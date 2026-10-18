@@ -861,9 +861,8 @@ local function buildHeroStatueDais(parent: Folder)
 				-- Screen-dominating Colossus Scale (68 studs tall = 14x taller than the player!)
 				local currentSize = model:GetExtentsSize()
 				local targetHeight = 68
-				if (model :: any).ScaleTo and currentSize.Y > 0 then
-					local factor = targetHeight / currentSize.Y
-					(model :: any):ScaleTo(factor)
+				if currentSize.Y > 0 then
+					model:ScaleTo(targetHeight / currentSize.Y)
 				end
 				model:PivotTo(anchor.CFrame)
 				model.Parent = statueGroup

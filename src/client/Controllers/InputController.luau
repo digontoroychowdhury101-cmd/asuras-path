@@ -8,12 +8,14 @@ local Workspace = game:GetService("Workspace")
 local UserInputService = game:GetService("UserInputService")
 local GuiService = game:GetService("GuiService")
 local ContextActionService = game:GetService("ContextActionService")
+local ProximityPromptService = game:GetService("ProximityPromptService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Shared = ReplicatedStorage:WaitForChild("AsurasPath")
 local InputBuffer = require(Shared:WaitForChild("Simulation"):WaitForChild("InputBuffer") :: ModuleScript)
 local WorldState = require(script.Parent:WaitForChild("WorldStateController") :: ModuleScript)
 local CameraController = require(script.Parent:WaitForChild("CameraController") :: ModuleScript)
+local HudKit = require(script.Parent:WaitForChild("HudKit") :: ModuleScript)
 
 type WorldState = WorldState.WorldState
 type CameraController = CameraController.CameraController
@@ -138,8 +140,21 @@ local function deviceFor(inputType: Enum.UserInputType): Device?
 	return nil
 end
 
+-- Prompts currently on screen (most recent last) and the one a touch USE press is holding.
+local shownPrompts: { ProximityPrompt } = {}
+local heldPrompt: ProximityPrompt? = nil
+
 local function buildTouchGui(self: InputController)
-	local gui = self.TouchGui
+	-- Buttons hang off a bottom-right cluster that scales with the viewport, so the top of the
+	-- cluster never climbs into the Roblox top bar on short landscape phones.
+	local gui = Instance.new("Frame")
+	gui.Name = "Cluster"
+	gui.AnchorPoint = Vector2.new(1, 1)
+	gui.Position = UDim2.fromScale(1, 1)
+	gui.Size = UDim2.fromOffset(340, 360)
+	gui.BackgroundTransparency = 1
+	gui.Parent = self.TouchGui
+	gui.Destroying:Once(HudKit.bindScale(gui, 1))
 	for _, entry in TOUCH_LAYOUT do
 		local button = Instance.new("TextButton")
 		button.Name = entry.Command
@@ -212,6 +227,18 @@ function Controller.new(state: WorldState, camera: CameraController, send: Sende
 	local self = setmetatable(fields, Controller)
 	buildTouchGui(self)
 	self:SetDevice(self.Device)
+	table.insert(self.Connections, ProximityPromptService.PromptShown:Connect(function(prompt: ProximityPrompt)
+		table.insert(shownPrompts, prompt)
+	end))
+	table.insert(self.Connections, ProximityPromptService.PromptHidden:Connect(function(prompt: ProximityPrompt)
+		local index = table.find(shownPrompts, prompt)
+		if index then
+			table.remove(shownPrompts, index)
+		end
+		if heldPrompt == prompt then
+			heldPrompt = nil
+		end
+	end))
 
 	table.insert(self.Connections, UserInputService.LastInputTypeChanged:Connect(function(inputType: Enum.UserInputType)
 		local device = deviceFor(inputType)
@@ -330,6 +357,16 @@ function Controller.Press(self: InputController, command: Command)
 	elseif command == "Heal" then
 		self.Send("Heal", nil, nil, nil, nil, stamp)
 	elseif command == "Interact" then
+		-- A visible ProximityPrompt already owns E / ButtonX (and runs its hold bar); sending the
+		-- Interact intent as well would rest or recover twice. Touch USE drives the prompt instead.
+		local prompt = shownPrompts[#shownPrompts]
+		if prompt and not self.MenuOpen then
+			if self.Device == "Touch" then
+				heldPrompt = prompt
+				prompt:InputHoldBegin()
+			end
+			return
+		end
 		self.Send("Interact", nil, nil, nil, nil, stamp)
 	elseif command == "Cursor" then
 		self.CursorFree = not self.CursorFree
@@ -337,7 +374,10 @@ function Controller.Press(self: InputController, command: Command)
 end
 
 function Controller.Release(self: InputController, command: Command)
-	if command == "Guard" and self.GuardHeld then
+	if command == "Interact" and heldPrompt then
+		heldPrompt:InputHoldEnd()
+		heldPrompt = nil
+	elseif command == "Guard" and self.GuardHeld then
 		self.GuardHeld = false
 		self.Send("Block", nil, nil, nil, false, now())
 	elseif command == "Sprint" and self.Device ~= "Gamepad" and self.SprintHeld then

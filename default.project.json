@@ -190,6 +190,9 @@
           },
           "IntentProtocol": {
             "$path": "src/infrastructure/IntentProtocol.luau"
+          },
+          "Objectives": {
+            "$path": "src/shared/Objectives.luau"
           }
         },
         "Simulation": {
@@ -312,6 +315,18 @@
             },
             "ColosseumController": {
               "$path": "src/client/Controllers/ColosseumController.luau"
+            },
+            "HudKit": {
+              "$path": "src/client/Controllers/HudKit.luau"
+            },
+            "ObjectiveController": {
+              "$path": "src/client/Controllers/ObjectiveController.luau"
+            },
+            "ControlsCard": {
+              "$path": "src/client/Controllers/ControlsCard.luau"
+            },
+            "WaypointMarker": {
+              "$path": "src/client/Controllers/WaypointMarker.luau"
             }
           }
         }

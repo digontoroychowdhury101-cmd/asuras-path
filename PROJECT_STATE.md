@@ -1,8 +1,8 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
-> **Last Updated**: 2026-10-17 23:45  
-> **Status**: Stage 5 Complete + Cleaned & Rebranded. Ready for Stage 6 (Sanctuary Lobby).  
-> **Built Target**: `outputs/AsurasPath.rbxlx` (Rojo 32 mapped sources, tests passing).
+> **Last Updated**: 2026-10-19 01:05  
+> **Status**: UX/onboarding overhaul on branch `ux/onboarding-overhaul` (Studio-verified via Rojo sync).  
+> **Built Target**: `outputs/AsurasPath.rbxlx` — NOT rebuilt this pass (still holds the pre-fix SanctuaryService parse error); rebuild with `tools/build.py` once Studio's open copy is saved/closed.
 
 ---
 
@@ -82,7 +82,16 @@ All 128 Phase 1–12 Cagebound places and docs have been moved out of this proje
 
 ---
 
-## 4. CURRENT MILESTONE & NEXT TASKS
+## 4. UX / ONBOARDING PASS (2026-10-19)
+- **Boot fix**: `SanctuaryService` titan auto-mount line was a Luau parse error (`(model :: any):ScaleTo` after a `local`), so the server never booted and players sat on the loading cover forever.
+- **Objective tracker**: pure resolver `src/shared/Objectives.luau` (tested by `tools/test_objectives.py`) + `ObjectiveController` (top-right card, "NEW OBJECTIVE" flash) + `WaypointMarker` (gold ◆ with distance). Route: first rest at Primal Bonfire → Ascension Stairs → each altar in order → fog gate → Colosseum; bloodstain recovery takes priority; hidden in boss fights/duels. Server now mirrors defeated bosses to the read-only `AsuraBosses` attribute.
+- **Controls card**: `ControlsCard` shows device-aware bindings (keys come from `InputController:Label`), auto-folds to a `[H] Controls` pill after 25 s; toggle H / D-Pad Left / tap.
+- **Responsive HUD**: `HudKit.bindScale` scales Vitals, Loadout, Altar menu, objective card and the touch cluster by viewport height (clamped 0.7–1.35 vs 900 px); death screen and toast use scale widths.
+- **Prompt double-fire**: E / ButtonX no longer sends the instant `Interact` intent while a ProximityPrompt is on screen (the prompt's hold owns it); touch USE drives the visible prompt.
+- **Loading cover**: rotating gameplay tips; after 20 s without `Workspace.AsuraReady` it says the server failed to start (Studio) / is not responding (live).
+- New shared kit `HudKit.luau` (palette, helpers, UI cue sounds). All new modules ≤150 lines.
+
+## 5. CURRENT MILESTONE & NEXT TASKS
 - **Next Task (Stage 6)**: Build the opening **Sanctuary Lobby** ("The Shrine of the Ascendant") based on the reference concept art:
   * Golden Hour sky sanctuary above sea of clouds (`TimeOfDay = "17:35:00"`, `Atmosphere`, `SunRays`).
   * Circular reflective terrace with shallow water ring and Primal Bonfire Altar.
@@ -92,7 +101,7 @@ All 128 Phase 1–12 Cagebound places and docs have been moved out of this proje
 
 ---
 
-## 5. AGENT PROTOCOL (HOW CLAUDE MUST OPERATE)
+## 6. AGENT PROTOCOL (HOW CLAUDE MUST OPERATE)
 1. At the start of a chat, read this file (`PROJECT_STATE.md`) to establish context.
 2. Only write/edit code in `src/`, `tools/`, and `default.project.json`. Do NOT touch binary files (`.rbxlx`, `.zip`, `work/bin/`).
 3. Maintain strict Luau typing (`--!strict`).

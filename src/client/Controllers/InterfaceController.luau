@@ -13,6 +13,7 @@ local World = require(Shared.Shared:WaitForChild("WorldDefinitions") :: ModuleSc
 local WorldState = require(script.Parent:WaitForChild("WorldStateController") :: ModuleScript)
 local CameraController = require(script.Parent:WaitForChild("CameraController") :: ModuleScript)
 local InputController = require(script.Parent:WaitForChild("InputController") :: ModuleScript)
+local HudKit = require(script.Parent:WaitForChild("HudKit") :: ModuleScript)
 
 type WorldState = WorldState.WorldState
 type Entity = WorldState.Entity
@@ -458,15 +459,17 @@ local function buildDeath(gui: ScreenGui): (Frame, TextLabel, TextLabel, TextLab
 	local title = label(frame, "YOU FELL", 84, TITLE_FONT, Color3.fromRGB(168, 24, 26), {
 		AnchorPoint = Vector2.new(0.5, 0.5),
 		Position = UDim2.fromScale(0.5, 0.44),
-		Size = UDim2.fromOffset(900, 100),
+		Size = UDim2.new(0.9, 0, 0, 100),
+		TextScaled = true,
 		TextTransparency = 1,
 		TextStrokeTransparency = 1,
 		ZIndex = 21,
 	})
+	make("UITextSizeConstraint", title, { MinTextSize = 36, MaxTextSize = 84 })
 	local sub = label(frame, "SPIRIT SEVERED", 26, BODY_FONT, IVORY, {
 		AnchorPoint = Vector2.new(0.5, 0),
 		Position = UDim2.fromScale(0.5, 0.52),
-		Size = UDim2.fromOffset(700, 34),
+		Size = UDim2.new(0.85, 0, 0, 34),
 		TextTransparency = 1,
 		TextStrokeTransparency = 1,
 		ZIndex = 21,
@@ -474,7 +477,9 @@ local function buildDeath(gui: ScreenGui): (Frame, TextLabel, TextLabel, TextLab
 	local detail = label(frame, "", 18, BODY_FONT, MUTED, {
 		AnchorPoint = Vector2.new(0.5, 0),
 		Position = UDim2.fromScale(0.5, 0.58),
-		Size = UDim2.fromOffset(700, 26),
+		Size = UDim2.new(0.85, 0, 0, 52),
+		TextWrapped = true,
+		TextYAlignment = Enum.TextYAlignment.Top,
 		TextTransparency = 1,
 		TextStrokeTransparency = 1,
 		ZIndex = 21,
@@ -510,11 +515,14 @@ function Controller.new(state: WorldState, camera: CameraController, input: Inpu
 	local toast = label(gui, "", 22, BODY_FONT, IVORY, {
 		Name = "Toast",
 		AnchorPoint = Vector2.new(0.5, 1),
-		Position = UDim2.new(0.5, 0, 1, -150),
-		Size = UDim2.fromOffset(640, 28),
+		Position = UDim2.new(0.5, 0, 1, -200),
+		Size = UDim2.new(0.8, 0, 0, 28),
+		TextScaled = true,
 		TextTransparency = 1,
 		TextStrokeTransparency = 1,
 	})
+	make("UISizeConstraint", toast, { MaxSize = Vector2.new(640, 28) })
+	make("UITextSizeConstraint", toast, { MinTextSize = 14, MaxTextSize = 22 })
 	local banner = label(gui, "", 27, TITLE_FONT, IVORY, {
 		Name = "Banner",
 		AnchorPoint = Vector2.new(0.5, 0.5),
@@ -589,6 +597,14 @@ function Controller.new(state: WorldState, camera: CameraController, input: Inpu
 	}
 	local self = setmetatable(fields, Controller)
 	self:BuildAltar()
+	-- Panels are authored at 1080p; scale them with the viewport so phones stay legible and
+	-- large displays don't shrink the HUD to a corner.
+	for name, base in { Vitals = 0.65, Loadout = 0.65, AltarMenu = 0.8 } do
+		local panel = gui:FindFirstChild(name)
+		if panel and panel:IsA("GuiObject") then
+			table.insert(self.Disconnects, HudKit.bindScale(panel, base))
+		end
+	end
 
 	table.insert(self.Disconnects, state:OnCue(function(cue: Cue)
 		self:OnCue(cue)

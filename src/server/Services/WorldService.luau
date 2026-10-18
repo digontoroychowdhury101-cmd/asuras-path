@@ -194,6 +194,13 @@ local function publish(s: Session)
 		end
 		table.sort(altars)
 		player:SetAttribute("AsuraAltars", table.concat(altars, ","))
+		-- Read-only progress mirror for the client objective tracker; never read back by the server.
+		local bosses: { string } = {}
+		for id in record.world.bosses do
+			table.insert(bosses, id)
+		end
+		table.sort(bosses)
+		player:SetAttribute("AsuraBosses", table.concat(bosses, ","))
 		for _, name in ProfileStore.Attributes do
 			player:SetAttribute("Asura" .. name, record.attributes[name])
 		end
