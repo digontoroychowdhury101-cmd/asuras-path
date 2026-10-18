@@ -1,0 +1,321 @@
+{
+  "name": "AsurasPath",
+  "tree": {
+    "$className": "DataModel",
+    "Workspace": {
+      "$className": "Workspace",
+      "$properties": {
+        "FallenPartsDestroyHeight": -100,
+        "GlobalWind": [
+          0,
+          0,
+          0
+        ],
+        "Gravity": 196.2,
+        "StreamingEnabled": false
+      },
+      "Camera": {
+        "$className": "Camera",
+        "$properties": {
+          "CFrame": [
+            0,
+            626,
+            966,
+            1,
+            0,
+            0,
+            0,
+            0.99935,
+            0.03612,
+            0,
+            -0.03612,
+            0.99935
+          ],
+          "Focus": [
+            0,
+            603.6,
+            900,
+            1,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            1
+          ],
+          "FieldOfView": 70
+        }
+      },
+      "AsurasPath": {
+        "$className": "Folder"
+      }
+    },
+    "Lighting": {
+      "$className": "Lighting",
+      "$properties": {
+        "LightingStyle": "Realistic",
+        "PrioritizeLightingQuality": true,
+        "Brightness": 2,
+        "GeographicLatitude": 18,
+        "EnvironmentDiffuseScale": 0.45,
+        "EnvironmentSpecularScale": 0.4,
+        "GlobalShadows": true,
+        "ShadowSoftness": 0.35,
+        "ExposureCompensation": 0.05,
+        "FogStart": 120,
+        "FogEnd": 1600,
+        "Ambient": [
+          0.227451,
+          0.266667,
+          0.305882
+        ],
+        "OutdoorAmbient": [
+          0.439216,
+          0.490196,
+          0.541176
+        ],
+        "FogColor": [
+          0.423529,
+          0.509804,
+          0.572549
+        ],
+        "ColorShift_Top": [
+          0.682353,
+          0.74902,
+          0.823529
+        ],
+        "ColorShift_Bottom": [
+          0.031373,
+          0.039216,
+          0.054902
+        ],
+        "TimeOfDay": "17:06:00",
+        "Technology": "Future"
+      },
+      "CB_Atmosphere": {
+        "$className": "Atmosphere",
+        "$properties": {
+          "Density": 0.46,
+          "Offset": 0.12,
+          "Haze": 4,
+          "Glare": 0,
+          "Color": [
+            0.615686,
+            0.694118,
+            0.74902
+          ],
+          "Decay": [
+            0.25098,
+            0.294118,
+            0.352941
+          ]
+        }
+      },
+      "CB_SunRays": {
+        "$className": "SunRaysEffect",
+        "$properties": {
+          "Enabled": true,
+          "Intensity": 0.025,
+          "Spread": 0.8
+        }
+      },
+      "CB_ColorCorrection": {
+        "$className": "ColorCorrectionEffect",
+        "$properties": {
+          "Brightness": 0.015,
+          "Contrast": 0.13,
+          "Enabled": true,
+          "Saturation": -0.42,
+          "TintColor": [
+            0.870588,
+            0.913725,
+            0.94902
+          ]
+        }
+      },
+      "CB_Bloom": {
+        "$className": "BloomEffect",
+        "$properties": {
+          "Enabled": true,
+          "Intensity": 0.16,
+          "Size": 20,
+          "Threshold": 2.4
+        }
+      },
+      "CB_DepthOfField": {
+        "$className": "DepthOfFieldEffect",
+        "$properties": {
+          "Enabled": false,
+          "FarIntensity": 0,
+          "FocusDistance": 20,
+          "InFocusRadius": 50,
+          "NearIntensity": 0
+        }
+      }
+    },
+    "Players": {
+      "$className": "Players",
+      "$properties": {
+        "CharacterAutoLoads": false
+      }
+    },
+    "ReplicatedStorage": {
+      "$className": "ReplicatedStorage",
+      "AsurasPath": {
+        "$className": "Folder",
+        "Config": {
+          "$path": "src/shared/Config.luau"
+        },
+        "ProfileSchema": {
+          "$path": "src/shared/ProfileSchema.luau"
+        },
+        "ShopCatalog": {
+          "$path": "src/shared/ShopCatalog.luau"
+        },
+        "Shared": {
+          "$className": "Folder",
+          "ConfigValidator": {
+            "$path": "src/shared/ConfigValidator.luau"
+          },
+          "CombatSettings": {
+            "$path": "src/shared/CombatSettings.luau"
+          },
+          "WorldDefinitions": {
+            "$path": "src/shared/WorldDefinitions.luau"
+          },
+          "AnimationCatalog": {
+            "$path": "src/shared/AnimationCatalog.luau"
+          },
+          "IntentProtocol": {
+            "$path": "src/infrastructure/IntentProtocol.luau"
+          }
+        },
+        "Simulation": {
+          "$className": "Folder",
+          "Tempo": {
+            "$path": "src/simulation/Tempo.luau"
+          },
+          "MoveSchema": {
+            "$path": "src/simulation/MoveSchema.luau"
+          },
+          "WeaponSchema": {
+            "$path": "src/simulation/WeaponSchema.luau"
+          },
+          "InputBuffer": {
+            "$path": "src/simulation/InputBuffer.luau"
+          },
+          "CombatRules": {
+            "$path": "src/simulation/CombatRules.luau"
+          },
+          "MatchmakingRules": {
+            "$path": "src/simulation/MatchmakingRules.luau"
+          }
+        },
+        "Net": {
+          "$className": "Folder",
+          "ActionIntent": {
+            "$className": "RemoteEvent"
+          },
+          "StateSnapshots": {
+            "$className": "RemoteEvent"
+          },
+          "ShopIntent": {
+            "$className": "RemoteEvent"
+          },
+          "ColosseumIntent": {
+            "$className": "RemoteEvent"
+          }
+        }
+      }
+    },
+    "ReplicatedFirst": {
+      "$className": "ReplicatedFirst",
+      "AsurasPathLoading": {
+        "$path": "src/loading/Loading.client.luau"
+      }
+    },
+    "ServerScriptService": {
+      "$className": "ServerScriptService",
+      "AsurasPath": {
+        "$className": "Folder",
+        "Bootstrap": {
+          "$path": "src/server/Bootstrap.server.luau"
+        },
+        "Services": {
+          "$className": "Folder",
+          "LagCompensation": {
+            "$path": "src/server/LagCompensation.luau"
+          },
+          "ProfileStore": {
+            "$path": "src/server/ProfileStore.luau"
+          },
+          "PersistenceService": {
+            "$path": "src/server/PersistenceService.luau"
+          },
+          "MatchJournal": {
+            "$path": "src/server/MatchJournal.luau"
+          },
+          "EnvironmentService": {
+            "$path": "src/server/EnvironmentService.luau"
+          },
+          "CharacterService": {
+            "$path": "src/server/CharacterService.luau"
+          },
+          "FighterAppearance": {
+            "$path": "src/server/FighterAppearance.luau"
+          },
+          "AIService": {
+            "$path": "src/server/Services/AIService.luau"
+          },
+          "SanctuaryService": {
+            "$path": "src/server/Services/SanctuaryService.luau"
+          },
+          "WorldService": {
+            "$path": "src/server/Services/WorldService.luau"
+          },
+          "ColosseumService": {
+            "$path": "src/server/Services/ColosseumService.luau"
+          },
+          "ShopService": {
+            "$path": "src/server/ShopService.luau"
+          }
+        }
+      }
+    },
+    "StarterPlayer": {
+      "$className": "StarterPlayer",
+      "StarterPlayerScripts": {
+        "$className": "StarterPlayerScripts",
+        "AsurasPathClient": {
+          "$path": "src/client/Bootstrap.client.luau"
+        },
+        "AsurasPath": {
+          "$className": "Folder",
+          "Controllers": {
+            "$className": "Folder",
+            "WorldStateController": {
+              "$path": "src/client/Controllers/WorldStateController.luau"
+            },
+            "CameraController": {
+              "$path": "src/client/Controllers/CameraController.luau"
+            },
+            "InputController": {
+              "$path": "src/client/Controllers/InputController.luau"
+            },
+            "GameFeelController": {
+              "$path": "src/client/Controllers/GameFeelController.luau"
+            },
+            "InterfaceController": {
+              "$path": "src/client/Controllers/InterfaceController.luau"
+            },
+            "ColosseumController": {
+              "$path": "src/client/Controllers/ColosseumController.luau"
+            }
+          }
+        }
+      }
+    }
+  }
+}

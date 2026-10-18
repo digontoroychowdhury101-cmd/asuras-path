@@ -1,0 +1,11 @@
+2026-10-17T12:51:59.156Z,89.156898,6c9ab000,6,Info [FLog::CreatorOutput] [Asura's Path] Server ready: 60 Hz authority, 150 ms rewind budget, 3 Colosseum rings; ranked league open (development).
+2026-10-17T12:51:59.631Z,89.631157,6c79f000,6,Info [FLog::CreatorOutput] [Asura's Path] Client ready: camlock, game feel, Souls HUD and Colosseum online.
+2026-10-17T12:53:12.562Z,162.562866,6be33000,6,Info [FLog::CreatorOutput] [Asura Playtest Ready] true true true
+2026-10-17T12:53:12.566Z,162.566727,6c593000,6,Info [FLog::CreatorOutput] [Asura Playtest State] Idle Unarmed 100
+2026-10-17T12:53:23.525Z,173.525787,6c9ab000,6,Info [FLog::CreatorOutput] [Asura Playtest State] Startup Unarmed 97
+2026-10-17T12:53:23.742Z,173.742172,6be33000,6,Info [FLog::CreatorOutput] [Asura Playtest State] Recovery Unarmed 97
+2026-10-17T12:53:24.573Z,174.573059,6c9ab000,6,Info [FLog::CreatorOutput] [Asura Playtest State] Deflecting Unarmed 88
+2026-10-17T12:53:24.839Z,174.839600,6be33000,6,Info [FLog::CreatorOutput] [Asura Playtest State] Blocking Unarmed 88
+2026-10-17T12:53:25.506Z,175.506561,6c9ab000,6,Info [FLog::CreatorOutput] [Asura Playtest State] Dashing Unarmed 93.47
+2026-10-17T12:53:57.569Z,207.569260,6c79f000,6,Info [FLog::CreatorOutput] [Asura Playtest Movement] 8.46387767791748
+2026-10-17T12:53:57.571Z,207.571030,6c79f000,6,Info [FLog::CreatorOutput] [Asura Playtest States] {"Dashing":true,"Startup":true,"Blocking":true,"Recovery":true,"Idle":true,"Deflecting":true}
