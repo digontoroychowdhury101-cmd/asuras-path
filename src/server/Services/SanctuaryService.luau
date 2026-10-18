@@ -21,6 +21,7 @@ local World = require(Shared.Shared.WorldDefinitions)
 local Animations = require(Shared.Shared.AnimationCatalog)
 local Characters = require(script.Parent:WaitForChild("CharacterService") :: ModuleScript)
 local WorldService = require(script.Parent:WaitForChild("WorldService") :: ModuleScript)
+local Dressing = require(script.Parent:WaitForChild("SanctuaryDressing") :: ModuleScript)
 
 local SanctuaryService = {}
 
@@ -484,6 +485,7 @@ local function buildGateway(parent: Folder): BasePart
 	local trigger=part(gate,"PortalTrigger",Vector3.new(13,11.4,2.4),cf,PORTAL,Enum.Material.SmoothPlastic,
 		{Collide=false,Query=false,Transparency=1,Shadow=false})
 	trigger.CanTouch=true
+	Dressing.try("PortalGates", Dressing.PortalGates, gate, cf, 13)
 	return trigger
 end
 
@@ -827,67 +829,12 @@ local function buildHeroStatueDais(parent: Folder)
 		part(titan, "RootTendril", Vector3.new(3.2, 28, 3.2), anchor.CFrame * CFrame.new(r * 6.5, 14, -8.0 + math.abs(r) * 2) * CFrame.Angles(math.rad(12), 0, math.rad(r * 15)), Color3.fromRGB(215, 210, 202), Enum.Material.Wood, decor())
 	end
 
-	-- Auto-mount listener: automatically mounts and positions titan statue when imported
-	task.spawn(function()
-		local function isTarget(name: string): boolean
-			return name == "AsuraColossusStatue" or name == "titan_statue" or name == "AsceticTitanStatue"
-		end
-
-		local function mountModel(model: Instance)
-			if model:IsA("Model") then
-				titan:Destroy()
-				-- Clean up procedural parts: style stone, roots, metal, and keep rich blood leaves
-				for _, desc in model:GetDescendants() do
-					if desc:IsA("BasePart") then
-						desc.Anchored = true
-						local lname = desc.Name:lower()
-						if lname:find("leaf") or lname:find("leaves") then
-							desc.Transparency = 0
-							desc.CanCollide = false
-							desc.Material = Enum.Material.SmoothPlastic
-							desc.Color = Color3.fromRGB(168, 24, 34) -- rich blood crimson sacred leaves
-						elseif lname:find("bark") or lname:find("tree") or lname:find("root") then
-							desc.Material = Enum.Material.Wood
-							desc.Color = Color3.fromRGB(212, 206, 198) -- pale sacred roots
-						elseif lname:find("metal") or lname:find("sword") or lname:find("crown") then
-							desc.Material = Enum.Material.Metal
-							desc.Color = Color3.fromRGB(88, 82, 76)
-						else
-							desc.Material = Enum.Material.Slate
-							desc.Color = Color3.fromRGB(136, 140, 138) -- weathered ancient stone
-						end
-					end
-				end
-				-- Screen-dominating Colossus Scale (68 studs tall = 14x taller than the player!)
-				local currentSize = model:GetExtentsSize()
-				local targetHeight = 68
-				if currentSize.Y > 0 then
-					model:ScaleTo(targetHeight / currentSize.Y)
-				end
-				model:PivotTo(anchor.CFrame)
-				model.Parent = statueGroup
-			elseif model:IsA("BasePart") then
-				titan:Destroy()
-				model.CFrame = anchor.CFrame
-				model.Parent = statueGroup
-			end
-		end
-
-		for _, parent in { ReplicatedStorage, Workspace } do
-			for _, child in parent:GetChildren() do
-				if isTarget(child.Name) then
-					mountModel(child)
-					return
-				end
-			end
-		end
-
-		ReplicatedStorage.ChildAdded:Connect(function(child)
-			if isTarget(child.Name) then
-				mountModel(child)
-			end
-		end)
-	end)
+	-- Uploaded PBR set pieces (ServerStorage.AsuraAssets). The procedural titan stays only if the
+	-- asset folder is missing, e.g. in a bare Rojo build without assets/models.
+	if Dressing.try("Colossus", Dressing.Colossus, statueGroup, anchor.CFrame, titan) then
+		Dressing.try("Roots", Dressing.Roots, statueGroup, daisBase)
+	end
+	Dressing.try("SacredTree", Dressing.SacredTree, statueGroup, daisBase * CFrame.new(-42, 0, -10))
 end
 
 -------------------------------------------------------------------------------------------------

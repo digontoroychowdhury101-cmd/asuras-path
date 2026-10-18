@@ -26,6 +26,7 @@ local Interface = require(controllers:WaitForChild("InterfaceController", timeou
 local Colosseum = require(controllers:WaitForChild("ColosseumController", timeout) :: ModuleScript)
 local Objective = require(controllers:WaitForChild("ObjectiveController", timeout) :: ModuleScript)
 local ControlsCard = require(controllers:WaitForChild("ControlsCard", timeout) :: ModuleScript)
+local Prologue = require(controllers:WaitForChild("PrologueController", timeout) :: ModuleScript)
 
 local net = Shared:WaitForChild("Net", timeout)
 assert(net, "Network folder did not replicate")
@@ -160,4 +161,5 @@ RunService:BindToRenderStep(RENDER_STEP, Enum.RenderPriority.Camera.Value + 1, f
 end)
 
 player:SetAttribute("AsuraClientReady", true)
+task.spawn(Prologue.Play, ui, input)
 print("[Asura's Path] Client ready: camlock, game feel, Souls HUD and Colosseum online.")

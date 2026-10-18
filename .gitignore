@@ -3,3 +3,5 @@ work/
 *.rbxl.lock
 *.rbxlx.lock
 
+assets/source/
+assets/build/

@@ -123,13 +123,13 @@ function Controller.SetOpen(self: ControlsCard, open: boolean)
 end
 
 function Controller.Update(self: ControlsCard, dt: number)
-	if self.Open and self.Timer > 0 then
+	local blocked = self.Ui.Altar.Visible or self.Ui.DeathShown or self.Ui.BossEntity ~= nil or self.Ui.PrologueActive == true
+	if self.Open and self.Timer > 0 and not blocked then
 		self.Timer -= dt
 		if self.Timer <= 0 then
 			self.Open = false
 		end
 	end
-	local blocked = self.Ui.Altar.Visible or self.Ui.DeathShown or self.Ui.BossEntity ~= nil
 	self.Card.Visible = self.Open and not blocked
 	self.Pill.Visible = not self.Open and not blocked
 end

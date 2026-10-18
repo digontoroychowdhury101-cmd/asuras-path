@@ -110,6 +110,7 @@ type EntityListener = (id: number, kind: EntityKind) -> ()
 
 local Service = {}
 local Appearance = require(script.Parent:WaitForChild("FighterAppearance") :: ModuleScript)
+local EnemyAppearance = require(script.Parent:WaitForChild("EnemyAppearance") :: ModuleScript)
 
 local TICK: number = Tempo.TickSeconds
 local MAX_CATCHUP: number = Config.Movement.MaxCatchupSteps
@@ -313,8 +314,10 @@ end
 
 local function tint(model: Model, rgb: { number })
 	local color = Color3.fromRGB(rgb[1] or 255, rgb[2] or 255, rgb[3] or 255)
+	local attire = model:FindFirstChild("AsuraAttire")
 	for _, descendant in model:GetDescendants() do
-		if descendant:IsA("BasePart") and descendant.Name ~= "HumanoidRootPart" and descendant.Name ~= "AsuraWeapon" then
+		if descendant:IsA("BasePart") and descendant.Name ~= "HumanoidRootPart" and descendant.Name ~= "AsuraWeapon"
+			and not (attire and descendant:IsDescendantOf(attire)) then
 			descendant.Color = color
 		end
 	end
@@ -720,7 +723,9 @@ local function spawnEnemy(spec: EnemySpec, existing: Model?): number?
 	nextEnemyId -= 1
 	model.Name = spec.Name
 	humanoid.DisplayName = spec.Name
-	if spec.BodyColor then
+	-- Authored enemy looks (EnemyAppearance) replace the flat body tint for known mobs.
+	local dressed = model:FindFirstChild("AsuraAttire") ~= nil or EnemyAppearance.Apply(model, spec.Definition)
+	if spec.BodyColor and not dressed then
 		tint(model, spec.BodyColor)
 	end
 	if not existing then

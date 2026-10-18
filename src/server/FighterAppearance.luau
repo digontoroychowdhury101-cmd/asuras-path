@@ -107,4 +107,7 @@ function Appearance.Apply(model: Model, connections: { RBXScriptConnection })
 	if humanoid then humanoid.DisplayDistanceType = Enum.HumanoidDisplayDistanceType.None end
 end
 
+-- Shared with EnemyAppearance so every fighter's attire is built the same way.
+Appearance.Gear = gear
+
 return table.freeze(Appearance)

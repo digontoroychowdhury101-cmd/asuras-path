@@ -1203,8 +1203,9 @@ local function buildRing(ring: Ring, parent: Folder): Model
 	signPost.CanCollide = false
 	signPost.CanQuery = false
 	local billboard = Instance.new("BillboardGui")
-	billboard.Size = UDim2.fromOffset(420, 90)
-	billboard.MaxDistance = 140
+	-- Sized in studs (scale) so it reads as a banner in the world, not a screen-sized overlay.
+	billboard.Size = UDim2.fromScale(22, 4.6)
+	billboard.MaxDistance = 90
 	billboard.LightInfluence = 0
 	billboard.Parent = signPost
 	local title = Instance.new("TextLabel")

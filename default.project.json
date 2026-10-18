@@ -269,6 +269,9 @@
           "FighterAppearance": {
             "$path": "src/server/FighterAppearance.luau"
           },
+          "EnemyAppearance": {
+            "$path": "src/server/EnemyAppearance.luau"
+          },
           "AIService": {
             "$path": "src/server/Services/AIService.luau"
           },
@@ -283,8 +286,17 @@
           },
           "ShopService": {
             "$path": "src/server/ShopService.luau"
+          },
+          "SanctuaryDressing": {
+            "$path": "src/server/Services/SanctuaryDressing.luau"
           }
         }
+      }
+    },
+    "ServerStorage": {
+      "$className": "ServerStorage",
+      "AsuraAssets": {
+        "$path": "assets/models/AsuraAssets.rbxm"
       }
     },
     "StarterPlayer": {
@@ -327,6 +339,9 @@
             },
             "WaypointMarker": {
               "$path": "src/client/Controllers/WaypointMarker.luau"
+            },
+            "PrologueController": {
+              "$path": "src/client/Controllers/PrologueController.luau"
             }
           }
         }

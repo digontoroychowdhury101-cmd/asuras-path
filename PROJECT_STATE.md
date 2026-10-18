@@ -91,7 +91,16 @@ All 128 Phase 1–12 Cagebound places and docs have been moved out of this proje
 - **Loading cover**: rotating gameplay tips; after 20 s without `Workspace.AsuraReady` it says the server failed to start (Studio) / is not responding (live).
 - New shared kit `HudKit.luau` (palette, helpers, UI cue sounds). All new modules ≤150 lines.
 
-## 5. CURRENT MILESTONE & NEXT TASKS
+## 5. VISUAL PASS 1 — SANCTUARY SET PIECES, ENEMY LOOKS, PROLOGUE (2026-10-19)
+- **Asset pipeline**: CC0 Poly Haven sources in `assets/source/` (git-ignored) → `tools/blender/process_asset.py` (headless Blender: decimate ≤19.5k tris/MeshPart, 1024 PBR maps, GLB + PNG maps) → `tools/blender/preview_asset.py` (QA render) → Studio 3D Importer upload → exported `assets/models/AsuraAssets.rbxm`, Rojo-mapped to `ServerStorage.AsuraAssets`. IDs in `assets/ASSET_IDS.md`, credits in `assets/CREDITS.md`.
+- **Uploaded (Creator: Me)**: Gothic Statue (colossus), Large Iron Gate, Dead Tree Trunk 02, Pine Roots — each MeshPart has a SurfaceAppearance with Color/Normal/Roughness/Metalness.
+- **`SanctuaryDressing.luau`**: 48-stud veiled colossus on the dais (faces the plaza), 6 root clusters on the plinth, upright dead sacred tree shedding crimson petals, iron gates swung open at the Ascension portal. All calls go through `Dressing.try` (pcall) so a cosmetic failure never blocks boot. Replaces the old titan auto-mount that overwrote materials (the cause of the black statue).
+- **`EnemyAppearance.luau`**: Corrupt Monk (ash skin, rust kasaya, prayer beads, ember eyes) and Cursed Swordsman (iron lamellar, pauldrons, black kasa, tattered cloak, ember eyes). `CharacterService.tint` now skips `AsuraAttire`. Catalog accessories were previewed and rejected (bright, cartoony).
+- **`PrologueController.luau`**: 4-line skippable letterboxed prologue for new players (motive: Grandmaster Shen, the Fallen Abbot). Controls card waits until it finishes.
+- Colosseum sign BillboardGui now sized in studs (was a screen-sized overlay visible from 140 studs).
+- **Still ugly / next**: Desecrated Monastery is a flat greybox plane (no map); enemies are R15 block bodies (real meshes need Mixamo/Sketchfab downloads under the user's own login); Sanctuary still ~1,700 primitives + 86 Neon parts; spawn falls and triggers "The clouds return you".
+
+## 6. CURRENT MILESTONE & NEXT TASKS
 - **Next Task (Stage 6)**: Build the opening **Sanctuary Lobby** ("The Shrine of the Ascendant") based on the reference concept art:
   * Golden Hour sky sanctuary above sea of clouds (`TimeOfDay = "17:35:00"`, `Atmosphere`, `SunRays`).
   * Circular reflective terrace with shallow water ring and Primal Bonfire Altar.
@@ -101,7 +110,7 @@ All 128 Phase 1–12 Cagebound places and docs have been moved out of this proje
 
 ---
 
-## 6. AGENT PROTOCOL (HOW CLAUDE MUST OPERATE)
+## 7. AGENT PROTOCOL (HOW CLAUDE MUST OPERATE)
 1. At the start of a chat, read this file (`PROJECT_STATE.md`) to establish context.
 2. Only write/edit code in `src/`, `tools/`, and `default.project.json`. Do NOT touch binary files (`.rbxlx`, `.zip`, `work/bin/`).
 3. Maintain strict Luau typing (`--!strict`).
