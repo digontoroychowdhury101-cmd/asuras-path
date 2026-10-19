@@ -1,0 +1,204 @@
+{
+  "status": "pending_roblox_upload",
+  "models": [
+    {
+      "name": "AsuraStone",
+      "file": "assets/build/phase5_import/meshes/AsuraStone.glb",
+      "mesh_objects": 1,
+      "materials": 1,
+      "triangles": 19304,
+      "source": "stone_01",
+      "sha256": "ddfe073dccb6e5e470efb37635afcdd7b8ddf15af0b5f2c75c408de575496f2e",
+      "uploaded": false
+    },
+    {
+      "name": "AsuraFirePit",
+      "file": "assets/build/phase5_import/meshes/AsuraFirePit.glb",
+      "mesh_objects": 1,
+      "materials": 1,
+      "triangles": 3887,
+      "source": "stone_fire_pit",
+      "sha256": "5f11467a2647e0339d4fb5d8301d2d98bc65fcec5aeaddec90501d73dd5e198d",
+      "uploaded": false
+    },
+    {
+      "name": "AsuraBrassLantern",
+      "file": "assets/build/phase5_import/meshes/AsuraBrassLantern.glb",
+      "mesh_objects": 3,
+      "materials": 4,
+      "triangles": 12742,
+      "source": "brass_diya_lantern",
+      "sha256": "fd4804351a1bc6be907d770b2f3561e9f9d8c8acb4d76edd0124d84a55d9ee53",
+      "uploaded": false
+    },
+    {
+      "name": "AsuraRuinArch",
+      "file": "assets/build/phase5_import/meshes/AsuraRuinArch.glb",
+      "mesh_objects": 1,
+      "materials": 3,
+      "triangles": 1480,
+      "source": "RuinArch_01",
+      "sha256": "7d50066718d5b3a557a8918d793699748ec61b0c04894d87344bc8a491c28223",
+      "uploaded": false
+    },
+    {
+      "name": "AsuraRomanRail",
+      "file": "assets/build/phase5_import/meshes/AsuraRomanRail.glb",
+      "mesh_objects": 1,
+      "materials": 1,
+      "triangles": 126,
+      "source": "RomanRail_01",
+      "sha256": "c2f287d20fa6e20eeb8d33d230f7e1c2bb8bc3b46ea086f8e17972fbe983e780",
+      "uploaded": false
+    },
+    {
+      "name": "AsuraRuinPillar",
+      "file": "assets/build/phase5_import/meshes/AsuraRuinPillar.glb",
+      "mesh_objects": 1,
+      "materials": 1,
+      "triangles": 296,
+      "source": "PillarSegment_01",
+      "sha256": "1473a610ce0035d70c13ee80866ac8e71098ea43b0b390e13df5b84d41aa4c55",
+      "uploaded": false
+    },
+    {
+      "name": "AsuraFoundationRuin",
+      "file": "assets/build/phase5_import/meshes/AsuraFoundationRuin.glb",
+      "mesh_objects": 1,
+      "materials": 2,
+      "triangles": 120,
+      "source": "FoundationRuin_01",
+      "sha256": "59b36429531387816fe7b6df80265d7fa3f81b1c8c79af7538d586a6e816a937",
+      "uploaded": false
+    },
+    {
+      "name": "AsuraTempleRuin",
+      "file": "assets/build/phase5_import/meshes/AsuraTempleRuin.glb",
+      "mesh_objects": 1,
+      "materials": 4,
+      "triangles": 2344,
+      "source": "TempleRuin_01",
+      "sha256": "cbf05e95e3a676ebf1e9e92d5d3e6dd0e6417af41ca7736f4fae8983d2d1b5d4",
+      "uploaded": false
+    }
+  ],
+  "Audio": {
+    "Clash": {
+      "file": "assets/build/phase5_import/audio/Clash.wav",
+      "id": "",
+      "uploaded": false
+    },
+    "ParryBass": {
+      "file": "assets/build/phase5_import/audio/ParryBass.wav",
+      "id": "",
+      "uploaded": false
+    },
+    "Flesh": {
+      "file": "assets/build/phase5_import/audio/Flesh.wav",
+      "id": "",
+      "uploaded": false
+    },
+    "Blunt": {
+      "file": "assets/build/phase5_import/audio/Blunt.wav",
+      "id": "",
+      "uploaded": false
+    },
+    "Stone": {
+      "file": "assets/build/phase5_import/audio/Stone.wav",
+      "id": "",
+      "uploaded": false
+    },
+    "BulletJump": {
+      "file": "assets/build/phase5_import/audio/BulletJump.wav",
+      "id": "",
+      "uploaded": false
+    },
+    "Glide": {
+      "file": "assets/build/phase5_import/audio/Glide.wav",
+      "id": "",
+      "uploaded": false
+    },
+    "Slide": {
+      "file": "assets/build/phase5_import/audio/Slide.wav",
+      "id": "",
+      "uploaded": false
+    },
+    "Wind": {
+      "file": "assets/build/phase5_import/audio/Wind.wav",
+      "id": "",
+      "uploaded": false
+    },
+    "Bell": {
+      "file": "assets/build/phase5_import/audio/Bell.wav",
+      "id": "",
+      "uploaded": false
+    },
+    "Water": {
+      "file": "assets/build/phase5_import/audio/Water.wav",
+      "id": "",
+      "uploaded": false
+    },
+    "BossDrone": {
+      "file": "assets/build/phase5_import/audio/BossDrone.wav",
+      "id": "",
+      "uploaded": false
+    }
+  },
+  "Textures": {
+    "Ember": {
+      "file": "assets/build/phase5_import/textures/Ember.png",
+      "id": "",
+      "uploaded": false
+    },
+    "Ribbon": {
+      "file": "assets/build/phase5_import/textures/Ribbon.png",
+      "id": "",
+      "uploaded": false
+    },
+    "Shockwave": {
+      "file": "assets/build/phase5_import/textures/Shockwave.png",
+      "id": "",
+      "uploaded": false
+    },
+    "Ash": {
+      "file": "assets/build/phase5_import/textures/Ash.png",
+      "id": "",
+      "uploaded": false
+    },
+    "Smoke": {
+      "file": "assets/build/phase5_import/textures/Smoke.png",
+      "id": "",
+      "uploaded": false
+    },
+    "Flame": {
+      "file": "assets/build/phase5_import/textures/Flame.png",
+      "id": "",
+      "uploaded": false
+    },
+    "BloodStain": {
+      "file": "assets/build/phase5_import/textures/BloodStain.png",
+      "id": "",
+      "uploaded": false
+    },
+    "Blood": {
+      "file": "assets/build/phase5_import/textures/Blood.png",
+      "id": "",
+      "uploaded": false
+    },
+    "Rune": {
+      "file": "assets/build/phase5_import/textures/Rune.png",
+      "id": "",
+      "uploaded": false
+    },
+    "Leaf": {
+      "file": "assets/build/phase5_import/textures/Leaf.png",
+      "id": "",
+      "uploaded": false
+    },
+    "LeafScatter": {
+      "file": "assets/build/phase5_import/textures/LeafScatter.png",
+      "id": "",
+      "uploaded": false
+    }
+  }
+}

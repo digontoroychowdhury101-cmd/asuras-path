@@ -60,21 +60,21 @@
         "Brightness": 2,
         "GeographicLatitude": 18,
         "EnvironmentDiffuseScale": 0.45,
-        "EnvironmentSpecularScale": 0.4,
+        "EnvironmentSpecularScale": 1,
         "GlobalShadows": true,
         "ShadowSoftness": 0.35,
         "ExposureCompensation": 0.05,
         "FogStart": 120,
         "FogEnd": 1600,
         "Ambient": [
-          0.227451,
-          0.266667,
-          0.305882
+          0.16470588235294117,
+          0.14901960784313725,
+          0.1450980392156863
         ],
         "OutdoorAmbient": [
-          0.439216,
-          0.490196,
-          0.541176
+          0.3137254901960784,
+          0.29411764705882354,
+          0.27450980392156865
         ],
         "FogColor": [
           0.423529,
@@ -92,7 +92,8 @@
           0.054902
         ],
         "TimeOfDay": "17:06:00",
-        "Technology": "Future"
+        "Technology": "Future",
+        "ClockTime": 17.666666666666668
       },
       "CB_Atmosphere": {
         "$className": "Atmosphere",
@@ -469,6 +470,9 @@
           },
           "PresentationService": {
             "$path": "src/server/Services/PresentationService.luau"
+          },
+          "ArenaLighting": {
+            "$path": "src/server/Services/ArenaLighting.luau"
           }
         }
       }
@@ -606,6 +610,9 @@
             },
             "QiVfx": {
               "$path": "src/client/Controllers/QiVfx.luau"
+            },
+            "ArenaAsh": {
+              "$path": "src/client/Controllers/ArenaAsh.luau"
             }
           }
         }

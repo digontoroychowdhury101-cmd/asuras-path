@@ -64,7 +64,19 @@ def main():
             z.extractall(source/'files')
         registry.append(dict(key=pack, publisher='Kenney', license='CC0-1.0', source='https://kenney.nl/assets/'+pack,
                              download=matches[0], sha256=hashlib.sha256(archive.read_bytes()).hexdigest()))
-    manifest = ROOT/'assets/PHASE5_SOURCES.json'
+    source = ROOT/'assets/source/3td_ruins'
+    archive = source/'ruins.zip'
+    url = 'https://opengameart.org/sites/default/files/Fantasy%20Ruins%20Pack.zip'
+    fetch(url, archive)
+    with zipfile.ZipFile(archive) as z:
+        for info in z.infolist():
+            if Path(info.filename).is_absolute() or '..' in Path(info.filename).parts: raise ValueError('Unsafe ZIP')
+        z.extractall(source)
+    registry.append(dict(key='3td_fantasy_ruins', publisher='Ron Kapaun / 3TD Studios', license='CC0-1.0',
+                         source='https://opengameart.org/content/3td-fantasy-ruins-pack', download=url,
+                         sha256=hashlib.sha256(archive.read_bytes()).hexdigest(),
+                         note='Authored architecture with diffuse/normal maps; roughness and metalness are authored defaults, not scans.'))
+    manifest = ROOT/'assets/PHASE5_SOURCES.json' 
     manifest.write_text(json.dumps({'retrieved':'2026-10-19','sources':registry},indent=2)+'\n')
     credits = ROOT/'assets/CREDITS.md'; text = credits.read_text()
     for entry in registry:

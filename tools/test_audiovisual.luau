@@ -25,7 +25,7 @@ function methods:Stop()self.Played=false end
 local Instance={new=instance}
 local registry={}
 local require=function(name)return assert(registry[name],tostring(name))end
-local script={Parent={SpatialAudio='SpatialAudio'}}
+local script={Parent={SpatialAudio='SpatialAudio',ArenaAsh='ArenaAsh'}}
 local vecmt={}
 local function vec(x,y,z)return setmetatable({X=x,Y=y,Z=z or 0},vecmt)end
 vecmt.__index=function(v,k)if k=='Magnitude'then return math.sqrt(v.X*v.X+v.Y*v.Y+v.Z*v.Z)end end
@@ -44,10 +44,11 @@ local Lighting=instance('Lighting')
 for _,n in {'CB_Atmosphere','CB_ColorCorrection','CB_SunRays','CB_Bloom'}do local p=instance('Effect',n);p.Parent=Lighting end
 local player=instance('Player')
 local Shared={PresentationAssets='PresentationAssets',EnvironmentProfiles='EnvironmentProfiles',WorldDefinitions='WorldDefinitions'}
-local services={ReplicatedStorage={AsurasPath={Shared=Shared}},SoundService=SoundService,Lighting=Lighting,Players={LocalPlayer=player},TweenService=TweenService,
+local services={CollectionService={GetTagged=function()return {}end},ReplicatedStorage={AsurasPath={Shared=Shared}},SoundService=SoundService,Lighting=Lighting,Players={LocalPlayer=player},TweenService=TweenService,
  Debris={AddItem=function()end},ServerStorage=instance('ServerStorage')}
 local game={GetService=function(_,name)return assert(services[name],name)end}
 local workspace=instance('Workspace')
+registry.ArenaAsh={new=function()return {Update=function()end,Destroy=function()end}end}
 registry.WorldDefinitions={regionAt=function(x,y,z)return if z< -600 then 'DesecratedMonastery' else 'Sanctuary'end}
 -- MODULES_INSERT
 local assets=registry.PresentationAssets

@@ -27,3 +27,5 @@ CC0 needs no attribution; credited here as good practice. Poly Haven: https://po
 | impact-sounds | https://kenney.nl/assets/impact-sounds | CC0-1.0 | Phase 5 scenery / sound design (upload pending) |
 
 | rpg-audio | https://kenney.nl/assets/rpg-audio | CC0-1.0 | Phase 5 scenery / sound design (upload pending) |
+
+| 3td_fantasy_ruins | https://opengameart.org/content/3td-fantasy-ruins-pack | CC0-1.0 | Phase 5 scenery / sound design (upload pending) |

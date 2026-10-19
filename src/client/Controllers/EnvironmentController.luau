@@ -2,15 +2,21 @@
 local Lighting = game:GetService("Lighting")
 local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
+local CollectionService = game:GetService("CollectionService")
 local Shared = game:GetService("ReplicatedStorage").AsurasPath
 local Profiles = require(Shared.Shared.EnvironmentProfiles)
 local Assets = require(Shared.Shared.PresentationAssets)
 local World = require(Shared.Shared.WorldDefinitions)
+local Ash = require(script.Parent.ArenaAsh)
 local Controller = {}
 Controller.__index = Controller
 
 function Controller.new(state: any): any
 	local self = setmetatable({ State = state, Key = "", Elapsed = 1, Phase = 1, Boss = "", Tweens = {} }, Controller)
+	self.Ash = Ash.new()
+	self.Sky = {}
+	local sky = Lighting:FindFirstChildOfClass("Sky")
+	if sky then for _, face in {"Bk","Dn","Ft","Lf","Rt","Up"} do self.Sky[face] = (sky :: any)["Skybox"..face] end end
 	self.Disconnect = state:OnCue(function(cue: any)
 		if cue.Kind == "BossPhase" and Players.LocalPlayer:GetAttribute("AsuraEncounter") == cue.Data.boss then
 			self.Phase = math.max(self.Phase, tonumber(cue.Data.phase) or 1)
@@ -19,6 +25,8 @@ function Controller.new(state: any): any
 	return self
 end
 function Controller.Update(self: any, dt: number)
+	local actor = self.State:Own()
+	self.Ash:Update(dt,if actor and actor.Root then actor.Root.Position else nil,self.Key)
 	self.Elapsed += dt
 	if self.Elapsed < 0.2 then return end
 	self.Elapsed = 0
@@ -39,6 +47,10 @@ function Controller.Update(self: any, dt: number)
 	self.Key = key
 	for _, tween in self.Tweens do tween:Cancel() end
 	table.clear(self.Tweens)
+	for _, light in CollectionService:GetTagged("AsuraArenaLight") do
+		local tween=TweenService:Create(light,TweenInfo.new(1.8),{Color=if key=="Cataclysm" then Color3.fromRGB(255,36,57) else Color3.fromRGB(255,161,84)})
+		table.insert(self.Tweens,tween);tween:Play()
+	end
 	for name, values in (Profiles :: any)[key] do
 		local target = if name == "Lighting" then Lighting else Lighting:FindFirstChild(name)
 		if target then
@@ -51,12 +63,15 @@ function Controller.Update(self: any, dt: number)
 		sky.CelestialBodiesShown = key ~= "Cataclysm" and key ~= "AshColosseum"
 		sky.StarCount = if sky.CelestialBodiesShown then 500 else 0
 		for face, id in Assets.Sky do
-			if id ~= "" then (sky :: any)["Skybox" .. ({Back="Bk",Down="Dn",Front="Ft",Left="Lf",Right="Rt",Up="Up"})[face]] = id end
+			local suffix=({Back="Bk",Down="Dn",Front="Ft",Left="Lf",Right="Rt",Up="Up"})[face]
+			local value=if (key=="Cataclysm" or key=="AshColosseum") and id~="" then id else self.Sky[suffix]
+			if value then (sky :: any)["Skybox"..suffix]=value end
 		end
 	end
 end
 function Controller.Destroy(self: any)
 	self.Disconnect()
+	self.Ash:Destroy()
 	for _, tween in self.Tweens do tween:Cancel() end
 end
 return Controller

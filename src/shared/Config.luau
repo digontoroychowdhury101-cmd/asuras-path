@@ -130,11 +130,11 @@ local Config = {
 	},
 	Lighting = {
 		LightingStyle = "Realistic", PrioritizeLightingQuality = true,
-		-- Golden celestial dawn over the cloud sea (matching lobby concept art).
-		Brightness = 2.4, ClockTime = 6.85, GeographicLatitude = 24,
-		Ambient = { 72, 75, 84 }, OutdoorAmbient = { 135, 128, 120 },
+		-- Golden-hour shrine above the cloud sea; biome clients use EnvironmentProfiles.
+		Brightness = 2, ClockTime = 17 + 40 / 60, GeographicLatitude = 24,
+		Ambient = { 42, 38, 37 }, OutdoorAmbient = { 80, 75, 70 },
 		ColorShiftTop = { 255, 225, 185 }, ColorShiftBottom = { 24, 28, 38 },
-		EnvironmentDiffuseScale = 0.6, EnvironmentSpecularScale = 0.65,
+		EnvironmentDiffuseScale = 0.6, EnvironmentSpecularScale = 1,
 		GlobalShadows = true, ShadowSoftness = 0.25, ExposureCompensation = 0.08,
 		-- Fog values are inert while an Atmosphere is present; kept as a sane fallback.
 		FogColor = { 140, 130, 125 }, FogStart = 150, FogEnd = 2200,
@@ -148,10 +148,10 @@ local Config = {
 			FocusDistance = 20, InFocusRadius = 50,
 		},
 		Atmosphere = {
-			Density = 0.38, Offset = 0.18, Haze = 2.2, Glare = 0.45,
-			Color = { 220, 198, 182 }, Decay = { 160, 95, 60 },
+			Density = 0.35, Offset = 0.1, Haze = 1.8, Glare = 0.45,
+			Color = { 224, 191, 142 }, Decay = { 42, 38, 37 },
 		},
-		SunRays = { Enabled = true, Intensity = 0.045, Spread = 0.85 },
+		SunRays = { Enabled = true, Intensity = 0.25, Spread = 0.4 },
 	},
 	Materials = {
 		Mat = { Material = "Concrete", Color = { 90, 90, 90 }, Reflectance = 0 },

@@ -3,9 +3,11 @@ local Workspace = game:GetService("Workspace")
 local Characters = require(script.Parent.CharacterService)
 local Dressing = require(script.Parent.PresentationDressing)
 local Skin = require(script.Parent.BossSkin)
+local ArenaLighting = require(script.Parent.ArenaLighting)
 local Service = {}
 local disconnect: (() -> ())? = nil
 function Service.Start()
+	ArenaLighting.Build()
 	for _, name in {"Sanctuary","Map_DesecratedMonastery"} do
 		local root = Workspace:FindFirstChild(name)
 		if root then Dressing.Build(root) end
@@ -24,5 +26,7 @@ function Service.Start()
 end
 function Service.Destroy()
 	if disconnect then disconnect();disconnect=nil end
+	local folder=Workspace:FindFirstChild("AsuraArenaLighting")
+	if folder then folder:Destroy() end
 end
 return Service

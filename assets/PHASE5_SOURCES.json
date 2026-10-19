@@ -43,6 +43,15 @@
       "source": "https://kenney.nl/assets/rpg-audio",
       "download": "https://kenney.nl/media/pages/assets/rpg-audio/8e99002d76-1677590336/kenney_rpg-audio.zip",
       "sha256": "6dbeaf8544da958d8f2adcb4a4a4b76c1ade34a05f8ab9edccd327da7375f38b"
+    },
+    {
+      "key": "3td_fantasy_ruins",
+      "publisher": "Ron Kapaun / 3TD Studios",
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/content/3td-fantasy-ruins-pack",
+      "download": "https://opengameart.org/sites/default/files/Fantasy%20Ruins%20Pack.zip",
+      "sha256": "12dad8708181bef31ac5e688fb61dc3232138206a6f004407044215f5fd64dfd",
+      "note": "Authored architecture with diffuse/normal maps; roughness and metalness are authored defaults, not scans."
     }
   ]
 }
