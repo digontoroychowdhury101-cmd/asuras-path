@@ -83,7 +83,7 @@ local Config = {
 		InterpolationDelay = 0.067, SnapshotHistory = 8, MaxSequenceGap = 240,
 	},
 	Camera = {
-		FOV = 80, MinFOV = 70, MaxFOV = 90, FOVStep = 5,
+		FOV = 70, MinFOV = 70, MaxFOV = 90, FOVStep = 5,
 		EyeHeight = 5.6, EyeForward = 0.12, Clearance = 0.25,
 		PitchLimit = math.rad(75), MouseSensitivity = 0.0025,
 		TouchSensitivity = 0.004, GamepadSensitivity = 2.4,

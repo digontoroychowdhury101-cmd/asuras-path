@@ -11,6 +11,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Shared = ReplicatedStorage:WaitForChild("AsurasPath")
 local Config = require(Shared:WaitForChild("Config") :: ModuleScript) :: any
 local WorldState = require(script.Parent:WaitForChild("WorldStateController") :: ModuleScript)
+local BossCinematics = require(script.Parent.BossCinematics)
 
 type WorldState = WorldState.WorldState
 type Entity = WorldState.Entity
@@ -38,6 +39,7 @@ local TRAUMA_WOBBLE: { [string]: number } = { None = 0, Impaired = 0.004, Injure
 type Spring = { Value: number, Velocity: number }
 
 type Fields = {
+	BossShotState: BossCinematics.Shot?,
 	State: WorldState,
 	Camera: Camera,
 	Yaw: Spring,
@@ -52,6 +54,12 @@ type Fields = {
 	LastSwitch: number,
 	SwitchAccumulator: number,
 	Fov: number,
+	MovementFov: Spring,
+	MovementDrop: Spring,
+	MovementTilt: Spring,
+	Gliding: boolean,
+	Sliding: boolean,
+	SlideTurn: number,
 	Sensitivity: number,
 	FovPunch: Spring,
 	FovClamp: number,
@@ -63,6 +71,7 @@ type Fields = {
 	Clock: number,
 	Params: RaycastParams,
 	Enabled: boolean,
+ DialogueFrame: CFrame?,
 	OnLockChanged: ((id: number?) -> ())?,
 }
 
@@ -98,6 +107,7 @@ function Controller.new(state: WorldState): CameraController
 	params.IgnoreWater = true
 	local fields: Fields = {
 		State = state,
+		BossShotState = nil,
 		Camera = camera,
 		Yaw = spring(0),
 		Pitch = spring(math.rad(-12)),
@@ -111,6 +121,8 @@ function Controller.new(state: WorldState): CameraController
 		LastSwitch = 0,
 		SwitchAccumulator = 0,
 		Fov = Config.Camera.FOV,
+		MovementFov = spring(0), MovementDrop = spring(0), MovementTilt = spring(0),
+		Gliding = false, Sliding = false, SlideTurn = 0,
 		Sensitivity = 1,
 		FovPunch = spring(0),
 		FovClamp = 0,
@@ -286,11 +298,27 @@ end
 -- Frame update
 -------------------------------------------------------------------------------------------------
 
+function Controller.SetMovement(self: CameraController, gliding: boolean, sliding: boolean, turn: number)
+	self.Gliding, self.Sliding, self.SlideTurn = gliding, sliding, turn
+end
+
+function Controller.BossShot(self: CameraController, id: number, duration: number, finish: boolean?)
+	BossCinematics.restore(self.BossShotState)
+	self.BossShotState = BossCinematics.begin(self.Camera, self.State, id, duration, finish == true)
+end
+
 function Controller.Update(self: CameraController, dt: number)
 	local camera = Workspace.CurrentCamera
 	self.Camera = camera
 	camera.CameraType = Enum.CameraType.Scriptable
 	self.Clock += dt
+ if self.DialogueFrame then
+  camera.CFrame=camera.CFrame:Lerp(self.DialogueFrame,math.min(1,dt*9));camera.FieldOfView=52;return
+ end
+	if self.BossShotState then
+		if BossCinematics.step(self.BossShotState, self.State, camera) then return end
+		self.BossShotState = nil
+	end
 	local own = self.State:Own()
 	local root = own and own.Root
 	if not own or not root then
@@ -304,7 +332,10 @@ function Controller.Update(self: CameraController, dt: number)
 		target = nil
 	end
 
-	local pivot = root.Position + Vector3.new(0, BASE_OFFSET.Y, 0)
+	stepSpring(self.MovementFov, if self.Gliding then 10 else 0, 10, dt)
+	stepSpring(self.MovementDrop, if self.Sliding then -0.6 else 0, 14, dt)
+	stepSpring(self.MovementTilt, if self.Sliding then -math.clamp(self.SlideTurn, -1, 1) * math.rad(4) else 0, 12, dt)
+	local pivot = root.Position + Vector3.new(0, BASE_OFFSET.Y + self.MovementDrop.Value, 0)
 	local omega = CORRECTION_SPEED
 	local desiredDistance = BASE_OFFSET.Z
 	local humanoid = own.Humanoid
@@ -351,7 +382,7 @@ function Controller.Update(self: CameraController, dt: number)
 	local wobble = TRAUMA_WOBBLE[self.HeadTier]
 	local swayRoll = self.Sway * math.sin(self.Clock * 0.6) + wobble * math.sin(self.Clock * 2.3)
 	local swayPitch = self.Sway * 0.5 * math.sin(self.Clock * 0.45 + 1.3) + wobble * math.cos(self.Clock * 1.7)
-	local rotation = CFrame.fromEulerAnglesYXZ(self.Pitch.Value + swayPitch, self.Yaw.Value, self.Roll + swayRoll)
+	local rotation = CFrame.fromEulerAnglesYXZ(self.Pitch.Value + swayPitch, self.Yaw.Value, self.Roll + swayRoll + self.MovementTilt.Value)
 	local shoulder = BASE_OFFSET.X * self.ShoulderSpring.Value
 	local origin = pivot + rotation:VectorToWorldSpace(Vector3.new(shoulder * 0.35, 0, 0))
 	local desired = pivot + rotation:VectorToWorldSpace(Vector3.new(shoulder, 0, self.Distance.Value))
@@ -388,11 +419,12 @@ function Controller.Update(self: CameraController, dt: number)
 	local shake = rotation:VectorToWorldSpace(Vector3.new(self.Shake.X, self.Shake.Y, 0))
 	camera.CFrame = CFrame.new(position + shake) * rotation
 	camera.Focus = CFrame.new(pivot)
-	local fov = math.clamp(self.Fov + self.FovPunch.Value - self.FovClamp, Config.Camera.MinFOV - 20, Config.Camera.MaxFOV + 10)
+	local fov = math.clamp(self.Fov + self.MovementFov.Value + self.FovPunch.Value - self.FovClamp, Config.Camera.MinFOV - 20, Config.Camera.MaxFOV + 10)
 	camera.FieldOfView = fov
 end
 
 function Controller.Destroy(self: CameraController)
+	BossCinematics.restore(self.BossShotState)
 	self.Enabled = false
 	self:SetLock(nil)
 	local own = self.State:Own()

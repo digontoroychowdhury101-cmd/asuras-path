@@ -65,4 +65,14 @@ assert(duel and duel.Key == "Duel" and duel.Target == nil, "duel objective")
 
 assert(Objectives.regionOf("Altar_BambooShrine") == "BambooPass" and Objectives.regionOf("nope") == nil, "regionOf")
 
-print("Objectives: all checks passed")
+local defeated = {}
+for _, encounter in Objectives.Encounters do
+ local active = Objectives.resolve(facts({Region=encounter.Region,Altars=all,Rested=true,Bosses=defeated}))
+ assert(active and active.Key=="Boss:"..encounter.Id, "regional boss objective "..encounter.Id)
+ defeated[encounter.Id]=true
+end
+local campaignDone=Objectives.resolve(facts({Region="SkyCitadel",Altars=all,Rested=true,Bosses=defeated}))
+assert(campaignDone and campaignDone.Key=="Duel", "completed roster returns to duel objective")
+local revived=Objectives.parseAltars("GrandmasterShen,AzureWyrm")
+assert(revived.GrandmasterShen and revived.AzureWyrm and not revived.TwinSentinels, "boss attribute flags parse")
+print("Objectives: all checks passed (including six encounter routes)")

@@ -6,24 +6,30 @@
 local hasScript = pcall(function()
 	return script.Parent
 end)
-local Settings: any, Weapons: any, World: any
+local Settings: any, Weapons: any, World: any, Arsenal: any
 if hasScript then
 	local Shared = game:GetService("ReplicatedStorage"):WaitForChild("AsurasPath")
 	Settings = require(Shared.Shared.CombatSettings)
 	Weapons = require(Shared.Simulation.WeaponSchema)
 	World = require(Shared.Shared.WorldDefinitions)
+	Arsenal = require(Shared.Simulation.ArsenalInventory)
 else
 	Settings = require("../shared/CombatSettings")
 	Weapons = require("../simulation/WeaponSchema")
 	World = require("../shared/WorldDefinitions")
+	Arsenal = require("../simulation/ArsenalInventory")
 end
 
-export type AttributeName = "Vitality" | "Qi" | "Strength" | "Dexterity"
+local Bridge: any = if hasScript then require(script.Parent.ProfileBridge) else require("./ProfileBridge")
+local Progression: any = if hasScript then require(game:GetService("ReplicatedStorage").AsurasPath.Shared.ProgressionRules) else require("../shared/ProgressionRules")
+
+export type AttributeName = "Vigor" | "Endurance" | "Strength" | "Dexterity" | "ArcaneQi"
 export type Attributes = { [AttributeName]: number }
 export type Bloodstain = { region: string, x: number, y: number, z: number, essence: number, death: number }
 export type Elixirs = { charges: number, max: number, potency: number }
 -- reinforcement: blacksmith upgrade level per weapon (absent = 0), 1..Store.ReinforceMax.
 export type Inventory = {
+	spells: {[string]: boolean}, spellSlots: {string}, remembrances: {[string]: any}, spentRemembrances: {[string]: boolean}, caches: {[string]: boolean},
 	weapons: { [string]: boolean },
 	mainhand: string,
 	offhand: string,
@@ -41,6 +47,7 @@ export type Souls = {
 	deaths: number,
 }
 export type DerivedStats = {
+	MaxQi: number, RallyScale: number, SpellScale: number, InfusionBurn: number, InfusionStun: number, GuardPierce: number, VoidScale: number, SignatureFinisher: boolean,
 	MaxHP: number,
 	MaxStamina: number,
 	PostureCapacity: number,
@@ -124,11 +131,11 @@ end
 -------------------------------------------------------------------------------------------------
 
 -- v2: weapon reinforcement levels.
-local SOULS_VERSION = 2
+local SOULS_VERSION = 4
 local MAX_SAFE_INTEGER = 9007199254740991
 local ATTRIBUTE_BASE = 10
 local ATTRIBUTE_MAX = 99
-local ATTRIBUTES: { AttributeName } = { "Vitality", "Qi", "Strength", "Dexterity" }
+local ATTRIBUTES: { AttributeName } = { "Vigor", "Endurance", "Strength", "Dexterity", "ArcaneQi" }
 local MAX_IDENTIFIER = 64
 local MAX_WORLD_ENTRIES = 512
 local COORDINATE_LIMIT = 1e6
@@ -136,8 +143,8 @@ local COORDINATE_LIMIT = 1e6
 local DEFAULT_ALTAR: string = World.Regions.Sanctuary.Altars.SanctuaryBonfire.Id
 assert(DEFAULT_ALTAR == (World :: any).startingAltar().Id, "The Sanctuary bonfire must remain the starting altar")
 local STARTING_WEAPONS = { "Unarmed", "Jian" }
-local REINFORCE_MAX = 5
-local REINFORCE_STEP = 0.06
+local REINFORCE_MAX = 10
+local REINFORCE_STEP = 0.1
 local ELIXIR = Settings.Elixir
 
 Store.Attributes = table.freeze(table.clone(ATTRIBUTES))
@@ -145,7 +152,7 @@ Store.AttributeBase = ATTRIBUTE_BASE
 Store.AttributeMax = ATTRIBUTE_MAX
 
 local WEAPON_SET: { [string]: boolean } = {}
-for _, name in Weapons.WeaponTypes do
+for _, name in Weapons.WeaponKeys do
 	WEAPON_SET[name] = true
 end
 
@@ -171,7 +178,7 @@ end
 
 -- Essence required to advance from `level` to `level + 1`.
 function Store.LevelCost(level: number): number
-	return math.floor(220 * 1.045 ^ (level - 1) + 12 * level)
+	return Progression.levelCost(level)
 end
 
 -- Piecewise soft caps: full value per point to 40, reduced to 60, minimal beyond.
@@ -187,7 +194,8 @@ Store.ReinforceMax = REINFORCE_MAX
 
 -- Essence the blacksmith asks to raise a weapon from `level` to `level + 1`.
 function Store.ReinforceCost(level: number): number
-	return math.floor(600 * 1.75 ^ level)
+	local cost = Progression.upgradeCost(level)
+ return cost
 end
 
 function Store.ReinforceLevel(souls: Souls, weapon: string): number
@@ -196,16 +204,16 @@ function Store.ReinforceLevel(souls: Souls, weapon: string): number
 end
 
 function Store.DeriveStats(souls: Souls): DerivedStats
-	local a = souls.attributes
-	-- The equipped weapon's reinforcement multiplies both damage scalings.
-	local forged = 1 + REINFORCE_STEP * Store.ReinforceLevel(souls, souls.inventory.mainhand)
-	return {
-		MaxHP = Settings.Health.MaxHP + softCap(a.Vitality, 6, 3, 1),
-		MaxStamina = Settings.Stamina.Max + softCap(a.Qi, 2.5, 1.2, 0.4),
-		PostureCapacity = Settings.Posture.StanceBreakThreshold + softCap(a.Qi, 1.5, 0.8, 0.3),
-		StrengthScale = (1 + softCap(a.Strength, 0.018, 0.009, 0.003)) * forged,
-		DexterityScale = (1 + softCap(a.Dexterity, 0.018, 0.009, 0.003)) * forged,
-	}
+ local stats = Progression.stats(souls.attributes, Store.ReinforceLevel(souls, souls.inventory.mainhand))
+ local rpg=(souls :: any).rpg
+ local weapon=souls.inventory.mainhand
+ local infusion=if rpg and rpg.Weapons[weapon] then rpg.Weapons[weapon].Infusion else nil
+ local affinity=Progression.affinity(infusion,souls.attributes)
+ local signature=rpg~=nil and Progression.masteryRank(rpg.Mastery[weapon] or 0)>=5
+ return {InfusionBurn=affinity.Burn,InfusionStun=affinity.Stun,GuardPierce=affinity.GuardPierce,VoidScale=affinity.VoidScale,SignatureFinisher=signature,
+  MaxHP=Settings.Health.MaxHP+stats.HPBonus, MaxStamina=Settings.Stamina.Max+stats.StaminaBonus,
+  PostureCapacity=Settings.Posture.StanceBreakThreshold+stats.PostureBonus, StrengthScale=stats.StrengthScale,
+  DexterityScale=stats.DexterityScale, MaxQi=stats.MaxQi, RallyScale=stats.RallyScale, SpellScale=stats.SpellScale}
 end
 
 function Store.DefaultSouls(startingAltar: string?): Souls
@@ -217,7 +225,7 @@ function Store.DefaultSouls(startingAltar: string?): Souls
 	return {
 		version = SOULS_VERSION,
 		level = 1,
-		attributes = { Vitality = ATTRIBUTE_BASE, Qi = ATTRIBUTE_BASE, Strength = ATTRIBUTE_BASE, Dexterity = ATTRIBUTE_BASE },
+		attributes = { Vigor = ATTRIBUTE_BASE, Endurance = ATTRIBUTE_BASE, ArcaneQi = ATTRIBUTE_BASE, Strength = ATTRIBUTE_BASE, Dexterity = ATTRIBUTE_BASE },
 		essence = 0,
 		inventory = {
 			weapons = weapons,
@@ -225,6 +233,7 @@ function Store.DefaultSouls(startingAltar: string?): Souls
 			offhand = "Unarmed",
 			elixirs = { charges = ELIXIR.BaseCharges, max = ELIXIR.BaseCharges, potency = 0 },
 			reinforcement = {},
+			spells = {ThunderclapPalm=true,GaleStep=true}, spellSlots={"ThunderclapPalm","GaleStep"}, remembrances={}, spentRemembrances={}, caches={},
 		},
 		world = { altars = { [altar] = true }, activeAltar = altar, bosses = {}, bloodstain = nil },
 		deaths = 0,
@@ -293,6 +302,7 @@ function Store.ValidateSouls(raw: any): (boolean, string?)
 	if type(inventory) ~= "table" or type(inventory.weapons) ~= "table" then
 		return false, "Missing inventory"
 	end
+	if not Arsenal.validate(inventory) then return false, "Invalid arsenal inventory" end
 	for name, owned in inventory.weapons do
 		if not WEAPON_SET[name] or owned ~= true then
 			return false, "Invalid weapon ownership"
@@ -341,9 +351,11 @@ function Store.MigrateSouls(raw: any, startingAltar: string?): Souls
 	if finite(raw.version) and raw.version > SOULS_VERSION then
 		error("Souls record is newer than this server supports", 0)
 	end
+	if raw.version == SOULS_VERSION then assert(Arsenal.validate(raw.inventory),"Corrupt arsenal inventory") end
 	if type(raw.attributes) == "table" then
 		for _, name in ATTRIBUTES do
 			local value = raw.attributes[name]
+            if value == nil then value = if name == "Vigor" then raw.attributes.Vitality elseif name == "Endurance" then raw.attributes.Qi else nil end
 			if integer(value, ATTRIBUTE_BASE, ATTRIBUTE_MAX) then
 				souls.attributes[name] = value
 			end
@@ -413,6 +425,9 @@ function Store.MigrateSouls(raw: any, startingAltar: string?): Souls
 			souls.world.bloodstain = copy(world.bloodstain)
 		end
 	end
+	local migratedArsenal = Arsenal.migrate(if type(raw)=="table" then raw.inventory else nil)
+	for key,value in migratedArsenal do (souls.inventory :: any)[key]=value end
+	for bossId in souls.world.bosses do Arsenal.award(souls.inventory,bossId) end
 	assert(Store.ValidateSouls(souls))
 	return souls
 end
@@ -423,6 +438,7 @@ function Store.WithSouls(schema: Schema, startingAltar: string?): Schema
 		Migrate = function(raw: any, id: number): any
 			local profile = schema.Migrate(raw, id)
 			profile.souls = Store.MigrateSouls(if type(raw) == "table" then raw.souls else nil, startingAltar)
+			Bridge.toSouls(profile)
 			return profile
 		end,
 		Validate = function(profile: any): (boolean, string?)
@@ -551,7 +567,9 @@ function Store.Transaction(self: Engine, id: number, mutate: (profile: any) -> (
 				return old
 			end
 			local candidate = self.schema.Migrate(old.profile, id)
+			local baseline = Bridge.snapshot(candidate)
 			mutate(candidate)
+			Bridge.reconcile(candidate, baseline)
 			candidate.lastSaveTime = self.options.now()
 			assert(self.schema.Validate(candidate))
 			return bounded({
@@ -618,7 +636,7 @@ function Store.ApplyResult(self: Engine, id: number, matchId: string, result: an
 		assert(count < 10000, "Result ledger full; archival required")
 		p.elo = math.clamp(p.elo + result.eloDelta, 0, 5000)
 		p.peakElo = math.max(p.peakElo, p.elo)
-		p.fightCash += result.cash
+		p.qiEssence += result.cash
 		if result.outcome == "Win" then
 			p.wins += 1
 			p.winStreak += 1
@@ -755,9 +773,13 @@ function Store.RecoverBloodstain(self: Engine, id: number, deathIndex: number): 
 end
 
 function Store.LevelAttribute(self: Engine, id: number, attribute: AttributeName): (boolean, string?)
-	if table.find(ATTRIBUTES, attribute) == nil then
+	local canonical: any = attribute
+	if canonical == "Vitality" then canonical = "Vigor" end
+	if canonical == "Qi" then canonical = "Endurance" end
+	if table.find(ATTRIBUTES, canonical) == nil then
 		return false, "Unknown attribute"
 	end
+	attribute = canonical
 	local souls = self:Souls(id)
 	if not souls then
 		return false, "Profile session unavailable"
@@ -791,6 +813,7 @@ function Store.RecordBossDefeat(self: Engine, id: number, bossId: string, essenc
 		return false, "Invalid boss record"
 	end
 	return self:Transaction(id, function(p)
+		Arsenal.award(p.souls.inventory, bossId)
 		local bosses = p.souls.world.bosses
 		local count = 0
 		for _ in bosses do
@@ -798,6 +821,12 @@ function Store.RecordBossDefeat(self: Engine, id: number, bossId: string, essenc
 		end
 		if not bosses[bossId] and count < MAX_WORLD_ENTRIES then
 			bosses[bossId] = true
+            local materials=p.inventory.Materials
+            materials.SpiritIronOre=(materials.SpiritIronOre or 0)+8
+            materials.StarfallShard=(materials.StarfallShard or 0)+4
+            materials.DragoniteCore=(materials.DragoniteCore or 0)+2
+            local gems={"CrimsonFireGem","CelestialLightningGem","AbyssalVoidGem"}
+            local gem=gems[(count%3)+1];materials[gem]=(materials[gem] or 0)+1
 			p.souls.essence = math.min(MAX_SAFE_INTEGER, p.souls.essence + essence)
 		end
 	end)
@@ -818,35 +847,11 @@ function Store.ReinforceWeapon(self: Engine, id: number, weapon: string): (boole
 	if not WEAPON_SET[weapon] then
 		return false, "Unknown weapon", 0
 	end
-	local souls = self:Souls(id)
-	if not souls then
-		return false, "Profile session unavailable", 0
-	end
-	if souls.inventory.weapons[weapon] ~= true then
-		return false, "Weapon is locked", 0
-	end
-	local current = Store.ReinforceLevel(souls, weapon)
-	if current >= REINFORCE_MAX then
-		return false, "Reinforcement at maximum", current
-	end
-	if souls.essence < Store.ReinforceCost(current) then
-		return false, "Not enough essence", current
-	end
-	local reached = 0
-	local ok, err = self:Transaction(id, function(p)
-		local s = p.souls
-		local level = s.inventory.reinforcement[weapon] or 0
-		local price = Store.ReinforceCost(level)
-		if s.inventory.weapons[weapon] == true and level < REINFORCE_MAX and s.essence >= price then
-			s.essence -= price
-			s.inventory.reinforcement[weapon] = level + 1
-			reached = level + 1
-		end
-	end)
-	if ok and reached == 0 then
-		return false, "Reinforcement refused", current
-	end
-	return ok, err, reached
+ local reached=0
+ local ok,err=self:Transaction(id,function(p: any)
+  Progression.upgrade(p,weapon);reached=p.inventory.Weapons[weapon].Level
+ end)
+ return ok,err,reached
 end
 
 function Store.EquipLoadout(self: Engine, id: number, mainhand: string, offhand: string): (boolean, string?)

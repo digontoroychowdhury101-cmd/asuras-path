@@ -16,6 +16,8 @@ local Settings = require(Shared.Shared.CombatSettings) :: any
 local Weapons = require(Shared.Simulation.WeaponSchema) :: any
 local Characters = require(script.Parent:WaitForChild("CharacterService") :: ModuleScript)
 local AI = require(script.Parent:WaitForChild("AIService") :: ModuleScript)
+local BossArenas = require(script.Parent.BossArenas)
+local BossRules = require(Shared.Shared.BossEncounterRules)
 local Persistence = require(script.Parent:WaitForChild("PersistenceService") :: ModuleScript) :: any
 local ProfileStore = require(script.Parent:WaitForChild("ProfileStore") :: ModuleScript)
 
@@ -181,6 +183,7 @@ local function publish(s: Session)
 	if record then
 		player:SetAttribute("AsuraEssence", record.essence)
 		player:SetAttribute("AsuraLevel", record.level)
+  player:SetAttribute("AsuraMaxQi",ProfileStore.DeriveStats(record).MaxQi)
 		player:SetAttribute("AsuraLevelCost", ProfileStore.LevelCost(record.level))
 		player:SetAttribute("AsuraActiveAltar", record.world.activeAltar)
 		player:SetAttribute("AsuraMainhand", record.inventory.mainhand)
@@ -196,8 +199,8 @@ local function publish(s: Session)
 		player:SetAttribute("AsuraAltars", table.concat(altars, ","))
 		-- Read-only progress mirror for the client objective tracker; never read back by the server.
 		local bosses: { string } = {}
-		for id in record.world.bosses do
-			table.insert(bosses, id)
+		for id, defeated in s.Bosses do
+			if defeated then table.insert(bosses, id) end
 		end
 		table.sort(bosses)
 		player:SetAttribute("AsuraBosses", table.concat(bosses, ","))
@@ -448,13 +451,14 @@ local function buildGate(gate: FogGate, parent: Folder)
 end
 
 local function setGate(gateId: string, sealed: boolean)
+	BossArenas.seal(gateId, sealed)
 	local wall = gateParts[gateId]
 	if not wall then
 		return
 	end
 	wall.CanCollide = sealed
 	wall.Transparency = if sealed then 0.1 else 0.45
-	wall.Color = if sealed then Color3.fromRGB(150, 40, 36) else Color3.fromRGB(220, 214, 200)
+	wall.Color = if sealed then Color3.fromRGB(218, 181, 88) else Color3.fromRGB(220, 214, 200)
 	wall:SetAttribute("Sealed", sealed)
 end
 
@@ -496,6 +500,11 @@ local function placeStain(s: Session, stain: ProfileStore.Bloodstain)
 	glow.Color = Color3.fromRGB(200, 30, 30)
 	glow.Range = 10
 	glow.Parent = part
+ local attachment=Instance.new("Attachment");attachment.Parent=part
+ local wraith=Instance.new("ParticleEmitter");wraith.Name="CrimsonWraith";wraith.Texture="rbxasset://textures/particles/smoke_main.dds"
+ wraith.Color=ColorSequence.new(Color3.fromRGB(205,24,42));wraith.Lifetime=NumberRange.new(1.2,2.2);wraith.Rate=12
+ wraith.Speed=NumberRange.new(1,2);wraith.LightEmission=0.7;wraith.Size=NumberSequence.new({NumberSequenceKeypoint.new(0,0.4),NumberSequenceKeypoint.new(0.5,1.5),NumberSequenceKeypoint.new(1,0)})
+ wraith.Transparency=NumberSequence.new({NumberSequenceKeypoint.new(0,0.4),NumberSequenceKeypoint.new(1,1)});wraith.Parent=attachment
 	local prompt = Instance.new("ProximityPrompt")
 	prompt.ActionText = "Recover Essence"
 	prompt.ObjectText = s.Player.DisplayName .. "'s Bloodstain"
@@ -616,6 +625,7 @@ local function restAt(s: Session, altar: Altar): (boolean, string)
 	Characters.SetRespawnPoint(s.UserId, toCFrame(altar.Spawn))
 	AI.RespawnRegion(altar.Region, true)
 	Characters.Cue("AltarRest", s.UserId, { altar = altar.Id, name = altar.Name })
+ if (WorldService :: any).OnAltarRest then (WorldService :: any).OnAltarRest(s.Player,altar.Id) end
 	flush(s)
 	enqueue(s, "ActivateAltar", function(store: any): (boolean, string?)
 		return store:ActivateAltar(s.UserId, altar.Id, true, true)
@@ -749,8 +759,10 @@ local function endFight(gateId: string, victory: boolean)
 		local s = sessions[userId]
 		if s then
 			s.Fight = nil
+			s.Player:SetAttribute("AsuraEncounter", nil)
 			if victory then
 				s.Bosses[fight.BossId] = true
+				publish(s)
 				flush(s)
 				enqueue(s, "BossDefeat", function(store: any): (boolean, string?)
 					return store:RecordBossDefeat(userId, fight.BossId, boss.Essence)
@@ -758,7 +770,11 @@ local function endFight(gateId: string, victory: boolean)
 			end
 		end
 	end
-	Characters.Cue(if victory then "BossDefeated" else "BossReset", fight.BossEntity, { boss = fight.BossId, gate = gateId })
+	local participants = {}
+	for userId in fight.Participants do table.insert(participants, userId) end
+	if victory then BossArenas.loot(Vector3.new(boss.Arena.Center.X, 3, boss.Arena.Center.Z), boss.Essence) end
+	Characters.Cue(if victory then "BossDefeated" else "BossReset", fight.BossEntity,
+		{ boss = fight.BossId, gate = gateId, participants = participants, banner = boss.Victory or "GREAT FOE VANQUISHED", essence = boss.Essence })
 	if not victory then
 		AI.DespawnBoss(fight.BossId)
 	end
@@ -774,7 +790,9 @@ local function startFight(gate: FogGate, entrants: { number })
 	end
 	for userId, s in sessions do
 		local position = entityPosition(userId)
-		if not participants[userId] and position and inBounds(boss.Arena, position) and not s.Bosses[boss.Id] and not s.Fight then
+		local e = Characters.GetEntity(userId)
+		if not participants[userId] and e and e.Fighter.State ~= "KO" and not e.Respawning and not Characters.IsInDuel(userId)
+			and position and inBounds(boss.Arena, position) and not s.Bosses[boss.Id] and not s.Fight then
 			participants[userId] = true
 			table.insert(list, userId)
 		end
@@ -788,10 +806,27 @@ local function startFight(gate: FogGate, entrants: { number })
 		local s = sessions[userId]
 		if s then
 			s.Fight = gate.Id
+			s.Player:SetAttribute("AsuraEncounter", boss.Id)
 		end
 	end
 	setGate(gate.Id, true)
-	Characters.Cue("FogGateSealed", entity, { gate = gate.Id, boss = boss.Id, title = boss.Title })
+	Characters.Cue("FogGateSealed", entity, { gate = gate.Id, boss = boss.Id, title = boss.Title, participants = list })
+end
+
+local function traverseGate(userId: number, gate: FogGate): (boolean, string)
+	local s, e = session(userId), Characters.GetEntity(userId)
+	if not s or not e or e.Fighter.State == "KO" or e.Respawning then return false, "Unavailable" end
+	if s.Fight or Characters.IsInDuel(userId) then return false, "InBossFight" end
+	if s.Bosses[gate.Boss] then return false, "BossFelled" end
+	if fights[gate.Id] then return false, "ArenaOccupied" end
+	if (e.Root.Position - toCFrame(gate.Placement).Position).Magnitude > 28 then return false, "TooFar" end
+	Characters.Teleport(userId, toCFrame(gate.Inside))
+	startFight(gate, { userId })
+	if not fights[gate.Id] then
+		Characters.Teleport(userId, toCFrame(gate.Outside))
+		return false, "Unavailable"
+	end
+	return true, "FogTraversed"
 end
 
 local function updateGates()
@@ -819,6 +854,8 @@ local function updateGates()
 					fight.Participants[userId] = nil
 					if s then
 						s.Fight = nil
+						s.Player:SetAttribute("AsuraEncounter", nil)
+						Characters.Cue("BossParticipantLeft", userId, { boss = boss.Id })
 					end
 				else
 					living += 1
@@ -840,9 +877,7 @@ local function updateGates()
 				table.insert(remaining, userId)
 			end
 			AI.SetBossTargets(fight.BossId, remaining)
-			if living == 0 then
-				endFight(gateId, false)
-			elseif AI.GetBossEntity(fight.BossId) == nil then
+			if BossRules.lifecycle(living, false, AI.GetBossEntity(fight.BossId) ~= nil) == "Reset" then
 				endFight(gateId, false)
 			end
 		end
@@ -864,15 +899,23 @@ local function onEvent(event: any, _point: Vector3?)
 		end
 		return
 	end
-	local agent = AI.GetAgent(event.Target)
-	if not agent or agent.Kind ~= "Mob" then
-		return
-	end
-	local killer = sessions[event.Source]
-	if killer then
-		killer.Unbanked += agent.Essence
-		killer.Player:SetAttribute("AsuraUnbanked", killer.Unbanked)
-	end
+ local agent = AI.GetAgent(event.Target)
+ if not agent then return end
+ local killer=sessions[event.Source]
+ if killer then
+  local fighter=Characters.GetFighter(event.Source)
+  local weapon=if fighter then fighter.Weapon else "Jian"
+  enqueue(killer,"WeaponMastery",function(store: any): (boolean,string?)
+   return store:Transaction(killer.UserId,function(p: any)
+    local rules=require(game:GetService("ReplicatedStorage").AsurasPath.Shared.ProgressionRules)
+    rules.mastery(p,weapon,if agent.Kind=="Mob" then 30 else 250)
+    local m=p.inventory.Materials;m.SpiritIronOre=(m.SpiritIronOre or 0)+1
+   end)
+  end)
+  if agent.Kind=="Mob" then
+   killer.Unbanked+=agent.Essence;killer.Player:SetAttribute("AsuraUnbanked",killer.Unbanked)
+  end
+ end
 end
 
 local function onBossDefeated(bossId: string, _entityId: number)
@@ -950,6 +993,9 @@ local function hooks(): Characters.Hooks
 			if part and (position - part.Position).Magnitude <= INTERACT_RADIUS + 3 then
 				return recoverStain(s)
 			end
+			for _, gate in World.FogGates do
+				if (position - toCFrame(gate.Placement).Position).Magnitude <= 24 then return traverseGate(userId, gate) end
+			end
 			local altar, distance = nearestAltar(position)
 			if altar and distance <= altar.Radius + 2 then
 				return restAt(s, altar)
@@ -1013,9 +1059,14 @@ function WorldService.Start()
 			end
 		end))
 	end
+	BossArenas.build(worldRoot)
 	local gatesFolder = folder("FogGates", worldRoot)
 	for _, gate in World.FogGates do
 		buildGate(gate, gatesFolder)
+		local prompt = Instance.new("ProximityPrompt")
+		prompt.ActionText, prompt.ObjectText, prompt.HoldDuration = "Traverse the Mist", World.Bosses[gate.Boss].Name, 0.35
+		prompt.MaxActivationDistance, prompt.Parent = 18, gateParts[gate.Id]
+		table.insert(connections, prompt.Triggered:Connect(function(player: Player) traverseGate(player.UserId, gate) end))
 	end
 	markGeometry(worldRoot)
 	local arena = root:FindFirstChild(Config.Names.Arena)
@@ -1126,6 +1177,10 @@ function WorldService.Destroy()
 end
 
 -- Blacksmith: reinforce the equipped weapon with banked essence (unbanked essence is banked first).
+function WorldService.Refresh(userId: number)
+ local s=session(userId);if s then publish(s) end
+end
+
 function WorldService.Reinforce(userId: number): (boolean, string)
 	local s = session(userId)
 	local record = souls(userId)
@@ -1142,7 +1197,7 @@ function WorldService.Reinforce(userId: number): (boolean, string)
 		if ok then
 			Characters.RefreshProgression(userId)
 			Characters.Cue("WeaponReinforced", userId, { weapon = weapon, level = level })
-		elseif err == "Not enough essence" or err == "Reinforcement at maximum" or err == "Weapon is locked" or err == "Reinforcement refused" then
+		elseif err ~= "Profile is busy" and err ~= "Profile session unavailable" then
 			local current = souls(userId)
 			Characters.Cue("ReinforceRefused", userId, {
 				reason = err,

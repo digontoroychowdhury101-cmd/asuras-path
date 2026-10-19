@@ -66,7 +66,7 @@ function Controller.new(state: WorldState.WorldState, ui: any): ObjectiveControl
 			if cue.Kind ~= "AltarRest" and destination then
 				self.PendingRegion = destination
 			end
-		elseif cue.Kind == "BossDefeated" then
+		elseif cue.Kind == "BossDefeated" and cue.Data.boss == "GrandmasterShen" then
 			self.BossFelled = true
 		end
 		self.Elapsed = REFRESH
@@ -80,6 +80,7 @@ function Controller.Facts(self: ObjectiveController): Objectives.Facts
 	local stain = player:GetAttribute("AsuraBloodstain")
 	local bosses = Objectives.parseAltars(player:GetAttribute("AsuraBosses"))
 	return {
+		Bosses = bosses,
 		Region = self.PendingRegion or (if type(region) == "string" then region else nil),
 		Altars = Objectives.parseAltars(player:GetAttribute("AsuraAltars")),
 		Bloodstain = if typeof(stain) == "Vector3" then stain else nil,

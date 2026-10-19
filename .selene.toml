@@ -1,0 +1,12 @@
+std = "roblox"
+
+[rules]
+# Critical anti-hallucination rules for Luau vibe-coding
+deprecated = "error"
+unscoped_variables = "error"
+shadowing = "warn"
+unused_variable = "warn"
+empty_if = "warn"
+parenthese_conditions = "allow"
+multiple_statements = "allow"
+roblox_incorrect_roact_usage = "allow"

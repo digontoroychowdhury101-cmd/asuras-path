@@ -8,12 +8,20 @@ local TweenService = game:GetService("TweenService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Shared = ReplicatedStorage:WaitForChild("AsurasPath")
-local Settings = require(Shared:WaitForChild("Shared"):WaitForChild("CombatSettings") :: ModuleScript) :: any
-local World = require(Shared.Shared:WaitForChild("WorldDefinitions") :: ModuleScript)
+local simFolder = Shared:WaitForChild("Simulation")
+local sharedFolder = Shared:WaitForChild("Shared")
+local Weapons = require(simFolder:WaitForChild("WeaponSchema") :: ModuleScript) :: any
+local Settings = require(sharedFolder:WaitForChild("CombatSettings") :: ModuleScript) :: any
+local World = require(sharedFolder:WaitForChild("WorldDefinitions") :: ModuleScript)
 local WorldState = require(script.Parent:WaitForChild("WorldStateController") :: ModuleScript)
 local CameraController = require(script.Parent:WaitForChild("CameraController") :: ModuleScript)
 local InputController = require(script.Parent:WaitForChild("InputController") :: ModuleScript)
 local HudKit = require(script.Parent:WaitForChild("HudKit") :: ModuleScript)
+local UiKit = require(script.Parent:WaitForChild("UiKit") :: ModuleScript)
+local BossHud = require(script.Parent.BossHud)
+local BossMusic = require(script.Parent.BossMusic)
+local BossEffects = require(script.Parent.BossEffects)
+local BossAnimations = require(script.Parent.BossAnimations)
 
 type WorldState = WorldState.WorldState
 type Entity = WorldState.Entity
@@ -44,10 +52,11 @@ local NUMBER_FONT = Enum.Font.GothamMedium
 local WEAPON_GLYPH: { [string]: string } = { Unarmed = "FIST", Jian = "JIAN", Dao = "DAO", Guandao = "GLAIVE" }
 local WEAPON_NAME: { [string]: string } = { Unarmed = "Iron Fist", Jian = "Jian Sword", Dao = "Dao Sabre", Guandao = "Guandao Glaive", None = "—" }
 local ATTRIBUTE_TEXT: { { Name: string, Glyph: string, Detail: string } } = {
-	{ Name = "Vitality", Glyph = "VIT", Detail = "Vigour of the body — health" },
-	{ Name = "Qi", Glyph = "QI", Detail = "Breath and poise — stamina and posture" },
+	{ Name = "Vigor", Glyph = "VIT", Detail = "Vigour of the body — health" },
+	{ Name = "Endurance", Glyph = "END", Detail = "Breath and poise — stamina and posture" },
 	{ Name = "Strength", Glyph = "STR", Detail = "Unarmed and heavy strikes" },
 	{ Name = "Dexterity", Glyph = "DEX", Detail = "Bladed technique" },
+ { Name = "ArcaneQi", Glyph = "ARC", Detail = "Qi pool and spell damage" },
 }
 local REASONS: { [string]: string } = {
 	GourdEmpty = "The gourd is empty.",
@@ -111,22 +120,11 @@ local function stroke(parent: Instance, color: Color3, thickness: number, transp
 	make("UIStroke", parent, { Color = color, Thickness = thickness, Transparency = transparency or 0 })
 end
 
+-- Altar buttons share the menu kit's hover / press / SFX juice.
 local function button(parent: Instance, text: string, size: UDim2, callback: () -> ()): TextButton
-	local result = make("TextButton", parent, {
-		Text = text,
-		Font = BODY_FONT,
-		TextSize = 22,
-		TextColor3 = IVORY,
-		BackgroundColor3 = INK,
-		BackgroundTransparency = 0.25,
-		AutoButtonColor = true,
-		Size = size,
-		BorderSizePixel = 0,
-		Selectable = true,
-	}) :: TextButton
-	corner(result, 4)
-	stroke(result, Color3.fromRGB(110, 36, 30), 1, 0.2)
-	result.Activated:Connect(callback)
+	local result = UiKit.button(parent, text, "Secondary", callback)
+	result.Size = size
+	result.TextSize = 22
 	return result
 end
 
@@ -241,6 +239,8 @@ type Fields = {
 	Gui: ScreenGui,
 	HealthArc: Arc,
 	StaminaArc: Arc,
+	QiArc: Arc,
+	QiText: TextLabel,
 	OwnPosture: PostureBar,
 	HealthText: TextLabel,
 	WeaponGlyph: TextLabel,
@@ -255,6 +255,9 @@ type Fields = {
 	BossRecoverable: Frame,
 	BossPosture: PostureBar,
 	BossEntity: number?,
+	BossId: string?,
+	BossMembers: { number },
+	BossScore: BossMusic.Score,
 	Billboard: BillboardGui,
 	LockPosture: PostureBar,
 	LockHealth: Frame,
@@ -289,7 +292,7 @@ type Fields = {
 
 export type Interface = typeof(setmetatable({} :: Fields, Controller))
 
-local function buildVitals(gui: ScreenGui): (Arc, Arc, PostureBar, TextLabel)
+local function buildVitals(gui: ScreenGui): (Arc, Arc, PostureBar, TextLabel, Arc, TextLabel)
 	local frame = make("Frame", gui, {
 		Name = "Vitals",
 		Size = UDim2.fromOffset(340, 210),
@@ -300,13 +303,17 @@ local function buildVitals(gui: ScreenGui): (Arc, Arc, PostureBar, TextLabel)
 	local center = Vector2.new(170, 190)
 	local health = newArc(frame, center, 150, 9, 56, 200, 112)
 	local stamina = newArc(frame, center, 136, 6, 48, 202, 104)
+	local qi = newArc(frame, center, 123, 5, 44, 204, 100)
 	local posture = newPosture(frame, UDim2.fromOffset(170, 7), UDim2.fromOffset(78, 112), Vector2.new(0, 0))
 	local text = label(frame, "", 14, NUMBER_FONT, MUTED, {
 		Position = UDim2.fromOffset(78, 124),
 		Size = UDim2.fromOffset(170, 16),
 		TextXAlignment = Enum.TextXAlignment.Left,
 	})
-	return health, stamina, posture, text
+	local qiText = label(frame, "QI 100 / 100", 12, NUMBER_FONT, Color3.fromRGB(85,220,230), {
+		Position=UDim2.fromOffset(78,145), Size=UDim2.fromOffset(170,16), TextXAlignment=Enum.TextXAlignment.Left,
+	})
+	return health, stamina, posture, text, qi, qiText
 end
 
 local function buildLoadout(gui: ScreenGui): (TextLabel, TextLabel, TextLabel, TextLabel, TextLabel)
@@ -358,11 +365,11 @@ local function buildBoss(gui: ScreenGui): (Frame, TextLabel, TextLabel, Frame, F
 		Name = "BossBar",
 		AnchorPoint = Vector2.new(0.5, 1),
 		Position = UDim2.new(0.5, 0, 1, -64),
-		Size = UDim2.new(0.56, 0, 0, 64),
+		Size = UDim2.new(0.68, 0, 0, 108),
 		BackgroundTransparency = 1,
 		Visible = false,
 	}) :: Frame
-	local title = label(frame, "", 24, TITLE_FONT, IVORY, {
+	local title = label(frame, "", 24, TITLE_FONT, GOLD, {
 		Size = UDim2.new(1, 0, 0, 26),
 		TextXAlignment = Enum.TextXAlignment.Left,
 	})
@@ -370,10 +377,10 @@ local function buildBoss(gui: ScreenGui): (Frame, TextLabel, TextLabel, Frame, F
 		Size = UDim2.new(1, 0, 0, 26),
 		TextXAlignment = Enum.TextXAlignment.Right,
 	})
-	local posture = newPosture(frame, UDim2.new(0.6, 0, 0, 6), UDim2.new(0.5, 0, 0, 32), Vector2.new(0.5, 0))
+	local posture = newPosture(frame, UDim2.new(0.6, 0, 0, 6), UDim2.new(0.5, 0, 0, 84), Vector2.new(0.5, 0))
 	local track = make("Frame", frame, {
 		Name = "Health",
-		Position = UDim2.fromOffset(0, 44),
+		Position = UDim2.fromOffset(0, 54),
 		Size = UDim2.new(1, 0, 0, 12),
 		BackgroundColor3 = TRACK,
 		BackgroundTransparency = 0.2,
@@ -496,7 +503,7 @@ function Controller.new(state: WorldState, camera: CameraController, input: Inpu
 		ZIndexBehavior = Enum.ZIndexBehavior.Sibling,
 		DisplayOrder = 10,
 	}) :: ScreenGui
-	local healthArc, staminaArc, ownPosture, healthText = buildVitals(gui)
+	local healthArc, staminaArc, ownPosture, healthText, qiArc, qiText = buildVitals(gui)
 	local glyph, weaponName, offhand, elixir, essence = buildLoadout(gui)
 	local bossFrame, bossTitle, bossPhase, bossActive, bossRecoverable, bossPosture = buildBoss(gui)
 	local billboard, lockPosture, lockHealth, lockKanji = buildLockBillboard(gui)
@@ -550,6 +557,8 @@ function Controller.new(state: WorldState, camera: CameraController, input: Inpu
 		Gui = gui,
 		HealthArc = healthArc,
 		StaminaArc = staminaArc,
+		QiArc = qiArc,
+		QiText = qiText,
 		OwnPosture = ownPosture,
 		HealthText = healthText,
 		WeaponGlyph = glyph,
@@ -564,6 +573,7 @@ function Controller.new(state: WorldState, camera: CameraController, input: Inpu
 		BossRecoverable = bossRecoverable,
 		BossPosture = bossPosture,
 		BossEntity = nil,
+		BossId = nil, BossMembers = {}, BossScore = BossMusic.new(),
 		Billboard = billboard,
 		LockPosture = lockPosture,
 		LockHealth = lockHealth,
@@ -818,6 +828,15 @@ function Controller.OpenAltar(self: Interface, altarId: string)
 	self.Altar.Visible = true
 	self.Input:SetMenu(true)
 	self:ShowPage("Main")
+	-- Spring the altar in from the left; the authored UIScale (0.8) is the rest size.
+	local scale = self.Altar:FindFirstChildOfClass("UIScale")
+	if scale then
+		scale.Scale = 0.72
+		TweenService:Create(scale, UiKit.Motion.Open, { Scale = 0.8 }):Play()
+	end
+	self.Altar.Position = UDim2.new(0, 60 - UiKit.Motion.SlidePixels * 2, 0.5, 0)
+	TweenService:Create(self.Altar, UiKit.Motion.Open, { Position = UDim2.new(0, 60, 0.5, 0) }):Play()
+	UiKit.play("Open")
 end
 
 function Controller.CloseAltar(self: Interface)
@@ -827,6 +846,7 @@ function Controller.CloseAltar(self: Interface)
 	self.Altar.Visible = false
 	self.AltarId = nil
 	self.Input:SetMenu(false)
+	UiKit.play("Close")
 end
 
 -------------------------------------------------------------------------------------------------
@@ -841,6 +861,11 @@ function Controller.ShowToast(self: Interface, text: string)
 end
 
 function Controller.ShowBanner(self: Interface, title: string, subtitle: string, duration: number)
+	self.Banner.TextColor3 = IVORY
+	self.Banner.Position = UDim2.fromScale(0.5, 0.22)
+	self.BannerSub.Position = UDim2.fromScale(0.5, 0.27)
+	local constraint = self.Banner:FindFirstChildOfClass("UITextSizeConstraint")
+	if constraint then constraint.MaxTextSize = 27 end
 	self.Banner.Text = title
 	self.BannerSub.Text = subtitle
 	self.Banner.TextTransparency = 0
@@ -944,6 +969,7 @@ end
 function Controller.OnEvent(self: Interface, event: CombatEvent)
 	if event.Kind == "KO" and event.Target == self.State.LocalId then
 		self:ShowDeath()
+		BossMusic.stop(self.BossScore)
 	elseif event.Kind == "StanceBreak" and event.Target == self.State.LocalId then
 		self:ShowToast("Posture broken!")
 	end
@@ -952,6 +978,24 @@ end
 function Controller.OnCue(self: Interface, cue: Cue)
 	local own = self.State.LocalId
 	local data = cue.Data
+	local isBossCue = string.sub(cue.Kind, 1, 4) == "Boss" or cue.Kind == "FogGateSealed"
+	local ownEncounter = self.Player:GetAttribute("AsuraEncounter")
+	if isBossCue then
+		local participants = data.participants
+		local entity = self.State:Get(cue.Source)
+		local encounter = data.boss or (entity and entity.Model:GetAttribute("AsuraEncounter"))
+		local included = type(participants) == "table" and table.find(participants, own) ~= nil
+		local involved = encounter ~= nil and (encounter == self.BossId or encounter == ownEncounter)
+		if cue.Kind == "BossParticipantLeft" then involved = cue.Source == own end
+		if not included and not involved then return end
+	end
+	local sourceEntity = self.State:Get(cue.Source)
+	if isBossCue or (sourceEntity and sourceEntity.Model:GetAttribute("AsuraEncounter") == self.BossId and self.BossId ~= nil) then
+		BossEffects.cue(cue, self.State)
+		if sourceEntity and (cue.Kind == "Telegraph" or cue.Kind == "BossPhase" or cue.Kind == "BossEnrage") then
+			BossAnimations.action(sourceEntity.Model, cue.Kind ~= "Telegraph")
+		end
+	end
 	if cue.Kind == "AltarRest" and cue.Source == own then
 		local altarId = tostring(data.altar or "")
 		self:ShowBanner("ALTAR KINDLED", tostring(data.name or ""), 2.5)
@@ -974,23 +1018,51 @@ function Controller.OnCue(self: Interface, cue: Cue)
 		self:ShowToast(string.format("Essence reclaimed  +%d", tonumber(data.amount) or 0))
 	elseif cue.Kind == "BossIntro" or cue.Kind == "FogGateSealed" then
 		self.BossEntity = cue.Source
-		self.BossTitle.Text = tostring(data.title or "")
-		if data.name then
-			self.BossPhase.Text = tostring(data.name)
-		end
-		self.BossFrame.Visible = true
-	elseif cue.Kind == "BossPhase" then
+		self.BossId = tostring(data.boss or "")
+		if type(data.members) == "table" then self.BossMembers = data.members
+		elseif #self.BossMembers == 0 then self.BossMembers = { cue.Source } end
+		local boss = World.Bosses[self.BossId :: string]
+		self.BossTitle.Text = if boss then boss.Name else tostring(data.title or "")
+		BossHud.decorate(self.BossFrame, if boss then boss.Title else "", if boss then math.max(#boss.Phases, #self.BossMembers) else 1)
 		self.BossPhase.Text = tostring(data.name or "")
+		self.BossFrame.Visible = true
+		BossMusic.set(self.BossScore, self.BossId :: string, 1)
+	elseif cue.Kind == "BossPhase" or cue.Kind == "BossEnrage" then
+		self.BossPhase.Text = tostring(data.name or "")
+		if data.survivor then self.BossTitle.Text = tostring(data.survivor) end
 		self:ShowBanner(string.upper(tostring(data.name or "")), "", 2.4)
+		self.Camera:BossShot(cue.Source, tonumber(data.duration) or 2.4)
+		BossMusic.set(self.BossScore, self.BossId or "", tonumber(data.phase) or 2)
+	elseif cue.Kind == "BossFinish" then
+		self.Camera:BossShot(cue.Source, 1.3, true)
+	elseif cue.Kind == "BossKneel" then
+		self:ShowToast("Ankles shattered — strike the head!")
+	elseif cue.Kind == "BossGrab" and data.target == own then
+		self.Camera:BossShot(cue.Source, tonumber(data.duration) or 1.2)
 	elseif cue.Kind == "BossDefeated" then
-		if self.BossEntity ~= nil then
-			self:ShowBanner("GREAT ENEMY FELLED", "", 4)
-		end
-		self.BossEntity = nil
+		self:ShowBanner(tostring(data.banner or "GREAT FOE VANQUISHED"), string.format("+%d Qi essence", tonumber(data.essence) or 0), 4)
+		self.Banner.TextColor3 = GOLD
+		self.Banner.ZIndex, self.BannerSub.ZIndex = 20, 20
+		self.Banner.Position = UDim2.fromScale(0.5, 0.45)
+		self.BannerSub.Position = UDim2.fromScale(0.5, 0.51)
+		local victoryVeil = self.Gui:FindFirstChild("VictoryVeil")
+		if victoryVeil then victoryVeil:Destroy() end
+		local veil = make("Frame", self.Gui, { Name = "VictoryVeil", Position = UDim2.fromScale(0, 0.36), Size = UDim2.fromScale(1, 0.22),
+			BackgroundColor3 = INK, BackgroundTransparency = 0.25, BorderSizePixel = 0, ZIndex = 19 }) :: Frame
+		TweenService:Create(veil, TweenInfo.new(4), { BackgroundTransparency = 1 }):Play()
+		task.delay(4.2, function() veil:Destroy() end)
+		self.Banner.TextSize = 44
+		local constraint = self.Banner:FindFirstChildOfClass("UITextSizeConstraint")
+		if constraint then constraint.MaxTextSize = 44 end
+		HudKit.cue(HudKit.Sounds.Objective, 0.8, 0.7)
+		HudKit.cue(HudKit.Sounds.Tick, 0.65, 1.4)
+		self.BossEntity, self.BossId, self.BossMembers = nil, nil, {}
 		self.BossFrame.Visible = false
-	elseif cue.Kind == "BossReset" then
-		self.BossEntity = nil
+		BossMusic.stop(self.BossScore)
+	elseif cue.Kind == "BossReset" or cue.Kind == "BossParticipantLeft" then
+		self.BossEntity, self.BossId, self.BossMembers = nil, nil, {}
 		self.BossFrame.Visible = false
+		BossMusic.stop(self.BossScore)
 	elseif cue.Kind == "PortalTransit" and cue.Source == own then
 		self:Transition(tonumber(data.fade) or 0.5, tostring(data.name or ""))
 	elseif cue.Kind == "SanctuaryCatch" and cue.Source == own then
@@ -1015,6 +1087,7 @@ function Controller.OnCue(self: Interface, cue: Cue)
 		local entity = self.State:Get(cue.Source)
 		if entity and type(data.impact) == "number" then
 			self:Telegraph(entity, tostring(data.class or "Heavy"), data.impact)
+			if data.counter and self.BossId then self:ShowToast("危  " .. tostring(data.counter)) end
 		end
 	end
 end
@@ -1037,10 +1110,13 @@ function Controller.UpdateVitals(self: Interface, snapshot: Snapshot)
 	}, math.clamp(maxHP / 200, 0.5, 1), TRACK)
 	local stamina = snapshot.Stamina / math.max(snapshot.MaxStamina, 1)
 	setArc(self.StaminaArc, { { Upto = stamina, Color = if snapshot.State == "StaminaBroken" then MUTED else JADE } }, math.clamp(snapshot.MaxStamina / 200, 0.5, 1), TRACK)
+	local maxQi=if self.Player:GetAttribute("AsuraColosseum") and self.Player:GetAttribute("AsuraArenaNormalized")==true then 130 else (tonumber(self.Player:GetAttribute("AsuraMaxQi")) or 100)
+ self.QiText.Text = string.format("QI %d / %d",math.floor(snapshot.Qi),maxQi)
+	setArc(self.QiArc, { { Upto = snapshot.Qi / maxQi, Color = lerpColor(Color3.fromRGB(85,220,230),GOLD,snapshot.Qi/maxQi) } }, 1, TRACK)
 	setPosture(self.OwnPosture, snapshot.Posture / math.max(snapshot.PostureCapacity, 1), snapshot.State == "StanceBroken")
 	self.HealthText.Text = string.format("%d / %d", math.floor(snapshot.ActiveHP + 0.5), math.floor(maxHP - snapshot.PermanentDeficit + 0.5))
 	self.WeaponGlyph.Text = WEAPON_GLYPH[snapshot.Weapon] or "FIST"
-	self.WeaponName.Text = WEAPON_NAME[snapshot.Weapon] or snapshot.Weapon
+	self.WeaponName.Text = Weapons.get(snapshot.Weapon).Name
 end
 
 function Controller.UpdateLock(self: Interface, own: Entity?, ownSnapshot: Snapshot?)
@@ -1071,16 +1147,15 @@ function Controller.UpdateLock(self: Interface, own: Entity?, ownSnapshot: Snaps
 end
 
 function Controller.UpdateBoss(self: Interface)
-	local id = self.BossEntity
-	local boss = if id then self.State:Get(id) else nil
-	local snapshot = boss and boss.Snapshot
-	if not boss or not snapshot then
-		return
+	if self.BossEntity == nil then return end
+	for _, id in self.BossMembers do
+		local entity = self.State:Get(id)
+		if entity then BossAnimations.sync(entity.Model) end
 	end
-	local maxHP = math.max(snapshot.MaxHP, 1)
-	self.BossActive.Size = UDim2.fromScale(math.clamp(snapshot.ActiveHP / maxHP, 0, 1), 1)
-	self.BossRecoverable.Size = UDim2.fromScale(math.clamp((snapshot.ActiveHP + snapshot.RecoverableHP) / maxHP, 0, 1), 1)
-	setPosture(self.BossPosture, snapshot.Posture / math.max(snapshot.PostureCapacity, 1), snapshot.State == "StanceBroken")
+	local active, recoverable, posture, broken = BossHud.values(self.BossFrame, self.State, self.BossMembers)
+	self.BossActive.Size = UDim2.fromScale(active, 1)
+	self.BossRecoverable.Size = UDim2.fromScale(recoverable, 1)
+	setPosture(self.BossPosture, posture, broken)
 end
 
 function Controller.Update(self: Interface, dt: number)
@@ -1138,6 +1213,8 @@ function Controller.Update(self: Interface, dt: number)
 end
 
 function Controller.Destroy(self: Interface)
+	BossMusic.stop(self.BossScore)
+	BossAnimations.clear()
 	for _, disconnect in self.Disconnects do
 		disconnect()
 	end

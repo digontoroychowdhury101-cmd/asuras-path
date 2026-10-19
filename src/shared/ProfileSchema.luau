@@ -2,6 +2,9 @@
 -- ModuleScript: ReplicatedStorage/AsurasPath/ProfileSchema
 -- Server-authoritative data schema, migration rules, and integrity validation for player persistence.
 
+local hasScript = pcall(function() return script.Parent end)
+local RPG: any = if hasScript then require(script.Parent.Shared.RPGProfile) else require("./RPGProfile")
+
 export type StyleEntry = {
 	unlocked: boolean,
 	xp: number,
@@ -17,7 +20,13 @@ export type Profile = {
 	losses: number,
 	draws: number,
 	winStreak: number,
-	fightCash: number,
+	qiEssence: number,
+	attributes: {[string]: number},
+	inventory: {Weapons: {[string]: {Level: number, Infusion: string?}}, Spells: {[string]: boolean}, Materials: {[string]: number}, LoreEntries: {[string]: boolean}},
+	equippedLoadout: {MainWeapon: string, OffWeapon: string?, SpellSlot1: string?, SpellSlot2: string?, ArmorSet: string?},
+	defeatedBosses: {[string]: boolean}, unlockedAltars: {[string]: boolean},
+	colosseum: {Elo: number, Rank: string, Wins: number, Losses: number, WinStreak: number},
+	weaponMastery: {[string]: number}, arenaWagers: {[string]: {Fighter: number, Amount: number, State: string}},
 	styleSpins: number,
 	pityCounter: number,
 	activeStyle: string,
@@ -39,7 +48,7 @@ export type Profile = {
 
 local ProfileSchema = {}
 
-local CURRENT_SCHEMA_VERSION = 3
+local CURRENT_SCHEMA_VERSION = 4
 local DEFAULT_ELO = 1000
 
 function ProfileSchema.Level(xp: number): number
@@ -49,7 +58,7 @@ function ProfileSchema.Level(xp: number): number
 end
 
 function ProfileSchema.Default(userId: number): Profile
-	return {
+	local profile: any = {
 		schemaVersion = CURRENT_SCHEMA_VERSION,
 		userId = userId,
 		elo = DEFAULT_ELO,
@@ -58,7 +67,6 @@ function ProfileSchema.Default(userId: number): Profile
 		losses = 0,
 		draws = 0,
 		winStreak = 0,
-		fightCash = 500, -- Welcome bonus
 		styleSpins = 5,  -- 5 free initial rolls
 		pityCounter = 0,
 		activeStyle = "Ironline",
@@ -80,12 +88,14 @@ function ProfileSchema.Default(userId: number): Profile
 			Taunt = "Taunt_Bow", Wrap="Wrap_White", Accessory="Accessory_None", Skin="Skin_Tan", Hair="Hair_Crop",
 		},
 		settings = {
-			fov = 80,
+			fov = 70,
 			sensitivity = 1.0,
 			leftHanded = false, keybinds = {},
 		},
 		lastSaveTime = 0, receipts = {}, appliedMatches = {}, pendingMatches = {},
 	}
+	RPG.apply(profile, nil)
+	return profile
 end
 
 -- Storage bounds preserve exact integer arithmetic; these are not progression caps.
@@ -96,7 +106,7 @@ local MAX_IDENTIFIER_LENGTH = 64
 local MIN_FOV, MAX_FOV = 70, 90
 local MIN_SENSITIVITY, MAX_SENSITIVITY = 0.5, 2
 local COUNTERS = table.freeze({
-	"wins", "losses", "draws", "winStreak", "fightCash", "styleSpins", "pityCounter", "lastSaveTime",
+	"wins", "losses", "draws", "winStreak", "styleSpins", "pityCounter", "lastSaveTime",
 })
 local COSMETIC_SLOTS = table.freeze({ "Trunks", "Gloves", "Taunt", "Wrap", "Accessory", "Skin", "Hair" })
 
@@ -191,7 +201,7 @@ function ProfileSchema.Validate(raw: any): (boolean, string?)
    elseif value~=true then return false,"Invalid result ledger" end
   end
  end
- return true, nil
+ return RPG.validate(raw)
 end
 
 function ProfileSchema.Migrate(raw: any, userId: number): Profile
@@ -255,6 +265,7 @@ function ProfileSchema.Migrate(raw: any, userId: number): Profile
    for id,value in raw[field] do (migrated :: any)[field][id]=value end
   end
  end
+ RPG.apply(migrated, raw)
  assert(ProfileSchema.Validate(migrated))
  return migrated
 end

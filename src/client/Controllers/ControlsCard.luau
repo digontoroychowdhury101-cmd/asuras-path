@@ -2,7 +2,7 @@
 -- ModuleScript: StarterPlayer/StarterPlayerScripts/AsurasPath/Controllers/ControlsCard
 -- Device-aware controls reference. Opens automatically on a fresh spawn, folds into a small
 -- "Controls" pill after a while (or once the player starts fighting), and toggles with H on
--- keyboard, D-Pad Left on gamepad, or a tap on touch. Key names come from InputController.Label,
+-- keyboard or a tap on touch. Key names come from InputController.Label,
 -- so the card can never drift from the real bindings.
 local UserInputService = game:GetService("UserInputService")
 
@@ -18,19 +18,22 @@ local ROWS: { { string } } = {
 	{ "Light", "Light attack" },
 	{ "Heavy", "Heavy attack · Deathblow" },
 	{ "Guard", "Guard · tap on impact to deflect" },
-	{ "Roll", "Dodge (there is no jump)" },
+	{ "Jump", "Jump · double jump · hold to glide" },
+	{ "Dash", "Dash · stamina + brief i-frames" },
+	{ "Slide", "Hold slide · + Jump: bullet jump" },
+	{ "Aim", "Hold in air to glide (3.5 s)" },
 	{ "Lock", "Lock on to a foe" },
 	{ "Heal", "Drink from the gourd" },
 	{ "Interact", "Interact · rest at altars" },
 	{ "Swap", "Swap weapon" },
 	{ "WeaponArt", "Weapon art" },
-	{ "Sprint", "Sprint" },
+	{ "Sprint", "Toggle sprint" },
 }
 local TOUCH: { [string]: string } = {
-	Light = "ATK", Heavy = "HVY", Guard = "GUARD", Roll = "DODGE", Lock = "LOCK", Heal = "HEAL",
+	Light = "ATK", Heavy = "HVY", Guard = "GUARD", Dash = "DASH", Jump = "JUMP", Slide = "SLIDE", Aim = "GLIDE", Lock = "LOCK", Heal = "HEAL",
 	Interact = "USE", Swap = "SWAP", WeaponArt = "SKILL", Sprint = "—",
 }
-local TOGGLE_HINT: { [string]: string } = { Keyboard = "[H]", Gamepad = "[D-Left]", Touch = "" }
+local TOGGLE_HINT: { [string]: string } = { Keyboard = "[H]", Gamepad = "", Touch = "" }
 
 local Controller = {}
 Controller.__index = Controller
@@ -87,7 +90,7 @@ function Controller.new(input: any, ui: any): ControlsCard
 	end)
 	local toggleConnection = UserInputService.InputBegan:Connect(function(event: InputObject, processed: boolean)
 		local key = event.KeyCode
-		if not processed and not UserInputService:GetFocusedTextBox() and (key == Enum.KeyCode.H or key == Enum.KeyCode.DPadLeft) then
+		if not processed and not UserInputService:GetFocusedTextBox() and (key == Enum.KeyCode.H) then
 			self:SetOpen(not self.Open)
 		end
 	end)

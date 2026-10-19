@@ -9,7 +9,7 @@ print("[Commercial Test] 1. ProfileSchema Invariants & Migration...")
 local p1 = ProfileSchema.Default(12345)
 assert(p1.userId == 12345, "UserId preserved")
 assert(p1.elo == 1000, "Initial ELO is 1000")
-assert(p1.fightCash == 500, "Initial welcome cash is 500")
+assert(p1.qiEssence == 500, "Initial welcome cash is 500")
 assert(p1.styleSpins == 5, "Initial free spins is 5")
 assert(p1.activeStyle == "Ironline", "Active style defaults to Ironline")
 
@@ -20,7 +20,7 @@ assert(okVal, "Default profile passes strict validation: " .. tostring(valErr))
 local rawCorrupted = {
 	schemaVersion = 0,
 	elo = "invalid", -- Should reset to 1000
-	fightCash = -50,  -- Should clamp to default
+	qiEssence = -50,  -- Should clamp to default
 	styles = {
 		ApexStriker = { unlocked = true, xp = 1200, level = 2 },
 	},
@@ -28,7 +28,7 @@ local rawCorrupted = {
 local migrated = ProfileSchema.Migrate(rawCorrupted, 99999)
 assert(migrated.userId == 99999, "UserId assigned on migration")
 assert(migrated.elo == 1000, "Corrupted ELO repaired to 1000")
-assert(migrated.fightCash == 500, "Negative cash repaired to default")
+assert(migrated.qiEssence == 500, "Negative cash repaired to default")
 assert(migrated.styles.ApexStriker.unlocked == true, "Existing style unlock preserved")
 assert(migrated.styles.ApexStriker.xp == 1200, "Existing style XP preserved")
 assert(migrated.styles.Ironline.unlocked == true, "Default style unlocked")

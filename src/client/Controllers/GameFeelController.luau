@@ -262,7 +262,7 @@ function Controller.OnEvent(self: GameFeel, event: CombatEvent)
 		-- Source is the defender; sparks fly back toward the attacker.
 		local back = if target and target.Root and source and source.Root then (target.Root.Position - source.Root.Position) else direction
 		local anchor = self:Spark(point, back + Vector3.new(0, 0.6, 0), Color3.fromRGB(255, 196, 92), 48, 46)
-		playSound(anchor, SOUNDS.Clang, 0.9, 1.25 + math.random() * 0.15)
+		playSound(anchor, SOUNDS.Clang, 0.9, if source and source.Snapshot and source.Snapshot.Weapon=="PrayerOfTheDefiled" then 0.45 else 1.25 + math.random() * 0.15)
 		playSound(anchor, SOUNDS.Slash, 0.4, 1.8)
 	elseif kind == "Block" then
 		local anchor = self:Spark(point, -direction, Color3.fromRGB(200, 200, 210), 10, 22)
@@ -318,7 +318,7 @@ function Controller.OnCue(self: GameFeel, cue: Cue)
 			local anchor = self:Spark(origin, Vector3.new(0, 1, 0), Color3.fromRGB(190, 30, 30), 120, 60)
 			playSound(anchor, SOUNDS.Lunge, 1, 0.45)
 		end
-	elseif cue.Kind == "BossPhase" then
+	elseif cue.Kind == "BossPhase" and Players.LocalPlayer:GetAttribute("AsuraEncounter") == cue.Data.boss then
 		self.Camera:Impulse(Vector3.new(0, 1, 0), 0.7, -5)
 	end
 end

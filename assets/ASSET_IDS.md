@@ -12,3 +12,21 @@ The Rojo-owned copy lives in `assets/models/AsuraAssets.rbxm` (mapped to `Server
 | AsuraRoots | fgt_01.001 | 128332031002584 | 139842784818646 / 75759511497970 / 122359992555222 / 88730331781199 |
 
 Native import sizes are in metres-as-studs (statue ~1.7 studs); `SanctuaryService` scales each on mount.
+
+## Pending upload — Veiled Ascetic
+
+Once the AI sculpt is ingested (`assets/VEILED_TITAN_PROMPTS.md`), import `assets/build/veiled_titan/veiled_titan.glb` with the 3D Importer, rename the Model to
+**`AsuraVeiledTitan`**, put it in `ServerStorage.AsuraAssets` and re-export `assets/models/AsuraAssets.rbxm`.
+`SanctuaryDressing` picks it up automatically (falls back to `AsuraColossusStatue` until then).
+
+| MeshPart | MeshId | SurfaceAppearance (Color / Normal / Roughness / Metalness) |
+|---|---|---|
+| Titan_Figure_1 | _pending_ | _pending_ |
+| Titan_Figure_2 | _pending_ | _pending_ |
+| Titan_Canopy | _pending_ | _pending_ |
+| Titan_Leaves | _pending_ | _pending_ (alpha: Color only) |
+
+| Decal | File | AssetId → paste into `SanctuaryLeaves.luau` |
+|---|---|---|
+| Crimson leaf (particle) | `assets/build/veiled_titan/leaves/crimson_leaf.png` | `LEAF_TEXTURE` = _pending_ |
+| Fallen-leaf scatter | `assets/build/veiled_titan/leaves/leaf_scatter.png` | `SCATTER_TEXTURE` = _pending_ |

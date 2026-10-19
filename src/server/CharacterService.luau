@@ -110,6 +110,7 @@ type EntityListener = (id: number, kind: EntityKind) -> ()
 
 local Service = {}
 local Appearance = require(script.Parent:WaitForChild("FighterAppearance") :: ModuleScript)
+local WeaponModels = require(script.Parent:WaitForChild("WeaponModels") :: ModuleScript)
 local EnemyAppearance = require(script.Parent:WaitForChild("EnemyAppearance") :: ModuleScript)
 
 local TICK: number = Tempo.TickSeconds
@@ -283,6 +284,9 @@ local function attachWeapon(e: Entity)
 	if e.WeaponPart then
 		e.WeaponPart:Destroy()
 		e.WeaponPart = nil
+	end
+	if WeaponModels.attach(e.Model,e.Fighter.Weapon) then
+		e.Model:SetAttribute("AsuraWeapon",e.Fighter.Weapon);return
 	end
 	local visual = WEAPON_VISUALS[e.Fighter.Weapon]
 	e.Model:SetAttribute("AsuraWeapon", e.Fighter.Weapon)
@@ -858,6 +862,7 @@ local function perform(e: Entity, action: string, pressTime: number, dirX: numbe
 		local victim = findDeathblowTarget(e, now)
 		if victim then
 			local dealt = Combat.executeDeathblow(f, victim.Fighter, now, frameEvents)
+   if f.SignatureFinisher then Service.Cue("SignatureFinisher",e.Id,{target=victim.Id,weapon=f.Weapon,position=victim.Root.Position}) end
 			eventPoints[frameEvents[#frameEvents]] = victim.Root.Position
 			awardXp(e, 60)
 			local look = flatUnit(victim.Root.Position - e.Root.Position)
@@ -990,6 +995,7 @@ end
 local function resolveContacts(attacker: Entity, now: number)
 	local f = attacker.Fighter
 	local move = f.Move
+	if move and (move.Effect=="AbbotDirge" or move.Effect=="FissureSlam" or move.Effect=="Thunderfall" or move.Effect=="WindSlash") then return end
 	local progress = Combat.activeProgress(f, now)
 	if move == nil or progress == nil then
 		return
@@ -1006,9 +1012,12 @@ local function resolveContacts(attacker: Entity, now: number)
 			local hit = Lag.queryHit(prevA, prevB, curA, curB, radius, defender.History, rewindTo, TICK)
 			if hit then
 				local before = #frameEvents
+				local ankleTarget = defender.Model:GetAttribute("AsuraVisceralTarget") == "Ankles"
+				local ankleHit = ankleTarget and (hit.Region == "LeftLeg" or hit.Region == "RightLeg")
 				local outcome = Combat.resolveHit(f, defender.Fighter, now, {
 					Facing = facingDot(defender, attacker) >= FACING_DOT,
 					Region = hit.Region :: any,
+					PostureBonus = if ankleHit then move.PostureDamage * 1.8 else nil,
 				}, frameEvents)
 				for index = before + 1, #frameEvents do
 					eventPoints[frameEvents[index]] = hit.Point
@@ -1075,7 +1084,8 @@ end
 
 local function applyLocomotion(e: Entity)
 	local f = e.Fighter
-	local speed = Settings.Movement.WalkSpeed * Combat.speedMultiplier(f)
+	e.Model:SetAttribute("JadeAegisUntil",f.WardUntil)
+	local speed = if f.RootUntil > simTime then 0 else Settings.Movement.WalkSpeed * Combat.speedMultiplier(f)
 	if math.abs(speed - e.WalkSpeed) > 0.01 then
 		e.WalkSpeed = speed
 		e.Humanoid.WalkSpeed = speed
@@ -1423,6 +1433,20 @@ function Service.ForceWeapon(id: number, weapon: WeaponType)
 	end
 end
 
+-- Keep rewound hurtboxes aligned with large boss bodies.
+function Service.ScaleEnemy(id: number, scale: number)
+	local e = entities[id]
+	if not e or e.Kind ~= "Enemy" then return end
+	e.Model:ScaleTo(scale)
+	local base = Lag.HumanoidProfile
+	local capsules: { Lag.Capsule } = {}
+	for _, capsule in base.Capsules do
+		table.insert(capsules, { Region = capsule.Region, A = capsule.A * scale, B = capsule.B * scale, Radius = capsule.Radius * scale })
+	end
+	e.History.Profile = { Capsules = capsules, BoxOffset = CFrame.new(base.BoxOffset.Position * scale), BoxHalfSize = base.BoxHalfSize * scale, Reach = base.Reach * scale }
+	Lag.clear(e.History)
+end
+
 function Service.Tint(id: number, rgb: { number })
 	local e = entities[id]
 	if e and alive(e) then
@@ -1470,6 +1494,18 @@ function Service.Cinematic(id: number, duration: number)
 	end
 end
 
+-- Chain and launch attacks resolve defense before applying displacement.
+function Service.ResolveWeaponHit(sourceId: number, targetId: number): string
+ local source,target=entities[sourceId],entities[targetId]
+ if not source or not target or not hostile(source,target) then return "Ignored" end
+ local move=source.Fighter.Move
+ if not move or (source.Root.Position-target.Root.Position).Magnitude>move.Reach+source.Fighter.ReachBonus then return "Whiff" end
+ local before=#frameEvents
+ local result=Combat.resolveHit(source.Fighter,target.Fighter,simTime,{Facing=facingDot(target,source)>=FACING_DOT,Region="Torso"},frameEvents)
+ for index=before+1,#frameEvents do eventPoints[frameEvents[index]]=target.Root.Position end
+ return result
+end
+
 function Service.ApplyArea(sourceId: number, targetId: number, damage: number, posture: number, unblockable: boolean): string
 	local source, target = entities[sourceId], entities[targetId]
 	if not source or not target or not alive(target) or not hostile(source, target) then
@@ -1481,6 +1517,24 @@ function Service.ApplyArea(sourceId: number, targetId: number, damage: number, p
 		eventPoints[frameEvents[index]] = target.Root.Position
 	end
 	return outcome
+end
+
+-- Geometry is evaluated by the boss scheduler; combat remains authoritative here.
+function Service.ApplyBossAttack(sourceId: number, targetId: number, damage: number, posture: number, kind: string): string
+	local source, target = entities[sourceId], entities[targetId]
+	if not source or not target or not alive(target) or not hostile(source, target) then return "Ignored" end
+	local velocity = target.Root.AssemblyLinearVelocity
+	if kind == "PerilousGrab" and Vector3.new(velocity.X, 0, velocity.Z).Magnitude >= 24 then return "Whiff" end
+	local before = #frameEvents
+	local result = Combat.applyBossAttack(source.Fighter, target.Fighter, simTime, damage, posture, kind,
+		facingDot(target, source) >= FACING_DOT, frameEvents)
+	for index = before + 1, #frameEvents do eventPoints[frameEvents[index]] = target.Root.Position end
+	if kind == "PerilousGrab" and result == "Hit" then
+		target.Root.AssemblyLinearVelocity = Vector3.new(0, 24, 0)
+		InputBuffer.clear(target.Buffer)
+		Service.Cue("BossGrab", sourceId, { target = targetId, duration = 1.2 })
+	end
+	return result
 end
 
 -- Broadcast a presentation cue (telegraph, boss phase, fog gate) on the shared event stream.

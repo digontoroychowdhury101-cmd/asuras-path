@@ -15,10 +15,10 @@ local HOLD = 4.2
 local FADE = 1.1
 
 local LINES: { { string } } = {
-	{ "Above the clouds, one bonfire still burns.", "The Shrine of the Ascendant" },
-	{ "Below it, the monastery has fallen silent.", "Grandmaster Shen drank his disciples' Qi — and became something else." },
-	{ "His monks wander as husks. His blade waits in the Ash Colosseum.", "The Fallen Abbot" },
-	{ "You are the last who still breathes the old Qi.", "Descend. Kindle the altars. End the Abbot." },
+ {"Shen devoured the souls of his disciples.", "THE JADE CATACLYSM"},
+ {"The celestial pillars shattered. The Abyss awoke.", "Six Fallen Sovereigns bind the living to the dead."},
+ {"You are an Asura Emissary, a phantom without an afterlife.", "The ferryman will not carry a soul still bound by six chains."},
+ {"Lay the six sovereigns to rest.", "Harvest Qi. Kindle the altars. Choose your path beyond death."},
 }
 
 local Controller = {}

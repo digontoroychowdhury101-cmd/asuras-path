@@ -22,6 +22,7 @@ local Animations = require(Shared.Shared.AnimationCatalog)
 local Characters = require(script.Parent:WaitForChild("CharacterService") :: ModuleScript)
 local WorldService = require(script.Parent:WaitForChild("WorldService") :: ModuleScript)
 local Dressing = require(script.Parent:WaitForChild("SanctuaryDressing") :: ModuleScript)
+local Leaves = require(script.Parent:WaitForChild("SanctuaryLeaves") :: ModuleScript)
 
 local SanctuaryService = {}
 
@@ -52,7 +53,6 @@ local SMITH_RADIUS = 10
 local TEXTURE_FIRE = "rbxasset://textures/particles/fire_main.dds"
 local TEXTURE_SPARKS = "rbxasset://textures/particles/fire_sparks_main.dds"
 local TEXTURE_SMOKE = "rbxasset://textures/particles/smoke_main.dds"
-local TEXTURE_MOTE = "rbxasset://textures/particles/sparkles_main.dds"
 
 -- Palette
 local FLAG_LIGHT = Color3.fromRGB(80, 87, 86)
@@ -314,24 +314,13 @@ local function buildPlaza(parent: Folder): BasePart
 			part(plaza,"InlaidPathEdge",Vector3.new(0.1,0.04,7.5),center*CFrame.new(side*4,0.15,z),BRONZE,Enum.Material.Metal,decor())
 		end
 	end
-	-- Crimson Petals drift across the wet plaza stones matching lobby concept art
+	-- Crimson leaves tumble across the wet plaza stones and settle on the reflecting basins
 	local petalAnchor = part(plaza, "PetalAnchor", Vector3.new(R * 1.6, 1, R * 1.6), center * CFrame.new(0, 32, 0), STONE, Enum.Material.SmoothPlastic,
 		{ Collide = false, Query = false, Shadow = false, Transparency = 1 })
-	local petals = Instance.new("ParticleEmitter")
-	petals.Name = "FallingPetals"
-	petals.Texture = TEXTURE_MOTE
-	petals.Rate = 12
-	petals.Lifetime = NumberRange.new(7, 12)
-	petals.Speed = NumberRange.new(1.2, 2.8)
-	petals.SpreadAngle = Vector2.new(45, 45)
-	petals.Acceleration = Vector3.new(1.5, -1.1, 0.8)
-	petals.Drag = 0.45
-	petals.Size = sequence({ { 0, 0.35 }, { 0.5, 0.45 }, { 1, 0.22 } })
-	petals.Transparency = sequence({ { 0, 0.15 }, { 0.8, 0.35 }, { 1, 1 } })
-	petals.Color = colors(Color3.fromRGB(188, 38, 48), Color3.fromRGB(118, 22, 28))
-	petals.LightEmission = 0.2
-	petals.LightInfluence = 0.85
-	petals.Parent = petalAnchor
+	Leaves.Emitter(petalAnchor, { Rate = 12, Size = 0.5, Wind = Vector3.new(1.5, -1.0, 0.8) })
+	for side = -1, 1, 2 do
+		Leaves.Scatter(plaza, center * CFrame.new(side * 16.25, 0.13, 0), Vector2.new(5.8, 15), 60, 90 + side, true)
+	end
 	-- A low bronze incense altar: the player, rather than a bonfire particle, supplies the scale.
 	disc(plaza,"AltarStep",4.6,0.4,center*CFrame.new(0,0.32,0),STONE,Enum.Material.Slate)
 	disc(plaza,"AltarDais",3.4,0.7,center*CFrame.new(0,0.85,0),STONE_DARK,Enum.Material.Slate)
@@ -439,6 +428,9 @@ local function buildGateway(parent: Folder): BasePart
 		if i==4 or i==12 or i==19 then
 			for side=-1,1,2 do lantern(gate,center*CFrame.new(side*(width*0.5+0.7),i*rise+2.2,z)) end
 		end
+	end
+	for _,i in {2,5,9,14} do -- leaves blown onto a few treads
+		Leaves.Scatter(gate,center*CFrame.new(0,i*rise,-(STAIR_START+(i-0.5)*run)),Vector2.new(width*0.42,run*0.4),12,i)
 	end
 	local top=steps*rise
 	local landingStart=STAIR_START+steps*run
@@ -634,9 +626,9 @@ local function buildLoggia(parent: Folder): (ProximityPrompt, ProximityPrompt)
 		{ Collide = false, Query = false, Transparency = 1, Shadow = false })
 	local reinforce = Instance.new("ProximityPrompt")
 	reinforce.Name = "ReinforcePrompt"
-	reinforce.ActionText = "Reinforce Weapon"
+	reinforce.ActionText = "Speak to Master Smith Gao"
 	reinforce.ObjectText = "Master Smith Gao"
-	reinforce.KeyboardKeyCode = Enum.KeyCode.E
+	reinforce.KeyboardKeyCode = Enum.KeyCode.Z
 	reinforce.GamepadKeyCode = Enum.KeyCode.ButtonX
 	reinforce.HoldDuration = 0.6
 	reinforce.MaxActivationDistance = SMITH_RADIUS
@@ -647,7 +639,7 @@ local function buildLoggia(parent: Folder): (ProximityPrompt, ProximityPrompt)
 	refill.ActionText = "Refill Elixir Gourd"
 	refill.ObjectText = "Master Smith Gao"
 	refill.KeyboardKeyCode = Enum.KeyCode.C
-	refill.GamepadKeyCode = Enum.KeyCode.DPadLeft
+	refill.GamepadKeyCode = Enum.KeyCode.ButtonStart
 	refill.HoldDuration = 0.3
 	refill.MaxActivationDistance = SMITH_RADIUS
 	refill.RequiresLineOfSight = false
@@ -798,6 +790,8 @@ local function buildHeroStatueDais(parent: Folder)
 	disc(statueGroup, "StatueBaseTier1", 28, 3.5, daisBase * CFrame.new(0, 1.75, 0), STONE_DARK, Enum.Material.Slate)
 	disc(statueGroup, "StatueBaseTier2", 23, 2.8, daisBase * CFrame.new(0, 4.5, 0), STONE, Enum.Material.Slate)
 	disc(statueGroup, "StatueBaseTier3", 18, 2.2, daisBase * CFrame.new(0, 7.0, 0), STONE_DARK, Enum.Material.Slate)
+	Leaves.Scatter(statueGroup, daisBase * CFrame.new(0, 8.1, 0), Vector2.new(17, 17), 70, 31)
+	Leaves.Scatter(statueGroup, daisBase * CFrame.new(0, 5.9, 0), Vector2.new(22, 22), 50, 32)
 
 	-- Flanking ruin columns with warm lanterns
 	for side = -1, 1, 2 do
@@ -883,7 +877,9 @@ local function poll()
 		if e and e.Fighter.State ~= "KO" and not e.Respawning and not Characters.IsInDuel(userId) then
 			local position = e.Root.Position
 			local flat = Vector3.new(position.X - ORIGIN.X, 0, position.Z - ORIGIN.Z)
-			if flat.Magnitude < CATCH_RADIUS and position.Y < ORIGIN.Y - CATCH_DEPTH then
+			-- Ground-level regions below the shrine are destinations, not falls from the clouds.
+			local region = World.regionAt(position.X, position.Y, position.Z)
+			if (region == nil or region == "Sanctuary") and flat.Magnitude < CATCH_RADIUS and position.Y < ORIGIN.Y - CATCH_DEPTH then
 				-- The clouds return those who fall back to the bonfire.
 				Characters.Teleport(userId, spawnCFrame)
 				Characters.Cue("SanctuaryCatch", userId, {})
@@ -928,7 +924,9 @@ function SanctuaryService.Start()
 	end))
 	table.insert(connections, trigger.Touched:Connect(onPortal))
 	table.insert(connections, reinforce.Triggered:Connect(function(player: Player)
-		local ok, reason = WorldService.Reinforce(player.UserId)
+		local Dialogue=require(script.Parent.DialogueService)
+        Dialogue.Open(player,"Gao")
+        local ok,reason=true,"Dialogue"
 		if not ok then
 			result(player, false, reason)
 		end

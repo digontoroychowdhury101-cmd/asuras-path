@@ -39,7 +39,7 @@ export type State =
 type Context = { [string]: any }
 export type InjuryTier = "None" | "Impaired" | "Injured" | "Severe"
 export type InjuryRegion = "Head" | "Torso" | "LeftArm" | "RightArm" | "LeftLeg" | "RightLeg"
-export type WeaponType = "Unarmed" | "Jian" | "Dao" | "Guandao"
+export type WeaponType = "Unarmed" | "Jian" | "Dao" | "Guandao" | "Odachi" | "TwinDaggers" | "ChainScythe" | "WarFan" | "Catalyst" | "PrayerOfTheDefiled" | "CalamityBoneCleaver" | "HeavenPiercingGuandao"
 export type MoveKind = "Light" | "Heavy" | "RunningAttack" | "WeaponArt"
 export type DamageCategory = "Chip" | "Light" | "Heavy" | "RunningAttack" | "WeaponArt" | "Bleed" | "Deathblow"
 
@@ -73,6 +73,7 @@ export type MoveTiming = {
 }
 
 export type MoveData = {
+	Effect: string?,
 	Id: string,
 	Kind: MoveKind,
 	ComboIndex: number,
@@ -124,7 +125,11 @@ export type Fighter = {
 	StaminaRegenAt: number,
 	Posture: number,
 	PostureDecayAt: number,
+ MaxQi: number, RallyScale: number, SpellScale: number,
+ InfusionBurn: number, InfusionStun: number, GuardPierce: number, VoidScale: number, SignatureFinisher: boolean,
+ BurnRate: number, BurnUntil: number, BurnSource: number,
 	Qi: number,
+	WardUntil: number, RootUntil: number,
 	Bleed: number,
 	BleedDecayAt: number,
 	Trauma: { [InjuryRegion]: number },
@@ -165,6 +170,8 @@ export type Fighter = {
 }
 
 export type Stats = {
+ MaxQi: number?, RallyScale: number?, SpellScale: number?, InfusionBurn: number?, InfusionStun: number?,
+ GuardPierce: number?, VoidScale: number?, SignatureFinisher: boolean?,
 	MaxHP: number?,
 	MaxStamina: number?,
 	PostureCapacity: number?,
@@ -179,6 +186,8 @@ export type HitContext = {
 	Facing: boolean,
 	-- Hurtbox region struck by the lag-compensated query.
 	Region: InjuryRegion,
+	-- Server-authored weak-point bonus, applied only after defenses accept a clean hit.
+	PostureBonus: number?,
 }
 
 export type HitOutcome = "Ignored" | "Whiff" | "Deflected" | "Blocked" | "GuardBroken" | "Hit" | "CounterHit" | "Armored" | "KO"
@@ -297,7 +306,10 @@ function Rules.new(id: number, weapon: WeaponType?, now: number): Fighter
 		StaminaRegenAt = now,
 		Posture = 0,
 		PostureDecayAt = now,
+  MaxQi=Settings.Qi.Max,RallyScale=1,SpellScale=1,InfusionBurn=0,InfusionStun=0,GuardPierce=0,VoidScale=1,SignatureFinisher=false,
+  BurnRate=0,BurnUntil=0,BurnSource=0,
 		Qi = Settings.Qi.Initial,
+		WardUntil = 0, RootUntil = 0,
 		Bleed = 0,
 		BleedDecayAt = now,
 		Trauma = trauma,
@@ -341,6 +353,7 @@ end
 
 -- Shrine rest / respawn restoration. `full` clears every layer regardless of shrine settings.
 function Rules.restore(f: Fighter, now: number, full: boolean?)
+	f.WardUntil = 0; f.RootUntil = 0
 	local shrine = Settings.Health.Shrine
 	if full or shrine.ClearsPermanentDeficit then
 		f.PermanentDeficit = 0
@@ -359,7 +372,7 @@ function Rules.restore(f: Fighter, now: number, full: boolean?)
 		refreshPenalties(f)
 	end
 	if full or Settings.Qi.ClearOnShrine then
-		f.Qi = Settings.Qi.Initial
+		f.Qi = if full then f.MaxQi else Settings.Qi.Initial
 	end
 	f.Stamina = f.MaxStamina
 	f.Posture = 0
@@ -367,6 +380,7 @@ function Rules.restore(f: Fighter, now: number, full: boolean?)
 	f.PendingHeal = 0
 	f.PendingHealAt = NEVER
 	f.InvulnerableUntil = -NEVER
+	f.BurnRate=0;f.BurnUntil=0;f.BurnSource=0
 	f.RallyUntil = -NEVER
 	f.DashChain = 0
 	f.DeflectChain = 0
@@ -389,6 +403,10 @@ end
 
 -- Applies attribute- or definition-derived pools. `refill` tops every pool up to its new maximum.
 function Rules.applyStats(f: Fighter, stats: Stats, refill: boolean?)
+ f.MaxQi=stats.MaxQi or f.MaxQi;f.RallyScale=stats.RallyScale or f.RallyScale;f.SpellScale=stats.SpellScale or f.SpellScale
+ f.InfusionBurn=stats.InfusionBurn or 0;f.InfusionStun=stats.InfusionStun or 0
+ f.GuardPierce=stats.GuardPierce or 0;f.VoidScale=stats.VoidScale or 1;f.SignatureFinisher=stats.SignatureFinisher or false
+ f.Qi=math.min(f.Qi,f.MaxQi)
 	local hpRatio = if f.MaxHP > 0 then f.ActiveHP / f.MaxHP else 1
 	f.MaxHP = math.clamp(stats.MaxHP or f.MaxHP, 1, 1600)
 	f.MaxStamina = math.clamp(stats.MaxStamina or f.MaxStamina, 1, 600)
@@ -412,10 +430,10 @@ end
 
 -- Attribute scaling: Strength drives unarmed and heavy strikes, Dexterity drives bladed technique.
 function Rules.damageScale(f: Fighter, move: MoveData): number
-	if f.Weapon == "Unarmed" or move.Kind == "Heavy" then
-		return f.StrengthScale
+	if f.Weapon == "Unarmed" or f.Weapon == "Guandao" or f.Weapon == "Odachi" or f.Weapon == "CalamityBoneCleaver" or f.Weapon == "HeavenPiercingGuandao" then
+		return f.StrengthScale*f.VoidScale
 	end
-	return f.DexterityScale
+	return f.DexterityScale*f.VoidScale
 end
 
 function Rules.maxPosture(f: Fighter): number
@@ -539,6 +557,9 @@ function Rules.addPosture(f: Fighter, amount: number, now: number, events: { Eve
 		return false
 	end
 	local limit = Rules.maxPosture(f)
+	if not cap and f.WardUntil > now and f.Posture + amount >= limit then
+		f.WardUntil = 0; return false
+	end
 	f.Posture = if cap then math.min(f.Posture + amount, limit - 1) else f.Posture + amount
 	f.PostureDecayAt = now + Settings.Posture.DecayDelay
 	if f.Posture >= limit then
@@ -572,6 +593,7 @@ function Rules.applyDamage(f: Fighter, amount: number, category: DamageCategory,
 	if amount <= 0 or f.State == "KO" then
 		return 0
 	end
+	if f.WardUntil > now and amount >= f.ActiveHP then f.WardUntil = 0; return 0 end
 	local health = Settings.Health
 	if category == "Heavy" or category == "Deathblow" then
 		convertRecoverable(f)
@@ -593,7 +615,7 @@ function Rules.rally(f: Fighter, dealt: number, now: number, events: { Event }?,
 	if dealt <= 0 or now > f.RallyUntil or f.RecoverableHP <= 0 or f.State == "KO" then
 		return 0
 	end
-	local restored = math.min(f.RecoverableHP, dealt * Settings.Health.Rally.ReturnRatio)
+	local restored = math.min(f.RecoverableHP, dealt * Settings.Health.Rally.ReturnRatio * f.RallyScale)
 	f.RecoverableHP -= restored
 	f.ActiveHP += restored
 	clampLayers(f)
@@ -691,6 +713,7 @@ local function expire(f: Fighter, now: number, events: { Event }?)
 end
 
 local function regenerate(f: Fighter, now: number, dt: number)
+	if f.State ~= "KO" then f.Qi = math.min(f.MaxQi, f.Qi + Settings.Qi.PassiveRegen * dt) end
 	if f.State == "KO" then
 		return
 	end
@@ -767,6 +790,10 @@ end
 
 -- Advances timers, state expiry and passive regeneration by one tick ending at `now`.
 function Rules.step(f: Fighter, now: number, dt: number, events: { Event }?)
+ if f.BurnUntil>now-dt and f.State~="KO" then
+  local dealt=Rules.applyDamage(f,f.BurnRate*math.min(dt,math.max(0,f.BurnUntil-(now-dt))),"Chip",now)
+  if f.ActiveHP<=0 then clearMove(f);enter(f,"KO",now);emit(f,events,"KO",f.BurnSource,f.Id,dealt) end
+ end
 	for _ = 1, 4 do
 		if now < f.StateEnd then
 			break
@@ -917,6 +944,7 @@ end
 
 -- 6. Evasion with backdash decay: rapid Roll/Dash spam shortens distance and i-frames.
 function Rules.tryDash(f: Fighter, kind: "Roll" | "Dash", now: number, dirX: number, dirZ: number, events: { Event }?): (DashGrant?, string)
+	if f.RootUntil > now then return nil, "Rooted" end
 	local ok, reason = Schema.canAct(f.State, kind, f.Stamina, f.Posture, Rules.context(f, now))
 	if not ok then
 		return nil, reason
@@ -1026,7 +1054,10 @@ function Rules.applyArea(source: Fighter, target: Fighter, now: number, damage: 
 	end
 	if not unblockable and facing and Rules.isDeflectTimed(target, now) then
 		Rules.addPosture(target, posture * Settings.Posture.DeflectSelfScale, now, events, source.Id, true)
-		emit(target, events, "DeflectSpark", target.Id, source.Id, 0)
+		target.Qi = math.min(target.MaxQi, target.Qi + Settings.Qi.GainOnDeflect)
+		local reflect = weaponOf(target).PostureReflect or 0
+		if reflect > 0 then Rules.addPosture(source,posture*reflect,now,events,target.Id) end
+	emit(target, events, "DeflectSpark", target.Id, source.Id, 0)
 		return "Deflected"
 	end
 	if not unblockable and facing and (target.State == "Blocking" or target.State == "Blockstun") then
@@ -1064,6 +1095,24 @@ function Rules.applyArea(source: Fighter, target: Fighter, now: number, damage: 
 	return "Hit"
 end
 
+-- Boss perilous contracts use the same damage, posture and event pipeline as all combat.
+function Rules.applyBossAttack(source: Fighter, target: Fighter, now: number, damage: number, posture: number, kind: string, facing: boolean, events: { Event }?): HitOutcome
+	if kind == "PerilousThrust" and facing and target.State == "Deflecting" then
+		local delta = now - target.DeflectPressedAt
+		if delta >= 0 and delta <= 0.1 + 1e-9 and not Rules.isInvulnerable(target, now) then
+			Rules.addPosture(source, posture * 2.5, now, events, target.Id)
+			Rules.addPosture(target, posture * Settings.Posture.DeflectSelfScale, now, events, source.Id, true)
+			target.Qi = math.min(target.MaxQi, target.Qi + Settings.Qi.GainOnDeflect)
+			emit(target, events, "DeflectSpark", target.Id, source.Id, posture * 2.5)
+			return "Deflected"
+		end
+	end
+	local unblockable = kind ~= "Barrage" and kind ~= "ShieldCharge"
+	local result = Rules.applyArea(source, target, now, damage, posture, unblockable, facing, events)
+	if kind == "PerilousGrab" and result == "Hit" then Rules.cinematic(target, now, 1.2) end
+	return result
+end
+
 -------------------------------------------------------------------------------------------------
 -- 3. StanceBreak & Deathblow
 -------------------------------------------------------------------------------------------------
@@ -1089,14 +1138,14 @@ function Rules.executeDeathblow(attacker: Fighter, victim: Fighter, now: number,
 	enter(victim, "DeathblowVictim", now, Settings.Stun.DeathblowVictim)
 	attacker.DeathblowPartner = victim.Id
 	victim.DeathblowPartner = attacker.Id
-	local damage = math.max(deathblow.MinimumDamage, victim.MaxHP * deathblow.DamageFraction)
+	local damage = math.max(deathblow.MinimumDamage, victim.MaxHP * deathblow.DamageFraction) * (if attacker.SignatureFinisher then 1.2 else 1)
 	local dealt = Rules.applyDamage(victim, damage, "Deathblow", now)
 	if deathblow.ClearsPosture then
 		victim.Posture = 0
 		attacker.Posture = 0
 	end
 	victim.PendingKO = victim.ActiveHP <= 0
-	attacker.Qi = math.min(Settings.Qi.Max, attacker.Qi + Settings.Qi.GainOnDeathblow)
+	attacker.Qi = math.min(attacker.MaxQi, attacker.Qi + Settings.Qi.GainOnDeathblow)
 	attacker.DashChain = 0
 	Rules.rally(attacker, dealt, now, events, victim.Id)
 	emit(attacker, events, "Deathblow", attacker.Id, victim.Id, dealt)
@@ -1139,9 +1188,10 @@ function Rules.resolveHit(attacker: Fighter, defender: Fighter, now: number, hit
 	-- 2. Perfect deflect: negate damage, heavy posture onto the attacker, spark.
 	if hit.Facing and move.Deflectable and Rules.isDeflectTimed(defender, now) then
 		local outcome = Weapons.deflectOutcome(move, attackerWeapon, defenderWeapon)
-		local reflected = math.max(outcome.AttackerPosture, Settings.Posture.DeflectMinimumReflect)
+		local bonus = Weapons.postureDamage(move,attackerWeapon)*(defenderWeapon.PostureReflect or 0)
+		local reflected = math.max(outcome.AttackerPosture-bonus, Settings.Posture.DeflectMinimumReflect)+bonus
 		Rules.addPosture(defender, outcome.DefenderPosture, now, events, attacker.Id, true)
-		defender.Qi = math.min(Settings.Qi.Max, defender.Qi + Settings.Qi.GainOnDeflect)
+		defender.Qi = math.min(defender.MaxQi, defender.Qi + Settings.Qi.GainOnDeflect)
 		defender.DeflectChain = 0
 		defender.LastDeflectPress = -NEVER
 		if now <= defender.RallyUntil and defender.RecoverableHP > 0 then
@@ -1166,16 +1216,17 @@ function Rules.resolveHit(attacker: Fighter, defender: Fighter, now: number, hit
 		local outcome = Weapons.blockOutcome(move, attackerWeapon, defenderWeapon, defender.Stamina)
 		local cost = if defender.State == "Deflecting" then Settings.Stamina.Costs.DeflectMiss else outcome.DefenderStamina
 		local depleted = Rules.spendStamina(defender, cost, now)
-		local chip = Rules.applyDamage(defender, outcome.DefenderChip, "Chip", now)
+		local pierce=move.BaseDamage*Rules.damageScale(attacker,move)*attacker.GuardPierce
+  local chip = Rules.applyDamage(defender, outcome.DefenderChip+pierce, "Chip", now)
 		Rules.rally(attacker, chip, now, events, defender.Id)
-		attacker.Qi = math.min(Settings.Qi.Max, attacker.Qi + Settings.Qi.GainOnHit * 0.5)
+		attacker.Qi = math.min(attacker.MaxQi, attacker.Qi + Settings.Qi.GainOnHit * 0.5)
 		if defender.ActiveHP <= 0 then
 			clearMove(defender)
 			enter(defender, "KO", now)
 			emit(defender, events, "KO", attacker.Id, defender.Id, chip)
 			return "KO"
 		end
-		if Rules.addPosture(defender, outcome.DefenderPosture, now, events, attacker.Id) then
+		if Rules.addPosture(defender, outcome.DefenderPosture+attacker.InfusionStun, now, events, attacker.Id) then
 			return "Blocked"
 		end
 		if depleted or outcome.GuardBreak then
@@ -1205,11 +1256,15 @@ function Rules.resolveHit(attacker: Fighter, defender: Fighter, now: number, hit
 		or defender.PoiseArmor >= poiseThreshold
 	local counter = defender.State == "Startup" and not armored
 	local counterScale = Settings.Counter
-	local damage = Schema.damage(move.BaseDamage, Rules.armTier(attacker)) * Rules.damageScale(attacker, move) * (if counter then counterScale.HitMultiplier else 1)
+	local critical = if hit.Facing then 1 else (attackerWeapon.CriticalMultiplier or 1.5)
+	local damage = critical * Schema.damage(move.BaseDamage, Rules.armTier(attacker)) * Rules.damageScale(attacker, move) * (if counter then counterScale.HitMultiplier else 1)
 	local category: DamageCategory = move.Kind
 	local dealt = Rules.applyDamage(defender, damage, category, now)
+ if dealt>0 and attacker.InfusionBurn>0 then
+  defender.BurnRate=attacker.InfusionBurn;defender.BurnUntil=now+4;defender.BurnSource=attacker.Id
+ end
 	Rules.rally(attacker, dealt, now, events, defender.Id)
-	attacker.Qi = math.min(Settings.Qi.Max, attacker.Qi + Settings.Qi.GainOnHit)
+	attacker.Qi = math.min(attacker.MaxQi, attacker.Qi + Settings.Qi.GainOnHit)
 	attacker.DashChain = 0
 
 	-- Bleed accumulation and proc.
@@ -1246,8 +1301,9 @@ function Rules.resolveHit(attacker: Fighter, defender: Fighter, now: number, hit
 		return if counter then "CounterHit" else "Hit"
 	end
 
-	local posture = Weapons.postureDamage(move, attackerWeapon) * Settings.Posture.HitScale * (if counter then counterScale.PostureMultiplier else 1)
+	local posture = attacker.InfusionStun + Weapons.postureDamage(move, attackerWeapon) * Settings.Posture.HitScale * (if counter then counterScale.PostureMultiplier else 1)
 		* (1 - defender.PoiseArmor * poise.PostureReduction)
+	posture += hit.PostureBonus or 0
 	if Rules.addPosture(defender, posture, now, events, attacker.Id) then
 		return if counter then "CounterHit" else "Hit"
 	end
@@ -1262,7 +1318,7 @@ function Rules.resolveHit(attacker: Fighter, defender: Fighter, now: number, hit
 	end
 	clearMove(defender)
 	defender.Sprinting = false
-	enter(defender, "Hitstun", now, hitstunFor(move))
+	enter(defender, "Hitstun", now, hitstunFor(move)+(if attacker.InfusionStun>0 then 0.15 else 0))
 	return if counter then "CounterHit" else "Hit"
 end
 
@@ -1329,7 +1385,7 @@ export type Snapshot = {
 }
 
 Rules.PACKET_SIZE = 58
-Rules.PACKET_VERSION = 2
+Rules.PACKET_VERSION = 3
 local HP_SCALE = 40
 
 local STATE_INDEX: { [string]: number } = {}
@@ -1337,7 +1393,7 @@ for index, name in Schema.StateList do
 	STATE_INDEX[name] = index
 end
 local WEAPON_INDEX: { [string]: number } = {}
-for index, name in Weapons.WeaponTypes do
+for index, name in Weapons.WeaponKeys do
 	WEAPON_INDEX[name] = index
 end
 local MOVE_LIST: { string } = {}
@@ -1426,7 +1482,7 @@ function Rules.unpack(b: buffer): Snapshot?
 		return nil
 	end
 	local state = Schema.StateList[buffer.readu8(b, 1)]
-	local weapon = Weapons.WeaponTypes[buffer.readu8(b, 2)]
+	local weapon = Weapons.WeaponKeys[buffer.readu8(b, 2)]
 	if state == nil or weapon == nil then
 		return nil
 	end

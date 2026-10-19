@@ -135,11 +135,12 @@ local Settings = {
 
 	Qi = {
 		Max = 100,
-		Initial = 0,
-		GainOnHit = 6,
-		GainOnDeflect = 10,
+		Initial = 100,
+		GainOnHit = 8,
+		GainOnDeflect = 15,
 		GainOnDeathblow = 25,
 		DecayRate = 0,
+		PassiveRegen = 2,
 		ClearOnShrine = false,
 	},
 
@@ -219,6 +220,18 @@ local Settings = {
 	},
 
 	Movement = {
+		SlideBoost = 1.4,
+		SlideFriction = 14,
+		SlideMaxSpeed = 95,
+		SlideMinSpeed = 8,
+		SlideHipDrop = 0.6,
+		SlideGroundGrace = 0.16,
+		BulletSpeed = 75,
+		DoubleJumpUp = 50,
+		DoubleJumpForward = 25,
+		GlideFallSpeed = 6,
+		GlideDuration = 3.5,
+		GlideSteering = 4,
 		WalkSpeed = 16 * 1.4,
 		SprintSpeed = 24 * 1.4,
 		DashDistance = 14,

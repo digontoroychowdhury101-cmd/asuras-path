@@ -1,13 +1,9 @@
 --!strict
--- ModuleScript: ReplicatedStorage/AsurasPath/Shared/Objectives
--- Pure "what should I do next?" resolver for the HUD objective tracker. It reads only facts the
--- server already replicates to the owning player (region, kindled altars, bloodstain, boss/duel
--- flags) and returns presentation text plus a waypoint target. No authority lives here: the
--- server still validates every rest, travel and recovery.
 local Objectives = {}
 
 export type Facts = {
 	Region: string?,
+	Bosses: { [string]: boolean }?,
 	Altars: { [string]: boolean },
 	Bloodstain: Vector3?,
 	InBoss: boolean,
@@ -17,7 +13,6 @@ export type Facts = {
 	Rested: boolean,
 }
 
--- Target kinds the client knows how to locate in the world.
 export type Target = { Kind: "Altar", Id: string } | { Kind: "Portal" } | { Kind: "Point", Position: Vector3 }
 
 export type Objective = {
@@ -29,7 +24,6 @@ export type Objective = {
 
 type AltarInfo = { Id: string, Name: string, Region: string }
 
--- Story order of altars; the first unkindled one is the next destination.
 local ROUTE: { AltarInfo } = {
 	{ Id = "Altar_SanctuaryBonfire", Name = "Primal Bonfire", Region = "Sanctuary" },
 	{ Id = "Altar_MonasteryGate", Name = "Monastery Gate", Region = "DesecratedMonastery" },
@@ -39,7 +33,6 @@ local ROUTE: { AltarInfo } = {
 }
 Objectives.Route = ROUTE
 
--- Fog gate in front of Grandmaster Shen (WorldDefinitions.FogGates.Gate_AshColosseum.Outside).
 local BOSS_APPROACH = Vector3.new(0, 3, -1880)
 
 function Objectives.parseAltars(value: any): { [string]: boolean }
@@ -53,6 +46,8 @@ function Objectives.parseAltars(value: any): { [string]: boolean }
 end
 
 function Objectives.regionOf(altarId: string): string?
+	local expanded: { [string]: string } = { Altar_SanctuaryDepths = "SanctuaryDepths", Altar_CelestialPagoda = "CelestialPagoda", Altar_SkyCitadel = "SkyCitadel" }
+	if expanded[altarId] then return expanded[altarId] end
 	for _, altar in ROUTE do
 		if altar.Id == altarId then
 			return altar.Region
@@ -60,6 +55,16 @@ function Objectives.regionOf(altarId: string): string?
 	end
 	return nil
 end
+
+local ENCOUNTERS = {
+	{ Id = "TwinSentinels", Name = "The Twin Sentinels", Region = "DesecratedMonastery", Position = Vector3.new(300, 3, -822) },
+	{ Id = "VenerableBaize", Name = "Venerable Baize", Region = "BambooPass", Position = Vector3.new(0, 3, -1362) },
+	{ Id = "GrandmasterShen", Name = "Grandmaster Shen", Region = "AshColosseum", Position = BOSS_APPROACH },
+	{ Id = "SlumberingTitan", Name = "The Slumbering Titan", Region = "SanctuaryDepths", Position = Vector3.new(520, 3, 988) },
+	{ Id = "SovereignWu", Name = "Sovereign Wu", Region = "CelestialPagoda", Position = Vector3.new(0, 3, -2272) },
+	{ Id = "AzureWyrm", Name = "Azure Wyrm", Region = "SkyCitadel", Position = Vector3.new(0, 3, -2722) },
+}
+Objectives.Encounters = ENCOUNTERS
 
 function Objectives.resolve(facts: Facts): Objective?
 	if facts.InColosseum or facts.InBoss then
@@ -84,7 +89,7 @@ function Objectives.resolve(facts: Facts): Objective?
 		}
 	end
 	for _, altar in ROUTE do
-		if not facts.Altars[altar.Id] then
+		if not facts.Altars[altar.Id] and (not facts.Bosses or altar.Region == facts.Region or facts.Region == "Sanctuary" or facts.Region == nil) then
 			if altar.Region == "Sanctuary" then
 				return {
 					Key = altar.Id,
@@ -108,7 +113,21 @@ function Objectives.resolve(facts: Facts): Objective?
 			}
 		end
 	end
-	if not facts.BossFelled then
+	if facts.Bosses then
+		local nextBoss = nil
+		for _, boss in ENCOUNTERS do
+			if not facts.Bosses[boss.Id] then
+				nextBoss = nextBoss or boss
+				if boss.Region == facts.Region then nextBoss = boss; break end
+			end
+		end
+		if nextBoss then
+			local approach = nextBoss.Position
+			if nextBoss.Id == "SlumberingTitan" and facts.Region == "Sanctuary" then approach = Vector3.new(-35, 605, 900) end
+			return { Key = "Boss:" .. nextBoss.Id, Title = "Challenge " .. nextBoss.Name,
+				Detail = "Traverse the arena mist in " .. string.gsub(nextBoss.Region, "(%l)(%u)", "%1 %2"), Target = { Kind = "Point", Position = approach } }
+		end
+	elseif not facts.BossFelled then
 		return {
 			Key = "Boss",
 			Title = "Pass the fog gate",

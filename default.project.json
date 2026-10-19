@@ -193,6 +193,45 @@
           },
           "Objectives": {
             "$path": "src/shared/Objectives.luau"
+          },
+          "ArsenalCatalog": {
+            "$path": "src/shared/ArsenalCatalog.luau"
+          },
+          "ArsenalProtocol": {
+            "$path": "src/shared/ArsenalProtocol.luau"
+          },
+          "BossTypes": {
+            "$path": "src/shared/BossTypes.luau"
+          },
+          "BossEncounterRules": {
+            "$path": "src/shared/BossEncounterRules.luau"
+          },
+          "BossAttackCatalog": {
+            "$path": "src/shared/BossAttackCatalog.luau"
+          },
+          "BossRoster": {
+            "$path": "src/shared/BossRoster.luau"
+          },
+          "BossArmaments": {
+            "$path": "src/shared/BossArmaments.luau"
+          },
+          "ProgressionRules": {
+            "$path": "src/shared/ProgressionRules.luau"
+          },
+          "RPGInventory": {
+            "$path": "src/shared/RPGInventory.luau"
+          },
+          "RPGProfile": {
+            "$path": "src/shared/RPGProfile.luau"
+          },
+          "ArenaRules": {
+            "$path": "src/shared/ArenaRules.luau"
+          },
+          "NarrativeCatalog": {
+            "$path": "src/shared/NarrativeCatalog.luau"
+          },
+          "DialogueRules": {
+            "$path": "src/shared/DialogueRules.luau"
           }
         },
         "Simulation": {
@@ -214,6 +253,18 @@
           },
           "MatchmakingRules": {
             "$path": "src/simulation/MatchmakingRules.luau"
+          },
+          "WeaponExpansion": {
+            "$path": "src/simulation/WeaponExpansion.luau"
+          },
+          "SpellSchema": {
+            "$path": "src/simulation/SpellSchema.luau"
+          },
+          "SpellRules": {
+            "$path": "src/simulation/SpellRules.luau"
+          },
+          "ArsenalInventory": {
+            "$path": "src/simulation/ArsenalInventory.luau"
           }
         },
         "Net": {
@@ -228,6 +279,15 @@
             "$className": "RemoteEvent"
           },
           "ColosseumIntent": {
+            "$className": "RemoteEvent"
+          },
+          "ArsenalIntent": {
+            "$className": "RemoteEvent"
+          },
+          "DialogueIntent": {
+            "$className": "RemoteEvent"
+          },
+          "WagerIntent": {
             "$className": "RemoteEvent"
           }
         }
@@ -278,6 +338,36 @@
           "SanctuaryService": {
             "$path": "src/server/Services/SanctuaryService.luau"
           },
+          "MonasteryService": {
+            "$path": "src/server/Services/MonasteryService.luau"
+          },
+          "MonasteryKit": {
+            "$path": "src/server/Services/MonasteryKit.luau"
+          },
+          "MonasteryFx": {
+            "$path": "src/server/Services/MonasteryFx.luau"
+          },
+          "MonasteryGrounds": {
+            "$path": "src/server/Services/MonasteryGrounds.luau"
+          },
+          "MonasteryRuins": {
+            "$path": "src/server/Services/MonasteryRuins.luau"
+          },
+          "MonasteryHalls": {
+            "$path": "src/server/Services/MonasteryHalls.luau"
+          },
+          "MonasteryLandmarks": {
+            "$path": "src/server/Services/MonasteryLandmarks.luau"
+          },
+          "MonasteryAtmosphere": {
+            "$path": "src/server/Services/MonasteryAtmosphere.luau"
+          },
+          "MonasteryDressing": {
+            "$path": "src/server/Services/MonasteryDressing.luau"
+          },
+          "MonasterySurvey": {
+            "$path": "src/server/Services/MonasterySurvey.luau"
+          },
           "WorldService": {
             "$path": "src/server/Services/WorldService.luau"
           },
@@ -289,6 +379,75 @@
           },
           "SanctuaryDressing": {
             "$path": "src/server/Services/SanctuaryDressing.luau"
+          },
+          "SanctuaryLeaves": {
+            "$path": "src/server/Services/SanctuaryLeaves.luau"
+          },
+          "LootWorld": {
+            "$path": "src/server/Services/LootWorld.luau"
+          },
+          "LootService": {
+            "$path": "src/server/Services/LootService.luau"
+          },
+          "MagicService": {
+            "$path": "src/server/Services/MagicService.luau"
+          },
+          "SpellGeometry": {
+            "$path": "src/server/Services/SpellGeometry.luau"
+          },
+          "SpellEffects": {
+            "$path": "src/server/Services/SpellEffects.luau"
+          },
+          "WeaponEffects": {
+            "$path": "src/server/Services/WeaponEffects.luau"
+          },
+          "WeaponModels": {
+            "$path": "src/server/Services/WeaponModels.luau"
+          },
+          "BossMotion": {
+            "$path": "src/server/Services/BossMotion.luau"
+          },
+          "BossHazards": {
+            "$path": "src/server/Services/BossHazards.luau"
+          },
+          "BossAttackService": {
+            "$path": "src/server/Services/BossAttackService.luau"
+          },
+          "BossTactics": {
+            "$path": "src/server/Services/BossTactics.luau"
+          },
+          "BossDuo": {
+            "$path": "src/server/Services/BossDuo.luau"
+          },
+          "BossAppearance": {
+            "$path": "src/server/Services/BossAppearance.luau"
+          },
+          "BossArenas": {
+            "$path": "src/server/Services/BossArenas.luau"
+          },
+          "ProfileBridge": {
+            "$path": "src/server/ProfileBridge.luau"
+          },
+          "ForgeService": {
+            "$path": "src/server/ForgeService.luau"
+          },
+          "NarrativeWorld": {
+            "$path": "src/server/Services/NarrativeWorld.luau"
+          },
+          "DialogueActions": {
+            "$path": "src/server/Services/DialogueActions.luau"
+          },
+          "DialogueService": {
+            "$path": "src/server/Services/DialogueService.luau"
+          },
+          "WagerLedger": {
+            "$path": "src/server/Services/WagerLedger.luau"
+          },
+          "WagerWorld": {
+            "$path": "src/server/Services/WagerWorld.luau"
+          },
+          "WagerService": {
+            "$path": "src/server/Services/WagerService.luau"
           }
         }
       }
@@ -319,6 +478,15 @@
             "InputController": {
               "$path": "src/client/Controllers/InputController.luau"
             },
+            "MovementController": {
+              "$path": "src/client/Controllers/MovementController.luau"
+            },
+            "MovementMath": {
+              "$path": "src/client/Controllers/MovementMath.luau"
+            },
+            "MovementEffects": {
+              "$path": "src/client/Controllers/MovementEffects.luau"
+            },
             "GameFeelController": {
               "$path": "src/client/Controllers/GameFeelController.luau"
             },
@@ -342,6 +510,57 @@
             },
             "PrologueController": {
               "$path": "src/client/Controllers/PrologueController.luau"
+            },
+            "SpellController": {
+              "$path": "src/client/Controllers/SpellController.luau"
+            },
+            "SpellHud": {
+              "$path": "src/client/Controllers/SpellHud.luau"
+            },
+            "SpellVfx": {
+              "$path": "src/client/Controllers/SpellVfx.luau"
+            },
+            "ArsenalPanel": {
+              "$path": "src/client/Controllers/ArsenalPanel.luau"
+            },
+            "ArsenalTabs": {
+              "$path": "src/client/Controllers/ArsenalTabs.luau"
+            },
+            "UiKit": {
+              "$path": "src/client/Controllers/UiKit.luau"
+            },
+            "UiWindow": {
+              "$path": "src/client/Controllers/UiWindow.luau"
+            },
+            "PauseMenu": {
+              "$path": "src/client/Controllers/PauseMenu.luau"
+            },
+            "BossHud": {
+              "$path": "src/client/Controllers/BossHud.luau"
+            },
+            "BossMusic": {
+              "$path": "src/client/Controllers/BossMusic.luau"
+            },
+            "BossCinematics": {
+              "$path": "src/client/Controllers/BossCinematics.luau"
+            },
+            "BossEffects": {
+              "$path": "src/client/Controllers/BossEffects.luau"
+            },
+            "BossAnimations": {
+              "$path": "src/client/Controllers/BossAnimations.luau"
+            },
+            "DialogueView": {
+              "$path": "src/client/Controllers/DialogueView.luau"
+            },
+            "DialogueController": {
+              "$path": "src/client/Controllers/DialogueController.luau"
+            },
+            "WagerController": {
+              "$path": "src/client/Controllers/WagerController.luau"
+            },
+            "MasteryEffects": {
+              "$path": "src/client/Controllers/MasteryEffects.luau"
             }
           }
         }

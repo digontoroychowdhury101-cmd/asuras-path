@@ -1,21 +1,23 @@
 --!strict
 -- ModuleScript: ServerScriptService/AsurasPath/Services/SanctuaryDressing
 -- Places the uploaded PBR set pieces (ServerStorage.AsuraAssets, see assets/ASSET_IDS.md) into the
--- procedurally built Sanctuary: the veiled Gothic colossus on the dais, pale roots clutching the
--- plinth, the weeping dead tree shedding crimson petals, and iron gates flanking the Ascension
--- portal. Textures come from each MeshPart's SurfaceAppearance, so materials are never overridden.
--- Every call degrades gracefully (returns false) if the asset folder is missing; callers go
--- through Dressing.try so a cosmetic failure can never stop the server from booting.
+-- procedurally built Sanctuary: the Veiled Ascetic colossus (roots and canopy grown into one model,
+-- tools/blender/build_titan.py), crimson leaves shed from her canopy, and iron gates flanking the
+-- Ascension portal. Older Gothic-statue / loose-roots / dead-tree pieces remain as a fallback.
+-- Textures come from each MeshPart's SurfaceAppearance, so materials are never overridden.
+-- Calls return false if the asset folder is missing; Dressing.try pcall-wraps them for boot safety.
 local ServerStorage = game:GetService("ServerStorage")
+local Leaves = require(script.Parent:WaitForChild("SanctuaryLeaves") :: ModuleScript)
 
 local Dressing = {}
 
 local COLOSSUS_HEIGHT = 48 -- fits between the arch pillars (inner edges at +/-21 studs)
-local COLOSSUS_YAW = 180 -- the Poly Haven mesh faces its +Z; the dais anchor looks down -Z
+local TITAN_HEIGHT = 62 -- Veiled Ascetic incl. canopy; the canopy tops out under the arch span
+local ROOT_SINK = 2
+local COLOSSUS_YAW = 180 -- both meshes face their +Z; the dais anchor looks down -Z
 local ROOT_LENGTH = 26
 local TREE_HEIGHT = 26
 local GATE_HEIGHT = 13
-local PETAL = Color3.fromRGB(150, 18, 28)
 
 function Dressing.try(label: string, fn: (...any) -> boolean, ...: any): boolean
 	local ok, placed = pcall(fn, ...)
@@ -52,23 +54,41 @@ local function scaleTo(model: Model, axis: "X" | "Y" | "Z", target: number)
 	end
 end
 
+local unified = false -- true once the Veiled Ascetic is mounted; Roots/SacredTree then add nothing
+
 function Dressing.Colossus(parent: Instance, anchor: CFrame, proxy: Instance?): boolean
-	local statue = asset("AsuraColossusStatue")
+	local statue = asset("AsuraVeiledTitan")
+	unified = statue ~= nil
+	statue = statue or asset("AsuraColossusStatue")
 	if not statue then
 		return false
 	end
-	scaleTo(statue, "Y", COLOSSUS_HEIGHT)
+	scaleTo(statue, "Y", if unified then TITAN_HEIGHT else COLOSSUS_HEIGHT)
 	settle(statue, true)
-	statue:PivotTo(anchor * CFrame.Angles(0, math.rad(COLOSSUS_YAW), 0))
-	statue.Parent = parent
-	if proxy then
-		proxy:Destroy()
+	-- Only the stone body collides; leaves and canopy are pass-through scenery.
+	for _, name in { "Titan_Leaves", "Titan_Canopy" } do
+		local p = statue:FindFirstChild(name, true)
+		if p and p:IsA("BasePart") then
+			p.CanCollide, p.CanQuery = false, false
+		end
 	end
+	statue:PivotTo(anchor * CFrame.Angles(0, math.rad(COLOSSUS_YAW), 0))
+	if unified then -- rest the robe on the dais (ground roots sink ~ROOT_SINK below it)
+		local box, size = statue:GetBoundingBox()
+		statue:PivotTo(statue:GetPivot() + Vector3.yAxis * (anchor.Position.Y - box.Position.Y + size.Y * 0.5 - ROOT_SINK))
+	end
+	statue.Parent = parent
+	local canopy = statue:FindFirstChild("Titan_Canopy", true)
+	if canopy and canopy:IsA("BasePart") then
+		Leaves.Emitter(canopy, { Rate = 18, Size = 1.1 })
+	end
+	if proxy then proxy:Destroy() end
 	return true
 end
 
 -- Roots radiate from the plinth like they grew out of the stone: tilted, half-sunk, varied.
 function Dressing.Roots(parent: Instance, base: CFrame): boolean
+	if unified then return true end -- roots are grown onto the Veiled Ascetic itself
 	local template = asset("AsuraRoots")
 	if not template then
 		return false
@@ -85,28 +105,9 @@ function Dressing.Roots(parent: Instance, base: CFrame): boolean
 	return true
 end
 
-local function petals(source: BasePart)
-	local emitter = Instance.new("ParticleEmitter")
-	emitter.Name = "CrimsonPetals"
-	emitter.Texture = "rbxasset://textures/particles/sparkles_main.dds"
-	emitter.Color = ColorSequence.new(PETAL, Color3.fromRGB(90, 10, 16))
-	emitter.LightEmission = 0
-	emitter.LightInfluence = 1
-	emitter.Size = NumberSequence.new({ NumberSequenceKeypoint.new(0, 0.35), NumberSequenceKeypoint.new(1, 0.2) })
-	emitter.Transparency = NumberSequence.new({ NumberSequenceKeypoint.new(0, 1), NumberSequenceKeypoint.new(0.15, 0.1), NumberSequenceKeypoint.new(0.85, 0.2), NumberSequenceKeypoint.new(1, 1) })
-	emitter.Lifetime = NumberRange.new(7, 11)
-	emitter.Rate = 9
-	emitter.Speed = NumberRange.new(0.6, 1.6)
-	emitter.SpreadAngle = Vector2.new(180, 180)
-	emitter.Acceleration = Vector3.new(0.9, -1.1, 0.4)
-	emitter.Rotation = NumberRange.new(0, 360)
-	emitter.RotSpeed = NumberRange.new(-90, 90)
-	emitter.Drag = 0.6
-	emitter.Parent = source
-end
-
 -- The fallen trunk stands upright as the dead sacred tree; its crown sheds crimson petals.
 function Dressing.SacredTree(parent: Instance, base: CFrame): boolean
+	if unified then return true end -- the canopy over her head is the sacred tree
 	local tree = asset("AsuraDeadTrunk")
 	if not tree then
 		return false
@@ -124,7 +125,7 @@ function Dressing.SacredTree(parent: Instance, base: CFrame): boolean
 	crown.Size = Vector3.new(16, 4, 16)
 	crown.CFrame = base * CFrame.new(0, TREE_HEIGHT - 4, 0)
 	crown.Parent = parent
-	petals(crown)
+	Leaves.Emitter(crown)
 	return true
 end
 

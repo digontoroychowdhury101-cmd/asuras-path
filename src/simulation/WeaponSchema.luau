@@ -5,16 +5,21 @@
 local hasScript = pcall(function()
 	return script.Parent
 end)
-local Settings: any, Tempo: any
+local Settings: any, Tempo: any, Expansion: any
 if hasScript then
-	Settings = require(script.Parent.Parent.Shared.CombatSettings)
-	Tempo = require(script.Parent.Tempo)
+	local simFolder = script.Parent :: Instance
+	local asuraFolder = simFolder.Parent
+	local sharedFolder = if asuraFolder then asuraFolder:WaitForChild("Shared") else nil
+	Settings = if sharedFolder then require(sharedFolder:WaitForChild("CombatSettings") :: ModuleScript) else require(script.Parent.Parent.Shared.CombatSettings)
+	Tempo = require(simFolder:WaitForChild("Tempo") :: ModuleScript)
+	Expansion = require(simFolder:WaitForChild("WeaponExpansion") :: ModuleScript)
 else
 	Settings = require("../shared/CombatSettings")
 	Tempo = require("./Tempo")
+	Expansion = require("./WeaponExpansion")
 end
 
-export type WeaponType = "Unarmed" | "Jian" | "Dao" | "Guandao"
+export type WeaponType = "Unarmed" | "Jian" | "Dao" | "Guandao" | "Odachi" | "TwinDaggers" | "ChainScythe" | "WarFan" | "Catalyst" | "PrayerOfTheDefiled" | "CalamityBoneCleaver" | "HeavenPiercingGuandao"
 export type Grip = "Fist" | "OneHanded" | "TwoHanded"
 export type MoveKind = "Light" | "Heavy" | "RunningAttack" | "WeaponArt"
 export type DamageType = "Blunt" | "Slash" | "Pierce"
@@ -61,11 +66,13 @@ export type MoveSpec = {
 	DamageType: DamageType,
 	Trauma: Trauma,
 	Animation: string,
+	Effect: string?,
 }
 
 export type Move = MoveSpec & { Timing: Timing }
 
 export type WeaponSpec = {
+	Stance: string?, WeightClass: string?, CriticalMultiplier: number?, SpellPotency: number?, QuickCast: boolean?, ProjectileParry: boolean?, PostureReflect: number?,
 	Id: string,
 	Type: WeaponType,
 	Name: string,
@@ -85,6 +92,7 @@ export type WeaponSpec = {
 }
 
 export type Weapon = {
+	Stance: string?, WeightClass: string?, CriticalMultiplier: number?, SpellPotency: number?, QuickCast: boolean?, ProjectileParry: boolean?, PostureReflect: number?,
 	Id: string,
 	Type: WeaponType,
 	Name: string,
@@ -109,7 +117,7 @@ export type BlockOutcome = { DefenderPosture: number, DefenderChip: number, Defe
 
 local Schema = {}
 
-Schema.WeaponTypes = table.freeze({ "Unarmed", "Jian", "Dao", "Guandao" } :: { WeaponType })
+Schema.WeaponTypes = table.freeze({ "Unarmed", "Jian", "Dao", "Guandao", "Odachi", "TwinDaggers", "ChainScythe", "WarFan", "Catalyst" } :: { WeaponType })
 Schema.MoveKinds = table.freeze({ "Light", "Heavy", "RunningAttack", "WeaponArt" } :: { MoveKind })
 
 local function trauma(head: number, torso: number, arms: number, legs: number): Trauma
@@ -197,6 +205,9 @@ end
 
 function Schema.validateWeapon(spec: WeaponSpec)
 	local id = tostring(spec.Id)
+	check(spec.CriticalMultiplier == nil or inRange(spec.CriticalMultiplier,1,4), id .. " invalid critical multiplier")
+	check(spec.SpellPotency == nil or inRange(spec.SpellPotency,1,1.5), id .. " invalid spell potency")
+	check(spec.PostureReflect == nil or inRange(spec.PostureReflect,0,0.25), id .. " invalid posture reflection")
 	check(type(spec.Id) == "string" and #spec.Id > 0, "weapon requires Id")
 	check(table.find(Schema.WeaponTypes, spec.Type) ~= nil, id .. " unknown Type")
 	check(spec.Grip == "Fist" or spec.Grip == "OneHanded" or spec.Grip == "TwoHanded", id .. " unknown Grip")
@@ -266,6 +277,9 @@ function Schema.build(spec: WeaponSpec): Weapon
 		RunningAttack = running,
 		WeaponArt = art,
 		Moves = moves,
+		Stance = spec.Stance or "Balanced", WeightClass = spec.WeightClass or "Medium",
+		CriticalMultiplier = spec.CriticalMultiplier or 1.5, SpellPotency = spec.SpellPotency or 1,
+		QuickCast = spec.QuickCast or false, ProjectileParry = spec.ProjectileParry or false, PostureReflect = spec.PostureReflect or 0,
 	}
 	table.freeze(weapon :: any)
 	return weapon
@@ -561,6 +575,12 @@ local WEAPONS: { [WeaponType]: Weapon } = {
 	Dao = Schema.build(DAO),
 	Guandao = Schema.build(GUANDAO),
 }
+local keys: {WeaponType} = table.clone(Schema.WeaponTypes)
+for _, spec in Expansion.specs() do
+	WEAPONS[spec.Id] = Schema.build(spec)
+	if not table.find(keys, spec.Id) then table.insert(keys, spec.Id) end
+end
+Schema.WeaponKeys = table.freeze(keys)
 local BY_ID: { [string]: Weapon } = {}
 for _, weapon in WEAPONS do
 	assert(BY_ID[weapon.Id] == nil, "Duplicate weapon id " .. weapon.Id)
@@ -622,7 +642,7 @@ function Schema.deflectOutcome(move: Move, attacker: Weapon, defender: Weapon): 
 	local posture = Schema.postureDamage(move, attacker)
 	local p = Settings.Posture
 	local outcome: DeflectOutcome = {
-		AttackerPosture = posture * move.DeflectVulnerability * defender.DeflectEfficiency * p.DeflectReflectScale,
+		AttackerPosture = posture * move.DeflectVulnerability * defender.DeflectEfficiency * p.DeflectReflectScale + posture * (defender.PostureReflect or 0),
 		DefenderPosture = posture * p.DeflectSelfScale / defender.DeflectEfficiency,
 		DefenderStamina = Settings.Stamina.Costs.DeflectSuccess,
 	}

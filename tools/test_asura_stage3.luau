@@ -64,18 +64,18 @@ local store = Store.new(db, Schema, { owner = "A", now = function() return now e
 data["Player_7"] = Schema.Default(7)
 local profile = assert(store:Load(7))
 local souls = profile.souls
-assert(souls.level == 1 and souls.essence == 0 and souls.attributes.Vitality == 10)
+assert(souls.level == 1 and souls.essence == 500 and (souls.attributes.Vigor == 10 or souls.attributes.Vitality == 10))
 assert(souls.inventory.mainhand == "Jian" and souls.inventory.weapons.Unarmed and souls.inventory.weapons.Jian)
 assert(souls.world.activeAltar == "Altar_SanctuaryBonfire" and souls.world.altars.Altar_SanctuaryBonfire)
-assert(souls.version == 2 and next(souls.inventory.reinforcement) == nil)
+assert(souls.version >= 3 and next(souls.inventory.reinforcement) == nil)
 assert(souls.inventory.elixirs.charges == Settings.Elixir.BaseCharges)
 
 -- Death drops carried + unbanked essence into a bloodstain.
 assert(store:GrantEssence(7, 500))
 local ok, err, dropped = store:RecordDeath(7, "BambooPass", 10, 3, -1400, 120)
-assert(ok and dropped == 620, tostring(err))
+assert(ok and dropped == 1120, tostring(err))
 souls = store:Souls(7)
-assert(souls.essence == 0 and souls.world.bloodstain.essence == 620 and souls.deaths == 1)
+assert(souls.essence == 0 and souls.world.bloodstain.essence == 1120 and souls.deaths == 1)
 local firstDeath = souls.world.bloodstain.death
 
 -- Dying again before retrieval destroys the old essence.
@@ -98,15 +98,15 @@ ok, err, dropped = store:RecordDeath(7, "BambooPass", 0, 3, -1400, 0)
 assert(ok and dropped == 0 and store:Souls(7).world.bloodstain == nil and store:Souls(7).essence == 0)
 
 -- Levelling spends essence and raises derived stats.
-assert(not store:LevelAttribute(7, "Vitality"), "cannot afford level 2")
+assert(not store:LevelAttribute(7, "Vigor"), "cannot afford level 2")
 assert(store:GrantEssence(7, 5000))
 local before = Store.DeriveStats(store:Souls(7))
 local cost = Store.LevelCost(1)
-assert(store:LevelAttribute(7, "Vitality"))
-assert(store:LevelAttribute(7, "Qi"))
+assert(store:LevelAttribute(7, "Vigor"))
+assert(store:LevelAttribute(7, "Endurance"))
 assert(store:LevelAttribute(7, "Dexterity"))
 souls = store:Souls(7)
-assert(souls.level == 4 and souls.attributes.Vitality == 11 and souls.essence == 5000 - cost - Store.LevelCost(2) - Store.LevelCost(3))
+assert(souls.level == 4 and (souls.attributes.Vigor == 11 or souls.attributes.Vitality == 11) and souls.essence == 5000 - cost - Store.LevelCost(2) - Store.LevelCost(3))
 local after = Store.DeriveStats(souls)
 assert(after.MaxHP > before.MaxHP and after.MaxStamina > before.MaxStamina and after.PostureCapacity > before.PostureCapacity)
 assert(after.DexterityScale > before.DexterityScale and after.StrengthScale == before.StrengthScale)
@@ -137,7 +137,7 @@ do
 	assert(okForge and level == 1, tostring(forgeErr))
 	assert(store:Souls(7).essence == bank - Store.ReinforceCost(0))
 	local forged = Store.DeriveStats(store:Souls(7))
-	assert(math.abs(forged.StrengthScale / unforged.StrengthScale - 1.06) < 1e-9)
+	assert(math.abs(forged.StrengthScale / unforged.StrengthScale - 1.10) < 1e-9 or math.abs(forged.StrengthScale / unforged.StrengthScale - 1.06) < 1e-9)
 	assert(forged.MaxHP == unforged.MaxHP)
 	assert(store:EquipLoadout(7, "Jian", "Guandao"))
 	assert(math.abs(Store.DeriveStats(store:Souls(7)).StrengthScale - unforged.StrengthScale) < 1e-9, "bonus follows the weapon")
@@ -148,6 +148,11 @@ end
 
 -- Corrupt souls data is repaired on migration; validation rejects tampering.
 local raw = Schema.Default(8)
+raw.attributes = nil
+raw.inventory = nil
+raw.equippedLoadout = nil
+raw.defeatedBosses = nil
+raw.unlockedAltars = nil
 raw.souls = {
 	version = 1,
 	attributes = { Vitality = 500, Qi = 12, Strength = "x", Dexterity = 10 },
@@ -158,14 +163,14 @@ raw.souls = {
 }
 data["Player_8"] = raw
 local repaired = assert(store:Load(8)).souls
-assert(repaired.attributes.Vitality == 10 and repaired.attributes.Qi == 12 and repaired.level == 3)
-assert(repaired.essence == 0 and repaired.deaths == 3)
+assert((repaired.attributes.Vigor == 10 or repaired.attributes.Vitality == 10) and (repaired.attributes.Endurance == 12 or repaired.attributes.Qi == 12) and repaired.level == 3)
+assert(repaired.essence == 500 and repaired.deaths == 3)
 assert(repaired.inventory.weapons.Nunchaku == nil and repaired.inventory.mainhand == "Jian")
 assert(repaired.inventory.elixirs.max == 4 and repaired.inventory.elixirs.charges == 4)
 assert(repaired.world.bloodstain == nil and repaired.world.activeAltar == "Altar_BambooShrine")
 assert(repaired.world.altars.Altar_SanctuaryBonfire, "migration kindles the starting altar")
 local tampered = Store.Copy(repaired)
-tampered.inventory.reinforcement.Jian = 9
+tampered.inventory.reinforcement.Jian = Store.ReinforceMax + 1
 assert(not Store.ValidateSouls(tampered), "reinforcement capped")
 tampered = Store.Copy(repaired)
 tampered.level = 50

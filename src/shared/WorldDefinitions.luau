@@ -3,11 +3,24 @@
 -- Story Mode world manifest. Engine-free data (plain numbers, yaw in degrees) so the manifest is
 -- validated identically by the server, the client and the local Luau runner.
 
+local hasScript = pcall(function() return script.Parent end)
+local Roster: any
+if hasScript then Roster = require(script.Parent.BossRoster) else Roster = require("./BossRoster") end
+
+type AttackKind = "PerilousSweep" | "PerilousThrust" | "PerilousGrab" | "Shockwave" | "Barrage" | "Gravity" | "Ritual" | "Leap" | "Breath" | "Tail" | "ShieldCharge"
+type Motion = "Pillar" | "Aerial" | "Lunge" | "Teleport"
+export type BossAttack = {
+	Id: string, Kind: AttackKind, Windup: number, Radius: number, Damage: number, Posture: number,
+	Height: number?, Speed: number?, Repeats: number?, Interval: number?, Duration: number?,
+	Count: number?, Motion: Motion?, Element: string?, Unblockable: boolean?,
+}
+type GapCloser = { Range: number, Delay: number, Cooldown: number, Motion: Motion }
+
 export type Vec3 = { X: number, Y: number, Z: number }
 export type Placement = { X: number, Y: number, Z: number, Yaw: number }
 export type Bounds = { Center: Vec3, Size: Vec3 }
-export type RegionId = "Sanctuary" | "DesecratedMonastery" | "BambooPass" | "AshColosseum"
-export type WeaponType = "Unarmed" | "Jian" | "Dao" | "Guandao"
+export type RegionId = "Sanctuary" | "DesecratedMonastery" | "BambooPass" | "AshColosseum" | "SanctuaryDepths" | "CelestialPagoda" | "SkyCitadel"
+export type WeaponType = "Unarmed" | "Jian" | "Dao" | "Guandao" | "Catalyst" | "PrayerOfTheDefiled" | "CalamityBoneCleaver" | "HeavenPiercingGuandao"
 
 export type Stats = {
 	MaxHP: number?,
@@ -90,6 +103,10 @@ export type Shockwave = {
 }
 
 export type BossPhase = {
+	Attacks: { BossAttack }?,
+	AttackInterval: number?,
+	AnimationSet: string?,
+	GapCloser: GapCloser?,
 	Index: number,
 	Name: string,
 	Weapon: WeaponType,
@@ -104,6 +121,8 @@ export type BossPhase = {
 }
 
 export type BossDef = {
+	Archetype: string?, Scale: number?, Victory: string?, Affinity: string?,
+	Partner: { Name: string, Weapon: WeaponType, Stats: Stats, Attacks: { BossAttack }, Affinity: string, Scale: number }?,
 	Id: string,
 	Name: string,
 	Title: string,
@@ -488,6 +507,11 @@ World.FogGates = {
 	},
 } :: { [string]: FogGate }
 
+Roster.apply(World, profile)
+local Armaments: any
+if hasScript then Armaments = require(script.Parent.BossArmaments) else Armaments = require("./BossArmaments") end
+Armaments.apply(World)
+
 -------------------------------------------------------------------------------------------------
 -- Queries
 -------------------------------------------------------------------------------------------------
@@ -554,7 +578,7 @@ end
 -- Manifest validation (runs at load on every peer)
 -------------------------------------------------------------------------------------------------
 
-local WEAPONS = { Unarmed = true, Jian = true, Dao = true, Guandao = true }
+local WEAPONS = { Unarmed = true, Jian = true, Dao = true, Guandao = true, Catalyst = true, PrayerOfTheDefiled=true, CalamityBoneCleaver=true, HeavenPiercingGuandao=true }
 
 local function inside(bounds: Bounds, p: Placement | Vec3): boolean
 	return World.contains(bounds, p.X, p.Y, p.Z)
@@ -611,6 +635,9 @@ do
 		assert(gate and gate.Boss == id, "Boss fog gate mismatch " .. id)
 		assert(#boss.Phases >= 1 and boss.Phases[1].Stats.MaxHP ~= nil, "Boss opening phase needs MaxHP " .. id)
 		for index, phase in boss.Phases do
+			for _, attack in phase.Attacks or {} do
+				assert(attack.Windup >= 0.65 and attack.Radius > 0 and attack.Damage >= 0, "Invalid boss attack " .. attack.Id)
+			end
 			assert(phase.Index == index and WEAPONS[phase.Weapon], "Boss phase order " .. id)
 			validateProfile(phase.AI, id .. ".Phase" .. index)
 			if index > 1 then

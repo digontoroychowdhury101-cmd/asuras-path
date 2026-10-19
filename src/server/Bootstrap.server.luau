@@ -2,9 +2,9 @@
 -- Script: ServerScriptService/AsurasPath/Bootstrap
 -- Asura's Path master server entry. Brings services up in dependency order:
 --   Environment -> LagCompensation -> ProfileStore (Persistence) -> CharacterService -> AIService
---   -> SanctuaryService -> WorldService -> ColosseumService
--- SanctuaryService precedes WorldService: the Sanctuary map folder suppresses greybox and its
--- bonfire anchor receives the starting altar's rest prompt.
+--   -> SanctuaryService -> MonasteryService -> WorldService -> ColosseumService
+-- SanctuaryService and MonasteryService precede WorldService: their map folders suppress greybox
+-- and their altar anchors receive the rest prompts.
 -- then owns the player lifecycle: leased profile hydration, durable ranked-result recovery,
 -- character admission, death/respawn telemetry and an ordered, deadline-bounded shutdown save.
 local Players = game:GetService("Players")
@@ -31,9 +31,16 @@ local Persistence = require(Services:WaitForChild("PersistenceService") :: Modul
 local Characters = require(Services:WaitForChild("CharacterService") :: ModuleScript)
 local AI = require(Services:WaitForChild("AIService") :: ModuleScript)
 local Sanctuary = require(Services:WaitForChild("SanctuaryService") :: ModuleScript)
+local Monastery = require(Services:WaitForChild("MonasteryService") :: ModuleScript)
 local WorldService = require(Services:WaitForChild("WorldService") :: ModuleScript)
 local Colosseum = require(Services:WaitForChild("ColosseumService") :: ModuleScript)
 local Shop = require(Services:WaitForChild("ShopService") :: ModuleScript) :: any
+
+local Magic = require(Services:WaitForChild("MagicService") :: ModuleScript)
+local Loot = require(Services:WaitForChild("LootService") :: ModuleScript)
+local Dialogue = require(Services:WaitForChild("DialogueService") :: ModuleScript)
+local Wagering = require(Services:WaitForChild("WagerService") :: ModuleScript)
+local WeaponEffects = require(Services:WaitForChild("WeaponEffects") :: ModuleScript)
 
 type Bucket = Protocol.Bucket
 
@@ -63,6 +70,7 @@ local function trace(problem: any): string
 end
 
 local function teardown()
+ if started.Narrative then pcall(Dialogue.Destroy);pcall(Wagering.Destroy) end
 	for _, disconnect in disconnectors do
 		pcall(disconnect)
 	end
@@ -71,11 +79,17 @@ local function teardown()
 		connection:Disconnect()
 	end
 	table.clear(connections)
+	if started.Arsenal then
+		pcall(WeaponEffects.Destroy); pcall(Loot.Destroy); pcall(Magic.Destroy)
+	end
 	if started.Colosseum then
 		pcall(Colosseum.Destroy)
 	end
 	if started.World then
 		pcall(WorldService.Destroy)
+	end
+	if started.Monastery then
+		pcall(Monastery.Destroy)
 	end
 	if started.Sanctuary then
 		pcall(Sanctuary.Destroy)
@@ -92,6 +106,7 @@ end
 local function syncProfile(player: Player)
 	if player.Parent and player:GetAttribute("AsuraClientReady") == true then
 		shopRemote:FireClient(player, { action = "ProfileSync", profile = Persistence.PublicProfile(player.UserId) })
+		Loot.Sync(player)
 	end
 end
 
@@ -223,7 +238,7 @@ local function onShop(player: Player, payload: any)
 	local handled, problem = xpcall(function(): boolean
 		local action: string = payload.action
 		if action == "GetProfile" then
-			shopRemote:FireClient(player, { action = "ProfileSync", profile = Persistence.PublicProfile(userId) })
+			syncProfile(player)
 		elseif action == "SaveSettings" then
 			local saved, err = Shop.SaveSettings(userId, payload.settings)
 			shopRemote:FireClient(player, { action = "SettingsResult", ok = saved, err = err, profile = Persistence.PublicProfile(userId) })
@@ -307,6 +322,9 @@ local function shutdown()
 		{ Name = "Colosseum", Run = function()
 			Colosseum.Close(deadline)
 		end },
+		{ Name = "Spectator wagers", Run = function()
+   Wagering.Close(deadline)
+  end },
 		{ Name = "World", Run = function()
 			WorldService.FlushAll(math.min(FLUSH_BUDGET, math.max(deadline - os.clock(), 1)))
 		end },
@@ -342,9 +360,15 @@ local ok, problem = xpcall(function(): boolean
 	started.AI = true
 	Sanctuary.Start()
 	started.Sanctuary = true
+	Monastery.Start()
+	started.Monastery = true
 	WorldService.Start()
 	started.World = true
+	started.Arsenal = true
+	Magic.Start(); Loot.Start(); WeaponEffects.Start()
 	Colosseum.Start()
+ Dialogue.Start();Wagering.Start(Colosseum)
+ started.Narrative=true
 	started.Colosseum = true
 
 	table.insert(disconnectors, Characters.Subscribe(onCombatEvent))

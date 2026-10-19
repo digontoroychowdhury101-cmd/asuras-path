@@ -231,7 +231,7 @@ function Controller.new(state: WorldState, input: InputController, ui: Interface
 		Position = UDim2.fromOffset(0, 36),
 		Size = UDim2.new(1, 0, 0, 20),
 	})
-	label(panel, "Ranked Duel", 20, TITLE_FONT, EMBER, {
+	label(panel, "Ranked Normalized", 20, TITLE_FONT, EMBER, {
 		Position = UDim2.fromOffset(0, 66),
 		Size = UDim2.new(1, 0, 0, 24),
 	})
@@ -243,7 +243,7 @@ function Controller.new(state: WorldState, input: InputController, ui: Interface
 	})
 	local rankedButton: TextButton = nil :: any -- built below once `self` exists
 
-	label(panel, "Casual Spar", 20, TITLE_FONT, EMBER, {
+	label(panel, "Open Arena", 20, TITLE_FONT, EMBER, {
 		Position = UDim2.fromOffset(0, 184),
 		Size = UDim2.new(1, 0, 0, 24),
 	})
@@ -477,13 +477,13 @@ function Controller.Populate(self: ColosseumController, payload: any)
 	local elo = tonumber(payload.elo)
 	self.PanelStatus.Text = string.format(
 		"%sLatency %d ms%s",
-		if elo then string.format("Rating %d  ·  ", elo) else "",
+		if elo then string.format("%s · %d  ·  ", tostring(payload.rank or "Unranked"),elo) else "",
 		ping,
 		if payload.occupied == true then "  ·  Ring in use" else ""
 	)
 	self.PanelStatus.TextColor3 = if limit > 0 and ping > limit then BLOOD else MUTED
 	self.RankedDetail.Text = string.format(
-		"Attributes are balanced to Soul Level %d in your build's proportions. Ranked requires latency under %d ms.",
+		"Equal attributes, +0 steel and no infusions · Soul Level %d. Latency under %d ms.",
 		tonumber(payload.level) or 1,
 		limit
 	)

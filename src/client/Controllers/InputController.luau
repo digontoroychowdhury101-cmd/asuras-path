@@ -16,6 +16,7 @@ local InputBuffer = require(Shared:WaitForChild("Simulation"):WaitForChild("Inpu
 local WorldState = require(script.Parent:WaitForChild("WorldStateController") :: ModuleScript)
 local CameraController = require(script.Parent:WaitForChild("CameraController") :: ModuleScript)
 local HudKit = require(script.Parent:WaitForChild("HudKit") :: ModuleScript)
+local Movement = require(script.Parent:WaitForChild("MovementController") :: ModuleScript)
 
 type WorldState = WorldState.WorldState
 type CameraController = CameraController.CameraController
@@ -35,63 +36,76 @@ export type Command =
 	| "Interact"
 	| "Shoulder"
 	| "Cursor"
+	| "Jump"
+	| "Slide"
+	| "Aim"
 
 local Controller = {}
 Controller.__index = Controller
 
 local KEYBOARD: { [Enum.KeyCode]: Command } = {
 	[Enum.KeyCode.F] = "Guard",
-	[Enum.KeyCode.LeftControl] = "Dash",
-	[Enum.KeyCode.LeftShift] = "Sprint",
+	[Enum.KeyCode.LeftControl] = "Slide",
+	[Enum.KeyCode.C] = "Slide",
+	[Enum.KeyCode.LeftShift] = "Dash",
+	[Enum.KeyCode.Q] = "Dash",
+	[Enum.KeyCode.CapsLock] = "Sprint",
 	[Enum.KeyCode.X] = "Lock",
-	[Enum.KeyCode.Q] = "Swap",
+	[Enum.KeyCode.J] = "Swap",
+	[Enum.KeyCode.V] = "Heavy",
 	[Enum.KeyCode.R] = "Heal",
-	[Enum.KeyCode.E] = "Interact",
+	[Enum.KeyCode.Z] = "Interact",
 	[Enum.KeyCode.G] = "WeaponArt",
 	[Enum.KeyCode.T] = "Shoulder",
 	[Enum.KeyCode.LeftAlt] = "Cursor",
 }
 local MOUSE: { [Enum.UserInputType]: Command } = {
 	[Enum.UserInputType.MouseButton1] = "Light",
-	[Enum.UserInputType.MouseButton2] = "Heavy",
+	[Enum.UserInputType.MouseButton2] = "Aim",
 	[Enum.UserInputType.MouseButton3] = "Lock",
 }
 local GAMEPAD: { [Enum.KeyCode]: Command } = {
 	[Enum.KeyCode.ButtonR1] = "Light",
 	[Enum.KeyCode.ButtonR2] = "Heavy",
 	[Enum.KeyCode.ButtonL1] = "Guard",
-	[Enum.KeyCode.ButtonL2] = "Roll",
-	[Enum.KeyCode.ButtonB] = "Roll",
+	[Enum.KeyCode.ButtonL2] = "Aim",
+	[Enum.KeyCode.ButtonB] = "Dash",
 	[Enum.KeyCode.ButtonR3] = "Lock",
-	[Enum.KeyCode.ButtonL3] = "Sprint",
-	[Enum.KeyCode.DPadDown] = "Swap",
-	[Enum.KeyCode.DPadUp] = "Heal",
+	[Enum.KeyCode.ButtonL3] = "Slide",
+	[Enum.KeyCode.DPadLeft] = "Sprint",
+	[Enum.KeyCode.ButtonStart] = "Heal",
 	[Enum.KeyCode.ButtonX] = "Interact",
 	[Enum.KeyCode.ButtonY] = "WeaponArt",
-	[Enum.KeyCode.DPadRight] = "Shoulder",
+	[Enum.KeyCode.DPadRight] = "Swap",
 }
 
 local LABELS: { [Command]: { Keyboard: string, Gamepad: string } } = {
 	Light = { Keyboard = "M1", Gamepad = "R1" },
-	Heavy = { Keyboard = "M2", Gamepad = "R2" },
+	Heavy = { Keyboard = "V", Gamepad = "R2" },
 	Guard = { Keyboard = "F", Gamepad = "L1" },
-	Roll = { Keyboard = "Space", Gamepad = "B" },
+	Roll = { Keyboard = "Shift/Q", Gamepad = "B" },
 	Lock = { Keyboard = "X", Gamepad = "R3" },
-	Swap = { Keyboard = "Q", Gamepad = "D-Down" },
-	Heal = { Keyboard = "R", Gamepad = "D-Up" },
-	Interact = { Keyboard = "E", Gamepad = "X" },
+	Swap = { Keyboard = "J", Gamepad = "D-Right" },
+	Heal = { Keyboard = "R", Gamepad = "Start" },
+	Interact = { Keyboard = "Z", Gamepad = "X" },
 	WeaponArt = { Keyboard = "G", Gamepad = "Y" },
-	Dash = { Keyboard = "Ctrl", Gamepad = "—" },
-	Sprint = { Keyboard = "Shift", Gamepad = "L3" },
-	Shoulder = { Keyboard = "T", Gamepad = "D-Right" },
+	Dash = { Keyboard = "Shift/Q", Gamepad = "B" },
+	Sprint = { Keyboard = "Caps", Gamepad = "D-Left" },
+	Shoulder = { Keyboard = "T", Gamepad = "—" },
 	Cursor = { Keyboard = "Alt", Gamepad = "—" },
+	Jump = { Keyboard = "Space", Gamepad = "A" },
+	Slide = { Keyboard = "C/Ctrl", Gamepad = "L3" },
+	Aim = { Keyboard = "RMB", Gamepad = "L2" },
 }
 
 local TOUCH_LAYOUT: { { Command: Command, Label: string, Position: UDim2, Size: number } } = {
 	{ Command = "Light", Label = "ATK", Position = UDim2.new(1, -96, 1, -150), Size = 84 },
 	{ Command = "Heavy", Label = "HVY", Position = UDim2.new(1, -190, 1, -110), Size = 72 },
 	{ Command = "Guard", Label = "GUARD", Position = UDim2.new(1, -110, 1, -250), Size = 72 },
-	{ Command = "Roll", Label = "DODGE", Position = UDim2.new(1, -205, 1, -205), Size = 64 },
+	{ Command = "Dash", Label = "DASH", Position = UDim2.new(1, -205, 1, -205), Size = 64 },
+	{ Command = "Jump", Label = "JUMP", Position = UDim2.new(1, -82, 1, -62), Size = 68 },
+	{ Command = "Slide", Label = "SLIDE", Position = UDim2.new(1, -300, 1, -325), Size = 56 },
+	{ Command = "Aim", Label = "GLIDE", Position = UDim2.new(1, -300, 1, -65), Size = 52 },
 	{ Command = "WeaponArt", Label = "SKILL", Position = UDim2.new(1, -280, 1, -150), Size = 56 },
 	{ Command = "Lock", Label = "LOCK", Position = UDim2.new(1, -70, 1, -330), Size = 52 },
 	{ Command = "Heal", Label = "HEAL", Position = UDim2.new(1, -150, 1, -320), Size = 52 },
@@ -99,8 +113,8 @@ local TOUCH_LAYOUT: { { Command: Command, Label: string, Position: UDim2, Size: 
 	{ Command = "Swap", Label = "SWAP", Position = UDim2.new(1, -300, 1, -230), Size = 48 },
 }
 
--- Space is the default jump key; the roll binding sinks it so a dodge never also hops.
-local ROLL_ACTION = "AsuraRollSinkJump"
+-- Own jump edges so native held-jump repeats cannot spend the double jump.
+local MOVEMENT_ACTION = "AsuraKineticMovement"
 local STICK_DEADZONE = 0.18
 local STICK_SPEED = 900
 local TOUCH_SCALE = 1.4
@@ -110,6 +124,7 @@ export type Sender = (action: string, variant: string?, x: number?, z: number?, 
 type Fields = {
 	State: WorldState,
 	Camera: CameraController,
+	Movement: Movement.MovementController,
 	Send: Sender,
 	Buffer: InputBuffer.Buffer,
 	Device: Device,
@@ -179,7 +194,7 @@ local function buildTouchGui(self: InputController)
 		padding.PaddingTop = UDim.new(0.18, 0)
 		padding.PaddingBottom = UDim.new(0.18, 0)
 		padding.Parent = button
-		local command = entry.Command
+		local command: Command = entry.Command
 		button.InputBegan:Connect(function(input: InputObject)
 			if input.UserInputType == Enum.UserInputType.Touch then
 				button.BackgroundTransparency = 0.05
@@ -197,7 +212,7 @@ local function buildTouchGui(self: InputController)
 	end
 end
 
-function Controller.new(state: WorldState, camera: CameraController, send: Sender): InputController
+function Controller.new(state: WorldState, camera: CameraController, send: Sender, movement: Movement.MovementController): InputController
 	local gui = Instance.new("ScreenGui")
 	gui.Name = "AsuraTouchControls"
 	gui.ResetOnSpawn = false
@@ -208,6 +223,7 @@ function Controller.new(state: WorldState, camera: CameraController, send: Sende
 	local fields: Fields = {
 		State = state,
 		Camera = camera,
+		Movement = movement,
 		Send = send,
 		Buffer = InputBuffer.new(),
 		Device = if UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled then "Touch" else "Keyboard",
@@ -241,7 +257,7 @@ function Controller.new(state: WorldState, camera: CameraController, send: Sende
 	end))
 
 	table.insert(self.Connections, UserInputService.LastInputTypeChanged:Connect(function(inputType: Enum.UserInputType)
-		local device = deviceFor(inputType)
+		local device: Device? = deviceFor(inputType)
 		if device then
 			self:SetDevice(device)
 		end
@@ -255,13 +271,23 @@ function Controller.new(state: WorldState, camera: CameraController, send: Sende
 	table.insert(self.Connections, UserInputService.InputChanged:Connect(function(input: InputObject, processed: boolean)
 		self:Changed(input, processed)
 	end))
-	ContextActionService:BindActionAtPriority(ROLL_ACTION, function(_name: string, inputState: Enum.UserInputState, _input: InputObject): Enum.ContextActionResult
-		if inputState == Enum.UserInputState.Begin and UserInputService:GetFocusedTextBox() == nil then
-			self:SetDevice("Keyboard")
-			self:Press("Roll")
+	table.insert(self.Connections, UserInputService.WindowFocusReleased:Connect(function() self.Movement:Cancel() end))
+	table.insert(self.Connections, UserInputService.TextBoxFocused:Connect(function() self.Movement:SetEnabled(false) end))
+	table.insert(self.Connections, GuiService.MenuOpened:Connect(function() self.Movement:SetEnabled(false) end))
+	ContextActionService:BindActionAtPriority(MOVEMENT_ACTION, function(_name: string, inputState: Enum.UserInputState, event: InputObject): Enum.ContextActionResult
+		if UserInputService:GetFocusedTextBox() then return Enum.ContextActionResult.Pass end
+		local command: Command = if event.KeyCode == Enum.KeyCode.Space or event.KeyCode == Enum.KeyCode.ButtonA then "Jump"
+			else KEYBOARD[event.KeyCode] or GAMEPAD[event.KeyCode] or MOUSE[event.UserInputType]
+		if inputState == Enum.UserInputState.Begin then
+			self:SetDevice(deviceFor(event.UserInputType) or self.Device)
+			self:Press(command)
+		elseif inputState == Enum.UserInputState.End or inputState == Enum.UserInputState.Cancel then
+			self:Release(command)
 		end
 		return Enum.ContextActionResult.Sink
-	end, false, Enum.ContextActionPriority.High.Value, Enum.KeyCode.Space)
+	end, false, Enum.ContextActionPriority.High.Value, Enum.KeyCode.Space, Enum.KeyCode.ButtonA,
+		Enum.KeyCode.LeftShift, Enum.KeyCode.Q, Enum.KeyCode.ButtonB, Enum.KeyCode.C, Enum.KeyCode.LeftControl,
+		Enum.KeyCode.ButtonL3, Enum.UserInputType.MouseButton2, Enum.KeyCode.ButtonL2)
 	return self
 end
 
@@ -289,12 +315,14 @@ end
 
 function Controller.SetMenu(self: InputController, open: boolean)
 	self.MenuOpen = open
+	self.Movement:SetEnabled(not open)
 	self.TouchGui.Enabled = self.Device == "Touch" and not open
 	if open and self.GuardHeld then
 		self:Release("Guard")
 	end
 	if open and self.SprintHeld then
-		self:Release("Sprint")
+		self.SprintHeld = false
+		self.Send("Sprint", nil, nil, nil, false, Workspace:GetServerTimeNow())
 	end
 end
 
@@ -320,11 +348,14 @@ function Controller.Press(self: InputController, command: Command)
 	if callback then
 		callback(command)
 	end
-	if self.MenuOpen and command ~= "Interact" and command ~= "Cursor" then
-		return
+	local blocked = self.MenuOpen or GuiService.MenuIsOpen or UserInputService:GetFocusedTextBox() ~= nil
+	if blocked then
+		if command ~= "Interact" and command ~= "Cursor" then return end
 	end
 	local stamp = now()
-	if command == "Light" or command == "Heavy" or command == "WeaponArt" then
+	if command == "Jump" or command == "Slide" or command == "Aim" then
+		self.Movement:Press(command)
+	elseif command == "Light" or command == "Heavy" or command == "WeaponArt" then
 		InputBuffer.push(self.Buffer, command, stamp)
 	elseif command == "Guard" then
 		-- Sekiro rule: a guard press during a feintable windup feints; otherwise it deflects, and
@@ -339,10 +370,11 @@ function Controller.Press(self: InputController, command: Command)
 			self.Send("Block", nil, nil, nil, true, stamp)
 		end
 	elseif command == "Roll" or command == "Dash" then
+		self.Movement:Release("Slide")
 		local direction = self:EvadeDirection()
 		InputBuffer.push(self.Buffer, command, stamp, nil, direction.X, direction.Z)
 	elseif command == "Sprint" then
-		if self.Device == "Gamepad" then
+		if self.Device == "Gamepad" or self.Device == "Keyboard" then
 			self.SprintHeld = not self.SprintHeld
 		else
 			self.SprintHeld = true
@@ -374,20 +406,22 @@ function Controller.Press(self: InputController, command: Command)
 end
 
 function Controller.Release(self: InputController, command: Command)
-	if command == "Interact" and heldPrompt then
+	if command == "Jump" or command == "Slide" or command == "Aim" then
+		self.Movement:Release(command)
+	elseif command == "Interact" and heldPrompt then
 		heldPrompt:InputHoldEnd()
 		heldPrompt = nil
 	elseif command == "Guard" and self.GuardHeld then
 		self.GuardHeld = false
 		self.Send("Block", nil, nil, nil, false, now())
-	elseif command == "Sprint" and self.Device ~= "Gamepad" and self.SprintHeld then
+	elseif command == "Sprint" and self.Device == "Touch" and self.SprintHeld then
 		self.SprintHeld = false
 		self.Send("Sprint", nil, nil, nil, false, now())
 	end
 end
 
 function Controller.Began(self: InputController, input: InputObject, processed: boolean)
-	local device = deviceFor(input.UserInputType)
+	local device: Device? = deviceFor(input.UserInputType)
 	if device then
 		self:SetDevice(device)
 	end
@@ -442,6 +476,7 @@ end
 
 -- Per frame: route look input to the camera, then flush buffered presses in priority order.
 function Controller.Step(self: InputController, dt: number)
+	self.Movement:SetEnabled(not self.MenuOpen and not GuiService.MenuIsOpen and UserInputService:GetFocusedTextBox() == nil)
 	local gameplay = not self.MenuOpen and not self.CursorFree and self.Device ~= "Touch"
 	UserInputService.MouseBehavior = if gameplay then Enum.MouseBehavior.LockCenter else Enum.MouseBehavior.Default
 	UserInputService.MouseIconEnabled = not gameplay
@@ -477,7 +512,7 @@ function Controller.Step(self: InputController, dt: number)
 end
 
 function Controller.Destroy(self: InputController)
-	ContextActionService:UnbindAction(ROLL_ACTION)
+	ContextActionService:UnbindAction(MOVEMENT_ACTION)
 	for _, connection in self.Connections do
 		connection:Disconnect()
 	end

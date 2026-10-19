@@ -20,6 +20,7 @@ local Settings = require(Shared.Shared.CombatSettings) :: any
 local World = require(Shared.Shared.WorldDefinitions)
 local Protocol = require(Shared.Shared.IntentProtocol)
 local Rules = require(Shared.Simulation.MatchmakingRules) :: any
+local ArenaRules = require(Shared.Shared.ArenaRules)
 local Characters = require(script.Parent:WaitForChild("CharacterService") :: ModuleScript)
 local Lag = require(script.Parent:WaitForChild("LagCompensation") :: ModuleScript)
 local AI = require(script.Parent:WaitForChild("AIService") :: ModuleScript)
@@ -108,7 +109,7 @@ local ColosseumService = {}
 
 local POLL_INTERVAL = 0.25
 local ROSTER_INTERVAL = 2
-local COUNTDOWN_SECONDS: number = Config.Match.CountdownSeconds
+local COUNTDOWN_SECONDS: number = math.max(12,Config.Match.CountdownSeconds)
 local FIGHT_SECONDS: number = Config.Match.RoundSeconds
 local RESULT_HOLD = 3
 local RING_COOLDOWN = 2
@@ -130,7 +131,7 @@ local PING_SMOOTHING = 0.2
 local RANKED_POINT_BUDGET = 60
 local RANKED_ATTRIBUTE_CAP = 40
 local ATTRIBUTE_BASE = 10
-local ATTRIBUTE_ORDER: { AttributeName } = { "Vitality", "Qi", "Strength", "Dexterity" }
+local ATTRIBUTE_ORDER: { AttributeName } = { "Vigor", "Endurance", "Strength", "Dexterity", "ArcaneQi" }
 
 local INTENT_RATE = 3
 local INTENT_BURST = 6
@@ -409,56 +410,8 @@ end
 -- Redistributes a fixed point budget across the four attributes in the proportions the player
 -- invested, clamped per attribute; an uninvested build is spread evenly. Largest-remainder
 -- rounding keeps the total exact.
-function ColosseumService.NormalizeAttributes(attributes: Attributes): Attributes
-	local spent: { [AttributeName]: number } = {} :: any
-	local total = 0
-	for _, name in ATTRIBUTE_ORDER do
-		local points = math.max((attributes[name] or ATTRIBUTE_BASE) - ATTRIBUTE_BASE, 0)
-		spent[name] = points
-		total += points
-	end
-	local headroom = RANKED_ATTRIBUTE_CAP - ATTRIBUTE_BASE
-	local allocation: { [AttributeName]: number } = {} :: any
-	local remainders: { Remainder } = {}
-	local assigned = 0
-	for _, name in ATTRIBUTE_ORDER do
-		local share = if total > 0 then spent[name] / total else 1 / #ATTRIBUTE_ORDER
-		local exact = math.min(RANKED_POINT_BUDGET * share, headroom)
-		local whole = math.floor(exact)
-		allocation[name] = whole
-		assigned += whole
-		table.insert(remainders, { Name = name, Fraction = exact - whole })
-	end
-	table.sort(remainders, function(a: Remainder, b: Remainder): boolean
-		if a.Fraction ~= b.Fraction then
-			return a.Fraction > b.Fraction
-		end
-		return (table.find(ATTRIBUTE_ORDER, a.Name) :: number) < (table.find(ATTRIBUTE_ORDER, b.Name) :: number)
-	end)
-	-- Hand out the remaining points; capped attributes overflow to the next in line.
-	local guard = 0
-	while assigned < RANKED_POINT_BUDGET and guard < 64 do
-		guard += 1
-		local granted = false
-		for _, item in remainders do
-			if assigned >= RANKED_POINT_BUDGET then
-				break
-			end
-			if allocation[item.Name] < headroom then
-				allocation[item.Name] += 1
-				assigned += 1
-				granted = true
-			end
-		end
-		if not granted then
-			break
-		end
-	end
-	local result: Attributes = {} :: any
-	for _, name in ATTRIBUTE_ORDER do
-		result[name] = ATTRIBUTE_BASE + allocation[name]
-	end
-	return result
+function ColosseumService.NormalizeAttributes(_attributes: Attributes): Attributes
+ return ArenaRules.normalized() :: Attributes
 end
 
 local function rankedStats(userId: number): any
@@ -471,6 +424,7 @@ local function rankedStats(userId: number): any
 	-- Blacksmith reinforcement is story progression too; ranked fighters carry unforged steel.
 	view.inventory = table.clone(record.inventory)
 	view.inventory.reinforcement = {}
+ view.rpg=nil
 	return ProfileStore.DeriveStats(view)
 end
 
@@ -581,7 +535,10 @@ local function conclude(match: Match, winner: number?, draw: boolean, reason: st
 	match.Reason = reason
 	match.ReleaseAt = now() + RESULT_HOLD
 	match.Results = if match.Mode == "Ranked1v1" and not closing then rankedResults(match) else nil
-	broadcast("ColosseumResult", match, {
+	if (ColosseumService :: any).SpectatorResult then
+  (ColosseumService :: any).SpectatorResult(match.Id,winner,draw or closing or winner==nil)
+ end
+ broadcast("ColosseumResult", match, {
 		winner = winner,
 		draw = draw,
 		reason = reason,
@@ -707,6 +664,7 @@ local function begin(ring: Ring, a: number, b: number, mode: Mode): (boolean, st
 		local player = Players:GetPlayerByUserId(userId)
 		if player then
 			player:SetAttribute("AsuraColosseum", ring.Definition.Id)
+   player:SetAttribute("AsuraArenaNormalized",mode=="Ranked1v1")
 		end
 		local opponent = if slot == 1 then b else a
 		local profile = match.Profiles[opponent]
@@ -726,6 +684,9 @@ local function begin(ring: Ring, a: number, b: number, mode: Mode): (boolean, st
 	end
 	match.PhaseEnds = now() + COUNTDOWN_SECONDS
 	broadcast("ColosseumBegin", match, { starts = match.PhaseEnds })
+ if (ColosseumService :: any).SpectatorBegin then
+  (ColosseumService :: any).SpectatorBegin(id,a,b,match.Names[a],match.Names[b],match.PhaseEnds,ring.Definition.Id)
+ end
 	return true, nil
 end
 
@@ -1040,7 +1001,8 @@ local function sendPanel(userId: number, ring: Ring, action: string)
 		glyph = ring.Definition.Glyph,
 		rankedOpen = rankedOpen(),
 		queued = inQueue(userId),
-		elo = if profile then profile.elo else nil,
+		elo = if profile then profile.colosseum.Elo else nil,
+  rank = if profile then profile.colosseum.Rank else "Unranked",
 		ping = math.floor(p.Ping * 1000 + 0.5),
 		pingLimit = math.floor(RANKED_ENTRY_PING * 1000 + 0.5),
 		level = normalizedLevel(userId),
@@ -1294,6 +1256,7 @@ local function poll()
 			local e = Characters.GetEntity(userId)
 			if e and e.Fighter.State ~= "KO" and not e.Respawning and not Characters.IsInDuel(userId) then
 				player:SetAttribute("AsuraColosseum", nil)
+   player:SetAttribute("AsuraArenaNormalized",false)
 			end
 		end
 		local e = Characters.GetEntity(userId)

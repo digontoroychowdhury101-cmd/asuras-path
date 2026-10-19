@@ -1,0 +1,72 @@
+name: CI & Build Asura's Path Place
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+  workflow_dispatch:
+
+jobs:
+  verify-and-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Rojo & Luau
+        run: |
+          mkdir -p bin
+          # Download official Rojo 7.7.1
+          curl -sL https://github.com/rojo-rbx/rojo/releases/download/v7.7.1/rojo-7.7.1-linux.zip -o rojo.zip
+          unzip -q rojo.zip -d bin/
+          chmod +x bin/rojo
+          
+          # Download official Luau 0.640
+          curl -sL https://github.com/luau-lang/luau/releases/download/0.640/luau-ubuntu.zip -o luau.zip
+          unzip -q luau.zip -d bin/
+          chmod +x bin/luau
+          
+          echo "$PWD/bin" >> $GITHUB_PATH
+          mkdir -p work/bin/rojo work/bin/luau
+          cp bin/rojo work/bin/rojo/rojo
+          cp bin/luau work/bin/luau/luau
+
+      - name: Run Stage 1 & 2 Tests
+        run: |
+          work/bin/luau/luau tools/test_asura_stage1.luau
+          python3 tools/test_asura_stage2.py
+
+      - name: Run Stage 3 Tests & Profile Integrity
+        run: |
+          work/bin/luau/luau tools/test_asura_stage3.luau
+          work/bin/luau/luau tools/test_profile_integrity.luau
+
+      - name: Run Weapons & Spells Tests
+        run: |
+          work/bin/luau/luau tools/test_weapons_and_spells.luau
+          python3 tools/test_weapons_and_spells_runtime.py
+
+      - name: Run Movement, Boss & Objective Tests
+        run: |
+          python3 tools/test_movement.py
+          python3 tools/test_boss_runtime.py
+          python3 tools/test_objectives.py
+          work/bin/luau/luau tools/test_progression_and_lore.luau
+          python3 tools/test_review_regressions.py
+
+      - name: Build Place (AsurasPath.rbxlx)
+        run: python3 tools/build.py
+
+      - name: Upload Place Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: AsurasPath-Place
+          path: outputs/AsurasPath.rbxlx
+          if-no-files-found: error

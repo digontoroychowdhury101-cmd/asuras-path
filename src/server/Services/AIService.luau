@@ -14,6 +14,9 @@ local Tempo = require(Shared.Simulation.Tempo) :: any
 local Schema = require(Shared.Simulation.MoveSchema) :: any
 local Combat = require(Shared.Simulation.CombatRules)
 local Characters = require(script.Parent:WaitForChild("CharacterService") :: ModuleScript)
+local BossTactics = require(script.Parent.BossTactics)
+local BossDuo = require(script.Parent.BossDuo)
+local BossAppearance = require(script.Parent.BossAppearance)
 
 type Entity = Characters.Entity
 type MobDef = World.MobDef
@@ -312,6 +315,11 @@ local function decide(agent: Agent, self: Entity, target: Entity, now: number)
 	local f = self.Fighter
 	local tf = target.Fighter
 	local profile = agent.Profile
+	local phantomUntil = target.Model:GetAttribute("PhantomUntil")
+	local phantom = target.Model:GetAttribute("PhantomPosition")
+	if type(phantomUntil)=="number" and now < phantomUntil and typeof(phantom)=="Vector3" then
+		Characters.Face(agent.Id,phantom);Characters.MoveTo(agent.Id,phantom);return
+	end
 	local distance = (target.Root.Position - self.Root.Position).Magnitude
 	local reach = reachOf(agent, f)
 
@@ -404,7 +412,7 @@ local function releaseShockwave(agent: Agent, self: Entity)
 	local origin = self.Root.Position
 	Characters.Cue("Shockwave", agent.Id, { radius = wave.Radius, x = origin.X, y = origin.Y, z = origin.Z })
 	for _, e in Characters.Entities() do
-		if e.Kind == "Player" and e.Model.Parent and (e.Root.Position - origin).Magnitude <= wave.Radius then
+		if e.Kind == "Player" and agent.Allowed and agent.Allowed[e.Id] and e.Model.Parent and e.Root.Position.Y - 3 <= 6 and (e.Root.Position - origin).Magnitude <= wave.Radius then
 			Characters.ApplyArea(agent.Id, e.Id, wave.Damage, wave.Posture, wave.Unblockable)
 		end
 	end
@@ -423,6 +431,8 @@ local function applyPhase(agent: Agent, boss: BossDef, index: number, self: Enti
 	if phase.Transition then
 		Characters.Tint(agent.Id, phase.Transition.BodyColor)
 	end
+	BossAppearance.phase(self.Model, phase.AnimationSet)
+	self.Model:SetAttribute("AsuraBossPhases", #boss.Phases)
 	self.Model:SetAttribute("AsuraBossPhase", index)
 	self.Model:SetAttribute("AsuraBossPhaseName", phase.Name)
 end
@@ -430,6 +440,7 @@ end
 local function beginTransition(agent: Agent, boss: BossDef, index: number, self: Entity, now: number)
 	local phase = boss.Phases[index]
 	local transition = phase.Transition
+	BossTactics.reset(agent.Id)
 	agent.Pending = nil
 	agent.DeflectAt = math.huge
 	if not transition then
@@ -479,6 +490,10 @@ local function updateBoss(agent: Agent, boss: BossDef, self: Entity, now: number
 			releaseShockwave(agent, self)
 		end
 		return pending ~= nil and agent.Shockwave ~= nil
+	end
+	if BossTactics.step(agent.Id, boss, agent.Phase, agent.Target, agent.Allowed, now) then
+		agent.Pending = nil
+		return true
 	end
 	local special = boss.Phases[agent.Phase].Special
 	if special and now >= agent.NextSpecial and f.State == "Idle" and agent.Mode == "Combat" then
@@ -767,14 +782,9 @@ end
 function AIService.SpawnBoss(bossId: string, participants: { number }?): number?
 	local existing = bossAgents[bossId]
 	if existing then
-		local current = Characters.GetEntity(existing)
-		if current and current.Fighter.State ~= "KO" then
-			return existing
-		end
-		-- A lingering corpse from the previous encounter is cleared before the next one starts.
-		bossAgents[bossId] = nil
-		agents[existing] = nil
-		Characters.DespawnEnemy(existing)
+		local living = BossDuo.alive(bossId)
+		if living then return living end
+		AIService.DespawnBoss(bossId)
 	end
 	local boss = World.Bosses[bossId]
 	if not boss then
@@ -798,50 +808,67 @@ function AIService.SpawnBoss(bossId: string, participants: { number }?): number?
 	local agent = newAgent(id, "Boss", boss.Id, opening.AI, boss.Region, boss.Essence, home, {})
 	agent.Boss = boss
 	agent.Mode = "Engage"
-	if participants then
-		AIService.SetBossTargets(bossId, participants)
-	end
+
 	local entity = Characters.GetEntity(id)
 	if entity then
 		applyPhase(agent, boss, 1, entity)
 		entity.Model:SetAttribute("AsuraBossTitle", boss.Title)
+		entity.Model:SetAttribute("AsuraEncounter", boss.Id)
+		BossAppearance.apply(entity.Model, boss.Archetype, boss.Scale)
 	end
 	bossAgents[bossId] = id
-	Characters.Cue("BossIntro", id, { boss = boss.Id, title = boss.Title, phase = 1, name = opening.Name })
+	local members = { id }
+	local partner = boss.Partner
+	if partner then
+		local partnerId = Characters.SpawnEnemy({ Name = partner.Name, Weapon = partner.Weapon, CFrame = home * CFrame.new(16, 0, 0),
+			Stats = partner.Stats, Definition = boss.Id, BodyColor = { 100, 88, 68 }, Boss = true })
+		if not partnerId then
+			agents[id] = nil; bossAgents[bossId] = nil; Characters.DespawnEnemy(id)
+			return nil
+		end
+		local partnerBoss = table.clone(boss)
+		local partnerPhase = table.clone(opening)
+		partnerPhase.Weapon, partnerPhase.Stats, partnerPhase.Attacks = partner.Weapon, partner.Stats, partner.Attacks
+		partnerPhase.AI = table.clone(opening.AI)
+		partnerPhase.AI.Aggression, partnerPhase.AI.GuardChance, partnerPhase.AI.DeflectChance = 0.5, 0.95, 0.05
+		partnerPhase.AttackInterval = 4
+		partnerBoss.Phases, partnerBoss.Partner = { partnerPhase }, nil
+		local ally = newAgent(partnerId, "Boss", boss.Id, partnerPhase.AI, boss.Region, 0, home * CFrame.new(16, 0, 0), {})
+		ally.Boss, ally.Mode = partnerBoss, "Engage"
+		local partnerEntity = Characters.GetEntity(partnerId)
+		if partnerEntity then
+			applyPhase(ally, partnerBoss, 1, partnerEntity)
+			partnerEntity.Model:SetAttribute("AsuraEncounter", boss.Id)
+			BossAppearance.apply(partnerEntity.Model, "IronBull", partner.Scale)
+		end
+		table.insert(members, partnerId)
+	end
+	BossDuo.register(boss, members)
+	if participants then AIService.SetBossTargets(bossId, participants) end
+	Characters.Cue("BossIntro", id, { boss = boss.Id, title = boss.Title, phase = 1, name = opening.Name, members = members, participants = participants })
 	return id
 end
 
 function AIService.SetBossTargets(bossId: string, participants: { number })
-	local id = bossAgents[bossId]
-	local agent = if id then agents[id] else nil
-	if not agent then
-		return
-	end
-	local allowed: { [number]: boolean } = {}
-	for _, participant in participants do
-		allowed[participant] = true
-	end
-	agent.Allowed = allowed
-	if agent.Target ~= 0 and not allowed[agent.Target] then
-		agent.Target = 0
+	for _, id in BossDuo.members(bossId) do
+		local agent = agents[id]
+		if not agent then continue end
+		local allowed: { [number]: boolean } = {}
+		for _, participant in participants do allowed[participant] = true end
+		agent.Allowed = allowed
+		if agent.Target ~= 0 and not allowed[agent.Target] then agent.Target = 0 end
 	end
 end
 
 function AIService.DespawnBoss(bossId: string)
-	local id = bossAgents[bossId]
+	local members = table.clone(BossDuo.members(bossId))
+	BossDuo.forget(bossId)
 	bossAgents[bossId] = nil
-	if id then
-		agents[id] = nil
-		Characters.DespawnEnemy(id)
-	end
+	for _, id in members do agents[id] = nil; Characters.DespawnEnemy(id) end
 end
 
 function AIService.GetBossEntity(bossId: string): number?
-	local id = bossAgents[bossId]
-	if id and Characters.GetEntity(id) then
-		return id
-	end
-	return nil
+	return BossDuo.alive(bossId)
 end
 
 function AIService.GetAgent(entityId: number): AgentInfo?
@@ -894,6 +921,13 @@ local function onEvent(event: Combat.Event, point: Vector3?)
 	end
 	if event.Kind == "Deathblow" and victim.Boss then
 		victim.Deathblows += 1
+		local e = Characters.GetEntity(victim.Id)
+		local final = e ~= nil and e.Fighter.PendingKO
+		for _, member in BossDuo.members(victim.Boss.Id) do
+			local other = Characters.GetEntity(member)
+			if member ~= victim.Id and other and other.Fighter.State ~= "KO" then final = false end
+		end
+		if final then Characters.Cue("BossFinish", victim.Id, { boss = victim.Boss.Id }) end
 	elseif (event.Kind == "Hit" or event.Kind == "CounterHit") and victim.Mode ~= "Combat" and victim.Mode ~= "Cinematic" then
 		local source = Characters.GetEntity(event.Source)
 		if source and isTargetable(victim, source) then
@@ -905,7 +939,8 @@ local function onEvent(event: Combat.Event, point: Vector3?)
 	elseif event.Kind == "KO" then
 		setMode(victim, "Dead", Characters.Now())
 		local boss = victim.Boss
-		if boss then
+		if boss and BossDuo.onKO(boss.Id, victim.Id) then
+
 			for _, listener in table.clone(bossListeners) do
 				local ok, problem = pcall(listener, boss.Id, victim.Id)
 				if not ok then
@@ -922,13 +957,14 @@ local function onRemoved(id: number, _kind: Characters.EntityKind)
 	if not agent then
 		return
 	end
+	BossTactics.reset(id)
 	agents[id] = nil
 	if agent.SpawnId and spawnAgents[agent.SpawnId] == id then
 		spawnAgents[agent.SpawnId] = nil
 	end
 	local boss = agent.Boss
 	if boss and bossAgents[boss.Id] == id then
-		bossAgents[boss.Id] = nil
+		bossAgents[boss.Id] = BossDuo.alive(boss.Id)
 	end
 end
 
@@ -977,6 +1013,7 @@ function AIService.Start()
 end
 
 function AIService.Destroy()
+	for bossId in table.clone(bossAgents) do AIService.DespawnBoss(bossId) end
 	running = false
 	for _, disconnect in disconnectors do
 		disconnect()

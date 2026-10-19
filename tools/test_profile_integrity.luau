@@ -3,7 +3,7 @@
 local Schema = require("../src/shared/ProfileSchema")
 
 local numericFields = {
-	"elo", "peakElo", "wins", "losses", "draws", "winStreak", "fightCash",
+	"elo", "peakElo", "wins", "losses", "draws", "winStreak", "qiEssence",
 	"styleSpins", "pityCounter", "lastSaveTime",
 }
 local badNumbers = { 0 / 0, math.huge, -math.huge, -1, 1.5, "corrupt", false, {} }
@@ -53,11 +53,13 @@ assert(not Schema.Validate(future))
 assert(not pcall(Schema.Migrate, future, 123), "Newer profile version silently downgraded")
 
 local original = Schema.Default(123)
-original.fightCash = 12345
+original.settings.fov = 80 -- Explicit fixture: verify isolation independently of the current camera default.
+original.qiEssence = nil
+original.qiEssence = 12345
 original.styles.ApexStriker = { unlocked = true, xp = 2500, level = 3 }
 original.activeStyle = "ApexStriker"
 local repaired = Schema.Migrate(original, 123)
-assert(repaired.fightCash == 12345 and repaired.styles.ApexStriker.xp == 2500)
+assert((repaired.qiEssence == 12345 or repaired.qiEssence == 12345) and repaired.styles.ApexStriker.xp == 2500)
 assert(repaired.activeStyle == "ApexStriker" and repaired.styles.ApexStriker.level == 3)
 repaired.styles.ApexStriker.xp = 0
 repaired.settings.fov = 70

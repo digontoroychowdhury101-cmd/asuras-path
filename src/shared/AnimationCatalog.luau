@@ -220,7 +220,8 @@ end
 
 -- Weapon slot lookup; unknown weapons use the Unarmed set so a new weapon never T-poses.
 function Catalog.weapon(weapon: string, key: WeaponKey): Slot
-	local set = Catalog.Weapons[weapon :: WeaponName] or Catalog.Weapons.Unarmed
+	local family = ({Odachi="Guandao",TwinDaggers="Jian",ChainScythe="Guandao",WarFan="Dao",Catalyst="Guandao",PrayerOfTheDefiled="Guandao",CalamityBoneCleaver="Guandao",HeavenPiercingGuandao="Guandao"} :: {[string]: string})[weapon] or weapon
+	local set = Catalog.Weapons[family :: WeaponName] or Catalog.Weapons.Unarmed
 	return set[key]
 end
 
