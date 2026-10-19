@@ -77,7 +77,7 @@ do
 	function player:SetAttribute(key: string,value: any) self.Attributes[key]=value end
 	function player:Kick(message: string) error(message) end
 	local loaded, unloaded = false, false
-	local profile={souls={inventory={spellSlots={"JadeAegis","EmberCataclysm"}}}}
+	local profile={inventory={Materials={}},souls={inventory={spellSlots={"JadeAegis","EmberCataclysm"}}}}
 	local Persistence={Get=function() return if loaded then profile else nil end,PublicProfile=function() return profile end,
 		Load=function() loaded=true end,Unload=function() unloaded=true end}
 	local remote={FireClient=function(_self: any,_player: any,packet: any) table.insert(received,packet) end}

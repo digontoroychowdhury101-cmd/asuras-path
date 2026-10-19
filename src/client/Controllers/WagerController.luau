@@ -9,6 +9,11 @@ function Controller.new(ui: any): any
  self.View.Gui.Name="SpectatorWagers";self.View.Gui.DisplayOrder=80
  table.insert(self.Links,self.View.Close.Activated:Connect(function() self:Close() end))
  table.insert(self.Links,self.Remote.OnClientEvent:Connect(function(p: any)
+  if p.action=="Settlement" then
+   ui:ShowToast((if p.refund then "Wager returned · " else "Wager settled · ")..p.payout.." Qi")
+   if self.Open then self.Remote:FireServer({action="Refresh"}) end
+   return
+  end
   if p.action~="Panel" then return end
   View.clear(self.View);self.View.Gui.Enabled=true;self.Open=true;ui:CloseAltar();ui.Input:SetMenu(true)
   self.View.Title.Text="COLOSSEUM BALCONY · "..p.qi.." Qi"

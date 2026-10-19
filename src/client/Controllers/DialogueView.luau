@@ -30,17 +30,17 @@ function View.button(v: any,label: string,run: ()->())
 end
 function View.render(v: any,p: any,send: (any)->())
  View.clear(v);local n=Catalog.NPCs[p.npc];local node=n.Nodes[p.node];local data=p.view
- v.Title.Text=n.Name.."  ·  "..tostring(data.qi).." Qi"
+ v.Title.Text=n.Name.."  ·  "..tostring(data.qi).." Qi"..(if p.npc=="Lin" then " · "..data.sovereigns.."/6 souls at rest" else "")
  v.Subtitle.Text=if p.message then tostring(p.message).."\n"..node.Text else node.Text
  if p.panel=="Level" then
   for _,id in Progress.Attributes do View.button(v,id.." "..data.attributes[id].." → "..(data.attributes[id]+1).." · "..data.cost.." Qi",function() send({action="Level",id=id}) end) end
  elseif p.panel=="Forge" then
   local id=data.loadout.MainWeapon;local w=data.inventory.Weapons[id];local cost,ore,count=Progress.upgradeCost(w.Level)
   View.button(v,id.." +"..w.Level.." · Mastery "..Progress.masteryRank(data.mastery[id] or 0).." · "..(w.Infusion or "Uninfused"),function() end)
-  if w.Level<10 then View.button(v,"Reinforce · "..cost.." Qi + "..count.." "..ore.." ("..(data.inventory.Materials[ore] or 0).." owned)",function() send({action="Upgrade"}) end) end
+  if w.Level<10 then View.button(v,"Reinforce · "..cost.." Qi + "..count.." "..Catalog.Trades[ore].Name.." ("..(data.inventory.Materials[ore] or 0).." owned)",function() send({action="Upgrade"}) end) end
   for _,affinity in {"CrimsonFire","CelestialLightning","AbyssalVoid"} do
    local gem=Progress.Infusions[affinity]
-   View.button(v,"Infuse "..affinity.." · 300 Qi + "..gem.." ("..(data.inventory.Materials[gem] or 0).." owned)",function() send({action="Infuse",id=affinity}) end)
+   View.button(v,"Infuse "..string.gsub(Catalog.Trades[gem].Name," Gem$","").." · 300 Qi + 1 gem".." ("..(data.inventory.Materials[gem] or 0).." owned)",function() send({action="Infuse",id=affinity}) end)
   end
  elseif p.panel=="Trade" then
   local ids={};for id in Catalog.Trades do table.insert(ids,id) end;table.sort(ids)
@@ -52,7 +52,8 @@ function View.codex(v: any,data: any,selected: string?)
  View.clear(v);v.Title.Text="MEMORIES OF THE JADE CATACLYSM"
  local entry=if selected then Catalog.Lore[selected] else nil
  v.Subtitle.Text=if entry then entry.Text else "Eight inscriptions. Six souls. One path beyond death."
- for id,l in Catalog.Lore do
+ for _,id in Catalog.LoreOrder do
+  local l=Catalog.Lore[id]
   if data.inventory.LoreEntries[id] then View.button(v,l.Title,function() View.codex(v,data,id) end) end
  end
 end

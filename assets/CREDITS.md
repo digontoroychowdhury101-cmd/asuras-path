@@ -17,3 +17,13 @@ Processed, Roblox-ready exports are written to `assets/build/` by `tools/blender
 service (record which one and its terms here once generated). Processed by `tools/blender/ingest_sculpt.py`.
 
 CC0 needs no attribution; credited here as good practice. Poly Haven: https://polyhaven.com · ambientCG: https://ambientcg.com
+
+| stone_01 | https://polyhaven.com/a/stone_01 | CC0-1.0 | Phase 5 scenery / sound design (upload pending) |
+
+| stone_fire_pit | https://polyhaven.com/a/stone_fire_pit | CC0-1.0 | Phase 5 scenery / sound design (upload pending) |
+
+| brass_diya_lantern | https://polyhaven.com/a/brass_diya_lantern | CC0-1.0 | Phase 5 scenery / sound design (upload pending) |
+
+| impact-sounds | https://kenney.nl/assets/impact-sounds | CC0-1.0 | Phase 5 scenery / sound design (upload pending) |
+
+| rpg-audio | https://kenney.nl/assets/rpg-audio | CC0-1.0 | Phase 5 scenery / sound design (upload pending) |

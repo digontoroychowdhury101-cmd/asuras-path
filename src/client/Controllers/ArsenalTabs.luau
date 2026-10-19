@@ -68,6 +68,11 @@ function Tabs.Spells(send: (any) -> (), inv: any, list: ScrollingFrame)
 end
 
 function Tabs.Weapons(send: (any) -> (), inv: any, list: ScrollingFrame)
+ local talismans=if inv.materials then inv.materials.LastBreathTalisman or 0 else 0
+ if talismans>0 then
+  local actions=card(list,0,"Last Breath Talisman",tostring(talismans).." owned · wards one fatal blow for 30 seconds",T.Gold,104)
+  action(actions,"Invoke","Primary",104,true,function() send({action="UseTalisman"}) end)
+ end
 	for order, id in Weapons.WeaponKeys do
 		if inv.weapons[id] then
 			local w = Weapons.get(id :: any) -- WeaponKeys is typed string[]; get() wants the key union

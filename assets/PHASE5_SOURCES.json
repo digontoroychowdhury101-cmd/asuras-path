@@ -1,0 +1,48 @@
+{
+  "retrieved": "2026-10-19",
+  "sources": [
+    {
+      "key": "stone_01",
+      "publisher": "Poly Haven",
+      "license": "CC0-1.0",
+      "source": "https://polyhaven.com/a/stone_01",
+      "files_url": "https://api.polyhaven.com/files/stone_01",
+      "input": "assets/source/stone_01/stone_01_1k.gltf",
+      "input_sha256": "e06d59972ef910acde1cc64f9450ddb9c12dcd052031bc9982a7c46e108f6111"
+    },
+    {
+      "key": "stone_fire_pit",
+      "publisher": "Poly Haven",
+      "license": "CC0-1.0",
+      "source": "https://polyhaven.com/a/stone_fire_pit",
+      "files_url": "https://api.polyhaven.com/files/stone_fire_pit",
+      "input": "assets/source/stone_fire_pit/stone_fire_pit_1k.gltf",
+      "input_sha256": "40034b326d28c06f25cf1cdb39a5ab3f3b1d1a9415d490af39621efe6c31cee6"
+    },
+    {
+      "key": "brass_diya_lantern",
+      "publisher": "Poly Haven",
+      "license": "CC0-1.0",
+      "source": "https://polyhaven.com/a/brass_diya_lantern",
+      "files_url": "https://api.polyhaven.com/files/brass_diya_lantern",
+      "input": "assets/source/brass_diya_lantern/brass_diya_lantern_1k.gltf",
+      "input_sha256": "6b908c48f0f5300ba561cbcfe38e938863e8d1d33569e9a1fab6c7e9c16f8e95"
+    },
+    {
+      "key": "impact-sounds",
+      "publisher": "Kenney",
+      "license": "CC0-1.0",
+      "source": "https://kenney.nl/assets/impact-sounds",
+      "download": "https://kenney.nl/media/pages/assets/impact-sounds/87b4ddecda-1677589768/kenney_impact-sounds.zip",
+      "sha256": "029d734af1582474edf3a694d1b0cebc97c1c152f2f39fa34d4c2bafc5de77f8"
+    },
+    {
+      "key": "rpg-audio",
+      "publisher": "Kenney",
+      "license": "CC0-1.0",
+      "source": "https://kenney.nl/assets/rpg-audio",
+      "download": "https://kenney.nl/media/pages/assets/rpg-audio/8e99002d76-1677590336/kenney_rpg-audio.zip",
+      "sha256": "6dbeaf8544da958d8f2adcb4a4a4b76c1ade34a05f8ab9edccd327da7375f38b"
+    }
+  ]
+}

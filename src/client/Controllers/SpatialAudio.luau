@@ -20,7 +20,10 @@ function Audio.play(key: string, parent: Instance, volume: number?, looped: bool
 	if id == "" then return nil end
 	for i = #voices, 1, -1 do if voices[i].Parent == nil then table.remove(voices, i) end end
 	if #voices >= Assets.Limits.Voices then
-		local victim = table.remove(voices, 1); victim:Destroy()
+		local index = nil
+		for i, voice in voices do if not voice.Looped then index = i; break end end
+		if not index then return nil end
+		table.remove(voices, index):Destroy()
 	end
 	local s = Instance.new("Sound")
 	s.Name, s.SoundId, s.Volume = "Asura_" .. key, id, math.clamp(volume or 0.6, 0, 1.4)
@@ -50,7 +53,7 @@ function Audio.at(key: string, position: Vector3, volume: number?): Sound?
 	p.Anchored, p.CanCollide, p.CanQuery, p.CanTouch, p.CastShadow = true, false, false, false, false
 	p.Parent = workspace; Debris:AddItem(p, 12)
 	local s = Audio.play(key, p, volume)
-	if s then s.Ended:Once(function() p:Destroy() end) else p:Destroy() end
+	if s then s.Destroying:Once(function() if p.Parent then p:Destroy() end end) else p:Destroy() end
 	return s
 end
 function Audio.destroy()

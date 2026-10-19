@@ -10,7 +10,8 @@ local Loot=require(script.Parent.LootService)
 local Actions={}
 function Actions.view(id: number): any
  local p=Persistence.Get(id);if not p then return nil end
- return {qi=p.qiEssence,attributes=p.attributes,inventory=p.inventory,loadout=p.equippedLoadout,mastery=p.weaponMastery,
+ local rested=0;for _,boss in Catalog.Sovereigns do if p.defeatedBosses[boss] then rested+=1 end end
+ return {sovereigns=rested,qi=p.qiEssence,attributes=p.attributes,inventory=p.inventory,loadout=p.equippedLoadout,mastery=p.weaponMastery,
   colosseum=p.colosseum,cost=Progress.levelCost(Progress.level(p.attributes)),bosses=p.defeatedBosses}
 end
 function Actions.run(player: Player,s: any,packet: any,valid: ()->boolean): (boolean,string?)

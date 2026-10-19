@@ -101,6 +101,38 @@ check(engine:Get(7).inventory.Weapons.Jian.Level==1,"runtime forge mirrors canon
 local fighter=Combat.new(1,"Jian",0);Combat.applyStats(fighter,{MaxQi=150,SpellScale=1.5,RallyScale=1.4},true)
 fighter.Qi=150;local cast=Spells.begin(fighter,"ThunderclapPalm",1,{},"Unarmed")
 check(cast~=nil and cast.Potency==1.5,"arcane scales actual spell casts")
+-- Verify the actual combat resolver applies affinities and mastery, including defense timing.
+local function strike(affinity: string?)
+ local attacker=Combat.new(10,"Jian",0);local victim=Combat.new(11,"Jian",0)
+ local stats=Progress.affinity(affinity,a)
+ Combat.applyStats(attacker,{InfusionBurn=stats.Burn,InfusionStun=stats.Stun,GuardPierce=stats.GuardPierce,VoidScale=stats.VoidScale})
+ assert(Combat.tryAttack(attacker,"Light",0))
+ attacker.State="Active"
+ return attacker,victim
+end
+local fire,target=strike("CrimsonFire")
+Combat.resolveHit(fire,target,1,{Facing=true,Region="Torso"},{})
+local health=target.ActiveHP;Combat.step(target,1.5,0.5,{})
+check(target.BurnSource==10 and target.ActiveHP<health,"fire DOT ticks through actual combat")
+local plain,guard=strike(nil);guard.State="Blocking"
+Combat.resolveHit(plain,guard,1,{Facing=true,Region="Torso"},{})
+local plainHealth=guard.ActiveHP
+local void,voidGuard=strike("AbyssalVoid");voidGuard.State="Blocking"
+Combat.resolveHit(void,voidGuard,1,{Facing=true,Region="Torso"},{})
+check(voidGuard.ActiveHP<plainHealth,"void bypasses actual guard defense")
+local lightning,stunned=strike("CelestialLightning")
+Combat.resolveHit(lightning,stunned,1,{Facing=true,Region="Torso"},{})
+local normal,unstunned=strike(nil);Combat.resolveHit(normal,unstunned,1,{Facing=true,Region="Torso"},{})
+check(stunned.Posture>unstunned.Posture and stunned.StateEnd>unstunned.StateEnd,"lightning adds posture and stun")
+local master=Combat.new(20,"Jian",0);local victim=Combat.new(21,"Jian",0)
+Combat.applyStats(master,{SignatureFinisher=true});victim.State="StanceBroken"
+local damage=Combat.executeDeathblow(master,victim,1,{})
+local novice=Combat.new(22,"Jian",0);local other=Combat.new(23,"Jian",0);other.State="StanceBroken"
+check(damage>Combat.executeDeathblow(novice,other,1,{}),"rank-five signature modifies actual execution")
+local rally=Combat.new(24,"Jian",0);rally.ActiveHP=50;rally.RecoverableHP=40;rally.RallyUntil=5
+Combat.applyStats(rally,{RallyScale=1.5});local recovery=Combat.rally(rally,10,1,{},25)
+local baseline=Combat.new(26,"Jian",0);baseline.ActiveHP=50;baseline.RecoverableHP=40;baseline.RallyUntil=5
+check(recovery>Combat.rally(baseline,10,1,{},25),"vigor improves actual blood rally")
 local normalized=Arena.normalized();check(normalized.Vigor==20 and normalized.ArcaneQi==20,"ranked equal attributes")
 for _,amount in {49,501,0/0,math.huge,50.5} do check(not Arena.validWager(amount),"invalid wager refused") end
 local bank=forge.qiEssence;Arena.place(forge,"duel",9,500)

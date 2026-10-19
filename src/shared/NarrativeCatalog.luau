@@ -4,10 +4,10 @@ export type Node={Text: string,Choices: {Choice}}
 export type NPC={Name: string,X: number,Y: number,Z: number,Color: {number},Start: string,Nodes: {[string]: Node}}
 export type Lore={Title: string,Region: string,X: number,Y: number,Z: number,Qi: number,Text: string}
 export type Trade={Name: string,Price: number}
-local Catalog: {Premise: string,NPCs: {[string]: NPC},Lore: {[string]: Lore},Trades: {[string]: Trade}}={Premise="",NPCs={},Lore={},Trades={}}
+local Catalog: {Premise: string,NPCs: {[string]: NPC},Lore: {[string]: Lore},Trades: {[string]: Trade},Sovereigns: {string},LoreOrder: {string}}={Premise="",NPCs={},Lore={},Trades={},Sovereigns={},LoreOrder={}}
 Catalog.Premise="Grandmaster Shen devoured his disciples and shattered the celestial pillars. You are an Asura Emissary: a wandering phantom barred from the afterlife until the six Fallen Sovereigns are laid to rest."
 Catalog.NPCs={
- Gao={Name="Master Smith Gao",X=-79,Y=603,Z=900,Color={74,57,49},Start="Greeting",Nodes={
+ Gao={Name="Master Smith Gao",X=-86,Y=603,Z=899,Color={74,57,49},Start="Greeting",Nodes={
   Greeting={Text="I lost my eyes to the <i>Jade Cataclysm</i>. Still, I can hear the blood upon your blade. What burden have you brought?",Choices={
    {Label="Reinforce or infuse my weapon",Next="Forge",Action="Forge"},{Label="What can a sovereign's soul become?",Next="Remembrance"},{Label="Farewell",Close=true}}},
   Forge={Text="Iron remembers every wound. Bring ore, starfall, and dragonite; I will teach your steel to remember you.",Choices={{Label="Return",Next="Greeting"},{Label="Farewell",Close=true}}},
@@ -39,6 +39,9 @@ Catalog.Lore={
 Catalog.Trades={SpiritIronOre={Name="Spirit Iron Ore",Price=80},StarfallShard={Name="Starfall Shard",Price=240},DragoniteCore={Name="Dragonite Core",Price=700},
  CrimsonFireGem={Name="Crimson Fire Gem",Price=600},CelestialLightningGem={Name="Celestial Lightning Gem",Price=600},AbyssalVoidGem={Name="Abyssal Void Gem",Price=600},
  LastBreathTalisman={Name="Last Breath Talisman · prevents one fatal blow for 30s",Price=400}}
+Catalog.Sovereigns={"GrandmasterShen","VenerableBaize","SlumberingTitan","SovereignWu","TwinSentinels","AzureWyrm"}
+Catalog.LoreOrder={"Pillars","Feast","Bell","Emissary","Bamboo","Wraith","Pagoda","Dawn"}
+Catalog.NPCs.Lin.Nodes.Release={Text="Six chains have fallen silent. The ferryman waits beyond the jade dawn. You may cross, Emissary—or remain a little longer, and carry their names where the living have forgotten.",Choices={{Label="Guide my Ascension",Next="Ascend",Action="Level"},{Label="I will carry their names",Close=true}}}
 local function freeze(t: any) for _,v in t do if type(v)=="table" then freeze(v) end end;table.freeze(t) end
 freeze(Catalog)
 return Catalog

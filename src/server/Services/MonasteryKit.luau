@@ -27,11 +27,12 @@ Kit.Palette = {
 	Dawn = Color3.fromRGB(214, 176, 150),
 }
 
+local Assets = require(game:GetService("ReplicatedStorage").AsurasPath.Shared.PresentationAssets)
 Kit.Texture = {
-	Smoke = "rbxasset://textures/particles/smoke_main.dds",
-	Fire = "rbxasset://textures/particles/fire_main.dds",
-	Sparks = "rbxasset://textures/particles/fire_sparks_main.dds",
-	Mote = "rbxasset://textures/particles/sparkles_main.dds",
+	Smoke = Assets.Textures.Smoke,
+	Fire = Assets.Textures.Flame,
+	Sparks = Assets.Textures.Ember,
+	Mote = Assets.Textures.Leaf,
 }
 
 export type PartOptions = { Collide: boolean?, Query: boolean?, Transparency: number?, Shadow: boolean?, Shape: Enum.PartType?, Class: string? }

@@ -3,8 +3,13 @@ local Tween=game:GetService("TweenService")
 local Debris=game:GetService("Debris")
 local Kit=require(script.Parent.HudKit)
 local Effects={}
-function Effects.new(state: any,camera: any): any
+function Effects.new(state: any,camera: any,ui: any): any
  local disconnect=state:OnCue(function(cue: any)
+  if cue.Kind=="SignatureUnlocked" then
+   local own=state:Own()
+   if own and state:Get(cue.Source)==own then ui:ShowBanner("SIGNATURE STANCE AWAKENED",tostring(cue.Data.weapon).." · Mastery V · Heavy on a broken stance",4) end
+   return
+  end
   if cue.Kind~="SignatureFinisher" then return end
   local d=cue.Data;local actor=state:Get(cue.Source)
   local own=state:Own();local point=d.position

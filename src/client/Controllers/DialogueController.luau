@@ -25,6 +25,7 @@ function Controller.new(camera: any,input: any,ui: any): any
  return self
 end
 function Controller.Close(self: any)
+ if self.Portrait then self.Portrait:Destroy();self.Portrait=nil end
  self.Generation+=1;local wasOpen=self.Open;self.Open=false;self.View.Gui.Enabled=false;self.Camera.DialogueFrame=nil
  if wasOpen then self.Input:SetMenu(false) end;self.Remote:FireServer({action="Close"})
  View.clear(self.View)
@@ -34,6 +35,7 @@ function Controller.Receive(self: any,p: any)
  if p.action=="Result" then self.UI:ShowBanner("THE INSCRIPTION",tostring(p.message),2);return end
  if not p.view then return end
  if self.UI.Altar.Visible then self.UI:CloseAltar() end
+ if self.Portrait then self.Portrait:Destroy();self.Portrait=nil end
  self.Generation+=1;local generation=self.Generation
  self.Open=true;self.View.Gui.Enabled=true;self.Input:SetMenu(true)
  if p.action=="Dialogue" then
@@ -41,6 +43,19 @@ function Controller.Receive(self: any,p: any)
   View.render(self.View,p,function(packet: any) packet.revision=self.Revision;self.Remote:FireServer(packet) end)
   local root=Players.LocalPlayer.Character and Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") :: BasePart?
   local point=p.point+Vector3.new(0,2,0)
+  if p.projection then
+   local world=workspace:FindFirstChild("JadeCataclysm")
+   local original=world and world:FindFirstChild("Lin")
+   if original and original:IsA("Model") then
+    local spirit=original:Clone()
+    for _,child in spirit:GetDescendants() do
+     if child:IsA("BasePart") then child.Transparency=0.35;child.CanCollide=false
+     elseif child:IsA("ProximityPrompt") or child:IsA("BillboardGui") then child:Destroy() end
+    end
+    spirit.Parent=workspace.CurrentCamera;spirit:PivotTo(CFrame.new(p.point+Vector3.new(3,2,0)))
+    self.Portrait=spirit;point=p.point+Vector3.new(3,4,0)
+   end
+  end
   if root then
    local direction=root.Position-point;direction=if direction.Magnitude>0.1 then direction.Unit else Vector3.zAxis
    local shoulder=direction:Cross(Vector3.yAxis)*2

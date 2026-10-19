@@ -18,6 +18,7 @@ local Characters = require(script.Parent:WaitForChild("CharacterService") :: Mod
 local AI = require(script.Parent:WaitForChild("AIService") :: ModuleScript)
 local BossArenas = require(script.Parent.BossArenas)
 local BossRules = require(Shared.Shared.BossEncounterRules)
+local Progression = require(Shared.Shared.ProgressionRules)
 local Persistence = require(script.Parent:WaitForChild("PersistenceService") :: ModuleScript) :: any
 local ProfileStore = require(script.Parent:WaitForChild("ProfileStore") :: ModuleScript)
 
@@ -501,7 +502,7 @@ local function placeStain(s: Session, stain: ProfileStore.Bloodstain)
 	glow.Range = 10
 	glow.Parent = part
  local attachment=Instance.new("Attachment");attachment.Parent=part
- local wraith=Instance.new("ParticleEmitter");wraith.Name="CrimsonWraith";wraith.Texture="rbxasset://textures/particles/smoke_main.dds"
+ local wraith=Instance.new("ParticleEmitter");wraith.Name="CrimsonWraith";wraith.Texture=require(Shared.Shared.PresentationAssets).Textures.Smoke;wraith.Enabled=wraith.Texture~=""
  wraith.Color=ColorSequence.new(Color3.fromRGB(205,24,42));wraith.Lifetime=NumberRange.new(1.2,2.2);wraith.Rate=12
  wraith.Speed=NumberRange.new(1,2);wraith.LightEmission=0.7;wraith.Size=NumberSequence.new({NumberSequenceKeypoint.new(0,0.4),NumberSequenceKeypoint.new(0.5,1.5),NumberSequenceKeypoint.new(1,0)})
  wraith.Transparency=NumberSequence.new({NumberSequenceKeypoint.new(0,0.4),NumberSequenceKeypoint.new(1,1)});wraith.Parent=attachment
@@ -906,11 +907,18 @@ local function onEvent(event: any, _point: Vector3?)
   local fighter=Characters.GetFighter(event.Source)
   local weapon=if fighter then fighter.Weapon else "Jian"
   enqueue(killer,"WeaponMastery",function(store: any): (boolean,string?)
-   return store:Transaction(killer.UserId,function(p: any)
-    local rules=require(game:GetService("ReplicatedStorage").AsurasPath.Shared.ProgressionRules)
-    rules.mastery(p,weapon,if agent.Kind=="Mob" then 30 else 250)
-    local m=p.inventory.Materials;m.SpiritIronOre=(m.SpiritIronOre or 0)+1
+   local unlocked=false
+   local ok,err=store:Transaction(killer.UserId,function(p: any)
+    local rank=Progression.masteryRank(p.weaponMastery[weapon] or 0)
+    Progression.mastery(p,weapon,if agent.Kind=="Mob" then 30 else 250)
+    unlocked=rank<5 and Progression.masteryRank(p.weaponMastery[weapon] or 0)>=5
+    local m=p.inventory.Materials;m.SpiritIronOre=math.min(9007199254740991,(m.SpiritIronOre or 0)+1)
    end)
+   if ok then
+    Characters.RefreshProgression(killer.UserId)
+    if unlocked then Characters.Cue("SignatureUnlocked",killer.UserId,{weapon=weapon}) end
+   end
+   return ok,err
   end)
   if agent.Kind=="Mob" then
    killer.Unbanked+=agent.Essence;killer.Player:SetAttribute("AsuraUnbanked",killer.Unbanked)

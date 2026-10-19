@@ -30,7 +30,7 @@ end
 local function send(player: Player,s: any,message: string?)
  serial+=1;s.Revision=serial
  remote:FireClient(player,{action="Dialogue",npc=s.NPC,node=s.Node,panel=s.Panel,revision=s.Revision,
-  point=s.Point,view=Actions.view(player.UserId),message=message})
+  point=s.Point,projection=s.Projection,view=Actions.view(player.UserId),message=message})
 end
 function Service.Open(player: Player,npc: string,altarId: string?)
  local n=Catalog.NPCs[npc];if not n or busy[player.UserId] then return end
@@ -41,7 +41,10 @@ function Service.Open(player: Player,npc: string,altarId: string?)
  if not nearby(player,point) or not Actions.view(player.UserId) then return end
  World.Flush(player.UserId,3)
  if not nearby(player,point) then return end
- local s={NPC=npc,Node=n.Start,Panel=nil,Point=point,Expires=os.clock()+120,Revision=0}
+ local node=n.Start
+ local view=Actions.view(player.UserId)
+ if npc=="Lin" and view and view.sovereigns==6 then node="Release" end
+ local s={NPC=npc,Node=node,Panel=nil,Point=point,Expires=os.clock()+120,Revision=0,Projection=altarId~=nil}
  sessions[player.UserId]=s;send(player,s)
 end
 local function lore(player: Player,id: string)
@@ -73,7 +76,7 @@ local function handle(player: Player,p: any)
  local success,ok,err=pcall(Actions.run,player,s,p,function() return valid(player,s) end)
  busy[id]=nil
  if success and ok then Actions.refresh(id) end
- if valid(player,s) then send(player,s,if success and ok then "The path remembers." else tostring(if success then err else ok)) end
+ if valid(player,s) then send(player,s,if success and ok then "The path remembers." else string.gsub(tostring(if success then err else ok),"^.-:%d+: ","")) end
 end
 function Service.Start()
  assert(not root,"DialogueService already started")

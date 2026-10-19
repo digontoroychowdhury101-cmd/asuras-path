@@ -3,6 +3,7 @@
 local Debris = game:GetService("Debris")
 local TweenService = game:GetService("TweenService")
 local Camera = require(script.Parent:WaitForChild("CameraController") :: ModuleScript)
+local Assets = require(game:GetService("ReplicatedStorage"):WaitForChild("AsurasPath"):WaitForChild("Shared"):WaitForChild("PresentationAssets") :: ModuleScript)
 local Effects = {}
 Effects.__index = Effects
 type Fields = {
@@ -59,7 +60,7 @@ function Effects.Bind(self: MovementEffects, model: Model, root: BasePart)
 	foot.Position = Vector3.new(0, -root.Size.Y * 0.5 - 1.4, 0)
 	foot.Parent = root
 	local dust = Instance.new("ParticleEmitter")
-	dust.Texture = "rbxasset://textures/particles/smoke_main.dds"
+	dust.Texture = Assets.Textures.Smoke
 	dust.Color = ColorSequence.new(Color3.fromRGB(147, 131, 107))
 	dust.Size = NumberSequence.new({ NumberSequenceKeypoint.new(0, 0.3), NumberSequenceKeypoint.new(1, 1.3) })
 	dust.Transparency = NumberSequence.new({ NumberSequenceKeypoint.new(0, 0.55), NumberSequenceKeypoint.new(1, 1) })
@@ -94,7 +95,7 @@ end
 function Effects.Step(self: MovementEffects, dt: number, state: string, turn: number, grounded: boolean)
 	self.Camera:SetMovement(state == "Gliding", state == "Sliding", turn)
 	for _, trail in self.Trails do trail.Enabled = state == "Gliding" end
-	if self.Dust then self.Dust.Enabled = state == "Sliding" and grounded end
+	if self.Dust then self.Dust.Enabled = state == "Sliding" and grounded and self.Dust.Texture ~= "" end
 	local joint = self.Joint
 	if joint and self.SpinDuration > 0 then
 		self.SpinTime = math.min(self.SpinTime + dt, self.SpinDuration)

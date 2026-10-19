@@ -50,9 +50,10 @@ local CATCH_RADIUS = 1300
 local POLL_INTERVAL = 0.5
 local SMITH_RADIUS = 10
 
-local TEXTURE_FIRE = "rbxasset://textures/particles/fire_main.dds"
-local TEXTURE_SPARKS = "rbxasset://textures/particles/fire_sparks_main.dds"
-local TEXTURE_SMOKE = "rbxasset://textures/particles/smoke_main.dds"
+local Assets = require(Shared.Shared.PresentationAssets)
+local TEXTURE_FIRE = Assets.Textures.Flame
+local TEXTURE_SPARKS = Assets.Textures.Ember
+local TEXTURE_SMOKE = Assets.Textures.Smoke
 
 -- Palette
 local FLAG_LIGHT = Color3.fromRGB(80, 87, 86)
@@ -176,7 +177,7 @@ end
 local function embers(parent: BasePart, rate: number, spread: number, lift: number): ParticleEmitter
 	local e = Instance.new("ParticleEmitter")
 	e.Name = "Embers"
-	e.Texture = TEXTURE_SPARKS
+	e.Texture = TEXTURE_SPARKS;e.Enabled=e.Texture~=""
 	e.Rate = rate
 	e.Lifetime = NumberRange.new(2.5, 4.5)
 	e.Speed = NumberRange.new(3, 7)
@@ -305,7 +306,7 @@ local function buildPlaza(parent: Folder): BasePart
 		local pool=center*CFrame.new(side*16.25,0,0)
 		part(plaza,"Basin",Vector3.new(12.9,0.1,32.4),pool*CFrame.new(0,0.02,0),SHADOW,Enum.Material.Slate)
 		part(plaza,"StillWater",Vector3.new(12.5,0.05,32),pool*CFrame.new(0,0.09,0),WATER,Enum.Material.Glass,
-			{Collide=false,Query=false,Shadow=false,Transparency=0.28,Reflectance=0.38})
+			{Collide=false,Query=false,Shadow=false,Transparency=0.28,Reflectance=0.94})
 		for edge=-1,1,2 do
 			part(plaza,"BasinCoping",Vector3.new(0.45,0.3,33),pool*CFrame.new(edge*6.5,0.16,0),STONE_DARK,Enum.Material.Slate)
 			part(plaza,"BasinCoping",Vector3.new(13.4,0.3,0.5),pool*CFrame.new(0,0.16,edge*16.5),STONE_DARK,Enum.Material.Slate)
@@ -335,7 +336,7 @@ local function buildPlaza(parent: Folder): BasePart
 	end
 	local flame=Instance.new("ParticleEmitter")
 	flame.Name="RitualFlame"
-	flame.Texture=TEXTURE_FIRE
+	flame.Texture=TEXTURE_FIRE;flame.Enabled=flame.Texture~=""
 	flame.Rate=9
 	flame.Lifetime=NumberRange.new(0.5,0.85)
 	flame.Speed=NumberRange.new(0.7,1.8)
@@ -348,7 +349,7 @@ local function buildPlaza(parent: Folder): BasePart
 	embers(coals,3,15,0.4)
 	light(coals,LANTERN,23,1.65,true)
 	local smoke=Instance.new("ParticleEmitter")
-	smoke.Texture=TEXTURE_SMOKE
+	smoke.Texture=TEXTURE_SMOKE;smoke.Enabled=smoke.Texture~=""
 	smoke.Rate=2
 	smoke.Lifetime=NumberRange.new(4,7)
 	smoke.Speed=NumberRange.new(0.5,0.9)
@@ -464,7 +465,7 @@ local function buildGateway(parent: Folder): BasePart
 	end
 	light(veil,PORTAL,16,0.8,false)
 	local mist=Instance.new("ParticleEmitter")
-	mist.Texture=TEXTURE_SMOKE
+	mist.Texture=TEXTURE_SMOKE;mist.Enabled=mist.Texture~=""
 	mist.Rate=4
 	mist.Lifetime=NumberRange.new(3,4)
 	mist.Speed=NumberRange.new(0.2,0.6)
@@ -736,7 +737,7 @@ local function buildSky(parent: Folder)
 		local anchor=part(sky,"MistBank",Vector3.new(150,5,110),CFrame.new(ORIGIN+Vector3.new(math.cos(angle)*190,-48,math.sin(angle)*190)),STONE,Enum.Material.SmoothPlastic,
 			{Collide=false,Query=false,Transparency=1,Shadow=false})
 		local mist=Instance.new("ParticleEmitter")
-		mist.Texture=TEXTURE_SMOKE
+		mist.Texture=TEXTURE_SMOKE;mist.Enabled=mist.Texture~=""
 		mist.Rate=1.2
 		mist.Lifetime=NumberRange.new(18,25)
 		mist.Speed=NumberRange.new(0.1,0.5)
@@ -926,10 +927,6 @@ function SanctuaryService.Start()
 	table.insert(connections, reinforce.Triggered:Connect(function(player: Player)
 		local Dialogue=require(script.Parent.DialogueService)
         Dialogue.Open(player,"Gao")
-        local ok,reason=true,"Dialogue"
-		if not ok then
-			result(player, false, reason)
-		end
 	end))
 	table.insert(connections, refill.Triggered:Connect(function(player: Player)
 		local ok, reason = WorldService.RefillElixirs(player.UserId)

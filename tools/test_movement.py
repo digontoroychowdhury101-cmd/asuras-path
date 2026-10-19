@@ -8,6 +8,7 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 sources = [
+    ("PresentationAssets", "src/shared/PresentationAssets.luau"),
     ("CombatSettings", "src/shared/CombatSettings.luau"),
     ("InputBuffer", "src/simulation/InputBuffer.luau"),
     ("MovementMath", "src/client/Controllers/MovementMath.luau"),

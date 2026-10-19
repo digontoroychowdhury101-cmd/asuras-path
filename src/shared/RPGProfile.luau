@@ -65,7 +65,8 @@ function RPG.validate(p: any): (boolean,string?)
  if type(p.weaponMastery)~="table" or type(p.arenaWagers)~="table" then return false,"Missing mastery or wagers" end
  for id,xp in p.weaponMastery do if not p.inventory.Weapons[id] or not I.integer(xp,0,9007199254740991) then return false,"Invalid mastery" end end
  local count=0;for id,b in p.arenaWagers do
-  count+=1;if count>512 or type(id)~="string" or #id==0 or #id>64 or type(b)~="table" or not I.integer(b.Fighter,-9007199254740991,9007199254740991)
+  count+=1
+  if count>512 or type(id)~="string" or #id==0 or #id>64 or type(b)~="table" or not I.integer(b.Fighter,-9007199254740991,9007199254740991)
    or not Arena.validWager(b.Amount) or (b.State~="Pending" and b.State~="Settled") then return false,"Invalid wager" end
  end
  return true,nil

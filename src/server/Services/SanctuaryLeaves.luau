@@ -3,13 +3,14 @@
 -- Crimson leaves for the Sanctuary: a fluttering ParticleEmitter shed from the Veiled Ascetic's
 -- canopy (and the plaza sky), plus fallen-leaf scatter on the dais, basins and stairs.
 -- Textures are uploaded Decals (assets/build/veiled_titan/leaves/, ids in assets/ASSET_IDS.md);
--- until they exist the emitter uses the stock spark texture and the scatter uses tiny flat parts.
+-- The emitter waits for the leaf upload; scatter retains small authored slivers as a fallback.
+local Assets = require(game:GetService("ReplicatedStorage").AsurasPath.Shared.PresentationAssets)
 local Leaves = {}
 
-Leaves.LEAF_TEXTURE = "" -- rbxassetid://<crimson_leaf.png>  (single leaf, alpha)
-Leaves.SCATTER_TEXTURE = "" -- rbxassetid://<leaf_scatter.png> (cluster of fallen leaves, alpha)
+Leaves.LEAF_TEXTURE = Assets.Textures.Leaf -- rbxassetid://<crimson_leaf.png>  (single leaf, alpha)
+Leaves.SCATTER_TEXTURE = Assets.Textures.LeafScatter -- rbxassetid://<leaf_scatter.png> (cluster of fallen leaves, alpha)
 
-local FALLBACK_TEXTURE = "rbxasset://textures/particles/sparkles_main.dds"
+local FALLBACK_TEXTURE = ""
 local CRIMSON = { Color3.fromRGB(150, 16, 24), Color3.fromRGB(122, 10, 18), Color3.fromRGB(176, 30, 34), Color3.fromRGB(96, 12, 16) }
 
 export type EmitterProfile = {
@@ -55,6 +56,7 @@ function Leaves.Emitter(source: BasePart, profile: EmitterProfile?): ParticleEmi
 	emitter.RotSpeed = NumberRange.new(-160, 160)
 	emitter.Shape = Enum.ParticleEmitterShape.Box
 	emitter.ShapeStyle = Enum.ParticleEmitterShapeStyle.Volume
+	emitter.Enabled = textured
 	emitter.Parent = source
 	return emitter
 end

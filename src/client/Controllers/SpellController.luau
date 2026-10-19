@@ -24,6 +24,7 @@ function Controller.new(state: any,ui: any,net: Instance): SpellController
  local remote=net:WaitForChild("ArsenalIntent") :: RemoteEvent
  local self: any=setmetatable({State=state,Ui=ui,Remote=remote,Slots={"ThunderclapPalm","GaleStep"},Cooldowns={},Connections={}},Controller)
  local function toggle()
+  if ui.Input.MenuOpen and not Panel.isOpen(self.Panel) then return end
   if Panel.isOpen(self.Panel) then Panel.close(self.Panel) else Panel.open(self.Panel);remote:FireServer({action="State"}) end
  end
  self.Panel=Panel.new(ui.Gui,function(packet: any) remote:FireServer(packet) end)

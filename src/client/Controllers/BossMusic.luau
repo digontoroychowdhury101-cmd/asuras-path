@@ -1,8 +1,7 @@
 --!strict
 -- Authored SoundService.BossMusic_<bossId> tracks override the built-in rhythmic placeholder.
 local SoundService = game:GetService("SoundService")
-local RunService = game:GetService("RunService")
-local Kit = require(script.Parent.HudKit)
+local Audio = require(script.Parent.SpatialAudio)
 local Music = {}
 export type Score = { Intensity: number, Beat: number, Track: Sound?, Connection: RBXScriptConnection? }
 function Music.new(): Score
@@ -21,14 +20,7 @@ function Music.set(score: Score, bossId: string, intensity: number)
 		if authored and authored:IsA("Sound") then
 			score.Track = authored:Clone(); score.Track.Parent = SoundService; score.Track.Looped = true; score.Track:Play()
 		else
-			score.Connection = RunService.Heartbeat:Connect(function(dt: number)
-				score.Beat += dt
-				local interval = 60 / (72 + score.Intensity * 24)
-				if score.Beat >= interval then
-					score.Beat %= interval
-					Kit.cue("rbxasset://sounds/impact_water.mp3", 0.12 + score.Intensity * 0.04, 0.45 + score.Intensity * 0.08)
-				end
-			end)
+			score.Track = Audio.play("BossDrone", SoundService, 0.28, true)
 		end
 	end
 	score.Intensity = intensity

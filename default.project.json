@@ -232,6 +232,12 @@
           },
           "DialogueRules": {
             "$path": "src/shared/DialogueRules.luau"
+          },
+          "PresentationAssets": {
+            "$path": "src/shared/PresentationAssets.luau"
+          },
+          "EnvironmentProfiles": {
+            "$path": "src/shared/EnvironmentProfiles.luau"
           }
         },
         "Simulation": {
@@ -321,7 +327,7 @@
             "$path": "src/server/MatchJournal.luau"
           },
           "EnvironmentService": {
-            "$path": "src/server/EnvironmentService.luau"
+            "$path": "src/server/Services/EnvironmentService.luau"
           },
           "CharacterService": {
             "$path": "src/server/CharacterService.luau"
@@ -448,6 +454,21 @@
           },
           "WagerService": {
             "$path": "src/server/Services/WagerService.luau"
+          },
+          "PbrAssets": {
+            "$path": "src/server/Services/PbrAssets.luau"
+          },
+          "PresentationDressing": {
+            "$path": "src/server/Services/PresentationDressing.luau"
+          },
+          "PresentationAudit": {
+            "$path": "src/server/Services/PresentationAudit.luau"
+          },
+          "BossSkin": {
+            "$path": "src/server/Services/BossSkin.luau"
+          },
+          "PresentationService": {
+            "$path": "src/server/Services/PresentationService.luau"
           }
         }
       }
@@ -561,6 +582,30 @@
             },
             "MasteryEffects": {
               "$path": "src/client/Controllers/MasteryEffects.luau"
+            },
+            "EnvironmentController": {
+              "$path": "src/client/Controllers/EnvironmentController.luau"
+            },
+            "SpatialAudio": {
+              "$path": "src/client/Controllers/SpatialAudio.luau"
+            },
+            "SoundscapeController": {
+              "$path": "src/client/Controllers/SoundscapeController.luau"
+            },
+            "CombatFeedback": {
+              "$path": "src/client/Controllers/CombatFeedback.luau"
+            },
+            "CombatVfx": {
+              "$path": "src/client/Controllers/CombatVfx.luau"
+            },
+            "CombatSurfaces": {
+              "$path": "src/client/Controllers/CombatSurfaces.luau"
+            },
+            "WeaponTrails": {
+              "$path": "src/client/Controllers/WeaponTrails.luau"
+            },
+            "QiVfx": {
+              "$path": "src/client/Controllers/QiVfx.luau"
             }
           }
         }

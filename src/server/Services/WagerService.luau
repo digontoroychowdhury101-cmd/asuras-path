@@ -21,12 +21,19 @@ local function near(id: number): boolean
  local e=Characters.GetActor(id);return e~=nil and not e.Duel and e.Fighter.State=="Idle" and Build.near(e.Root.Position)
 end
 local function settle(id: number,matchId: string,result: any)
- Persistence.Transaction(id,function(p: any) Rules.settle(p,matchId,result.Winner,result.Refund==true) end)
+ local payout=0;local changed=false
+ local ok=Persistence.Transaction(id,function(p: any)
+  local bet=p.arenaWagers[matchId];changed=bet~=nil and bet.State=="Pending"
+  payout=Rules.settle(p,matchId,result.Winner,result.Refund==true)
+ end)
+ local player=Players:GetPlayerByUserId(id)
+ if ok and changed and player then remote:FireClient(player,{action="Settlement",payout=payout,refund=result.Refund==true}) end
 end
 function Service.Recover(id: number)
  if busy[id] then return end;busy[id]=true
  local p=Persistence.Get(id)
  if p then for matchId,bet in p.arenaWagers do if bet.State=="Pending" then
+  if matches[matchId] and matches[matchId].Phase~="Resolved" then continue end
   local ok,record=Ledger:Read(matchId)
   if ok and record and record.state~="Active" then
    settle(id,matchId,record.results or {Refund=true})
@@ -97,7 +104,7 @@ function Service.Start(colosseum: any)
 end
 function Service.Close(deadline: number?)
  running=false
- deadline=deadline or os.clock()+5
+ local endsAt=deadline or os.clock()+5
  repeat
   for id in matches do
    local result=outcomes[id] or {Refund=true}
@@ -105,7 +112,7 @@ function Service.Close(deadline: number?)
   end
   if next(matches)==nil then break end
   task.wait(0.15)
- until os.clock()>=deadline
+ until os.clock()>=endsAt
 end
 function Service.Destroy()
  Service.Close();if arena then arena.SpectatorBegin=nil;arena.SpectatorResult=nil end

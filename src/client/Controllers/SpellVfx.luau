@@ -5,6 +5,7 @@ local Workspace=game:GetService("Workspace")
 local Shared=game:GetService("ReplicatedStorage"):WaitForChild("AsurasPath")
 local simFolder=Shared:WaitForChild("Simulation")
 local Spells=require(simFolder:WaitForChild("SpellSchema") :: ModuleScript)
+local Qi=require(script.Parent.QiVfx)
 local Vfx={}
 local colors: {[string]: Color3}={CelestialThunder=Color3.fromRGB(112,210,255),CrimsonFlame=Color3.fromRGB(255,91,42),AbyssalVoid=Color3.fromRGB(113,66,172),SpiritTalismans=Color3.fromRGB(91,236,194)}
 local casting: {[number]: {Instance}}={}
@@ -23,6 +24,7 @@ end
 local function beam(a: Vector3,b: Vector3,color: Color3,duration: number)
  local first=part("QiBeamOrigin",a,color,duration+0.3);first.Transparency=1
  local last=part("QiBeamHead",a,color,duration+0.3)
+ Qi.tail(last,color)
  local aa=Instance.new("Attachment");aa.Parent=first;local ab=Instance.new("Attachment");ab.Parent=last
  local v=Instance.new("Beam");v.Attachment0=aa;v.Attachment1=ab;v.Color=ColorSequence.new(color);v.Width0=0.35;v.Width1=0.65
  v.FaceCamera=true;v.LightEmission=1;v.Parent=first
@@ -32,7 +34,10 @@ function Vfx.cancel(id: number)
  for _,p in casting[id] or {} do p:Destroy() end;casting[id]=nil
 end
 function Vfx.cue(cue: any,state: any)
- local d=cue.Data;local s=if type(d.spell)=="string" then Spells.get(d.spell) else nil
+ local own=state:Own()
+ local d=cue.Data
+ if own and own.Root and typeof(d.position)=="Vector3" and (own.Root.Position-d.position).Magnitude>100 then return end
+ local s=if type(d.spell)=="string" then Spells.get(d.spell) else nil
  local color=if s then colors[s.Discipline] else colors.SpiritTalismans
  if cue.Kind=="SpellInterrupted" then Vfx.cancel(cue.Source);return end
  if typeof(d.position)~="Vector3" then return end
@@ -42,7 +47,8 @@ function Vfx.cue(cue: any,state: any)
   local p=ring(d.position-Vector3.new(0,2.6,0),color,4,duration)
   casting[cue.Source]={p}
   local e=state:Get(cue.Source);local hand=if e then e.Model:FindFirstChild("RightHand") else nil
-  if hand then
+  if hand and hand:IsA("BasePart") then
+   local seal=Qi.seal(hand,color,duration);if seal then table.insert(casting[cue.Source],seal) end
    local glow=Instance.new("Highlight");glow.Adornee=hand;glow.FillColor=color;glow.FillTransparency=0.2;glow.OutlineTransparency=1;glow.Parent=p
    local light=Instance.new("PointLight");light.Color=color;light.Range=10;light.Brightness=2;light.Parent=hand
    Debris:AddItem(light,duration);table.insert(casting[cue.Source],light)
@@ -77,6 +83,10 @@ function Vfx.cue(cue: any,state: any)
    end
   end
  elseif cue.Kind=="SpellPulse" then
+  if d.spell=="FissureSlam" then
+   local e=state:Get(cue.Source);local p=part("FissureAnchor",d.position,color,1.6);p.Transparency=1
+   Qi.rupture(p,d.position,if e and e.Root then e.Root.CFrame.LookVector else Vector3.zAxis,color,if e then e.Model else nil)
+  end
   ring(d.position-Vector3.new(0,2.4,0),color,math.min(d.range or 5,20),0.65)
   if s and s.Id=="GraveTendrils" then
    for n=1,5 do

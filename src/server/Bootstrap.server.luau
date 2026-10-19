@@ -40,6 +40,7 @@ local Magic = require(Services:WaitForChild("MagicService") :: ModuleScript)
 local Loot = require(Services:WaitForChild("LootService") :: ModuleScript)
 local Dialogue = require(Services:WaitForChild("DialogueService") :: ModuleScript)
 local Wagering = require(Services:WaitForChild("WagerService") :: ModuleScript)
+local Presentation = require(Services:WaitForChild("PresentationService") :: ModuleScript)
 local WeaponEffects = require(Services:WaitForChild("WeaponEffects") :: ModuleScript)
 
 type Bucket = Protocol.Bucket
@@ -70,7 +71,9 @@ local function trace(problem: any): string
 end
 
 local function teardown()
- if started.Narrative then pcall(Dialogue.Destroy);pcall(Wagering.Destroy) end
+ pcall(Presentation.Destroy)
+ if started.Dialogue then pcall(Dialogue.Destroy) end
+ if started.Wagers then pcall(Wagering.Destroy) end
 	for _, disconnect in disconnectors do
 		pcall(disconnect)
 	end
@@ -367,9 +370,11 @@ local ok, problem = xpcall(function(): boolean
 	started.Arsenal = true
 	Magic.Start(); Loot.Start(); WeaponEffects.Start()
 	Colosseum.Start()
- Dialogue.Start();Wagering.Start(Colosseum)
- started.Narrative=true
+ Dialogue.Start();started.Dialogue=true
+ Wagering.Start(Colosseum);started.Wagers=true
 	started.Colosseum = true
+	local presented, presentationError = pcall(Presentation.Start)
+	if not presented then warn("[Asura AV] Dressing skipped: " .. tostring(presentationError)) end
 
 	table.insert(disconnectors, Characters.Subscribe(onCombatEvent))
 	table.insert(disconnectors, Characters.OnEntityAdded(onEntityAdded))

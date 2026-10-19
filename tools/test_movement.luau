@@ -64,7 +64,8 @@ local registry = { WorldStateController = {}, CameraController = {} }
 local folder = { WaitForChild = function(self, name) return if name == "AsurasPath" or name == "Simulation" or name == "Shared" then self else name end }
 -- Resolve replicated dependencies against the actual Rojo hierarchy, not a permissive mock.
 local function tree(children)
-	return { WaitForChild = function(_, name) return assert(children[name], "Missing replicated child: " .. name) end }
+	children.WaitForChild = function(_, name) return assert(children[name], "Missing replicated child: " .. name) end
+	return children
 end
 local replicated = tree({}) -- REPLICATION_INSERT
 local script = { Parent = folder }
