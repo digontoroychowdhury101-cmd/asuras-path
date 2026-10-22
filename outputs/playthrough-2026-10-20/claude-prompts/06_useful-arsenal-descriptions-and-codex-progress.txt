@@ -1,0 +1,21 @@
+Continue Asura's Path repairs — batch 06/26: Useful Arsenal descriptions and Codex progress.
+
+Apply the shared operating brief (outputs/playthrough-2026-10-20/claude-prompts/00_OPERATING_BRIEF.txt; read once per chat) and current PROGRESS.md. Read report findings #41, #42 only, plus relevant evidence. Implement this batch now.
+
+Improve information in the existing Arsenal and Codex. Spell cards need a short functional description, targeting/range, important effects, Qi cost and cooldown. Weapon cards need playstyle/reach/weight and a useful comparison based on real schemas and equipped state. Use current scaling functions for any numbers; avoid invented or duplicated balance values.
+Make slot 1/2 labels unmistakable in the actual font and display the binding chosen in batch 02. Keep touch/controller selection and scrolling usable.
+Give Codex a useful empty state, discovered/total inscriptions and sovereign progress, clear sections and a brief discovery instruction. Populate entries only from legitimate discovered flags; keep undiscovered lore appropriately hidden. Inspect empty, partial and complete layouts. Preserve existing narrative writing unless clarity requires a small edit.
+
+Start near these files; follow only necessary dependencies:
+- src/client/Controllers/ArsenalTabs.luau
+- src/client/Controllers/ArsenalPanel.luau
+- src/client/Controllers/DialogueView.luau
+- src/client/Controllers/DialogueController.luau
+- src/shared/ArsenalCatalog.luau
+- src/shared/NarrativeCatalog.luau
+- src/simulation/SpellSchema.luau
+
+Acceptance and focused verification:
+Inspect both starting spells/weapons, a seeded diagnostic owned item, all three Arsenal tabs, empty/partial/full Codex and long text. Seeded state only proves layout, not earned unlock delivery. Ensure menus neither expose undiscovered rewards as owned nor leave movement/menu state stuck.
+
+Update the repair ledger and PROJECT_STATE.md. State implementation versus verification precisely, then stop at this batch boundary.

@@ -9,6 +9,7 @@ HEADER = r'''--!nonstrict
 local Schema=require("../src/shared/ProfileSchema")
 local Store=require("../src/server/ProfileStore")
 local Progress=require("../src/shared/ProgressionRules")
+local CombatSettings=require("../src/shared/CombatSettings")
 local Catalog=require("../src/shared/NarrativeCatalog")
 local DialogueRules=require("../src/shared/DialogueRules")
 local ArenaRules=require("../src/shared/ArenaRules")
@@ -71,6 +72,7 @@ function Methods:Clone()
  for _,c in self.Children do local child=c:Clone();child.Parent=copy end;return copy
 end
 function Methods:PivotTo(cf) self.Pivot=cf end
+function Methods:FindFirstChildOfClass(kind) for _,c in self.Children do if c.ClassName==kind then return c end end end
 function Methods:FindFirstChild(name) for _,c in self.Children do if c.Name==name and not c.Destroyed then return c end end end
 function Methods:WaitForChild(name) return assert(self:FindFirstChild(name),name) end
 function Methods:Destroy() self.Destroyed=true end
@@ -84,7 +86,7 @@ local function remote(name)
 end
 remote("DialogueIntent");remote("WagerIntent")
 local net=setmetatable({WaitForChild=function(self,key) return self[key] end},{__index=remotes})
-local actors={};local player={UserId=7,Parent=true,CharacterRemoving=signal()}
+local actors={};local player={UserId=7,Parent=true,CharacterRemoving=signal(),CharacterAdded=signal()}
 player.Gui=Instance.new("PlayerGui")
 function player:WaitForChild() return self.Gui end
 player.Character=Instance.new("Model");local root=Instance.new("Part");root.Name="HumanoidRootPart";root.Position=vec();root.Parent=player.Character
@@ -94,9 +96,11 @@ function Players:GetPlayers() return if player.Parent then {player} else {} end
 local workspace={Children={},GetServerTimeNow=function() return clock end}
 workspace.FindFirstChild=Methods.FindFirstChild
 workspace.CurrentCamera=Instance.new("Camera")
+function workspace:Raycast() return nil end
+local RaycastParams={new=function() return {} end}
 local Run={Heartbeat=signal()}
 local inputService={InputBegan=signal(),GamepadEnabled=false}
-local services={ReplicatedStorage={AsurasPath={Shared={},Net=net}},Players=Players,RunService=Run,UserInputService=inputService,GuiService={},Workspace=workspace}
+local services={ReplicatedStorage={AsurasPath={Shared={},Net=net}},Players=Players,RunService=Run,UserInputService=inputService,GuiService={},Workspace=workspace,ProximityPromptService={Enabled=true}}
 local game={GetService=function(_,key) return assert(services[key],key) end}
 local db={};local database={UpdateAsync=function(_,key,fn)
  -- Invoke the callback twice and discard the speculative result, like an UpdateAsync retry.
@@ -108,7 +112,8 @@ local Persistence={Get=function(id) return engine:Get(id) end,Transaction=functi
 local refreshes=0;local cues={}
 local Characters={GetActor=function(id) return actors[id] end,Now=function() return clock end,RefreshProgression=function() refreshes+=1 end,GetFighter=function(id) return actors[id] and actors[id].Fighter end,IsInDuel=function() return false end,Cue=function(kind) table.insert(cues,kind) end}
 actors[7]={Root=root,Fighter={State="Idle"},Duel=nil}
-local World={Flush=function() end,Refresh=function() end,IsInBossFight=function() return false end}
+local kindled={Altar_SanctuaryBonfire=true,Altar_MonasteryGate=true}
+local World={Flush=function() end,Refresh=function() end,IsInBossFight=function() return false end,GetSession=function() return {Altars=kindled} end}
 local hunting=false
 local AI={IsHunting=function() return hunting end}
 local Loot={Sync=function() end}
@@ -119,7 +124,12 @@ function Kit.label(parent,text,_,_,_,props) props.Text=text;return Kit.make("Tex
 function Kit.panel(parent,name,props) props.Name=name;return Kit.make("Frame",parent,props) end
 local ui={Gui=Instance.new("ScreenGui"),Altar={Visible=false},Input={MenuOpen=false}}
 function ui.Input:SetMenu(open) self.MenuOpen=open end
+function ui.Input:Label(command) return if command=="Codex" then "J" else "?" end
 function ui:CloseAltar() self.Altar.Visible=false;self.Input:SetMenu(false) end
+function ui:OpenAltar(id) self.Altar.Visible=true;self.ReopenedAltar=id;self.Input:SetMenu(true) end
+local UiKit={Theme={Ink=1,Gold=2,Ivory=3,Muted=4,Ember=5,Edge=6,Surface=7,TitleFont="Title",BodyFont="Body"}}
+function UiKit.button(parent,text,_,fn) local b=Kit.make("TextButton",parent,{Text=text});b.Activated:Connect(function() if not b.Disabled then fn() end end);return b end
+function UiKit.setEnabled(b,on) b.Disabled=not on end
 function ui:ShowBanner() end
 function ui:ShowToast() end
 local camera={}
@@ -142,24 +152,49 @@ source += module("Forge", "src/server/ForgeService.luau", {
     "script.Parent.PersistenceService": "Persistence", "script.Parent.CharacterService": "Characters",
     "Shared.Shared.WorldDefinitions": "Definitions"})
 source += "local Shop={UpgradeWeapon=Forge.Upgrade,InfuseWeapon=Forge.Infuse,Trade=Forge.Trade}\n"
+source += module("EndingRules", "src/shared/EndingRules.luau", {})
+source += module("EndingCredits", "src/shared/EndingCredits.luau", {})
+source += module("Effects", "src/shared/EffectsPreference.luau", {})
 source += module("Actions", "src/server/Services/DialogueActions.luau", {
     "Shared.Shared.ProgressionRules": "Progress", "Shared.Shared.NarrativeCatalog": "Catalog",
     "script.Parent.PersistenceService": "Persistence", "script.Parent.CharacterService": "Characters",
-    "script.Parent.WorldService": "World", "script.Parent.ShopService": "Shop", "script.Parent.LootService": "Loot"})
-source += module("NarrativeWorld", "src/server/Services/NarrativeWorld.luau", {"Shared.NarrativeCatalog": "Catalog"})
+    "script.Parent.WorldService": "World", "script.Parent.ShopService": "Shop", "script.Parent.LootService": "Loot",
+    "Shared.Shared.EndingRules": "EndingRules"})
+source += module("InputMap", "src/shared/InputMap.luau", {})
+# CastFigures builds real rig geometry (covered by test_cast_visuals.luau); here a figure is a model with torso and head.
+source += """local CastFigures={statue=function(parent,key,_ground)
+ local model=Instance.new("Model");model.Name=key;model.Parent=parent
+ local torso=Instance.new("Part");torso.Name="UpperTorso";torso.Parent=model
+ local head=Instance.new("Part");head.Name="Head";head.Parent=model
+ return model,torso,head
+end}
+"""
+source += module("NarrativeWorld", "src/server/Services/NarrativeWorld.luau", {"Shared.NarrativeCatalog": "Catalog", "Shared.InputMap": "InputMap", "script.Parent.CastFigures": "CastFigures"})
 source += module("DialogueService", "src/server/Services/DialogueService.luau", {
     "Shared.Shared.NarrativeCatalog": "Catalog", "Shared.Shared.DialogueRules": "DialogueRules",
     "Shared.Shared.IntentProtocol": "Budget", "Shared.Shared.WorldDefinitions": "Definitions",
     "script.Parent.CharacterService": "Characters", "script.Parent.AIService": "AI",
-    "script.Parent.WorldService": "World", "script.Parent.DialogueActions": "Actions", "script.Parent.NarrativeWorld": "NarrativeWorld"})
-source += module("WagerWorld", "src/server/Services/WagerWorld.luau", {"game:GetService(\"ReplicatedStorage\").AsurasPath.Shared.WorldDefinitions": "Definitions"})
+    "script.Parent.WorldService": "World", "script.Parent.DialogueActions": "Actions", "script.Parent.NarrativeWorld": "NarrativeWorld",
+    "Shared.Shared.EndingRules": "EndingRules"})
+source += module("WagerWorld", "src/server/Services/WagerWorld.luau", {"game:GetService(\"ReplicatedStorage\").AsurasPath.Shared.WorldDefinitions": "Definitions", "game:GetService(\"ReplicatedStorage\").AsurasPath.Shared.InputMap": "InputMap"})
 source += module("WagerService", "src/server/Services/WagerService.luau", {
     "Shared.Shared.ArenaRules": "ArenaRules", "Shared.Shared.IntentProtocol": "Budget",
     "script.Parent.PersistenceService": "Persistence", "script.Parent.CharacterService": "Characters",
     "script.Parent.WagerLedger": "Ledger", "script.Parent.WagerWorld": "WagerWorld"})
+source += module("LevelPreview", "src/shared/LevelPreview.luau", {
+    "(script :: any).Parent.ProgressionRules": "Progress", "\"./ProgressionRules\"": "Progress",
+    "(script :: any).Parent.CombatSettings": "CombatSettings", "\"./CombatSettings\"": "CombatSettings"})
+source += module("CodexView", "src/client/Controllers/CodexView.luau", {"Shared.NarrativeCatalog": "Catalog", "Shared.WorldDefinitions": "Definitions", "Shared.InputMap": "InputMap", "Shared.EndingRules": "EndingRules"})
 source += module("View", "src/client/Controllers/DialogueView.luau", {
-    "script.Parent.HudKit": "Kit", "Shared.NarrativeCatalog": "Catalog", "Shared.ProgressionRules": "Progress"})
-source += module("DialogueClient", "src/client/Controllers/DialogueController.luau", {"script.Parent.DialogueView": "View", "script.Parent.HudKit": "Kit"})
+    "script.Parent.CodexView": "CodexView",
+    "script.Parent.HudKit": "Kit", "script.Parent.UiKit": "UiKit", "Shared.NarrativeCatalog": "Catalog",
+    "Shared.ProgressionRules": "Progress", "Shared.LevelPreview": "LevelPreview", "Shared.EffectsPreference": "Effects"})
+source += module("Portrait", "src/client/Controllers/PortraitCamera.luau", {})
+source += module("Visibility", "src/client/Controllers/HudVisibility.luau", {})
+source += module("DialogueClient", "src/client/Controllers/DialogueController.luau", {"script.Parent.DialogueView": "View", "script.Parent.HudKit": "Kit", "Shared.Shared.InputMap": "InputMap", "script.Parent.HudVisibility": "Visibility", "script.Parent.PortraitCamera": "Portrait"})
+source += module("EndingClient", "src/client/Controllers/EndingController.luau", {
+    "Shared.Shared.EndingRules": "EndingRules", "Shared.Shared.EndingCredits": "EndingCredits",
+    "Shared.Shared.EffectsPreference": "Effects", "script.Parent.HudKit": "Kit"})
 source += module("WagerClient", "src/client/Controllers/WagerController.luau", {
     "script.Parent.DialogueView": "View", "game:GetService(\"ReplicatedStorage\").AsurasPath.Shared.WorldDefinitions": "Definitions"})
 world_source=(ROOT / "src/server/Services/WorldService.luau").read_text()
@@ -192,11 +227,21 @@ send({action="Upgrade",revision=latest().revision})
 check(engine:Get(7).qiEssence==bank,"remote forge fails distance check")
 local altar=Definitions.Altars.Altar_SanctuaryBonfire.Placement
 move(altar.X,altar.Y+3,altar.Z)
-World.OnAltarRest(player,"Altar_SanctuaryBonfire")
-check(latest().npc=="Lin","rest opens shrine maiden session")
+packets=#remotes.DialogueIntent.Packets
+send({action="Summon",id="Altar_SanctuaryBonfire"})
+check(#remotes.DialogueIntent.Packets==packets+1 and latest().npc=="Lin","altar menu summon opens shrine maiden session")
+check(latest().projection==false and latest().altar=="Altar_SanctuaryBonfire" and latest().point.X==Catalog.NPCs.Lin.X,"Lin beside the bonfire speaks in person, framed on her own position")
 send({action="Choose",index=1,revision=latest().revision})
+check(latest().panel=="Level" and latest().view.cost==Progress.levelCost(Progress.level(engine:Get(7).attributes)),"ascension panel carries the real level cost")
+local cost=latest().view.cost
+assert(engine:Transaction(7,function(p) p.qiEssence=cost-1 end))
+send({action="Choose",index=1,revision=latest().revision});send({action="Choose",index=1,revision=latest().revision})
 send({action="Level",id="Vigor",revision=latest().revision})
-check(engine:Get(7).attributes.Vigor==11,"real shrine levels canonical attributes")
+check(engine:Get(7).attributes.Vigor==10 and engine:Get(7).qiEssence==cost-1 and string.find(latest().message,"Not enough Essence",1,true),"insufficient Essence refused with currency wording")
+assert(engine:Transaction(7,function(p) p.qiEssence=10000 end))
+local stale=latest().revision
+send({action="Level",id="Vigor",revision=stale});send({action="Level",id="Vigor",revision=stale})
+check(engine:Get(7).attributes.Vigor==11 and engine:Get(7).qiEssence==10000-cost,"real shrine levels canonical attributes exactly once per revision")
 hunting=true;bank=engine:Get(7).qiEssence
 send({action="Level",id="Vigor",revision=latest().revision})
 check(engine:Get(7).qiEssence==bank,"hunted player cannot level")
@@ -221,12 +266,125 @@ client.View.Buttons[1].Activated:Fire()
 check(remotes.DialogueIntent.Sent[#remotes.DialogueIntent.Sent].revision==latest().revision,"client choices carry current revision")
 check(client.View.Subtitle.RichText and client.View.Subtitle.MaxVisibleGraphemes>=1,"rich subtitle typewriter starts")
 client:Close();check(not ui.Input.MenuOpen and camera.DialogueFrame==nil,"dialogue close restores camera and input")
-move(altar.X,altar.Y+3,altar.Z);World.OnAltarRest(player,"Altar_SanctuaryBonfire");client:Receive(latest())
-check(client.Portrait~=nil,"altar summons shrine maiden portrait projection")
-client:Close();check(client.Portrait==nil,"projection cleaned when dialogue closes")
-assert(engine:Transaction(7,function(p) for _,id in Catalog.Sovereigns do p.defeatedBosses[id]=true end end))
-World.OnAltarRest(player,"Altar_SanctuaryBonfire")
-check(latest().node=="Release","all six sovereigns unlock the narrative ending")
+send({action="Codex"});check(latest().action=="Codex","codex request answered with server discovery flags");client:Receive(latest())
+local function texts() local all=client.View.Subtitle.Text.." "..client.View.Status.Text;for _,c in client.View.List.Children do if not c.Destroyed then all..=" "..tostring(c.Text) end end;return all end
+local shown=texts()
+check(string.find(shown,"1 / 8 Inscriptions",1,true) and string.find(shown,"Sovereigns at rest",1,true),"codex shows discovered totals")
+check(string.find(shown,Catalog.Lore.Pillars.Title,1,true)~=nil,"discovered inscription listed")
+local leaked=false
+for _,id in Catalog.LoreOrder do if id~="Pillars" and (string.find(shown,Catalog.Lore[id].Title,1,true) or string.find(shown,string.sub(Catalog.Lore[id].Text,1,40),1,true)) then leaked=true end end
+check(not leaked,"undiscovered inscriptions never show title or text")
+check(ui.Input.MenuOpen and camera.DialogueFrame==nil,"codex owns input without a portrait camera")
+client:Receive({action="Codex",view=latest().view,id="Feast"})
+check(not string.find(client.View.Subtitle.Text,string.sub(Catalog.Lore.Feast.Text,1,40),1,true),"a forged selection of locked lore stays hidden")
+client:Close(true);check(not ui.Input.MenuOpen and not client.View.Gui.Enabled and not ui.Altar.Visible,"closing the codex restores movement and opens nothing")
+local gate=Definitions.Altars.Altar_MonasteryGate.Placement
+move(gate.X+4,gate.Y+3,gate.Z+4);ui.Altar.Visible=true;ui.Input:SetMenu(true)
+send({action="Summon",id="Altar_MonasteryGate"});client:Receive(latest())
+check(latest().projection and client.Portrait~=nil and client.Portrait.Pivot~=nil,"distant altar summons Lin's spirit projection, placed beside the altar")
+check(not ui.Altar.Visible and ui.Input.MenuOpen and camera.DialogueFrame~=nil,"summon hands the altar menu over to the conversation")
+client.View.Close.Activated:Fire()
+check(client.Portrait==nil and camera.DialogueFrame==nil and ui.Altar.Visible and ui.ReopenedAltar=="Altar_MonasteryGate","leaving Lin returns to the altar menu (travel stays reachable)")
+ui:CloseAltar();send({action="Summon",id="Altar_MonasteryGate"});client:Receive(latest())
+remotes.DialogueIntent.OnClientEvent:Fire({action="Close",reason="Farewell"})
+check(ui.Altar.Visible and not client.Open,"farewell choice also returns to the altar")
+ui:CloseAltar();ui.ReopenedAltar=nil;send({action="Summon",id="Altar_MonasteryGate"});client:Receive(latest())
+player.CharacterAdded:Fire(player.Character)
+check(not client.Open and not ui.Input.MenuOpen and camera.DialogueFrame==nil and client.Portrait==nil and ui.ReopenedAltar==nil,"respawn closes the conversation and restores camera and input without reopening menus")
+send({action="Summon",id="Altar_MonasteryGate"});client:Receive(latest());ui.DeathShown=true
+remotes.DialogueIntent.OnClientEvent:Fire({action="Close"})
+check(not client.Open and not ui.Input.MenuOpen and not ui.Altar.Visible,"closing during death restores input and opens nothing")
+packets=#remotes.DialogueIntent.Packets
+client:Receive({action="Dialogue",npc="Lin",node="Greeting",view=latest().view,point=gate,revision=1})
+check(not client.Open and not ui.Input.MenuOpen,"no conversation opens over the death screen");ui.DeathShown=false
+send({action="Summon",id="Altar_DesecratedCloister"})
+check(#remotes.DialogueIntent.Packets==packets,"unkindled altar cannot summon Lin")
+move(1000,600,1000);send({action="Summon",id="Altar_MonasteryGate"})
+check(#remotes.DialogueIntent.Packets==packets,"summon refused away from the altar")
+move(gate.X+4,gate.Y+3,gate.Z+4)
+-- Batch 22: the six-sovereign ending on the real dialogue server, profile store and client scene.
+-- Defeated-boss flags are seeded here: this validates logic, not an earned six-boss run (batch 23).
+local banners={};function ui:ShowBanner(title,sub) table.insert(banners,{title,sub}) end
+function inputService:GetFocusedTextBox() return nil end
+local function packets(n) local list=remotes.DialogueIntent.Packets;return list[#list-n].Packet end
+local function deliver(n) for i=n,0,-1 do remotes.DialogueIntent.OnClientEvent:Fire(packets(i)) end end
+local function index(action) for i,c in Catalog.NPCs.Lin.Nodes[latest().node].Choices do if c.Action==action then return i end end;return nil end
+local bonfire=Definitions.Altars.Altar_SanctuaryBonfire.Placement
+check(EndingRules.Lin.X==Catalog.NPCs.Lin.X and EndingRules.Lin.Y==Catalog.NPCs.Lin.Y and EndingRules.Lin.Z==Catalog.NPCs.Lin.Z,"ending objective points at Lin's real position")
+check(table.concat(EndingRules.Sovereigns,",")==table.concat(Catalog.Sovereigns,","),"ending counts exactly the catalog's six sovereigns")
+assert(engine:Transaction(7,function(p) for _,id in Catalog.Sovereigns do if id~="AzureWyrm" then p.defeatedBosses[id]=true end end end))
+move(bonfire.X,bonfire.Y+3,bonfire.Z);send({action="Summon",id="Altar_SanctuaryBonfire"})
+check(latest().node=="Greeting" and index("Cross")==nil,"five of six: Lin greets and offers no crossing")
+local early=Actions.decide(player,{NPC="Lin",Projection=false},"Cross",function() return true end)
+check(not early and next(engine:Get(7).souls.world.story)==nil,"five of six: the server refuses a forged crossing")
+assert(engine:Transaction(7,function(p) p.defeatedBosses.AzureWyrm=true end))
+move(gate.X+4,gate.Y+3,gate.Z+4);send({action="Summon",id="Altar_MonasteryGate"})
+check(latest().node=="Summons" and latest().projection and index("Cross")==nil and index("Remain")==nil,"six at a distant altar: her projection calls the Emissary home, no choice through incense")
+send({action="Choose",index=1,revision=latest().revision})
+check(next(engine:Get(7).souls.world.story)==nil,"a projection cannot record a choice")
+local projected,why=Actions.decide(player,{NPC="Lin",Projection=true},"Cross",function() return true end)
+check(not projected and string.find(tostring(why),"Primal Bonfire",1,true),"server refuses a projected crossing with a travel instruction")
+move(bonfire.X,bonfire.Y+3,bonfire.Z);send({action="Summon",id="Altar_SanctuaryBonfire"})
+check(latest().node=="Release" and not latest().projection and index("Cross") and index("Remain"),"six in person: Release offers Cross and Remain")
+local before=Store.Copy(engine:Get(7))
+local scene=EndingClient.new(camera,ui.Input,ui)
+client:Receive(latest())
+send({action="Choose",index=index("Remain"),revision=latest().revision})
+check(packets(0).action=="Ending" and packets(0).choice=="Remain" and packets(0).first==true and packets(1).action=="Close","remain is recorded, then announced")
+deliver(1)
+check(not client.Open and not scene.Active and not ui.Input.MenuOpen and banners[#banners][1]=="YOU REMAIN","remain closes Lin and returns to play with a banner")
+local story=engine:Get(7).souls.world.story
+check(story.Remained and story.Released and not story.Crossed,"remain persisted")
+send({action="Summon",id="Altar_SanctuaryBonfire"})
+check(latest().node=="Release","after remaining Lin still offers the crossing")
+send({action="Choose",index=index("Remain"),revision=latest().revision})
+check(packets(0).first==false,"repeating remain is not a first time");deliver(1)
+send({action="Summon",id="Altar_SanctuaryBonfire"});client:Receive(latest())
+send({action="Choose",index=index("Cross"),revision=latest().revision})
+check(packets(0).choice=="Cross" and packets(0).first==true and engine:Get(7).souls.world.story.Crossed,"crossing recorded before the scene")
+deliver(1)
+check(scene.Active and ui.EndingActive and ui.Input.MenuOpen and camera.DialogueFrame~=nil and not client.Open,"the crossing owns camera and input")
+local layers=Visibility.of(ui);check(not layers.Combat and not layers.Prompts and not layers.Guidance,"HUD, prompts and guidance hidden during the crossing")
+scene:Update(0.3);inputService.InputBegan:Fire({UserInputType="Keyboard"})
+check(scene.Index==1,"the choosing input cannot skip the scene")
+scene:Update(0.6);inputService.InputBegan:Fire({UserInputType="Keyboard"})
+check(scene.Index==EndingRules.CardBeat and scene.Line.Text=="THE ASURA'S PATH","first skip lands on the completion card")
+scene:Update(EndingRules.Scene[EndingRules.CardBeat].Duration+0.01)
+check(scene.Roll.Visible and string.find(scene.Roll.Text,"Kenney",1,true) and string.find(scene.Roll.Text,"Ron Kapaun",1,true),"credits roll from the project record")
+inputService.InputBegan:Fire({UserInputType="Keyboard"})
+check(not scene.Active and camera.DialogueFrame==nil and not ui.Input.MenuOpen and not ui.EndingActive and scene.Gui==nil,"second skip ends the scene and restores camera, input and HUD")
+check(banners[#banners][1]=="THE EMISSARY RETURNS","completion acknowledged with the return line")
+local after=engine:Get(7)
+local kept=after.qiEssence==before.qiEssence
+for _,key in {"attributes","defeatedBosses","unlockedAltars"} do for k,v in before[key] do if after[key][k]~=v then kept=false end end end
+for id in before.inventory.Weapons do if not after.inventory.Weapons[id] then kept=false end end
+for id in before.inventory.LoreEntries do if not after.inventory.LoreEntries[id] then kept=false end end
+check(kept,"the ending grants nothing and keeps every weapon, discovery, flag and Essence")
+send({action="Summon",id="Altar_SanctuaryBonfire"})
+check(latest().node=="Postgame" and index("Cross") and index("Remain")==nil,"after crossing Lin welcomes the returned Emissary and offers the crossing again")
+client:Receive(latest());send({action="Choose",index=index("Cross"),revision=latest().revision})
+check(packets(0).first==false,"walking the crossing again is a replay, not a second completion");deliver(1)
+scene:Update(1);player.CharacterAdded:Fire(player.Character)
+check(not scene.Active and camera.DialogueFrame==nil and not ui.Input.MenuOpen and banners[#banners][1]=="THE CROSSING IS RECORDED","respawn interrupts cleanly and says the crossing is kept")
+scene:Play();player.CharacterRemoving:Fire()
+check(not scene.Active and not ui.EndingActive,"leaving the character interrupts cleanly")
+ui.DeathShown=true;scene:Play();check(not scene.Active,"no crossing over the death screen");ui.DeathShown=false
+scene:Play();local steps=0;while scene.Active and steps<400 do scene:Update(0.25);steps+=1 end
+check(not scene.Active and steps*0.25>=40 and camera.DialogueFrame==nil and not ui.Input.MenuOpen,"unskipped scene plays every beat and cleans up")
+local remain=Actions.decide(player,{NPC="Lin",Projection=false},"Remain",function() return true end)
+check(remain and engine:Get(7).souls.world.story.Crossed,"remain after crossing never undoes the crossing")
+assert(engine:Release(7));assert(engine:Load(7))
+local rejoined=engine:Get(7).souls.world.story
+check(rejoined.Crossed and rejoined.Remained and rejoined.Released,"story flags survive release and rejoin")
+send({action="Summon",id="Altar_SanctuaryBonfire"})
+check(latest().node=="Postgame","rejoined Emissary returns to the postgame Lin")
+send({action="Codex"});check(string.find(CodexView.summary(latest().view).Crossing,"crossing is made",1,true)~=nil,"Codex records the completed crossing")
+local raw=Store.Copy(engine:Get(7));raw.souls.world.story={Crossed="yes"}
+check(not Store.ValidateSouls(raw.souls),"corrupt story flags are rejected")
+check(Store.MigrateSouls(raw.souls).world.story.Crossed==nil,"migration drops corrupt story flags rather than inventing a completion")
+local legacy=Store.Copy(engine:Get(7).souls);legacy.world.story=nil
+check(Store.ValidateSouls(legacy) and next(Store.MigrateSouls(legacy).world.story)==nil,"profiles from before batch 22 load with no choice made")
+scene:Destroy()
 client:Destroy()
 local arena={};WagerService.Start(arena)
 local c=Definitions.Sanctuary.Promenade;move(c.X+30,c.Y+15,c.Z)
@@ -276,9 +434,34 @@ local beforeRefresh=refreshes
 onEvent({Kind="KO",Source=7,Target=99})
 check(engine:Get(7).weaponMastery.Jian==1520 and refreshes>beforeRefresh,"kill applies mastery unlock to the current fighter immediately")
 check(cues[#cues]=="SignatureUnlocked" and sessions[7].Unbanked==25,"rank-five cue and harvested Qi are emitted")
-check(World.OnAltarRest==nil,"narrative shutdown removes altar callback")
+check(World.OnAltarRest==nil,"resting never installs a dialogue callback")
 print("PASS progression runtime: "..checks.." checks")
 '''
+
+
+def check_credits():
+    """Batch 22: the crossing's credits match assets/CREDITS.md both ways (no invented or missing rows)."""
+    record = (ROOT / "assets/CREDITS.md").read_text()
+    flat = " ".join(record.split())
+    credits = (ROOT / "src/shared/EndingCredits.luau").read_text()
+    listed = set(re.findall(r'Source = "([^"]+)"', credits))
+    rows = set()
+    for line in record.splitlines():
+        if line.startswith("|") and "http" in line and not line.startswith("|---"):
+            rows.update(re.findall(r"https?://[^\s)|]+", line.split("|")[2]))
+    assert rows, "no credit rows parsed"
+    assert listed == rows, (sorted(rows - listed), sorted(listed - rows))
+    for work, by, licence, source in re.findall(r'Work = "([^"]+)", By = "([^"]+)", License = "([^"]+)", Source = "([^"]+)"', credits):
+        row = next(l for l in record.splitlines() if source in l)
+        assert licence in row, (work, licence)
+        assert by.split(" / ")[0] in row or by in record, (work, by)
+    project = re.search(r"Credits.Project = table.freeze\(\{(.*?)\}\)", credits, re.S).group(1)
+    for phrase in re.findall(r'"([^"]+)"', project):
+        assert phrase.split(": ", 1)[-1] in flat, phrase
+    print(f"PASS ending credits: {len(rows)} sourced rows and project lines match assets/CREDITS.md")
+
+
+check_credits()
 output = ROOT / "work/test_progression_runtime.generated.luau"
 output.parent.mkdir(exist_ok=True)
 output.write_text(source)

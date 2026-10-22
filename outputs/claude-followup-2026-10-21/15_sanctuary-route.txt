@@ -1,0 +1,24 @@
+Continue Asura's Path — follow-up 15/26: Validate Sanctuary reveals, terrace and cache routes.
+
+Apply 00_SHARED_BRIEF.txt in /Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 16. Findings: #27, #28, #31, #32. Verify existing work, fix actual gaps, and execute this batch now.
+
+Walk from spawn/bonfire through the stairs, viewing wings and pilgrim daises at ordinary camera height. Preserve the imported colossus/tree identity, scale and composition while fixing demonstrated player-scale occlusion, footing, camera clipping or visual seams. Do not evaluate the whole reveal from a detached aerial camera.
+Walk terrace edges/roots and both Sanctuary cache routes, including the moved ladder/service ledge and cloud shards. Use real jump/glide physics. Check parapets, honest limits, legitimate fall return and arrival/return portal legs. Verify camera and collision around imported meshes and their simple movement proxies.
+Inspect route cues/minimap added in prompt 14, the first-rest orientation, portrait pocket and return-to-Lin objective. Ensure the Crypt catch and Sanctuary catch cannot steal each other's players. Any material/texture-scale repairs should reuse the current architecture vocabulary and retain the centerpiece.
+Original Sanctuary reachability was checked against a numeric model rather than the actual built place. This prompt must close that evidence gap, not rerun the same model and call it a walk. If Studio is unavailable, document exact unwalked sections and continue only useful local fixes.
+Start files (relative to project root; follow only required dependencies):
+- src/shared/SanctuaryRoutes.luau
+- src/server/Services/SanctuaryApproach.luau
+- src/server/Services/SanctuaryService.luau
+- src/server/Services/SanctuaryColossus.luau
+- src/server/Services/LootWorld.luau
+- src/shared/RouteGuide.luau
+
+Focused checks (reuse prior results unless code changed or live evidence is missing):
+- python3 tools/test_campaign_regions.py
+- python3 tools/test_campaign_build.py
+
+Acceptance:
+Natural-camera reveal captures, a real terrace/cache/ladder traversal and correct Sanctuary/Crypt fall/return behavior; no claim that numeric reachability proves physics.
+
+Update the matching ledgers with evidence type and exact remaining work; stop after this batch.

@@ -1,0 +1,783 @@
+{
+  "Checks": [
+    {
+      "name": "only detached objects created",
+      "pass": true
+    },
+    {
+      "name": "real-engine parry creates visuals",
+      "pass": true
+    },
+    {
+      "name": "geometry and concurrency hard caps",
+      "pass": true
+    },
+    {
+      "name": "particle token budget bounded",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguinePulse",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineBurstAnchor",
+      "pass": true
+    },
+    {
+      "name": "no continuous imported emitter",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguinePulse",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineBurstAnchor",
+      "pass": true
+    },
+    {
+      "name": "no continuous imported emitter",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguinePulse",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineBurstAnchor",
+      "pass": true
+    },
+    {
+      "name": "no continuous imported emitter",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguinePulse",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineBurstAnchor",
+      "pass": true
+    },
+    {
+      "name": "no continuous imported emitter",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguinePulse",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineBurstAnchor",
+      "pass": true
+    },
+    {
+      "name": "no continuous imported emitter",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguinePulse",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguinePulse",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguinePulse",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineEnergyLine",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "render part cannot influence physics SanguineRing",
+      "pass": true
+    },
+    {
+      "name": "cancelled startup does not create a swing",
+      "pass": true
+    },
+    {
+      "name": "one crescent per authoritative active window",
+      "pass": true
+    },
+    {
+      "name": "next swing remains visible",
+      "pass": true
+    },
+    {
+      "name": "snapshot family resolves: PrayerOfTheDefiled",
+      "pass": true
+    },
+    {
+      "name": "snapshot family resolves: Dao",
+      "pass": true
+    },
+    {
+      "name": "snapshot family resolves: Jian",
+      "pass": true
+    },
+    {
+      "name": "snapshot family resolves: ChainScythe",
+      "pass": true
+    },
+    {
+      "name": "snapshot family resolves: WarFan",
+      "pass": true
+    },
+    {
+      "name": "snapshot family resolves: HeavenPiercingGuandao",
+      "pass": true
+    },
+    {
+      "name": "snapshot family resolves: Odachi",
+      "pass": true
+    },
+    {
+      "name": "snapshot family resolves: Unarmed",
+      "pass": true
+    },
+    {
+      "name": "snapshot family resolves: TwinDaggers",
+      "pass": true
+    },
+    {
+      "name": "snapshot family resolves: Catalyst",
+      "pass": true
+    },
+    {
+      "name": "snapshot family resolves: CalamityBoneCleaver",
+      "pass": true
+    },
+    {
+      "name": "snapshot family resolves: Guandao",
+      "pass": true
+    },
+    {
+      "name": "dash samples a detached silhouette",
+      "pass": true
+    },
+    {
+      "name": "phase death and spell paths execute",
+      "pass": true
+    },
+    {
+      "name": "boss death never resizes or recolors actor",
+      "pass": true
+    },
+    {
+      "name": "movement health and actor transform unchanged",
+      "pass": true
+    },
+    {
+      "name": "dialogue clears and suppresses additive effects",
+      "pass": true
+    },
+    {
+      "name": "death clears and suppresses effects",
+      "pass": true
+    },
+    {
+      "name": "rollback flag disables layer",
+      "pass": true
+    },
+    {
+      "name": "reduced effects lower geometry cap",
+      "pass": true
+    },
+    {
+      "name": "global lighting unchanged",
+      "pass": true
+    },
+    {
+      "name": "camera unchanged",
+      "pass": true
+    },
+    {
+      "name": "no demo input UI or scripts imported",
+      "pass": true
+    },
+    {
+      "name": "expired groups clean to baseline",
+      "pass": true
+    },
+    {
+      "name": "idempotent teardown disconnects two listeners",
+      "pass": true
+    }
+  ],
+  "Mode": "Studio Client; detached instances; fake state; real client guard",
+  "Passed": true,
+  "CheckCount": 194
+}

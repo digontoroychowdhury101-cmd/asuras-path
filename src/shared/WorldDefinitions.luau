@@ -74,6 +74,9 @@ export type Altar = {
 	Spawn: Placement,
 	Radius: number,
 	Starting: boolean,
+	-- Where the rest pocket's departure path leads (batch 07); the walk from Spawn to Exit and the
+	-- pocket around the altar must stay free of solid geometry (MonasterySurvey checks both).
+	Exit: Placement?,
 }
 
 export type MobDef = {
@@ -215,7 +218,7 @@ World.Sanctuary = {
 	StairSteps = 20,
 	StairRise = 1,
 	StairRun = 2,
-	StairWidth = 14,
+	StairWidth = 18, -- lobby rebuild: broad flight between carved balustrades (SanctuaryAscent)
 	PortalDestination = "Altar_MonasteryGate",
 	CloudRadius = 1200,
 } :: SanctuaryLayout
@@ -224,7 +227,8 @@ World.Regions = {
 	Sanctuary = {
 		Id = "Sanctuary",
 		Name = "The Shrine of the Ascendant",
-		Bounds = { Center = v(SANCTUARY_ORIGIN.X, SANCTUARY_ORIGIN.Y + 20, SANCTUARY_ORIGIN.Z), Size = v(420, 260, 420) },
+		-- Extends north past the Ascension gate to take in the colossus terrace (SanctuaryColossus).
+		Bounds = { Center = v(SANCTUARY_ORIGIN.X, SANCTUARY_ORIGIN.Y + 200, SANCTUARY_ORIGIN.Z - 250), Size = v(600, 800, 920) },
 		-- Built at runtime by SanctuaryService as Workspace.Sanctuary; its presence suppresses greybox.
 		MapFolder = "Sanctuary",
 		Greybox = { Color = { 120, 112, 104 }, Material = "Slate" },
@@ -243,7 +247,8 @@ World.Regions = {
 	BambooPass = {
 		Id = "BambooPass",
 		Name = "Bamboo Pass",
-		Bounds = { Center = v(0, 40, -1400), Size = v(240, 200, 560) },
+		-- 400 wide (batch 17): the frost ridge and the bamboo thicket that walls the pass.
+		Bounds = { Center = v(0, 40, -1400), Size = v(400, 200, 560) },
 		MapFolder = "Map_BambooPass",
 		Greybox = { Color = { 68, 92, 58 }, Material = "Grass" },
 		Ambience = "WindReeds",
@@ -281,6 +286,7 @@ World.Altars = {
 		Spawn = at(0, 3, -728, 0),
 		Radius = 9,
 		Starting = false,
+		Exit = at(0, 3, -764), -- through the gatehouse's open centre bay into the courtyard
 	},
 	Altar_DesecratedCloister = {
 		Id = "Altar_DesecratedCloister",
@@ -290,24 +296,29 @@ World.Altars = {
 		Spawn = at(60, 3, -1018, 0),
 		Radius = 9,
 		Starting = false,
+		Exit = at(6, 3, -1012), -- out of the west gateway onto the south road
 	},
+	-- Batches 17-18: both altars stand in authored pockets (BambooPassLayout / AshColosseumLayout
+	-- marks). The shrine used to sit on Baize's arena wall with its spawn inside the arena.
 	Altar_BambooShrine = {
 		Id = "Altar_BambooShrine",
 		Name = "Whispering Bamboo Shrine",
 		Region = "BambooPass",
-		Placement = at(-30, 0, -1380),
-		Spawn = at(-30, 3, -1388, 0),
+		Placement = at(-36, 0.2, -1328),
+		Spawn = at(-29, 3.2, -1333, 306),
 		Radius = 9,
 		Starting = false,
+		Exit = at(-6, 3.2, -1352), -- toward Baize's mouth
 	},
 	Altar_ColosseumAntechamber = {
 		Id = "Altar_ColosseumAntechamber",
 		Name = "Colosseum Antechamber",
 		Region = "AshColosseum",
-		Placement = at(0, 0, -1730),
-		Spawn = at(0, 3, -1738, 0),
+		Placement = at(0, 3, -1736),
+		Spawn = at(0, 6, -1744, 0),
 		Radius = 9,
 		Starting = false,
+		Exit = at(0, 6, -1766), -- out through the antechamber's south door
 	},
 } :: { [string]: Altar }
 
@@ -365,6 +376,32 @@ World.Mobs = {
 		Essence = 80,
 		BodyColor = { 46, 50, 62 },
 	},
+	-- Opening training partner (batch 10, TutorialService): waits on the Monastery Gate landing,
+	-- notices only someone who walks up to it, stays on the landing, strikes gently, uses its
+	-- unblockable Sundering Qi Palm (the perilous lesson) and breaks posture readily. No Essence.
+	SparringPhantom = {
+		Id = "SparringPhantom",
+		Name = "Sparring Phantom",
+		Weapon = "Unarmed",
+		Stats = { MaxHP = 140, MaxStamina = 90, PostureCapacity = 60, StrengthScale = 0.35, DexterityScale = 0.35, PoiseArmor = 0 },
+		AI = profile({
+			SightRange = 11,
+			FieldOfView = 360,
+			HearingRange = 6,
+			Aggression = 0.45,
+			DeflectChance = 0.05,
+			GuardChance = 0.3,
+			ReactionTime = 0.4,
+			PatrolRadius = 3,
+			LeashRange = 24,
+			ComboContinueChance = 0.3,
+			HeavyChance = 0.3,
+			ArtChance = 0.35,
+			StrafeChance = 0.2,
+		}),
+		Essence = 0,
+		BodyColor = { 150, 168, 160 },
+	},
 } :: { [string]: MobDef }
 
 local function patrol(x: number, z: number, radius: number): { Placement }
@@ -376,25 +413,43 @@ local function patrol(x: number, z: number, radius: number): { Placement }
 	}
 end
 
-local function spawn(id: string, mob: string, region: RegionId, x: number, z: number, yaw: number, radius: number): MobSpawn
-	return { Id = id, Mob = mob, Region = region, Placement = at(x, 3, z, yaw), Patrol = patrol(x, z, radius) }
+-- `floor` (batches 17-21): the authored floor height the foe stands on (default the ground, 0).
+local function spawn(id: string, mob: string, region: RegionId, x: number, z: number, yaw: number, radius: number, floor: number?): MobSpawn
+	local y = 3 + (floor or 0)
+	local points = patrol(x, z, radius)
+	for _, point in points do
+		point.Y = y
+	end
+	return { Id = id, Mob = mob, Region = region, Placement = at(x, y, z, yaw), Patrol = points }
 end
 
 World.Spawns = {
-	spawn("DM_Monk_Courtyard_A", "CorruptWanderingMonk", "DesecratedMonastery", -30, -790, 180, 10),
-	spawn("DM_Monk_Courtyard_B", "CorruptWanderingMonk", "DesecratedMonastery", 34, -812, 200, 12),
+	spawn("DM_Sparring_Phantom", "SparringPhantom", "DesecratedMonastery", 15, -705, 200, 3),
+	-- Courtyard (batch 10, #15): one monk waits alone inside the gatehouse for a readable duel; the
+	-- pair guards the way south at the far end, beyond its sight (55) from that duel, as a group.
+	spawn("DM_Monk_Courtyard_A", "CorruptWanderingMonk", "DesecratedMonastery", 0, -786, 180, 6),
+	spawn("DM_Monk_Courtyard_B", "CorruptWanderingMonk", "DesecratedMonastery", -14, -852, 180, 5),
+	spawn("DM_Monk_Courtyard_C", "CorruptWanderingMonk", "DesecratedMonastery", 14, -852, 180, 5),
 	spawn("DM_Monk_Hall_A", "CorruptWanderingMonk", "DesecratedMonastery", -70, -900, 90, 8),
 	spawn("DM_Monk_Hall_B", "CorruptWanderingMonk", "DesecratedMonastery", 78, -920, 270, 8),
 	spawn("DM_Swordsman_Bridge", "CursedSwordsman", "DesecratedMonastery", 0, -960, 180, 6),
 	spawn("DM_Monk_Cloister", "CorruptWanderingMonk", "DesecratedMonastery", 40, -1060, 180, 10),
 	spawn("DM_Swordsman_Cloister", "CursedSwordsman", "DesecratedMonastery", 90, -1080, 220, 8),
-	spawn("BP_Swordsman_Trail_A", "CursedSwordsman", "BambooPass", 20, -1200, 180, 10),
-	spawn("BP_Monk_Trail", "CorruptWanderingMonk", "BambooPass", -40, -1270, 160, 12),
-	spawn("BP_Swordsman_Grove_A", "CursedSwordsman", "BambooPass", 50, -1450, 200, 8),
-	spawn("BP_Swordsman_Grove_B", "CursedSwordsman", "BambooPass", -60, -1500, 140, 8),
-	spawn("BP_Monk_Ridge", "CorruptWanderingMonk", "BambooPass", 10, -1590, 180, 10),
-	spawn("AC_Swordsman_Gate_A", "CursedSwordsman", "AshColosseum", -24, -1800, 180, 6),
-	spawn("AC_Swordsman_Gate_B", "CursedSwordsman", "AshColosseum", 24, -1810, 180, 6),
+	-- Batches 17-21: stable ids, now placed on the authored routes (two Bamboo swordsmen stood
+	-- inside Baize's arena); each fights only inside its layout zone (CampaignZones).
+	spawn("BP_Swordsman_Trail_A", "CursedSwordsman", "BambooPass", 6, -1212, 180, 6),
+	spawn("BP_Monk_Trail", "CorruptWanderingMonk", "BambooPass", 0, -1272, 180, 8, 12),
+	spawn("BP_Swordsman_Grove_A", "CursedSwordsman", "BambooPass", 124, -1310, 180, 6, 18),
+	spawn("BP_Swordsman_Grove_B", "CursedSwordsman", "BambooPass", 124, -1372, 180, 6, 18),
+	spawn("BP_Monk_Ridge", "CorruptWanderingMonk", "BambooPass", 0, -1632, 180, 8),
+	spawn("AC_Swordsman_Gate_A", "CursedSwordsman", "AshColosseum", -18, -1790, 180, 6),
+	spawn("AC_Swordsman_Gate_B", "CursedSwordsman", "AshColosseum", 20, -1846, 180, 6),
+	spawn("SD_Swordsman_Nave", "CursedSwordsman", "SanctuaryDepths", 492, 1004, 90, 6),
+	spawn("SD_Monk_Ossuary", "CorruptWanderingMonk", "SanctuaryDepths", 382, 932, 180, 6),
+	spawn("CP_Monk_Gallery", "CorruptWanderingMonk", "CelestialPagoda", -88, -2200, 270, 6, -6),
+	spawn("CP_Swordsman_Rafter", "CursedSwordsman", "CelestialPagoda", 0, -2228, 90, 4, -6),
+	spawn("SC_Monk_Bridge", "CorruptWanderingMonk", "SkyCitadel", 0, -2604, 180, 3, -20),
+	spawn("SC_Swordsman_Gate", "CursedSwordsman", "SkyCitadel", 0, -2645, 180, 4, -10),
 } :: { MobSpawn }
 
 World.Bosses = {
@@ -612,7 +667,8 @@ do
 	assert(starting == 1, "Exactly one starting altar required")
 	for id, mob in World.Mobs do
 		assert(mob.Id == id and WEAPONS[mob.Weapon], "Invalid mob " .. id)
-		assert(mob.Essence > 0, "Mob essence " .. id)
+		-- Only the training partner gives nothing; every hostile mob must pay out.
+		assert(mob.Essence > 0 or id == "SparringPhantom", "Mob essence " .. id)
 		validateProfile(mob.AI, id)
 	end
 	local seen: { [string]: boolean } = {}

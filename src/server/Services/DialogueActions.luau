@@ -2,6 +2,7 @@
 local Shared=game:GetService("ReplicatedStorage").AsurasPath
 local Progress=require(Shared.Shared.ProgressionRules)
 local Catalog=require(Shared.Shared.NarrativeCatalog)
+local Ending=require(Shared.Shared.EndingRules)
 local Persistence=require(script.Parent.PersistenceService) :: any
 local Characters=require(script.Parent.CharacterService)
 local World=require(script.Parent.WorldService)
@@ -11,8 +12,9 @@ local Actions={}
 function Actions.view(id: number): any
  local p=Persistence.Get(id);if not p then return nil end
  local rested=0;for _,boss in Catalog.Sovereigns do if p.defeatedBosses[boss] then rested+=1 end end
- return {sovereigns=rested,qi=p.qiEssence,attributes=p.attributes,inventory=p.inventory,loadout=p.equippedLoadout,mastery=p.weaponMastery,
-  colosseum=p.colosseum,cost=Progress.levelCost(Progress.level(p.attributes)),bosses=p.defeatedBosses}
+ return {sovereigns=rested,story=table.clone(p.souls.world.story or {}),qi=p.qiEssence,attributes=p.attributes,inventory=p.inventory,loadout=p.equippedLoadout,mastery=p.weaponMastery,
+  colosseum=p.colosseum,cost=Progress.levelCost(Progress.level(p.attributes)),bosses=p.defeatedBosses,
+  altars=p.unlockedAltars,tier=(p.inventory.Weapons[p.equippedLoadout.MainWeapon] or {Level=0}).Level}
 end
 function Actions.run(player: Player,s: any,packet: any,valid: ()->boolean): (boolean,string?)
  World.Flush(player.UserId,3)
@@ -24,12 +26,26 @@ function Actions.run(player: Player,s: any,packet: any,valid: ()->boolean): (boo
   assert(table.find(Progress.Attributes,packet.id),"Unknown attribute")
   return Persistence.Transaction(player.UserId,function(p: any)
    assert(valid(),"Conversation ended");assert(s.NPC=="Lin","Seek Lady Lin")
-   local cost=Progress.levelCost(Progress.level(p.attributes));assert(p.qiEssence>=cost,"Not enough Qi")
+   local cost=Progress.levelCost(Progress.level(p.attributes));assert(p.qiEssence>=cost,"Not enough Essence")
    assert(p.attributes[packet.id]<99,"Attribute at maximum")
    p.qiEssence-=cost;p.attributes[packet.id]+=1
   end)
  end
  return false,"Choice unavailable"
+end
+-- Cross / Remain (batch 22): recorded in the story flags before any scene plays, so an interrupted
+-- scene, death or disconnect keeps the choice. Grants nothing; returns whether it was the first time.
+function Actions.decide(player: Player,s: any,choice: string,valid: ()->boolean): (boolean,any)
+ World.Flush(player.UserId,3)
+ local first=false
+ local ok,err=Persistence.Transaction(player.UserId,function(p: any)
+  assert(valid(),"Conversation ended");assert(s.NPC=="Lin","Seek Lady Lin")
+  local story=p.souls.world.story or {};p.souls.world.story=story
+  local done,why,isFirst=Ending.decide(story,Ending.stage(p.defeatedBosses,story),choice,s.Projection==true)
+  assert(done,why);first=isFirst
+ end)
+ if not ok then return false,err end
+ return true,first
 end
 function Actions.panel(player: Player,action: string)
  if action=="Arsenal" then Loot.Sync(player,true) end

@@ -6,6 +6,7 @@ local Catalog=require(Shared.Shared.NarrativeCatalog)
 local Rules=require(Shared.Shared.DialogueRules)
 local Budget=require(Shared.Shared.IntentProtocol)
 local Definitions=require(Shared.Shared.WorldDefinitions)
+local Ending=require(Shared.Shared.EndingRules)
 local Characters=require(script.Parent.CharacterService)
 local AI=require(script.Parent.AIService)
 local World=require(script.Parent.WorldService)
@@ -19,6 +20,7 @@ local busy: {[number]: boolean}={}
 local links: {RBXScriptConnection}={}
 local root: Folder?=nil
 local serial=0
+local PRESENT=24 -- studs: an NPC this close to the summoning altar answers in person
 local function nearby(player: Player,point: Vector3): boolean
  local e=Characters.GetActor(player.UserId)
  return e~=nil and not e.Duel and (e.Fighter.State=="Idle" or e.Fighter.State=="RestingAtShrine")
@@ -30,21 +32,26 @@ end
 local function send(player: Player,s: any,message: string?)
  serial+=1;s.Revision=serial
  remote:FireClient(player,{action="Dialogue",npc=s.NPC,node=s.Node,panel=s.Panel,revision=s.Revision,
-  point=s.Point,projection=s.Projection,view=Actions.view(player.UserId),message=message})
+  point=s.Subject or s.Point,projection=s.Projection,altar=s.Altar,view=Actions.view(player.UserId),message=message})
 end
+-- altarId: Lin summoned from the altar menu. Her spirit is projected to the altar (intentional),
+-- unless her physical self already stands beside it (the Sanctuary bonfire), where she speaks in person.
+-- Point is where the session is validated (the altar when summoned); Subject is who the camera frames.
 function Service.Open(player: Player,npc: string,altarId: string?)
  local n=Catalog.NPCs[npc];if not n or busy[player.UserId] then return end
- local point=Vector3.new(n.X,n.Y,n.Z)
+ local point=Vector3.new(n.X,n.Y,n.Z);local subject=point;local projection=false
  if altarId then
-  local a=Definitions.Altars[altarId];if not a then return end;point=Vector3.new(a.Placement.X,a.Placement.Y,a.Placement.Z)
+  local a=Definitions.Altars[altarId];if not a then return end
+  point=Vector3.new(a.Placement.X,a.Placement.Y,a.Placement.Z)
+  if (point-subject).Magnitude>PRESENT then subject=point;projection=true end
  end
  if not nearby(player,point) or not Actions.view(player.UserId) then return end
  World.Flush(player.UserId,3)
  if not nearby(player,point) then return end
  local node=n.Start
  local view=Actions.view(player.UserId)
- if npc=="Lin" and view and view.sovereigns==6 then node="Release" end
- local s={NPC=npc,Node=node,Panel=nil,Point=point,Expires=os.clock()+120,Revision=0,Projection=altarId~=nil}
+ if npc=="Lin" and view then node=Ending.linNode(Ending.stage(view.bosses,view.story),projection) end
+ local s={NPC=npc,Node=node,Panel=nil,Point=point,Expires=os.clock()+120,Revision=0,Projection=projection,Altar=altarId,Subject=subject}
  sessions[player.UserId]=s;send(player,s)
 end
 local function lore(player: Player,id: string)
@@ -62,11 +69,27 @@ local function handle(player: Player,p: any)
  if not Budget.Take(b,now,1,3,6) or busy[id] then return end
  if p.action=="Close" then sessions[id]=nil;return end
  if p.action=="Codex" then remote:FireClient(player,{action="Codex",view=Actions.view(id)});return end
+ if p.action=="Summon" then -- deliberate altar-menu choice; resting never opens her by itself
+  local profile=Actions.view(id);local live=World.GetSession(id)
+  local kindled=(live~=nil and live.Altars~=nil and live.Altars[p.id]==true) or (profile~=nil and profile.altars[p.id]==true)
+  if Definitions.Altars[p.id] and kindled then Service.Open(player,"Lin",p.id) end
+  return
+ end
  local s=sessions[id];if not s or not valid(player,s) or p.revision~=s.Revision then return end
  if p.action=="Choose" then
   local choice=Rules.choose(s.NPC,s.Node,p.index);if not choice then return end
-  if choice.Close then sessions[id]=nil;remote:FireClient(player,{action="Close"});return end
+  if choice.Close then sessions[id]=nil;remote:FireClient(player,{action="Close",reason="Farewell"});return end
+  if choice.Action=="Cross" or choice.Action=="Remain" then -- batch 22: recorded first, then the scene
+   busy[id]=true
+   local success,ok,first=pcall(Actions.decide,player,s,choice.Action,function() return valid(player,s) end)
+   busy[id]=nil
+   if not (success and ok) then if valid(player,s) then send(player,s,string.gsub(tostring(if success then first else ok),"^.-:%d+: ","")) end;return end
+   sessions[id]=nil;Actions.refresh(id)
+   remote:FireClient(player,{action="Close",reason=choice.Action})
+   remote:FireClient(player,{action="Ending",choice=choice.Action,first=first==true});return
+  end
   s.Node=choice.Next;s.Panel=choice.Action
+  if s.NPC=="Lin" and s.Node=="Greeting" then local v=Actions.view(id);if v then s.Node=Ending.linNode(Ending.stage(v.bosses,v.story),s.Projection) end end
   if s.Panel=="Arsenal" then
    sessions[id]=nil;remote:FireClient(player,{action="Close"});Actions.panel(player,s.Panel);return
   end
@@ -81,7 +104,6 @@ end
 function Service.Start()
  assert(not root,"DialogueService already started")
  local folder,connections=Build.build(function(p: Player,id: string) Service.Open(p,id) end,lore);root=folder;links=connections;
- (World :: any).OnAltarRest=function(p: Player,id: string) task.spawn(Service.Open,p,"Lin",id) end
  table.insert(links,remote.OnServerEvent:Connect(handle))
  local elapsed=0
  table.insert(links,Run.Heartbeat:Connect(function(dt: number)
@@ -94,7 +116,6 @@ function Service.Start()
  table.insert(links,Players.PlayerRemoving:Connect(function(p: Player) sessions[p.UserId]=nil;buckets[p.UserId]=nil;busy[p.UserId]=nil end))
 end
 function Service.Destroy()
- (World :: any).OnAltarRest=nil
  for _,c in links do c:Disconnect() end;table.clear(links)
  if root then root:Destroy();root=nil end;table.clear(sessions);table.clear(buckets);table.clear(busy)
 end

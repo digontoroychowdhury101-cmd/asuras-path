@@ -31,7 +31,8 @@ local function beam(a: Vector3,b: Vector3,color: Color3,duration: number)
  TweenService:Create(last,TweenInfo.new(math.max(0.05,duration),Enum.EasingStyle.Linear),{Position=b}):Play()
 end
 function Vfx.cancel(id: number)
- for _,p in casting[id] or {} do p:Destroy() end;casting[id]=nil
+ local items: {Instance}=casting[id] or {}
+ for _,p in items do p:Destroy() end;casting[id]=nil
 end
 function Vfx.cue(cue: any,state: any)
  local own=state:Own()

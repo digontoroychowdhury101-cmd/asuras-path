@@ -1,0 +1,127 @@
+{
+  "date": "2026-10-21",
+  "scope": "Existing verify_all regression commands, without its saved-place overwrite step",
+  "results": [
+    {
+      "command": [
+        "/Users/digonto/Documents/ChatGPT/Roblox game 2/work/bin/luau/luau",
+        "tools/test_asura_stage1.luau"
+      ],
+      "exit_code": 0,
+      "seconds": 0.04
+    },
+    {
+      "command": [
+        "python3",
+        "tools/test_asura_stage2.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.08
+    },
+    {
+      "command": [
+        "/Users/digonto/Documents/ChatGPT/Roblox game 2/work/bin/luau/luau",
+        "tools/test_asura_stage3.luau"
+      ],
+      "exit_code": 0,
+      "seconds": 0.04
+    },
+    {
+      "command": [
+        "/Users/digonto/Documents/ChatGPT/Roblox game 2/work/bin/luau/luau",
+        "tools/test_weapons_and_spells.luau"
+      ],
+      "exit_code": 0,
+      "seconds": 0.04
+    },
+    {
+      "command": [
+        "python3",
+        "tools/test_weapons_and_spells_runtime.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.08
+    },
+    {
+      "command": [
+        "/Users/digonto/Documents/ChatGPT/Roblox game 2/work/bin/luau/luau",
+        "tools/test_profile_integrity.luau"
+      ],
+      "exit_code": 0,
+      "seconds": 0.03
+    },
+    {
+      "command": [
+        "python3",
+        "tools/test_movement.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.07
+    },
+    {
+      "command": [
+        "python3",
+        "tools/test_boss_runtime.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.09
+    },
+    {
+      "command": [
+        "python3",
+        "tools/test_objectives.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.06
+    },
+    {
+      "command": [
+        "/Users/digonto/Documents/ChatGPT/Roblox game 2/work/bin/luau/luau",
+        "tools/test_progression_and_lore.luau"
+      ],
+      "exit_code": 0,
+      "seconds": 0.04
+    },
+    {
+      "command": [
+        "python3",
+        "tools/test_progression_runtime.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.11
+    },
+    {
+      "command": [
+        "python3",
+        "tools/test_review_regressions.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.07
+    },
+    {
+      "command": [
+        "python3",
+        "tools/test_campaign_regions.py"
+      ],
+      "exit_code": 0,
+      "seconds": 33.35
+    },
+    {
+      "command": [
+        "python3",
+        "tools/test_campaign_build.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.21
+    },
+    {
+      "command": [
+        "python3",
+        "tools/lune_compat.py",
+        "--all"
+      ],
+      "exit_code": 0,
+      "seconds": 13.15
+    }
+  ]
+}

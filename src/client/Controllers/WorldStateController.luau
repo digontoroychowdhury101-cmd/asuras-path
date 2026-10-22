@@ -56,6 +56,7 @@ type Fields = {
 	AddedListeners: { EntityListener },
 	RemovedListeners: { EntityListener },
 	Connections: { RBXScriptConnection },
+	Pending: { [Model]: RBXScriptConnection }, -- models waiting for their AsuraId (batch 26: no unbounded list)
 	DashSeq: number,
 	DashEnds: number,
 	DashVelocity: Vector3,
@@ -100,6 +101,7 @@ function Controller.new(net: Instance): WorldState
 		DashSeq = -1,
 		DashEnds = 0,
 		DashVelocity = Vector3.zero,
+		Pending = setmetatable({}, { __mode = "k" }) :: any,
 	}
 	local self = setmetatable(fields, Controller)
 
@@ -159,14 +161,19 @@ function Controller.Track(self: WorldState, model: Model)
 	end
 	local id = model:GetAttribute("AsuraId")
 	if type(id) ~= "number" then
-		local pending: RBXScriptConnection? = nil
-		pending = model:GetAttributeChangedSignal("AsuraId"):Connect(function()
-			if pending then
-				pending:Disconnect()
+		if self.Pending[model] then
+			return
+		end
+		-- One waiter per model, dropped once the id arrives (or with the model): every enemy respawn
+		-- used to append a spent connection to self.Connections for the rest of the session.
+		self.Pending[model] = model:GetAttributeChangedSignal("AsuraId"):Connect(function()
+			local waiting = self.Pending[model]
+			self.Pending[model] = nil
+			if waiting then
+				waiting:Disconnect()
 			end
 			self:Track(model)
 		end)
-		table.insert(self.Connections, pending :: RBXScriptConnection)
 		return
 	end
 	local previous = self.Entities[id]
@@ -288,7 +295,10 @@ end
 
 function Controller.IsAlive(_self: WorldState, entity: Entity): boolean
 	local snapshot = entity.Snapshot
+	-- A dissolving enemy (server-pinned corpse) is dead at once, even before its KO snapshot arrives,
+	-- so plates, lock-on and minimap dots drop the moment it falls.
 	return entity.Model.Parent ~= nil and entity.Root ~= nil and (snapshot == nil or snapshot.State ~= "KO")
+		and entity.Model:GetAttribute("AsuraDissolve") == nil
 end
 
 function Controller.IsHostile(self: WorldState, entity: Entity): boolean
@@ -360,6 +370,10 @@ function Controller.Destroy(self: WorldState)
 		connection:Disconnect()
 	end
 	table.clear(self.Connections)
+	for _, waiting in self.Pending do
+		waiting:Disconnect()
+	end
+	table.clear(self.Pending)
 	for _, entity in self.Entities do
 		for _, connection in entity.Connections do
 			connection:Disconnect()

@@ -333,7 +333,7 @@ def crimson_leaves():
     lum = col[..., 0] * 0.3 + col[..., 1] * 0.59 + col[..., 2] * 0.11
     vein = np.clip(lum / max(lum[op[..., 0] > 0.5].mean(), 1e-3), 0, 2)
     out = np.zeros_like(col)
-    hue = np.array([0.62, 0.035, 0.05])
+    hue = np.array([0.4, 0.018, 0.03])
     out[..., :3] = np.clip(hue * (0.35 + 0.75 * vein[..., None]), 0, 1)
     out[..., 1] += 0.03 * (1 - vein)  # faint brown in the veins
     out[..., 3] = op[..., 0]

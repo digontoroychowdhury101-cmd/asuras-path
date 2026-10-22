@@ -1,0 +1,1 @@
+[["__lua","Client","local a = game:GetService(\"Lighting\"):FindFirstChildOfClass(\"Atmosphere\") a.Offset, a.Glare = 0, 0 return string.format(\"d %.2f h %.2f o %.2f\", a.Density, a.Haze, a.Offset)"]]

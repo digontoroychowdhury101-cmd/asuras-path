@@ -1,0 +1,23 @@
+Continue Asura's Path — follow-up 02/26: Close the checkpoint, death and recovery loop.
+
+Apply 00_SHARED_BRIEF.txt in /Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 01. Findings: #1, #18, #19. Verify existing work, fix actual gaps, and execute this batch now.
+
+The recovery suite already passes 94 checks. Verify the real LoadCharacter/CharacterAdded timing and Sanctuary fall safeguard before replacing this implementation.
+Rest at Gate and Cloister, die to an actual enemy, and observe active altar, physical position, region, replenished resources, boss reset and recovery objective. Cover every remaining altar using a compact position/result table; diagnostic access is acceptable for isolating an altar but is not earned campaign evidence.
+Check bloodstain creation, reclaim once, second death with zero carried currency, delayed/duplicate death callbacks and respawn while a boss introduction or dialogue is active. Make death → loss → wake location → recovery goal a clean transition. Verify legitimate Sanctuary falls still recover while ground regions, crypt travel and normal spawning do not trigger the cloud-return toast.
+Fix demonstrated causes in the existing recovery path, retaining per-life idempotence and schema compatibility. Include one save/rejoin at a later checkpoint on isolated test data. If engine timing cannot be exercised, retain acceptance pending and supply the exact short human test rather than adding another fake that repeats the rules.
+Start files (relative to project root; follow only required dependencies):
+- src/server/RecoveryRules.luau
+- src/server/CharacterService.luau
+- src/server/Services/WorldService.luau
+- src/server/Services/SanctuaryService.luau
+- src/client/Controllers/HudVisibility.luau
+
+Focused checks (reuse prior results unless code changed or live evidence is missing):
+- python3 tools/lune_compat.py tools/test_recovery_lifecycle.luau
+- python3 tools/lune_compat.py tools/test_campaign_ledger.luau
+
+Acceptance:
+No unexplained return to Sanctuary, duplicate currency loss or stale encounter/UI state; record actual spawn coordinates and distinguish real deaths from seeded diagnostics.
+
+Update the matching ledgers with evidence type and exact remaining work; stop after this batch.

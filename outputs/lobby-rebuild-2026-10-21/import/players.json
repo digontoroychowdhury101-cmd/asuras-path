@@ -1,0 +1,1 @@
+[["__lua","Server","local ps = game:GetService(\"Players\"):GetPlayers() local n = {} for _, p in ps do table.insert(n, p.Name .. \"/\" .. p.UserId) end return #ps .. \": \" .. table.concat(n, \", \") .. \" ready=\" .. tostring(workspace:GetAttribute(\"AsuraReady\"))"]]

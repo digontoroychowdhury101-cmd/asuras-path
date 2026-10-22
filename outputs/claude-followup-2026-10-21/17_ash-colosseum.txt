@@ -1,0 +1,23 @@
+Continue Asura's Path — follow-up 17/26: Finish and validate the Ash Colosseum story region.
+
+Apply 00_SHARED_BRIEF.txt in /Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 18. Findings: #22, #27, #28, #32. Verify existing work, fix actual gaps, and execute this batch now.
+
+Walk Bamboo join → antechamber altar → Shen arena → Pagoda join and return. Confirm rest/death/respawn/travel and correct portal/waypoint legs. Check the cavea and arena perimeter against both Shen forms, normal shoulder camera, weapon reach, hazards and handoff locations; reuse prompt 10's boss evidence.
+Inspect actual story-region silhouettes, ruined martial architecture, material/texture scale and combat readability. Integrate available approved colosseum tier/arcade art through current dressings without moving authoritative arena floors or covering collision/exit paths. Essential absent kits remain explicitly blocked with a precise deliverable; a box-layout pass is not final environment art.
+Preserve the separate Sanctuary/Monastery PvP system. In this region, verify the Proving Court lane and Ring_OctagonOfAsh are physically reachable, unobstructed and not cut off by the story veils. Avoid changing wager/matchmaking rules here.
+After an actual or separately labeled diagnostic victory, verify the onward route remains traversable with correct guidance and no stale fog-gate/encounter lock. Keep existing IDs, saves and boss reward behavior. This is a single-region closure pass, not another campaign expansion.
+Start files (relative to project root; follow only required dependencies):
+- src/shared/AshColosseumLayout.luau
+- src/server/Services/ColosseumDressing.luau
+- src/server/Services/BossArenas.luau
+- src/server/Services/CampaignBounds.luau
+- src/shared/RouteGuide.luau
+
+Focused checks (reuse prior results unless code changed or live evidence is missing):
+- python3 tools/test_campaign_regions.py
+- python3 tools/test_campaign_build.py
+
+Acceptance:
+Walked story and Proving Court connections; both Shen forms have real clearance and a usable exit; final art is distinguished from structural completion.
+
+Update the matching ledgers with evidence type and exact remaining work; stop after this batch.

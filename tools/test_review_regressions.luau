@@ -18,9 +18,13 @@ do
 	local e: any = {Root={},Fighter={State="Idle"}}
 	local returned = false
 	local Players = {GetPlayers=function() return {{UserId=1}} end}
+	local settling = false
 	local Characters = {GetEntity=function() return e end, IsInDuel=function() return false end,
-		Teleport=function() returned=true end, Cue=function() end}
+		Teleport=function() returned=true end, Cue=function() end, IsSettling=function() return settling end}
 	local spawnCFrame = {}
+	local Recovery = require("../src/server/RecoveryRules")
+	local fallState: any = {}
+	local CATCH_LIMITS = {Radius=CATCH_RADIUS, FloorY=ORIGIN.Y-CATCH_DEPTH}
 	-- POLL_INSERT
 	local altar = World.Altars.Altar_SanctuaryDepths.Spawn
 	for _, position in {vec(520,3,988),vec(520,3,880),vec(altar.X,altar.Y,altar.Z)} do
@@ -30,6 +34,9 @@ do
 	e.Root.Position=vec(0,550,900);poll();check(returned,"A fall from the shrine is still recovered")
 	returned=false;e.Root.Position=vec(0,603,920);poll();check(not returned,"Shrine ground is safe")
 	e.Root.Position=vec(0,3,-900);poll();check(not returned,"Monastery is safe")
+	-- Batch 01: a later-altar respawn displaced to the engine default spawn is never sent to the bonfire.
+	settling=true;e.Root.Position=vec(0,100,0);poll();check(not returned,"Settling respawn is not caught")
+	settling=false;poll();check(not returned,"Unclaimed ground below the shrine is not a Sanctuary fall")
 end
 do
 	local entities: any = {}

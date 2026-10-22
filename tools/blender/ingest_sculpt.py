@@ -16,6 +16,7 @@ What it does:
 """
 import math
 import sys
+from types import SimpleNamespace
 from pathlib import Path
 
 import bmesh
@@ -38,6 +39,8 @@ SRC, OUT = Path(ARGS[0]), Path(ARGS[1])
 TREE = opt("--tree", "")
 YAW = opt("--yaw", 0.0)
 PARTS = opt("--parts", 2)
+TREE_PARTS = opt("--tree-parts", 2)
+BAKE = "--bake" in ARGS   # re-bake from the high-poly (needs lots of RAM); default reuses source maps
 GRADE = opt("--grade", 0.6)
 CAP = 19000
 bt.configure(opt("--tex-dir", "assets/source/tex"), OUT)
@@ -70,6 +73,7 @@ def normalize(obj, height, yaw=0.0):
     s = height / (hi[2] - lo[2])
     obj.data.transform(Matrix.Scale(s, 4) @ Matrix.Translation(Vector((-(lo[0] + hi[0]) / 2, -(lo[1] + hi[1]) / 2, -lo[2]))))
     obj.data.update()
+    bpy.context.view_layer.update()   # refresh obj.dimensions (cached bounds)
 
 
 def slice_by_height(src, parts):
@@ -179,19 +183,20 @@ def bake_from(hi, lo, name, grade):
 
 def place_tree(tree, statue):
     """Tree ~1.8x her height, trunk base just behind her back, crown over her head."""
-    normalize(tree, statue.dimensions.z * 1.8)
+    normalize(tree, statue.dimensions.z * 2.0)
     spread = max(tree.dimensions.x, tree.dimensions.y) / (max(statue.dimensions.x, statue.dimensions.y) * 2.4)
     if spread > 1:  # keep the canopy footprint within ~2.4x her width
         tree.data.transform(Matrix.Scale(1 / spread, 4))
         tree.data.update()
+        bpy.context.view_layer.update()
     co = np.array([v.co[:] for v in tree.data.vertices])
     base = co[co[:, 2] < 0.06 * co[:, 2].max()].mean(0)
-    back = statue.dimensions.y * 0.5 + 0.04
+    back = statue.dimensions.y * 0.3   # trunk tucked right behind her back
     tree.data.transform(Matrix.Translation(Vector((-base[0], back - base[1], -0.02))))
     tree.data.update()
 
 
-def leaf_tips(tree, count=70):
+def leaf_tips(tree, count=45):
     co = np.array([v.co[:] for v in tree.data.vertices])
     top = co[:, 2].max()
     axis = co[co[:, 2] < 0.2 * top][:, :2].mean(0)
@@ -233,11 +238,91 @@ def preview(parts, path):
     cam.data.lens = 50
     sc.collection.objects.link(cam)
     sc.camera = cam
-    d = Vector((math.sin(math.radians(28)), -math.cos(math.radians(28)), 0.12)).normalized()
-    cam.location = ctr + d * (hi - lo).length * 1.25
+    d = Vector((math.sin(math.radians(14)), -math.cos(math.radians(14)), 0.1)).normalized()
+    cam.location = ctr + d * (hi - lo).length * 1.15
     cam.rotation_euler = (ctr - cam.location).to_track_quat("-Z", "Y").to_euler()
     sc.render.filepath = str(path)
     bpy.ops.render.render(write_still=True)
+
+
+def source_maps(obj):
+    """Images feeding the source's Principled BSDF: base colour, normal map, and the glTF
+    metallic-roughness texture (roughness = G, metalness = B)."""
+    found = {}
+    for mat in obj.data.materials:
+        if not mat or not mat.node_tree:
+            continue
+        p = next((n for n in mat.node_tree.nodes if n.type == "BSDF_PRINCIPLED"), None)
+        if p is None:
+            continue
+        for socket, key in (("Base Color", "Color"), ("Normal", "Normal"), ("Roughness", "Roughness")):
+            stack = [p.inputs[socket].links[0].from_node] if p.inputs[socket].is_linked else []
+            while stack:
+                node = stack.pop()
+                if node.type == "TEX_IMAGE" and node.image:
+                    found.setdefault(key, node.image)
+                    break
+                stack += [i.links[0].from_node for i in node.inputs if i.is_linked]
+    return found
+
+
+def reuse_maps(obj, name, grade):
+    """Writes 1024 Color/Normal/Roughness from the source's own maps and assigns a material
+    using them (valid because decimation keeps the source UV layout)."""
+    src = source_maps(obj)
+    imgs = {}
+    for key, nc in (("Color", False), ("Normal", True), ("Roughness", True)):
+        if key not in src:
+            continue
+        im = src[key]
+        if nc:
+            im.colorspace_settings.name = "Non-Color"
+        if im.size[0] > bt.SIZE:
+            im.scale(bt.SIZE, bt.SIZE)
+        a = bt.pixels(im).copy()
+        if key == "Roughness":
+            a[..., 0] = a[..., 2] = a[..., 1]          # glTF ARM: G channel is roughness
+        if key == "Color" and grade > 0:
+            lum = a[..., 0] * 0.3 + a[..., 1] * 0.59 + a[..., 2] * 0.11
+            a[..., :3] = a[..., :3] * (1 - grade) + lum[..., None] * np.array([0.62, 0.64, 0.68]) * grade
+        a[..., 3] = 1.0
+        out = bt.to_image(f"{name}_{key}", a, nc)
+        bt.save(out, OUT / "maps" / f"{name}_{key}.png")
+        imgs[key] = out
+        print(f"MAP {name} {key} from {im.name}", flush=True)
+    mat = bt.textured_material(name + "_Mat", imgs["Color"], imgs.get("Normal"), imgs.get("Roughness"))
+    obj.data.materials.clear()
+    obj.data.materials.append(mat)
+
+
+def sliced(hi, name, count, grade):
+    """Decimates hi once, bakes onto its original UVs, then slices it into MeshParts that share
+    the same Color/Normal/Roughness maps (named <name> or <name>_1.._n)."""
+    if BAKE:
+        whole = hi.copy()
+        whole.data = hi.data.copy()
+        bpy.context.scene.collection.objects.link(whole)
+        whole.name = name
+        bt.decimate(whole, int(CAP * count * 0.97))
+        bake_from(hi, whole, name, grade)
+    else:  # lean: decimate the source in place and keep its UVs + maps
+        whole = hi
+        whole.name = name
+        bt.decimate(whole, int(CAP * count * 0.97))
+        bt.select([whole])
+        if whole.data.has_custom_normals:
+            bpy.ops.mesh.customdata_custom_splitnormals_clear()
+        bpy.ops.object.shade_smooth()
+        reuse_maps(whole, name, grade)
+    if count == 1:
+        return [whole]
+    out = []
+    for k, piece in enumerate(slice_by_height(whole, count)):
+        piece.name = f"{name}_{k + 1}"
+        decimate_keep_seams(piece, CAP)
+        out.append(piece)
+    bpy.data.objects.remove(whole)
+    return out
 
 
 def main():
@@ -245,36 +330,16 @@ def main():
     statue = import_joined(SRC, "StatueHigh")
     normalize(statue, 1.0, YAW)
     print("SOURCE", SRC.name, bt.tris(statue), "tris", flush=True)
-    # Decimate the whole sculpt once and bake onto its original UVs, then slice it into MeshParts
-    # that share the same Color/Normal/Roughness maps.
-    whole = statue.copy()
-    whole.data = statue.data.copy()
-    bpy.context.scene.collection.objects.link(whole)
-    whole.name = "Titan_Figure"
-    bt.decimate(whole, int(CAP * PARTS * 0.97))
-    bake_from(statue, whole, "Titan_Figure", GRADE)
-    parts = []
-    if PARTS == 1:
-        parts.append(whole)
-    else:
-        for k, piece in enumerate(slice_by_height(whole, PARTS)):
-            piece.name = f"Titan_Figure_{k + 1}"
-            decimate_keep_seams(piece, CAP)
-            parts.append(piece)
-        bpy.data.objects.remove(whole)
-    rest = [statue]
+    dims = statue.dimensions.copy()
+    parts = sliced(statue, "Titan_Figure", PARTS, GRADE)
+    rest = [o for o in (bpy.data.objects.get("StatueHigh"),) if o]
     if TREE:
         tree_hi = import_joined(TREE, "TreeHigh")
-        place_tree(tree_hi, statue)
-        canopy = tree_hi.copy()
-        canopy.data = tree_hi.data.copy()
-        bpy.context.scene.collection.objects.link(canopy)
-        canopy.name = "Titan_Canopy"
-        bt.decimate(canopy, CAP)
-        bake_from(tree_hi, canopy, "Titan_Canopy", 0.0)
-        parts.append(canopy)
-        rest.append(tree_hi)
-        leaves = td.leaves(leaf_tips(tree_hi), td.statue_bvh(rest))
+        place_tree(tree_hi, SimpleNamespace(dimensions=dims))
+        tips = leaf_tips(tree_hi)
+        parts += sliced(tree_hi, "Titan_Canopy", TREE_PARTS, 0.0)
+        rest += [o for o in (bpy.data.objects.get("TreeHigh"),) if o]
+        leaves = td.leaves(tips, td.statue_bvh(rest or parts))
         leaves.name = "Titan_Leaves"
         leaves.data.materials.append(bt.textured_material("CrimsonLeaves", bt.crimson_leaves(), alpha=True))
         parts.append(leaves)

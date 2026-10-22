@@ -1,0 +1,26 @@
+
+$ /Users/digonto/Documents/ChatGPT/Roblox game 2/work/bin/luau/luau tools/test_backend.luau
+PASS backend: leases, expiry/fencing, bounded retries, load failure protection, callback replay, commit-response loss, receipts across reconnect, schema migration, durable result inbox recovery, exactly-once results, practice rejection and request schemas
+
+
+$ /Users/digonto/Documents/ChatGPT/Roblox game 2/work/bin/luau/luau tools/test_commercial_systems.luau
+[Commercial Test] 1. ProfileSchema Invariants & Migration...
+[Commercial Test] 2. ShopCatalog Immutability & Drop Probability Sums...
+[Commercial Test] 3. ELO Rating Calculation & Division Belts...
+[Commercial Test] 4. Matchmaking Queue & Expanding Search Window...
+[Commercial Test] 5. Multi-Arena Cage Allocation & Release...
+[Commercial Test] 6. Gacha Pity Counter Simulation...
+PASS Commercial Systems: ProfileSchema integrity, ShopCatalog immutability, ELO rating math, expanding queue brackets, multi-arena cage allocation, and gacha pity guarantee.
+
+
+$ /Users/digonto/Documents/ChatGPT/Roblox game 2/work/bin/luau/luau tools/test_boss_encounters.luau
+Boss encounters: 286 checks passed
+
+
+$ python3 tools/test_audiovisual.py
+PASS: 41 audiovisual runtime assertions (engine fakes; Studio QA separate)
+/Users/digonto/Documents/ChatGPT/Roblox game 2/tools/test_audiovisual.py:63: DeprecationWarning: Testing an element's truth value will always return True in future versions.  Use specific 'len(elem)' or 'elem is not None' test instead.
+  if surface:
+PASS: 13 imported templates, 56 complete PBR MeshParts; saved Automatic fidelity
+PASS: 8 PBR exports validated; audio format/peak/DC checks passed (available media only)
+

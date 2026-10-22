@@ -20,6 +20,9 @@ local Landmarks = require(Services:WaitForChild("MonasteryLandmarks") :: ModuleS
 local Atmosphere = require(Services:WaitForChild("MonasteryAtmosphere") :: ModuleScript)
 local Dressing = require(Services:WaitForChild("MonasteryDressing") :: ModuleScript)
 local Survey = require(Services:WaitForChild("MonasterySurvey") :: ModuleScript)
+local Bounds = require(Services:WaitForChild("MonasteryBounds") :: ModuleScript)
+local Pockets = require(Services:WaitForChild("MonasteryPockets") :: ModuleScript)
+local Secrets = require(Services:WaitForChild("MonasterySecrets") :: ModuleScript)
 
 local MonasteryService = {}
 
@@ -70,8 +73,18 @@ function MonasteryService.Start()
 	layer("Landmarks", function()
 		Landmarks.Build(map, rng)
 	end)
+	layer("Pockets", function() -- route cover and storytelling (batch 15)
+		Pockets.Build(map, rng)
+	end)
+	layer("Secrets", function() -- waterfall path, drum tower, mausoleum seal (batch 15)
+		Secrets.Build(map, rng)
+	end)
 	layer("Atmosphere", function()
 		Atmosphere.Build(map, rng)
+	end)
+	layer("Bounds", function()
+		Bounds.Build(map)
+		Bounds.Start()
 	end)
 	local placed = Dressing.Build(map)
 	map.Parent = Workspace
@@ -96,6 +109,7 @@ end
 
 function MonasteryService.Destroy()
 	running = false
+	Bounds.Stop()
 	local folderRoot = root
 	if folderRoot then
 		folderRoot:Destroy()

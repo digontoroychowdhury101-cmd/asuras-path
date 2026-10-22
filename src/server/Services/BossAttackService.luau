@@ -6,6 +6,7 @@ local Rules = require(Shared.Shared.BossEncounterRules)
 local Characters = require(script.Parent.CharacterService)
 local Motion = require(script.Parent.BossMotion)
 local Hazards = require(script.Parent.BossHazards)
+local Handoff = require(script.Parent.EncounterHandoff)
 local Service = {}
 type Active = { Attack: Types.Attack, Impact: number, Origin: Vector3, Aim: Vector3, Target: number,
 	Allowed: { [number]: boolean }?, Hazard: Hazards.Hazard?, Pulse: number }
@@ -20,7 +21,10 @@ function Service.start(id: number, attack: Types.Attack, target: number, allowed
 	Service.cancel(id)
 	local e, victim = Characters.GetEntity(id), Characters.GetEntity(target)
 	if not e or not victim or not allowed or not allowed[target] then return end
+	local encounter = e.Model:GetAttribute("AsuraEncounter")
+	-- No impact inside an encounter handoff: the windup stretches to the readable lead (#16).
 	local impact = Rules.impact(now, attack.Windup)
+	if type(encounter) == "string" then impact = Handoff.defer(encounter, impact) end
 	local origin = Vector3.new(e.Root.Position.X, 3, e.Root.Position.Z)
 	local aim = Motion.clamp(id, Vector3.new(victim.Root.Position.X, e.Root.Position.Y, victim.Root.Position.Z))
 	active[id] = { Attack = attack, Impact = impact, Origin = origin, Aim = aim, Target = target, Allowed = allowed, Hazard = nil, Pulse = 0 }

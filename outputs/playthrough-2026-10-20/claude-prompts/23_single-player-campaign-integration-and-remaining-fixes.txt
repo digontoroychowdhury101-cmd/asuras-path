@@ -1,0 +1,21 @@
+Continue Asura's Path repairs — batch 23/26: Single-player campaign integration and remaining fixes.
+
+Apply the shared operating brief (outputs/playthrough-2026-10-20/claude-prompts/00_OPERATING_BRIEF.txt; read once per chat) and current PROGRESS.md. Read report findings #1, #8, #9, #10, #16, #18, #19, #22, #23, #27, #28, #44 only, plus relevant evidence. Implement this batch now.
+
+Validate the integrated solo game using the repair ledger, not a fresh speculative audit. Build/sync the current source and attempt a normal fresh-profile run from prologue through all six bosses, reward/forge progression, all region joins and ending. Exercise a later-checkpoint death/retry, bloodstain recovery and second death, one reinforcement/infusion, mastery/ward behavior where reachable, every altar travel destination, all eight inscriptions and all five caches.
+Fix concrete integration failures within the touched systems and add focused regressions for actual causes. Check save/rejoin after meaningful milestones. Reuse earlier evidence and run the relevant regression suites once; broaden only for changed behavior or failures.
+Keep normal play evidence separate from diagnostic seeded flags, teleports, automated phase access and headless engine fakes. Use continuous input for meaningful boss fairness/deflect judgments; do not nerf difficulty to compensate for tool latency.
+Do not mark a full campaign clear unless it happened. Record exactly what was reached, failures fixed, and any required human/asset/live-service acceptance still pending.
+
+Start near these files; follow only necessary dependencies:
+- outputs/playthrough-2026-10-20/claude-prompts/PROGRESS.md
+- tools/test_progression_runtime.py
+- tools/test_boss_runtime.py
+- tools/test_boss_encounters.luau
+- tools/test_progression_and_lore.luau
+- tools/test_weapons_and_spells_runtime.py
+
+Acceptance and focused verification:
+Produce a compact acceptance matrix with actual results and evidence paths for routes, six bosses/phases, retries, rewards/forge, collectibles, travel, ending and rejoin. No source-only or seeded test may be labeled an earned end-to-end completion. Keep follow-up items concrete and scoped.
+
+Update the repair ledger and PROJECT_STATE.md. State implementation versus verification precisely, then stop at this batch boundary.

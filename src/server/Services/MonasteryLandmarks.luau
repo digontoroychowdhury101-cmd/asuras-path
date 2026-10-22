@@ -9,6 +9,7 @@ local World = require(ReplicatedStorage:WaitForChild("AsurasPath").Shared.WorldD
 local Kit = require(script.Parent:WaitForChild("MonasteryKit") :: ModuleScript)
 local Fx = require(script.Parent:WaitForChild("MonasteryFx") :: ModuleScript)
 local Ruins = require(script.Parent:WaitForChild("MonasteryRuins") :: ModuleScript)
+local Zones = require(ReplicatedStorage:WaitForChild("AsurasPath").Shared.MonasteryZones)
 
 local Landmarks = {}
 
@@ -112,7 +113,7 @@ function Landmarks.Build(parent: Instance, rng: Random)
 	local graves = Kit.folder("GraveStupas", parent)
 	for _ = 1, 12 do
 		local spot = Vector3.new(rng:NextNumber(-130, -26), 0, rng:NextNumber(-998, -1108))
-		if (spot - Vector3.new(-90, 0, -1052)).Magnitude > 34 then
+		if (spot - Vector3.new(-90, 0, -1052)).Magnitude > 34 and Zones.distanceToPath(Zones.GravePath, spot.X, spot.Z) > 5 then
 			stupa(graves, spot, rng)
 		end
 	end

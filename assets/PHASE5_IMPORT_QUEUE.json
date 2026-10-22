@@ -1,15 +1,25 @@
 {
-  "status": "pending_roblox_upload",
+  "status": "uploaded_registered",
   "models": [
     {
       "name": "AsuraStone",
       "file": "assets/build/phase5_import/meshes/AsuraStone.glb",
       "mesh_objects": 1,
       "materials": 1,
-      "triangles": 19304,
+      "triangles": 2376,
       "source": "stone_01",
-      "sha256": "ddfe073dccb6e5e470efb37635afcdd7b8ddf15af0b5f2c75c408de575496f2e",
-      "uploaded": false
+      "sha256": "c724465fe45a9dd3648c03badd0199e71752df78175ce928c79ade7dbeb6f6c6",
+      "uploaded": true,
+      "parts": [
+        {
+          "Name": "Plane.001",
+          "MeshId": "rbxassetid://106842288070597",
+          "ColorMap": "rbxassetid://87157390429481",
+          "NormalMap": "rbxassetid://99253232224054",
+          "RoughnessMap": "rbxassetid://137387887381874",
+          "MetalnessMap": "rbxassetid://89251314153712"
+        }
+      ]
     },
     {
       "name": "AsuraFirePit",
@@ -19,7 +29,17 @@
       "triangles": 3887,
       "source": "stone_fire_pit",
       "sha256": "5f11467a2647e0339d4fb5d8301d2d98bc65fcec5aeaddec90501d73dd5e198d",
-      "uploaded": false
+      "uploaded": true,
+      "parts": [
+        {
+          "Name": "texturedMesh.002",
+          "MeshId": "rbxassetid://108335955316266",
+          "ColorMap": "rbxassetid://81871441453880",
+          "NormalMap": "rbxassetid://128729071716272",
+          "RoughnessMap": "rbxassetid://81235678714562",
+          "MetalnessMap": "rbxassetid://71498989613246"
+        }
+      ]
     },
     {
       "name": "AsuraBrassLantern",
@@ -29,7 +49,49 @@
       "triangles": 12742,
       "source": "brass_diya_lantern",
       "sha256": "fd4804351a1bc6be907d770b2f3561e9f9d8c8acb4d76edd0124d84a55d9ee53",
-      "uploaded": false
+      "uploaded": true,
+      "parts": [
+        {
+          "Name": "Spiral.001",
+          "MeshId": "rbxassetid://105652153407631",
+          "ColorMap": "rbxassetid://83916215536492",
+          "NormalMap": "rbxassetid://93820446667366",
+          "RoughnessMap": "rbxassetid://109643218174169",
+          "MetalnessMap": "rbxassetid://125358453747501"
+        },
+        {
+          "Name": "Plane.003",
+          "MeshId": "rbxassetid://115107662385208",
+          "ColorMap": "rbxassetid://83916215536492",
+          "NormalMap": "rbxassetid://93820446667366",
+          "RoughnessMap": "rbxassetid://109643218174169",
+          "MetalnessMap": "rbxassetid://125358453747501"
+        },
+        {
+          "Name": "Cylinder.002",
+          "MeshId": "rbxassetid://136022696846207",
+          "ColorMap": "rbxassetid://121597930637578",
+          "NormalMap": "rbxassetid://74906709556220",
+          "RoughnessMap": "rbxassetid://107590083950252",
+          "MetalnessMap": "rbxassetid://72545291918659"
+        },
+        {
+          "Name": "Cylinder.0022",
+          "MeshId": "rbxassetid://97362454477468",
+          "ColorMap": "rbxassetid://103138693368825",
+          "NormalMap": "rbxassetid://109697051965049",
+          "RoughnessMap": "rbxassetid://72895908124284",
+          "MetalnessMap": "rbxassetid://136766781517910"
+        },
+        {
+          "Name": "Cylinder.0023",
+          "MeshId": "rbxassetid://79705045816338",
+          "ColorMap": "rbxassetid://85486650695835",
+          "NormalMap": "rbxassetid://109153360511008",
+          "RoughnessMap": "rbxassetid://132787622483826",
+          "MetalnessMap": "rbxassetid://111724240203096"
+        }
+      ]
     },
     {
       "name": "AsuraRuinArch",
@@ -39,7 +101,33 @@
       "triangles": 1480,
       "source": "RuinArch_01",
       "sha256": "7d50066718d5b3a557a8918d793699748ec61b0c04894d87344bc8a491c28223",
-      "uploaded": false
+      "uploaded": true,
+      "parts": [
+        {
+          "Name": "geom-RuinArchOne200",
+          "MeshId": "rbxassetid://103358279439886",
+          "ColorMap": "rbxassetid://120914392025247",
+          "NormalMap": "rbxassetid://119475070585763",
+          "RoughnessMap": "rbxassetid://78499308812196",
+          "MetalnessMap": "rbxassetid://74230407012235"
+        },
+        {
+          "Name": "geom-RuinArchOne2002",
+          "MeshId": "rbxassetid://137359830236447",
+          "ColorMap": "rbxassetid://102140983777594",
+          "NormalMap": "rbxassetid://83722376361115",
+          "RoughnessMap": "rbxassetid://73630114478381",
+          "MetalnessMap": "rbxassetid://130006463668012"
+        },
+        {
+          "Name": "geom-RuinArchOne2003",
+          "MeshId": "rbxassetid://91051007359488",
+          "ColorMap": "rbxassetid://128523825225102",
+          "NormalMap": "rbxassetid://75864540478380",
+          "RoughnessMap": "rbxassetid://109687928233318",
+          "MetalnessMap": "rbxassetid://115028776122747"
+        }
+      ]
     },
     {
       "name": "AsuraRomanRail",
@@ -49,7 +137,17 @@
       "triangles": 126,
       "source": "RomanRail_01",
       "sha256": "c2f287d20fa6e20eeb8d33d230f7e1c2bb8bc3b46ea086f8e17972fbe983e780",
-      "uploaded": false
+      "uploaded": true,
+      "parts": [
+        {
+          "Name": "geom-RomanRailOne200",
+          "MeshId": "rbxassetid://101115989575429",
+          "ColorMap": "rbxassetid://115519715746909",
+          "NormalMap": "rbxassetid://93998763996521",
+          "RoughnessMap": "rbxassetid://75771821309732",
+          "MetalnessMap": "rbxassetid://108649236867429"
+        }
+      ]
     },
     {
       "name": "AsuraRuinPillar",
@@ -59,7 +157,17 @@
       "triangles": 296,
       "source": "PillarSegment_01",
       "sha256": "1473a610ce0035d70c13ee80866ac8e71098ea43b0b390e13df5b84d41aa4c55",
-      "uploaded": false
+      "uploaded": true,
+      "parts": [
+        {
+          "Name": "geom-PillarSegmentOne200",
+          "MeshId": "rbxassetid://83165492087847",
+          "ColorMap": "rbxassetid://106699959040875",
+          "NormalMap": "rbxassetid://118937475008117",
+          "RoughnessMap": "rbxassetid://130940046029698",
+          "MetalnessMap": "rbxassetid://96086949181464"
+        }
+      ]
     },
     {
       "name": "AsuraFoundationRuin",
@@ -69,7 +177,25 @@
       "triangles": 120,
       "source": "FoundationRuin_01",
       "sha256": "59b36429531387816fe7b6df80265d7fa3f81b1c8c79af7538d586a6e816a937",
-      "uploaded": false
+      "uploaded": true,
+      "parts": [
+        {
+          "Name": "geom-foundationRuinOne200",
+          "MeshId": "rbxassetid://136107613967652",
+          "ColorMap": "rbxassetid://78441719564628",
+          "NormalMap": "rbxassetid://111784806989479",
+          "RoughnessMap": "rbxassetid://82345357399702",
+          "MetalnessMap": "rbxassetid://123673760795028"
+        },
+        {
+          "Name": "geom-foundationRuinOne2002",
+          "MeshId": "rbxassetid://95310618975232",
+          "ColorMap": "rbxassetid://89346240490549",
+          "NormalMap": "rbxassetid://132296709562120",
+          "RoughnessMap": "rbxassetid://78258725551214",
+          "MetalnessMap": "rbxassetid://115558161060962"
+        }
+      ]
     },
     {
       "name": "AsuraTempleRuin",
@@ -79,126 +205,192 @@
       "triangles": 2344,
       "source": "TempleRuin_01",
       "sha256": "cbf05e95e3a676ebf1e9e92d5d3e6dd0e6417af41ca7736f4fae8983d2d1b5d4",
-      "uploaded": false
+      "uploaded": true,
+      "parts": [
+        {
+          "Name": "geom-TempleRuinTwo300",
+          "MeshId": "rbxassetid://134793265676507",
+          "ColorMap": "rbxassetid://76219792695659",
+          "NormalMap": "rbxassetid://75185688461234",
+          "RoughnessMap": "rbxassetid://107235427816457",
+          "MetalnessMap": "rbxassetid://124806922294614"
+        },
+        {
+          "Name": "geom-TempleRuinTwo3002",
+          "MeshId": "rbxassetid://101774153092769",
+          "ColorMap": "rbxassetid://71508537465352",
+          "NormalMap": "rbxassetid://130640337670770",
+          "RoughnessMap": "rbxassetid://135559226476621",
+          "MetalnessMap": "rbxassetid://113785376072240"
+        },
+        {
+          "Name": "geom-TempleRuinTwo3003",
+          "MeshId": "rbxassetid://86382170254990",
+          "ColorMap": "rbxassetid://103405013866391",
+          "NormalMap": "rbxassetid://103854815134378",
+          "RoughnessMap": "rbxassetid://123363896843694",
+          "MetalnessMap": "rbxassetid://130261474356055"
+        },
+        {
+          "Name": "geom-TempleRuinTwo3004",
+          "MeshId": "rbxassetid://121030663327713",
+          "ColorMap": "rbxassetid://76632070422460",
+          "NormalMap": "rbxassetid://88779290927572",
+          "RoughnessMap": "rbxassetid://73543054060037",
+          "MetalnessMap": "rbxassetid://121333697106873"
+        }
+      ]
     }
   ],
   "Audio": {
     "Clash": {
       "file": "assets/build/phase5_import/audio/Clash.wav",
-      "id": "",
-      "uploaded": false
+      "id": "rbxassetid://112256493525265",
+      "uploaded": true
     },
     "ParryBass": {
       "file": "assets/build/phase5_import/audio/ParryBass.wav",
-      "id": "",
-      "uploaded": false
+      "id": "rbxassetid://132244224106707",
+      "uploaded": true
     },
     "Flesh": {
       "file": "assets/build/phase5_import/audio/Flesh.wav",
-      "id": "",
-      "uploaded": false
+      "id": "rbxassetid://135539914951495",
+      "uploaded": true
     },
     "Blunt": {
       "file": "assets/build/phase5_import/audio/Blunt.wav",
-      "id": "",
-      "uploaded": false
+      "id": "rbxassetid://96420173928383",
+      "uploaded": true
     },
     "Stone": {
       "file": "assets/build/phase5_import/audio/Stone.wav",
-      "id": "",
-      "uploaded": false
+      "id": "rbxassetid://99727362444008",
+      "uploaded": true
     },
     "BulletJump": {
       "file": "assets/build/phase5_import/audio/BulletJump.wav",
-      "id": "",
-      "uploaded": false
+      "id": "rbxassetid://100694818881612",
+      "uploaded": true
     },
     "Glide": {
       "file": "assets/build/phase5_import/audio/Glide.wav",
-      "id": "",
-      "uploaded": false
+      "id": "rbxassetid://120377372310702",
+      "uploaded": true
     },
     "Slide": {
       "file": "assets/build/phase5_import/audio/Slide.wav",
-      "id": "",
-      "uploaded": false
+      "id": "rbxassetid://96988662266744",
+      "uploaded": true
     },
     "Wind": {
       "file": "assets/build/phase5_import/audio/Wind.wav",
-      "id": "",
-      "uploaded": false
+      "id": "rbxassetid://122450130719273",
+      "uploaded": true
     },
     "Bell": {
       "file": "assets/build/phase5_import/audio/Bell.wav",
-      "id": "",
-      "uploaded": false
+      "id": "rbxassetid://123385330740698",
+      "uploaded": true
     },
     "Water": {
       "file": "assets/build/phase5_import/audio/Water.wav",
-      "id": "",
-      "uploaded": false
+      "id": "rbxassetid://113213311649809",
+      "uploaded": true
     },
     "BossDrone": {
       "file": "assets/build/phase5_import/audio/BossDrone.wav",
-      "id": "",
-      "uploaded": false
+      "id": "rbxassetid://123393717022210",
+      "uploaded": true
     }
   },
   "Textures": {
     "Ember": {
       "file": "assets/build/phase5_import/textures/Ember.png",
-      "id": "",
-      "uploaded": false
+      "id": "rbxassetid://71210522377346",
+      "uploaded": true
     },
     "Ribbon": {
       "file": "assets/build/phase5_import/textures/Ribbon.png",
-      "id": "",
-      "uploaded": false
+      "id": "rbxassetid://103002669230055",
+      "uploaded": true
     },
     "Shockwave": {
       "file": "assets/build/phase5_import/textures/Shockwave.png",
-      "id": "",
-      "uploaded": false
+      "id": "rbxassetid://83732553901476",
+      "uploaded": true
     },
     "Ash": {
       "file": "assets/build/phase5_import/textures/Ash.png",
-      "id": "",
-      "uploaded": false
+      "id": "rbxassetid://84748845356339",
+      "uploaded": true
     },
     "Smoke": {
       "file": "assets/build/phase5_import/textures/Smoke.png",
-      "id": "",
-      "uploaded": false
+      "id": "rbxassetid://118836433841190",
+      "uploaded": true
     },
     "Flame": {
       "file": "assets/build/phase5_import/textures/Flame.png",
-      "id": "",
-      "uploaded": false
+      "id": "rbxassetid://109612319904107",
+      "uploaded": true
     },
     "BloodStain": {
       "file": "assets/build/phase5_import/textures/BloodStain.png",
-      "id": "",
-      "uploaded": false
+      "id": "rbxassetid://127759159077031",
+      "uploaded": true
     },
     "Blood": {
       "file": "assets/build/phase5_import/textures/Blood.png",
-      "id": "",
-      "uploaded": false
+      "id": "rbxassetid://130551791057565",
+      "uploaded": true
     },
     "Rune": {
       "file": "assets/build/phase5_import/textures/Rune.png",
-      "id": "",
-      "uploaded": false
+      "id": "rbxassetid://122602029003354",
+      "uploaded": true
     },
     "Leaf": {
       "file": "assets/build/phase5_import/textures/Leaf.png",
-      "id": "",
-      "uploaded": false
+      "id": "rbxassetid://87626133699464",
+      "uploaded": true
     },
     "LeafScatter": {
       "file": "assets/build/phase5_import/textures/LeafScatter.png",
-      "id": "",
-      "uploaded": false
+      "id": "rbxassetid://117610974782404",
+      "uploaded": true
+    }
+  },
+  "Sky": {
+    "Back": {
+      "file": "assets/build/phase5_import/sky/SkyBack.png",
+      "id": "rbxassetid://87628549041414",
+      "uploaded": true
+    },
+    "Front": {
+      "file": "assets/build/phase5_import/sky/SkyFront.png",
+      "id": "rbxassetid://77637140898450",
+      "uploaded": true
+    },
+    "Left": {
+      "file": "assets/build/phase5_import/sky/SkyLeft.png",
+      "id": "rbxassetid://83782412023406",
+      "uploaded": true
+    },
+    "Right": {
+      "file": "assets/build/phase5_import/sky/SkyRight.png",
+      "id": "rbxassetid://126646523881532",
+      "uploaded": true
+    },
+    "Up": {
+      "file": "assets/build/phase5_import/sky/SkyUp.png",
+      "id": "rbxassetid://94728124992475",
+      "uploaded": true
+    },
+    "Down": {
+      "file": "assets/build/phase5_import/sky/SkyDown.png",
+      "id": "rbxassetid://103952866093370",
+      "uploaded": true
     }
   }
 }

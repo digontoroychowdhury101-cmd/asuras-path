@@ -1,0 +1,23 @@
+Continue Asura's Path — follow-up 08/26: Make the first ten minutes teach the actual game.
+
+Apply 00_SHARED_BRIEF.txt in /Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 10. Findings: #11, #12, #13, #15, #19, #43, #44. Verify existing work, fix actual gaps, and execute this batch now.
+
+Start with a fresh isolated profile. Observe first boot, avatar appearance loading, prologue play/skip and the first-rest objective. The scene must not reveal an unfinished avatar or competing UI before the intended handoff. Verify replay opening/training through Respite and interruptions by death/respawn.
+Walk the current Sparring Phantom sequence using real actions: light, deflect, dodge, lock, heal, deathblow, perilous/mobility counter and Blood Rally as defined in TutorialRules. Ensure server-judged steps cannot advance from an unrelated event, dead target or mere keypress. Practice must remain safe and reward-free. Skipping/rejoining must neither trap an existing save nor force veteran retraining.
+Then face the lone introductory monk before the later pair. Read the early memorial and see its Codex/reward update. Explain carried Essence, second-death loss, recoverable health, reduced ceiling, rest and current counter inputs at the moment they matter. Fix observed confusion with short contextual cues, not a longer controls wall. Record the first action, first useful success and first death/confusion point; any claims about ease of deflecting require a human with continuous input.
+Start files (relative to project root; follow only required dependencies):
+- src/shared/TutorialRules.luau
+- src/server/Services/TutorialService.luau
+- src/client/Controllers/TutorialController.luau
+- src/client/Controllers/PrologueController.luau
+- src/shared/WorldDefinitions.luau
+- src/shared/NarrativeCatalog.luau
+
+Focused checks (reuse prior results unless code changed or live evidence is missing):
+- python3 tools/lune_compat.py tools/test_opening_tutorial.luau
+- python3 tools/test_objectives.py
+
+Acceptance:
+A fresh player can reach rest, practice, one real duel and one discovery without a stuck camera/input/objective; distinguish human observations from scripted state tests.
+
+Update the matching ledgers with evidence type and exact remaining work; stop after this batch.

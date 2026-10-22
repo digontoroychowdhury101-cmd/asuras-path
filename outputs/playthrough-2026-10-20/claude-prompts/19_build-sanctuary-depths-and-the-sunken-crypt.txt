@@ -1,0 +1,20 @@
+Continue Asura's Path repairs — batch 19/26: Build Sanctuary Depths and the Sunken Crypt.
+
+Apply the shared operating brief (outputs/playthrough-2026-10-20/claude-prompts/00_OPERATING_BRIEF.txt; read once per chat) and current PROGRESS.md. Read report findings #22, #27, #28, #32 only, plus relevant evidence. Implement this batch now.
+
+Turn Sanctuary Depths into the Sunken Crypt promised by Titan's encounter. Build a coherent descent/arrival, crypt exploration route, incense checkpoint, Titan chamber and return connection. Give the crypt readable depth, scale, ruins and controlled sightlines without recreating the near-black visibility problem.
+Provide enough room and ground support for Titan, legible ankle/weapon combat, safe camera placement, honest boundaries and deliberate optional traversal. Make portal arrival/return and recovery guidance obvious.
+Preserve region/checkpoint IDs, defeated flags and existing portal semantics, and reuse shared construction/lighting components. Ensure the Sanctuary safety catch does not intercept legitimate underground-region play.
+Limit new content to this region; prioritize an actually walkable complete route over dense repetitive decoration.
+
+Start near these files; follow only necessary dependencies:
+- src/shared/WorldDefinitions.luau
+- src/server/Services/BossArenas.luau
+- src/server/Services/WorldService.luau
+- src/server/Services/SanctuaryService.luau
+- src/shared/EnvironmentProfiles.luau
+
+Acceptance and focused verification:
+Traverse Sanctuary -> Crypt -> altar -> Titan -> return, test death/respawn/travel and a ground-level fall/boundary case. Verify Titan camera/hurtbox clearance and idle lighting. Demonstrate that the Sanctuary catch still recovers real shrine falls without teleporting crypt players away.
+
+Update the repair ledger and PROJECT_STATE.md. State implementation versus verification precisely, then stop at this batch boundary.

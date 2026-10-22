@@ -1,0 +1,20 @@
+Continue Asura's Path repairs — batch 09/26: Attack contact, full-health healing and enemy deaths.
+
+Apply the shared operating brief (outputs/playthrough-2026-10-20/claude-prompts/00_OPERATING_BRIEF.txt; read once per chat) and current PROGRESS.md. Read report findings #14, #20, #21 only, plus relevant evidence. Implement this batch now.
+
+Make melee outcomes legible. Diagnose actual whiffs/contact before changing damage: check reach, actor spacing, attack animation/VFX alignment and geometry. Distinguish a whiff, deliberate guard-during-startup feint, block, hit and deathblow through coherent feedback. Retain server authority, rewind logic and the existing feint rule; do not lengthen hitboxes just to hide a placement problem.
+Prevent an ordinary heal at full currently healable health from consuming a flask, with short clear feedback; retain intentional healing rules for a reduced ceiling and any valid secondary effect. Keep the flask count visible using batch 04.
+Replace the killed monk's loose block breakup with a bounded collapse/dissolve presentation consistent with existing assets. Remove labels/reticles promptly and show reward feedback. Corpses/effects should not obstruct navigation or accumulate indefinitely.
+
+Start near these files; follow only necessary dependencies:
+- src/server/CharacterService.luau
+- src/simulation/CombatRules.luau
+- src/client/Controllers/CombatFeedback.luau
+- src/client/Controllers/CombatVfx.luau
+- src/client/Controllers/CombatCallouts.luau
+- src/client/Controllers/EnemyBars.luau
+
+Acceptance and focused verification:
+Exercise hits just inside/outside reach, intentional feint, guarded strike and actual hit. Test full-health/partial-health/reduced-ceiling/no-flask healing and exactly-once resource use. Kill several enemies and verify reward/state correctness, prompt label removal and bounded corpse cleanup. Tune damage only if a separately demonstrated defect requires it.
+
+Update the repair ledger and PROJECT_STATE.md. State implementation versus verification precisely, then stop at this batch boundary.

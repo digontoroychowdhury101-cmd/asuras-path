@@ -1,0 +1,20 @@
+Continue Asura's Path repairs — batch 05/26: Rest, Lin dialogue and leveling flow.
+
+Apply the shared operating brief (outputs/playthrough-2026-10-20/claude-prompts/00_OPERATING_BRIEF.txt; read once per chat) and current PROGRESS.md. Read report findings #4, #38, #39, #40 only, plus relevant evidence. Implement this batch now.
+
+Make rest immediately set the checkpoint/refill resources, followed by a clear altar menu with deliberate Travel and Summon Lin/Ascension choices. Preserve Lin's intentional remote spirit projection; it was not an NPC-proximity exploit. Keep travel accessible after interacting with her.
+Give physical NPC and projection conversations an unobstructed portrait shot, collision-aware fallback and consistent modal style using the existing UI kit. Hide unrelated prompts/objectives while appropriate, and reliably restore camera/input on close, death, replacement dialogue and respawn. Coordinate with the geometry repairs in batch 07.
+Improve leveling with source-derived before/after benefits, cost and currency remaining. Use readable labels such as Arcane Qi, distinguish currency from spell resource, and keep long attribute lists inside a clear scroll region. Preserve current stat formulas and schema compatibility.
+
+Start near these files; follow only necessary dependencies:
+- src/client/Controllers/DialogueController.luau
+- src/client/Controllers/DialogueView.luau
+- src/client/Controllers/InterfaceController.luau
+- src/server/Services/DialogueService.luau
+- src/server/Services/DialogueActions.luau
+- src/shared/ProgressionRules.luau
+
+Acceptance and focused verification:
+At Sanctuary, Gate and Cloister: rest, open/close Lin, level if affordable, return to altar, travel and resume movement. Test portrait clearance from both shoulders and with nearby fire/stone. Validate insufficient currency, exactly-once purchase, displayed derived benefits and closing during death.
+
+Update the repair ledger and PROJECT_STATE.md. State implementation versus verification precisely, then stop at this batch boundary.

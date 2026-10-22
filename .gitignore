@@ -2,6 +2,10 @@ work/
 .DS_Store
 *.rbxl.lock
 *.rbxlx.lock
+*.pyc
+__pycache__/
+tools/**/__pycache__/
+*.tmp
 
 assets/source/
 assets/build/

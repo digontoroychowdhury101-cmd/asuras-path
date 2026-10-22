@@ -1,0 +1,21 @@
+Continue Asura's Path repairs — batch 13/26: Wu and Azure Wyrm presentation.
+
+Apply the shared operating brief (outputs/playthrough-2026-10-20/claude-prompts/00_OPERATING_BRIEF.txt; read once per chat) and current PROGRESS.md. Read report findings #16, #23 only, plus relevant evidence. Implement this batch now.
+
+Limit this pass to Sovereign Wu and Azure Wyrm, reusing the repaired asset pipeline. Give Wu a readable oracle/sorcerer identity and Wyrm a convincing creature/dragon silhouette, body and animated wings instead of the observed humanoid with simple wing lines. Use valid available assets and deliberate materials/poses.
+Align visual attacks, casting, teleport/aerial motion and landing with server hit areas and hazards. Make bodies and weapons readable before an effect fires; preserve the biome lighting work from batch 03 and keep floor telegraphs clear.
+Implement/verify phase appearance and animation changes, entrance restoration and post-defeat cleanup. Preserve current encounter identity and avoid balance changes justified only by delayed tool input.
+If the production rig/animations cannot be created or accessed locally, complete the import/binding validation and list the exact missing asset deliverables. Do not mark the creature presentation complete from a source stub or a recolored placeholder.
+
+Start near these files; follow only necessary dependencies:
+- src/server/Services/BossSkin.luau
+- src/server/Services/BossAppearance.luau
+- src/server/Services/BossMotion.luau
+- src/server/Services/BossAttackService.luau
+- src/server/Services/BossHazards.luau
+- src/client/Controllers/BossAnimations.luau
+
+Acceptance and focused verification:
+Inspect both phases, normal play-distance silhouettes, Wu casting/teleport, Wyrm flight/landing, attack area alignment, entry/retry/death and cleanup. Record preview, seeded phase and actual-play evidence separately.
+
+Update the repair ledger and PROJECT_STATE.md. State implementation versus verification precisely, then stop at this batch boundary.

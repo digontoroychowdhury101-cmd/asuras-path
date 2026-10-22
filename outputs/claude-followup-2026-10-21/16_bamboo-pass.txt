@@ -1,0 +1,23 @@
+Continue Asura's Path — follow-up 16/26: Finish and validate Bamboo Pass.
+
+Apply 00_SHARED_BRIEF.txt in /Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 17. Findings: #22, #27, #28, #32, #44. Verify existing work, fix actual gaps, and execute this batch now.
+
+Walk Monastery south road → gorge/stairs → Bamboo shrine → Baize approach → Ash join and return. Verify real footing, enemy zones/leashes, readable landmarks, altar kindle/death/respawn/travel and both Bamboo inscriptions. Traverse the optional frost-stone route using the actual movement system; test double-jump/glide against the thicket veils and catch volumes.
+The 1,219-part offline build and exact-box reachability pass do not establish a finished bamboo biome. Inspect the scene at character height for repeated slabs, weak silhouettes, poor texture scale and empty boundaries. Place available approved bamboo/ruin meshes through the existing dressing/PBR layer over preserved collision boxes; if essential bamboo kits are absent, create the exact asset handoff and keep production-art acceptance blocked. Recolored primitives alone do not close finding 22 or 32.
+Use the shared minimap/RouteGuide layer from prompt 14; directions must name the usable stair/door rather than point across the gorge. Check Baize enter/leave/reset and local camera clearance with the actual rig, reusing prompt 11 evidence. Limit changes to this region and its immediate joins; record concrete defects instead of a broad environment rewrite.
+Start files (relative to project root; follow only required dependencies):
+- src/shared/BambooPassLayout.luau
+- src/server/Services/BambooDressing.luau
+- src/server/Services/CampaignBounds.luau
+- src/shared/CampaignZones.luau
+- src/shared/RouteGuide.luau
+- src/shared/NarrativeCatalog.luau
+
+Focused checks (reuse prior results unless code changed or live evidence is missing):
+- python3 tools/test_campaign_regions.py
+- python3 tools/test_campaign_build.py
+
+Acceptance:
+Walked main/optional routes, two readable tablets, altar retry/travel and ordinary-light region views, with geometry/production-art status separated.
+
+Update the matching ledgers with evidence type and exact remaining work; stop after this batch.

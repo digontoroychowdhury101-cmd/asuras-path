@@ -1,0 +1,25 @@
+Continue Asura's Path — follow-up 23/26: Verify real multiplayer and isolated durable persistence.
+
+Apply 00_SHARED_BRIEF.txt in /Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 24. Findings: additional verification/tooling. Verify existing work, fix actual gaps, and execute this batch now.
+
+The real-service mock test passes 28 checks, including the fixed leave-during-setup forfeit. Validate two duelists plus a spectator in an actual local multi-client session. Cover Ranked normalization, Open build stats, countdown/queue cancellation, both reachable rings, target/lighting isolation and leaving during setup versus mid-match.
+For the spectator, test eligibility, escrow before the bell, rejection once closed, duelist refusal, win/loss/refund and exactly-once settlement. Verify duplicate requests, disconnect/rejoin, abandoned setup, service outage and shutdown produce the appropriate durable journal/inbox/profile outcomes without double rating, Essence or stakes.
+Then use an existing authorized isolated private test universe for genuine DataStore/lease/fencing, result recovery and shutdown delivery. Keep test accounts and stores separate from real player data. If no such live environment is available, prepare the runnable harness and owner steps; leave live delivery pending rather than publishing or pointing destructive tests at production. Local multi-client sessions and mocks cannot establish cloud durability.
+Retain current schema migration and release gates; this prompt adds no monetization or wager rules. Save the session topology, test data identities, outcomes and relevant failure/recovery excerpts without dumping account secrets.
+Start files (relative to project root; follow only required dependencies):
+- src/server/Services/ColosseumService.luau
+- src/server/Services/WagerService.luau
+- src/server/Services/WagerLedger.luau
+- src/server/PersistenceService.luau
+- src/server/ProfileStore.luau
+- src/server/MatchJournal.luau
+
+Focused checks (reuse prior results unless code changed or live evidence is missing):
+- python3 tools/lune_compat.py tools/test_colosseum_runtime.luau
+- work/bin/luau/luau tools/test_backend.luau
+- work/bin/luau/luau tools/test_profile_integrity.luau
+
+Acceptance:
+A clear mock/local multi-client/private-live matrix; real match, wager, disconnect and durable recovery evidence or a precise external environment requirement.
+
+Update the matching ledgers with evidence type and exact remaining work; stop after this batch.

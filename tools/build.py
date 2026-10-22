@@ -2,12 +2,17 @@
 """Build the Asura's Path place from the checked-in Rojo tree (default.project.json).
 
 Requires the official Rojo binary on PATH or in work/bin/rojo. Verifies that every $path in the
-tree exists, builds outputs/AsurasPath.rbxlx, and points Workspace.CurrentCamera at the
-serialized editor camera. Does not install software, connect to Studio, or publish.
+tree exists, builds outputs/AsurasPath.rbxlx (or --output PATH / $ASURA_BUILD_OUTPUT, so a
+verification build can leave the saved place untouched), points Workspace.CurrentCamera at the
+serialized editor camera and reports the distinct Roblox asset IDs the built place references.
+Does not install software, connect to Studio, or publish.
 """
 from __future__ import annotations
+import argparse
 import json
+import os
 from pathlib import Path
+import re
 import shutil
 import subprocess
 import xml.etree.ElementTree as ET
@@ -15,6 +20,7 @@ import xml.etree.ElementTree as ET
 ROOT = Path(__file__).resolve().parents[1]
 PROJECT = ROOT / 'default.project.json'
 OUTPUT = ROOT / 'outputs' / 'AsurasPath.rbxlx'
+ASSET_ID = re.compile(r'(?:rbxassetid://|roblox\.com/asset/\?id=)(\d+)')
 
 
 def binary(name: str, folder: str) -> str:
@@ -35,17 +41,17 @@ def paths(node: dict, trail: str) -> list[tuple[str, str]]:
     return found
 
 
-def build() -> None:
+def build(output: Path = OUTPUT) -> None:
     rojo = binary('rojo', 'rojo')
     project = json.loads(PROJECT.read_text())
     missing = [f'{trail} -> {path}' for trail, path in paths(project['tree'], '') if not (ROOT / path).exists()]
     if missing:
         raise SystemExit('Rojo tree references missing sources:\n  ' + '\n  '.join(missing))
-    OUTPUT.parent.mkdir(exist_ok=True)
-    subprocess.run([rojo, 'build', str(PROJECT), '--output', str(OUTPUT)], cwd=ROOT, check=True)
+    output.parent.mkdir(parents=True, exist_ok=True)
+    subprocess.run([rojo, 'build', str(PROJECT), '--output', str(output)], cwd=ROOT, check=True)
     # Rojo cannot point a property at a sibling instance through JSON; set the editor camera
     # reference in the serialized place without changing source.
-    xml = ET.parse(OUTPUT)
+    xml = ET.parse(output)
     workspace = next(i for i in xml.getroot().findall('Item') if i.attrib['class'] == 'Workspace')
     camera = next(i for i in workspace.findall('Item') if i.attrib['class'] == 'Camera')
     properties = workspace.find('Properties')
@@ -54,9 +60,13 @@ def build() -> None:
         if old.attrib.get('name') == 'CurrentCamera':
             properties.remove(old)
     ET.SubElement(properties, 'Ref', name='CurrentCamera').text = camera.attrib['referent']
-    xml.write(OUTPUT, encoding='utf-8', xml_declaration=True)
-    print(f'Built {OUTPUT.name}: {len(paths(project["tree"], ""))} mapped sources; external asset IDs: 0')
+    xml.write(output, encoding='utf-8', xml_declaration=True)
+    assets = set(ASSET_ID.findall(output.read_text(encoding='utf-8')))
+    print(f'Built {output}: {len(paths(project["tree"], ""))} mapped sources; '
+          f'{len(assets)} distinct Roblox asset IDs referenced')
 
 
 if __name__ == '__main__':
-    build()
+    parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    parser.add_argument('--output', type=Path, default=Path(os.environ.get('ASURA_BUILD_OUTPUT') or OUTPUT))
+    build(parser.parse_args().output.resolve())

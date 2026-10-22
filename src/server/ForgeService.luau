@@ -30,7 +30,7 @@ function Forge.Trade(id: number,item: string): (boolean,string?)
  local h=Catalog.NPCs.Hermit;local position=Vector3.new(h.X,h.Y,h.Z)
  if not near(id,position) then return false,"Visit the Wandering Hermit" end
  return Persistence.Transaction(id,function(p: any)
-  assert(near(id,position),"Visit the Wandering Hermit");assert(p.qiEssence>=trade.Price,"Not enough Qi")
+  assert(near(id,position),"Visit the Wandering Hermit");assert(p.qiEssence>=trade.Price,"Not enough Essence")
   p.qiEssence-=trade.Price;p.inventory.Materials[item]=(p.inventory.Materials[item] or 0)+1
  end)
 end

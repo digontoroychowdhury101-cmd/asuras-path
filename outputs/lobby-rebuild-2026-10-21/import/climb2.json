@@ -1,0 +1,5 @@
+[["character_navigation", {"datamodel_type":"Client","x":-76,"y":601,"z":914,"speed_multiplier":3}], ["__sleep", 1],
+ ["__lua","Client","tools/qa/LobbyWhere.luau"],
+ ["__lua","Client","outputs/lobby-rebuild-2026-10-21/import/climb2.luau"], ["__sleep", 1],
+ ["__lua","Client","outputs/lobby-rebuild-2026-10-21/import/prompts.luau"],
+ ["screen_capture", {"capture_id": "test_ladder_deck"}]]

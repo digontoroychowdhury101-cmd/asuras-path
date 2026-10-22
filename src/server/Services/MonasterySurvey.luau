@@ -2,7 +2,8 @@
 -- ModuleScript: ServerScriptService/AsurasPath/Services/MonasterySurvey
 -- Walkability check for a procedurally built region: raycasts every altar surround, altar spawn,
 -- mob spawn and patrol point down to the walkable top, and every patrol leg sideways at knee and
--- chest height. Returns human-readable problems (empty when the layout is sound).
+-- chest height. Each altar's rest pocket (Kit.POCKET, shrine excluded) and the walk from its spawn
+-- to its Exit (batch 07) must be free of solid geometry. Returns human-readable problems.
 local Workspace = game:GetService("Workspace")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
@@ -53,6 +54,21 @@ function Survey.Run(regionId: World.RegionId): { string }
 			ground(id .. " altar ring", altar.Placement.X + math.cos(a) * 5.5, altar.Placement.Z + math.sin(a) * 5.5)
 		end
 		ground(id .. " spawn", altar.Spawn.X, altar.Spawn.Z)
+		local shrine = Workspace:FindFirstChild("Shrine_" .. altar.Id, true)
+		local saved = params.FilterDescendantsInstances
+		local ignore = table.clone(characters)
+		if shrine then table.insert(ignore, shrine) end
+		params.FilterDescendantsInstances = ignore
+		for k = 0, 11 do -- pocket: spokes from the shrine's edge out to the pocket radius
+			local a = k * math.pi / 6
+			local from = Vector3.new(altar.Placement.X + math.cos(a) * 3.5, 0, altar.Placement.Z + math.sin(a) * 3.5)
+			local to = Vector3.new(altar.Placement.X + math.cos(a) * Kit.POCKET, 0, altar.Placement.Z + math.sin(a) * Kit.POCKET)
+			leg(id .. " pocket", { X = from.X, Y = 3, Z = from.Z, Yaw = 0 }, { X = to.X, Y = 3, Z = to.Z, Yaw = 0 })
+		end
+		if altar.Exit then
+			leg(id .. " departure", altar.Spawn, altar.Exit)
+		end
+		params.FilterDescendantsInstances = saved
 	end
 	for _, entry in World.spawnsIn(regionId) do
 		ground(entry.Id, entry.Placement.X, entry.Placement.Z)

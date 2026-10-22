@@ -1,0 +1,4 @@
+[["__lua","Client","local r = game:GetService('ReplicatedStorage').AsurasPath.Net.ArsenalIntent _G.AsuraQA = {} if _G.AsuraQAConn then _G.AsuraQAConn:Disconnect() end _G.AsuraQAConn = r.OnClientEvent:Connect(function(p) if p.action == 'Result' then table.insert(_G.AsuraQA, tostring(p.ok) .. ':' .. tostring(p.message)) elseif p.action == 'State' and p.inventory then local c = p.inventory.caches or p.inventory.Caches local keys = {} if type(c) == 'table' then for k, v in c do table.insert(keys, tostring(k) .. '=' .. tostring(v)) end end table.insert(_G.AsuraQA, 'state caches: ' .. table.concat(keys, ',')) end end) return 'listening'"],
+ ["user_keyboard_input", {"datamodel_type":"Client","actions":[{"action":"keyDown","key_code":"Z"},{"action":"wait","wait_time_ms":1200},{"action":"keyUp","key_code":"Z"}]}],
+ ["__sleep", 2.5],
+ ["__lua","Client","return table.concat(_G.AsuraQA, ' | ')"]]

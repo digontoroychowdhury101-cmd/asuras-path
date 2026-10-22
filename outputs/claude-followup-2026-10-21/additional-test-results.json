@@ -1,0 +1,30 @@
+[
+  {
+    "command": [
+      "/Users/digonto/Documents/ChatGPT/Roblox game 2/work/bin/luau/luau",
+      "tools/test_backend.luau"
+    ],
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "/Users/digonto/Documents/ChatGPT/Roblox game 2/work/bin/luau/luau",
+      "tools/test_commercial_systems.luau"
+    ],
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "/Users/digonto/Documents/ChatGPT/Roblox game 2/work/bin/luau/luau",
+      "tools/test_boss_encounters.luau"
+    ],
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "python3",
+      "tools/test_audiovisual.py"
+    ],
+    "exit_code": 0
+  }
+]

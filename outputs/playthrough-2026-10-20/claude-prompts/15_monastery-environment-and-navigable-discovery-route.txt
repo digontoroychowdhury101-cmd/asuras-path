@@ -1,0 +1,23 @@
+Continue Asura's Path repairs — batch 15/26: Monastery environment and navigable discovery route.
+
+Apply the shared operating brief (outputs/playthrough-2026-10-20/claude-prompts/00_OPERATING_BRIEF.txt; read once per chat) and current PROGRESS.md. Read report findings #25, #26, #27, #28, #32, #44 only, plus relevant evidence. Implement this batch now.
+
+Complete an authored Monastery pass within the existing route, building on batch 07's collision repairs. Give the gate, courtyard, bridge and Cloister distinct silhouettes, combat pockets, wear, cover and environmental storytelling. Replace mismatched architectural/material treatment with the established wuxia ruin vocabulary, reusing good existing assets.
+Develop the intended exterior secret route with a clear destination/reward or finish believable boundaries. Respect wall/double-jump/ravine movement and enemy leashes.
+Make wayfinding follow walkable turns, bridges and portal legs through lightweight route targets/landmarks rather than a new global navigation framework. A bloodstain beyond a portal should first guide to the usable portal.
+Physically validate the four Monastery inscriptions and three Monastery caches, including the high cache, with legible interaction space and intentional traversal. Keep optional secrets optional; the first taught discovery comes from batch 10.
+
+Start near these files; follow only necessary dependencies:
+- src/server/Services/MonasteryService.luau
+- src/server/Services/MonasteryDressing.luau
+- src/server/Services/MonasteryLandmarks.luau
+- src/server/Services/MonasteryRuins.luau
+- src/client/Controllers/ObjectiveController.luau
+- src/client/Controllers/WaypointMarker.luau
+- src/shared/ArsenalCatalog.luau
+- src/shared/NarrativeCatalog.luau
+
+Acceptance and focused verification:
+Walk Gate -> courtyard -> bridge -> Cloister in both directions, fight in the pockets and retrieve every assigned cache/tablet with normal mobility. Check portal-aware recovery guidance, shortcuts, boundaries, art scale and collision; captures must be from character height.
+
+Update the repair ledger and PROJECT_STATE.md. State implementation versus verification precisely, then stop at this batch boundary.

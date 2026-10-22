@@ -1,0 +1,21 @@
+Continue Asura's Path repairs — batch 12/26: Baize and Titan creature presentation.
+
+Apply the shared operating brief (outputs/playthrough-2026-10-20/claude-prompts/00_OPERATING_BRIEF.txt; read once per chat) and current PROGRESS.md. Read report findings #13, #16, #23 only, plus relevant evidence. Implement this batch now.
+
+Apply the validated skin pipeline from batch 11 only to Venerable Baize and Slumbering Titan. Make Baize read as the intended beast and Titan as a colossal ancient rather than scaled block humanoids. Use existing approved models/authoring tools, real rig/bone bindings, materials and readable locomotion/attack poses.
+Match visible body/weapon placement to authoritative hurtboxes, reach and ground contact. Check Titan's ankles and camera clearance, Baize's sweep/charge silhouette and any pillar movement. Preserve encounter rules and the 1.4x tempo; do not disguise missing animation with extra particles.
+Make phase changes visibly distinct without obscuring Air Glide/evade/deflect cues, using the input teaching from batch 10. Verify large actors do not clip below floors or get stuck on props.
+For unavailable external art, finish local integration/validation and provide exact dimensions, rig, phase variants, attachments and import requirements in the ledger; leave the art item explicitly open.
+
+Start near these files; follow only necessary dependencies:
+- src/server/Services/BossSkin.luau
+- src/server/Services/BossAppearance.luau
+- src/server/Services/BossMotion.luau
+- src/server/Services/BossTactics.luau
+- src/client/Controllers/BossAnimations.luau
+- src/shared/BossRoster.luau
+
+Acceptance and focused verification:
+Check both actors and both phases in lit arenas, ground/hurtbox alignment, sweeps/gap closers, relevant counters, large-body camera clearance and repeat entry/death. Separate asset-preview checks from real combat acceptance and keep any missing production assets visible in progress.
+
+Update the repair ledger and PROJECT_STATE.md. State implementation versus verification precisely, then stop at this batch boundary.

@@ -1,0 +1,19 @@
+Continue Asura's Path repairs — batch 08/26: Earned remembrance and complete boss reward pipeline.
+
+Apply the shared operating brief (outputs/playthrough-2026-10-20/claude-prompts/00_OPERATING_BRIEF.txt; read once per chat) and current PROGRESS.md. Read report findings #8, #9 only, plus relevant evidence. Implement this batch now.
+
+Fix token ownership through the actual inventory -> synchronization -> Arsenal -> Gao -> forge flow. ArsenalInventory stores remembrance token objects while ArsenalTabs checks == true. Align validation/display with the schema, handle valid migrated data and preserve exactly-once consumption.
+Audit the six current bosses: Grandmaster Shen, Venerable Baize, Slumbering Titan, Sovereign Wu, Twin Sentinels and Azure Wyrm. Provide coherent weapon-or-spell transmutation choices for each using existing authored weapon/spell capabilities where suitable. Preserve the 12-weapon registry. Shen's two token awards are intentional in current code; evaluate rather than automatically deleting them.
+Resolve obsolete Ash Pagoda General references through compatible IDs/aliases or migration so existing saves retain earned value. Ensure every reward is obtainable, inspectable and usable and that defeat replay/reconnect cannot duplicate it. Keep forge proximity, authoritative eligibility and the existing confirmation step.
+
+Start near these files; follow only necessary dependencies:
+- src/simulation/ArsenalInventory.luau
+- src/shared/ArsenalCatalog.luau
+- src/server/Services/LootService.luau
+- src/server/Services/WorldService.luau
+- src/client/Controllers/ArsenalTabs.luau
+
+Acceptance and focused verification:
+Cover token object/legacy data, unowned/owned/spent display, one successful choice, unavailable second choice, duplicate defeat, duplicate forge request and reconnect. Use focused progression/weapon-spell regressions. Demonstrate one earned boss -> enabled recipe -> forge -> equip path when live play is available; label seeded award tests separately.
+
+Update the repair ledger and PROJECT_STATE.md. State implementation versus verification precisely, then stop at this batch boundary.

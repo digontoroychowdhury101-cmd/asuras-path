@@ -1,0 +1,1 @@
+[["__lua", "Client", "local L = game:GetService('Lighting') local out = {} for _, t in {17.4, 17.6, 17.8} do L.ClockTime = t local d = L:GetSunDirection() table.insert(out, string.format('%.1f: %.3f %.3f %.3f', t, d.X, d.Y, d.Z)) end L.ClockTime = 17.6 return table.concat(out, ' | ') .. ' lat ' .. L.GeographicLatitude"]]

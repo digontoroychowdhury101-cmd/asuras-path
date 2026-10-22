@@ -1,0 +1,6 @@
+[["user_keyboard_input", {"datamodel_type":"Client","actions":[{"action":"keyDown","key_code":"H"},{"action":"wait","wait_time_ms":150},{"action":"keyUp","key_code":"H"}]}], ["__sleep", 1],
+ ["screen_capture", {"capture_id": "test_well2"}],
+ ["user_keyboard_input", {"datamodel_type":"Client","actions":[{"action":"keyDown","key_code":"Z"},{"action":"wait","wait_time_ms":900},{"action":"keyUp","key_code":"Z"}]}],
+ ["__sleep", 3],
+ ["__lua","Client","tools/qa/LobbyWhere.luau"],
+ ["screen_capture", {"capture_id": "test_crypt_arrival"}]]

@@ -2,6 +2,7 @@
 local Characters = require(script.Parent.CharacterService)
 local Tactics = require(script.Parent.BossTactics)
 local World = require(game:GetService("ReplicatedStorage").AsurasPath.Shared.WorldDefinitions)
+local HandoffRules = require(game:GetService("ReplicatedStorage").AsurasPath.Shared.BossHandoff)
 local Duo = {}
 type Encounter = { Members: { number }, Enraged: boolean, Finished: boolean, Boss: World.BossDef }
 local encounters: { [string]: Encounter } = {}
@@ -19,9 +20,11 @@ function Duo.alive(bossId: string): number?
 	end
 	return nil
 end
-function Duo.onKO(bossId: string, victim: number): boolean
+-- True when the encounter is won; the second value is the Twin who just swore the oath (the
+-- caller opens the "Enrage" handoff for the participants).
+function Duo.onKO(bossId: string, victim: number): (boolean, number?)
 	local encounter = encounters[bossId]
-	if not encounter or encounter.Finished then return false end
+	if not encounter or encounter.Finished then return false, nil end
 	Tactics.reset(victim)
 	local survivor = Duo.alive(bossId)
 	if survivor then
@@ -35,10 +38,12 @@ function Duo.onKO(bossId: string, victim: number): boolean
 				e.Model:SetAttribute("AsuraBossEnraged", true)
 				e.Model:SetAttribute("AsuraAffinity", "Lightning+Iron")
 				Tactics.enrage(survivor, if survivor == encounter.Members[1] and boss.Partner then boss.Partner.Attacks else boss.Phases[1].Attacks or {})
-				Characters.Cue("BossEnrage", survivor, { boss = bossId, duration = 2, name = "Oath of the Fallen", affinity = "Lightning+Iron", members = encounter.Members, survivor = e.Model.Name })
+				Characters.Cue("BossEnrage", survivor, { boss = bossId, duration = 2, name = "Oath of the Fallen", affinity = "Lightning+Iron",
+					members = encounter.Members, survivor = e.Model.Name, shot = HandoffRules.shot("Enrage") })
+				return false, survivor
 			end
 		end
-		return false
+		return false, nil
 	end
 	encounter.Finished = true
 	return true

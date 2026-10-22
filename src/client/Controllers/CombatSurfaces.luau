@@ -8,7 +8,8 @@ function Surfaces.ground(folder: Instance, point: Vector3, excludes: {Instance}?
 	local params = RaycastParams.new()
 	params.FilterType = Enum.RaycastFilterType.Exclude
 	local list: {Instance} = { folder }
-	for _, item in excludes or {} do table.insert(list, item) end
+	local ignored: {Instance} = excludes or {}
+	for _, item in ignored do table.insert(list, item) end
 	params.FilterDescendantsInstances, params.RespectCanCollide = list, true
 	return workspace:Raycast(point + Vector3.yAxis * 2, -Vector3.yAxis * 16, params)
 end
@@ -16,7 +17,7 @@ function Surfaces.stain(folder: Instance, point: Vector3, direction: Vector3, ex
 	local hit = Surfaces.ground(folder, point + direction * 1.4, excludes)
 	if not hit then return end
 	while #stains > 0 and stains[1].Parent == nil do table.remove(stains, 1) end
-	if #stains >= Assets.Limits.Stains then table.remove(stains, 1):Destroy() end
+	if #stains >= Assets.Limits.Stains then local oldest=table.remove(stains,1); if oldest then oldest:Destroy() end end
 	local p = Instance.new("Part")
 	p.Name, p.Anchored, p.CanCollide, p.CanQuery, p.CanTouch, p.CastShadow = "BloodRallyStain", true, false, false, false, false
 	local normal = hit.Normal

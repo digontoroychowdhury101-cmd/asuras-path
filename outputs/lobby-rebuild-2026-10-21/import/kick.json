@@ -1,0 +1,3 @@
+[["__lua","Server","local SSS = game:GetService('ServerScriptService').AsurasPath local P = require(SSS:FindFirstChild('PersistenceService', true)) local a = {pcall(P.Load, -1)} local b = {pcall(P.Load, -2)} return 'p1 ' .. tostring(a[1]) .. ' ' .. tostring(a[2]) .. ' | p2 ' .. tostring(b[1]) .. ' ' .. tostring(b[2])"],
+ ["__sleep", 8],
+ ["__lua","Server","local out = {} for _, p in game:GetService('Players'):GetPlayers() do table.insert(out, p.Name .. ' char=' .. tostring(p.Character ~= nil)) end return table.concat(out, ' | ')"]]

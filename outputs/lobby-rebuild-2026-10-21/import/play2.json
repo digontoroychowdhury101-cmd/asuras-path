@@ -1,0 +1,4 @@
+[["__lua", "Edit", "outputs/lobby-rebuild-2026-10-21/import/tint.luau"],
+ ["start_stop_play", {"is_start": true}], ["__sleep", 28],
+ ["__lua", "Server", "local s = workspace:FindFirstChild('Sanctuary') local n, m, l = 0, 0, 0 if s then for _, d in s:GetDescendants() do if d:IsA('MeshPart') then m += 1 elseif d:IsA('BasePart') then n += 1 end if d:IsA('Light') then l += 1 end end end return tostring(workspace:GetAttribute('AsuraReady')) .. ' parts ' .. n .. ' meshparts ' .. m .. ' lights ' .. l"],
+ ["get_console_output", {}]]

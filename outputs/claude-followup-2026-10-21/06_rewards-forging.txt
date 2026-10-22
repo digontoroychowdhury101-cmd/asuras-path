@@ -1,0 +1,23 @@
+Continue Asura's Path — follow-up 06/26: Prove earned boss rewards and exactly-once forging.
+
+Apply 00_SHARED_BRIEF.txt in /Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 08. Findings: #8, #9. Verify existing work, fix actual gaps, and execute this batch now.
+
+The token-object ownership and six-sovereign recipes are implemented and the reward suite passes. Inspect the active roster, legacy aliases and server/UI recipeState paths before changing anything. Preserve Shen's intentional Shen plus Chimera tokens and the retired Ash Pagoda General migration to TwinSentinels; do not revive a seventh campaign boss.
+Run one genuine boss victory → server award → visible token/Essence → Gao → enabled recipe → confirmation → forged item → equip/use → save/rejoin flow. If earned victory is unavailable, exercise a clearly labeled diagnostic transaction and leave earned acceptance open for prompt 22. Never mark the flow earned after directly writing defeat flags.
+For all sovereigns, check the weapon/spell choices, displayed boss identity, already-owned gifts, one-choice consumption, rapid repeated requests, duplicate award delivery and rejoin. Each valid remembrance is a token object; boolean or malformed ownership must not enable a transaction. Confirm UI and server agree about Locked/Owned/Consumed rather than only testing a helper function. Keep stable item/profile IDs and idempotent server transactions.
+Start files (relative to project root; follow only required dependencies):
+- src/simulation/ArsenalInventory.luau
+- src/shared/ArsenalCatalog.luau
+- src/shared/BossArmaments.luau
+- src/server/ForgeService.luau
+- src/server/ProfileStore.luau
+- src/client/Controllers/ArsenalTabs.luau
+
+Focused checks (reuse prior results unless code changed or live evidence is missing):
+- python3 tools/lune_compat.py tools/test_boss_rewards.luau
+- work/bin/luau/luau tools/test_weapons_and_spells.luau
+
+Acceptance:
+Produce the six-boss recipe/result table plus the actual earned or diagnostic transaction evidence; no duplicate award, token spend or lost item across rejoin.
+
+Update the matching ledgers with evidence type and exact remaining work; stop after this batch.

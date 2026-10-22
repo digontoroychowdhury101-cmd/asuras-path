@@ -13,6 +13,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Shared = ReplicatedStorage:WaitForChild("AsurasPath")
 local InputBuffer = require(Shared:WaitForChild("Simulation"):WaitForChild("InputBuffer") :: ModuleScript)
+local InputMap = require(Shared:WaitForChild("Shared"):WaitForChild("InputMap") :: ModuleScript)
 local WorldState = require(script.Parent:WaitForChild("WorldStateController") :: ModuleScript)
 local CameraController = require(script.Parent:WaitForChild("CameraController") :: ModuleScript)
 local HudKit = require(script.Parent:WaitForChild("HudKit") :: ModuleScript)
@@ -43,74 +44,59 @@ export type Command =
 local Controller = {}
 Controller.__index = Controller
 
-local KEYBOARD: { [Enum.KeyCode]: Command } = {
-	[Enum.KeyCode.F] = "Guard",
-	[Enum.KeyCode.LeftControl] = "Slide",
-	[Enum.KeyCode.C] = "Slide",
-	[Enum.KeyCode.LeftShift] = "Dash",
-	[Enum.KeyCode.Q] = "Dash",
-	[Enum.KeyCode.CapsLock] = "Sprint",
-	[Enum.KeyCode.X] = "Lock",
-	[Enum.KeyCode.J] = "Swap",
-	[Enum.KeyCode.V] = "Heavy",
-	[Enum.KeyCode.R] = "Heal",
-	[Enum.KeyCode.Z] = "Interact",
-	[Enum.KeyCode.G] = "WeaponArt",
-	[Enum.KeyCode.T] = "Shoulder",
-	[Enum.KeyCode.LeftAlt] = "Cursor",
-}
-local MOUSE: { [Enum.UserInputType]: Command } = {
-	[Enum.UserInputType.MouseButton1] = "Light",
-	[Enum.UserInputType.MouseButton2] = "Aim",
-	[Enum.UserInputType.MouseButton3] = "Lock",
-}
-local GAMEPAD: { [Enum.KeyCode]: Command } = {
-	[Enum.KeyCode.ButtonR1] = "Light",
-	[Enum.KeyCode.ButtonR2] = "Heavy",
-	[Enum.KeyCode.ButtonL1] = "Guard",
-	[Enum.KeyCode.ButtonL2] = "Aim",
-	[Enum.KeyCode.ButtonB] = "Dash",
-	[Enum.KeyCode.ButtonR3] = "Lock",
-	[Enum.KeyCode.ButtonL3] = "Slide",
-	[Enum.KeyCode.DPadLeft] = "Sprint",
-	[Enum.KeyCode.ButtonStart] = "Heal",
-	[Enum.KeyCode.ButtonX] = "Interact",
-	[Enum.KeyCode.ButtonY] = "WeaponArt",
-	[Enum.KeyCode.DPadRight] = "Swap",
-}
+-- Bindings, captions and touch labels all come from the shared InputMap.
+local function keyTable(names: { [string]: InputMap.Command }, enum: any): { [any]: Command }
+	local result: { [any]: Command } = {}
+	for name, command in names do
+		result[enum[name]] = command :: any
+	end
+	return result
+end
+local KEYBOARD: { [Enum.KeyCode]: Command } = keyTable(InputMap.lookup("Combat", "Keys"), Enum.KeyCode)
+local MOUSE: { [Enum.UserInputType]: Command } = keyTable(InputMap.lookup("Combat", "Mouse"), Enum.UserInputType)
+local GAMEPAD: { [Enum.KeyCode]: Command } = keyTable(InputMap.lookup("Combat", "Pad"), Enum.KeyCode)
+-- Jump, dash, slide and glide inputs are owned by one context action (native held-jump repeats
+-- cannot spend the double jump); jump never takes the raw InputBegan path.
+local MOVEMENT_INPUTS: { any } = {}
+local JUMP_INPUTS: { [Enum.KeyCode]: boolean } = {}
+for _, command in { "Jump", "Dash", "Slide", "Aim" } do
+	local binding = InputMap.get(command) :: InputMap.Binding
+	for _, name in binding.Keys do
+		table.insert(MOVEMENT_INPUTS, (Enum.KeyCode :: any)[name])
+	end
+	for _, name in binding.Pad do
+		table.insert(MOVEMENT_INPUTS, (Enum.KeyCode :: any)[name])
+	end
+	for _, name in binding.Mouse do
+		table.insert(MOVEMENT_INPUTS, (Enum.UserInputType :: any)[name])
+	end
+	if command == "Jump" then
+		for _, name in binding.Keys do
+			KEYBOARD[(Enum.KeyCode :: any)[name]] = nil
+			JUMP_INPUTS[(Enum.KeyCode :: any)[name]] = true
+		end
+		for _, name in binding.Pad do
+			GAMEPAD[(Enum.KeyCode :: any)[name]] = nil
+			JUMP_INPUTS[(Enum.KeyCode :: any)[name]] = true
+		end
+	end
+end
+local PROMPT_KEY: Enum.KeyCode = (Enum.KeyCode :: any)[InputMap.PromptKey]
+local PROMPT_PAD: Enum.KeyCode = (Enum.KeyCode :: any)[InputMap.PromptPad]
 
-local LABELS: { [Command]: { Keyboard: string, Gamepad: string } } = {
-	Light = { Keyboard = "M1", Gamepad = "R1" },
-	Heavy = { Keyboard = "V", Gamepad = "R2" },
-	Guard = { Keyboard = "F", Gamepad = "L1" },
-	Roll = { Keyboard = "Shift/Q", Gamepad = "B" },
-	Lock = { Keyboard = "X", Gamepad = "R3" },
-	Swap = { Keyboard = "J", Gamepad = "D-Right" },
-	Heal = { Keyboard = "R", Gamepad = "Start" },
-	Interact = { Keyboard = "Z", Gamepad = "X" },
-	WeaponArt = { Keyboard = "G", Gamepad = "Y" },
-	Dash = { Keyboard = "Shift/Q", Gamepad = "B" },
-	Sprint = { Keyboard = "Caps", Gamepad = "D-Left" },
-	Shoulder = { Keyboard = "T", Gamepad = "—" },
-	Cursor = { Keyboard = "Alt", Gamepad = "—" },
-	Jump = { Keyboard = "Space", Gamepad = "A" },
-	Slide = { Keyboard = "C/Ctrl", Gamepad = "L3" },
-	Aim = { Keyboard = "RMB", Gamepad = "L2" },
-}
-
-local TOUCH_LAYOUT: { { Command: Command, Label: string, Position: UDim2, Size: number } } = {
-	{ Command = "Light", Label = "ATK", Position = UDim2.new(1, -96, 1, -150), Size = 84 },
-	{ Command = "Heavy", Label = "HVY", Position = UDim2.new(1, -190, 1, -110), Size = 72 },
-	{ Command = "Guard", Label = "GUARD", Position = UDim2.new(1, -110, 1, -250), Size = 72 },
-	{ Command = "Dash", Label = "DASH", Position = UDim2.new(1, -205, 1, -205), Size = 64 },
-	{ Command = "Jump", Label = "JUMP", Position = UDim2.new(1, -82, 1, -62), Size = 68 },
-	{ Command = "Slide", Label = "SLIDE", Position = UDim2.new(1, -300, 1, -325), Size = 56 },
-	{ Command = "Aim", Label = "GLIDE", Position = UDim2.new(1, -300, 1, -65), Size = 52 },
-	{ Command = "WeaponArt", Label = "SKILL", Position = UDim2.new(1, -280, 1, -150), Size = 56 },
-	{ Command = "Lock", Label = "LOCK", Position = UDim2.new(1, -70, 1, -330), Size = 52 },
-	{ Command = "Heal", Label = "HEAL", Position = UDim2.new(1, -150, 1, -320), Size = 52 },
-	{ Command = "Interact", Label = "USE", Position = UDim2.new(1, -230, 1, -290), Size = 52 },
-	{ Command = "Swap", Label = "SWAP", Position = UDim2.new(1, -300, 1, -230), Size = 48 },
+local TOUCH_LAYOUT: { { Command: Command, Position: UDim2, Size: number } } = {
+	{ Command = "Light", Position = UDim2.new(1, -96, 1, -150), Size = 84 },
+	{ Command = "Heavy", Position = UDim2.new(1, -190, 1, -110), Size = 72 },
+	{ Command = "Guard", Position = UDim2.new(1, -110, 1, -250), Size = 72 },
+	{ Command = "Dash", Position = UDim2.new(1, -205, 1, -205), Size = 64 },
+	{ Command = "Jump", Position = UDim2.new(1, -82, 1, -62), Size = 68 },
+	{ Command = "Slide", Position = UDim2.new(1, -300, 1, -325), Size = 56 },
+	{ Command = "Aim", Position = UDim2.new(1, -300, 1, -65), Size = 52 },
+	{ Command = "WeaponArt", Position = UDim2.new(1, -280, 1, -150), Size = 56 },
+	{ Command = "Lock", Position = UDim2.new(1, -70, 1, -326), Size = 52 },
+	{ Command = "Heal", Position = UDim2.new(1, -150, 1, -320), Size = 52 },
+	{ Command = "Interact", Position = UDim2.new(1, -230, 1, -290), Size = 52 },
+	{ Command = "Swap", Position = UDim2.new(1, -300, 1, -230), Size = 48 },
 }
 
 -- Own jump edges so native held-jump repeats cannot spend the double jump.
@@ -118,6 +104,8 @@ local MOVEMENT_ACTION = "AsuraKineticMovement"
 local STICK_DEADZONE = 0.18
 local STICK_SPEED = 900
 local TOUCH_SCALE = 1.4
+-- Authored minimum button size: at the smallest HUD factor (0.7) it is still a 44-point target (batch 25).
+local MIN_TOUCH = 64
 
 export type Sender = (action: string, variant: string?, x: number?, z: number?, held: boolean?, time: number?) -> ()
 
@@ -173,21 +161,21 @@ local function buildTouchGui(self: InputController)
 	for _, entry in TOUCH_LAYOUT do
 		local button = Instance.new("TextButton")
 		button.Name = entry.Command
-		button.Text = entry.Label
+		button.Text = InputMap.label(entry.Command, "Touch")
 		button.Font = Enum.Font.Antique
 		button.TextScaled = true
-		button.TextColor3 = Color3.fromRGB(236, 226, 206)
-		button.BackgroundColor3 = Color3.fromRGB(20, 14, 12)
+		button.TextColor3 = Color3.fromRGB(255, 226, 238)
+		button.BackgroundColor3 = Color3.fromRGB(48, 18, 42)
 		button.BackgroundTransparency = 0.3
 		button.AutoButtonColor = false
-		button.Size = UDim2.fromOffset(entry.Size, entry.Size)
+		button.Size = UDim2.fromOffset(math.max(entry.Size, MIN_TOUCH), math.max(entry.Size, MIN_TOUCH))
 		button.Position = entry.Position
 		button.AnchorPoint = Vector2.new(0.5, 0.5)
 		local corner = Instance.new("UICorner")
 		corner.CornerRadius = UDim.new(1, 0)
 		corner.Parent = button
 		local stroke = Instance.new("UIStroke")
-		stroke.Color = Color3.fromRGB(150, 32, 28)
+		stroke.Color = Color3.fromRGB(247, 168, 200)
 		stroke.Thickness = 2
 		stroke.Parent = button
 		local padding = Instance.new("UIPadding")
@@ -244,6 +232,10 @@ function Controller.new(state: WorldState, camera: CameraController, send: Sende
 	buildTouchGui(self)
 	self:SetDevice(self.Device)
 	table.insert(self.Connections, ProximityPromptService.PromptShown:Connect(function(prompt: ProximityPrompt)
+		-- Any prompt (including saved-place content) answers the shared Interact binding.
+		if prompt.KeyboardKeyCode ~= PROMPT_KEY or prompt.GamepadKeyCode ~= PROMPT_PAD then
+			InputMap.applyPrompt(prompt)
+		end
 		table.insert(shownPrompts, prompt)
 	end))
 	table.insert(self.Connections, ProximityPromptService.PromptHidden:Connect(function(prompt: ProximityPrompt)
@@ -276,7 +268,7 @@ function Controller.new(state: WorldState, camera: CameraController, send: Sende
 	table.insert(self.Connections, GuiService.MenuOpened:Connect(function() self.Movement:SetEnabled(false) end))
 	ContextActionService:BindActionAtPriority(MOVEMENT_ACTION, function(_name: string, inputState: Enum.UserInputState, event: InputObject): Enum.ContextActionResult
 		if UserInputService:GetFocusedTextBox() then return Enum.ContextActionResult.Pass end
-		local command: Command = if event.KeyCode == Enum.KeyCode.Space or event.KeyCode == Enum.KeyCode.ButtonA then "Jump"
+		local command: Command = if JUMP_INPUTS[event.KeyCode] then "Jump"
 			else KEYBOARD[event.KeyCode] or GAMEPAD[event.KeyCode] or MOUSE[event.UserInputType]
 		if inputState == Enum.UserInputState.Begin then
 			self:SetDevice(deviceFor(event.UserInputType) or self.Device)
@@ -285,9 +277,7 @@ function Controller.new(state: WorldState, camera: CameraController, send: Sende
 			self:Release(command)
 		end
 		return Enum.ContextActionResult.Sink
-	end, false, Enum.ContextActionPriority.High.Value, Enum.KeyCode.Space, Enum.KeyCode.ButtonA,
-		Enum.KeyCode.LeftShift, Enum.KeyCode.Q, Enum.KeyCode.ButtonB, Enum.KeyCode.C, Enum.KeyCode.LeftControl,
-		Enum.KeyCode.ButtonL3, Enum.UserInputType.MouseButton2, Enum.KeyCode.ButtonL2)
+	end, false, Enum.ContextActionPriority.High.Value, table.unpack(MOVEMENT_INPUTS))
 	return self
 end
 
@@ -303,14 +293,18 @@ function Controller.SetDevice(self: InputController, device: Device)
 	end
 end
 
-function Controller.Label(self: InputController, command: Command): string
-	local entry = LABELS[command]
-	if self.Device == "Gamepad" then
-		return entry.Gamepad
-	elseif self.Device == "Touch" then
+-- Caption of any InputMap command (combat, spells, menus) for the active device; "" on touch.
+function Controller.Label(self: InputController, command: string): string
+	if self.Device == "Touch" then
 		return ""
 	end
-	return entry.Keyboard
+	return InputMap.label(command, self.Device)
+end
+
+-- Caption for instructional text (tutorial, counter hints): touch names its on-screen button
+-- ("JUMP") where Label answers "" so key badges can hide (batch 25).
+function Controller.Hint(self: InputController, command: string): string
+	return InputMap.label(command, self.Device)
 end
 
 function Controller.SetMenu(self: InputController, open: boolean)
@@ -349,8 +343,9 @@ function Controller.Press(self: InputController, command: Command)
 		callback(command)
 	end
 	local blocked = self.MenuOpen or GuiService.MenuIsOpen or UserInputService:GetFocusedTextBox() ~= nil
-	if blocked then
-		if command ~= "Interact" and command ~= "Cursor" then return end
+	-- Open menus own every key except cursor release; world interaction waits until they close.
+	if blocked and command ~= "Cursor" then
+		return
 	end
 	local stamp = now()
 	if command == "Jump" or command == "Slide" or command == "Aim" then
@@ -389,10 +384,10 @@ function Controller.Press(self: InputController, command: Command)
 	elseif command == "Heal" then
 		self.Send("Heal", nil, nil, nil, nil, stamp)
 	elseif command == "Interact" then
-		-- A visible ProximityPrompt already owns E / ButtonX (and runs its hold bar); sending the
-		-- Interact intent as well would rest or recover twice. Touch USE drives the prompt instead.
-		local prompt = shownPrompts[#shownPrompts]
-		if prompt and not self.MenuOpen then
+		-- A visible prompt on the Interact key already owns the press (and runs its hold bar);
+		-- sending the intent too would rest or recover twice. Touch USE drives the prompt instead.
+		local prompt = self:OwningPrompt()
+		if prompt then
 			if self.Device == "Touch" then
 				heldPrompt = prompt
 				prompt:InputHoldBegin()
@@ -403,6 +398,16 @@ function Controller.Press(self: InputController, command: Command)
 	elseif command == "Cursor" then
 		self.CursorFree = not self.CursorFree
 	end
+end
+
+-- The newest visible prompt that answers this device's Interact input (InputMap.routeInteract).
+function Controller.OwningPrompt(self: InputController): ProximityPrompt?
+	local views: { InputMap.PromptView } = {}
+	for index, prompt in shownPrompts do
+		views[index] = { Enabled = prompt.Enabled, Key = prompt.KeyboardKeyCode.Name, Pad = prompt.GamepadKeyCode.Name }
+	end
+	local route, index = InputMap.routeInteract(self.Device, views, false)
+	return if route == "Prompt" and index then shownPrompts[index] else nil
 end
 
 function Controller.Release(self: InputController, command: Command)

@@ -11,6 +11,8 @@ local World=require("../src/shared/WorldDefinitions")
 local Rules=require("../src/shared/BossEncounterRules")
 local Types=require("../src/shared/BossTypes")
 local AttackCatalog=require("../src/shared/BossAttackCatalog")
+local Bodies=require("../src/shared/BossBodies")
+local HandoffRules=require("../src/shared/BossHandoff")
 local checks=0
 local function check(value:any, label:string) assert(value,label); checks+=1 end
 local V:any={}
@@ -54,15 +56,15 @@ local function actor(id:number,x:number,y:number,z:number):any
  local e:any={Id=id,Root=root,Model=model,Fighter=Combat.new(id,"Jian",0),Kind=if id>0 then "Player" else "Enemy",Humanoid={HipHeight=2}}
  actors[id]=e;return e
 end
-local registry:any={World=World,Types=Types,Rules=Rules,Combat=Combat,Characters=Characters}
+local registry:any={World=World,Types=Types,Rules=Rules,Combat=Combat,Characters=Characters,Bodies=Bodies,HandoffRules=HandoffRules}
 '''
-MODULES = ["BossMotion", "BossHazards", "BossAttackService", "BossTactics", "BossDuo"]
+MODULES = ["BossMotion", "BossHazards", "EncounterHandoff", "BossAttackService", "BossTactics", "BossDuo"]
 chunks = [HEADER]
 for name in MODULES:
     source = (ROOT / "src/server/Services" / f"{name}.luau").read_text()
     source = re.sub(r"^export type", "type", source, flags=re.MULTILINE)
     source = re.sub(r"^local (?:Shared|Replicated) = game:GetService.*$", "", source, flags=re.MULTILINE)
-    bindings = {"Motion": "BossMotion", "Hazards": "BossHazards", "Attacks": "BossAttackService", "Tactics": "BossTactics"}
+    bindings = {"Motion": "BossMotion", "Hazards": "BossHazards", "Attacks": "BossAttackService", "Tactics": "BossTactics", "Handoff": "EncounterHandoff"}
     def bind(match):
         variable = match.group(1)
         return f"local {variable} = registry.{bindings.get(variable, variable)}"
@@ -177,6 +179,7 @@ function Characters.ApplyArea(id:number,target:number,damage:number,posture:numb
 end
 local PhaseCoordinator=(function()
  local BossTactics=registry.BossTactics
+ local Handoff=registry.EncounterHandoff
  local BossAppearance={phase=function(model:any,set:any) model:SetAttribute("AsuraAnimationSet",set) end}
  local Schema={isStunned=function(state:string) return state=="StanceBroken" or state=="Hitstun" end}
  local Telegraph={shockwave=function(wave:any,t:number) return t,t+math.max(0.45,wave.Windup) end}
@@ -187,7 +190,7 @@ chunks.append(r'''
  return {Apply=applyPhase,Update=updateBoss}
 end)()
 source.Fighter=Combat.new(-1,"Jian",0)
-local agent:any={Id=-1,Phase=1,Deathblows=0,Allowed={[1]=true},TransitionEnd=math.huge,NextSpecial=math.huge,Target=1,Mode="Combat"}
+local agent:any={Id=-1,Phase=1,Deathblows=0,Allowed={[1]=true},TransitionEnd=math.huge,NextSpecial=math.huge,Target=1,Mode="Combat",HoldUntil=-math.huge}
 PhaseCoordinator.Apply(agent,World.Bosses.GrandmasterShen,1,source)
 source.Fighter.ActiveHP=source.Fighter.MaxHP*0.5
 now=60
@@ -216,6 +219,7 @@ fog_source = world_source[world_source.index("local function endFight"):world_so
 chunks.append(r'''
 local GateCoordinator=(function()
  local BossRules=Rules
+ local EncounterHandoff=registry.EncounterHandoff
  local sessions:any={};local fights:any={};local sealed:any={};local awards:any={};local drops=0;local present=true;local failSpawn=false
  local AI={SpawnBoss=function(_id:string,_participants:any) return if failSpawn then nil else -99 end,
   DespawnBoss=function(_id:string) present=false end,GetBossEntity=function(_id:string) return if present then -99 else nil end,

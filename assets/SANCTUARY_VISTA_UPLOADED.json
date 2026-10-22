@@ -1,0 +1,142 @@
+{
+  "source": "assets/build/sanctuary_vista/AsuraSanctuaryVista.glb",
+  "sourceSha256": "8b7216a9c99d674fbd43de16218f6a223ec3a100ce45aa63a0083a3cb7e8bf67",
+  "sourcePlace": "outputs/AsurasPath.rbxlx",
+  "manifest": "assets/build/sanctuary_vista/manifest.json",
+  "importer": "Studio 3D Importer, Creator: Me",
+  "provenance": "original procedural Blender geometry; reused CC0 Poly Haven rock_face_03 source scan already present in assets/source/tex. New resized 1024 maps are embedded in GLB.",
+  "pieces": {
+    "Vista_Waterfall": {
+      "Vista_Waterfall__Water": {
+        "MeshId": "rbxassetid://90643561869721",
+        "material": "Water",
+        "center": [
+          0.0421000011,
+          60.0,
+          1.80599999
+        ],
+        "size": [
+          12.5012722,
+          120.0,
+          4.28838634
+        ],
+        "triangles": 320
+      }
+    },
+    "Vista_Ridge": {
+      "Vista_Ridge__Moss": {
+        "MeshId": "rbxassetid://115098264735142",
+        "material": "Moss",
+        "center": [
+          -11.6787004,
+          113.7826,
+          3.9756999
+        ],
+        "size": [
+          117.788338,
+          82.0347672,
+          28.6120396
+        ],
+        "triangles": 280
+      },
+      "Vista_Ridge__Rock": {
+        "MeshId": "rbxassetid://74326716930951",
+        "ColorMap": "rbxassetid://136171872609075",
+        "NormalMap": "rbxassetid://92125690052934",
+        "RoughnessMap": "rbxassetid://118561797132229",
+        "MetalnessMap": "rbxassetid://97533670003493",
+        "TexturePack": "rbxassetid://105010258752740",
+        "material": "Rock",
+        "center": [
+          -4.98140001,
+          77.5930023,
+          2.24449992
+        ],
+        "size": [
+          156.475677,
+          155.18605,
+          62.3424301
+        ],
+        "triangles": 18928
+      }
+    },
+    "Vista_Needle": {
+      "Vista_Needle__Rock": {
+        "MeshId": "rbxassetid://111771089774460",
+        "ColorMap": "rbxassetid://136171872609075",
+        "NormalMap": "rbxassetid://92125690052934",
+        "RoughnessMap": "rbxassetid://118561797132229",
+        "MetalnessMap": "rbxassetid://97533670003493",
+        "TexturePack": "rbxassetid://105010258752740",
+        "material": "Rock",
+        "center": [
+          -0.55369997,
+          111.960602,
+          0.459500015
+        ],
+        "size": [
+          83.6231308,
+          223.921127,
+          55.0856476
+        ],
+        "triangles": 14196
+      },
+      "Vista_Needle__Moss": {
+        "MeshId": "rbxassetid://122575948849186",
+        "material": "Moss",
+        "center": [
+          -10.2605,
+          196.280106,
+          0.239500001
+        ],
+        "size": [
+          43.2746658,
+          53.0399017,
+          13.3711872
+        ],
+        "triangles": 140
+      }
+    },
+    "Vista_Crown": {
+      "Vista_Crown__Rock": {
+        "MeshId": "rbxassetid://76256953766601",
+        "ColorMap": "rbxassetid://136171872609075",
+        "NormalMap": "rbxassetid://92125690052934",
+        "RoughnessMap": "rbxassetid://118561797132229",
+        "MetalnessMap": "rbxassetid://97533670003493",
+        "TexturePack": "rbxassetid://105010258752740",
+        "material": "Rock",
+        "center": [
+          1.2464,
+          86.7011032,
+          -3.56920004
+        ],
+        "size": [
+          109.364609,
+          173.402237,
+          82.4444046
+        ],
+        "triangles": 18928
+      },
+      "Vista_Crown__Moss": {
+        "MeshId": "rbxassetid://137161568674569",
+        "material": "Moss",
+        "center": [
+          2.05060005,
+          146.781204,
+          4.45809984
+        ],
+        "size": [
+          91.3896713,
+          52.0376663,
+          34.1361732
+        ],
+        "triangles": 210
+      }
+    }
+  },
+  "meshParts": 7,
+  "distinctMeshIds": 7,
+  "distinctTextureIds": 5,
+  "referencedSharedStrings": 8
+}

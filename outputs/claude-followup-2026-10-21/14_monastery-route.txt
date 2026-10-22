@@ -1,0 +1,24 @@
+Continue Asura's Path — follow-up 14/26: Walk and finish the Monastery route and navigation.
+
+Apply 00_SHARED_BRIEF.txt in /Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 07, 15. Findings: #3, #4, #25, #26, #27, #28, #29, #30, #32, #44. Verify existing work, fix actual gaps, and execute this batch now.
+
+Combine the two original Monastery batches into one route pass. Walk Sanctuary portal → Gate altar → courtyard → bridge duel → Cloister and back. Arrival must frame/name the actual checkpoint, bridge swordsman must be visible and damageable from both ends, and the Cloister altar needs safe standing/portrait/exit space. Reuse prompt 04's portrait results.
+Walk all four Monastery tablets and three caches, including waterfall, rafters and mausoleum with real ladder/jump/terrain physics. Test intended roof/ravine shortcuts, ridge veils, enemy leashes and the restored Gatehouse PvP yard. Empty reachable exterior must lead somewhere intentional or have believable bounds. Improve only weak route readability/combat pockets/material scale found in this pass; do not bury paths with extra decoration.
+Close the overlooked navigation gap: SakuraMinimap still draws entity/altar dots without route geometry, while RouteGuide already stages the objective marker. Add a small bounded route/connection layer using existing zone/door data, with elevation/portal-leg cues and a bloodstain route, so the display does not imply walking through walls. Reuse it for later region prompts; avoid a new pathfinding framework or per-frame world scan.
+Check directions from a later-checkpoint death and inspect the map/marker at turns and portals. Keep mobility, stable IDs and existing shrine/ruin assets intact.
+Start files (relative to project root; follow only required dependencies):
+- src/server/Services/MonasteryGrounds.luau
+- src/server/Services/MonasterySecrets.luau
+- src/server/Services/MonasteryTerrain.luau
+- src/shared/MonasteryZones.luau
+- src/shared/RouteGuide.luau
+- src/client/Controllers/SakuraMinimap.luau
+
+Focused checks (reuse prior results unless code changed or live evidence is missing):
+- python3 tools/lune_compat.py tools/test_monastery_route.luau tools/test_monastery_discovery.luau
+- python3 tools/test_objectives.py
+
+Acceptance:
+Actual walk/duel/collectible evidence and readable map/marker turns; no geometry-stuck altar or misleading cross-wall/portal guidance. Track any new region-kit deficit as art work.
+
+Update the matching ledgers with evidence type and exact remaining work; stop after this batch.

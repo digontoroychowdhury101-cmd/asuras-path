@@ -1,0 +1,22 @@
+Continue Asura's Path repairs — batch 25/26: Device layouts, controls and accessibility.
+
+Apply the shared operating brief (outputs/playthrough-2026-10-20/claude-prompts/00_OPERATING_BRIEF.txt; read once per chat) and current PROGRESS.md. Read report findings #5, #6, #12, #13, #33, #34, #35, #36, #37, #39, #40, #41, #42, #43 only, plus relevant evidence. Implement this batch now.
+
+Verify and repair the existing interface at small desktop, widescreen/ultrawide, phone and tablet sizes, plus keyboard, touch and controller inputs supported by the available tools. Focus on real clipping, overlaps, safe areas, text scale, scrolling, focus navigation and input collisions across HUD, controls, spells, Arsenal, Codex, leveling, dialogue and ending.
+Ensure prompts/tutorial/counter hints display the actual active-device bindings from batch 02. Keep life/rally/perilous cues understandable without color alone. Expose reduced decorative effects/motion/flashes and subtitle/text readability through the existing settings model where appropriate, using batch 03's effects hook.
+Verify existing sensitivity/FOV and any existing remapping settings persist/revert correctly. Reuse the current UI kit and settings system rather than introducing competing versions.
+Emulation establishes layout coverage only; identify physical-device/controller checks still needed. Fix demonstrated issues without reopening art direction or changing combat timing.
+
+Start near these files; follow only necessary dependencies:
+- src/client/Controllers/UiWindow.luau
+- src/client/Controllers/PauseMenu.luau
+- src/client/Controllers/ControlsCard.luau
+- src/client/Controllers/SpellHud.luau
+- src/client/Controllers/DialogueView.luau
+- src/client/Controllers/SakuraHud.luau
+- src/client/Controllers/InputController.luau
+
+Acceptance and focused verification:
+Record a compact viewport/input matrix with captures, including long text, low-resource HUD, two enemies, boss bar, open controls, dialogue and ending. Verify focus/close/resume, settings persistence/cancel and effect reductions. Label emulated, hardware-tested and untested cases separately.
+
+Update the repair ledger and PROJECT_STATE.md. State implementation versus verification precisely, then stop at this batch boundary.

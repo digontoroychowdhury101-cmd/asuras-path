@@ -45,4 +45,29 @@ function Models.attach(model: Model,id: string): boolean
  end
  return true
 end
+-- Batch 14: the stock jian, dao and guandao were single blocks. Their fittings (guard, wrapped
+-- grip, pommel and tassel; the guandao's moon blade and dragon mouth) are welded to that blade part,
+-- so its length (the trail anchor and reach read) is unchanged and they leave with it.
+function Models.dress(blade: BasePart, id: string)
+ local z,y=blade.Size.Z*0.5,blade.Size.Y*0.5
+ local GOLD,WRAP,TASSEL=Color3.fromRGB(176,140,64),Color3.fromRGB(40,30,26),Color3.fromRGB(150,30,34)
+ local function fit(name: string,size: Vector3,offset: CFrame,color: Color3,shape: Enum.PartType?): Part
+  local p=Instance.new("Part");p.Name=name;p.Size=size;p.CFrame=blade.CFrame*offset;p.Color=color;p.Material=Enum.Material.Metal
+  p.Massless=true;p.CanCollide=false;p.CanTouch=false;p.CanQuery=false;if shape then p.Shape=shape end
+  local weld=Instance.new("WeldConstraint");weld.Part0=blade;weld.Part1=p;weld.Parent=p;p.Parent=blade
+  return p
+ end
+ if id=="Jian" or id=="Dao" then
+  fit("Guard",Vector3.new(if id=="Dao" then 0.6 else 0.9,0.16,0.2),CFrame.new(0,0,z-0.8),GOLD,if id=="Dao" then Enum.PartType.Ball else nil)
+  local grip=fit("GripWrap",Vector3.new(0.2,0.22,0.8),CFrame.new(0,0,z-0.35),WRAP);grip.Material=Enum.Material.Fabric
+  fit("Pommel",Vector3.new(0.26,0.26,0.26),CFrame.new(0,0,z+0.08),GOLD,Enum.PartType.Ball)
+  local cord=fit("Tassel",Vector3.new(0.1,0.7,0.1),CFrame.new(0,-0.35,z+0.12),TASSEL);cord.Material=Enum.Material.Fabric
+  if id=="Dao" then fit("BackSpine",Vector3.new(blade.Size.X+0.06,0.1,blade.Size.Z-1.2),CFrame.new(0,y,-0.4),Color3.fromRGB(120,112,104)) end
+ elseif id=="Guandao" then
+  fit("MoonBlade",Vector3.new(0.18,1.1,2.2),CFrame.new(0,0.4,-z-0.8),Color3.fromRGB(176,182,188)).Shape=Enum.PartType.Wedge
+  fit("DragonMouth",Vector3.new(0.4,0.42,0.6),CFrame.new(0,0,-z+0.2),GOLD)
+  local tuft=fit("Tassel",Vector3.new(0.24,0.7,0.24),CFrame.new(0,-0.4,-z+0.6),TASSEL);tuft.Material=Enum.Material.Fabric
+  fit("Counterweight",Vector3.new(0.32,0.32,0.5),CFrame.new(0,0,z),Color3.fromRGB(90,88,86))
+ end
+end
 return table.freeze(Models)

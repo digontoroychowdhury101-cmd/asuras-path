@@ -1,0 +1,21 @@
+Continue Asura's Path repairs — batch 11/26: Shen and Twin Sentinels presentation and fair entry.
+
+Apply the shared operating brief (outputs/playthrough-2026-10-20/claude-prompts/00_OPERATING_BRIEF.txt; read once per chat) and current PROGRESS.md. Read report findings #16, #17, #23 only, plus relevant evidence. Implement this batch now.
+
+Limit character/encounter work to Grandmaster Shen and the Twin Sentinels. Audit why intended skins are absent or fall back to block bodies; inspect actual template IDs, phase names, bone/bind contracts, validation and attachment. Repair reusable skin/animation plumbing, then make these actors read as distinct wuxia combatants using valid available assets and authored poses/materials.
+Give Zhao and Iron Bull clearly different silhouettes, weapons/roles and stable target identification, coordinating with batch 04's separate bars. Preserve the duo's existing mechanical identity; verify target switching and intended separation behavior.
+Fix the shared boss-entry handoff where necessary: protection/AI sequencing must cover cinematic loss of control and end when readable player control resumes. Camera and combat states must restore on skip, death, retry and cancellation. Avoid blanket damage reductions based on the assisted playtest.
+When a required production model/animation is unavailable, complete the binding/tooling work and record the exact asset deliverable still required; colored primitives do not close the visual finding.
+
+Start near these files; follow only necessary dependencies:
+- src/server/Services/BossSkin.luau
+- src/server/Services/BossAppearance.luau
+- src/server/Services/BossDuo.luau
+- src/server/Services/AIService.luau
+- src/client/Controllers/BossAnimations.luau
+- src/client/Controllers/BossCinematics.luau
+
+Acceptance and focused verification:
+Inspect both Shen phases and both Twins at normal camera distance, actual skin attachment/weapon alignment, first attack timing, target switching and entry/retry/cancel. Test shared entry logic against the other bosses as a regression, without redesigning their content in this batch.
+
+Update the repair ledger and PROJECT_STATE.md. State implementation versus verification precisely, then stop at this batch boundary.

@@ -1,0 +1,21 @@
+Continue Asura's Path repairs — batch 07/26: Monastery collision, altar clearance and arrival repairs.
+
+Apply the shared operating brief (outputs/playthrough-2026-10-20/claude-prompts/00_OPERATING_BRIEF.txt; read once per chat) and current PROGRESS.md. Read report findings #3, #4, #26, #27, #29, #30 only, plus relevant evidence. Implement this batch now.
+
+Repair the walked opening route before adding more decoration. Diagnose the bridge swordsman's actual spawn/root height, walkable surface, navigation, collision and melee/spell contact; its marker appeared against a tall central stone obstruction. Fix the demonstrated cause and preserve an appropriate bridge fight.
+Create an open approach/standing/exit pocket around Desecrated Cloister's altar and clear space for batch 05's portrait camera. Audit other existing altar anchors for the same issue.
+Address the empty walkable exterior and wall/ravine bypasses deliberately: mark intended shortcuts and give them a destination, or constrain unintended access with believable terrain/architecture. Retain the wuxia mobility system.
+Make Monastery portal arrival face a safe, readable checkpoint view. Correct Sanctuary objective wording to name the immediate portal destination, then the next route leg. This is a functional route repair, not the larger Monastery art pass in batch 15.
+
+Start near these files; follow only necessary dependencies:
+- src/server/Services/MonasteryService.luau
+- src/server/Services/MonasteryGrounds.luau
+- src/server/Services/MonasteryRuins.luau
+- src/server/Services/WorldService.luau
+- src/shared/WorldDefinitions.luau
+- src/shared/Objectives.luau
+
+Acceptance and focused verification:
+Walk both bridge directions and exchange real hits with the swordsman; approach/rest/leave the Cloister from both shoulders. Test jump/double jump/wall and ravine cases, portal arrival, objective copy and nearby altar visibility. Do not treat coordinate checks alone as proof of physical clearance.
+
+Update the repair ledger and PROJECT_STATE.md. State implementation versus verification precisely, then stop at this batch boundary.

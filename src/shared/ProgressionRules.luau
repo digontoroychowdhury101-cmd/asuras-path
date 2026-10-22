@@ -26,14 +26,14 @@ end
 function Rules.upgrade(p: any,weapon: string): string
  local w=assert(p.inventory.Weapons[weapon],"Weapon is locked");assert(w.Level<10,"Weapon is already +10")
  local cost,ore,count=Rules.upgradeCost(w.Level)
- assert(p.qiEssence>=cost,"Not enough Qi");assert((p.inventory.Materials[ore] or 0)>=count,"Missing "..ore)
+ assert(p.qiEssence>=cost,"Not enough Essence");assert((p.inventory.Materials[ore] or 0)>=count,"Missing "..ore)
  p.qiEssence-=cost;p.inventory.Materials[ore]-=count;w.Level+=1
  return "Reinforced "..weapon.." +"..w.Level
 end
 function Rules.infuse(p: any,weapon: string,affinity: string): string
  local gem=assert(Rules.Infusions[affinity],"Unknown infusion")
  local w=assert(p.inventory.Weapons[weapon],"Weapon is locked");assert(w.Infusion~=affinity,"Already infused")
- assert((p.inventory.Materials[gem] or 0)>=1,"Missing "..gem);assert(p.qiEssence>=300,"Not enough Qi")
+ assert((p.inventory.Materials[gem] or 0)>=1,"Missing "..gem);assert(p.qiEssence>=300,"Not enough Essence")
  p.inventory.Materials[gem]-=1;p.qiEssence-=300;w.Infusion=affinity;return "Infused "..weapon
 end
 function Rules.affinity(id: string?,a: {[string]: number}): {[string]: number}

@@ -45,5 +45,22 @@ for key,path in (('Leaf',leaf),('LeafScatter',scatter)):
     if path.exists():
         import shutil
         shutil.copy2(path,OUT/(key+'.png'));files[key]=str((OUT/(key+'.png')).relative_to(ROOT))
-(OUT/'manifest.json').write_text(json.dumps({'textures':files,'authored':'Asura Phase 5 analytic masks; leaf source: ambientCG LeafSet024, CC0'},indent=2)+'\n')
+sky={}
+faces={'Back':(-x,y,np.ones_like(x)),'Front':(x,y,-np.ones_like(x)),
+       'Left':(-np.ones_like(x),y,-x),'Right':(np.ones_like(x),y,x),
+       'Up':(x,np.ones_like(x),-y),'Down':(x,-np.ones_like(x),y)}
+for name,(dx,dy,dz) in faces.items():
+    norm=np.sqrt(dx*dx+dy*dy+dz*dz);dx,dy,dz=dx/norm,dy/norm,dz/norm
+    cloud=np.zeros_like(dx)
+    for octave in range(1,6):
+        cloud+=np.sin(dx*octave*9+dz*octave*11+dy*octave*6)/octave/5
+    horizon=np.exp(-dy*dy*14)
+    intensity=0.025+0.035*horizon+np.maximum(cloud,0)*0.028
+    rgba=np.ones((N,N,4),dtype=np.float32)
+    for channel,tint in enumerate((1.0,0.88,0.9)):rgba[:,:,channel]=intensity*tint
+    im=bpy.data.images.new('Sky'+name,N,N,alpha=False)
+    im.colorspace_settings.name='sRGB';im.pixels.foreach_set(rgba.ravel())
+    im.filepath_raw=str(OUT/('Sky'+name+'.png'));im.file_format='PNG';im.save()
+    sky[name]=str((OUT/('Sky'+name+'.png')).relative_to(ROOT))
+(OUT/'manifest.json').write_text(json.dumps({'textures':files,'sky':sky,'authored':'Asura Phase 5 analytic masks; leaf source: ambientCG LeafSet024, CC0'},indent=2)+'\n')
 print('VFX_TEXTURES',len(files),OUT)

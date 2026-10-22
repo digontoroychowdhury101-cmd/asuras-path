@@ -1,0 +1,7 @@
+[["__lua","Server","_G.QATrig = {} local found = 0 for _, d in workspace:GetDescendants() do if d:IsA('ProximityPrompt') and d.ActionText == 'Traverse' then found += 1 local where = d.Parent.Position d.Triggered:Connect(function(p) table.insert(_G.QATrig, 'triggered ' .. d.ObjectText) end) d.PromptButtonHoldBegan:Connect(function() table.insert(_G.QATrig, 'hold ' .. d.ObjectText) end) table.insert(_G.QATrig, string.format('%s at %.0f,%.0f,%.0f en=%s', d.ObjectText, where.X, where.Y, where.Z, tostring(d.Enabled))) end end return found .. ' traverse prompts'"],
+ ["__lua","Client","local pps = game:GetService('ProximityPromptService') _G.QAC = {} pps.PromptShown:Connect(function(p) table.insert(_G.QAC, 'shown ' .. p.ObjectText) end) pps.PromptButtonHoldBegan:Connect(function(p) table.insert(_G.QAC, 'holdbegan ' .. p.ObjectText) end) pps.PromptTriggered:Connect(function(p) table.insert(_G.QAC, 'trig ' .. p.ObjectText) end) return 'pps enabled=' .. tostring(pps.Enabled)"],
+ ["user_keyboard_input", {"datamodel_type":"Client","actions":[{"action":"keyDown","key_code":"Z"},{"action":"wait","wait_time_ms":1000},{"action":"keyUp","key_code":"Z"}]}],
+ ["__sleep", 2],
+ ["__lua","Client","return table.concat(_G.QAC, ' | ')"],
+ ["__lua","Server","return table.concat(_G.QATrig, ' | ')"],
+ ["__lua","Client","tools/qa/LobbyWhere.luau"]]

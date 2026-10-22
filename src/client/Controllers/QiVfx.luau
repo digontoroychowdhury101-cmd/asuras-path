@@ -35,6 +35,8 @@ function Qi.tail(head: BasePart, color: Color3)
 	end
 end
 function Qi.rupture(folder: Instance, point: Vector3, direction: Vector3, color: Color3, character: Model?)
-	Surfaces.rupture(folder,point,direction,color,if character then {character} else {})
+	local excludes: {Instance}={}
+	if character then table.insert(excludes,character) end
+	Surfaces.rupture(folder,point,direction,color,excludes)
 end
 return Qi

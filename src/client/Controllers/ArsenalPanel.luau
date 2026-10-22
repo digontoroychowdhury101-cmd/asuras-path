@@ -4,7 +4,13 @@
 -- lacquer window. Re-renders the active tab from the last inventory packet; every action goes to
 -- the server through `Send` (ArsenalIntent), which stays authoritative. Forging asks twice.
 local GuiService = game:GetService("GuiService")
+local Players = game:GetService("Players")
 local UserInputService = game:GetService("UserInputService")
+local Shared = game:GetService("ReplicatedStorage"):WaitForChild("AsurasPath")
+local Settings = require(Shared:WaitForChild("Shared"):WaitForChild("CombatSettings") :: ModuleScript) :: any
+local InputMap = require(Shared:WaitForChild("Shared"):WaitForChild("InputMap") :: ModuleScript)
+local Weapons = require(Shared:WaitForChild("Simulation"):WaitForChild("WeaponSchema") :: ModuleScript)
+local Rules = require(Shared:WaitForChild("Shared"):WaitForChild("ProgressionRules") :: ModuleScript)
 local HudKit = require(script.Parent:WaitForChild("HudKit") :: ModuleScript)
 local UiKit = require(script.Parent:WaitForChild("UiKit") :: ModuleScript)
 local UiWindow = require(script.Parent:WaitForChild("UiWindow") :: ModuleScript)
@@ -17,15 +23,28 @@ local T = UiKit.Theme
 local WINDOW_SIZE = Vector2.new(760, 560)
 local TABS = { "Spells", "Weapons", "Forge" }
 local TAB_TEXT: { [string]: string } = { Spells = "Qi Sorcery", Weapons = "Weapons", Forge = "Transmutation" }
-local HINTS: { [string]: string } = {
-	Spells = "Slot I casts on 1 / D-Pad Up · Slot II on E / D-Pad Down · Melee hits +8 Qi · Perfect deflects +15 Qi",
-	Weapons = "A Jade Catalyst held off-hand focuses sorcery: +25% potency and faster casting.",
-	Forge = "Each remembrance forges ONE weapon or spell. The choice is permanent. Visit Gao's Loggia.",
-}
+-- Hints are built from the live bindings and settings so they cannot drift from the game.
+local function hint(tab: string, label: (string) -> string): string
+	if tab == "Spells" then
+		return string.format("Slot 1 casts on [%s] · Slot 2 on [%s] · Melee hits +%d Qi · Perfect deflects +%d Qi",
+			label("SpellOne"), label("SpellTwo"), Settings.Qi.GainOnHit, Settings.Qi.GainOnDeflect)
+	elseif tab == "Weapons" then
+		local catalyst = Weapons.get("Catalyst")
+		return string.format("Numbers use your current attributes and forge levels; ▲ beats your wielded weapon, ▼ falls short. A Jade Catalyst held off-hand focuses sorcery: +%d%% potency and faster casting.",
+			math.floor(((catalyst.SpellPotency or 1) - 1) * 100 + 0.5))
+	end
+	return "Each remembrance forges ONE weapon or spell. The choice is permanent. Visit Gao's Loggia."
+end
 export type View = {
-	Root: Frame, List: ScrollingFrame, Send: (any) -> (), Inventory: any,
+	Root: Frame, List: ScrollingFrame, Send: (any) -> (), Inventory: any, Label: (string) -> string,
 	Window: UiWindow.Window, Tab: string, Tabs: { [string]: TextButton }, Hint: TextLabel,
 }
+
+local function attributes(): { [string]: number }
+	local player, result = Players.LocalPlayer, {}
+	for _, id in Rules.Attributes do result[id] = tonumber(player:GetAttribute("Asura" .. id)) or 10 end
+	return result
+end
 
 local function render(view: View)
 	for _, child in view.List:GetChildren() do
@@ -35,20 +54,21 @@ local function render(view: View)
 		tab.TextColor3 = if name == view.Tab then T.Gold else T.Muted;
 		(tab:FindFirstChild("Underline") :: Frame).Visible = name == view.Tab
 	end
-	view.Hint.Text = HINTS[view.Tab]
+	view.Hint.Text = hint(view.Tab, view.Label)
 	local inv = view.Inventory
 	if not inv then
 		HudKit.label(view.List, "The arsenal stirs…", 18, T.BodyFont, T.Muted, { Size = UDim2.new(1, 0, 0, 40) })
 		return
 	end
-	local fill: (send: (any) -> (), inv: any, list: ScrollingFrame) -> () = if view.Tab == "Spells" then ArsenalTabs.Spells elseif view.Tab == "Weapons" then ArsenalTabs.Weapons else ArsenalTabs.Forge
-	fill(view.Send, inv, view.List)
+	local fill: (send: (any) -> (), inv: any, list: ScrollingFrame, env: ArsenalTabs.Env) -> () = if view.Tab == "Spells" then ArsenalTabs.Spells elseif view.Tab == "Weapons" then ArsenalTabs.Weapons else ArsenalTabs.Forge
+	fill(view.Send, inv, view.List, { Label = view.Label, Attributes = attributes() })
 	if UserInputService.GamepadEnabled and UiWindow.isOpen(view.Window) then
 		GuiService.SelectedObject = view.List:FindFirstChildWhichIsA("TextButton", true)
 	end
 end
 
-function Panel.new(gui: ScreenGui, send: (any) -> ()): View
+-- `label` maps an InputMap command to the key shown for the current device (InputController:Label).
+function Panel.new(gui: ScreenGui, send: (any) -> (), label: ((string) -> string)?): View
 	local view: View
 	local window = UiWindow.new(gui, "ArsenalPanel", "Arsenal", "Weapons · Qi Sorcery · Transmutation", WINDOW_SIZE, function() Panel.close(view) end)
 	local tabs = HudKit.make("Frame", window.Body, { Name = "Tabs", Size = UDim2.new(1, -50, 0, 38), BackgroundTransparency = 1 }) :: Frame
@@ -59,10 +79,11 @@ function Panel.new(gui: ScreenGui, send: (any) -> ()): View
 	}) :: ScrollingFrame
 	HudKit.make("UIListLayout", list, { Padding = UDim.new(0, 8), SortOrder = Enum.SortOrder.LayoutOrder })
 	HudKit.make("UIPadding", list, { PaddingTop = UDim.new(0, 4), PaddingLeft = UDim.new(0, 2) })
-	local hint = HudKit.label(window.Body, "", 14, T.BodyFont, T.Muted, {
+	local hintLabel = HudKit.label(window.Body, "", 14, T.BodyFont, T.Muted, {
 		AnchorPoint = Vector2.new(0, 1), Position = UDim2.fromScale(0, 1), Size = UDim2.new(1, 0, 0, 36), TextWrapped = true, TextXAlignment = Enum.TextXAlignment.Left,
 	})
-	view = { Root = window.Root, List = list, Send = send, Inventory = nil, Window = window, Tab = "Spells", Tabs = {}, Hint = hint }
+	local keys = label or function(command: string): string return InputMap.label(command, "Keyboard") end
+	view = { Root = window.Root, List = list, Send = send, Inventory = nil, Label = keys, Window = window, Tab = "Spells", Tabs = {}, Hint = hintLabel }
 	for order, name in TABS do
 		local tab = UiKit.button(tabs, TAB_TEXT[name], "Ghost", function()
 			view.Tab = name

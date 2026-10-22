@@ -3,7 +3,7 @@ local Lighting = game:GetService("Lighting")
 local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
 local CollectionService = game:GetService("CollectionService")
-local Shared = game:GetService("ReplicatedStorage").AsurasPath
+local Shared = game:GetService("ReplicatedStorage"):WaitForChild("AsurasPath")
 local Profiles = require(Shared.Shared.EnvironmentProfiles)
 local Assets = require(Shared.Shared.PresentationAssets)
 local World = require(Shared.Shared.WorldDefinitions)
@@ -40,18 +40,22 @@ function Controller.Update(self: any, dt: number)
 		end
 	end
 	local p = own.Root.Position
-	local region = World.regionAt(p.X, p.Y, p.Z) or Players.LocalPlayer:GetAttribute("AsuraRegion")
+	local reported = Players.LocalPlayer:GetAttribute("AsuraRegion")
+	local region = World.regionAt(p.X, p.Y, p.Z) or (if type(reported)=="string" then reported else nil)
 	local alive = own.Snapshot == nil or own.Snapshot.State ~= "KO"
-	local key = Profiles.resolve(region, boss ~= "" and alive, self.Phase)
+	-- The fight takes its look from the boss arena's biome, never one shared night profile.
+	local definition = if boss ~= "" then World.Bosses[boss] else nil
+	local arena = if definition then definition.Region else nil
+	local key = Profiles.resolve(region, boss ~= "" and alive, self.Phase, arena)
 	if key == self.Key then return end
 	self.Key = key
 	for _, tween in self.Tweens do tween:Cancel() end
 	table.clear(self.Tweens)
 	for _, light in CollectionService:GetTagged("AsuraArenaLight") do
-		local tween=TweenService:Create(light,TweenInfo.new(1.8),{Color=if key=="Cataclysm" then Color3.fromRGB(255,36,57) else Color3.fromRGB(255,161,84)})
+		local tween=TweenService:Create(light,TweenInfo.new(1.8),{Color=if Profiles.isUnbound(key) then Profiles.UnboundBrazier else Profiles.arena(arena).Brazier})
 		table.insert(self.Tweens,tween);tween:Play()
 	end
-	for name, values in (Profiles :: any)[key] do
+	for name, values in Profiles.get(key) do
 		local target = if name == "Lighting" then Lighting else Lighting:FindFirstChild(name)
 		if target then
 			local tween = TweenService:Create(target, TweenInfo.new(2.4, Enum.EasingStyle.Sine), values)
@@ -60,11 +64,14 @@ function Controller.Update(self: any, dt: number)
 	end
 	local sky = Lighting:FindFirstChildOfClass("Sky")
 	if sky then
-		sky.CelestialBodiesShown = key ~= "Cataclysm" and key ~= "AshColosseum"
+		local kind = Profiles.skyFor(key)
+		local night = kind == "Night"
+		sky.CelestialBodiesShown = not night
 		sky.StarCount = if sky.CelestialBodiesShown then 500 else 0
-		for face, id in Assets.Sky do
-			local suffix=({Back="Bk",Down="Dn",Front="Ft",Left="Lf",Right="Rt",Up="Up"})[face]
-			local value=if (key=="Cataclysm" or key=="AshColosseum") and id~="" then id else self.Sky[suffix]
+		local set = if night then Assets.Sky elseif kind == "Sunset" then Assets.SunsetSky else nil
+		for face, suffix in {Back="Bk",Down="Dn",Front="Ft",Left="Lf",Right="Rt",Up="Up"} do
+			local id = if set then set[face] else nil
+			local value=if id and id~="" then id else self.Sky[suffix]
 			if value then (sky :: any)["Skybox"..suffix]=value end
 		end
 	end

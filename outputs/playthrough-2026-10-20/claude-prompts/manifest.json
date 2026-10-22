@@ -1,0 +1,309 @@
+{
+  "created": "2026-10-20",
+  "workspace": "/Users/digonto/Documents/ChatGPT/Roblox game 2",
+  "report": "outputs/playthrough-2026-10-20/PLAYTEST_REPORT.md",
+  "findingsCount": 44,
+  "workBatchCount": 26,
+  "batches": [
+    {
+      "batch": 1,
+      "title": "Checkpoint, death and recovery lifecycle",
+      "file": "01_checkpoint-death-and-recovery-lifecycle.txt",
+      "findings": [
+        1,
+        18,
+        19
+      ]
+    },
+    {
+      "batch": 2,
+      "title": "One consistent input and interaction map",
+      "file": "02_one-consistent-input-and-interaction-map.txt",
+      "findings": [
+        5,
+        6,
+        37
+      ]
+    },
+    {
+      "batch": 3,
+      "title": "Readable combat lighting and stable audio cleanup",
+      "file": "03_readable-combat-lighting-and-stable-audio-cleanup.txt",
+      "findings": [
+        2,
+        7,
+        36
+      ]
+    },
+    {
+      "batch": 4,
+      "title": "HUD layout, health readability and death transitions",
+      "file": "04_hud-layout-health-readability-and-death-transitions.txt",
+      "findings": [
+        12,
+        17,
+        18,
+        33,
+        34,
+        35,
+        36
+      ]
+    },
+    {
+      "batch": 5,
+      "title": "Rest, Lin dialogue and leveling flow",
+      "file": "05_rest-lin-dialogue-and-leveling-flow.txt",
+      "findings": [
+        4,
+        38,
+        39,
+        40
+      ]
+    },
+    {
+      "batch": 6,
+      "title": "Useful Arsenal descriptions and Codex progress",
+      "file": "06_useful-arsenal-descriptions-and-codex-progress.txt",
+      "findings": [
+        41,
+        42
+      ]
+    },
+    {
+      "batch": 7,
+      "title": "Monastery collision, altar clearance and arrival repairs",
+      "file": "07_monastery-collision-altar-clearance-and-arrival-repairs.txt",
+      "findings": [
+        3,
+        4,
+        26,
+        27,
+        29,
+        30
+      ]
+    },
+    {
+      "batch": 8,
+      "title": "Earned remembrance and complete boss reward pipeline",
+      "file": "08_earned-remembrance-and-complete-boss-reward-pipeline.txt",
+      "findings": [
+        8,
+        9
+      ]
+    },
+    {
+      "batch": 9,
+      "title": "Attack contact, full-health healing and enemy deaths",
+      "file": "09_attack-contact-full-health-healing-and-enemy-deaths.txt",
+      "findings": [
+        14,
+        20,
+        21
+      ]
+    },
+    {
+      "batch": 10,
+      "title": "A playable opening tutorial and clean prologue handoff",
+      "file": "10_a-playable-opening-tutorial-and-clean-prologue-handoff.txt",
+      "findings": [
+        11,
+        12,
+        13,
+        15,
+        19,
+        43,
+        44
+      ]
+    },
+    {
+      "batch": 11,
+      "title": "Shen and Twin Sentinels presentation and fair entry",
+      "file": "11_shen-and-twin-sentinels-presentation-and-fair-entry.txt",
+      "findings": [
+        16,
+        17,
+        23
+      ]
+    },
+    {
+      "batch": 12,
+      "title": "Baize and Titan creature presentation",
+      "file": "12_baize-and-titan-creature-presentation.txt",
+      "findings": [
+        13,
+        16,
+        23
+      ]
+    },
+    {
+      "batch": 13,
+      "title": "Wu and Azure Wyrm presentation",
+      "file": "13_wu-and-azure-wyrm-presentation.txt",
+      "findings": [
+        16,
+        23
+      ]
+    },
+    {
+      "batch": 14,
+      "title": "Player, NPC and normal-enemy visual identity",
+      "file": "14_player-npc-and-normal-enemy-visual-identity.txt",
+      "findings": [
+        24
+      ]
+    },
+    {
+      "batch": 15,
+      "title": "Monastery environment and navigable discovery route",
+      "file": "15_monastery-environment-and-navigable-discovery-route.txt",
+      "findings": [
+        25,
+        26,
+        27,
+        28,
+        32,
+        44
+      ]
+    },
+    {
+      "batch": 16,
+      "title": "Sanctuary framing, terrace and optional routes",
+      "file": "16_sanctuary-framing-terrace-and-optional-routes.txt",
+      "findings": [
+        27,
+        28,
+        31,
+        32
+      ]
+    },
+    {
+      "batch": 17,
+      "title": "Build the Bamboo Pass region",
+      "file": "17_build-the-bamboo-pass-region.txt",
+      "findings": [
+        22,
+        27,
+        28,
+        32,
+        44
+      ]
+    },
+    {
+      "batch": 18,
+      "title": "Build the Ash Colosseum campaign region",
+      "file": "18_build-the-ash-colosseum-campaign-region.txt",
+      "findings": [
+        22,
+        27,
+        28,
+        32
+      ]
+    },
+    {
+      "batch": 19,
+      "title": "Build Sanctuary Depths and the Sunken Crypt",
+      "file": "19_build-sanctuary-depths-and-the-sunken-crypt.txt",
+      "findings": [
+        22,
+        27,
+        28,
+        32
+      ]
+    },
+    {
+      "batch": 20,
+      "title": "Build Celestial Pagoda and its lore route",
+      "file": "20_build-celestial-pagoda-and-its-lore-route.txt",
+      "findings": [
+        22,
+        27,
+        28,
+        32,
+        44
+      ]
+    },
+    {
+      "batch": 21,
+      "title": "Build Sky Citadel and the final approach",
+      "file": "21_build-sky-citadel-and-the-final-approach.txt",
+      "findings": [
+        22,
+        27,
+        28,
+        32
+      ]
+    },
+    {
+      "batch": 22,
+      "title": "A real six-sovereign ending and postgame handoff",
+      "file": "22_a-real-six-sovereign-ending-and-postgame-handoff.txt",
+      "findings": [
+        10,
+        28,
+        42
+      ]
+    },
+    {
+      "batch": 23,
+      "title": "Single-player campaign integration and remaining fixes",
+      "file": "23_single-player-campaign-integration-and-remaining-fixes.txt",
+      "findings": [
+        1,
+        8,
+        9,
+        10,
+        16,
+        18,
+        19,
+        22,
+        23,
+        27,
+        28,
+        44
+      ]
+    },
+    {
+      "batch": 24,
+      "title": "Multiplayer and persistence integration",
+      "file": "24_multiplayer-and-persistence-integration.txt",
+      "findings": []
+    },
+    {
+      "batch": 25,
+      "title": "Device layouts, controls and accessibility",
+      "file": "25_device-layouts-controls-and-accessibility.txt",
+      "findings": [
+        5,
+        6,
+        12,
+        13,
+        33,
+        34,
+        35,
+        36,
+        37,
+        39,
+        40,
+        41,
+        42,
+        43
+      ]
+    },
+    {
+      "batch": 26,
+      "title": "Performance, audio listening and final coverage audit",
+      "file": "26_performance-audio-listening-and-final-coverage-audit.txt",
+      "findings": [
+        2,
+        7,
+        21,
+        23,
+        24,
+        25,
+        31,
+        32,
+        36
+      ]
+    }
+  ]
+}

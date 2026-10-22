@@ -1,0 +1,2 @@
+CALL upload_image ok
+{"http://127.0.0.1:8765/Sunset_ny.png":"rbxassetid://127950753221991","http://127.0.0.1:8765/Sunset_py.png":"rbxassetid://124525209129489","http://127.0.0.1:8765/Sunset_px.png":"rbxassetid://129381868969576","http://127.0.0.1:8765/Sunset_pz.png":"rbxassetid://137019358306246","http://127.0.0.1:8765/Sunset_nx.png":"rbxassetid://103858488792424","http://127.0.0.1:8765/Sunset_nz.png":"rbxassetid://90950146067839"}

@@ -1,0 +1,5 @@
+CALL get_console_output ok
+[Asura's Path] Campaign regions raised: 5 maps, 2226 parts (40 ms).
+[Asura's Path] Server ready: 60 Hz authority, 150 ms rewind budget, 3 Colosseum rings; ranked league open (development).
+ContentId: rbxassetid://203785492 failed due to: Asset type does not match requested type
+[Asura's Path] Desecrated Monastery raised: 3369 parts, 9 set pieces, 0 walkability issues (90 ms).

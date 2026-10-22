@@ -1,0 +1,23 @@
+Continue Asura's Path — follow-up 20/26: Finish and validate Sky Citadel and summit return.
+
+Apply 00_SHARED_BRIEF.txt in /Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 21. Findings: #22, #27, #28, #32. Verify existing work, fix actual gaps, and execute this batch now.
+
+Walk Pagoda exit → bastion/checkpoint → summit arena and the post-victory Sanctuary return. Test actual bridges/landings, double-jump/glide limits, chasm/summit catches, rest/death/respawn/travel and clear final-route guidance. The route should remain usable after Wyrm dies and during later visits.
+Inspect the summit reveal and region at ordinary camera distance with no bright attack effect. Citadel towers/battlements, weather and ground silhouettes need a coherent visual identity, readable combat boundaries and sensible texture scale. Integrate available approved art with collision proxies preserved; list missing tower/battlement kits explicitly if production delivery is unavailable.
+Using prompt 12's real Wyrm rig, verify flight, landing, camera at arena edges and defeated-in-flight cleanup against the built geometry. Recheck bounds and return portal after any clearance fix. A diagnostic victory can inspect the exit but cannot establish earned completion.
+Preserve authoritative arena heights, boss/checkpoint IDs and the current campaign scope. Resolve only demonstrated route, geometry, lighting or presentation failures here; the ending and full run belong to prompts 21 and 22.
+Start files (relative to project root; follow only required dependencies):
+- src/shared/SkyCitadelLayout.luau
+- src/server/Services/CitadelDressing.luau
+- src/server/Services/CampaignBounds.luau
+- src/server/Services/BossMotion.luau
+- src/shared/RouteGuide.luau
+
+Focused checks (reuse prior results unless code changed or live evidence is missing):
+- python3 tools/test_campaign_regions.py
+- python3 tools/test_campaign_build.py
+
+Acceptance:
+Walked summit approach and return, readable floor/edge views and actual Wyrm clearance/landing evidence; honest geometry versus production-art status.
+
+Update the matching ledgers with evidence type and exact remaining work; stop after this batch.

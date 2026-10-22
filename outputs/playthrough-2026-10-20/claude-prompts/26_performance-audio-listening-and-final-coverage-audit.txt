@@ -1,0 +1,22 @@
+Continue Asura's Path repairs — batch 26/26: Performance, audio listening and final coverage audit.
+
+Apply the shared operating brief (outputs/playthrough-2026-10-20/claude-prompts/00_OPERATING_BRIEF.txt; read once per chat) and current PROGRESS.md. Read report findings #2, #7, #21, #23, #24, #25, #31, #32, #36 only, plus relevant evidence. Implement this batch now.
+
+Measure the completed content on the available machine before optimizing. Sample Sanctuary/colossal tree, a normal fight, a populated later region and large/duo boss combat. Record frame-time/FPS observations, memory, relevant part/mesh/light/effect counts, repeated respawn cleanup and network behavior when measurable. Use comparable conditions; make no unsupported universal performance claim.
+Fix demonstrated hotspots or leaks with bounded changes such as reuse, cleanup, culling/LOD or effect/light budgets while preserving the tested art, collision and combat. Recheck SpatialAudio lifecycle after repeated combat/rest/death.
+Perform an actual audio listening pass if the environment supplies audio: mix hierarchy, hit/block/parry distinction, music transitions, ambience, positional range and failed/unauthorized asset loads. Logs alone cannot pass listening acceptance.
+Finally audit all 44 findings and every batch in PROGRESS.md. Link implementation/test evidence, identify any external asset, human-play, device or live-service dependency, and produce a concise remaining-work list. Close only findings whose assigned work and acceptance are satisfied.
+
+Start near these files; follow only necessary dependencies:
+- src/server/Services/PresentationService.luau
+- src/server/Services/PbrAssets.luau
+- src/client/Controllers/SpatialAudio.luau
+- src/client/Controllers/SoundscapeController.luau
+- src/client/Controllers/BossMusic.luau
+- src/client/Controllers/CombatVfx.luau
+- outputs/playthrough-2026-10-20/claude-prompts/PROGRESS.md
+
+Acceptance and focused verification:
+Report before/after measurements for any optimization, repeated-session cleanup results and actual audio-listening coverage. Complete the evidence-backed 44-item disposition table: verified, implemented/pending acceptance, or explicitly blocked with the exact missing input. Do not issue a blanket all-fixed verdict while production art or earned-play checks remain open.
+
+Update the repair ledger and PROJECT_STATE.md. State implementation versus verification precisely, then stop at this batch boundary.

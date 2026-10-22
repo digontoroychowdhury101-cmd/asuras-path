@@ -1,0 +1,21 @@
+Continue Asura's Path repairs — batch 16/26: Sanctuary framing, terrace and optional routes.
+
+Apply the shared operating brief (outputs/playthrough-2026-10-20/claude-prompts/00_OPERATING_BRIEF.txt; read once per chat) and current PROGRESS.md. Read report findings #27, #28, #31, #32 only, plus relevant evidence. Implement this batch now.
+
+Refine the existing Sanctuary around the current colossal veiled figure/tree, preserving their imported art, scale and central axis. Add intentional reveal points while walking from plaza through stairs/landing to the terrace; maintain a clear bonfire, gate, forge and Colosseum route.
+Audit the enlarged terrace edge, roots, stairs, parapets, camera clearance and fall-return behavior at character height. Keep the statue/tree visually dramatic while ensuring landing/route silhouettes remain readable. Use the material/architecture vocabulary established in batch 15.
+Make both Sanctuary caches physically reachable through deliberate traversal, and make the Sunken Crypt portal and return leg understandable. Preserve optional discovery without confusing the main story exit.
+Implement composition/layout/collision changes through supported source/configuration; keep existing saved place and imported binary assets intact.
+
+Start near these files; follow only necessary dependencies:
+- src/server/Services/SanctuaryService.luau
+- src/server/Services/SanctuaryColossus.luau
+- src/server/Services/SanctuaryTitan.luau
+- src/server/Services/SanctuaryDressing.luau
+- src/shared/WorldDefinitions.luau
+- src/server/Services/LootWorld.luau
+
+Acceptance and focused verification:
+Walk plaza -> stairs -> landing -> terrace edge and back, both cache routes, forge, Colosseum and Crypt portal. Inspect the full composition at natural camera angles, collision/fall return and checkpoint/portal regressions. Do not approve the route solely from an overhead render.
+
+Update the repair ledger and PROJECT_STATE.md. State implementation versus verification precisely, then stop at this batch boundary.

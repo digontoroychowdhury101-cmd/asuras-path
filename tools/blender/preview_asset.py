@@ -19,7 +19,9 @@ center, radius = (lo + hi) / 2, (hi - lo).length / 2
 
 scene = bpy.context.scene
 scene.render.engine = "BLENDER_EEVEE_NEXT" if "BLENDER_EEVEE_NEXT" in {e.identifier for e in bpy.types.RenderSettings.bl_rna.properties["engine"].enum_items} else "BLENDER_EEVEE"
-scene.render.resolution_x, scene.render.resolution_y = 900, 900
+scene.render.resolution_x, scene.render.resolution_y = 640, 640
+if hasattr(scene, "eevee") and hasattr(scene.eevee, "taa_render_samples"):
+    scene.eevee.taa_render_samples = 24
 scene.render.filepath = out
 world = bpy.data.worlds.new("Dusk")
 world.color = (0.05, 0.05, 0.06)
@@ -31,6 +33,8 @@ scene.camera = camera
 direction = Vector((math.sin(math.radians(35)), -math.cos(math.radians(35)), 0.35)).normalized()
 camera.location = center + direction * radius * 2.6
 camera.rotation_euler = (center - camera.location).to_track_quat("-Z", "Y").to_euler()
+camera.data.type = "ORTHO"
+camera.data.ortho_scale = max(radius * 2.3, 0.01)  # entire bounding sphere fits; no cropped chains/pillars
 
 for energy, angle, color in ((4.0, (50, 0, 40), (1.0, 0.86, 0.7)), (1.2, (60, 0, -140), (0.6, 0.7, 0.9))):
     sun = bpy.data.objects.new("Sun", bpy.data.lights.new("Sun", "SUN"))

@@ -1,0 +1,3 @@
+[["start_stop_play", {"is_start": true}], ["__sleep", 25],
+ ["__lua", "Server", "local s = workspace:FindFirstChild('Sanctuary') local n, m = 0, 0 if s then for _, d in s:GetDescendants() do if d:IsA('MeshPart') then m += 1 elseif d:IsA('BasePart') then n += 1 end end end return tostring(workspace:GetAttribute('AsuraReady')) .. ' parts ' .. n .. ' meshparts ' .. m"],
+ ["get_console_output", {}]]

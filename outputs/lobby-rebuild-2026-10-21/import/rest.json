@@ -1,0 +1,6 @@
+[["character_navigation", {"datamodel_type":"Client","x":0,"y":601,"z":906,"speed_multiplier":3}], ["__sleep", 1.5],
+ ["__lua","Client","outputs/lobby-rebuild-2026-10-21/import/prompts.luau"],
+ ["user_keyboard_input", {"datamodel_type":"Client","actions": [{"action":"keyDown","key_code":"Z"},{"action":"wait","wait_time_ms":1600},{"action":"keyUp","key_code":"Z"}]}],
+ ["__sleep", 2.5],
+ ["__lua","Client","outputs/lobby-rebuild-2026-10-21/import/prompts.luau"],
+ ["screen_capture", {"capture_id": "test_rest"}]]

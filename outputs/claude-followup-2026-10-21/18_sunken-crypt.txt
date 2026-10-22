@@ -1,0 +1,24 @@
+Continue Asura's Path — follow-up 18/26: Finish and validate Sanctuary Depths and Sunken Crypt.
+
+Apply 00_SHARED_BRIEF.txt in /Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 19. Findings: #22, #27, #28, #32. Verify existing work, fix actual gaps, and execute this batch now.
+
+Walk Sanctuary Well of Descent → crypt arrival → incense altar → Titan chamber → return. Check arrival facing, readable route/portal labels, rest/death/respawn/travel and a real pit/catch case. Legitimate underground play must not activate the Sanctuary cloud-return catch.
+Inspect the Crypt at character height in exploration and steady combat lighting. Depth, vaults, sarcophagus/optional traversal, boundaries and landmarks should fulfill the crypt premise while keeping floor edges, Titan's ankles and weapons readable. Use available approved vault/sarcophagus/bone-niche assets over existing collision boxes; retain an explicit production-kit blocker where no valid art can be supplied.
+Test actual mobility on the optional lids, enemy leashes, tight corners, ceiling/camera access and Titan's chamber entrance/reset with the real rig. Reuse prompt 11's encounter evidence. Confirm death/bloodstain guidance stages the well/return portal rather than aiming directly across the world separation.
+Keep the authoritative arena floor and stable region/checkpoint/portal IDs. Fix demonstrated geometry, lighting or catch bugs in this region and its joins. Do not certify physics from the existing offline grid alone.
+Start files (relative to project root; follow only required dependencies):
+- src/shared/SunkenCryptLayout.luau
+- src/server/Services/CryptDressing.luau
+- src/server/Services/CampaignBounds.luau
+- src/server/Services/SanctuaryService.luau
+- src/shared/EnvironmentProfiles.luau
+- src/shared/RouteGuide.luau
+
+Focused checks (reuse prior results unless code changed or live evidence is missing):
+- python3 tools/test_campaign_regions.py
+- python3 tools/test_campaign_build.py
+
+Acceptance:
+Walked descent, optional branch, altar retry, chamber/return and pit recovery; no false Sanctuary catch and no unreadable underground combat.
+
+Update the matching ledgers with evidence type and exact remaining work; stop after this batch.

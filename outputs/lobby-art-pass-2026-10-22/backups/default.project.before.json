@@ -1,0 +1,987 @@
+{
+  "name": "AsurasPath",
+  "tree": {
+    "$className": "DataModel",
+    "Workspace": {
+      "$className": "Workspace",
+      "$properties": {
+        "FallenPartsDestroyHeight": -100,
+        "GlobalWind": [
+          0,
+          0,
+          0
+        ],
+        "Gravity": 196.2,
+        "StreamingEnabled": false
+      },
+      "Camera": {
+        "$className": "Camera",
+        "$properties": {
+          "CFrame": [
+            0,
+            626,
+            966,
+            1,
+            0,
+            0,
+            0,
+            0.99935,
+            0.03612,
+            0,
+            -0.03612,
+            0.99935
+          ],
+          "Focus": [
+            0,
+            603.6,
+            900,
+            1,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            1
+          ],
+          "FieldOfView": 70
+        }
+      },
+      "AsurasPath": {
+        "$className": "Folder"
+      }
+    },
+    "Lighting": {
+      "$className": "Lighting",
+      "$properties": {
+        "LightingStyle": "Realistic",
+        "PrioritizeLightingQuality": true,
+        "Brightness": 2,
+        "GeographicLatitude": 18,
+        "EnvironmentDiffuseScale": 0.45,
+        "EnvironmentSpecularScale": 1,
+        "GlobalShadows": true,
+        "ShadowSoftness": 0.35,
+        "ExposureCompensation": 0.05,
+        "FogStart": 120,
+        "FogEnd": 1600,
+        "Ambient": [
+          0.16470588235294117,
+          0.14901960784313725,
+          0.1450980392156863
+        ],
+        "OutdoorAmbient": [
+          0.3137254901960784,
+          0.29411764705882354,
+          0.27450980392156865
+        ],
+        "FogColor": [
+          0.423529,
+          0.509804,
+          0.572549
+        ],
+        "ColorShift_Top": [
+          0.682353,
+          0.74902,
+          0.823529
+        ],
+        "ColorShift_Bottom": [
+          0.031373,
+          0.039216,
+          0.054902
+        ],
+        "TimeOfDay": "17:06:00",
+        "Technology": "Future",
+        "ClockTime": 17.666666666666668
+      },
+      "CB_Atmosphere": {
+        "$className": "Atmosphere",
+        "$properties": {
+          "Density": 0.46,
+          "Offset": 0.12,
+          "Haze": 4,
+          "Glare": 0,
+          "Color": [
+            0.615686,
+            0.694118,
+            0.74902
+          ],
+          "Decay": [
+            0.25098,
+            0.294118,
+            0.352941
+          ]
+        }
+      },
+      "CB_SunRays": {
+        "$className": "SunRaysEffect",
+        "$properties": {
+          "Enabled": true,
+          "Intensity": 0.025,
+          "Spread": 0.8
+        }
+      },
+      "CB_ColorCorrection": {
+        "$className": "ColorCorrectionEffect",
+        "$properties": {
+          "Brightness": 0.015,
+          "Contrast": 0.13,
+          "Enabled": true,
+          "Saturation": -0.42,
+          "TintColor": [
+            0.870588,
+            0.913725,
+            0.94902
+          ]
+        }
+      },
+      "CB_Bloom": {
+        "$className": "BloomEffect",
+        "$properties": {
+          "Enabled": true,
+          "Intensity": 0.16,
+          "Size": 20,
+          "Threshold": 2.4
+        }
+      },
+      "CB_DepthOfField": {
+        "$className": "DepthOfFieldEffect",
+        "$properties": {
+          "Enabled": false,
+          "FarIntensity": 0,
+          "FocusDistance": 20,
+          "InFocusRadius": 50,
+          "NearIntensity": 0
+        }
+      }
+    },
+    "Players": {
+      "$className": "Players",
+      "$properties": {
+        "CharacterAutoLoads": false
+      }
+    },
+    "ReplicatedStorage": {
+      "$className": "ReplicatedStorage",
+      "AsurasPath": {
+        "$className": "Folder",
+        "Config": {
+          "$path": "src/shared/Config.luau"
+        },
+        "ProfileSchema": {
+          "$path": "src/shared/ProfileSchema.luau"
+        },
+        "ShopCatalog": {
+          "$path": "src/shared/ShopCatalog.luau"
+        },
+        "Shared": {
+          "$className": "Folder",
+          "ConfigValidator": {
+            "$path": "src/shared/ConfigValidator.luau"
+          },
+          "CombatSettings": {
+            "$path": "src/shared/CombatSettings.luau"
+          },
+          "InputMap": {
+            "$path": "src/shared/InputMap.luau"
+          },
+          "EffectsPreference": {
+            "$path": "src/shared/EffectsPreference.luau"
+          },
+          "ArenaLightPlan": {
+            "$path": "src/shared/ArenaLightPlan.luau"
+          },
+          "WorldDefinitions": {
+            "$path": "src/shared/WorldDefinitions.luau"
+          },
+          "AnimationCatalog": {
+            "$path": "src/shared/AnimationCatalog.luau"
+          },
+          "IntentProtocol": {
+            "$path": "src/infrastructure/IntentProtocol.luau"
+          },
+          "Objectives": {
+            "$path": "src/shared/Objectives.luau"
+          },
+          "ArsenalCatalog": {
+            "$path": "src/shared/ArsenalCatalog.luau"
+          },
+          "ArsenalProtocol": {
+            "$path": "src/shared/ArsenalProtocol.luau"
+          },
+          "BossTypes": {
+            "$path": "src/shared/BossTypes.luau"
+          },
+          "BossEncounterRules": {
+            "$path": "src/shared/BossEncounterRules.luau"
+          },
+          "BossAttackCatalog": {
+            "$path": "src/shared/BossAttackCatalog.luau"
+          },
+          "BossRoster": {
+            "$path": "src/shared/BossRoster.luau"
+          },
+          "BossArmaments": {
+            "$path": "src/shared/BossArmaments.luau"
+          },
+          "ProgressionRules": {
+            "$path": "src/shared/ProgressionRules.luau"
+          },
+          "RPGInventory": {
+            "$path": "src/shared/RPGInventory.luau"
+          },
+          "RPGProfile": {
+            "$path": "src/shared/RPGProfile.luau"
+          },
+          "ArenaRules": {
+            "$path": "src/shared/ArenaRules.luau"
+          },
+          "NarrativeCatalog": {
+            "$path": "src/shared/NarrativeCatalog.luau"
+          },
+          "DialogueRules": {
+            "$path": "src/shared/DialogueRules.luau"
+          },
+          "LevelPreview": {
+            "$path": "src/shared/LevelPreview.luau"
+          },
+          "ArsenalFacts": {
+            "$path": "src/shared/ArsenalFacts.luau"
+          },
+          "ContactCues": {
+            "$path": "src/shared/ContactCues.luau"
+          },
+          "TutorialRules": {
+            "$path": "src/shared/TutorialRules.luau"
+          },
+          "BossHandoff": {
+            "$path": "src/shared/BossHandoff.luau"
+          },
+          "CostumeSchema": {
+            "$path": "src/shared/CostumeSchema.luau"
+          },
+          "BossBodies": {
+            "$path": "src/shared/BossBodies.luau"
+          },
+          "LooksDuelists": {
+            "$path": "src/shared/LooksDuelists.luau"
+          },
+          "LooksBeasts": {
+            "$path": "src/shared/LooksBeasts.luau"
+          },
+          "LooksSovereigns": {
+            "$path": "src/shared/LooksSovereigns.luau"
+          },
+          "LooksCast": {
+            "$path": "src/shared/LooksCast.luau"
+          },
+          "MonasteryZones": {
+            "$path": "src/shared/MonasteryZones.luau"
+          },
+          "RouteGuide": {
+            "$path": "src/shared/RouteGuide.luau"
+          },
+          "RegionLayout": {
+            "$path": "src/shared/RegionLayout.luau"
+          },
+          "BambooPassLayout": {
+            "$path": "src/shared/BambooPassLayout.luau"
+          },
+          "AshColosseumLayout": {
+            "$path": "src/shared/AshColosseumLayout.luau"
+          },
+          "SunkenCryptLayout": {
+            "$path": "src/shared/SunkenCryptLayout.luau"
+          },
+          "CelestialPagodaLayout": {
+            "$path": "src/shared/CelestialPagodaLayout.luau"
+          },
+          "SkyCitadelLayout": {
+            "$path": "src/shared/SkyCitadelLayout.luau"
+          },
+          "SanctuaryRoutes": {
+            "$path": "src/shared/SanctuaryRoutes.luau"
+          },
+          "CampaignZones": {
+            "$path": "src/shared/CampaignZones.luau"
+          },
+          "EndingRules": {
+            "$path": "src/shared/EndingRules.luau"
+          },
+          "EndingCredits": {
+            "$path": "src/shared/EndingCredits.luau"
+          },
+          "PresentationAssets": {
+            "$path": "src/shared/PresentationAssets.luau"
+          },
+          "EnvironmentProfiles": {
+            "$path": "src/shared/EnvironmentProfiles.luau"
+          }
+        },
+        "Simulation": {
+          "$className": "Folder",
+          "Tempo": {
+            "$path": "src/simulation/Tempo.luau"
+          },
+          "MoveSchema": {
+            "$path": "src/simulation/MoveSchema.luau"
+          },
+          "WeaponSchema": {
+            "$path": "src/simulation/WeaponSchema.luau"
+          },
+          "InputBuffer": {
+            "$path": "src/simulation/InputBuffer.luau"
+          },
+          "CombatRules": {
+            "$path": "src/simulation/CombatRules.luau"
+          },
+          "MatchmakingRules": {
+            "$path": "src/simulation/MatchmakingRules.luau"
+          },
+          "WeaponExpansion": {
+            "$path": "src/simulation/WeaponExpansion.luau"
+          },
+          "SpellSchema": {
+            "$path": "src/simulation/SpellSchema.luau"
+          },
+          "SpellRules": {
+            "$path": "src/simulation/SpellRules.luau"
+          },
+          "ArsenalInventory": {
+            "$path": "src/simulation/ArsenalInventory.luau"
+          }
+        },
+        "Net": {
+          "$className": "Folder",
+          "ActionIntent": {
+            "$className": "RemoteEvent"
+          },
+          "StateSnapshots": {
+            "$className": "RemoteEvent"
+          },
+          "ShopIntent": {
+            "$className": "RemoteEvent"
+          },
+          "ColosseumIntent": {
+            "$className": "RemoteEvent"
+          },
+          "ArsenalIntent": {
+            "$className": "RemoteEvent"
+          },
+          "DialogueIntent": {
+            "$className": "RemoteEvent"
+          },
+          "TutorialIntent": {
+            "$className": "RemoteEvent"
+          },
+          "WagerIntent": {
+            "$className": "RemoteEvent"
+          }
+        }
+      }
+    },
+    "ReplicatedFirst": {
+      "$className": "ReplicatedFirst",
+      "AsurasPathLoading": {
+        "$path": "src/loading/Loading.client.luau"
+      }
+    },
+    "ServerScriptService": {
+      "$className": "ServerScriptService",
+      "AsurasPath": {
+        "$className": "Folder",
+        "Bootstrap": {
+          "$path": "src/server/Bootstrap.server.luau"
+        },
+        "Services": {
+          "$className": "Folder",
+          "LagCompensation": {
+            "$path": "src/server/LagCompensation.luau"
+          },
+          "ProfileStore": {
+            "$path": "src/server/ProfileStore.luau"
+          },
+          "PersistenceService": {
+            "$path": "src/server/PersistenceService.luau"
+          },
+          "MatchJournal": {
+            "$path": "src/server/MatchJournal.luau"
+          },
+          "EnvironmentService": {
+            "$path": "src/server/Services/EnvironmentService.luau"
+          },
+          "CharacterService": {
+            "$path": "src/server/CharacterService.luau"
+          },
+          "RecoveryRules": {
+            "$path": "src/server/RecoveryRules.luau"
+          },
+          "FighterAppearance": {
+            "$path": "src/server/FighterAppearance.luau"
+          },
+          "EnemyAppearance": {
+            "$path": "src/server/EnemyAppearance.luau"
+          },
+          "AIService": {
+            "$path": "src/server/Services/AIService.luau"
+          },
+          "SanctuaryService": {
+            "$path": "src/server/Services/SanctuaryService.luau"
+          },
+          "MonasteryService": {
+            "$path": "src/server/Services/MonasteryService.luau"
+          },
+          "RegionDecor": {
+            "$path": "src/server/Services/RegionDecor.luau"
+          },
+          "CampaignWorld": {
+            "$path": "src/server/Services/CampaignWorld.luau"
+          },
+          "CampaignBounds": {
+            "$path": "src/server/Services/CampaignBounds.luau"
+          },
+          "BambooDressing": {
+            "$path": "src/server/Services/BambooDressing.luau"
+          },
+          "ColosseumDressing": {
+            "$path": "src/server/Services/ColosseumDressing.luau"
+          },
+          "CryptDressing": {
+            "$path": "src/server/Services/CryptDressing.luau"
+          },
+          "PagodaDressing": {
+            "$path": "src/server/Services/PagodaDressing.luau"
+          },
+          "CitadelDressing": {
+            "$path": "src/server/Services/CitadelDressing.luau"
+          },
+          "SanctuaryApproach": {
+            "$path": "src/server/Services/SanctuaryApproach.luau"
+          },
+          "MonasteryKit": {
+            "$path": "src/server/Services/MonasteryKit.luau"
+          },
+          "MonasteryFx": {
+            "$path": "src/server/Services/MonasteryFx.luau"
+          },
+          "MonasteryGrounds": {
+            "$path": "src/server/Services/MonasteryGrounds.luau"
+          },
+          "MonasteryTerrain": {
+            "$path": "src/server/Services/MonasteryTerrain.luau"
+          },
+          "MonasteryRuins": {
+            "$path": "src/server/Services/MonasteryRuins.luau"
+          },
+          "MonasteryHalls": {
+            "$path": "src/server/Services/MonasteryHalls.luau"
+          },
+          "MonasteryLandmarks": {
+            "$path": "src/server/Services/MonasteryLandmarks.luau"
+          },
+          "MonasteryAtmosphere": {
+            "$path": "src/server/Services/MonasteryAtmosphere.luau"
+          },
+          "MonasteryDressing": {
+            "$path": "src/server/Services/MonasteryDressing.luau"
+          },
+          "MonasterySurvey": {
+            "$path": "src/server/Services/MonasterySurvey.luau"
+          },
+          "MonasteryBounds": {
+            "$path": "src/server/Services/MonasteryBounds.luau"
+          },
+          "MonasteryPockets": {
+            "$path": "src/server/Services/MonasteryPockets.luau"
+          },
+          "MonasterySecrets": {
+            "$path": "src/server/Services/MonasterySecrets.luau"
+          },
+          "TutorialService": {
+            "$path": "src/server/Services/TutorialService.luau"
+          },
+          "CostumeKit": {
+            "$path": "src/server/Services/CostumeKit.luau"
+          },
+          "EncounterHandoff": {
+            "$path": "src/server/Services/EncounterHandoff.luau"
+          },
+          "CastFigures": {
+            "$path": "src/server/Services/CastFigures.luau"
+          },
+          "WorldService": {
+            "$path": "src/server/Services/WorldService.luau"
+          },
+          "ColosseumService": {
+            "$path": "src/server/Services/ColosseumService.luau"
+          },
+          "ShopService": {
+            "$path": "src/server/ShopService.luau"
+          },
+          "SanctuaryDressing": {
+            "$path": "src/server/Services/SanctuaryDressing.luau"
+          },
+          "SanctuaryLeaves": {
+            "$path": "src/server/Services/SanctuaryLeaves.luau"
+          },
+          "SanctuaryTitan": {
+            "$path": "src/server/Services/SanctuaryTitan.luau"
+          },
+          "SanctuaryColossus": {
+            "$path": "src/server/Services/SanctuaryColossus.luau"
+          },
+          "SanctuaryBonfire": {
+            "$path": "src/server/Services/SanctuaryBonfire.luau"
+          },
+          "LootWorld": {
+            "$path": "src/server/Services/LootWorld.luau"
+          },
+          "LootService": {
+            "$path": "src/server/Services/LootService.luau"
+          },
+          "MagicService": {
+            "$path": "src/server/Services/MagicService.luau"
+          },
+          "SpellGeometry": {
+            "$path": "src/server/Services/SpellGeometry.luau"
+          },
+          "SpellEffects": {
+            "$path": "src/server/Services/SpellEffects.luau"
+          },
+          "WeaponEffects": {
+            "$path": "src/server/Services/WeaponEffects.luau"
+          },
+          "WeaponModels": {
+            "$path": "src/server/Services/WeaponModels.luau"
+          },
+          "BossMotion": {
+            "$path": "src/server/Services/BossMotion.luau"
+          },
+          "BossHazards": {
+            "$path": "src/server/Services/BossHazards.luau"
+          },
+          "BossAttackService": {
+            "$path": "src/server/Services/BossAttackService.luau"
+          },
+          "BossTactics": {
+            "$path": "src/server/Services/BossTactics.luau"
+          },
+          "BossDuo": {
+            "$path": "src/server/Services/BossDuo.luau"
+          },
+          "BossAppearance": {
+            "$path": "src/server/Services/BossAppearance.luau"
+          },
+          "BossArenas": {
+            "$path": "src/server/Services/BossArenas.luau"
+          },
+          "ProfileBridge": {
+            "$path": "src/server/ProfileBridge.luau"
+          },
+          "ForgeService": {
+            "$path": "src/server/ForgeService.luau"
+          },
+          "NarrativeWorld": {
+            "$path": "src/server/Services/NarrativeWorld.luau"
+          },
+          "DialogueActions": {
+            "$path": "src/server/Services/DialogueActions.luau"
+          },
+          "DialogueService": {
+            "$path": "src/server/Services/DialogueService.luau"
+          },
+          "WagerLedger": {
+            "$path": "src/server/Services/WagerLedger.luau"
+          },
+          "WagerWorld": {
+            "$path": "src/server/Services/WagerWorld.luau"
+          },
+          "WagerService": {
+            "$path": "src/server/Services/WagerService.luau"
+          },
+          "PbrAssets": {
+            "$path": "src/server/Services/PbrAssets.luau"
+          },
+          "PresentationDressing": {
+            "$path": "src/server/Services/PresentationDressing.luau"
+          },
+          "PresentationAudit": {
+            "$path": "src/server/Services/PresentationAudit.luau"
+          },
+          "BossSkin": {
+            "$path": "src/server/Services/BossSkin.luau"
+          },
+          "PresentationService": {
+            "$path": "src/server/Services/PresentationService.luau"
+          },
+          "ArenaLighting": {
+            "$path": "src/server/Services/ArenaLighting.luau"
+          },
+          "SanctuaryKit": {
+            "$path": "src/server/Services/SanctuaryKit.luau"
+          },
+          "SanctuaryFrame": {
+            "$path": "src/server/Services/SanctuaryFrame.luau"
+          },
+          "SanctuaryRails": {
+            "$path": "src/server/Services/SanctuaryRails.luau"
+          },
+          "SanctuaryProps": {
+            "$path": "src/server/Services/SanctuaryProps.luau"
+          },
+          "SanctuaryCourtyard": {
+            "$path": "src/server/Services/SanctuaryCourtyard.luau"
+          },
+          "SanctuaryCloisters": {
+            "$path": "src/server/Services/SanctuaryCloisters.luau"
+          },
+          "SanctuaryForge": {
+            "$path": "src/server/Services/SanctuaryForge.luau"
+          },
+          "SanctuaryDuelCourt": {
+            "$path": "src/server/Services/SanctuaryDuelCourt.luau"
+          },
+          "SanctuaryAscent": {
+            "$path": "src/server/Services/SanctuaryAscent.luau"
+          },
+          "SanctuaryTerrace": {
+            "$path": "src/server/Services/SanctuaryTerrace.luau"
+          },
+          "SanctuaryHorizon": {
+            "$path": "src/server/Services/SanctuaryHorizon.luau"
+          }
+        }
+      }
+    },
+    "ServerStorage": {
+      "$className": "ServerStorage",
+      "AsuraAssets": {
+        "$path": "assets/models/AsuraAssets_Phase5.rbxmx"
+      },
+      "AsuraLobbyKit": {
+        "$path": "assets/models/AsuraLobbyKit.rbxmx"
+      }
+    },
+    "StarterPlayer": {
+      "$className": "StarterPlayer",
+      "StarterPlayerScripts": {
+        "$className": "StarterPlayerScripts",
+        "AsurasPathClient": {
+          "$path": "src/client/Bootstrap.client.luau"
+        },
+        "AsurasPath": {
+          "$className": "Folder",
+          "Controllers": {
+            "$className": "Folder",
+            "WorldStateController": {
+              "$path": "src/client/Controllers/WorldStateController.luau"
+            },
+            "CameraController": {
+              "$path": "src/client/Controllers/CameraController.luau"
+            },
+            "InputController": {
+              "$path": "src/client/Controllers/InputController.luau"
+            },
+            "MovementController": {
+              "$path": "src/client/Controllers/MovementController.luau"
+            },
+            "MovementMath": {
+              "$path": "src/client/Controllers/MovementMath.luau"
+            },
+            "MovementEffects": {
+              "$path": "src/client/Controllers/MovementEffects.luau"
+            },
+            "GameFeelController": {
+              "$path": "src/client/Controllers/GameFeelController.luau"
+            },
+            "InterfaceController": {
+              "$path": "src/client/Controllers/InterfaceController.luau"
+            },
+            "ColosseumController": {
+              "$path": "src/client/Controllers/ColosseumController.luau"
+            },
+            "HudKit": {
+              "$path": "src/client/Controllers/HudKit.luau"
+            },
+            "ObjectiveController": {
+              "$path": "src/client/Controllers/ObjectiveController.luau"
+            },
+            "ControlsCard": {
+              "$path": "src/client/Controllers/ControlsCard.luau"
+            },
+            "WaypointMarker": {
+              "$path": "src/client/Controllers/WaypointMarker.luau"
+            },
+            "PrologueController": {
+              "$path": "src/client/Controllers/PrologueController.luau"
+            },
+            "EndingController": {
+              "$path": "src/client/Controllers/EndingController.luau"
+            },
+            "DeviceLayout": {
+              "$path": "src/client/Controllers/DeviceLayout.luau"
+            },
+            "ComfortSettings": {
+              "$path": "src/client/Controllers/ComfortSettings.luau"
+            },
+            "SpellController": {
+              "$path": "src/client/Controllers/SpellController.luau"
+            },
+            "SpellHud": {
+              "$path": "src/client/Controllers/SpellHud.luau"
+            },
+            "SpellVfx": {
+              "$path": "src/client/Controllers/SpellVfx.luau"
+            },
+            "ArsenalPanel": {
+              "$path": "src/client/Controllers/ArsenalPanel.luau"
+            },
+            "ArsenalTabs": {
+              "$path": "src/client/Controllers/ArsenalTabs.luau"
+            },
+            "UiKit": {
+              "$path": "src/client/Controllers/UiKit.luau"
+            },
+            "UiWindow": {
+              "$path": "src/client/Controllers/UiWindow.luau"
+            },
+            "PauseMenu": {
+              "$path": "src/client/Controllers/PauseMenu.luau"
+            },
+            "SakuraKit": {
+              "$path": "src/client/Controllers/SakuraKit.luau"
+            },
+            "SakuraCompass": {
+              "$path": "src/client/Controllers/SakuraCompass.luau"
+            },
+            "SakuraMinimap": {
+              "$path": "src/client/Controllers/SakuraMinimap.luau"
+            },
+            "SakuraHud": {
+              "$path": "src/client/Controllers/SakuraHud.luau"
+            },
+            "HudVisibility": {
+              "$path": "src/client/Controllers/HudVisibility.luau"
+            },
+            "HudLayout": {
+              "$path": "src/client/Controllers/HudLayout.luau"
+            },
+            "PlateLayout": {
+              "$path": "src/client/Controllers/PlateLayout.luau"
+            },
+            "DuoBars": {
+              "$path": "src/client/Controllers/DuoBars.luau"
+            },
+            "VitalsTags": {
+              "$path": "src/client/Controllers/VitalsTags.luau"
+            },
+            "CoreGuiPolicy": {
+              "$path": "src/client/Controllers/CoreGuiPolicy.luau"
+            },
+            "PortraitCamera": {
+              "$path": "src/client/Controllers/PortraitCamera.luau"
+            },
+            "AltarAscension": {
+              "$path": "src/client/Controllers/AltarAscension.luau"
+            },
+            "CodexView": {
+              "$path": "src/client/Controllers/CodexView.luau"
+            },
+            "EnemyDissolve": {
+              "$path": "src/client/Controllers/EnemyDissolve.luau"
+            },
+            "TutorialController": {
+              "$path": "src/client/Controllers/TutorialController.luau"
+            },
+            "EncounterHandoffController": {
+              "$path": "src/client/Controllers/EncounterHandoffController.luau"
+            },
+            "CreatureMotion": {
+              "$path": "src/client/Controllers/CreatureMotion.luau"
+            },
+            "IconShapes": {
+              "$path": "src/client/Controllers/IconShapes.luau"
+            },
+            "MoveIcons": {
+              "$path": "src/client/Controllers/MoveIcons.luau"
+            },
+            "ActionBar": {
+              "$path": "src/client/Controllers/ActionBar.luau"
+            },
+            "EnemyPlate": {
+              "$path": "src/client/Controllers/EnemyPlate.luau"
+            },
+            "EnemyBars": {
+              "$path": "src/client/Controllers/EnemyBars.luau"
+            },
+            "CombatCallouts": {
+              "$path": "src/client/Controllers/CombatCallouts.luau"
+            },
+            "TargetPlate": {
+              "$path": "src/client/Controllers/TargetPlate.luau"
+            },
+            "CombatHud": {
+              "$path": "src/client/Controllers/CombatHud.luau"
+            },
+            "BossHud": {
+              "$path": "src/client/Controllers/BossHud.luau"
+            },
+            "BossMusic": {
+              "$path": "src/client/Controllers/BossMusic.luau"
+            },
+            "BossCinematics": {
+              "$path": "src/client/Controllers/BossCinematics.luau"
+            },
+            "BossEffects": {
+              "$path": "src/client/Controllers/BossEffects.luau"
+            },
+            "BossAnimations": {
+              "$path": "src/client/Controllers/BossAnimations.luau"
+            },
+            "DialogueView": {
+              "$path": "src/client/Controllers/DialogueView.luau"
+            },
+            "DialogueController": {
+              "$path": "src/client/Controllers/DialogueController.luau"
+            },
+            "WagerController": {
+              "$path": "src/client/Controllers/WagerController.luau"
+            },
+            "MasteryEffects": {
+              "$path": "src/client/Controllers/MasteryEffects.luau"
+            },
+            "EnvironmentController": {
+              "$path": "src/client/Controllers/EnvironmentController.luau"
+            },
+            "SpatialAudio": {
+              "$path": "src/client/Controllers/SpatialAudio.luau"
+            },
+            "SoundscapeController": {
+              "$path": "src/client/Controllers/SoundscapeController.luau"
+            },
+            "CombatFeedback": {
+              "$path": "src/client/Controllers/CombatFeedback.luau"
+            },
+            "CombatVfx": {
+              "$path": "src/client/Controllers/CombatVfx.luau"
+            },
+            "CombatSurfaces": {
+              "$path": "src/client/Controllers/CombatSurfaces.luau"
+            },
+            "WeaponTrails": {
+              "$path": "src/client/Controllers/WeaponTrails.luau"
+            },
+            "QiVfx": {
+              "$path": "src/client/Controllers/QiVfx.luau"
+            },
+            "ArenaAsh": {
+              "$path": "src/client/Controllers/ArenaAsh.luau"
+            },
+            "SanguineRuntime": {
+              "$path": "src/client/Controllers/SanguineRuntime.luau"
+            },
+            "SanguineGeometry": {
+              "$path": "src/client/Controllers/SanguineGeometry.luau"
+            },
+            "SanguineCombat": {
+              "$path": "src/client/Controllers/SanguineCombat.luau"
+            },
+            "SanguineGhost": {
+              "$path": "src/client/Controllers/SanguineGhost.luau"
+            },
+            "SanguineMagic": {
+              "$path": "src/client/Controllers/SanguineMagic.luau"
+            },
+            "SanguineDispatch": {
+              "$path": "src/client/Controllers/SanguineDispatch.luau"
+            },
+            "SanguineController": {
+              "$path": "src/client/Controllers/SanguineController.luau"
+            }
+          }
+        }
+      }
+    },
+    "MaterialService": {
+      "$className": "MaterialService",
+      "AsuraPaving": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "Slate",
+          "StudsPerTile": 16,
+          "ColorMapContent": "rbxassetid://97098803114986",
+          "NormalMapContent": "rbxassetid://135418954147476",
+          "RoughnessMapContent": "rbxassetid://86840331999508",
+          "MetalnessMapContent": "rbxassetid://94935615941315"
+        }
+      },
+      "AsuraStone": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "Slate",
+          "StudsPerTile": 8,
+          "ColorMapContent": "rbxassetid://136097211790572",
+          "NormalMapContent": "rbxassetid://109459161356712",
+          "RoughnessMapContent": "rbxassetid://119714822642733",
+          "MetalnessMapContent": "rbxassetid://124364850877053"
+        }
+      },
+      "AsuraRock": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "Rock",
+          "StudsPerTile": 32,
+          "ColorMapContent": "rbxassetid://110041854624516",
+          "NormalMapContent": "rbxassetid://70592265451033",
+          "RoughnessMapContent": "rbxassetid://135695099560736",
+          "MetalnessMapContent": "rbxassetid://71226144468886"
+        }
+      },
+      "AsuraLacquer": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "Wood",
+          "StudsPerTile": 8,
+          "ColorMapContent": "rbxassetid://82143966653046",
+          "NormalMapContent": "rbxassetid://135808171380272",
+          "RoughnessMapContent": "rbxassetid://101209818894447",
+          "MetalnessMapContent": "rbxassetid://122620400490301"
+        }
+      },
+      "AsuraTimber": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "Wood",
+          "StudsPerTile": 8,
+          "ColorMapContent": "rbxassetid://137089161025118",
+          "NormalMapContent": "rbxassetid://77502879945862",
+          "RoughnessMapContent": "rbxassetid://116196707878232",
+          "MetalnessMapContent": "rbxassetid://75777050451984"
+        }
+      },
+      "AsuraBronze": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "Metal",
+          "StudsPerTile": 4,
+          "ColorMapContent": "rbxassetid://102773795312372",
+          "NormalMapContent": "rbxassetid://71590561736430",
+          "RoughnessMapContent": "rbxassetid://112284405141693",
+          "MetalnessMapContent": "rbxassetid://77828170829088"
+        }
+      },
+      "AsuraRoofTile": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "Slate",
+          "StudsPerTile": 17.6,
+          "ColorMapContent": "rbxassetid://117971224870335",
+          "NormalMapContent": "rbxassetid://94752161531324",
+          "RoughnessMapContent": "rbxassetid://73989184937039",
+          "MetalnessMapContent": "rbxassetid://99148132922819"
+        }
+      }
+    }
+  }
+}

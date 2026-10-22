@@ -13,7 +13,10 @@ When assisting:
    - Always use `task.wait()`, `task.spawn()`, `task.delay()`. Never use deprecated `wait()`, `spawn()`, `delay()`.
    - Always use modern constraints (`LinearVelocity`, `VectorForce`, `AlignOrientation`) instead of deprecated BodyMovers.
    - Always use `workspace:Raycast()` with `RaycastParams` instead of `FindPartOnRay`.
-4. Architecture rules:
+4. Architecture & Scope rules:
+   - Work strictly within this repository (`src/` for Luau, `assets/` for models, `places/server.rbxl` for the Studio place).
+   - Git branch: `ux/onboarding-overhaul`. Always push changes to this branch.
+   - Never read binary files (`.rbxl`, `.rbxlx`, `.glb`, `.obj`); refer to `PROJECT_STATE.md` and `default.project.json`.
    - Maintain 1.4× Tempo baseline (`src/simulation/Tempo.luau`).
    - Respect the 12-weapon registry (`WeaponExpansion.luau`, `WeaponSchema.luau`).
    - Respect 60 Hz circular ring buffer netcode (`LagCompensation.luau`).

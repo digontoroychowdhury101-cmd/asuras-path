@@ -23,6 +23,16 @@ function Tactics.enrage(id: number, inherited: { Types.Attack })
 	end
 	schedule.Extra = inherited; schedule.Next = Characters.Now() + 1
 end
+-- Encounter handoff: nothing is scheduled to start before control returns at `untilTime`.
+function Tactics.hold(id: number, untilTime: number)
+	local schedule = schedules[id]
+	if not schedule then
+		schedule = { Next = untilTime, Cursor = 0, FarSince = untilTime, NextClose = untilTime, Extra = {}, Kneeling = false }
+		schedules[id] = schedule
+	end
+	schedule.Next, schedule.NextClose = math.max(schedule.Next, untilTime), math.max(schedule.NextClose, untilTime)
+	schedule.FarSince = math.max(schedule.FarSince, untilTime)
+end
 function Tactics.step(id: number, boss: World.BossDef, phase: number, targetId: number, allowed: { [number]: boolean }?, now: number): boolean
 	local e, target = Characters.GetEntity(id), Characters.GetEntity(targetId)
 	if not e then return false end

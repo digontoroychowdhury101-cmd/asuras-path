@@ -1,0 +1,1 @@
+[["__lua","Server","local out = {} for _, p in game:GetService(\"Players\"):GetPlayers() do table.insert(out, p.Name .. \"/\" .. p.UserId .. \" char=\" .. tostring(p.Character)) end return #out .. \": \" .. table.concat(out, \", \")"], ["get_console_output", {}]]

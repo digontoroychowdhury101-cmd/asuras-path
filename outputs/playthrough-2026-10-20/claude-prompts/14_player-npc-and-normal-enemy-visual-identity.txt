@@ -1,0 +1,20 @@
+Continue Asura's Path repairs — batch 14/26: Player, NPC and normal-enemy visual identity.
+
+Apply the shared operating brief (outputs/playthrough-2026-10-20/claude-prompts/00_OPERATING_BRIEF.txt; read once per chat) and current PROGRESS.md. Read report findings #24 only, plus relevant evidence. Implement this batch now.
+
+Bring the common humanoid cast up to a coherent wuxia presentation while retaining the Sakura UI and existing shrine centerpiece. Improve the player outfit/head/hair/body presentation, Lin, Gao, the Hermit and ordinary enemy types through reusable rigged costume/accessory/material components.
+Give each NPC a recognizable silhouette and readable face/portrait subject. Give normal enemies visually meaningful roles and weapon handling. Ensure authored assets actually attach to live spawned characters instead of merely existing in storage.
+Keep visual parts non-colliding as appropriate, preserve animation joints, server hurtboxes and gameplay readability, and avoid breaking user-avatar compatibility if currently supported. Reuse approved assets before inventing a new character-generation framework.
+Use local authoring/import tooling available in the project. Missing external art needs an exact production brief and working integration contract, with the associated finding still open until real assets appear in Studio.
+
+Start near these files; follow only necessary dependencies:
+- src/server/CharacterService.luau
+- src/server/Services/NarrativeWorld.luau
+- src/server/Services/PresentationService.luau
+- src/server/Services/PbrAssets.luau
+- src/shared/PresentationAssets.luau
+
+Acceptance and focused verification:
+Inspect player spawn/respawn, each NPC portrait, normal-enemy roles and weapon animations under Sanctuary and Monastery lighting. Verify no extra collision, rig breakage or excessive per-character asset cost, and that appropriate fallback behavior is visible and diagnosed.
+
+Update the repair ledger and PROJECT_STATE.md. State implementation versus verification precisely, then stop at this batch boundary.

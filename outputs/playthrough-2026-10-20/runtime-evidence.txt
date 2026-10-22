@@ -1,0 +1,27 @@
+Asura's Path — selected runtime evidence, 20 October 2026 Australia/Sydney
+Local Studio run; log timestamps below are UTC (19 October UTC is 20 October Sydney).
+Only selected game errors and read-only playtest observations are retained.
+No player identifiers or complete host log are included.
+
+Repeated audio cleanup exceptions in the fresh-run interval:
+78 × Error: The Parent property of AsuraAudioSource.Asura_Blunt is locked
+39 × Error: The Parent property of AsuraAudioSource.Asura_Bell is locked
+37 × Error: The Parent property of AsuraAudioSource.Asura_Flesh is locked
+19 × Error: The Parent property of AsuraAudioSource.Asura_Clash is locked
+4 × Error: The Parent property of AsuraAudioSource.Asura_Stone is locked
+2 × Error: The Parent property of AsuraAudioSource.Asura_ParryBass is locked
+
+Checkpoint / spawn observations before assisted boss access:
+2026-10-19T14:16:20.042Z,4515.042969,6f037000,6,Info [FLog::CreatorOutput] PLAYPOS 0, 603.1337890625, 920 REGION Sanctuary ALTAR Altar_DesecratedCloister ENCOUNTER nil HP 106
+2026-10-19T14:16:25.057Z,4520.057617,6f797000,6,Info [FLog::CreatorOutput] PLAYPOS 0, 603.1337890625, 920 REGION Sanctuary ALTAR Altar_DesecratedCloister ENCOUNTER nil HP 106
+
+Read-only player attributes:
+2026-10-19T14:02:04.529Z,3659.529297,6f037000,6,Info [FLog::CreatorOutput] PLAYTEST_ATTRS {"AsuraEndurance":10,"AsuraArcaneQi":10,"AsuraBloodstain":null,"AsuraReinforce":0,"AsuraElixirs":3,"AsuraActiveAltar":"Altar_MonasteryGate","AsuraLevelCost":395,"AsuraOffhand":"None","AsuraDeaths":1,"AsuraEssence":0,"AsuraMainhand":"Jian","AsuraElixirsMax":3,"AsuraAck":43,"AsuraResult":"Jian_L1","AsuraClientReady":true,"AsuraRegion":"Sanctuary","AsuraUnbanked":0,"AsuraDowned":false,"AsuraLevel":2,"AsuraAltars":"Altar_MonasteryGate,Altar_SanctuaryBonfire","AsuraDexterity":10,"AsuraMaxQi":100,"AsuraStrength":10,"AsuraVigor":11,"AsuraBosses":"","AsuraReinforceCost":250} POSITION 0, 603.1337890625, 920 CAMERA 10.0815973, 601.112, 920.377747, 0.215135485, 0.318254709, 0.923271716, 0, 0.945409238, -0.325885594, -0.976584196, 0.0701095536, 0.203391075
+
+Assisted boss-access markers:
+2026-10-19T14:22:51.794Z,4906.794434,6f797000,6,Info [FLog::CreatorOutput] PLAYTEST_ASSIST TwinSentinels
+2026-10-19T14:27:37.565Z,5192.565430,6f037000,6,Info [FLog::CreatorOutput] PLAYTEST_ASSIST Baize
+2026-10-19T14:31:54.829Z,5449.829590,6f243000,6,Info [FLog::CreatorOutput] PLAYTEST_ASSIST Shen
+2026-10-19T14:33:14.796Z,5529.796387,6f037000,6,Info [FLog::CreatorOutput] PLAYTEST_ASSIST Titan
+2026-10-19T14:34:35.881Z,5610.881348,6f037000,6,Info [FLog::CreatorOutput] PLAYTEST_ASSIST Wu
+2026-10-19T14:35:53.390Z,5688.390625,701d3000,6,Info [FLog::CreatorOutput] PLAYTEST_ASSIST Wyrm

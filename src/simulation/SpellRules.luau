@@ -5,6 +5,8 @@ local Spells: any=if hasScript then require(script.Parent.SpellSchema) else requ
 local Weapons: any=if hasScript then require(script.Parent.WeaponSchema) else require("./WeaponSchema")
 local Combat: any=if hasScript then require(script.Parent.CombatRules) else require("./CombatRules")
 local Rules={}
+Rules.WardSeconds=30 -- Jade Aegis: the next posture break inside this window is prevented
+Rules.InterruptSeconds=0.4 -- hitstun from an interrupting spell
 export type Cast={Id: string,Start: number,Release: number,End: number,Potency: number}
 function Rules.focus(f: any,offhand: string?): (number,boolean)
  local main=Weapons.get(f.Weapon)
@@ -37,11 +39,11 @@ function Rules.status(target: any,id: string,now: number)
  target.Stamina=math.max(0,target.Stamina-s.Status.Drain)
  if s.Status.Root>0 then target.RootUntil=math.max(target.RootUntil,now+s.Status.Root) end
  if s.Status.Interrupt and target.State~="KO" and target.State~="StanceBroken" and target.State~="DeathblowVictim" then
-  target.Move=nil;target.Sprinting=false;target.State="Hitstun";target.StateStart=now;target.StateEnd=now+0.4
+  target.Move=nil;target.Sprinting=false;target.State="Hitstun";target.StateStart=now;target.StateEnd=now+Rules.InterruptSeconds
  end
 end
 function Rules.ward(f: any,now: number)
- f.WardUntil=now+30
+ f.WardUntil=now+Rules.WardSeconds
 end
 function Rules.projectileParry(f: any,now: number): boolean
  return Weapons.get(f.Weapon).ProjectileParry==true and (f.State=="Blocking" or Combat.isDeflectTimed(f,now))

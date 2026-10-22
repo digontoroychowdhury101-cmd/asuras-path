@@ -1,0 +1,38 @@
+{
+  "date": "2026-10-21",
+  "canonical_build": "/Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/AsurasPath.rbxlx",
+  "canonical_sha256": "fe55e404c664fac61ef59b3dcb4f2722989bd2e46b1927cc099e2c34924aea4d",
+  "changed_existing_files": [
+    "src/client/Bootstrap.client.luau",
+    "default.project.json"
+  ],
+  "new_client_modules": [
+    "src/client/Controllers/SanguineCombat.luau",
+    "src/client/Controllers/SanguineController.luau",
+    "src/client/Controllers/SanguineDispatch.luau",
+    "src/client/Controllers/SanguineGeometry.luau",
+    "src/client/Controllers/SanguineGhost.luau",
+    "src/client/Controllers/SanguineMagic.luau",
+    "src/client/Controllers/SanguineRuntime.luau"
+  ],
+  "protected_gameplay_files_unchanged": 136,
+  "source_export": "source-export/inventory.json",
+  "saved_original_backup": "backups/AsurasPath.pre-vfx.rbxlx",
+  "full_local_verifier_passed": true,
+  "engine_fixture_checks": 194,
+  "engine_fixture_passed": true,
+  "visual_acceptance": "Pending: Studio capture showed HUD over a black scene; not usable for appearance approval. No full integrated gameplay run performed.",
+  "cloud_published": false,
+  "routing_adapter_checks": 30,
+  "routing_adapter_checks_passed": true,
+  "engine_fixture_revision_note": "194 checks passed before final multiplayer ownership refinement; final refinement passed 30 focused dispatcher checks, syntax and rebuild. Studio disconnected before repeating its engine fixture.",
+  "final_source_hashes": {
+    "src/client/Controllers/SanguineCombat.luau": "2b7673dad5b9db047164013ccd4b5778388453d55b2311c5a61a01d087cbfca6",
+    "src/client/Controllers/SanguineController.luau": "2a5b17f84cc77fbae0b17dd74d798276fde7413014ed519660e2dd07abe217e7",
+    "src/client/Controllers/SanguineDispatch.luau": "91995ffb776842698f70bf001611fb02bec9442cccfd61e33f8759fb2dfb16d6",
+    "src/client/Controllers/SanguineGeometry.luau": "b09bdd929ea2628c6beaccf468430fb3e73c9e698fb385cdfffe3c88abec6810",
+    "src/client/Controllers/SanguineGhost.luau": "e9db59ca356ac1fb95b53e993f1d9f3b8aa6e380c6a26fbdf806db2836da297a",
+    "src/client/Controllers/SanguineMagic.luau": "a4d63f35b97d758cab7e6069a7a9c3de27594ee02faa01ab75c381d5dc7119c8",
+    "src/client/Controllers/SanguineRuntime.luau": "ffdf66bd0ba7dedb3edaa81c0eaf40ff1533dbc64373a47d07eef3f01a512bf3"
+  }
+}

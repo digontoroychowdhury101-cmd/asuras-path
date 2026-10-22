@@ -18,7 +18,8 @@ function Music.set(score: Score, bossId: string, intensity: number)
 	if score.Intensity == 0 then
 		local authored = SoundService:FindFirstChild("BossMusic_" .. bossId)
 		if authored and authored:IsA("Sound") then
-			score.Track = authored:Clone(); score.Track.Parent = SoundService; score.Track.Looped = true; score.Track:Play()
+			local track = authored:Clone(); score.Track = track
+			track.Parent = SoundService; track.Looped = true; track:Play()
 		else
 			score.Track = Audio.play("BossDrone", SoundService, 0.28, true)
 		end

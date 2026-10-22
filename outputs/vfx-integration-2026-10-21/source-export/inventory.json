@@ -1,0 +1,27 @@
+{
+  "PlaceId": 99240829139422,
+  "UniverseId": 10771730783,
+  "Scripts": [
+    {
+      "Class": "LocalScript",
+      "Name": "SanguineSanctum_Revamped",
+      "Path": "StarterPlayer.StarterPlayerScripts.SanguineSanctum_Revamped",
+      "File": "SanguineSanctum_Revamped.luau",
+      "SHA256": "9cc9e54f8e5759fca013c08f120776e7d998104017b39b64d073b4cdc1fd64ff"
+    },
+    {
+      "Class": "LocalScript",
+      "Name": "SanguineVFXPreview",
+      "Path": "StarterPlayer.StarterPlayerScripts.SanguineVFXPreview",
+      "File": "SanguineVFXPreview.luau",
+      "SHA256": "b8eccfe99cc5a9cba53d8d6e78d42bfda24c6d410768137de2ff99e012d57006"
+    },
+    {
+      "Class": "ModuleScript",
+      "Name": "SanguineVFX_Overhaul",
+      "Path": "ReplicatedStorage.SanguineVFX_Overhaul",
+      "File": "SanguineVFX_Overhaul.luau",
+      "SHA256": "8fc82ea53e4d1b4e31911f296357cdbeee58a420addbc3a59aea052c9b1e2e70"
+    }
+  ]
+}

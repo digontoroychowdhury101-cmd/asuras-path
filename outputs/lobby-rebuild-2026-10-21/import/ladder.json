@@ -1,0 +1,7 @@
+[["__lua","Client","local c = game:GetService('Players').LocalPlayer.Character c:PivotTo(CFrame.new(-56, 603.1, 902)) return 'at forge walkway'"], ["__sleep", 1],
+ ["character_navigation", {"datamodel_type":"Client","x":-64,"y":601,"z":919,"speed_multiplier":1.5}], ["__sleep", 1],
+ ["character_navigation", {"datamodel_type":"Client","x":-76,"y":601,"z":920.5,"speed_multiplier":1}], ["__sleep", 1],
+ ["__lua","Client","tools/qa/LobbyWhere.luau"],
+ ["screen_capture", {"capture_id": "test_ladder_foot"}],
+ ["character_navigation", {"datamodel_type":"Client","x":-76,"y":617,"z":923,"speed_multiplier":1}], ["__sleep", 2],
+ ["__lua","Client","tools/qa/LobbyWhere.luau"]]

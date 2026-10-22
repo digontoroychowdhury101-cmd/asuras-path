@@ -1,0 +1,21 @@
+{
+  "source": "assets/build/sanctuary_sky/panorama.png; generated original with built-in imagegen; projection tools/assets/panorama_to_sanctuary_sky.py",
+  "uploader": "Studio MCP upload_image, Creator Me",
+  "faces": {
+    "px": "rbxassetid://132527418910759",
+    "nx": "rbxassetid://135495662234371",
+    "pz": "rbxassetid://91892434596631",
+    "nz": "rbxassetid://108067720936233",
+    "py": "rbxassetid://74428004859056",
+    "ny": "rbxassetid://134298860757348"
+  },
+  "branch": "rbxassetid://133941376172785",
+  "mapping": {
+    "Front": "nz",
+    "Back": "pz",
+    "Left": "px",
+    "Right": "nx",
+    "Up": "py",
+    "Down": "ny"
+  }
+}

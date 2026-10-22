@@ -1,0 +1,52 @@
+# F01 Studio session log (filtered: CorePackages/UIBlox stack lines removed; duplicates collapsed)
+## play_boot.txt
+CALL start_stop_play ok
+Game Started
+CALL get_studio_state ok
+- Current Studio Mode: Play
+- Available DataModels: Client, Server
+- Focused DataModel in the viewport: Client
+CALL execute_luau ok
+server ready Phase12Ready=true AsuraReady=true players=1 | Sheashing123 clientReady=true char=true pos=0, 603.134765625, 920
+client clientReady=true guis=Chat,BubbleChat,Freecam,AsuraTouchControls,AsuraVignette,AsuraHUD,AsuraColosseum,JadeDialogue,SpectatorWagers,AsuraPrologue pos=0, 603.1338500976562, 920
+CALL user_keyboard_input error
+datamodel_type is required
+CALL get_console_output ok
+[Asura's Path] Campaign regions raised: 5 maps, 2226 parts (40 ms).
+[Asura's Path] Server ready: 60 Hz authority, 150 ms rewind budget, 3 Colosseum rings; ranked league open (development).
+[Asura's Path] Desecrated Monastery raised: 3369 parts, 9 set pieces, 0 walkability issues (99 ms).
+[CharacterService] Respawn of 3148600636 displaced to 0, 705.8663330078125, 0; restored to 0, 603.1338500976562, 920
+[Asura's Path] Client ready: camlock, game feel, Souls HUD and Colosseum online.
+ContentId: rbxassetid://203785492 failed due to: Asset type does not match requested type
+## play_input.txt
+CALL execute_luau ok
+pos=0, 603.1338500976562, 920 walkspeed=22.399999618530273 state=Enum.HumanoidStateType.Running prologue=nil
+CALL user_keyboard_input error
+wait_time_ms is required for wait action
+pos=0, 603.1329345703125, 894.0034790039062 walkspeed=22.399999618530273 state=Enum.HumanoidStateType.Running prologue=nil
+CALL get_console_output ok
+[Asura's Path] Campaign regions raised: 5 maps, 2226 parts (40 ms).
+[Asura's Path] Server ready: 60 Hz authority, 150 ms rewind budget, 3 Colosseum rings; ranked league open (development).
+[Asura's Path] Desecrated Monastery raised: 3369 parts, 9 set pieces, 0 walkability issues (99 ms).
+[CharacterService] Respawn of 3148600636 displaced to 0, 705.8663330078125, 0; restored to 0, 603.1338500976562, 920
+[Asura's Path] Client ready: camlock, game feel, Souls HUD and Colosseum online.
+ContentId: rbxassetid://203785492 failed due to: Asset type does not match requested type
+## play_input2.txt
+CALL user_keyboard_input ok
+Success
+CALL execute_luau ok
+pos=-79.58577728271484, 3.1999998092651367, -799.2855834960938 vel=0.00
+pos=-60.63153839111328, 2.9674997329711914, -787.2452392578125 vel=0.00
+CALL get_console_output ok
+[Asura's Path] Campaign regions raised: 5 maps, 2226 parts (40 ms).
+[Asura's Path] Server ready: 60 Hz authority, 150 ms rewind budget, 3 Colosseum rings; ranked league open (development).
+[Asura's Path] Desecrated Monastery raised: 3369 parts, 9 set pieces, 0 walkability issues (99 ms).
+[CharacterService] Respawn of 3148600636 displaced to 0, 705.8663330078125, 0; restored to 0, 603.1338500976562, 920
+[Asura's Path] Client ready: camlock, game feel, Souls HUD and Colosseum online.
+ContentId: rbxassetid://203785492 failed due to: Asset type does not match requested type
+CALL start_stop_play ok
+Game Stopped
+CALL get_studio_state ok
+- Current Studio Mode: Edit
+- Available DataModels: Edit
+- Focused DataModel in the viewport: Edit

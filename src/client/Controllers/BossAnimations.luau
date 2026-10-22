@@ -3,7 +3,11 @@ local Catalog = require(game:GetService("ReplicatedStorage").AsurasPath.Shared.A
 local Animations = {}
 type Playing = { Set: string, Track: AnimationTrack? }
 local playing: { [Model]: Playing } = {}
+-- Placeholder tracks (AnimationCatalog falls back to stock tool emotes until authored boss
+-- animations are imported; AsuraBossAnimation_<key> attributes override per actor). Creature rigs
+-- hide their humanoid, so CreatureMotion poses them instead of these tracks.
 local function play(model: Model, key: string, action: boolean, speed: number?)
+	if model:GetAttribute("AsuraRig") == "Creature" then return end
 	local humanoid = model:FindFirstChildOfClass("Humanoid")
 	local animator = humanoid and humanoid:FindFirstChildOfClass("Animator")
 	if not humanoid or not animator then return end
@@ -30,6 +34,15 @@ end
 function Animations.action(model: Model, transform: boolean)
 	local set = tostring(model:GetAttribute("AsuraAnimationSet"))
 	play(model, if transform then "Shen_Phase2_Transform" elseif set == "DemonicChimera" or set == "Unbound" then "Shen_Phase2_GlaiveCombo" else "Shen_Phase1_SwordCombo", true)
+end
+-- Drops tracks of actors that have left the world (defeat, reset); called with the boss cues.
+function Animations.prune()
+	for model, entry in playing do
+		if not model.Parent then
+			if entry.Track then entry.Track:Destroy() end
+			playing[model] = nil
+		end
+	end
 end
 function Animations.clear()
 	for model, entry in playing do

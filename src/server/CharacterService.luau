@@ -16,10 +16,12 @@ local Settings = require(Shared.Shared.CombatSettings) :: any
 local Schema = require(Shared.Simulation.MoveSchema) :: any
 local Weapons = require(Shared.Simulation.WeaponSchema) :: any
 local Combat = require(Shared.Simulation.CombatRules)
+local Contact = require(Shared.Shared.ContactCues)
 local InputBuffer = require(Shared.Simulation.InputBuffer)
 local Tempo = require(Shared.Simulation.Tempo) :: any
 local Protocol = require(Shared.Shared.IntentProtocol)
 local Lag = require(script.Parent:WaitForChild("LagCompensation") :: ModuleScript)
+local Recovery = require(script.Parent:WaitForChild("RecoveryRules") :: ModuleScript)
 
 local Persistence: any = nil
 pcall(function()
@@ -55,6 +57,7 @@ export type Hooks = {
 	LevelUp: ((userId: number, attribute: string) -> (boolean, string))?,
 	Swap: ((userId: number) -> (boolean, string))?,
 	Travel: ((userId: number, altarId: string) -> (boolean, string))?,
+	Skip: ((userId: number) -> (boolean, string))?,
 }
 
 export type Entity = {
@@ -84,6 +87,7 @@ export type Entity = {
 	Shrine: CFrame?,
 	Duel: string?,
 	SpawnOverride: CFrame?,
+	Placement: Recovery.Hold?,
 	Definition: string?,
 	Boss: boolean,
 	LastMoveTo: Vector3,
@@ -142,6 +146,7 @@ local INTENT_ACTIONS: { [string]: boolean } = {
 	Interact = true,
 	LevelUp = true,
 	Travel = true,
+	Skip = true,
 }
 local BUFFERED: { [string]: boolean } = { Light = true, Heavy = true, WeaponArt = true, Roll = true, Dash = true, Deflect = true }
 local INTENT_KEYS: { [string]: string } = {
@@ -173,6 +178,7 @@ local eventListeners: { EventListener } = {}
 local stepListeners: { StepListener } = {}
 local addedListeners: { EntityListener } = {}
 local removedListeners: { EntityListener } = {}
+local spawnedListeners: { EntityListener } = {}
 local hooks: Hooks = {}
 local stepTimeIndex = 0
 local droppedSteps = 0
@@ -180,7 +186,9 @@ local running = false
 local accumulator = 0
 local tickCount = 0
 local simTime = 0
-local nextEnemyId = -1
+-- Enemy entity ids count down from far below zero: Studio's local test players get UserIds -1, -2, ...,
+-- and an enemy holding the same id made ensurePlayer skip spawning them (no multi-client tests).
+local nextEnemyId = -1000000
 local duels: { [string]: Duel } = {}
 
 local net = Shared:WaitForChild("Net")
@@ -285,6 +293,9 @@ local function attachWeapon(e: Entity)
 		e.WeaponPart:Destroy()
 		e.WeaponPart = nil
 	end
+	if e.Model:GetAttribute("AsuraWeaponVisual") == "Costume" then
+		e.Model:SetAttribute("AsuraWeapon", e.Fighter.Weapon);return -- the boss look carries its weapon
+	end
 	if WeaponModels.attach(e.Model,e.Fighter.Weapon) then
 		e.Model:SetAttribute("AsuraWeapon",e.Fighter.Weapon);return
 	end
@@ -313,14 +324,19 @@ local function attachWeapon(e: Entity)
 	weld.Part1 = part
 	weld.Parent = part
 	part.Parent = e.Model
+	WeaponModels.dress(part, e.Fighter.Weapon)
 	e.WeaponPart = part
 end
 
 local function tint(model: Model, rgb: { number })
+	if model:GetAttribute("AsuraCostume") ~= nil then
+		return -- authored looks recolour per phase themselves (CostumeKit)
+	end
 	local color = Color3.fromRGB(rgb[1] or 255, rgb[2] or 255, rgb[3] or 255)
 	local attire = model:FindFirstChild("AsuraAttire")
 	for _, descendant in model:GetDescendants() do
-		if descendant:IsA("BasePart") and descendant.Name ~= "HumanoidRootPart" and descendant.Name ~= "AsuraWeapon"
+		local fitting = descendant.Parent ~= nil and descendant.Parent.Name == "AsuraWeapon" -- WeaponModels.dress
+		if descendant:IsA("BasePart") and descendant.Name ~= "HumanoidRootPart" and descendant.Name ~= "AsuraWeapon" and not fitting
 			and not (attire and descendant:IsDescendantOf(attire)) then
 			descendant.Color = color
 		end
@@ -467,6 +483,7 @@ local function newEntity(id: number, kind: EntityKind, player: Player?, model: M
 		Shrine = nil,
 		Duel = nil,
 		SpawnOverride = nil,
+		Placement = nil,
 		Definition = nil,
 		Boss = false,
 		LastMoveTo = Vector3.new(math.huge, 0, 0),
@@ -547,6 +564,42 @@ local function spawnCFrameFor(e: Entity): CFrame
 	return e.Shrine or defaultSpawn()
 end
 
+-- Floor probe for respawn placement; ignores every fighter so nobody spawns on another's head.
+local function groundProbe(model: Model): Recovery.Probe
+	local ignore: { Instance } = { model, rootFolder("Entities") }
+	for _, player in Players:GetPlayers() do
+		if player.Character then
+			table.insert(ignore, player.Character)
+		end
+	end
+	local params = RaycastParams.new()
+	params.FilterType = Enum.RaycastFilterType.Exclude
+	params.FilterDescendantsInstances = ignore
+	params.RespectCanCollide = true
+	return function(origin: Vector3, direction: Vector3): Vector3?
+		local hit = Workspace:Raycast(origin, direction, params)
+		return if hit then hit.Position else nil
+	end
+end
+
+local function placeBody(e: Entity, target: CFrame)
+	e.Model:PivotTo(target)
+	e.Root.AssemblyLinearVelocity = Vector3.zero
+	e.LastMoveTo = Vector3.new(math.huge, 0, 0)
+	Lag.clear(e.History)
+end
+
+-- LoadCharacter may move the body after CharacterAdded placed it; hold the target briefly.
+local function settle(e: Entity, hold: Recovery.Hold, clock: number)
+	local verdict = Recovery.check(hold, e.Root.Position, clock)
+	if verdict == "Release" then
+		e.Placement = nil
+	elseif verdict == "Correct" then
+		print(string.format("[CharacterService] Respawn of %d displaced to %s; restored to %s", e.Id, tostring(e.Root.Position), tostring(hold.Target.Position)))
+		placeBody(e, hold.Target)
+	end
+end
+
 local function loadProfile(e: Entity)
 	local player = e.Player
 	if not player or not Persistence then
@@ -618,7 +671,9 @@ local function onCharacter(player: Player, model: Model)
 	InputBuffer.clear(e.Buffer)
 	bindModel(e)
 	model:SetAttribute("AsuraDuel", e.Duel)
-	model:PivotTo(spawnCFrameFor(e))
+	local target = Recovery.standing(spawnCFrameFor(e), Config.Movement.RootHeight, groundProbe(model))
+	placeBody(e, target)
+	e.Placement = Recovery.begin(target, os.clock())
 	if e.Cosmetics then
 		model:SetAttribute("Trunks", e.Cosmetics.Trunks)
 		model:SetAttribute("Gloves", e.Cosmetics.Gloves)
@@ -626,6 +681,7 @@ local function onCharacter(player: Player, model: Model)
 	if created then
 		notify(addedListeners, id, "Player")
 	end
+	notify(spawnedListeners, id, "Player")
 end
 
 local function requestCharacter(player: Player)
@@ -727,6 +783,7 @@ local function spawnEnemy(spec: EnemySpec, existing: Model?): number?
 	nextEnemyId -= 1
 	model.Name = spec.Name
 	humanoid.DisplayName = spec.Name
+	humanoid.BreakJointsOnDeath = false -- no physics breakup; EnemyDissolve authors the death
 	-- Authored enemy looks (EnemyAppearance) replace the flat body tint for known mobs.
 	local dressed = model:FindFirstChild("AsuraAttire") ~= nil or EnemyAppearance.Apply(model, spec.Definition)
 	if spec.BodyColor and not dressed then
@@ -943,6 +1000,8 @@ local function immediate(e: Entity, packet: any): (boolean, string)
 			return false, "InDuel"
 		end
 		return callHook("Travel", e.Id, packet.variant or "")
+	elseif action == "Skip" then
+		return callHook("Skip", e.Id) -- ends this player's boss cutscene lock (EncounterHandoff)
 	end
 	return false, "UnknownAction"
 end
@@ -995,7 +1054,7 @@ end
 local function resolveContacts(attacker: Entity, now: number)
 	local f = attacker.Fighter
 	local move = f.Move
-	if move and (move.Effect=="AbbotDirge" or move.Effect=="FissureSlam" or move.Effect=="Thunderfall" or move.Effect=="WindSlash") then return end
+	if move and Combat.RangedEffects[move.Effect or ""] then return end
 	local progress = Combat.activeProgress(f, now)
 	if move == nil or progress == nil then
 		return
@@ -1034,6 +1093,56 @@ local function resolveContacts(attacker: Entity, now: number)
 	end
 end
 
+-- Whiffs (batch 09): name the foe a contact-less swing was nearest to and how many studs short it
+-- fell, and place the cue at the weapon tip, so a miss reads as distance rather than a broken hit.
+local function annotateWhiffs(from: number)
+	for index = from, #frameEvents do
+		local event = frameEvents[index]
+		local e = if event.Kind == "Whiff" then entities[event.Source] else nil
+		local move = e and e.Fighter.Move
+		if e and move then
+			local reach = move.Reach + e.Fighter.ReachBonus + move.Lunge * 0.35
+			local best, gap = nil :: Entity?, math.huge
+			for _, other in entities do
+				if other ~= e and other.Fighter.State ~= "KO" and alive(other) and hostile(e, other) then
+					local g = Contact.gap(e.Root.Position, other.Root.Position, reach)
+					if g < gap then best, gap = other, g end
+				end
+			end
+			if best and gap <= Contact.NoticeRange then
+				event.Target, event.Value = best.Id, gap
+			end
+			local _, tip = weaponSegment(e.Root.CFrame, move, 1, e.Fighter.ReachBonus)
+			eventPoints[event] = tip
+		end
+	end
+end
+
+-- Enemy deaths are authored on clients (EnemyDissolve): the fallen body is pinned where it fell,
+-- keeps its joints (BreakJointsOnDeath is off) and stops colliding or answering queries, so it
+-- never blocks a walkway, a camera probe or a later swing while it collapses and burns away.
+local function settleCorpse(e: Entity)
+	-- A boss felled mid-flight or mid-pounce comes down to the floor before it dissolves.
+	local params = RaycastParams.new()
+	local ignore: { Instance } = { e.Model, rootFolder("Entities") }
+	for _, player in Players:GetPlayers() do
+		if player.Character then table.insert(ignore, player.Character) end
+	end
+	params.FilterType, params.FilterDescendantsInstances = Enum.RaycastFilterType.Exclude, ignore
+	local floor = Workspace:Raycast(e.Root.Position, Vector3.new(0, -400, 0), params)
+	local stand = e.Humanoid.HipHeight + e.Root.Size.Y * 0.5
+	if floor and e.Root.Position.Y - floor.Position.Y > stand + 1 then
+		e.Model:PivotTo(e.Model:GetPivot() - Vector3.yAxis * (e.Root.Position.Y - floor.Position.Y - stand))
+	end
+	e.Root.Anchored = true
+	for _, d in e.Model:GetDescendants() do
+		if d:IsA("BasePart") then
+			d.CanCollide, d.CanQuery, d.CanTouch = false, false, false
+		end
+	end
+	e.Model:SetAttribute("AsuraDissolve", simTime)
+end
+
 local function finishDuel(loser: Entity)
 	local duelId = loser.Duel
 	local active = if duelId then duels[duelId] else nil
@@ -1062,6 +1171,7 @@ local function handleDefeat(e: Entity, now: number)
 		if e.DespawnAt == math.huge then
 			e.DespawnAt = now + Settings.Respawn.EnemyCorpseTime
 			e.Humanoid:MoveTo(e.Root.Position)
+			settleCorpse(e)
 		elseif now >= e.DespawnAt then
 			removeEntity(e.Id, true)
 		end
@@ -1145,6 +1255,10 @@ local function step()
 	local clock = os.clock()
 	for _, e in entities do
 		if alive(e) then
+			local hold = e.Placement
+			if hold then
+				settle(e, hold, clock)
+			end
 			table.insert(live, e)
 			Lag.record(e.History, now, e.Root.CFrame, e.Root.AssemblyLinearVelocity)
 		elseif e.Kind == "Player" and not e.Respawning and not pendingSpawn[e.Id] and clock >= (retryAt[e.Id] or 0) then
@@ -1167,6 +1281,7 @@ local function step()
 		end
 	end
 
+	local stepped = #frameEvents + 1
 	for _, e in live do
 		if entities[e.Id] == e then
 			local f = e.Fighter
@@ -1177,6 +1292,8 @@ local function step()
 			drainBuffer(e)
 		end
 	end
+
+	annotateWhiffs(stepped)
 
 	for _, e in live do
 		if entities[e.Id] == e and e.Fighter.State == "Active" then
@@ -1305,6 +1422,17 @@ function Service.OnEntityRemoved(listener: EntityListener): () -> ()
 	return subscribe(removedListeners, listener)
 end
 
+-- Fires after every player character admission (first spawn and each respawn), once placed.
+function Service.OnCharacterSpawned(listener: EntityListener): () -> ()
+	return subscribe(spawnedListeners, listener)
+end
+
+-- True while a fresh body is held at its respawn point; recovery safeguards must ignore it.
+function Service.IsSettling(id: number): boolean
+	local e = entities[id]
+	return e ~= nil and e.Placement ~= nil
+end
+
 function Service.Now(): number
 	return simTime
 end
@@ -1402,6 +1530,7 @@ end
 function Service.Teleport(id: number, cframe: CFrame)
 	local e = entities[id]
 	if e and alive(e) then
+		e.Placement = nil
 		e.Model:PivotTo(cframe)
 		e.Root.AssemblyLinearVelocity = Vector3.zero
 		e.LastMoveTo = Vector3.new(math.huge, 0, 0)
@@ -1433,12 +1562,21 @@ function Service.ForceWeapon(id: number, weapon: WeaponType)
 	end
 end
 
--- Keep rewound hurtboxes aligned with large boss bodies.
-function Service.ScaleEnemy(id: number, scale: number)
+-- Keep rewound hurtboxes aligned with large boss bodies. `shape` (BossBodies) replaces the upright
+-- humanoid capsules for creatures, so the hurtbox follows the body players actually see.
+function Service.ScaleEnemy(id: number, scale: number, shape: any?)
 	local e = entities[id]
 	if not e or e.Kind ~= "Enemy" then return end
-	e.Model:ScaleTo(scale)
+	if scale ~= 1 then e.Model:ScaleTo(scale) end
 	local base = Lag.HumanoidProfile
+	if shape then
+		local list: { Lag.Capsule } = {}
+		for _, c in shape.Capsules do
+			table.insert(list, { Region = c.Region, A = Vector3.new(c.A[1], c.A[2], c.A[3]), B = Vector3.new(c.B[1], c.B[2], c.B[3]), Radius = c.Radius })
+		end
+		local box = shape.Box
+		base = { Capsules = list, BoxOffset = CFrame.new(0, box[1], 0), BoxHalfSize = Vector3.new(box[2], box[3], box[4]), Reach = shape.Reach }
+	end
 	local capsules: { Lag.Capsule } = {}
 	for _, capsule in base.Capsules do
 		table.insert(capsules, { Region = capsule.Region, A = capsule.A * scale, B = capsule.B * scale, Radius = capsule.Radius * scale })
@@ -1705,6 +1843,7 @@ function Service.StartAllocatedMatch(id: string, p1: number, p2: number, mode: s
 		Lag.clear(e.History)
 		e.RespawnAt = math.huge
 		e.Model:SetAttribute("AsuraDuel", id)
+		e.Placement = nil
 		e.Model:PivotTo(spawnCFrameFor(e))
 		e.Root.AssemblyLinearVelocity = Vector3.zero
 	end
@@ -1733,6 +1872,7 @@ function Service.EndAllocatedMatch(id: string, returns: { [number]: CFrame }?)
 				e.Fighter.StateEnd = math.huge
 				InputBuffer.clear(e.Buffer)
 				e.RespawnAt = math.huge
+				e.Placement = nil
 				e.Model:PivotTo(destination)
 				e.Root.AssemblyLinearVelocity = Vector3.zero
 				e.LastMoveTo = Vector3.new(math.huge, 0, 0)

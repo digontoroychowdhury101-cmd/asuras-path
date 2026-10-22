@@ -1,0 +1,20 @@
+Continue Asura's Path repairs — batch 20/26: Build Celestial Pagoda and its lore route.
+
+Apply the shared operating brief (outputs/playthrough-2026-10-20/claude-prompts/00_OPERATING_BRIEF.txt; read once per chat) and current PROGRESS.md. Read report findings #22, #27, #28, #32, #44 only, plus relevant evidence. Implement this batch now.
+
+Replace Celestial Pagoda's flat floor with an authored multi-level pagoda/rafters route appropriate to Wu. Connect the Ash Colosseum join, incense altar, Wu's arena and Sky Citadel exit through a readable main ascent with deliberate wuxia traversal and one bounded optional route.
+Give rafters/stairs/platforms usable widths, camera clearance, collision and landing affordances. Maintain safe altar/portrait space, readable caster sightlines and enough arena space for Wu's movement. Establish distinct landmarks and materials within the shared art direction.
+Physically place and validate both Pagoda inscriptions, including the final lore entry, so they are discoverable and readable through actual movement. Keep route/waypoint guidance aware of elevation and usable connections.
+Preserve progression IDs and avoid a new mandatory movement trick that the tutorial has not taught.
+
+Start near these files; follow only necessary dependencies:
+- src/shared/WorldDefinitions.luau
+- src/server/Services/WorldService.luau
+- src/server/Services/BossArenas.luau
+- src/shared/NarrativeCatalog.luau
+- src/shared/EnvironmentProfiles.luau
+
+Acceptance and focused verification:
+Walk the full ascent and optional route, read both tablets, rest/respawn/travel, enter/reset Wu and reach the Sky Citadel join. Test falls, narrow-platform camera, jumps and line-of-sight combat with normal mobility.
+
+Update the repair ledger and PROJECT_STATE.md. State implementation versus verification precisely, then stop at this batch boundary.

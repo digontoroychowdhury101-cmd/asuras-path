@@ -1,0 +1,23 @@
+Continue Asura's Path — follow-up 04/26: Finish rest, Lin portraits and practical leveling.
+
+Apply 00_SHARED_BRIEF.txt in /Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 05. Findings: #4, #38, #39, #40. Verify existing work, fix actual gaps, and execute this batch now.
+
+The rest/dialogue implementation exists; verify it in Studio at Sanctuary, Gate and Cloister. Rest should set/refill the checkpoint and expose Travel and deliberate Summon Lin/Ascension choices. Lin's remote spirit projection is intentional. Closing her should leave the altar actions easy to reach.
+Inspect both shoulder views and awkward approach angles. Her face/body must be visible, fire/stone must not fill the portrait, and the player needs safe standing and departure room. Repair portrait selection/fallback and only the necessary local geometry; coordinate any wider Cloister change with prompt 14. Unrelated HUD/prompts should disappear during dialogue and return on close, replacement dialogue, death and respawn without camera/input leaks.
+Check a real affordable Vigor purchase plus insufficient-currency refusal: preview and actual HP/derived benefits must agree, currency left must be correct, Arcane Qi distinct from Essence, long attribute lists scroll inside their panel, and repeat activation cannot double-charge. Use the current LevelPreview/ProgressionRules formulas. Keep controller focus paths intact for later hardware testing.
+Start files (relative to project root; follow only required dependencies):
+- src/client/Controllers/DialogueController.luau
+- src/client/Controllers/DialogueView.luau
+- src/client/Controllers/PortraitCamera.luau
+- src/shared/LevelPreview.luau
+- src/server/Services/DialogueService.luau
+- src/server/Services/DialogueActions.luau
+
+Focused checks (reuse prior results unless code changed or live evidence is missing):
+- python3 tools/lune_compat.py tools/test_rest_dialogue.luau
+- python3 tools/test_progression_runtime.py
+
+Acceptance:
+Capture Lin at the three altar settings and verify rest → summon → return → travel; demonstrate one exactly-once level purchase and clean interruption recovery.
+
+Update the matching ledgers with evidence type and exact remaining work; stop after this batch.

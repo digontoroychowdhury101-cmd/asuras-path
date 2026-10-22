@@ -1,0 +1,7 @@
+[["character_navigation", {"datamodel_type":"Client","x":43,"y":605,"z":984,"speed_multiplier":1}], ["__sleep", 1.5],
+ ["__lua","Client","tools/qa/LobbyWhere.luau"],
+ ["__lua","Client","outputs/lobby-rebuild-2026-10-21/import/prompts.luau"],
+ ["user_keyboard_input", {"datamodel_type":"Client","actions":[{"action":"keyDown","key_code":"Z"},{"action":"wait","wait_time_ms":1200},{"action":"keyUp","key_code":"Z"}]}],
+ ["__sleep", 2],
+ ["__lua","Client","local p = game:GetService('Players').LocalPlayer return 'result=' .. tostring(p:GetAttribute('AsuraResult'))"],
+ ["screen_capture", {"capture_id": "test_reliquary"}]]

@@ -1,0 +1,21 @@
+local L = game:GetService("Lighting")
+local rgb = Color3.fromRGB
+L.ClockTime = 17.85
+L.Brightness = 2.6
+L.Ambient = rgb(86, 76, 72)
+L.OutdoorAmbient = rgb(140, 124, 112)
+L.ColorShift_Top = rgb(255, 208, 160)
+L.ColorShift_Bottom = rgb(40, 36, 44)
+L.EnvironmentDiffuseScale = 0.75
+L.EnvironmentSpecularScale = 1
+L.ExposureCompensation = -0.05
+local a = L:FindFirstChildOfClass("Atmosphere")
+a.Density, a.Offset, a.Haze, a.Glare = 0.32, 0.18, 1.6, 0.55
+a.Color, a.Decay = rgb(246, 202, 150), rgb(196, 128, 92)
+local cc = L:FindFirstChild("CB_ColorCorrection")
+cc.TintColor, cc.Saturation, cc.Contrast, cc.Brightness = rgb(255, 244, 230), 0.05, 0.14, 0.0
+local rays = L:FindFirstChild("CB_SunRays")
+rays.Intensity, rays.Spread = 0.12, 0.5
+local bloom = L:FindFirstChild("CB_Bloom")
+bloom.Intensity, bloom.Threshold, bloom.Size = 0.3, 1.8, 26
+return "lit"

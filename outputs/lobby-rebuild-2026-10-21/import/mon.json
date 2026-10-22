@@ -1,0 +1,4 @@
+[["__lua","Client","local pg = game:GetService('Players').LocalPlayer.PlayerGui for _, b in pg:GetDescendants() do if b:IsA('TextButton') and b.Text == '×' and b.Visible then return b:GetFullName() end end return 'none'"],
+ ["__sleep", 4],
+ ["__lua","Client","local L = game:GetService('Lighting') local s = L:FindFirstChildOfClass('Sky') local a = L:FindFirstChildOfClass('Atmosphere') return string.format('clock %.2f outdoor %s sky %s atmo d=%.2f c=%s', L.ClockTime, tostring(L.OutdoorAmbient), s and s.SkyboxFt or '-', a.Density, tostring(a.Color))"],
+ ["screen_capture", {"capture_id": "test_monastery"}]]

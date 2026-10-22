@@ -47,7 +47,8 @@ def main():
                              input=str(input_file.relative_to(ROOT)), input_sha256=hashlib.sha256(input_file.read_bytes()).hexdigest()))
         if args.process:
             subprocess.run([BLENDER,'-b','--python-exit-code','1','-P',str(ROOT/'tools/blender/process_asset.py'),
-                            '--',str(input_file),str(ROOT/'assets/build'/asset)], check=True)
+                            '--',str(input_file),str(ROOT/'assets/build'/asset),
+                            '--max-tris','2400' if asset == 'stone_01' else '19500'], check=True)
         glb = ROOT/'assets/build'/asset/(asset+'.glb')
         if args.preview and glb.exists():
             subprocess.run([BLENDER,'-b','--python-exit-code','1','-P',str(ROOT/'tools/blender/preview_asset.py'),

@@ -1,0 +1,9 @@
+CALL execute_luau ok
+quality Automatic | mem 4378MB | lobby/entrance: avg 67.2ms p95 69.6ms (15 fps) renderCPU 5.5ms
+lobby/elevated: avg 66.7ms p95 68.4ms (15 fps) renderCPU 4.3ms
+lobby/gameplay: avg 66.7ms p95 68.2ms (15 fps) renderCPU 3.9ms
+lobby/terrace: avg 66.7ms p95 68.7ms (15 fps) renderCPU 2.9ms
+hidden/entrance: avg 66.1ms p95 69.2ms (15 fps) renderCPU 3.5ms
+hidden/elevated: avg 17.5ms p95 18.9ms (57 fps) renderCPU 12.0ms
+hidden/gameplay: avg 18.3ms p95 18.6ms (55 fps) renderCPU 6.9ms
+hidden/terrace: avg 61.3ms p95 68.8ms (16 fps) renderCPU 8.9ms

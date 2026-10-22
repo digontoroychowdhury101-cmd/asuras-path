@@ -1,0 +1,23 @@
+Continue Asura's Path — follow-up 03/26: Validate input ownership and the desktop combat HUD.
+
+Apply 00_SHARED_BRIEF.txt in /Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 02, 04. Findings: #5, #6, #12, #17, #18, #33, #34, #35, #36, #37. Verify existing work, fix actual gaps, and execute this batch now.
+
+Use InputMap as the control contract: Z interacts, E casts slot 2, 1 casts slot 1, J opens Codex, K swaps. Do not revert to stale instructions in PROJECT_STATE. Check prompt ownership just inside/outside range, a held prompt, two overlapping prompts, a focused text box and an open modal. Each action must fire once; reclaiming must never cast Gale Step. Include the controller-equivalent route; hardware closure belongs to prompt 24.
+Inspect the current HUD in one small desktop and one wide viewport, grouping checks into three states: ordinary combat with H open; two enemies/Twins with lock switching; reduced HP ceiling followed by death/respawn. Fix genuine controls/action-bar overlap, duplicate CoreGui/target plates, unreadable flask/currency values and stale labels using existing layout/visibility components. Survival information and perilous cues take priority over petals and compass decoration. Rally, recoverable health and lasting deficit must be understandable without color alone.
+This prompt owns desktop input/HUD defects, not a UI redesign or combat balance. Prompt 04 owns portraits, 08 teaching, 09 lighting, and 24 full device coverage. Save the views so later prompts reuse them instead of repeating this audit.
+Start files (relative to project root; follow only required dependencies):
+- src/shared/InputMap.luau
+- src/client/Controllers/InputController.luau
+- src/client/Controllers/HudLayout.luau
+- src/client/Controllers/HudVisibility.luau
+- src/client/Controllers/PlateLayout.luau
+- src/client/Controllers/DuoBars.luau
+- src/client/Controllers/CoreGuiPolicy.luau
+
+Focused checks (reuse prior results unless code changed or live evidence is missing):
+- python3 tools/lune_compat.py tools/test_input_map.luau tools/test_hud_layout.luau
+
+Acceptance:
+Provide three state comparisons at two actual Studio viewports, exact binding/ownership outcomes and no stuck input after modal/death transitions.
+
+Update the matching ledgers with evidence type and exact remaining work; stop after this batch.

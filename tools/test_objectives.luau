@@ -71,8 +71,26 @@ for _, encounter in Objectives.Encounters do
  assert(active and active.Key=="Boss:"..encounter.Id, "regional boss objective "..encounter.Id)
  defeated[encounter.Id]=true
 end
+-- Batch 22: six sovereigns lead home to Lin and the choice, never straight to PvP.
+local five=table.clone(defeated);five.AzureWyrm=nil
+local lastOne=Objectives.resolve(facts({Region="SkyCitadel",Altars=all,Rested=true,Bosses=five}))
+assert(lastOne and lastOne.Key=="Boss:AzureWyrm", "five of six still points at the last sovereign")
 local campaignDone=Objectives.resolve(facts({Region="SkyCitadel",Altars=all,Rested=true,Bosses=defeated}))
-assert(campaignDone and campaignDone.Key=="Duel", "completed roster returns to duel objective")
+assert(campaignDone and campaignDone.Key=="Ending:Return" and campaignDone.Target.Kind=="Point" and campaignDone.Target.Position.Z==-2690, "citadel: take the bastion portal home")
+local home=Objectives.resolve(facts({Region="Sanctuary",Altars=all,Rested=true,Bosses=defeated}))
+assert(home and home.Key=="Ending:Return" and home.Target.Position.X==8 and home.Target.Position.Z==918, "sanctuary: Lin beside the bonfire")
+local bamboo=Objectives.resolve(facts({Region="BambooPass",Altars=all,Rested=true,Bosses=defeated}))
+assert(bamboo and bamboo.Target.Kind=="Altar" and bamboo.Target.Id=="Altar_BambooShrine", "other regions: travel from the local altar")
+local crypt=Objectives.resolve(facts({Region="SanctuaryDepths",Altars=all,Rested=true,Bosses=defeated}))
+assert(crypt and crypt.Target.Position.Z==1074, "crypt: return portal")
+local remain=Objectives.resolve(facts({Region="Sanctuary",Altars=all,Rested=true,Bosses=defeated,Story={Released=true,Remained=true}}))
+assert(remain and remain.Key=="Ending:Remain" and remain.Target==nil and string.find(remain.Detail,"optional",1,true), "remain: free roam, crossing still offered, duels optional")
+local crossed=Objectives.resolve(facts({Region="AshColosseum",Altars=all,Rested=true,Bosses=defeated,Story={Released=true,Remained=true,Crossed=true}}))
+assert(crossed and crossed.Key=="Postgame" and crossed.Target==nil and string.find(crossed.Detail,"optional",1,true), "crossed: postgame, duels optional")
+local stained=Objectives.resolve(facts({Region="Sanctuary",Altars=all,Rested=true,Bosses=defeated,Bloodstain=Vector3.new(1,2,3)}))
+assert(stained and stained.Key=="Bloodstain", "a bloodstain still comes first after six")
+local seeded=Objectives.resolve(facts({Region="Sanctuary",Altars=all,Rested=true,Bosses=five,Story={Crossed=true}}))
+assert(seeded and seeded.Key=="Boss:AzureWyrm", "story flags never count without six defeated-boss flags")
 local revived=Objectives.parseAltars("GrandmasterShen,AzureWyrm")
 assert(revived.GrandmasterShen and revived.AzureWyrm and not revived.TwinSentinels, "boss attribute flags parse")
 print("Objectives: all checks passed (including six encounter routes)")

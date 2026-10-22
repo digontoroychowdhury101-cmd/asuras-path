@@ -1,0 +1,19 @@
+Continue Asura's Path repairs — batch 21/26: Build Sky Citadel and the final approach.
+
+Apply the shared operating brief (outputs/playthrough-2026-10-20/claude-prompts/00_OPERATING_BRIEF.txt; read once per chat) and current PROGRESS.md. Read report findings #22, #27, #28, #32 only, plus relevant evidence. Implement this batch now.
+
+Complete Sky Citadel as a recognizable summit/citadel route rather than a flat boss floor. Connect the Pagoda exit, final incense checkpoint and Wyrm arena with a legible ascent, strong skyline/reveal and purposeful ruins/weather.
+Support established jump/glide movement with readable landings, honest boundaries and recovery paths. Provide adequate air/ground space, visible floor/hazard boundaries and camera clearance for the actual Wyrm rig and flight/landing from batch 13.
+Keep the route clear after victory and support returning to Sanctuary for the ending. Reuse shared geometry/material/lighting conventions and sensible asset budgets. Preserve existing profile, altar and boss IDs.
+Finish this region and its immediate joins without expanding the campaign or adding another boss.
+
+Start near these files; follow only necessary dependencies:
+- src/shared/WorldDefinitions.luau
+- src/server/Services/BossArenas.luau
+- src/server/Services/WorldService.luau
+- src/shared/EnvironmentProfiles.luau
+
+Acceptance and focused verification:
+Walk Pagoda -> checkpoint -> summit arena and return, with rest/respawn/travel, edge/fall cases and Wyrm flight/landing clearance. Inspect the final approach and arena in ordinary lighting without attack effects. Verify victory leaves a navigable return route.
+
+Update the repair ledger and PROJECT_STATE.md. State implementation versus verification precisely, then stop at this batch boundary.

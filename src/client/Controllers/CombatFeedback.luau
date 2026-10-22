@@ -2,6 +2,7 @@
 local Players = game:GetService("Players")
 local Lighting = game:GetService("Lighting")
 local Schema = require(game:GetService("ReplicatedStorage").AsurasPath.Simulation.MoveSchema) :: any
+local Comfort = require(game:GetService("ReplicatedStorage").AsurasPath.Shared.EffectsPreference) :: any
 local Feedback = {}
 Feedback.__index = Feedback
 local HITSTOP: { [string]: number } = {
@@ -129,7 +130,7 @@ function Feedback.Update(self: any, dt: number)
 		self.Camera:SetFovClamp(FOV_CLAMP_BY_TIER[tier] or 0)
 		self.Camera:SetSway(SWAY_BY_TIER[tier] or 0)
 	end
-	local pulse = if blur > 0 then 1 + 0.15 * math.sin(now * 1.4) else 1
+	local pulse = if blur > 0 and not Comfort.reducedMotion() then 1 + 0.15 * math.sin(now * 1.4) else 1
 	self.BlurTarget = math.clamp(blur * pulse, 0, 14)
 	self.Blur.Size += (self.BlurTarget - self.Blur.Size) * math.min(1, dt * 4)
 	local transparency = 1 - math.clamp(vignette * 1.1, 0, 0.85)

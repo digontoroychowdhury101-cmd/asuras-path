@@ -1,0 +1,20 @@
+Continue Asura's Path repairs — batch 02/26: One consistent input and interaction map.
+
+Apply the shared operating brief (outputs/playthrough-2026-10-20/claude-prompts/00_OPERATING_BRIEF.txt; read once per chat) and current PROGRESS.md. Read report findings #5, #6, #37 only, plus relevant evidence. Implement this batch now.
+
+Resolve the Z/E interaction mismatch and E spell overlap through one authoritative binding/interaction definition. Default keyboard scheme: Z interacts, E remains spell slot 2, J opens Codex, and K swaps weapons. Preserve the other established combat/movement keys unless a demonstrated collision requires adjustment.
+Apply the same interaction ownership to NPCs, altars, caches, lore, fog gates and bloodstains. A visible prompt must own the matching input without causing duplicate remote intents. Synchronize controller/touch equivalents, displayed prompts, action bar and control references.
+Resolve the J Codex/Swap collision. Generate or derive displayed bindings from the shared map, including spells, Arsenal, cursor release and shoulder switching. Retain server proximity/life/combat validation. This batch changes bindings/reference content; controls panel positioning belongs to batch 04.
+
+Start near these files; follow only necessary dependencies:
+- src/client/Controllers/InputController.luau
+- src/client/Controllers/SpellController.luau
+- src/client/Controllers/DialogueController.luau
+- src/client/Controllers/ControlsCard.luau
+- src/server/Services/LootWorld.luau
+- src/server/Services/NarrativeWorld.luau
+
+Acceptance and focused verification:
+Exercise each object type just inside/outside interaction range, typing in a text box, overlapping prompts, held input and open menus. Confirm Z recovery never casts a spell, E still casts when allowed, and J/K each perform exactly one action. Validate keyboard/controller/touch mapping conflicts with focused checks.
+
+Update the repair ledger and PROJECT_STATE.md. State implementation versus verification precisely, then stop at this batch boundary.

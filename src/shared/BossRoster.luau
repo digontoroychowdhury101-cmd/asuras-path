@@ -7,18 +7,23 @@ local Roster = {}
 local function vec(x: number, y: number, z: number): any return { X = x, Y = y, Z = z } end
 local function at(x: number, z: number): any return { X = x, Y = 3, Z = z, Yaw = 180 } end
 function Roster.apply(world: any, profile: ({ [string]: number }) -> any)
+	-- Bounds (centre z, depth) and the incense altar's authored pocket {placement, spawn yaw, exit}
+	-- per region (batches 19-21: SunkenCryptLayout, CelestialPagodaLayout, SkyCitadelLayout marks).
+	-- The Pagoda and Citadel bounds now reach north to take in the cloud stair and the summit bridge.
 	local regions = {
-		{ "SanctuaryDepths", "Sanctuary Depths", 520, 900 },
-		{ "CelestialPagoda", "Celestial Pagoda Rafters", 0, -2360 },
-		{ "SkyCitadel", "Sky Citadel", 0, -2800 },
+		{ "SanctuaryDepths", "Sanctuary Depths", 520, 900, 360, { 455, 15, 1046 }, { 455, 1038, 0 }, { 455, 1022 } },
+		{ "CelestialPagoda", "Celestial Pagoda Rafters", 0, -2330, 420, { -46, 0, -2268 }, { -38, -2268, 270 }, { -10, -2272 } },
+		{ "SkyCitadel", "Sky Citadel", 0, -2760, 440, { -40, 0, -2690 }, { -32, -2690, 270 }, { -10, -2712 } },
 	}
 	for _, entry in regions do
-		local id, name, x, z = entry[1] :: string, entry[2] :: string, entry[3] :: number, entry[4] :: number
-		world.Regions[id] = { Id = id, Name = name, Bounds = { Center = vec(x, 40, z), Size = vec(360, 200, 360) },
+		local id, name, x, z, depth = entry[1] :: string, entry[2] :: string, entry[3] :: number, entry[4] :: number, entry[5] :: number
+		local p, s, e = entry[6] :: { number }, entry[7] :: { number }, entry[8] :: { number }
+		world.Regions[id] = { Id = id, Name = name, Bounds = { Center = vec(x, 40, z), Size = vec(360, 200, depth) },
 			MapFolder = "Map_" .. id, Greybox = { Color = { 47, 48, 62 }, Material = "Slate" }, Ambience = "StarlessWind", Altars = {} }
 		table.insert(world.RegionOrder, id)
 		local altarId = "Altar_" .. id
-		local altar = { Id = altarId, Name = name .. " Incense", Region = id, Placement = at(x, z + 145), Spawn = at(x, z + 145), Radius = 12, Starting = false }
+		local altar = { Id = altarId, Name = name .. " Incense", Region = id, Placement = { X = p[1], Y = p[2], Z = p[3], Yaw = 0 },
+			Spawn = { X = s[1], Y = p[2] + 3, Z = s[2], Yaw = s[3] }, Radius = 12, Starting = false, Exit = { X = e[1], Y = p[2] + 3, Z = e[2], Yaw = 0 } }
 		world.Altars[altarId] = altar
 		world.Regions[id].Altars[id] = altar
 	end

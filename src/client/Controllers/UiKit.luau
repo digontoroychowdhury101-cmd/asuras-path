@@ -12,11 +12,11 @@ local P = HudKit.Palette
 -- Customization ------------------------------------------------------------------------------
 UiKit.Theme = table.freeze({
 	Ink = P.Ink, Ivory = P.Ivory, Muted = P.Muted, Gold = P.Gold, Ember = P.Ember, Edge = P.Edge,
-	Surface = Color3.fromRGB(22, 15, 14), Raised = Color3.fromRGB(36, 24, 22),
-	Primary = Color3.fromRGB(150, 18, 22), PrimaryHot = Color3.fromRGB(196, 32, 32),
-	Secondary = Color3.fromRGB(30, 21, 19), SecondaryHot = Color3.fromRGB(48, 32, 28),
+	Surface = Color3.fromRGB(30, 13, 28), Raised = Color3.fromRGB(56, 24, 50),
+	Primary = Color3.fromRGB(176, 52, 112), PrimaryHot = Color3.fromRGB(222, 96, 156),
+	Secondary = Color3.fromRGB(40, 17, 36), SecondaryHot = Color3.fromRGB(74, 32, 66),
 	Danger = Color3.fromRGB(70, 14, 14), DangerHot = Color3.fromRGB(110, 20, 20),
-	Backdrop = Color3.fromRGB(4, 2, 2), BackdropAlpha = 0.4,
+	Backdrop = Color3.fromRGB(10, 2, 10), BackdropAlpha = 0.4,
 	TitleFont = HudKit.TitleFont, BodyFont = HudKit.BodyFont, Radius = 6,
 })
 UiKit.Motion = table.freeze({

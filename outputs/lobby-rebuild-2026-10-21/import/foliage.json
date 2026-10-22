@@ -1,0 +1,1 @@
+[["__lua","Edit","for _, d in game:GetService(\"ServerStorage\").AsuraLobbyKit:GetDescendants() do if d:IsA(\"SurfaceAppearance\") and string.find(d.Parent.Name, \"__Foliage\") then d.Color = Color3.new(0.62, 0.44, 0.44) end end return \"foliage tinted\""]]

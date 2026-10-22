@@ -1,0 +1,1 @@
+[["__lua", "Client", "local L = game:GetService('Lighting') local s = L:FindFirstChildOfClass('Sky') if s then s.Parent = game:GetService('ReplicatedStorage') end L.ClockTime = 17.6 return 'sky removed'"]]

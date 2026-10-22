@@ -60,6 +60,8 @@ export type EventKind =
 	| "Dash"
 	| "KO"
 	| "Rest"
+	| "Whiff"
+	| "Evade"
 
 export type Event = { Kind: EventKind, Source: number, Target: number, Value: number, Region: string? }
 
@@ -195,6 +197,8 @@ export type HitOutcome = "Ignored" | "Whiff" | "Deflected" | "Blocked" | "GuardB
 export type DashGrant = { Distance: number, Duration: number, IFrameStart: number, IFrameEnd: number, Seq: number }
 
 local Rules = {}
+-- Move effects that resolve as spells/projectiles rather than weapon contact.
+Rules.RangedEffects = table.freeze({ AbbotDirge = true, FissureSlam = true, Thunderfall = true, WindSlash = true }) :: { [string]: boolean }
 
 local REGIONS: { InjuryRegion } = { "Head", "Torso", "LeftArm", "RightArm", "LeftLeg", "RightLeg" }
 local GROUP: { [InjuryRegion]: "Head" | "Torso" | "Arms" | "Legs" } = {
@@ -225,6 +229,10 @@ local EVENT_CODES: { [EventKind]: number } = {
 	Dash = 14,
 	KO = 15,
 	Rest = 16,
+	-- Contact legibility (batch 09): an attack window that closed without touching anyone, and
+	-- a strike that passed through dodge i-frames (Source = the evader, Target = the attacker).
+	Whiff = 17,
+	Evade = 18,
 }
 local EVENT_NAMES: { [number]: EventKind } = {}
 for name, code in EVENT_CODES do
@@ -429,8 +437,13 @@ function Rules.applyStats(f: Fighter, stats: Stats, refill: boolean?)
 end
 
 -- Attribute scaling: Strength drives unarmed and heavy strikes, Dexterity drives bladed technique.
+local STRENGTH_WEAPONS: { [string]: boolean } = { Unarmed = true, Guandao = true, Odachi = true, CalamityBoneCleaver = true, HeavenPiercingGuandao = true }
+function Rules.scalingAttribute(weapon: string): string
+	return if STRENGTH_WEAPONS[weapon] then "Strength" else "Dexterity"
+end
+
 function Rules.damageScale(f: Fighter, move: MoveData): number
-	if f.Weapon == "Unarmed" or f.Weapon == "Guandao" or f.Weapon == "Odachi" or f.Weapon == "CalamityBoneCleaver" or f.Weapon == "HeavenPiercingGuandao" then
+	if Rules.scalingAttribute(f.Weapon) == "Strength" then
 		return f.StrengthScale*f.VoidScale
 	end
 	return f.DexterityScale*f.VoidScale
@@ -681,6 +694,9 @@ local function expire(f: Fighter, now: number, events: { Event }?)
 		f.State = "Recovery"
 		f.StateStart = f.StateEnd
 		f.StateEnd = f.StateStart + move.Timing.RecoverySeconds
+		if next(f.HitRegistry) == nil and not Rules.RangedEffects[move.Effect or ""] then
+			emit(f, events, "Whiff", f.Id, 0, 0) -- the server fills in the nearest foe and the reach gap
+		end
 	elseif state == "Deflecting" or state == "Blockstun" then
 		local guard = f.GuardHeld and f.Stamina > Settings.Stamina.BreakThreshold
 		enter(f, if guard then "Blocking" else "Idle", f.StateEnd)
@@ -1011,8 +1027,19 @@ function Rules.tryRest(f: Fighter, now: number, atShrine: boolean, events: { Eve
 	return true, "Rest"
 end
 
+-- Health a drink could restore right now: up to the current ceiling (effective max HP), which a
+-- permanent deficit lowers until rest. Below one point the drink would be wasted.
+function Rules.healRoom(f: Fighter): number
+	return math.max(0, Rules.effectiveMaxHP(f) - math.max(f.ActiveHP, 0))
+end
+
 -- Elixir drink: a short interruptible Recovery; the heal lands when the drink completes.
+-- Refused with nothing spent when there is no room below the ceiling ("FullHealth", or
+-- "AtCeiling" when the ceiling itself is lowered); wounded fighters below a lowered ceiling drink.
 function Rules.tryHeal(f: Fighter, now: number, fraction: number?, duration: number?): (boolean, string)
+	if f.State ~= "KO" and Rules.healRoom(f) < 1 then
+		return false, if Rules.effectiveMaxHP(f) < f.MaxHP - 0.5 then "AtCeiling" else "FullHealth"
+	end
 	local ok, reason = Schema.canAct(f.State, "Heal", f.Stamina, f.Posture, Rules.context(f, now, { HasHealCharge = true }))
 	if not ok then
 		return false, reason
@@ -1050,6 +1077,7 @@ function Rules.applyArea(source: Fighter, target: Fighter, now: number, damage: 
 		return "Ignored"
 	end
 	if Rules.isInvulnerable(target, now) then
+		emit(target, events, "Evade", target.Id, source.Id, 0)
 		return "Whiff"
 	end
 	if not unblockable and facing and Rules.isDeflectTimed(target, now) then
@@ -1179,6 +1207,7 @@ function Rules.resolveHit(attacker: Fighter, defender: Fighter, now: number, hit
 	end
 	attacker.HitRegistry[defender.Id] = true
 	if Rules.isInvulnerable(defender, now) then
+		emit(defender, events, "Evade", defender.Id, attacker.Id, 0)
 		return "Whiff"
 	end
 

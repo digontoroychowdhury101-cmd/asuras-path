@@ -12,6 +12,7 @@
 - **Client Presentation**: Third-Person Over-the-Shoulder Camlock, metallic deflect sparks, hit-stop, and dynamic concussive eye/head trauma effects.
 
 ### Development & Build
+- **Working project**: this source checkout; open `outputs/AsurasPath.rbxlx` after building. See `docs/PROJECT_VERSIONS.md` for the older Studio cards and the isolated Sanguine VFX integration.
 - **Build Place**: `python3 tools/build.py` (builds `outputs/AsurasPath.rbxlx`)
 - **Run Tests**: 
   - `work/bin/luau/luau tools/test_asura_stage1.luau`

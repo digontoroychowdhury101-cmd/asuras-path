@@ -1,0 +1,1327 @@
+{
+  "date": "2026-10-21",
+  "root": "/Users/digonto/Documents/ChatGPT/Roblox game 2",
+  "original_manifest": "/Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/playthrough-2026-10-20/claude-prompts/manifest.json",
+  "original_batches": 26,
+  "original_findings": 44,
+  "followup_prompts": 26,
+  "shared_brief": "00_SHARED_BRIEF.txt",
+  "batches": [
+    {
+      "batch": 1,
+      "title": "Establish a working Studio baseline and trustworthy verifier",
+      "slug": "studio-baseline",
+      "original_batches": [
+        26
+      ],
+      "findings": [],
+      "files": [
+        "docs/BUILD.md",
+        "tools/build.py",
+        "tools/verify_all.sh",
+        "default.project.json",
+        "src/client/Bootstrap.client.luau",
+        "src/server/Bootstrap.server.luau"
+      ],
+      "tests": [
+        "Existing LOCAL_TEST_LOG.txt and ADDITIONAL_TEST_LOG.txt",
+        "python3 tools/test_audiovisual.py"
+      ],
+      "audit_gaps": [
+        "A1",
+        "A2"
+      ],
+      "file": "01_studio-baseline.txt",
+      "word_count": 343
+    },
+    {
+      "batch": 2,
+      "title": "Close the checkpoint, death and recovery loop",
+      "slug": "checkpoint-recovery",
+      "original_batches": [
+        1
+      ],
+      "findings": [
+        1,
+        18,
+        19
+      ],
+      "files": [
+        "src/server/RecoveryRules.luau",
+        "src/server/CharacterService.luau",
+        "src/server/Services/WorldService.luau",
+        "src/server/Services/SanctuaryService.luau",
+        "src/client/Controllers/HudVisibility.luau"
+      ],
+      "tests": [
+        "python3 tools/lune_compat.py tools/test_recovery_lifecycle.luau",
+        "python3 tools/lune_compat.py tools/test_campaign_ledger.luau"
+      ],
+      "audit_gaps": [],
+      "file": "02_checkpoint-recovery.txt",
+      "word_count": 304
+    },
+    {
+      "batch": 3,
+      "title": "Validate input ownership and the desktop combat HUD",
+      "slug": "inputs-and-hud",
+      "original_batches": [
+        2,
+        4
+      ],
+      "findings": [
+        5,
+        6,
+        12,
+        17,
+        18,
+        33,
+        34,
+        35,
+        36,
+        37
+      ],
+      "files": [
+        "src/shared/InputMap.luau",
+        "src/client/Controllers/InputController.luau",
+        "src/client/Controllers/HudLayout.luau",
+        "src/client/Controllers/HudVisibility.luau",
+        "src/client/Controllers/PlateLayout.luau",
+        "src/client/Controllers/DuoBars.luau",
+        "src/client/Controllers/CoreGuiPolicy.luau"
+      ],
+      "tests": [
+        "python3 tools/lune_compat.py tools/test_input_map.luau tools/test_hud_layout.luau"
+      ],
+      "audit_gaps": [],
+      "file": "03_inputs-and-hud.txt",
+      "word_count": 319
+    },
+    {
+      "batch": 4,
+      "title": "Finish rest, Lin portraits and practical leveling",
+      "slug": "rest-dialogue-leveling",
+      "original_batches": [
+        5
+      ],
+      "findings": [
+        4,
+        38,
+        39,
+        40
+      ],
+      "files": [
+        "src/client/Controllers/DialogueController.luau",
+        "src/client/Controllers/DialogueView.luau",
+        "src/client/Controllers/PortraitCamera.luau",
+        "src/shared/LevelPreview.luau",
+        "src/server/Services/DialogueService.luau",
+        "src/server/Services/DialogueActions.luau"
+      ],
+      "tests": [
+        "python3 tools/lune_compat.py tools/test_rest_dialogue.luau",
+        "python3 tools/test_progression_runtime.py"
+      ],
+      "audit_gaps": [],
+      "file": "04_rest-dialogue-leveling.txt",
+      "word_count": 291
+    },
+    {
+      "batch": 5,
+      "title": "Make Arsenal and Codex truthful and readable",
+      "slug": "arsenal-codex",
+      "original_batches": [
+        6
+      ],
+      "findings": [
+        41,
+        42
+      ],
+      "files": [
+        "src/shared/ArsenalFacts.luau",
+        "src/shared/ArsenalCatalog.luau",
+        "src/client/Controllers/ArsenalPanel.luau",
+        "src/client/Controllers/ArsenalTabs.luau",
+        "src/client/Controllers/CodexView.luau"
+      ],
+      "tests": [
+        "python3 tools/lune_compat.py tools/test_arsenal_codex.luau",
+        "python3 tools/test_progression_runtime.py"
+      ],
+      "audit_gaps": [],
+      "file": "05_arsenal-codex.txt",
+      "word_count": 266
+    },
+    {
+      "batch": 6,
+      "title": "Prove earned boss rewards and exactly-once forging",
+      "slug": "rewards-forging",
+      "original_batches": [
+        8
+      ],
+      "findings": [
+        8,
+        9
+      ],
+      "files": [
+        "src/simulation/ArsenalInventory.luau",
+        "src/shared/ArsenalCatalog.luau",
+        "src/shared/BossArmaments.luau",
+        "src/server/ForgeService.luau",
+        "src/server/ProfileStore.luau",
+        "src/client/Controllers/ArsenalTabs.luau"
+      ],
+      "tests": [
+        "python3 tools/lune_compat.py tools/test_boss_rewards.luau",
+        "work/bin/luau/luau tools/test_weapons_and_spells.luau"
+      ],
+      "audit_gaps": [],
+      "file": "06_rewards-forging.txt",
+      "word_count": 294
+    },
+    {
+      "batch": 7,
+      "title": "Verify attack contact, healing and enemy defeat feedback",
+      "slug": "combat-contact",
+      "original_batches": [
+        9
+      ],
+      "findings": [
+        14,
+        20,
+        21
+      ],
+      "files": [
+        "src/shared/ContactCues.luau",
+        "src/simulation/CombatRules.luau",
+        "src/server/CharacterService.luau",
+        "src/server/Services/WorldService.luau",
+        "src/client/Controllers/CombatCallouts.luau",
+        "src/client/Controllers/EnemyDissolve.luau"
+      ],
+      "tests": [
+        "python3 tools/lune_compat.py tools/test_combat_contact.luau",
+        "work/bin/luau/luau tools/test_asura_stage1.luau"
+      ],
+      "audit_gaps": [],
+      "file": "07_combat-contact.txt",
+      "word_count": 291
+    },
+    {
+      "batch": 8,
+      "title": "Make the first ten minutes teach the actual game",
+      "slug": "opening-tutorial",
+      "original_batches": [
+        10
+      ],
+      "findings": [
+        11,
+        12,
+        13,
+        15,
+        19,
+        43,
+        44
+      ],
+      "files": [
+        "src/shared/TutorialRules.luau",
+        "src/server/Services/TutorialService.luau",
+        "src/client/Controllers/TutorialController.luau",
+        "src/client/Controllers/PrologueController.luau",
+        "src/shared/WorldDefinitions.luau",
+        "src/shared/NarrativeCatalog.luau"
+      ],
+      "tests": [
+        "python3 tools/lune_compat.py tools/test_opening_tutorial.luau",
+        "python3 tools/test_objectives.py"
+      ],
+      "audit_gaps": [],
+      "file": "08_opening-tutorial.txt",
+      "word_count": 308
+    },
+    {
+      "batch": 9,
+      "title": "Close live combat lighting and sound-lifetime failures",
+      "slug": "lighting-audio-lifetime",
+      "original_batches": [
+        3
+      ],
+      "findings": [
+        2,
+        7,
+        36
+      ],
+      "files": [
+        "src/shared/EnvironmentProfiles.luau",
+        "src/shared/ArenaLightPlan.luau",
+        "src/shared/EffectsPreference.luau",
+        "src/client/Controllers/EnvironmentController.luau",
+        "src/client/Controllers/SpatialAudio.luau",
+        "src/server/Services/ArenaLighting.luau"
+      ],
+      "tests": [
+        "python3 tools/lune_compat.py tools/test_combat_presentation.luau",
+        "python3 tools/test_audiovisual.py"
+      ],
+      "audit_gaps": [],
+      "file": "09_lighting-audio-lifetime.txt",
+      "word_count": 280
+    },
+    {
+      "batch": 10,
+      "title": "Finish Shen and Twins, including the real animation dispatcher",
+      "slug": "shen-twins",
+      "original_batches": [
+        11
+      ],
+      "findings": [
+        16,
+        17,
+        23
+      ],
+      "files": [
+        "src/client/Controllers/BossAnimations.luau",
+        "src/shared/AnimationCatalog.luau",
+        "src/shared/BossAttackCatalog.luau",
+        "src/server/Services/BossSkin.luau",
+        "src/server/Services/EncounterHandoff.luau",
+        "src/server/Services/BossDuo.luau"
+      ],
+      "tests": [
+        "python3 tools/lune_compat.py tools/test_boss_presentation.luau",
+        "python3 tools/test_boss_runtime.py"
+      ],
+      "audit_gaps": [
+        "A3",
+        "A4"
+      ],
+      "file": "10_shen-twins.txt",
+      "word_count": 318
+    },
+    {
+      "batch": 11,
+      "title": "Finish Baize and Titan as readable creature encounters",
+      "slug": "baize-titan",
+      "original_batches": [
+        12
+      ],
+      "findings": [
+        13,
+        16,
+        23
+      ],
+      "files": [
+        "src/shared/BossBodies.luau",
+        "src/shared/LooksBeasts.luau",
+        "src/server/Services/BossMotion.luau",
+        "src/server/Services/BossSkin.luau",
+        "src/client/Controllers/CreatureMotion.luau",
+        "src/shared/BossEncounterRules.luau"
+      ],
+      "tests": [
+        "python3 tools/lune_compat.py tools/test_boss_presentation.luau",
+        "python3 tools/test_boss_runtime.py"
+      ],
+      "audit_gaps": [
+        "A3",
+        "A4"
+      ],
+      "file": "11_baize-titan.txt",
+      "word_count": 304
+    },
+    {
+      "batch": 12,
+      "title": "Finish Wu and Wyrm presentation and phase behavior",
+      "slug": "wu-wyrm",
+      "original_batches": [
+        13
+      ],
+      "findings": [
+        16,
+        23
+      ],
+      "files": [
+        "src/shared/LooksSovereigns.luau",
+        "src/shared/BossBodies.luau",
+        "src/server/Services/BossMotion.luau",
+        "src/server/Services/BossSkin.luau",
+        "src/client/Controllers/BossAnimations.luau",
+        "src/client/Controllers/CreatureMotion.luau"
+      ],
+      "tests": [
+        "python3 tools/lune_compat.py tools/test_boss_presentation.luau",
+        "python3 tools/test_boss_runtime.py"
+      ],
+      "audit_gaps": [
+        "A3",
+        "A4"
+      ],
+      "file": "12_wu-wyrm.txt",
+      "word_count": 296
+    },
+    {
+      "batch": 13,
+      "title": "Finish player, NPC and normal-enemy visual identity",
+      "slug": "cast-identity",
+      "original_batches": [
+        14
+      ],
+      "findings": [
+        24
+      ],
+      "files": [
+        "src/server/FighterAppearance.luau",
+        "src/server/EnemyAppearance.luau",
+        "src/server/Services/CastFigures.luau",
+        "src/shared/LooksCast.luau",
+        "src/server/Services/WeaponModels.luau",
+        "src/client/Controllers/PortraitCamera.luau"
+      ],
+      "tests": [
+        "python3 tools/lune_compat.py tools/test_cast_visuals.luau",
+        "python3 tools/test_progression_runtime.py"
+      ],
+      "audit_gaps": [
+        "A3"
+      ],
+      "file": "13_cast-identity.txt",
+      "word_count": 291
+    },
+    {
+      "batch": 14,
+      "title": "Walk and finish the Monastery route and navigation",
+      "slug": "monastery-route",
+      "original_batches": [
+        7,
+        15
+      ],
+      "findings": [
+        3,
+        4,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        32,
+        44
+      ],
+      "files": [
+        "src/server/Services/MonasteryGrounds.luau",
+        "src/server/Services/MonasterySecrets.luau",
+        "src/server/Services/MonasteryTerrain.luau",
+        "src/shared/MonasteryZones.luau",
+        "src/shared/RouteGuide.luau",
+        "src/client/Controllers/SakuraMinimap.luau"
+      ],
+      "tests": [
+        "python3 tools/lune_compat.py tools/test_monastery_route.luau tools/test_monastery_discovery.luau",
+        "python3 tools/test_objectives.py"
+      ],
+      "audit_gaps": [
+        "A3",
+        "A5"
+      ],
+      "file": "14_monastery-route.txt",
+      "word_count": 338
+    },
+    {
+      "batch": 15,
+      "title": "Validate Sanctuary reveals, terrace and cache routes",
+      "slug": "sanctuary-route",
+      "original_batches": [
+        16
+      ],
+      "findings": [
+        27,
+        28,
+        31,
+        32
+      ],
+      "files": [
+        "src/shared/SanctuaryRoutes.luau",
+        "src/server/Services/SanctuaryApproach.luau",
+        "src/server/Services/SanctuaryService.luau",
+        "src/server/Services/SanctuaryColossus.luau",
+        "src/server/Services/LootWorld.luau",
+        "src/shared/RouteGuide.luau"
+      ],
+      "tests": [
+        "python3 tools/test_campaign_regions.py",
+        "python3 tools/test_campaign_build.py"
+      ],
+      "audit_gaps": [],
+      "file": "15_sanctuary-route.txt",
+      "word_count": 301
+    },
+    {
+      "batch": 16,
+      "title": "Finish and validate Bamboo Pass",
+      "slug": "bamboo-pass",
+      "original_batches": [
+        17
+      ],
+      "findings": [
+        22,
+        27,
+        28,
+        32,
+        44
+      ],
+      "files": [
+        "src/shared/BambooPassLayout.luau",
+        "src/server/Services/BambooDressing.luau",
+        "src/server/Services/CampaignBounds.luau",
+        "src/shared/CampaignZones.luau",
+        "src/shared/RouteGuide.luau",
+        "src/shared/NarrativeCatalog.luau"
+      ],
+      "tests": [
+        "python3 tools/test_campaign_regions.py",
+        "python3 tools/test_campaign_build.py"
+      ],
+      "audit_gaps": [
+        "A3"
+      ],
+      "file": "16_bamboo-pass.txt",
+      "word_count": 297
+    },
+    {
+      "batch": 17,
+      "title": "Finish and validate the Ash Colosseum story region",
+      "slug": "ash-colosseum",
+      "original_batches": [
+        18
+      ],
+      "findings": [
+        22,
+        27,
+        28,
+        32
+      ],
+      "files": [
+        "src/shared/AshColosseumLayout.luau",
+        "src/server/Services/ColosseumDressing.luau",
+        "src/server/Services/BossArenas.luau",
+        "src/server/Services/CampaignBounds.luau",
+        "src/shared/RouteGuide.luau"
+      ],
+      "tests": [
+        "python3 tools/test_campaign_regions.py",
+        "python3 tools/test_campaign_build.py"
+      ],
+      "audit_gaps": [
+        "A3"
+      ],
+      "file": "17_ash-colosseum.txt",
+      "word_count": 295
+    },
+    {
+      "batch": 18,
+      "title": "Finish and validate Sanctuary Depths and Sunken Crypt",
+      "slug": "sunken-crypt",
+      "original_batches": [
+        19
+      ],
+      "findings": [
+        22,
+        27,
+        28,
+        32
+      ],
+      "files": [
+        "src/shared/SunkenCryptLayout.luau",
+        "src/server/Services/CryptDressing.luau",
+        "src/server/Services/CampaignBounds.luau",
+        "src/server/Services/SanctuaryService.luau",
+        "src/shared/EnvironmentProfiles.luau",
+        "src/shared/RouteGuide.luau"
+      ],
+      "tests": [
+        "python3 tools/test_campaign_regions.py",
+        "python3 tools/test_campaign_build.py"
+      ],
+      "audit_gaps": [
+        "A3"
+      ],
+      "file": "18_sunken-crypt.txt",
+      "word_count": 293
+    },
+    {
+      "batch": 19,
+      "title": "Finish and validate Celestial Pagoda and final lore",
+      "slug": "celestial-pagoda",
+      "original_batches": [
+        20
+      ],
+      "findings": [
+        22,
+        27,
+        28,
+        32,
+        44
+      ],
+      "files": [
+        "src/shared/CelestialPagodaLayout.luau",
+        "src/server/Services/PagodaDressing.luau",
+        "src/shared/NarrativeCatalog.luau",
+        "src/server/Services/NarrativeWorld.luau",
+        "src/shared/CampaignZones.luau",
+        "src/shared/RouteGuide.luau"
+      ],
+      "tests": [
+        "python3 tools/test_campaign_regions.py",
+        "python3 tools/test_campaign_build.py"
+      ],
+      "audit_gaps": [
+        "A3"
+      ],
+      "file": "19_celestial-pagoda.txt",
+      "word_count": 286
+    },
+    {
+      "batch": 20,
+      "title": "Finish and validate Sky Citadel and summit return",
+      "slug": "sky-citadel",
+      "original_batches": [
+        21
+      ],
+      "findings": [
+        22,
+        27,
+        28,
+        32
+      ],
+      "files": [
+        "src/shared/SkyCitadelLayout.luau",
+        "src/server/Services/CitadelDressing.luau",
+        "src/server/Services/CampaignBounds.luau",
+        "src/server/Services/BossMotion.luau",
+        "src/shared/RouteGuide.luau"
+      ],
+      "tests": [
+        "python3 tools/test_campaign_regions.py",
+        "python3 tools/test_campaign_build.py"
+      ],
+      "audit_gaps": [
+        "A3"
+      ],
+      "file": "20_sky-citadel.txt",
+      "word_count": 286
+    },
+    {
+      "batch": 21,
+      "title": "Verify the six-sovereign ending and postgame",
+      "slug": "ending-postgame",
+      "original_batches": [
+        22
+      ],
+      "findings": [
+        10,
+        28,
+        42
+      ],
+      "files": [
+        "src/shared/EndingRules.luau",
+        "src/shared/EndingCredits.luau",
+        "src/client/Controllers/EndingController.luau",
+        "src/server/Services/DialogueActions.luau",
+        "src/shared/Objectives.luau",
+        "src/client/Controllers/CodexView.luau"
+      ],
+      "tests": [
+        "python3 tools/test_progression_runtime.py",
+        "python3 tools/test_objectives.py"
+      ],
+      "audit_gaps": [],
+      "file": "21_ending-postgame.txt",
+      "word_count": 304
+    },
+    {
+      "batch": 22,
+      "title": "Run the earned solo campaign and close integration failures",
+      "slug": "earned-campaign",
+      "original_batches": [
+        23
+      ],
+      "findings": [
+        1,
+        8,
+        9,
+        10,
+        16,
+        18,
+        19,
+        22,
+        23,
+        27,
+        28,
+        44
+      ],
+      "files": [
+        "src/server/Services/WorldService.luau",
+        "src/server/CharacterService.luau",
+        "src/server/ProfileStore.luau",
+        "src/shared/Objectives.luau",
+        "tools/test_campaign_ledger.luau",
+        "tools/test_progression_runtime.py"
+      ],
+      "tests": [
+        "python3 tools/lune_compat.py tools/test_campaign_ledger.luau",
+        "Run only regressions affected by actual integration fixes"
+      ],
+      "audit_gaps": [],
+      "file": "22_earned-campaign.txt",
+      "word_count": 344
+    },
+    {
+      "batch": 23,
+      "title": "Verify real multiplayer and isolated durable persistence",
+      "slug": "multiplayer-persistence",
+      "original_batches": [
+        24
+      ],
+      "findings": [],
+      "files": [
+        "src/server/Services/ColosseumService.luau",
+        "src/server/Services/WagerService.luau",
+        "src/server/Services/WagerLedger.luau",
+        "src/server/PersistenceService.luau",
+        "src/server/ProfileStore.luau",
+        "src/server/MatchJournal.luau"
+      ],
+      "tests": [
+        "python3 tools/lune_compat.py tools/test_colosseum_runtime.luau",
+        "work/bin/luau/luau tools/test_backend.luau",
+        "work/bin/luau/luau tools/test_profile_integrity.luau"
+      ],
+      "audit_gaps": [],
+      "file": "23_multiplayer-persistence.txt",
+      "word_count": 306
+    },
+    {
+      "batch": 24,
+      "title": "Close phone, tablet, controller and accessibility acceptance",
+      "slug": "devices-accessibility",
+      "original_batches": [
+        25
+      ],
+      "findings": [
+        5,
+        6,
+        12,
+        13,
+        33,
+        34,
+        35,
+        36,
+        37,
+        39,
+        40,
+        41,
+        42,
+        43
+      ],
+      "files": [
+        "src/client/Controllers/DeviceLayout.luau",
+        "src/client/Controllers/HudLayout.luau",
+        "src/client/Controllers/ComfortSettings.luau",
+        "src/client/Controllers/PauseMenu.luau",
+        "src/client/Controllers/InputController.luau",
+        "src/shared/EffectsPreference.luau"
+      ],
+      "tests": [
+        "python3 tools/lune_compat.py tools/test_device_layout.luau tools/test_input_map.luau tools/test_hud_layout.luau"
+      ],
+      "audit_gaps": [],
+      "file": "24_devices-accessibility.txt",
+      "word_count": 312
+    },
+    {
+      "batch": 25,
+      "title": "Measure performance and listen to the finished audio",
+      "slug": "performance-audio",
+      "original_batches": [
+        26
+      ],
+      "findings": [
+        2,
+        7,
+        21,
+        23,
+        24,
+        25,
+        31,
+        32,
+        36
+      ],
+      "files": [
+        "src/client/Controllers/SpatialAudio.luau",
+        "src/client/Controllers/BossMusic.luau",
+        "src/client/Controllers/SoundscapeController.luau",
+        "src/server/Services/PresentationService.luau",
+        "src/server/Services/PbrAssets.luau",
+        "src/shared/PresentationAssets.luau"
+      ],
+      "tests": [
+        "python3 tools/lune_compat.py tools/test_session_cleanup.luau",
+        "python3 tools/test_audiovisual.py",
+        "python3 tools/test_campaign_build.py"
+      ],
+      "audit_gaps": [
+        "A6"
+      ],
+      "file": "25_performance-audio.txt",
+      "word_count": 327
+    },
+    {
+      "batch": 26,
+      "title": "Audit every original batch and every finding before sign-off",
+      "slug": "final-coverage",
+      "original_batches": [
+        26
+      ],
+      "findings": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44
+      ],
+      "files": [
+        "outputs/claude-followup-2026-10-21/PROGRESS.md",
+        "outputs/claude-followup-2026-10-21/manifest.json",
+        "outputs/claude-followup-2026-10-21/AUDIT.md",
+        "tools/verify_all.sh",
+        "default.project.json"
+      ],
+      "tests": [
+        "Final consolidated verifier once",
+        "Recheck only acceptance affected by final fixes"
+      ],
+      "audit_gaps": [
+        "A1",
+        "A2",
+        "A3",
+        "A4",
+        "A5",
+        "A6"
+      ],
+      "file": "26_final-coverage.txt",
+      "word_count": 361
+    }
+  ],
+  "findings": [
+    {
+      "id": 1,
+      "priority": "P1",
+      "title": "Later checkpoints did not produce later respawns",
+      "work_prompts": [
+        2,
+        22
+      ],
+      "audit_status": "Implemented — acceptance pending"
+    },
+    {
+      "id": 2,
+      "priority": "P1",
+      "title": "Boss arenas lose most of their readable image",
+      "work_prompts": [
+        9,
+        25
+      ],
+      "audit_status": "Implemented — acceptance pending"
+    },
+    {
+      "id": 3,
+      "priority": "P1",
+      "title": "The bridge fight is obstructed by its geometry",
+      "work_prompts": [
+        14
+      ],
+      "audit_status": "Implemented — acceptance pending"
+    },
+    {
+      "id": 4,
+      "priority": "P1",
+      "title": "Desecrated Cloister altar needs physical and camera clearance",
+      "work_prompts": [
+        4,
+        14
+      ],
+      "audit_status": "Implemented — acceptance pending"
+    },
+    {
+      "id": 5,
+      "priority": "P1",
+      "title": "The taught interaction button differs from the altar button",
+      "work_prompts": [
+        3,
+        24
+      ],
+      "audit_status": "Implemented — acceptance pending"
+    },
+    {
+      "id": 6,
+      "priority": "P1",
+      "title": "E is also a spell, causing interaction ambiguity",
+      "work_prompts": [
+        3,
+        24
+      ],
+      "audit_status": "Implemented — acceptance pending"
+    },
+    {
+      "id": 7,
+      "priority": "P1",
+      "title": "Combat sounds repeatedly throw cleanup exceptions",
+      "work_prompts": [
+        9,
+        25
+      ],
+      "audit_status": "Implemented — acceptance pending"
+    },
+    {
+      "id": 8,
+      "priority": "P1",
+      "title": "Owned remembrance tokens are checked as booleans in the UI",
+      "work_prompts": [
+        6,
+        22
+      ],
+      "audit_status": "Implemented — acceptance pending"
+    },
+    {
+      "id": 9,
+      "priority": "P1",
+      "title": "Transmutation content has not caught up with the campaign roster",
+      "work_prompts": [
+        6,
+        22
+      ],
+      "audit_status": "Implemented — acceptance pending"
+    },
+    {
+      "id": 10,
+      "priority": "P1",
+      "title": "The promised ending needs a playable conclusion",
+      "work_prompts": [
+        21,
+        22
+      ],
+      "audit_status": "Implemented — acceptance pending"
+    },
+    {
+      "id": 11,
+      "priority": "P2",
+      "title": "Introduce mechanics through a safe first encounter",
+      "work_prompts": [
+        8
+      ],
+      "audit_status": "Implemented — acceptance pending"
+    },
+    {
+      "id": 12,
+      "priority": "P2",
+      "title": "Explain the changing health ceiling and Blood Rally",
+      "work_prompts": [
+        3,
+        8,
+        24
+      ],
+      "audit_status": "Implemented — acceptance pending"
+    },
+    {
+      "id": 13,
+      "priority": "P2",
+      "title": "Perilous counter instructions need concrete input teaching",
+      "work_prompts": [
+        8,
+        11,
+        24
+      ],
+      "audit_status": "Implemented — acceptance pending"
+    },
+    {
+      "id": 14,
+      "priority": "P2",
+      "title": "Make attack range and missed contact understandable",
+      "work_prompts": [
+        7
+      ],
+      "audit_status": "Implemented — acceptance pending"
+    },
+    {
+      "id": 15,
+      "priority": "P2",
+      "title": "Make the first combat encounter readable before using multiple enemies",
+      "work_prompts": [
+        8
+      ],
+      "audit_status": "Implemented — acceptance pending"
+    },
+    {
+      "id": 16,
+      "priority": "P2",
+      "title": "Boss entry needs a fair, observable handoff",
+      "work_prompts": [
+        10,
+        11,
+        12,
+        22
+      ],
+      "audit_status": "Implemented — acceptance pending"
+    },
+    {
+      "id": 17,
+      "priority": "P2",
+      "title": "Give the Twins distinct, persistent identification",
+      "work_prompts": [
+        3,
+        10
+      ],
+      "audit_status": "Implemented — acceptance pending"
+    },
+    {
+      "id": 18,
+      "priority": "P2",
+      "title": "Improve death and retry feedback",
+      "work_prompts": [
+        2,
+        3,
+        22
+      ],
+      "audit_status": "Implemented — acceptance pending"
+    },
+    {
+      "id": 19,
+      "priority": "P2",
+      "title": "Clarify the stakes of carried currency",
+      "work_prompts": [
+        2,
+        8,
+        22
+      ],
+      "audit_status": "Implemented — acceptance pending"
+    },
+    {
+      "id": 20,
+      "priority": "P3",
+      "title": "Decide whether healing at full health should consume a charge",
+      "work_prompts": [
+        7
+      ],
+      "audit_status": "Implemented — acceptance pending"
+    },
+    {
+      "id": 21,
+      "priority": "P3",
+      "title": "Replace crude enemy death breakup with authored feedback",
+      "work_prompts": [
+        7,
+        25
+      ],
+      "audit_status": "Implemented — acceptance pending"
+    },
+    {
+      "id": 22,
+      "priority": "P2",
+      "title": "Complete the environments beyond the Monastery",
+      "work_prompts": [
+        16,
+        17,
+        18,
+        19,
+        20,
+        22
+      ],
+      "audit_status": "Blocked — production art + acceptance"
+    },
+    {
+      "id": 23,
+      "priority": "P2",
+      "title": "Boss models need to fulfill the encounter premise",
+      "work_prompts": [
+        10,
+        11,
+        12,
+        22,
+        25
+      ],
+      "audit_status": "Blocked — production art + acceptance"
+    },
+    {
+      "id": 24,
+      "priority": "P2",
+      "title": "Player and NPC presentation is far behind the hero environment",
+      "work_prompts": [
+        13,
+        25
+      ],
+      "audit_status": "Blocked — production art + acceptance"
+    },
+    {
+      "id": 25,
+      "priority": "P2",
+      "title": "Give the Monastery more authored spatial variety",
+      "work_prompts": [
+        14,
+        25
+      ],
+      "audit_status": "Implemented — acceptance pending"
+    },
+    {
+      "id": 26,
+      "priority": "P2",
+      "title": "Close or develop the walkable empty exterior",
+      "work_prompts": [
+        14
+      ],
+      "audit_status": "Implemented — acceptance pending"
+    },
+    {
+      "id": 27,
+      "priority": "P2",
+      "title": "Audit traversal against level boundaries",
+      "work_prompts": [
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        22
+      ],
+      "audit_status": "Implemented — acceptance pending"
+    },
+    {
+      "id": 28,
+      "priority": "P2",
+      "title": "Show navigable routes, including portal legs",
+      "work_prompts": [
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22
+      ],
+      "audit_status": "Implemented — acceptance pending"
+    },
+    {
+      "id": 29,
+      "priority": "P2",
+      "title": "Correct the Sanctuary destination wording",
+      "work_prompts": [
+        14
+      ],
+      "audit_status": "Implemented — acceptance pending"
+    },
+    {
+      "id": 30,
+      "priority": "P2",
+      "title": "Make portal arrival and the nearby checkpoint obvious",
+      "work_prompts": [
+        14
+      ],
+      "audit_status": "Implemented — acceptance pending"
+    },
+    {
+      "id": 31,
+      "priority": "P2",
+      "title": "Keep the shrine's large-scale spectacle, refine player-scale views",
+      "work_prompts": [
+        15,
+        25
+      ],
+      "audit_status": "Implemented — acceptance pending"
+    },
+    {
+      "id": 32,
+      "priority": "P3",
+      "title": "Establish a consistent architecture/material vocabulary",
+      "work_prompts": [
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        25
+      ],
+      "audit_status": "Blocked — production art + acceptance"
+    },
+    {
+      "id": 33,
+      "priority": "P1",
+      "title": "Controls card overlaps the combat action bar",
+      "work_prompts": [
+        3,
+        24
+      ],
+      "audit_status": "Implemented — acceptance pending"
+    },
+    {
+      "id": 34,
+      "priority": "P2",
+      "title": "Remove duplicate default and custom combat UI",
+      "work_prompts": [
+        3,
+        24
+      ],
+      "audit_status": "Implemented — acceptance pending"
+    },
+    {
+      "id": 35,
+      "priority": "P2",
+      "title": "Improve the HUD's information hierarchy and small text",
+      "work_prompts": [
+        3,
+        24
+      ],
+      "audit_status": "Implemented — acceptance pending"
+    },
+    {
+      "id": 36,
+      "priority": "P2",
+      "title": "Keep effects from competing with combat warnings",
+      "work_prompts": [
+        3,
+        9,
+        24,
+        25
+      ],
+      "audit_status": "Implemented — acceptance pending"
+    },
+    {
+      "id": 37,
+      "priority": "P2",
+      "title": "Expand and synchronize the actual control reference",
+      "work_prompts": [
+        3,
+        24
+      ],
+      "audit_status": "Implemented — acceptance pending"
+    },
+    {
+      "id": 38,
+      "priority": "P2",
+      "title": "Make resting and summoning Lin separate, understandable choices",
+      "work_prompts": [
+        4
+      ],
+      "audit_status": "Implemented — acceptance pending"
+    },
+    {
+      "id": 39,
+      "priority": "P2",
+      "title": "Give dialogue a clear subject and consistent modal treatment",
+      "work_prompts": [
+        4,
+        24
+      ],
+      "audit_status": "Implemented — acceptance pending"
+    },
+    {
+      "id": 40,
+      "priority": "P2",
+      "title": "Preview the concrete result of leveling",
+      "work_prompts": [
+        4,
+        24
+      ],
+      "audit_status": "Implemented — acceptance pending"
+    },
+    {
+      "id": 41,
+      "priority": "P2",
+      "title": "Add useful spell and weapon descriptions",
+      "work_prompts": [
+        5,
+        24
+      ],
+      "audit_status": "Implemented — acceptance pending"
+    },
+    {
+      "id": 42,
+      "priority": "P2",
+      "title": "Give Codex an informative empty state and progress",
+      "work_prompts": [
+        5,
+        21,
+        24
+      ],
+      "audit_status": "Implemented — acceptance pending"
+    },
+    {
+      "id": 43,
+      "priority": "P3",
+      "title": "Clean up the initial prologue handoff",
+      "work_prompts": [
+        8,
+        24
+      ],
+      "audit_status": "Implemented — acceptance pending"
+    },
+    {
+      "id": 44,
+      "priority": "P2",
+      "title": "Make discoveries and story progress part of the walked route",
+      "work_prompts": [
+        8,
+        14,
+        16,
+        19,
+        22
+      ],
+      "audit_status": "Implemented — acceptance pending"
+    }
+  ],
+  "final_audit_prompt": 26,
+  "note": "Coverage assignments are not verified fixes. All follow-up prompts are unexecuted at generation."
+}

@@ -32,6 +32,7 @@ local Characters = require(Services:WaitForChild("CharacterService") :: ModuleSc
 local AI = require(Services:WaitForChild("AIService") :: ModuleScript)
 local Sanctuary = require(Services:WaitForChild("SanctuaryService") :: ModuleScript)
 local Monastery = require(Services:WaitForChild("MonasteryService") :: ModuleScript)
+local Campaign = require(Services:WaitForChild("CampaignWorld") :: ModuleScript)
 local WorldService = require(Services:WaitForChild("WorldService") :: ModuleScript)
 local Colosseum = require(Services:WaitForChild("ColosseumService") :: ModuleScript)
 local Shop = require(Services:WaitForChild("ShopService") :: ModuleScript) :: any
@@ -42,6 +43,7 @@ local Dialogue = require(Services:WaitForChild("DialogueService") :: ModuleScrip
 local Wagering = require(Services:WaitForChild("WagerService") :: ModuleScript)
 local Presentation = require(Services:WaitForChild("PresentationService") :: ModuleScript)
 local WeaponEffects = require(Services:WaitForChild("WeaponEffects") :: ModuleScript)
+local Tutorial = require(Services:WaitForChild("TutorialService") :: ModuleScript)
 
 type Bucket = Protocol.Bucket
 
@@ -72,6 +74,7 @@ end
 
 local function teardown()
  pcall(Presentation.Destroy)
+ if started.Tutorial then pcall(Tutorial.Destroy) end
  if started.Dialogue then pcall(Dialogue.Destroy) end
  if started.Wagers then pcall(Wagering.Destroy) end
 	for _, disconnect in disconnectors do
@@ -90,6 +93,9 @@ local function teardown()
 	end
 	if started.World then
 		pcall(WorldService.Destroy)
+	end
+	if started.Campaign then
+		pcall(Campaign.Destroy)
 	end
 	if started.Monastery then
 		pcall(Monastery.Destroy)
@@ -365,12 +371,15 @@ local ok, problem = xpcall(function(): boolean
 	started.Sanctuary = true
 	Monastery.Start()
 	started.Monastery = true
+	Campaign.Start() -- Bamboo Pass .. Sky Citadel maps (batches 17-21); before WorldService, like the Monastery
+	started.Campaign = true
 	WorldService.Start()
 	started.World = true
 	started.Arsenal = true
 	Magic.Start(); Loot.Start(); WeaponEffects.Start()
 	Colosseum.Start()
  Dialogue.Start();started.Dialogue=true
+ Tutorial.Start();started.Tutorial=true
  Wagering.Start(Colosseum);started.Wagers=true
 	started.Colosseum = true
 	local presented, presentationError = pcall(Presentation.Start)

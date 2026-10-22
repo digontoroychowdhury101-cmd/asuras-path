@@ -69,8 +69,14 @@ function Protocol.Shop(packet: any): boolean
  if packet.action=="GetProfile" then return true end
  if packet.action=="SaveSettings" then
   local s=packet.settings
-  local count=if type(s)=="table" and s.keybinds~=nil then 4 else 3
-  if not keys(s,{fov=true,sensitivity=true,leftHanded=true,keybinds=true},count) then return false end
+  local count=if type(s)=="table" then 3+(if s.keybinds~=nil then 1 else 0)+(if s.comfort~=nil then 1 else 0) else 3
+  if not keys(s,{fov=true,sensitivity=true,leftHanded=true,keybinds=true,comfort=true},count) then return false end
+  if s.comfort~=nil then -- comfort/readability toggles (batch 25)
+   local c=s.comfort
+   if not keys(c,{ReducedEffects=true,ReducedMotion=true,ReducedFlashes=true,TextScale=true},4) then return false end
+   if type(c.ReducedEffects)~="boolean" or type(c.ReducedMotion)~="boolean" or type(c.ReducedFlashes)~="boolean" then return false end
+   if c.TextScale~=1 and c.TextScale~=1.15 and c.TextScale~=1.3 then return false end
+  end
   if s.keybinds~=nil then
    if type(s.keybinds)~="table" then return false end
    local n=0

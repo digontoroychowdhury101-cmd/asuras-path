@@ -12,6 +12,11 @@ function Rules.classify(kind: string): (boolean, string)
 	if kind == "Shockwave" or kind == "Leap" or kind == "Ritual" or kind == "Breath" then return true, "Air Glide" end
 	return false, "Evade"
 end
+-- How each named counter is performed, as TutorialRules.text templates of live key captions; the
+-- first few boss warnings of each kind carry this hint (#13).
+Rules.CounterKeys = table.freeze({ ["Air Glide"] = "{Jump} {Jump}, hold {Jump}", ["Double Jump"] = "{Jump} then {Jump} in the air",
+	Deflect = "tap {Guard} on impact", ["Slide Dash"] = "{Slide} away, then {Dash}", ["Bullet Jump"] = "{Slide} + {Jump}", Evade = "{Dash} through it" })
+Rules.CounterHintCount = 3
 function Rules.impact(now: number, windup: number): number
 	return now + math.max(Rules.MinimumWarning, windup)
 end

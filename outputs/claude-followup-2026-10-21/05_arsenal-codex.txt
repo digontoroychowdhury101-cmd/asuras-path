@@ -1,0 +1,22 @@
+Continue Asura's Path — follow-up 05/26: Make Arsenal and Codex truthful and readable.
+
+Apply 00_SHARED_BRIEF.txt in /Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 06. Findings: #41, #42. Verify existing work, fix actual gaps, and execute this batch now.
+
+Inspect all three existing Arsenal tabs with the starting loadout, one earned unlock if available, and separately labeled seeded partial/full fixtures. Verify practical spell function, targeting/range, key effects, Qi/cooldown and weapon playstyle/comparisons agree with the active schemas and scaling functions. Slot 1 and Slot 2 must be unmistakable and display current InputMap captions.
+Inspect Codex at zero, partial and complete discovery counts, including long text and the story-completion line. Show truthful n/8 inscriptions and n/6 sovereigns, explain discovery in the empty state, and keep locked entries unclaimed/unreadable through the normal UI. Do not claim lore secrecy at the networking level when NarrativeCatalog is replicated.
+Fix clipping, misleading data, contrast, focus and menu-close/input restoration through the existing panels. Do not invent balance values, rewrite the lore, or add another inventory framework. Prompt 06 owns reward delivery and forging; prompt 24 owns final phone/controller closure.
+Start files (relative to project root; follow only required dependencies):
+- src/shared/ArsenalFacts.luau
+- src/shared/ArsenalCatalog.luau
+- src/client/Controllers/ArsenalPanel.luau
+- src/client/Controllers/ArsenalTabs.luau
+- src/client/Controllers/CodexView.luau
+
+Focused checks (reuse prior results unless code changed or live evidence is missing):
+- python3 tools/lune_compat.py tools/test_arsenal_codex.luau
+- python3 tools/test_progression_runtime.py
+
+Acceptance:
+Save a small empty/partial/full view matrix; descriptions match actual behavior, counters are accurate, and menus restore movement/focus correctly.
+
+Update the matching ledgers with evidence type and exact remaining work; stop after this batch.

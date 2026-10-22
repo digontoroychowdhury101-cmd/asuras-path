@@ -3,6 +3,7 @@ local Tween = game:GetService("TweenService")
 local Debris = game:GetService("Debris")
 local Assets = require(game:GetService("ReplicatedStorage").AsurasPath.Shared.PresentationAssets)
 local Surfaces = require(script.Parent.CombatSurfaces)
+local Comfort = require(game:GetService("ReplicatedStorage").AsurasPath.Shared.EffectsPreference) :: any
 local Vfx = {}
 Vfx.__index = Vfx
 local rng = Random.new()
@@ -15,7 +16,7 @@ local function part(parent: Instance, name: string): Part
 end
 function Vfx.ring(self: any, point: Vector3, direction: Vector3, color: Color3, radius: number)
 	while #self.Bursts > 0 and self.Bursts[1].Parent == nil do table.remove(self.Bursts, 1) end
-	if #self.Bursts >= Assets.Limits.Bursts then table.remove(self.Bursts, 1):Destroy() end
+	if #self.Bursts >= Assets.Limits.Bursts then local oldest=table.remove(self.Bursts,1); if oldest then oldest:Destroy() end end
 	local p = part(self.Folder, "DeflectShockwave")
 	table.insert(self.Bursts, p)
 	p.CFrame = CFrame.lookAt(point, point + (if direction.Magnitude > 0.1 then direction.Unit else Vector3.yAxis))
@@ -35,9 +36,29 @@ function Vfx.ring(self: any, point: Vector3, direction: Vector3, color: Color3, 
 	end
 	Debris:AddItem(p, 0.23)
 end
+-- An attack's real reach (batch 09): a pale 90° arc at chest height around the attacker, drawn when a
+-- swing closes without contact so a whiff reads as distance rather than a broken hit.
+function Vfx.arc(self: any, center: Vector3, forward: Vector3, radius: number, color: Color3)
+	local p = part(self.Folder, "ReachArc")
+	local flat = Vector3.new(forward.X, 0, forward.Z)
+	p.CFrame = CFrame.lookAt(center, center + (if flat.Magnitude > 0.1 then flat.Unit else Vector3.zAxis))
+	local nodes: {Attachment} = {}
+	for i = 0, 8 do
+		local angle = math.rad(-45 + i * 11.25)
+		local a = Instance.new("Attachment"); a.Position, a.Parent = Vector3.new(math.sin(angle), 0, -math.cos(angle)) * radius, p
+		table.insert(nodes, a)
+	end
+	for i = 1, #nodes - 1 do
+		local b = Instance.new("Beam")
+		b.Attachment0, b.Attachment1, b.FaceCamera, b.Parent = nodes[i], nodes[i + 1], true, p
+		b.Color, b.LightEmission, b.Transparency, b.Width0, b.Width1 = ColorSequence.new(color), 0.6, NumberSequence.new(0.35), 0.12, 0.12
+		Tween:Create(b, TweenInfo.new(0.35), { Width0 = 0, Width1 = 0 }):Play()
+	end
+	Debris:AddItem(p, 0.4)
+end
 function Vfx.burst(self: any, point: Vector3, direction: Vector3, color: Color3, count: number, speed: number, blood: boolean?): Part
 	while #self.Bursts > 0 and self.Bursts[1].Parent == nil do table.remove(self.Bursts, 1) end
-	if #self.Bursts >= Assets.Limits.Bursts then table.remove(self.Bursts, 1):Destroy() end
+	if #self.Bursts >= Assets.Limits.Bursts then local oldest=table.remove(self.Bursts,1); if oldest then oldest:Destroy() end end
 	local p = part(self.Folder, if blood then "FleshImpact" else "BladeEmbers")
 	p.CFrame = CFrame.lookAt(point, point + (if direction.Magnitude > 0.1 then direction.Unit else Vector3.yAxis))
 	table.insert(self.Bursts, p)
@@ -64,7 +85,7 @@ function Vfx.burst(self: any, point: Vector3, direction: Vector3, color: Color3,
 	end
 	if not blood then
 		local flash = Instance.new("PointLight")
-		flash.Color, flash.Range, flash.Brightness, flash.Parent = color, 10, 3, p
+		flash.Color, flash.Range, flash.Brightness, flash.Parent = color, 10, Comfort.flash(3), p
 		Tween:Create(flash, TweenInfo.new(0.1), { Brightness = 0 }):Play()
 	end
 	Debris:AddItem(p, 0.65); return p
@@ -86,8 +107,8 @@ function Vfx.blood(self: any, point: Vector3, direction: Vector3, excludes: {Ins
 	self:burst(point,direction,Color3.fromRGB(118,8,17),18,22,true)
 	Surfaces.stain(self.Folder,point,direction,excludes)
 end
-function Vfx.rupture(self: any, point: Vector3, direction: Vector3)
-	Surfaces.rupture(self.Folder,point,direction,Color3.fromRGB(248,74,36))
+function Vfx.rupture(self: any, point: Vector3, direction: Vector3, excludes: {Instance}?)
+	Surfaces.rupture(self.Folder,point,direction,Color3.fromRGB(248,74,36),excludes)
 end
 function Vfx.Destroy(self: any) Surfaces.clear(); self.Folder:ClearAllChildren(); table.clear(self.Shards); table.clear(self.Bursts) end
 return Vfx

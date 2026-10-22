@@ -74,6 +74,7 @@ type Match = {
 	Journaled: boolean,
 	Busy: boolean,
 	ReleaseAt: number,
+	Abandoned: boolean?, -- a fighter left while the match was still being set up (batch 24)
 }
 
 type QueueEntry = {
@@ -156,7 +157,7 @@ local RING_DEFINITIONS: { RingDefinition } = {
 	{
 		Id = "Ring_SanctuaryPromenade",
 		Name = "The Colosseum Promenade",
-		Glyph = "昇",
+		Glyph = "",
 		Region = "Sanctuary",
 		Center = Vector3.new(PROMENADE.X, PROMENADE.Y, PROMENADE.Z),
 		Apothem = 16,
@@ -166,7 +167,7 @@ local RING_DEFINITIONS: { RingDefinition } = {
 	{
 		Id = "Ring_OctagonOfAsh",
 		Name = "The Octagonal Ring of Ash",
-		Glyph = "灰",
+		Glyph = "",
 		Region = "AshColosseum",
 		Center = Vector3.new(118, 0, -1770),
 		Apothem = 20,
@@ -176,7 +177,7 @@ local RING_DEFINITIONS: { RingDefinition } = {
 	{
 		Id = "Ring_GatehouseCircle",
 		Name = "The Gatehouse Sparring Ring",
-		Glyph = "武",
+		Glyph = "",
 		Region = "DesecratedMonastery",
 		Center = Vector3.new(-130, 0, -745),
 		Apothem = 16,
@@ -630,7 +631,7 @@ local function begin(ring: Ring, a: number, b: number, mode: Mode): (boolean, st
 	-- Persistence yields: either fighter may have left, died or been pulled into a boss fight.
 	for _, userId in { a, b } do
 		local e = Characters.GetEntity(userId)
-		if closing or not Players:GetPlayerByUserId(userId) or not e or e.Respawning or e.Fighter.State == "KO"
+		if closing or match.Abandoned or not Players:GetPlayerByUserId(userId) or not e or e.Respawning or e.Fighter.State == "KO"
 			or WorldService.IsInBossFight(userId) then
 			cancelBeforeStart(id, mode, a, b)
 			return abandon("Unavailable")
@@ -1175,7 +1176,7 @@ local function buildRing(ring: Ring, parent: Folder): Model
 	title.Size = UDim2.new(1, 0, 0.62, 0)
 	title.Font = Enum.Font.Antique
 	title.TextScaled = true
-	title.Text = definition.Glyph .. "  " .. string.upper(definition.Name)
+	title.Text = string.upper(definition.Name)
 	title.TextColor3 = Color3.fromRGB(236, 226, 206)
 	title.TextStrokeTransparency = 0.4
 	title.Parent = billboard
@@ -1438,7 +1439,11 @@ function ColosseumService.Disconnect(userId: number)
 		end
 	end
 	local match = matchOf[userId]
-	if match and match.Phase ~= "Resolving" then
+	if match and matches[match.Id] ~= match then
+		-- Still being set up (begin is yielding on the journal/inbox): it never began, so there is
+		-- no forfeit, result broadcast or spectator settlement; begin cancels it when it resumes.
+		match.Abandoned = true
+	elseif match and match.Phase ~= "Resolving" then
 		conclude(match, if match.A == userId then match.B else match.A, false, "Forfeit")
 		match.ReleaseAt = now()
 	end

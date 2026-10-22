@@ -23,13 +23,14 @@ function Dressing.Build(root: Instance): number
 		if name and size and Pbr.place(folder,name,floorOf(p),size,axis,p) then placed += 1 end
 	end
 	if root.Name == "Map_DesecratedMonastery" then
-		for _, spec in {
+		local placements: {{any}} = {
 			{"AsuraRuinArch", CFrame.new(0,0.3,-861),17,"Y"},
 			{"AsuraBrassLantern",CFrame.new(-16,0.3,-766),3,"Y"},
 			{"AsuraBrassLantern",CFrame.new(16,0.3,-846),3,"Y"},
 			{"AsuraFirePit",CFrame.new(0,0.3,-812),8,"X"},
 			{"AsuraFoundationRuin",CFrame.new(-68,0.3,-1090),14,"X"},
-		} do
+		}
+		for _, spec in placements do
 			if Pbr.place(folder,spec[1] :: string,spec[2] :: CFrame,spec[3] :: number,spec[4] :: string) then placed += 1 end
 		end
 		local bridge = root:FindFirstChild("RavineBridge",true)

@@ -2,6 +2,7 @@
 local Tween = game:GetService("TweenService")
 local Debris = game:GetService("Debris")
 local WorldState = require(script.Parent.WorldStateController)
+local Comfort = require(game:GetService("ReplicatedStorage").AsurasPath.Shared.EffectsPreference) :: any
 local Effects = {}
 local COLORS: { [string]: Color3 } = { ["Lightning+Iron"] = Color3.fromRGB(235, 197, 95), Frost = Color3.fromRGB(115, 220, 255), Thunder = Color3.fromRGB(100, 170, 255),
 	Lightning = Color3.fromRGB(220, 205, 90), Void = Color3.fromRGB(138, 65, 215), Iron = Color3.fromRGB(165, 145, 95), Blood = Color3.fromRGB(210, 24, 46) }
@@ -54,9 +55,20 @@ function Effects.cue(cue: WorldState.Cue, state: WorldState.WorldState)
 		local p = spark(origin, Color3.fromRGB(150, 110, 245), Vector3.new(0.6, 0.6, 4), 0.08)
 		p.Transparency = 0.05
 	elseif cue.Kind == "BossPhase" or cue.Kind == "BossEnrage" or cue.Kind == "BossTeleport" then
-		local p = spark(origin, color, Vector3.one * 3, 1.5)
-		p.Shape = Enum.PartType.Ball
-		Tween:Create(p, TweenInfo.new(1.4), { Size = Vector3.one * 35, Transparency = 1 }):Play()
+		-- One brief translucent bloom sized to the actor; the phase reads on the body (CostumeKit) and
+		-- the perilous ring and warning stay visible through it (it used to fill 35 studs for 1.4 s).
+		local span = if entity and entity.Model then math.clamp(entity.Model:GetExtentsSize().Y, 6, 24) else 8
+		if cue.Kind == "BossTeleport" then
+			color = COLORS.Void -- the bloom marks the server's destination; a shade fades where Wu stood
+			if entity and entity.Root and (entity.Root.Position - origin).Magnitude > 3 then
+				local shade = spark(entity.Root.Position, color, Vector3.new(2.4, span, 2.4), 0.6)
+				shade.Transparency = 0.55
+				Tween:Create(shade, TweenInfo.new(0.5), { Transparency = 1, Size = Vector3.new(0.4, span * 1.2, 0.4) }):Play()
+			end
+		end
+		local p = spark(origin, color, Vector3.one * 2, 0.9)
+		p.Shape, p.Transparency = Enum.PartType.Ball, 1 - Comfort.flash(0.4) -- reduced flashes: fainter, still marked
+		Tween:Create(p, TweenInfo.new(0.8), { Size = Vector3.one * span * 1.6, Transparency = 1 }):Play()
 	end
 end
 return Effects

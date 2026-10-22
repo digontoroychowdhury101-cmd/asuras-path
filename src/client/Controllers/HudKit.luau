@@ -8,14 +8,14 @@ local SoundService = game:GetService("SoundService")
 
 local HudKit = {}
 
-HudKit.Palette = table.freeze({
-	Ink = Color3.fromRGB(14, 10, 9),
-	Ivory = Color3.fromRGB(236, 226, 206),
-	Muted = Color3.fromRGB(150, 140, 126),
-	Blood = Color3.fromRGB(176, 22, 24),
-	Ember = Color3.fromRGB(232, 132, 52),
-	Gold = Color3.fromRGB(232, 188, 76),
-	Edge = Color3.fromRGB(110, 36, 30),
+HudKit.Palette = table.freeze({ -- sakura theme; SakuraKit.Colors holds the full set
+	Ink = Color3.fromRGB(22, 10, 20),
+	Ivory = Color3.fromRGB(255, 240, 246),
+	Muted = Color3.fromRGB(190, 156, 176),
+	Blood = Color3.fromRGB(196, 22, 38),
+	Ember = Color3.fromRGB(247, 168, 200),
+	Gold = Color3.fromRGB(236, 196, 120),
+	Edge = Color3.fromRGB(150, 60, 110),
 })
 
 HudKit.TitleFont = Enum.Font.Antique
@@ -80,21 +80,19 @@ function HudKit.factor(): number
 	return math.clamp(height / REFERENCE_HEIGHT, MIN_FACTOR, MAX_FACTOR)
 end
 
--- Adds (or reuses) a UIScale on `target` whose scale is `base * factor()`, kept current as the
--- viewport resizes or the camera is replaced. Returns a disconnect function.
-function HudKit.bindScale(target: GuiObject, base: number): () -> ()
-	local scale = target:FindFirstChildOfClass("UIScale") or HudKit.make("UIScale", target, {})
+-- Calls `refresh(viewportSize)` now and whenever the viewport resizes or the camera is replaced.
+-- Returns a disconnect function.
+function HudKit.onViewport(refresh: (Vector2) -> ()): () -> ()
 	local viewportConnection: RBXScriptConnection? = nil
-	local function refresh()
-		scale.Scale = base * HudKit.factor()
-	end
 	local function watch()
 		if viewportConnection then
 			viewportConnection:Disconnect()
 		end
 		local camera = Workspace.CurrentCamera
-		viewportConnection = if camera then camera:GetPropertyChangedSignal("ViewportSize"):Connect(refresh) else nil
-		refresh()
+		viewportConnection = if camera then camera:GetPropertyChangedSignal("ViewportSize"):Connect(function()
+			refresh(camera.ViewportSize)
+		end) else nil
+		refresh(if camera then camera.ViewportSize else Vector2.new(REFERENCE_HEIGHT * 16 / 9, REFERENCE_HEIGHT))
 	end
 	local cameraConnection = Workspace:GetPropertyChangedSignal("CurrentCamera"):Connect(watch)
 	watch()
@@ -104,6 +102,17 @@ function HudKit.bindScale(target: GuiObject, base: number): () -> ()
 			viewportConnection:Disconnect()
 		end
 	end
+end
+
+-- Adds (or reuses) a UIScale on `target` whose scale is `base * factor()`, kept current as the
+-- viewport resizes or the camera is replaced. Returns a disconnect function.
+-- A device profile may override the base through the AsuraScaleBase attribute (DeviceLayout).
+function HudKit.bindScale(target: GuiObject, base: number): () -> ()
+	local scale = target:FindFirstChildOfClass("UIScale") or HudKit.make("UIScale", target, {})
+	return HudKit.onViewport(function()
+		local override = target:GetAttribute("AsuraScaleBase")
+		scale.Scale = (if type(override) == "number" then override else base) * HudKit.factor()
+	end)
 end
 
 -- Built-in content sounds only (rbxasset://), so cues work offline and in Studio.

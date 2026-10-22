@@ -21,8 +21,9 @@ function Audit.Run(root: Instance): any
 			else
 				result.Surfaces += 1
 				for _, key in {"ColorMap","NormalMap","RoughnessMap","MetalnessMap"} do
-					local id = (s :: any)[key]
-					if id == "" then table.insert(result.Issues,item:GetFullName() .. ": missing " .. key) else maps[id]=true end
+					local content = (s :: any)[key.."Content"]
+					local id = content and content.Uri
+					if not id or id == "" then table.insert(result.Issues,item:GetFullName() .. ": missing " .. key) else maps[id]=true end
 				end
 			end
 		elseif item:IsA("ParticleEmitter") then

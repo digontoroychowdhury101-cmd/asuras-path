@@ -80,7 +80,7 @@ function Ruins.roof(parent: Instance, base: CFrame, width: number, depth: number
 	return group
 end
 
-local function inscription(parent: BasePart, text: string)
+function Ruins.inscription(parent: BasePart, text: string)
 	local gui = Instance.new("SurfaceGui")
 	gui.Face = Enum.NormalId.Front
 	gui.SizingMode = Enum.SurfaceGuiSizingMode.PixelsPerStud
@@ -106,7 +106,7 @@ local function gatehouse(parent: Instance, z: number, rng: Random)
 	Kit.part(g, "Lintel", Vector3.new(46, 1.8, 2.8), CFrame.new(0, G + 18.1, z), P.WoodDark, WOOD)
 	Kit.part(g, "TieBeam", Vector3.new(18, 1.2, 2.2), CFrame.new(0, G + 13.2, z), P.WoodDark, WOOD)
 	local plaque = Kit.part(g, "Plaque", Vector3.new(6, 2.6, 0.4), CFrame.new(0, G + 15.6, z + 1.3) * CFrame.Angles(0, math.pi, 0), P.WoodDark, WOOD)
-	inscription(plaque, "古寺")
+	Ruins.inscription(plaque, "ANCIENT TEMPLE")
 	Ruins.roof(g, CFrame.new(0, G + 19, z) * CFrame.Angles(0, math.pi / 2, 0), 11, 50, rng, true)
 	for side = -1, 1, 2 do
 		Kit.part(g, "BayWall", Vector3.new(8.6, 7, 2.2), CFrame.new(side * 13.5, G + 3.5, z), P.Stone, COBBLE)
@@ -122,12 +122,14 @@ function Ruins.Build(parent: Instance, rng: Random)
 	-- Courtyard enclosure (north wall meets the gatehouse, south wall opens on the processional path).
 	run(-82, -752, -21, -752, 12)
 	run(21, -752, 82, -752, 12)
-	run(-82, -752, -82, -858, 12, 0.12)
-	run(82, -752, 82, -858, 12, 0.12)
+	run(-82, -752, -82, -826, 12, 0.12) -- the west postern (z -826..-834) opens on the waterfall path
+	run(-82, -834, -82, -858, 12, 0.12)
+	-- East wall opens (z -800..-822) on the road through the ridge pass to the Twins' side plateau.
+	run(82, -752, 82, -800, 12, 0.12)
+	run(82, -822, 82, -858, 12, 0.12)
 	run(-82, -858, -16, -858, 8, 0.25)
 	run(16, -858, 82, -858, 8, 0.25)
-	-- Arrival landing parapets.
-	run(-26, -698, -26, -748, 3.2, 0.15, false)
+	run(-26, -698, -26, -748, 3.2, 0.15, false) -- arrival landing parapets
 	run(26, -698, 26, -748, 3.2, 0.15, false)
 	run(-26, -698, 26, -698, 3.2, 0.2, false)
 	-- Ravine lips, broken where the ground slumped.

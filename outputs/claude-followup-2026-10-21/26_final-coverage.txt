@@ -1,0 +1,23 @@
+Continue Asura's Path — follow-up 26/26: Audit every original batch and every finding before sign-off.
+
+Apply 00_SHARED_BRIEF.txt in /Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 26. Findings: all #1–44 (evidence audit only). Verify existing work, fix actual gaps, and execute this batch now.
+
+Perform an evidence audit, not another unrestricted implementation pass. Read this pack's PROGRESS.md and manifest plus the original 26-row audit. Review all original batches 01–26, every original finding 1–44 and audit gaps A1–A6. Use existing evidence and the changed-file/build identity; do not close items by citing the prompt that requested them.
+For each original batch/finding, record current implementation, appropriately typed acceptance evidence, remaining defect/dependency and exact owner. A finding assigned to several prompts stays open until all its required parts pass. Retain partial status for production models/animations/region kits, real physics/presentation, earned six-boss completion, device hardware, listening/performance and live persistence that lack direct evidence. Do not erase the original historical observations or imply that the pack author performed these future tests.
+Run the consolidated local verifier once on the final changed code, with temporary place output. Check source registration, asset paths, syntax, remaining new Studio output and meaningful regressions; do not weaken assertions or remove tests to obtain green results. Recheck only affected acceptance after final fixes.
+Write FINAL_ACCEPTANCE.md with two concise tables (26 batches; 44 findings), linked evidence, exact open work and a go/no-go assessment for representative private playtesting. Record a small remaining owner-action list. All-fixed/ready-to-launch is forbidden while mandatory acceptance is absent; successful local tests alone cannot establish commercial success. Stop after this sign-off audit rather than starting new features.
+Start files (relative to project root; follow only required dependencies):
+- outputs/claude-followup-2026-10-21/PROGRESS.md
+- outputs/claude-followup-2026-10-21/manifest.json
+- outputs/claude-followup-2026-10-21/AUDIT.md
+- tools/verify_all.sh
+- default.project.json
+
+Focused checks (reuse prior results unless code changed or live evidence is missing):
+- Final consolidated verifier once
+- Recheck only acceptance affected by final fixes
+
+Acceptance:
+Every original batch, all 44 findings and A1–A6 have evidence-backed dispositions; unresolved work stays visible and the readiness verdict matches what was actually tested.
+
+Update the matching ledgers with evidence type and exact remaining work; stop after this batch.

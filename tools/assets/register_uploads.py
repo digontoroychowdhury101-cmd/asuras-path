@@ -24,15 +24,31 @@ def main():
                 queue[section][key].update(id=value,uploaded=True)
             updates.append((section,key,value))
         source=source[:block.start(2)]+text+source[block.end(2):]
+    models=data.get('Models',{})
+    for name,parts in models.items():
+        if not isinstance(parts,list) or not parts: raise ValueError('Empty imported model '+name)
+        for part in parts:
+            for field in ('MeshId','ColorMap','NormalMap','RoughnessMap','MetalnessMap'):
+                if not re.fullmatch(r'rbxassetid://[1-9][0-9]{5,19}',str(part.get(field,''))):
+                    raise ValueError(f'{name}: missing/invalid {field}')
+        for entry in queue['models']:
+            if entry['name']==name:entry['uploaded']=True;entry['parts']=parts
     path.write_text(source);queued.write_text(json.dumps(queue,indent=2)+'\n')
     registry=ROOT/'assets/PHASE5_UPLOADED.json'
     previous=json.loads(registry.read_text()) if registry.exists() else {}
     for section,key,value in updates: previous.setdefault(section,{})[key]=value
+    previous.setdefault('Models',{}).update(models)
     registry.write_text(json.dumps(previous,indent=2)+'\n')
     doc=ROOT/'assets/ASSET_IDS.md';text=doc.read_text().split('<!-- PHASE5_UPLOADED -->')[0].rstrip()
     rows=['\n\n<!-- PHASE5_UPLOADED -->','## Registered Phase 5 uploads','', '| Type | Slot | Owned asset ID |','|---|---|---|']
     for section,entries in previous.items():
+        if section=='Models': continue
         for key,value in entries.items(): rows.append(f'| {section} | {key} | {value} |')
+    rows+=['', '| Model | MeshPart | MeshId | Color / Normal / Roughness / Metalness |','|---|---|---|---|']
+    for name,parts in previous.get('Models',{}).items():
+        for part in parts:
+            maps=' / '.join(part[k] for k in ('ColorMap','NormalMap','RoughnessMap','MetalnessMap'))
+            rows.append(f"| {name} | {part.get('Name','MeshPart')} | {part['MeshId']} | {maps} |")
     doc.write_text(text+'\n'.join(rows)+'\n')
     print('Registered',len(updates),'uploaded IDs. Verify experience permissions in Studio.')
 if __name__=='__main__':main()

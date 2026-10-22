@@ -8,13 +8,12 @@
 -- Calls return false if the asset folder is missing; Dressing.try pcall-wraps them for boot safety.
 local ServerStorage = game:GetService("ServerStorage")
 local Leaves = require(script.Parent:WaitForChild("SanctuaryLeaves") :: ModuleScript)
+local Titan = require(script.Parent:WaitForChild("SanctuaryTitan") :: ModuleScript)
 
 local Dressing = {}
 
 local COLOSSUS_HEIGHT = 48 -- fits between the arch pillars (inner edges at +/-21 studs)
-local TITAN_HEIGHT = 62 -- Veiled Ascetic incl. canopy; the canopy tops out under the arch span
-local ROOT_SINK = 2
-local COLOSSUS_YAW = 180 -- both meshes face their +Z; the dais anchor looks down -Z
+local COLOSSUS_YAW = 180 -- the fallback Gothic statue faces its +Z; the dais anchor looks down -Z
 local ROOT_LENGTH = 26
 local TREE_HEIGHT = 26
 local GATE_HEIGHT = 13
@@ -56,32 +55,26 @@ end
 
 local unified = false -- true once the Veiled Ascetic is mounted; Roots/SacredTree then add nothing
 
-function Dressing.Colossus(parent: Instance, anchor: CFrame, proxy: Instance?): boolean
+function Dressing.Colossus(parent: Instance, anchor: CFrame, proxy: Instance?, focus: Vector3?): boolean
 	local statue = asset("AsuraVeiledTitan")
 	unified = statue ~= nil
 	statue = statue or asset("AsuraColossusStatue")
 	if not statue then
 		return false
 	end
-	scaleTo(statue, "Y", if unified then TITAN_HEIGHT else COLOSSUS_HEIGHT)
 	settle(statue, true)
-	-- Only the stone body collides; leaves and canopy are pass-through scenery.
-	for _, name in { "Titan_Leaves", "Titan_Canopy" } do
-		local p = statue:FindFirstChild(name, true)
-		if p and p:IsA("BasePart") then
-			p.CanCollide, p.CanQuery = false, false
+	if unified then
+		-- Figure, tree and leaves are laid out against the dais and arch by SanctuaryTitan.
+		if not Titan.Mount(statue, anchor, focus) then
+			statue:Destroy()
+			unified = false
+			return false
 		end
-	end
-	statue:PivotTo(anchor * CFrame.Angles(0, math.rad(COLOSSUS_YAW), 0))
-	if unified then -- rest the robe on the dais (ground roots sink ~ROOT_SINK below it)
-		local box, size = statue:GetBoundingBox()
-		statue:PivotTo(statue:GetPivot() + Vector3.yAxis * (anchor.Position.Y - box.Position.Y + size.Y * 0.5 - ROOT_SINK))
+	else
+		scaleTo(statue, "Y", COLOSSUS_HEIGHT)
+		statue:PivotTo(anchor * CFrame.Angles(0, math.rad(COLOSSUS_YAW), 0))
 	end
 	statue.Parent = parent
-	local canopy = statue:FindFirstChild("Titan_Canopy", true)
-	if canopy and canopy:IsA("BasePart") then
-		Leaves.Emitter(canopy, { Rate = 18, Size = 1.1 })
-	end
 	if proxy then proxy:Destroy() end
 	return true
 end

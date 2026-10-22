@@ -15,7 +15,12 @@ local function blade(e: any): BasePart?
 			if p and p:IsA("BasePart") then return p end
 		end
 	end
-	return nil
+	-- Boss looks carry their own weapons (CostumeKit): trail the longest visible weapon piece.
+	local attire, best, length = e.Model:FindFirstChild("AsuraAttire"), nil :: BasePart?, 0
+	for _, p in if attire then attire:GetChildren() else {} do
+		if p:IsA("BasePart") and p:GetAttribute("AsuraRole") == "Weapon" and p.Transparency < 1 and p.Size.Z > length then best, length = p, p.Size.Z end
+	end
+	return best
 end
 function Controller.new(state: any): any return setmetatable({State=state, Records={}, Tick=0},Controller) end
 function Controller.Update(self: any, dt: number)
@@ -53,7 +58,8 @@ function Controller.Update(self: any, dt: number)
 			trail.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0,0.08),NumberSequenceKeypoint.new(1,1)})
 			trail.WidthScale,trail.LightEmission = NumberSequence.new(1,0),0.85
 			trail.Texture,trail.Enabled,trail.Parent = Assets.Textures.Ribbon,false,p
-			record={Part=p,Trail=trail,Items={trail,a,b}}; self.Records[id]=record
+			local items: {Instance}={trail,a,b}
+			record={Part=p,Trail=trail,Items=items}; self.Records[id]=record
 		end
 		local snapshot=e.Snapshot
 		record.Trail.Enabled = snapshot ~= nil and snapshot.State == "Active"

@@ -1,0 +1,1 @@
+[["__lua","Client","for _, n in {\"CloudSea\", \"KarstHorizon\"} do local f = workspace.Sanctuary:FindFirstChild(n) if f then f.Parent = game:GetService(\"ReplicatedStorage\") end end return \"hidden\""]]

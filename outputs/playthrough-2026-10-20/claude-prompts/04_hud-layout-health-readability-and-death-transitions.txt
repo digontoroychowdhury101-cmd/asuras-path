@@ -1,0 +1,22 @@
+Continue Asura's Path repairs — batch 04/26: HUD layout, health readability and death transitions.
+
+Apply the shared operating brief (outputs/playthrough-2026-10-20/claude-prompts/00_OPERATING_BRIEF.txt; read once per chat) and current PROGRESS.md. Read report findings #12, #17, #18, #33, #34, #35, #36 only, plus relevant evidence. Implement this batch now.
+
+Repair the current Sakura HUD without replacing its visual identity. Put the H controls card in a reserved region or proper modal so it cannot overlap the action bar. Remove redundant default Roblox health/player-list elements where they duplicate or cover game information; keep unrelated core functions usable.
+Consolidate enemy/target labels, prevent crowded nameplates and show the Twins with separate, stable actor identification and understandable health/posture bars. Make flask count, life, stamina/posture, Qi and carried currency readable; distinguish currency from spell energy using the actual data model.
+Show the changing health ceiling/recoverable damage and rally window through shape/animation/short labels, not color alone. Hide irrelevant combat labels, prompts, petals and bars during prologue, death and dialogue, restoring them correctly afterwards. Improve priority among damage numbers, counter text and warnings. Reuse existing UI components; avoid a broad UI-framework rewrite.
+
+Start near these files; follow only necessary dependencies:
+- src/client/Controllers/ControlsCard.luau
+- src/client/Controllers/CombatHud.luau
+- src/client/Controllers/EnemyBars.luau
+- src/client/Controllers/EnemyPlate.luau
+- src/client/Controllers/TargetPlate.luau
+- src/client/Controllers/BossHud.luau
+- src/client/Controllers/SakuraHud.luau
+- src/client/Controllers/InterfaceController.luau
+
+Acceptance and focused verification:
+Inspect default HUD, H opened, two nearby enemies, Twins, reduced health ceiling, low flask count, boss entry, death/respawn and dialogue. Check a small and wide desktop viewport. Verify transitions restore state without stale labels. Avoid changing combat math in this layout batch.
+
+Update the repair ledger and PROJECT_STATE.md. State implementation versus verification precisely, then stop at this batch boundary.

@@ -1,0 +1,23 @@
+Continue Asura's Path — follow-up 11/26: Finish Baize and Titan as readable creature encounters.
+
+Apply 00_SHARED_BRIEF.txt in /Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 12. Findings: #13, #16, #23. Verify existing work, fix actual gaps, and execute this batch now.
+
+Reuse prompt 10's animation contract; read only the Baize/Titan rows of ASSET_REQUIREMENTS.md. Inspect AsuraLookKey, AsuraSkinStatus, body scale, actual bound templates, hurt capsules and custom animation availability. Do not rename or recolor a fallback and report production art complete. Use available approved authoring assets/tools to deliver valid models and animations; if unavailable, preserve the fallback and record the exact deliverable still absent.
+For Baize, verify grounded paws, creature silhouette, phase change, pillar steering, pounce clearance and readable Air Glide counter inputs in the actual arena. Camera and hitboxes must follow the presented body rather than a hidden humanoid position. For Titan, verify scale, ankle weak-point visibility, melee/camera access, kneel/phase behavior and weapon reach. Inspect at normal play height in steady light.
+For both, check handoff skip/restore, first-impact grace, death/reset and defeat cleanup. Procedural CreatureMotion must yield cleanly to valid authored animation without double transforms. Earned-fight fairness and counter usability need continuous input; seeded phase access only validates that phase's presentation. Keep scene geometry changes confined to clearance fixes; regional art is owned by prompts 16 and 18.
+Start files (relative to project root; follow only required dependencies):
+- src/shared/BossBodies.luau
+- src/shared/LooksBeasts.luau
+- src/server/Services/BossMotion.luau
+- src/server/Services/BossSkin.luau
+- src/client/Controllers/CreatureMotion.luau
+- src/shared/BossEncounterRules.luau
+
+Focused checks (reuse prior results unless code changed or live evidence is missing):
+- python3 tools/lune_compat.py tools/test_boss_presentation.luau
+- python3 tools/test_boss_runtime.py
+
+Acceptance:
+Save lit views and attachment/phase/camera results for both bosses; mark production art, continuous-input combat and diagnostic phase checks independently.
+
+Update the matching ledgers with evidence type and exact remaining work; stop after this batch.

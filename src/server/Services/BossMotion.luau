@@ -1,8 +1,9 @@
 --!strict
 local Characters = require(script.Parent.CharacterService)
 local World = require(game:GetService("ReplicatedStorage").AsurasPath.Shared.WorldDefinitions)
+local Bodies = require(game:GetService("ReplicatedStorage").AsurasPath.Shared.BossBodies)
 local Motion = {}
-type Flight = { From: Vector3, To: Vector3, Start: number, Impact: number, Height: number, Kind: string, Perch: Vector3, Anchored: boolean }
+type Flight = { From: Vector3, To: Vector3, Start: number, Impact: number, Height: number, Kind: string, Perch: Vector3, Anchored: boolean, Clear: number }
 local flights: { [number]: Flight } = {}
 function Motion.clamp(id: number, point: Vector3): Vector3
 	local e = Characters.GetEntity(id)
@@ -13,23 +14,33 @@ function Motion.clamp(id: number, point: Vector3): Vector3
 	return Vector3.new(math.clamp(point.X, c.X - s.X / 2 + 12, c.X + s.X / 2 - 12), point.Y,
 		math.clamp(point.Z, c.Z - s.Z / 2 + 12, c.Z + s.Z / 2 - 12))
 end
-local function pillarPerch(id: number, target: Vector3): Vector3
+-- The pillar across the arena from the target, perched on its top (feet just above it), plus the
+-- horizontal radius within which the body must stay above the column.
+local function pillarPerch(id: number, target: Vector3): (Vector3, number)
 	local e = Characters.GetEntity(id)
 	local bossId = e and e.Model:GetAttribute("AsuraEncounter")
 	local boss = if type(bossId) == "string" then World.Bosses[bossId] else nil
-	if boss then
+	if boss and e then
+		local scale = e.Model:GetScale()
 		local c = boss.Arena.Center
-		return Vector3.new(c.X + (if target.X >= c.X then -60 else 60), 34, c.Z + (if target.Z >= c.Z then -50 else 50))
+		for _, pillar in Bodies.pillars(boss) do
+			if (pillar.X < c.X) == (target.X >= c.X) and (pillar.Z < c.Z) == (target.Z >= c.Z) then
+				local hull = (Bodies.Hulls :: any)[boss.Archetype]
+				local reach = if hull then math.max(hull[1], hull[3]) * 0.5 * scale else 2
+				return Vector3.new(pillar.X, Bodies.perchY(pillar, scale), pillar.Z), pillar.Half * math.sqrt(2) + reach
+			end
+		end
 	end
-	return Motion.clamp(id, target + Vector3.new(50, 31, -50))
+	return Motion.clamp(id, target + Vector3.new(50, 31, -50)), 0
 end
 function Motion.begin(id: number, kind: string, destination: Vector3, now: number, impact: number)
 	Motion.cancel(id)
 	local e = Characters.GetEntity(id)
 	if not e then return end
 	local target = Motion.clamp(id, destination)
-	flights[id] = { From = e.Root.Position, To = target, Start = now, Impact = impact,
-		Kind = kind, Perch = pillarPerch(id, target),
+	local perch, clear = pillarPerch(id, target)
+	flights[id] = { From = e.Root.Position, To = target, Start = now, Impact = impact, Clear = clear,
+		Kind = kind, Perch = perch,
 		Height = if kind == "Pillar" then 34 elseif kind == "Aerial" then 28 elseif kind == "Teleport" then 0 else 4,
 		Anchored = e.Root.Anchored }
 	e.Root.Anchored = true
@@ -43,7 +54,12 @@ function Motion.step(id: number, now: number)
 	local point = flight.From:Lerp(flight.To, t) + Vector3.new(0, math.sin(math.pi * t) * flight.Height, 0)
 	if flight.Kind == "Teleport" then point = if t < 0.75 then flight.From else flight.To end
 	if flight.Kind == "Pillar" then
-		point = if t < 0.3 then flight.From:Lerp(flight.Perch, t / 0.3) elseif t < 0.65 then flight.Perch else flight.Perch:Lerp(flight.To, (t - 0.65) / 0.35)
+		-- Rise before crossing the column, hold on its top, leave the top before falling (BossBodies.arc).
+		local from, perch, to = flight.From, flight.Perch, flight.To
+		local p = if t < 0.3 then Bodies.arc({ from.X, from.Y, from.Z }, { perch.X, perch.Y, perch.Z }, perch.Y, flight.Clear, false, true, t / 0.3)
+			elseif t < 0.65 then { perch.X, perch.Y, perch.Z }
+			else Bodies.arc({ perch.X, perch.Y, perch.Z }, { to.X, to.Y, to.Z }, perch.Y, flight.Clear, true, false, (t - 0.65) / 0.35)
+		point = Vector3.new(p[1], p[2], p[3])
 	end
 	local direction = flight.To - flight.From
 	local look = Vector3.new(direction.X, 0, direction.Z)

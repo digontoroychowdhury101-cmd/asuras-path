@@ -1,0 +1,22 @@
+Continue Asura's Path repairs — batch 24/26: Multiplayer and persistence integration.
+
+Apply the shared operating brief (outputs/playthrough-2026-10-20/claude-prompts/00_OPERATING_BRIEF.txt; read once per chat) and current PROGRESS.md. Read the report's remaining multiplayer/persistence verification section only, plus relevant evidence. Implement this batch now.
+
+Cover the report's untested multiplayer/persistence risks as verification work, not presumed defects. Use the existing backend/profile/Colosseum architecture and local Studio tools when available. Test two duelists plus a spectator: matchmaking, countdown closure, ranked-normalized versus Open builds, spectator wager eligibility/settlement and disconnect recovery.
+Exercise durable profile/result/escrow behavior for duplicate delivery, retries, stale sessions, leave/rejoin, unavailable persistence and shutdown. Fix demonstrated failures while preserving migration/schema compatibility, authoritative validation and idempotent settlement.
+Use isolated test profiles and fixtures. Preserve real player data and existing release gates. Local mocks/fakes do not prove live DataStore delivery; identify any cloud acceptance that cannot be run in the current environment.
+Keep this pass limited to reliability and integration. Do not add monetization, new wager rules or unrelated multiplayer features.
+
+Start near these files; follow only necessary dependencies:
+- src/server/Services/ColosseumService.luau
+- src/server/Services/WagerService.luau
+- src/server/PersistenceService.luau
+- src/server/ProfileStore.luau
+- tools/test_backend.luau
+- tools/test_profile_integrity.luau
+- tools/test_commercial_systems.luau
+
+Acceptance and focused verification:
+Run focused profile/backend/wager regressions and an actual multi-client session where available. Report normalized/open stats, wager/refund cases and reconnect outcomes with local versus live evidence clearly distinguished. Leave unavailable multi-client/cloud checks explicitly pending.
+
+Update the repair ledger and PROJECT_STATE.md. State implementation versus verification precisely, then stop at this batch boundary.

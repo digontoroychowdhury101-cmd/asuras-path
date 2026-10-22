@@ -24,7 +24,7 @@ function Marker.new(parent: Instance): WaypointMarker
 	local anchor = Instance.new("Attachment")
 	anchor.Name = "AsuraObjectiveAnchor"
 	anchor.Parent = Workspace.Terrain
-	local gui = HudKit.make("BillboardGui", parent, { Name = "ObjectiveMarker", Adornee = anchor, AlwaysOnTop = true, LightInfluence = 0, Size = UDim2.fromOffset(120, 54), StudsOffset = Vector3.new(0, 4, 0), Enabled = false }) :: BillboardGui
+	local gui = HudKit.make("BillboardGui", parent, { Name = "ObjectiveMarker", Adornee = anchor, AlwaysOnTop = true, LightInfluence = 0, Size = UDim2.fromOffset(240, 54), StudsOffset = Vector3.new(0, 4, 0), Enabled = false }) :: BillboardGui
 	HudKit.label(gui, "◆", 26, HudKit.TitleFont, HudKit.Palette.Gold, { Size = UDim2.new(1, 0, 0, 30), TextStrokeTransparency = 0.2 })
 	local text = HudKit.label(gui, "", 14, Enum.Font.GothamMedium, HudKit.Palette.Ivory, { Position = UDim2.fromOffset(0, 30), Size = UDim2.new(1, 0, 0, 20), TextStrokeTransparency = 0.3 })
 	return setmetatable({ Anchor = anchor, Gui = gui, Text = text, Portal = nil }, Marker)
@@ -57,16 +57,18 @@ function Marker.Locate(self: WaypointMarker, target: any): Vector3?
 	return if portal then portal.Position else nil
 end
 
--- Points the marker at `goal` and returns the distance in studs (nil when there is no goal).
-function Marker.Point(self: WaypointMarker, goal: Vector3?, from: Vector3?, suppressed: boolean): number?
+-- Points the marker at `goal` and returns the distance in studs (nil when there is no goal). A
+-- staged route step names itself ("Bridge · 64m") and reports the walked distance to the goal.
+function Marker.Point(self: WaypointMarker, goal: Vector3?, from: Vector3?, suppressed: boolean, label: string?, walked: number?): number?
 	if goal == nil or from == nil then
 		self.Gui.Enabled = false
 		return nil
 	end
-	local meters = math.floor((goal - from).Magnitude)
+	local near = math.floor((goal - from).Magnitude)
+	local meters = if walked then math.floor(walked) else near
 	self.Anchor.WorldPosition = goal
-	self.Text.Text = string.format("%dm", meters)
-	self.Gui.Enabled = meters > ARRIVE_DISTANCE and not suppressed
+	self.Text.Text = if label then string.format("%s · %dm", label, meters) else string.format("%dm", meters)
+	self.Gui.Enabled = near > ARRIVE_DISTANCE and not suppressed
 	return meters
 end
 

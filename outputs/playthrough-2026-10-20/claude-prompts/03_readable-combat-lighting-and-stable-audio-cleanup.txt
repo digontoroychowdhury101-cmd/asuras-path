@@ -1,0 +1,19 @@
+Continue Asura's Path repairs — batch 03/26: Readable combat lighting and stable audio cleanup.
+
+Apply the shared operating brief (outputs/playthrough-2026-10-20/claude-prompts/00_OPERATING_BRIEF.txt; read once per chat) and current PROGRESS.md. Read report findings #2, #7, #36 only, plus relevant evidence. Implement this batch now.
+
+Fix two presentation blockers together. First, inspect EnvironmentProfiles.resolve and the per-client transition: every first-phase boss currently receives Ash Colosseum night lighting. Give each biome an intentional combat treatment with readable actors, weapons, floor boundaries and sufficient neutral fill across the whole arena. Keep phase-two changes atmospheric without hiding telegraphs. Inspect brazier coverage instead of relying on bright temporary attack effects.
+Second, reproduce and fix the repeated locked-Parent exceptions in SpatialAudio.at. Make sound/source cleanup idempotent across Ended, Debris, parent destruction, voice eviction and shutdown; retain bounded cleanup for assets that fail loading.
+Reduce decorative petals/ambient effects during active fights so warning cues remain dominant. Expose a small shared effects preference hook for batch 25 rather than building another settings system. Preserve the existing shrine palette and avoid a global fullbright workaround.
+
+Start near these files; follow only necessary dependencies:
+- src/shared/EnvironmentProfiles.luau
+- src/client/Controllers/EnvironmentController.luau
+- src/server/Services/ArenaLighting.luau
+- src/client/Controllers/SpatialAudio.luau
+- src/client/Controllers/SakuraHud.luau
+
+Acceptance and focused verification:
+Capture the six arenas at normal play distance during idle combat lighting and any phase transition accessible to testing. Exercise repeated hits, parries, rest, death and sound/source destruction; verify no cleanup exceptions or growing orphan sources. Compare report screenshots and runtime-evidence.txt. Do not claim an audio listening assessment from logs alone.
+
+Update the repair ledger and PROJECT_STATE.md. State implementation versus verification precisely, then stop at this batch boundary.

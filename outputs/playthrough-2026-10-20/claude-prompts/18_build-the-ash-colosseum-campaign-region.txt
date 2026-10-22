@@ -1,0 +1,19 @@
+Continue Asura's Path repairs — batch 18/26: Build the Ash Colosseum campaign region.
+
+Apply the shared operating brief (outputs/playthrough-2026-10-20/claude-prompts/00_OPERATING_BRIEF.txt; read once per chat) and current PROGRESS.md. Read report findings #22, #27, #28, #32 only, plus relevant evidence. Implement this batch now.
+
+Replace the campaign Ash Colosseum approach/arena blockout with a coherent ruined martial colosseum route. This is Grandmaster Shen's story region, distinct from the Sanctuary PvP rings. Connect Bamboo Pass through the antechamber altar to Shen, then onward toward Celestial Pagoda.
+Create readable ruins, a clear arena identity, purposeful elevation/boundaries, spaced approach combat and a safe altar/portrait pocket. Maintain sufficient fighting room and camera clearance for both Shen forms. Reuse the project's wuxia architecture/material language and batch 03's readable combat lighting.
+Preserve validated fog-gate, phase, reward, checkpoint and region IDs. Make the next route visible after victory and avoid new progression locks that can strand existing saves.
+Keep the pass limited to this region and its immediate joins.
+
+Start near these files; follow only necessary dependencies:
+- src/shared/WorldDefinitions.luau
+- src/server/Services/WorldService.luau
+- src/server/Services/BossArenas.luau
+- src/shared/EnvironmentProfiles.luau
+
+Acceptance and focused verification:
+Walk Bamboo join -> antechamber -> arena -> onward connection, including rest/death/travel and camera clearance. Check Shen's two forms against geometry/hazards and confirm the Sanctuary PvP area is unchanged. Use normal-view captures and distinguish seeded victory access from earned progression.
+
+Update the repair ledger and PROJECT_STATE.md. State implementation versus verification precisely, then stop at this batch boundary.

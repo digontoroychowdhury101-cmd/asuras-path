@@ -5,13 +5,21 @@ local Workspace=game:GetService("Workspace")
 local Shared=game:GetService("ReplicatedStorage"):WaitForChild("AsurasPath")
 local simFolder=Shared:WaitForChild("Simulation")
 local Spells=require(simFolder:WaitForChild("SpellSchema") :: ModuleScript)
+local InputMap=require(Shared:WaitForChild("Shared"):WaitForChild("InputMap") :: ModuleScript)
 local Hud=require(script.Parent.SpellHud)
+local Visibility=require(script.Parent.HudVisibility)
 local Panel=require(script.Parent.ArsenalPanel)
 local Vfx=require(script.Parent.SpellVfx)
 local Controller={}
 Controller.__index=Controller
 export type SpellController=typeof(setmetatable({} :: {State: any,Ui: any,Remote: RemoteEvent,Slots: {string},Cooldowns: {[string]: number},
  View: Hud.View,Panel: Panel.View,Connections: {RBXScriptConnection},Unsubscribe: ()->()},Controller))
+-- Spell and Arsenal inputs come from the shared InputMap (keyboard and gamepad alike).
+local function keys(command: string): {Enum.KeyCode}
+ local binding=InputMap.get(command);local list: {Enum.KeyCode}={}
+ if binding then for _,field in {binding.Keys,binding.Pad} do for _,name in field do table.insert(list,(Enum.KeyCode :: any)[name]) end end end
+ return list
+end
 function Controller.Cast(self: SpellController,slot: number)
  if self.Ui.Input.MenuOpen or UserInputService:GetFocusedTextBox() or self.Panel.Root.Visible or self.Ui.Altar.Visible or self.Ui.PrologueActive then return end
  local snapshot=self.State:OwnSnapshot();local id=self.Slots[slot];local s=if id then Spells.get(id) else nil
@@ -27,7 +35,7 @@ function Controller.new(state: any,ui: any,net: Instance): SpellController
   if ui.Input.MenuOpen and not Panel.isOpen(self.Panel) then return end
   if Panel.isOpen(self.Panel) then Panel.close(self.Panel) else Panel.open(self.Panel);remote:FireServer({action="State"}) end
  end
- self.Panel=Panel.new(ui.Gui,function(packet: any) remote:FireServer(packet) end)
+ self.Panel=Panel.new(ui.Gui,function(packet: any) remote:FireServer(packet) end,function(command: string) return ui.Input:Label(command) end)
  self.View=Hud.new(ui.Gui,function(slot: number) self:Cast(slot) end,toggle)
  table.insert(self.Connections,self.Panel.Root:GetPropertyChangedSignal("Visible"):Connect(function()
   if self.Panel.Root.Visible then ui:CloseAltar() end
@@ -49,9 +57,9 @@ function Controller.new(state: any,ui: any,net: Instance): SpellController
   end
   return Enum.ContextActionResult.Sink
  end
- ContextActionService:BindActionAtPriority("QiSpellOne",action,false,Enum.ContextActionPriority.High.Value+1,Enum.KeyCode.One,Enum.KeyCode.DPadUp)
- ContextActionService:BindActionAtPriority("QiSpellTwo",action,false,Enum.ContextActionPriority.High.Value+1,Enum.KeyCode.E,Enum.KeyCode.DPadDown)
- ContextActionService:BindAction("QiArsenal",action,false,Enum.KeyCode.B,Enum.KeyCode.ButtonSelect)
+ ContextActionService:BindActionAtPriority("QiSpellOne",action,false,Enum.ContextActionPriority.High.Value+1,table.unpack(keys("SpellOne")))
+ ContextActionService:BindActionAtPriority("QiSpellTwo",action,false,Enum.ContextActionPriority.High.Value+1,table.unpack(keys("SpellTwo")))
+ ContextActionService:BindAction("QiArsenal",action,false,table.unpack(keys("Arsenal")))
  table.insert(self.Connections,Workspace:GetAttributeChangedSignal("AsuraReady"):Connect(function()
   if Workspace:GetAttribute("AsuraReady") then remote:FireServer({action="State"}) end
  end))
@@ -60,7 +68,10 @@ function Controller.new(state: any,ui: any,net: Instance): SpellController
 end
 function Controller.Step(self: SpellController)
  local snapshot=self.State:OwnSnapshot()
- Hud.update(self.View,self.Slots,self.Cooldowns,Workspace:GetServerTimeNow(),if snapshot then snapshot.Qi else 0)
+ local input=self.Ui.Input
+ Hud.update(self.View,self.Slots,self.Cooldowns,Workspace:GetServerTimeNow(),if snapshot then snapshot.Qi else 0,input.Device=="Touch",
+  {input:Label("SpellOne"),input:Label("SpellTwo"),input:Label("Arsenal")})
+ self.View.Root.Visible=Visibility.of(self.Ui).Combat
 end
 function Controller.Destroy(self: SpellController)
  for _,c in self.Connections do c:Disconnect() end;self.Unsubscribe()

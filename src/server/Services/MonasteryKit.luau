@@ -35,6 +35,26 @@ Kit.Texture = {
 	Mote = Assets.Textures.Leaf,
 }
 
+-- Rest pockets (batch 07): no solid piece stands within POCKET studs of a Monastery altar or within
+-- AISLE studs of the straight walk from the altar to its Exit, so resting, the portrait camera and
+-- leaving never meet a pillar. Builders that place columns or scatter ask Kit.keepClear first.
+Kit.POCKET, Kit.AISLE = 12.5, 4
+local World = require(game:GetService("ReplicatedStorage").AsurasPath.Shared.WorldDefinitions)
+function Kit.keepClear(x: number, z: number, margin: number?): boolean
+	local m = margin or 0
+	for _, altar in (World.Regions :: any).DesecratedMonastery.Altars do
+		local ax, az = altar.Placement.X, altar.Placement.Z
+		if math.sqrt((x - ax) ^ 2 + (z - az) ^ 2) < Kit.POCKET + m then return true end
+		local exit = altar.Exit
+		if exit then
+			local dx, dz = exit.X - ax, exit.Z - az
+			local t = math.clamp(((x - ax) * dx + (z - az) * dz) / (dx * dx + dz * dz), 0, 1)
+			if math.sqrt((x - ax - dx * t) ^ 2 + (z - az - dz * t) ^ 2) < Kit.AISLE + m then return true end
+		end
+	end
+	return false
+end
+
 export type PartOptions = { Collide: boolean?, Query: boolean?, Transparency: number?, Shadow: boolean?, Shape: Enum.PartType?, Class: string? }
 
 function Kit.folder(name: string, parent: Instance): Folder

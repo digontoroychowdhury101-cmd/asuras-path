@@ -1,4 +1,6 @@
 --!strict
+local hasScript = pcall(function() return script.Parent end)
+local Ending: any = if hasScript then require(script.Parent.EndingRules) else require("./EndingRules")
 local Objectives = {}
 
 export type Facts = {
@@ -6,11 +8,13 @@ export type Facts = {
 	Bosses: { [string]: boolean }?,
 	Altars: { [string]: boolean },
 	Bloodstain: Vector3?,
+	StainRegion: string?, -- region the bloodstain lies in (portal-aware guidance, #28)
 	InBoss: boolean,
 	InColosseum: boolean,
 	BossFelled: boolean,
 	-- True once the player has rested at any altar this session (teaches the rest loop first).
 	Rested: boolean,
+	Story: { [string]: boolean }?, -- six-sovereign ending flags (batch 22)
 }
 
 export type Target = { Kind: "Altar", Id: string } | { Kind: "Portal" } | { Kind: "Point", Position: Vector3 }
@@ -34,6 +38,17 @@ local ROUTE: { AltarInfo } = {
 Objectives.Route = ROUTE
 
 local BOSS_APPROACH = Vector3.new(0, 3, -1880)
+-- The Sanctuary's northern gate always delivers to this altar (WorldDefinitions.Sanctuary.PortalDestination).
+local PORTAL_ARRIVAL = ROUTE[2]
+
+-- Sanctuary wording (batch 07, #29): name the portal's real destination first, then the next leg.
+function Objectives.portalDetail(altar: AltarInfo): string
+	if altar.Id == PORTAL_ARRIVAL.Id then
+		return "The northern gate opens on the " .. PORTAL_ARRIVAL.Name .. " · kneel at its altar"
+	end
+	local leg = if altar.Region == PORTAL_ARRIVAL.Region then "press on through the monastery" else "travel on"
+	return "The northern gate opens on the " .. PORTAL_ARRIVAL.Name .. " · then " .. leg .. " to the " .. altar.Name
+end
 
 function Objectives.parseAltars(value: any): { [string]: boolean }
 	local set: { [string]: boolean } = {}
@@ -74,9 +89,20 @@ function Objectives.resolve(facts: Facts): Objective?
 		return {
 			Key = "Bloodstain",
 			Title = "Reclaim your lost essence",
-			Detail = "Return to your bloodstain before you fall again",
+			Detail = if facts.Region == "Sanctuary" and facts.StainRegion ~= nil and facts.StainRegion ~= "Sanctuary"
+				then "Take the northern gate first · the marker then leads to your bloodstain"
+				else "Return to your bloodstain before you fall again",
 			Target = { Kind = "Point", Position = facts.Bloodstain },
 		}
+	end
+	-- Six sovereigns at rest (batch 22): home to Lin, then the choice; PvP is never the conclusion.
+	if facts.Bosses then
+		local home = nil
+		for _, id in { ROUTE[2].Id, ROUTE[3].Id, ROUTE[4].Id, ROUTE[5].Id, "Altar_SanctuaryDepths", "Altar_CelestialPagoda", "Altar_SkyCitadel" } do
+			if not home and facts.Altars[id] and Objectives.regionOf(id) == facts.Region then home = id end
+		end
+		local ending = Ending.objective(Ending.stage(facts.Bosses, facts.Story), facts.Region, home)
+		if ending then return ending end
 	end
 	-- New profiles start with the bonfire pre-kindled; still walk a newcomer through one rest.
 	local bonfire = ROUTE[1]
@@ -101,14 +127,15 @@ function Objectives.resolve(facts: Facts): Objective?
 				return {
 					Key = "Ascend:" .. altar.Id,
 					Title = "Climb the Ascension Stairs",
-					Detail = "Pass through the northern gate to reach the " .. altar.Name,
+					Detail = Objectives.portalDetail(altar),
 					Target = { Kind = "Portal" },
 				}
 			end
 			return {
 				Key = altar.Id,
 				Title = "Kindle the " .. altar.Name,
-				Detail = "Fight your way forward — altars mark safe ground",
+				Detail = if altar.Id == PORTAL_ARRIVAL.Id then "The altar stands just ahead of the portal · rest to set your checkpoint"
+					else "Fight your way forward — altars mark safe ground",
 				Target = { Kind = "Altar", Id = altar.Id },
 			}
 		end
@@ -123,7 +150,8 @@ function Objectives.resolve(facts: Facts): Objective?
 		end
 		if nextBoss then
 			local approach = nextBoss.Position
-			if nextBoss.Id == "SlumberingTitan" and facts.Region == "Sanctuary" then approach = Vector3.new(-35, 605, 900) end
+			-- The Well of Descent south of the plaza (SanctuaryRoutes.Marks.CryptDescent, batch 16).
+			if nextBoss.Id == "SlumberingTitan" and facts.Region == "Sanctuary" then approach = Vector3.new(0, 605, 996) end
 			return { Key = "Boss:" .. nextBoss.Id, Title = "Challenge " .. nextBoss.Name,
 				Detail = "Traverse the arena mist in " .. string.gsub(nextBoss.Region, "(%l)(%u)", "%1 %2"), Target = { Kind = "Point", Position = approach } }
 		end

@@ -1,0 +1,213 @@
+CALL get_console_output ok
+[TRUNCATED DUE TO LENGTH LIMIT]
+ContentId: rbxassetid://123537602528847 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://84736816706203 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://122429504777206 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://101115989575429 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://115107662385208 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://112870504465237 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://128804986593067 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://72737878527180 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://104510306610617 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://73643624590773 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://110679207413731 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://79085173711487 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://98697120785323 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://98001903350092 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://107464988199312 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://134797493263468 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://92067625257954 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://73957556161204 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://83680488063424 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://129231249249908 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://104501073353924 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://110938367746582 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://113621787098249 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://70971849248176 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://131148604393960 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://132020235026894 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://83165492087847 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://128960467757576 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://82262248132316 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://85690041024248 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://96357535549475 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://76096344869372 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://119648258733745 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://91508101790927 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://74811893104638 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://90707300450934 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://93052897612550 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://108335955316266 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://95493185106639 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://135737234695313 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://120622315316406 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://77401471848786 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://131429447915500 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://117298748719225 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://133415051975810 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://101981203948515 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://102024796584460 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://74696345899256 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://123480233606534 failed due to: Authentication required to access Asset.
+MeshContentProvider failed to process https://assetdelivery.roblox.com/v1/asset/?id=123480233606534 because 'could not fetch'
+ContentId: rbxassetid://85184122225102 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://109612319904107 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://71210522377346 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://79417774806659 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://122450130719273 failed due to: User is not authorized to access Asset.
+Failed to load sound rbxassetid://122450130719273: User is not authorized to access Asset.
+ContentId: rbxassetid://6017289712 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://5981360137 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://3222730627 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://10131770538 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://5981360418 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://6016251963 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://6016251644 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://10434145835 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://14011257320 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://2609138523 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://3088713341 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://4918677124 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://2600845734 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://10434408368 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://3222731032 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://10434144680 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://12045401097 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://14011257320 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://3056541177 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://5990772764 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://6017289904 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://16571172190 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://16565325171 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://16571019891 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://16571012729 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://16588411361 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://16565035221 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://6017213752 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://6017290134 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://118836433841190 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://71210522377346 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://109612319904107 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://85184122225102 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://79417774806659 failed due to: Authentication required to access Asset.
+[Roblox][CorePackages.Packages._Index.UIBlox.UIBlox.Logger] [UIBlox - Warning] - FoundationProvider not found. Please ensure that the FoundationProvider is present in the component tree.
+CorePackages.Packages._Index.UIBlox.UIBlox.App.Style.AppStyleProvider:178 function AppStyleProvider
+CorePackages.Packages._Index.ReactReconciler.ReactReconciler.ReactFiberHooks.new:3196 function renderWithHooks
+CorePackages.Packages._Index.ReactReconciler.ReactReconciler.ReactFiberBeginWork.new:209 function renderWithHooks
+CorePackages.Packages._Index.ReactReconciler.ReactReconciler.ReactFiberBeginWork.new:1577 function mountIndeterminateComponent
+CorePackages.Packages._Index.ReactReconciler.ReactReconciler.ReactFiberBeginWork.new:3485 function beginWork
+CorePackages.Packages._Index.ReactReconciler.ReactReconciler.ReactFiberWorkLoop.new:255
+CorePackages.Packages._Index.ReactReconciler.ReactReconciler.ReactFiberWorkLoop.new:1977
+CorePackages.Packages._Index.ReactReconciler.ReactReconciler.ReactFiberWorkLoop.new:1953
+CorePackages.Packages._Index.ReactReconciler.ReactReconciler.ReactFiberWorkLoop.new:1896
+CorePackages.Packages._Index.ReactReconciler.ReactReconciler.ReactFiberWorkLoop.new:915
+CorePackages.Packages._Index.ReactReconciler.ReactReconciler.ReactFiberWorkLoop.new:860
+CorePackages.Packages._Index.Scheduler.Scheduler.Scheduler:320
+CorePackages.Packages._Index.Scheduler.Scheduler.Scheduler:268
+CorePackages.Packages._Index.Scheduler.Scheduler.forks.SchedulerHostConfig.default:260 function doWork
+CorePackages.Packages._Index.Scheduler.Scheduler.forks.SchedulerHostConfig.default:296 function performWorkUntilDeadline
+
+[Roblox][CorePackages.Packages._Index.UIBlox.UIBlox.Logger] [UIBlox - Warning] - FoundationProvider not found. Please ensure that the FoundationProvider is present in the component tree.
+CorePackages.Packages._Index.UIBlox.UIBlox.App.Style.AppStyleProvider:178 function AppStyleProvider
+CorePackages.Packages._Index.ReactReconciler.ReactReconciler.ReactFiberHooks.new:3196 function renderWithHooks
+CorePackages.Packages._Index.ReactReconciler.ReactReconciler.ReactFiberBeginWork.new:209 function renderWithHooks
+CorePackages.Packages._Index.ReactReconciler.ReactReconciler.ReactFiberBeginWork.new:1577 function mountIndeterminateComponent
+CorePackages.Packages._Index.ReactReconciler.ReactReconciler.ReactFiberBeginWork.new:3485 function beginWork
+CorePackages.Packages._Index.ReactReconciler.ReactReconciler.ReactFiberWorkLoop.new:255
+CorePackages.Packages._Index.ReactReconciler.ReactReconciler.ReactFiberWorkLoop.new:1977
+CorePackages.Packages._Index.ReactReconciler.ReactReconciler.ReactFiberWorkLoop.new:1953
+CorePackages.Packages._Index.ReactReconciler.ReactReconciler.ReactFiberWorkLoop.new:1896
+CorePackages.Packages._Index.ReactReconciler.ReactReconciler.ReactFiberWorkLoop.new:915
+CorePackages.Packages._Index.ReactReconciler.ReactReconciler.ReactFiberWorkLoop.new:860
+CorePackages.Packages._Index.Scheduler.Scheduler.Scheduler:320
+CorePackages.Packages._Index.Scheduler.Scheduler.Scheduler:268
+CorePackages.Packages._Index.Scheduler.Scheduler.forks.SchedulerHostConfig.default:260 function doWork
+CorePackages.Packages._Index.Scheduler.Scheduler.forks.SchedulerHostConfig.default:296 function performWorkUntilDeadline
+
+[Roblox][CorePackages.Packages._Index.UIBlox.UIBlox.Logger] [UIBlox - Warning] - FoundationProvider not found. Please ensure that the FoundationProvider is present in the component tree.
+CorePackages.Packages._Index.UIBlox.UIBlox.App.Style.AppStyleProvider:178 function AppStyleProvider
+CorePackages.Packages._Index.ReactReconciler.ReactReconciler.ReactFiberHooks.new:3196 function renderWithHooks
+CorePackages.Packages._Index.ReactReconciler.ReactReconciler.ReactFiberBeginWork.new:209 function renderWithHooks
+CorePackages.Packages._Index.ReactReconciler.ReactReconciler.ReactFiberBeginWork.new:1577 function mountIndeterminateComponent
+CorePackages.Packages._Index.ReactReconciler.ReactReconciler.ReactFiberBeginWork.new:3485 function beginWork
+CorePackages.Packages._Index.ReactReconciler.ReactReconciler.ReactFiberWorkLoop.new:255
+CorePackages.Packages._Index.ReactReconciler.ReactReconciler.ReactFiberWorkLoop.new:1977
+CorePackages.Packages._Index.ReactReconciler.ReactReconciler.ReactFiberWorkLoop.new:1953
+CorePackages.Packages._Index.ReactReconciler.ReactReconciler.ReactFiberWorkLoop.new:1896
+CorePackages.Packages._Index.ReactReconciler.ReactReconciler.ReactFiberWorkLoop.new:915
+CorePackages.Packages._Index.ReactReconciler.ReactReconciler.ReactFiberWorkLoop.new:860
+CorePackages.Packages._Index.Scheduler.Scheduler.Scheduler:320
+CorePackages.Packages._Index.Scheduler.Scheduler.Scheduler:268
+CorePackages.Packages._Index.Scheduler.Scheduler.forks.SchedulerHostConfig.default:260 function doWork
+CorePackages.Packages._Index.Scheduler.Scheduler.forks.SchedulerHostConfig.default:296 function performWorkUntilDeadline
+
+[Roblox][CorePackages.Packages._Index.UIBlox.UIBlox.Logger] [UIBlox - Warning] - FoundationProvider not found. Please ensure that the FoundationProvider is present in the component tree.
+CorePackages.Packages._Index.UIBlox.UIBlox.App.Style.AppStyleProvider:178 function AppStyleProvider
+CorePackages.Packages._Index.ReactReconciler.ReactReconciler.ReactFiberHooks.new:3196 function renderWithHooks
+CorePackages.Packages._Index.ReactReconciler.ReactReconciler.ReactFiberBeginWork.new:209 function renderWithHooks
+CorePackages.Packages._Index.ReactReconciler.ReactReconciler.ReactFiberBeginWork.new:1577 function mountIndeterminateComponent
+CorePackages.Packages._Index.ReactReconciler.ReactReconciler.ReactFiberBeginWork.new:3485 function beginWork
+CorePackages.Packages._Index.ReactReconciler.ReactReconciler.ReactFiberWorkLoop.new:255
+CorePackages.Packages._Index.ReactReconciler.ReactReconciler.ReactFiberWorkLoop.new:1977
+CorePackages.Packages._Index.ReactReconciler.ReactReconciler.ReactFiberWorkLoop.new:1953
+CorePackages.Packages._Index.ReactReconciler.ReactReconciler.ReactFiberWorkLoop.new:1896
+CorePackages.Packages._Index.ReactReconciler.ReactReconciler.ReactFiberWorkLoop.new:915
+CorePackages.Packages._Index.ReactReconciler.ReactReconciler.ReactFiberWorkLoop.new:860
+CorePackages.Packages._Index.Scheduler.Scheduler.Scheduler:320
+CorePackages.Packages._Index.Scheduler.Scheduler.Scheduler:268
+CorePackages.Packages._Index.Scheduler.Scheduler.forks.SchedulerHostConfig.default:260 function doWork
+CorePackages.Packages._Index.Scheduler.Scheduler.forks.SchedulerHostConfig.default:296 function performWorkUntilDeadline
+
+[Roblox][CorePackages.Packages._Index.UIBlox.UIBlox.Logger] [UIBlox - Warning] - FoundationProvider not found. Please ensure that the FoundationProvider is present in the component tree.
+CorePackages.Packages._Index.UIBlox.UIBlox.App.Style.AppStyleProvider:178 function AppStyleProvider
+CorePackages.Packages._Index.ReactReconciler.ReactReconciler.ReactFiberHooks.new:3196 function renderWithHooks
+CorePackages.Packages._Index.ReactReconciler.ReactReconciler.ReactFiberBeginWork.new:209 function renderWithHooks
+CorePackages.Packages._Index.ReactReconciler.ReactReconciler.ReactFiberBeginWork.new:1577 function mountIndeterminateComponent
+CorePackages.Packages._Index.ReactReconciler.ReactReconciler.ReactFiberBeginWork.new:3485 function beginWork
+CorePackages.Packages._Index.ReactReconciler.ReactReconciler.ReactFiberWorkLoop.new:255
+CorePackages.Packages._Index.ReactReconciler.ReactReconciler.ReactFiberWorkLoop.new:1977
+CorePackages.Packages._Index.ReactReconciler.ReactReconciler.ReactFiberWorkLoop.new:1953
+CorePackages.Packages._Index.ReactReconciler.ReactReconciler.ReactFiberWorkLoop.new:1896
+CorePackages.Packages._Index.ReactReconciler.ReactReconciler.ReactFiberWorkLoop.new:915
+CorePackages.Packages._Index.ReactReconciler.ReactReconciler.ReactFiberWorkLoop.new:860
+CorePackages.Packages._Index.Scheduler.Scheduler.Scheduler:320
+CorePackages.Packages._Index.Scheduler.Scheduler.Scheduler:268
+CorePackages.Packages._Index.Scheduler.Scheduler.forks.SchedulerHostConfig.default:260 function doWork
+CorePackages.Packages._Index.Scheduler.Scheduler.forks.SchedulerHostConfig.default:296 function performWorkUntilDeadline
+
+ContentId: rbxassetid://123385330740698 failed due to: User is not authorized to access Asset.
+Failed to load sound rbxassetid://123385330740698: User is not authorized to access Asset.
+ContentId: rbxassetid://95310618975232 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://101115989575429 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://72082952604136 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://91051007359488 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://137359830236447 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://108335955316266 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://105652153407631 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://101981203948515 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://136022696846207 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://97362454477468 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://79705045816338 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://106842288070597 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://83019889922001 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://123385330740698 failed due to: User is not authorized to access Asset.
+Failed to load sound rbxassetid://123385330740698: User is not authorized to access Asset.
+ContentId: rbxassetid://136107613967652 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://103358279439886 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://91051007359488 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://137359830236447 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://79705045816338 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://97362454477468 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://136022696846207 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://101981203948515 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://106842288070597 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://83019889922001 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://128332031002584 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://123385330740698 failed due to: User is not authorized to access Asset.
+Failed to load sound rbxassetid://123385330740698: User is not authorized to access Asset.
+ContentId: rbxassetid://123385330740698 failed due to: User is not authorized to access Asset.
+Failed to load sound rbxassetid://123385330740698: User is not authorized to access Asset.
+ContentId: rbxassetid://129686277632150 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://129686277632150 failed due to: Authentication required to access Asset.
+ContentId: rbxassetid://123385330740698 failed due to: User is not authorized to access Asset.
+Failed to load sound rbxassetid://123385330740698: User is not authorized to access Asset.

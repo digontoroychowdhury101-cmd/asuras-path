@@ -2,7 +2,7 @@
 local SoundService = game:GetService("SoundService")
 local Players = game:GetService("Players")
 local Tween = game:GetService("TweenService")
-local Shared = game:GetService("ReplicatedStorage").AsurasPath
+local Shared = game:GetService("ReplicatedStorage"):WaitForChild("AsurasPath")
 local World = require(Shared.Shared.WorldDefinitions)
 local Profiles = require(Shared.Shared.EnvironmentProfiles)
 local Audio = require(script.Parent.SpatialAudio)
@@ -40,12 +40,8 @@ function Controller.Update(self: any, dt: number)
 	end
 	local nearWater = region == "DesecratedMonastery" and p.Z < -940 and p.Z > -1080
 	if nearWater and not self.Water then
-		local anchor = Instance.new("Part")
-		anchor.Name, anchor.Size, anchor.Position, anchor.Transparency = "CloisterWater", Vector3.one, Vector3.new(55, 1, -1015), 1
-		anchor.Anchored, anchor.CanCollide, anchor.CanQuery, anchor.CanTouch = true, false, false, false
-		anchor.Parent = workspace
-		local sound = Audio.play("Water", anchor, 0.3, true)
-		if sound then self.Water = sound; sound.Destroying:Once(function() anchor:Destroy() end) else anchor:Destroy() end
+		-- SpatialAudio owns the source part, so stopping the loop cannot re-enter its destruction.
+		self.Water = Audio.at("Water", Vector3.new(55, 1, -1015), 0.3, true)
 	elseif not nearWater and self.Water then stop(self.Water); self.Water = nil end
 	local active = own.Snapshot == nil or own.Snapshot.State ~= "KO"
 	local move = if active then self.Movement.State else ""

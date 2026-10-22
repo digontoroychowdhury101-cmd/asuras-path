@@ -1,0 +1,1 @@
+quality=Enum.QualityLevel.Automatic | savedQuality=Enum.SavedQualitySetting.Automatic | meshDetail=Enum.MeshPartDetailLevel.DistanceBased | frameTime=0.0695306658744812 | renderCPU=0.0033868334721773863 | renderGPU=1.6666672308929265e-07 | heartbeatMs=0.2961485683917999 | memMb=3684 | instances=69781 | primitives=8958 | drawcalls=has | avgFrame=67.2ms fps=15

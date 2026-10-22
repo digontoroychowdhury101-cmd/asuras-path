@@ -1,0 +1,5 @@
+[["__lua","Client","local c = game:GetService('Players').LocalPlayer.Character c:PivotTo(CFrame.new(150, 612, 960)) return 'client dropped off the east edge'"],
+ ["__sleep", 1.0],
+ ["__lua","Client","outputs/lobby-rebuild-2026-10-21/import/where.luau"],
+ ["__sleep", 7],
+ ["__lua","Client","outputs/lobby-rebuild-2026-10-21/import/where.luau"]]

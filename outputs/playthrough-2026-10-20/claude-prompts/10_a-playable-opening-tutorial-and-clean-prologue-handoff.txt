@@ -1,0 +1,21 @@
+Continue Asura's Path repairs — batch 10/26: A playable opening tutorial and clean prologue handoff.
+
+Apply the shared operating brief (outputs/playthrough-2026-10-20/claude-prompts/00_OPERATING_BRIEF.txt; read once per chat) and current PROGRESS.md. Read report findings #11, #12, #13, #15, #19, #43, #44 only, plus relevant evidence. Implement this batch now.
+
+Build a short, integrated opening teaching sequence using the real combat/movement systems. Show the character only after a deliberate spawn pose/view is ready; cleanly hand off from skippable prologue to rest and training.
+Teach lock-on, light hit, deflect/guard, dodge, heal and deathblow in manageable steps, then Blood Rally/reduced health ceiling, a perilous counter and the actual Air Glide input from batch 02. Establish a readable single duel before the two-monk group, with spacing/aggro that permits learning.
+Explain carried currency and recover-before-second-death stakes before the first likely loss. Place one clearly discoverable inscription/cache opportunity on the opening route and teach its reward/Codex update, preserving later optional secrets.
+Keep instruction short and input-device aware, offer replay/skip, and make state cleanup safe on death/rejoin. Existing profiles must keep their progress. Use actual success events rather than advancing tutorial steps on button presses alone.
+
+Start near these files; follow only necessary dependencies:
+- src/client/Controllers/PrologueController.luau
+- src/client/Controllers/InputController.luau
+- src/shared/NarrativeCatalog.luau
+- src/server/Services/NarrativeWorld.luau
+- src/server/Services/WorldService.luau
+- src/shared/WorldDefinitions.luau
+
+Acceptance and focused verification:
+Run a fresh-profile opening through the first taught duel/discovery, then test skip, replay, death midway and an existing save. Verify no permanently invulnerable trainer/player or locked input leaks into ordinary play. If continuous-input deflect timing cannot be tested, mark that acceptance pending rather than weakening combat to pass automation.
+
+Update the repair ledger and PROJECT_STATE.md. State implementation versus verification precisely, then stop at this batch boundary.

@@ -1,0 +1,1 @@
+[["__lua","Server","local out = {} for _, p in game:GetService(\"Players\"):GetPlayers() do local c = p.Character local r = c and c:FindFirstChild(\"HumanoidRootPart\") table.insert(out, p.Name .. \" char=\" .. tostring(c ~= nil) .. (r and string.format(\" @%.0f,%.0f,%.0f\", r.Position.X, r.Position.Y, r.Position.Z) or \"\")) end return table.concat(out, \" | \")"]]

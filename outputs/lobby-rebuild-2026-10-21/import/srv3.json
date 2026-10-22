@@ -1,0 +1,1 @@
+[["__lua","Server","local SSS = game:GetService(\"ServerScriptService\").AsurasPath local P = require(SSS:FindFirstChild(\"PersistenceService\", true)) local t = os.clock() local ok, res = pcall(P.Load, -1) return string.format(\"ok=%s res=%s in %.2fs; get=%s\", tostring(ok), tostring(res), os.clock() - t, tostring(P.Get(-1) ~= nil))"]]

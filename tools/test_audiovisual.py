@@ -7,12 +7,13 @@ import re
 import struct
 import subprocess
 import wave
+import xml.etree.ElementTree as ET
 
 ROOT=Path(__file__).resolve().parents[1]
-modules=('PresentationAssets','EnvironmentProfiles','SpatialAudio','EnvironmentController','WeaponTrails','PbrAssets')
+modules=('PresentationAssets','EnvironmentProfiles','EffectsPreference','SpatialAudio','ArenaAsh','CombatSurfaces','CombatVfx','EnvironmentController','WeaponTrails','PbrAssets')
 chunks=[]
 for name in modules:
-    folder='shared' if name in modules[:2] else 'server/Services' if name=='PbrAssets' else 'client/Controllers'
+    folder='shared' if name in modules[:3] else 'server/Services' if name=='PbrAssets' else 'client/Controllers'
     source=(ROOT/'src'/folder/(name+'.luau')).read_text()
     chunks.append(f'registry["{name}"] = (function()\n{source}\nend)()')
 harness=(ROOT/'tools/test_audiovisual.luau').read_text().replace('-- MODULES_INSERT','\n'.join(chunks))
@@ -45,4 +46,22 @@ if manifest.exists():
         with wave.open(str(ROOT/cue['file'])) as w:
             assert (w.getnchannels(),w.getframerate(),w.getsampwidth())==(1,48000,2)
         assert cue['peak_dbfs']<=-2.9 and abs(cue['dc'])<.003 and cue['duration']>0
+library=ROOT/'assets/models/AsuraAssets_Phase5.rbxmx'
+if library.exists():
+    imported=ET.parse(library).getroot();mesh_count=0;names=set()
+    folder=imported.find('Item')
+    for model in folder.findall('Item'):
+        name=model.findtext('Properties/string[@name="Name"]')
+        assert name not in names,f'Duplicate imported template: {name}'
+        names.add(name)
+        for part in model.iter('Item'):
+            if part.get('class')!='MeshPart':continue
+            mesh_count+=1
+            assert part.findtext('Properties/Content[@name="MeshId"]/url') or part.findtext('Properties/Content[@name="MeshContent"]/uri'),name
+            assert part.findtext('Properties/token[@name="RenderFidelity"]') in ('0','1'),name
+            surface=next((s for s in part.findall('Item') if s.get('class')=='SurfaceAppearance'), None)
+            if surface:
+                for key in ('ColorMap','NormalMap','RoughnessMap','MetalnessMap'):
+                    assert surface.findtext(f'Properties/Content[@name="{key}"]/url') or surface.findtext(f'Properties/Content[@name="{key}Content"]/uri'),f'{name}: {key}'
+    print(f'PASS: {len(names)} imported templates, {mesh_count} complete PBR MeshParts; saved Automatic fidelity')
 print(f'PASS: {media} PBR exports validated; audio format/peak/DC checks passed (available media only)')

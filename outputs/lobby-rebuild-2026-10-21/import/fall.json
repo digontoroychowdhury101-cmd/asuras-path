@@ -1,0 +1,6 @@
+[["user_keyboard_input", {"datamodel_type":"Client","actions":[{"action":"keyPress","key_code":"Escape"}]}], ["__sleep", 1],
+ ["__lua","Server","local Characters = require(game:GetService('ServerScriptService').AsurasPath.Services.CharacterService) local p = game:GetService('Players'):GetPlayers()[1] Characters.Teleport(p.UserId, CFrame.new(150, 612, 960)) return 'dropped off the east edge'"],
+ ["__sleep", 1.0],
+ ["__lua","Client","outputs/lobby-rebuild-2026-10-21/import/where.luau"],
+ ["__sleep", 6],
+ ["__lua","Client","outputs/lobby-rebuild-2026-10-21/import/where.luau"]]

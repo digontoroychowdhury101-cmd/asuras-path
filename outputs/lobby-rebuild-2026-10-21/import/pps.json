@@ -1,0 +1,1 @@
+[["__lua","Client","local pps = game:GetService(\"ProximityPromptService\") return \"max=\" .. pps.MaxPromptsVisible .. \" enabled=\" .. tostring(pps.Enabled)"]]

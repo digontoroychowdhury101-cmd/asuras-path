@@ -1,9 +1,12 @@
 --!strict
 -- ModuleScript: StarterPlayer/StarterPlayerScripts/AsurasPath/Controllers/PrologueController
--- First-session prologue: four letterboxed lines that give the climb its motive (the Fallen Abbot,
--- the husked monks, the last disciple) before handing over to the HUD objective. Plays once per
--- session and only for new players (nothing kindled beyond the Primal Bonfire). Skippable with any
--- key, button or tap. Presentation only; input is parked in menu mode while it runs.
+-- Opening presentation (batch 10, #43). An opaque veil covers the screen from the first frame until
+-- the avatar has loaded its appearance and settled at the spawn (the server holds respawns for
+-- 1.5 s), so no grey silhouette or half-built HUD shows through. New players (nothing kindled
+-- beyond the Primal Bonfire) then see four letterboxed lines; any key, button or tap skips. The
+-- camera is set behind the standing avatar before the veil lifts, and the handoff names the first
+-- step (rest at the bonfire, then train at the Monastery Gate). Replayable from the Respite menu.
+-- Presentation only; input is parked in menu mode while the veil is up.
 local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
@@ -13,6 +16,8 @@ local HudKit = require(script.Parent:WaitForChild("HudKit") :: ModuleScript)
 local P = HudKit.Palette
 local HOLD = 4.2
 local FADE = 1.1
+local LOAD_TIMEOUT = 8 -- seconds before the veil lifts even if the appearance never reports loaded
+local SETTLE = 1.6 -- spawn hold plus a beat, so the avatar is standing still when revealed
 
 local LINES: { { string } } = {
  {"Shen devoured the souls of his disciples.", "THE JADE CATACLYSM"},
@@ -22,23 +27,30 @@ local LINES: { { string } } = {
 }
 
 local Controller = {}
+Controller.Handoff = { "WALK THE ASURA'S PATH", "Kneel at the bonfire to rest · then train at the Monastery Gate" }
 
-local function isNewcomer(player: Player): boolean
-	local altars = player:GetAttribute("AsuraAltars")
+function Controller.isNewcomer(altars: any): boolean
 	return type(altars) ~= "string" or altars == "" or altars == "Altar_SanctuaryBonfire"
 end
 
--- Plays the prologue if this player is new. `ui` gets a PrologueActive flag other HUD pieces honour.
-function Controller.Play(ui: any, input: any)
+-- Blocks until the character exists, its appearance has loaded and it has settled (or timeout).
+local function ready(player: Player)
+	local deadline = os.clock() + LOAD_TIMEOUT
+	local character = player.Character or player.CharacterAdded:Wait()
+	while os.clock() < deadline and not (player:HasAppearanceLoaded() and character:FindFirstChild("HumanoidRootPart")) do task.wait(0.1) end
+	while os.clock() < deadline and player:GetAttribute("AsuraAltars") == nil do task.wait(0.1) end
+	task.wait(SETTLE)
+end
+
+-- Plays the opening. `force` replays it for anyone (Respite menu); otherwise only newcomers see the
+-- lines and everyone else just gets the clean load veil. `ui` gets a PrologueActive flag.
+function Controller.Play(ui: any, input: any, camera: any?, force: boolean?)
 	local player = Players.LocalPlayer
-	task.wait(1.5) -- let the profile attributes replicate
-	if not isNewcomer(player) then
-		return
-	end
+	if ui.PrologueActive then return end
 	ui.PrologueActive = true
 	input:SetMenu(true)
 	local gui = HudKit.make("ScreenGui", player:WaitForChild("PlayerGui"), { Name = "AsuraPrologue", IgnoreGuiInset = true, DisplayOrder = 60, ResetOnSpawn = false }) :: ScreenGui
-	local veil = HudKit.make("Frame", gui, { Size = UDim2.fromScale(1, 1), BackgroundColor3 = Color3.new(0, 0, 0), BackgroundTransparency = 0.08, BorderSizePixel = 0 }) :: Frame
+	local veil = HudKit.make("Frame", gui, { Size = UDim2.fromScale(1, 1), BackgroundColor3 = Color3.new(0, 0, 0), BackgroundTransparency = 0, BorderSizePixel = 0 }) :: Frame
 	local bars: { Frame } = {}
 	for edge = 0, 1 do
 		table.insert(bars, HudKit.make("Frame", veil, { AnchorPoint = Vector2.new(0, edge), Position = UDim2.fromScale(0, edge), Size = UDim2.new(1, 0, 0.12, 0), BackgroundColor3 = Color3.new(0, 0, 0), BorderSizePixel = 0 }))
@@ -46,8 +58,10 @@ function Controller.Play(ui: any, input: any)
 	local line = HudKit.label(veil, "", 34, HudKit.TitleFont, P.Ivory, { AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 0.45), Size = UDim2.new(0.8, 0, 0, 48), TextScaled = true, TextTransparency = 1, TextStrokeTransparency = 1 })
 	HudKit.make("UITextSizeConstraint", line, { MinTextSize = 18, MaxTextSize = 34 })
 	local sub = HudKit.label(veil, "", 20, HudKit.BodyFont, P.Ember, { AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.new(0.5, 0, 0.45, 34), Size = UDim2.new(0.8, 0, 0, 30), TextWrapped = true, TextTransparency = 1, TextStrokeTransparency = 1 })
-	HudKit.label(veil, "Press any key to skip", 14, HudKit.BodyFont, P.Muted, { AnchorPoint = Vector2.new(1, 1), Position = UDim2.new(1, -24, 0.88, -10), Size = UDim2.fromOffset(240, 20), TextXAlignment = Enum.TextXAlignment.Right })
+	local hint = HudKit.label(veil, "", 14, HudKit.BodyFont, P.Muted, { AnchorPoint = Vector2.new(1, 1), Position = UDim2.new(1, -24, 0.88, -10), Size = UDim2.fromOffset(320, 20), TextXAlignment = Enum.TextXAlignment.Right })
 
+	if not force then ready(player) end
+	local story = force == true or Controller.isNewcomer(player:GetAttribute("AsuraAltars"))
 	local skipped = false
 	local skip = UserInputService.InputBegan:Connect(function(event: InputObject)
 		local t = event.UserInputType
@@ -62,33 +76,36 @@ function Controller.Play(ui: any, input: any)
 	end
 	local function hold(seconds: number)
 		local finish = os.clock() + seconds
-		while os.clock() < finish and not skipped do
-			task.wait(0.05)
-		end
+		while os.clock() < finish and not skipped do task.wait(0.05) end
 	end
-
-	for _, entry in LINES do
-		if skipped then
-			break
+	if story then
+		hint.Text = if UserInputService.GamepadEnabled then "Press any button to skip" else "Press any key or tap to skip"
+		for _, entry in LINES do
+			if skipped then break end
+			line.Text, sub.Text = entry[1], entry[2]
+			fade(0, FADE)
+			hold(FADE + HOLD)
+			fade(1, FADE * 0.7)
+			hold(FADE * 0.7)
 		end
-		line.Text, sub.Text = entry[1], entry[2]
-		fade(0, FADE)
-		hold(FADE + HOLD)
-		fade(1, FADE * 0.7)
-		hold(FADE * 0.7)
 	end
 	skip:Disconnect()
-	local out = TweenService:Create(veil, TweenInfo.new(1.4, Enum.EasingStyle.Sine), { BackgroundTransparency = 1 })
+	hint.Text = ""
+	-- A deliberate first view: behind the avatar, facing where the spawn faces.
+	local root = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
+	if camera and root and root:IsA("BasePart") then camera:Face(root.CFrame.LookVector) end
+	local lift = if story then 1.4 else 0.6
+	local out = TweenService:Create(veil, TweenInfo.new(lift, Enum.EasingStyle.Sine), { BackgroundTransparency = 1 })
 	fade(1, 0.4)
 	for _, bar in bars do
-		TweenService:Create(bar, TweenInfo.new(1.4, Enum.EasingStyle.Sine), { BackgroundTransparency = 1 }):Play()
+		TweenService:Create(bar, TweenInfo.new(lift, Enum.EasingStyle.Sine), { BackgroundTransparency = 1 }):Play()
 	end
 	out:Play()
 	out.Completed:Wait()
 	gui:Destroy()
 	input:SetMenu(false)
 	ui.PrologueActive = false
-	ui:ShowBanner("WALK THE ASURA'S PATH", "", 3)
+	if story then ui:ShowBanner(Controller.Handoff[1], Controller.Handoff[2], 4) end
 end
 
 return Controller

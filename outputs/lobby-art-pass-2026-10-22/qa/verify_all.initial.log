@@ -1,0 +1,66 @@
+==========================================================
+ Running Full Verification Suite for Asura's Path
+==========================================================
+[1/14] Testing Asura Stage 1...
+Asura Stage 1: all checks passed
+[2/14] Testing Asura Stage 2...
+Asura Stage 2: all checks passed
+[3/14] Testing Asura Stage 3...
+Asura Stage 3: all checks passed
+[4/14] Testing Weapons & Spells Contracts...
+Phase 2 weapons and spells: 367 checks passed
+[5/14] Testing Weapons & Spells Server Runtime...
+Phase 2 server effects: 14 scenarios passed
+[6/14] Testing Profile Integrity & Migrations...
+PASS profile integrity: invalid numbers, nested corruption, locked styles, future versions, valid-data preservation and table isolation
+[7/14] Testing Movement Controller & Kinetics...
+PASS: 48 kinetic movement/input/effects assertions (engine fakes; Studio contact QA separate)
+[8/14] Testing Boss Encounters & Runtime...
+Boss encounters: 286 checks passed
+Boss runtime: 25 checks passed
+Boss HUD: 2 checks passed
+Boss phase coordinator: 8 checks passed
+Boss fog coordinator: 11 checks passed
+[9/14] Testing Objectives System...
+Objectives: all checks passed (including six encounter routes)
+[10/14] Testing Progression, Lore, Review & Campaign Region Regressions...
+PASS progression and lore: 146 checks
+PASS progression runtime: 85 checks
+PASS ending credits: 13 sourced rows and project lines match assets/CREDITS.md
+Review regressions: 21 checks passed
+chain built and walked in 77.3s
+campaign regions: 251 passed, 0 failed
+  BambooPass        1219 parts   73 colliding  10 lights  12 emitters
+  AshColosseum       217 parts  105 colliding  20 lights  26 emitters
+  SanctuaryDepths    310 parts   97 colliding  20 lights  18 emitters
+  CelestialPagoda    287 parts  120 colliding  11 lights  13 emitters
+  SkyCitadel         201 parts   90 colliding   8 lights  11 emitters
+  Sanctuary routes   146 parts   88 colliding  14 lights   9 emitters
+campaign build: 27 passed, 0 failed
+PASS     test_arsenal_codex.luau: arsenal codex: 159 passed, 0 failed
+PASS     test_boss_presentation.luau: boss presentation: 125 passed, 0 failed
+PASS     test_boss_rewards.luau: boss rewards: 131 passed, 0 failed
+PASS     test_camera_shake.luau: camera shake: 5 passed, 0 failed
+PASS     test_campaign_ledger.luau: campaign ledger: 99 passed, 0 failed (seeded state, not earned play)
+PASS     test_cast_visuals.luau: cast visuals: 46 passed, 0 failed
+PASS     test_colosseum_runtime.luau: colosseum runtime: 28 passed, 0 failed (local mocks; live DataStore and multi-client not exercised)
+PASS     test_combat_contact.luau: combat contact: 52 passed, 0 failed
+FAIL     test_combat_presentation.luau:
+FAIL shrine golden hour
+combat presentation: 160 passed, 1 failed
+/Users/digonto/Documents/ChatGPT/Roblox game 2/tools/_lune_test_combat_presentation.generated.luau:53305: combat presentation regression failed
+stacktrace:
+[C] function error
+/Users/digonto/Documents/ChatGPT/Roblox game 2/tools/_lune_test_combat_presentation.generated.luau:53305
+
+PASS     test_death_note.luau: death note: 6 passed, 0 failed
+PASS     test_device_layout.luau: device layout: 89 passed, 0 failed (geometry + emulation; no phone, tablet or controller hardware)
+PASS     test_hud_layout.luau: hud layout: 176 passed, 0 failed
+PASS     test_input_map.luau: input map: 359 passed, 0 failed
+PASS     test_monastery_discovery.luau: monastery discovery: 53 passed, 0 failed
+PASS     test_monastery_route.luau: monastery route: 59 passed, 0 failed
+PASS     test_opening_tutorial.luau: opening tutorial: 97 passed, 0 failed
+PASS     test_recovery_lifecycle.luau: recovery lifecycle: 97 passed, 0 failed
+PASS     test_rest_dialogue.luau: rest dialogue: 61 passed, 0 failed
+PASS     test_sanguine_dispatch.luau: sanguine dispatch: 30 passed, 0 failed (state/render adapters; Studio visual acceptance separate)
+PASS     test_session_cleanup.luau: session cleanup: 7 passed, 0 failed (emulated counts; no profiler or Studio session)

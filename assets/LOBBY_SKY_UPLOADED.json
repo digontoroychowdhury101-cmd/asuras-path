@@ -1,0 +1,21 @@
+{
+  "source": "tools/assets/make_sunset_sky.py -> assets/build/lobby_sky/Sunset_<face>.png (1024 PNG, original, deterministic)",
+  "uploader": "Studio MCP upload_image (Creator: Me), 2026-10-22",
+  "faces": {
+    "px": "rbxassetid://129381868969576",
+    "nx": "rbxassetid://103858488792424",
+    "pz": "rbxassetid://137019358306246",
+    "nz": "rbxassetid://90950146067839",
+    "py": "rbxassetid://124525209129489",
+    "ny": "rbxassetid://127950753221991"
+  },
+  "skyProperties": {
+    "SkyboxFt": "nz (-Z, north)",
+    "SkyboxBk": "pz (+Z, south)",
+    "SkyboxLf": "px (+X, east)",
+    "SkyboxRt": "nx (-X, west, the sun)",
+    "SkyboxUp": "py",
+    "SkyboxDn": "ny"
+  },
+  "verification": "Assignment checked in Studio Play: sun glow under the engine sun (west, ClockTime 17.5) and continuous horizon across the W/NW faces; up/down faces are azimuth-symmetric so their rotation cannot seam."
+}

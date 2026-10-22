@@ -1,0 +1,25 @@
+Continue Asura's Path — follow-up 25/26: Measure performance and listen to the finished audio.
+
+Apply 00_SHARED_BRIEF.txt in /Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 26. Findings: #2, #7, #21, #23, #24, #25, #31, #32, #36. Verify existing work, fix actual gaps, and execute this batch now.
+
+Use the same build after content fixes. Profile Sanctuary/tree, a normal Monastery fight, populated Bamboo Pass, Twins and Wyrm in comparable camera/graphics/session conditions. Capture actual frame-time distribution/spikes, client/server memory, draw/render/effect/instance counts and network traffic where available. Record machine/device, quality setting, sample duration and player count. Existing box/part counts and a packet-size estimate are not measured FPS, GPU cost or bandwidth.
+Repeat combat/rest/death/respawn and region rebuilds, compare settled baselines and inspect SpatialAudio stats. Optimize only demonstrated hotspots/leaks using current budgets, reuse/culling/cleanup and bounded lighting/effect changes, preserving collision, attack cues and authored art. Report measured before/after evidence; do not invent a universal frame-rate claim.
+Perform actual audio playback/listening: hit/block/armored-hit/deflect distinction, ambience distance, music entry/phase/exit/retry, clipping, hierarchy and asset-load/access failures. BossMusic currently falls back to one BossDrone and the saved project has no BossMusic_<bossId> tracks. Supply available approved original/cleared music and a useful category mix if needed; a configured name or silent log does not supply a score. If listening or tracks are unavailable, record that exact gap.
+Reuse prompt 09 lifetime evidence and 24 hardware conditions. Do not create new gameplay systems or repeatedly rerun the entire regression suite for a cosmetic-only adjustment.
+Start files (relative to project root; follow only required dependencies):
+- src/client/Controllers/SpatialAudio.luau
+- src/client/Controllers/BossMusic.luau
+- src/client/Controllers/SoundscapeController.luau
+- src/server/Services/PresentationService.luau
+- src/server/Services/PbrAssets.luau
+- src/shared/PresentationAssets.luau
+
+Focused checks (reuse prior results unless code changed or live evidence is missing):
+- python3 tools/lune_compat.py tools/test_session_cleanup.luau
+- python3 tools/test_audiovisual.py
+- python3 tools/test_campaign_build.py
+
+Acceptance:
+Measured scene/cleanup results and a real listening/track-availability matrix. Separate measured results, source estimates, placeholder music and untested devices.
+
+Update the matching ledgers with evidence type and exact remaining work; stop after this batch.

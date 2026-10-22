@@ -1,0 +1,1 @@
+[["__lua","Client","local p = game:GetService(\"Players\").LocalPlayer return p.Name .. \" char=\" .. tostring(p.Character ~= nil) .. \" ready=\" .. tostring(workspace:GetAttribute(\"AsuraReady\"))"]]

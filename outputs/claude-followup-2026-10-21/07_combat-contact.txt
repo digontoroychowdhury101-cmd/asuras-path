@@ -1,0 +1,23 @@
+Continue Asura's Path — follow-up 07/26: Verify attack contact, healing and enemy defeat feedback.
+
+Apply 00_SHARED_BRIEF.txt in /Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 09. Findings: #14, #20, #21. Verify existing work, fix actual gaps, and execute this batch now.
+
+Use the existing ContactCues, authoritative Whiff/Evade events, healRoom refusal and EnemyDissolve. Demonstrate a light hit, heavy hit, genuine out-of-range whiff, startup feint, block and evade against one normal enemy. Check visual weapon reach versus actual hitboxes, cues/damage numbers and hit confirmation at ordinary camera distance; retain server authority and rewind limits.
+At full effective HP, pressing Heal should give clear refusal and preserve charges. Verify injury-reduced ceiling, recoverable damage, available healing room and the last charge; do not equate reduced ceiling with a broken flask. Gourd count must remain readable.
+Kill a monk and a swordsman: their labels/lock target should clear promptly, the body should use intentional collapse/dissolve rather than loose block debris, and Essence/reward feedback should occur once. Check a death during effects and repeated enemy respawns for leftover attachments or plates. Fix actual behavior or presentation defects, preserving attack timing and damage unless the resolver is demonstrably wrong. Deflect fairness needs continuous-input play, not delayed tool clicks.
+Start files (relative to project root; follow only required dependencies):
+- src/shared/ContactCues.luau
+- src/simulation/CombatRules.luau
+- src/server/CharacterService.luau
+- src/server/Services/WorldService.luau
+- src/client/Controllers/CombatCallouts.luau
+- src/client/Controllers/EnemyDissolve.luau
+
+Focused checks (reuse prior results unless code changed or live evidence is missing):
+- python3 tools/lune_compat.py tools/test_combat_contact.luau
+- work/bin/luau/luau tools/test_asura_stage1.luau
+
+Acceptance:
+Record the six contact outcomes, three heal cases and clean defeats in Studio; cues agree with real health/posture changes and rewards fire once.
+
+Update the matching ledgers with evidence type and exact remaining work; stop after this batch.

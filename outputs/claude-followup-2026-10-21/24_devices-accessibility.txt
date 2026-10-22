@@ -1,0 +1,23 @@
+Continue Asura's Path — follow-up 24/26: Close phone, tablet, controller and accessibility acceptance.
+
+Apply 00_SHARED_BRIEF.txt in /Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 25. Findings: #5, #6, #12, #13, #33, #34, #35, #36, #37, #39, #40, #41, #42, #43. Verify existing work, fix actual gaps, and execute this batch now.
+
+Reuse desktop evidence from prompt 03 and modals from 04–05. The current 89-check device test is geometry/emulation with no captures or hardware. Inspect actual Studio phone/tablet safe-area emulation at the existing six sizes plus small desktop and ultrawide; then check physical phone, tablet and controller where available. Label these evidence types separately.
+Group coverage into combat HUD/touch holds, modal navigation/scrolling and settings/transitions. Verify thumb movement plus attack/guard/jump/glide, prompt range/hold, binding captions, perilous hints, flask count, two foes/boss bars, Controls, Arsenal/Respite/Codex, long dialogue/leveling and ending. Controller users need a complete open/select/back/close/resume path and sensible focus, not just the correct caption. Test active-device switching during a session.
+Check comfort text 100/115/130%, reduced decorative effects/motion/flashes, non-color health/perilous cues, sensitivity/FOV save/cancel/rejoin and readable subtitles. There is currently no functioning remapping UI; do not advertise the legacy boxing keybinds table as working remapping. Fix regressions within the existing DeviceLayout/UI/settings model rather than adding a second framework.
+Record concrete clipping, overlap, touch usability and focus outcomes, reusing views where possible. Unavailable hardware remains an exact human test, not a passed case.
+Start files (relative to project root; follow only required dependencies):
+- src/client/Controllers/DeviceLayout.luau
+- src/client/Controllers/HudLayout.luau
+- src/client/Controllers/ComfortSettings.luau
+- src/client/Controllers/PauseMenu.luau
+- src/client/Controllers/InputController.luau
+- src/shared/EffectsPreference.luau
+
+Focused checks (reuse prior results unless code changed or live evidence is missing):
+- python3 tools/lune_compat.py tools/test_device_layout.luau tools/test_input_map.luau tools/test_hud_layout.luau
+
+Acceptance:
+Compact viewport/input/state matrix with captures and hardware labels; complete touch/controller tasks and persisted/reverted comfort settings, or exact untested cases.
+
+Update the matching ledgers with evidence type and exact remaining work; stop after this batch.

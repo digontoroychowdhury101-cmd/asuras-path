@@ -1,0 +1,20 @@
+Continue Asura's Path repairs — batch 17/26: Build the Bamboo Pass region.
+
+Apply the shared operating brief (outputs/playthrough-2026-10-20/claude-prompts/00_OPERATING_BRIEF.txt; read once per chat) and current PROGRESS.md. Read report findings #22, #27, #28, #32, #44 only, plus relevant evidence. Implement this batch now.
+
+Replace Bamboo Pass's flat blockout with one cohesive playable region using the project's established assets and procedural/source workflow. Author a bamboo pass/ridge route from the Monastery exit to Whispering Bamboo Shrine, Baize's arena and the Ash Colosseum connection. Include a readable main path, one purposeful traversal/optional route, safe altar pocket and spaced combat encounters.
+Give the region distinct bamboo/frosted-ridge landmarks, terrain elevation, boundary silhouettes and local storytelling. Preserve deliberate wuxia mobility, a readable Baize arena including usable pillars, checkpoint placement and clear portal/route guidance.
+Place and physically validate both Bamboo Pass inscriptions with real standing/reading space. Keep the scene within sensible part/light/effect budgets and reuse the shared region/route conventions.
+Finish this region's route and presentation only; do not start rebuilding adjacent regions or redesigning Baize's mechanics.
+
+Start near these files; follow only necessary dependencies:
+- src/shared/WorldDefinitions.luau
+- src/server/Services/WorldService.luau
+- src/server/Services/BossArenas.luau
+- src/shared/EnvironmentProfiles.luau
+- src/shared/NarrativeCatalog.luau
+
+Acceptance and focused verification:
+Walk the complete region connection and optional branch, kindle/respawn/travel, read both inscriptions, fight normal enemies and enter/leave/reset Baize. Verify bounds, jumps, nav, camera and idle combat lighting at character height. Leave unavailable imported art explicitly listed rather than calling a blockout finished.
+
+Update the repair ledger and PROJECT_STATE.md. State implementation versus verification precisely, then stop at this batch boundary.

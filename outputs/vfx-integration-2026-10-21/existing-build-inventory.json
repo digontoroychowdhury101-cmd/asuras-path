@@ -1,0 +1,3298 @@
+[
+  {
+    "path": "/private/tmp/AsurasPath-Courtyard-v2.rbxlx",
+    "bytes": 639593,
+    "script_count": 35,
+    "sha256": "cdf72dd79eeee9118fb038f72da7e7bb1ea51cded970d5b3707f4900712797dd",
+    "scripts": [
+      {
+        "name": "AsurasPathLoading",
+        "sha256": null
+      },
+      {
+        "name": "Config",
+        "sha256": null
+      },
+      {
+        "name": "ProfileSchema",
+        "sha256": null
+      },
+      {
+        "name": "AnimationCatalog",
+        "sha256": null
+      },
+      {
+        "name": "CombatSettings",
+        "sha256": null
+      },
+      {
+        "name": "ConfigValidator",
+        "sha256": null
+      },
+      {
+        "name": "IntentProtocol",
+        "sha256": null
+      },
+      {
+        "name": "WorldDefinitions",
+        "sha256": null
+      },
+      {
+        "name": "ShopCatalog",
+        "sha256": null
+      },
+      {
+        "name": "CombatRules",
+        "sha256": null
+      },
+      {
+        "name": "InputBuffer",
+        "sha256": null
+      },
+      {
+        "name": "MatchmakingRules",
+        "sha256": null
+      },
+      {
+        "name": "MoveSchema",
+        "sha256": null
+      },
+      {
+        "name": "Tempo",
+        "sha256": null
+      },
+      {
+        "name": "WeaponSchema",
+        "sha256": null
+      },
+      {
+        "name": "Bootstrap",
+        "sha256": null
+      },
+      {
+        "name": "AIService",
+        "sha256": null
+      },
+      {
+        "name": "CharacterService",
+        "sha256": null
+      },
+      {
+        "name": "ColosseumService",
+        "sha256": null
+      },
+      {
+        "name": "EnvironmentService",
+        "sha256": null
+      },
+      {
+        "name": "FighterAppearance",
+        "sha256": null
+      },
+      {
+        "name": "LagCompensation",
+        "sha256": null
+      },
+      {
+        "name": "MatchJournal",
+        "sha256": null
+      },
+      {
+        "name": "PersistenceService",
+        "sha256": null
+      },
+      {
+        "name": "ProfileStore",
+        "sha256": null
+      },
+      {
+        "name": "SanctuaryService",
+        "sha256": null
+      },
+      {
+        "name": "ShopService",
+        "sha256": null
+      },
+      {
+        "name": "WorldService",
+        "sha256": null
+      },
+      {
+        "name": "CameraController",
+        "sha256": null
+      },
+      {
+        "name": "ColosseumController",
+        "sha256": null
+      },
+      {
+        "name": "GameFeelController",
+        "sha256": null
+      },
+      {
+        "name": "InputController",
+        "sha256": null
+      },
+      {
+        "name": "InterfaceController",
+        "sha256": null
+      },
+      {
+        "name": "WorldStateController",
+        "sha256": null
+      },
+      {
+        "name": "AsurasPathClient",
+        "sha256": null
+      }
+    ]
+  },
+  {
+    "path": "/private/tmp/AsurasPath-Courtyard.rbxlx",
+    "bytes": 638417,
+    "script_count": 35,
+    "sha256": "d10b4ed44e231dca2506aa67c1a75d85d196b6dce98ed911dcddfbf731ac7467",
+    "scripts": [
+      {
+        "name": "AsurasPathLoading",
+        "sha256": null
+      },
+      {
+        "name": "Config",
+        "sha256": null
+      },
+      {
+        "name": "ProfileSchema",
+        "sha256": null
+      },
+      {
+        "name": "AnimationCatalog",
+        "sha256": null
+      },
+      {
+        "name": "CombatSettings",
+        "sha256": null
+      },
+      {
+        "name": "ConfigValidator",
+        "sha256": null
+      },
+      {
+        "name": "IntentProtocol",
+        "sha256": null
+      },
+      {
+        "name": "WorldDefinitions",
+        "sha256": null
+      },
+      {
+        "name": "ShopCatalog",
+        "sha256": null
+      },
+      {
+        "name": "CombatRules",
+        "sha256": null
+      },
+      {
+        "name": "InputBuffer",
+        "sha256": null
+      },
+      {
+        "name": "MatchmakingRules",
+        "sha256": null
+      },
+      {
+        "name": "MoveSchema",
+        "sha256": null
+      },
+      {
+        "name": "Tempo",
+        "sha256": null
+      },
+      {
+        "name": "WeaponSchema",
+        "sha256": null
+      },
+      {
+        "name": "Bootstrap",
+        "sha256": null
+      },
+      {
+        "name": "AIService",
+        "sha256": null
+      },
+      {
+        "name": "CharacterService",
+        "sha256": null
+      },
+      {
+        "name": "ColosseumService",
+        "sha256": null
+      },
+      {
+        "name": "EnvironmentService",
+        "sha256": null
+      },
+      {
+        "name": "FighterAppearance",
+        "sha256": null
+      },
+      {
+        "name": "LagCompensation",
+        "sha256": null
+      },
+      {
+        "name": "MatchJournal",
+        "sha256": null
+      },
+      {
+        "name": "PersistenceService",
+        "sha256": null
+      },
+      {
+        "name": "ProfileStore",
+        "sha256": null
+      },
+      {
+        "name": "SanctuaryService",
+        "sha256": null
+      },
+      {
+        "name": "ShopService",
+        "sha256": null
+      },
+      {
+        "name": "WorldService",
+        "sha256": null
+      },
+      {
+        "name": "CameraController",
+        "sha256": null
+      },
+      {
+        "name": "ColosseumController",
+        "sha256": null
+      },
+      {
+        "name": "GameFeelController",
+        "sha256": null
+      },
+      {
+        "name": "InputController",
+        "sha256": null
+      },
+      {
+        "name": "InterfaceController",
+        "sha256": null
+      },
+      {
+        "name": "WorldStateController",
+        "sha256": null
+      },
+      {
+        "name": "AsurasPathClient",
+        "sha256": null
+      }
+    ]
+  },
+  {
+    "path": "/private/tmp/AsurasPath-Playtest.rbxlx",
+    "bytes": 632291,
+    "script_count": 34,
+    "sha256": "5424b576994f3c77f77322b9846ed1e0bb9f42b8995cb7071f783b4ab29f546d",
+    "scripts": [
+      {
+        "name": "AsurasPathLoading",
+        "sha256": null
+      },
+      {
+        "name": "Config",
+        "sha256": null
+      },
+      {
+        "name": "ProfileSchema",
+        "sha256": null
+      },
+      {
+        "name": "AnimationCatalog",
+        "sha256": null
+      },
+      {
+        "name": "CombatSettings",
+        "sha256": null
+      },
+      {
+        "name": "ConfigValidator",
+        "sha256": null
+      },
+      {
+        "name": "IntentProtocol",
+        "sha256": null
+      },
+      {
+        "name": "WorldDefinitions",
+        "sha256": null
+      },
+      {
+        "name": "ShopCatalog",
+        "sha256": null
+      },
+      {
+        "name": "CombatRules",
+        "sha256": null
+      },
+      {
+        "name": "InputBuffer",
+        "sha256": null
+      },
+      {
+        "name": "MatchmakingRules",
+        "sha256": null
+      },
+      {
+        "name": "MoveSchema",
+        "sha256": null
+      },
+      {
+        "name": "Tempo",
+        "sha256": null
+      },
+      {
+        "name": "WeaponSchema",
+        "sha256": null
+      },
+      {
+        "name": "Bootstrap",
+        "sha256": null
+      },
+      {
+        "name": "AIService",
+        "sha256": null
+      },
+      {
+        "name": "CharacterService",
+        "sha256": null
+      },
+      {
+        "name": "ColosseumService",
+        "sha256": null
+      },
+      {
+        "name": "EnvironmentService",
+        "sha256": null
+      },
+      {
+        "name": "LagCompensation",
+        "sha256": null
+      },
+      {
+        "name": "MatchJournal",
+        "sha256": null
+      },
+      {
+        "name": "PersistenceService",
+        "sha256": null
+      },
+      {
+        "name": "ProfileStore",
+        "sha256": null
+      },
+      {
+        "name": "SanctuaryService",
+        "sha256": null
+      },
+      {
+        "name": "ShopService",
+        "sha256": null
+      },
+      {
+        "name": "WorldService",
+        "sha256": null
+      },
+      {
+        "name": "CameraController",
+        "sha256": null
+      },
+      {
+        "name": "ColosseumController",
+        "sha256": null
+      },
+      {
+        "name": "GameFeelController",
+        "sha256": null
+      },
+      {
+        "name": "InputController",
+        "sha256": null
+      },
+      {
+        "name": "InterfaceController",
+        "sha256": null
+      },
+      {
+        "name": "WorldStateController",
+        "sha256": null
+      },
+      {
+        "name": "AsurasPathClient",
+        "sha256": null
+      }
+    ]
+  },
+  {
+    "path": "/private/tmp/AsurasPath-Test.rbxlx",
+    "bytes": 632158,
+    "script_count": 34,
+    "sha256": "2b2e3b135c137210e7cbdc132a7474716695cfc0361507b7b285d7e8a6e8ac0f",
+    "scripts": [
+      {
+        "name": "AsurasPathLoading",
+        "sha256": null
+      },
+      {
+        "name": "Config",
+        "sha256": null
+      },
+      {
+        "name": "ProfileSchema",
+        "sha256": null
+      },
+      {
+        "name": "AnimationCatalog",
+        "sha256": null
+      },
+      {
+        "name": "CombatSettings",
+        "sha256": null
+      },
+      {
+        "name": "ConfigValidator",
+        "sha256": null
+      },
+      {
+        "name": "IntentProtocol",
+        "sha256": null
+      },
+      {
+        "name": "WorldDefinitions",
+        "sha256": null
+      },
+      {
+        "name": "ShopCatalog",
+        "sha256": null
+      },
+      {
+        "name": "CombatRules",
+        "sha256": null
+      },
+      {
+        "name": "InputBuffer",
+        "sha256": null
+      },
+      {
+        "name": "MatchmakingRules",
+        "sha256": null
+      },
+      {
+        "name": "MoveSchema",
+        "sha256": null
+      },
+      {
+        "name": "Tempo",
+        "sha256": null
+      },
+      {
+        "name": "WeaponSchema",
+        "sha256": null
+      },
+      {
+        "name": "Bootstrap",
+        "sha256": null
+      },
+      {
+        "name": "AIService",
+        "sha256": null
+      },
+      {
+        "name": "CharacterService",
+        "sha256": null
+      },
+      {
+        "name": "ColosseumService",
+        "sha256": null
+      },
+      {
+        "name": "EnvironmentService",
+        "sha256": null
+      },
+      {
+        "name": "LagCompensation",
+        "sha256": null
+      },
+      {
+        "name": "MatchJournal",
+        "sha256": null
+      },
+      {
+        "name": "PersistenceService",
+        "sha256": null
+      },
+      {
+        "name": "ProfileStore",
+        "sha256": null
+      },
+      {
+        "name": "SanctuaryService",
+        "sha256": null
+      },
+      {
+        "name": "ShopService",
+        "sha256": null
+      },
+      {
+        "name": "WorldService",
+        "sha256": null
+      },
+      {
+        "name": "CameraController",
+        "sha256": null
+      },
+      {
+        "name": "ColosseumController",
+        "sha256": null
+      },
+      {
+        "name": "GameFeelController",
+        "sha256": null
+      },
+      {
+        "name": "InputController",
+        "sha256": null
+      },
+      {
+        "name": "InterfaceController",
+        "sha256": null
+      },
+      {
+        "name": "WorldStateController",
+        "sha256": null
+      },
+      {
+        "name": "AsurasPathClient",
+        "sha256": null
+      }
+    ]
+  },
+  {
+    "path": "/private/tmp/AsurasPath_Codex_Audit_2026-10-21.rbxlx",
+    "bytes": 2338842,
+    "script_count": 205,
+    "sha256": "fc7a03c5c8763054d7cf29cfbcde71c49127fe3c1ebd2eaaabb1d5f91fa2b347",
+    "scripts": [
+      {
+        "name": "AsurasPathLoading",
+        "sha256": null
+      },
+      {
+        "name": "Config",
+        "sha256": null
+      },
+      {
+        "name": "ProfileSchema",
+        "sha256": null
+      },
+      {
+        "name": "AnimationCatalog",
+        "sha256": null
+      },
+      {
+        "name": "ArenaLightPlan",
+        "sha256": null
+      },
+      {
+        "name": "ArenaRules",
+        "sha256": null
+      },
+      {
+        "name": "ArsenalCatalog",
+        "sha256": null
+      },
+      {
+        "name": "ArsenalFacts",
+        "sha256": null
+      },
+      {
+        "name": "ArsenalProtocol",
+        "sha256": null
+      },
+      {
+        "name": "AshColosseumLayout",
+        "sha256": null
+      },
+      {
+        "name": "BambooPassLayout",
+        "sha256": null
+      },
+      {
+        "name": "BossArmaments",
+        "sha256": null
+      },
+      {
+        "name": "BossAttackCatalog",
+        "sha256": null
+      },
+      {
+        "name": "BossBodies",
+        "sha256": null
+      },
+      {
+        "name": "BossEncounterRules",
+        "sha256": null
+      },
+      {
+        "name": "BossHandoff",
+        "sha256": null
+      },
+      {
+        "name": "BossRoster",
+        "sha256": null
+      },
+      {
+        "name": "BossTypes",
+        "sha256": null
+      },
+      {
+        "name": "CampaignZones",
+        "sha256": null
+      },
+      {
+        "name": "CelestialPagodaLayout",
+        "sha256": null
+      },
+      {
+        "name": "CombatSettings",
+        "sha256": null
+      },
+      {
+        "name": "ConfigValidator",
+        "sha256": null
+      },
+      {
+        "name": "ContactCues",
+        "sha256": null
+      },
+      {
+        "name": "CostumeSchema",
+        "sha256": null
+      },
+      {
+        "name": "DialogueRules",
+        "sha256": null
+      },
+      {
+        "name": "EffectsPreference",
+        "sha256": null
+      },
+      {
+        "name": "EndingCredits",
+        "sha256": null
+      },
+      {
+        "name": "EndingRules",
+        "sha256": null
+      },
+      {
+        "name": "EnvironmentProfiles",
+        "sha256": null
+      },
+      {
+        "name": "InputMap",
+        "sha256": null
+      },
+      {
+        "name": "IntentProtocol",
+        "sha256": null
+      },
+      {
+        "name": "LevelPreview",
+        "sha256": null
+      },
+      {
+        "name": "LooksBeasts",
+        "sha256": null
+      },
+      {
+        "name": "LooksCast",
+        "sha256": null
+      },
+      {
+        "name": "LooksDuelists",
+        "sha256": null
+      },
+      {
+        "name": "LooksSovereigns",
+        "sha256": null
+      },
+      {
+        "name": "MonasteryZones",
+        "sha256": null
+      },
+      {
+        "name": "NarrativeCatalog",
+        "sha256": null
+      },
+      {
+        "name": "Objectives",
+        "sha256": null
+      },
+      {
+        "name": "PresentationAssets",
+        "sha256": null
+      },
+      {
+        "name": "ProgressionRules",
+        "sha256": null
+      },
+      {
+        "name": "RPGInventory",
+        "sha256": null
+      },
+      {
+        "name": "RPGProfile",
+        "sha256": null
+      },
+      {
+        "name": "RegionLayout",
+        "sha256": null
+      },
+      {
+        "name": "RouteGuide",
+        "sha256": null
+      },
+      {
+        "name": "SanctuaryRoutes",
+        "sha256": null
+      },
+      {
+        "name": "SkyCitadelLayout",
+        "sha256": null
+      },
+      {
+        "name": "SunkenCryptLayout",
+        "sha256": null
+      },
+      {
+        "name": "TutorialRules",
+        "sha256": null
+      },
+      {
+        "name": "WorldDefinitions",
+        "sha256": null
+      },
+      {
+        "name": "ShopCatalog",
+        "sha256": null
+      },
+      {
+        "name": "ArsenalInventory",
+        "sha256": null
+      },
+      {
+        "name": "CombatRules",
+        "sha256": null
+      },
+      {
+        "name": "InputBuffer",
+        "sha256": null
+      },
+      {
+        "name": "MatchmakingRules",
+        "sha256": null
+      },
+      {
+        "name": "MoveSchema",
+        "sha256": null
+      },
+      {
+        "name": "SpellRules",
+        "sha256": null
+      },
+      {
+        "name": "SpellSchema",
+        "sha256": null
+      },
+      {
+        "name": "Tempo",
+        "sha256": null
+      },
+      {
+        "name": "WeaponExpansion",
+        "sha256": null
+      },
+      {
+        "name": "WeaponSchema",
+        "sha256": null
+      },
+      {
+        "name": "Bootstrap",
+        "sha256": null
+      },
+      {
+        "name": "AIService",
+        "sha256": null
+      },
+      {
+        "name": "ArenaLighting",
+        "sha256": null
+      },
+      {
+        "name": "BambooDressing",
+        "sha256": null
+      },
+      {
+        "name": "BossAppearance",
+        "sha256": null
+      },
+      {
+        "name": "BossArenas",
+        "sha256": null
+      },
+      {
+        "name": "BossAttackService",
+        "sha256": null
+      },
+      {
+        "name": "BossDuo",
+        "sha256": null
+      },
+      {
+        "name": "BossHazards",
+        "sha256": null
+      },
+      {
+        "name": "BossMotion",
+        "sha256": null
+      },
+      {
+        "name": "BossSkin",
+        "sha256": null
+      },
+      {
+        "name": "BossTactics",
+        "sha256": null
+      },
+      {
+        "name": "CampaignBounds",
+        "sha256": null
+      },
+      {
+        "name": "CampaignWorld",
+        "sha256": null
+      },
+      {
+        "name": "CastFigures",
+        "sha256": null
+      },
+      {
+        "name": "CharacterService",
+        "sha256": null
+      },
+      {
+        "name": "CitadelDressing",
+        "sha256": null
+      },
+      {
+        "name": "ColosseumDressing",
+        "sha256": null
+      },
+      {
+        "name": "ColosseumService",
+        "sha256": null
+      },
+      {
+        "name": "CostumeKit",
+        "sha256": null
+      },
+      {
+        "name": "CryptDressing",
+        "sha256": null
+      },
+      {
+        "name": "DialogueActions",
+        "sha256": null
+      },
+      {
+        "name": "DialogueService",
+        "sha256": null
+      },
+      {
+        "name": "EncounterHandoff",
+        "sha256": null
+      },
+      {
+        "name": "EnemyAppearance",
+        "sha256": null
+      },
+      {
+        "name": "EnvironmentService",
+        "sha256": null
+      },
+      {
+        "name": "FighterAppearance",
+        "sha256": null
+      },
+      {
+        "name": "ForgeService",
+        "sha256": null
+      },
+      {
+        "name": "LagCompensation",
+        "sha256": null
+      },
+      {
+        "name": "LootService",
+        "sha256": null
+      },
+      {
+        "name": "LootWorld",
+        "sha256": null
+      },
+      {
+        "name": "MagicService",
+        "sha256": null
+      },
+      {
+        "name": "MatchJournal",
+        "sha256": null
+      },
+      {
+        "name": "MonasteryAtmosphere",
+        "sha256": null
+      },
+      {
+        "name": "MonasteryBounds",
+        "sha256": null
+      },
+      {
+        "name": "MonasteryDressing",
+        "sha256": null
+      },
+      {
+        "name": "MonasteryFx",
+        "sha256": null
+      },
+      {
+        "name": "MonasteryGrounds",
+        "sha256": null
+      },
+      {
+        "name": "MonasteryHalls",
+        "sha256": null
+      },
+      {
+        "name": "MonasteryKit",
+        "sha256": null
+      },
+      {
+        "name": "MonasteryLandmarks",
+        "sha256": null
+      },
+      {
+        "name": "MonasteryPockets",
+        "sha256": null
+      },
+      {
+        "name": "MonasteryRuins",
+        "sha256": null
+      },
+      {
+        "name": "MonasterySecrets",
+        "sha256": null
+      },
+      {
+        "name": "MonasteryService",
+        "sha256": null
+      },
+      {
+        "name": "MonasterySurvey",
+        "sha256": null
+      },
+      {
+        "name": "MonasteryTerrain",
+        "sha256": null
+      },
+      {
+        "name": "NarrativeWorld",
+        "sha256": null
+      },
+      {
+        "name": "PagodaDressing",
+        "sha256": null
+      },
+      {
+        "name": "PbrAssets",
+        "sha256": null
+      },
+      {
+        "name": "PersistenceService",
+        "sha256": null
+      },
+      {
+        "name": "PresentationAudit",
+        "sha256": null
+      },
+      {
+        "name": "PresentationDressing",
+        "sha256": null
+      },
+      {
+        "name": "PresentationService",
+        "sha256": null
+      },
+      {
+        "name": "ProfileBridge",
+        "sha256": null
+      },
+      {
+        "name": "ProfileStore",
+        "sha256": null
+      },
+      {
+        "name": "RecoveryRules",
+        "sha256": null
+      },
+      {
+        "name": "RegionDecor",
+        "sha256": null
+      },
+      {
+        "name": "SanctuaryApproach",
+        "sha256": null
+      },
+      {
+        "name": "SanctuaryBonfire",
+        "sha256": null
+      },
+      {
+        "name": "SanctuaryColossus",
+        "sha256": null
+      },
+      {
+        "name": "SanctuaryDressing",
+        "sha256": null
+      },
+      {
+        "name": "SanctuaryLeaves",
+        "sha256": null
+      },
+      {
+        "name": "SanctuaryService",
+        "sha256": null
+      },
+      {
+        "name": "SanctuaryTitan",
+        "sha256": null
+      },
+      {
+        "name": "ShopService",
+        "sha256": null
+      },
+      {
+        "name": "SpellEffects",
+        "sha256": null
+      },
+      {
+        "name": "SpellGeometry",
+        "sha256": null
+      },
+      {
+        "name": "TutorialService",
+        "sha256": null
+      },
+      {
+        "name": "WagerLedger",
+        "sha256": null
+      },
+      {
+        "name": "WagerService",
+        "sha256": null
+      },
+      {
+        "name": "WagerWorld",
+        "sha256": null
+      },
+      {
+        "name": "WeaponEffects",
+        "sha256": null
+      },
+      {
+        "name": "WeaponModels",
+        "sha256": null
+      },
+      {
+        "name": "WorldService",
+        "sha256": null
+      },
+      {
+        "name": "ActionBar",
+        "sha256": null
+      },
+      {
+        "name": "AltarAscension",
+        "sha256": null
+      },
+      {
+        "name": "ArenaAsh",
+        "sha256": null
+      },
+      {
+        "name": "ArsenalPanel",
+        "sha256": null
+      },
+      {
+        "name": "ArsenalTabs",
+        "sha256": null
+      },
+      {
+        "name": "BossAnimations",
+        "sha256": null
+      },
+      {
+        "name": "BossCinematics",
+        "sha256": null
+      },
+      {
+        "name": "BossEffects",
+        "sha256": null
+      },
+      {
+        "name": "BossHud",
+        "sha256": null
+      },
+      {
+        "name": "BossMusic",
+        "sha256": null
+      },
+      {
+        "name": "CameraController",
+        "sha256": null
+      },
+      {
+        "name": "CodexView",
+        "sha256": null
+      },
+      {
+        "name": "ColosseumController",
+        "sha256": null
+      },
+      {
+        "name": "CombatCallouts",
+        "sha256": null
+      },
+      {
+        "name": "CombatFeedback",
+        "sha256": null
+      },
+      {
+        "name": "CombatHud",
+        "sha256": null
+      },
+      {
+        "name": "CombatSurfaces",
+        "sha256": null
+      },
+      {
+        "name": "CombatVfx",
+        "sha256": null
+      },
+      {
+        "name": "ComfortSettings",
+        "sha256": null
+      },
+      {
+        "name": "ControlsCard",
+        "sha256": null
+      },
+      {
+        "name": "CoreGuiPolicy",
+        "sha256": null
+      },
+      {
+        "name": "CreatureMotion",
+        "sha256": null
+      },
+      {
+        "name": "DeviceLayout",
+        "sha256": null
+      },
+      {
+        "name": "DialogueController",
+        "sha256": null
+      },
+      {
+        "name": "DialogueView",
+        "sha256": null
+      },
+      {
+        "name": "DuoBars",
+        "sha256": null
+      },
+      {
+        "name": "EncounterHandoffController",
+        "sha256": null
+      },
+      {
+        "name": "EndingController",
+        "sha256": null
+      },
+      {
+        "name": "EnemyBars",
+        "sha256": null
+      },
+      {
+        "name": "EnemyDissolve",
+        "sha256": null
+      },
+      {
+        "name": "EnemyPlate",
+        "sha256": null
+      },
+      {
+        "name": "EnvironmentController",
+        "sha256": null
+      },
+      {
+        "name": "GameFeelController",
+        "sha256": null
+      },
+      {
+        "name": "HudKit",
+        "sha256": null
+      },
+      {
+        "name": "HudLayout",
+        "sha256": null
+      },
+      {
+        "name": "HudVisibility",
+        "sha256": null
+      },
+      {
+        "name": "IconShapes",
+        "sha256": null
+      },
+      {
+        "name": "InputController",
+        "sha256": null
+      },
+      {
+        "name": "InterfaceController",
+        "sha256": null
+      },
+      {
+        "name": "MasteryEffects",
+        "sha256": null
+      },
+      {
+        "name": "MoveIcons",
+        "sha256": null
+      },
+      {
+        "name": "MovementController",
+        "sha256": null
+      },
+      {
+        "name": "MovementEffects",
+        "sha256": null
+      },
+      {
+        "name": "MovementMath",
+        "sha256": null
+      },
+      {
+        "name": "ObjectiveController",
+        "sha256": null
+      },
+      {
+        "name": "PauseMenu",
+        "sha256": null
+      },
+      {
+        "name": "PlateLayout",
+        "sha256": null
+      },
+      {
+        "name": "PortraitCamera",
+        "sha256": null
+      },
+      {
+        "name": "PrologueController",
+        "sha256": null
+      },
+      {
+        "name": "QiVfx",
+        "sha256": null
+      },
+      {
+        "name": "SakuraCompass",
+        "sha256": null
+      },
+      {
+        "name": "SakuraHud",
+        "sha256": null
+      },
+      {
+        "name": "SakuraKit",
+        "sha256": null
+      },
+      {
+        "name": "SakuraMinimap",
+        "sha256": null
+      },
+      {
+        "name": "SoundscapeController",
+        "sha256": null
+      },
+      {
+        "name": "SpatialAudio",
+        "sha256": null
+      },
+      {
+        "name": "SpellController",
+        "sha256": null
+      },
+      {
+        "name": "SpellHud",
+        "sha256": null
+      },
+      {
+        "name": "SpellVfx",
+        "sha256": null
+      },
+      {
+        "name": "TargetPlate",
+        "sha256": null
+      },
+      {
+        "name": "TutorialController",
+        "sha256": null
+      },
+      {
+        "name": "UiKit",
+        "sha256": null
+      },
+      {
+        "name": "UiWindow",
+        "sha256": null
+      },
+      {
+        "name": "VitalsTags",
+        "sha256": null
+      },
+      {
+        "name": "WagerController",
+        "sha256": null
+      },
+      {
+        "name": "WaypointMarker",
+        "sha256": null
+      },
+      {
+        "name": "WeaponTrails",
+        "sha256": null
+      },
+      {
+        "name": "WorldStateController",
+        "sha256": null
+      },
+      {
+        "name": "AsurasPathClient",
+        "sha256": null
+      }
+    ]
+  },
+  {
+    "path": "/private/tmp/AsurasPath_Phase5.rbxlx",
+    "bytes": 1847786,
+    "script_count": 130,
+    "sha256": "b3b1da365e7b99d94b07484f39b73f07eb030355200a11218c492349b92763ca",
+    "scripts": [
+      {
+        "name": "AsurasPathLoading",
+        "sha256": "0047fccef801cf5cb247d4e97ec7ce247ff520c0b3c22d589ca40d96e7442d0b"
+      },
+      {
+        "name": "ArsenalPanel",
+        "sha256": "57f3e2346c429a09bf673ec884832423cbe4864ab3b7e63d0589d6369257e170"
+      },
+      {
+        "name": "ArsenalTabs",
+        "sha256": "26e5818db4f9808483718af407e747663320b1ca942fa5682397cfd8e91e5b93"
+      },
+      {
+        "name": "BossAnimations",
+        "sha256": "c6d5dae674ea01cedcece4d25462dde68ac9eb169621892749f857af77592b36"
+      },
+      {
+        "name": "BossCinematics",
+        "sha256": "3b085cb7180795ce653856814dec9e9397928c564e62cdd3d9459e3a4a96e9df"
+      },
+      {
+        "name": "BossEffects",
+        "sha256": "d96c68baeb7940496a052666966955aa73a43345d0230b95e32d15033e163ce2"
+      },
+      {
+        "name": "BossHud",
+        "sha256": "3550ba85345fa8c769349ac7997b92a43a37ab44861fe4b12330a2703e684cae"
+      },
+      {
+        "name": "BossMusic",
+        "sha256": "6206275684a463228cdfee7fbbeac8cc321fd28a8eb1e697b3d19a506c9ff31c"
+      },
+      {
+        "name": "CameraController",
+        "sha256": "6afcb681ca0d89c7198c8e3541a8701b2503653aef463474ac7023098a81c954"
+      },
+      {
+        "name": "ColosseumController",
+        "sha256": "5e350a495ce872cb96b1bcc72f29dcfc2bc415cab456370f6258cf8464b194e3"
+      },
+      {
+        "name": "CombatFeedback",
+        "sha256": "bc51d5dbbc7f19c1550da9e3928d62454046d56ed75d7b92aa7b1d5513d3678b"
+      },
+      {
+        "name": "CombatSurfaces",
+        "sha256": "124c1b722a468fd83ea436422fa44f49370b0fd59c51821ec5c018a48dc1805e"
+      },
+      {
+        "name": "CombatVfx",
+        "sha256": "fb4325ce433ac12d045e24d4c1d0ad1b618d4823227bd5e02d458d3024201721"
+      },
+      {
+        "name": "ControlsCard",
+        "sha256": "30cc16f88b3ab4e00f2db4dc28c2eb7c56de0237a4eb1aed2281c32c016df781"
+      },
+      {
+        "name": "DialogueController",
+        "sha256": "485b6b65ca402e9d25d05ed5ec5fd47da11e1d20e485e7ff52bb21f0ba4d1f34"
+      },
+      {
+        "name": "DialogueView",
+        "sha256": "4b5fbb59f3678bb03616074c5faa4bad7372ed3a1b7e15f2a25efd1e62bd9801"
+      },
+      {
+        "name": "EnvironmentController",
+        "sha256": "a7f362ceb31e31db77ea33ca17f88fe68b7f9fa2644b35d69ad0814638dba0dc"
+      },
+      {
+        "name": "GameFeelController",
+        "sha256": "a45a086c36f714644337e33e088c9f9945c38c6fddda617b7892dfe3a01e0c6c"
+      },
+      {
+        "name": "HudKit",
+        "sha256": "1b080b584c1daf827f9ddc5f1448392c7b738c3c9b78089501a30a47aebf8290"
+      },
+      {
+        "name": "InputController",
+        "sha256": "edfb463526368ca0f86a6baef1c6a92abcad65e0d3d2116952bc90cf1f38e06a"
+      },
+      {
+        "name": "InterfaceController",
+        "sha256": "afa3f919e47746f848f6486cd972a9a0d807c4c1016f2b844289c7e40ad1653f"
+      },
+      {
+        "name": "MasteryEffects",
+        "sha256": "c2b470db333a2429b137b90043773312b67f81a24ed1c648e4f7458968c22670"
+      },
+      {
+        "name": "MovementController",
+        "sha256": "b1654377cbb264d7aa2c14001b973e54d65b16063317c22bd03b1da732cfe5ac"
+      },
+      {
+        "name": "MovementEffects",
+        "sha256": "914b9931ed85f4e9c11f52f825b7d07d1511641f5c75b432e1d6b4df552bdac8"
+      },
+      {
+        "name": "MovementMath",
+        "sha256": "ae81cf2d7121aa92a59b67a39e7e4d0f5392d9ac64651ed0984258f78ed39d7a"
+      },
+      {
+        "name": "ObjectiveController",
+        "sha256": "90034deff36c1182b0710b3abc446892f9672057b765bb2ad22f7b2d707ec702"
+      },
+      {
+        "name": "PauseMenu",
+        "sha256": "4619fae249a665d952c86385ea0490db177d788b273df28bff3d492cf6399d8b"
+      },
+      {
+        "name": "PrologueController",
+        "sha256": "45eff4dad73837c371f6fcb54c3b1a22e62c097c428f22c4b8028d8cae85cae8"
+      },
+      {
+        "name": "QiVfx",
+        "sha256": "949d195821faf9f5bdb1d4a81383fca54b3ffb8210f6547d3a3df9a273880b38"
+      },
+      {
+        "name": "SoundscapeController",
+        "sha256": "4628091cd8ba23802d915c0028de793f420db0124fc7f2a1d3e7f9840493de5d"
+      },
+      {
+        "name": "SpatialAudio",
+        "sha256": "7df2170a597698321078bfd5f56e80535e052a00eedc9987c5bc9db8fdc41122"
+      },
+      {
+        "name": "SpellController",
+        "sha256": "6eb9ada76aac672e91f6d4e2dae9ecbda431955b1a2184ecc0d1c4a5ca39f8cb"
+      },
+      {
+        "name": "SpellHud",
+        "sha256": "2b90274147a17a9167fc2ecfc9239810d95b870f2df15d867c650ba06dcc8f55"
+      },
+      {
+        "name": "SpellVfx",
+        "sha256": "885c79d32e28ba442a90c5bdc59bee2be49b67988cfeeb1bb418c3ab89198e20"
+      },
+      {
+        "name": "UiKit",
+        "sha256": "33a48dad1b78a2daa31cae6559f940454db1239cbe6962153d672976b87d2b81"
+      },
+      {
+        "name": "UiWindow",
+        "sha256": "3037cc03b820bb0f21e818282e905143d425a261be1400ad31d0df539b42b933"
+      },
+      {
+        "name": "WagerController",
+        "sha256": "d9669cbd9e168a5a6985b17ea2e9b1c6f8da04bf60eaca090782fc6ae20dac8e"
+      },
+      {
+        "name": "WaypointMarker",
+        "sha256": "7565d95058bcf6cdb288efc9438d4e9e5e3b78be745147cd71732e7745e2f4df"
+      },
+      {
+        "name": "WeaponTrails",
+        "sha256": "65ad1847e2300d7f9e56c2a0d6ed04a077911dbc2b20650ca34b14072c51fe36"
+      },
+      {
+        "name": "WorldStateController",
+        "sha256": "b661fa2e9dcf21b9e5d8e4d460b837306a63e3ab74c67c2fbc69f2fbc3117bef"
+      },
+      {
+        "name": "ArenaAsh",
+        "sha256": "73f233af7865393f37a5ae968fecb32416f29b7c9336e881dd21aef61818ec35"
+      },
+      {
+        "name": "AsurasPathClient",
+        "sha256": "b6aa16215e6a0db0498b00e47d80bffe863f234e5ec12cfebb5ec5baaf89de20"
+      },
+      {
+        "name": "Config",
+        "sha256": "63dcad099c4f019dcd1521ed174afbcc2437b13deb70979e7bd7ffc384244706"
+      },
+      {
+        "name": "ProfileSchema",
+        "sha256": "b74e4362f8bad4c3e35c32294348331184889a01040bbfbeea9d139520aaa903"
+      },
+      {
+        "name": "AnimationCatalog",
+        "sha256": "4098d65c6610802ab011ddd131c9ece62668596ef51f90066d0bf8d6447b22ad"
+      },
+      {
+        "name": "ArenaRules",
+        "sha256": "22329f64a035e57bd75ab109390e049ced3c3a640952f2468653f5a14f8fa39a"
+      },
+      {
+        "name": "ArsenalCatalog",
+        "sha256": "ed68b17811a88606619ad992ea5dabdf7aff8435d7832a85b0bcfe08027d779a"
+      },
+      {
+        "name": "ArsenalProtocol",
+        "sha256": "4899a3a31d8c61fbb105f5f55c5a76a10ce54d4a20a561adfe029116eb9ed330"
+      },
+      {
+        "name": "BossArmaments",
+        "sha256": "00bdd8d0a026f67a2ffa1a28f77b1c3328eabdd941dd2e327662fdaedb398629"
+      },
+      {
+        "name": "BossAttackCatalog",
+        "sha256": "cae668719f4d286f440f7c5d9e70d230cb54034e28f31dc8cb8ca19e6732ba6d"
+      },
+      {
+        "name": "BossEncounterRules",
+        "sha256": "c745714f67ee519e816ac892695969f990d38fe5c96a44da481837112001967a"
+      },
+      {
+        "name": "BossRoster",
+        "sha256": "199b4fb404b4c6c4aeb470b3c1a6c5e1e5b26cbb496ad125a7553d73abd17ff4"
+      },
+      {
+        "name": "BossTypes",
+        "sha256": "79841a45079ddfd0e7ed865d27a860993cc895e4d9b82033f3bcfbe5c461a295"
+      },
+      {
+        "name": "CombatSettings",
+        "sha256": "6df3400e3de9b6c154812272e910007516491f741cdcc7aabd201448352b91d4"
+      },
+      {
+        "name": "ConfigValidator",
+        "sha256": "0a014ca0950ce411fd44e2631436aad51b1f1c8700c37bbeb438a731a1d9f6e6"
+      },
+      {
+        "name": "DialogueRules",
+        "sha256": "7c398b19e8b84a739f3ab055c74ec2c2934a347251e1a6387afd0acbec3a0621"
+      },
+      {
+        "name": "EnvironmentProfiles",
+        "sha256": "2115fb919ea045c43475ca3b5052d5ae020469fe7f63cd63609520334ad53d2c"
+      },
+      {
+        "name": "IntentProtocol",
+        "sha256": "2d891530d5e77a1924f545b8c20a4022cf7b16f60a23eb8413deadd771b6fe0d"
+      },
+      {
+        "name": "NarrativeCatalog",
+        "sha256": "ab3bf730a0e970777f82158e92289f327c2034cb9357ff87edd1bf78c3daa928"
+      },
+      {
+        "name": "Objectives",
+        "sha256": "e9b4bea4956fb28d3fa0a4e0cd74f42edc1473c2e6532f9aba319a0edf24775f"
+      },
+      {
+        "name": "PresentationAssets",
+        "sha256": "7e37caed894e548837512d9f2cce2d89ee39344515b8d0303ad3c7094c7f3c9c"
+      },
+      {
+        "name": "ProgressionRules",
+        "sha256": "4f6ecb8adf333b045f86d602e68e91f787f41dac6f29d37b97c4c8afed6dd2fd"
+      },
+      {
+        "name": "RPGInventory",
+        "sha256": "da38faeed937e87f6a2f3354c8ddf0c2be6758c7009a0363cfa64f8296cd1737"
+      },
+      {
+        "name": "RPGProfile",
+        "sha256": "b86bd63790b54dfbe5b82fe2760fa098d3081ebb3c96c8b377043da8e5273a08"
+      },
+      {
+        "name": "WorldDefinitions",
+        "sha256": "b4d01e909f845b4c33940abbcf02f63381f315736615dda254a825abee3608ae"
+      },
+      {
+        "name": "ShopCatalog",
+        "sha256": "f7017ccc008c825e5db673f7e3fc4fbaebf14272d318890ad0d85d7e33712793"
+      },
+      {
+        "name": "ArsenalInventory",
+        "sha256": "2c89e45bbd7f7d5e2624a3424818d6c51d4f511baa1d89f65a7500043943aabd"
+      },
+      {
+        "name": "CombatRules",
+        "sha256": "3c38bca1e0788e9173f83a7ab37755522eb21642b3fad6facce38c9173ab311b"
+      },
+      {
+        "name": "InputBuffer",
+        "sha256": "3acb8290f61fbf71bed71181f237776b34fc6d0dff19a99dc439482a81cc9cff"
+      },
+      {
+        "name": "MatchmakingRules",
+        "sha256": "b109ddb4790f12b1d4959eddac44e45e534a735ba9a122c0a93b437d612ce423"
+      },
+      {
+        "name": "MoveSchema",
+        "sha256": "f0c0eaad20344ea326925a6aa39726bfffd5e02e0f880949920d800fddb95cb8"
+      },
+      {
+        "name": "SpellRules",
+        "sha256": "836bad0d00890f00d8bb15b59db88fc2296df8bb32656ad3e6efe621779f633d"
+      },
+      {
+        "name": "SpellSchema",
+        "sha256": "f6032caab3a666910f84c66d651af8400507d51858f511b76699fe50583131fe"
+      },
+      {
+        "name": "Tempo",
+        "sha256": "c022d2bffdc1e15be2f79b4aa4a9a02654ac750f5fff78d3a9c8f70d7bfaf9a9"
+      },
+      {
+        "name": "WeaponExpansion",
+        "sha256": "d8d3669be99319d437a3b9782a7f973b5526311e36b57f3e7946ab0c3fc8fc47"
+      },
+      {
+        "name": "WeaponSchema",
+        "sha256": "bbae727f8d9affd409cd52e8191c0e545d367cdf9a6e5c48f02b55a148b40996"
+      },
+      {
+        "name": "Bootstrap",
+        "sha256": "1d48010f1772c9b7a44395dcb99fbd26d8fccd325db7eab391f50ddc9005c3d4"
+      },
+      {
+        "name": "AIService",
+        "sha256": "d0fd37b8fdc99ee3a38e6f8549eb0dbc6405df2a1adad67535e7518b81ff8fcf"
+      },
+      {
+        "name": "BossAppearance",
+        "sha256": "2c7fc0519dfb7f8123064a4a9b51eb11fa884cf345896c6795eba353cffd23b9"
+      },
+      {
+        "name": "BossArenas",
+        "sha256": "2061ef5c86deee94d34add57dd64921917fef6a66436edb44c610e6a496a36de"
+      },
+      {
+        "name": "BossAttackService",
+        "sha256": "5a98d8cc347cb3999ee4251a3f380de60d341cabb5a64cc1596c62716cd240e3"
+      },
+      {
+        "name": "BossDuo",
+        "sha256": "69002eb99f3f5641e66a5e70148cc1edd1c8fe7874dca7461a42851dca22c0b9"
+      },
+      {
+        "name": "BossHazards",
+        "sha256": "738cecd0cc66b1ea68e8e6de02fd227ead1e62c3fe586be59b7226480f379b0c"
+      },
+      {
+        "name": "BossMotion",
+        "sha256": "b4fb4d363477dcd4832ca47cd670cf5468f55cc5beb0fd8d2fc6922a277a41cf"
+      },
+      {
+        "name": "BossTactics",
+        "sha256": "6c91ca5d3c90feae36f5ded21c7283a4f5fa5cd4e414b623db22176a7f398a7a"
+      },
+      {
+        "name": "CharacterService",
+        "sha256": "30d475fe2b4334072d959018da9263933d6db954a88143d66daefdd47e823cd8"
+      },
+      {
+        "name": "ColosseumService",
+        "sha256": "947f1c4bc8dc5501d5b5f8f4db2609982ee4a83a82242ed13e8a0094339d33d8"
+      },
+      {
+        "name": "DialogueActions",
+        "sha256": "bc4bb892d85ee73676b3f1122099a55e72872b78e288a4940c9dbfa5cd7c40a2"
+      },
+      {
+        "name": "DialogueService",
+        "sha256": "76a1bf143a9fc3edfe4a7f9b38e94a750986bfae5a9795d023a5d67097383d0a"
+      },
+      {
+        "name": "EnemyAppearance",
+        "sha256": "e3ef233daca527897f908cb14e61eb8d8b6b11958653be04edaa0ee5c7deb4c3"
+      },
+      {
+        "name": "EnvironmentService",
+        "sha256": "05d06bce15278c9a4258b8ff9c38e65c1c2f36637793808e38bc5fb4abd0c516"
+      },
+      {
+        "name": "FighterAppearance",
+        "sha256": "b2b2709ada06810f25164199b77891d47aea9b4e1fd75b703625a9d01d8f9376"
+      },
+      {
+        "name": "ForgeService",
+        "sha256": "c96b30471ca411cac796fe369681760902d623a1e4ccbae4f644681ef93539d5"
+      },
+      {
+        "name": "LagCompensation",
+        "sha256": "93269810321b9ec8faf4b83bea4f2cb79599b7e8acea5114b79952d141fc4b8a"
+      },
+      {
+        "name": "LootService",
+        "sha256": "ec9ce601916744c46cd5e511c905edbf6442669c8fa6cd5b2fe5f8dbd610e644"
+      },
+      {
+        "name": "LootWorld",
+        "sha256": "b189890aa09b5d681de35cbfd5ba661d615331c9e13fd347a55e04e1744739a4"
+      },
+      {
+        "name": "MagicService",
+        "sha256": "f74283832631ea9a12ca652f36d2b1eb58c8ebb109990a2e4e39d7b02bc66aae"
+      },
+      {
+        "name": "MatchJournal",
+        "sha256": "aca9e1eda3b0e5ebc59c01904c549233f5b28fc323a63d95e73f08835f4999c7"
+      },
+      {
+        "name": "MonasteryAtmosphere",
+        "sha256": "037ad9351a0b2b166b4e48fb98307fed9e57827af7b708ec9492bae9181d833f"
+      },
+      {
+        "name": "MonasteryDressing",
+        "sha256": "a6ff16818c92464f3ee3b2520baf9d705b749bea033263729643e10cb1957d26"
+      },
+      {
+        "name": "MonasteryFx",
+        "sha256": "f7bc955373a456e8fe46af5dc2e6e1babec5467f709f4771557bc540177736c4"
+      },
+      {
+        "name": "MonasteryGrounds",
+        "sha256": "86fdedc3b8a4cb5b9049b670c9325cdbbfda6e1421fb6b370ba6ec6f819062d8"
+      },
+      {
+        "name": "MonasteryHalls",
+        "sha256": "21fcd4262eaaf4ecc390b9060c316a702f6f16fd6308142a035907c2acb979fa"
+      },
+      {
+        "name": "MonasteryKit",
+        "sha256": "aadbda0ae3de7a2dd58216d8d8c96b7db4aed76e8919430e85fba89fa9de7d14"
+      },
+      {
+        "name": "MonasteryLandmarks",
+        "sha256": "5cd543766fdc79980e8ce0d566211e0510edaae99f35b5ef3aca9a64013ab25b"
+      },
+      {
+        "name": "MonasteryRuins",
+        "sha256": "f62c2da5eb13ab1acab1453e48f1dc7fccd247490d0a649945126b46a2027171"
+      },
+      {
+        "name": "MonasteryService",
+        "sha256": "8659601b6e5d2586c26dc22ddbbccb7337137ac828f653dbb2bf42e5699a6957"
+      },
+      {
+        "name": "MonasterySurvey",
+        "sha256": "591ec1839b72ff675715bc9dc05e7b4b4cb9ab5878c592802356ba53ece9ddf3"
+      },
+      {
+        "name": "NarrativeWorld",
+        "sha256": "81a2f5f2d5fe42a54b66751fa63ca56160c523c9e310bb7df910c6097cdbef18"
+      },
+      {
+        "name": "PersistenceService",
+        "sha256": "e65bd7593a67f1fad81fa357d62a40754d61b5f26c160b9000a1f735d3f283a4"
+      },
+      {
+        "name": "ProfileBridge",
+        "sha256": "a99906a39a89e3967a8c4bffd027ef6d6a76ee913c8f19b2c3bbe86191fc57cb"
+      },
+      {
+        "name": "ProfileStore",
+        "sha256": "977b25fdec6ddfb0875e5e4e07e6009deaacbfe3999803f9d07c416b38b0e2b6"
+      },
+      {
+        "name": "SanctuaryDressing",
+        "sha256": "1c13627239eb0556388f6da26c41af50c5ec7c22d978cd8a223458194e776da6"
+      },
+      {
+        "name": "SanctuaryLeaves",
+        "sha256": "38272def01a55de3047bd196110e57ca18a1b5984e81d8697e19c60c391ca038"
+      },
+      {
+        "name": "SanctuaryService",
+        "sha256": "e18ceadbb21b8af5e8e8251bcaff47deae2494078a8d27587da20b35f70b7850"
+      },
+      {
+        "name": "ShopService",
+        "sha256": "dd148f3e1eec60bde2741f1cb0157e57681ca5e07aadc553579dc67fcd1351dd"
+      },
+      {
+        "name": "SpellEffects",
+        "sha256": "6f7abe947527d0179755037db74bb5a96664d4840aa94ace97d71dc43b01efde"
+      },
+      {
+        "name": "SpellGeometry",
+        "sha256": "9b81eb69e5654c224e9810f9bc2eca835e143c7ba867b498e7c082dd808ce710"
+      },
+      {
+        "name": "WagerLedger",
+        "sha256": "88ebf7703de55076178a66c4da2ce812539bf7d8a9abece4f02ec81699cf0072"
+      },
+      {
+        "name": "WagerService",
+        "sha256": "eb5ab3ba8849c71c6e8302be622f0a8ec0dcbd7e5d245b80a718b6c83394e377"
+      },
+      {
+        "name": "WagerWorld",
+        "sha256": "0ccf1b42d790c8bbcf1b9ada0dcabcf1704bcb17d9073436d2db0ecf3aaf560f"
+      },
+      {
+        "name": "WeaponEffects",
+        "sha256": "a5dd87b4dc6813334e809777e0bcc15d7a509cd3b443994c068105c8c7cec1a0"
+      },
+      {
+        "name": "WeaponModels",
+        "sha256": "b2a28e2c81d21ba37e0a8fac03e6a6b88287ffae96e269657b17f1f73598ea08"
+      },
+      {
+        "name": "WorldService",
+        "sha256": "aaff64e8cfc17a83dea604a7ee7e6459283c13c5c47dff576960cf62c8b6ae9a"
+      },
+      {
+        "name": "PbrAssets",
+        "sha256": "23b102f6f05cd8836113aff8cda65060ccae495c5355fd412584c04bee7a57bc"
+      },
+      {
+        "name": "ArenaLighting",
+        "sha256": "648fcbd0a1e576b70b18d7c61f9c4e0c51a0b7e238714ac4055af810c4cc8c72"
+      },
+      {
+        "name": "PresentationService",
+        "sha256": "a4973f1c97767407a0937291c7bf11afdbbfe98447e23e15a4d4f93c03bd806b"
+      },
+      {
+        "name": "BossSkin",
+        "sha256": "20b2c4d8ef46e22a21c8989cf085c466bfed7283c466e9d36f335ff44101361f"
+      },
+      {
+        "name": "PresentationAudit",
+        "sha256": "e4cb40d603381352ed386eff108f4cddf465407a49e5f752a8c17f512513cade"
+      },
+      {
+        "name": "PresentationDressing",
+        "sha256": "770fb2f6f2ef2077d0794512dddd0c7ffd0cfa64d7cfbc463092985728074efe"
+      }
+    ]
+  },
+  {
+    "path": "/private/tmp/AsurasPath_Phase5_verified.rbxlx",
+    "bytes": 1583830,
+    "script_count": 130,
+    "sha256": "5b4428c4a8c34974224caef589fc6d2454929cea797fc3d210670594e3df724c",
+    "scripts": [
+      {
+        "name": "AsurasPathLoading",
+        "sha256": null
+      },
+      {
+        "name": "Config",
+        "sha256": null
+      },
+      {
+        "name": "ProfileSchema",
+        "sha256": null
+      },
+      {
+        "name": "AnimationCatalog",
+        "sha256": null
+      },
+      {
+        "name": "ArenaRules",
+        "sha256": null
+      },
+      {
+        "name": "ArsenalCatalog",
+        "sha256": null
+      },
+      {
+        "name": "ArsenalProtocol",
+        "sha256": null
+      },
+      {
+        "name": "BossArmaments",
+        "sha256": null
+      },
+      {
+        "name": "BossAttackCatalog",
+        "sha256": null
+      },
+      {
+        "name": "BossEncounterRules",
+        "sha256": null
+      },
+      {
+        "name": "BossRoster",
+        "sha256": null
+      },
+      {
+        "name": "BossTypes",
+        "sha256": null
+      },
+      {
+        "name": "CombatSettings",
+        "sha256": null
+      },
+      {
+        "name": "ConfigValidator",
+        "sha256": null
+      },
+      {
+        "name": "DialogueRules",
+        "sha256": null
+      },
+      {
+        "name": "EnvironmentProfiles",
+        "sha256": null
+      },
+      {
+        "name": "IntentProtocol",
+        "sha256": null
+      },
+      {
+        "name": "NarrativeCatalog",
+        "sha256": null
+      },
+      {
+        "name": "Objectives",
+        "sha256": null
+      },
+      {
+        "name": "PresentationAssets",
+        "sha256": null
+      },
+      {
+        "name": "ProgressionRules",
+        "sha256": null
+      },
+      {
+        "name": "RPGInventory",
+        "sha256": null
+      },
+      {
+        "name": "RPGProfile",
+        "sha256": null
+      },
+      {
+        "name": "WorldDefinitions",
+        "sha256": null
+      },
+      {
+        "name": "ShopCatalog",
+        "sha256": null
+      },
+      {
+        "name": "ArsenalInventory",
+        "sha256": null
+      },
+      {
+        "name": "CombatRules",
+        "sha256": null
+      },
+      {
+        "name": "InputBuffer",
+        "sha256": null
+      },
+      {
+        "name": "MatchmakingRules",
+        "sha256": null
+      },
+      {
+        "name": "MoveSchema",
+        "sha256": null
+      },
+      {
+        "name": "SpellRules",
+        "sha256": null
+      },
+      {
+        "name": "SpellSchema",
+        "sha256": null
+      },
+      {
+        "name": "Tempo",
+        "sha256": null
+      },
+      {
+        "name": "WeaponExpansion",
+        "sha256": null
+      },
+      {
+        "name": "WeaponSchema",
+        "sha256": null
+      },
+      {
+        "name": "Bootstrap",
+        "sha256": null
+      },
+      {
+        "name": "AIService",
+        "sha256": null
+      },
+      {
+        "name": "ArenaLighting",
+        "sha256": null
+      },
+      {
+        "name": "BossAppearance",
+        "sha256": null
+      },
+      {
+        "name": "BossArenas",
+        "sha256": null
+      },
+      {
+        "name": "BossAttackService",
+        "sha256": null
+      },
+      {
+        "name": "BossDuo",
+        "sha256": null
+      },
+      {
+        "name": "BossHazards",
+        "sha256": null
+      },
+      {
+        "name": "BossMotion",
+        "sha256": null
+      },
+      {
+        "name": "BossSkin",
+        "sha256": null
+      },
+      {
+        "name": "BossTactics",
+        "sha256": null
+      },
+      {
+        "name": "CharacterService",
+        "sha256": null
+      },
+      {
+        "name": "ColosseumService",
+        "sha256": null
+      },
+      {
+        "name": "DialogueActions",
+        "sha256": null
+      },
+      {
+        "name": "DialogueService",
+        "sha256": null
+      },
+      {
+        "name": "EnemyAppearance",
+        "sha256": null
+      },
+      {
+        "name": "EnvironmentService",
+        "sha256": null
+      },
+      {
+        "name": "FighterAppearance",
+        "sha256": null
+      },
+      {
+        "name": "ForgeService",
+        "sha256": null
+      },
+      {
+        "name": "LagCompensation",
+        "sha256": null
+      },
+      {
+        "name": "LootService",
+        "sha256": null
+      },
+      {
+        "name": "LootWorld",
+        "sha256": null
+      },
+      {
+        "name": "MagicService",
+        "sha256": null
+      },
+      {
+        "name": "MatchJournal",
+        "sha256": null
+      },
+      {
+        "name": "MonasteryAtmosphere",
+        "sha256": null
+      },
+      {
+        "name": "MonasteryDressing",
+        "sha256": null
+      },
+      {
+        "name": "MonasteryFx",
+        "sha256": null
+      },
+      {
+        "name": "MonasteryGrounds",
+        "sha256": null
+      },
+      {
+        "name": "MonasteryHalls",
+        "sha256": null
+      },
+      {
+        "name": "MonasteryKit",
+        "sha256": null
+      },
+      {
+        "name": "MonasteryLandmarks",
+        "sha256": null
+      },
+      {
+        "name": "MonasteryRuins",
+        "sha256": null
+      },
+      {
+        "name": "MonasteryService",
+        "sha256": null
+      },
+      {
+        "name": "MonasterySurvey",
+        "sha256": null
+      },
+      {
+        "name": "NarrativeWorld",
+        "sha256": null
+      },
+      {
+        "name": "PbrAssets",
+        "sha256": null
+      },
+      {
+        "name": "PersistenceService",
+        "sha256": null
+      },
+      {
+        "name": "PresentationAudit",
+        "sha256": null
+      },
+      {
+        "name": "PresentationDressing",
+        "sha256": null
+      },
+      {
+        "name": "PresentationService",
+        "sha256": null
+      },
+      {
+        "name": "ProfileBridge",
+        "sha256": null
+      },
+      {
+        "name": "ProfileStore",
+        "sha256": null
+      },
+      {
+        "name": "SanctuaryDressing",
+        "sha256": null
+      },
+      {
+        "name": "SanctuaryLeaves",
+        "sha256": null
+      },
+      {
+        "name": "SanctuaryService",
+        "sha256": null
+      },
+      {
+        "name": "ShopService",
+        "sha256": null
+      },
+      {
+        "name": "SpellEffects",
+        "sha256": null
+      },
+      {
+        "name": "SpellGeometry",
+        "sha256": null
+      },
+      {
+        "name": "WagerLedger",
+        "sha256": null
+      },
+      {
+        "name": "WagerService",
+        "sha256": null
+      },
+      {
+        "name": "WagerWorld",
+        "sha256": null
+      },
+      {
+        "name": "WeaponEffects",
+        "sha256": null
+      },
+      {
+        "name": "WeaponModels",
+        "sha256": null
+      },
+      {
+        "name": "WorldService",
+        "sha256": null
+      },
+      {
+        "name": "ArenaAsh",
+        "sha256": null
+      },
+      {
+        "name": "ArsenalPanel",
+        "sha256": null
+      },
+      {
+        "name": "ArsenalTabs",
+        "sha256": null
+      },
+      {
+        "name": "BossAnimations",
+        "sha256": null
+      },
+      {
+        "name": "BossCinematics",
+        "sha256": null
+      },
+      {
+        "name": "BossEffects",
+        "sha256": null
+      },
+      {
+        "name": "BossHud",
+        "sha256": null
+      },
+      {
+        "name": "BossMusic",
+        "sha256": null
+      },
+      {
+        "name": "CameraController",
+        "sha256": null
+      },
+      {
+        "name": "ColosseumController",
+        "sha256": null
+      },
+      {
+        "name": "CombatFeedback",
+        "sha256": null
+      },
+      {
+        "name": "CombatSurfaces",
+        "sha256": null
+      },
+      {
+        "name": "CombatVfx",
+        "sha256": null
+      },
+      {
+        "name": "ControlsCard",
+        "sha256": null
+      },
+      {
+        "name": "DialogueController",
+        "sha256": null
+      },
+      {
+        "name": "DialogueView",
+        "sha256": null
+      },
+      {
+        "name": "EnvironmentController",
+        "sha256": null
+      },
+      {
+        "name": "GameFeelController",
+        "sha256": null
+      },
+      {
+        "name": "HudKit",
+        "sha256": null
+      },
+      {
+        "name": "InputController",
+        "sha256": null
+      },
+      {
+        "name": "InterfaceController",
+        "sha256": null
+      },
+      {
+        "name": "MasteryEffects",
+        "sha256": null
+      },
+      {
+        "name": "MovementController",
+        "sha256": null
+      },
+      {
+        "name": "MovementEffects",
+        "sha256": null
+      },
+      {
+        "name": "MovementMath",
+        "sha256": null
+      },
+      {
+        "name": "ObjectiveController",
+        "sha256": null
+      },
+      {
+        "name": "PauseMenu",
+        "sha256": null
+      },
+      {
+        "name": "PrologueController",
+        "sha256": null
+      },
+      {
+        "name": "QiVfx",
+        "sha256": null
+      },
+      {
+        "name": "SoundscapeController",
+        "sha256": null
+      },
+      {
+        "name": "SpatialAudio",
+        "sha256": null
+      },
+      {
+        "name": "SpellController",
+        "sha256": null
+      },
+      {
+        "name": "SpellHud",
+        "sha256": null
+      },
+      {
+        "name": "SpellVfx",
+        "sha256": null
+      },
+      {
+        "name": "UiKit",
+        "sha256": null
+      },
+      {
+        "name": "UiWindow",
+        "sha256": null
+      },
+      {
+        "name": "WagerController",
+        "sha256": null
+      },
+      {
+        "name": "WaypointMarker",
+        "sha256": null
+      },
+      {
+        "name": "WeaponTrails",
+        "sha256": null
+      },
+      {
+        "name": "WorldStateController",
+        "sha256": null
+      },
+      {
+        "name": "AsurasPathClient",
+        "sha256": null
+      }
+    ]
+  },
+  {
+    "path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/AsurasPath.rbxlx",
+    "bytes": 2336323,
+    "script_count": 205,
+    "sha256": "04fb114a88de04fed6c03100bb2c8fe58928ce7d08c09baa1875b11f58b7c477",
+    "scripts": [
+      {
+        "name": "AsurasPathLoading",
+        "sha256": null
+      },
+      {
+        "name": "Config",
+        "sha256": null
+      },
+      {
+        "name": "ProfileSchema",
+        "sha256": null
+      },
+      {
+        "name": "AnimationCatalog",
+        "sha256": null
+      },
+      {
+        "name": "ArenaLightPlan",
+        "sha256": null
+      },
+      {
+        "name": "ArenaRules",
+        "sha256": null
+      },
+      {
+        "name": "ArsenalCatalog",
+        "sha256": null
+      },
+      {
+        "name": "ArsenalFacts",
+        "sha256": null
+      },
+      {
+        "name": "ArsenalProtocol",
+        "sha256": null
+      },
+      {
+        "name": "AshColosseumLayout",
+        "sha256": null
+      },
+      {
+        "name": "BambooPassLayout",
+        "sha256": null
+      },
+      {
+        "name": "BossArmaments",
+        "sha256": null
+      },
+      {
+        "name": "BossAttackCatalog",
+        "sha256": null
+      },
+      {
+        "name": "BossBodies",
+        "sha256": null
+      },
+      {
+        "name": "BossEncounterRules",
+        "sha256": null
+      },
+      {
+        "name": "BossHandoff",
+        "sha256": null
+      },
+      {
+        "name": "BossRoster",
+        "sha256": null
+      },
+      {
+        "name": "BossTypes",
+        "sha256": null
+      },
+      {
+        "name": "CampaignZones",
+        "sha256": null
+      },
+      {
+        "name": "CelestialPagodaLayout",
+        "sha256": null
+      },
+      {
+        "name": "CombatSettings",
+        "sha256": null
+      },
+      {
+        "name": "ConfigValidator",
+        "sha256": null
+      },
+      {
+        "name": "ContactCues",
+        "sha256": null
+      },
+      {
+        "name": "CostumeSchema",
+        "sha256": null
+      },
+      {
+        "name": "DialogueRules",
+        "sha256": null
+      },
+      {
+        "name": "EffectsPreference",
+        "sha256": null
+      },
+      {
+        "name": "EndingCredits",
+        "sha256": null
+      },
+      {
+        "name": "EndingRules",
+        "sha256": null
+      },
+      {
+        "name": "EnvironmentProfiles",
+        "sha256": null
+      },
+      {
+        "name": "InputMap",
+        "sha256": null
+      },
+      {
+        "name": "IntentProtocol",
+        "sha256": null
+      },
+      {
+        "name": "LevelPreview",
+        "sha256": null
+      },
+      {
+        "name": "LooksBeasts",
+        "sha256": null
+      },
+      {
+        "name": "LooksCast",
+        "sha256": null
+      },
+      {
+        "name": "LooksDuelists",
+        "sha256": null
+      },
+      {
+        "name": "LooksSovereigns",
+        "sha256": null
+      },
+      {
+        "name": "MonasteryZones",
+        "sha256": null
+      },
+      {
+        "name": "NarrativeCatalog",
+        "sha256": null
+      },
+      {
+        "name": "Objectives",
+        "sha256": null
+      },
+      {
+        "name": "PresentationAssets",
+        "sha256": null
+      },
+      {
+        "name": "ProgressionRules",
+        "sha256": null
+      },
+      {
+        "name": "RPGInventory",
+        "sha256": null
+      },
+      {
+        "name": "RPGProfile",
+        "sha256": null
+      },
+      {
+        "name": "RegionLayout",
+        "sha256": null
+      },
+      {
+        "name": "RouteGuide",
+        "sha256": null
+      },
+      {
+        "name": "SanctuaryRoutes",
+        "sha256": null
+      },
+      {
+        "name": "SkyCitadelLayout",
+        "sha256": null
+      },
+      {
+        "name": "SunkenCryptLayout",
+        "sha256": null
+      },
+      {
+        "name": "TutorialRules",
+        "sha256": null
+      },
+      {
+        "name": "WorldDefinitions",
+        "sha256": null
+      },
+      {
+        "name": "ShopCatalog",
+        "sha256": null
+      },
+      {
+        "name": "ArsenalInventory",
+        "sha256": null
+      },
+      {
+        "name": "CombatRules",
+        "sha256": null
+      },
+      {
+        "name": "InputBuffer",
+        "sha256": null
+      },
+      {
+        "name": "MatchmakingRules",
+        "sha256": null
+      },
+      {
+        "name": "MoveSchema",
+        "sha256": null
+      },
+      {
+        "name": "SpellRules",
+        "sha256": null
+      },
+      {
+        "name": "SpellSchema",
+        "sha256": null
+      },
+      {
+        "name": "Tempo",
+        "sha256": null
+      },
+      {
+        "name": "WeaponExpansion",
+        "sha256": null
+      },
+      {
+        "name": "WeaponSchema",
+        "sha256": null
+      },
+      {
+        "name": "Bootstrap",
+        "sha256": null
+      },
+      {
+        "name": "AIService",
+        "sha256": null
+      },
+      {
+        "name": "ArenaLighting",
+        "sha256": null
+      },
+      {
+        "name": "BambooDressing",
+        "sha256": null
+      },
+      {
+        "name": "BossAppearance",
+        "sha256": null
+      },
+      {
+        "name": "BossArenas",
+        "sha256": null
+      },
+      {
+        "name": "BossAttackService",
+        "sha256": null
+      },
+      {
+        "name": "BossDuo",
+        "sha256": null
+      },
+      {
+        "name": "BossHazards",
+        "sha256": null
+      },
+      {
+        "name": "BossMotion",
+        "sha256": null
+      },
+      {
+        "name": "BossSkin",
+        "sha256": null
+      },
+      {
+        "name": "BossTactics",
+        "sha256": null
+      },
+      {
+        "name": "CampaignBounds",
+        "sha256": null
+      },
+      {
+        "name": "CampaignWorld",
+        "sha256": null
+      },
+      {
+        "name": "CastFigures",
+        "sha256": null
+      },
+      {
+        "name": "CharacterService",
+        "sha256": null
+      },
+      {
+        "name": "CitadelDressing",
+        "sha256": null
+      },
+      {
+        "name": "ColosseumDressing",
+        "sha256": null
+      },
+      {
+        "name": "ColosseumService",
+        "sha256": null
+      },
+      {
+        "name": "CostumeKit",
+        "sha256": null
+      },
+      {
+        "name": "CryptDressing",
+        "sha256": null
+      },
+      {
+        "name": "DialogueActions",
+        "sha256": null
+      },
+      {
+        "name": "DialogueService",
+        "sha256": null
+      },
+      {
+        "name": "EncounterHandoff",
+        "sha256": null
+      },
+      {
+        "name": "EnemyAppearance",
+        "sha256": null
+      },
+      {
+        "name": "EnvironmentService",
+        "sha256": null
+      },
+      {
+        "name": "FighterAppearance",
+        "sha256": null
+      },
+      {
+        "name": "ForgeService",
+        "sha256": null
+      },
+      {
+        "name": "LagCompensation",
+        "sha256": null
+      },
+      {
+        "name": "LootService",
+        "sha256": null
+      },
+      {
+        "name": "LootWorld",
+        "sha256": null
+      },
+      {
+        "name": "MagicService",
+        "sha256": null
+      },
+      {
+        "name": "MatchJournal",
+        "sha256": null
+      },
+      {
+        "name": "MonasteryAtmosphere",
+        "sha256": null
+      },
+      {
+        "name": "MonasteryBounds",
+        "sha256": null
+      },
+      {
+        "name": "MonasteryDressing",
+        "sha256": null
+      },
+      {
+        "name": "MonasteryFx",
+        "sha256": null
+      },
+      {
+        "name": "MonasteryGrounds",
+        "sha256": null
+      },
+      {
+        "name": "MonasteryHalls",
+        "sha256": null
+      },
+      {
+        "name": "MonasteryKit",
+        "sha256": null
+      },
+      {
+        "name": "MonasteryLandmarks",
+        "sha256": null
+      },
+      {
+        "name": "MonasteryPockets",
+        "sha256": null
+      },
+      {
+        "name": "MonasteryRuins",
+        "sha256": null
+      },
+      {
+        "name": "MonasterySecrets",
+        "sha256": null
+      },
+      {
+        "name": "MonasteryService",
+        "sha256": null
+      },
+      {
+        "name": "MonasterySurvey",
+        "sha256": null
+      },
+      {
+        "name": "MonasteryTerrain",
+        "sha256": null
+      },
+      {
+        "name": "NarrativeWorld",
+        "sha256": null
+      },
+      {
+        "name": "PagodaDressing",
+        "sha256": null
+      },
+      {
+        "name": "PbrAssets",
+        "sha256": null
+      },
+      {
+        "name": "PersistenceService",
+        "sha256": null
+      },
+      {
+        "name": "PresentationAudit",
+        "sha256": null
+      },
+      {
+        "name": "PresentationDressing",
+        "sha256": null
+      },
+      {
+        "name": "PresentationService",
+        "sha256": null
+      },
+      {
+        "name": "ProfileBridge",
+        "sha256": null
+      },
+      {
+        "name": "ProfileStore",
+        "sha256": null
+      },
+      {
+        "name": "RecoveryRules",
+        "sha256": null
+      },
+      {
+        "name": "RegionDecor",
+        "sha256": null
+      },
+      {
+        "name": "SanctuaryApproach",
+        "sha256": null
+      },
+      {
+        "name": "SanctuaryBonfire",
+        "sha256": null
+      },
+      {
+        "name": "SanctuaryColossus",
+        "sha256": null
+      },
+      {
+        "name": "SanctuaryDressing",
+        "sha256": null
+      },
+      {
+        "name": "SanctuaryLeaves",
+        "sha256": null
+      },
+      {
+        "name": "SanctuaryService",
+        "sha256": null
+      },
+      {
+        "name": "SanctuaryTitan",
+        "sha256": null
+      },
+      {
+        "name": "ShopService",
+        "sha256": null
+      },
+      {
+        "name": "SpellEffects",
+        "sha256": null
+      },
+      {
+        "name": "SpellGeometry",
+        "sha256": null
+      },
+      {
+        "name": "TutorialService",
+        "sha256": null
+      },
+      {
+        "name": "WagerLedger",
+        "sha256": null
+      },
+      {
+        "name": "WagerService",
+        "sha256": null
+      },
+      {
+        "name": "WagerWorld",
+        "sha256": null
+      },
+      {
+        "name": "WeaponEffects",
+        "sha256": null
+      },
+      {
+        "name": "WeaponModels",
+        "sha256": null
+      },
+      {
+        "name": "WorldService",
+        "sha256": null
+      },
+      {
+        "name": "ActionBar",
+        "sha256": null
+      },
+      {
+        "name": "AltarAscension",
+        "sha256": null
+      },
+      {
+        "name": "ArenaAsh",
+        "sha256": null
+      },
+      {
+        "name": "ArsenalPanel",
+        "sha256": null
+      },
+      {
+        "name": "ArsenalTabs",
+        "sha256": null
+      },
+      {
+        "name": "BossAnimations",
+        "sha256": null
+      },
+      {
+        "name": "BossCinematics",
+        "sha256": null
+      },
+      {
+        "name": "BossEffects",
+        "sha256": null
+      },
+      {
+        "name": "BossHud",
+        "sha256": null
+      },
+      {
+        "name": "BossMusic",
+        "sha256": null
+      },
+      {
+        "name": "CameraController",
+        "sha256": null
+      },
+      {
+        "name": "CodexView",
+        "sha256": null
+      },
+      {
+        "name": "ColosseumController",
+        "sha256": null
+      },
+      {
+        "name": "CombatCallouts",
+        "sha256": null
+      },
+      {
+        "name": "CombatFeedback",
+        "sha256": null
+      },
+      {
+        "name": "CombatHud",
+        "sha256": null
+      },
+      {
+        "name": "CombatSurfaces",
+        "sha256": null
+      },
+      {
+        "name": "CombatVfx",
+        "sha256": null
+      },
+      {
+        "name": "ComfortSettings",
+        "sha256": null
+      },
+      {
+        "name": "ControlsCard",
+        "sha256": null
+      },
+      {
+        "name": "CoreGuiPolicy",
+        "sha256": null
+      },
+      {
+        "name": "CreatureMotion",
+        "sha256": null
+      },
+      {
+        "name": "DeviceLayout",
+        "sha256": null
+      },
+      {
+        "name": "DialogueController",
+        "sha256": null
+      },
+      {
+        "name": "DialogueView",
+        "sha256": null
+      },
+      {
+        "name": "DuoBars",
+        "sha256": null
+      },
+      {
+        "name": "EncounterHandoffController",
+        "sha256": null
+      },
+      {
+        "name": "EndingController",
+        "sha256": null
+      },
+      {
+        "name": "EnemyBars",
+        "sha256": null
+      },
+      {
+        "name": "EnemyDissolve",
+        "sha256": null
+      },
+      {
+        "name": "EnemyPlate",
+        "sha256": null
+      },
+      {
+        "name": "EnvironmentController",
+        "sha256": null
+      },
+      {
+        "name": "GameFeelController",
+        "sha256": null
+      },
+      {
+        "name": "HudKit",
+        "sha256": null
+      },
+      {
+        "name": "HudLayout",
+        "sha256": null
+      },
+      {
+        "name": "HudVisibility",
+        "sha256": null
+      },
+      {
+        "name": "IconShapes",
+        "sha256": null
+      },
+      {
+        "name": "InputController",
+        "sha256": null
+      },
+      {
+        "name": "InterfaceController",
+        "sha256": null
+      },
+      {
+        "name": "MasteryEffects",
+        "sha256": null
+      },
+      {
+        "name": "MoveIcons",
+        "sha256": null
+      },
+      {
+        "name": "MovementController",
+        "sha256": null
+      },
+      {
+        "name": "MovementEffects",
+        "sha256": null
+      },
+      {
+        "name": "MovementMath",
+        "sha256": null
+      },
+      {
+        "name": "ObjectiveController",
+        "sha256": null
+      },
+      {
+        "name": "PauseMenu",
+        "sha256": null
+      },
+      {
+        "name": "PlateLayout",
+        "sha256": null
+      },
+      {
+        "name": "PortraitCamera",
+        "sha256": null
+      },
+      {
+        "name": "PrologueController",
+        "sha256": null
+      },
+      {
+        "name": "QiVfx",
+        "sha256": null
+      },
+      {
+        "name": "SakuraCompass",
+        "sha256": null
+      },
+      {
+        "name": "SakuraHud",
+        "sha256": null
+      },
+      {
+        "name": "SakuraKit",
+        "sha256": null
+      },
+      {
+        "name": "SakuraMinimap",
+        "sha256": null
+      },
+      {
+        "name": "SoundscapeController",
+        "sha256": null
+      },
+      {
+        "name": "SpatialAudio",
+        "sha256": null
+      },
+      {
+        "name": "SpellController",
+        "sha256": null
+      },
+      {
+        "name": "SpellHud",
+        "sha256": null
+      },
+      {
+        "name": "SpellVfx",
+        "sha256": null
+      },
+      {
+        "name": "TargetPlate",
+        "sha256": null
+      },
+      {
+        "name": "TutorialController",
+        "sha256": null
+      },
+      {
+        "name": "UiKit",
+        "sha256": null
+      },
+      {
+        "name": "UiWindow",
+        "sha256": null
+      },
+      {
+        "name": "VitalsTags",
+        "sha256": null
+      },
+      {
+        "name": "WagerController",
+        "sha256": null
+      },
+      {
+        "name": "WaypointMarker",
+        "sha256": null
+      },
+      {
+        "name": "WeaponTrails",
+        "sha256": null
+      },
+      {
+        "name": "WorldStateController",
+        "sha256": null
+      },
+      {
+        "name": "AsurasPathClient",
+        "sha256": null
+      }
+    ]
+  }
+]

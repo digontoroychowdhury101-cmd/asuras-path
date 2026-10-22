@@ -16,7 +16,7 @@ function Rules.valid(packet: any): boolean
  if type(packet)~="table" or type(packet.action)~="string" then return false end
  local shapes={Choose={action="string",index="number",revision="number"},Close={action="string"},
   Upgrade={action="string",revision="number"},Infuse={action="string",id="string",revision="number"},
-  Level={action="string",id="string",revision="number"},Trade={action="string",id="string",revision="number"},Codex={action="string"}}
+  Level={action="string",id="string",revision="number"},Summon={action="string",id="string"},Trade={action="string",id="string",revision="number"},Codex={action="string"}}
  local shape=shapes[packet.action];if not shape then return false end
  local count=0;local expected=0;for _ in shape do expected+=1 end
  for key,v in packet do

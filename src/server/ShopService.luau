@@ -82,6 +82,7 @@ function Shop.SaveSettings(id: number,settings: any)
  return Persistence.Transaction(id,function(p: any)
   p.settings.fov=settings.fov;p.settings.sensitivity=settings.sensitivity;p.settings.leftHanded=settings.leftHanded
   if settings.keybinds then p.settings.keybinds=table.clone(settings.keybinds) end
+  if settings.comfort then assert(Schema.ValidComfort(settings.comfort),"Invalid comfort settings");p.settings.comfort=table.clone(settings.comfort) end
  end)
 end
 function Shop.BuyBundle() return false,"Developer products require a durable receipt" end

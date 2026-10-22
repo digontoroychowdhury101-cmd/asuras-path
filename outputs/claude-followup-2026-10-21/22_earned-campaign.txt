@@ -1,0 +1,24 @@
+Continue Asura's Path — follow-up 22/26: Run the earned solo campaign and close integration failures.
+
+Apply 00_SHARED_BRIEF.txt in /Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 23. Findings: #1, #8, #9, #10, #16, #18, #19, #22, #23, #27, #28, #44. Verify existing work, fix actual gaps, and execute this batch now.
+
+Use the evidence collected in prompts 02–21. Do not reread/rebuild every system or replay already-proven isolated cases. Attempt a normal fresh-profile campaign with continuous input: opening → all six sovereigns and every phase → earned rewards/forge → return to Lin → crossing/postgame. No defeat flags, invulnerability, kill commands or teleports count as earned progress.
+Maintain a compact checkpoint log with build identity and real milestone evidence so a resumed session does not repeat the opening. Record each boss's phase/victory/retry outcome, one later-checkpoint death/stain/reclaim/second death, save/rejoin at meaningful progress, all altar travel destinations, all eight inscriptions and five caches. Reuse actual collectible/route evidence when it belongs to this same build and profile lineage. Include one real reinforce/infuse plus mastery/ward/Last Breath behavior where legitimately reachable.
+Fix demonstrated cross-system blockers with the smallest necessary change and a focused regression. Do not nerf damage/deflect windows because computer-use input is delayed. If a human must perform combat, deliver the exact short route/save/test handoff and keep the unplayed sections pending while completing independent integration checks.
+Separate earned outcomes, diagnostic fixtures and offline proofs in the final matrix. This is the campaign gate; one normal-enemy kill plus six assisted encounter starts does not pass it.
+Start files (relative to project root; follow only required dependencies):
+- src/server/Services/WorldService.luau
+- src/server/CharacterService.luau
+- src/server/ProfileStore.luau
+- src/shared/Objectives.luau
+- tools/test_campaign_ledger.luau
+- tools/test_progression_runtime.py
+
+Focused checks (reuse prior results unless code changed or live evidence is missing):
+- python3 tools/lune_compat.py tools/test_campaign_ledger.luau
+- Run only regressions affected by actual integration fixes
+
+Acceptance:
+An evidence-linked earned completion matrix or exact reached milestone/blocker; no blanket full-clear claim without all six real victories and the ending.
+
+Update the matching ledgers with evidence type and exact remaining work; stop after this batch.

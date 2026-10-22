@@ -18,14 +18,41 @@ service (record which one and its terms here once generated). Processed by `tool
 
 CC0 needs no attribution; credited here as good practice. Poly Haven: https://polyhaven.com · ambientCG: https://ambientcg.com
 
-| stone_01 | https://polyhaven.com/a/stone_01 | CC0-1.0 | Phase 5 scenery / sound design (upload pending) |
+## Phase 5 sources — retrieved 2026-10-19
 
-| stone_fire_pit | https://polyhaven.com/a/stone_fire_pit | CC0-1.0 | Phase 5 scenery / sound design (upload pending) |
+| Asset / author | Source | License | Processing / use |
+|---|---|---|---|
+| Stone 01 — Poly Haven | [Original scan](https://polyhaven.com/a/stone_01) | CC0-1.0 | Small decorative rubble; 2,400-triangle cap, 1024 PBR |
+| Stone Fire Pit — Poly Haven | [Original scan](https://polyhaven.com/a/stone_fire_pit) | CC0-1.0 | Arena / monastery braziers; 1024 PBR |
+| Brass Diya Lantern — Poly Haven | [Original model](https://polyhaven.com/a/brass_diya_lantern) | CC0-1.0 | Hanging bronze lantern; vertex colors baked into base color |
+| Fantasy Ruins — Ron Kapaun / 3TD Studios | [Original pack](https://opengameart.org/content/3td-fantasy-ruins-pack) | CC0-1.0 | Ruined arch, Roman rail, pillar, foundation and temple. Original authored geometry + diffuse/normal maps; roughness .86 and metalness 0 are authored defaults. These are not photogrammetry scans. |
+| Impact Sounds — Kenney | [Original pack](https://kenney.nl/assets/impact-sounds) | CC0-1.0 | Metal / plate clash, punch, mining / stone, concrete footsteps, soft impacts |
+| RPG Audio — Kenney | [Original pack](https://kenney.nl/assets/rpg-audio) | CC0-1.0 | Knife slice, chop, cloth flutter |
 
-| brass_diya_lantern | https://polyhaven.com/a/brass_diya_lantern | CC0-1.0 | Phase 5 scenery / sound design (upload pending) |
+Exact audio source filenames, original synthesis layers, hashes and measured levels are in
+`assets/build/phase5_audio/manifest.json`. Wind, bronze bell, droplets, bass impulse and bowed-harmonic
+drone were synthesized for this project; the drone is not a recorded cello performance. No Freesound,
+Sonniss, Mixamo or Sketchfab assets were downloaded or claimed as licensed in this pass.
 
-| impact-sounds | https://kenney.nl/assets/impact-sounds | CC0-1.0 | Phase 5 scenery / sound design (upload pending) |
+Custom ember, ribbon, blood, smoke, ash, flame, shockwave, seal masks and six seamless charcoal sky
+faces are authored by `tools/blender/build_vfx.py`. The copied leaf masks retain the ambientCG
+LeafSet024 credit above. The older rejected procedural titan sculpt was not used as a new boss.
 
-| rpg-audio | https://kenney.nl/assets/rpg-audio | CC0-1.0 | Phase 5 scenery / sound design (upload pending) |
+Provenance and source archive SHA-256 hashes: `assets/PHASE5_SOURCES.json`.
+The original 3TD CC0 dedication PDF and Kenney license texts are preserved with the raw downloads.
 
-| 3td_fantasy_ruins | https://opengameart.org/content/3td-fantasy-ruins-pack | CC0-1.0 | Phase 5 scenery / sound design (upload pending) |
+## Shrine lobby rebuild — 2026-10-21/22
+
+The Shrine of the Ascendant's modular architecture kit (roofs, timber frame, brackets, balustrades,
+lanterns, stelae, ruins, basin coping, bonfire dais, cliffs, karst towers), its cloud, maple, shrub and
+banner pieces, all eleven tileable PBR texture sets and the six golden-hour sky faces were generated for
+this project by `tools/blender/lobby_kit.py`, `lobby_kit_*.py`, `lobby_textures.py` and
+`tools/assets/make_sunset_sky.py`. No third-party models, scans or textures were downloaded or used.
+
+## Sanctuary vista landscape kit — 2026-10-22
+
+The Crown, Ridge, Needle and Waterfall geometry in `AsuraSanctuaryVista` was authored for this project
+with `tools/blender/sanctuary_vista.py`. Its rock color, normal and roughness maps reuse the existing
+Poly Haven [Rock Face 03](https://polyhaven.com/a/rock_face_03) CC0 source already recorded above,
+resized to 1024 for this kit. Moss and water use plain authored materials; the optional black metalness
+map comes from the existing generated lobby kit. No new external assets were downloaded.

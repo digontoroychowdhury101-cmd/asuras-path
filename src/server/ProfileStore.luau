@@ -36,7 +36,7 @@ export type Inventory = {
 	elixirs: Elixirs,
 	reinforcement: { [string]: number },
 }
-export type WorldState = { altars: { [string]: boolean }, activeAltar: string, bosses: { [string]: boolean }, bloodstain: Bloodstain? }
+export type WorldState = { altars: { [string]: boolean }, activeAltar: string, bosses: { [string]: boolean }, bloodstain: Bloodstain?, tutorial: { [string]: boolean }?, story: { [string]: boolean }? }
 export type Souls = {
 	version: number,
 	level: number,
@@ -235,7 +235,9 @@ function Store.DefaultSouls(startingAltar: string?): Souls
 			reinforcement = {},
 			spells = {ThunderclapPalm=true,GaleStep=true}, spellSlots={"ThunderclapPalm","GaleStep"}, remembrances={}, spentRemembrances={}, caches={},
 		},
-		world = { altars = { [altar] = true }, activeAltar = altar, bosses = {}, bloodstain = nil },
+		-- tutorial: opening-training steps completed (TutorialRules ids, "Skipped" when declined).
+		-- story: six-sovereign ending flags (EndingRules.Flags); they only ever gain entries.
+		world = { altars = { [altar] = true }, activeAltar = altar, bosses = {}, bloodstain = nil, tutorial = {}, story = {} },
 		deaths = 0,
 	}
 end
@@ -337,6 +339,12 @@ function Store.ValidateSouls(raw: any): (boolean, string?)
 	if not identifier(world.activeAltar) or world.altars[world.activeAltar] ~= true then
 		return false, "Active altar must be activated"
 	end
+	if world.tutorial ~= nil and not validFlagSet(world.tutorial) then
+		return false, "Invalid tutorial progress"
+	end
+	if world.story ~= nil and not validFlagSet(world.story) then
+		return false, "Invalid story progress"
+	end
 	if world.bloodstain ~= nil and not validBloodstain(world.bloodstain) then
 		return false, "Invalid bloodstain"
 	end
@@ -410,6 +418,16 @@ function Store.MigrateSouls(raw: any, startingAltar: string?): Souls
 		if validFlagSet(world.altars) then
 			for id in world.altars do
 				souls.world.altars[id] = true
+			end
+		end
+		if validFlagSet(world.tutorial) then -- older records simply start the training fresh
+			for id in world.tutorial do
+				(souls.world.tutorial :: { [string]: boolean })[id] = true
+			end
+		end
+		if validFlagSet(world.story) then -- older records have made no ending choice yet
+			for id in world.story do
+				(souls.world.story :: { [string]: boolean })[id] = true
 			end
 		end
 		if validFlagSet(world.bosses) then

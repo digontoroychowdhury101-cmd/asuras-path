@@ -10,7 +10,9 @@ local TweenService = game:GetService("TweenService")
 local Objectives = require(ReplicatedStorage:WaitForChild("AsurasPath"):WaitForChild("Shared"):WaitForChild("Objectives") :: ModuleScript)
 local HudKit = require(script.Parent:WaitForChild("HudKit") :: ModuleScript)
 local WaypointMarker = require(script.Parent:WaitForChild("WaypointMarker") :: ModuleScript)
+local Visibility = require(script.Parent:WaitForChild("HudVisibility") :: ModuleScript)
 local WorldState = require(script.Parent:WaitForChild("WorldStateController") :: ModuleScript)
+local RouteGuide = require(ReplicatedStorage.AsurasPath.Shared.RouteGuide)
 
 local P = HudKit.Palette
 local REFRESH = 0.2
@@ -84,10 +86,12 @@ function Controller.Facts(self: ObjectiveController): Objectives.Facts
 		Region = self.PendingRegion or (if type(region) == "string" then region else nil),
 		Altars = Objectives.parseAltars(player:GetAttribute("AsuraAltars")),
 		Bloodstain = if typeof(stain) == "Vector3" then stain else nil,
+		StainRegion = if typeof(stain) == "Vector3" then RouteGuide.regionOf(stain) else nil,
 		InBoss = self.Ui.BossEntity ~= nil,
 		InColosseum = type(player:GetAttribute("AsuraColosseum")) == "string",
 		BossFelled = self.BossFelled or bosses.GrandmasterShen == true,
 		Rested = self.Rested,
+		Story = Objectives.parseAltars(player:GetAttribute("AsuraStory")),
 	}
 end
 
@@ -114,6 +118,8 @@ function Controller.Show(self: ObjectiveController, objective: Objectives.Object
 end
 
 function Controller.Update(self: ObjectiveController, dt: number)
+	local guidance = Visibility.of(self.Ui).Guidance
+	self.Panel.Visible = self.Current ~= nil and guidance
 	self.Elapsed += dt
 	if self.Elapsed < REFRESH then
 		return
@@ -126,7 +132,10 @@ function Controller.Update(self: ObjectiveController, dt: number)
 	local character = self.Player.Character
 	local root = character and character:FindFirstChild("HumanoidRootPart") :: BasePart?
 	local goal = if objective then self.Marker:Locate(objective.Target) else nil
-	local meters = self.Marker:Point(goal, if root then root.Position else nil, self.Ui.Altar.Visible)
+	-- Staged route (#28): the next doorway or portal on the walked route, with the walked distance.
+	local stage = if goal and root then RouteGuide.next(root.Position, goal) else nil
+	if stage then goal = if stage.Kind == "Portal" then self.Marker:Locate({ Kind = "Portal" }) else stage.Position end
+	local meters = self.Marker:Point(goal, if root then root.Position else nil, not guidance, stage and stage.Label, stage and stage.Remaining)
 	self.Distance.Text = if meters then string.format("%dm", meters) else ""
 end
 

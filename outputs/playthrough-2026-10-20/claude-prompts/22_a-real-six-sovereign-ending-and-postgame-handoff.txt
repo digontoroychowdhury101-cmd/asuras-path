@@ -1,0 +1,21 @@
+Continue Asura's Path repairs — batch 22/26: A real six-sovereign ending and postgame handoff.
+
+Apply the shared operating brief (outputs/playthrough-2026-10-20/claude-prompts/00_OPERATING_BRIEF.txt; read once per chat) and current PROGRESS.md. Read report findings #10, #28, #42 only, plus relevant evidence. Implement this batch now.
+
+Finish the story promise using the six current server-owned defeated-boss flags. After all six, guide the player through the correct return/travel leg to Lin, show her Release dialogue and offer an explicit meaningful Cross or Remain choice.
+Implement a deliberate crossing scene/sequence, completion acknowledgement and concise credits using actual project credit records. Provide a clear continue-playing/postgame return that preserves earned gear, discoveries and progress. Remain should allow continued play and later access to crossing. Keep PvP an optional postgame activity rather than the only apparent conclusion.
+Make completion state and rewards, if any, idempotent across repeat interaction, death, disconnect/rejoin and interrupted presentation. Update Codex/quest state consistently and keep the ending's camera/UI cleanup robust.
+Use the established narrative/art identity and existing assets; keep the scene bounded instead of adding a new campaign chapter.
+
+Start near these files; follow only necessary dependencies:
+- src/shared/NarrativeCatalog.luau
+- src/shared/Objectives.luau
+- src/server/Services/DialogueService.luau
+- src/server/Services/DialogueActions.luau
+- src/client/Controllers/DialogueController.luau
+- src/client/Controllers/PrologueController.luau
+
+Acceptance and focused verification:
+Test five/six flags, both choices, revisit, replay/skip, interrupted scene and rejoin without duplicate rewards or lost progress. A seeded six-flag test validates logic only; keep earned six-boss-to-ending acceptance pending until batch 23 actually establishes it. Verify credit entries against project records.
+
+Update the repair ledger and PROJECT_STATE.md. State implementation versus verification precisely, then stop at this batch boundary.

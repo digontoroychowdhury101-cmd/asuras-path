@@ -1,0 +1,1 @@
+[["__lua","Client","local a = game:GetService(\"Lighting\"):FindFirstChildOfClass(\"Atmosphere\") a.Density, a.Haze = 0.05, 0.3 return \"thin\""]]

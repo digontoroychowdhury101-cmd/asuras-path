@@ -11,6 +11,7 @@ sources = [
     ("PresentationAssets", "src/shared/PresentationAssets.luau"),
     ("CombatSettings", "src/shared/CombatSettings.luau"),
     ("InputBuffer", "src/simulation/InputBuffer.luau"),
+    ("InputMap", "src/shared/InputMap.luau"),
     ("MovementMath", "src/client/Controllers/MovementMath.luau"),
     ("MovementEffects", "src/client/Controllers/MovementEffects.luau"),
     ("MovementController", "src/client/Controllers/MovementController.luau"),

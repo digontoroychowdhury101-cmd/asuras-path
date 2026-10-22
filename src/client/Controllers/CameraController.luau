@@ -12,6 +12,7 @@ local Shared = ReplicatedStorage:WaitForChild("AsurasPath")
 local Config = require(Shared:WaitForChild("Config") :: ModuleScript) :: any
 local WorldState = require(script.Parent:WaitForChild("WorldStateController") :: ModuleScript)
 local BossCinematics = require(script.Parent.BossCinematics)
+local Effects = require(Shared:WaitForChild("Shared"):WaitForChild("EffectsPreference") :: ModuleScript) :: any
 
 type WorldState = WorldState.WorldState
 type Entity = WorldState.Entity
@@ -89,6 +90,19 @@ local function stepSpring(s: Spring, target: number, omega: number, dt: number)
 		local acceleration = omega * omega * (target - s.Value) - 2 * omega * s.Velocity
 		s.Velocity += acceleration * h
 		s.Value += s.Velocity * h
+	end
+end
+
+-- Camera shake: a damped oscillator in camera space, sub-stepped like the springs. One explicit
+-- step per frame is unstable above ~33 ms frames: at 7 FPS in Studio one hit impulse grew to 1e35,
+-- froze the camera and hid every line-of-sight prompt (altars, portals).
+local function stepShake(fields: Fields, dt: number)
+	local steps = math.max(1, math.ceil(dt / (1 / 120)))
+	local h = dt / steps
+	for _ = 1, steps do
+		local acceleration = -fields.Shake * 900 - fields.ShakeVelocity * 30
+		fields.ShakeVelocity += acceleration * h
+		fields.Shake += fields.ShakeVelocity * h
 	end
 end
 
@@ -272,13 +286,21 @@ function Controller.ToggleShoulder(self: CameraController)
 end
 
 -- Directional shake and FOV punch. `direction` is world-space (the shake pushes along it).
+-- Snaps the orbit behind a facing (portal arrival, batch 07) so the view matches the body.
+function Controller.Face(self: CameraController, look: Vector3)
+	if Vector3.new(look.X, 0, look.Z).Magnitude < 1e-3 then return end
+	self.TargetYaw = yawOf(look)
+	self.Yaw.Value = self.TargetYaw
+end
+
 function Controller.Impulse(self: CameraController, direction: Vector3?, magnitude: number, fovPunch: number?)
 	local push = if direction and direction.Magnitude > 1e-3 then direction.Unit else Vector3.new(0, 1, 0)
 	local localPush = self.Camera.CFrame:VectorToObjectSpace(push)
+	magnitude = Effects.motion(magnitude) -- reduced motion keeps a quarter of the kick (batch 25)
 	self.ShakeVelocity += Vector3.new(localPush.X, localPush.Y, 0) * magnitude * 6
 	self.Roll += (math.random() - 0.5) * magnitude * 0.05
 	if fovPunch then
-		self.FovPunch.Velocity += fovPunch * 18
+		self.FovPunch.Velocity += Effects.motion(fovPunch) * 18
 	end
 end
 
@@ -287,7 +309,7 @@ function Controller.SetHeadTrauma(self: CameraController, tier: string)
 end
 
 function Controller.SetSway(self: CameraController, amplitude: number)
-	self.Sway = amplitude
+	self.Sway = Effects.motion(amplitude)
 end
 
 function Controller.SetFovClamp(self: CameraController, degrees: number)
@@ -305,6 +327,12 @@ end
 function Controller.BossShot(self: CameraController, id: number, duration: number, finish: boolean?)
 	BossCinematics.restore(self.BossShotState)
 	self.BossShotState = BossCinematics.begin(self.Camera, self.State, id, duration, finish == true)
+end
+
+-- Ends any boss shot now (skip, reset, leaving, death) and restores slowed tracks.
+function Controller.EndBossShot(self: CameraController)
+	BossCinematics.restore(self.BossShotState)
+	self.BossShotState = nil
 end
 
 function Controller.Update(self: CameraController, dt: number)
@@ -373,10 +401,7 @@ function Controller.Update(self: CameraController, dt: number)
 	stepSpring(self.ShoulderSpring, self.Shoulder, 10, dt)
 	stepSpring(self.FovPunch, 0, 14, dt)
 
-	-- Shake: damped oscillator around zero in camera space.
-	local shakeAcceleration = -self.Shake * 900 - self.ShakeVelocity * 30
-	self.ShakeVelocity += shakeAcceleration * dt
-	self.Shake += self.ShakeVelocity * dt
+	stepShake(self, dt)
 	self.Roll *= math.exp(-dt * 8)
 
 	local wobble = TRAUMA_WOBBLE[self.HeadTier]

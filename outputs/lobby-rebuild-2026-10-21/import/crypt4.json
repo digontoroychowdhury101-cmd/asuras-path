@@ -1,0 +1,8 @@
+[["__lua","Client","_G.QAC = {} return 'reset'"],
+ ["character_navigation", {"datamodel_type":"Client","x":0,"y":601,"z":975,"speed_multiplier":2}], ["__sleep", 1],
+ ["character_navigation", {"datamodel_type":"Client","x":0,"y":601,"z":989,"speed_multiplier":1}], ["__sleep", 1.5],
+ ["__lua","Client","local out = {} for _, d in workspace:GetDescendants() do if d:IsA('ProximityPrompt') and d.ActionText == 'Traverse' then table.insert(out, d.ObjectText .. ' style=' .. d.Style.Name .. ' los=' .. tostring(d.RequiresLineOfSight) .. ' excl=' .. d.Exclusivity.Name .. ' hold=' .. d.HoldDuration) end end return table.concat(_G.QAC, ' | ') .. ' :: ' .. table.concat(out, ' ; ')"],
+ ["user_keyboard_input", {"datamodel_type":"Client","actions":[{"action":"keyDown","key_code":"Z"},{"action":"wait","wait_time_ms":1000},{"action":"keyUp","key_code":"Z"}]}],
+ ["__sleep", 3],
+ ["__lua","Client","return table.concat(_G.QAC, ' | ')"],
+ ["__lua","Client","tools/qa/LobbyWhere.luau"]]

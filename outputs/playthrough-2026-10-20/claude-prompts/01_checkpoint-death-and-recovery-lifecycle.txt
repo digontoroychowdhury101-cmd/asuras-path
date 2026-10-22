@@ -1,0 +1,18 @@
+Continue Asura's Path repairs — batch 01/26: Checkpoint, death and recovery lifecycle.
+
+Apply the shared operating brief (outputs/playthrough-2026-10-20/claude-prompts/00_OPERATING_BRIEF.txt; read once per chat) and current PROGRESS.md. Read report findings #1, #18, #19 only, plus relevant evidence. Implement this batch now.
+
+Reproduce the later-altar respawn failure before changing it. Trace active-altar selection, respawn hooks/overrides, character admission, region detection and the Sanctuary fall-return safeguard. The observation is correct altar attributes followed by position near (0,603,920); the root cause is still unproven.
+Implement reliable respawn at every kindled altar with a safe standing position, correct resource refill, region/objective refresh and boss reset. Preserve bloodstain loss/recovery rules, including second death with zero carried currency, and prevent duplicate loss or rewards during respawn/reconnect.
+Separate legitimate Sanctuary fall recovery from ground-region travel and normal respawning. Add a focused lifecycle regression for the actual cause rather than disabling the safeguard globally. This batch owns state correctness; HUD transition polish belongs to batch 04.
+
+Start near these files; follow only necessary dependencies:
+- src/server/CharacterService.luau
+- src/server/Services/WorldService.luau
+- src/server/Services/SanctuaryService.luau
+- src/server/Bootstrap.server.luau
+
+Acceptance and focused verification:
+Test Monastery Gate and Cloister rest -> enemy death -> correct local respawn; then cover all remaining altars, boss death/reset, legitimate Sanctuary fall, and recover/die-again behavior. Use existing progression/profile tests where relevant. Report exact observed positions and active altars when Studio is available.
+
+Update the repair ledger and PROJECT_STATE.md. State implementation versus verification precisely, then stop at this batch boundary.

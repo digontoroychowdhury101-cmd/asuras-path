@@ -1,0 +1,5 @@
+[["character_navigation", {"datamodel_type":"Client","x":0,"y":621,"z":812,"speed_multiplier":3}], ["__sleep", 1],
+ ["__lua","Client","outputs/lobby-rebuild-2026-10-21/import/where.luau"],
+ ["screen_capture", {"capture_id": "test_gate"}],
+ ["character_navigation", {"datamodel_type":"Client","x":0,"y":621,"z":797,"speed_multiplier":2}], ["__sleep", 3],
+ ["__lua","Client","outputs/lobby-rebuild-2026-10-21/import/where.luau"]]

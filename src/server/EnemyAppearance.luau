@@ -67,10 +67,13 @@ local LOOKS: { [string]: (p: Parts) -> () } = {
 			b.Shape = Enum.PartType.Ball
 		end
 		splitSkirt(p, robe, rust:Lerp(robe, 0.5), 1.25)
-		for _, name in { "LeftLowerArm", "RightLowerArm" } do
+		-- Brawler role: bare forearms bound in stained wraps and iron-knuckled fists.
+		for _, name in { "LeftLowerArm", "RightLowerArm", "LeftHand", "RightHand" } do
 			local arm = limb(p.Model, name)
 			if arm then
-				gear(p.Outfit, arm, "StainedWraps", arm.Size + Vector3.new(0.06, -0.2, 0.06), CFrame.new(), Color3.fromRGB(112, 100, 84), FABRIC)
+				local fist = string.find(name, "Hand") ~= nil
+				gear(p.Outfit, arm, if fist then "IronKnuckles" else "StainedWraps", arm.Size + (if fist then Vector3.new(0.18, 0.12, 0.18) else Vector3.new(0.06, -0.2, 0.06)),
+					CFrame.new(), if fist then Color3.fromRGB(70, 66, 62) else Color3.fromRGB(112, 100, 84), if fist then METAL else FABRIC)
 			end
 		end
 		emberEyes(p)
@@ -96,7 +99,22 @@ local LOOKS: { [string]: (p: Parts) -> () } = {
 		gear(p.Outfit, p.Torso, "TatteredCloak", Vector3.new(t.X * 1.05, t.Y * 2.1, 0.1),
 			CFrame.new(0, -t.Y * 0.45, t.Z * 0.5 + 0.12) * CFrame.Angles(math.rad(-6), 0, 0), Color3.fromRGB(34, 22, 22), FABRIC)
 		splitSkirt(p, cloth, iron, 1.1)
+		-- Swordsman role: the dao's lacquered scabbard rides the left hip.
+		gear(p.Outfit, p.Waist, "Scabbard", Vector3.new(0.22, 0.4, 3.4), CFrame.new(-p.Waist.Size.X * 0.62, -0.2, 0.3) * CFrame.Angles(math.rad(-28), 0, 0), Color3.fromRGB(40, 22, 20), WOOD)
 		emberEyes(p)
+	end,
+	-- Sparring Phantom: a translucent jade training spirit with a white sash; never mistaken for a foe.
+	SparringPhantom = function(p)
+		local jade = Color3.fromRGB(150, 220, 196)
+		colorBody(p.Model, jade, jade)
+		for _, item in p.Model:GetChildren() do
+			if item:IsA("BasePart") and item.Name ~= "HumanoidRootPart" then item.Transparency, item.Material = 0.35, Enum.Material.Glass end
+		end
+		local sash = gear(p.Outfit, p.Waist, "TrainingSash", p.Waist.Size + Vector3.new(0.14, 0.2, 0.14), CFrame.new(), Color3.fromRGB(240, 240, 232), FABRIC)
+		sash.Transparency = 0.1
+		local glow = Instance.new("PointLight")
+		glow.Color, glow.Brightness, glow.Range, glow.Shadows = jade, 0.8, 8, false
+		glow.Parent = p.Torso
 	end,
 }
 

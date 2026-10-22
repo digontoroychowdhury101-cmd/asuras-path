@@ -41,6 +41,7 @@ export type Profile = {
 		fov: number,
 		sensitivity: number,
 		leftHanded: boolean, keybinds: {[string]: string},
+		comfort: { ReducedEffects: boolean, ReducedMotion: boolean, ReducedFlashes: boolean, TextScale: number }?,
 	},
 	lastSaveTime: number,
  receipts: {[string]: number}, appliedMatches: {[string]: boolean}, pendingMatches: {[string]: boolean},
@@ -91,6 +92,7 @@ function ProfileSchema.Default(userId: number): Profile
 			fov = 70,
 			sensitivity = 1.0,
 			leftHanded = false, keybinds = {},
+			comfort = { ReducedEffects = false, ReducedMotion = false, ReducedFlashes = false, TextScale = 1 },
 		},
 		lastSaveTime = 0, receipts = {}, appliedMatches = {}, pendingMatches = {},
 	}
@@ -131,6 +133,21 @@ local ACTIONS={LeftHand=true,RightHand=true,LeftLeg=true,RightLeg=true,Alternate
 local DEFAULT_KEYS: {[string]: string}={LeftHand="MouseLeftButton",RightHand="MouseRightButton",LeftLeg="Q",RightLeg="E",Alternate="LeftAlt",Body="LeftControl",Guard="Space",Grapple="F",Evade="LeftShift",Tap="T",Style="R"}
 local VALID_KEYS={MouseLeftButton=true,MouseRightButton=true,Space=true,LeftAlt=true,RightAlt=true,LeftControl=true,RightControl=true,LeftShift=true,RightShift=true,One=true,Two=true,Three=true,Four=true,Five=true,Six=true,Seven=true,Eight=true,Nine=true,Zero=true,Minus=true,Equals=true,LeftBracket=true,RightBracket=true,Semicolon=true,Quote=true,Comma=true,Period=true,BackSlash=true}
 for key in string.gmatch("C E F G H I J K L N O P Q R T U V X Y Z", "%S+") do VALID_KEYS[key]=true end
+-- Comfort and readability (batch 25; EffectsPreference.sanitize is the client-side twin).
+local TEXT_SCALES = { [1] = true, [1.15] = true, [1.3] = true }
+function ProfileSchema.ValidComfort(c: any): boolean
+	if type(c) ~= "table" then return false end
+	local n = 0
+	for key, value in c do
+		n += 1
+		if key == "TextScale" then
+			if not TEXT_SCALES[value] then return false end
+		elseif (key ~= "ReducedEffects" and key ~= "ReducedMotion" and key ~= "ReducedFlashes") or type(value) ~= "boolean" then
+			return false
+		end
+	end
+	return n == 4
+end
 function ProfileSchema.ValidKeybinds(bindings: any): boolean
  if type(bindings)~="table" then return false end
  for name,key in bindings do if not ACTIONS[name] or type(key)~="string" or not VALID_KEYS[key] then return false end end
@@ -190,6 +207,7 @@ function ProfileSchema.Validate(raw: any): (boolean, string?)
 	if not finite(raw.settings.sensitivity) or raw.settings.sensitivity < MIN_SENSITIVITY
 		or raw.settings.sensitivity > MAX_SENSITIVITY then return false, "Invalid sensitivity" end
 	if not ProfileSchema.ValidKeybinds(raw.settings.keybinds) then return false,"Invalid keybinds" end
+	if raw.settings.comfort ~= nil and not ProfileSchema.ValidComfort(raw.settings.comfort) then return false, "Invalid comfort settings" end
 	for _, field in {"receipts", "appliedMatches", "pendingMatches"} do
   if type(raw[field])~="table" then return false,"Missing ledger: "..field end
   local count=0
@@ -253,6 +271,7 @@ function ProfileSchema.Migrate(raw: any, userId: number): Profile
 			migrated.settings.sensitivity = math.clamp(raw.settings.sensitivity, MIN_SENSITIVITY, MAX_SENSITIVITY)
 		end
 		if type(raw.settings.leftHanded) == "boolean" then migrated.settings.leftHanded = raw.settings.leftHanded end
+		if ProfileSchema.ValidComfort(raw.settings.comfort) then migrated.settings.comfort = table.clone(raw.settings.comfort) end
   if raw.settings.keybinds~=nil then
    assert(ProfileSchema.ValidKeybinds(raw.settings.keybinds),"Corrupt keybinds")
    for name,key in raw.settings.keybinds do migrated.settings.keybinds[name]=key end

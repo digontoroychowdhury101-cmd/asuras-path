@@ -12,15 +12,18 @@ local PhysicsService = game:GetService("PhysicsService")
 local Shared = ReplicatedStorage:WaitForChild("AsurasPath")
 local Config = require(Shared:WaitForChild("Config") :: ModuleScript) :: any
 local World = require(Shared.Shared.WorldDefinitions)
+local InputMap = require(Shared.Shared.InputMap)
 local Settings = require(Shared.Shared.CombatSettings) :: any
 local Weapons = require(Shared.Simulation.WeaponSchema) :: any
 local Characters = require(script.Parent:WaitForChild("CharacterService") :: ModuleScript)
 local AI = require(script.Parent:WaitForChild("AIService") :: ModuleScript)
 local BossArenas = require(script.Parent.BossArenas)
+local EncounterHandoff = require(script.Parent.EncounterHandoff)
 local BossRules = require(Shared.Shared.BossEncounterRules)
 local Progression = require(Shared.Shared.ProgressionRules)
 local Persistence = require(script.Parent:WaitForChild("PersistenceService") :: ModuleScript) :: any
 local ProfileStore = require(script.Parent:WaitForChild("ProfileStore") :: ModuleScript)
+local Recovery = require(script.Parent:WaitForChild("RecoveryRules") :: ModuleScript)
 
 type Altar = World.Altar
 type FogGate = World.FogGate
@@ -46,6 +49,8 @@ type Session = {
 	Queue: { Commit },
 	Processing: boolean,
 	LastFlush: number,
+	Life: number,
+	DeathLife: number,
 }
 
 type Fight = {
@@ -61,6 +66,10 @@ local WorldService = {}
 local TAG_ALTAR = "AsuraAltar"
 local TAG_STAIN = "AsuraBloodstain"
 local INTERACT_RADIUS = 6
+-- Fog-gate prompt reach; the Interact fallback below uses the same reach as each visible prompt
+-- plus a latency slack, so a key press never acts on something whose prompt is out of range.
+local GATE_RADIUS = 18
+local PROMPT_SLACK = 2
 local FLUSH_INTERVAL = 20
 local GATE_INTERVAL = 6 -- ticks (10 Hz)
 local BUSY_RETRIES = 40
@@ -164,6 +173,8 @@ local function session(userId: number): Session?
 		Queue = {},
 		Processing = false,
 		LastFlush = os.clock(),
+		Life = 1,
+		DeathLife = 0,
 	}
 	sessions[userId] = created
 	player:SetAttribute("AsuraElixirs", created.Elixirs)
@@ -205,6 +216,13 @@ local function publish(s: Session)
 		end
 		table.sort(bosses)
 		player:SetAttribute("AsuraBosses", table.concat(bosses, ","))
+		-- Six-sovereign ending flags (batch 22): Released / Remained / Crossed, read by the objective tracker.
+		local story: { string } = {}
+		for id, on in record.world.story or {} do
+			if on then table.insert(story, id) end
+		end
+		table.sort(story)
+		player:SetAttribute("AsuraStory", table.concat(story, ","))
 		for _, name in ProfileStore.Attributes do
 			player:SetAttribute("Asura" .. name, record.attributes[name])
 		end
@@ -365,6 +383,7 @@ local function anchoredAltar(altar: Altar): ProximityPrompt?
 	prompt.HoldDuration = 0.4
 	prompt.MaxActivationDistance = altar.Radius
 	prompt.RequiresLineOfSight = false
+	InputMap.applyPrompt(prompt)
 	prompt.Parent = anchor
 	anchor:SetAttribute("AltarId", altar.Id)
 	CollectionService:AddTag(anchor, TAG_ALTAR)
@@ -424,6 +443,7 @@ local function buildAltar(altar: Altar, parent: Folder): ProximityPrompt
 	prompt.HoldDuration = 0.4
 	prompt.MaxActivationDistance = altar.Radius
 	prompt.RequiresLineOfSight = false
+	InputMap.applyPrompt(prompt)
 	prompt.Parent = base
 	model.PrimaryPart = base
 	model:SetAttribute("AltarId", altar.Id)
@@ -512,6 +532,7 @@ local function placeStain(s: Session, stain: ProfileStore.Bloodstain)
 	prompt.HoldDuration = 0.6
 	prompt.MaxActivationDistance = INTERACT_RADIUS
 	prompt.RequiresLineOfSight = false
+	InputMap.applyPrompt(prompt)
 	prompt.Parent = part
 	table.insert(connections, prompt.Triggered:Connect(function(player: Player)
 		if player.UserId == s.UserId then
@@ -545,7 +566,7 @@ end
 
 local function onPlayerDeath(s: Session)
 	local e = Characters.GetEntity(s.UserId)
-	if not e then
+	if not e or not Recovery.claimDeath(s) then
 		return
 	end
 	local position = e.Root.Position
@@ -626,7 +647,6 @@ local function restAt(s: Session, altar: Altar): (boolean, string)
 	Characters.SetRespawnPoint(s.UserId, toCFrame(altar.Spawn))
 	AI.RespawnRegion(altar.Region, true)
 	Characters.Cue("AltarRest", s.UserId, { altar = altar.Id, name = altar.Name })
- if (WorldService :: any).OnAltarRest then (WorldService :: any).OnAltarRest(s.Player,altar.Id) end
 	flush(s)
 	enqueue(s, "ActivateAltar", function(store: any): (boolean, string?)
 		return store:ActivateAltar(s.UserId, altar.Id, true, true)
@@ -652,6 +672,10 @@ local function drink(s: Session): (boolean, string)
 	end
 	local ok, reason = Characters.TryHeal(s.UserId, Settings.Elixir.HealFraction + s.Potency * POTENCY_STEP)
 	if not ok then
+		-- Nothing below the ceiling to restore: the charge is kept; say so on every press.
+		if reason == "FullHealth" or reason == "AtCeiling" then
+			Characters.Cue("HealRefused", s.UserId, { reason = reason, charges = s.Elixirs })
+		end
 		return false, reason
 	end
 	s.Elixirs -= 1
@@ -755,6 +779,7 @@ local function endFight(gateId: string, victory: boolean)
 	end
 	fights[gateId] = nil
 	setGate(gateId, false)
+	EncounterHandoff.forget(fight.BossId) -- no cutscene lock outlives its fight
 	local boss = World.Bosses[fight.BossId]
 	for userId in fight.Participants do
 		local s = sessions[userId]
@@ -853,6 +878,7 @@ local function updateGates()
 				local s = sessions[userId]
 				if not s or not e or e.Fighter.State == "KO" or e.Respawning then
 					fight.Participants[userId] = nil
+					EncounterHandoff.release(userId)
 					if s then
 						s.Fight = nil
 						s.Player:SetAttribute("AsuraEncounter", nil)
@@ -901,7 +927,7 @@ local function onEvent(event: any, _point: Vector3?)
 		return
 	end
  local agent = AI.GetAgent(event.Target)
- if not agent then return end
+ if not agent or agent.Essence <= 0 then return end -- the Sparring Phantom pays nothing (no farming)
  local killer=sessions[event.Source]
  if killer then
   local fighter=Characters.GetFighter(event.Source)
@@ -950,6 +976,26 @@ local function onPlayerAdded(id: number, kind: Characters.EntityKind)
 	publish(s)
 end
 
+-- Every admission (respawn or rejoin) opens a new life and refreshes region and resource state.
+local function onCharacterSpawned(id: number, kind: Characters.EntityKind)
+	local s = if kind == "Player" then session(id) else nil
+	if not s then
+		return
+	end
+	Recovery.spawned(s)
+	-- This runs inside CharacterAdded, before the engine parents the new body, so the live lookup is
+	-- still nil; the placed root already stands at the wake point. A nil here cleared the region and
+	-- replayed the region banner on every respawn.
+	local placed = Characters.Entities()[id]
+	local position = if placed then placed.Root.Position else nil
+	local region = if position then World.regionAt(position.X, position.Y, position.Z) else nil
+	if region ~= s.Region then
+		s.Region = region
+		s.Player:SetAttribute("AsuraRegion", region)
+	end
+	publish(s)
+end
+
 local function hooks(): Characters.Hooks
 	return {
 		RespawnPoint = function(userId: number): CFrame?
@@ -971,6 +1017,9 @@ local function hooks(): Characters.Hooks
 		CanEquip = function(userId: number, weapon: string): boolean
 			local record = souls(userId)
 			return record ~= nil and record.inventory.weapons[weapon] == true and Weapons.Weapons[weapon] ~= nil
+		end,
+		Skip = function(userId: number): (boolean, string)
+			return EncounterHandoff.skip(userId)
 		end,
 		Rest = function(userId: number): (boolean, string)
 			local s = session(userId)
@@ -998,14 +1047,15 @@ local function hooks(): Characters.Hooks
 				return false, "Unavailable"
 			end
 			local part = s.Stain
-			if part and (position - part.Position).Magnitude <= INTERACT_RADIUS + 3 then
+			if part and (position - part.Position).Magnitude <= INTERACT_RADIUS + PROMPT_SLACK then
 				return recoverStain(s)
 			end
 			for _, gate in World.FogGates do
-				if (position - toCFrame(gate.Placement).Position).Magnitude <= 24 then return traverseGate(userId, gate) end
+				local gatePart = gateParts[gate.Id]
+				if gatePart and (position - gatePart.Position).Magnitude <= GATE_RADIUS + PROMPT_SLACK then return traverseGate(userId, gate) end
 			end
 			local altar, distance = nearestAltar(position)
-			if altar and distance <= altar.Radius + 2 then
+			if altar and distance <= altar.Radius + PROMPT_SLACK then
 				return restAt(s, altar)
 			end
 			for _, handler in interactables do
@@ -1073,7 +1123,8 @@ function WorldService.Start()
 		buildGate(gate, gatesFolder)
 		local prompt = Instance.new("ProximityPrompt")
 		prompt.ActionText, prompt.ObjectText, prompt.HoldDuration = "Traverse the Mist", World.Bosses[gate.Boss].Name, 0.35
-		prompt.MaxActivationDistance, prompt.Parent = 18, gateParts[gate.Id]
+		InputMap.applyPrompt(prompt)
+		prompt.MaxActivationDistance, prompt.Parent = GATE_RADIUS, gateParts[gate.Id]
 		table.insert(connections, prompt.Triggered:Connect(function(player: Player) traverseGate(player.UserId, gate) end))
 	end
 	markGeometry(worldRoot)
@@ -1094,6 +1145,7 @@ function WorldService.Start()
 	Characters.SetHooks(hooks())
 	table.insert(disconnectors, Characters.Subscribe(onEvent))
 	table.insert(disconnectors, Characters.OnEntityAdded(onPlayerAdded))
+	table.insert(disconnectors, Characters.OnCharacterSpawned(onCharacterSpawned))
 	table.insert(disconnectors, AI.OnBossDefeated(onBossDefeated))
 	table.insert(disconnectors, Characters.OnStep(function(_now: number, _dt: number)
 		tickCounter += 1

@@ -49,7 +49,12 @@ local function hall(parent: Instance, name: string, x0: number, x1: number, z0: 
 	for z = zN - 8, zS + 1, -8 do
 		column(group, front - inward * 3, z, rng)
 	end
-	Ruins.wall(group, Vector2.new(back, z0), Vector2.new(back, z1), 13, rng, 0.08)
+	if side < 0 then -- the west hall's back wall is breached where the waterfall path rejoins (z -876..-884)
+		Ruins.wall(group, Vector2.new(back, z0), Vector2.new(back, -876), 13, rng, 0.08)
+		Ruins.wall(group, Vector2.new(back, -884), Vector2.new(back, z1), 13, rng, 0.08)
+	else
+		Ruins.wall(group, Vector2.new(back, z0), Vector2.new(back, z1), 13, rng, 0.08)
+	end
 	Ruins.wall(group, Vector2.new(back, z0 - 0.5), Vector2.new(back + inward * 24, z0 - 0.5), 13, rng, 0.15)
 	-- Half the roof survives over the back aisle...
 	local width = math.abs(x1 - x0) * 0.5 + 2
@@ -102,7 +107,10 @@ local function cloister(parent: Instance, x0: number, x1: number, z0: number, z1
 		local count = math.round((b - a).Magnitude / 12)
 		for k = 0, count - 1 do
 			local at = a:Lerp(b, k / count)
-			column(group, at.X, at.Z, rng, 8)
+			-- The altar's pocket and its aisle to the west gateway stay open (Kit.keepClear).
+			if not Kit.keepClear(at.X, at.Z, 1.7) then
+				column(group, at.X, at.Z, rng, 8)
+			end
 			local mid = a:Lerp(b, (k + 0.5) / count)
 			local low, high = mid + Vector3.new(0, G + 9.2, 0), mid + out + Vector3.new(0, G + 10.8, 0)
 			if rng:NextNumber() < 0.8 then

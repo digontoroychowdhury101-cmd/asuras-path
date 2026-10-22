@@ -16,10 +16,31 @@ local function bosses(): {[string]: boolean}
  return result
 end
 local BOSSES=bosses()
+local LEGACY: {[string]: string}=Catalog.LegacyBosses
+local function token(id: string): Token return table.freeze({Id="BossRemembrance_"..id,Kind="BossRemembrance",Boss=id}) end
+-- A held remembrance is a token object (never a boolean flag).
+local function wellFormed(t: any,id: string): boolean
+ return type(t)=="table" and t.Kind=="BossRemembrance" and t.Boss==id and t.Id=="BossRemembrance_"..id
+end
+function Inventory.canonical(boss: string): string return LEGACY[boss] or boss end
+function Inventory.owns(i: any,boss: string): boolean
+ return type(i)=="table" and type(i.remembrances)=="table" and wellFormed(i.remembrances[boss],boss)
+end
+-- Idempotent: a repeated victory, replay or rejoin never adds, renews or un-spends a token.
 function Inventory.award(i: any,boss: string)
- for _,id in Catalog.BossTokens[boss] or (if World.Bosses[boss] then {boss} else {}) do
-  if not i.remembrances[id] then i.remembrances[id]=table.freeze({Id="BossRemembrance_"..id,Kind="BossRemembrance",Boss=id}) end
+ local id0=Inventory.canonical(boss)
+ for _,id in Catalog.BossTokens[id0] or (if BOSSES[id0] then {id0} else {}) do
+  if not i.remembrances[id] then i.remembrances[id]=token(id) end
  end
+end
+export type RecipeState="Ready"|"Spent"|"Owned"|"Locked"
+-- What Gao's forge may do with one recipe for this inventory; the server forge uses the same rule.
+function Inventory.recipeState(i: any,recipeId: string): RecipeState
+ local r=Catalog.Recipes[recipeId]
+ if not r or not Inventory.owns(i,r.Boss) then return "Locked" end
+ if i.spentRemembrances[r.Boss]==true then return "Spent" end
+ local owned=if r.Kind=="Weapon" then i.weapons else i.spells
+ return if type(owned)=="table" and owned[r.Reward] then "Owned" else "Ready"
 end
 function Inventory.migrate(raw: any): Inventory
  local result=Inventory.defaults()
@@ -34,10 +55,13 @@ function Inventory.migrate(raw: any): Inventory
  end
  if type(raw.remembrances)=="table" then
   for id,t in raw.remembrances do
-   if BOSSES[id] and type(t)=="table" and t.Kind=="BossRemembrance" and t.Boss==id and t.Id=="BossRemembrance_"..id then
-    result.remembrances[id]=table.freeze({Id=t.Id,Kind=t.Kind,Boss=id})
-   end
+   local to=Inventory.canonical(id)
+   if (BOSSES[id] or LEGACY[id]) and BOSSES[to] and wellFormed(t,id) then result.remembrances[to]=token(to) end
   end
+ end
+ -- Legacy spent flags consume the canonical token's forging right (merged, never reset).
+ if type(raw.spentRemembrances)=="table" then
+  for id,flag in raw.spentRemembrances do if LEGACY[id] and flag==true then result.spentRemembrances[LEGACY[id]]=true end end
  end
  for id in result.spentRemembrances do if not result.remembrances[id] then result.spentRemembrances[id]=nil end end
  if type(raw.spellSlots)=="table" then
@@ -51,8 +75,9 @@ function Inventory.validate(i: any): boolean
  for id,owned in i.spells do if not Spells.ById[id] or owned~=true then return false end end
  if #i.spellSlots~=2 then return false end
  for slot,id in i.spellSlots do if (slot~=1 and slot~=2) or not i.spells[id] then return false end end
- for id,token in i.remembrances do
-  if not BOSSES[id] or type(token)~="table" or token.Kind~="BossRemembrance" or token.Boss~=id or token.Id~="BossRemembrance_"..id then return false end
+ -- Retired ids (LegacyBosses) are accepted so older profiles load; migrate() re-keys them.
+ for id,t in i.remembrances do
+  if not (BOSSES[id] or LEGACY[id]) or not wellFormed(t,id) then return false end
  end
  for id,spent in i.spentRemembrances do if not i.remembrances[id] or spent~=true then return false end end
  for id,claimed in i.caches do if not Catalog.Caches[id] or claimed~=true then return false end end
@@ -61,9 +86,10 @@ end
 function Inventory.forge(i: any,recipeId: string): (boolean,string)
  local r=Catalog.Recipes[recipeId]
  if not r then return false,"Unknown recipe" end
- if not i.remembrances[r.Boss] or i.spentRemembrances[r.Boss] then return false,"Remembrance unavailable" end
+ local state=Inventory.recipeState(i,recipeId)
+ if state=="Locked" or state=="Spent" then return false,"Remembrance unavailable" end
+ if state=="Owned" then return false,"Already owned" end
  local owned=if r.Kind=="Weapon" then i.weapons else i.spells
- if owned[r.Reward] then return false,"Already owned" end
  -- Preserve the immutable token as provenance; a separate spent flag consumes its forging right.
  i.spentRemembrances[r.Boss]=true;owned[r.Reward]=true
  return true,"Forged "..r.Name

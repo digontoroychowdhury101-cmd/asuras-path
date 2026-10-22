@@ -17,6 +17,11 @@ local Characters = require(script.Parent:WaitForChild("CharacterService") :: Mod
 local BossTactics = require(script.Parent.BossTactics)
 local BossDuo = require(script.Parent.BossDuo)
 local BossAppearance = require(script.Parent.BossAppearance)
+local Handoff = require(script.Parent.EncounterHandoff)
+local HandoffRules = require(Shared.Shared.BossHandoff)
+local Bodies = require(Shared.Shared.BossBodies)
+local Zones = require(Shared.Shared.MonasteryZones)
+local Campaign = require(Shared.Shared.CampaignZones)
 
 type Entity = Characters.Entity
 type MobDef = World.MobDef
@@ -65,6 +70,10 @@ type Agent = {
 	Shockwave: PendingShockwave?,
 	TransitionEnd: number,
 	NextSpecial: number,
+	HoldUntil: number, -- encounter handoff: the boss stands until readable control returns (#16)
+	Pillars: { Bodies.Pillar }?, -- arena columns a long body steers around
+	Clearance: number,
+	Zone: Zones.Zone?, -- Monastery spawns fight only inside their zone (batch 15, #27)
 }
 
 type Noise = { Position: Vector3, Time: number }
@@ -298,6 +307,17 @@ local function react(agent: Agent, self: Entity, target: Entity, now: number)
 	end
 end
 
+-- Every agent walk goes through here; a long-bodied boss bends its path round the arena pillars.
+local function moveTo(agent: Agent, point: Vector3)
+	local pillars = agent.Pillars
+	local e = if pillars and #pillars > 0 then Characters.GetEntity(agent.Id) else nil
+	if pillars and e then
+		local x, z = Bodies.steer(e.Root.Position.X, e.Root.Position.Z, point.X, point.Z, pillars, agent.Clearance)
+		point = Vector3.new(x, point.Y, z)
+	end
+	Characters.MoveTo(agent.Id, point)
+end
+
 local function strafePoint(agent: Agent, self: Entity, target: Entity, spacing: number, now: number): Vector3
 	if now >= agent.StrafeUntil then
 		agent.StrafeSign = if agent.Rng:NextNumber() < 0.5 then -1 else 1
@@ -318,7 +338,7 @@ local function decide(agent: Agent, self: Entity, target: Entity, now: number)
 	local phantomUntil = target.Model:GetAttribute("PhantomUntil")
 	local phantom = target.Model:GetAttribute("PhantomPosition")
 	if type(phantomUntil)=="number" and now < phantomUntil and typeof(phantom)=="Vector3" then
-		Characters.Face(agent.Id,phantom);Characters.MoveTo(agent.Id,phantom);return
+		Characters.Face(agent.Id,phantom);moveTo(agent,phantom);return
 	end
 	local distance = (target.Root.Position - self.Root.Position).Magnitude
 	local reach = reachOf(agent, f)
@@ -340,12 +360,12 @@ local function decide(agent: Agent, self: Entity, target: Entity, now: number)
 		end
 	end
 	if now < agent.RecomposeUntil then
-		Characters.MoveTo(agent.Id, strafePoint(agent, self, target, reach * 1.8, now))
+		moveTo(agent, strafePoint(agent, self, target, reach * 1.8, now))
 		return
 	end
 
 	if distance > reach * 0.95 then
-		Characters.MoveTo(agent.Id, target.Root.Position)
+		moveTo(agent, target.Root.Position)
 		return
 	end
 
@@ -370,7 +390,7 @@ local function decide(agent: Agent, self: Entity, target: Entity, now: number)
 		return
 	end
 	if agent.Rng:NextNumber() < profile.StrafeChance * (1 - profile.Aggression) then
-		Characters.MoveTo(agent.Id, strafePoint(agent, self, target, reach * 0.8, now))
+		moveTo(agent, strafePoint(agent, self, target, reach * 0.8, now))
 		return
 	end
 	Characters.StopMoving(agent.Id)
@@ -392,8 +412,9 @@ end
 -- Boss multi-phase manager
 -------------------------------------------------------------------------------------------------
 
-local function scheduleShockwave(agent: Agent, wave: Shockwave, now: number, cancelable: boolean)
+local function scheduleShockwave(agent: Agent, wave: Shockwave, now: number, cancelable: boolean, earliest: number?)
 	local _, impactAt = Telegraph.shockwave(wave, now)
+	impactAt = math.max(impactAt, earliest or impactAt) -- never inside an encounter handoff
 	agent.Shockwave = { At = impactAt, Wave = wave, Cancelable = cancelable }
 	Characters.Cue("Telegraph", agent.Id, { class = "Perilous", move = "Shockwave", impact = impactAt, radius = wave.Radius })
 	local e = Characters.GetEntity(agent.Id)
@@ -431,7 +452,7 @@ local function applyPhase(agent: Agent, boss: BossDef, index: number, self: Enti
 	if phase.Transition then
 		Characters.Tint(agent.Id, phase.Transition.BodyColor)
 	end
-	BossAppearance.phase(self.Model, phase.AnimationSet)
+	BossAppearance.phase(self.Model, phase.AnimationSet, index)
 	self.Model:SetAttribute("AsuraBossPhases", #boss.Phases)
 	self.Model:SetAttribute("AsuraBossPhase", index)
 	self.Model:SetAttribute("AsuraBossPhaseName", phase.Name)
@@ -449,8 +470,16 @@ local function beginTransition(agent: Agent, boss: BossDef, index: number, self:
 	end
 	setMode(agent, "Cinematic", now)
 	Characters.Cinematic(agent.Id, transition.Duration)
-	Characters.Cue("BossPhase", agent.Id, { boss = boss.Id, phase = index, name = phase.Name, duration = transition.Duration })
-	scheduleShockwave(agent, transition.Shockwave, now, false)
+	-- The metamorphosis takes the camera: participants are locked and protected for the shot, and
+	-- the unblockable wave lands no sooner than BossHandoff.Lead after control returns.
+	local participants: { number } = {}
+	local allowed: { [number]: boolean } = agent.Allowed or {}
+	for id in allowed do table.insert(participants, id) end
+	local window = Handoff.begin(boss.Id, "Phase", participants)
+	Characters.Cue("BossPhase", agent.Id, { boss = boss.Id, phase = index, name = phase.Name, duration = transition.Duration,
+		shot = HandoffRules.shot("Phase"), participants = participants })
+	scheduleShockwave(agent, transition.Shockwave, now, false, HandoffRules.earliest(window))
+	BossAppearance.phase(self.Model, phase.AnimationSet, index) -- the body changes under the camera; the moveset at the end
 	agent.TransitionEnd = now + transition.Duration
 	agent.Phase = index
 end
@@ -490,6 +519,11 @@ local function updateBoss(agent: Agent, boss: BossDef, self: Entity, now: number
 			releaseShockwave(agent, self)
 		end
 		return pending ~= nil and agent.Shockwave ~= nil
+	end
+	if now < agent.HoldUntil then
+		agent.Pending = nil
+		Characters.StopMoving(agent.Id)
+		return true
 	end
 	if BossTactics.step(agent.Id, boss, agent.Phase, agent.Target, agent.Allowed, now) then
 		agent.Pending = nil
@@ -558,7 +592,15 @@ local function update(agent: Agent, now: number)
 	agent.NextThink = now + 1 / profile.ThinkRate
 
 	local homeDistance = (self.Root.Position - agent.Home.Position).Magnitude
-	if agent.Mode ~= "Return" and homeDistance > profile.LeashRange then
+	-- Zone leash: a foe whose target leaves its zone (walls, the safe landing, the far bridgehead)
+	-- breaks off instead of chasing; the distance leash still applies inside it.
+	local zone = agent.Zone
+	local fled = false
+	if zone and agent.Target ~= 0 then
+		local foe = Characters.GetEntity(agent.Target)
+		fled = foe ~= nil and not Zones.contains(zone, foe.Root.Position.X, foe.Root.Position.Z, Zones.Grace)
+	end
+	if agent.Mode ~= "Return" and (homeDistance > profile.LeashRange or fled) then
 		agent.Target = 0
 		Characters.SetGuard(agent.Id, false)
 		Characters.SetSprint(agent.Id, false)
@@ -566,7 +608,7 @@ local function update(agent: Agent, now: number)
 	end
 
 	if agent.Mode == "Return" then
-		Characters.MoveTo(agent.Id, agent.Home.Position)
+		moveTo(agent, agent.Home.Position)
 		if homeDistance <= 4 then
 			Characters.RestoreFighter(agent.Id)
 			setMode(agent, if #agent.Patrol > 0 then "Patrol" else "Idle", now)
@@ -575,6 +617,9 @@ local function update(agent: Agent, now: number)
 	end
 
 	local seen, heard = perceive(agent, self, now)
+	if seen and zone and not Zones.contains(zone, seen.Root.Position.X, seen.Root.Position.Z, Zones.Grace) then
+		seen = nil -- noticed from beyond the zone: not worth leaving it for
+	end
 	if seen then
 		agent.LastSeen = now
 		agent.LastKnown = seen.Root.Position
@@ -599,7 +644,7 @@ local function update(agent: Agent, now: number)
 				setMode(agent, "Idle", now)
 				Characters.StopMoving(agent.Id)
 			else
-				Characters.MoveTo(agent.Id, point)
+				moveTo(agent, point)
 			end
 		end
 		return
@@ -618,7 +663,7 @@ local function update(agent: Agent, now: number)
 			end
 		elseif known then
 			agent.Suspicion += (0.5 / profile.ThinkRate) / math.max(profile.AlertTime, 0.05)
-			Characters.MoveTo(agent.Id, known)
+			moveTo(agent, known)
 		end
 		if not seen and now - math.max(agent.LastSeen, agent.ModeSince) > profile.SearchTime then
 			setMode(agent, "Return", now)
@@ -635,7 +680,7 @@ local function update(agent: Agent, now: number)
 			Characters.SetSprint(agent.Id, false)
 			setMode(agent, "Return", now)
 		elseif agent.LastKnown then
-			Characters.MoveTo(agent.Id, agent.LastKnown :: Vector3)
+			moveTo(agent, agent.LastKnown :: Vector3)
 		end
 		return
 	end
@@ -644,7 +689,7 @@ local function update(agent: Agent, now: number)
 	local reach = reachOf(agent, f)
 	if agent.Mode == "Engage" then
 		Characters.Face(agent.Id, target.Root.Position)
-		Characters.MoveTo(agent.Id, target.Root.Position)
+		moveTo(agent, target.Root.Position)
 		Characters.SetSprint(agent.Id, distance > reach * 3 and f.Stamina > profile.RetreatStamina * 2)
 		if distance <= reach * 1.1 then
 			Characters.SetSprint(agent.Id, false)
@@ -696,6 +741,10 @@ local function newAgent(entityId: number, kind: "Mob" | "Boss", definition: stri
 		Shockwave = nil,
 		TransitionEnd = math.huge,
 		NextSpecial = math.huge,
+		HoldUntil = -math.huge,
+		Pillars = nil,
+		Clearance = 0,
+		Zone = nil,
 	}
 	agents[entityId] = agent
 	return agent
@@ -734,6 +783,9 @@ function AIService.SpawnMob(spawnId: string): number?
 	end
 	local agent = newAgent(id, "Mob", mob.Id, mob.AI, entry.Region, mob.Essence, home, patrol)
 	agent.SpawnId = spawnId
+	local zoneId = Zones.Spawns[spawnId]
+	-- Campaign regions (batches 17-21) leash their foes the same way, to their layout zone.
+	agent.Zone = if zoneId then Zones.get(zoneId) else Campaign.zoneForSpawn(spawnId) :: any
 	spawnAgents[spawnId] = id
 	return id
 end
@@ -808,6 +860,9 @@ function AIService.SpawnBoss(bossId: string, participants: { number }?): number?
 	local agent = newAgent(id, "Boss", boss.Id, opening.AI, boss.Region, boss.Essence, home, {})
 	agent.Boss = boss
 	agent.Mode = "Engage"
+	agent.Pillars = Bodies.pillars(boss)
+	local hull = (Bodies.Hulls :: any)[boss.Archetype]
+	agent.Clearance = if hull then hull[3] * 0.5 * (boss.Scale or 1) + 0.5 else 0
 
 	local entity = Characters.GetEntity(id)
 	if entity then
@@ -845,9 +900,25 @@ function AIService.SpawnBoss(bossId: string, participants: { number }?): number?
 	end
 	BossDuo.register(boss, members)
 	if participants then AIService.SetBossTargets(bossId, participants) end
-	Characters.Cue("BossIntro", id, { boss = boss.Id, title = boss.Title, phase = 1, name = opening.Name, members = members, participants = participants })
+	-- Entry handoff: everyone locked and protected through the framing shot and the camera's return.
+	local shot = if participants and #participants > 0 then HandoffRules.shot("Intro") else nil
+	if participants and shot then Handoff.begin(boss.Id, "Intro", participants, members) end
+	Characters.Cue("BossIntro", id, { boss = boss.Id, title = boss.Title, phase = 1, name = opening.Name, members = members, participants = participants, shot = shot })
 	return id
 end
+
+-- Holds a boss's actors still until `untilTime` (+ half the readable lead) and keeps their first
+-- scheduled attack after it; EncounterHandoff calls this through SetHolder.
+function AIService.Hold(bossId: string, untilTime: number)
+	for _, id in BossDuo.members(bossId) do
+		local agent = agents[id]
+		if agent then
+			agent.HoldUntil = untilTime + HandoffRules.Lead * 0.5
+			BossTactics.hold(id, untilTime)
+		end
+	end
+end
+Handoff.SetHolder(AIService.Hold)
 
 function AIService.SetBossTargets(bossId: string, participants: { number })
 	for _, id in BossDuo.members(bossId) do
@@ -862,6 +933,7 @@ end
 
 function AIService.DespawnBoss(bossId: string)
 	local members = table.clone(BossDuo.members(bossId))
+	Handoff.forget(bossId)
 	BossDuo.forget(bossId)
 	bossAgents[bossId] = nil
 	for _, id in members do agents[id] = nil; Characters.DespawnEnemy(id) end
@@ -939,7 +1011,15 @@ local function onEvent(event: Combat.Event, point: Vector3?)
 	elseif event.Kind == "KO" then
 		setMode(victim, "Dead", Characters.Now())
 		local boss = victim.Boss
-		if boss and BossDuo.onKO(boss.Id, victim.Id) then
+		local won, oath = false, nil
+		if boss then won, oath = BossDuo.onKO(boss.Id, victim.Id) end
+		if boss and oath then
+			local participants: { number } = {}
+			local allowed: { [number]: boolean } = victim.Allowed or {}
+			for id in allowed do table.insert(participants, id) end
+			Handoff.begin(boss.Id, "Enrage", participants)
+		end
+		if boss and won then
 
 			for _, listener in table.clone(bossListeners) do
 				local ok, problem = pcall(listener, boss.Id, victim.Id)

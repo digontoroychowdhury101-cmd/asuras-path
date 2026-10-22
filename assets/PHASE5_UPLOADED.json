@@ -1,0 +1,247 @@
+{
+  "Models": {
+    "AsuraColossusStatue": [
+      {
+        "Name": "Plane",
+        "MeshId": "rbxassetid://129686277632150",
+        "ColorMap": "rbxassetid://102568692017145",
+        "NormalMap": "rbxassetid://84210454203890",
+        "RoughnessMap": "rbxassetid://140528737295050",
+        "MetalnessMap": "rbxassetid://131789440418621"
+      }
+    ],
+    "AsuraIronGate": [
+      {
+        "Name": "iron_gate_01_right_door",
+        "MeshId": "rbxassetid://83019889922001",
+        "ColorMap": "rbxassetid://97374784142437",
+        "NormalMap": "rbxassetid://127669019703202",
+        "RoughnessMap": "rbxassetid://115257626046759",
+        "MetalnessMap": "rbxassetid://130890861230712"
+      }
+    ],
+    "AsuraDeadTrunk": [
+      {
+        "Name": "fallen_log_5m_PROXY.002",
+        "MeshId": "rbxassetid://72082952604136",
+        "ColorMap": "rbxassetid://103278282137922",
+        "NormalMap": "rbxassetid://121334908599331",
+        "RoughnessMap": "rbxassetid://100711174339712",
+        "MetalnessMap": "rbxassetid://125819066547895"
+      }
+    ],
+    "AsuraRoots": [
+      {
+        "Name": "fgt_02_rep.001",
+        "MeshId": "rbxassetid://101981203948515",
+        "ColorMap": "rbxassetid://128208407391331",
+        "NormalMap": "rbxassetid://132647085814431",
+        "RoughnessMap": "rbxassetid://116611612863005",
+        "MetalnessMap": "rbxassetid://80998998366059"
+      },
+      {
+        "Name": "fgt_01.001",
+        "MeshId": "rbxassetid://128332031002584",
+        "ColorMap": "rbxassetid://139842784818646",
+        "NormalMap": "rbxassetid://75759511497970",
+        "RoughnessMap": "rbxassetid://122359992555222",
+        "MetalnessMap": "rbxassetid://88730331781199"
+      }
+    ],
+    "AsuraRuinPillar": [
+      {
+        "Name": "geom-PillarSegmentOne200",
+        "MeshId": "rbxassetid://83165492087847",
+        "ColorMap": "rbxassetid://106699959040875",
+        "NormalMap": "rbxassetid://118937475008117",
+        "RoughnessMap": "rbxassetid://130940046029698",
+        "MetalnessMap": "rbxassetid://96086949181464"
+      }
+    ],
+    "AsuraFirePit": [
+      {
+        "Name": "texturedMesh.002",
+        "MeshId": "rbxassetid://108335955316266",
+        "ColorMap": "rbxassetid://81871441453880",
+        "NormalMap": "rbxassetid://128729071716272",
+        "RoughnessMap": "rbxassetid://81235678714562",
+        "MetalnessMap": "rbxassetid://71498989613246"
+      }
+    ],
+    "AsuraStone": [
+      {
+        "Name": "Plane.001",
+        "MeshId": "rbxassetid://106842288070597",
+        "ColorMap": "rbxassetid://87157390429481",
+        "NormalMap": "rbxassetid://99253232224054",
+        "RoughnessMap": "rbxassetid://137387887381874",
+        "MetalnessMap": "rbxassetid://89251314153712"
+      }
+    ],
+    "AsuraRomanRail": [
+      {
+        "Name": "geom-RomanRailOne200",
+        "MeshId": "rbxassetid://101115989575429",
+        "ColorMap": "rbxassetid://115519715746909",
+        "NormalMap": "rbxassetid://93998763996521",
+        "RoughnessMap": "rbxassetid://75771821309732",
+        "MetalnessMap": "rbxassetid://108649236867429"
+      }
+    ],
+    "AsuraFoundationRuin": [
+      {
+        "Name": "geom-foundationRuinOne200",
+        "MeshId": "rbxassetid://136107613967652",
+        "ColorMap": "rbxassetid://78441719564628",
+        "NormalMap": "rbxassetid://111784806989479",
+        "RoughnessMap": "rbxassetid://82345357399702",
+        "MetalnessMap": "rbxassetid://123673760795028"
+      },
+      {
+        "Name": "geom-foundationRuinOne2002",
+        "MeshId": "rbxassetid://95310618975232",
+        "ColorMap": "rbxassetid://89346240490549",
+        "NormalMap": "rbxassetid://132296709562120",
+        "RoughnessMap": "rbxassetid://78258725551214",
+        "MetalnessMap": "rbxassetid://115558161060962"
+      }
+    ],
+    "AsuraBrassLantern": [
+      {
+        "Name": "Spiral.001",
+        "MeshId": "rbxassetid://105652153407631",
+        "ColorMap": "rbxassetid://83916215536492",
+        "NormalMap": "rbxassetid://93820446667366",
+        "RoughnessMap": "rbxassetid://109643218174169",
+        "MetalnessMap": "rbxassetid://125358453747501"
+      },
+      {
+        "Name": "Plane.003",
+        "MeshId": "rbxassetid://115107662385208",
+        "ColorMap": "rbxassetid://83916215536492",
+        "NormalMap": "rbxassetid://93820446667366",
+        "RoughnessMap": "rbxassetid://109643218174169",
+        "MetalnessMap": "rbxassetid://125358453747501"
+      },
+      {
+        "Name": "Cylinder.002",
+        "MeshId": "rbxassetid://136022696846207",
+        "ColorMap": "rbxassetid://121597930637578",
+        "NormalMap": "rbxassetid://74906709556220",
+        "RoughnessMap": "rbxassetid://107590083950252",
+        "MetalnessMap": "rbxassetid://72545291918659"
+      },
+      {
+        "Name": "Cylinder.0022",
+        "MeshId": "rbxassetid://97362454477468",
+        "ColorMap": "rbxassetid://103138693368825",
+        "NormalMap": "rbxassetid://109697051965049",
+        "RoughnessMap": "rbxassetid://72895908124284",
+        "MetalnessMap": "rbxassetid://136766781517910"
+      },
+      {
+        "Name": "Cylinder.0023",
+        "MeshId": "rbxassetid://79705045816338",
+        "ColorMap": "rbxassetid://85486650695835",
+        "NormalMap": "rbxassetid://109153360511008",
+        "RoughnessMap": "rbxassetid://132787622483826",
+        "MetalnessMap": "rbxassetid://111724240203096"
+      }
+    ],
+    "AsuraTempleRuin": [
+      {
+        "Name": "geom-TempleRuinTwo300",
+        "MeshId": "rbxassetid://134793265676507",
+        "ColorMap": "rbxassetid://76219792695659",
+        "NormalMap": "rbxassetid://75185688461234",
+        "RoughnessMap": "rbxassetid://107235427816457",
+        "MetalnessMap": "rbxassetid://124806922294614"
+      },
+      {
+        "Name": "geom-TempleRuinTwo3002",
+        "MeshId": "rbxassetid://101774153092769",
+        "ColorMap": "rbxassetid://71508537465352",
+        "NormalMap": "rbxassetid://130640337670770",
+        "RoughnessMap": "rbxassetid://135559226476621",
+        "MetalnessMap": "rbxassetid://113785376072240"
+      },
+      {
+        "Name": "geom-TempleRuinTwo3003",
+        "MeshId": "rbxassetid://86382170254990",
+        "ColorMap": "rbxassetid://103405013866391",
+        "NormalMap": "rbxassetid://103854815134378",
+        "RoughnessMap": "rbxassetid://123363896843694",
+        "MetalnessMap": "rbxassetid://130261474356055"
+      },
+      {
+        "Name": "geom-TempleRuinTwo3004",
+        "MeshId": "rbxassetid://121030663327713",
+        "ColorMap": "rbxassetid://76632070422460",
+        "NormalMap": "rbxassetid://88779290927572",
+        "RoughnessMap": "rbxassetid://73543054060037",
+        "MetalnessMap": "rbxassetid://121333697106873"
+      }
+    ],
+    "AsuraRuinArch": [
+      {
+        "Name": "geom-RuinArchOne200",
+        "MeshId": "rbxassetid://103358279439886",
+        "ColorMap": "rbxassetid://120914392025247",
+        "NormalMap": "rbxassetid://119475070585763",
+        "RoughnessMap": "rbxassetid://78499308812196",
+        "MetalnessMap": "rbxassetid://74230407012235"
+      },
+      {
+        "Name": "geom-RuinArchOne2002",
+        "MeshId": "rbxassetid://137359830236447",
+        "ColorMap": "rbxassetid://102140983777594",
+        "NormalMap": "rbxassetid://83722376361115",
+        "RoughnessMap": "rbxassetid://73630114478381",
+        "MetalnessMap": "rbxassetid://130006463668012"
+      },
+      {
+        "Name": "geom-RuinArchOne2003",
+        "MeshId": "rbxassetid://91051007359488",
+        "ColorMap": "rbxassetid://128523825225102",
+        "NormalMap": "rbxassetid://75864540478380",
+        "RoughnessMap": "rbxassetid://109687928233318",
+        "MetalnessMap": "rbxassetid://115028776122747"
+      }
+    ]
+  },
+  "Audio": {
+    "Water": "rbxassetid://113213311649809",
+    "BossDrone": "rbxassetid://123393717022210",
+    "Glide": "rbxassetid://120377372310702",
+    "Bell": "rbxassetid://123385330740698",
+    "Blunt": "rbxassetid://96420173928383",
+    "Flesh": "rbxassetid://135539914951495",
+    "ParryBass": "rbxassetid://132244224106707",
+    "Stone": "rbxassetid://99727362444008",
+    "Clash": "rbxassetid://112256493525265",
+    "Slide": "rbxassetid://96988662266744",
+    "BulletJump": "rbxassetid://100694818881612",
+    "Wind": "rbxassetid://122450130719273"
+  },
+  "Textures": {
+    "LeafScatter": "rbxassetid://85184122225102",
+    "Blood": "rbxassetid://130551791057565",
+    "Leaf": "rbxassetid://79417774806659",
+    "Rune": "rbxassetid://122602029003354",
+    "Flame": "rbxassetid://109612319904107",
+    "BloodStain": "rbxassetid://127759159077031",
+    "Shockwave": "rbxassetid://83732553901476",
+    "Ember": "rbxassetid://71210522377346",
+    "Smoke": "rbxassetid://118836433841190",
+    "Ribbon": "rbxassetid://103002669230055",
+    "Ash": "rbxassetid://84748845356339"
+  },
+  "Sky": {
+    "Up": "rbxassetid://94728124992475",
+    "Back": "rbxassetid://87628549041414",
+    "Right": "rbxassetid://126646523881532",
+    "Front": "rbxassetid://77637140898450",
+    "Down": "rbxassetid://103952866093370",
+    "Left": "rbxassetid://83782412023406"
+  }
+}

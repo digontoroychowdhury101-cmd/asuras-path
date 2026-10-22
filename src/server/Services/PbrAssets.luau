@@ -9,8 +9,10 @@ function Pbr.validate(model: Model): (boolean, string?)
 		count += 1
 		local surface = item:FindFirstChildOfClass("SurfaceAppearance")
 		if not surface then return false, item.Name .. ": missing SurfaceAppearance" end
-		if surface.ColorMap == "" or surface.NormalMap == "" or surface.RoughnessMap == "" or surface.MetalnessMap == "" then
-			return false, item.Name .. ": incomplete PBR maps"
+		-- Legacy *Map strings require Plugin security; *MapContent is readable in live servers.
+		for _, key in {"ColorMapContent","NormalMapContent","RoughnessMapContent","MetalnessMapContent"} do
+			local content = (surface :: any)[key]
+			if not content or not content.Uri or content.Uri == "" then return false, item.Name .. ": incomplete PBR maps" end
 		end
 	end
 	return count > 0, if count == 0 then "no MeshParts" else nil
@@ -33,7 +35,7 @@ function Pbr.place(parent: Instance, name: string, floor: CFrame, target: number
 		if item:IsA("BasePart") then
 			item.Anchored, item.CanCollide, item.CanQuery, item.CanTouch = true, false, false, false
 			item:SetAttribute("AsuraDecorative", true)
-			if item:IsA("MeshPart") then item.RenderFidelity = Enum.RenderFidelity.Automatic end
+			-- RenderFidelity is authored on the imported template; runtime writes are restricted.
 		end
 	end
 	model:SetAttribute("AsuraPbr", true); model.Parent = parent

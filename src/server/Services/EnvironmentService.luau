@@ -99,11 +99,11 @@ function Environment.Apply()
   if target then for property, value in values do (target :: any)[property] = value end end
  end
  local sky = Lighting:FindFirstChildOfClass("Sky")
- if not sky then sky = Instance.new("Sky"); sky.Name = "AsuraSky"; sky.Parent = Lighting end
- Workspace.Terrain.WaterColor = Color3.fromRGB(27,38,39)
- Workspace.Terrain.WaterReflectance = 0.94
- Workspace.Terrain.WaterTransparency = 0.2
- Workspace.Terrain.WaterWaveSize, Workspace.Terrain.WaterWaveSpeed = 0.04, 1
+ if not sky then local created = Instance.new("Sky"); created.Name = "AsuraSky"; created.Parent = Lighting end
+ Workspace.Terrain.WaterColor = Color3.fromRGB(31,69,68)
+ Workspace.Terrain.WaterReflectance = 0.5
+ Workspace.Terrain.WaterTransparency = 0.46
+ Workspace.Terrain.WaterWaveSize, Workspace.Terrain.WaterWaveSpeed = 0.06, 4
 
 	-- Only one Atmosphere renders; a second authored one would fight the configured sky.
 	for _, child in Lighting:GetChildren() do

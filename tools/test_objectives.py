@@ -12,6 +12,9 @@ marker = 'local Objectives = require("../src/shared/Objectives")'
 assert marker in test, "require marker missing from test"
 # Type exports are only legal at chunk scope; inlined inside a function they become local types.
 module = re.sub(r"^export type", "type", module, flags=re.MULTILINE)
+ending = (root / "src" / "shared" / "EndingRules.luau").read_text()
+ending = re.sub(r"^export type", "type", ending, flags=re.MULTILINE)
+module = module.replace('if hasScript then require(script.Parent.EndingRules) else require("./EndingRules")', "(function()\n" + ending + "\nend)()", 1)
 inlined = "local Objectives = (function()\n" + module + "\nend)()"
 generated = root / "work" / "test_objectives.generated.luau"
 generated.write_text(test.replace(marker, inlined, 1))
