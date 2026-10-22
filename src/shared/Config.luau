@@ -1,3 +1,4 @@
+-- [Connection Verified: Computer B is Live]
 --!strict
 -- ModuleScript: ReplicatedStorage/AsurasPath/Config
 -- Edit this module, then restart Play. Arena geometry is rebuilt once at startup.
