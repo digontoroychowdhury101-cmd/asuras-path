@@ -122,4 +122,10 @@ for bossId in World.Bosses do
 end
 assert(store:Release(42));local reloaded=assert(store:Load(42))
 check(reloaded.souls.inventory.spentRemembrances.GrandmasterShen and reloaded.souls.inventory.weapons.PrayerOfTheDefiled,"Save/rejoin preserves consumed token")
+local showcase: any=Inventory.defaults();showcase.weapons={Unarmed=true}
+check(Inventory.claim(showcase,"SanctuaryEaves") and showcase.spells.CelestialSupernova,"Loggia Eaves grants Celestial Supernova")
+check(Inventory.claim(showcase,"SanctuaryReliquary") and showcase.spells.BlazingSunAwakening,"Cloud Reliquary grants Blazing Sun Awakening")
+local early=Inventory.migrate({spells={JadeAegis=true},caches={SanctuaryEaves=true,SanctuaryReliquary=true}})
+check(early.spells.CelestialSupernova and early.spells.BlazingSunAwakening and Inventory.validate(early),"Caches claimed before the update grant the new spells")
+check(Spells.ById.CelestialSupernova.Shape=="Column" and Spells.ById.BlazingSunAwakening.Pulses==3,"Showcase spell shapes")
 print("Phase 2 weapons and spells: "..checks.." checks passed")

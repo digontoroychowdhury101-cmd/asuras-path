@@ -27,8 +27,8 @@ Catalog.Caches={
  WaterfallAlcove={Name="Waterfall Alcove",Region="DesecratedMonastery",X=-140,Y=5,Z=-840,Weapon="ChainScythe",Spells={"HeavenlyLightningSpear"}},
  PagodaRafters={Name="High Pagoda Rafters",Region="DesecratedMonastery",X=92,Y=30,Z=-1000,Weapon="TwinDaggers",Spells={"DragonsMaw"},Extras={"Dao"}},
  SealedMausoleum={Name="Sealed Mausoleum",Region="DesecratedMonastery",X=-110,Y=3,Z=-1060,Weapon="Odachi",Spells={"GraveTendrils","BlackflameSurge"},Extras={"Guandao"}},
- SanctuaryEaves={Name="Loggia Eaves",Region="Sanctuary",X=-76,Y=617,Z=923,Weapon="WarFan",Spells={"JadeAegis"}},
- SanctuaryReliquary={Name="Cloud Reliquary",Region="Sanctuary",X=46,Y=605,Z=988,Weapon="Catalyst",Spells={"EmberCataclysm"}},
+ SanctuaryEaves={Name="Loggia Eaves",Region="Sanctuary",X=-76,Y=617,Z=923,Weapon="WarFan",Spells={"JadeAegis","CelestialSupernova"}},
+ SanctuaryReliquary={Name="Cloud Reliquary",Region="Sanctuary",X=46,Y=605,Z=988,Weapon="Catalyst",Spells={"EmberCataclysm","BlazingSunAwakening"}},
 } :: {[string]: Cache}
 -- Practical use, authored as words only: every number on an Arsenal card is derived from
 -- SpellSchema / WeaponSchema and the scaling rules (ArsenalFacts), never written here.
@@ -45,6 +45,8 @@ Catalog.SpellUses={
  FissureSlam="Ground-splitting line that breaks posture hard and leaves burning ground.",
  Thunderfall="Hurls lightning at a distant point and carries you to it.",
  WindSlash="Cheap ranged cut for chip damage between melee exchanges.",
+ CelestialSupernova="Rise into the void and call a column of starlight down on everything around you; a long, punishable channel.",
+ BlazingSunAwakening="Clench, ignite and blast a fire shockwave, then keep burning heat rings pulsing where you stood.",
 } :: {[string]: string}
 Catalog.WeaponUses={
  Unarmed="Fast, close palm strikes; scales with Strength.",

@@ -15,6 +15,10 @@ function Geometry.endpoint(origin: Vector3,direction: Vector3,range: number): Ve
  local hit=Workspace:Raycast(origin,direction*range,Geometry.params())
  return origin+direction*(if hit then math.max(0,(hit.Position-origin).Magnitude-2) else range)
 end
+function Geometry.ground(origin: Vector3): Vector3
+ local hit=Workspace:Raycast(origin,Vector3.new(0,-40,0),Geometry.params())
+ return if hit then hit.Position+Vector3.new(0,3,0) else origin
+end
 function Geometry.clear(a: Vector3,b: Vector3): boolean
  return (a-b).Magnitude<0.01 or Workspace:Raycast(a,b-a,Geometry.params())==nil
 end

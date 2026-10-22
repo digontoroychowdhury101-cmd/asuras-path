@@ -49,6 +49,8 @@ function Facts.targeting(s: any): string
 		return (if s.Speed > 0 then "Projectile · " else "Line · ") .. num(s.Range) .. " studs" .. (if s.Pierces then " · pierces" else "")
 	elseif s.Shape == "Pillars" then
 		return string.format("%d pillar%s on foes within %s studs", s.Pulses, if s.Pulses == 1 then "" else "s", num(s.Range))
+	elseif s.Shape == "Column" then
+		return "Column of light around you · radius " .. num(s.Radius)
 	elseif s.Shape == "Aura" then
 		return "Aura around you · radius " .. num(s.Range)
 	end

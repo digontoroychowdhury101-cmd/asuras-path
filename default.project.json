@@ -907,6 +907,30 @@
             },
             "SanguineController": {
               "$path": "src/client/Controllers/SanguineController.luau"
+            },
+            "SkillKit": {
+              "$path": "src/client/Controllers/SkillKit.luau"
+            },
+            "SkillCinema": {
+              "$path": "src/client/Controllers/SkillCinema.luau"
+            },
+            "ImpactFrame": {
+              "$path": "src/client/Controllers/ImpactFrame.luau"
+            },
+            "CelestialForms": {
+              "$path": "src/client/Controllers/CelestialForms.luau"
+            },
+            "SupernovaShow": {
+              "$path": "src/client/Controllers/SupernovaShow.luau"
+            },
+            "FlameForms": {
+              "$path": "src/client/Controllers/FlameForms.luau"
+            },
+            "BlazingSunShow": {
+              "$path": "src/client/Controllers/BlazingSunShow.luau"
+            },
+            "SkillShowcase": {
+              "$path": "src/client/Controllers/SkillShowcase.luau"
             }
           }
         }

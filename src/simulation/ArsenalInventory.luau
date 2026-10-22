@@ -64,6 +64,8 @@ function Inventory.migrate(raw: any): Inventory
   for id,flag in raw.spentRemembrances do if LEGACY[id] and flag==true then result.spentRemembrances[LEGACY[id]]=true end end
  end
  for id in result.spentRemembrances do if not result.remembrances[id] then result.spentRemembrances[id]=nil end end
+ -- A claimed cache grants every spell it holds now, including spells added after the claim.
+ for id in result.caches do for _,spell in Catalog.Caches[id].Spells do if Spells.ById[spell] then result.spells[spell]=true end end end
  if type(raw.spellSlots)=="table" then
   for slot=1,2 do local id=raw.spellSlots[slot];if type(id)=="string" and result.spells[id] then result.spellSlots[slot]=id end end
  end

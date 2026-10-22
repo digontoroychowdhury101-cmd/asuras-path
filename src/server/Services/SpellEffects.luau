@@ -35,8 +35,9 @@ local function strike(j: Job,target: any,now: number)
 end
 local function pulse(j: Job,now: number)
  local s=j.Spell
- local origin=if s.Shape=="Pillars" or s.Shape=="Impact" then j.Point else j.Origin
- local range=if s.Shape=="Pillars" or s.Shape=="Impact" then s.Radius else s.Range
+ local pointed=s.Shape=="Pillars" or s.Shape=="Impact" or s.Shape=="Column"
+ local origin=if pointed then j.Point else j.Origin
+ local range=if pointed then s.Radius else s.Range
  for _,e in Geometry.targets(j.Source,origin,range) do
   local delta=e.Root.Position-origin
   local inside=s.Shape~="Cone" or delta.Magnitude<0.1 or delta.Unit:Dot(j.Direction)>=math.cos(math.rad(s.Arc/2))
@@ -47,7 +48,8 @@ end
 function Effects.release(source: any,id: string,potency: number,now: number)
  local s=Spells.get(id);if not s or not source.Root.Parent then return end
  local origin=source.Root.Position;local direction=source.Root.CFrame.LookVector
- local point=Geometry.endpoint(origin,direction,s.Range)
+ -- A Column stands on the ground under the caster, so a levitating channel still reaches the floor.
+ local point=if s.Shape=="Column" then Geometry.ground(origin) else Geometry.endpoint(origin,direction,s.Range)
  if s.Shape=="Self" then
   if s.Status.Ward then Rules.ward(source.Fighter,now);source.Model:SetAttribute("JadeAegisUntil",now+30) end
   if s.Status.Teleport then

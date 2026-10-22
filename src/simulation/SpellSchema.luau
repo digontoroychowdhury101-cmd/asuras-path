@@ -37,6 +37,14 @@ local thunder=spell("Thunderfall","Thunderfall","CelestialThunder",45,65,"Impact
 thunder.Speed=180;thunder.Radius=9;thunder.Status.Teleport=true;thunder.Status.Interrupt=true;thunder.Startup=36
 local wind=spell("WindSlash","Wind-Cutting Slash","SpiritTalismans",1,30,"Line",12)
 wind.Speed=90;wind.Radius=2
+-- Showcase sorceries (Sanctuary caches). Long telegraphed channels; the client plays a cinematic
+-- timeline scaled to the server's release time, so quick-cast catalysts stay in sync.
+local nova=spell("CelestialSupernova","Celestial Supernova","CelestialThunder",60,12,"Column",34)
+nova.Radius=12;nova.Posture=36;nova.Pulses=2;nova.Delay=1.6;nova.Cooldown=32
+nova.Startup=252;nova.Active=60;nova.Recovery=72;nova.Status.Interrupt=true
+local sun=spell("BlazingSunAwakening","Blazing Sun Awakening","CrimsonFlame",55,14,"Aura",20)
+sun.Posture=34;sun.Pulses=3;sun.Delay=1.5;sun.Cooldown=28;sun.Startup=168;sun.Active=30;sun.Recovery=60
+sun.Status.Burn=1;sun.Status.Interrupt=true
 local byId: {[string]: Spell}={}
 local order: {string}={}
 function Schema.validate(s: Spell)
@@ -48,7 +56,7 @@ function Schema.validate(s: Spell)
  assert(s.Arc>=0 and s.Arc<=360 and s.Speed<=240 and s.Cooldown<=60,"Invalid spell reach/timing limits")
  assert(s.Startup>=1 and s.Active>=1 and s.Recovery>=1 and s.Pulses>=1 and s.Pulses<=5 and s.Pulses%1==0,"Invalid spell timings")
  assert(s.Status.Root>=0 and s.Status.Root<=2 and s.Status.Burn>=0 and s.Status.Burn<=5 and s.Status.Drain>=0,"Invalid status")
- assert(table.find({"Self","Cone","Line","Pillars","Aura","Impact"},s.Shape),"Invalid spell shape")
+ assert(table.find({"Self","Cone","Line","Pillars","Aura","Impact","Column"},s.Shape),"Invalid spell shape")
 end
 function Schema.timing(s: Spell,quick: boolean?): {Startup: number,Active: number,Recovery: number,Total: number}
  local startup=Tempo.framesToSeconds(Tempo.enforceTelegraph("Light",Tempo.scaleFrames(s.Startup)))
@@ -57,7 +65,7 @@ function Schema.timing(s: Spell,quick: boolean?): {Startup: number,Active: numbe
  local recovery=Tempo.framesToSeconds(Tempo.scaleFrames(s.Recovery))
  return {Startup=startup,Active=active,Recovery=recovery,Total=startup+active+recovery}
 end
-for _,s in {palm,spear,maw,ember,surge,grave,aegis,gale,dirge,fissure,thunder,wind} do
+for _,s in {palm,spear,maw,ember,surge,grave,aegis,gale,dirge,fissure,thunder,wind,nova,sun} do
  Schema.validate(s);local previous=byId[s.Id];assert(previous==nil,"Duplicate spell")
  byId[s.Id]=s;table.insert(order,s.Id);table.freeze(s.Status);table.freeze(s)
 end

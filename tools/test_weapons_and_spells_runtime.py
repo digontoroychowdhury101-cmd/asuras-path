@@ -94,7 +94,12 @@ assert(b.Fighter.ActiveHP==100 and b.Fighter.Qi==15,"Fan projectile parry")
 a,b=reset();Effects.release(a,"HeavenlyLightningSpear",1,0);a.Fighter.State="KO"
 for t=1,60 do step(t/60) end
 assert(b.Fighter.ActiveHP==100,"Death cancels scheduled projectile")
-print("Phase 2 server effects: 14 scenarios passed")
+a,b=reset();a.Root.Position=vec(0,13,-900);b.Root.Position=vec(8,3,-904);Effects.release(a,"CelestialSupernova",1,0);step(0)
+assert(b.Fighter.ActiveHP<100 and b.Fighter.State=="Hitstun","Supernova column reaches the floor under a levitating caster")
+local first=b.Fighter.ActiveHP;b.Fighter.State="Idle";step(1.6);assert(b.Fighter.ActiveHP<first,"Supernova second pulse lands")
+a,b=reset();Effects.release(a,"BlazingSunAwakening",1,0);step(0);local sun=b.Fighter.ActiveHP
+assert(sun<100,"Blazing Sun shockwave hits");step(1.5);assert(b.Fighter.ActiveHP<sun,"Blazing Sun heat ring pulses")
+print("Phase 2 server effects: 16 scenarios passed")
 '''
 source = HEADER + inline('Geometry', 'src/server/Services/SpellGeometry.luau') + inline('Effects', 'src/server/Services/SpellEffects.luau') + TESTS
 output = ROOT / 'work' / 'test_weapons_and_spells_runtime.generated.luau'

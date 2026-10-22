@@ -1,5 +1,14 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## Showcase sorceries — 2026-10-23 (Computer B)
+
+Two cinematic spells from the TikTok VFX reference, built into the existing magic system (not standalone Q/E scripts; Q/E still cast whatever is slotted).
+- **Celestial Supernova** (CelestialThunder, 60 Qi, 32 s cd): ~3 s channel — levitate 10 studs into a dimmed void, teal planet + counter-rotating gold/teal rings, rising voxels, implosion; release drops a 24×120 cyan pillar with shockwave discs and spiralling voxels, second pulse = whiteout + cubic-falloff trauma shake, then descent. New server `Column` shape hits the floor under the levitating caster (radius 12, 2 pulses).
+- **Blazing Sun Awakening** (CrimsonFlame, 55 Qi, 28 s cd): ~2 s stance (low Dutch camera, trembling shake, hand embers); release = blackout → solarized yellow → 2D manga impact frame (crimson silhouette, radial speed lines) + fire shockwave, blazing-eye macro shot with starbursts/jets, flame gauntlets, heat rings on pulses 2–3 (Aura 14, burn).
+- **Unlocks**: Loggia Eaves cache → Supernova; Cloud Reliquary cache → Blazing Sun. `ArsenalInventory.migrate` regrants cache spells, so saves that already claimed those caches get them on next load.
+- **Client**: `SkillShowcase` routes cues → `SupernovaShow`/`BlazingSunShow`, built from `SkillKit` (trove cleanup, procedural parts), `SkillCinema` (render step after the camlock: blended shots, Dutch/FOV, noise trauma shake), `ImpactFrame` (grading + manga overlay), `CelestialForms`, `FlameForms`. Timelines scale to the server's release time; camera/grading/levitation only on the caster's client. Honours reduced motion/flashes.
+- **Verified**: 373 spell checks, 16 server-effect scenarios (2 new), boss rewards, arsenal codex, ledger, cast visuals, sanguine dispatch, HUD, movement, audiovisual suites pass; all new modules compile. **Not yet seen in Studio** — look, timing, camera feel, levitation physics and performance still need a playtest.
+
 ## Current VFX integration — 2026-10-21
 
 Main source/build remains this checkout → `outputs/AsurasPath.rbxlx`. Seven bounded Sanguine client modules adapt the separate VFX demo; four bootstrap hooks, no gameplay-source changes. Original demo sources and pre-integration backups are preserved. Full local verification, 194 detached client-engine checks and 30 focused routing checks passed. Normal visual/device/performance acceptance remains pending; see `docs/PROJECT_VERSIONS.md` and `outputs/vfx-integration-2026-10-21/`.

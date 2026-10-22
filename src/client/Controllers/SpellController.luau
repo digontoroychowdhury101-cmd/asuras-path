@@ -10,10 +10,11 @@ local Hud=require(script.Parent.SpellHud)
 local Visibility=require(script.Parent.HudVisibility)
 local Panel=require(script.Parent.ArsenalPanel)
 local Vfx=require(script.Parent.SpellVfx)
+local Showcase=require(script.Parent.SkillShowcase)
 local Controller={}
 Controller.__index=Controller
 export type SpellController=typeof(setmetatable({} :: {State: any,Ui: any,Remote: RemoteEvent,Slots: {string},Cooldowns: {[string]: number},
- View: Hud.View,Panel: Panel.View,Connections: {RBXScriptConnection},Unsubscribe: ()->()},Controller))
+ View: Hud.View,Panel: Panel.View,Showcase: Showcase.Showcase,Connections: {RBXScriptConnection},Unsubscribe: ()->()},Controller))
 -- Spell and Arsenal inputs come from the shared InputMap (keyboard and gamepad alike).
 local function keys(command: string): {Enum.KeyCode}
  local binding=InputMap.get(command);local list: {Enum.KeyCode}={}
@@ -28,7 +29,7 @@ function Controller.Cast(self: SpellController,slot: number)
  if snapshot.Qi<s.QiCost then self.Ui:ShowToast("Not enough Qi");return end
  self.Remote:FireServer({action="Cast",slot=slot})
 end
-function Controller.new(state: any,ui: any,net: Instance): SpellController
+function Controller.new(state: any,ui: any,net: Instance,camera: any?): SpellController
  local remote=net:WaitForChild("ArsenalIntent") :: RemoteEvent
  local self: any=setmetatable({State=state,Ui=ui,Remote=remote,Slots={"ThunderclapPalm","GaleStep"},Cooldowns={},Connections={}},Controller)
  local function toggle()
@@ -49,7 +50,9 @@ function Controller.new(state: any,ui: any,net: Instance): SpellController
   elseif packet.action=="Cooldown" then self.Cooldowns[packet.id]=packet.untilTime
   elseif packet.action=="Result" and not packet.ok then ui:ShowToast(packet.message) end
  end))
- self.Unsubscribe=state:OnCue(function(cue: any) Vfx.cue(cue,state) end)
+ -- Showcase sorceries (Supernova, Blazing Sun) take their own cues; everything else keeps SpellVfx.
+ self.Showcase=Showcase.new(state,camera)
+ self.Unsubscribe=state:OnCue(function(cue: any) if not Showcase.cue(self.Showcase,cue) then Vfx.cue(cue,state) end end)
  local function action(name: string,inputState: Enum.UserInputState,_input: InputObject): Enum.ContextActionResult
   if UserInputService:GetFocusedTextBox() or (self.Panel.Root.Visible and name~="QiArsenal") then return Enum.ContextActionResult.Pass end
   if inputState==Enum.UserInputState.Begin then
@@ -76,6 +79,6 @@ end
 function Controller.Destroy(self: SpellController)
  for _,c in self.Connections do c:Disconnect() end;self.Unsubscribe()
  for _,name in {"QiSpellOne","QiSpellTwo","QiArsenal"} do ContextActionService:UnbindAction(name) end
- self.View.Root:Destroy();self.Panel.Root:Destroy();Vfx.destroy()
+ self.View.Root:Destroy();self.Panel.Root:Destroy();Vfx.destroy();Showcase.destroy(self.Showcase)
 end
 return Controller
