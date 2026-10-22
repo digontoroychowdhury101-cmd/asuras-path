@@ -27,5 +27,5 @@ The creator is entirely vibe-coding this Roblox game and does not write code man
 - Always use the `task` library (`task.wait()`, `task.spawn()`, `task.delay()`). NEVER use deprecated `wait()`, `spawn()`, or `delay()`.
 - Use modern physics constraints (`LinearVelocity`, `VectorForce`, `AlignOrientation`) instead of deprecated BodyMovers (`BodyVelocity`, `BodyGyro`).
 - Use `workspace:Raycast()` with `RaycastParams` instead of deprecated `FindPartOnRay`.
-- Keep ModuleScripts modular, clean, and under 150 lines.
+- Keep ModuleScripts modular and clean.
 - Follow Schema version 4 with attributes: Vigor, Endurance, Strength, Dexterity, ArcaneQi.

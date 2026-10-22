@@ -10,7 +10,7 @@ The creator is entirely **vibe-coding** this game and does not write code manual
 1. **Direct File Modifications**: Whenever possible, make direct file edits or small targeted commits in the repository. Avoid dumping massive scripts into chat.
 2. **Surgical Edits**: If presenting code in conversation, **NEVER reprint an entire 200+ line script**. Provide only the specific function, changed block, or replacement diff with exact line instructions.
 3. **No Redundant Lectures**: Give direct, concise test instructions in 1-2 bullet points. Avoid syntax lectures or lengthy explanations unless explicitly requested.
-4. **Keep Modules Modular**: Keep new ModuleScripts focused, clean, and under 150 lines.
+4. **Keep Modules Modular**: Keep new ModuleScripts focused and clean.
 
 ---
 
