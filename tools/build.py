@@ -61,6 +61,10 @@ def build(output: Path = OUTPUT) -> None:
             properties.remove(old)
     ET.SubElement(properties, 'Ref', name='CurrentCamera').text = camera.attrib['referent']
     xml.write(output, encoding='utf-8', xml_declaration=True)
+    if output == OUTPUT:
+        places_target = ROOT / 'places' / 'AsurasPath.rbxlx'
+        places_target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(output, places_target)
     assets = set(ASSET_ID.findall(output.read_text(encoding='utf-8')))
     print(f'Built {output}: {len(paths(project["tree"], ""))} mapped sources; '
           f'{len(assets)} distinct Roblox asset IDs referenced')

@@ -1,9 +1,9 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
-## Portable Prompt Catalog — 2026-10-23 (Computer A)
+## Portable Prompt Catalog & Place Files — 2026-10-23 (Computer A)
 
 - **ALL_PROMPTS.md & Brief Portability**: All hardcoded `/Users/digonto/...` absolute paths in `outputs/claude-followup-2026-10-21/ALL_PROMPTS.md`, `00_SHARED_BRIEF.txt`, and standalone prompt files `01_` through `26_` converted to repository-relative paths (`outputs/...`).
-- **Cross-Computer Ready**: Prompt sequences and briefs can now be directly copied into Claude on either Computer A (macOS) or Computer B (Windows) without path mismatch errors.
+- **AsurasPath Place Files in `places/`**: Copied and tracked `places/AsurasPath.rbxlx` and `places/AsurasPath.rbxl` directly inside the `places/` directory so Studio can open it without navigating into `outputs/` or fighting Windows file-type filter defaults. `places/server.rbxl` updated to match the latest build. `tools/build.py` now automatically mirrors default builds to `places/AsurasPath.rbxlx`.
 - **Next**: Run follow-up prompt (e.g. 04/26) on Computer A or B.
 
 ## Showcase sorceries — 2026-10-23 (Computer B)
