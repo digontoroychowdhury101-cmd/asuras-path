@@ -1,0 +1,106 @@
+{
+  "mode": "Local Studio Play, current rebuilt source",
+  "stairClimb": {
+    "method": "character_navigation in separate short calls",
+    "midpoint": [
+      -0.0000519703,
+      612.59998,
+      836.89587
+    ],
+    "landing": [
+      -9.437e-7,
+      622.99994,
+      812.72345
+    ],
+    "result": "Success, health100"
+  },
+  "outerCapDrops": [
+    {
+      "name": "East",
+      "requested": [
+        265,
+        628,
+        600
+      ],
+      "landed": [
+        254.2605133,
+        622.9257202,
+        612.96875
+      ],
+      "support": "KarstCapGround_3",
+      "health": 100
+    },
+    {
+      "name": "West",
+      "requested": [
+        -265,
+        628,
+        510
+      ],
+      "landed": [
+        -265.1328125,
+        622.8948364,
+        510.3027344
+      ],
+      "support": "KarstCapGround_7",
+      "health": 100
+    },
+    {
+      "name": "Rear",
+      "requested": [
+        70,
+        628,
+        300
+      ],
+      "landed": [
+        70,
+        622.875,
+        300
+      ],
+      "support": "KarstCapGround_5",
+      "health": 100
+    },
+    {
+      "name": "Front flank",
+      "requested": [
+        90,
+        628,
+        815
+      ],
+      "landed": [
+        90,
+        622.9003906,
+        815
+      ],
+      "support": "StairFlankCapGround_2",
+      "health": 100
+    }
+  ],
+  "smith": {
+    "method": "Prompt InputHold API confirmed callback, then separate virtual Z keyDown/keyUp calls confirmed keyboard interaction",
+    "arsenalVisible": true,
+    "sealAnchorSize": [
+      2,
+      2,
+      2
+    ],
+    "sealMaterial": "Slate",
+    "sealTransparency": 1
+  },
+  "earlierLiveChecks": {
+    "sameArtPass": true,
+    "rest": "Rest menu and Sanctuary checkpoint confirmed",
+    "lin": "Dialogue populated",
+    "gao": "Arsenal panel opened",
+    "courtyardAndDuel": "Crossing and duel threshold reached",
+    "prayerCourt": "East court reached at approx67.709,625.55,765.82",
+    "storyGate": "Teleported to DesecratedMonastery; correct regional atmosphere applied",
+    "cryptReturn": "Verified in preceding art-pass session; not repeated after current decorative cleanup"
+  },
+  "notVerified": [
+    "Two-client duel",
+    "mobile/console rendering and controls",
+    "complete jump exploration of every new outer cliff edge",
+    "final live cache pickup and full eaves ladder mount"
+  ]
+}

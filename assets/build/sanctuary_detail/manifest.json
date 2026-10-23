@@ -1,0 +1,52 @@
+{
+  "Detail_Strata": {
+    "triangles": 192,
+    "vertices": 108,
+    "material": "DetailRock",
+    "blenderLayout": [
+      0,
+      0,
+      0
+    ]
+  },
+  "Detail_Fissure": {
+    "triangles": 412,
+    "vertices": 208,
+    "material": "DetailRock",
+    "blenderLayout": [
+      18,
+      0,
+      0
+    ]
+  },
+  "Detail_Fern": {
+    "triangles": 160,
+    "vertices": 320,
+    "material": "Moss",
+    "blenderLayout": [
+      30,
+      0,
+      0
+    ]
+  },
+  "Detail_MapleSpray": {
+    "triangles": 616,
+    "vertices": 660,
+    "material": "Crimson",
+    "blenderLayout": [
+      40,
+      0,
+      0
+    ]
+  },
+  "Detail_BranchCard": {
+    "triangles": 2,
+    "vertices": 4,
+    "material": "Crimson",
+    "blenderLayout": [
+      50,
+      0,
+      1
+    ]
+  }
+}

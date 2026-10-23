@@ -36,6 +36,7 @@ local Ascent = require(script.Parent:WaitForChild("SanctuaryAscent") :: ModuleSc
 local Forge = require(script.Parent:WaitForChild("SanctuaryForge") :: ModuleScript)
 local DuelCourt = require(script.Parent:WaitForChild("SanctuaryDuelCourt") :: ModuleScript)
 local Horizon = require(script.Parent:WaitForChild("SanctuaryHorizon") :: ModuleScript)
+local Ecology = require(script.Parent:WaitForChild("SanctuaryEcology") :: ModuleScript)
 
 local SanctuaryService = {}
 
@@ -378,6 +379,7 @@ function SanctuaryService.Start()
 	end
 	Horizon.Foundations(sanctuary, origin, LOGGIA - ORIGIN, PROMENADE - ORIGIN, DESCENT)
 	Horizon.Build(sanctuary, origin)
+	Ecology.Build(sanctuary, origin)
 	sanctuary.Parent = Workspace
 
 	-- Default checkpoint for anyone without a resolved respawn yet (WorldService's altar hook

@@ -1,5 +1,13 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## Detail/device handoff — 2026-10-23
+
+Integrated Blender cliff/foliage detail, client landscape budgets, phone controls and local Rojo preloader fix. Canonical/mirrored place SourceDigest 1045496687. Verifier 14/14; movement 50; device 89; four Studio form-factor bounds audits pass. Physical hardware/FPS and successful two-client duel remain deferred. Latest build and editable assets are included; see [computer B handoff](outputs/lobby-finish-2026-10-23/COMPUTER_B_HANDOFF.md).
+
+## Shrine monumental environment verification — 2026-10-23
+
+The monumental lobby is integrated into `outputs/AsurasPath.rbxlx`: 150-stud goddess, active golden-hour atmosphere (Density 0.38/Haze 2.2), 48-stud pool promenade, 30-stud main stair, modular gate/cloisters, jagged floating terrace and eleven physical karst peaks over the cloud sea. Gao's cyan interaction cube is now a carved seal; the existing prompt and callback remain. Final local verifier passed 14/14. SourceDigest `1060436377` / 234 scripts agrees between the saved place, freshly opened Studio and verification build. Current stair climb, outer-cap landings and Gao interaction passed in Studio. Before/after images and explicit remaining fidelity, performance and device limits: [art-pass report](outputs/lobby-monumental-2026-10-23/ART_PASS_REPORT.md). No publishing performed.
+
 ## Unified Master Sync (Computer A + Computer B) — 2026-10-23
 
 - **State Unified**: Merged Computer A's monumental Sanctuary art pass, Guardian Lion PBR models, and lighting into the branch with Computer B's F02 checkpoint findings and Windows rojo tooling.

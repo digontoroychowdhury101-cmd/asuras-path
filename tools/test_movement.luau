@@ -50,12 +50,16 @@ local UDim = { new = identity }
 local RaycastParams = { new = function() return {} end }
 local function instance(class)
 	local obj = { ClassName = class, Size = vec(2,2,1), C0 = frame(), Position = vec(0,4,0),
-		InputBegan = signal(), InputEnded = signal(), Destroying = signal(), Children = {} }
+		InputBegan = signal(), InputEnded = signal(), Destroying = signal(), DescendantAdded = signal(), Children = {}, AbsoluteSize = vec(800,600), PropertySignals = {} }
 	function obj:IsA(kind) return self.ClassName == kind or (kind == "BasePart" and self.ClassName == "Part") end
 	function obj:Destroy() self.Destroyed = true; self.Parent = nil end
 	function obj:FindFirstChild(name) return self.Children[name] end
 	function obj:FindFirstChildOfClass(kind) for _, child in self.Children do if child.ClassName==kind then return child end end; return nil end
 	function obj:WaitForChild(name) return self.Children[name] end
+	function obj:GetPropertyChangedSignal(name) self.PropertySignals[name] = self.PropertySignals[name] or signal(); return self.PropertySignals[name] end
+	function obj:GetChildren() local out = {};for _,c in self.Children do table.insert(out,c) end;return out end
+	function obj:GetDescendants() local out={};for _,c in self.Children do table.insert(out,c);for _,d in c:GetDescendants() do table.insert(out,d)end end;return out end
+	function obj:FindFirstAncestor(name) local p=self.Parent;while p do if p.Name==name then return p end;p=p.Parent end;return nil end
 	function obj:GetAttribute(name) return self.Attributes and self.Attributes[name] end
 	return obj
 end
@@ -71,13 +75,17 @@ local replicated = tree({}) -- REPLICATION_INSERT
 local script = { Parent = folder }
 local require = function(name) return assert(registry[name], tostring(name)) end
 local playerGui = instance("PlayerGui")
-local player = { WaitForChild = function() return playerGui end }
+local player = { WaitForChild = function() return playerGui end, Attributes = {} }
+function player:SetAttribute(key, value) self.Attributes[key] = value end
 local ray = { Normal = Vector3.yAxis }
 local workspace = { Gravity = 196.2, CurrentCamera = { CFrame = frame(), ViewportSize = vec(1920,1080) },
 	Raycast = function() return ray end, GetServerTimeNow = function() return os.clock() end }
 local UIS = { TouchEnabled = false, KeyboardEnabled = true, Focus = nil,
 	GetFocusedTextBox = function(self) return self.Focus end, GetMouseDelta = function() return Vector2.zero end }
 for _, name in { "WindowFocusReleased", "TextBoxFocused", "LastInputTypeChanged", "InputBegan", "InputEnded", "InputChanged" } do UIS[name] = signal() end
+local propertySignals = {}
+function UIS:GetPropertyChangedSignal(key) propertySignals[key] = propertySignals[key] or signal();return propertySignals[key]end
+function UIS:GetLastInputType() return Enum.UserInputType.Keyboard end
 local guiService = { MenuOpened = signal(), MenuIsOpen = false }
 local CAS = { Actions = {}, BindActionAtPriority = function(self, name, fn, _touch, _priority, ...)
 	self.Actions[name] = { Callback = fn, Inputs = { ... } }
@@ -187,6 +195,14 @@ check(oldHumanoid.HipHeight==2 and oldHumanoid.AutoJumpEnabled and not move.Doub
 function world:Own() return { Humanoid = humanoid } end
 local sent = {}
 local input = registry.InputController.new(world,camera,function(action) table.insert(sent,action) end,move)
+
+-- Capability changes may arrive without LastInputTypeChanged (Studio emulator and hot-plugging).
+UIS.TouchEnabled,UIS.KeyboardEnabled=true,false
+UIS:GetPropertyChangedSignal("TouchEnabled"):Fire()
+check(input.Device=="Touch" and input.TouchGui.Enabled,"phone capability change enables touch without an input edge")
+UIS.TouchEnabled,UIS.KeyboardEnabled=false,true
+UIS:GetPropertyChangedSignal("TouchEnabled"):Fire()
+check(input.Device=="Keyboard" and not input.TouchGui.Enabled,"return to keyboard capabilities restores desktop input")
 local lastCommand
 input.OnCommand = function(command) lastCommand = command end
 local binding = CAS.Actions.AsuraKineticMovement

@@ -1,0 +1,9 @@
+{
+  "installed": "/Users/digonto/Documents/Roblox/Plugins/Rojo.rbxm",
+  "backup": "/Users/digonto/Documents/ChatGPT/Roblox game 2/work/rojo-warning/Rojo.original.rbxm",
+  "originalSha256": "50a8d83db87deab4d65fd6100eb74396de232355b1ae89c641035d02c49db6f4",
+  "patchedSha256": "30e19c8ba64908be6617f0865dc6093746cc3d3045719a0182486246d0945d44",
+  "fix": "Notification audio preloaded as a Sound; temporary Sound instances destroyed afterward",
+  "upstream": "https://github.com/rojo-rbx/rojo/pull/1344",
+  "typedAudioStudioPreload": "Success"
+}

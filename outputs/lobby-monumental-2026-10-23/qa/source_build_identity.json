@@ -1,0 +1,16 @@
+{
+  "place": "/Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/AsurasPath.rbxlx",
+  "placeBytes": 3124010,
+  "sha256": "64d8d18139509b55cb9e3230884ba0cf800b0287557370e91c04c4379b513ea5",
+  "mappedSources": 238,
+  "mappedScripts": 234,
+  "distinctAssetIds": 354,
+  "sourceBytes": 1672825,
+  "sourceDigest": 1060436377,
+  "digestAlgorithm": "SourceDigest.luau: sorted path + NUL + CR-normalized UTF-8 source + NUL; multiplier31 mod2147483647",
+  "studioEditMatches": true,
+  "verificationBuildMatches": true,
+  "mirroredPlace": "places/AsurasPath.rbxlx",
+  "mirrorSourceDigest": 1060436377,
+  "mirrorMatchesBytes": true
+}

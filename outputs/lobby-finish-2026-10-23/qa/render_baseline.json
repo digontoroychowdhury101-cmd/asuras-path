@@ -1,0 +1,34 @@
+{
+  "source": "Previous delivered source digest 1060436377; live Studio pre-change query 23 Oct 2026",
+  "camera": {
+    "position": [
+      175,
+      735,
+      1100
+    ],
+    "focus": [
+      0,
+      650,
+      815
+    ],
+    "fov": 60
+  },
+  "viewport": [
+    1221,
+    543
+  ],
+  "quality": 21,
+  "opaque": {
+    "triangles": 1630800,
+    "drawcalls": 1021
+  },
+  "transparent": {
+    "triangles": 11384,
+    "drawcalls": 85
+  },
+  "terrain": {
+    "triangles": 8928,
+    "drawcalls": 18
+  },
+  "note": "View-dependent draw composition; excludes shadows from comparison. This is not a hardware FPS benchmark."
+}

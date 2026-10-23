@@ -1,0 +1,110 @@
+{
+  "rest": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"haze\":2.200000047683716,\"region\":\"Sanctuary\",\"figureHeight\":149.99998474121095,\"axis\":48,\"density\":0.3799999952316284,\"restMenu\":true,\"position\":\"0, 603.0999755859375, 906.6815185546875\",\"clock\":17.399999618530275,\"preload\":\"{\\\"ok\\\":true,\\\"failures\\\":[],\\\"count\\\":3022}\",\"altar\":\"Altar_SanctuaryBonfire\",\"treeHeight\":402.44964599609377}"
+      }
+    ],
+    "isError": false
+  },
+  "lin": {
+    "content": [
+      {
+        "type": "text",
+        "text": "true"
+      }
+    ],
+    "isError": false
+  },
+  "gao": {
+    "content": [
+      {
+        "type": "text",
+        "text": "true"
+      }
+    ],
+    "isError": false
+  },
+  "crossing": {
+    "content": [
+      {
+        "type": "text",
+        "text": "Success"
+      }
+    ],
+    "isError": false
+  },
+  "duel": {
+    "content": [
+      {
+        "type": "text",
+        "text": "Success"
+      }
+    ],
+    "isError": false
+  },
+  "stairs": {
+    "content": [
+      {
+        "type": "text",
+        "text": "Success"
+      }
+    ],
+    "isError": false
+  },
+  "gate landing": {
+    "content": [
+      {
+        "type": "text",
+        "text": "Success"
+      }
+    ],
+    "isError": false
+  },
+  "story": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"clock\":15,\"density\":0.4000000059604645,\"region\":\"DesecratedMonastery\",\"pos\":\"1.590456122357864e-08, 3.1999998092651367, -728\"}"
+      }
+    ],
+    "isError": false
+  },
+  "prayer0,611,836": {
+    "content": [
+      {
+        "type": "text",
+        "text": "Success"
+      }
+    ],
+    "isError": false
+  },
+  "prayer27,621,812": {
+    "content": [
+      {
+        "type": "text",
+        "text": "Success"
+      }
+    ],
+    "isError": false
+  },
+  "prayer27,621,790": {
+    "content": [
+      {
+        "type": "text",
+        "text": "Success"
+      }
+    ],
+    "isError": false
+  },
+  "prayer68,623,780": {
+    "content": [
+      {
+        "type": "text",
+        "text": "Success"
+      }
+    ],
+    "isError": false
+  }
+}

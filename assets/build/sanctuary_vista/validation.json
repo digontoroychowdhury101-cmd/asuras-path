@@ -1,0 +1,55 @@
+{
+  "glbBytes": 14248532,
+  "meshParts": [
+    {
+      "name": "Vista_Crown__Moss",
+      "triangles": 210,
+      "normal": true,
+      "uv": true,
+      "singleMaterial": true
+    },
+    {
+      "name": "Vista_Crown__Rock",
+      "triangles": 18928,
+      "normal": true,
+      "uv": true,
+      "singleMaterial": true
+    },
+    {
+      "name": "Vista_Needle__Moss",
+      "triangles": 140,
+      "normal": true,
+      "uv": true,
+      "singleMaterial": true
+    },
+    {
+      "name": "Vista_Needle__Rock",
+      "triangles": 14196,
+      "normal": true,
+      "uv": true,
+      "singleMaterial": true
+    },
+    {
+      "name": "Vista_Ridge__Moss",
+      "triangles": 280,
+      "normal": true,
+      "uv": true,
+      "singleMaterial": true
+    },
+    {
+      "name": "Vista_Ridge__Rock",
+      "triangles": 18928,
+      "normal": true,
+      "uv": true,
+      "singleMaterial": true
+    },
+    {
+      "name": "Vista_Waterfall__Water",
+      "triangles": 320,
+      "normal": true,
+      "uv": true,
+      "singleMaterial": true
+    }
+  ],
+  "embeddedImages": 3
+}

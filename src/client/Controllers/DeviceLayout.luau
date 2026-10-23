@@ -32,7 +32,7 @@ type Saved = { AnchorPoint: Vector2, Position: UDim2, Size: UDim2, Min: Vector2?
 function Device.new(ui: any, input: any, extras: { ScreenGui }, arsenal: any?, pause: any?): any
 	local self = setmetatable({ Ui = ui, Input = input, Saved = {} :: { [string]: Saved }, Touch = false, Links = {} }, Device) :: any
 	for _, gui in { ui.Gui, table.unpack(extras) } do
-		pcall(function() (gui :: any).ScreenInsets = Enum.ScreenInsets.DeviceSafeInsets end)
+		pcall(function() (gui :: any).ScreenInsets = Enum.ScreenInsets.CoreUISafeInsets end)
 	end
 	local function refresh() self:Apply() end
 	table.insert(self.Links, (ui.Gui :: ScreenGui):GetPropertyChangedSignal("AbsoluteSize"):Connect(refresh))
@@ -40,6 +40,10 @@ function Device.new(ui: any, input: any, extras: { ScreenGui }, arsenal: any?, p
 	input.OnDeviceChanged = function(device: string) if previous then previous(device) end; refresh() end
 	self.RestoreDevice = function() input.OnDeviceChanged = previous end
 	if arsenal and pause then self:MenuRoute(arsenal, pause) end
+	local minimap = ui.Gui:FindFirstChild("Minimap")
+	if minimap and minimap:IsA("GuiObject") then
+		table.insert(self.Links, minimap:GetPropertyChangedSignal("AbsoluteSize"):Connect(function() self:Blossoms(ui.Gui, self.Touch) end))
+	end
 	refresh()
 	return self
 end
@@ -98,7 +102,7 @@ function Device.Blossoms(self: any, gui: ScreenGui, touch: boolean)
 	local mapScale = map:FindFirstChildOfClass("UIScale")
 	local mapFactor: number = if mapScale then mapScale.Scale else 1
 	local shown: number = BLOSSOM_SIZE * mapFactor -- on-screen points
-	for _, b in map:GetChildren() do
+	for _, b in map:GetDescendants() do
 		if b:IsA("TextButton") and (b.Text == "≡" or b.Text == "?") then
 			local grow = (b:FindFirstChild("TouchGrow") :: UIScale?) or (HudKit.make("UIScale", b, { Name = "TouchGrow" }) :: UIScale)
 			local wanted: number = TOUCH_TARGET / shown

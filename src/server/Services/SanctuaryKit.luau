@@ -52,6 +52,10 @@ local function template(name: string): Model?
 		local vista = ServerStorage:FindFirstChild("AsuraSanctuaryVista")
 		piece = vista and vista:FindFirstChild(name)
 	end
+	if not piece then
+		local detail = ServerStorage:FindFirstChild("AsuraSanctuaryDetail")
+		piece = detail and detail:FindFirstChild(name)
+	end
 	if not piece and name == "AsuraGuardianLion" then piece = ServerStorage:FindFirstChild(name) end
 	return if piece and piece:IsA("Model") then piece else nil
 end
@@ -92,6 +96,22 @@ function Kit.place(parent: Instance, name: string, cf: CFrame, scale: (number | 
 	model.WorldPivot = cf
 	model.Parent = parent
 	return model
+end
+
+-- One shared, double-sided mesh replaces two Decals per leaf plane. The saved template
+-- carries its alpha SurfaceAppearance; all clones can share geometry and texture bindings.
+function Kit.branchCard(parent: Instance, frame: CFrame, width: number, height: number, tint: Color3): BasePart?
+	local source = template("Detail_BranchCard")
+	local mesh = source and source:FindFirstChildWhichIsA("MeshPart")
+	if not mesh then return nil end
+	local copy = mesh:Clone()
+	copy.Name, copy.Size, copy.CFrame = "CrimsonBranchSpray", Vector3.new(width, height, 0.001), frame
+	copy.Color, copy.CastShadow = tint, false
+	local finish = copy:FindFirstChildOfClass("SurfaceAppearance")
+	if finish then finish.Color = tint end
+	copy:SetAttribute("AsuraFoliage", true)
+	copy.Parent = parent
+	return copy
 end
 
 -- A primitive in one of the shared surfaces (collides unless told otherwise).

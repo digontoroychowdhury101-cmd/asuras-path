@@ -50,6 +50,8 @@ local TINTS = {
 }
 
 local function card(parent: Instance, frame: CFrame, width: number, height: number, tint: Color3)
+	local mesh = Kit.branchCard(parent, frame, width, height, tint)
+	if mesh then mesh.Name = "CrimsonLeafCard"; mesh:SetAttribute("AsuraHeroFoliage", true); return end
 	local p = Instance.new("Part")
 	p.Name = "CrimsonLeafCard"
 	p.Anchored, p.CanCollide, p.CanTouch, p.CanQuery, p.CastShadow = true, false, false, false, false

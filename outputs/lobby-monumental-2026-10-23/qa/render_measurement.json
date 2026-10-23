@@ -1,0 +1,76 @@
+{
+  "hardware": {
+    "model": "MacBookPro17,1",
+    "chip": "Apple M1",
+    "ramGB": 8
+  },
+  "sample": {
+    "camera": "elevated175,735,1100",
+    "viewport": "1221, 543",
+    "renderCPU": {
+      "max": 86.87562495470047,
+      "p95": 12.35108356922865,
+      "mean": 8.144154138345685,
+      "n": 180
+    },
+    "frames": {
+      "max": 378.0452609062195,
+      "p95": 92.2548770904541,
+      "mean": 72.0254992859231,
+      "n": 180
+    },
+    "quality": "Enum.QualityLevel.Level21"
+  },
+  "composition": {
+    "Children": {
+      "1": {
+        "Name": "Opaque",
+        "Sizes": {
+          "Drawcalls": 1030,
+          "Triangles": 1630788
+        }
+      },
+      "2": {
+        "Name": "Transparent",
+        "Sizes": {
+          "Drawcalls": 80,
+          "Triangles": 9208
+        }
+      },
+      "3": {
+        "Name": "Terrain",
+        "Sizes": {
+          "Drawcalls": 20,
+          "Triangles": 10182
+        }
+      },
+      "4": {
+        "Name": "UI",
+        "Sizes": {
+          "Drawcalls": 2,
+          "Triangles": 180
+        }
+      },
+      "5": {
+        "Name": "Particles",
+        "Sizes": {
+          "Drawcalls": 1,
+          "Triangles": 538
+        }
+      },
+      "6": {
+        "Name": "Shadows",
+        "Sizes": {
+          "Drawcalls": 207,
+          "Triangles": 857024
+        }
+      }
+    },
+    "Sizes": {
+      "Drawcalls": 1340,
+      "Triangles": 2507920
+    },
+    "Name": "TriangleComposition"
+  },
+  "interpretation": "Observed Studio cadence only. Foreground focus was not established during the sample, so background throttling cannot be separated from rendering cost. This is not a validated standalone FPS target."
+}

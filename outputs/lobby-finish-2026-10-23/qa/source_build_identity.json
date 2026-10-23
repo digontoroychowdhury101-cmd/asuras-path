@@ -1,0 +1,20 @@
+{
+  "files": [
+    {
+      "path": "outputs/AsurasPath.rbxlx",
+      "bytes": 3223393,
+      "sha256": "3b6de54795b27df3a06e14e95dac23f3db217aa212fccfdde7fe768b95ed1bac"
+    },
+    {
+      "path": "places/AsurasPath.rbxlx",
+      "bytes": 3223393,
+      "sha256": "3b6de54795b27df3a06e14e95dac23f3db217aa212fccfdde7fe768b95ed1bac"
+    }
+  ],
+  "SourceDigest": 1045496687,
+  "mappedScripts": 236,
+  "sourceBytes": 1687612,
+  "mappedSources": 241,
+  "distinctAssetIds": 360,
+  "freshStudioEditAgrees": true
+}

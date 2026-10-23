@@ -93,6 +93,24 @@ function Hud.update(view: View, slots: { string }, cooldowns: { [string]: number
 	else
 		view.Root.AnchorPoint, view.Root.Position = Vector2.new(1, 1), UDim2.new(1, -24, 1, -24)
 	end
+	local touchLayout = touch == true
+	if view.Root:GetAttribute("TouchLayout") ~= touchLayout then
+		view.Root:SetAttribute("TouchLayout", touchLayout)
+		for slot, card in view.Cards do
+			local at = if touchLayout then Vector2.new(if slot == 1 then 48 else 132, 42) else SLOTS[slot].Pos
+			local holder = card.Button.Parent :: Frame
+			holder.Position = UDim2.fromOffset(at.X, at.Y)
+			card.Name.Position = UDim2.fromOffset(at.X, at.Y + card.Size * 0.62)
+			for i, tick in card.Segments do
+				local angle, radius = math.rad((i - 1) * 360 / TICKS - 90), card.Size * 0.5 + 15
+				tick.Position = UDim2.fromOffset(at.X + math.cos(angle) * radius, at.Y + math.sin(angle) * radius)
+			end
+		end
+		local menuHolder = view.Menu.Parent :: Frame
+		menuHolder.Position = if touchLayout then UDim2.fromOffset(218, 42) else UDim2.fromOffset(MENU.Pos.X, MENU.Pos.Y)
+		local scale = menuHolder:FindFirstChildOfClass("UIScale") or Instance.new("UIScale", menuHolder)
+		scale.Scale = if touchLayout then 1.45 else 1
+	end
 	local captions = keys or {}
 	caption(view.MenuKey, captions[3])
 	for slot, c in view.Cards do
@@ -108,7 +126,7 @@ function Hud.update(view: View, slots: { string }, cooldowns: { [string]: number
 		end
 		c.Icon.GroupTransparency = if ready then 0 else 0.5
 		c.Shade.BackgroundTransparency = if remaining > 0 then 0.35 else 1
-		c.Name.Text = if s then string.format("%s · %d Qi", s.Name, s.QiCost) else "Empty slot"
+		c.Name.Text = if s then (if touch then string.format("%d Qi", s.QiCost) else string.format("%s · %d Qi", s.Name, s.QiCost)) else "Empty slot"
 		c.Timer.Text = if remaining > 0 then string.format("%.1f", remaining) else ""
 		local lit = if s and remaining > 0 then math.ceil(remaining / s.Cooldown * TICKS) else 0
 		for n, f in c.Segments do

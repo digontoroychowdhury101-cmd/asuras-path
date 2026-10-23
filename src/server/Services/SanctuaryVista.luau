@@ -72,6 +72,7 @@ local function summitFoliage(parent: Instance, summit: CFrame, focus: Vector3)
 	for _, side in { -1, 1 } do
 		local at = summit:PointToWorldSpace(Vector3.new(side * 23, 8, 9))
 		local frame = CFrame.lookAt(at, Vector3.new(focus.X, at.Y, focus.Z)) * CFrame.Angles(0, side * 0.3, side * 0.07)
+		if Kit.branchCard(parent, frame, 25, 14, Color3.fromRGB(183, 149, 155)) then continue end
 		local card = Kit.hidden(parent, "SummitCrimsonBranch", Vector3.new(25, 14, 0.04), frame)
 		for _, face in { Enum.NormalId.Front, Enum.NormalId.Back } do
 			local decal = Instance.new("Decal")

@@ -659,6 +659,9 @@
           },
           "SanctuaryRingFinish": {
             "$path": "src/server/Services/SanctuaryRingFinish.luau"
+          },
+          "SanctuaryEcology": {
+            "$path": "src/server/Services/SanctuaryEcology.luau"
           }
         }
       }
@@ -676,6 +679,9 @@
       },
       "AsuraGuardianLion": {
         "$path": "assets/models/AsuraGuardianLion.rbxmx"
+      },
+      "AsuraSanctuaryDetail": {
+        "$path": "assets/models/AsuraSanctuaryDetail.rbxmx"
       }
     },
     "StarterPlayer": {
@@ -937,6 +943,9 @@
             },
             "SkillShowcase": {
               "$path": "src/client/Controllers/SkillShowcase.luau"
+            },
+            "LandscapeBudget": {
+              "$path": "src/client/Controllers/LandscapeBudget.luau"
             }
           }
         }

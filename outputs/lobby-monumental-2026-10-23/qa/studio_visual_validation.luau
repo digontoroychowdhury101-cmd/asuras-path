@@ -47,6 +47,7 @@ result.figureHeight, result.treeHeight = hero.Figure:GetExtentsSize().Y, hero.Tr
 result.axialWalk = tostring(root:FindFirstChild("AxialWalk", true).Size)
 result.arrivalBridge = tostring(root:FindFirstChild("PilgrimWalk", true).Size)
 result.terraceFoundation = colossus:FindFirstChild("TerraceKarstCliffs", true):GetAttributes()
+result.terraceGround = colossus:FindFirstChild("TerraceCapGround", true):GetAttributes()
 result.hiddenSupport = {}
 for _, name in { "ColossusTerrace", "TerraceKerb", "TerraceFoot", "TerraceRoot" } do
 	local p = colossus[name]
@@ -64,4 +65,21 @@ for _, d in light:GetChildren() do
 end
 result.quality, result.viewport = tostring(settings().Rendering.QualityLevel), tostring(workspace.CurrentCamera.ViewportSize)
 result.playerPosition = tostring(game.Players.LocalPlayer.Character.HumanoidRootPart.Position)
+local seal = workspace.WorldDiscoveryCaches.TransmutationSeal
+result.smithSeal = { material = tostring(seal.Material), transparency = seal.Transparency, size = tostring(seal.Size), prompt = seal.TransmutePrompt.ActionText }
+local attire = workspace.JadeCataclysm.Lin.AsuraAttire
+local handheld = attire.SoulLantern:FindFirstChildOfClass("PointLight")
+result.handheldLantern = { housed = attire:FindFirstChild("LanternRoof") ~= nil and attire:FindFirstChild("LanternPostNE") ~= nil, Color = tostring(handheld.Color), Brightness = handheld.Brightness, Range = handheld.Range, Shadows = handheld.Shadows }
+result.visibleNeonOutsideHousings = {}
+for _, d in workspace:GetDescendants() do
+	if d:IsA("BasePart") and d.Material == Enum.Material.Neon and d.Transparency < 0.95 then
+		local at = d.Position
+		if at.Y > 550 and at.Y < 1100 and math.abs(at.X) < 380 and at.Z > 200 and at.Z < 1060 then
+			local chamber = d:FindFirstAncestor("FrostedLanternChamber")
+			local candle = d.Name == "ShelteredFlame" and math.max(d.Size.X, d.Size.Y, d.Size.Z) <= 0.25
+			local carried = d == attire.SoulLantern and result.handheldLantern.housed
+			if not chamber and not candle and not carried then table.insert(result.visibleNeonOutsideHousings, d:GetFullName()) end
+		end
+	end
+end
 return game:GetService("HttpService"):JSONEncode(result)

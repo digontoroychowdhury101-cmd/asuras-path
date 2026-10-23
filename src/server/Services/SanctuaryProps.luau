@@ -13,6 +13,7 @@ local function invisible(): any
 end
 
 local function branchCard(group: Instance, cf: CFrame, width: number, height: number, tint: Color3)
+	if Kit.branchCard(group, cf, width, height, tint) then return end
 	local card = Kit.hidden(group, "CrimsonBranchSpray", Vector3.new(width, height, 0.04), cf)
 	for _, face in { Enum.NormalId.Front, Enum.NormalId.Back } do
 		local image = Instance.new("Decal")

@@ -162,7 +162,7 @@ local function buildTouchGui(self: InputController)
 		local button = Instance.new("TextButton")
 		button.Name = entry.Command
 		button.Text = InputMap.label(entry.Command, "Touch")
-		button.Font = Enum.Font.Antique
+		button.Font = Enum.Font.GothamMedium
 		button.TextScaled = true
 		button.TextColor3 = Color3.fromRGB(255, 226, 238)
 		button.BackgroundColor3 = Color3.fromRGB(48, 18, 42)
@@ -176,10 +176,16 @@ local function buildTouchGui(self: InputController)
 		corner.Parent = button
 		local stroke = Instance.new("UIStroke")
 		stroke.Color = Color3.fromRGB(247, 168, 200)
-		stroke.Thickness = 2
+		stroke.Thickness = 1
+		stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 		stroke.Parent = button
 		local padding = Instance.new("UIPadding")
 		padding.PaddingTop = UDim.new(0.18, 0)
+		padding.PaddingLeft = UDim.new(0.08, 0)
+		padding.PaddingRight = UDim.new(0.08, 0)
+		local textLimit = Instance.new("UITextSizeConstraint")
+		textLimit.MinTextSize, textLimit.MaxTextSize = 10, 16
+		textLimit.Parent = button
 		padding.PaddingBottom = UDim.new(0.18, 0)
 		padding.Parent = button
 		local command: Command = entry.Command
@@ -198,6 +204,32 @@ local function buildTouchGui(self: InputController)
 		button.Parent = gui
 		self.TouchButtons[command] = button
 	end
+	local compact = { { "Slide", "Heal", "Lock" }, { "Swap", "Interact", "Guard" },
+		{ "WeaponArt", "Dash", "Light" }, { "Aim", "Heavy", "Jump" } }
+	local function arrange()
+		if self.TouchGui.AbsoluteSize.Y < 420 then
+			for row, names in compact do
+				for col, name in names do
+					local button = self.TouchButtons[name :: Command]
+					button.Position = UDim2.new(1, -({ 218, 136, 54 })[col], 1, -({ 274, 200, 122, 40 })[row])
+				end
+			end
+		else
+			for _, entry in TOUCH_LAYOUT do self.TouchButtons[entry.Command].Position = entry.Position end
+		end
+	end
+	table.insert(self.Connections, self.TouchGui:GetPropertyChangedSignal("AbsoluteSize"):Connect(arrange))
+	arrange()
+	-- PlayerModule still owns the native thumbstick. Its separate jump button would duplicate
+	-- our edge-owned double jump, so hide that button only, including when Roblox rebuilds it.
+	local playerGui = Players.LocalPlayer:WaitForChild("PlayerGui")
+	local function nativeJump(item: Instance)
+		if item.Name ~= "JumpButton" or not item:IsA("GuiObject") or not item:FindFirstAncestor("TouchControlFrame") then return end
+		item.Visible = false
+		table.insert(self.Connections, item:GetPropertyChangedSignal("Visible"):Connect(function() if item.Visible then item.Visible = false end end))
+	end
+	for _, item in playerGui:GetDescendants() do nativeJump(item) end
+	table.insert(self.Connections, playerGui.DescendantAdded:Connect(nativeJump))
 end
 
 function Controller.new(state: WorldState, camera: CameraController, send: Sender, movement: Movement.MovementController): InputController
@@ -254,6 +286,21 @@ function Controller.new(state: WorldState, camera: CameraController, send: Sende
 			self:SetDevice(device)
 		end
 	end))
+	-- Device Simulator and hardware capability changes need not produce an input event. Refresh
+	-- on capability changes too, so an already-running session never keeps desktop controls on a phone.
+	local function capabilitiesChanged()
+		if UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled then
+			self:SetDevice("Touch")
+		elseif not UserInputService.KeyboardEnabled and UserInputService.GamepadEnabled then
+			self:SetDevice("Gamepad")
+		elseif self.Device == "Touch" and not UserInputService.TouchEnabled then
+			self:SetDevice(deviceFor(UserInputService:GetLastInputType()) or "Keyboard")
+		end
+	end
+	for _, capability in { "TouchEnabled", "KeyboardEnabled", "GamepadEnabled" } do
+		table.insert(self.Connections, UserInputService:GetPropertyChangedSignal(capability):Connect(capabilitiesChanged))
+	end
+	capabilitiesChanged()
 	table.insert(self.Connections, UserInputService.InputBegan:Connect(function(input: InputObject, processed: boolean)
 		self:Began(input, processed)
 	end))
@@ -286,6 +333,7 @@ function Controller.SetDevice(self: InputController, device: Device)
 		return
 	end
 	self.Device = device
+	Players.LocalPlayer:SetAttribute("AsuraInputDevice", device)
 	self.TouchGui.Enabled = device == "Touch" and not self.MenuOpen
 	local callback = self.OnDeviceChanged
 	if callback then

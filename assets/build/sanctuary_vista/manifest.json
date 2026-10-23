@@ -1,0 +1,240 @@
+{
+  "units": "studs",
+  "axes": "Roblox (-BlenderX, BlenderZ, BlenderY), pivots at mountain foot centre",
+  "source": "original procedural Blender geometry; reused CC0 Poly Haven rock_face_03 source scan already present in assets/source/tex. New resized 1024 maps are embedded in GLB.",
+  "textureReuse": {
+    "Rock": "Existing source scan rock_face_03 color, normal, roughness; existing lobby kit black Metalness map. New importer maps preferred; lobby Rock IDs are a fallback."
+  },
+  "import": "Studio 3D Importer, Creator Me, World Forward Front, World Up Top. Meshes single material; no collision.",
+  "pieces": {
+    "Vista_Crown": {
+      "layoutOrigin": [
+        0,
+        0,
+        0
+      ],
+      "bounds": [
+        [
+          -53.43590438232422,
+          -1.846923828452418e-05,
+          -44.79140230102539
+        ],
+        [
+          55.92870438232422,
+          173.40221846923828,
+          37.65300230102539
+        ]
+      ],
+      "size": [
+        109.36460876464844,
+        173.40223693847656,
+        82.44440460205078
+      ],
+      "parts": {
+        "Vista_Crown__Rock": {
+          "material": "Rock",
+          "center": [
+            1.2464,
+            86.7011,
+            -3.5692
+          ],
+          "size": [
+            109.36460876464844,
+            173.40223693847656,
+            82.44440460205078
+          ],
+          "triangles": 18928,
+          "vertices": 9472,
+          "uv": true,
+          "singleMaterial": true
+        },
+        "Vista_Crown__Moss": {
+          "material": "Moss",
+          "center": [
+            2.0506,
+            146.7812,
+            4.4581
+          ],
+          "size": [
+            91.3896713256836,
+            52.03766632080078,
+            34.1361722946167
+          ],
+          "triangles": 210,
+          "vertices": 129,
+          "uv": true,
+          "singleMaterial": true
+        }
+      }
+    },
+    "Vista_Ridge": {
+      "layoutOrigin": [
+        -210,
+        0,
+        0
+      ],
+      "bounds": [
+        [
+          -83.21923493041992,
+          -2.5207519527725708e-05,
+          -28.926714103698732
+        ],
+        [
+          73.25643493041993,
+          155.18602520751955,
+          33.41571410369873
+        ]
+      ],
+      "size": [
+        156.47566986083984,
+        155.18605041503906,
+        62.34242820739746
+      ],
+      "parts": {
+        "Vista_Ridge__Rock": {
+          "material": "Rock",
+          "center": [
+            -4.9814,
+            77.593,
+            2.2445
+          ],
+          "size": [
+            156.47566986083984,
+            155.18605041503906,
+            62.34242820739746
+          ],
+          "triangles": 18928,
+          "vertices": 9472,
+          "uv": true,
+          "singleMaterial": true
+        },
+        "Vista_Ridge__Moss": {
+          "material": "Moss",
+          "center": [
+            -11.6787,
+            113.7826,
+            3.9757
+          ],
+          "size": [
+            117.78833770751953,
+            82.0347671508789,
+            28.61203956604004
+          ],
+          "triangles": 280,
+          "vertices": 172,
+          "uv": true,
+          "singleMaterial": true
+        }
+      }
+    },
+    "Vista_Needle": {
+      "layoutOrigin": [
+        -410,
+        0,
+        0
+      ],
+      "bounds": [
+        [
+          -42.36526539916992,
+          3.63403320307043e-05,
+          -27.083323791503908
+        ],
+        [
+          41.25786539916992,
+          223.92116365966797,
+          28.002323791503905
+        ]
+      ],
+      "size": [
+        83.62313079833984,
+        223.92112731933594,
+        55.08564758300781
+      ],
+      "parts": {
+        "Vista_Needle__Rock": {
+          "material": "Rock",
+          "center": [
+            -0.5537,
+            111.9606,
+            0.4595
+          ],
+          "size": [
+            83.62313079833984,
+            223.92112731933594,
+            55.08564758300781
+          ],
+          "triangles": 14196,
+          "vertices": 7104,
+          "uv": true,
+          "singleMaterial": true
+        },
+        "Vista_Needle__Moss": {
+          "material": "Moss",
+          "center": [
+            -10.2605,
+            196.2801,
+            0.2395
+          ],
+          "size": [
+            43.27466583251953,
+            53.03990173339844,
+            13.371187686920166
+          ],
+          "triangles": 140,
+          "vertices": 86,
+          "uv": true,
+          "singleMaterial": true
+        }
+      }
+    },
+    "Vista_Waterfall": {
+      "layoutOrigin": [
+        -520,
+        0,
+        0
+      ],
+      "bounds": [
+        [
+          -6.2085363391876225,
+          0.0,
+          -0.3381930532455444
+        ],
+        [
+          6.292736339187622,
+          120.0,
+          3.9501930532455445
+        ]
+      ],
+      "size": [
+        12.501272678375244,
+        120.0,
+        4.288386106491089
+      ],
+      "parts": {
+        "Vista_Waterfall__Water": {
+          "material": "Water",
+          "center": [
+            0.0421,
+            60.0,
+            1.806
+          ],
+          "size": [
+            12.501272678375244,
+            120.0,
+            4.288386106491089
+          ],
+          "triangles": 320,
+          "vertices": 330,
+          "uv": true,
+          "singleMaterial": true
+        }
+      }
+    }
+  },
+  "totals": {
+    "pieces": 4,
+    "meshParts": 7,
+    "triangles": 53002
+  },
+  "problems": []
+}

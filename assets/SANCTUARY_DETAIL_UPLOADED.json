@@ -1,0 +1,75 @@
+{
+  "source": "assets/build/sanctuary_detail/AsuraSanctuaryDetail.glb",
+  "sha256": "d14844ac3ffa628e2e983df8ec42afa5b0f574a7f6c2c9e24c86a9bb28789064",
+  "importer": "Studio 3D Importer, Creator Me",
+  "pieces": {
+    "Detail_Strata": {
+      "MeshId": "rbxassetid://75047984252688",
+      "TextureID": "",
+      "triangles": 192,
+      "doubleSided": true,
+      "collision": false,
+      "renderFidelity": "Automatic",
+      "surface": {
+        "ColorMap": "rbxassetid://136171872609075",
+        "EmissiveMaskContent": "",
+        "MetalnessMap": "rbxassetid://97533670003493",
+        "NormalMap": "rbxassetid://92125690052934",
+        "RoughnessMap": "rbxassetid://118561797132229",
+        "TexturePack": "rbxassetid://105010258752740"
+      }
+    },
+    "Detail_Fissure": {
+      "MeshId": "rbxassetid://82880748622677",
+      "TextureID": "",
+      "triangles": 412,
+      "doubleSided": true,
+      "collision": false,
+      "renderFidelity": "Automatic",
+      "surface": {
+        "ColorMap": "rbxassetid://136171872609075",
+        "EmissiveMaskContent": "",
+        "MetalnessMap": "rbxassetid://97533670003493",
+        "NormalMap": "rbxassetid://92125690052934",
+        "RoughnessMap": "rbxassetid://118561797132229",
+        "TexturePack": "rbxassetid://105010258752740"
+      }
+    },
+    "Detail_MapleSpray": {
+      "MeshId": "rbxassetid://92903237254739",
+      "TextureID": "",
+      "triangles": 616,
+      "doubleSided": true,
+      "collision": false,
+      "renderFidelity": "Automatic",
+      "surface": {}
+    },
+    "Detail_Fern": {
+      "MeshId": "rbxassetid://73988913132975",
+      "TextureID": "",
+      "triangles": 160,
+      "doubleSided": true,
+      "collision": false,
+      "renderFidelity": "Automatic",
+      "surface": {}
+    },
+    "Detail_BranchCard": {
+      "MeshId": "rbxassetid://133075255025497",
+      "TextureID": "",
+      "triangles": 2,
+      "doubleSided": true,
+      "collision": false,
+      "renderFidelity": "Automatic",
+      "surface": {
+        "ColorMap": "rbxassetid://133941376172785",
+        "EmissiveMaskContent": "",
+        "MetalnessMap": "",
+        "NormalMap": "",
+        "RoughnessMap": "",
+        "TexturePack": "rbxassetid://87238947491336"
+      }
+    }
+  },
+  "provenance": "Original Blender geometry; reused Poly Haven CC0 rock maps and existing generated crimson branch image",
+  "sharedStrings": 6
+}

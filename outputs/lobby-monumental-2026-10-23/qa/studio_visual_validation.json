@@ -11,34 +11,52 @@
   },
   "figureHeight": 149.99998474121094,
   "bareNeon": [],
+  "terraceGround": {
+    "SupportBudget": 9,
+    "StairClearanceHalfWidth": 28
+  },
+  "smithSeal": {
+    "prompt": "Transmute Remembrance",
+    "material": "Enum.Material.Slate",
+    "transparency": 1,
+    "size": "2, 2, 2"
+  },
   "Workspace": {
     "SpotLights": 3,
-    "SurfaceAppearances": 1517,
+    "SurfaceAppearances": 1518,
     "Decals": 656,
-    "MeshParts": 1903,
-    "BaseParts": 10721,
+    "MeshParts": 1911,
+    "BaseParts": 10740,
     "PointLights": 300,
     "enabledEmitters": 180,
-    "collidingParts": 3370
+    "collidingParts": 3379
   },
-  "playerPosition": "12.49586009979248, 603.0999755859375, 944.1271362304688",
+  "visibleNeonOutsideHousings": [],
+  "playerPosition": "-9.422484481547144e-07, 622.9999389648438, 812.7234497070312",
   "quality": "Enum.QualityLevel.Level21",
   "lanternViolations": [],
-  "viewport": "1241, 563",
+  "handheldLantern": {
+    "Shadows": true,
+    "housed": true,
+    "Brightness": 1.2000000476837158,
+    "Range": 15,
+    "Color": "1, 0.686275, 0.372549"
+  },
+  "viewport": "1221, 543",
   "post": {
-    "SunRays": {
-      "Intensity": 0.11999999731779099,
-      "Spread": 0.44999998807907104
+    "Bloom": {
+      "Threshold": 2,
+      "Intensity": 0.25,
+      "Size": 24
     },
     "ColorCorrection": {
       "TintColor": "1, 0.964706, 0.92549",
       "Saturation": 0.05000000074505806,
       "Contrast": 0.15000000596046448
     },
-    "Bloom": {
-      "Threshold": 2,
-      "Intensity": 0.25,
-      "Size": 24
+    "SunRays": {
+      "Intensity": 0.11999999731779099,
+      "Spread": 0.44999998807907104
     }
   },
   "lighting": {
@@ -50,11 +68,86 @@
   },
   "arrivalBridge": "24, 3, 26",
   "tinyCandleFlames": 4,
-  "terraceFoundation": {
-    "CragTriangleBudget": 170352,
-    "CompletePlateauFoundation": true,
-    "CragMeshBudget": 9
+  "peaks": [
+    {
+      "foot": -500,
+      "distance": 1466.96966567138,
+      "name": "Vista_Crown_6",
+      "layer": "FarDistance"
+    },
+    {
+      "foot": -500,
+      "distance": 2155.643755354766,
+      "name": "Vista_Ridge_3",
+      "layer": "FarDistance"
+    },
+    {
+      "foot": -500,
+      "distance": 2487.267577081324,
+      "name": "Vista_Crown_4",
+      "layer": "FarDistance"
+    },
+    {
+      "foot": 220,
+      "distance": 718.9228053136164,
+      "name": "Intermediate_Vista_Needle_3",
+      "layer": "Intermediate"
+    },
+    {
+      "foot": 220,
+      "distance": 564.0257086339238,
+      "name": "Intermediate_Vista_Crown_1",
+      "layer": "Intermediate"
+    },
+    {
+      "foot": 220,
+      "distance": 629.3250352560273,
+      "name": "Intermediate_Vista_Needle_2",
+      "layer": "Intermediate"
+    },
+    {
+      "foot": -500,
+      "distance": 2675.9110598074817,
+      "name": "Vista_Needle_8",
+      "layer": "FarDistance"
+    },
+    {
+      "foot": -500,
+      "distance": 1626.8988905276196,
+      "name": "Vista_Crown_1",
+      "layer": "MiddleDistance"
+    },
+    {
+      "foot": -500,
+      "distance": 1280.0390619039717,
+      "name": "Vista_Needle_5",
+      "layer": "FarDistance"
+    },
+    {
+      "foot": -500,
+      "distance": 1535.2198539622916,
+      "name": "Vista_Needle_2",
+      "layer": "MiddleDistance"
+    },
+    {
+      "foot": -500,
+      "distance": 2039.607805437114,
+      "name": "Vista_Ridge_7",
+      "layer": "FarDistance"
+    }
+  ],
+  "Sanctuary": {
+    "SpotLights": 3,
+    "SurfaceAppearances": 1233,
+    "Decals": 656,
+    "MeshParts": 1281,
+    "BaseParts": 3378,
+    "PointLights": 71,
+    "enabledEmitters": 53,
+    "collidingParts": 444
   },
+  "treeHeight": 402.44964599609375,
+  "lanternLights": 58,
   "hiddenSupport": {
     "TerraceKerb": {
       "transparency": 1,
@@ -77,76 +170,6 @@
       "size": "6, 492, 492"
     }
   },
-  "treeHeight": 402.44964599609375,
-  "lanternLights": 58,
-  "peaks": [
-    {
-      "foot": -500,
-      "distance": 1626.8988905276196,
-      "name": "Vista_Crown_1",
-      "layer": "MiddleDistance"
-    },
-    {
-      "foot": -500,
-      "distance": 2675.9110598074817,
-      "name": "Vista_Needle_8",
-      "layer": "FarDistance"
-    },
-    {
-      "foot": -500,
-      "distance": 2039.607805437114,
-      "name": "Vista_Ridge_7",
-      "layer": "FarDistance"
-    },
-    {
-      "foot": 220,
-      "distance": 564.0257086339238,
-      "name": "Intermediate_Vista_Crown_1",
-      "layer": "Intermediate"
-    },
-    {
-      "foot": 220,
-      "distance": 718.9228053136164,
-      "name": "Intermediate_Vista_Needle_3",
-      "layer": "Intermediate"
-    },
-    {
-      "foot": 220,
-      "distance": 629.3250352560273,
-      "name": "Intermediate_Vista_Needle_2",
-      "layer": "Intermediate"
-    },
-    {
-      "foot": -500,
-      "distance": 1280.0390619039717,
-      "name": "Vista_Needle_5",
-      "layer": "FarDistance"
-    },
-    {
-      "foot": -500,
-      "distance": 1466.96966567138,
-      "name": "Vista_Crown_6",
-      "layer": "FarDistance"
-    },
-    {
-      "foot": -500,
-      "distance": 2155.643755354766,
-      "name": "Vista_Ridge_3",
-      "layer": "FarDistance"
-    },
-    {
-      "foot": -500,
-      "distance": 2487.267577081324,
-      "name": "Vista_Crown_4",
-      "layer": "FarDistance"
-    },
-    {
-      "foot": -500,
-      "distance": 1535.2198539622916,
-      "name": "Vista_Needle_2",
-      "layer": "MiddleDistance"
-    }
-  ],
   "atmosphere": {
     "Density": 0.3799999952316284,
     "Decay": "0.470588, 0.509804, 0.647059",
@@ -156,15 +179,10 @@
     "Haze": 2.200000047683716
   },
   "axialWalk": "48, 4, 92",
-  "Sanctuary": {
-    "SpotLights": 3,
-    "SurfaceAppearances": 1233,
-    "Decals": 656,
-    "MeshParts": 1274,
-    "BaseParts": 3369,
-    "PointLights": 71,
-    "enabledEmitters": 53,
-    "collidingParts": 435
+  "terraceFoundation": {
+    "CragTriangleBudget": 170352,
+    "CompletePlateauFoundation": true,
+    "CragMeshBudget": 9
   },
   "cloudSea": {
     "LocalCloudElevationMax": 522,
