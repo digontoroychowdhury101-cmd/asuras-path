@@ -45,11 +45,32 @@ function Decor.lantern(parent: Instance, x: number, y: number, z: number, range:
 	Kit.light(paper, P.Lantern, range or 20, 1.3, false)
 end
 
--- One bamboo stalk with a leaf crown; decor, so groves never trap bodies or cameras.
+-- Blender-built Bamboo Pass art (tools/blender/bamboo_karst_kit.py): Bamboo_A/B/C stalks 40 studs tall
+-- and Karst_A/B/C towers ~107 studs tall, each pivoted at its foot centre. Nil when the kit is missing.
+local KIT_HEIGHT = { Bamboo = 41, Karst = 107 }
+function Decor.kit(kind: string, rng: Random): Model?
+	local kit = game:GetService("ServerStorage"):FindFirstChild("AsuraBambooKit")
+	local piece = kit and kit:FindFirstChild(kind .. "_" .. ({ "A", "B", "C" })[rng:NextInteger(1, 3)])
+	return if piece and piece:IsA("Model") then piece:Clone() else nil
+end
+
+-- Places a kit clone `height` studs tall with its foot at `base`.
+function Decor.placeKit(parent: Instance, model: Model, kind: string, base: CFrame, height: number)
+	model:ScaleTo(height / KIT_HEIGHT[kind])
+	model:PivotTo(base)
+	model.Parent = parent
+end
+
+-- One bamboo stalk with its leaf sprays; decor, so groves never trap bodies or cameras.
 function Decor.bamboo(parent: Instance, x: number, floor: number, z: number, rng: Random)
 	local height = rng:NextNumber(26, 44)
 	local lean = CFrame.Angles(math.rad(rng:NextNumber(-5, 5)), 0, math.rad(rng:NextNumber(-5, 5)))
 	local base = CFrame.new(x, floor, z) * lean
+	local stalk = Decor.kit("Bamboo", rng)
+	if stalk then
+		Decor.placeKit(parent, stalk, "Bamboo", base * CFrame.Angles(0, rng:NextNumber(0, 2 * math.pi), 0), height)
+		return
+	end
 	local green = rgb(78, 104, 66):Lerp(rgb(132, 140, 92), rng:NextNumber())
 	Kit.part(parent, "BambooStalk", Vector3.new(height, 0.9, 0.9), base * CFrame.new(0, height / 2, 0) * CFrame.Angles(0, 0, math.rad(90)),
 		green, M.Wood, { Collide = false, Query = false, Shadow = true, Shape = Enum.PartType.Cylinder })

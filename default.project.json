@@ -683,6 +683,9 @@
       "AsuraReliquaryKit": {
         "$path": "assets/models/AsuraReliquaryKit.rbxmx"
       },
+      "AsuraBambooKit": {
+        "$path": "assets/models/AsuraBambooKit.rbxmx"
+      },
       "AsuraSanctuaryDetail": {
         "$path": "assets/models/AsuraSanctuaryDetail.rbxmx"
       }

@@ -17,6 +17,11 @@ local FROST = rgb(222, 230, 234)
 
 local function spire(parent: Instance, x: number, z: number, height: number, rng: Random)
 	local base = CFrame.new(x, -2, z) * CFrame.Angles(0, rng:NextNumber(0, math.pi), 0)
+	local tower = Decor.kit("Karst", rng)
+	if tower then -- fluted, frost-capped limestone tower (tools/blender/bamboo_karst_kit.py)
+		Decor.placeKit(parent, tower, "Karst", base * CFrame.new(0, -4, 0), height + 4)
+		return
+	end
 	local width = height * rng:NextNumber(0.22, 0.32)
 	Kit.part(parent, "KarstSpire", Vector3.new(width, height, width * 0.8), base * CFrame.new(0, height / 2, 0)
 		* CFrame.Angles(math.rad(rng:NextNumber(-4, 4)), 0, math.rad(rng:NextNumber(-4, 4))), rgb(84, 88, 92), M.Rock, Kit.decor())
