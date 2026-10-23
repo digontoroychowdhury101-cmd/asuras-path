@@ -17,11 +17,18 @@ The creator is entirely vibe-coding this Roblox game and does not write code man
 - `tools/`: Automation tools (`start_sync.command`, `auto_pull.command`, Python build scripts).
 - `default.project.json`: Rojo configuration mapping `src/` and `assets/models/` into Studio.
 
-## Multi-Machine Relay & Git Protocol
+## Multi-Machine Relay & Git Protocol (CRITICAL)
 - Active branch: `ux/onboarding-overhaul` (all pushes/pulls target this branch).
-- When finishing a task/prompt, automatically stage and push:
-  `git add . && git commit -m "feat/fix: concise summary" && git push origin ux/onboarding-overhaul`
-- Rojo (`start_sync.command`) and Auto-Pull (`auto_pull.command`) run locally to live-sync Studio.
+- **Zero-Stash Rule**: NEVER conclude a task or session with uncommitted changes in the working directory.
+- **Before Concluding Any Turn/Batch**:
+  1. If code, assets, or `default.project.json` changed, run `python3 tools/build.py` to ensure `places/AsurasPath.rbxlx` is updated.
+  2. Append at most 60 words to `PROJECT_STATE.md` stating what was completed and what comes next.
+  3. Commit and push: `git add -A && git commit -m "feat/fix: summary" && git push origin ux/onboarding-overhaul`
+  4. Confirm `git status` is clean so the other computer pulls complete, unbroken work.
+- **When Starting Any Session**:
+  1. Run `git pull --rebase origin ux/onboarding-overhaul`.
+  2. Inspect the top of `PROJECT_STATE.md` to see what the other computer finished.
+- Handoff scripts: `./tools/handoff.sh` (Mac) or `tools\handoff.cmd` (Windows) automate this entire flow.
 
 ## Modern Luau Standards
 - Always use the `task` library (`task.wait()`, `task.spawn()`, `task.delay()`). NEVER use deprecated `wait()`, `spawn()`, or `delay()`.
