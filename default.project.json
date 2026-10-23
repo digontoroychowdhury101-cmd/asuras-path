@@ -164,9 +164,6 @@
     },
     "ReplicatedStorage": {
       "$className": "ReplicatedStorage",
-      "TikTokVFX_Config": {
-        "$path": "standalone/TikTokVFX/TikTokVFX_Config.luau"
-      },
       "AsurasPath": {
         "$className": "Folder",
         "Config": {
@@ -392,9 +389,6 @@
     },
     "ServerScriptService": {
       "$className": "ServerScriptService",
-      "TikTokVFX_Server": {
-        "$path": "standalone/TikTokVFX/TikTokVFX_Server.server.luau"
-      },
       "AsurasPath": {
         "$className": "Folder",
         "Bootstrap": {
@@ -682,9 +676,6 @@
       "$className": "StarterPlayer",
       "StarterPlayerScripts": {
         "$className": "StarterPlayerScripts",
-        "TikTokVFX_Client": {
-          "$path": "standalone/TikTokVFX/TikTokVFX_Client.client.luau"
-        },
         "AsurasPathClient": {
           "$path": "src/client/Bootstrap.client.luau"
         },
