@@ -6,640 +6,640 @@
   "replaces": "AsuraVeiledTitan",
   "savedPlace": "places\\AsurasPath.rbxlx",
   "partCount": 78,
-  "totalTriangles": 1179772,
-  "maxPartTriangles": 19052,
+  "totalTriangles": 1180276,
+  "maxPartTriangles": 19268,
   "treeSpanStuds": {
-    "Forward": 135.62174657044554,
-    "Radius": 254.67097263270884,
+    "Forward": 150.0,
+    "Radius": 227.40117453802335,
     "TreeHeight": 600.0,
     "FigureHeight": 150.0,
-    "Raised": 78.75,
-    "FloorAboveBottom": 0.1571370865732056
+    "Raised": 54.75000000000001,
+    "FloorAboveBottom": 0.14760551237400707
   },
   "parts": {
     "Titan_Sap_05": {
-      "MeshId": "rbxassetid://110990377408535",
+      "MeshId": "rbxassetid://120132734561037",
       "ColorMap": "rbxassetid://134364880292966",
       "NormalMap": "rbxassetid://76741646345555",
       "RoughnessMap": "rbxassetid://130957659061277",
-      "MetalnessMap": "rbxassetid://124554111296513",
-      "triangles": 652
+      "MetalnessMap": "rbxassetid://106019978821380",
+      "triangles": 4132
     },
     "Titan_Sap_04": {
-      "MeshId": "rbxassetid://72995704739058",
+      "MeshId": "rbxassetid://102051165357360",
       "ColorMap": "rbxassetid://134364880292966",
       "NormalMap": "rbxassetid://76741646345555",
       "RoughnessMap": "rbxassetid://130957659061277",
-      "MetalnessMap": "rbxassetid://124554111296513",
-      "triangles": 19052
-    },
-    "Titan_Sap_03": {
-      "MeshId": "rbxassetid://110700269357426",
-      "ColorMap": "rbxassetid://134364880292966",
-      "NormalMap": "rbxassetid://76741646345555",
-      "RoughnessMap": "rbxassetid://130957659061277",
-      "MetalnessMap": "rbxassetid://124554111296513",
-      "triangles": 19052
+      "MetalnessMap": "rbxassetid://106019978821380",
+      "triangles": 19268
     },
     "Titan_Sap_02": {
-      "MeshId": "rbxassetid://106147057517868",
+      "MeshId": "rbxassetid://98375775577529",
       "ColorMap": "rbxassetid://134364880292966",
       "NormalMap": "rbxassetid://76741646345555",
       "RoughnessMap": "rbxassetid://130957659061277",
-      "MetalnessMap": "rbxassetid://124554111296513",
-      "triangles": 19020
+      "MetalnessMap": "rbxassetid://106019978821380",
+      "triangles": 18764
+    },
+    "Titan_Sap_01": {
+      "MeshId": "rbxassetid://137456214880404",
+      "ColorMap": "rbxassetid://134364880292966",
+      "NormalMap": "rbxassetid://76741646345555",
+      "RoughnessMap": "rbxassetid://130957659061277",
+      "MetalnessMap": "rbxassetid://106019978821380",
+      "triangles": 18840
     },
     "Titan_Roots_01": {
-      "MeshId": "rbxassetid://107742354969748",
+      "MeshId": "rbxassetid://114444147210654",
       "ColorMap": "rbxassetid://125461408634595",
       "NormalMap": "rbxassetid://90672077915359",
       "RoughnessMap": "rbxassetid://132652641973983",
       "MetalnessMap": "rbxassetid://106019978821380",
-      "triangles": 6240
-    },
-    "Titan_Figure_32": {
-      "MeshId": "rbxassetid://129510379470354",
-      "ColorMap": "rbxassetid://78802947304166",
-      "NormalMap": "rbxassetid://94347280740334",
-      "RoughnessMap": "rbxassetid://120162006965872",
-      "MetalnessMap": "rbxassetid://110101025434443",
-      "triangles": 15625
+      "triangles": 4824
     },
     "Titan_Figure_31": {
-      "MeshId": "rbxassetid://108379642258501",
-      "ColorMap": "rbxassetid://78802947304166",
+      "MeshId": "rbxassetid://103840126203729",
+      "ColorMap": "rbxassetid://89061981302011",
       "NormalMap": "rbxassetid://94347280740334",
-      "RoughnessMap": "rbxassetid://120162006965872",
-      "MetalnessMap": "rbxassetid://110101025434443",
+      "RoughnessMap": "rbxassetid://102476696895710",
+      "MetalnessMap": "rbxassetid://122652616653852",
       "triangles": 15625
     },
     "Titan_Figure_30": {
-      "MeshId": "rbxassetid://127336132753051",
-      "ColorMap": "rbxassetid://78802947304166",
+      "MeshId": "rbxassetid://77140185457405",
+      "ColorMap": "rbxassetid://89061981302011",
       "NormalMap": "rbxassetid://94347280740334",
-      "RoughnessMap": "rbxassetid://120162006965872",
-      "MetalnessMap": "rbxassetid://110101025434443",
+      "RoughnessMap": "rbxassetid://102476696895710",
+      "MetalnessMap": "rbxassetid://122652616653852",
       "triangles": 15625
     },
     "Titan_Figure_29": {
-      "MeshId": "rbxassetid://93351143982252",
-      "ColorMap": "rbxassetid://78802947304166",
+      "MeshId": "rbxassetid://91200415831205",
+      "ColorMap": "rbxassetid://89061981302011",
       "NormalMap": "rbxassetid://94347280740334",
-      "RoughnessMap": "rbxassetid://120162006965872",
-      "MetalnessMap": "rbxassetid://110101025434443",
+      "RoughnessMap": "rbxassetid://102476696895710",
+      "MetalnessMap": "rbxassetid://122652616653852",
       "triangles": 15625
     },
     "Titan_Figure_28": {
-      "MeshId": "rbxassetid://92020667310364",
-      "ColorMap": "rbxassetid://78802947304166",
+      "MeshId": "rbxassetid://107627207253960",
+      "ColorMap": "rbxassetid://89061981302011",
       "NormalMap": "rbxassetid://94347280740334",
-      "RoughnessMap": "rbxassetid://120162006965872",
-      "MetalnessMap": "rbxassetid://110101025434443",
+      "RoughnessMap": "rbxassetid://102476696895710",
+      "MetalnessMap": "rbxassetid://122652616653852",
       "triangles": 15625
     },
     "Titan_Figure_27": {
-      "MeshId": "rbxassetid://94857068127639",
-      "ColorMap": "rbxassetid://78802947304166",
+      "MeshId": "rbxassetid://124608292061157",
+      "ColorMap": "rbxassetid://89061981302011",
       "NormalMap": "rbxassetid://94347280740334",
-      "RoughnessMap": "rbxassetid://120162006965872",
-      "MetalnessMap": "rbxassetid://110101025434443",
+      "RoughnessMap": "rbxassetid://102476696895710",
+      "MetalnessMap": "rbxassetid://122652616653852",
       "triangles": 15625
     },
     "Titan_Figure_26": {
-      "MeshId": "rbxassetid://99223340947056",
-      "ColorMap": "rbxassetid://78802947304166",
+      "MeshId": "rbxassetid://74608165294569",
+      "ColorMap": "rbxassetid://89061981302011",
       "NormalMap": "rbxassetid://94347280740334",
-      "RoughnessMap": "rbxassetid://120162006965872",
-      "MetalnessMap": "rbxassetid://110101025434443",
+      "RoughnessMap": "rbxassetid://102476696895710",
+      "MetalnessMap": "rbxassetid://122652616653852",
       "triangles": 15625
     },
     "Titan_Figure_25": {
-      "MeshId": "rbxassetid://129788033857745",
-      "ColorMap": "rbxassetid://78802947304166",
+      "MeshId": "rbxassetid://72934284446905",
+      "ColorMap": "rbxassetid://89061981302011",
       "NormalMap": "rbxassetid://94347280740334",
-      "RoughnessMap": "rbxassetid://120162006965872",
-      "MetalnessMap": "rbxassetid://110101025434443",
+      "RoughnessMap": "rbxassetid://102476696895710",
+      "MetalnessMap": "rbxassetid://122652616653852",
       "triangles": 15625
     },
     "Titan_Figure_24": {
-      "MeshId": "rbxassetid://135308490437350",
-      "ColorMap": "rbxassetid://78802947304166",
+      "MeshId": "rbxassetid://137784599526412",
+      "ColorMap": "rbxassetid://89061981302011",
       "NormalMap": "rbxassetid://94347280740334",
-      "RoughnessMap": "rbxassetid://120162006965872",
-      "MetalnessMap": "rbxassetid://110101025434443",
+      "RoughnessMap": "rbxassetid://102476696895710",
+      "MetalnessMap": "rbxassetid://122652616653852",
       "triangles": 15625
     },
     "Titan_Figure_23": {
-      "MeshId": "rbxassetid://113150793273345",
-      "ColorMap": "rbxassetid://78802947304166",
+      "MeshId": "rbxassetid://122924085378392",
+      "ColorMap": "rbxassetid://89061981302011",
       "NormalMap": "rbxassetid://94347280740334",
-      "RoughnessMap": "rbxassetid://120162006965872",
-      "MetalnessMap": "rbxassetid://110101025434443",
+      "RoughnessMap": "rbxassetid://102476696895710",
+      "MetalnessMap": "rbxassetid://122652616653852",
       "triangles": 15625
     },
     "Titan_Figure_22": {
-      "MeshId": "rbxassetid://76092634727225",
-      "ColorMap": "rbxassetid://78802947304166",
+      "MeshId": "rbxassetid://120065755797091",
+      "ColorMap": "rbxassetid://89061981302011",
       "NormalMap": "rbxassetid://94347280740334",
-      "RoughnessMap": "rbxassetid://120162006965872",
-      "MetalnessMap": "rbxassetid://110101025434443",
+      "RoughnessMap": "rbxassetid://102476696895710",
+      "MetalnessMap": "rbxassetid://122652616653852",
       "triangles": 15625
     },
     "Titan_Figure_20": {
-      "MeshId": "rbxassetid://83987362826906",
-      "ColorMap": "rbxassetid://78802947304166",
+      "MeshId": "rbxassetid://78078264302602",
+      "ColorMap": "rbxassetid://89061981302011",
       "NormalMap": "rbxassetid://94347280740334",
-      "RoughnessMap": "rbxassetid://120162006965872",
-      "MetalnessMap": "rbxassetid://110101025434443",
+      "RoughnessMap": "rbxassetid://102476696895710",
+      "MetalnessMap": "rbxassetid://122652616653852",
       "triangles": 15625
     },
     "Titan_Figure_16": {
-      "MeshId": "rbxassetid://87359970490192",
-      "ColorMap": "rbxassetid://78802947304166",
+      "MeshId": "rbxassetid://107943092319551",
+      "ColorMap": "rbxassetid://89061981302011",
       "NormalMap": "rbxassetid://94347280740334",
-      "RoughnessMap": "rbxassetid://120162006965872",
-      "MetalnessMap": "rbxassetid://110101025434443",
+      "RoughnessMap": "rbxassetid://102476696895710",
+      "MetalnessMap": "rbxassetid://122652616653852",
       "triangles": 15625
     },
     "Titan_Figure_14": {
-      "MeshId": "rbxassetid://113823132039361",
-      "ColorMap": "rbxassetid://78802947304166",
+      "MeshId": "rbxassetid://94289300427736",
+      "ColorMap": "rbxassetid://89061981302011",
       "NormalMap": "rbxassetid://94347280740334",
-      "RoughnessMap": "rbxassetid://120162006965872",
-      "MetalnessMap": "rbxassetid://110101025434443",
+      "RoughnessMap": "rbxassetid://102476696895710",
+      "MetalnessMap": "rbxassetid://122652616653852",
       "triangles": 15625
     },
     "Titan_Figure_06": {
-      "MeshId": "rbxassetid://109734246199440",
-      "ColorMap": "rbxassetid://78802947304166",
+      "MeshId": "rbxassetid://138857415816907",
+      "ColorMap": "rbxassetid://89061981302011",
       "NormalMap": "rbxassetid://94347280740334",
-      "RoughnessMap": "rbxassetid://120162006965872",
-      "MetalnessMap": "rbxassetid://110101025434443",
+      "RoughnessMap": "rbxassetid://102476696895710",
+      "MetalnessMap": "rbxassetid://122652616653852",
       "triangles": 15625
     },
     "Titan_Figure_05": {
-      "MeshId": "rbxassetid://92423247106627",
-      "ColorMap": "rbxassetid://78802947304166",
+      "MeshId": "rbxassetid://70747661034856",
+      "ColorMap": "rbxassetid://89061981302011",
       "NormalMap": "rbxassetid://94347280740334",
-      "RoughnessMap": "rbxassetid://120162006965872",
-      "MetalnessMap": "rbxassetid://110101025434443",
+      "RoughnessMap": "rbxassetid://102476696895710",
+      "MetalnessMap": "rbxassetid://122652616653852",
       "triangles": 15625
     },
     "Titan_Figure_03": {
-      "MeshId": "rbxassetid://75232347976898",
-      "ColorMap": "rbxassetid://78802947304166",
+      "MeshId": "rbxassetid://74084665531607",
+      "ColorMap": "rbxassetid://89061981302011",
       "NormalMap": "rbxassetid://94347280740334",
-      "RoughnessMap": "rbxassetid://120162006965872",
-      "MetalnessMap": "rbxassetid://110101025434443",
+      "RoughnessMap": "rbxassetid://102476696895710",
+      "MetalnessMap": "rbxassetid://122652616653852",
       "triangles": 15625
     },
     "Titan_Figure_02": {
-      "MeshId": "rbxassetid://118309048561571",
-      "ColorMap": "rbxassetid://78802947304166",
+      "MeshId": "rbxassetid://103730066033995",
+      "ColorMap": "rbxassetid://89061981302011",
       "NormalMap": "rbxassetid://94347280740334",
-      "RoughnessMap": "rbxassetid://120162006965872",
-      "MetalnessMap": "rbxassetid://110101025434443",
+      "RoughnessMap": "rbxassetid://102476696895710",
+      "MetalnessMap": "rbxassetid://122652616653852",
       "triangles": 15625
     },
     "Titan_Figure_01": {
-      "MeshId": "rbxassetid://134110795826211",
-      "ColorMap": "rbxassetid://78802947304166",
+      "MeshId": "rbxassetid://130049058052206",
+      "ColorMap": "rbxassetid://89061981302011",
       "NormalMap": "rbxassetid://94347280740334",
-      "RoughnessMap": "rbxassetid://120162006965872",
-      "MetalnessMap": "rbxassetid://110101025434443",
+      "RoughnessMap": "rbxassetid://102476696895710",
+      "MetalnessMap": "rbxassetid://122652616653852",
       "triangles": 15625
     },
     "Titan_Canopy_Leaves_07": {
-      "MeshId": "rbxassetid://123823228649644",
+      "MeshId": "rbxassetid://103917555800556",
       "ColorMap": "rbxassetid://100896989225266",
       "NormalMap": "rbxassetid://83837021000710",
       "RoughnessMap": "rbxassetid://113808251752918",
-      "MetalnessMap": "rbxassetid://135633338266553",
-      "triangles": 12192
+      "MetalnessMap": "rbxassetid://106019978821380",
+      "triangles": 12066
     },
     "Titan_Canopy_Leaves_06": {
-      "MeshId": "rbxassetid://79429015883386",
+      "MeshId": "rbxassetid://82306736337609",
       "ColorMap": "rbxassetid://100896989225266",
       "NormalMap": "rbxassetid://83837021000710",
       "RoughnessMap": "rbxassetid://113808251752918",
-      "MetalnessMap": "rbxassetid://135633338266553",
-      "triangles": 12186
+      "MetalnessMap": "rbxassetid://106019978821380",
+      "triangles": 12066
     },
     "Titan_Canopy_Leaves_05": {
-      "MeshId": "rbxassetid://87261185981874",
+      "MeshId": "rbxassetid://99926696132625",
       "ColorMap": "rbxassetid://100896989225266",
       "NormalMap": "rbxassetid://83837021000710",
       "RoughnessMap": "rbxassetid://113808251752918",
-      "MetalnessMap": "rbxassetid://135633338266553",
-      "triangles": 12186
+      "MetalnessMap": "rbxassetid://106019978821380",
+      "triangles": 12066
     },
     "Titan_Canopy_Leaves_04": {
-      "MeshId": "rbxassetid://139623286348689",
+      "MeshId": "rbxassetid://139218250805486",
       "ColorMap": "rbxassetid://100896989225266",
       "NormalMap": "rbxassetid://83837021000710",
       "RoughnessMap": "rbxassetid://113808251752918",
-      "MetalnessMap": "rbxassetid://135633338266553",
-      "triangles": 12186
+      "MetalnessMap": "rbxassetid://106019978821380",
+      "triangles": 12066
     },
     "Titan_Canopy_Leaves_03": {
-      "MeshId": "rbxassetid://130851697449672",
+      "MeshId": "rbxassetid://81907255836059",
       "ColorMap": "rbxassetid://100896989225266",
       "NormalMap": "rbxassetid://83837021000710",
       "RoughnessMap": "rbxassetid://113808251752918",
-      "MetalnessMap": "rbxassetid://135633338266553",
-      "triangles": 12186
+      "MetalnessMap": "rbxassetid://106019978821380",
+      "triangles": 12060
     },
     "Titan_Figure_18": {
-      "MeshId": "rbxassetid://129496046134335",
-      "ColorMap": "rbxassetid://78802947304166",
+      "MeshId": "rbxassetid://133919381372581",
+      "ColorMap": "rbxassetid://89061981302011",
       "NormalMap": "rbxassetid://94347280740334",
-      "RoughnessMap": "rbxassetid://120162006965872",
-      "MetalnessMap": "rbxassetid://110101025434443",
+      "RoughnessMap": "rbxassetid://102476696895710",
+      "MetalnessMap": "rbxassetid://122652616653852",
       "triangles": 15625
     },
     "Titan_Canopy_Leaves_02": {
-      "MeshId": "rbxassetid://115453901641320",
+      "MeshId": "rbxassetid://137237833934996",
       "ColorMap": "rbxassetid://100896989225266",
       "NormalMap": "rbxassetid://83837021000710",
       "RoughnessMap": "rbxassetid://113808251752918",
-      "MetalnessMap": "rbxassetid://135633338266553",
-      "triangles": 12186
+      "MetalnessMap": "rbxassetid://106019978821380",
+      "triangles": 12060
     },
     "Titan_Canopy_Leaves_01": {
-      "MeshId": "rbxassetid://99270524984503",
+      "MeshId": "rbxassetid://110327896375309",
       "ColorMap": "rbxassetid://100896989225266",
       "NormalMap": "rbxassetid://83837021000710",
       "RoughnessMap": "rbxassetid://113808251752918",
-      "MetalnessMap": "rbxassetid://135633338266553",
-      "triangles": 12186
+      "MetalnessMap": "rbxassetid://106019978821380",
+      "triangles": 12066
     },
     "Titan_Canopy_32": {
-      "MeshId": "rbxassetid://137814427336360",
-      "ColorMap": "rbxassetid://115031926117728",
+      "MeshId": "rbxassetid://98060483584588",
+      "ColorMap": "rbxassetid://138922704904080",
       "NormalMap": "rbxassetid://134323155340554",
-      "RoughnessMap": "rbxassetid://81575160938014",
-      "MetalnessMap": "rbxassetid://86217958692786",
-      "triangles": 15625
+      "RoughnessMap": "rbxassetid://116461852435622",
+      "MetalnessMap": "rbxassetid://107067438708069",
+      "triangles": 15602
     },
     "Titan_Canopy_31": {
-      "MeshId": "rbxassetid://116985542285372",
-      "ColorMap": "rbxassetid://115031926117728",
+      "MeshId": "rbxassetid://73093211927500",
+      "ColorMap": "rbxassetid://138922704904080",
       "NormalMap": "rbxassetid://134323155340554",
-      "RoughnessMap": "rbxassetid://81575160938014",
-      "MetalnessMap": "rbxassetid://86217958692786",
-      "triangles": 15625
+      "RoughnessMap": "rbxassetid://116461852435622",
+      "MetalnessMap": "rbxassetid://107067438708069",
+      "triangles": 15602
     },
     "Titan_Canopy_30": {
-      "MeshId": "rbxassetid://127962017565505",
-      "ColorMap": "rbxassetid://115031926117728",
+      "MeshId": "rbxassetid://130369071887396",
+      "ColorMap": "rbxassetid://138922704904080",
       "NormalMap": "rbxassetid://134323155340554",
-      "RoughnessMap": "rbxassetid://81575160938014",
-      "MetalnessMap": "rbxassetid://86217958692786",
-      "triangles": 15625
+      "RoughnessMap": "rbxassetid://116461852435622",
+      "MetalnessMap": "rbxassetid://107067438708069",
+      "triangles": 15601
     },
-    "Titan_Figure_13": {
-      "MeshId": "rbxassetid://118048489096171",
-      "ColorMap": "rbxassetid://78802947304166",
-      "NormalMap": "rbxassetid://94347280740334",
-      "RoughnessMap": "rbxassetid://120162006965872",
-      "MetalnessMap": "rbxassetid://110101025434443",
-      "triangles": 15625
-    },
-    "Titan_Canopy_29": {
-      "MeshId": "rbxassetid://115902961985930",
-      "ColorMap": "rbxassetid://115031926117728",
-      "NormalMap": "rbxassetid://134323155340554",
-      "RoughnessMap": "rbxassetid://81575160938014",
-      "MetalnessMap": "rbxassetid://86217958692786",
-      "triangles": 15625
-    },
-    "Titan_Canopy_28": {
-      "MeshId": "rbxassetid://91939996005617",
-      "ColorMap": "rbxassetid://115031926117728",
-      "NormalMap": "rbxassetid://134323155340554",
-      "RoughnessMap": "rbxassetid://81575160938014",
-      "MetalnessMap": "rbxassetid://86217958692786",
-      "triangles": 15625
-    },
-    "Titan_Figure_11": {
-      "MeshId": "rbxassetid://126414213183263",
-      "ColorMap": "rbxassetid://78802947304166",
-      "NormalMap": "rbxassetid://94347280740334",
-      "RoughnessMap": "rbxassetid://120162006965872",
-      "MetalnessMap": "rbxassetid://110101025434443",
-      "triangles": 15625
-    },
-    "Titan_Canopy_27": {
-      "MeshId": "rbxassetid://71207058048572",
-      "ColorMap": "rbxassetid://115031926117728",
-      "NormalMap": "rbxassetid://134323155340554",
-      "RoughnessMap": "rbxassetid://81575160938014",
-      "MetalnessMap": "rbxassetid://86217958692786",
-      "triangles": 15625
-    },
-    "Titan_Canopy_25": {
-      "MeshId": "rbxassetid://95717289174766",
-      "ColorMap": "rbxassetid://115031926117728",
-      "NormalMap": "rbxassetid://134323155340554",
-      "RoughnessMap": "rbxassetid://81575160938014",
-      "MetalnessMap": "rbxassetid://86217958692786",
-      "triangles": 15625
-    },
-    "Titan_Figure_07": {
-      "MeshId": "rbxassetid://111591232081037",
-      "ColorMap": "rbxassetid://78802947304166",
-      "NormalMap": "rbxassetid://94347280740334",
-      "RoughnessMap": "rbxassetid://120162006965872",
-      "MetalnessMap": "rbxassetid://110101025434443",
-      "triangles": 15625
-    },
-    "Titan_Canopy_24": {
-      "MeshId": "rbxassetid://94821809147690",
-      "ColorMap": "rbxassetid://115031926117728",
-      "NormalMap": "rbxassetid://134323155340554",
-      "RoughnessMap": "rbxassetid://81575160938014",
-      "MetalnessMap": "rbxassetid://86217958692786",
-      "triangles": 15625
-    },
-    "Titan_Canopy_23": {
-      "MeshId": "rbxassetid://95724038953962",
-      "ColorMap": "rbxassetid://115031926117728",
-      "NormalMap": "rbxassetid://134323155340554",
-      "RoughnessMap": "rbxassetid://81575160938014",
-      "MetalnessMap": "rbxassetid://86217958692786",
-      "triangles": 15625
-    },
-    "Titan_Canopy_22": {
-      "MeshId": "rbxassetid://125875480760037",
-      "ColorMap": "rbxassetid://115031926117728",
-      "NormalMap": "rbxassetid://134323155340554",
-      "RoughnessMap": "rbxassetid://81575160938014",
-      "MetalnessMap": "rbxassetid://86217958692786",
-      "triangles": 15625
-    },
-    "Titan_Figure_21": {
-      "MeshId": "rbxassetid://94725667376221",
-      "ColorMap": "rbxassetid://78802947304166",
-      "NormalMap": "rbxassetid://94347280740334",
-      "RoughnessMap": "rbxassetid://120162006965872",
-      "MetalnessMap": "rbxassetid://110101025434443",
-      "triangles": 15625
-    },
-    "Titan_Figure_04": {
-      "MeshId": "rbxassetid://70743692060238",
-      "ColorMap": "rbxassetid://78802947304166",
-      "NormalMap": "rbxassetid://94347280740334",
-      "RoughnessMap": "rbxassetid://120162006965872",
-      "MetalnessMap": "rbxassetid://110101025434443",
-      "triangles": 15625
-    },
-    "Titan_Canopy_21": {
-      "MeshId": "rbxassetid://138967158441077",
-      "ColorMap": "rbxassetid://115031926117728",
-      "NormalMap": "rbxassetid://134323155340554",
-      "RoughnessMap": "rbxassetid://81575160938014",
-      "MetalnessMap": "rbxassetid://86217958692786",
-      "triangles": 15625
-    },
-    "Titan_Canopy_20": {
-      "MeshId": "rbxassetid://98387781570732",
-      "ColorMap": "rbxassetid://115031926117728",
-      "NormalMap": "rbxassetid://134323155340554",
-      "RoughnessMap": "rbxassetid://81575160938014",
-      "MetalnessMap": "rbxassetid://86217958692786",
-      "triangles": 15625
-    },
-    "Titan_Figure_19": {
-      "MeshId": "rbxassetid://129286776974731",
-      "ColorMap": "rbxassetid://78802947304166",
-      "NormalMap": "rbxassetid://94347280740334",
-      "RoughnessMap": "rbxassetid://120162006965872",
-      "MetalnessMap": "rbxassetid://110101025434443",
-      "triangles": 15625
-    },
-    "Titan_Canopy_19": {
-      "MeshId": "rbxassetid://115648161649255",
-      "ColorMap": "rbxassetid://115031926117728",
-      "NormalMap": "rbxassetid://134323155340554",
-      "RoughnessMap": "rbxassetid://81575160938014",
-      "MetalnessMap": "rbxassetid://86217958692786",
-      "triangles": 15625
-    },
-    "Titan_Canopy_18": {
-      "MeshId": "rbxassetid://125748267949618",
-      "ColorMap": "rbxassetid://115031926117728",
-      "NormalMap": "rbxassetid://134323155340554",
-      "RoughnessMap": "rbxassetid://81575160938014",
-      "MetalnessMap": "rbxassetid://86217958692786",
-      "triangles": 15625
-    },
-    "Titan_Figure_17": {
-      "MeshId": "rbxassetid://102154148723031",
-      "ColorMap": "rbxassetid://78802947304166",
-      "NormalMap": "rbxassetid://94347280740334",
-      "RoughnessMap": "rbxassetid://120162006965872",
-      "MetalnessMap": "rbxassetid://110101025434443",
-      "triangles": 15625
-    },
-    "Titan_Canopy_17": {
-      "MeshId": "rbxassetid://75294986068003",
-      "ColorMap": "rbxassetid://115031926117728",
-      "NormalMap": "rbxassetid://134323155340554",
-      "RoughnessMap": "rbxassetid://81575160938014",
-      "MetalnessMap": "rbxassetid://86217958692786",
-      "triangles": 15625
-    },
-    "Titan_Canopy_Leaves_08": {
-      "MeshId": "rbxassetid://73096766215851",
-      "ColorMap": "rbxassetid://100896989225266",
-      "NormalMap": "rbxassetid://83837021000710",
-      "RoughnessMap": "rbxassetid://113808251752918",
-      "MetalnessMap": "rbxassetid://135633338266553",
-      "triangles": 12192
-    },
-    "Titan_Canopy_16": {
-      "MeshId": "rbxassetid://86335867455538",
-      "ColorMap": "rbxassetid://115031926117728",
-      "NormalMap": "rbxassetid://134323155340554",
-      "RoughnessMap": "rbxassetid://81575160938014",
-      "MetalnessMap": "rbxassetid://86217958692786",
-      "triangles": 15625
-    },
-    "Titan_Figure_15": {
-      "MeshId": "rbxassetid://129446629514536",
-      "ColorMap": "rbxassetid://78802947304166",
-      "NormalMap": "rbxassetid://94347280740334",
-      "RoughnessMap": "rbxassetid://120162006965872",
-      "MetalnessMap": "rbxassetid://110101025434443",
-      "triangles": 15625
-    },
-    "Titan_Canopy_15": {
-      "MeshId": "rbxassetid://70907380999197",
-      "ColorMap": "rbxassetid://115031926117728",
-      "NormalMap": "rbxassetid://134323155340554",
-      "RoughnessMap": "rbxassetid://81575160938014",
-      "MetalnessMap": "rbxassetid://86217958692786",
-      "triangles": 15625
-    },
-    "Titan_Canopy_14": {
-      "MeshId": "rbxassetid://134067586983285",
-      "ColorMap": "rbxassetid://115031926117728",
-      "NormalMap": "rbxassetid://134323155340554",
-      "RoughnessMap": "rbxassetid://81575160938014",
-      "MetalnessMap": "rbxassetid://86217958692786",
-      "triangles": 15625
-    },
-    "Titan_Canopy_13": {
-      "MeshId": "rbxassetid://81031670108332",
-      "ColorMap": "rbxassetid://115031926117728",
-      "NormalMap": "rbxassetid://134323155340554",
-      "RoughnessMap": "rbxassetid://81575160938014",
-      "MetalnessMap": "rbxassetid://86217958692786",
-      "triangles": 15625
-    },
-    "Titan_Figure_12": {
-      "MeshId": "rbxassetid://114480373486065",
-      "ColorMap": "rbxassetid://78802947304166",
-      "NormalMap": "rbxassetid://94347280740334",
-      "RoughnessMap": "rbxassetid://120162006965872",
-      "MetalnessMap": "rbxassetid://110101025434443",
-      "triangles": 15625
-    },
-    "Titan_Canopy_12": {
-      "MeshId": "rbxassetid://111514688423365",
-      "ColorMap": "rbxassetid://115031926117728",
-      "NormalMap": "rbxassetid://134323155340554",
-      "RoughnessMap": "rbxassetid://81575160938014",
-      "MetalnessMap": "rbxassetid://86217958692786",
-      "triangles": 15625
-    },
-    "Titan_Canopy_11": {
-      "MeshId": "rbxassetid://106608572265660",
-      "ColorMap": "rbxassetid://115031926117728",
-      "NormalMap": "rbxassetid://134323155340554",
-      "RoughnessMap": "rbxassetid://81575160938014",
-      "MetalnessMap": "rbxassetid://86217958692786",
-      "triangles": 15625
-    },
-    "Titan_Canopy_10": {
-      "MeshId": "rbxassetid://124143246142018",
-      "ColorMap": "rbxassetid://115031926117728",
-      "NormalMap": "rbxassetid://134323155340554",
-      "RoughnessMap": "rbxassetid://81575160938014",
-      "MetalnessMap": "rbxassetid://86217958692786",
-      "triangles": 15625
-    },
-    "Titan_Canopy_09": {
-      "MeshId": "rbxassetid://108969075508107",
-      "ColorMap": "rbxassetid://115031926117728",
-      "NormalMap": "rbxassetid://134323155340554",
-      "RoughnessMap": "rbxassetid://81575160938014",
-      "MetalnessMap": "rbxassetid://86217958692786",
-      "triangles": 15625
-    },
-    "Titan_Figure_08": {
-      "MeshId": "rbxassetid://122712292876292",
-      "ColorMap": "rbxassetid://78802947304166",
-      "NormalMap": "rbxassetid://94347280740334",
-      "RoughnessMap": "rbxassetid://120162006965872",
-      "MetalnessMap": "rbxassetid://110101025434443",
-      "triangles": 15625
-    },
-    "Titan_Canopy_07": {
-      "MeshId": "rbxassetid://102190558472742",
-      "ColorMap": "rbxassetid://115031926117728",
-      "NormalMap": "rbxassetid://134323155340554",
-      "RoughnessMap": "rbxassetid://81575160938014",
-      "MetalnessMap": "rbxassetid://86217958692786",
-      "triangles": 15625
-    },
-    "Titan_Canopy_06": {
-      "MeshId": "rbxassetid://76679021093117",
-      "ColorMap": "rbxassetid://115031926117728",
-      "NormalMap": "rbxassetid://134323155340554",
-      "RoughnessMap": "rbxassetid://81575160938014",
-      "MetalnessMap": "rbxassetid://86217958692786",
-      "triangles": 15625
-    },
-    "Titan_Canopy_05": {
-      "MeshId": "rbxassetid://96613879158051",
-      "ColorMap": "rbxassetid://115031926117728",
-      "NormalMap": "rbxassetid://134323155340554",
-      "RoughnessMap": "rbxassetid://81575160938014",
-      "MetalnessMap": "rbxassetid://86217958692786",
-      "triangles": 15625
-    },
-    "Titan_Sap_01": {
-      "MeshId": "rbxassetid://124075144832192",
+    "Titan_Sap_03": {
+      "MeshId": "rbxassetid://91988599351984",
       "ColorMap": "rbxassetid://134364880292966",
       "NormalMap": "rbxassetid://76741646345555",
       "RoughnessMap": "rbxassetid://130957659061277",
-      "MetalnessMap": "rbxassetid://124554111296513",
-      "triangles": 18256
+      "MetalnessMap": "rbxassetid://106019978821380",
+      "triangles": 18688
     },
-    "Titan_Canopy_04": {
-      "MeshId": "rbxassetid://77911635270589",
-      "ColorMap": "rbxassetid://115031926117728",
-      "NormalMap": "rbxassetid://134323155340554",
-      "RoughnessMap": "rbxassetid://81575160938014",
-      "MetalnessMap": "rbxassetid://86217958692786",
+    "Titan_Figure_13": {
+      "MeshId": "rbxassetid://128089751871494",
+      "ColorMap": "rbxassetid://89061981302011",
+      "NormalMap": "rbxassetid://94347280740334",
+      "RoughnessMap": "rbxassetid://102476696895710",
+      "MetalnessMap": "rbxassetid://122652616653852",
       "triangles": 15625
     },
-    "Titan_Figure_10": {
-      "MeshId": "rbxassetid://89017142441645",
-      "ColorMap": "rbxassetid://78802947304166",
+    "Titan_Canopy_29": {
+      "MeshId": "rbxassetid://112841446156022",
+      "ColorMap": "rbxassetid://138922704904080",
+      "NormalMap": "rbxassetid://134323155340554",
+      "RoughnessMap": "rbxassetid://116461852435622",
+      "MetalnessMap": "rbxassetid://107067438708069",
+      "triangles": 15601
+    },
+    "Titan_Canopy_28": {
+      "MeshId": "rbxassetid://126948116170270",
+      "ColorMap": "rbxassetid://138922704904080",
+      "NormalMap": "rbxassetid://134323155340554",
+      "RoughnessMap": "rbxassetid://116461852435622",
+      "MetalnessMap": "rbxassetid://107067438708069",
+      "triangles": 15602
+    },
+    "Titan_Figure_11": {
+      "MeshId": "rbxassetid://97024909399427",
+      "ColorMap": "rbxassetid://89061981302011",
       "NormalMap": "rbxassetid://94347280740334",
-      "RoughnessMap": "rbxassetid://120162006965872",
-      "MetalnessMap": "rbxassetid://110101025434443",
+      "RoughnessMap": "rbxassetid://102476696895710",
+      "MetalnessMap": "rbxassetid://122652616653852",
+      "triangles": 15625
+    },
+    "Titan_Canopy_27": {
+      "MeshId": "rbxassetid://77019442480881",
+      "ColorMap": "rbxassetid://138922704904080",
+      "NormalMap": "rbxassetid://134323155340554",
+      "RoughnessMap": "rbxassetid://116461852435622",
+      "MetalnessMap": "rbxassetid://107067438708069",
+      "triangles": 15601
+    },
+    "Titan_Canopy_25": {
+      "MeshId": "rbxassetid://71632555779999",
+      "ColorMap": "rbxassetid://138922704904080",
+      "NormalMap": "rbxassetid://134323155340554",
+      "RoughnessMap": "rbxassetid://116461852435622",
+      "MetalnessMap": "rbxassetid://107067438708069",
+      "triangles": 15601
+    },
+    "Titan_Canopy_24": {
+      "MeshId": "rbxassetid://127447348760707",
+      "ColorMap": "rbxassetid://138922704904080",
+      "NormalMap": "rbxassetid://134323155340554",
+      "RoughnessMap": "rbxassetid://116461852435622",
+      "MetalnessMap": "rbxassetid://107067438708069",
+      "triangles": 15601
+    },
+    "Titan_Figure_07": {
+      "MeshId": "rbxassetid://109086834261715",
+      "ColorMap": "rbxassetid://89061981302011",
+      "NormalMap": "rbxassetid://94347280740334",
+      "RoughnessMap": "rbxassetid://102476696895710",
+      "MetalnessMap": "rbxassetid://122652616653852",
+      "triangles": 15625
+    },
+    "Titan_Canopy_23": {
+      "MeshId": "rbxassetid://137378507865081",
+      "ColorMap": "rbxassetid://138922704904080",
+      "NormalMap": "rbxassetid://134323155340554",
+      "RoughnessMap": "rbxassetid://116461852435622",
+      "MetalnessMap": "rbxassetid://107067438708069",
+      "triangles": 15602
+    },
+    "Titan_Canopy_22": {
+      "MeshId": "rbxassetid://106484446318997",
+      "ColorMap": "rbxassetid://138922704904080",
+      "NormalMap": "rbxassetid://134323155340554",
+      "RoughnessMap": "rbxassetid://116461852435622",
+      "MetalnessMap": "rbxassetid://107067438708069",
+      "triangles": 15602
+    },
+    "Titan_Figure_21": {
+      "MeshId": "rbxassetid://93100021882623",
+      "ColorMap": "rbxassetid://89061981302011",
+      "NormalMap": "rbxassetid://94347280740334",
+      "RoughnessMap": "rbxassetid://102476696895710",
+      "MetalnessMap": "rbxassetid://122652616653852",
+      "triangles": 15625
+    },
+    "Titan_Canopy_21": {
+      "MeshId": "rbxassetid://97690738014823",
+      "ColorMap": "rbxassetid://138922704904080",
+      "NormalMap": "rbxassetid://134323155340554",
+      "RoughnessMap": "rbxassetid://116461852435622",
+      "MetalnessMap": "rbxassetid://107067438708069",
+      "triangles": 15602
+    },
+    "Titan_Figure_04": {
+      "MeshId": "rbxassetid://97864974457960",
+      "ColorMap": "rbxassetid://89061981302011",
+      "NormalMap": "rbxassetid://94347280740334",
+      "RoughnessMap": "rbxassetid://102476696895710",
+      "MetalnessMap": "rbxassetid://122652616653852",
+      "triangles": 15625
+    },
+    "Titan_Canopy_20": {
+      "MeshId": "rbxassetid://86465698058404",
+      "ColorMap": "rbxassetid://138922704904080",
+      "NormalMap": "rbxassetid://134323155340554",
+      "RoughnessMap": "rbxassetid://116461852435622",
+      "MetalnessMap": "rbxassetid://107067438708069",
+      "triangles": 15601
+    },
+    "Titan_Figure_19": {
+      "MeshId": "rbxassetid://74040684892594",
+      "ColorMap": "rbxassetid://89061981302011",
+      "NormalMap": "rbxassetid://94347280740334",
+      "RoughnessMap": "rbxassetid://102476696895710",
+      "MetalnessMap": "rbxassetid://122652616653852",
+      "triangles": 15625
+    },
+    "Titan_Canopy_19": {
+      "MeshId": "rbxassetid://95552145844392",
+      "ColorMap": "rbxassetid://138922704904080",
+      "NormalMap": "rbxassetid://134323155340554",
+      "RoughnessMap": "rbxassetid://116461852435622",
+      "MetalnessMap": "rbxassetid://107067438708069",
+      "triangles": 15601
+    },
+    "Titan_Canopy_18": {
+      "MeshId": "rbxassetid://139507204480939",
+      "ColorMap": "rbxassetid://138922704904080",
+      "NormalMap": "rbxassetid://134323155340554",
+      "RoughnessMap": "rbxassetid://116461852435622",
+      "MetalnessMap": "rbxassetid://107067438708069",
+      "triangles": 15601
+    },
+    "Titan_Figure_17": {
+      "MeshId": "rbxassetid://136734141673584",
+      "ColorMap": "rbxassetid://89061981302011",
+      "NormalMap": "rbxassetid://94347280740334",
+      "RoughnessMap": "rbxassetid://102476696895710",
+      "MetalnessMap": "rbxassetid://122652616653852",
+      "triangles": 15625
+    },
+    "Titan_Canopy_17": {
+      "MeshId": "rbxassetid://88258405025134",
+      "ColorMap": "rbxassetid://138922704904080",
+      "NormalMap": "rbxassetid://134323155340554",
+      "RoughnessMap": "rbxassetid://116461852435622",
+      "MetalnessMap": "rbxassetid://107067438708069",
+      "triangles": 15601
+    },
+    "Titan_Canopy_Leaves_08": {
+      "MeshId": "rbxassetid://131945504988453",
+      "ColorMap": "rbxassetid://100896989225266",
+      "NormalMap": "rbxassetid://83837021000710",
+      "RoughnessMap": "rbxassetid://113808251752918",
+      "MetalnessMap": "rbxassetid://106019978821380",
+      "triangles": 12066
+    },
+    "Titan_Canopy_16": {
+      "MeshId": "rbxassetid://140075454600175",
+      "ColorMap": "rbxassetid://138922704904080",
+      "NormalMap": "rbxassetid://134323155340554",
+      "RoughnessMap": "rbxassetid://116461852435622",
+      "MetalnessMap": "rbxassetid://107067438708069",
+      "triangles": 15601
+    },
+    "Titan_Figure_15": {
+      "MeshId": "rbxassetid://82832470761264",
+      "ColorMap": "rbxassetid://89061981302011",
+      "NormalMap": "rbxassetid://94347280740334",
+      "RoughnessMap": "rbxassetid://102476696895710",
+      "MetalnessMap": "rbxassetid://122652616653852",
+      "triangles": 15625
+    },
+    "Titan_Canopy_15": {
+      "MeshId": "rbxassetid://135002224687620",
+      "ColorMap": "rbxassetid://138922704904080",
+      "NormalMap": "rbxassetid://134323155340554",
+      "RoughnessMap": "rbxassetid://116461852435622",
+      "MetalnessMap": "rbxassetid://107067438708069",
+      "triangles": 15601
+    },
+    "Titan_Canopy_14": {
+      "MeshId": "rbxassetid://125246995498962",
+      "ColorMap": "rbxassetid://138922704904080",
+      "NormalMap": "rbxassetid://134323155340554",
+      "RoughnessMap": "rbxassetid://116461852435622",
+      "MetalnessMap": "rbxassetid://107067438708069",
+      "triangles": 15601
+    },
+    "Titan_Canopy_13": {
+      "MeshId": "rbxassetid://80079804796757",
+      "ColorMap": "rbxassetid://138922704904080",
+      "NormalMap": "rbxassetid://134323155340554",
+      "RoughnessMap": "rbxassetid://116461852435622",
+      "MetalnessMap": "rbxassetid://107067438708069",
+      "triangles": 15602
+    },
+    "Titan_Figure_12": {
+      "MeshId": "rbxassetid://73898076547244",
+      "ColorMap": "rbxassetid://89061981302011",
+      "NormalMap": "rbxassetid://94347280740334",
+      "RoughnessMap": "rbxassetid://102476696895710",
+      "MetalnessMap": "rbxassetid://122652616653852",
+      "triangles": 15625
+    },
+    "Titan_Canopy_12": {
+      "MeshId": "rbxassetid://128856236645984",
+      "ColorMap": "rbxassetid://138922704904080",
+      "NormalMap": "rbxassetid://134323155340554",
+      "RoughnessMap": "rbxassetid://116461852435622",
+      "MetalnessMap": "rbxassetid://107067438708069",
+      "triangles": 15601
+    },
+    "Titan_Canopy_11": {
+      "MeshId": "rbxassetid://72521528909069",
+      "ColorMap": "rbxassetid://138922704904080",
+      "NormalMap": "rbxassetid://134323155340554",
+      "RoughnessMap": "rbxassetid://116461852435622",
+      "MetalnessMap": "rbxassetid://107067438708069",
+      "triangles": 15601
+    },
+    "Titan_Canopy_10": {
+      "MeshId": "rbxassetid://85983612042445",
+      "ColorMap": "rbxassetid://138922704904080",
+      "NormalMap": "rbxassetid://134323155340554",
+      "RoughnessMap": "rbxassetid://116461852435622",
+      "MetalnessMap": "rbxassetid://107067438708069",
+      "triangles": 15601
+    },
+    "Titan_Canopy_09": {
+      "MeshId": "rbxassetid://123193537012402",
+      "ColorMap": "rbxassetid://138922704904080",
+      "NormalMap": "rbxassetid://134323155340554",
+      "RoughnessMap": "rbxassetid://116461852435622",
+      "MetalnessMap": "rbxassetid://107067438708069",
+      "triangles": 15601
+    },
+    "Titan_Figure_08": {
+      "MeshId": "rbxassetid://125348971120250",
+      "ColorMap": "rbxassetid://89061981302011",
+      "NormalMap": "rbxassetid://94347280740334",
+      "RoughnessMap": "rbxassetid://102476696895710",
+      "MetalnessMap": "rbxassetid://122652616653852",
+      "triangles": 15625
+    },
+    "Titan_Canopy_07": {
+      "MeshId": "rbxassetid://123439815910865",
+      "ColorMap": "rbxassetid://138922704904080",
+      "NormalMap": "rbxassetid://134323155340554",
+      "RoughnessMap": "rbxassetid://116461852435622",
+      "MetalnessMap": "rbxassetid://107067438708069",
+      "triangles": 15601
+    },
+    "Titan_Canopy_06": {
+      "MeshId": "rbxassetid://112760849458232",
+      "ColorMap": "rbxassetid://138922704904080",
+      "NormalMap": "rbxassetid://134323155340554",
+      "RoughnessMap": "rbxassetid://116461852435622",
+      "MetalnessMap": "rbxassetid://107067438708069",
+      "triangles": 15602
+    },
+    "Titan_Canopy_05": {
+      "MeshId": "rbxassetid://105006220445842",
+      "ColorMap": "rbxassetid://138922704904080",
+      "NormalMap": "rbxassetid://134323155340554",
+      "RoughnessMap": "rbxassetid://116461852435622",
+      "MetalnessMap": "rbxassetid://107067438708069",
+      "triangles": 15601
+    },
+    "Titan_Figure_10": {
+      "MeshId": "rbxassetid://126668141354107",
+      "ColorMap": "rbxassetid://89061981302011",
+      "NormalMap": "rbxassetid://94347280740334",
+      "RoughnessMap": "rbxassetid://102476696895710",
+      "MetalnessMap": "rbxassetid://122652616653852",
+      "triangles": 15625
+    },
+    "Titan_Canopy_04": {
+      "MeshId": "rbxassetid://127723213639093",
+      "ColorMap": "rbxassetid://138922704904080",
+      "NormalMap": "rbxassetid://134323155340554",
+      "RoughnessMap": "rbxassetid://116461852435622",
+      "MetalnessMap": "rbxassetid://107067438708069",
+      "triangles": 15602
+    },
+    "Titan_Canopy_03": {
+      "MeshId": "rbxassetid://128888680651760",
+      "ColorMap": "rbxassetid://138922704904080",
+      "NormalMap": "rbxassetid://134323155340554",
+      "RoughnessMap": "rbxassetid://116461852435622",
+      "MetalnessMap": "rbxassetid://107067438708069",
+      "triangles": 15602
+    },
+    "Titan_Figure_32": {
+      "MeshId": "rbxassetid://138050659992076",
+      "ColorMap": "rbxassetid://89061981302011",
+      "NormalMap": "rbxassetid://94347280740334",
+      "RoughnessMap": "rbxassetid://102476696895710",
+      "MetalnessMap": "rbxassetid://122652616653852",
       "triangles": 15625
     },
     "Titan_Canopy_26": {
-      "MeshId": "rbxassetid://106090501528139",
-      "ColorMap": "rbxassetid://115031926117728",
+      "MeshId": "rbxassetid://75212544889715",
+      "ColorMap": "rbxassetid://138922704904080",
       "NormalMap": "rbxassetid://134323155340554",
-      "RoughnessMap": "rbxassetid://81575160938014",
-      "MetalnessMap": "rbxassetid://86217958692786",
-      "triangles": 15625
+      "RoughnessMap": "rbxassetid://116461852435622",
+      "MetalnessMap": "rbxassetid://107067438708069",
+      "triangles": 15601
     },
     "Titan_Figure_09": {
-      "MeshId": "rbxassetid://80230367409546",
-      "ColorMap": "rbxassetid://78802947304166",
+      "MeshId": "rbxassetid://80989447842907",
+      "ColorMap": "rbxassetid://89061981302011",
       "NormalMap": "rbxassetid://94347280740334",
-      "RoughnessMap": "rbxassetid://120162006965872",
-      "MetalnessMap": "rbxassetid://110101025434443",
-      "triangles": 15625
-    },
-    "Titan_Canopy_03": {
-      "MeshId": "rbxassetid://91845011104436",
-      "ColorMap": "rbxassetid://115031926117728",
-      "NormalMap": "rbxassetid://134323155340554",
-      "RoughnessMap": "rbxassetid://81575160938014",
-      "MetalnessMap": "rbxassetid://86217958692786",
+      "RoughnessMap": "rbxassetid://102476696895710",
+      "MetalnessMap": "rbxassetid://122652616653852",
       "triangles": 15625
     },
     "Titan_Canopy_02": {
-      "MeshId": "rbxassetid://122423875194399",
-      "ColorMap": "rbxassetid://115031926117728",
+      "MeshId": "rbxassetid://90809587708299",
+      "ColorMap": "rbxassetid://138922704904080",
       "NormalMap": "rbxassetid://134323155340554",
-      "RoughnessMap": "rbxassetid://81575160938014",
-      "MetalnessMap": "rbxassetid://86217958692786",
-      "triangles": 15625
+      "RoughnessMap": "rbxassetid://116461852435622",
+      "MetalnessMap": "rbxassetid://107067438708069",
+      "triangles": 15601
     },
     "Titan_Canopy_01": {
-      "MeshId": "rbxassetid://122726509029038",
-      "ColorMap": "rbxassetid://115031926117728",
+      "MeshId": "rbxassetid://120625131341198",
+      "ColorMap": "rbxassetid://138922704904080",
       "NormalMap": "rbxassetid://134323155340554",
-      "RoughnessMap": "rbxassetid://81575160938014",
-      "MetalnessMap": "rbxassetid://86217958692786",
-      "triangles": 15625
+      "RoughnessMap": "rbxassetid://116461852435622",
+      "MetalnessMap": "rbxassetid://107067438708069",
+      "triangles": 15602
     },
     "Titan_Canopy_08": {
-      "MeshId": "rbxassetid://126258586753994",
-      "ColorMap": "rbxassetid://115031926117728",
+      "MeshId": "rbxassetid://136117236410193",
+      "ColorMap": "rbxassetid://138922704904080",
       "NormalMap": "rbxassetid://134323155340554",
-      "RoughnessMap": "rbxassetid://81575160938014",
-      "MetalnessMap": "rbxassetid://86217958692786",
-      "triangles": 15625
+      "RoughnessMap": "rbxassetid://116461852435622",
+      "MetalnessMap": "rbxassetid://107067438708069",
+      "triangles": 15602
     }
   }
 }

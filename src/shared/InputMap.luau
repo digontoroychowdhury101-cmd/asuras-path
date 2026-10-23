@@ -47,7 +47,7 @@ InputMap.Bindings = {
 	bind("Sprint", "Combat", { "CapsLock" }, {}, { "DPadLeft" }, "Caps", "D-Left", nil, "Toggle sprint"),
 	bind("Codex", "Interface", { "J" }, {}, {}, "J", "—", "CODEX", "Open the Codex"),
 	bind("Shoulder", "Combat", { "T" }, {}, {}, "T", "—", nil, "Switch camera shoulder"),
-	bind("Cursor", "Combat", { "LeftAlt" }, {}, {}, "Alt", "—", nil, "Release the mouse cursor"),
+	bind("Cursor", "Combat", { "LeftAlt" }, {}, {}, "Alt", "—", nil, "Hold to release the mouse cursor"),
 	bind("Controls", "Interface", { "H" }, {}, {}, "H", "—", nil, nil),
 	bind("Pause", "Interface", { "P" }, {}, {}, "P", "—", nil, nil),
 }

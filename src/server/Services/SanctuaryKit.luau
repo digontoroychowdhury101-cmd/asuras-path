@@ -56,9 +56,11 @@ local function template(name: string): Model?
 		local detail = ServerStorage:FindFirstChild("AsuraSanctuaryDetail")
 		piece = detail and detail:FindFirstChild(name)
 	end
-	if not piece and name == "AsuraGuardianLion" then piece = ServerStorage:FindFirstChild(name) end
+	if not piece and name:sub(1, 17) == "AsuraGuardianLion" then piece = ServerStorage:FindFirstChild(name) end
 	return if piece and piece:IsA("Model") then piece else nil
 end
+
+Kit.template = template
 
 function Kit.available(): boolean
 	return template("Rail_Bay") ~= nil

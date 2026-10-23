@@ -52,11 +52,17 @@ local function landing(group: Instance, origin: CFrame, s: Stair)
 	local top, back = s.Steps * s.Rise, s.Start + s.Steps * s.Run
 	Kit.slab(group, "Landing", Vector3.new(52, 10, s.Landing + 3), origin * CFrame.new(0, top - 5, -back - s.Landing / 2), "Paving")
 	Kit.slab(group, "LandingSkirting", Vector3.new(53, 2, s.Landing + 3.5), origin * CFrame.new(0, top - 6.2, -back - s.Landing / 2), "StoneDark")
-	-- The TRELLIS guardian pair sits inside the landing, outside the clear stair/gate axis.
+	-- The TRELLIS guardian pair sits inside the landing, outside the clear stair/gate axis, looking down
+	-- the stairs at arriving pilgrims, each turned 12 deg outward. The west lion is the mirrored twin
+	-- (tools/blender/mirror_lion.py) so the pair mirror each other; the importer left the twin facing
+	-- its own +Z where the original faces -Z, hence their different base turns. Each pedestal turns with
+	-- its lion, so the carving's wide base sits along the long pedestal.
 	for side = -1, 1, 2 do
-		local foot = origin * CFrame.new(side * 22, top, -back - 4.5)
+		local twin = side < 0 and Kit.template("AsuraGuardianLionMirror") ~= nil
+		local foot = origin * CFrame.new(side * 22, top, -back - 4.5) * CFrame.Angles(0, math.rad(side * 12), 0)
 		Kit.slab(group, "GuardianPedestal", Vector3.new(7.1, 1.0, 6.2), foot * CFrame.new(0, 0.5, 0), "StoneDark", Kit.decor())
-		Kit.place(group, "AsuraGuardianLion", foot * CFrame.new(0, 0.5, 0) * CFrame.Angles(0, math.rad(side * 18 + 180), 0))
+		Kit.place(group, if twin then "AsuraGuardianLionMirror" else "AsuraGuardianLion",
+			foot * CFrame.new(0, 0.5, 0) * CFrame.Angles(0, if twin then 0 else math.pi, 0))
 	end
 	for side = -1, 1, 2 do
 		local a = (origin * CFrame.new(side * (s.Width / 2 + 1.9), top, -back - 0.6)).Position

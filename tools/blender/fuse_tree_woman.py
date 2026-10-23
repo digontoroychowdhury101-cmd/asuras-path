@@ -2,7 +2,7 @@
 
 Usage:
   Blender -b tree+woman.blend --python-exit-code 1 -P tools/blender/fuse_tree_woman.py -- <out_dir>
-      [--ratio 4.0] [--gap 0.12] [--preview] [--no-save]
+      [--ratio 4.0] [--gap 0.12] [--sink 0.04] [--reach 1.5] [--bed 1.0] [--preview] [--no-save] [--save-as PATH]
 
 Works on the two sculpts already in the file: `model` (the woman, facing -Y) and `model.001` (the tree).
   1. The tree is turned so its crown leans over her and scaled to --ratio times her height. She stays a
@@ -46,6 +46,10 @@ def opt(name, default):
 
 RATIO = opt("--ratio", 4.0)
 GAP = opt("--gap", 0.12)  # clear space between her back and the trunk, in her heights
+SINK = opt("--sink", 0.04)  # the whole piece drops this much of the tree's height: the root flare, not
+#                             its hanging root tips, meets the floor; tips left under the floor are trimmed
+REACH = opt("--reach", 1.5)  # the low roots' floor reach about the bed centre, in her heights
+BED = opt("--bed", 1.0)  # bed centre this far behind her, in her heights (SanctuaryTitan.TreeSpan.Forward)
 PREVIEW = "--preview" in ARGS
 CAP = 19000
 TEX = 2048
@@ -246,6 +250,46 @@ def place(woman, tree):
         o.data.update()
     print(f"PLACE H={H:.3f} TH={TH:.3f} raised {ZB / H:.3f}H, trunk centre y {-c:.3f}, hidden {best[2]}, "
           f"hem held {-best[3]:.2f}", flush=True)
+    ground(woman, tree)
+
+
+def ground(woman, tree):
+    """Seat the root flare on the floor and keep it on the terrace. The low roots are drawn in
+    smoothly about the bed centre (BED*H behind her) past 0.8*REACH, so their reach ends near
+    REACH*H; then everything sinks SINK*TH and root tips buried deeper than 0.03*TH are trimmed.
+    Vertices move, none are removed from what stays above the floor."""
+    global ZB
+    me = tree.data
+    co = verts(tree)
+    centre = np.array([0.0, BED * H])
+    d = co[:, :2] - centre
+    r = np.linalg.norm(d, axis=1)
+    knee, far = 0.8 * REACH * H, float(np.quantile(r[co[:, 2] < 0.06 * TH], 0.995))
+    k = (REACH * H - knee) / max(far - knee, 1e-6)
+    pulled = np.where(r > knee, knee + (r - knee) * k, r)
+    t = np.clip((0.16 * TH - co[:, 2]) / (0.08 * TH), 0, 1)  # full below 0.08*TH, none above 0.16*TH
+    w = t * t * (3 - 2 * t)
+    scale = np.where(r > 1e-6, (r + (pulled - r) * w) / np.maximum(r, 1e-6), 1.0)
+    co[:, :2] = centre + d * scale[:, None]
+    co[:, 2] -= SINK * TH
+    me.vertices.foreach_set("co", co.ravel())
+    me.update()
+    woman.data.transform(Matrix.Translation(Vector((0, 0, -SINK * TH))))
+    woman.data.update()
+    ZB -= SINK * TH
+    bm = bmesh.new()
+    bm.from_mesh(me)
+    buried = [f for f in bm.faces if max(v.co.z for v in f.verts) < -0.03 * TH]
+    bmesh.ops.delete(bm, geom=buried, context="FACES")
+    bmesh.ops.delete(bm, geom=[v for v in bm.verts if not v.link_faces], context="VERTS")
+    bm.to_mesh(me)
+    bm.free()
+    me.update()
+    low = verts(tree)
+    low = low[np.abs(low[:, 2]) < 0.01 * TH]
+    print(f"GROUND sink {SINK * TH:.3f}m, roots drawn in past {knee / H:.2f}H (k={k:.2f}), trimmed {len(buried)} "
+          f"buried faces, floor reach {np.linalg.norm(low[:, :2] - centre, axis=1).max() / H:.2f}H, she stands "
+          f"{ZB / H:.3f}H up", flush=True)
 
 
 # ------------------------------------------------------------------------------------------ geometry sets
@@ -888,6 +932,13 @@ def main():
     for o in (woman, tree):
         own(o)
     place(woman, tree)
+    if "--profile" in ARGS:  # the tree's footprint by height, to choose --sink
+        co = verts(tree)
+        for f in np.arange(0.0, 0.31, 0.02):
+            band = co[np.abs(co[:, 2] - f * TH) < 0.01 * TH]
+            r = np.linalg.norm(band[:, :2] - TRUNK, axis=1) if len(band) else np.zeros(1)
+            print(f"PROFILE z={f:.2f}TH n={len(band)} r95={np.quantile(r, 0.95) / H:.2f}H rmax={r.max() / H:.2f}H", flush=True)
+        return
     for o in (woman, tree):
         weld_and_smooth(o)
     w_col, w_mr, w_nrm = source_maps(woman)
@@ -928,11 +979,10 @@ def main():
 
     # Footprint for SanctuaryTitan.TreeSpan, in studs with her at STUD_FIGURE.
     tco = verts(tree)
-    low = tco[tco[:, 2] < 0.04 * TH]
-    bed_c = (low[:, :2].min(0) + low[:, :2].max(0)) / 2
+    bed_c = np.array([0.0, BED * H])
     f = STUD_FIGURE / H
     span = {"Forward": float(np.linalg.norm(bed_c) * f),
-            "Radius": float(np.linalg.norm(tco[tco[:, 2] < 0.15 * TH][:, :2] - bed_c, axis=1).max() * f),
+            "Radius": float(np.linalg.norm(tco[tco[:, 2] < 0.02 * TH][:, :2] - bed_c, axis=1).max() * f),
             "TreeHeight": float(TH * f), "FigureHeight": STUD_FIGURE, "Raised": float(ZB * f)}
 
     parts = split(woman, "Titan_Figure") + split(tree, "Titan_Canopy") + roots + runs + canopy
@@ -952,7 +1002,10 @@ def main():
              "treeSpanStuds": span}
     print("STATS", json.dumps({k: v for k, v in stats.items() if k != "parts"}), flush=True)
     if "--no-save" not in ARGS:
-        bpy.ops.wm.save_mainfile()
+        if "--save-as" in ARGS:
+            bpy.ops.wm.save_as_mainfile(filepath=str(Path(opt("--save-as", "")).resolve()))
+        else:
+            bpy.ops.wm.save_mainfile()
         print("SAVED", bpy.data.filepath, flush=True)
 
     # Export copies at her = FIG_UNITS (the .blend stays in metres).

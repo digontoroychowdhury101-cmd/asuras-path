@@ -157,17 +157,18 @@ end
 -- Floating karst is broad where it carries the sanctuary, then fractures downward into the clouds.
 -- The vista meshes' closed, irregular feet form that plateau; their broken summits point down.
 -- Eight overlapping outer masses and one central mass cover the complete support, so its smooth
--- collision cylinders and circular paving rim can disappear without leaving a hovering disc.
+-- collision cylinders and circular paving rim can disappear without leaving a hovering disc. The
+-- three plaza-side masses stop at the terrace's front edge: none overhangs the Ascension Stairs.
 type Cliff = { Name: string, Angle: number, Reach: number, Height: number, Width: number, Depth: number }
 local CLIFFS: { Cliff } = {
-	{ Name = "Vista_Ridge", Angle = 3, Reach = 0.74, Height = 286, Width = 2.2, Depth = 3.8 },
-	{ Name = "Vista_Crown", Angle = 46, Reach = 0.69, Height = 310, Width = 2.65, Depth = 3.025 },
+	{ Name = "Vista_Ridge", Angle = 3, Reach = 0.55, Height = 286, Width = 2.2, Depth = 3.0 },
+	{ Name = "Vista_Crown", Angle = 46, Reach = 0.66, Height = 310, Width = 2.65, Depth = 3.025 },
 	{ Name = "Vista_Ridge", Angle = 92, Reach = 0.74, Height = 274, Width = 2.2, Depth = 3.8 },
 	{ Name = "Vista_Crown", Angle = 136, Reach = 0.67, Height = 298, Width = 2.55, Depth = 2.97 },
 	{ Name = "Vista_Ridge", Angle = 181, Reach = 0.74, Height = 326, Width = 2.2, Depth = 3.8 },
 	{ Name = "Vista_Crown", Angle = 227, Reach = 0.66, Height = 282, Width = 2.5, Depth = 2.915 },
 	{ Name = "Vista_Ridge", Angle = 272, Reach = 0.74, Height = 304, Width = 2.2, Depth = 3.8 },
-	{ Name = "Vista_Crown", Angle = 316, Reach = 0.70, Height = 294, Width = 2.6, Depth = 3.08 },
+	{ Name = "Vista_Crown", Angle = 316, Reach = 0.62, Height = 294, Width = 2.6, Depth = 3.08 },
 	{ Name = "Vista_Crown", Angle = 19, Reach = 0, Height = 258, Width = 3.2, Depth = 3.63 },
 }
 
@@ -183,19 +184,6 @@ local function groundWafer(parent: Instance, rock: BasePart, top: number, index:
 	support.Transparency, support.CastShadow = 1, false
 	support:SetAttribute("AsuraGroundSupport", true)
 	support.Parent = parent
-end
-
--- The front mass extends over the stair approach. Its flanking cap bounds come from the actual
--- imported cap polygons, outside the old 246-stud floor and the neighbouring cliff caps. Two
--- shallow supports leave an unbroken +/-28-stud corridor above the original stairs and landing.
-local function frontGround(parent: Instance, centre: CFrame, top: number)
-	for i, b in { { -143, -28, 226, 296 }, { 28, 153, 224, 288 } } do
-		local frame = centre * CFrame.new((b[1] + b[2]) / 2, top - 0.3, (b[3] + b[4]) / 2)
-		local support = Kit.part(parent, "StairFlankCapGround_" .. i, Vector3.new(b[2] - b[1], 0.6, b[4] - b[3]), frame,
-			Color3.fromRGB(90, 101, 112), M.Rock, { Collide = true, Query = true, Transparency = 1, Shadow = false })
-		support.CanTouch = false
-		support:SetAttribute("AsuraGroundSupport", true)
-	end
 end
 
 local function underside(group: Instance, centre: CFrame, radius: number): boolean
@@ -223,11 +211,10 @@ local function underside(group: Instance, centre: CFrame, radius: number): boole
 						p.CanCollide, p.CanQuery, p.CanTouch = false, false, false
 						local finish = p:FindFirstChildOfClass("SurfaceAppearance")
 						if finish then finish.Color = Color3.fromRGB(176, 190, 202) end
-						if index > 1 and s.Reach > 0 then groundWafer(supports, p, centre.Position.Y + top, index) end
+						if s.Reach > 0 then groundWafer(supports, p, centre.Position.Y + top, index) end
 					end
 				end
 			end
-			if index == 1 then frontGround(supports, centre, top) end
 			placed += 1
 		end
 	end

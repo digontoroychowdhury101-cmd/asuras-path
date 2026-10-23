@@ -2,7 +2,7 @@
 -- ModuleScript: ServerScriptService/AsurasPath/Services/SanctuaryTitan
 -- Mounts the fused tree and woman (ServerStorage.AsuraAssets.FusedTreeStatue, built by
 -- tools/blender/fuse_tree_woman.py) on the colossus terrace. She stands on the root mass of a sacred
--- tree four times her height, clear of its trunk; roots coil round her hem and reach toward her
+-- tree four times her height, clear of its trunk, its root flare planted on the terrace; roots coil round her hem and reach toward her
 -- shoulders, crimson sap runs down the bark and the blood-red crown is solid leaf geometry. Every
 -- piece is scaled together (her silhouette FIGURE_HEIGHT studs) so the composition never drifts apart.
 -- Imported mesh references, UVs and PBR maps are retained.
@@ -13,13 +13,13 @@ local Titan = {}
 local FIGURE_HEIGHT = 150
 local SINK = 2 -- the root bed beds into the terrace so no root edge hovers
 -- Terrace layout (SanctuaryColossus / SanctuaryRoutes): her place `Forward` studs in front of the terrace
--- centre, root platform `Radius`. fuse_tree_woman.py's stats.json measures the fused tree's root bed at
--- 136 studs behind her with a 255-stud reach; the established layout is kept, so a few root tips spill
--- over the terrace's back rim.
+-- centre, root platform `Radius`. fuse_tree_woman.py draws the low roots in about a bed centre exactly
+-- `Forward` behind her (stats.json: Forward 150, floor reach 227), so the flare sits inside the rim.
 Titan.TreeSpan = { Forward = 150, Radius = 240 }
--- The authored floor sits this many figure heights above the lowest point of the piece (root ends dive
--- below it), so the floor, not the lowest root, lands on the terrace (stats.json FloorAboveBottom).
-local FLOOR_ABOVE_BOTTOM = 0.157
+-- The authored floor sits this many figure heights above the lowest point of the piece (buried root
+-- stubs dive below it), so the floor, where the root flare meets it, lands on the terrace
+-- (stats.json FloorAboveBottom).
+local FLOOR_ABOVE_BOTTOM = 0.1476
 
 local function group(model: Model, prefixes: { string }, name: string): Model
 	local g = Instance.new("Model")

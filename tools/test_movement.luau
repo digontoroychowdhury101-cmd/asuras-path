@@ -81,8 +81,9 @@ local ray = { Normal = Vector3.yAxis }
 local workspace = { Gravity = 196.2, CurrentCamera = { CFrame = frame(), ViewportSize = vec(1920,1080) },
 	Raycast = function() return ray end, GetServerTimeNow = function() return os.clock() end }
 local UIS = { TouchEnabled = false, KeyboardEnabled = true, Focus = nil,
-	GetFocusedTextBox = function(self) return self.Focus end, GetMouseDelta = function() return Vector2.zero end }
-for _, name in { "WindowFocusReleased", "TextBoxFocused", "LastInputTypeChanged", "InputBegan", "InputEnded", "InputChanged" } do UIS[name] = signal() end
+	GetFocusedTextBox = function(self) return self.Focus end, GetMouseDelta = function() return Vector2.zero end,
+	Keys = {}, IsKeyDown = function(self, key) return self.Keys[key] == true end }
+for _, name in { "WindowFocused", "WindowFocusReleased", "TextBoxFocused", "LastInputTypeChanged", "InputBegan", "InputEnded", "InputChanged" } do UIS[name] = signal() end
 local propertySignals = {}
 function UIS:GetPropertyChangedSignal(key) propertySignals[key] = propertySignals[key] or signal();return propertySignals[key]end
 function UIS:GetLastInputType() return Enum.UserInputType.Keyboard end
@@ -238,6 +239,15 @@ table.clear(sent); UIS.Focus = {}; input:Step(0.01)
 check(not move.Enabled,"typing blocks movement")
 UIS.Focus=nil; input:Step(0.01); UIS.WindowFocusReleased:Fire()
 check(not move.JumpHeld and not move.AimHeld and not move.SlideHeld,"focus loss releases held movement")
+-- Alt frees the cursor only while held: a lone Alt press from Alt-Tab must not leave mouse look dead.
+UIS.Keys[Enum.KeyCode.LeftAlt] = true; input:Press("Cursor"); input:Step(0.01)
+check(input.CursorFree and UIS.MouseBehavior == Enum.MouseBehavior.Default, "holding Alt frees the cursor")
+UIS.Keys[Enum.KeyCode.LeftAlt] = nil; input:Step(0.01)
+check(not input.CursorFree and UIS.MouseBehavior == Enum.MouseBehavior.LockCenter, "an Alt press whose release never arrives does not stick")
+UIS.Keys[Enum.KeyCode.LeftAlt] = true; input:Press("Cursor"); input:Release("Cursor")
+check(not input.CursorFree, "releasing Alt recaptures the mouse")
+input:Press("Cursor"); UIS.WindowFocused:Fire(); UIS.Keys[Enum.KeyCode.LeftAlt] = nil
+check(not input.CursorFree, "regaining window focus recaptures the mouse")
 move:Destroy(); input:Destroy()
 check(humanoid.AutoJumpEnabled and humanoid.HipHeight==2 and #move.Effects.Items==0,"destroy restores rig and removes all effects")
 print("PASS: "..checks.." kinetic movement/input/effects assertions (engine fakes; Studio contact QA separate)")

@@ -677,6 +677,12 @@
       "AsuraGuardianLion": {
         "$path": "assets/models/AsuraGuardianLion.rbxmx"
       },
+      "AsuraGuardianLionMirror": {
+        "$path": "assets/models/AsuraGuardianLionMirror.rbxmx"
+      },
+      "AsuraReliquaryKit": {
+        "$path": "assets/models/AsuraReliquaryKit.rbxmx"
+      },
       "AsuraSanctuaryDetail": {
         "$path": "assets/models/AsuraSanctuaryDetail.rbxmx"
       }

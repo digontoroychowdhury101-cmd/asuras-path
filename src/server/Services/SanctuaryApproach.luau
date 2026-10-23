@@ -26,8 +26,29 @@ local COLUMNS = { WellColumn = true } -- collision for the Well pavilion's kit c
 local SURFACES = { ViewingWing = "Paving", PilgrimWalk = "PavingPath", DescentPavilion = "Paving", ServiceLedge = "Stone",
 	ReliquaryIsle = "Stone", PilgrimDais = "Stone", TerraceParapet = "StoneDark" }
 
+local ServerStorage = game:GetService("ServerStorage")
+
+-- Cloud Reliquary art (tools/blender/reliquary_kit.py): carved stone on floating karst. Each template's
+-- pivot is its walkable top centre; the route box under it stays the (now invisible) walk surface.
+local function reliquary(name: string): Model?
+	local kit = ServerStorage:FindFirstChild("AsuraReliquaryKit")
+	local piece = kit and kit:FindFirstChild(name)
+	return if piece and piece:IsA("Model") then piece else nil
+end
+
+local function reliquaryPiece(box: any): string?
+	if string.sub(box.Name, 1, 10) == "CloudShard" then return "Reliquary_Shard" end
+	if box.Name == "ReliquaryIsle" then return "Reliquary_Isle" end
+	return nil
+end
+
 local function solid(group: Instance, box: any)
 	local p = Decor.solid(group, box)
+	local art = reliquaryPiece(box)
+	if art and reliquary(art) then
+		p.Transparency = 1
+		return
+	end
 	if RAILS[box.Name] and Lobby.available() then
 		p.Transparency = 1
 		local axis = p.CFrame.LookVector * box.SZ / 2
@@ -106,11 +127,30 @@ function Approach.Build(parent: Instance): Folder
 		local m = Routes.Marks[key]
 		stoneLantern(group, CFrame.new(m.X + (if m.X > 0 then 4.6 else -4.6), m.Y, m.Z + 8.6))
 	end
-	-- Cloud shards: a soft jade underglow so the optional jumps read at dusk.
+	-- Cloud shards: carved stones on floating karst and a soft jade underglow so the optional jumps
+	-- read at dusk. Shards alternate their turn; the isle turns its shrine to the far (east) end.
 	for _, box in Routes.Solids do
-		if string.sub(box.Name, 1, 10) == "CloudShard" or box.Name == "ReliquaryIsle" then
+		local art = reliquaryPiece(box)
+		if art then
+			local template = reliquary(art)
+			if template then
+				local top = CFrame.new(box.X, box.Y + box.SY / 2, box.Z)
+				local piece = template:Clone()
+				piece:PivotTo(top * CFrame.Angles(0, if art == "Reliquary_Isle" or box.Name == "CloudShard2" then math.pi else 0, 0))
+				piece.Parent = group
+			end
 			local glow = Kit.hidden(group, "ShardGlow", Vector3.one, CFrame.new(box.X, box.Y - 2, box.Z))
 			Kit.light(glow, JADE, 12, 0.7, false)
+		end
+	end
+	-- The isle's arrival (west) corners take stone lanterns, a small crimson maple shades the shrine.
+	for _, box in Routes.Solids do
+		if box.Name == "ReliquaryIsle" and reliquary("Reliquary_Isle") then
+			local y = box.Y + box.SY / 2
+			for _, dz in { -6.4, 6.4 } do
+				stoneLantern(group, CFrame.new(box.X - 4.4, y, box.Z + dz))
+			end
+			Lobby.place(group, "Tree_MapleSmall", CFrame.new(box.X + 3.2, y, box.Z - 5.6) * CFrame.Angles(0, math.rad(35), 0), 0.48)
 		end
 	end
 	return group

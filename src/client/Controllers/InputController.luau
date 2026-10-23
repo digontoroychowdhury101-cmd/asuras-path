@@ -55,6 +55,11 @@ end
 local KEYBOARD: { [Enum.KeyCode]: Command } = keyTable(InputMap.lookup("Combat", "Keys"), Enum.KeyCode)
 local MOUSE: { [Enum.UserInputType]: Command } = keyTable(InputMap.lookup("Combat", "Mouse"), Enum.UserInputType)
 local GAMEPAD: { [Enum.KeyCode]: Command } = keyTable(InputMap.lookup("Combat", "Pad"), Enum.KeyCode)
+-- Keys bound to "Cursor": the cursor stays free only while one of them is physically held.
+local CURSOR_KEYS: { Enum.KeyCode } = {}
+for _, name in (InputMap.get("Cursor") :: InputMap.Binding).Keys do
+	table.insert(CURSOR_KEYS, (Enum.KeyCode :: any)[name])
+end
 -- Jump, dash, slide and glide inputs are owned by one context action (native held-jump repeats
 -- cannot spend the double jump); jump never takes the raw InputBegan path.
 local MOVEMENT_INPUTS: { any } = {}
@@ -312,7 +317,11 @@ function Controller.new(state: WorldState, camera: CameraController, send: Sende
 	table.insert(self.Connections, UserInputService.InputChanged:Connect(function(input: InputObject, processed: boolean)
 		self:Changed(input, processed)
 	end))
-	table.insert(self.Connections, UserInputService.WindowFocusReleased:Connect(function() self.Movement:Cancel() end))
+	table.insert(self.Connections, UserInputService.WindowFocusReleased:Connect(function()
+		self.Movement:Cancel()
+		self.CursorFree = false -- the Alt release is lost when focus leaves mid-press
+	end))
+	table.insert(self.Connections, UserInputService.WindowFocused:Connect(function() self.CursorFree = false end))
 	table.insert(self.Connections, UserInputService.TextBoxFocused:Connect(function() self.Movement:SetEnabled(false) end))
 	table.insert(self.Connections, GuiService.MenuOpened:Connect(function() self.Movement:SetEnabled(false) end))
 	ContextActionService:BindActionAtPriority(MOVEMENT_ACTION, function(_name: string, inputState: Enum.UserInputState, event: InputObject): Enum.ContextActionResult
@@ -450,7 +459,9 @@ function Controller.Press(self: InputController, command: Command)
 		end
 		self.Send("Interact", nil, nil, nil, nil, stamp)
 	elseif command == "Cursor" then
-		self.CursorFree = not self.CursorFree
+		-- Held, not toggled: Alt-Tab and window focus changes deliver a lone Alt press, which used to
+		-- leave the cursor free and mouse look dead until Alt was pressed again.
+		self.CursorFree = true
 	end
 end
 
@@ -476,6 +487,8 @@ function Controller.Release(self: InputController, command: Command)
 	elseif command == "Sprint" and self.Device == "Touch" and self.SprintHeld then
 		self.SprintHeld = false
 		self.Send("Sprint", nil, nil, nil, false, now())
+	elseif command == "Cursor" then
+		self.CursorFree = false
 	end
 end
 
@@ -536,6 +549,13 @@ end
 -- Per frame: route look input to the camera, then flush buffered presses in priority order.
 function Controller.Step(self: InputController, dt: number)
 	self.Movement:SetEnabled(not self.MenuOpen and not GuiService.MenuIsOpen and UserInputService:GetFocusedTextBox() == nil)
+	if self.CursorFree then
+		local held = false
+		for _, key in CURSOR_KEYS do
+			held = held or UserInputService:IsKeyDown(key)
+		end
+		self.CursorFree = held -- a press whose release never arrived (focus change) must not stick
+	end
 	local gameplay = not self.MenuOpen and not self.CursorFree and self.Device ~= "Touch"
 	UserInputService.MouseBehavior = if gameplay then Enum.MouseBehavior.LockCenter else Enum.MouseBehavior.Default
 	UserInputService.MouseIconEnabled = not gameplay

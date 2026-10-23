@@ -1,5 +1,9 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## Lobby fixes — 2026-10-24 (Computer B)
+
+Mouse-look fixed (Alt now hold-to-free, cleared on focus). Tree re-grounded: flare planted, roots inside the rim. Front karst no longer overhangs the stairs. Lions now a mirrored pair facing the plaza. Cloud Reliquary has Blender-built floating stones and a shrine isle. Play-tested; verifier 14/14. Next: device FPS check.
+
 ## Fused tree statue — 2026-10-23 (Computer B)
 
 `FusedTreeStatue` replaces AsuraVeiledTitan: woman stands clear of a 4x sacred tree, blood-red crown, glossy sap, 78 PBR MeshParts under 20k tris, no decimation. Play-tested in Studio; verifier 14/14. Source `tree+woman.blend` stays local (gitignored, >100 MB). Next: device FPS check of its 1.18M triangles.
