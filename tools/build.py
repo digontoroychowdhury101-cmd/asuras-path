@@ -25,6 +25,8 @@ ASSET_ID = re.compile(r'(?:rbxassetid://|roblox\.com/asset/\?id=)(\d+)')
 
 def binary(name: str, folder: str) -> str:
     local = ROOT / 'work' / 'bin' / folder / name
+    if not local.is_file():
+        local = local.with_suffix('.exe')  # Windows checkouts ship rojo.exe
     found = str(local) if local.is_file() else shutil.which(name)
     if not found:
         raise SystemExit(f'Missing {name}. See docs/BUILD.md for official download locations.')

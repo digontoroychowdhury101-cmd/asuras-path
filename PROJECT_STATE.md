@@ -1,5 +1,12 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## F02c checkpoint rejoin attempt — 2026-10-23 (Computer B, Windows)
+
+- **Run**: Studio Server & Clients (set player count to 1; the default is 0). Seeded Studio diagnostic on `places/AsurasPath.rbxlx` (digest 761943064): rested at the Cloister, one monk KO left a 500 stain at (42.86, 3.2, −1047.8), woke at (60, 3.2, −1018), Essence 0. Exit Client was clean.
+- **Finding**: Add Clients rejoins as a *new* UserId (−2), so local Studio cannot test same-user rejoin. **Blocked**: run Team Test on a separate test experience (steps in `F02_RECOVERY.md`).
+- **Fix**: `tools/build.py` finds `rojo.exe` on Windows. `verify_all.sh` 14/14 (temp build).
+- **Note**: the saved `places/AsurasPath.rbxlx` still contains TikTokVFX scripts that were removed from the tree in 83eb67f.
+
 ## Portable Prompt Catalog & Place Files — 2026-10-23 (Computer A)
 
 - **ALL_PROMPTS.md & Brief Portability**: All hardcoded `/Users/digonto/...` absolute paths in `outputs/claude-followup-2026-10-21/ALL_PROMPTS.md`, `00_SHARED_BRIEF.txt`, and standalone prompt files `01_` through `26_` converted to repository-relative paths (`outputs/...`).
