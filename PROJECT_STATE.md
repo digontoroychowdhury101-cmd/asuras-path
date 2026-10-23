@@ -1,5 +1,9 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## Fused tree statue — 2026-10-23 (Computer B)
+
+`FusedTreeStatue` replaces AsuraVeiledTitan: woman stands clear of a 4x sacred tree, blood-red crown, glossy sap, 78 PBR MeshParts under 20k tris, no decimation. Play-tested in Studio; verifier 14/14. Source `tree+woman.blend` stays local (gitignored, >100 MB). Next: device FPS check of its 1.18M triangles.
+
 ## F03 input + HUD — 2026-10-23 (Computer B)
 
 Seeded Studio diagnostic in `places/AsurasPath.rbxlx` (digest 48998423), two viewports. Fixed the menu-owner input leak, the Esc/Backspace close, stacked Respite, missing glyphs, small survival values and the respawn sky-camera, with regressions. `verify_all` 14/14. Next: prompt 04; device/lock-switch checks → 24. See `F03_INPUT_HUD.md`.

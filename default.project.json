@@ -651,9 +651,6 @@
           "SanctuaryHorizon": {
             "$path": "src/server/Services/SanctuaryHorizon.luau"
           },
-          "SanctuaryCanopy": {
-            "$path": "src/server/Services/SanctuaryCanopy.luau"
-          },
           "SanctuaryVista": {
             "$path": "src/server/Services/SanctuaryVista.luau"
           },

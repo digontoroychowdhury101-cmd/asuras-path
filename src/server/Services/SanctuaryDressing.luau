@@ -56,7 +56,7 @@ end
 local unified = false -- true once the Veiled Ascetic is mounted; Roots/SacredTree then add nothing
 
 function Dressing.Colossus(parent: Instance, anchor: CFrame, proxy: Instance?, focus: Vector3?): boolean
-	local statue = asset("AsuraVeiledTitan")
+	local statue = asset("FusedTreeStatue")
 	unified = statue ~= nil
 	statue = statue or asset("AsuraColossusStatue")
 	if not statue then

@@ -12,3 +12,7 @@ assets/source/
 assets/build/
 tools/trellis_env/
 tools/trellis/.env
+
+# Blender working files (raw sculpts; >100 MB, kept local like assets/source/)
+*.blend
+*.blend1

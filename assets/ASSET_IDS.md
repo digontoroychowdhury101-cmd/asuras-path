@@ -3,7 +3,7 @@
 Uploaded 2026-10-19 via Studio 3D Importer (Creator: Me) from `assets/build/*.glb`.
 The current Rojo library is `assets/models/AsuraAssets_Phase5.rbxmx` (mapped to `ServerStorage.AsuraAssets`); the original binary library is preserved.
 
-**AsuraVeiledTitan** (composed 2026-10-21 by `tools/blender/compose_titan.py` from the welded original sculpts; figure 100 studs, tree 4.5x her, bark roots binding them; DoubleSided, Precise fidelity), spliced into `AsuraAssets_Phase5.rbxmx`. Supersedes the 2026-10-19 decimated upload (meshes 138990699574611 etc.).
+**FusedTreeStatue** (2026-10-23, `tools/blender/fuse_tree_woman.py` on `tree+woman.blend`, spliced by `tools/assets/splice_fused_tree.py`): the woman stands clear of a sacred tree 4x her height, blood-red leaf crown, glossy sap; 78 MeshParts (max 19,052 tris, none decimated), full PBR. IDs in `assets/FUSED_TREE_STATUE_UPLOADED.json`. Replaces AsuraVeiledTitan.
 
 | MeshPart | MeshId | Color / Normal / Roughness / Metalness |
 |---|---|---|

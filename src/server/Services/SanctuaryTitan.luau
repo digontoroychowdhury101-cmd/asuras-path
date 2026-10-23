@@ -1,27 +1,37 @@
 --!strict
 -- ModuleScript: ServerScriptService/AsurasPath/Services/SanctuaryTitan
--- Mounts the Veiled Ascetic (ServerStorage.AsuraAssets.AsuraVeiledTitan) on the colossus terrace.
--- The imported figure and its binding roots are enlarged together around the original plinth base.
--- Her seated silhouette is 150 studs tall; the established 450-stud sacred tree and its root-bed
--- footprint stay at their authored scale. Imported mesh references, UVs and PBR maps are retained.
+-- Mounts the fused tree and woman (ServerStorage.AsuraAssets.FusedTreeStatue, built by
+-- tools/blender/fuse_tree_woman.py) on the colossus terrace. She stands on the root mass of a sacred
+-- tree four times her height, clear of its trunk; roots coil round her hem and reach toward her
+-- shoulders, crimson sap runs down the bark and the blood-red crown is solid leaf geometry. Every
+-- piece is scaled together (her silhouette FIGURE_HEIGHT studs) so the composition never drifts apart.
+-- Imported mesh references, UVs and PBR maps are retained.
 local Leaves = require(script.Parent:WaitForChild("SanctuaryLeaves") :: ModuleScript)
-local Canopy = require(script.Parent:WaitForChild("SanctuaryCanopy") :: ModuleScript)
 
 local Titan = {}
 
-local AUTHORED_FIGURE_HEIGHT = 100
-local FIGURE_HEIGHT = 150 -- plinth base to crown spikes, independent of the tree's footprint
-local SINK = 2 -- the whole piece beds into the terrace so no plinth or root edge hovers
--- Footprint of the composed tree, for the terrace: its root bed is centred ~150 behind her and
--- spreads ~240 studs from there.
+local FIGURE_HEIGHT = 150
+local SINK = 2 -- the root bed beds into the terrace so no root edge hovers
+-- Terrace layout (SanctuaryColossus / SanctuaryRoutes): her place `Forward` studs in front of the terrace
+-- centre, root platform `Radius`. fuse_tree_woman.py's stats.json measures the fused tree's root bed at
+-- 136 studs behind her with a 255-stud reach; the established layout is kept, so a few root tips spill
+-- over the terrace's back rim.
 Titan.TreeSpan = { Forward = 150, Radius = 240 }
+-- The authored floor sits this many figure heights above the lowest point of the piece (root ends dive
+-- below it), so the floor, not the lowest root, lands on the terrace (stats.json FloorAboveBottom).
+local FLOOR_ABOVE_BOTTOM = 0.157
 
-local function group(model: Model, pattern: string, name: string): Model
+local function group(model: Model, prefixes: { string }, name: string): Model
 	local g = Instance.new("Model")
 	g.Name = name
 	for _, p in model:GetChildren() do
-		if p:IsA("BasePart") and p.Name:find(pattern) then
-			p.Parent = g
+		if p:IsA("BasePart") then
+			for _, prefix in prefixes do
+				if p.Name:sub(1, #prefix) == prefix then
+					p.Parent = g
+					break
+				end
+			end
 		end
 	end
 	g.Parent = model
@@ -32,69 +42,78 @@ local function flat(v: Vector3): Vector3
 	return Vector3.new(v.X, 0, v.Z)
 end
 
--- Roots were sculpted onto her robe and shoulders. Moving them with her, rather than stretching
--- individual root pieces, preserves that contact. Their ground ends bed into the much wider tree
--- root mass; neither the tree nor the terrace needs to grow with her.
-local function monument(figure: Model, roots: Model)
-	local box, size = figure:GetBoundingBox()
-	local seat = box.Position - Vector3.yAxis * size.Y * 0.5
-	local scale = FIGURE_HEIGHT / size.Y
-	for _, model in { figure, roots } do
-		for _, child in model:GetChildren() do
-			if child:IsA("BasePart") then
-				child.Size *= scale
-				child.CFrame = CFrame.new(seat + (child.Position - seat) * scale) * child.CFrame.Rotation
-			end
+-- Centre of the root bed: the tree chunks that reach the lowest tenth of its height.
+local function rootBed(tree: Model): Vector3
+	local box, size = tree:GetBoundingBox()
+	local floor = box.Position.Y - size.Y * 0.5
+	local sum, n = Vector3.zero, 0
+	for _, p in tree:GetChildren() do
+		local part = p :: BasePart
+		if part.Position.Y - part.Size.Y * 0.5 < floor + size.Y * 0.1 then
+			sum += part.Position
+			n += 1
 		end
+	end
+	return if n > 0 then sum / n else box.Position
+end
+
+-- Only the trunk's walkable root base collides (PreciseConvexDecomposition, authored in Studio); boughs,
+-- leaves, sap and the generated roots are decoration.
+local function collisions(tree: Model, roots: Model)
+	local box, size = tree:GetBoundingBox()
+	local base = box.Position.Y - size.Y * 0.5 + size.Y * 0.15
+	for _, p in tree:GetChildren() do
+		local part = p :: BasePart
+		local solid = not part.Name:find("Leaves") and part.Position.Y - part.Size.Y * 0.5 < base
+		part.CanCollide, part.CanQuery = solid, solid
+	end
+	for _, p in roots:GetChildren() do
+		local part = p :: BasePart
+		part.CanCollide, part.CanQuery = false, false
 	end
 end
 
 -- `focus` is where visitors look from (the plaza); the tree ends up on the far side of her.
--- `anchor` is her seat: the centre of her plinth on the terrace top.
+-- `anchor` is her place: the floor point under the centre of her figure on the terrace top.
 function Titan.Mount(statue: Model, anchor: CFrame, focus: Vector3?): boolean
 	local cards = statue:FindFirstChild("Titan_Leaves")
 	if cards then
 		cards:Destroy()
 	end
-	local figure = group(statue, "^Titan_Figure", "Figure")
-	local tree = group(statue, "^Titan_Canopy", "Tree")
-	local roots = group(statue, "^Titan_Roots", "Roots")
+	local figure = group(statue, { "Titan_Figure" }, "Figure")
+	local tree = group(statue, { "Titan_Canopy" }, "Tree")
+	local roots = group(statue, { "Titan_Roots", "Titan_Sap" }, "Roots")
 	if #figure:GetChildren() == 0 or #tree:GetChildren() == 0 then
 		return false
 	end
-	for _, g in { tree, roots } do
-		for _, p in g:GetChildren() do
-			local part = p :: BasePart
-			part.CanCollide, part.CanQuery = false, false
-		end
-	end
-	statue:PivotTo(anchor)
+	collisions(tree, roots)
 
-	-- Away-from-plaza direction; turn the piece about her so the tree points that way.
+	local height = figure:GetExtentsSize().Y
+	if height > 0 then
+		statue:ScaleTo(statue:GetScale() * FIGURE_HEIGHT / height)
+	end
+
+	-- Away-from-plaza direction; turn the piece about her so the tree's root bed lies that way.
 	local away = flat(anchor.Position - (focus or (anchor.Position + anchor.LookVector)))
 	away = if away.Magnitude > 1e-3 then away.Unit else Vector3.zAxis
 	local fc = figure:GetBoundingBox().Position
-	local back = flat(tree:GetBoundingBox().Position - fc)
+	local back = flat(rootBed(tree) - fc)
 	if back.Magnitude > 1e-3 then
 		local turn = math.atan2(away.X, away.Z) - math.atan2(back.X, back.Z)
 		statue:PivotTo(CFrame.new(fc) * CFrame.Angles(0, turn, 0) * CFrame.new(-fc) * statue:GetPivot())
 	end
 
-	-- Normalize the imported composition first, then enlarge only the pale figure and the roots
-	-- embracing it. The existing canopy remains approximately 450 studs tall, rather than 675.
-	local height = figure:GetExtentsSize().Y
-	if height > 0 then
-		statue:ScaleTo(statue:GetScale() * AUTHORED_FIGURE_HEIGHT / height)
-	end
-	monument(figure, roots)
-	local fbox0, fsize0 = figure:GetBoundingBox()
-	local seat = fbox0.Position - Vector3.yAxis * fsize0.Y * 0.5
-	statue:PivotTo(statue:GetPivot() + (anchor.Position - Vector3.yAxis * SINK - seat))
+	-- Her figure centred over the anchor; the authored floor on the terrace, sunk SINK.
+	local box, size = statue:GetBoundingBox()
+	local bottom = box.Position.Y - size.Y * 0.5
+	local floor = bottom + FLOOR_ABOVE_BOTTOM * FIGURE_HEIGHT
+	fc = figure:GetBoundingBox().Position
+	statue:PivotTo(statue:GetPivot() + Vector3.new(anchor.X - fc.X, anchor.Y - SINK - floor, anchor.Z - fc.Z))
+
 	local fbox, fsize = figure:GetBoundingBox()
 	local depth = math.abs(away.X) * fsize.X + math.abs(away.Z) * fsize.Z
 	statue:SetAttribute("FigureHeight", fsize.Y)
 	statue:SetAttribute("SacredTreeHeight", tree:GetExtentsSize().Y)
-	statue:SetAttribute("MonumentalFigureScale", FIGURE_HEIGHT / AUTHORED_FIGURE_HEIGHT)
 
 	-- Leaves fall from the crown: the four highest tree chunks each shed a share.
 	local parts = tree:GetChildren()
@@ -104,10 +123,10 @@ function Titan.Mount(statue: Model, anchor: CFrame, focus: Vector3?): boolean
 	for i = 1, math.min(4, #parts) do
 		Leaves.Emitter(parts[i] :: BasePart, { Rate = 2, Size = 0.45, Wind = Vector3.new(1.2, -0.5, 0.35) })
 	end
-	Canopy.Build(statue, tree)
 
 	-- Key light from the plaza side: three spots (Roblox caps a light's range at 60 studs) on her
-	-- lap, chest and veiled face so she reads against the dusk haze instead of as a silhouette.
+	-- hem, chest and veiled face so she reads against the pale bark instead of as a silhouette. The
+	-- hem spot is the closest to her white robe, so it is the dimmest (no blown-out hotspot).
 	for i, h in { 0.25, 0.55, 0.85 } do
 		local target = fbox.Position + Vector3.yAxis * (fsize.Y * (h - 0.5))
 		local lamp = Instance.new("Part")
@@ -118,7 +137,7 @@ function Titan.Mount(statue: Model, anchor: CFrame, focus: Vector3?): boolean
 		lamp.CFrame = CFrame.lookAt(target - away * distance - Vector3.yAxis * 4, target)
 		local spot = Instance.new("SpotLight")
 		spot.Color = Color3.fromRGB(255, 210, 172)
-		spot.Range, spot.Brightness, spot.Angle, spot.Shadows = 60, 3.3, 80, false
+		spot.Range, spot.Brightness, spot.Angle, spot.Shadows = 60, if i == 1 then 0.9 else 2.6, 80, false
 		spot.Parent = lamp
 		lamp.Parent = statue
 	end
