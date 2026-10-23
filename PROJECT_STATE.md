@@ -1,5 +1,9 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## Bug sweep — 2026-10-24 (Computer B)
+
+Play-tested lobby and regions. Fixed: monastery dead trees (scaled 4x and buried; world-space fit), loggia lookout solid black rail walls (open timber railing), black crag-garden beds (mossy). Rest, cache, reliquary jumps checked. Tree costs ~4–7ms GPU (RTX 4050). Verifier 14/14. Next: device FPS, monastery bamboo/cliff placeholders.
+
 ## Lobby fixes — 2026-10-24 (Computer B)
 
 Mouse-look fixed (Alt now hold-to-free, cleared on focus). Tree re-grounded: flare planted, roots inside the rim. Front karst no longer overhangs the stairs. Lions now a mirrored pair facing the plaza. Cloud Reliquary has Blender-built floating stones and a shrine isle. Play-tested; verifier 14/14. Next: device FPS check.

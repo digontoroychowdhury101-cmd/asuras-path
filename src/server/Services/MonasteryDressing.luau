@@ -62,17 +62,39 @@ local function gates(parent: Instance): boolean
 	return true
 end
 
--- Upright dead tree (the trunk asset stood on end) with a crown that sheds crimson leaves.
+-- World-space bounds of a model's parts. GetExtentsSize measures in the pivot's own frame, which
+-- for the trunk stood on end is its thickness, not its height.
+local function worldBounds(model: Model): (Vector3, Vector3)
+	local lo, hi = Vector3.one * math.huge, -Vector3.one * math.huge
+	for _, p in model:GetDescendants() do
+		if p:IsA("BasePart") then
+			local cf, s = p.CFrame, p.Size / 2
+			local ext = Vector3.new(
+				math.abs(cf.RightVector.X) * s.X + math.abs(cf.UpVector.X) * s.Y + math.abs(cf.LookVector.X) * s.Z,
+				math.abs(cf.RightVector.Y) * s.X + math.abs(cf.UpVector.Y) * s.Y + math.abs(cf.LookVector.Y) * s.Z,
+				math.abs(cf.RightVector.Z) * s.X + math.abs(cf.UpVector.Z) * s.Y + math.abs(cf.LookVector.Z) * s.Z)
+			lo, hi = lo:Min(p.Position - ext), hi:Max(p.Position + ext)
+		end
+	end
+	return lo, hi
+end
+
+-- Upright dead tree: the trunk asset (lying along its X) stood on end with a slight lean, `height`
+-- studs tall in the world, its foot bedded 1.5 studs into the flagstones at `at`.
 local function deadTree(parent: Instance, at: Vector3, height: number, lean: number): boolean
 	local tree = asset("AsuraDeadTrunk")
 	if not tree then
 		return false
 	end
-	tree:PivotTo(CFrame.Angles(0, 0, math.rad(90)))
-	scaleTo(tree, "Y", height)
 	settle(tree, true)
-	local size = tree:GetExtentsSize()
-	tree:PivotTo(CFrame.new(at.X, size.Y * 0.5 - 2, at.Z) * CFrame.Angles(math.rad(lean), math.rad(lean * 7), math.rad(90)))
+	tree:PivotTo(CFrame.Angles(math.rad(lean), math.rad(lean * 7), math.rad(90)))
+	local lo, hi = worldBounds(tree)
+	if hi.Y > lo.Y then
+		tree:ScaleTo(tree:GetScale() * height / (hi.Y - lo.Y))
+	end
+	lo, hi = worldBounds(tree)
+	local centre = (lo + hi) / 2
+	tree:PivotTo(tree:GetPivot() + Vector3.new(at.X - centre.X, G - 1.5 - lo.Y, at.Z - centre.Z))
 	tree.Parent = parent
 	return true
 end

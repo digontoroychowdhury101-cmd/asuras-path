@@ -18594,17 +18594,39 @@ local function gates(parent: Instance): boolean
 	return true
 end
 
--- Upright dead tree (the trunk asset stood on end) with a crown that sheds crimson leaves.
+-- World-space bounds of a model's parts. GetExtentsSize measures in the pivot's own frame, which
+-- for the trunk stood on end is its thickness, not its height.
+local function worldBounds(model: Model): (Vector3, Vector3)
+	local lo, hi = Vector3.one * math.huge, -Vector3.one * math.huge
+	for _, p in model:GetDescendants() do
+		if p:IsA("BasePart") then
+			local cf, s = p.CFrame, p.Size / 2
+			local ext = Vector3.new(
+				math.abs(cf.RightVector.X) * s.X + math.abs(cf.UpVector.X) * s.Y + math.abs(cf.LookVector.X) * s.Z,
+				math.abs(cf.RightVector.Y) * s.X + math.abs(cf.UpVector.Y) * s.Y + math.abs(cf.LookVector.Y) * s.Z,
+				math.abs(cf.RightVector.Z) * s.X + math.abs(cf.UpVector.Z) * s.Y + math.abs(cf.LookVector.Z) * s.Z)
+			lo, hi = lo:Min(p.Position - ext), hi:Max(p.Position + ext)
+		end
+	end
+	return lo, hi
+end
+
+-- Upright dead tree: the trunk asset (lying along its X) stood on end with a slight lean, `height`
+-- studs tall in the world, its foot bedded 1.5 studs into the flagstones at `at`.
 local function deadTree(parent: Instance, at: Vector3, height: number, lean: number): boolean
 	local tree = asset("AsuraDeadTrunk")
 	if not tree then
 		return false
 	end
-	tree:PivotTo(CFrame.Angles(0, 0, math.rad(90)))
-	scaleTo(tree, "Y", height)
 	settle(tree, true)
-	local size = tree:GetExtentsSize()
-	tree:PivotTo(CFrame.new(at.X, size.Y * 0.5 - 2, at.Z) * CFrame.Angles(math.rad(lean), math.rad(lean * 7), math.rad(90)))
+	tree:PivotTo(CFrame.Angles(math.rad(lean), math.rad(lean * 7), math.rad(90)))
+	local lo, hi = worldBounds(tree)
+	if hi.Y &gt; lo.Y then
+		tree:ScaleTo(tree:GetScale() * height / (hi.Y - lo.Y))
+	end
+	lo, hi = worldBounds(tree)
+	local centre = (lo + hi) / 2
+	tree:PivotTo(tree:GetPivot() + Vector3.new(at.X - centre.X, G - 1.5 - lo.Y, at.Z - centre.Z))
 	tree.Parent = parent
 	return true
 end
@@ -21639,8 +21661,35 @@ local function reliquaryPiece(box: any): string?
 	return nil
 end
 
+-- The loggia lookout is a timber deck: its rail walls keep their collision under an open timber
+-- railing (posts, top and mid rails, balusters) rather than reading as solid black panels.
+local function timberRail(group: Instance, a: Vector3, b: Vector3)
+	local length = (b - a).Magnitude
+	local along = CFrame.lookAt(a, b)
+	local function piece(name: string, size: Vector3, offset: Vector3)
+		Lobby.slab(group, name, size, along * CFrame.new(offset), "Timber", Lobby.decor())
+	end
+	piece("LookoutTopRail", Vector3.new(0.34, 0.26, length + 0.3), Vector3.new(0, 2.35, -length / 2))
+	piece("LookoutMidRail", Vector3.new(0.22, 0.18, length), Vector3.new(0, 1.15, -length / 2))
+	local posts = math.max(1, math.round(length / 2.6))
+	for i = 0, posts do
+		piece("LookoutPost", Vector3.new(0.42, 2.5, 0.42), Vector3.new(0, 1.25, -length * i / posts))
+	end
+	local balusters = math.max(2, math.floor(length / 0.65))
+	for i = 1, balusters - 1 do
+		piece("LookoutBaluster", Vector3.new(0.14, 2.2, 0.14), Vector3.new(0, 1.15, -length * i / balusters))
+	end
+end
+
 local function solid(group: Instance, box: any)
 	local p = Decor.solid(group, box)
+	if box.Name == "LookoutRail" and Lobby.available() then
+		p.Transparency = 1
+		local axis = p.CFrame.LookVector * box.SZ / 2
+		local floor = Vector3.new(box.X, box.Y - box.SY / 2, box.Z)
+		timberRail(group, floor - axis, floor + axis)
+		return
+	end
 	local art = reliquaryPiece(box)
 	if art and reliquary(art) then
 		p.Transparency = 1
@@ -24346,8 +24395,9 @@ local function landscapeGardens(group: Instance, centre: CFrame, seat: number)
 		local shrine = at * CFrame.new(-side * 9, top, -2)
 		Frame.pavilion(garden, shrine, 12, 10, 10.2, { Square = true, Rise = 0.86, Xs = { -6, 6 } })
 		Props.stele(garden, shrine * CFrame.new(0, 0, -1.7), "", side &gt; 0)
+		-- A mossy planted bed: plain dark Ground read as a black hole under the sacred tree's shadow.
 		Kit.part(garden, "CragGardenEarth", Vector3.new(21, 0.12, 33), at * CFrame.new(side * 12, top + 0.03, -2),
-			Color3.fromRGB(47, 57, 46), M.Ground, Kit.decor())
+			Color3.fromRGB(104, 112, 66), M.LeafyGrass, Kit.decor())
 		local ledgeTop = top + (if side &lt; 0 then 4.8 else 5.9)
 		Kit.place(garden, "Cliff_Ledge", at * CFrame.new(side * 13, ledgeTop, -6) * CFrame.Angles(0, yaw, 0), Vector3.new(0.43, 0.23, 0.51))
 		Kit.place(garden, "Rock_Outcrop", at * CFrame.new(side * 14, top - 0.25, -5) * CFrame.Angles(0, yaw + 0.35, 0), Vector3.new(2.2, 2.4, 2.1))

@@ -112,8 +112,9 @@ local function landscapeGardens(group: Instance, centre: CFrame, seat: number)
 		local shrine = at * CFrame.new(-side * 9, top, -2)
 		Frame.pavilion(garden, shrine, 12, 10, 10.2, { Square = true, Rise = 0.86, Xs = { -6, 6 } })
 		Props.stele(garden, shrine * CFrame.new(0, 0, -1.7), "", side > 0)
+		-- A mossy planted bed: plain dark Ground read as a black hole under the sacred tree's shadow.
 		Kit.part(garden, "CragGardenEarth", Vector3.new(21, 0.12, 33), at * CFrame.new(side * 12, top + 0.03, -2),
-			Color3.fromRGB(47, 57, 46), M.Ground, Kit.decor())
+			Color3.fromRGB(104, 112, 66), M.LeafyGrass, Kit.decor())
 		local ledgeTop = top + (if side < 0 then 4.8 else 5.9)
 		Kit.place(garden, "Cliff_Ledge", at * CFrame.new(side * 13, ledgeTop, -6) * CFrame.Angles(0, yaw, 0), Vector3.new(0.43, 0.23, 0.51))
 		Kit.place(garden, "Rock_Outcrop", at * CFrame.new(side * 14, top - 0.25, -5) * CFrame.Angles(0, yaw + 0.35, 0), Vector3.new(2.2, 2.4, 2.1))

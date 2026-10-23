@@ -42,8 +42,35 @@ local function reliquaryPiece(box: any): string?
 	return nil
 end
 
+-- The loggia lookout is a timber deck: its rail walls keep their collision under an open timber
+-- railing (posts, top and mid rails, balusters) rather than reading as solid black panels.
+local function timberRail(group: Instance, a: Vector3, b: Vector3)
+	local length = (b - a).Magnitude
+	local along = CFrame.lookAt(a, b)
+	local function piece(name: string, size: Vector3, offset: Vector3)
+		Lobby.slab(group, name, size, along * CFrame.new(offset), "Timber", Lobby.decor())
+	end
+	piece("LookoutTopRail", Vector3.new(0.34, 0.26, length + 0.3), Vector3.new(0, 2.35, -length / 2))
+	piece("LookoutMidRail", Vector3.new(0.22, 0.18, length), Vector3.new(0, 1.15, -length / 2))
+	local posts = math.max(1, math.round(length / 2.6))
+	for i = 0, posts do
+		piece("LookoutPost", Vector3.new(0.42, 2.5, 0.42), Vector3.new(0, 1.25, -length * i / posts))
+	end
+	local balusters = math.max(2, math.floor(length / 0.65))
+	for i = 1, balusters - 1 do
+		piece("LookoutBaluster", Vector3.new(0.14, 2.2, 0.14), Vector3.new(0, 1.15, -length * i / balusters))
+	end
+end
+
 local function solid(group: Instance, box: any)
 	local p = Decor.solid(group, box)
+	if box.Name == "LookoutRail" and Lobby.available() then
+		p.Transparency = 1
+		local axis = p.CFrame.LookVector * box.SZ / 2
+		local floor = Vector3.new(box.X, box.Y - box.SY / 2, box.Z)
+		timberRail(group, floor - axis, floor + axis)
+		return
+	end
 	local art = reliquaryPiece(box)
 	if art and reliquary(art) then
 		p.Transparency = 1
