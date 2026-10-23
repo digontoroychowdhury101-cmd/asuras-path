@@ -1,0 +1,177 @@
+{
+  "horizon": {
+    "SummitFoliageCardBudget": 4,
+    "CascadeParticleSteadyStateCeiling": 45,
+    "CascadeTriangleBudget": 4800,
+    "IntermediateMountainBudget": 3,
+    "MountainBudget": 11,
+    "CascadeEmitterBudget": 5,
+    "CascadeMeshBudget": 15,
+    "RequiredFarMountainBudget": 8
+  },
+  "figureHeight": 149.99998474121094,
+  "bareNeon": [],
+  "Workspace": {
+    "SpotLights": 3,
+    "SurfaceAppearances": 1517,
+    "Decals": 656,
+    "MeshParts": 1903,
+    "BaseParts": 10721,
+    "PointLights": 300,
+    "enabledEmitters": 180,
+    "collidingParts": 3370
+  },
+  "playerPosition": "12.49586009979248, 603.0999755859375, 944.1271362304688",
+  "quality": "Enum.QualityLevel.Level21",
+  "lanternViolations": [],
+  "viewport": "1241, 563",
+  "post": {
+    "SunRays": {
+      "Intensity": 0.11999999731779099,
+      "Spread": 0.44999998807907104
+    },
+    "ColorCorrection": {
+      "TintColor": "1, 0.964706, 0.92549",
+      "Saturation": 0.05000000074505806,
+      "Contrast": 0.15000000596046448
+    },
+    "Bloom": {
+      "Threshold": 2,
+      "Intensity": 0.25,
+      "Size": 24
+    }
+  },
+  "lighting": {
+    "ClockTime": 17.399999618530273,
+    "LightingStyle": "Enum.LightingStyle.Realistic",
+    "Brightness": 2.200000047683716,
+    "EnvironmentDiffuseScale": 0.6499999761581421,
+    "EnvironmentSpecularScale": 1
+  },
+  "arrivalBridge": "24, 3, 26",
+  "tinyCandleFlames": 4,
+  "terraceFoundation": {
+    "CragTriangleBudget": 170352,
+    "CompletePlateauFoundation": true,
+    "CragMeshBudget": 9
+  },
+  "hiddenSupport": {
+    "TerraceKerb": {
+      "transparency": 1,
+      "collides": true,
+      "size": "2.5, 496, 496"
+    },
+    "TerraceRoot": {
+      "transparency": 1,
+      "collides": true,
+      "size": "90, 270.6000061035156, 270.6000061035156"
+    },
+    "TerraceFoot": {
+      "transparency": 1,
+      "collides": true,
+      "size": "70, 413.2799987792969, 413.2799987792969"
+    },
+    "ColossusTerrace": {
+      "transparency": 1,
+      "collides": true,
+      "size": "6, 492, 492"
+    }
+  },
+  "treeHeight": 402.44964599609375,
+  "lanternLights": 58,
+  "peaks": [
+    {
+      "foot": -500,
+      "distance": 1626.8988905276196,
+      "name": "Vista_Crown_1",
+      "layer": "MiddleDistance"
+    },
+    {
+      "foot": -500,
+      "distance": 2675.9110598074817,
+      "name": "Vista_Needle_8",
+      "layer": "FarDistance"
+    },
+    {
+      "foot": -500,
+      "distance": 2039.607805437114,
+      "name": "Vista_Ridge_7",
+      "layer": "FarDistance"
+    },
+    {
+      "foot": 220,
+      "distance": 564.0257086339238,
+      "name": "Intermediate_Vista_Crown_1",
+      "layer": "Intermediate"
+    },
+    {
+      "foot": 220,
+      "distance": 718.9228053136164,
+      "name": "Intermediate_Vista_Needle_3",
+      "layer": "Intermediate"
+    },
+    {
+      "foot": 220,
+      "distance": 629.3250352560273,
+      "name": "Intermediate_Vista_Needle_2",
+      "layer": "Intermediate"
+    },
+    {
+      "foot": -500,
+      "distance": 1280.0390619039717,
+      "name": "Vista_Needle_5",
+      "layer": "FarDistance"
+    },
+    {
+      "foot": -500,
+      "distance": 1466.96966567138,
+      "name": "Vista_Crown_6",
+      "layer": "FarDistance"
+    },
+    {
+      "foot": -500,
+      "distance": 2155.643755354766,
+      "name": "Vista_Ridge_3",
+      "layer": "FarDistance"
+    },
+    {
+      "foot": -500,
+      "distance": 2487.267577081324,
+      "name": "Vista_Crown_4",
+      "layer": "FarDistance"
+    },
+    {
+      "foot": -500,
+      "distance": 1535.2198539622916,
+      "name": "Vista_Needle_2",
+      "layer": "MiddleDistance"
+    }
+  ],
+  "atmosphere": {
+    "Density": 0.3799999952316284,
+    "Decay": "0.470588, 0.509804, 0.647059",
+    "Color": "0.980392, 0.843137, 0.72549",
+    "Glare": 0.3499999940395355,
+    "Offset": 0.20000000298023224,
+    "Haze": 2.200000047683716
+  },
+  "axialWalk": "48, 4, 92",
+  "Sanctuary": {
+    "SpotLights": 3,
+    "SurfaceAppearances": 1233,
+    "Decals": 656,
+    "MeshParts": 1274,
+    "BaseParts": 3369,
+    "PointLights": 71,
+    "enabledEmitters": 53,
+    "collidingParts": 435
+  },
+  "cloudSea": {
+    "LocalCloudElevationMax": 522,
+    "MistEmitterBudget": 32,
+    "LocalCloudElevationMin": 500,
+    "CloudParticleSteadyStateCeiling": 644,
+    "CloudMeshBudget": 0,
+    "CloudInitialParticleBudget": 356
+  }
+}

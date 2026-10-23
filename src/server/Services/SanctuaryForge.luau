@@ -52,7 +52,7 @@ local function furnace(group: Instance, base: CFrame, embers: (BasePart) -> ())
 	end
 	Kit.place(group, "Roof_Square", at * CFrame.new(-1, 24.2, 0), 0.3)
 	Kit.slab(group, "HearthApron", Vector3.new(2.8, 0.25, 5.7), at * CFrame.new(4.1, 0.92, 0), "StoneDark", Kit.decor())
-	local mouth = Kit.part(group, "ForgeMouth", Vector3.new(1.3, 0.18, 3.3), at * CFrame.new(2.8, 1.25, 0), rgb(255, 96, 36), M.Neon, Kit.decor())
+	local mouth = Kit.part(group, "ForgeMouth", Vector3.new(1.3, 0.18, 3.3), at * CFrame.new(2.8, 1.25, 0), rgb(50, 42, 37), M.Basalt, Kit.decor())
 	for z = -1.4, 1.4, 0.56 do
 		Kit.part(group, "HearthGrate", Vector3.new(1.65, 0.12, 0.1), at * CFrame.new(2.8, 1.4, z), Kit.Palette.Iron, M.Metal, Kit.decor())
 	end

@@ -1,7 +1,7 @@
 --!strict
 -- ModuleScript: ServerScriptService/AsurasPath/Services/SanctuaryColossus
 -- The Veiled Ascetic closes the Sanctuary's main axis. Past the Ascension Stairs and the gate, a
--- rock terrace flush with the landing carries the colossus (100 studs seated) at the foot of the
+-- rock terrace flush with the landing carries the colossus (150 studs seated) at the foot of the
 -- sacred tree (~450 studs, sized by SanctuaryTitan), so every view up the stairs from the bonfire ends on her face. The terrace is a sky-island
 -- shard like the plaza: kerbed slab, tapering rock foot; its dressing is SanctuaryTerrace's (lobby kit).
 local Dressing = require(script.Parent:WaitForChild("SanctuaryDressing") :: ModuleScript)
@@ -46,18 +46,23 @@ function Colossus.Build(parent: Instance, origin: Vector3, top: number, back: nu
 	local plaza = CFrame.new(origin)
 	local centre = plaza * CFrame.new(0, top, -(back + RADIUS - OVERLAP))
 
-	-- Terrace: paved slab flush with the landing (3 hundredths under it, so the two never shimmer),
-	-- a moulded kerb and a rock foot tapering into the clouds, in the lobby kit's shared surfaces.
+	-- Existing slab, kerb and support cylinders retain their exact movement collision. Once all
+	-- broad, overlapping cliff masses are present, only those irregular scanned-rock surfaces and
+	-- the authored processional paving remain visible; no cylindrical skirt is left around them.
 	local slab = disc(group, "ColossusTerrace", RADIUS, 6, centre * CFrame.new(0, -3.03, 0), STONE_DARK, Enum.Material.Slate)
 	local kerb = disc(group, "TerraceKerb", RADIUS + 2, 2.5, centre * CFrame.new(0, -6.9, 0), STONE, Enum.Material.Slate)
 	local foot = disc(group, "TerraceFoot", RADIUS * 0.84, 70, centre * CFrame.new(0, -41, 0), ROCK, Enum.Material.Rock)
 	local root = disc(group, "TerraceRoot", RADIUS * 0.55, 90, centre * CFrame.new(0, -120, 0), ROCK, Enum.Material.Rock)
-	for p, surface in { [slab] = "TerraceRock", [kerb] = "StoneDark", [foot] = "Rock", [root] = "Rock" } do
+	for p, surface in { [slab] = "TerracePaving", [kerb] = "StoneDark", [foot] = "Rock", [root] = "Rock" } do
 		local s = Kit.Surface[surface]
-		p.Color, p.MaterialVariant = s.Color, s.Variant
+		p.Color, p.Material, p.MaterialVariant = s.Color, s.Material, s.Variant
 	end
-	-- Processional way, carved stelae, ruins, rim lanterns and layered spurs (SanctuaryTerrace).
-	Terrace.Dress(group, centre, RADIUS, FORWARD)
+	root.Transparency = 1
+	slab.Color = Kit.Surface.Paving.Color
+	-- Keep the old visible support as a boot-safe fallback if the uploaded cliff library is absent.
+	if Terrace.Dress(group, centre, RADIUS, FORWARD) then
+		for _, cylinder in { slab, kerb, foot, root } do cylinder.Transparency = 1 end
+	end
 	Leaves.Scatter(group, centre * CFrame.new(0, 0.02, 0), Vector2.new(RADIUS - 10, RADIUS - 10), 420, 31)
 
 	-- Her seat, facing back down the axis toward the plaza and the bonfire.

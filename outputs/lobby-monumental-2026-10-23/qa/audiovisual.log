@@ -1,0 +1,5 @@
+PASS: 43 audiovisual runtime assertions (engine fakes; Studio QA separate)
+/Users/digonto/Documents/ChatGPT/Roblox game 2/tools/test_audiovisual.py:63: DeprecationWarning: Testing an element's truth value will always return True in future versions.  Use specific 'len(elem)' or 'elem is not None' test instead.
+  if surface:
+PASS: 13 imported templates, 56 complete PBR MeshParts; saved Automatic fidelity
+PASS: 8 PBR exports validated; audio format/peak/DC checks passed (available media only)

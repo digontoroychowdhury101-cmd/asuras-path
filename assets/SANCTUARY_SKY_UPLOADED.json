@@ -6,8 +6,8 @@
     "nx": "rbxassetid://135495662234371",
     "pz": "rbxassetid://91892434596631",
     "nz": "rbxassetid://108067720936233",
-    "py": "rbxassetid://74428004859056",
-    "ny": "rbxassetid://134298860757348"
+    "py": "rbxassetid://111642714464286",
+    "ny": "rbxassetid://118353493252474"
   },
   "branch": "rbxassetid://133941376172785",
   "mapping": {
@@ -17,5 +17,6 @@
     "Right": "nx",
     "Up": "py",
     "Down": "ny"
-  }
+  },
+  "capProjection": "Corrected inside-cube handedness plus Roblox cap quarter-turn, checked in Studio"
 }

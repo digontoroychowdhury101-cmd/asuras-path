@@ -1,0 +1,33 @@
+{
+  "source": "assets/build/guardian_lion/Asuraguardianlion.glb",
+  "source_sha256": "efcb1897e5bc37cee18237dab6f6a7adbf56e47df29742a982be5e6fcc7039fa",
+  "raw_source": "assets/build/guardian_lion/source/AsuraGuardianLion_TRELLIS_raw.glb",
+  "importer": "Roblox Studio 3D Importer, Creator: Me",
+  "model": "AsuraGuardianLion",
+  "parts": {
+    "GuardianCarving": {
+      "MeshId": "rbxassetid://105991522625229",
+      "ColorMap": "rbxassetid://103244811740790",
+      "NormalMap": "rbxassetid://140320045759420",
+      "RoughnessMap": "rbxassetid://72562556216716",
+      "MetalnessMap": "rbxassetid://96564304031277",
+      "TexturePack": "rbxassetid://114039213458588"
+    }
+  },
+  "size": [
+    6.47660542,
+    8.0,
+    5.68446159
+  ],
+  "height": 8.0,
+  "footY": 0,
+  "worldPivot": [
+    0,
+    0,
+    0
+  ],
+  "identityOrientation": true,
+  "sharedStringCount": 2,
+  "validation": "Single uploaded MeshPart; complete PBR; height 8; centred foot at origin; identity WorldPivot and part rotation",
+  "savedPlace": "outputs/AsurasPath.rbxlx"
+}

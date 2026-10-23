@@ -47,7 +47,15 @@ function LootWorld.build(claim: (Player,string)->(),openSmith: (Player)->()): (F
  end
  local l=World.Sanctuary.Loggia
  local smith=part(root,"TransmutationSeal",Vector3.new(2,2,2),Vector3.new(l.X+5,l.Y+3,l.Z))
- smith.Material=Enum.Material.Neon;smith.Color=Color3.fromRGB(97,218,207)
+ -- Keep the original prompt/collision anchor, housed inside a carved smith's seal.
+ smith.Material=Enum.Material.Slate;smith.MaterialVariant="AsuraStone";smith.Color=Color3.fromRGB(126,141,158)
+ local styled,kit=pcall(function() return require(script.Parent:WaitForChild("SanctuaryKit") :: ModuleScript) end)
+ if styled then
+  local base=CFrame.new(l.X+5,l.Y+1,l.Z)*CFrame.Angles(0,math.rad(90),0)
+  local seal=kit.place(root,"Stele_Dragon",base,Vector3.new(0.55,0.5,0.55))
+  if seal then smith.Transparency=1 end
+  kit.slab(root,"SmithSealPlinth",Vector3.new(2.55,1,2.55),CFrame.new(l.X+5,l.Y+0.5,l.Z),"StoneDark",kit.decor())
+ end
  local prompt=Instance.new("ProximityPrompt");prompt.Name="TransmutePrompt";prompt.ActionText="Transmute Remembrance"
  prompt.ObjectText="Master Smith Gao";InputMap.applyPrompt(prompt)
  prompt.MaxActivationDistance=12;prompt.HoldDuration=0.4;prompt.Parent=smith

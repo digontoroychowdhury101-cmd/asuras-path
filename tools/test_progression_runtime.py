@@ -176,7 +176,8 @@ source += module("DialogueService", "src/server/Services/DialogueService.luau", 
     "script.Parent.CharacterService": "Characters", "script.Parent.AIService": "AI",
     "script.Parent.WorldService": "World", "script.Parent.DialogueActions": "Actions", "script.Parent.NarrativeWorld": "NarrativeWorld",
     "Shared.Shared.EndingRules": "EndingRules"})
-source += module("WagerWorld", "src/server/Services/WagerWorld.luau", {"game:GetService(\"ReplicatedStorage\").AsurasPath.Shared.WorldDefinitions": "Definitions", "game:GetService(\"ReplicatedStorage\").AsurasPath.Shared.InputMap": "InputMap"})
+# The balcony's optional imported kit is Studio evidence; exercise its primitive visual fallback here.
+source += module("WagerWorld", "src/server/Services/WagerWorld.luau", {"game:GetService(\"ReplicatedStorage\").AsurasPath.Shared.WorldDefinitions": "Definitions", "game:GetService(\"ReplicatedStorage\").AsurasPath.Shared.InputMap": "InputMap", "script.Parent:WaitForChild(\"SanctuaryKit\") :: ModuleScript": "error(\"visual mesh kit unavailable in detached fixture\")"})
 source += module("WagerService", "src/server/Services/WagerService.luau", {
     "Shared.Shared.ArenaRules": "ArenaRules", "Shared.Shared.IntentProtocol": "Budget",
     "script.Parent.PersistenceService": "Persistence", "script.Parent.CharacterService": "Characters",

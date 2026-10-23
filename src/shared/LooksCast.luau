@@ -43,7 +43,15 @@ local function lin(): Schema.Look
 		P("SashBow", "LowerTorso", { 0.6, 0.4, 0.2 }, { 0, 0, 0.62 }, CRIMSON, "Fabric"),
 		P("Skirt", "LowerTorso", { 2.3, 2.5, 1.4 }, { 0, -1.4, 0 }, WHITE, "Fabric"),
 		P("SkirtHem", "LowerTorso", { 2.34, 0.15, 1.44 }, { 0, -2.55, 0 }, CRIMSON, "Fabric"),
-		P("SoulLantern", "RightHand", { 0.5, 0.7, 0.5 }, { 0, -0.6, -0.3 }, { 240, 210, 160 }, "Neon", { Glow = 9, Transparency = 0.15 }),
+		P("SoulLantern", "RightHand", { 0.5, 0.7, 0.5 }, { 0, -0.6, -0.3 }, { 151, 101, 58 }, "Neon", { Glow = 15, Transparency = 0.35 }),
+		P("LanternFoot", "RightHand", { 0.68, 0.09, 0.68 }, { 0, -0.99, -0.3 }, IRON, "Metal"),
+		P("LanternRoof", "RightHand", { 0.72, 0.12, 0.72 }, { 0, -0.21, -0.3 }, IRON, "Metal"),
+		P("LanternRoofCrown", "RightHand", { 0.46, 0.09, 0.46 }, { 0, -0.105, -0.3 }, IRON, "Metal"),
+		P("LanternHandle", "RightHand", { 0.07, 0.15, 0.07 }, { 0, 0.015, -0.3 }, IRON, "Metal"),
+		P("LanternPostNE", "RightHand", { 0.045, 0.69, 0.045 }, { 0.28, -0.6, -0.58 }, IRON, "Metal"),
+		P("LanternPostNW", "RightHand", { 0.045, 0.69, 0.045 }, { -0.28, -0.6, -0.58 }, IRON, "Metal"),
+		P("LanternPostSE", "RightHand", { 0.045, 0.69, 0.045 }, { 0.28, -0.6, -0.02 }, IRON, "Metal"),
+		P("LanternPostSW", "RightHand", { 0.045, 0.69, 0.045 }, { -0.28, -0.6, -0.02 }, IRON, "Metal"),
 	}
 	face(list, { 40, 30, 36 }, HAIR)
 	pair(list, "SideLock", "Head", { 0.22, 1.4, 0.25 }, { -0.58, -0.5, -0.25 }, HAIR, "Fabric")

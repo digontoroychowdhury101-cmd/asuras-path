@@ -12,6 +12,6 @@ Assets.Textures = {
 }
 Assets.Sky = { Back = "rbxassetid://87628549041414", Down = "rbxassetid://103952866093370", Front = "rbxassetid://77637140898450", Left = "rbxassetid://83782412023406", Right = "rbxassetid://126646523881532", Up = "rbxassetid://94728124992475" }
 -- Golden-hour Shrine sky (tools/assets/make_sunset_sky.py; assignment verified in Studio, assets/LOBBY_SKY_UPLOADED.json).
-Assets.SunsetSky = { Front = "rbxassetid://108067720936233", Back = "rbxassetid://91892434596631", Left = "rbxassetid://132527418910759", Right = "rbxassetid://135495662234371", Up = "rbxassetid://74428004859056", Down = "rbxassetid://134298860757348" }
+Assets.SunsetSky = { Front = "rbxassetid://108067720936233", Back = "rbxassetid://91892434596631", Left = "rbxassetid://132527418910759", Right = "rbxassetid://135495662234371", Up = "rbxassetid://111642714464286", Down = "rbxassetid://118353493252474" }
 Assets.Limits = { Voices = 32, Bursts = 16, Shards = 96, Stains = 20, TrailActors = 24, Scenery = 100 }
 return table.freeze(Assets)

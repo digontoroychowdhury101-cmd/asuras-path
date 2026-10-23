@@ -218,7 +218,7 @@ World.Sanctuary = {
 	StairSteps = 20,
 	StairRise = 1,
 	StairRun = 2,
-	StairWidth = 18, -- lobby rebuild: broad flight between carved balustrades (SanctuaryAscent)
+	StairWidth = 30, -- monumental sanctuary: open procession into the sacred terrace
 	PortalDestination = "Altar_MonasteryGate",
 	CloudRadius = 1200,
 } :: SanctuaryLayout

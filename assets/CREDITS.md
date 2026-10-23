@@ -45,9 +45,10 @@ The original 3TD CC0 dedication PDF and Kenney license texts are preserved with 
 
 The Shrine of the Ascendant's modular architecture kit (roofs, timber frame, brackets, balustrades,
 lanterns, stelae, ruins, basin coping, bonfire dais, cliffs, karst towers), its cloud, maple, shrub and
-banner pieces, all eleven tileable PBR texture sets and the six golden-hour sky faces were generated for
+banner pieces, all eleven tileable PBR texture sets and the original six procedural golden-hour sky faces were generated for
 this project by `tools/blender/lobby_kit.py`, `lobby_kit_*.py`, `lobby_textures.py` and
 `tools/assets/make_sunset_sky.py`. No third-party models, scans or textures were downloaded or used.
+That sky describes the first rebuild iteration; the current sky and new branch cutout are recorded below.
 
 ## Sanctuary vista landscape kit — 2026-10-22
 
@@ -56,3 +57,23 @@ with `tools/blender/sanctuary_vista.py`. Its rock color, normal and roughness ma
 Poly Haven [Rock Face 03](https://polyhaven.com/a/rock_face_03) CC0 source already recorded above,
 resized to 1024 for this kit. Moss and water use plain authored materials; the optional black metalness
 map comes from the existing generated lobby kit. No new external assets were downloaded.
+
+## Sanctuary sky, foliage and guardian — 2026-10-22/23
+
+The current golden-hour panorama and transparent crimson maple-branch spray were generated as original
+project assets with the built-in imagegen tool on 22 October 2026. No reference-image inputs were
+supplied. Complete generation prompts are preserved in `assets/build/sanctuary_sky/prompt.md` and
+`crimson_branch_prompt.md`; original outputs are `panorama.png` and `crimson_branch.png` in that folder.
+`tools/assets/panorama_to_sanctuary_sky.py` projects the panorama into six cube faces, including corrected
+cap orientation. Actual uploaded image IDs and the maple texture are in `assets/SANCTUARY_SKY_UPLOADED.json`.
+The older leaf-particle/scatter masks continue to use the ambientCG Leaf Set 024 credit above.
+
+The guardian lion was generated through the installed `tools/trellis/run_trellis.sh` on 23 October
+2026: Pollinations produced the reference image and microsoft/TRELLIS.2 reconstructed the sculpture.
+Conservative Blender cleanup flattened/closed the lower plinth and retained the generated PBR maps.
+The cleaned asset contains 17,622 triangles with 1024 Color/Normal/Roughness/Metalness maps. The raw
+generation, editable `.blend`, cleanup script and validation are preserved under
+`assets/build/guardian_lion/`; the generation reference is under `work/trellis/Asuraguardianlion/`.
+`assets/GUARDIAN_LION_UPLOADED.json` records the imported mesh/map IDs, hash and eight-stud template.
+This is generated-asset provenance; no third-party lion mesh was downloaded. The earlier hero sculpt's
+generation-service gap noted above remains unresolved.

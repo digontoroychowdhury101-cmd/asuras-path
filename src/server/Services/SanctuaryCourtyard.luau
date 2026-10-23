@@ -11,15 +11,17 @@ local Rails = require(script.Parent:WaitForChild("SanctuaryRails") :: ModuleScri
 local Leaves = require(script.Parent:WaitForChild("SanctuaryLeaves") :: ModuleScript)
 local Bonfire = require(script.Parent:WaitForChild("SanctuaryBonfire") :: ModuleScript)
 local Props = require(script.Parent:WaitForChild("SanctuaryProps") :: ModuleScript)
+local Assets = require(game:GetService("ReplicatedStorage").AsurasPath.Shared.PresentationAssets)
 local Terrain = game:GetService("Workspace").Terrain
 
 local Courtyard = {}
 
-local HALF = 46 -- the terrace runs +/-46 studs; WorldDefinitions.PlazaRadius stays the route radius
+local HALF = 46 -- north/south extent and existing route anchors stay fixed
+local HALF_X = 58
 local TOP = 0.1 -- flagstone top
-local POOL = { X0 = 12, X1 = 30, Z0 = -20, Z1 = 32, Floor = -0.7, Water = -0.14 }
+local POOL = { X0 = 24, X1 = 42, Z0 = -20, Z1 = 32, Floor = -0.7, Water = -0.14 }
 -- Openings in the balustrade, as half-widths: north stairs, west/east walkways, south pilgrim walk.
-local OPEN = { N = 11, W = 7, E = 7, S = 7 }
+local OPEN = { N = 20, W = 7, E = 7, S = 14 }
 Courtyard.Half, Courtyard.Top, Courtyard.Pool, Courtyard.Open = HALF, TOP, table.freeze(POOL), table.freeze(OPEN)
 
 local Y = Vector3.yAxis
@@ -51,7 +53,7 @@ local function basin(group: Instance, origin: CFrame, side: number)
 	Kit.slab(group, "BasinFloor", Vector3.new(w, 2, l), origin * CFrame.new(cx, POOL.Floor - 1, cz), "Basin")
 	-- Real water supplies ripples and local reflections. Its voxel bounds extend under the paving:
 	-- the solid floor and coping conceal Terrain's rounded shore and keep the basin shallow to walk.
-	-- At the canonical origin these are x[-32,-8]/[8,32], y[596,600], z[876,936].
+	-- Water extends under the coping and paving; the finished rim exposes only the two basins.
 	local a = (origin * CFrame.new(math.min(x0, x1), 0, POOL.Z0)).Position
 	local b = (origin * CFrame.new(math.max(x0, x1), 0, POOL.Z1)).Position
 	local left = math.floor(a.X / 4) * 4 - (if side > 0 then 4 else 0)
@@ -60,6 +62,19 @@ local function basin(group: Instance, origin: CFrame, side: number)
 	Terrain:FillBlock(CFrame.new((left + right) / 2, origin.Y - 2, (front + back) / 2), Vector3.new(right - left, 4, back - front), Enum.Material.Water)
 	Kit.hidden(group, "StillWater", Vector3.new(w, 0.1, l), origin * CFrame.new(cx, POOL.Water - 0.05, cz))
 	Leaves.Scatter(group, origin * CFrame.new(cx, POOL.Water + 0.02, cz), Vector2.new(w / 2 - 0.8, l / 2 - 1), 14, 90 + side, true)
+	if Assets.Textures.Smoke ~= "" then
+		for _, z in { POOL.Z0 + 9, cz, POOL.Z1 - 9 } do
+			local anchor = Kit.hidden(group, "PoolMistEdge", Vector3.new(1, 0.1, 8), origin * CFrame.new(side * (POOL.X0 + 1.8), 0.1, z))
+			local mist = Instance.new("ParticleEmitter")
+			mist.Name, mist.Texture, mist.Rate = "WaterEdgeMist", Assets.Textures.Smoke, 0.38
+			mist.Lifetime, mist.Speed, mist.Acceleration = NumberRange.new(4, 6), NumberRange.new(0.15, 0.35), Vector3.new(0.12, 0.08, 0)
+			mist.Size = Kit.sequence({ { 0, 1 }, { 1, 4.5 } })
+			mist.Transparency = Kit.sequence({ { 0, 1 }, { 0.25, 0.88 }, { 1, 1 } })
+			mist.Color, mist.LightInfluence = ColorSequence.new(Color3.fromRGB(211, 217, 216)), 0.65
+			mist.Rotation, mist.RotSpeed = NumberRange.new(0, 360), NumberRange.new(-4, 4)
+			mist.Parent = anchor
+		end
+	end
 	-- Coping on all four edges; each piece's back (+Z) faces the water, its pivot on the water edge.
 	local edges = {
 		{ Vector3.new(x0, 0, POOL.Z0), Vector3.new(x0, 0, POOL.Z1), Vector3.new(side, 0, 0) },
@@ -95,27 +110,19 @@ local function basin(group: Instance, origin: CFrame, side: number)
 end
 
 local function dais(group: Instance, origin: CFrame)
-	local placed = Kit.place(group, "Dais_Bonfire", origin * CFrame.new(0, TOP + 0.01, 0))
 	Kit.place(group, "Paving_Medallion", origin * CFrame.new(0, TOP - 0.01, 0))
-	for _, step in { { 6.4, 0.38 }, { 5.15, 0.78 }, { 3.85, 1.18 } } do
-		local disc = Kit.disc(group, "DaisStep", step[1], step[2], origin * CFrame.new(0, TOP + step[2] / 2, 0), Kit.Surface.Stone.Color, Enum.Material.Slate,
-			if placed then invisible() else nil)
-		if not placed then
-			disc.MaterialVariant = "AsuraStone"
-		end
-	end
 end
 
 local function balustrade(group: Instance, origin: CFrame)
-	local e = HALF - 0.6
+	local ex, ez = HALF_X - 0.6, HALF - 0.6
 	local function run(a: Vector3, b: Vector3)
 		Rails.run(group, (origin * CFrame.new(a + Y * TOP)).Position, (origin * CFrame.new(b + Y * TOP)).Position)
 	end
 	for side = -1, 1, 2 do
-		run(Vector3.new(side * e, 0, -e), Vector3.new(side * OPEN.N, 0, -e)) -- north, either side of the stairs
-		run(Vector3.new(side * e, 0, e), Vector3.new(side * OPEN.S, 0, e)) -- south, either side of the walk
-		run(Vector3.new(-e, 0, side * e), Vector3.new(-e, 0, side * OPEN.W)) -- west, either side of the forge walk
-		run(Vector3.new(e, 0, side * e), Vector3.new(e, 0, side * OPEN.E)) -- east, either side of the duel walk
+		run(Vector3.new(side * ex, 0, -ez), Vector3.new(side * OPEN.N, 0, -ez))
+		run(Vector3.new(side * ex, 0, ez), Vector3.new(side * OPEN.S, 0, ez))
+		run(Vector3.new(-ex, 0, side * ez), Vector3.new(-ex, 0, side * OPEN.W))
+		run(Vector3.new(ex, 0, side * ez), Vector3.new(ex, 0, side * OPEN.E))
 	end
 end
 
@@ -126,36 +133,37 @@ function Courtyard.Build(parent: Instance, origin: CFrame, altarId: string, plin
 		Kit.slab(group, name, Vector3.new(x1 - x0, 4, z1 - z0), origin * CFrame.new((x0 + x1) / 2, TOP - 2, (z0 + z1) / 2), surface)
 	end
 	floor("AxialWalk", -POOL.X0, POOL.X0, -HALF, HALF, "PavingPath")
+	pavingJoints(group, origin, -POOL.X0 + 1.5, POOL.X0 - 1.5, -HALF + 1, HALF - 1)
 	for side = -1, 1, 2 do
-		local a, b = math.min(side * POOL.X1, side * HALF), math.max(side * POOL.X1, side * HALF)
+		local a, b = math.min(side * POOL.X1, side * HALF_X), math.max(side * POOL.X1, side * HALF_X)
 		floor("Flagstones", a, b, -HALF, HALF, "Paving")
 		local c, d = math.min(side * POOL.X0, side * POOL.X1), math.max(side * POOL.X0, side * POOL.X1)
 		floor("Flagstones", c, d, -HALF, POOL.Z0, "Paving")
 		floor("Flagstones", c, d, POOL.Z1, HALF, "Paving")
 		basin(group, origin, side)
 		pavingJoints(group, origin, a + 0.5, b - 0.5, POOL.Z0, POOL.Z1)
-		Kit.slab(group, "PathInlay", Vector3.new(0.12, 0.04, HALF * 2 - 2), origin * CFrame.new(side * 7.2, TOP + 0.01, 0), "Bronze", Kit.decor())
+		Kit.slab(group, "PathInlay", Vector3.new(0.12, 0.04, HALF * 2 - 2), origin * CFrame.new(side * 19.5, TOP + 0.01, 0), "Bronze", Kit.decor())
 		for _, z in { -16, 27, 42.5 } do
-			Props.lantern(group, origin * CFrame.new(side * 9.6, TOP, z))
+			Props.lantern(group, origin * CFrame.new(side * 21.2, TOP, z))
 		end
-		Props.stele(group, origin * CFrame.new(side * 37, TOP, 37) * CFrame.Angles(0, math.rad(side * 45), 0), "REMEMBER\nDEATH")
-		for _, x in { 16, 30 } do
+		Props.stele(group, origin * CFrame.new(side * 49, TOP, 37) * CFrame.Angles(0, math.rad(side * 45), 0), "REMEMBER\nDEATH")
+		for _, x in { 28, 42 } do
 			Props.banner(group, origin * CFrame.new(side * x, TOP, HALF - 1.6))
 		end
 		-- Sparse crimson maples and shrubs in the outer strips, echoing the sacred tree's leaves.
-		Props.tree(group, origin * CFrame.new(side * 38.5, TOP, 20) * CFrame.Angles(0, side, 0), 0.8)
+		Props.tree(group, origin * CFrame.new(side * 50.5, TOP, 20) * CFrame.Angles(0, side, 0), 0.8)
 		for _, z in { 10, 30, 41 } do
-			Props.shrub(group, origin * CFrame.new(side * 43.4, TOP, z) * CFrame.Angles(0, z, 0), 1.1)
+			Props.shrub(group, origin * CFrame.new(side * 55.4, TOP, z) * CFrame.Angles(0, z, 0), 1.1)
 		end
 	end
-	Kit.slab(group, "TerraceSkirting", Vector3.new(HALF * 2 + 1, 2.2, HALF * 2 + 1), origin * CFrame.new(0, TOP - 4.6, 0), "StoneDark")
+	Kit.slab(group, "TerraceSkirting", Vector3.new(HALF_X * 2 + 1, 2.2, HALF * 2 + 1), origin * CFrame.new(0, TOP - 4.6, 0), "StoneDark")
 	dais(group, origin)
 	balustrade(group, origin)
 	local anchor = Kit.part(group, "AltarAnchor_" .. altarId, Vector3.new(1, 0.2, 1), origin * CFrame.new(0, plinth, 0), Color3.new(), Enum.Material.Slate,
 		{ Collide = false, Query = false, Transparency = 1, Shadow = false })
-	Bonfire.Build(group, origin * CFrame.new(0, TOP + 1.56, 0))
+	Bonfire.Build(group, origin * CFrame.new(0, TOP + 0.03, 0))
 	local petals = Kit.hidden(group, "PetalAnchor", Vector3.new(HALF * 1.8, 1, HALF * 1.8), origin * CFrame.new(0, 32, 0))
-	Leaves.Emitter(petals, { Rate = 7, Size = 0.5, Wind = Vector3.new(1.5, -1.0, 0.8) })
+	Leaves.Emitter(petals, { Rate = 2, Size = 0.28, Wind = Vector3.new(1.5, -1.0, 0.8) })
 	return anchor
 end
 

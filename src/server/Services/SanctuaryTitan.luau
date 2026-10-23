@@ -1,16 +1,16 @@
 --!strict
 -- ModuleScript: ServerScriptService/AsurasPath/Services/SanctuaryTitan
 -- Mounts the Veiled Ascetic (ServerStorage.AsuraAssets.AsuraVeiledTitan) on the colossus terrace.
--- The asset is pre-composed in Blender (tools/blender/compose_titan.py), in studs: her figure
--- (Titan_Figure_NN, 100 tall), the sacred tree (Titan_Canopy_NN, 4.5x her, trunk 175 behind her,
--- root bed flat on the floor) and the bark roots binding them (Titan_Roots_NN). Model space z = 0 is
--- the floor at her plinth base, so the whole piece moves and scales as one: no per-part fitting.
+-- The imported figure and its binding roots are enlarged together around the original plinth base.
+-- Her seated silhouette is 150 studs tall; the established 450-stud sacred tree and its root-bed
+-- footprint stay at their authored scale. Imported mesh references, UVs and PBR maps are retained.
 local Leaves = require(script.Parent:WaitForChild("SanctuaryLeaves") :: ModuleScript)
 local Canopy = require(script.Parent:WaitForChild("SanctuaryCanopy") :: ModuleScript)
 
 local Titan = {}
 
-local FIGURE_HEIGHT = 100 -- plinth base to crown spikes (the composed asset's own scale)
+local AUTHORED_FIGURE_HEIGHT = 100
+local FIGURE_HEIGHT = 150 -- plinth base to crown spikes, independent of the tree's footprint
 local SINK = 2 -- the whole piece beds into the terrace so no plinth or root edge hovers
 -- Footprint of the composed tree, for the terrace: its root bed is centred ~150 behind her and
 -- spreads ~240 studs from there.
@@ -30,6 +30,23 @@ end
 
 local function flat(v: Vector3): Vector3
 	return Vector3.new(v.X, 0, v.Z)
+end
+
+-- Roots were sculpted onto her robe and shoulders. Moving them with her, rather than stretching
+-- individual root pieces, preserves that contact. Their ground ends bed into the much wider tree
+-- root mass; neither the tree nor the terrace needs to grow with her.
+local function monument(figure: Model, roots: Model)
+	local box, size = figure:GetBoundingBox()
+	local seat = box.Position - Vector3.yAxis * size.Y * 0.5
+	local scale = FIGURE_HEIGHT / size.Y
+	for _, model in { figure, roots } do
+		for _, child in model:GetChildren() do
+			if child:IsA("BasePart") then
+				child.Size *= scale
+				child.CFrame = CFrame.new(seat + (child.Position - seat) * scale) * child.CFrame.Rotation
+			end
+		end
+	end
 end
 
 -- `focus` is where visitors look from (the plaza); the tree ends up on the far side of her.
@@ -63,16 +80,21 @@ function Titan.Mount(statue: Model, anchor: CFrame, focus: Vector3?): boolean
 		statue:PivotTo(CFrame.new(fc) * CFrame.Angles(0, turn, 0) * CFrame.new(-fc) * statue:GetPivot())
 	end
 
-	-- One scale for the whole piece (keeps the roots joined), then seat her plinth on the anchor.
+	-- Normalize the imported composition first, then enlarge only the pale figure and the roots
+	-- embracing it. The existing canopy remains approximately 450 studs tall, rather than 675.
 	local height = figure:GetExtentsSize().Y
 	if height > 0 then
-		statue:ScaleTo(statue:GetScale() * FIGURE_HEIGHT / height)
+		statue:ScaleTo(statue:GetScale() * AUTHORED_FIGURE_HEIGHT / height)
 	end
+	monument(figure, roots)
 	local fbox0, fsize0 = figure:GetBoundingBox()
 	local seat = fbox0.Position - Vector3.yAxis * fsize0.Y * 0.5
 	statue:PivotTo(statue:GetPivot() + (anchor.Position - Vector3.yAxis * SINK - seat))
 	local fbox, fsize = figure:GetBoundingBox()
 	local depth = math.abs(away.X) * fsize.X + math.abs(away.Z) * fsize.Z
+	statue:SetAttribute("FigureHeight", fsize.Y)
+	statue:SetAttribute("SacredTreeHeight", tree:GetExtentsSize().Y)
+	statue:SetAttribute("MonumentalFigureScale", FIGURE_HEIGHT / AUTHORED_FIGURE_HEIGHT)
 
 	-- Leaves fall from the crown: the four highest tree chunks each shed a share.
 	local parts = tree:GetChildren()
@@ -80,7 +102,7 @@ function Titan.Mount(statue: Model, anchor: CFrame, focus: Vector3?): boolean
 		return (a :: BasePart).Position.Y > (b :: BasePart).Position.Y
 	end)
 	for i = 1, math.min(4, #parts) do
-		Leaves.Emitter(parts[i] :: BasePart, { Rate = 22, Size = 4 })
+		Leaves.Emitter(parts[i] :: BasePart, { Rate = 2, Size = 0.45, Wind = Vector3.new(1.2, -0.5, 0.35) })
 	end
 	Canopy.Build(statue, tree)
 
@@ -92,10 +114,11 @@ function Titan.Mount(statue: Model, anchor: CFrame, focus: Vector3?): boolean
 		lamp.Name = "TitanKeyLight" .. i
 		lamp.Anchored, lamp.CanCollide, lamp.CanQuery, lamp.CanTouch = true, false, false, false
 		lamp.Transparency, lamp.Size = 1, Vector3.one
-		lamp.CFrame = CFrame.lookAt(target - away * (depth * 0.5 + 10 - (h - 0.25) * 30) - Vector3.yAxis * 4, target)
+		local distance = math.clamp(depth * 0.5 + 10 - (h - 0.25) * 30, 32, 52)
+		lamp.CFrame = CFrame.lookAt(target - away * distance - Vector3.yAxis * 4, target)
 		local spot = Instance.new("SpotLight")
-		spot.Color = Color3.fromRGB(255, 206, 160)
-		spot.Range, spot.Brightness, spot.Angle, spot.Shadows = 60, 5, 80, false
+		spot.Color = Color3.fromRGB(255, 210, 172)
+		spot.Range, spot.Brightness, spot.Angle, spot.Shadows = 60, 3.3, 80, false
 		spot.Parent = lamp
 		lamp.Parent = statue
 	end

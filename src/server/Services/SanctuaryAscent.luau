@@ -50,8 +50,14 @@ end
 
 local function landing(group: Instance, origin: CFrame, s: Stair)
 	local top, back = s.Steps * s.Rise, s.Start + s.Steps * s.Run
-	Kit.slab(group, "Landing", Vector3.new(44, 10, s.Landing + 3), origin * CFrame.new(0, top - 5, -back - s.Landing / 2), "Paving")
-	Kit.slab(group, "LandingSkirting", Vector3.new(45, 2, s.Landing + 3.5), origin * CFrame.new(0, top - 6.2, -back - s.Landing / 2), "StoneDark")
+	Kit.slab(group, "Landing", Vector3.new(52, 10, s.Landing + 3), origin * CFrame.new(0, top - 5, -back - s.Landing / 2), "Paving")
+	Kit.slab(group, "LandingSkirting", Vector3.new(53, 2, s.Landing + 3.5), origin * CFrame.new(0, top - 6.2, -back - s.Landing / 2), "StoneDark")
+	-- The TRELLIS guardian pair sits inside the landing, outside the clear stair/gate axis.
+	for side = -1, 1, 2 do
+		local foot = origin * CFrame.new(side * 22, top, -back - 4.5)
+		Kit.slab(group, "GuardianPedestal", Vector3.new(7.1, 1.0, 6.2), foot * CFrame.new(0, 0.5, 0), "StoneDark", Kit.decor())
+		Kit.place(group, "AsuraGuardianLion", foot * CFrame.new(0, 0.5, 0) * CFrame.Angles(0, math.rad(side * 18 + 180), 0))
+	end
 	for side = -1, 1, 2 do
 		local a = (origin * CFrame.new(side * (s.Width / 2 + 1.9), top, -back - 0.6)).Position
 		local b = (origin * CFrame.new(side * 21, top, -back - 0.6)).Position
@@ -64,11 +70,11 @@ local function gate(group: Instance, origin: CFrame, s: Stair): BasePart
 	local floor = origin * CFrame.new(0, s.Steps * s.Rise, -(s.Start + s.Steps * s.Run + s.Gate))
 	-- The plaza looks at the hall's back (+Z), so the hall is turned to face south.
 	local hall = floor * CFrame.Angles(0, math.pi, 0)
-	Frame.pavilion(group, hall, 30, 6, 12, { Rise = 0.85, Xs = { -15, -7.4, 7.4, 15 }, Lanterns = false })
-	Kit.slab(group, "UpperStorey", Vector3.new(17, 5.2, 4.6), hall * CFrame.new(0, 16.8, 0), "Lacquer", Kit.decor())
-	Kit.slab(group, "StoreyBand", Vector3.new(17.4, 0.6, 5), hall * CFrame.new(0, 14.4, 0), "Timber", Kit.decor())
-	Kit.place(group, "Roof_Hall", hall * CFrame.new(0, 19.6, 0), Vector3.new(0.68, 0.72, 0.78))
-	local plaque = floor * CFrame.new(0, 16.9, 2.45)
+	Frame.pavilion(group, hall, 42, 8, 15, { Rise = 0.9, Xs = { -21, -10.7, 10.7, 21 }, Lanterns = false })
+	Kit.slab(group, "UpperStorey", Vector3.new(23, 5.2, 6.6), hall * CFrame.new(0, 19.8, 0), "Lacquer", Kit.decor())
+	Kit.slab(group, "StoreyBand", Vector3.new(23.4, 0.6, 7), hall * CFrame.new(0, 17.4, 0), "Timber", Kit.decor())
+	Kit.place(group, "Roof_Hall", hall * CFrame.new(0, 22.6, 0), Vector3.new(0.92, 0.76, 0.9))
+	local plaque = floor * CFrame.new(0, 19.9, 3.45)
 	Kit.place(group, "Gate_Plaque", plaque)
 	local text = Kit.part(group, "GateTablet", Vector3.new(6.2, 2.3, 0.05), plaque * CFrame.new(0, 0, 0.22), Color3.new(), Enum.Material.Wood, Kit.decor())
 	text.Transparency = 1
@@ -81,20 +87,20 @@ local function gate(group: Instance, origin: CFrame, s: Stair): BasePart
 	gui.Parent = text
 	-- Side bays: stone dado and timber lattice, so the jade portal is the one opening on the axis.
 	for side = -1, 1, 2 do
-		local bay = floor * CFrame.new(side * 11.2, 0, 0)
-		Kit.slab(group, "GateDado", Vector3.new(6.8, 2.4, 0.8), bay * CFrame.new(0, 1.2, 0), "StoneDark")
-		for x = -3, 3, 0.75 do
-			Kit.slab(group, "GateLattice", Vector3.new(0.2, 7.4, 0.25), bay * CFrame.new(x, 6.1, 0), "Timber", Kit.decor())
+		local bay = floor * CFrame.new(side * 15.8, 0, 0)
+		Kit.slab(group, "GateDado", Vector3.new(9.2, 2.4, 0.8), bay * CFrame.new(0, 1.2, 0), "StoneDark")
+		for x = -4.1, 4.1, 0.75 do
+			Kit.slab(group, "GateLattice", Vector3.new(0.2, 10.4, 0.25), bay * CFrame.new(x, 7.6, 0), "Timber", Kit.decor())
 		end
-		Kit.slab(group, "GateLatticeRail", Vector3.new(6.8, 0.35, 0.4), bay * CFrame.new(0, 9.9, 0), "Lacquer", Kit.decor())
-		Kit.blocker(group, "GateBayCollision", (bay * CFrame.new(-3.4, 0, 0)).Position, (bay * CFrame.new(3.4, 0, 0)).Position, 10, 0.8)
-		Frame.hanging(group, (floor * CFrame.new(side * 11.2, 11.6, 3)).Position, 16)
+		Kit.slab(group, "GateLatticeRail", Vector3.new(9.2, 0.35, 0.4), bay * CFrame.new(0, 12.9, 0), "Lacquer", Kit.decor())
+		Kit.blocker(group, "GateBayCollision", (bay * CFrame.new(-4.6, 0, 0)).Position, (bay * CFrame.new(4.6, 0, 0)).Position, 13, 0.8)
+		Frame.hanging(group, (floor * CFrame.new(side * 15.8, 14.6, 4)).Position, 16)
 	end
-	local cf = floor * CFrame.new(0, 5.8, 0)
-	local veil = Kit.part(group, "PortalVeil", Vector3.new(13, 11.4, 0.2), cf, Color3.fromRGB(46, 92, 88), Enum.Material.Glass, Kit.decor())
+	local cf = floor * CFrame.new(0, 7.3, 0)
+	local veil = Kit.part(group, "PortalVeil", Vector3.new(20, 14.4, 0.2), cf, Color3.fromRGB(46, 92, 88), Enum.Material.Glass, Kit.decor())
 	veil.Transparency, veil.Reflectance = 0.25, 0.1
 	for side = -1, 1, 2 do
-		Kit.part(group, "PortalSeam", Vector3.new(0.06, 11.3, 0.1), cf * CFrame.new(side * 6.4, 0, 0.15), PORTAL, Enum.Material.Neon, Kit.decor())
+		Kit.part(group, "PortalSeam", Vector3.new(0.045, 14.3, 0.1), cf * CFrame.new(side * 9.9, 0, 0.15), PORTAL, Enum.Material.Glass, Kit.decor())
 	end
 	Kit.light(veil, PORTAL, 18, 0.9, false)
 	if Assets.Textures.Smoke ~= "" then
@@ -106,7 +112,7 @@ local function gate(group: Instance, origin: CFrame, s: Stair): BasePart
 		mist.Color = ColorSequence.new(PORTAL, Color3.fromRGB(72, 103, 112))
 		mist.Parent = veil
 	end
-	local trigger = Kit.part(group, "PortalTrigger", Vector3.new(13, 11.4, 2.4), cf, PORTAL, Enum.Material.SmoothPlastic,
+	local trigger = Kit.part(group, "PortalTrigger", Vector3.new(20, 14.4, 2.4), cf, PORTAL, Enum.Material.SmoothPlastic,
 		{ Collide = false, Query = false, Transparency = 1, Shadow = false })
 	trigger.CanTouch = true
 	return trigger

@@ -1,0 +1,33 @@
+{
+  "source": "Asuraguardianlion_raw.glb",
+  "source_sha256": "56a142c1b3d58d0f40761e057b24bb41e88c92140fcc704dcb1aaa440de09bf7",
+  "cap": 18000,
+  "texture_size": 1024,
+  "meshes": [
+    {
+      "name": "geometry_0",
+      "tris_before": 96265,
+      "tris_after": 17819,
+      "size_m": [
+        0.7656,
+        0.6743,
+        1.0007
+      ],
+      "split_nonmanifold_edges": 2,
+      "boundary_edges": 9
+    }
+  ],
+  "maps": {
+    "Material_0": {
+      "Color": "Material_0_Color.png",
+      "Normal": "Material_0_Normal.png",
+      "Roughness": "Material_0_Roughness.png",
+      "Metalness": "Material_0_Metalness.png"
+    }
+  },
+  "glb": "Asuraguardianlion_raw.glb",
+  "glb_mb": 2.188,
+  "sha256": "f1bdb4d126aed7959627a8c83d39661a49c34c80fdb70028a7baf664bff9f44d",
+  "total_triangles": 17819,
+  "estimated_rgba_map_bytes": 16777216
+}

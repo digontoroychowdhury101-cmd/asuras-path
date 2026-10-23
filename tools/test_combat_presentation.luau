@@ -59,9 +59,18 @@ end
 -- The cause: the shared night profile every first phase used is far below the floor.
 check("legacy Colosseum night fails the floor", L(Profiles.AshColosseum.Lighting.OutdoorAmbient) < F.Outdoor and Profiles.AshColosseum.CB_Atmosphere.Density > F.Density)
 local s = Profiles.Sanctuary
--- The lobby art pass keeps golden-hour sunlight over neutral blue-grey fill for the stone and faces.
-check("shrine golden hour", s.Lighting.ClockTime == 17.5 and s.CB_Atmosphere.Density == 0.17 and s.CB_SunRays.Intensity == 0.14
-	and s.Lighting.Ambient == roblox.Color3.fromRGB(80, 88, 104))
+-- The monumental sanctuary needs active engine scattering to separate the courtyard and remote peaks.
+check("shrine golden hour", s.Lighting.ClockTime == 17.4 and s.Lighting.Brightness == 2.2
+	and s.Lighting.EnvironmentDiffuseScale == 0.65 and s.Lighting.EnvironmentSpecularScale == 1.0
+	and s.Lighting.Ambient == roblox.Color3.fromRGB(60, 70, 92) and s.Lighting.OutdoorAmbient == roblox.Color3.fromRGB(105, 117, 139)
+	and s.Lighting.ColorShift_Top == roblox.Color3.fromRGB(255, 245, 226) and s.Lighting.ExposureCompensation == -0.12
+	and s.CB_Atmosphere.Density == 0.38 and s.CB_Atmosphere.Haze == 2.2
+	and s.CB_Atmosphere.Color == roblox.Color3.fromRGB(250, 215, 185) and s.CB_Atmosphere.Decay == roblox.Color3.fromRGB(120, 130, 165)
+	and s.CB_Atmosphere.Glare == 0.35 and s.CB_Atmosphere.Offset == 0.2
+	and s.CB_SunRays.Intensity == 0.12 and s.CB_SunRays.Spread == 0.45
+	and s.CB_ColorCorrection.Saturation == 0.05 and s.CB_ColorCorrection.Contrast == 0.15
+	and s.CB_ColorCorrection.TintColor == roblox.Color3.fromRGB(255, 246, 236)
+	and s.CB_Bloom.Intensity == 0.25 and s.CB_Bloom.Size == 24 and s.CB_Bloom.Threshold == 2.0)
 check("shrine fill reads floors and faces", L(s.Lighting.Ambient) >= F.Ambient and L(s.Lighting.OutdoorAmbient) >= F.Outdoor)
 check("night sky only Colosseum and phase two", Profiles.nightSky("Combat:AshColosseum") and Profiles.nightSky("Unbound:BambooPass") and not Profiles.nightSky("Combat:BambooPass"))
 

@@ -42,8 +42,10 @@ function Frame.beam(parent: Instance, a: Vector3, b: Vector3)
 end
 
 function Frame.hanging(parent: Instance, hook: Vector3, range: number?)
-	Kit.place(parent, "Lantern_Hanging", CFrame.new(hook))
-	Kit.glow(parent, CFrame.new(hook - Y * 1.3), Vector3.new(0.95, 1.0, 0.95), range or 16)
+	if not Kit.place(parent, "Lantern_Hanging", CFrame.new(hook)) then
+		Kit.lanternFallback(parent, CFrame.new(hook), true)
+	end
+	Kit.glow(parent, CFrame.new(hook - Y * 1.3), Vector3.new(0.88, 1.0, 0.88), range or 15, 1.35, 6)
 end
 
 -- Pavilion on `cf` (floor centre; X = width). Columns every <= 11 studs along the width.

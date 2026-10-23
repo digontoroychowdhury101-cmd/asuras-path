@@ -121,6 +121,49 @@ local function module(path: string): any
 	return luau.load(fs.readFile(path), { debugName = path, environment = env })()
 end
 siblings.WagerLedger = module("src/server/Services/WagerLedger.luau")
+-- Execute the real Sanctuary finish against primitive visual stand-ins. Imported meshes are Studio
+-- evidence; this fixture proves that cosmetic assembly cannot move/resize the live duel geometry.
+local visualKit = { Surface = {} }
+for _, key in { "PavingPath", "Stone", "Bronze", "Timber" } do
+	visualKit.Surface[key] = { Material = roblox.Enum.Material.Slate, Variant = "Test" .. key, Color = roblox.Color3.fromRGB(140, 150, 160) }
+end
+function visualKit.decor() return { Collide = false, Query = false, Shadow = false } end
+function visualKit.folder(name, parent)
+	local folder = roblox.Instance.new("Folder"); folder.Name, folder.Parent = name, parent; return folder
+end
+function visualKit.slab(parent, name, size, cf, key)
+	local p = roblox.Instance.new("Part")
+	p.Name, p.Size, p.CFrame, p.Anchored = name, size, cf, true
+	p.CanCollide, p.CanQuery, p.CanTouch, p.CastShadow = false, false, false, false
+	p.Material, p.Color, p.Parent = visualKit.Surface[key].Material, visualKit.Surface[key].Color, parent
+	return p
+end
+function visualKit.place() return nil end
+function visualKit.glow(parent, cf, size) return visualKit.slab(parent, "Paper", size, cf, "Stone") end
+siblings.SanctuaryKit = visualKit
+local ringFinish = module("src/server/Services/SanctuaryRingFinish.luau")
+siblings.SanctuaryRingFinish = { Dress = function(model)
+	local originals, known = {}, {}
+	for _, p in model:GetChildren() do
+		if p:IsA("BasePart") then
+			known[p] = true
+			table.insert(originals, { Part = p, Name = p.Name, Size = p.Size, Frame = p.CFrame, Collide = p.CanCollide,
+				Query = p.CanQuery, Touch = p.CanTouch, Anchored = p.Anchored, Shape = p.Shape, Transparency = p.Transparency })
+		end
+	end
+	ringFinish.Dress(model)
+	for _, old in originals do
+		local p = old.Part
+		check("Sanctuary finish preserves " .. old.Name .. " physics", p.Parent == model and p.Name == old.Name and p.Size == old.Size and p.CFrame == old.Frame
+			and p.CanCollide == old.Collide and p.CanQuery == old.Query and p.CanTouch == old.Touch and p.Anchored == old.Anchored and p.Shape == old.Shape)
+		if old.Name:match("^Barrier") then check("Sanctuary finish preserves barrier visibility", p.Transparency == old.Transparency) end
+	end
+	for _, p in model:GetDescendants() do
+		if p:IsA("BasePart") and not known[p] then
+			check("Sanctuary decoration never collides or answers queries", not p.CanCollide and not p.CanQuery and not p.CanTouch)
+		end
+	end
+end }
 local Colosseum = module("src/server/Services/ColosseumService.luau")
 local Wagers = module("src/server/Services/WagerService.luau")
 

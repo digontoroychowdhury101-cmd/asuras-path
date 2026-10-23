@@ -20,9 +20,9 @@ local TERRACE = { X = 0, Z = 555, Radius = 246, Top = 620 } -- SanctuaryColossus
 local FIGURE = { X = 0, Z = 705 } -- her seat (terrace centre + TreeSpan.Forward)
 
 -- Pilgrim walk and the Well of Descent.
-L.slab(r, "PilgrimWalk", "Path", -6, 6, 946, 972, Y, 3)
+L.slab(r, "PilgrimWalk", "Path", -12, 12, 946, 972, Y, 3)
 for _, side in { -1, 1 } do
-	L.wall(r, "PilgrimRail", "Stone", side * 6.4, 947, side * 6.4, 972, Y, 1.4, 0.8)
+	L.wall(r, "PilgrimRail", "Stone", side * 12.4, 947, side * 12.4, 972, Y, 1.4, 0.8)
 end
 L.slab(r, "DescentPavilion", "Marble", -16, 16, 972, 1004, Y, 6)
 -- Lobby rebuild: the four columns of the pyramidal roof over the Well (SanctuaryApproach).
@@ -35,8 +35,8 @@ L.wall(r, "PavilionRail", "Stone", -15.6, 972, -15.6, 1004, Y, 2.6, 0.8)
 L.wall(r, "PavilionRail", "Stone", -16, 1003.6, 16, 1003.6, Y, 2.6, 0.8)
 L.wall(r, "PavilionRail", "Stone", 15.6, 972, 15.6, 983, Y, 2.6, 0.8)
 L.wall(r, "PavilionRail", "Stone", 15.6, 993, 15.6, 1004, Y, 2.6, 0.8)
-L.wall(r, "PavilionRail", "Stone", -16, 972.4, -6.8, 972.4, Y, 2.6, 0.8)
-L.wall(r, "PavilionRail", "Stone", 6.8, 972.4, 16, 972.4, Y, 2.6, 0.8)
+L.wall(r, "PavilionRail", "Stone", -16, 972.4, -12.8, 972.4, Y, 2.6, 0.8)
+L.wall(r, "PavilionRail", "Stone", 12.8, 972.4, 16, 972.4, Y, 2.6, 0.8)
 -- Cloud Reliquary stones and isle (cache SanctuaryReliquary sits on it).
 for i, top in { 601, 602, 603 } do
 	L.slab(r, "CloudShard" .. i, "Marble", 12 + i * 7, 16 + i * 7, 985, 991, top, 3)

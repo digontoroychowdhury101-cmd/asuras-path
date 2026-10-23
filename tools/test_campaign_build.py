@@ -72,13 +72,15 @@ local function audit(label, root, solids, budget)
 			parts += 1
 			if d.CanCollide then colliding += 1 end
 			local m = d.Material and d.Material.Name
-			if m == "Neon" or m == "SmoothPlastic" then flat += 1 end
+			local housedPaper = label == "Sanctuary routes" and d.Parent and d.Parent.Name == "FrostedLanternChamber"
+				and ((d.Name == "FrostedPaperPane" and d.Size.Z <= 0.03) or d.Name == "ShelteredFlame")
+			if (m == "Neon" and not housedPaper) or m == "SmoothPlastic" then flat += 1 end
 		elseif d.ClassName == "PointLight" or d.ClassName == "SpotLight" then lights += 1
 		elseif d.ClassName == "ParticleEmitter" then emitters += 1 end
 	end
 	printed(string.format("  %-16s %5d parts  %3d colliding  %2d lights  %2d emitters", label, parts, colliding, lights, emitters))
 	check(label .. " collides only with its layout boxes", colliding == solids)
-	check(label .. " uses the slate/lacquer/tile vocabulary (no Neon, no SmoothPlastic)", flat == 0)
+	check(label .. " uses crafted materials; emissive paper stays inside framed lanterns", flat == 0)
 	check(label .. " stays inside its budget", parts <= budget.Parts and lights <= budget.Lights and emitters <= budget.Emitters)
 end
 for _, layout in Campaign.Layouts do

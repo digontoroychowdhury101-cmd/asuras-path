@@ -12,8 +12,8 @@ local Props = require(script.Parent:WaitForChild("SanctuaryProps") :: ModuleScri
 local Cloisters = {}
 
 local TOP = 0.1
-local HALL = { X = 24, Z = -37, Width = 20, Depth = 10, Height = 10.5 }
-local SIDE = { X = 40.8, Z0 = -42, Z1 = -6, Width = 6, Height = 8.5 }
+local HALL = { X = 36, Z = -37, Width = 20, Depth = 10, Height = 10.5 }
+local SIDE = { X = 52.8, Z0 = -42, Z1 = -6, Width = 6, Height = 8.5 }
 local WALK = { Width = 12, Height = 8.5 }
 local Y = Vector3.yAxis
 
@@ -83,8 +83,8 @@ function Cloisters.Build(parent: Instance, origin: CFrame, forgeEdge: number, du
 		Props.bench(group, origin * CFrame.new(side * (SIDE.X + 2.2), TOP, -24) * CFrame.Angles(0, math.rad(side * 90), 0))
 	end
 	-- The forge walk opens onto the Loggia Eaves service ledge (SanctuaryRoutes) beside the platform.
-	walkway(group, origin, Vector3.new(-46, 0, 0), Vector3.new(-forgeEdge, 0, 0), -1)
-	walkway(group, origin, Vector3.new(46, 0, 0), Vector3.new(duelEdge, 0, 0))
+	walkway(group, origin, Vector3.new(-58, 0, 0), Vector3.new(-forgeEdge, 0, 0), -1)
+	walkway(group, origin, Vector3.new(58, 0, 0), Vector3.new(duelEdge, 0, 0))
 	return group
 end
 

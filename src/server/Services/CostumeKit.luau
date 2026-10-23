@@ -45,6 +45,9 @@ local function make(piece: Schema.Piece, limb: BasePart, parent: Instance): Part
 	if piece.Glow then
 		local light = Instance.new("PointLight")
 		light.Color, light.Range, light.Brightness, light.Shadows = p.Color, piece.Glow, 0.7, false
+		if piece.Name == "SoulLantern" then
+			light.Color, light.Range, light.Brightness, light.Shadows = Color3.fromRGB(255, 175, 95), 15, 1.2, true
+		end
 		light.Parent = p
 	end
 	p.Parent = parent

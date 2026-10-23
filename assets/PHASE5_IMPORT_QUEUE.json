@@ -240,6 +240,28 @@
           "MetalnessMap": "rbxassetid://121333697106873"
         }
       ]
+    },
+    {
+      "name": "Asurastonelantern",
+      "file": "assets/models/Asurastonelantern.glb",
+      "mesh_objects": 1,
+      "materials": 1,
+      "triangles": 18000,
+      "source": "trellis_ai",
+      "sha256": "c847fea937b1b86c46adf903e1a9c80bd99ebfbfc0e693bf8ec471c6de89fffb",
+      "uploaded": false,
+      "parts": []
+    },
+    {
+      "name": "Asuraguardianlion",
+      "file": "assets/build/guardian_lion/AsuraGuardianLion.glb",
+      "mesh_objects": 1,
+      "materials": 1,
+      "triangles": 17622,
+      "source": "trellis_ai_with_blender_plinth_cleanup",
+      "sha256": "efcb1897e5bc37cee18237dab6f6a7adbf56e47df29742a982be5e6fcc7039fa",
+      "uploaded": false,
+      "parts": []
     }
   ],
   "Audio": {

@@ -1,9 +1,10 @@
 --!strict
 -- ModuleScript: ServerScriptService/AsurasPath/Services/SanctuaryProps
--- Repeated Shrine dressing built from the lobby kit: stone lanterns with a glowing paper box, cloth
+-- Repeated Shrine dressing built from the lobby kit: stone lanterns with frosted paper chambers, cloth
 -- banners on poles with a gold seal, and memorial stelae carrying an engraved inscription. Each solid
 -- prop gets one invisible collision box; cloth, glow and text never collide.
 local Kit = require(script.Parent:WaitForChild("SanctuaryKit") :: ModuleScript)
+local Assets = require(game:GetService("ReplicatedStorage").AsurasPath.Shared.PresentationAssets)
 
 local Props = {}
 
@@ -11,20 +12,28 @@ local function invisible(): any
 	return { Collide = true, Query = false, Transparency = 1, Shadow = false }
 end
 
--- Stone lantern standing on `cf` (floor). Its paper box glows between the corner posts.
+local function branchCard(group: Instance, cf: CFrame, width: number, height: number, tint: Color3)
+	local card = Kit.hidden(group, "CrimsonBranchSpray", Vector3.new(width, height, 0.04), cf)
+	for _, face in { Enum.NormalId.Front, Enum.NormalId.Back } do
+		local image = Instance.new("Decal")
+		image.Name, image.Texture, image.Face, image.Color3 = "CrimsonSpray", Assets.Textures.CrimsonBranch, face, tint
+		image.Parent = card
+	end
+end
+
+local function removeBlob(model: Model)
+	for _, child in model:GetChildren() do
+		if child:IsA("BasePart") and child.Name:find("__Foliage", 1, true) then
+			child:Destroy()
+		end
+	end
+end
+
+-- Stone lantern standing on `cf` (floor). A shaded paper chamber sits behind its carved posts.
 function Props.lantern(group: Instance, cf: CFrame, range: number?)
 	local shell = Kit.place(group, "Lantern_Stone", cf)
-	if shell then
-		for _, child in shell:GetChildren() do
-			if child:IsA("BasePart") then
-				child.Color = Kit.Surface.Stone.Color
-			end
-		end
-		Kit.glow(group, cf * CFrame.new(0, 3.35, 0), Vector3.new(1.04, 1.12, 1.04), range or 15, 0.82)
-	else
-		Kit.slab(group, "LanternPost", Vector3.new(0.9, 2.6, 0.9), cf * CFrame.new(0, 1.3, 0), "Stone", Kit.decor())
-		Kit.glow(group, cf * CFrame.new(0, 3.2, 0), Vector3.new(1.12, 1.2, 1.12), range or 15, 0.82)
-	end
+	if not shell then Kit.lanternFallback(group, cf, false) end
+	Kit.glow(group, cf * CFrame.new(0, 3.35, 0), Vector3.new(1.04, 1.12, 1.04), range or 15, 1.35)
 	Kit.part(group, "LanternCollision", Vector3.new(1.9, 4.4, 1.9), cf * CFrame.new(0, 2.2, 0), Color3.new(), Enum.Material.SmoothPlastic, invisible())
 end
 
@@ -77,13 +86,37 @@ end
 function Props.tree(group: Instance, cf: CFrame, scale: number?, small: boolean?)
 	-- These are secondary garden trees; the unchanged imported sacred tree owns the skyline.
 	local s = (scale or 1) * 0.78
-	if Kit.place(group, if small then "Tree_MapleSmall" else "Tree_Maple", cf, s) then
+	local tree = Kit.place(group, if small then "Tree_MapleSmall" else "Tree_Maple", cf, s)
+	if tree then
+		removeBlob(tree)
+		local rng = Random.new(math.floor(cf.X * 23 + cf.Z * 19) % 100000)
+		local height = if small then 12 else 15
+		for layer = 1, 3 do
+			for k = 0, 3 do
+				local angle = math.rad(k * 90 + layer * 31) + rng:NextNumber(-0.2, 0.2)
+				local radius = (if layer == 2 then 4.6 elseif layer == 3 then 2.7 else 3.6) * s
+				local pos = Vector3.new(math.cos(angle) * radius, (height * (0.43 + layer * 0.14) + rng:NextNumber(-0.5, 0.5)) * s, math.sin(angle) * radius)
+				local frame = cf * CFrame.new(pos) * CFrame.Angles(rng:NextNumber(-0.22, 0.22), -angle + math.pi / 2, rng:NextNumber(-0.3, 0.3))
+				branchCard(tree, frame, (if layer == 2 then 8 else 6) * s, (if layer == 2 then 4 else 3.5) * s,
+					if k % 2 == 0 then Color3.fromRGB(195, 177, 169) else Color3.fromRGB(179, 162, 165))
+			end
+		end
 		Kit.part(group, "TrunkCollision", Vector3.new(2.6, 9, 2.6) * s, cf * CFrame.new(0, 4.5 * s, 0), Color3.new(), Enum.Material.SmoothPlastic, invisible())
 	end
 end
 
 function Props.shrub(group: Instance, cf: CFrame, scale: number?)
-	Kit.place(group, "Shrub_Crimson", cf * CFrame.new(0, -0.15, 0), (scale or 1) * 0.68)
+	local s = (scale or 1) * 0.68
+	local shrub = Kit.place(group, "Shrub_Crimson", cf * CFrame.new(0, -0.15, 0), s)
+	if not shrub then return end
+	removeBlob(shrub)
+	for k = 0, 4 do
+		local angle = math.rad(k * 137 + 17)
+		local radius = (if k % 2 == 0 then 1.1 else 0.6) * s
+		local frame = cf * CFrame.new(math.cos(angle) * radius, (1.15 + (k % 3) * 0.25) * s, math.sin(angle) * radius)
+			* CFrame.Angles(math.rad(-12 + k * 5), angle, math.rad(-18 + k * 8))
+		branchCard(shrub, frame, 4.5 * s, 2.8 * s, Color3.fromRGB(190, 172, 163))
+	end
 end
 
 -- Low resting bench, facing -Z, reserved for the outer edges of galleries and the shrine walk.
@@ -103,7 +136,12 @@ function Props.brazier(group: Instance, cf: CFrame, range: number?)
 	Kit.part(group, "BrazierStand", Vector3.new(0.55, 3.8, 0.55), cf * CFrame.new(0, 1.9, 0), iron, Enum.Material.Metal)
 	Kit.disc(group, "BrazierFoot", 1.0, 0.3, cf * CFrame.new(0, 0.15, 0), iron, Enum.Material.Metal)
 	Kit.disc(group, "BrazierBowl", 1.35, 0.7, cf * CFrame.new(0, 4.1, 0), iron, Enum.Material.Metal).MaterialVariant = "AsuraBronze"
-	local coals = Kit.disc(group, "BrazierCoals", 1.1, 0.2, cf * CFrame.new(0, 4.5, 0), Color3.fromRGB(255, 120, 40), Enum.Material.Neon, Kit.decor())
+	local coals = Kit.disc(group, "BrazierCoals", 1.1, 0.2, cf * CFrame.new(0, 4.5, 0), Color3.fromRGB(49, 38, 32), Enum.Material.Slate, Kit.decor())
+	for k = 0, 6 do
+		local a = math.rad(k * 137)
+		Kit.part(group, "BankedCoal", Vector3.new(0.48, 0.24, 0.36), cf * CFrame.new(math.cos(a) * 0.65, 4.62, math.sin(a) * 0.65),
+			Color3.fromRGB(62, 42, 31), Enum.Material.Slate, { Collide = false, Query = false, Shadow = false, Shape = Enum.PartType.Ball })
+	end
 	local fire = Instance.new("Fire")
 	fire.Size, fire.Heat, fire.Color, fire.SecondaryColor = 2.2, 4, Color3.fromRGB(255, 150, 60), Color3.fromRGB(220, 60, 20)
 	fire.Parent = coals

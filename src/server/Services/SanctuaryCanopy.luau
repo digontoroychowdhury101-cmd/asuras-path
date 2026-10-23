@@ -1,10 +1,11 @@
 --!strict
--- Static crimson sprays on the existing sacred tree. The hero's imported bark, roots, scale and
--- pose stay untouched. Anchors were sampled from the composed GLB's actual branch vertices and
+-- Static crimson sprays and folded prayer silks on the existing sacred tree. Its imported bark,
+-- scale and pose stay untouched. Anchors were sampled from the composed GLB's branch vertices and
 -- expressed in each imported chunk's local bounding box; they follow its final mounted transform.
 -- Twenty-eight sprays / 84 alpha cards reuse the existing uploaded leaf-scatter texture. Mixed
 -- card angles give the crown depth from the terrace as well as the courtyard, with open branch gaps.
 local Assets = require(game:GetService("ReplicatedStorage").AsurasPath.Shared.PresentationAssets)
+local Kit = require(script.Parent:WaitForChild("SanctuaryKit") :: ModuleScript)
 
 local Canopy = {}
 type Branch = { string | number }
@@ -44,8 +45,8 @@ local BRANCHES: { Branch } = {
 }
 
 local TINTS = {
-	Color3.fromRGB(255, 235, 220), Color3.fromRGB(244, 190, 178),
-	Color3.fromRGB(220, 202, 218), Color3.fromRGB(255, 218, 185),
+	Color3.fromRGB(194, 173, 168), Color3.fromRGB(174, 157, 160),
+	Color3.fromRGB(180, 169, 181), Color3.fromRGB(205, 176, 158),
 }
 
 local function card(parent: Instance, frame: CFrame, width: number, height: number, tint: Color3)
@@ -65,6 +66,26 @@ local function card(parent: Instance, frame: CFrame, width: number, height: numb
 	p.Parent = parent
 end
 
+-- The cloth is the kit's double-sided, folded swallowtail mesh, not flat rectangular strips.
+-- Narrow widths and long, varied drops read as silk prayers hanging from the actual branch tips.
+local function prayer(group: Instance, branch: CFrame, index: number, scale: number, rng: Random): boolean
+	local length = rng:NextNumber(22, 47) * scale
+	local width = rng:NextNumber(1.25, 2.15) * scale
+	local hook = CFrame.new(branch.Position + Vector3.new(0, -0.35 * scale, 0))
+		* CFrame.Angles(math.rad(rng:NextNumber(-6, 6)), math.rad(index * 63), math.rad(rng:NextNumber(-5, 5)))
+	local silk = Kit.place(group, "Banner_Cloth", hook, Vector3.new(width / 3.2, length / 8.6, 1.1), false)
+	if not silk then return false end
+	silk.Name = "HangingSilkPrayer"
+	for _, p in silk:GetChildren() do
+		if p:IsA("BasePart") then
+			p.Material, p.Color = Enum.Material.Fabric, Color3.fromRGB(143, 27, 35)
+			local finish = p:FindFirstChildOfClass("SurfaceAppearance")
+			if finish then finish.Color = Color3.fromRGB(211, 137, 126) end
+		end
+	end
+	return true
+end
+
 function Canopy.Build(statue: Model, tree: Model): Model?
 	if Assets.Textures.CrimsonBranch == "" then return nil end
 	local old = statue:FindFirstChild("SacredCrimsonCanopy")
@@ -72,14 +93,14 @@ function Canopy.Build(statue: Model, tree: Model): Model?
 	local group = Instance.new("Model")
 	group.Name = "SacredCrimsonCanopy"
 	local rng = Random.new(14277)
-	local cards, sprays = 0, 0
-	for _, a in BRANCHES do
+	local cards, sprays, ribbons = 0, 0, 0
+	for index, a in BRANCHES do
 		local chunk = tree:FindFirstChild(a[1] :: string)
 		if chunk and chunk:IsA("BasePart") then
 			local scale = chunk.Size.Y / (a[2] :: number)
 			local branch = chunk.CFrame * CFrame.new(chunk.Size.X * (a[3] :: number), chunk.Size.Y * (a[4] :: number), chunk.Size.Z * (a[5] :: number))
-			-- Five intersecting sprays grow along one limb; their centres stay close to the bark.
-			-- The fifth card tilts upward so the crown also reads from an elevated camera.
+			-- Three intersecting sprays grow along one limb; their centres stay close to the bark.
+			-- The third card tilts upward so the crown also reads from an elevated camera.
 			for k = 1, 3 do
 				local offset = Vector3.new(rng:NextNumber(-13, 13), rng:NextNumber(-7, 10), rng:NextNumber(-9, 9)) * scale
 				local pitch = if k == 3 then rng:NextNumber(65, 85) else rng:NextNumber(-32, 35)
@@ -89,10 +110,13 @@ function Canopy.Build(statue: Model, tree: Model): Model?
 				cards += 1
 			end
 			sprays += 1
+			-- Leave alternating open branch gaps; the ribbons frame her rather than veil her face.
+			if index % 3 ~= 0 and prayer(group, branch, index, scale, rng) then ribbons += 1 end
 		end
 	end
 	group:SetAttribute("BranchSprays", sprays)
 	group:SetAttribute("LeafCards", cards)
+	group:SetAttribute("PrayerRibbons", ribbons)
 	group.Parent = statue
 	return group
 end

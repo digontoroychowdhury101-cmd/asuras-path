@@ -45,53 +45,52 @@ function Horizon.Foundations(parent: Instance, origin: CFrame, forge: Vector3, d
 	return group
 end
 
-local function mist(anchor: BasePart, rate: number, size: number, transparency: number, color: Color3)
+local function mist(anchor: BasePart, rate: number, size: number, transparency: number, color: Color3, lifetime: number, initial: number)
 	if Assets.Textures.Smoke == "" then
 		return
 	end
 	local e = Instance.new("ParticleEmitter")
-	e.Texture, e.Rate, e.Lifetime, e.Speed = Assets.Textures.Smoke, rate, NumberRange.new(20, 28), NumberRange.new(0.2, 0.6)
-	e.Acceleration, e.Shape, e.ShapeStyle = Vector3.new(0.5, 0, 0.15), Enum.ParticleEmitterShape.Box, Enum.ParticleEmitterShapeStyle.Volume
-	e.Size = Kit.sequence({ { 0, size * 0.7 }, { 1, size * 1.2 } })
-	e.Transparency = Kit.sequence({ { 0, 1 }, { 0.25, transparency }, { 0.75, transparency + 0.05 }, { 1, 1 } })
-	e.Color = ColorSequence.new(color, Color3.fromRGB(214, 206, 214))
-	e.LightInfluence, e.Rotation, e.RotSpeed = 0.85, NumberRange.new(0, 360), NumberRange.new(-2, 2)
+	e.Name = "RollingCloud"
+	e.Texture, e.Rate, e.Lifetime, e.Speed = Assets.Textures.Smoke, rate, NumberRange.new(lifetime - 5, lifetime), NumberRange.new(0.6, 1.2)
+	e.Acceleration, e.Shape, e.ShapeStyle = Vector3.new(0.025, 0, 0.015), Enum.ParticleEmitterShape.Box, Enum.ParticleEmitterShapeStyle.Volume
+	e.EmissionDirection, e.SpreadAngle = Enum.NormalId.Right, Vector2.new(8, 8)
+	e.Size = Kit.sequence({ { 0, size * 0.78 }, { 0.48, size }, { 1, size * 1.1 } })
+	e.Transparency = Kit.sequence({ { 0, 0.8 }, { 0.16, transparency }, { 0.68, transparency + 0.08 }, { 1, 1 } })
+	e.Color = ColorSequence.new(color, Color3.fromRGB(242, 238, 236))
+	e.LightInfluence, e.LightEmission = 0.05, 0.18
+	e.Rotation, e.RotSpeed = NumberRange.new(0, 360), NumberRange.new(-1.8, 1.8)
 	e.Parent = anchor
+	e:Emit(initial)
 end
 
--- Cloud banks stay well below the walking surfaces. Flattened shared meshes supply the distant
--- sea while a bounded set of translucent wisps blends their silhouettes into the mountain feet.
+-- Two staggered beds fill the space below the island rather than painting the horizon alone.
+-- Their opaque silhouettes are the overlapping soft particle alpha, never flattened mesh discs.
+-- Every local emitter is 70–100 studs below the plaza; its largest puff stays below flagstones.
 function Horizon.Build(parent: Instance, origin: CFrame)
 	local sky = Kit.folder("CloudSea", parent)
-	local rng = Random.new(2718)
-	local names = { "Cloud_A", "Cloud_B", "Cloud_C" }
-	for k = 0, 25 do
-		local a = math.rad(k * 137.508)
-		local r = 150 + (k / 25) ^ 0.8 * 1020
-		local at = origin * CFrame.new(math.cos(a) * r, -184 - rng:NextNumber(0, 46) - r * 0.025, math.sin(a) * r - 120)
-		local size = 3.5 + r / 230 + rng:NextNumber(0, 1.2)
-		local bank = Kit.place(sky, names[k % 3 + 1], at * CFrame.Angles(0, rng:NextNumber(0, math.pi * 2), 0), Vector3.new(size, 0.85 + size * 0.07, size * 0.8), false)
-		if bank then
-			for _, p in bank:GetDescendants() do
-				if p:IsA("BasePart") then
-					p.Transparency = 0.4
-					p.CanCollide, p.CanQuery, p.CanTouch, p.CastShadow = false, false, false, false
-				end
-			end
+	for row, z in { -560, -340, -120, 100 } do
+		for column, x in { -220, 0, 220 } do
+			local lower = Kit.hidden(sky, "DeepCloudBank", Vector3.new(210, 8, 210), origin * CFrame.new(x, -100 + (row % 2) * 2, z))
+			mist(lower, 0.7, 142, 0.14, Color3.fromRGB(247, 243, 237), 26, 8)
+			local upper = Kit.hidden(sky, "SunlitCloudCrest", Vector3.new(185, 6, 185), origin * CFrame.new(x + 22, -80 + (column % 2) * 2, z + 40))
+			mist(upper, 0.48, 106, 0.10, Color3.fromRGB(247, 243, 237), 24, 7)
 		end
 	end
-	for k = 0, 7 do
-		local a = math.rad(k * 45 + 17)
-		local anchor = Kit.hidden(sky, "CloudBank", Vector3.new(260, 8, 190), origin * CFrame.new(math.cos(a) * 510, -155, math.sin(a) * 510 - 160))
-		mist(anchor, 0.22, 105, 0.84, Color3.fromRGB(251, 235, 220))
-	end
-	for _, p in { { -110, -35 }, { 125, -60 }, { 0, 125 }, { 0, -390 } } do
-		local anchor = Kit.hidden(sky, "CliffMist", Vector3.new(95, 4, 75), origin * CFrame.new(p[1], -78, p[2]))
-		mist(anchor, 0.18, 52, 0.88, Color3.fromRGB(241, 230, 219))
+	-- Broad but sparse foot banks connect the rolling local sea to the hazed physical mountains.
+	for _, bank in {
+		{ -1180, -1120 }, { 1120, -1050 }, { -1920, -980 }, { 1870, -1640 },
+		{ -920, 890 }, { 1320, 640 }, { 400, 2000 }, { -980, 2490 },
+	} do
+		local anchor = Kit.hidden(sky, "MountainFootCloud", Vector3.new(420, 12, 320), origin * CFrame.new(bank[1], -90, bank[2]))
+		mist(anchor, 1.0, 240, 0.08, Color3.fromRGB(247, 243, 237), 34, 22)
 	end
 	Vista.Build(parent, origin)
-	sky:SetAttribute("CloudMeshBudget", 26)
-	sky:SetAttribute("MistEmitterBudget", 12)
+	sky:SetAttribute("CloudMeshBudget", 0)
+	sky:SetAttribute("MistEmitterBudget", 32)
+	sky:SetAttribute("CloudParticleSteadyStateCeiling", 644)
+	sky:SetAttribute("CloudInitialParticleBudget", 356)
+	sky:SetAttribute("LocalCloudElevationMin", origin.Position.Y - 100)
+	sky:SetAttribute("LocalCloudElevationMax", origin.Position.Y - 78)
 	return sky
 end
 

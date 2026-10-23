@@ -57,6 +57,11 @@ local function sign(parent: Instance, text: string, cf: CFrame)
 	label.Parent = gui
 end
 
+local function stoneLantern(parent: Instance, floor: CFrame)
+	if not Lobby.place(parent, "Lantern_Stone", floor) then Lobby.lanternFallback(parent, floor, false) end
+	Lobby.glow(parent, floor * CFrame.new(0, 3.35, 0), Vector3.new(1.04, 1.12, 1.04), 15, 1.35)
+end
+
 function Approach.Build(parent: Instance): Folder
 	local group = Kit.folder("PilgrimRoutes", parent)
 	for _, box in Routes.Solids do
@@ -80,14 +85,16 @@ function Approach.Build(parent: Instance): Folder
 	sign(group, "WELL OF DESCENT", CFrame.new(0, d.Y + 9, 972.4)) -- hung over the pavilion's entrance, facing the plaza
 	for z = 952, 968, 8 do
 		for _, side in { -1, 1 } do
-			Decor.lantern(group, side * 6.4, 602.6, z, 14)
+			stoneLantern(group, CFrame.new(side * 13.6, 600, z))
 		end
 	end
 	-- Loggia lookout: brackets under the deck and a lantern on its rail.
 	for _, x in { -79, -73 } do
 		Kit.beam(group, "DeckBracket", Vector3.new(x, 611, 918), Vector3.new(x, 615, 926), 0.6, P.WoodDark, M.Wood)
 	end
-	Decor.lantern(group, -71.6, 619.4, 927.4, 16)
+	Lobby.slab(group, "LookoutLanternMast", Vector3.new(0.4, 4.8, 0.4), CFrame.new(-71.6, 618.4, 927.4), "Timber", Lobby.decor())
+	Lobby.slab(group, "LookoutLanternArm", Vector3.new(1.5, 0.22, 0.25), CFrame.new(-71.1, 620.7, 927.4), "Timber", Lobby.decor())
+	Frame.hanging(group, Vector3.new(-70.6, 620.7, 927.4), 15)
 	-- Reveal points: a stele and a bench on each dais, lanterns on the viewing wings.
 	for _, key in { "RevealDaisW", "RevealDaisE" } do
 		local m = Routes.Marks[key]
@@ -97,7 +104,7 @@ function Approach.Build(parent: Instance): Folder
 	end
 	for _, key in { "RevealWingW", "RevealWingE" } do
 		local m = Routes.Marks[key]
-		Decor.lantern(group, m.X + (if m.X > 0 then 4.6 else -4.6), m.Y + 3.4, m.Z + 8.6, 16)
+		stoneLantern(group, CFrame.new(m.X + (if m.X > 0 then 4.6 else -4.6), m.Y, m.Z + 8.6))
 	end
 	-- Cloud shards: a soft jade underglow so the optional jumps read at dusk.
 	for _, box in Routes.Solids do

@@ -18,12 +18,15 @@ local function profile(clock: number, ambient: Color3, outdoor: Color3, tint: Co
 end
 -- The Shrine at golden hour (lobby rebuild 2026-10-21): low sun in the west, warm haze over the sea of
 -- clouds under the Sanctuary skybox, and enough neutral fill to read floors, faces and the pale statue.
-Profiles.Sanctuary = profile(17.5, rgb(80, 88, 104), rgb(124, 136, 151), rgb(255, 225, 190), rgb(220, 220, 225), 0.17, 1.0, 0.0, 0.14, 0.02)
-Profiles.Sanctuary.Lighting.Brightness, Profiles.Sanctuary.Lighting.EnvironmentDiffuseScale = 2.5, 0.7
+-- Real aerial perspective separates the carved courtyard, the sacred terrace and the remote peaks.
+-- Future / Realistic lighting is baked into default.project.json (the runtime cannot change it).
+Profiles.Sanctuary = profile(17.4, rgb(60, 70, 92), rgb(105, 117, 139), rgb(255, 245, 226), rgb(250, 215, 185), 0.38, 2.2, -0.12, 0.12, 0.05)
+Profiles.Sanctuary.Lighting.Brightness, Profiles.Sanctuary.Lighting.EnvironmentDiffuseScale = 2.2, 0.65
 Profiles.Sanctuary.Lighting.ColorShift_Bottom = rgb(32, 40, 53)
-Profiles.Sanctuary.CB_Atmosphere.Decay, Profiles.Sanctuary.CB_Atmosphere.Glare, Profiles.Sanctuary.CB_Atmosphere.Offset = rgb(184, 159, 155), 0.25, 0.24
-Profiles.Sanctuary.CB_ColorCorrection.TintColor, Profiles.Sanctuary.CB_ColorCorrection.Contrast = rgb(255, 248, 239), 0.16
-Profiles.Sanctuary.CB_Bloom = { Intensity = 0.18, Threshold = 2.1, Size = 26 }
+Profiles.Sanctuary.CB_Atmosphere.Decay, Profiles.Sanctuary.CB_Atmosphere.Glare, Profiles.Sanctuary.CB_Atmosphere.Offset = rgb(120, 130, 165), 0.35, 0.2
+Profiles.Sanctuary.CB_ColorCorrection.TintColor, Profiles.Sanctuary.CB_ColorCorrection.Contrast = rgb(255, 246, 236), 0.15
+Profiles.Sanctuary.CB_SunRays.Spread = 0.45
+Profiles.Sanctuary.CB_Bloom = { Intensity = 0.25, Threshold = 2.0, Size = 24 }
 Profiles.DesecratedMonastery = profile(15, rgb(38, 43, 52), rgb(67, 73, 83), rgb(206, 220, 238), rgb(143, 155, 170), 0.4, 2.5, -0.22, 0.015, -0.45)
 Profiles.BambooPass = profile(16, rgb(34, 48, 44), rgb(76, 91, 79), rgb(219, 235, 221), rgb(158, 181, 165), 0.38, 2.2, -0.1, 0.06, -0.22)
 Profiles.AshColosseum = profile(0.15, rgb(27, 23, 27), rgb(47, 40, 43), rgb(217, 191, 184), rgb(69, 61, 66), 0.5, 3.8, -0.3, 0, -0.48)
@@ -56,7 +59,7 @@ end
 -- Per-biome fight treatment: same palette family as the exploration profile, raised fill, thinner
 -- mist. Fill/Brazier colour the arena lanterns (ArenaLighting); night arenas stay night.
 local combat: { [string]: any } = {
-	Sanctuary = profile(17.5, rgb(84, 76, 74), rgb(140, 126, 116), rgb(255, 222, 186), rgb(246, 208, 166), 0.26, 1.3, 0.02, 0.12, 0),
+	Sanctuary = profile(17.4, rgb(100, 104, 119), rgb(143, 150, 166), rgb(255, 225, 190), rgb(250, 215, 185), 0.32, 2, 0.02, 0.12, 0.05),
 	DesecratedMonastery = profile(14.5, rgb(66, 72, 82), rgb(112, 118, 128), rgb(218, 226, 238), rgb(150, 160, 172), 0.3, 1.8, -0.05, 0.02, -0.3),
 	BambooPass = profile(15.5, rgb(62, 76, 70), rgb(110, 126, 114), rgb(226, 238, 226), rgb(166, 186, 170), 0.28, 1.6, -0.02, 0.05, -0.15),
 	AshColosseum = profile(0.15, rgb(80, 70, 72), rgb(122, 108, 108), rgb(232, 206, 198), rgb(92, 80, 84), 0.3, 1.8, 0, 0, -0.3),
@@ -64,6 +67,8 @@ local combat: { [string]: any } = {
 	CelestialPagoda = profile(17.3, rgb(76, 62, 66), rgb(124, 104, 106), rgb(248, 220, 204), rgb(166, 128, 124), 0.3, 1.8, 0, 0.06, -0.12),
 	SkyCitadel = profile(17.8, rgb(62, 70, 92), rgb(110, 120, 150), rgb(222, 228, 252), rgb(136, 150, 190), 0.28, 1.8, -0.02, 0.05, -0.15),
 }
+combat.Sanctuary.CB_Atmosphere.Decay = rgb(120, 130, 165)
+combat.Sanctuary.CB_Atmosphere.Offset, combat.Sanctuary.CB_Atmosphere.Glare = 0.2, 0.35
 local arenas: { [string]: { Fill: Color3, Brazier: Color3 } } = {
 	Sanctuary = { Fill = rgb(255, 236, 214), Brazier = rgb(255, 170, 96) },
 	DesecratedMonastery = { Fill = rgb(214, 224, 240), Brazier = rgb(255, 161, 84) },

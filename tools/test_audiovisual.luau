@@ -82,10 +82,22 @@ check(profiles.resolve(nil,false,1)=='Sanctuary','unknown region falls back')
 check(profiles.resolve('BambooPass',false,3)=='BambooPass','another player phase cannot affect lighting')
 check(profiles.resolve('Sanctuary',true,2)=='Unbound:Sanctuary','phase two deepens the arena biome')
 check(profiles.resolve('Sanctuary',true,1,'BambooPass')=='Combat:BambooPass','phase one follows the arena biome')
--- Lobby rebuild (2026-10-21): lower sun, thinner haze over the cloud sea, warm readable fill.
-check(profiles.Sanctuary.Lighting.ClockTime==17.5,'17:30 golden hour')
-check(profiles.Sanctuary.CB_Atmosphere.Density==.17,'thin golden haze over the cloud sea')
-check(profiles.Sanctuary.CB_SunRays.Spread==.4 and profiles.Sanctuary.CB_SunRays.Intensity==.14,'authored sun rays')
+-- Active engine scattering supplies aerial perspective between the courtyard, terrace and far peaks.
+local shrine=profiles.Sanctuary
+check(shrine.Lighting.ClockTime==17.4 and shrine.Lighting.Brightness==2.2
+ and shrine.Lighting.EnvironmentDiffuseScale==.65 and shrine.Lighting.EnvironmentSpecularScale==1
+ and shrine.Lighting.Ambient.R==60/255 and shrine.Lighting.Ambient.G==70/255 and shrine.Lighting.Ambient.B==92/255
+ and shrine.Lighting.OutdoorAmbient.R==105/255 and shrine.Lighting.OutdoorAmbient.G==117/255 and shrine.Lighting.OutdoorAmbient.B==139/255
+ and shrine.Lighting.ColorShift_Top.R==1 and shrine.Lighting.ColorShift_Top.G==245/255 and shrine.Lighting.ColorShift_Top.B==226/255
+ and shrine.Lighting.ExposureCompensation==-.12,'17:24 golden hour and neutral courtyard fill')
+check(shrine.CB_Atmosphere.Density==.38 and shrine.CB_Atmosphere.Haze==2.2
+ and shrine.CB_Atmosphere.Glare==.35 and shrine.CB_Atmosphere.Offset==.2
+ and shrine.CB_Atmosphere.Color.R==250/255 and shrine.CB_Atmosphere.Color.G==215/255 and shrine.CB_Atmosphere.Color.B==185/255
+ and shrine.CB_Atmosphere.Decay.R==120/255 and shrine.CB_Atmosphere.Decay.G==130/255 and shrine.CB_Atmosphere.Decay.B==165/255,'warm volumetric mist and lavender distance decay')
+check(shrine.CB_SunRays.Spread==.45 and shrine.CB_SunRays.Intensity==.12
+ and shrine.CB_ColorCorrection.Saturation==.05 and shrine.CB_ColorCorrection.Contrast==.15
+ and shrine.CB_ColorCorrection.TintColor.R==1 and shrine.CB_ColorCorrection.TintColor.G==246/255 and shrine.CB_ColorCorrection.TintColor.B==236/255
+ and shrine.CB_Bloom.Intensity==.25 and shrine.CB_Bloom.Size==24 and shrine.CB_Bloom.Threshold==2,'authored golden rays and gentle bloom')
 check(profiles.skyFor('Sanctuary')=='Sunset' and profiles.skyFor('Combat:Sanctuary')=='Sunset','shrine golden-hour sky')
 check(profiles.skyFor('DesecratedMonastery')==nil and profiles.skyFor('AshColosseum')=='Night','other skies unchanged')
 check(profiles.acoustics('DesecratedMonastery',vec(0,0,-960))=='Ravine','ravine acoustics')

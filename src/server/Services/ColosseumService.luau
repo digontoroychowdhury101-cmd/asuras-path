@@ -1193,6 +1193,9 @@ local function buildRing(ring: Ring, parent: Folder): Model
 
 	model.PrimaryPart = model:FindFirstChild("Floor0") :: BasePart
 	model.Parent = parent
+	if definition.Id == "Ring_SanctuaryPromenade" then
+		require(script.Parent:WaitForChild("SanctuaryRingFinish") :: ModuleScript).Dress(model)
+	end
 	return model
 end
 

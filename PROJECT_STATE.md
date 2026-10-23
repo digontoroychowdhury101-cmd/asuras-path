@@ -1,5 +1,11 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## Unified Master Sync (Computer A + Computer B) — 2026-10-23
+
+- **State Unified**: Merged Computer A's monumental Sanctuary art pass, Guardian Lion PBR models, and lighting into the branch with Computer B's F02 checkpoint findings and Windows rojo tooling.
+- **Clean Place Build**: Rebuilt `outputs/AsurasPath.rbxlx` and mirrored to `places/AsurasPath.rbxlx`. Orphaned TikTokVFX references are fully cleared; `places/server.rbxl` is deleted.
+- **Next on Computer B**: Run `git pull origin ux/onboarding-overhaul`. Open `places/AsurasPath.rbxlx` in Studio to see the complete, unified game.
+
 ## F02c checkpoint rejoin attempt — 2026-10-23 (Computer B, Windows)
 
 - **Run**: Studio Server & Clients (set player count to 1; the default is 0). Seeded Studio diagnostic on `places/AsurasPath.rbxlx` (digest 761943064): rested at the Cloister, one monk KO left a 500 stain at (42.86, 3.2, −1047.8), woke at (60, 3.2, −1018), Essence 0. Exit Client was clean.
