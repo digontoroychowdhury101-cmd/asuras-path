@@ -85,9 +85,22 @@ function Cinema.step(self: Director, dt: number)
 	end
 end
 
+-- Pulls an authored eye in front of any wall, roof or rock between it and the subject, so wide
+-- shots never end up inside a pavilion. Characters are ignored; spell effects never take queries.
+local function clear(from: Vector3, at: Vector3): Vector3
+	local params = RaycastParams.new()
+	local ignore = {}
+	for _, player in game:GetService("Players"):GetPlayers() do
+		if player.Character then table.insert(ignore, player.Character) end
+	end
+	params.FilterDescendantsInstances = ignore
+	local hit = Workspace:Raycast(at, from - at, params)
+	return if hit then hit.Position + (at - from).Unit * 1.5 else from
+end
+
 -- Helpers for authored frames. Dutch tilt rolls the camera around its own look axis.
 function Cinema.look(from: Vector3, at: Vector3, fov: number, dutchDegrees: number?): Frame
-	return { CFrame = CFrame.lookAt(from, at) * CFrame.Angles(0, 0, math.rad(dutchDegrees or 0)), Fov = fov }
+	return { CFrame = CFrame.lookAt(clear(from, at), at) * CFrame.Angles(0, 0, math.rad(dutchDegrees or 0)), Fov = fov }
 end
 
 function Cinema.destroy(self: Director)

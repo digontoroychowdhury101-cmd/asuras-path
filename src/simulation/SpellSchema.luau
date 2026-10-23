@@ -38,12 +38,13 @@ thunder.Speed=180;thunder.Radius=9;thunder.Status.Teleport=true;thunder.Status.I
 local wind=spell("WindSlash","Wind-Cutting Slash","SpiritTalismans",1,30,"Line",12)
 wind.Speed=90;wind.Radius=2
 -- Showcase sorceries (Sanctuary caches). Long telegraphed channels; the client plays a cinematic
--- timeline scaled to the server's release time, so quick-cast catalysts stay in sync.
-local nova=spell("CelestialSupernova","Celestial Supernova","CelestialThunder",60,12,"Column",34)
-nova.Radius=12;nova.Posture=36;nova.Pulses=2;nova.Delay=1.6;nova.Cooldown=32
-nova.Startup=252;nova.Active=60;nova.Recovery=72;nova.Status.Interrupt=true
-local sun=spell("BlazingSunAwakening","Blazing Sun Awakening","CrimsonFlame",55,14,"Aura",20)
-sun.Posture=34;sun.Pulses=3;sun.Delay=1.5;sun.Cooldown=28;sun.Startup=168;sun.Active=30;sun.Recovery=60
+-- timeline scaled to the server's release time, so quick-cast catalysts stay in sync. Each extra
+-- pulse comes with less damage per hit, so the longer show keeps the same total payoff.
+local nova=spell("CelestialSupernova","Celestial Supernova","CelestialThunder",60,12,"Column",24)
+nova.Radius=12;nova.Posture=24;nova.Pulses=3;nova.Delay=1.4;nova.Cooldown=34
+nova.Startup=360;nova.Active=60;nova.Recovery=72;nova.Status.Interrupt=true
+local sun=spell("BlazingSunAwakening","Blazing Sun Awakening","CrimsonFlame",55,14,"Aura",16)
+sun.Posture=26;sun.Pulses=4;sun.Delay=1.3;sun.Cooldown=30;sun.Startup=240;sun.Active=30;sun.Recovery=60
 sun.Status.Burn=1;sun.Status.Interrupt=true
 local byId: {[string]: Spell}={}
 local order: {string}={}

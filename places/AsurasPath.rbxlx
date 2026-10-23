@@ -9517,12 +9517,13 @@ thunder.Speed=180;thunder.Radius=9;thunder.Status.Teleport=true;thunder.Status.I
 local wind=spell("WindSlash","Wind-Cutting Slash","SpiritTalismans",1,30,"Line",12)
 wind.Speed=90;wind.Radius=2
 -- Showcase sorceries (Sanctuary caches). Long telegraphed channels; the client plays a cinematic
--- timeline scaled to the server's release time, so quick-cast catalysts stay in sync.
-local nova=spell("CelestialSupernova","Celestial Supernova","CelestialThunder",60,12,"Column",34)
-nova.Radius=12;nova.Posture=36;nova.Pulses=2;nova.Delay=1.6;nova.Cooldown=32
-nova.Startup=252;nova.Active=60;nova.Recovery=72;nova.Status.Interrupt=true
-local sun=spell("BlazingSunAwakening","Blazing Sun Awakening","CrimsonFlame",55,14,"Aura",20)
-sun.Posture=34;sun.Pulses=3;sun.Delay=1.5;sun.Cooldown=28;sun.Startup=168;sun.Active=30;sun.Recovery=60
+-- timeline scaled to the server's release time, so quick-cast catalysts stay in sync. Each extra
+-- pulse comes with less damage per hit, so the longer show keeps the same total payoff.
+local nova=spell("CelestialSupernova","Celestial Supernova","CelestialThunder",60,12,"Column",24)
+nova.Radius=12;nova.Posture=24;nova.Pulses=3;nova.Delay=1.4;nova.Cooldown=34
+nova.Startup=360;nova.Active=60;nova.Recovery=72;nova.Status.Interrupt=true
+local sun=spell("BlazingSunAwakening","Blazing Sun Awakening","CrimsonFlame",55,14,"Aura",16)
+sun.Posture=26;sun.Pulses=4;sun.Delay=1.3;sun.Cooldown=30;sun.Startup=240;sun.Active=30;sun.Recovery=60
 sun.Status.Burn=1;sun.Status.Interrupt=true
 local byId: {[string]: Spell}={}
 local order: {string}={}
@@ -67751,68 +67752,98 @@ return table.freeze(Tabs)
             <Properties>
               <string name="Name">BlazingSunShow</string>
               <string name="Source">--!strict
--- Blazing Sun Awakening timeline. Stance tension runs over the server's windup; the authoritative
--- SpellRelease cue fires the manga impact frame, fire shockwave, blazing-eye macro shot and flame
--- gauntlets; later SpellPulse cues ring heat around the stance. Camera, grading and the 2D frame
--- belong to the caster's client; the fire itself is seen by everyone nearby.
+-- Blazing Sun Awakening timeline (phases are fractions of the server's windup):
+--   0.00 fire sigil, embers, low over-the-shoulder Dutch angle   0.25 flame spirals climb the body
+--   0.45 a sun forms overhead (hero shot from the front, low)     0.80 it is crushed into the chest
+--   release: blackout, solarized flash, manga frame, negative frame; fire nova, a ring of erupting
+--   pillars, rays, blazing-eye close-up and gauntlets   pulses: pillar rings   final pulse: frame
+-- Camera, grading and the 2D frames belong to the caster's client; the fire is seen by everyone.
 local Kit = require(script.Parent.SkillKit)
+local Fx = require(script.Parent.SkillFx)
 local Cinema = require(script.Parent.SkillCinema)
 local Screen = require(script.Parent.ImpactFrame)
 local Flame = require(script.Parent.FlameForms)
+local Solar = require(script.Parent.SolarForms)
 local Show = {}
 
+Show.FinalPulse = 4
 local TENSION = { Brightness = -0.15, Contrast = 0.35, Saturation = -0.25, TintColor = Color3.fromRGB(255, 225, 200) }
+local KILN = { Brightness = -0.05, Contrast = 0.5, Saturation = 0.15, TintColor = Color3.fromRGB(255, 200, 160) }
 local NEUTRAL = { Brightness = 0, Contrast = 0, Saturation = 0, TintColor = Color3.new(1, 1, 1) }
 local GAZE = { Brightness = -0.3, Contrast = 0.55, Saturation = -0.4, TintColor = Color3.fromRGB(255, 205, 180) }
-local GAUNTLET_SECONDS = 4.6 -- flame gauntlets outlast the last heat ring
+local GAUNTLET_SECONDS = 6.4 -- flame gauntlets outlast the last pillar ring
+local P = Screen.Palettes
 
 local function rootFrame(cast: any): CFrame?
 	local root = cast.Entity.Root
 	return if root and root.Parent then root.CFrame else nil
 end
 
--- Phase 1: low over-the-shoulder Dutch angle, trembling fists, embers rising off the hands.
 function Show.startup(cast: any)
 	local w = cast.Windup
 	local tension = Kit.trove()
 	cast.Bag.Tension = tension
 	Kit.add(cast.Trove, function() Kit.clean(tension) end)
+	local folder = Kit.folder(tension, "BlazingSunStance")
+	local cf = rootFrame(cast) or CFrame.identity
+	local floor = CFrame.new(cf.Position - Vector3.new(0, 2.85, 0))
+	cast.Bag.Floor = floor
+	Fx.sigil(tension, folder, floor, 9, Flame.Body, Flame.Core, w * 0.3)
 	for _, hand in Kit.hands(cast.Entity.Model) do Flame.embers(tension, hand) end
+	Kit.after(tension, w * 0.25, function() if cast.Entity.Root then Solar.swirl(tension, cast.Entity.Root, w * 0.8) end end)
+	Kit.after(tension, w * 0.45, function()
+		local at = (rootFrame(cast) or cf).Position + Vector3.new(0, 7, 0)
+		cast.Bag.Sun = Solar.sun(tension, folder, at, 3.2, w * 0.25)
+		Fx.flash(tension, folder, at, Flame.Core, 10, 0.4)
+	end)
+	Kit.after(tension, w * 0.8, function()
+		if cast.Bag.Sun then Solar.compress(tension, cast.Bag.Sun, function() return (rootFrame(cast) or cf).Position + Vector3.new(0, 0.6, 0) end, w * 0.18) end
+	end)
 	if not cast.Own then return end
 	cast.Bag.Grade = Screen.grade(cast.Trove)
-	Screen.settle(cast.Trove, cast.Bag.Grade, TENSION, w * 0.6)
-	Cinema.play(cast.Cinema, function(t: number)
-		local cf = rootFrame(cast)
-		if not cf then return nil end
-		-- Off the right shoulder and low, aimed past the caster's left: the body sits on the left third
-		-- of the frame instead of filling it (a wide hat used to block the whole shot).
-		local push = math.min(1, t / w)
-		local eye = cf:PointToWorldSpace(Vector3.new(4.6, -0.8, 9.5 - push * 2))
-		return Cinema.look(eye, cf:PointToWorldSpace(Vector3.new(-1.4, 1.6, -8)), 50, 6)
-	end, w + 0.1, 0.3)
-	-- Fists tremble: small repeating trauma kicks that grow toward the release.
-	for n = 1, math.max(1, math.floor(w / 0.25)) do
-		Kit.after(tension, n * 0.25, function() Cinema.shake(cast.Cinema, 0.12 + 0.2 * (n * 0.25 / w), 1.5, 2) end)
+	Screen.settle(cast.Trove, cast.Bag.Grade, TENSION, w * 0.4)
+	Cinema.play(cast.Cinema, function(t: number) -- off the right shoulder, low, Dutch
+		local c = rootFrame(cast)
+		if not c then return nil end
+		local push = math.min(1, t / (w * 0.45))
+		return Cinema.look(c:PointToWorldSpace(Vector3.new(4.6, -0.8, 9.5 - push * 2)), c:PointToWorldSpace(Vector3.new(-1.4, 1.6, -8)), 50, 6)
+	end, w * 0.45, 0.3)
+	Kit.after(tension, w * 0.45, function() -- hero shot: low in front, looking up at the caster and the sun
+		Screen.settle(cast.Trove, cast.Bag.Grade, KILN, w * 0.3)
+		Cinema.play(cast.Cinema, function(t: number)
+			local c = rootFrame(cast)
+			if not c then return nil end
+			local k = math.min(1, t / (w * 0.55))
+			return Cinema.look(c:PointToWorldSpace(Vector3.new(-3, -2.2, -(15 - k * 6))), c.Position + Vector3.new(0, 4.5 - k * 3.5, 0), 62 - k * 14, -4 - k * 6)
+		end, w * 0.55 + 0.1, 0.12)
+	end)
+	for n = 1, math.max(1, math.floor(w / 0.25)) do -- fists tremble, harder toward release
+		Kit.after(tension, n * 0.25, function() Cinema.shake(cast.Cinema, 0.1 + 0.25 * (n * 0.25 / w), 1.5, 2) end)
 	end
 end
 
 local function gaze(cast: any, head: BasePart)
 	Screen.settle(cast.Trove, cast.Bag.Grade, GAZE, 0.08)
-	Cinema.play(cast.Cinema, function(t: number)
+	Cinema.play(cast.Cinema, function(t: number) -- head-and-shoulders push-in (a macro filled the screen)
 		if not head.Parent then return nil end
-		-- Head-and-shoulders push-in, not an extreme macro: at 2 studs a blocky head (and a hat brim)
-		-- filled the screen as flat panels. From here the blazing eyes and both gauntlets read together.
 		local cf = head.CFrame
 		local eye = cf.Position + cf.LookVector * (7 - math.min(t, 1) * 1.5) + cf.UpVector * 0.2 + cf.RightVector * 0.8
 		return Cinema.look(eye, cf.Position - cf.UpVector * 0.9, 40 - math.min(t, 1) * 5, -3)
-	end, 1.15, 0.05)
-	Kit.after(cast.Trove, 1.15, function()
-		Screen.settle(cast.Trove, cast.Bag.Grade, NEUTRAL, 0.5)
-		Cinema.release(cast.Cinema, 0.5)
+	end, 1.3, 0.05)
+	Kit.after(cast.Trove, 1.3, function() -- pull back wide to watch the pillar rings
+		Screen.settle(cast.Trove, cast.Bag.Grade, NEUTRAL, 0.6)
+		local side = math.random() * math.pi * 2
+		Cinema.play(cast.Cinema, function(t: number)
+			local c = rootFrame(cast)
+			if not c then return nil end
+			local eye = c.Position + Vector3.new(math.cos(side + t * 0.2), 0, math.sin(side + t * 0.2)) * 26 + Vector3.new(0, 9, 0)
+			return Cinema.look(eye, c.Position + Vector3.new(0, 2, 0), 64, 0)
+		end, 3.2, 0.5)
+		Kit.after(cast.Trove, 3.2, function() Cinema.release(cast.Cinema, 0.7) end)
 	end)
 end
 
--- Phases 2-4: impact frame sequence, fire shockwave, blazing eyes, then the gauntlets.
+-- Impact sequence, fire nova, the erupting pillar ring, blazing eyes, then the gauntlets.
 function Show.release(cast: any, at: Vector3)
 	if cast.Bag.Tension then Kit.clean(cast.Bag.Tension) end
 	local folder = Kit.folder(cast.Trove, "BlazingSunAwakening")
@@ -67822,23 +67853,27 @@ function Show.release(cast: any, at: Vector3)
 	if cast.Own then
 		local grade = cast.Bag.Grade or Screen.grade(cast.Trove)
 		cast.Bag.Grade = grade
-		Screen.pulse(cast.Trove, grade, { Brightness = -1, Contrast = 0.5 }, 0.035, 0) -- A: blackout cut (2 frames)
-		Kit.after(cast.Trove, 0.04, function() -- B: solarized burst (1 frame)
-			Screen.pulse(cast.Trove, grade, { Brightness = 0.8, Contrast = 0.6, TintColor = Screen.Yellow }, 0.02, 0.18)
-		end)
-		Kit.after(cast.Trove, 0.06, function() -- C: 2D manga impact frame (8 frames)
-			Screen.manga(cast.Trove, model, 0.15)
-			Cinema.shake(cast.Cinema, 0.8, 1.3, 2)
+		Screen.pulse(cast.Trove, grade, { Brightness = -1, Contrast = 0.5 }, 0.035, 0) -- A: blackout (2 frames)
+		Kit.after(cast.Trove, 0.04, function() Screen.pulse(cast.Trove, grade, { Brightness = 0.8, Contrast = 0.6, TintColor = Screen.Yellow }, 0.02, 0.18) end)
+		Kit.after(cast.Trove, 0.06, function() -- C/D: manga frame then its negative
+			Screen.sequence(cast.Trove, model, { { P.Fire, 0.13 }, { P.FireNegative, 0.07 } })
+			Cinema.shake(cast.Cinema, 0.85, 1.2, 2)
 		end)
 	end
-	Kit.after(cast.Trove, if cast.Own then 0.06 else 0, function() Flame.shockwave(cast.Trove, folder, floor) end) -- D
+	Kit.after(cast.Trove, if cast.Own then 0.2 else 0, function()
+		Flame.shockwave(cast.Trove, folder, floor)
+		Fx.flash(cast.Trove, folder, at, Flame.Core, 22, 0.6)
+		Fx.rays(cast.Trove, folder, CFrame.new(at), Flame.Core, 18, 40, 0.7)
+		Fx.cracks(cast.Trove, folder, floor.Position, 10, 18, Flame.Body, 0.3)
+		Solar.pillars(cast.Trove, folder, floor, 8, 11, 22, 0)
+	end)
 	local head = Kit.head(model)
-	Kit.after(cast.Trove, 0.2, function()
+	Kit.after(cast.Trove, 0.3, function()
 		if head then
 			local eyes = Kit.trove()
 			Kit.add(cast.Trove, function() Kit.clean(eyes) end)
 			Flame.eyes(eyes, head)
-			Kit.after(cast.Trove, 1.6, function() Kit.clean(eyes) end)
+			Kit.after(cast.Trove, 1.8, function() Kit.clean(eyes) end)
 			if cast.Own then gaze(cast, head) end
 		end
 		for _, hand in Kit.hands(model) do Flame.gauntlet(cast.Trove, hand) end
@@ -67846,10 +67881,21 @@ function Show.release(cast: any, at: Vector3)
 	Kit.after(cast.Trove, GAUNTLET_SECONDS, function() Kit.clean(cast.Trove) end)
 end
 
--- Phase 4 pulses: the first pulse is the shockwave itself; later ones ring heat.
+-- Pulses 2..3 ring heat and a rotated ring of pillars; the final pulse adds a frame and a big nova.
 function Show.pulse(cast: any, at: Vector3)
 	if cast.Pulses &lt;= 1 or not cast.Bag.Folder then return end
-	Flame.heat(cast.Trove, cast.Bag.Folder, CFrame.new(at - Vector3.new(0, 2.8, 0)))
+	local floor = CFrame.new(at - Vector3.new(0, 2.8, 0))
+	local final = cast.Pulses &gt;= Show.FinalPulse
+	Flame.heat(cast.Trove, cast.Bag.Folder, floor)
+	Solar.pillars(cast.Trove, cast.Bag.Folder, floor, if final then 12 else 6, if final then 14 else 8 + cast.Pulses, if final then 30 else 14, cast.Pulses * 0.5)
+	if final then
+		Flame.shockwave(cast.Trove, cast.Bag.Folder, floor)
+		Fx.flash(cast.Trove, cast.Bag.Folder, at, Flame.Body, 30, 0.7)
+	end
+	if cast.Own then
+		Cinema.shake(cast.Cinema, if final then 0.8 else 0.4, 1.4, 2)
+		if final then Screen.frame(cast.Trove, cast.Entity.Model, 0.08, P.FireNegative) end
+	end
 end
 
 return table.freeze(Show)
@@ -68652,7 +68698,7 @@ Forms.Gold = Color3.fromRGB(255, 170, 0)
 Forms.Cyan = Color3.fromRGB(0, 230, 230)
 local WHITE = Color3.new(1, 1, 1)
 
-export type Ring = { Parts: { BasePart }, Radius: number, Angle: number, Spin: number, Tilt: CFrame }
+export type Ring = { Parts: { BasePart }, Radius: number, Angle: number, Spin: number, Tilt: CFrame, Moon: BasePart? }
 export type Voxel = { Part: BasePart, Base: Vector3, Lift: number, Phase: number, Spin: Vector3 }
 
 function Forms.orb(trove: Kit.Trove, folder: Instance, center: Vector3): (BasePart, BasePart)
@@ -68674,12 +68720,22 @@ local function ring(folder: Instance, radius: number, color: Color3, tilt: CFram
 	return { Parts = parts, Radius = radius, Angle = 0, Spin = spin, Tilt = tilt }
 end
 
--- Gold and teal rings on crossed tilts, spinning in opposite directions.
+-- Gold and teal rings on crossed tilts spinning in opposite directions, a fine white equator ring,
+-- and a small moon riding each of the two main rings.
 function Forms.rings(folder: Instance): { Ring }
-	return {
+	local list = {
 		ring(folder, 6.5, Forms.Gold, CFrame.Angles(math.rad(28), 0, math.rad(8)), 1),
 		ring(folder, 7.6, Forms.Cyan, CFrame.Angles(math.rad(-22), 0, math.rad(-34)), -1),
+		ring(folder, 9.4, WHITE, CFrame.Angles(math.rad(4), 0, math.rad(12)), 0.45),
 	}
+	for n = 1, 2 do
+		local moon = list[n].Parts[1]
+		moon.Shape, moon.Size, moon.Color = Enum.PartType.Ball, Vector3.one * 1.1, if n == 1 then Forms.Gold else WHITE
+		list[n].Moon = moon
+		Kit.light(moon, moon.Color, 10, 2)
+	end
+	for _, p in list[3].Parts do p.Size = Vector3.new(1, 0.12, 0.12); p.Transparency = 0.3 end
+	return list
 end
 
 -- Places every segment around `center` this frame; speed is radians per second.
@@ -68694,7 +68750,7 @@ function Forms.spin(rings: { Ring }, center: Vector3, speed: number, dt: number)
 			local yaw = r.Angle + (n / count) * math.pi * 2
 			table.insert(parts, p)
 			table.insert(frames, CFrame.new(center) * r.Tilt * CFrame.Angles(0, yaw, 0) * CFrame.new(0, 0, -r.Radius))
-			if math.abs(p.Size.X - chord) &gt; 0.05 then p.Size = Vector3.new(chord, p.Size.Y, p.Size.Z) end
+			if p ~= r.Moon and math.abs(p.Size.X - chord) &gt; 0.05 then p.Size = Vector3.new(chord, p.Size.Y, p.Size.Z) end
 		end
 	end
 	Workspace:BulkMoveTo(parts, frames, Enum.BulkMoveMode.FireCFrameChanged)
@@ -68737,20 +68793,20 @@ function Forms.drift(voxels: { Voxel }, axis: Vector3, clock: number, spiral: nu
 	Workspace:BulkMoveTo(parts, frames, Enum.BulkMoveMode.FireCFrameChanged)
 end
 
--- A 24-stud, 120-stud-tall column of cyan light that drives down from the sky onto `ground`.
-function Forms.pillar(trove: Kit.Trove, folder: Instance, ground: Vector3): { BasePart }
-	local up = CFrame.Angles(0, 0, math.pi / 2)
-	local top = ground + Vector3.new(0, 120, 0)
-	local outer = Kit.part(folder, "SupernovaPillar", Forms.Teal, Vector3.new(1, 24, 24), CFrame.new(top) * up, Enum.PartType.Cylinder)
-	outer.Transparency = 0.45
-	local inner = Kit.part(folder, "SupernovaCore", WHITE, Vector3.new(1, 8, 8), CFrame.new(top) * up, Enum.PartType.Cylinder)
-	inner.Transparency = 0.1
-	for _, p in { outer, inner } do
-		Kit.tween(trove, p, 0.22, { Size = Vector3.new(120, p.Size.Y, p.Size.Z), CFrame = CFrame.new(ground + Vector3.new(0, 60 - 2.4, 0)) * up },
-			Enum.EasingStyle.Quad, Enum.EasingDirection.In)
+-- Caster-only lift on an AlignPosition: rises to `rise` studs above where the cast began.
+function Forms.levitate(cast: any, rise: number, seconds: number)
+	local root = cast.Entity.Root
+	if not cast.Own or not root then return end
+	local align = cast.Bag.Align
+	if not align then
+		local anchor = Kit.attach(cast.Trove, root, Vector3.zero, "SupernovaLift")
+		align = Kit.add(cast.Trove, Instance.new("AlignPosition"))
+		align.Mode, align.Attachment0 = Enum.PositionAlignmentMode.OneAttachment, anchor
+		align.MaxForce, align.MaxVelocity, align.Responsiveness = 1e6, 40, 25
+		align.Position, align.Parent = root.Position, root
+		cast.Bag.Align, cast.Bag.Floor = align, root.Position
 	end
-	Kit.light(inner, Forms.Teal, 60, 6)
-	return { outer, inner }
+	Kit.tween(cast.Trove, align, seconds, { Position = cast.Bag.Floor + Vector3.new(0, rise, 0) }, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut)
 end
 
 return table.freeze(Forms)
@@ -68758,6 +68814,116 @@ return table.freeze(Forms)
             </Properties>
           </Item>
           <Item class="ModuleScript" referent="649">
+            <Properties>
+              <string name="Name">CelestialPillar</string>
+              <string name="Source">--!strict
+-- The Supernova column: a teal shell, a white-hot core and a ForceField sheath that drive down from
+-- the sky, twin gold helices climbing the beam, rune rings rising through it, and the pulse flare.
+local RunService = game:GetService("RunService")
+local Workspace = game:GetService("Workspace")
+local Kit = require(script.Parent.SkillKit)
+local Forms = require(script.Parent.CelestialForms)
+local Pillar = {}
+
+local WHITE = Color3.new(1, 1, 1)
+local HEIGHT = 140
+local UP = CFrame.Angles(0, 0, math.pi / 2)
+
+export type Column = { Parts: { BasePart }, Helix: { BasePart }, Ground: Vector3, Width: number, Fading: boolean? }
+
+local function cylinder(folder: Instance, name: string, color: Color3, width: number, transparency: number, top: Vector3): BasePart
+	local p = Kit.part(folder, name, color, Vector3.new(1, width, width), CFrame.new(top) * UP, Enum.PartType.Cylinder)
+	p.Transparency = transparency
+	return p
+end
+
+-- Slams the column onto `ground` from the sky in 0.22 s, then keeps the helices and rune rings moving.
+function Pillar.erupt(trove: Kit.Trove, folder: Instance, ground: Vector3, width: number): Column
+	local top = ground + Vector3.new(0, HEIGHT, 0)
+	local sheath = cylinder(folder, "SupernovaSheath", Forms.Cyan, width * 1.35, 0, top)
+	sheath.Material = Enum.Material.ForceField
+	local shell = cylinder(folder, "SupernovaPillar", Forms.Teal, width, 0.4, top)
+	local core = cylinder(folder, "SupernovaCore", WHITE, width * 0.34, 0.05, top)
+	local parts = { sheath, shell, core }
+	for _, p in parts do
+		Kit.tween(trove, p, 0.22, { Size = Vector3.new(HEIGHT, p.Size.Y, p.Size.Z), CFrame = CFrame.new(ground + Vector3.new(0, HEIGHT / 2 - 2.4, 0)) * UP },
+			Enum.EasingStyle.Quad, Enum.EasingDirection.In)
+	end
+	Kit.light(core, Forms.Teal, 60, 8)
+	-- Twin helices: 2 x 26 gold/white segments wound up the beam, unwinding as they climb.
+	local helix: { BasePart } = {}
+	for n = 1, 52 do
+		local strand = n % 2
+		local p = Kit.part(folder, "Helix", if strand == 0 then Forms.Gold else WHITE, Vector3.new(0.5, 0.5, 3.2), CFrame.new(ground))
+		p.Transparency = 1
+		helix[n] = p
+	end
+	local column: Column = { Parts = parts, Helix = helix, Ground = ground, Width = width }
+	local clock = 0
+	Kit.add(trove, RunService.Heartbeat:Connect(function(dt: number)
+		clock += dt
+		local frames: { CFrame } = {}
+		for n, p in helix do
+			local strand, step = n % 2, math.ceil(n / 2)
+			local height = (step / 26 * HEIGHT + clock * 38) % HEIGHT
+			local angle = height * 0.11 + strand * math.pi + clock * 3
+			local r = width * 0.62
+			local at = ground + Vector3.new(math.cos(angle) * r, height - 2.4, math.sin(angle) * r)
+			local tangent = Vector3.new(-math.sin(angle), 0.35, math.cos(angle))
+			frames[n] = CFrame.lookAt(at, at + tangent)
+			if not column.Fading then p.Transparency = math.clamp(0.9 - math.min(clock * 3, 1) + height / HEIGHT * 0.6, 0, 1) end
+		end
+		Workspace:BulkMoveTo(helix, frames, Enum.BulkMoveMode.FireCFrameChanged)
+	end))
+	return column
+end
+
+-- A gold rune ring rising up the column and fading at the top; one is launched every `every` s.
+function Pillar.runes(trove: Kit.Trove, folder: Instance, column: Column, every: number)
+	local function launch()
+		local ring = Kit.ring(folder, "RisingRune", column.Width * 0.75, 0.35, Forms.Gold, 30)
+		ring:PivotTo(CFrame.new(column.Ground))
+		Kit.add(trove, ring)
+		local height = 0
+		local link: RBXScriptConnection
+		link = RunService.Heartbeat:Connect(function(dt: number)
+			height += dt * 45
+			if height &gt; HEIGHT then link:Disconnect(); ring:Destroy(); return end
+			local s = 1 + math.sin(height * 0.08) * 0.15
+			ring:PivotTo(CFrame.new(column.Ground + Vector3.new(0, height, 0)) * CFrame.Angles(0, height * 0.05, 0))
+			ring:ScaleTo(s)
+		end)
+		Kit.add(trove, link)
+	end
+	launch()
+	local thread = task.spawn(function()
+		while true do task.wait(every); launch() end
+	end)
+	Kit.add(trove, thread)
+end
+
+-- A pulse: the beam swells and brightens for a beat, then settles.
+function Pillar.flare(trove: Kit.Trove, column: Column, strength: number)
+	for _, p in column.Parts do
+		local base = p.Size
+		Kit.tween(trove, p, 0.08, { Size = Vector3.new(base.X, base.Y * (1 + 0.35 * strength), base.Z * (1 + 0.35 * strength)) }, Enum.EasingStyle.Quad)
+		Kit.after(trove, 0.1, function() Kit.tween(trove, p, 0.5, { Size = base }, Enum.EasingStyle.Sine) end)
+	end
+end
+
+-- Final beat: the column blasts wide and dissolves upward.
+function Pillar.dissolve(trove: Kit.Trove, column: Column, seconds: number)
+	for _, p in column.Parts do
+		Kit.tween(trove, p, seconds, { Transparency = 1, Size = Vector3.new(p.Size.X * 1.4, p.Size.Y * 2.2, p.Size.Z * 2.2) }, Enum.EasingStyle.Quart)
+	end
+	for _, p in column.Helix do Kit.tween(trove, p, seconds * 0.6, { Transparency = 1 }) end
+end
+
+return table.freeze(Pillar)
+</string>
+            </Properties>
+          </Item>
+          <Item class="ModuleScript" referent="650">
             <Properties>
               <string name="Name">CodexView</string>
               <string name="Source">--!strict
@@ -68867,7 +69033,7 @@ return table.freeze(Codex)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="650">
+          <Item class="ModuleScript" referent="651">
             <Properties>
               <string name="Name">ColosseumController</string>
               <string name="Source">--!strict
@@ -69615,7 +69781,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="651">
+          <Item class="ModuleScript" referent="652">
             <Properties>
               <string name="Name">CombatCallouts</string>
               <string name="Source">--!strict
@@ -69770,7 +69936,7 @@ return table.freeze(Callouts)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="652">
+          <Item class="ModuleScript" referent="653">
             <Properties>
               <string name="Name">CombatFeedback</string>
               <string name="Source">--!strict
@@ -69922,7 +70088,7 @@ return Feedback
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="653">
+          <Item class="ModuleScript" referent="654">
             <Properties>
               <string name="Name">CombatHud</string>
               <string name="Source">--!strict
@@ -70021,7 +70187,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="654">
+          <Item class="ModuleScript" referent="655">
             <Properties>
               <string name="Name">CombatSurfaces</string>
               <string name="Source">--!strict
@@ -70090,7 +70256,7 @@ return Surfaces
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="655">
+          <Item class="ModuleScript" referent="656">
             <Properties>
               <string name="Name">CombatVfx</string>
               <string name="Source">--!strict
@@ -70210,7 +70376,7 @@ return Vfx
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="656">
+          <Item class="ModuleScript" referent="657">
             <Properties>
               <string name="Name">ComfortSettings</string>
               <string name="Source">--!strict
@@ -70278,7 +70444,7 @@ return table.freeze(Comfort)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="657">
+          <Item class="ModuleScript" referent="658">
             <Properties>
               <string name="Name">ControlsCard</string>
               <string name="Source">--!strict
@@ -70432,7 +70598,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="658">
+          <Item class="ModuleScript" referent="659">
             <Properties>
               <string name="Name">CoreGuiPolicy</string>
               <string name="Source">--!strict
@@ -70476,7 +70642,7 @@ return table.freeze(Policy)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="659">
+          <Item class="ModuleScript" referent="660">
             <Properties>
               <string name="Name">CreatureMotion</string>
               <string name="Source">--!strict
@@ -70591,7 +70757,7 @@ return Motion
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="660">
+          <Item class="ModuleScript" referent="661">
             <Properties>
               <string name="Name">DeviceLayout</string>
               <string name="Source">--!strict
@@ -70739,7 +70905,7 @@ return Device
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="661">
+          <Item class="ModuleScript" referent="662">
             <Properties>
               <string name="Name">DialogueController</string>
               <string name="Source">--!strict
@@ -70866,7 +71032,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="662">
+          <Item class="ModuleScript" referent="663">
             <Properties>
               <string name="Name">DialogueView</string>
               <string name="Source">--!strict
@@ -70980,7 +71146,7 @@ return table.freeze(View)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="663">
+          <Item class="ModuleScript" referent="664">
             <Properties>
               <string name="Name">DuoBars</string>
               <string name="Source">--!strict
@@ -71092,7 +71258,7 @@ return table.freeze(Duo)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="664">
+          <Item class="ModuleScript" referent="665">
             <Properties>
               <string name="Name">EncounterHandoffController</string>
               <string name="Source">--!strict
@@ -71186,7 +71352,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="665">
+          <Item class="ModuleScript" referent="666">
             <Properties>
               <string name="Name">EndingController</string>
               <string name="Source">--!strict
@@ -71337,7 +71503,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="666">
+          <Item class="ModuleScript" referent="667">
             <Properties>
               <string name="Name">EnemyBars</string>
               <string name="Source">--!strict
@@ -71428,7 +71594,7 @@ return table.freeze(Bars)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="667">
+          <Item class="ModuleScript" referent="668">
             <Properties>
               <string name="Name">EnemyDissolve</string>
               <string name="Source">--!strict
@@ -71541,7 +71707,7 @@ return Dissolve
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="668">
+          <Item class="ModuleScript" referent="669">
             <Properties>
               <string name="Name">EnemyPlate</string>
               <string name="Source">--!strict
@@ -71673,7 +71839,7 @@ return table.freeze(Plate)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="669">
+          <Item class="ModuleScript" referent="670">
             <Properties>
               <string name="Name">EnvironmentController</string>
               <string name="Source">--!strict
@@ -71763,7 +71929,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="670">
+          <Item class="ModuleScript" referent="671">
             <Properties>
               <string name="Name">FlameForms</string>
               <string name="Source">--!strict
@@ -71880,7 +72046,7 @@ return table.freeze(Flame)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="671">
+          <Item class="ModuleScript" referent="672">
             <Properties>
               <string name="Name">GameFeelController</string>
               <string name="Source">--!strict
@@ -71964,7 +72130,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="672">
+          <Item class="ModuleScript" referent="673">
             <Properties>
               <string name="Name">HudKit</string>
               <string name="Source">--!strict
@@ -72106,7 +72272,7 @@ return HudKit
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="673">
+          <Item class="ModuleScript" referent="674">
             <Properties>
               <string name="Name">HudLayout</string>
               <string name="Source">--!strict
@@ -72225,7 +72391,7 @@ return table.freeze(Layout)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="674">
+          <Item class="ModuleScript" referent="675">
             <Properties>
               <string name="Name">HudVisibility</string>
               <string name="Source">--!strict
@@ -72310,7 +72476,7 @@ return table.freeze(Visibility)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="675">
+          <Item class="ModuleScript" referent="676">
             <Properties>
               <string name="Name">IconShapes</string>
               <string name="Source">--!strict
@@ -72370,13 +72536,14 @@ return table.freeze(Shapes)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="676">
+          <Item class="ModuleScript" referent="677">
             <Properties>
               <string name="Name">ImpactFrame</string>
               <string name="Source">--!strict
 -- Screen-space layer for the showcase sorceries: colour grading pulses (blackout, solarized burst,
--- whiteout) and the 2D manga impact frame (sunburst, radial speed lines, character silhouette).
--- Local caster only. Reduced flashes keeps a share of every grade via EffectsPreference.flash.
+-- whiteout) and 2D anime impact frames (sunburst discs, radial speed lines, character silhouette with
+-- a coloured rim). Palettes give each spell its own frame and its negative. Local caster only;
+-- reduced flashes keeps a share of every grade via EffectsPreference.flash and shortens frames.
 local Lighting = game:GetService("Lighting")
 local Players = game:GetService("Players")
 local Workspace = game:GetService("Workspace")
@@ -72384,10 +72551,20 @@ local Effects = require(game:GetService("ReplicatedStorage").AsurasPath.Shared.E
 local Kit = require(script.Parent.SkillKit)
 local Screen = {}
 
-Screen.Yellow = Color3.fromRGB(251, 252, 29)
-Screen.Pale = Color3.fromRGB(255, 245, 157)
-Screen.Ink = Color3.fromRGB(15, 2, 2)
-local NEUTRAL = { Brightness = 0, Contrast = 0, Saturation = 0, TintColor = Color3.new(1, 1, 1) }
+local rgb = Color3.fromRGB
+Screen.Yellow = rgb(251, 252, 29)
+Screen.Pale = rgb(255, 245, 157)
+Screen.Ink = rgb(15, 2, 2)
+local WHITE = Color3.new(1, 1, 1)
+local NEUTRAL = { Brightness = 0, Contrast = 0, Saturation = 0, TintColor = WHITE }
+
+export type Palette = { Back: Color3, Rings: { Color3 }, Lines: Color3, Body: Color3, Rim: Color3, Flat: boolean? }
+Screen.Palettes = table.freeze({
+	Fire = { Back = rgb(255, 140, 0), Rings = { Screen.Yellow, Screen.Pale, WHITE }, Lines = Screen.Ink, Body = Screen.Ink, Rim = rgb(150, 12, 10) },
+	FireNegative = { Back = Screen.Ink, Rings = { rgb(120, 8, 6), rgb(255, 69, 0), Screen.Yellow }, Lines = Screen.Pale, Body = WHITE, Rim = rgb(255, 69, 0), Flat = true },
+	Celestial = { Back = rgb(6, 12, 30), Rings = { rgb(0, 120, 140), rgb(0, 255, 255), WHITE }, Lines = WHITE, Body = Screen.Ink, Rim = rgb(255, 170, 0) },
+	CelestialNegative = { Back = WHITE, Rings = { rgb(190, 250, 255), rgb(120, 230, 240), WHITE }, Lines = rgb(4, 20, 40), Body = rgb(4, 8, 18), Rim = rgb(0, 200, 210) },
+})
 
 function Screen.grade(trove: Kit.Trove): ColorCorrectionEffect
 	local cc = Instance.new("ColorCorrectionEffect")
@@ -72418,11 +72595,11 @@ function Screen.settle(trove: Kit.Trove, cc: ColorCorrectionEffect, goal: { [str
 	Kit.tween(trove, cc, seconds, scaled, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut)
 end
 
-local function silhouette(parent: Instance, model: Model, view: CFrame, fov: number, tint: Color3, scale: number, z: number)
+local function silhouette(parent: Instance, model: Model, view: CFrame, fov: number, tint: Color3, scale: number, z: number, flat: boolean?)
 	local viewport = Instance.new("ViewportFrame")
 	viewport.Size, viewport.AnchorPoint = UDim2.fromScale(scale, scale), Vector2.new(0.5, 0.5)
 	viewport.Position, viewport.BackgroundTransparency, viewport.ZIndex = UDim2.fromScale(0.5, 0.5), 1, z
-	viewport.Ambient, viewport.LightColor, viewport.ImageColor3 = Color3.new(1, 1, 1), Color3.new(1, 1, 1), tint
+	viewport.Ambient, viewport.LightColor, viewport.ImageColor3 = WHITE, WHITE, tint
 	local camera = Instance.new("Camera")
 	camera.CFrame, camera.FieldOfView, camera.Parent = view, fov, viewport
 	viewport.CurrentCamera = camera
@@ -72434,42 +72611,45 @@ local function silhouette(parent: Instance, model: Model, view: CFrame, fov: num
 	model.Archivable = was
 	if not clone then return end
 	for _, d in clone:GetDescendants() do
-		if d:IsA("LuaSourceContainer") or d:IsA("ParticleEmitter") or d:IsA("Light") or d:IsA("GuiBase") or d:IsA("Constraint") then
+		if d:IsA("LuaSourceContainer") or d:IsA("ParticleEmitter") or d:IsA("Light") or d:IsA("GuiBase") or d:IsA("Constraint") or d:IsA("Beam") then
+			d:Destroy()
+		elseif flat and (d:IsA("Decal") or d:IsA("SurfaceAppearance") or d:IsA("Clothing")) then
 			d:Destroy()
 		elseif d:IsA("BasePart") then
 			d.Anchored = true
+			if flat then d.Color, d.Material = WHITE, Enum.Material.Neon end
 		end
 	end
 	clone.Parent = world
 	viewport.Parent = parent
 end
 
--- Manga impact frame over `seconds`: crimson-black silhouette on a cadmium sunburst.
-function Screen.manga(trove: Kit.Trove, model: Model, seconds: number)
+-- Impact frame over `seconds` in `palette`: sunburst discs, speed lines re-cut every frame like
+-- hand-drawn smears, and the caster's silhouette with a coloured rim exactly where it stands.
+function Screen.frame(trove: Kit.Trove, model: Model, seconds: number, palette: Palette)
 	local player = Players.LocalPlayer
 	local camera = Workspace.CurrentCamera
 	if not player or not camera then return end
+	if Effects.reducedFlashes() then seconds *= 0.5 end
 	local gui = Kit.add(trove, Instance.new("ScreenGui"))
 	gui.Name, gui.IgnoreGuiInset, gui.DisplayOrder, gui.ResetOnSpawn = "AsuraImpactFrame", true, 60, false
 	local back = Instance.new("Frame")
-	back.Size, back.BackgroundColor3, back.BorderSizePixel = UDim2.fromScale(1, 1), Color3.fromRGB(255, 140, 0), 0
+	back.Size, back.BackgroundColor3, back.BorderSizePixel = UDim2.fromScale(1, 1), palette.Back, 0
 	back.Parent = gui
-	for n, ring in { { 1.9, Screen.Yellow }, { 1.15, Screen.Pale }, { 0.55, Color3.new(1, 1, 1) } } do
+	for n, ring in { 1.9, 1.15, 0.55 } do
 		local disc = Instance.new("Frame")
 		disc.AnchorPoint, disc.Position = Vector2.new(0.5, 0.5), UDim2.fromScale(0.5, 0.5)
-		disc.Size, disc.BackgroundColor3, disc.BorderSizePixel, disc.ZIndex = UDim2.fromScale(ring[1], ring[1]), ring[2], 0, 1 + n
-		local aspect = Instance.new("UIAspectRatioConstraint")
-		aspect.DominantAxis, aspect.Parent = Enum.DominantAxis.Height, disc
-		local corner = Instance.new("UICorner")
-		corner.CornerRadius, corner.Parent = UDim.new(0.5, 0), disc
+		disc.Size, disc.BackgroundColor3, disc.BorderSizePixel, disc.ZIndex = UDim2.fromScale(ring, ring), palette.Rings[n], 0, 1 + n
+		local aspect, corner = Instance.new("UIAspectRatioConstraint"), Instance.new("UICorner")
+		aspect.DominantAxis, aspect.Parent, corner.CornerRadius, corner.Parent = Enum.DominantAxis.Height, disc, UDim.new(0.5, 0), disc
 		disc.Parent = back
 	end
 	local size = camera.ViewportSize
 	local reach = size.Magnitude * 0.5
 	local lines: { Frame } = {}
-	for n = 1, 40 do
+	for n = 1, 48 do
 		local line = Instance.new("Frame")
-		line.AnchorPoint, line.BackgroundColor3, line.BorderSizePixel, line.ZIndex = Vector2.new(0.5, 0.5), Screen.Ink, 0, 6
+		line.AnchorPoint, line.BackgroundColor3, line.BorderSizePixel, line.ZIndex = Vector2.new(0.5, 0.5), palette.Lines, 0, 6
 		local fade = Instance.new("UIGradient")
 		fade.Transparency = NumberSequence.new({ NumberSequenceKeypoint.new(0, 1), NumberSequenceKeypoint.new(0.45, 0.6), NumberSequenceKeypoint.new(1, 0) })
 		fade.Parent = line
@@ -72479,17 +72659,16 @@ function Screen.manga(trove: Kit.Trove, model: Model, seconds: number)
 	local function scatter()
 		for n, line in lines do
 			local angle = (n / #lines) * math.pi * 2 + (math.random() - 0.5) * 0.12
-			local length = reach * (0.55 + math.random() * 0.45)
+			local length = reach * (0.5 + math.random() * 0.5)
 			local mid = size / 2 + Vector2.new(math.cos(angle), math.sin(angle)) * (reach - length / 2)
-			line.Size = UDim2.fromOffset(length, 2 + math.random() * 7)
+			line.Size = UDim2.fromOffset(length, 2 + math.random() * 8)
 			line.Position, line.Rotation = UDim2.fromOffset(mid.X, mid.Y), math.deg(angle)
 		end
 	end
 	scatter()
-	silhouette(back, model, camera.CFrame, camera.FieldOfView, Color3.fromRGB(150, 12, 10), 1.025, 7)
-	silhouette(back, model, camera.CFrame, camera.FieldOfView, Screen.Ink, 1, 8)
+	silhouette(back, model, camera.CFrame, camera.FieldOfView, palette.Rim, 1.03, 7, palette.Flat)
+	silhouette(back, model, camera.CFrame, camera.FieldOfView, palette.Body, 1, 8, palette.Flat)
 	gui.Parent = player:FindFirstChildOfClass("PlayerGui")
-	-- Speed lines re-cut every other frame, like hand-drawn smear frames.
 	Kit.add(trove, task.spawn(function()
 		local stop = os.clock() + seconds
 		while os.clock() &lt; stop and gui.Parent do
@@ -72500,11 +72679,20 @@ function Screen.manga(trove: Kit.Trove, model: Model, seconds: number)
 	end))
 end
 
+-- A beat of impact frames: each entry {palette, seconds} plays back to back from now.
+function Screen.sequence(trove: Kit.Trove, model: Model, beats: { { any } })
+	local at = 0
+	for _, beat in beats do
+		Kit.after(trove, at, function() Screen.frame(trove, model, beat[2], beat[1]) end)
+		at += beat[2]
+	end
+end
+
 return table.freeze(Screen)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="677">
+          <Item class="ModuleScript" referent="678">
             <Properties>
               <string name="Name">InputController</string>
               <string name="Source">--!strict
@@ -73114,7 +73302,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="678">
+          <Item class="ModuleScript" referent="679">
             <Properties>
               <string name="Name">InterfaceController</string>
               <string name="Source">--!strict
@@ -74372,7 +74560,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="679">
+          <Item class="ModuleScript" referent="680">
             <Properties>
               <string name="Name">LandscapeBudget</string>
               <string name="Source">--!strict
@@ -74491,7 +74679,7 @@ return Budget
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="680">
+          <Item class="ModuleScript" referent="681">
             <Properties>
               <string name="Name">MasteryEffects</string>
               <string name="Source">--!strict
@@ -74531,7 +74719,7 @@ return table.freeze(Effects)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="681">
+          <Item class="ModuleScript" referent="682">
             <Properties>
               <string name="Name">MoveIcons</string>
               <string name="Source">--!strict
@@ -74657,7 +74845,7 @@ return table.freeze(Icons)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="682">
+          <Item class="ModuleScript" referent="683">
             <Properties>
               <string name="Name">MovementController</string>
               <string name="Source">--!strict
@@ -74839,7 +75027,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="683">
+          <Item class="ModuleScript" referent="684">
             <Properties>
               <string name="Name">MovementEffects</string>
               <string name="Source">--!strict
@@ -74955,7 +75143,7 @@ return Effects
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="684">
+          <Item class="ModuleScript" referent="685">
             <Properties>
               <string name="Name">MovementMath</string>
               <string name="Source">--!strict
@@ -74998,7 +75186,7 @@ return Motion
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="685">
+          <Item class="ModuleScript" referent="686">
             <Properties>
               <string name="Name">ObjectiveController</string>
               <string name="Source">--!strict
@@ -75154,7 +75342,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="686">
+          <Item class="ModuleScript" referent="687">
             <Properties>
               <string name="Name">PauseMenu</string>
               <string name="Source">--!strict
@@ -75336,7 +75524,7 @@ return Menu
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="687">
+          <Item class="ModuleScript" referent="688">
             <Properties>
               <string name="Name">PlateLayout</string>
               <string name="Source">--!strict
@@ -75407,7 +75595,7 @@ return table.freeze(Layout)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="688">
+          <Item class="ModuleScript" referent="689">
             <Properties>
               <string name="Name">PortraitCamera</string>
               <string name="Source">--!strict
@@ -75511,7 +75699,7 @@ return table.freeze(Portrait)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="689">
+          <Item class="ModuleScript" referent="690">
             <Properties>
               <string name="Name">PrologueController</string>
               <string name="Source">--!strict
@@ -75628,7 +75816,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="690">
+          <Item class="ModuleScript" referent="691">
             <Properties>
               <string name="Name">QiVfx</string>
               <string name="Source">--!strict
@@ -75676,7 +75864,7 @@ return Qi
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="691">
+          <Item class="ModuleScript" referent="692">
             <Properties>
               <string name="Name">SakuraCompass</string>
               <string name="Source">--!strict
@@ -75770,7 +75958,7 @@ return table.freeze(Compass)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="692">
+          <Item class="ModuleScript" referent="693">
             <Properties>
               <string name="Name">SakuraHud</string>
               <string name="Source">--!strict
@@ -75893,7 +76081,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="693">
+          <Item class="ModuleScript" referent="694">
             <Properties>
               <string name="Name">SakuraKit</string>
               <string name="Source">--!strict
@@ -76043,7 +76231,7 @@ return table.freeze(Kit)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="694">
+          <Item class="ModuleScript" referent="695">
             <Properties>
               <string name="Name">SakuraMinimap</string>
               <string name="Source">--!strict
@@ -76176,7 +76364,7 @@ return table.freeze(Map)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="695">
+          <Item class="ModuleScript" referent="696">
             <Properties>
               <string name="Name">SanguineCombat</string>
               <string name="Source">--!strict
@@ -76228,7 +76416,7 @@ return table.freeze(Combat)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="696">
+          <Item class="ModuleScript" referent="697">
             <Properties>
               <string name="Name">SanguineController</string>
               <string name="Source">--!strict
@@ -76299,7 +76487,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="697">
+          <Item class="ModuleScript" referent="698">
             <Properties>
               <string name="Name">SanguineDispatch</string>
               <string name="Source">--!strict
@@ -76357,7 +76545,7 @@ return table.freeze(Dispatch)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="698">
+          <Item class="ModuleScript" referent="699">
             <Properties>
               <string name="Name">SanguineGeometry</string>
               <string name="Source">--!strict
@@ -76407,7 +76595,7 @@ return table.freeze(Geometry)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="699">
+          <Item class="ModuleScript" referent="700">
             <Properties>
               <string name="Name">SanguineGhost</string>
               <string name="Source">--!strict
@@ -76429,7 +76617,7 @@ return table.freeze(Ghost)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="700">
+          <Item class="ModuleScript" referent="701">
             <Properties>
               <string name="Name">SanguineMagic</string>
               <string name="Source">--!strict
@@ -76482,7 +76670,7 @@ return table.freeze(Magic)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="701">
+          <Item class="ModuleScript" referent="702">
             <Properties>
               <string name="Name">SanguineRuntime</string>
               <string name="Source">--!strict
@@ -76571,7 +76759,7 @@ return Runtime
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="702">
+          <Item class="ModuleScript" referent="703">
             <Properties>
               <string name="Name">SkillCinema</string>
               <string name="Source">--!strict
@@ -76661,9 +76849,22 @@ function Cinema.step(self: Director, dt: number)
 	end
 end
 
+-- Pulls an authored eye in front of any wall, roof or rock between it and the subject, so wide
+-- shots never end up inside a pavilion. Characters are ignored; spell effects never take queries.
+local function clear(from: Vector3, at: Vector3): Vector3
+	local params = RaycastParams.new()
+	local ignore = {}
+	for _, player in game:GetService("Players"):GetPlayers() do
+		if player.Character then table.insert(ignore, player.Character) end
+	end
+	params.FilterDescendantsInstances = ignore
+	local hit = Workspace:Raycast(at, from - at, params)
+	return if hit then hit.Position + (at - from).Unit * 1.5 else from
+end
+
 -- Helpers for authored frames. Dutch tilt rolls the camera around its own look axis.
 function Cinema.look(from: Vector3, at: Vector3, fov: number, dutchDegrees: number?): Frame
-	return { CFrame = CFrame.lookAt(from, at) * CFrame.Angles(0, 0, math.rad(dutchDegrees or 0)), Fov = fov }
+	return { CFrame = CFrame.lookAt(clear(from, at), at) * CFrame.Angles(0, 0, math.rad(dutchDegrees or 0)), Fov = fov }
 end
 
 function Cinema.destroy(self: Director)
@@ -76675,7 +76876,151 @@ return table.freeze(Cinema)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="703">
+          <Item class="ModuleScript" referent="704">
+            <Properties>
+              <string name="Name">SkillFx</string>
+              <string name="Source">--!strict
+-- Higher-order effects shared by the showcase sorceries: ground sigils, energy beams, crackling
+-- lightning, glowing ground fissures, anime light rays, flash spheres, converging motes and one-shot
+-- spark bursts. Built from SkillKit parts/emitters; everything lives in the caller's trove.
+local RunService = game:GetService("RunService")
+local Assets = require(game:GetService("ReplicatedStorage").AsurasPath.Shared.PresentationAssets)
+local Kit = require(script.Parent.SkillKit)
+local Fx = {}
+
+local function flat(cf: CFrame): CFrame return cf * CFrame.Angles(0, 0, math.pi / 2) end
+
+-- Ground magic circle: outer and inner rings, an eight-point star of crossed bars and rune ticks.
+-- Grows in over `grow` seconds and spins; returns the model (PivotTo it to move the circle).
+function Fx.sigil(trove: Kit.Trove, parent: Instance, at: CFrame, radius: number, outer: Color3, inner: Color3, grow: number): Model
+	local model = Instance.new("Model")
+	model.Name = "Sigil"
+	for _, r in { { radius, 0.35, outer, 40 }, { radius * 0.92, 0.12, inner, 40 }, { radius * 0.55, 0.22, inner, 28 } } do
+		local ring = Kit.ring(model, "SigilRing", r[1], r[2], r[3], r[4])
+		ring.Parent = model
+	end
+	for n = 0, 3 do -- two squares rotated 45 degrees make the eight-point star
+		local yaw = n * math.pi / 4
+		Kit.part(model, "SigilBar", inner, Vector3.new(radius * 1.55, 0.12, 0.16), CFrame.Angles(0, yaw, 0) * CFrame.new(0, 0, radius * 0.55))
+		Kit.part(model, "SigilBar", inner, Vector3.new(radius * 1.55, 0.12, 0.16), CFrame.Angles(0, yaw, 0) * CFrame.new(0, 0, -radius * 0.55))
+	end
+	for n = 1, 16 do
+		local yaw = n / 16 * math.pi * 2
+		Kit.part(model, "SigilRune", outer, Vector3.new(0.18, 0.12, if n % 2 == 0 then 1.4 else 0.7), CFrame.Angles(0, yaw, 0) * CFrame.new(0, 0, -radius * 0.78))
+	end
+	model.WorldPivot = CFrame.identity
+	model.Parent = parent
+	local scale, spin = 0.05, 0
+	model:ScaleTo(scale)
+	Kit.add(trove, model)
+	Kit.add(trove, RunService.Heartbeat:Connect(function(dt: number)
+		scale = math.min(1, scale + dt / math.max(grow, 0.05))
+		spin += dt * 0.6
+		model:ScaleTo(math.max(0.05, 1 - (1 - scale) ^ 3))
+		model:PivotTo(at * CFrame.Angles(0, spin, 0))
+	end))
+	return model
+end
+
+function Fx.fade(trove: Kit.Trove, model: Instance, seconds: number)
+	for _, p in model:GetDescendants() do
+		if p:IsA("BasePart") then Kit.tween(trove, p, seconds, { Transparency = 1 }) end
+	end
+end
+
+-- A glowing beam between two attachments (Ribbon texture scrolls along it).
+function Fx.beam(trove: Kit.Trove, a0: Attachment, a1: Attachment, color: Color3, width: number, parent: Instance): Beam
+	local beam = Kit.add(trove, Instance.new("Beam"))
+	beam.Attachment0, beam.Attachment1, beam.Color = a0, a1, ColorSequence.new(color)
+	beam.Width0, beam.Width1, beam.LightEmission, beam.LightInfluence = width, width * 0.4, 1, 0
+	beam.Texture, beam.TextureSpeed, beam.TextureLength, beam.FaceCamera = Assets.Textures.Ribbon, 2.5, 4, true
+	beam.Transparency = NumberSequence.new(0.05)
+	beam.Parent = parent
+	return beam
+end
+
+-- Crackling bolt from `from` to `to`: jagged neon segments re-cut 20 times a second for `seconds`.
+function Fx.lightning(trove: Kit.Trove, parent: Instance, from: () -&gt; Vector3, to: () -&gt; Vector3, color: Color3, seconds: number)
+	local count = 9
+	local parts: { BasePart } = {}
+	for n = 1, count do parts[n] = Kit.part(parent, "Bolt", color, Vector3.new(0.18, 0.18, 1), CFrame.identity) end
+	local stop, clock = os.clock() + seconds, 0
+	Kit.add(trove, RunService.Heartbeat:Connect(function(dt: number)
+		clock += dt
+		if clock &lt; 0.05 and os.clock() &lt; stop then return end
+		clock = 0
+		local a, b = from(), to()
+		local last = a
+		for n, p in parts do
+			local t = n / count
+			local jitter = if n == count then Vector3.zero else Vector3.new(math.random() - 0.5, math.random() - 0.5, math.random() - 0.5) * (b - a).Magnitude * 0.18
+			local point = a:Lerp(b, t) + jitter
+			local len = (point - last).Magnitude
+			p.Size = Vector3.new(0.16, 0.16, len)
+			p.CFrame = CFrame.lookAt((last + point) / 2, point)
+			p.Transparency = if os.clock() &gt; stop then 1 else math.random() * 0.3
+			last = point
+		end
+	end))
+end
+
+-- Radial ground fissures with a glowing seam, racing out from `center` over `seconds`.
+function Fx.cracks(trove: Kit.Trove, parent: Instance, center: Vector3, count: number, length: number, glow: Color3, seconds: number)
+	for n = 1, count do
+		local yaw = n / count * math.pi * 2 + math.random() * 0.5
+		local reach = length * (0.6 + math.random() * 0.4)
+		local base = CFrame.new(center) * CFrame.Angles(0, yaw, 0)
+		local rock = Kit.part(parent, "Fissure", Color3.fromRGB(28, 26, 30), Vector3.new(1.4, 0.3, 0.1), base * CFrame.new(0, 0.05, 0))
+		rock.Material = Enum.Material.Slate
+		local seam = Kit.part(parent, "FissureGlow", glow, Vector3.new(0.35, 0.34, 0.1), base * CFrame.new(0, 0.07, 0))
+		for _, p in { rock, seam } do
+			Kit.tween(trove, p, seconds, { Size = Vector3.new(p.Size.X, p.Size.Y, reach), CFrame = base * CFrame.new(0, p.Position.Y - center.Y, -reach / 2) },
+				Enum.EasingStyle.Quart)
+		end
+	end
+end
+
+-- Anime light rays: long tapered neon blades fanning out from `at` that flare and fade.
+function Fx.rays(trove: Kit.Trove, parent: Instance, at: CFrame, color: Color3, count: number, length: number, seconds: number)
+	for n = 1, count do
+		local dir = CFrame.Angles(math.random() * math.pi * 2, math.random() * math.pi * 2, 0)
+		local ray = Kit.part(parent, "LightRay", color, Vector3.new(0.6, 0.6, 0.5), at * dir)
+		ray.Transparency = 0.15
+		local reach = length * (0.5 + math.random() * 0.5)
+		Kit.tween(trove, ray, seconds, { Size = Vector3.new(0.05, 0.05, reach), CFrame = at * dir * CFrame.new(0, 0, -reach / 2), Transparency = 1 },
+			Enum.EasingStyle.Quint)
+	end
+end
+
+-- A flash sphere that blooms to `size` and fades out.
+function Fx.flash(trove: Kit.Trove, parent: Instance, at: Vector3, color: Color3, size: number, seconds: number)
+	local ball = Kit.part(parent, "FlashSphere", color, Vector3.one, CFrame.new(at), Enum.PartType.Ball)
+	ball.Transparency = 0.05
+	Kit.light(ball, color, math.min(60, size * 2), 8)
+	Kit.tween(trove, ball, seconds, { Size = Vector3.one * size, Transparency = 1 }, Enum.EasingStyle.Quart)
+end
+
+-- Motes drawn inward to `holder` from a sphere of `radius` (the gathering of power).
+function Fx.converge(holder: Instance, color: Color3, radius: number, rate: number): ParticleEmitter
+	local e = Kit.emitter(holder, { Texture = Assets.Textures.Ember, Color = ColorSequence.new(Color3.new(1, 1, 1), color),
+		Size = NumberSequence.new(0.35, 0.1), Rate = rate, Lifetime = NumberRange.new(0.9, 1.1), Speed = NumberRange.new(radius * 0.95, radius),
+		Spread = 0, Light = 1 })
+	e.Shape, e.ShapeStyle, e.ShapeInOut = Enum.ParticleEmitterShape.Sphere, Enum.ParticleEmitterShapeStyle.Surface, Enum.ParticleEmitterShapeInOut.Inward
+	return e
+end
+
+function Fx.burst(holder: Instance, colors: ColorSequence, count: number, speed: number, texture: string?)
+	local e = Kit.emitter(holder, { Texture = texture or Assets.Textures.Ember, Color = colors, Size = NumberSequence.new(0.45, 0.05), Rate = 0,
+		Lifetime = NumberRange.new(0.5, 1.2), Speed = NumberRange.new(speed * 0.5, speed), Spread = 180, Drag = 2, Light = 1 })
+	e:Emit(count)
+end
+
+Fx.flat = flat
+return table.freeze(Fx)
+</string>
+            </Properties>
+          </Item>
+          <Item class="ModuleScript" referent="705">
             <Properties>
               <string name="Name">SkillKit</string>
               <string name="Source">--!strict
@@ -76829,7 +77174,7 @@ return table.freeze(Kit)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="704">
+          <Item class="ModuleScript" referent="706">
             <Properties>
               <string name="Name">SkillShowcase</string>
               <string name="Source">--!strict
@@ -76906,7 +77251,7 @@ function Showcase.cue(self: Showcase, cue: any): boolean
 		if cast then
 			cast.Pulses += 1
 			if show.pulse then show.pulse(cast, point) end
-			if show.whiteout and cast.Pulses &gt;= 2 then show.whiteout(cast) end
+			if show.whiteout and cast.Pulses &gt;= (show.FinalPulse or 2) then show.whiteout(cast) end
 		end
 	elseif cue.Kind == "SpellHit" then
 		return false -- the shared hit ring still marks who was struck
@@ -76923,7 +77268,134 @@ return table.freeze(Showcase)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="705">
+          <Item class="ModuleScript" referent="707">
+            <Properties>
+              <string name="Name">SolarForms</string>
+              <string name="Source">--!strict
+-- Procedural fire for the Blazing Sun build-up and blast: a miniature sun (plasma core, ForceField
+-- corona, looping solar-flare ribbons), twin flame spirals winding up the body, and rings of fire
+-- pillars that erupt from the ground. Colours are FlameForms' crimson/orange/yellow palette.
+local RunService = game:GetService("RunService")
+local Assets = require(game:GetService("ReplicatedStorage").AsurasPath.Shared.PresentationAssets)
+local Kit = require(script.Parent.SkillKit)
+local Flame = require(script.Parent.FlameForms)
+local Fx = require(script.Parent.SkillFx)
+local Solar = {}
+
+export type Sun = { Core: BasePart, Corona: BasePart, Flares: { Beam }, Hub: Attachment, Glow: { BasePart } }
+
+local function seq(a: Color3, b: Color3): ColorSequence return ColorSequence.new(a, b) end
+
+-- A sun that grows to `size` over `grow` seconds at `at`; flares loop out of it as curved ribbons.
+function Solar.sun(trove: Kit.Trove, folder: Instance, at: Vector3, size: number, grow: number): Sun
+	local core = Kit.part(folder, "SunCore", Flame.Core, Vector3.one * 0.2, CFrame.new(at), Enum.PartType.Ball)
+	local corona = Kit.part(folder, "SunCorona", Flame.Body, Vector3.one * 0.3, CFrame.new(at), Enum.PartType.Ball)
+	corona.Material = Enum.Material.ForceField
+	Kit.light(core, Flame.Body, 40, 6)
+	Kit.tween(trove, core, grow, { Size = Vector3.one * size }, Enum.EasingStyle.Back)
+	Kit.tween(trove, corona, grow, { Size = Vector3.one * size * 1.7 }, Enum.EasingStyle.Back)
+	-- Layered bloom shells (white-hot heart, yellow and orange haze) so it reads as a star, not a disc.
+	local glow: { BasePart } = {}
+	for n, layer in { { Flame.Plasma, 0.55, 0 }, { Flame.Core, 1.4, 0.55 }, { Flame.Body, 2.4, 0.82 } } do
+		local shell = Kit.part(folder, "SunGlow", layer[1], Vector3.one * 0.2, CFrame.new(at), Enum.PartType.Ball)
+		shell.Transparency = layer[3]
+		Kit.tween(trove, shell, grow, { Size = Vector3.one * size * layer[2] }, Enum.EasingStyle.Back)
+		glow[n] = shell
+	end
+	local hub = Kit.attach(trove, core, Vector3.zero, "SunHub")
+	Kit.emitter(hub, { Texture = Assets.Textures.Flame, Color = seq(Flame.Plasma, Flame.Body), Size = NumberSequence.new(size * 0.6, size * 0.15),
+		Rate = 60, Lifetime = NumberRange.new(0.3, 0.6), Speed = NumberRange.new(2, 5), Spread = 180, Light = 1 })
+	local flares: { Beam } = {}
+	for n = 1, 5 do
+		local a = Kit.attach(trove, core, Vector3.zero, "FlareA")
+		local b = Kit.attach(trove, core, Vector3.zero, "FlareB")
+		local beam = Fx.beam(trove, a, b, if n % 2 == 0 then Flame.Core else Flame.Body, 1.6, core)
+		beam.FaceCamera, beam.Segments, beam.Texture = true, 16, ""
+		flares[n] = beam
+	end
+	local clock = 0
+	Kit.add(trove, RunService.Heartbeat:Connect(function(dt: number)
+		clock += dt
+		local r = core.Size.X * 0.5
+		for n, beam in flares do
+			local phase = n * 1.3 + clock * (0.8 + n * 0.15)
+			local dirA = Vector3.new(math.cos(phase), math.sin(phase * 0.7), math.sin(phase))
+			local dirB = Vector3.new(math.cos(phase + 1.1), math.sin(phase * 0.7 + 0.8), math.sin(phase + 1.1))
+			beam.Attachment0.Position, beam.Attachment1.Position = dirA.Unit * r, dirB.Unit * r
+			local loop = r * (1.4 + 0.6 * math.sin(clock * 5 + n))
+			beam.CurveSize0, beam.CurveSize1 = loop, -loop
+		end
+		corona.CFrame = core.CFrame * CFrame.Angles(clock * 0.7, clock, 0)
+		for n, shell in glow do
+			shell.Position = core.Position
+			if n == 3 then shell.Transparency = 0.78 + 0.08 * math.sin(clock * 9) end
+		end
+	end))
+	return { Core = core, Corona = corona, Flares = flares, Hub = hub, Glow = glow }
+end
+
+-- Drives the sun down into the caster's chest, crushing it to a point.
+function Solar.compress(trove: Kit.Trove, sun: Sun, target: () -&gt; Vector3, seconds: number)
+	local from = sun.Core.Position
+	local clock = 0
+	Kit.add(trove, RunService.Heartbeat:Connect(function(dt: number)
+		clock = math.min(seconds, clock + dt)
+		local k = (clock / seconds) ^ 2
+		local at = from:Lerp(target(), k)
+		sun.Core.Position = at
+		sun.Core.Size = Vector3.one * math.max(0.3, (1 - k) * sun.Core.Size.X + k * 0.3)
+		sun.Corona.Size = Vector3.one * math.max(0.4, (1 - k) * sun.Corona.Size.X)
+		for _, shell in sun.Glow do shell.Size = Vector3.one * math.max(0.3, (1 - k * 0.2) * shell.Size.X) end
+	end))
+end
+
+-- Two flame streams spiralling up the caster's body for `seconds`.
+function Solar.swirl(trove: Kit.Trove, root: BasePart, seconds: number)
+	local holders: { Attachment } = {}
+	for n = 1, 2 do
+		local a = Kit.attach(trove, root, Vector3.zero, "SunSwirl")
+		Kit.emitter(a, { Texture = Assets.Textures.Flame, Color = seq(Flame.Core, Flame.Body), Size = NumberSequence.new(1.1, 0.2),
+			Rate = 70, Lifetime = NumberRange.new(0.25, 0.45), Speed = NumberRange.new(0.5, 1.5), Spread = 30, Light = 1 })
+		holders[n] = a
+	end
+	local clock = 0
+	Kit.add(trove, RunService.Heartbeat:Connect(function(dt: number)
+		clock += dt
+		for n, a in holders do
+			local angle = clock * 7 + n * math.pi
+			local height = ((clock * 3.2 + n * 1.5) % 5) - 2.6
+			a.Position = Vector3.new(math.cos(angle) * 2.4, height, math.sin(angle) * 2.4)
+		end
+	end))
+	Kit.after(trove, seconds, function() for _, a in holders do a:Destroy() end end)
+end
+
+-- `count` fire pillars erupting in a ring of `radius` around `floor` (height ~`height`).
+function Solar.pillars(trove: Kit.Trove, folder: Instance, floor: CFrame, count: number, radius: number, height: number, offset: number)
+	for n = 1, count do
+		local yaw = n / count * math.pi * 2 + offset
+		local base = floor * CFrame.Angles(0, yaw, 0) * CFrame.new(0, 0, -radius)
+		local up = base * CFrame.Angles(0, 0, math.pi / 2) -- cylinders run along X
+		local pillar = Kit.part(folder, "FirePillar", Flame.Body, Vector3.new(0.2, 3, 3), up, Enum.PartType.Cylinder)
+		pillar.Transparency = 0.2
+		local core = Kit.part(folder, "FirePillarCore", Flame.Core, Vector3.new(0.2, 1.3, 1.3), up, Enum.PartType.Cylinder)
+		local h = height * (0.75 + math.random() * 0.5)
+		for _, p in { pillar, core } do
+			Kit.tween(trove, p, 0.18, { Size = Vector3.new(h, p.Size.Y, p.Size.Z), CFrame = base * CFrame.new(0, h / 2, 0) * CFrame.Angles(0, 0, math.pi / 2) }, Enum.EasingStyle.Quint)
+			Kit.after(trove, 0.25, function() Kit.tween(trove, p, 0.55, { Size = Vector3.new(h * 1.2, 0.1, 0.1), Transparency = 1 }, Enum.EasingStyle.Quad) end)
+		end
+		local burst = Kit.emitter(pillar, { Texture = Assets.Textures.Flame, Color = seq(Flame.Core, Flame.Coal), Size = NumberSequence.new(2.2, 0.4),
+			Rate = 0, Lifetime = NumberRange.new(0.4, 0.8), Speed = NumberRange.new(8, 16), Spread = 25, Accel = Vector3.new(0, 18, 0) })
+		burst.EmissionDirection = Enum.NormalId.Right -- the cylinder's +X axis points up
+		burst:Emit(12)
+	end
+end
+
+return table.freeze(Solar)
+</string>
+            </Properties>
+          </Item>
+          <Item class="ModuleScript" referent="708">
             <Properties>
               <string name="Name">SoundscapeController</string>
               <string name="Source">--!strict
@@ -76991,7 +77463,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="706">
+          <Item class="ModuleScript" referent="709">
             <Properties>
               <string name="Name">SpatialAudio</string>
               <string name="Source">--!strict
@@ -77095,7 +77567,7 @@ return Audio
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="707">
+          <Item class="ModuleScript" referent="710">
             <Properties>
               <string name="Name">SpellController</string>
               <string name="Source">--!strict
@@ -77185,7 +77657,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="708">
+          <Item class="ModuleScript" referent="711">
             <Properties>
               <string name="Name">SpellHud</string>
               <string name="Source">--!strict
@@ -77329,7 +77801,7 @@ return table.freeze(Hud)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="709">
+          <Item class="ModuleScript" referent="712">
             <Properties>
               <string name="Name">SpellVfx</string>
               <string name="Source">--!strict
@@ -77443,65 +77915,126 @@ return table.freeze(Vfx)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="710">
+          <Item class="ModuleScript" referent="713">
+            <Properties>
+              <string name="Name">SupernovaShots</string>
+              <string name="Source">--!strict
+-- Camera direction for Celestial Supernova (caster only). Startup is three shots chained over the
+-- server's windup: a low wide angle looking up as the caster rises off the sigil, a slow orbit
+-- around the planet, and a fast push-in on the implosion. Release looks up the column from the
+-- ground; the finale pulls back high and wide so the whole blast fits the frame.
+local Cinema = require(script.Parent.SkillCinema)
+local Kit = require(script.Parent.SkillKit)
+local Shots = {}
+
+function Shots.startup(cast: any, center: () -&gt; Vector3?, floor: Vector3)
+	local w = cast.Windup
+	local side = math.random() * math.pi * 2
+	local wide = Vector3.new(math.cos(side), 0, math.sin(side))
+	-- 1. Low, wide, looking up past the sigil at the rising caster.
+	Cinema.play(cast.Cinema, function(t: number)
+		local at = center() or floor
+		local eye = floor + wide * (22 - t * 2) + Vector3.new(0, -1.6, 0)
+		return Cinema.look(eye, at + Vector3.new(0, 2 + t * 1.5, 0), 70, 4)
+	end, w * 0.3 + 0.1, 0.35)
+	-- 2. Slow orbit at the planet's height.
+	Kit.after(cast.Trove, w * 0.3, function()
+		local start = side + 0.6
+		Cinema.play(cast.Cinema, function(t: number)
+			local at = center()
+			if not at then return nil end
+			local angle = start + t * 0.45
+			local eye = at + Vector3.new(math.cos(angle), 0, math.sin(angle)) * (18 - t * 0.6) + Vector3.new(0, 2.5 - t * 0.4, 0)
+			return Cinema.look(eye, at + Vector3.new(0, 0.6, 0), 60, -3)
+		end, w * 0.52 + 0.1, 0.6)
+	end)
+	-- 3. Fast push-in on the collapsing core, a hard Dutch angle.
+	Kit.after(cast.Trove, w * 0.82, function()
+		local at0 = center() or floor
+		local from = workspace.CurrentCamera and workspace.CurrentCamera.CFrame.Position or at0 + wide * 16
+		Cinema.play(cast.Cinema, function(t: number)
+			local at = center() or at0
+			local k = math.clamp(t / (w * 0.18), 0, 1)
+			local eye = from:Lerp(at + (from - at).Unit * 6, k * k)
+			return Cinema.look(eye, at, 58 - k * 18, -10 * k)
+		end, w * 0.18 + 0.3, 0.08)
+	end)
+end
+
+function Shots.release(cast: any, ground: Vector3)
+	local side = math.random() * math.pi * 2
+	Cinema.play(cast.Cinema, function(t: number)
+		local eye = ground + Vector3.new(math.cos(side + t * 0.18), 0, math.sin(side + t * 0.18)) * (36 + t * 3) + Vector3.new(0, 1.5, 0)
+		return Cinema.look(eye, ground + Vector3.new(0, 20 + t * 6, 0), 74, -5)
+	end, 4, 0.12)
+end
+
+function Shots.finale(cast: any)
+	local column = cast.Bag.Column
+	if not column then Cinema.release(cast.Cinema, 0.8) return end
+	local ground = column.Ground
+	local side = math.random() * math.pi * 2
+	Cinema.play(cast.Cinema, function(t: number)
+		local k = math.min(1, t / 1.4)
+		local eye = ground + Vector3.new(math.cos(side), 0, math.sin(side)) * (40 + 30 * k) + Vector3.new(0, 10 + 30 * k, 0)
+		return Cinema.look(eye, ground + Vector3.new(0, 18 + 10 * k, 0), 70, 0)
+	end, 1.8, 0.2)
+	Kit.after(cast.Trove, 1.8, function() Cinema.release(cast.Cinema, 0.9) end)
+end
+
+return table.freeze(Shots)
+</string>
+            </Properties>
+          </Item>
+          <Item class="ModuleScript" referent="714">
             <Properties>
               <string name="Name">SupernovaShow</string>
               <string name="Source">--!strict
 -- Celestial Supernova timeline. Startup phases are fractions of the server's windup (so quick-cast
--- catalysts stay in sync); the pillar waits for the authoritative SpellRelease cue and the whiteout
--- for the second SpellPulse. Levitation, camera, grading and shake belong to the caster's client;
--- everyone else sees the replicated body and the world-space effects.
+-- catalysts stay in sync); the column waits for the authoritative SpellRelease cue, pulses flare it
+-- and the final pulse whites out. Levitation, camera, grading and impact frames belong to the
+-- caster's client; everyone else sees the replicated body and the world-space effects.
+--   0.00 sigil, dim  0.05 rise, starlight converges  0.30 planet, orbits, moons  0.55 lightning well
+--   0.82 implosion   0.94 negative frame   release: frame, column, fissures, rays   final: whiteout
 local RunService = game:GetService("RunService")
 local Kit = require(script.Parent.SkillKit)
+local Fx = require(script.Parent.SkillFx)
 local Cinema = require(script.Parent.SkillCinema)
 local Screen = require(script.Parent.ImpactFrame)
 local Forms = require(script.Parent.CelestialForms)
+local Pillar = require(script.Parent.CelestialPillar)
+local Shots = require(script.Parent.SupernovaShots)
 local Show = {}
 
-local RISE = 10 -- studs of levitation
+Show.FinalPulse = 3
+local RISE = 12
 local VOID = { Brightness = -0.35, Contrast = 0.25, Saturation = -0.55, TintColor = Color3.fromRGB(150, 175, 200) }
+local WELL = { Brightness = -0.5, Contrast = 0.45, Saturation = -0.7, TintColor = Color3.fromRGB(120, 160, 200) }
+local P = Screen.Palettes
 
 local function center(cast: any): Vector3?
-	local root = cast.Entity.Root
-	return if root and root.Parent then root.Position else nil
+	local root = cast.Entity.Root; return if root and root.Parent then root.Position else nil
 end
 
-local function levitate(cast: any, rise: number, seconds: number)
-	local root = cast.Entity.Root
-	if not cast.Own or not root then return end
-	local align = cast.Bag.Align
-	if not align then
-		local anchor = Kit.attach(cast.Trove, root, Vector3.zero, "SupernovaLift")
-		align = Kit.add(cast.Trove, Instance.new("AlignPosition"))
-		align.Mode, align.Attachment0 = Enum.PositionAlignmentMode.OneAttachment, anchor
-		align.MaxForce, align.MaxVelocity, align.Responsiveness = 1e6, 40, 25
-		align.Position, align.Parent = root.Position, root
-		cast.Bag.Align, cast.Bag.Floor = align, root.Position
-	end
-	Kit.tween(cast.Trove, align, seconds, { Position = cast.Bag.Floor + Vector3.new(0, rise, 0) }, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut)
-end
+local levitate = Forms.levitate
 
--- Phases 1-3: levitate into the void, planet and rings, gravitational implosion.
 function Show.startup(cast: any)
 	local w = cast.Windup
 	local folder = Kit.folder(cast.Trove, "CelestialSupernova")
 	cast.Bag.Folder = folder
-	levitate(cast, RISE, w * 0.36)
+	local floor = center(cast) or Vector3.zero
+	local ground = CFrame.new(floor - Vector3.new(0, 2.85, 0))
+	cast.Bag.Sigil = Fx.sigil(cast.Trove, folder, ground, 13, Forms.Teal, Forms.Gold, w * 0.25)
+	Kit.after(cast.Trove, w * 0.05, function() levitate(cast, RISE, w * 0.4) end)
 	if cast.Own then
 		cast.Bag.Grade = Screen.grade(cast.Trove)
-		Screen.settle(cast.Trove, cast.Bag.Grade, VOID, w * 0.36)
-		local start = math.random() * math.pi * 2
-		Cinema.play(cast.Cinema, function(t: number)
-			local at = center(cast)
-			if not at then return nil end
-			local angle = start + t * 0.4
-			local zoom = math.clamp((t - w * 0.84) / (w * 0.16), 0, 1)
-			local eye = at + Vector3.new(math.cos(angle), 0, math.sin(angle)) * (17 - zoom * 4) + Vector3.new(0, 3 - t * 0.5, 0)
-			return Cinema.look(eye, at + Vector3.new(0, 1, 0), 62 - zoom * 12, 0)
-		end, w + 0.2, 0.4)
+		Screen.settle(cast.Trove, cast.Bag.Grade, VOID, w * 0.35)
+		Shots.startup(cast, function() return center(cast) end, floor)
 	end
-	local floor = center(cast) or Vector3.zero
-	cast.Bag.Voxels = Forms.voxels(folder, floor, 14)
+	local motes = Kit.attach(cast.Trove, cast.Entity.Root, Vector3.zero, "SupernovaMotes")
+	local gather = Fx.converge(motes, Forms.Teal, 16, 0)
+	Kit.after(cast.Trove, w * 0.05, function() gather.Rate = 40 end)
+	cast.Bag.Voxels = Forms.voxels(folder, floor, 18)
 	local clock = 0
 	Kit.add(cast.Trove, RunService.Heartbeat:Connect(function(dt: number)
 		clock += dt
@@ -77510,80 +78043,110 @@ function Show.startup(cast: any)
 		Forms.drift(cast.Bag.Voxels, cast.Bag.Axis or floor, clock, if spiral &gt; 0 then math.max(1e-3, clock - spiral) else 0)
 		local at = center(cast)
 		if cast.Bag.Rings and at then Forms.spin(cast.Bag.Rings, at, cast.Bag.Speed or 4, dt) end
-		if cast.Bag.Orb and at then
-			cast.Bag.Orb.Position = at
-			cast.Bag.Core.Position = at
-		end
+		if cast.Bag.Orb and at then cast.Bag.Orb.Position, cast.Bag.Core.Position = at, at end
 	end))
-	Kit.after(cast.Trove, w * 0.36, function()
+	Kit.after(cast.Trove, w * 0.3, function()
 		local at = center(cast) or floor
 		cast.Bag.Orb, cast.Bag.Core = Forms.orb(cast.Trove, folder, at)
 		cast.Bag.Rings = Forms.rings(folder)
+		Fx.flash(cast.Trove, folder, at, Forms.Teal, 16, 0.5)
 	end)
-	Kit.after(cast.Trove, w * 0.84, function()
+	Kit.after(cast.Trove, w * 0.55, function() -- gravity well: bolts from the planet to the sigil's star
+		if cast.Own then Screen.settle(cast.Trove, cast.Bag.Grade, WELL, w * 0.25) end
+		gather.Rate = 90
+		for n = 1, 4 do
+			local yaw = n / 4 * math.pi * 2
+			Fx.lightning(cast.Trove, folder, function() return center(cast) or floor end,
+				function() return floor + Vector3.new(math.cos(yaw) * 10, -2.6, math.sin(yaw) * 10) end, if n % 2 == 0 then Forms.Gold else Forms.Cyan, w * 0.3)
+		end
+	end)
+	Kit.after(cast.Trove, w * 0.82, function() -- implosion
+		gather.Rate = 0
 		if not cast.Bag.Rings then return end
-		local implode = w * 0.16
+		local implode = w * 0.14
 		for _, r in cast.Bag.Rings do
 			local from = r.Radius
-			Kit.add(cast.Trove, RunService.Heartbeat:Connect(function(dt: number)
-				r.Radius = math.max(0.3, r.Radius - dt * from / implode)
-			end))
+			Kit.add(cast.Trove, RunService.Heartbeat:Connect(function(dt: number) r.Radius = math.max(0.3, r.Radius - dt * from / implode) end))
 		end
-		cast.Bag.Speed = 14
+		cast.Bag.Speed = 16
 		Kit.tween(cast.Trove, cast.Bag.Orb, implode, { Size = Vector3.one * 0.5 }, Enum.EasingStyle.Quint, Enum.EasingDirection.In)
 		Kit.tween(cast.Trove, cast.Bag.Core, implode, { Size = Vector3.one * 0.5, Color = Color3.new(1, 1, 1) }, Enum.EasingStyle.Quint, Enum.EasingDirection.In)
 	end)
+	if cast.Own then
+		Kit.after(cast.Trove, w * 0.94, function()
+			Screen.pulse(cast.Trove, cast.Bag.Grade, { Brightness = -1, Contrast = 0.6 }, w * 0.03, 0)
+			Screen.frame(cast.Trove, cast.Entity.Model, w * 0.05, P.CelestialNegative)
+		end)
+	end
 end
 
--- Phase 4: the column erupts through the caster, shockwave discs race outward, voxels spiral up.
+-- The column erupts through the caster: impact frame, shockwaves, fissures, rays, rune rings.
 function Show.release(cast: any, ground: Vector3)
 	local folder = cast.Bag.Folder or Kit.folder(cast.Trove, "CelestialSupernova")
 	cast.Bag.Folder = folder
-	for _, key in { "Orb", "Core" } do
-		if cast.Bag[key] then cast.Bag[key]:Destroy(); cast.Bag[key] = nil end
-	end
-	if cast.Bag.Rings then
-		for _, r in cast.Bag.Rings do for _, p in r.Parts do p:Destroy() end end
-		cast.Bag.Rings = nil
-	end
-	cast.Bag.Pillar = Forms.pillar(cast.Trove, folder, ground)
+	for _, key in { "Orb", "Core" } do if cast.Bag[key] then cast.Bag[key]:Destroy(); cast.Bag[key] = nil end end
+	for _, r in cast.Bag.Rings or {} do for _, p in r.Parts do p:Destroy() end end
+	cast.Bag.Rings = nil
+	local column = Pillar.erupt(cast.Trove, folder, ground, 24)
+	cast.Bag.Column = column
+	Pillar.runes(cast.Trove, folder, column, 0.45)
 	cast.Bag.Axis, cast.Bag.Spiral = ground, (cast.Bag.Clock or 0) + 1e-3
-	Kit.after(cast.Trove, 2.4, function() Show.whiteout(cast) end) -- if the second pulse never arrives
+	Kit.after(cast.Trove, 4.2, function() Show.whiteout(cast) end) -- if the final pulse never arrives
 	local floor = CFrame.new(ground - Vector3.new(0, 2.6, 0))
-	Kit.shockwave(cast.Trove, folder, floor, Forms.Teal, 42, 0.9)
-	Kit.after(cast.Trove, 0.12, function() Kit.shockwave(cast.Trove, folder, floor, Forms.Gold, 28, 0.75, 0.35) end)
+	Fx.cracks(cast.Trove, folder, floor.Position, 12, 26, Forms.Cyan, 0.35)
+	Fx.rays(cast.Trove, folder, CFrame.new(ground + Vector3.new(0, 4, 0)), Forms.Teal, 22, 60, 0.9)
+	for n, wave in { { Forms.Teal, 48, 0.9, 0.2 }, { Forms.Gold, 32, 0.75, 0.35 }, { Color3.new(1, 1, 1), 60, 1.2, 0.6 } } do
+		Kit.after(cast.Trove, (n - 1) * 0.1, function() Kit.shockwave(cast.Trove, folder, floor, wave[1], wave[2], wave[3], wave[4]) end)
+	end
 	if cast.Own then
-		Cinema.shake(cast.Cinema, 0.55, 1.2, 2)
-		local side = math.random() * math.pi * 2
-		Cinema.play(cast.Cinema, function(t: number)
-			local eye = ground + Vector3.new(math.cos(side + t * 0.15), 0, math.sin(side + t * 0.15)) * 34 + Vector3.new(0, 1.5, 0)
-			return Cinema.look(eye, ground + Vector3.new(0, 18 + t * 4, 0), 72, -4)
-		end, 3, 0.12)
+		Screen.frame(cast.Trove, cast.Entity.Model, 0.14, P.Celestial)
+		Kit.after(cast.Trove, 0.14, function() Screen.pulse(cast.Trove, cast.Bag.Grade or Screen.grade(cast.Trove), { Brightness = 0.7, Contrast = 0.5 }, 0.03, 0.4) end)
+		Cinema.shake(cast.Cinema, 0.7, 1.1, 2)
+		Shots.release(cast, ground)
 	end
 end
 
--- Phase 5: whiteout flash, heavy trauma with cubic falloff, the column fades and the caster lands.
+function Show.pulse(cast: any, at: Vector3)
+	local column = cast.Bag.Column
+	if not column or cast.Pulses &lt;= 1 or cast.Pulses &gt;= Show.FinalPulse then return end
+	Pillar.flare(cast.Trove, column, 1)
+	Kit.shockwave(cast.Trove, cast.Bag.Folder, CFrame.new(column.Ground - Vector3.new(0, 2.6, 0)), Forms.Cyan, 40, 0.7, 0.3)
+	if cast.Own then
+		Screen.pulse(cast.Trove, cast.Bag.Grade or Screen.grade(cast.Trove), { Brightness = 0.35, Contrast = 0.3, TintColor = Color3.fromRGB(200, 255, 255) }, 0.03, 0.3)
+		Cinema.shake(cast.Cinema, 0.5, 1.4, 2)
+	end
+end
+
+-- Final beat: negative frame, whiteout, the column blasts wide and dissolves, the caster lands.
 function Show.whiteout(cast: any)
 	if cast.Bag.Done then return end
 	cast.Bag.Done = true
-	for _, p in cast.Bag.Pillar or {} do
-		Kit.tween(cast.Trove, p, 0.6, { Transparency = 1, Size = Vector3.new(p.Size.X, p.Size.Y * 1.6, p.Size.Z * 1.6) })
+	local column = cast.Bag.Column
+	if column then
+		column.Fading = true
+		Pillar.dissolve(cast.Trove, column, 0.9)
+		Fx.flash(cast.Trove, cast.Bag.Folder, column.Ground + Vector3.new(0, 10, 0), Color3.new(1, 1, 1), 70, 0.8)
+		Fx.rays(cast.Trove, cast.Bag.Folder, CFrame.new(column.Ground + Vector3.new(0, 20, 0)), Forms.Gold, 30, 90, 1.2)
 	end
+	if cast.Bag.Sigil then Fx.fade(cast.Trove, cast.Bag.Sigil, 1) end
 	for _, v in cast.Bag.Voxels or {} do Kit.tween(cast.Trove, v.Part, 0.6, { Transparency = 1 }) end
 	if cast.Own then
-		Screen.pulse(cast.Trove, cast.Bag.Grade or Screen.grade(cast.Trove), { Brightness = 1, Contrast = 0.4 }, 0.05, 0.6)
-		Cinema.shake(cast.Cinema, 1, 0.9, 3)
-		Cinema.release(cast.Cinema, 0.8)
+		Screen.frame(cast.Trove, cast.Entity.Model, 0.1, P.CelestialNegative)
+		Kit.after(cast.Trove, 0.1, function()
+			Screen.pulse(cast.Trove, cast.Bag.Grade or Screen.grade(cast.Trove), { Brightness = 1, Contrast = 0.4 }, 0.06, 0.8)
+		end)
+		Cinema.shake(cast.Cinema, 1, 0.8, 3)
+		Shots.finale(cast)
 	end
-	if cast.Bag.Align then levitate(cast, 0, 1.1) end
-	Kit.after(cast.Trove, 1.4, function() Kit.clean(cast.Trove) end)
+	if cast.Bag.Align then levitate(cast, 0, 1.4) end
+	Kit.after(cast.Trove, 2, function() Kit.clean(cast.Trove) end)
 end
 
 return table.freeze(Show)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="711">
+          <Item class="ModuleScript" referent="715">
             <Properties>
               <string name="Name">TargetPlate</string>
               <string name="Source">--!strict
@@ -77671,7 +78234,7 @@ return table.freeze(Target)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="712">
+          <Item class="ModuleScript" referent="716">
             <Properties>
               <string name="Name">TutorialController</string>
               <string name="Source">--!strict
@@ -77799,7 +78362,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="713">
+          <Item class="ModuleScript" referent="717">
             <Properties>
               <string name="Name">UiKit</string>
               <string name="Source">--!strict
@@ -77951,7 +78514,7 @@ return table.freeze(UiKit)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="714">
+          <Item class="ModuleScript" referent="718">
             <Properties>
               <string name="Name">UiWindow</string>
               <string name="Source">--!strict
@@ -78099,7 +78662,7 @@ return table.freeze(Window)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="715">
+          <Item class="ModuleScript" referent="719">
             <Properties>
               <string name="Name">VitalsTags</string>
               <string name="Source">--!strict
@@ -78181,7 +78744,7 @@ return table.freeze(Tags)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="716">
+          <Item class="ModuleScript" referent="720">
             <Properties>
               <string name="Name">WagerController</string>
               <string name="Source">--!strict
@@ -78238,7 +78801,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="717">
+          <Item class="ModuleScript" referent="721">
             <Properties>
               <string name="Name">WaypointMarker</string>
               <string name="Source">--!strict
@@ -78324,7 +78887,7 @@ return Marker
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="718">
+          <Item class="ModuleScript" referent="722">
             <Properties>
               <string name="Name">WeaponTrails</string>
               <string name="Source">--!strict
@@ -78402,7 +78965,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="719">
+          <Item class="ModuleScript" referent="723">
             <Properties>
               <string name="Name">WorldStateController</string>
               <string name="Source">--!strict
@@ -78796,7 +79359,7 @@ return Controller
           </Item>
         </Item>
       </Item>
-      <Item class="LocalScript" referent="720">
+      <Item class="LocalScript" referent="724">
         <Properties>
           <string name="Name">AsurasPathClient</string>
           <string name="Source">--!strict
@@ -79041,7 +79604,7 @@ print("[Asura's Path] Client ready: camlock, game feel, Souls HUD and Colosseum 
       </Item>
     </Item>
   </Item>
-  <Item class="Workspace" referent="721">
+  <Item class="Workspace" referent="725">
     <Properties>
       <string name="Name">Workspace</string>
       <float name="FallenPartsDestroyHeight">-100</float>
@@ -79053,13 +79616,13 @@ print("[Asura's Path] Client ready: camlock, game feel, Souls HUD and Colosseum 
       <float name="Gravity">196.2</float>
       <bool name="NeedsPivotMigration">false</bool>
       <bool name="StreamingEnabled">false</bool>
-    <Ref name="CurrentCamera">723</Ref></Properties>
-    <Item class="Folder" referent="722">
+    <Ref name="CurrentCamera">727</Ref></Properties>
+    <Item class="Folder" referent="726">
       <Properties>
         <string name="Name">AsurasPath</string>
       </Properties>
     </Item>
-    <Item class="Camera" referent="723">
+    <Item class="Camera" referent="727">
       <Properties>
         <string name="Name">Camera</string>
         <CoordinateFrame name="CFrame">

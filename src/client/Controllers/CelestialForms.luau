@@ -11,7 +11,7 @@ Forms.Gold = Color3.fromRGB(255, 170, 0)
 Forms.Cyan = Color3.fromRGB(0, 230, 230)
 local WHITE = Color3.new(1, 1, 1)
 
-export type Ring = { Parts: { BasePart }, Radius: number, Angle: number, Spin: number, Tilt: CFrame }
+export type Ring = { Parts: { BasePart }, Radius: number, Angle: number, Spin: number, Tilt: CFrame, Moon: BasePart? }
 export type Voxel = { Part: BasePart, Base: Vector3, Lift: number, Phase: number, Spin: Vector3 }
 
 function Forms.orb(trove: Kit.Trove, folder: Instance, center: Vector3): (BasePart, BasePart)
@@ -33,12 +33,22 @@ local function ring(folder: Instance, radius: number, color: Color3, tilt: CFram
 	return { Parts = parts, Radius = radius, Angle = 0, Spin = spin, Tilt = tilt }
 end
 
--- Gold and teal rings on crossed tilts, spinning in opposite directions.
+-- Gold and teal rings on crossed tilts spinning in opposite directions, a fine white equator ring,
+-- and a small moon riding each of the two main rings.
 function Forms.rings(folder: Instance): { Ring }
-	return {
+	local list = {
 		ring(folder, 6.5, Forms.Gold, CFrame.Angles(math.rad(28), 0, math.rad(8)), 1),
 		ring(folder, 7.6, Forms.Cyan, CFrame.Angles(math.rad(-22), 0, math.rad(-34)), -1),
+		ring(folder, 9.4, WHITE, CFrame.Angles(math.rad(4), 0, math.rad(12)), 0.45),
 	}
+	for n = 1, 2 do
+		local moon = list[n].Parts[1]
+		moon.Shape, moon.Size, moon.Color = Enum.PartType.Ball, Vector3.one * 1.1, if n == 1 then Forms.Gold else WHITE
+		list[n].Moon = moon
+		Kit.light(moon, moon.Color, 10, 2)
+	end
+	for _, p in list[3].Parts do p.Size = Vector3.new(1, 0.12, 0.12); p.Transparency = 0.3 end
+	return list
 end
 
 -- Places every segment around `center` this frame; speed is radians per second.
@@ -53,7 +63,7 @@ function Forms.spin(rings: { Ring }, center: Vector3, speed: number, dt: number)
 			local yaw = r.Angle + (n / count) * math.pi * 2
 			table.insert(parts, p)
 			table.insert(frames, CFrame.new(center) * r.Tilt * CFrame.Angles(0, yaw, 0) * CFrame.new(0, 0, -r.Radius))
-			if math.abs(p.Size.X - chord) > 0.05 then p.Size = Vector3.new(chord, p.Size.Y, p.Size.Z) end
+			if p ~= r.Moon and math.abs(p.Size.X - chord) > 0.05 then p.Size = Vector3.new(chord, p.Size.Y, p.Size.Z) end
 		end
 	end
 	Workspace:BulkMoveTo(parts, frames, Enum.BulkMoveMode.FireCFrameChanged)
@@ -96,20 +106,20 @@ function Forms.drift(voxels: { Voxel }, axis: Vector3, clock: number, spiral: nu
 	Workspace:BulkMoveTo(parts, frames, Enum.BulkMoveMode.FireCFrameChanged)
 end
 
--- A 24-stud, 120-stud-tall column of cyan light that drives down from the sky onto `ground`.
-function Forms.pillar(trove: Kit.Trove, folder: Instance, ground: Vector3): { BasePart }
-	local up = CFrame.Angles(0, 0, math.pi / 2)
-	local top = ground + Vector3.new(0, 120, 0)
-	local outer = Kit.part(folder, "SupernovaPillar", Forms.Teal, Vector3.new(1, 24, 24), CFrame.new(top) * up, Enum.PartType.Cylinder)
-	outer.Transparency = 0.45
-	local inner = Kit.part(folder, "SupernovaCore", WHITE, Vector3.new(1, 8, 8), CFrame.new(top) * up, Enum.PartType.Cylinder)
-	inner.Transparency = 0.1
-	for _, p in { outer, inner } do
-		Kit.tween(trove, p, 0.22, { Size = Vector3.new(120, p.Size.Y, p.Size.Z), CFrame = CFrame.new(ground + Vector3.new(0, 60 - 2.4, 0)) * up },
-			Enum.EasingStyle.Quad, Enum.EasingDirection.In)
+-- Caster-only lift on an AlignPosition: rises to `rise` studs above where the cast began.
+function Forms.levitate(cast: any, rise: number, seconds: number)
+	local root = cast.Entity.Root
+	if not cast.Own or not root then return end
+	local align = cast.Bag.Align
+	if not align then
+		local anchor = Kit.attach(cast.Trove, root, Vector3.zero, "SupernovaLift")
+		align = Kit.add(cast.Trove, Instance.new("AlignPosition"))
+		align.Mode, align.Attachment0 = Enum.PositionAlignmentMode.OneAttachment, anchor
+		align.MaxForce, align.MaxVelocity, align.Responsiveness = 1e6, 40, 25
+		align.Position, align.Parent = root.Position, root
+		cast.Bag.Align, cast.Bag.Floor = align, root.Position
 	end
-	Kit.light(inner, Forms.Teal, 60, 6)
-	return { outer, inner }
+	Kit.tween(cast.Trove, align, seconds, { Position = cast.Bag.Floor + Vector3.new(0, rise, 0) }, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut)
 end
 
 return table.freeze(Forms)

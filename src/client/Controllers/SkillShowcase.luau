@@ -72,7 +72,7 @@ function Showcase.cue(self: Showcase, cue: any): boolean
 		if cast then
 			cast.Pulses += 1
 			if show.pulse then show.pulse(cast, point) end
-			if show.whiteout and cast.Pulses >= 2 then show.whiteout(cast) end
+			if show.whiteout and cast.Pulses >= (show.FinalPulse or 2) then show.whiteout(cast) end
 		end
 	elseif cue.Kind == "SpellHit" then
 		return false -- the shared hit ring still marks who was struck

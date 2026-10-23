@@ -929,6 +929,18 @@
             "SkillKit": {
               "$path": "src/client/Controllers/SkillKit.luau"
             },
+            "SkillFx": {
+              "$path": "src/client/Controllers/SkillFx.luau"
+            },
+            "CelestialPillar": {
+              "$path": "src/client/Controllers/CelestialPillar.luau"
+            },
+            "SupernovaShots": {
+              "$path": "src/client/Controllers/SupernovaShots.luau"
+            },
+            "SolarForms": {
+              "$path": "src/client/Controllers/SolarForms.luau"
+            },
             "SkillCinema": {
               "$path": "src/client/Controllers/SkillCinema.luau"
             },

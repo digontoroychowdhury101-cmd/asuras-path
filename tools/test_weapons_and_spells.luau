@@ -127,5 +127,6 @@ check(Inventory.claim(showcase,"SanctuaryEaves") and showcase.spells.CelestialSu
 check(Inventory.claim(showcase,"SanctuaryReliquary") and showcase.spells.BlazingSunAwakening,"Cloud Reliquary grants Blazing Sun Awakening")
 local early=Inventory.migrate({spells={JadeAegis=true},caches={SanctuaryEaves=true,SanctuaryReliquary=true}})
 check(early.spells.CelestialSupernova and early.spells.BlazingSunAwakening and Inventory.validate(early),"Caches claimed before the update grant the new spells")
-check(Spells.ById.CelestialSupernova.Shape=="Column" and Spells.ById.BlazingSunAwakening.Pulses==3,"Showcase spell shapes")
+check(Spells.ById.CelestialSupernova.Shape=="Column" and Spells.ById.CelestialSupernova.Pulses==3 and Spells.ById.BlazingSunAwakening.Pulses==4,"Showcase spell shapes")
+check(Spells.ById.CelestialSupernova.Damage*Spells.ById.CelestialSupernova.Pulses<=72 and Spells.ById.BlazingSunAwakening.Damage*Spells.ById.BlazingSunAwakening.Pulses<=64,"Longer showcase channels keep their total payoff")
 print("Phase 2 weapons and spells: "..checks.." checks passed")

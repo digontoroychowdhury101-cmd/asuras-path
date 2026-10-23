@@ -1,5 +1,9 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## Showcase spell VFX revamp — 2026-10-24 (Computer B)
+
+Supernova (6 s charge, 3 pulses) and Blazing Sun (4 s charge, 4 pulses) rebuilt: sigils, lightning well, helix column with rune rings, miniature sun, fire pillar rings, cracks, rays, palette impact frames + negatives, multi-shot cameras that avoid walls. Per-hit damage cut so totals hold. Studio-tested; verifier 14/14.
+
 ## Showcase spells in Studio — 2026-10-24 (Computer B)
 
 First Studio playtest of Celestial Supernova and Blazing Sun Awakening (3b2601f): unlock from caches, equip, cast, levitation (+10, lands cleanly), pillar, manga frame all work. Fixed: opaque orb (ForceField shell), voxels passing the lens, Blazing Sun charge camera blocked by the body, eye close-up filling the screen. Verifier 14/14.
