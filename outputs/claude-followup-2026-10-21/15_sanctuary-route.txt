@@ -1,6 +1,6 @@
 Continue Asura's Path — follow-up 15/26: Validate Sanctuary reveals, terrace and cache routes.
 
-Apply 00_SHARED_BRIEF.txt in /Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 16. Findings: #27, #28, #31, #32. Verify existing work, fix actual gaps, and execute this batch now.
+Apply 00_SHARED_BRIEF.txt in outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 16. Findings: #27, #28, #31, #32. Verify existing work, fix actual gaps, and execute this batch now.
 
 Walk from spawn/bonfire through the stairs, viewing wings and pilgrim daises at ordinary camera height. Preserve the imported colossus/tree identity, scale and composition while fixing demonstrated player-scale occlusion, footing, camera clipping or visual seams. Do not evaluate the whole reveal from a detached aerial camera.
 Walk terrace edges/roots and both Sanctuary cache routes, including the moved ladder/service ledge and cloud shards. Use real jump/glide physics. Check parapets, honest limits, legitimate fall return and arrival/return portal legs. Verify camera and collision around imported meshes and their simple movement proxies.

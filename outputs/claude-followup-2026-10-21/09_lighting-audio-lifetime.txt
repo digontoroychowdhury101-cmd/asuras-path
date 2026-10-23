@@ -1,6 +1,6 @@
 Continue Asura's Path — follow-up 09/26: Close live combat lighting and sound-lifetime failures.
 
-Apply 00_SHARED_BRIEF.txt in /Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 03. Findings: #2, #7, #36. Verify existing work, fix actual gaps, and execute this batch now.
+Apply 00_SHARED_BRIEF.txt in outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 03. Findings: #2, #7, #36. Verify existing work, fix actual gaps, and execute this batch now.
 
 The per-biome combat/Unbound profiles, ArenaLightPlan fill, reduced decorative effects and idempotent SpatialAudio release already pass local tests. Verify them in the actual engine rather than replacing them with fullbright or another audio wrapper.
 Capture all six arenas at ordinary play distance in idle combat lighting and accessible phase-two lighting. Actors, weapons, floor edges and telegraphs must be readable without an active bright spell. Check exiting, death, retry and another player's encounter do not leave incorrect lighting on this client. Tame decorative petals/bloom when they compete with warnings, including reduced-flash mode.

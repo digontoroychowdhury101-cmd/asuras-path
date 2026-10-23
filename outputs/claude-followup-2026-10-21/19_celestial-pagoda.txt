@@ -1,6 +1,6 @@
 Continue Asura's Path — follow-up 19/26: Finish and validate Celestial Pagoda and final lore.
 
-Apply 00_SHARED_BRIEF.txt in /Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 20. Findings: #22, #27, #28, #32, #44. Verify existing work, fix actual gaps, and execute this batch now.
+Apply 00_SHARED_BRIEF.txt in outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 20. Findings: #22, #27, #28, #32, #44. Verify existing work, fix actual gaps, and execute this batch now.
 
 Walk Ash join → multi-level ascent/rafters → incense altar → Wu arena → Sky join and back. Verify actual stair/rafter widths, ceiling/headroom, single-jump landings, falls/catches, shoulder camera, enemy pathing and line-of-sight combat. Main progress must not require an untaught mobility trick.
 Read both Pagoda inscriptions, including the final eighth entry, from real standing positions; confirm Codex/reward updates once. Test the optional loft, rest/death/respawn/travel and guidance on different elevation bands. The minimap/marker should stage the correct stairs and doors, not draw a misleading straight route through floors.

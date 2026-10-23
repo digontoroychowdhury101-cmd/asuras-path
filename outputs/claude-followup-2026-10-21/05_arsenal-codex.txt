@@ -1,6 +1,6 @@
 Continue Asura's Path — follow-up 05/26: Make Arsenal and Codex truthful and readable.
 
-Apply 00_SHARED_BRIEF.txt in /Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 06. Findings: #41, #42. Verify existing work, fix actual gaps, and execute this batch now.
+Apply 00_SHARED_BRIEF.txt in outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 06. Findings: #41, #42. Verify existing work, fix actual gaps, and execute this batch now.
 
 Inspect all three existing Arsenal tabs with the starting loadout, one earned unlock if available, and separately labeled seeded partial/full fixtures. Verify practical spell function, targeting/range, key effects, Qi/cooldown and weapon playstyle/comparisons agree with the active schemas and scaling functions. Slot 1 and Slot 2 must be unmistakable and display current InputMap captions.
 Inspect Codex at zero, partial and complete discovery counts, including long text and the story-completion line. Show truthful n/8 inscriptions and n/6 sovereigns, explain discovery in the empty state, and keep locked entries unclaimed/unreadable through the normal UI. Do not claim lore secrecy at the networking level when NarrativeCatalog is replicated.

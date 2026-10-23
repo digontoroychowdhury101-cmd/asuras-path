@@ -1,5 +1,11 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## Portable Prompt Catalog — 2026-10-23 (Computer A)
+
+- **ALL_PROMPTS.md & Brief Portability**: All hardcoded `/Users/digonto/...` absolute paths in `outputs/claude-followup-2026-10-21/ALL_PROMPTS.md`, `00_SHARED_BRIEF.txt`, and standalone prompt files `01_` through `26_` converted to repository-relative paths (`outputs/...`).
+- **Cross-Computer Ready**: Prompt sequences and briefs can now be directly copied into Claude on either Computer A (macOS) or Computer B (Windows) without path mismatch errors.
+- **Next**: Run follow-up prompt (e.g. 04/26) on Computer A or B.
+
 ## Showcase sorceries — 2026-10-23 (Computer B)
 
 Two cinematic spells from the TikTok VFX reference, built into the existing magic system (not standalone Q/E scripts; Q/E still cast whatever is slotted).

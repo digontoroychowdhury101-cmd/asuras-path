@@ -1,6 +1,6 @@
 Continue Asura's Path — follow-up 23/26: Verify real multiplayer and isolated durable persistence.
 
-Apply 00_SHARED_BRIEF.txt in /Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 24. Findings: additional verification/tooling. Verify existing work, fix actual gaps, and execute this batch now.
+Apply 00_SHARED_BRIEF.txt in outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 24. Findings: additional verification/tooling. Verify existing work, fix actual gaps, and execute this batch now.
 
 The real-service mock test passes 28 checks, including the fixed leave-during-setup forfeit. Validate two duelists plus a spectator in an actual local multi-client session. Cover Ranked normalization, Open build stats, countdown/queue cancellation, both reachable rings, target/lighting isolation and leaving during setup versus mid-match.
 For the spectator, test eligibility, escrow before the bell, rejection once closed, duelist refusal, win/loss/refund and exactly-once settlement. Verify duplicate requests, disconnect/rejoin, abandoned setup, service outage and shutdown produce the appropriate durable journal/inbox/profile outcomes without double rating, Essence or stakes.

@@ -1,6 +1,6 @@
 Continue Asura's Path — follow-up 17/26: Finish and validate the Ash Colosseum story region.
 
-Apply 00_SHARED_BRIEF.txt in /Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 18. Findings: #22, #27, #28, #32. Verify existing work, fix actual gaps, and execute this batch now.
+Apply 00_SHARED_BRIEF.txt in outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 18. Findings: #22, #27, #28, #32. Verify existing work, fix actual gaps, and execute this batch now.
 
 Walk Bamboo join → antechamber altar → Shen arena → Pagoda join and return. Confirm rest/death/respawn/travel and correct portal/waypoint legs. Check the cavea and arena perimeter against both Shen forms, normal shoulder camera, weapon reach, hazards and handoff locations; reuse prompt 10's boss evidence.
 Inspect actual story-region silhouettes, ruined martial architecture, material/texture scale and combat readability. Integrate available approved colosseum tier/arcade art through current dressings without moving authoritative arena floors or covering collision/exit paths. Essential absent kits remain explicitly blocked with a precise deliverable; a box-layout pass is not final environment art.

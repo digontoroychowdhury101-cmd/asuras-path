@@ -1,6 +1,6 @@
 Continue Asura's Path — follow-up 07/26: Verify attack contact, healing and enemy defeat feedback.
 
-Apply 00_SHARED_BRIEF.txt in /Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 09. Findings: #14, #20, #21. Verify existing work, fix actual gaps, and execute this batch now.
+Apply 00_SHARED_BRIEF.txt in outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 09. Findings: #14, #20, #21. Verify existing work, fix actual gaps, and execute this batch now.
 
 Use the existing ContactCues, authoritative Whiff/Evade events, healRoom refusal and EnemyDissolve. Demonstrate a light hit, heavy hit, genuine out-of-range whiff, startup feint, block and evade against one normal enemy. Check visual weapon reach versus actual hitboxes, cues/damage numbers and hit confirmation at ordinary camera distance; retain server authority and rewind limits.
 At full effective HP, pressing Heal should give clear refusal and preserve charges. Verify injury-reduced ceiling, recoverable damage, available healing room and the last charge; do not equate reduced ceiling with a broken flask. Gourd count must remain readable.

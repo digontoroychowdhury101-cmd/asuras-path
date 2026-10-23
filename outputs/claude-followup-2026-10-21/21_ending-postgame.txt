@@ -1,6 +1,6 @@
 Continue Asura's Path — follow-up 21/26: Verify the six-sovereign ending and postgame.
 
-Apply 00_SHARED_BRIEF.txt in /Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 22. Findings: #10, #28, #42. Verify existing work, fix actual gaps, and execute this batch now.
+Apply 00_SHARED_BRIEF.txt in outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 22. Findings: #10, #28, #42. Verify existing work, fix actual gaps, and execute this batch now.
 
 The server story flags, Cross/Remain choice, client crossing scene, credits and postgame Codex are implemented. Verify five flags cannot unlock Release, six legitimate flags route back to Lin in person, and the remote projection gives correct homeward guidance. Isolated seeded profiles can test edge cases; earned ending acceptance must wait for prompt 22's genuine six-boss run.
 Exercise Remain → continued exploration → later Cross; Cross → completion card → credits → continue playing; replay/skip; death/respawn during the scene; leave/rejoin after the recorded choice; and interrupted presentation. The choice is currently saved before presentation and grants no item: do not invent a new reward to make the test pass.

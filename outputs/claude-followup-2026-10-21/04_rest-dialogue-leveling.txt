@@ -1,6 +1,6 @@
 Continue Asura's Path — follow-up 04/26: Finish rest, Lin portraits and practical leveling.
 
-Apply 00_SHARED_BRIEF.txt in /Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 05. Findings: #4, #38, #39, #40. Verify existing work, fix actual gaps, and execute this batch now.
+Apply 00_SHARED_BRIEF.txt in outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 05. Findings: #4, #38, #39, #40. Verify existing work, fix actual gaps, and execute this batch now.
 
 The rest/dialogue implementation exists; verify it in Studio at Sanctuary, Gate and Cloister. Rest should set/refill the checkpoint and expose Travel and deliberate Summon Lin/Ascension choices. Lin's remote spirit projection is intentional. Closing her should leave the altar actions easy to reach.
 Inspect both shoulder views and awkward approach angles. Her face/body must be visible, fire/stone must not fill the portrait, and the player needs safe standing and departure room. Repair portrait selection/fallback and only the necessary local geometry; coordinate any wider Cloister change with prompt 14. Unrelated HUD/prompts should disappear during dialogue and return on close, replacement dialogue, death and respawn without camera/input leaks.

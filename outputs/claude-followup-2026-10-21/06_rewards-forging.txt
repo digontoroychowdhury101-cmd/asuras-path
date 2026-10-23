@@ -1,6 +1,6 @@
 Continue Asura's Path — follow-up 06/26: Prove earned boss rewards and exactly-once forging.
 
-Apply 00_SHARED_BRIEF.txt in /Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 08. Findings: #8, #9. Verify existing work, fix actual gaps, and execute this batch now.
+Apply 00_SHARED_BRIEF.txt in outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 08. Findings: #8, #9. Verify existing work, fix actual gaps, and execute this batch now.
 
 The token-object ownership and six-sovereign recipes are implemented and the reward suite passes. Inspect the active roster, legacy aliases and server/UI recipeState paths before changing anything. Preserve Shen's intentional Shen plus Chimera tokens and the retired Ash Pagoda General migration to TwinSentinels; do not revive a seventh campaign boss.
 Run one genuine boss victory → server award → visible token/Essence → Gao → enabled recipe → confirmation → forged item → equip/use → save/rejoin flow. If earned victory is unavailable, exercise a clearly labeled diagnostic transaction and leave earned acceptance open for prompt 22. Never mark the flow earned after directly writing defeat flags.

@@ -5,9 +5,9 @@ Send the shared brief once, then one numbered block at a time. Do not send this 
 ## 00 — Shared brief
 
 ```text
-You are continuing Asura's Path in /Users/digonto/Documents/ChatGPT/Roblox game 2. I will send one numbered follow-up prompt at a time. Implement necessary fixes, perform focused verification, update the ledger, then stop at that boundary. Do not stop after a plan. Preserve existing uncommitted work, saved places, asset binaries, profiles, stable IDs/migrations, 1.4x tempo and server-authoritative combat.
+You are continuing Asura's Path in this repository. I will send one numbered follow-up prompt at a time. Implement necessary fixes, perform focused verification, update the ledger, then stop at that boundary. Do not stop after a plan. Preserve existing uncommitted work, saved places, asset binaries, profiles, stable IDs/migrations, 1.4x tempo and server-authoritative combat.
 
-At a fresh chat read CLAUDE.md, current default.project.json, this pack's AUDIT.md and relevant PROGRESS.md rows once. Read PROJECT_STATE.md's current sections selectively: it contains historical and contradictory instructions. Original references are /Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/playthrough-2026-10-20/PLAYTEST_REPORT.md and /Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/playthrough-2026-10-20/claude-prompts/PROGRESS.md. Those 26 batches all have implementation work, but zero have complete acceptance. Forty findings are implemented/pending; four (#22, #23, #24, #32) retain production-art blockers. Do not resend or blindly redo the original implementation prompts.
+At a fresh chat read CLAUDE.md, current default.project.json, this pack's AUDIT.md and relevant PROGRESS.md rows once. Read PROJECT_STATE.md's current sections selectively: it contains historical and contradictory instructions. Original references are outputs/playthrough-2026-10-20/PLAYTEST_REPORT.md and outputs/playthrough-2026-10-20/claude-prompts/PROGRESS.md. Those 26 batches all have implementation work, but zero have complete acceptance. Forty findings are implemented/pending; four (#22, #23, #24, #32) retain production-art blockers. Do not resend or blindly redo the original implementation prompts.
 
 My 21 October audit passed 19 existing regression commands (including 17 emulated suites inside one command), 206 source syntax checks and a full temporary Rojo build. Read the saved logs if needed rather than repeatedly running the baseline. These results do not certify Studio physics, appearance, human combat, actual audio, hardware or cloud delivery. Each claim must identify its evidence type: source, local regression, engine emulation, seeded Studio diagnostic, real Studio play, earned continuous-input play, hardware or private live service. Never promote one type into another. A seeded victory is never an earned kill.
 
@@ -27,7 +27,7 @@ Respond in at most 150 words: change/result, verification, remaining dependency 
 ```text
 Continue Asura's Path — follow-up 01/26: Establish a working Studio baseline and trustworthy verifier.
 
-Apply 00_SHARED_BRIEF.txt in /Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 26. Findings: additional verification/tooling. Verify existing work, fix actual gaps, and execute this batch now.
+Apply 00_SHARED_BRIEF.txt in outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 26. Findings: additional verification/tooling. Verify existing work, fix actual gaps, and execute this batch now.
 
 The audit passed 19 regression commands, 206 source compilations and a temporary full-project Rojo build. Preserve that baseline. First prove the current Studio place contains this checkout: identify the place/test mode, call one harmless Studio read, and confirm server/client readiness plus current source. The previous connection check in this chat completed an MCP handshake but returned zero tools; do not assume connection is repaired. If unavailable, record the exact failing layer and finish independent local work without claiming Studio results.
 Repair current build instructions in docs/BUILD.md: they still describe Cagebound Phase 12, missing commands and old namespaces. Keep historical material explicitly historical. Correct tools/build.py's misleading hard-coded 'external asset IDs: 0' message using a real count or remove the claim. The Phase 5 asset file now exists and the complete project builds; do not strip its mapping to bypass assets.
@@ -55,7 +55,7 @@ Update the matching ledgers with evidence type and exact remaining work; stop af
 ```text
 Continue Asura's Path — follow-up 02/26: Close the checkpoint, death and recovery loop.
 
-Apply 00_SHARED_BRIEF.txt in /Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 01. Findings: #1, #18, #19. Verify existing work, fix actual gaps, and execute this batch now.
+Apply 00_SHARED_BRIEF.txt in outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 01. Findings: #1, #18, #19. Verify existing work, fix actual gaps, and execute this batch now.
 
 The recovery suite already passes 94 checks. Verify the real LoadCharacter/CharacterAdded timing and Sanctuary fall safeguard before replacing this implementation.
 Rest at Gate and Cloister, die to an actual enemy, and observe active altar, physical position, region, replenished resources, boss reset and recovery objective. Cover every remaining altar using a compact position/result table; diagnostic access is acceptable for isolating an altar but is not earned campaign evidence.
@@ -83,7 +83,7 @@ Update the matching ledgers with evidence type and exact remaining work; stop af
 ```text
 Continue Asura's Path — follow-up 03/26: Validate input ownership and the desktop combat HUD.
 
-Apply 00_SHARED_BRIEF.txt in /Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 02, 04. Findings: #5, #6, #12, #17, #18, #33, #34, #35, #36, #37. Verify existing work, fix actual gaps, and execute this batch now.
+Apply 00_SHARED_BRIEF.txt in outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 02, 04. Findings: #5, #6, #12, #17, #18, #33, #34, #35, #36, #37. Verify existing work, fix actual gaps, and execute this batch now.
 
 Use InputMap as the control contract: Z interacts, E casts slot 2, 1 casts slot 1, J opens Codex, K swaps. Do not revert to stale instructions in PROJECT_STATE. Check prompt ownership just inside/outside range, a held prompt, two overlapping prompts, a focused text box and an open modal. Each action must fire once; reclaiming must never cast Gale Step. Include the controller-equivalent route; hardware closure belongs to prompt 24.
 Inspect the current HUD in one small desktop and one wide viewport, grouping checks into three states: ordinary combat with H open; two enemies/Twins with lock switching; reduced HP ceiling followed by death/respawn. Fix genuine controls/action-bar overlap, duplicate CoreGui/target plates, unreadable flask/currency values and stale labels using existing layout/visibility components. Survival information and perilous cues take priority over petals and compass decoration. Rally, recoverable health and lasting deficit must be understandable without color alone.
@@ -111,7 +111,7 @@ Update the matching ledgers with evidence type and exact remaining work; stop af
 ```text
 Continue Asura's Path — follow-up 04/26: Finish rest, Lin portraits and practical leveling.
 
-Apply 00_SHARED_BRIEF.txt in /Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 05. Findings: #4, #38, #39, #40. Verify existing work, fix actual gaps, and execute this batch now.
+Apply 00_SHARED_BRIEF.txt in outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 05. Findings: #4, #38, #39, #40. Verify existing work, fix actual gaps, and execute this batch now.
 
 The rest/dialogue implementation exists; verify it in Studio at Sanctuary, Gate and Cloister. Rest should set/refill the checkpoint and expose Travel and deliberate Summon Lin/Ascension choices. Lin's remote spirit projection is intentional. Closing her should leave the altar actions easy to reach.
 Inspect both shoulder views and awkward approach angles. Her face/body must be visible, fire/stone must not fill the portrait, and the player needs safe standing and departure room. Repair portrait selection/fallback and only the necessary local geometry; coordinate any wider Cloister change with prompt 14. Unrelated HUD/prompts should disappear during dialogue and return on close, replacement dialogue, death and respawn without camera/input leaks.
@@ -139,7 +139,7 @@ Update the matching ledgers with evidence type and exact remaining work; stop af
 ```text
 Continue Asura's Path — follow-up 05/26: Make Arsenal and Codex truthful and readable.
 
-Apply 00_SHARED_BRIEF.txt in /Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 06. Findings: #41, #42. Verify existing work, fix actual gaps, and execute this batch now.
+Apply 00_SHARED_BRIEF.txt in outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 06. Findings: #41, #42. Verify existing work, fix actual gaps, and execute this batch now.
 
 Inspect all three existing Arsenal tabs with the starting loadout, one earned unlock if available, and separately labeled seeded partial/full fixtures. Verify practical spell function, targeting/range, key effects, Qi/cooldown and weapon playstyle/comparisons agree with the active schemas and scaling functions. Slot 1 and Slot 2 must be unmistakable and display current InputMap captions.
 Inspect Codex at zero, partial and complete discovery counts, including long text and the story-completion line. Show truthful n/8 inscriptions and n/6 sovereigns, explain discovery in the empty state, and keep locked entries unclaimed/unreadable through the normal UI. Do not claim lore secrecy at the networking level when NarrativeCatalog is replicated.
@@ -166,7 +166,7 @@ Update the matching ledgers with evidence type and exact remaining work; stop af
 ```text
 Continue Asura's Path — follow-up 06/26: Prove earned boss rewards and exactly-once forging.
 
-Apply 00_SHARED_BRIEF.txt in /Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 08. Findings: #8, #9. Verify existing work, fix actual gaps, and execute this batch now.
+Apply 00_SHARED_BRIEF.txt in outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 08. Findings: #8, #9. Verify existing work, fix actual gaps, and execute this batch now.
 
 The token-object ownership and six-sovereign recipes are implemented and the reward suite passes. Inspect the active roster, legacy aliases and server/UI recipeState paths before changing anything. Preserve Shen's intentional Shen plus Chimera tokens and the retired Ash Pagoda General migration to TwinSentinels; do not revive a seventh campaign boss.
 Run one genuine boss victory → server award → visible token/Essence → Gao → enabled recipe → confirmation → forged item → equip/use → save/rejoin flow. If earned victory is unavailable, exercise a clearly labeled diagnostic transaction and leave earned acceptance open for prompt 22. Never mark the flow earned after directly writing defeat flags.
@@ -194,7 +194,7 @@ Update the matching ledgers with evidence type and exact remaining work; stop af
 ```text
 Continue Asura's Path — follow-up 07/26: Verify attack contact, healing and enemy defeat feedback.
 
-Apply 00_SHARED_BRIEF.txt in /Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 09. Findings: #14, #20, #21. Verify existing work, fix actual gaps, and execute this batch now.
+Apply 00_SHARED_BRIEF.txt in outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 09. Findings: #14, #20, #21. Verify existing work, fix actual gaps, and execute this batch now.
 
 Use the existing ContactCues, authoritative Whiff/Evade events, healRoom refusal and EnemyDissolve. Demonstrate a light hit, heavy hit, genuine out-of-range whiff, startup feint, block and evade against one normal enemy. Check visual weapon reach versus actual hitboxes, cues/damage numbers and hit confirmation at ordinary camera distance; retain server authority and rewind limits.
 At full effective HP, pressing Heal should give clear refusal and preserve charges. Verify injury-reduced ceiling, recoverable damage, available healing room and the last charge; do not equate reduced ceiling with a broken flask. Gourd count must remain readable.
@@ -222,7 +222,7 @@ Update the matching ledgers with evidence type and exact remaining work; stop af
 ```text
 Continue Asura's Path — follow-up 08/26: Make the first ten minutes teach the actual game.
 
-Apply 00_SHARED_BRIEF.txt in /Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 10. Findings: #11, #12, #13, #15, #19, #43, #44. Verify existing work, fix actual gaps, and execute this batch now.
+Apply 00_SHARED_BRIEF.txt in outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 10. Findings: #11, #12, #13, #15, #19, #43, #44. Verify existing work, fix actual gaps, and execute this batch now.
 
 Start with a fresh isolated profile. Observe first boot, avatar appearance loading, prologue play/skip and the first-rest objective. The scene must not reveal an unfinished avatar or competing UI before the intended handoff. Verify replay opening/training through Respite and interruptions by death/respawn.
 Walk the current Sparring Phantom sequence using real actions: light, deflect, dodge, lock, heal, deathblow, perilous/mobility counter and Blood Rally as defined in TutorialRules. Ensure server-judged steps cannot advance from an unrelated event, dead target or mere keypress. Practice must remain safe and reward-free. Skipping/rejoining must neither trap an existing save nor force veteran retraining.
@@ -250,7 +250,7 @@ Update the matching ledgers with evidence type and exact remaining work; stop af
 ```text
 Continue Asura's Path — follow-up 09/26: Close live combat lighting and sound-lifetime failures.
 
-Apply 00_SHARED_BRIEF.txt in /Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 03. Findings: #2, #7, #36. Verify existing work, fix actual gaps, and execute this batch now.
+Apply 00_SHARED_BRIEF.txt in outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 03. Findings: #2, #7, #36. Verify existing work, fix actual gaps, and execute this batch now.
 
 The per-biome combat/Unbound profiles, ArenaLightPlan fill, reduced decorative effects and idempotent SpatialAudio release already pass local tests. Verify them in the actual engine rather than replacing them with fullbright or another audio wrapper.
 Capture all six arenas at ordinary play distance in idle combat lighting and accessible phase-two lighting. Actors, weapons, floor edges and telegraphs must be readable without an active bright spell. Check exiting, death, retry and another player's encounter do not leave incorrect lighting on this client. Tame decorative petals/bloom when they compete with warnings, including reduced-flash mode.
@@ -278,7 +278,7 @@ Update the matching ledgers with evidence type and exact remaining work; stop af
 ```text
 Continue Asura's Path — follow-up 10/26: Finish Shen and Twins, including the real animation dispatcher.
 
-Apply 00_SHARED_BRIEF.txt in /Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 11. Findings: #16, #17, #23. Verify existing work, fix actual gaps, and execute this batch now.
+Apply 00_SHARED_BRIEF.txt in outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 11. Findings: #16, #17, #23. Verify existing work, fix actual gaps, and execute this batch now.
 
 Read ASSET_REQUIREMENTS.md. The shipped asset library has no AsuraBoss_* models. Current BossAnimations routes all humanoids through four Shen keys, and AnimationCatalog's 45 slots are stock fallbacks. Owning this shared dispatcher repair here prevents three boss batches from independently rewriting it.
 Implement explicit boss/look/phase/attack animation resolution using the existing catalog and boss attack data, with safe fallback and honest missing-asset status. Confirm any imported override attributes are actually authored onto live actors, survive phase changes and are consumed by the resolver. Do not claim that a new registry supplies absent animations. Preserve attack timing/server authority and avoid driving gameplay damage from cosmetic client markers.
@@ -306,7 +306,7 @@ Update the matching ledgers with evidence type and exact remaining work; stop af
 ```text
 Continue Asura's Path — follow-up 11/26: Finish Baize and Titan as readable creature encounters.
 
-Apply 00_SHARED_BRIEF.txt in /Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 12. Findings: #13, #16, #23. Verify existing work, fix actual gaps, and execute this batch now.
+Apply 00_SHARED_BRIEF.txt in outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 12. Findings: #13, #16, #23. Verify existing work, fix actual gaps, and execute this batch now.
 
 Reuse prompt 10's animation contract; read only the Baize/Titan rows of ASSET_REQUIREMENTS.md. Inspect AsuraLookKey, AsuraSkinStatus, body scale, actual bound templates, hurt capsules and custom animation availability. Do not rename or recolor a fallback and report production art complete. Use available approved authoring assets/tools to deliver valid models and animations; if unavailable, preserve the fallback and record the exact deliverable still absent.
 For Baize, verify grounded paws, creature silhouette, phase change, pillar steering, pounce clearance and readable Air Glide counter inputs in the actual arena. Camera and hitboxes must follow the presented body rather than a hidden humanoid position. For Titan, verify scale, ankle weak-point visibility, melee/camera access, kneel/phase behavior and weapon reach. Inspect at normal play height in steady light.
@@ -334,7 +334,7 @@ Update the matching ledgers with evidence type and exact remaining work; stop af
 ```text
 Continue Asura's Path — follow-up 12/26: Finish Wu and Wyrm presentation and phase behavior.
 
-Apply 00_SHARED_BRIEF.txt in /Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 13. Findings: #16, #23. Verify existing work, fix actual gaps, and execute this batch now.
+Apply 00_SHARED_BRIEF.txt in outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 13. Findings: #16, #23. Verify existing work, fix actual gaps, and execute this batch now.
 
 Reuse the shared animation resolver from prompt 10. Read the Wu/Wyrm rows of ASSET_REQUIREMENTS.md and inspect live template/override status before changing the rig. Supply valid available production assets; keep absent models/animations explicitly open instead of treating manifest entries or procedural shapes as finished art.
 Wu needs readable casting/weapon poses, visible teleport destination, correct phase presentation and safe camera return before an attack can land. Verify teleport clearance and obstruction with the actual Pagoda geometry, without weakening combat timing to hide tool latency.
@@ -363,7 +363,7 @@ Update the matching ledgers with evidence type and exact remaining work; stop af
 ```text
 Continue Asura's Path — follow-up 13/26: Finish player, NPC and normal-enemy visual identity.
 
-Apply 00_SHARED_BRIEF.txt in /Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 14. Findings: #24. Verify existing work, fix actual gaps, and execute this batch now.
+Apply 00_SHARED_BRIEF.txt in outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 14. Findings: #24. Verify existing work, fix actual gaps, and execute this batch now.
 
 Audit the actual spawned player, Lin, Hermit, Gao, monk, swordsman and training phantom. Current CastFigures/CostumeKit and player rebinding are useful primitive fallbacks; production face/hair/attire is still missing. Read the cast row of ASSET_REQUIREMENTS.md and use approved assets/authoring capability where available.
 Verify the player appearance loader replacing a limb/head does not orphan clothing, duplicate costume pieces or reveal an unintended bald/default body. Check first spawn, delayed avatar load, respawn, limb replacement and equipment changes, including weapon grip/reach and trails. Preserve movement collision and the game's readable wuxia silhouette.
@@ -392,7 +392,7 @@ Update the matching ledgers with evidence type and exact remaining work; stop af
 ```text
 Continue Asura's Path — follow-up 14/26: Walk and finish the Monastery route and navigation.
 
-Apply 00_SHARED_BRIEF.txt in /Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 07, 15. Findings: #3, #4, #25, #26, #27, #28, #29, #30, #32, #44. Verify existing work, fix actual gaps, and execute this batch now.
+Apply 00_SHARED_BRIEF.txt in outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 07, 15. Findings: #3, #4, #25, #26, #27, #28, #29, #30, #32, #44. Verify existing work, fix actual gaps, and execute this batch now.
 
 Combine the two original Monastery batches into one route pass. Walk Sanctuary portal → Gate altar → courtyard → bridge duel → Cloister and back. Arrival must frame/name the actual checkpoint, bridge swordsman must be visible and damageable from both ends, and the Cloister altar needs safe standing/portrait/exit space. Reuse prompt 04's portrait results.
 Walk all four Monastery tablets and three caches, including waterfall, rafters and mausoleum with real ladder/jump/terrain physics. Test intended roof/ravine shortcuts, ridge veils, enemy leashes and the restored Gatehouse PvP yard. Empty reachable exterior must lead somewhere intentional or have believable bounds. Improve only weak route readability/combat pockets/material scale found in this pass; do not bury paths with extra decoration.
@@ -421,7 +421,7 @@ Update the matching ledgers with evidence type and exact remaining work; stop af
 ```text
 Continue Asura's Path — follow-up 15/26: Validate Sanctuary reveals, terrace and cache routes.
 
-Apply 00_SHARED_BRIEF.txt in /Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 16. Findings: #27, #28, #31, #32. Verify existing work, fix actual gaps, and execute this batch now.
+Apply 00_SHARED_BRIEF.txt in outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 16. Findings: #27, #28, #31, #32. Verify existing work, fix actual gaps, and execute this batch now.
 
 Walk from spawn/bonfire through the stairs, viewing wings and pilgrim daises at ordinary camera height. Preserve the imported colossus/tree identity, scale and composition while fixing demonstrated player-scale occlusion, footing, camera clipping or visual seams. Do not evaluate the whole reveal from a detached aerial camera.
 Walk terrace edges/roots and both Sanctuary cache routes, including the moved ladder/service ledge and cloud shards. Use real jump/glide physics. Check parapets, honest limits, legitimate fall return and arrival/return portal legs. Verify camera and collision around imported meshes and their simple movement proxies.
@@ -450,7 +450,7 @@ Update the matching ledgers with evidence type and exact remaining work; stop af
 ```text
 Continue Asura's Path — follow-up 16/26: Finish and validate Bamboo Pass.
 
-Apply 00_SHARED_BRIEF.txt in /Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 17. Findings: #22, #27, #28, #32, #44. Verify existing work, fix actual gaps, and execute this batch now.
+Apply 00_SHARED_BRIEF.txt in outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 17. Findings: #22, #27, #28, #32, #44. Verify existing work, fix actual gaps, and execute this batch now.
 
 Walk Monastery south road → gorge/stairs → Bamboo shrine → Baize approach → Ash join and return. Verify real footing, enemy zones/leashes, readable landmarks, altar kindle/death/respawn/travel and both Bamboo inscriptions. Traverse the optional frost-stone route using the actual movement system; test double-jump/glide against the thicket veils and catch volumes.
 The 1,219-part offline build and exact-box reachability pass do not establish a finished bamboo biome. Inspect the scene at character height for repeated slabs, weak silhouettes, poor texture scale and empty boundaries. Place available approved bamboo/ruin meshes through the existing dressing/PBR layer over preserved collision boxes; if essential bamboo kits are absent, create the exact asset handoff and keep production-art acceptance blocked. Recolored primitives alone do not close finding 22 or 32.
@@ -478,7 +478,7 @@ Update the matching ledgers with evidence type and exact remaining work; stop af
 ```text
 Continue Asura's Path — follow-up 17/26: Finish and validate the Ash Colosseum story region.
 
-Apply 00_SHARED_BRIEF.txt in /Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 18. Findings: #22, #27, #28, #32. Verify existing work, fix actual gaps, and execute this batch now.
+Apply 00_SHARED_BRIEF.txt in outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 18. Findings: #22, #27, #28, #32. Verify existing work, fix actual gaps, and execute this batch now.
 
 Walk Bamboo join → antechamber altar → Shen arena → Pagoda join and return. Confirm rest/death/respawn/travel and correct portal/waypoint legs. Check the cavea and arena perimeter against both Shen forms, normal shoulder camera, weapon reach, hazards and handoff locations; reuse prompt 10's boss evidence.
 Inspect actual story-region silhouettes, ruined martial architecture, material/texture scale and combat readability. Integrate available approved colosseum tier/arcade art through current dressings without moving authoritative arena floors or covering collision/exit paths. Essential absent kits remain explicitly blocked with a precise deliverable; a box-layout pass is not final environment art.
@@ -506,7 +506,7 @@ Update the matching ledgers with evidence type and exact remaining work; stop af
 ```text
 Continue Asura's Path — follow-up 18/26: Finish and validate Sanctuary Depths and Sunken Crypt.
 
-Apply 00_SHARED_BRIEF.txt in /Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 19. Findings: #22, #27, #28, #32. Verify existing work, fix actual gaps, and execute this batch now.
+Apply 00_SHARED_BRIEF.txt in outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 19. Findings: #22, #27, #28, #32. Verify existing work, fix actual gaps, and execute this batch now.
 
 Walk Sanctuary Well of Descent → crypt arrival → incense altar → Titan chamber → return. Check arrival facing, readable route/portal labels, rest/death/respawn/travel and a real pit/catch case. Legitimate underground play must not activate the Sanctuary cloud-return catch.
 Inspect the Crypt at character height in exploration and steady combat lighting. Depth, vaults, sarcophagus/optional traversal, boundaries and landmarks should fulfill the crypt premise while keeping floor edges, Titan's ankles and weapons readable. Use available approved vault/sarcophagus/bone-niche assets over existing collision boxes; retain an explicit production-kit blocker where no valid art can be supplied.
@@ -535,7 +535,7 @@ Update the matching ledgers with evidence type and exact remaining work; stop af
 ```text
 Continue Asura's Path — follow-up 19/26: Finish and validate Celestial Pagoda and final lore.
 
-Apply 00_SHARED_BRIEF.txt in /Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 20. Findings: #22, #27, #28, #32, #44. Verify existing work, fix actual gaps, and execute this batch now.
+Apply 00_SHARED_BRIEF.txt in outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 20. Findings: #22, #27, #28, #32, #44. Verify existing work, fix actual gaps, and execute this batch now.
 
 Walk Ash join → multi-level ascent/rafters → incense altar → Wu arena → Sky join and back. Verify actual stair/rafter widths, ceiling/headroom, single-jump landings, falls/catches, shoulder camera, enemy pathing and line-of-sight combat. Main progress must not require an untaught mobility trick.
 Read both Pagoda inscriptions, including the final eighth entry, from real standing positions; confirm Codex/reward updates once. Test the optional loft, rest/death/respawn/travel and guidance on different elevation bands. The minimap/marker should stage the correct stairs and doors, not draw a misleading straight route through floors.
@@ -564,7 +564,7 @@ Update the matching ledgers with evidence type and exact remaining work; stop af
 ```text
 Continue Asura's Path — follow-up 20/26: Finish and validate Sky Citadel and summit return.
 
-Apply 00_SHARED_BRIEF.txt in /Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 21. Findings: #22, #27, #28, #32. Verify existing work, fix actual gaps, and execute this batch now.
+Apply 00_SHARED_BRIEF.txt in outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 21. Findings: #22, #27, #28, #32. Verify existing work, fix actual gaps, and execute this batch now.
 
 Walk Pagoda exit → bastion/checkpoint → summit arena and the post-victory Sanctuary return. Test actual bridges/landings, double-jump/glide limits, chasm/summit catches, rest/death/respawn/travel and clear final-route guidance. The route should remain usable after Wyrm dies and during later visits.
 Inspect the summit reveal and region at ordinary camera distance with no bright attack effect. Citadel towers/battlements, weather and ground silhouettes need a coherent visual identity, readable combat boundaries and sensible texture scale. Integrate available approved art with collision proxies preserved; list missing tower/battlement kits explicitly if production delivery is unavailable.
@@ -592,7 +592,7 @@ Update the matching ledgers with evidence type and exact remaining work; stop af
 ```text
 Continue Asura's Path — follow-up 21/26: Verify the six-sovereign ending and postgame.
 
-Apply 00_SHARED_BRIEF.txt in /Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 22. Findings: #10, #28, #42. Verify existing work, fix actual gaps, and execute this batch now.
+Apply 00_SHARED_BRIEF.txt in outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 22. Findings: #10, #28, #42. Verify existing work, fix actual gaps, and execute this batch now.
 
 The server story flags, Cross/Remain choice, client crossing scene, credits and postgame Codex are implemented. Verify five flags cannot unlock Release, six legitimate flags route back to Lin in person, and the remote projection gives correct homeward guidance. Isolated seeded profiles can test edge cases; earned ending acceptance must wait for prompt 22's genuine six-boss run.
 Exercise Remain → continued exploration → later Cross; Cross → completion card → credits → continue playing; replay/skip; death/respawn during the scene; leave/rejoin after the recorded choice; and interrupted presentation. The choice is currently saved before presentation and grants no item: do not invent a new reward to make the test pass.
@@ -621,7 +621,7 @@ Update the matching ledgers with evidence type and exact remaining work; stop af
 ```text
 Continue Asura's Path — follow-up 22/26: Run the earned solo campaign and close integration failures.
 
-Apply 00_SHARED_BRIEF.txt in /Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 23. Findings: #1, #8, #9, #10, #16, #18, #19, #22, #23, #27, #28, #44. Verify existing work, fix actual gaps, and execute this batch now.
+Apply 00_SHARED_BRIEF.txt in outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 23. Findings: #1, #8, #9, #10, #16, #18, #19, #22, #23, #27, #28, #44. Verify existing work, fix actual gaps, and execute this batch now.
 
 Use the evidence collected in prompts 02–21. Do not reread/rebuild every system or replay already-proven isolated cases. Attempt a normal fresh-profile campaign with continuous input: opening → all six sovereigns and every phase → earned rewards/forge → return to Lin → crossing/postgame. No defeat flags, invulnerability, kill commands or teleports count as earned progress.
 Maintain a compact checkpoint log with build identity and real milestone evidence so a resumed session does not repeat the opening. Record each boss's phase/victory/retry outcome, one later-checkpoint death/stain/reclaim/second death, save/rejoin at meaningful progress, all altar travel destinations, all eight inscriptions and five caches. Reuse actual collectible/route evidence when it belongs to this same build and profile lineage. Include one real reinforce/infuse plus mastery/ward/Last Breath behavior where legitimately reachable.
@@ -650,7 +650,7 @@ Update the matching ledgers with evidence type and exact remaining work; stop af
 ```text
 Continue Asura's Path — follow-up 23/26: Verify real multiplayer and isolated durable persistence.
 
-Apply 00_SHARED_BRIEF.txt in /Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 24. Findings: additional verification/tooling. Verify existing work, fix actual gaps, and execute this batch now.
+Apply 00_SHARED_BRIEF.txt in outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 24. Findings: additional verification/tooling. Verify existing work, fix actual gaps, and execute this batch now.
 
 The real-service mock test passes 28 checks, including the fixed leave-during-setup forfeit. Validate two duelists plus a spectator in an actual local multi-client session. Cover Ranked normalization, Open build stats, countdown/queue cancellation, both reachable rings, target/lighting isolation and leaving during setup versus mid-match.
 For the spectator, test eligibility, escrow before the bell, rejection once closed, duelist refusal, win/loss/refund and exactly-once settlement. Verify duplicate requests, disconnect/rejoin, abandoned setup, service outage and shutdown produce the appropriate durable journal/inbox/profile outcomes without double rating, Essence or stakes.
@@ -680,7 +680,7 @@ Update the matching ledgers with evidence type and exact remaining work; stop af
 ```text
 Continue Asura's Path — follow-up 24/26: Close phone, tablet, controller and accessibility acceptance.
 
-Apply 00_SHARED_BRIEF.txt in /Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 25. Findings: #5, #6, #12, #13, #33, #34, #35, #36, #37, #39, #40, #41, #42, #43. Verify existing work, fix actual gaps, and execute this batch now.
+Apply 00_SHARED_BRIEF.txt in outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 25. Findings: #5, #6, #12, #13, #33, #34, #35, #36, #37, #39, #40, #41, #42, #43. Verify existing work, fix actual gaps, and execute this batch now.
 
 Reuse desktop evidence from prompt 03 and modals from 04–05. The current 89-check device test is geometry/emulation with no captures or hardware. Inspect actual Studio phone/tablet safe-area emulation at the existing six sizes plus small desktop and ultrawide; then check physical phone, tablet and controller where available. Label these evidence types separately.
 Group coverage into combat HUD/touch holds, modal navigation/scrolling and settings/transitions. Verify thumb movement plus attack/guard/jump/glide, prompt range/hold, binding captions, perilous hints, flask count, two foes/boss bars, Controls, Arsenal/Respite/Codex, long dialogue/leveling and ending. Controller users need a complete open/select/back/close/resume path and sensible focus, not just the correct caption. Test active-device switching during a session.
@@ -708,7 +708,7 @@ Update the matching ledgers with evidence type and exact remaining work; stop af
 ```text
 Continue Asura's Path — follow-up 25/26: Measure performance and listen to the finished audio.
 
-Apply 00_SHARED_BRIEF.txt in /Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 26. Findings: #2, #7, #21, #23, #24, #25, #31, #32, #36. Verify existing work, fix actual gaps, and execute this batch now.
+Apply 00_SHARED_BRIEF.txt in outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 26. Findings: #2, #7, #21, #23, #24, #25, #31, #32, #36. Verify existing work, fix actual gaps, and execute this batch now.
 
 Use the same build after content fixes. Profile Sanctuary/tree, a normal Monastery fight, populated Bamboo Pass, Twins and Wyrm in comparable camera/graphics/session conditions. Capture actual frame-time distribution/spikes, client/server memory, draw/render/effect/instance counts and network traffic where available. Record machine/device, quality setting, sample duration and player count. Existing box/part counts and a packet-size estimate are not measured FPS, GPU cost or bandwidth.
 Repeat combat/rest/death/respawn and region rebuilds, compare settled baselines and inspect SpatialAudio stats. Optimize only demonstrated hotspots/leaks using current budgets, reuse/culling/cleanup and bounded lighting/effect changes, preserving collision, attack cues and authored art. Report measured before/after evidence; do not invent a universal frame-rate claim.
@@ -738,7 +738,7 @@ Update the matching ledgers with evidence type and exact remaining work; stop af
 ```text
 Continue Asura's Path — follow-up 26/26: Audit every original batch and every finding before sign-off.
 
-Apply 00_SHARED_BRIEF.txt in /Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 26. Findings: all #1–44 (evidence audit only). Verify existing work, fix actual gaps, and execute this batch now.
+Apply 00_SHARED_BRIEF.txt in outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 26. Findings: all #1–44 (evidence audit only). Verify existing work, fix actual gaps, and execute this batch now.
 
 Perform an evidence audit, not another unrestricted implementation pass. Read this pack's PROGRESS.md and manifest plus the original 26-row audit. Review all original batches 01–26, every original finding 1–44 and audit gaps A1–A6. Use existing evidence and the changed-file/build identity; do not close items by citing the prompt that requested them.
 For each original batch/finding, record current implementation, appropriately typed acceptance evidence, remaining defect/dependency and exact owner. A finding assigned to several prompts stays open until all its required parts pass. Retain partial status for production models/animations/region kits, real physics/presentation, earned six-boss completion, device hardware, listening/performance and live persistence that lack direct evidence. Do not erase the original historical observations or imply that the pack author performed these future tests.

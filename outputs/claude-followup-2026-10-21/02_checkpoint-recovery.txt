@@ -1,6 +1,6 @@
 Continue Asura's Path — follow-up 02/26: Close the checkpoint, death and recovery loop.
 
-Apply 00_SHARED_BRIEF.txt in /Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 01. Findings: #1, #18, #19. Verify existing work, fix actual gaps, and execute this batch now.
+Apply 00_SHARED_BRIEF.txt in outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 01. Findings: #1, #18, #19. Verify existing work, fix actual gaps, and execute this batch now.
 
 The recovery suite already passes 94 checks. Verify the real LoadCharacter/CharacterAdded timing and Sanctuary fall safeguard before replacing this implementation.
 Rest at Gate and Cloister, die to an actual enemy, and observe active altar, physical position, region, replenished resources, boss reset and recovery objective. Cover every remaining altar using a compact position/result table; diagnostic access is acceptable for isolating an altar but is not earned campaign evidence.

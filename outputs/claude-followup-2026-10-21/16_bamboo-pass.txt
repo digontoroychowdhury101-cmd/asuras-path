@@ -1,6 +1,6 @@
 Continue Asura's Path — follow-up 16/26: Finish and validate Bamboo Pass.
 
-Apply 00_SHARED_BRIEF.txt in /Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 17. Findings: #22, #27, #28, #32, #44. Verify existing work, fix actual gaps, and execute this batch now.
+Apply 00_SHARED_BRIEF.txt in outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 17. Findings: #22, #27, #28, #32, #44. Verify existing work, fix actual gaps, and execute this batch now.
 
 Walk Monastery south road → gorge/stairs → Bamboo shrine → Baize approach → Ash join and return. Verify real footing, enemy zones/leashes, readable landmarks, altar kindle/death/respawn/travel and both Bamboo inscriptions. Traverse the optional frost-stone route using the actual movement system; test double-jump/glide against the thicket veils and catch volumes.
 The 1,219-part offline build and exact-box reachability pass do not establish a finished bamboo biome. Inspect the scene at character height for repeated slabs, weak silhouettes, poor texture scale and empty boundaries. Place available approved bamboo/ruin meshes through the existing dressing/PBR layer over preserved collision boxes; if essential bamboo kits are absent, create the exact asset handoff and keep production-art acceptance blocked. Recolored primitives alone do not close finding 22 or 32.

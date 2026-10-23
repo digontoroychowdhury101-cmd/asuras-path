@@ -1,6 +1,6 @@
 Continue Asura's Path — follow-up 18/26: Finish and validate Sanctuary Depths and Sunken Crypt.
 
-Apply 00_SHARED_BRIEF.txt in /Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 19. Findings: #22, #27, #28, #32. Verify existing work, fix actual gaps, and execute this batch now.
+Apply 00_SHARED_BRIEF.txt in outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 19. Findings: #22, #27, #28, #32. Verify existing work, fix actual gaps, and execute this batch now.
 
 Walk Sanctuary Well of Descent → crypt arrival → incense altar → Titan chamber → return. Check arrival facing, readable route/portal labels, rest/death/respawn/travel and a real pit/catch case. Legitimate underground play must not activate the Sanctuary cloud-return catch.
 Inspect the Crypt at character height in exploration and steady combat lighting. Depth, vaults, sarcophagus/optional traversal, boundaries and landmarks should fulfill the crypt premise while keeping floor edges, Titan's ankles and weapons readable. Use available approved vault/sarcophagus/bone-niche assets over existing collision boxes; retain an explicit production-kit blocker where no valid art can be supplied.

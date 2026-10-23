@@ -1,6 +1,6 @@
 Continue Asura's Path — follow-up 14/26: Walk and finish the Monastery route and navigation.
 
-Apply 00_SHARED_BRIEF.txt in /Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 07, 15. Findings: #3, #4, #25, #26, #27, #28, #29, #30, #32, #44. Verify existing work, fix actual gaps, and execute this batch now.
+Apply 00_SHARED_BRIEF.txt in outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 07, 15. Findings: #3, #4, #25, #26, #27, #28, #29, #30, #32, #44. Verify existing work, fix actual gaps, and execute this batch now.
 
 Combine the two original Monastery batches into one route pass. Walk Sanctuary portal → Gate altar → courtyard → bridge duel → Cloister and back. Arrival must frame/name the actual checkpoint, bridge swordsman must be visible and damageable from both ends, and the Cloister altar needs safe standing/portrait/exit space. Reuse prompt 04's portrait results.
 Walk all four Monastery tablets and three caches, including waterfall, rafters and mausoleum with real ladder/jump/terrain physics. Test intended roof/ravine shortcuts, ridge veils, enemy leashes and the restored Gatehouse PvP yard. Empty reachable exterior must lead somewhere intentional or have believable bounds. Improve only weak route readability/combat pockets/material scale found in this pass; do not bury paths with extra decoration.

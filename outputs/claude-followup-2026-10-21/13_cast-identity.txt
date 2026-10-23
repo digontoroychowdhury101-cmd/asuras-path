@@ -1,6 +1,6 @@
 Continue Asura's Path — follow-up 13/26: Finish player, NPC and normal-enemy visual identity.
 
-Apply 00_SHARED_BRIEF.txt in /Users/digonto/Documents/ChatGPT/Roblox game 2/outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 14. Findings: #24. Verify existing work, fix actual gaps, and execute this batch now.
+Apply 00_SHARED_BRIEF.txt in outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 14. Findings: #24. Verify existing work, fix actual gaps, and execute this batch now.
 
 Audit the actual spawned player, Lin, Hermit, Gao, monk, swordsman and training phantom. Current CastFigures/CostumeKit and player rebinding are useful primitive fallbacks; production face/hair/attire is still missing. Read the cast row of ASSET_REQUIREMENTS.md and use approved assets/authoring capability where available.
 Verify the player appearance loader replacing a limb/head does not orphan clothing, duplicate costume pieces or reveal an unintended bald/default body. Check first spawn, delayed avatar load, respawn, limb replacement and equipment changes, including weapon grip/reach and trails. Preserve movement collision and the game's readable wuxia silhouette.
