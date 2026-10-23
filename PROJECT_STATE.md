@@ -1,5 +1,9 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## Showcase spells in Studio — 2026-10-24 (Computer B)
+
+First Studio playtest of Celestial Supernova and Blazing Sun Awakening (3b2601f): unlock from caches, equip, cast, levitation (+10, lands cleanly), pillar, manga frame all work. Fixed: opaque orb (ForceField shell), voxels passing the lens, Blazing Sun charge camera blocked by the body, eye close-up filling the screen. Verifier 14/14.
+
 ## Bamboo Pass art — 2026-10-24 (Computer B)
 
 Replaced the pass's placeholder bamboo (cylinder + flat leaf board) and grey KarstSpire slabs, seen from the monastery, with Blender assets (`tools/blender/bamboo_karst_kit.py` → `AsuraBambooKit`): 3 leafy bamboo variants, 3 fluted frost-capped karst towers. Old parts remain as fallback. Verifier 14/14. Next: device FPS.

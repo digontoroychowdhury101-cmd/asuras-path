@@ -32,9 +32,11 @@ function Show.startup(cast: any)
 	Cinema.play(cast.Cinema, function(t: number)
 		local cf = rootFrame(cast)
 		if not cf then return nil end
+		-- Off the right shoulder and low, aimed past the caster's left: the body sits on the left third
+		-- of the frame instead of filling it (a wide hat used to block the whole shot).
 		local push = math.min(1, t / w)
-		local eye = cf:PointToWorldSpace(Vector3.new(2.4, -1.5, 7.2 - push * 1.6))
-		return Cinema.look(eye, cf:PointToWorldSpace(Vector3.new(0, 1.2, -6)), 52, 6)
+		local eye = cf:PointToWorldSpace(Vector3.new(4.6, -0.8, 9.5 - push * 2))
+		return Cinema.look(eye, cf:PointToWorldSpace(Vector3.new(-1.4, 1.6, -8)), 50, 6)
 	end, w + 0.1, 0.3)
 	-- Fists tremble: small repeating trauma kicks that grow toward the release.
 	for n = 1, math.max(1, math.floor(w / 0.25)) do
@@ -46,9 +48,11 @@ local function gaze(cast: any, head: BasePart)
 	Screen.settle(cast.Trove, cast.Bag.Grade, GAZE, 0.08)
 	Cinema.play(cast.Cinema, function(t: number)
 		if not head.Parent then return nil end
+		-- Head-and-shoulders push-in, not an extreme macro: at 2 studs a blocky head (and a hat brim)
+		-- filled the screen as flat panels. From here the blazing eyes and both gauntlets read together.
 		local cf = head.CFrame
-		local eye = cf.Position + cf.LookVector * (2.6 - math.min(t, 1) * 0.6) + cf.UpVector * 0.1
-		return Cinema.look(eye, cf.Position + cf.UpVector * 0.12, 30 - math.min(t, 1) * 6, -3)
+		local eye = cf.Position + cf.LookVector * (7 - math.min(t, 1) * 1.5) + cf.UpVector * 0.2 + cf.RightVector * 0.8
+		return Cinema.look(eye, cf.Position - cf.UpVector * 0.9, 40 - math.min(t, 1) * 5, -3)
 	end, 1.15, 0.05)
 	Kit.after(cast.Trove, 1.15, function()
 		Screen.settle(cast.Trove, cast.Bag.Grade, NEUTRAL, 0.5)

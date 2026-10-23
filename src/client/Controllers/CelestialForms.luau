@@ -15,8 +15,9 @@ export type Ring = { Parts: { BasePart }, Radius: number, Angle: number, Spin: n
 export type Voxel = { Part: BasePart, Base: Vector3, Lift: number, Phase: number, Spin: Vector3 }
 
 function Forms.orb(trove: Kit.Trove, folder: Instance, center: Vector3): (BasePart, BasePart)
+	-- ForceField shell: a shimmering energy surface the caster shows through, not a solid plastic ball.
 	local shell = Kit.part(folder, "PlanetOrb", Forms.Teal, Vector3.one * 0.2, CFrame.new(center), Enum.PartType.Ball)
-	shell.Transparency = 0.15
+	shell.Material, shell.Transparency = Enum.Material.ForceField, 0
 	local core = Kit.part(folder, "PlanetCore", WHITE, Vector3.one * 0.1, CFrame.new(center), Enum.PartType.Ball)
 	Kit.light(shell, Forms.Teal, 22, 3)
 	Kit.tween(trove, shell, 0.55, { Size = Vector3.one * 6 }, Enum.EasingStyle.Back)
@@ -62,7 +63,7 @@ function Forms.voxels(folder: Instance, ground: Vector3, count: number): { Voxel
 	local list: { Voxel } = {}
 	for n = 1, count do
 		local angle = (n / count) * math.pi * 2 + math.random() * 0.4
-		local distance = 4 + math.random() * 9
+		local distance = 4 + math.random() * 7 -- inside the orbit camera's 13-17 stud radius
 		local base = ground + Vector3.new(math.cos(angle) * distance, -2.4, math.sin(angle) * distance)
 		local size = 0.5 + math.random()
 		local glow = n % 4 == 0

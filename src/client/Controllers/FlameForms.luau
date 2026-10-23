@@ -49,7 +49,7 @@ local function spikes(parent: Instance, count: number, length: number, color: Co
 	for n = 1, count do
 		local spike = Instance.new("Frame")
 		spike.AnchorPoint, spike.Position, spike.BackgroundColor3, spike.BorderSizePixel = Vector2.new(0.5, 0.5), UDim2.fromScale(0.5, 0.5), color, 0
-		spike.Size, spike.Rotation = UDim2.fromScale(length, 0.07), (n / count) * 180
+		spike.Size, spike.Rotation = UDim2.fromScale(length, 0.04), (n / count) * 180
 		local fade = Instance.new("UIGradient")
 		fade.Transparency = NumberSequence.new({ NumberSequenceKeypoint.new(0, 1), NumberSequenceKeypoint.new(0.5, 0), NumberSequenceKeypoint.new(1, 1) })
 		fade.Parent = spike
@@ -66,7 +66,9 @@ function Flame.eyes(trove: Kit.Trove, head: BasePart)
 	for _, side in { -1, 1 } do
 		local a = Kit.attach(trove, head, Vector3.new(side * s.X * 0.17, s.Y * 0.1, -s.Z * 0.5), "BlazingEye")
 		local gui = Kit.add(trove, Instance.new("BillboardGui"))
-		gui.Adornee, gui.Size, gui.LightInfluence, gui.AlwaysOnTop = a, UDim2.fromScale(2.2, 2.2), 0, false
+		-- Sized to the eye: the gaze shot frames the face from ~2 studs, where a 2.2-stud burst became
+		-- flat panels across the whole screen.
+		gui.Adornee, gui.Size, gui.LightInfluence, gui.AlwaysOnTop = a, UDim2.fromScale(0.9, 0.9), 0, false
 		table.insert(bursts, spikes(gui, 2, 1, Flame.Plasma))
 		table.insert(bursts, spikes(gui, 3, 0.6, Flame.Heat))
 		gui.Parent = a
