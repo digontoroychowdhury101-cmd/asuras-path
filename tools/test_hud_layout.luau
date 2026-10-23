@@ -105,15 +105,15 @@ check("equal range ordering is stable by id", tie[3].Lift == 0 and tie[7].Lift =
 local Tags = load(C .. "VitalsTags.luau", { script = stubScript, require = function() return { Colors = {} } end })
 local function snap(o) return { MaxHP = 106, ActiveHP = o.Active or 80, RecoverableHP = o.Rec or 0, PermanentDeficit = o.Lost or 0, RallyActive = o.Rally == true, RallyRemaining = o.Left or 0 } end
 local rally, ceiling = Tags.texts(snap({ Rec = 12, Rally = true, Left = 2.36 }))
-check("rally window: countdown and action", rally == "↺ RALLY 2.4s · strike back" and ceiling == "")
+check("rally window: countdown and action", rally == "RALLY 2.4s · strike back" and ceiling == "")
 rally = Tags.texts(snap({ Rec = 12 }))
-check("after the window: flask restores recoverable", rally == "↺ +12 recoverable · flask")
+check("after the window: flask restores recoverable", rally == "+12 recoverable · flask")
 rally, ceiling = Tags.texts(snap({ Lost = 11.6 }))
 check("reduced ceiling: lasting loss and rest", rally == "" and ceiling == "▼ max −12 · rest restores")
 check("full health: no tags", select(1, Tags.texts(snap({ Active = 106 }))) == "" and select(2, Tags.texts(snap({ Active = 106 }))) == "")
 check("flask pips are shapes", Tags.flask(1, 3) == "FLASK ◆◇◇" and Tags.flask(0, 3) == "FLASK ◇◇◇" and Tags.flask(0, 0) == "FLASK —")
 local ic = src(C .. "InterfaceController.luau")
-check("currency labelled as essence, Qi stays spell energy", string.find(ic, "✦ %d ESSENCE", 1, true) and string.find(ic, "+%d carried", 1, true) and string.find(ic, "QI %d / %d", 1, true))
+check("currency labelled as essence, Qi stays spell energy", string.find(ic, "\"%d ESSENCE", 1, true) and string.find(ic, "+%d carried", 1, true) and string.find(ic, "QI %d / %d", 1, true))
 check("boss reward no longer calls currency Qi", not string.find(ic, "Qi essence", 1, true))
 check("low flask pulses", string.find(ic, "elixirs <= 1", 1, true) ~= nil)
 

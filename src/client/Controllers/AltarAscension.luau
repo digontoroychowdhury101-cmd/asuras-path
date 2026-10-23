@@ -55,7 +55,7 @@ function Ascension.refresh(view: View, player: Player)
 	local attributes: { [string]: number } = {}
 	for _, id in Rules.Attributes do attributes[id] = tonumber(player:GetAttribute("Asura" .. id)) or 10 end
 	local affordable, quote = Preview.quote(essence, cost)
-	view.Header.Text = string.format("Level %d → %d   ·   ✦ %d Essence", level, level + 1, essence)
+	view.Header.Text = string.format("Level %d → %d   ·   %d Essence", level, level + 1, essence)
 	view.Quote.Text, view.Quote.TextColor3 = quote, if affordable then T.Gold else T.Muted
 	for id, row in view.Rows do
 		row.Value.Text = tostring(attributes[id])

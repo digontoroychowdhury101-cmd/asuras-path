@@ -51,6 +51,18 @@ table.insert(hitch, 5, 0.5)
 local peakHitch, endHitch = run(hitch)
 check("a single 0.5 s hitch stays bounded", peakHitch < 1 and endHitch < 1e-2)
 
+-- Follow-up 03: a lock held over the KO'd body left TargetPitch at ~+48 degrees (Studio lookY 0.75),
+-- so every respawn stared at the sky until the mouse moved. A new body must recentre the view.
+local helpers = string.sub(source, assert(string.find(source, "local function yawOf(", 1, true)),
+	assert(string.find(source, "\nfunction Controller.new(", 1, true)))
+local follow = luau.load("type Fields = any\nlocal DEFAULT_PITCH = math.rad(-12)\n" .. helpers .. "\nreturn followRoot",
+	{ debugName = "CameraController.followRoot", environment = setmetatable({ math = math, Vector3 = Vector3 }, { __index = getfenv() }) })()
+local camera = { TargetPitch = math.rad(48), Pitch = { Value = math.rad(48), Velocity = 2 }, TargetYaw = 1, Yaw = { Value = 1, Velocity = 1 } }
+local body = { CFrame = { LookVector = Vector3.new(1, 0, 0) } }
+follow(camera, body)
+check("respawn recentres pitch", math.abs(camera.TargetPitch - math.rad(-12)) < 1e-6 and camera.Pitch.Value == camera.TargetPitch and camera.Pitch.Velocity == 0)
+check("respawn faces the camera along the body", math.abs(camera.TargetYaw - math.atan2(-1, 0)) < 1e-6 and camera.Yaw.Value == camera.TargetYaw and camera.FollowRoot == body)
+
 print(string.format("camera shake: %d passed, %d failed", passed, failed))
 if failed > 0 then
 	error("camera shake regression failed")

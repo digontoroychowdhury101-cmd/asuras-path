@@ -1,5 +1,9 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## F03 input + HUD — 2026-10-23 (Computer B)
+
+Seeded Studio diagnostic in `places/AsurasPath.rbxlx` (digest 48998423), two viewports. Fixed the menu-owner input leak, the Esc/Backspace close, stacked Respite, missing glyphs, small survival values and the respawn sky-camera, with regressions. `verify_all` 14/14. Next: prompt 04; device/lock-switch checks → 24. See `F03_INPUT_HUD.md`.
+
 ## F02d closing pass — 2026-10-23 (Computer B, Windows)
 
 Same-UserId save/rejoin is still **Blocked**. The source confirms the Studio mock store is in-memory per server and keyed by UserId. Add Clients gets a new UserId, and a restart empties the store. No new Studio run was made; F02c coordinates stand: wake (60, 3.2, −1018). A human must run Team Test, or solo route B (test experience, API access, temporary `StudioLiveData=true`), per `F02_RECOVERY.md`.

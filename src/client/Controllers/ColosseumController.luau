@@ -430,7 +430,7 @@ end
 function Controller.HoldMenu(self: ColosseumController, held: boolean)
 	if self.MenuHeld ~= held then
 		self.MenuHeld = held
-		self.Input:SetMenu(held)
+		self.Input:SetMenu(held, "Colosseum")
 	end
 end
 

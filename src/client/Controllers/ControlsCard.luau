@@ -45,7 +45,8 @@ function Controller.new(input: any, ui: any): ControlsCard
 		Name = "ControlsBackdrop", Size = UDim2.fromScale(1, 1), BackgroundColor3 = Color3.new(0, 0, 0), BackgroundTransparency = 0.55,
 		Text = "", AutoButtonColor = false, ZIndex = 30, Visible = false,
 	}) :: TextButton
-	local card = HudKit.panel(ui.Gui, "ControlsCard", { AnchorPoint = Vector2.new(0.5, 0.5), Size = UDim2.fromOffset(size.X, size.Y), Active = true, ZIndex = 31 })
+	-- Near-opaque: a modal over the backdrop must not let a teaching card's text bleed through (F03).
+	local card = HudKit.panel(ui.Gui, "ControlsCard", { AnchorPoint = Vector2.new(0.5, 0.5), Size = UDim2.fromOffset(size.X, size.Y), Active = true, ZIndex = 31, BackgroundTransparency = 0.04 })
 	HudKit.make("UIPadding", card, { PaddingLeft = UDim.new(0, 14), PaddingRight = UDim.new(0, 14), PaddingTop = UDim.new(0, 8) })
 	HudKit.label(card, "CONTROLS", 18, HudKit.TitleFont, P.Ember, { Size = UDim2.new(1, 0, 0, 24), TextXAlignment = Enum.TextXAlignment.Left })
 	HudKit.label(card, "", 13, HudKit.BodyFont, P.Muted, { Name = "CloseHint", Size = UDim2.new(1, 0, 0, 24), TextXAlignment = Enum.TextXAlignment.Right })

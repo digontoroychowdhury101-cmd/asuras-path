@@ -16,6 +16,7 @@ export type Rect = { X: number, Y: number, W: number, H: number }
 export type Region = {
 	Anchor: { number }, At: { number }, Offset: { number }, Size: { number }, Base: number,
 	WidthScale: number?, MinWidth: number?, MaxWidth: number?,
+	MinScale: number?, -- desktop floor on Base * factor (survival plates)
 }
 local function region(anchor: { number }, at: { number }, offset: { number }, size: { number }, base: number): Region
 	return { Anchor = anchor, At = at, Offset = offset, Size = size, Base = base }
@@ -30,7 +31,9 @@ Layout.Regions = {
 	Codex = region({ 0, 0 }, { 0, 0.55 }, { 14, 0 }, { 92, 30 }, 0),
 	ControlsPill = region({ 0, 0 }, { 0, 0.55 }, { 14, -40 }, { 150, 30 }, 0.85),
 }
-Layout.Regions.Compass = { Anchor = { 0.5, 0 }, At = { 0.5, 0 }, Offset = { 0, 8 }, Size = { 520, 60 }, Base = 0, WidthScale = 0.36, MinWidth = 240, MaxWidth = 520 }
+-- Health, flask, essence and weapon stay at least ~12 px on a 1096x604 window (F03 Studio view).
+Layout.Regions.Vitals.MinScale = 0.66
+Layout.Regions.Compass ={ Anchor = { 0.5, 0 }, At = { 0.5, 0 }, Offset = { 0, 8 }, Size = { 520, 60 }, Base = 0, WidthScale = 0.36, MinWidth = 240, MaxWidth = 520 }
 Layout.Regions.Boss = { Anchor = { 0.5, 0 }, At = { 0.5, 0 }, Offset = { 0, 74 }, Size = { 900, 148 }, Base = 0, WidthScale = 0.5, MinWidth = 300, MaxWidth = 900 }
 
 function Layout.factor(height: number): number
@@ -41,7 +44,7 @@ end
 -- On-screen rectangle of a region (UIScale scales about the anchor point).
 function Layout.rect(name: string, width: number, height: number): Rect
 	local r = (Layout.Regions :: any)[name] :: Region
-	local scale = if r.Base > 0 then r.Base * Layout.factor(height) else 1
+	local scale = if r.Base > 0 then math.max(r.Base * Layout.factor(height), r.MinScale or 0) else 1
 	local w = r.Size[1] * scale
 	if r.WidthScale then w = math.clamp(width * r.WidthScale, r.MinWidth or 0, r.MaxWidth or math.huge) end
 	local h = r.Size[2] * scale

@@ -49,7 +49,7 @@ function Controller.Play(self: any)
 	if self.Active or ui.PrologueActive or ui.DeathShown then return end
 	self.Active, self.Index, self.Elapsed, self.Clock = true, 1, 0, 0
 	ui.EndingActive = true
-	self.Input:SetMenu(true)
+	self.Input:SetMenu(true, "Ending")
 	local gui = HudKit.make("ScreenGui", Players.LocalPlayer:WaitForChild("PlayerGui"), { Name = "AsuraCrossing", IgnoreGuiInset = true, DisplayOrder = 61, ResetOnSpawn = false })
 	self.Gui = gui
 	self.Veil = HudKit.make("Frame", gui, { Size = UDim2.fromScale(1, 1), BackgroundColor3 = VEIL, BackgroundTransparency = 1, BorderSizePixel = 0 })
@@ -125,7 +125,7 @@ function Controller.Stop(self: any, reason: string)
 	if self.SkipLink then self.SkipLink:Disconnect(); self.SkipLink = nil end
 	if self.Gui then self.Gui:Destroy(); self.Gui = nil end
 	self.Camera.DialogueFrame = nil
-	self.Input:SetMenu(false)
+	self.Input:SetMenu(false, "Ending")
 	self.Ui.EndingActive = false
 	local final = Ending.Scene[#Ending.Scene]
 	if reason == "Interrupted" then

@@ -48,7 +48,7 @@ function Controller.Play(ui: any, input: any, camera: any?, force: boolean?)
 	local player = Players.LocalPlayer
 	if ui.PrologueActive then return end
 	ui.PrologueActive = true
-	input:SetMenu(true)
+	input:SetMenu(true, "Prologue")
 	local gui = HudKit.make("ScreenGui", player:WaitForChild("PlayerGui"), { Name = "AsuraPrologue", IgnoreGuiInset = true, DisplayOrder = 60, ResetOnSpawn = false }) :: ScreenGui
 	local veil = HudKit.make("Frame", gui, { Size = UDim2.fromScale(1, 1), BackgroundColor3 = Color3.new(0, 0, 0), BackgroundTransparency = 0, BorderSizePixel = 0 }) :: Frame
 	local bars: { Frame } = {}
@@ -103,7 +103,7 @@ function Controller.Play(ui: any, input: any, camera: any?, force: boolean?)
 	out:Play()
 	out.Completed:Wait()
 	gui:Destroy()
-	input:SetMenu(false)
+	input:SetMenu(false, "Prologue")
 	ui.PrologueActive = false
 	if story then ui:ShowBanner(Controller.Handoff[1], Controller.Handoff[2], 4) end
 end

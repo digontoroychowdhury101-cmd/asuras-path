@@ -107,11 +107,12 @@ end
 -- Adds (or reuses) a UIScale on `target` whose scale is `base * factor()`, kept current as the
 -- viewport resizes or the camera is replaced. Returns a disconnect function.
 -- A device profile may override the base through the AsuraScaleBase attribute (DeviceLayout).
-function HudKit.bindScale(target: GuiObject, base: number): () -> ()
+-- minScale (desktop only) keeps survival values readable on small windows (HudLayout MinScale).
+function HudKit.bindScale(target: GuiObject, base: number, minScale: number?): () -> ()
 	local scale = target:FindFirstChildOfClass("UIScale") or HudKit.make("UIScale", target, {})
 	return HudKit.onViewport(function()
 		local override = target:GetAttribute("AsuraScaleBase")
-		scale.Scale = (if type(override) == "number" then override else base) * HudKit.factor()
+		scale.Scale = if type(override) == "number" then override * HudKit.factor() else math.max(base * HudKit.factor(), minScale or 0)
 	end)
 end
 

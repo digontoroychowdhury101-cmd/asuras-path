@@ -41,7 +41,8 @@ function Controller.new(camera: any,input: any,ui: any): any
  table.insert(self.Links,UserInput.InputBegan:Connect(function(key: InputObject,used: boolean)
   if used or UserInput:GetFocusedTextBox() then return end
   if CODEX_KEYS[key.KeyCode] and not input.MenuOpen and Visibility.of(ui).Guidance then self.Remote:FireServer({action="Codex"})
-  elseif self.Open and (key.KeyCode==Enum.KeyCode.Escape or key.KeyCode==Enum.KeyCode.ButtonB) then self:Close(true) end
+  -- Roblox reserves Escape for its own menu (the event arrives processed), so Backspace is the desktop back key, as in Respite.
+  elseif self.Open and (key.KeyCode==Enum.KeyCode.Backspace or key.KeyCode==Enum.KeyCode.Escape or key.KeyCode==Enum.KeyCode.ButtonB) then self:Close(true) end
  end))
  -- Death and respawn always end the conversation without returning to any menu.
  local function watch(character: Model) -- one Died link at a time (batch 26: none kept per respawn)
@@ -61,7 +62,7 @@ function Controller.Close(self: any,toAltar: boolean?)
  if self.Portrait then self.Portrait:Destroy();self.Portrait=nil end
  local altar=self.ReturnAltar;self.ReturnAltar=nil
  self.Generation+=1;local wasOpen=self.Open;self.Open=false;self.UI.DialogueOpen=false;self.View.Gui.Enabled=false;self.Camera.DialogueFrame=nil
- if wasOpen then self.Input:SetMenu(false);self.Remote:FireServer({action="Close"}) end
+ if wasOpen then self.Input:SetMenu(false,"Dialogue");self.Remote:FireServer({action="Close"}) end
  View.clear(self.View)
  if wasOpen and toAltar and altar and not self.UI.DeathShown then self.UI:OpenAltar(altar) end
 end
@@ -95,7 +96,7 @@ function Controller.Receive(self: any,p: any)
  if self.UI.Altar.Visible then self.UI:CloseAltar() end
  if self.Portrait then self.Portrait:Destroy();self.Portrait=nil end -- a replacement conversation
  self.Generation+=1;local generation=self.Generation
- if not self.Open then self.Input:SetMenu(true) end
+ if not self.Open then self.Input:SetMenu(true,"Dialogue") end
  self.Open=true;self.UI.DialogueOpen=true;self.View.Gui.Enabled=true
  if p.action=="Dialogue" then
   self.Revision=p.revision;self.ReturnAltar=p.altar

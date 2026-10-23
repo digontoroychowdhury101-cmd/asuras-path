@@ -36,7 +36,7 @@ function View.new(parent: Instance): any
  return {Gui=gui,Title=title,Status=status,Subtitle=subtitle,List=list,Hint=hint,Close=close,Buttons={},Links={},Locked=false,Enabled={},Serial=0,Order=0}
 end
 function View.hint(v: any,device: string)
- v.Hint.Text=if device=="Gamepad" then "[B] leave" elseif device=="Touch" then "Tap Leave to return" else "[Esc] leave"
+ v.Hint.Text=if device=="Gamepad" then "[B] leave" elseif device=="Touch" then "Tap Leave to return" else "[Backspace] leave"
 end
 -- Reading text follows the comfort text size (batch 25): long lore still shrinks to fit.
 local function readable(v: any)
@@ -72,7 +72,7 @@ function View.render(v: any,p: any,send: (any)->())
   end
  end
  v.Title.Text=n.Name..(if p.projection then "  ·  spirit projection" else "")
- v.Status.Text="✦ "..tostring(data.qi).." Essence"..(if p.npc=="Lin" then "  ·  "..data.sovereigns.."/6 souls at rest" else "")
+ v.Status.Text=tostring(data.qi).." Essence"..(if p.npc=="Lin" then "  ·  "..data.sovereigns.."/6 souls at rest" else "")
  v.Subtitle.Text=if p.message then tostring(p.message).."\n"..node.Text else node.Text
  if p.panel=="Level" then
   local affordable,quote=Preview.quote(data.qi,data.cost)

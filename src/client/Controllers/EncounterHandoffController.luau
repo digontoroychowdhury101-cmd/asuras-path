@@ -41,7 +41,7 @@ function Controller.OnCue(self: any, cue: any)
 	if SHOTS[cue.Kind] and type(data.shot) == "number" and self:Involved(data) then
 		self.Camera:BossShot(cue.Source, data.shot)
 		self.Active = true
-		if not self.Input.MenuOpen then self.Blocked = true; self.Input:SetMenu(true) end
+		if not self.Blocked then self.Blocked = true; self.Input:SetMenu(true, "Handoff") end
 		self.Pill.Text = "Skip ›  " .. self:Key()
 		self.Pill.Visible = true
 	elseif self.Active and (ENDS[cue.Kind] or (cue.Kind == "BossParticipantLeft" and cue.Source == self.State.LocalId)) then
@@ -67,7 +67,7 @@ function Controller.Finish(self: any, cut: boolean)
 	self.Pill.Visible = false
 	if self.Blocked then
 		self.Blocked = false
-		self.Input:SetMenu(false)
+		self.Input:SetMenu(false, "Handoff")
 	end
 end
 

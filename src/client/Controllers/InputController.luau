@@ -121,6 +121,7 @@ type Fields = {
 	SprintHeld: boolean,
 	CursorFree: boolean,
 	MenuOpen: boolean,
+	MenuOwners: { [string]: true },
 	Stick: Vector2,
 	TouchLook: Vector2,
 	TouchGui: ScreenGui,
@@ -252,6 +253,7 @@ function Controller.new(state: WorldState, camera: CameraController, send: Sende
 		SprintHeld = false,
 		CursorFree = false,
 		MenuOpen = false,
+		MenuOwners = {},
 		Stick = Vector2.zero,
 		TouchLook = Vector2.zero,
 		TouchGui = gui,
@@ -355,7 +357,11 @@ function Controller.Hint(self: InputController, command: string): string
 	return InputMap.label(command, self.Device)
 end
 
-function Controller.SetMenu(self: InputController, open: boolean)
+-- Each window claims input under its own owner name; input stays with menus until every owner has
+-- released it, so closing Respite over a dialogue cannot hand keys back while Lin is still talking.
+function Controller.SetMenu(self: InputController, open: boolean, owner: string?)
+	self.MenuOwners[owner or "Menu"] = if open then true else nil
+	open = next(self.MenuOwners) ~= nil
 	self.MenuOpen = open
 	self.Movement:SetEnabled(not open)
 	self.TouchGui.Enabled = self.Device == "Touch" and not open

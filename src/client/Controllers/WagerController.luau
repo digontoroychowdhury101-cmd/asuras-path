@@ -15,7 +15,7 @@ function Controller.new(ui: any): any
    return
   end
   if p.action~="Panel" then return end
-  View.clear(self.View);self.View.Gui.Enabled=true;self.Open=true;ui:CloseAltar();ui.Input:SetMenu(true)
+  View.clear(self.View);self.View.Gui.Enabled=true;self.Open=true;ui:CloseAltar();ui.Input:SetMenu(true,"Wager")
   self.View.Title.Text="COLOSSEUM BALCONY · "..p.qi.." Qi"
   self.View.Subtitle.MaxVisibleGraphemes=-1
   self.View.Subtitle.Text=p.message or "Wager 50–500 Qi before the opening bell. Winners receive 1.8× their stake; a draw or cancelled duel refunds it."
@@ -34,7 +34,7 @@ function Controller.new(ui: any): any
  return self
 end
 function Controller.Close(self: any)
- if self.Open then self.Ui.Input:SetMenu(false) end
+ if self.Open then self.Ui.Input:SetMenu(false,"Wager") end
  self.Open=false;self.View.Gui.Enabled=false
 end
 function Controller.Update(self: any)

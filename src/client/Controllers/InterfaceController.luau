@@ -17,6 +17,7 @@ local WorldState = require(script.Parent:WaitForChild("WorldStateController") ::
 local CameraController = require(script.Parent:WaitForChild("CameraController") :: ModuleScript)
 local InputController = require(script.Parent:WaitForChild("InputController") :: ModuleScript)
 local HudKit = require(script.Parent:WaitForChild("HudKit") :: ModuleScript)
+local HudLayout = require(script.Parent:WaitForChild("HudLayout") :: ModuleScript)
 local UiKit = require(script.Parent:WaitForChild("UiKit") :: ModuleScript)
 local Sakura = require(script.Parent:WaitForChild("SakuraKit") :: ModuleScript)
 local BossHud = require(script.Parent.BossHud)
@@ -620,7 +621,8 @@ function Controller.new(state: WorldState, camera: CameraController, input: Inpu
 	for name, base in { Vitals = 0.78, Loadout = 0.78, AltarMenu = 0.8 } do
 		local panel = gui:FindFirstChild(name)
 		if panel and panel:IsA("GuiObject") then
-			table.insert(self.Disconnects, HudKit.bindScale(panel, base))
+			local floor = if name == "AltarMenu" then nil else HudLayout.Regions.Vitals.MinScale -- loadout shares the vitals plate
+			table.insert(self.Disconnects, HudKit.bindScale(panel, base, floor))
 		end
 	end
 
@@ -799,7 +801,7 @@ function Controller.OpenAltar(self: Interface, altarId: string)
 	self.AltarId = altarId
 	self.AltarTitle.Text = if altar then altar.Name else "Incense Altar"
 	self.Altar.Visible = true
-	self.Input:SetMenu(true)
+	self.Input:SetMenu(true, "Altar")
 	self:ShowPage("Main")
 	-- Spring the altar in from the left; the authored UIScale (0.8) is the rest size.
 	local scale = self.Altar:FindFirstChildOfClass("UIScale")
@@ -818,7 +820,7 @@ function Controller.CloseAltar(self: Interface)
 	end
 	self.Altar.Visible = false
 	self.AltarId = nil
-	self.Input:SetMenu(false)
+	self.Input:SetMenu(false, "Altar")
 	UiKit.play("Close")
 end
 
@@ -1203,7 +1205,7 @@ function Controller.Update(self: Interface, dt: number)
 	self.OffhandName.Text = if type(offhand) == "string" and offhand ~= "None" then "Off: " .. (WEAPON_NAME[offhand] or offhand) else ""
 	local essence = tonumber(player:GetAttribute("AsuraEssence")) or 0
 	local unbanked = tonumber(player:GetAttribute("AsuraUnbanked")) or 0
-	self.EssenceText.Text = if unbanked > 0 then string.format("✦ %d ESSENCE  +%d carried", essence, unbanked) else string.format("✦ %d ESSENCE", essence)
+	self.EssenceText.Text = if unbanked > 0 then string.format("%d ESSENCE  +%d carried", essence, unbanked) else string.format("%d ESSENCE", essence)
 	self.LevelText.Text = string.format("Lv. %d", tonumber(player:GetAttribute("AsuraLevel")) or 1)
 
 	if self.Altar.Visible then
@@ -1243,7 +1245,7 @@ function Controller.Destroy(self: Interface)
 		connection:Disconnect()
 	end
 	table.clear(self.Connections)
-	self.Input:SetMenu(false)
+	self.Input:SetMenu(false, "Altar")
 	self.Gui:Destroy()
 end
 

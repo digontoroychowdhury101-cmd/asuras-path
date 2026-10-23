@@ -26,6 +26,7 @@ local MIN_DISTANCE, MAX_DISTANCE = 8, 16
 local LOCK_RANGE = 60
 local LOCK_BREAK_RANGE = 80
 local PITCH_MIN, PITCH_MAX = math.rad(-70), math.rad(55)
+local DEFAULT_PITCH = math.rad(-12)
 local PROBE_RADIUS = 0.6
 local PROBE_GROUP = "CameraProbe"
 local OCCLUSION_RECOVER = 6
@@ -52,6 +53,7 @@ type Fields = {
 	Shoulder: number,
 	ShoulderSpring: Spring,
 	Locked: number?,
+	FollowRoot: BasePart?, -- the body being framed; a new one (respawn) recentres the view
 	LastSwitch: number,
 	SwitchAccumulator: number,
 	Fov: number,
@@ -114,6 +116,20 @@ local function yawOf(direction: Vector3): number
 	return math.atan2(-direction.X, -direction.Z)
 end
 
+-- A new body to frame (spawn or respawn). A lock held over a KO'd body pitches the view up toward
+-- the killer; the respawned body starts behind its own facing instead of staring at the sky until
+-- the mouse moves (F03; tools/test_camera_shake.luau).
+local function followRoot(self: Fields, root: BasePart)
+	self.FollowRoot = root
+	self.TargetPitch, self.Pitch.Value, self.Pitch.Velocity = DEFAULT_PITCH, DEFAULT_PITCH, 0
+	local facing = root.CFrame.LookVector
+	local flat = Vector3.new(facing.X, 0, facing.Z)
+	if flat.Magnitude > 1e-3 then
+		self.TargetYaw = yawOf(flat)
+		self.Yaw.Value, self.Yaw.Velocity = self.TargetYaw, 0
+	end
+end
+
 function Controller.new(state: WorldState): CameraController
 	local camera = Workspace.CurrentCamera
 	local params = RaycastParams.new()
@@ -124,14 +140,15 @@ function Controller.new(state: WorldState): CameraController
 		BossShotState = nil,
 		Camera = camera,
 		Yaw = spring(0),
-		Pitch = spring(math.rad(-12)),
+		Pitch = spring(DEFAULT_PITCH),
 		Distance = spring(BASE_OFFSET.Z),
 		TargetYaw = 0,
-		TargetPitch = math.rad(-12),
+		TargetPitch = DEFAULT_PITCH,
 		Occluded = BASE_OFFSET.Z,
 		Shoulder = 1,
 		ShoulderSpring = spring(1),
 		Locked = nil,
+		FollowRoot = nil,
 		LastSwitch = 0,
 		SwitchAccumulator = 0,
 		Fov = Config.Camera.FOV,
@@ -351,6 +368,9 @@ function Controller.Update(self: CameraController, dt: number)
 	local root = own and own.Root
 	if not own or not root then
 		return
+	end
+	if root ~= self.FollowRoot then
+		followRoot(self, root)
 	end
 
 	local target = self:LockedEntity()

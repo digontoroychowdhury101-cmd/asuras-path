@@ -53269,7 +53269,7 @@ function Ascension.refresh(view: View, player: Player)
 	local attributes: { [string]: number } = {}
 	for _, id in Rules.Attributes do attributes[id] = tonumber(player:GetAttribute("Asura" .. id)) or 10 end
 	local affordable, quote = Preview.quote(essence, cost)
-	view.Header.Text = string.format("Level %d → %d   ·   ✦ %d Essence", level, level + 1, essence)
+	view.Header.Text = string.format("Level %d → %d   ·   %d Essence", level, level + 1, essence)
 	view.Quote.Text, view.Quote.TextColor3 = quote, if affordable then T.Gold else T.Muted
 	for id, row in view.Rows do
 		row.Value.Text = tostring(attributes[id])
@@ -54039,6 +54039,7 @@ local MIN_DISTANCE, MAX_DISTANCE = 8, 16
 local LOCK_RANGE = 60
 local LOCK_BREAK_RANGE = 80
 local PITCH_MIN, PITCH_MAX = math.rad(-70), math.rad(55)
+local DEFAULT_PITCH = math.rad(-12)
 local PROBE_RADIUS = 0.6
 local PROBE_GROUP = "CameraProbe"
 local OCCLUSION_RECOVER = 6
@@ -54065,6 +54066,7 @@ type Fields = {
 	Shoulder: number,
 	ShoulderSpring: Spring,
 	Locked: number?,
+	FollowRoot: BasePart?, -- the body being framed; a new one (respawn) recentres the view
 	LastSwitch: number,
 	SwitchAccumulator: number,
 	Fov: number,
@@ -54127,6 +54129,20 @@ local function yawOf(direction: Vector3): number
 	return math.atan2(-direction.X, -direction.Z)
 end
 
+-- A new body to frame (spawn or respawn). A lock held over a KO'd body pitches the view up toward
+-- the killer; the respawned body starts behind its own facing instead of staring at the sky until
+-- the mouse moves (F03; tools/test_camera_shake.luau).
+local function followRoot(self: Fields, root: BasePart)
+	self.FollowRoot = root
+	self.TargetPitch, self.Pitch.Value, self.Pitch.Velocity = DEFAULT_PITCH, DEFAULT_PITCH, 0
+	local facing = root.CFrame.LookVector
+	local flat = Vector3.new(facing.X, 0, facing.Z)
+	if flat.Magnitude &gt; 1e-3 then
+		self.TargetYaw = yawOf(flat)
+		self.Yaw.Value, self.Yaw.Velocity = self.TargetYaw, 0
+	end
+end
+
 function Controller.new(state: WorldState): CameraController
 	local camera = Workspace.CurrentCamera
 	local params = RaycastParams.new()
@@ -54137,14 +54153,15 @@ function Controller.new(state: WorldState): CameraController
 		BossShotState = nil,
 		Camera = camera,
 		Yaw = spring(0),
-		Pitch = spring(math.rad(-12)),
+		Pitch = spring(DEFAULT_PITCH),
 		Distance = spring(BASE_OFFSET.Z),
 		TargetYaw = 0,
-		TargetPitch = math.rad(-12),
+		TargetPitch = DEFAULT_PITCH,
 		Occluded = BASE_OFFSET.Z,
 		Shoulder = 1,
 		ShoulderSpring = spring(1),
 		Locked = nil,
+		FollowRoot = nil,
 		LastSwitch = 0,
 		SwitchAccumulator = 0,
 		Fov = Config.Camera.FOV,
@@ -54364,6 +54381,9 @@ function Controller.Update(self: CameraController, dt: number)
 	local root = own and own.Root
 	if not own or not root then
 		return
+	end
+	if root ~= self.FollowRoot then
+		followRoot(self, root)
 	end
 
 	local target = self:LockedEntity()
@@ -55146,7 +55166,7 @@ end
 function Controller.HoldMenu(self: ColosseumController, held: boolean)
 	if self.MenuHeld ~= held then
 		self.MenuHeld = held
-		self.Input:SetMenu(held)
+		self.Input:SetMenu(held, "Colosseum")
 	end
 end
 
@@ -56172,7 +56192,8 @@ function Controller.new(input: any, ui: any): ControlsCard
 		Name = "ControlsBackdrop", Size = UDim2.fromScale(1, 1), BackgroundColor3 = Color3.new(0, 0, 0), BackgroundTransparency = 0.55,
 		Text = "", AutoButtonColor = false, ZIndex = 30, Visible = false,
 	}) :: TextButton
-	local card = HudKit.panel(ui.Gui, "ControlsCard", { AnchorPoint = Vector2.new(0.5, 0.5), Size = UDim2.fromOffset(size.X, size.Y), Active = true, ZIndex = 31 })
+	-- Near-opaque: a modal over the backdrop must not let a teaching card's text bleed through (F03).
+	local card = HudKit.panel(ui.Gui, "ControlsCard", { AnchorPoint = Vector2.new(0.5, 0.5), Size = UDim2.fromOffset(size.X, size.Y), Active = true, ZIndex = 31, BackgroundTransparency = 0.04 })
 	HudKit.make("UIPadding", card, { PaddingLeft = UDim.new(0, 14), PaddingRight = UDim.new(0, 14), PaddingTop = UDim.new(0, 8) })
 	HudKit.label(card, "CONTROLS", 18, HudKit.TitleFont, P.Ember, { Size = UDim2.new(1, 0, 0, 24), TextXAlignment = Enum.TextXAlignment.Left })
 	HudKit.label(card, "", 13, HudKit.BodyFont, P.Muted, { Name = "CloseHint", Size = UDim2.new(1, 0, 0, 24), TextXAlignment = Enum.TextXAlignment.Right })
@@ -56628,7 +56649,8 @@ function Controller.new(camera: any,input: any,ui: any): any
  table.insert(self.Links,UserInput.InputBegan:Connect(function(key: InputObject,used: boolean)
   if used or UserInput:GetFocusedTextBox() then return end
   if CODEX_KEYS[key.KeyCode] and not input.MenuOpen and Visibility.of(ui).Guidance then self.Remote:FireServer({action="Codex"})
-  elseif self.Open and (key.KeyCode==Enum.KeyCode.Escape or key.KeyCode==Enum.KeyCode.ButtonB) then self:Close(true) end
+  -- Roblox reserves Escape for its own menu (the event arrives processed), so Backspace is the desktop back key, as in Respite.
+  elseif self.Open and (key.KeyCode==Enum.KeyCode.Backspace or key.KeyCode==Enum.KeyCode.Escape or key.KeyCode==Enum.KeyCode.ButtonB) then self:Close(true) end
  end))
  -- Death and respawn always end the conversation without returning to any menu.
  local function watch(character: Model) -- one Died link at a time (batch 26: none kept per respawn)
@@ -56648,7 +56670,7 @@ function Controller.Close(self: any,toAltar: boolean?)
  if self.Portrait then self.Portrait:Destroy();self.Portrait=nil end
  local altar=self.ReturnAltar;self.ReturnAltar=nil
  self.Generation+=1;local wasOpen=self.Open;self.Open=false;self.UI.DialogueOpen=false;self.View.Gui.Enabled=false;self.Camera.DialogueFrame=nil
- if wasOpen then self.Input:SetMenu(false);self.Remote:FireServer({action="Close"}) end
+ if wasOpen then self.Input:SetMenu(false,"Dialogue");self.Remote:FireServer({action="Close"}) end
  View.clear(self.View)
  if wasOpen and toAltar and altar and not self.UI.DeathShown then self.UI:OpenAltar(altar) end
 end
@@ -56682,7 +56704,7 @@ function Controller.Receive(self: any,p: any)
  if self.UI.Altar.Visible then self.UI:CloseAltar() end
  if self.Portrait then self.Portrait:Destroy();self.Portrait=nil end -- a replacement conversation
  self.Generation+=1;local generation=self.Generation
- if not self.Open then self.Input:SetMenu(true) end
+ if not self.Open then self.Input:SetMenu(true,"Dialogue") end
  self.Open=true;self.UI.DialogueOpen=true;self.View.Gui.Enabled=true
  if p.action=="Dialogue" then
   self.Revision=p.revision;self.ReturnAltar=p.altar
@@ -56749,7 +56771,7 @@ function View.new(parent: Instance): any
  return {Gui=gui,Title=title,Status=status,Subtitle=subtitle,List=list,Hint=hint,Close=close,Buttons={},Links={},Locked=false,Enabled={},Serial=0,Order=0}
 end
 function View.hint(v: any,device: string)
- v.Hint.Text=if device=="Gamepad" then "[B] leave" elseif device=="Touch" then "Tap Leave to return" else "[Esc] leave"
+ v.Hint.Text=if device=="Gamepad" then "[B] leave" elseif device=="Touch" then "Tap Leave to return" else "[Backspace] leave"
 end
 -- Reading text follows the comfort text size (batch 25): long lore still shrinks to fit.
 local function readable(v: any)
@@ -56785,7 +56807,7 @@ function View.render(v: any,p: any,send: (any)-&gt;())
   end
  end
  v.Title.Text=n.Name..(if p.projection then "  ·  spirit projection" else "")
- v.Status.Text="✦ "..tostring(data.qi).." Essence"..(if p.npc=="Lin" then "  ·  "..data.sovereigns.."/6 souls at rest" else "")
+ v.Status.Text=tostring(data.qi).." Essence"..(if p.npc=="Lin" then "  ·  "..data.sovereigns.."/6 souls at rest" else "")
  v.Subtitle.Text=if p.message then tostring(p.message).."\n"..node.Text else node.Text
  if p.panel=="Level" then
   local affordable,quote=Preview.quote(data.qi,data.cost)
@@ -56980,7 +57002,7 @@ function Controller.OnCue(self: any, cue: any)
 	if SHOTS[cue.Kind] and type(data.shot) == "number" and self:Involved(data) then
 		self.Camera:BossShot(cue.Source, data.shot)
 		self.Active = true
-		if not self.Input.MenuOpen then self.Blocked = true; self.Input:SetMenu(true) end
+		if not self.Blocked then self.Blocked = true; self.Input:SetMenu(true, "Handoff") end
 		self.Pill.Text = "Skip ›  " .. self:Key()
 		self.Pill.Visible = true
 	elseif self.Active and (ENDS[cue.Kind] or (cue.Kind == "BossParticipantLeft" and cue.Source == self.State.LocalId)) then
@@ -57006,7 +57028,7 @@ function Controller.Finish(self: any, cut: boolean)
 	self.Pill.Visible = false
 	if self.Blocked then
 		self.Blocked = false
-		self.Input:SetMenu(false)
+		self.Input:SetMenu(false, "Handoff")
 	end
 end
 
@@ -57082,7 +57104,7 @@ function Controller.Play(self: any)
 	if self.Active or ui.PrologueActive or ui.DeathShown then return end
 	self.Active, self.Index, self.Elapsed, self.Clock = true, 1, 0, 0
 	ui.EndingActive = true
-	self.Input:SetMenu(true)
+	self.Input:SetMenu(true, "Ending")
 	local gui = HudKit.make("ScreenGui", Players.LocalPlayer:WaitForChild("PlayerGui"), { Name = "AsuraCrossing", IgnoreGuiInset = true, DisplayOrder = 61, ResetOnSpawn = false })
 	self.Gui = gui
 	self.Veil = HudKit.make("Frame", gui, { Size = UDim2.fromScale(1, 1), BackgroundColor3 = VEIL, BackgroundTransparency = 1, BorderSizePixel = 0 })
@@ -57158,7 +57180,7 @@ function Controller.Stop(self: any, reason: string)
 	if self.SkipLink then self.SkipLink:Disconnect(); self.SkipLink = nil end
 	if self.Gui then self.Gui:Destroy(); self.Gui = nil end
 	self.Camera.DialogueFrame = nil
-	self.Input:SetMenu(false)
+	self.Input:SetMenu(false, "Ending")
 	self.Ui.EndingActive = false
 	local final = Ending.Scene[#Ending.Scene]
 	if reason == "Interrupted" then
@@ -57916,11 +57938,12 @@ end
 -- Adds (or reuses) a UIScale on `target` whose scale is `base * factor()`, kept current as the
 -- viewport resizes or the camera is replaced. Returns a disconnect function.
 -- A device profile may override the base through the AsuraScaleBase attribute (DeviceLayout).
-function HudKit.bindScale(target: GuiObject, base: number): () -&gt; ()
+-- minScale (desktop only) keeps survival values readable on small windows (HudLayout MinScale).
+function HudKit.bindScale(target: GuiObject, base: number, minScale: number?): () -&gt; ()
 	local scale = target:FindFirstChildOfClass("UIScale") or HudKit.make("UIScale", target, {})
 	return HudKit.onViewport(function()
 		local override = target:GetAttribute("AsuraScaleBase")
-		scale.Scale = (if type(override) == "number" then override else base) * HudKit.factor()
+		scale.Scale = if type(override) == "number" then override * HudKit.factor() else math.max(base * HudKit.factor(), minScale or 0)
 	end)
 end
 
@@ -57966,6 +57989,7 @@ export type Rect = { X: number, Y: number, W: number, H: number }
 export type Region = {
 	Anchor: { number }, At: { number }, Offset: { number }, Size: { number }, Base: number,
 	WidthScale: number?, MinWidth: number?, MaxWidth: number?,
+	MinScale: number?, -- desktop floor on Base * factor (survival plates)
 }
 local function region(anchor: { number }, at: { number }, offset: { number }, size: { number }, base: number): Region
 	return { Anchor = anchor, At = at, Offset = offset, Size = size, Base = base }
@@ -57980,7 +58004,9 @@ Layout.Regions = {
 	Codex = region({ 0, 0 }, { 0, 0.55 }, { 14, 0 }, { 92, 30 }, 0),
 	ControlsPill = region({ 0, 0 }, { 0, 0.55 }, { 14, -40 }, { 150, 30 }, 0.85),
 }
-Layout.Regions.Compass = { Anchor = { 0.5, 0 }, At = { 0.5, 0 }, Offset = { 0, 8 }, Size = { 520, 60 }, Base = 0, WidthScale = 0.36, MinWidth = 240, MaxWidth = 520 }
+-- Health, flask, essence and weapon stay at least ~12 px on a 1096x604 window (F03 Studio view).
+Layout.Regions.Vitals.MinScale = 0.66
+Layout.Regions.Compass ={ Anchor = { 0.5, 0 }, At = { 0.5, 0 }, Offset = { 0, 8 }, Size = { 520, 60 }, Base = 0, WidthScale = 0.36, MinWidth = 240, MaxWidth = 520 }
 Layout.Regions.Boss = { Anchor = { 0.5, 0 }, At = { 0.5, 0 }, Offset = { 0, 74 }, Size = { 900, 148 }, Base = 0, WidthScale = 0.5, MinWidth = 300, MaxWidth = 900 }
 
 function Layout.factor(height: number): number
@@ -57991,7 +58017,7 @@ end
 -- On-screen rectangle of a region (UIScale scales about the anchor point).
 function Layout.rect(name: string, width: number, height: number): Rect
 	local r = (Layout.Regions :: any)[name] :: Region
-	local scale = if r.Base &gt; 0 then r.Base * Layout.factor(height) else 1
+	local scale = if r.Base &gt; 0 then math.max(r.Base * Layout.factor(height), r.MinScale or 0) else 1
 	local w = r.Size[1] * scale
 	if r.WidthScale then w = math.clamp(width * r.WidthScale, r.MinWidth or 0, r.MaxWidth or math.huge) end
 	local h = r.Size[2] * scale
@@ -58466,6 +58492,7 @@ type Fields = {
 	SprintHeld: boolean,
 	CursorFree: boolean,
 	MenuOpen: boolean,
+	MenuOwners: { [string]: true },
 	Stick: Vector2,
 	TouchLook: Vector2,
 	TouchGui: ScreenGui,
@@ -58597,6 +58624,7 @@ function Controller.new(state: WorldState, camera: CameraController, send: Sende
 		SprintHeld = false,
 		CursorFree = false,
 		MenuOpen = false,
+		MenuOwners = {},
 		Stick = Vector2.zero,
 		TouchLook = Vector2.zero,
 		TouchGui = gui,
@@ -58700,7 +58728,11 @@ function Controller.Hint(self: InputController, command: string): string
 	return InputMap.label(command, self.Device)
 end
 
-function Controller.SetMenu(self: InputController, open: boolean)
+-- Each window claims input under its own owner name; input stays with menus until every owner has
+-- released it, so closing Respite over a dialogue cannot hand keys back while Lin is still talking.
+function Controller.SetMenu(self: InputController, open: boolean, owner: string?)
+	self.MenuOwners[owner or "Menu"] = if open then true else nil
+	open = next(self.MenuOwners) ~= nil
 	self.MenuOpen = open
 	self.Movement:SetEnabled(not open)
 	self.TouchGui.Enabled = self.Device == "Touch" and not open
@@ -58946,6 +58978,7 @@ local WorldState = require(script.Parent:WaitForChild("WorldStateController") ::
 local CameraController = require(script.Parent:WaitForChild("CameraController") :: ModuleScript)
 local InputController = require(script.Parent:WaitForChild("InputController") :: ModuleScript)
 local HudKit = require(script.Parent:WaitForChild("HudKit") :: ModuleScript)
+local HudLayout = require(script.Parent:WaitForChild("HudLayout") :: ModuleScript)
 local UiKit = require(script.Parent:WaitForChild("UiKit") :: ModuleScript)
 local Sakura = require(script.Parent:WaitForChild("SakuraKit") :: ModuleScript)
 local BossHud = require(script.Parent.BossHud)
@@ -59549,7 +59582,8 @@ function Controller.new(state: WorldState, camera: CameraController, input: Inpu
 	for name, base in { Vitals = 0.78, Loadout = 0.78, AltarMenu = 0.8 } do
 		local panel = gui:FindFirstChild(name)
 		if panel and panel:IsA("GuiObject") then
-			table.insert(self.Disconnects, HudKit.bindScale(panel, base))
+			local floor = if name == "AltarMenu" then nil else HudLayout.Regions.Vitals.MinScale -- loadout shares the vitals plate
+			table.insert(self.Disconnects, HudKit.bindScale(panel, base, floor))
 		end
 	end
 
@@ -59728,7 +59762,7 @@ function Controller.OpenAltar(self: Interface, altarId: string)
 	self.AltarId = altarId
 	self.AltarTitle.Text = if altar then altar.Name else "Incense Altar"
 	self.Altar.Visible = true
-	self.Input:SetMenu(true)
+	self.Input:SetMenu(true, "Altar")
 	self:ShowPage("Main")
 	-- Spring the altar in from the left; the authored UIScale (0.8) is the rest size.
 	local scale = self.Altar:FindFirstChildOfClass("UIScale")
@@ -59747,7 +59781,7 @@ function Controller.CloseAltar(self: Interface)
 	end
 	self.Altar.Visible = false
 	self.AltarId = nil
-	self.Input:SetMenu(false)
+	self.Input:SetMenu(false, "Altar")
 	UiKit.play("Close")
 end
 
@@ -60132,7 +60166,7 @@ function Controller.Update(self: Interface, dt: number)
 	self.OffhandName.Text = if type(offhand) == "string" and offhand ~= "None" then "Off: " .. (WEAPON_NAME[offhand] or offhand) else ""
 	local essence = tonumber(player:GetAttribute("AsuraEssence")) or 0
 	local unbanked = tonumber(player:GetAttribute("AsuraUnbanked")) or 0
-	self.EssenceText.Text = if unbanked &gt; 0 then string.format("✦ %d ESSENCE  +%d carried", essence, unbanked) else string.format("✦ %d ESSENCE", essence)
+	self.EssenceText.Text = if unbanked &gt; 0 then string.format("%d ESSENCE  +%d carried", essence, unbanked) else string.format("%d ESSENCE", essence)
 	self.LevelText.Text = string.format("Lv. %d", tonumber(player:GetAttribute("AsuraLevel")) or 1)
 
 	if self.Altar.Visible then
@@ -60172,7 +60206,7 @@ function Controller.Destroy(self: Interface)
 		connection:Disconnect()
 	end
 	table.clear(self.Connections)
-	self.Input:SetMenu(false)
+	self.Input:SetMenu(false, "Altar")
 	self.Gui:Destroy()
 end
 
@@ -61092,7 +61126,8 @@ end
 
 function Menu.Blocked(self: PauseMenu): boolean
 	local ui = self.Ui
-	return ui.DeathShown or ui.PrologueActive == true or ui.EndingActive == true or ui.Altar.Visible or self.Arsenal.Visible
+	-- One window at a time: Respite opened over Lin or the Codex stacked two translucent panels (F03).
+	return ui.DeathShown or ui.PrologueActive == true or ui.EndingActive == true or ui.DialogueOpen == true or ui.Altar.Visible or self.Arsenal.Visible
 end
 
 function Menu.Show(self: PauseMenu, name: string)
@@ -61111,7 +61146,7 @@ function Menu.Toggle(self: PauseMenu)
 end
 
 function Menu.Open(self: PauseMenu)
-	self.Input:SetMenu(true)
+	self.Input:SetMenu(true, "Pause")
 	UiWindow.open(self.Window)
 	self:Show("Main")
 	ContextActionService:BindActionAtPriority("AsuraRespiteBack", function(_: string, state: Enum.UserInputState): Enum.ContextActionResult
@@ -61128,7 +61163,7 @@ function Menu.Close(self: PauseMenu)
 	self:Revert()
 	if GuiService.SelectedObject and GuiService.SelectedObject:IsDescendantOf(self.Window.Root) then GuiService.SelectedObject = nil end
 	UiWindow.close(self.Window, function()
-		self.Input:SetMenu(self.Ui.Altar.Visible or self.Arsenal.Visible)
+		self.Input:SetMenu(false, "Pause")
 	end)
 end
 
@@ -61371,7 +61406,7 @@ function Controller.Play(ui: any, input: any, camera: any?, force: boolean?)
 	local player = Players.LocalPlayer
 	if ui.PrologueActive then return end
 	ui.PrologueActive = true
-	input:SetMenu(true)
+	input:SetMenu(true, "Prologue")
 	local gui = HudKit.make("ScreenGui", player:WaitForChild("PlayerGui"), { Name = "AsuraPrologue", IgnoreGuiInset = true, DisplayOrder = 60, ResetOnSpawn = false }) :: ScreenGui
 	local veil = HudKit.make("Frame", gui, { Size = UDim2.fromScale(1, 1), BackgroundColor3 = Color3.new(0, 0, 0), BackgroundTransparency = 0, BorderSizePixel = 0 }) :: Frame
 	local bars: { Frame } = {}
@@ -61426,7 +61461,7 @@ function Controller.Play(ui: any, input: any, camera: any?, force: boolean?)
 	out:Play()
 	out.Completed:Wait()
 	gui:Destroy()
-	input:SetMenu(false)
+	input:SetMenu(false, "Prologue")
 	ui.PrologueActive = false
 	if story then ui:ShowBanner(Controller.Handoff[1], Controller.Handoff[2], 4) end
 end
@@ -62947,7 +62982,7 @@ function Controller.new(state: any,ui: any,net: Instance,camera: any?): SpellCon
  self.View=Hud.new(ui.Gui,function(slot: number) self:Cast(slot) end,toggle)
  table.insert(self.Connections,self.Panel.Root:GetPropertyChangedSignal("Visible"):Connect(function()
   if self.Panel.Root.Visible then ui:CloseAltar() end
-  ui.Input:SetMenu(self.Panel.Root.Visible or ui.Altar.Visible)
+  ui.Input:SetMenu(self.Panel.Root.Visible, "Arsenal")
  end))
  table.insert(self.Connections,remote.OnClientEvent:Connect(function(packet: any)
   if type(packet)~="table" then return end
@@ -63957,8 +63992,8 @@ function Tags.texts(s: { MaxHP: number, ActiveHP: number, RecoverableHP: number,
 	local recoverable = math.floor(s.RecoverableHP + 0.5)
 	local rally = ""
 	if recoverable &gt; 0 then
-		rally = if s.RallyActive then string.format("↺ RALLY %.1fs · strike back", math.max(s.RallyRemaining, 0))
-			else string.format("↺ +%d recoverable · flask", recoverable)
+		rally = if s.RallyActive then string.format("RALLY %.1fs · strike back", math.max(s.RallyRemaining, 0))
+			else string.format("+%d recoverable · flask", recoverable)
 	end
 	local lost = math.floor(s.PermanentDeficit + 0.5)
 	local ceiling = if lost &gt; 0 then string.format("▼ max −%d · rest restores", lost) else ""
@@ -64008,7 +64043,7 @@ function Controller.new(ui: any): any
    return
   end
   if p.action~="Panel" then return end
-  View.clear(self.View);self.View.Gui.Enabled=true;self.Open=true;ui:CloseAltar();ui.Input:SetMenu(true)
+  View.clear(self.View);self.View.Gui.Enabled=true;self.Open=true;ui:CloseAltar();ui.Input:SetMenu(true,"Wager")
   self.View.Title.Text="COLOSSEUM BALCONY · "..p.qi.." Qi"
   self.View.Subtitle.MaxVisibleGraphemes=-1
   self.View.Subtitle.Text=p.message or "Wager 50–500 Qi before the opening bell. Winners receive 1.8× their stake; a draw or cancelled duel refunds it."
@@ -64027,7 +64062,7 @@ function Controller.new(ui: any): any
  return self
 end
 function Controller.Close(self: any)
- if self.Open then self.Ui.Input:SetMenu(false) end
+ if self.Open then self.Ui.Input:SetMenu(false,"Wager") end
  self.Open=false;self.View.Gui.Enabled=false
 end
 function Controller.Update(self: any)

@@ -125,7 +125,8 @@ end
 
 function Menu.Blocked(self: PauseMenu): boolean
 	local ui = self.Ui
-	return ui.DeathShown or ui.PrologueActive == true or ui.EndingActive == true or ui.Altar.Visible or self.Arsenal.Visible
+	-- One window at a time: Respite opened over Lin or the Codex stacked two translucent panels (F03).
+	return ui.DeathShown or ui.PrologueActive == true or ui.EndingActive == true or ui.DialogueOpen == true or ui.Altar.Visible or self.Arsenal.Visible
 end
 
 function Menu.Show(self: PauseMenu, name: string)
@@ -144,7 +145,7 @@ function Menu.Toggle(self: PauseMenu)
 end
 
 function Menu.Open(self: PauseMenu)
-	self.Input:SetMenu(true)
+	self.Input:SetMenu(true, "Pause")
 	UiWindow.open(self.Window)
 	self:Show("Main")
 	ContextActionService:BindActionAtPriority("AsuraRespiteBack", function(_: string, state: Enum.UserInputState): Enum.ContextActionResult
@@ -161,7 +162,7 @@ function Menu.Close(self: PauseMenu)
 	self:Revert()
 	if GuiService.SelectedObject and GuiService.SelectedObject:IsDescendantOf(self.Window.Root) then GuiService.SelectedObject = nil end
 	UiWindow.close(self.Window, function()
-		self.Input:SetMenu(self.Ui.Altar.Visible or self.Arsenal.Visible)
+		self.Input:SetMenu(false, "Pause")
 	end)
 end
 

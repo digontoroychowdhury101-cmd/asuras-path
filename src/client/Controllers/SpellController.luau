@@ -40,7 +40,7 @@ function Controller.new(state: any,ui: any,net: Instance,camera: any?): SpellCon
  self.View=Hud.new(ui.Gui,function(slot: number) self:Cast(slot) end,toggle)
  table.insert(self.Connections,self.Panel.Root:GetPropertyChangedSignal("Visible"):Connect(function()
   if self.Panel.Root.Visible then ui:CloseAltar() end
-  ui.Input:SetMenu(self.Panel.Root.Visible or ui.Altar.Visible)
+  ui.Input:SetMenu(self.Panel.Root.Visible, "Arsenal")
  end))
  table.insert(self.Connections,remote.OnClientEvent:Connect(function(packet: any)
   if type(packet)~="table" then return end

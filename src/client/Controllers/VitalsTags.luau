@@ -46,8 +46,8 @@ function Tags.texts(s: { MaxHP: number, ActiveHP: number, RecoverableHP: number,
 	local recoverable = math.floor(s.RecoverableHP + 0.5)
 	local rally = ""
 	if recoverable > 0 then
-		rally = if s.RallyActive then string.format("↺ RALLY %.1fs · strike back", math.max(s.RallyRemaining, 0))
-			else string.format("↺ +%d recoverable · flask", recoverable)
+		rally = if s.RallyActive then string.format("RALLY %.1fs · strike back", math.max(s.RallyRemaining, 0))
+			else string.format("+%d recoverable · flask", recoverable)
 	end
 	local lost = math.floor(s.PermanentDeficit + 0.5)
 	local ceiling = if lost > 0 then string.format("▼ max −%d · rest restores", lost) else ""
