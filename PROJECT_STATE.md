@@ -1,5 +1,9 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## F02d closing pass — 2026-10-23 (Computer B, Windows)
+
+Same-UserId save/rejoin is still **Blocked**. The source confirms the Studio mock store is in-memory per server and keyed by UserId. Add Clients gets a new UserId, and a restart empties the store. No new Studio run was made; F02c coordinates stand: wake (60, 3.2, −1018). A human must run Team Test, or solo route B (test experience, API access, temporary `StudioLiveData=true`), per `F02_RECOVERY.md`.
+
 ## Detail/device handoff — 2026-10-23
 
 Integrated Blender cliff/foliage detail, client landscape budgets, phone controls and local Rojo preloader fix. Canonical/mirrored place SourceDigest 1045496687. Verifier 14/14; movement 50; device 89; four Studio form-factor bounds audits pass. Physical hardware/FPS and successful two-client duel remain deferred. Latest build and editable assets are included; see [computer B handoff](outputs/lobby-finish-2026-10-23/COMPUTER_B_HANDOFF.md).
