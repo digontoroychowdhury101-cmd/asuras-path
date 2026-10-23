@@ -14,7 +14,7 @@ When assisting:
    - Always use modern constraints (`LinearVelocity`, `VectorForce`, `AlignOrientation`) instead of deprecated BodyMovers.
    - Always use `workspace:Raycast()` with `RaycastParams` instead of `FindPartOnRay`.
 4. Architecture & Scope rules:
-   - Work strictly within this repository (`src/` for Luau, `assets/` for models, `places/server.rbxl` for the Studio place).
+   - Work strictly within this repository (`src/` for Luau, `assets/` for models, `places/AsurasPath.rbxlx` for the Studio place).
    - Git branch: `ux/onboarding-overhaul`. Always push changes to this branch.
    - Never read binary files (`.rbxl`, `.rbxlx`, `.glb`, `.obj`); refer to `PROJECT_STATE.md` and `default.project.json`.
    - Maintain 1.4× Tempo baseline (`src/simulation/Tempo.luau`).
@@ -22,4 +22,10 @@ When assisting:
    - Respect 60 Hz circular ring buffer netcode (`LagCompensation.luau`).
    - Follow Schema version 4 with attributes: Vigor, Endurance, Strength, Dexterity, ArcaneQi.
 5. Provide clear, 2-bullet-point test instructions. No unnecessary syntax lectures.
+6. 3D Asset Generation & Loading (TRELLIS.2 Pipeline):
+   - When new 3D models, weapons, props, or scenery are needed, run:
+     `./tools/trellis/run_trellis.sh --prompt "<detailed grimdark wuxia prompt>" --name "<PascalCaseName>"`
+   - To auto-upload to Roblox Cloud and insert directly into active Studio:
+     `./tools/trellis/run_trellis.sh --prompt "..." --name "..." --upload --insert`
+   - Generated GLBs are automatically decimated (< 19,500 tris) and textured (1024 PBR maps) for Roblox, saved to `assets/models/<Name>.glb`, and registered in `assets/PHASE5_IMPORT_QUEUE.json`.
 ```

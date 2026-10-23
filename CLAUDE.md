@@ -12,7 +12,7 @@ The creator is entirely vibe-coding this Roblox game and does not write code man
 
 ## Project Layout & Architecture
 - `src/`: All Luau source code (Server, Client, Shared, Simulation).
-- `places/server.rbxl`: Authoritative Roblox Studio place file (mirrored to `~/Documents/Roblox/server.rbxl`).
+- `places/AsurasPath.rbxlx`: Authoritative Roblox Studio place file (mirrored to `outputs/AsurasPath.rbxlx`).
 - `assets/`: Uploaded models (`assets/models/*.rbxmx`), JSON registries, and raw 3D sources (`assets/source/`).
 - `tools/`: Automation tools (`start_sync.command`, `auto_pull.command`, Python build scripts).
 - `default.project.json`: Rojo configuration mapping `src/` and `assets/models/` into Studio.

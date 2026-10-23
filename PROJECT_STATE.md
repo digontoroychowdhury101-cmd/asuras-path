@@ -3,7 +3,7 @@
 ## Portable Prompt Catalog & Place Files — 2026-10-23 (Computer A)
 
 - **ALL_PROMPTS.md & Brief Portability**: All hardcoded `/Users/digonto/...` absolute paths in `outputs/claude-followup-2026-10-21/ALL_PROMPTS.md`, `00_SHARED_BRIEF.txt`, and standalone prompt files `01_` through `26_` converted to repository-relative paths (`outputs/...`).
-- **AsurasPath Place Files in `places/`**: Copied and tracked `places/AsurasPath.rbxlx` and `places/AsurasPath.rbxl` directly inside the `places/` directory so Studio can open it without navigating into `outputs/` or fighting Windows file-type filter defaults. `places/server.rbxl` updated to match the latest build. `tools/build.py` now automatically mirrors default builds to `places/AsurasPath.rbxlx`.
+- **AsurasPath Place Files in `places/`**: Copied and tracked `places/AsurasPath.rbxlx` and `places/AsurasPath.rbxl` directly inside `places/`. Deleted deprecated `places/server.rbxl` to eliminate place-file ambiguity. `tools/build.py` automatically mirrors builds to `places/AsurasPath.rbxlx`.
 - **Next**: Run follow-up prompt (e.g. 04/26) on Computer A or B.
 
 ## Showcase sorceries — 2026-10-23 (Computer B)
