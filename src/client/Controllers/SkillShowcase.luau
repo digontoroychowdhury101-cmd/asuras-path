@@ -35,7 +35,7 @@ local function begin(self: Showcase, source: number, entity: any, windup: number
 	stop(self, source)
 	local own = self.State:Own()
 	local cast: Cast = { Trove = Kit.trove(), Entity = entity, Own = own ~= nil and own.Id == entity.Id, Cinema = self.Cinema,
-		Windup = math.clamp(windup, 0.3, 6), Pulses = 0, Bag = {} }
+		Windup = math.clamp(windup, 0.3, 8), Pulses = 0, Bag = {} }
 	self.Casts[source] = cast
 	-- Forget the cast once its own trove is cleaned (end of timeline), unless a newer one replaced it.
 	Kit.add(cast.Trove, function() if self.Casts[source] == cast then self.Casts[source] = nil end end)

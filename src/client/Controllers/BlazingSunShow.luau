@@ -1,29 +1,44 @@
 --!strict
--- Blazing Sun Awakening timeline (phases are fractions of the server's windup):
---   0.00 fire sigil, embers, low over-the-shoulder Dutch angle   0.25 flame spirals climb the body
---   0.45 a sun forms overhead (hero shot from the front, low)     0.80 it is crushed into the chest
---   release: blackout, solarized flash, manga frame, negative frame; fire nova, a ring of erupting
---   pillars, rays, blazing-eye close-up and gauntlets   pulses: pillar rings   final pulse: frame
--- Camera, grading and the 2D frames belong to the caster's client; the fire is seen by everyone.
+-- Blazing Sun Awakening, cut to the reference video (startup phases are fractions of the server
+-- windup; the release and pulses wait for the authoritative cues):
+--   0.00 the world goes orange duotone, white sparkles, low close-up on the face
+--   0.07 extreme close-up along cheek and shoulder   0.33 "BOOM." bubble
+--   0.39 black void, medium shot; 0.42 an ember kindles on the chest   0.80 a thorn ring clamps it
+--   0.88 it bursts into a sunburst that fills the frame
+--   release: black/white ground frame, boiling 2D toon fire, gradient wash, dark sun frame;
+--   +3.5 black silhouette, blazing star eyes, ember rain   +5.4 burning fists with gold crescents
+-- Void, camera, grading and 2D layers are the caster's; everyone nearby sees the fire in the world.
 local Kit = require(script.Parent.SkillKit)
 local Fx = require(script.Parent.SkillFx)
 local Cinema = require(script.Parent.SkillCinema)
 local Screen = require(script.Parent.ImpactFrame)
 local Flame = require(script.Parent.FlameForms)
-local Solar = require(script.Parent.SolarForms)
+local Bb = require(script.Parent.BillboardFx)
+local Manga = require(script.Parent.MangaFx)
+local Canvas = require(script.Parent.FireCanvas)
+local Stage = require(script.Parent.VoidStage)
+local Sun = require(script.Parent.SunForms)
+local Shots = require(script.Parent.SunShots)
 local Show = {}
 
 Show.FinalPulse = 4
-local TENSION = { Brightness = -0.15, Contrast = 0.35, Saturation = -0.25, TintColor = Color3.fromRGB(255, 225, 200) }
-local KILN = { Brightness = -0.05, Contrast = 0.5, Saturation = 0.15, TintColor = Color3.fromRGB(255, 200, 160) }
-local NEUTRAL = { Brightness = 0, Contrast = 0, Saturation = 0, TintColor = Color3.new(1, 1, 1) }
-local GAZE = { Brightness = -0.3, Contrast = 0.55, Saturation = -0.4, TintColor = Color3.fromRGB(255, 205, 180) }
-local GAUNTLET_SECONDS = 6.4 -- flame gauntlets outlast the last pillar ring
-local P = Screen.Palettes
+local EYES, FISTS, FINISH = 3.5, 5.4, 8.6 -- seconds after release
+local rgb = Color3.fromRGB
 
-local function rootFrame(cast: any): CFrame?
-	local root = cast.Entity.Root
-	return if root and root.Parent then root.CFrame else nil
+local function root(cast: any): BasePart?
+	local r = cast.Entity.Root
+	return if r and r.Parent then r else nil
+end
+
+local function sparkles(cast: any, trove: Kit.Trove, count: number)
+	local r = root(cast)
+	if not r then return end
+	for n = 1, count do
+		Kit.after(trove, (n - 1) * 0.12, function()
+			local a = Kit.attach(trove, r, Vector3.new((math.random() - 0.5) * 6, 1 + math.random() * 3, -1 - math.random() * 2), "Twinkle")
+			Bb.sparkle(trove, a, Color3.new(1, 1, 1), 0.9, 0.5, (math.random() - 0.5) * 30)
+		end)
+	end
 end
 
 function Show.startup(cast: any)
@@ -31,118 +46,92 @@ function Show.startup(cast: any)
 	local tension = Kit.trove()
 	cast.Bag.Tension = tension
 	Kit.add(cast.Trove, function() Kit.clean(tension) end)
-	local folder = Kit.folder(tension, "BlazingSunStance")
-	local cf = rootFrame(cast) or CFrame.identity
-	local floor = CFrame.new(cf.Position - Vector3.new(0, 2.85, 0))
-	cast.Bag.Floor = floor
-	Fx.sigil(tension, folder, floor, 9, Flame.Body, Flame.Core, w * 0.3)
-	for _, hand in Kit.hands(cast.Entity.Model) do Flame.embers(tension, hand) end
-	Kit.after(tension, w * 0.25, function() if cast.Entity.Root then Solar.swirl(tension, cast.Entity.Root, w * 0.8) end end)
-	Kit.after(tension, w * 0.45, function()
-		local at = (rootFrame(cast) or cf).Position + Vector3.new(0, 7, 0)
-		cast.Bag.Sun = Solar.sun(tension, folder, at, 3.2, w * 0.25)
-		Fx.flash(tension, folder, at, Flame.Core, 10, 0.4)
+	local r = root(cast)
+	sparkles(cast, tension, 6)
+	if cast.Own then
+		cast.Bag.Grade = Screen.grade(cast.Trove)
+		cast.Bag.Hud = Kit.add(cast.Trove, Stage.hud())
+		Screen.settle(cast.Trove, cast.Bag.Grade, Stage.Grades.Duotone, 0.04)
+		Shots.startup(cast)
+		Kit.after(tension, w * 0.33, function() Manga.boom(tension, Vector2.new(0.28, 0.48), w * 0.1) end)
+		Kit.after(tension, w * 0.39, function()
+			local base = root(cast) or r
+			if not base then return end
+			cast.Bag.Void = Stage.void(cast.Trove, base.Position, 40, 2.8, 60, rgb(4, 2, 2), { cast.Entity.Model })
+			cast.Bag.Key = Stage.key(cast.Trove, base, rgb(255, 120, 50), 2.5)
+		end)
+	end
+	if not r then return end
+	local chest = Sun.chest(tension, r)
+	Kit.after(tension, w * 0.42, function()
+		local ember = Sun.ember(tension, chest)
+		Kit.tween(tension, ember, w * 0.4, { Size = UDim2.fromScale(3, 3) }, Enum.EasingStyle.Quad, Enum.EasingDirection.In)
 	end)
 	Kit.after(tension, w * 0.8, function()
-		if cast.Bag.Sun then Solar.compress(tension, cast.Bag.Sun, function() return (rootFrame(cast) or cf).Position + Vector3.new(0, 0.6, 0) end, w * 0.18) end
+		Bb.thorns(tension, chest, 4.2)
+		if cast.Own then Cinema.shake(cast.Cinema, 0.25, 1, 2) end
 	end)
-	if not cast.Own then return end
-	cast.Bag.Grade = Screen.grade(cast.Trove)
-	Screen.settle(cast.Trove, cast.Bag.Grade, TENSION, w * 0.4)
-	Cinema.play(cast.Cinema, function(t: number) -- off the right shoulder, low, Dutch
-		local c = rootFrame(cast)
-		if not c then return nil end
-		local push = math.min(1, t / (w * 0.45))
-		return Cinema.look(c:PointToWorldSpace(Vector3.new(4.6, -0.8, 9.5 - push * 2)), c:PointToWorldSpace(Vector3.new(-1.4, 1.6, -8)), 50, 6)
-	end, w * 0.45, 0.3)
-	Kit.after(tension, w * 0.45, function() -- hero shot: low in front, looking up at the caster and the sun
-		Screen.settle(cast.Trove, cast.Bag.Grade, KILN, w * 0.3)
-		Cinema.play(cast.Cinema, function(t: number)
-			local c = rootFrame(cast)
-			if not c then return nil end
-			local k = math.min(1, t / (w * 0.55))
-			return Cinema.look(c:PointToWorldSpace(Vector3.new(-3, -2.2, -(15 - k * 6))), c.Position + Vector3.new(0, 4.5 - k * 3.5, 0), 62 - k * 14, -4 - k * 6)
-		end, w * 0.55 + 0.1, 0.12)
-	end)
-	for n = 1, math.max(1, math.floor(w / 0.25)) do -- fists tremble, harder toward release
-		Kit.after(tension, n * 0.25, function() Cinema.shake(cast.Cinema, 0.1 + 0.25 * (n * 0.25 / w), 1.5, 2) end)
-	end
-end
-
-local function gaze(cast: any, head: BasePart)
-	Screen.settle(cast.Trove, cast.Bag.Grade, GAZE, 0.08)
-	Cinema.play(cast.Cinema, function(t: number) -- head-and-shoulders push-in (a macro filled the screen)
-		if not head.Parent then return nil end
-		local cf = head.CFrame
-		local eye = cf.Position + cf.LookVector * (7 - math.min(t, 1) * 1.5) + cf.UpVector * 0.2 + cf.RightVector * 0.8
-		return Cinema.look(eye, cf.Position - cf.UpVector * 0.9, 40 - math.min(t, 1) * 5, -3)
-	end, 1.3, 0.05)
-	Kit.after(cast.Trove, 1.3, function() -- pull back wide to watch the pillar rings
-		Screen.settle(cast.Trove, cast.Bag.Grade, NEUTRAL, 0.6)
-		local side = math.random() * math.pi * 2
-		Cinema.play(cast.Cinema, function(t: number)
-			local c = rootFrame(cast)
-			if not c then return nil end
-			local eye = c.Position + Vector3.new(math.cos(side + t * 0.2), 0, math.sin(side + t * 0.2)) * 26 + Vector3.new(0, 9, 0)
-			return Cinema.look(eye, c.Position + Vector3.new(0, 2, 0), 64, 0)
-		end, 3.2, 0.5)
-		Kit.after(cast.Trove, 3.2, function() Cinema.release(cast.Cinema, 0.7) end)
+	Kit.after(tension, w * 0.88, function()
+		local burst = Bb.starburst(tension, chest, Sun.Burst, 3, 14)
+		Kit.tween(tension, burst, w * 0.11, { Size = UDim2.fromScale(16, 16) }, Enum.EasingStyle.Quad, Enum.EasingDirection.In)
+		Kit.light(chest, Sun.Burst[3], 30, 6)
 	end)
 end
 
--- Impact sequence, fire nova, the erupting pillar ring, blazing eyes, then the gauntlets.
+-- The blast as the reference draws it, then the eyes, then the fists.
 function Show.release(cast: any, at: Vector3)
 	if cast.Bag.Tension then Kit.clean(cast.Bag.Tension) end
 	local folder = Kit.folder(cast.Trove, "BlazingSunAwakening")
 	cast.Bag.Folder = folder
 	local model = cast.Entity.Model
 	local floor = CFrame.new(at - Vector3.new(0, 2.8, 0))
+	Flame.shockwave(cast.Trove, folder, floor)
+	Fx.flash(cast.Trove, folder, at, Sun.Burst[2], 26, 0.6)
+	Fx.burst(Bb.anchor(folder, at), ColorSequence.new(Sun.Burst[1], Sun.Burst[4]), 70, 45)
 	if cast.Own then
-		local grade = cast.Bag.Grade or Screen.grade(cast.Trove)
-		cast.Bag.Grade = grade
-		Screen.pulse(cast.Trove, grade, { Brightness = -1, Contrast = 0.5 }, 0.035, 0) -- A: blackout (2 frames)
-		Kit.after(cast.Trove, 0.04, function() Screen.pulse(cast.Trove, grade, { Brightness = 0.8, Contrast = 0.6, TintColor = Screen.Yellow }, 0.02, 0.18) end)
-		Kit.after(cast.Trove, 0.06, function() -- C/D: manga frame then its negative
-			Screen.sequence(cast.Trove, model, { { P.Fire, 0.13 }, { P.FireNegative, 0.07 } })
-			Cinema.shake(cast.Cinema, 0.85, 1.2, 2)
-		end)
+		Manga.groundFlash(cast.Trove, 0.1)
+		Kit.after(cast.Trove, 0.1, function() Canvas.chaos(cast.Trove, 2.5) end)
+		Kit.after(cast.Trove, 2.6, function() Canvas.wash(cast.Trove, 0.45) end)
+		Kit.after(cast.Trove, 3.05, function() Canvas.sunFrame(cast.Trove, 0.45) end)
+		Cinema.shake(cast.Cinema, 0.9, 0.5, 2)
+		Shots.release(cast, EYES, FISTS, FINISH)
 	end
-	Kit.after(cast.Trove, if cast.Own then 0.2 else 0, function()
-		Flame.shockwave(cast.Trove, folder, floor)
-		Fx.flash(cast.Trove, folder, at, Flame.Core, 22, 0.6)
-		Fx.rays(cast.Trove, folder, CFrame.new(at), Flame.Core, 18, 40, 0.7)
-		Fx.cracks(cast.Trove, folder, floor.Position, 10, 18, Flame.Body, 0.3)
-		Solar.pillars(cast.Trove, folder, floor, 8, 11, 22, 0)
-	end)
 	local head = Kit.head(model)
-	Kit.after(cast.Trove, 0.3, function()
-		if head then
-			local eyes = Kit.trove()
-			Kit.add(cast.Trove, function() Kit.clean(eyes) end)
-			Flame.eyes(eyes, head)
-			Kit.after(cast.Trove, 1.8, function() Kit.clean(eyes) end)
-			if cast.Own then gaze(cast, head) end
+	Kit.after(cast.Trove, EYES, function()
+		if not head then return end
+		local eyes = Kit.trove()
+		cast.Bag.Eyes = eyes
+		Kit.add(cast.Trove, function() Kit.clean(eyes) end)
+		local flares = Sun.eyes(eyes, head, 2.3)
+		if cast.Own then
+			if cast.Bag.Void then Stage.tint(cast.Trove, cast.Bag.Void, rgb(62, 18, 6), 0.05) end
+			cast.Bag.Mask = Stage.silhouette(eyes, model, rgb(8, 4, 3))
+			Screen.settle(cast.Trove, cast.Bag.Grade or Screen.grade(cast.Trove), Stage.Grades.Ember, 0.05)
 		end
-		for _, hand in Kit.hands(model) do Flame.gauntlet(cast.Trove, hand) end
+		Kit.after(cast.Trove, FISTS - EYES, function()
+			for _, f in flares do f.Scale = 0.9 end
+			if cast.Bag.Mask then cast.Bag.Mask:Destroy() end
+		end)
 	end)
-	Kit.after(cast.Trove, GAUNTLET_SECONDS, function() Kit.clean(cast.Trove) end)
+	Kit.after(cast.Trove, FISTS, function()
+		for _, hand in Kit.hands(model) do Sun.gauntlet(cast.Trove, hand) end
+		if cast.Own and cast.Bag.Void then Stage.tint(cast.Trove, cast.Bag.Void, rgb(8, 4, 3), 0.3) end
+	end)
+	Kit.after(cast.Trove, FINISH, function()
+		if cast.Own then
+			Stage.remove(cast.Bag.Void)
+			if cast.Bag.Hud then cast.Bag.Hud() end
+			Screen.settle(cast.Trove, cast.Bag.Grade or Screen.grade(cast.Trove), Stage.Grades.Neutral, 0.5)
+		end
+	end)
+	Kit.after(cast.Trove, FINISH + 1.6, function() Kit.clean(cast.Trove) end)
 end
 
--- Pulses 2..3 ring heat and a rotated ring of pillars; the final pulse adds a frame and a big nova.
+-- Pulses: heat rings in the world and a kick of shake for the caster.
 function Show.pulse(cast: any, at: Vector3)
 	if cast.Pulses <= 1 or not cast.Bag.Folder then return end
-	local floor = CFrame.new(at - Vector3.new(0, 2.8, 0))
-	local final = cast.Pulses >= Show.FinalPulse
-	Flame.heat(cast.Trove, cast.Bag.Folder, floor)
-	Solar.pillars(cast.Trove, cast.Bag.Folder, floor, if final then 12 else 6, if final then 14 else 8 + cast.Pulses, if final then 30 else 14, cast.Pulses * 0.5)
-	if final then
-		Flame.shockwave(cast.Trove, cast.Bag.Folder, floor)
-		Fx.flash(cast.Trove, cast.Bag.Folder, at, Flame.Body, 30, 0.7)
-	end
-	if cast.Own then
-		Cinema.shake(cast.Cinema, if final then 0.8 else 0.4, 1.4, 2)
-		if final then Screen.frame(cast.Trove, cast.Entity.Model, 0.08, P.FireNegative) end
-	end
+	Flame.heat(cast.Trove, cast.Bag.Folder, CFrame.new(at - Vector3.new(0, 2.8, 0)))
+	if cast.Own then Cinema.shake(cast.Cinema, if cast.Pulses >= Show.FinalPulse then 0.6 else 0.35, 1.4, 2) end
 end
 
 return table.freeze(Show)

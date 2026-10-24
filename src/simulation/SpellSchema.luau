@@ -42,9 +42,9 @@ wind.Speed=90;wind.Radius=2
 -- pulse comes with less damage per hit, so the longer show keeps the same total payoff.
 local nova=spell("CelestialSupernova","Celestial Supernova","CelestialThunder",60,12,"Column",24)
 nova.Radius=12;nova.Posture=24;nova.Pulses=3;nova.Delay=1.4;nova.Cooldown=34
-nova.Startup=360;nova.Active=60;nova.Recovery=72;nova.Status.Interrupt=true
+nova.Startup=395;nova.Active=200;nova.Recovery=100;nova.Status.Interrupt=true
 local sun=spell("BlazingSunAwakening","Blazing Sun Awakening","CrimsonFlame",55,14,"Aura",16)
-sun.Posture=26;sun.Pulses=4;sun.Delay=1.3;sun.Cooldown=30;sun.Startup=240;sun.Active=30;sun.Recovery=60
+sun.Posture=26;sun.Pulses=4;sun.Delay=1.3;sun.Cooldown=30;sun.Startup=428;sun.Active=300;sun.Recovery=150
 sun.Status.Burn=1;sun.Status.Interrupt=true
 local byId: {[string]: Spell}={}
 local order: {string}={}

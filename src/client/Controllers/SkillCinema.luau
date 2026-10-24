@@ -87,7 +87,14 @@ end
 
 -- Pulls an authored eye in front of any wall, roof or rock between it and the subject, so wide
 -- shots never end up inside a pavilion. Characters are ignored; spell effects never take queries.
+local clip = true
+-- Off while a cinematic void hides the world (the hidden geometry still blocks rays).
+function Cinema.clipping(on: boolean)
+	clip = on
+end
+
 local function clear(from: Vector3, at: Vector3): Vector3
+	if not clip then return from end
 	local params = RaycastParams.new()
 	local ignore = {}
 	for _, player in game:GetService("Players"):GetPlayers() do

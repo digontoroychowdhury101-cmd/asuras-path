@@ -1,65 +1,61 @@
 --!strict
--- Camera direction for Celestial Supernova (caster only). Startup is three shots chained over the
--- server's windup: a low wide angle looking up as the caster rises off the sigil, a slow orbit
--- around the planet, and a fast push-in on the implosion. Release looks up the column from the
--- ground; the finale pulls back high and wide so the whole blast fits the frame.
+-- Camera direction for Celestial Supernova (caster only), cut to the reference: a tight orbit in the
+-- smoke, a pull-back that frames the ring, a fast swoop, a wide tilted look at the planet, a push-in
+-- as it ignites; after release a straight look at the blast, then a close shot inside the column.
 local Cinema = require(script.Parent.SkillCinema)
 local Kit = require(script.Parent.SkillKit)
 local Shots = {}
 
-function Shots.startup(cast: any, center: () -> Vector3?, floor: Vector3)
+local function dir(angle: number): Vector3 return Vector3.new(math.cos(angle), 0, math.sin(angle)) end
+
+function Shots.startup(cast: any, center: () -> Vector3?, floor: Vector3, radius: number)
 	local w = cast.Windup
-	local side = math.random() * math.pi * 2
-	local wide = Vector3.new(math.cos(side), 0, math.sin(side))
-	-- 1. Low, wide, looking up past the sigil at the rising caster.
+	local yaw = math.random() * math.pi * 2
+	local function at(): Vector3 return center() or floor end
+	-- A: close in the vortex, slightly above, Dutch.
 	Cinema.play(cast.Cinema, function(t: number)
-		local at = center() or floor
-		local eye = floor + wide * (22 - t * 2) + Vector3.new(0, -1.6, 0)
-		return Cinema.look(eye, at + Vector3.new(0, 2 + t * 1.5, 0), 70, 4)
-	end, w * 0.3 + 0.1, 0.35)
-	-- 2. Slow orbit at the planet's height.
-	Kit.after(cast.Trove, w * 0.3, function()
-		local start = side + 0.6
+		local c = at()
+		return Cinema.look(c + dir(yaw + t * 0.7) * 7.5 + Vector3.new(0, 2.2, 0), c + Vector3.new(0, 0.6, 0), 55, -7)
+	end, w * 0.23, 0.25)
+	-- B: pull back to frame the circle.
+	Kit.after(cast.Trove, w * 0.23, function()
 		Cinema.play(cast.Cinema, function(t: number)
-			local at = center()
-			if not at then return nil end
-			local angle = start + t * 0.45
-			local eye = at + Vector3.new(math.cos(angle), 0, math.sin(angle)) * (18 - t * 0.6) + Vector3.new(0, 2.5 - t * 0.4, 0)
-			return Cinema.look(eye, at + Vector3.new(0, 0.6, 0), 60, -3)
-		end, w * 0.52 + 0.1, 0.6)
+			local k = 1 - (1 - math.min(1, t / (w * 0.06))) ^ 3
+			local c = at()
+			return Cinema.look(c + dir(yaw + 0.16 + t * 0.2) * (7.5 + k * 20) + Vector3.new(0, 2.2 + k * 3, 0), c, 55, -4)
+		end, w * 0.11, 0.05)
 	end)
-	-- 3. Fast push-in on the collapsing core, a hard Dutch angle.
-	Kit.after(cast.Trove, w * 0.82, function()
-		local at0 = center() or floor
-		local from = workspace.CurrentCamera and workspace.CurrentCamera.CFrame.Position or at0 + wide * 16
+	-- C: the swoop, a fast low arc under the forming ring.
+	Kit.after(cast.Trove, w * 0.34, function()
 		Cinema.play(cast.Cinema, function(t: number)
-			local at = center() or at0
-			local k = math.clamp(t / (w * 0.18), 0, 1)
-			local eye = from:Lerp(at + (from - at).Unit * 6, k * k)
-			return Cinema.look(eye, at, 58 - k * 18, -10 * k)
-		end, w * 0.18 + 0.3, 0.08)
+			local k = math.min(1, t / (w * 0.13))
+			local c = at()
+			return Cinema.look(c + dir(yaw + 0.3 + k * 2.4) * (30 + k * 10) + Vector3.new(0, 8 - k * 14, 0), c + Vector3.new(0, -2 + k * 2, 0), 72 - k * 10, 12 - k * 4)
+		end, w * 0.13, 0.04)
+	end)
+	-- D: wide on the planet, ring tilted across frame; E: push-in as it ignites.
+	Kit.after(cast.Trove, w * 0.47, function()
+		local base = yaw + 2.7
+		Cinema.play(cast.Cinema, function(t: number)
+			local c = at()
+			local push = math.clamp((t - w * 0.38) / (w * 0.15), 0, 1)
+			local d = radius * (3.3 - push * 0.8)
+			return Cinema.look(c + dir(base + t * 0.1) * d + Vector3.new(0, radius * 0.3, 0), c, 55 - push * 6, 9)
+		end, w * 0.53 + 3, 0.06) -- holds past a late release cue
 	end)
 end
 
-function Shots.release(cast: any, ground: Vector3)
-	local side = math.random() * math.pi * 2
+function Shots.release(cast: any, ground: Vector3, center: Vector3, radius: number)
+	local yaw = math.random() * math.pi * 2
 	Cinema.play(cast.Cinema, function(t: number)
-		local eye = ground + Vector3.new(math.cos(side + t * 0.18), 0, math.sin(side + t * 0.18)) * (36 + t * 3) + Vector3.new(0, 1.5, 0)
-		return Cinema.look(eye, ground + Vector3.new(0, 20 + t * 6, 0), 74, -5)
-	end, 4, 0.12)
-end
-
-function Shots.finale(cast: any)
-	local column = cast.Bag.Column
-	if not column then Cinema.release(cast.Cinema, 0.8) return end
-	local ground = column.Ground
-	local side = math.random() * math.pi * 2
-	Cinema.play(cast.Cinema, function(t: number)
-		local k = math.min(1, t / 1.4)
-		local eye = ground + Vector3.new(math.cos(side), 0, math.sin(side)) * (40 + 30 * k) + Vector3.new(0, 10 + 30 * k, 0)
-		return Cinema.look(eye, ground + Vector3.new(0, 18 + 10 * k, 0), 70, 0)
-	end, 1.8, 0.2)
-	Kit.after(cast.Trove, 1.8, function() Cinema.release(cast.Cinema, 0.9) end)
+		return Cinema.look(center + dir(yaw) * (radius * 3 + t * 6) + Vector3.new(0, radius * 0.3, 0), center, 62, 4)
+	end, 0.62, 0.04)
+	Kit.after(cast.Trove, 0.62, function()
+		Cinema.play(cast.Cinema, function(t: number) -- close outside the column, looking in at the caster
+			local eye = center + dir(yaw + 1.2 + t * 0.12) * 21 + Vector3.new(0, -3 + t * 0.8, 0)
+			return Cinema.look(eye, center + Vector3.new(0, 2 + t * 1.2, 0), 64, -6)
+		end, 6, 0.02)
+	end)
 end
 
 return table.freeze(Shots)

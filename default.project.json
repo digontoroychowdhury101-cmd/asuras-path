@@ -962,6 +962,27 @@
             "SkillShowcase": {
               "$path": "src/client/Controllers/SkillShowcase.luau"
             },
+            "BillboardFx": {
+              "$path": "src/client/Controllers/BillboardFx.luau"
+            },
+            "VoidStage": {
+              "$path": "src/client/Controllers/VoidStage.luau"
+            },
+            "MangaFx": {
+              "$path": "src/client/Controllers/MangaFx.luau"
+            },
+            "FireCanvas": {
+              "$path": "src/client/Controllers/FireCanvas.luau"
+            },
+            "PlanetForms": {
+              "$path": "src/client/Controllers/PlanetForms.luau"
+            },
+            "SunForms": {
+              "$path": "src/client/Controllers/SunForms.luau"
+            },
+            "SunShots": {
+              "$path": "src/client/Controllers/SunShots.luau"
+            },
             "LandscapeBudget": {
               "$path": "src/client/Controllers/LandscapeBudget.luau"
             }

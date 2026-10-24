@@ -1,5 +1,9 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## Showcase spells rebuilt to TikTok frames — 2026-10-24 (Computer B)
+
+Supernova and Blazing Sun now follow the reference beat-for-beat: caster-only void, glowing ring, banded planet, ink frames, slivered pillar, whiteout; duotone close-ups, BOOM bubble, toon fire, silhouette star-eyes, crescent fists. Studio-verified with stretched cues. Next: real-speed playtest feel, other-player view, performance.
+
 ## Showcase spell VFX revamp — 2026-10-24 (Computer B)
 
 Supernova (6 s charge, 3 pulses) and Blazing Sun (4 s charge, 4 pulses) rebuilt: sigils, lightning well, helix column with rune rings, miniature sun, fire pillar rings, cracks, rays, palette impact frames + negatives, multi-shot cameras that avoid walls. Per-hit damage cut so totals hold. Studio-tested; verifier 14/14.
