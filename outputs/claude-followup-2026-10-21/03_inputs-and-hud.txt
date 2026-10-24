@@ -1,11 +1,19 @@
-Continue Asura's Path — follow-up 03/26: Validate input ownership and the desktop combat HUD.
+Continue Asura's Path — follow-up 03/26 (acceptance pass): Validate input ownership and the desktop combat HUD.
 
-Apply 00_SHARED_BRIEF.txt in outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 02, 04. Findings: #5, #6, #12, #17, #18, #33, #34, #35, #36, #37. Verify existing work, fix actual gaps, and execute this batch now.
+Apply 00_SHARED_BRIEF.txt in outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 02, 04. Findings: #5, #6, #12, #17, #18, #33, #34, #35, #36, #37.
 
-Use InputMap as the control contract: Z interacts, E casts slot 2, 1 casts slot 1, J opens Codex, K swaps. Do not revert to stale instructions in PROJECT_STATE. Check prompt ownership just inside/outside range, a held prompt, two overlapping prompts, a focused text box and an open modal. Each action must fire once; reclaiming must never cast Gale Step. Include the controller-equivalent route; hardware closure belongs to prompt 24.
-Inspect the current HUD in one small desktop and one wide viewport, grouping checks into three states: ordinary combat with H open; two enemies/Twins with lock switching; reduced HP ceiling followed by death/respawn. Fix genuine controls/action-bar overlap, duplicate CoreGui/target plates, unreadable flask/currency values and stale labels using existing layout/visibility components. Survival information and perilous cues take priority over petals and compass decoration. Rally, recoverable health and lasting deficit must be understandable without color alone.
-This prompt owns desktop input/HUD defects, not a UI redesign or combat balance. Prompt 04 owns portraits, 08 teaching, 09 lighting, and 24 full device coverage. Save the views so later prompts reuse them instead of repeating this audit.
+This batch already ran once (commit bd737a7, 23 Oct): read F03_INPUT_HUD.md and f03-views/ first and reuse that evidence. Do not redo rows that still hold; re-verify only what code changed since bd737a7 or what the report left open. Since then InputController changed (fix 2602f3f): the "Cursor" binding (LeftAlt) is now hold-to-free, not a toggle. The cursor stays free only while Alt is physically held (keys come from InputMap's Cursor binding), and it is cleared on WindowFocused/WindowFocusReleased, because Alt-Tab used to leave the cursor free and mouse look dead. Regressions are in tools/test_movement.luau.
+
+Use InputMap as the control contract: Z interacts, E casts slot 2, 1 casts slot 1, J opens Codex, K swaps, hold Alt frees the cursor. Do not revert to stale instructions in PROJECT_STATE. Add these rows to the existing binding/ownership table:
+- Alt held: cursor free, no mouse look; Alt released: LockCenter returns and mouse look works.
+- Alt pressed, then focus leaves the window (Alt-Tab) and returns without the release: the cursor must not stay free.
+- Alt held with a modal open (Codex/Respite/dialogue) and after death/respawn: no stuck cursor, no stuck input, each action still fires once.
+Re-check that menu ownership (owner-scoped SetMenu) still holds with the Alt change: no keys leak under a dialogue, and reclaiming never casts Gale Step. Close the open item from the first run: isolate the 1-stud overlap band between Lin's Speak prompt and the Bonfire Rest prompt in Studio. Include the controller-equivalent route; hardware closure belongs to prompt 24.
+
+HUD: reuse the three-state views (ordinary combat with H open; two enemies/Twins with lock switching; reduced HP ceiling then death/respawn) at the same two viewports, 1736x824 and 1096x604. Capture new views only where the HUD or input code changed since bd737a7. Fix only genuine remaining defects using existing layout/visibility components. Survival information and perilous cues take priority over petals and compass decoration. Rally, recoverable health and lasting deficit must be understandable without color alone. Known open items stay with their owners unless trivially fixable here: rally/ceiling tags 8-10 px and target-plate numbers ~6 px -> 24; real mouse/stick lock switching, gamepad hardware, Twins duo -> 10/24; KO-time lock pitch -> 07/09; #36 petals -> 09.
+This prompt owns desktop input/HUD defects, not a UI redesign or combat balance. Prompt 04 owns portraits, 08 teaching, 09 lighting, and 24 full device coverage.
 Start files (relative to project root; follow only required dependencies):
+- outputs/claude-followup-2026-10-21/F03_INPUT_HUD.md
 - src/shared/InputMap.luau
 - src/client/Controllers/InputController.luau
 - src/client/Controllers/HudLayout.luau
@@ -16,8 +24,9 @@ Start files (relative to project root; follow only required dependencies):
 
 Focused checks (reuse prior results unless code changed or live evidence is missing):
 - python3 tools/lune_compat.py tools/test_input_map.luau tools/test_hud_layout.luau
+- python3 tools/test_movement.py (includes the hold-Alt / lost-release cursor regressions)
 
 Acceptance:
-Provide three state comparisons at two actual Studio viewports, exact binding/ownership outcomes and no stuck input after modal/death transitions.
+Extend F03_INPUT_HUD.md (do not replace it) with the Alt-cursor and overlap-band rows, any new or changed views at the two Studio viewports, exact binding/ownership outcomes and no stuck input or stuck cursor after modal, focus-loss and death transitions.
 
-Update the matching ledgers with evidence type and exact remaining work; stop after this batch.
+Update the matching ledgers (PROGRESS.md row 03 and findings #5 #6 #12 #17 #18 #33-#37) with evidence type and exact remaining work; append to PROJECT_STATE.md rather than replacing it; stop after this batch. Push to GitHub once done.

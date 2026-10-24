@@ -82,6 +82,7 @@
         37
       ],
       "files": [
+        "outputs/claude-followup-2026-10-21/F03_INPUT_HUD.md",
         "src/shared/InputMap.luau",
         "src/client/Controllers/InputController.luau",
         "src/client/Controllers/HudLayout.luau",
@@ -91,11 +92,12 @@
         "src/client/Controllers/CoreGuiPolicy.luau"
       ],
       "tests": [
-        "python3 tools/lune_compat.py tools/test_input_map.luau tools/test_hud_layout.luau"
+        "python3 tools/lune_compat.py tools/test_input_map.luau tools/test_hud_layout.luau",
+        "python3 tools/test_movement.py (includes the hold-Alt / lost-release cursor regressions)"
       ],
       "audit_gaps": [],
       "file": "03_inputs-and-hud.txt",
-      "word_count": 319
+      "word_count": 570
     },
     {
       "batch": 4,
@@ -265,7 +267,7 @@
       ],
       "audit_gaps": [],
       "file": "09_lighting-audio-lifetime.txt",
-      "word_count": 280
+      "word_count": 308
     },
     {
       "batch": 10,
@@ -296,7 +298,7 @@
         "A4"
       ],
       "file": "10_shen-twins.txt",
-      "word_count": 318
+      "word_count": 316
     },
     {
       "batch": 11,
@@ -327,7 +329,7 @@
         "A4"
       ],
       "file": "11_baize-titan.txt",
-      "word_count": 304
+      "word_count": 302
     },
     {
       "batch": 12,
@@ -357,7 +359,7 @@
         "A4"
       ],
       "file": "12_wu-wyrm.txt",
-      "word_count": 296
+      "word_count": 294
     },
     {
       "batch": 13,
@@ -385,7 +387,7 @@
         "A3"
       ],
       "file": "13_cast-identity.txt",
-      "word_count": 291
+      "word_count": 289
     },
     {
       "batch": 14,
@@ -444,6 +446,9 @@
         "src/server/Services/SanctuaryApproach.luau",
         "src/server/Services/SanctuaryService.luau",
         "src/server/Services/SanctuaryColossus.luau",
+        "src/server/Services/SanctuaryTitan.luau",
+        "src/server/Services/SanctuaryAscent.luau",
+        "src/server/Services/SanctuaryTerrace.luau",
         "src/server/Services/LootWorld.luau",
         "src/shared/RouteGuide.luau"
       ],
@@ -453,7 +458,7 @@
       ],
       "audit_gaps": [],
       "file": "15_sanctuary-route.txt",
-      "word_count": 301
+      "word_count": 361
     },
     {
       "batch": 16,
@@ -472,6 +477,7 @@
       "files": [
         "src/shared/BambooPassLayout.luau",
         "src/server/Services/BambooDressing.luau",
+        "src/server/Services/RegionDecor.luau",
         "src/server/Services/CampaignBounds.luau",
         "src/shared/CampaignZones.luau",
         "src/shared/RouteGuide.luau",
@@ -485,7 +491,7 @@
         "A3"
       ],
       "file": "16_bamboo-pass.txt",
-      "word_count": 297
+      "word_count": 318
     },
     {
       "batch": 17,
@@ -736,7 +742,7 @@
       ],
       "audit_gaps": [],
       "file": "24_devices-accessibility.txt",
-      "word_count": 312
+      "word_count": 337
     },
     {
       "batch": 25,
@@ -773,7 +779,7 @@
         "A6"
       ],
       "file": "25_performance-audio.txt",
-      "word_count": 327
+      "word_count": 352
     },
     {
       "batch": 26,

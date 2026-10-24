@@ -81,14 +81,22 @@ Update the matching ledgers with evidence type and exact remaining work; stop af
 ## 03 — Validate input ownership and the desktop combat HUD
 
 ```text
-Continue Asura's Path — follow-up 03/26: Validate input ownership and the desktop combat HUD.
+Continue Asura's Path — follow-up 03/26 (acceptance pass): Validate input ownership and the desktop combat HUD.
 
-Apply 00_SHARED_BRIEF.txt in outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 02, 04. Findings: #5, #6, #12, #17, #18, #33, #34, #35, #36, #37. Verify existing work, fix actual gaps, and execute this batch now.
+Apply 00_SHARED_BRIEF.txt in outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 02, 04. Findings: #5, #6, #12, #17, #18, #33, #34, #35, #36, #37.
 
-Use InputMap as the control contract: Z interacts, E casts slot 2, 1 casts slot 1, J opens Codex, K swaps. Do not revert to stale instructions in PROJECT_STATE. Check prompt ownership just inside/outside range, a held prompt, two overlapping prompts, a focused text box and an open modal. Each action must fire once; reclaiming must never cast Gale Step. Include the controller-equivalent route; hardware closure belongs to prompt 24.
-Inspect the current HUD in one small desktop and one wide viewport, grouping checks into three states: ordinary combat with H open; two enemies/Twins with lock switching; reduced HP ceiling followed by death/respawn. Fix genuine controls/action-bar overlap, duplicate CoreGui/target plates, unreadable flask/currency values and stale labels using existing layout/visibility components. Survival information and perilous cues take priority over petals and compass decoration. Rally, recoverable health and lasting deficit must be understandable without color alone.
-This prompt owns desktop input/HUD defects, not a UI redesign or combat balance. Prompt 04 owns portraits, 08 teaching, 09 lighting, and 24 full device coverage. Save the views so later prompts reuse them instead of repeating this audit.
+This batch already ran once (commit bd737a7, 23 Oct): read F03_INPUT_HUD.md and f03-views/ first and reuse that evidence. Do not redo rows that still hold; re-verify only what code changed since bd737a7 or what the report left open. Since then InputController changed (fix 2602f3f): the "Cursor" binding (LeftAlt) is now hold-to-free, not a toggle. The cursor stays free only while Alt is physically held (keys come from InputMap's Cursor binding), and it is cleared on WindowFocused/WindowFocusReleased, because Alt-Tab used to leave the cursor free and mouse look dead. Regressions are in tools/test_movement.luau.
+
+Use InputMap as the control contract: Z interacts, E casts slot 2, 1 casts slot 1, J opens Codex, K swaps, hold Alt frees the cursor. Do not revert to stale instructions in PROJECT_STATE. Add these rows to the existing binding/ownership table:
+- Alt held: cursor free, no mouse look; Alt released: LockCenter returns and mouse look works.
+- Alt pressed, then focus leaves the window (Alt-Tab) and returns without the release: the cursor must not stay free.
+- Alt held with a modal open (Codex/Respite/dialogue) and after death/respawn: no stuck cursor, no stuck input, each action still fires once.
+Re-check that menu ownership (owner-scoped SetMenu) still holds with the Alt change: no keys leak under a dialogue, and reclaiming never casts Gale Step. Close the open item from the first run: isolate the 1-stud overlap band between Lin's Speak prompt and the Bonfire Rest prompt in Studio. Include the controller-equivalent route; hardware closure belongs to prompt 24.
+
+HUD: reuse the three-state views (ordinary combat with H open; two enemies/Twins with lock switching; reduced HP ceiling then death/respawn) at the same two viewports, 1736x824 and 1096x604. Capture new views only where the HUD or input code changed since bd737a7. Fix only genuine remaining defects using existing layout/visibility components. Survival information and perilous cues take priority over petals and compass decoration. Rally, recoverable health and lasting deficit must be understandable without color alone. Known open items stay with their owners unless trivially fixable here: rally/ceiling tags 8-10 px and target-plate numbers ~6 px -> 24; real mouse/stick lock switching, gamepad hardware, Twins duo -> 10/24; KO-time lock pitch -> 07/09; #36 petals -> 09.
+This prompt owns desktop input/HUD defects, not a UI redesign or combat balance. Prompt 04 owns portraits, 08 teaching, 09 lighting, and 24 full device coverage.
 Start files (relative to project root; follow only required dependencies):
+- outputs/claude-followup-2026-10-21/F03_INPUT_HUD.md
 - src/shared/InputMap.luau
 - src/client/Controllers/InputController.luau
 - src/client/Controllers/HudLayout.luau
@@ -99,11 +107,12 @@ Start files (relative to project root; follow only required dependencies):
 
 Focused checks (reuse prior results unless code changed or live evidence is missing):
 - python3 tools/lune_compat.py tools/test_input_map.luau tools/test_hud_layout.luau
+- python3 tools/test_movement.py (includes the hold-Alt / lost-release cursor regressions)
 
 Acceptance:
-Provide three state comparisons at two actual Studio viewports, exact binding/ownership outcomes and no stuck input after modal/death transitions.
+Extend F03_INPUT_HUD.md (do not replace it) with the Alt-cursor and overlap-band rows, any new or changed views at the two Studio viewports, exact binding/ownership outcomes and no stuck input or stuck cursor after modal, focus-loss and death transitions.
 
-Update the matching ledgers with evidence type and exact remaining work; stop after this batch.
+Update the matching ledgers (PROGRESS.md row 03 and findings #5 #6 #12 #17 #18 #33-#37) with evidence type and exact remaining work; append to PROJECT_STATE.md rather than replacing it; stop after this batch. Push to GitHub once done.
 ```
 
 ## 04 — Finish rest, Lin portraits and practical leveling
@@ -253,7 +262,7 @@ Continue Asura's Path — follow-up 09/26: Close live combat lighting and sound-
 Apply 00_SHARED_BRIEF.txt in outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 03. Findings: #2, #7, #36. Verify existing work, fix actual gaps, and execute this batch now.
 
 The per-biome combat/Unbound profiles, ArenaLightPlan fill, reduced decorative effects and idempotent SpatialAudio release already pass local tests. Verify them in the actual engine rather than replacing them with fullbright or another audio wrapper.
-Capture all six arenas at ordinary play distance in idle combat lighting and accessible phase-two lighting. Actors, weapons, floor edges and telegraphs must be readable without an active bright spell. Check exiting, death, retry and another player's encounter do not leave incorrect lighting on this client. Tame decorative petals/bloom when they compete with warnings, including reduced-flash mode.
+Capture all six arenas at ordinary play distance in idle combat lighting and accessible phase-two lighting. Actors, weapons, floor edges and telegraphs must be readable without an active bright spell. Check exiting, death, retry and another player's encounter do not leave incorrect lighting on this client. Tame decorative petals/bloom when they compete with warnings, including reduced-flash mode. Include a death and a respawn mid-cast during Celestial Supernova and Blazing Sun: no AsuraSkillGrade, bloom or void may remain on this client, and their SkillAudio sources must be released.
 Exercise hits, blocks, parries, rest, death, failed sound loads, source-first/sound-first destruction and repeated encounters. Compare voice/source counts to a settled baseline and inspect new client/server output for the original locked-Parent errors. Fix actual leaks/exceptions and retain sound budgets. Save counts/log excerpts and representative before/after views. Logs can prove lifetime behavior but cannot establish how the mix sounds; prompt 25 owns listening and music quality.
 Start files (relative to project root; follow only required dependencies):
 - src/shared/EnvironmentProfiles.luau
@@ -280,7 +289,7 @@ Continue Asura's Path — follow-up 10/26: Finish Shen and Twins, including the 
 
 Apply 00_SHARED_BRIEF.txt in outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 11. Findings: #16, #17, #23. Verify existing work, fix actual gaps, and execute this batch now.
 
-Read ASSET_REQUIREMENTS.md. The shipped asset library has no AsuraBoss_* models. Current BossAnimations routes all humanoids through four Shen keys, and AnimationCatalog's 45 slots are stock fallbacks. Owning this shared dispatcher repair here prevents three boss batches from independently rewriting it.
+Read outputs/claude-followup-2026-10-21/ASSET_REQUIREMENTS.md. The shipped asset library has no AsuraBoss_* models. Current BossAnimations routes all humanoids through four Shen keys, and AnimationCatalog's 45 slots are stock fallbacks. Owning this shared dispatcher repair here prevents three boss batches from independently rewriting it.
 Implement explicit boss/look/phase/attack animation resolution using the existing catalog and boss attack data, with safe fallback and honest missing-asset status. Confirm any imported override attributes are actually authored onto live actors, survive phase changes and are consumed by the resolver. Do not claim that a new registry supplies absent animations. Preserve attack timing/server authority and avoid driving gameplay damage from cosmetic client markers.
 For Shen P1/P2 and each Twin, inspect real skin attachment, weapon alignment, silhouette and both idle/action poses in the lit arena. Supply/attach available approved production art; a welded costume is a functional fallback, not completion of finding 23. Validate entry, skip, camera return, first-impact grace, death/retry and phase transition. Zhao and Iron Bull need persistent separate names/bars, recognizable roles, target switching and room to separate. Use continuous-input evidence for fairness; leave a precise asset manifest and human test if those capabilities are missing.
 Start files (relative to project root; follow only required dependencies):
@@ -308,7 +317,7 @@ Continue Asura's Path — follow-up 11/26: Finish Baize and Titan as readable cr
 
 Apply 00_SHARED_BRIEF.txt in outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 12. Findings: #13, #16, #23. Verify existing work, fix actual gaps, and execute this batch now.
 
-Reuse prompt 10's animation contract; read only the Baize/Titan rows of ASSET_REQUIREMENTS.md. Inspect AsuraLookKey, AsuraSkinStatus, body scale, actual bound templates, hurt capsules and custom animation availability. Do not rename or recolor a fallback and report production art complete. Use available approved authoring assets/tools to deliver valid models and animations; if unavailable, preserve the fallback and record the exact deliverable still absent.
+Reuse prompt 10's animation contract; read only the Baize/Titan rows of outputs/claude-followup-2026-10-21/ASSET_REQUIREMENTS.md. Inspect AsuraLookKey, AsuraSkinStatus, body scale, actual bound templates, hurt capsules and custom animation availability. Do not rename or recolor a fallback and report production art complete. Use available approved authoring assets/tools to deliver valid models and animations; if unavailable, preserve the fallback and record the exact deliverable still absent.
 For Baize, verify grounded paws, creature silhouette, phase change, pillar steering, pounce clearance and readable Air Glide counter inputs in the actual arena. Camera and hitboxes must follow the presented body rather than a hidden humanoid position. For Titan, verify scale, ankle weak-point visibility, melee/camera access, kneel/phase behavior and weapon reach. Inspect at normal play height in steady light.
 For both, check handoff skip/restore, first-impact grace, death/reset and defeat cleanup. Procedural CreatureMotion must yield cleanly to valid authored animation without double transforms. Earned-fight fairness and counter usability need continuous input; seeded phase access only validates that phase's presentation. Keep scene geometry changes confined to clearance fixes; regional art is owned by prompts 16 and 18.
 Start files (relative to project root; follow only required dependencies):
@@ -336,7 +345,7 @@ Continue Asura's Path — follow-up 12/26: Finish Wu and Wyrm presentation and p
 
 Apply 00_SHARED_BRIEF.txt in outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 13. Findings: #16, #23. Verify existing work, fix actual gaps, and execute this batch now.
 
-Reuse the shared animation resolver from prompt 10. Read the Wu/Wyrm rows of ASSET_REQUIREMENTS.md and inspect live template/override status before changing the rig. Supply valid available production assets; keep absent models/animations explicitly open instead of treating manifest entries or procedural shapes as finished art.
+Reuse the shared animation resolver from prompt 10. Read the Wu/Wyrm rows of outputs/claude-followup-2026-10-21/ASSET_REQUIREMENTS.md and inspect live template/override status before changing the rig. Supply valid available production assets; keep absent models/animations explicitly open instead of treating manifest entries or procedural shapes as finished art.
 Wu needs readable casting/weapon poses, visible teleport destination, correct phase presentation and safe camera return before an attack can land. Verify teleport clearance and obstruction with the actual Pagoda geometry, without weakening combat timing to hide tool latency.
 Wyrm must read as a dragon at normal camera distance: body/tail and hurt volumes aligned, articulated wings, readable flight/landing, accessible ground windows and no double posing when authored tracks take over from CreatureMotion. Defeating it in flight must land/clean it up correctly. Inspect both phases in steady lighting, entry/skip/death/retry and the camera near arena edges.
 Fix demonstrated attachment, animation lookup, phase or camera bugs within these encounters. Preserve server damage, roster IDs and boss logic. Seeded access can inspect flight/phase states; it cannot close earned victory or continuous-input counter/fairness acceptance.
@@ -365,7 +374,7 @@ Continue Asura's Path — follow-up 13/26: Finish player, NPC and normal-enemy v
 
 Apply 00_SHARED_BRIEF.txt in outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 14. Findings: #24. Verify existing work, fix actual gaps, and execute this batch now.
 
-Audit the actual spawned player, Lin, Hermit, Gao, monk, swordsman and training phantom. Current CastFigures/CostumeKit and player rebinding are useful primitive fallbacks; production face/hair/attire is still missing. Read the cast row of ASSET_REQUIREMENTS.md and use approved assets/authoring capability where available.
+Audit the actual spawned player, Lin, Hermit, Gao, monk, swordsman and training phantom. Current CastFigures/CostumeKit and player rebinding are useful primitive fallbacks; production face/hair/attire is still missing. Read the cast row of outputs/claude-followup-2026-10-21/ASSET_REQUIREMENTS.md and use approved assets/authoring capability where available.
 Verify the player appearance loader replacing a limb/head does not orphan clothing, duplicate costume pieces or reveal an unintended bald/default body. Check first spawn, delayed avatar load, respawn, limb replacement and equipment changes, including weapon grip/reach and trails. Preserve movement collision and the game's readable wuxia silhouette.
 Inspect Lin/Gao/Hermit close-up through the real portrait camera in Sanctuary and Monastery lighting. Faces, hair, apparel and posture should form recognizable characters. Normal enemy roles need distinct silhouettes and weapon handling that remain readable in combat and dissolve cleanly on death. Replace only the demonstrated weak presentation; do not redesign the imported colossal shrine landmark.
 If essential character art cannot be delivered, provide exact filenames/template/rig/texture requirements and keep art acceptance blocked. Geometry passing the cast shim does not prove a portrait looks finished.
@@ -423,7 +432,7 @@ Continue Asura's Path — follow-up 15/26: Validate Sanctuary reveals, terrace a
 
 Apply 00_SHARED_BRIEF.txt in outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 16. Findings: #27, #28, #31, #32. Verify existing work, fix actual gaps, and execute this batch now.
 
-Walk from spawn/bonfire through the stairs, viewing wings and pilgrim daises at ordinary camera height. Preserve the imported colossus/tree identity, scale and composition while fixing demonstrated player-scale occlusion, footing, camera clipping or visual seams. Do not evaluate the whole reveal from a detached aerial camera.
+Walk from spawn/bonfire through the stairs, viewing wings and pilgrim daises at ordinary camera height. Preserve the imported colossus/tree identity, scale and composition while fixing demonstrated player-scale occlusion, footing, camera clipping or visual seams. Do not evaluate the whole reveal from a detached aerial camera. Since 9efab71/2602f3f the centerpiece is the fused tree statue (SanctuaryTitan, 78 MeshParts under 20k triangles each, grounded on the terrace), the stair karst covers the protruding island base, the guardian lions are mirrored (SanctuaryAscent) and the Cloud Reliquary fills the former empty stone rectangle (SanctuaryApproach). Verify these as built; do not re-fuse, re-scale or decimate them.
 Walk terrace edges/roots and both Sanctuary cache routes, including the moved ladder/service ledge and cloud shards. Use real jump/glide physics. Check parapets, honest limits, legitimate fall return and arrival/return portal legs. Verify camera and collision around imported meshes and their simple movement proxies.
 Inspect route cues/minimap added in prompt 14, the first-rest orientation, portrait pocket and return-to-Lin objective. Ensure the Crypt catch and Sanctuary catch cannot steal each other's players. Any material/texture-scale repairs should reuse the current architecture vocabulary and retain the centerpiece.
 Original Sanctuary reachability was checked against a numeric model rather than the actual built place. This prompt must close that evidence gap, not rerun the same model and call it a walk. If Studio is unavailable, document exact unwalked sections and continue only useful local fixes.
@@ -432,6 +441,9 @@ Start files (relative to project root; follow only required dependencies):
 - src/server/Services/SanctuaryApproach.luau
 - src/server/Services/SanctuaryService.luau
 - src/server/Services/SanctuaryColossus.luau
+- src/server/Services/SanctuaryTitan.luau
+- src/server/Services/SanctuaryAscent.luau
+- src/server/Services/SanctuaryTerrace.luau
 - src/server/Services/LootWorld.luau
 - src/shared/RouteGuide.luau
 
@@ -453,11 +465,12 @@ Continue Asura's Path — follow-up 16/26: Finish and validate Bamboo Pass.
 Apply 00_SHARED_BRIEF.txt in outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 17. Findings: #22, #27, #28, #32, #44. Verify existing work, fix actual gaps, and execute this batch now.
 
 Walk Monastery south road → gorge/stairs → Bamboo shrine → Baize approach → Ash join and return. Verify real footing, enemy zones/leashes, readable landmarks, altar kindle/death/respawn/travel and both Bamboo inscriptions. Traverse the optional frost-stone route using the actual movement system; test double-jump/glide against the thicket veils and catch volumes.
-The 1,219-part offline build and exact-box reachability pass do not establish a finished bamboo biome. Inspect the scene at character height for repeated slabs, weak silhouettes, poor texture scale and empty boundaries. Place available approved bamboo/ruin meshes through the existing dressing/PBR layer over preserved collision boxes; if essential bamboo kits are absent, create the exact asset handoff and keep production-art acceptance blocked. Recolored primitives alone do not close finding 22 or 32.
+The 1,219-part offline build and exact-box reachability pass do not establish a finished bamboo biome. Inspect the scene at character height for repeated slabs, weak silhouettes, poor texture scale and empty boundaries. The Blender bamboo/karst kit (AsuraBambooKit, commit 0af3403) is already placed by RegionDecor over preserved collision boxes; judge it in place at character height and fix its placement, scale or seams before adding anything. Create an exact asset handoff only for pieces still missing (for example ruins), keeping that art acceptance blocked. Recolored primitives alone do not close finding 22 or 32.
 Use the shared minimap/RouteGuide layer from prompt 14; directions must name the usable stair/door rather than point across the gorge. Check Baize enter/leave/reset and local camera clearance with the actual rig, reusing prompt 11 evidence. Limit changes to this region and its immediate joins; record concrete defects instead of a broad environment rewrite.
 Start files (relative to project root; follow only required dependencies):
 - src/shared/BambooPassLayout.luau
 - src/server/Services/BambooDressing.luau
+- src/server/Services/RegionDecor.luau
 - src/server/Services/CampaignBounds.luau
 - src/shared/CampaignZones.luau
 - src/shared/RouteGuide.luau
@@ -683,7 +696,7 @@ Continue Asura's Path — follow-up 24/26: Close phone, tablet, controller and a
 Apply 00_SHARED_BRIEF.txt in outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 25. Findings: #5, #6, #12, #13, #33, #34, #35, #36, #37, #39, #40, #41, #42, #43. Verify existing work, fix actual gaps, and execute this batch now.
 
 Reuse desktop evidence from prompt 03 and modals from 04–05. The current 89-check device test is geometry/emulation with no captures or hardware. Inspect actual Studio phone/tablet safe-area emulation at the existing six sizes plus small desktop and ultrawide; then check physical phone, tablet and controller where available. Label these evidence types separately.
-Group coverage into combat HUD/touch holds, modal navigation/scrolling and settings/transitions. Verify thumb movement plus attack/guard/jump/glide, prompt range/hold, binding captions, perilous hints, flask count, two foes/boss bars, Controls, Arsenal/Respite/Codex, long dialogue/leveling and ending. Controller users need a complete open/select/back/close/resume path and sensible focus, not just the correct caption. Test active-device switching during a session.
+Group coverage into combat HUD/touch holds, modal navigation/scrolling and settings/transitions. Verify thumb movement plus attack/guard/jump/glide, prompt range/hold, binding captions, perilous hints, flask count, two foes/boss bars, Controls, Arsenal/Respite/Codex, long dialogue/leveling and ending. Controller users need a complete open/select/back/close/resume path and sensible focus, not just the correct caption. Test active-device switching during a session. Holding Alt frees the mouse cursor (2602f3f): verify mouse look recovers after switching between controller and mouse, and touch/controller can never be left with the cursor freed.
 Check comfort text 100/115/130%, reduced decorative effects/motion/flashes, non-color health/perilous cues, sensitivity/FOV save/cancel/rejoin and readable subtitles. There is currently no functioning remapping UI; do not advertise the legacy boxing keybinds table as working remapping. Fix regressions within the existing DeviceLayout/UI/settings model rather than adding a second framework.
 Record concrete clipping, overlap, touch usability and focus outcomes, reusing views where possible. Unavailable hardware remains an exact human test, not a passed case.
 Start files (relative to project root; follow only required dependencies):
@@ -710,8 +723,8 @@ Continue Asura's Path — follow-up 25/26: Measure performance and listen to the
 
 Apply 00_SHARED_BRIEF.txt in outputs/claude-followup-2026-10-21 (read once per chat). Load only this prompt's ledger rows and necessary dependencies. Original batches: 26. Findings: #2, #7, #21, #23, #24, #25, #31, #32, #36. Verify existing work, fix actual gaps, and execute this batch now.
 
-Use the same build after content fixes. Profile Sanctuary/tree, a normal Monastery fight, populated Bamboo Pass, Twins and Wyrm in comparable camera/graphics/session conditions. Capture actual frame-time distribution/spikes, client/server memory, draw/render/effect/instance counts and network traffic where available. Record machine/device, quality setting, sample duration and player count. Existing box/part counts and a packet-size estimate are not measured FPS, GPU cost or bandwidth.
-Repeat combat/rest/death/respawn and region rebuilds, compare settled baselines and inspect SpatialAudio stats. Optimize only demonstrated hotspots/leaks using current budgets, reuse/culling/cleanup and bounded lighting/effect changes, preserving collision, attack cues and authored art. Report measured before/after evidence; do not invent a universal frame-rate claim.
+Use the same build after content fixes. Profile Sanctuary/tree, a normal Monastery fight, populated Bamboo Pass, Twins, Wyrm and one Celestial Supernova and Blazing Sun cast each in comparable camera/graphics/session conditions. Capture actual frame-time distribution/spikes, client/server memory, draw/render/effect/instance counts and network traffic where available. Record machine/device, quality setting, sample duration and player count. Existing box/part counts and a packet-size estimate are not measured FPS, GPU cost or bandwidth.
+Repeat combat/rest/death/respawn and region rebuilds, compare settled baselines and inspect SpatialAudio stats. Optimize only demonstrated hotspots/leaks using current budgets, reuse/culling/cleanup and bounded lighting/effect changes, preserving collision, attack cues and authored art. Never decimate or simplify the FusedTreeStatue (~1.18M triangles, 78 MeshParts); reduce its cost only with RenderFidelity, streaming or culling. Report measured before/after evidence; do not invent a universal frame-rate claim.
 Perform actual audio playback/listening: hit/block/armored-hit/deflect distinction, ambience distance, music entry/phase/exit/retry, clipping, hierarchy and asset-load/access failures. BossMusic currently falls back to one BossDrone and the saved project has no BossMusic_<bossId> tracks. Supply available approved original/cleared music and a useful category mix if needed; a configured name or silent log does not supply a score. If listening or tracks are unavailable, record that exact gap.
 Reuse prompt 09 lifetime evidence and 24 hardware conditions. Do not create new gameplay systems or repeatedly rerun the entire regression suite for a cosmetic-only adjustment.
 Start files (relative to project root; follow only required dependencies):

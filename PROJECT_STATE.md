@@ -381,3 +381,5 @@ Studio diagnostic: all 8 altars wake correctly, and reclaim/forfeit work. Fixed:
 ## Additional lobby references (2026-10-22)
 - Created four imagegen detail references matching the original two concepts: courtyard materials/water, Gao's forge, statue terrace and duel court. Saved under `outputs/lobby-references-2026-10-22/` with an index and complete generation prompts.
 - These illustrate the next close-range art pass on the already rebuilt lobby. They are concept art, not current Studio screenshots or measured plans; preserve tested routes and the existing statue/tree when using them. No source, asset library or saved place changes made by this reference task.
+
+- **24 Oct — follow-up pack amended.** Prompt 03 is now an acceptance pass reusing bd737a7 evidence plus Alt hold-to-free-cursor rows. 15/16 note the fused tree, lions, Reliquary and AsuraBambooKit; 09/25 add mid-cast spell cleanup, spell profiling and no tree decimation; 24 adds Alt/device switching; 10–13 give the ASSET_REQUIREMENTS path. Next: send 03, then 04 onward in order.
