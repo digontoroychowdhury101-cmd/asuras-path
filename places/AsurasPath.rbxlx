@@ -1976,6 +1976,16 @@ end
 -- A leap that must stay at height `high` while within `clear` horizontal studs of the pillar it
 -- leaves (`fromPillar`) or lands on (`toPillar`), so the body rises before it crosses the column
 -- and leaves the top before it falls. u runs 0..1; points are { x, y, z }.
+-- F07/F08: where a melee foe walks to engage: `stop` studs short of its target on the side it comes
+-- from. Steered at the target's own root, a humanoid pushed into the player and climbed onto their
+-- head (Studio: the Sparring Phantom stood 4 studs up at 0.8 flat and every swing passed beneath it).
+function Bodies.closeIn(fx: number, fz: number, tx: number, tz: number, stop: number): (number, number)
+	local dx, dz = fx - tx, fz - tz
+	local d = math.sqrt(dx * dx + dz * dz)
+	if d &lt; 1e-3 then dx, dz, d = 0, 1, 1 end
+	return tx + dx / d * stop, tz + dz / d * stop
+end
+
 function Bodies.arc(from: { number }, to: { number }, high: number, clear: number, fromPillar: boolean, toPillar: boolean, u: number): { number }
 	local dx, dz = to[1] - from[1], to[3] - from[3]
 	local distance = math.sqrt(dx * dx + dz * dz)
@@ -5643,15 +5653,20 @@ function Rules.finished(done: { [string]: boolean }): boolean
 	return Rules.current(done) == nil
 end
 
+-- What the player's fighter was doing when the event fired (TutorialService reads it).
+export type Own = { State: string, Move: string? }
 -- Combat event (as CombatRules emits it) -&gt; the signal it proves for `player`, or nil.
--- `perilous` says the attacker's strike was unblockable (a perilous attack).
-function Rules.signal(kind: string, source: number, target: number, player: number, perilous: boolean): string?
+-- `perilous` says the attacker's strike was unblockable (a perilous attack). F08: CombatRules reports
+-- Evade for any invulnerability (Studio logged the player "evading" while lying helpless after a
+-- deathblow) and Hit for spells, arts and burn ticks, so a dodge needs a dash and Light an M1 move.
+function Rules.signal(kind: string, source: number, target: number, player: number, perilous: boolean, own: Own?): string?
 	if kind == "Hit" or kind == "CounterHit" then
-		return if source == player then "Light" else nil
+		local m1 = own ~= nil and (own.Move == "Light" or own.Move == "RunningAttack")
+		return if source == player and m1 then "Light" else nil
 	elseif kind == "Block" then
 		return if target == player then "Guard" else nil
 	elseif kind == "DeflectSpark" or kind == "Evade" then -- Source avoided Target's strike
-		if source ~= player then return nil end
+		if source ~= player or (kind == "Evade" and not (own and own.State == "Dashing")) then return nil end
 		if perilous then return "Perilous" end
 		return if kind == "DeflectSpark" then "Deflect" else "Dodge"
 	elseif kind == "Rally" then
@@ -7566,12 +7581,15 @@ local function expire(f: Fighter, now: number, events: { Event }?)
 		f.Posture = Settings.Posture.StanceBreakResetValue
 		enter(f, "Idle", f.StateEnd)
 	elseif state == "DeathblowVictim" then
+		-- F07: the KO names its executioner. With source 0 a killing deathblow paid no Essence, mastery
+		-- or ore (WorldService credits the KO's source), so finishing a foe properly earned nothing.
+		local executioner = f.DeathblowPartner
 		f.Posture = 0
 		f.DeathblowPartner = 0
 		if f.PendingKO or f.ActiveHP &lt;= 0 then
 			f.PendingKO = false
 			enter(f, "KO", f.StateEnd)
-			emit(f, events, "KO", 0, f.Id, 0)
+			emit(f, events, "KO", executioner, f.Id, 0)
 		else
 			enter(f, "Idle", f.StateEnd)
 		end
@@ -11198,6 +11216,13 @@ local function moveTo(agent: Agent, point: Vector3)
 	Characters.MoveTo(agent.Id, point)
 end
 
+-- Engage just inside attack reach, never on the target's own root (BossBodies.closeIn).
+local function closeIn(agent: Agent, self: Entity, target: Entity, reach: number)
+	local at, to = self.Root.Position, target.Root.Position
+	local x, z = Bodies.closeIn(at.X, at.Z, to.X, to.Z, reach * 0.6)
+	moveTo(agent, Vector3.new(x, to.Y, z))
+end
+
 local function strafePoint(agent: Agent, self: Entity, target: Entity, spacing: number, now: number): Vector3
 	if now &gt;= agent.StrafeUntil then
 		agent.StrafeSign = if agent.Rng:NextNumber() &lt; 0.5 then -1 else 1
@@ -11245,7 +11270,7 @@ local function decide(agent: Agent, self: Entity, target: Entity, now: number)
 	end
 
 	if distance &gt; reach * 0.95 then
-		moveTo(agent, target.Root.Position)
+		closeIn(agent, self, target, reach)
 		return
 	end
 
@@ -11569,7 +11594,7 @@ local function update(agent: Agent, now: number)
 	local reach = reachOf(agent, f)
 	if agent.Mode == "Engage" then
 		Characters.Face(agent.Id, target.Root.Position)
-		moveTo(agent, target.Root.Position)
+		closeIn(agent, self, target, reach)
 		Characters.SetSprint(agent.Id, distance &gt; reach * 3 and f.Stamina &gt; profile.RetreatStamina * 2)
 		if distance &lt;= reach * 1.1 then
 			Characters.SetSprint(agent.Id, false)
@@ -13199,6 +13224,7 @@ export type Entity = {
 	Definition: string?,
 	Boss: boolean,
 	LastMoveTo: Vector3,
+	MoveIssuedAt: number,
 	Style: string,
 	Elo: number,
 	Vip: boolean,
@@ -13233,6 +13259,7 @@ local STATE_ATTRIBUTE = "AsuraState"
 local ID_ATTRIBUTE = "AsuraId"
 local ENEMY_TAG = "AsuraEnemy"
 local FACING_DOT = 0.15
+local MOVE_RENEW = 4 -- seconds; Humanoid:MoveTo times out after 8
 local PROTOCOL_TAG = "Asura1"
 local MAX_SEQUENCE_GAP = 4096
 local DEFAULT_JUMP = 7.2
@@ -13595,6 +13622,7 @@ local function newEntity(id: number, kind: EntityKind, player: Player?, model: M
 		Definition = nil,
 		Boss = false,
 		LastMoveTo = Vector3.new(math.huge, 0, 0),
+		MoveIssuedAt = 0,
 		Style = "Unarmed",
 		Elo = 1000,
 		Vip = false,
@@ -14201,6 +14229,19 @@ local function resolveContacts(attacker: Entity, now: number)
 	end
 end
 
+-- F07: Combat.step ends an active window before contacts are resolved, so the tick that closes it
+-- never swept the blade to full extension and every move fell short of its authored reach (a Jian
+-- thrust touched ~6 of 7.5 studs and read as MISSED). Sweep that last stretch first; a hit lands on
+-- the same tick and fills HitRegistry, so the expiring window no longer reports a whiff.
+local function sweepClosingWindows(live: { Entity }, now: number)
+	for _, e in live do
+		local f = e.Fighter
+		if entities[e.Id] == e and f.State == "Active" and f.Move and now &gt;= f.StateEnd then
+			resolveContacts(e, now)
+		end
+	end
+end
+
 -- Whiffs (batch 09): name the foe a contact-less swing was nearest to and how many studs short it
 -- fell, and place the cue at the weapon tip, so a miss reads as distance rather than a broken hit.
 local function annotateWhiffs(from: number)
@@ -14389,6 +14430,7 @@ local function step()
 		end
 	end
 
+	sweepClosingWindows(live, now)
 	local stepped = #frameEvents + 1
 	for _, e in live do
 		if entities[e.Id] == e then
@@ -14605,8 +14647,10 @@ function Service.MoveTo(id: number, position: Vector3)
 	if not e or not alive(e) or e.Kind ~= "Enemy" then
 		return
 	end
-	if (position - e.LastMoveTo).Magnitude &gt; 0.75 then
-		e.LastMoveTo = position
+	-- F08: Humanoid:MoveTo gives up after 8 s, so a chase toward a foe standing still stalled for good
+	-- (the Sparring Phantom never closed on a player who waited). Renew it before the engine does.
+	if (position - e.LastMoveTo).Magnitude &gt; 0.75 or simTime - e.MoveIssuedAt &gt; MOVE_RENEW then
+		e.LastMoveTo, e.MoveIssuedAt = position, simTime
 		e.Humanoid:MoveTo(position)
 	end
 end
@@ -25242,7 +25286,6 @@ local Tutorial = {}
 Tutorial.SpawnId = "DM_Sparring_Phantom"
 Tutorial.RingRadius = 32 -- non-lethal sparring ground around the phantom's home
 Tutorial.PERILOUS_WINDOW = 1.0 -- seconds around a published perilous impact
-
 type State = { Done: { [string]: boolean }, Elixirs: number?, Protected: boolean, Bucket: Budget.Bucket }
 local states: { [number]: State } = {}
 local connections: { RBXScriptConnection } = {}
@@ -25300,7 +25343,9 @@ local function onEvent(event: any, _point: Vector3?)
 	for _, player in Players:GetPlayers() do
 		local id = player.UserId
 		if states[id] and (event.Source == id or event.Target == id) then
-			local signal = Rules.signal(event.Kind, event.Source, event.Target, id, perilous(event.Target))
+			local f = Characters.GetEntity(id) -- what the player was doing decides what the event proves
+			local own = f and { State = f.Fighter.State, Move = f.Fighter.Move and f.Fighter.Move.Kind }
+			local signal = Rules.signal(event.Kind, event.Source, event.Target, id, perilous(event.Target), own)
 			if signal then record(player, signal) end
 		end
 	end
@@ -70057,7 +70102,7 @@ local WARNING, CRITICAL, INFO = 3, 2, 1
 
 export type View = {
 	Gui: ScreenGui, State: any, Text: TextLabel, Pop: UIScale, Until: number, Live: number, Priority: number, WarnUntil: number,
-	Guard: Frame, GuardStroke: UIStroke, GuardFill: Frame,
+	Guard: Frame, GuardStroke: UIStroke, GuardFill: Frame, OwnState: string,
 }
 
 function Callouts.new(gui: ScreenGui, state: any): View
@@ -70077,7 +70122,7 @@ function Callouts.new(gui: ScreenGui, state: any): View
 		AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.fromScale(0.5, 0), Size = UDim2.fromScale(0, 1), BackgroundColor3 = C.Gold, BorderSizePixel = 0,
 	}) :: Frame
 	return {
-		Gui = gui, State = state, Text = text, Pop = pop, Until = 0, Live = 0, Priority = 0, WarnUntil = 0,
+		Gui = gui, State = state, Text = text, Pop = pop, Until = 0, Live = 0, Priority = 0, WarnUntil = 0, OwnState = "Idle",
 		Guard = guard, GuardStroke = guard:FindFirstChildOfClass("UIStroke") :: UIStroke, GuardFill = fill,
 	}
 end
@@ -70115,6 +70160,7 @@ end
 
 -- Whiff / evade / feint (ContactCues): grey popups over the foe, or a quiet centre call.
 local function contact(view: View, event: any, own: number): boolean
+	if event.Kind == "Evade" and event.Source == own and view.OwnState ~= "Dashing" then return false end -- F08: not while helpless
 	local source, me = view.State:Get(event.Source), view.State:Get(own)
 	local near = source and source.Root and me and me.Root and (source.Root.Position - me.Root.Position).Magnitude &lt; 30
 	local cue = Contact.describe(event.Kind, event.Source, event.Target, event.Value, own, near == true)
@@ -70171,7 +70217,7 @@ function Callouts.step(view: View, dt: number, snapshot: any?, hidden: boolean)
 		view.Text.TextTransparency = math.min(1, view.Text.TextTransparency + dt * 4)
 		view.Text.TextStrokeTransparency = math.max(view.Text.TextTransparency, 0.1)
 	end
-	local state = if snapshot then snapshot.State else "Idle"
+	local state = if snapshot then snapshot.State else "Idle"; view.OwnState = state
 	local guarding = snapshot ~= nil and not hidden and (snapshot.Blocking or state == "Blocking" or state == "Blockstun" or state == "Deflecting")
 	view.Guard.Visible = guarding
 	if guarding and snapshot then
@@ -70181,7 +70227,6 @@ function Callouts.step(view: View, dt: number, snapshot: any?, hidden: boolean)
 		view.GuardStroke.Color = if state == "Deflecting" then C.Gold elseif state == "Blockstun" then C.Ivory else C.Sakura
 	end
 end
-
 return table.freeze(Callouts)
 </string>
             </Properties>
@@ -70776,11 +70821,12 @@ function Controller.new(input: any, ui: any): ControlsCard
 	end
 	table.insert(self.Cleanup, HudKit.onViewport(place))
 	table.insert(self.Cleanup, HudKit.bindScale(pill, slot.Base))
-	-- Any combat command folds the reference away so it never sits over a fight.
+	-- Any combat command folds the reference away so it never sits over a fight. Only a card on
+	-- screen folds (F08): the Space or click that skips the prologue closed it before it was seen.
 	local previousCommand, previousDevice = input.OnCommand, input.OnDeviceChanged
 	input.OnCommand = function(command: string)
 		if previousCommand then previousCommand(command) end
-		if self.Open and command ~= "Controls" and command ~= "Cursor" and command ~= "Shoulder" then self:SetOpen(false) end
+		if self.Open and self.Card.Visible and command ~= "Controls" and command ~= "Cursor" and command ~= "Shoulder" then self:SetOpen(false) end
 	end
 	input.OnDeviceChanged = function(device: string)
 		if previousDevice then previousDevice(device) end
@@ -70828,7 +70874,9 @@ end
 
 function Controller.Update(self: ControlsCard, dt: number)
 	-- A window that owns input (the Arsenal opens on its own key) hides the card; F05: it drew over the Arsenal.
+	-- F08: so does the prologue's handoff line, which the card's backdrop dimmed and half covered.
 	local blocked = not Visibility.of(self.Ui).Guidance or self.Ui.BossEntity ~= nil or self.Input.MenuOpen
+		or os.clock() &lt; (self.Ui.HandoffUntil or 0)
 	if self.Open and self.Timer &gt; 0 and not blocked then
 		self.Timer -= dt
 		if self.Timer &lt;= 0 then
@@ -72809,11 +72857,23 @@ Layout.Regions = {
 	Objective = region({ 1, 0 }, { 1, 0 }, { -20, 64 }, { 360, 92 }, 0.8),
 	Codex = region({ 0, 0 }, { 0, 0.55 }, { 14, 0 }, { 92, 30 }, 0),
 	ControlsPill = region({ 0, 0 }, { 0, 0.55 }, { 14, -40 }, { 150, 30 }, 0.85),
+	-- The training card (unscaled, grows with its text): right column, below the objective and above
+	-- the spell slots. F08: in the left column it covered the Codex button and the Controls pill.
+	Training = region({ 1, 0 }, { 1, 0 }, { -20, 172 }, { 360, 170 }, 0),
 }
 -- Health, flask, essence and weapon stay at least ~12 px on a 1096x604 window (F03 Studio view).
 Layout.Regions.Vitals.MinScale = 0.66
 Layout.Regions.Compass ={ Anchor = { 0.5, 0 }, At = { 0.5, 0 }, Offset = { 0, 8 }, Size = { 520, 60 }, Base = 0, WidthScale = 0.36, MinWidth = 240, MaxWidth = 520 }
 Layout.Regions.Boss = { Anchor = { 0.5, 0 }, At = { 0.5, 0 }, Offset = { 0, 74 }, Size = { 900, 148 }, Base = 0, WidthScale = 0.5, MinWidth = 300, MaxWidth = 900 }
+
+-- The general toast (InterfaceController): centred above the action bar, as wide as the band left
+-- between two side columns (the training card is 360 wide at 20 from the edge), wrapping to two lines.
+Layout.Toast = { Bottom = 200, Side = 400, Height = 48, MaxWidth = 640 }
+function Layout.toastRect(width: number, height: number): Rect
+	local t = Layout.Toast
+	local w = math.clamp(width - 2 * t.Side, 0, t.MaxWidth)
+	return { X = (width - w) / 2, Y = height - t.Bottom - t.Height, W = w, H = t.Height }
+end
 
 function Layout.factor(height: number): number
 	if height &lt;= 1 then return 1 end
@@ -74423,16 +74483,19 @@ function Controller.new(state: WorldState, camera: CameraController, input: Inpu
 		ZIndex = 50,
 		Visible = false,
 	}) :: Frame
+	-- Kept to the centre band between the side columns (HudLayout.Toast; F08: the gourd refusal ran
+	-- under the training card) and wrapped onto a second line rather than clipped.
 	local toast = label(gui, "", 22, BODY_FONT, IVORY, {
 		Name = "Toast",
 		AnchorPoint = Vector2.new(0.5, 1),
-		Position = UDim2.new(0.5, 0, 1, -200),
-		Size = UDim2.new(0.8, 0, 0, 28),
+		Position = UDim2.new(0.5, 0, 1, -HudLayout.Toast.Bottom),
+		Size = UDim2.new(1, -2 * HudLayout.Toast.Side, 0, HudLayout.Toast.Height),
 		TextScaled = true,
+		TextWrapped = true,
 		TextTransparency = 1,
 		TextStrokeTransparency = 1,
 	})
-	make("UISizeConstraint", toast, { MaxSize = Vector2.new(640, 28) })
+	make("UISizeConstraint", toast, { MaxSize = Vector2.new(HudLayout.Toast.MaxWidth, HudLayout.Toast.Height) })
 	make("UITextSizeConstraint", toast, { MinTextSize = 14, MaxTextSize = 22 })
 	local banner = label(gui, "", 27, TITLE_FONT, IVORY, {
 		Name = "Banner",
@@ -76858,6 +76921,7 @@ local LINES: { { string } } = {
 
 local Controller = {}
 Controller.Handoff = { "WALK THE ASURA'S PATH", "Kneel at the bonfire to rest · then train at the Monastery Gate" }
+Controller.HandoffSeconds = 4
 
 function Controller.isNewcomer(altars: any): boolean
 	return type(altars) ~= "string" or altars == "" or altars == "Altar_SanctuaryBonfire"
@@ -76935,7 +76999,10 @@ function Controller.Play(ui: any, input: any, camera: any?, force: boolean?)
 	gui:Destroy()
 	input:SetMenu(false, "Prologue")
 	ui.PrologueActive = false
-	if story then ui:ShowBanner(Controller.Handoff[1], Controller.Handoff[2], 4) end
+	if story then
+		ui.HandoffUntil = os.clock() + Controller.HandoffSeconds -- the controls card waits for it (F08)
+		ui:ShowBanner(Controller.Handoff[1], Controller.Handoff[2], Controller.HandoffSeconds)
+	end
 end
 
 return Controller
@@ -79633,6 +79700,7 @@ local InputMap = require(Shared.Shared.InputMap)
 local World = require(Shared.Shared.WorldDefinitions)
 local HudKit = require(script.Parent:WaitForChild("HudKit") :: ModuleScript)
 local UiKit = require(script.Parent:WaitForChild("UiKit") :: ModuleScript)
+local Layout = require(script.Parent:WaitForChild("HudLayout") :: ModuleScript)
 
 local Controller = {}
 Controller.__index = Controller
@@ -79644,8 +79712,10 @@ local COURTYARD_Z = -750 -- past the gatehouse: the first lethal encounter
 
 function Controller.new(state: any, camera: any, movement: any, input: any, ui: any): any
 	local remote = Shared.Net:WaitForChild("TutorialIntent") :: RemoteEvent
-	local card = HudKit.panel(ui.Gui, "TrainingCard", { AnchorPoint = Vector2.new(0, 0.5), Position = UDim2.new(0, 24, 0.46, 0),
-		Size = UDim2.fromOffset(360, 0), AutomaticSize = Enum.AutomaticSize.Y, Visible = false })
+	local slot = Layout.Regions.Training
+	local card = HudKit.panel(ui.Gui, "TrainingCard", { AnchorPoint = Vector2.new(slot.Anchor[1], slot.Anchor[2]),
+		Position = UDim2.new(slot.At[1], slot.Offset[1], slot.At[2], slot.Offset[2]),
+		Size = UDim2.fromOffset(slot.Size[1], 0), AutomaticSize = Enum.AutomaticSize.Y, Visible = false })
 	HudKit.make("UIListLayout", card, { Padding = UDim.new(0, 4), SortOrder = Enum.SortOrder.LayoutOrder })
 	HudKit.make("UIPadding", card, { PaddingTop = UDim.new(0, 10), PaddingBottom = UDim.new(0, 10), PaddingLeft = UDim.new(0, 12), PaddingRight = UDim.new(0, 12) })
 	local function text(order: number, size: number, color: Color3, font: Enum.Font): TextLabel
@@ -79666,6 +79736,7 @@ function Controller.new(state: any, camera: any, movement: any, input: any, ui: 
 		self:Stakes()
 	end)
 	skip.LayoutOrder, skip.Size = 5, UDim2.new(1, 0, 0, 30)
+	self.Skip = skip
 	ui.OnTraining = function(action: string) remote:FireServer({ action = action }); self.Sent = {} end
 	table.insert(self.Links, state:OnCue(function(cue: any)
 		if cue.Source ~= state.LocalId then return end
@@ -79693,7 +79764,7 @@ end
 function Controller.Stakes(self: any)
 	if self.StakesShown then return end
 	self.StakesShown = true
-	local panel = HudKit.panel(self.Ui.Gui, "StakesCard", { AnchorPoint = Vector2.new(0.5, 1), Position = UDim2.new(0.5, 0, 0.8, 0),
+	local panel = HudKit.panel(self.Ui.Gui, "StakesCard", { AnchorPoint = Vector2.new(0.5, 1), Position = UDim2.new(0.5, 0, 0.72, 0),
 		Size = UDim2.fromOffset(520, 0), AutomaticSize = Enum.AutomaticSize.Y })
 	HudKit.make("UIListLayout", panel, { Padding = UDim.new(0, 6), SortOrder = Enum.SortOrder.LayoutOrder, HorizontalAlignment = Enum.HorizontalAlignment.Center })
 	HudKit.make("UIPadding", panel, { PaddingTop = UDim.new(0, 12), PaddingBottom = UDim.new(0, 12), PaddingLeft = UDim.new(0, 16), PaddingRight = UDim.new(0, 16) })
@@ -79702,6 +79773,7 @@ function Controller.Stakes(self: any)
 	local ok = UiKit.button(panel, "Understood", "Primary", function() panel:Destroy() end)
 	ok.LayoutOrder, ok.Size = 3, UDim2.fromOffset(180, 36)
 	task.delay(20, function() if panel.Parent then panel:Destroy() end end)
+	self.StakesPanel = panel
 end
 
 function Controller.Update(self: any, dt: number)
@@ -79717,6 +79789,9 @@ function Controller.Update(self: any, dt: number)
 		and root.Position.Y &lt; 100 and string.find(tostring(player:GetAttribute("AsuraAltars") or ""), "Cloister", 1, true) == nil then
 		self:Stakes()
 	end
+	-- F08: the cursor is captured in play, so the card also folds once the fight starts (any combat state).
+	local snapshot = self.State:OwnSnapshot()
+	if self.StakesPanel and self.StakesPanel.Parent and snapshot and snapshot.State ~= "Idle" then self.StakesPanel:Destroy() end
 	self.Card.Visible = step ~= nil and root ~= nil and not hidden and (root.Position - HOME).Magnitude &lt;= Controller.ShowRadius
 	if not step then return end
 	local count = 0
@@ -79725,6 +79800,10 @@ function Controller.Update(self: any, dt: number)
 	self.Title.Text = step.Title
 	self.Do.Text = Rules.text(step.Do, function(c: string) return self:Label(c) end)
 	self.Why.Text = step.Why
+	-- F08: the cursor is captured in play, so a mouse player could not click Skip without knowing Alt.
+	if not self.Armed then
+		self.Skip.Text = if self.Input.Device == "Keyboard" then "Skip training  ·  hold [" .. self:Label("Cursor") .. "] to click" else "Skip training"
+	end
 	-- Client-only proofs, each reported once per step.
 	if step.Id == "LockOn" and self.Camera.Locked and not self.Sent.LockOn then
 		local target = self.State:Get(self.Camera.Locked)
@@ -80794,8 +80873,10 @@ end
 function Controller.IsAlive(_self: WorldState, entity: Entity): boolean
 	local snapshot = entity.Snapshot
 	-- A dissolving enemy (server-pinned corpse) is dead at once, even before its KO snapshot arrives,
-	-- so plates, lock-on and minimap dots drop the moment it falls.
-	return entity.Model.Parent ~= nil and entity.Root ~= nil and (snapshot == nil or snapshot.State ~= "KO")
+	-- so plates, lock-on and minimap dots drop the moment it falls. F07: so is the victim of a killing
+	-- deathblow, whose KO waits out the 1.6 s execution (its plate sat at 0 HP until then).
+	local executed = snapshot ~= nil and snapshot.State == "DeathblowVictim" and snapshot.ActiveHP &lt;= 0
+	return entity.Model.Parent ~= nil and entity.Root ~= nil and (snapshot == nil or snapshot.State ~= "KO") and not executed
 		and entity.Model:GetAttribute("AsuraDissolve") == nil
 end
 

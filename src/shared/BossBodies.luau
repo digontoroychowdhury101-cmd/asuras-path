@@ -106,6 +106,16 @@ end
 -- A leap that must stay at height `high` while within `clear` horizontal studs of the pillar it
 -- leaves (`fromPillar`) or lands on (`toPillar`), so the body rises before it crosses the column
 -- and leaves the top before it falls. u runs 0..1; points are { x, y, z }.
+-- F07/F08: where a melee foe walks to engage: `stop` studs short of its target on the side it comes
+-- from. Steered at the target's own root, a humanoid pushed into the player and climbed onto their
+-- head (Studio: the Sparring Phantom stood 4 studs up at 0.8 flat and every swing passed beneath it).
+function Bodies.closeIn(fx: number, fz: number, tx: number, tz: number, stop: number): (number, number)
+	local dx, dz = fx - tx, fz - tz
+	local d = math.sqrt(dx * dx + dz * dz)
+	if d < 1e-3 then dx, dz, d = 0, 1, 1 end
+	return tx + dx / d * stop, tz + dz / d * stop
+end
+
 function Bodies.arc(from: { number }, to: { number }, high: number, clear: number, fromPillar: boolean, toPillar: boolean, u: number): { number }
 	local dx, dz = to[1] - from[1], to[3] - from[3]
 	local distance = math.sqrt(dx * dx + dz * dz)

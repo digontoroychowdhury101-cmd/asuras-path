@@ -707,12 +707,15 @@ local function expire(f: Fighter, now: number, events: { Event }?)
 		f.Posture = Settings.Posture.StanceBreakResetValue
 		enter(f, "Idle", f.StateEnd)
 	elseif state == "DeathblowVictim" then
+		-- F07: the KO names its executioner. With source 0 a killing deathblow paid no Essence, mastery
+		-- or ore (WorldService credits the KO's source), so finishing a foe properly earned nothing.
+		local executioner = f.DeathblowPartner
 		f.Posture = 0
 		f.DeathblowPartner = 0
 		if f.PendingKO or f.ActiveHP <= 0 then
 			f.PendingKO = false
 			enter(f, "KO", f.StateEnd)
-			emit(f, events, "KO", 0, f.Id, 0)
+			emit(f, events, "KO", executioner, f.Id, 0)
 		else
 			enter(f, "Idle", f.StateEnd)
 		end

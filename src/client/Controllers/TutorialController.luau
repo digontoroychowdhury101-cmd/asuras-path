@@ -13,6 +13,7 @@ local InputMap = require(Shared.Shared.InputMap)
 local World = require(Shared.Shared.WorldDefinitions)
 local HudKit = require(script.Parent:WaitForChild("HudKit") :: ModuleScript)
 local UiKit = require(script.Parent:WaitForChild("UiKit") :: ModuleScript)
+local Layout = require(script.Parent:WaitForChild("HudLayout") :: ModuleScript)
 
 local Controller = {}
 Controller.__index = Controller
@@ -24,8 +25,10 @@ local COURTYARD_Z = -750 -- past the gatehouse: the first lethal encounter
 
 function Controller.new(state: any, camera: any, movement: any, input: any, ui: any): any
 	local remote = Shared.Net:WaitForChild("TutorialIntent") :: RemoteEvent
-	local card = HudKit.panel(ui.Gui, "TrainingCard", { AnchorPoint = Vector2.new(0, 0.5), Position = UDim2.new(0, 24, 0.46, 0),
-		Size = UDim2.fromOffset(360, 0), AutomaticSize = Enum.AutomaticSize.Y, Visible = false })
+	local slot = Layout.Regions.Training
+	local card = HudKit.panel(ui.Gui, "TrainingCard", { AnchorPoint = Vector2.new(slot.Anchor[1], slot.Anchor[2]),
+		Position = UDim2.new(slot.At[1], slot.Offset[1], slot.At[2], slot.Offset[2]),
+		Size = UDim2.fromOffset(slot.Size[1], 0), AutomaticSize = Enum.AutomaticSize.Y, Visible = false })
 	HudKit.make("UIListLayout", card, { Padding = UDim.new(0, 4), SortOrder = Enum.SortOrder.LayoutOrder })
 	HudKit.make("UIPadding", card, { PaddingTop = UDim.new(0, 10), PaddingBottom = UDim.new(0, 10), PaddingLeft = UDim.new(0, 12), PaddingRight = UDim.new(0, 12) })
 	local function text(order: number, size: number, color: Color3, font: Enum.Font): TextLabel
@@ -46,6 +49,7 @@ function Controller.new(state: any, camera: any, movement: any, input: any, ui: 
 		self:Stakes()
 	end)
 	skip.LayoutOrder, skip.Size = 5, UDim2.new(1, 0, 0, 30)
+	self.Skip = skip
 	ui.OnTraining = function(action: string) remote:FireServer({ action = action }); self.Sent = {} end
 	table.insert(self.Links, state:OnCue(function(cue: any)
 		if cue.Source ~= state.LocalId then return end
@@ -73,7 +77,7 @@ end
 function Controller.Stakes(self: any)
 	if self.StakesShown then return end
 	self.StakesShown = true
-	local panel = HudKit.panel(self.Ui.Gui, "StakesCard", { AnchorPoint = Vector2.new(0.5, 1), Position = UDim2.new(0.5, 0, 0.8, 0),
+	local panel = HudKit.panel(self.Ui.Gui, "StakesCard", { AnchorPoint = Vector2.new(0.5, 1), Position = UDim2.new(0.5, 0, 0.72, 0),
 		Size = UDim2.fromOffset(520, 0), AutomaticSize = Enum.AutomaticSize.Y })
 	HudKit.make("UIListLayout", panel, { Padding = UDim.new(0, 6), SortOrder = Enum.SortOrder.LayoutOrder, HorizontalAlignment = Enum.HorizontalAlignment.Center })
 	HudKit.make("UIPadding", panel, { PaddingTop = UDim.new(0, 12), PaddingBottom = UDim.new(0, 12), PaddingLeft = UDim.new(0, 16), PaddingRight = UDim.new(0, 16) })
@@ -82,6 +86,7 @@ function Controller.Stakes(self: any)
 	local ok = UiKit.button(panel, "Understood", "Primary", function() panel:Destroy() end)
 	ok.LayoutOrder, ok.Size = 3, UDim2.fromOffset(180, 36)
 	task.delay(20, function() if panel.Parent then panel:Destroy() end end)
+	self.StakesPanel = panel
 end
 
 function Controller.Update(self: any, dt: number)
@@ -97,6 +102,9 @@ function Controller.Update(self: any, dt: number)
 		and root.Position.Y < 100 and string.find(tostring(player:GetAttribute("AsuraAltars") or ""), "Cloister", 1, true) == nil then
 		self:Stakes()
 	end
+	-- F08: the cursor is captured in play, so the card also folds once the fight starts (any combat state).
+	local snapshot = self.State:OwnSnapshot()
+	if self.StakesPanel and self.StakesPanel.Parent and snapshot and snapshot.State ~= "Idle" then self.StakesPanel:Destroy() end
 	self.Card.Visible = step ~= nil and root ~= nil and not hidden and (root.Position - HOME).Magnitude <= Controller.ShowRadius
 	if not step then return end
 	local count = 0
@@ -105,6 +113,10 @@ function Controller.Update(self: any, dt: number)
 	self.Title.Text = step.Title
 	self.Do.Text = Rules.text(step.Do, function(c: string) return self:Label(c) end)
 	self.Why.Text = step.Why
+	-- F08: the cursor is captured in play, so a mouse player could not click Skip without knowing Alt.
+	if not self.Armed then
+		self.Skip.Text = if self.Input.Device == "Keyboard" then "Skip training  ·  hold [" .. self:Label("Cursor") .. "] to click" else "Skip training"
+	end
 	-- Client-only proofs, each reported once per step.
 	if step.Id == "LockOn" and self.Camera.Locked and not self.Sent.LockOn then
 		local target = self.State:Get(self.Camera.Locked)

@@ -385,3 +385,5 @@ Studio diagnostic: all 8 altars wake correctly, and reclaim/forfeit work. Fixed:
 - 2026-10-24 F03b (Computer A): input/HUD acceptance pass. Hold-Alt cursor survives focus loss, modals and death; Lin/Bonfire prompt band isolated. Fixed: pad B now closes Lin/Codex, altar gets Backspace/B back, Lin's own arm no longer hides her Speak prompt. Place digest 584676947. Open: hardware/Alt-Tab (24), Twins/lock switching (10). Next: follow-up 04.
 
 - 2026-10-24 F04–06 (Computer A): rest/Lin/leveling, Arsenal/Codex and six-sovereign forging verified in Studio (seeded diagnostic; awards via store). Fixed portrait framing, hat-in-shot, Bonfire travel checkpoint, silent summon refusal, slot font, footer clip, overlay stacking, script-path toasts. Digest 1783028740. Next: follow-up 07; earned rewards → 22.
+
+- 2026-10-25 Batch B (07–09): fixed reach sweep, deathblow KO reward, AI chase/spacing, tutorial Evade/Light judging, handoff/controls/training/toast layout, Alt-labelled skip. 09 lighting partly checked: Titan/Wu arenas dark, Wu floor cast unidentified; audio cycle not run. Next: resume 09 at Sovereign Wu.

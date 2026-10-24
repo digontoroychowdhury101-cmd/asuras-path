@@ -28,6 +28,7 @@ local LINES: { { string } } = {
 
 local Controller = {}
 Controller.Handoff = { "WALK THE ASURA'S PATH", "Kneel at the bonfire to rest · then train at the Monastery Gate" }
+Controller.HandoffSeconds = 4
 
 function Controller.isNewcomer(altars: any): boolean
 	return type(altars) ~= "string" or altars == "" or altars == "Altar_SanctuaryBonfire"
@@ -105,7 +106,10 @@ function Controller.Play(ui: any, input: any, camera: any?, force: boolean?)
 	gui:Destroy()
 	input:SetMenu(false, "Prologue")
 	ui.PrologueActive = false
-	if story then ui:ShowBanner(Controller.Handoff[1], Controller.Handoff[2], 4) end
+	if story then
+		ui.HandoffUntil = os.clock() + Controller.HandoffSeconds -- the controls card waits for it (F08)
+		ui:ShowBanner(Controller.Handoff[1], Controller.Handoff[2], Controller.HandoffSeconds)
+	end
 end
 
 return Controller

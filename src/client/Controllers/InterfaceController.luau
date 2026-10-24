@@ -532,16 +532,19 @@ function Controller.new(state: WorldState, camera: CameraController, input: Inpu
 		ZIndex = 50,
 		Visible = false,
 	}) :: Frame
+	-- Kept to the centre band between the side columns (HudLayout.Toast; F08: the gourd refusal ran
+	-- under the training card) and wrapped onto a second line rather than clipped.
 	local toast = label(gui, "", 22, BODY_FONT, IVORY, {
 		Name = "Toast",
 		AnchorPoint = Vector2.new(0.5, 1),
-		Position = UDim2.new(0.5, 0, 1, -200),
-		Size = UDim2.new(0.8, 0, 0, 28),
+		Position = UDim2.new(0.5, 0, 1, -HudLayout.Toast.Bottom),
+		Size = UDim2.new(1, -2 * HudLayout.Toast.Side, 0, HudLayout.Toast.Height),
 		TextScaled = true,
+		TextWrapped = true,
 		TextTransparency = 1,
 		TextStrokeTransparency = 1,
 	})
-	make("UISizeConstraint", toast, { MaxSize = Vector2.new(640, 28) })
+	make("UISizeConstraint", toast, { MaxSize = Vector2.new(HudLayout.Toast.MaxWidth, HudLayout.Toast.Height) })
 	make("UITextSizeConstraint", toast, { MinTextSize = 14, MaxTextSize = 22 })
 	local banner = label(gui, "", 27, TITLE_FONT, IVORY, {
 		Name = "Banner",

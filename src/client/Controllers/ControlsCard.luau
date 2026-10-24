@@ -77,11 +77,12 @@ function Controller.new(input: any, ui: any): ControlsCard
 	end
 	table.insert(self.Cleanup, HudKit.onViewport(place))
 	table.insert(self.Cleanup, HudKit.bindScale(pill, slot.Base))
-	-- Any combat command folds the reference away so it never sits over a fight.
+	-- Any combat command folds the reference away so it never sits over a fight. Only a card on
+	-- screen folds (F08): the Space or click that skips the prologue closed it before it was seen.
 	local previousCommand, previousDevice = input.OnCommand, input.OnDeviceChanged
 	input.OnCommand = function(command: string)
 		if previousCommand then previousCommand(command) end
-		if self.Open and command ~= "Controls" and command ~= "Cursor" and command ~= "Shoulder" then self:SetOpen(false) end
+		if self.Open and self.Card.Visible and command ~= "Controls" and command ~= "Cursor" and command ~= "Shoulder" then self:SetOpen(false) end
 	end
 	input.OnDeviceChanged = function(device: string)
 		if previousDevice then previousDevice(device) end
@@ -129,7 +130,9 @@ end
 
 function Controller.Update(self: ControlsCard, dt: number)
 	-- A window that owns input (the Arsenal opens on its own key) hides the card; F05: it drew over the Arsenal.
+	-- F08: so does the prologue's handoff line, which the card's backdrop dimmed and half covered.
 	local blocked = not Visibility.of(self.Ui).Guidance or self.Ui.BossEntity ~= nil or self.Input.MenuOpen
+		or os.clock() < (self.Ui.HandoffUntil or 0)
 	if self.Open and self.Timer > 0 and not blocked then
 		self.Timer -= dt
 		if self.Timer <= 0 then
