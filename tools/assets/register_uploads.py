@@ -39,7 +39,9 @@ def main():
     for section,key,value in updates: previous.setdefault(section,{})[key]=value
     previous.setdefault('Models',{}).update(models)
     registry.write_text(json.dumps(previous,indent=2)+'\n')
-    doc=ROOT/'assets/ASSET_IDS.md';text=doc.read_text().split('<!-- PHASE5_UPLOADED -->')[0].rstrip()
+    doc=ROOT/'assets/ASSET_IDS.md';text,_,generated=doc.read_text().partition('<!-- PHASE5_UPLOADED -->');text=text.rstrip()
+    after=generated.find('\n## ',generated.find('## Registered Phase 5 uploads')+1)  # hand-written sections after the table survive
+    rest=generated[after:] if after>=0 else ''
     rows=['\n\n<!-- PHASE5_UPLOADED -->','## Registered Phase 5 uploads','', '| Type | Slot | Owned asset ID |','|---|---|---|']
     for section,entries in previous.items():
         if section=='Models': continue
@@ -49,6 +51,6 @@ def main():
         for part in parts:
             maps=' / '.join(part[k] for k in ('ColorMap','NormalMap','RoughnessMap','MetalnessMap'))
             rows.append(f"| {name} | {part.get('Name','MeshPart')} | {part['MeshId']} | {maps} |")
-    doc.write_text(text+'\n'.join(rows)+'\n')
+    doc.write_text(text+'\n'.join(rows)+'\n'+rest)
     print('Registered',len(updates),'uploaded IDs. Verify experience permissions in Studio.')
 if __name__=='__main__':main()

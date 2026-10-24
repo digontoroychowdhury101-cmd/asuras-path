@@ -1,5 +1,9 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## Showcase spell sounds uploaded — 2026-10-24 (Computer B)
+
+Uploaded the 18 original Supernova/Blazing Sun cues (OGG of `build_skill_audio.py` output) to Sheashing123 via Creator Hub and registered their IDs; all 18 load in Studio, so SkillAudio now plays the real masters. `register_uploads.py` now keeps hand-written ASSET_IDS sections. Next: mix levels by ear, other-player view.
+
 ## Showcase spells: cohesion pass + sound — 2026-10-24 (Computer B)
 
 Matched more reference beats (ink burst, red splatter, shard flash, in-camera firestorm, hollow stars, merged blast blob). Added SkillAudio: 18 timed cues using pitched owned sounds; original masters from `tools/assets/build_skill_audio.py` await upload. Split modules under 150 lines. Studio real-speed pass clean. Next: upload the WAVs, other-player view.

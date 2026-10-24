@@ -5,9 +5,9 @@ local Assets = {}
 Assets.Audio = {
 	Clash = "rbxassetid://112256493525265", ParryBass = "rbxassetid://132244224106707", Flesh = "rbxassetid://135539914951495", Blunt = "rbxassetid://96420173928383", Stone = "rbxassetid://99727362444008",
 	BulletJump = "rbxassetid://100694818881612", Glide = "rbxassetid://120377372310702", Slide = "rbxassetid://96988662266744", Wind = "rbxassetid://122450130719273", Bell = "rbxassetid://123385330740698", Water = "rbxassetid://113213311649809", BossDrone = "rbxassetid://123393717022210",
-	-- Signature-spell score (tools/assets/build_skill_audio.py); SkillAudio stands in until uploaded.
-	NovaVoid = "", NovaRing = "", NovaSwoop = "", NovaPlanet = "", NovaCharge = "", NovaBlast = "", NovaInk = "", NovaColumn = "", NovaWhite = "",
-	SunTension = "", SunBoom = "", SunEmber = "", SunThorn = "", SunCharge = "", SunBlast = "", SunEyes = "", SunGauntlet = "", SunPulse = "",
+	-- Signature-spell score (tools/assets/build_skill_audio.py, uploaded 2026-10-24); SkillAudio pitches owned stand-ins if a slot is blank.
+	NovaVoid = "rbxassetid://129359188549606", NovaRing = "rbxassetid://134564910653256", NovaSwoop = "rbxassetid://110060527562569", NovaPlanet = "rbxassetid://70380265927325", NovaCharge = "rbxassetid://112033209229095", NovaBlast = "rbxassetid://133807813064998", NovaInk = "rbxassetid://131991190965773", NovaColumn = "rbxassetid://107313082560233", NovaWhite = "rbxassetid://96092388966263",
+	SunTension = "rbxassetid://100202591727169", SunBoom = "rbxassetid://75096821018311", SunEmber = "rbxassetid://86447083540632", SunThorn = "rbxassetid://81636168021067", SunCharge = "rbxassetid://105215829186624", SunBlast = "rbxassetid://136996507247009", SunEyes = "rbxassetid://116302876643156", SunGauntlet = "rbxassetid://109867440300434", SunPulse = "rbxassetid://103546737552644",
 }
 Assets.Textures = {
 	Ember = "rbxassetid://71210522377346", Smoke = "rbxassetid://118836433841190", Flame = "rbxassetid://109612319904107", Blood = "rbxassetid://130551791057565", BloodStain = "rbxassetid://127759159077031", Rune = "rbxassetid://122602029003354",
