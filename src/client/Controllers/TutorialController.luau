@@ -91,7 +91,8 @@ function Controller.Update(self: any, dt: number)
 	local own = self.State:Own()
 	local root = own and own.Root
 	local ui = self.Ui
-	local hidden = ui.PrologueActive or ui.DialogueOpen or ui.DeathShown or (ui.Altar and ui.Altar.Visible)
+	-- Any open window (Arsenal, Codex, Respite) owns the screen; the card sat beside the Arsenal (F05).
+	local hidden = ui.PrologueActive or ui.DialogueOpen or ui.DeathShown or (ui.Altar and ui.Altar.Visible) or (ui.Input and ui.Input.MenuOpen)
 	if root and not self.StakesShown and root.Position.Z < COURTYARD_Z and root.Position.Z > -900 and math.abs(root.Position.X) < 90
 		and root.Position.Y < 100 and string.find(tostring(player:GetAttribute("AsuraAltars") or ""), "Cloister", 1, true) == nil then
 		self:Stakes()

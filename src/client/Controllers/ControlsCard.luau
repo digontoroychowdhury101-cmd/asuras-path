@@ -92,7 +92,7 @@ function Controller.new(input: any, ui: any): ControlsCard
 	table.insert(self.Cleanup, function() input.OnCommand, input.OnDeviceChanged = previousCommand, previousDevice end)
 	local toggleConnection = UserInputService.InputBegan:Connect(function(event: InputObject, processed: boolean)
 		local key = event.KeyCode
-		if not processed and not UserInputService:GetFocusedTextBox() and TOGGLE[key] then
+		if not processed and not UserInputService:GetFocusedTextBox() and TOGGLE[key] and not self.Input.MenuOpen then
 			self:SetOpen(not self.Open)
 		elseif self.Open and CLOSE_KEYS[key] and self.Card.Visible then
 			self:SetOpen(false)
@@ -128,7 +128,8 @@ function Controller.SetOpen(self: ControlsCard, open: boolean)
 end
 
 function Controller.Update(self: ControlsCard, dt: number)
-	local blocked = not Visibility.of(self.Ui).Guidance or self.Ui.BossEntity ~= nil
+	-- A window that owns input (the Arsenal opens on its own key) hides the card; F05: it drew over the Arsenal.
+	local blocked = not Visibility.of(self.Ui).Guidance or self.Ui.BossEntity ~= nil or self.Input.MenuOpen
 	if self.Open and self.Timer > 0 and not blocked then
 		self.Timer -= dt
 		if self.Timer <= 0 then

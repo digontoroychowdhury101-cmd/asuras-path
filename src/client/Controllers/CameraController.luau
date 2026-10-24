@@ -12,6 +12,7 @@ local Shared = ReplicatedStorage:WaitForChild("AsurasPath")
 local Config = require(Shared:WaitForChild("Config") :: ModuleScript) :: any
 local WorldState = require(script.Parent:WaitForChild("WorldStateController") :: ModuleScript)
 local BossCinematics = require(script.Parent.BossCinematics)
+local Portrait = require(script.Parent.PortraitCamera)
 local Effects = require(Shared:WaitForChild("Shared"):WaitForChild("EffectsPreference") :: ModuleScript) :: any
 
 type WorldState = WorldState.WorldState
@@ -358,7 +359,7 @@ function Controller.Update(self: CameraController, dt: number)
 	camera.CameraType = Enum.CameraType.Scriptable
 	self.Clock += dt
  if self.DialogueFrame then
-  camera.CFrame=camera.CFrame:Lerp(self.DialogueFrame,math.min(1,dt*9));camera.FieldOfView=52;return
+  camera.CFrame=camera.CFrame:Lerp(self.DialogueFrame,math.min(1,dt*9));camera.FieldOfView=Portrait.Fov;return
  end
 	if self.BossShotState then
 		if BossCinematics.step(self.BossShotState, self.State, camera) then return end

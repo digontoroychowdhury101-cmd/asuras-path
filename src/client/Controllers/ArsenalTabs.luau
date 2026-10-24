@@ -88,9 +88,10 @@ function Tabs.Spells(send: (any) -> (), inv: any, list: ScrollingFrame, env: Env
 			local actions = card(list, order, s.Name, lines(facts), school.Color, 248)
 			for slot, command in { "SpellOne", "SpellTwo" } do
 				local on = inv.spellSlots[slot] == id
-				action(actions, Tabs.slotText(slot, env.Label(command), on), if on then "Primary" else "Secondary", 120, true, function()
+				local b = action(actions, Tabs.slotText(slot, env.Label(command), on), if on then "Primary" else "Secondary", 120, true, function()
 					send({ action = "EquipSpell", id = id, slot = slot })
 				end)
+				b.Font = Enum.Font.GothamMedium -- the menu face draws an old-style "1" that reads as "ı" (F05)
 			end
 		end
 	end

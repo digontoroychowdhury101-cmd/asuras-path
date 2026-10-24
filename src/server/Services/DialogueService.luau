@@ -72,7 +72,10 @@ local function handle(player: Player,p: any)
  if p.action=="Summon" then -- deliberate altar-menu choice; resting never opens her by itself
   local profile=Actions.view(id);local live=World.GetSession(id)
   local kindled=(live~=nil and live.Altars~=nil and live.Altars[p.id]==true) or (profile~=nil and profile.altars[p.id]==true)
-  if Definitions.Altars[p.id] and kindled then Service.Open(player,"Lin",p.id) end
+  if not (Definitions.Altars[p.id] and kindled) then return end
+  -- Resting respawns the region, so foes can be hunting at the altar: say so instead of doing nothing.
+  if AI.IsHunting(id) then remote:FireClient(player,{action="Refused",message="Lady Lin cannot answer while foes hunt you"});return end
+  Service.Open(player,"Lin",p.id)
   return
  end
  local s=sessions[id];if not s or not valid(player,s) or p.revision~=s.Revision then return end

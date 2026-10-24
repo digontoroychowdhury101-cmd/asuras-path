@@ -13,14 +13,23 @@ local Preview=require(Shared.LevelPreview)
 local Codex=require(script.Parent.CodexView)
 local Effects=require(Shared.EffectsPreference)
 local View={}
+View.Letterbox=0.09 -- height of each cinematic bar, as a fraction of the screen
+View.PanelBottom,View.PanelHeight,View.PanelMax=0.9,0.58,Vector2.new(900,600)
+-- Screen height fraction (0 = top) midway between the top bar and the panel's top edge: where a
+-- speaker's face stays visible. Computed from the layout, so it holds before the panel is laid out.
+function View.faceY(screen: number,inset: number): number
+ local height=screen-inset
+ local top=height*View.PanelBottom-math.min(height*View.PanelHeight,View.PanelMax.Y)
+ return (inset+(height*View.Letterbox+top)/2)/screen
+end
 local T=UiKit.Theme
 local PURCHASES={Level=true,Upgrade=true,Infuse=true,Trade=true}
 function View.new(parent: Instance): any
  local gui=Kit.make("ScreenGui",parent,{Name="JadeDialogue",ResetOnSpawn=false,DisplayOrder=85,IgnoreGuiInset=true,Enabled=false})
- Kit.make("Frame",gui,{Size=UDim2.fromScale(1,0.09),BackgroundColor3=T.Ink,BorderSizePixel=0})
- Kit.make("Frame",gui,{Position=UDim2.fromScale(0,0.91),Size=UDim2.fromScale(1,0.09),BackgroundColor3=T.Ink,BorderSizePixel=0})
- local panel=Kit.panel(gui,"Dialogue",{AnchorPoint=Vector2.new(0.5,1),Position=UDim2.fromScale(0.5,0.9),Size=UDim2.fromScale(0.9,0.58),BackgroundColor3=T.Surface,BackgroundTransparency=0.08})
- Kit.make("UISizeConstraint",panel,{MaxSize=Vector2.new(900,600)})
+ Kit.make("Frame",gui,{Size=UDim2.fromScale(1,View.Letterbox),BackgroundColor3=T.Ink,BorderSizePixel=0})
+ Kit.make("Frame",gui,{Position=UDim2.fromScale(0,1-View.Letterbox),Size=UDim2.fromScale(1,View.Letterbox),BackgroundColor3=T.Ink,BorderSizePixel=0})
+ local panel=Kit.panel(gui,"Dialogue",{AnchorPoint=Vector2.new(0.5,1),Position=UDim2.fromScale(0.5,View.PanelBottom),Size=UDim2.fromScale(0.9,View.PanelHeight),BackgroundColor3=T.Surface,BackgroundTransparency=0.08})
+ Kit.make("UISizeConstraint",panel,{MaxSize=View.PanelMax})
  local title=Kit.label(panel,"",26,T.TitleFont,T.Gold,{Position=UDim2.fromOffset(18,6),Size=UDim2.new(1,-120,0,32),TextXAlignment=Enum.TextXAlignment.Left})
  local status=Kit.label(panel,"",15,T.BodyFont,T.Ember,{Position=UDim2.fromOffset(18,36),Size=UDim2.new(1,-120,0,18),TextXAlignment=Enum.TextXAlignment.Left})
  Kit.make("Frame",panel,{Position=UDim2.fromOffset(18,58),Size=UDim2.new(1,-36,0,1),BackgroundColor3=T.Gold,BackgroundTransparency=0.5,BorderSizePixel=0})

@@ -17086,7 +17086,10 @@ local function handle(player: Player,p: any)
  if p.action=="Summon" then -- deliberate altar-menu choice; resting never opens her by itself
   local profile=Actions.view(id);local live=World.GetSession(id)
   local kindled=(live~=nil and live.Altars~=nil and live.Altars[p.id]==true) or (profile~=nil and profile.altars[p.id]==true)
-  if Definitions.Altars[p.id] and kindled then Service.Open(player,"Lin",p.id) end
+  if not (Definitions.Altars[p.id] and kindled) then return end
+  -- Resting respawns the region, so foes can be hunting at the altar: say so instead of doing nothing.
+  if AI.IsHunting(id) then remote:FireClient(player,{action="Refused",message="Lady Lin cannot answer while foes hunt you"});return end
+  Service.Open(player,"Lin",p.id)
   return
  end
  local s=sessions[id];if not s or not valid(player,s) or p.revision~=s.Revision then return end
@@ -18097,12 +18100,14 @@ function Loot.Sync(player: Player,open: boolean?)
  local inventory=table.clone(p.souls.inventory);inventory.materials=table.clone(p.inventory.Materials)
  remote:FireClient(player,{action="State",inventory=inventory,cooldowns=Magic.Cooldowns(player.UserId),open=open or false})
 end
+-- Assert messages carry "Script:line: "; players see only the reason (F06: the toast showed the script path).
+local function reason(err: any): string return (string.gsub(tostring(err),"^.-:%d+: ","")) end
 local function transact(player: Player,mutate: (any)-&gt;())
  local id=player.UserId;if busy[id] then return end;busy[id]=true
  local ok,err=Persistence.Transaction(id,function(p: any) mutate(p.souls.inventory) end)
  busy[id]=nil
  if ok then Characters.RefreshProgression(id);Loot.Sync(player) end
- if player.Parent then remote:FireClient(player,{action="Result",ok=ok,message=if ok then "Arsenal updated" else tostring(err)}) end
+ if player.Parent then remote:FireClient(player,{action="Result",ok=ok,message=if ok then "Arsenal updated" else reason(err)}) end
 end
 function Loot.Claim(player: Player,id: string)
  local c=Catalog.Caches[id];local e=available(player.UserId)
@@ -18128,7 +18133,7 @@ local function useTalisman(player: Player)
  end)
  busy[id]=nil
  if ok and available(id)==e then e.Fighter.WardUntil=Characters.Now()+30 end
- Loot.Sync(player);remote:FireClient(player,{action="Result",ok=ok,message=if ok then "Last Breath · one fatal blow warded for 30s" else tostring(err)})
+ Loot.Sync(player);remote:FireClient(player,{action="Result",ok=ok,message=if ok then "Last Breath · one fatal blow warded for 30s" else reason(err)})
 end
 local function handle(player: Player,packet: any)
  if not Protocol.valid(packet) or packet.action=="Cast" then return end
@@ -21516,6 +21521,19 @@ end
 
 function RecoveryRules.spawned(life: Life)
 	life.Life += 1
+end
+
+-- Where altar travel sets the fighter down: the altar's spawn when that is within resting reach,
+-- otherwise (radius - 1) studs from the altar on the spawn's side, at spawn height. The Primal
+-- Bonfire's spawn (also the prologue start) is 20 studs out, so travel landed there, refused to
+-- rest ("TooFar") and left the previous checkpoint active (F04).
+function RecoveryRules.arrival(spawn: Vector3, anchor: Vector3, radius: number): Vector3
+	if (spawn - anchor).Magnitude &lt;= radius + 2 then
+		return spawn
+	end
+	local flat = Vector3.new(spawn.X - anchor.X, 0, spawn.Z - anchor.Z)
+	local direction = if flat.Magnitude &gt; 1e-3 then flat.Unit else Vector3.zAxis
+	return Vector3.new(anchor.X, spawn.Y, anchor.Z) + direction * (radius - 1)
 end
 
 return RecoveryRules
@@ -26489,7 +26507,10 @@ local function travel(s: Session, altarId: string): (boolean, string)
 	if origin.Id == altarId then
 		return false, "AlreadyHere"
 	end
-	Characters.Teleport(s.UserId, toCFrame(destination.Spawn))
+	-- Land within resting reach, facing the altar, so the rest below can set the checkpoint.
+	local spawn, part = toCFrame(destination.Spawn), altarParts[altarId]
+	local at = if part then Recovery.arrival(spawn.Position, part.Position, destination.Radius) else spawn.Position
+	Characters.Teleport(s.UserId, if part and at ~= spawn.Position then CFrame.lookAt(at, Vector3.new(part.Position.X, at.Y, part.Position.Z)) else spawn)
 	Characters.Cue("AltarTravel", s.UserId, { from = origin.Id, to = altarId })
 	local fighter = Characters.GetFighter(s.UserId)
 	if fighter and fighter.State == "RestingAtShrine" then
@@ -67489,7 +67510,6 @@ local UserInputService = game:GetService("UserInputService")
 local Shared = game:GetService("ReplicatedStorage"):WaitForChild("AsurasPath")
 local Settings = require(Shared:WaitForChild("Shared"):WaitForChild("CombatSettings") :: ModuleScript) :: any
 local InputMap = require(Shared:WaitForChild("Shared"):WaitForChild("InputMap") :: ModuleScript)
-local Weapons = require(Shared:WaitForChild("Simulation"):WaitForChild("WeaponSchema") :: ModuleScript)
 local Rules = require(Shared:WaitForChild("Shared"):WaitForChild("ProgressionRules") :: ModuleScript)
 local HudKit = require(script.Parent:WaitForChild("HudKit") :: ModuleScript)
 local UiKit = require(script.Parent:WaitForChild("UiKit") :: ModuleScript)
@@ -67509,9 +67529,8 @@ local function hint(tab: string, label: (string) -&gt; string): string
 		return string.format("Slot 1 casts on [%s] · Slot 2 on [%s] · Melee hits +%d Qi · Perfect deflects +%d Qi",
 			label("SpellOne"), label("SpellTwo"), Settings.Qi.GainOnHit, Settings.Qi.GainOnDeflect)
 	elseif tab == "Weapons" then
-		local catalyst = Weapons.get("Catalyst")
-		return string.format("Numbers use your current attributes and forge levels; ▲ beats your wielded weapon, ▼ falls short. A Jade Catalyst held off-hand focuses sorcery: +%d%% potency and faster casting.",
-			math.floor(((catalyst.SpellPotency or 1) - 1) * 100 + 0.5))
+		-- The Jade Catalyst's card states its own sorcery focus; a third sentence was clipped here (F05).
+		return "Numbers use your current attributes and forge levels; ▲ beats your wielded weapon, ▼ falls short."
 	end
 	return "Each remembrance forges ONE weapon or spell. The choice is permanent. Visit Gao's Loggia."
 end
@@ -67692,9 +67711,10 @@ function Tabs.Spells(send: (any) -&gt; (), inv: any, list: ScrollingFrame, env: 
 			local actions = card(list, order, s.Name, lines(facts), school.Color, 248)
 			for slot, command in { "SpellOne", "SpellTwo" } do
 				local on = inv.spellSlots[slot] == id
-				action(actions, Tabs.slotText(slot, env.Label(command), on), if on then "Primary" else "Secondary", 120, true, function()
+				local b = action(actions, Tabs.slotText(slot, env.Label(command), on), if on then "Primary" else "Secondary", 120, true, function()
 					send({ action = "EquipSpell", id = id, slot = slot })
 				end)
+				b.Font = Enum.Font.GothamMedium -- the menu face draws an old-style "1" that reads as "ı" (F05)
 			end
 		end
 	end
@@ -68432,6 +68452,7 @@ local Shared = ReplicatedStorage:WaitForChild("AsurasPath")
 local Config = require(Shared:WaitForChild("Config") :: ModuleScript) :: any
 local WorldState = require(script.Parent:WaitForChild("WorldStateController") :: ModuleScript)
 local BossCinematics = require(script.Parent.BossCinematics)
+local Portrait = require(script.Parent.PortraitCamera)
 local Effects = require(Shared:WaitForChild("Shared"):WaitForChild("EffectsPreference") :: ModuleScript) :: any
 
 type WorldState = WorldState.WorldState
@@ -68778,7 +68799,7 @@ function Controller.Update(self: CameraController, dt: number)
 	camera.CameraType = Enum.CameraType.Scriptable
 	self.Clock += dt
  if self.DialogueFrame then
-  camera.CFrame=camera.CFrame:Lerp(self.DialogueFrame,math.min(1,dt*9));camera.FieldOfView=52;return
+  camera.CFrame=camera.CFrame:Lerp(self.DialogueFrame,math.min(1,dt*9));camera.FieldOfView=Portrait.Fov;return
  end
 	if self.BossShotState then
 		if BossCinematics.step(self.BossShotState, self.State, camera) then return end
@@ -70770,7 +70791,7 @@ function Controller.new(input: any, ui: any): ControlsCard
 	table.insert(self.Cleanup, function() input.OnCommand, input.OnDeviceChanged = previousCommand, previousDevice end)
 	local toggleConnection = UserInputService.InputBegan:Connect(function(event: InputObject, processed: boolean)
 		local key = event.KeyCode
-		if not processed and not UserInputService:GetFocusedTextBox() and TOGGLE[key] then
+		if not processed and not UserInputService:GetFocusedTextBox() and TOGGLE[key] and not self.Input.MenuOpen then
 			self:SetOpen(not self.Open)
 		elseif self.Open and CLOSE_KEYS[key] and self.Card.Visible then
 			self:SetOpen(false)
@@ -70806,7 +70827,8 @@ function Controller.SetOpen(self: ControlsCard, open: boolean)
 end
 
 function Controller.Update(self: ControlsCard, dt: number)
-	local blocked = not Visibility.of(self.Ui).Guidance or self.Ui.BossEntity ~= nil
+	-- A window that owns input (the Arsenal opens on its own key) hides the card; F05: it drew over the Arsenal.
+	local blocked = not Visibility.of(self.Ui).Guidance or self.Ui.BossEntity ~= nil or self.Input.MenuOpen
 	if self.Open and self.Timer &gt; 0 and not blocked then
 		self.Timer -= dt
 		if self.Timer &lt;= 0 then
@@ -71156,6 +71178,16 @@ local Portrait=require(script.Parent.PortraitCamera)
 local CODEX_KEYS: {[Enum.KeyCode]: boolean}={}
 for _,name in (InputMap.get("Codex") :: any).Keys do CODEX_KEYS[(Enum.KeyCode :: any)[name]]=true end
 local Controller={};Controller.__index=Controller
+-- The player's costume ignores spatial queries, so no probe sees a hat brim in an over-the-shoulder
+-- shot (F04: it covered half of Lin's face): the local avatar is hidden while a portrait is framed.
+local function hideAvatar(self: any,character: Model?)
+ for part,original in self.Hidden or {} do if part.Parent then part.LocalTransparencyModifier=original end end
+ self.Hidden=nil
+ if not character then return end
+ local hidden={}
+ for _,d in character:GetDescendants() do if d:IsA("BasePart") then hidden[d]=d.LocalTransparencyModifier;d.LocalTransparencyModifier=1 end end
+ self.Hidden=hidden
+end
 function Controller.new(camera: any,input: any,ui: any): any
  local self=setmetatable({Camera=camera,Input=input,UI=ui,Revision=0,Generation=0,Open=false,Links={},ReturnAltar=nil},Controller) :: any
  self.Remote=Shared.Net:WaitForChild("DialogueIntent")
@@ -71200,7 +71232,7 @@ end
 function Controller.Close(self: any,toAltar: boolean?)
  if self.Portrait then self.Portrait:Destroy();self.Portrait=nil end
  local altar=self.ReturnAltar;self.ReturnAltar=nil
- self.Generation+=1;local wasOpen=self.Open;self.Open=false;self.UI.DialogueOpen=false;self.View.Gui.Enabled=false;self.Camera.DialogueFrame=nil
+ self.Generation+=1;local wasOpen=self.Open;self.Open=false;self.UI.DialogueOpen=false;self.View.Gui.Enabled=false;self.Camera.DialogueFrame=nil;hideAvatar(self,nil)
  if wasOpen then self.Input:SetMenu(false,"Dialogue");self.Remote:FireServer({action="Close"}) end
  View.clear(self.View)
  if wasOpen and toAltar and altar and not self.UI.DeathShown then self.UI:OpenAltar(altar) end
@@ -71226,11 +71258,20 @@ function Controller.Frame(self: any,p: any)
   spirit.Parent=workspace.CurrentCamera;spirit:PivotTo(CFrame.lookAt(spot,Vector3.new(viewer.X,spot.Y,viewer.Z)))
   self.Portrait=spirit;subject=spot+Vector3.new(0,2,0)
  end
- self.Camera.DialogueFrame=CFrame.lookAt(Portrait.choose(subject,viewer,probe),subject)
+ -- The panel covers the middle of the screen, so the face goes in the clear band between the top
+ -- letterbox bar and the panel's top edge (F04: a centred head sat behind Lin's name on short screens).
+ local speaker=self.Portrait or original
+ local head=speaker and speaker:FindFirstChild("Head",true)
+ local face=if head and head:IsA("BasePart") then head.Position else subject
+ local screen=workspace.CurrentCamera.ViewportSize.Y
+ local inset=if self.View.Gui.IgnoreGuiInset then 0 else GuiService:GetGuiInset().Y
+ self.Camera.DialogueFrame=Portrait.aim(Portrait.choose(subject,viewer,probe),face,if screen&gt;inset then View.faceY(screen,inset) else 0.3)
+ hideAvatar(self,character)
 end
 function Controller.Receive(self: any,p: any)
  if p.action=="Close" then self:Close(p.reason=="Farewell");return end
  if p.action=="Result" then self.UI:ShowBanner("THE INSCRIPTION",tostring(p.message),2);return end
+ if p.action=="Refused" then self.UI:ShowToast(tostring(p.message));return end
  if not p.view or self.UI.DeathShown then return end
  if self.UI.Altar.Visible then self.UI:CloseAltar() end
  if self.Portrait then self.Portrait:Destroy();self.Portrait=nil end -- a replacement conversation
@@ -71241,7 +71282,7 @@ function Controller.Receive(self: any,p: any)
   self.Revision=p.revision;self.ReturnAltar=p.altar
   View.render(self.View,p,function(packet: any) packet.revision=self.Revision;self.Remote:FireServer(packet) end)
   self:Frame(p)
- else self.ReturnAltar=nil;self.Camera.DialogueFrame=nil;View.codex(self.View,p.view,p.id) end
+ else self.ReturnAltar=nil;self.Camera.DialogueFrame=nil;hideAvatar(self,nil);View.codex(self.View,p.view,p.id) end
  self.View.Subtitle.MaxVisibleGraphemes=0
  local count=utf8.len(self.View.Subtitle.ContentText) or #self.View.Subtitle.Text
  task.spawn(function()
@@ -71279,14 +71320,23 @@ local Preview=require(Shared.LevelPreview)
 local Codex=require(script.Parent.CodexView)
 local Effects=require(Shared.EffectsPreference)
 local View={}
+View.Letterbox=0.09 -- height of each cinematic bar, as a fraction of the screen
+View.PanelBottom,View.PanelHeight,View.PanelMax=0.9,0.58,Vector2.new(900,600)
+-- Screen height fraction (0 = top) midway between the top bar and the panel's top edge: where a
+-- speaker's face stays visible. Computed from the layout, so it holds before the panel is laid out.
+function View.faceY(screen: number,inset: number): number
+ local height=screen-inset
+ local top=height*View.PanelBottom-math.min(height*View.PanelHeight,View.PanelMax.Y)
+ return (inset+(height*View.Letterbox+top)/2)/screen
+end
 local T=UiKit.Theme
 local PURCHASES={Level=true,Upgrade=true,Infuse=true,Trade=true}
 function View.new(parent: Instance): any
  local gui=Kit.make("ScreenGui",parent,{Name="JadeDialogue",ResetOnSpawn=false,DisplayOrder=85,IgnoreGuiInset=true,Enabled=false})
- Kit.make("Frame",gui,{Size=UDim2.fromScale(1,0.09),BackgroundColor3=T.Ink,BorderSizePixel=0})
- Kit.make("Frame",gui,{Position=UDim2.fromScale(0,0.91),Size=UDim2.fromScale(1,0.09),BackgroundColor3=T.Ink,BorderSizePixel=0})
- local panel=Kit.panel(gui,"Dialogue",{AnchorPoint=Vector2.new(0.5,1),Position=UDim2.fromScale(0.5,0.9),Size=UDim2.fromScale(0.9,0.58),BackgroundColor3=T.Surface,BackgroundTransparency=0.08})
- Kit.make("UISizeConstraint",panel,{MaxSize=Vector2.new(900,600)})
+ Kit.make("Frame",gui,{Size=UDim2.fromScale(1,View.Letterbox),BackgroundColor3=T.Ink,BorderSizePixel=0})
+ Kit.make("Frame",gui,{Position=UDim2.fromScale(0,1-View.Letterbox),Size=UDim2.fromScale(1,View.Letterbox),BackgroundColor3=T.Ink,BorderSizePixel=0})
+ local panel=Kit.panel(gui,"Dialogue",{AnchorPoint=Vector2.new(0.5,1),Position=UDim2.fromScale(0.5,View.PanelBottom),Size=UDim2.fromScale(0.9,View.PanelHeight),BackgroundColor3=T.Surface,BackgroundTransparency=0.08})
+ Kit.make("UISizeConstraint",panel,{MaxSize=View.PanelMax})
  local title=Kit.label(panel,"",26,T.TitleFont,T.Gold,{Position=UDim2.fromOffset(18,6),Size=UDim2.new(1,-120,0,32),TextXAlignment=Enum.TextXAlignment.Left})
  local status=Kit.label(panel,"",15,T.BodyFont,T.Ember,{Position=UDim2.fromOffset(18,36),Size=UDim2.new(1,-120,0,18),TextXAlignment=Enum.TextXAlignment.Left})
  Kit.make("Frame",panel,{Position=UDim2.fromOffset(18,58),Size=UDim2.new(1,-36,0,1),BackgroundColor3=T.Gold,BackgroundTransparency=0.5,BorderSizePixel=0})
@@ -76682,6 +76732,7 @@ Portrait.Height = 1
 Portrait.Margin = 0.8 -- clearance kept around the camera
 Portrait.MinReach = 3.2 -- a pulled-in shot closer than this is rejected
 Portrait.Chest = 1.2 -- second sight line, below the head
+Portrait.Fov = 52 -- vertical field of view while a conversation is framed (CameraController)
 
 -- Returns where a segment first meets visible geometry, or nil when it is clear.
 export type Probe = (from: Vector3, to: Vector3) -&gt; Vector3?
@@ -76755,6 +76806,14 @@ function Portrait.probe(exclude: { Instance }): Probe
 		end
 		return nil
 	end
+end
+
+-- Looks from `position` at `face`, pitched down so the face sits at `faceY` of the screen height
+-- (0 = top) instead of the centre, which the dialogue panel covers.
+function Portrait.aim(position: Vector3, face: Vector3, faceY: number): CFrame
+	local above = math.clamp(1 - 2 * faceY, 0, 0.9) -- how far above the centre, in half-screens
+	local pitch = math.atan(above * math.tan(math.rad(Portrait.Fov) / 2))
+	return CFrame.lookAt(position, face) * CFrame.Angles(-pitch, 0, 0)
 end
 
 function Portrait.frame(subject: Vector3, viewer: Vector3, exclude: { Instance }): CFrame
@@ -79652,7 +79711,8 @@ function Controller.Update(self: any, dt: number)
 	local own = self.State:Own()
 	local root = own and own.Root
 	local ui = self.Ui
-	local hidden = ui.PrologueActive or ui.DialogueOpen or ui.DeathShown or (ui.Altar and ui.Altar.Visible)
+	-- Any open window (Arsenal, Codex, Respite) owns the screen; the card sat beside the Arsenal (F05).
+	local hidden = ui.PrologueActive or ui.DialogueOpen or ui.DeathShown or (ui.Altar and ui.Altar.Visible) or (ui.Input and ui.Input.MenuOpen)
 	if root and not self.StakesShown and root.Position.Z &lt; COURTYARD_Z and root.Position.Z &gt; -900 and math.abs(root.Position.X) &lt; 90
 		and root.Position.Y &lt; 100 and string.find(tostring(player:GetAttribute("AsuraAltars") or ""), "Cloister", 1, true) == nil then
 		self:Stakes()

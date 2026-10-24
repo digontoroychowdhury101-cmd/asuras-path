@@ -87,6 +87,16 @@ local wall = function(from, to)
 end
 pos, clean = Portrait.choose(subject, viewer, wall)
 check("enclosed altar pulls the camera in front of the stone", not clean and (pos - subject).Magnitude <= 5 - Portrait.Margin + 1e-6 and (pos - subject).Magnitude >= Portrait.MinReach)
+-- F04: a head at the screen centre sat behind the dialogue panel (top at 40% on a 1221x503 view).
+local function screenY(cf, point)
+	local p = cf:PointToObjectSpace(point)
+	return (1 - (p.Y / -p.Z) / math.tan(math.rad(Portrait.Fov) / 2)) / 2, p.Z
+end
+local face = subject + V(0, 0.6, 0)
+local aimed = Portrait.aim(right, face, 0.3)
+local y, depth = screenY(aimed, face)
+check("the face is framed in the band above the dialogue panel", math.abs(y - 0.3) < 0.01 and depth < 0)
+check("the panel-free centre framing is still available", math.abs(screenY(Portrait.aim(right, face, 0.5), face) - 0.5) < 1e-6)
 local tight = function(from, to) return from + (to - from).Unit * 1 end
 pos, clean = Portrait.choose(subject, viewer, tight)
 check("no viable angle falls back to a raised shot", not clean and pos.Y > subject.Y + 4)

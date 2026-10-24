@@ -9,7 +9,6 @@ local UserInputService = game:GetService("UserInputService")
 local Shared = game:GetService("ReplicatedStorage"):WaitForChild("AsurasPath")
 local Settings = require(Shared:WaitForChild("Shared"):WaitForChild("CombatSettings") :: ModuleScript) :: any
 local InputMap = require(Shared:WaitForChild("Shared"):WaitForChild("InputMap") :: ModuleScript)
-local Weapons = require(Shared:WaitForChild("Simulation"):WaitForChild("WeaponSchema") :: ModuleScript)
 local Rules = require(Shared:WaitForChild("Shared"):WaitForChild("ProgressionRules") :: ModuleScript)
 local HudKit = require(script.Parent:WaitForChild("HudKit") :: ModuleScript)
 local UiKit = require(script.Parent:WaitForChild("UiKit") :: ModuleScript)
@@ -29,9 +28,8 @@ local function hint(tab: string, label: (string) -> string): string
 		return string.format("Slot 1 casts on [%s] · Slot 2 on [%s] · Melee hits +%d Qi · Perfect deflects +%d Qi",
 			label("SpellOne"), label("SpellTwo"), Settings.Qi.GainOnHit, Settings.Qi.GainOnDeflect)
 	elseif tab == "Weapons" then
-		local catalyst = Weapons.get("Catalyst")
-		return string.format("Numbers use your current attributes and forge levels; ▲ beats your wielded weapon, ▼ falls short. A Jade Catalyst held off-hand focuses sorcery: +%d%% potency and faster casting.",
-			math.floor(((catalyst.SpellPotency or 1) - 1) * 100 + 0.5))
+		-- The Jade Catalyst's card states its own sorcery focus; a third sentence was clipped here (F05).
+		return "Numbers use your current attributes and forge levels; ▲ beats your wielded weapon, ▼ falls short."
 	end
 	return "Each remembrance forges ONE weapon or spell. The choice is permanent. Visit Gao's Loggia."
 end

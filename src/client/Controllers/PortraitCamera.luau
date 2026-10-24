@@ -15,6 +15,7 @@ Portrait.Height = 1
 Portrait.Margin = 0.8 -- clearance kept around the camera
 Portrait.MinReach = 3.2 -- a pulled-in shot closer than this is rejected
 Portrait.Chest = 1.2 -- second sight line, below the head
+Portrait.Fov = 52 -- vertical field of view while a conversation is framed (CameraController)
 
 -- Returns where a segment first meets visible geometry, or nil when it is clear.
 export type Probe = (from: Vector3, to: Vector3) -> Vector3?
@@ -88,6 +89,14 @@ function Portrait.probe(exclude: { Instance }): Probe
 		end
 		return nil
 	end
+end
+
+-- Looks from `position` at `face`, pitched down so the face sits at `faceY` of the screen height
+-- (0 = top) instead of the centre, which the dialogue panel covers.
+function Portrait.aim(position: Vector3, face: Vector3, faceY: number): CFrame
+	local above = math.clamp(1 - 2 * faceY, 0, 0.9) -- how far above the centre, in half-screens
+	local pitch = math.atan(above * math.tan(math.rad(Portrait.Fov) / 2))
+	return CFrame.lookAt(position, face) * CFrame.Angles(-pitch, 0, 0)
 end
 
 function Portrait.frame(subject: Vector3, viewer: Vector3, exclude: { Instance }): CFrame

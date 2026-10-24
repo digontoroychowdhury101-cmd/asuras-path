@@ -77,4 +77,17 @@ function RecoveryRules.spawned(life: Life)
 	life.Life += 1
 end
 
+-- Where altar travel sets the fighter down: the altar's spawn when that is within resting reach,
+-- otherwise (radius - 1) studs from the altar on the spawn's side, at spawn height. The Primal
+-- Bonfire's spawn (also the prologue start) is 20 studs out, so travel landed there, refused to
+-- rest ("TooFar") and left the previous checkpoint active (F04).
+function RecoveryRules.arrival(spawn: Vector3, anchor: Vector3, radius: number): Vector3
+	if (spawn - anchor).Magnitude <= radius + 2 then
+		return spawn
+	end
+	local flat = Vector3.new(spawn.X - anchor.X, 0, spawn.Z - anchor.Z)
+	local direction = if flat.Magnitude > 1e-3 then flat.Unit else Vector3.zAxis
+	return Vector3.new(anchor.X, spawn.Y, anchor.Z) + direction * (radius - 1)
+end
+
 return RecoveryRules
