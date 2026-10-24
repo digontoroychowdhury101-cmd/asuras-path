@@ -326,6 +326,8 @@ function Controller.new(state: WorldState, camera: CameraController, send: Sende
 	table.insert(self.Connections, GuiService.MenuOpened:Connect(function() self.Movement:SetEnabled(false) end))
 	ContextActionService:BindActionAtPriority(MOVEMENT_ACTION, function(_name: string, inputState: Enum.UserInputState, event: InputObject): Enum.ContextActionResult
 		if UserInputService:GetFocusedTextBox() then return Enum.ContextActionResult.Pass end
+		-- B is Dash and also every window's back button: an open window gets it unprocessed.
+		if self.MenuOpen and event.KeyCode == Enum.KeyCode.ButtonB then return Enum.ContextActionResult.Pass end
 		local command: Command = if JUMP_INPUTS[event.KeyCode] then "Jump"
 			else KEYBOARD[event.KeyCode] or GAMEPAD[event.KeyCode] or MOUSE[event.UserInputType]
 		if inputState == Enum.UserInputState.Begin then

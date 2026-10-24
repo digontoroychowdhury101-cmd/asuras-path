@@ -6,6 +6,9 @@
 local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local ContextActionService = game:GetService("ContextActionService")
+local GuiService = game:GetService("GuiService")
+local UserInputService = game:GetService("UserInputService")
 
 local Shared = ReplicatedStorage:WaitForChild("AsurasPath")
 local simFolder = Shared:WaitForChild("Simulation")
@@ -53,6 +56,11 @@ local GOLD = Sakura.Colors.Gold
 local SCAR = Color3.fromRGB(62, 40, 60)
 local TRACK = Sakura.Colors.Track
 local EDGE = Color3.fromRGB(150, 60, 110)
+
+-- The altar holds the cursor and combat keys while open, so it takes the same back keys as Respite,
+-- the Codex and Lin (Roblox reserves Escape). Bound only while open; anything stacked over it closes it.
+local ALTAR_BACK = "AsuraAltarBack"
+local ALTAR_BACK_KEYS = { Enum.KeyCode.ButtonB, Enum.KeyCode.Backspace }
 
 local TITLE_FONT = Enum.Font.Antique
 local BODY_FONT = Enum.Font.Garamond
@@ -803,6 +811,16 @@ function Controller.OpenAltar(self: Interface, altarId: string)
 	self.Altar.Visible = true
 	self.Input:SetMenu(true, "Altar")
 	self:ShowPage("Main")
+	-- Back steps out of Ascension/Travel first, then leaves the altar.
+	ContextActionService:BindActionAtPriority(ALTAR_BACK, function(_: string, state: Enum.UserInputState): Enum.ContextActionResult
+		if state == Enum.UserInputState.Begin then
+			if self.AltarPages.Main.Visible then self:CloseAltar() else self:ShowPage("Main") end
+		end
+		return Enum.ContextActionResult.Sink
+	end, false, Enum.ContextActionPriority.High.Value + 2, table.unpack(ALTAR_BACK_KEYS))
+	if UserInputService.GamepadEnabled then
+		GuiService.SelectedObject = self.AltarPages.Main:FindFirstChildWhichIsA("TextButton", true)
+	end
 	-- Spring the altar in from the left; the authored UIScale (0.8) is the rest size.
 	local scale = self.Altar:FindFirstChildOfClass("UIScale")
 	if scale then
@@ -820,6 +838,8 @@ function Controller.CloseAltar(self: Interface)
 	end
 	self.Altar.Visible = false
 	self.AltarId = nil
+	ContextActionService:UnbindAction(ALTAR_BACK)
+	if GuiService.SelectedObject and GuiService.SelectedObject:IsDescendantOf(self.Altar) then GuiService.SelectedObject = nil end
 	self.Input:SetMenu(false, "Altar")
 	UiKit.play("Close")
 end
@@ -1245,6 +1265,7 @@ function Controller.Destroy(self: Interface)
 		connection:Disconnect()
 	end
 	table.clear(self.Connections)
+	ContextActionService:UnbindAction(ALTAR_BACK)
 	self.Input:SetMenu(false, "Altar")
 	self.Gui:Destroy()
 end

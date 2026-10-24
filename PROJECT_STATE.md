@@ -381,3 +381,5 @@ Studio diagnostic: all 8 altars wake correctly, and reclaim/forfeit work. Fixed:
 ## Additional lobby references (2026-10-22)
 - Created four imagegen detail references matching the original two concepts: courtyard materials/water, Gao's forge, statue terrace and duel court. Saved under `outputs/lobby-references-2026-10-22/` with an index and complete generation prompts.
 - These illustrate the next close-range art pass on the already rebuilt lobby. They are concept art, not current Studio screenshots or measured plans; preserve tested routes and the existing statue/tree when using them. No source, asset library or saved place changes made by this reference task.
+
+- 2026-10-24 F03b (Computer A): input/HUD acceptance pass. Hold-Alt cursor survives focus loss, modals and death; Lin/Bonfire prompt band isolated. Fixed: pad B now closes Lin/Codex, altar gets Backspace/B back, Lin's own arm no longer hides her Speak prompt. Place digest 584676947. Open: hardware/Alt-Tab (24), Twins/lock switching (10). Next: follow-up 04.
