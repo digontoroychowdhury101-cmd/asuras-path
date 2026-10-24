@@ -1,6 +1,6 @@
 --!strict
--- Hand-drawn 2D screen beats from the reference cut: the black/white ink "dome" negative, the white
--- frame of black vertical ink streaks, the black frame with a white ground band, a comic "BOOM."
+-- Hand-drawn 2D screen beats from the reference cut (NovaInk and InkFrames draw the ink frames):
+-- the black frame with a white ground band, a comic "BOOM."
 -- bubble, diagonal swoop streaks and full-screen colour fills (the slow whiteout). Lines re-cut every
 -- frame like smear animation. Caster only; reduced flashes shortens and softens every beat.
 local Players = game:GetService("Players")
@@ -48,55 +48,18 @@ local function animate(trove: Kit.Trove, gui: ScreenGui, seconds: number, draw: 
 	end))
 end
 
-local function sparkle(parent: Instance, at: Vector2, size: number)
-	for _, bar in { { size, size * 0.06 }, { size * 0.06, size * 0.7 } } do
-		local f = box(parent, WHITE)
+-- A long, needle-thin 4-point sparkle (the reference's cross-shaped glints).
+local function sparkle(parent: Instance, at: Vector2, size: number, color: Color3?)
+	for _, bar in { { size, size * 0.022 }, { size * 0.022, size * 0.8 } } do
+		local f = box(parent, color or WHITE)
 		f.Position, f.Size, f.ZIndex = UDim2.fromOffset(at.X, at.Y), UDim2.fromOffset(bar[1], bar[2]), 5
+		local g = Instance.new("UIGradient")
+		g.Transparency = NumberSequence.new({ NumberSequenceKeypoint.new(0, 1), NumberSequenceKeypoint.new(0.5, 0), NumberSequenceKeypoint.new(1, 1) })
+		g.Rotation, g.Parent = if bar[1] < bar[2] then 90 else 0, f
 	end
 end
 
--- Black frame: a white dome of vertical ink hatching around a black core, falling white rain lines.
-function Manga.inkDome(trove: Kit.Trove, seconds: number)
-	local gui, size = screen(trove, 62)
-	if not gui then return end
-	local back = box(gui, INK)
-	back.Position, back.Size = UDim2.fromScale(0.5, 0.5), UDim2.fromScale(1, 1)
-	local hatch: { Frame } = {}
-	for n = 1, 140 do hatch[n] = box(back, WHITE) end
-	local core = blob(back, INK)
-	core.ZIndex = 3
-	for n = 1, 4 do sparkle(back, Vector2.new(size.X * (0.15 + 0.23 * n), size.Y * (0.2 + 0.18 * (n % 2))), size.Y * 0.14) end
-	animate(trove, gui, seconds, function(t: number)
-		local c, rx, ry = size / 2 + Vector2.new(0, size.Y * 0.08), size.X * 0.27 * (1 + t), size.Y * 0.34 * (1 + t)
-		core.Position, core.Size = UDim2.fromOffset(c.X, c.Y), UDim2.fromOffset(rx * 1.5, ry * 1.2)
-		for n, f in hatch do
-			if n <= 90 then -- the dome band
-				local a = n / 90 * math.pi * 2
-				local len = size.Y * (0.08 + math.random() * 0.2)
-				f.Position, f.Size = UDim2.fromOffset(c.X + math.cos(a) * rx, c.Y + math.sin(a) * ry - len * 0.3), UDim2.fromOffset(2 + math.random() * 5, len)
-			else -- rain from the top edge
-				f.Position, f.Size = UDim2.fromOffset(math.random() * size.X, math.random() * size.Y * 0.3), UDim2.fromOffset(1 + math.random() * 2, size.Y * (0.1 + math.random() * 0.4))
-			end
-		end
-	end)
-end
-
--- White frame torn by black vertical ink streaks (the column's first instant).
-function Manga.inkStreaks(trove: Kit.Trove, seconds: number)
-	local gui, size = screen(trove, 62)
-	if not gui then return end
-	local back = box(gui, WHITE)
-	back.Position, back.Size = UDim2.fromScale(0.5, 0.5), UDim2.fromScale(1, 1)
-	local streaks: { Frame } = {}
-	for n = 1, 46 do streaks[n] = box(back, if n % 5 == 0 then Color3.fromRGB(120, 120, 125) else INK) end
-	animate(trove, gui, seconds, function()
-		for _, f in streaks do
-			local x = size.X * (0.5 + (math.random() - 0.5) * (if math.random() < 0.6 then 0.3 else 0.95))
-			f.Position, f.Rotation = UDim2.fromOffset(x, size.Y * (0.3 + math.random() * 0.5)), (math.random() - 0.5) * 16
-			f.Size = UDim2.fromOffset(2 + math.random() ^ 2 * 26, size.Y * (0.3 + math.random() * 0.8))
-		end
-	end)
-end
+Manga.screen, Manga.box, Manga.blob, Manga.animate, Manga.sparkle = screen, box, blob, animate, sparkle
 
 -- Black frame with a white ground band and scattered white blobs (the burst's first instant).
 function Manga.groundFlash(trove: Kit.Trove, seconds: number)

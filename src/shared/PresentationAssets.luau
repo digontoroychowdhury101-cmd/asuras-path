@@ -5,6 +5,9 @@ local Assets = {}
 Assets.Audio = {
 	Clash = "rbxassetid://112256493525265", ParryBass = "rbxassetid://132244224106707", Flesh = "rbxassetid://135539914951495", Blunt = "rbxassetid://96420173928383", Stone = "rbxassetid://99727362444008",
 	BulletJump = "rbxassetid://100694818881612", Glide = "rbxassetid://120377372310702", Slide = "rbxassetid://96988662266744", Wind = "rbxassetid://122450130719273", Bell = "rbxassetid://123385330740698", Water = "rbxassetid://113213311649809", BossDrone = "rbxassetid://123393717022210",
+	-- Signature-spell score (tools/assets/build_skill_audio.py); SkillAudio stands in until uploaded.
+	NovaVoid = "", NovaRing = "", NovaSwoop = "", NovaPlanet = "", NovaCharge = "", NovaBlast = "", NovaInk = "", NovaColumn = "", NovaWhite = "",
+	SunTension = "", SunBoom = "", SunEmber = "", SunThorn = "", SunCharge = "", SunBlast = "", SunEyes = "", SunGauntlet = "", SunPulse = "",
 }
 Assets.Textures = {
 	Ember = "rbxassetid://71210522377346", Smoke = "rbxassetid://118836433841190", Flame = "rbxassetid://109612319904107", Blood = "rbxassetid://130551791057565", BloodStain = "rbxassetid://127759159077031", Rune = "rbxassetid://122602029003354",

@@ -138,13 +138,6 @@ function Screen.frame(trove: Kit.Trove, model: Model, seconds: number, palette: 
 	end))
 end
 
--- A beat of impact frames: each entry {palette, seconds} plays back to back from now.
-function Screen.sequence(trove: Kit.Trove, model: Model, beats: { { any } })
-	local at = 0
-	for _, beat in beats do
-		Kit.after(trove, at, function() Screen.frame(trove, model, beat[2], beat[1]) end)
-		at += beat[2]
-	end
-end
+Screen.silhouette = silhouette -- the caster drawn exactly where they stand, for other 2D layers
 
 return table.freeze(Screen)

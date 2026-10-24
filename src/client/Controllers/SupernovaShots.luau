@@ -39,8 +39,8 @@ function Shots.startup(cast: any, center: () -> Vector3?, floor: Vector3, radius
 		Cinema.play(cast.Cinema, function(t: number)
 			local c = at()
 			local push = math.clamp((t - w * 0.38) / (w * 0.15), 0, 1)
-			local d = radius * (3.3 - push * 0.8)
-			return Cinema.look(c + dir(base + t * 0.1) * d + Vector3.new(0, radius * 0.3, 0), c, 55 - push * 6, 9)
+			local d = radius * (4.2 - push * 0.9)
+			return Cinema.look(c + dir(base + t * 0.1) * d + Vector3.new(0, radius * 0.15, 0), c, 55 - push * 6, 9)
 		end, w * 0.53 + 3, 0.06) -- holds past a late release cue
 	end)
 end
@@ -48,9 +48,9 @@ end
 function Shots.release(cast: any, ground: Vector3, center: Vector3, radius: number)
 	local yaw = math.random() * math.pi * 2
 	Cinema.play(cast.Cinema, function(t: number)
-		return Cinema.look(center + dir(yaw) * (radius * 3 + t * 6) + Vector3.new(0, radius * 0.3, 0), center, 62, 4)
-	end, 0.62, 0.04)
-	Kit.after(cast.Trove, 0.62, function()
+		return Cinema.look(center + dir(yaw) * (radius * 2.1 + t * 6) + Vector3.new(0, radius * 0.2, 0), center, 62, 4)
+	end, 0.59, 0.04)
+	Kit.after(cast.Trove, 0.59, function()
 		Cinema.play(cast.Cinema, function(t: number) -- close outside the column, looking in at the caster
 			local eye = center + dir(yaw + 1.2 + t * 0.12) * 21 + Vector3.new(0, -3 + t * 0.8, 0)
 			return Cinema.look(eye, center + Vector3.new(0, 2 + t * 1.2, 0), 64, -6)

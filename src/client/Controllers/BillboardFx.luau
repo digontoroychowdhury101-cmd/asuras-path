@@ -1,6 +1,6 @@
 --!strict
 -- Camera-facing 2D shapes drawn in the world with BillboardGuis: glowing rings, 4-point lens-flare
--- sparkles, jagged starbursts, spinning crescent arcs, vertical flare lines and thorn rings. Sizes are
+-- sparkles, jagged starbursts and spinning crescent arcs (BillboardShapes has the rest). Sizes are
 -- in studs; stroke widths follow the on-screen size so a ring stays a ring at any distance.
 local RunService = game:GetService("RunService")
 local Kit = require(script.Parent.SkillKit)
@@ -24,7 +24,7 @@ end
 function Bb.board(trove: Kit.Trove, adornee: Instance, studs: number): BillboardGui
 	local gui = Kit.add(trove, Instance.new("BillboardGui"))
 	gui.Adornee, gui.Size, gui.LightInfluence, gui.AlwaysOnTop = adornee, UDim2.fromScale(studs, studs), 0, false
-	gui.MaxDistance, gui.ZIndexBehavior = 2000, Enum.ZIndexBehavior.Sibling
+	gui.MaxDistance, gui.ZIndexBehavior, gui.Brightness = 2000, Enum.ZIndexBehavior.Sibling, 2 -- glows like the clip's light
 	gui.Parent = adornee
 	return gui
 end
@@ -55,10 +55,14 @@ local function circle(gui: BillboardGui, color: Color3, scale: number, ratio: nu
 	return stroke
 end
 
+Bb.seq, Bb.frame, Bb.round, Bb.circle = seq, frame, round, circle -- for the other shape modules
+
 -- The circle: a white-hot ring with a cyan glow that snaps open from `from` to `to` studs.
-function Bb.ring(trove: Kit.Trove, adornee: Instance, glow: Color3, from: number, to: number, grow: number, hold: number, fade: number): BillboardGui
+-- `weight` thickens every layer (the detonation's white donut is ~4).
+function Bb.ring(trove: Kit.Trove, adornee: Instance, glow: Color3, from: number, to: number, grow: number, hold: number, fade: number, weight: number?): BillboardGui
 	local gui = Bb.board(trove, adornee, from)
-	local strokes = { circle(gui, glow, 0.92, 0.07, 0.75, trove), circle(gui, glow, 0.92, 0.035, 0.35, trove), circle(gui, WHITE, 0.92, 0.012, 0, trove) }
+	local w = weight or 1
+	local strokes = { circle(gui, glow, 0.92, 0.07 * w, 0.75, trove), circle(gui, glow, 0.92, 0.035 * w, 0.35, trove), circle(gui, WHITE, 0.92, 0.012 * w + 0.02 * (w - 1), 0, trove) } -- heavy rings are mostly white
 	Kit.tween(trove, gui, grow, { Size = UDim2.fromScale(to, to) }, Enum.EasingStyle.Quart)
 	Kit.after(trove, grow + hold, function()
 		for _, s in strokes do Kit.tween(trove, s, fade, { Transparency = 1 }) end
@@ -112,13 +116,14 @@ function Bb.starburst(trove: Kit.Trove, adornee: Instance, colors: { Color3 }, s
 end
 
 -- Crescent arc: `span` (0..1) of a glowing circle, spinning at `speed` degrees per second.
-function Bb.arc(trove: Kit.Trove, adornee: Instance, color: Color3, studs: number, span: number, speed: number): BillboardGui
+function Bb.arc(trove: Kit.Trove, adornee: Instance, color: Color3, studs: number, span: number, speed: number, weight: number?): BillboardGui
 	local gui = Bb.board(trove, adornee, studs)
+	local w = weight or 1
 	local cut = math.clamp(span, 0.05, 0.95)
 	local mask = seq(0, 1, 0.5 - cut / 2, 1, 0.5 - cut / 2 + 0.02, 0, 0.5 + cut / 2 - 0.02, 0, 0.5 + cut / 2, 1, 1, 1)
 	local grads: { UIGradient } = {}
 	for _, layer in { { color, 0.09, 0.6 }, { color, 0.04, 0.1 }, { WHITE, 0.014, 0 } } do
-		local stroke = circle(gui, layer[1], 0.9, layer[2], layer[3], trove)
+		local stroke = circle(gui, layer[1], 0.9, layer[2] * w, layer[3], trove)
 		local g = Instance.new("UIGradient")
 		g.Transparency, g.Parent = mask, stroke
 		table.insert(grads, g)
@@ -128,28 +133,6 @@ function Bb.arc(trove: Kit.Trove, adornee: Instance, color: Color3, studs: numbe
 		angle += speed * dt
 		for _, g in grads do g.Rotation = angle end
 	end))
-	return gui
-end
-
--- A thin vertical flare line through `adornee` (lens streak).
-function Bb.line(trove: Kit.Trove, adornee: Instance, color: Color3, studs: number, seconds: number)
-	local gui = Bb.board(trove, adornee, studs)
-	local f = frame(gui, WHITE, UDim2.fromScale(0.012, 1))
-	local g = Instance.new("UIGradient")
-	g.Transparency, g.Color, g.Parent = seq(0, 1, 0.5, 0, 1, 1), ColorSequence.new({ ColorSequenceKeypoint.new(0, color), ColorSequenceKeypoint.new(0.5, WHITE), ColorSequenceKeypoint.new(1, color) }), f
-	Kit.tween(trove, f, seconds, { Size = UDim2.fromScale(0.004, 1.2), BackgroundTransparency = 1 }, Enum.EasingStyle.Quad, Enum.EasingDirection.In)
-end
-
--- A black ring of thorns (the seal that clamps the chest ember before it bursts).
-function Bb.thorns(trove: Kit.Trove, adornee: Instance, studs: number): BillboardGui
-	local gui = Bb.board(trove, adornee, studs)
-	local ink = Color3.fromRGB(10, 4, 2)
-	circle(gui, ink, 0.62, 0.06, 0, trove)
-	for n = 1, 22 do
-		local yaw = n / 22 * math.pi * 2
-		local f = frame(gui, ink, UDim2.fromScale(0.07, 0.07), math.deg(yaw) + 45)
-		f.Position = UDim2.fromScale(0.5 + math.cos(yaw) * 0.33, 0.5 + math.sin(yaw) * 0.33)
-	end
 	return gui
 end
 

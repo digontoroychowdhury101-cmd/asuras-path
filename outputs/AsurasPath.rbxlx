@@ -4839,6 +4839,9 @@ local Assets = {}
 Assets.Audio = {
 	Clash = "rbxassetid://112256493525265", ParryBass = "rbxassetid://132244224106707", Flesh = "rbxassetid://135539914951495", Blunt = "rbxassetid://96420173928383", Stone = "rbxassetid://99727362444008",
 	BulletJump = "rbxassetid://100694818881612", Glide = "rbxassetid://120377372310702", Slide = "rbxassetid://96988662266744", Wind = "rbxassetid://122450130719273", Bell = "rbxassetid://123385330740698", Water = "rbxassetid://113213311649809", BossDrone = "rbxassetid://123393717022210",
+	-- Signature-spell score (tools/assets/build_skill_audio.py); SkillAudio stands in until uploaded.
+	NovaVoid = "", NovaRing = "", NovaSwoop = "", NovaPlanet = "", NovaCharge = "", NovaBlast = "", NovaInk = "", NovaColumn = "", NovaWhite = "",
+	SunTension = "", SunBoom = "", SunEmber = "", SunThorn = "", SunCharge = "", SunBlast = "", SunEyes = "", SunGauntlet = "", SunPulse = "",
 }
 Assets.Textures = {
 	Ember = "rbxassetid://71210522377346", Smoke = "rbxassetid://118836433841190", Flame = "rbxassetid://109612319904107", Blood = "rbxassetid://130551791057565", BloodStain = "rbxassetid://127759159077031", Rune = "rbxassetid://122602029003354",
@@ -67753,7 +67756,7 @@ return table.freeze(Tabs)
               <string name="Name">BillboardFx</string>
               <string name="Source">--!strict
 -- Camera-facing 2D shapes drawn in the world with BillboardGuis: glowing rings, 4-point lens-flare
--- sparkles, jagged starbursts, spinning crescent arcs, vertical flare lines and thorn rings. Sizes are
+-- sparkles, jagged starbursts and spinning crescent arcs (BillboardShapes has the rest). Sizes are
 -- in studs; stroke widths follow the on-screen size so a ring stays a ring at any distance.
 local RunService = game:GetService("RunService")
 local Kit = require(script.Parent.SkillKit)
@@ -67777,7 +67780,7 @@ end
 function Bb.board(trove: Kit.Trove, adornee: Instance, studs: number): BillboardGui
 	local gui = Kit.add(trove, Instance.new("BillboardGui"))
 	gui.Adornee, gui.Size, gui.LightInfluence, gui.AlwaysOnTop = adornee, UDim2.fromScale(studs, studs), 0, false
-	gui.MaxDistance, gui.ZIndexBehavior = 2000, Enum.ZIndexBehavior.Sibling
+	gui.MaxDistance, gui.ZIndexBehavior, gui.Brightness = 2000, Enum.ZIndexBehavior.Sibling, 2 -- glows like the clip's light
 	gui.Parent = adornee
 	return gui
 end
@@ -67808,10 +67811,14 @@ local function circle(gui: BillboardGui, color: Color3, scale: number, ratio: nu
 	return stroke
 end
 
+Bb.seq, Bb.frame, Bb.round, Bb.circle = seq, frame, round, circle -- for the other shape modules
+
 -- The circle: a white-hot ring with a cyan glow that snaps open from `from` to `to` studs.
-function Bb.ring(trove: Kit.Trove, adornee: Instance, glow: Color3, from: number, to: number, grow: number, hold: number, fade: number): BillboardGui
+-- `weight` thickens every layer (the detonation's white donut is ~4).
+function Bb.ring(trove: Kit.Trove, adornee: Instance, glow: Color3, from: number, to: number, grow: number, hold: number, fade: number, weight: number?): BillboardGui
 	local gui = Bb.board(trove, adornee, from)
-	local strokes = { circle(gui, glow, 0.92, 0.07, 0.75, trove), circle(gui, glow, 0.92, 0.035, 0.35, trove), circle(gui, WHITE, 0.92, 0.012, 0, trove) }
+	local w = weight or 1
+	local strokes = { circle(gui, glow, 0.92, 0.07 * w, 0.75, trove), circle(gui, glow, 0.92, 0.035 * w, 0.35, trove), circle(gui, WHITE, 0.92, 0.012 * w + 0.02 * (w - 1), 0, trove) } -- heavy rings are mostly white
 	Kit.tween(trove, gui, grow, { Size = UDim2.fromScale(to, to) }, Enum.EasingStyle.Quart)
 	Kit.after(trove, grow + hold, function()
 		for _, s in strokes do Kit.tween(trove, s, fade, { Transparency = 1 }) end
@@ -67865,13 +67872,14 @@ function Bb.starburst(trove: Kit.Trove, adornee: Instance, colors: { Color3 }, s
 end
 
 -- Crescent arc: `span` (0..1) of a glowing circle, spinning at `speed` degrees per second.
-function Bb.arc(trove: Kit.Trove, adornee: Instance, color: Color3, studs: number, span: number, speed: number): BillboardGui
+function Bb.arc(trove: Kit.Trove, adornee: Instance, color: Color3, studs: number, span: number, speed: number, weight: number?): BillboardGui
 	local gui = Bb.board(trove, adornee, studs)
+	local w = weight or 1
 	local cut = math.clamp(span, 0.05, 0.95)
 	local mask = seq(0, 1, 0.5 - cut / 2, 1, 0.5 - cut / 2 + 0.02, 0, 0.5 + cut / 2 - 0.02, 0, 0.5 + cut / 2, 1, 1, 1)
 	local grads: { UIGradient } = {}
 	for _, layer in { { color, 0.09, 0.6 }, { color, 0.04, 0.1 }, { WHITE, 0.014, 0 } } do
-		local stroke = circle(gui, layer[1], 0.9, layer[2], layer[3], trove)
+		local stroke = circle(gui, layer[1], 0.9, layer[2] * w, layer[3], trove)
 		local g = Instance.new("UIGradient")
 		g.Transparency, g.Parent = mask, stroke
 		table.insert(grads, g)
@@ -67884,33 +67892,86 @@ function Bb.arc(trove: Kit.Trove, adornee: Instance, color: Color3, studs: numbe
 	return gui
 end
 
--- A thin vertical flare line through `adornee` (lens streak).
-function Bb.line(trove: Kit.Trove, adornee: Instance, color: Color3, studs: number, seconds: number)
-	local gui = Bb.board(trove, adornee, studs)
-	local f = frame(gui, WHITE, UDim2.fromScale(0.012, 1))
-	local g = Instance.new("UIGradient")
-	g.Transparency, g.Color, g.Parent = seq(0, 1, 0.5, 0, 1, 1), ColorSequence.new({ ColorSequenceKeypoint.new(0, color), ColorSequenceKeypoint.new(0.5, WHITE), ColorSequenceKeypoint.new(1, color) }), f
-	Kit.tween(trove, f, seconds, { Size = UDim2.fromScale(0.004, 1.2), BackgroundTransparency = 1 }, Enum.EasingStyle.Quad, Enum.EasingDirection.In)
-end
-
--- A black ring of thorns (the seal that clamps the chest ember before it bursts).
-function Bb.thorns(trove: Kit.Trove, adornee: Instance, studs: number): BillboardGui
-	local gui = Bb.board(trove, adornee, studs)
-	local ink = Color3.fromRGB(10, 4, 2)
-	circle(gui, ink, 0.62, 0.06, 0, trove)
-	for n = 1, 22 do
-		local yaw = n / 22 * math.pi * 2
-		local f = frame(gui, ink, UDim2.fromScale(0.07, 0.07), math.deg(yaw) + 45)
-		f.Position = UDim2.fromScale(0.5 + math.cos(yaw) * 0.33, 0.5 + math.sin(yaw) * 0.33)
-	end
-	return gui
-end
-
 return table.freeze(Bb)
 </string>
             </Properties>
           </Item>
           <Item class="ModuleScript" referent="642">
+            <Properties>
+              <string name="Name">BillboardShapes</string>
+              <string name="Source">--!strict
+-- The Supernova's one-off billboard shapes: the merged five-lobed detonation blob, the hollow gold
+-- 4-point stars by the planet and the vertical lens-flare line. Built on BillboardFx's helpers.
+local Kit = require(script.Parent.SkillKit)
+local Bb = require(script.Parent.BillboardFx)
+local Shapes = {}
+
+local WHITE = Color3.new(1, 1, 1)
+
+-- Detonation blob: a white core with `lobes` bulges under a soft glowing rim, swelling from 40% to
+-- `studs` over `grow` seconds and then fading over `fade` (the reference's white star-burst).
+function Shapes.blob(trove: Kit.Trove, adornee: Instance, glow: Color3, studs: number, lobes: number, grow: number, fade: number): BillboardGui
+	local gui = Bb.board(trove, adornee, studs * 0.4)
+	-- One CanvasGroup so the lobes fade as a single merged shape, never as overlapping circles.
+	local group = Instance.new("CanvasGroup")
+	group.Size, group.BackgroundTransparency = UDim2.fromScale(1, 1), 1
+	group.Parent = gui
+	local function puff(x: number, y: number, d: number)
+		for _, layer in { { glow, 1.3, 0.45, 1 }, { WHITE, 1, 0, 2 } } do
+			local f = Bb.frame(group, layer[1], UDim2.fromScale(d * layer[2], d * layer[2]), 0, layer[4])
+			f.Position, f.BackgroundTransparency = UDim2.fromScale(x, y), layer[3]
+			Bb.round(f)
+		end
+	end
+	puff(0.5, 0.5, 0.48)
+	local spin = math.random() * math.pi * 2
+	for n = 1, lobes do
+		local a = spin + n / lobes * math.pi * 2
+		puff(0.5 + math.cos(a) * 0.25, 0.5 + math.sin(a) * 0.25, 0.24 + math.random() * 0.1)
+	end
+	Kit.tween(trove, gui, grow, { Size = UDim2.fromScale(studs, studs) }, Enum.EasingStyle.Quart)
+	Kit.after(trove, grow, function() Kit.tween(trove, group, fade, { GroupTransparency = 1 }) end)
+	return gui
+end
+
+-- A hollow 4-point star outline (the reference's gold stars hanging by the planet), fading in and out.
+function Shapes.star(trove: Kit.Trove, adornee: Instance, color: Color3, studs: number, seconds: number): BillboardGui
+	local gui = Bb.board(trove, adornee, studs)
+	local group = Instance.new("CanvasGroup")
+	group.Size, group.BackgroundTransparency, group.GroupTransparency = UDim2.fromScale(1, 1), 1, 1
+	group.Parent = gui
+	local tips = { Vector2.new(0.5, 0), Vector2.new(1, 0.5), Vector2.new(0.5, 1), Vector2.new(0, 0.5) }
+	local points: { Vector2 } = {}
+	for n, tip in tips do
+		local nxt = tips[(n % 4) + 1]
+		table.insert(points, tip)
+		table.insert(points, Vector2.new(0.5, 0.5) + ((tip + nxt) / 2 - Vector2.new(0.5, 0.5)) * 0.3)
+	end
+	for n, a in points do
+		local b = points[(n % #points) + 1]
+		local mid, delta = (a + b) / 2, b - a
+		local f = Bb.frame(group, color, UDim2.fromScale(delta.Magnitude + 0.02, 0.03), math.deg(math.atan2(delta.Y, delta.X)))
+		f.Position = UDim2.fromScale(mid.X, mid.Y)
+	end
+	Kit.tween(trove, group, seconds * 0.25, { GroupTransparency = 0.25 })
+	Kit.after(trove, seconds * 0.7, function() Kit.tween(trove, group, seconds * 0.3, { GroupTransparency = 1 }) end)
+	return gui
+end
+
+-- A thin vertical flare line through `adornee` (lens streak).
+function Shapes.line(trove: Kit.Trove, adornee: Instance, color: Color3, studs: number, seconds: number)
+	local gui = Bb.board(trove, adornee, studs)
+	local f = Bb.frame(gui, WHITE, UDim2.fromScale(0.012, 1))
+	local g = Instance.new("UIGradient")
+	g.Transparency, g.Color, g.Parent = Bb.seq(0, 1, 0.5, 0, 1, 1), ColorSequence.new({ ColorSequenceKeypoint.new(0, color), ColorSequenceKeypoint.new(0.5, WHITE), ColorSequenceKeypoint.new(1, color) }), f
+	Kit.tween(trove, f, seconds, { Size = UDim2.fromScale(0.004, 1.2), BackgroundTransparency = 1 }, Enum.EasingStyle.Quad, Enum.EasingDirection.In)
+end
+
+return table.freeze(Shapes)
+</string>
+            </Properties>
+          </Item>
+          <Item class="ModuleScript" referent="643">
             <Properties>
               <string name="Name">BlazingSunShow</string>
               <string name="Source">--!strict
@@ -67920,7 +67981,8 @@ return table.freeze(Bb)
 --   0.07 extreme close-up along cheek and shoulder   0.33 "BOOM." bubble
 --   0.39 black void, medium shot; 0.42 an ember kindles on the chest   0.80 a thorn ring clamps it
 --   0.88 it bursts into a sunburst that fills the frame
---   release: black/white ground frame, boiling 2D toon fire, gradient wash, dark sun frame;
+--   release: red splatter, shard burst, black/white ground frame, the camera inside a 3D firestorm
+--   with the silhouette burning through, gradient wash, dark sun frame;
 --   +3.5 black silhouette, blazing star eyes, ember rain   +5.4 burning fists with gold crescents
 -- Void, camera, grading and 2D layers are the caster's; everyone nearby sees the fire in the world.
 local Kit = require(script.Parent.SkillKit)
@@ -67934,10 +67996,13 @@ local Canvas = require(script.Parent.FireCanvas)
 local Stage = require(script.Parent.VoidStage)
 local Sun = require(script.Parent.SunForms)
 local Shots = require(script.Parent.SunShots)
+local Ink = require(script.Parent.InkFrames)
+local Storm = require(script.Parent.FireStorm)
+local Sfx = require(script.Parent.SkillAudio)
 local Show = {}
 
 Show.FinalPulse = 4
-local EYES, FISTS, FINISH = 3.5, 5.4, 8.6 -- seconds after release
+local EYES, FISTS, FINISH = 3.55, 5.45, 8.6 -- seconds after release
 local rgb = Color3.fromRGB
 
 local function root(cast: any): BasePart?
@@ -67962,10 +68027,12 @@ function Show.startup(cast: any)
 	cast.Bag.Tension = tension
 	Kit.add(cast.Trove, function() Kit.clean(tension) end)
 	local r = root(cast)
+	Sfx.score(cast, "Sun", "Startup")
 	sparkles(cast, tension, 6)
 	if cast.Own then
 		cast.Bag.Grade = Screen.grade(cast.Trove)
 		cast.Bag.Hud = Kit.add(cast.Trove, Stage.hud())
+		Stage.bloom(cast.Trove, 1, 26, 0.88, 0.4)
 		Screen.settle(cast.Trove, cast.Bag.Grade, Stage.Grades.Duotone, 0.04)
 		Shots.startup(cast)
 		Kit.after(tension, w * 0.33, function() Manga.boom(tension, Vector2.new(0.28, 0.48), w * 0.1) end)
@@ -67983,7 +68050,7 @@ function Show.startup(cast: any)
 		Kit.tween(tension, ember, w * 0.4, { Size = UDim2.fromScale(3, 3) }, Enum.EasingStyle.Quad, Enum.EasingDirection.In)
 	end)
 	Kit.after(tension, w * 0.8, function()
-		Bb.thorns(tension, chest, 4.2)
+		Sun.thorns(tension, chest, 4.2)
 		if cast.Own then Cinema.shake(cast.Cinema, 0.25, 1, 2) end
 	end)
 	Kit.after(tension, w * 0.88, function()
@@ -67998,16 +68065,21 @@ function Show.release(cast: any, at: Vector3)
 	if cast.Bag.Tension then Kit.clean(cast.Bag.Tension) end
 	local folder = Kit.folder(cast.Trove, "BlazingSunAwakening")
 	cast.Bag.Folder = folder
+	Sfx.score(cast, "Sun", "Release")
 	local model = cast.Entity.Model
 	local floor = CFrame.new(at - Vector3.new(0, 2.8, 0))
 	Flame.shockwave(cast.Trove, folder, floor)
 	Fx.flash(cast.Trove, folder, at, Sun.Burst[2], 26, 0.6)
 	Fx.burst(Bb.anchor(folder, at), ColorSequence.new(Sun.Burst[1], Sun.Burst[4]), 70, 45)
 	if cast.Own then
-		Manga.groundFlash(cast.Trove, 0.1)
-		Kit.after(cast.Trove, 0.1, function() Canvas.chaos(cast.Trove, 2.5) end)
-		Kit.after(cast.Trove, 2.6, function() Canvas.wash(cast.Trove, 0.45) end)
-		Kit.after(cast.Trove, 3.05, function() Canvas.sunFrame(cast.Trove, 0.45) end)
+		-- Timed to the reference: red splatter, white shard burst, black/white ground, then the fire.
+		Ink.splatter(cast.Trove, 0.05)
+		Kit.after(cast.Trove, 0.055, function() Ink.shards(cast.Trove, 0.06) end)
+		Kit.after(cast.Trove, 0.115, function() Manga.groundFlash(cast.Trove, 0.1) end)
+		Kit.after(cast.Trove, 0.22, function() Storm.engulf(cast.Trove, 2.45) end)
+		Kit.after(cast.Trove, 0.27, function() Canvas.emerge(cast.Trove, model, 0.3) end)
+		Kit.after(cast.Trove, 2.67, function() Canvas.wash(cast.Trove, 0.45) end)
+		Kit.after(cast.Trove, 3.12, function() Canvas.sunFrame(cast.Trove, 0.42) end)
 		Cinema.shake(cast.Cinema, 0.9, 0.5, 2)
 		Shots.release(cast, EYES, FISTS, FINISH)
 	end
@@ -68019,7 +68091,7 @@ function Show.release(cast: any, at: Vector3)
 		Kit.add(cast.Trove, function() Kit.clean(eyes) end)
 		local flares = Sun.eyes(eyes, head, 2.3)
 		if cast.Own then
-			if cast.Bag.Void then Stage.tint(cast.Trove, cast.Bag.Void, rgb(62, 18, 6), 0.05) end
+			if cast.Bag.Void then Stage.tint(cast.Trove, cast.Bag.Void, rgb(96, 26, 10), 0.05) end
 			cast.Bag.Mask = Stage.silhouette(eyes, model, rgb(8, 4, 3))
 			Screen.settle(cast.Trove, cast.Bag.Grade or Screen.grade(cast.Trove), Stage.Grades.Ember, 0.05)
 		end
@@ -68046,6 +68118,7 @@ end
 function Show.pulse(cast: any, at: Vector3)
 	if cast.Pulses &lt;= 1 or not cast.Bag.Folder then return end
 	Flame.heat(cast.Trove, cast.Bag.Folder, CFrame.new(at - Vector3.new(0, 2.8, 0)))
+	Sfx.play(cast, "SunPulse", if cast.Pulses &gt;= Show.FinalPulse then 1.2 else 1)
 	if cast.Own then Cinema.shake(cast.Cinema, if cast.Pulses &gt;= Show.FinalPulse then 0.6 else 0.35, 1.4, 2) end
 end
 
@@ -68053,7 +68126,7 @@ return table.freeze(Show)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="643">
+          <Item class="ModuleScript" referent="644">
             <Properties>
               <string name="Name">BossAnimations</string>
               <string name="Source">--!strict
@@ -68112,7 +68185,7 @@ return Animations
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="644">
+          <Item class="ModuleScript" referent="645">
             <Properties>
               <string name="Name">BossCinematics</string>
               <string name="Source">--!strict
@@ -68172,7 +68245,7 @@ return Cinematics
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="645">
+          <Item class="ModuleScript" referent="646">
             <Properties>
               <string name="Name">BossEffects</string>
               <string name="Source">--!strict
@@ -68252,7 +68325,7 @@ return Effects
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="646">
+          <Item class="ModuleScript" referent="647">
             <Properties>
               <string name="Name">BossHud</string>
               <string name="Source">--!strict
@@ -68302,7 +68375,7 @@ return Hud
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="647">
+          <Item class="ModuleScript" referent="648">
             <Properties>
               <string name="Name">BossMusic</string>
               <string name="Source">--!strict
@@ -68340,7 +68413,7 @@ return Music
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="648">
+          <Item class="ModuleScript" referent="649">
             <Properties>
               <string name="Name">CameraController</string>
               <string name="Source">--!strict
@@ -68833,7 +68906,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="649">
+          <Item class="ModuleScript" referent="650">
             <Properties>
               <string name="Name">CelestialForms</string>
               <string name="Source">--!strict
@@ -68964,7 +69037,7 @@ return table.freeze(Forms)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="650">
+          <Item class="ModuleScript" referent="651">
             <Properties>
               <string name="Name">CelestialPillar</string>
               <string name="Source">--!strict
@@ -68993,7 +69066,7 @@ end
 function Pillar.erupt(trove: Kit.Trove, folder: Instance, ground: Vector3, width: number, band: number): Column
 	local top = ground + Vector3.new(0, HEIGHT, 0)
 	local shell = cylinder(folder, "SupernovaPillar", SHELL, width, 0.62, top)
-	local heart = cylinder(folder, "SupernovaHeart", HEART, width * 0.55, 0.5, top)
+	local heart = cylinder(folder, "SupernovaHeart", HEART, width * 0.55, 0.62, top)
 	local sheath = cylinder(folder, "SupernovaSheath", SHELL, width * 1.04, 0, top)
 	sheath.Material = Enum.Material.ForceField
 	local parts = { shell, heart, sheath }
@@ -69012,11 +69085,12 @@ function Pillar.erupt(trove: Kit.Trove, folder: Instance, ground: Vector3, width
 	local shards: { BasePart } = {}
 	local spec = {}
 	for n = 1, 46 do
-		local p = Kit.part(folder, "InkShard", INK, Vector3.new(0.1 + math.random() * 0.25, 5 + math.random() * 18, 0.4 + math.random() * 1.4), CFrame.new(ground),
+		local p = Kit.part(folder, "InkShard", INK, Vector3.new(0.15 + math.random() * 0.35, 5 + math.random() * 18, 0.6 + math.random() * 1.8), CFrame.new(ground),
 			if n % 2 == 0 then Enum.PartType.Wedge else Enum.PartType.Block)
 		p.Material, p.Transparency = Enum.Material.SmoothPlastic, 1
 		shards[n] = p
-		spec[n] = { Yaw = math.random() * math.pi * 2, R = width * (0.12 + math.random() * 0.36), H = math.random() * HEIGHT, Speed = 30 + math.random() * 40, Lean = (math.random() - 0.5) * 0.4 }
+		-- Mostly between the white heart and the outer shell, where only one translucent layer covers them.
+		spec[n] = { Yaw = math.random() * math.pi * 2, R = width * (0.3 + math.random() * 0.19), H = math.random() * HEIGHT, Speed = 30 + math.random() * 40, Lean = (math.random() - 0.5) * 0.4 }
 	end
 	-- Disc band: a wide translucent ring and a bright rim at the caster's height.
 	local ring: { BasePart } = {}
@@ -69076,7 +69150,7 @@ return table.freeze(Pillar)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="651">
+          <Item class="ModuleScript" referent="652">
             <Properties>
               <string name="Name">CodexView</string>
               <string name="Source">--!strict
@@ -69186,7 +69260,7 @@ return table.freeze(Codex)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="652">
+          <Item class="ModuleScript" referent="653">
             <Properties>
               <string name="Name">ColosseumController</string>
               <string name="Source">--!strict
@@ -69934,7 +70008,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="653">
+          <Item class="ModuleScript" referent="654">
             <Properties>
               <string name="Name">CombatCallouts</string>
               <string name="Source">--!strict
@@ -70089,7 +70163,7 @@ return table.freeze(Callouts)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="654">
+          <Item class="ModuleScript" referent="655">
             <Properties>
               <string name="Name">CombatFeedback</string>
               <string name="Source">--!strict
@@ -70241,7 +70315,7 @@ return Feedback
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="655">
+          <Item class="ModuleScript" referent="656">
             <Properties>
               <string name="Name">CombatHud</string>
               <string name="Source">--!strict
@@ -70340,7 +70414,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="656">
+          <Item class="ModuleScript" referent="657">
             <Properties>
               <string name="Name">CombatSurfaces</string>
               <string name="Source">--!strict
@@ -70409,7 +70483,7 @@ return Surfaces
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="657">
+          <Item class="ModuleScript" referent="658">
             <Properties>
               <string name="Name">CombatVfx</string>
               <string name="Source">--!strict
@@ -70529,7 +70603,7 @@ return Vfx
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="658">
+          <Item class="ModuleScript" referent="659">
             <Properties>
               <string name="Name">ComfortSettings</string>
               <string name="Source">--!strict
@@ -70597,7 +70671,7 @@ return table.freeze(Comfort)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="659">
+          <Item class="ModuleScript" referent="660">
             <Properties>
               <string name="Name">ControlsCard</string>
               <string name="Source">--!strict
@@ -70751,7 +70825,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="660">
+          <Item class="ModuleScript" referent="661">
             <Properties>
               <string name="Name">CoreGuiPolicy</string>
               <string name="Source">--!strict
@@ -70795,7 +70869,7 @@ return table.freeze(Policy)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="661">
+          <Item class="ModuleScript" referent="662">
             <Properties>
               <string name="Name">CreatureMotion</string>
               <string name="Source">--!strict
@@ -70910,7 +70984,7 @@ return Motion
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="662">
+          <Item class="ModuleScript" referent="663">
             <Properties>
               <string name="Name">DeviceLayout</string>
               <string name="Source">--!strict
@@ -71058,7 +71132,7 @@ return Device
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="663">
+          <Item class="ModuleScript" referent="664">
             <Properties>
               <string name="Name">DialogueController</string>
               <string name="Source">--!strict
@@ -71185,7 +71259,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="664">
+          <Item class="ModuleScript" referent="665">
             <Properties>
               <string name="Name">DialogueView</string>
               <string name="Source">--!strict
@@ -71299,7 +71373,7 @@ return table.freeze(View)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="665">
+          <Item class="ModuleScript" referent="666">
             <Properties>
               <string name="Name">DuoBars</string>
               <string name="Source">--!strict
@@ -71411,7 +71485,7 @@ return table.freeze(Duo)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="666">
+          <Item class="ModuleScript" referent="667">
             <Properties>
               <string name="Name">EncounterHandoffController</string>
               <string name="Source">--!strict
@@ -71505,7 +71579,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="667">
+          <Item class="ModuleScript" referent="668">
             <Properties>
               <string name="Name">EndingController</string>
               <string name="Source">--!strict
@@ -71656,7 +71730,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="668">
+          <Item class="ModuleScript" referent="669">
             <Properties>
               <string name="Name">EnemyBars</string>
               <string name="Source">--!strict
@@ -71747,7 +71821,7 @@ return table.freeze(Bars)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="669">
+          <Item class="ModuleScript" referent="670">
             <Properties>
               <string name="Name">EnemyDissolve</string>
               <string name="Source">--!strict
@@ -71860,7 +71934,7 @@ return Dissolve
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="670">
+          <Item class="ModuleScript" referent="671">
             <Properties>
               <string name="Name">EnemyPlate</string>
               <string name="Source">--!strict
@@ -71992,7 +72066,7 @@ return table.freeze(Plate)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="671">
+          <Item class="ModuleScript" referent="672">
             <Properties>
               <string name="Name">EnvironmentController</string>
               <string name="Source">--!strict
@@ -72082,23 +72156,21 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="672">
+          <Item class="ModuleScript" referent="673">
             <Properties>
               <string name="Name">FireCanvas</string>
               <string name="Source">--!strict
--- The Blazing Sun blast as the reference draws it: flat cel-shaded flame shapes (hard-edged yellow,
--- orange, crimson and near-black blobs) boiling over the whole screen with bright spark streaks,
--- then a yellow-to-crimson wash and a dark orange frame with the sun's disc. Smear frames at 24 fps.
--- Caster only; reduced flashes keeps the shapes but lets the world show through.
+-- 2D layers of the Blazing Sun blast (the fire itself is FireStorm, in 3D): the caster's crimson
+-- silhouette with white-hot eyes burning through it, the yellow-to-crimson wash and the soft dark
+-- orange frame with the sun's disc. Caster only; reduced flashes lets the world show through.
 local Players = game:GetService("Players")
 local Workspace = game:GetService("Workspace")
 local Effects = require(game:GetService("ReplicatedStorage").AsurasPath.Shared.EffectsPreference) :: any
 local Kit = require(script.Parent.SkillKit)
+local Screen = require(script.Parent.ImpactFrame)
 local Canvas = {}
 
 local rgb = Color3.fromRGB
-local HOT = { rgb(255, 250, 200), rgb(255, 236, 70), rgb(255, 214, 40) }
-local BODY = { rgb(255, 150, 30), rgb(250, 110, 25), rgb(225, 70, 20), rgb(170, 35, 10), rgb(70, 14, 4) }
 
 local function gui(trove: Kit.Trove, order: number): (ScreenGui?, Vector2)
 	local player, camera = Players.LocalPlayer, Workspace.CurrentCamera
@@ -72118,61 +72190,30 @@ local function shape(parent: Instance, z: number): Frame
 	return f
 end
 
-local function pick(list: { Color3 }): Color3 return list[math.random(1, #list)] end
 
--- `seconds` of boiling toon fire. Heat starts blown-out (mostly yellow/white) and cools to crimson.
-function Canvas.chaos(trove: Kit.Trove, seconds: number)
-	local g, size = gui(trove, 58)
-	if not g then return end
-	local see = if Effects.reducedFlashes() then 0.45 else 0
-	local back = shape(g, 1)
-	back.Position, back.Size, back.BackgroundColor3, back.BackgroundTransparency = UDim2.fromScale(0.5, 0.5), UDim2.fromScale(1, 1), BODY[2], 0.15 + see
-	back:FindFirstChildOfClass("UICorner"):Destroy()
-	local blobs: { Frame } = {}
-	local tips: { Frame } = {}
-	for n = 1, 34 do
-		blobs[n] = shape(back, 2 + n % 3)
-		local tip = shape(blobs[n], 2 + n % 3) -- a square turned 45 degrees: the tongue's point
-		tip.Rotation, tip.Position = 45, UDim2.fromScale(0.5, 0.08)
-		tip:FindFirstChildOfClass("UICorner"):Destroy()
-		tips[n] = tip
-	end
-	local sparks: { Frame } = {}
-	for n = 1, 16 do
-		local s = shape(back, 6)
-		s.BackgroundColor3 = if n % 3 == 0 then Color3.new(1, 1, 1) else HOT[2]
-		sparks[n] = s
-	end
-	local function draw(t: number)
-		local heat = math.clamp(1 - t / (seconds * 0.6), 0, 1)
-		back.BackgroundColor3 = if heat &gt; 0.6 then HOT[3] else BODY[2]
-		for n, f in blobs do
-			local hot = math.random() &lt; 0.12 + heat * 0.55
-			local w = size.Y * (0.1 + math.random() * 0.32)
-			local h = w * (1.3 + math.random() * 1.2)
-			f.BackgroundColor3 = if hot then pick(HOT) else pick(BODY)
-			f.BackgroundTransparency = see
-			f.Position = UDim2.fromOffset(math.random() * size.X, size.Y * (0.2 + math.random() * 0.95))
-			f.Size, f.Rotation = UDim2.fromOffset(w, h), (math.random() - 0.5) * 60
-			f:FindFirstChildOfClass("UICorner").CornerRadius = UDim.new(0.5, 0)
-			local tip = tips[n]
-			tip.BackgroundColor3, tip.BackgroundTransparency = f.BackgroundColor3, see
-			tip.Size = UDim2.fromScale(0.72, 0.72 * w / h)
-		end
-		for _, s in sparks do
-			s.Position = UDim2.fromOffset(math.random() * size.X, math.random() * size.Y)
-			s.Size, s.Rotation = UDim2.fromOffset(size.Y * (0.008 + math.random() * 0.02), size.Y * (0.08 + math.random() * 0.3)), (math.random() - 0.5) * 70
+-- The caster as a dark crimson silhouette with two white-hot eyes burning through the blast, drawn
+-- exactly where they stand for `seconds` (over the 3D firestorm).
+function Canvas.emerge(trove: Kit.Trove, model: Model, seconds: number)
+	local g = gui(trove, 59)
+	local camera = Workspace.CurrentCamera
+	local head = model:FindFirstChild("Head")
+	if not g or not camera or not head or not head:IsA("BasePart") then return end
+	local layer = Instance.new("Frame")
+	layer.Size, layer.BackgroundTransparency = UDim2.fromScale(1, 1), 1
+	layer.Parent = g
+	Screen.silhouette(layer, model, camera.CFrame, camera.FieldOfView, rgb(120, 14, 6), 1, 7, true)
+	local s = head.Size
+	for _, side in { -1, 1 } do
+		local at = camera:WorldToViewportPoint((head.CFrame * CFrame.new(side * s.X * 0.22, s.Y * 0.08, -s.Z * 0.5)).Position)
+		for n, spec in { { rgb(255, 210, 80), 0.05, 0.35 }, { Color3.new(1, 1, 1), 0.022, 0 } } do
+			local eye = shape(layer, 8 + n)
+			eye.Position, eye.Size = UDim2.fromOffset(at.X, at.Y), UDim2.fromOffset(camera.ViewportSize.Y * spec[2], camera.ViewportSize.Y * spec[2] * 0.8)
+			eye.BackgroundColor3, eye.BackgroundTransparency = spec[1], spec[3]
+			eye:FindFirstChildOfClass("UICorner").CornerRadius = UDim.new(0.5, 0)
 		end
 	end
-	draw(0)
-	Kit.add(trove, task.spawn(function()
-		local start = os.clock()
-		while os.clock() - start &lt; seconds and g.Parent do
-			task.wait(1 / 24)
-			draw(os.clock() - start)
-		end
-		g:Destroy()
-	end))
+	Kit.tween(trove, layer, seconds, { BackgroundTransparency = 1 })
+	Kit.after(trove, seconds, function() g:Destroy() end)
 end
 
 -- Yellow-to-crimson gradient wash over `seconds`, sliding as it fades.
@@ -72196,13 +72237,19 @@ function Canvas.sunFrame(trove: Kit.Trove, seconds: number)
 	local back = shape(g, 1)
 	back.Position, back.Size, back.BackgroundColor3 = UDim2.fromScale(0.5, 0.5), UDim2.fromScale(1, 1), rgb(165, 70, 12)
 	back:FindFirstChildOfClass("UICorner"):Destroy()
-	local sun = shape(back, 2)
-	sun.Position, sun.Size, sun.BackgroundColor3, sun.Rotation = UDim2.fromScale(0.16, 0.2), UDim2.fromOffset(size.Y * 0.5, size.Y * 0.3), rgb(255, 196, 60), -35
-	sun:FindFirstChildOfClass("UICorner").CornerRadius = UDim.new(0.5, 0)
+	-- Every shape is stacked in widening, fading copies: a cheap blur, as the reference frame is soft.
+	local function soft(color: Color3, x: number, y: number, w: number, h: number, rotation: number, z: number)
+		for k, fade in { 0, 0.5, 0.72, 0.86 } do
+			local f = shape(back, z)
+			local grow = 1 + (k - 1) * 0.09
+			f.Position, f.Size, f.Rotation = UDim2.fromScale(x, y), UDim2.fromOffset(w * grow, h * grow), rotation
+			f.BackgroundColor3, f.BackgroundTransparency = color, fade
+			f:FindFirstChildOfClass("UICorner").CornerRadius = UDim.new(0.5, 0)
+		end
+	end
+	soft(rgb(255, 196, 60), 0.16, 0.2, size.Y * 0.5, size.Y * 0.3, -35, 2)
 	for n, lobe in { { 0.55, 0.62, 0.62 }, { 0.2, 0.95, 0.5 }, { 0.88, 0.9, 0.45 } } do
-		local f = shape(back, 3)
-		f.Position, f.Size, f.BackgroundColor3 = UDim2.fromScale(lobe[1], lobe[2]), UDim2.fromOffset(size.Y * lobe[3], size.Y * lobe[3] * 1.1), rgb(130 - n * 10, 50, 8)
-		f:FindFirstChildOfClass("UICorner").CornerRadius = UDim.new(0.5, 0)
+		soft(rgb(130 - n * 10, 50, 8), lobe[1], lobe[2], size.Y * lobe[3], size.Y * lobe[3] * 1.1, 0, 3)
 	end
 	Kit.tween(trove, back, seconds, { BackgroundTransparency = 0.3 }, Enum.EasingStyle.Quad, Enum.EasingDirection.In)
 	Kit.after(trove, seconds, function() g:Destroy() end)
@@ -72212,7 +72259,127 @@ return table.freeze(Canvas)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="673">
+          <Item class="ModuleScript" referent="674">
+            <Properties>
+              <string name="Name">FireStorm</string>
+              <string name="Source">--!strict
+-- The Blazing Sun blast as the reference shows it: the camera is inside the explosion. Glowing flame
+-- puffs and spark streaks boil up a few studs in front of the lens, flame particles roar through,
+-- and a blur pass plus a hot solarized grade soften it into the smeared, blown-out look of the clip.
+-- Heat starts white-hot and cools to orange and crimson; the storm thins and pales as it burns out.
+-- Caster only; reduced flashes keeps the fire but drops the blow-out.
+local Lighting = game:GetService("Lighting")
+local RunService = game:GetService("RunService")
+local Workspace = game:GetService("Workspace")
+local Assets = require(game:GetService("ReplicatedStorage").AsurasPath.Shared.PresentationAssets)
+local Effects = require(game:GetService("ReplicatedStorage").AsurasPath.Shared.EffectsPreference) :: any
+local Kit = require(script.Parent.SkillKit)
+local Storm = {}
+
+local rgb = Color3.fromRGB
+local HOT = { rgb(255, 252, 225), rgb(255, 240, 120), rgb(255, 214, 60) }
+local BODY = { rgb(255, 160, 40), rgb(250, 115, 25), rgb(225, 70, 20), rgb(160, 30, 10), rgb(60, 12, 4) }
+
+type Puff = { Part: BasePart, X: number, Y: number, Depth: number, Speed: number, Size: number }
+
+local function pick(list: { Color3 }): Color3 return list[math.random(1, #list)] end
+
+local function respawn(p: Puff, heat: number, bottom: boolean)
+	p.X, p.Y = (math.random() - 0.5) * 2.2, if bottom then -1.3 - math.random() * 0.4 else (math.random() - 0.5) * 2.4
+	p.Depth, p.Speed, p.Size = 4 + math.random() * 4, 1.2 + math.random() * 2.2, 1.8 + math.random() * 3.8
+	p.Part.Color = if math.random() &lt; 0.15 + heat * 0.7 then pick(HOT) else pick(BODY)
+end
+
+-- `seconds` of storm around `camera`. Returns nothing; everything leaves with `trove`.
+function Storm.engulf(trove: Kit.Trove, seconds: number)
+	local camera = Workspace.CurrentCamera
+	if not camera then return end
+	local folder = Kit.folder(trove, "BlazingSunStorm")
+	local puffs: { Puff } = {}
+	for n = 1, 34 do
+		local part = Kit.part(folder, "FlamePuff", HOT[1], Vector3.one, CFrame.identity, Enum.PartType.Ball)
+		local p: Puff = { Part = part, X = 0, Y = 0, Depth = 5, Speed = 1, Size = 1 }
+		respawn(p, 1, false)
+		puffs[n] = p
+	end
+	local sparks: { BasePart } = {}
+	for n = 1, 18 do sparks[n] = Kit.part(folder, "SparkStreak", if n % 3 == 0 then HOT[1] else HOT[2], Vector3.new(0.05, 0.05, 2), CFrame.identity) end
+	-- Most of the storm is soft flame-texture particles pouring up through a sheet just past the lens,
+	-- over dark crimson smoke that gives the fire its holes and depth (the neon puffs only add heat).
+	local roar = Kit.part(folder, "StormSheet", HOT[2], Vector3.new(18, 12, 3), CFrame.identity)
+	roar.Transparency = 1
+	local flames = Kit.emitter(roar, { Texture = Assets.Textures.Flame, Color = ColorSequence.new(HOT[1], HOT[3]), Size = NumberSequence.new({
+		NumberSequenceKeypoint.new(0, 3), NumberSequenceKeypoint.new(0.4, 7), NumberSequenceKeypoint.new(1, 4) }), Rate = 260,
+		Lifetime = NumberRange.new(0.35, 0.7), Speed = NumberRange.new(5, 11), Spread = 25, Accel = Vector3.new(0, 14, 0), Light = 1,
+		Transparency = NumberSequence.new({ NumberSequenceKeypoint.new(0, 0.6), NumberSequenceKeypoint.new(0.2, 0.05), NumberSequenceKeypoint.new(1, 1) }) })
+	flames.Shape, flames.EmissionDirection = Enum.ParticleEmitterShape.Box, Enum.NormalId.Top
+	local smoke = Kit.emitter(roar, { Texture = Assets.Textures.Smoke, Color = ColorSequence.new(rgb(150, 34, 10), rgb(40, 8, 2)), Size = NumberSequence.new(4, 9), Rate = 30,
+		Lifetime = NumberRange.new(0.6, 1.1), Speed = NumberRange.new(3, 6), Spread = 30, Accel = Vector3.new(0, 6, 0), Light = 0,
+		Transparency = NumberSequence.new({ NumberSequenceKeypoint.new(0, 1), NumberSequenceKeypoint.new(0.25, 0.25), NumberSequenceKeypoint.new(1, 1) }) })
+	smoke.Shape, smoke.EmissionDirection = Enum.ParticleEmitterShape.Box, Enum.NormalId.Top
+	local tint = 0
+	local blur = Kit.add(trove, Instance.new("BlurEffect"))
+	blur.Name, blur.Size, blur.Parent = "AsuraSkillStormBlur", 9, Lighting
+	local grade = Kit.add(trove, Instance.new("ColorCorrectionEffect"))
+	grade.Name, grade.Parent = "AsuraSkillStormGrade", Lighting
+	local blowout = if Effects.reducedFlashes() then 0.15 else 0.45
+	local start = os.clock()
+	local name = "AsuraSkillStorm" .. math.random(1, 1e6)
+	Kit.add(trove, function() RunService:UnbindFromRenderStep(name) end)
+	-- After the cinema director (Camera + 5) so the storm sits on this frame's camera, never a frame late.
+	RunService:BindToRenderStep(name, Enum.RenderPriority.Camera.Value + 6, function(dt: number)
+		local t = os.clock() - start
+		local heat = math.clamp(1 - t / (seconds * 0.55), 0, 1)
+		local fade = math.clamp((t - seconds * 0.6) / (seconds * 0.4), 0, 1)
+		local view = camera.CFrame
+		local parts: { BasePart } = {}
+		local frames: { CFrame } = {}
+		for _, p in puffs do
+			p.Y += p.Speed * dt
+			if p.Y &gt; 1.4 then respawn(p, heat, true) end
+			local wobble = math.sin(t * 6 + p.Depth * 3) * 0.08
+			local scale = p.Depth * math.tan(math.rad(camera.FieldOfView / 2))
+			local size = p.Size * (0.75 + 0.25 * math.sin(t * 9 + p.X * 5))
+			p.Part.Size = Vector3.new(size, size * 1.35, size * 0.6)
+			p.Part.Transparency = 0.2 + fade * 0.75
+			table.insert(parts, p.Part)
+			table.insert(frames, view * CFrame.new((p.X + wobble) * scale * 1.7, p.Y * scale, -p.Depth))
+		end
+		for n, s in sparks do
+			local seed = n * 13.7 + math.floor(t * 12 + n) * 0.37
+			local x, y = (math.noise(seed, 1) * 2) * 3, (math.noise(seed, 2) * 2) * 2
+			table.insert(parts, s)
+			table.insert(frames, view * CFrame.new(x, y, -3 - (n % 4)) * CFrame.Angles(math.rad(90 + math.noise(seed, 3) * 50), 0, math.rad(math.noise(seed, 4) * 40)))
+			s.Transparency = fade
+		end
+		table.insert(parts, roar)
+		table.insert(frames, view * CFrame.new(0, -3, -6))
+		tint += dt
+		if tint &gt; 0.1 then -- the particles cool with the heat and thin as the storm burns out
+			tint = 0
+			flames.Color = if heat &gt; 0.5 then ColorSequence.new(HOT[1], HOT[3]) else ColorSequence.new(HOT[3], BODY[3])
+			flames.Rate, smoke.Rate = 260 * (1 - fade), 30 * (1 - fade) + 10 * (1 - heat)
+		end
+		Workspace:BulkMoveTo(parts, frames, Enum.BulkMoveMode.FireCFrameChanged)
+		blur.Size = 9 * (1 - fade * 0.7)
+		grade.Brightness = blowout * heat
+		grade.Contrast = 0.35 + 0.2 * heat
+		grade.Saturation = 0.35 - fade * 0.6
+		grade.TintColor = Color3.new(1, 0.9 + 0.08 * heat, 0.72 + 0.2 * heat)
+	end)
+	Kit.after(trove, seconds, function()
+		RunService:UnbindFromRenderStep(name)
+		folder:Destroy()
+		blur:Destroy()
+		grade:Destroy()
+	end)
+end
+
+return table.freeze(Storm)
+</string>
+            </Properties>
+          </Item>
+          <Item class="ModuleScript" referent="675">
             <Properties>
               <string name="Name">FlameForms</string>
               <string name="Source">--!strict
@@ -72329,7 +72496,7 @@ return table.freeze(Flame)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="674">
+          <Item class="ModuleScript" referent="676">
             <Properties>
               <string name="Name">GameFeelController</string>
               <string name="Source">--!strict
@@ -72413,7 +72580,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="675">
+          <Item class="ModuleScript" referent="677">
             <Properties>
               <string name="Name">HudKit</string>
               <string name="Source">--!strict
@@ -72555,7 +72722,7 @@ return HudKit
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="676">
+          <Item class="ModuleScript" referent="678">
             <Properties>
               <string name="Name">HudLayout</string>
               <string name="Source">--!strict
@@ -72674,7 +72841,7 @@ return table.freeze(Layout)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="677">
+          <Item class="ModuleScript" referent="679">
             <Properties>
               <string name="Name">HudVisibility</string>
               <string name="Source">--!strict
@@ -72759,7 +72926,7 @@ return table.freeze(Visibility)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="678">
+          <Item class="ModuleScript" referent="680">
             <Properties>
               <string name="Name">IconShapes</string>
               <string name="Source">--!strict
@@ -72819,7 +72986,7 @@ return table.freeze(Shapes)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="679">
+          <Item class="ModuleScript" referent="681">
             <Properties>
               <string name="Name">ImpactFrame</string>
               <string name="Source">--!strict
@@ -72962,20 +73129,100 @@ function Screen.frame(trove: Kit.Trove, model: Model, seconds: number, palette: 
 	end))
 end
 
--- A beat of impact frames: each entry {palette, seconds} plays back to back from now.
-function Screen.sequence(trove: Kit.Trove, model: Model, beats: { { any } })
-	local at = 0
-	for _, beat in beats do
-		Kit.after(trove, at, function() Screen.frame(trove, model, beat[2], beat[1]) end)
-		at += beat[2]
-	end
-end
+Screen.silhouette = silhouette -- the caster drawn exactly where they stand, for other 2D layers
 
 return table.freeze(Screen)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="680">
+          <Item class="ModuleScript" referent="682">
+            <Properties>
+              <string name="Name">InkFrames</string>
+              <string name="Source">--!strict
+-- Single-beat impact frames that open the Blazing Sun blast: the red ink splatter and the white shard
+-- burst. Each lasts two to four frames and re-cuts every frame like hand-drawn smears. Caster only.
+local Kit = require(script.Parent.SkillKit)
+local Manga = require(script.Parent.MangaFx)
+local Ink = {}
+
+local rgb = Color3.fromRGB
+local WHITE, INK = Color3.new(1, 1, 1), rgb(6, 6, 8)
+
+local function full(gui: ScreenGui, color: Color3): Frame
+	local back = Manga.box(gui, color)
+	back.Position, back.Size = UDim2.fromScale(0.5, 0.5), UDim2.fromScale(1, 1)
+	return back
+end
+
+-- A thin stroke from `from` at `angle` (radians), `length` px long.
+local function stroke(f: Frame, from: Vector2, angle: number, length: number, width: number)
+	local mid = from + Vector2.new(math.cos(angle), math.sin(angle)) * length / 2
+	f.Position, f.Size, f.Rotation = UDim2.fromOffset(mid.X, mid.Y), UDim2.fromOffset(length, width), math.deg(angle)
+end
+
+Ink.full, Ink.stroke = full, stroke -- shared with NovaInk
+
+-- Black frame splashed with blood-red ink around a white-hot star.
+function Ink.splatter(trove: Kit.Trove, seconds: number)
+	local gui, size = Manga.screen(trove, 62)
+	if not gui then return end
+	local back = full(gui, INK)
+	local drops: { Frame } = {}
+	for n = 1, 80 do drops[n] = Manga.blob(back, rgb(222, 18, 10)) end
+	local rays: { Frame } = {}
+	for n = 1, 24 do
+		rays[n] = Manga.box(back, if n % 3 == 0 then WHITE else rgb(255, 236, 90))
+		rays[n].ZIndex = 4
+	end
+	local star = Manga.blob(back, rgb(255, 250, 225))
+	star.ZIndex = 5
+	Manga.animate(trove, gui, seconds, function()
+		local c = Vector2.new(size.X * 0.5, size.Y * 0.47)
+		for _, f in drops do
+			local a, r = math.random() * math.pi * 2, size.Y * (0.05 + 0.6 * math.random() ^ 1.3)
+			local d = size.Y * (0.08 + math.random() * 0.3) * (1.1 - r / (size.Y * 0.75))
+			f.Position, f.Size = UDim2.fromOffset(c.X + math.cos(a) * r * 1.4, c.Y + math.sin(a) * r), UDim2.fromOffset(d * (1 + math.random()), d)
+			f.Rotation = math.random() * 180
+		end
+		for n, f in rays do stroke(f, c, n / #rays * math.pi * 2 + math.random() * 0.3, size.Y * (0.14 + math.random() * 0.3), 4 + math.random() * 12) end
+		star.Position, star.Size = UDim2.fromOffset(c.X, c.Y), UDim2.fromOffset(size.Y * 0.2, size.Y * 0.2)
+	end)
+end
+
+-- Warm white flash of yellow, white and red sticks flying from the centre, a flare line through it.
+function Ink.shards(trove: Kit.Trove, seconds: number)
+	local gui, size = Manga.screen(trove, 62)
+	if not gui then return end
+	-- A hazy, washed-out flash the world still shows through, with a soft white heart.
+	local back = full(gui, rgb(250, 232, 214))
+	back.BackgroundTransparency = 0.3
+	for k, spec in { { 1.3, 0.75 }, { 0.95, 0.5 }, { 0.6, 0.15 } } do
+		local glow = Manga.blob(back, WHITE)
+		glow.Position, glow.Size, glow.BackgroundTransparency, glow.ZIndex = UDim2.fromScale(0.5, 0.5), UDim2.fromOffset(size.Y * spec[1], size.Y * spec[1]), spec[2], 1 + k
+	end
+	local colors = { WHITE, rgb(255, 236, 90), rgb(255, 176, 40), rgb(225, 40, 20) }
+	local sticks: { Frame } = {}
+	for n = 1, 48 do
+		sticks[n] = Manga.box(back, colors[(n % #colors) + 1])
+		sticks[n].ZIndex = 5
+	end
+	local flare = Manga.box(back, WHITE)
+	flare.Position, flare.Size, flare.ZIndex = UDim2.fromScale(0.5, 0.5), UDim2.fromOffset(size.X * 0.008, size.Y), 4
+	Manga.animate(trove, gui, seconds, function()
+		local c = size / 2
+		for _, f in sticks do
+			local a = math.random() * math.pi * 2
+			local from = c + Vector2.new(math.cos(a), math.sin(a)) * size.Y * math.random() * 0.12
+			stroke(f, from, a + (math.random() - 0.5) * 0.6, size.Y * (0.08 + math.random() * 0.4), 4 + math.random() * 9)
+		end
+	end)
+end
+
+return table.freeze(Ink)
+</string>
+            </Properties>
+          </Item>
+          <Item class="ModuleScript" referent="683">
             <Properties>
               <string name="Name">InputController</string>
               <string name="Source">--!strict
@@ -73585,7 +73832,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="681">
+          <Item class="ModuleScript" referent="684">
             <Properties>
               <string name="Name">InterfaceController</string>
               <string name="Source">--!strict
@@ -74843,7 +75090,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="682">
+          <Item class="ModuleScript" referent="685">
             <Properties>
               <string name="Name">LandscapeBudget</string>
               <string name="Source">--!strict
@@ -74962,12 +75209,12 @@ return Budget
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="683">
+          <Item class="ModuleScript" referent="686">
             <Properties>
               <string name="Name">MangaFx</string>
               <string name="Source">--!strict
--- Hand-drawn 2D screen beats from the reference cut: the black/white ink "dome" negative, the white
--- frame of black vertical ink streaks, the black frame with a white ground band, a comic "BOOM."
+-- Hand-drawn 2D screen beats from the reference cut (NovaInk and InkFrames draw the ink frames):
+-- the black frame with a white ground band, a comic "BOOM."
 -- bubble, diagonal swoop streaks and full-screen colour fills (the slow whiteout). Lines re-cut every
 -- frame like smear animation. Caster only; reduced flashes shortens and softens every beat.
 local Players = game:GetService("Players")
@@ -75015,55 +75262,18 @@ local function animate(trove: Kit.Trove, gui: ScreenGui, seconds: number, draw: 
 	end))
 end
 
-local function sparkle(parent: Instance, at: Vector2, size: number)
-	for _, bar in { { size, size * 0.06 }, { size * 0.06, size * 0.7 } } do
-		local f = box(parent, WHITE)
+-- A long, needle-thin 4-point sparkle (the reference's cross-shaped glints).
+local function sparkle(parent: Instance, at: Vector2, size: number, color: Color3?)
+	for _, bar in { { size, size * 0.022 }, { size * 0.022, size * 0.8 } } do
+		local f = box(parent, color or WHITE)
 		f.Position, f.Size, f.ZIndex = UDim2.fromOffset(at.X, at.Y), UDim2.fromOffset(bar[1], bar[2]), 5
+		local g = Instance.new("UIGradient")
+		g.Transparency = NumberSequence.new({ NumberSequenceKeypoint.new(0, 1), NumberSequenceKeypoint.new(0.5, 0), NumberSequenceKeypoint.new(1, 1) })
+		g.Rotation, g.Parent = if bar[1] &lt; bar[2] then 90 else 0, f
 	end
 end
 
--- Black frame: a white dome of vertical ink hatching around a black core, falling white rain lines.
-function Manga.inkDome(trove: Kit.Trove, seconds: number)
-	local gui, size = screen(trove, 62)
-	if not gui then return end
-	local back = box(gui, INK)
-	back.Position, back.Size = UDim2.fromScale(0.5, 0.5), UDim2.fromScale(1, 1)
-	local hatch: { Frame } = {}
-	for n = 1, 140 do hatch[n] = box(back, WHITE) end
-	local core = blob(back, INK)
-	core.ZIndex = 3
-	for n = 1, 4 do sparkle(back, Vector2.new(size.X * (0.15 + 0.23 * n), size.Y * (0.2 + 0.18 * (n % 2))), size.Y * 0.14) end
-	animate(trove, gui, seconds, function(t: number)
-		local c, rx, ry = size / 2 + Vector2.new(0, size.Y * 0.08), size.X * 0.27 * (1 + t), size.Y * 0.34 * (1 + t)
-		core.Position, core.Size = UDim2.fromOffset(c.X, c.Y), UDim2.fromOffset(rx * 1.5, ry * 1.2)
-		for n, f in hatch do
-			if n &lt;= 90 then -- the dome band
-				local a = n / 90 * math.pi * 2
-				local len = size.Y * (0.08 + math.random() * 0.2)
-				f.Position, f.Size = UDim2.fromOffset(c.X + math.cos(a) * rx, c.Y + math.sin(a) * ry - len * 0.3), UDim2.fromOffset(2 + math.random() * 5, len)
-			else -- rain from the top edge
-				f.Position, f.Size = UDim2.fromOffset(math.random() * size.X, math.random() * size.Y * 0.3), UDim2.fromOffset(1 + math.random() * 2, size.Y * (0.1 + math.random() * 0.4))
-			end
-		end
-	end)
-end
-
--- White frame torn by black vertical ink streaks (the column's first instant).
-function Manga.inkStreaks(trove: Kit.Trove, seconds: number)
-	local gui, size = screen(trove, 62)
-	if not gui then return end
-	local back = box(gui, WHITE)
-	back.Position, back.Size = UDim2.fromScale(0.5, 0.5), UDim2.fromScale(1, 1)
-	local streaks: { Frame } = {}
-	for n = 1, 46 do streaks[n] = box(back, if n % 5 == 0 then Color3.fromRGB(120, 120, 125) else INK) end
-	animate(trove, gui, seconds, function()
-		for _, f in streaks do
-			local x = size.X * (0.5 + (math.random() - 0.5) * (if math.random() &lt; 0.6 then 0.3 else 0.95))
-			f.Position, f.Rotation = UDim2.fromOffset(x, size.Y * (0.3 + math.random() * 0.5)), (math.random() - 0.5) * 16
-			f.Size = UDim2.fromOffset(2 + math.random() ^ 2 * 26, size.Y * (0.3 + math.random() * 0.8))
-		end
-	end)
-end
+Manga.screen, Manga.box, Manga.blob, Manga.animate, Manga.sparkle = screen, box, blob, animate, sparkle
 
 -- Black frame with a white ground band and scattered white blobs (the burst's first instant).
 function Manga.groundFlash(trove: Kit.Trove, seconds: number)
@@ -75144,7 +75354,7 @@ return table.freeze(Manga)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="684">
+          <Item class="ModuleScript" referent="687">
             <Properties>
               <string name="Name">MasteryEffects</string>
               <string name="Source">--!strict
@@ -75184,7 +75394,7 @@ return table.freeze(Effects)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="685">
+          <Item class="ModuleScript" referent="688">
             <Properties>
               <string name="Name">MoveIcons</string>
               <string name="Source">--!strict
@@ -75310,7 +75520,7 @@ return table.freeze(Icons)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="686">
+          <Item class="ModuleScript" referent="689">
             <Properties>
               <string name="Name">MovementController</string>
               <string name="Source">--!strict
@@ -75492,7 +75702,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="687">
+          <Item class="ModuleScript" referent="690">
             <Properties>
               <string name="Name">MovementEffects</string>
               <string name="Source">--!strict
@@ -75608,7 +75818,7 @@ return Effects
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="688">
+          <Item class="ModuleScript" referent="691">
             <Properties>
               <string name="Name">MovementMath</string>
               <string name="Source">--!strict
@@ -75651,7 +75861,261 @@ return Motion
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="689">
+          <Item class="ModuleScript" referent="692">
+            <Properties>
+              <string name="Name">NovaInk</string>
+              <string name="Source">--!strict
+-- The Supernova's three ink frames, back to back after the detonation: the black frame with a white
+-- hatched dome over a two-lobed ink core, the inverted white frame with a hatched black blob and a
+-- white radial burst, and the white frame torn by black ink streaks. Lines re-cut every frame like
+-- smear animation. Caster only; reduced flashes shortens every beat.
+local Kit = require(script.Parent.SkillKit)
+local Manga = require(script.Parent.MangaFx)
+local Ink = require(script.Parent.InkFrames)
+local Nova = {}
+
+local rgb = Color3.fromRGB
+local WHITE, INK = Color3.new(1, 1, 1), rgb(6, 6, 8)
+
+-- Black frame: a thick white dome of vertical ink hatching arching over a two-lobed black core that
+-- sits on a hatched white ground line, white rain from the top edge, needle sparkles.
+function Nova.dome(trove: Kit.Trove, seconds: number)
+	local gui, size = Manga.screen(trove, 62)
+	if not gui then return end
+	local back = Manga.box(gui, INK)
+	back.Position, back.Size = UDim2.fromScale(0.5, 0.5), UDim2.fromScale(1, 1)
+	local hatch: { Frame } = {}
+	for n = 1, 320 do hatch[n] = Manga.box(back, WHITE) end
+	local inner: { Frame } = {}
+	for n = 1, 70 do
+		inner[n] = Manga.box(back, INK)
+		inner[n].ZIndex = 4
+	end
+	local arch = Manga.blob(back, WHITE) -- solid white under the hatching: the dome reads as one bright mass
+	arch.ZIndex = 1
+	local lobes = { Manga.blob(back, INK), Manga.blob(back, INK) }
+	for _, l in lobes do l.ZIndex = 3 end
+	local ground = Manga.box(back, WHITE)
+	ground.AnchorPoint, ground.ZIndex = Vector2.new(0.5, 0), 2
+	for n, at in { Vector2.new(0.24, 0.24), Vector2.new(0.66, 0.16), Vector2.new(0.86, 0.42), Vector2.new(0.12, 0.6) } do
+		Manga.sparkle(back, at * size, size.Y * (0.22 + 0.06 * n))
+	end
+	Manga.animate(trove, gui, seconds, function(t: number)
+		local grow = 1 + t * 1.5
+		local c = Vector2.new(size.X * 0.5, size.Y * 0.6)
+		local rx, ry = size.X * 0.23 * grow, size.Y * 0.4 * grow
+		arch.Position, arch.Size = UDim2.fromOffset(c.X, c.Y), UDim2.fromOffset(rx * 2.15, ry * 1.75)
+		for i, l in lobes do
+			l.Position = UDim2.fromOffset(c.X + (if i == 1 then -1 else 1) * rx * 0.36, c.Y + ry * 0.08)
+			l.Size = UDim2.fromOffset(rx * 0.95, ry * 1.05)
+		end
+		ground.Position, ground.Size = UDim2.fromOffset(c.X, c.Y + ry * 0.5), UDim2.fromOffset(size.X, size.Y)
+		for n, f in inner do -- the core's edge hatched up into the white, so the two read as one ink mass
+			local i = if n % 2 == 0 then 1 else -1
+			local a = math.pi + (math.random() * 0.9 + 0.05) * math.pi
+			local len = size.Y * (0.03 + math.random() * 0.08)
+			f.Position = UDim2.fromOffset(c.X + i * rx * 0.36 + math.cos(a) * rx * 0.47, c.Y + ry * 0.08 + math.sin(a) * ry * 0.52 - len * 0.4)
+			f.Size = UDim2.fromOffset(1 + math.random() * 3, len)
+		end
+		for n, f in hatch do
+			if n &lt;= 240 then -- the arch's fuzzy rim: strokes poking out of it, longest at the crown
+				local a = math.pi * 0.92 + n / 240 * math.pi * 1.16
+				local crown = math.max(0, -math.sin(a))
+				local len = size.Y * (0.05 + math.random() * 0.1 + crown * 0.1)
+				f.Position = UDim2.fromOffset(c.X + math.cos(a) * rx * 1.06 + (math.random() - 0.5) * 12, c.Y + math.sin(a) * ry * 0.86 - len * 0.2)
+				f.Size = UDim2.fromOffset(2 + math.random() * 5, len)
+			elseif n &lt;= 280 then -- rain from the top edge
+				f.Position, f.Size = UDim2.fromOffset(math.random() * size.X, math.random() * size.Y * 0.25), UDim2.fromOffset(1 + math.random() * 2, size.Y * (0.08 + math.random() * 0.35))
+			else -- hatching up from the ground line
+				f.Position, f.Size = UDim2.fromOffset(math.random() * size.X, c.Y + ry * 0.5 - size.Y * 0.03), UDim2.fromOffset(1 + math.random() * 3, size.Y * (0.03 + math.random() * 0.09))
+			end
+		end
+	end)
+end
+
+-- White frame torn by black vertical ink streaks (the column's first instant).
+function Nova.streaks(trove: Kit.Trove, seconds: number)
+	local gui, size = Manga.screen(trove, 62)
+	if not gui then return end
+	local back = Manga.box(gui, WHITE)
+	back.Position, back.Size = UDim2.fromScale(0.5, 0.5), UDim2.fromScale(1, 1)
+	-- Each tear is three stacked strokes of different widths and lengths: a ragged ink edge.
+	local streaks: { Frame } = {}
+	for n = 1, 96 do streaks[n] = Manga.box(back, if n % 7 == 0 then Color3.fromRGB(110, 110, 115) else INK) end
+	Manga.animate(trove, gui, seconds, function()
+		for n = 1, #streaks, 3 do
+			local x = size.X * (0.5 + (math.random() - 0.5) * (if math.random() &lt; 0.65 then 0.32 else 0.95))
+			local y, width, tilt = size.Y * (0.25 + math.random() * 0.55), 4 + math.random() ^ 1.6 * 70, (math.random() - 0.5) * 14
+			for k = 0, 2 do
+				local f = streaks[n + k]
+				f.Position = UDim2.fromOffset(x + (math.random() - 0.5) * width * 0.6, y + (math.random() - 0.5) * size.Y * 0.3)
+				f.Size, f.Rotation = UDim2.fromOffset(width * (0.35 + math.random() * 0.65), size.Y * (0.2 + math.random() * 0.7)), tilt + (math.random() - 0.5) * 6
+			end
+		end
+	end)
+end
+
+-- White frame: a black hatched blob on hatched ground with white rays bursting from its heart.
+function Nova.burst(trove: Kit.Trove, seconds: number)
+	local gui, size = Manga.screen(trove, 62)
+	if not gui then return end
+	local back = Ink.full(gui, WHITE)
+	local core = Manga.blob(back, INK)
+	core.ZIndex = 2
+	local fringe: { Frame } = {}
+	for n = 1, 230 do
+		fringe[n] = Manga.box(back, INK)
+		fringe[n].ZIndex = 2
+	end
+	local rays: { Frame } = {}
+	for n = 1, 44 do
+		rays[n] = Manga.box(back, WHITE)
+		rays[n].ZIndex = 4
+	end
+	for n = 1, 3 do Manga.sparkle(back, Vector2.new(size.X * (0.1 + 0.3 * n), size.Y * (0.1 + 0.12 * (n % 2))), size.Y * 0.4, rgb(70, 70, 75)) end
+	Manga.animate(trove, gui, seconds, function()
+		local c = Vector2.new(size.X * 0.5, size.Y * 0.5)
+		local rx, ry = size.Y * 0.44, size.Y * 0.4 -- a round blob, not a pill
+		core.Position, core.Size = UDim2.fromOffset(c.X, c.Y), UDim2.fromOffset(rx * 2, ry * 2)
+		for n, f in fringe do
+			if n &lt;= 150 then -- hatched rim of the blob
+				local a = n / 150 * math.pi * 2
+				f.Position = UDim2.fromOffset(c.X + math.cos(a) * rx * 0.97 + (math.random() - 0.5) * 8, c.Y + math.sin(a) * ry * 0.97)
+				f.Size = UDim2.fromOffset(2 + math.random() * 4, size.Y * (0.05 + math.random() * 0.14))
+			else -- hatched ground band
+				f.Position, f.Size = UDim2.fromOffset(math.random() * size.X, size.Y * 0.92), UDim2.fromOffset(2 + math.random() * 4, size.Y * (0.06 + math.random() * 0.16))
+			end
+		end
+		local hub = c + Vector2.new(size.X * 0.03, size.Y * 0.16)
+		for n, f in rays do
+			Ink.stroke(f, hub, n / #rays * math.pi * 2 + (math.random() - 0.5) * 0.25, size.Y * (0.1 + math.random() * 0.36), 1 + math.random() * 4)
+		end
+	end)
+end
+
+return table.freeze(Nova)
+</string>
+            </Properties>
+          </Item>
+          <Item class="ModuleScript" referent="693">
+            <Properties>
+              <string name="Name">NovaScenery</string>
+              <string name="Source">--!strict
+-- Celestial Supernova scenery around the planet: a vortex of translucent teal smoke ribbons whipping
+-- round the caster, floating black rocks and glowing cubes, gold sparkles, the hollow gold stars by
+-- the planet and the gold flame crescents that tear across it before the detonation.
+local RunService = game:GetService("RunService")
+local Workspace = game:GetService("Workspace")
+local Assets = require(game:GetService("ReplicatedStorage").AsurasPath.Shared.PresentationAssets)
+local Kit = require(script.Parent.SkillKit)
+local Bb = require(script.Parent.BillboardFx)
+local Shapes = require(script.Parent.BillboardShapes)
+local Planet = require(script.Parent.PlanetForms)
+local Scenery = {}
+
+local rgb = Color3.fromRGB
+local WHITE = Color3.new(1, 1, 1)
+
+-- Curved smoke ribbons orbiting `center()`; returns a setter for their radius (to widen the storm).
+function Scenery.vortex(trove: Kit.Trove, folder: Instance, center: () -&gt; Vector3, count: number): (number) -&gt; ()
+	local hub = Kit.part(folder, "VortexHub", WHITE, Vector3.one * 0.1, CFrame.new(center()))
+	hub.Transparency = 1
+	local radius = 6
+	local ribbons = {}
+	for n = 1, count do
+		local a0, a1 = Kit.attach(trove, hub, Vector3.zero, "RibbonA"), Kit.attach(trove, hub, Vector3.zero, "RibbonB")
+		local beam = Instance.new("Beam")
+		beam.Attachment0, beam.Attachment1, beam.Segments, beam.FaceCamera = a0, a1, 24, true
+		beam.Texture, beam.TextureSpeed, beam.TextureLength = Assets.Textures.Smoke, 0.6, 6
+		beam.Color = ColorSequence.new(if n % 3 == 0 then rgb(200, 255, 255) else rgb(70, 205, 215))
+		beam.Transparency = NumberSequence.new({ NumberSequenceKeypoint.new(0, 1), NumberSequenceKeypoint.new(0.3, 0.45), NumberSequenceKeypoint.new(0.7, 0.5), NumberSequenceKeypoint.new(1, 1) })
+		beam.LightEmission, beam.LightInfluence, beam.Width0, beam.Width1 = 1, 0, 3 + math.random() * 4, 4 + math.random() * 6
+		beam.Parent = hub
+		ribbons[n] = { A = a0, B = a1, Beam = beam, Phase = math.random() * 6, Tilt = (math.random() - 0.5) * 1.6, Speed = 1.6 + math.random() * 1.8 }
+	end
+	-- A soft teal cloud boiling round the caster under the ribbons.
+	Kit.emitter(hub, { Texture = Assets.Textures.Smoke, Color = ColorSequence.new(rgb(90, 220, 230), rgb(20, 90, 110)), Size = NumberSequence.new(5, 12),
+		Rate = 7, Lifetime = NumberRange.new(2, 3), Speed = NumberRange.new(1, 3), Spread = 180, Light = 0.4, Spin = NumberRange.new(-40, 40),
+		Transparency = NumberSequence.new({ NumberSequenceKeypoint.new(0, 1), NumberSequenceKeypoint.new(0.3, 0.75), NumberSequenceKeypoint.new(1, 1) }) })
+	local clock = 0
+	Kit.add(trove, RunService.Heartbeat:Connect(function(dt: number)
+		clock += dt
+		hub.Position = center()
+		for _, r in ribbons do
+			local a = r.Phase + clock * r.Speed
+			local rr = radius * (0.7 + 0.3 * math.sin(clock + r.Phase))
+			local function at(off: number): Vector3
+				local yaw = a + off
+				return Vector3.new(math.cos(yaw) * rr, math.sin(yaw * 0.5 + r.Tilt) * rr * 0.35 + r.Tilt * 2, math.sin(yaw) * rr)
+			end
+			r.A.Position, r.B.Position = at(0), at(1.9)
+			r.Beam.CurveSize0, r.Beam.CurveSize1 = rr * 0.9, -rr * 0.9
+		end
+	end))
+	return function(r: number) radius = r end
+end
+
+-- Dark rocks (and a few glowing cubes) hanging in the void around `center`, tumbling slowly.
+function Scenery.rocks(trove: Kit.Trove, folder: Instance, center: Vector3, count: number, spread: number)
+	local parts: { BasePart } = {}
+	local spins: { CFrame } = {}
+	for n = 1, count do
+		local cube = n % 5 == 0
+		local size = if cube then Vector3.one * (0.5 + math.random() * 0.6) else Vector3.new(1 + math.random() * 2.5, 0.8 + math.random() * 2, 1 + math.random() * 2)
+		local offset = Vector3.new(math.random() - 0.5, (math.random() - 0.5) * 0.6, math.random() - 0.5) * spread
+		local p = Kit.part(folder, if cube then "GlowCube" else "VoidRock", if cube then Planet.Cyan else rgb(14, 18, 22), size, CFrame.new(center + offset))
+		p.Material = if cube then Enum.Material.Neon else Enum.Material.Slate
+		parts[n], spins[n] = p, CFrame.Angles(math.random() - 0.5, math.random() - 0.5, math.random() - 0.5)
+	end
+	Kit.add(trove, RunService.Heartbeat:Connect(function(dt: number)
+		local frames: { CFrame } = {}
+		for n, p in parts do frames[n] = p.CFrame * spins[n]:Lerp(CFrame.identity, 1 - dt) + Vector3.new(0, dt * 0.6, 0) end
+		Workspace:BulkMoveTo(parts, frames, Enum.BulkMoveMode.FireCFrameChanged)
+	end))
+end
+
+-- `count` gold sparkles twinkling in one by one around `at`.
+function Scenery.sparkles(trove: Kit.Trove, folder: Instance, at: Vector3, count: number, spread: number, size: number, life: number)
+	for n = 1, count do
+		Kit.after(trove, (n - 1) * 0.12, function()
+			local p = Bb.anchor(folder, at + Vector3.new(math.random() - 0.5, math.random() - 0.3, math.random() - 0.5) * spread)
+			Bb.sparkle(trove, p, Planet.Gold, size * (0.6 + math.random() * 0.8), life, (math.random() - 0.5) * 20)
+		end)
+	end
+end
+
+-- Hollow gold stars hanging off the planet's upper shoulder on this viewer's screen.
+function Scenery.stars(trove: Kit.Trove, folder: Instance, at: Vector3, radius: number, seconds: number)
+	local camera = Workspace.CurrentCamera
+	if not camera then return end
+	local right, up = camera.CFrame.RightVector, camera.CFrame.UpVector
+	for n, spot in { { -1.15, 0.7, 0.62 }, { -0.6, 1.15, 0.48 }, { 0.15, 1.3, 0.34 } } do
+		Kit.after(trove, (n - 1) * 0.12, function()
+			local hold = Bb.anchor(folder, at + right * radius * spot[1] + up * radius * spot[2])
+			Shapes.star(trove, hold, rgb(215, 160, 70), radius * spot[3], seconds)
+		end)
+	end
+end
+
+-- Gold flame crescents on this viewer's side of the planet, so they tear across its face; returns
+-- their anchors so the detonation can burn them out.
+function Scenery.crescents(trove: Kit.Trove, folder: Instance, at: Vector3, radius: number): { BasePart }
+	local camera = Workspace.CurrentCamera
+	local toward = if camera then (camera.CFrame.Position - at).Unit else Vector3.zAxis
+	local anchors: { BasePart } = {}
+	for n = 1, 6 do
+		local p = Bb.anchor(folder, at + toward * radius * 1.25 + Vector3.new(math.random() - 0.5, math.random() - 0.5, math.random() - 0.5) * radius * 1.3)
+		table.insert(anchors, p)
+		Bb.arc(trove, p, Planet.Gold, radius * (1.3 + math.random() * 0.9), 0.3 + math.random() * 0.2, (if n % 2 == 0 then 1 else -1) * (160 + math.random() * 120), 2.4)
+	end
+	return anchors
+end
+
+return table.freeze(Scenery)
+</string>
+            </Properties>
+          </Item>
+          <Item class="ModuleScript" referent="694">
             <Properties>
               <string name="Name">ObjectiveController</string>
               <string name="Source">--!strict
@@ -75807,7 +76271,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="690">
+          <Item class="ModuleScript" referent="695">
             <Properties>
               <string name="Name">PauseMenu</string>
               <string name="Source">--!strict
@@ -75989,81 +76453,21 @@ return Menu
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="691">
+          <Item class="ModuleScript" referent="696">
             <Properties>
               <string name="Name">PlanetForms</string>
               <string name="Source">--!strict
--- Celestial Supernova world pieces from the reference: a vortex of translucent teal smoke ribbons
--- whipping around the caster, floating black rocks and glowing cubes, and the planet itself — a
--- translucent sphere wrapped in streaking cyan cloud bands under a tilted Saturn ring — which can
--- burn white-hot before it detonates. Procedural parts and Beams only.
+-- The Celestial Supernova planet from the reference: a translucent sphere wrapped in streaking cyan
+-- cloud bands under a tilted Saturn ring, which can burn white-hot before it detonates (NovaScenery
+-- has the vortex, rocks and gold accents around it). Procedural parts only.
 local RunService = game:GetService("RunService")
 local Workspace = game:GetService("Workspace")
-local Assets = require(game:GetService("ReplicatedStorage").AsurasPath.Shared.PresentationAssets)
 local Kit = require(script.Parent.SkillKit)
 local Planet = {}
 
 local rgb = Color3.fromRGB
 Planet.Cyan, Planet.Deep, Planet.Gold = rgb(120, 255, 255), rgb(0, 110, 125), rgb(255, 160, 30)
 local WHITE = Color3.new(1, 1, 1)
-
--- Curved smoke ribbons orbiting `center()`; returns a setter for their radius (to widen the storm).
-function Planet.vortex(trove: Kit.Trove, folder: Instance, center: () -&gt; Vector3, count: number): (number) -&gt; ()
-	local hub = Kit.part(folder, "VortexHub", WHITE, Vector3.one * 0.1, CFrame.new(center()))
-	hub.Transparency = 1
-	local radius = 6
-	local ribbons = {}
-	for n = 1, count do
-		local a0, a1 = Kit.attach(trove, hub, Vector3.zero, "RibbonA"), Kit.attach(trove, hub, Vector3.zero, "RibbonB")
-		local beam = Instance.new("Beam")
-		beam.Attachment0, beam.Attachment1, beam.Segments, beam.FaceCamera = a0, a1, 24, true
-		beam.Texture, beam.TextureSpeed, beam.TextureLength = Assets.Textures.Smoke, 0.6, 6
-		beam.Color = ColorSequence.new(if n % 3 == 0 then rgb(200, 255, 255) else rgb(70, 205, 215))
-		beam.Transparency = NumberSequence.new({ NumberSequenceKeypoint.new(0, 1), NumberSequenceKeypoint.new(0.3, 0.45), NumberSequenceKeypoint.new(0.7, 0.5), NumberSequenceKeypoint.new(1, 1) })
-		beam.LightEmission, beam.LightInfluence, beam.Width0, beam.Width1 = 1, 0, 3 + math.random() * 4, 4 + math.random() * 6
-		beam.Parent = hub
-		ribbons[n] = { A = a0, B = a1, Beam = beam, Phase = math.random() * 6, Tilt = (math.random() - 0.5) * 1.6, Speed = 1.6 + math.random() * 1.8 }
-	end
-	-- A soft teal cloud boiling round the caster under the ribbons.
-	Kit.emitter(hub, { Texture = Assets.Textures.Smoke, Color = ColorSequence.new(rgb(90, 220, 230), rgb(20, 90, 110)), Size = NumberSequence.new(5, 12),
-		Rate = 7, Lifetime = NumberRange.new(2, 3), Speed = NumberRange.new(1, 3), Spread = 180, Light = 0.4, Spin = NumberRange.new(-40, 40),
-		Transparency = NumberSequence.new({ NumberSequenceKeypoint.new(0, 1), NumberSequenceKeypoint.new(0.3, 0.75), NumberSequenceKeypoint.new(1, 1) }) })
-	local clock = 0
-	Kit.add(trove, RunService.Heartbeat:Connect(function(dt: number)
-		clock += dt
-		hub.Position = center()
-		for _, r in ribbons do
-			local a = r.Phase + clock * r.Speed
-			local rr = radius * (0.7 + 0.3 * math.sin(clock + r.Phase))
-			local function at(off: number): Vector3
-				local yaw = a + off
-				return Vector3.new(math.cos(yaw) * rr, math.sin(yaw * 0.5 + r.Tilt) * rr * 0.35 + r.Tilt * 2, math.sin(yaw) * rr)
-			end
-			r.A.Position, r.B.Position = at(0), at(1.9)
-			r.Beam.CurveSize0, r.Beam.CurveSize1 = rr * 0.9, -rr * 0.9
-		end
-	end))
-	return function(r: number) radius = r end
-end
-
--- Dark rocks (and a few glowing cubes) hanging in the void around `center`, tumbling slowly.
-function Planet.rocks(trove: Kit.Trove, folder: Instance, center: Vector3, count: number, spread: number)
-	local parts: { BasePart } = {}
-	local spins: { CFrame } = {}
-	for n = 1, count do
-		local cube = n % 5 == 0
-		local size = if cube then Vector3.one * (0.5 + math.random() * 0.6) else Vector3.new(1 + math.random() * 2.5, 0.8 + math.random() * 2, 1 + math.random() * 2)
-		local offset = Vector3.new(math.random() - 0.5, (math.random() - 0.5) * 0.6, math.random() - 0.5) * spread
-		local p = Kit.part(folder, if cube then "GlowCube" else "VoidRock", if cube then Planet.Cyan else rgb(14, 18, 22), size, CFrame.new(center + offset))
-		p.Material = if cube then Enum.Material.Neon else Enum.Material.Slate
-		parts[n], spins[n] = p, CFrame.Angles(math.random() - 0.5, math.random() - 0.5, math.random() - 0.5)
-	end
-	Kit.add(trove, RunService.Heartbeat:Connect(function(dt: number)
-		local frames: { CFrame } = {}
-		for n, p in parts do frames[n] = p.CFrame * spins[n]:Lerp(CFrame.identity, 1 - dt) + Vector3.new(0, dt * 0.6, 0) end
-		Workspace:BulkMoveTo(parts, frames, Enum.BulkMoveMode.FireCFrameChanged)
-	end))
-end
 
 export type Body = { Shell: BasePart, Inner: BasePart, Core: BasePart, Bands: { BasePart }, Ring: { BasePart }, Light: PointLight, Radius: number }
 
@@ -76084,27 +76488,32 @@ function Planet.body(trove: Kit.Trove, folder: Instance, center: () -&gt; Vector
 	core.Transparency = 1
 	local light = Kit.light(inner, Planet.Cyan, 60, 2)
 	for _, p in { shell, inner } do Kit.tween(trove, p, grow, { Size = Vector3.one * radius * 2 }, Enum.EasingStyle.Back) end
-	-- Cloud bands: 11 latitudes x 22 slabs, each band a broken arc so it reads as streaking weather.
+	-- Cloud bands: 13 latitudes x 32 slabs of varied thickness, each a broken arc that ripples in
+	-- latitude as it turns, so the planet reads as wavy brushed weather rather than stacked rings.
+	local SEG = 32
 	local bands: { BasePart } = {}
 	local layout = {}
-	for lat = 1, 11 do
-		local phi = math.rad(-70 + (lat - 1) * 14)
+	for lat = 1, 13 do
+		local phi = math.rad(-72 + (lat - 1) * 12)
 		local bright = lat % 2 == 1
-		local start, run = math.random(1, 22), math.random(12, 20)
-		for s = 1, 22 do
-			local lit = ((s - start) % 22) &lt; run
-			local p = slab(folder, if bright then Planet.Cyan else Planet.Deep, Vector3.new(1, radius * 0.17, 0.3), if lit then (if bright then 0.15 else 0.25) else 1)
+		local start, run = math.random(1, SEG), math.random(16, 28)
+		local thick = radius * (0.07 + math.random() * 0.09)
+		for s = 1, SEG do
+			local lit = ((s - start) % SEG) &lt; run
+			local p = slab(folder, if bright then Planet.Cyan else Planet.Deep, Vector3.new(1, thick, 0.3), if lit then (if bright then 0.12 else 0.3) else 1)
 			table.insert(bands, p)
-			table.insert(layout, { Phi = phi, Index = s, Speed = (if bright then 0.9 else 0.55) * (1 + lat * 0.06) })
+			table.insert(layout, { Phi = phi, Index = s, Lat = lat, Speed = (if bright then 0.9 else 0.55) * (1 + lat * 0.05) })
 		end
 	end
-	-- Saturn ring: a wide translucent band with a bright rim line.
+	-- Saturn ring: a faint translucent sheet between a bright outer rim and a fainter inner rim.
+	local RING = 56
 	local ring: { BasePart } = {}
-	for s = 1, 40 do table.insert(ring, slab(folder, rgb(60, 210, 220), Vector3.new(1, 0.15, radius * 0.45), 0.8)) end
-	for s = 1, 40 do table.insert(ring, slab(folder, Planet.Cyan, Vector3.new(1, 0.25, 0.3), 0.05)) end
+	for _ = 1, RING do table.insert(ring, slab(folder, rgb(60, 210, 220), Vector3.new(1, 0.1, radius * 0.4), 0.88)) end
+	for _ = 1, RING do table.insert(ring, slab(folder, Planet.Cyan, Vector3.new(1, 0.22, 0.28), 0)) end
+	for _ = 1, RING do table.insert(ring, slab(folder, Planet.Cyan, Vector3.new(1, 0.12, 0.16), 0.55)) end
 	local body: Body = { Shell = shell, Inner = inner, Core = core, Bands = bands, Ring = ring, Light = light, Radius = radius }
 	local axis = CFrame.Angles(math.rad(14), 0, math.rad(-10))
-	local ringTilt = CFrame.Angles(math.rad(22), 0, math.rad(8))
+	local ringTilt = CFrame.Angles(math.rad(14), 0, math.rad(-16))
 	local clock = 0
 	Kit.add(trove, RunService.Heartbeat:Connect(function(dt: number)
 		if not shell.Parent then return end -- removed at detonation
@@ -76114,18 +76523,19 @@ function Planet.body(trove: Kit.Trove, folder: Instance, center: () -&gt; Vector
 		local frames: { CFrame } = {}
 		for n, p in bands do
 			local l = layout[n]
-			local ring_r = r * math.cos(l.Phi)
-			local yaw = l.Index / 22 * math.pi * 2 + clock * l.Speed
-			frames[n] = CFrame.new(c) * axis * CFrame.new(0, r * math.sin(l.Phi), 0) * CFrame.Angles(0, yaw, 0) * CFrame.new(0, 0, -ring_r) * CFrame.Angles(l.Phi, 0, 0)
-			p.Size = Vector3.new(2 * ring_r * math.sin(math.pi / 22) * 1.15, p.Size.Y, p.Size.Z)
+			local yaw = l.Index / SEG * math.pi * 2 + clock * l.Speed
+			local phi = l.Phi + 0.07 * math.sin(yaw * 3 + clock * 1.5 + l.Lat)
+			local ring_r = r * math.cos(phi)
+			frames[n] = CFrame.new(c) * axis * CFrame.new(0, r * math.sin(phi), 0) * CFrame.Angles(0, yaw, 0) * CFrame.new(0, 0, -ring_r) * CFrame.Angles(phi, 0, 0)
+			p.Size = Vector3.new(2 * ring_r * math.sin(math.pi / SEG) * 1.15, p.Size.Y, p.Size.Z)
 		end
 		for n, p in ring do
-			local rim = n &gt; 40
-			local s = if rim then n - 40 else n
-			local rr = r * (if rim then 2.05 else 1.75)
-			local yaw = s / 40 * math.pi * 2 + clock * 0.25
+			local layer = math.ceil(n / RING)
+			local s = n - (layer - 1) * RING
+			local rr = r * (if layer == 1 then 1.72 elseif layer == 2 then 2.02 else 1.42)
+			local yaw = s / RING * math.pi * 2 + clock * 0.25
 			table.insert(frames, CFrame.new(c) * ringTilt * CFrame.Angles(0, yaw, 0) * CFrame.new(0, 0, -rr))
-			p.Size = Vector3.new(2 * rr * math.sin(math.pi / 40) * 1.02, p.Size.Y, if rim then 0.3 else r * 0.55)
+			p.Size = Vector3.new(2 * rr * math.sin(math.pi / RING) * 1.03, p.Size.Y, if layer == 1 then r * 0.55 else p.Size.Z)
 		end
 		local all = table.move(ring, 1, #ring, #bands + 1, table.clone(bands))
 		Workspace:BulkMoveTo(all, frames, Enum.BulkMoveMode.FireCFrameChanged)
@@ -76156,7 +76566,7 @@ return table.freeze(Planet)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="692">
+          <Item class="ModuleScript" referent="697">
             <Properties>
               <string name="Name">PlateLayout</string>
               <string name="Source">--!strict
@@ -76227,7 +76637,7 @@ return table.freeze(Layout)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="693">
+          <Item class="ModuleScript" referent="698">
             <Properties>
               <string name="Name">PortraitCamera</string>
               <string name="Source">--!strict
@@ -76331,7 +76741,7 @@ return table.freeze(Portrait)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="694">
+          <Item class="ModuleScript" referent="699">
             <Properties>
               <string name="Name">PrologueController</string>
               <string name="Source">--!strict
@@ -76448,7 +76858,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="695">
+          <Item class="ModuleScript" referent="700">
             <Properties>
               <string name="Name">QiVfx</string>
               <string name="Source">--!strict
@@ -76496,7 +76906,7 @@ return Qi
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="696">
+          <Item class="ModuleScript" referent="701">
             <Properties>
               <string name="Name">SakuraCompass</string>
               <string name="Source">--!strict
@@ -76590,7 +77000,7 @@ return table.freeze(Compass)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="697">
+          <Item class="ModuleScript" referent="702">
             <Properties>
               <string name="Name">SakuraHud</string>
               <string name="Source">--!strict
@@ -76713,7 +77123,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="698">
+          <Item class="ModuleScript" referent="703">
             <Properties>
               <string name="Name">SakuraKit</string>
               <string name="Source">--!strict
@@ -76863,7 +77273,7 @@ return table.freeze(Kit)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="699">
+          <Item class="ModuleScript" referent="704">
             <Properties>
               <string name="Name">SakuraMinimap</string>
               <string name="Source">--!strict
@@ -76996,7 +77406,7 @@ return table.freeze(Map)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="700">
+          <Item class="ModuleScript" referent="705">
             <Properties>
               <string name="Name">SanguineCombat</string>
               <string name="Source">--!strict
@@ -77048,7 +77458,7 @@ return table.freeze(Combat)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="701">
+          <Item class="ModuleScript" referent="706">
             <Properties>
               <string name="Name">SanguineController</string>
               <string name="Source">--!strict
@@ -77119,7 +77529,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="702">
+          <Item class="ModuleScript" referent="707">
             <Properties>
               <string name="Name">SanguineDispatch</string>
               <string name="Source">--!strict
@@ -77177,7 +77587,7 @@ return table.freeze(Dispatch)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="703">
+          <Item class="ModuleScript" referent="708">
             <Properties>
               <string name="Name">SanguineGeometry</string>
               <string name="Source">--!strict
@@ -77227,7 +77637,7 @@ return table.freeze(Geometry)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="704">
+          <Item class="ModuleScript" referent="709">
             <Properties>
               <string name="Name">SanguineGhost</string>
               <string name="Source">--!strict
@@ -77249,7 +77659,7 @@ return table.freeze(Ghost)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="705">
+          <Item class="ModuleScript" referent="710">
             <Properties>
               <string name="Name">SanguineMagic</string>
               <string name="Source">--!strict
@@ -77302,7 +77712,7 @@ return table.freeze(Magic)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="706">
+          <Item class="ModuleScript" referent="711">
             <Properties>
               <string name="Name">SanguineRuntime</string>
               <string name="Source">--!strict
@@ -77391,7 +77801,65 @@ return Runtime
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="707">
+          <Item class="ModuleScript" referent="712">
+            <Properties>
+              <string name="Name">SkillAudio</string>
+              <string name="Source">--!strict
+-- Sound score for the signature spells. Every cue has its own Assets.Audio slot for its synthesized
+-- master (tools/assets/build_skill_audio.py); until that is uploaded, a pitched owned sound stands
+-- in. The caster hears the score flat (SoundService); everyone else hears it from the caster's root.
+-- Sounds belong to the cast trove, so an interrupted cast falls silent with its visuals.
+local SoundService = game:GetService("SoundService")
+local Kit = require(script.Parent.SkillKit)
+local Audio = require(script.Parent.SpatialAudio)
+local Sfx = {}
+
+-- cue = { stand-in key, stand-in pitch, volume }
+local CUES: { [string]: { any } } = {
+	NovaVoid = { "Wind", 0.7, 0.8 }, NovaRing = { "Bell", 1.6, 0.7 }, NovaSwoop = { "Glide", 1.2, 0.8 },
+	NovaPlanet = { "BossDrone", 1.3, 0.8 }, NovaCharge = { "BulletJump", 0.6, 0.9 }, NovaBlast = { "ParryBass", 0.55, 1.2 },
+	NovaInk = { "Clash", 1.4, 0.7 }, NovaColumn = { "Wind", 1.5, 1 }, NovaWhite = { "Bell", 0.8, 0.6 },
+	SunTension = { "BossDrone", 0.8, 0.8 }, SunBoom = { "ParryBass", 0.9, 1 }, SunEmber = { "Blunt", 1.3, 0.7 },
+	SunThorn = { "Clash", 0.7, 0.8 }, SunCharge = { "Glide", 0.7, 0.9 }, SunBlast = { "ParryBass", 0.5, 1.3 },
+	SunEyes = { "Slide", 1.4, 0.8 }, SunGauntlet = { "Wind", 1.8, 0.8 }, SunPulse = { "Blunt", 0.8, 0.9 },
+}
+
+-- Startup beats are fractions of the windup (a negative beat is seconds before the release, so a
+-- riser always lands on the hit); release beats are seconds after the release cue.
+local SCORES: { [string]: { [string]: { { any } } } } = {
+	Nova = {
+		Startup = { { "NovaVoid", 0 }, { "NovaRing", 0.26 }, { "NovaSwoop", 0.34 }, { "NovaPlanet", 0.45 }, { "NovaCharge", -0.75 } },
+		Release = { { "NovaBlast", 0 }, { "NovaColumn", 0.22 }, { "NovaInk", 0.36 }, { "NovaInk", 0.47 } },
+	},
+	Sun = {
+		Startup = { { "SunTension", 0 }, { "SunBoom", 0.33 }, { "SunEmber", 0.42 }, { "SunThorn", 0.8 }, { "SunCharge", -0.75 } },
+		Release = { { "SunBlast", 0 }, { "SunEyes", 3.55 }, { "SunGauntlet", 5.45 } },
+	},
+}
+
+function Sfx.play(cast: any, cue: string, volume: number?)
+	local spec = CUES[cue]
+	if not spec then return end
+	local owned = Audio.id(cue) ~= ""
+	local root = cast.Entity.Root
+	local parent: Instance = if cast.Own or not (root and root.Parent) then SoundService else root
+	local s = Audio.play(if owned then cue else spec[1], parent, spec[3] * (volume or 1), false, if owned then 1 else spec[2])
+	if s then Kit.add(cast.Trove, s) end
+end
+
+function Sfx.score(cast: any, spell: string, phase: string)
+	for _, beat in SCORES[spell][phase] do
+		local at = beat[2]
+		if phase == "Startup" then at = if at &lt; 0 then cast.Windup + at else cast.Windup * at end
+		if at &gt;= 0 then Kit.after(cast.Trove, at, function() Sfx.play(cast, beat[1]) end) end
+	end
+end
+
+return table.freeze(Sfx)
+</string>
+            </Properties>
+          </Item>
+          <Item class="ModuleScript" referent="713">
             <Properties>
               <string name="Name">SkillCinema</string>
               <string name="Source">--!strict
@@ -77515,7 +77983,7 @@ return table.freeze(Cinema)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="708">
+          <Item class="ModuleScript" referent="714">
             <Properties>
               <string name="Name">SkillFx</string>
               <string name="Source">--!strict
@@ -77659,7 +78127,7 @@ return table.freeze(Fx)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="709">
+          <Item class="ModuleScript" referent="715">
             <Properties>
               <string name="Name">SkillKit</string>
               <string name="Source">--!strict
@@ -77813,7 +78281,7 @@ return table.freeze(Kit)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="710">
+          <Item class="ModuleScript" referent="716">
             <Properties>
               <string name="Name">SkillShowcase</string>
               <string name="Source">--!strict
@@ -77907,7 +78375,7 @@ return table.freeze(Showcase)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="711">
+          <Item class="ModuleScript" referent="717">
             <Properties>
               <string name="Name">SolarForms</string>
               <string name="Source">--!strict
@@ -78034,7 +78502,7 @@ return table.freeze(Solar)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="712">
+          <Item class="ModuleScript" referent="718">
             <Properties>
               <string name="Name">SoundscapeController</string>
               <string name="Source">--!strict
@@ -78102,7 +78570,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="713">
+          <Item class="ModuleScript" referent="719">
             <Properties>
               <string name="Name">SpatialAudio</string>
               <string name="Source">--!strict
@@ -78206,7 +78674,7 @@ return Audio
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="714">
+          <Item class="ModuleScript" referent="720">
             <Properties>
               <string name="Name">SpellController</string>
               <string name="Source">--!strict
@@ -78296,7 +78764,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="715">
+          <Item class="ModuleScript" referent="721">
             <Properties>
               <string name="Name">SpellHud</string>
               <string name="Source">--!strict
@@ -78440,7 +78908,7 @@ return table.freeze(Hud)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="716">
+          <Item class="ModuleScript" referent="722">
             <Properties>
               <string name="Name">SpellVfx</string>
               <string name="Source">--!strict
@@ -78554,7 +79022,7 @@ return table.freeze(Vfx)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="717">
+          <Item class="ModuleScript" referent="723">
             <Properties>
               <string name="Name">SunForms</string>
               <string name="Source">--!strict
@@ -78664,11 +79132,24 @@ function Sun.gauntlet(trove: Kit.Trove, hand: BasePart)
 	end))
 end
 
+-- A black ring of thorns (the seal that clamps the chest ember before it bursts).
+function Sun.thorns(trove: Kit.Trove, adornee: Instance, studs: number): BillboardGui
+	local gui = Bb.board(trove, adornee, studs)
+	local ink = Color3.fromRGB(10, 4, 2)
+	Bb.circle(gui, ink, 0.62, 0.06, 0, trove)
+	for n = 1, 22 do
+		local yaw = n / 22 * math.pi * 2
+		local f = Bb.frame(gui, ink, UDim2.fromScale(0.07, 0.07), math.deg(yaw) + 45)
+		f.Position = UDim2.fromScale(0.5 + math.cos(yaw) * 0.33, 0.5 + math.sin(yaw) * 0.33)
+	end
+	return gui
+end
+
 return table.freeze(Sun)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="718">
+          <Item class="ModuleScript" referent="724">
             <Properties>
               <string name="Name">SunShots</string>
               <string name="Source">--!strict
@@ -78746,7 +79227,7 @@ return table.freeze(Shots)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="719">
+          <Item class="ModuleScript" referent="725">
             <Properties>
               <string name="Name">SupernovaShots</string>
               <string name="Source">--!strict
@@ -78790,8 +79271,8 @@ function Shots.startup(cast: any, center: () -&gt; Vector3?, floor: Vector3, rad
 		Cinema.play(cast.Cinema, function(t: number)
 			local c = at()
 			local push = math.clamp((t - w * 0.38) / (w * 0.15), 0, 1)
-			local d = radius * (3.3 - push * 0.8)
-			return Cinema.look(c + dir(base + t * 0.1) * d + Vector3.new(0, radius * 0.3, 0), c, 55 - push * 6, 9)
+			local d = radius * (4.2 - push * 0.9)
+			return Cinema.look(c + dir(base + t * 0.1) * d + Vector3.new(0, radius * 0.15, 0), c, 55 - push * 6, 9)
 		end, w * 0.53 + 3, 0.06) -- holds past a late release cue
 	end)
 end
@@ -78799,9 +79280,9 @@ end
 function Shots.release(cast: any, ground: Vector3, center: Vector3, radius: number)
 	local yaw = math.random() * math.pi * 2
 	Cinema.play(cast.Cinema, function(t: number)
-		return Cinema.look(center + dir(yaw) * (radius * 3 + t * 6) + Vector3.new(0, radius * 0.3, 0), center, 62, 4)
-	end, 0.62, 0.04)
-	Kit.after(cast.Trove, 0.62, function()
+		return Cinema.look(center + dir(yaw) * (radius * 2.1 + t * 6) + Vector3.new(0, radius * 0.2, 0), center, 62, 4)
+	end, 0.59, 0.04)
+	Kit.after(cast.Trove, 0.59, function()
 		Cinema.play(cast.Cinema, function(t: number) -- close outside the column, looking in at the caster
 			local eye = center + dir(yaw + 1.2 + t * 0.12) * 21 + Vector3.new(0, -3 + t * 0.8, 0)
 			return Cinema.look(eye, center + Vector3.new(0, 2 + t * 1.2, 0), 64, -6)
@@ -78813,7 +79294,7 @@ return table.freeze(Shots)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="720">
+          <Item class="ModuleScript" referent="726">
             <Properties>
               <string name="Name">SupernovaShow</string>
               <string name="Source">--!strict
@@ -78833,28 +79314,23 @@ local Forms = require(script.Parent.CelestialForms)
 local Pillar = require(script.Parent.CelestialPillar)
 local Shots = require(script.Parent.SupernovaShots)
 local Bb = require(script.Parent.BillboardFx)
+local Shapes = require(script.Parent.BillboardShapes)
+local Scenery = require(script.Parent.NovaScenery)
 local Manga = require(script.Parent.MangaFx)
 local Planet = require(script.Parent.PlanetForms)
 local Stage = require(script.Parent.VoidStage)
+local Ink = require(script.Parent.NovaInk)
+local Sfx = require(script.Parent.SkillAudio)
 local Show = {}
 
 Show.FinalPulse = 3
 local RISE, RADIUS = 20, 18 -- high enough that the planet clears the void floor
-local VOID_COLOR = Color3.fromRGB(24, 80, 100)
+local VOID_COLOR = Color3.fromRGB(14, 64, 70)
 local WHITE = Color3.new(1, 1, 1)
 
 local function center(cast: any): Vector3?
 	local root = cast.Entity.Root
 	return if root and root.Parent then root.Position else nil
-end
-
-local function sparkles(cast: any, folder: Instance, at: Vector3, count: number, spread: number, size: number, life: number)
-	for n = 1, count do
-		Kit.after(cast.Trove, (n - 1) * 0.12, function()
-			local p = Bb.anchor(folder, at + Vector3.new(math.random() - 0.5, math.random() - 0.3, math.random() - 0.5) * spread)
-			Bb.sparkle(cast.Trove, p, Planet.Gold, size * (0.6 + math.random() * 0.8), life, (math.random() - 0.5) * 20)
-		end)
-	end
 end
 
 function Show.startup(cast: any)
@@ -78863,16 +79339,18 @@ function Show.startup(cast: any)
 	cast.Bag.Folder = folder
 	local floor = center(cast) or Vector3.zero
 	local function at(): Vector3 return center(cast) or floor end
+	Sfx.score(cast, "Nova", "Startup")
 	if cast.Own then
 		cast.Bag.Void = Stage.void(cast.Trove, floor, 95, 2.8, 200, VOID_COLOR, { cast.Entity.Model, folder })
 		cast.Bag.Grade = Screen.grade(cast.Trove)
+		cast.Bag.Bloom = Stage.bloom(cast.Trove, 1.3, 32, 0.82, 0.6)
 		Screen.settle(cast.Trove, cast.Bag.Grade, Stage.Grades.TealVoid, 0.3)
 		Shots.startup(cast, function() return center(cast) end, floor, RADIUS)
 	end
-	cast.Bag.Widen = Planet.vortex(cast.Trove, folder, at, 10)
-	Planet.rocks(cast.Trove, folder, floor + Vector3.new(0, 6, 0), 26, 70)
+	cast.Bag.Widen = Scenery.vortex(cast.Trove, folder, at, 10)
+	Scenery.rocks(cast.Trove, folder, floor + Vector3.new(0, 6, 0), 26, 70)
 	Kit.after(cast.Trove, w * 0.03, function() Forms.levitate(cast, RISE, w * 0.45) end)
-	Kit.after(cast.Trove, w * 0.24, function() sparkles(cast, folder, at(), 4, 16, 3, w * 0.14) end)
+	Kit.after(cast.Trove, w * 0.24, function() Scenery.sparkles(cast.Trove, folder, at(), 4, 16, 3, w * 0.14) end)
 	Kit.after(cast.Trove, w * 0.26, function() -- the circle
 		local hold = Bb.anchor(folder, at())
 		Kit.add(cast.Trove, RunService.Heartbeat:Connect(function() hold.Position = at() end))
@@ -78885,54 +79363,51 @@ function Show.startup(cast: any)
 	Kit.after(cast.Trove, w * 0.45, function() -- the planet
 		cast.Bag.Widen(RADIUS * 1.5)
 		cast.Bag.Planet = Planet.body(cast.Trove, folder, at, RADIUS, w * 0.06)
-		for n = 0, 1 do -- gold stars hanging over the planet's shoulder
-			Kit.after(cast.Trove, n * w * 0.18, function() sparkles(cast, folder, at() + Vector3.new(-RADIUS * 0.5, RADIUS * 0.75, 0), 3, RADIUS * 0.8, 7, w * 0.22) end)
-		end
+		Scenery.stars(cast.Trove, folder, at(), RADIUS, w * 0.42)
 	end)
 	Kit.after(cast.Trove, w * 0.8, function() if cast.Bag.Planet then Planet.ignite(cast.Trove, cast.Bag.Planet, w * 0.18) end end)
 	Kit.after(cast.Trove, w * 0.86, function() -- gold flame crescents tearing round the white-hot planet
 		local c = at()
-		local camera = workspace.CurrentCamera
-		local toward = if camera then (camera.CFrame.Position - c).Unit else Vector3.zAxis
-		cast.Bag.Arcs = {}
-		for n = 1, 6 do -- on this viewer's side of the planet so the crescents tear across its face
-			local p = Bb.anchor(folder, c + toward * RADIUS * 1.15 + Vector3.new(math.random() - 0.5, math.random() - 0.5, math.random() - 0.5) * RADIUS * 0.9)
-			table.insert(cast.Bag.Arcs, p)
-			Bb.arc(cast.Trove, p, Planet.Gold, RADIUS * (0.8 + math.random() * 0.7), 0.3 + math.random() * 0.2, (if n % 2 == 0 then 1 else -1) * (160 + math.random() * 120))
-		end
+		cast.Bag.Arcs = Scenery.crescents(cast.Trove, folder, c, RADIUS)
 		Fx.burst(Bb.anchor(folder, c), ColorSequence.new(WHITE, Planet.Gold), 40, 50)
 		if cast.Own then Cinema.shake(cast.Cinema, 0.35, 0.6, 2) end
 	end)
 end
 
--- Detonation: white blast, the huge ring and flare line, ink frames, then the column.
+-- Detonation, timed to the reference: 0.00 five-lobed white blast and gold embers, 0.12 thick white
+-- donut, 0.20 ring, flare line and white heart, 0.22 the column, then three ink frames (0.36 dome,
+-- 0.42 inverted burst, 0.47 streaks) and at 0.59 the shot inside the column.
 function Show.release(cast: any, ground: Vector3)
 	local folder = cast.Bag.Folder or Kit.folder(cast.Trove, "CelestialSupernova")
 	cast.Bag.Folder = folder
+	Sfx.score(cast, "Nova", "Release")
 	local c = center(cast) or ground + Vector3.new(0, RISE, 0)
 	Planet.remove(cast.Bag.Planet)
 	cast.Bag.Planet = nil
 	for _, p in cast.Bag.Arcs or {} do p:Destroy() end -- the crescents burn out in the blast
 	if cast.Bag.Widen then cast.Bag.Widen(10) end
-	Fx.flash(cast.Trove, folder, c, WHITE, RADIUS * 2.8, 0.55)
-	Fx.flash(cast.Trove, folder, c, Planet.Cyan, RADIUS * 3.4, 0.7)
-	Fx.burst(Bb.anchor(folder, c), ColorSequence.new(WHITE, Planet.Gold), 60, 70)
-	Kit.after(cast.Trove, 0.12, function()
-		local hub = Bb.anchor(folder, c)
-		Bb.ring(cast.Trove, hub, Planet.Cyan, RADIUS * 1.6, RADIUS * 2.8, 0.08, 0.2, 0.25)
-		Bb.line(cast.Trove, hub, Planet.Cyan, RADIUS * 4, 0.4)
+	local hub = Bb.anchor(folder, c)
+	if cast.Bag.Bloom then Kit.tween(cast.Trove, cast.Bag.Bloom, 0.6, { Intensity = 0.45 }) end -- keep the column cyan, not blown white
+	Shapes.blob(cast.Trove, hub, Planet.Cyan, RADIUS * 3.2, 5, 0.12, 0.2)
+	Fx.burst(hub, ColorSequence.new(WHITE, Planet.Gold), 60, 70)
+	Kit.after(cast.Trove, 0.12, function() Bb.ring(cast.Trove, hub, Planet.Cyan, RADIUS * 2.4, RADIUS * 3.3, 0.06, 0.03, 0.08, 4.5) end)
+	Kit.after(cast.Trove, 0.2, function()
+		Bb.ring(cast.Trove, hub, Planet.Cyan, RADIUS * 3.6, RADIUS * 4, 0.04, 0.3, 0.3, 1.8)
+		Shapes.line(cast.Trove, hub, Planet.Cyan, RADIUS * 4.5, 0.35)
+		Fx.flash(cast.Trove, folder, c, WHITE, RADIUS * 1.4, 0.45)
 	end)
-	Kit.after(cast.Trove, 0.3, function()
+	Kit.after(cast.Trove, 0.22, function()
 		cast.Bag.Column = Pillar.erupt(cast.Trove, folder, ground, 24, c.Y - ground.Y)
-		Planet.rocks(cast.Trove, folder, ground + Vector3.new(0, 10, 0), 14, 34)
+		Scenery.rocks(cast.Trove, folder, ground + Vector3.new(0, 10, 0), 14, 34)
 		Kit.shockwave(cast.Trove, folder, CFrame.new(ground - Vector3.new(0, 2.6, 0)), Planet.Cyan, 48, 0.9, 0.2)
 	end)
 	Kit.after(cast.Trove, 4.4, function() Show.whiteout(cast) end) -- if the final pulse never arrives
 	if cast.Own then
 		Cinema.shake(cast.Cinema, 0.8, 1.2, 2)
 		Shots.release(cast, ground, c, RADIUS)
-		Kit.after(cast.Trove, 0.3, function() Manga.inkDome(cast.Trove, 0.18) end)
-		Kit.after(cast.Trove, 0.48, function() Manga.inkStreaks(cast.Trove, 0.14); Cinema.shake(cast.Cinema, 0.6, 1.4, 2) end)
+		Kit.after(cast.Trove, 0.36, function() Ink.dome(cast.Trove, 0.06) end)
+		Kit.after(cast.Trove, 0.42, function() Ink.burst(cast.Trove, 0.05) end)
+		Kit.after(cast.Trove, 0.47, function() Ink.streaks(cast.Trove, 0.12); Cinema.shake(cast.Cinema, 0.6, 1.4, 2) end)
 	end
 end
 
@@ -78940,6 +79415,7 @@ function Show.pulse(cast: any, _at: Vector3)
 	local column = cast.Bag.Column
 	if not column or cast.Pulses &lt;= 1 or cast.Pulses &gt;= Show.FinalPulse then return end
 	Pillar.flare(cast.Trove, column, 1)
+	Sfx.play(cast, "NovaRing", 0.7)
 	if cast.Own then Cinema.shake(cast.Cinema, 0.4, 1.4, 2) end
 end
 
@@ -78947,6 +79423,7 @@ end
 function Show.whiteout(cast: any)
 	if cast.Bag.Done then return end
 	cast.Bag.Done = true
+	Sfx.play(cast, "NovaWhite")
 	if cast.Own then
 		Manga.fill(cast.Trove, WHITE, 1.1, 0.45, 0.35)
 		Kit.after(cast.Trove, 1.55, function()
@@ -78966,7 +79443,7 @@ return table.freeze(Show)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="721">
+          <Item class="ModuleScript" referent="727">
             <Properties>
               <string name="Name">TargetPlate</string>
               <string name="Source">--!strict
@@ -79054,7 +79531,7 @@ return table.freeze(Target)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="722">
+          <Item class="ModuleScript" referent="728">
             <Properties>
               <string name="Name">TutorialController</string>
               <string name="Source">--!strict
@@ -79182,7 +79659,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="723">
+          <Item class="ModuleScript" referent="729">
             <Properties>
               <string name="Name">UiKit</string>
               <string name="Source">--!strict
@@ -79334,7 +79811,7 @@ return table.freeze(UiKit)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="724">
+          <Item class="ModuleScript" referent="730">
             <Properties>
               <string name="Name">UiWindow</string>
               <string name="Source">--!strict
@@ -79482,7 +79959,7 @@ return table.freeze(Window)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="725">
+          <Item class="ModuleScript" referent="731">
             <Properties>
               <string name="Name">VitalsTags</string>
               <string name="Source">--!strict
@@ -79564,11 +80041,11 @@ return table.freeze(Tags)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="726">
+          <Item class="ModuleScript" referent="732">
             <Properties>
               <string name="Name">VoidStage</string>
               <string name="Source">--!strict
--- Caster-only staging for the showcase cinematics: a dark matte "void" box that hides the world
+-- Caster-only staging for the showcase cinematics: a flat Neon "void" box that hides the world
 -- behind the shot, a Highlight that turns the caster into a
 -- solid silhouette, a key light, and the colour grades the reference cuts between. The parts are
 -- created on the caster's client only, never take queries, and leave with the cast's trove.
@@ -79665,7 +80142,8 @@ function Stage.void(trove: Kit.Trove, center: Vector3, half: number, down: numbe
 	}
 	for _, s in spec do
 		local wall = Kit.part(folder, "VoidWall", color, s[1], CFrame.new(mid + s[2]))
-		wall.Material = Enum.Material.SmoothPlastic -- dark Neon renders flat black; matte keeps the hue
+		-- Neon renders one flat colour per wall, so the box never shows its corners (matte shades per face).
+		-- Below about 60 in its brightest channel Neon crushes to black: pick void colours above that.
 		table.insert(walls, wall)
 	end
 	return { Walls = walls, Center = center, Restore = restore }
@@ -79680,6 +80158,15 @@ function Stage.remove(void: Void?)
 		void.Restore()
 		for _, w in void.Walls do w:Destroy() end
 	end
+end
+
+-- A soft bloom pass on this client for the cast (the reference's glowing whites).
+function Stage.bloom(trove: Kit.Trove, intensity: number, size: number, threshold: number, seconds: number): BloomEffect
+	local b = Kit.add(trove, Instance.new("BloomEffect"))
+	b.Name, b.Intensity, b.Size, b.Threshold = "AsuraSkillBloom", 0, size, threshold
+	b.Parent = game:GetService("Lighting")
+	Kit.tween(trove, b, seconds, { Intensity = intensity })
+	return b
 end
 
 -- The caster drawn as a flat silhouette (black for the blazing-eye close-up).
@@ -79700,7 +80187,7 @@ return table.freeze(Stage)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="727">
+          <Item class="ModuleScript" referent="733">
             <Properties>
               <string name="Name">WagerController</string>
               <string name="Source">--!strict
@@ -79757,7 +80244,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="728">
+          <Item class="ModuleScript" referent="734">
             <Properties>
               <string name="Name">WaypointMarker</string>
               <string name="Source">--!strict
@@ -79843,7 +80330,7 @@ return Marker
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="729">
+          <Item class="ModuleScript" referent="735">
             <Properties>
               <string name="Name">WeaponTrails</string>
               <string name="Source">--!strict
@@ -79921,7 +80408,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="730">
+          <Item class="ModuleScript" referent="736">
             <Properties>
               <string name="Name">WorldStateController</string>
               <string name="Source">--!strict
@@ -80315,7 +80802,7 @@ return Controller
           </Item>
         </Item>
       </Item>
-      <Item class="LocalScript" referent="731">
+      <Item class="LocalScript" referent="737">
         <Properties>
           <string name="Name">AsurasPathClient</string>
           <string name="Source">--!strict
@@ -80560,7 +81047,7 @@ print("[Asura's Path] Client ready: camlock, game feel, Souls HUD and Colosseum 
       </Item>
     </Item>
   </Item>
-  <Item class="Workspace" referent="732">
+  <Item class="Workspace" referent="738">
     <Properties>
       <string name="Name">Workspace</string>
       <float name="FallenPartsDestroyHeight">-100</float>
@@ -80572,13 +81059,13 @@ print("[Asura's Path] Client ready: camlock, game feel, Souls HUD and Colosseum 
       <float name="Gravity">196.2</float>
       <bool name="NeedsPivotMigration">false</bool>
       <bool name="StreamingEnabled">false</bool>
-    <Ref name="CurrentCamera">734</Ref></Properties>
-    <Item class="Folder" referent="733">
+    <Ref name="CurrentCamera">740</Ref></Properties>
+    <Item class="Folder" referent="739">
       <Properties>
         <string name="Name">AsurasPath</string>
       </Properties>
     </Item>
-    <Item class="Camera" referent="734">
+    <Item class="Camera" referent="740">
       <Properties>
         <string name="Name">Camera</string>
         <CoordinateFrame name="CFrame">

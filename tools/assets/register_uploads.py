@@ -20,7 +20,7 @@ def main():
             pattern=r'(\b'+re.escape(key)+r'\s*=\s*)"[^"]*"'
             if not re.search(pattern,text): raise ValueError(f'Unknown slot {section}.{key}')
             text=re.sub(pattern,lambda m:m[1]+json.dumps(value),text,count=1)
-            if section in queue:
+            if key in queue.get(section,{}):  # skill cues are not in the phase-5 queue
                 queue[section][key].update(id=value,uploaded=True)
             updates.append((section,key,value))
         source=source[:block.start(2)]+text+source[block.end(2):]

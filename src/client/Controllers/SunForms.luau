@@ -105,4 +105,17 @@ function Sun.gauntlet(trove: Kit.Trove, hand: BasePart)
 	end))
 end
 
+-- A black ring of thorns (the seal that clamps the chest ember before it bursts).
+function Sun.thorns(trove: Kit.Trove, adornee: Instance, studs: number): BillboardGui
+	local gui = Bb.board(trove, adornee, studs)
+	local ink = Color3.fromRGB(10, 4, 2)
+	Bb.circle(gui, ink, 0.62, 0.06, 0, trove)
+	for n = 1, 22 do
+		local yaw = n / 22 * math.pi * 2
+		local f = Bb.frame(gui, ink, UDim2.fromScale(0.07, 0.07), math.deg(yaw) + 45)
+		f.Position = UDim2.fromScale(0.5 + math.cos(yaw) * 0.33, 0.5 + math.sin(yaw) * 0.33)
+	end
+	return gui
+end
+
 return table.freeze(Sun)

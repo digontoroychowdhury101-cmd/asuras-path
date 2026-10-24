@@ -1,75 +1,15 @@
 --!strict
--- Celestial Supernova world pieces from the reference: a vortex of translucent teal smoke ribbons
--- whipping around the caster, floating black rocks and glowing cubes, and the planet itself — a
--- translucent sphere wrapped in streaking cyan cloud bands under a tilted Saturn ring — which can
--- burn white-hot before it detonates. Procedural parts and Beams only.
+-- The Celestial Supernova planet from the reference: a translucent sphere wrapped in streaking cyan
+-- cloud bands under a tilted Saturn ring, which can burn white-hot before it detonates (NovaScenery
+-- has the vortex, rocks and gold accents around it). Procedural parts only.
 local RunService = game:GetService("RunService")
 local Workspace = game:GetService("Workspace")
-local Assets = require(game:GetService("ReplicatedStorage").AsurasPath.Shared.PresentationAssets)
 local Kit = require(script.Parent.SkillKit)
 local Planet = {}
 
 local rgb = Color3.fromRGB
 Planet.Cyan, Planet.Deep, Planet.Gold = rgb(120, 255, 255), rgb(0, 110, 125), rgb(255, 160, 30)
 local WHITE = Color3.new(1, 1, 1)
-
--- Curved smoke ribbons orbiting `center()`; returns a setter for their radius (to widen the storm).
-function Planet.vortex(trove: Kit.Trove, folder: Instance, center: () -> Vector3, count: number): (number) -> ()
-	local hub = Kit.part(folder, "VortexHub", WHITE, Vector3.one * 0.1, CFrame.new(center()))
-	hub.Transparency = 1
-	local radius = 6
-	local ribbons = {}
-	for n = 1, count do
-		local a0, a1 = Kit.attach(trove, hub, Vector3.zero, "RibbonA"), Kit.attach(trove, hub, Vector3.zero, "RibbonB")
-		local beam = Instance.new("Beam")
-		beam.Attachment0, beam.Attachment1, beam.Segments, beam.FaceCamera = a0, a1, 24, true
-		beam.Texture, beam.TextureSpeed, beam.TextureLength = Assets.Textures.Smoke, 0.6, 6
-		beam.Color = ColorSequence.new(if n % 3 == 0 then rgb(200, 255, 255) else rgb(70, 205, 215))
-		beam.Transparency = NumberSequence.new({ NumberSequenceKeypoint.new(0, 1), NumberSequenceKeypoint.new(0.3, 0.45), NumberSequenceKeypoint.new(0.7, 0.5), NumberSequenceKeypoint.new(1, 1) })
-		beam.LightEmission, beam.LightInfluence, beam.Width0, beam.Width1 = 1, 0, 3 + math.random() * 4, 4 + math.random() * 6
-		beam.Parent = hub
-		ribbons[n] = { A = a0, B = a1, Beam = beam, Phase = math.random() * 6, Tilt = (math.random() - 0.5) * 1.6, Speed = 1.6 + math.random() * 1.8 }
-	end
-	-- A soft teal cloud boiling round the caster under the ribbons.
-	Kit.emitter(hub, { Texture = Assets.Textures.Smoke, Color = ColorSequence.new(rgb(90, 220, 230), rgb(20, 90, 110)), Size = NumberSequence.new(5, 12),
-		Rate = 7, Lifetime = NumberRange.new(2, 3), Speed = NumberRange.new(1, 3), Spread = 180, Light = 0.4, Spin = NumberRange.new(-40, 40),
-		Transparency = NumberSequence.new({ NumberSequenceKeypoint.new(0, 1), NumberSequenceKeypoint.new(0.3, 0.75), NumberSequenceKeypoint.new(1, 1) }) })
-	local clock = 0
-	Kit.add(trove, RunService.Heartbeat:Connect(function(dt: number)
-		clock += dt
-		hub.Position = center()
-		for _, r in ribbons do
-			local a = r.Phase + clock * r.Speed
-			local rr = radius * (0.7 + 0.3 * math.sin(clock + r.Phase))
-			local function at(off: number): Vector3
-				local yaw = a + off
-				return Vector3.new(math.cos(yaw) * rr, math.sin(yaw * 0.5 + r.Tilt) * rr * 0.35 + r.Tilt * 2, math.sin(yaw) * rr)
-			end
-			r.A.Position, r.B.Position = at(0), at(1.9)
-			r.Beam.CurveSize0, r.Beam.CurveSize1 = rr * 0.9, -rr * 0.9
-		end
-	end))
-	return function(r: number) radius = r end
-end
-
--- Dark rocks (and a few glowing cubes) hanging in the void around `center`, tumbling slowly.
-function Planet.rocks(trove: Kit.Trove, folder: Instance, center: Vector3, count: number, spread: number)
-	local parts: { BasePart } = {}
-	local spins: { CFrame } = {}
-	for n = 1, count do
-		local cube = n % 5 == 0
-		local size = if cube then Vector3.one * (0.5 + math.random() * 0.6) else Vector3.new(1 + math.random() * 2.5, 0.8 + math.random() * 2, 1 + math.random() * 2)
-		local offset = Vector3.new(math.random() - 0.5, (math.random() - 0.5) * 0.6, math.random() - 0.5) * spread
-		local p = Kit.part(folder, if cube then "GlowCube" else "VoidRock", if cube then Planet.Cyan else rgb(14, 18, 22), size, CFrame.new(center + offset))
-		p.Material = if cube then Enum.Material.Neon else Enum.Material.Slate
-		parts[n], spins[n] = p, CFrame.Angles(math.random() - 0.5, math.random() - 0.5, math.random() - 0.5)
-	end
-	Kit.add(trove, RunService.Heartbeat:Connect(function(dt: number)
-		local frames: { CFrame } = {}
-		for n, p in parts do frames[n] = p.CFrame * spins[n]:Lerp(CFrame.identity, 1 - dt) + Vector3.new(0, dt * 0.6, 0) end
-		Workspace:BulkMoveTo(parts, frames, Enum.BulkMoveMode.FireCFrameChanged)
-	end))
-end
 
 export type Body = { Shell: BasePart, Inner: BasePart, Core: BasePart, Bands: { BasePart }, Ring: { BasePart }, Light: PointLight, Radius: number }
 
@@ -90,27 +30,32 @@ function Planet.body(trove: Kit.Trove, folder: Instance, center: () -> Vector3, 
 	core.Transparency = 1
 	local light = Kit.light(inner, Planet.Cyan, 60, 2)
 	for _, p in { shell, inner } do Kit.tween(trove, p, grow, { Size = Vector3.one * radius * 2 }, Enum.EasingStyle.Back) end
-	-- Cloud bands: 11 latitudes x 22 slabs, each band a broken arc so it reads as streaking weather.
+	-- Cloud bands: 13 latitudes x 32 slabs of varied thickness, each a broken arc that ripples in
+	-- latitude as it turns, so the planet reads as wavy brushed weather rather than stacked rings.
+	local SEG = 32
 	local bands: { BasePart } = {}
 	local layout = {}
-	for lat = 1, 11 do
-		local phi = math.rad(-70 + (lat - 1) * 14)
+	for lat = 1, 13 do
+		local phi = math.rad(-72 + (lat - 1) * 12)
 		local bright = lat % 2 == 1
-		local start, run = math.random(1, 22), math.random(12, 20)
-		for s = 1, 22 do
-			local lit = ((s - start) % 22) < run
-			local p = slab(folder, if bright then Planet.Cyan else Planet.Deep, Vector3.new(1, radius * 0.17, 0.3), if lit then (if bright then 0.15 else 0.25) else 1)
+		local start, run = math.random(1, SEG), math.random(16, 28)
+		local thick = radius * (0.07 + math.random() * 0.09)
+		for s = 1, SEG do
+			local lit = ((s - start) % SEG) < run
+			local p = slab(folder, if bright then Planet.Cyan else Planet.Deep, Vector3.new(1, thick, 0.3), if lit then (if bright then 0.12 else 0.3) else 1)
 			table.insert(bands, p)
-			table.insert(layout, { Phi = phi, Index = s, Speed = (if bright then 0.9 else 0.55) * (1 + lat * 0.06) })
+			table.insert(layout, { Phi = phi, Index = s, Lat = lat, Speed = (if bright then 0.9 else 0.55) * (1 + lat * 0.05) })
 		end
 	end
-	-- Saturn ring: a wide translucent band with a bright rim line.
+	-- Saturn ring: a faint translucent sheet between a bright outer rim and a fainter inner rim.
+	local RING = 56
 	local ring: { BasePart } = {}
-	for s = 1, 40 do table.insert(ring, slab(folder, rgb(60, 210, 220), Vector3.new(1, 0.15, radius * 0.45), 0.8)) end
-	for s = 1, 40 do table.insert(ring, slab(folder, Planet.Cyan, Vector3.new(1, 0.25, 0.3), 0.05)) end
+	for _ = 1, RING do table.insert(ring, slab(folder, rgb(60, 210, 220), Vector3.new(1, 0.1, radius * 0.4), 0.88)) end
+	for _ = 1, RING do table.insert(ring, slab(folder, Planet.Cyan, Vector3.new(1, 0.22, 0.28), 0)) end
+	for _ = 1, RING do table.insert(ring, slab(folder, Planet.Cyan, Vector3.new(1, 0.12, 0.16), 0.55)) end
 	local body: Body = { Shell = shell, Inner = inner, Core = core, Bands = bands, Ring = ring, Light = light, Radius = radius }
 	local axis = CFrame.Angles(math.rad(14), 0, math.rad(-10))
-	local ringTilt = CFrame.Angles(math.rad(22), 0, math.rad(8))
+	local ringTilt = CFrame.Angles(math.rad(14), 0, math.rad(-16))
 	local clock = 0
 	Kit.add(trove, RunService.Heartbeat:Connect(function(dt: number)
 		if not shell.Parent then return end -- removed at detonation
@@ -120,18 +65,19 @@ function Planet.body(trove: Kit.Trove, folder: Instance, center: () -> Vector3, 
 		local frames: { CFrame } = {}
 		for n, p in bands do
 			local l = layout[n]
-			local ring_r = r * math.cos(l.Phi)
-			local yaw = l.Index / 22 * math.pi * 2 + clock * l.Speed
-			frames[n] = CFrame.new(c) * axis * CFrame.new(0, r * math.sin(l.Phi), 0) * CFrame.Angles(0, yaw, 0) * CFrame.new(0, 0, -ring_r) * CFrame.Angles(l.Phi, 0, 0)
-			p.Size = Vector3.new(2 * ring_r * math.sin(math.pi / 22) * 1.15, p.Size.Y, p.Size.Z)
+			local yaw = l.Index / SEG * math.pi * 2 + clock * l.Speed
+			local phi = l.Phi + 0.07 * math.sin(yaw * 3 + clock * 1.5 + l.Lat)
+			local ring_r = r * math.cos(phi)
+			frames[n] = CFrame.new(c) * axis * CFrame.new(0, r * math.sin(phi), 0) * CFrame.Angles(0, yaw, 0) * CFrame.new(0, 0, -ring_r) * CFrame.Angles(phi, 0, 0)
+			p.Size = Vector3.new(2 * ring_r * math.sin(math.pi / SEG) * 1.15, p.Size.Y, p.Size.Z)
 		end
 		for n, p in ring do
-			local rim = n > 40
-			local s = if rim then n - 40 else n
-			local rr = r * (if rim then 2.05 else 1.75)
-			local yaw = s / 40 * math.pi * 2 + clock * 0.25
+			local layer = math.ceil(n / RING)
+			local s = n - (layer - 1) * RING
+			local rr = r * (if layer == 1 then 1.72 elseif layer == 2 then 2.02 else 1.42)
+			local yaw = s / RING * math.pi * 2 + clock * 0.25
 			table.insert(frames, CFrame.new(c) * ringTilt * CFrame.Angles(0, yaw, 0) * CFrame.new(0, 0, -rr))
-			p.Size = Vector3.new(2 * rr * math.sin(math.pi / 40) * 1.02, p.Size.Y, if rim then 0.3 else r * 0.55)
+			p.Size = Vector3.new(2 * rr * math.sin(math.pi / RING) * 1.03, p.Size.Y, if layer == 1 then r * 0.55 else p.Size.Z)
 		end
 		local all = table.move(ring, 1, #ring, #bands + 1, table.clone(bands))
 		Workspace:BulkMoveTo(all, frames, Enum.BulkMoveMode.FireCFrameChanged)

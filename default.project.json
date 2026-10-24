@@ -983,6 +983,24 @@
             "SunShots": {
               "$path": "src/client/Controllers/SunShots.luau"
             },
+            "InkFrames": {
+              "$path": "src/client/Controllers/InkFrames.luau"
+            },
+            "FireStorm": {
+              "$path": "src/client/Controllers/FireStorm.luau"
+            },
+            "BillboardShapes": {
+              "$path": "src/client/Controllers/BillboardShapes.luau"
+            },
+            "NovaInk": {
+              "$path": "src/client/Controllers/NovaInk.luau"
+            },
+            "NovaScenery": {
+              "$path": "src/client/Controllers/NovaScenery.luau"
+            },
+            "SkillAudio": {
+              "$path": "src/client/Controllers/SkillAudio.luau"
+            },
             "LandscapeBudget": {
               "$path": "src/client/Controllers/LandscapeBudget.luau"
             }

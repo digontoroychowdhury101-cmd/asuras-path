@@ -24,7 +24,7 @@ end
 function Pillar.erupt(trove: Kit.Trove, folder: Instance, ground: Vector3, width: number, band: number): Column
 	local top = ground + Vector3.new(0, HEIGHT, 0)
 	local shell = cylinder(folder, "SupernovaPillar", SHELL, width, 0.62, top)
-	local heart = cylinder(folder, "SupernovaHeart", HEART, width * 0.55, 0.5, top)
+	local heart = cylinder(folder, "SupernovaHeart", HEART, width * 0.55, 0.62, top)
 	local sheath = cylinder(folder, "SupernovaSheath", SHELL, width * 1.04, 0, top)
 	sheath.Material = Enum.Material.ForceField
 	local parts = { shell, heart, sheath }
@@ -43,11 +43,12 @@ function Pillar.erupt(trove: Kit.Trove, folder: Instance, ground: Vector3, width
 	local shards: { BasePart } = {}
 	local spec = {}
 	for n = 1, 46 do
-		local p = Kit.part(folder, "InkShard", INK, Vector3.new(0.1 + math.random() * 0.25, 5 + math.random() * 18, 0.4 + math.random() * 1.4), CFrame.new(ground),
+		local p = Kit.part(folder, "InkShard", INK, Vector3.new(0.15 + math.random() * 0.35, 5 + math.random() * 18, 0.6 + math.random() * 1.8), CFrame.new(ground),
 			if n % 2 == 0 then Enum.PartType.Wedge else Enum.PartType.Block)
 		p.Material, p.Transparency = Enum.Material.SmoothPlastic, 1
 		shards[n] = p
-		spec[n] = { Yaw = math.random() * math.pi * 2, R = width * (0.12 + math.random() * 0.36), H = math.random() * HEIGHT, Speed = 30 + math.random() * 40, Lean = (math.random() - 0.5) * 0.4 }
+		-- Mostly between the white heart and the outer shell, where only one translucent layer covers them.
+		spec[n] = { Yaw = math.random() * math.pi * 2, R = width * (0.3 + math.random() * 0.19), H = math.random() * HEIGHT, Speed = 30 + math.random() * 40, Lean = (math.random() - 0.5) * 0.4 }
 	end
 	-- Disc band: a wide translucent ring and a bright rim at the caster's height.
 	local ring: { BasePart } = {}

@@ -1,5 +1,9 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## Showcase spells: cohesion pass + sound — 2026-10-24 (Computer B)
+
+Matched more reference beats (ink burst, red splatter, shard flash, in-camera firestorm, hollow stars, merged blast blob). Added SkillAudio: 18 timed cues using pitched owned sounds; original masters from `tools/assets/build_skill_audio.py` await upload. Split modules under 150 lines. Studio real-speed pass clean. Next: upload the WAVs, other-player view.
+
 ## Showcase spells rebuilt to TikTok frames — 2026-10-24 (Computer B)
 
 Supernova and Blazing Sun now follow the reference beat-for-beat: caster-only void, glowing ring, banded planet, ink frames, slivered pillar, whiteout; duotone close-ups, BOOM bubble, toon fire, silhouette star-eyes, crescent fists. Studio-verified with stretched cues. Next: real-speed playtest feel, other-player view, performance.

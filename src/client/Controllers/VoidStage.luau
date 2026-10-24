@@ -1,5 +1,5 @@
 --!strict
--- Caster-only staging for the showcase cinematics: a dark matte "void" box that hides the world
+-- Caster-only staging for the showcase cinematics: a flat Neon "void" box that hides the world
 -- behind the shot, a Highlight that turns the caster into a
 -- solid silhouette, a key light, and the colour grades the reference cuts between. The parts are
 -- created on the caster's client only, never take queries, and leave with the cast's trove.
@@ -96,7 +96,8 @@ function Stage.void(trove: Kit.Trove, center: Vector3, half: number, down: numbe
 	}
 	for _, s in spec do
 		local wall = Kit.part(folder, "VoidWall", color, s[1], CFrame.new(mid + s[2]))
-		wall.Material = Enum.Material.SmoothPlastic -- dark Neon renders flat black; matte keeps the hue
+		-- Neon renders one flat colour per wall, so the box never shows its corners (matte shades per face).
+		-- Below about 60 in its brightest channel Neon crushes to black: pick void colours above that.
 		table.insert(walls, wall)
 	end
 	return { Walls = walls, Center = center, Restore = restore }
@@ -111,6 +112,15 @@ function Stage.remove(void: Void?)
 		void.Restore()
 		for _, w in void.Walls do w:Destroy() end
 	end
+end
+
+-- A soft bloom pass on this client for the cast (the reference's glowing whites).
+function Stage.bloom(trove: Kit.Trove, intensity: number, size: number, threshold: number, seconds: number): BloomEffect
+	local b = Kit.add(trove, Instance.new("BloomEffect"))
+	b.Name, b.Intensity, b.Size, b.Threshold = "AsuraSkillBloom", 0, size, threshold
+	b.Parent = game:GetService("Lighting")
+	Kit.tween(trove, b, seconds, { Intensity = intensity })
+	return b
 end
 
 -- The caster drawn as a flat silhouette (black for the blazing-eye close-up).

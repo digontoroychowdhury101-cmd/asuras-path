@@ -5,7 +5,8 @@
 --   0.07 extreme close-up along cheek and shoulder   0.33 "BOOM." bubble
 --   0.39 black void, medium shot; 0.42 an ember kindles on the chest   0.80 a thorn ring clamps it
 --   0.88 it bursts into a sunburst that fills the frame
---   release: black/white ground frame, boiling 2D toon fire, gradient wash, dark sun frame;
+--   release: red splatter, shard burst, black/white ground frame, the camera inside a 3D firestorm
+--   with the silhouette burning through, gradient wash, dark sun frame;
 --   +3.5 black silhouette, blazing star eyes, ember rain   +5.4 burning fists with gold crescents
 -- Void, camera, grading and 2D layers are the caster's; everyone nearby sees the fire in the world.
 local Kit = require(script.Parent.SkillKit)
@@ -19,10 +20,13 @@ local Canvas = require(script.Parent.FireCanvas)
 local Stage = require(script.Parent.VoidStage)
 local Sun = require(script.Parent.SunForms)
 local Shots = require(script.Parent.SunShots)
+local Ink = require(script.Parent.InkFrames)
+local Storm = require(script.Parent.FireStorm)
+local Sfx = require(script.Parent.SkillAudio)
 local Show = {}
 
 Show.FinalPulse = 4
-local EYES, FISTS, FINISH = 3.5, 5.4, 8.6 -- seconds after release
+local EYES, FISTS, FINISH = 3.55, 5.45, 8.6 -- seconds after release
 local rgb = Color3.fromRGB
 
 local function root(cast: any): BasePart?
@@ -47,10 +51,12 @@ function Show.startup(cast: any)
 	cast.Bag.Tension = tension
 	Kit.add(cast.Trove, function() Kit.clean(tension) end)
 	local r = root(cast)
+	Sfx.score(cast, "Sun", "Startup")
 	sparkles(cast, tension, 6)
 	if cast.Own then
 		cast.Bag.Grade = Screen.grade(cast.Trove)
 		cast.Bag.Hud = Kit.add(cast.Trove, Stage.hud())
+		Stage.bloom(cast.Trove, 1, 26, 0.88, 0.4)
 		Screen.settle(cast.Trove, cast.Bag.Grade, Stage.Grades.Duotone, 0.04)
 		Shots.startup(cast)
 		Kit.after(tension, w * 0.33, function() Manga.boom(tension, Vector2.new(0.28, 0.48), w * 0.1) end)
@@ -68,7 +74,7 @@ function Show.startup(cast: any)
 		Kit.tween(tension, ember, w * 0.4, { Size = UDim2.fromScale(3, 3) }, Enum.EasingStyle.Quad, Enum.EasingDirection.In)
 	end)
 	Kit.after(tension, w * 0.8, function()
-		Bb.thorns(tension, chest, 4.2)
+		Sun.thorns(tension, chest, 4.2)
 		if cast.Own then Cinema.shake(cast.Cinema, 0.25, 1, 2) end
 	end)
 	Kit.after(tension, w * 0.88, function()
@@ -83,16 +89,21 @@ function Show.release(cast: any, at: Vector3)
 	if cast.Bag.Tension then Kit.clean(cast.Bag.Tension) end
 	local folder = Kit.folder(cast.Trove, "BlazingSunAwakening")
 	cast.Bag.Folder = folder
+	Sfx.score(cast, "Sun", "Release")
 	local model = cast.Entity.Model
 	local floor = CFrame.new(at - Vector3.new(0, 2.8, 0))
 	Flame.shockwave(cast.Trove, folder, floor)
 	Fx.flash(cast.Trove, folder, at, Sun.Burst[2], 26, 0.6)
 	Fx.burst(Bb.anchor(folder, at), ColorSequence.new(Sun.Burst[1], Sun.Burst[4]), 70, 45)
 	if cast.Own then
-		Manga.groundFlash(cast.Trove, 0.1)
-		Kit.after(cast.Trove, 0.1, function() Canvas.chaos(cast.Trove, 2.5) end)
-		Kit.after(cast.Trove, 2.6, function() Canvas.wash(cast.Trove, 0.45) end)
-		Kit.after(cast.Trove, 3.05, function() Canvas.sunFrame(cast.Trove, 0.45) end)
+		-- Timed to the reference: red splatter, white shard burst, black/white ground, then the fire.
+		Ink.splatter(cast.Trove, 0.05)
+		Kit.after(cast.Trove, 0.055, function() Ink.shards(cast.Trove, 0.06) end)
+		Kit.after(cast.Trove, 0.115, function() Manga.groundFlash(cast.Trove, 0.1) end)
+		Kit.after(cast.Trove, 0.22, function() Storm.engulf(cast.Trove, 2.45) end)
+		Kit.after(cast.Trove, 0.27, function() Canvas.emerge(cast.Trove, model, 0.3) end)
+		Kit.after(cast.Trove, 2.67, function() Canvas.wash(cast.Trove, 0.45) end)
+		Kit.after(cast.Trove, 3.12, function() Canvas.sunFrame(cast.Trove, 0.42) end)
 		Cinema.shake(cast.Cinema, 0.9, 0.5, 2)
 		Shots.release(cast, EYES, FISTS, FINISH)
 	end
@@ -104,7 +115,7 @@ function Show.release(cast: any, at: Vector3)
 		Kit.add(cast.Trove, function() Kit.clean(eyes) end)
 		local flares = Sun.eyes(eyes, head, 2.3)
 		if cast.Own then
-			if cast.Bag.Void then Stage.tint(cast.Trove, cast.Bag.Void, rgb(62, 18, 6), 0.05) end
+			if cast.Bag.Void then Stage.tint(cast.Trove, cast.Bag.Void, rgb(96, 26, 10), 0.05) end
 			cast.Bag.Mask = Stage.silhouette(eyes, model, rgb(8, 4, 3))
 			Screen.settle(cast.Trove, cast.Bag.Grade or Screen.grade(cast.Trove), Stage.Grades.Ember, 0.05)
 		end
@@ -131,6 +142,7 @@ end
 function Show.pulse(cast: any, at: Vector3)
 	if cast.Pulses <= 1 or not cast.Bag.Folder then return end
 	Flame.heat(cast.Trove, cast.Bag.Folder, CFrame.new(at - Vector3.new(0, 2.8, 0)))
+	Sfx.play(cast, "SunPulse", if cast.Pulses >= Show.FinalPulse then 1.2 else 1)
 	if cast.Own then Cinema.shake(cast.Cinema, if cast.Pulses >= Show.FinalPulse then 0.6 else 0.35, 1.4, 2) end
 end
 
