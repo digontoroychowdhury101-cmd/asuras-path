@@ -1,72 +1,118 @@
 --!strict
-local Assets = require(game:GetService("ReplicatedStorage").AsurasPath.Shared.PresentationAssets)
+-- Weapon arcs (post-F26 step 2). Every swing in view draws the path the server actually swept: the
+-- server publishes each committed strike as the model attribute AsuraStrike (StrikeGeometry arc,
+-- reach, lunge and yaw), and this ribbon is built from those numbers rather than the animated blade,
+-- so an arc that misses a body really missed it. Player, enemy and boss-look swings alike. A tier-1
+-- gameplay cue: shaped by the move (a narrow thrust line, a swept slash fan) so it reads in grayscale
+-- and with reduced effects, and gone before the next swing can start.
+local TweenService = game:GetService("TweenService")
+local Debris = game:GetService("Debris")
+local Workspace = game:GetService("Workspace")
+local Shared = game:GetService("ReplicatedStorage").AsurasPath
+local Assets = require(Shared.Shared.PresentationAssets)
+local Strike = require(Shared.Simulation.StrikeGeometry)
 local Controller = {}
 Controller.__index = Controller
 local COLORS = { CalamityBoneCleaver=Color3.fromRGB(215,33,27), HeavenPiercingGuandao=Color3.fromRGB(74,222,255),
 	TwinShadowSai=Color3.fromRGB(139,66,221), JadeCatalyst=Color3.fromRGB(83,241,208) }
-local function clear(record: any) for _, item in record.Items do item:Destroy() end end
-local function blade(e: any): BasePart?
-	local basic = e.Model:FindFirstChild("AsuraWeapon")
-	if basic and basic:IsA("BasePart") then return basic end
-	local folder = e.Model:FindFirstChild("ArsenalWeapon")
-	if folder then
-		for _, name in {"GreatBlade","ShadowSai","SickleBlade","FanRib","JadeStaff","BronzeCenser"} do
-			local p = folder:FindFirstChild(name)
-			if p and p:IsA("BasePart") then return p end
-		end
-	end
-	-- Boss looks carry their own weapons (CostumeKit): trail the longest visible weapon piece.
-	local attire, best, length = e.Model:FindFirstChild("AsuraAttire"), nil :: BasePart?, 0
-	for _, p in if attire then attire:GetChildren() else {} do
-		if p:IsA("BasePart") and p:GetAttribute("AsuraRole") == "Weapon" and p.Transparency < 1 and p.Size.Z > length then best, length = p, p.Size.Z end
-	end
-	return best
+local DEFAULT_COLOR = Color3.fromRGB(237, 192, 118)
+local SAMPLES = 8
+local FADE = 0.15 -- shorter than any recovery, so a fading arc never reads as the next attack
+local RANGE = 80
+local STALE = 0.5 -- records older than this (late replication, streaming in) are not drawn
+
+local function beam(carrier: BasePart, a: Attachment, b: Attachment, color: Color3, width: number)
+	local item = Instance.new("Beam")
+	item.Attachment0, item.Attachment1, item.FaceCamera, item.Segments = a, b, true, 1
+	item.Color = ColorSequence.new(Color3.new(1, 1, 1), color)
+	item.Transparency = NumberSequence.new(0.1, 0.35)
+	item.LightEmission, item.Width0, item.Width1 = 0.6, width, width
+	item.Parent = carrier
+	TweenService:Create(item, TweenInfo.new(FADE), { Width0 = 0, Width1 = 0 }):Play()
 end
-function Controller.new(state: any): any return setmetatable({State=state, Records={}, Tick=0},Controller) end
+
+local function node(carrier: BasePart, x: number, z: number): Attachment
+	local a = Instance.new("Attachment")
+	a.Position = Vector3.new(x, 0.6, z)
+	a.Parent = carrier
+	return a
+end
+
+-- Builds the swept shape for one strike around `root`, at the committed yaw.
+local function draw(folder: Instance, root: BasePart, strike: Strike.Strike)
+	local carrier = Instance.new("Part")
+	carrier.Name, carrier.Anchored, carrier.Transparency, carrier.Size = "StrikeArc", true, 1, Vector3.one * 0.2
+	carrier.CanCollide, carrier.CanQuery, carrier.CanTouch, carrier.CastShadow = false, false, false, false
+	carrier.CFrame = CFrame.new(root.Position) * CFrame.Angles(0, strike.Yaw, 0)
+	local color = (COLORS :: any)[strike.Weapon] or DEFAULT_COLOR
+	local shape = { Arc = strike.Arc, Reach = strike.Reach, Lunge = strike.Lunge }
+	if strike.Arc > Strike.SlashArc then
+		-- Slash: the outer edge of the fan plus its two radial edges.
+		local tips = Strike.sweep(shape, 0, SAMPLES)
+		local hx, _, hz = Strike.segment(shape, 0, 0)
+		local ex, _, ez = Strike.segment(shape, 1, 0)
+		local previous = node(carrier, tips[1][1], tips[1][2])
+		beam(carrier, node(carrier, hx, hz), previous, color, 0.08)
+		for i = 2, #tips do
+			local current = node(carrier, tips[i][1], tips[i][2])
+			beam(carrier, previous, current, color, 0.32)
+			previous = current
+		end
+		beam(carrier, node(carrier, ex, ez), previous, color, 0.08)
+	else
+		-- Thrust: one line from the hilt to full extension.
+		local ax, _, az, bx, _, bz = Strike.segment(shape, 1, 0)
+		beam(carrier, node(carrier, ax, az), node(carrier, bx, bz), color, 0.3)
+	end
+	carrier.Parent = folder
+	Debris:AddItem(carrier, FADE + 0.05)
+end
+
+function Controller.new(state: any): any
+	local folder = Instance.new("Folder")
+	folder.Name, folder.Parent = "AsuraStrikeArcs", Workspace
+	return setmetatable({ State = state, Folder = folder, Seen = {} :: { [number]: string }, Tick = 0 }, Controller)
+end
+
 function Controller.Update(self: any, dt: number)
 	self.Tick += dt
-	if self.Tick < 1/30 then return end
+	if self.Tick < 1 / 30 then
+		return
+	end
 	self.Tick = 0
-	local own = self.State:Own(); local admitted = 0
-	for id, record in self.Records do
-		record.Trail.Enabled = false
-		local e = self.State:Get(id)
-		if not e or not record.Part.Parent or not own or not own.Root or not e.Root or (own.Root.Position-e.Root.Position).Magnitude>85 then
-			clear(record); self.Records[id]=nil
+	local own = self.State:Own()
+	if not own or not own.Root then
+		return
+	end
+	local now, admitted = Workspace:GetServerTimeNow(), 0
+	for id in self.Seen do
+		if not self.State:Get(id) then
+			self.Seen[id] = nil
 		end
 	end
-	if not own or not own.Root then return end
 	for id, e in self.State.Entities do
-		if not e.Root or (own.Root.Position-e.Root.Position).Magnitude>80 then continue end
-		admitted += 1; if admitted > Assets.Limits.TrailActors then break end
-		local p = blade(e); local record = self.Records[id]
-		if record and record.Part ~= p then clear(record); self.Records[id]=nil; record=nil end
-		if not p then continue end
-		if not record then
-			local a, b = Instance.new("Attachment"), Instance.new("Attachment")
-			a.Name,b.Name = "AsuraHilt","AsuraTip"
-			local axis = if p.Size.Y > p.Size.Z then Vector3.yAxis else Vector3.zAxis
-			local length = math.max(p.Size.Y,p.Size.Z)
-			a.Position,b.Position = axis*length*0.35, -axis*length*0.5
-			a.Parent,b.Parent = p,p
-			local trail = Instance.new("Trail")
-			trail.Name, trail.Attachment0, trail.Attachment1 = "ElementRibbon",a,b
-			trail.Lifetime,trail.MinLength,trail.FaceCamera = 0.15,0.04,true
-			trail.Color = ColorSequence.new({ColorSequenceKeypoint.new(0,Color3.new(1,1,1)),
-				ColorSequenceKeypoint.new(0.22,(COLORS :: any)[e.Model:GetAttribute("AsuraWeapon")] or Color3.fromRGB(237,192,118)),
-				ColorSequenceKeypoint.new(1,Color3.fromRGB(45,19,42))})
-			trail.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0,0.08),NumberSequenceKeypoint.new(1,1)})
-			trail.WidthScale,trail.LightEmission = NumberSequence.new(1,0),0.85
-			trail.Texture,trail.Enabled,trail.Parent = Assets.Textures.Ribbon,false,p
-			local items: {Instance}={trail,a,b}
-			record={Part=p,Trail=trail,Items=items}; self.Records[id]=record
+		local root = e.Root
+		if not root or (own.Root.Position - root.Position).Magnitude > RANGE then
+			continue
 		end
-		local snapshot=e.Snapshot
-		record.Trail.Enabled = snapshot ~= nil and snapshot.State == "Active"
+		admitted += 1
+		if admitted > Assets.Limits.TrailActors then
+			break
+		end
+		local record = e.Model:GetAttribute("AsuraStrike")
+		if type(record) == "string" and record ~= self.Seen[id] then
+			self.Seen[id] = record
+			local strike = Strike.decode(record)
+			if strike and now - (strike.Start + strike.Active) < STALE then
+				draw(self.Folder, root, strike)
+			end
+		end
 	end
 end
+
 function Controller.Destroy(self: any)
-	for _, record in self.Records do clear(record) end
-	table.clear(self.Records)
+	self.Folder:Destroy()
+	table.clear(self.Seen)
 end
+
 return Controller

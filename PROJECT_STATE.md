@@ -1,5 +1,9 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## Post-F26 step 2: omnidirectional combat — 2026-10-25 (Computer B)
+
+StrikeGeometry: shared commit, tracking and air rules; the server-validated arc is drawn; the dash is fixed. Verifier and 21 suites green; single-client Studio duels (`OMNI_COMBAT.md`). Digest 1219538751. Next, on the other computer (not this MacBook): run the two-client `tools/qa/OmniPvP.*` test, then a human fairness playtest.
+
 ## Post-F26 audit — 2026-10-25 (Computer B)
 
 Audit only, no source change. 2aa5000, digest 1438804042: verifier 14/14, 20 shim suites (2,191 checks), place rebuild byte-identical, clean Studio boot. Studio confirms 0 `AsuraBoss_*` templates and 0 authored boss tracks. Findings 3 Verified / 37 pending / 4 Blocked. Live ranked stays closed. Backlog: `outputs/claude-followup-2026-10-21/POST_F26_AUDIT.md`. Next: earned six-boss run, private live harness.

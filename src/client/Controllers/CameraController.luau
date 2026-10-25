@@ -14,6 +14,7 @@ local WorldState = require(script.Parent:WaitForChild("WorldStateController") ::
 local BossCinematics = require(script.Parent.BossCinematics)
 local Portrait = require(script.Parent.PortraitCamera)
 local Effects = require(Shared:WaitForChild("Shared"):WaitForChild("EffectsPreference") :: ModuleScript) :: any
+local Strike = require(Shared:WaitForChild("Simulation"):WaitForChild("StrikeGeometry") :: ModuleScript)
 
 type WorldState = WorldState.WorldState
 type Entity = WorldState.Entity
@@ -403,16 +404,22 @@ function Controller.Update(self: CameraController, dt: number)
 		if humanoid then
 			humanoid.AutoRotate = false
 		end
+		-- StrikeGeometry: face the target freely in neutral, at the shared rate while winding up or
+		-- recovering, and not at all once a swing commits (the server sweeps the committed yaw).
 		local snapshot = own.Snapshot
-		local canTurn = snapshot == nil or (snapshot.State ~= "KO" and snapshot.State ~= "Dashing" and snapshot.State ~= "DeathblowVictim")
-		if canTurn and flat.Magnitude > 0.1 then
-			local look = Vector3.new(point.X - root.Position.X, 0, point.Z - root.Position.Z)
-			if look.Magnitude > 0.1 then
-				root.CFrame = CFrame.lookAt(root.Position, root.Position + look)
+		local look = Vector3.new(point.X - root.Position.X, 0, point.Z - root.Position.Z)
+		local desired, current = Strike.yaw(look.X, look.Z), Strike.yaw(root.CFrame.LookVector.X, root.CFrame.LookVector.Z)
+		if desired and current and flat.Magnitude > 0.1 then
+			local step = if snapshot then Strike.turnStep(snapshot.State, snapshot.StateElapsed, snapshot.StateDuration, dt) else math.huge
+			local yaw = Strike.turn(current, desired, step)
+			if yaw ~= current then
+				root.CFrame = CFrame.new(root.Position) * CFrame.Angles(0, yaw, 0)
 			end
 		end
 	elseif humanoid then
-		humanoid.AutoRotate = true
+		-- Unlocked, walking turns the body only in neutral; a committed swing keeps its facing.
+		local snapshot = own.Snapshot
+		humanoid.AutoRotate = snapshot == nil or Strike.turnStep(snapshot.State, 0, 0, 1) == math.huge
 	end
 
 	self.Yaw.Value = self.TargetYaw + wrap(self.Yaw.Value - self.TargetYaw)

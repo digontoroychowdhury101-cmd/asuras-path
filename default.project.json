@@ -339,6 +339,9 @@
           "CombatRules": {
             "$path": "src/simulation/CombatRules.luau"
           },
+          "StrikeGeometry": {
+            "$path": "src/simulation/StrikeGeometry.luau"
+          },
           "MatchmakingRules": {
             "$path": "src/simulation/MatchmakingRules.luau"
           },

@@ -152,7 +152,8 @@ for _, case in { { "Jian", V3.new(0.12, 0.28, 4.2), { "Guard", "GripWrap", "Pomm
 end
 check("held stock weapons are dressed", string.find(src("src/server/CharacterService.luau"), "WeaponModels.dress(part, e.Fighter.Weapon)", 1, true) ~= nil)
 check("phase recolours skip weapon fittings", string.find(src("src/server/CharacterService.luau"), 'descendant.Parent.Name == "AsuraWeapon"', 1, true) ~= nil)
-check("weapon trails follow boss look weapons", string.find(src("src/client/Controllers/WeaponTrails.luau"), 'GetAttribute("AsuraRole") == "Weapon"', 1, true) ~= nil)
+-- Post-F26 step 2: arcs follow the server's committed strike for every actor, boss looks included.
+check("weapon arcs follow the validated strike record", string.find(src("src/client/Controllers/WeaponTrails.luau"), 'GetAttribute("AsuraStrike")', 1, true) ~= nil)
 
 print(string.format("cast visuals: %d passed, %d failed", passed, failed))
 if failed > 0 then error("cast visuals regression failed") end

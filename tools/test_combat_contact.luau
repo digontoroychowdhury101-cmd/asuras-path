@@ -91,7 +91,8 @@ check("ranged effect list shared", Combat.RangedEffects[fan.Light[3].Effect] == 
 
 -- 7. Hitboxes and rewind untouched.
 local cs = src("src/server/CharacterService.luau")
-check("weapon segment reach formula unchanged", string.find(cs, "local reach = move.Reach + bonus + move.Lunge * 0.35 * progress", 1, true) ~= nil)
+-- Post-F26 step 2: the formula moved verbatim into StrikeGeometry (number-for-number parity in test_omni_combat).
+check("weapon segment reach formula unchanged", string.find(src("src/simulation/StrikeGeometry.luau"), "local reach = shape.Reach + bonus + shape.Lunge * 0.35 * progress", 1, true) ~= nil and string.find(cs, "Strike.segment(move, progress, bonus)", 1, true) ~= nil)
 check("weapon radius unchanged", string.find(cs, 'return if f.Weapon == "Unarmed" then 0.55 else 0.3', 1, true) ~= nil)
 check("rewind query unchanged", string.find(cs, "Lag.queryHit(prevA, prevB, curA, curB, radius, defender.History, rewindTo, TICK)", 1, true) ~= nil)
 check("whiffs annotated after the step, before contacts", string.find(cs, "annotateWhiffs(stepped)\n\n\tfor _, e in live do\n\t\tif entities[e.Id] == e and e.Fighter.State == \"Active\" then", 1, true) ~= nil)
@@ -181,7 +182,8 @@ end
 local geo = { Vector3 = roblox.Vector3, CFrame = roblox.CFrame, math = math, table = table, type = type, setmetatable = setmetatable,
 	ipairs = ipairs, pairs = pairs, next = next, assert = assert, error = error, tostring = tostring, string = string, os = os }
 local Lag = luau.load(src("src/server/LagCompensation.luau"), { debugName = "LagCompensation", environment = geo })()
-local chunk = "local Combat, Lag, TICK, FACING_DOT, entities, frameEvents, eventPoints = ...\n"
+local Strike = require("../src/simulation/StrikeGeometry")
+local chunk = "local Combat, Lag, TICK, FACING_DOT, entities, frameEvents, eventPoints, Strike = ...\n"
 	.. "local function alive() return true end\nlocal function hostile() return true end\n"
 	.. "local function facingDot() return 1 end\nlocal function awardXp() end\n"
 	.. between(cs, "local function weaponSegment(", "\n-------") .. "\n"
@@ -189,13 +191,13 @@ local chunk = "local Combat, Lag, TICK, FACING_DOT, entities, frameEvents, event
 	.. "\nreturn resolveContacts, sweepClosingWindows"
 local function duel(flat: number, closingSweep: boolean): string
 	local entities, frameEvents = {}, {}
-	local resolve, sweep = luau.load(chunk, { debugName = "Contacts", environment = geo })(Combat, Lag, Tempo.TickSeconds, 0.15, entities, frameEvents, {})
+	local resolve, sweep = luau.load(chunk, { debugName = "Contacts", environment = geo })(Combat, Lag, Tempo.TickSeconds, 0.15, entities, frameEvents, {}, Strike)
 	local a, b = Combat.new(1, "Jian", T), Combat.new(-1, "Jian", T)
 	local aRoot = roblox.CFrame.lookAt(roblox.Vector3.new(0, 3.2, 0), roblox.Vector3.new(0, 3.2, -10))
 	local bRoot = roblox.CFrame.lookAt(roblox.Vector3.new(0, 3.39, -flat), roblox.Vector3.new(0, 3.39, 0))
 	local history = Lag.newHistory()
 	for i = -30, 0 do Lag.record(history, T + i * Tempo.TickSeconds, bRoot, roblox.Vector3.zero) end
-	local ea = { Id = 1, Fighter = a, Root = { CFrame = aRoot, Position = aRoot.Position }, Model = { GetAttribute = function() return nil end } }
+	local ea = { Id = 1, Fighter = a, Root = { CFrame = aRoot, Position = aRoot.Position }, Model = { GetAttribute = function() return nil end }, Omni = { YawFor = -1 } }
 	local eb = { Id = -1, Fighter = b, Root = { CFrame = bRoot, Position = bRoot.Position }, Model = ea.Model, History = history }
 	entities[1], entities[-1] = ea, eb
 	assert(Combat.tryAttack(a, "Light", T))

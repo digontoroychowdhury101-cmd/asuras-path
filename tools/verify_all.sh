@@ -37,8 +37,9 @@ python3 tools/test_asura_stage2.py
 echo "[3/14] Testing Asura Stage 3..."
 "$LUAU" tools/test_asura_stage3.luau
 
-echo "[4/14] Testing Weapons & Spells Contracts..."
+echo "[4/14] Testing Weapons & Spells Contracts and Omnidirectional Combat..."
 "$LUAU" tools/test_weapons_and_spells.luau
+python3 tools/lune_compat.py tools/test_omni_combat.luau
 
 echo "[5/14] Testing Weapons & Spells Server Runtime..."
 python3 tools/test_weapons_and_spells_runtime.py

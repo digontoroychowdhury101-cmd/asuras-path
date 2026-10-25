@@ -242,6 +242,23 @@ local Settings = {
 		DashInvulnerable = { Start = 0.0, Finish = 0.10 },
 	},
 
+	-- One facing rule for players, enemies, bosses and grounded duels (StrikeGeometry, post-F26 step 2).
+	-- Seconds are already at the 1.4x tempo; frame data is unchanged.
+	Tracking = {
+		-- Degrees per second an attacker may turn while winding up or recovering.
+		StartupTurnRate = 240,
+		-- Tracking stops this long before the first active frame, so a late sidestep makes it whiff.
+		CommitLeadSeconds = 9 / 60,
+		-- AI aims where its target will be this far ahead (steady circling is read, reversals are not).
+		AimLeadSeconds = 0.1,
+		-- Airborne: one light attack and one dodge per airtime; heavier moves wait for the ground.
+		AerialAttacks = 1,
+		AirDodges = 1,
+		LandingRecoverySeconds = 10 / 60,
+		-- Feet this far above the floor count as airborne (a step or slope edge does not).
+		AirborneClearance = 1.2,
+	},
+
 	Input = {
 		BufferWindow = 0.10,
 		BufferCapacity = 16,

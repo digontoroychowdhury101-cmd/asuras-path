@@ -25,9 +25,8 @@ function Controller.OnEvent(self: GameFeel, event: any)
  if direction.Magnitude>0.1 then direction=direction.Unit end
  local kind=event.Kind
  if kind=="Whiff" and source and source.Root and (event.Source==own.Id or event.Target==own.Id) then
-  -- The swing's true reach, so a miss reads as distance (ContactCues words it in the callouts).
-  local flat=Vector3.new(point.X-source.Root.Position.X,0,point.Z-source.Root.Position.Z).Magnitude
-  self.Vfx:arc(source.Root.Position+Vector3.yAxis*0.6,source.Root.CFrame.LookVector,math.max(flat,2),Color3.fromRGB(214,206,196))
+  -- The swing's true reach is already drawn from the server's committed strike (WeaponTrails), so
+  -- a miss reads as distance there; ContactCues words the gap in the callouts.
   Audio.at("Wind",point,0.25)
  elseif kind=="DeflectSpark" then
   self.Vfx:burst(point,direction+Vector3.yAxis*0.5,Color3.fromRGB(255,173,65),math.random(25,40),55)

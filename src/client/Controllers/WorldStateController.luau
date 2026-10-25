@@ -60,6 +60,9 @@ type Fields = {
 	DashSeq: number,
 	DashEnds: number,
 	DashVelocity: Vector3,
+	DashDrive: LinearVelocity?,
+	DashFrom: Vector3,
+	DashLength: number,
 }
 
 export type WorldState = typeof(setmetatable({} :: Fields, Controller))
@@ -101,6 +104,9 @@ function Controller.new(net: Instance): WorldState
 		DashSeq = -1,
 		DashEnds = 0,
 		DashVelocity = Vector3.zero,
+		DashDrive = nil,
+		DashFrom = Vector3.zero,
+		DashLength = 0,
 		Pending = setmetatable({}, { __mode = "k" }) :: any,
 	}
 	local self = setmetatable(fields, Controller)
@@ -335,8 +341,36 @@ function Controller.OnEntityRemoved(self: WorldState, listener: EntityListener):
 	return subscribe(self.RemovedListeners, listener)
 end
 
+-- Horizontal-plane LinearVelocity on the owned root. A per-frame velocity write lost most of the
+-- dash to the humanoid's braking (WalkSpeed is 0 while Dashing): a 14-stud dash covered ~6 studs in
+-- Studio (post-F26 step 2). The constraint holds the granted speed every physics step; gravity stays free.
+local function dashDrive(self: WorldState, root: BasePart): LinearVelocity
+	local drive = self.DashDrive
+	if drive and drive.Parent == root then
+		return drive
+	end
+	local attachment = root:FindFirstChild("RootAttachment")
+	if not attachment or not attachment:IsA("Attachment") then
+		attachment = Instance.new("Attachment")
+		attachment.Name = "AsuraDashAttachment"
+		attachment.Parent = root
+	end
+	local made = Instance.new("LinearVelocity")
+	made.Name = "AsuraDashDrive"
+	made.Attachment0 = attachment :: Attachment
+	made.RelativeTo = Enum.ActuatorRelativeTo.World
+	made.VelocityConstraintMode = Enum.VelocityConstraintMode.Plane
+	made.PrimaryTangentAxis = Vector3.xAxis
+	made.SecondaryTangentAxis = Vector3.zAxis
+	made.MaxForce = 1e7
+	made.Enabled = false
+	made.Parent = root
+	self.DashDrive = made
+	return made
+end
+
 -- Executes the server's dash grant on the locally owned root for the granted duration.
-function Controller.Step(self: WorldState, _dt: number)
+function Controller.Step(self: WorldState, dt: number)
 	local own = self:Own()
 	local snapshot = own and own.Snapshot
 	local root = own and own.Root
@@ -355,15 +389,38 @@ function Controller.Step(self: WorldState, _dt: number)
 			local remaining = math.max(snapshot.DashDuration - snapshot.StateElapsed, 0.05)
 			self.DashVelocity = direction * (snapshot.DashDistance / snapshot.DashDuration)
 			self.DashEnds = os.clock() + remaining
+			self.DashFrom, self.DashLength = root.Position, snapshot.DashDistance * remaining / snapshot.DashDuration
 		end
 	end
+	local drive = self.DashDrive
 	if os.clock() < self.DashEnds then
 		if snapshot.State ~= "Dashing" and snapshot.State ~= "Idle" then
 			self.DashEnds = 0
+			if drive then
+				drive.Enabled = false
+			end
 			return
 		end
+		-- Stop on the granted distance, not a frame boundary: at low frame rates the last frame is slowed
+		-- so the dash lands on its length instead of overshooting by a frame of full speed.
+		local moved = Vector3.new(root.Position.X - self.DashFrom.X, 0, root.Position.Z - self.DashFrom.Z).Magnitude
+		local left = self.DashLength - moved
+		local full = self.DashVelocity.Magnitude
+		if left <= 0.05 or full < 1e-3 then
+			self.DashEnds = 0
+			if drive then
+				drive.Enabled = false
+			end
+			return
+		end
+		local planar = self.DashVelocity * math.min(1, left / (full * math.max(dt, 1 / 240)))
 		local velocity = root.AssemblyLinearVelocity
-		root.AssemblyLinearVelocity = Vector3.new(self.DashVelocity.X, velocity.Y, self.DashVelocity.Z)
+		root.AssemblyLinearVelocity = Vector3.new(planar.X, velocity.Y, planar.Z)
+		drive = dashDrive(self, root)
+		drive.PlaneVelocity = Vector2.new(planar.X, planar.Z)
+		drive.Enabled = true
+	elseif drive and drive.Enabled then
+		drive.Enabled = false
 	end
 end
 

@@ -962,6 +962,22 @@ function Rules.setSprint(f: Fighter, on: boolean, now: number): boolean
 end
 
 -- 6. Evasion with backdash decay: rapid Roll/Dash spam shortens distance and i-frames.
+-- Touchdown after an aerial strike (StrikeGeometry): the landing costs `seconds` of move-less
+-- Recovery (guard and deflect stay open, no combo or dodge cancel). Returns "Wait" while the swing or
+-- an air dodge is still out (dodging into the ground does not skip the landing), "Applied" once paid,
+-- "Dropped" when a stun or KO already took over.
+function Rules.landingRecovery(f: Fighter, now: number, seconds: number): "Applied" | "Wait" | "Dropped"
+	if f.State == "Startup" or f.State == "Active" or f.State == "Dashing" then
+		return "Wait"
+	elseif (f.State ~= "Idle" and f.State ~= "Recovery") or f.PendingHeal > 0 then
+		return "Dropped"
+	end
+	local remaining = if f.State == "Recovery" then math.max(f.StateEnd - now, seconds) else seconds
+	clearMove(f)
+	enter(f, "Recovery", now, remaining)
+	return "Applied"
+end
+
 function Rules.tryDash(f: Fighter, kind: "Roll" | "Dash", now: number, dirX: number, dirZ: number, events: { Event }?): (DashGrant?, string)
 	if f.RootUntil > now then return nil, "Rooted" end
 	local ok, reason = Schema.canAct(f.State, kind, f.Stamina, f.Posture, Rules.context(f, now))

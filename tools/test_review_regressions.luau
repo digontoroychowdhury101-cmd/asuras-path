@@ -46,6 +46,7 @@ do
 	local region = "LeftLeg"
 	local Lag = {queryHit=function() return {Region=region,Point=vec(0,0,0)} end}
 	local function weaponSegment(...: any): (any,any) return vec(0,0,0),vec(0,0,0) end
+	local function strikeFrame(e: any): any return e.Root.CFrame end
 	local function weaponRadius(...: any): number return 0.3 end
 	local function alive(...: any): boolean return true end
 	local function hostile(...: any): boolean return true end

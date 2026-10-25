@@ -33,6 +33,13 @@ This ledger starts with the audit baseline only. No new numbered prompt has been
 | 25 | Measure performance and listen to the finished audio | In progress | Studio samples (build 1129449138, iGPU likely, 1736×824, 1 player, 10 s): Sanctuary 42.2/45.0 p99, Monastery fight 43.0/48.0, Bamboo 41.8/43.7 ms; server heartbeat 0.78 ms, physics 1.87 ms; ~24 fps cap not tree-specific; memory +119 MB over 25 min, instances flat. 13/13 sounds loaded; no `BossMusic_<bossId>` tracks. Cleanup 7, audiovisual pass (R). Orig 26; #2 #7 #21 #23–25 #31 #32 #36. Open: Twins/Wyrm/cast scenes (desync discarded), draw calls/GPU, player hardware, listening, score · human/composer. |
 | 26 | Audit every original batch and every finding before sign-off | Implemented — acceptance pending | `FINAL_ACCEPTANCE.md`: 26 batches, 44 findings, A1–A6 with evidence types; verdict GO (conditional) for private playtesting, NO-GO for launch. `bash tools/verify_all.sh` SUCCESS exit 0 (`F21_26_VERIFY_LOG.txt`, temp place). Open: owner actions 1–5 in `FINAL_ACCEPTANCE.md`. |
 
+## Post-F26 production steps
+
+| Step | Objective | Status | Evidence and open items |
+|---|---|---|---|
+| 1 | Audit the 26 follow-ups (build identity, ledger, boss/ranked status, backlog) | Done (audit only) | `POST_F26_AUDIT.md`, digest 1438804042. |
+| 2 | Shared omnidirectional combat (enemies, bosses, grounded PvP) | Implemented — acceptance pending | `OMNI_COMBAT.md`. New `StrikeGeometry` facing/commit/air rules, validated arc drawn from the server record, AI aim lead, guard turn limit, landing recovery, constraint-driven client dash (6.05 → 14.7 studs). Local regression: verifier SUCCESS; 21 suites / 2,276 checks; `test_omni_combat` 84. Studio (1 client, digest 1219538751): real input plus seeded/server-timed beats vs monk, swordsman and skilled opponent, and Twin Sentinels entry (`omni-views/`). Open: human continuous-input fairness (stunlock, Twins pressure, tracking values, lock switching); two-client PvP harness `tools/qa/OmniPvP.*` to run on the other computer; gamepad/touch hardware. |
+
 ## Original batch acceptance
 
 | Original | Current independent audit | Follow-up owners | Exact acceptance still open |

@@ -151,6 +151,12 @@ local function flatUnit(v: Vector3): Vector3
 	return if m > 1e-5 then f / m else Vector3.zero
 end
 
+-- Where a fighting AI aims (StrikeGeometry): the target's position a short beat ahead along its
+-- ground velocity, so steady circling is read while a late reversal or dodge still makes it whiff.
+local function leadPoint(target: Entity): Vector3
+	return target.Root.Position + flat(target.Root.AssemblyLinearVelocity) * Settings.Tracking.AimLeadSeconds
+end
+
 local function toCFrame(p: World.Placement): CFrame
 	return CFrame.new(p.X, p.Y, p.Z) * CFrame.Angles(0, math.rad(p.Yaw), 0)
 end
@@ -359,7 +365,7 @@ local function decide(agent: Agent, self: Entity, target: Entity, now: number)
 	local distance = (target.Root.Position - self.Root.Position).Magnitude
 	local reach = reachOf(agent, f)
 
-	Characters.Face(agent.Id, target.Root.Position)
+	Characters.Face(agent.Id, leadPoint(target))
 
 	if tf.State == "StanceBroken" and distance <= Settings.Deathblow.Range then
 		Characters.PushIntent(agent.Id, "Heavy")

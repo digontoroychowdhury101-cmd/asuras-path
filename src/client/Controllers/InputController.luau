@@ -13,6 +13,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Shared = ReplicatedStorage:WaitForChild("AsurasPath")
 local InputBuffer = require(Shared:WaitForChild("Simulation"):WaitForChild("InputBuffer") :: ModuleScript)
+local Strike = require(Shared:WaitForChild("Simulation"):WaitForChild("StrikeGeometry") :: ModuleScript)
 local InputMap = require(Shared:WaitForChild("Shared"):WaitForChild("InputMap") :: ModuleScript)
 local WorldState = require(script.Parent:WaitForChild("WorldStateController") :: ModuleScript)
 local CameraController = require(script.Parent:WaitForChild("CameraController") :: ModuleScript)
@@ -402,6 +403,46 @@ function Controller.EvadeDirection(self: InputController): Vector3
 	return if back.Magnitude > 1e-3 then back.Unit else Vector3.new(0, 0, 1)
 end
 
+-- Where an attack is aimed (StrikeGeometry): the locked target, else the move input, else the camera
+-- (mouse) or the body's facing (stick and touch). The server commits the swing within its budget.
+function Controller.AttackDirection(self: InputController): Vector3
+	local own = self.State:Own()
+	local root = own and own.Root
+	local target = self.Camera:LockedEntity()
+	if root and target and target.Root then
+		local d = (target.Root :: BasePart).Position - root.Position
+		if Vector3.new(d.X, 0, d.Z).Magnitude > 0.1 then
+			return Vector3.new(d.X, 0, d.Z).Unit
+		end
+	end
+	local humanoid = own and own.Humanoid
+	if humanoid and humanoid.MoveDirection.Magnitude > 0.1 then
+		local m = humanoid.MoveDirection
+		return Vector3.new(m.X, 0, m.Z).Unit
+	end
+	local look = if self.Device == "Keyboard" or not root then Workspace.CurrentCamera.CFrame.LookVector else root.CFrame.LookVector
+	local flat = Vector3.new(look.X, 0, look.Z)
+	return if flat.Magnitude > 1e-3 then flat.Unit else Vector3.new(0, 0, -1)
+end
+
+-- Turn the body to a sent attack's aim at once in neutral, or by the shared recovery rate in a combo,
+-- so it agrees with the arc the server commits.
+function Controller.FaceAttack(self: InputController, x: number, z: number)
+	local own = self.State:Own()
+	local root, snapshot = own and own.Root, self.State:OwnSnapshot()
+	local aim = Strike.yaw(x, z)
+	if not root or not aim then
+		return
+	end
+	local look = root.CFrame.LookVector
+	local current = Strike.yaw(look.X, look.Z) or aim
+	local state = if snapshot then snapshot.State else "Idle"
+	local step = if state == "Recovery" then Strike.turnStep("Recovery", 0, 0, snapshot.StateElapsed) else Strike.turnStep(state, 0, 0, 0)
+	if step > 0 then
+		root.CFrame = CFrame.new(root.Position) * CFrame.Angles(0, Strike.turn(current, aim, step), 0)
+	end
+end
+
 function Controller.Press(self: InputController, command: Command)
 	local callback = self.OnCommand
 	if callback then
@@ -416,7 +457,8 @@ function Controller.Press(self: InputController, command: Command)
 	if command == "Jump" or command == "Slide" or command == "Aim" then
 		self.Movement:Press(command)
 	elseif command == "Light" or command == "Heavy" or command == "WeaponArt" then
-		InputBuffer.push(self.Buffer, command, stamp)
+		local aim = self:AttackDirection()
+		InputBuffer.push(self.Buffer, command, stamp, nil, aim.X, aim.Z)
 	elseif command == "Guard" then
 		-- Sekiro rule: a guard press during a feintable windup feints; otherwise it deflects, and
 		-- holding it keeps the guard raised once the deflect window closes.
@@ -587,7 +629,11 @@ function Controller.Step(self: InputController, dt: number)
 		if action == nil then
 			break
 		end
-		local hasDirection = action == "Roll" or action == "Dash"
+		local attack = action == "Light" or action == "Heavy" or action == "WeaponArt"
+		local hasDirection = attack or action == "Roll" or action == "Dash"
+		if attack and x and z then
+			self:FaceAttack(x, z)
+		end
 		self.Send(action, if variant ~= "" then variant else nil, if hasDirection then x else nil, if hasDirection then z else nil, nil, time)
 	end
 end

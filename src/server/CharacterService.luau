@@ -16,6 +16,7 @@ local Settings = require(Shared.Shared.CombatSettings) :: any
 local Schema = require(Shared.Simulation.MoveSchema) :: any
 local Weapons = require(Shared.Simulation.WeaponSchema) :: any
 local Combat = require(Shared.Simulation.CombatRules)
+local Strike = require(Shared.Simulation.StrikeGeometry)
 local Contact = require(Shared.Shared.ContactCues)
 local InputBuffer = require(Shared.Simulation.InputBuffer)
 local Tempo = require(Shared.Simulation.Tempo) :: any
@@ -96,6 +97,9 @@ export type Entity = {
 	Elo: number,
 	Vip: boolean,
 	Cosmetics: any,
+	-- StrikeGeometry facing/air state: press aim and committed yaw (each keyed by Fighter.MoveStart),
+	-- last enemy Face time and the airtime allowances.
+	Omni: { Aim: number?, AimFor: number, Yaw: number?, YawFor: number, LastFace: number, Air: Strike.Air },
 }
 
 type Duel = {
@@ -345,19 +349,27 @@ local function tint(model: Model, rgb: { number })
 	end
 end
 
--- World-space weapon segment for a move at `progress` through its active frames. Slashes sweep the
--- authored arc around the root; thrusts extend along the facing. Lunge and fighter reach bonus are
--- folded into the tip.
+-- World-space weapon segment for a move at `progress` through its active frames (StrikeGeometry:
+-- slashes sweep the authored arc around the root, thrusts extend along the facing; lunge and reach
+-- bonus fold into the tip). The client draws the same path from the AsuraStrike record.
 local function weaponSegment(rootCFrame: CFrame, move: Combat.MoveData, progress: number, bonus: number): (Vector3, Vector3)
-	local reach = move.Reach + bonus + move.Lunge * 0.35 * progress
-	if move.Arc > 40 then
-		local angle = math.rad(move.Arc) * (progress - 0.5)
-		local direction = Vector3.new(math.sin(angle), 0, -math.cos(angle))
-		local shoulder = Vector3.new(0, 0.6, 0)
-		return rootCFrame:PointToWorldSpace(shoulder + direction * 0.8), rootCFrame:PointToWorldSpace(shoulder + direction * reach)
+	local ax, ay, az, bx, by, bz = Strike.segment(move, progress, bonus)
+	return rootCFrame:PointToWorldSpace(Vector3.new(ax, ay, az)), rootCFrame:PointToWorldSpace(Vector3.new(bx, by, bz))
+end
+
+local function yawOf(cframe: CFrame): number
+	local look = cframe.LookVector
+	return Strike.yaw(look.X, look.Z) or 0
+end
+
+-- The attacker's frame for the current swing: its live root turned to the committed yaw. Without a
+-- commit for this move it is the live root, so nothing changes until a swing is out.
+local function strikeFrame(e: Entity): CFrame
+	local omni, root = e.Omni, e.Root.CFrame
+	if omni.Yaw == nil or omni.YawFor ~= e.Fighter.MoveStart then
+		return root
 	end
-	local extension = reach * (0.55 + 0.45 * progress)
-	return rootCFrame:PointToWorldSpace(Vector3.new(0, 0.6, -0.8)), rootCFrame:PointToWorldSpace(Vector3.new(0, 0.6, -extension))
+	return CFrame.new(root.Position) * CFrame.Angles(0, Strike.delta(yawOf(root), omni.Yaw :: number), 0) * root.Rotation
 end
 
 local function weaponRadius(f: Fighter): number
@@ -368,10 +380,33 @@ end
 -- Entity construction
 -------------------------------------------------------------------------------------------------
 
+-- Ground probe for bodies that can jump; anchored (scripted flight) roots never count as airborne.
+local airParams = RaycastParams.new()
+airParams.FilterType = Enum.RaycastFilterType.Exclude
+airParams.RespectCanCollide = true
+local function airborne(e: Entity): boolean
+	local root = e.Root
+	if root.Anchored then
+		return false
+	end
+	airParams.FilterDescendantsInstances = { e.Model }
+	local reach = e.Humanoid.HipHeight + root.Size.Y * 0.5 + Settings.Tracking.AirborneClearance
+	return Workspace:Raycast(root.Position, Vector3.new(0, -reach, 0), airParams) == nil
+end
+
+local function ruleset(e: Entity): string?
+	local value = e.Model:GetAttribute("AsuraRuleset")
+	return if type(value) == "string" then value else nil
+end
+
 local function eligibleFor(e: Entity): InputBuffer.Filter
 	return function(action: InputBuffer.BufferedAction, _variant: string): boolean
 		local f = e.Fighter
 		local now = simTime
+		-- Air rules hold refused presses in the buffer, so a heavy pressed just before landing fires on touchdown.
+		if not (Strike.airAllows(e.Omni.Air, action, ruleset(e))) then
+			return false
+		end
 		if action == "Light" then
 			local kind: Combat.MoveKind = if f.Sprinting and f.State == "Idle" then "RunningAttack" else "Light"
 			local move = Combat.selectMove(f, kind, now)
@@ -494,6 +529,7 @@ local function newEntity(id: number, kind: EntityKind, player: Player?, model: M
 		Elo = 1000,
 		Vip = false,
 		Cosmetics = nil,
+		Omni = { Aim = nil, AimFor = -1, Yaw = nil, YawFor = -1, LastFace = 0, Air = Strike.newAir() },
 	}
 	e.Eligible = eligibleFor(e)
 	return e
@@ -912,12 +948,43 @@ local function applyDash(e: Entity)
 	e.Root.AssemblyLinearVelocity = Vector3.new(velocity.X, e.Root.AssemblyLinearVelocity.Y, velocity.Z)
 end
 
+-- Press aim for a swing that just started (StrikeGeometry): the sent direction (players), else the
+-- body's facing (AI turns through Face). A combo follow-up turns from the last committed yaw at the
+-- shared rate only, the same budget an enemy's Face gets while recovering.
+local function aimStrike(e: Entity, prevState: string, prevYaw: number?, prevEnd: number, dirX: number, dirZ: number)
+	local f, omni = e.Fighter, e.Omni
+	local aim = Strike.yaw(dirX, dirZ) or yawOf(e.Root.CFrame)
+	if prevState == "Recovery" and prevYaw then
+		aim = Strike.turn(prevYaw, aim, Strike.turnStep("Recovery", 0, 0, math.max(0, simTime - prevEnd)))
+	elseif prevState ~= "Recovery" and Strike.turnStep(prevState, 0, 0, 1) ~= math.huge then
+		-- Out of a guard the swing leaves along the body (guards turn at the shared rate, never snap).
+		aim = yawOf(e.Root.CFrame)
+	end
+	omni.Aim, omni.AimFor = aim, f.MoveStart
+end
+
+local function attack(e: Entity, kind: Combat.MoveKind, now: number, dirX: number, dirZ: number): (boolean, string)
+	local f = e.Fighter
+	local prevState, prevYaw = f.State, if e.Omni.YawFor == f.MoveStart then e.Omni.Yaw else nil
+	local prevEnd = Combat.recoveryStart(f)
+	local ok, reason = Combat.tryAttack(f, kind, now)
+	if ok then
+		aimStrike(e, prevState, prevYaw, prevEnd, dirX, dirZ)
+		Strike.airSpend(e.Omni.Air, if kind == "RunningAttack" then "Light" else kind)
+	end
+	return ok, reason
+end
+
 local function perform(e: Entity, action: string, pressTime: number, dirX: number, dirZ: number): (boolean, string)
 	local f = e.Fighter
 	local now = simTime
+	local airOk, airReason = Strike.airAllows(e.Omni.Air, action, ruleset(e))
+	if not airOk then
+		return false, airReason
+	end
 	if action == "Light" then
-		local kind: Combat.MoveKind = if f.Sprinting and f.State == "Idle" then "RunningAttack" else "Light"
-		return Combat.tryAttack(f, kind, now)
+		local kind: Combat.MoveKind = if f.Sprinting and f.State == "Idle" and not e.Omni.Air.Airborne then "RunningAttack" else "Light"
+		return attack(e, kind, now, dirX, dirZ)
 	elseif action == "Heavy" then
 		local victim = findDeathblowTarget(e, now)
 		if victim then
@@ -931,12 +998,13 @@ local function perform(e: Entity, action: string, pressTime: number, dirX: numbe
 			end
 			return true, "Deathblow:" .. string.format("%.1f", dealt)
 		end
-		return Combat.tryAttack(f, "Heavy", now)
+		return attack(e, "Heavy", now, dirX, dirZ)
 	elseif action == "WeaponArt" then
-		return Combat.tryAttack(f, "WeaponArt", now)
+		return attack(e, "WeaponArt", now, dirX, dirZ)
 	elseif action == "Roll" or action == "Dash" then
 		local grant, reason = Combat.tryDash(f, action :: "Roll" | "Dash", now, dirX, dirZ, frameEvents)
 		if grant then
+			Strike.airSpend(e.Omni.Air, action)
 			applyDash(e)
 			return true, reason
 		end
@@ -1054,6 +1122,26 @@ end
 -- Simulation step
 -------------------------------------------------------------------------------------------------
 
+-- First active frame of a swing: fix its yaw (StrikeGeometry.commit) for the server sweep, turn an
+-- AI body to it so the body agrees, and publish the record the client draws (AsuraStrike).
+local function commitStrike(e: Entity)
+	local f, omni = e.Fighter, e.Omni
+	local move = f.Move
+	if move == nil or omni.YawFor == f.MoveStart then
+		return
+	end
+	local actual = yawOf(e.Root.CFrame)
+	local aim = if omni.AimFor == f.MoveStart and omni.Aim then omni.Aim :: number else actual
+	omni.Yaw, omni.YawFor = Strike.commit(aim, actual, move.Timing.StartupSeconds), f.MoveStart
+	if e.Kind == "Enemy" then
+		e.Root.CFrame = strikeFrame(e)
+	end
+	if not Combat.RangedEffects[move.Effect or ""] then
+		e.Model:SetAttribute("AsuraStrike", Strike.encode({ Arc = move.Arc, Reach = move.Reach + f.ReachBonus, Lunge = move.Lunge,
+			Yaw = omni.Yaw :: number, Start = f.MoveStart + move.Timing.StartupSeconds, Active = move.Timing.ActiveSeconds, Weapon = f.Weapon }))
+	end
+end
+
 local function resolveContacts(attacker: Entity, now: number)
 	local f = attacker.Fighter
 	local move = f.Move
@@ -1063,7 +1151,7 @@ local function resolveContacts(attacker: Entity, now: number)
 		return
 	end
 	local previous = math.max(0, progress - TICK / math.max(move.Timing.ActiveSeconds, TICK))
-	local rootCFrame = attacker.Root.CFrame
+	local rootCFrame = strikeFrame(attacker)
 	local prevA, prevB = weaponSegment(rootCFrame, move, previous, f.ReachBonus)
 	local curA, curB = weaponSegment(rootCFrame, move, progress, f.ReachBonus)
 	local radius = weaponRadius(f)
@@ -1128,7 +1216,7 @@ local function annotateWhiffs(from: number)
 			if best and gap <= Contact.NoticeRange then
 				event.Target, event.Value = best.Id, gap
 			end
-			local _, tip = weaponSegment(e.Root.CFrame, move, 1, e.Fighter.ReachBonus)
+			local _, tip = weaponSegment(strikeFrame(e), move, 1, e.Fighter.ReachBonus)
 			eventPoints[event] = tip
 		end
 	end
@@ -1221,6 +1309,13 @@ local function applyLocomotion(e: Entity)
 		e.JumpHeight = jump
 		e.Humanoid.JumpHeight = jump
 	end
+	-- AI bodies walk during windups (0.35x) and swings (0.25x); only Face may turn them then.
+	if e.Kind == "Enemy" then
+		local free = Strike.turnStep(f.State, 0, 0, 1) == math.huge
+		if e.Humanoid.AutoRotate ~= free then
+			e.Humanoid.AutoRotate = free
+		end
+	end
 end
 
 local function replicate(e: Entity, now: number)
@@ -1302,6 +1397,13 @@ local function step()
 	for _, e in live do
 		if entities[e.Id] == e then
 			local f = e.Fighter
+			local air = e.Omni.Air
+			if e.Kind == "Player" then
+				Strike.airUpdate(air, airborne(e))
+			end
+			if air.Landing and not air.Airborne and Combat.landingRecovery(f, now, Settings.Tracking.LandingRecoverySeconds) ~= "Wait" then
+				air.Landing = false
+			end
 			Combat.step(f, now, TICK, frameEvents)
 			if f.GuardHeld and f.State == "Idle" then
 				Combat.setGuard(f, true, now)
@@ -1314,6 +1416,7 @@ local function step()
 
 	for _, e in live do
 		if entities[e.Id] == e and e.Fighter.State == "Active" then
+			commitStrike(e)
 			resolveContacts(e, now)
 		end
 	end
@@ -1542,7 +1645,15 @@ function Service.Face(id: number, position: Vector3)
 	local origin = e.Root.Position
 	local direction = flatUnit(position - origin)
 	if direction.Magnitude > 0 then
-		e.Root.CFrame = CFrame.lookAt(origin, origin + direction)
+		-- StrikeGeometry: instant in neutral, the shared rate while winding up or recovering, and no
+		-- tracking in the commit lead, so a late sidestep makes the swing whiff.
+		local omni = e.Omni
+		local dt = math.clamp(simTime - omni.LastFace, TICK, 0.25)
+		omni.LastFace = simTime
+		local startup = if f.Move then f.Move.Timing.StartupSeconds else 0
+		local step = Strike.turnStep(f.State, simTime - f.StateStart, startup, dt)
+		local yaw = Strike.turn(yawOf(e.Root.CFrame), Strike.yaw(direction.X, direction.Z) :: number, step)
+		e.Root.CFrame = CFrame.new(origin) * CFrame.Angles(0, yaw, 0)
 	end
 end
 

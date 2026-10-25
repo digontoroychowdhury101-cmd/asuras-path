@@ -11,6 +11,7 @@ sources = [
     ("PresentationAssets", "src/shared/PresentationAssets.luau"),
     ("CombatSettings", "src/shared/CombatSettings.luau"),
     ("InputBuffer", "src/simulation/InputBuffer.luau"),
+    ("StrikeGeometry", "src/simulation/StrikeGeometry.luau"),
     ("InputMap", "src/shared/InputMap.luau"),
     ("MovementMath", "src/client/Controllers/MovementMath.luau"),
     ("MovementEffects", "src/client/Controllers/MovementEffects.luau"),
@@ -31,7 +32,7 @@ chunks = []
 for name, path in sources:
     source = (ROOT / path).read_text()
     source = re.sub(r"^export type", "type", source, flags=re.MULTILINE)
-    if name == "InputBuffer":
+    if name in ("InputBuffer", "StrikeGeometry"):
         source = source.replace("require(script.Parent.Parent.Shared.CombatSettings)", 'require("CombatSettings")')
     chunks.append(f'registry["{name}"] = (function()\n{source}\nend)()')
 generated = ROOT / "work/test_movement.generated.luau"
