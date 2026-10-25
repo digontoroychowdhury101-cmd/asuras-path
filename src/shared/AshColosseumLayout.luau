@@ -91,14 +91,17 @@ L.zone(r, "AC_HallN", "the hall of champions", -52, 52, -1774, -1814)
 L.zone(r, "AC_HallS", "the hall of champions", -52, 52, -1814, -1877)
 L.zone(r, "AC_Arena", "Shen's arena", -116, 116, -1877, AS - 3)
 L.zone(r, "AC_South", "the ashen causeway", -16, 16, AS - 3, -2120)
-L.zone(r, "AC_Court", "the proving court", 30, 156, -1680, -1808)
+-- The court is L-shaped (its veil turns at x 80): the walk along the north wall, then the ring yard.
+L.zone(r, "AC_CourtWalk", "the proving court", 30, 156, -1680, -1708)
+L.zone(r, "AC_Court", "the proving court", 80, 156, -1708, -1808)
 L.door(r, "AC_Road", "AC_Ante", 0, 0.2, -1708, "Antechamber steps")
 L.door(r, "AC_Ante", "AC_HallN", 0, 0.2, -1774, "Hall of Champions")
 L.door(r, "AC_HallN", "AC_HallS", 0, 0.2, -1814, "Broken wall")
 L.door(r, "AC_HallS", "AC_Arena", 0, 0.2, -1877, "Shen's fog gate")
 L.door(r, "AC_Arena", "AC_South", 0, 0.2, AS - 3, "Victor's gate")
 L.door(r, "AC_South", "CP_Stair", 0, 0.2, -2120, "Cloud stair")
-L.door(r, "AC_Road", "AC_Court", 30, 0.2, -1694, "Proving court")
+L.door(r, "AC_Road", "AC_CourtWalk", 30, 0.2, -1694, "Proving court")
+L.door(r, "AC_CourtWalk", "AC_Court", 118, 0.2, -1708, "Ring yard")
 r.SpawnZones = { AC_Swordsman_Gate_A = "AC_HallN", AC_Swordsman_Gate_B = "AC_HallS" }
 
 r.Groves = {} -- no bamboo here: ash, basalt and ruin

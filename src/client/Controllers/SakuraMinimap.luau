@@ -3,13 +3,15 @@
 -- Top-left blossom radar that turns with the camera: sakura-ringed plum disc with corner sprigs,
 -- N/E/S/W on the rim, the player's arrow fixed at the centre, crimson dots for hostiles, blossom
 -- dots for other fighters, gold diamonds for Incense Altars, the region name beneath, and small
--- round blossom buttons on the rim (Respite menu, Controls).
+-- round blossom buttons on the rim (Respite menu, Controls). Follow-up 14: under the dots, the
+-- objective's walked route (MinimapRoute) - doorways, climbs, portal exits and the bloodstain.
 local Workspace = game:GetService("Workspace")
 local Players = game:GetService("Players")
 local Shared = game:GetService("ReplicatedStorage"):WaitForChild("AsurasPath")
 local World = require(Shared:WaitForChild("Shared"):WaitForChild("WorldDefinitions") :: ModuleScript) :: any
 local HudKit = require(script.Parent:WaitForChild("HudKit") :: ModuleScript)
 local Sakura = require(script.Parent:WaitForChild("SakuraKit") :: ModuleScript)
+local RouteLayer = require(script.Parent:WaitForChild("MinimapRoute") :: ModuleScript)
 
 local Map = {}
 local C = Sakura.Colors
@@ -21,7 +23,8 @@ local DOT_POOL = 24
 local ALTAR_POOL = 8
 
 export type Button = { Glyph: string, Angle: number, Press: () -> () }
-export type View = { Root: Frame, Disc: Frame, Letters: { [number]: TextLabel }, Dots: { Frame }, Altars: { Frame }, Region: TextLabel, State: any }
+export type View = { Root: Frame, Disc: Frame, Letters: { [number]: TextLabel }, Dots: { Frame }, Altars: { Frame }, Region: TextLabel, State: any,
+	Route: RouteLayer.View }
 
 local function dot(parent: Instance, size: number, color: Color3, diamond: boolean): Frame
 	local d = HudKit.make("Frame", parent, {
@@ -56,6 +59,7 @@ function Map.new(gui: ScreenGui, state: any, buttons: { Button }): View
 	HudKit.label(disc, "▲", 18, Enum.Font.GothamBold, C.Blossom, {
 		AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 0.5), Size = UDim2.fromOffset(20, 20), ZIndex = 5, TextStrokeTransparency = 0.2,
 	})
+	local route = RouteLayer.new(disc, DIAMETER)
 	local dots, altars = {}, {}
 	for i = 1, DOT_POOL do dots[i] = dot(disc, 7, C.Crimson, false) end
 	for i = 1, ALTAR_POOL do altars[i] = dot(disc, 8, C.Gold, true) end
@@ -69,7 +73,7 @@ function Map.new(gui: ScreenGui, state: any, buttons: { Button }): View
 		button.TextSize, button.Font = 15, Enum.Font.GothamBold
 		button.Activated:Connect(b.Press)
 	end
-	return { Root = root, Disc = disc, Letters = letters, Dots = dots, Altars = altars, Region = region, State = state }
+	return { Root = root, Disc = disc, Letters = letters, Dots = dots, Altars = altars, Region = region, State = state, Route = route }
 end
 
 -- Places `offset` (world, studs) on the disc relative to the camera's flat heading.
@@ -83,7 +87,8 @@ local function place(gui: Frame, offset: Vector3, look: Vector3, right: Vector3)
 	gui.Visible = true
 end
 
-function Map.step(view: View)
+-- `route` is ObjectiveController's staged route (ui.Route), nil when guidance is hidden.
+function Map.step(view: View, route: RouteLayer.Route?)
 	local camera = Workspace.CurrentCamera
 	local own = view.State:Own()
 	local root = own and own.Root
@@ -96,6 +101,7 @@ function Map.step(view: View)
 		local a = math.rad(bearing) - heading
 		letter.Position = UDim2.new(0.5, math.sin(a) * (DIAMETER * 0.5 - 13), 0.5, -math.cos(a) * (DIAMETER * 0.5 - 13))
 	end
+	RouteLayer.step(view.Route, route, root.Position, look, right, RANGE)
 	local used = 0
 	for _, entity in view.State.Entities do
 		if entity ~= own and entity.Root and used < #view.Dots and view.State:IsAlive(entity) then

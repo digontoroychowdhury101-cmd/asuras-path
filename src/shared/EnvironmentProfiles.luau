@@ -29,7 +29,9 @@ Profiles.Sanctuary.CB_SunRays.Spread = 0.45
 Profiles.Sanctuary.CB_Bloom = { Intensity = 0.25, Threshold = 2.0, Size = 24 }
 Profiles.DesecratedMonastery = profile(15, rgb(38, 43, 52), rgb(67, 73, 83), rgb(206, 220, 238), rgb(143, 155, 170), 0.4, 2.5, -0.22, 0.015, -0.45)
 Profiles.BambooPass = profile(16, rgb(34, 48, 44), rgb(76, 91, 79), rgb(219, 235, 221), rgb(158, 181, 165), 0.38, 2.2, -0.1, 0.06, -0.22)
-Profiles.AshColosseum = profile(0.15, rgb(27, 23, 27), rgb(47, 40, 43), rgb(217, 191, 184), rgb(69, 61, 66), 0.5, 3.8, -0.3, 0, -0.48)
+-- Night stays night (ashen sky), but walking it needs crypt-level fill: at 27/47 fill, -0.3 exposure and
+-- 3.8 haze the road, court and arena walls read near-black at character height (Studio F17).
+Profiles.AshColosseum = profile(0.15, rgb(52, 45, 50), rgb(88, 76, 80), rgb(217, 191, 184), rgb(84, 74, 80), 0.42, 2.8, -0.12, 0, -0.4)
 -- The Sunken Crypt (batch 19) reads by pale, cool fill and its lanterns instead of near-black mist.
 Profiles.SanctuaryDepths = profile(0, rgb(48, 56, 64), rgb(74, 86, 94), rgb(186, 214, 224), rgb(72, 94, 102), 0.4, 2.6, -0.12, 0, -0.28)
 Profiles.CelestialPagoda = profile(17.5, rgb(46, 34, 39), rgb(81, 61, 65), rgb(245, 208, 190), rgb(153, 111, 108), 0.4, 2.4, -0.08, 0.08, -0.22)

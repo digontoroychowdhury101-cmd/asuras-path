@@ -300,6 +300,22 @@ check("distance is walked through the doorways, not straight through walls", fir
 local sanctuary = World.startingAltar()
 local stain = V3.new(0, 3, -960)
 check("a bloodstain beyond the portal points at the northern gate first", Guide.next(V3.new(sanctuary.Placement.X, sanctuary.Placement.Y, sanctuary.Placement.Z), stain).Kind == "Portal")
+local function sameZone(p, q)
+	for _, z in Zones.List do
+		if Zones.contains(z, p.X, p.Z, 3) and Zones.contains(z, q.X, q.Z, 3) then return true end
+	end
+	return false
+end
+for _, case in { { gate.Placement, cloister.Placement }, { cloister.Placement, gate.Placement }, { { X = -120, Z = -832 }, { X = 60, Z = -1010 } } } do
+	local from, to = V3.new(case[1].X, 3, case[1].Z), V3.new(case[2].X, 3, case[2].Z)
+	local cursor, inside = from, true
+	for _, point in Guide.next(from, to).Route.Points do
+		inside = inside and sameZone(cursor, point)
+		cursor = point
+	end
+	check(string.format("minimap route (%d,%d)->(%d,%d) never crosses a wall", from.X, from.Z, to.X, to.Z), inside and cursor == to)
+end
+check("the northern gate route draws nothing past the portal", Guide.next(V3.new(sanctuary.Placement.X, sanctuary.Placement.Y, sanctuary.Placement.Z), stain).Route.Exit == "Northern gate")
 check("from the waterfall path the marker leads back through the postern", Guide.next(V3.new(-120, 3, -832), V3.new(0, 3, -800)).Label == "West postern")
 local o = Objectives.resolve({ Region = "Sanctuary", Altars = {}, Bloodstain = stain, StainRegion = "DesecratedMonastery", InBoss = false, InColosseum = false, BossFelled = false, Rested = true })
 check("bloodstain objective says to take the gate first", o and string.find(o.Detail, "northern gate first", 1, true) ~= nil)

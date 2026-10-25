@@ -407,7 +407,9 @@ check("Bamboo gate -> Colosseum altar starts up the ridge stairs", s1.Label == "
 local s2 = stage({ -36, 3, -1320 }, { 128, 21, -1428 })
 check("shrine -> Wraith tablet goes back over the crest, not up the drop", s2.Label == "Shrine stairs")
 local s3 = stage({ 0, -23, -2180 }, { 0, 3, -2272 })
-check("lotus gorge -> Wu's gate climbs the west stair", s3.Label == "West stair" and s3.Position.Y > -20)
+local head = table.find(s3.Route.Names, "Stair head")
+check("lotus gorge -> Wu's gate climbs the west stair from its foot to its head", s3.Label == "West stair"
+	and head ~= nil and s3.Route.Points[head].Y > -10 and s3.Route.Points[head].X < -55)
 local s4 = stage({ 0, 3, -800 }, { -36, 3, -1328 })
 check("Monastery courtyard -> Bamboo shrine follows the Monastery doors first", s4.Label == "Processional path")
 local s5 = stage({ -36, 3, -1328 }, { 60, 3, -1010 })
@@ -420,6 +422,118 @@ local s8 = stage({ 0, 3, -2700 }, { 0, 3, -2300 })
 check("bastion -> Wu (backwards) descends Heaven's stair", s8.Label == "Last bastion")
 local s9 = stage({ 0, 3, -800 }, { 60, 3, -1010 })
 check("Monastery-only routes are unchanged", s9.Label == "Processional path")
+-- Follow-up 14: the whole route the minimap draws. Every segment (player -> doors -> goal) must lie
+-- inside one walked zone, so the line never crosses a wall; home goals end at the region's own portal.
+local function shareZone(p, q)
+	for _, z in Zones.List do
+		if Zones.contains(z, p.X, p.Z, 3) and Zones.contains(z, q.X, q.Z, 3) then return true end
+	end
+	for _, z in Campaign.List do
+		if Campaign.contains(z, p.X, nil, p.Z, 3) and Campaign.contains(z, q.X, nil, q.Z, 3) then return true end
+	end
+	return false
+end
+-- Or the segment ends at a doorway of the zone it starts in (stair doors stand at the stair foot).
+local function doorOf(name, p)
+	for _, d in Campaign.Doors do
+		if d.Name == name then
+			for _, id in { d.A, d.B } do
+				local z = Campaign.get(id)
+				if z and Campaign.contains(z, p.X, nil, p.Z, 3) then return true end
+			end
+		end
+	end
+	for _, d in Zones.Doors do
+		if d.Name == name then
+			for _, id in { d.A, d.B } do
+				local z = Zones.get(id)
+				if z and Zones.contains(z, p.X, p.Z, 3) then return true end
+			end
+		end
+	end
+	return false
+end
+-- Studio F17: a zone rectangle that spans a veiled-off corner lets the line cut through a MistVeil.
+local veils = {}
+for _, layout in byRegion do
+	for _, b in layout.Solids do if b.Kind == "Veil" then table.insert(veils, b) end end
+end
+local function crossesVeil(a, b)
+	local steps = math.ceil((b - a).Magnitude)
+	for k = 1, steps - 1 do
+		local t = k / steps
+		local x, y, z = a.X + (b.X - a.X) * t, a.Y + (b.Y - a.Y) * t, a.Z + (b.Z - a.Z) * t
+		for _, v in veils do
+			if Walk.inside(v, x, y, z) then return true end
+		end
+	end
+	return false
+end
+local function walkable(from, goal)
+	local s = stage(from, goal)
+	local cursor = vec(from[1], from[2], from[3])
+	for i, point in s.Route.Points do
+		if crossesVeil(cursor, point) then
+			print(string.format("  veil: (%.0f,%.0f,%.0f) -> (%.0f,%.0f,%.0f)", cursor.X, cursor.Y, cursor.Z, point.X, point.Y, point.Z))
+			return false
+		end
+		if not shareZone(cursor, point) and not doorOf(s.Route.Names[i], cursor) then
+			print(string.format("  gap: (%.0f,%.0f,%.0f) -> (%.0f,%.0f,%.0f)", cursor.X, cursor.Y, cursor.Z, point.X, point.Y, point.Z))
+			return false
+		end
+		cursor = point
+	end
+	return #s.Route.Points >= 1
+end
+for name, case in {
+	["Bamboo gate -> Colosseum altar"] = { { 0, 3, -1180 }, { 0, 6, -1736 } },
+	["Monastery courtyard -> Bamboo shrine"] = { { 0, 3, -800 }, { -36, 3, -1328 } },
+	["lotus gorge -> Wu's gate"] = { { 0, -23, -2180 }, { 0, 3, -2272 } },
+	["crypt arrival -> Titan's gate"] = { { arrive.X, arrive.Y + 3, arrive.Z }, { 520, 3, 988 } },
+	["bastion -> Wu"] = { { 0, 3, -2700 }, { 0, 3, -2300 } },
+	["Octagon ring -> Shen's gate"] = { { 106, 3, -1751 }, { 0, 3, -1868 } },
+	["antechamber -> Octagon ring"] = { { 0, 3, -1736 }, { 118, 3, -1760 } },
+	["Bamboo shrine -> frost ridge"] = { { -36, 3, -1328 }, { 100, 15, -1300 } },
+	["Pagoda gorge -> Sky bastion"] = { { 0, -23, -2180 }, { 0, 3, -2700 } },
+	["crypt reliquary -> Titan's gate"] = { { 380, 3, 800 }, { 520, 3, 985 } },
+} do
+	check("route line stays inside walked zones: " .. name, walkable(case[1], case[2]))
+end
+local last = stage({ 0, 3, -1180 }, { 0, 6, -1736 }).Route.Points
+check("an on-foot route ends at the goal itself", last[#last].Z == -1736)
+local home = stage({ arrive.X, arrive.Y + 3, arrive.Z }, { 0, 603, 918 })
+local portal = home.Route.Points[#home.Route.Points]
+check("crypt -> Sanctuary goal ends at the crypt's return portal, not across the world split", home.Route.Exit == "Return portal"
+	and portal.X == 520 and portal.Z == 1074 and home.Position.Y < 100)
+local summit = stage({ 0, 3, -2700 }, { 0, 603, 918 })
+local gate = summit.Route.Points[#summit.Route.Points]
+check("bastion -> Sanctuary goal ends at the bastion's return portal", summit.Route.Exit == "Return portal" and gate.X == 44 and gate.Z == -2690)
+check("Sanctuary -> crypt goal ends at the Well of Descent", s7.Route.Exit == "Crypt descent")
+-- Studio F18: the sarcophagus lids stood in no zone, so on the lids the guide fell back to a straight
+-- line across the crypt walls. Every doorway must stand in (or on the edge of) a zone it joins.
+for _, d in Campaign.Doors do
+	local inside = false
+	for _, id in { d.A, d.B } do
+		local z = Campaign.get(id)
+		if z and Campaign.contains(z, d.X, nil, d.Z, 3) then inside = true end
+	end
+	check("door " .. d.Name .. " stands in a zone it joins", inside)
+end
+-- Studio F20: off the Citadel's cloud bridge the engine deleted the body at y -100 (FallenPartsDestroyHeight)
+-- ~0.94 s into the fall, before the bridge catch (0.6 s hold below -30, 0.2 s poll) could return it.
+-- WORLD_INSERT
+for _, layout in byRegion do
+	for _, c in layout.Returns or {} do
+		local top = c.To.Y
+		local reach = math.sqrt(2 * math.max(top - c.Below, 0) / GRAVITY)
+		local deleted = math.sqrt(2 * (top - DESTROY_Y) / GRAVITY)
+		check(string.format("%s catch returns a falling body before the engine deletes it (%.2fs < %.2fs)", c.Name, reach + HOLD + POLL, deleted),
+			reach + HOLD + POLL + 0.1 < deleted)
+	end
+end
+for _, z in { 853, 860, 867, 874, 881, 888, 895 } do
+	check(string.format("sarcophagus lid z=%d is walked ground", z), Campaign.at(366, 1, z) ~= nil)
+end
 for _, door in Campaign.Doors do
 	local w = if string.sub(door.A, 1, 3) == "SD_" then kw else cw
 	local reached = door.A == "DM:Road" or (if w == kw then kjump else jump).has(door.X, door.Y, door.Z, 2.5)

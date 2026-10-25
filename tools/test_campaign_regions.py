@@ -20,7 +20,18 @@ def section(path, start, end):
 
 guide = (ROOT / "src/shared/RouteGuide.luau").read_text()
 guide = re.sub(r"^export type", "type", guide, flags=re.M)
+# Follow-up 20: the saved place's destroy height and gravity (what Studio actually simulates) and the
+# catch's hold/poll, so a catch is proven to fire before the engine deletes a falling body.
+project = (ROOT / "default.project.json").read_text()
+config = (ROOT / "src/shared/Config.luau").read_text()
+bounds = (ROOT / "src/server/Services/CampaignBounds.luau").read_text()
+destroy = float(re.search(r'"FallenPartsDestroyHeight": ([-\d.]+)', project).group(1))
+gravity = float(re.search(r'"Gravity": ([-\d.]+)', project).group(1))
+assert destroy == float(re.search(r"FallenPartsDestroyHeight = ([-\d.]+)", config).group(1)), "Config and saved place destroy heights differ"
+hold = float(re.search(r"Bounds.HOLD = ([\d.]+)", bounds).group(1))
+poll = float(re.search(r"poll\(task.wait\(([\d.]+)\)\)", bounds).group(1))
 replacements = {
+    "-- WORLD_INSERT": f"local DESTROY_Y, GRAVITY, HOLD, POLL = {destroy}, {gravity}, {hold}, {poll}",
     "-- ROUTEGUIDE_INSERT": "local function loadGuide(script, require)\n" + guide + "\nend",
     "-- POLL_INSERT": section("src/server/Services/SanctuaryService.luau", "local function poll()", "\n---"),
 }

@@ -48,6 +48,17 @@ assert(monastery and monastery.Key == "Altar_MonasteryGate" and monastery.Target
 local stain = Vector3.new(1, 2, 3)
 local reclaim = Objectives.resolve(facts({ Region = "BambooPass", Bloodstain = stain, Rested = true }))
 assert(reclaim and reclaim.Key == "Bloodstain" and reclaim.Target.Position == stain, "bloodstain priority")
+-- The card names the leg the marker stages (follow-up 14): the Well for a crypt stain, the return portal home.
+local well = Objectives.resolve(facts({ Region = "Sanctuary", Bloodstain = stain, StainRegion = "SanctuaryDepths", Rested = true }))
+assert(well and string.find(well.Detail, "Well of Descent", 1, true), "crypt stain names the Well, not the northern gate")
+local gateStain = Objectives.resolve(facts({ Region = "Sanctuary", Bloodstain = stain, StainRegion = "BambooPass", Rested = true }))
+assert(gateStain and string.find(gateStain.Detail, "northern gate", 1, true), "campaign stain still names the northern gate")
+local homeStain = Objectives.resolve(facts({ Region = "SanctuaryDepths", Bloodstain = stain, StainRegion = "Sanctuary", Rested = true }))
+assert(homeStain and string.find(homeStain.Detail, "return portal", 1, true), "Sanctuary stain from the crypt names the return portal")
+-- Same key, new wording (Studio F14: a death moved the player home and the card kept the old leg).
+assert(Objectives.changed(reclaim, gateStain), "the tracker redraws when only the bloodstain detail changes")
+assert(not Objectives.changed(gateStain, Objectives.resolve(facts({ Region = "Sanctuary", Bloodstain = stain, StainRegion = "BambooPass", Rested = true }))), "an identical step does not redraw")
+assert(Objectives.changed(nil, reclaim) and Objectives.changed(reclaim, nil) and not Objectives.changed(nil, nil), "appearing and clearing redraw")
 
 -- Boss fights and duels hide the tracker.
 assert(Objectives.resolve(facts({ InBoss = true })) == nil, "hidden in boss")

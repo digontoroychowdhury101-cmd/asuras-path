@@ -5,7 +5,7 @@
     "Workspace": {
       "$className": "Workspace",
       "$properties": {
-        "FallenPartsDestroyHeight": -100,
+        "FallenPartsDestroyHeight": -400,
         "GlobalWind": [
           0,
           0,
@@ -787,6 +787,9 @@
             },
             "SakuraMinimap": {
               "$path": "src/client/Controllers/SakuraMinimap.luau"
+            },
+            "MinimapRoute": {
+              "$path": "src/client/Controllers/MinimapRoute.luau"
             },
             "SakuraHud": {
               "$path": "src/client/Controllers/SakuraHud.luau"

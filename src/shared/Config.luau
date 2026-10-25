@@ -127,7 +127,9 @@ local Config = {
 	Workspace = {
 		Gravity = 196.2, GlobalWind = { 0, 0, 0 },
 		-- Saved-place / Studio settings. Ordinary Scripts do not assign these.
-		StreamingEnabled = false, FallenPartsDestroyHeight = -100,
+		-- -400, not -100: falls off the Citadel bridge (y -20) and bastion reached -100 before their
+		-- CampaignBounds catch could fire, so the engine deleted the body (Studio F20).
+		StreamingEnabled = false, FallenPartsDestroyHeight = -400,
 	},
 	Lighting = {
 		LightingStyle = "Realistic", PrioritizeLightingQuality = true,

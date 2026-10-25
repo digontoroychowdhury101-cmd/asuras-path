@@ -438,7 +438,9 @@ local Config = {
 	Workspace = {
 		Gravity = 196.2, GlobalWind = { 0, 0, 0 },
 		-- Saved-place / Studio settings. Ordinary Scripts do not assign these.
-		StreamingEnabled = false, FallenPartsDestroyHeight = -100,
+		-- -400, not -100: falls off the Citadel bridge (y -20) and bastion reached -100 before their
+		-- CampaignBounds catch could fire, so the engine deleted the body (Studio F20).
+		StreamingEnabled = false, FallenPartsDestroyHeight = -400,
 	},
 	Lighting = {
 		LightingStyle = "Realistic", PrioritizeLightingQuality = true,
@@ -1660,14 +1662,17 @@ L.zone(r, "AC_HallN", "the hall of champions", -52, 52, -1774, -1814)
 L.zone(r, "AC_HallS", "the hall of champions", -52, 52, -1814, -1877)
 L.zone(r, "AC_Arena", "Shen's arena", -116, 116, -1877, AS - 3)
 L.zone(r, "AC_South", "the ashen causeway", -16, 16, AS - 3, -2120)
-L.zone(r, "AC_Court", "the proving court", 30, 156, -1680, -1808)
+-- The court is L-shaped (its veil turns at x 80): the walk along the north wall, then the ring yard.
+L.zone(r, "AC_CourtWalk", "the proving court", 30, 156, -1680, -1708)
+L.zone(r, "AC_Court", "the proving court", 80, 156, -1708, -1808)
 L.door(r, "AC_Road", "AC_Ante", 0, 0.2, -1708, "Antechamber steps")
 L.door(r, "AC_Ante", "AC_HallN", 0, 0.2, -1774, "Hall of Champions")
 L.door(r, "AC_HallN", "AC_HallS", 0, 0.2, -1814, "Broken wall")
 L.door(r, "AC_HallS", "AC_Arena", 0, 0.2, -1877, "Shen's fog gate")
 L.door(r, "AC_Arena", "AC_South", 0, 0.2, AS - 3, "Victor's gate")
 L.door(r, "AC_South", "CP_Stair", 0, 0.2, -2120, "Cloud stair")
-L.door(r, "AC_Road", "AC_Court", 30, 0.2, -1694, "Proving court")
+L.door(r, "AC_Road", "AC_CourtWalk", 30, 0.2, -1694, "Proving court")
+L.door(r, "AC_CourtWalk", "AC_Court", 118, 0.2, -1708, "Ring yard")
 r.SpawnZones = { AC_Swordsman_Gate_A = "AC_HallN", AC_Swordsman_Gate_B = "AC_HallS" }
 
 r.Groves = {} -- no bamboo here: ash, basalt and ruin
@@ -2580,12 +2585,14 @@ L.zone(r, "CP_Stair", "the cloud stair", -8, 8, -2120, -2172)
 L.zone(r, "CP_Well", "the lotus gorge", -156, 156, -2172, -2252, -40, -16)
 L.zone(r, "CP_GalleryW", "the eave gallery", -116, -14, -2176, -2244, -16, -1)
 L.zone(r, "CP_Rafter", "the lantern rafter", -14, 14, -2216, -2252, -16, -1)
+L.zone(r, "CP_WestStair", "the west stair", -60, -14, -2179, -2189, -27, -4) -- climbs west (Studio F19)
 L.zone(r, "CP_Forecourt", "the pagoda forecourt", -156, 92, -2252, -2292, -4, 10)
 L.zone(r, "CP_Loft", "the throne loft", -152, -108, -2238, -2292, 10, 30)
 L.zone(r, "CP_Arena", "Wu's hall", -92, 92, -2292, -2470)
 L.zone(r, "CP_Dawn", "the dawn terrace", -30, 30, -2470, -2540)
 L.door(r, "CP_Stair", "CP_Well", 0, -26, -2172, "Lotus gorge")
-L.door(r, "CP_Well", "CP_GalleryW", -30, -18, -2184, "West stair")
+L.door(r, "CP_Well", "CP_WestStair", -12, -26, -2184, "West stair")
+L.door(r, "CP_WestStair", "CP_GalleryW", -62, -6, -2184, "Stair head")
 L.door(r, "CP_GalleryW", "CP_Rafter", -14, -6, -2228, "Rafter beam")
 L.door(r, "CP_Rafter", "CP_Forecourt", 0, 0, -2252, "Rafter stair")
 L.door(r, "CP_Forecourt", "CP_Arena", 0, 0, -2292, "Wu's fog gate")
@@ -3679,7 +3686,9 @@ Profiles.Sanctuary.CB_SunRays.Spread = 0.45
 Profiles.Sanctuary.CB_Bloom = { Intensity = 0.25, Threshold = 2.0, Size = 24 }
 Profiles.DesecratedMonastery = profile(15, rgb(38, 43, 52), rgb(67, 73, 83), rgb(206, 220, 238), rgb(143, 155, 170), 0.4, 2.5, -0.22, 0.015, -0.45)
 Profiles.BambooPass = profile(16, rgb(34, 48, 44), rgb(76, 91, 79), rgb(219, 235, 221), rgb(158, 181, 165), 0.38, 2.2, -0.1, 0.06, -0.22)
-Profiles.AshColosseum = profile(0.15, rgb(27, 23, 27), rgb(47, 40, 43), rgb(217, 191, 184), rgb(69, 61, 66), 0.5, 3.8, -0.3, 0, -0.48)
+-- Night stays night (ashen sky), but walking it needs crypt-level fill: at 27/47 fill, -0.3 exposure and
+-- 3.8 haze the road, court and arena walls read near-black at character height (Studio F17).
+Profiles.AshColosseum = profile(0.15, rgb(52, 45, 50), rgb(88, 76, 80), rgb(217, 191, 184), rgb(84, 74, 80), 0.42, 2.8, -0.12, 0, -0.4)
 -- The Sunken Crypt (batch 19) reads by pale, cool fill and its lanterns instead of near-black mist.
 Profiles.SanctuaryDepths = profile(0, rgb(48, 56, 64), rgb(74, 86, 94), rgb(186, 214, 224), rgb(72, 94, 102), 0.4, 2.6, -0.12, 0, -0.28)
 Profiles.CelestialPagoda = profile(17.5, rgb(46, 34, 39), rgb(81, 61, 65), rgb(245, 208, 190), rgb(153, 111, 108), 0.4, 2.4, -0.08, 0.08, -0.22)
@@ -4895,6 +4904,13 @@ local ENCOUNTERS = {
 }
 Objectives.Encounters = ENCOUNTERS
 
+-- Whether the tracker must redraw: a new step, or the same step with new wording (the bloodstain
+-- card names a different leg after a death moves the player to another region; follow-up 14).
+function Objectives.changed(shown: Objective?, latest: Objective?): boolean
+	if shown == nil or latest == nil then return shown ~= latest end
+	return shown.Key ~= latest.Key or shown.Title ~= latest.Title or shown.Detail ~= latest.Detail
+end
+
 function Objectives.resolve(facts: Facts): Objective?
 	if facts.InColosseum or facts.InBoss then
 		return nil
@@ -4903,8 +4919,13 @@ function Objectives.resolve(facts: Facts): Objective?
 		return {
 			Key = "Bloodstain",
 			Title = "Reclaim your lost essence",
-			Detail = if facts.Region == "Sanctuary" and facts.StainRegion ~= nil and facts.StainRegion ~= "Sanctuary"
+			-- Name the leg the marker stages (RouteGuide): the Well for the crypt, the return portal home.
+			Detail = if facts.Region == "Sanctuary" and facts.StainRegion == "SanctuaryDepths"
+				then "Take the Well of Descent first · the marker then leads to your bloodstain"
+				elseif facts.Region == "Sanctuary" and facts.StainRegion ~= nil and facts.StainRegion ~= "Sanctuary"
 				then "Take the northern gate first · the marker then leads to your bloodstain"
+				elseif facts.StainRegion == "Sanctuary" and (facts.Region == "SanctuaryDepths" or facts.Region == "SkyCitadel")
+				then "Take the return portal first · the marker then leads to your bloodstain"
 				else "Return to your bloodstain before you fall again",
 			Target = { Kind = "Point", Position = facts.Bloodstain },
 		}
@@ -5381,6 +5402,10 @@ return table.freeze(Layout)
 -- Batches 16-21: the authored campaign regions stage the same way through CampaignZones (doors
 -- carry their height, so the Pagoda's levels and the Citadel's stairs are walked, not flown), and
 -- a goal past the Monastery's south road is reached through that road's doorways first.
+-- Follow-up 14: every stage carries its whole `Route` (doorways in order, then the goal when it is
+-- reached on foot) so the minimap draws the same walked line the marker stages. A route that leaves
+-- the world through a portal ends at that portal: the northern gate, the Well of Descent, or the
+-- crypt's and bastion's return portals when the goal lies back in the Sanctuary.
 local Zones = require(script.Parent.MonasteryZones)
 local World = require(script.Parent.WorldDefinitions)
 local Campaign = require(script.Parent.CampaignZones)
@@ -5388,11 +5413,16 @@ local Routes = require(script.Parent.SanctuaryRoutes)
 
 local Guide = {}
 
-export type Stage = { Kind: string, Position: Vector3?, Label: string?, Remaining: number? }
+-- `Exit` names the portal a route ends at (its Position is the last point, or nil for the northern
+-- gate, which the client resolves from the placed PortalTrigger).
+export type Route = { Points: { Vector3 }, Names: { string }, Exit: string? }
+export type Stage = { Kind: string, Position: Vector3?, Label: string?, Remaining: number?, Route: Route }
 
 local descent = Routes.Marks.CryptDescent
 Guide.CryptDescent = Vector3.new(descent.X, descent.Y + 5, descent.Z) -- the Well of Descent portal (batch 16)
 Guide.Monastery = "DesecratedMonastery"
+-- Regions whose own portal walks home to the Sanctuary (SunkenCryptLayout / SkyCitadelLayout marks).
+local HOME = { "SanctuaryDepths", "SkyCitadel" }
 
 local function flat(a: Vector3, b: Vector3): number
 	return Vector3.new(a.X - b.X, 0, a.Z - b.Z).Magnitude
@@ -5414,16 +5444,49 @@ end
 
 -- The first doorway of a leg, and the walked length through all of them (campaign legs add the
 -- height climbed; Monastery legs keep their flat batch 15 measure).
+local function direct(goal: Vector3): Stage
+	return { Kind = "Point", Position = goal, Label = nil, Remaining = nil, Route = { Points = { goal }, Names = { "" } } }
+end
+
 local function staged(from: Vector3, goal: Vector3, leg: Leg, climb: boolean?): Stage
 	if #leg.Points == 0 then
-		return { Kind = "Point", Position = goal, Label = nil, Remaining = nil }
+		return direct(goal)
 	end
 	local walked, cursor = 0, from
 	for _, point in leg.Points do
 		walked += flat(cursor, point) + (if climb then math.abs(point.Y - cursor.Y) else 0)
 		cursor = point
 	end
-	return { Kind = "Point", Position = leg.Points[1], Label = leg.Names[1], Remaining = walked + flat(cursor, goal) }
+	local points, names = table.clone(leg.Points), table.clone(leg.Names)
+	table.insert(points, goal); table.insert(names, "")
+	return { Kind = "Point", Position = leg.Points[1], Label = leg.Names[1], Remaining = walked + flat(cursor, goal),
+		Route = { Points = points, Names = names } }
+end
+
+-- Campaign doorways from `from` to the zone holding `target`, as raised route points.
+local function campaignLeg(from: Vector3, target: Vector3, leg: Leg)
+	local a, b = Campaign.at(from.X, from.Y, from.Z), Campaign.at(target.X, target.Y, target.Z)
+	if not (a and b) then return end
+	for _, door in Campaign.path(a.Id, b.Id) do
+		table.insert(leg.Points, Vector3.new(door.X, door.Y + 3, door.Z)); table.insert(leg.Names, door.Name)
+	end
+end
+
+-- From the crypt or the bastion, a Sanctuary goal is reached through that region's return portal.
+local function homeward(from: Vector3, here: string?): Stage?
+	for _, region in HOME do
+		if region == here then
+			local mark = Campaign.mark(region, "ReturnPortal")
+			if not mark then return nil end
+			local portal = Vector3.new(mark.X, mark.Y + 3, mark.Z)
+			local leg: Leg = { Points = {}, Names = {} }
+			campaignLeg(from, portal, leg)
+			table.insert(leg.Points, portal); table.insert(leg.Names, "Return portal")
+			return { Kind = "Point", Position = leg.Points[1], Label = leg.Names[1], Remaining = nil,
+				Route = { Points = leg.Points, Names = leg.Names, Exit = "Return portal" } }
+		end
+	end
+	return nil
 end
 
 -- The next step from `from` toward `goal`; Kind "Portal" means the Sanctuary's northern gate.
@@ -5431,9 +5494,15 @@ function Guide.next(from: Vector3, goal: Vector3): Stage
 	local here, there = Guide.regionOf(from), Guide.regionOf(goal)
 	if here == "Sanctuary" and there ~= nil and there ~= "Sanctuary" then
 		if there == "SanctuaryDepths" then
-			return { Kind = "Point", Position = Guide.CryptDescent, Label = "Crypt descent", Remaining = nil }
+			return { Kind = "Point", Position = Guide.CryptDescent, Label = "Crypt descent", Remaining = nil,
+				Route = { Points = { Guide.CryptDescent }, Names = { "Crypt descent" }, Exit = "Crypt descent" } }
 		end
-		return { Kind = "Portal", Position = nil, Label = "Northern gate", Remaining = nil }
+		return { Kind = "Portal", Position = nil, Label = "Northern gate", Remaining = nil,
+			Route = { Points = {}, Names = {}, Exit = "Northern gate" } }
+	end
+	if there == "Sanctuary" and here ~= nil and here ~= "Sanctuary" then
+		local home = homeward(from, here)
+		if home then return home end
 	end
 	if here == Guide.Monastery and there == Guide.Monastery then
 		local a, b = Zones.at(from.X, from.Z), Zones.at(goal.X, goal.Z)
@@ -5472,7 +5541,7 @@ function Guide.next(from: Vector3, goal: Vector3): Stage
 			return staged(from, goal, { Points = legs, Names = names }, true)
 		end
 	end
-	return { Kind = "Point", Position = goal, Label = nil, Remaining = nil }
+	return direct(goal)
 end
 
 return table.freeze(Guide)
@@ -5720,13 +5789,13 @@ L.mark(r, "Reliquary", "Bone reliquary", 366, 0.2, 812)
 L.zone(r, "SD_Descent", "the descent", 440, 544, 1020, 1080, 8, 40)
 L.zone(r, "SD_Nave", "the crypt nave", 356, 628, 968, 1046, -4, 14)
 L.zone(r, "SD_Ossuary", "the ossuary", 356, 404, 900, 968, -14, 14)
-L.zone(r, "SD_Reliquary", "the reliquary", 356, 404, 774, 850, -4, 14)
+L.zone(r, "SD_Reliquary", "the reliquary", 356, 404, 774, 900, -4, 14) -- and the lid causeway over the pit (follow-up 18)
 L.zone(r, "SD_Loft", "the ossuary balcony", 376, 414, 774, 968, 14, 30)
 L.zone(r, "SD_Arena", "the Titan's hall", 414, 626, 774, 968, -4, 14)
 L.door(r, "SD_Descent", "SD_Nave", 455, 0.2, 990, "Gallery stair")
 L.door(r, "SD_Nave", "SD_Arena", 520, 0.2, 970, "Titan's fog gate")
 L.door(r, "SD_Nave", "SD_Ossuary", 380, 0.2, 968, "Ossuary")
-L.door(r, "SD_Ossuary", "SD_Reliquary", 366, 0.2, 875, "Sarcophagus lids")
+L.door(r, "SD_Ossuary", "SD_Reliquary", 366, 0.2, 901, "Sarcophagus lids") -- the pit lip; the line then runs down the lids
 L.door(r, "SD_Reliquary", "SD_Loft", 380, 16, 832, "Bone stair")
 L.door(r, "SD_Loft", "SD_Arena", 414, 0.2, 900, "Balcony drop", true)
 r.SpawnZones = { SD_Swordsman_Nave = "SD_Nave", SD_Monk_Ossuary = "SD_Ossuary" }
@@ -75801,6 +75870,115 @@ return table.freeze(Effects)
           </Item>
           <Item class="ModuleScript" referent="689">
             <Properties>
+              <string name="Name">MinimapRoute</string>
+              <string name="Source">--!strict
+-- ModuleScript: StarterPlayer/StarterPlayerScripts/AsurasPath/Controllers/MinimapRoute
+-- Route layer for the SakuraMinimap (follow-up 14, #28): the walked line RouteGuide stages for the
+-- objective marker (player -&gt; doorways -&gt; goal), drawn as thin pooled segments clipped to the disc.
+-- Nodes mark what the line cannot show flat: a climb or drop (▲/▼ when a doorway sits a storey
+-- above or below), a portal the route leaves through (◎, nothing drawn past it), and the
+-- bloodstain (✕). The route comes from ObjectiveController's refresh; nothing here scans the world.
+local HudKit = require(script.Parent:WaitForChild("HudKit") :: ModuleScript)
+local Sakura = require(script.Parent:WaitForChild("SakuraKit") :: ModuleScript)
+
+local Layer = {}
+local C = Sakura.Colors
+
+-- Customization ------------------------------------------------------------------------------
+local SEGMENTS = 10 -- longest staged route (Monastery doors + campaign doors) fits
+local NODES = 6
+local RIM = 0.86 -- disc radius the line is clipped to (dots clamp to the same rim)
+local NODE_RIM = 0.7 -- off-disc nodes ride inside the N/E/S/W ring, never under a letter
+local STOREY = 7 -- studs above/below the player before a doorway shows a climb or a drop
+local WIDTH = 3 -- line thickness, px
+
+export type Route = { Points: { Vector3 }, Names: { string }, Exit: string?, Stain: boolean? }
+export type View = { Segments: { Frame }, Nodes: { TextLabel }, Diameter: number }
+
+function Layer.new(disc: Frame, diameter: number): View
+	local segments, nodes = {}, {}
+	for i = 1, SEGMENTS do
+		segments[i] = HudKit.make("Frame", disc, {
+			Name = "RouteSegment", AnchorPoint = Vector2.new(0.5, 0.5), BackgroundColor3 = C.Gold, BackgroundTransparency = 0.25,
+			BorderSizePixel = 0, Visible = false, ZIndex = 2,
+		}) :: Frame
+	end
+	for i = 1, NODES do
+		nodes[i] = HudKit.label(disc, "", 11, Enum.Font.GothamBold, C.Gold, {
+			Name = "RouteNode", AnchorPoint = Vector2.new(0.5, 0.5), Size = UDim2.fromOffset(14, 14), Visible = false, ZIndex = 3,
+			TextStrokeTransparency = 0.2,
+		})
+	end
+	return { Segments = segments, Nodes = nodes, Diameter = diameter }
+end
+
+-- The part of a -&gt; b inside the rim circle (disc units: 1 = RANGE studs), or nil when outside.
+local function clip(ax: number, ay: number, bx: number, by: number): (number?, number?, number?, number?)
+	local dx, dy = bx - ax, by - ay
+	local a = dx * dx + dy * dy
+	if a &lt; 1e-6 then return nil, nil, nil, nil end
+	local b = 2 * (ax * dx + ay * dy)
+	local c = ax * ax + ay * ay - RIM * RIM
+	local disc = b * b - 4 * a * c
+	if disc &lt;= 0 then return nil, nil, nil, nil end
+	local root = math.sqrt(disc)
+	local t0, t1 = math.max(0, (-b - root) / (2 * a)), math.min(1, (-b + root) / (2 * a))
+	if t0 &gt;= t1 then return nil, nil, nil, nil end
+	return ax + dx * t0, ay + dy * t0, ax + dx * t1, ay + dy * t1
+end
+
+local function glyph(route: Route, index: number, rise: number): (string, Color3)
+	local last = index == #route.Points
+	if last and route.Exit then return "◎", C.Blossom end
+	if last and route.Stain then return "✕", C.Crimson end
+	if rise &gt; STOREY then return "▲", C.Gold end
+	if rise &lt; -STOREY then return "▼", C.Gold end
+	return if last then "◆" else "", C.Gold
+end
+
+-- Projects the route around `origin` with the camera's flat basis (as SakuraMinimap places dots).
+function Layer.step(view: View, route: Route?, origin: Vector3, look: Vector3, right: Vector3, range: number)
+	local drawn, marked = 0, 0
+	if route then
+		local px, py = 0, 0 -- the player sits at the centre
+		for index, point in route.Points do
+			local offset = point - origin
+			local x, y = offset:Dot(right) / range, -offset:Dot(look) / range
+			local ax, ay, bx, by = clip(px, py, x, y)
+			if ax and ay and bx and by and drawn &lt; #view.Segments then
+				drawn += 1
+				local segment = view.Segments[drawn]
+				local length = math.sqrt((bx - ax) ^ 2 + (by - ay) ^ 2) * view.Diameter * 0.5
+				segment.Position = UDim2.fromScale(0.5 + (ax + bx) * 0.25, 0.5 + (ay + by) * 0.25)
+				segment.Size = UDim2.fromOffset(length, WIDTH)
+				segment.Rotation = math.deg(math.atan2(by - ay, bx - ax))
+				segment.Visible = true
+			end
+			local text, color = glyph(route, index, offset.Y)
+			local distance = math.sqrt(x * x + y * y)
+			-- Off-disc nodes ride the rim only for the next step, so the rim never fills with icons.
+			if text ~= "" and marked &lt; #view.Nodes and (distance &lt;= RIM or index == 1) then
+				marked += 1
+				local node = view.Nodes[marked]
+				local scale = if distance &gt; RIM then NODE_RIM / distance else 1
+				node.Text, node.TextColor3 = text, color
+				node.Position = UDim2.fromScale(0.5 + x * scale * 0.5, 0.5 + y * scale * 0.5)
+				node.TextTransparency = if distance &gt; RIM then 0.45 else 0
+				node.Visible = true
+			end
+			px, py = x, y
+		end
+	end
+	for i = drawn + 1, #view.Segments do view.Segments[i].Visible = false end
+	for i = marked + 1, #view.Nodes do view.Nodes[i].Visible = false end
+end
+
+return table.freeze(Layer)
+</string>
+            </Properties>
+          </Item>
+          <Item class="ModuleScript" referent="690">
+            <Properties>
               <string name="Name">MoveIcons</string>
               <string name="Source">--!strict
 -- ModuleScript: StarterPlayer/StarterPlayerScripts/AsurasPath/Controllers/MoveIcons
@@ -75925,7 +76103,7 @@ return table.freeze(Icons)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="690">
+          <Item class="ModuleScript" referent="691">
             <Properties>
               <string name="Name">MovementController</string>
               <string name="Source">--!strict
@@ -76107,7 +76285,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="691">
+          <Item class="ModuleScript" referent="692">
             <Properties>
               <string name="Name">MovementEffects</string>
               <string name="Source">--!strict
@@ -76223,7 +76401,7 @@ return Effects
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="692">
+          <Item class="ModuleScript" referent="693">
             <Properties>
               <string name="Name">MovementMath</string>
               <string name="Source">--!strict
@@ -76266,7 +76444,7 @@ return Motion
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="693">
+          <Item class="ModuleScript" referent="694">
             <Properties>
               <string name="Name">NovaInk</string>
               <string name="Source">--!strict
@@ -76402,7 +76580,7 @@ return table.freeze(Nova)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="694">
+          <Item class="ModuleScript" referent="695">
             <Properties>
               <string name="Name">NovaScenery</string>
               <string name="Source">--!strict
@@ -76520,7 +76698,7 @@ return table.freeze(Scenery)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="695">
+          <Item class="ModuleScript" referent="696">
             <Properties>
               <string name="Name">ObjectiveController</string>
               <string name="Source">--!strict
@@ -76651,7 +76829,7 @@ function Controller.Update(self: ObjectiveController, dt: number)
 	end
 	self.Elapsed = 0
 	local objective = Objectives.resolve(self:Facts())
-	if objective == nil or self.Current == nil or objective.Key ~= self.Current.Key then
+	if Objectives.changed(self.Current, objective) then
 		self:Show(objective)
 	end
 	local character = self.Player.Character
@@ -76660,6 +76838,14 @@ function Controller.Update(self: ObjectiveController, dt: number)
 	-- Staged route (#28): the next doorway or portal on the walked route, with the walked distance.
 	local stage = if goal and root then RouteGuide.next(root.Position, goal) else nil
 	if stage then goal = if stage.Kind == "Portal" then self.Marker:Locate({ Kind = "Portal" }) else stage.Position end
+	-- The minimap draws the same walked route (follow-up 14); the northern gate is the placed portal.
+	local route: any = nil
+	if stage and guidance then
+		local points = stage.Route.Points
+		if stage.Route.Exit == "Northern gate" then points = if goal then { goal } else {} end
+		route = { Points = points, Names = stage.Route.Names, Exit = stage.Route.Exit, Stain = objective ~= nil and objective.Key == "Bloodstain" }
+	end
+	self.Ui.Route = route
 	local meters = self.Marker:Point(goal, if root then root.Position else nil, not guidance, stage and stage.Label, stage and stage.Remaining)
 	self.Distance.Text = if meters then string.format("%dm", meters) else ""
 end
@@ -76676,7 +76862,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="696">
+          <Item class="ModuleScript" referent="697">
             <Properties>
               <string name="Name">PauseMenu</string>
               <string name="Source">--!strict
@@ -76858,7 +77044,7 @@ return Menu
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="697">
+          <Item class="ModuleScript" referent="698">
             <Properties>
               <string name="Name">PlanetForms</string>
               <string name="Source">--!strict
@@ -76971,7 +77157,7 @@ return table.freeze(Planet)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="698">
+          <Item class="ModuleScript" referent="699">
             <Properties>
               <string name="Name">PlateLayout</string>
               <string name="Source">--!strict
@@ -77042,7 +77228,7 @@ return table.freeze(Layout)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="699">
+          <Item class="ModuleScript" referent="700">
             <Properties>
               <string name="Name">PortraitCamera</string>
               <string name="Source">--!strict
@@ -77167,7 +77353,7 @@ return table.freeze(Portrait)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="700">
+          <Item class="ModuleScript" referent="701">
             <Properties>
               <string name="Name">PrologueController</string>
               <string name="Source">--!strict
@@ -77288,7 +77474,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="701">
+          <Item class="ModuleScript" referent="702">
             <Properties>
               <string name="Name">QiVfx</string>
               <string name="Source">--!strict
@@ -77336,7 +77522,7 @@ return Qi
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="702">
+          <Item class="ModuleScript" referent="703">
             <Properties>
               <string name="Name">SakuraCompass</string>
               <string name="Source">--!strict
@@ -77430,7 +77616,7 @@ return table.freeze(Compass)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="703">
+          <Item class="ModuleScript" referent="704">
             <Properties>
               <string name="Name">SakuraHud</string>
               <string name="Source">--!strict
@@ -77519,7 +77705,7 @@ function Controller.Update(self: SakuraHud, dt: number)
 	self.Layer.Visible = not hidden
 	if hidden then return end
 	Compass.step(self.Compass)
-	Minimap.step(self.Minimap)
+	Minimap.step(self.Minimap, self.Ui.Route)
 	self.Probe -= dt
 	if self.Probe &lt;= 0 then
 		self.Probe, self.Engaged = 0.25, engaged(self.State)
@@ -77553,7 +77739,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="704">
+          <Item class="ModuleScript" referent="705">
             <Properties>
               <string name="Name">SakuraKit</string>
               <string name="Source">--!strict
@@ -77703,7 +77889,7 @@ return table.freeze(Kit)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="705">
+          <Item class="ModuleScript" referent="706">
             <Properties>
               <string name="Name">SakuraMinimap</string>
               <string name="Source">--!strict
@@ -77711,13 +77897,15 @@ return table.freeze(Kit)
 -- Top-left blossom radar that turns with the camera: sakura-ringed plum disc with corner sprigs,
 -- N/E/S/W on the rim, the player's arrow fixed at the centre, crimson dots for hostiles, blossom
 -- dots for other fighters, gold diamonds for Incense Altars, the region name beneath, and small
--- round blossom buttons on the rim (Respite menu, Controls).
+-- round blossom buttons on the rim (Respite menu, Controls). Follow-up 14: under the dots, the
+-- objective's walked route (MinimapRoute) - doorways, climbs, portal exits and the bloodstain.
 local Workspace = game:GetService("Workspace")
 local Players = game:GetService("Players")
 local Shared = game:GetService("ReplicatedStorage"):WaitForChild("AsurasPath")
 local World = require(Shared:WaitForChild("Shared"):WaitForChild("WorldDefinitions") :: ModuleScript) :: any
 local HudKit = require(script.Parent:WaitForChild("HudKit") :: ModuleScript)
 local Sakura = require(script.Parent:WaitForChild("SakuraKit") :: ModuleScript)
+local RouteLayer = require(script.Parent:WaitForChild("MinimapRoute") :: ModuleScript)
 
 local Map = {}
 local C = Sakura.Colors
@@ -77729,7 +77917,8 @@ local DOT_POOL = 24
 local ALTAR_POOL = 8
 
 export type Button = { Glyph: string, Angle: number, Press: () -&gt; () }
-export type View = { Root: Frame, Disc: Frame, Letters: { [number]: TextLabel }, Dots: { Frame }, Altars: { Frame }, Region: TextLabel, State: any }
+export type View = { Root: Frame, Disc: Frame, Letters: { [number]: TextLabel }, Dots: { Frame }, Altars: { Frame }, Region: TextLabel, State: any,
+	Route: RouteLayer.View }
 
 local function dot(parent: Instance, size: number, color: Color3, diamond: boolean): Frame
 	local d = HudKit.make("Frame", parent, {
@@ -77764,6 +77953,7 @@ function Map.new(gui: ScreenGui, state: any, buttons: { Button }): View
 	HudKit.label(disc, "▲", 18, Enum.Font.GothamBold, C.Blossom, {
 		AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 0.5), Size = UDim2.fromOffset(20, 20), ZIndex = 5, TextStrokeTransparency = 0.2,
 	})
+	local route = RouteLayer.new(disc, DIAMETER)
 	local dots, altars = {}, {}
 	for i = 1, DOT_POOL do dots[i] = dot(disc, 7, C.Crimson, false) end
 	for i = 1, ALTAR_POOL do altars[i] = dot(disc, 8, C.Gold, true) end
@@ -77777,7 +77967,7 @@ function Map.new(gui: ScreenGui, state: any, buttons: { Button }): View
 		button.TextSize, button.Font = 15, Enum.Font.GothamBold
 		button.Activated:Connect(b.Press)
 	end
-	return { Root = root, Disc = disc, Letters = letters, Dots = dots, Altars = altars, Region = region, State = state }
+	return { Root = root, Disc = disc, Letters = letters, Dots = dots, Altars = altars, Region = region, State = state, Route = route }
 end
 
 -- Places `offset` (world, studs) on the disc relative to the camera's flat heading.
@@ -77791,7 +77981,8 @@ local function place(gui: Frame, offset: Vector3, look: Vector3, right: Vector3)
 	gui.Visible = true
 end
 
-function Map.step(view: View)
+-- `route` is ObjectiveController's staged route (ui.Route), nil when guidance is hidden.
+function Map.step(view: View, route: RouteLayer.Route?)
 	local camera = Workspace.CurrentCamera
 	local own = view.State:Own()
 	local root = own and own.Root
@@ -77804,6 +77995,7 @@ function Map.step(view: View)
 		local a = math.rad(bearing) - heading
 		letter.Position = UDim2.new(0.5, math.sin(a) * (DIAMETER * 0.5 - 13), 0.5, -math.cos(a) * (DIAMETER * 0.5 - 13))
 	end
+	RouteLayer.step(view.Route, route, root.Position, look, right, RANGE)
 	local used = 0
 	for _, entity in view.State.Entities do
 		if entity ~= own and entity.Root and used &lt; #view.Dots and view.State:IsAlive(entity) then
@@ -77836,7 +78028,7 @@ return table.freeze(Map)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="706">
+          <Item class="ModuleScript" referent="707">
             <Properties>
               <string name="Name">SanguineCombat</string>
               <string name="Source">--!strict
@@ -77888,7 +78080,7 @@ return table.freeze(Combat)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="707">
+          <Item class="ModuleScript" referent="708">
             <Properties>
               <string name="Name">SanguineController</string>
               <string name="Source">--!strict
@@ -77959,7 +78151,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="708">
+          <Item class="ModuleScript" referent="709">
             <Properties>
               <string name="Name">SanguineDispatch</string>
               <string name="Source">--!strict
@@ -78017,7 +78209,7 @@ return table.freeze(Dispatch)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="709">
+          <Item class="ModuleScript" referent="710">
             <Properties>
               <string name="Name">SanguineGeometry</string>
               <string name="Source">--!strict
@@ -78067,7 +78259,7 @@ return table.freeze(Geometry)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="710">
+          <Item class="ModuleScript" referent="711">
             <Properties>
               <string name="Name">SanguineGhost</string>
               <string name="Source">--!strict
@@ -78089,7 +78281,7 @@ return table.freeze(Ghost)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="711">
+          <Item class="ModuleScript" referent="712">
             <Properties>
               <string name="Name">SanguineMagic</string>
               <string name="Source">--!strict
@@ -78142,7 +78334,7 @@ return table.freeze(Magic)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="712">
+          <Item class="ModuleScript" referent="713">
             <Properties>
               <string name="Name">SanguineRuntime</string>
               <string name="Source">--!strict
@@ -78231,7 +78423,7 @@ return Runtime
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="713">
+          <Item class="ModuleScript" referent="714">
             <Properties>
               <string name="Name">SkillAudio</string>
               <string name="Source">--!strict
@@ -78289,7 +78481,7 @@ return table.freeze(Sfx)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="714">
+          <Item class="ModuleScript" referent="715">
             <Properties>
               <string name="Name">SkillCinema</string>
               <string name="Source">--!strict
@@ -78413,7 +78605,7 @@ return table.freeze(Cinema)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="715">
+          <Item class="ModuleScript" referent="716">
             <Properties>
               <string name="Name">SkillFx</string>
               <string name="Source">--!strict
@@ -78559,7 +78751,7 @@ return table.freeze(Fx)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="716">
+          <Item class="ModuleScript" referent="717">
             <Properties>
               <string name="Name">SkillKit</string>
               <string name="Source">--!strict
@@ -78713,7 +78905,7 @@ return table.freeze(Kit)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="717">
+          <Item class="ModuleScript" referent="718">
             <Properties>
               <string name="Name">SkillShowcase</string>
               <string name="Source">--!strict
@@ -78807,7 +78999,7 @@ return table.freeze(Showcase)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="718">
+          <Item class="ModuleScript" referent="719">
             <Properties>
               <string name="Name">SolarForms</string>
               <string name="Source">--!strict
@@ -78934,7 +79126,7 @@ return table.freeze(Solar)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="719">
+          <Item class="ModuleScript" referent="720">
             <Properties>
               <string name="Name">SoundscapeController</string>
               <string name="Source">--!strict
@@ -79002,7 +79194,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="720">
+          <Item class="ModuleScript" referent="721">
             <Properties>
               <string name="Name">SpatialAudio</string>
               <string name="Source">--!strict
@@ -79106,7 +79298,7 @@ return Audio
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="721">
+          <Item class="ModuleScript" referent="722">
             <Properties>
               <string name="Name">SpellController</string>
               <string name="Source">--!strict
@@ -79196,7 +79388,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="722">
+          <Item class="ModuleScript" referent="723">
             <Properties>
               <string name="Name">SpellHud</string>
               <string name="Source">--!strict
@@ -79340,7 +79532,7 @@ return table.freeze(Hud)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="723">
+          <Item class="ModuleScript" referent="724">
             <Properties>
               <string name="Name">SpellVfx</string>
               <string name="Source">--!strict
@@ -79454,7 +79646,7 @@ return table.freeze(Vfx)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="724">
+          <Item class="ModuleScript" referent="725">
             <Properties>
               <string name="Name">SunForms</string>
               <string name="Source">--!strict
@@ -79581,7 +79773,7 @@ return table.freeze(Sun)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="725">
+          <Item class="ModuleScript" referent="726">
             <Properties>
               <string name="Name">SunShots</string>
               <string name="Source">--!strict
@@ -79659,7 +79851,7 @@ return table.freeze(Shots)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="726">
+          <Item class="ModuleScript" referent="727">
             <Properties>
               <string name="Name">SupernovaShots</string>
               <string name="Source">--!strict
@@ -79726,7 +79918,7 @@ return table.freeze(Shots)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="727">
+          <Item class="ModuleScript" referent="728">
             <Properties>
               <string name="Name">SupernovaShow</string>
               <string name="Source">--!strict
@@ -79875,7 +80067,7 @@ return table.freeze(Show)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="728">
+          <Item class="ModuleScript" referent="729">
             <Properties>
               <string name="Name">TargetPlate</string>
               <string name="Source">--!strict
@@ -79963,7 +80155,7 @@ return table.freeze(Target)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="729">
+          <Item class="ModuleScript" referent="730">
             <Properties>
               <string name="Name">TutorialController</string>
               <string name="Source">--!strict
@@ -80104,7 +80296,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="730">
+          <Item class="ModuleScript" referent="731">
             <Properties>
               <string name="Name">UiKit</string>
               <string name="Source">--!strict
@@ -80256,7 +80448,7 @@ return table.freeze(UiKit)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="731">
+          <Item class="ModuleScript" referent="732">
             <Properties>
               <string name="Name">UiWindow</string>
               <string name="Source">--!strict
@@ -80404,7 +80596,7 @@ return table.freeze(Window)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="732">
+          <Item class="ModuleScript" referent="733">
             <Properties>
               <string name="Name">VitalsTags</string>
               <string name="Source">--!strict
@@ -80486,7 +80678,7 @@ return table.freeze(Tags)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="733">
+          <Item class="ModuleScript" referent="734">
             <Properties>
               <string name="Name">VoidStage</string>
               <string name="Source">--!strict
@@ -80633,7 +80825,7 @@ return table.freeze(Stage)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="734">
+          <Item class="ModuleScript" referent="735">
             <Properties>
               <string name="Name">WagerController</string>
               <string name="Source">--!strict
@@ -80690,7 +80882,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="735">
+          <Item class="ModuleScript" referent="736">
             <Properties>
               <string name="Name">WaypointMarker</string>
               <string name="Source">--!strict
@@ -80776,7 +80968,7 @@ return Marker
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="736">
+          <Item class="ModuleScript" referent="737">
             <Properties>
               <string name="Name">WeaponTrails</string>
               <string name="Source">--!strict
@@ -80854,7 +81046,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="737">
+          <Item class="ModuleScript" referent="738">
             <Properties>
               <string name="Name">WorldStateController</string>
               <string name="Source">--!strict
@@ -81250,7 +81442,7 @@ return Controller
           </Item>
         </Item>
       </Item>
-      <Item class="LocalScript" referent="738">
+      <Item class="LocalScript" referent="739">
         <Properties>
           <string name="Name">AsurasPathClient</string>
           <string name="Source">--!strict
@@ -81495,10 +81687,10 @@ print("[Asura's Path] Client ready: camlock, game feel, Souls HUD and Colosseum 
       </Item>
     </Item>
   </Item>
-  <Item class="Workspace" referent="739">
+  <Item class="Workspace" referent="740">
     <Properties>
       <string name="Name">Workspace</string>
-      <float name="FallenPartsDestroyHeight">-100</float>
+      <float name="FallenPartsDestroyHeight">-400</float>
       <Vector3 name="GlobalWind">
         <X>0</X>
         <Y>0</Y>
@@ -81507,13 +81699,13 @@ print("[Asura's Path] Client ready: camlock, game feel, Souls HUD and Colosseum 
       <float name="Gravity">196.2</float>
       <bool name="NeedsPivotMigration">false</bool>
       <bool name="StreamingEnabled">false</bool>
-    <Ref name="CurrentCamera">741</Ref></Properties>
-    <Item class="Folder" referent="740">
+    <Ref name="CurrentCamera">742</Ref></Properties>
+    <Item class="Folder" referent="741">
       <Properties>
         <string name="Name">AsurasPath</string>
       </Properties>
     </Item>
-    <Item class="Camera" referent="741">
+    <Item class="Camera" referent="742">
       <Properties>
         <string name="Name">Camera</string>
         <CoordinateFrame name="CFrame">

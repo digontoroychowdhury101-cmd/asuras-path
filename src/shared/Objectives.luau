@@ -81,6 +81,13 @@ local ENCOUNTERS = {
 }
 Objectives.Encounters = ENCOUNTERS
 
+-- Whether the tracker must redraw: a new step, or the same step with new wording (the bloodstain
+-- card names a different leg after a death moves the player to another region; follow-up 14).
+function Objectives.changed(shown: Objective?, latest: Objective?): boolean
+	if shown == nil or latest == nil then return shown ~= latest end
+	return shown.Key ~= latest.Key or shown.Title ~= latest.Title or shown.Detail ~= latest.Detail
+end
+
 function Objectives.resolve(facts: Facts): Objective?
 	if facts.InColosseum or facts.InBoss then
 		return nil
@@ -89,8 +96,13 @@ function Objectives.resolve(facts: Facts): Objective?
 		return {
 			Key = "Bloodstain",
 			Title = "Reclaim your lost essence",
-			Detail = if facts.Region == "Sanctuary" and facts.StainRegion ~= nil and facts.StainRegion ~= "Sanctuary"
+			-- Name the leg the marker stages (RouteGuide): the Well for the crypt, the return portal home.
+			Detail = if facts.Region == "Sanctuary" and facts.StainRegion == "SanctuaryDepths"
+				then "Take the Well of Descent first · the marker then leads to your bloodstain"
+				elseif facts.Region == "Sanctuary" and facts.StainRegion ~= nil and facts.StainRegion ~= "Sanctuary"
 				then "Take the northern gate first · the marker then leads to your bloodstain"
+				elseif facts.StainRegion == "Sanctuary" and (facts.Region == "SanctuaryDepths" or facts.Region == "SkyCitadel")
+				then "Take the return portal first · the marker then leads to your bloodstain"
 				else "Return to your bloodstain before you fall again",
 			Target = { Kind = "Point", Position = facts.Bloodstain },
 		}

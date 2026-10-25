@@ -84,7 +84,7 @@ function Controller.Update(self: SakuraHud, dt: number)
 	self.Layer.Visible = not hidden
 	if hidden then return end
 	Compass.step(self.Compass)
-	Minimap.step(self.Minimap)
+	Minimap.step(self.Minimap, self.Ui.Route)
 	self.Probe -= dt
 	if self.Probe <= 0 then
 		self.Probe, self.Engaged = 0.25, engaged(self.State)

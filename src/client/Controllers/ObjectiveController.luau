@@ -126,7 +126,7 @@ function Controller.Update(self: ObjectiveController, dt: number)
 	end
 	self.Elapsed = 0
 	local objective = Objectives.resolve(self:Facts())
-	if objective == nil or self.Current == nil or objective.Key ~= self.Current.Key then
+	if Objectives.changed(self.Current, objective) then
 		self:Show(objective)
 	end
 	local character = self.Player.Character
@@ -135,6 +135,14 @@ function Controller.Update(self: ObjectiveController, dt: number)
 	-- Staged route (#28): the next doorway or portal on the walked route, with the walked distance.
 	local stage = if goal and root then RouteGuide.next(root.Position, goal) else nil
 	if stage then goal = if stage.Kind == "Portal" then self.Marker:Locate({ Kind = "Portal" }) else stage.Position end
+	-- The minimap draws the same walked route (follow-up 14); the northern gate is the placed portal.
+	local route: any = nil
+	if stage and guidance then
+		local points = stage.Route.Points
+		if stage.Route.Exit == "Northern gate" then points = if goal then { goal } else {} end
+		route = { Points = points, Names = stage.Route.Names, Exit = stage.Route.Exit, Stain = objective ~= nil and objective.Key == "Bloodstain" }
+	end
+	self.Ui.Route = route
 	local meters = self.Marker:Point(goal, if root then root.Position else nil, not guidance, stage and stage.Label, stage and stage.Remaining)
 	self.Distance.Text = if meters then string.format("%dm", meters) else ""
 end
