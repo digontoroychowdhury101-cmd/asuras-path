@@ -219,6 +219,9 @@
           "BossAttackCatalog": {
             "$path": "src/shared/BossAttackCatalog.luau"
           },
+          "BossAnimationRules": {
+            "$path": "src/shared/BossAnimationRules.luau"
+          },
           "BossRoster": {
             "$path": "src/shared/BossRoster.luau"
           },

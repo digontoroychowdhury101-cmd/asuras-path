@@ -7,6 +7,7 @@
 local Players=game:GetService("Players")
 local UserInput=game:GetService("UserInputService")
 local GuiService=game:GetService("GuiService")
+local CollectionService=game:GetService("CollectionService")
 local Shared=game:GetService("ReplicatedStorage").AsurasPath
 local View=require(script.Parent.DialogueView)
 local Kit=require(script.Parent.HudKit)
@@ -79,8 +80,7 @@ end
 function Controller.Frame(self: any,p: any)
  local character=Players.LocalPlayer.Character
  local root=character and character:FindFirstChild("HumanoidRootPart") :: BasePart?
- local world=workspace:FindFirstChild("JadeCataclysm")
- local original=world and world:FindFirstChild(p.npc)
+ local original=Portrait.speaker(p.npc,workspace:FindFirstChild("JadeCataclysm"),CollectionService:GetTagged("AsuraNPC"))
  local exclude: {Instance}={workspace.CurrentCamera}
  if character then table.insert(exclude,character) end
  if original then table.insert(exclude,original) end

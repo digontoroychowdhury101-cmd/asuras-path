@@ -319,9 +319,18 @@ local function moveTo(agent: Agent, point: Vector3)
 end
 
 -- Engage just inside attack reach, never on the target's own root (BossBodies.closeIn).
+-- A Twin flanks: it never takes the engage point its living partner already holds (Bodies.flank).
 local function closeIn(agent: Agent, self: Entity, target: Entity, reach: number)
 	local at, to = self.Root.Position, target.Root.Position
 	local x, z = Bodies.closeIn(at.X, at.Z, to.X, to.Z, reach * 0.6)
+	local encounter = self.Model:GetAttribute("AsuraEncounter")
+	for _, id in if type(encounter) == "string" then BossDuo.members(encounter) else {} do
+		local partner = if id ~= agent.Id then Characters.GetEntity(id) else nil
+		if partner and partner.Fighter.State ~= "KO" then
+			local o = partner.Root.Position
+			x, z = Bodies.flank(at.X, at.Z, to.X, to.Z, reach * 0.6, o.X, o.Z, 2.5 * (self.Model:GetScale() + partner.Model:GetScale()))
+		end
+	end
 	moveTo(agent, Vector3.new(x, to.Y, z))
 end
 

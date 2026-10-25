@@ -80,6 +80,20 @@ check("blocked right shoulder falls back to the left", clean and pos == left)
 local fire = function(from, to) if from.Y < subject.Y - 0.5 and to.Z > 2 then return from:Lerp(to, 0.5) end return nil end
 pos, clean = Portrait.choose(subject, viewer, fire)
 check("fire blocking the chest line is not accepted as clear", not clean or pos.Z <= 2)
+-- F13: a speaker outside JadeCataclysm (Gao in the Sanctuary loggia) is found by its AsuraNPC tag, so
+-- its own body is excluded from the probe instead of blocking every shot (the overhead fallback).
+local function fakeModel(name, key)
+	return { Name = name, IsA = function(_, c) return c == "Model" end, GetAttribute = function(_, a) return if a == "AsuraNPC" then key else nil end }
+end
+local lin, gaoModel = fakeModel("Lin", nil), fakeModel("MasterSmithGao", "Gao")
+local jade = { FindFirstChild = function(_, n) return if n == "Lin" then lin else nil end }
+check("speakers in JadeCataclysm resolve by name", Portrait.speaker("Lin", jade, {}) == lin)
+check("Gao resolves by his AsuraNPC tag", Portrait.speaker("Gao", jade, { lin, gaoModel }) == gaoModel and Portrait.speaker("Hermit", jade, { gaoModel }) == nil)
+local selfBlocked = function(from, to) return from:Lerp(to, 0.05) end
+local over = Portrait.choose(subject, viewer, selfBlocked)
+check("an unexcluded speaker body forces the overhead fallback (why the lookup matters)", over.Y >= subject.Y + 5)
+check("dialogue frames speakers through the tag lookup", has(C .. "DialogueController.luau", 'Portrait.speaker(p.npc,workspace:FindFirstChild("JadeCataclysm"),CollectionService:GetTagged("AsuraNPC"))')
+	and has(S .. "SanctuaryService.luau", 'model:SetAttribute("AsuraNPC", "Gao")'))
 -- A wall closes every angle 5 studs out: the shot is pulled in front of it, never through it.
 local wall = function(from, to)
 	if (to - subject).Magnitude > 5 then return from + (to - from).Unit * 5 end

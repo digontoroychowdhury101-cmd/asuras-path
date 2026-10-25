@@ -99,6 +99,18 @@ function Portrait.aim(position: Vector3, face: Vector3, faceY: number): CFrame
 	return CFrame.lookAt(position, face) * CFrame.Angles(-pitch, 0, 0)
 end
 
+-- The speaker's own model: JadeCataclysm.<npc>, else any model tagged AsuraNPC = npc (Master Smith
+-- Gao stands in the Sanctuary loggia). F13: Gao was never found, so his body was not excluded from
+-- the probe, every shot hit him and the portrait fell back to looking down on his topknot.
+function Portrait.speaker(npc: string, world: Instance?, tagged: { Instance }): Instance?
+	local found = world and world:FindFirstChild(npc)
+	if found then return found end
+	for _, model in tagged do
+		if model:IsA("Model") and model:GetAttribute("AsuraNPC") == npc then return model end
+	end
+	return nil
+end
+
 function Portrait.frame(subject: Vector3, viewer: Vector3, exclude: { Instance }): CFrame
 	local position = Portrait.choose(subject, viewer, Portrait.probe(exclude))
 	return CFrame.lookAt(position, subject)

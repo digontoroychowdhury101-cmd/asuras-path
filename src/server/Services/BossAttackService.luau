@@ -36,7 +36,7 @@ function Service.start(id: number, attack: Types.Attack, target: number, allowed
 	e.Model:SetAttribute("AsuraTelegraph", string.format("Perilous|%s|%.3f", attack.Id, impact))
 	Characters.Cue("Telegraph", id, { class = "Perilous", move = attack.Id, kind = attack.Kind, counter = counter, impact = impact,
 		radius = attack.Radius, ox = origin.X, oz = origin.Z, x = aim.X, y = 0, z = aim.Z, duration = attack.Duration, element = attack.Element })
-	if attack.Motion then Motion.begin(id, attack.Motion, aim, now, impact) end
+	if attack.Motion then Motion.begin(id, attack.Motion, Motion.approach(id, attack.Motion, aim), now, impact) end
 end
 local function strike(id: number, current: Active)
 	local e = Characters.GetEntity(id)

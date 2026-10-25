@@ -52,6 +52,7 @@ local function actor(id:number,x:number,y:number,z:number):any
  local model:any={Attributes={}}
  function model:SetAttribute(k:string,v:any) self.Attributes[k]=v end
  function model:GetAttribute(k:string) return self.Attributes[k] end
+ function model:GetScale() return self.Attributes.__scale or 1 end
  function model:PivotTo(cf:any) root.Position,root.CFrame=cf.Position,cf end
  local e:any={Id=id,Root=root,Model=model,Fighter=Combat.new(id,"Jian",0),Kind=if id>0 then "Player" else "Enemy",Humanoid={HipHeight=2}}
  actors[id]=e;return e
@@ -99,6 +100,9 @@ player.Fighter.State="Deflecting";player.Fighter.DeflectPressedAt=2.91
 now=3;Scheduler.step(-1,now)
 check(hits[#hits].Outcome=="Deflected" and source.Fighter.Posture>=75,"scheduled thrust supports tight deflect")
 check(not source.Root.Anchored,"lunge returns physics ownership")
+local gap=player.Root.Position-source.Root.Position
+check(math.abs(Vector3.new(gap.X,0,gap.Z).Magnitude-3)<0.01,"lunge ends a body short of the target, not inside it")
+source.Root.Position=vec(0,3,0)
 source.Fighter=Combat.new(-1,"Jian",3)
 Scheduler.start(-1,thrust,1,allowed,4);Scheduler.cancel(-1)
 check(not source.Root.Anchored and source.Model:GetAttribute("AsuraBossAttack")==nil,"reset cancels warning and releases anchor")
@@ -127,7 +131,13 @@ source.Root.Position=vec(0,3,0)
 Motion.begin(-1,"Pillar",vec(30,3,0),30,32)
 Motion.step(-1,31)
 check(source.Root.Position.Y>=30,"meteor pounce hangs above the arena")
+Motion.step(-1,32)
+check((source.Root.Position-vec(30,source.Root.Position.Y,0)).Magnitude>=2.99,"meteor pounce lands beside the mark, not on it")
 Motion.cancel(-1);check(not source.Root.Anchored,"interruption releases perched beast")
+Motion.begin(-1,"Aerial",vec(30,3,0),33,35);Motion.step(-1,34)
+source.Fighter.State="KO";source.Root.Anchored=true -- settleCorpse pinned the felled body
+Motion.cancel(-1);check(source.Root.Anchored,"a boss felled in flight stays pinned where it was set down")
+source.Fighter=Combat.new(-1,"Jian",0);source.Root.Anchored=false
 -- Kill either duo member; the other heals once, inherits attacks, and defers victory.
 local first=actor(-10,0,3,0);local second=actor(-11,10,3,0)
 local definition=World.Bosses.TwinSentinels
@@ -149,6 +159,14 @@ Tactics.reset(-1);now=40
 Tactics.step(-1,World.Bosses.GrandmasterShen,1,1,allowed,now)
 now=42.5;Tactics.step(-1,World.Bosses.GrandmasterShen,1,1,allowed,now)
 check(cues[#cues].Data.move=="Pursuit","range clamp schedules pursuit after dwell time")
+Tactics.reset(-1)
+-- The Titan kneels to deathblow height and rises back to its own scaled standing height.
+source.Humanoid.HipHeight=6.577;source.Fighter.State="StanceBroken";now=50
+Tactics.step(-1,World.Bosses.SlumberingTitan,1,1,allowed,now)
+check(source.Humanoid.HipHeight==0 and source.Model:GetAttribute("AsuraVisceralTarget")=="Head","titan kneels for the head deathblow")
+source.Fighter.State="Idle";now=53
+Tactics.step(-1,World.Bosses.SlumberingTitan,1,1,allowed,now)
+check(source.Humanoid.HipHeight==6.577 and source.Model:GetAttribute("AsuraVisceralTarget")=="Ankles","titan rises to its own standing height")
 Tactics.reset(-1)
 print(string.format("Boss runtime: %d checks passed",checks))
 ''')

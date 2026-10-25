@@ -15,6 +15,7 @@
 -- the greybox, and the bonfire's AltarAnchor part receives the altar's rest prompt.
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
+local CollectionService = game:GetService("CollectionService")
 local Workspace = game:GetService("Workspace")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
@@ -162,6 +163,8 @@ local function buildSmithFigure(parent: Instance, base: CFrame)
 	-- Stone-coloured stand-in used only if the avatar rig cannot be created.
 	local model = Instance.new("Model")
 	model.Name = "MasterSmithGao"
+	model:SetAttribute("AsuraNPC", "Gao") -- DialogueController frames his portrait by this tag
+	CollectionService:AddTag(model, "AsuraNPC")
 	part(model, "Legs", Vector3.new(2, 2.4, 1), base * CFrame.new(0, 1.2, 0), Color3.fromRGB(40, 34, 30), Enum.Material.Fabric)
 	part(model, "Torso", Vector3.new(2.2, 2.4, 1.2), base * CFrame.new(0, 3.6, 0), Color3.fromRGB(70, 48, 36), Enum.Material.Leather)
 	part(model, "Head", Vector3.new(1.3, 1.3, 1.3), base * CFrame.new(0, 5.5, 0), Color3.fromRGB(176, 128, 96), Enum.Material.SmoothPlastic, { Shape = Enum.PartType.Ball })
@@ -193,6 +196,8 @@ local function spawnSmith(parent: Instance, base: CFrame)
 			return
 		end
 		model.Name = "MasterSmithGao"
+		model:SetAttribute("AsuraNPC", "Gao") -- DialogueController frames his portrait by this tag
+		CollectionService:AddTag(model, "AsuraNPC")
 		local humanoid = model:FindFirstChildOfClass("Humanoid")
 		local rootPart = model:FindFirstChild("HumanoidRootPart")
 		if humanoid then

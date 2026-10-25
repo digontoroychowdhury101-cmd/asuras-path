@@ -33,12 +33,31 @@ local function pillarPerch(id: number, target: Vector3): (Vector3, number)
 	end
 	return Motion.clamp(id, target + Vector3.new(50, 31, -50)), 0
 end
+-- Where a lunge or aerial landing should end: a body short of the marked point on the boss's
+-- side, not inside the target (F10: Shen's Flowing Jian ended 0.2 studs from the player and
+-- climbed onto them). Hits still resolve from the marked origin/aim, so reach and timing hold.
+local function bodyStop(e: any): number
+	local bossId = e.Model:GetAttribute("AsuraEncounter")
+	local boss = if type(bossId) == "string" then World.Bosses[bossId] else nil
+	local hull = if boss then (Bodies.Hulls :: any)[boss.Archetype] else nil
+	return (if hull then math.max(hull[1], hull[3]) * 0.5 else 1) * e.Model:GetScale() + 2
+end
+function Motion.approach(id: number, kind: string, aim: Vector3): Vector3
+	local e = Characters.GetEntity(id)
+	if not e or (kind ~= "Lunge" and kind ~= "Aerial") then return aim end
+	local x, z = Bodies.closeIn(e.Root.Position.X, e.Root.Position.Z, aim.X, aim.Z, bodyStop(e))
+	return Vector3.new(x, aim.Y, z)
+end
 function Motion.begin(id: number, kind: string, destination: Vector3, now: number, impact: number)
 	Motion.cancel(id)
 	local e = Characters.GetEntity(id)
 	if not e then return end
 	local target = Motion.clamp(id, destination)
 	local perch, clear = pillarPerch(id, target)
+	if kind == "Pillar" then -- the pounce comes down beside the mark, on the pillar's side (F11: it landed on the player)
+		local x, z = Bodies.closeIn(perch.X, perch.Z, target.X, target.Z, bodyStop(e))
+		target = Vector3.new(x, target.Y, z)
+	end
 	flights[id] = { From = e.Root.Position, To = target, Start = now, Impact = impact, Clear = clear,
 		Kind = kind, Perch = perch,
 		Height = if kind == "Pillar" then 34 elseif kind == "Aerial" then 28 elseif kind == "Teleport" then 0 else 4,
@@ -66,9 +85,14 @@ function Motion.step(id: number, now: number)
 	e.Model:PivotTo(if look.Magnitude > 0.1 then CFrame.lookAt(point, point + Vector3.new(look.X, 0, look.Z)) else CFrame.new(point))
 	if t >= 1 then Motion.cancel(id) end
 end
+-- A felled body keeps the anchor settleCorpse gave it (F12: a Wyrm killed in flight was set on the
+-- floor, then this restored its pre-flight unanchored root and it fell through the arena).
 function Motion.cancel(id: number)
 	local flight, e = flights[id], Characters.GetEntity(id)
-	if flight and e then e.Root.Anchored = flight.Anchored; e.Root.AssemblyLinearVelocity = Vector3.zero end
+	if flight and e then
+		if e.Fighter.State ~= "KO" then e.Root.Anchored = flight.Anchored end
+		e.Root.AssemblyLinearVelocity = Vector3.zero
+	end
 	flights[id] = nil
 end
 return Motion

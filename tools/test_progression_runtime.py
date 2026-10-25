@@ -102,7 +102,7 @@ function workspace:Raycast() return nil end
 local RaycastParams={new=function() return {} end}
 local Run={Heartbeat=signal()}
 local inputService={InputBegan=signal(),GamepadEnabled=false}
-local services={ReplicatedStorage={AsurasPath={Shared={},Net=net}},Players=Players,RunService=Run,UserInputService=inputService,GuiService={GetGuiInset=function() return vec(0,58,0),vec() end},Workspace=workspace,ProximityPromptService={Enabled=true}}
+local services={ReplicatedStorage={AsurasPath={Shared={},Net=net}},Players=Players,RunService=Run,UserInputService=inputService,GuiService={GetGuiInset=function() return vec(0,58,0),vec() end},Workspace=workspace,ProximityPromptService={Enabled=true},CollectionService={AddTag=function() end,GetTagged=function() return {} end}}
 local game={GetService=function(_,key) return assert(services[key],key) end}
 local db={};local database={UpdateAsync=function(_,key,fn)
  -- Invoke the callback twice and discard the speculative result, like an UpdateAsync retry.

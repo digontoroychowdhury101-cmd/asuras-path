@@ -1008,7 +1008,7 @@ function Controller.OnCue(self: Interface, cue: Cue)
 	if isBossCue or (sourceEntity and sourceEntity.Model:GetAttribute("AsuraEncounter") == self.BossId and self.BossId ~= nil) then
 		BossEffects.cue(cue, self.State)
 		if sourceEntity and (cue.Kind == "Telegraph" or cue.Kind == "BossPhase" or cue.Kind == "BossEnrage") then
-			BossAnimations.action(sourceEntity.Model, cue.Kind ~= "Telegraph")
+			BossAnimations.action(sourceEntity.Model, cue.Kind ~= "Telegraph", data.move, data.kind)
 		end
 	end
 	if cue.Kind == "AltarRest" and cue.Source == own then
