@@ -92,6 +92,24 @@ check("Gao resolves by his AsuraNPC tag", Portrait.speaker("Gao", jade, { lin, g
 local selfBlocked = function(from, to) return from:Lerp(to, 0.05) end
 local over = Portrait.choose(subject, viewer, selfBlocked)
 check("an unexcluded speaker body forces the overhead fallback (why the lookup matters)", over.Y >= subject.Y + 5)
+-- F13: the Transmutation Seal stands beside Gao, so from any spot in front of him "Speak" (the nearer
+-- Z prompt, OnePerButton) wins; beside the seal its own prompt wins. At Loggia.X+5 it stood in front.
+do
+	local Loggia = require("../src/shared/WorldDefinitions").Sanctuary.Loggia
+	local offset = tonumber(string.match(src(S .. "LootWorld.luau"), "LootWorld%.SealOffset=(%-?%d+)"))
+	local stand = V(Loggia.X - 2, Loggia.Y, Loggia.Z - 1) -- SanctuaryService: base * CFrame.new(-2, 0, -1)
+	local function speakWins(sealAt)
+		for dx = 3, 7 do for dz = -1, 1 do
+			local spot = stand + V(dx, 0, dz)
+			if (spot - stand).Magnitude + 1.5 > (spot - sealAt).Magnitude then return false end
+		end end
+		return true
+	end
+	local sealAt = V(Loggia.X, Loggia.Y, Loggia.Z + (offset or 0))
+	check("Speak beats the seal from in front of Gao", offset ~= nil and speakWins(sealAt) and not speakWins(V(Loggia.X + 5, Loggia.Y, Loggia.Z)))
+	local beside = sealAt + V(3, 0, 0)
+	check("the seal still wins beside itself and stays within its 12-stud prompt", (beside - sealAt).Magnitude < (beside - stand).Magnitude and (stand + V(5, 0, 0) - sealAt).Magnitude <= 12)
+end
 check("dialogue frames speakers through the tag lookup", has(C .. "DialogueController.luau", 'Portrait.speaker(p.npc,workspace:FindFirstChild("JadeCataclysm"),CollectionService:GetTagged("AsuraNPC"))')
 	and has(S .. "SanctuaryService.luau", 'model:SetAttribute("AsuraNPC", "Gao")'))
 -- A wall closes every angle 5 studs out: the shot is pulled in front of it, never through it.

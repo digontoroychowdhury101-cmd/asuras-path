@@ -28,7 +28,7 @@ PASS progression and lore: 146 checks
 PASS progression runtime: 89 checks
 PASS ending credits: 13 sourced rows and project lines match assets/CREDITS.md
 Review regressions: 21 checks passed
-chain built and walked in 27.3s
+chain built and walked in 27.0s
 campaign regions: 251 passed, 0 failed
   BambooPass        1219 parts   73 colliding  10 lights  12 emitters
   AshColosseum       217 parts  105 colliding  20 lights  26 emitters
@@ -54,7 +54,7 @@ PASS     test_monastery_discovery.luau: monastery discovery: 53 passed, 0 failed
 PASS     test_monastery_route.luau: monastery route: 59 passed, 0 failed
 PASS     test_opening_tutorial.luau: opening tutorial: 108 passed, 0 failed
 PASS     test_recovery_lifecycle.luau: recovery lifecycle: 100 passed, 0 failed
-PASS     test_rest_dialogue.luau: rest dialogue: 67 passed, 0 failed
+PASS     test_rest_dialogue.luau: rest dialogue: 69 passed, 0 failed
 PASS     test_sanguine_dispatch.luau: sanguine dispatch: 30 passed, 0 failed (state/render adapters; Studio visual acceptance separate)
 PASS     test_session_cleanup.luau: session cleanup: 7 passed, 0 failed (emulated counts; no profiler or Studio session)
 [11/14] Testing Backend Persistence & Commercial Systems (local mocks)...
@@ -73,7 +73,7 @@ PASS: 43 audiovisual runtime assertions (engine fakes; Studio QA separate)
 PASS: 13 imported templates, 101 complete PBR MeshParts; saved Automatic fidelity
 PASS: 8 PBR exports validated; audio format/peak/DC checks passed (available media only)
 [13/14] Syntax-compiling every source script...
-Compiled 39 KLOC into 1675 KB bytecode (read 0.08s, parse 0.03s, compile 0.07s)
+Compiled 39 KLOC into 1675 KB bytecode (read 0.09s, parse 0.04s, compile 0.08s)
 [14/14] Compiling Roblox Place to /var/folders/0h/ppzkjk7x4sd3qkr37t30hxmc0000gn/T//AsurasPath_verify.rbxlx ...
 Building project 'AsurasPath'
 Built project to AsurasPath_verify.rbxlx

@@ -3,8 +3,8 @@
 Original batches 11–14. Findings #13 #16 #17 #23 #24.
 
 ## Build and evidence
-- Start HEAD `f05c720` (digest 591768240). End: `places/AsurasPath.rbxlx` rebuilt, Studio Edit place synced and read back: **scripts 253, bytes 1,817,788, digest 1870254957** (Studio = build). Temporary Edit-mode probe scripts (`QAProbeB10*`) were removed before the digest read.
-- Local regression / engine emulation: `bash tools/verify_all.sh` SUCCESS → `F10_13_VERIFY_LOG.txt`. Focused: boss_presentation 197 (+72), boss_runtime 30 (+5), rest_dialogue 67 (+4), cast_visuals 48, progression_runtime 89, combat_contact 68.
+- Start HEAD `f05c720` (digest 591768240). End: `places/AsurasPath.rbxlx` rebuilt, Studio Edit place synced and read back: **scripts 253, bytes 1,818,152, digest 1334509767** (Studio = build; after the Gao seal follow-up). Temporary Edit-mode probe scripts (`QAProbeB10*`) were removed before the digest read.
+- Local regression / engine emulation: `bash tools/verify_all.sh` SUCCESS → `F10_13_VERIFY_LOG.txt`. Focused: boss_presentation 197 (+72), boss_runtime 30 (+5), rest_dialogue 69 (+6), cast_visuals 48, progression_runtime 89, combat_contact 68.
 - Studio evidence is **seeded Studio diagnostic** unless marked: server pivots into each arena, KO protection, HP seeded for phase 2, `ApplyArea` from the player for kills, a client render-step camera for close views. **Real Studio play** items are marked (keys/clicks through the injector). Nothing is earned continuous-input play; the seeded Wyrm kill is not an earned victory. Viewport 1221×503. Views in `f10-13-views/`.
 
 ## Defects found and fixed (each regression fails on the old code)
@@ -36,7 +36,7 @@ Original batches 11–14. Findings #13 #16 #17 #23 #24.
 ## 13 — player, NPCs, enemies
 - Player (seeded): one `AsuraAttire` (36 pieces), 0 detached, late Accessory+Shirt stripped, head replaced while alive (RequiresNeck off) → re-dressed on the live head, 0 loose parts; weapon grip 0.16 from the hand, blade 4.2.
 - Portraits (real key hold): Gao after fix 8; Hermit face at 0.30, 7.3 studs; Lin covered in F04.
-- **Open — Gao prompt conflict:** the Transmutation Seal (`LootWorld`, `Loggia.X+5`) stands 7 studs in front of Gao, where a player stops to talk; both prompts use Z with OnePerButton, so from the front "Transmute Remembrance" always wins and Gao's dialogue only opens from his side. Moving the seal is a layout decision; not changed.
+- **Gao prompt conflict — fixed (follow-up, same day):** the Transmutation Seal stood 7 studs in front of Gao (`Loggia.X+5`), where a player stops to talk; both prompts use Z (OnePerButton), so "Transmute Remembrance" always won. `LootWorld.SealOffset = -10` moves the seal, stele and plinth 10 studs to Gao's side (clear floor, no props; checked with an overlap query). Regression in rest_dialogue (69): from every talking spot 3–7 studs in front, Speak is nearer by > 1.5 studs; the old spot fails. Studio (real Z holds, camera behind the player facing Gao): front → "Speak to Master Smith Gao", dialogue opens alone, face at 0.30, 7.5 studs; beside the seal → "Transmute Remembrance" opens the Arsenal (`f10-13-views/gao_seal_beside.jpg`). The engine also weighs camera direction: with the camera turned toward the seal side the seal can still win, as intended for a prompt you are looking at.
 - Enemy silhouettes and dissolves: not re-captured here; 07's seeded monk/swordsman deaths stand.
 
 ## Art status (Blocked — production art)
@@ -49,6 +49,5 @@ Original batches 11–14. Findings #13 #16 #17 #23 #24.
 ## Remaining (exact)
 - Production art above (#23, #24).
 - Human: flick/stick lock switching between the Twins; Twins flanking fairness; earned fights of all six (22).
-- Gao: decide whether the Transmutation Seal moves off Gao's front or the dialogue becomes the only Z prompt there.
 - 24: boss bar hides the Titan's upper body and the perilous warning overlaps the duo bars at 1221×503.
 - Not exercised in Studio: entry skip key and first-impact grace (local regression only).
