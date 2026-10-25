@@ -28,7 +28,7 @@ PASS progression and lore: 146 checks
 PASS progression runtime: 89 checks
 PASS ending credits: 13 sourced rows and project lines match assets/CREDITS.md
 Review regressions: 21 checks passed
-chain built and walked in 21.2s
+chain built and walked in 22.1s
 campaign regions: 251 passed, 0 failed
   BambooPass        1219 parts   73 colliding  10 lights  12 emitters
   AshColosseum       217 parts  105 colliding  20 lights  26 emitters
@@ -45,7 +45,7 @@ PASS     test_campaign_ledger.luau: campaign ledger: 99 passed, 0 failed (seeded
 PASS     test_cast_visuals.luau: cast visuals: 48 passed, 0 failed
 PASS     test_colosseum_runtime.luau: colosseum runtime: 135 passed, 0 failed (local mocks; live DataStore and multi-client not exercised)
 PASS     test_combat_contact.luau: combat contact: 68 passed, 0 failed
-PASS     test_combat_presentation.luau: combat presentation: 161 passed, 0 failed
+PASS     test_combat_presentation.luau: combat presentation: 165 passed, 0 failed
 PASS     test_death_note.luau: death note: 6 passed, 0 failed
 PASS     test_device_layout.luau: device layout: 89 passed, 0 failed (geometry + emulation; no phone, tablet or controller hardware)
 PASS     test_hud_layout.luau: hud layout: 258 passed, 0 failed

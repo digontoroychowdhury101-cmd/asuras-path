@@ -34,18 +34,27 @@ Original batches 09, 10, 03. Findings #2 #7 #11 #12 #13 #14 #15 #19 #20 #21 #36 
 - Fresh profile: black veil, no unfinished avatar; prologue play and Space-skip; handoff banner then controls card; bonfire rest (0.4 s hold), portal, Gate kindled, Training 1→10 Complete; each step advanced only on its own server event (blocks before Guard ignored, guard-break taught nothing, deathblow-victim Evade taught nothing); practice paid no Essence; Skip persisted; stakes card at the courtyard; memorial I → Codex 1/8, +100 once; Respite Replay opening plays.
 - First action: lock-on. First success: light hit after fix 1. First death/confusion: lone monk killed an idle player in ~4.4 s (10 consecutive hits) while the stakes paragraph was up; the phantom's combo/perilous loop at the 1 HP floor and its follow to the Gate altar (rest refused) make training hard without continuous input → human test, no tuning from tool play.
 
-## 09 lighting/audio (seeded Studio diagnostic)
+## 09 lighting/audio (seeded Studio diagnostic; continued 25 Oct, digest 591768240)
+Additional fixes:
+| # | Defect | Fix | Check |
+|---|---|---|---|
+| 14 | Bare Titan and Wu duel floors (slate 49,45,43) rendered black at the dusk sun; dark costumes (the player, Wu) vanished on them (#2) | `BossArenas.FloorColor` mid stone (118,110,100); lights unchanged, no fullbright | presentation +2 (luminance band); Studio before/after views |
+| 15 | Spell bloom and flash sphere ignored Reduced flashes (bloom stayed 1.0) (#36) | `VoidStage.bloom` and `SkillFx.flash` pass through `EffectsPreference.flash` | presentation +2; Studio Blazing Sun: full bloom 1.00/sphere T 0.05/light 8 → reduced 0.35/0.67/2.8 |
+
 | Arena | Combat light (ordinary distance) | Phase 2 | Exit by death → region profile restored |
 |---|---|---|---|
 | Twin Sentinels | readable | n/a (1 phase) | yes (exact values) |
-| Grandmaster Shen | readable mid-arena; near-black from the gate mouth at entry | readable (Unbound red) | yes |
+| Grandmaster Shen | readable; walk-in entry dark only during the 2.4 s profile blend, readable once settled | readable (Unbound red) | yes |
 | Venerable Baize | readable | readable, darker | yes |
-| Slumbering Titan | **dark**: boss reads, floor near-black, player only hat/blade | same | yes |
-| Sovereign Wu | **dark**: bare slate floor near-black, player hat only | not captured | not checked |
-| Azure Wyrm | not captured | — | — |
-- Diagnosis in progress (not fixed): all six arena floors are dark Slate (0.19) with 0.9 fills; dressed arenas read, bare ones (Titan, Wu) do not. Raising fills to 1.4–2.2 (live, unsaved) lit Wu's floor but it then showed a strong red/purple cast of unknown source (no coloured light, decal or overlay part found) — must be identified before any change.
-- Audio lifetime repeated cycles, failed loads, source-first destruction, locked-Parent log scan, Celestial Supernova/Blazing Sun mid-cast death: **not run**.
+| Slumbering Titan | readable after fix 14 (was near-black) | readable after fix 14 | yes |
+| Sovereign Wu | readable after fix 14 (was near-black) | readable | yes |
+| Azure Wyrm | readable | readable | yes |
+- The red/purple floor cast in Wu's arena is Wu's own Gravity/Ritual hazard disc (BossEffects, camera-parented Neon, CanQuery off) — an intended telegraph, not a defect.
+- Petals: exploring 14/14 at 0.30 transparency; combat 4/14 at 0.72; combat with Reduced effects (saved through Respite > Settings > Apply) 0/14.
+- Audio lifetime (client counts; baseline 9 world sounds / 0 sources): two combat cycles (hits, counter-hits, blocks, deflects, rally, death) peaked at 11 sources and returned to 9/0 after death and respawn; rest added none. In-engine SpatialAudio paths: 10 source-first and 10 sound-first destructions → 0 voices/0 sources; unloadable asset leaked nothing; 40-cue burst capped at 32 (budget) and fully released after 13 s. Client and server error/locked-Parent log scan across all cycles: **0**.
+- Mid-cast death: Celestial Supernova (AsuraSkillGrade, AsuraSkillBloom, SkillVoid present) and Blazing Sun (grade, bloom, skill overlay present) — all removed at the death sample, the death cue's source released within ~1 s, 0 errors.
+- Observations → 24: on a 1221x503 window the centre perilous warning overlaps the boss bars, and Respite's Settings > Apply and "Replay opening" sit below the panel's visible area (scroll required). Logs prove lifetime only; how the mix sounds is 25.
 
 ## Remaining (exact)
-- 09: identify the floor cast in Wu's arena, then fix Titan/Wu arena readability (floor albedo or fill level), capture Wu phase 2 and Wyrm, check the Shen gate-mouth entry view, run the audio-lifetime cycle and log scan, the mid-cast spell death, reduced-flash petals (#36); another player's encounter → 23.
 - 07/08: earned continuous-input deflect/feint/duel fairness and onboarding difficulty (human); last-charge heal; death during the replayed opening; visual re-capture of fixes 10, 12, 13.
+- 09: another player's encounter on this client and two-player lighting → 23; listening/mix quality → 25; short-window layout notes → 24.

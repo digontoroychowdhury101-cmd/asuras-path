@@ -4,6 +4,7 @@
 -- spark bursts. Built from SkillKit parts/emitters; everything lives in the caller's trove.
 local RunService = game:GetService("RunService")
 local Assets = require(game:GetService("ReplicatedStorage").AsurasPath.Shared.PresentationAssets)
+local Comfort = require(game:GetService("ReplicatedStorage").AsurasPath.Shared.EffectsPreference)
 local Kit = require(script.Parent.SkillKit)
 local Fx = {}
 
@@ -114,8 +115,9 @@ end
 -- A flash sphere that blooms to `size` and fades out.
 function Fx.flash(trove: Kit.Trove, parent: Instance, at: Vector3, color: Color3, size: number, seconds: number)
 	local ball = Kit.part(parent, "FlashSphere", color, Vector3.one, CFrame.new(at), Enum.PartType.Ball)
-	ball.Transparency = 0.05
-	Kit.light(ball, color, math.min(60, size * 2), 8)
+	-- F09: reduced flashes keep a share of the sphere and its light (it ignored the setting).
+	ball.Transparency = 1 - Comfort.flash(0.95)
+	Kit.light(ball, color, math.min(60, size * 2), Comfort.flash(8))
 	Kit.tween(trove, ball, seconds, { Size = Vector3.one * size, Transparency = 1 }, Enum.EasingStyle.Quart)
 end
 

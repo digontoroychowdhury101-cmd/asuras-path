@@ -231,5 +231,17 @@ check("ArenaAsh follows the effects hook", string.find(src("src/client/Controlle
 check("Soundscape water owned by SpatialAudio", string.find(src("src/client/Controllers/SoundscapeController.luau"), "Destroying:Once", 1, true) == nil)
 check("no Debris on audio sources", string.find(src("src/client/Controllers/SpatialAudio.luau"), "Debris", 1, true) == nil)
 
+-- F09 (Studio, Reduced flashes on): Blazing Sun's skill bloom still peaked at its full 1.0.
+check("spell bloom honours reduced flashes", string.find(src("src/client/Controllers/VoidStage.luau"), "{ Intensity = Comfort.flash(intensity) }", 1, true) ~= nil)
+check("spell flash sphere and its light honour reduced flashes", string.find(src("src/client/Controllers/SkillFx.luau"), "ball.Transparency = 1 - Comfort.flash(0.95)", 1, true) ~= nil
+	and string.find(src("src/client/Controllers/SkillFx.luau"), "Comfort.flash(8)", 1, true) ~= nil)
+-- F09 (Studio): the bare Titan and Wu duel floors (slate 49,45,43) rendered black at dusk and dark
+-- costumes vanished on them; the floor tone, not the lights, carries the silhouette.
+do
+	local r, g, b = string.match(src("src/server/Services/BossArenas.luau"), "Arenas%.FloorColor = Color3%.fromRGB%((%d+), (%d+), (%d+)%)")
+	local luminance = r and (0.2126 * tonumber(r) + 0.7152 * tonumber(g) + 0.0722 * tonumber(b)) / 255 or 0
+	check("boss duel floors are a mid tone that dark actors read against", luminance >= 0.35 and luminance <= 0.6)
+	check("every boss floor uses that tone", string.find(src("src/server/Services/BossArenas.luau"), 'boss.Id .. "Floor", Vector3.new(s.X, 4, s.Z), center - Vector3.new(0, 2, 0), Arenas.FloorColor)', 1, true) ~= nil)
+end
 print(string.format("combat presentation: %d passed, %d failed", passed, failed))
 if failed > 0 then error("combat presentation regression failed") end
