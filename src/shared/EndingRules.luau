@@ -108,11 +108,13 @@ end
 -- narrative (lore IV and VIII, Lin's Release). Kind "Card"/"Credits"/"Return" draw over a veil.
 export type Beat = { Kind: string, Duration: number, From: Vector3?, To: Vector3?, Look: Vector3?, Line: string, Sub: string }
 Ending.Scene = table.freeze({
-	{ Kind = "Shot", Duration = 6, From = Vector3.new(26, 610, 944), To = Vector3.new(18, 608, 932), Look = Vector3.new(8, 605, 918),
+	{ Kind = "Shot", Duration = 6, From = Vector3.new(26, 610, 944), To = Vector3.new(11, 610, 940), Look = Vector3.new(8, 605, 918),
 		Line = "Six chains have fallen silent.", Sub = "The incense remembers every name the Emissary carried home." },
-	{ Kind = "Shot", Duration = 7, From = Vector3.new(0, 612, 880), To = Vector3.new(0, 640, 840), Look = Vector3.new(0, 700, 705),
+	-- Studio F21: shot 1 ended inside a plaza lantern's collision box; aimed at y 700 the seated figure's head left the frame, and the dawn shot sat inside the
+	-- FusedTreeStatue's robe (its bounds reach z 844); the figure now fills shot 2 and shot 3 pulls back past it.
+	{ Kind = "Shot", Duration = 7, From = Vector3.new(0, 614, 900), To = Vector3.new(0, 632, 868), Look = Vector3.new(0, 770, 705),
 		Line = "\"Return them to rest,\" he said, \"and I shall return for you.\"", Sub = "The ferryman keeps his word." },
-	{ Kind = "Shot", Duration = 7, From = Vector3.new(0, 660, 820), To = Vector3.new(0, 700, 790), Look = Vector3.new(0, 760, 560),
+	{ Kind = "Shot", Duration = 7, From = Vector3.new(0, 628, 960), To = Vector3.new(0, 640, 1000), Look = Vector3.new(10, 880, 600),
 		Line = "Beyond the jade dawn, the river of souls lies open.", Sub = "Some endings must be chosen by the dead." },
 	{ Kind = "Card", Duration = 6, Line = "THE ASURA'S PATH", Sub = "Six sovereigns at rest · the crossing is made" },
 	{ Kind = "Credits", Duration = 14, Line = "CREDITS", Sub = "" },

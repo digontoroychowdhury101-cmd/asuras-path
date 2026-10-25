@@ -33,10 +33,21 @@ function Controller.new(camera: any, input: any, ui: any): any
 		end
 	end))
 	local player = Players.LocalPlayer
-	local function watch(character: Model) -- one Died link at a time, never one kept per respawn
+	-- One link at a time, never one kept per respawn. The client can see the character before its Humanoid
+	-- replicates, so wait for it (Studio F21: a death mid-scene played the crossing over the death screen).
+	local function watch(character: Model)
 		if self.DiedLink then self.DiedLink:Disconnect(); self.DiedLink = nil end
+		local function link(humanoid: Humanoid)
+			self.DiedLink = humanoid.Died:Connect(function() self:Stop("Interrupted") end)
+		end
 		local humanoid = character:FindFirstChildOfClass("Humanoid")
-		if humanoid then self.DiedLink = humanoid.Died:Connect(function() self:Stop("Interrupted") end) end
+		if humanoid then link(humanoid); return end
+		self.DiedLink = character.ChildAdded:Connect(function(child: Instance)
+			if child:IsA("Humanoid") then
+				self.DiedLink:Disconnect()
+				link(child)
+			end
+		end)
 	end
 	if player.Character then watch(player.Character) end
 	table.insert(self.Links, player.CharacterAdded:Connect(function(character: Model) self:Stop("Interrupted"); watch(character) end))
@@ -56,12 +67,16 @@ function Controller.Play(self: any)
 	for edge = 0, 1 do
 		HudKit.make("Frame", gui, { AnchorPoint = Vector2.new(0, edge), Position = UDim2.fromScale(0, edge), Size = UDim2.fromScale(1, 0.1), BackgroundColor3 = Color3.fromRGB(0, 0, 0), BorderSizePixel = 0 })
 	end
-	self.Line = HudKit.label(gui, "", 30, HudKit.TitleFont, P.Ivory, { AnchorPoint = Vector2.new(0.5, 1), Position = UDim2.fromScale(0.5, 0.8), Size = UDim2.new(0.84, 0, 0, 40), TextScaled = true, TextWrapped = true, TextTransparency = 1, TextStrokeTransparency = 0.6 })
-	HudKit.make("UITextSizeConstraint", self.Line, { MinTextSize = 16, MaxTextSize = 30 })
-	self.Sub = HudKit.label(gui, "", 18, HudKit.BodyFont, P.Ember, { AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.new(0.5, 0, 0.8, 6), Size = UDim2.new(0.84, 0, 0, 44), TextWrapped = true, TextTransparency = 1, TextStrokeTransparency = 0.7 })
-	self.Roll = HudKit.label(gui, Credits.Title .. "\n\n" .. table.concat(Credits.lines(), "\n") .. "\n\n" .. Credits.Closing, 15, HudKit.BodyFont, P.Ivory,
+	-- The Respite text size reaches the crossing's lines and credits too (Studio F24: only dialogue
+	-- used it); the subtitle keeps a firm stroke over the pale colossus (Studio F21).
+	local scale = Effects.textScale()
+	local function px(n: number): number return math.floor(n * scale + 0.5) end
+	self.Line = HudKit.label(gui, "", px(30), HudKit.TitleFont, P.Ivory, { AnchorPoint = Vector2.new(0.5, 1), Position = UDim2.fromScale(0.5, 0.8), Size = UDim2.new(0.84, 0, 0, px(40)), TextScaled = true, TextWrapped = true, TextTransparency = 1, TextStrokeTransparency = 0.6 })
+	HudKit.make("UITextSizeConstraint", self.Line, { MinTextSize = px(16), MaxTextSize = px(30) })
+	self.Sub = HudKit.label(gui, "", px(18), HudKit.BodyFont, P.Ember, { AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.new(0.5, 0, 0.8, 6), Size = UDim2.new(0.84, 0, 0, px(44)), TextWrapped = true, TextTransparency = 1, TextStrokeTransparency = 0.3 })
+	self.Roll = HudKit.label(gui, Credits.Title .. "\n\n" .. table.concat(Credits.lines(), "\n") .. "\n\n" .. Credits.Closing, px(15), HudKit.BodyFont, P.Ivory,
 		{ AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.fromScale(0.5, 0.2), Size = UDim2.fromScale(0.8, 0.62), TextScaled = true, TextWrapped = true, TextTransparency = 1, Visible = false })
-	HudKit.make("UITextSizeConstraint", self.Roll, { MinTextSize = 11, MaxTextSize = 16 })
+	HudKit.make("UITextSizeConstraint", self.Roll, { MinTextSize = px(11), MaxTextSize = px(16) })
 	local skipText = if UserInputService.GamepadEnabled then "Any button skips" else "Any key or tap skips"
 	HudKit.label(gui, skipText, 14, HudKit.BodyFont, P.Muted, { AnchorPoint = Vector2.new(1, 1), Position = UDim2.new(1, -24, 1, -12), Size = UDim2.fromOffset(260, 20), TextXAlignment = Enum.TextXAlignment.Right })
 	self.SkipLink = UserInputService.InputBegan:Connect(function(event: InputObject)

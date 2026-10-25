@@ -90,7 +90,7 @@ local net=setmetatable({WaitForChild=function(self,key) return self[key] end},{_
 local actors={};local player={UserId=7,Parent=true,CharacterRemoving=signal(),CharacterAdded=signal()}
 player.Gui=Instance.new("PlayerGui")
 function player:WaitForChild() return self.Gui end
-player.Character=Instance.new("Model");local root=Instance.new("Part");root.Name="HumanoidRootPart";root.Position=vec();root.LocalTransparencyModifier=0;root.Parent=player.Character
+player.Character=Instance.new("Model");player.Character.ChildAdded=signal();local root=Instance.new("Part");root.Name="HumanoidRootPart";root.Position=vec();root.LocalTransparencyModifier=0;root.Parent=player.Character
 local Players={LocalPlayer=player,PlayerRemoving=signal()}
 function Players:GetPlayerByUserId(id) return if id==7 and player.Parent then player else nil end
 function Players:GetPlayers() return if player.Parent then {player} else {} end
@@ -379,6 +379,11 @@ scene:Update(1);player.CharacterAdded:Fire(player.Character)
 check(not scene.Active and camera.DialogueFrame==nil and not ui.Input.MenuOpen and banners[#banners][1]=="THE CROSSING IS RECORDED","respawn interrupts cleanly and says the crossing is kept")
 scene:Play();player.CharacterRemoving:Fire()
 check(not scene.Active and not ui.EndingActive,"leaving the character interrupts cleanly")
+-- Studio F21: the Humanoid replicates after the character, so the Died link must wait for it.
+local body=Instance.new("Model");body.ChildAdded=signal();player.Character=body;player.CharacterAdded:Fire(body)
+local humanoid=Instance.new("Humanoid");humanoid.Died=signal();humanoid.Parent=body;body.ChildAdded:Fire(humanoid)
+scene:Play();scene:Update(1);humanoid.Died:Fire()
+check(not scene.Active and camera.DialogueFrame==nil and not ui.Input.MenuOpen and banners[#banners][1]=="THE CROSSING IS RECORDED","a death mid-scene stops the crossing even when the Humanoid arrived after the character")
 ui.DeathShown=true;scene:Play();check(not scene.Active,"no crossing over the death screen");ui.DeathShown=false
 scene:Play();local steps=0;while scene.Active and steps<400 do scene:Update(0.25);steps+=1 end
 check(not scene.Active and steps*0.25>=40 and camera.DialogueFrame==nil and not ui.Input.MenuOpen,"unskipped scene plays every beat and cleans up")

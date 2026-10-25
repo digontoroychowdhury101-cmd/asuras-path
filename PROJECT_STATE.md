@@ -1,5 +1,9 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## Follow-ups 21–26: ending, gate, multi-client, sign-off — 2026-10-25 (Computer A)
+
+Ending verified in Studio; fixed death-mid-scene overlay, three shot framings, ending text scale. 3-client duel/wager diagnostic 25/25 (exactly-once payout). Earned campaign 0/6; no hardware, listening or live-service runs. `FINAL_ACCEPTANCE.md`: conditional GO for private playtesting, NO-GO for launch. Next: owner actions there.
+
 ## Follow-ups 14–20: world, traversal, minimap route — 2026-10-25 (Computer A)
 
 Minimap now draws RouteGuide's walked route (portal/climb/stain nodes). Guided Studio walks fixed crypt, Ash court, Pagoda stair/beam routing, optional-jump avoidance, grave path, Citadel catches (destroy height −400), Eaves rail, Ash darkness, stale stain card. Evidence: `outputs/claude-followup-2026-10-21/F14_20_WORLD_NAV.md`. Next: human bridge duel, Rafters ladder, Bamboo inscriptions/glide, art kits.
