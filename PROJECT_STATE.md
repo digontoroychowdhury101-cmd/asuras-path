@@ -1,5 +1,9 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## Post-F26 batch 3: playtest kit, ledger, Shen handoff — 2026-10-25 (Computer B)
+
+Studio-only 20-minute playtest panel and route; Claude diagnostics kept separate. Earned ledger opened (0/6). Shen P1/P2 asset handoff; skin loader now requires 15 limbs and lets templates own the weapon. Verifier green, digest 1661908618. Next: human playtest, earned session 1, Windows two-client OmniPvP. See `outputs/post-f26-batch3-2026-10-25/README.md`.
+
 ## Post-F26 step 2: omnidirectional combat — 2026-10-25 (Computer B)
 
 StrikeGeometry: shared commit, tracking and air rules; the server-validated arc is drawn; the dash is fixed. Verifier and 21 suites green; single-client Studio duels (`OMNI_COMBAT.md`). Digest 1219538751. Next, on the other computer (not this MacBook): run the two-client `tools/qa/OmniPvP.*` test, then a human fairness playtest.

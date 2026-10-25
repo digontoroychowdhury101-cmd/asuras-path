@@ -27,9 +27,11 @@ Schema.Materials = table.freeze({ "Fabric", "Metal", "Wood", "SmoothPlastic", "N
 Schema.Shapes = table.freeze({ "Block", "Ball", "Cylinder", "Wedge" })
 Schema.Joints = table.freeze({ "LegFL", "LegFR", "LegHL", "LegHR", "WingL", "WingR", "WingTipL", "WingTipR", "Tail1", "Tail2", "Tail3",
 	"Tail4", "Tail5", "Neck", "Jaw", "Mane", "Orbit", "Sleeve" })
--- What a production skin must cover before it may hide the rig (BossSkin).
+-- What a production skin must cover before it may hide the rig (BossSkin hides every rig limb, so a
+-- humanoid skin must cover all fifteen or the uncovered hands/feet/forearms would vanish).
 Schema.RequiredBones = table.freeze({
-	Humanoid = table.freeze({ "Head", "UpperTorso", "LeftUpperArm", "RightUpperArm", "LeftUpperLeg", "RightUpperLeg" }),
+	Humanoid = table.freeze({ "Head", "UpperTorso", "LowerTorso", "LeftUpperArm", "LeftLowerArm", "LeftHand", "RightUpperArm",
+		"RightLowerArm", "RightHand", "LeftUpperLeg", "LeftLowerLeg", "LeftFoot", "RightUpperLeg", "RightLowerLeg", "RightFoot" }),
 	Creature = table.freeze({ "HumanoidRootPart" }),
 })
 Schema.DefaultBudget = 160 -- welded pieces per actor; normal enemies and NPCs set lower budgets

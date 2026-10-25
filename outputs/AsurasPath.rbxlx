@@ -3239,9 +3239,11 @@ Schema.Materials = table.freeze({ "Fabric", "Metal", "Wood", "SmoothPlastic", "N
 Schema.Shapes = table.freeze({ "Block", "Ball", "Cylinder", "Wedge" })
 Schema.Joints = table.freeze({ "LegFL", "LegFR", "LegHL", "LegHR", "WingL", "WingR", "WingTipL", "WingTipR", "Tail1", "Tail2", "Tail3",
 	"Tail4", "Tail5", "Neck", "Jaw", "Mane", "Orbit", "Sleeve" })
--- What a production skin must cover before it may hide the rig (BossSkin).
+-- What a production skin must cover before it may hide the rig (BossSkin hides every rig limb, so a
+-- humanoid skin must cover all fifteen or the uncovered hands/feet/forearms would vanish).
 Schema.RequiredBones = table.freeze({
-	Humanoid = table.freeze({ "Head", "UpperTorso", "LeftUpperArm", "RightUpperArm", "LeftUpperLeg", "RightUpperLeg" }),
+	Humanoid = table.freeze({ "Head", "UpperTorso", "LowerTorso", "LeftUpperArm", "LeftLowerArm", "LeftHand", "RightUpperArm",
+		"RightLowerArm", "RightHand", "LeftUpperLeg", "LeftLowerLeg", "LeftFoot", "RightUpperLeg", "RightLowerLeg", "RightFoot" }),
 	Creature = table.freeze({ "HumanoidRootPart" }),
 })
 Schema.DefaultBudget = 160 -- welded pieces per actor; normal enemies and NPCs set lower budgets
@@ -13314,6 +13316,7 @@ function Skin.attach(actor: Model): boolean
 	local model = template:Clone()
 	model:ScaleTo(actor:GetScale())
 	local coverage: { [string]: boolean } = {}
+	local ownsWeapon = false
 	for _, part in model:GetDescendants() do
 		if not part:IsA("BasePart") then continue end
 		part.Anchored, part.Massless, part.CanCollide, part.CanQuery, part.CanTouch = false, true, false, false, false
@@ -13327,6 +13330,7 @@ function Skin.attach(actor: Model): boolean
 			return false
 		end
 		coverage[bone :: string] = true
+		ownsWeapon = ownsWeapon or part:GetAttribute("AsuraRole") == "Weapon"
 		part.CFrame = limb.CFrame * bind.CFrame:Inverse()
 		local weld = Instance.new("WeldConstraint")
 		weld.Part0, weld.Part1, weld.Parent = limb, part, part
@@ -13339,12 +13343,20 @@ function Skin.attach(actor: Model): boolean
 		end
 	end
 	model:SetAttribute("Template", template.Name)
+	-- A template that carries its own weapon meshes (AsuraRole=Weapon) replaces the costume weapon too;
+	-- otherwise the costume weapon stays visible, so the drawn blade never doubles or vanishes.
+	model:SetAttribute("OwnsWeapon", ownsWeapon)
+	local phase = actor:GetAttribute("AsuraBossPhase") or 1
 	if old then old:Destroy() end
 	model.Name, model.Parent = "AsuraBossSkin", actor
 	for _, part in actor:GetDescendants() do
-		if part:IsA("BasePart") and not part:IsDescendantOf(model) and part.Name ~= "AsuraWeapon" and not part:FindFirstAncestor("ArsenalWeapon")
-			and part:GetAttribute("AsuraRole") ~= "Weapon" then
+		if part:IsA("BasePart") and not part:IsDescendantOf(model) and (ownsWeapon or (part.Name ~= "AsuraWeapon" and not part:FindFirstAncestor("ArsenalWeapon")
+			and part:GetAttribute("AsuraRole") ~= "Weapon")) then
 			part.Transparency, part.CastShadow = 1, false
+		elseif not ownsWeapon and part:GetAttribute("AsuraRole") == "Weapon" and part:IsDescendantOf(actor:FindFirstChild("AsuraAttire") or model) then
+			-- a weapon-owning skin of the previous phase may have hidden this phase's costume weapon
+			local tag, base = part:GetAttribute("AsuraPhase"), part:GetAttribute("AsuraOpacity")
+			if tag == nil or tag == phase then part.Transparency = if type(base) == "number" then base else 0 end
 		end
 	end
 	report(actor, "Template:" .. template.Name)
@@ -17559,12 +17571,13 @@ function Kit.phase(model: Model, phase: number)
 			end
 		end
 	end
-	local skinned = model:FindFirstChild("AsuraBossSkin") ~= nil -- a production skin covers all but the weapon
+	local skin = model:FindFirstChild("AsuraBossSkin") -- a production skin covers all but the weapon, unless it owns one
+	local skinned, skinWeapon = skin ~= nil, skin ~= nil and skin:GetAttribute("OwnsWeapon") == true
 	for _, item in folder:GetChildren() do
 		if item:IsA("BasePart") then
 			local tagged = item:GetAttribute("AsuraPhase")
 			local base = item:GetAttribute("AsuraOpacity")
-			local show = (tagged == nil or tagged == phase) and (not skinned or item:GetAttribute("AsuraRole") == "Weapon")
+			local show = (tagged == nil or tagged == phase) and (not skinned or (item:GetAttribute("AsuraRole") == "Weapon" and not skinWeapon))
 			item.Transparency = if show then (if type(base) == "number" then base else 0) else 1
 			local light = item:FindFirstChildOfClass("PointLight")
 			if light then light.Enabled = show end

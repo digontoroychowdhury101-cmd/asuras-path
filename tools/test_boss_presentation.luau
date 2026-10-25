@@ -269,7 +269,7 @@ local function template(name, bones)
 	t.Parent = library
 	return t
 end
-local full = { "Head", "UpperTorso", "LeftUpperArm", "RightUpperArm", "LeftUpperLeg", "RightUpperLeg" }
+local full = table.clone(Schema.RequiredBones.Humanoid)
 template("AsuraBoss_GeneralZhao", full)
 template("AsuraBoss_IronBull_P1", full)
 template("AsuraBoss_GrandmasterShen_P2", { "Head", "UpperTorso" })
@@ -290,11 +290,31 @@ check("a valid template binds, hides the rig and the costume but keeps the weapo
 	and zhao:GetAttribute("AsuraSkinStatus") == "Template:AsuraBoss_GeneralZhao")
 local bound = 0
 for _, p in zhao.AsuraBossSkin:GetChildren() do if p:FindFirstChildOfClass("WeldConstraint") and not p.CanCollide and not p.CanQuery then bound += 1 end end
-check("skin meshes are welded, non-colliding and non-querying", bound == 6)
+check("skin meshes are welded, non-colliding and non-querying", bound == #full and #full == 15)
 local shenActor = actor("GrandmasterShen", "GrandmasterShen", 2)
-check("an incomplete phase template is refused and diagnosed", not Skin.attach(shenActor) and string.find(shenActor:GetAttribute("AsuraSkinStatus"), "missing LeftUpperArm", 1, true))
+check("an incomplete phase template is refused and diagnosed", not Skin.attach(shenActor) and string.find(shenActor:GetAttribute("AsuraSkinStatus"), "missing LowerTorso", 1, true))
 local wu = actor("SovereignWu", "SovereignWu", 1)
 check("a missing template falls back to the costume, named", not Skin.attach(wu) and string.find(wu:GetAttribute("AsuraSkinStatus"), "Fallback:Costume (no AsuraBoss_SovereignWu_P1", 1, true))
+-- Post-F26 Shen handoff: a skin must cover every limb it hides, and a skin that carries its own weapon
+-- replaces the costume weapon (no doubled blade); a later phase without one shows the costume weapon again.
+local handless = table.clone(full); table.remove(handless, table.find(handless, "LeftHand"))
+template("AsuraBoss_Handless", handless)
+local handActor = actor("Handless", "Handless", 1)
+check("a humanoid skin missing a hand is refused (hands would vanish)", not Skin.attach(handActor) and string.find(handActor:GetAttribute("AsuraSkinStatus"), "missing LeftHand", 1, true))
+local armed = template("AsuraBoss_GrandmasterShen_P1", full)
+local blade = mesh("JianBladeMesh", "RightHand"); blade:SetAttribute("AsuraRole", "Weapon"); blade.Parent = armed
+library.AsuraBoss_GrandmasterShen_P2:Destroy()
+template("AsuraBoss_GrandmasterShen_P2", full)
+local master = actor("GrandmasterShen", "GrandmasterShen", 1)
+Kit.build(master, LOOKS.GrandmasterShen, 1)
+check("a skin with its own weapon hides the costume weapon", Skin.attach(master) and master.AsuraBossSkin:GetAttribute("OwnsWeapon") == true
+	and master.AsuraAttire.JianBlade.Transparency == 1 and master.AsuraBossSkin.JianBladeMesh.Transparency == 0)
+Kit.phase(master, 1)
+check("re-showing the phase keeps the costume weapon hidden under a weapon skin", master.AsuraAttire.JianBlade.Transparency == 1)
+master:SetAttribute("AsuraBossPhase", 2); Kit.phase(master, 2)
+check("phase 2 skin without a weapon shows the costume glaive again", Skin.attach(master) and master.AsuraBossSkin:GetAttribute("OwnsWeapon") == false
+	and master.AsuraAttire.GlaiveHaft.Transparency == 0 and master.AsuraAttire.JianBlade.Transparency == 1
+	and master:GetAttribute("AsuraSkinStatus") == "Template:AsuraBoss_GrandmasterShen_P2")
 check("creature skins only need the root bone", Schema.RequiredBones.Creature[1] == "HumanoidRootPart" and #Schema.RequiredBones.Creature == 1)
 check("template names: phase, look, then legacy", table.concat(Schema.templates("GeneralZhao", 2, "TwinSentinels", "Ancient Oath"), ",")
 	== "AsuraBoss_GeneralZhao_P2,AsuraBoss_GeneralZhao,AsuraBoss_TwinSentinels_Ancient Oath,AsuraBoss_TwinSentinels")

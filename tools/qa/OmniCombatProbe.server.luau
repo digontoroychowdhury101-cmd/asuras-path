@@ -102,6 +102,30 @@ function ops.state(id)
 		f.Move and f.Move.Id or "-", f.ActiveHP, tostring(e.Omni.Air.Airborne), e.Omni.Air.Attacks, e.Omni.Air.Dodges, tostring(e.Omni.Air.Landing), tostring(e.Humanoid.AutoRotate))
 end
 function ops.push(id, action, x, z) return Characters.PushIntent(id, action, nil, x, z) end
+-- Health layers and the Blood Rally window (human playtest diagnostics).
+function ops.health(id)
+	local e = if id then Characters.GetEntity(id) else own()
+	if not e then return "gone" end
+	local f = e.Fighter
+	return string.format("t=%.3f active=%.1f recoverable=%.1f deficit=%.1f rallyLeft=%.2f state=%s", Characters.Now(), f.ActiveHP, f.RecoverableHP,
+		f.PermanentDeficit, math.max(0, f.RallyUntil - Characters.Now()), f.State)
+end
+-- Server-side planar travel of the player from the moment a Dashing state starts (dash displacement).
+function ops.dashTrack(seconds)
+	local me = own()
+	local rows, origin, started = {}, nil, nil
+	local conn = Run.Heartbeat:Connect(function()
+		local f = me.Fighter
+		if not started and f.State == "Dashing" then started, origin = Characters.Now(), me.Root.Position end
+		if started then
+			local d = me.Root.Position - origin
+			table.insert(rows, string.format("%.3f %s %.2f", Characters.Now() - started, f.State, Vector3.new(d.X, 0, d.Z).Magnitude))
+		end
+	end)
+	task.wait(seconds)
+	conn:Disconnect()
+	return table.concat(rows, "\n")
+end
 -- Server-timed player intents at `lead` seconds before each enemy impact, for `seconds`.
 function ops.react(mode, enemyId, seconds, lead)
 	local me, foe = own(), Characters.GetEntity(enemyId)

@@ -119,12 +119,13 @@ function Kit.phase(model: Model, phase: number)
 			end
 		end
 	end
-	local skinned = model:FindFirstChild("AsuraBossSkin") ~= nil -- a production skin covers all but the weapon
+	local skin = model:FindFirstChild("AsuraBossSkin") -- a production skin covers all but the weapon, unless it owns one
+	local skinned, skinWeapon = skin ~= nil, skin ~= nil and skin:GetAttribute("OwnsWeapon") == true
 	for _, item in folder:GetChildren() do
 		if item:IsA("BasePart") then
 			local tagged = item:GetAttribute("AsuraPhase")
 			local base = item:GetAttribute("AsuraOpacity")
-			local show = (tagged == nil or tagged == phase) and (not skinned or item:GetAttribute("AsuraRole") == "Weapon")
+			local show = (tagged == nil or tagged == phase) and (not skinned or (item:GetAttribute("AsuraRole") == "Weapon" and not skinWeapon))
 			item.Transparency = if show then (if type(base) == "number" then base else 0) else 1
 			local light = item:FindFirstChildOfClass("PointLight")
 			if light then light.Enabled = show end

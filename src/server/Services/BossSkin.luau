@@ -57,6 +57,7 @@ function Skin.attach(actor: Model): boolean
 	local model = template:Clone()
 	model:ScaleTo(actor:GetScale())
 	local coverage: { [string]: boolean } = {}
+	local ownsWeapon = false
 	for _, part in model:GetDescendants() do
 		if not part:IsA("BasePart") then continue end
 		part.Anchored, part.Massless, part.CanCollide, part.CanQuery, part.CanTouch = false, true, false, false, false
@@ -70,6 +71,7 @@ function Skin.attach(actor: Model): boolean
 			return false
 		end
 		coverage[bone :: string] = true
+		ownsWeapon = ownsWeapon or part:GetAttribute("AsuraRole") == "Weapon"
 		part.CFrame = limb.CFrame * bind.CFrame:Inverse()
 		local weld = Instance.new("WeldConstraint")
 		weld.Part0, weld.Part1, weld.Parent = limb, part, part
@@ -82,12 +84,20 @@ function Skin.attach(actor: Model): boolean
 		end
 	end
 	model:SetAttribute("Template", template.Name)
+	-- A template that carries its own weapon meshes (AsuraRole=Weapon) replaces the costume weapon too;
+	-- otherwise the costume weapon stays visible, so the drawn blade never doubles or vanishes.
+	model:SetAttribute("OwnsWeapon", ownsWeapon)
+	local phase = actor:GetAttribute("AsuraBossPhase") or 1
 	if old then old:Destroy() end
 	model.Name, model.Parent = "AsuraBossSkin", actor
 	for _, part in actor:GetDescendants() do
-		if part:IsA("BasePart") and not part:IsDescendantOf(model) and part.Name ~= "AsuraWeapon" and not part:FindFirstAncestor("ArsenalWeapon")
-			and part:GetAttribute("AsuraRole") ~= "Weapon" then
+		if part:IsA("BasePart") and not part:IsDescendantOf(model) and (ownsWeapon or (part.Name ~= "AsuraWeapon" and not part:FindFirstAncestor("ArsenalWeapon")
+			and part:GetAttribute("AsuraRole") ~= "Weapon")) then
 			part.Transparency, part.CastShadow = 1, false
+		elseif not ownsWeapon and part:GetAttribute("AsuraRole") == "Weapon" and part:IsDescendantOf(actor:FindFirstChild("AsuraAttire") or model) then
+			-- a weapon-owning skin of the previous phase may have hidden this phase's costume weapon
+			local tag, base = part:GetAttribute("AsuraPhase"), part:GetAttribute("AsuraOpacity")
+			if tag == nil or tag == phase then part.Transparency = if type(base) == "number" then base else 0 end
 		end
 	end
 	report(actor, "Template:" .. template.Name)
