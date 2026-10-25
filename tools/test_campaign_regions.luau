@@ -415,7 +415,9 @@ check("Monastery courtyard -> Bamboo shrine follows the Monastery doors first", 
 local s5 = stage({ -36, 3, -1328 }, { 60, 3, -1010 })
 check("Bamboo shrine -> Cloister altar walks back through the crest and the Bamboo Gate", s5.Label == "Shrine stairs")
 local s6 = stage({ arrive.X, arrive.Y + 3, arrive.Z }, { 520, 3, 988 })
-check("crypt arrival -> Titan's gate goes down the gallery stair", s6.Label == "Gallery stair")
+local names6 = table.concat(s6.Route.Names, ">")
+check("crypt arrival -> Titan's gate goes down the descent stair, then the gallery stair: " .. names6,
+	s6.Label == "Descent stair" and string.find(names6, "Descent stair>Incense gallery>Gallery stair>Gallery foot", 1, true) ~= nil)
 local s7 = stage({ 0, 603, 920 }, { 520, 3, 988 })
 check("from the shrine the crypt goal points at the Well of Descent", s7.Position and s7.Position.Z == 996 and s7.Label == "Crypt descent")
 local s8 = stage({ 0, 3, -2700 }, { 0, 3, -2300 })
@@ -499,6 +501,48 @@ for name, case in {
 } do
 	check("route line stays inside walked zones: " .. name, walkable(case[1], case[2]))
 end
+-- Studio F19: from the Pagoda stair head the line ran diagonally over the open gorge to the far end of
+-- the rafter beam, and a player following it falls. Every drawn segment must stay over walked ground.
+local function overGround(from, goal, set)
+	local s = stage(from, goal)
+	local cursor = vec(from[1], from[2], from[3])
+	for _, point in s.Route.Points do
+		local steps = math.ceil((point - cursor).Magnitude / 2)
+		for k = 1, steps - 1 do
+			local t = k / steps
+			local x, y, z = cursor.X + (point.X - cursor.X) * t, cursor.Y + (point.Y - cursor.Y) * t, cursor.Z + (point.Z - cursor.Z) * t
+			if not set.has(x, y - 3, z, 12) then -- stairs and crests sit off the straight height line
+				print(string.format("  void: (%.0f,%.0f,%.0f) on (%.0f,%.0f,%.0f) -> (%.0f,%.0f,%.0f)", x, y, z, cursor.X, cursor.Y, cursor.Z, point.X, point.Y, point.Z))
+				return false
+			end
+		end
+		cursor = point
+	end
+	return true
+end
+for name, case in {
+	["Bamboo gate -> Colosseum altar"] = { { 0, 3, -1180 }, { 0, 6, -1736 } },
+	["lotus gorge -> Wu's gate"] = { { 0, -23, -2180 }, { 0, 3, -2285 } },
+	["cloud stair -> Wu's gate"] = { { 0, 3, -2126 }, { 0, 3, -2285 } },
+	["bastion -> Wu"] = { { 0, 3, -2700 }, { 0, 3, -2300 } },
+	["Octagon ring -> Shen's gate"] = { { 106, 3, -1751 }, { 0, 3, -1868 } },
+	["Pagoda gorge -> Sky bastion"] = { { 0, -23, -2180 }, { 0, 3, -2700 } },
+} do
+	check("route line stays over walked ground: " .. name, overGround(case[1], case[2], jump))
+end
+for name, case in {
+	["crypt arrival -> Titan's gate"] = { { arrive.X, arrive.Y + 3, arrive.Z }, { 520, 3, 985 } },
+	["crypt reliquary -> Titan's gate"] = { { 370, 3, 845 }, { 520, 3, 985 } },
+} do
+	check("route line stays over walked ground: " .. name, overGround(case[1], case[2], kjump))
+end
+-- Studio F19: with the beam split, fewest-doors routing sent the main route over the optional rafter-end
+-- jumps and the loft drop. Main progress must take the beam and rafter stair.
+local wu = table.concat(stage({ 0, -23, -2180 }, { 0, 3, -2285 }).Route.Names, ">")
+check("gorge -> Wu's gate takes the rafter beam and stair, not the optional loft jumps: " .. wu,
+	string.find(wu, "Rafter beam>Lantern rafter>Rafter stair>Forecourt", 1, true) ~= nil and string.find(wu, "Rafter ends", 1, true) == nil)
+local loft = table.concat(stage({ 0, -23, -2180 }, { -132, 20, -2262 }).Route.Names, ">")
+check("the throne loft itself is still reached by its rafter ends: " .. loft, string.find(loft, "Rafter ends", 1, true) ~= nil)
 local last = stage({ 0, 3, -1180 }, { 0, 6, -1736 }).Route.Points
 check("an on-foot route ends at the goal itself", last[#last].Z == -1736)
 local home = stage({ arrive.X, arrive.Y + 3, arrive.Z }, { 0, 603, 918 })

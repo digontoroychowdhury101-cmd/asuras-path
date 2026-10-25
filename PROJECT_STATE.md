@@ -1,5 +1,9 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## Follow-ups 14–20: world, traversal, minimap route — 2026-10-25 (Computer A)
+
+Minimap now draws RouteGuide's walked route (portal/climb/stain nodes). Guided Studio walks fixed crypt, Ash court, Pagoda stair/beam routing, optional-jump avoidance, grave path, Citadel catches (destroy height −400), Eaves rail, Ash darkness, stale stain card. Evidence: `outputs/claude-followup-2026-10-21/F14_20_WORLD_NAV.md`. Next: human bridge duel, Rafters ladder, Bamboo inscriptions/glide, art kits.
+
 ## Showcase spell sounds uploaded — 2026-10-24 (Computer B)
 
 Uploaded the 18 original Supernova/Blazing Sun cues (OGG of `build_skill_audio.py` output) to Sheashing123 via Creator Hub and registered their IDs; all 18 load in Studio, so SkillAudio now plays the real masters. `register_uploads.py` now keeps hand-written ASSET_IDS sections. Next: mix levels by ear, other-player view.

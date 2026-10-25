@@ -16,7 +16,7 @@ local Layouts = {
 }
 
 export type Zone = { Id: string, Name: string, X0: number, X1: number, Z0: number, Z1: number, Y0: number?, Y1: number?, Region: string? }
-export type Door = { A: string, B: string, X: number, Y: number, Z: number, Name: string, OneWay: boolean? }
+export type Door = { A: string, B: string, X: number, Y: number, Z: number, Name: string, OneWay: boolean?, Optional: boolean? }
 
 local Campaign = {}
 local list: { Zone } = { { Id = "DM:Road", Name = "the south road", X0 = -14, X1 = 14, Z0 = -988, Z1 = -1120, Region = "DesecratedMonastery" } }
@@ -65,15 +65,17 @@ function Campaign.at(x: number, y: number, z: number): Zone?
 	return best
 end
 
--- Doorways from zone `from` to zone `to` along the fewest crossings, never up a one-way drop.
-function Campaign.path(from: string, to: string): { Door }
-	if from == to then return {} end
+-- Doorways from zone `from` to zone `to` along the fewest crossings, never up a one-way drop. Optional
+-- mobility doors (the Pagoda's rafter-end jumps, the frost stones) are used only when nothing else
+-- connects, so main progress never asks for an untaught jump chain (Studio F19).
+local function search(from: string, to: string, optional: boolean): { Door }
 	local previous: { [string]: { Door: Door, From: string } } = {}
 	local seen, queue = { [from] = true }, { from }
 	while #queue > 0 do
 		local here = table.remove(queue, 1) :: string
 		for _, door in doors do
-			local other = if door.A == here then door.B elseif door.B == here and not door.OneWay then door.A else nil
+			local usable = optional or not door.Optional
+			local other = if not usable then nil elseif door.A == here then door.B elseif door.B == here and not door.OneWay then door.A else nil
 			if other and not seen[other] then
 				seen[other], previous[other] = true, { Door = door, From = here }
 				table.insert(queue, other)
@@ -89,6 +91,12 @@ function Campaign.path(from: string, to: string): { Door }
 		cursor = step.From
 	end
 	return result
+end
+
+function Campaign.path(from: string, to: string): { Door }
+	if from == to then return {} end
+	local plain = search(from, to, false)
+	return if #plain > 0 then plain else search(from, to, true)
 end
 
 -- Fighting zone for a regional spawn (Monastery spawns keep MonasteryZones).

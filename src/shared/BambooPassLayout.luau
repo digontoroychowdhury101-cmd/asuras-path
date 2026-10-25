@@ -82,7 +82,7 @@ L.door(r, "BP_Crest", "BP_Shrine", 0, 0.2, -1316, "Shrine stairs")
 L.door(r, "BP_Shrine", "BP_Arena", 0, 0.2, -1366, "Baize's mouth")
 L.door(r, "BP_Arena", "BP_South", 0, 0.2, -1580, "Moon gate")
 L.door(r, "BP_South", "AC_Road", 0, 0.2, -1680, "Ash road")
-L.door(r, "BP_Crest", "BP_Ridge", 36, 12, -1268, "Frost stones")
+L.door(r, "BP_Crest", "BP_Ridge", 36, 12, -1268, "Frost stones", nil, true)
 L.door(r, "BP_Ridge", "BP_Shrine", 70, 0.2, -1292, "Ridge drop", true)
 r.SpawnZones = {
 	BP_Swordsman_Trail_A = "BP_Gate", BP_Monk_Trail = "BP_Crest", BP_Swordsman_Grove_A = "BP_Ridge",

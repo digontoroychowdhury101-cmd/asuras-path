@@ -315,6 +315,23 @@ for _, case in { { gate.Placement, cloister.Placement }, { cloister.Placement, g
 	end
 	check(string.format("minimap route (%d,%d)->(%d,%d) never crosses a wall", from.X, from.Z, to.X, to.Z), inside and cursor == to)
 end
+-- Studio F14: the toppled pagoda stands in the grave field; the line to the mausoleum follows the
+-- authored grave path instead of crossing it, and never strays more than 3 studs from that path.
+do
+	local s = Guide.next(V3.new(0, 3, -1040), V3.new(-108, 3, -1064))
+	local cursor, onPath, used = V3.new(0, 3, -1040), true, false
+	for i, point in s.Route.Points do
+		if used then -- segments leaving a grave-path vertex
+			for t = 0.1, 0.9, 0.2 do
+				local x, z = cursor.X + (point.X - cursor.X) * t, cursor.Z + (point.Z - cursor.Z) * t
+				if Zones.distanceToPath(Zones.GravePath, x, z) > 3 and (V3.new(x, 3, z) - V3.new(-108, 3, -1064)).Magnitude > 6 then onPath = false end
+			end
+		end
+		cursor = point
+		used = s.Route.Names[i] == "Grave path"
+	end
+	check("mausoleum route follows the grave path past the toppled pagoda", onPath and table.find(s.Route.Names, "Grave path") ~= nil)
+end
 check("the northern gate route draws nothing past the portal", Guide.next(V3.new(sanctuary.Placement.X, sanctuary.Placement.Y, sanctuary.Placement.Z), stain).Route.Exit == "Northern gate")
 check("from the waterfall path the marker leads back through the postern", Guide.next(V3.new(-120, 3, -832), V3.new(0, 3, -800)).Label == "West postern")
 local o = Objectives.resolve({ Region = "Sanctuary", Altars = {}, Bloodstain = stain, StainRegion = "DesecratedMonastery", InBoss = false, InColosseum = false, BossFelled = false, Rested = true })

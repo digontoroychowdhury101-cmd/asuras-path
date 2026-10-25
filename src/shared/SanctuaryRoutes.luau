@@ -45,9 +45,10 @@ L.slab(r, "ReliquaryIsle", "Marble", 40, 52, 980, 996, 604, 5)
 -- Loggia Eaves: service ledge, deck rails (the 8x8 deck and ladder are LootWorld's).
 L.slab(r, "ServiceLedge", "Path", -66, -60, 907, 922, Y, 3)
 L.slab(r, "ServiceLedge", "Path", -102, -66, 918, 922, Y, 3)
-L.wall(r, "LookoutRail", "Timber", -80.4, 919.5, -80.4, 927, 616, 2.4, 0.6)
-L.wall(r, "LookoutRail", "Timber", -71.6, 919.5, -71.6, 927, 616, 2.4, 0.6)
-L.wall(r, "LookoutRail", "Timber", -80.4, 927.4, -71.6, 927.4, 616, 2.4, 0.6)
+-- 3.8 high: at 2.4 the cache chest (top 617.9) was a step a running player used to clear the rail (Studio F15).
+L.wall(r, "LookoutRail", "Timber", -80.4, 919.5, -80.4, 927, 616, 3.8, 0.6)
+L.wall(r, "LookoutRail", "Timber", -71.6, 919.5, -71.6, 927, 616, 3.8, 0.6)
+L.wall(r, "LookoutRail", "Timber", -80.4, 927.4, -71.6, 927.4, 616, 3.8, 0.6)
 -- Reveal points: landing wings beside the gate, pilgrim daises on the terrace's front flanks.
 for _, side in { -1, 1 } do
 	L.slab(r, "ViewingWing", "Path", side * 21, side * 33, 794, 814, 620, 10)

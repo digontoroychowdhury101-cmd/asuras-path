@@ -79,13 +79,21 @@ L.mark(r, "PitLip", "Flooded pit", 366, 0.2, 904)
 L.mark(r, "Overlook", "Ossuary balcony", 409, 16, 900, 270)
 L.mark(r, "Reliquary", "Bone reliquary", 366, 0.2, 812)
 
-L.zone(r, "SD_Descent", "the descent", 440, 544, 1020, 1080, 8, 40)
+-- The descent is a U (landing -> stair west -> gallery -> stair south): each stair is its own zone so the
+-- guide's line climbs down them instead of cutting the landing parapet over the drop (Studio F18).
+L.zone(r, "SD_Descent", "the descent", 500, 544, 1046, 1080, 25, 40)
+L.zone(r, "SD_DescentStair", "the descent stair", 470, 500, 1050, 1062, 12, 34)
+L.zone(r, "SD_Gallery", "the incense gallery", 440, 470, 1020, 1078, 8, 30)
+L.zone(r, "SD_GalleryStair", "the gallery stair", 449, 461, 990, 1020, -4, 20)
 L.zone(r, "SD_Nave", "the crypt nave", 356, 628, 968, 1046, -4, 14)
 L.zone(r, "SD_Ossuary", "the ossuary", 356, 404, 900, 968, -14, 14)
 L.zone(r, "SD_Reliquary", "the reliquary", 356, 404, 774, 900, -4, 14) -- and the lid causeway over the pit (follow-up 18)
 L.zone(r, "SD_Loft", "the ossuary balcony", 376, 414, 774, 968, 14, 30)
 L.zone(r, "SD_Arena", "the Titan's hall", 414, 626, 774, 968, -4, 14)
-L.door(r, "SD_Descent", "SD_Nave", 455, 0.2, 990, "Gallery stair")
+L.door(r, "SD_Descent", "SD_DescentStair", 502, 30, 1056, "Descent stair")
+L.door(r, "SD_DescentStair", "SD_Gallery", 468, 15, 1056, "Incense gallery")
+L.door(r, "SD_Gallery", "SD_GalleryStair", 455, 15, 1022, "Gallery stair")
+L.door(r, "SD_GalleryStair", "SD_Nave", 455, 0.2, 988, "Gallery foot")
 L.door(r, "SD_Nave", "SD_Arena", 520, 0.2, 970, "Titan's fog gate")
 L.door(r, "SD_Nave", "SD_Ossuary", 380, 0.2, 968, "Ossuary")
 L.door(r, "SD_Ossuary", "SD_Reliquary", 366, 0.2, 901, "Sarcophagus lids") -- the pit lip; the line then runs down the lids

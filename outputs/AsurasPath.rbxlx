@@ -1768,7 +1768,7 @@ L.door(r, "BP_Crest", "BP_Shrine", 0, 0.2, -1316, "Shrine stairs")
 L.door(r, "BP_Shrine", "BP_Arena", 0, 0.2, -1366, "Baize's mouth")
 L.door(r, "BP_Arena", "BP_South", 0, 0.2, -1580, "Moon gate")
 L.door(r, "BP_South", "AC_Road", 0, 0.2, -1680, "Ash road")
-L.door(r, "BP_Crest", "BP_Ridge", 36, 12, -1268, "Frost stones")
+L.door(r, "BP_Crest", "BP_Ridge", 36, 12, -1268, "Frost stones", nil, true)
 L.door(r, "BP_Ridge", "BP_Shrine", 70, 0.2, -1292, "Ridge drop", true)
 r.SpawnZones = {
 	BP_Swordsman_Trail_A = "BP_Gate", BP_Monk_Trail = "BP_Crest", BP_Swordsman_Grove_A = "BP_Ridge",
@@ -2406,7 +2406,7 @@ local Layouts = {
 }
 
 export type Zone = { Id: string, Name: string, X0: number, X1: number, Z0: number, Z1: number, Y0: number?, Y1: number?, Region: string? }
-export type Door = { A: string, B: string, X: number, Y: number, Z: number, Name: string, OneWay: boolean? }
+export type Door = { A: string, B: string, X: number, Y: number, Z: number, Name: string, OneWay: boolean?, Optional: boolean? }
 
 local Campaign = {}
 local list: { Zone } = { { Id = "DM:Road", Name = "the south road", X0 = -14, X1 = 14, Z0 = -988, Z1 = -1120, Region = "DesecratedMonastery" } }
@@ -2455,15 +2455,17 @@ function Campaign.at(x: number, y: number, z: number): Zone?
 	return best
 end
 
--- Doorways from zone `from` to zone `to` along the fewest crossings, never up a one-way drop.
-function Campaign.path(from: string, to: string): { Door }
-	if from == to then return {} end
+-- Doorways from zone `from` to zone `to` along the fewest crossings, never up a one-way drop. Optional
+-- mobility doors (the Pagoda's rafter-end jumps, the frost stones) are used only when nothing else
+-- connects, so main progress never asks for an untaught jump chain (Studio F19).
+local function search(from: string, to: string, optional: boolean): { Door }
 	local previous: { [string]: { Door: Door, From: string } } = {}
 	local seen, queue = { [from] = true }, { from }
 	while #queue &gt; 0 do
 		local here = table.remove(queue, 1) :: string
 		for _, door in doors do
-			local other = if door.A == here then door.B elseif door.B == here and not door.OneWay then door.A else nil
+			local usable = optional or not door.Optional
+			local other = if not usable then nil elseif door.A == here then door.B elseif door.B == here and not door.OneWay then door.A else nil
 			if other and not seen[other] then
 				seen[other], previous[other] = true, { Door = door, From = here }
 				table.insert(queue, other)
@@ -2479,6 +2481,12 @@ function Campaign.path(from: string, to: string): { Door }
 		cursor = step.From
 	end
 	return result
+end
+
+function Campaign.path(from: string, to: string): { Door }
+	if from == to then return {} end
+	local plain = search(from, to, false)
+	return if #plain &gt; 0 then plain else search(from, to, true)
 end
 
 -- Fighting zone for a regional spawn (Monastery spawns keep MonasteryZones).
@@ -2583,8 +2591,10 @@ L.mark(r, "SouthJoin", "Summit bridge", 0, 0, -2538)
 
 L.zone(r, "CP_Stair", "the cloud stair", -8, 8, -2120, -2172)
 L.zone(r, "CP_Well", "the lotus gorge", -156, 156, -2172, -2252, -40, -16)
-L.zone(r, "CP_GalleryW", "the eave gallery", -116, -14, -2176, -2244, -16, -1)
-L.zone(r, "CP_Rafter", "the lantern rafter", -14, 14, -2216, -2252, -16, -1)
+L.zone(r, "CP_GalleryW", "the eave gallery", -116, -60, -2176, -2244, -16, -1) -- the gallery slab only
+L.zone(r, "CP_Beam", "the rafter beam", -60, -14, -2225, -2231, -16, -1) -- the gorge lies either side (Studio F19)
+L.zone(r, "CP_Rafter", "the lantern rafter", -14, 14, -2216, -2240, -16, -1)
+L.zone(r, "CP_RafterStair", "the rafter stair", -5, 5, -2240, -2252, -8, 4) -- the gorge lies either side (Studio F19)
 L.zone(r, "CP_WestStair", "the west stair", -60, -14, -2179, -2189, -27, -4) -- climbs west (Studio F19)
 L.zone(r, "CP_Forecourt", "the pagoda forecourt", -156, 92, -2252, -2292, -4, 10)
 L.zone(r, "CP_Loft", "the throne loft", -152, -108, -2238, -2292, 10, 30)
@@ -2593,12 +2603,14 @@ L.zone(r, "CP_Dawn", "the dawn terrace", -30, 30, -2470, -2540)
 L.door(r, "CP_Stair", "CP_Well", 0, -26, -2172, "Lotus gorge")
 L.door(r, "CP_Well", "CP_WestStair", -12, -26, -2184, "West stair")
 L.door(r, "CP_WestStair", "CP_GalleryW", -62, -6, -2184, "Stair head")
-L.door(r, "CP_GalleryW", "CP_Rafter", -14, -6, -2228, "Rafter beam")
-L.door(r, "CP_Rafter", "CP_Forecourt", 0, 0, -2252, "Rafter stair")
+L.door(r, "CP_GalleryW", "CP_Beam", -61, -6, -2228, "Rafter beam")
+L.door(r, "CP_Beam", "CP_Rafter", -14, -6, -2228, "Lantern rafter")
+L.door(r, "CP_Rafter", "CP_RafterStair", 0, -6, -2239, "Rafter stair")
+L.door(r, "CP_RafterStair", "CP_Forecourt", 0, 0, -2253, "Forecourt")
 L.door(r, "CP_Forecourt", "CP_Arena", 0, 0, -2292, "Wu's fog gate")
 L.door(r, "CP_Arena", "CP_Dawn", 0, 0, -2470, "Dawn gate")
 L.door(r, "CP_Dawn", "SC_Bridge", 0, 0, -2540, "Summit bridge")
-L.door(r, "CP_GalleryW", "CP_Loft", -112, 3, -2246, "Rafter ends")
+L.door(r, "CP_GalleryW", "CP_Loft", -112, 3, -2246, "Rafter ends", nil, true)
 L.door(r, "CP_Loft", "CP_Forecourt", -130, 0, -2270, "Loft drop", true)
 L.door(r, "CP_GalleryW", "CP_Well", -88, -26, -2210, "Gallery drop", true)
 r.SpawnZones = { CP_Monk_Gallery = "CP_GalleryW", CP_Swordsman_Rafter = "CP_Rafter" }
@@ -5343,8 +5355,9 @@ function Layout.zone(r: Region, id: string, name: string, x0: number, x1: number
 	table.insert(r.Zones, { Id = id, Name = name, X0 = math.min(x0, x1), X1 = math.max(x0, x1), Z0 = math.max(z0, z1), Z1 = math.min(z0, z1), Y0 = y0, Y1 = y1 })
 end
 
-function Layout.door(r: Region, a: string, b: string, x: number, y: number, z: number, name: string, oneWay: boolean?)
-	table.insert(r.Doors, { A = a, B = b, X = x, Y = y, Z = z, Name = name, OneWay = oneWay })
+-- `optional`: a mobility route (jump chains) wayfinding uses only when no ordinary route exists.
+function Layout.door(r: Region, a: string, b: string, x: number, y: number, z: number, name: string, oneWay: boolean?, optional: boolean?)
+	table.insert(r.Doors, { A = a, B = b, X = x, Y = y, Z = z, Name = name, OneWay = oneWay, Optional = optional })
 end
 
 -- Falling below `below` inside the rectangle returns the body to `to` (Characters.Teleport).
@@ -5442,6 +5455,27 @@ local function monasteryLeg(doors: { Zones.Door }, y: number): Leg
 	return leg
 end
 
+-- Inside a zone with an authored footpath (the grave field's walk past the toppled pagoda, Studio F14),
+-- the route follows that path from the vertex nearest `entry` to the vertex nearest the goal.
+local TRAILS: { [string]: { { number } } } = { Graves = Zones.GravePath }
+local function nearest(path: { { number } }, p: Vector3): number
+	local best, index = math.huge, 1
+	for k, v in path do
+		local d = (v[1] - p.X) ^ 2 + (v[2] - p.Z) ^ 2
+		if d &lt; best then best, index = d, k end
+	end
+	return index
+end
+local function trail(leg: Leg, zoneId: string, entry: Vector3, goal: Vector3)
+	local path = TRAILS[zoneId]
+	if not path then return end
+	local i, j = nearest(path, entry), nearest(path, goal)
+	local step = if j &gt;= i then 1 else -1
+	for k = i, j, step do
+		table.insert(leg.Points, Vector3.new(path[k][1], goal.Y, path[k][2])); table.insert(leg.Names, "Grave path")
+	end
+end
+
 -- The first doorway of a leg, and the walked length through all of them (campaign legs add the
 -- height climbed; Monastery legs keep their flat batch 15 measure).
 local function direct(goal: Vector3): Stage
@@ -5507,7 +5541,13 @@ function Guide.next(from: Vector3, goal: Vector3): Stage
 	if here == Guide.Monastery and there == Guide.Monastery then
 		local a, b = Zones.at(from.X, from.Z), Zones.at(goal.X, goal.Z)
 		if a and b and a.Id ~= b.Id then
-			return staged(from, goal, monasteryLeg(Zones.path(a.Id, b.Id), goal.Y))
+			local leg = monasteryLeg(Zones.path(a.Id, b.Id), goal.Y)
+			trail(leg, b.Id, leg.Points[#leg.Points] or from, goal)
+			return staged(from, goal, leg)
+		elseif a and b then
+			local leg: Leg = { Points = {}, Names = {} }
+			trail(leg, b.Id, from, goal)
+			if #leg.Points &gt; 0 then return staged(from, goal, leg) end
 		end
 	end
 	-- Campaign regions: inside them, between them, and to or from the Monastery's south road.
@@ -5598,9 +5638,10 @@ L.slab(r, "ReliquaryIsle", "Marble", 40, 52, 980, 996, 604, 5)
 -- Loggia Eaves: service ledge, deck rails (the 8x8 deck and ladder are LootWorld's).
 L.slab(r, "ServiceLedge", "Path", -66, -60, 907, 922, Y, 3)
 L.slab(r, "ServiceLedge", "Path", -102, -66, 918, 922, Y, 3)
-L.wall(r, "LookoutRail", "Timber", -80.4, 919.5, -80.4, 927, 616, 2.4, 0.6)
-L.wall(r, "LookoutRail", "Timber", -71.6, 919.5, -71.6, 927, 616, 2.4, 0.6)
-L.wall(r, "LookoutRail", "Timber", -80.4, 927.4, -71.6, 927.4, 616, 2.4, 0.6)
+-- 3.8 high: at 2.4 the cache chest (top 617.9) was a step a running player used to clear the rail (Studio F15).
+L.wall(r, "LookoutRail", "Timber", -80.4, 919.5, -80.4, 927, 616, 3.8, 0.6)
+L.wall(r, "LookoutRail", "Timber", -71.6, 919.5, -71.6, 927, 616, 3.8, 0.6)
+L.wall(r, "LookoutRail", "Timber", -80.4, 927.4, -71.6, 927.4, 616, 3.8, 0.6)
 -- Reveal points: landing wings beside the gate, pilgrim daises on the terrace's front flanks.
 for _, side in { -1, 1 } do
 	L.slab(r, "ViewingWing", "Path", side * 21, side * 33, 794, 814, 620, 10)
@@ -5786,13 +5827,21 @@ L.mark(r, "PitLip", "Flooded pit", 366, 0.2, 904)
 L.mark(r, "Overlook", "Ossuary balcony", 409, 16, 900, 270)
 L.mark(r, "Reliquary", "Bone reliquary", 366, 0.2, 812)
 
-L.zone(r, "SD_Descent", "the descent", 440, 544, 1020, 1080, 8, 40)
+-- The descent is a U (landing -&gt; stair west -&gt; gallery -&gt; stair south): each stair is its own zone so the
+-- guide's line climbs down them instead of cutting the landing parapet over the drop (Studio F18).
+L.zone(r, "SD_Descent", "the descent", 500, 544, 1046, 1080, 25, 40)
+L.zone(r, "SD_DescentStair", "the descent stair", 470, 500, 1050, 1062, 12, 34)
+L.zone(r, "SD_Gallery", "the incense gallery", 440, 470, 1020, 1078, 8, 30)
+L.zone(r, "SD_GalleryStair", "the gallery stair", 449, 461, 990, 1020, -4, 20)
 L.zone(r, "SD_Nave", "the crypt nave", 356, 628, 968, 1046, -4, 14)
 L.zone(r, "SD_Ossuary", "the ossuary", 356, 404, 900, 968, -14, 14)
 L.zone(r, "SD_Reliquary", "the reliquary", 356, 404, 774, 900, -4, 14) -- and the lid causeway over the pit (follow-up 18)
 L.zone(r, "SD_Loft", "the ossuary balcony", 376, 414, 774, 968, 14, 30)
 L.zone(r, "SD_Arena", "the Titan's hall", 414, 626, 774, 968, -4, 14)
-L.door(r, "SD_Descent", "SD_Nave", 455, 0.2, 990, "Gallery stair")
+L.door(r, "SD_Descent", "SD_DescentStair", 502, 30, 1056, "Descent stair")
+L.door(r, "SD_DescentStair", "SD_Gallery", 468, 15, 1056, "Incense gallery")
+L.door(r, "SD_Gallery", "SD_GalleryStair", 455, 15, 1022, "Gallery stair")
+L.door(r, "SD_GalleryStair", "SD_Nave", 455, 0.2, 988, "Gallery foot")
 L.door(r, "SD_Nave", "SD_Arena", 520, 0.2, 970, "Titan's fog gate")
 L.door(r, "SD_Nave", "SD_Ossuary", 380, 0.2, 968, "Ossuary")
 L.door(r, "SD_Ossuary", "SD_Reliquary", 366, 0.2, 901, "Sarcophagus lids") -- the pit lip; the line then runs down the lids

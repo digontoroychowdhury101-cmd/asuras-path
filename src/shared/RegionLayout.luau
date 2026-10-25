@@ -95,8 +95,9 @@ function Layout.zone(r: Region, id: string, name: string, x0: number, x1: number
 	table.insert(r.Zones, { Id = id, Name = name, X0 = math.min(x0, x1), X1 = math.max(x0, x1), Z0 = math.max(z0, z1), Z1 = math.min(z0, z1), Y0 = y0, Y1 = y1 })
 end
 
-function Layout.door(r: Region, a: string, b: string, x: number, y: number, z: number, name: string, oneWay: boolean?)
-	table.insert(r.Doors, { A = a, B = b, X = x, Y = y, Z = z, Name = name, OneWay = oneWay })
+-- `optional`: a mobility route (jump chains) wayfinding uses only when no ordinary route exists.
+function Layout.door(r: Region, a: string, b: string, x: number, y: number, z: number, name: string, oneWay: boolean?, optional: boolean?)
+	table.insert(r.Doors, { A = a, B = b, X = x, Y = y, Z = z, Name = name, OneWay = oneWay, Optional = optional })
 end
 
 -- Falling below `below` inside the rectangle returns the body to `to` (Characters.Teleport).

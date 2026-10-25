@@ -49,6 +49,27 @@ local function monasteryLeg(doors: { Zones.Door }, y: number): Leg
 	return leg
 end
 
+-- Inside a zone with an authored footpath (the grave field's walk past the toppled pagoda, Studio F14),
+-- the route follows that path from the vertex nearest `entry` to the vertex nearest the goal.
+local TRAILS: { [string]: { { number } } } = { Graves = Zones.GravePath }
+local function nearest(path: { { number } }, p: Vector3): number
+	local best, index = math.huge, 1
+	for k, v in path do
+		local d = (v[1] - p.X) ^ 2 + (v[2] - p.Z) ^ 2
+		if d < best then best, index = d, k end
+	end
+	return index
+end
+local function trail(leg: Leg, zoneId: string, entry: Vector3, goal: Vector3)
+	local path = TRAILS[zoneId]
+	if not path then return end
+	local i, j = nearest(path, entry), nearest(path, goal)
+	local step = if j >= i then 1 else -1
+	for k = i, j, step do
+		table.insert(leg.Points, Vector3.new(path[k][1], goal.Y, path[k][2])); table.insert(leg.Names, "Grave path")
+	end
+end
+
 -- The first doorway of a leg, and the walked length through all of them (campaign legs add the
 -- height climbed; Monastery legs keep their flat batch 15 measure).
 local function direct(goal: Vector3): Stage
@@ -114,7 +135,13 @@ function Guide.next(from: Vector3, goal: Vector3): Stage
 	if here == Guide.Monastery and there == Guide.Monastery then
 		local a, b = Zones.at(from.X, from.Z), Zones.at(goal.X, goal.Z)
 		if a and b and a.Id ~= b.Id then
-			return staged(from, goal, monasteryLeg(Zones.path(a.Id, b.Id), goal.Y))
+			local leg = monasteryLeg(Zones.path(a.Id, b.Id), goal.Y)
+			trail(leg, b.Id, leg.Points[#leg.Points] or from, goal)
+			return staged(from, goal, leg)
+		elseif a and b then
+			local leg: Leg = { Points = {}, Names = {} }
+			trail(leg, b.Id, from, goal)
+			if #leg.Points > 0 then return staged(from, goal, leg) end
 		end
 	end
 	-- Campaign regions: inside them, between them, and to or from the Monastery's south road.
