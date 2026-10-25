@@ -5,11 +5,13 @@
 -- their BossBodies shape. Replaces the old neon gear blocks. A production skin (BossSkin) still
 -- overrides the look when a valid template is imported; the look is the diagnosed fallback.
 local PhysicsService = game:GetService("PhysicsService")
+local ServerStorage = game:GetService("ServerStorage")
 local Shared = game:GetService("ReplicatedStorage"):WaitForChild("AsurasPath").Shared
 local Characters = require(script.Parent.CharacterService)
 local Kit = require(script.Parent.CostumeKit)
 local Bodies = require(Shared.BossBodies)
 local Schema = require(Shared.CostumeSchema)
+local AnimationRules = require(Shared.BossAnimationRules)
 
 local Appearance = {}
 Appearance.HullGroup, Appearance.WorldGroup = "AsuraCreatureHull", "WorldGeometry"
@@ -52,6 +54,31 @@ local function hull(model: Model, root: BasePart, spec: { number })
 	p.Parent = model
 end
 
+-- F10: imported boss tracks are Animation objects in ServerStorage.AsuraAssets.AsuraBossAnimations
+-- named by slot key (BossAnimationRules); each actor gets its look's ids as attributes at spawn,
+-- so every retry and phase reads the same overrides. The status names what is still a stand-in.
+local function animationStatus(model: Model)
+	local look, phase = model:GetAttribute("AsuraLookKey"), model:GetAttribute("AsuraBossPhase")
+	if type(look) ~= "string" then return end
+	local humanoid = model:FindFirstChildOfClass("Humanoid")
+	local rig = if model:GetAttribute("AsuraRig") == "Creature" then "Creature"
+		elseif humanoid and humanoid.RigType == Enum.HumanoidRigType.R6 then "R6" else "R15"
+	model:SetAttribute("AsuraAnimationStatus", AnimationRules.status(look, if type(phase) == "number" then phase else 1, rig,
+		function(name) return model:GetAttribute(name) end))
+end
+Appearance.animationStatus = animationStatus
+
+function Appearance.bindAnimations(model: Model, library: Instance?)
+	local look = model:GetAttribute("AsuraLookKey")
+	local folder = library and library:FindFirstChild("AsuraBossAnimations")
+	if type(look) ~= "string" or not folder then return end
+	for _, animation in folder:GetChildren() do
+		if animation:IsA("Animation") and string.sub(animation.Name, 1, #look + 1) == look .. "_" and AnimationRules.validId(animation.AnimationId) then
+			model:SetAttribute("AsuraBossAnimation_" .. animation.Name, animation.AnimationId)
+		end
+	end
+end
+
 function Appearance.apply(model: Model, archetype: string?, scale: number?)
 	local look = Appearance.look(archetype)
 	local root = model:FindFirstChild("HumanoidRootPart")
@@ -66,11 +93,18 @@ function Appearance.apply(model: Model, archetype: string?, scale: number?)
 	local id = Characters.GetEntityByModel(model)
 	if id and ((scale and scale ~= 1) or shape) then Characters.ScaleEnemy(id, scale or 1, shape) end
 	if archetype == "Colossus" then model:SetAttribute("AsuraVisceralTarget", "Ankles") end
+	Appearance.bindAnimations(model, ServerStorage:FindFirstChild("AsuraAssets"))
+	animationStatus(model)
 end
 
+-- The phase index is published before the animation set: PresentationService re-binds the skin on
+-- the set change and BossSkin resolves AsuraBoss_<Look>_P<phase> from it (F10: the set changed
+-- first, so phase 2 kept resolving the _P1 template).
 function Appearance.phase(model: Model, animationSet: string?, index: number?)
+	model:SetAttribute("AsuraBossPhase", index or 1)
 	model:SetAttribute("AsuraAnimationSet", animationSet or "Boss")
 	Kit.phase(model, index or 1)
+	animationStatus(model)
 end
 
 return Appearance

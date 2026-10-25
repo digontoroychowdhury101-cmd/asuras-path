@@ -8,7 +8,7 @@ local Characters = require(script.Parent.CharacterService)
 local Attacks = require(script.Parent.BossAttackService)
 local Motion = require(script.Parent.BossMotion)
 local Tactics = {}
-type Schedule = { Next: number, Cursor: number, FarSince: number, NextClose: number, Extra: { Types.Attack }, Kneeling: boolean }
+type Schedule = { Next: number, Cursor: number, FarSince: number, NextClose: number, Extra: { Types.Attack }, Kneeling: boolean, StandHip: number? }
 local schedules: { [number]: Schedule } = {}
 function Tactics.reset(id: number)
 	Attacks.cancel(id)
@@ -48,13 +48,15 @@ function Tactics.step(id: number, boss: World.BossDef, phase: number, targetId: 
 			e.Model:SetAttribute("AsuraVisceralTarget", "Head")
 			Characters.Cue("BossKneel", id, { duration = 2.5 })
 			-- Lower the head into the normal deathblow reach, then restore when posture recovers.
+			schedule.StandHip = e.Humanoid.HipHeight
 			e.Humanoid.HipHeight = 0
 		end
 		return true
 	elseif schedule.Kneeling then
 		schedule.Kneeling = false
 		e.Model:SetAttribute("AsuraVisceralTarget", "Ankles")
-		e.Humanoid.HipHeight = 6
+		-- The scaled standing height, not a constant (F11: 6 sank the scale-3 Titan's feet 0.58 studs).
+		e.Humanoid.HipHeight = schedule.StandHip or e.Humanoid.HipHeight
 	end
 	if Attacks.step(id, now) then return true end
 	if not target or not allowed or not allowed[targetId] or target.Fighter.State == "KO" or e.Fighter.State ~= "Idle" then return false end

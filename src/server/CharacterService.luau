@@ -91,6 +91,7 @@ export type Entity = {
 	Definition: string?,
 	Boss: boolean,
 	LastMoveTo: Vector3,
+	MoveIssuedAt: number,
 	Style: string,
 	Elo: number,
 	Vip: boolean,
@@ -125,6 +126,7 @@ local STATE_ATTRIBUTE = "AsuraState"
 local ID_ATTRIBUTE = "AsuraId"
 local ENEMY_TAG = "AsuraEnemy"
 local FACING_DOT = 0.15
+local MOVE_RENEW = 4 -- seconds; Humanoid:MoveTo times out after 8
 local PROTOCOL_TAG = "Asura1"
 local MAX_SEQUENCE_GAP = 4096
 local DEFAULT_JUMP = 7.2
@@ -487,6 +489,7 @@ local function newEntity(id: number, kind: EntityKind, player: Player?, model: M
 		Definition = nil,
 		Boss = false,
 		LastMoveTo = Vector3.new(math.huge, 0, 0),
+		MoveIssuedAt = 0,
 		Style = "Unarmed",
 		Elo = 1000,
 		Vip = false,
@@ -1093,6 +1096,19 @@ local function resolveContacts(attacker: Entity, now: number)
 	end
 end
 
+-- F07: Combat.step ends an active window before contacts are resolved, so the tick that closes it
+-- never swept the blade to full extension and every move fell short of its authored reach (a Jian
+-- thrust touched ~6 of 7.5 studs and read as MISSED). Sweep that last stretch first; a hit lands on
+-- the same tick and fills HitRegistry, so the expiring window no longer reports a whiff.
+local function sweepClosingWindows(live: { Entity }, now: number)
+	for _, e in live do
+		local f = e.Fighter
+		if entities[e.Id] == e and f.State == "Active" and f.Move and now >= f.StateEnd then
+			resolveContacts(e, now)
+		end
+	end
+end
+
 -- Whiffs (batch 09): name the foe a contact-less swing was nearest to and how many studs short it
 -- fell, and place the cue at the weapon tip, so a miss reads as distance rather than a broken hit.
 local function annotateWhiffs(from: number)
@@ -1281,6 +1297,7 @@ local function step()
 		end
 	end
 
+	sweepClosingWindows(live, now)
 	local stepped = #frameEvents + 1
 	for _, e in live do
 		if entities[e.Id] == e then
@@ -1497,8 +1514,10 @@ function Service.MoveTo(id: number, position: Vector3)
 	if not e or not alive(e) or e.Kind ~= "Enemy" then
 		return
 	end
-	if (position - e.LastMoveTo).Magnitude > 0.75 then
-		e.LastMoveTo = position
+	-- F08: Humanoid:MoveTo gives up after 8 s, so a chase toward a foe standing still stalled for good
+	-- (the Sparring Phantom never closed on a player who waited). Renew it before the engine does.
+	if (position - e.LastMoveTo).Magnitude > 0.75 or simTime - e.MoveIssuedAt > MOVE_RENEW then
+		e.LastMoveTo, e.MoveIssuedAt = position, simTime
 		e.Humanoid:MoveTo(position)
 	end
 end

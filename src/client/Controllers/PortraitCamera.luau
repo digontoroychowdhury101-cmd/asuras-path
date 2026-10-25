@@ -15,6 +15,7 @@ Portrait.Height = 1
 Portrait.Margin = 0.8 -- clearance kept around the camera
 Portrait.MinReach = 3.2 -- a pulled-in shot closer than this is rejected
 Portrait.Chest = 1.2 -- second sight line, below the head
+Portrait.Fov = 52 -- vertical field of view while a conversation is framed (CameraController)
 
 -- Returns where a segment first meets visible geometry, or nil when it is clear.
 export type Probe = (from: Vector3, to: Vector3) -> Vector3?
@@ -88,6 +89,26 @@ function Portrait.probe(exclude: { Instance }): Probe
 		end
 		return nil
 	end
+end
+
+-- Looks from `position` at `face`, pitched down so the face sits at `faceY` of the screen height
+-- (0 = top) instead of the centre, which the dialogue panel covers.
+function Portrait.aim(position: Vector3, face: Vector3, faceY: number): CFrame
+	local above = math.clamp(1 - 2 * faceY, 0, 0.9) -- how far above the centre, in half-screens
+	local pitch = math.atan(above * math.tan(math.rad(Portrait.Fov) / 2))
+	return CFrame.lookAt(position, face) * CFrame.Angles(-pitch, 0, 0)
+end
+
+-- The speaker's own model: JadeCataclysm.<npc>, else any model tagged AsuraNPC = npc (Master Smith
+-- Gao stands in the Sanctuary loggia). F13: Gao was never found, so his body was not excluded from
+-- the probe, every shot hit him and the portrait fell back to looking down on his topknot.
+function Portrait.speaker(npc: string, world: Instance?, tagged: { Instance }): Instance?
+	local found = world and world:FindFirstChild(npc)
+	if found then return found end
+	for _, model in tagged do
+		if model:IsA("Model") and model:GetAttribute("AsuraNPC") == npc then return model end
+	end
+	return nil
 end
 
 function Portrait.frame(subject: Vector3, viewer: Vector3, exclude: { Instance }): CFrame

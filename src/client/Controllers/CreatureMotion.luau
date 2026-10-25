@@ -72,6 +72,11 @@ function Motion.Update(self: Controller, dt: number)
 		local attire = if entity.Kind == "Enemy" and root and model:GetAttribute("AsuraCostume") ~= nil then model:FindFirstChild("AsuraAttire") else nil
 		if not attire or not root or (root.Position - eye).Magnitude > Motion.Range then continue end
 		local known = self.Rigs[model]
+		if model:GetAttribute("AsuraAuthoredMotion") == true then -- an authored track owns the joints (BossAnimations)
+			if known then for _, joint in known.Joints do joint.Weld.C1 = CFrame.identity end end
+			self.Rigs[model] = nil
+			continue
+		end
 		local rig: Rig = if known and self.Clock < known.Recheck then known else collect(attire, known, self.Clock)
 		self.Rigs[model] = rig
 		if #rig.Joints == 0 then continue end

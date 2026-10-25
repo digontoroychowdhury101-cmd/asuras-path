@@ -733,7 +733,10 @@ local function travel(s: Session, altarId: string): (boolean, string)
 	if origin.Id == altarId then
 		return false, "AlreadyHere"
 	end
-	Characters.Teleport(s.UserId, toCFrame(destination.Spawn))
+	-- Land within resting reach, facing the altar, so the rest below can set the checkpoint.
+	local spawn, part = toCFrame(destination.Spawn), altarParts[altarId]
+	local at = if part then Recovery.arrival(spawn.Position, part.Position, destination.Radius) else spawn.Position
+	Characters.Teleport(s.UserId, if part and at ~= spawn.Position then CFrame.lookAt(at, Vector3.new(part.Position.X, at.Y, part.Position.Z)) else spawn)
 	Characters.Cue("AltarTravel", s.UserId, { from = origin.Id, to = altarId })
 	local fighter = Characters.GetFighter(s.UserId)
 	if fighter and fighter.State == "RestingAtShrine" then

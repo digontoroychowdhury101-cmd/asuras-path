@@ -3,6 +3,7 @@
 -- behind the shot, a Highlight that turns the caster into a
 -- solid silhouette, a key light, and the colour grades the reference cuts between. The parts are
 -- created on the caster's client only, never take queries, and leave with the cast's trove.
+local Comfort = require(game:GetService("ReplicatedStorage").AsurasPath.Shared.EffectsPreference)
 local Kit = require(script.Parent.SkillKit)
 local Cinema = require(script.Parent.SkillCinema)
 local Stage = {}
@@ -119,7 +120,7 @@ function Stage.bloom(trove: Kit.Trove, intensity: number, size: number, threshol
 	local b = Kit.add(trove, Instance.new("BloomEffect"))
 	b.Name, b.Intensity, b.Size, b.Threshold = "AsuraSkillBloom", 0, size, threshold
 	b.Parent = game:GetService("Lighting")
-	Kit.tween(trove, b, seconds, { Intensity = intensity })
+	Kit.tween(trove, b, seconds, { Intensity = Comfort.flash(intensity) }) -- F09: honours reduced flashes
 	return b
 end
 

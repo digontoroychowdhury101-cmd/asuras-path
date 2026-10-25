@@ -39,10 +39,15 @@ check("health ceiling and rally explained", string.find(Rules.Steps[6].Why, "cei
 check("stakes explain carried, reclaimed and lost Essence", string.find(Rules.Stakes, "bloodstain", 1, true) and string.find(Rules.Stakes, "lost", 1, true) and string.find(Rules.Stakes, "Spend Essence", 1, true))
 local done = {}
 check("only the current step advances", Rules.advance(done, "Light") == nil and Rules.advance(done, "LockOn") == "LockOn")
-check("signals: own hit = Light, blocked strike = Guard", Rules.signal("Hit", 1, 9, 1, false) == "Light" and Rules.signal("Block", 9, 1, 1, false) == "Guard")
-check("signals: being hit or a foe blocking teaches nothing", Rules.signal("Hit", 9, 1, 1, false) == nil and Rules.signal("Block", 1, 9, 1, false) == nil)
-check("signals: deflect/evade, perilous when the strike was perilous", Rules.signal("DeflectSpark", 1, 9, 1, false) == "Deflect" and Rules.signal("Evade", 1, 9, 1, false) == "Dodge"
-	and Rules.signal("DeflectSpark", 1, 9, 1, true) == "Perilous" and Rules.signal("Evade", 1, 9, 1, true) == "Perilous")
+local M1, DASH = { State = "Active", Move = "Light" }, { State = "Dashing" }
+check("signals: own hit = Light, blocked strike = Guard", Rules.signal("Hit", 1, 9, 1, false, M1) == "Light" and Rules.signal("Block", 9, 1, 1, false) == "Guard")
+check("signals: a spell, art, heavy or burn tick is not a light attack (F08)", Rules.signal("Hit", 1, 9, 1, false, { State = "Casting" }) == nil
+	and Rules.signal("Hit", 1, 9, 1, false, { State = "Active", Move = "Heavy" }) == nil and Rules.signal("Hit", 1, 9, 1, false) == nil
+	and Rules.signal("Hit", 1, 9, 1, false, { State = "Active", Move = "RunningAttack" }) == "Light")
+check("signals: being hit or a foe blocking teaches nothing", Rules.signal("Hit", 9, 1, 1, false, M1) == nil and Rules.signal("Block", 1, 9, 1, false) == nil)
+check("signals: deflect/evade, perilous when the strike was perilous", Rules.signal("DeflectSpark", 1, 9, 1, false) == "Deflect" and Rules.signal("Evade", 1, 9, 1, false, DASH) == "Dodge"
+	and Rules.signal("DeflectSpark", 1, 9, 1, true) == "Perilous" and Rules.signal("Evade", 1, 9, 1, true, DASH) == "Perilous")
+check("signals: an evade outside a dash (deathblow or rest invulnerability) teaches nothing", Rules.signal("Evade", 1, 9, 1, false, { State = "DeathblowVictim" }) == nil and Rules.signal("Evade", 1, 9, 1, true) == nil)
 check("signals: whiffs and feints are not successes", Rules.signal("Whiff", 1, 9, 1, false) == nil and Rules.signal("Feint", 1, 1, 1, false) == nil)
 check("client may only report lock-on and glide", Rules.ClientSignals.LockOn and Rules.ClientSignals.Glide and not Rules.ClientSignals.Light and not Rules.ClientSignals.Deathblow)
 check("progress round-trips", Rules.serialize(Rules.parse("LockOn,Light,Bogus")) == "LockOn,Light" and Rules.serialize({ Skipped = true }) == "Skipped" and Rules.current(Rules.parse("Complete")) == nil)
@@ -95,9 +100,14 @@ handler(player, { action = "Signal", signal = "LockOn" })
 check("lock-on report advances its own step", attrs.AsuraTutorial == "LockOn")
 event("Whiff", 7, -50); event("Feint", 7, 7)
 check("whiff and feint do not count as a light attack", attrs.AsuraTutorial == "LockOn")
-event("Hit", 7, -50)
+fighter.State = "Casting"; event("Hit", 7, -50)
+check("a palm spell landing is not the light attack", attrs.AsuraTutorial == "LockOn")
+fighter.State, fighter.Move = "Active", { Kind = "Light" }; event("Hit", 7, -50); fighter.State, fighter.Move = "Idle", nil
 check("a landed hit advances Light", attrs.AsuraTutorial == "LockOn,Light" and profile.souls.world.tutorial.Light == true)
-event("Block", -50, 7); event("DeflectSpark", 7, -50); event("Evade", 7, -50); event("Rally", 7, 7)
+event("Block", -50, 7); event("DeflectSpark", 7, -50)
+fighter.State = "DeathblowVictim"; event("Evade", 7, -50)
+check("struck while helpless after a deathblow is not a dodge (F08 Studio log)", attrs.AsuraTutorial == "LockOn,Light,Guard,Deflect")
+fighter.State = "Dashing"; event("Evade", 7, -50); fighter.State = "Idle"; event("Rally", 7, 7)
 check("guard, deflect, dodge, rally each advance in turn", attrs.AsuraTutorial == "LockOn,Light,Guard,Deflect,Dodge,Rally")
 attrs.AsuraElixirs = 3; poll(); attrs.AsuraElixirs = 3; poll()
 check("no drink, no heal step", not string.find(attrs.AsuraTutorial, "Heal", 1, true))
@@ -106,7 +116,9 @@ check("a spent charge (accepted drink) advances Heal", string.find(attrs.AsuraTu
 event("DeflectSpark", 7, -50)
 check("an ordinary deflect is not the perilous lesson", not string.find(attrs.AsuraTutorial, "Perilous", 1, true))
 phantom.Model.Tag = string.format("Perilous|Unarmed_Art|%.3f", now + 0.3)
-event("Evade", 7, -50)
+fighter.State = "DeathblowVictim"; event("Evade", 7, -50)
+check("a perilous strike met while helpless is not the perilous lesson", not string.find(attrs.AsuraTutorial, "Perilous", 1, true))
+fighter.State = "Dashing"; event("Evade", 7, -50); fighter.State = "Idle"
 check("evading a published perilous strike advances Perilous", string.find(attrs.AsuraTutorial, "Perilous", 1, true) ~= nil)
 event("Deathblow", 7, -50)
 handler(player, { action = "Signal", signal = "Glide" })
@@ -197,6 +209,7 @@ check("no blind delay before the veil", not string.find(pro, "task.wait(1.5) -- 
 check("camera framed behind the avatar before reveal", string.find(pro, "camera:Face(root.CFrame.LookVector)", 1, true) ~= nil)
 check("skip works on any device, replay forces the lines", string.find(pro, "Press any key or tap to skip", 1, true) and string.find(pro, "force == true", 1, true))
 check("handoff names the first rest and the training", string.find(pro, "then train at the Monastery Gate", 1, true) ~= nil)
+check("handoff window published before its banner", string.find(pro, "ui.HandoffUntil = os.clock() + Controller.HandoffSeconds", 1, true) ~= nil)
 local pause, boot = src("src/client/Controllers/PauseMenu.luau"), src("src/client/Bootstrap.client.luau")
 check("Respite offers replay of training and opening", string.find(pause, "Replay training", 1, true) and string.find(pause, "Replay opening", 1, true))
 check("bootstrap wires prologue camera, tutorial and replay", string.find(boot, "task.spawn(Prologue.Play, ui, input, camera)", 1, true) and string.find(boot, "tutorial:Update(frame)", 1, true)
@@ -205,7 +218,58 @@ local tc = src("src/client/Controllers/TutorialController.luau")
 check("lock-on reported only when locked on a hostile", string.find(tc, "self.State:IsHostile(target)", 1, true) ~= nil)
 check("glide reported only after holding a glide", string.find(tc, "self.Glide >= Rules.GlideSeconds", 1, true) ~= nil)
 check("skip needs a confirming press", string.find(tc, "Press again to skip", 1, true) ~= nil)
+check("skip names the cursor key a mouse player must hold to click it (F08)", string.find(tc, 'self:Label("Cursor") .. "] to click"', 1, true) ~= nil)
+check("stakes card folds once the fight starts and clears the action bar (F08)", string.find(tc, 'snapshot.State ~= "Idle" then self.StakesPanel:Destroy()', 1, true) ~= nil
+	and string.find(tc, 'Position = UDim2.new(0.5, 0, 0.72, 0)', 1, true) ~= nil)
 check("stakes shown before the courtyard fight", string.find(tc, "root.Position.Z < COURTYARD_Z", 1, true) ~= nil)
+-- F08 (Studio, fresh profile): the Space or click that skips the prologue reached the Controls card's
+-- fold rule while it was hidden under the veil, so the reference never showed at the handoff. The
+-- real ControlsCard runs on permissive engine stubs.
+do
+	local function stub(): any
+		local store = {}
+		return setmetatable(store, { __index = function(t, k)
+			if k == "Visible" or k == "Enabled" then return false end
+			local child = stub(); rawset(t, k, child); return child
+		end, __call = function() return stub() end })
+	end
+	local function instance(...) -- make/panel/label: the property table is the last argument
+		local i, args = stub(), { ... }
+		local props = args[#args]
+		if type(props) == "table" and getmetatable(props) == nil then for k, v in props do i[k] = v end end
+		return i
+	end
+	local HudKit = setmetatable({ make = instance, panel = instance, label = instance, onViewport = function() return function() end end,
+		bindScale = function() return function() end end, cue = function() end }, { __index = function() return stub() end })
+	local guidance = false
+	local Visibility = { of = function() return { Guidance = guidance } end }
+	local Layout = { modal = function() return 1, { X = 0, Y = 0, W = 1, H = 1 } end, Regions = { ControlsPill = { At = { 0, 0 }, Offset = { 0, 0 }, Size = { 1, 1 } } } }
+	local modules = { HudKit = HudKit, HudLayout = Layout, HudVisibility = Visibility, InputMap = InputMap }
+	local named = function(name) return { Name = name, WaitForChild = function(self, n) return modules[n] or { Name = n, WaitForChild = self.WaitForChild } end } end
+	local scriptStub = { Parent = { WaitForChild = function(_, n) return modules[n] end } }
+	local env = setmetatable({ script = scriptStub, require = function(m) return m end, setmetatable = setmetatable, math = math, table = table, string = string,
+		Vector2 = roblox.Vector2, UDim2 = roblox.UDim2, UDim = roblox.UDim, Color3 = roblox.Color3, Enum = roblox.Enum,
+		game = { GetService = function(_, name) if name == "ReplicatedStorage" then return { WaitForChild = function() return named("AsurasPath") end } end
+			return { InputBegan = { Connect = function() return { Disconnect = function() end } end }, GetFocusedTextBox = function() return nil end } end },
+		workspace = { CurrentCamera = nil } }, { __index = function(_, k) return (getfenv() :: any)[k] end })
+	local Card = luau.load(src("src/client/Controllers/ControlsCard.luau"), { debugName = "ControlsCard", environment = env })()
+	local input = { MenuOpen = true, Device = "Keyboard" }
+	local card = Card.new(input, { Gui = stub() })
+	card:Update(0.1)
+	input.OnCommand("Jump") -- the prologue skip key while the veil owns input
+	input.OnCommand("Light") -- a click skip
+	local ui = card.Ui
+	input.MenuOpen, guidance, ui.HandoffUntil = false, true, os.clock() + 60
+	card:Update(0.1)
+	check("the handoff line is not covered by the controls card", card.Open and card.Card.Visible == false and card.Pill.Visible == false)
+	input.OnCommand("Light")
+	ui.HandoffUntil = 0
+	card:Update(0.1)
+	check("a skip under the veil leaves the controls reference to open at the handoff", card.Open and card.Card.Visible == true)
+	input.OnCommand("Light")
+	card:Update(0.1)
+	check("a combat command still folds the card once it is on screen", not card.Open and card.Card.Visible == false and card.Pill.Visible == true)
+end
 
 -- 6. Hygiene.
 local project = src("default.project.json")

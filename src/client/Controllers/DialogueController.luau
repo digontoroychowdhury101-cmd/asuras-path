@@ -7,6 +7,7 @@
 local Players=game:GetService("Players")
 local UserInput=game:GetService("UserInputService")
 local GuiService=game:GetService("GuiService")
+local CollectionService=game:GetService("CollectionService")
 local Shared=game:GetService("ReplicatedStorage").AsurasPath
 local View=require(script.Parent.DialogueView)
 local Kit=require(script.Parent.HudKit)
@@ -17,6 +18,16 @@ local Portrait=require(script.Parent.PortraitCamera)
 local CODEX_KEYS: {[Enum.KeyCode]: boolean}={}
 for _,name in (InputMap.get("Codex") :: any).Keys do CODEX_KEYS[(Enum.KeyCode :: any)[name]]=true end
 local Controller={};Controller.__index=Controller
+-- The player's costume ignores spatial queries, so no probe sees a hat brim in an over-the-shoulder
+-- shot (F04: it covered half of Lin's face): the local avatar is hidden while a portrait is framed.
+local function hideAvatar(self: any,character: Model?)
+ for part,original in self.Hidden or {} do if part.Parent then part.LocalTransparencyModifier=original end end
+ self.Hidden=nil
+ if not character then return end
+ local hidden={}
+ for _,d in character:GetDescendants() do if d:IsA("BasePart") then hidden[d]=d.LocalTransparencyModifier;d.LocalTransparencyModifier=1 end end
+ self.Hidden=hidden
+end
 function Controller.new(camera: any,input: any,ui: any): any
  local self=setmetatable({Camera=camera,Input=input,UI=ui,Revision=0,Generation=0,Open=false,Links={},ReturnAltar=nil},Controller) :: any
  self.Remote=Shared.Net:WaitForChild("DialogueIntent")
@@ -61,7 +72,7 @@ end
 function Controller.Close(self: any,toAltar: boolean?)
  if self.Portrait then self.Portrait:Destroy();self.Portrait=nil end
  local altar=self.ReturnAltar;self.ReturnAltar=nil
- self.Generation+=1;local wasOpen=self.Open;self.Open=false;self.UI.DialogueOpen=false;self.View.Gui.Enabled=false;self.Camera.DialogueFrame=nil
+ self.Generation+=1;local wasOpen=self.Open;self.Open=false;self.UI.DialogueOpen=false;self.View.Gui.Enabled=false;self.Camera.DialogueFrame=nil;hideAvatar(self,nil)
  if wasOpen then self.Input:SetMenu(false,"Dialogue");self.Remote:FireServer({action="Close"}) end
  View.clear(self.View)
  if wasOpen and toAltar and altar and not self.UI.DeathShown then self.UI:OpenAltar(altar) end
@@ -69,8 +80,7 @@ end
 function Controller.Frame(self: any,p: any)
  local character=Players.LocalPlayer.Character
  local root=character and character:FindFirstChild("HumanoidRootPart") :: BasePart?
- local world=workspace:FindFirstChild("JadeCataclysm")
- local original=world and world:FindFirstChild(p.npc)
+ local original=Portrait.speaker(p.npc,workspace:FindFirstChild("JadeCataclysm"),CollectionService:GetTagged("AsuraNPC"))
  local exclude: {Instance}={workspace.CurrentCamera}
  if character then table.insert(exclude,character) end
  if original then table.insert(exclude,original) end
@@ -87,11 +97,20 @@ function Controller.Frame(self: any,p: any)
   spirit.Parent=workspace.CurrentCamera;spirit:PivotTo(CFrame.lookAt(spot,Vector3.new(viewer.X,spot.Y,viewer.Z)))
   self.Portrait=spirit;subject=spot+Vector3.new(0,2,0)
  end
- self.Camera.DialogueFrame=CFrame.lookAt(Portrait.choose(subject,viewer,probe),subject)
+ -- The panel covers the middle of the screen, so the face goes in the clear band between the top
+ -- letterbox bar and the panel's top edge (F04: a centred head sat behind Lin's name on short screens).
+ local speaker=self.Portrait or original
+ local head=speaker and speaker:FindFirstChild("Head",true)
+ local face=if head and head:IsA("BasePart") then head.Position else subject
+ local screen=workspace.CurrentCamera.ViewportSize.Y
+ local inset=if self.View.Gui.IgnoreGuiInset then 0 else GuiService:GetGuiInset().Y
+ self.Camera.DialogueFrame=Portrait.aim(Portrait.choose(subject,viewer,probe),face,if screen>inset then View.faceY(screen,inset) else 0.3)
+ hideAvatar(self,character)
 end
 function Controller.Receive(self: any,p: any)
  if p.action=="Close" then self:Close(p.reason=="Farewell");return end
  if p.action=="Result" then self.UI:ShowBanner("THE INSCRIPTION",tostring(p.message),2);return end
+ if p.action=="Refused" then self.UI:ShowToast(tostring(p.message));return end
  if not p.view or self.UI.DeathShown then return end
  if self.UI.Altar.Visible then self.UI:CloseAltar() end
  if self.Portrait then self.Portrait:Destroy();self.Portrait=nil end -- a replacement conversation
@@ -102,7 +121,7 @@ function Controller.Receive(self: any,p: any)
   self.Revision=p.revision;self.ReturnAltar=p.altar
   View.render(self.View,p,function(packet: any) packet.revision=self.Revision;self.Remote:FireServer(packet) end)
   self:Frame(p)
- else self.ReturnAltar=nil;self.Camera.DialogueFrame=nil;View.codex(self.View,p.view,p.id) end
+ else self.ReturnAltar=nil;self.Camera.DialogueFrame=nil;hideAvatar(self,nil);View.codex(self.View,p.view,p.id) end
  self.View.Subtitle.MaxVisibleGraphemes=0
  local count=utf8.len(self.View.Subtitle.ContentText) or #self.View.Subtitle.Text
  task.spawn(function()

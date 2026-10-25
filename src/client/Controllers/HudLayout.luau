@@ -30,11 +30,23 @@ Layout.Regions = {
 	Objective = region({ 1, 0 }, { 1, 0 }, { -20, 64 }, { 360, 92 }, 0.8),
 	Codex = region({ 0, 0 }, { 0, 0.55 }, { 14, 0 }, { 92, 30 }, 0),
 	ControlsPill = region({ 0, 0 }, { 0, 0.55 }, { 14, -40 }, { 150, 30 }, 0.85),
+	-- The training card (unscaled, grows with its text): right column, below the objective and above
+	-- the spell slots. F08: in the left column it covered the Codex button and the Controls pill.
+	Training = region({ 1, 0 }, { 1, 0 }, { -20, 172 }, { 360, 170 }, 0),
 }
 -- Health, flask, essence and weapon stay at least ~12 px on a 1096x604 window (F03 Studio view).
 Layout.Regions.Vitals.MinScale = 0.66
 Layout.Regions.Compass ={ Anchor = { 0.5, 0 }, At = { 0.5, 0 }, Offset = { 0, 8 }, Size = { 520, 60 }, Base = 0, WidthScale = 0.36, MinWidth = 240, MaxWidth = 520 }
 Layout.Regions.Boss = { Anchor = { 0.5, 0 }, At = { 0.5, 0 }, Offset = { 0, 74 }, Size = { 900, 148 }, Base = 0, WidthScale = 0.5, MinWidth = 300, MaxWidth = 900 }
+
+-- The general toast (InterfaceController): centred above the action bar, as wide as the band left
+-- between two side columns (the training card is 360 wide at 20 from the edge), wrapping to two lines.
+Layout.Toast = { Bottom = 200, Side = 400, Height = 48, MaxWidth = 640 }
+function Layout.toastRect(width: number, height: number): Rect
+	local t = Layout.Toast
+	local w = math.clamp(width - 2 * t.Side, 0, t.MaxWidth)
+	return { X = (width - w) / 2, Y = height - t.Bottom - t.Height, W = w, H = t.Height }
+end
 
 function Layout.factor(height: number): number
 	if height <= 1 then return 1 end

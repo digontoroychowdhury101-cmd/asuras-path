@@ -106,6 +106,31 @@ end
 -- A leap that must stay at height `high` while within `clear` horizontal studs of the pillar it
 -- leaves (`fromPillar`) or lands on (`toPillar`), so the body rises before it crosses the column
 -- and leaves the top before it falls. u runs 0..1; points are { x, y, z }.
+-- F07/F08: where a melee foe walks to engage: `stop` studs short of its target on the side it comes
+-- from. Steered at the target's own root, a humanoid pushed into the player and climbed onto their
+-- head (Studio: the Sparring Phantom stood 4 studs up at 0.8 flat and every swing passed beneath it).
+function Bodies.closeIn(fx: number, fz: number, tx: number, tz: number, stop: number): (number, number)
+	local dx, dz = fx - tx, fz - tz
+	local d = math.sqrt(dx * dx + dz * dz)
+	if d < 1e-3 then dx, dz, d = 0, 1, 1 end
+	return tx + dx / d * stop, tz + dz / d * stop
+end
+
+-- The engage point for one of two bodies closing on the same target (the Twins, F10: Zhao and the
+-- Bull both stood on the same closeIn point, 0.6 studs apart): the closeIn point, swung round the
+-- target until it is at least `gap` from the partner at (ox, oz).
+function Bodies.flank(fx: number, fz: number, tx: number, tz: number, stop: number, ox: number, oz: number, gap: number): (number, number)
+	local x, z = Bodies.closeIn(fx, fz, tx, tz, stop)
+	if (x - ox) ^ 2 + (z - oz) ^ 2 >= gap * gap then return x, z end
+	local po = math.max(math.sqrt((ox - tx) ^ 2 + (oz - tz) ^ 2), 1e-3)
+	local c = (stop * stop + po * po - gap * gap) / (2 * stop * po)
+	local delta = if c <= -1 then math.pi else math.acos(math.min(c, 1))
+	local other = math.atan2(oz - tz, ox - tx)
+	local diff = (math.atan2(z - tz, x - tx) - other + math.pi) % (2 * math.pi) - math.pi
+	local angle = other + (if diff >= 0 then 1 else -1) * delta
+	return tx + math.cos(angle) * stop, tz + math.sin(angle) * stop
+end
+
 function Bodies.arc(from: { number }, to: { number }, high: number, clear: number, fromPillar: boolean, toPillar: boolean, u: number): { number }
 	local dx, dz = to[1] - from[1], to[3] - from[3]
 	local distance = math.sqrt(dx * dx + dz * dz)

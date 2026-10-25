@@ -19,6 +19,8 @@ local InputMap = require("../src/shared/InputMap")
 local Combat = require("../src/simulation/CombatRules")
 local Weapons = require("../src/simulation/WeaponSchema")
 local World = require("../src/shared/WorldDefinitions")
+local AnimRules = require("../src/shared/BossAnimationRules")
+local Attacks = require("../src/shared/BossAttackCatalog")
 local V3, CF, Instance = Scene.V3, Scene.CF, Scene.Instance
 
 local passed, failed = 0, 0
@@ -417,6 +419,129 @@ for counter in counters do
 end
 check("hints only on the first few warnings", BossRules.CounterHintCount == 3 and string.find(src("src/client/Controllers/CombatHud.luau"), "count <= BossRules.CounterHintCount", 1, true))
 check("felled-in-flight bosses come down before dissolving", string.find(src("src/server/CharacterService.luau"), "A boss felled mid-flight", 1, true) ~= nil)
+
+-- 11. The shared boss animation contract (F10): per actor, phase and attack, honest fallbacks.
+local function attrs(t) return function(name) return t[name] end end
+local none = attrs({})
+for look, sets in AnimRules.Moves do
+	for phase = 1, #sets do
+		local slots = AnimRules.slots(look, phase)
+		local stock, ids = 0, 0
+		for _, action in slots do
+			local r = AnimRules.resolve(look, phase, action, nil, "R15", none)
+			if r.Source == "Stock" and AnimRules.validId(r.Id) then stock += 1 end
+			if string.sub(r.Key, 1, #look + 3) == look .. "_P" .. phase then ids += 1 end
+		end
+		check(look .. " P" .. phase .. ": every slot falls back to a stock track under its own key", stock == #slots and ids == #slots)
+		for _, move in Attacks[sets[phase]] do check(look .. " P" .. phase .. " requests " .. move.Id, table.find(slots, move.Id) ~= nil) end
+	end
+end
+check("every roster boss look has a move contract", AnimRules.Moves.GrandmasterShen and AnimRules.Moves.AzureWyrm and AnimRules.Moves.IronBull and AnimRules.Moves.GeneralZhao)
+local spears = AnimRules.resolve("SovereignWu", 1, "SoulSpears", nil, "R15", none)
+local thrust = AnimRules.resolve("GeneralZhao", 1, "LightningSpear", nil, "R15", none)
+check("attack kinds pick their stand-in (cast vs thrust)", spears.Id ~= thrust.Id and spears.Key == "SovereignWu_P1_SoulSpears" and not spears.Looped)
+local creature = AnimRules.resolve("VenerableBaize", 2, "MeteorPounce", nil, "Creature", none)
+check("a creature with nothing authored keeps its procedural pose", creature.Source == "Procedural" and creature.Id == nil)
+local wide = attrs({ AsuraBossAnimation_SlumberingTitan_CryptHand = "rbxassetid://111" })
+check("a look-wide override survives the phase change", AnimRules.resolve("SlumberingTitan", 1, "CryptHand", nil, "Creature", wide).Id == "rbxassetid://111"
+	and AnimRules.resolve("SlumberingTitan", 2, "CryptHand", nil, "Creature", wide).Source == "Override")
+local phased = attrs({ AsuraBossAnimation_SovereignWu_P2_Idle = "rbxassetid://222", AsuraBossAnimation_SovereignWu_Idle = "rbxassetid://333" })
+check("a phase override beats the look-wide one only in its phase", AnimRules.resolve("SovereignWu", 2, "Idle", nil, "R15", phased).Id == "rbxassetid://222"
+	and AnimRules.resolve("SovereignWu", 1, "Idle", nil, "R15", phased).Id == "rbxassetid://333")
+check("an attack without its own track uses the look's Strike override", AnimRules.resolve("GeneralZhao", 1, "ThunderQuickstep", nil, "R15",
+	attrs({ AsuraBossAnimation_GeneralZhao_Strike = "rbxassetid://444" })).Id == "rbxassetid://444")
+check("Shen's legacy override names still count", AnimRules.resolve("GrandmasterShen", 2, "Transform", nil, "R15",
+	attrs({ AsuraBossAnimation_Shen_Phase2_Transform = "rbxassetid://555" })).Source == "Override")
+check("malformed overrides are ignored", AnimRules.resolve("SovereignWu", 1, "Idle", nil, "R15", attrs({ AsuraBossAnimation_SovereignWu_Idle = "555" })).Source == "Stock")
+check("status names the stand-ins honestly", AnimRules.status("GrandmasterShen", 1, "R15", none) == "Fallback:Stock 0/5 authored (first missing GrandmasterShen_P1_Idle)"
+	and string.find(AnimRules.status("AzureWyrm", 2, "Creature", none), "Fallback:CreatureMotion 0/6", 1, true) ~= nil)
+local all = {}
+for _, action in AnimRules.slots("IronBull", 1) do all["AsuraBossAnimation_IronBull_" .. action] = "rbxassetid://9" end
+check("status reports a fully authored actor", AnimRules.status("IronBull", 1, "R15", attrs(all)) == "Authored 5/5")
+check("cosmetic tracks drive no gameplay (no marker/keyframe hooks)", not string.find(src("src/server/Services/BossAttackService.luau") .. src("src/simulation/CombatRules.luau")
+	.. src("src/server/Services/AIService.luau") .. src("src/server/CharacterService.luau"), "MarkerReached", 1, true))
+
+-- Server: the phase reaches the skin and the status; imported tracks bind per look.
+local shared = { CostumeSchema = Schema, BossBodies = Bodies, BossAnimationRules = AnimRules, WaitForChild = function() return {} end }
+local Appearance = Scene.load("src/server/Services/BossAppearance.luau", {
+	game = { GetService = function(_, n)
+		if n == "ServerStorage" then return storage end
+		return { WaitForChild = function() return { Shared = shared } end }
+	end },
+	script = { Parent = { CharacterService = { GetEntityByModel = function() return nil end }, CostumeKit = { phase = function() end } } } })
+template("AsuraBoss_GrandmasterShen_P1", full)
+local shen = actor("GrandmasterShen", "GrandmasterShen", 1)
+Appearance.phase(shen, "DisciplinedMaster", 1)
+local p1 = Skin.resolve(library, shen)
+Appearance.phase(shen, "DemonicChimera", 2) -- beginTransition: the set changes before applyPhase finishes
+check("the phase-2 skin resolves when the set changes (was _P1 until the transition ended)", p1.Name == "AsuraBoss_GrandmasterShen_P1"
+	and Skin.resolve(library, shen).Name == "AsuraBoss_GrandmasterShen_P2")
+check("phase change rewrites the animation status", string.find(shen:GetAttribute("AsuraAnimationStatus"), "first missing GrandmasterShen_P2_Idle", 1, true) ~= nil)
+local tracks = Instance.new("Folder"); tracks.Name = "AsuraBossAnimations"; tracks.Parent = library
+local function anim(name, id) local a = Instance.new("Animation"); a.Name = name; a.AnimationId = id; a.Parent = tracks end
+anim("SovereignWu_P2_Idle", "rbxassetid://777"); anim("SovereignWuX_Idle", "rbxassetid://778"); anim("SovereignWu_Bad", "nope"); anim("AzureWyrm_Idle", "rbxassetid://779")
+local wuActor = actor("SovereignWu", "SovereignWu", 1)
+Appearance.bindAnimations(wuActor, library)
+check("imported tracks bind to their own look only", wuActor:GetAttribute("AsuraBossAnimation_SovereignWu_P2_Idle") == "rbxassetid://777"
+	and wuActor:GetAttribute("AsuraBossAnimation_SovereignWuX_Idle") == nil and wuActor:GetAttribute("AsuraBossAnimation_SovereignWu_Bad") == nil
+	and wuActor:GetAttribute("AsuraBossAnimation_AzureWyrm_Idle") == nil)
+check("bosses bind imported tracks at spawn", string.find(src("src/server/Services/BossAppearance.luau"), "Appearance.bindAnimations(model, ServerStorage:FindFirstChild(\"AsuraAssets\"))", 1, true) ~= nil)
+
+-- Client: the dispatcher requests per actor and attack, re-resolves on phase, yields creature joints.
+local function fakeActor(look, rig, attributes)
+	local a = { Name = look, attributes = attributes or {}, loads = {} }
+	a.attributes.AsuraLookKey = look; a.attributes.AsuraRig = rig
+	function a:GetAttribute(n) return self.attributes[n] end
+	function a:SetAttribute(n, v) self.attributes[n] = v end
+	local animator = { LoadAnimation = function(_, animation)
+		local t = { Id = animation.AnimationId, IsPlaying = true }
+		function t:Play(_, _, speed) self.Speed = speed end
+		function t:Stop() self.IsPlaying = false end
+		function t:Destroy() end
+		table.insert(a.loads, t)
+		return t
+	end }
+	local humanoid = { RigType = "R15", FindFirstChildOfClass = function() return animator end }
+	function a:FindFirstChildOfClass(c) return if c == "Humanoid" then humanoid else nil end
+	return a
+end
+local Dispatch = Scene.load("src/client/Controllers/BossAnimations.luau", {
+	game = { GetService = function() return { AsurasPath = { Shared = { BossAnimationRules = AnimRules } } } end },
+	Instance = { new = function() return { Destroy = function() end } end },
+	Enum = { HumanoidRigType = { R6 = "R6" }, AnimationPriority = { Idle = 1, Action = 2, Action4 = 4 } } })
+local zhaoA, bullA = fakeActor("GeneralZhao", "Humanoid"), fakeActor("IronBull", "Humanoid")
+Dispatch.action(zhaoA, false, "LightningSpear", "PerilousThrust"); Dispatch.action(bullA, false, "ColossalHammer", "Shockwave")
+check("each Twin requests its own attack slot", zhaoA.attributes.AsuraAnimationPlaying == "GeneralZhao_P1_LightningSpear|Stock"
+	and bullA.attributes.AsuraAnimationPlaying == "IronBull_P1_ColossalHammer|Stock" and zhaoA.loads[1].Id ~= bullA.loads[1].Id)
+local wuA = fakeActor("SovereignWu", "Humanoid", { AsuraBossPhase = 1, AsuraAnimationSet = "Ancient Oath", AsuraBossAnimation_SovereignWu_P2_Idle = "rbxassetid://777" })
+Dispatch.sync(wuA); Dispatch.sync(wuA)
+check("idle is requested once per phase", #wuA.loads == 1 and wuA.attributes.AsuraAnimationPlaying == "SovereignWu_P1_Idle|Stock")
+wuA.attributes.AsuraBossPhase, wuA.attributes.AsuraAnimationSet = 2, "Unbound"
+Dispatch.sync(wuA)
+check("a phase change re-resolves and plays the phase override", #wuA.loads == 2 and wuA.loads[2].Id == "rbxassetid://777" and not wuA.loads[1].IsPlaying)
+local wyrmA = fakeActor("AzureWyrm", "Creature")
+Dispatch.action(wyrmA, false, "AzureTail", "Tail")
+check("a creature without tracks loads nothing and keeps procedural motion", #wyrmA.loads == 0 and wyrmA.attributes.AsuraAuthoredMotion == nil
+	and wyrmA.attributes.AsuraAnimationPlaying == "AzureWyrm_P1_AzureTail|Procedural")
+wyrmA.attributes.AsuraBossAnimation_AzureWyrm_AzureTail = "rbxassetid://880"
+Dispatch.action(wyrmA, false, "AzureTail", "Tail")
+check("an authored creature track plays and claims the joints", #wyrmA.loads == 1 and wyrmA.attributes.AsuraAuthoredMotion == true)
+check("CreatureMotion releases joints an authored track owns", string.find(src("src/client/Controllers/CreatureMotion.luau"), "AsuraAuthoredMotion\") == true", 1, true) ~= nil)
+check("telegraphs pass the move and kind to the dispatcher", string.find(src("src/client/Controllers/InterfaceController.luau"), "BossAnimations.action(sourceEntity.Model, cue.Kind ~= \"Telegraph\", data.move, data.kind)", 1, true) ~= nil)
+
+-- 12. The Twins flank instead of sharing one engage point (F10: 0.6 studs apart in Studio).
+do
+	local zx, zz = Bodies.closeIn(0, 20, 0, 0, 4)
+	local bx, bz = Bodies.flank(0.5, 22, 0, 0, 4, zx, zz, 7.25)
+	check("the second Twin swings round the target, clear of its partner", math.sqrt((bx - zx) ^ 2 + (bz - zz) ^ 2) >= 7.25 - 1e-6
+		and math.abs(math.sqrt(bx * bx + bz * bz) - 4) < 1e-6)
+	local fx, fz = Bodies.flank(0, -20, 0, 0, 4, zx, zz, 7.25)
+	local cx, cz = Bodies.closeIn(0, -20, 0, 0, 4)
+	check("a Twin already on another side keeps its own engage point", fx == cx and fz == cz)
+	local ax, az = Bodies.flank(0, 0, 0, 0, 4, 0, 4, 7.25)
+	check("flank resolves a coincident start", ax == ax and math.sqrt((ax) ^ 2 + (az - 4) ^ 2) >= 7.25 - 1e-6)
+	check("AI chases flank the living partner", string.find(src("src/server/Services/AIService.luau"), "Bodies.flank(at.X, at.Z, to.X, to.Z, reach * 0.6", 1, true) ~= nil)
+end
 
 print(string.format("boss presentation: %d passed, %d failed", passed, failed))
 if failed > 0 then error("boss presentation regression failed") end

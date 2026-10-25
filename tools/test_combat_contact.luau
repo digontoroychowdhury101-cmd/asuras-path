@@ -109,6 +109,7 @@ check("own feint explained", string.find(Contact.describe("Feint", 1, 1, 5, 1, f
 check("nearby foe feint called", Contact.describe("Feint", 9, 9, 5, 1, true).Text == "FEINT" and Contact.describe("Feint", 9, 9, 5, 1, false) == nil)
 local callouts = src("src/client/Controllers/CombatCallouts.luau")
 check("callouts use ContactCues", string.find(callouts, "Contact.describe(event.Kind", 1, true) ~= nil)
+check("EVADED is called only out of a dash (F08: shown while helpless after a deathblow)", string.find(callouts, 'event.Kind == "Evade" and event.Source == own and view.OwnState ~= "Dashing" then return false', 1, true) ~= nil)
 check("existing parry/deathblow calls kept", string.find(callouts, '"PARRY!"', 1, true) and string.find(callouts, '"DEATHBLOW"', 1, true))
 check("reach arc drawn on whiffs", string.find(src("src/client/Controllers/GameFeelController.luau"), 'kind=="Whiff"', 1, true) and string.find(src("src/client/Controllers/CombatVfx.luau"), "function Vfx.arc", 1, true))
 
@@ -134,6 +135,7 @@ check("refusal is cued every press", string.find(ws, 'Characters.Cue("HealRefuse
 check("no joint breakup", string.find(cs, "humanoid.BreakJointsOnDeath = false", 1, true) ~= nil)
 check("corpse pinned and non-blocking", string.find(cs, "d.CanCollide, d.CanQuery, d.CanTouch = false, false, false", 1, true) and string.find(cs, 'e.Model:SetAttribute("AsuraDissolve", simTime)', 1, true))
 check("corpse settled once when KO begins", string.find(cs, "e.Humanoid:MoveTo(e.Root.Position)\n\t\t\tsettleCorpse(e)", 1, true) ~= nil)
+check("a foe executed at 0 HP drops its plate and lock at the deathblow, not at the KO (F07)", string.find(src("src/client/Controllers/WorldStateController.luau"), 'snapshot.State == "DeathblowVictim" and snapshot.ActiveHP <= 0', 1, true) ~= nil)
 check("plates and lock drop at once", string.find(src("src/client/Controllers/WorldStateController.luau"), 'entity.Model:GetAttribute("AsuraDissolve") == nil', 1, true) ~= nil)
 local dsrc = src("src/client/Controllers/EnemyDissolve.luau")
 local Dissolve = luau.load(dsrc, { debugName = "EnemyDissolve", environment = {
@@ -147,6 +149,100 @@ check("falls forward toward its facing", down.Position.Z < -1 and down.Position.
 check("feet stay planted while it falls", (feet - roblox.Vector3.new(0, 0, 0)).Magnitude < 1e-4)
 check("collapse time fits before the server removes the body", Dissolve.Collapse + Dissolve.Fade < Settings.Respawn.EnemyCorpseTime)
 check("dissolve wired into game feel", string.find(src("src/client/Controllers/GameFeelController.luau"), "self.Dissolve:Update(dt)", 1, true) ~= nil)
+
+-- 10a. F07 (Studio): the lone monk's killing deathblow ended in "KO 0 -> monk" and no Essence.
+do
+	local killer, victim = Combat.new(31, "Jian", T), Combat.new(-32, "Jian", T)
+	victim.ActiveHP = 5
+	local events = {}
+	Combat.executeDeathblow(killer, victim, T, events)
+	advance(victim, events, T, T + Settings.Stun.DeathblowVictim + 0.1)
+	local ko
+	for _, e in events do if e.Kind == "KO" then ko = e end end
+	check("a killing deathblow's KO names the executioner", ko ~= nil and ko.Source == 31 and ko.Target == -32 and victim.State == "KO")
+	check("Essence, mastery and ore are credited to the KO's source", string.find(src("src/server/Services/WorldService.luau"), "local killer=sessions[event.Source]", 1, true) ~= nil)
+	local survivor = Combat.new(-33, "Jian", T)
+	events = {}
+	Combat.executeDeathblow(killer, survivor, T, events)
+	advance(survivor, events, T, T + Settings.Stun.DeathblowVictim + 0.1)
+	local none = true
+	for _, e in events do if e.Kind == "KO" then none = false end end
+	check("a deathblow that leaves the foe standing reports no KO", none and survivor.State == "Idle")
+end
+
+-- 10b. F07 (Studio, seeded): a Jian thrust 7.8 studs from the Sparring Phantom whiffed every time
+-- although its authored reach covers that body. The real weaponSegment / resolveContacts /
+-- sweepClosingWindows, real LagCompensation and CombatRules run in the server's tick order.
+local Tempo = require("../src/simulation/Tempo")
+local function between(text, from, to)
+	local s = assert(string.find(text, from, 1, true), from)
+	return string.sub(text, s, (assert(string.find(text, to, s, true), to)) - 1)
+end
+local geo = { Vector3 = roblox.Vector3, CFrame = roblox.CFrame, math = math, table = table, type = type, setmetatable = setmetatable,
+	ipairs = ipairs, pairs = pairs, next = next, assert = assert, error = error, tostring = tostring, string = string, os = os }
+local Lag = luau.load(src("src/server/LagCompensation.luau"), { debugName = "LagCompensation", environment = geo })()
+local chunk = "local Combat, Lag, TICK, FACING_DOT, entities, frameEvents, eventPoints = ...\n"
+	.. "local function alive() return true end\nlocal function hostile() return true end\n"
+	.. "local function facingDot() return 1 end\nlocal function awardXp() end\n"
+	.. between(cs, "local function weaponSegment(", "\n-------") .. "\n"
+	.. between(cs, "local function resolveContacts(", "\n-- Whiffs (batch 09)")
+	.. "\nreturn resolveContacts, sweepClosingWindows"
+local function duel(flat: number, closingSweep: boolean): string
+	local entities, frameEvents = {}, {}
+	local resolve, sweep = luau.load(chunk, { debugName = "Contacts", environment = geo })(Combat, Lag, Tempo.TickSeconds, 0.15, entities, frameEvents, {})
+	local a, b = Combat.new(1, "Jian", T), Combat.new(-1, "Jian", T)
+	local aRoot = roblox.CFrame.lookAt(roblox.Vector3.new(0, 3.2, 0), roblox.Vector3.new(0, 3.2, -10))
+	local bRoot = roblox.CFrame.lookAt(roblox.Vector3.new(0, 3.39, -flat), roblox.Vector3.new(0, 3.39, 0))
+	local history = Lag.newHistory()
+	for i = -30, 0 do Lag.record(history, T + i * Tempo.TickSeconds, bRoot, roblox.Vector3.zero) end
+	local ea = { Id = 1, Fighter = a, Root = { CFrame = aRoot, Position = aRoot.Position }, Model = { GetAttribute = function() return nil end } }
+	local eb = { Id = -1, Fighter = b, Root = { CFrame = bRoot, Position = bRoot.Position }, Model = ea.Model, History = history }
+	entities[1], entities[-1] = ea, eb
+	assert(Combat.tryAttack(a, "Light", T))
+	local t = T
+	for _ = 1, 40 do
+		t += Tempo.TickSeconds
+		Lag.record(history, t, bRoot, roblox.Vector3.zero)
+		if closingSweep then sweep({ ea, eb }, t) end
+		Combat.step(a, t, Tempo.TickSeconds, frameEvents); Combat.step(b, t, Tempo.TickSeconds, frameEvents)
+		if a.State == "Active" then resolve(ea, t) end
+	end
+	return kinds(frameEvents)
+end
+check("old tick order never swept the final active frame (the Studio whiff)", duel(7.8, false) == "Whiff")
+check("closing sweep lands the thrust at its authored reach", string.find(duel(7.8, true), "Hit", 1, true) ~= nil and not string.find(duel(7.8, true), "Whiff", 1, true))
+check("beyond blade + body the thrust still whiffs", duel(9.6, true) == "Whiff")
+check("closing sweep runs before the step ends the window", string.find(cs, "sweepClosingWindows(live, now)\n\tlocal stepped = #frameEvents + 1", 1, true) ~= nil)
+
+-- 10c. F08 (Studio): the Sparring Phantom stood in Engage 8.4 studs from a player who waited, because
+-- Humanoid:MoveTo times out after 8 s and the same target point was never re-issued.
+do
+	local moveChunk = "local Service, entities, alive, Vector3 = {}, ...\nlocal simTime = 0\n" .. string.match(cs, "local MOVE_RENEW = [^\n]+") .. "\n"
+		.. between(cs, "function Service.MoveTo(", "\nfunction Service.StopMoving(")
+		.. "\nreturn Service, function(t) simTime = t end"
+	local orders = 0
+	local e = { Kind = "Enemy", LastMoveTo = roblox.Vector3.new(math.huge, 0, 0), MoveIssuedAt = 0, Humanoid = { MoveTo = function() orders += 1 end } }
+	local Service, setTime = luau.load(moveChunk, { debugName = "MoveTo", environment = geo })({ [7] = e }, function() return true end, roblox.Vector3)
+	local foe = roblox.Vector3.new(0, 3, -8)
+	setTime(1); Service.MoveTo(7, foe)
+	setTime(2); Service.MoveTo(7, foe)
+	check("a chase is not re-ordered every think", orders == 1)
+	setTime(6); Service.MoveTo(7, foe)
+	check("a chase toward a foe standing still is renewed before the 8 s engine timeout", orders == 2)
+	setTime(6.5); Service.MoveTo(7, foe + roblox.Vector3.new(2, 0, 0))
+	check("a moving foe still re-orders at once", orders == 3)
+	-- F08 (Studio): steered at the player's root, the phantom climbed onto their head.
+	local Bodies = require("../src/shared/BossBodies")
+	local x, z = Bodies.closeIn(10, 0, 0, 0, 2.4)
+	check("a chase stops short of the target on its own side", math.abs(x - 2.4) < 1e-9 and math.abs(z) < 1e-9)
+	x, z = Bodies.closeIn(0.2, 0.1, 0, 0, 2.4)
+	check("a foe on top of its target steps back off to fighting distance", math.abs(math.sqrt(x * x + z * z) - 2.4) < 1e-9)
+	x, z = Bodies.closeIn(0, 0, 0, 0, 2.4)
+	check("a foe exactly on its target still gets a point to stand on", math.abs(math.sqrt(x * x + z * z) - 2.4) < 1e-9)
+	local ai = src("src/server/Services/AIService.luau")
+	check("no chase steers a body onto its target's root", not string.find(ai, "moveTo(agent, target.Root.Position)", 1, true)
+		and select(2, string.gsub(ai, "closeIn%(agent, self, target, reach%)", "")) == 2 and string.find(ai, "reach * 0.6", 1, true) ~= nil)
+end
 
 -- 11. Hygiene.
 for _, path in { "src/shared/ContactCues.luau", "src/client/Controllers/EnemyDissolve.luau", "src/client/Controllers/CombatCallouts.luau", "src/client/Controllers/CombatVfx.luau" } do

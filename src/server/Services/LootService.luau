@@ -30,12 +30,14 @@ function Loot.Sync(player: Player,open: boolean?)
  local inventory=table.clone(p.souls.inventory);inventory.materials=table.clone(p.inventory.Materials)
  remote:FireClient(player,{action="State",inventory=inventory,cooldowns=Magic.Cooldowns(player.UserId),open=open or false})
 end
+-- Assert messages carry "Script:line: "; players see only the reason (F06: the toast showed the script path).
+local function reason(err: any): string return (string.gsub(tostring(err),"^.-:%d+: ","")) end
 local function transact(player: Player,mutate: (any)->())
  local id=player.UserId;if busy[id] then return end;busy[id]=true
  local ok,err=Persistence.Transaction(id,function(p: any) mutate(p.souls.inventory) end)
  busy[id]=nil
  if ok then Characters.RefreshProgression(id);Loot.Sync(player) end
- if player.Parent then remote:FireClient(player,{action="Result",ok=ok,message=if ok then "Arsenal updated" else tostring(err)}) end
+ if player.Parent then remote:FireClient(player,{action="Result",ok=ok,message=if ok then "Arsenal updated" else reason(err)}) end
 end
 function Loot.Claim(player: Player,id: string)
  local c=Catalog.Caches[id];local e=available(player.UserId)
@@ -61,7 +63,7 @@ local function useTalisman(player: Player)
  end)
  busy[id]=nil
  if ok and available(id)==e then e.Fighter.WardUntil=Characters.Now()+30 end
- Loot.Sync(player);remote:FireClient(player,{action="Result",ok=ok,message=if ok then "Last Breath · one fatal blow warded for 30s" else tostring(err)})
+ Loot.Sync(player);remote:FireClient(player,{action="Result",ok=ok,message=if ok then "Last Breath · one fatal blow warded for 30s" else reason(err)})
 end
 local function handle(player: Player,packet: any)
  if not Protocol.valid(packet) or packet.action=="Cast" then return end

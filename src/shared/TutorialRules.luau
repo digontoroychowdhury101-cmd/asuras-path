@@ -62,15 +62,20 @@ function Rules.finished(done: { [string]: boolean }): boolean
 	return Rules.current(done) == nil
 end
 
+-- What the player's fighter was doing when the event fired (TutorialService reads it).
+export type Own = { State: string, Move: string? }
 -- Combat event (as CombatRules emits it) -> the signal it proves for `player`, or nil.
--- `perilous` says the attacker's strike was unblockable (a perilous attack).
-function Rules.signal(kind: string, source: number, target: number, player: number, perilous: boolean): string?
+-- `perilous` says the attacker's strike was unblockable (a perilous attack). F08: CombatRules reports
+-- Evade for any invulnerability (Studio logged the player "evading" while lying helpless after a
+-- deathblow) and Hit for spells, arts and burn ticks, so a dodge needs a dash and Light an M1 move.
+function Rules.signal(kind: string, source: number, target: number, player: number, perilous: boolean, own: Own?): string?
 	if kind == "Hit" or kind == "CounterHit" then
-		return if source == player then "Light" else nil
+		local m1 = own ~= nil and (own.Move == "Light" or own.Move == "RunningAttack")
+		return if source == player and m1 then "Light" else nil
 	elseif kind == "Block" then
 		return if target == player then "Guard" else nil
 	elseif kind == "DeflectSpark" or kind == "Evade" then -- Source avoided Target's strike
-		if source ~= player then return nil end
+		if source ~= player or (kind == "Evade" and not (own and own.State == "Dashing")) then return nil end
 		if perilous then return "Perilous" end
 		return if kind == "DeflectSpark" then "Deflect" else "Dodge"
 	elseif kind == "Rally" then

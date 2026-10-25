@@ -10,6 +10,7 @@ local Characters = require(script.Parent.CharacterService)
 local Routes = require(Shared.Shared.SanctuaryRoutes)
 local Campaign = require(Shared.Shared.CampaignZones)
 local Arenas = {}
+Arenas.FloorColor = Color3.fromRGB(118, 110, 100) -- duel floor tone (F09 readability)
 local walls: { [string]: { Part } } = {}
 local function part(parent: Instance, name: string, size: Vector3, position: Vector3, color: Color3): Part
 	local p = Instance.new("Part")
@@ -48,7 +49,9 @@ function Arenas.build(root: Instance)
 	for _, boss in World.Bosses do
 		local c, s = boss.Arena.Center, boss.Arena.Size
 		local center = Vector3.new(c.X, 0, c.Z)
-		part(folder, boss.Id .. "Floor", Vector3.new(s.X, 4, s.Z), center - Vector3.new(0, 2, 0), Color3.fromRGB(49, 45, 43))
+		-- F09: a mid stone, not near-black slate: at the low dusk sun the bare Titan and Wu floors read
+		-- black, and dark costumes (the player, Wu) vanished against them. Lights are unchanged.
+		part(folder, boss.Id .. "Floor", Vector3.new(s.X, 4, s.Z), center - Vector3.new(0, 2, 0), Arenas.FloorColor)
 		part(folder, boss.Id .. "Approach", Vector3.new(30, 4, 40), center + Vector3.new(0, -2, s.Z / 2 + 20), Color3.fromRGB(61, 56, 48))
 		local boundary: { Part } = {}
 		-- Entrance is on the north face; only the fog aperture remains open there.

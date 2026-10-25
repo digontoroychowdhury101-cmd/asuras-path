@@ -48,6 +48,7 @@ local Vector2={new=function(x,y) return {X=x,Y=y} end}
 local CF={};CF.__index=CF;CF.__mul=function(a,b) return setmetatable({Position=a.Position+b.Position},CF) end
 local CFrame={new=function(x,y,z) return setmetatable({Position=if type(x)=="table" then x else vec(x,y,z)},CF) end}
 function CFrame.lookAt(p) return CFrame.new(p) end
+function CFrame.Angles() return CFrame.new(0,0,0) end -- position-only fake: rotations are identity
 local function dim(...) return {...} end
 local UDim2={new=dim,fromOffset=dim,fromScale=dim};local UDim={new=dim}
 local Enum=setmetatable({}, {__index=function(t,k) local v=setmetatable({}, {__index=function(_,key) return key end});rawset(t,k,v);return v end})
@@ -61,7 +62,7 @@ end,__newindex=function(t,k,v)
  rawset(t,k,v);if k=="Parent" and v and v.Children then table.insert(v.Children,t) end
 end}
 function Instance.new(kind) return setmetatable({ClassName=kind,Children={},Activated=signal(),Triggered=signal(),Attributes={}},MT) end
-function Methods:IsA(kind) return self.ClassName==kind or (kind=="GuiObject" and self.ClassName~="UIListLayout") end
+function Methods:IsA(kind) return self.ClassName==kind or (kind=="GuiObject" and self.ClassName~="UIListLayout") or (kind=="BasePart" and (self.ClassName=="Part" or self.ClassName=="MeshPart")) end
 function Methods:GetChildren() return self.Children end
 function Methods:GetDescendants()
  local result={};for _,child in self.Children do table.insert(result,child);for _,v in child:GetDescendants() do table.insert(result,v) end end;return result
@@ -89,18 +90,19 @@ local net=setmetatable({WaitForChild=function(self,key) return self[key] end},{_
 local actors={};local player={UserId=7,Parent=true,CharacterRemoving=signal(),CharacterAdded=signal()}
 player.Gui=Instance.new("PlayerGui")
 function player:WaitForChild() return self.Gui end
-player.Character=Instance.new("Model");local root=Instance.new("Part");root.Name="HumanoidRootPart";root.Position=vec();root.Parent=player.Character
+player.Character=Instance.new("Model");local root=Instance.new("Part");root.Name="HumanoidRootPart";root.Position=vec();root.LocalTransparencyModifier=0;root.Parent=player.Character
 local Players={LocalPlayer=player,PlayerRemoving=signal()}
 function Players:GetPlayerByUserId(id) return if id==7 and player.Parent then player else nil end
 function Players:GetPlayers() return if player.Parent then {player} else {} end
 local workspace={Children={},GetServerTimeNow=function() return clock end}
 workspace.FindFirstChild=Methods.FindFirstChild
 workspace.CurrentCamera=Instance.new("Camera")
+workspace.CurrentCamera.ViewportSize=vec(1221,503,0) -- the short desktop view where the panel hid Lin's face (F04)
 function workspace:Raycast() return nil end
 local RaycastParams={new=function() return {} end}
 local Run={Heartbeat=signal()}
 local inputService={InputBegan=signal(),GamepadEnabled=false}
-local services={ReplicatedStorage={AsurasPath={Shared={},Net=net}},Players=Players,RunService=Run,UserInputService=inputService,GuiService={},Workspace=workspace,ProximityPromptService={Enabled=true}}
+local services={ReplicatedStorage={AsurasPath={Shared={},Net=net}},Players=Players,RunService=Run,UserInputService=inputService,GuiService={GetGuiInset=function() return vec(0,58,0),vec() end},Workspace=workspace,ProximityPromptService={Enabled=true},CollectionService={AddTag=function() end,GetTagged=function() return {} end}}
 local game={GetService=function(_,key) return assert(services[key],key) end}
 local db={};local database={UpdateAsync=function(_,key,fn)
  -- Invoke the callback twice and discard the speculative result, like an UpdateAsync retry.
@@ -263,10 +265,12 @@ local client=DialogueClient.new(camera,ui.Input,ui)
 move(Catalog.NPCs.Gao.X,Catalog.NPCs.Gao.Y,Catalog.NPCs.Gao.Z)
 DialogueService.Open(player,"Gao");client:Receive(latest())
 check(client.Open and ui.Input.MenuOpen and camera.DialogueFrame~=nil,"portrait camera and gameplay input are owned during dialogue")
+check(root.LocalTransparencyModifier==1,"the player's own avatar is hidden from the portrait shot (F04: hat over Lin's face)")
 client.View.Buttons[1].Activated:Fire()
 check(remotes.DialogueIntent.Sent[#remotes.DialogueIntent.Sent].revision==latest().revision,"client choices carry current revision")
 check(client.View.Subtitle.RichText and client.View.Subtitle.MaxVisibleGraphemes>=1,"rich subtitle typewriter starts")
 client:Close();check(not ui.Input.MenuOpen and camera.DialogueFrame==nil,"dialogue close restores camera and input")
+check(root.LocalTransparencyModifier~=1,"closing restores the player's avatar")
 send({action="Codex"});check(latest().action=="Codex","codex request answered with server discovery flags");client:Receive(latest())
 local function texts() local all=client.View.Subtitle.Text.." "..client.View.Status.Text;for _,c in client.View.List.Children do if not c.Destroyed then all..=" "..tostring(c.Text) end end;return all end
 local shown=texts()
@@ -289,9 +293,15 @@ check(client.Portrait==nil and camera.DialogueFrame==nil and ui.Altar.Visible an
 ui:CloseAltar();send({action="Summon",id="Altar_MonasteryGate"});client:Receive(latest())
 remotes.DialogueIntent.OnClientEvent:Fire({action="Close",reason="Farewell"})
 check(ui.Altar.Visible and not client.Open,"farewell choice also returns to the altar")
+-- F04: at the Cloister the rest respawned monks that engaged at once, and Summon did nothing and said nothing.
+ui:CloseAltar();ui.Altar.Visible=true;hunting=true
+send({action="Summon",id="Altar_MonasteryGate"});client:Receive(latest())
+check(latest().action=="Refused" and string.find(latest().message,"hunt",1,true)~=nil and not client.Open and ui.Altar.Visible,"a summon refused while foes hunt says why and keeps the altar menu")
+hunting=false;ui:CloseAltar()
 ui:CloseAltar();ui.ReopenedAltar=nil;send({action="Summon",id="Altar_MonasteryGate"});client:Receive(latest())
 player.CharacterAdded:Fire(player.Character)
 check(not client.Open and not ui.Input.MenuOpen and camera.DialogueFrame==nil and client.Portrait==nil and ui.ReopenedAltar==nil,"respawn closes the conversation and restores camera and input without reopening menus")
+check(root.LocalTransparencyModifier~=1,"respawn mid-conversation leaves no hidden avatar")
 send({action="Summon",id="Altar_MonasteryGate"});client:Receive(latest());ui.DeathShown=true
 remotes.DialogueIntent.OnClientEvent:Fire({action="Close"})
 check(not client.Open and not ui.Input.MenuOpen and not ui.Altar.Visible,"closing during death restores input and opens nothing")

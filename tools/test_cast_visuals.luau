@@ -45,17 +45,20 @@ for _, id in { "Lin", "Hermit" } do
 	local look = Looks[id].Look
 	local toward = (V3.new(look[1], n.Y, look[2]) - V3.new(n.X, n.Y, n.Z)).Unit
 	check(id .. " faces the way players approach", torso.CFrame.LookVector:Dot(toward) > 0.98)
-	local wrong, top, lo, hi = 0, -math.huge, V3.new(math.huge, math.huge, math.huge), V3.new(-math.huge, -math.huge, -math.huge)
+	local wrong, sighted, top, lo, hi = 0, 0, -math.huge, V3.new(math.huge, math.huge, math.huge), V3.new(-math.huge, -math.huge, -math.huge)
 	for _, part in model:GetDescendants() do
 		if part:IsA("BasePart") then
 			local solid = part.Parent == model and (part.Name == "UpperTorso" or part.Name == "LowerTorso" or string.find(part.Name, "Leg") ~= nil)
 			if part.CanCollide ~= solid then wrong += 1 end
+			if part.CanQuery ~= solid then sighted += 1 end
 			local local_ = torso.CFrame:PointToObjectSpace(part.CFrame.Position)
 			lo, hi = V3.new(math.min(lo.X, local_.X), math.min(lo.Y, local_.Y), math.min(lo.Z, local_.Z)), V3.new(math.max(hi.X, local_.X), math.max(hi.Y, local_.Y), math.max(hi.Z, local_.Z))
 			top = math.max(top, part.CFrame.Position.Y + part.Size.Y / 2)
 		end
 	end
 	check(id .. " only its torso and legs collide; attire never does", wrong == 0)
+	-- F03: Lin's own arm hid her Speak prompt (line of sight to the torso) whenever the camera swung past her.
+	check(id .. " non-colliding limbs never block its Speak prompt's line of sight", sighted == 0)
 	silhouettes[id] = { Size = hi - lo, Top = top - head.CFrame.Position.Y }
 end
 check("the Hermit's staff rises well over his head", silhouettes.Hermit.Top > 1.5 and silhouettes.Lin.Top < 1.2)

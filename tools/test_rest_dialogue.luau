@@ -80,6 +80,38 @@ check("blocked right shoulder falls back to the left", clean and pos == left)
 local fire = function(from, to) if from.Y < subject.Y - 0.5 and to.Z > 2 then return from:Lerp(to, 0.5) end return nil end
 pos, clean = Portrait.choose(subject, viewer, fire)
 check("fire blocking the chest line is not accepted as clear", not clean or pos.Z <= 2)
+-- F13: a speaker outside JadeCataclysm (Gao in the Sanctuary loggia) is found by its AsuraNPC tag, so
+-- its own body is excluded from the probe instead of blocking every shot (the overhead fallback).
+local function fakeModel(name, key)
+	return { Name = name, IsA = function(_, c) return c == "Model" end, GetAttribute = function(_, a) return if a == "AsuraNPC" then key else nil end }
+end
+local lin, gaoModel = fakeModel("Lin", nil), fakeModel("MasterSmithGao", "Gao")
+local jade = { FindFirstChild = function(_, n) return if n == "Lin" then lin else nil end }
+check("speakers in JadeCataclysm resolve by name", Portrait.speaker("Lin", jade, {}) == lin)
+check("Gao resolves by his AsuraNPC tag", Portrait.speaker("Gao", jade, { lin, gaoModel }) == gaoModel and Portrait.speaker("Hermit", jade, { gaoModel }) == nil)
+local selfBlocked = function(from, to) return from:Lerp(to, 0.05) end
+local over = Portrait.choose(subject, viewer, selfBlocked)
+check("an unexcluded speaker body forces the overhead fallback (why the lookup matters)", over.Y >= subject.Y + 5)
+-- F13: the Transmutation Seal stands beside Gao, so from any spot in front of him "Speak" (the nearer
+-- Z prompt, OnePerButton) wins; beside the seal its own prompt wins. At Loggia.X+5 it stood in front.
+do
+	local Loggia = require("../src/shared/WorldDefinitions").Sanctuary.Loggia
+	local offset = tonumber(string.match(src(S .. "LootWorld.luau"), "LootWorld%.SealOffset=(%-?%d+)"))
+	local stand = V(Loggia.X - 2, Loggia.Y, Loggia.Z - 1) -- SanctuaryService: base * CFrame.new(-2, 0, -1)
+	local function speakWins(sealAt)
+		for dx = 3, 7 do for dz = -1, 1 do
+			local spot = stand + V(dx, 0, dz)
+			if (spot - stand).Magnitude + 1.5 > (spot - sealAt).Magnitude then return false end
+		end end
+		return true
+	end
+	local sealAt = V(Loggia.X, Loggia.Y, Loggia.Z + (offset or 0))
+	check("Speak beats the seal from in front of Gao", offset ~= nil and speakWins(sealAt) and not speakWins(V(Loggia.X + 5, Loggia.Y, Loggia.Z)))
+	local beside = sealAt + V(3, 0, 0)
+	check("the seal still wins beside itself and stays within its 12-stud prompt", (beside - sealAt).Magnitude < (beside - stand).Magnitude and (stand + V(5, 0, 0) - sealAt).Magnitude <= 12)
+end
+check("dialogue frames speakers through the tag lookup", has(C .. "DialogueController.luau", 'Portrait.speaker(p.npc,workspace:FindFirstChild("JadeCataclysm"),CollectionService:GetTagged("AsuraNPC"))')
+	and has(S .. "SanctuaryService.luau", 'model:SetAttribute("AsuraNPC", "Gao")'))
 -- A wall closes every angle 5 studs out: the shot is pulled in front of it, never through it.
 local wall = function(from, to)
 	if (to - subject).Magnitude > 5 then return from + (to - from).Unit * 5 end
@@ -87,6 +119,16 @@ local wall = function(from, to)
 end
 pos, clean = Portrait.choose(subject, viewer, wall)
 check("enclosed altar pulls the camera in front of the stone", not clean and (pos - subject).Magnitude <= 5 - Portrait.Margin + 1e-6 and (pos - subject).Magnitude >= Portrait.MinReach)
+-- F04: a head at the screen centre sat behind the dialogue panel (top at 40% on a 1221x503 view).
+local function screenY(cf, point)
+	local p = cf:PointToObjectSpace(point)
+	return (1 - (p.Y / -p.Z) / math.tan(math.rad(Portrait.Fov) / 2)) / 2, p.Z
+end
+local face = subject + V(0, 0.6, 0)
+local aimed = Portrait.aim(right, face, 0.3)
+local y, depth = screenY(aimed, face)
+check("the face is framed in the band above the dialogue panel", math.abs(y - 0.3) < 0.01 and depth < 0)
+check("the panel-free centre framing is still available", math.abs(screenY(Portrait.aim(right, face, 0.5), face) - 0.5) < 1e-6)
 local tight = function(from, to) return from + (to - from).Unit * 1 end
 pos, clean = Portrait.choose(subject, viewer, tight)
 check("no viable angle falls back to a raised shot", not clean and pos.Y > subject.Y + 4)

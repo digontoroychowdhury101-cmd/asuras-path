@@ -296,8 +296,10 @@ end
 function Controller.IsAlive(_self: WorldState, entity: Entity): boolean
 	local snapshot = entity.Snapshot
 	-- A dissolving enemy (server-pinned corpse) is dead at once, even before its KO snapshot arrives,
-	-- so plates, lock-on and minimap dots drop the moment it falls.
-	return entity.Model.Parent ~= nil and entity.Root ~= nil and (snapshot == nil or snapshot.State ~= "KO")
+	-- so plates, lock-on and minimap dots drop the moment it falls. F07: so is the victim of a killing
+	-- deathblow, whose KO waits out the 1.6 s execution (its plate sat at 0 HP until then).
+	local executed = snapshot ~= nil and snapshot.State == "DeathblowVictim" and snapshot.ActiveHP <= 0
+	return entity.Model.Parent ~= nil and entity.Root ~= nil and (snapshot == nil or snapshot.State ~= "KO") and not executed
 		and entity.Model:GetAttribute("AsuraDissolve") == nil
 end
 

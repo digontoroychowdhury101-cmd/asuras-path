@@ -233,8 +233,16 @@ input:SetMenu(false)
 input:SetMenu(true, "Dialogue"); input:SetMenu(true, "Pause"); input:SetMenu(false, "Pause")
 table.clear(sent); input:Press("Swap"); input:Press("Interact")
 check(input.MenuOpen and not move.Enabled and #sent == 0, "closing one window keeps input with the dialogue still open")
+-- F03: B is both Dash and every window's back button; sinking it left Lin's "[B] leave" dead on a pad.
+check(action(Enum.KeyCode.ButtonB,Enum.UserInputState.Begin,Enum.UserInputType.Gamepad1) == Enum.ContextActionResult.Pass,
+	"an open window receives B unprocessed for its back button")
+check(action(Enum.KeyCode.Space,Enum.UserInputState.Begin) == Enum.ContextActionResult.Sink, "other movement keys stay sunk under a window")
+action(Enum.KeyCode.Space,Enum.UserInputState.End)
 input:SetMenu(false, "Dialogue"); input:Press("Swap")
 check(not input.MenuOpen and move.Enabled and sent[1] == "Swap", "input returns once the last window closes")
+check(action(Enum.KeyCode.ButtonB,Enum.UserInputState.Begin,Enum.UserInputType.Gamepad1) == Enum.ContextActionResult.Sink and lastCommand == "Dash",
+	"with no window open B is Dash again")
+input:Step(0.01); table.clear(sent)
 table.clear(sent); UIS.Focus = {}; input:Step(0.01)
 check(not move.Enabled,"typing blocks movement")
 UIS.Focus=nil; input:Step(0.01); UIS.WindowFocusReleased:Fire()

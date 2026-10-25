@@ -5,7 +5,7 @@ Send the shared brief once, then one numbered block at a time. Do not send this 
 ## 00 — Shared brief
 
 ```text
-You are continuing Asura's Path in this repository. I will send one numbered follow-up prompt at a time. Implement necessary fixes, perform focused verification, update the ledger, then stop at that boundary. Do not stop after a plan. Preserve existing uncommitted work, saved places, asset binaries, profiles, stable IDs/migrations, 1.4x tempo and server-authoritative combat.
+You are continuing Asura's Path in this repository. I will send one numbered follow-up prompt at a time. Implement necessary fixes, perform focused verification, update the ledger, then stop at that boundary. Do stop after a plan. Preserve existing uncommitted work, saved places, asset binaries, profiles, stable IDs/migrations, 1.4x tempo and server-authoritative combat.
 
 At a fresh chat read CLAUDE.md, current default.project.json, this pack's AUDIT.md and relevant PROGRESS.md rows once. Read PROJECT_STATE.md's current sections selectively: it contains historical and contradictory instructions. Original references are outputs/playthrough-2026-10-20/PLAYTEST_REPORT.md and outputs/playthrough-2026-10-20/claude-prompts/PROGRESS.md. Those 26 batches all have implementation work, but zero have complete acceptance. Forty findings are implemented/pending; four (#22, #23, #24, #32) retain production-art blockers. Do not resend or blindly redo the original implementation prompts.
 

@@ -46,6 +46,21 @@ for _, v in viewports do
 	local old = { X = (w - cardW * 0.75 * f) / 2, Y = h - 16 - cardH * 0.75 * f, W = cardW * 0.75 * f, H = cardH * 0.75 * f }
 	check(tag .. " legacy dock overlapped the action bar", Layout.overlaps(old, Layout.rect("ActionBar", w, h)))
 end
+-- F08 (Studio 1221x503): the training card sat in the left column over the Codex button and pill.
+for _, v in { { 1221, 503 }, { 1096, 604 }, table.unpack(viewports) } do
+	local w, h = v[1], v[2]
+	local training = Layout.rect("Training", w, h)
+	for _, other in { "ActionBar", "Vitals", "Spells", "Minimap", "Objective", "Compass", "Codex", "ControlsPill" } do
+		check(w .. "x" .. h .. " training card clear of " .. other, not Layout.overlaps(training, Layout.rect(other, w, h)))
+	end
+	-- F08 (Studio 1221x503): "At your lowered ceiling · gourd kept · rest restores…" ran under the card.
+	local toast = Layout.toastRect(w, h)
+	check(w .. "x" .. h .. " toast clear of the training card", not Layout.overlaps(toast, training))
+	check(w .. "x" .. h .. " toast keeps a readable width", toast.W >= 220)
+end
+check("toast built from its reserved band and wraps", has(C .. "InterfaceController.luau", "UDim2.new(1, -2 * HudLayout.Toast.Side, 0, HudLayout.Toast.Height)")
+	and has(C .. "InterfaceController.luau", "TextWrapped = true,"))
+check("training card placed from its reserved region", has(C .. "TutorialController.luau", "Layout.Regions.Training") and not has(C .. "TutorialController.luau", "UDim2.new(0, 24, 0.46, 0)"))
 -- Mirrored constants must match the components they describe.
 local kit = src(C .. "HudKit.luau")
 check("factor mirrors HudKit", string.find(kit, "REFERENCE_HEIGHT = 900", 1, true) and string.find(kit, "MIN_FACTOR = 0.7", 1, true) and string.find(kit, "MAX_FACTOR = 1.35", 1, true))

@@ -169,6 +169,22 @@ do
 	check("respawn in another region publishes that region", s.Region == "Sanctuary" and attributes.AsuraRegion == "Sanctuary")
 end
 
+-- F04: travel to the Primal Bonfire landed on its spawn 20 studs out, refused to rest ("TooFar")
+-- and left the previous checkpoint active. Travel now lands within resting reach of every altar.
+local outOfReach, landed = {}, true
+for id, altar in World.Altars do
+	local spawn = Vector3.new(altar.Spawn.X, altar.Spawn.Y, altar.Spawn.Z)
+	local anchor = Vector3.new(altar.Placement.X, altar.Placement.Y, altar.Placement.Z)
+	if (spawn - anchor).Magnitude > altar.Radius + 2 then table.insert(outOfReach, id) end
+	local at = Recovery.arrival(spawn, anchor, altar.Radius)
+	landed = landed and (at - anchor).Magnitude <= altar.Radius + 2 and math.abs(at.Y - spawn.Y) < 1e-6
+end
+check("the Primal Bonfire's spawn is the one outside resting reach", #outOfReach == 1 and outOfReach[1] == "Altar_SanctuaryBonfire")
+check("altar travel always arrives within resting reach, at spawn height", landed)
+local gate = World.Altars.Altar_MonasteryGate
+local gateSpawn = Vector3.new(gate.Spawn.X, gate.Spawn.Y, gate.Spawn.Z)
+check("a spawn already in reach is used unchanged", Recovery.arrival(gateSpawn, Vector3.new(gate.Placement.X, gate.Placement.Y, gate.Placement.Z), gate.Radius) == gateSpawn)
+
 print(string.format("recovery lifecycle: %d passed, %d failed", passed, failed))
 if failed > 0 then
 	error("recovery lifecycle regression failed")

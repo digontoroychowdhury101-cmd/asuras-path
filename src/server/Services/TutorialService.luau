@@ -20,7 +20,6 @@ local Tutorial = {}
 Tutorial.SpawnId = "DM_Sparring_Phantom"
 Tutorial.RingRadius = 32 -- non-lethal sparring ground around the phantom's home
 Tutorial.PERILOUS_WINDOW = 1.0 -- seconds around a published perilous impact
-
 type State = { Done: { [string]: boolean }, Elixirs: number?, Protected: boolean, Bucket: Budget.Bucket }
 local states: { [number]: State } = {}
 local connections: { RBXScriptConnection } = {}
@@ -78,7 +77,9 @@ local function onEvent(event: any, _point: Vector3?)
 	for _, player in Players:GetPlayers() do
 		local id = player.UserId
 		if states[id] and (event.Source == id or event.Target == id) then
-			local signal = Rules.signal(event.Kind, event.Source, event.Target, id, perilous(event.Target))
+			local f = Characters.GetEntity(id) -- what the player was doing decides what the event proves
+			local own = f and { State = f.Fighter.State, Move = f.Fighter.Move and f.Fighter.Move.Kind }
+			local signal = Rules.signal(event.Kind, event.Source, event.Target, id, perilous(event.Target), own)
 			if signal then record(player, signal) end
 		end
 	end

@@ -33,7 +33,9 @@ function Figures.statue(parent: Instance, key: string, ground: Vector3): (Model,
 		if bone == "HumanoidRootPart" then continue end
 		local p = Instance.new("Part")
 		p.Name, p.Size, p.CFrame = bone, v3(spec.Size), root * CFrame.new(v3(spec.At))
-		p.Anchored, p.CanCollide, p.CanTouch = true, SOLID[bone] == true, false
+		-- Like the attire, non-colliding limbs stay out of queries: otherwise an arm blocks the
+		-- Speak prompt's line of sight to the torso whenever the camera swings past the figure.
+		p.Anchored, p.CanCollide, p.CanQuery, p.CanTouch = true, SOLID[bone] == true, SOLID[bone] == true, false
 		p.Material = Enum.Material.SmoothPlastic
 		if bone == "Head" then p.Shape = Enum.PartType.Ball end
 		p.Parent = model

@@ -21,7 +21,7 @@ local WARNING, CRITICAL, INFO = 3, 2, 1
 
 export type View = {
 	Gui: ScreenGui, State: any, Text: TextLabel, Pop: UIScale, Until: number, Live: number, Priority: number, WarnUntil: number,
-	Guard: Frame, GuardStroke: UIStroke, GuardFill: Frame,
+	Guard: Frame, GuardStroke: UIStroke, GuardFill: Frame, OwnState: string,
 }
 
 function Callouts.new(gui: ScreenGui, state: any): View
@@ -41,7 +41,7 @@ function Callouts.new(gui: ScreenGui, state: any): View
 		AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.fromScale(0.5, 0), Size = UDim2.fromScale(0, 1), BackgroundColor3 = C.Gold, BorderSizePixel = 0,
 	}) :: Frame
 	return {
-		Gui = gui, State = state, Text = text, Pop = pop, Until = 0, Live = 0, Priority = 0, WarnUntil = 0,
+		Gui = gui, State = state, Text = text, Pop = pop, Until = 0, Live = 0, Priority = 0, WarnUntil = 0, OwnState = "Idle",
 		Guard = guard, GuardStroke = guard:FindFirstChildOfClass("UIStroke") :: UIStroke, GuardFill = fill,
 	}
 end
@@ -79,6 +79,7 @@ end
 
 -- Whiff / evade / feint (ContactCues): grey popups over the foe, or a quiet centre call.
 local function contact(view: View, event: any, own: number): boolean
+	if event.Kind == "Evade" and event.Source == own and view.OwnState ~= "Dashing" then return false end -- F08: not while helpless
 	local source, me = view.State:Get(event.Source), view.State:Get(own)
 	local near = source and source.Root and me and me.Root and (source.Root.Position - me.Root.Position).Magnitude < 30
 	local cue = Contact.describe(event.Kind, event.Source, event.Target, event.Value, own, near == true)
@@ -135,7 +136,7 @@ function Callouts.step(view: View, dt: number, snapshot: any?, hidden: boolean)
 		view.Text.TextTransparency = math.min(1, view.Text.TextTransparency + dt * 4)
 		view.Text.TextStrokeTransparency = math.max(view.Text.TextTransparency, 0.1)
 	end
-	local state = if snapshot then snapshot.State else "Idle"
+	local state = if snapshot then snapshot.State else "Idle"; view.OwnState = state
 	local guarding = snapshot ~= nil and not hidden and (snapshot.Blocking or state == "Blocking" or state == "Blockstun" or state == "Deflecting")
 	view.Guard.Visible = guarding
 	if guarding and snapshot then
@@ -145,5 +146,4 @@ function Callouts.step(view: View, dt: number, snapshot: any?, hidden: boolean)
 		view.GuardStroke.Color = if state == "Deflecting" then C.Gold elseif state == "Blockstun" then C.Ivory else C.Sakura
 	end
 end
-
 return table.freeze(Callouts)
