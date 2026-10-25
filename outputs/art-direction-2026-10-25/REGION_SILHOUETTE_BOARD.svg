@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1680" height="760" viewBox="0 0 1680 760" role="img" aria-labelledby="title desc">
+  <title id="title">Asura's Path: The Six Broken Vows — regional silhouette board</title>
+  <desc id="desc">Seven graphic thumbnails compare the Sanctuary, Desecrated Monastery, Bamboo Pass, Ash Colosseum, Sunken Crypt, Celestial Pagoda and Sky Citadel. A production palette runs across the top.</desc>
+  <defs>
+    <linearGradient id="paper" x2="0" y2="1"><stop stop-color="#20272b"/><stop offset="1" stop-color="#171d20"/></linearGradient>
+    <linearGradient id="warmSky" x2="0" y2="1"><stop stop-color="#c39180"/><stop offset=".7" stop-color="#737e82"/><stop offset="1" stop-color="#34474e"/></linearGradient>
+    <linearGradient id="rainSky" x2="0" y2="1"><stop stop-color="#71848e"/><stop offset="1" stop-color="#38454b"/></linearGradient>
+    <linearGradient id="bambooSky" x2="0" y2="1"><stop stop-color="#a5b8ab"/><stop offset="1" stop-color="#3b5653"/></linearGradient>
+    <linearGradient id="ashSky" x2="0" y2="1"><stop stop-color="#766267"/><stop offset="1" stop-color="#252a2d"/></linearGradient>
+    <linearGradient id="cryptSky" x2="0" y2="1"><stop stop-color="#647e82"/><stop offset="1" stop-color="#1c323b"/></linearGradient>
+    <linearGradient id="duskSky" x2="0" y2="1"><stop stop-color="#ad8586"/><stop offset="1" stop-color="#333947"/></linearGradient>
+    <linearGradient id="citadelSky" x2="0" y2="1"><stop stop-color="#aebacb"/><stop offset="1" stop-color="#53667e"/></linearGradient>
+    <style>
+      .h{font: 600 34px 'Avenir Next',Avenir,Arial,sans-serif;fill:#e8e5db;letter-spacing:1px}
+      .sub{font: 16px 'Avenir Next',Avenir,Arial,sans-serif;fill:#a9b2ae;letter-spacing:1.4px}
+      .small{font: 13px 'Avenir Next',Avenir,Arial,sans-serif;fill:#bac0b8;letter-spacing:1.2px}
+      .name{font: 600 17px 'Avenir Next',Avenir,Arial,sans-serif;fill:#ece9df;letter-spacing:1px}
+      .note{font: 12px 'Avenir Next',Avenir,Arial,sans-serif;fill:#a6b1ae}
+      .line{stroke:#d9d8c9;stroke-opacity:.34;stroke-width:1;fill:none}
+      .dark{fill:#222c31}.mid{fill:#415056}.stone{fill:#8d9997}.pale{fill:#c1c3b7}
+    </style>
+  </defs>
+  <rect width="1680" height="760" fill="url(#paper)"/>
+  <text x="43" y="63" class="h">ASURA'S PATH  /  THE SIX BROKEN VOWS</text>
+  <text x="44" y="91" class="sub">Silhouette and color hierarchy • concept key, not measured level geometry</text>
+  <line x1="44" y1="112" x2="1634" y2="112" stroke="#7d8882" stroke-opacity=".4"/>
+  <g transform="translate(44 132)">
+    <text x="0" y="17" class="small">SHARED MATERIAL PALETTE</text>
+    <g transform="translate(292 0)">
+      <rect width="120" height="32" fill="#252B30"/><rect x="124" width="120" height="32" fill="#4E5B61"/>
+      <rect x="248" width="120" height="32" fill="#A7A79B"/><rect x="372" width="120" height="32" fill="#4A3631"/>
+      <rect x="496" width="120" height="32" fill="#877151"/><rect x="620" width="120" height="32" fill="#668B7F"/>
+      <rect x="744" width="120" height="32" fill="#9E4041"/><rect x="868" width="120" height="32" fill="#D18A56"/>
+      <rect x="992" width="120" height="32" fill="#B7C6CA"/>
+      <text x="0" y="52" class="note">ink</text><text x="124" y="52" class="note">slate</text><text x="248" y="52" class="note">limestone</text>
+      <text x="372" y="52" class="note">cedar</text><text x="496" y="52" class="note">bronze</text><text x="620" y="52" class="note">jade</text>
+      <text x="744" y="52" class="note">crimson</text><text x="868" y="52" class="note">ember</text><text x="992" y="52" class="note">sky fill</text>
+    </g>
+  </g>
+  <!-- All panels use the same horizon and ground height; the horizon differences belong to the region. -->
+  <g transform="translate(44 219)">
+    <rect width="214" height="434" rx="8" fill="url(#warmSky)"/><rect y="320" width="214" height="114" fill="#293337"/>
+    <path d="M0 300 Q30 285 50 301 T100 300 T155 305 T214 297 L214 350 H0Z" fill="#c5c3b7" opacity=".4"/>
+    <path d="M0 340 L107 306 L214 340 V434 H0Z" fill="#536064"/><path d="M35 433 L107 327 L179 433" fill="#848983"/>
+    <path d="M52 321 L52 304 L162 304 L162 321 M64 304 L54 298 L108 280 L160 298 L150 304Z" fill="#263036"/>
+    <path d="M108 299 L108 187" stroke="#3a332f" stroke-width="19" stroke-linecap="round"/><path d="M105 201 Q45 173 38 135 M108 191 Q166 148 184 105 M106 218 Q79 174 64 155" stroke="#3a332f" stroke-width="14" fill="none" stroke-linecap="round"/>
+    <path d="M40 135 Q80 102 119 122 Q156 97 188 113" stroke="#863b3f" stroke-width="34" fill="none" stroke-linecap="round"/>
+    <circle cx="108" cy="226" r="14" fill="#d6d4c8"/><path d="M96 240 Q78 274 72 293 H144 Q139 264 120 240Z" fill="#c8c4b8"/>
+    <circle cx="106" cy="359" r="5" fill="#d18a56"/><path d="M106 348 L101 361 L111 361Z" fill="#d18a56"/>
+    <text x="14" y="383" class="name">SANCTUARY</text><text x="14" y="405" class="note">tree • veiled figure • stair</text>
+  </g>
+  <g transform="translate(274 219)">
+    <rect width="214" height="434" rx="8" fill="url(#rainSky)"/><rect y="315" width="214" height="119" fill="#303b41"/>
+    <path d="M0 338 L48 295 L91 302 L138 285 L214 324 V434 H0Z" fill="#39464b"/>
+    <path d="M15 315 V231 H55 V315 M18 236 L35 220 L53 236 M152 315 V251 H195 V315 M153 251 L174 236 L195 251" fill="#212c31"/>
+    <path d="M70 318 V142 H133 V318 M75 149 L101 126 L131 148 M77 205 H125" fill="#293237"/>
+    <path d="M116 126 L144 99 L126 146" fill="#405057"/>
+    <path d="M92 178 Q101 190 110 178 V167 H92Z" fill="#877151"/><path d="M101 190 V208" stroke="#877151" stroke-width="3"/>
+    <path d="M0 351 L106 322 L214 351 V434 H0Z" fill="#717c7b"/><path d="M16 351 L102 324 L196 350" class="line"/>
+    <path d="M30 84 L15 130 M93 88 L77 133 M168 100 L153 145 M196 127 L179 162" stroke="#bec9c6" opacity=".55" stroke-width="2"/>
+    <text x="14" y="383" class="name">MONASTERY</text><text x="14" y="405" class="note">broken bell • cloister</text>
+  </g>
+  <g transform="translate(504 219)">
+    <rect width="214" height="434" rx="8" fill="url(#bambooSky)"/><rect y="321" width="214" height="113" fill="#2e413e"/>
+    <path d="M0 310 L38 180 L68 307 M146 309 L170 135 L214 309" fill="#526969"/><path d="M145 273 L172 135 L185 256" fill="#bdc6bd"/>
+    <g stroke="#263d38" stroke-width="8"><path d="M16 333 V100 M35 331 V75 M56 333 V119 M188 333 V76 M204 333 V126"/></g>
+    <g stroke="#5a806b" stroke-width="5" stroke-linecap="round"><path d="M18 122 l23 -26 M35 166 l-25 -28 M56 206 l25 -26 M189 130 l-25 -25 M204 192 l-27 -25"/></g>
+    <path d="M0 353 Q90 336 214 350 V434 H0Z" fill="#4c6259"/><path d="M55 435 L103 319 L162 435" fill="#9fa89e"/>
+    <path d="M74 318 V286 H140 V318 M75 289 Q107 252 139 289" stroke="#263b39" stroke-width="9" fill="none"/>
+    <path d="M75 356 L92 350 M134 350 L150 357" stroke="#b8c9c0" stroke-width="3"/>
+    <text x="14" y="383" class="name">BAMBOO PASS</text><text x="14" y="405" class="note">vertical stems • karst • frost</text>
+  </g>
+  <g transform="translate(734 219)">
+    <rect width="214" height="434" rx="8" fill="url(#ashSky)"/><rect y="315" width="214" height="119" fill="#292c2e"/>
+    <path d="M0 220 L21 213 L21 301 L45 300 L45 235 L70 230 L70 284 L144 284 L144 230 L170 236 L170 301 L195 301 L195 214 L214 220 V346 H0Z" fill="#3d3839"/>
+    <path d="M0 275 Q107 223 214 275 M0 300 Q107 256 214 300 M0 324 Q107 288 214 324" stroke="#716467" stroke-width="14" fill="none"/>
+    <path d="M83 289 V229 H131 V289 M79 230 L107 215 L135 230" fill="#232729"/>
+    <path d="M0 335 L107 302 L214 335 V434 H0Z" fill="#817574"/><path d="M0 353 Q107 312 214 353 M0 379 Q107 339 214 379" stroke="#aca29b" stroke-width="4" fill="none" opacity=".7"/>
+    <path d="M105 301 v17" stroke="#d3b5a1" stroke-width="3"/><circle cx="105" cy="295" r="4" fill="#d3b5a1"/>
+    <g fill="#d18a56" opacity=".7"><circle cx="29" cy="97" r="2"/><circle cx="159" cy="131" r="2"/><circle cx="185" cy="85" r="1"/></g>
+    <text x="14" y="383" class="name">ASH COLOSSEUM</text><text x="14" y="405" class="note">low ring • victor gate • ash</text>
+  </g>
+  <g transform="translate(964 219)">
+    <rect width="214" height="434" rx="8" fill="url(#cryptSky)"/><rect y="319" width="214" height="115" fill="#1d3037"/>
+    <path d="M0 320 V188 Q107 74 214 188 V320 H186 V193 Q107 116 28 193 V320Z" fill="#283940"/>
+    <path d="M32 320 V214 Q107 136 182 214 V320" stroke="#687c80" stroke-width="12" fill="none"/><path d="M17 252 H197 M17 284 H197" stroke="#50636a" stroke-width="6"/>
+    <path d="M0 352 L107 305 L214 352 V434 H0Z" fill="#5b7073"/><path d="M0 372 L107 326 L214 372" stroke="#9baaa7" stroke-width="4" fill="none"/>
+    <path d="M79 318 V271 H135 V318 M82 275 Q107 246 132 275" fill="#1f2d32"/>
+    <path d="M94 279 V235 M121 279 V235" stroke="#83959a" stroke-width="6"/><path d="M107 233 v-27" stroke="#83959a" stroke-width="10"/>
+    <path d="M16 342 Q95 330 197 342" stroke="#a3c0bb" stroke-opacity=".35" stroke-width="7" fill="none"/>
+    <text x="14" y="383" class="name">SUNKEN CRYPT</text><text x="14" y="405" class="note">well • vault ribs • giant hall</text>
+  </g>
+  <g transform="translate(1194 219)">
+    <rect width="214" height="434" rx="8" fill="url(#duskSky)"/><rect y="320" width="214" height="114" fill="#2e333a"/>
+    <path d="M107 78 L107 315 M75 127 H139 M58 184 H156 M42 242 H172" stroke="#362d30" stroke-width="13"/>
+    <path d="M71 129 L53 129 L107 104 L162 129 H143 M55 187 L36 187 L107 160 L178 187 H158 M38 245 L17 245 L107 214 L197 245 H175" fill="#242d32" stroke="#242d32" stroke-width="7"/>
+    <path d="M76 139 V176 M138 139 V176 M60 197 V233 M154 197 V233 M44 254 V313 M170 254 V313" stroke="#4a3631" stroke-width="11"/>
+    <path d="M0 344 L107 307 L214 344 V434 H0Z" fill="#695b59"/>
+    <path d="M36 338 L36 314 L92 314 M121 314 L178 314 L178 338" stroke="#a79c91" stroke-width="7" fill="none"/>
+    <path d="M26 256 Q36 274 45 256 M171 260 Q180 278 188 259" stroke="#a3876d" stroke-width="3" fill="none"/>
+    <text x="14" y="383" class="name">CELESTIAL PAGODA</text><text x="14" y="405" class="note">tiered eaves • open rafters</text>
+  </g>
+  <g transform="translate(1424 219)">
+    <rect width="214" height="434" rx="8" fill="url(#citadelSky)"/><rect y="320" width="214" height="114" fill="#354250"/>
+    <path d="M0 320 L56 281 L64 315 L100 295 L121 315 L162 269 L214 320 V434 H0Z" fill="#596879"/>
+    <path d="M42 324 V206 H76 V324 M49 211 V194 H58 V211 M66 211 V194 H75 V211 M143 324 V184 H178 V324 M146 189 V174 H155 V189 M168 189 V174 H177 V189" fill="#303b49"/>
+    <path d="M91 300 L101 164 L115 164 L126 300 M90 177 L107 120 L124 177" fill="#788996"/><path d="M107 121 L83 85 L93 139 M107 121 L130 77 L122 138" fill="#b3bdc1"/>
+    <path d="M0 348 L107 309 L214 348 V434 H0Z" fill="#788590"/><path d="M45 433 L101 321 L151 433" fill="#a8b4b8"/>
+    <path d="M20 334 L194 334" stroke="#d0d1c9" stroke-width="4"/>
+    <path d="M146 109 l22 -27 -9 23 13 8" stroke="#c1d7e5" stroke-width="3" fill="none"/>
+    <text x="14" y="383" class="name">SKY CITADEL</text><text x="14" y="405" class="note">bridge • bastion • broken crown</text>
+  </g>
+  <line x1="44" y1="681" x2="1634" y2="681" stroke="#7d8882" stroke-opacity=".4"/>
+  <text x="44" y="712" class="sub">Shape first · route second · lore detail third</text>
+  <text x="44" y="739" class="note">Graphic silhouette key for 2D concepts. See ASURAS_PATH_VISUAL_DIRECTION.md for material, weather, VFX and camera rules.</text>
+</svg>
