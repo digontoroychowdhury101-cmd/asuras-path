@@ -155,6 +155,114 @@ function ops.first(since)
 	return if best then string.format("%.3f %s %s (+%.3f s)", best.at, best.move, best.kind, best.at - since) else "none"
 end
 function ops.now() return Characters.Now() end
+-- Seeded: take one Twin out without a KO (no Oath), to watch the other alone.
+function ops.remove(name)
+	for _, e in twins() do
+		if string.find(e.Model.Name, name, 1, true) then Characters.DespawnEnemy(e.Id); return "removed " .. e.Model.Name end
+	end
+	return "none"
+end
+-- Seeded punish window: when the Bull enters Recovery, the player is placed 4 studs `side` of it
+-- ("behind" or "front"), facing it, and throws one light 0.03 s later. Tallies what the light met.
+function ops.window(seconds, side)
+	local bull
+	for _, e in twins() do if string.find(e.Model.Name, "Bull", 1, true) then bull = e end end
+	if not bull then return "no bull" end
+	local me, seen, out, last = own(), {}, {}, nil
+	local tally = {}
+	local conn = Characters.Subscribe(function(event)
+		if event.Source == me.Id and event.Target == bull.Id and last then
+			tally[last .. " " .. event.Kind] = (tally[last .. " " .. event.Kind] or 0) + 1
+		end
+	end)
+	local beat = Run.Heartbeat:Connect(function()
+		local f = bull.Fighter
+		if f.State == "Recovery" and f.Move and not seen[f.MoveStart] then
+			seen[f.MoveStart] = true
+			last = f.Move.Id
+			local look = bull.Root.CFrame.LookVector * Vector3.new(1, 0, 1)
+			local spot = bull.Root.Position + look.Unit * (if side == "front" then 4 else -4)
+			spot = Vector3.new(spot.X, 3, spot.Z)
+			Characters.Teleport(me.Id, CFrame.lookAt(spot, Vector3.new(bull.Root.Position.X, 3, bull.Root.Position.Z)))
+			task.delay(0.03, function()
+				local d = bull.Root.Position - me.Root.Position
+				Characters.PushIntent(me.Id, "Light", nil, d.X / d.Magnitude, d.Z / d.Magnitude)
+			end)
+		end
+	end)
+	task.wait(seconds)
+	beat:Disconnect(); conn()
+	for k, v in tally do table.insert(out, k .. "=" .. v) end
+	table.sort(out)
+	return side .. ": " .. table.concat(out, " | ")
+end
+-- The Bull's swings for `seconds`: per move, measured Startup/Recovery and the committed strike record
+-- (arc, reach, lunge) the server swept and the client drew, against WeaponSchema. With `punish`, the
+-- player dashes through each swing 0.05 s before impact (server-timed) and throws one light at the
+-- Bull's back once it is in Recovery.
+function ops.bull(seconds, punish)
+	local Geometry = require(game:GetService("ReplicatedStorage").AsurasPath.Simulation.StrikeGeometry)
+	local Weapons = require(game:GetService("ReplicatedStorage").AsurasPath.Simulation.WeaponSchema)
+	local bull
+	for _, e in twins() do if string.find(e.Model.Name, "Bull", 1, true) then bull = e end end
+	if not bull then return "no bull" end
+	local me = own()
+	local rows, last, since, current, dashed, struck = {}, bull.Fighter.State, Characters.Now(), nil, {}, {}
+	local strikeConn = bull.Model:GetAttributeChangedSignal("AsuraStrike"):Connect(function()
+		local s = Geometry.decode(bull.Model:GetAttribute("AsuraStrike"))
+		local move = bull.Fighter.Move
+		if s and move then
+			local row = rows[move.Id] or { n = 0, startup = {}, recovery = {}, arc = {}, reach = {}, lunge = {} }
+			rows[move.Id] = row
+			table.insert(row.arc, s.Arc); table.insert(row.reach, s.Reach); table.insert(row.lunge, s.Lunge)
+		end
+	end)
+	local outcome = {}
+	local eventConn = Characters.Subscribe(function(event)
+		if event.Source == me.Id and event.Target == bull.Id then outcome[event.Kind] = (outcome[event.Kind] or 0) + 1 end
+		if event.Source == bull.Id and event.Target == me.Id and (event.Kind == "Hit" or event.Kind == "Evade") then outcome["bull " .. event.Kind] = (outcome["bull " .. event.Kind] or 0) + 1 end
+	end)
+	local conn = Run.Heartbeat:Connect(function()
+		local f, now = bull.Fighter, Characters.Now()
+		if f.State ~= last then
+			if current and (last == "Startup" or last == "Recovery") then
+				local row = rows[current] or { n = 0, startup = {}, recovery = {}, arc = {}, reach = {}, lunge = {} }
+				rows[current] = row
+				table.insert(if last == "Startup" then row.startup else row.recovery, now - since)
+				if last == "Startup" then row.n += 1 end
+			end
+			last, since = f.State, now
+		end
+		if f.Move then current = f.Move.Id end
+		if punish and f.State == "Startup" and f.Move and not dashed[f.MoveStart] and now >= f.MoveStart + f.Move.Timing.StartupSeconds - 0.05 then
+			dashed[f.MoveStart] = true
+			local d = bull.Root.Position - me.Root.Position
+			Characters.PushIntent(me.Id, "Dash", nil, d.X / d.Magnitude, d.Z / d.Magnitude)
+		end
+		if punish and f.State == "Recovery" and dashed[f.MoveStart] and not struck[f.MoveStart] and now - since > 0.05 then
+			struck[f.MoveStart] = true
+			local d = bull.Root.Position - me.Root.Position
+			Characters.PushIntent(me.Id, "Light", nil, d.X / d.Magnitude, d.Z / d.Magnitude)
+		end
+	end)
+	task.wait(seconds)
+	conn:Disconnect(); strikeConn:Disconnect(); eventConn()
+	local maul = Weapons.get("IronBullMaul")
+	local out = {}
+	local function mean(t) local s = 0; for _, v in t do s += v end; return if #t > 0 then s / #t else 0 / 0 end
+	for id, row in rows do
+		local spec = maul.Moves[id]
+		table.insert(out, string.format("%s x%d startup %.3f (spec %.3f) recovery %.3f (spec %.3f) arc %.0f reach %.1f lunge %.1f (spec %s/%s/%s)", id, row.n,
+			mean(row.startup), spec and spec.Timing.StartupSeconds or -1, mean(row.recovery), spec and spec.Timing.RecoverySeconds or -1,
+			mean(row.arc), mean(row.reach), mean(row.lunge), tostring(spec and spec.Arc), tostring(spec and spec.Reach), tostring(spec and spec.Lunge)))
+	end
+	table.sort(out)
+	local tally = {}
+	for k, v in outcome do table.insert(tally, k .. "=" .. v) end
+	table.sort(tally)
+	table.insert(out, "outcomes: " .. table.concat(tally, " "))
+	return table.concat(out, "\n")
+end
 -- Seeded: player and both Twins to fixed spots (player at x,z facing north; Twins 9 studs north).
 function ops.stage(x, z)
 	Characters.Teleport(own().Id, CFrame.lookAt(Vector3.new(x, 3, z), Vector3.new(x, 3, z - 10)))

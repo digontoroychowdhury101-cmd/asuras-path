@@ -48,6 +48,12 @@ function Layout.toastRect(width: number, height: number): Rect
 	return { X = (width - w) / 2, Y = height - t.Bottom - t.Height, W = w, H = t.Height }
 end
 
+-- Post-F26 step 6: a centre warning banner outranks the toast. While one is up, the toast's slot
+-- steps down to just under the banner's text (screen pixels; 0 when the two already clear).
+function Layout.toastShift(slotTop: number, bannerBottom: number?): number
+	return if bannerBottom then math.max(0, bannerBottom + 6 - slotTop) else 0
+end
+
 function Layout.factor(height: number): number
 	if height <= 1 then return 1 end
 	return math.clamp(height / Layout.ReferenceHeight, Layout.MinFactor, Layout.MaxFactor)

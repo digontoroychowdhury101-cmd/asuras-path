@@ -120,9 +120,10 @@ local function bull(): Schema.Look
 		P("TassetFront", "LowerTorso", { 2.3, 1.4, 0.3 }, { 0, -0.8, -0.64 }, IRON, "Metal"),
 		P("Greatshield", "LeftLowerArm", { 3.2, 4.6, 0.45 }, { 0.2, -0.3, -0.95 }, IRON, "Metal"),
 		P("ShieldRim", "LeftLowerArm", { 3.45, 4.85, 0.3 }, { 0.2, -0.3, -0.86 }, BRONZE, "Metal"),
-		P("MaulHaft", "RightHand", { 0.36, 0.36, 6 }, { 0, -0.1, -2.2 }, { 54, 40, 30 }, "Wood", { Role = "Weapon" }),
-		P("MaulHead", "RightHand", { 1.3, 1.3, 1.6 }, { 0, -0.1, -5.6 }, IRON, "Metal", { Role = "Weapon" }),
-		P("MaulBand", "RightHand", { 1.36, 1.36, 0.2 }, { 0, -0.1, -5.1 }, BRONZE, "Metal"),
+		-- Maul far face 5.7 from the hand at scale 1 = IronBullMaul reach 10 at the Bull's 1.7 (step 6, D1).
+		P("MaulHaft", "RightHand", { 0.36, 0.36, 5.2 }, { 0, -0.1, -1.8 }, { 54, 40, 30 }, "Wood", { Role = "Weapon" }),
+		P("MaulHead", "RightHand", { 1.3, 1.3, 1.6 }, { 0, -0.1, -4.9 }, IRON, "Metal", { Role = "Weapon" }),
+		P("MaulBand", "RightHand", { 1.36, 1.36, 0.2 }, { 0, -0.1, -4.4 }, BRONZE, "Metal"),
 	}
 	for band = 0, 2 do
 		table.insert(list, P("PlateBand" .. band, "UpperTorso", { 2.4, 0.14, 1.4 }, { 0, 0.5 - band * 0.5, 0 }, BRONZE, "Metal"))

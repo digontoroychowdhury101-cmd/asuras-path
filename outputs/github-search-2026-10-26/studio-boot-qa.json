@@ -1,0 +1,12 @@
+{
+  "evidence_type": "Seeded Studio diagnostic; not an earned or human-listening test",
+  "studio_mode_after_test": "Edit",
+  "client_ready": true,
+  "character_ready": true,
+  "registered_library_templates": 16,
+  "forest_ambience_excluded_from_active_registry": true,
+  "active_impact_ids": ["rbxassetid://84168306022631", "rbxassetid://75064735099891"],
+  "voice_creation_checked": ["GithubLightImpact", "GithubHeavyImpact", "GithubWhooshLight", "GithubWhooshHeavy"],
+  "fresh_client_log": ["[Asura's Path] Client ready: camlock, game feel, Souls HUD and Colosseum online."],
+  "limits": "Normal combat, visual mix, physical hardware and published-experience delivery still require their own acceptance tests."
+}

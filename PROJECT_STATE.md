@@ -1,5 +1,9 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## Expanded GitHub reuse and combined sync — 2026-10-26
+
+149 candidates, 135 above 1,000 stars; six repositories reused. Studio: 16 verified media templates, impacts/whooshes/thunder active. Nine CC0 motion sources and validated mesh/LOD pipeline included. Pending Iron Bull/camera edits preserved; offline camera/roof adapters fixed. Full verifier and builds pass. Next: R15 retargeting, visual/listening QA; forest ambience awaits Roblox approval. See `outputs/github-search-2026-10-26/README.md`.
+
 ## GitHub reuse — 2026-10-26
 
 Integrated FastNoiseLite cliff profiles and Effekseer easing; uploaded six CC0 textures (6/6 typed preload), four active in parry/Blazing Sun. Two CC0 impacts prepared locally. Licenses, pinned hashes, tests and credits included. Full local verifier passed; final presentation checks/build repeated. Next: visual playtest, audio-upload approval; horizontal thunder variant awaits verification. See `docs/GITHUB_REUSE.md`.

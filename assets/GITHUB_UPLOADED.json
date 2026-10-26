@@ -7,15 +7,34 @@
     "GithubShockwave": "rbxassetid://113620265045402",
     "GithubWind": "rbxassetid://138369746472175",
     "GithubSmoke": "rbxassetid://106136904847136",
-    "GithubThunder": "rbxassetid://91094113748034"
+    "GithubThunder": "rbxassetid://91094113748034",
+    "GithubThunderHorizontal": "rbxassetid://90786029633700"
   },
-  "load_status": "6/6 Success in Studio Client typed ImageLabel preload",
-  "Audio": {},
-  "notes": "Image IDs returned by Studio upload_image. Audio remains local; no audio upload tool is available.",
-  "pending_replacements": {
+  "load_status": "7/7 Success in Studio typed image preloads",
+  "Audio": {
+    "GithubLightImpact": "rbxassetid://84168306022631",
+    "GithubHeavyImpact": "rbxassetid://75064735099891",
+    "GithubSwordHeavy": "rbxassetid://134923760317969",
+    "GithubSwordLight": "rbxassetid://90713694021705",
+    "GithubSecret": "rbxassetid://101518165997871",
+    "GithubMagic": "rbxassetid://111038929226449",
+    "GithubWhooshHeavy": "rbxassetid://128390103310574",
+    "GithubWhooshLight": "rbxassetid://110795098552792",
+    "GithubMonsterGrowl": "rbxassetid://111778581433967"
+  },
+  "notes": "Seven images and nine playable audio assets registered. One additional ambience upload is pending Roblox requester approval and not enabled.",
+  "audio_load_status": "Nine playable sounds verified; forest ambience excluded after live requester approval failures.",
+  "superpowers_audio_load_status": "Seven playable; one uploaded ambience pending requester approval",
+  "verified_variants": {
     "GithubThunderHorizontal": {
       "id": "rbxassetid://90786029633700",
-      "status": "Preload interrupted by closed client; not active"
+      "status": "Success in Studio Edit typed ImageLabel preload; now available for beam use"
+    }
+  },
+  "PendingAudio": {
+    "GithubForestAmbience": {
+      "id": "rbxassetid://87123492592079",
+      "status": "Uploaded; Roblox rejects live sound load as not approved for requester. Excluded from active registry and Sound templates."
     }
   }
 }

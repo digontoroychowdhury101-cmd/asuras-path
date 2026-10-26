@@ -390,6 +390,9 @@
           "WagerIntent": {
             "$className": "RemoteEvent"
           }
+        },
+        "GithubAssets": {
+          "$path": "assets/models/AsuraGithubMedia.rbxmx"
         }
       }
     },

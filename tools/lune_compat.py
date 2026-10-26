@@ -12,6 +12,7 @@ suite that needs engine behaviour the shim lacks is reported as SHIM GAP, never 
     python3 tools/lune_compat.py --all
 """
 from pathlib import Path
+from functools import lru_cache
 import os
 import re
 import subprocess
@@ -30,11 +31,20 @@ def long_string(text):
     return f"[{eq}[\n{text}]{eq}]"
 
 
+@lru_cache(maxsize=1)
 def snapshot():
+    # One immutable source snapshot per runner invocation: every suite sees the same files,
+    # and a full run does not repeatedly read optional authoring-tool directories.
     files, dirs = {}, {}
     roots = [ROOT / "src", ROOT / "tools"]
     for root in roots:
-        for path in sorted(root.rglob("*")):
+        paths = []
+        for current, subdirs, names in os.walk(root):
+            # Tool dependencies are not game/test source. In particular, the optional mesh
+            # pipeline's package metadata must not be embedded into every Luau test harness.
+            subdirs[:] = sorted(name for name in subdirs if name not in ("node_modules", "__pycache__", ".git", ".venv", "venv", "trellis_env"))
+            paths.extend(Path(current) / name for name in subdirs + names)
+        for path in sorted(paths):
             rel = path.relative_to(ROOT).as_posix()
             if "__pycache__" in rel or path.name.startswith("_lune_"):
                 continue

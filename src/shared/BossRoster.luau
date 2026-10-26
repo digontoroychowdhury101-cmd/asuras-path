@@ -56,7 +56,8 @@ function Roster.apply(world: any, profile: ({ [string]: number }) -> any)
 	boss("AzureWyrm", "Azure Wyrm", "Overlord of the Heavenly Summit", "SkyCitadel", 0, -2830, 1600, "Guandao", Attacks.Wyrm, "Dragon", 2.2, "Aerial")
 	local duo = world.Bosses.TwinSentinels
 	duo.Phases = { duo.Phases[1] }
-	duo.Partner = { Name = "The Iron Bull", Weapon = "Guandao", Stats = { MaxHP = 1600, MaxStamina = 320, PostureCapacity = 460, PoiseArmor = 0.9 },
+	-- The Bull fights with his own boss-only maul and tower shield (post-F26 step 6, D1).
+	duo.Partner = { Name = "The Iron Bull", Weapon = "IronBullMaul", Stats = { MaxHP = 1600, MaxStamina = 320, PostureCapacity = 460, PoiseArmor = 0.9 },
 		Attacks = Attacks.Bull, Affinity = "Iron", Scale = 1.7 }
 	duo.Affinity = "Lightning"
 	local shen = world.Bosses.GrandmasterShen

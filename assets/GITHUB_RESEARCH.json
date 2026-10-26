@@ -1,0 +1,2978 @@
+{
+  "checked_date": "2026-10-26",
+  "scope": "24 broad GitHub search queries plus targeted follow-ups; finite survey, not an exhaustive listing of GitHub.",
+  "counts": {
+    "candidates": 149,
+    "available": 146,
+    "above_1000_stars": 135,
+    "project_specific_assessments": 83
+  },
+  "queries": [
+    {
+      "category": "Roblox",
+      "query": "roblox stars:>1000",
+      "returned": 10
+    },
+    {
+      "category": "Terrain",
+      "query": "terrain stars:>1000",
+      "returned": 12
+    },
+    {
+      "category": "Procedural worlds",
+      "query": "procedural generation stars:>1000",
+      "returned": 12
+    },
+    {
+      "category": "VFX",
+      "query": "particle effects stars:>1000",
+      "returned": 6
+    },
+    {
+      "category": "Animation",
+      "query": "skeletal animation stars:>1000",
+      "returned": 2
+    },
+    {
+      "category": "Animation retargeting",
+      "query": "animation retargeting stars:>1000",
+      "returned": 0
+    },
+    {
+      "category": "Geometry optimization",
+      "query": "mesh optimization stars:>1000",
+      "returned": 2
+    },
+    {
+      "category": "Blender assets",
+      "query": "blender procedural stars:>1000",
+      "returned": 3
+    },
+    {
+      "category": "Game audio",
+      "query": "game audio stars:>1000",
+      "returned": 12
+    },
+    {
+      "category": "Asset libraries",
+      "query": "game assets stars:>1000",
+      "returned": 12
+    },
+    {
+      "category": "Luau tools",
+      "query": "luau stars:>1000",
+      "returned": 6
+    },
+    {
+      "category": "Character motion",
+      "query": "inverse kinematics stars:>1000",
+      "returned": 3
+    },
+    {
+      "category": "Open asset licensing",
+      "query": "CC0 stars:>1000",
+      "returned": 7
+    },
+    {
+      "category": "Texture libraries",
+      "query": "textures game stars:>1000",
+      "returned": 3
+    },
+    {
+      "category": "Blender pipeline",
+      "query": "blender addon stars:>1000",
+      "returned": 12
+    },
+    {
+      "category": "Motion matching",
+      "query": "motion matching stars:>1000",
+      "returned": 1
+    },
+    {
+      "category": "Retargeting",
+      "query": "retargeting stars:>1000",
+      "returned": 2
+    },
+    {
+      "category": "glTF pipeline",
+      "query": "gltf optimization stars:>1000",
+      "returned": 3
+    },
+    {
+      "category": "SFX authoring",
+      "query": "sound synthesis stars:>1000",
+      "returned": 9
+    },
+    {
+      "category": "Noise algorithms",
+      "query": "noise generation stars:>1000",
+      "returned": 2
+    },
+    {
+      "category": "Pathfinding",
+      "query": "pathfinding game stars:>1000",
+      "returned": 4
+    },
+    {
+      "category": "VFX authoring",
+      "query": "Effekseer stars:>1000",
+      "returned": 1
+    },
+    {
+      "category": "Combat frameworks",
+      "query": "soulslike stars:>1000",
+      "returned": 0
+    },
+    {
+      "category": "Animation datasets",
+      "query": "character animation stars:>1000",
+      "returned": 12
+    }
+  ],
+  "repositories": [
+    {
+      "repo": "blender/blender",
+      "categories": [
+        "Targeted follow-up"
+      ],
+      "stars": 21260,
+      "license": "NOASSERTION",
+      "branch": "main",
+      "description": "Official mirror of Blender",
+      "archived": false,
+      "url": "https://github.com/blender/blender",
+      "pushed_at": "2026-10-25T10:53:51Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery only",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Needs source, compatibility and license review before use.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "mahmoud/awesome-python-applications",
+      "categories": [
+        "Game audio"
+      ],
+      "stars": 18116,
+      "license": null,
+      "branch": "master",
+      "description": "\ud83d\udcbf Free software that works great, and also happens to be open-source Python. ",
+      "archived": false,
+      "url": "https://github.com/mahmoud/awesome-python-applications",
+      "pushed_at": "2026-10-18T07:15:39Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery only",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Needs source, compatibility and license review before use.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "HumanAIGC/AnimateAnyone",
+      "categories": [
+        "Animation datasets"
+      ],
+      "stars": 14780,
+      "license": "Apache-2.0",
+      "branch": "main",
+      "description": "Animate Anyone: Consistent and Controllable Image-to-Video Synthesis for Character Animation",
+      "archived": false,
+      "url": "https://github.com/HumanAIGC/AnimateAnyone",
+      "pushed_at": "2025-09-20T13:56:23Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery only",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Needs source, compatibility and license review before use.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "microsoft/TRELLIS",
+      "categories": [
+        "Targeted follow-up"
+      ],
+      "stars": 14107,
+      "license": "MIT",
+      "branch": "main",
+      "description": "Official repo for paper \"Structured 3D Latents for Scalable and Versatile 3D Generation\" (CVPR'25 Spotlight).",
+      "archived": false,
+      "url": "https://github.com/microsoft/TRELLIS",
+      "pushed_at": "2026-06-26T07:27:56Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Reference",
+      "potential_use": "Earlier image-to-3D reconstruction",
+      "next_step": "TRELLIS.2 is already the project's active route; avoid duplicating models.",
+      "license_review": "MIT"
+    },
+    {
+      "repo": "assimp/assimp",
+      "categories": [
+        "Targeted follow-up"
+      ],
+      "stars": 13283,
+      "license": "NOASSERTION",
+      "branch": "master",
+      "description": "The official Open-Asset-Importer-Library Repository. Loads 40+ 3D-file-formats into one unified and clean data structure. ",
+      "archived": false,
+      "url": "https://github.com/assimp/assimp",
+      "pushed_at": "2026-10-25T22:08:19Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "High priority",
+      "potential_use": "DAE/FBX/glTF asset conversion",
+      "next_step": "Useful for the CC0 DAE motion sources; check the selected converter's full notices.",
+      "license_review": "License review required"
+    },
+    {
+      "repo": "microsoft/TRELLIS.2",
+      "categories": [
+        "Targeted follow-up"
+      ],
+      "stars": 12459,
+      "license": "MIT",
+      "branch": "main",
+      "description": "Native and Compact Structured Latents for 3D Generation",
+      "archived": false,
+      "url": "https://github.com/microsoft/TRELLIS.2",
+      "pushed_at": "2026-07-10T12:34:32Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Already in project pipeline",
+      "potential_use": "Reference-to-3D reconstruction for props and sculptures",
+      "next_step": "Existing tools/trellis pipeline already uses it; retain input-image rights records.",
+      "license_review": "MIT"
+    },
+    {
+      "repo": "godotengine/godot-demo-projects",
+      "categories": [
+        "Targeted follow-up"
+      ],
+      "stars": 9709,
+      "license": "MIT",
+      "branch": "master",
+      "description": "Demonstration and Template Projects",
+      "archived": false,
+      "url": "https://github.com/godotengine/godot-demo-projects",
+      "pushed_at": "2026-10-08T09:33:27Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "In use",
+      "potential_use": "Physical impacts and engine-independent demo assets",
+      "next_step": "Two impacts uploaded, verified and used in combat.",
+      "license_review": "MIT code; selected audio CC0"
+    },
+    {
+      "repo": "domlysz/BlenderGIS",
+      "categories": [
+        "Blender pipeline"
+      ],
+      "stars": 9534,
+      "license": "GPL-3.0",
+      "branch": "master",
+      "description": "Blender addons to make the bridge between Blender and geographic data",
+      "archived": false,
+      "url": "https://github.com/domlysz/BlenderGIS",
+      "pushed_at": "2025-12-20T18:19:10Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Conditional",
+      "potential_use": "Real-world heightmap authoring",
+      "next_step": "GIS source data licensing and scale need review; optional for a fictional wuxia map.",
+      "license_review": "GPL-3.0"
+    },
+    {
+      "repo": "cabaletta/baritone",
+      "categories": [
+        "Pathfinding"
+      ],
+      "stars": 9316,
+      "license": "LGPL-3.0",
+      "branch": "1.21.4",
+      "description": "google maps for block game",
+      "archived": false,
+      "url": "https://github.com/cabaletta/baritone",
+      "pushed_at": "2026-10-23T06:10:11Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Excluded",
+      "potential_use": "Minecraft automation",
+      "next_step": "Outside project scope.",
+      "license_review": "LGPL-3.0"
+    },
+    {
+      "repo": "tsparticles/tsparticles",
+      "categories": [
+        "VFX"
+      ],
+      "stars": 8995,
+      "license": "MIT",
+      "branch": "main",
+      "description": "tsParticles - Easily create highly customizable JavaScript particles effects, confetti explosions and fireworks animations and use them as animated backgrounds for your website. Ready to use components available for React.js, Vue.js (2.x and 3.x), Angular, Svelte, jQuery, Preact, Inferno, Solid, Riot and Web Components.",
+      "archived": false,
+      "url": "https://github.com/tsparticles/tsparticles",
+      "pushed_at": "2026-10-26T00:18:28Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Reference",
+      "potential_use": "Particle authoring behaviors and masks",
+      "next_step": "Web renderer is incompatible; only selected algorithms would merit a Luau port.",
+      "license_review": "MIT"
+    },
+    {
+      "repo": "rehan-remade/universal-modder",
+      "categories": [
+        "Game audio"
+      ],
+      "stars": 8961,
+      "license": "MIT",
+      "branch": "main",
+      "description": "Point Claude at any game. Skills, tools and the fal MCP that let Claude Code mod almost any PC game you own: recon, reverse engineering, fal-generated art/3D/audio, in-game testing, showcase videos.",
+      "archived": false,
+      "url": "https://github.com/rehan-remade/universal-modder",
+      "pushed_at": "2026-10-25T20:48:13Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Excluded",
+      "potential_use": "Modification/extraction tooling",
+      "next_step": "No need for third-party game extraction in this project.",
+      "license_review": "MIT metadata"
+    },
+    {
+      "repo": "sebastianstarke/AI4Animation",
+      "categories": [
+        "Animation datasets"
+      ],
+      "stars": 8907,
+      "license": null,
+      "branch": "master",
+      "description": "Bringing Characters to Life with Computer Brains in Unity",
+      "archived": false,
+      "url": "https://github.com/sebastianstarke/AI4Animation",
+      "pushed_at": "2026-04-17T17:03:39Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Conditional",
+      "potential_use": "Motion datasets, locomotion and fighting research",
+      "next_step": "Dataset, code and character terms need separate confirmation; no dataset downloaded.",
+      "license_review": "No root license detected"
+    },
+    {
+      "repo": "zeux/meshoptimizer",
+      "categories": [
+        "Geometry optimization",
+        "glTF pipeline"
+      ],
+      "stars": 8629,
+      "license": "MIT",
+      "branch": "master",
+      "description": "Mesh optimization library that makes meshes smaller and faster to render",
+      "archived": false,
+      "url": "https://github.com/zeux/meshoptimizer",
+      "pushed_at": "2026-10-14T17:27:17Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Adopted tooling",
+      "potential_use": "Vertex/index locality and static-mesh LOD generation",
+      "next_step": "Pinned offline pipeline verified on guardian lion; LOD1 has 8,907 triangles.",
+      "license_review": "MIT",
+      "license_evidence": "https://github.com/zeux/meshoptimizer/blob/f0a684f11ead064e176775c9b796f82a55910e92/LICENSE.md",
+      "reviewed_commit": "f0a684f11ead064e176775c9b796f82a55910e92"
+    },
+    {
+      "repo": "recastnavigation/recastnavigation",
+      "categories": [
+        "Pathfinding"
+      ],
+      "stars": 7983,
+      "license": "Zlib",
+      "branch": "main",
+      "description": "Industry-standard navigation-mesh toolset for games",
+      "archived": false,
+      "url": "https://github.com/recastnavigation/recastnavigation",
+      "pushed_at": "2026-02-27T07:17:13Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Reference",
+      "potential_use": "Navigation-mesh and crowd steering algorithms",
+      "next_step": "Roblox PathfindingService remains the runtime path; useful for offline route analysis.",
+      "license_review": "Zlib"
+    },
+    {
+      "repo": "KhronosGroup/glTF",
+      "categories": [
+        "Targeted follow-up"
+      ],
+      "stars": 7868,
+      "license": "NOASSERTION",
+      "branch": "main",
+      "description": "glTF \u2013 Runtime 3D Asset Delivery",
+      "archived": false,
+      "url": "https://github.com/KhronosGroup/glTF",
+      "pushed_at": "2026-10-20T06:57:52Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Reference",
+      "potential_use": "Interchange format specifications",
+      "next_step": "Use to validate the pipeline; not a source of production art.",
+      "license_review": "Specification licenses differ"
+    },
+    {
+      "repo": "a1studmuffin/SpaceshipGenerator",
+      "categories": [
+        "Blender assets"
+      ],
+      "stars": 7842,
+      "license": "NOASSERTION",
+      "branch": "master",
+      "description": "A Blender script to procedurally generate 3D spaceships",
+      "archived": false,
+      "url": "https://github.com/a1studmuffin/SpaceshipGenerator",
+      "pushed_at": "2024-05-25T16:11:50Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery only",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Needs source, compatibility and license review before use.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "google/draco",
+      "categories": [
+        "Targeted follow-up"
+      ],
+      "stars": 7526,
+      "license": "Apache-2.0",
+      "branch": "main",
+      "description": "Draco is a library for compressing and decompressing 3D geometric meshes and point clouds. It is intended to improve the storage and transmission of 3D graphics.",
+      "archived": false,
+      "url": "https://github.com/google/draco",
+      "pushed_at": "2026-10-16T21:02:17Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Conditional",
+      "potential_use": "Offline geometry decode and transfer compression",
+      "next_step": "Do not emit compressed assets for Roblox unless importer compatibility is verified.",
+      "license_review": "Apache-2.0"
+    },
+    {
+      "repo": "agmmnn/awesome-blender",
+      "categories": [
+        "Blender pipeline"
+      ],
+      "stars": 7501,
+      "license": "CC0-1.0",
+      "branch": "master",
+      "description": "\ud83e\ude90 A curated list of awesome Blender addons, tools, tutorials; and 3D resources for everyone.",
+      "archived": false,
+      "url": "https://github.com/agmmnn/awesome-blender",
+      "pushed_at": "2026-01-22T14:37:39Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery index",
+      "potential_use": "Find additional art-authoring tools",
+      "next_step": "An index license does not license the linked assets; follow each original source.",
+      "license_review": "CC0 index"
+    },
+    {
+      "repo": "princeton-vl/infinigen",
+      "categories": [
+        "Procedural worlds"
+      ],
+      "stars": 7360,
+      "license": "BSD-3-Clause",
+      "branch": "main",
+      "description": "Infinite Photorealistic Worlds using Procedural Generation",
+      "archived": false,
+      "url": "https://github.com/princeton-vl/infinigen",
+      "pushed_at": "2026-10-14T19:54:31Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "High priority",
+      "potential_use": "Offline cliffs, rocks, vegetation and ruined environment source generation",
+      "next_step": "Use bounded exported static kits; evaluate generation cost and each imported asset's provenance.",
+      "license_review": "BSD-3-Clause",
+      "license_evidence": "https://github.com/princeton-vl/infinigen/blob/224598d4a2ff95b4fc928e72c222598b7122c698/LICENSE",
+      "reviewed_commit": "224598d4a2ff95b4fc928e72c222598b7122c698"
+    },
+    {
+      "repo": "AlkaidLab/foundation-sunshine",
+      "categories": [
+        "Game audio"
+      ],
+      "stars": 7332,
+      "license": "GPL-3.0",
+      "branch": "master",
+      "description": "Sunshine fork: an enhanced sunshine, a self-hosted game streaming host for Moonlight with HDR10/HDR Vivid, virtual displays, advanced audio, optimized encoders, and a modern control panel.",
+      "archived": false,
+      "url": "https://github.com/AlkaidLab/foundation-sunshine",
+      "pushed_at": "2026-10-25T16:46:58Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery only",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Needs source, compatibility and license review before use.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "s-macke/VoxelSpace",
+      "categories": [
+        "Terrain"
+      ],
+      "stars": 6821,
+      "license": "MIT",
+      "branch": "master",
+      "description": "Terrain rendering algorithm in less than 20 lines of code",
+      "archived": false,
+      "url": "https://github.com/s-macke/VoxelSpace",
+      "pushed_at": "2024-04-29T20:51:47Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Reference",
+      "potential_use": "Heightmap sampling and distant terrain concepts",
+      "next_step": "Software renderer; not production terrain art.",
+      "license_review": "MIT"
+    },
+    {
+      "repo": "supercollider/supercollider",
+      "categories": [
+        "SFX authoring"
+      ],
+      "stars": 6802,
+      "license": "GPL-3.0",
+      "branch": "develop",
+      "description": "An audio server, programming language, and IDE for sound synthesis and algorithmic composition.",
+      "archived": false,
+      "url": "https://github.com/supercollider/supercollider",
+      "pushed_at": "2026-10-25T21:34:03Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery only",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Needs source, compatibility and license review before use.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "luau-lang/luau",
+      "categories": [
+        "Luau tools"
+      ],
+      "stars": 6029,
+      "license": "MIT",
+      "branch": "master",
+      "description": "A small, fast, and embeddable programming language based on Lua with a gradual type system.",
+      "archived": false,
+      "url": "https://github.com/luau-lang/luau",
+      "pushed_at": "2026-10-23T23:25:41Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Already in project pipeline",
+      "potential_use": "Compilation, analysis and offline regressions",
+      "next_step": "Already bundled in work/bin/luau; do not replace the runtime mid-feature.",
+      "license_review": "MIT"
+    },
+    {
+      "repo": "mob-sakai/ParticleEffectForUGUI",
+      "categories": [
+        "VFX"
+      ],
+      "stars": 6028,
+      "license": "MIT",
+      "branch": "main",
+      "description": "Render particle effect in UnityUI(uGUI). Maskable, sortable, and no extra Camera/RenderTexture/Canvas.",
+      "archived": false,
+      "url": "https://github.com/mob-sakai/ParticleEffectForUGUI",
+      "pushed_at": "2026-10-21T08:55:35Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Reference",
+      "potential_use": "UI-particle pooling and lifecycle ideas",
+      "next_step": "Unity renderer incompatible; current effects already have bounded ownership.",
+      "license_review": "MIT"
+    },
+    {
+      "repo": "RodZill4/material-maker",
+      "categories": [
+        "Texture libraries"
+      ],
+      "stars": 6022,
+      "license": "MIT",
+      "branch": "master",
+      "description": "A procedural textures authoring and 3D model painting tool based on the Godot game engine",
+      "archived": false,
+      "url": "https://github.com/RodZill4/material-maker",
+      "pushed_at": "2026-10-25T09:18:13Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "High priority",
+      "potential_use": "Stone, moss, worn timber and magical material masks",
+      "next_step": "Bake Roblox-supported maps; review sample material licenses separately.",
+      "license_review": "MIT",
+      "license_evidence": "https://github.com/RodZill4/material-maker/blob/7d6daae3c74c09720afe4138ce09699ab3591ce1/LICENSE.md",
+      "reviewed_commit": "7d6daae3c74c09720afe4138ce09699ab3591ce1"
+    },
+    {
+      "repo": "EsotericSoftware/spine-runtimes",
+      "categories": [
+        "Animation"
+      ],
+      "stars": 5331,
+      "license": "NOASSERTION",
+      "branch": "4.3",
+      "description": "2D skeletal animation runtimes for Spine.",
+      "archived": false,
+      "url": "https://github.com/EsotericSoftware/spine-runtimes",
+      "pushed_at": "2026-10-21T17:00:57Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Excluded",
+      "potential_use": "2D animation runtime",
+      "next_step": "Not freely reusable under the project's current requirements.",
+      "license_review": "Spine Editor licensing required"
+    },
+    {
+      "repo": "RandyGaul/cute_headers",
+      "categories": [
+        "Game audio"
+      ],
+      "stars": 5093,
+      "license": "NOASSERTION",
+      "branch": "master",
+      "description": "Collection of cross-platform one-file C/C++ libraries with no dependencies, primarily used for games",
+      "archived": false,
+      "url": "https://github.com/RandyGaul/cute_headers",
+      "pushed_at": "2026-08-05T00:10:44Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Conditional",
+      "potential_use": "Geometry, collision and audio algorithms",
+      "next_step": "Review the specific header before a selective port; no blanket copy.",
+      "license_review": "Per-header licenses"
+    },
+    {
+      "repo": "chanind/hanzi-writer",
+      "categories": [
+        "Animation datasets"
+      ],
+      "stars": 5033,
+      "license": "MIT",
+      "branch": "master",
+      "description": "Chinese character stroke order animations and practice quizzes",
+      "archived": false,
+      "url": "https://github.com/chanind/hanzi-writer",
+      "pushed_at": "2025-12-31T05:43:32Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery only",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Needs source, compatibility and license review before use.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "TokisanGames/Terrain3D",
+      "categories": [
+        "Terrain"
+      ],
+      "stars": 4431,
+      "license": "MIT",
+      "branch": "main",
+      "description": "A high performance, editable terrain system for Godot 4.",
+      "archived": false,
+      "url": "https://github.com/TokisanGames/Terrain3D",
+      "pushed_at": "2026-10-24T11:37:37Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Reference",
+      "potential_use": "Large terrain authoring, texture layering and LOD ideas",
+      "next_step": "Godot plugin; export height data/material masks rather than porting the renderer.",
+      "license_review": "MIT"
+    },
+    {
+      "repo": "gamedev-skills/awesome-gamedev-agent-skills",
+      "categories": [
+        "Roblox"
+      ],
+      "stars": 4322,
+      "license": "Apache-2.0",
+      "branch": "main",
+      "description": "74 game-dev skills for AI coding agents \u2014 Godot, Unity, Unreal, Phaser, PixiJS, three.js, Bevy, pygame, L\u00d6VE, Roblox. Portable SKILL.md Agent Skills (the format Anthropic launched as Claude Skills), with a router that loads the right skill for your engine and task. Runs in Claude Code, Cursor, Kiro, Codex, Copilot, Gemini CLI and more.",
+      "archived": false,
+      "url": "https://github.com/gamedev-skills/awesome-gamedev-agent-skills",
+      "pushed_at": "2026-10-24T02:31:50Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery index",
+      "potential_use": "Developer workflow ideas",
+      "next_step": "No skills installed; repository instructions are not execution authorization.",
+      "license_review": "Apache-2.0"
+    },
+    {
+      "repo": "OpenMOSS/MOSS-TTS",
+      "categories": [
+        "SFX authoring"
+      ],
+      "stars": 4250,
+      "license": "Apache-2.0",
+      "branch": "main",
+      "description": "An open-source model family for long-form speech, dialogue synthesis, voice design, sound effects, and real-time streaming TTS",
+      "archived": false,
+      "url": "https://github.com/OpenMOSS/MOSS-TTS",
+      "pushed_at": "2026-09-06T06:19:28Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Conditional",
+      "potential_use": "Generated dialogue and SFX research",
+      "next_step": "Review model/voice/output terms and local resource costs before adoption.",
+      "license_review": "Apache-2.0 metadata"
+    },
+    {
+      "repo": "yousifamanuel/terraink",
+      "categories": [
+        "Terrain"
+      ],
+      "stars": 4216,
+      "license": "NOASSERTION",
+      "branch": "main",
+      "description": "Terraink: The Cartographic Poster Engine that creates unique and customizable map posters",
+      "archived": false,
+      "url": "https://github.com/yousifamanuel/terraink",
+      "pushed_at": "2026-09-24T18:40:56Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery only",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Needs source, compatibility and license review before use.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "bozbez/win-capture-audio",
+      "categories": [
+        "Game audio"
+      ],
+      "stars": 4018,
+      "license": "GPL-2.0",
+      "branch": "main",
+      "description": "An OBS plugin that allows capture of independant application audio streams on Windows, in a similar fashion to OBS's game capture and Discord's application streaming.",
+      "archived": false,
+      "url": "https://github.com/bozbez/win-capture-audio",
+      "pushed_at": "2024-01-30T01:36:15Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery only",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Needs source, compatibility and license review before use.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "dathere/qsv",
+      "categories": [
+        "Luau tools"
+      ],
+      "stars": 3815,
+      "license": "NOASSERTION",
+      "branch": "master",
+      "description": "Blazing-fast, Neuro-symbolic Data-Wrangling toolkit",
+      "archived": false,
+      "url": "https://github.com/dathere/qsv",
+      "pushed_at": "2026-10-26T01:09:56Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery only",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Needs source, compatibility and license review before use.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "DLR-RM/BlenderProc",
+      "categories": [
+        "Procedural worlds",
+        "Blender assets"
+      ],
+      "stars": 3764,
+      "license": "GPL-3.0",
+      "branch": "main",
+      "description": "A procedural Blender pipeline for photorealistic training image generation",
+      "archived": false,
+      "url": "https://github.com/DLR-RM/BlenderProc",
+      "pushed_at": "2026-01-20T18:01:09Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Conditional",
+      "potential_use": "Offline procedural scene generation and render QA",
+      "next_step": "Heavy authoring dependency; evaluate only for repeatable environment generation.",
+      "license_review": "GPL-3.0"
+    },
+    {
+      "repo": "NVIDIAGameWorks/PhysX",
+      "categories": [
+        "Targeted follow-up"
+      ],
+      "stars": 3602,
+      "license": "NOASSERTION",
+      "branch": "4.1",
+      "description": "NVIDIA PhysX SDK",
+      "archived": false,
+      "url": "https://github.com/NVIDIAGameWorks/PhysX",
+      "pushed_at": "2023-09-05T08:32:01Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery only",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Needs source, compatibility and license review before use.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "kth-competitive-programming/kactl",
+      "categories": [
+        "Open asset licensing"
+      ],
+      "stars": 3581,
+      "license": null,
+      "branch": "main",
+      "description": "KTH Algorithm Competition Template Library (... eller KTHs AC-tillverkande lapp)",
+      "archived": false,
+      "url": "https://github.com/kth-competitive-programming/kactl",
+      "pushed_at": "2026-10-08T18:13:34Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery only",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Needs source, compatibility and license review before use.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "Auburn/FastNoiseLite",
+      "categories": [
+        "Targeted follow-up"
+      ],
+      "stars": 3534,
+      "license": "MIT",
+      "branch": "master",
+      "description": "Fast Portable Noise Library - C# C++ C Java HLSL GLSL JavaScript Rust Go ",
+      "archived": false,
+      "url": "https://github.com/Auburn/FastNoiseLite",
+      "pushed_at": "2026-10-17T21:55:56Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "In use",
+      "potential_use": "Offline Monastery ridge generation",
+      "next_step": "Already integrated; keep pinned bake reproducible.",
+      "license_review": "MIT"
+    },
+    {
+      "repo": "General-Legal/legal-templates",
+      "categories": [
+        "Open asset licensing"
+      ],
+      "stars": 3524,
+      "license": "CC0-1.0",
+      "branch": "main",
+      "description": "Public collection of high-quality templates created by General Legal attorneys with CC0 license",
+      "archived": false,
+      "url": "https://github.com/General-Legal/legal-templates",
+      "pushed_at": "2026-09-22T19:31:26Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery only",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Needs source, compatibility and license review before use.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "MooreThreads/Moore-AnimateAnyone",
+      "categories": [
+        "Animation datasets"
+      ],
+      "stars": 3514,
+      "license": "Apache-2.0",
+      "branch": "master",
+      "description": "Character Animation (AnimateAnyone, Face Reenactment)",
+      "archived": false,
+      "url": "https://github.com/MooreThreads/Moore-AnimateAnyone",
+      "pushed_at": "2024-05-31T03:45:26Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery only",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Needs source, compatibility and license review before use.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "imadr/Unity-game-hacking",
+      "categories": [
+        "Asset libraries"
+      ],
+      "stars": 3480,
+      "license": null,
+      "branch": "master",
+      "description": "A guide for hacking unity games",
+      "archived": false,
+      "url": "https://github.com/imadr/Unity-game-hacking",
+      "pushed_at": "2022-11-14T15:38:12Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Excluded",
+      "potential_use": "Game hacking resources",
+      "next_step": "Not a source of reusable licensed art or Roblox gameplay.",
+      "license_review": "No license detected"
+    },
+    {
+      "repo": "EpicGames/BlenderTools",
+      "categories": [
+        "Blender pipeline"
+      ],
+      "stars": 3362,
+      "license": "MIT",
+      "branch": "main",
+      "description": "Blender addons that improve the game development workflow between Blender and Unreal.",
+      "archived": false,
+      "url": "https://github.com/EpicGames/BlenderTools",
+      "pushed_at": "2026-09-09T11:07:47Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Conditional",
+      "potential_use": "Batch asset export workflow reference",
+      "next_step": "Unreal-targeted; select only engine-independent export automation.",
+      "license_review": "MIT"
+    },
+    {
+      "repo": "AhmadHassan-BTed/RoseWish",
+      "categories": [
+        "VFX",
+        "Game audio"
+      ],
+      "stars": 3286,
+      "license": "MIT",
+      "branch": "main",
+      "description": "A heartfelt, interactive narrative mini-game built in Python for Rose Day. Features custom entities, a dynamic dialogue system, animated particle effects, and integrated audio to deliver a unique, romantic digital experience.",
+      "archived": false,
+      "url": "https://github.com/AhmadHassan-BTed/RoseWish",
+      "pushed_at": "2026-07-06T06:05:57Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery only",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Needs source, compatibility and license review before use.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "AhmadHassan-BTed/CursedTomorrow",
+      "categories": [
+        "Asset libraries"
+      ],
+      "stars": 3261,
+      "license": "MIT",
+      "branch": "main",
+      "description": "A 2D horror-survival and escape game built from scratch in C++. Navigate unsettling levels, survive the glitches, and escape the nightmare. Features a custom C++ game core, robust asset management, and comprehensive system architecture documentation.",
+      "archived": false,
+      "url": "https://github.com/AhmadHassan-BTed/CursedTomorrow",
+      "pushed_at": "2026-10-20T06:49:30Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery only",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Needs source, compatibility and license review before use.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "grame-cncm/faust",
+      "categories": [
+        "SFX authoring"
+      ],
+      "stars": 3198,
+      "license": "NOASSERTION",
+      "branch": "master-dev",
+      "description": "Functional programming language for signal processing and sound synthesis",
+      "archived": false,
+      "url": "https://github.com/grame-cncm/faust",
+      "pushed_at": "2026-10-25T21:33:29Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery only",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Needs source, compatibility and license review before use.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "bloxstraplabs/bloxstrap",
+      "categories": [
+        "Roblox"
+      ],
+      "stars": 3185,
+      "license": "MIT",
+      "branch": "main",
+      "description": "An alternative bootstrapper for Roblox with a bunch of extra features.",
+      "archived": false,
+      "url": "https://github.com/bloxstraplabs/bloxstrap",
+      "pushed_at": "2026-10-25T18:27:25Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Excluded",
+      "potential_use": "Alternative client bootstrapper",
+      "next_step": "Outside game-content and development scope.",
+      "license_review": "MIT"
+    },
+    {
+      "repo": "mewo2/terrain",
+      "categories": [
+        "Terrain"
+      ],
+      "stars": 3043,
+      "license": "NOASSERTION",
+      "branch": "master",
+      "description": "Fantasy map generator",
+      "archived": false,
+      "url": "https://github.com/mewo2/terrain",
+      "pushed_at": "2016-08-15T10:43:45Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Port candidate",
+      "potential_use": "Campaign-map topology and fantasy map generation",
+      "next_step": "Generate an authored overview/map artifact; preserve the campaign's walked routes.",
+      "license_review": "MIT (LICENSE.md verified)",
+      "license_evidence": "https://github.com/mewo2/terrain/blob/a2511d6b673ae92f5983f3343365ba9326c03b63/LICENSE.md",
+      "reviewed_commit": "a2511d6b673ae92f5983f3343365ba9326c03b63"
+    },
+    {
+      "repo": "Engine-Simulator/engine-sim-community-edition",
+      "categories": [
+        "Game audio"
+      ],
+      "stars": 3011,
+      "license": null,
+      "branch": "master",
+      "description": "Combustion engine simulation game that generates realistic audio.",
+      "archived": false,
+      "url": "https://github.com/Engine-Simulator/engine-sim-community-edition",
+      "pushed_at": "2025-09-11T16:01:27Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery only",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Needs source, compatibility and license review before use.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "guillaumeblanc/ozz-animation",
+      "categories": [
+        "Animation"
+      ],
+      "stars": 2976,
+      "license": "NOASSERTION",
+      "branch": "master",
+      "description": "Open source c++ skeletal animation library and toolset",
+      "archived": false,
+      "url": "https://github.com/guillaumeblanc/ozz-animation",
+      "pushed_at": "2026-08-01T21:34:54Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "High priority",
+      "potential_use": "Offline skeletal animation sampling, optimization and blending reference",
+      "next_step": "Export/sample through an R15 retargeting pipeline; C++ runtime cannot run inside Luau.",
+      "license_review": "MIT (LICENSE.md verified previously)"
+    },
+    {
+      "repo": "mlua-rs/mlua",
+      "categories": [
+        "Luau tools"
+      ],
+      "stars": 2923,
+      "license": "NOASSERTION",
+      "branch": "main",
+      "description": "High level Lua 5.5/5.4/5.3/5.2/5.1 (including LuaJIT) and Luau bindings to Rust with async/await support",
+      "archived": false,
+      "url": "https://github.com/mlua-rs/mlua",
+      "pushed_at": "2026-10-24T18:10:14Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery only",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Needs source, compatibility and license review before use.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "Syomus/ProceduralToolkit",
+      "categories": [
+        "Procedural worlds"
+      ],
+      "stars": 2909,
+      "license": "MIT",
+      "branch": "master",
+      "description": "Procedural generation library for Unity",
+      "archived": false,
+      "url": "https://github.com/Syomus/ProceduralToolkit",
+      "pushed_at": "2024-04-04T23:31:28Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Port candidate",
+      "potential_use": "Building, geometry and layout algorithms",
+      "next_step": "Selective algorithm port or Blender generation; Unity components are not directly compatible.",
+      "license_review": "MIT"
+    },
+    {
+      "repo": "YanjieZe/GMR",
+      "categories": [
+        "Retargeting"
+      ],
+      "stars": 2799,
+      "license": "MIT",
+      "branch": "master",
+      "description": "[ICRA 2026] GMR: General Motion Retargeting. Retarget human motions into diverse humanoid robots in real time on CPU. Retargeter for TWIST.",
+      "archived": false,
+      "url": "https://github.com/YanjieZe/GMR",
+      "pushed_at": "2026-10-22T17:08:44Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery only",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Needs source, compatibility and license review before use.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "RobustFieldAutonomyLab/LeGO-LOAM",
+      "categories": [
+        "Terrain"
+      ],
+      "stars": 2763,
+      "license": "BSD-3-Clause",
+      "branch": "master",
+      "description": "LeGO-LOAM: Lightweight and Ground-Optimized Lidar Odometry and Mapping on Variable Terrain",
+      "archived": false,
+      "url": "https://github.com/RobustFieldAutonomyLab/LeGO-LOAM",
+      "pushed_at": "2024-08-17T07:20:25Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery only",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Needs source, compatibility and license review before use.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "spothq/cryptocurrency-icons",
+      "categories": [
+        "Open asset licensing"
+      ],
+      "stars": 2756,
+      "license": "CC0-1.0",
+      "branch": "master",
+      "description": "A set of icons for all the main cryptocurrencies and altcoins, in a range of styles and sizes.",
+      "archived": false,
+      "url": "https://github.com/spothq/cryptocurrency-icons",
+      "pushed_at": "2024-08-19T15:29:55Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery only",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Needs source, compatibility and license review before use.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "xavier150/Blender-For-UnrealEngine-Addons",
+      "categories": [
+        "Blender pipeline"
+      ],
+      "stars": 2697,
+      "license": "GPL-3.0",
+      "branch": "release",
+      "description": "I have created this addons for export asset from Blender to Unreal Engine",
+      "archived": false,
+      "url": "https://github.com/xavier150/Blender-For-UnrealEngine-Addons",
+      "pushed_at": "2026-10-08T02:01:51Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery only",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Needs source, compatibility and license review before use.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "Tencent-Hunyuan/HY-Motion-1.0",
+      "categories": [
+        "Animation datasets"
+      ],
+      "stars": 2627,
+      "license": "NOASSERTION",
+      "branch": "master",
+      "description": "HY-Motion model for 3D human motion or 3D character animation generation. ",
+      "archived": false,
+      "url": "https://github.com/Tencent-Hunyuan/HY-Motion-1.0",
+      "pushed_at": "2026-07-18T15:13:36Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Excluded",
+      "potential_use": "Motion generation",
+      "next_step": "Not unrestricted open source; do not download/run weights or copy outputs without separate review.",
+      "license_review": "Tencent community license, territorial restrictions",
+      "license_evidence": "https://github.com/Tencent-Hunyuan/HY-Motion-1.0/blob/4e426f5a1021cbcf7f375458c37b840ee7225229/License.txt",
+      "reviewed_commit": "4e426f5a1021cbcf7f375458c37b840ee7225229"
+    },
+    {
+      "repo": "majidmanzarpour/threejs-game-skills",
+      "categories": [
+        "Game audio",
+        "Asset libraries"
+      ],
+      "stars": 2586,
+      "license": "MIT",
+      "branch": "main",
+      "description": "Agent skills for building playable, polished Three.js browser games with gameplay, AAA-style graphics, UI, QA, and optional AI-generated 3D, image, and audio assets.",
+      "archived": false,
+      "url": "https://github.com/majidmanzarpour/threejs-game-skills",
+      "pushed_at": "2026-09-28T03:23:18Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery only",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Needs source, compatibility and license review before use.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "NatroTeam/NatroMacro",
+      "categories": [
+        "Roblox"
+      ],
+      "stars": 2428,
+      "license": "GPL-3.0",
+      "branch": "main",
+      "description": "A Bee Swarm Simulator macro for Windows",
+      "archived": false,
+      "url": "https://github.com/NatroTeam/NatroMacro",
+      "pushed_at": "2026-04-27T20:32:55Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery only",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Needs source, compatibility and license review before use.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "AhmadHassan-BTed/EQAI",
+      "categories": [
+        "Asset libraries"
+      ],
+      "stars": 2418,
+      "license": null,
+      "branch": "main",
+      "description": "A highly specialized reverse-engineering pipeline designed to structurally transplant original Vanilla character models into the EverQuest Online Adventures: Frontiers (PS2) game engine, resolving complex Vector Unit 1 (VU1) shader bugs, Emotion Engine (EE) memory overflows, and PS2 CDVDman hardware faults.",
+      "archived": false,
+      "url": "https://github.com/AhmadHassan-BTed/EQAI",
+      "pushed_at": "2026-07-03T07:34:53Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery only",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Needs source, compatibility and license review before use.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "JohnnyMorganz/StyLua",
+      "categories": [
+        "Luau tools"
+      ],
+      "stars": 2322,
+      "license": "MPL-2.0",
+      "branch": "main",
+      "description": "A Lua code formatter",
+      "archived": false,
+      "url": "https://github.com/JohnnyMorganz/StyLua",
+      "pushed_at": "2026-10-12T06:50:49Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "High priority",
+      "potential_use": "Consistent Luau formatting and CI checks",
+      "next_step": "Developer tool, not shipped gameplay code; introduce formatting gradually to avoid noisy rewrites.",
+      "license_review": "MPL-2.0"
+    },
+    {
+      "repo": "StefanoCecere/awesome-opensource-unity",
+      "categories": [
+        "Asset libraries"
+      ],
+      "stars": 2288,
+      "license": "CC0-1.0",
+      "branch": "master",
+      "description": "a list of curated opensource Unity packages for future proof Game Developers",
+      "archived": false,
+      "url": "https://github.com/StefanoCecere/awesome-opensource-unity",
+      "pushed_at": "2026-02-18T12:54:30Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery index",
+      "potential_use": "Find selectively portable gameplay/geometry examples",
+      "next_step": "Use original repositories and verify their terms; no Unity runtime import.",
+      "license_review": "CC0 index"
+    },
+    {
+      "repo": "Zylann/godot_heightmap_plugin",
+      "categories": [
+        "Terrain"
+      ],
+      "stars": 2284,
+      "license": "NOASSERTION",
+      "branch": "master",
+      "description": "HeightMap terrain for Godot implemented in GDScript",
+      "archived": false,
+      "url": "https://github.com/Zylann/godot_heightmap_plugin",
+      "pushed_at": "2026-07-30T20:14:30Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Reference",
+      "potential_use": "Heightmap import/export and sculpting patterns",
+      "next_step": "Offline authoring only; Godot shaders do not import into Roblox.",
+      "license_review": "MIT (LICENSE.md verified)",
+      "license_evidence": "https://github.com/Zylann/godot_heightmap_plugin/blob/7f574eb47fbd74cb1a79adc2cc9fb7f0694fccc3/LICENSE.md",
+      "reviewed_commit": "7f574eb47fbd74cb1a79adc2cc9fb7f0694fccc3"
+    },
+    {
+      "repo": "Miziziziz/Retro3DGraphicsCollection",
+      "categories": [
+        "Asset libraries"
+      ],
+      "stars": 2271,
+      "license": null,
+      "branch": "main",
+      "description": "a compilation of commercially usable game ready retro style 3d graphic assets",
+      "archived": false,
+      "url": "https://github.com/Miziziziz/Retro3DGraphicsCollection",
+      "pushed_at": "2026-07-25T17:25:01Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery index",
+      "potential_use": "Low-poly art-source discovery",
+      "next_step": "Review individual packs; avoid imposing a PSX art style on the existing direction.",
+      "license_review": "No blanket license detected"
+    },
+    {
+      "repo": "axstin/rbxfpsunlocker",
+      "categories": [
+        "Roblox"
+      ],
+      "stars": 2242,
+      "license": "MIT",
+      "branch": "master",
+      "description": "FPS Unlocker for Roblox",
+      "archived": true,
+      "url": "https://github.com/axstin/rbxfpsunlocker",
+      "pushed_at": "2024-06-21T18:43:29Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Excluded",
+      "potential_use": "Client FPS unlocker",
+      "next_step": "Not an in-game performance improvement.",
+      "license_review": "MIT"
+    },
+    {
+      "repo": "jarikomppa/soloud",
+      "categories": [
+        "Game audio"
+      ],
+      "stars": 2189,
+      "license": "NOASSERTION",
+      "branch": "master",
+      "description": "Free, easy, portable audio engine for games",
+      "archived": false,
+      "url": "https://github.com/jarikomppa/soloud",
+      "pushed_at": "2024-08-13T04:10:58Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Conditional",
+      "potential_use": "DSP and sound-generation reference",
+      "next_step": "Offline sound authoring only; generated output and sample rights need separate review.",
+      "license_review": "Review complete license"
+    },
+    {
+      "repo": "CesiumGS/gltf-pipeline",
+      "categories": [
+        "glTF pipeline"
+      ],
+      "stars": 2136,
+      "license": "Apache-2.0",
+      "branch": "main",
+      "description": "Content pipeline tools for optimizing glTF assets. :globe_with_meridians:",
+      "archived": false,
+      "url": "https://github.com/CesiumGS/gltf-pipeline",
+      "pushed_at": "2026-06-23T13:27:31Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Reference",
+      "potential_use": "Alternative GLB cleanup and batch processing",
+      "next_step": "glTF Transform/meshoptimizer are now adopted; avoid unsupported compressed output.",
+      "license_review": "Apache-2.0"
+    },
+    {
+      "repo": "Radivarig/UvSquares",
+      "categories": [
+        "Blender pipeline"
+      ],
+      "stars": 2132,
+      "license": "GPL-2.0",
+      "branch": "master",
+      "description": "Blender addon for reshaping UV quad selection into a grid.",
+      "archived": false,
+      "url": "https://github.com/Radivarig/UvSquares",
+      "pushed_at": "2025-11-21T23:07:43Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Conditional",
+      "potential_use": "Offline UV cleanup",
+      "next_step": "Keep GPL add-on code in the authoring tool; independently document model and texture rights.",
+      "license_review": "GPL-2.0"
+    },
+    {
+      "repo": "facebookresearch/ai4animationpy",
+      "categories": [
+        "Animation datasets"
+      ],
+      "stars": 2122,
+      "license": "NOASSERTION",
+      "branch": "main",
+      "description": "A Python framework for AI-driven character animation using neural networks.",
+      "archived": false,
+      "url": "https://github.com/facebookresearch/ai4animationpy",
+      "pushed_at": "2026-10-24T13:47:11Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Excluded",
+      "potential_use": "Research animation framework",
+      "next_step": "Noncommercial license prevents copying into this commercial-capable game.",
+      "license_review": "CC-BY-NC-4.0 verified",
+      "license_evidence": "https://github.com/facebookresearch/ai4animationpy/blob/0feae690aebd0a4cb47a084577a50a937dd7edd1/LICENSE",
+      "reviewed_commit": "0feae690aebd0a4cb47a084577a50a937dd7edd1"
+    },
+    {
+      "repo": "SebLague/Path-Creator",
+      "categories": [
+        "Asset libraries"
+      ],
+      "stars": 2099,
+      "license": "MIT",
+      "branch": "master",
+      "description": "Path creation asset for Unity game development",
+      "archived": false,
+      "url": "https://github.com/SebLague/Path-Creator",
+      "pushed_at": "2024-05-02T21:14:52Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Port candidate",
+      "potential_use": "Spline camera rails and authored traversal paths",
+      "next_step": "Port the spline math selectively; do not import a Unity runtime.",
+      "license_review": "MIT"
+    },
+    {
+      "repo": "donmccurdy/glTF-Transform",
+      "categories": [
+        "glTF pipeline"
+      ],
+      "stars": 1994,
+      "license": "MIT",
+      "branch": "main",
+      "description": "glTF 2.0 SDK for JavaScript and TypeScript, on Web and Node.js.",
+      "archived": false,
+      "url": "https://github.com/donmccurdy/glTF-Transform",
+      "pushed_at": "2026-10-20T11:41:51Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Adopted tooling",
+      "potential_use": "Safe GLB read/write, welding and asset round-trip validation",
+      "next_step": "Pinned pipeline preserves material counts and embedded texture payloads.",
+      "license_review": "MIT",
+      "license_evidence": "https://github.com/donmccurdy/glTF-Transform/blob/8e2a94a2616d293c4b503d0fb6a4b42e6ec7c62f/LICENSE.md",
+      "reviewed_commit": "8e2a94a2616d293c4b503d0fb6a4b42e6ec7c62f"
+    },
+    {
+      "repo": "rserota/wad",
+      "categories": [
+        "SFX authoring"
+      ],
+      "stars": 1984,
+      "license": "MIT",
+      "branch": "master",
+      "description": "Web Audio DAW.  Use the Web Audio API for dynamic sound synthesis.  It's like jQuery for your ears. ",
+      "archived": false,
+      "url": "https://github.com/rserota/wad",
+      "pushed_at": "2025-11-06T22:42:39Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Reference",
+      "potential_use": "Audio mixing and sound-control patterns",
+      "next_step": "Web Audio is incompatible; no need to replace Roblox SoundService.",
+      "license_review": "MIT"
+    },
+    {
+      "repo": "zeroruka/GI-Assets",
+      "categories": [
+        "Asset libraries",
+        "Texture libraries"
+      ],
+      "stars": 1963,
+      "license": "GPL-3.0",
+      "branch": "main",
+      "description": "Character textures, models and mods for a certain anime game. ",
+      "archived": false,
+      "url": "https://github.com/zeroruka/GI-Assets",
+      "pushed_at": "2025-05-01T13:09:13Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Excluded",
+      "potential_use": "Third-party game-asset dump",
+      "next_step": "Do not use Genshin game assets without the rights holder's license.",
+      "license_review": "Repository code label does not grant game-art rights"
+    },
+    {
+      "repo": "gdquest-demos/godot-4-procedural-generation",
+      "categories": [
+        "Procedural worlds"
+      ],
+      "stars": 1932,
+      "license": "NOASSERTION",
+      "branch": "master",
+      "description": "Procedural generation algorithms and demos for the Godot game engine",
+      "archived": false,
+      "url": "https://github.com/gdquest-demos/godot-4-procedural-generation",
+      "pushed_at": "2026-06-26T12:55:03Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery only",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Needs source, compatibility and license review before use.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "prettymuchbryce/easystarjs",
+      "categories": [
+        "Pathfinding"
+      ],
+      "stars": 1932,
+      "license": "MIT",
+      "branch": "master",
+      "description": "An asynchronous A* pathfinding API written in Javascript.",
+      "archived": false,
+      "url": "https://github.com/prettymuchbryce/easystarjs",
+      "pushed_at": "2024-01-23T23:07:02Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Port candidate",
+      "potential_use": "Grid route planning and route validation",
+      "next_step": "Useful for offline map audits; do not replace authoritative combat movement with JS.",
+      "license_review": "MIT"
+    },
+    {
+      "repo": "ANYbotics/elevation_mapping",
+      "categories": [
+        "Terrain"
+      ],
+      "stars": 1894,
+      "license": "BSD-3-Clause",
+      "branch": "master",
+      "description": "Robot-centric elevation mapping for rough terrain navigation",
+      "archived": false,
+      "url": "https://github.com/ANYbotics/elevation_mapping",
+      "pushed_at": "2024-11-04T10:55:13Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery only",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Needs source, compatibility and license review before use.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "Inochi2D/inochi2d",
+      "categories": [
+        "Animation datasets"
+      ],
+      "stars": 1827,
+      "license": "BSD-2-Clause",
+      "branch": "main",
+      "description": "Inochi2D SDK - Bring your characters to life",
+      "archived": false,
+      "url": "https://github.com/Inochi2D/inochi2d",
+      "pushed_at": "2026-10-03T02:58:52Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery only",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Needs source, compatibility and license review before use.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "rojo-rbx/rojo",
+      "categories": [
+        "Roblox"
+      ],
+      "stars": 1821,
+      "license": "MPL-2.0",
+      "branch": "master",
+      "description": "Rojo enables Roblox developers to use professional-grade software engineering tools",
+      "archived": false,
+      "url": "https://github.com/rojo-rbx/rojo",
+      "pushed_at": "2026-10-06T01:02:36Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Already in project pipeline",
+      "potential_use": "Source-to-Studio build and synchronization",
+      "next_step": "Already used by tools/build.py and start_sync; retain version pin.",
+      "license_review": "MPL-2.0"
+    },
+    {
+      "repo": "JohnHeibel/ClaudeAnimationBase",
+      "categories": [
+        "Animation datasets"
+      ],
+      "stars": 1817,
+      "license": "MIT",
+      "branch": "main",
+      "description": "A starter kit for animating hand-painted cartoons with Claude: p5.js + p5.brush, the Clawd character, 31 acted emotions and a guide for the model",
+      "archived": false,
+      "url": "https://github.com/JohnHeibel/ClaudeAnimationBase",
+      "pushed_at": "2026-09-24T07:41:21Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Reference",
+      "potential_use": "2D hand-drawn animation/storyboard workflow",
+      "next_step": "Possible marketing/cinematic authoring reference; not R15 motion.",
+      "license_review": "MIT",
+      "reviewed_commit": "0ac8bf2b31942376cb6b8c4074715595d512acd2"
+    },
+    {
+      "repo": "pelicanmapping/osgearth",
+      "categories": [
+        "Terrain"
+      ],
+      "stars": 1813,
+      "license": "MIT",
+      "branch": "master",
+      "description": "3D Maps & Terrain SDK (C++)",
+      "archived": false,
+      "url": "https://github.com/pelicanmapping/osgearth",
+      "pushed_at": "2026-10-23T19:54:25Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery only",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Needs source, compatibility and license review before use.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "effekseer/Effekseer",
+      "categories": [
+        "VFX authoring"
+      ],
+      "stars": 1812,
+      "license": "MIT",
+      "branch": "master",
+      "description": null,
+      "archived": false,
+      "url": "https://github.com/effekseer/Effekseer",
+      "pushed_at": "2026-10-26T01:07:39Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "In use",
+      "potential_use": "VFX textures and speed easing",
+      "next_step": "Five textures active, two masks reserved; all seven image variants typed-verified.",
+      "license_review": "MIT code + CC0 selected samples"
+    },
+    {
+      "repo": "MTG/sms-tools",
+      "categories": [
+        "SFX authoring"
+      ],
+      "stars": 1801,
+      "license": "AGPL-3.0",
+      "branch": "master",
+      "description": "Sound analysis/synthesis tools for music applications",
+      "archived": false,
+      "url": "https://github.com/MTG/sms-tools",
+      "pushed_at": "2026-03-19T15:59:07Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery only",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Needs source, compatibility and license review before use.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "Unity-Technologies/Animation-Instancing",
+      "categories": [
+        "Animation datasets"
+      ],
+      "stars": 1784,
+      "license": "NOASSERTION",
+      "branch": "master",
+      "description": "This technique is designed to instance Characters(SkinnedMeshRender). ",
+      "archived": false,
+      "url": "https://github.com/Unity-Technologies/Animation-Instancing",
+      "pushed_at": "2024-03-06T08:22:22Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery only",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Needs source, compatibility and license review before use.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "chenjd/Render-Crowd-Of-Animated-Characters",
+      "categories": [
+        "Animation datasets"
+      ],
+      "stars": 1780,
+      "license": "MIT",
+      "branch": "master",
+      "description": "Animation Baker and Instancing for Animated Characters: Using GPU to implement large-amount animation characters rendering. The animation map for vertex shader to modify the vertex position of the mesh at runtime. Using GPU instancing to reduce draw calls. ",
+      "archived": false,
+      "url": "https://github.com/chenjd/Render-Crowd-Of-Animated-Characters",
+      "pushed_at": "2024-12-28T22:33:56Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery only",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Needs source, compatibility and license review before use.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "VoxelPlugin/VoxelPluginFreeLegacy",
+      "categories": [
+        "Terrain"
+      ],
+      "stars": 1767,
+      "license": null,
+      "branch": "master",
+      "description": "Voxel Plugin Legacy for Unreal Engine",
+      "archived": false,
+      "url": "https://github.com/VoxelPlugin/VoxelPluginFreeLegacy",
+      "pushed_at": "2026-06-24T10:55:26Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery only",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Needs source, compatibility and license review before use.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "SirRamEsq/SmartShape2D",
+      "categories": [
+        "Terrain"
+      ],
+      "stars": 1760,
+      "license": "MIT",
+      "branch": "master",
+      "description": "A 2D Terrain Tool for Godot",
+      "archived": false,
+      "url": "https://github.com/SirRamEsq/SmartShape2D",
+      "pushed_at": "2026-08-07T10:36:57Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery only",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Needs source, compatibility and license review before use.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "protongraph/protongraph",
+      "categories": [
+        "Procedural worlds"
+      ],
+      "stars": 1748,
+      "license": "MIT",
+      "branch": "main",
+      "description": "Experimental node-based software for procedural content generation",
+      "archived": false,
+      "url": "https://github.com/protongraph/protongraph",
+      "pushed_at": "2023-11-23T00:33:30Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Conditional",
+      "potential_use": "Node-based procedural 3D authoring",
+      "next_step": "Evaluate export formats and maintenance before adoption.",
+      "license_review": "MIT"
+    },
+    {
+      "repo": "saturday06/VRM-Addon-for-Blender",
+      "categories": [
+        "Blender pipeline"
+      ],
+      "stars": 1730,
+      "license": "MIT",
+      "branch": "main",
+      "description": "VRM Importer, Exporter and Utilities for Blender 2.93 to 5.2",
+      "archived": false,
+      "url": "https://github.com/saturday06/VRM-Addon-for-Blender",
+      "pushed_at": "2026-10-26T01:25:56Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Conditional",
+      "potential_use": "Humanoid skeleton inspection and retargeting workflow",
+      "next_step": "VRM source character licenses still need separate review.",
+      "license_review": "MIT"
+    },
+    {
+      "repo": "fdivitto/FabGL",
+      "categories": [
+        "Game audio"
+      ],
+      "stars": 1725,
+      "license": "NOASSERTION",
+      "branch": "master",
+      "description": "ESP32 Display Controller (VGA, PAL/NTSC Color Composite, SSD1306, ST7789, ILI9341), PS/2 Mouse and Keyboard Controller, Graphics Library, Sound Engine, Game Engine and ANSI/VT Terminal",
+      "archived": false,
+      "url": "https://github.com/fdivitto/FabGL",
+      "pushed_at": "2025-02-27T08:49:40Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery only",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Needs source, compatibility and license review before use.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "One-2-3-45/One-2-3-45",
+      "categories": [
+        "Geometry optimization"
+      ],
+      "stars": 1714,
+      "license": "Apache-2.0",
+      "branch": "master",
+      "description": "[NeurIPS 2023] Official code of \"One-2-3-45: Any Single Image to 3D Mesh in 45 Seconds without Per-Shape Optimization\"",
+      "archived": false,
+      "url": "https://github.com/One-2-3-45/One-2-3-45",
+      "pushed_at": "2024-04-20T23:15:25Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery only",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Needs source, compatibility and license review before use.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "ammaarreshi/Generals-Mac-iOS-iPad",
+      "categories": [
+        "Asset libraries"
+      ],
+      "stars": 1705,
+      "license": "NOASSERTION",
+      "branch": "main",
+      "description": "Command & Conquer Generals: Zero Hour running natively on macOS, iPhone & iPad \u2014 real engine (EA GPL v3 source, via GeneralsX), DXVK/MoltenVK renderer, RTS touch controls. No game assets included.",
+      "archived": false,
+      "url": "https://github.com/ammaarreshi/Generals-Mac-iOS-iPad",
+      "pushed_at": "2026-07-05T17:23:48Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery only",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Needs source, compatibility and license review before use.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "gaea-godot/gaea",
+      "categories": [
+        "Procedural worlds"
+      ],
+      "stars": 1662,
+      "license": "MIT",
+      "branch": "2.0",
+      "description": "Procedural generation add-on for Godot 4.",
+      "archived": false,
+      "url": "https://github.com/gaea-godot/gaea",
+      "pushed_at": "2026-10-18T14:03:26Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Reference",
+      "potential_use": "Node-based procedural world generation",
+      "next_step": "Godot plugin; authoring patterns and exported maps only.",
+      "license_review": "MIT"
+    },
+    {
+      "repo": "jeffffffli/HybrIK",
+      "categories": [
+        "Character motion"
+      ],
+      "stars": 1631,
+      "license": "MIT",
+      "branch": "main",
+      "description": "Official code of \"HybrIK: A Hybrid Analytical-Neural Inverse Kinematics Solution for 3D Human Pose and Shape Estimation\", CVPR 2021",
+      "archived": false,
+      "url": "https://github.com/jeffffffli/HybrIK",
+      "pushed_at": "2025-01-08T10:01:45Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery only",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Needs source, compatibility and license review before use.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "twostraws/Vortex",
+      "categories": [
+        "VFX"
+      ],
+      "stars": 1589,
+      "license": "MIT",
+      "branch": "main",
+      "description": "High-performance particle effects for SwiftUI.",
+      "archived": false,
+      "url": "https://github.com/twostraws/Vortex",
+      "pushed_at": "2026-04-03T10:26:16Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Reference",
+      "potential_use": "Declarative particle timing examples",
+      "next_step": "SwiftUI-specific; only authoring patterns transfer.",
+      "license_review": "MIT"
+    },
+    {
+      "repo": "kevinzakka/mink",
+      "categories": [
+        "Character motion"
+      ],
+      "stars": 1583,
+      "license": "Apache-2.0",
+      "branch": "main",
+      "description": "Python inverse kinematics based on MuJoCo.",
+      "archived": false,
+      "url": "https://github.com/kevinzakka/mink",
+      "pushed_at": "2026-10-26T01:26:10Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery only",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Needs source, compatibility and license review before use.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "ranjian0/building_tools",
+      "categories": [
+        "Blender pipeline"
+      ],
+      "stars": 1511,
+      "license": "MIT",
+      "branch": "master",
+      "description": "Building generation addon for blender",
+      "archived": false,
+      "url": "https://github.com/ranjian0/building_tools",
+      "pushed_at": "2026-09-24T10:49:10Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "High priority",
+      "potential_use": "Offline modular walls, doors, stairs and courtyards",
+      "next_step": "Adapt generated kit to Chinese monastery silhouettes in Blender.",
+      "license_review": "MIT",
+      "reviewed_commit": "0216534645b15b3f8aac0bd1d7e6674e2972b9b3"
+    },
+    {
+      "repo": "scallyw4g/bonsai",
+      "categories": [
+        "Procedural worlds"
+      ],
+      "stars": 1466,
+      "license": "WTFPL",
+      "branch": "master",
+      "description": "The procedural generation voxel engine",
+      "archived": false,
+      "url": "https://github.com/scallyw4g/bonsai",
+      "pushed_at": "2026-10-19T19:03:23Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery only",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Needs source, compatibility and license review before use.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "AsPJT/DungeonTemplateLibrary",
+      "categories": [
+        "Terrain",
+        "Procedural worlds"
+      ],
+      "stars": 1464,
+      "license": "BSL-1.0",
+      "branch": "master",
+      "description": "\ud83c\udf0f: Dungeon free resources (terrain & roguelike generation)",
+      "archived": false,
+      "url": "https://github.com/AsPJT/DungeonTemplateLibrary",
+      "pushed_at": "2025-04-09T07:08:03Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Port candidate",
+      "potential_use": "Dungeon/ruin layout algorithms",
+      "next_step": "C++ source; a selective layout generator could aid optional crypt rooms.",
+      "license_review": "BSL-1.0"
+    },
+    {
+      "repo": "belangeo/pyo",
+      "categories": [
+        "SFX authoring"
+      ],
+      "stars": 1458,
+      "license": "LGPL-3.0",
+      "branch": "master",
+      "description": "Python DSP module",
+      "archived": false,
+      "url": "https://github.com/belangeo/pyo",
+      "pushed_at": "2026-10-25T11:50:22Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery only",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Needs source, compatibility and license review before use.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "xandergos/terrain-diffusion",
+      "categories": [
+        "Terrain",
+        "Procedural worlds"
+      ],
+      "stars": 1455,
+      "license": "MIT",
+      "branch": "master",
+      "description": "[SIGGRAPH 2026] InfiniteDiffusion & Terrain Diffusion: Procedural generation with diffusion models",
+      "archived": false,
+      "url": "https://github.com/xandergos/terrain-diffusion",
+      "pushed_at": "2026-08-12T03:58:54Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery only",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Needs source, compatibility and license review before use.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "Auburn/FastNoise2",
+      "categories": [
+        "Noise algorithms"
+      ],
+      "stars": 1445,
+      "license": "MIT",
+      "branch": "master",
+      "description": "Modular node graph based noise generation library using SIMD, C++17 and templates",
+      "archived": false,
+      "url": "https://github.com/Auburn/FastNoise2",
+      "pushed_at": "2026-10-24T20:29:18Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Reference",
+      "potential_use": "SIMD noise for large offline bakes",
+      "next_step": "FastNoiseLite is already sufficient at current scale; use only when bake profiling justifies it.",
+      "license_review": "MIT"
+    },
+    {
+      "repo": "djeedai/bevy_hanabi",
+      "categories": [
+        "VFX"
+      ],
+      "stars": 1436,
+      "license": "Apache-2.0",
+      "branch": "main",
+      "description": "\ud83c\udf86 Hanabi \u2014 a GPU particle system plugin for the Bevy game engine.",
+      "archived": false,
+      "url": "https://github.com/djeedai/bevy_hanabi",
+      "pushed_at": "2026-10-24T22:50:39Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Reference",
+      "potential_use": "Particle lifecycle and GPU authoring patterns",
+      "next_step": "Rust/Bevy renderer incompatible; do not import its runtime.",
+      "license_review": "Apache-2.0"
+    },
+    {
+      "repo": "stevinz/awesome-game-engine-dev",
+      "categories": [
+        "Asset libraries"
+      ],
+      "stars": 1436,
+      "license": "CC0-1.0",
+      "branch": "main",
+      "description": "Awesome list of resources for Game Engine Development.",
+      "archived": false,
+      "url": "https://github.com/stevinz/awesome-game-engine-dev",
+      "pushed_at": "2026-08-17T18:26:37Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery index",
+      "potential_use": "Rendering, geometry, animation and tooling references",
+      "next_step": "Useful discovery list; linked projects have independent licenses.",
+      "license_review": "CC0 index"
+    },
+    {
+      "repo": "SBCV/Blender-Addon-Photogrammetry-Importer",
+      "categories": [
+        "Blender pipeline"
+      ],
+      "stars": 1376,
+      "license": "MIT",
+      "branch": "master",
+      "description": "Addon to import different photogrammetry formats into Blender",
+      "archived": false,
+      "url": "https://github.com/SBCV/Blender-Addon-Photogrammetry-Importer",
+      "pushed_at": "2026-02-16T15:04:38Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Conditional",
+      "potential_use": "Photogrammetry ingest",
+      "next_step": "Only use scans with confirmed rights; export bounded PBR static meshes.",
+      "license_review": "MIT"
+    },
+    {
+      "repo": "Yuan-ManX/ai-game-devtools",
+      "categories": [
+        "Game audio",
+        "Texture libraries"
+      ],
+      "stars": 1373,
+      "license": "MIT",
+      "branch": "main",
+      "description": "Your AI Game Dev Hub. The ultimate resource hub for AI-powered game development tools. Discover cutting-edge LLMs, World Model, Agent, Code, Image, Texture, Shader, 3D Model, Animation, Video, Audio, Music, Singing Voice and Analytics. \ud83d\udd25",
+      "archived": false,
+      "url": "https://github.com/Yuan-ManX/ai-game-devtools",
+      "pushed_at": "2026-07-21T09:21:18Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery only",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Needs source, compatibility and license review before use.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "roblox-ts/roblox-ts",
+      "categories": [
+        "Roblox",
+        "Luau tools"
+      ],
+      "stars": 1324,
+      "license": "MIT",
+      "branch": "master",
+      "description": "A TypeScript-to-Luau Compiler for Roblox",
+      "archived": false,
+      "url": "https://github.com/roblox-ts/roblox-ts",
+      "pushed_at": "2026-10-23T06:03:23Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Reference",
+      "potential_use": "Typed Roblox development tooling",
+      "next_step": "Current project is Luau; migration would cost more than it helps now.",
+      "license_review": "MIT"
+    },
+    {
+      "repo": "seankross/the-unix-workbench",
+      "categories": [
+        "Open asset licensing"
+      ],
+      "stars": 1310,
+      "license": "CC0-1.0",
+      "branch": "master",
+      "description": ":house_with_garden: A Book for Anyone to Get Started with Unix",
+      "archived": false,
+      "url": "https://github.com/seankross/the-unix-workbench",
+      "pushed_at": "2024-08-03T12:51:04Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery only",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Needs source, compatibility and license review before use.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "mirror-engine/the-mirror",
+      "categories": [
+        "Roblox"
+      ],
+      "stars": 1301,
+      "license": "NOASSERTION",
+      "branch": "dev",
+      "description": "V1, Mirror Classic. V2, Mirror Engine: Join Discord for access.",
+      "archived": false,
+      "url": "https://github.com/mirror-engine/the-mirror",
+      "pushed_at": "2025-08-28T09:53:18Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery only",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Needs source, compatibility and license review before use.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "dexsuite/dex-retargeting",
+      "categories": [
+        "Retargeting"
+      ],
+      "stars": 1295,
+      "license": "MIT",
+      "branch": "main",
+      "description": "Various retargeting optimizers to translate human hand motion to robot hand motion. ",
+      "archived": false,
+      "url": "https://github.com/dexsuite/dex-retargeting",
+      "pushed_at": "2025-08-21T17:51:55Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery only",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Needs source, compatibility and license review before use.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "sensorium/Mozzi",
+      "categories": [
+        "SFX authoring"
+      ],
+      "stars": 1293,
+      "license": "LGPL-2.1",
+      "branch": "master",
+      "description": "sound synthesis library for Arduino",
+      "archived": false,
+      "url": "https://github.com/sensorium/Mozzi",
+      "pushed_at": "2026-07-22T12:35:24Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery only",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Needs source, compatibility and license review before use.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "Roblox/cube",
+      "categories": [
+        "Roblox"
+      ],
+      "stars": 1285,
+      "license": "NOASSERTION",
+      "branch": "main",
+      "description": "Roblox Foundation Model for 3D Intelligence",
+      "archived": false,
+      "url": "https://github.com/Roblox/cube",
+      "pushed_at": "2026-05-28T03:37:24Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Conditional",
+      "potential_use": "Roblox-oriented mesh generation research",
+      "next_step": "Review model/weight and output terms before any use; no weights downloaded.",
+      "license_review": "Custom license; review required"
+    },
+    {
+      "repo": "sugiany/blender_mmd_tools",
+      "categories": [
+        "Blender pipeline"
+      ],
+      "stars": 1279,
+      "license": "NOASSERTION",
+      "branch": "master",
+      "description": "mmd_tools is a blender addon for importing Models and Motions of MikuMikuDance.",
+      "archived": false,
+      "url": "https://github.com/sugiany/blender_mmd_tools",
+      "pushed_at": "2022-06-12T15:54:33Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery only",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Needs source, compatibility and license review before use.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "EdyJ/blender-to-unity-fbx-exporter",
+      "categories": [
+        "Blender pipeline"
+      ],
+      "stars": 1277,
+      "license": "MIT",
+      "branch": "master",
+      "description": "FBX exporter addon for Blender compatible with Unity's coordinate and scaling system.",
+      "archived": false,
+      "url": "https://github.com/EdyJ/blender-to-unity-fbx-exporter",
+      "pushed_at": "2026-04-16T16:05:05Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Port candidate",
+      "potential_use": "FBX coordinate and scale handling",
+      "next_step": "Useful offline export patterns; verify Roblox R15 axis conventions.",
+      "license_review": "MIT"
+    },
+    {
+      "repo": "sparklinlabs/superpowers-asset-packs",
+      "categories": [
+        "Open asset licensing"
+      ],
+      "stars": 1274,
+      "license": "CC0-1.0",
+      "branch": "master",
+      "description": "CC0-licensed asset packs for your games",
+      "archived": false,
+      "url": "https://github.com/sparklinlabs/superpowers-asset-packs",
+      "pushed_at": "2019-09-21T20:04:12Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Imported sources",
+      "potential_use": "CC0 punch/roll/run/walk/jump/idle sources and fantasy sounds",
+      "next_step": "Nine DAE clips require R15 retargeting; eight sounds uploaded, seven registered after live checks, ambience pending Roblox requester approval.",
+      "license_review": "CC0-1.0",
+      "license_evidence": "https://github.com/sparklinlabs/superpowers-asset-packs/blob/master/LICENSE.txt",
+      "reviewed_commit": "e8674a03ab4456802f71f848c4df79eccca23f7a"
+    },
+    {
+      "repo": "TimoBolkart/voca",
+      "categories": [
+        "Animation datasets"
+      ],
+      "stars": 1272,
+      "license": null,
+      "branch": "master",
+      "description": "This codebase demonstrates how to synthesize realistic 3D character animations given an arbitrary speech signal and a static character mesh.",
+      "archived": false,
+      "url": "https://github.com/TimoBolkart/voca",
+      "pushed_at": "2024-08-20T10:53:36Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery only",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Needs source, compatibility and license review before use.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "codrops/ParticleEffectsButtons",
+      "categories": [
+        "VFX"
+      ],
+      "stars": 1264,
+      "license": null,
+      "branch": "master",
+      "description": "A little library that can be used for bursting particles effects on buttons and other elements",
+      "archived": false,
+      "url": "https://github.com/codrops/ParticleEffectsButtons",
+      "pushed_at": "2024-08-05T18:29:36Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery only",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Needs source, compatibility and license review before use.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "Jaysmito101/TerraForge3D",
+      "categories": [
+        "Procedural worlds"
+      ],
+      "stars": 1252,
+      "license": "MIT",
+      "branch": "gen3",
+      "description": "Cross Platform Professional Procedural Terrain Generation & Texturing Tool",
+      "archived": false,
+      "url": "https://github.com/Jaysmito101/TerraForge3D",
+      "pushed_at": "2026-10-12T01:05:09Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Conditional",
+      "potential_use": "Offline terrain authoring and erosion",
+      "next_step": "Evaluate exported heightmaps, then blend with protected Roblox routes.",
+      "license_review": "MIT"
+    },
+    {
+      "repo": "SebLague/Procedural-Landmass-Generation",
+      "categories": [
+        "Procedural worlds"
+      ],
+      "stars": 1250,
+      "license": "MIT",
+      "branch": "master",
+      "description": "Procedural Landmass Generation in Unity",
+      "archived": false,
+      "url": "https://github.com/SebLague/Procedural-Landmass-Generation",
+      "pushed_at": "2024-01-12T08:26:42Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Port candidate",
+      "potential_use": "Coherent terrain regions, falloff and LOD design",
+      "next_step": "Use as an offline authoring reference alongside the existing terrain builder.",
+      "license_review": "MIT"
+    },
+    {
+      "repo": "Kiri-Innovation/3dgs-render-blender-addon",
+      "categories": [
+        "Blender pipeline"
+      ],
+      "stars": 1245,
+      "license": "GPL-2.0",
+      "branch": "main",
+      "description": "3DGS Render by KIRI Engine",
+      "archived": false,
+      "url": "https://github.com/Kiri-Innovation/3dgs-render-blender-addon",
+      "pushed_at": "2026-09-20T09:18:26Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery only",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Needs source, compatibility and license review before use.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "godotengine/godot-blender-exporter",
+      "categories": [
+        "Blender pipeline"
+      ],
+      "stars": 1234,
+      "license": "GPL-2.0",
+      "branch": "master",
+      "description": "Addon for Blender to directly export to a Godot Scene",
+      "archived": false,
+      "url": "https://github.com/godotengine/godot-blender-exporter",
+      "pushed_at": "2024-01-06T08:06:51Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery only",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Needs source, compatibility and license review before use.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "maximecb/noisecraft",
+      "categories": [
+        "SFX authoring"
+      ],
+      "stars": 1229,
+      "license": "GPL-2.0",
+      "branch": "main",
+      "description": "Browser-based visual programming language and platform for sound synthesis.",
+      "archived": false,
+      "url": "https://github.com/maximecb/noisecraft",
+      "pushed_at": "2026-09-23T12:55:46Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery only",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Needs source, compatibility and license review before use.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "SamiPerttu/fundsp",
+      "categories": [
+        "SFX authoring"
+      ],
+      "stars": 1229,
+      "license": "Apache-2.0",
+      "branch": "master",
+      "description": "Library for audio processing and synthesis",
+      "archived": false,
+      "url": "https://github.com/SamiPerttu/fundsp",
+      "pushed_at": "2026-03-03T15:41:09Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Conditional",
+      "potential_use": "Offline procedural sound design",
+      "next_step": "Useful future DSP authoring; no Rust dependency installed.",
+      "license_review": "Apache-2.0"
+    },
+    {
+      "repo": "jzyong/game-server",
+      "categories": [
+        "Pathfinding"
+      ],
+      "stars": 1229,
+      "license": "MIT",
+      "branch": "master",
+      "description": "Distributed Java game server, including cluster management server, gateway server, hall server, game logic server, background monitoring server and a running web version of fishing. State machine, behavior tree, A* pathfinding, navigation mesh and other AI tools",
+      "archived": false,
+      "url": "https://github.com/jzyong/game-server",
+      "pushed_at": "2025-12-19T22:49:29Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery only",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Needs source, compatibility and license review before use.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "aachman98/Sorcar",
+      "categories": [
+        "Blender assets"
+      ],
+      "stars": 1182,
+      "license": "GPL-3.0",
+      "branch": "master",
+      "description": "Procedural modeling in Blender using Node Editor",
+      "archived": false,
+      "url": "https://github.com/aachman98/Sorcar",
+      "pushed_at": "2021-02-23T15:59:29Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery only",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Needs source, compatibility and license review before use.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "nv-tlabs/ASE",
+      "categories": [
+        "Animation datasets"
+      ],
+      "stars": 1130,
+      "license": "NOASSERTION",
+      "branch": "main",
+      "description": "Adversarial skill embeddings for training reusable controllers for physically simulated characters.",
+      "archived": false,
+      "url": "https://github.com/nv-tlabs/ASE",
+      "pushed_at": "2025-12-07T09:02:20Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery only",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Needs source, compatibility and license review before use.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "KhronosGroup/glTF-Sample-Assets",
+      "categories": [
+        "Targeted follow-up"
+      ],
+      "stars": 1128,
+      "license": null,
+      "branch": "main",
+      "description": "An assortment of assets that demonstrate features and capabilities of the glTF format",
+      "archived": false,
+      "url": "https://github.com/KhronosGroup/glTF-Sample-Assets",
+      "pushed_at": "2026-10-25T21:48:31Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Conditional",
+      "potential_use": "Importer edge cases and asset-pipeline fixtures",
+      "next_step": "Use assets only after checking each model's license; repository availability is not a blanket grant.",
+      "license_review": "Per-asset licenses"
+    },
+    {
+      "repo": "vinegarhq/sober",
+      "categories": [
+        "Roblox"
+      ],
+      "stars": 1120,
+      "license": null,
+      "branch": "master",
+      "description": "Runtime for Roblox on Linux",
+      "archived": false,
+      "url": "https://github.com/vinegarhq/sober",
+      "pushed_at": "2026-10-14T00:02:52Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery only",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Needs source, compatibility and license review before use.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "JiawangBian/GMS-Feature-Matcher",
+      "categories": [
+        "Motion matching"
+      ],
+      "stars": 1113,
+      "license": "BSD-3-Clause",
+      "branch": "master",
+      "description": "GMS: Grid-based Motion Statistics for Fast, Ultra-robust Feature Correspondence (CVPR 17 & IJCV 20)",
+      "archived": false,
+      "url": "https://github.com/JiawangBian/GMS-Feature-Matcher",
+      "pushed_at": "2020-06-10T06:30:44Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery only",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Needs source, compatibility and license review before use.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "atenfyr/UAssetGUI",
+      "categories": [
+        "Asset libraries"
+      ],
+      "stars": 1093,
+      "license": "MIT",
+      "branch": "master",
+      "description": "A tool designed for low-level examination and modification of Unreal Engine game assets by hand.",
+      "archived": false,
+      "url": "https://github.com/atenfyr/UAssetGUI",
+      "pushed_at": "2026-10-19T05:26:09Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery only",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Needs source, compatibility and license review before use.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "Razaekel/noise-rs",
+      "categories": [
+        "Procedural worlds",
+        "Noise algorithms"
+      ],
+      "stars": 1088,
+      "license": "Apache-2.0",
+      "branch": "develop",
+      "description": "Procedural noise generation library for Rust.",
+      "archived": false,
+      "url": "https://github.com/Razaekel/noise-rs",
+      "pushed_at": "2025-02-14T03:15:59Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Reference",
+      "potential_use": "Alternative noise and terrain algorithms",
+      "next_step": "Rust offline tool; avoid adding a second runtime dependency without an authoring need.",
+      "license_review": "Apache-2.0"
+    },
+    {
+      "repo": "tesselode/kira",
+      "categories": [
+        "Game audio"
+      ],
+      "stars": 1073,
+      "license": "Apache-2.0",
+      "branch": "main",
+      "description": "Library for expressive game audio.",
+      "archived": false,
+      "url": "https://github.com/tesselode/kira",
+      "pushed_at": "2026-09-26T19:25:30Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Reference",
+      "potential_use": "Adaptive game-audio scheduling",
+      "next_step": "Rust runtime cannot run in Roblox; preserve current spatial voice pool.",
+      "license_review": "Apache-2.0"
+    },
+    {
+      "repo": "Stefanuk12/ROBLOX",
+      "categories": [
+        "Roblox"
+      ],
+      "stars": 1064,
+      "license": "Apache-2.0",
+      "branch": "master",
+      "description": "Public: All of my ROBLOX Scripts, etc.",
+      "archived": true,
+      "url": "https://github.com/Stefanuk12/ROBLOX",
+      "pushed_at": "2026-09-18T15:52:03Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Excluded",
+      "potential_use": "Client exploit scripts",
+      "next_step": "Not a legitimate gameplay-development dependency.",
+      "license_review": "Apache-2.0 metadata"
+    },
+    {
+      "repo": "Phylliade/ikpy",
+      "categories": [
+        "Character motion"
+      ],
+      "stars": 1038,
+      "license": "Apache-2.0",
+      "branch": "master",
+      "description": "IKPy, an Universal Inverse Kinematics library",
+      "archived": false,
+      "url": "https://github.com/Phylliade/ikpy",
+      "pushed_at": "2026-08-30T15:58:55Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery only",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Needs source, compatibility and license review before use.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "taishi-i/awesome-japanese-nlp-resources",
+      "categories": [
+        "Open asset licensing"
+      ],
+      "stars": 1023,
+      "license": "CC0-1.0",
+      "branch": "main",
+      "description": "A curated list of resources for Japanese natural language processing (NLP): Python libraries, LLMs, dictionaries, corpora, and datasets. Includes Claude Code and Codex skills to search resources.",
+      "archived": false,
+      "url": "https://github.com/taishi-i/awesome-japanese-nlp-resources",
+      "pushed_at": "2026-10-24T18:08:11Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery only",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Needs source, compatibility and license review before use.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "devanshutak25/3d-resources",
+      "categories": [
+        "Asset libraries",
+        "Open asset licensing"
+      ],
+      "stars": 1006,
+      "license": "CC0-1.0",
+      "branch": "main",
+      "description": "Curated, CC0 reference hub for 3D, VFX, and game dev. 3,400+ tools, assets, and tutorials across 12 sections. Searchable, filterable, free.",
+      "archived": false,
+      "url": "https://github.com/devanshutak25/3d-resources",
+      "pushed_at": "2026-10-12T06:59:34Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery index",
+      "potential_use": "Find CC0/PBR resources",
+      "next_step": "Check each linked asset at its original source.",
+      "license_review": "CC0 index"
+    },
+    {
+      "repo": "lumen-oss/lux",
+      "categories": [
+        "Luau tools"
+      ],
+      "stars": 1005,
+      "license": "LGPL-3.0",
+      "branch": "main",
+      "description": "A luxurious package manager for Lua and Luau",
+      "archived": false,
+      "url": "https://github.com/lumen-oss/lux",
+      "pushed_at": "2026-10-26T02:12:41Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": true,
+      "decision": "Discovery only",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Needs source, compatibility and license review before use.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "lune-org/lune",
+      "categories": [
+        "Targeted follow-up"
+      ],
+      "stars": 970,
+      "license": "MPL-2.0",
+      "branch": "main",
+      "description": "A standalone Luau runtime",
+      "archived": false,
+      "url": "https://github.com/lune-org/lune",
+      "pushed_at": "2026-10-21T13:11:21Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": false,
+      "decision": "Excluded by star count",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Not reused under the requested >1000-star constraint.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "orangeduck/Motion-Matching",
+      "categories": [
+        "Targeted follow-up"
+      ],
+      "stars": 930,
+      "license": "MIT",
+      "branch": "main",
+      "description": "Learned Motion Matching example implementation and source code for the article \"Code vs Data Driven Displacement\"",
+      "archived": false,
+      "url": "https://github.com/orangeduck/Motion-Matching",
+      "pushed_at": "2025-02-06T03:15:47Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": false,
+      "decision": "Excluded by star count",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Not reused under the requested >1000-star constraint.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "Kampfkarren/selene",
+      "categories": [
+        "Targeted follow-up"
+      ],
+      "stars": 833,
+      "license": "MPL-2.0",
+      "branch": "main",
+      "description": "A blazing-fast modern Lua linter written in Rust",
+      "archived": false,
+      "url": "https://github.com/Kampfkarren/selene",
+      "pushed_at": "2026-10-01T22:47:55Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": false,
+      "decision": "Excluded by star count",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Not reused under the requested >1000-star constraint.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "Sleitnick/Knit",
+      "categories": [
+        "Targeted follow-up"
+      ],
+      "stars": 632,
+      "license": "MIT",
+      "branch": "main",
+      "description": "Lightweight game framework for Roblox",
+      "archived": true,
+      "url": "https://github.com/Sleitnick/Knit",
+      "pushed_at": "2024-07-31T13:18:03Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": false,
+      "decision": "Excluded by star count",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Not reused under the requested >1000-star constraint.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "Roblox/roact",
+      "categories": [
+        "Targeted follow-up"
+      ],
+      "stars": 625,
+      "license": "Apache-2.0",
+      "branch": "master",
+      "description": "A view management library for Roblox Lua similar to React",
+      "archived": true,
+      "url": "https://github.com/Roblox/roact",
+      "pushed_at": "2023-12-13T00:17:58Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": false,
+      "decision": "Excluded by star count",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Not reused under the requested >1000-star constraint.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "jsdotlua/react-lua",
+      "categories": [
+        "Targeted follow-up"
+      ],
+      "stars": 578,
+      "license": "MIT",
+      "branch": "main",
+      "description": "A comprehensive, but not exhaustive, translation of upstream ReactJS 17.x into Lua.",
+      "archived": false,
+      "url": "https://github.com/jsdotlua/react-lua",
+      "pushed_at": "2025-05-23T02:42:51Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": false,
+      "decision": "Excluded by star count",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Not reused under the requested >1000-star constraint.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "JohnnyMorganz/luau-lsp",
+      "categories": [
+        "Targeted follow-up"
+      ],
+      "stars": 558,
+      "license": "MIT",
+      "branch": "main",
+      "description": "Language Server Implementation for Luau",
+      "archived": false,
+      "url": "https://github.com/JohnnyMorganz/luau-lsp",
+      "pushed_at": "2026-10-24T04:29:59Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": false,
+      "decision": "Excluded by star count",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Not reused under the requested >1000-star constraint.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "UpliftGames/wally",
+      "categories": [
+        "Targeted follow-up"
+      ],
+      "stars": 506,
+      "license": "MPL-2.0",
+      "branch": "main",
+      "description": "Wally is a modern package manager for Roblox projects inspired by Cargo",
+      "archived": false,
+      "url": "https://github.com/UpliftGames/wally",
+      "pushed_at": "2026-10-12T18:11:02Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": false,
+      "decision": "Excluded by star count",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Not reused under the requested >1000-star constraint.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "jayanam/fast-carve",
+      "categories": [
+        "Targeted follow-up"
+      ],
+      "stars": 489,
+      "license": "GPL-3.0",
+      "branch": "master",
+      "description": "Hardsurface utility Blender addon for fast boolean and bevel operations (it's now JMesh tools : https://github.com/jayanam/jmesh-tools)",
+      "archived": false,
+      "url": "https://github.com/jayanam/fast-carve",
+      "pushed_at": "2023-09-15T01:39:40Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": false,
+      "decision": "Excluded by star count",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Not reused under the requested >1000-star constraint.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "KhronosGroup/glTF-Validator",
+      "categories": [
+        "Targeted follow-up"
+      ],
+      "stars": 475,
+      "license": "Apache-2.0",
+      "branch": "main",
+      "description": "Tool to validate glTF assets.",
+      "archived": false,
+      "url": "https://github.com/KhronosGroup/glTF-Validator",
+      "pushed_at": "2026-10-06T19:02:48Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": false,
+      "decision": "Excluded by star count",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Not reused under the requested >1000-star constraint.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "rojo-rbx/rbx-dom",
+      "categories": [
+        "Targeted follow-up"
+      ],
+      "stars": 203,
+      "license": "MIT",
+      "branch": "master",
+      "description": "Roblox DOM and (de)serialization implementation in Rust",
+      "archived": false,
+      "url": "https://github.com/rojo-rbx/rbx-dom",
+      "pushed_at": "2026-10-06T01:02:42Z",
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": false,
+      "decision": "Excluded by star count",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Not reused under the requested >1000-star constraint.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "Roblox/roblox-lsp",
+      "categories": [
+        "Targeted follow-up"
+      ],
+      "error": true,
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": false,
+      "decision": "Unavailable",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Targeted candidate did not resolve; not used.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "ThomasTheSpaceFox/Fusion",
+      "categories": [
+        "Targeted follow-up"
+      ],
+      "error": true,
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": false,
+      "decision": "Unavailable",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Targeted candidate did not resolve; not used.",
+      "license_review": "Repository API metadata only"
+    },
+    {
+      "repo": "morrownr/awesome-webgl",
+      "categories": [
+        "Targeted follow-up"
+      ],
+      "error": true,
+      "checked_date": "2026-10-26",
+      "meets_star_requirement": false,
+      "decision": "Unavailable",
+      "potential_use": "Metadata hit; no project-specific recommendation made.",
+      "next_step": "Targeted candidate did not resolve; not used.",
+      "license_review": "Repository API metadata only"
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "input": "assets/models/Asuraguardianlion.glb",
+  "output": "assets/github/optimized/AsuraGuardianLion.glb",
+  "ratio": 1,
+  "error": 0.001,
+  "before": {
+    "meshes": 1,
+    "primitives": 1,
+    "vertices": 16656,
+    "triangles": 17819,
+    "bounds": [
+      -0.3846898376941681,
+      -0.4999980032444,
+      -0.32969531416893005,
+      0.38090112805366516,
+      0.5007103085517883,
+      0.34464767575263977
+    ],
+    "materials": 1,
+    "textures": 3,
+    "skins": 0,
+    "animations": 0,
+    "textureHashes": [
+      "2a37097d002c7245b2a672ff0336249e5af2653458bc882bd86d30d9558ab784",
+      "98a34c1a57effdb5daef9d5eef5e43a4f0cfc0d7f91f7f6a1b76461b9512253d",
+      "ab6d60e58621faf36d684e3d7577add1d6e995a2309da626e35930cebcb86a3e"
+    ]
+  },
+  "after": {
+    "meshes": 1,
+    "primitives": 1,
+    "vertices": 16656,
+    "triangles": 17819,
+    "bounds": [
+      -0.3846898376941681,
+      -0.4999980032444,
+      -0.32969531416893005,
+      0.38090112805366516,
+      0.5007103085517883,
+      0.34464767575263977
+    ],
+    "materials": 1,
+    "textures": 3,
+    "skins": 0,
+    "animations": 0,
+    "textureHashes": [
+      "2a37097d002c7245b2a672ff0336249e5af2653458bc882bd86d30d9558ab784",
+      "98a34c1a57effdb5daef9d5eef5e43a4f0cfc0d7f91f7f6a1b76461b9512253d",
+      "ab6d60e58621faf36d684e3d7577add1d6e995a2309da626e35930cebcb86a3e"
+    ]
+  },
+  "inputBytes": 2187788,
+  "outputBytes": 2187760,
+  "inputSHA256": "f1bdb4d126aed7959627a8c83d39661a49c34c80fdb70028a7baf664bff9f44d",
+  "outputSHA256": "dc1372cb13f346f090997a12255ab28943c3c3fef04eb3b60899a9c7a7c81f51",
+  "pipeline": {
+    "glTF-Transform": "4.5.1",
+    "meshoptimizer": "1.3.0"
+  },
+  "compression": "none; no Draco, quantization, meshopt compression, or KTX output"
+}

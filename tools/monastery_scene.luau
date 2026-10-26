@@ -41,9 +41,17 @@ function Scene.build(seed: number?)
 	local Zones = require("../src/shared/MonasteryZones")
 	local RidgeProfile = require("../src/shared/MonasteryRidgeProfile")
 	local terrainLog = {}
+	local tags: { [string]: { Instance } } = {}
 	local workspace = { Terrain = fakeTerrain(terrainLog) }
 	local services = {
 		Workspace = workspace,
+		CollectionService = {
+			AddTag = function(_, instance, tag)
+				tags[tag] = tags[tag] or {}
+				table.insert(tags[tag], instance)
+			end,
+			GetTagged = function(_, tag) return tags[tag] or {} end,
+		},
 		ReplicatedStorage = { WaitForChild = function(self, name) return self[name] end, AsurasPath = { Shared = { WorldDefinitions = World, PresentationAssets = Assets, MonasteryZones = Zones, MonasteryRidgeProfile = RidgeProfile } } },
 		ServerStorage = { FindFirstChild = function() return nil end },
 	}

@@ -28,6 +28,9 @@ Credits.ThirdParty = table.freeze({
 	{ Work = "FastNoiseLite cliff profiles", By = "Jordan Peck and contributors", License = "MIT", Source = "https://github.com/Auburn/FastNoiseLite" },
 	{ Work = "Effekseer speed easing", By = "Effekseer Project", License = "MIT", Source = "https://github.com/effekseer/Effekseer/blob/8b1e2969825638fb24682f3697610d8f37949d22/Dev/Editor/EffekseerCore/Utils/Math.cs" },
 	{ Work = "Effekseer sample textures", By = "Effekseer Project / AndrewFM", License = "CC0-1.0", Source = "https://github.com/effekseer/Effekseer/tree/8b1e2969825638fb24682f3697610d8f37949d22/Release/Sample/01_AndrewFM01" },
+	{ Work = "Heavy physical impact", By = "FFeller", License = "CC0-1.0", Source = "https://github.com/godotengine/godot-demo-projects/blob/b761b4cd5718a7118f2c95eb55f181d0a5f004f1/3d/ragdoll_physics/sounds/impact_big.LICENSE.md" },
+	{ Work = "Light physical impact", By = "dorian.mastin", License = "CC0-1.0", Source = "https://github.com/godotengine/godot-demo-projects/blob/b761b4cd5718a7118f2c95eb55f181d0a5f004f1/3d/ragdoll_physics/sounds/impact_small.LICENSE.md" },
+	{ Work = "Superpowers fantasy sound library", By = "Sparklin Labs / Pixel-boy", License = "CC0-1.0", Source = "https://github.com/sparklinlabs/superpowers-asset-packs" },
 } :: { Entry })
 
 -- Made for the project, in the record's own words (each phrase appears in CREDITS.md).

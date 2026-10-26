@@ -46,7 +46,7 @@
       "prepared_rotation_degrees": 90,
       "roblox_uploaded_variant": "original vertical strip",
       "horizontal_variant_id": "rbxassetid://90786029633700",
-      "horizontal_variant_status": "pending typed verification; not active"
+      "horizontal_variant_status": "Success (Studio Edit typed ImageLabel preload); active for Celestial beams"
     },
     {
       "repository": "effekseer/Effekseer",
@@ -172,12 +172,14 @@
       "commit": "b761b4cd5718a7118f2c95eb55f181d0a5f004f1",
       "blob_sha": "3010d93b9ba707d2709504fa47a2c187c8569081",
       "license": "CC0-1.0",
-      "uploaded": false,
+      "uploaded": true,
       "sha256": "8219eee486ec96b3de1b4eb5dfc7a10de47d4aa10927387b1df7a9de05b17cfc",
       "bytes": 100930,
       "prepared_seconds": 1.0496666666666667,
       "prepared_file": "assets/github/ready/GithubHeavyImpact.wav",
-      "prepared_sha256": "8f1d3ac511056d788aeb700e2a65f89836c8edff2a44697fc8a65f250747d05a"
+      "prepared_sha256": "8f1d3ac511056d788aeb700e2a65f89836c8edff2a44697fc8a65f250747d05a",
+      "roblox_id": "rbxassetid://75064735099891",
+      "roblox_load_status": "Success (Studio Edit typed Sound preload)"
     },
     {
       "repository": "godotengine/godot-demo-projects",
@@ -188,12 +190,14 @@
       "commit": "b761b4cd5718a7118f2c95eb55f181d0a5f004f1",
       "blob_sha": "00651194206930455bf15b4f4c990ca772359bd1",
       "license": "CC0-1.0",
-      "uploaded": false,
+      "uploaded": true,
       "sha256": "b38e07a93d65723b7f31848aff5b42c50893e72ca895947e48f3a09f08370596",
       "bytes": 85582,
       "prepared_seconds": 0.9698125,
       "prepared_file": "assets/github/ready/GithubLightImpact.wav",
-      "prepared_sha256": "3d2cfc006c7c50026caf10e993c06376cc4077a6b279849e5b7e75629de760f9"
+      "prepared_sha256": "3d2cfc006c7c50026caf10e993c06376cc4077a6b279849e5b7e75629de760f9",
+      "roblox_id": "rbxassetid://84168306022631",
+      "roblox_load_status": "Success (Studio Edit typed Sound preload)"
     }
   ]
 }

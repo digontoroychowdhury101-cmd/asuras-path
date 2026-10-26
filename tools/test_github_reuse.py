@@ -7,6 +7,7 @@ import re
 import struct
 import subprocess
 import wave
+import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[1]
 manifest = json.loads((ROOT / "assets/GITHUB_REUSE.json").read_text())
@@ -20,9 +21,10 @@ for repo in manifest["repositories"]:
     assert repo["stars"] > 1000 and len(repo["commit"]) == 40
 uploaded = json.loads((ROOT / "assets/GITHUB_UPLOADED.json").read_text())
 registry = (ROOT / "src/shared/PresentationAssets.luau").read_text()
-for slot, asset_id in uploaded["Textures"].items():
-    assert re.fullmatch(r"rbxassetid://[1-9][0-9]+", asset_id)
-    assert f'{slot} = "{asset_id}"' in registry, slot
+for section in ("Textures", "Audio"):
+    for slot, asset_id in uploaded[section].items():
+        assert re.fullmatch(r"rbxassetid://[1-9][0-9]+", asset_id)
+        assert f'{slot} = "{asset_id}"' in registry, slot
 for entry in manifest["files"]:
     raw = (ROOT / entry["file"]).read_bytes()
     assert hashlib.sha256(raw).hexdigest() == entry["sha256"], entry["file"]
@@ -44,5 +46,23 @@ for entry in manifest["files"]:
             samples = array.array("h", wav.readframes(wav.getnframes()))
             assert len(samples) > 0 and max(abs(s) for s in samples) <= 16423
             assert abs(sum(samples) / len(samples) / 32768) < 0.003
+library = ET.parse(ROOT / "assets/models/AsuraGithubMedia.rbxmx").getroot().find("Item")
+expected_ids = set(uploaded["Audio"].values()) | set(uploaded["Textures"].values())
+library_ids = {item.findtext("Properties/Content/url") for item in library.findall("Item")}
+assert expected_ids == library_ids, "Studio library and source registry differ"
+extra = json.loads((ROOT / "assets/GITHUB_SUPERPOWERS.json").read_text())
+assert extra["stars"] > 1000 and extra["license"] == "CC0-1.0"
+for entry in extra["files"]:
+    raw = (ROOT / entry["file"]).read_bytes()
+    assert hashlib.sha256(raw).hexdigest() == entry["sha256"]
+    assert hashlib.sha1(f"blob {len(raw)}\0".encode() + raw).hexdigest() == entry["blob_sha"]
+    if entry["kind"] == "animation-source":
+        assert ET.parse(ROOT / entry["file"]).getroot().tag.endswith("COLLADA")
+    else:
+        prepared = (ROOT / entry["prepared_file"]).read_bytes()
+        assert hashlib.sha256(prepared).hexdigest() == entry["prepared_sha256"]
+research = json.loads((ROOT / "assets/GITHUB_RESEARCH.json").read_text())
+assert research["counts"]["candidates"] == len(research["repositories"])
+assert research["counts"]["above_1000_stars"] == sum(r.get("stars", 0) > 1000 for r in research["repositories"])
 print(f"PASS: {len(manifest['repositories'])} qualifying pinned repositories, {len(manifest['files'])} verified CC0 assets")
 subprocess.run([str(ROOT / "work/bin/luau/luau"), "tools/test_github_reuse.luau"], cwd=ROOT, check=True)

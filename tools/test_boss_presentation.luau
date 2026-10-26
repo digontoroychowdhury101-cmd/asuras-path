@@ -63,7 +63,7 @@ local cases = {
 	{ "Shen jian", LOOKS.GrandmasterShen, 1, Weapons.Weapons.Jian.Reach, 1 },
 	{ "Shen chimera glaive", LOOKS.GrandmasterShen, 2, Weapons.Weapons.Guandao.Reach + 2.5, 1 },
 	{ "Zhao guandao", LOOKS.GeneralZhao, 1, Weapons.Weapons.Guandao.Reach, 1.2 },
-	{ "Iron Bull maul", LOOKS.IronBull, 1, Weapons.Weapons.Guandao.Reach, 1.7 },
+	{ "Iron Bull maul", LOOKS.IronBull, 1, Weapons.Weapons.IronBullMaul.Reach, 1.7 },
 	{ "Wu staff", LOOKS.SovereignWu, 1, Weapons.Weapons.Catalyst.Reach, 1.2 },
 }
 for _, case in cases do
@@ -477,7 +477,10 @@ check("status names the stand-ins honestly", AnimRules.status("GrandmasterShen",
 	and string.find(AnimRules.status("AzureWyrm", 2, "Creature", none), "Fallback:CreatureMotion 0/6", 1, true) ~= nil)
 local all = {}
 for _, action in AnimRules.slots("IronBull", 1) do all["AsuraBossAnimation_IronBull_" .. action] = "rbxassetid://9" end
-check("status reports a fully authored actor", AnimRules.status("IronBull", 1, "R15", attrs(all)) == "Authored 5/5")
+check("status reports a fully authored actor (Bull: 5 + 6 maul/shield swings, step 6 D1)", AnimRules.status("IronBull", 1, "R15", attrs(all)) == "Authored 11/11")
+check("the Bull's swings are their own slots, in WeaponSchema order", #AnimRules.Melee.IronBull == 6 and AnimRules.Melee.IronBull[1] == Weapons.get("IronBullMaul").Light[1].Id
+	and AnimRules.Melee.IronBull[6] == Weapons.get("IronBullMaul").WeaponArt.Id and AnimRules.Melee.GeneralZhao == nil)
+check("an unauthored Bull swing stands in with the stock strike", AnimRules.resolve("IronBull", 1, "IronBullMaul_L3", nil, "R15", none).Source == "Stock")
 check("cosmetic tracks drive no gameplay (no marker/keyframe hooks)", not string.find(src("src/server/Services/BossAttackService.luau") .. src("src/simulation/CombatRules.luau")
 	.. src("src/server/Services/AIService.luau") .. src("src/server/CharacterService.luau"), "MarkerReached", 1, true))
 
@@ -547,7 +550,7 @@ wyrmA.attributes.AsuraBossAnimation_AzureWyrm_AzureTail = "rbxassetid://880"
 Dispatch.action(wyrmA, false, "AzureTail", "Tail")
 check("an authored creature track plays and claims the joints", #wyrmA.loads == 1 and wyrmA.attributes.AsuraAuthoredMotion == true)
 check("CreatureMotion releases joints an authored track owns", string.find(src("src/client/Controllers/CreatureMotion.luau"), "AsuraAuthoredMotion\") == true", 1, true) ~= nil)
-check("telegraphs pass the move and kind to the dispatcher", string.find(src("src/client/Controllers/InterfaceController.luau"), "BossAnimations.action(sourceEntity.Model, cue.Kind ~= \"Telegraph\", data.move, data.kind)", 1, true) ~= nil)
+check("telegraphs pass the move and kind to the dispatcher", string.find(src("src/client/Controllers/InterfaceController.luau"), "BossAnimations.action(sourceEntity.Model, cue.Kind == \"BossPhase\" or cue.Kind == \"BossEnrage\", data.move, data.kind)", 1, true) ~= nil)
 
 -- 12. The Twins flank instead of sharing one engage point (F10: 0.6 studs apart in Studio).
 do

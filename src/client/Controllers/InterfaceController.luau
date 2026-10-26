@@ -859,6 +859,27 @@ function Controller.ShowToast(self: Interface, text: string)
 	self.ToastUntil = os.clock() + 2.4
 end
 
+-- A perilous banner (CombatCallouts) outranks the toast: while both show, the toast drops under the
+-- banner's text instead of crossing it (HudLayout.toastShift; Studio: "The fog binds you" sat 19 px
+-- into "PERILOUS - DEFLECT"). The two labels live in different ScreenGuis, so compare screen pixels.
+function Controller.YieldToast(self: Interface)
+	local toast, root = self.Toast, self.Gui.Parent
+	local callout = root and root:FindFirstChild("CombatCallout", true)
+	local function top(object: GuiObject): number
+		local gui = object:FindFirstAncestorWhichIsA("ScreenGui")
+		return object.AbsolutePosition.Y + (if gui and not gui.IgnoreGuiInset then GuiService:GetGuiInset().Y else 0)
+	end
+	local scale = toast.AbsoluteSize.Y / math.max(HudLayout.Toast.Height, 1)
+	local current = toast.Position.Y.Offset + HudLayout.Toast.Bottom -- pixels already shifted, unscaled
+	local shift = 0
+	if callout and callout:IsA("TextLabel") and callout.Text ~= "" and callout.TextTransparency < 0.5 and toast.TextTransparency < 1 then
+		local bottom = top(callout) + (callout.AbsoluteSize.Y + callout.TextBounds.Y) / 2
+		local slotTop = top(toast) - current * scale + (toast.AbsoluteSize.Y - toast.TextBounds.Y) / 2
+		shift = HudLayout.toastShift(slotTop, bottom) / math.max(scale, 1e-3)
+	end
+	if math.abs(shift - current) > 0.5 then toast.Position = UDim2.new(0.5, 0, 1, -HudLayout.Toast.Bottom + shift) end
+end
+
 function Controller.ShowBanner(self: Interface, title: string, subtitle: string, duration: number)
 	if not Visibility.of(self).Notices then return end
 	self.Banner.TextColor3 = IVORY
@@ -1007,8 +1028,8 @@ function Controller.OnCue(self: Interface, cue: Cue)
 	local sourceEntity = self.State:Get(cue.Source)
 	if isBossCue or (sourceEntity and sourceEntity.Model:GetAttribute("AsuraEncounter") == self.BossId and self.BossId ~= nil) then
 		BossEffects.cue(cue, self.State)
-		if sourceEntity and (cue.Kind == "Telegraph" or cue.Kind == "BossPhase" or cue.Kind == "BossEnrage") then
-			BossAnimations.action(sourceEntity.Model, cue.Kind ~= "Telegraph", data.move, data.kind)
+		if sourceEntity and (cue.Kind == "Telegraph" or cue.Kind == "BossSwing" or cue.Kind == "BossPhase" or cue.Kind == "BossEnrage") then
+			BossAnimations.action(sourceEntity.Model, cue.Kind == "BossPhase" or cue.Kind == "BossEnrage", data.move, data.kind)
 		end
 	end
 	if cue.Kind == "AltarRest" and cue.Source == own then
@@ -1248,6 +1269,7 @@ function Controller.Update(self: Interface, dt: number)
 		self.Toast.TextTransparency = math.min(1, self.Toast.TextTransparency + dt * 2)
 		self.Toast.TextStrokeTransparency = math.max(self.Toast.TextTransparency, 0.6)
 	end
+	self:YieldToast()
 	if now > self.BannerUntil and self.Banner.TextTransparency < 1 then
 		local fade = math.min(1, self.Banner.TextTransparency + dt * 1.2)
 		self.Banner.TextTransparency = fade

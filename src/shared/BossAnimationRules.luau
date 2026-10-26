@@ -34,6 +34,11 @@ Rules.Moves = table.freeze({
 	SovereignWu = { "Wu", "Wu" }, AzureWyrm = { "Wyrm", "Wyrm" },
 } :: { [string]: { string } })
 Rules.Oath = table.freeze({ GeneralZhao = true, IronBull = true } :: { [string]: boolean })
+-- Boss-only melee sets whose every swing is its own clip slot (post-F26 step 6, D1: the Bull's maul and
+-- shield). Ids are WeaponSchema's IronBullMaul moves; AIService cues each swing as "BossSwing".
+Rules.Melee = table.freeze({
+	IronBull = table.freeze({ "IronBullMaul_L1", "IronBullMaul_L2", "IronBullMaul_L3", "IronBullMaul_Heavy", "IronBullMaul_Running", "IronBullMaul_Art" }),
+} :: { [string]: { string } })
 
 -- Shen's original catalog slots (and their AsuraBossAnimation_<legacy> attributes) still count.
 local LEGACY: { [string]: { Slot: string, Speed: number } } = {
@@ -110,6 +115,7 @@ function Rules.slots(look: string, phase: number): { string }
 	local sets = Rules.Moves[look]
 	local set = sets and Attacks[sets[math.clamp(phase, 1, #sets)]]
 	for _, move in set or {} do table.insert(list, move.Id) end
+	for _, id in Rules.Melee[look] or {} do table.insert(list, id) end
 	return list
 end
 

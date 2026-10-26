@@ -94,10 +94,9 @@ The following code is integrated into the game build. Source versions and hashes
 | Effekseer sample textures — Effekseer Project / AndrewFM | [Sample pack](https://github.com/effekseer/Effekseer/tree/8b1e2969825638fb24682f3697610d8f37949d22/Release/Sample/01_AndrewFM01) | CC0-1.0 | Parry wind and wave strip, Blazing Sun flame and smoke; spark and thunder masks registered as reserves. |
 
 Texture uploads returned real Roblox IDs and all six passed a typed Studio image preload.
-`assets/GITHUB_UPLOADED.json` records them. Four textures are used in the game; spark and thunder masks
-are registered for future effects. A 90-degree lightning variant was uploaded for Beam UVs, but its
-load verification was interrupted, so it is recorded as pending and is not used by the game.
-The two downloaded sounds remain **staged locally, not uploaded or active in Roblox**:
+`assets/GITHUB_UPLOADED.json` records them. Five texture variants are used in the game; spark and vertical thunder masks
+are registered for future effects. The 90-degree lightning variant has now passed typed Studio preload and is used by Celestial line spells.
+The two physical impacts are uploaded, typed-preloaded and active on unarmed/heavy contacts and shockwaves:
 
 Six sample textures by AndrewFM / the Effekseer contributors, from `Release/Sample/01_AndrewFM01/Texture/`, have an explicit CC0 dedication in `assets/github/effekseer/CC0-SAMPLES.txt`; this is separate from the editor's MIT license. The prepared masks convert black-background additive textures into white RGBA, retain existing alpha, and cap either dimension at 1024.
 - `impact_big.wav`: FFeller (2020), CC0-1.0, via [Godot's per-file record](https://github.com/godotengine/godot-demo-projects/blob/b761b4cd5718a7118f2c95eb55f181d0a5f004f1/3d/ragdoll_physics/sounds/impact_big.LICENSE.md), originally [Freesound 532873](https://freesound.org/people/FFeller/sounds/532873/).
@@ -108,3 +107,22 @@ Godot's copies have leading silence trimmed upstream. The local preparation resa
 Originals, prepared files, Git/LFS identities and SHA-256 hashes are recorded in
 `assets/GITHUB_REUSE.json`. No sound or image IDs were invented; existing owned image/audio slots
 remain available alongside the new GitHub texture slots.
+
+
+## Expanded GitHub search and audio library — 26 October 2026
+
+| Work / author | Source | License | Use |
+|---|---|---|---|
+| Heavy physical impact — FFeller | [Per-file credit](https://github.com/godotengine/godot-demo-projects/blob/b761b4cd5718a7118f2c95eb55f181d0a5f004f1/3d/ragdoll_physics/sounds/impact_big.LICENSE.md) | CC0-1.0 | Heavy blunt contacts and shockwaves. |
+| Light physical impact — dorian.mastin | [Per-file credit](https://github.com/godotengine/godot-demo-projects/blob/b761b4cd5718a7118f2c95eb55f181d0a5f004f1/3d/ragdoll_physics/sounds/impact_small.LICENSE.md) | CC0-1.0 | Unarmed contacts. |
+| Superpowers fantasy sound library — Sparklin Labs / Pixel-boy | [Original repository](https://github.com/sparklinlabs/superpowers-asset-packs) | CC0-1.0 | Two whooshes active on missed swings; five other sounds are an audition bank in Studio; the ambience is pending Roblox requester approval. |
+
+Nine CC0 Collada animation sources from the Superpowers character pack are also preserved with
+their pinned hashes in `assets/GITHUB_SUPERPOWERS.json`. They require R15 retargeting, conversion and
+authored-track upload; they are not claimed as production Roblox animations. The eight prepared
+Superpowers WAVs are mono 48 kHz PCM16, peak-normalized to -6 dBFS with 5 ms end fades.
+
+The offline mesh pipeline uses MIT glTF Transform (Don McCurdy) and meshoptimizer (Arseny Kapoulkine);
+full notices are under `tools/assets/mesh_pipeline/licenses/`. It produces new copies of the existing
+project-owned guardian-lion model. No third-party lion geometry is introduced. The generated LOD is
+a preparation artifact, not an uploaded production replacement.

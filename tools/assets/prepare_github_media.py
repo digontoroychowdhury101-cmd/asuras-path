@@ -7,6 +7,7 @@ existing alpha is retained. WAVs become mono 48 kHz PCM16, with a -6 dBFS peak.
 from pathlib import Path
 import hashlib
 import json
+import argparse
 import wave
 
 import numpy as np
@@ -16,12 +17,18 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 def prepare():
-    manifest_path = ROOT / "assets/GITHUB_REUSE.json"
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--manifest", default="assets/GITHUB_REUSE.json")
+    parser.add_argument("--output", default="assets/github/ready")
+    args = parser.parse_args()
+    manifest_path = ROOT / args.manifest
     manifest = json.loads(manifest_path.read_text())
-    ready = ROOT / "assets/github/ready"
-    ready.mkdir(exist_ok=True)
+    ready = ROOT / args.output
+    ready.mkdir(parents=True, exist_ok=True)
     previews = []
     for entry in manifest["files"]:
+        if entry.get("kind") == "animation-source":
+            continue
         source = ROOT / entry["file"]
         if entry["section"] == "Textures":
             image = Image.open(source).convert("RGBA")
@@ -71,10 +78,11 @@ def prepare():
         entry["prepared_file"] = target.relative_to(ROOT).as_posix()
         entry["prepared_sha256"] = hashlib.sha256(target.read_bytes()).hexdigest()
         print("Prepared", entry["prepared_file"])
-    sheet = Image.new("RGB", (720, 528))
-    for index, tile in enumerate(previews):
-        sheet.paste(tile, ((index % 3) * 240, (index // 3) * 264))
-    sheet.save(ready / "preview.jpg")
+    if previews:
+        sheet = Image.new("RGB", (720, 528))
+        for index, tile in enumerate(previews):
+            sheet.paste(tile, ((index % 3) * 240, (index // 3) * 264))
+        sheet.save(ready / "preview.jpg")
     manifest_path.write_text(json.dumps(manifest, indent=2) + "\n")
 
 

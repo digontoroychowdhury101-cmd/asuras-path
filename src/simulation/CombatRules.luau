@@ -437,7 +437,7 @@ function Rules.applyStats(f: Fighter, stats: Stats, refill: boolean?)
 end
 
 -- Attribute scaling: Strength drives unarmed and heavy strikes, Dexterity drives bladed technique.
-local STRENGTH_WEAPONS: { [string]: boolean } = { Unarmed = true, Guandao = true, Odachi = true, CalamityBoneCleaver = true, HeavenPiercingGuandao = true }
+local STRENGTH_WEAPONS: { [string]: boolean } = { Unarmed = true, Guandao = true, Odachi = true, CalamityBoneCleaver = true, HeavenPiercingGuandao = true, IronBullMaul = true }
 function Rules.scalingAttribute(weapon: string): string
 	return if STRENGTH_WEAPONS[weapon] then "Strength" else "Dexterity"
 end
@@ -1441,7 +1441,7 @@ for index, name in Schema.StateList do
 	STATE_INDEX[name] = index
 end
 local WEAPON_INDEX: { [string]: number } = {}
-for index, name in Weapons.WeaponKeys do
+for index, name in Weapons.WireKeys do -- player registry, then boss-only arms (IronBullMaul)
 	WEAPON_INDEX[name] = index
 end
 local MOVE_LIST: { string } = {}
@@ -1530,7 +1530,7 @@ function Rules.unpack(b: buffer): Snapshot?
 		return nil
 	end
 	local state = Schema.StateList[buffer.readu8(b, 1)]
-	local weapon = Weapons.WeaponKeys[buffer.readu8(b, 2)]
+	local weapon = Weapons.WireKeys[buffer.readu8(b, 2)]
 	if state == nil or weapon == nil then
 		return nil
 	end

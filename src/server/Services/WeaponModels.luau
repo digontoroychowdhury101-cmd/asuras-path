@@ -14,7 +14,7 @@ end
 function Models.attach(model: Model,id: string): boolean
  local old=model:FindFirstChild("ArsenalWeapon");if old then old:Destroy() end
  local w=Weapons.Weapons[id]
- if not w or table.find({"Unarmed","Jian","Dao","Guandao"},id) then return false end
+ if not w or table.find({"Unarmed","Jian","Dao","Guandao"},id) or Weapons.isBossOnly(id) then return false end -- boss arms: the look's own
  local hand=model:FindFirstChild("RightHand") or model:FindFirstChild("Right Arm")
  if not hand or not hand:IsA("BasePart") then return true end
  local folder=Instance.new("Folder");folder.Name="ArsenalWeapon";folder.Parent=model

@@ -19,7 +19,7 @@ else
 	Expansion = require("./WeaponExpansion")
 end
 
-export type WeaponType = "Unarmed" | "Jian" | "Dao" | "Guandao" | "Odachi" | "TwinDaggers" | "ChainScythe" | "WarFan" | "Catalyst" | "PrayerOfTheDefiled" | "CalamityBoneCleaver" | "HeavenPiercingGuandao"
+export type WeaponType = "Unarmed" | "Jian" | "Dao" | "Guandao" | "Odachi" | "TwinDaggers" | "ChainScythe" | "WarFan" | "Catalyst" | "PrayerOfTheDefiled" | "CalamityBoneCleaver" | "HeavenPiercingGuandao" | "IronBullMaul"
 export type Grip = "Fist" | "OneHanded" | "TwoHanded"
 export type MoveKind = "Light" | "Heavy" | "RunningAttack" | "WeaponArt"
 export type DamageType = "Blunt" | "Slash" | "Pierce"
@@ -581,6 +581,21 @@ for _, spec in Expansion.specs() do
 	if not table.find(keys, spec.Id) then table.insert(keys, spec.Id) end
 end
 Schema.WeaponKeys = table.freeze(keys)
+-- Boss-only arms: built and validated like any weapon, but outside the 12-key player registry.
+local bossKeys: {WeaponType} = {}
+for _, spec in Expansion.bossSpecs() do
+	assert(WEAPONS[spec.Id] == nil, "Boss weapon shadows a player weapon " .. spec.Id)
+	WEAPONS[spec.Id] = Schema.build(spec)
+	table.insert(bossKeys, spec.Id)
+end
+Schema.BossWeaponKeys = table.freeze(bossKeys)
+-- Snapshot wire order: the player registry first (its indices never move), then boss-only arms.
+local wire = table.clone(keys)
+for _, id in bossKeys do table.insert(wire, id) end
+Schema.WireKeys = table.freeze(wire)
+function Schema.isBossOnly(id: string): boolean
+	return table.find(bossKeys, id :: any) ~= nil
+end
 local BY_ID: { [string]: Weapon } = {}
 for _, weapon in WEAPONS do
 	assert(BY_ID[weapon.Id] == nil, "Duplicate weapon id " .. weapon.Id)

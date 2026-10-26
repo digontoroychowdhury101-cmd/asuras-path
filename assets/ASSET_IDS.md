@@ -247,5 +247,23 @@ Studio Client preload. See `GITHUB_REUSE.json` for source hashes and `GITHUB_UPL
 | GithubSpark | 130696775636258 | Registered reserve |
 | GithubThunder | 91094113748034 | Registered vertical-strip reserve |
 
-Horizontal thunder variant `90786029633700` is uploaded but its preload was interrupted. It is not
-active in `PresentationAssets`. The two CC0 impact WAVs in `assets/github/ready/` remain local.
+Horizontal thunder variant `90786029633700` passed typed preload and is active for Celestial beams.
+
+## GitHub CC0 audio — 26 October 2026
+
+Nine sounds are registered after live verification. Four are active (physical contacts and
+missed-swing whooshes); five are an audition library. Forest ambience was uploaded as 87123492592079,
+but Roblox rejects its live requester approval, so it is excluded from Sound templates and preload.
+
+| Slot | Roblox audio ID |
+|---|---|
+
+| GithubLightImpact | 84168306022631 |
+| GithubHeavyImpact | 75064735099891 |
+| GithubSwordHeavy | 134923760317969 |
+| GithubSwordLight | 90713694021705 |
+| GithubSecret | 101518165997871 |
+| GithubMagic | 111038929226449 |
+| GithubWhooshHeavy | 128390103310574 |
+| GithubWhooshLight | 110795098552792 |
+| GithubMonsterGrowl | 111778581433967 |

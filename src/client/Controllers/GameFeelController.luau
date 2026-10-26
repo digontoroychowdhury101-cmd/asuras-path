@@ -27,7 +27,8 @@ function Controller.OnEvent(self: GameFeel, event: any)
  if kind=="Whiff" and source and source.Root and (event.Source==own.Id or event.Target==own.Id) then
   -- The swing's true reach is already drawn from the server's committed strike (WeaponTrails), so
   -- a miss reads as distance there; ContactCues words the gap in the callouts.
-  Audio.at("Wind",point,0.25)
+  local unarmed=source.Snapshot and source.Snapshot.Weapon=="Unarmed"
+  Audio.at(if unarmed then "GithubWhooshLight" else "GithubWhooshHeavy",point,0.35)
  elseif kind=="DeflectSpark" then
   self.Vfx:burst(point,direction+Vector3.yAxis*0.5,Color3.fromRGB(255,173,65),math.random(25,40),55)
   self.Vfx:ring(point,direction,Color3.fromRGB(255,200,105),4)
@@ -40,7 +41,7 @@ function Controller.OnEvent(self: GameFeel, event: any)
   local stone=weapon=="CalamityBoneCleaver" or (source and source.Model:FindFirstChild("ColossalWarhammer",true)~=nil)
   if stone or weapon=="Unarmed" or kind=="Armored" then
    self.Vfx:burst(point,direction,Color3.fromRGB(192,173,142),22,26)
-   Audio.at(if stone then "Stone" elseif kind=="Armored" then "Clash" else "Blunt",point,0.75)
+   Audio.at(if stone then "GithubHeavyImpact" elseif kind=="Armored" then "Clash" else "GithubLightImpact",point,0.75)
   else
    local excludes: {Instance}={}
    if source then table.insert(excludes,source.Model) end
@@ -62,7 +63,7 @@ function Controller.OnCue(self: GameFeel, cue: any)
   self.Vfx:ring(at,Vector3.yAxis,Color3.fromRGB(237,93,44),math.min(radius,24))
   local excludes: {Instance}={own.Model}
   local source=self.State:Get(cue.Source);if source then table.insert(excludes,source.Model) end
-  self.Vfx:rupture(at,own.Root.Position-at,excludes); Audio.at("Stone",at,0.9)
+  self.Vfx:rupture(at,own.Root.Position-at,excludes); Audio.at("GithubHeavyImpact",at,0.9)
  elseif cue.Kind=="BossPhase" and Players.LocalPlayer:GetAttribute("AsuraEncounter")==cue.Data.boss then
   self.Camera:Impulse(Vector3.yAxis,0.7,-5)
  end

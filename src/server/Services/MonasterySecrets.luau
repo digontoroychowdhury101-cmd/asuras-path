@@ -79,7 +79,8 @@ local function drumTower(parent: Instance, rng: Random)
 		local along = edge[1] == 0
 		Kit.part(group, "LoftRail", Vector3.new(if along then t.Half * 2 else 0.4, 0.4, if along then 0.4 else t.Half * 2), CFrame.new(t.X + edge[1], t.Floor + 2.4, t.Z + edge[2]), P.WoodDark, WOOD, Kit.decor())
 	end
-	Ruins.roof(group, CFrame.new(t.X, top, t.Z), 13, 13, rng, true)
+	-- The loft stands under this roof: the client fades it while it hides the player (post-F26 step 6).
+	game:GetService("CollectionService"):AddTag(Ruins.roof(group, CFrame.new(t.X, top, t.Z), 13, 13, rng, true), "AsuraCameraFade")
 	Fx.lantern(group, CFrame.new(t.X - t.Half, t.Floor + 4.5, t.Z - t.Half - 0.6), true, 16)
 end
 

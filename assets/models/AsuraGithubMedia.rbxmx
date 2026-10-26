@@ -1,0 +1,250 @@
+<?xml version='1.0' encoding='utf-8'?>
+<roblox version="4">
+  <Item class="Folder" referent="GithubAssets">
+    <Properties>
+      <string name="Name">GithubAssets</string>
+    </Properties>
+    <Item class="Decal" referent="GithubSpark">
+      <Properties>
+        <string name="Name">GithubSpark</string>
+        <Content name="Texture">
+          <url>rbxassetid://130696775636258</url>
+        </Content>
+      </Properties>
+      <Item class="StringValue" referent="GithubSpark_Credit">
+        <Properties>
+          <string name="Name">LicenseAndSource</string>
+          <string name="Value">CC0-1.0 | Effekseer / AndrewFM | assets/GITHUB_REUSE.json; assets/GITHUB_SUPERPOWERS.json</string>
+        </Properties>
+      </Item>
+    </Item>
+    <Item class="Decal" referent="GithubFlame">
+      <Properties>
+        <string name="Name">GithubFlame</string>
+        <Content name="Texture">
+          <url>rbxassetid://91726489235085</url>
+        </Content>
+      </Properties>
+      <Item class="StringValue" referent="GithubFlame_Credit">
+        <Properties>
+          <string name="Name">LicenseAndSource</string>
+          <string name="Value">CC0-1.0 | Effekseer / AndrewFM | assets/GITHUB_REUSE.json; assets/GITHUB_SUPERPOWERS.json</string>
+        </Properties>
+      </Item>
+    </Item>
+    <Item class="Decal" referent="GithubShockwave">
+      <Properties>
+        <string name="Name">GithubShockwave</string>
+        <Content name="Texture">
+          <url>rbxassetid://113620265045402</url>
+        </Content>
+      </Properties>
+      <Item class="StringValue" referent="GithubShockwave_Credit">
+        <Properties>
+          <string name="Name">LicenseAndSource</string>
+          <string name="Value">CC0-1.0 | Effekseer / AndrewFM | assets/GITHUB_REUSE.json; assets/GITHUB_SUPERPOWERS.json</string>
+        </Properties>
+      </Item>
+    </Item>
+    <Item class="Decal" referent="GithubWind">
+      <Properties>
+        <string name="Name">GithubWind</string>
+        <Content name="Texture">
+          <url>rbxassetid://138369746472175</url>
+        </Content>
+      </Properties>
+      <Item class="StringValue" referent="GithubWind_Credit">
+        <Properties>
+          <string name="Name">LicenseAndSource</string>
+          <string name="Value">CC0-1.0 | Effekseer / AndrewFM | assets/GITHUB_REUSE.json; assets/GITHUB_SUPERPOWERS.json</string>
+        </Properties>
+      </Item>
+    </Item>
+    <Item class="Decal" referent="GithubSmoke">
+      <Properties>
+        <string name="Name">GithubSmoke</string>
+        <Content name="Texture">
+          <url>rbxassetid://106136904847136</url>
+        </Content>
+      </Properties>
+      <Item class="StringValue" referent="GithubSmoke_Credit">
+        <Properties>
+          <string name="Name">LicenseAndSource</string>
+          <string name="Value">CC0-1.0 | Effekseer / AndrewFM | assets/GITHUB_REUSE.json; assets/GITHUB_SUPERPOWERS.json</string>
+        </Properties>
+      </Item>
+    </Item>
+    <Item class="Decal" referent="GithubThunder">
+      <Properties>
+        <string name="Name">GithubThunder</string>
+        <Content name="Texture">
+          <url>rbxassetid://91094113748034</url>
+        </Content>
+      </Properties>
+      <Item class="StringValue" referent="GithubThunder_Credit">
+        <Properties>
+          <string name="Name">LicenseAndSource</string>
+          <string name="Value">CC0-1.0 | Effekseer / AndrewFM | assets/GITHUB_REUSE.json; assets/GITHUB_SUPERPOWERS.json</string>
+        </Properties>
+      </Item>
+    </Item>
+    <Item class="Decal" referent="GithubThunderHorizontal">
+      <Properties>
+        <string name="Name">GithubThunderHorizontal</string>
+        <Content name="Texture">
+          <url>rbxassetid://90786029633700</url>
+        </Content>
+      </Properties>
+      <Item class="StringValue" referent="GithubThunderHorizontal_Credit">
+        <Properties>
+          <string name="Name">LicenseAndSource</string>
+          <string name="Value">CC0-1.0 | Effekseer / AndrewFM | assets/GITHUB_REUSE.json; assets/GITHUB_SUPERPOWERS.json</string>
+        </Properties>
+      </Item>
+    </Item>
+    <Item class="Sound" referent="GithubLightImpact">
+      <Properties>
+        <string name="Name">GithubLightImpact</string>
+        <Content name="SoundId">
+          <url>rbxassetid://84168306022631</url>
+        </Content>
+        <float name="Volume">0.45</float>
+        <bool name="Playing">false</bool>
+      </Properties>
+      <Item class="StringValue" referent="GithubLightImpact_Credit">
+        <Properties>
+          <string name="Name">LicenseAndSource</string>
+          <string name="Value">CC0-1.0 | Godot demo sources / FFeller / dorian.mastin | assets/GITHUB_REUSE.json; assets/GITHUB_SUPERPOWERS.json</string>
+        </Properties>
+      </Item>
+    </Item>
+    <Item class="Sound" referent="GithubHeavyImpact">
+      <Properties>
+        <string name="Name">GithubHeavyImpact</string>
+        <Content name="SoundId">
+          <url>rbxassetid://75064735099891</url>
+        </Content>
+        <float name="Volume">0.45</float>
+        <bool name="Playing">false</bool>
+      </Properties>
+      <Item class="StringValue" referent="GithubHeavyImpact_Credit">
+        <Properties>
+          <string name="Name">LicenseAndSource</string>
+          <string name="Value">CC0-1.0 | Godot demo sources / FFeller / dorian.mastin | assets/GITHUB_REUSE.json; assets/GITHUB_SUPERPOWERS.json</string>
+        </Properties>
+      </Item>
+    </Item>
+    <Item class="Sound" referent="GithubSwordHeavy">
+      <Properties>
+        <string name="Name">GithubSwordHeavy</string>
+        <Content name="SoundId">
+          <url>rbxassetid://134923760317969</url>
+        </Content>
+        <float name="Volume">0.45</float>
+        <bool name="Playing">false</bool>
+      </Properties>
+      <Item class="StringValue" referent="GithubSwordHeavy_Credit">
+        <Properties>
+          <string name="Name">LicenseAndSource</string>
+          <string name="Value">CC0-1.0 | Sparklin Labs / Pixel-boy | assets/GITHUB_REUSE.json; assets/GITHUB_SUPERPOWERS.json</string>
+        </Properties>
+      </Item>
+    </Item>
+    <Item class="Sound" referent="GithubSwordLight">
+      <Properties>
+        <string name="Name">GithubSwordLight</string>
+        <Content name="SoundId">
+          <url>rbxassetid://90713694021705</url>
+        </Content>
+        <float name="Volume">0.45</float>
+        <bool name="Playing">false</bool>
+      </Properties>
+      <Item class="StringValue" referent="GithubSwordLight_Credit">
+        <Properties>
+          <string name="Name">LicenseAndSource</string>
+          <string name="Value">CC0-1.0 | Sparklin Labs / Pixel-boy | assets/GITHUB_REUSE.json; assets/GITHUB_SUPERPOWERS.json</string>
+        </Properties>
+      </Item>
+    </Item>
+    <Item class="Sound" referent="GithubSecret">
+      <Properties>
+        <string name="Name">GithubSecret</string>
+        <Content name="SoundId">
+          <url>rbxassetid://101518165997871</url>
+        </Content>
+        <float name="Volume">0.45</float>
+        <bool name="Playing">false</bool>
+      </Properties>
+      <Item class="StringValue" referent="GithubSecret_Credit">
+        <Properties>
+          <string name="Name">LicenseAndSource</string>
+          <string name="Value">CC0-1.0 | Sparklin Labs / Pixel-boy | assets/GITHUB_REUSE.json; assets/GITHUB_SUPERPOWERS.json</string>
+        </Properties>
+      </Item>
+    </Item>
+    <Item class="Sound" referent="GithubMagic">
+      <Properties>
+        <string name="Name">GithubMagic</string>
+        <Content name="SoundId">
+          <url>rbxassetid://111038929226449</url>
+        </Content>
+        <float name="Volume">0.45</float>
+        <bool name="Playing">false</bool>
+      </Properties>
+      <Item class="StringValue" referent="GithubMagic_Credit">
+        <Properties>
+          <string name="Name">LicenseAndSource</string>
+          <string name="Value">CC0-1.0 | Sparklin Labs / Pixel-boy | assets/GITHUB_REUSE.json; assets/GITHUB_SUPERPOWERS.json</string>
+        </Properties>
+      </Item>
+    </Item>
+    <Item class="Sound" referent="GithubWhooshHeavy">
+      <Properties>
+        <string name="Name">GithubWhooshHeavy</string>
+        <Content name="SoundId">
+          <url>rbxassetid://128390103310574</url>
+        </Content>
+        <float name="Volume">0.45</float>
+        <bool name="Playing">false</bool>
+      </Properties>
+      <Item class="StringValue" referent="GithubWhooshHeavy_Credit">
+        <Properties>
+          <string name="Name">LicenseAndSource</string>
+          <string name="Value">CC0-1.0 | Sparklin Labs / Pixel-boy | assets/GITHUB_REUSE.json; assets/GITHUB_SUPERPOWERS.json</string>
+        </Properties>
+      </Item>
+    </Item>
+    <Item class="Sound" referent="GithubWhooshLight">
+      <Properties>
+        <string name="Name">GithubWhooshLight</string>
+        <Content name="SoundId">
+          <url>rbxassetid://110795098552792</url>
+        </Content>
+        <float name="Volume">0.45</float>
+        <bool name="Playing">false</bool>
+      </Properties>
+      <Item class="StringValue" referent="GithubWhooshLight_Credit">
+        <Properties>
+          <string name="Name">LicenseAndSource</string>
+          <string name="Value">CC0-1.0 | Sparklin Labs / Pixel-boy | assets/GITHUB_REUSE.json; assets/GITHUB_SUPERPOWERS.json</string>
+        </Properties>
+      </Item>
+    </Item>
+    <Item class="Sound" referent="GithubMonsterGrowl">
+      <Properties>
+        <string name="Name">GithubMonsterGrowl</string>
+        <Content name="SoundId">
+          <url>rbxassetid://111778581433967</url>
+        </Content>
+        <float name="Volume">0.45</float>
+        <bool name="Playing">false</bool>
+      </Properties>
+      <Item class="StringValue" referent="GithubMonsterGrowl_Credit">
+        <Properties>
+          <string name="Name">LicenseAndSource</string>
+          <string name="Value">CC0-1.0 | Sparklin Labs / Pixel-boy | assets/GITHUB_REUSE.json; assets/GITHUB_SUPERPOWERS.json</string>
+        </Properties>
+      </Item>
+    </Item>
+  </Item>
+</roblox>

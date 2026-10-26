@@ -48,4 +48,31 @@ function Expansion.specs(): {any}
  lightning.Type="Guandao";lightning.Stance="Thunder General";lightning.WeaponArt.Name="Thunderfall";lightning.WeaponArt.Effect="Thunderfall";lightning.WeaponArt.QiCost=45
  return {odachi,daggers,chain,fan,staff,censer,cleaver,lightning}
 end
+-- Boss-only arms (never in WeaponKeys, profiles, drops or the Arsenal). Post-F26 step 6 (D1): the Iron
+-- Bull fights with a one-handed iron maul and a tower shield instead of borrowing the guandao. Reach is
+-- from the root (not scaled with the 1.7 body); arcs follow the motion: hook sweep, narrow shield ram,
+-- vertical anvil drop, shield-up crush, shield-first rush, front-only bell-breaker. Slow finishers carry
+-- long recoveries, and nothing covers the back.
+local function strike(id: string, name: string, kind: string, index: number, t: {number}, dmg: number, posture: number, reach: number, arc: number, lunge: number, extra: {[string]: any}?): any
+ local m = { Id=id, Name=name, Kind=kind, ComboIndex=index, Startup=t[1], Active=t[2], Recovery=t[3], ComboWindow=t[4], CancelFrom=t[5],
+  BaseDamage=dmg, PostureDamage=posture, Bleed=0.1, DeflectVulnerability=if kind=="Light" then 0.7 else 0.9, Deflectable=true, Unblockable=false,
+  HyperArmor=kind=="Heavy" or kind=="WeaponArt", StaminaCost=if kind=="Light" then 4 elseif kind=="WeaponArt" then 12 else 10, QiCost=if kind=="WeaponArt" then 40 else 0,
+  Reach=reach, Arc=arc, Lunge=lunge, DamageType="Blunt", Trauma={Head=0.04,Torso=0.08,Arms=0.03,Legs=0.02}, Animation="IronBull."..string.gsub(name," ","") }
+ for k,v in extra or {} do m[k]=v end
+ return m
+end
+function Expansion.bossSpecs(): {any}
+ local maul={Id="IronBullMaul",Type="Odachi",Name="Iron Bull's Maul and Tower Shield",Grip="OneHanded",Reach=10,Weight=7,DeflectEfficiency=0.9,
+  GuardChip=0.25,BleedMultiplier=0.4,PostureMultiplier=1.4,BlockPostureResistance=1.5,MoveSpeedMultiplier=0.85,Stance="Iron Rampart",WeightClass="Colossal",
+  Light={
+   strike("IronBullMaul_L1","Iron Hook","Light",1,{18,5,24,10,12},15,20,9.5,100,1.5),
+   strike("IronBullMaul_L2","Shield Ram","Light",2,{14,5,22,10,12},8,26,7.0,36,3.0),
+   strike("IronBullMaul_L3","Anvil Drop","Light",3,{26,6,42,0,20},22,30,10.0,24,2.5),
+  },
+  Heavy=strike("IronBullMaul_Heavy","Ox-Yoke Crush","Heavy",0,{44,7,50,0,30},32,46,10.5,70,2.0),
+  RunningAttack=strike("IronBullMaul_Running","Rampart Rush","RunningAttack",0,{24,7,36,0,24},16,34,8.0,40,7.0,{StaminaCost=8}),
+  WeaponArt=strike("IronBullMaul_Art","Bell-Breaker","WeaponArt",0,{36,10,52,0,40},30,50,9.5,200,1.0)}
+ maul.Light[3].StaminaCost=4
+ return {maul}
+end
 return table.freeze(Expansion)

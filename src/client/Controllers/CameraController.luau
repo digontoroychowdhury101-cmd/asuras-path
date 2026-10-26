@@ -69,6 +69,8 @@ type Fields = {
 	SlideTurn: number,
 	Sensitivity: number,
 	FovPunch: Spring,
+	Crane: Spring, -- extra downward pitch while the boom is squeezed (CameraClearance.crane)
+	BoomRatio: number,
 	FovClamp: number,
 	Shake: Vector3,
 	ShakeVelocity: Vector3,
@@ -160,6 +162,7 @@ function Controller.new(state: WorldState): CameraController
 		Gliding = false, Sliding = false, SlideTurn = 0,
 		Sensitivity = 1,
 		FovPunch = spring(0),
+		Crane = spring(0), BoomRatio = 1,
 		FovClamp = 0,
 		Shake = Vector3.zero,
 		ShakeVelocity = Vector3.zero,
@@ -440,11 +443,6 @@ function Controller.Update(self: CameraController, dt: number)
 	local wobble = TRAUMA_WOBBLE[self.HeadTier]
 	local swayRoll = self.Sway * math.sin(self.Clock * 0.6) + wobble * math.sin(self.Clock * 2.3)
 	local swayPitch = self.Sway * 0.5 * math.sin(self.Clock * 0.45 + 1.3) + wobble * math.cos(self.Clock * 1.7)
-	local rotation = CFrame.fromEulerAnglesYXZ(self.Pitch.Value + swayPitch, self.Yaw.Value, self.Roll + swayRoll + self.MovementTilt.Value)
-	local shoulder = BASE_OFFSET.X * self.ShoulderSpring.Value
-	local origin = pivot + rotation:VectorToWorldSpace(Vector3.new(shoulder * 0.35, 0, 0))
-	local desired = pivot + rotation:VectorToWorldSpace(Vector3.new(shoulder, 0, self.Distance.Value))
-
 	-- Occlusion: snap in immediately, ease back out. CameraProbe only collides with WorldGeometry;
 	-- before the server registers the groups, fall back to excluding every fighter model.
 	local params = self.Params
@@ -458,6 +456,20 @@ function Controller.Update(self: CameraController, dt: number)
 		end
 		params.FilterDescendantsInstances = ignore
 	end
+	-- Crane (post-F26 step 6): probe the un-craned boom; the more a wall squeezes it, the more the lens
+	-- swings up and looks down over the player (Studio: the sealed fog gate held it 4.5 studs off the head).
+	local shoulder = BASE_OFFSET.X * self.ShoulderSpring.Value
+	local plain = CFrame.fromEulerAnglesYXZ(self.Pitch.Value, self.Yaw.Value, 0)
+	local plainOrigin = plain:VectorToWorldSpace(Vector3.new(shoulder * 0.35, 0, 0))
+	local plainBoom = plain:VectorToWorldSpace(Vector3.new(shoulder, 0, self.Distance.Value)) - plainOrigin
+	local plainHit = Workspace:Spherecast(pivot + plainOrigin, PROBE_RADIUS, plainBoom, params)
+	self.BoomRatio = if plainHit then plainHit.Distance / math.max(plainBoom.Magnitude, 1e-3) else 1
+	stepSpring(self.Crane, Clearance.crane(self.BoomRatio), 6, dt)
+	local pitch = math.max(self.Pitch.Value - self.Crane.Value, PITCH_MIN)
+	local rotation = CFrame.fromEulerAnglesYXZ(pitch + swayPitch, self.Yaw.Value, self.Roll + swayRoll + self.MovementTilt.Value)
+	local origin = pivot + rotation:VectorToWorldSpace(Vector3.new(shoulder * 0.35, 0, 0))
+	local desired = pivot + rotation:VectorToWorldSpace(Vector3.new(shoulder, 0, self.Distance.Value))
+
 	local offset = desired - origin
 	local length = offset.Magnitude
 	local allowed = length
@@ -485,6 +497,8 @@ function Controller.Update(self: CameraController, dt: number)
 		end
 	end
 	Clearance.step(bodies, position + shake, root.Position)
+	Clearance.own(own.Model, (position - pivot).Magnitude)
+	Clearance.roofs(position + shake, pivot)
 	local fov = math.clamp(self.Fov + self.MovementFov.Value + self.FovPunch.Value - self.FovClamp, Config.Camera.MinFOV - 20, Config.Camera.MaxFOV + 10)
 	camera.FieldOfView = fov
 end

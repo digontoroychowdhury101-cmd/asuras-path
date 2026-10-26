@@ -26,13 +26,17 @@ function Duo.new(frame: Frame, gui: ScreenGui): View
 	return { Frame = frame, Gui = gui, Root = root, Hint = hint, Rows = {} }
 end
 
--- Where a centre banner goes while a strip is up: just under the strip and its lock hint, else nil
--- (post-F26 Step 4: "PERILOUS - DEFLECT" was drawn across both Twins' health bars).
+-- Where a centre banner goes while a strip is up: just under the strip and its lock hint (post-F26
+-- Step 4: "PERILOUS - DEFLECT" crossed both Twins' bars). The notice toast yields below it instead
+-- (InterfaceController.YieldToast, step 6). Screen pixels; the banner is anchored at its centre.
+function Duo.slot(hintBottom: number, floor: number): number
+	return math.max(hintBottom + 22, floor)
+end
 function Duo.below(gui: ScreenGui): UDim2?
 	local hint = gui.Parent and gui.Parent:FindFirstChild("DuoHint", true)
 	if not (hint and hint:IsA("GuiObject") and hint.Visible) then return nil end
-	local below = hint.AbsolutePosition.Y + hint.AbsoluteSize.Y + 22 - gui.AbsolutePosition.Y -- clear of the toast below; guis may differ by the inset
-	return UDim2.new(0.5, 0, 0, math.max(below, gui.AbsoluteSize.Y * 0.34))
+	local y = Duo.slot(hint.AbsolutePosition.Y + hint.AbsoluteSize.Y, gui.AbsoluteSize.Y * 0.34 + gui.AbsolutePosition.Y)
+	return UDim2.new(0.5, 0, 0, y - gui.AbsolutePosition.Y) -- the guis may differ by the top-bar inset
 end
 
 local function setReplaced(view: View, visible: boolean)

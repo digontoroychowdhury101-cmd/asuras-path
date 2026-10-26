@@ -6,8 +6,8 @@ than 1,000 stars** supplied imported work. Code and media licenses were checked 
 | Repository | Stars | License for selected work | Delivered use |
 |---|---:|---|---|
 | [Auburn/FastNoiseLite](https://github.com/Auburn/FastNoiseLite) | 3,534 | MIT | Vendored upstream JavaScript library; baked 48 OpenSimplex2S / ridged noise samples into the existing Monastery upper cliffs. |
-| [effekseer/Effekseer](https://github.com/effekseer/Effekseer) | 1,812 | MIT for code; explicit CC0 for selected samples | Ported `MathUtl.Easing` into the combat ember envelope; uploaded six AndrewFM sample masks; four are wired into parry and Blazing Sun effects. |
-| [godotengine/godot-demo-projects](https://github.com/godotengine/godot-demo-projects) | 9,709 | Selected WAVs each explicitly CC0 | Downloaded two physical impact sounds with their per-file author/license records; prepared mono 48 kHz PCM16 copies. |
+| [effekseer/Effekseer](https://github.com/effekseer/Effekseer) | 1,812 | MIT for code; explicit CC0 for selected samples | Ported `MathUtl.Easing` into the combat ember envelope; uploaded seven AndrewFM texture variants; five are wired into parry, thunder and Blazing Sun effects. |
+| [godotengine/godot-demo-projects](https://github.com/godotengine/godot-demo-projects) | 9,709 | Selected WAVs each explicitly CC0 | Uploaded two physical impact sounds, verified both in Studio and connected them to combat. |
 
 ## Included in the game build
 
@@ -34,17 +34,18 @@ The eight prepared files are:
 - `GithubThunder.png`, `GithubWind.png`, `GithubSpark.png`, `GithubShockwave.png`, `GithubSmoke.png`, `GithubFlame.png`.
 - `GithubHeavyImpact.wav` (FFeller) and `GithubLightImpact.wav` (dorian.mastin). Peaks are -6 dBFS, with DC removal and 5 ms end fades.
 
-**Six textures were uploaded through Studio and registered with real Roblox IDs.** Four are active:
-wind and wrapped shockwave for parries, and flame/smoke for Blazing Sun. Spark and vertical thunder
+**Six textures were uploaded through Studio and registered with real Roblox IDs.** Five are active:
+wind and wrapped shockwave for parries, flame/smoke for Blazing Sun and the horizontal strip for Celestial lightning. Spark and vertical thunder
 masks are registered as reserves. The wind overlay observes reduced effects/motion and
-leaves with the bounded parry burst. All six initial images passed typed Studio preloading; the
-rotated lightning replacement remains unverified after an interrupted client preload and is not
-active. Its ID is recorded separately in `assets/GITHUB_UPLOADED.json`. Rendering and
+leaves with the bounded parry burst. All seven images passed typed Studio preloading, including the
+rotated lightning variant. Their IDs are recorded in `assets/GITHUB_UPLOADED.json`. Rendering and
 visual mix still need a normal Studio playtest.
 
-**The two impact sounds remain local and have no Roblox IDs.** Studio's available upload tool only
-supports images. Browser audio uploads need confirmation before transmitting those two files to the
-creator account. Existing owned audio remains active; no account permissions have been changed.
+**Ten sounds were uploaded; nine remain registered after live verification.** Two physical impacts
+and two Superpowers whooshes are active; five other fantasy cues are an audition library. The long
+forest ambience is excluded from the registry because Roblox rejected live requester approval. The user
+approved audio uploads. No account permissions were changed. The browsable source-mapped Studio
+library is `ReplicatedStorage.AsurasPath.GithubAssets` (seven Decals and nine Sounds).
 
 Exact repository commits, Git blob / LFS identities, SHA-256 checksums and local preparation details
 are in `assets/GITHUB_REUSE.json` and `assets/GITHUB_CODE_SOURCES.json`. License evidence is beside
@@ -78,3 +79,6 @@ it never clones or runs downloaded game scripts. `test_github_reuse.py` uses sta
 and the existing local Luau binary, so verification does not need Pillow or NumPy. The full verifier
 includes the new checks. Source compilation and engine-fake tests do not certify Studio rendering,
 the terrain voxel surface, listening quality, frame rate or human play.
+
+
+Expanded search: see `outputs/github-search-2026-10-26/README.md`, `repositories.csv` and `assets/GITHUB_RESEARCH.json` for 149 candidates, 135 above the requested star threshold, and the source/compatibility decisions.

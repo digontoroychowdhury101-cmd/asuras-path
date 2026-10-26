@@ -260,6 +260,9 @@ local function publishTelegraph(agent: Agent, move: Combat.MoveData, class: Tele
 	end
 	if class ~= "Light" then
 		Characters.Cue("Telegraph", agent.Id, { class = class, move = move.Id, impact = impactAt })
+	elseif agent.Boss and e and Weapons.isBossOnly(e.Fighter.Weapon) then
+		-- A boss-only weapon's light swing plays its own clip slot too (BossAnimationRules.Melee); no warning UI.
+		Characters.Cue("BossSwing", agent.Id, { move = move.Id, impact = impactAt })
 	end
 end
 

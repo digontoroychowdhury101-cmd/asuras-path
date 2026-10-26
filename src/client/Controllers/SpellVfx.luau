@@ -5,6 +5,7 @@ local Workspace=game:GetService("Workspace")
 local Shared=game:GetService("ReplicatedStorage"):WaitForChild("AsurasPath")
 local simFolder=Shared:WaitForChild("Simulation")
 local Spells=require(simFolder:WaitForChild("SpellSchema") :: ModuleScript)
+local Assets=require(Shared.Shared.PresentationAssets)
 local Qi=require(script.Parent.QiVfx)
 local Vfx={}
 local colors: {[string]: Color3}={CelestialThunder=Color3.fromRGB(112,210,255),CrimsonFlame=Color3.fromRGB(255,91,42),AbyssalVoid=Color3.fromRGB(113,66,172),SpiritTalismans=Color3.fromRGB(91,236,194)}
@@ -21,13 +22,14 @@ local function ring(position: Vector3,color: Color3,radius: number,duration: num
  TweenService:Create(p,TweenInfo.new(duration),{Size=Vector3.new(0.04,radius*2,radius*2),Transparency=1}):Play()
  return p
 end
-local function beam(a: Vector3,b: Vector3,color: Color3,duration: number)
+local function beam(a: Vector3,b: Vector3,color: Color3,duration: number,thunder: boolean)
  local first=part("QiBeamOrigin",a,color,duration+0.3);first.Transparency=1
  local last=part("QiBeamHead",a,color,duration+0.3)
  Qi.tail(last,color)
  local aa=Instance.new("Attachment");aa.Parent=first;local ab=Instance.new("Attachment");ab.Parent=last
  local v=Instance.new("Beam");v.Attachment0=aa;v.Attachment1=ab;v.Color=ColorSequence.new(color);v.Width0=0.35;v.Width1=0.65
  v.FaceCamera=true;v.LightEmission=1;v.Parent=first
+ if thunder then v.Texture=Assets.Textures.GithubThunderHorizontal;v.TextureMode=Enum.TextureMode.Stretch;v.TextureSpeed=0 end
  TweenService:Create(last,TweenInfo.new(math.max(0.05,duration),Enum.EasingStyle.Linear),{Position=b}):Play()
 end
 function Vfx.cancel(id: number)
@@ -56,7 +58,7 @@ function Vfx.cue(cue: any,state: any)
   end
  elseif cue.Kind=="SpellRelease" then
   Vfx.cancel(cue.Source);ring(d.position,color,5,0.45)
-  if s and (s.Shape=="Line" or s.Shape=="Impact") and typeof(d.destination)=="Vector3" then beam(d.position,d.destination,color,d.travel or 0.2) end
+  if s and (s.Shape=="Line" or s.Shape=="Impact") and typeof(d.destination)=="Vector3" then beam(d.position,d.destination,color,d.travel or 0.2,s.Discipline=="CelestialThunder") end
   if s and s.Status.Decoy then
    local e=state:Get(cue.Source)
    if e then

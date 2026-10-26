@@ -3,6 +3,7 @@
 No repository code is executed. See assets/GITHUB_REUSE.json for source and license.
 """
 from pathlib import Path
+import argparse
 import hashlib
 import json
 import subprocess
@@ -18,9 +19,16 @@ def download(url):
 
 
 def main():
-    manifest_path = ROOT / "assets/GITHUB_REUSE.json"
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--manifest", default="assets/GITHUB_REUSE.json")
+    args = parser.parse_args()
+    manifest_path = ROOT / args.manifest
     manifest = json.loads(manifest_path.read_text())
     for entry in manifest["files"]:
+        if "repository" not in entry:
+            entry["repository"] = manifest["repository"]
+        if "commit" not in entry:
+            entry["commit"] = manifest["commit"]
         target = ROOT / entry["file"]
         url = f"https://raw.githubusercontent.com/{entry['repository']}/{entry['commit']}/{entry['path']}"
         if target.exists() and entry.get("lfs_sha256"):
