@@ -51,6 +51,7 @@ local function frame()return setmetatable({Position=vec(0,0,0),VectorToWorldSpac
 local CFrame={new=frame,Angles=frame,lookAt=frame}
 local function identity(...)return {...}end
 local NumberSequence={new=identity};local NumberSequenceKeypoint={new=identity};local NumberRange={new=identity}
+local UDim2={fromScale=identity}
 local ColorSequence={new=identity};local Vector2={new=vec}
 local RaycastParams={new=function()return {}end}
 local Color3={fromRGB=function(r,g,b)return {R=r/255,G=g/255,B=b/255}end,new=function(r,g,b)return {R=r,G=g,B=b}end}
@@ -64,7 +65,7 @@ local Lighting=instance('Lighting')
 for _,n in {'CB_Atmosphere','CB_ColorCorrection','CB_SunRays','CB_Bloom'}do local p=instance('Effect',n);p.Parent=Lighting end
 local player=instance('Player')
 local brazier=instance('PointLight')
-local Shared={PresentationAssets='PresentationAssets',EnvironmentProfiles='EnvironmentProfiles',WorldDefinitions='WorldDefinitions',EffectsPreference='EffectsPreference'}
+local Shared={PresentationAssets='PresentationAssets',EnvironmentProfiles='EnvironmentProfiles',WorldDefinitions='WorldDefinitions',EffectsPreference='EffectsPreference',EffectEasing='EffectEasing'}
 local AsurasPath={Shared=Shared,Simulation={StrikeGeometry='StrikeGeometry'}}
 local services={CollectionService={GetTagged=function()return {brazier}end},ReplicatedStorage={AsurasPath=AsurasPath,WaitForChild=function()return AsurasPath end},SoundService=SoundService,Lighting=Lighting,Players={LocalPlayer=player},TweenService=TweenService,
  Debris={AddItem=function()end},ServerStorage=instance('ServerStorage')}
@@ -175,6 +176,10 @@ local bursts=0;for _,p in folder:GetChildren()do if p.Name=='BladeEmbers'then bu
 check(bursts<=assets.Limits.Bursts and #vfx.Shards<=assets.Limits.Shards,'impact spam bounded by burst/shard budgets')
 vfx:Update(.4);check(#vfx.Shards==0,'expired geometric sparks released')
 vfx:ring(vec(0,0,0),Vector3.yAxis,Color3.fromRGB(255,255,255),4)
+local parry=folder:FindFirstChild('DeflectShockwave')
+check(parry and parry:FindFirstChild('EffekseerParryWind'),'uploaded parry wind stays attached to the bounded burst')
+local ringBeam=parry:FindFirstChildOfClass('Beam')
+check(ringBeam and ringBeam.Texture==assets.Textures.GithubShockwave,'parry ring wraps the CC0 shockwave strip')
 vfx:Destroy();check(#folder:GetChildren()==0,'effect teardown removes shockwave nodes')
 assets.Audio.Wind,assets.Audio.Clash,assets.Textures.Ash,assets.Textures.Ember=uploaded.Wind,uploaded.Clash,uploaded.Ash,uploaded.Ember
 check(audio.id('Wind')==uploaded.Wind,'registered ambience resolves to uploaded asset')

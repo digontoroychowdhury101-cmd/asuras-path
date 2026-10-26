@@ -39,11 +39,12 @@ function Scene.build(seed: number?)
 	local World = require("../src/shared/WorldDefinitions")
 	local Assets = require("../src/shared/PresentationAssets")
 	local Zones = require("../src/shared/MonasteryZones")
+	local RidgeProfile = require("../src/shared/MonasteryRidgeProfile")
 	local terrainLog = {}
 	local workspace = { Terrain = fakeTerrain(terrainLog) }
 	local services = {
 		Workspace = workspace,
-		ReplicatedStorage = { WaitForChild = function(self, name) return self[name] end, AsurasPath = { Shared = { WorldDefinitions = World, PresentationAssets = Assets, MonasteryZones = Zones } } },
+		ReplicatedStorage = { WaitForChild = function(self, name) return self[name] end, AsurasPath = { Shared = { WorldDefinitions = World, PresentationAssets = Assets, MonasteryZones = Zones, MonasteryRidgeProfile = RidgeProfile } } },
 		ServerStorage = { FindFirstChild = function() return nil end },
 	}
 	services.ReplicatedStorage.AsurasPath.WaitForChild = function(self, name) return self[name] end

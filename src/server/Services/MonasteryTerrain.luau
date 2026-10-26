@@ -11,6 +11,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local World = require(ReplicatedStorage:WaitForChild("AsurasPath").Shared.WorldDefinitions)
 local Zones = require(ReplicatedStorage:WaitForChild("AsurasPath").Shared.MonasteryZones)
+local RidgeProfile = require(ReplicatedStorage:WaitForChild("AsurasPath").Shared.MonasteryRidgeProfile)
 
 local Terrain = {}
 
@@ -103,11 +104,16 @@ function Terrain.Build(rng: Random)
 		t:FillBlock(CFrame.new(x, TERRAIN_TOP - 1, z), Vector3.new(rng:NextNumber(16, 40), 2, rng:NextNumber(16, 40)), material)
 	end
 	-- Valley walls: dark rock ridges east, west and north; the south stays open for the road.
+	local ridgeIndex = 0
 	for z = -640, -1160, -22 do
+		ridgeIndex += 1
 		for side = -1, 1, 2 do
 			local x = side * (180 + rng:NextNumber(-6, 12))
 			t:FillBall(Vector3.new(x, rng:NextNumber(-6, 14), z), rng:NextNumber(26, 36), Enum.Material.Rock)
-			t:FillBall(Vector3.new(x + side * 18, rng:NextNumber(18, 38), z), rng:NextNumber(18, 26), Enum.Material.Slate)
+			-- Preserve the seeded random stream for every other piece of scenery.
+			rng:NextNumber(18, 38)
+			local height = RidgeProfile[ridgeIndex][if side == -1 then 1 else 2]
+			t:FillBall(Vector3.new(x + side * 18, height, z), rng:NextNumber(18, 26), Enum.Material.Slate)
 		end
 	end
 	for x = -200, 200, 22 do

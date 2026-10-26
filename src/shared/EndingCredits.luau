@@ -25,6 +25,9 @@ Credits.ThirdParty = table.freeze({
 	{ Work = "Fantasy Ruins", By = "Ron Kapaun / 3TD Studios", License = "CC0-1.0", Source = "https://opengameart.org/content/3td-fantasy-ruins-pack" },
 	{ Work = "Impact Sounds", By = "Kenney", License = "CC0-1.0", Source = "https://kenney.nl/assets/impact-sounds" },
 	{ Work = "RPG Audio", By = "Kenney", License = "CC0-1.0", Source = "https://kenney.nl/assets/rpg-audio" },
+	{ Work = "FastNoiseLite cliff profiles", By = "Jordan Peck and contributors", License = "MIT", Source = "https://github.com/Auburn/FastNoiseLite" },
+	{ Work = "Effekseer speed easing", By = "Effekseer Project", License = "MIT", Source = "https://github.com/effekseer/Effekseer/blob/8b1e2969825638fb24682f3697610d8f37949d22/Dev/Editor/EffekseerCore/Utils/Math.cs" },
+	{ Work = "Effekseer sample textures", By = "Effekseer Project / AndrewFM", License = "CC0-1.0", Source = "https://github.com/effekseer/Effekseer/tree/8b1e2969825638fb24682f3697610d8f37949d22/Release/Sample/01_AndrewFM01" },
 } :: { Entry })
 
 -- Made for the project, in the record's own words (each phrase appears in CREDITS.md).

@@ -1,0 +1,34 @@
+[
+  {
+    "repository": "Auburn/FastNoiseLite",
+    "path": "JavaScript/dist/FastNoiseLite.js",
+    "file": "tools/vendor/fastnoise-lite/FastNoiseLite.js",
+    "license": "MIT",
+    "commit": "785f37a9ad76e283586a379675085f2063ae03f7",
+    "blob_sha": "d8c6392edfc0c15c96af42ef556360fd30bbe55e"
+  },
+  {
+    "repository": "Auburn/FastNoiseLite",
+    "path": "LICENSE",
+    "file": "tools/vendor/fastnoise-lite/LICENSE",
+    "license": "MIT",
+    "commit": "785f37a9ad76e283586a379675085f2063ae03f7",
+    "blob_sha": "dd6df2c160a31fff4e781e9589d56bc29dabb5c0"
+  },
+  {
+    "repository": "effekseer/Effekseer",
+    "path": "Dev/Editor/EffekseerCore/Utils/Math.cs",
+    "file": "tools/vendor/effekseer/Math.cs",
+    "license": "MIT",
+    "commit": "8b1e2969825638fb24682f3697610d8f37949d22",
+    "blob_sha": "646150bf7f2599bb0415a4afa46d3a5114322564"
+  },
+  {
+    "repository": "effekseer/Effekseer",
+    "path": "LICENSE",
+    "file": "tools/vendor/effekseer/LICENSE",
+    "license": "MIT",
+    "commit": "8b1e2969825638fb24682f3697610d8f37949d22",
+    "blob_sha": "c7c0094a9a163d8013086a42b3dcb3a46f984cb1"
+  }
+]

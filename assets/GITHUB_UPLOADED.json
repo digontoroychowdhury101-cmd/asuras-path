@@ -1,0 +1,21 @@
+{
+  "uploaded_date": "2026-10-26",
+  "creator_user_id": "3148600636",
+  "Textures": {
+    "GithubSpark": "rbxassetid://130696775636258",
+    "GithubFlame": "rbxassetid://91726489235085",
+    "GithubShockwave": "rbxassetid://113620265045402",
+    "GithubWind": "rbxassetid://138369746472175",
+    "GithubSmoke": "rbxassetid://106136904847136",
+    "GithubThunder": "rbxassetid://91094113748034"
+  },
+  "load_status": "6/6 Success in Studio Client typed ImageLabel preload",
+  "Audio": {},
+  "notes": "Image IDs returned by Studio upload_image. Audio remains local; no audio upload tool is available.",
+  "pending_replacements": {
+    "GithubThunderHorizontal": {
+      "id": "rbxassetid://90786029633700",
+      "status": "Preload interrupted by closed client; not active"
+    }
+  }
+}

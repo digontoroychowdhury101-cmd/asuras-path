@@ -1,0 +1,199 @@
+{
+  "checked_date": "2026-10-26",
+  "repositories": [
+    {
+      "repository": "Auburn/FastNoiseLite",
+      "stars": 3534,
+      "commit": "785f37a9ad76e283586a379675085f2063ae03f7",
+      "license": "MIT"
+    },
+    {
+      "repository": "effekseer/Effekseer",
+      "stars": 1812,
+      "commit": "8b1e2969825638fb24682f3697610d8f37949d22",
+      "license": "MIT"
+    },
+    {
+      "repository": "godotengine/godot-demo-projects",
+      "stars": 9709,
+      "commit": "b761b4cd5718a7118f2c95eb55f181d0a5f004f1",
+      "license": "MIT"
+    }
+  ],
+  "files": [
+    {
+      "repository": "effekseer/Effekseer",
+      "path": "Release/Sample/01_AndrewFM01/Texture/Thunder01.png",
+      "file": "assets/github/effekseer/Thunder01.png",
+      "section": "Textures",
+      "slot": "GithubThunder",
+      "commit": "8b1e2969825638fb24682f3697610d8f37949d22",
+      "blob_sha": "84eb0f172a9bcd3c1bea53708d7c8b9ea6c47c37",
+      "license": "CC0-1.0",
+      "uploaded": true,
+      "sha256": "020afb852c0b4e39d07a560be6437563de4e437848ebab3957ecccbcf84498ac",
+      "bytes": 19998,
+      "lfs_sha256": "020afb852c0b4e39d07a560be6437563de4e437848ebab3957ecccbcf84498ac",
+      "source_pointer": "version https://git-lfs.github.com/spec/v1\noid sha256:020afb852c0b4e39d07a560be6437563de4e437848ebab3957ecccbcf84498ac\nsize 19998\n",
+      "prepared_size": [
+        512,
+        64
+      ],
+      "prepared_file": "assets/github/ready/GithubThunder.png",
+      "prepared_sha256": "7892828c261409547986f6f6e6a96b56ad32804ecb518ec5a5843ec42c33e4f8",
+      "roblox_id": "rbxassetid://91094113748034",
+      "roblox_load_status": "Success (Studio Client typed ImageLabel preload)",
+      "prepared_rotation_degrees": 90,
+      "roblox_uploaded_variant": "original vertical strip",
+      "horizontal_variant_id": "rbxassetid://90786029633700",
+      "horizontal_variant_status": "pending typed verification; not active"
+    },
+    {
+      "repository": "effekseer/Effekseer",
+      "path": "Release/Sample/01_AndrewFM01/Texture/Wind01.png",
+      "file": "assets/github/effekseer/Wind01.png",
+      "section": "Textures",
+      "slot": "GithubWind",
+      "commit": "8b1e2969825638fb24682f3697610d8f37949d22",
+      "blob_sha": "6097a4cdd6bb7aba831b304d058db728cdbceda0",
+      "license": "CC0-1.0",
+      "uploaded": true,
+      "sha256": "64398f834d8a7cb1cf259308c32fa6e6265649a90691e75cfb3ce9cbe17217ae",
+      "bytes": 10565,
+      "lfs_sha256": "64398f834d8a7cb1cf259308c32fa6e6265649a90691e75cfb3ce9cbe17217ae",
+      "source_pointer": "version https://git-lfs.github.com/spec/v1\noid sha256:64398f834d8a7cb1cf259308c32fa6e6265649a90691e75cfb3ce9cbe17217ae\nsize 10565\n",
+      "prepared_size": [
+        128,
+        128
+      ],
+      "prepared_file": "assets/github/ready/GithubWind.png",
+      "prepared_sha256": "9fd663a68921469a7eb4b1a30b2a1b1b9ac966605ba0e1ce26badb9ca9ef0943",
+      "roblox_id": "rbxassetid://138369746472175",
+      "roblox_load_status": "Success (Studio Client typed ImageLabel preload)"
+    },
+    {
+      "repository": "effekseer/Effekseer",
+      "path": "Release/Sample/01_AndrewFM01/Texture/Particle01.png",
+      "file": "assets/github/effekseer/Particle01.png",
+      "section": "Textures",
+      "slot": "GithubSpark",
+      "commit": "8b1e2969825638fb24682f3697610d8f37949d22",
+      "blob_sha": "a43329949d7636804239bcbbf8ffea0bd57c8e19",
+      "license": "CC0-1.0",
+      "uploaded": true,
+      "sha256": "b1346d2bfafa6e783661453680b282edc6bc0e0b85711414b9914aac03a3a881",
+      "bytes": 7082,
+      "lfs_sha256": "b1346d2bfafa6e783661453680b282edc6bc0e0b85711414b9914aac03a3a881",
+      "source_pointer": "version https://git-lfs.github.com/spec/v1\noid sha256:b1346d2bfafa6e783661453680b282edc6bc0e0b85711414b9914aac03a3a881\nsize 7082\n",
+      "prepared_size": [
+        128,
+        128
+      ],
+      "prepared_file": "assets/github/ready/GithubSpark.png",
+      "prepared_sha256": "717416c3d04c97352a43f6057046a7dd0555a12c59ffeb49399c2b8c87e234b9",
+      "roblox_id": "rbxassetid://130696775636258",
+      "roblox_load_status": "Success (Studio Client typed ImageLabel preload)"
+    },
+    {
+      "repository": "effekseer/Effekseer",
+      "path": "Release/Sample/01_AndrewFM01/Texture/Shock_wave_ring001.png",
+      "file": "assets/github/effekseer/Shock_wave_ring001.png",
+      "section": "Textures",
+      "slot": "GithubShockwave",
+      "commit": "8b1e2969825638fb24682f3697610d8f37949d22",
+      "blob_sha": "92ee1f74ab50f22c53686ceb399dd95d96b87819",
+      "license": "CC0-1.0",
+      "uploaded": true,
+      "sha256": "a902c3169287c337accf458dd651105210c9660da8770fbc535091e235eb8dac",
+      "bytes": 6486,
+      "lfs_sha256": "a902c3169287c337accf458dd651105210c9660da8770fbc535091e235eb8dac",
+      "source_pointer": "version https://git-lfs.github.com/spec/v1\noid sha256:a902c3169287c337accf458dd651105210c9660da8770fbc535091e235eb8dac\nsize 6486\n",
+      "prepared_size": [
+        128,
+        128
+      ],
+      "prepared_file": "assets/github/ready/GithubShockwave.png",
+      "prepared_sha256": "569b36271510650b720e16b9c635dccad1ceebc8cd7aa4aee4b398281face80f",
+      "roblox_id": "rbxassetid://113620265045402",
+      "roblox_load_status": "Success (Studio Client typed ImageLabel preload)"
+    },
+    {
+      "repository": "effekseer/Effekseer",
+      "path": "Release/Sample/01_AndrewFM01/Texture/smoke_tex.png",
+      "file": "assets/github/effekseer/smoke_tex.png",
+      "section": "Textures",
+      "slot": "GithubSmoke",
+      "commit": "8b1e2969825638fb24682f3697610d8f37949d22",
+      "blob_sha": "62489765512644bfacf6434e65245eb975287a1a",
+      "license": "CC0-1.0",
+      "uploaded": true,
+      "sha256": "953d069e80f5374c430ddc278b9e27a9a8480af64615f68803cb6f05c7ac9e51",
+      "bytes": 208912,
+      "lfs_sha256": "953d069e80f5374c430ddc278b9e27a9a8480af64615f68803cb6f05c7ac9e51",
+      "source_pointer": "version https://git-lfs.github.com/spec/v1\noid sha256:953d069e80f5374c430ddc278b9e27a9a8480af64615f68803cb6f05c7ac9e51\nsize 208912\n",
+      "prepared_size": [
+        500,
+        500
+      ],
+      "prepared_file": "assets/github/ready/GithubSmoke.png",
+      "prepared_sha256": "01a23961ef202bbf795c5fd573e1b891eae87e8548852172bfd5010e75e5600a",
+      "roblox_id": "rbxassetid://106136904847136",
+      "roblox_load_status": "Success (Studio Client typed ImageLabel preload)"
+    },
+    {
+      "repository": "effekseer/Effekseer",
+      "path": "Release/Sample/01_AndrewFM01/Texture/fire_tex.png",
+      "file": "assets/github/effekseer/fire_tex.png",
+      "section": "Textures",
+      "slot": "GithubFlame",
+      "commit": "8b1e2969825638fb24682f3697610d8f37949d22",
+      "blob_sha": "ac74f77de3e45723301dd08f8c90c3e8c8c58571",
+      "license": "CC0-1.0",
+      "uploaded": true,
+      "sha256": "cde3a45c51db47989d7fbb55368c889da4c9fb519b53b2a719634959083cdcb6",
+      "bytes": 845218,
+      "lfs_sha256": "cde3a45c51db47989d7fbb55368c889da4c9fb519b53b2a719634959083cdcb6",
+      "source_pointer": "version https://git-lfs.github.com/spec/v1\noid sha256:cde3a45c51db47989d7fbb55368c889da4c9fb519b53b2a719634959083cdcb6\nsize 845218\n",
+      "prepared_size": [
+        840,
+        1024
+      ],
+      "prepared_file": "assets/github/ready/GithubFlame.png",
+      "prepared_sha256": "df0c09af3b097309158587046955505db65fc49ab9ad72634cfe53026b13b592",
+      "roblox_id": "rbxassetid://91726489235085",
+      "roblox_load_status": "Success (Studio Client typed ImageLabel preload)"
+    },
+    {
+      "repository": "godotengine/godot-demo-projects",
+      "path": "3d/ragdoll_physics/sounds/impact_big.wav",
+      "file": "assets/github/godot/impact_big.wav",
+      "section": "Audio",
+      "slot": "GithubHeavyImpact",
+      "commit": "b761b4cd5718a7118f2c95eb55f181d0a5f004f1",
+      "blob_sha": "3010d93b9ba707d2709504fa47a2c187c8569081",
+      "license": "CC0-1.0",
+      "uploaded": false,
+      "sha256": "8219eee486ec96b3de1b4eb5dfc7a10de47d4aa10927387b1df7a9de05b17cfc",
+      "bytes": 100930,
+      "prepared_seconds": 1.0496666666666667,
+      "prepared_file": "assets/github/ready/GithubHeavyImpact.wav",
+      "prepared_sha256": "8f1d3ac511056d788aeb700e2a65f89836c8edff2a44697fc8a65f250747d05a"
+    },
+    {
+      "repository": "godotengine/godot-demo-projects",
+      "path": "3d/ragdoll_physics/sounds/impact_small.wav",
+      "file": "assets/github/godot/impact_small.wav",
+      "section": "Audio",
+      "slot": "GithubLightImpact",
+      "commit": "b761b4cd5718a7118f2c95eb55f181d0a5f004f1",
+      "blob_sha": "00651194206930455bf15b4f4c990ca772359bd1",
+      "license": "CC0-1.0",
+      "uploaded": false,
+      "sha256": "b38e07a93d65723b7f31848aff5b42c50893e72ca895947e48f3a09f08370596",
+      "bytes": 85582,
+      "prepared_seconds": 0.9698125,
+      "prepared_file": "assets/github/ready/GithubLightImpact.wav",
+      "prepared_sha256": "3d2cfc006c7c50026caf10e993c06376cc4077a6b279849e5b7e75629de760f9"
+    }
+  ]
+}

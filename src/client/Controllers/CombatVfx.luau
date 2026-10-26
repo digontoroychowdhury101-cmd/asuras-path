@@ -2,11 +2,21 @@
 local Tween = game:GetService("TweenService")
 local Debris = game:GetService("Debris")
 local Assets = require(game:GetService("ReplicatedStorage").AsurasPath.Shared.PresentationAssets)
+local Easing = require(game:GetService("ReplicatedStorage").AsurasPath.Shared.EffectEasing)
 local Surfaces = require(script.Parent.CombatSurfaces)
 local Comfort = require(game:GetService("ReplicatedStorage").AsurasPath.Shared.EffectsPreference) :: any
 local Vfx = {}
 Vfx.__index = Vfx
 local rng = Random.new()
+-- Effekseer speed easing gives embers a sharp attack and a lingering tapered tail.
+local taper = Easing.new(10, -20)
+local emberSize = NumberSequence.new({
+	NumberSequenceKeypoint.new(0, 0.26),
+	NumberSequenceKeypoint.new(0.2, 0.26 * (1 - taper(0.2))),
+	NumberSequenceKeypoint.new(0.5, 0.26 * (1 - taper(0.5))),
+	NumberSequenceKeypoint.new(0.8, 0.26 * (1 - taper(0.8))),
+	NumberSequenceKeypoint.new(1, 0),
+})
 function Vfx.new(folder: Folder): any return setmetatable({ Folder = folder, Bursts = {}, Shards = {} }, Vfx) end
 local function part(parent: Instance, name: string): Part
 	local p = Instance.new("Part")
@@ -20,6 +30,16 @@ function Vfx.ring(self: any, point: Vector3, direction: Vector3, color: Color3, 
 	local p = part(self.Folder, "DeflectShockwave")
 	table.insert(self.Bursts, p)
 	p.CFrame = CFrame.lookAt(point, point + (if direction.Magnitude > 0.1 then direction.Unit else Vector3.yAxis))
+	if not Comfort.reduced() and Assets.Textures.GithubWind ~= "" then
+		local gui = Instance.new("BillboardGui")
+		gui.Name, gui.Adornee, gui.Size, gui.LightInfluence = "EffekseerParryWind", p, UDim2.fromScale(0.3, 0.3), 0
+		gui.AlwaysOnTop, gui.Parent = false, p
+		local icon = Instance.new("ImageLabel")
+		icon.Image, icon.ImageColor3, icon.BackgroundTransparency = Assets.Textures.GithubWind, color, 1
+		icon.ImageTransparency, icon.Size, icon.Parent = 0.4, UDim2.fromScale(1, 1), gui
+		Tween:Create(gui, TweenInfo.new(0.2), { Size = UDim2.fromScale(radius * 2, radius * 2) }):Play()
+		Tween:Create(icon, TweenInfo.new(0.2), { ImageTransparency = 1, Rotation = Comfort.motion(35) }):Play()
+	end
 	local nodes: {Attachment} = {}
 	for i = 1, 20 do
 		local angle = (i - 1) * math.pi / 10
@@ -31,6 +51,7 @@ function Vfx.ring(self: any, point: Vector3, direction: Vector3, color: Color3, 
 		local b = Instance.new("Beam")
 		b.Attachment0, b.Attachment1, b.FaceCamera = a, nodes[i % #nodes + 1], true
 		b.Color, b.LightEmission, b.Width0, b.Width1 = ColorSequence.new(Color3.new(1,1,1), color), 1, 0.09, 0.09
+		b.Texture, b.TextureMode, b.TextureSpeed = Assets.Textures.GithubShockwave, Enum.TextureMode.Stretch, 0
 		b.Parent = p
 		Tween:Create(b, TweenInfo.new(0.2), { Width0 = 0, Width1 = 0 }):Play()
 	end
@@ -71,7 +92,7 @@ function Vfx.burst(self: any, point: Vector3, direction: Vector3, color: Color3,
 		e.LightEmission, e.LightInfluence = if blood then 0 else 1, if blood then 1 else 0
 		e.Color = ColorSequence.new(if blood then color else Color3.new(1,1,1), color)
 		e.Acceleration = Vector3.new(0, -55, 0)
-		e.Size = NumberSequence.new({NumberSequenceKeypoint.new(0, 0.26), NumberSequenceKeypoint.new(1, 0)})
+		e.Size = if blood then NumberSequence.new({NumberSequenceKeypoint.new(0, 0.26), NumberSequenceKeypoint.new(1, 0)}) else emberSize
 		e.Parent = p; e:Emit(math.clamp(count, 1, 40))
 	else
 		-- Custom geometric streaks keep feedback available before the texture uploads.

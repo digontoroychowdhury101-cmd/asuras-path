@@ -44,12 +44,12 @@ function Storm.engulf(trove: Kit.Trove, seconds: number)
 	-- over dark crimson smoke that gives the fire its holes and depth (the neon puffs only add heat).
 	local roar = Kit.part(folder, "StormSheet", HOT[2], Vector3.new(18, 12, 3), CFrame.identity)
 	roar.Transparency = 1
-	local flames = Kit.emitter(roar, { Texture = Assets.Textures.Flame, Color = ColorSequence.new(HOT[1], HOT[3]), Size = NumberSequence.new({
+	local flames = Kit.emitter(roar, { Texture = Assets.Textures.GithubFlame, Color = ColorSequence.new(HOT[1], HOT[3]), Size = NumberSequence.new({
 		NumberSequenceKeypoint.new(0, 3), NumberSequenceKeypoint.new(0.4, 7), NumberSequenceKeypoint.new(1, 4) }), Rate = 260,
 		Lifetime = NumberRange.new(0.35, 0.7), Speed = NumberRange.new(5, 11), Spread = 25, Accel = Vector3.new(0, 14, 0), Light = 1,
 		Transparency = NumberSequence.new({ NumberSequenceKeypoint.new(0, 0.6), NumberSequenceKeypoint.new(0.2, 0.05), NumberSequenceKeypoint.new(1, 1) }) })
 	flames.Shape, flames.EmissionDirection = Enum.ParticleEmitterShape.Box, Enum.NormalId.Top
-	local smoke = Kit.emitter(roar, { Texture = Assets.Textures.Smoke, Color = ColorSequence.new(rgb(150, 34, 10), rgb(40, 8, 2)), Size = NumberSequence.new(4, 9), Rate = 30,
+	local smoke = Kit.emitter(roar, { Texture = Assets.Textures.GithubSmoke, Color = ColorSequence.new(rgb(150, 34, 10), rgb(40, 8, 2)), Size = NumberSequence.new(4, 9), Rate = 30,
 		Lifetime = NumberRange.new(0.6, 1.1), Speed = NumberRange.new(3, 6), Spread = 30, Accel = Vector3.new(0, 6, 0), Light = 0,
 		Transparency = NumberSequence.new({ NumberSequenceKeypoint.new(0, 1), NumberSequenceKeypoint.new(0.25, 0.25), NumberSequenceKeypoint.new(1, 1) }) })
 	smoke.Shape, smoke.EmissionDirection = Enum.ParticleEmitterShape.Box, Enum.NormalId.Top

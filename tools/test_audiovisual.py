@@ -10,10 +10,10 @@ import wave
 import xml.etree.ElementTree as ET
 
 ROOT=Path(__file__).resolve().parents[1]
-modules=('PresentationAssets','EnvironmentProfiles','EffectsPreference','SpatialAudio','ArenaAsh','CombatSurfaces','CombatVfx','EnvironmentController','WeaponTrails','PbrAssets')
+modules=('PresentationAssets','EnvironmentProfiles','EffectsPreference','EffectEasing','SpatialAudio','ArenaAsh','CombatSurfaces','CombatVfx','EnvironmentController','WeaponTrails','PbrAssets')
 chunks=[]
 for name in modules:
-    folder='shared' if name in modules[:3] else 'server/Services' if name=='PbrAssets' else 'client/Controllers'
+    folder='shared' if name in modules[:4] else 'server/Services' if name=='PbrAssets' else 'client/Controllers'
     source=(ROOT/'src'/folder/(name+'.luau')).read_text()
     chunks.append(f'registry["{name}"] = (function()\n{source}\nend)()')
 harness=(ROOT/'tools/test_audiovisual.luau').read_text().replace('-- MODULES_INSERT','\n'.join(chunks))

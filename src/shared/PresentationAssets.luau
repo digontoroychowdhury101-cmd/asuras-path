@@ -10,6 +10,9 @@ Assets.Audio = {
 	SunTension = "rbxassetid://100202591727169", SunBoom = "rbxassetid://75096821018311", SunEmber = "rbxassetid://86447083540632", SunThorn = "rbxassetid://81636168021067", SunCharge = "rbxassetid://105215829186624", SunBlast = "rbxassetid://136996507247009", SunEyes = "rbxassetid://116302876643156", SunGauntlet = "rbxassetid://109867440300434", SunPulse = "rbxassetid://103546737552644",
 }
 Assets.Textures = {
+	-- CC0 Effekseer samples; uploaded and typed-preloaded 6/6 on 2026-10-26 (assets/GITHUB_UPLOADED.json).
+	GithubThunder = "rbxassetid://91094113748034", GithubWind = "rbxassetid://138369746472175", GithubSpark = "rbxassetid://130696775636258",
+	GithubShockwave = "rbxassetid://113620265045402", GithubSmoke = "rbxassetid://106136904847136", GithubFlame = "rbxassetid://91726489235085",
 	Ember = "rbxassetid://71210522377346", Smoke = "rbxassetid://118836433841190", Flame = "rbxassetid://109612319904107", Blood = "rbxassetid://130551791057565", BloodStain = "rbxassetid://127759159077031", Rune = "rbxassetid://122602029003354",
 	Shockwave = "rbxassetid://83732553901476", Ribbon = "rbxassetid://103002669230055", Leaf = "rbxassetid://79417774806659", LeafScatter = "rbxassetid://85184122225102", CrimsonBranch = "rbxassetid://133941376172785", Ash = "rbxassetid://84748845356339",
 }

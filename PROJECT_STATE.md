@@ -1,5 +1,9 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## GitHub reuse — 2026-10-26
+
+Integrated FastNoiseLite cliff profiles and Effekseer easing; uploaded six CC0 textures (6/6 typed preload), four active in parry/Blazing Sun. Two CC0 impacts prepared locally. Licenses, pinned hashes, tests and credits included. Full local verifier passed; final presentation checks/build repeated. Next: visual playtest, audio-upload approval; horizontal thunder variant awaits verification. See `docs/GITHUB_REUSE.md`.
+
 ## Post-F26 Steps 4–5: Twins greybox, Monastery approach — 2026-10-26 (Computer B)
 
 Twins: kept spaced (6.3–7.8 studs), one perilous at a time, lock camera no longer floor-pitched, near-lens fade, banner below bars. Monastery: routes, ladder, tablets II–IV walked; bridge rail-gap fall fixed. Verifier green, digest 557606020. Next: Step 6 art (`STEP6_TWINS_ASSET_BRIEF.md`), Windows human/two-client. See `outputs/post-f26-step4-5-2026-10-26/`.

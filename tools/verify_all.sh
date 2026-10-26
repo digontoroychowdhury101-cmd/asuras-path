@@ -71,6 +71,7 @@ echo "[11/14] Testing Backend Persistence & Commercial Systems (local mocks)..."
 
 echo "[12/14] Testing Audiovisual Modules & Imported Media (engine fakes)..."
 python3 tools/test_audiovisual.py
+python3 tools/test_github_reuse.py
 
 echo "[13/14] Syntax-compiling every source script..."
 find src -name '*.luau' -print0 | xargs -0 "$LUAU_COMPILE" --null

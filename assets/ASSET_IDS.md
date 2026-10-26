@@ -232,3 +232,20 @@ The texture sets below also feed `MaterialService.Asura*` MaterialVariants (`too
 | Sunset_nz (SkyboxFt) | 90950146067839 |
 | Sunset_py (SkyboxUp) | 124525209129489 |
 | Sunset_ny (SkyboxDn) | 127950753221991 |
+
+## GitHub CC0 effect textures — 26 October 2026
+
+From Effekseer / AndrewFM's CC0 sample pack. All six original images returned Success in a typed
+Studio Client preload. See `GITHUB_REUSE.json` for source hashes and `GITHUB_UPLOADED.json` for IDs.
+
+| Slot | Roblox image ID | Use |
+|---|---|---|
+| GithubWind | 138369746472175 | Parry wind ring |
+| GithubShockwave | 113620265045402 | Wrapped parry wave strip |
+| GithubFlame | 91726489235085 | Blazing Sun flame |
+| GithubSmoke | 106136904847136 | Blazing Sun smoke |
+| GithubSpark | 130696775636258 | Registered reserve |
+| GithubThunder | 91094113748034 | Registered vertical-strip reserve |
+
+Horizontal thunder variant `90786029633700` is uploaded but its preload was interrupted. It is not
+active in `PresentationAssets`. The two CC0 impact WAVs in `assets/github/ready/` remain local.

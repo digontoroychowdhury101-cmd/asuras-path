@@ -282,6 +282,12 @@
           "MonasteryZones": {
             "$path": "src/shared/MonasteryZones.luau"
           },
+          "MonasteryRidgeProfile": {
+            "$path": "src/shared/MonasteryRidgeProfile.luau"
+          },
+          "EffectEasing": {
+            "$path": "src/shared/EffectEasing.luau"
+          },
           "RouteGuide": {
             "$path": "src/shared/RouteGuide.luau"
           },
