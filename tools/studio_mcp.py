@@ -7,6 +7,7 @@ runs an ordered list of tool calls from a JSON file: [["tool", {args}], ["__slee
 
     python3 tools/studio_mcp.py --list                      # tool names + connected Studio ids
     python3 tools/studio_mcp.py calls.json                  # run calls, print each text result
+    python3 tools/studio_mcp.py calls.json --images DIR     # also save screen_capture images
     python3 tools/studio_mcp.py --digest PLACE.rbxlx        # expected script digest of a build
 
 --digest matches tools/qa/SourceDigest.luau run in Studio (execute_luau, Edit): equal script count,
@@ -15,14 +16,19 @@ seeded Studio diagnostic. It is not real or earned play.
 """
 from __future__ import annotations
 import argparse
+import base64
 import json
-import select
+import queue
 import subprocess
 import sys
+import threading
 import time
 import xml.etree.ElementTree as ET
+from pathlib import Path
 
-BIN = '/Applications/RobloxStudio.app/Contents/MacOS/StudioMCP'
+from run_studiomcp import find_binary  # macOS app bundle or newest Windows Roblox\Versions build
+
+BIN = find_binary() or '/Applications/RobloxStudio.app/Contents/MacOS/StudioMCP'
 ROOTS = ('Lighting', 'Players', 'ReplicatedFirst', 'ReplicatedStorage', 'ServerScriptService',
          'ServerStorage', 'StarterPlayer', 'Workspace')
 SCRIPTS = {'Script', 'LocalScript', 'ModuleScript'}
@@ -31,12 +37,21 @@ SCRIPTS = {'Script', 'LocalScript', 'ModuleScript'}
 class Client:
     def __init__(self) -> None:
         self.proc = subprocess.Popen([BIN], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-                                     stderr=subprocess.DEVNULL, text=True, bufsize=1)
+                                     stderr=subprocess.DEVNULL, text=True, bufsize=1, encoding='utf-8')
         self.next_id = 1
+        # A reader thread instead of select(): Windows cannot select() on pipes.
+        self.lines: queue.Queue[str] = queue.Queue()
+        threading.Thread(target=self._pump, daemon=True).start()
         self.request('initialize', {'protocolVersion': '2025-06-18', 'capabilities': {},
                                     'clientInfo': {'name': 'asura-qa', 'version': '1'}})
         self.send({'jsonrpc': '2.0', 'method': 'notifications/initialized'})
         time.sleep(1.5)  # the proxy fills its tool list from the hub after initialisation
+
+    def _pump(self) -> None:
+        assert self.proc.stdout
+        for line in self.proc.stdout:
+            self.lines.put(line)
+        self.lines.put('')
 
     def send(self, message: dict) -> None:
         assert self.proc.stdin
@@ -47,12 +62,11 @@ class Client:
         ident, self.next_id = self.next_id, self.next_id + 1
         self.send({'jsonrpc': '2.0', 'id': ident, 'method': method, 'params': params})
         deadline = time.time() + timeout
-        assert self.proc.stdout
         while time.time() < deadline:
-            ready, _, _ = select.select([self.proc.stdout], [], [], 0.5)
-            if not ready:
+            try:
+                line = self.lines.get(timeout=0.5)
+            except queue.Empty:
                 continue
-            line = self.proc.stdout.readline()
             if not line:
                 break
             try:
@@ -66,7 +80,10 @@ class Client:
     def call(self, name: str, args: dict) -> tuple[bool, str]:
         reply = self.request('tools/call', {'name': name, 'arguments': args})
         result = reply.get('result') or {}
+        self.images = [c['data'] for c in result.get('content') or [] if c.get('type') == 'image']
         text = '\n'.join(c.get('text', '') for c in result.get('content') or [] if c.get('type') == 'text')
+        if not text and self.images:
+            text = f'{len(self.images)} image(s)'
         return not (reply.get('error') or result.get('isError')), text or json.dumps(reply)
 
     def close(self) -> None:
@@ -104,6 +121,7 @@ def main() -> int:
     parser.add_argument('--list', action='store_true')
     parser.add_argument('--digest')
     parser.add_argument('--limit', type=int, default=6000, help='max characters printed per result')
+    parser.add_argument('--images', help='save screen_capture images here as <capture_id>.jpg')
     args = parser.parse_args()
     if args.digest:
         print(digest(args.digest))
@@ -123,6 +141,13 @@ def main() -> int:
                 continue
             ok, text = client.call(name, call_args)
             failed += not ok
+            if args.images and client.images:
+                folder = Path(args.images)
+                folder.mkdir(parents=True, exist_ok=True)
+                for i, data in enumerate(client.images):
+                    target = folder / f"{call_args.get('capture_id', name)}{'' if i == 0 else f'_{i}'}.jpg"
+                    target.write_bytes(base64.b64decode(data))
+                    text += f' -> {target}'
             print(f'CALL {name} {"ok" if ok else "error"}\n{text[:args.limit]}')
         return 1 if failed else 0
     finally:

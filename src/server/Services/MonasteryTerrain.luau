@@ -18,6 +18,10 @@ local Terrain = {}
 local BOUNDS = (World.Regions :: any).DesecratedMonastery.Bounds
 local CENTER = Vector3.new(BOUNDS.Center.X, 0, BOUNDS.Center.Z)
 local MARGIN = 80
+-- South edge: Bamboo Pass (CampaignTerrain) owns the voxels beyond the region bounds on that side, and
+-- the Monastery builds asynchronously after it, so the clear and the floor stop here.
+local SOUTH = BOUNDS.Center.Z - BOUNDS.Size.Z / 2
+local NORTH = BOUNDS.Center.Z + BOUNDS.Size.Z / 2 + MARGIN
 
 Terrain.RAVINE_Z = -960
 Terrain.VALLEY_HALF = 214 -- floor half-width; the ridge crests stand near x = ±180..200
@@ -28,9 +32,9 @@ Terrain.EAST_PASS = { X0 = 140, X1 = 236, Z0 = -796, Z1 = -824 } -- the courtyar
 -- TERRAIN_TOP to leave the surface just under the flagstones.
 local TERRAIN_TOP = -2.2
 
--- Terrain extent cleared on build and teardown (region bounds plus the cliff margin).
+-- Terrain extent cleared on build and teardown (region bounds plus the cliff margin, except south).
 function Terrain.Extent(): (CFrame, Vector3)
-	return CFrame.new(CENTER.X, -20, CENTER.Z), Vector3.new(BOUNDS.Size.X + MARGIN * 2, 120, BOUNDS.Size.Z + MARGIN * 2)
+	return CFrame.new(CENTER.X, -20, (NORTH + SOUTH) * 0.5), Vector3.new(BOUNDS.Size.X + MARGIN * 2, 120, NORTH - SOUTH)
 end
 
 function Terrain.Clear()
@@ -91,8 +95,7 @@ function Terrain.Build(rng: Random)
 	-- Ground, LeafyGrass and Rock carry PBR overrides; CampaignTerrain owns their tints.
 	t:SetMaterialColor(Enum.Material.Mud, Color3.fromRGB(46, 38, 34))
 	t:SetMaterialColor(Enum.Material.Slate, Color3.fromRGB(52, 54, 56))
-	local sz = BOUNDS.Size.Z + MARGIN * 2
-	floor(t, -Terrain.VALLEY_HALF, Terrain.VALLEY_HALF, CENTER.Z + sz * 0.5, CENTER.Z - sz * 0.5)
+	floor(t, -Terrain.VALLEY_HALF, Terrain.VALLEY_HALF, NORTH, SOUTH)
 	local plateau = Terrain.PLATEAU
 	floor(t, plateau.X0, plateau.X1, plateau.Z0, plateau.Z1)
 	-- Top-layer patches of mud and sour moss break up the floor between the stones.

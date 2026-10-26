@@ -1,8 +1,10 @@
 --!strict
 -- ModuleScript: ServerScriptService/AsurasPath/Services/CampaignTerrain
 -- Natural layout boxes (Grass, Rock, Snow, Ash, Basalt) are drawn as smooth Terrain instead of flat
--- parts. The box part stays as the exact collider (invisible), and the voxels are inset below its top
--- and inside its sides, so no surface the reachability suite walks moves. Terrain materials use the
+-- parts. The box part stays as the exact collider (invisible) under the voxels. Smooth terrain is
+-- bumpy (about +-1 stud) and its surface sits ~2 studs above the fill top (Studio-measured), so fills
+-- stop TOP_INSET under the lid, so the surface sits on or just above it (never hovering feet); carve() then clears terrain
+-- off every built walkway so voxels never lift paths, stairs or floors. Terrain materials use the
 -- GitHub PBR MaterialVariants (assets/GITHUB_TERRAIN.json) through base-material overrides; the lobby
 -- only uses Water terrain, so the overrides reach the campaign regions and the Monastery hills.
 local Workspace = game:GetService("Workspace")
@@ -26,9 +28,10 @@ CampaignTerrain.Tints = table.freeze({
 	Ground = Color3.fromRGB(150, 140, 128), Basalt = Color3.fromRGB(210, 205, 205),
 } :: { [string]: Color3 })
 
-local MIN_DIM = 4 -- one voxel; thinner boxes cannot be drawn faithfully and stay parts
-local TOP_INSET = 0.6 -- terrain surface sits under the collider top, never above it
-local SIDE_INSET = 0.5
+local VOXEL = 4 -- a fill thinner than one voxel cannot be drawn faithfully; such boxes stay parts
+local TOP_INSET = 1.5 -- fill top under the collider lid; the bumpy surface lands on or just above it
+local SIDE_INSET = 0.5 -- edges stay near the collider; carve() trims any spill onto walkways
+local CLEAR = 8 -- headroom carve() empties above built walkways
 
 local function terrain(): Terrain?
 	return Workspace:FindFirstChildOfClass("Terrain")
@@ -48,19 +51,98 @@ function CampaignTerrain.applyOverrides()
 	end
 end
 
--- Draws one box as terrain and hides its part. Returns true when converted.
-function CampaignTerrain.convert(part: BasePart, box: any): boolean
-	local t = terrain()
-	local material = CampaignTerrain.Kinds[box.Kind]
-	if not t or not material or math.min(box.SX, box.SY, box.SZ) < MIN_DIM then
+-- True when no other layout solid lies under `box` (within `depth` below its bottom): a ground slab
+-- whose fill may then reach below the collider, so thin floors still get a full voxel layer.
+local function nothingBelow(box: any, solids: { any }?, depth: number): boolean
+	if not solids then
 		return false
 	end
-	local size = Vector3.new(box.SX - SIDE_INSET * 2, box.SY - TOP_INSET, box.SZ - SIDE_INSET * 2)
-	local cf = CFrame.new(box.X, box.Y - TOP_INSET / 2, box.Z) * CFrame.Angles(0, math.rad(box.Yaw), 0)
+	local bottom = box.Y - box.SY / 2
+	local r = math.max(box.SX, box.SZ) / 2 -- yaw-safe radius
+	for _, o in solids do
+		local otop = o.Y + o.SY / 2
+		if o ~= box and o.Kind ~= "Veil" and otop <= bottom + 0.01 and otop > bottom - depth
+			and math.abs(o.X - box.X) < r + math.max(o.SX, o.SZ) / 2 and math.abs(o.Z - box.Z) < r + math.max(o.SX, o.SZ) / 2 then
+			return false
+		end
+	end
+	return true
+end
+
+-- Draws one box as terrain and hides its part. Returns true when converted. `solids` (the region's
+-- layout) lets a thin ground slab extend its fill below the collider when nothing is underneath.
+function CampaignTerrain.convert(part: BasePart, box: any, solids: { any }?): boolean
+	local t = terrain()
+	local material = CampaignTerrain.Kinds[box.Kind]
+	if not t or not material or math.min(box.SX, box.SZ) - SIDE_INSET * 2 < VOXEL then
+		return false
+	end
+	local top = box.Y + box.SY / 2 - TOP_INSET
+	local bottom = box.Y - box.SY / 2
+	if top - bottom < VOXEL * 2 then
+		if not nothingBelow(box, solids, VOXEL * 2) then
+			if top - bottom < VOXEL then
+				return false
+			end
+		else
+			bottom = top - VOXEL * 2
+		end
+	end
+	local size = Vector3.new(box.SX - SIDE_INSET * 2, top - bottom, box.SZ - SIDE_INSET * 2)
+	local cf = CFrame.new(box.X, (top + bottom) / 2, box.Z) * CFrame.Angles(0, math.rad(box.Yaw), 0)
 	t:FillBlock(cf, size, material)
 	part.Transparency, part.CastShadow = 1, false
 	part:SetAttribute("AsuraTerrainProxy", box.Kind)
 	return true
+end
+
+-- Clears terrain above every built (non-proxy) colliding part in `structure`, so natural fills never
+-- poke through paths, stairs or floors. A part with a proxy rising over its footprint (a cliff on a
+-- gorge floor) is left alone: that terrain is the cliff itself.
+function CampaignTerrain.carve(structure: Instance)
+	local t = terrain()
+	if not t then
+		return
+	end
+	local proxies: { BasePart } = {}
+	for _, p in structure:GetChildren() do
+		if p:IsA("BasePart") and p:GetAttribute("AsuraTerrainProxy") then
+			table.insert(proxies, p)
+		end
+	end
+	-- A proxy covers a floor when it rises above the floor's top and stands over part of its area
+	-- (5 x 5 samples in the floor's own frame, tested in the proxy's frame: yaw-exact, unlike AABBs).
+	local function covers(q: BasePart, p: BasePart, top: number): boolean
+		if q.Position.Y + q.Size.Y / 2 <= top + 0.5 then
+			return false
+		end
+		for i = -2, 2 do
+			for j = -2, 2 do
+				local w = p.CFrame * Vector3.new(p.Size.X * i / 5, 0, p.Size.Z * j / 5)
+				local l = q.CFrame:PointToObjectSpace(w)
+				if math.abs(l.X) < q.Size.X / 2 and math.abs(l.Z) < q.Size.Z / 2 then
+					return true
+				end
+			end
+		end
+		return false
+	end
+	for _, p in structure:GetChildren() do
+		if not p:IsA("BasePart") or not p.CanCollide or p.Transparency >= 1 or p:GetAttribute("AsuraTerrainProxy") then
+			continue
+		end
+		local top = p.Position.Y + p.Size.Y / 2
+		local covered = false
+		for _, q in proxies do
+			if covers(q, p, top) then
+				covered = true
+				break
+			end
+		end
+		if not covered then
+			t:FillBlock(p.CFrame * CFrame.new(0, p.Size.Y / 2 + CLEAR / 2, 0), Vector3.new(p.Size.X + 0.5, CLEAR, p.Size.Z + 0.5), M.Air)
+		end
+	end
 end
 
 -- Valley walls outside each region's east and west bounds, so the walkable boxes sit in a landscape
@@ -118,7 +200,7 @@ function CampaignTerrain.clear(box: any)
 	local t = terrain()
 	if t then
 		local cf = CFrame.new(box.X, box.Y, box.Z) * CFrame.Angles(0, math.rad(box.Yaw), 0)
-		t:FillBlock(cf, Vector3.new(box.SX, box.SY, box.SZ), M.Air)
+		t:FillBlock(cf, Vector3.new(box.SX, box.SY + VOXEL * 4, box.SZ), M.Air) -- covers deepened ground fills
 	end
 end
 

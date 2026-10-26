@@ -1,5 +1,9 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## Terrain footing pass — 2026-10-26 (Computer A)
+
+Probe found terrain 0.3–3.9 studs above walkways; fixed (insets, deep ground fills, walkway carve, Monastery south clamp). RouteGuide walks clean on Bamboo, Ash, Pagoda, Citadel; stalls identical with terrain off. `studio_mcp.py` now runs on Windows. See `outputs/terrain-reuse-2026-10-26/FOOTING_WALK.md`. Next: human feel, FPS.
+
 ## Campaign terrain from GitHub — 2026-10-26 (Computer A)
 
 Four PBR terrain variants (Terrain3D, Babylon.js, Godot demos; all >1,000★) uploaded. Natural campaign boxes now render as smooth Terrain over invisible colliders; ridged valley walls frame Bamboo, Ash, Pagoda, Citadel; parts use lobby PBR. Verifier green; Studio screenshots in `outputs/terrain-reuse-2026-10-26/`. Next: human walk of all regions, FPS check.

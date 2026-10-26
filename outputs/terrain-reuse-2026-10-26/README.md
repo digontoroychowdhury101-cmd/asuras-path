@@ -11,6 +11,6 @@ Bamboo Pass, Ash Colosseum, Celestial Pagoda and Sky Citadel were flat parts flo
   bounds (8 studs past the bounds, beyond the Veils), tapering into saddles at region ends.
 - **Built parts** (paths, stone, crypt, tile, timber, lacquer) now use the lobby's PBR variants.
 
-Studio check (single client, Edit-injected sources, then `build.py`): screenshots in this folder.
+Studio check (single client, Edit-injected sources, then `build.py`): screenshots in this folder. Footing probe and route walks: `FOOTING_WALK.md`.
 Region build time rose to ~0.8 s at server start. Not done: human playtest, device FPS, Ash/Citadel lighting
 (both are intentionally dark night profiles), Sunken Crypt (underground, no natural kinds).

@@ -45,10 +45,11 @@ local function build(layout: any): Folder?
 		structure.Name = "Structure"
 		structure.Parent = map
 		for _, box in layout.Solids do
-			if Ground.convert(Decor.solid(structure, box), box) then
+			if Ground.convert(Decor.solid(structure, box), box, layout.Solids) then
 				table.insert(terrainBoxes, box)
 			end
 		end
+		Ground.carve(structure)
 		local lights = Instance.new("Folder")
 		lights.Name = "Lanterns"
 		lights.Parent = map
