@@ -106,5 +106,31 @@ do
 	check("four guarded bays (Studio: +4 parts, 3369 -> 3373)", bays == 4)
 end
 
+-- 7. Post-F26 step 6 presentation faults (numbers from the Studio measurements in post-f26-step6-2026-10-26).
+do
+	local deg = math.deg
+	check("crane rests on an open boom", Clearance.crane(1) == 0 and Clearance.crane(0.8) == 0)
+	check("Studio: fog gate squeeze 0.43 lifts the lens >= 20 deg", deg(Clearance.crane(0.43)) >= 20)
+	check("crane saturates at 35 deg", math.abs(deg(Clearance.crane(0.2)) - 35) < 1e-6)
+	check("crane grows as the squeeze grows", Clearance.crane(0.5) > Clearance.crane(0.6) and Clearance.crane(0.6) > Clearance.crane(0.7))
+	local camera = src("src/client/Controllers/CameraController.luau")
+	check("crane is driven by the un-craned boom (no feedback)", string.find(camera, "Workspace:Spherecast(pivot + plainOrigin, PROBE_RADIUS, plainBoom, params)", 1, true) ~= nil
+		and string.find(camera, "stepSpring(self.Crane, Clearance.crane(self.BoomRatio), 6, dt)", 1, true) ~= nil)
+	check("own body fades only with the lens in close", Clearance.ownFade(4.3) == 0 and Clearance.ownFade(2) > 0.5)
+	-- Rafters roof box measured in Studio: (83.9, 35.8, -1007.3) .. (100.1, 39.0, -992.7).
+	local roofish = require("@lune/roblox").Vector3
+	local V = roofish.new
+	local lo, hi = V(83.94, 35.79, -1007.32), V(100.06, 39.01, -992.68)
+	check("Studio m01: a lens over the roof crosses it", Clearance.crosses(V(93.3, 41.9, -1008.6), V(92, 34.4, -1001), lo, hi))
+	local pad = V(1, 1, 1) * Clearance.RoofMargin
+	check("a lens tucked under the eave fades the roof (margin)", Clearance.crosses(V(92.67, 35.58, -992.22), V(90.87, 33.4, -1002.49), lo - pad, hi + pad))
+	check("on the ground under the tower the roof stays", not Clearance.crosses(V(92, 12, -985), V(92, 4.4, -996), lo - pad, hi + pad))
+	check("drum tower roof is tagged", string.find(src("src/server/Services/MonasterySecrets.luau"), "\"AsuraCameraFade\")", 1, true) ~= nil)
+	local Layout = require("../src/client/Controllers/HudLayout")
+	check("Studio: toast at 268 under a banner ending 282 drops to clear it", Layout.toastShift(268, 282) == 20 and Layout.toastShift(300, 282) == 0 and Layout.toastShift(268, nil) == 0)
+	check("toast yields every frame", has("src/client/Controllers/InterfaceController.luau", "self:YieldToast()"))
+	check("banner sits under the lock hint, independent of the toast", has("src/client/Controllers/DuoBars.luau", "return math.max(hintBottom + 22, floor)"))
+end
+
 print(string.format("twins + monastery: %d passed, %d failed", passed, failed))
 if failed > 0 then error("twins/monastery regression failed") end

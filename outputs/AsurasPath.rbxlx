@@ -72921,21 +72921,16 @@ function Duo.new(frame: Frame, gui: ScreenGui): View
 	return { Frame = frame, Gui = gui, Root = root, Hint = hint, Rows = {} }
 end
 
--- Where a centre banner goes while a strip is up: just under the strip and its lock hint and above the
--- notice toast's fixed slot (post-F26 Step 4: "PERILOUS - DEFLECT" crossed both Twins' bars; step 6: it
--- then grazed "Posture broken!"). Screen pixels; the banner is a 48-px label anchored at its centre.
-function Duo.slot(hintBottom: number, toastTop: number?, floor: number): number
-	local y = math.max(hintBottom + 22, floor)
-	if toastTop then y = math.min(y, math.max(toastTop - 20, hintBottom + 20)) end
-	return y
+-- Where a centre banner goes while a strip is up: just under the strip and its lock hint (post-F26
+-- Step 4: "PERILOUS - DEFLECT" crossed both Twins' bars). The notice toast yields below it instead
+-- (InterfaceController.YieldToast, step 6). Screen pixels; the banner is anchored at its centre.
+function Duo.slot(hintBottom: number, floor: number): number
+	return math.max(hintBottom + 22, floor)
 end
 function Duo.below(gui: ScreenGui): UDim2?
-	local root = gui.Parent
-	local hint = root and root:FindFirstChild("DuoHint", true)
+	local hint = gui.Parent and gui.Parent:FindFirstChild("DuoHint", true)
 	if not (hint and hint:IsA("GuiObject") and hint.Visible) then return nil end
-	local toast = root and root:FindFirstChild("Toast", true)
-	local top = if toast and toast:IsA("GuiObject") then toast.AbsolutePosition.Y else nil
-	local y = Duo.slot(hint.AbsolutePosition.Y + hint.AbsoluteSize.Y, top, gui.AbsoluteSize.Y * 0.34 + gui.AbsolutePosition.Y)
+	local y = Duo.slot(hint.AbsolutePosition.Y + hint.AbsoluteSize.Y, gui.AbsoluteSize.Y * 0.34 + gui.AbsolutePosition.Y)
 	return UDim2.new(0.5, 0, 0, y - gui.AbsolutePosition.Y) -- the guis may differ by the top-bar inset
 end
 
@@ -74323,6 +74318,12 @@ function Layout.toastRect(width: number, height: number): Rect
 	local t = Layout.Toast
 	local w = math.clamp(width - 2 * t.Side, 0, t.MaxWidth)
 	return { X = (width - w) / 2, Y = height - t.Bottom - t.Height, W = w, H = t.Height }
+end
+
+-- Post-F26 step 6: a centre warning banner outranks the toast. While one is up, the toast's slot
+-- steps down to just under the banner's text (screen pixels; 0 when the two already clear).
+function Layout.toastShift(slotTop: number, bannerBottom: number?): number
+	return if bannerBottom then math.max(0, bannerBottom + 6 - slotTop) else 0
 end
 
 function Layout.factor(height: number): number
@@ -76306,6 +76307,27 @@ function Controller.ShowToast(self: Interface, text: string)
 	self.ToastUntil = os.clock() + 2.4
 end
 
+-- A perilous banner (CombatCallouts) outranks the toast: while both show, the toast drops under the
+-- banner's text instead of crossing it (HudLayout.toastShift; Studio: "The fog binds you" sat 19 px
+-- into "PERILOUS - DEFLECT"). The two labels live in different ScreenGuis, so compare screen pixels.
+function Controller.YieldToast(self: Interface)
+	local toast, root = self.Toast, self.Gui.Parent
+	local callout = root and root:FindFirstChild("CombatCallout", true)
+	local function top(object: GuiObject): number
+		local gui = object:FindFirstAncestorWhichIsA("ScreenGui")
+		return object.AbsolutePosition.Y + (if gui and not gui.IgnoreGuiInset then GuiService:GetGuiInset().Y else 0)
+	end
+	local scale = toast.AbsoluteSize.Y / math.max(HudLayout.Toast.Height, 1)
+	local current = toast.Position.Y.Offset + HudLayout.Toast.Bottom -- pixels already shifted, unscaled
+	local shift = 0
+	if callout and callout:IsA("TextLabel") and callout.Text ~= "" and callout.TextTransparency &lt; 0.5 and toast.TextTransparency &lt; 1 then
+		local bottom = top(callout) + (callout.AbsoluteSize.Y + callout.TextBounds.Y) / 2
+		local slotTop = top(toast) - current * scale + (toast.AbsoluteSize.Y - toast.TextBounds.Y) / 2
+		shift = HudLayout.toastShift(slotTop, bottom) / math.max(scale, 1e-3)
+	end
+	if math.abs(shift - current) &gt; 0.5 then toast.Position = UDim2.new(0.5, 0, 1, -HudLayout.Toast.Bottom + shift) end
+end
+
 function Controller.ShowBanner(self: Interface, title: string, subtitle: string, duration: number)
 	if not Visibility.of(self).Notices then return end
 	self.Banner.TextColor3 = IVORY
@@ -76695,6 +76717,7 @@ function Controller.Update(self: Interface, dt: number)
 		self.Toast.TextTransparency = math.min(1, self.Toast.TextTransparency + dt * 2)
 		self.Toast.TextStrokeTransparency = math.max(self.Toast.TextTransparency, 0.6)
 	end
+	self:YieldToast()
 	if now &gt; self.BannerUntil and self.Banner.TextTransparency &lt; 1 then
 		local fade = math.min(1, self.Banner.TextTransparency + dt * 1.2)
 		self.Banner.TextTransparency = fade

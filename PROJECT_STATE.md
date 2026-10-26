@@ -1,5 +1,9 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## Post-F26 step 6 (D1): Iron Bull maul and shield — 2026-10-26 (Computer B)
+
+Bull uses boss-only IronBullMaul (6 moves, registry stays 12); arcs and records match spec in seeded Studio fights; back punish lands. Toast yields to perilous banner; crane fixes north-edge squeeze; Rafters roof fades. Mastery unchanged. Digest 1556498119. Next: Bull clips, Windows human feel. See `outputs/post-f26-step6-2026-10-26/`.
+
 ## Expanded GitHub reuse and combined sync — 2026-10-26
 
 149 candidates, 135 above 1,000 stars; six repositories reused. Studio: 16 verified media templates, impacts/whooshes/thunder active. Nine CC0 motion sources and validated mesh/LOD pipeline included. Pending Iron Bull/camera edits preserved; offline camera/roof adapters fixed. Full verifier and builds pass. Next: R15 retargeting, visual/listening QA; forest ambience awaits Roblox approval. See `outputs/github-search-2026-10-26/README.md`.
