@@ -195,6 +195,60 @@ function CampaignTerrain.backdrop(regionId: string, bounds: any): { any }
 	return drawn
 end
 
+-- Rock pillars that carry set pieces standing outside the walkable floor (the Pagoda's corner
+-- towers): {x, z, top, radius} rising from far below, lumped with balls, flat-capped so a model's
+-- base sits on the surface (which renders ~2 studs above a fill's top).
+CampaignTerrain.Pillars = table.freeze({
+	CelestialPagoda = { { -140, -2318, 0, 16 }, { 140, -2318, 0, 16 }, { -140, -2448, 0, 16 }, { 140, -2448, 0, 16 } },
+} :: { [string]: { { number } } })
+
+-- Rock massifs under platforms that would otherwise hang in the void: {x0, x1, z0, z1, top}, filled
+-- from 150 studs down to `top` (kept under the platform's own underside or floor so no walked
+-- surface moves), with weathered lumps along the sides that stay below the top.
+CampaignTerrain.Massifs = table.freeze({
+	CelestialPagoda = {
+		{ -160, 160, -2172, -2252, -33 }, -- under the gorge floor (bottom -32)
+		{ -160, 96, -2252, -2292, -31 }, -- under the forecourt (bottom -30)
+		{ -118, 118, -2292, -2472, -4.5 }, -- Wu's hall plateau under the arena floor (y 0; surface stays below), carrying the hall columns
+		{ -36, 36, -2470, -2540, -31 }, -- under the dawn terrace (bottom -30)
+	},
+} :: { [string]: { { number } } })
+
+function CampaignTerrain.pillars(regionId: string): { any }
+	local t = terrain()
+	local list = CampaignTerrain.Pillars[regionId] or {}
+	local drawn: { any } = {}
+	if not t then
+		return drawn
+	end
+	for i, m in CampaignTerrain.Massifs[regionId] or {} do
+		local x0, x1, z0, z1, top = m[1], m[2], math.min(m[3], m[4]), math.max(m[3], m[4]), m[5]
+		local bottom = top - 150
+		local box = { X = (x0 + x1) / 2, Y = (top + bottom) / 2, Z = (z0 + z1) / 2, SX = x1 - x0, SY = top - bottom, SZ = z1 - z0, Yaw = 0 }
+		t:FillBlock(CFrame.new(box.X, box.Y, box.Z), Vector3.new(box.SX, box.SY, box.SZ), M.Rock)
+		for k = 0, 23 do -- lumps along the long sides, sunk below the top
+			local side = if k % 2 == 0 then -1 else 1
+			local r = 7 + (k * 37 + i * 11) % 6
+			local along = x0 + (x1 - x0) * ((k * 0.618 + i * 0.3) % 1)
+			local zz = if side < 0 then z0 else z1
+			t:FillBall(Vector3.new(along, top - r - 4 - (k % 5) * 9, zz), r, M.Rock)
+		end
+		table.insert(drawn, { X = box.X, Y = box.Y, Z = box.Z, SX = box.SX + 30, SY = box.SY + 10, SZ = box.SZ + 30, Yaw = 0 })
+	end
+	for i, p in list do
+		local x, z, top, r = p[1], p[2], p[3], p[4]
+		local bottom = top - 160
+		t:FillCylinder(CFrame.new(x, (top - 2 + bottom) / 2, z), top - 2 - bottom, r, M.Rock)
+		for k = 1, 9 do -- weathered bulges down the shaft, never above the cap
+			local a = k * 2.4 + i
+			local y = top - 14 - k * 13
+			t:FillBall(Vector3.new(x + math.cos(a) * r * 0.75, y, z + math.sin(a) * r * 0.75), r * (0.5 + 0.06 * (k % 4)), M.Rock)
+		end
+		table.insert(drawn, { X = x, Y = (top + bottom) / 2, Z = z, SX = r * 3.2, SY = top - bottom + 8, SZ = r * 3.2, Yaw = 0 })
+	end
+	return drawn
+end
+
 -- Clears the voxels a convert() drew (CampaignWorld.Destroy / rebuilds).
 function CampaignTerrain.clear(box: any)
 	local t = terrain()

@@ -138,3 +138,15 @@ Pinned commits, Git blob hashes and SHA-256 are in `assets/GITHUB_TERRAIN.json`;
 | AsuraCliff | [TokisanGames/Terrain3D](https://github.com/TokisanGames/Terrain3D) (4,435) | `rock023_*` = ambientCG Rock023 | CC0-1.0; repo MIT |
 | AsuraGravel | [BabylonJS/Babylon.js](https://github.com/BabylonJS/Babylon.js) (26,230) | playground `rockyGround_*` | Apache-2.0 (full text in `assets/github/babylon/license.md`) |
 | AsuraBasalt | [godotengine/godot-demo-projects](https://github.com/godotengine/godot-demo-projects/tree/b761b4cd5718a7118f2c95eb55f181d0a5f004f1/3d/material_testers) (9,709) | material_testers `marble_albedo.png` (normal/roughness derived) | MIT, Copyright (c) 2014-present Godot Engine contributors |
+
+## Han architecture and nature models — 26 October 2026
+
+Pinned sources and hashes: `assets/GITHUB_MODELS.json`; uploaded IDs: `assets/HAN_KITS_UPLOADED.json`.
+`AsuraHanHD` (HanPagodaHD, HanGateHD) is original geometry built by `tools/blender/han_hd.py` from the lobby
+kit and lobby textures, with 0 A.D.'s han_pagoda used only as a proportion reference.
+
+| Pieces | Repository (stars when checked) | Source | License |
+|---|---|---|---|
+| AsuraHanKit Han buildings, walls, towers, bixie, lantern, cauldron | [0ad/0ad](https://github.com/0ad/0ad) (2,827) | `binaries/data/mods/public/art` meshes and Han textures, by Wildfire Games (https://www.wildfiregames.com/) | CC-BY-SA-3.0 (https://creativecommons.org/licenses/by-sa/3.0/); these meshes stay CC BY-SA, crimson player-colour bake is the only change |
+| AsuraHanKit Pine, BoulderLarge, BoulderSmall | [HungryProton/scatter](https://github.com/HungryProton/scatter) (3,017) | demo models and textures (tints from the demo materials) | MIT, Copyright (c) HungryProton |
+| AsuraHanKit CragA/B/C | [TokisanGames/Terrain3D](https://github.com/TokisanGames/Terrain3D/tree/dc9e6a6324f1e242e8e0f5a52fceb3fc57580c55/project/demo/assets/models) (4,435) | demo RockA/B/C, textured with ambientCG Rock023 | MIT, Copyright (c) Tokisan Games |

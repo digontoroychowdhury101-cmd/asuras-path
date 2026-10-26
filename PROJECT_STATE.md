@@ -1,5 +1,9 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## Han architecture kits — 2026-10-26 (Computer A)
+
+Pagoda primitives replaced: uploaded HD pagoda/paifang (original Blender builds, ≤18k tris per part) plus 0 A.D. Han kit (CC BY-SA, credited), MIT pines/rocks. Pagodas stand on terrain pillars; massifs under the gorge, forecourt, hall, terrace; floating roof ring and rafters removed. Verifier green. Next: device FPS, place kits in Bamboo/Citadel. See `outputs/han-kit-2026-10-26/`.
+
 ## Terrain footing pass — 2026-10-26 (Computer A)
 
 Probe found terrain 0.3–3.9 studs above walkways; fixed (insets, deep ground fills, walkway carve, Monastery south clamp). RouteGuide walks clean on Bamboo, Ash, Pagoda, Citadel; stalls identical with terrain off. `studio_mcp.py` now runs on Windows. See `outputs/terrain-reuse-2026-10-26/FOOTING_WALK.md`. Next: human feel, FPS.

@@ -65,6 +65,9 @@ local function build(layout: any): Folder?
 	for _, wall in Ground.backdrop(layout.Region, region.Bounds) do
 		table.insert(terrainBoxes, wall)
 	end
+	for _, pillar in Ground.pillars(layout.Region) do
+		table.insert(terrainBoxes, pillar)
+	end
 	local dressing = Dressings[layout.Region]
 	if dressing then
 		local dressed, err = pcall(dressing.Build, map, layout, Random.new(#layout.Solids * 7919))

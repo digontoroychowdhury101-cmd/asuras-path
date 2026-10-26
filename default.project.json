@@ -704,6 +704,12 @@
       "AsuraBambooKit": {
         "$path": "assets/models/AsuraBambooKit.rbxmx"
       },
+      "AsuraHanHD": {
+        "$path": "assets/models/AsuraHanHD.rbxmx"
+      },
+      "AsuraHanKit": {
+        "$path": "assets/models/AsuraHanKit.rbxmx"
+      },
       "AsuraSanctuaryDetail": {
         "$path": "assets/models/AsuraSanctuaryDetail.rbxmx"
       }

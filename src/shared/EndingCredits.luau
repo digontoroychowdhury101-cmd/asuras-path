@@ -33,6 +33,9 @@ Credits.ThirdParty = table.freeze({
 	{ Work = "Superpowers fantasy sound library", By = "Sparklin Labs / Pixel-boy", License = "CC0-1.0", Source = "https://github.com/sparklinlabs/superpowers-asset-packs" },
 	{ Work = "Grass and cliff terrain (ambientCG Ground037, Rock023)", By = "ambientCG / Terrain3D", License = "CC0-1.0", Source = "https://github.com/TokisanGames/Terrain3D" },
 	{ Work = "Rocky ground terrain", By = "BabylonJS", License = "Apache-2.0", Source = "https://github.com/BabylonJS/Babylon.js" },
+	{ Work = "Han architecture models (0 A.D.)", By = "Wildfire Games", License = "CC-BY-SA-3.0", Source = "https://github.com/0ad/0ad" },
+	{ Work = "Pine and boulder models", By = "HungryProton", License = "MIT", Source = "https://github.com/HungryProton/scatter" },
+	{ Work = "Crag rock models", By = "Tokisan Games", License = "MIT", Source = "https://github.com/TokisanGames/Terrain3D/tree/dc9e6a6324f1e242e8e0f5a52fceb3fc57580c55/project/demo/assets/models" },
 	{ Work = "Basalt terrain (material tester)", By = "Godot Engine contributors", License = "MIT", Source = "https://github.com/godotengine/godot-demo-projects/tree/b761b4cd5718a7118f2c95eb55f181d0a5f004f1/3d/material_testers" },
 } :: { Entry })
 

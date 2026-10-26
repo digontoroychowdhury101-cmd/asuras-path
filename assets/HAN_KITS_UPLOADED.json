@@ -1,0 +1,471 @@
+{
+  "sources": {
+    "AsuraHanHD": "assets/build/han_hd/AsuraHanHD.glb",
+    "AsuraHanKit": "assets/build/han_kit/AsuraHanKit.glb"
+  },
+  "importer": "Studio 3D Importer, Creator: Me",
+  "kits": {
+    "AsuraHanHD": {
+      "HanGateHD": {
+        "HanGateHD_Frame__Bronze": {
+          "MeshId": "rbxassetid://92992113590920",
+          "ColorMap": "rbxassetid://136765325902460",
+          "NormalMap": "rbxassetid://101643978821248",
+          "RoughnessMap": "rbxassetid://88868333208365",
+          "MetalnessMap": "rbxassetid://75877486135323",
+          "TexturePack": "rbxassetid://114488316544648"
+        },
+        "HanGateHD_Frame__Lacquer": {
+          "MeshId": "rbxassetid://112798512056352",
+          "ColorMap": "rbxassetid://92072988514919",
+          "NormalMap": "rbxassetid://85152801833384",
+          "RoughnessMap": "rbxassetid://70749437651476",
+          "MetalnessMap": "rbxassetid://102181115290362",
+          "TexturePack": "rbxassetid://76063490750576"
+        },
+        "HanGateHD_Frame__Stone": {
+          "MeshId": "rbxassetid://83497205981403",
+          "ColorMap": "rbxassetid://136748153335500",
+          "NormalMap": "rbxassetid://128632734041894",
+          "RoughnessMap": "rbxassetid://104781340986427",
+          "MetalnessMap": "rbxassetid://126043948357875",
+          "TexturePack": "rbxassetid://115987261922090"
+        },
+        "HanGateHD_Frame__Timber": {
+          "MeshId": "rbxassetid://98261888396127",
+          "ColorMap": "rbxassetid://137182996021710",
+          "NormalMap": "rbxassetid://90569730751569",
+          "RoughnessMap": "rbxassetid://119568651410358",
+          "MetalnessMap": "rbxassetid://84983933741311",
+          "TexturePack": "rbxassetid://86274736608745"
+        },
+        "HanGateHD_Roofs__Bronze": {
+          "MeshId": "rbxassetid://123983708316321",
+          "ColorMap": "rbxassetid://136765325902460",
+          "NormalMap": "rbxassetid://101643978821248",
+          "RoughnessMap": "rbxassetid://88868333208365",
+          "MetalnessMap": "rbxassetid://75877486135323",
+          "TexturePack": "rbxassetid://114488316544648"
+        },
+        "HanGateHD_Roofs__Roof": {
+          "MeshId": "rbxassetid://129115281236497",
+          "ColorMap": "rbxassetid://91106958589879",
+          "NormalMap": "rbxassetid://85898455644532",
+          "RoughnessMap": "rbxassetid://116068728089285",
+          "MetalnessMap": "rbxassetid://118240936139884",
+          "TexturePack": "rbxassetid://93898114665670"
+        },
+        "HanGateHD_Roofs__Timber": {
+          "MeshId": "rbxassetid://95862426994581",
+          "ColorMap": "rbxassetid://137182996021710",
+          "NormalMap": "rbxassetid://90569730751569",
+          "RoughnessMap": "rbxassetid://119568651410358",
+          "MetalnessMap": "rbxassetid://84983933741311",
+          "TexturePack": "rbxassetid://86274736608745"
+        }
+      },
+      "HanPagodaHD": {
+        "HanPagodaHD_Base__Stone": {
+          "MeshId": "rbxassetid://134152773722201",
+          "ColorMap": "rbxassetid://136748153335500",
+          "NormalMap": "rbxassetid://128632734041894",
+          "RoughnessMap": "rbxassetid://104781340986427",
+          "MetalnessMap": "rbxassetid://126043948357875",
+          "TexturePack": "rbxassetid://115987261922090"
+        },
+        "HanPagodaHD_T3__Timber": {
+          "MeshId": "rbxassetid://125050326295226",
+          "ColorMap": "rbxassetid://137182996021710",
+          "NormalMap": "rbxassetid://90569730751569",
+          "RoughnessMap": "rbxassetid://119568651410358",
+          "MetalnessMap": "rbxassetid://84983933741311",
+          "TexturePack": "rbxassetid://86274736608745"
+        },
+        "HanPagodaHD_Spire__Bronze": {
+          "MeshId": "rbxassetid://110017016883067",
+          "ColorMap": "rbxassetid://136765325902460",
+          "NormalMap": "rbxassetid://101643978821248",
+          "RoughnessMap": "rbxassetid://88868333208365",
+          "MetalnessMap": "rbxassetid://75877486135323",
+          "TexturePack": "rbxassetid://114488316544648"
+        },
+        "HanPagodaHD_T1__Bronze": {
+          "MeshId": "rbxassetid://113906418530048",
+          "ColorMap": "rbxassetid://136765325902460",
+          "NormalMap": "rbxassetid://101643978821248",
+          "RoughnessMap": "rbxassetid://88868333208365",
+          "MetalnessMap": "rbxassetid://75877486135323",
+          "TexturePack": "rbxassetid://114488316544648"
+        },
+        "HanPagodaHD_T1__Lacquer": {
+          "MeshId": "rbxassetid://129962924388323",
+          "ColorMap": "rbxassetid://92072988514919",
+          "NormalMap": "rbxassetid://85152801833384",
+          "RoughnessMap": "rbxassetid://70749437651476",
+          "MetalnessMap": "rbxassetid://102181115290362",
+          "TexturePack": "rbxassetid://76063490750576"
+        },
+        "HanPagodaHD_T1__Roof": {
+          "MeshId": "rbxassetid://77921335101939",
+          "ColorMap": "rbxassetid://91106958589879",
+          "NormalMap": "rbxassetid://85898455644532",
+          "RoughnessMap": "rbxassetid://116068728089285",
+          "MetalnessMap": "rbxassetid://118240936139884",
+          "TexturePack": "rbxassetid://93898114665670"
+        },
+        "HanPagodaHD_T1__Stone": {
+          "MeshId": "rbxassetid://102319180033790",
+          "ColorMap": "rbxassetid://136748153335500",
+          "NormalMap": "rbxassetid://128632734041894",
+          "RoughnessMap": "rbxassetid://104781340986427",
+          "MetalnessMap": "rbxassetid://126043948357875",
+          "TexturePack": "rbxassetid://115987261922090"
+        },
+        "HanPagodaHD_T1__Timber1": {
+          "MeshId": "rbxassetid://108417597746658",
+          "ColorMap": "rbxassetid://137182996021710",
+          "NormalMap": "rbxassetid://90569730751569",
+          "RoughnessMap": "rbxassetid://119568651410358",
+          "MetalnessMap": "rbxassetid://84983933741311",
+          "TexturePack": "rbxassetid://86274736608745"
+        },
+        "HanPagodaHD_T1__Timber2": {
+          "MeshId": "rbxassetid://122826263822968",
+          "ColorMap": "rbxassetid://137182996021710",
+          "NormalMap": "rbxassetid://90569730751569",
+          "RoughnessMap": "rbxassetid://119568651410358",
+          "MetalnessMap": "rbxassetid://84983933741311",
+          "TexturePack": "rbxassetid://86274736608745"
+        },
+        "HanPagodaHD_T2__Bronze": {
+          "MeshId": "rbxassetid://107841008132333",
+          "ColorMap": "rbxassetid://136765325902460",
+          "NormalMap": "rbxassetid://101643978821248",
+          "RoughnessMap": "rbxassetid://88868333208365",
+          "MetalnessMap": "rbxassetid://75877486135323",
+          "TexturePack": "rbxassetid://114488316544648"
+        },
+        "HanPagodaHD_T2__Lacquer": {
+          "MeshId": "rbxassetid://86809554125999",
+          "ColorMap": "rbxassetid://92072988514919",
+          "NormalMap": "rbxassetid://85152801833384",
+          "RoughnessMap": "rbxassetid://70749437651476",
+          "MetalnessMap": "rbxassetid://102181115290362",
+          "TexturePack": "rbxassetid://76063490750576"
+        },
+        "HanPagodaHD_T2__Roof": {
+          "MeshId": "rbxassetid://108646816027224",
+          "ColorMap": "rbxassetid://91106958589879",
+          "NormalMap": "rbxassetid://85898455644532",
+          "RoughnessMap": "rbxassetid://116068728089285",
+          "MetalnessMap": "rbxassetid://118240936139884",
+          "TexturePack": "rbxassetid://93898114665670"
+        },
+        "HanPagodaHD_T2__Timber1": {
+          "MeshId": "rbxassetid://120007358108623",
+          "ColorMap": "rbxassetid://137182996021710",
+          "NormalMap": "rbxassetid://90569730751569",
+          "RoughnessMap": "rbxassetid://119568651410358",
+          "MetalnessMap": "rbxassetid://84983933741311",
+          "TexturePack": "rbxassetid://86274736608745"
+        },
+        "HanPagodaHD_T2__Timber2": {
+          "MeshId": "rbxassetid://79340931481202",
+          "ColorMap": "rbxassetid://137182996021710",
+          "NormalMap": "rbxassetid://90569730751569",
+          "RoughnessMap": "rbxassetid://119568651410358",
+          "MetalnessMap": "rbxassetid://84983933741311",
+          "TexturePack": "rbxassetid://86274736608745"
+        },
+        "HanPagodaHD_T3__Bronze": {
+          "MeshId": "rbxassetid://83148446221754",
+          "ColorMap": "rbxassetid://136765325902460",
+          "NormalMap": "rbxassetid://101643978821248",
+          "RoughnessMap": "rbxassetid://88868333208365",
+          "MetalnessMap": "rbxassetid://75877486135323",
+          "TexturePack": "rbxassetid://114488316544648"
+        },
+        "HanPagodaHD_T3__Lacquer": {
+          "MeshId": "rbxassetid://75899173983088",
+          "ColorMap": "rbxassetid://92072988514919",
+          "NormalMap": "rbxassetid://85152801833384",
+          "RoughnessMap": "rbxassetid://70749437651476",
+          "MetalnessMap": "rbxassetid://102181115290362",
+          "TexturePack": "rbxassetid://76063490750576"
+        },
+        "HanPagodaHD_T3__Roof": {
+          "MeshId": "rbxassetid://88689780448912",
+          "ColorMap": "rbxassetid://91106958589879",
+          "NormalMap": "rbxassetid://85898455644532",
+          "RoughnessMap": "rbxassetid://116068728089285",
+          "MetalnessMap": "rbxassetid://118240936139884",
+          "TexturePack": "rbxassetid://93898114665670"
+        },
+        "HanPagodaHD_T4__Bronze": {
+          "MeshId": "rbxassetid://125109859786316",
+          "ColorMap": "rbxassetid://136765325902460",
+          "NormalMap": "rbxassetid://101643978821248",
+          "RoughnessMap": "rbxassetid://88868333208365",
+          "MetalnessMap": "rbxassetid://75877486135323",
+          "TexturePack": "rbxassetid://114488316544648"
+        },
+        "HanPagodaHD_T4__Lacquer": {
+          "MeshId": "rbxassetid://93323813092457",
+          "ColorMap": "rbxassetid://92072988514919",
+          "NormalMap": "rbxassetid://85152801833384",
+          "RoughnessMap": "rbxassetid://70749437651476",
+          "MetalnessMap": "rbxassetid://102181115290362",
+          "TexturePack": "rbxassetid://76063490750576"
+        },
+        "HanPagodaHD_T4__Roof": {
+          "MeshId": "rbxassetid://113234351890031",
+          "ColorMap": "rbxassetid://91106958589879",
+          "NormalMap": "rbxassetid://85898455644532",
+          "RoughnessMap": "rbxassetid://116068728089285",
+          "MetalnessMap": "rbxassetid://118240936139884",
+          "TexturePack": "rbxassetid://93898114665670"
+        },
+        "HanPagodaHD_T4__Timber": {
+          "MeshId": "rbxassetid://102754014830810",
+          "ColorMap": "rbxassetid://137182996021710",
+          "NormalMap": "rbxassetid://90569730751569",
+          "RoughnessMap": "rbxassetid://119568651410358",
+          "MetalnessMap": "rbxassetid://84983933741311",
+          "TexturePack": "rbxassetid://86274736608745"
+        },
+        "HanPagodaHD_T5__Bronze": {
+          "MeshId": "rbxassetid://98829383336446",
+          "ColorMap": "rbxassetid://136765325902460",
+          "NormalMap": "rbxassetid://101643978821248",
+          "RoughnessMap": "rbxassetid://88868333208365",
+          "MetalnessMap": "rbxassetid://75877486135323",
+          "TexturePack": "rbxassetid://114488316544648"
+        },
+        "HanPagodaHD_T5__Lacquer": {
+          "MeshId": "rbxassetid://83324108631643",
+          "ColorMap": "rbxassetid://92072988514919",
+          "NormalMap": "rbxassetid://85152801833384",
+          "RoughnessMap": "rbxassetid://70749437651476",
+          "MetalnessMap": "rbxassetid://102181115290362",
+          "TexturePack": "rbxassetid://76063490750576"
+        },
+        "HanPagodaHD_T5__Roof": {
+          "MeshId": "rbxassetid://73161843739020",
+          "ColorMap": "rbxassetid://91106958589879",
+          "NormalMap": "rbxassetid://85898455644532",
+          "RoughnessMap": "rbxassetid://116068728089285",
+          "MetalnessMap": "rbxassetid://118240936139884",
+          "TexturePack": "rbxassetid://93898114665670"
+        },
+        "HanPagodaHD_T5__Timber": {
+          "MeshId": "rbxassetid://124466065874062",
+          "ColorMap": "rbxassetid://137182996021710",
+          "NormalMap": "rbxassetid://90569730751569",
+          "RoughnessMap": "rbxassetid://119568651410358",
+          "MetalnessMap": "rbxassetid://84983933741311",
+          "TexturePack": "rbxassetid://86274736608745"
+        }
+      }
+    },
+    "AsuraHanKit": {
+      "HanBixie": {
+        "HanBixie__HanBixie": {
+          "MeshId": "rbxassetid://98663515084540",
+          "ColorMap": "rbxassetid://124565705376844",
+          "NormalMap": "rbxassetid://136178770673806",
+          "RoughnessMap": "rbxassetid://99894413551201",
+          "MetalnessMap": "rbxassetid://103505732538247",
+          "TexturePack": "rbxassetid://70620603525664"
+        }
+      },
+      "HanPagoda": {
+        "HanPagoda__HanStruct": {
+          "MeshId": "rbxassetid://115859989741818",
+          "ColorMap": "rbxassetid://77862470824149",
+          "NormalMap": "rbxassetid://83238762180722",
+          "RoughnessMap": "rbxassetid://127216940044987",
+          "MetalnessMap": "rbxassetid://91619926326118",
+          "TexturePack": "rbxassetid://119522766181437"
+        }
+      },
+      "HanTemple": {
+        "HanTemple__HanStruct": {
+          "MeshId": "rbxassetid://137297646900355",
+          "ColorMap": "rbxassetid://77862470824149",
+          "NormalMap": "rbxassetid://83238762180722",
+          "RoughnessMap": "rbxassetid://127216940044987",
+          "MetalnessMap": "rbxassetid://91619926326118",
+          "TexturePack": "rbxassetid://119522766181437"
+        }
+      },
+      "HanGreatTower": {
+        "HanGreatTower__HanStruct": {
+          "MeshId": "rbxassetid://76558328741968",
+          "ColorMap": "rbxassetid://77862470824149",
+          "NormalMap": "rbxassetid://83238762180722",
+          "RoughnessMap": "rbxassetid://127216940044987",
+          "MetalnessMap": "rbxassetid://91619926326118",
+          "TexturePack": "rbxassetid://119522766181437"
+        }
+      },
+      "CragB": {
+        "CragB__Crag": {
+          "MeshId": "rbxassetid://140700450900041",
+          "ColorMap": "rbxassetid://129881729371111",
+          "NormalMap": "rbxassetid://125164692206798",
+          "RoughnessMap": "rbxassetid://120675287744369",
+          "MetalnessMap": "rbxassetid://118240936139884",
+          "TexturePack": "rbxassetid://82488931548224"
+        }
+      },
+      "HanWallTower": {
+        "HanWallTower__HanStruct": {
+          "MeshId": "rbxassetid://81740687591528",
+          "ColorMap": "rbxassetid://77862470824149",
+          "NormalMap": "rbxassetid://83238762180722",
+          "RoughnessMap": "rbxassetid://127216940044987",
+          "MetalnessMap": "rbxassetid://91619926326118",
+          "TexturePack": "rbxassetid://119522766181437"
+        }
+      },
+      "HanBixiePedestal": {
+        "HanBixiePedestal__HanStruct": {
+          "MeshId": "rbxassetid://108563926798787",
+          "ColorMap": "rbxassetid://77862470824149",
+          "NormalMap": "rbxassetid://83238762180722",
+          "RoughnessMap": "rbxassetid://127216940044987",
+          "MetalnessMap": "rbxassetid://91619926326118",
+          "TexturePack": "rbxassetid://119522766181437"
+        }
+      },
+      "CragA": {
+        "CragA__Crag": {
+          "MeshId": "rbxassetid://110939704894454",
+          "ColorMap": "rbxassetid://129881729371111",
+          "NormalMap": "rbxassetid://125164692206798",
+          "RoughnessMap": "rbxassetid://120675287744369",
+          "MetalnessMap": "rbxassetid://118240936139884",
+          "TexturePack": "rbxassetid://82488931548224"
+        }
+      },
+      "CragC": {
+        "CragC__Crag": {
+          "MeshId": "rbxassetid://103452322924424",
+          "ColorMap": "rbxassetid://129881729371111",
+          "NormalMap": "rbxassetid://125164692206798",
+          "RoughnessMap": "rbxassetid://120675287744369",
+          "MetalnessMap": "rbxassetid://118240936139884",
+          "TexturePack": "rbxassetid://82488931548224"
+        }
+      },
+      "Pine": {
+        "Pine__PineBark": {
+          "MeshId": "rbxassetid://104263359109770",
+          "ColorMap": "rbxassetid://101308083685325",
+          "NormalMap": "rbxassetid://116302612443750",
+          "RoughnessMap": "rbxassetid://111849095964707",
+          "MetalnessMap": "rbxassetid://103796952067298",
+          "TexturePack": "rbxassetid://140254494270302"
+        },
+        "Pine__PineNeedles": {
+          "MeshId": "rbxassetid://72176860261470",
+          "ColorMap": "rbxassetid://126124010214118",
+          "NormalMap": "rbxassetid://125706891628206",
+          "RoughnessMap": "rbxassetid://89194177650930",
+          "MetalnessMap": "rbxassetid://123363364406755",
+          "TexturePack": "rbxassetid://124178717096420"
+        }
+      },
+      "HanLantern": {
+        "HanLantern__HanLantern": {
+          "MeshId": "rbxassetid://82621407656083",
+          "ColorMap": "rbxassetid://105032287505328",
+          "NormalMap": "rbxassetid://123274340469393",
+          "RoughnessMap": "rbxassetid://118669000990309",
+          "MetalnessMap": "rbxassetid://72745386265429",
+          "TexturePack": "rbxassetid://96468779358689"
+        }
+      },
+      "BoulderSmall": {
+        "BoulderSmall__ScatterRock": {
+          "MeshId": "rbxassetid://92680686510100",
+          "ColorMap": "rbxassetid://88869500477424",
+          "NormalMap": "rbxassetid://113003747264853",
+          "RoughnessMap": "rbxassetid://104799255463643",
+          "MetalnessMap": "rbxassetid://121078201937253",
+          "TexturePack": "rbxassetid://120408604194449"
+        }
+      },
+      "HanCauldron": {
+        "HanCauldron__HanCauldron": {
+          "MeshId": "rbxassetid://106071752004364",
+          "ColorMap": "rbxassetid://71205405130275",
+          "NormalMap": "rbxassetid://92768036586558",
+          "RoughnessMap": "rbxassetid://99089326926301",
+          "MetalnessMap": "rbxassetid://101226156184110",
+          "TexturePack": "rbxassetid://88728071632112"
+        }
+      },
+      "HanWallGate": {
+        "HanWallGate__HanStruct": {
+          "MeshId": "rbxassetid://126832424192561",
+          "ColorMap": "rbxassetid://77862470824149",
+          "NormalMap": "rbxassetid://83238762180722",
+          "RoughnessMap": "rbxassetid://127216940044987",
+          "MetalnessMap": "rbxassetid://91619926326118",
+          "TexturePack": "rbxassetid://119522766181437"
+        }
+      },
+      "HanHouse": {
+        "HanHouse__HanStruct": {
+          "MeshId": "rbxassetid://96682271816023",
+          "ColorMap": "rbxassetid://77862470824149",
+          "NormalMap": "rbxassetid://83238762180722",
+          "RoughnessMap": "rbxassetid://127216940044987",
+          "MetalnessMap": "rbxassetid://91619926326118",
+          "TexturePack": "rbxassetid://119522766181437"
+        }
+      },
+      "HanWallLong": {
+        "HanWallLong__HanStruct": {
+          "MeshId": "rbxassetid://135731684038196",
+          "ColorMap": "rbxassetid://77862470824149",
+          "NormalMap": "rbxassetid://83238762180722",
+          "RoughnessMap": "rbxassetid://127216940044987",
+          "MetalnessMap": "rbxassetid://91619926326118",
+          "TexturePack": "rbxassetid://119522766181437"
+        }
+      },
+      "BoulderLarge": {
+        "BoulderLarge__ScatterRock": {
+          "MeshId": "rbxassetid://123208215348145",
+          "ColorMap": "rbxassetid://88869500477424",
+          "NormalMap": "rbxassetid://113003747264853",
+          "RoughnessMap": "rbxassetid://104799255463643",
+          "MetalnessMap": "rbxassetid://121078201937253",
+          "TexturePack": "rbxassetid://120408604194449"
+        }
+      },
+      "HanDefenseTower": {
+        "HanDefenseTower__HanStruct": {
+          "MeshId": "rbxassetid://126676372197412",
+          "ColorMap": "rbxassetid://77862470824149",
+          "NormalMap": "rbxassetid://83238762180722",
+          "RoughnessMap": "rbxassetid://127216940044987",
+          "MetalnessMap": "rbxassetid://91619926326118",
+          "TexturePack": "rbxassetid://119522766181437"
+        }
+      },
+      "HanShrine": {
+        "HanShrine__HanStruct": {
+          "MeshId": "rbxassetid://80949924478521",
+          "ColorMap": "rbxassetid://77862470824149",
+          "NormalMap": "rbxassetid://83238762180722",
+          "RoughnessMap": "rbxassetid://127216940044987",
+          "MetalnessMap": "rbxassetid://91619926326118",
+          "TexturePack": "rbxassetid://119522766181437"
+        }
+      }
+    }
+  }
+}

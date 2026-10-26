@@ -1,0 +1,384 @@
+{
+  "checked_date": "2026-10-26",
+  "purpose": "AsuraHanKit: East Asian architecture and nature props for the campaign regions",
+  "repositories": {
+    "0ad/0ad": {
+      "stars": 2827,
+      "license": "art CC-BY-SA-3.0 (Wildfire Games); code GPL-2.0+"
+    },
+    "HungryProton/scatter": {
+      "stars": 3017,
+      "license": "MIT"
+    },
+    "TokisanGames/Terrain3D": {
+      "stars": 4435,
+      "license": "MIT"
+    }
+  },
+  "safety": "Only .dae (COLLADA XML), .glb, .png/.jpg and license text are fetched by pinned blob hash; nothing is executed.",
+  "files": [
+    {
+      "repository": "0ad/0ad",
+      "commit": "61a3b9507d974084e6badb88a0826bd89a6d5b8b",
+      "path": "binaries/data/mods/public/art/meshes/structural/han_pagoda.dae",
+      "file": "assets/github/0ad/han_pagoda.dae",
+      "blob_sha": "cc7597869f5c4ef7fae68ef18646fa6f829681bc",
+      "license": "CC-BY-SA-3.0 (Wildfire Games)",
+      "kind": "model-source",
+      "sha256": "bc06bea65978d013f285e82425d6e593f5af2a03d098788707ae54b97b272185",
+      "bytes": 200400
+    },
+    {
+      "repository": "0ad/0ad",
+      "commit": "61a3b9507d974084e6badb88a0826bd89a6d5b8b",
+      "path": "binaries/data/mods/public/art/meshes/structural/han_temple.dae",
+      "file": "assets/github/0ad/han_temple.dae",
+      "blob_sha": "6179e9e8d157eacf02b46800547f3ab3ab29aa54",
+      "license": "CC-BY-SA-3.0 (Wildfire Games)",
+      "kind": "model-source",
+      "sha256": "0b564c611ce6cfee35787125807bc4eb7564c233cc697a64743a0ba53e7756e5",
+      "bytes": 538123
+    },
+    {
+      "repository": "0ad/0ad",
+      "commit": "61a3b9507d974084e6badb88a0826bd89a6d5b8b",
+      "path": "binaries/data/mods/public/art/meshes/structural/han_shrine.dae",
+      "file": "assets/github/0ad/han_shrine.dae",
+      "blob_sha": "a69e298545ed13ad1865ffdc115b5737bf14eafc",
+      "license": "CC-BY-SA-3.0 (Wildfire Games)",
+      "kind": "model-source",
+      "sha256": "788a38ef9f138835d4c3f7fa11243d26bf80d5efa6a8fa7837b488f810769bb6",
+      "bytes": 264361
+    },
+    {
+      "repository": "0ad/0ad",
+      "commit": "61a3b9507d974084e6badb88a0826bd89a6d5b8b",
+      "path": "binaries/data/mods/public/art/meshes/structural/han_great_tower.dae",
+      "file": "assets/github/0ad/han_great_tower.dae",
+      "blob_sha": "fb62cb69ec70cb3bb2a30d06ffd488b40be6a6b6",
+      "license": "CC-BY-SA-3.0 (Wildfire Games)",
+      "kind": "model-source",
+      "sha256": "ebcfad44ac424caff37521c56c7c504a599cb8281ce86bc80e2302ef6b3f293b",
+      "bytes": 714796
+    },
+    {
+      "repository": "0ad/0ad",
+      "commit": "61a3b9507d974084e6badb88a0826bd89a6d5b8b",
+      "path": "binaries/data/mods/public/art/meshes/structural/han_defense_tower.dae",
+      "file": "assets/github/0ad/han_defense_tower.dae",
+      "blob_sha": "c1ffee14432111d4342320e2e3ef4553ab1bb56c",
+      "license": "CC-BY-SA-3.0 (Wildfire Games)",
+      "kind": "model-source",
+      "sha256": "5c27465122b098474aaffd11bb30f1f04569d6218ce12d6b98336c2c3de0d737",
+      "bytes": 481412
+    },
+    {
+      "repository": "0ad/0ad",
+      "commit": "61a3b9507d974084e6badb88a0826bd89a6d5b8b",
+      "path": "binaries/data/mods/public/art/meshes/structural/han_wall_gate.dae",
+      "file": "assets/github/0ad/han_wall_gate.dae",
+      "blob_sha": "cc5efecdf45709d869e2b21367cddf9c4a7b98ff",
+      "license": "CC-BY-SA-3.0 (Wildfire Games)",
+      "kind": "model-source",
+      "sha256": "6ac5eec45ef6d3b6d5d06257ec92a0d981b297874cee365ec18c87a4c6425a03",
+      "bytes": 21065
+    },
+    {
+      "repository": "0ad/0ad",
+      "commit": "61a3b9507d974084e6badb88a0826bd89a6d5b8b",
+      "path": "binaries/data/mods/public/art/meshes/structural/han_wall_tower.dae",
+      "file": "assets/github/0ad/han_wall_tower.dae",
+      "blob_sha": "c6b08f0b6c6d366518efd533b3c71aab86ec1534",
+      "license": "CC-BY-SA-3.0 (Wildfire Games)",
+      "kind": "model-source",
+      "sha256": "643278b035b1eec0ce867cb3c2a3d6593cff1228735ff1af20f1080e7c133cad",
+      "bytes": 343953
+    },
+    {
+      "repository": "0ad/0ad",
+      "commit": "61a3b9507d974084e6badb88a0826bd89a6d5b8b",
+      "path": "binaries/data/mods/public/art/meshes/structural/han_wall_long.dae",
+      "file": "assets/github/0ad/han_wall_long.dae",
+      "blob_sha": "54d46d9668f110777d088e0312426dcb01658a67",
+      "license": "CC-BY-SA-3.0 (Wildfire Games)",
+      "kind": "model-source",
+      "sha256": "e5ade24c4c892ef1dabfb7568f60d7d38bdf21e4546647a77d59c106823b11b2",
+      "bytes": 279682
+    },
+    {
+      "repository": "0ad/0ad",
+      "commit": "61a3b9507d974084e6badb88a0826bd89a6d5b8b",
+      "path": "binaries/data/mods/public/art/meshes/structural/han_bixie.dae",
+      "file": "assets/github/0ad/han_bixie.dae",
+      "blob_sha": "e5ad8bf340b35f1e11cfdf450c93e8a33fb461c5",
+      "license": "CC-BY-SA-3.0 (Wildfire Games)",
+      "kind": "model-source",
+      "sha256": "c5597799f0a7696ed20f617040780de2279a1a222ef25288a30e465df7ca6df7",
+      "bytes": 199291
+    },
+    {
+      "repository": "0ad/0ad",
+      "commit": "61a3b9507d974084e6badb88a0826bd89a6d5b8b",
+      "path": "binaries/data/mods/public/art/meshes/structural/han_bixie_pedestal.dae",
+      "file": "assets/github/0ad/han_bixie_pedestal.dae",
+      "blob_sha": "cbc41b8b5f0f655cda540c822f432bc72b0f06a4",
+      "license": "CC-BY-SA-3.0 (Wildfire Games)",
+      "kind": "model-source",
+      "sha256": "fae3465d16d73a9c93f02e32e96a6bc193846b80e34b27b37db07aef5f1d0ab6",
+      "bytes": 35511
+    },
+    {
+      "repository": "0ad/0ad",
+      "commit": "61a3b9507d974084e6badb88a0826bd89a6d5b8b",
+      "path": "binaries/data/mods/public/art/meshes/structural/han_temple_lantern.dae",
+      "file": "assets/github/0ad/han_temple_lantern.dae",
+      "blob_sha": "8556316a84fb2918887cfd8fb1c5d3c0d6817933",
+      "license": "CC-BY-SA-3.0 (Wildfire Games)",
+      "kind": "model-source",
+      "sha256": "37923533d9fb53e8bc68ba26bb0a936f02ebb115f443748db9a1e20cad9f7ed4",
+      "bytes": 28828
+    },
+    {
+      "repository": "0ad/0ad",
+      "commit": "61a3b9507d974084e6badb88a0826bd89a6d5b8b",
+      "path": "binaries/data/mods/public/art/meshes/structural/han_temple_cauldron.dae",
+      "file": "assets/github/0ad/han_temple_cauldron.dae",
+      "blob_sha": "d58116e0dd01d7215c79e5035d7526d79c75a655",
+      "license": "CC-BY-SA-3.0 (Wildfire Games)",
+      "kind": "model-source",
+      "sha256": "ddae2c2800bf400b78970da969f8f103ec641599a8aeb00666cad099bf318c8b",
+      "bytes": 61959
+    },
+    {
+      "repository": "0ad/0ad",
+      "commit": "61a3b9507d974084e6badb88a0826bd89a6d5b8b",
+      "path": "binaries/data/mods/public/art/meshes/structural/han_house_a.dae",
+      "file": "assets/github/0ad/han_house_a.dae",
+      "blob_sha": "a40e59244e5a8ab346f0821044d9f0705d70e9c4",
+      "license": "CC-BY-SA-3.0 (Wildfire Games)",
+      "kind": "model-source",
+      "sha256": "15b31caf4cb4415c7bd7a285e497a526a297b4f23064de0bd25f7f22e8119e4c",
+      "bytes": 195210
+    },
+    {
+      "repository": "0ad/0ad",
+      "commit": "61a3b9507d974084e6badb88a0826bd89a6d5b8b",
+      "path": "binaries/data/mods/public/art/textures/skins/structural/han_struct_02.png",
+      "file": "assets/github/0ad/han_struct_02.png",
+      "blob_sha": "5af91f43b3ea9fc73ebeda6f1517b98df0d3a57a",
+      "license": "CC-BY-SA-3.0 (Wildfire Games)",
+      "kind": "model-texture",
+      "sha256": "ea99d9f7752559732d9a45ceda8eaf170d9cc795dee2ffcb4567f4f378506c76",
+      "bytes": 4081111
+    },
+    {
+      "repository": "0ad/0ad",
+      "commit": "61a3b9507d974084e6badb88a0826bd89a6d5b8b",
+      "path": "binaries/data/mods/public/art/textures/skins/structural/han_struct_02_norm.png",
+      "file": "assets/github/0ad/han_struct_02_norm.png",
+      "blob_sha": "da34e9b356b8e572eb0255e01d7bad13b6b59511",
+      "license": "CC-BY-SA-3.0 (Wildfire Games)",
+      "kind": "model-texture",
+      "sha256": "6ddaaa6c84bd99864b437e162f391ea3163c758881d7a27741c6575382b2e81a",
+      "bytes": 4393812
+    },
+    {
+      "repository": "0ad/0ad",
+      "commit": "61a3b9507d974084e6badb88a0826bd89a6d5b8b",
+      "path": "binaries/data/mods/public/art/textures/skins/structural/han_struct_02_spec.png",
+      "file": "assets/github/0ad/han_struct_02_spec.png",
+      "blob_sha": "caed296683a35d4fd31fb87cca755bea568b817b",
+      "license": "CC-BY-SA-3.0 (Wildfire Games)",
+      "kind": "model-texture",
+      "sha256": "ad919e39c864a3db78f91d419997b5decf1a2dae06feebf0967badf1e065087b",
+      "bytes": 1333893
+    },
+    {
+      "repository": "0ad/0ad",
+      "commit": "61a3b9507d974084e6badb88a0826bd89a6d5b8b",
+      "path": "binaries/data/mods/public/art/textures/skins/structural/han_bixie_gold.png",
+      "file": "assets/github/0ad/han_bixie_gold.png",
+      "blob_sha": "ce52345b4fdfd022a6de89c9cfa85ad5efa9d151",
+      "license": "CC-BY-SA-3.0 (Wildfire Games)",
+      "kind": "model-texture",
+      "sha256": "8e75b502db76c53b1d4858661acac3009115b605c8d7f01e3b594db01869cabd",
+      "bytes": 389929
+    },
+    {
+      "repository": "0ad/0ad",
+      "commit": "61a3b9507d974084e6badb88a0826bd89a6d5b8b",
+      "path": "binaries/data/mods/public/art/textures/skins/structural/han_bixie_norm.png",
+      "file": "assets/github/0ad/han_bixie_norm.png",
+      "blob_sha": "071f1a6eec81c3851b532ce0c31a3c3bdc761d82",
+      "license": "CC-BY-SA-3.0 (Wildfire Games)",
+      "kind": "model-texture",
+      "sha256": "1ee95aeb13e9a18867bb354f11110cb94e4efdea03f317588507e13c620cb6db",
+      "bytes": 965638
+    },
+    {
+      "repository": "0ad/0ad",
+      "commit": "61a3b9507d974084e6badb88a0826bd89a6d5b8b",
+      "path": "binaries/data/mods/public/art/textures/skins/structural/han_bixie_gold_spec.png",
+      "file": "assets/github/0ad/han_bixie_gold_spec.png",
+      "blob_sha": "84d25cfc79c98fb4c7b1ad84923d9322a684836c",
+      "license": "CC-BY-SA-3.0 (Wildfire Games)",
+      "kind": "model-texture",
+      "sha256": "c75c09b6911191eb921bdab04d1586da54f78b0cc7ebe0f5b6e9e81608674417",
+      "bytes": 191433
+    },
+    {
+      "repository": "0ad/0ad",
+      "commit": "61a3b9507d974084e6badb88a0826bd89a6d5b8b",
+      "path": "binaries/data/mods/public/art/textures/skins/structural/han_temple_lantern.png",
+      "file": "assets/github/0ad/han_temple_lantern.png",
+      "blob_sha": "80a1e2e25fe442282a4259299ecee6a3cb7fee76",
+      "license": "CC-BY-SA-3.0 (Wildfire Games)",
+      "kind": "model-texture",
+      "sha256": "44d64893ad62c3aafa40c2f09a422302f9d4f5f860a2d635da337b42772269b4",
+      "bytes": 86780
+    },
+    {
+      "repository": "0ad/0ad",
+      "commit": "61a3b9507d974084e6badb88a0826bd89a6d5b8b",
+      "path": "binaries/data/mods/public/art/textures/skins/structural/han_temple_cauldron.png",
+      "file": "assets/github/0ad/han_temple_cauldron.png",
+      "blob_sha": "e1fcae821317f1df96284a723f865647f24eedc1",
+      "license": "CC-BY-SA-3.0 (Wildfire Games)",
+      "kind": "model-texture",
+      "sha256": "5b5bef8d69b7be3c5e5828cb1b19f1661d38851cfaf2a6b9009332727dabd125",
+      "bytes": 12277
+    },
+    {
+      "repository": "0ad/0ad",
+      "commit": "61a3b9507d974084e6badb88a0826bd89a6d5b8b",
+      "path": "binaries/data/mods/public/art/LICENSE.txt",
+      "file": "assets/github/0ad/LICENSE-art.txt",
+      "blob_sha": "2fcf9977cd8169322ab3983388d2d9ae675d167f",
+      "license": "license",
+      "kind": "license",
+      "sha256": "ef98babd771c206032e005f3d440a1e610df409d9a9191f03e64deaa4abefbd9",
+      "bytes": 1426
+    },
+    {
+      "repository": "0ad/0ad",
+      "commit": "61a3b9507d974084e6badb88a0826bd89a6d5b8b",
+      "path": "LICENSE.txt",
+      "file": "assets/github/0ad/LICENSE-repo.txt",
+      "blob_sha": "a9c00015bfd51ef8fa5b95e501d246ffd16ec876",
+      "license": "license",
+      "kind": "license",
+      "sha256": "cb9eb5e8768328e8086b0d17bd1b95f07b51bc9ab74fa1b509ee09c7894b2f53",
+      "bytes": 3049
+    },
+    {
+      "repository": "HungryProton/scatter",
+      "commit": "7198cc00078ebde61307578137c3f35223c6e438",
+      "path": "addons/proton_scatter/demos/assets/models/pine_tree.glb",
+      "file": "assets/github/scatter/pine_tree.glb",
+      "blob_sha": "2081573e8775a2390a6c1ab5e6e60ed985fa5b9b",
+      "license": "MIT",
+      "kind": "model-source",
+      "sha256": "84172bc0ba8ac6c0417fae6e1e1146ae752fcb0e512acf9c2bdc22e9f1a84584",
+      "bytes": 133988
+    },
+    {
+      "repository": "HungryProton/scatter",
+      "commit": "7198cc00078ebde61307578137c3f35223c6e438",
+      "path": "addons/proton_scatter/demos/assets/models/large_rock.glb",
+      "file": "assets/github/scatter/large_rock.glb",
+      "blob_sha": "e88cd6c015286c07e462b8e5bbb48916dcbbf568",
+      "license": "MIT",
+      "kind": "model-source",
+      "sha256": "2b7eff55c4c0b8cac878232eb3afb1937cbabd6816c14bd484798614ce2dbca6",
+      "bytes": 11876
+    },
+    {
+      "repository": "HungryProton/scatter",
+      "commit": "7198cc00078ebde61307578137c3f35223c6e438",
+      "path": "addons/proton_scatter/demos/assets/models/small_rock.glb",
+      "file": "assets/github/scatter/small_rock.glb",
+      "blob_sha": "f30897f8b1219bec555ed881cce7dac0c383296d",
+      "license": "MIT",
+      "kind": "model-source",
+      "sha256": "83b3f49f4e31060269cd6eb7ae01120dde964be398cacbd4cd832bb14090766a",
+      "bytes": 11012
+    },
+    {
+      "repository": "HungryProton/scatter",
+      "commit": "7198cc00078ebde61307578137c3f35223c6e438",
+      "path": "addons/proton_scatter/demos/assets/textures/t_pine_branch.png",
+      "file": "assets/github/scatter/t_pine_branch.png",
+      "blob_sha": "26ea314487ecb4c54bc280749aafa08c153ec288",
+      "license": "MIT",
+      "kind": "model-source",
+      "sha256": "ffa8b55087af0286b069f161a8f320e54466c4fe5eb55beb930293f40bad6e8b",
+      "bytes": 122575
+    },
+    {
+      "repository": "HungryProton/scatter",
+      "commit": "7198cc00078ebde61307578137c3f35223c6e438",
+      "path": "addons/proton_scatter/demos/assets/textures/t_tree_bark.png",
+      "file": "assets/github/scatter/t_tree_bark.png",
+      "blob_sha": "73529aa3b284106db2a491768c0d2929c15056c4",
+      "license": "MIT",
+      "kind": "model-source",
+      "sha256": "56affaec0710a934ce079c363d2c00dec39916012c72b74e363758d3db5f14ef",
+      "bytes": 126421
+    },
+    {
+      "repository": "HungryProton/scatter",
+      "commit": "7198cc00078ebde61307578137c3f35223c6e438",
+      "path": "addons/proton_scatter/demos/assets/textures/t_rock.jpg",
+      "file": "assets/github/scatter/t_rock.jpg",
+      "blob_sha": "d709604c4d787ccbcf258ff40c0002e33f63de04",
+      "license": "MIT",
+      "kind": "model-source",
+      "sha256": "e6b091e8749fabc17219232a2231ad5bf1f7fcb2c345dc34b177d600d95df1d2",
+      "bytes": 353150
+    },
+    {
+      "repository": "HungryProton/scatter",
+      "commit": "7198cc00078ebde61307578137c3f35223c6e438",
+      "path": "LICENSE.md",
+      "file": "assets/github/scatter/LICENSE.md",
+      "blob_sha": "6a989062fdb3dadb480c9dd5b6e2ba351e91df99",
+      "license": "license",
+      "kind": "license",
+      "sha256": "07bb1f4511f17211b977c534e46f1b9948091d8ece6082b57caaad32cd56c7d6",
+      "bytes": 1065
+    },
+    {
+      "repository": "TokisanGames/Terrain3D",
+      "commit": "dc9e6a6324f1e242e8e0f5a52fceb3fc57580c55",
+      "path": "project/demo/assets/models/RockA.glb",
+      "file": "assets/github/terrain3d/RockA.glb",
+      "blob_sha": "7ee3b6eb82a654ffcf79072f28878138661ab455",
+      "license": "MIT",
+      "kind": "model-source",
+      "sha256": "215fa6380049a8b4959c959ac9c2760ffa1353493dbdd022ad761054c06a6dbe",
+      "bytes": 8544
+    },
+    {
+      "repository": "TokisanGames/Terrain3D",
+      "commit": "dc9e6a6324f1e242e8e0f5a52fceb3fc57580c55",
+      "path": "project/demo/assets/models/RockB.glb",
+      "file": "assets/github/terrain3d/RockB.glb",
+      "blob_sha": "79c695eb68b88c0b869ad200e7ea85f87b6cdf7e",
+      "license": "MIT",
+      "kind": "model-source",
+      "sha256": "53a673e3c49fb0b214c93a35e4c838c24133d089b837aa57922f18ffca2e7514",
+      "bytes": 9628
+    },
+    {
+      "repository": "TokisanGames/Terrain3D",
+      "commit": "dc9e6a6324f1e242e8e0f5a52fceb3fc57580c55",
+      "path": "project/demo/assets/models/RockC.glb",
+      "file": "assets/github/terrain3d/RockC.glb",
+      "blob_sha": "8d87cfde243f1b8d1cc758904dc1374f32b8382b",
+      "license": "MIT",
+      "kind": "model-source",
+      "sha256": "12c975b16ec6a355f3224ea4e182536bf446fdb956c4c49d84967d6782a3c5ec",
+      "bytes": 8344
+    }
+  ]
+}

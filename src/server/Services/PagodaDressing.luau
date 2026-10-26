@@ -1,8 +1,8 @@
 --!strict
 -- ModuleScript: ServerScriptService/AsurasPath/Services/PagodaDressing
--- Celestial Pagoda silhouettes and storytelling (batch 20). All decor: four corner towers with
--- stacked curved eaves around Wu's open hall (their roofs start above the arena's air space), the
--- torn upper roof ring, criss-cross rafters over the lotus gorge, a lotus pool and drifting mist in
+-- Celestial Pagoda silhouettes and storytelling (batch 20). All decor: four uploaded high-detail
+-- pagodas on rock pillars around Wu's open hall, the paifang at the cloud stair, bixie guardians,
+-- temple lanterns, pines and crags (AsuraHanHD / AsuraHanKit), a lotus pool and drifting mist in
 -- the gorge, prayer banners from the gallery, the empty throne's canopy and the hall's great bell.
 -- Collision lives in CelestialPagodaLayout.
 local Kit = require(script.Parent:WaitForChild("MonasteryKit") :: ModuleScript)
@@ -27,23 +27,53 @@ end
 
 function Dressing.Build(map: Instance, _layout: any, rng: Random)
 	local set = Kit.folder("PagodaDressing", map)
-	-- Corner towers and the torn roof ring above the hall (clear of its 86-stud air space).
-	for _, c in { { -114, -2296 }, { 114, -2296 }, { -114, -2466 }, { 114, -2466 } } do
-		tower(set, c[1], c[2], 3)
-	end
-	for k = 0, 15 do
-		if k % 5 ~= 2 then -- broken bays
-			local a = math.rad(k * 22.5)
-			Kit.part(set, "RoofRing", Vector3.new(38, 1.2, 10), CFrame.new(math.cos(a) * 100, 96 + (k % 3), -2380 + math.sin(a) * 100)
-				* CFrame.Angles(0, -a + math.pi / 2, math.rad(12)), P.Roof, M.Slate, Kit.decor())
+	-- Corner pagodas (AsuraHanHD) on the rock pillars CampaignTerrain raises outside the hall frame;
+	-- the primitive towers remain only as the fallback when the kit is missing.
+	for _, c in { { -140, -2318 }, { 140, -2318 }, { -140, -2448 }, { 140, -2448 } } do
+		local facing = CFrame.Angles(0, if c[1] < 0 then math.rad(90) else math.rad(-90), 0)
+		if not Decor.han(set, "AsuraHanHD", "HanPagodaHD", CFrame.new(c[1], 0, c[2]) * facing, 0.75) then
+			tower(set, c[1] * 114 / 140, c[2], 3)
 		end
 	end
-	-- Rafters over the gorge: dark beams at two heights, criss-crossed.
-	for k = 0, 6 do
-		local z = -2180 - k * 11
-		Kit.beam(set, "OverRafter", Vector3.new(-150, 14 + (k % 2) * 6, z), Vector3.new(150, 14 + (k % 2) * 6, z - 8), 1.4, P.WoodDark, M.Wood)
+	-- Hall columns and gate towers keep their layout boxes as invisible colliders under real models:
+	-- lobby-kit lacquer columns with bases and bracket sets, and Han watchtowers at the forecourt.
+	local structure = map:FindFirstChild("Structure")
+	for _, box in if structure then structure:GetChildren() else {} do
+		if not box:IsA("BasePart") then
+			continue
+		end
+		local foot = CFrame.new(box.Position.X, box.Position.Y - box.Size.Y / 2, box.Position.Z)
+		local dressed = false
+		if box.Name == "HallColumn" then
+			dressed = Decor.han(set, "AsuraLobbyKit", "Column_Lacquer", foot, box.Size.Y / 10) ~= nil
+			if dressed then
+				Decor.han(set, "AsuraLobbyKit", "Column_Base", foot, 2)
+				Decor.han(set, "AsuraLobbyKit", "Bracket_Set", foot + Vector3.new(0, box.Size.Y, 0), 1.3)
+			end
+		elseif box.Name == "GateTower" then
+			dressed = Decor.han(set, "AsuraHanKit", "HanDefenseTower", foot * CFrame.Angles(0, math.pi, 0), box.Size.Y / 31) ~= nil
+		end
+		if dressed then
+			box.Transparency, box.CastShadow = 1, false
+		end
 	end
-	Kit.beam(set, "OverRafter", Vector3.new(-150, 24, -2176), Vector3.new(150, 18, -2248), 1.6, P.WoodDark, M.Wood)
+	-- The paifang over the head of the cloud stair: the region's threshold.
+	Decor.han(set, "AsuraHanHD", "HanGateHD", CFrame.new(0, 0, -2124), 2)
+	-- Forecourt guardians and lanterns (AsuraHanKit), clear of the walk to Wu's gate.
+	for _, side in { -1, 1 } do
+		Decor.han(set, "AsuraHanKit", "HanBixie", CFrame.new(side * 44, 0, -2284) * CFrame.Angles(0, math.rad(side * 90), 0), 1.6)
+		Decor.han(set, "AsuraHanKit", "HanLantern", CFrame.new(side * 30, 0, -2262), 1.4)
+	end
+	-- Pines and crags along the cliff tops either side of the cloud stair.
+	for _ = 1, 14 do
+		local side = if rng:NextNumber() < 0.5 then -1 else 1
+		local x, z = side * rng:NextNumber(24, 146), rng:NextNumber(-2126, -2160)
+		Decor.han(set, "AsuraHanKit", "Pine", CFrame.new(x, 0, z) * CFrame.Angles(0, rng:NextNumber(0, 2 * math.pi), 0), rng:NextNumber(4.5, 7))
+	end
+	for _, c in { { -150, -2130 }, { 150, -2140 }, { -96, -2166 }, { 110, -2166 } } do
+		Decor.han(set, "AsuraHanKit", ({ "CragA", "CragB", "CragC" })[rng:NextInteger(1, 3)],
+			CFrame.new(c[1], -2, c[2]) * CFrame.Angles(0, rng:NextNumber(0, 2 * math.pi), 0), rng:NextNumber(1.6, 2.4))
+	end
 	-- Lotus pool on the gorge floor (top -26) and mist pooling under the galleries.
 	Kit.part(set, "LotusPool", Vector3.new(60, 0.1, 30), CFrame.new(70, -25.94, -2214), rgb(40, 74, 82), M.Glass, Kit.decor())
 	for _ = 1, 22 do
@@ -63,6 +93,9 @@ function Dressing.Build(map: Instance, _layout: any, rng: Random)
 	Kit.part(set, "ThroneCushion", Vector3.new(5, 0.6, 3), CFrame.new(-140, 20.3, -2279.5), GOLD, M.Fabric, Kit.decor())
 	-- The hall's great bell, hung beside the fog gate.
 	Kit.part(set, "BellFrame", Vector3.new(12, 1, 1), CFrame.new(60, 16, -2276), P.WoodDark, M.Wood, Kit.decor())
+	for _, x in { 54.5, 65.5 } do
+		Kit.part(set, "BellPost", Vector3.new(1, 16, 1), CFrame.new(x, 8, -2276), P.Lacquer, M.Wood, Kit.decor())
+	end
 	local bell = Kit.part(set, "GreatBell", Vector3.new(6, 8, 6), CFrame.new(60, 11, -2276), rgb(112, 91, 57), M.Metal, Kit.decor())
 	bell.Shape = Enum.PartType.Cylinder
 	bell.CFrame = bell.CFrame * CFrame.Angles(0, 0, math.rad(90))

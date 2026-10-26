@@ -75,6 +75,28 @@ function Decor.placeKit(parent: Instance, model: Model, kind: string, base: CFra
 	model.Parent = parent
 end
 
+-- Uploaded Han architecture (ServerStorage.AsuraHanHD from tools/blender/han_hd.py, AsuraHanKit from
+-- tools/blender/han_kit.py): a clone of `piece` scaled by `scale` with its base centre at `base`.
+-- Decor only (no collision, queries or touches). Nil when the kit or piece is missing.
+function Decor.han(parent: Instance, kit: string, piece: string, base: CFrame, scale: number?): Model?
+	local library = game:GetService("ServerStorage"):FindFirstChild(kit)
+	local template = library and library:FindFirstChild(piece)
+	if not template or not template:IsA("Model") then
+		return nil
+	end
+	local model = template:Clone()
+	model:ScaleTo(scale or 1)
+	model:PivotTo(base)
+	for _, d in model:GetDescendants() do
+		if d:IsA("BasePart") then
+			d.Anchored, d.CanCollide, d.CanQuery, d.CanTouch = true, false, false, false
+			d:SetAttribute("AsuraDecorative", true)
+		end
+	end
+	model.Parent = parent
+	return model
+end
+
 -- One bamboo stalk with its leaf sprays; decor, so groves never trap bodies or cameras.
 function Decor.bamboo(parent: Instance, x: number, floor: number, z: number, rng: Random)
 	local height = rng:NextNumber(26, 44)
