@@ -1,5 +1,9 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## Campaign terrain from GitHub — 2026-10-26 (Computer A)
+
+Four PBR terrain variants (Terrain3D, Babylon.js, Godot demos; all >1,000★) uploaded. Natural campaign boxes now render as smooth Terrain over invisible colliders; ridged valley walls frame Bamboo, Ash, Pagoda, Citadel; parts use lobby PBR. Verifier green; Studio screenshots in `outputs/terrain-reuse-2026-10-26/`. Next: human walk of all regions, FPS check.
+
 ## Post-F26 step 6 (D1): Iron Bull maul and shield — 2026-10-26 (Computer B)
 
 Bull uses boss-only IronBullMaul (6 moves, registry stays 12); arcs and records match spec in seeded Studio fights; back punish lands. Toast yields to perilous banner; crane fixes north-edge squeeze; Rafters roof fades. Mastery unchanged. Digest 1556498119. Next: Bull clips, Windows human feel. See `outputs/post-f26-step6-2026-10-26/`.

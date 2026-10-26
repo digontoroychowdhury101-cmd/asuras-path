@@ -453,6 +453,9 @@
           "CampaignWorld": {
             "$path": "src/server/Services/CampaignWorld.luau"
           },
+          "CampaignTerrain": {
+            "$path": "src/server/Services/CampaignTerrain.luau"
+          },
           "CampaignBounds": {
             "$path": "src/server/Services/CampaignBounds.luau"
           },
@@ -1106,6 +1109,46 @@
           "NormalMapContent": "rbxassetid://94752161531324",
           "RoughnessMapContent": "rbxassetid://73989184937039",
           "MetalnessMapContent": "rbxassetid://99148132922819"
+        }
+      },
+      "AsuraGrass": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "LeafyGrass",
+          "StudsPerTile": 14,
+          "ColorMapContent": "rbxassetid://128338658336777",
+          "NormalMapContent": "rbxassetid://76500188535913",
+          "RoughnessMapContent": "rbxassetid://129085797627128"
+        }
+      },
+      "AsuraCliff": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "Rock",
+          "StudsPerTile": 28,
+          "ColorMapContent": "rbxassetid://109301918063840",
+          "NormalMapContent": "rbxassetid://138671984924984",
+          "RoughnessMapContent": "rbxassetid://108295420863717"
+        }
+      },
+      "AsuraBasalt": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "Basalt",
+          "StudsPerTile": 18,
+          "ColorMapContent": "rbxassetid://76383713659031",
+          "NormalMapContent": "rbxassetid://92400830591080",
+          "RoughnessMapContent": "rbxassetid://92426428241266"
+        }
+      },
+      "AsuraGravel": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "Ground",
+          "StudsPerTile": 12,
+          "ColorMapContent": "rbxassetid://129792741117215",
+          "NormalMapContent": "rbxassetid://105491792597410",
+          "RoughnessMapContent": "rbxassetid://119305204978209"
         }
       }
     }

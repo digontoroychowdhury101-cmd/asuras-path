@@ -126,3 +126,15 @@ The offline mesh pipeline uses MIT glTF Transform (Don McCurdy) and meshoptimize
 full notices are under `tools/assets/mesh_pipeline/licenses/`. It produces new copies of the existing
 project-owned guardian-lion model. No third-party lion geometry is introduced. The generated LOD is
 a preparation artifact, not an uploaded production replacement.
+
+## Campaign terrain materials — 26 October 2026
+
+Pinned commits, Git blob hashes and SHA-256 are in `assets/GITHUB_TERRAIN.json`; Roblox IDs in
+`assets/GITHUB_TERRAIN_UPLOADED.json`. Maps prepared by `tools/assets/prepare_github_terrain.py`.
+
+| Variant | Repository (stars when checked) | Source file(s) | License |
+|---|---|---|---|
+| AsuraGrass | [TokisanGames/Terrain3D](https://github.com/TokisanGames/Terrain3D) (4,435) | `ground037_*` = ambientCG Ground037 | CC0-1.0 (asset_licenses.txt); repo MIT |
+| AsuraCliff | [TokisanGames/Terrain3D](https://github.com/TokisanGames/Terrain3D) (4,435) | `rock023_*` = ambientCG Rock023 | CC0-1.0; repo MIT |
+| AsuraGravel | [BabylonJS/Babylon.js](https://github.com/BabylonJS/Babylon.js) (26,230) | playground `rockyGround_*` | Apache-2.0 (full text in `assets/github/babylon/license.md`) |
+| AsuraBasalt | [godotengine/godot-demo-projects](https://github.com/godotengine/godot-demo-projects/tree/b761b4cd5718a7118f2c95eb55f181d0a5f004f1/3d/material_testers) (9,709) | material_testers `marble_albedo.png` (normal/roughness derived) | MIT, Copyright (c) 2014-present Godot Engine contributors |

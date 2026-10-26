@@ -1,0 +1,35 @@
+{
+  "uploaded_date": "2026-10-26",
+  "creator_user_id": "3148600636",
+  "source_manifest": "assets/GITHUB_TERRAIN.json",
+  "Variants": {
+    "AsuraGrass": {
+      "BaseMaterial": "LeafyGrass",
+      "StudsPerTile": 14,
+      "ColorMap": "rbxassetid://128338658336777",
+      "NormalMap": "rbxassetid://76500188535913",
+      "RoughnessMap": "rbxassetid://129085797627128"
+    },
+    "AsuraCliff": {
+      "BaseMaterial": "Rock",
+      "StudsPerTile": 28,
+      "ColorMap": "rbxassetid://109301918063840",
+      "NormalMap": "rbxassetid://138671984924984",
+      "RoughnessMap": "rbxassetid://108295420863717"
+    },
+    "AsuraBasalt": {
+      "BaseMaterial": "Basalt",
+      "StudsPerTile": 18,
+      "ColorMap": "rbxassetid://76383713659031",
+      "NormalMap": "rbxassetid://92400830591080",
+      "RoughnessMap": "rbxassetid://92426428241266"
+    },
+    "AsuraGravel": {
+      "BaseMaterial": "Ground",
+      "StudsPerTile": 12,
+      "ColorMap": "rbxassetid://129792741117215",
+      "NormalMap": "rbxassetid://105491792597410",
+      "RoughnessMap": "rbxassetid://119305204978209"
+    }
+  }
+}

@@ -31,6 +31,9 @@ Credits.ThirdParty = table.freeze({
 	{ Work = "Heavy physical impact", By = "FFeller", License = "CC0-1.0", Source = "https://github.com/godotengine/godot-demo-projects/blob/b761b4cd5718a7118f2c95eb55f181d0a5f004f1/3d/ragdoll_physics/sounds/impact_big.LICENSE.md" },
 	{ Work = "Light physical impact", By = "dorian.mastin", License = "CC0-1.0", Source = "https://github.com/godotengine/godot-demo-projects/blob/b761b4cd5718a7118f2c95eb55f181d0a5f004f1/3d/ragdoll_physics/sounds/impact_small.LICENSE.md" },
 	{ Work = "Superpowers fantasy sound library", By = "Sparklin Labs / Pixel-boy", License = "CC0-1.0", Source = "https://github.com/sparklinlabs/superpowers-asset-packs" },
+	{ Work = "Grass and cliff terrain (ambientCG Ground037, Rock023)", By = "ambientCG / Terrain3D", License = "CC0-1.0", Source = "https://github.com/TokisanGames/Terrain3D" },
+	{ Work = "Rocky ground terrain", By = "BabylonJS", License = "Apache-2.0", Source = "https://github.com/BabylonJS/Babylon.js" },
+	{ Work = "Basalt terrain (material tester)", By = "Godot Engine contributors", License = "MIT", Source = "https://github.com/godotengine/godot-demo-projects/tree/b761b4cd5718a7118f2c95eb55f181d0a5f004f1/3d/material_testers" },
 } :: { Entry })
 
 -- Made for the project, in the record's own words (each phrase appears in CREDITS.md).

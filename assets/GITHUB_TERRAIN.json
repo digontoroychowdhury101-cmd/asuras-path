@@ -1,0 +1,141 @@
+{
+  "checked_date": "2026-10-26",
+  "purpose": "PBR MaterialVariants for campaign-region ground (Bamboo Pass, Ash Colosseum, Sunken Crypt, Celestial Pagoda, Sky Citadel)",
+  "repositories": {
+    "TokisanGames/Terrain3D": {
+      "stars": 4435,
+      "license": "MIT; demo textures CC0 ambientCG"
+    },
+    "godotengine/godot-demo-projects": {
+      "stars": 9709,
+      "license": "MIT"
+    },
+    "BabylonJS/Babylon.js": {
+      "stars": 26230,
+      "license": "Apache-2.0"
+    }
+  },
+  "files": [
+    {
+      "repository": "TokisanGames/Terrain3D",
+      "commit": "dc9e6a6324f1e242e8e0f5a52fceb3fc57580c55",
+      "path": "project/demo/assets/textures/ground037_alb_ht.png",
+      "file": "assets/github/terrain3d/ground037_alb_ht.png",
+      "blob_sha": "d7628fa35c0121a36c15d738c0e87a5c4607328d",
+      "license": "CC0-1.0 (ambientCG, per asset_licenses.txt)",
+      "kind": "terrain-texture",
+      "sha256": "dd93b05e107b15ebd3b94075cb31068a12e490a1fa5e58df3c9cbd54dc33e492",
+      "bytes": 3339714
+    },
+    {
+      "repository": "TokisanGames/Terrain3D",
+      "commit": "dc9e6a6324f1e242e8e0f5a52fceb3fc57580c55",
+      "path": "project/demo/assets/textures/ground037_nrm_rgh.png",
+      "file": "assets/github/terrain3d/ground037_nrm_rgh.png",
+      "blob_sha": "82053505ed09c48adadf76f1e61f5c1c0aa75520",
+      "license": "CC0-1.0 (ambientCG, per asset_licenses.txt)",
+      "kind": "terrain-texture",
+      "sha256": "cd91f17498306bfe6c1fb3be65ab1468c4d197deffff6fc55d660afccbbb5ee3",
+      "bytes": 3425588
+    },
+    {
+      "repository": "TokisanGames/Terrain3D",
+      "commit": "dc9e6a6324f1e242e8e0f5a52fceb3fc57580c55",
+      "path": "project/demo/assets/textures/rock023_alb_ht.png",
+      "file": "assets/github/terrain3d/rock023_alb_ht.png",
+      "blob_sha": "b80135ccd8e8990161fcbc1c61506736f485be40",
+      "license": "CC0-1.0 (ambientCG, per asset_licenses.txt)",
+      "kind": "terrain-texture",
+      "sha256": "ad598379cd27e113e78c869b743a77f8d8b442824dbf3fc43dcc03925bb91832",
+      "bytes": 2691666
+    },
+    {
+      "repository": "TokisanGames/Terrain3D",
+      "commit": "dc9e6a6324f1e242e8e0f5a52fceb3fc57580c55",
+      "path": "project/demo/assets/textures/rock023_nrm_rgh.png",
+      "file": "assets/github/terrain3d/rock023_nrm_rgh.png",
+      "blob_sha": "5c2ed7a8c22ee9e885f6880e2a2212391c1d1fce",
+      "license": "CC0-1.0 (ambientCG, per asset_licenses.txt)",
+      "kind": "terrain-texture",
+      "sha256": "e9a0e4175d6cf569f85143b740c91b860c409b3c7203c0aad410314b3d3ab5ff",
+      "bytes": 2575727
+    },
+    {
+      "repository": "TokisanGames/Terrain3D",
+      "commit": "dc9e6a6324f1e242e8e0f5a52fceb3fc57580c55",
+      "path": "project/demo/assets/textures/asset_licenses.txt",
+      "file": "assets/github/terrain3d/asset_licenses.txt",
+      "blob_sha": "bcab6b6cbf10ee2613ae03eafabb1f3a68903507",
+      "license": "license evidence",
+      "kind": "license",
+      "sha256": "5a24184afdb8452ffd44c475ec7cf1ce0f754624cc326ece239273ba12483f8f",
+      "bytes": 263
+    },
+    {
+      "repository": "TokisanGames/Terrain3D",
+      "commit": "dc9e6a6324f1e242e8e0f5a52fceb3fc57580c55",
+      "path": "LICENSE.txt",
+      "file": "assets/github/terrain3d/LICENSE.txt",
+      "blob_sha": "2168226f8fc78d41180e63bd7eae0890538b6def",
+      "license": "MIT",
+      "kind": "license",
+      "sha256": "f7ecc09ce65c97828130728072c5a6ed3cc185d3bf0436e51a15828ad9ceca7c",
+      "bytes": 1112
+    },
+    {
+      "repository": "godotengine/godot-demo-projects",
+      "commit": "b761b4cd5718a7118f2c95eb55f181d0a5f004f1",
+      "path": "3d/material_testers/test_materials/marble_albedo.png",
+      "file": "assets/github/godot/material_testers/marble_albedo.png",
+      "blob_sha": "aeba458d79b0181f46a732ee4f802efa9e4982fd",
+      "license": "MIT (godot-demo-projects LICENSE.md)",
+      "kind": "terrain-texture",
+      "sha256": "ead20d29a62650b1bf3d5fd7be0f41825cd0dd8b493bcfb7c3d235132b385765",
+      "bytes": 1546905
+    },
+    {
+      "repository": "BabylonJS/Babylon.js",
+      "commit": "832d181120e10dd4ff5ffd8c5572fca3335c0ca2",
+      "path": "packages/tools/playground/public/textures/rockyGround_basecolor.png",
+      "file": "assets/github/babylon/rockyGround_basecolor.png",
+      "blob_sha": "5930788f52de7b4da9868c0b133e85352fb83028",
+      "license": "Apache-2.0 (Babylon.js repository license)",
+      "kind": "terrain-texture",
+      "sha256": "e0f9375b366c3bd3375581a329af36fe70ded07ffee8e1156aa6a210c16f486b",
+      "bytes": 1819556
+    },
+    {
+      "repository": "BabylonJS/Babylon.js",
+      "commit": "832d181120e10dd4ff5ffd8c5572fca3335c0ca2",
+      "path": "packages/tools/playground/public/textures/rockyGround_normal.png",
+      "file": "assets/github/babylon/rockyGround_normal.png",
+      "blob_sha": "725f581fe9d27f0dcf36ee70151f293dcdb79160",
+      "license": "Apache-2.0 (Babylon.js repository license)",
+      "kind": "terrain-texture",
+      "sha256": "66fccd4db45e00fcc713907208b42aa9b64f4f26db35e9b5251b36756558b7a1",
+      "bytes": 2488211
+    },
+    {
+      "repository": "BabylonJS/Babylon.js",
+      "commit": "832d181120e10dd4ff5ffd8c5572fca3335c0ca2",
+      "path": "packages/tools/playground/public/textures/rockyGround_metalRough.png",
+      "file": "assets/github/babylon/rockyGround_metalRough.png",
+      "blob_sha": "aa445568b7490eff8b01f8db1b12962428b3c2b5",
+      "license": "Apache-2.0 (Babylon.js repository license)",
+      "kind": "terrain-texture",
+      "sha256": "9c92d4710faa18a7e0f547ba0ac7a312732087656b079d9548062f1df09674e8",
+      "bytes": 625737
+    },
+    {
+      "repository": "BabylonJS/Babylon.js",
+      "commit": "832d181120e10dd4ff5ffd8c5572fca3335c0ca2",
+      "path": "license.md",
+      "file": "assets/github/babylon/license.md",
+      "blob_sha": "7853ac1b7b32819fb9b2182d65649e3f7d488566",
+      "license": "license",
+      "kind": "license",
+      "sha256": "9362ea9ea17cb221a20cbbd63f404710834cc273d2a9a7b60314fd68ab702cd6",
+      "bytes": 9226
+    }
+  ]
+}

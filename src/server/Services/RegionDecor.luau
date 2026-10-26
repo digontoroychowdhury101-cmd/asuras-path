@@ -21,6 +21,16 @@ Decor.Style = table.freeze({
 	Bone = { M.Limestone, rgb(206, 196, 170) }, Water = { M.Glass, rgb(40, 74, 82) }, Tile = { M.Slate, rgb(86, 82, 80) },
 })
 
+-- PBR MaterialVariants shared with the lobby (and the GitHub terrain set); Color tints the colour
+-- map, so these replace the flat Style tint. Kinds absent here keep their plain material.
+Decor.Variant = table.freeze({
+	Path = { "AsuraPaving", rgb(139, 153, 167) }, Stone = { "AsuraStone", rgb(148, 158, 170) },
+	Crypt = { "AsuraStone", rgb(100, 112, 126) }, Tile = { "AsuraPaving", rgb(167, 177, 187) },
+	Timber = { "AsuraTimber", rgb(255, 255, 255) }, Lacquer = { "AsuraLacquer", rgb(255, 255, 255) },
+	Grass = { "AsuraGrass", rgb(255, 255, 255) }, Rock = { "AsuraCliff", rgb(226, 222, 216) },
+	Ash = { "AsuraGravel", rgb(120, 116, 114) }, Basalt = { "AsuraBasalt", rgb(255, 255, 255) },
+})
+
 -- One layout box as a part. Veils collide but are invisible to eyes, cameras and queries.
 function Decor.solid(parent: Instance, b: any): BasePart
 	local cf = CFrame.new(b.X, b.Y, b.Z) * CFrame.Angles(0, math.rad(b.Yaw), 0)
@@ -31,6 +41,10 @@ function Decor.solid(parent: Instance, b: any): BasePart
 	local p = Kit.part(parent, b.Name, Vector3.new(b.SX, b.SY, b.SZ), cf, style[2], style[1])
 	if b.Kind == "Water" then
 		p.Transparency, p.Reflectance = 0.15, 0.3
+	end
+	local variant = Decor.Variant[b.Kind]
+	if variant then
+		p.MaterialVariant, p.Color = variant[1], variant[2]
 	end
 	return p
 end

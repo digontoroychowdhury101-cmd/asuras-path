@@ -88,10 +88,8 @@ end
 
 function Terrain.Build(rng: Random)
 	local t = Workspace.Terrain
-	t:SetMaterialColor(Enum.Material.Ground, Color3.fromRGB(58, 50, 44))
+	-- Ground, LeafyGrass and Rock carry PBR overrides; CampaignTerrain owns their tints.
 	t:SetMaterialColor(Enum.Material.Mud, Color3.fromRGB(46, 38, 34))
-	t:SetMaterialColor(Enum.Material.LeafyGrass, Color3.fromRGB(70, 68, 46))
-	t:SetMaterialColor(Enum.Material.Rock, Color3.fromRGB(62, 62, 64))
 	t:SetMaterialColor(Enum.Material.Slate, Color3.fromRGB(52, 54, 56))
 	local sz = BOUNDS.Size.Z + MARGIN * 2
 	floor(t, -Terrain.VALLEY_HALF, Terrain.VALLEY_HALF, CENTER.Z + sz * 0.5, CENTER.Z - sz * 0.5)

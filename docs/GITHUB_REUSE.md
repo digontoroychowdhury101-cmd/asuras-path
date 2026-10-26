@@ -82,3 +82,10 @@ the terrain voxel surface, listening quality, frame rate or human play.
 
 
 Expanded search: see `outputs/github-search-2026-10-26/README.md`, `repositories.csv` and `assets/GITHUB_RESEARCH.json` for 149 candidates, 135 above the requested star threshold, and the source/compatibility decisions.
+
+## Campaign terrain — 26 October 2026
+
+Terrain3D (4,435★, CC0 ambientCG grass/cliff), Babylon.js (26,230★, Apache-2.0 rocky ground) and
+godot-demo-projects (9,709★, MIT breccia) now supply four terrain MaterialVariants. `CampaignTerrain`
+draws natural campaign boxes as smooth Terrain over invisible colliders and adds noise valley walls
+outside each region. Details and screenshots: `outputs/terrain-reuse-2026-10-26/README.md`.
