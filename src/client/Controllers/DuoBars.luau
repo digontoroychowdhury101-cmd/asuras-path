@@ -26,6 +26,15 @@ function Duo.new(frame: Frame, gui: ScreenGui): View
 	return { Frame = frame, Gui = gui, Root = root, Hint = hint, Rows = {} }
 end
 
+-- Where a centre banner goes while a strip is up: just under the strip and its lock hint, else nil
+-- (post-F26 Step 4: "PERILOUS - DEFLECT" was drawn across both Twins' health bars).
+function Duo.below(gui: ScreenGui): UDim2?
+	local hint = gui.Parent and gui.Parent:FindFirstChild("DuoHint", true)
+	if not (hint and hint:IsA("GuiObject") and hint.Visible) then return nil end
+	local below = hint.AbsolutePosition.Y + hint.AbsoluteSize.Y + 22 - gui.AbsolutePosition.Y -- clear of the toast below; guis may differ by the inset
+	return UDim2.new(0.5, 0, 0, math.max(below, gui.AbsoluteSize.Y * 0.34))
+end
+
 local function setReplaced(view: View, visible: boolean)
 	for _, name in Duo.Replaced do
 		local child = view.Frame:FindFirstChild(name)

@@ -13,6 +13,7 @@ local Types=require("../src/shared/BossTypes")
 local AttackCatalog=require("../src/shared/BossAttackCatalog")
 local Bodies=require("../src/shared/BossBodies")
 local HandoffRules=require("../src/shared/BossHandoff")
+local Weapons=require("../src/simulation/WeaponSchema")
 local checks=0
 local function check(value:any, label:string) assert(value,label); checks+=1 end
 local V:any={}
@@ -57,7 +58,7 @@ local function actor(id:number,x:number,y:number,z:number):any
  local e:any={Id=id,Root=root,Model=model,Fighter=Combat.new(id,"Jian",0),Kind=if id>0 then "Player" else "Enemy",Humanoid={HipHeight=2}}
  actors[id]=e;return e
 end
-local registry:any={World=World,Types=Types,Rules=Rules,Combat=Combat,Characters=Characters,Bodies=Bodies,HandoffRules=HandoffRules}
+local registry:any={World=World,Types=Types,Rules=Rules,Combat=Combat,Characters=Characters,Bodies=Bodies,HandoffRules=HandoffRules,Weapons=Weapons}
 '''
 MODULES = ["BossMotion", "BossHazards", "EncounterHandoff", "BossAttackService", "BossTactics", "BossDuo"]
 chunks = [HEADER]
@@ -168,6 +169,30 @@ source.Fighter.State="Idle";now=53
 Tactics.step(-1,World.Bosses.SlumberingTitan,1,1,allowed,now)
 check(source.Humanoid.HipHeight==6.577 and source.Model:GetAttribute("AsuraVisceralTarget")=="Ankles","titan rises to its own standing height")
 Tactics.reset(-1)
+-- Post-F26 Step 4: the Twins never have two perilous attacks pending at once (Studio: Zhao's thrust and
+-- the Bull's charge landed in the same frame after the entry hold); the Bull's lands a lead after Zhao's.
+local zhao=actor(-20,0,3,0);local bull=actor(-21,8,3,0)
+zhao.Model:SetAttribute("AsuraEncounter","TwinSentinels");bull.Model:SetAttribute("AsuraEncounter","TwinSentinels")
+zhao.Model.Attributes.__scale=1.2;bull.Model.Attributes.__scale=1.7
+player.Fighter=Combat.new(1,"Jian",0);player.Root.Position=vec(4,3,6)
+local twins=World.Bosses.TwinSentinels
+local bullBoss=table.clone(twins);bullBoss.Phases={table.clone(twins.Phases[1])};bullBoss.Phases[1].Attacks=twins.Partner.Attacks
+now=60;Tactics.hold(-20,now);Tactics.hold(-21,now)
+check(Tactics.step(-20,twins,1,1,allowed,now),"Zhao opens with his perilous")
+check(not Tactics.step(-21,bullBoss,1,1,allowed,now),"the Bull holds while Zhao's is pending")
+local zhaoLast=Scheduler.lastImpact(-20)
+check(zhaoLast~=nil and zhaoLast>=now+0.8,"Zhao's last pulse is known")
+local bullStart=nil
+while now<70 and not bullStart do
+ now+=1/60
+ Tactics.step(-20,twins,1,1,allowed,now)
+ Tactics.step(-21,bullBoss,1,1,allowed,now)
+ if Scheduler.lastImpact(-21) then bullStart=now end
+end
+check(bullStart~=nil,"the Bull's perilous follows")
+local bullImpact=Scheduler.lastImpact(-21)
+check(bullImpact and zhaoLast and bullImpact>=zhaoLast+Rules.DuoPerilousGap-1e-6,"the Bull's lands at least the readable lead after Zhao's last pulse")
+Tactics.reset(-20);Tactics.reset(-21);actors[-20]=nil;actors[-21]=nil
 print(string.format("Boss runtime: %d checks passed",checks))
 ''')
 hud_source = (ROOT / "src/client/Controllers/BossHud.luau").read_text()

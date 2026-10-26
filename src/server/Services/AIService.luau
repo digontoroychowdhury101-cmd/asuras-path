@@ -17,6 +17,8 @@ local Characters = require(script.Parent:WaitForChild("CharacterService") :: Mod
 local BossTactics = require(script.Parent.BossTactics)
 local BossDuo = require(script.Parent.BossDuo)
 local BossAppearance = require(script.Parent.BossAppearance)
+local BossMotion = require(script.Parent.BossMotion)
+local BossRules = require(Shared.Shared.BossEncounterRules)
 local Handoff = require(script.Parent.EncounterHandoff)
 local HandoffRules = require(Shared.Shared.BossHandoff)
 local Bodies = require(Shared.Shared.BossBodies)
@@ -389,6 +391,17 @@ local function decide(agent: Agent, self: Entity, target: Entity, now: number)
 	if distance > reach * 0.95 then
 		closeIn(agent, self, target, reach)
 		return
+	end
+	-- A Twin left on top of the player or its partner (after a lunge) steps back out to its flank
+	-- point before the next swing (BossRules.crowded, post-F26 Step 4).
+	local partner = if agent.Boss and f.State == "Idle" and agent.Pending == nil then BossMotion.partner(self) else nil
+	if partner then
+		local flatTo = flat(target.Root.Position - self.Root.Position).Magnitude
+		local toPartner = flat(partner.Root.Position - self.Root.Position).Magnitude
+		if BossRules.crowded(flatTo, reach * 0.6, toPartner, BossMotion.duoGap(self, partner)) then
+			closeIn(agent, self, target, reach)
+			return
+		end
 	end
 
 	if f.Stamina < profile.RetreatStamina and agent.Rng:NextNumber() < 0.3 then

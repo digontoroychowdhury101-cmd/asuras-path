@@ -81,9 +81,15 @@ local function bridge(parent: Instance, rng: Random)
 				if k < math.floor(length / 4) then
 					Kit.part(group, "Rail", Vector3.new(0.6, 0.6, 4), CFrame.new(side * (b.Half - 0.45), G + 2.9, z - 2), P.StoneDark, Enum.Material.Slate)
 				end
-			elseif rng:NextNumber() < 0.6 then
-				Kit.part(group, "FallenRail", Vector3.new(0.6, 0.6, 3.6), CFrame.new(side * (b.Half - 1.6), G + 0.3, z - 1) *
-					CFrame.Angles(0, math.rad(rng:NextNumber(-30, 30)), 0), P.StoneDark, Enum.Material.Slate, Kit.decor())
+			else
+				-- Post-F26 Step 5: the broken bays still stop bodies. Studio: a deflect-recoiled swordsman
+				-- left the deck through the west gap and stood under the bridge in Engage, out of reach.
+				Kit.part(group, "RailGap", Vector3.new(0.6, 4, 4), CFrame.new(side * (b.Half - 0.45), G + 2, z - 2), P.StoneDark, Enum.Material.Slate,
+					{ Transparency = 1, Query = false, Shadow = false })
+				if rng:NextNumber() < 0.6 then
+					Kit.part(group, "FallenRail", Vector3.new(0.6, 0.6, 3.6), CFrame.new(side * (b.Half - 1.6), G + 0.3, z - 1) *
+						CFrame.Angles(0, math.rad(rng:NextNumber(-30, 30)), 0), P.StoneDark, Enum.Material.Slate, Kit.decor())
+				end
 			end
 		end
 	end

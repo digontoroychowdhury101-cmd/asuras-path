@@ -2,6 +2,7 @@
 local Characters = require(script.Parent.CharacterService)
 local World = require(game:GetService("ReplicatedStorage").AsurasPath.Shared.WorldDefinitions)
 local Bodies = require(game:GetService("ReplicatedStorage").AsurasPath.Shared.BossBodies)
+local Weapons = require(game:GetService("ReplicatedStorage").AsurasPath.Simulation.WeaponSchema)
 local Motion = {}
 type Flight = { From: Vector3, To: Vector3, Start: number, Impact: number, Height: number, Kind: string, Perch: Vector3, Anchored: boolean, Clear: number }
 local flights: { [number]: Flight } = {}
@@ -42,10 +43,33 @@ local function bodyStop(e: any): number
 	local hull = if boss then (Bodies.Hulls :: any)[boss.Archetype] else nil
 	return (if hull then math.max(hull[1], hull[3]) * 0.5 else 1) * e.Model:GetScale() + 2
 end
+-- The living partner of a Twin (same encounter, another enemy body), and the spacing two bodies keep.
+function Motion.partner(e: any): any?
+	local encounter = e.Model:GetAttribute("AsuraEncounter")
+	if type(encounter) ~= "string" then return nil end
+	for _, other in Characters.Entities() do
+		if other ~= e and other.Kind == "Enemy" and other.Fighter.State ~= "KO" and other.Model:GetAttribute("AsuraEncounter") == encounter then
+			return other
+		end
+	end
+	return nil
+end
+function Motion.duoGap(a: any, b: any): number
+	return 2.5 * (a.Model:GetScale() + b.Model:GetScale())
+end
 function Motion.approach(id: number, kind: string, aim: Vector3): Vector3
 	local e = Characters.GetEntity(id)
 	if not e or (kind ~= "Lunge" and kind ~= "Aerial") then return aim end
-	local x, z = Bodies.closeIn(e.Root.Position.X, e.Root.Position.Z, aim.X, aim.Z, bodyStop(e))
+	local at = e.Root.Position
+	local x, z = Bodies.closeIn(at.X, at.Z, aim.X, aim.Z, bodyStop(e))
+	-- A Twin's lunge ends on its engage point (the AI's closeIn stop), clear of its partner (post-F26
+	-- Step 4: both ended 3 studs apart on the player). Hits still use the marked origin and aim.
+	local partner = Motion.partner(e)
+	if partner then
+		local o = partner.Root.Position
+		local stop = math.max(bodyStop(e), Weapons.get(e.Fighter.Weapon).Light[1].Reach * 0.6)
+		x, z = Bodies.flank(at.X, at.Z, aim.X, aim.Z, stop, o.X, o.Z, Motion.duoGap(e, partner))
+	end
 	return Vector3.new(x, aim.Y, z)
 end
 function Motion.begin(id: number, kind: string, destination: Vector3, now: number, impact: number)

@@ -2215,6 +2215,18 @@ end
 function Rules.enrage(alive: number, alreadyEnraged: boolean): boolean
 	return alive == 1 and not alreadyEnraged
 end
+-- Twin Sentinels (post-F26 Step 4). Studio: after their lunges both Twins stood 3-4 studs from the
+-- player and 3 from each other, and the opening landed Zhao's thrust and the Bull's charge in the same
+-- frame with two different counters. A Twin crowding the player or its partner re-spaces before its
+-- next swing; only one Twin's perilous attack is pending at a time, so one counter is asked at once.
+Rules.DuoCrowd = 0.7 -- fraction of the engage stop / partner gap below which a Twin steps back out
+Rules.DuoPerilousGap = 0.9 -- seconds after the partner's last perilous impact (= BossHandoff.Lead)
+function Rules.crowded(toTarget: number, stop: number, toPartner: number?, gap: number): boolean
+	return toTarget &lt; stop * Rules.DuoCrowd or (toPartner ~= nil and toPartner &lt; gap * Rules.DuoCrowd)
+end
+function Rules.perilousClear(impact: number, partnerLast: number?): boolean
+	return partnerLast == nil or impact &gt;= partnerLast + Rules.DuoPerilousGap - 1e-9
+end
 function Rules.lifecycle(living: number, defeated: boolean, entityPresent: boolean): string
 	if defeated then return "Victory" end
 	if living == 0 or not entityPresent then return "Reset" end
@@ -11416,6 +11428,8 @@ local Characters = require(script.Parent:WaitForChild("CharacterService") :: Mod
 local BossTactics = require(script.Parent.BossTactics)
 local BossDuo = require(script.Parent.BossDuo)
 local BossAppearance = require(script.Parent.BossAppearance)
+local BossMotion = require(script.Parent.BossMotion)
+local BossRules = require(Shared.Shared.BossEncounterRules)
 local Handoff = require(script.Parent.EncounterHandoff)
 local HandoffRules = require(Shared.Shared.BossHandoff)
 local Bodies = require(Shared.Shared.BossBodies)
@@ -11788,6 +11802,17 @@ local function decide(agent: Agent, self: Entity, target: Entity, now: number)
 	if distance &gt; reach * 0.95 then
 		closeIn(agent, self, target, reach)
 		return
+	end
+	-- A Twin left on top of the player or its partner (after a lunge) steps back out to its flank
+	-- point before the next swing (BossRules.crowded, post-F26 Step 4).
+	local partner = if agent.Boss and f.State == "Idle" and agent.Pending == nil then BossMotion.partner(self) else nil
+	if partner then
+		local flatTo = flat(target.Root.Position - self.Root.Position).Magnitude
+		local toPartner = flat(partner.Root.Position - self.Root.Position).Magnitude
+		if BossRules.crowded(flatTo, reach * 0.6, toPartner, BossMotion.duoGap(self, partner)) then
+			closeIn(agent, self, target, reach)
+			return
+		end
 	end
 
 	if f.Stamina &lt; profile.RetreatStamina and agent.Rng:NextNumber() &lt; 0.3 then
@@ -12936,6 +12961,12 @@ function Service.start(id: number, attack: Types.Attack, target: number, allowed
 		radius = attack.Radius, ox = origin.X, oz = origin.Z, x = aim.X, y = 0, z = aim.Z, duration = attack.Duration, element = attack.Element })
 	if attack.Motion then Motion.begin(id, attack.Motion, Motion.approach(id, attack.Motion, aim), now, impact) end
 end
+-- The final pulse of an attack in progress (the Twins' one-perilous-at-a-time rule), else nil.
+function Service.lastImpact(id: number): number?
+	local current = active[id]
+	if not current then return nil end
+	return current.Impact + ((current.Attack.Repeats or 1) - 1) * (current.Attack.Interval or 0.7)
+end
 local function strike(id: number, current: Active)
 	local e = Characters.GetEntity(id)
 	if not e then return end
@@ -13157,6 +13188,7 @@ return Hazards
 local Characters = require(script.Parent.CharacterService)
 local World = require(game:GetService("ReplicatedStorage").AsurasPath.Shared.WorldDefinitions)
 local Bodies = require(game:GetService("ReplicatedStorage").AsurasPath.Shared.BossBodies)
+local Weapons = require(game:GetService("ReplicatedStorage").AsurasPath.Simulation.WeaponSchema)
 local Motion = {}
 type Flight = { From: Vector3, To: Vector3, Start: number, Impact: number, Height: number, Kind: string, Perch: Vector3, Anchored: boolean, Clear: number }
 local flights: { [number]: Flight } = {}
@@ -13197,10 +13229,33 @@ local function bodyStop(e: any): number
 	local hull = if boss then (Bodies.Hulls :: any)[boss.Archetype] else nil
 	return (if hull then math.max(hull[1], hull[3]) * 0.5 else 1) * e.Model:GetScale() + 2
 end
+-- The living partner of a Twin (same encounter, another enemy body), and the spacing two bodies keep.
+function Motion.partner(e: any): any?
+	local encounter = e.Model:GetAttribute("AsuraEncounter")
+	if type(encounter) ~= "string" then return nil end
+	for _, other in Characters.Entities() do
+		if other ~= e and other.Kind == "Enemy" and other.Fighter.State ~= "KO" and other.Model:GetAttribute("AsuraEncounter") == encounter then
+			return other
+		end
+	end
+	return nil
+end
+function Motion.duoGap(a: any, b: any): number
+	return 2.5 * (a.Model:GetScale() + b.Model:GetScale())
+end
 function Motion.approach(id: number, kind: string, aim: Vector3): Vector3
 	local e = Characters.GetEntity(id)
 	if not e or (kind ~= "Lunge" and kind ~= "Aerial") then return aim end
-	local x, z = Bodies.closeIn(e.Root.Position.X, e.Root.Position.Z, aim.X, aim.Z, bodyStop(e))
+	local at = e.Root.Position
+	local x, z = Bodies.closeIn(at.X, at.Z, aim.X, aim.Z, bodyStop(e))
+	-- A Twin's lunge ends on its engage point (the AI's closeIn stop), clear of its partner (post-F26
+	-- Step 4: both ended 3 studs apart on the player). Hits still use the marked origin and aim.
+	local partner = Motion.partner(e)
+	if partner then
+		local o = partner.Root.Position
+		local stop = math.max(bodyStop(e), Weapons.get(e.Fighter.Weapon).Light[1].Reach * 0.6)
+		x, z = Bodies.flank(at.X, at.Z, aim.X, aim.Z, stop, o.X, o.Z, Motion.duoGap(e, partner))
+	end
 	return Vector3.new(x, aim.Y, z)
 end
 function Motion.begin(id: number, kind: string, destination: Vector3, now: number, impact: number)
@@ -13436,7 +13491,9 @@ function Tactics.step(id: number, boss: World.BossDef, phase: number, targetId: 
 	local p = boss.Phases[phase]
 	local closer = p.GapCloser
 	if distance &lt;= (closer and closer.Range or 40) then schedule.FarSince = now end
-	if closer and now &gt;= schedule.NextClose and Rules.shouldClose(distance, schedule.FarSince, now, closer.Range, closer.Delay) then
+	local twin = Motion.partner(e)
+	local partnerBusy = twin ~= nil and not Rules.perilousClear(Rules.impact(now, 1), Attacks.lastImpact(twin.Id))
+	if closer and not partnerBusy and now &gt;= schedule.NextClose and Rules.shouldClose(distance, schedule.FarSince, now, closer.Range, closer.Delay) then
 		schedule.NextClose = now + closer.Cooldown
 		schedule.Next = now + 2
 		Attacks.start(id, { Id = "Pursuit", Kind = "Leap", Motion = closer.Motion, Windup = 1, Radius = 18, Damage = 22, Posture = 30 }, targetId, allowed, now)
@@ -13457,7 +13514,14 @@ function Tactics.step(id: number, boss: World.BossDef, phase: number, targetId: 
 	local moves: { Types.Attack } = table.clone(p.Attacks or {})
 	for _, move in schedule.Extra do table.insert(moves, move) end
 	if #moves == 0 then return false end
-	schedule.Cursor = schedule.Cursor % #moves + 1
+	local cursor = schedule.Cursor % #moves + 1
+	-- Twins: one perilous at a time; this one waits (melee goes on) until the partner's last pulse
+	-- plus the readable lead (Rules.perilousClear, post-F26 Step 4).
+	if twin and not Rules.perilousClear(Rules.impact(now, moves[cursor].Windup), Attacks.lastImpact(twin.Id)) then
+		schedule.Next = now + 0.2
+		return false
+	end
+	schedule.Cursor = cursor
 	schedule.Next = now + (p.AttackInterval or 3)
 	local attack = table.clone(moves[schedule.Cursor])
 	if e.Model:GetAttribute("AsuraBossEnraged") then
@@ -19663,9 +19727,15 @@ local function bridge(parent: Instance, rng: Random)
 				if k &lt; math.floor(length / 4) then
 					Kit.part(group, "Rail", Vector3.new(0.6, 0.6, 4), CFrame.new(side * (b.Half - 0.45), G + 2.9, z - 2), P.StoneDark, Enum.Material.Slate)
 				end
-			elseif rng:NextNumber() &lt; 0.6 then
-				Kit.part(group, "FallenRail", Vector3.new(0.6, 0.6, 3.6), CFrame.new(side * (b.Half - 1.6), G + 0.3, z - 1) *
-					CFrame.Angles(0, math.rad(rng:NextNumber(-30, 30)), 0), P.StoneDark, Enum.Material.Slate, Kit.decor())
+			else
+				-- Post-F26 Step 5: the broken bays still stop bodies. Studio: a deflect-recoiled swordsman
+				-- left the deck through the west gap and stood under the bridge in Engage, out of reach.
+				Kit.part(group, "RailGap", Vector3.new(0.6, 4, 4), CFrame.new(side * (b.Half - 0.45), G + 2, z - 2), P.StoneDark, Enum.Material.Slate,
+					{ Transparency = 1, Query = false, Shadow = false })
+				if rng:NextNumber() &lt; 0.6 then
+					Kit.part(group, "FallenRail", Vector3.new(0.6, 0.6, 3.6), CFrame.new(side * (b.Half - 1.6), G + 0.3, z - 1) *
+						CFrame.Angles(0, math.rad(rng:NextNumber(-30, 30)), 0), P.StoneDark, Enum.Material.Slate, Kit.decor())
+				end
 			end
 		end
 	end
@@ -69223,6 +69293,68 @@ return Music
           </Item>
           <Item class="ModuleScript" referent="651">
             <Properties>
+              <string name="Name">CameraClearance</string>
+              <string name="Source">--!strict
+-- ModuleScript: StarterPlayer/StarterPlayerScripts/AsurasPath/Controllers/CameraClearance
+-- Post-F26 Step 4. A hostile body that stands between the lens and the player (nearer the camera
+-- than the player, and not the locked target) is drawn see-through on this client only. Studio: with
+-- the Iron Bull locked, General Zhao flanked beside the lens and covered 35% of the frame (62% peak).
+-- The camera spherecast ignores fighters by design, so this fade is the clearance for bodies. Purely
+-- visual: hurtboxes, telegraphs and the server are untouched; the faded body keeps its silhouette.
+local Clearance = {}
+
+Clearance.Fade = 0.6 -- LocalTransparencyModifier for a body in the lens's near field
+Clearance.Margin = 1.5 -- studs nearer the camera than the player before a body counts as in front
+Clearance.Range = 30 -- only bodies this close to the player (the fight, not the far arena)
+
+-- Whether a body fades: nearer the lens than the player by Margin, near the player, not locked.
+function Clearance.shouldFade(cameraToBody: number, cameraToPlayer: number, bodyToPlayer: number, locked: boolean): boolean
+	return not locked and bodyToPlayer &lt;= Clearance.Range and cameraToBody &lt; cameraToPlayer - Clearance.Margin
+end
+
+local faded: { [Model]: { BasePart } } = {}
+
+local function setFade(model: Model, value: number)
+	local parts = faded[model]
+	if not parts then
+		parts = {}
+		for _, d in model:GetDescendants() do
+			if d:IsA("BasePart") and d.Transparency &lt; 1 then table.insert(parts, d) end
+		end
+		faded[model] = parts
+	end
+	for _, part in parts do
+		if part.Parent then part.LocalTransparencyModifier = value end
+	end
+	if value == 0 then faded[model] = nil end
+end
+
+-- Called once per camera frame with the hostile, living bodies the camera knows about.
+function Clearance.step(bodies: { { Model: Model, Root: BasePart, Locked: boolean } }, cameraPosition: Vector3, playerPosition: Vector3)
+	local keep: { [Model]: boolean } = {}
+	local toPlayer = (playerPosition - cameraPosition).Magnitude
+	for _, body in bodies do
+		local position = body.Root.Position
+		if Clearance.shouldFade((position - cameraPosition).Magnitude, toPlayer, (position - playerPosition).Magnitude, body.Locked) then
+			keep[body.Model] = true
+			setFade(body.Model, Clearance.Fade)
+		end
+	end
+	for model in faded do
+		if not keep[model] then setFade(model, 0) end
+	end
+end
+
+function Clearance.clear()
+	for model in faded do setFade(model, 0) end
+end
+
+return Clearance
+</string>
+            </Properties>
+          </Item>
+          <Item class="ModuleScript" referent="652">
+            <Properties>
               <string name="Name">CameraController</string>
               <string name="Source">--!strict
 -- ModuleScript: StarterPlayer/StarterPlayerScripts/AsurasPath/Controllers/CameraController
@@ -69241,6 +69373,7 @@ local BossCinematics = require(script.Parent.BossCinematics)
 local Portrait = require(script.Parent.PortraitCamera)
 local Effects = require(Shared:WaitForChild("Shared"):WaitForChild("EffectsPreference") :: ModuleScript) :: any
 local Strike = require(Shared:WaitForChild("Simulation"):WaitForChild("StrikeGeometry") :: ModuleScript)
+local Clearance = require(script.Parent.CameraClearance)
 
 type WorldState = WorldState.WorldState
 type Entity = WorldState.Entity
@@ -69253,6 +69386,7 @@ local CORRECTION_SPEED = 22
 local MIN_DISTANCE, MAX_DISTANCE = 8, 16
 local LOCK_RANGE = 60
 local LOCK_BREAK_RANGE = 80
+local LOCK_PITCH_NEAR = 6 -- half-separation floor for the lock pitch (studs)
 local PITCH_MIN, PITCH_MAX = math.rad(-70), math.rad(55)
 local DEFAULT_PITCH = math.rad(-12)
 local PROBE_RADIUS = 0.6
@@ -69586,10 +69720,11 @@ function Controller.Update(self: CameraController, dt: number)
 	camera.CameraType = Enum.CameraType.Scriptable
 	self.Clock += dt
  if self.DialogueFrame then
+  Clearance.clear()
   camera.CFrame=camera.CFrame:Lerp(self.DialogueFrame,math.min(1,dt*9));camera.FieldOfView=Portrait.Fov;return
  end
 	if self.BossShotState then
-		if BossCinematics.step(self.BossShotState, self.State, camera) then return end
+		if BossCinematics.step(self.BossShotState, self.State, camera) then Clearance.clear(); return end
 		self.BossShotState = nil
 	end
 	local own = self.State:Own()
@@ -69624,7 +69759,9 @@ function Controller.Update(self: CameraController, dt: number)
 		end
 		local separation = (point - pivot).Magnitude
 		local elevation = point.Y - pivot.Y
-		self.TargetPitch = math.clamp(math.atan2(elevation * 0.5, math.max(flat.Magnitude, 1)) - math.rad(10), PITCH_MIN, PITCH_MAX)
+		-- Pitch toward a tall target as if it stood at least 2 x LOCK_PITCH_NEAR away: a 1.7x Bull at
+		-- 7 studs pitched the lens up 16 degrees from floor height and filled the frame (post-F26 Step 4).
+		self.TargetPitch = math.clamp(math.atan2(elevation * 0.5, math.max(flat.Magnitude, LOCK_PITCH_NEAR)) - math.rad(10), PITCH_MIN, PITCH_MAX)
 		desiredDistance = math.clamp(MIN_DISTANCE + separation * 0.28 + math.max(elevation, 0) * 0.6, MIN_DISTANCE, MAX_DISTANCE)
 		omega = CORRECTION_SPEED * TRAUMA_DRAG[self.HeadTier]
 		if humanoid then
@@ -69698,12 +69835,21 @@ function Controller.Update(self: CameraController, dt: number)
 	local shake = rotation:VectorToWorldSpace(Vector3.new(self.Shake.X, self.Shake.Y, 0))
 	camera.CFrame = CFrame.new(position + shake) * rotation
 	camera.Focus = CFrame.new(pivot)
+	local bodies = {}
+	for _, entity in self.State.Entities do
+		local body = entity.Root
+		if body and entity ~= own and self.State:IsHostile(entity) and self.State:IsAlive(entity) then
+			table.insert(bodies, { Model = entity.Model, Root = body, Locked = entity.Id == self.Locked })
+		end
+	end
+	Clearance.step(bodies, position + shake, root.Position)
 	local fov = math.clamp(self.Fov + self.MovementFov.Value + self.FovPunch.Value - self.FovClamp, Config.Camera.MinFOV - 20, Config.Camera.MaxFOV + 10)
 	camera.FieldOfView = fov
 end
 
 function Controller.Destroy(self: CameraController)
 	BossCinematics.restore(self.BossShotState)
+	Clearance.clear()
 	self.Enabled = false
 	self:SetLock(nil)
 	local own = self.State:Own()
@@ -69722,7 +69868,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="652">
+          <Item class="ModuleScript" referent="653">
             <Properties>
               <string name="Name">CelestialForms</string>
               <string name="Source">--!strict
@@ -69853,7 +69999,7 @@ return table.freeze(Forms)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="653">
+          <Item class="ModuleScript" referent="654">
             <Properties>
               <string name="Name">CelestialPillar</string>
               <string name="Source">--!strict
@@ -69966,7 +70112,7 @@ return table.freeze(Pillar)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="654">
+          <Item class="ModuleScript" referent="655">
             <Properties>
               <string name="Name">CodexView</string>
               <string name="Source">--!strict
@@ -70076,7 +70222,7 @@ return table.freeze(Codex)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="655">
+          <Item class="ModuleScript" referent="656">
             <Properties>
               <string name="Name">ColosseumController</string>
               <string name="Source">--!strict
@@ -70824,7 +70970,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="656">
+          <Item class="ModuleScript" referent="657">
             <Properties>
               <string name="Name">CombatCallouts</string>
               <string name="Source">--!strict
@@ -70839,12 +70985,11 @@ local HudKit = require(script.Parent:WaitForChild("HudKit") :: ModuleScript)
 local Sakura = require(script.Parent:WaitForChild("SakuraKit") :: ModuleScript)
 local Icons = require(script.Parent:WaitForChild("MoveIcons") :: ModuleScript)
 local Contact = require(game:GetService("ReplicatedStorage").AsurasPath.Shared.ContactCues)
-
+local DuoBars = require(script.Parent:WaitForChild("DuoBars") :: ModuleScript)
 local Callouts = {}
 local C = Sakura.Colors
 -- Customization ------------------------------------------------------------------------------
-local MAX_POPUPS, POPUP_TIME, CALLOUT_TIME = 16, 0.85, 0.75
-local GREY = Color3.fromRGB(190, 170, 182)
+local MAX_POPUPS, POPUP_TIME, CALLOUT_TIME, GREY = 16, 0.85, 0.75, Color3.fromRGB(190, 170, 182)
 local DAMAGE_KINDS = { Hit = true, CounterHit = true, BleedProc = true, Deathblow = true }
 local WARNING, CRITICAL, INFO = 3, 2, 1
 
@@ -70879,6 +71024,7 @@ local function shout(view: View, text: string, color: Color3, size: number?, pri
 	local rank = priority or INFO
 	if os.clock() &lt; view.Until and rank &lt; view.Priority then return end
 	view.Priority = rank
+	view.Text.Position = DuoBars.below(view.Gui) or UDim2.fromScale(0.5, 0.34) -- under the Twins' strip
 	view.Text.Text, view.Text.TextColor3, view.Text.TextSize = text, color, size or 40
 	view.Text.TextTransparency, view.Text.TextStrokeTransparency = 0, 0.1
 	view.Until = os.clock() + (hold or CALLOUT_TIME)
@@ -70979,7 +71125,7 @@ return table.freeze(Callouts)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="657">
+          <Item class="ModuleScript" referent="658">
             <Properties>
               <string name="Name">CombatFeedback</string>
               <string name="Source">--!strict
@@ -71131,7 +71277,7 @@ return Feedback
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="658">
+          <Item class="ModuleScript" referent="659">
             <Properties>
               <string name="Name">CombatHud</string>
               <string name="Source">--!strict
@@ -71230,7 +71376,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="659">
+          <Item class="ModuleScript" referent="660">
             <Properties>
               <string name="Name">CombatSurfaces</string>
               <string name="Source">--!strict
@@ -71299,7 +71445,7 @@ return Surfaces
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="660">
+          <Item class="ModuleScript" referent="661">
             <Properties>
               <string name="Name">CombatVfx</string>
               <string name="Source">--!strict
@@ -71419,7 +71565,7 @@ return Vfx
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="661">
+          <Item class="ModuleScript" referent="662">
             <Properties>
               <string name="Name">ComfortSettings</string>
               <string name="Source">--!strict
@@ -71487,7 +71633,7 @@ return table.freeze(Comfort)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="662">
+          <Item class="ModuleScript" referent="663">
             <Properties>
               <string name="Name">ControlsCard</string>
               <string name="Source">--!strict
@@ -71645,7 +71791,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="663">
+          <Item class="ModuleScript" referent="664">
             <Properties>
               <string name="Name">CoreGuiPolicy</string>
               <string name="Source">--!strict
@@ -71689,7 +71835,7 @@ return table.freeze(Policy)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="664">
+          <Item class="ModuleScript" referent="665">
             <Properties>
               <string name="Name">CreatureMotion</string>
               <string name="Source">--!strict
@@ -71809,7 +71955,7 @@ return Motion
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="665">
+          <Item class="ModuleScript" referent="666">
             <Properties>
               <string name="Name">DeviceLayout</string>
               <string name="Source">--!strict
@@ -71957,7 +72103,7 @@ return Device
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="666">
+          <Item class="ModuleScript" referent="667">
             <Properties>
               <string name="Name">DialogueController</string>
               <string name="Source">--!strict
@@ -72103,7 +72249,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="667">
+          <Item class="ModuleScript" referent="668">
             <Properties>
               <string name="Name">DialogueView</string>
               <string name="Source">--!strict
@@ -72226,7 +72372,7 @@ return table.freeze(View)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="668">
+          <Item class="ModuleScript" referent="669">
             <Properties>
               <string name="Name">DuoBars</string>
               <string name="Source">--!strict
@@ -72255,6 +72401,15 @@ function Duo.new(frame: Frame, gui: ScreenGui): View
 	local root = Kit.make("Frame", frame, { Name = "DuoStrip", Position = UDim2.fromOffset(0, 32), Size = UDim2.new(1, 0, 0, 58), BackgroundTransparency = 1, Visible = false }) :: Frame
 	local hint = Kit.label(frame, "", 13, Kit.BodyFont, Kit.Palette.Muted, { Name = "DuoHint", Position = UDim2.fromOffset(0, 94), Size = UDim2.new(1, 0, 0, 16), Visible = false })
 	return { Frame = frame, Gui = gui, Root = root, Hint = hint, Rows = {} }
+end
+
+-- Where a centre banner goes while a strip is up: just under the strip and its lock hint, else nil
+-- (post-F26 Step 4: "PERILOUS - DEFLECT" was drawn across both Twins' health bars).
+function Duo.below(gui: ScreenGui): UDim2?
+	local hint = gui.Parent and gui.Parent:FindFirstChild("DuoHint", true)
+	if not (hint and hint:IsA("GuiObject") and hint.Visible) then return nil end
+	local below = hint.AbsolutePosition.Y + hint.AbsoluteSize.Y + 22 - gui.AbsolutePosition.Y -- clear of the toast below; guis may differ by the inset
+	return UDim2.new(0.5, 0, 0, math.max(below, gui.AbsoluteSize.Y * 0.34))
 end
 
 local function setReplaced(view: View, visible: boolean)
@@ -72338,7 +72493,7 @@ return table.freeze(Duo)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="669">
+          <Item class="ModuleScript" referent="670">
             <Properties>
               <string name="Name">EncounterHandoffController</string>
               <string name="Source">--!strict
@@ -72432,7 +72587,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="670">
+          <Item class="ModuleScript" referent="671">
             <Properties>
               <string name="Name">EndingController</string>
               <string name="Source">--!strict
@@ -72598,7 +72753,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="671">
+          <Item class="ModuleScript" referent="672">
             <Properties>
               <string name="Name">EnemyBars</string>
               <string name="Source">--!strict
@@ -72689,7 +72844,7 @@ return table.freeze(Bars)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="672">
+          <Item class="ModuleScript" referent="673">
             <Properties>
               <string name="Name">EnemyDissolve</string>
               <string name="Source">--!strict
@@ -72802,7 +72957,7 @@ return Dissolve
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="673">
+          <Item class="ModuleScript" referent="674">
             <Properties>
               <string name="Name">EnemyPlate</string>
               <string name="Source">--!strict
@@ -72934,7 +73089,7 @@ return table.freeze(Plate)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="674">
+          <Item class="ModuleScript" referent="675">
             <Properties>
               <string name="Name">EnvironmentController</string>
               <string name="Source">--!strict
@@ -73024,7 +73179,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="675">
+          <Item class="ModuleScript" referent="676">
             <Properties>
               <string name="Name">FireCanvas</string>
               <string name="Source">--!strict
@@ -73127,7 +73282,7 @@ return table.freeze(Canvas)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="676">
+          <Item class="ModuleScript" referent="677">
             <Properties>
               <string name="Name">FireStorm</string>
               <string name="Source">--!strict
@@ -73247,7 +73402,7 @@ return table.freeze(Storm)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="677">
+          <Item class="ModuleScript" referent="678">
             <Properties>
               <string name="Name">FlameForms</string>
               <string name="Source">--!strict
@@ -73364,7 +73519,7 @@ return table.freeze(Flame)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="678">
+          <Item class="ModuleScript" referent="679">
             <Properties>
               <string name="Name">GameFeelController</string>
               <string name="Source">--!strict
@@ -73447,7 +73602,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="679">
+          <Item class="ModuleScript" referent="680">
             <Properties>
               <string name="Name">HudKit</string>
               <string name="Source">--!strict
@@ -73589,7 +73744,7 @@ return HudKit
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="680">
+          <Item class="ModuleScript" referent="681">
             <Properties>
               <string name="Name">HudLayout</string>
               <string name="Source">--!strict
@@ -73720,7 +73875,7 @@ return table.freeze(Layout)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="681">
+          <Item class="ModuleScript" referent="682">
             <Properties>
               <string name="Name">HudVisibility</string>
               <string name="Source">--!strict
@@ -73805,7 +73960,7 @@ return table.freeze(Visibility)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="682">
+          <Item class="ModuleScript" referent="683">
             <Properties>
               <string name="Name">IconShapes</string>
               <string name="Source">--!strict
@@ -73865,7 +74020,7 @@ return table.freeze(Shapes)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="683">
+          <Item class="ModuleScript" referent="684">
             <Properties>
               <string name="Name">ImpactFrame</string>
               <string name="Source">--!strict
@@ -74014,7 +74169,7 @@ return table.freeze(Screen)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="684">
+          <Item class="ModuleScript" referent="685">
             <Properties>
               <string name="Name">InkFrames</string>
               <string name="Source">--!strict
@@ -74101,7 +74256,7 @@ return table.freeze(Ink)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="685">
+          <Item class="ModuleScript" referent="686">
             <Properties>
               <string name="Name">InputController</string>
               <string name="Source">--!strict
@@ -74759,7 +74914,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="686">
+          <Item class="ModuleScript" referent="687">
             <Properties>
               <string name="Name">InterfaceController</string>
               <string name="Source">--!strict
@@ -76041,7 +76196,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="687">
+          <Item class="ModuleScript" referent="688">
             <Properties>
               <string name="Name">LandscapeBudget</string>
               <string name="Source">--!strict
@@ -76160,7 +76315,7 @@ return Budget
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="688">
+          <Item class="ModuleScript" referent="689">
             <Properties>
               <string name="Name">MangaFx</string>
               <string name="Source">--!strict
@@ -76305,7 +76460,7 @@ return table.freeze(Manga)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="689">
+          <Item class="ModuleScript" referent="690">
             <Properties>
               <string name="Name">MasteryEffects</string>
               <string name="Source">--!strict
@@ -76345,7 +76500,7 @@ return table.freeze(Effects)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="690">
+          <Item class="ModuleScript" referent="691">
             <Properties>
               <string name="Name">MinimapRoute</string>
               <string name="Source">--!strict
@@ -76454,7 +76609,7 @@ return table.freeze(Layer)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="691">
+          <Item class="ModuleScript" referent="692">
             <Properties>
               <string name="Name">MoveIcons</string>
               <string name="Source">--!strict
@@ -76580,7 +76735,7 @@ return table.freeze(Icons)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="692">
+          <Item class="ModuleScript" referent="693">
             <Properties>
               <string name="Name">MovementController</string>
               <string name="Source">--!strict
@@ -76762,7 +76917,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="693">
+          <Item class="ModuleScript" referent="694">
             <Properties>
               <string name="Name">MovementEffects</string>
               <string name="Source">--!strict
@@ -76878,7 +77033,7 @@ return Effects
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="694">
+          <Item class="ModuleScript" referent="695">
             <Properties>
               <string name="Name">MovementMath</string>
               <string name="Source">--!strict
@@ -76921,7 +77076,7 @@ return Motion
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="695">
+          <Item class="ModuleScript" referent="696">
             <Properties>
               <string name="Name">NovaInk</string>
               <string name="Source">--!strict
@@ -77057,7 +77212,7 @@ return table.freeze(Nova)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="696">
+          <Item class="ModuleScript" referent="697">
             <Properties>
               <string name="Name">NovaScenery</string>
               <string name="Source">--!strict
@@ -77175,7 +77330,7 @@ return table.freeze(Scenery)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="697">
+          <Item class="ModuleScript" referent="698">
             <Properties>
               <string name="Name">ObjectiveController</string>
               <string name="Source">--!strict
@@ -77339,7 +77494,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="698">
+          <Item class="ModuleScript" referent="699">
             <Properties>
               <string name="Name">PauseMenu</string>
               <string name="Source">--!strict
@@ -77521,7 +77676,7 @@ return Menu
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="699">
+          <Item class="ModuleScript" referent="700">
             <Properties>
               <string name="Name">PlanetForms</string>
               <string name="Source">--!strict
@@ -77634,7 +77789,7 @@ return table.freeze(Planet)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="700">
+          <Item class="ModuleScript" referent="701">
             <Properties>
               <string name="Name">PlateLayout</string>
               <string name="Source">--!strict
@@ -77705,7 +77860,7 @@ return table.freeze(Layout)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="701">
+          <Item class="ModuleScript" referent="702">
             <Properties>
               <string name="Name">PortraitCamera</string>
               <string name="Source">--!strict
@@ -77830,7 +77985,7 @@ return table.freeze(Portrait)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="702">
+          <Item class="ModuleScript" referent="703">
             <Properties>
               <string name="Name">PrologueController</string>
               <string name="Source">--!strict
@@ -77951,7 +78106,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="703">
+          <Item class="ModuleScript" referent="704">
             <Properties>
               <string name="Name">QiVfx</string>
               <string name="Source">--!strict
@@ -77999,7 +78154,7 @@ return Qi
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="704">
+          <Item class="ModuleScript" referent="705">
             <Properties>
               <string name="Name">SakuraCompass</string>
               <string name="Source">--!strict
@@ -78093,7 +78248,7 @@ return table.freeze(Compass)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="705">
+          <Item class="ModuleScript" referent="706">
             <Properties>
               <string name="Name">SakuraHud</string>
               <string name="Source">--!strict
@@ -78216,7 +78371,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="706">
+          <Item class="ModuleScript" referent="707">
             <Properties>
               <string name="Name">SakuraKit</string>
               <string name="Source">--!strict
@@ -78366,7 +78521,7 @@ return table.freeze(Kit)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="707">
+          <Item class="ModuleScript" referent="708">
             <Properties>
               <string name="Name">SakuraMinimap</string>
               <string name="Source">--!strict
@@ -78505,7 +78660,7 @@ return table.freeze(Map)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="708">
+          <Item class="ModuleScript" referent="709">
             <Properties>
               <string name="Name">SanguineCombat</string>
               <string name="Source">--!strict
@@ -78557,7 +78712,7 @@ return table.freeze(Combat)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="709">
+          <Item class="ModuleScript" referent="710">
             <Properties>
               <string name="Name">SanguineController</string>
               <string name="Source">--!strict
@@ -78628,7 +78783,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="710">
+          <Item class="ModuleScript" referent="711">
             <Properties>
               <string name="Name">SanguineDispatch</string>
               <string name="Source">--!strict
@@ -78686,7 +78841,7 @@ return table.freeze(Dispatch)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="711">
+          <Item class="ModuleScript" referent="712">
             <Properties>
               <string name="Name">SanguineGeometry</string>
               <string name="Source">--!strict
@@ -78736,7 +78891,7 @@ return table.freeze(Geometry)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="712">
+          <Item class="ModuleScript" referent="713">
             <Properties>
               <string name="Name">SanguineGhost</string>
               <string name="Source">--!strict
@@ -78758,7 +78913,7 @@ return table.freeze(Ghost)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="713">
+          <Item class="ModuleScript" referent="714">
             <Properties>
               <string name="Name">SanguineMagic</string>
               <string name="Source">--!strict
@@ -78811,7 +78966,7 @@ return table.freeze(Magic)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="714">
+          <Item class="ModuleScript" referent="715">
             <Properties>
               <string name="Name">SanguineRuntime</string>
               <string name="Source">--!strict
@@ -78900,7 +79055,7 @@ return Runtime
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="715">
+          <Item class="ModuleScript" referent="716">
             <Properties>
               <string name="Name">SkillAudio</string>
               <string name="Source">--!strict
@@ -78958,7 +79113,7 @@ return table.freeze(Sfx)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="716">
+          <Item class="ModuleScript" referent="717">
             <Properties>
               <string name="Name">SkillCinema</string>
               <string name="Source">--!strict
@@ -79082,7 +79237,7 @@ return table.freeze(Cinema)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="717">
+          <Item class="ModuleScript" referent="718">
             <Properties>
               <string name="Name">SkillFx</string>
               <string name="Source">--!strict
@@ -79228,7 +79383,7 @@ return table.freeze(Fx)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="718">
+          <Item class="ModuleScript" referent="719">
             <Properties>
               <string name="Name">SkillKit</string>
               <string name="Source">--!strict
@@ -79382,7 +79537,7 @@ return table.freeze(Kit)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="719">
+          <Item class="ModuleScript" referent="720">
             <Properties>
               <string name="Name">SkillShowcase</string>
               <string name="Source">--!strict
@@ -79476,7 +79631,7 @@ return table.freeze(Showcase)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="720">
+          <Item class="ModuleScript" referent="721">
             <Properties>
               <string name="Name">SolarForms</string>
               <string name="Source">--!strict
@@ -79603,7 +79758,7 @@ return table.freeze(Solar)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="721">
+          <Item class="ModuleScript" referent="722">
             <Properties>
               <string name="Name">SoundscapeController</string>
               <string name="Source">--!strict
@@ -79671,7 +79826,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="722">
+          <Item class="ModuleScript" referent="723">
             <Properties>
               <string name="Name">SpatialAudio</string>
               <string name="Source">--!strict
@@ -79775,7 +79930,7 @@ return Audio
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="723">
+          <Item class="ModuleScript" referent="724">
             <Properties>
               <string name="Name">SpellController</string>
               <string name="Source">--!strict
@@ -79865,7 +80020,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="724">
+          <Item class="ModuleScript" referent="725">
             <Properties>
               <string name="Name">SpellHud</string>
               <string name="Source">--!strict
@@ -80009,7 +80164,7 @@ return table.freeze(Hud)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="725">
+          <Item class="ModuleScript" referent="726">
             <Properties>
               <string name="Name">SpellVfx</string>
               <string name="Source">--!strict
@@ -80123,7 +80278,7 @@ return table.freeze(Vfx)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="726">
+          <Item class="ModuleScript" referent="727">
             <Properties>
               <string name="Name">SunForms</string>
               <string name="Source">--!strict
@@ -80250,7 +80405,7 @@ return table.freeze(Sun)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="727">
+          <Item class="ModuleScript" referent="728">
             <Properties>
               <string name="Name">SunShots</string>
               <string name="Source">--!strict
@@ -80328,7 +80483,7 @@ return table.freeze(Shots)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="728">
+          <Item class="ModuleScript" referent="729">
             <Properties>
               <string name="Name">SupernovaShots</string>
               <string name="Source">--!strict
@@ -80395,7 +80550,7 @@ return table.freeze(Shots)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="729">
+          <Item class="ModuleScript" referent="730">
             <Properties>
               <string name="Name">SupernovaShow</string>
               <string name="Source">--!strict
@@ -80544,7 +80699,7 @@ return table.freeze(Show)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="730">
+          <Item class="ModuleScript" referent="731">
             <Properties>
               <string name="Name">TargetPlate</string>
               <string name="Source">--!strict
@@ -80632,7 +80787,7 @@ return table.freeze(Target)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="731">
+          <Item class="ModuleScript" referent="732">
             <Properties>
               <string name="Name">TutorialController</string>
               <string name="Source">--!strict
@@ -80773,7 +80928,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="732">
+          <Item class="ModuleScript" referent="733">
             <Properties>
               <string name="Name">UiKit</string>
               <string name="Source">--!strict
@@ -80925,7 +81080,7 @@ return table.freeze(UiKit)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="733">
+          <Item class="ModuleScript" referent="734">
             <Properties>
               <string name="Name">UiWindow</string>
               <string name="Source">--!strict
@@ -81073,7 +81228,7 @@ return table.freeze(Window)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="734">
+          <Item class="ModuleScript" referent="735">
             <Properties>
               <string name="Name">VitalsTags</string>
               <string name="Source">--!strict
@@ -81155,7 +81310,7 @@ return table.freeze(Tags)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="735">
+          <Item class="ModuleScript" referent="736">
             <Properties>
               <string name="Name">VoidStage</string>
               <string name="Source">--!strict
@@ -81302,7 +81457,7 @@ return table.freeze(Stage)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="736">
+          <Item class="ModuleScript" referent="737">
             <Properties>
               <string name="Name">WagerController</string>
               <string name="Source">--!strict
@@ -81359,7 +81514,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="737">
+          <Item class="ModuleScript" referent="738">
             <Properties>
               <string name="Name">WaypointMarker</string>
               <string name="Source">--!strict
@@ -81445,7 +81600,7 @@ return Marker
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="738">
+          <Item class="ModuleScript" referent="739">
             <Properties>
               <string name="Name">WeaponTrails</string>
               <string name="Source">--!strict
@@ -81569,7 +81724,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="739">
+          <Item class="ModuleScript" referent="740">
             <Properties>
               <string name="Name">WorldStateController</string>
               <string name="Source">--!strict
@@ -82022,7 +82177,7 @@ return Controller
           </Item>
         </Item>
       </Item>
-      <Item class="LocalScript" referent="740">
+      <Item class="LocalScript" referent="741">
         <Properties>
           <string name="Name">AsurasPathClient</string>
           <string name="Source">--!strict
@@ -82267,7 +82422,7 @@ print("[Asura's Path] Client ready: camlock, game feel, Souls HUD and Colosseum 
       </Item>
     </Item>
   </Item>
-  <Item class="Workspace" referent="741">
+  <Item class="Workspace" referent="742">
     <Properties>
       <string name="Name">Workspace</string>
       <float name="FallenPartsDestroyHeight">-400</float>
@@ -82279,13 +82434,13 @@ print("[Asura's Path] Client ready: camlock, game feel, Souls HUD and Colosseum 
       <float name="Gravity">196.2</float>
       <bool name="NeedsPivotMigration">false</bool>
       <bool name="StreamingEnabled">false</bool>
-    <Ref name="CurrentCamera">743</Ref></Properties>
-    <Item class="Folder" referent="742">
+    <Ref name="CurrentCamera">744</Ref></Properties>
+    <Item class="Folder" referent="743">
       <Properties>
         <string name="Name">AsurasPath</string>
       </Properties>
     </Item>
-    <Item class="Camera" referent="743">
+    <Item class="Camera" referent="744">
       <Properties>
         <string name="Name">Camera</string>
         <CoordinateFrame name="CFrame">

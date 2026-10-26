@@ -64,7 +64,9 @@ function Tactics.step(id: number, boss: World.BossDef, phase: number, targetId: 
 	local p = boss.Phases[phase]
 	local closer = p.GapCloser
 	if distance <= (closer and closer.Range or 40) then schedule.FarSince = now end
-	if closer and now >= schedule.NextClose and Rules.shouldClose(distance, schedule.FarSince, now, closer.Range, closer.Delay) then
+	local twin = Motion.partner(e)
+	local partnerBusy = twin ~= nil and not Rules.perilousClear(Rules.impact(now, 1), Attacks.lastImpact(twin.Id))
+	if closer and not partnerBusy and now >= schedule.NextClose and Rules.shouldClose(distance, schedule.FarSince, now, closer.Range, closer.Delay) then
 		schedule.NextClose = now + closer.Cooldown
 		schedule.Next = now + 2
 		Attacks.start(id, { Id = "Pursuit", Kind = "Leap", Motion = closer.Motion, Windup = 1, Radius = 18, Damage = 22, Posture = 30 }, targetId, allowed, now)
@@ -85,7 +87,14 @@ function Tactics.step(id: number, boss: World.BossDef, phase: number, targetId: 
 	local moves: { Types.Attack } = table.clone(p.Attacks or {})
 	for _, move in schedule.Extra do table.insert(moves, move) end
 	if #moves == 0 then return false end
-	schedule.Cursor = schedule.Cursor % #moves + 1
+	local cursor = schedule.Cursor % #moves + 1
+	-- Twins: one perilous at a time; this one waits (melee goes on) until the partner's last pulse
+	-- plus the readable lead (Rules.perilousClear, post-F26 Step 4).
+	if twin and not Rules.perilousClear(Rules.impact(now, moves[cursor].Windup), Attacks.lastImpact(twin.Id)) then
+		schedule.Next = now + 0.2
+		return false
+	end
+	schedule.Cursor = cursor
 	schedule.Next = now + (p.AttackInterval or 3)
 	local attack = table.clone(moves[schedule.Cursor])
 	if e.Model:GetAttribute("AsuraBossEnraged") then

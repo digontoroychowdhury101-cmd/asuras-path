@@ -15,6 +15,7 @@ local BossCinematics = require(script.Parent.BossCinematics)
 local Portrait = require(script.Parent.PortraitCamera)
 local Effects = require(Shared:WaitForChild("Shared"):WaitForChild("EffectsPreference") :: ModuleScript) :: any
 local Strike = require(Shared:WaitForChild("Simulation"):WaitForChild("StrikeGeometry") :: ModuleScript)
+local Clearance = require(script.Parent.CameraClearance)
 
 type WorldState = WorldState.WorldState
 type Entity = WorldState.Entity
@@ -27,6 +28,7 @@ local CORRECTION_SPEED = 22
 local MIN_DISTANCE, MAX_DISTANCE = 8, 16
 local LOCK_RANGE = 60
 local LOCK_BREAK_RANGE = 80
+local LOCK_PITCH_NEAR = 6 -- half-separation floor for the lock pitch (studs)
 local PITCH_MIN, PITCH_MAX = math.rad(-70), math.rad(55)
 local DEFAULT_PITCH = math.rad(-12)
 local PROBE_RADIUS = 0.6
@@ -360,10 +362,11 @@ function Controller.Update(self: CameraController, dt: number)
 	camera.CameraType = Enum.CameraType.Scriptable
 	self.Clock += dt
  if self.DialogueFrame then
+  Clearance.clear()
   camera.CFrame=camera.CFrame:Lerp(self.DialogueFrame,math.min(1,dt*9));camera.FieldOfView=Portrait.Fov;return
  end
 	if self.BossShotState then
-		if BossCinematics.step(self.BossShotState, self.State, camera) then return end
+		if BossCinematics.step(self.BossShotState, self.State, camera) then Clearance.clear(); return end
 		self.BossShotState = nil
 	end
 	local own = self.State:Own()
@@ -398,7 +401,9 @@ function Controller.Update(self: CameraController, dt: number)
 		end
 		local separation = (point - pivot).Magnitude
 		local elevation = point.Y - pivot.Y
-		self.TargetPitch = math.clamp(math.atan2(elevation * 0.5, math.max(flat.Magnitude, 1)) - math.rad(10), PITCH_MIN, PITCH_MAX)
+		-- Pitch toward a tall target as if it stood at least 2 x LOCK_PITCH_NEAR away: a 1.7x Bull at
+		-- 7 studs pitched the lens up 16 degrees from floor height and filled the frame (post-F26 Step 4).
+		self.TargetPitch = math.clamp(math.atan2(elevation * 0.5, math.max(flat.Magnitude, LOCK_PITCH_NEAR)) - math.rad(10), PITCH_MIN, PITCH_MAX)
 		desiredDistance = math.clamp(MIN_DISTANCE + separation * 0.28 + math.max(elevation, 0) * 0.6, MIN_DISTANCE, MAX_DISTANCE)
 		omega = CORRECTION_SPEED * TRAUMA_DRAG[self.HeadTier]
 		if humanoid then
@@ -472,12 +477,21 @@ function Controller.Update(self: CameraController, dt: number)
 	local shake = rotation:VectorToWorldSpace(Vector3.new(self.Shake.X, self.Shake.Y, 0))
 	camera.CFrame = CFrame.new(position + shake) * rotation
 	camera.Focus = CFrame.new(pivot)
+	local bodies = {}
+	for _, entity in self.State.Entities do
+		local body = entity.Root
+		if body and entity ~= own and self.State:IsHostile(entity) and self.State:IsAlive(entity) then
+			table.insert(bodies, { Model = entity.Model, Root = body, Locked = entity.Id == self.Locked })
+		end
+	end
+	Clearance.step(bodies, position + shake, root.Position)
 	local fov = math.clamp(self.Fov + self.MovementFov.Value + self.FovPunch.Value - self.FovClamp, Config.Camera.MinFOV - 20, Config.Camera.MaxFOV + 10)
 	camera.FieldOfView = fov
 end
 
 function Controller.Destroy(self: CameraController)
 	BossCinematics.restore(self.BossShotState)
+	Clearance.clear()
 	self.Enabled = false
 	self:SetLock(nil)
 	local own = self.State:Own()

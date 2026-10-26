@@ -10,12 +10,11 @@ local HudKit = require(script.Parent:WaitForChild("HudKit") :: ModuleScript)
 local Sakura = require(script.Parent:WaitForChild("SakuraKit") :: ModuleScript)
 local Icons = require(script.Parent:WaitForChild("MoveIcons") :: ModuleScript)
 local Contact = require(game:GetService("ReplicatedStorage").AsurasPath.Shared.ContactCues)
-
+local DuoBars = require(script.Parent:WaitForChild("DuoBars") :: ModuleScript)
 local Callouts = {}
 local C = Sakura.Colors
 -- Customization ------------------------------------------------------------------------------
-local MAX_POPUPS, POPUP_TIME, CALLOUT_TIME = 16, 0.85, 0.75
-local GREY = Color3.fromRGB(190, 170, 182)
+local MAX_POPUPS, POPUP_TIME, CALLOUT_TIME, GREY = 16, 0.85, 0.75, Color3.fromRGB(190, 170, 182)
 local DAMAGE_KINDS = { Hit = true, CounterHit = true, BleedProc = true, Deathblow = true }
 local WARNING, CRITICAL, INFO = 3, 2, 1
 
@@ -50,6 +49,7 @@ local function shout(view: View, text: string, color: Color3, size: number?, pri
 	local rank = priority or INFO
 	if os.clock() < view.Until and rank < view.Priority then return end
 	view.Priority = rank
+	view.Text.Position = DuoBars.below(view.Gui) or UDim2.fromScale(0.5, 0.34) -- under the Twins' strip
 	view.Text.Text, view.Text.TextColor3, view.Text.TextSize = text, color, size or 40
 	view.Text.TextTransparency, view.Text.TextStrokeTransparency = 0, 0.1
 	view.Until = os.clock() + (hold or CALLOUT_TIME)

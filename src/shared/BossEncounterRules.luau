@@ -40,6 +40,18 @@ end
 function Rules.enrage(alive: number, alreadyEnraged: boolean): boolean
 	return alive == 1 and not alreadyEnraged
 end
+-- Twin Sentinels (post-F26 Step 4). Studio: after their lunges both Twins stood 3-4 studs from the
+-- player and 3 from each other, and the opening landed Zhao's thrust and the Bull's charge in the same
+-- frame with two different counters. A Twin crowding the player or its partner re-spaces before its
+-- next swing; only one Twin's perilous attack is pending at a time, so one counter is asked at once.
+Rules.DuoCrowd = 0.7 -- fraction of the engage stop / partner gap below which a Twin steps back out
+Rules.DuoPerilousGap = 0.9 -- seconds after the partner's last perilous impact (= BossHandoff.Lead)
+function Rules.crowded(toTarget: number, stop: number, toPartner: number?, gap: number): boolean
+	return toTarget < stop * Rules.DuoCrowd or (toPartner ~= nil and toPartner < gap * Rules.DuoCrowd)
+end
+function Rules.perilousClear(impact: number, partnerLast: number?): boolean
+	return partnerLast == nil or impact >= partnerLast + Rules.DuoPerilousGap - 1e-9
+end
 function Rules.lifecycle(living: number, defeated: boolean, entityPresent: boolean): string
 	if defeated then return "Victory" end
 	if living == 0 or not entityPresent then return "Reset" end

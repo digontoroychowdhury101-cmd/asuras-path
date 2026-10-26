@@ -38,6 +38,12 @@ function Service.start(id: number, attack: Types.Attack, target: number, allowed
 		radius = attack.Radius, ox = origin.X, oz = origin.Z, x = aim.X, y = 0, z = aim.Z, duration = attack.Duration, element = attack.Element })
 	if attack.Motion then Motion.begin(id, attack.Motion, Motion.approach(id, attack.Motion, aim), now, impact) end
 end
+-- The final pulse of an attack in progress (the Twins' one-perilous-at-a-time rule), else nil.
+function Service.lastImpact(id: number): number?
+	local current = active[id]
+	if not current then return nil end
+	return current.Impact + ((current.Attack.Repeats or 1) - 1) * (current.Attack.Interval or 0.7)
+end
 local function strike(id: number, current: Active)
 	local e = Characters.GetEntity(id)
 	if not e then return end

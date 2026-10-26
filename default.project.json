@@ -713,6 +713,9 @@
             "CameraController": {
               "$path": "src/client/Controllers/CameraController.luau"
             },
+            "CameraClearance": {
+              "$path": "src/client/Controllers/CameraClearance.luau"
+            },
             "InputController": {
               "$path": "src/client/Controllers/InputController.luau"
             },

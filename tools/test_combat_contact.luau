@@ -241,9 +241,9 @@ do
 	check("a foe on top of its target steps back off to fighting distance", math.abs(math.sqrt(x * x + z * z) - 2.4) < 1e-9)
 	x, z = Bodies.closeIn(0, 0, 0, 0, 2.4)
 	check("a foe exactly on its target still gets a point to stand on", math.abs(math.sqrt(x * x + z * z) - 2.4) < 1e-9)
-	local ai = src("src/server/Services/AIService.luau")
+	local ai = src("src/server/Services/AIService.luau") -- closeIn: chase, close-in, Twin re-space (post-F26 Step 4)
 	check("no chase steers a body onto its target's root", not string.find(ai, "moveTo(agent, target.Root.Position)", 1, true)
-		and select(2, string.gsub(ai, "closeIn%(agent, self, target, reach%)", "")) == 2 and string.find(ai, "reach * 0.6", 1, true) ~= nil)
+		and select(2, string.gsub(ai, "closeIn%(agent, self, target, reach%)", "")) == 3 and string.find(ai, "reach * 0.6", 1, true) ~= nil)
 end
 
 -- 11. Hygiene.

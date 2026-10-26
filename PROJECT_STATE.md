@@ -1,5 +1,9 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## Post-F26 Steps 4–5: Twins greybox, Monastery approach — 2026-10-26 (Computer B)
+
+Twins: kept spaced (6.3–7.8 studs), one perilous at a time, lock camera no longer floor-pitched, near-lens fade, banner below bars. Monastery: routes, ladder, tablets II–IV walked; bridge rail-gap fall fixed. Verifier green, digest 557606020. Next: Step 6 art (`STEP6_TWINS_ASSET_BRIEF.md`), Windows human/two-client. See `outputs/post-f26-step4-5-2026-10-26/`.
+
 ## Post-F26 batch 3: playtest kit, ledger, Shen handoff — 2026-10-25 (Computer B)
 
 Studio-only 20-minute playtest panel and route; Claude diagnostics kept separate. Earned ledger opened (0/6). Shen P1/P2 asset handoff; skin loader now requires 15 limbs and lets templates own the weapon. Verifier green, digest 1661908618. Next: human playtest, earned session 1, Windows two-client OmniPvP. See `outputs/post-f26-batch3-2026-10-25/README.md`.
