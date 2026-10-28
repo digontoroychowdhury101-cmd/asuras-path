@@ -130,3 +130,14 @@ NVIDIA-render / Intel-scan-out path plus Studio's several panel swapchains is th
   - Windows Graphics settings > Roblox Studio > Power saving (Intel), to remove the NVIDIA-to-Intel frame hand-off.
 - Vsync Off for Roblox Studio (NVIDIA App), Studio fully restarted, 144 Hz: Edit is still evenly paced at 55.5 ms
   per frame, and Play at 24.0 fps (Heartbeat 24.5). Vsync is ruled out. Left to test: Studio on the Intel GPU.
+
+### The 24 fps cap — found (28 October 2026, 23:10)
+
+Studio running on the Intel UHD GPU (Windows Graphics > Power saving; the log shows `gpu=Intel(R) UHD Graphics`):
+Edit runs at 219.7 fps (4 ms frames) and Play at 44–47 fps (Heartbeat 43–47).
+
+The cap is the hybrid-GPU hand-off on this laptop: the RTX 4050 renders and the Intel GPU drives the panel, and Studio's
+frames wait on that copy. It is not the project. Best setting: switch the laptop's GPU mode to dedicated/discrete
+(Lenovo Vantage or Legion Space > GPU Working Mode; needs a reboot). The RTX then drives the panel directly.
+Then set Studio back to "Let Windows decide" and rerun `tools/qa/RegionFrameTime.luau` for real numbers.
+The Intel-GPU Play figure is limited by that GPU, so it isn't a performance number for the game.
