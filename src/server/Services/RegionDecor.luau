@@ -97,6 +97,40 @@ function Decor.han(parent: Instance, kit: string, piece: string, base: CFrame, s
 	return model
 end
 
+-- A base CFrame at `at` whose front (-Z, the imported models' front) looks toward `target` in plan.
+function Decor.facing(at: Vector3, target: Vector3): CFrame
+	return CFrame.lookAt(at, Vector3.new(target.X, at.Y, target.Z))
+end
+
+-- Highest walkable top of the layout's solids over (x, z) (yaw-aware; veils skipped), or nil.
+function Decor.layoutTop(layout: any, x: number, z: number): number?
+	local best: number? = nil
+	for _, b in layout.Solids do
+		if b.Kind ~= "Veil" then
+			local a = math.rad(b.Yaw)
+			local lx, lz = x - b.X, z - b.Z
+			local u, v = lx * math.cos(a) - lz * math.sin(a), lx * math.sin(a) + lz * math.cos(a)
+			if math.abs(u) <= b.SX / 2 and math.abs(v) <= b.SZ / 2 then
+				local top = b.Y + b.SY / 2
+				best = if best then math.max(best, top) else top
+			end
+		end
+	end
+	return best
+end
+
+-- Dresses named layout boxes with models: rules[name](foot, box) places decor at the box's foot and
+-- returns true; the box then stays only as an invisible collider. Unmatched or failed boxes stay visible.
+function Decor.dressBoxes(map: Instance, rules: { [string]: (CFrame, BasePart) -> boolean })
+	local structure = map:FindFirstChild("Structure")
+	for _, box in if structure then structure:GetChildren() else {} do
+		local rule = box:IsA("BasePart") and rules[box.Name]
+		if rule and rule(CFrame.new(box.Position.X, box.Position.Y - box.Size.Y / 2, box.Position.Z), box :: BasePart) then
+			(box :: BasePart).Transparency, (box :: BasePart).CastShadow = 1, false
+		end
+	end
+end
+
 -- One bamboo stalk with its leaf sprays; decor, so groves never trap bodies or cameras.
 function Decor.bamboo(parent: Instance, x: number, floor: number, z: number, rng: Random)
 	local height = rng:NextNumber(26, 44)

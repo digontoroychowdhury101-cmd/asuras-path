@@ -45,3 +45,25 @@ highest surface −2.0, 0 cells at or above the arena floor. Footing probe uncha
 Screenshots: `pagoda_gate.jpg`, `pagoda_aerial.jpg`, `pagoda_close.jpg`; Blender sheets in `assets/build/han_hd/`
 and `assets/build/han_kit/`. Not checked: device frame rate with four 151k-triangle pagodas (Roblox instances
 identical meshes and LODs them, but this is unmeasured), human play, other regions (kit not yet placed there).
+
+## Bamboo Pass and Sky Citadel — 28 October 2026
+
+A Studio probe (every visible part > 6 studs with nothing within 4 studs under its base) found real
+floating primitives only in the Citadel: six box towers with roofs, four glass cloud-sea sheets, the
+First Gate Landing and Last Bastion slabs, both stairs and the bridge piers / dragon's perch undersides.
+Bamboo Pass had none (only sunk-in bases and bamboo canopies were flagged).
+
+- **Sky Citadel**: one rock peak of CampaignTerrain massifs under the saddle head and stair ridge,
+  Heaven's Stair spine, landing, bastion, summit and perch (all tops under the platforms they carry;
+  the bridge chasm stays open), pillars under the bridge piers. Han great/wall towers on pillars replace
+  the box towers; two HanPagodaHD flank the bastion; HanGateHD at the saddle head; Han watchtowers dress
+  the gate towers (boxes kept as invisible colliders); bixies and lanterns at the Wyrm's gate; the
+  glass cloud sheets became mist.
+- **Bamboo Pass**: two full-scale HanPagodaHD on the valley walls, each on a level rock terrace; shrine
+  lanterns and incense cauldron; bixies at Baize's arena mouth; pines and crags on the frost ridge.
+- **Pagoda**: corner pagodas, gate and bixies now face the path (they had faced away).
+
+Placement heights come from `CampaignTerrain.backdropHeight` and the layout boxes, because terrain filled
+in the same frame has no collision yet. Seating check: every pillar/terrace base is 0–2 studs into rock;
+the worst Bamboo plinth corner is 0.6 above the slope. Footing probe unchanged in every region.
+Screenshots: `regions/`. Not checked: device frame rate, human play.

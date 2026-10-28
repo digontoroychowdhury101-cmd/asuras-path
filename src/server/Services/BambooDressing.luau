@@ -3,11 +3,14 @@
 -- Bamboo Pass silhouettes and storytelling (batch 17). All decor: the thicket groves that read as the
 -- pass's walls, frost-capped karst spires beyond them, the Bamboo Gate's lacquered torii lintels, the
 -- whispering shrine's roof and wind ribbons, a fallen jade-root giant by tablet V, a pilgrim's hat and
--- staff where the first swordsman waits, the frost ridge's snow drifts and the moon gate's ring.
+-- staff where the first swordsman waits, the frost ridge's snow drifts and the moon gate's ring, plus
+-- uploaded Han pieces: valley-wall pagodas, shrine lanterns and cauldron, bixies, ridge pines and crags.
 -- Collision lives in BambooPassLayout only.
 local Kit = require(script.Parent:WaitForChild("MonasteryKit") :: ModuleScript)
 local Fx = require(script.Parent:WaitForChild("MonasteryFx") :: ModuleScript)
 local Decor = require(script.Parent:WaitForChild("RegionDecor") :: ModuleScript)
+local Ground = require(script.Parent:WaitForChild("CampaignTerrain") :: ModuleScript)
+local World = require(game:GetService("ReplicatedStorage"):WaitForChild("AsurasPath").Shared.WorldDefinitions)
 
 local Dressing = {}
 local P = Kit.Palette
@@ -41,6 +44,33 @@ function Dressing.Build(map: Instance, layout: any, rng: Random)
 		local z = -1160 - i * 54
 		spire(set, -186 + rng:NextNumber(-8, 8), z, rng:NextNumber(60, 110), rng)
 		spire(set, 186 + rng:NextNumber(-8, 8), z - 20, rng:NextNumber(60, 110), rng)
+	end
+	-- High-detail pagodas on the valley walls (seated on CampaignTerrain's backdrop), above the bamboo.
+	for _, c in { { 246, -1330 }, { -246, -1490 } } do
+		local y = Ground.backdropHeight("BambooPass", World.Regions.BambooPass.Bounds, c[1], c[2])
+		if y then
+			Ground.pad(c[1], c[2], y - 1.5, 44) -- a level terrace on the slope under the plinth
+			local at = Vector3.new(c[1], y - 1.5, c[2])
+			Decor.han(set, "AsuraHanHD", "HanPagodaHD", Decor.facing(at, Vector3.new(0, y, c[2])), 1)
+		end
+	end
+	-- The whispering shrine's lanterns and incense cauldron (behind the altar), Baize's guardians.
+	for _, x in { -48, -24 } do
+		Decor.han(set, "AsuraHanKit", "HanLantern", CFrame.new(x, 0, -1336), 1.2)
+	end
+	Decor.han(set, "AsuraHanKit", "HanCauldron", CFrame.new(-36, 0, -1341), 2.2)
+	for _, side in { -1, 1 } do
+		Decor.han(set, "AsuraHanKit", "HanBixie", Decor.facing(Vector3.new(side * 13, 0, -1356), Vector3.new(0, 0, -1356)), 1.5)
+	end
+	-- Pines and crags on the frost ridge, seated on its terrain.
+	for k = 1, 10 do
+		local x, z = rng:NextNumber(112, 156), rng:NextNumber(-1298, -1386)
+		local y = Decor.layoutTop(layout, x, z)
+		if y then
+			local piece = if k <= 7 then "Pine" else ({ "CragA", "CragB", "CragC" })[rng:NextInteger(1, 3)]
+			local scale = if k <= 7 then rng:NextNumber(4, 6) else rng:NextNumber(1, 1.6)
+			Decor.han(set, "AsuraHanKit", piece, CFrame.new(x, y - 0.6, z) * CFrame.Angles(0, rng:NextNumber(0, 2 * math.pi), 0), scale)
+		end
 	end
 	-- Bamboo Gate: two lacquered lintels on the posts (x +/-9, z -1150), a weathered name board.
 	Kit.part(set, "ToriiKasagi", Vector3.new(26, 1.4, 2), CFrame.new(0, 16.6, -1150), P.Lacquer, M.Wood, Kit.decor())

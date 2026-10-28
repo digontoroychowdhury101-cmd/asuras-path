@@ -30,38 +30,31 @@ function Dressing.Build(map: Instance, _layout: any, rng: Random)
 	-- Corner pagodas (AsuraHanHD) on the rock pillars CampaignTerrain raises outside the hall frame;
 	-- the primitive towers remain only as the fallback when the kit is missing.
 	for _, c in { { -140, -2318 }, { 140, -2318 }, { -140, -2448 }, { 140, -2448 } } do
-		local facing = CFrame.Angles(0, if c[1] < 0 then math.rad(90) else math.rad(-90), 0)
-		if not Decor.han(set, "AsuraHanHD", "HanPagodaHD", CFrame.new(c[1], 0, c[2]) * facing, 0.75) then
+		local at = Vector3.new(c[1], 0, c[2])
+		if not Decor.han(set, "AsuraHanHD", "HanPagodaHD", Decor.facing(at, Vector3.new(0, 0, c[2])), 0.75) then
 			tower(set, c[1] * 114 / 140, c[2], 3)
 		end
 	end
 	-- Hall columns and gate towers keep their layout boxes as invisible colliders under real models:
 	-- lobby-kit lacquer columns with bases and bracket sets, and Han watchtowers at the forecourt.
-	local structure = map:FindFirstChild("Structure")
-	for _, box in if structure then structure:GetChildren() else {} do
-		if not box:IsA("BasePart") then
-			continue
-		end
-		local foot = CFrame.new(box.Position.X, box.Position.Y - box.Size.Y / 2, box.Position.Z)
-		local dressed = false
-		if box.Name == "HallColumn" then
-			dressed = Decor.han(set, "AsuraLobbyKit", "Column_Lacquer", foot, box.Size.Y / 10) ~= nil
-			if dressed then
-				Decor.han(set, "AsuraLobbyKit", "Column_Base", foot, 2)
-				Decor.han(set, "AsuraLobbyKit", "Bracket_Set", foot + Vector3.new(0, box.Size.Y, 0), 1.3)
+	Decor.dressBoxes(map, {
+		HallColumn = function(foot, box)
+			if not Decor.han(set, "AsuraLobbyKit", "Column_Lacquer", foot, box.Size.Y / 10) then
+				return false
 			end
-		elseif box.Name == "GateTower" then
-			dressed = Decor.han(set, "AsuraHanKit", "HanDefenseTower", foot * CFrame.Angles(0, math.pi, 0), box.Size.Y / 31) ~= nil
-		end
-		if dressed then
-			box.Transparency, box.CastShadow = 1, false
-		end
-	end
-	-- The paifang over the head of the cloud stair: the region's threshold.
-	Decor.han(set, "AsuraHanHD", "HanGateHD", CFrame.new(0, 0, -2124), 2)
+			Decor.han(set, "AsuraLobbyKit", "Column_Base", foot, 2)
+			Decor.han(set, "AsuraLobbyKit", "Bracket_Set", foot + Vector3.new(0, box.Size.Y, 0), 1.3)
+			return true
+		end,
+		GateTower = function(foot, box)
+			return Decor.han(set, "AsuraHanKit", "HanDefenseTower", Decor.facing(foot.Position, Vector3.new(0, 0, -2200)), box.Size.Y / 31) ~= nil
+		end,
+	})
+	-- The paifang over the head of the cloud stair, facing the approach from the Colosseum causeway.
+	Decor.han(set, "AsuraHanHD", "HanGateHD", Decor.facing(Vector3.new(0, 0, -2124), Vector3.new(0, 0, -2000)), 2)
 	-- Forecourt guardians and lanterns (AsuraHanKit), clear of the walk to Wu's gate.
 	for _, side in { -1, 1 } do
-		Decor.han(set, "AsuraHanKit", "HanBixie", CFrame.new(side * 44, 0, -2284) * CFrame.Angles(0, math.rad(side * 90), 0), 1.6)
+		Decor.han(set, "AsuraHanKit", "HanBixie", Decor.facing(Vector3.new(side * 44, 0, -2284), Vector3.new(0, 0, -2284)), 1.6)
 		Decor.han(set, "AsuraHanKit", "HanLantern", CFrame.new(side * 30, 0, -2262), 1.4)
 	end
 	-- Pines and crags along the cliff tops either side of the cloud stair.

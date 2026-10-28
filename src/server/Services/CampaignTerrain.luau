@@ -158,6 +158,40 @@ CampaignTerrain.Backdrops = table.freeze({
 
 local MARGIN, WIDTH, STEP, FADE = 8, 140, 8, 72
 
+-- Fill top of one valley-wall column at (x, z); `ramp` is the smoothstepped distance out from the bounds.
+local function wallTop(style: any, x: number, z: number, ramp: number, z0: number, z1: number): number
+	-- Ridged noise: sharp crests and creases read as eroded karst rather than blobs.
+	local ridge = 1 - math.abs(math.noise(x / 90, z / 90, 7.3))
+	local detail = math.noise(x / 23, z / 23, 1.9)
+	local top = style.Low + (style.High - style.Low) * ramp * (0.55 + 0.45 * ridge) + detail * 6
+	-- Taper into a saddle at the region's ends, so neighbouring walls meet without a sheer face.
+	local fade = math.clamp(math.min(z - z0, z1 - z) / FADE, 0, 1)
+	return style.Floor + (top - style.Floor) * (0.25 + 0.75 * fade * fade * (3 - 2 * fade))
+end
+
+-- Valley-wall surface height at (x, z) (the column's fill top plus the ~2-stud smooth-terrain lift),
+-- or nil outside the walls. Dressing seats models with this: terrain collision for voxels filled in
+-- the same frame is not built yet, so raycasts cannot find it.
+function CampaignTerrain.backdropHeight(regionId: string, bounds: any, x: number, z: number): number?
+	local style = CampaignTerrain.Backdrops[regionId]
+	if not style then
+		return nil
+	end
+	local c, s = bounds.Center, bounds.Size
+	local z0, z1 = c.Z - s.Z / 2, c.Z + s.Z / 2
+	local out = math.abs(x - c.X) - (s.X / 2 + MARGIN)
+	if out < 0 or out > WIDTH or z < z0 or z > z1 then
+		return nil
+	end
+	local i = math.min(math.floor(out / STEP), WIDTH / STEP - 1)
+	local side = if x < c.X then -1 else 1
+	local cx = c.X + side * (s.X / 2 + MARGIN + (i + 0.5) * STEP)
+	local cz = z0 + STEP / 2 + math.floor((z - z0) / STEP) * STEP
+	local ramp = (i + 0.5) * STEP / WIDTH
+	ramp = ramp * ramp * (3 - 2 * ramp)
+	return wallTop(style, cx, cz, ramp, z0, z1) + 2
+end
+
 function CampaignTerrain.backdrop(regionId: string, bounds: any): { any }
 	local t = terrain()
 	local style = CampaignTerrain.Backdrops[regionId]
@@ -174,13 +208,7 @@ function CampaignTerrain.backdrop(regionId: string, bounds: any): { any }
 			local ramp = (i + 0.5) * STEP / WIDTH
 			ramp = ramp * ramp * (3 - 2 * ramp)
 			for z = z0 + STEP / 2, z1, STEP do
-				-- Ridged noise: sharp crests and creases read as eroded karst rather than blobs.
-				local ridge = 1 - math.abs(math.noise(x / 90, z / 90, 7.3))
-				local detail = math.noise(x / 23, z / 23, 1.9)
-				local top = style.Low + (style.High - style.Low) * ramp * (0.55 + 0.45 * ridge) + detail * 6
-				-- Taper into a saddle at the region's ends, so neighbouring walls meet without a sheer face.
-				local fade = math.clamp(math.min(z - z0, z1 - z) / FADE, 0, 1)
-				top = style.Floor + (top - style.Floor) * (0.25 + 0.75 * fade * fade * (3 - 2 * fade))
+				local top = wallTop(style, x, z, ramp, z0, z1)
 				local height = top - style.Floor
 				if height > 2 then
 					local cf = CFrame.new(x, style.Floor + height / 2, z)
@@ -200,6 +228,11 @@ end
 -- base sits on the surface (which renders ~2 studs above a fill's top).
 CampaignTerrain.Pillars = table.freeze({
 	CelestialPagoda = { { -140, -2318, 0, 16 }, { 140, -2318, 0, 16 }, { -140, -2448, 0, 16 }, { 140, -2448, 0, 16 } },
+	SkyCitadel = {
+		{ -4, -2604, -98, 4 }, { 4, -2604, -98, 4 }, -- under the bridge piers (bottom -97); the chasm stays open
+		{ -120, -2700, 0, 17 }, { 120, -2700, 0, 17 }, -- the bastion pagodas
+		{ -70, -2580, -40, 12 }, { 70, -2600, -40, 12 }, { -150, -2860, -40, 13 }, { 150, -2900, -40, 13 }, -- ruined towers
+	},
 } :: { [string]: { { number } } })
 
 -- Rock massifs under platforms that would otherwise hang in the void: {x0, x1, z0, z1, top}, filled
@@ -211,6 +244,15 @@ CampaignTerrain.Massifs = table.freeze({
 		{ -160, 96, -2252, -2292, -31 }, -- under the forecourt (bottom -30)
 		{ -118, 118, -2292, -2472, -4.5 }, -- Wu's hall plateau under the arena floor (y 0; surface stays below), carrying the hall columns
 		{ -36, 36, -2470, -2540, -31 }, -- under the dawn terrace (bottom -30)
+	},
+	SkyCitadel = { -- one peak: saddle ridge, Heaven's Stair spine, landing, bastion, summit, perch
+		{ -30, 30, -2540, -2548, -31 }, -- under the saddle head (bottom -30)
+		{ -12, 12, -2548, -2588, -23 }, -- the ridge under the saddle stair (steps reach -22)
+		{ -12, 12, -2618, -2670, -23 }, -- Heaven's Stair spine (steps reach -22)
+		{ -20, 20, -2640, -2650, -51 }, -- under the first gate landing (bottom -50)
+		{ -72, 72, -2670, -2740, -51 }, -- under the last bastion (bottom -50)
+		{ -96, 96, -2736, -2926, -51 }, -- under the summit plateau (bottom -50.1)
+		{ -14, 14, -2926, -2966, -41 }, -- under the dragon's perch (bottom -40)
 	},
 } :: { [string]: { { number } } })
 
@@ -247,6 +289,15 @@ function CampaignTerrain.pillars(regionId: string): { any }
 		table.insert(drawn, { X = x, Y = (top + bottom) / 2, Z = z, SX = r * 3.2, SY = top - bottom + 8, SZ = r * 3.2, Yaw = 0 })
 	end
 	return drawn
+end
+
+-- A level rock terrace for a set piece on a slope: surface at `top` (fill stops 2 studs under it,
+-- the smooth-terrain lift) over a size x size footprint, reaching 18 studs down into the hillside.
+function CampaignTerrain.pad(x: number, z: number, top: number, size: number)
+	local t = terrain()
+	if t then
+		t:FillBlock(CFrame.new(x, top - 11, z), Vector3.new(size, 18, size), M.Rock)
+	end
 end
 
 -- Clears the voxels a convert() drew (CampaignWorld.Destroy / rebuilds).

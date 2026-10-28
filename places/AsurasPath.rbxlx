@@ -13078,11 +13078,14 @@ return Lighting
 -- Bamboo Pass silhouettes and storytelling (batch 17). All decor: the thicket groves that read as the
 -- pass's walls, frost-capped karst spires beyond them, the Bamboo Gate's lacquered torii lintels, the
 -- whispering shrine's roof and wind ribbons, a fallen jade-root giant by tablet V, a pilgrim's hat and
--- staff where the first swordsman waits, the frost ridge's snow drifts and the moon gate's ring.
+-- staff where the first swordsman waits, the frost ridge's snow drifts and the moon gate's ring, plus
+-- uploaded Han pieces: valley-wall pagodas, shrine lanterns and cauldron, bixies, ridge pines and crags.
 -- Collision lives in BambooPassLayout only.
 local Kit = require(script.Parent:WaitForChild("MonasteryKit") :: ModuleScript)
 local Fx = require(script.Parent:WaitForChild("MonasteryFx") :: ModuleScript)
 local Decor = require(script.Parent:WaitForChild("RegionDecor") :: ModuleScript)
+local Ground = require(script.Parent:WaitForChild("CampaignTerrain") :: ModuleScript)
+local World = require(game:GetService("ReplicatedStorage"):WaitForChild("AsurasPath").Shared.WorldDefinitions)
 
 local Dressing = {}
 local P = Kit.Palette
@@ -13116,6 +13119,33 @@ function Dressing.Build(map: Instance, layout: any, rng: Random)
 		local z = -1160 - i * 54
 		spire(set, -186 + rng:NextNumber(-8, 8), z, rng:NextNumber(60, 110), rng)
 		spire(set, 186 + rng:NextNumber(-8, 8), z - 20, rng:NextNumber(60, 110), rng)
+	end
+	-- High-detail pagodas on the valley walls (seated on CampaignTerrain's backdrop), above the bamboo.
+	for _, c in { { 246, -1330 }, { -246, -1490 } } do
+		local y = Ground.backdropHeight("BambooPass", World.Regions.BambooPass.Bounds, c[1], c[2])
+		if y then
+			Ground.pad(c[1], c[2], y - 1.5, 44) -- a level terrace on the slope under the plinth
+			local at = Vector3.new(c[1], y - 1.5, c[2])
+			Decor.han(set, "AsuraHanHD", "HanPagodaHD", Decor.facing(at, Vector3.new(0, y, c[2])), 1)
+		end
+	end
+	-- The whispering shrine's lanterns and incense cauldron (behind the altar), Baize's guardians.
+	for _, x in { -48, -24 } do
+		Decor.han(set, "AsuraHanKit", "HanLantern", CFrame.new(x, 0, -1336), 1.2)
+	end
+	Decor.han(set, "AsuraHanKit", "HanCauldron", CFrame.new(-36, 0, -1341), 2.2)
+	for _, side in { -1, 1 } do
+		Decor.han(set, "AsuraHanKit", "HanBixie", Decor.facing(Vector3.new(side * 13, 0, -1356), Vector3.new(0, 0, -1356)), 1.5)
+	end
+	-- Pines and crags on the frost ridge, seated on its terrain.
+	for k = 1, 10 do
+		local x, z = rng:NextNumber(112, 156), rng:NextNumber(-1298, -1386)
+		local y = Decor.layoutTop(layout, x, z)
+		if y then
+			local piece = if k &lt;= 7 then "Pine" else ({ "CragA", "CragB", "CragC" })[rng:NextInteger(1, 3)]
+			local scale = if k &lt;= 7 then rng:NextNumber(4, 6) else rng:NextNumber(1, 1.6)
+			Decor.han(set, "AsuraHanKit", piece, CFrame.new(x, y - 0.6, z) * CFrame.Angles(0, rng:NextNumber(0, 2 * math.pi), 0), scale)
+		end
 	end
 	-- Bamboo Gate: two lacquered lintels on the posts (x +/-9, z -1150), a weathered name board.
 	Kit.part(set, "ToriiKasagi", Vector3.new(26, 1.4, 2), CFrame.new(0, 16.6, -1150), P.Lacquer, M.Wood, Kit.decor())
@@ -14240,6 +14270,40 @@ CampaignTerrain.Backdrops = table.freeze({
 
 local MARGIN, WIDTH, STEP, FADE = 8, 140, 8, 72
 
+-- Fill top of one valley-wall column at (x, z); `ramp` is the smoothstepped distance out from the bounds.
+local function wallTop(style: any, x: number, z: number, ramp: number, z0: number, z1: number): number
+	-- Ridged noise: sharp crests and creases read as eroded karst rather than blobs.
+	local ridge = 1 - math.abs(math.noise(x / 90, z / 90, 7.3))
+	local detail = math.noise(x / 23, z / 23, 1.9)
+	local top = style.Low + (style.High - style.Low) * ramp * (0.55 + 0.45 * ridge) + detail * 6
+	-- Taper into a saddle at the region's ends, so neighbouring walls meet without a sheer face.
+	local fade = math.clamp(math.min(z - z0, z1 - z) / FADE, 0, 1)
+	return style.Floor + (top - style.Floor) * (0.25 + 0.75 * fade * fade * (3 - 2 * fade))
+end
+
+-- Valley-wall surface height at (x, z) (the column's fill top plus the ~2-stud smooth-terrain lift),
+-- or nil outside the walls. Dressing seats models with this: terrain collision for voxels filled in
+-- the same frame is not built yet, so raycasts cannot find it.
+function CampaignTerrain.backdropHeight(regionId: string, bounds: any, x: number, z: number): number?
+	local style = CampaignTerrain.Backdrops[regionId]
+	if not style then
+		return nil
+	end
+	local c, s = bounds.Center, bounds.Size
+	local z0, z1 = c.Z - s.Z / 2, c.Z + s.Z / 2
+	local out = math.abs(x - c.X) - (s.X / 2 + MARGIN)
+	if out &lt; 0 or out &gt; WIDTH or z &lt; z0 or z &gt; z1 then
+		return nil
+	end
+	local i = math.min(math.floor(out / STEP), WIDTH / STEP - 1)
+	local side = if x &lt; c.X then -1 else 1
+	local cx = c.X + side * (s.X / 2 + MARGIN + (i + 0.5) * STEP)
+	local cz = z0 + STEP / 2 + math.floor((z - z0) / STEP) * STEP
+	local ramp = (i + 0.5) * STEP / WIDTH
+	ramp = ramp * ramp * (3 - 2 * ramp)
+	return wallTop(style, cx, cz, ramp, z0, z1) + 2
+end
+
 function CampaignTerrain.backdrop(regionId: string, bounds: any): { any }
 	local t = terrain()
 	local style = CampaignTerrain.Backdrops[regionId]
@@ -14256,13 +14320,7 @@ function CampaignTerrain.backdrop(regionId: string, bounds: any): { any }
 			local ramp = (i + 0.5) * STEP / WIDTH
 			ramp = ramp * ramp * (3 - 2 * ramp)
 			for z = z0 + STEP / 2, z1, STEP do
-				-- Ridged noise: sharp crests and creases read as eroded karst rather than blobs.
-				local ridge = 1 - math.abs(math.noise(x / 90, z / 90, 7.3))
-				local detail = math.noise(x / 23, z / 23, 1.9)
-				local top = style.Low + (style.High - style.Low) * ramp * (0.55 + 0.45 * ridge) + detail * 6
-				-- Taper into a saddle at the region's ends, so neighbouring walls meet without a sheer face.
-				local fade = math.clamp(math.min(z - z0, z1 - z) / FADE, 0, 1)
-				top = style.Floor + (top - style.Floor) * (0.25 + 0.75 * fade * fade * (3 - 2 * fade))
+				local top = wallTop(style, x, z, ramp, z0, z1)
 				local height = top - style.Floor
 				if height &gt; 2 then
 					local cf = CFrame.new(x, style.Floor + height / 2, z)
@@ -14282,6 +14340,11 @@ end
 -- base sits on the surface (which renders ~2 studs above a fill's top).
 CampaignTerrain.Pillars = table.freeze({
 	CelestialPagoda = { { -140, -2318, 0, 16 }, { 140, -2318, 0, 16 }, { -140, -2448, 0, 16 }, { 140, -2448, 0, 16 } },
+	SkyCitadel = {
+		{ -4, -2604, -98, 4 }, { 4, -2604, -98, 4 }, -- under the bridge piers (bottom -97); the chasm stays open
+		{ -120, -2700, 0, 17 }, { 120, -2700, 0, 17 }, -- the bastion pagodas
+		{ -70, -2580, -40, 12 }, { 70, -2600, -40, 12 }, { -150, -2860, -40, 13 }, { 150, -2900, -40, 13 }, -- ruined towers
+	},
 } :: { [string]: { { number } } })
 
 -- Rock massifs under platforms that would otherwise hang in the void: {x0, x1, z0, z1, top}, filled
@@ -14293,6 +14356,15 @@ CampaignTerrain.Massifs = table.freeze({
 		{ -160, 96, -2252, -2292, -31 }, -- under the forecourt (bottom -30)
 		{ -118, 118, -2292, -2472, -4.5 }, -- Wu's hall plateau under the arena floor (y 0; surface stays below), carrying the hall columns
 		{ -36, 36, -2470, -2540, -31 }, -- under the dawn terrace (bottom -30)
+	},
+	SkyCitadel = { -- one peak: saddle ridge, Heaven's Stair spine, landing, bastion, summit, perch
+		{ -30, 30, -2540, -2548, -31 }, -- under the saddle head (bottom -30)
+		{ -12, 12, -2548, -2588, -23 }, -- the ridge under the saddle stair (steps reach -22)
+		{ -12, 12, -2618, -2670, -23 }, -- Heaven's Stair spine (steps reach -22)
+		{ -20, 20, -2640, -2650, -51 }, -- under the first gate landing (bottom -50)
+		{ -72, 72, -2670, -2740, -51 }, -- under the last bastion (bottom -50)
+		{ -96, 96, -2736, -2926, -51 }, -- under the summit plateau (bottom -50.1)
+		{ -14, 14, -2926, -2966, -41 }, -- under the dragon's perch (bottom -40)
 	},
 } :: { [string]: { { number } } })
 
@@ -14329,6 +14401,15 @@ function CampaignTerrain.pillars(regionId: string): { any }
 		table.insert(drawn, { X = x, Y = (top + bottom) / 2, Z = z, SX = r * 3.2, SY = top - bottom + 8, SZ = r * 3.2, Yaw = 0 })
 	end
 	return drawn
+end
+
+-- A level rock terrace for a set piece on a slope: surface at `top` (fill stops 2 studs under it,
+-- the smooth-terrain lift) over a size x size footprint, reaching 18 studs down into the hillside.
+function CampaignTerrain.pad(x: number, z: number, top: number, size: number)
+	local t = terrain()
+	if t then
+		t:FillBlock(CFrame.new(x, top - 11, z), Vector3.new(size, 18, size), M.Rock)
+	end
 end
 
 -- Clears the voxels a convert() drew (CampaignWorld.Destroy / rebuilds).
@@ -16565,8 +16646,9 @@ return Service
             <string name="Source">--!strict
 -- ModuleScript: ServerScriptService/AsurasPath/Services/CitadelDressing
 -- Sky Citadel skyline, weather and storytelling (batch 21). All decor and none of it over the
--- summit: a sea of cloud far below the bridge, ruined citadel towers ringing the chasm and the
--- bastion (outside the veil), torn azure banners on the battlements, chain posts that mark the
+-- summit: a sea of mist far below the bridge, ruined Han towers on rock pillars ringing the chasm,
+-- high-detail pagodas flanking the bastion, the paifang at the saddle head (AsuraHanKit / AsuraHanHD;
+-- the rock peak itself is CampaignTerrain's), torn azure banners on the battlements, chain posts that mark the
 -- saddle stair's edges, the dragon's perch with gouged rock and broken chains, and wind-driven
 -- sleet. The summit plateau keeps open air for the Wyrm's flight and landings. Collision lives in
 -- SkyCitadelLayout.
@@ -16592,15 +16674,44 @@ end
 
 function Dressing.Build(map: Instance, _layout: any, rng: Random)
 	local set = Kit.folder("CitadelDressing", map)
-	-- The cloud sea far below, and banks drifting through the chasm.
+	-- The cloud sea far below: low mist banks (the flat glass sheets that hung in the void are gone).
 	for _, c in { { 0, -2600, 360, 200 }, { -170, -2820, 160, 360 }, { 170, -2820, 160, 360 }, { 0, -2960, 360, 80 } } do
-		Kit.part(set, "CloudSea", Vector3.new(c[3], 2, c[4]), CFrame.new(c[1], -96, c[2]), CLOUD, M.Glass, { Collide = false, Query = false, Shadow = false, Transparency = 0.35 })
+		Fx.mist(set, CFrame.new(c[1], -90, c[2]), Vector3.new(c[3], 14, c[4]), 3, 50, CLOUD)
 	end
 	Fx.mist(set, CFrame.new(0, -48, -2600), Vector3.new(200, 30, 120), 4, 40, CLOUD)
 	Fx.mist(set, CFrame.new(0, -40, -2830), Vector3.new(260, 20, 220), 3, 46, CLOUD)
-	-- Ruined towers around the chasm and the summit (outside the veil): the skyline from the bridge.
-	for _, t in { { -70, -2580, 120 }, { 70, -2600, 140 }, { -120, -2690, 150 }, { 120, -2700, 130 }, { -150, -2860, 170 }, { 150, -2900, 160 } } do
-		ruinTower(set, t[1], t[2], t[3], rng)
+	-- Ruined Han towers on the rock pillars CampaignTerrain raises (outside the veil): the skyline from
+	-- the bridge. The box towers remain only as the fallback when the kit is missing.
+	for i, t in { { -70, -2580, 120 }, { 70, -2600, 140 }, { -150, -2860, 170 }, { 150, -2900, 160 } } do
+		local piece = ({ "HanGreatTower", "HanWallTower", "HanWallTower", "HanGreatTower" })[i]
+		local native = if piece == "HanGreatTower" then 37 else 27.5
+		local at = Vector3.new(t[1], -40, t[2])
+		if not Decor.han(set, "AsuraHanKit", piece, Decor.facing(at, Vector3.new(0, -40, -2700)), (t[3] - 40) / native) then
+			ruinTower(set, t[1], t[2], t[3], rng)
+		end
+	end
+	-- Two high-detail pagodas flank the Last Bastion on their own pillars.
+	for _, x in { -120, 120 } do
+		local at = Vector3.new(x, 0, -2700)
+		if not Decor.han(set, "AsuraHanHD", "HanPagodaHD", Decor.facing(at, Vector3.new(0, 0, -2700)), 0.85) then
+			ruinTower(set, x, -2695, 140, rng)
+		end
+	end
+	-- The paifang at the saddle head, facing the dawn terrace it is reached from.
+	Decor.han(set, "AsuraHanHD", "HanGateHD", Decor.facing(Vector3.new(0, 0, -2544), Vector3.new(0, 0, -2400)), 2)
+	-- Gate towers stay as invisible colliders under Han watchtowers.
+	Decor.dressBoxes(map, {
+		GateTower = function(foot, box)
+			return Decor.han(set, "AsuraHanKit", "HanDefenseTower", Decor.facing(foot.Position, Vector3.new(0, 0, -2650)), box.Size.Y / 31) ~= nil
+		end,
+		FirstGateTower = function(foot, box)
+			return Decor.han(set, "AsuraHanKit", "HanDefenseTower", Decor.facing(foot.Position, Vector3.new(0, 0, -2600)), box.Size.Y / 31) ~= nil
+		end,
+	})
+	-- Guardians and lanterns before the Wyrm's fog gate.
+	for _, side in { -1, 1 } do
+		Decor.han(set, "AsuraHanKit", "HanBixie", Decor.facing(Vector3.new(side * 34, 0, -2716), Vector3.new(0, 0, -2716)), 1.6)
+		Decor.han(set, "AsuraHanKit", "HanLantern", CFrame.new(side * 12, 0, -2732), 1.4)
 	end
 	-- Banners on the battlements and the gate towers.
 	for _, spot in { { -71.5, -2690 }, { -71.5, -2722 }, { 71.5, -2690 }, { 71.5, -2722 } } do
@@ -21726,38 +21837,31 @@ function Dressing.Build(map: Instance, _layout: any, rng: Random)
 	-- Corner pagodas (AsuraHanHD) on the rock pillars CampaignTerrain raises outside the hall frame;
 	-- the primitive towers remain only as the fallback when the kit is missing.
 	for _, c in { { -140, -2318 }, { 140, -2318 }, { -140, -2448 }, { 140, -2448 } } do
-		local facing = CFrame.Angles(0, if c[1] &lt; 0 then math.rad(90) else math.rad(-90), 0)
-		if not Decor.han(set, "AsuraHanHD", "HanPagodaHD", CFrame.new(c[1], 0, c[2]) * facing, 0.75) then
+		local at = Vector3.new(c[1], 0, c[2])
+		if not Decor.han(set, "AsuraHanHD", "HanPagodaHD", Decor.facing(at, Vector3.new(0, 0, c[2])), 0.75) then
 			tower(set, c[1] * 114 / 140, c[2], 3)
 		end
 	end
 	-- Hall columns and gate towers keep their layout boxes as invisible colliders under real models:
 	-- lobby-kit lacquer columns with bases and bracket sets, and Han watchtowers at the forecourt.
-	local structure = map:FindFirstChild("Structure")
-	for _, box in if structure then structure:GetChildren() else {} do
-		if not box:IsA("BasePart") then
-			continue
-		end
-		local foot = CFrame.new(box.Position.X, box.Position.Y - box.Size.Y / 2, box.Position.Z)
-		local dressed = false
-		if box.Name == "HallColumn" then
-			dressed = Decor.han(set, "AsuraLobbyKit", "Column_Lacquer", foot, box.Size.Y / 10) ~= nil
-			if dressed then
-				Decor.han(set, "AsuraLobbyKit", "Column_Base", foot, 2)
-				Decor.han(set, "AsuraLobbyKit", "Bracket_Set", foot + Vector3.new(0, box.Size.Y, 0), 1.3)
+	Decor.dressBoxes(map, {
+		HallColumn = function(foot, box)
+			if not Decor.han(set, "AsuraLobbyKit", "Column_Lacquer", foot, box.Size.Y / 10) then
+				return false
 			end
-		elseif box.Name == "GateTower" then
-			dressed = Decor.han(set, "AsuraHanKit", "HanDefenseTower", foot * CFrame.Angles(0, math.pi, 0), box.Size.Y / 31) ~= nil
-		end
-		if dressed then
-			box.Transparency, box.CastShadow = 1, false
-		end
-	end
-	-- The paifang over the head of the cloud stair: the region's threshold.
-	Decor.han(set, "AsuraHanHD", "HanGateHD", CFrame.new(0, 0, -2124), 2)
+			Decor.han(set, "AsuraLobbyKit", "Column_Base", foot, 2)
+			Decor.han(set, "AsuraLobbyKit", "Bracket_Set", foot + Vector3.new(0, box.Size.Y, 0), 1.3)
+			return true
+		end,
+		GateTower = function(foot, box)
+			return Decor.han(set, "AsuraHanKit", "HanDefenseTower", Decor.facing(foot.Position, Vector3.new(0, 0, -2200)), box.Size.Y / 31) ~= nil
+		end,
+	})
+	-- The paifang over the head of the cloud stair, facing the approach from the Colosseum causeway.
+	Decor.han(set, "AsuraHanHD", "HanGateHD", Decor.facing(Vector3.new(0, 0, -2124), Vector3.new(0, 0, -2000)), 2)
 	-- Forecourt guardians and lanterns (AsuraHanKit), clear of the walk to Wu's gate.
 	for _, side in { -1, 1 } do
-		Decor.han(set, "AsuraHanKit", "HanBixie", CFrame.new(side * 44, 0, -2284) * CFrame.Angles(0, math.rad(side * 90), 0), 1.6)
+		Decor.han(set, "AsuraHanKit", "HanBixie", Decor.facing(Vector3.new(side * 44, 0, -2284), Vector3.new(0, 0, -2284)), 1.6)
 		Decor.han(set, "AsuraHanKit", "HanLantern", CFrame.new(side * 30, 0, -2262), 1.4)
 	end
 	-- Pines and crags along the cliff tops either side of the cloud stair.
@@ -23253,6 +23357,40 @@ function Decor.han(parent: Instance, kit: string, piece: string, base: CFrame, s
 	end
 	model.Parent = parent
 	return model
+end
+
+-- A base CFrame at `at` whose front (-Z, the imported models' front) looks toward `target` in plan.
+function Decor.facing(at: Vector3, target: Vector3): CFrame
+	return CFrame.lookAt(at, Vector3.new(target.X, at.Y, target.Z))
+end
+
+-- Highest walkable top of the layout's solids over (x, z) (yaw-aware; veils skipped), or nil.
+function Decor.layoutTop(layout: any, x: number, z: number): number?
+	local best: number? = nil
+	for _, b in layout.Solids do
+		if b.Kind ~= "Veil" then
+			local a = math.rad(b.Yaw)
+			local lx, lz = x - b.X, z - b.Z
+			local u, v = lx * math.cos(a) - lz * math.sin(a), lx * math.sin(a) + lz * math.cos(a)
+			if math.abs(u) &lt;= b.SX / 2 and math.abs(v) &lt;= b.SZ / 2 then
+				local top = b.Y + b.SY / 2
+				best = if best then math.max(best, top) else top
+			end
+		end
+	end
+	return best
+end
+
+-- Dresses named layout boxes with models: rules[name](foot, box) places decor at the box's foot and
+-- returns true; the box then stays only as an invisible collider. Unmatched or failed boxes stay visible.
+function Decor.dressBoxes(map: Instance, rules: { [string]: (CFrame, BasePart) -&gt; boolean })
+	local structure = map:FindFirstChild("Structure")
+	for _, box in if structure then structure:GetChildren() else {} do
+		local rule = box:IsA("BasePart") and rules[box.Name]
+		if rule and rule(CFrame.new(box.Position.X, box.Position.Y - box.Size.Y / 2, box.Position.Z), box :: BasePart) then
+			(box :: BasePart).Transparency, (box :: BasePart).CastShadow = 1, false
+		end
+	end
 end
 
 -- One bamboo stalk with its leaf sprays; decor, so groves never trap bodies or cameras.

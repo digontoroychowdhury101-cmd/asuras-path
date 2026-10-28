@@ -1,8 +1,9 @@
 --!strict
 -- ModuleScript: ServerScriptService/AsurasPath/Services/CitadelDressing
 -- Sky Citadel skyline, weather and storytelling (batch 21). All decor and none of it over the
--- summit: a sea of cloud far below the bridge, ruined citadel towers ringing the chasm and the
--- bastion (outside the veil), torn azure banners on the battlements, chain posts that mark the
+-- summit: a sea of mist far below the bridge, ruined Han towers on rock pillars ringing the chasm,
+-- high-detail pagodas flanking the bastion, the paifang at the saddle head (AsuraHanKit / AsuraHanHD;
+-- the rock peak itself is CampaignTerrain's), torn azure banners on the battlements, chain posts that mark the
 -- saddle stair's edges, the dragon's perch with gouged rock and broken chains, and wind-driven
 -- sleet. The summit plateau keeps open air for the Wyrm's flight and landings. Collision lives in
 -- SkyCitadelLayout.
@@ -28,15 +29,44 @@ end
 
 function Dressing.Build(map: Instance, _layout: any, rng: Random)
 	local set = Kit.folder("CitadelDressing", map)
-	-- The cloud sea far below, and banks drifting through the chasm.
+	-- The cloud sea far below: low mist banks (the flat glass sheets that hung in the void are gone).
 	for _, c in { { 0, -2600, 360, 200 }, { -170, -2820, 160, 360 }, { 170, -2820, 160, 360 }, { 0, -2960, 360, 80 } } do
-		Kit.part(set, "CloudSea", Vector3.new(c[3], 2, c[4]), CFrame.new(c[1], -96, c[2]), CLOUD, M.Glass, { Collide = false, Query = false, Shadow = false, Transparency = 0.35 })
+		Fx.mist(set, CFrame.new(c[1], -90, c[2]), Vector3.new(c[3], 14, c[4]), 3, 50, CLOUD)
 	end
 	Fx.mist(set, CFrame.new(0, -48, -2600), Vector3.new(200, 30, 120), 4, 40, CLOUD)
 	Fx.mist(set, CFrame.new(0, -40, -2830), Vector3.new(260, 20, 220), 3, 46, CLOUD)
-	-- Ruined towers around the chasm and the summit (outside the veil): the skyline from the bridge.
-	for _, t in { { -70, -2580, 120 }, { 70, -2600, 140 }, { -120, -2690, 150 }, { 120, -2700, 130 }, { -150, -2860, 170 }, { 150, -2900, 160 } } do
-		ruinTower(set, t[1], t[2], t[3], rng)
+	-- Ruined Han towers on the rock pillars CampaignTerrain raises (outside the veil): the skyline from
+	-- the bridge. The box towers remain only as the fallback when the kit is missing.
+	for i, t in { { -70, -2580, 120 }, { 70, -2600, 140 }, { -150, -2860, 170 }, { 150, -2900, 160 } } do
+		local piece = ({ "HanGreatTower", "HanWallTower", "HanWallTower", "HanGreatTower" })[i]
+		local native = if piece == "HanGreatTower" then 37 else 27.5
+		local at = Vector3.new(t[1], -40, t[2])
+		if not Decor.han(set, "AsuraHanKit", piece, Decor.facing(at, Vector3.new(0, -40, -2700)), (t[3] - 40) / native) then
+			ruinTower(set, t[1], t[2], t[3], rng)
+		end
+	end
+	-- Two high-detail pagodas flank the Last Bastion on their own pillars.
+	for _, x in { -120, 120 } do
+		local at = Vector3.new(x, 0, -2700)
+		if not Decor.han(set, "AsuraHanHD", "HanPagodaHD", Decor.facing(at, Vector3.new(0, 0, -2700)), 0.85) then
+			ruinTower(set, x, -2695, 140, rng)
+		end
+	end
+	-- The paifang at the saddle head, facing the dawn terrace it is reached from.
+	Decor.han(set, "AsuraHanHD", "HanGateHD", Decor.facing(Vector3.new(0, 0, -2544), Vector3.new(0, 0, -2400)), 2)
+	-- Gate towers stay as invisible colliders under Han watchtowers.
+	Decor.dressBoxes(map, {
+		GateTower = function(foot, box)
+			return Decor.han(set, "AsuraHanKit", "HanDefenseTower", Decor.facing(foot.Position, Vector3.new(0, 0, -2650)), box.Size.Y / 31) ~= nil
+		end,
+		FirstGateTower = function(foot, box)
+			return Decor.han(set, "AsuraHanKit", "HanDefenseTower", Decor.facing(foot.Position, Vector3.new(0, 0, -2600)), box.Size.Y / 31) ~= nil
+		end,
+	})
+	-- Guardians and lanterns before the Wyrm's fog gate.
+	for _, side in { -1, 1 } do
+		Decor.han(set, "AsuraHanKit", "HanBixie", Decor.facing(Vector3.new(side * 34, 0, -2716), Vector3.new(0, 0, -2716)), 1.6)
+		Decor.han(set, "AsuraHanKit", "HanLantern", CFrame.new(side * 12, 0, -2732), 1.4)
 	end
 	-- Banners on the battlements and the gate towers.
 	for _, spot in { { -71.5, -2690 }, { -71.5, -2722 }, { 71.5, -2690 }, { 71.5, -2722 } } do

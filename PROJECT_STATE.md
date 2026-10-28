@@ -1,5 +1,9 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## Han kits in Bamboo Pass and Sky Citadel — 2026-10-28 (Computer A)
+
+Citadel floating boxes, glass cloud sheets and hanging platforms replaced: rock-peak massifs and pillars, Han towers, bastion pagodas, saddle paifang, dressed gate towers, mist. Bamboo: valley-wall pagodas on terraces, shrine lanterns/cauldron, bixies, ridge pines/crags. Pagoda models now face the path. Verifier green. Next: device FPS, human walk.
+
 ## Han architecture kits — 2026-10-26 (Computer A)
 
 Pagoda primitives replaced: uploaded HD pagoda/paifang (original Blender builds, ≤18k tris per part) plus 0 A.D. Han kit (CC BY-SA, credited), MIT pines/rocks. Pagodas stand on terrain pillars; massifs under the gorge, forecourt, hall, terrace; floating roof ring and rafters removed. Verifier green. Next: device FPS, place kits in Bamboo/Citadel. See `outputs/han-kit-2026-10-26/`.
