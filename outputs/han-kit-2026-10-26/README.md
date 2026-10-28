@@ -117,3 +117,14 @@ NVIDIA-render / Intel-scan-out path plus Studio's several panel swapchains is th
 - Next test, done by the user: set 144 Hz, then rerun `tools/qa/RegionFrameTime.luau`. If Play rises toward 58 fps,
   frame display through the Intel path is the cap.
 - If not, set NVIDIA App > Program settings > Roblox Studio > Vertical sync to Off.
+
+### The 24 fps cap — 144 Hz test (28 October 2026, 22:50)
+
+- The display is now 144 Hz (Windows composites at 144.0 Hz). Play still runs at exactly 24.0 fps, with Heartbeat at 24.4.
+  Refresh rate is ruled out.
+- Edit mode, looking at sky: frames are evenly spaced at 55.5 ms (18 fps); the 3–4 s average is 10–12 fps.
+- With every Studio connection closed (the second Studio window and StudioMCP), Edit still runs at 11.9 fps, Heartbeat 18.5.
+  The result was read from Studio's log. The measuring tools are not the cause.
+- Left to test (both are system settings, so the user changes them):
+  - NVIDIA App > Program settings > Roblox Studio > Vertical sync Off.
+  - Windows Graphics settings > Roblox Studio > Power saving (Intel), to remove the NVIDIA-to-Intel frame hand-off.
