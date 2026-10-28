@@ -93,3 +93,27 @@ It is a time-based limiter on this machine, not load and not vsync:
   FrameRateManager Automatic, Process Lasso (no Roblox rules; cannot cap fps), AC power on a high-performance plan.
 - Remaining: the NVIDIA driver profile (a built-in `robloxstudiobeta` profile exists; its values are encoded) — check
   NVIDIA App > Graphics > Global and Program settings > Roblox Studio > Max Frame Rate — or Studio-internal throttling.
+
+### The 24 fps cap — second pass (28 October 2026, 22:30)
+
+Now ruled out by direct reads or live tests:
+- NVIDIA: the driver database (read-only, via `nvapi64`) has a global Max Frame Rate of 144. The Roblox Studio
+  profile has no limiter, only its Optimus GPU choice.
+- Roblox: in-game Maximum Frame Rate was Default (60). It is now set to 240 and Play still ran at 24.
+  Frame Rate Manager Off and quality level 1 both left about 20.5 fps.
+- Studio was the active window, and its render throttle had been released since 22:29 local time.
+- No frame-rate flags at 24, no local flag overrides, and no recording running.
+- The only third-party DLLs in Studio are Nahimic (audio) and Defender; there are no overlay hooks.
+- No power throttling; the Windows timer runs at 1 ms.
+- The project: nothing in `src/`, `default.project.json` or the place sets a frame rate. Working on the Mac first doesn't matter here.
+
+What the measurements show:
+- Heartbeat (client and server) runs at 24, matching rendering. The whole Studio frame loop is paced.
+- Studio uses 0.56 CPU cores; the NVIDIA 3D engine is about 10% busy and Intel DWM about 12%.
+- renderCPU of about 40 ms is spent waiting while showing each frame, not computing.
+
+Display: 60 Hz now, and the panel supports 144 Hz (Settings > Display > Advanced display). The
+NVIDIA-render / Intel-scan-out path plus Studio's several panel swapchains is the remaining suspect.
+- Next test, done by the user: set 144 Hz, then rerun `tools/qa/RegionFrameTime.luau`. If Play rises toward 58 fps,
+  frame display through the Intel path is the cap.
+- If not, set NVIDIA App > Program settings > Roblox Studio > Vertical sync to Off.
