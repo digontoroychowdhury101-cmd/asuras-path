@@ -1,5 +1,9 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## 24 fps cap investigation — 2026-10-28 (Computer A)
+
+Studio Play here is held at exactly 24 fps by a time limiter: unaffected by scene size, focus, power, Roblox caps (-1) or Process Lasso; panel is 60 Hz. Prime suspect: NVIDIA Max Frame Rate (global or Roblox Studio profile). Next: owner checks NVIDIA App, then rerun RegionFrameTime. Notes in `outputs/han-kit-2026-10-26/README.md`.
+
 ## Region frame time — 2026-10-28 (Computer A)
 
 New `tools/qa/RegionFrameTime.luau`. Studio here is capped at 24 fps, so wall time is flat; GPU time 7.4–13.2 ms in Pagoda/Citadel/Bamboo views (worst: Citadel bastion), kits' cost below the ~2–3 ms noise. Next: find the 24 fps cap, uncapped run, phone check. See `outputs/han-kit-2026-10-26/README.md`.

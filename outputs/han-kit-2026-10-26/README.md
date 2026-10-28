@@ -81,3 +81,15 @@ then the same cameras with every kit model hidden on the client. Raw output: `fr
 - Kits shown vs hidden differed by -3 to +3 ms with no consistent sign (idle-clocked GPU under the cap), so the
   kits' GPU cost is below this method's ~2–3 ms resolution. CPU render cost is not separable under the cap.
 - Not measured: phones/tablets, an uncapped run, multiplayer.
+
+### The 24 fps cap — investigation (28 October 2026)
+
+It is a time-based limiter on this machine, not load and not vsync:
+- Hiding 11,567 of 11,998 workspace parts on the client left Play at 24.0 fps (renderCPU stays 40.7 ms = waiting).
+- Studio held window focus for 25/26 and 71/71 samples during runs and Play stayed at 24.0 fps.
+- The panel runs at 60 Hz (Intel UHD scan-out, RTX 4050 renders; `nvidia-smi` lists both Studio processes),
+  and 60 Hz vsync can only give 60/30/20/15, never 24.
+- Ruled out: Roblox `FramerateCap` = -1 in GlobalBasicSettings (player and Studio), no ClientAppSettings FFlags,
+  FrameRateManager Automatic, Process Lasso (no Roblox rules; cannot cap fps), AC power on a high-performance plan.
+- Remaining: the NVIDIA driver profile (a built-in `robloxstudiobeta` profile exists; its values are encoded) — check
+  NVIDIA App > Graphics > Global and Program settings > Roblox Studio > Max Frame Rate — or Studio-internal throttling.
