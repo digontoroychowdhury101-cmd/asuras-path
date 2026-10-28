@@ -128,3 +128,5 @@ NVIDIA-render / Intel-scan-out path plus Studio's several panel swapchains is th
 - Left to test (both are system settings, so the user changes them):
   - NVIDIA App > Program settings > Roblox Studio > Vertical sync Off.
   - Windows Graphics settings > Roblox Studio > Power saving (Intel), to remove the NVIDIA-to-Intel frame hand-off.
+- Vsync Off for Roblox Studio (NVIDIA App), Studio fully restarted, 144 Hz: Edit is still evenly paced at 55.5 ms
+  per frame, and Play at 24.0 fps (Heartbeat 24.5). Vsync is ruled out. Left to test: Studio on the Intel GPU.
