@@ -1,0 +1,25 @@
+scripts 259 bytes 1905234 digest 1174798130 | AsuraAssets children 13 | place AsurasPath.rbxlx
+Game Started
+ready Sheashing123
+CelestialPagoda | 59 kit models | quality Automatic | mem 3009MB
+full/gate: avg 41.7ms p95 42.5ms (24 fps) renderCPU 40.3ms renderGPU 9.19ms
+full/aerial: avg 41.7ms p95 42.4ms (24 fps) renderCPU 40.3ms renderGPU 8.59ms
+full/hall: avg 41.7ms p95 42.3ms (24 fps) renderCPU 40.3ms renderGPU 8.30ms
+kits hidden/gate: avg 41.7ms p95 42.5ms (24 fps) renderCPU 40.2ms renderGPU 8.04ms
+kits hidden/aerial: avg 41.7ms p95 42.5ms (24 fps) renderCPU 40.4ms renderGPU 11.04ms
+kits hidden/hall: avg 41.7ms p95 42.5ms (24 fps) renderCPU 40.3ms renderGPU 10.38ms
+SkyCitadel | 15 kit models | quality Automatic | mem 3014MB
+full/saddle: avg 41.8ms p95 42.7ms (24 fps) renderCPU 40.2ms renderGPU 9.05ms
+full/aerial: avg 41.8ms p95 42.6ms (24 fps) renderCPU 40.2ms renderGPU 7.88ms
+full/bastion: avg 41.7ms p95 42.5ms (24 fps) renderCPU 40.2ms renderGPU 13.15ms
+kits hidden/saddle: avg 41.7ms p95 42.4ms (24 fps) renderCPU 40.3ms renderGPU 8.08ms
+kits hidden/aerial: avg 41.7ms p95 42.3ms (24 fps) renderCPU 40.4ms renderGPU 11.07ms
+kits hidden/bastion: avg 41.7ms p95 42.7ms (24 fps) renderCPU 40.3ms renderGPU 10.30ms
+BambooPass | 17 kit models | quality Automatic | mem 3019MB
+full/valley: avg 41.8ms p95 42.7ms (24 fps) renderCPU 40.1ms renderGPU 8.74ms
+full/arena: avg 41.8ms p95 42.5ms (24 fps) renderCPU 40.1ms renderGPU 8.94ms
+full/shrine: avg 41.7ms p95 42.6ms (24 fps) renderCPU 40.2ms renderGPU 8.59ms
+kits hidden/valley: avg 41.7ms p95 42.4ms (24 fps) renderCPU 40.2ms renderGPU 7.43ms
+kits hidden/arena: avg 41.7ms p95 42.3ms (24 fps) renderCPU 40.2ms renderGPU 7.87ms
+kits hidden/shrine: avg 41.7ms p95 42.5ms (24 fps) renderCPU 40.1ms renderGPU 7.52ms
+Game Stopped

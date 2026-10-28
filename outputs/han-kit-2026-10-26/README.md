@@ -67,3 +67,17 @@ Placement heights come from `CampaignTerrain.backdropHeight` and the layout boxe
 in the same frame has no collision yet. Seating check: every pillar/terrace base is 0–2 studs into rock;
 the worst Bamboo plinth corner is 0.6 above the slope. Footing probe unchanged in every region.
 Screenshots: `regions/`. Not checked: device frame rate, human play.
+
+## Frame time — 28 October 2026 (Computer A, Windows laptop on AC, Studio foreground)
+
+`tools/qa/RegionFrameTime.luau` (Client, during Play): three fixed cameras per region, 240 frames each,
+then the same cameras with every kit model hidden on the client. Raw output: `frame_time_2026-10-28.txt`.
+
+- Wall-clock frames were exactly 41.7 ms (24 fps) in every view, kits shown or hidden: Studio on this
+  machine is frame-capped (UserGameSettings.FramerateCap is not script-readable; check Studio Settings ->
+  Rendering and any GPU-driver frame limit), so wall time cannot show the models' cost here.
+- GPU time per frame (`Stats.RenderGPUFrameTime`): 7.4–13.2 ms everywhere; worst is the Sky Citadel bastion
+  view with both HD pagodas close (13.2 ms), still under the 16.7 ms a 60 fps frame allows on this GPU.
+- Kits shown vs hidden differed by -3 to +3 ms with no consistent sign (idle-clocked GPU under the cap), so the
+  kits' GPU cost is below this method's ~2–3 ms resolution. CPU render cost is not separable under the cap.
+- Not measured: phones/tablets, an uncapped run, multiplayer.
