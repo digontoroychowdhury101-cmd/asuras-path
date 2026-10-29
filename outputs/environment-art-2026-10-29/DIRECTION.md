@@ -20,7 +20,7 @@ References guide original modeling and composition; no photographed or protected
 | [Bamboo Sea Resort trail photograph](https://www.tripadvisor.com/Attraction_Review-g1409092-d1824623-Reviews-Bamboo_Sea_Resort-Jiang_an_County_Sichuan.html) | Path-edge moss, narrow clear route and dense vertical framing. Reference only; third-party photograph. |
 | [South China Karst — UNESCO gallery](https://whc.unesco.org/en/list/1248/gallery/) | Uneven tower groups, vegetated lower slopes and atmospheric separation. Reference only; credited photographers retain rights. |
 
-## Asset priorities, pending running baseline
+## Asset priorities after running baseline
 
 1. Reuse and inspect the three uploaded bamboo culms. Build five deliberately different clump silhouettes (upright, broad fan, leaning, young, broken edge) only where their player-distance appearance supports it. Author improved geometry in a separate Blender collection/version if necessary.
 2. Reuse uploaded Detail_Fern, scanned rocks and erosion pieces for near-ground transitions. Add original litter, root and shoot units if missing. Avoid giving deep shaded bamboo a uniform grass lawn.

@@ -1,0 +1,12 @@
+{
+  "meanUpdateMs": 0.34592083329698653,
+  "globalWind": "6, 0, 2",
+  "active": 112,
+  "part": "Workspace.Map_BambooPass.LivingBambooEntry.GroveClump_2.Bamboo_B.Bamboo_B__Culm",
+  "distance": 23.477567672729492,
+  "rotationDeltaRadians": 0,
+  "registered": 357,
+  "positionDeltaStuds": 0.002555189421400428,
+  "kind": "running-client part-motion diagnostic",
+  "peakUpdateMs": 1.4738750014657853
+}

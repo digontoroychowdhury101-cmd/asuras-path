@@ -30,7 +30,11 @@ local function composition()
 end
 
 task.spawn(function()
-	local focused = nil -- initial focus unknown; subsequent focus events are measured explicitly
+	-- An optional previously attached observer supplies an actual focus event, never an assumed
+	-- foreground state. Without one, the initial state stays unknown until a new event arrives.
+	local observer = _G.AsuraFocusProbe
+	local prior = observer and observer.events and observer.events[#observer.events]
+	local focused = prior and prior.focused
 	local links = {
 		UIS.WindowFocused:Connect(function() focused = true end),
 		UIS.WindowFocusReleased:Connect(function() focused = false end),

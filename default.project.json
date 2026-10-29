@@ -7,9 +7,9 @@
       "$properties": {
         "FallenPartsDestroyHeight": -400,
         "GlobalWind": [
+          6,
           0,
-          0,
-          0
+          2
         ],
         "Gravity": 196.2,
         "StreamingEnabled": false
@@ -50,6 +50,13 @@
       },
       "AsurasPath": {
         "$className": "Folder"
+      },
+      "Terrain": {
+        "$className": "Terrain",
+        "$properties": {
+          "Decoration": true,
+          "GrassLength": 0.4
+        }
       }
     },
     "Lighting": {
@@ -677,6 +684,9 @@
           },
           "SanctuaryEcology": {
             "$path": "src/server/Services/SanctuaryEcology.luau"
+          },
+          "BambooEcology": {
+            "$path": "src/server/Services/BambooEcology.luau"
           }
         }
       }
@@ -712,6 +722,9 @@
       },
       "AsuraSanctuaryDetail": {
         "$path": "assets/models/AsuraSanctuaryDetail.rbxmx"
+      },
+      "AsuraLivingBamboo": {
+        "$path": "assets/models/AsuraLivingBamboo.rbxmx"
       }
     },
     "StarterPlayer": {
@@ -1033,6 +1046,9 @@
             },
             "LandscapeBudget": {
               "$path": "src/client/Controllers/LandscapeBudget.luau"
+            },
+            "FoliageWind": {
+              "$path": "src/client/Controllers/FoliageWind.luau"
             }
           }
         }
@@ -1155,6 +1171,16 @@
           "ColorMapContent": "rbxassetid://129792741117215",
           "NormalMapContent": "rbxassetid://105491792597410",
           "RoughnessMapContent": "rbxassetid://119305204978209"
+        }
+      },
+      "AsuraMeadow": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "Grass",
+          "StudsPerTile": 14,
+          "ColorMapContent": "rbxassetid://128338658336777",
+          "NormalMapContent": "rbxassetid://76500188535913",
+          "RoughnessMapContent": "rbxassetid://129085797627128"
         }
       }
     }

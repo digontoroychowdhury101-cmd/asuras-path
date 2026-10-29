@@ -19,12 +19,13 @@ CampaignTerrain.Kinds = table.freeze({
 
 -- Base material -> uploaded variant (default.project.json MaterialService).
 CampaignTerrain.Overrides = table.freeze({
-	LeafyGrass = "AsuraGrass", Rock = "AsuraCliff", Ground = "AsuraGravel", Basalt = "AsuraBasalt",
+	LeafyGrass = "AsuraGrass", Grass = "AsuraMeadow", Rock = "AsuraCliff", Ground = "AsuraGravel", Basalt = "AsuraBasalt",
 } :: { [string]: string })
 
 -- Terrain colour multiplies the variant's colour map; near-neutral tints keep the photo texture.
 CampaignTerrain.Tints = table.freeze({
 	LeafyGrass = Color3.fromRGB(176, 180, 150), Rock = Color3.fromRGB(150, 150, 152),
+	Grass = Color3.fromRGB(158, 172, 133),
 	Ground = Color3.fromRGB(150, 140, 128), Basalt = Color3.fromRGB(210, 205, 205),
 } :: { [string]: Color3 })
 
@@ -35,6 +36,18 @@ local CLEAR = 8 -- headroom carve() empties above built walkways
 
 local function terrain(): Terrain?
 	return Workspace:FindFirstChildOfClass("Terrain")
+end
+
+-- Newly filled terrain collision becomes queryable after a scheduler yield. Dressing callers use
+-- this measured surface rather than the proxy lid; this preserves grounding on the voxel surface.
+function CampaignTerrain.surfaceHeight(x: number, z: number, fallback: number): number
+	local t = terrain()
+	if not t then return fallback end
+	local params = RaycastParams.new()
+	params.FilterType = Enum.RaycastFilterType.Include
+	params.FilterDescendantsInstances = { t }
+	local hit = Workspace:Raycast(Vector3.new(x, fallback + 8, z), Vector3.new(0, -16, 0), params)
+	return if hit and math.abs(hit.Position.Y - fallback) < 3 then hit.Position.Y else fallback
 end
 
 function CampaignTerrain.applyOverrides()
@@ -90,10 +103,43 @@ function CampaignTerrain.convert(part: BasePart, box: any, solids: { any }?): bo
 	end
 	local size = Vector3.new(box.SX - SIDE_INSET * 2, top - bottom, box.SZ - SIDE_INSET * 2)
 	local cf = CFrame.new(box.X, (top + bottom) / 2, box.Z) * CFrame.Angles(0, math.rad(box.Yaw), 0)
-	t:FillBlock(cf, size, material)
+	if material == M.Snow and size.Y >= VOXEL * 2 and (box.Name == "FrostedCrest" or box.Name == "RidgeNorth") then
+		-- Frost belongs on exposed tops; a solid white ridge reads as an artificial snow wall.
+		-- Keep the exact fill envelope and original collider, changing only the material layers.
+		t:FillBlock(cf, size, M.Rock)
+		t:FillBlock(CFrame.new(box.X, top - 1, box.Z) * CFrame.Angles(0, math.rad(box.Yaw), 0),
+			Vector3.new(size.X, 2, size.Z), M.Snow)
+	else
+		t:FillBlock(cf, size, material)
+	end
 	part.Transparency, part.CastShadow = 1, false
 	part:SetAttribute("AsuraTerrainProxy", box.Kind)
 	return true
+end
+
+-- Paint small irregular openings with true Grass without changing voxel occupancy or navigation.
+-- Deep shaded groves retain LeafyGrass/moss; only these suitable openings receive animated blades.
+local function paintPatch(x: number, z: number, rx: number, rz: number, material: Enum.Material)
+	local t = terrain()
+	if not t then return end
+	for gx = math.floor((x - rx) / VOXEL) * VOXEL, x + rx, VOXEL do
+		for gz = math.floor((z - rz) / VOXEL) * VOXEL, z + rz, VOXEL do
+			local nx, nz = (gx + 2 - x) / rx, (gz + 2 - z) / rz
+			if nx * nx + nz * nz < 0.92 + math.noise(gx / 9, gz / 9, 4.7) * 0.25 then
+				t:ReplaceMaterial(Region3.new(Vector3.new(gx, -12, gz), Vector3.new(gx + VOXEL, 4, gz + VOXEL)),
+					VOXEL, M.LeafyGrass, material)
+			end
+		end
+	end
+end
+
+function CampaignTerrain.grassPatch(x: number, z: number, rx: number, rz: number)
+	paintPatch(x, z, rx, rz, M.Grass)
+end
+
+-- Dry mineral soil below closed bamboo carries litter, while brighter openings keep grass.
+function CampaignTerrain.forestFloor(x: number, z: number, rx: number, rz: number)
+	paintPatch(x, z, rx, rz, M.Ground)
 end
 
 -- Clears terrain above every built (non-proxy) colliding part in `structure`, so natural fills never

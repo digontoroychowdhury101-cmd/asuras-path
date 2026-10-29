@@ -1,0 +1,40 @@
+{
+  "frames": 24,
+  "seconds": 19.93215445899841,
+  "restorationErrors": [],
+  "active": [
+    112
+  ],
+  "kinds": {
+    "Shoot": {
+      "sampledPartNames": [
+        "Workspace.Map_BambooPass.LivingBambooEntry.Bamboo_YoungShoots.Bamboo_YoungShoots"
+      ],
+      "maxTipDistanceStuds": 0.0,
+      "maxRootErrorStuds": 0
+    },
+    "Fern": {
+      "sampledPartNames": [
+        "Workspace.Map_BambooPass.LivingBambooEntry.Ground_Fern.Ground_Fern"
+      ],
+      "maxTipDistanceStuds": 0.0,
+      "maxRootErrorStuds": 0
+    },
+    "Bamboo": {
+      "sampledPartNames": [
+        "Workspace.Map_BambooPass.LivingBambooEntry.GroveClump_1.Bamboo_B.Bamboo_B__Culm"
+      ],
+      "maxTipDistanceStuds": 0.0,
+      "maxRootErrorStuds": 0.00025834955158643425
+    },
+    "Grass": {
+      "sampledPartNames": [
+        "Workspace.Map_BambooPass.LivingBambooEntry.Ground_GrassTuft.Ground_GrassTuft"
+      ],
+      "maxTipDistanceStuds": 0.0,
+      "maxRootErrorStuds": 0
+    }
+  },
+  "meanOfReportedUpdateMs": 0.05407414994082507,
+  "maxReportedPeakMs": 0.7871249981690198
+}

@@ -1,0 +1,121 @@
+{
+  "kind": "seeded Studio running-client diagnostic; original scene and HUD",
+  "stage": "after",
+  "views": [
+    {
+      "name": "entry",
+      "eye": [
+        1.8,
+        6.5,
+        -1124
+      ],
+      "target": [
+        0,
+        7,
+        -1174
+      ],
+      "stand": [
+        0,
+        3.2,
+        -1135
+      ],
+      "files": [
+        "after_entry.jpg"
+      ],
+      "conditions": {
+        "maxFramerate": "unavailable",
+        "studioVersion": "0.745.0.7451137",
+        "editorQuality": "Automatic",
+        "place": "AsurasPath.rbxlx",
+        "terrainDecoration": "unavailable",
+        "wind": "6, 0, 2",
+        "lighting": {
+          "density": 0.3100000023841858,
+          "ambient": "0.223529, 0.254902, 0.239216",
+          "outdoor": "0.403922, 0.45098, 0.411765",
+          "clock": 15.300000190734863,
+          "haze": 1.350000023841858,
+          "exposure": -0.03999999910593033
+        },
+        "camera": "1.79999995, 6.5, -1124, 0.999352694, 0.000359516125, 0.0359748974, 0, 0.999950111, -0.00999302696, -0.0359767005, 0.009986558, 0.999302685",
+        "hud": {
+          "JadeDialogue": false,
+          "AsuraColosseum": true,
+          "BubbleChat": true,
+          "AsuraTouchControls": false,
+          "ProximityPrompts": true,
+          "Chat": true,
+          "AsuraHUD": true,
+          "AsuraVignette": true,
+          "SpectatorWagers": false,
+          "Freecam": true
+        },
+        "fov": 70,
+        "viewport": [
+          1221,
+          503
+        ],
+        "region": "BambooPass",
+        "quality": "Automatic"
+      }
+    },
+    {
+      "name": "ground_transition",
+      "eye": [
+        -10,
+        5.5,
+        -1200
+      ],
+      "target": [
+        -37,
+        2,
+        -1220
+      ],
+      "stand": [
+        -17,
+        3.2,
+        -1205
+      ],
+      "files": [
+        "after_ground_transition.jpg"
+      ],
+      "conditions": {
+        "maxFramerate": "unavailable",
+        "studioVersion": "0.745.0.7451137",
+        "editorQuality": "Automatic",
+        "place": "AsurasPath.rbxlx",
+        "terrainDecoration": "unavailable",
+        "wind": "6, 0, 2",
+        "lighting": {
+          "density": 0.3100000023841858,
+          "ambient": "0.223529, 0.254902, 0.239216",
+          "outdoor": "0.403922, 0.45098, 0.411765",
+          "clock": 15.300000190734863,
+          "haze": 1.350000023841858,
+          "exposure": -0.03999999910593033
+        },
+        "camera": "-10, 5.5, -1200, 0.59522754, -0.083251968, 0.79923296, 0, 0.994618654, 0.103604272, -0.803557277, -0.0616681166, 0.592024386",
+        "hud": {
+          "JadeDialogue": false,
+          "AsuraColosseum": true,
+          "BubbleChat": true,
+          "AsuraTouchControls": false,
+          "ProximityPrompts": true,
+          "Chat": true,
+          "AsuraHUD": true,
+          "AsuraVignette": true,
+          "SpectatorWagers": false,
+          "Freecam": true
+        },
+        "fov": 70,
+        "viewport": [
+          1221,
+          503
+        ],
+        "region": "BambooPass",
+        "quality": "Automatic"
+      }
+    }
+  ],
+  "restoration_errors": []
+}

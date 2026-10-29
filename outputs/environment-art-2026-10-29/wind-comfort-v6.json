@@ -1,0 +1,21 @@
+{
+  "kind": "Actual Respite Settings Reduced motion UI toggle; no Apply/save. Keyboard Backspace reverts preview; Resume closes menu.",
+  "before": {
+    "active": 112,
+    "wind": "6, 0, 2"
+  },
+  "reduced": {
+    "wind": "0.6000000238418579, 0, 0.20000000298023224",
+    "registered": 373,
+    "button": "On",
+    "culmPositionDelta": 0,
+    "active": 0
+  },
+  "restored": {
+    "wind": "6, 0, 2",
+    "menu": false,
+    "registered": 373,
+    "active": 112,
+    "moved": 265
+  }
+}

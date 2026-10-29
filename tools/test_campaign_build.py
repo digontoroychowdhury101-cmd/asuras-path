@@ -12,7 +12,7 @@ import subprocess
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
-SERVER = ["MonasteryKit", "MonasteryFx", "RegionDecor", "PbrAssets", "CampaignBounds", "CampaignTerrain", "BambooDressing", "ColosseumDressing",
+SERVER = ["MonasteryKit", "MonasteryFx", "RegionDecor", "PbrAssets", "CampaignBounds", "CampaignTerrain", "BambooEcology", "BambooDressing", "ColosseumDressing",
           "CryptDressing", "PagodaDressing", "CitadelDressing", "CampaignWorld", "SanctuaryKit", "SanctuaryRails",
           "SanctuaryFrame", "SanctuaryApproach"]
 

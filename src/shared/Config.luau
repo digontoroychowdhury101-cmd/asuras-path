@@ -125,7 +125,7 @@ local Config = {
 		ThighSize = { 0.6, 1.25, 0.6 }, ShinSize = { 0.5, 1.1, 0.5 }, FootSize = { 0.55, 0.35, 0.95 },
 	},
 	Workspace = {
-		Gravity = 196.2, GlobalWind = { 0, 0, 0 },
+		Gravity = 196.2, GlobalWind = { 6, 0, 2 },
 		-- Saved-place / Studio settings. Ordinary Scripts do not assign these.
 		-- -400, not -100: falls off the Citadel bridge (y -20) and bastion reached -100 before their
 		-- CampaignBounds catch could fire, so the engine deleted the body (Studio F20).

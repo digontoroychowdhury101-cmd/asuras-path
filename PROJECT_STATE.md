@@ -1,5 +1,9 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## Living bamboo entry checkpoint — 2026-10-29 (Mac)
+
+Uploaded five original ecology meshes; entry has clustered canopy, grounded undergrowth, native grass, roofed gate and rooted client wind. Late-replication/removal/reduced-motion checks pass; verifier green. Evidence: `outputs/environment-art-2026-10-29/`. Foreground p95 17.57 ms exceeds 16.7 target. Next: shadow cost, root giant, shrine and remaining Bamboo views; other regions unfinished. Push/art approvals recorded.
+
 ## Environment art baseline — 2026-10-29 (Mac)
 
 Canonical Studio digest 1174798130 matches source; no art changed. Eight-view capture tool, 60-second sampler and direction/ledger prepared in `outputs/environment-art-2026-10-29/`. Rojo can serialize Decoration/GrassLength despite unavailable MCP property reads. Rodin balance is zero. Next: confirm local Studio target, unlock Mac, capture running baseline, then implement Bamboo. Commits remain local pending push approval.

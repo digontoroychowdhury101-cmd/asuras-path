@@ -1,0 +1,18 @@
+{
+  "kind": "Studio client diagnostic; temporary tagged model with delayed part/property arrival, two workspace exits/reentries and part deletion. Temporary model destroyed.",
+  "result": {
+    "initial": 373,
+    "cachedAfterPartRemoval": 1149,
+    "cachedFinal": 1149,
+    "added": 374,
+    "final": 373,
+    "reentered1": 374,
+    "ok": true,
+    "removed2": 373,
+    "positionDelta": 0.0057820482179522514,
+    "cachedBefore": 1149,
+    "removed1": 373,
+    "reentered2": 374,
+    "cachedAdded": 1150
+  }
+}

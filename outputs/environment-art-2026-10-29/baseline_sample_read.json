@@ -1,0 +1,10 @@
+[
+  [
+    "execute_luau",
+    {
+      "studio_id": "cdc8d85d-85cd-467c-abed-a14eb0ad526c",
+      "datamodel_type": "Client",
+      "code": "local s=_G.AsuraEnvironmentSample; assert(s and s.Result,s and s.Error or 'sample not complete'); return game:GetService('HttpService'):JSONEncode(s.Result)"
+    }
+  ]
+]

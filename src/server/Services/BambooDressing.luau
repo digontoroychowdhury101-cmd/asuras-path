@@ -10,6 +10,7 @@ local Kit = require(script.Parent:WaitForChild("MonasteryKit") :: ModuleScript)
 local Fx = require(script.Parent:WaitForChild("MonasteryFx") :: ModuleScript)
 local Decor = require(script.Parent:WaitForChild("RegionDecor") :: ModuleScript)
 local Ground = require(script.Parent:WaitForChild("CampaignTerrain") :: ModuleScript)
+local Ecology = require(script.Parent:WaitForChild("BambooEcology") :: ModuleScript)
 local World = require(game:GetService("ReplicatedStorage"):WaitForChild("AsurasPath").Shared.WorldDefinitions)
 
 local Dressing = {}
@@ -17,6 +18,36 @@ local P = Kit.Palette
 local M = Enum.Material
 local rgb = Color3.fromRGB
 local FROST = rgb(222, 230, 234)
+
+-- Two structural bays reuse the Sanctuary's authored joinery and tiled roof. The gate's
+-- existing posts remain its only colliders; the visual opening keeps their original width.
+local function entryGate(parent: Instance, map: Instance): boolean
+	local lib = game:GetService("ServerStorage"):FindFirstChild("AsuraLobbyKit")
+	for _, name in { "Column_Base", "Column_Lacquer", "Bracket_Set", "Beam_Architrave", "Roof_Gallery", "Roof_GalleryEnd", "Gate_Plaque" } do
+		if not lib or not lib:FindFirstChild(name) then return false end
+	end
+	local gate = Kit.folder("BambooRoofedGate", parent)
+	for _, x in { -9, 9 } do
+		Decor.han(gate, "AsuraLobbyKit", "Column_Base", CFrame.new(x, 0.1, -1150), 1.4)
+		Decor.han(gate, "AsuraLobbyKit", "Column_Lacquer", CFrame.new(x, 0.9, -1150), 1.55)
+		Decor.han(gate, "AsuraLobbyKit", "Bracket_Set", CFrame.new(x, 16, -1150), 0.7)
+	end
+	for _, x in { -4.5, 4.5 } do
+		Decor.han(gate, "AsuraLobbyKit", "Beam_Architrave", CFrame.new(x, 14.7, -1150), 1.15)
+	end
+	for _, x in { -8.8, 0, 8.8 } do
+		Decor.han(gate, "AsuraLobbyKit", "Roof_Gallery", CFrame.new(x, 17.8, -1150), 1)
+	end
+	for _, x in { -13.2, 13.2 } do
+		Decor.han(gate, "AsuraLobbyKit", "Roof_GalleryEnd", CFrame.new(x, 17.8, -1150), 1)
+	end
+	Decor.han(gate, "AsuraLobbyKit", "Gate_Plaque", CFrame.new(0, 15.6, -1148.9), 0.8)
+	local structure = map:FindFirstChild("Structure")
+	for _, p in if structure then structure:GetChildren() else {} do
+		if p:IsA("BasePart") and p.Name == "GatePost" then p.Transparency, p.CastShadow = 1, false end
+	end
+	return true
+end
 
 local function spire(parent: Instance, x: number, z: number, height: number, rng: Random)
 	local base = CFrame.new(x, -2, z) * CFrame.Angles(0, rng:NextNumber(0, math.pi), 0)
@@ -33,11 +64,14 @@ end
 
 function Dressing.Build(map: Instance, layout: any, rng: Random)
 	local groves = Kit.folder("BambooGroves", map)
-	for _, grove in layout.Groves or {} do
-		Decor.scatter(grove, rng, function(x, floor, z)
-			Decor.bamboo(groves, x, floor, z, rng)
-		end)
+	for i, grove in layout.Groves or {} do
+		if i ~= 1 and i ~= 4 then
+			Decor.scatter(grove, rng, function(x, floor, z)
+				Decor.bamboo(groves, x, floor, z, rng)
+			end)
+		end
 	end
+	Ecology.Entry(map, layout, rng)
 	local set = Kit.folder("PassDressing", map)
 	-- Karst spires beyond the thicket: the pass's skyline on both sides.
 	for i = 0, 9 do
@@ -72,10 +106,11 @@ function Dressing.Build(map: Instance, layout: any, rng: Random)
 			Decor.han(set, "AsuraHanKit", piece, CFrame.new(x, y - 0.6, z) * CFrame.Angles(0, rng:NextNumber(0, 2 * math.pi), 0), scale)
 		end
 	end
-	-- Bamboo Gate: two lacquered lintels on the posts (x +/-9, z -1150), a weathered name board.
-	Kit.part(set, "ToriiKasagi", Vector3.new(26, 1.4, 2), CFrame.new(0, 16.6, -1150), P.Lacquer, M.Wood, Kit.decor())
-	Kit.part(set, "ToriiNuki", Vector3.new(21, 0.9, 1.2), CFrame.new(0, 13.4, -1150), P.WoodDark, M.Wood, Kit.decor())
-	Kit.part(set, "GateBoard", Vector3.new(3, 2.4, 0.4), CFrame.new(0, 15, -1149.4), P.WoodDark, M.Wood, Kit.decor())
+	if not entryGate(set, map) then
+		Kit.part(set, "ToriiKasagi", Vector3.new(26, 1.4, 2), CFrame.new(0, 16.6, -1150), P.Lacquer, M.Wood, Kit.decor())
+		Kit.part(set, "ToriiNuki", Vector3.new(21, 0.9, 1.2), CFrame.new(0, 13.4, -1150), P.WoodDark, M.Wood, Kit.decor())
+		Kit.part(set, "GateBoard", Vector3.new(3, 2.4, 0.4), CFrame.new(0, 15, -1149.4), P.WoodDark, M.Wood, Kit.decor())
+	end
 	-- The fallen jade-root giant beside tablet V (outside the veil, seen from the path).
 	Kit.part(set, "JadeRootGiant", Vector3.new(38, 6, 6), CFrame.new(-56, 2.9, -1150) * CFrame.Angles(0, math.rad(68), 0),
 		rgb(96, 128, 98), M.Wood, { Collide = false, Query = false, Shadow = true, Shape = Enum.PartType.Cylinder })

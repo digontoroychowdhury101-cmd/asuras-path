@@ -1,0 +1,4 @@
+CALL execute_luau ok
+baseline start: unchanged Bamboo entry
+CALL execute_luau ok
+Started 60-second sample. Play normally; read _G.AsuraEnvironmentSample after completion.

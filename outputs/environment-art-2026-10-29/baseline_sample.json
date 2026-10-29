@@ -1,0 +1,859 @@
+{
+  "workspaceMeshParts": 4598,
+  "place": "AsurasPath.rbxlx",
+  "unknownFocusFrames": 19,
+  "frames": {
+    "p95Ms": 17.21133291721344,
+    "count": 3536,
+    "maxMs": 80.38487285375595,
+    "p50Ms": 16.668958589434624,
+    "p99Ms": 19.150249660015106,
+    "meanMs": 16.972750431001483
+  },
+  "knownForegroundFrames": {
+    "p95Ms": 17.185291275382042,
+    "count": 3517,
+    "maxMs": 80.38487285375595,
+    "p50Ms": 16.66812412440777,
+    "p99Ms": 18.12366582453251,
+    "meanMs": 16.704540513694194
+  },
+  "renderGPU": {
+    "p95Ms": 14.52337484806776,
+    "count": 3536,
+    "maxMs": 44.957831501960754,
+    "p50Ms": 13.151749968528748,
+    "p99Ms": 15.028833411633968,
+    "meanMs": 12.604626759663578
+  },
+  "quality": "Automatic",
+  "studioVersion": "0.745.0.7451137",
+  "endComposition": {
+    "Name": "TriangleComposition",
+    "Children": [
+      {
+        "Sizes": {
+          "Triangles": 868890,
+          "Drawcalls": 184
+        },
+        "Name": "Opaque"
+      },
+      {
+        "Sizes": {
+          "Triangles": 338,
+          "Drawcalls": 17
+        },
+        "Name": "Transparent"
+      },
+      {
+        "Sizes": {
+          "Triangles": 44400,
+          "Drawcalls": 61
+        },
+        "Name": "Terrain"
+      },
+      {
+        "Sizes": {
+          "Triangles": 976,
+          "Drawcalls": 11
+        },
+        "Name": "UI"
+      },
+      {
+        "Sizes": {
+          "Triangles": 354,
+          "Drawcalls": 1
+        },
+        "Name": "Particles"
+      },
+      {
+        "Sizes": {
+          "Triangles": 219826,
+          "Drawcalls": 182
+        },
+        "Name": "Shadows"
+      }
+    ],
+    "Sizes": {
+      "Triangles": 1134784,
+      "Drawcalls": 456
+    }
+  },
+  "snapshots": [
+    {
+      "seconds": 0.05823383333336096,
+      "region": "BambooPass",
+      "memoryMb": 4457.06689453125,
+      "position": [
+        0,
+        3.406249761581421,
+        -1135
+      ],
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 1.05844949999846,
+      "region": "BambooPass",
+      "memoryMb": 4448.94189453125,
+      "position": [
+        0,
+        3.406249761581421,
+        -1135
+      ],
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 2.0745080416654673,
+      "region": "BambooPass",
+      "memoryMb": 4455.08251953125,
+      "position": [
+        0,
+        3.406249761581421,
+        -1135
+      ],
+      "focused": true,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 3.090534499999194,
+      "region": "BambooPass",
+      "memoryMb": 4448.17626953125,
+      "position": [
+        0,
+        3.406249761581421,
+        -1135
+      ],
+      "focused": true,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 4.09104329166621,
+      "region": "BambooPass",
+      "memoryMb": 4447.55126953125,
+      "position": [
+        0,
+        3.406249761581421,
+        -1135
+      ],
+      "focused": true,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 5.091556333332846,
+      "region": "BambooPass",
+      "memoryMb": 4449.50439453125,
+      "position": [
+        0,
+        3.406249761581421,
+        -1135
+      ],
+      "focused": true,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 6.107603124999514,
+      "region": "BambooPass",
+      "memoryMb": 4447.84814453125,
+      "position": [
+        0,
+        3.406249761581421,
+        -1135
+      ],
+      "focused": true,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 7.108138666666491,
+      "region": "BambooPass",
+      "memoryMb": 4447.81689453125,
+      "position": [
+        0,
+        3.406249761581421,
+        -1135
+      ],
+      "focused": true,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 8.124661166666556,
+      "region": "BambooPass",
+      "memoryMb": 4447.94189453125,
+      "position": [
+        0,
+        3.406249761581421,
+        -1135
+      ],
+      "focused": true,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 9.12492354166534,
+      "region": "BambooPass",
+      "memoryMb": 4447.81689453125,
+      "position": [
+        0,
+        3.406249761581421,
+        -1135
+      ],
+      "focused": true,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 10.140909374998955,
+      "region": "BambooPass",
+      "memoryMb": 4448.30126953125,
+      "position": [
+        0,
+        3.406249761581421,
+        -1135
+      ],
+      "focused": true,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 11.140911083331957,
+      "region": "BambooPass",
+      "memoryMb": 4458.36376953125,
+      "position": [
+        0,
+        3.406249761581421,
+        -1135
+      ],
+      "focused": true,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 12.158174000000145,
+      "region": "BambooPass",
+      "memoryMb": 4448.41064453125,
+      "position": [
+        0,
+        3.406249761581421,
+        -1135
+      ],
+      "focused": true,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 13.174848999999085,
+      "region": "BambooPass",
+      "memoryMb": 4448.56689453125,
+      "position": [
+        0,
+        3.406249761581421,
+        -1135
+      ],
+      "focused": true,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 14.191361208331728,
+      "region": "BambooPass",
+      "memoryMb": 4448.50439453125,
+      "position": [
+        0,
+        3.406249761581421,
+        -1135
+      ],
+      "focused": true,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 15.207970833333093,
+      "region": "BambooPass",
+      "memoryMb": 4448.44189453125,
+      "position": [
+        0,
+        3.406249761581421,
+        -1135
+      ],
+      "focused": true,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 16.20862333333207,
+      "region": "BambooPass",
+      "memoryMb": 4448.53564453125,
+      "position": [
+        0,
+        3.406249761581421,
+        -1135
+      ],
+      "focused": true,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 17.226557291665813,
+      "region": "BambooPass",
+      "memoryMb": 4452.34814453125,
+      "position": [
+        0,
+        3.406249761581421,
+        -1135
+      ],
+      "focused": true,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 18.24171533333174,
+      "region": "BambooPass",
+      "memoryMb": 4452.37939453125,
+      "position": [
+        0,
+        3.406249761581421,
+        -1135
+      ],
+      "focused": true,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 19.25832883333169,
+      "region": "BambooPass",
+      "memoryMb": 4464.58251953125,
+      "position": [
+        -3.6260604858398438,
+        3.1875977516174316,
+        -1119.593994140625
+      ],
+      "focused": true,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 20.27542216666552,
+      "region": "BambooPass",
+      "memoryMb": 4471.44189453125,
+      "position": [
+        -8.842310905456543,
+        3.1869025230407715,
+        -1097.433837890625
+      ],
+      "focused": true,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 21.291609333333327,
+      "region": "DesecratedMonastery",
+      "memoryMb": 4473.56689453125,
+      "position": [
+        -14.058669090270996,
+        2.9763433933258057,
+        -1075.273681640625
+      ],
+      "focused": true,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 22.2925435833331,
+      "region": "DesecratedMonastery",
+      "memoryMb": 4473.11376953125,
+      "position": [
+        -19.18937110900879,
+        2.882479667663574,
+        -1053.476806640625
+      ],
+      "focused": true,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 23.308144958333287,
+      "region": "DesecratedMonastery",
+      "memoryMb": 4473.58251953125,
+      "position": [
+        -23.16579246520996,
+        2.812499761581421,
+        -1036.5833740234375
+      ],
+      "focused": true,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 24.30857779166581,
+      "region": "DesecratedMonastery",
+      "memoryMb": 4472.70751953125,
+      "position": [
+        -23.16579246520996,
+        2.812499761581421,
+        -1036.5833740234375
+      ],
+      "focused": true,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 25.325075791666677,
+      "region": "DesecratedMonastery",
+      "memoryMb": 4471.72314453125,
+      "position": [
+        -23.16579246520996,
+        2.812499761581421,
+        -1036.5833740234375
+      ],
+      "focused": true,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 26.34181070833256,
+      "region": "DesecratedMonastery",
+      "memoryMb": 4472.56689453125,
+      "position": [
+        -23.16579246520996,
+        2.812499761581421,
+        -1036.5833740234375
+      ],
+      "focused": true,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 27.341962583332133,
+      "region": "DesecratedMonastery",
+      "memoryMb": 4470.80126953125,
+      "position": [
+        -23.16579246520996,
+        2.812499761581421,
+        -1036.5833740234375
+      ],
+      "focused": true,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 28.342072749999716,
+      "region": "DesecratedMonastery",
+      "memoryMb": 4470.16064453125,
+      "position": [
+        -23.16579246520996,
+        2.812499761581421,
+        -1036.5833740234375
+      ],
+      "focused": true,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 29.359376916665497,
+      "region": "DesecratedMonastery",
+      "memoryMb": 4467.45751953125,
+      "position": [
+        -23.16579246520996,
+        2.812499761581421,
+        -1036.5833740234375
+      ],
+      "focused": true,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 30.359494999998788,
+      "region": "DesecratedMonastery",
+      "memoryMb": 4467.05126953125,
+      "position": [
+        -23.16579246520996,
+        2.812499761581421,
+        -1036.5833740234375
+      ],
+      "focused": true,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 31.38975395833222,
+      "region": "DesecratedMonastery",
+      "memoryMb": 4468.03564453125,
+      "position": [
+        -23.16579246520996,
+        2.812499761581421,
+        -1036.5833740234375
+      ],
+      "focused": true,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 32.39097095833313,
+      "region": "DesecratedMonastery",
+      "memoryMb": 4480.25439453125,
+      "position": [
+        -23.16579246520996,
+        2.812499761581421,
+        -1036.5833740234375
+      ],
+      "focused": true,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 33.40873683333302,
+      "region": "DesecratedMonastery",
+      "memoryMb": 4479.95751953125,
+      "position": [
+        -23.16579246520996,
+        2.812499761581421,
+        -1036.5833740234375
+      ],
+      "focused": true,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 34.42426387499836,
+      "region": "DesecratedMonastery",
+      "memoryMb": 4480.02001953125,
+      "position": [
+        -23.16579246520996,
+        2.812499761581421,
+        -1036.5833740234375
+      ],
+      "focused": true,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 35.440871374999915,
+      "region": "DesecratedMonastery",
+      "memoryMb": 4478.95751953125,
+      "position": [
+        -23.16579246520996,
+        2.812499761581421,
+        -1036.5833740234375
+      ],
+      "focused": true,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 36.4411540000001,
+      "region": "DesecratedMonastery",
+      "memoryMb": 4478.84814453125,
+      "position": [
+        -23.16579246520996,
+        2.812499761581421,
+        -1036.5833740234375
+      ],
+      "focused": true,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 37.44120804166596,
+      "region": "DesecratedMonastery",
+      "memoryMb": 4478.94189453125,
+      "position": [
+        -23.16579246520996,
+        2.812499761581421,
+        -1036.5833740234375
+      ],
+      "focused": true,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 38.45755887499945,
+      "region": "DesecratedMonastery",
+      "memoryMb": 4479.11376953125,
+      "position": [
+        -23.16579246520996,
+        2.812499761581421,
+        -1036.5833740234375
+      ],
+      "focused": true,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 39.47414216666584,
+      "region": "DesecratedMonastery",
+      "memoryMb": 4479.30126953125,
+      "position": [
+        -23.16579246520996,
+        2.812499761581421,
+        -1036.5833740234375
+      ],
+      "focused": true,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 40.47422112499953,
+      "region": "DesecratedMonastery",
+      "memoryMb": 4479.42626953125,
+      "position": [
+        -23.16579246520996,
+        2.812499761581421,
+        -1036.5833740234375
+      ],
+      "focused": true,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 41.49075283333332,
+      "region": "DesecratedMonastery",
+      "memoryMb": 4479.91064453125,
+      "position": [
+        -23.16579246520996,
+        2.812499761581421,
+        -1036.5833740234375
+      ],
+      "focused": true,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 42.490863749999335,
+      "region": "DesecratedMonastery",
+      "memoryMb": 4479.87939453125,
+      "position": [
+        -23.16579246520996,
+        2.812499761581421,
+        -1036.5833740234375
+      ],
+      "focused": true,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 43.50752045833178,
+      "region": "DesecratedMonastery",
+      "memoryMb": 4480.83251953125,
+      "position": [
+        -23.16579246520996,
+        2.812499761581421,
+        -1036.5833740234375
+      ],
+      "focused": true,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 44.50754649999908,
+      "region": "DesecratedMonastery",
+      "memoryMb": 4481.20751953125,
+      "position": [
+        -27.221874237060547,
+        2.812499761581421,
+        -1019.34814453125
+      ],
+      "focused": true,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 45.507814374999725,
+      "region": "DesecratedMonastery",
+      "memoryMb": 4491.05126953125,
+      "position": [
+        -32.35248947143555,
+        2.812499761581421,
+        -997.53662109375
+      ],
+      "focused": true,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 46.50826574999883,
+      "region": "DesecratedMonastery",
+      "memoryMb": 4485.37939453125,
+      "position": [
+        -37.13564682006836,
+        -0.5180331468582153,
+        -977.8162841796875
+      ],
+      "focused": true,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 47.50852120833224,
+      "region": "DesecratedMonastery",
+      "memoryMb": 4488.22314453125,
+      "position": [
+        -41.87064743041992,
+        -7.000001430511475,
+        -957.6915283203125
+      ],
+      "focused": true,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 48.524673124999026,
+      "region": "DesecratedMonastery",
+      "memoryMb": 4496.92626953125,
+      "position": [
+        -4.569241046905518,
+        3.1999993324279785,
+        -906.575927734375
+      ],
+      "focused": true,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 49.525282916665674,
+      "region": "DesecratedMonastery",
+      "memoryMb": 4494.72314453125,
+      "position": [
+        -9.700008392333984,
+        3.199993133544922,
+        -884.764404296875
+      ],
+      "focused": true,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 50.54175120833315,
+      "region": "DesecratedMonastery",
+      "memoryMb": 4497.48876953125,
+      "position": [
+        -11.166633605957031,
+        3.1224770545959473,
+        -878.5302124023438
+      ],
+      "focused": true,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 51.55830816666639,
+      "region": "DesecratedMonastery",
+      "memoryMb": 4498.42626953125,
+      "position": [
+        -11.166633605957031,
+        3.122499704360962,
+        -878.5302124023438
+      ],
+      "focused": true,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 52.5584111666667,
+      "region": "DesecratedMonastery",
+      "memoryMb": 4497.87939453125,
+      "position": [
+        -11.166633605957031,
+        3.122499704360962,
+        -878.5302124023438
+      ],
+      "focused": true,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 53.57493291666651,
+      "region": "DesecratedMonastery",
+      "memoryMb": 4496.25439453125,
+      "position": [
+        -11.166633605957031,
+        3.122499704360962,
+        -878.5302124023438
+      ],
+      "focused": true,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 54.591507624998485,
+      "region": "DesecratedMonastery",
+      "memoryMb": 4496.00439453125,
+      "position": [
+        -11.166633605957031,
+        3.122499704360962,
+        -878.5302124023438
+      ],
+      "focused": true,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 55.591828666665606,
+      "region": "DesecratedMonastery",
+      "memoryMb": 4496.03564453125,
+      "position": [
+        -11.166633605957031,
+        3.122499704360962,
+        -878.5302124023438
+      ],
+      "focused": true,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 56.60855179166538,
+      "region": "DesecratedMonastery",
+      "memoryMb": 4495.78564453125,
+      "position": [
+        -11.166633605957031,
+        3.122499704360962,
+        -878.5302124023438
+      ],
+      "focused": true,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 57.62505979166599,
+      "region": "DesecratedMonastery",
+      "memoryMb": 4495.58251953125,
+      "position": [
+        -11.166633605957031,
+        3.122499704360962,
+        -878.5302124023438
+      ],
+      "focused": true,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 58.64167645833186,
+      "region": "DesecratedMonastery",
+      "memoryMb": 4495.11376953125,
+      "position": [
+        -11.166633605957031,
+        3.122499704360962,
+        -878.5302124023438
+      ],
+      "focused": true,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 59.641802291665954,
+      "region": "DesecratedMonastery",
+      "memoryMb": 4495.33251953125,
+      "position": [
+        -11.166633605957031,
+        3.122499704360962,
+        -878.5302124023438
+      ],
+      "focused": true,
+      "tier": "Detailed"
+    }
+  ],
+  "renderQuality": "Automatic",
+  "workspaceParts": 11998,
+  "seconds": 60.00813612499951,
+  "sampledTravelStuds": 276.3595459461212,
+  "droppedSamples": 0,
+  "unfocusedFrames": 0,
+  "renderCPU": {
+    "p95Ms": 16.265541315078735,
+    "count": 3536,
+    "maxMs": 47.713663429021835,
+    "p50Ms": 15.88379219174385,
+    "p99Ms": 16.43487624824047,
+    "meanMs": 15.034262957649275
+  },
+  "viewport": [
+    1221,
+    503
+  ],
+  "kind": "Studio client 60-second ordinary-gameplay sample; no scene overrides",
+  "startComposition": {
+    "Name": "TriangleComposition",
+    "Children": [
+      {
+        "Sizes": {
+          "Triangles": 275197,
+          "Drawcalls": 85
+        },
+        "Name": "Opaque"
+      },
+      {
+        "Sizes": {
+          "Triangles": 8732,
+          "Drawcalls": 56
+        },
+        "Name": "Transparent"
+      },
+      {
+        "Sizes": {
+          "Triangles": 41668,
+          "Drawcalls": 51
+        },
+        "Name": "Terrain"
+      },
+      {
+        "Sizes": {
+          "Triangles": 84,
+          "Drawcalls": 1
+        },
+        "Name": "Particles"
+      }
+    ],
+    "Sizes": {
+      "Triangles": 325681,
+      "Drawcalls": 193
+    }
+  },
+  "frameCap": "unavailable"
+}

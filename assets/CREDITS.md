@@ -150,3 +150,18 @@ kit and lobby textures, with 0 A.D.'s han_pagoda used only as a proportion refer
 | AsuraHanKit Han buildings, walls, towers, bixie, lantern, cauldron | [0ad/0ad](https://github.com/0ad/0ad) (2,827) | `binaries/data/mods/public/art` meshes and Han textures, by Wildfire Games (https://www.wildfiregames.com/) | CC-BY-SA-3.0 (https://creativecommons.org/licenses/by-sa/3.0/); these meshes stay CC BY-SA, crimson player-colour bake is the only change |
 | AsuraHanKit Pine, BoulderLarge, BoulderSmall | [HungryProton/scatter](https://github.com/HungryProton/scatter) (3,017) | demo models and textures (tints from the demo materials) | MIT, Copyright (c) HungryProton |
 | AsuraHanKit CragA/B/C | [TokisanGames/Terrain3D](https://github.com/TokisanGames/Terrain3D/tree/dc9e6a6324f1e242e8e0f5a52fceb3fc57580c55/project/demo/assets/models) (4,435) | demo RockA/B/C, textured with ambientCG Rock023 | MIT, Copyright (c) Tokisan Games |
+
+## Living bamboo ecology — 29 October 2026
+
+The fern, grass tuft, curled bamboo leaf litter, young shoots and curved bamboo leaf spray in
+`AsuraLivingBamboo` are original geometry and procedural PBR maps authored for this project by
+`tools/blender/living_bamboo_ground.py`. Five single-material meshes total 7,556 evaluated triangles;
+no decimation was used. Editable source and 2048 texture masters are preserved under
+`assets/build/living_bamboo_v1/`; separate 1024 maps are used for upload. `assets/LIVING_BAMBOO_UPLOADED.json`
+records real creator-owned Roblox mesh and PBR map IDs. No third-party art or paid generation was used.
+The original Blender scene was backed up and retained separately.
+
+Entry-grove rocks reuse the already credited HungryProton/scatter BoulderSmall geometry, now scaled
+from its measured 0.60-stud source width to a useful 3.6–6-stud landscape width. Native grass openings
+reuse the previously credited ambientCG Ground037 maps through a Grass-compatible MaterialVariant;
+deep shaded ground retains the existing LeafyGrass/moss material.

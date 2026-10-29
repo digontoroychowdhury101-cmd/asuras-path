@@ -28,7 +28,11 @@ Profiles.Sanctuary.CB_ColorCorrection.TintColor, Profiles.Sanctuary.CB_ColorCorr
 Profiles.Sanctuary.CB_SunRays.Spread = 0.45
 Profiles.Sanctuary.CB_Bloom = { Intensity = 0.25, Threshold = 2.0, Size = 24 }
 Profiles.DesecratedMonastery = profile(15, rgb(38, 43, 52), rgb(67, 73, 83), rgb(206, 220, 238), rgb(143, 155, 170), 0.4, 2.5, -0.22, 0.015, -0.45)
-Profiles.BambooPass = profile(16, rgb(34, 48, 44), rgb(76, 91, 79), rgb(219, 235, 221), rgb(158, 181, 165), 0.38, 2.2, -0.1, 0.06, -0.22)
+Profiles.BambooPass = profile(15.3, rgb(81, 87, 80), rgb(121, 128, 116), rgb(255, 246, 230), rgb(188, 193, 181), 0.31, 1.55, 0.02, 0.045, -0.26)
+Profiles.BambooPass.Lighting.EnvironmentDiffuseScale = 0.65
+Profiles.BambooPass.Lighting.ColorShift_Bottom = rgb(28, 35, 32)
+Profiles.BambooPass.CB_ColorCorrection.TintColor = rgb(255, 246, 231)
+Profiles.BambooPass.CB_ColorCorrection.Contrast = 0.08
 -- Night stays night (ashen sky), but walking it needs crypt-level fill: at 27/47 fill, -0.3 exposure and
 -- 3.8 haze the road, court and arena walls read near-black at character height (Studio F17).
 Profiles.AshColosseum = profile(0.15, rgb(52, 45, 50), rgb(88, 76, 80), rgb(217, 191, 184), rgb(84, 74, 80), 0.42, 2.8, -0.12, 0, -0.4)

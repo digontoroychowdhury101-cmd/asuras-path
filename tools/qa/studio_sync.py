@@ -97,7 +97,8 @@ def variants() -> str:
         lines.append(f'do local v = ms:FindFirstChild("{name}") or Instance.new("MaterialVariant") v.Name = "{name}" '
                      f'v.BaseMaterial = Enum.Material.{p["BaseMaterial"]} v.StudsPerTile = {p["StudsPerTile"]}')
         for key in ('ColorMapContent', 'NormalMapContent', 'RoughnessMapContent', 'MetalnessMapContent'):
-            lines.append(f'v.{key} = Content.fromUri("{p[key]}")')
+            if key in p:
+                lines.append(f'v.{key} = Content.fromUri("{p[key]}")')
         lines.append('v.Parent = ms end')
     lines.append('return "variants " .. #ms:GetChildren()')
     return '\n'.join(lines)

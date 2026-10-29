@@ -1,0 +1,18 @@
+{
+  "kind": "Actual Studio Client run of tools/qa/FoliageLifecycle.luau; stdout result preserved",
+  "sourceDigest": 531655793,
+  "initial": 373,
+  "firstPositionDelta": 0.021248390898108484,
+  "cachedAfterPartRemoval": 1149,
+  "removed2": 373,
+  "ok": true,
+  "added": 374,
+  "reentered2": 374,
+  "reentered1": 374,
+  "cachedFinal": 1149,
+  "final": 373,
+  "secondPositionDelta": 0.021372921764850618,
+  "cachedBefore": 1149,
+  "removed1": 373,
+  "cachedAdded": 1151
+}

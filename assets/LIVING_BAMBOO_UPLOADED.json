@@ -1,0 +1,222 @@
+{
+  "master": "assets/build/living_bamboo_v1/LivingBambooMaster.blend",
+  "library": "AsuraLivingBamboo",
+  "partCount": 5,
+  "meshIds": [
+    "rbxassetid://81752398968484",
+    "rbxassetid://109511720196112",
+    "rbxassetid://122140868243983",
+    "rbxassetid://125682180747589",
+    "rbxassetid://76189316403390"
+  ],
+  "pieces": {
+    "Ground_GrassTuft": {
+      "ColorMap": "rbxassetid://140526033686426",
+      "NormalMap": "rbxassetid://79352866120849",
+      "RoughnessMap": "rbxassetid://81908685503578",
+      "MeshId": "rbxassetid://81752398968484",
+      "MetalnessMap": "rbxassetid://99302435029656",
+      "position": [
+        -0.1767418384552002,
+        0.98833829164505,
+        0.07439076900482178
+      ],
+      "DoubleSided": true,
+      "size": [
+        5.108375549316406,
+        1.9766765832901,
+        5.215145111083984
+      ],
+      "triangles": 704
+    },
+    "Ground_Fern": {
+      "ColorMap": "rbxassetid://140526033686426",
+      "NormalMap": "rbxassetid://79352866120849",
+      "RoughnessMap": "rbxassetid://81908685503578",
+      "MeshId": "rbxassetid://109511720196112",
+      "MetalnessMap": "rbxassetid://99302435029656",
+      "position": [
+        -0.11205267906188965,
+        0.8272435069084167,
+        -0.272297203540802
+      ],
+      "DoubleSided": true,
+      "size": [
+        4.228333950042725,
+        1.685042142868042,
+        4.152592182159424
+      ],
+      "triangles": 2720
+    },
+    "Ground_LeafLitter": {
+      "ColorMap": "rbxassetid://81217906286631",
+      "NormalMap": "rbxassetid://79352866120849",
+      "RoughnessMap": "rbxassetid://111860992283534",
+      "MeshId": "rbxassetid://122140868243983",
+      "MetalnessMap": "rbxassetid://99302435029656",
+      "position": [
+        0.0038154125213623047,
+        0.14720091223716736,
+        0.46793437004089355
+      ],
+      "DoubleSided": true,
+      "size": [
+        9.844060897827148,
+        0.2560761570930481,
+        9.948625564575195
+      ],
+      "triangles": 1360
+    },
+    "Bamboo_LeafSpray": {
+      "ColorMap": "rbxassetid://140526033686426",
+      "NormalMap": "rbxassetid://79352866120849",
+      "RoughnessMap": "rbxassetid://81908685503578",
+      "MeshId": "rbxassetid://125682180747589",
+      "MetalnessMap": "rbxassetid://99302435029656",
+      "position": [
+        0.14396119117736816,
+        0.7965508699417114,
+        -0.42299675941467285
+      ],
+      "DoubleSided": true,
+      "size": [
+        11.442489624023438,
+        1.971930742263794,
+        11.42764663696289
+      ],
+      "triangles": 1952
+    },
+    "Bamboo_YoungShoots": {
+      "ColorMap": "rbxassetid://140526033686426",
+      "NormalMap": "rbxassetid://79352866120849",
+      "RoughnessMap": "rbxassetid://81908685503578",
+      "MeshId": "rbxassetid://76189316403390",
+      "MetalnessMap": "rbxassetid://99302435029656",
+      "position": [
+        0.36316654086112976,
+        2.5473906993865967,
+        0.002826094627380371
+      ],
+      "DoubleSided": true,
+      "size": [
+        2.7149527072906494,
+        5.096872806549072,
+        2.291566848754883
+      ],
+      "triangles": 820
+    }
+  },
+  "totalTriangles": 7556,
+  "source": "assets/build/living_bamboo_v1/LivingBambooGround_Validated.glb",
+  "sourceManifest": "assets/build/living_bamboo_v1/manifest.json",
+  "calibration": {
+    "export": "LeafLitterCalibration.glb",
+    "triangles": 1360,
+    "importScaleUnit": "Stud",
+    "scaleFactor": 1,
+    "orientation": "Y up in Studio; authored ground pivot retained",
+    "validatedBoundsStuds": [
+      9.844,
+      0.256,
+      9.949
+    ]
+  },
+  "textureMasters": {
+    "resolution": [
+      2048,
+      2048
+    ],
+    "exportResolution": [
+      1024,
+      1024
+    ],
+    "normalConvention": "OpenGL tangent-space",
+    "alpha": "opaque geometry; no alpha cards"
+  },
+  "sourceFiles": {
+    "assets/build/living_bamboo_v1/LeafLitterCalibration.glb": {
+      "bytes": 1173852,
+      "sha256": "bdc5b30448de6763d8b1db1bc8de2da60a17cae270b943949543d3e565120742"
+    },
+    "assets/build/living_bamboo_v1/LivingBambooGround.glb": {
+      "bytes": 2370436,
+      "sha256": "d7cb079fba0c91636d0d6999fab8baa60b36c203cc9687437b707e5596b728c8"
+    },
+    "assets/build/living_bamboo_v1/LivingBambooGround_Validated.glb": {
+      "bytes": 2370436,
+      "sha256": "d7cb079fba0c91636d0d6999fab8baa60b36c203cc9687437b707e5596b728c8"
+    },
+    "assets/build/living_bamboo_v1/LivingBambooMaster.blend": {
+      "bytes": 6654305,
+      "sha256": "1b72f8d0371fb332a5fd6384a96b26082eb0fbce0f3a5ecc2feb7c3e4d974c45"
+    },
+    "assets/build/living_bamboo_v1/manifest.json": {
+      "bytes": 2032,
+      "sha256": "f6d76c0ae48daf27df4633eb2616a0eb9174e3148b400c856340781d0f1b3c05"
+    },
+    "assets/build/living_bamboo_v1/maps/BambooDryLitter_Color.png": {
+      "bytes": 477010,
+      "sha256": "eb9d13035cd84685b431db5ad09261b2523f3156a188c46c4939faeba3d812a4"
+    },
+    "assets/build/living_bamboo_v1/maps/BambooDryLitter_Metalness.png": {
+      "bytes": 13995,
+      "sha256": "1a5e57350822bcd0cdb03f4dc88a26b4a281ba170756106cf0e2df2b298a2cd2"
+    },
+    "assets/build/living_bamboo_v1/maps/BambooDryLitter_Normal.png": {
+      "bytes": 179269,
+      "sha256": "427270c1b7998a7536fbdd8712d18db2ccafe9df8e8f5651e8ce60f1cafdc93b"
+    },
+    "assets/build/living_bamboo_v1/maps/BambooDryLitter_Roughness.png": {
+      "bytes": 471180,
+      "sha256": "d67b23c610a1dc1e8aa26c22cdd8459541d9bee4973db4b1f538f499aeef0444"
+    },
+    "assets/build/living_bamboo_v1/maps/BambooLivingGreen_Color.png": {
+      "bytes": 344475,
+      "sha256": "cf9cd7343c62851bbbf70c317f9865740da9a7b94fd101ba4d3f6306cbbfab55"
+    },
+    "assets/build/living_bamboo_v1/maps/BambooLivingGreen_Metalness.png": {
+      "bytes": 13995,
+      "sha256": "1a5e57350822bcd0cdb03f4dc88a26b4a281ba170756106cf0e2df2b298a2cd2"
+    },
+    "assets/build/living_bamboo_v1/maps/BambooLivingGreen_Normal.png": {
+      "bytes": 179269,
+      "sha256": "427270c1b7998a7536fbdd8712d18db2ccafe9df8e8f5651e8ce60f1cafdc93b"
+    },
+    "assets/build/living_bamboo_v1/maps/BambooLivingGreen_Roughness.png": {
+      "bytes": 470752,
+      "sha256": "9152a1ba4890472faa4a1b3e58b32d212ecdf25fee408d73ad7b12e46c912e9a"
+    },
+    "assets/build/living_bamboo_v1/masters/BambooDryLitter_Color.png": {
+      "bytes": 1275897,
+      "sha256": "dc723747cc70bcb558db5b538a62ae4e89a6109d4d643ca6eeaa8177b4167f5c"
+    },
+    "assets/build/living_bamboo_v1/masters/BambooDryLitter_Metalness.png": {
+      "bytes": 55235,
+      "sha256": "5630edf42913f842e57308503a7e0977e721d09027a12c453b8878c22108cd37"
+    },
+    "assets/build/living_bamboo_v1/masters/BambooDryLitter_Normal.png": {
+      "bytes": 739537,
+      "sha256": "eda33a5051e8272fcc77e58e32294344e092fd712ac090e1f6f9e9b2f3a21659"
+    },
+    "assets/build/living_bamboo_v1/masters/BambooDryLitter_Roughness.png": {
+      "bytes": 1448452,
+      "sha256": "60c05a01e9ea3612b46ce3118144db4195c0cc422f8d3924fb08f131f9ea8aea"
+    },
+    "assets/build/living_bamboo_v1/masters/BambooLivingGreen_Color.png": {
+      "bytes": 876451,
+      "sha256": "57fee04a71e0c8a1429d98b745c1cfbfb38c886fdb8bc7b3ca9bca75b35ee50c"
+    },
+    "assets/build/living_bamboo_v1/masters/BambooLivingGreen_Metalness.png": {
+      "bytes": 55235,
+      "sha256": "5630edf42913f842e57308503a7e0977e721d09027a12c453b8878c22108cd37"
+    },
+    "assets/build/living_bamboo_v1/masters/BambooLivingGreen_Normal.png": {
+      "bytes": 739537,
+      "sha256": "eda33a5051e8272fcc77e58e32294344e092fd712ac090e1f6f9e9b2f3a21659"
+    },
+    "assets/build/living_bamboo_v1/masters/BambooLivingGreen_Roughness.png": {
+      "bytes": 1447872,
+      "sha256": "d202f47b8fa1f0ffe629d31c15629fe0f8edfa568110aefcfda0d81204b80d35"
+    }
+  }
+}

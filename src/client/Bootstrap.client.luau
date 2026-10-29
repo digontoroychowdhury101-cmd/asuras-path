@@ -47,6 +47,7 @@ local Handoff = require(controllers:WaitForChild("EncounterHandoffController", t
 local CreatureMotion = require(controllers:WaitForChild("CreatureMotion", timeout) :: ModuleScript)
 local DeviceLayout = require(controllers:WaitForChild("DeviceLayout", timeout) :: ModuleScript)
 local LandscapeBudget = require(controllers:WaitForChild("LandscapeBudget", timeout) :: ModuleScript)
+local FoliageWind = require(controllers:WaitForChild("FoliageWind", timeout) :: ModuleScript)
 local Effects = require(Shared:WaitForChild("Shared"):WaitForChild("EffectsPreference") :: ModuleScript) :: any
 
 local net = Shared:WaitForChild("Net", timeout)
@@ -115,6 +116,7 @@ local handoff = Handoff.new(state, camera, input, ui, function(action: string) s
 local creatures = CreatureMotion.new(state) -- procedural gait/wings/tail for creature bosses
 -- Batch 25: touch/desktop HUD placement, safe-area insets, 44-pt touch targets, controller route to Respite.
 local landscape = LandscapeBudget.new()
+local foliageWind = FoliageWind.new()
 local devices = DeviceLayout.new(ui, input, { input.TouchGui, dialogue.View.Gui },
 	{ Window = spells.Panel.Window, Hint = spells.Panel.Hint }, pause)
 ui.OnPrologue = function() task.spawn(Prologue.Play, ui, input, camera, true) end -- Respite: replay opening
@@ -179,6 +181,7 @@ local function destroy()
 	ending:Destroy()
 	devices:Destroy()
 	landscape:Destroy()
+	foliageWind:Destroy()
 	dialogue:Destroy();wagers:Destroy();mastery:Destroy()
 	spells:Destroy()
 	sakura:Destroy()

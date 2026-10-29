@@ -1,2 +1,13 @@
 # Reproducible snapshot of the starting canonical build, kept locally for comparison.
 baseline-reference.rbxlx
+imported-ecology.rbxlx
+
+# Failed/overlay-obstructed captures remain local; valid comparisons are tracked.
+baseline/
+baseline-run01/
+baseline-run02/
+entry-slice-v1/
+entry-slice-v2/
+entry-slice-v2-ready/
+entry-wind-v5/*
+!entry-wind-v5/motion_summary.json

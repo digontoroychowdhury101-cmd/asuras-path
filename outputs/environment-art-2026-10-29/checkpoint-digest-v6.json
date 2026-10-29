@@ -1,0 +1,16 @@
+{
+  "studio": "23114e37-9b1f-4703-881d-b052215e2a52",
+  "mode": "Edit after tests; scripts synced from canonical",
+  "disk": {
+    "scripts": 261,
+    "bytes": 1928385,
+    "digest": 531655793
+  },
+  "studioResult": {
+    "bytes": 1928385,
+    "wind": "6, 0, 2",
+    "scripts": 261,
+    "pieces": 5,
+    "digest": 531655793
+  }
+}

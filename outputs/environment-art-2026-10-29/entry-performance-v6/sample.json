@@ -1,0 +1,1018 @@
+{
+  "workspaceMeshParts": 5027,
+  "place": "AsurasPath.rbxlx",
+  "unknownFocusFrames": 1393,
+  "frames": {
+    "p95Ms": 67.52920895814896,
+    "count": 1945,
+    "maxMs": 73.45374673604965,
+    "p50Ms": 16.72758348286152,
+    "p99Ms": 68.8280388712883,
+    "meanMs": 30.867105564653183
+  },
+  "knownForegroundFrames": {
+    "count": 0
+  },
+  "renderGPU": {
+    "p95Ms": 14.1372075304389,
+    "count": 1945,
+    "maxMs": 18.879083916544914,
+    "p50Ms": 9.411416947841644,
+    "p99Ms": 15.13724960386753,
+    "meanMs": 7.778872427403757
+  },
+  "quality": "Automatic",
+  "studioVersion": "0.745.0.7451137",
+  "endComposition": {
+    "Name": "TriangleComposition",
+    "Children": [
+      {
+        "Sizes": {
+          "Triangles": 232673,
+          "Drawcalls": 60
+        },
+        "Name": "Opaque"
+      },
+      {
+        "Sizes": {
+          "Triangles": 28,
+          "Drawcalls": 3
+        },
+        "Name": "Transparent"
+      },
+      {
+        "Sizes": {
+          "Triangles": 37628,
+          "Drawcalls": 46
+        },
+        "Name": "Terrain"
+      },
+      {
+        "Sizes": {
+          "Triangles": 516,
+          "Drawcalls": 8
+        },
+        "Name": "Grass"
+      },
+      {
+        "Sizes": {
+          "Triangles": 432,
+          "Drawcalls": 2
+        },
+        "Name": "UI"
+      },
+      {
+        "Sizes": {
+          "Triangles": 50,
+          "Drawcalls": 1
+        },
+        "Name": "Particles"
+      }
+    ],
+    "Sizes": {
+      "Triangles": 271327,
+      "Drawcalls": 120
+    }
+  },
+  "snapshots": [
+    {
+      "seconds": 0.011647416664345656,
+      "region": "BambooPass",
+      "memoryMb": 4637.3642578125,
+      "foliageRegistered": 373,
+      "foliageActive": 112,
+      "position": [
+        0,
+        3.406249761581421,
+        -1135
+      ],
+      "foliageUpdateMs": 0.1952752730280512,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 1.0120745833337423,
+      "region": "BambooPass",
+      "memoryMb": 4637.1611328125,
+      "foliageRegistered": 373,
+      "foliageActive": 112,
+      "position": [
+        0,
+        3.406249761581421,
+        -1135
+      ],
+      "foliageUpdateMs": 0.19305122939423186,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 2.0206066249993455,
+      "region": "BambooPass",
+      "memoryMb": 4636.0517578125,
+      "foliageRegistered": 373,
+      "foliageActive": 112,
+      "position": [
+        0,
+        3.406249761581421,
+        -1135
+      ],
+      "foliageUpdateMs": 0.181844262189144,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 3.0278188749980472,
+      "region": "BambooPass",
+      "memoryMb": 4636.3955078125,
+      "foliageRegistered": 373,
+      "foliageActive": 112,
+      "position": [
+        0,
+        3.406249761581421,
+        -1135
+      ],
+      "foliageUpdateMs": 0.20491597224463476,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 4.028311666665104,
+      "region": "BambooPass",
+      "memoryMb": 4636.0361328125,
+      "foliageRegistered": 373,
+      "foliageActive": 112,
+      "position": [
+        0,
+        3.406249761581421,
+        -1135
+      ],
+      "foliageUpdateMs": 0.19385625037102727,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 5.043949166665698,
+      "region": "BambooPass",
+      "memoryMb": 4634.7705078125,
+      "foliageRegistered": 373,
+      "foliageActive": 112,
+      "position": [
+        0,
+        3.406249761581421,
+        -1135
+      ],
+      "foliageUpdateMs": 0.24369181037713886,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 6.0606402499979595,
+      "region": "BambooPass",
+      "memoryMb": 4630.9736328125,
+      "foliageRegistered": 373,
+      "foliageActive": 112,
+      "position": [
+        0,
+        3.406249761581421,
+        -1135
+      ],
+      "foliageUpdateMs": 0.21054305525467498,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 7.0772272083304415,
+      "region": "BambooPass",
+      "memoryMb": 4630.8955078125,
+      "foliageRegistered": 373,
+      "foliageActive": 112,
+      "position": [
+        0,
+        3.406249761581421,
+        -1135
+      ],
+      "foliageUpdateMs": 0.18619652776881898,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 8.078055791665975,
+      "region": "BambooPass",
+      "memoryMb": 4633.1142578125,
+      "foliageRegistered": 373,
+      "foliageActive": 112,
+      "position": [
+        0,
+        3.406249761581421,
+        -1135
+      ],
+      "foliageUpdateMs": 0.18072199439257766,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 9.078305083330633,
+      "region": "BambooPass",
+      "memoryMb": 4638.9892578125,
+      "foliageRegistered": 373,
+      "foliageActive": 112,
+      "position": [
+        0,
+        3.406249761581421,
+        -1135
+      ],
+      "foliageUpdateMs": 0.18300683026251643,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 10.08165737499803,
+      "region": "BambooPass",
+      "memoryMb": 4637.5048828125,
+      "foliageRegistered": 373,
+      "foliageActive": 112,
+      "position": [
+        0,
+        3.406249761581421,
+        -1135
+      ],
+      "foliageUpdateMs": 0.16239412565721337,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 11.094175916667155,
+      "region": "BambooPass",
+      "memoryMb": 4637.6767578125,
+      "foliageRegistered": 373,
+      "foliageActive": 112,
+      "position": [
+        0,
+        3.406249761581421,
+        -1135
+      ],
+      "foliageUpdateMs": 0.15021857933654664,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 12.094471958331269,
+      "region": "BambooPass",
+      "memoryMb": 4636.8486328125,
+      "foliageRegistered": 373,
+      "foliageActive": 112,
+      "position": [
+        0,
+        3.406249761581421,
+        -1135
+      ],
+      "foliageUpdateMs": 0.2033055553814241,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 13.111070958333585,
+      "region": "BambooPass",
+      "memoryMb": 4637.2548828125,
+      "foliageRegistered": 373,
+      "foliageActive": 112,
+      "position": [
+        0,
+        3.406249761581421,
+        -1135
+      ],
+      "foliageUpdateMs": 0.22069444427567456,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 14.126986833332921,
+      "region": "BambooPass",
+      "memoryMb": 4637.9267578125,
+      "foliageRegistered": 373,
+      "foliageActive": 112,
+      "position": [
+        0,
+        3.406249761581421,
+        -1135
+      ],
+      "foliageUpdateMs": 0.21881625702992066,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 15.127299541665707,
+      "region": "BambooPass",
+      "memoryMb": 4645.6142578125,
+      "foliageRegistered": 373,
+      "foliageActive": 112,
+      "position": [
+        0,
+        3.406249761581421,
+        -1135
+      ],
+      "foliageUpdateMs": 0.22255259539290775,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 16.127463333330525,
+      "region": "BambooPass",
+      "memoryMb": 4641.4892578125,
+      "foliageRegistered": 373,
+      "foliageActive": 112,
+      "position": [
+        0,
+        3.406249761581421,
+        -1135
+      ],
+      "foliageUpdateMs": 0.21900416668358957,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 17.142964041664527,
+      "region": "BambooPass",
+      "memoryMb": 4641.4580078125,
+      "foliageRegistered": 373,
+      "foliageActive": 112,
+      "position": [
+        0,
+        3.406249761581421,
+        -1135
+      ],
+      "foliageUpdateMs": 0.20291530059604737,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 18.143803583330737,
+      "region": "BambooPass",
+      "memoryMb": 4641.7705078125,
+      "foliageRegistered": 373,
+      "foliageActive": 112,
+      "position": [
+        0,
+        3.406249761581421,
+        -1135
+      ],
+      "foliageUpdateMs": 0.22062146925205617,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 19.144399583332415,
+      "region": "BambooPass",
+      "memoryMb": 4641.4111328125,
+      "foliageRegistered": 373,
+      "foliageActive": 112,
+      "position": [
+        0,
+        3.406249761581421,
+        -1135
+      ],
+      "foliageUpdateMs": 0.22184999997989507,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 20.16075116666616,
+      "region": "BambooPass",
+      "memoryMb": 4647.2080078125,
+      "foliageRegistered": 373,
+      "foliageActive": 112,
+      "position": [
+        0,
+        3.406249761581421,
+        -1135
+      ],
+      "foliageUpdateMs": 0.2443194449369912,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 21.176502124999388,
+      "region": "BambooPass",
+      "memoryMb": 4641.3017578125,
+      "foliageRegistered": 373,
+      "foliageActive": 112,
+      "position": [
+        0,
+        3.406249761581421,
+        -1135
+      ],
+      "foliageUpdateMs": 0.23988114743155703,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 22.17702879166609,
+      "region": "BambooPass",
+      "memoryMb": 4641.0673828125,
+      "foliageRegistered": 373,
+      "foliageActive": 112,
+      "position": [
+        0,
+        3.406249761581421,
+        -1135
+      ],
+      "foliageUpdateMs": 0.21572336088150326,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 23.193985541664006,
+      "region": "BambooPass",
+      "memoryMb": 4641.2548828125,
+      "foliageRegistered": 373,
+      "foliageActive": 112,
+      "position": [
+        0,
+        3.4051480293273926,
+        -1135
+      ],
+      "foliageUpdateMs": 0.22510486111665765,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 24.23326824999822,
+      "region": "BambooPass",
+      "memoryMb": 4644.0673828125,
+      "foliageRegistered": 373,
+      "foliageActive": 112,
+      "position": [
+        0,
+        3.406249761581421,
+        -1135
+      ],
+      "foliageUpdateMs": 0.22076867803818837,
+      "focused": false,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 25.300922583330248,
+      "region": "BambooPass",
+      "memoryMb": 4641.1923828125,
+      "foliageRegistered": 373,
+      "foliageActive": 112,
+      "position": [
+        0,
+        3.406249761581421,
+        -1135
+      ],
+      "foliageUpdateMs": 0.2244368053652579,
+      "focused": false,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 26.36547299999802,
+      "region": "BambooPass",
+      "memoryMb": 4639.8173828125,
+      "foliageRegistered": 373,
+      "foliageActive": 112,
+      "position": [
+        0,
+        3.406249761581421,
+        -1135
+      ],
+      "foliageUpdateMs": 0.31639754095402944,
+      "focused": false,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 27.43233266666357,
+      "region": "BambooPass",
+      "memoryMb": 4608.2392578125,
+      "foliageRegistered": 373,
+      "foliageActive": 112,
+      "position": [
+        0,
+        3.406249761581421,
+        -1135
+      ],
+      "foliageUpdateMs": 0.20947267741993542,
+      "focused": false,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 28.49954641666409,
+      "region": "BambooPass",
+      "memoryMb": 4608.4267578125,
+      "foliageRegistered": 373,
+      "foliageActive": 112,
+      "position": [
+        0,
+        3.406249761581421,
+        -1135
+      ],
+      "foliageUpdateMs": 0.24643852449400105,
+      "focused": false,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 29.5651569583315,
+      "region": "BambooPass",
+      "memoryMb": 4610.5205078125,
+      "foliageRegistered": 373,
+      "foliageActive": 112,
+      "position": [
+        -4.610737323760986,
+        3.406249761581421,
+        -1144.1441650390625
+      ],
+      "foliageUpdateMs": 0.17527732243103006,
+      "focused": false,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 30.567304916665307,
+      "region": "BambooPass",
+      "memoryMb": 4607.5517578125,
+      "foliageRegistered": 373,
+      "foliageActive": 112,
+      "position": [
+        -13.448234558105469,
+        3.4062492847442627,
+        -1163.540283203125
+      ],
+      "foliageUpdateMs": 0.2550263884283292,
+      "focused": false,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 31.634336625000287,
+      "region": "BambooPass",
+      "memoryMb": 4607.3017578125,
+      "foliageRegistered": 373,
+      "foliageActive": 112,
+      "position": [
+        -24.209524154663086,
+        4.06870698928833,
+        -1184.884033203125
+      ],
+      "foliageUpdateMs": 0.33675887983112945,
+      "focused": false,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 32.69900283333118,
+      "region": "BambooPass",
+      "memoryMb": 4613.1611328125,
+      "foliageRegistered": 373,
+      "foliageActive": 112,
+      "position": [
+        -34.97088623046875,
+        3.4062492847442627,
+        -1206.227783203125
+      ],
+      "foliageUpdateMs": 0.3280416665981394,
+      "focused": false,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 33.69999529166671,
+      "region": "BambooPass",
+      "memoryMb": 4612.9267578125,
+      "foliageRegistered": 373,
+      "foliageActive": 112,
+      "position": [
+        -37.962894439697266,
+        3.4020936489105225,
+        -1223.8074951171875
+      ],
+      "foliageUpdateMs": 0.3451994537603927,
+      "focused": false,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 34.765423791664944,
+      "region": "BambooPass",
+      "memoryMb": 4610.7548828125,
+      "foliageRegistered": 373,
+      "foliageActive": 112,
+      "position": [
+        -37.98572540283203,
+        3.403927803039551,
+        -1241.4173583984375
+      ],
+      "foliageUpdateMs": 0.2689610654535917,
+      "focused": false,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 35.76656066666692,
+      "region": "BambooPass",
+      "memoryMb": 4611.9267578125,
+      "foliageRegistered": 373,
+      "foliageActive": 112,
+      "position": [
+        -37.98681640625,
+        5.746335029602051,
+        -1248.1197509765625
+      ],
+      "foliageUpdateMs": 0.30098263905529166,
+      "focused": false,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 36.832587416665774,
+      "region": "BambooPass",
+      "memoryMb": 4609.5517578125,
+      "foliageRegistered": 373,
+      "foliageActive": 112,
+      "position": [
+        -37.93193817138672,
+        8.082175254821777,
+        -1248.6666259765625
+      ],
+      "foliageUpdateMs": 0.35305486107972683,
+      "focused": false,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 37.898956333330716,
+      "region": "BambooPass",
+      "memoryMb": 4610.3642578125,
+      "foliageRegistered": 373,
+      "foliageActive": 112,
+      "position": [
+        -37.93193817138672,
+        8.082175254821777,
+        -1248.6666259765625
+      ],
+      "foliageUpdateMs": 0.3175416664210691,
+      "focused": false,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 38.96645712499958,
+      "region": "BambooPass",
+      "memoryMb": 4609.9580078125,
+      "foliageRegistered": 373,
+      "foliageActive": 112,
+      "position": [
+        -37.93193817138672,
+        8.082175254821777,
+        -1248.6666259765625
+      ],
+      "foliageUpdateMs": 0.2894795080002771,
+      "focused": false,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 40.033102458331996,
+      "region": "BambooPass",
+      "memoryMb": 4609.7080078125,
+      "foliageRegistered": 373,
+      "foliageActive": 112,
+      "position": [
+        -32.798526763916016,
+        3.4062209129333496,
+        -1238.5589599609375
+      ],
+      "foliageUpdateMs": 0.3129694445912416,
+      "focused": false,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 41.03319679166452,
+      "region": "BambooPass",
+      "memoryMb": 4609.3017578125,
+      "foliageRegistered": 373,
+      "foliageActive": 112,
+      "position": [
+        -32.798526763916016,
+        3.406249761581421,
+        -1238.5589599609375
+      ],
+      "foliageUpdateMs": 0.3407834701051126,
+      "focused": false,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 42.098321374996885,
+      "region": "BambooPass",
+      "memoryMb": 4608.5986328125,
+      "foliageRegistered": 373,
+      "foliageActive": 112,
+      "position": [
+        -32.798526763916016,
+        3.406249761581421,
+        -1238.5589599609375
+      ],
+      "foliageUpdateMs": 0.34859631150688014,
+      "focused": false,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 43.1030119166644,
+      "region": "BambooPass",
+      "memoryMb": 4609.0830078125,
+      "foliageRegistered": 373,
+      "foliageActive": 112,
+      "position": [
+        -32.798526763916016,
+        3.406249761581421,
+        -1238.5589599609375
+      ],
+      "foliageUpdateMs": 0.272349043669118,
+      "focused": false,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 44.16573774999779,
+      "region": "BambooPass",
+      "memoryMb": 4608.6455078125,
+      "foliageRegistered": 373,
+      "foliageActive": 112,
+      "position": [
+        -32.798526763916016,
+        3.406249761581421,
+        -1238.5589599609375
+      ],
+      "foliageUpdateMs": 0.3026277321862194,
+      "focused": false,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 45.166030249998585,
+      "region": "BambooPass",
+      "memoryMb": 4608.8173828125,
+      "foliageRegistered": 373,
+      "foliageActive": 112,
+      "position": [
+        -32.798526763916016,
+        3.406249761581421,
+        -1238.5589599609375
+      ],
+      "foliageUpdateMs": 0.344636805675691,
+      "focused": false,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 46.23289254166593,
+      "region": "BambooPass",
+      "memoryMb": 4607.8642578125,
+      "foliageRegistered": 373,
+      "foliageActive": 112,
+      "position": [
+        -32.798526763916016,
+        3.406249761581421,
+        -1238.5589599609375
+      ],
+      "foliageUpdateMs": 0.3461707649980557,
+      "focused": false,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 47.299508749998495,
+      "region": "BambooPass",
+      "memoryMb": 4608.3173828125,
+      "foliageRegistered": 373,
+      "foliageActive": 112,
+      "position": [
+        -32.798526763916016,
+        3.406249761581421,
+        -1238.5589599609375
+      ],
+      "foliageUpdateMs": 0.3079090276514762,
+      "focused": false,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 48.36497624999902,
+      "region": "BambooPass",
+      "memoryMb": 4608.1142578125,
+      "foliageRegistered": 373,
+      "foliageActive": 112,
+      "position": [
+        -32.798526763916016,
+        3.406249761581421,
+        -1238.5589599609375
+      ],
+      "foliageUpdateMs": 0.2926646176077708,
+      "focused": false,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 49.36500504166543,
+      "region": "BambooPass",
+      "memoryMb": 4607.6142578125,
+      "foliageRegistered": 373,
+      "foliageActive": 112,
+      "position": [
+        -32.798526763916016,
+        3.406249761581421,
+        -1238.5589599609375
+      ],
+      "foliageUpdateMs": 0.40456944443576504,
+      "focused": false,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 50.36543024999992,
+      "region": "BambooPass",
+      "memoryMb": 4606.8955078125,
+      "foliageRegistered": 373,
+      "foliageActive": 112,
+      "position": [
+        -32.798526763916016,
+        3.406249761581421,
+        -1238.5589599609375
+      ],
+      "foliageUpdateMs": 0.36890972223773133,
+      "focused": false,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 51.365553999999975,
+      "region": "BambooPass",
+      "memoryMb": 4607.0205078125,
+      "foliageRegistered": 373,
+      "foliageActive": 112,
+      "position": [
+        -32.798526763916016,
+        3.406249761581421,
+        -1238.5589599609375
+      ],
+      "foliageUpdateMs": 0.32589139366001424,
+      "focused": false,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 52.4317622916642,
+      "region": "BambooPass",
+      "memoryMb": 4607.4267578125,
+      "foliageRegistered": 373,
+      "foliageActive": 112,
+      "position": [
+        -32.798526763916016,
+        3.406249761581421,
+        -1238.5589599609375
+      ],
+      "foliageUpdateMs": 0.27592638895536464,
+      "focused": false,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 53.43189054166578,
+      "region": "BambooPass",
+      "memoryMb": 4607.0517578125,
+      "foliageRegistered": 373,
+      "foliageActive": 112,
+      "position": [
+        -32.798526763916016,
+        3.406249761581421,
+        -1238.5589599609375
+      ],
+      "foliageUpdateMs": 0.35382582010228003,
+      "focused": false,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 54.43240154166415,
+      "region": "BambooPass",
+      "memoryMb": 4607.2861328125,
+      "foliageRegistered": 373,
+      "foliageActive": 112,
+      "position": [
+        -32.798526763916016,
+        3.406249761581421,
+        -1238.5589599609375
+      ],
+      "foliageUpdateMs": 0.3557930557387105,
+      "focused": false,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 55.49830649999785,
+      "region": "BambooPass",
+      "memoryMb": 4606.6142578125,
+      "foliageRegistered": 373,
+      "foliageActive": 112,
+      "position": [
+        -32.798526763916016,
+        3.406249761581421,
+        -1238.5589599609375
+      ],
+      "foliageUpdateMs": 0.3824651643388607,
+      "focused": false,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 56.56994170833059,
+      "region": "BambooPass",
+      "memoryMb": 4606.8017578125,
+      "foliageRegistered": 373,
+      "foliageActive": 112,
+      "position": [
+        -32.798526763916016,
+        3.406249761581421,
+        -1238.5589599609375
+      ],
+      "foliageUpdateMs": 0.27345277776475996,
+      "focused": false,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 57.6321810833324,
+      "region": "BambooPass",
+      "memoryMb": 4606.6298828125,
+      "foliageRegistered": 373,
+      "foliageActive": 112,
+      "position": [
+        -32.798526763916016,
+        3.406249761581421,
+        -1238.5589599609375
+      ],
+      "foliageUpdateMs": 0.3407826389472272,
+      "focused": false,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 58.63645645833094,
+      "region": "BambooPass",
+      "memoryMb": 4606.9111328125,
+      "foliageRegistered": 373,
+      "foliageActive": 112,
+      "position": [
+        -32.798526763916016,
+        3.406249761581421,
+        -1238.5589599609375
+      ],
+      "foliageUpdateMs": 0.3850259562285396,
+      "focused": false,
+      "tier": "Detailed"
+    },
+    {
+      "seconds": 59.69817616666478,
+      "region": "BambooPass",
+      "memoryMb": 4607.3798828125,
+      "foliageRegistered": 373,
+      "foliageActive": 112,
+      "position": [
+        -32.798526763916016,
+        3.406249761581421,
+        -1238.5589599609375
+      ],
+      "foliageUpdateMs": 0.2770293715121759,
+      "focused": false,
+      "tier": "Detailed"
+    }
+  ],
+  "renderQuality": "Automatic",
+  "workspaceParts": 12424,
+  "seconds": 60.03164479166662,
+  "sampledTravelStuds": 136.58729338645935,
+  "droppedSamples": 0,
+  "unfocusedFrames": 552,
+  "renderCPU": {
+    "p95Ms": 16.107458621263504,
+    "count": 1945,
+    "maxMs": 32.82870724797249,
+    "p50Ms": 15.364667400717735,
+    "p99Ms": 31.67758509516716,
+    "meanMs": 12.436428213860735
+  },
+  "viewport": [
+    1221,
+    503
+  ],
+  "kind": "Studio client 60-second ordinary-gameplay sample; no scene overrides",
+  "startComposition": {
+    "Name": "TriangleComposition",
+    "Children": [
+      {
+        "Sizes": {
+          "Triangles": 856650,
+          "Drawcalls": 162
+        },
+        "Name": "Opaque"
+      },
+      {
+        "Sizes": {
+          "Triangles": 98,
+          "Drawcalls": 8
+        },
+        "Name": "Transparent"
+      },
+      {
+        "Sizes": {
+          "Triangles": 79070,
+          "Drawcalls": 105
+        },
+        "Name": "Terrain"
+      },
+      {
+        "Sizes": {
+          "Triangles": 29382,
+          "Drawcalls": 20
+        },
+        "Name": "Grass"
+      },
+      {
+        "Sizes": {
+          "Triangles": 320,
+          "Drawcalls": 2
+        },
+        "Name": "UI"
+      },
+      {
+        "Sizes": {
+          "Triangles": 268,
+          "Drawcalls": 1
+        },
+        "Name": "Particles"
+      },
+      {
+        "Sizes": {
+          "Triangles": 1166700,
+          "Drawcalls": 575
+        },
+        "Name": "Shadows"
+      }
+    ],
+    "Sizes": {
+      "Triangles": 2132488,
+      "Drawcalls": 873
+    }
+  },
+  "frameCap": "unavailable"
+}

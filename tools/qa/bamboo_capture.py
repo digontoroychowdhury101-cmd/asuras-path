@@ -73,10 +73,14 @@ def main():
         state = call(client, sid, "get_studio_state")[1]
         if "Client" not in state or "Server" not in state:
             raise RuntimeError("Start Play in the confirmed instance before capturing")
+        lua(client, sid, "Client", """local pg=game.Players.LocalPlayer.PlayerGui
+assert(not pg:FindFirstChild('AsuraPrologue'),'wait for the normal prologue to finish before capturing')
+local card=pg:FindFirstChild('ControlsCard',true)
+assert(not card or not card.Visible,'close the normal controls card with Backspace before capturing')
+return 'normal gameplay HUD ready'""")
         lua(client, sid, "Server", """local p=game:GetService('Players'):GetPlayers()[1]
-local cs=require(game.ServerScriptService.AsurasPath.Services.CharacterService)
-assert(p and cs.GetEntity(p.UserId),'player entity not ready')
-_G.AsuraBambooCaptureOrigin={UserId=p.UserId,Frame=cs.GetEntity(p.UserId).Model:GetPivot()}
+assert(p and p.Character and p.Character:FindFirstChild('HumanoidRootPart'),'player character not ready')
+_G.AsuraBambooCaptureOrigin={UserId=p.UserId,Frame=p.Character:GetPivot()}
 return 'saved server origin'""")
         saved_server = True
         lua(client, sid, "Client", """local c=workspace.CurrentCamera
@@ -86,7 +90,10 @@ return 'saved camera'""")
         for name in names:
             eye, target, stand = CAMERAS[name]
             lua(client, sid, "Server", f"""local s=_G.AsuraBambooCaptureOrigin
-require(game.ServerScriptService.AsurasPath.Services.CharacterService).Teleport(s.UserId,CFrame.new({vector(stand)}))
+local p=game:GetService('Players'):GetPlayerByUserId(s.UserId)
+assert(p and p.Character,'player character missing')
+p.Character:PivotTo(CFrame.new({vector(stand)}))
+p.Character.HumanoidRootPart.AssemblyLinearVelocity=Vector3.zero
 return 'positioned'""")
             lua(client, sid, "Client", f"""local rs=game:GetService('RunService')
 rs:UnbindFromRenderStep('{BINDING}')
@@ -135,7 +142,8 @@ _G.AsuraBambooCaptureCamera=nil return 'camera restored'""")
         if saved_server:
             try:
                 lua(client, sid, "Server", """local s=_G.AsuraBambooCaptureOrigin
-if s then require(game.ServerScriptService.AsurasPath.Services.CharacterService).Teleport(s.UserId,s.Frame) end
+local p=s and game:GetService('Players'):GetPlayerByUserId(s.UserId)
+if p and p.Character then p.Character:PivotTo(s.Frame) p.Character.HumanoidRootPart.AssemblyLinearVelocity=Vector3.zero end
 _G.AsuraBambooCaptureOrigin=nil return 'player restored'""")
             except Exception as exc:
                 manifest["restoration_errors"].append(str(exc))
