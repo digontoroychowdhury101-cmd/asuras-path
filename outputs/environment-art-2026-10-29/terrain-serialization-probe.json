@@ -1,0 +1,17 @@
+{
+  "date": "2026-10-29",
+  "kind": "offline Rojo property-serialization probe; no game modification or rendering evidence",
+  "serializer": "work/bin/rojo/rojo",
+  "returncode": 0,
+  "serializedTerrainProperties": {
+    "Decoration": true,
+    "GrassLength": 0.4
+  },
+  "studioReadContext": {
+    "version": "0.745.0.7451137",
+    "mode": "Edit",
+    "execute_luau": "Decoration and GrassLength return not a valid member",
+    "inspect_instance": "Terrain properties array is empty"
+  },
+  "conclusion": "The canonical Rojo tree can serialize the documented grass properties. Runtime visibility and animation must still be verified after opening a build with those properties. No change has been made to the game yet."
+}

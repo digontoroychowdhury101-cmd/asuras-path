@@ -2,7 +2,7 @@
 
 ## Environment art baseline — 2026-10-29 (Mac)
 
-Canonical Studio source matches digest 1174798130. Bamboo's uniform scatter, LeafyGrass mapping and absent wind animation identified; no art changed yet. Eight-view capture tool, 60-second sampler and direction/ledger prepared in `outputs/environment-art-2026-10-29/`. Rodin API balance is zero. Next: confirm local Studio target, unlock Mac, capture running baseline, then implement the Bamboo slice.
+Canonical Studio digest 1174798130 matches source; no art changed. Eight-view capture tool, 60-second sampler and direction/ledger prepared in `outputs/environment-art-2026-10-29/`. Rojo can serialize Decoration/GrassLength despite unavailable MCP property reads. Rodin balance is zero. Next: confirm local Studio target, unlock Mac, capture running baseline, then implement Bamboo. Commits remain local pending push approval.
 
 ## 24 fps cap investigation — 2026-10-28 (Computer A)
 

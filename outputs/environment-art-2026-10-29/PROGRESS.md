@@ -33,6 +33,8 @@ These are implementation findings, not screenshot-grounded visual judgments:
 
 Preparation checks: Python capture-tool syntax/help succeeded; a separate local baseline build succeeded (270 mapped sources, 633 referenced asset IDs) and matches the starting script digest. An Edit screenshot request did not return and its orchestration was cancelled; no image was produced. There are no running-client screenshots yet.
 
+Continuation check: Studio remains in Edit with the same local instance; native computer-use inventory still explicitly reports the Mac locked. Target confirmation and push approval have not arrived. An isolated temporary Rojo serializer probe successfully wrote Terrain.Decoration=true and GrassLength=0.4, so these settings have a supported build-time route despite unavailable MCP property reads. See `terrain-serialization-probe.json`. The probe was deleted with its temporary directory; it was never opened or used as visual evidence. The actual game remains unchanged.
+
 Before/after images, motion, 60-second traversal/combat performance, regression checks, other-region art passes and final canonical-build verification are all **incomplete**.
 
 Next action: confirm the Studio instance, unlock the Mac, start the unchanged canonical game, inspect ordinary gameplay, and capture all eight baseline views. Build a screenshot-grounded defect list before changing environment art.
