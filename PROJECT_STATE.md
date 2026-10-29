@@ -1,5 +1,9 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## Environment art baseline — 2026-10-29 (Mac)
+
+Canonical Studio source matches digest 1174798130. Bamboo's uniform scatter, LeafyGrass mapping and absent wind animation identified; no art changed yet. Eight-view capture tool, 60-second sampler and direction/ledger prepared in `outputs/environment-art-2026-10-29/`. Rodin API balance is zero. Next: confirm local Studio target, unlock Mac, capture running baseline, then implement the Bamboo slice.
+
 ## 24 fps cap investigation — 2026-10-28 (Computer A)
 
 Studio Play here is held at exactly 24 fps by a time limiter: unaffected by scene size, focus, power, Roblox caps (-1) or Process Lasso; panel is 60 Hz. Prime suspect: NVIDIA Max Frame Rate (global or Roblox Studio profile). Next: owner checks NVIDIA App, then rerun RegionFrameTime. Notes in `outputs/han-kit-2026-10-26/README.md`.
