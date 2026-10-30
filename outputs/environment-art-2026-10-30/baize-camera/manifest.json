@@ -1,0 +1,320 @@
+{
+  "kind": "seeded Studio Baize combat, ordinary camera/lock input; original health and rules",
+  "frames": [
+    {
+      "file": "baize_00.jpg",
+      "seconds": 0.7522897499948158,
+      "client": {
+        "camera": "-8.9289341, 13.2244406, -1475.18091, 0.911743343, 0.100309603, -0.398324013, -0, 0.969723701, 0.24420473, 0.410760283, -0.222652033, 0.88413918",
+        "bosses": [
+          {
+            "projected": "604.1785888671875, 317.9690856933594, 23.99970054626465",
+            "centreInViewport": true,
+            "name": "Venerable Baize",
+            "centre": "-2.3043317298743204e-07, 4.093150615692139, -1495.78076171875",
+            "size": "5.918013095855713, 8.186319351196289, 12.661643981933594"
+          }
+        ],
+        "fov": 56,
+        "viewport": [
+          1221,
+          503
+        ],
+        "type": "Scriptable",
+        "encounter": "VenerableBaize",
+        "quality": "Automatic"
+      },
+      "server": {
+        "encounter": "VenerableBaize",
+        "bosses": [
+          {
+            "state": "Recovery",
+            "name": "Venerable Baize",
+            "position": "0, 4.7890625, -1495",
+            "id": -1000022,
+            "hp": 1100
+          }
+        ],
+        "hp": 100,
+        "maxHP": 100
+      }
+    },
+    {
+      "file": "baize_01.jpg",
+      "seconds": 1.9693845000001602,
+      "client": {
+        "camera": "-8.9289341, 13.2244396, -1475.18091, 0.911743343, 0.100309588, -0.398324013, -0, 0.969723701, 0.244204685, 0.410760283, -0.222652003, 0.88413918",
+        "bosses": [
+          {
+            "projected": "604.2864379882812, 318.062744140625, 23.98761558532715",
+            "centreInViewport": true,
+            "name": "Venerable Baize",
+            "centre": "-2.0984681725622067e-07, 4.093150615692139, -1495.76708984375",
+            "size": "5.918013095855713, 8.186318397521973, 12.634185791015625"
+          }
+        ],
+        "fov": 56,
+        "viewport": [
+          1221,
+          503
+        ],
+        "type": "Scriptable",
+        "encounter": "VenerableBaize",
+        "quality": "Automatic"
+      },
+      "server": {
+        "encounter": "VenerableBaize",
+        "bosses": [
+          {
+            "state": "Recovery",
+            "name": "Venerable Baize",
+            "position": "0, 4.7890625, -1495",
+            "id": -1000022,
+            "hp": 1100
+          }
+        ],
+        "hp": 100,
+        "maxHP": 100
+      }
+    },
+    {
+      "file": "baize_02.jpg",
+      "seconds": 3.051338333993044,
+      "client": {
+        "camera": "1.80000007, 5.91776991, -1444.15186, 1, 9.68343201e-12, -1.01111425e-10, 0, 0.995445371, 0.0953337178, 1.01574055e-10, -0.0953337178, 0.995445371",
+        "bosses": [
+          {
+            "projected": "597.7591552734375, 222.3317108154297, 51.306419372558594",
+            "centreInViewport": true,
+            "name": "Venerable Baize",
+            "centre": "-0.019949540495872498, 5.174060821533203, -1495.621826171875",
+            "size": "5.918012619018555, 8.186319351196289, 12.682679176330566"
+          }
+        ],
+        "fov": 70,
+        "viewport": [
+          1221,
+          503
+        ],
+        "type": "Scriptable",
+        "encounter": "VenerableBaize",
+        "quality": "Automatic"
+      },
+      "server": {
+        "encounter": "VenerableBaize",
+        "bosses": [
+          {
+            "state": "Idle",
+            "name": "Venerable Baize",
+            "position": "-4.055230617523193, 12.189990997314453, -1496.4896240234375",
+            "id": -1000022,
+            "hp": 1100
+          }
+        ],
+        "hp": 100,
+        "maxHP": 100
+      }
+    },
+    {
+      "file": "baize_03.jpg",
+      "seconds": 3.956876583994017,
+      "client": {
+        "camera": "8.51504612, 1.80453897, -1452.99707, 0.752770185, 0.152791187, 0.640306056, 0, 0.972690642, -0.232105494, -0.658283353, 0.17472209, 0.732212543",
+        "bosses": [
+          {
+            "projected": "586.010498046875, 219.37673950195312, 100.90800476074219",
+            "centreInViewport": true,
+            "name": "Venerable Baize",
+            "centre": "-59.89714431762695, 34.00410461425781, -1520.77734375",
+            "size": "5.918012619018555, 8.186319351196289, 12.668424606323242"
+          }
+        ],
+        "fov": 70,
+        "viewport": [
+          1221,
+          503
+        ],
+        "type": "Scriptable",
+        "encounter": "VenerableBaize",
+        "quality": "Automatic"
+      },
+      "server": {
+        "encounter": "VenerableBaize",
+        "bosses": [
+          {
+            "state": "Idle",
+            "name": "Venerable Baize",
+            "position": "-60, 34.70000076293945, -1520",
+            "id": -1000022,
+            "hp": 1100
+          }
+        ],
+        "hp": 100,
+        "maxHP": 100
+      }
+    },
+    {
+      "file": "baize_04.jpg",
+      "seconds": 4.891784124993137,
+      "client": {
+        "camera": "8.0798502, 1.96251154, -1453.49597, 0.752720177, 0.152802184, 0.640362203, 0, 0.972691417, -0.232102036, -0.658340573, 0.17470789, 0.732164443",
+        "bosses": [
+          {
+            "projected": "583.5711059570312, 196.47581481933594, 40.176673889160156",
+            "centreInViewport": true,
+            "name": "Venerable Baize",
+            "centre": "-18.974660873413086, 17.274362564086914, -1479.853515625",
+            "size": "5.918012619018555, 8.186317443847656, 12.665994644165039"
+          }
+        ],
+        "fov": 70,
+        "viewport": [
+          1221,
+          503
+        ],
+        "type": "Scriptable",
+        "encounter": "VenerableBaize",
+        "quality": "Automatic"
+      },
+      "server": {
+        "encounter": "VenerableBaize",
+        "bosses": [
+          {
+            "state": "Idle",
+            "name": "Venerable Baize",
+            "position": "-10.103985786437988, 10.428642272949219, -1470.10400390625",
+            "id": -1000022,
+            "hp": 1100
+          }
+        ],
+        "hp": 100,
+        "maxHP": 100
+      }
+    },
+    {
+      "file": "baize_05.jpg",
+      "seconds": 5.75152716699813,
+      "client": {
+        "camera": "8.0786953, 1.96287322, -1453.49731, 0.752715528, 0.152824998, 0.640362203, -2.94716847e-05, 0.972691417, -0.232102036, -0.658345878, 0.174687937, 0.732164443",
+        "bosses": [
+          {
+            "projected": "575.9293212890625, 289.58251953125, 16.51740837097168",
+            "centreInViewport": true,
+            "name": "Venerable Baize",
+            "centre": "-3.962742567062378, 4.093164920806885, -1464.8499755859375",
+            "size": "5.918027877807617, 8.186317443847656, 12.68093490600586"
+          }
+        ],
+        "fov": 70,
+        "viewport": [
+          1221,
+          503
+        ],
+        "type": "Scriptable",
+        "encounter": "VenerableBaize",
+        "quality": "Automatic"
+      },
+      "server": {
+        "encounter": "VenerableBaize",
+        "bosses": [
+          {
+            "state": "Idle",
+            "name": "Venerable Baize",
+            "position": "-4.065864086151123, 4.788632869720459, -1464.06591796875",
+            "id": -1000022,
+            "hp": 1100
+          }
+        ],
+        "hp": 68,
+        "maxHP": 100
+      }
+    },
+    {
+      "file": "baize_06.jpg",
+      "seconds": 6.635463666993019,
+      "client": {
+        "camera": "8.0786972, 1.96291208, -1453.49731, 0.752718747, 0.152809203, 0.640362203, -9.06798959e-06, 0.972691417, -0.232102036, -0.658342183, 0.17470175, 0.732164443",
+        "bosses": [
+          {
+            "projected": "575.5839233398438, 289.5500793457031, 16.504980087280273",
+            "centreInViewport": true,
+            "name": "Venerable Baize",
+            "centre": "-3.9652621746063232, 4.093150615692139, -1464.8309326171875",
+            "size": "5.918027877807617, 8.186318397521973, 12.64251708984375"
+          }
+        ],
+        "fov": 69.99653625488281,
+        "viewport": [
+          1221,
+          503
+        ],
+        "type": "Scriptable",
+        "encounter": "VenerableBaize",
+        "quality": "Automatic"
+      },
+      "server": {
+        "encounter": "VenerableBaize",
+        "bosses": [
+          {
+            "state": "Idle",
+            "name": "Venerable Baize",
+            "position": "-4.06640625, 4.7890625, -1464.06640625",
+            "id": -1000022,
+            "hp": 1100
+          }
+        ],
+        "hp": 36,
+        "maxHP": 100
+      }
+    },
+    {
+      "file": "baize_07.jpg",
+      "seconds": 7.5211122919936315,
+      "client": {
+        "camera": "8.07830429, 1.96177149, -1453.49731, 0.752593398, 0.153425217, 0.640362203, -0.000805178483, 0.972691059, -0.232102036, -0.658484936, 0.174162865, 0.732164443",
+        "bosses": [
+          {
+            "projected": "575.99072265625, 289.5887756347656, 16.518259048461914",
+            "centreInViewport": true,
+            "name": "Venerable Baize",
+            "centre": "-3.962552070617676, 4.093150615692139, -1464.8514404296875",
+            "size": "5.918027877807617, 8.186318397521973, 12.68384075164795"
+          }
+        ],
+        "fov": 70,
+        "viewport": [
+          1221,
+          503
+        ],
+        "type": "Scriptable",
+        "encounter": "VenerableBaize",
+        "quality": "Automatic"
+      },
+      "server": {
+        "bosses": [],
+        "hp": 0,
+        "maxHP": 100
+      }
+    }
+  ],
+  "restoration_errors": [],
+  "start": {
+    "encounter": "VenerableBaize",
+    "bosses": [
+      {
+        "state": "Recovery",
+        "name": "Venerable Baize",
+        "position": "0, 3, -1495",
+        "id": -1000022,
+        "hp": 1100
+      }
+    ],
+    "hp": 100,
+    "maxHP": 100
+  },
+  "restored": {
+    "bosses": [],
+    "hp": 0,
+    "maxHP": 100
+  }
+}

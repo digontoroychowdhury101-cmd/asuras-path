@@ -34,3 +34,13 @@ Valid cost evidence is rendered composition (unaffected by frame pacing), with t
 The first pass was material (+52% at the arena), so the slice was optimized before closing: the south clumps lost their sculpted crowns (~72k tris at the arena) and dropped to one fern each. Budgeted totals stay below the v6 entry view's 631,318 visible triangles. Registered moving plants are 792 (v8: 736); the active wind set is capped at 112 Detailed / 64 Balanced, unchanged. Raw files: `slice-composition-prebudget.json`, `slice-composition-budgeted.json`.
 
 **Open gates (not claimable from this Mac):** desktop ≤16.7 ms p95 over a 60-second foreground traversal and Baize combat on the Windows machine; physical-mobile ≤33.3 ms Balanced; a Balanced-tier composition check of the new south grove; and a GPU timing delta for this slice under foreground conditions.
+
+## 30 October continuation
+
+`../environment-art-2026-10-30/mixed-run-not-acceptance.json` records 60.00 s / 3,299 frames,
+p95 20.15 ms, including 97 unfocused frames and a death/respawn into Sanctuary. Its foreground
+subset p95 is 17.65 ms; the mixed route is not the required Baize/full-pass sequence. It does not
+replace the last valid v6 result or establish an art regression delta. Balanced emulator views
+(750×381, iPhone 17 Pro preset, Automatic quality) validate 792 registered / 64 active plants;
+no physical-mobile timing is claimed. Sanctuary's existing 1.18M-triangle monument contributes
+814k–999k rendered triangles at the two forward cameras; a material tint adds no geometry.

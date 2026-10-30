@@ -1,0 +1,8 @@
+{
+  "stopSucceeded": true,
+  "events": [],
+  "startSucceeded": true,
+  "start": "Enum.VideoCaptureStartedResult.Success",
+  "kind": "native CaptureService running-client video",
+  "finished": true
+}

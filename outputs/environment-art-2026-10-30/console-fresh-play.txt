@@ -1,0 +1,14 @@
+Region has to be aligned to the grid (use Region3:ExpandToGrid with authoring resolution)
+Stack Begin
+Script 'ServerScriptService.AsurasPath.Services.CampaignTerrain', Line 120 - function convert
+Script 'ServerScriptService.AsurasPath.Services.CampaignWorld', Line 48
+Script 'ServerScriptService.AsurasPath.Services.CampaignWorld', Line 43 - function build
+Script 'ServerScriptService.AsurasPath.Services.CampaignWorld', Line 93 - function Start
+Script 'ServerScriptService.AsurasPath.Bootstrap', Line 374
+Script 'ServerScriptService.AsurasPath.Bootstrap', Line 359
+Stack End
+[Asura's Path] Campaign regions raised: 5 maps, 4135 parts (1034 ms).
+[Asura's Path] Server ready: 60 Hz authority, 150 ms rewind budget, 3 Colosseum rings; ranked league open (development).
+[Asura's Path] Desecrated Monastery raised: 3373 parts, 9 set pieces, 0 walkability issues (128 ms).
+[CharacterService] Respawn of 3148600636 displaced to 0, 102.54682922363281, 0; restored to 0, 603.0999755859375, 920
+[Asura's Path] Client ready: camlock, game feel, Souls HUD and Colosseum online.

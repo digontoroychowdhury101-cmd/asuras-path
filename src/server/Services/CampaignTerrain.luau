@@ -109,6 +109,19 @@ function CampaignTerrain.convert(part: BasePart, box: any, solids: { any }?): bo
 		t:FillBlock(cf, size, M.Rock)
 		t:FillBlock(CFrame.new(box.X, top - 1, box.Z) * CFrame.Angles(0, math.rad(box.Yaw), 0),
 			Vector3.new(size.X, 2, size.Z), M.Snow)
+		-- Exposed stone breaks the straight snow lip. Repainting preserves voxel occupancy,
+		-- the exact slab envelope and the authored route collider beneath the terrain.
+		local halfX, halfZ = size.X / 2, size.Z / 2
+		for x = math.floor((box.X - halfX) / VOXEL) * VOXEL, box.X + halfX, VOXEL do
+			for z = math.floor((box.Z - halfZ) / VOXEL) * VOXEL, box.Z + halfZ, VOXEL do
+				local inward = math.min(halfX - math.abs(x + VOXEL / 2 - box.X), halfZ - math.abs(z + VOXEL / 2 - box.Z))
+				local margin = 6 + math.noise(x / 11, z / 13, 8.2) * 8
+				if inward < margin then
+					t:ReplaceMaterial(Region3.new(Vector3.new(x, bottom - VOXEL, z), Vector3.new(x + VOXEL, top + VOXEL, z + VOXEL)),
+						VOXEL, M.Snow, M.Rock)
+				end
+			end
+		end
 	else
 		t:FillBlock(cf, size, material)
 	end

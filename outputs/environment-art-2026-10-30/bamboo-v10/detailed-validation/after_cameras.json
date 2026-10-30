@@ -1,0 +1,243 @@
+{
+  "kind": "seeded Studio running-client diagnostic; original scene and HUD",
+  "stage": "after",
+  "views": [
+    {
+      "name": "entry",
+      "eye": [
+        1.8,
+        6.5,
+        -1124
+      ],
+      "target": [
+        0,
+        7,
+        -1174
+      ],
+      "stand": [
+        0,
+        3.2,
+        -1135
+      ],
+      "files": [
+        "after_entry.jpg"
+      ],
+      "settle": 8.0,
+      "conditions": {
+        "maxFramerate": "unavailable",
+        "studioVersion": "0.745.0.7451137",
+        "editorQuality": "Automatic",
+        "place": "AsurasPath.rbxlx",
+        "terrainDecoration": "unavailable",
+        "wind": "6, 0, 2",
+        "lighting": {
+          "density": 0.3100000023841858,
+          "ambient": "0.317647, 0.341176, 0.313726",
+          "outdoor": "0.47451, 0.501961, 0.454902",
+          "clock": 15.300000190734863,
+          "haze": 1.5499999523162842,
+          "exposure": 0.020000003278255463
+        },
+        "camera": "1.79999995, 6.5, -1124, 0.999352694, 0.000359516125, 0.0359748974, 0, 0.999950111, -0.00999302696, -0.0359767005, 0.009986558, 0.999302685",
+        "hud": {
+          "JadeDialogue": false,
+          "AsuraColosseum": true,
+          "BubbleChat": true,
+          "AsuraTouchControls": false,
+          "ProximityPrompts": true,
+          "Chat": true,
+          "AsuraHUD": true,
+          "AsuraVignette": true,
+          "SpectatorWagers": false,
+          "Freecam": true
+        },
+        "fov": 70,
+        "viewport": [
+          1221,
+          503
+        ],
+        "region": "BambooPass",
+        "quality": "Automatic"
+      },
+      "cost": null
+    },
+    {
+      "name": "close_path",
+      "eye": [
+        1.8,
+        6.5,
+        -1183
+      ],
+      "target": [
+        0,
+        7,
+        -1223
+      ],
+      "stand": [
+        0,
+        3.2,
+        -1194
+      ],
+      "files": [
+        "after_close_path.jpg"
+      ],
+      "settle": 8.0,
+      "conditions": {
+        "maxFramerate": "unavailable",
+        "studioVersion": "0.745.0.7451137",
+        "editorQuality": "Automatic",
+        "place": "AsurasPath.rbxlx",
+        "terrainDecoration": "unavailable",
+        "wind": "6, 0, 2",
+        "lighting": {
+          "density": 0.3100000023841858,
+          "ambient": "0.317647, 0.341176, 0.313726",
+          "outdoor": "0.47451, 0.501961, 0.454902",
+          "clock": 15.300000190734863,
+          "haze": 1.5499999523162842,
+          "exposure": 0.020000003278255463
+        },
+        "camera": "1.79999995, 6.5, -1183, 0.998989046, 0.000561319408, 0.0449509993, 0, 0.999922037, -0.0124863889, -0.0449545048, 0.0124737658, 0.998911142",
+        "hud": {
+          "JadeDialogue": false,
+          "AsuraColosseum": true,
+          "BubbleChat": true,
+          "AsuraTouchControls": false,
+          "ProximityPrompts": true,
+          "Chat": true,
+          "AsuraHUD": true,
+          "AsuraVignette": true,
+          "SpectatorWagers": false,
+          "Freecam": true
+        },
+        "fov": 70,
+        "viewport": [
+          1221,
+          503
+        ],
+        "region": "BambooPass",
+        "quality": "Automatic"
+      },
+      "cost": null
+    },
+    {
+      "name": "arena",
+      "eye": [
+        1.8,
+        6.5,
+        -1374
+      ],
+      "target": [
+        0,
+        6,
+        -1460
+      ],
+      "stand": [
+        0,
+        3.2,
+        -1385
+      ],
+      "files": [
+        "after_arena.jpg"
+      ],
+      "settle": 8.0,
+      "conditions": {
+        "maxFramerate": "unavailable",
+        "studioVersion": "0.745.0.7451137",
+        "editorQuality": "Automatic",
+        "place": "AsurasPath.rbxlx",
+        "terrainDecoration": "unavailable",
+        "wind": "6, 0, 2",
+        "lighting": {
+          "density": 0.3100000023841858,
+          "ambient": "0.317647, 0.341176, 0.313726",
+          "outdoor": "0.47451, 0.501961, 0.454902",
+          "clock": 15.300000190734863,
+          "haze": 1.5499999523162842,
+          "exposure": 0.020000003278255463
+        },
+        "camera": "1.79999995, 6.5, -1374, 0.999781132, -0.000121632067, 0.0209252965, 0, 0.999983251, 0.00581258256, -0.0209256504, -0.00581131037, 0.999764204",
+        "hud": {
+          "JadeDialogue": false,
+          "AsuraColosseum": true,
+          "BubbleChat": true,
+          "AsuraTouchControls": false,
+          "ProximityPrompts": true,
+          "Chat": true,
+          "AsuraHUD": true,
+          "AsuraVignette": true,
+          "SpectatorWagers": false,
+          "Freecam": true
+        },
+        "fov": 70,
+        "viewport": [
+          1221,
+          503
+        ],
+        "region": "BambooPass",
+        "quality": "Automatic"
+      },
+      "cost": null
+    },
+    {
+      "name": "moon_gate",
+      "eye": [
+        1.8,
+        6.5,
+        -1550
+      ],
+      "target": [
+        0,
+        12,
+        -1597
+      ],
+      "stand": [
+        0,
+        3.2,
+        -1561
+      ],
+      "files": [
+        "after_moon_gate.jpg"
+      ],
+      "settle": 8.0,
+      "conditions": {
+        "maxFramerate": "unavailable",
+        "studioVersion": "0.745.0.7451137",
+        "editorQuality": "Automatic",
+        "place": "AsurasPath.rbxlx",
+        "terrainDecoration": "unavailable",
+        "wind": "6, 0, 2",
+        "lighting": {
+          "density": 0.3100000023841858,
+          "ambient": "0.317647, 0.341176, 0.313726",
+          "outdoor": "0.47451, 0.501961, 0.454902",
+          "clock": 15.300000190734863,
+          "haze": 1.5499999523162842,
+          "exposure": 0.020000003278255463
+        },
+        "camera": "1.79999995, 6.5, -1550, 0.999267459, 0.00444481615, 0.0380108207, 0, 0.993232369, -0.116144173, -0.0382698178, 0.116059095, 0.992504776",
+        "hud": {
+          "JadeDialogue": false,
+          "AsuraColosseum": true,
+          "BubbleChat": true,
+          "AsuraTouchControls": false,
+          "ProximityPrompts": true,
+          "Chat": true,
+          "AsuraHUD": true,
+          "AsuraVignette": true,
+          "SpectatorWagers": false,
+          "Freecam": true
+        },
+        "fov": 70,
+        "viewport": [
+          1221,
+          503
+        ],
+        "region": "BambooPass",
+        "quality": "Automatic"
+      },
+      "cost": null
+    }
+  ],
+  "restoration_errors": []
+}

@@ -57,15 +57,21 @@ def main():
     parser.add_argument("studio", help="exact, already-confirmed Studio id")
     parser.add_argument("outdir", type=Path)
     parser.add_argument("stage", choices=("before", "after"))
-    parser.add_argument("views", nargs="?", default=",".join(CAMERAS))
+    parser.add_argument("views", nargs="?", help="comma-separated views; defaults to every camera")
+    parser.add_argument("--cameras", type=Path, help="optional JSON mapping of names to [eye, target, stand] vectors")
     parser.add_argument("--settle", type=float, default=3.0, help="seconds to let lighting and material maps settle")
     parser.add_argument("--cost-seconds", type=float, default=0, help="optional 1..10 second fixed-view cost diagnostic")
     args = parser.parse_args()
     if args.cost_seconds and not 1 <= args.cost_seconds <= 10:
         parser.error("cost-seconds must be 1..10, or zero to disable")
-    names = args.views.split(",")
-    if set(names) - CAMERAS.keys():
+    cameras = json.loads(args.cameras.read_text()) if args.cameras else CAMERAS
+    names = args.views.split(",") if args.views else list(cameras)
+    if set(names) - cameras.keys():
         parser.error("unknown view(s)")
+    for name in names:
+        vectors = cameras[name]
+        if len(vectors) != 3 or any(len(v) != 3 or any(not isinstance(n, (int, float)) for n in v) for v in vectors):
+            parser.error(f"invalid camera vectors for {name}")
     args.outdir.mkdir(parents=True, exist_ok=True)
     manifest_path = args.outdir / f"{args.stage}_cameras.json"
     if manifest_path.exists() or any((args.outdir / f"{args.stage}_{n}.jpg").exists() for n in names):
@@ -94,7 +100,7 @@ _G.AsuraBambooCaptureCamera={Type=c.CameraType,Frame=c.CFrame,FOV=c.FieldOfView}
 return 'saved camera'""")
         saved_client = True
         for name in names:
-            eye, target, stand = CAMERAS[name]
+            eye, target, stand = cameras[name]
             lua(client, sid, "Server", f"""local s=_G.AsuraBambooCaptureOrigin
 local p=game:GetService('Players'):GetPlayerByUserId(s.UserId)
 assert(p and p.Character,'player character missing')
@@ -118,6 +124,9 @@ quality=safe(function() return UserSettings():GetService('UserGameSettings').Sav
 editorQuality=safe(function() return settings().Rendering.QualityLevel.Name end),
 maxFramerate=safe(function() return UserSettings():GetService('UserGameSettings').FramerateCap end),
 region=p:GetAttribute('AsuraRegion'),encounter=p:GetAttribute('AsuraEncounter'),hud=gui,
+tier=p:GetAttribute('LandscapeTier'),foliageRegistered=p:GetAttribute('FoliageRegistered'),
+foliageActive=p:GetAttribute('FoliageActive'),foliageShadows=p:GetAttribute('LandscapeFoliageShadows'),
+touch=game:GetService('UserInputService').TouchEnabled,
 lighting={clock=l.ClockTime,exposure=l.ExposureCompensation,ambient=tostring(l.Ambient),
 outdoor=tostring(l.OutdoorAmbient),density=a and a.Density,haze=a and a.Haze},
 wind=tostring(workspace.GlobalWind),terrainDecoration=safe(function() return workspace.Terrain.Decoration end)})""")

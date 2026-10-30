@@ -1,6 +1,6 @@
 # Environment art ledger — 29 October 2026
 
-Status: **Bamboo Pass visual slice closed at v9 (30 October 2026, Mac)**, stopping at the Bamboo boundary. Bamboo's Windows/hardware/device gates and every other region remain open; the full-world goal is unfinished.
+Status: **Active again, 30 October 2026.** Bamboo v10 snow/graphics/combat refinements and Sanctuary v1 material correction are recorded in `../environment-art-2026-10-30/README.md`. Performance, video, full-route gates and the full-world goal remain unfinished.
 
 ## v9 — Bamboo slice close (30 October 2026)
 
@@ -21,8 +21,8 @@ Status: **Bamboo Pass visual slice closed at v9 (30 October 2026, Mac)**, stoppi
 
 - Branch `ux/onboarding-overhaul`; starting commit `8438e42`. Baseline documentation commits `d97e8d5` and `b881688` were pushed.
 - User confirmed the local `places/AsurasPath.rbxlx` instance, approved future goal-related art uploads to their Roblox inventory, and approved goal-related pushes to this branch. No game publishing or spending is authorized or performed.
-- Canonical source checkpoint: **261 scripts / 1,935,942 bytes / digest 991116205**, 274 mapped sources, 660 referenced asset IDs. Build mirrored to `places/AsurasPath.rbxlx`.
-- Last Studio instance (now closed): `23114e37-9b1f-4703-881d-b052215e2a52`. The separate import snapshot was saved safely and its empty Studio process closed. The canonical place was freshly opened for v2, then script-synced through v8. A fresh canonical v8 reopen remains part of later acceptance.
+- Canonical source checkpoint: **261 scripts / 1,941,899 bytes / digest 1384380081**, 274 mapped sources, 660 referenced asset IDs. Build mirrored to `places/AsurasPath.rbxlx`.
+- Current confirmed local Studio: `dda73794-0660-4c62-90bf-0914a7187a38`, Edit resync digest matches the current canonical build; fresh production Play inspected. V9's fresh reopen remains historical evidence for v9.
 - Existing unrelated untracked `outputs/blender-connection-2026-10-29/` is preserved and excluded from staging.
 - Desktop: Apple M5 MacBook Air, 10 CPU cores, 8 GPU cores, 16 GB RAM. Physical mobile availability remains unverified.
 - Rodin API balance check returned HTTP 200 / **0 credits**. No generation submitted or credits spent.

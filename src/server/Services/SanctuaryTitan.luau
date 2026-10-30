@@ -12,6 +12,7 @@ local Titan = {}
 
 local FIGURE_HEIGHT = 150
 local SINK = 2 -- the root bed beds into the terrace so no root edge hovers
+local BARK_TINT = Color3.fromRGB(145, 136, 129)
 -- Terrace layout (SanctuaryColossus / SanctuaryRoutes): her place `Forward` studs in front of the terrace
 -- centre, root platform `Radius`. fuse_tree_woman.py draws the low roots in about a bed centre exactly
 -- `Forward` behind her (stats.json: Forward 150, floor reach 227), so the flare sits inside the rim.
@@ -85,6 +86,16 @@ function Titan.Mount(statue: Model, anchor: CFrame, focus: Vector3?): boolean
 	local roots = group(statue, { "Titan_Roots", "Titan_Sap" }, "Roots")
 	if #figure:GetChildren() == 0 or #tree:GetChildren() == 0 then
 		return false
+	end
+	-- Pale bark and pale robes previously merged into one bright mass. Tint the existing PBR
+	-- surfaces so the figure reads against aged timber; retain every mesh, map and glossy sap part.
+	for _, g in { tree, roots } do
+		for _, p in g:GetChildren() do
+			if p:IsA("BasePart") and not p.Name:find("Titan_Sap", 1, true) then
+				local appearance = p:FindFirstChildOfClass("SurfaceAppearance")
+				if appearance then appearance.Color = BARK_TINT end
+			end
+		end
 	end
 	collisions(tree, roots)
 

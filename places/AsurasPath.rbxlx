@@ -14603,6 +14603,19 @@ function CampaignTerrain.convert(part: BasePart, box: any, solids: { any }?): bo
 		t:FillBlock(cf, size, M.Rock)
 		t:FillBlock(CFrame.new(box.X, top - 1, box.Z) * CFrame.Angles(0, math.rad(box.Yaw), 0),
 			Vector3.new(size.X, 2, size.Z), M.Snow)
+		-- Exposed stone breaks the straight snow lip. Repainting preserves voxel occupancy,
+		-- the exact slab envelope and the authored route collider beneath the terrain.
+		local halfX, halfZ = size.X / 2, size.Z / 2
+		for x = math.floor((box.X - halfX) / VOXEL) * VOXEL, box.X + halfX, VOXEL do
+			for z = math.floor((box.Z - halfZ) / VOXEL) * VOXEL, box.Z + halfZ, VOXEL do
+				local inward = math.min(halfX - math.abs(x + VOXEL / 2 - box.X), halfZ - math.abs(z + VOXEL / 2 - box.Z))
+				local margin = 6 + math.noise(x / 11, z / 13, 8.2) * 8
+				if inward &lt; margin then
+					t:ReplaceMaterial(Region3.new(Vector3.new(x, bottom - VOXEL, z), Vector3.new(x + VOXEL, top + VOXEL, z + VOXEL)),
+						VOXEL, M.Snow, M.Rock)
+				end
+			end
+		end
 	else
 		t:FillBlock(cf, size, material)
 	end
@@ -26864,6 +26877,7 @@ local Titan = {}
 
 local FIGURE_HEIGHT = 150
 local SINK = 2 -- the root bed beds into the terrace so no root edge hovers
+local BARK_TINT = Color3.fromRGB(145, 136, 129)
 -- Terrace layout (SanctuaryColossus / SanctuaryRoutes): her place `Forward` studs in front of the terrace
 -- centre, root platform `Radius`. fuse_tree_woman.py draws the low roots in about a bed centre exactly
 -- `Forward` behind her (stats.json: Forward 150, floor reach 227), so the flare sits inside the rim.
@@ -26937,6 +26951,16 @@ function Titan.Mount(statue: Model, anchor: CFrame, focus: Vector3?): boolean
 	local roots = group(statue, { "Titan_Roots", "Titan_Sap" }, "Roots")
 	if #figure:GetChildren() == 0 or #tree:GetChildren() == 0 then
 		return false
+	end
+	-- Pale bark and pale robes previously merged into one bright mass. Tint the existing PBR
+	-- surfaces so the figure reads against aged timber; retain every mesh, map and glossy sap part.
+	for _, g in { tree, roots } do
+		for _, p in g:GetChildren() do
+			if p:IsA("BasePart") and not p.Name:find("Titan_Sap", 1, true) then
+				local appearance = p:FindFirstChildOfClass("SurfaceAppearance")
+				if appearance then appearance.Color = BARK_TINT end
+			end
+		end
 	end
 	collisions(tree, roots)
 

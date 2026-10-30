@@ -1,0 +1,250 @@
+{
+  "views": [
+    {
+      "hidden": {
+        "Name": "TriangleComposition",
+        "Children": [
+          {
+            "Sizes": {
+              "Triangles": 512819,
+              "Drawcalls": 180
+            },
+            "Name": "Opaque"
+          },
+          {
+            "Sizes": {
+              "Triangles": 368,
+              "Drawcalls": 29
+            },
+            "Name": "Transparent"
+          },
+          {
+            "Sizes": {
+              "Triangles": 608,
+              "Drawcalls": 4
+            },
+            "Name": "Terrain"
+          },
+          {
+            "Sizes": {
+              "Triangles": 228,
+              "Drawcalls": 6
+            },
+            "Name": "UI"
+          },
+          {
+            "Sizes": {
+              "Triangles": 368,
+              "Drawcalls": 1
+            },
+            "Name": "Particles"
+          }
+        ],
+        "Sizes": {
+          "Triangles": 514391,
+          "Drawcalls": 220
+        }
+      },
+      "present": {
+        "Name": "TriangleComposition",
+        "Children": [
+          {
+            "Sizes": {
+              "Triangles": 1326885,
+              "Drawcalls": 251
+            },
+            "Name": "Opaque"
+          },
+          {
+            "Sizes": {
+              "Triangles": 374,
+              "Drawcalls": 31
+            },
+            "Name": "Transparent"
+          },
+          {
+            "Sizes": {
+              "Triangles": 608,
+              "Drawcalls": 4
+            },
+            "Name": "Terrain"
+          },
+          {
+            "Sizes": {
+              "Triangles": 228,
+              "Drawcalls": 6
+            },
+            "Name": "UI"
+          },
+          {
+            "Sizes": {
+              "Triangles": 374,
+              "Drawcalls": 1
+            },
+            "Name": "Particles"
+          }
+        ],
+        "Sizes": {
+          "Triangles": 1328469,
+          "Drawcalls": 293
+        }
+      },
+      "name": "plaza_axis"
+    },
+    {
+      "hidden": {
+        "Name": "TriangleComposition",
+        "Children": [
+          {
+            "Sizes": {
+              "Triangles": 57916,
+              "Drawcalls": 6
+            },
+            "Name": "Opaque"
+          },
+          {
+            "Sizes": {
+              "Triangles": 18,
+              "Drawcalls": 6
+            },
+            "Name": "Transparent"
+          },
+          {
+            "Sizes": {
+              "Triangles": 18,
+              "Drawcalls": 1
+            },
+            "Name": "Particles"
+          }
+        ],
+        "Sizes": {
+          "Triangles": 57952,
+          "Drawcalls": 13
+        }
+      },
+      "present": {
+        "Name": "TriangleComposition",
+        "Children": [
+          {
+            "Sizes": {
+              "Triangles": 1057311,
+              "Drawcalls": 77
+            },
+            "Name": "Opaque"
+          },
+          {
+            "Sizes": {
+              "Triangles": 16,
+              "Drawcalls": 6
+            },
+            "Name": "Transparent"
+          },
+          {
+            "Sizes": {
+              "Triangles": 16,
+              "Drawcalls": 1
+            },
+            "Name": "Particles"
+          }
+        ],
+        "Sizes": {
+          "Triangles": 1057343,
+          "Drawcalls": 84
+        }
+      },
+      "name": "upper_approach"
+    },
+    {
+      "hidden": {
+        "Name": "TriangleComposition",
+        "Children": [
+          {
+            "Sizes": {
+              "Triangles": 262064,
+              "Drawcalls": 149
+            },
+            "Name": "Opaque"
+          },
+          {
+            "Sizes": {
+              "Triangles": 320,
+              "Drawcalls": 24
+            },
+            "Name": "Transparent"
+          },
+          {
+            "Sizes": {
+              "Triangles": 1776,
+              "Drawcalls": 8
+            },
+            "Name": "Terrain"
+          },
+          {
+            "Sizes": {
+              "Triangles": 222,
+              "Drawcalls": 6
+            },
+            "Name": "UI"
+          },
+          {
+            "Sizes": {
+              "Triangles": 320,
+              "Drawcalls": 1
+            },
+            "Name": "Particles"
+          }
+        ],
+        "Sizes": {
+          "Triangles": 264702,
+          "Drawcalls": 188
+        }
+      },
+      "present": {
+        "Name": "TriangleComposition",
+        "Children": [
+          {
+            "Sizes": {
+              "Triangles": 262064,
+              "Drawcalls": 149
+            },
+            "Name": "Opaque"
+          },
+          {
+            "Sizes": {
+              "Triangles": 284,
+              "Drawcalls": 20
+            },
+            "Name": "Transparent"
+          },
+          {
+            "Sizes": {
+              "Triangles": 1776,
+              "Drawcalls": 8
+            },
+            "Name": "Terrain"
+          },
+          {
+            "Sizes": {
+              "Triangles": 222,
+              "Drawcalls": 6
+            },
+            "Name": "UI"
+          },
+          {
+            "Sizes": {
+              "Triangles": 284,
+              "Drawcalls": 1
+            },
+            "Name": "Particles"
+          }
+        ],
+        "Sizes": {
+          "Triangles": 264630,
+          "Drawcalls": 184
+        }
+      },
+      "name": "plaza_reverse"
+    }
+  ],
+  "kind": "Studio view-dependent rendered composition; no foreground timing claim"
+}

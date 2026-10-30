@@ -1,5 +1,9 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## Environment continuation — 2026-10-30 (Mac)
+
+Bamboo snow edge corrected; Balanced emulator 792/64 plants; Baize body/pounce captured with normal health. Sanctuary bark tint separates figure; original 1.18M-triangle asset preserved/profiled. Verifier passes; digest 1384380081. Evidence: `outputs/environment-art-2026-10-30/`. Performance/video/full-route gates remain open. Next: Sanctuary side routes, root detail and canopy; remaining regions. General Zhao work preserved.
+
 ## Bamboo Pass art slice closed (v9) — 2026-10-30 (Mac)
 
 Moon gate rebuilt, south grove, ridge drifts/coping, trunk grounded; colliders, elevations, altar, asset IDs unchanged. Nine views plus Baize telegraph captured; verifier 14/14, digest 803029733. Slice cost budgeted to +21% triangles. Mac timing not qualified; desktop/mobile gates open. Next: Windows 60-second Baize/traversal run, then Sanctuary.
