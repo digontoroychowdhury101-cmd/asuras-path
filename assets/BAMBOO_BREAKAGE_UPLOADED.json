@@ -1,0 +1,195 @@
+{
+  "source": "assets/build/bamboo_breakage_v2/BambooBreakage_Validated.glb",
+  "master": "assets/build/bamboo_breakage_v2/BambooBreakageMaster_Validated.blend",
+  "builder": "tools/blender/bamboo_breakage.py",
+  "library": "AsuraBambooBreakage",
+  "importer": {
+    "creator": "Me",
+    "scaleUnit": "Stud",
+    "scaleFactor": 1,
+    "anchored": true,
+    "scenePosition": true,
+    "pivotToSceneOrigin": true,
+    "mergeMeshes": false,
+    "dimensions": [
+      12.81,
+      8.22,
+      1.45
+    ]
+  },
+  "partCount": 4,
+  "totalTriangles": 2704,
+  "maxPartTriangles": 1854,
+  "masterResolution": 2048,
+  "uploadResolution": 1024,
+  "normalConvention": "OpenGL tangent-space",
+  "parts": {
+    "Bamboo_BrokenClump_V2__Cut": {
+      "ColorMap": "rbxassetid://117853702698728",
+      "NormalMap": "rbxassetid://131276137588867",
+      "RoughnessMap": "rbxassetid://99847793018372",
+      "position": [
+        -0.35816383361816406,
+        4.998970031738281,
+        -0.0845198929309845
+      ],
+      "DoubleSided": true,
+      "MeshId": "rbxassetid://88664957677846",
+      "MetalnessMap": "rbxassetid://73139532777983",
+      "size": [
+        2.866018295288086,
+        6.31502103805542,
+        1.24891996383667
+      ],
+      "triangles": 174
+    },
+    "Bamboo_BrokenClump_V2__Culm": {
+      "ColorMap": "rbxassetid://88649990947605",
+      "NormalMap": "rbxassetid://106239035416325",
+      "RoughnessMap": "rbxassetid://128122577701907",
+      "position": [
+        -0.3141924738883972,
+        4.057121753692627,
+        -0.08322203159332275
+      ],
+      "DoubleSided": true,
+      "MeshId": "rbxassetid://87737302473702",
+      "MetalnessMap": "rbxassetid://115196481403224",
+      "size": [
+        2.95396089553833,
+        8.198718070983887,
+        1.45303213596344
+      ],
+      "triangles": 1854
+    },
+    "Bamboo_FallenPole_V2__Cut": {
+      "ColorMap": "rbxassetid://117853702698728",
+      "NormalMap": "rbxassetid://131276137588867",
+      "RoughnessMap": "rbxassetid://99847793018372",
+      "position": [
+        -10.797929763793945,
+        0.31000083684921265,
+        9.685754776000977e-07
+      ],
+      "DoubleSided": true,
+      "MeshId": "rbxassetid://125101949703524",
+      "MetalnessMap": "rbxassetid://73139532777983",
+      "size": [
+        1.6958589553833008,
+        0.60371994972229,
+        0.6037200689315796
+      ],
+      "triangles": 58
+    },
+    "Bamboo_FallenPole_V2__Culm": {
+      "ColorMap": "rbxassetid://88649990947605",
+      "NormalMap": "rbxassetid://106239035416325",
+      "RoughnessMap": "rbxassetid://128122577701907",
+      "position": [
+        -5.822929382324219,
+        0.3760213851928711,
+        2.086162567138672e-07
+      ],
+      "DoubleSided": true,
+      "MeshId": "rbxassetid://125206876878081",
+      "MetalnessMap": "rbxassetid://115196481403224",
+      "size": [
+        11.645858764648438,
+        0.8853294849395752,
+        0.8637719750404358
+      ],
+      "triangles": 618
+    }
+  },
+  "preservedFiles": {
+    "assets/build/bamboo_breakage_v2/BambooBreakage.glb": {
+      "bytes": 18203356,
+      "sha256": "cf86cc8f0b6b6b285af15da3b11d92928797ef535b183639332219a3ccf0ea8b"
+    },
+    "assets/build/bamboo_breakage_v2/BambooBreakageMaster.blend": {
+      "bytes": 33844746,
+      "sha256": "b598902d05cc7a9f071357169fb6f220abd36228a30a3a5edd91cea77fa500b8"
+    },
+    "assets/build/bamboo_breakage_v2/BambooBreakageMaster_Validated.blend": {
+      "bytes": 33845083,
+      "sha256": "221963c4cb0df94a203f78a9c9648cc531e1e317ffaf452716584827248c230d"
+    },
+    "assets/build/bamboo_breakage_v2/BambooBreakage_Validated.glb": {
+      "bytes": 4473020,
+      "sha256": "bb4907c377f51695b222a2ab293ba6bbe47c5e6577377b6765f4ce8cad53e5aa"
+    },
+    "assets/build/bamboo_breakage_v2/manifest.json": {
+      "bytes": 2204,
+      "sha256": "7b17e725447bde87758ca115249ebc6ebcbbb5f37e1f12e0e9a9c835f802b958"
+    },
+    "assets/build/bamboo_breakage_v2/maps/BrokenBambooCulm_Color.png": {
+      "bytes": 1019326,
+      "sha256": "ce7ec0550a437143f62a37919d032c75314b645a089b9ee30fddcff159b7453d"
+    },
+    "assets/build/bamboo_breakage_v2/maps/BrokenBambooCulm_Metalness.png": {
+      "bytes": 13995,
+      "sha256": "1a5e57350822bcd0cdb03f4dc88a26b4a281ba170756106cf0e2df2b298a2cd2"
+    },
+    "assets/build/bamboo_breakage_v2/maps/BrokenBambooCulm_Normal.png": {
+      "bytes": 160266,
+      "sha256": "24f71ddb7a2ed195d751ee055495decb9097d8f3315237c5d62449ec5ba609f8"
+    },
+    "assets/build/bamboo_breakage_v2/maps/BrokenBambooCulm_Roughness.png": {
+      "bytes": 453156,
+      "sha256": "a10dffb200b570117af1c4242db433e1e3681789ceef9988e35aaf5233537362"
+    },
+    "assets/build/bamboo_breakage_v2/maps/BrokenBambooCut_Color.png": {
+      "bytes": 1209280,
+      "sha256": "76a203501edee4a78b8bcab6a396fded778556b5f2b4878f6f306f10e0ff147e"
+    },
+    "assets/build/bamboo_breakage_v2/maps/BrokenBambooCut_Metalness.png": {
+      "bytes": 13995,
+      "sha256": "1a5e57350822bcd0cdb03f4dc88a26b4a281ba170756106cf0e2df2b298a2cd2"
+    },
+    "assets/build/bamboo_breakage_v2/maps/BrokenBambooCut_Normal.png": {
+      "bytes": 924207,
+      "sha256": "7636519ded2fdda5dfc3a940256434f07ce8f50900804ddd4acb0963d5d4369a"
+    },
+    "assets/build/bamboo_breakage_v2/maps/BrokenBambooCut_Roughness.png": {
+      "bytes": 657384,
+      "sha256": "fd973c8395a1eceaac90bf4a3d803d601afa8cb569568ae5da90cdcbad8b69cb"
+    },
+    "assets/build/bamboo_breakage_v2/masters/BrokenBambooCulm_Color.png": {
+      "bytes": 3092341,
+      "sha256": "cafad98b3a54b1f54871c60a87394b2ddc48618cc3fe35993676bbaf1377ca96"
+    },
+    "assets/build/bamboo_breakage_v2/masters/BrokenBambooCulm_Metalness.png": {
+      "bytes": 55235,
+      "sha256": "5630edf42913f842e57308503a7e0977e721d09027a12c453b8878c22108cd37"
+    },
+    "assets/build/bamboo_breakage_v2/masters/BrokenBambooCulm_Normal.png": {
+      "bytes": 407340,
+      "sha256": "add6c2be35c77a946fe210cd2494e57636c048837a7c1f5b96e576cf9e705b3e"
+    },
+    "assets/build/bamboo_breakage_v2/masters/BrokenBambooCulm_Roughness.png": {
+      "bytes": 1381025,
+      "sha256": "4cfd6beb4bc80eea78ad29e4194433b4c0b3471edec4592a47e178e43884857d"
+    },
+    "assets/build/bamboo_breakage_v2/masters/BrokenBambooCut_Color.png": {
+      "bytes": 4084158,
+      "sha256": "c6a8c9a0a897de96122665aa4951505bada5fcaf5de2e5012bdfe6fe60e3255f"
+    },
+    "assets/build/bamboo_breakage_v2/masters/BrokenBambooCut_Metalness.png": {
+      "bytes": 55235,
+      "sha256": "5630edf42913f842e57308503a7e0977e721d09027a12c453b8878c22108cd37"
+    },
+    "assets/build/bamboo_breakage_v2/masters/BrokenBambooCut_Normal.png": {
+      "bytes": 2853189,
+      "sha256": "cb717f4b45f4b40548b1f379a06f7d193200bb902896be1d7fa038ffc23b9197"
+    },
+    "assets/build/bamboo_breakage_v2/masters/BrokenBambooCut_Roughness.png": {
+      "bytes": 1941371,
+      "sha256": "59a7d42faf6727cb83a2591fd57b9b0b40d581446b7bc71de615fc9f9e94e31b"
+    },
+    "assets/build/bamboo_breakage_v2/BambooBreakageMaster_Checkpoint.blend": {
+      "bytes": 33845556,
+      "sha256": "b3c0f1086e49359b0ded9d052bb534eec4a9cf9fd924197c5fa2a13c79e35fc2"
+    }
+  },
+  "checkpointMaster": "assets/build/bamboo_breakage_v2/BambooBreakageMaster_Checkpoint.blend"
+}

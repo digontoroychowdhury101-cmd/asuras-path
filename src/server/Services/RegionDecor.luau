@@ -12,6 +12,17 @@ local Decor = {}
 local P = Kit.Palette
 local M = Enum.Material
 local rgb = Color3.fromRGB
+local Tags = game:GetService("CollectionService")
+
+-- Foliage silhouette stays visible at distance; only its fine shadow has a local budget.
+function Decor.foliageShadows(model: Instance)
+	for _, p in model:GetDescendants() do
+		if p:IsA("BasePart") and p.CastShadow then
+			p:SetAttribute("AsuraShadowDistance", 80)
+			if Tags then Tags:AddTag(p, "AsuraFoliageShadow") end
+		end
+	end
+end
 
 Decor.Style = table.freeze({
 	Path = { M.Slate, P.FlagDark }, Ground = { M.Ground, rgb(66, 58, 50) }, Grass = { M.Grass, rgb(70, 82, 58) },
@@ -97,6 +108,29 @@ function Decor.han(parent: Instance, kit: string, piece: string, base: CFrame, s
 	return model
 end
 
+-- Existing licensed nature scans have arbitrary import pivots. Normalize a clone to its measured
+-- ground centre, preserve its PBR maps, and fit its longest horizontal dimension to `span`.
+function Decor.nature(parent: Instance, piece: string, base: CFrame, span: number): Model?
+	local library = game:GetService("ServerStorage"):FindFirstChild("AsuraAssets")
+	local template = library and library:FindFirstChild(piece)
+	if not template or not template:IsA("Model") then return nil end
+	local model = template:Clone()
+	local _, size = model:GetBoundingBox()
+	model:ScaleTo(model:GetScale() * span / math.max(size.X, size.Z, 0.01))
+	local box, scaled = model:GetBoundingBox()
+	model.PrimaryPart = nil
+	model.WorldPivot = CFrame.new(box.X, box.Y - scaled.Y / 2, box.Z)
+	model:PivotTo(base)
+	for _, p in model:GetDescendants() do
+		if p:IsA("BasePart") then
+			p.Anchored, p.CanCollide, p.CanQuery, p.CanTouch = true, false, false, false
+			p:SetAttribute("AsuraDecorative", true)
+		end
+	end
+	model.Parent = parent
+	return model
+end
+
 -- A base CFrame at `at` whose front (-Z, the imported models' front) looks toward `target` in plan.
 function Decor.facing(at: Vector3, target: Vector3): CFrame
 	return CFrame.lookAt(at, Vector3.new(target.X, at.Y, target.Z))
@@ -139,6 +173,7 @@ function Decor.bamboo(parent: Instance, x: number, floor: number, z: number, rng
 	local stalk = Decor.kit("Bamboo", rng)
 	if stalk then
 		Decor.placeKit(parent, stalk, "Bamboo", base * CFrame.Angles(0, rng:NextNumber(0, 2 * math.pi), 0), height)
+		Decor.foliageShadows(stalk)
 		return
 	end
 	local green = rgb(78, 104, 66):Lerp(rgb(132, 140, 92), rng:NextNumber())

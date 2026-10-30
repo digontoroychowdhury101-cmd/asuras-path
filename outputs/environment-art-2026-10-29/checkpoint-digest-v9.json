@@ -1,0 +1,6 @@
+{
+  "kind": "Fresh canonical reopen after build; Edit-mode script digest vs built file",
+  "disk": {"scripts": 261, "bytes": 1940644, "digest": 803029733, "sha256": "6097fb3dfad9ee195e0c0311c9c675d70201bed2f5e1a7bd46aaf2c9bcd76ce5"},
+  "studio": {"id": "dda73794-0660-4c62-90bf-0914a7187a38", "scripts": 261, "bytes": 1940644, "digest": 803029733, "asuraAssets": 13},
+  "playBoot": {"errors": 0, "bambooColliders": 73, "bambooArtPass": "Living groves, breakage, shrine, moon gate and ridge margins v9"}
+}

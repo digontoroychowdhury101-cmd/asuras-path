@@ -1,5 +1,13 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## Bamboo Pass art slice closed (v9) — 2026-10-30 (Mac)
+
+Moon gate rebuilt, south grove, ridge drifts/coping, trunk grounded; colliders, elevations, altar, asset IDs unchanged. Nine views plus Baize telegraph captured; verifier 14/14, digest 803029733. Slice cost budgeted to +21% triangles. Mac timing not qualified; desktop/mobile gates open. Next: Windows 60-second Baize/traversal run, then Sanctuary.
+
+## Environment checkpoint paused — 2026-10-29 (Mac)
+
+User requested pause. Saved/closed Studio and Blender. Broken/fallen bamboo uploaded/integrated; grove clustering expanded, shrine/root assembly and arena pillars improved; original Y=0 floor exposed. Full verifier passes; digest 991116205. See `outputs/environment-art-2026-10-29/PROGRESS.md`. Next: final Bamboo views, moon gate/overlook, performance/regressions, then other regions. Desktop target remains unmet.
+
 ## Living bamboo entry checkpoint — 2026-10-29 (Mac)
 
 Uploaded five original ecology meshes; entry has clustered canopy, grounded undergrowth, native grass, roofed gate and rooted client wind. Late-replication/removal/reduced-motion checks pass; verifier green. Evidence: `outputs/environment-art-2026-10-29/`. Foreground p95 17.57 ms exceeds 16.7 target. Next: shadow cost, root giant, shrine and remaining Bamboo views; other regions unfinished. Push/art approvals recorded.

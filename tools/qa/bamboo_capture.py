@@ -29,6 +29,8 @@ CAMERAS = {
     "arena": ((1.8, 6.5, -1374), (0, 6, -1460), (0, 3.2, -1385)),
     "frost_overlook": ((129, 24.5, -1415), (48, 8, -1470), (118, 21.4, -1418)),
     "moon_gate": ((1.8, 6.5, -1550), (0, 12, -1597), (0, 3.2, -1561)),
+    # Supplementary close inspection of the fallen trunk/root assembly from the gate path.
+    "root_detail": ((-27, 5.5, -1131), (-56, 1.5, -1153), (-24, 3.2, -1127)),
 }
 BINDING = "AsuraBambooComparison"
 
@@ -56,7 +58,11 @@ def main():
     parser.add_argument("outdir", type=Path)
     parser.add_argument("stage", choices=("before", "after"))
     parser.add_argument("views", nargs="?", default=",".join(CAMERAS))
+    parser.add_argument("--settle", type=float, default=3.0, help="seconds to let lighting and material maps settle")
+    parser.add_argument("--cost-seconds", type=float, default=0, help="optional 1..10 second fixed-view cost diagnostic")
     args = parser.parse_args()
+    if args.cost_seconds and not 1 <= args.cost_seconds <= 10:
+        parser.error("cost-seconds must be 1..10, or zero to disable")
     names = args.views.split(",")
     if set(names) - CAMERAS.keys():
         parser.error("unknown view(s)")
@@ -101,7 +107,7 @@ local c=workspace.CurrentCamera local frame=CFrame.lookAt({vector(eye)},{vector(
 rs:BindToRenderStep('{BINDING}',Enum.RenderPriority.Last.Value+50,function()
 c.CameraType=Enum.CameraType.Scriptable c.FieldOfView=70 c.CFrame=frame end)
 return 'pinned'""")
-            time.sleep(3.0)  # allow the game's ordinary regional lighting blend to settle
+            time.sleep(args.settle)  # regional lighting blend and material-variant maps settle
             metadata = lua(client, sid, "Client", """local p=game:GetService('Players').LocalPlayer
 local c=workspace.CurrentCamera local l=game:GetService('Lighting') local a=l:FindFirstChildOfClass('Atmosphere')
 local gui={} for _,g in p.PlayerGui:GetChildren() do if g:IsA('ScreenGui') then gui[g.Name]=g.Enabled end end
@@ -126,8 +132,12 @@ wind=tostring(workspace.GlobalWind),terrainDecoration=safe(function() return wor
                 path = args.outdir / f"{args.stage}_{name}{suffix}.{ext}"
                 path.write_bytes(base64.b64decode(image["data"]))
                 files.append(path.name)
+            cost = None
+            if args.cost_seconds:
+                code = f"_G.AsuraViewCostSeconds={args.cost_seconds}\n" + (Path(__file__).parent / "ViewCost.luau").read_text()
+                cost = json.loads(lua(client, sid, "Client", code))
             manifest["views"].append({"name": name, "eye": eye, "target": target, "stand": stand,
-                                      "files": files, "conditions": json.loads(metadata)})
+                                      "files": files, "settle": args.settle, "conditions": json.loads(metadata), "cost": cost})
             manifest_path.write_text(json.dumps(manifest, indent=2) + "\n")
             print(f"Captured {name}: {', '.join(files)}", flush=True)
     finally:

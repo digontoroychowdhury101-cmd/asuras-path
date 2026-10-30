@@ -11,3 +11,8 @@ entry-slice-v2/
 entry-slice-v2-ready/
 entry-wind-v5/*
 !entry-wind-v5/motion_summary.json
+
+imported-breakage.rbxlx
+
+# Final capture attempt rejected by normal controls-card precondition.
+checkpoint-v8/

@@ -5,6 +5,7 @@
 local Players = game:GetService("Players")
 local UIS = game:GetService("UserInputService")
 local RunService = game:GetService("RunService")
+local Tags = game:GetService("CollectionService")
 local Shared = game:GetService("ReplicatedStorage").AsurasPath.Shared
 local Effects = require(Shared.EffectsPreference)
 local Budget = {}
@@ -25,7 +26,7 @@ local function keep(part: BasePart): boolean
 end
 
 function Budget.new(): any
-	local self = setmetatable({ Parts = {}, Emitters = {}, Lights = {}, Links = {}, Time = 1, Alive = true }, Budget) :: any
+	local self = setmetatable({ Parts = {}, Emitters = {}, Lights = {}, Shadows = {}, Links = {}, Time = 1, Alive = true }, Budget) :: any
 	local function register(item: Instance)
 		if not item:IsDescendantOf(workspace) then return end
 		local root: Instance? = item
@@ -46,6 +47,19 @@ function Budget.new(): any
 	end
 	for _, item in workspace:GetDescendants() do register(item) end
 	table.insert(self.Links, workspace.DescendantAdded:Connect(register))
+	if Tags then
+		-- The tag's server contract is CastShadow=true. Reading that property when a tag first
+		-- replicates can see a transient default, so it is not used to infer the original state.
+		local function shadow(part: Instance)
+			if part:IsA("BasePart") then self.Shadows[part] = true end
+		end
+		for _, part in Tags:GetTagged("AsuraFoliageShadow") do shadow(part) end
+		table.insert(self.Links, Tags:GetInstanceAddedSignal("AsuraFoliageShadow"):Connect(shadow))
+		table.insert(self.Links, Tags:GetInstanceRemovedSignal("AsuraFoliageShadow"):Connect(function(part)
+			if self.Shadows[part] and part.Parent then part.CastShadow = true end
+			self.Shadows[part] = nil
+		end))
+	end
 	table.insert(self.Links, RunService.Heartbeat:Connect(function(dt)
 		self.Time += dt
 		if self.Time >= 0.4 then self.Time = 0; self:Refresh() end
@@ -62,6 +76,18 @@ function Budget.Refresh(self: any)
 	local low = (quality > 0 and quality <= 4) or (quality == 0 and UIS.TouchEnabled)
 	local threshold = if low then 0.028 else 0.013
 	local hidden, active, particles = 0, 0, 0
+	local foliageShadows = 0
+	for part in self.Shadows do
+		if not part.Parent then self.Shadows[part] = nil; continue end
+		local enabled = true
+		if part:IsDescendantOf(workspace) then
+			local range = (part:GetAttribute("AsuraShadowDistance") or 80) * (if low then 0.6 else 1)
+			-- Hysteresis prevents tiny wind movement or a hovering camera from toggling a boundary.
+			enabled = (part.Position - at).Magnitude < range + (if part.CastShadow then 6 else -6)
+			if enabled then foliageShadows += 1 end
+		end
+		if part.CastShadow ~= enabled then part.CastShadow = enabled end
+	end
 	for i = #self.Parts, 1, -1 do
 		local row = self.Parts[i]; local part = row.Part
 		if not part.Parent then table.remove(self.Parts, i); continue end
@@ -98,6 +124,7 @@ function Budget.Refresh(self: any)
 	local player = Players.LocalPlayer
 	player:SetAttribute("LandscapeTier", if low then "Balanced" else "Detailed")
 	player:SetAttribute("LandscapeHiddenMeshes", hidden)
+	player:SetAttribute("LandscapeFoliageShadows", foliageShadows)
 	player:SetAttribute("LandscapeActiveLights", active)
 	player:SetAttribute("LandscapeParticleCeiling", particles)
 end
@@ -105,9 +132,10 @@ end
 function Budget.Destroy(self: any)
 	self.Alive = false
 	for _, link in self.Links do link:Disconnect() end
+	for part in self.Shadows do if part.Parent then part.CastShadow = true end end
 	for _, row in self.Parts do if row.Part.Parent then row.Part.LocalTransparencyModifier = row.Original end end
 	for _, row in self.Lights do if row.Light.Parent then row.Light.Enabled = row.Enabled end end
 	for _, row in self.Emitters do if row.Emitter.Parent then row.Emitter.Rate, row.Emitter.Enabled = row.Rate, row.Enabled end end
-	table.clear(self.Parts); table.clear(self.Lights); table.clear(self.Emitters); table.clear(self.Links)
+	table.clear(self.Parts); table.clear(self.Lights); table.clear(self.Emitters); table.clear(self.Shadows); table.clear(self.Links)
 end
 return Budget

@@ -1,0 +1,60 @@
+{
+  "floorPosition": "0, -2, -1470",
+  "fallen": 2,
+  "probes": [
+    {
+      "y": 0,
+      "hit": "Workspace.AsurasPath.World.BossArenas.VenerableBaizeFloor",
+      "position": "0, 5, -1470"
+    },
+    {
+      "y": 0,
+      "hit": "Workspace.AsurasPath.World.BossArenas.VenerableBaizeFloor",
+      "position": "80, 5, -1470"
+    },
+    {
+      "y": 0,
+      "hit": "Workspace.AsurasPath.World.BossArenas.VenerableBaizeFloor",
+      "position": "-80, 5, -1470"
+    },
+    {
+      "y": 0,
+      "hit": "Workspace.AsurasPath.World.BossArenas.VenerableBaizeFloor",
+      "position": "0, 5, -1400"
+    },
+    {
+      "y": 0,
+      "hit": "Workspace.AsurasPath.World.BossArenas.VenerableBaizeFloor",
+      "position": "0, 5, -1540"
+    }
+  ],
+  "floorSize": "180, 4, 180",
+  "kind": "fresh Play production source",
+  "broken": 3,
+  "columns": [
+    {
+      "collide": true,
+      "query": true,
+      "size": "8, 30, 8",
+      "position": "-60, 15, -1520"
+    },
+    {
+      "collide": true,
+      "query": true,
+      "size": "8, 30, 8",
+      "position": "-60, 15, -1420"
+    },
+    {
+      "collide": true,
+      "query": true,
+      "size": "8, 30, 8",
+      "position": "60, 15, -1520"
+    },
+    {
+      "collide": true,
+      "query": true,
+      "size": "8, 30, 8",
+      "position": "60, 15, -1420"
+    }
+  ]
+}

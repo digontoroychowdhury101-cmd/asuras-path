@@ -1,0 +1,1 @@
+{"initial":792,"firstPositionDelta":0.016010021790862085,"cachedAfterPartRemoval":2545,"removed2":792,"ok":true,"added":793,"reentered2":793,"reentered1":793,"cachedFinal":2545,"final":792,"secondPositionDelta":0.01663600094616413,"cachedBefore":2545,"removed1":792,"cachedAdded":2547}

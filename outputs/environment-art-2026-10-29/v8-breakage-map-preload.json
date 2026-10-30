@@ -1,0 +1,37 @@
+{
+  "kind": "Typed client ImageLabel preload of all eight real PBR-map IDs; temporary unparented labels destroyed",
+  "statuses": [
+    {
+      "id": "rbxassetid://115196481403224",
+      "status": "Enum.AssetFetchStatus.Success"
+    },
+    {
+      "id": "rbxassetid://73139532777983",
+      "status": "Enum.AssetFetchStatus.Success"
+    },
+    {
+      "id": "rbxassetid://128122577701907",
+      "status": "Enum.AssetFetchStatus.Success"
+    },
+    {
+      "id": "rbxassetid://106239035416325",
+      "status": "Enum.AssetFetchStatus.Success"
+    },
+    {
+      "id": "rbxassetid://117853702698728",
+      "status": "Enum.AssetFetchStatus.Success"
+    },
+    {
+      "id": "rbxassetid://99847793018372",
+      "status": "Enum.AssetFetchStatus.Success"
+    },
+    {
+      "id": "rbxassetid://88649990947605",
+      "status": "Enum.AssetFetchStatus.Success"
+    },
+    {
+      "id": "rbxassetid://131276137588867",
+      "status": "Enum.AssetFetchStatus.Success"
+    }
+  ]
+}

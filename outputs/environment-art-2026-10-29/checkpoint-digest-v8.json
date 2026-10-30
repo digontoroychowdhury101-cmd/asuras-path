@@ -1,0 +1,15 @@
+{
+  "kind": "Edit-mode scripts synced from final canonical build; imported libraries present",
+  "disk": {
+    "scripts": 261,
+    "bytes": 1935942,
+    "digest": 991116205
+  },
+  "studio": {
+    "bytes": 1935942,
+    "scripts": 261,
+    "livingUnits": 5,
+    "breakageUnits": 2,
+    "digest": 991116205
+  }
+}

@@ -145,6 +145,18 @@ end
 -- Clears terrain above every built (non-proxy) colliding part in `structure`, so natural fills never
 -- poke through paths, stairs or floors. A part with a proxy rising over its footprint (a cliff on a
 -- gorge floor) is left alone: that terrain is the cliff itself.
+-- Expose an authored floor without moving it: the voxel ground must not cover an arena's Y=0 lid.
+function CampaignTerrain.exposeFloor(p: BasePart)
+	local t = terrain()
+	if t then
+		-- The smooth surface can protrude beyond the last occupied voxel by ~0.4 stud.
+		-- Undercut inside the existing solid slab so the unchanged Part lid owns contact.
+		local undercut = math.min(VOXEL, p.Size.Y)
+		t:FillBlock(p.CFrame * CFrame.new(0, p.Size.Y / 2 + (CLEAR - undercut) / 2, 0),
+			Vector3.new(p.Size.X + 0.5, CLEAR + undercut, p.Size.Z + 0.5), M.Air)
+	end
+end
+
 function CampaignTerrain.carve(structure: Instance)
 	local t = terrain()
 	if not t then

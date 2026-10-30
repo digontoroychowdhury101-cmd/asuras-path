@@ -244,11 +244,11 @@ for ob in bpy.context.selected_objects:
 for ob in collection.objects:
     ob.select_set(True)
 bpy.ops.export_scene.gltf(filepath=str(OUT / "LivingBambooGround.glb"), export_format="GLB", use_selection=True,
-                          export_apply=True, export_yup=True, export_animations=False)
+                          use_active_scene=True, export_apply=True, export_yup=True, export_animations=False)
 for ob in collection.objects:
     ob.select_set(ob.name == "Ground_LeafLitter")
 bpy.ops.export_scene.gltf(filepath=str(OUT / "LeafLitterCalibration.glb"), export_format="GLB", use_selection=True,
-                          export_apply=True, export_yup=True, export_animations=False)
+                          use_active_scene=True, export_apply=True, export_yup=True, export_animations=False)
 for node, original in relinks:
     node.image = original
 (OUT / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")

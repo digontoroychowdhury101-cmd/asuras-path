@@ -9,6 +9,8 @@ local Bodies = require(Shared.Shared.BossBodies)
 local Characters = require(script.Parent.CharacterService)
 local Routes = require(Shared.Shared.SanctuaryRoutes)
 local Campaign = require(Shared.Shared.CampaignZones)
+local Ground = require(script.Parent.CampaignTerrain)
+local Decor = require(script.Parent.RegionDecor)
 local Arenas = {}
 Arenas.FloorColor = Color3.fromRGB(118, 110, 100) -- duel floor tone (F09 readability)
 local walls: { [string]: { Part } } = {}
@@ -51,7 +53,11 @@ function Arenas.build(root: Instance)
 		local center = Vector3.new(c.X, 0, c.Z)
 		-- F09: a mid stone, not near-black slate: at the low dusk sun the bare Titan and Wu floors read
 		-- black, and dark costumes (the player, Wu) vanished against them. Lights are unchanged.
-		part(folder, boss.Id .. "Floor", Vector3.new(s.X, 4, s.Z), center - Vector3.new(0, 2, 0), Arenas.FloorColor)
+		local floor = part(folder, boss.Id .. "Floor", Vector3.new(s.X, 4, s.Z), center - Vector3.new(0, 2, 0), Arenas.FloorColor)
+		if boss.Region == "BambooPass" then
+			floor.MaterialVariant, floor.Color = "AsuraPaving", Color3.fromRGB(177, 179, 169)
+			Ground.exposeFloor(floor)
+		end
 		part(folder, boss.Id .. "Approach", Vector3.new(30, 4, 40), center + Vector3.new(0, -2, s.Z / 2 + 20), Color3.fromRGB(61, 56, 48))
 		local boundary: { Part } = {}
 		-- Entrance is on the north face; only the fog aperture remains open there.
@@ -74,6 +80,10 @@ function Arenas.build(root: Instance)
 			local column = part(folder, "FrostPillar", Vector3.new(pillar.Half * 2, pillar.Top, pillar.Half * 2),
 				Vector3.new(pillar.X, pillar.Top / 2, pillar.Z), Color3.fromRGB(97, 128, 140))
 			column.CollisionGroup = "WorldGeometry"
+			if boss.Region == "BambooPass" then
+				local shell = Decor.han(folder, "AsuraLobbyKit", "Ruin_Pillar", CFrame.new(pillar.X, 0, pillar.Z), pillar.Top / 11.776619)
+				if shell then column.Transparency, column.CastShadow = 1, false end
+			end
 		end
 	end
 	-- Traversable link for the Monastery's side courtyard. The Pagoda and Summit roads that used to

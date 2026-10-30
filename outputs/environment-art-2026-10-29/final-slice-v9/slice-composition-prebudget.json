@@ -1,0 +1,6 @@
+{
+  "_note": "v9 slice before the south-grove budget (sculpted crowns, two ferns per clump); character stood in Bamboo; Mac Studio diagnostic. Values transcribed from the SliceComposition probe output.",
+  "moon_gate": {"present": {"Triangles": 381202, "Drawcalls": 135}, "hidden": {"Triangles": 217212, "Drawcalls": 132}},
+  "arena": {"present": {"Triangles": 473478, "Drawcalls": 146}, "hidden": {"Triangles": 312195, "Drawcalls": 134}},
+  "arena_breakdown": {"all": 473480, "south_crowns_hidden": 401248, "south_clumps_hidden": 383190, "crowns": 38, "clumps": 10, "ground_items": 43}
+}

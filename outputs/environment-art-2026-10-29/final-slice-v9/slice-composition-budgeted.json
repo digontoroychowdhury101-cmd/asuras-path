@@ -1,0 +1,123 @@
+{
+  "arena_present": {
+    "TriangleComposition": {
+      "Triangles": 381809,
+      "Drawcalls": 141
+    },
+    "TriangleComposition/Transparent": {
+      "Triangles": 2,
+      "Drawcalls": 1
+    },
+    "TriangleComposition/Opaque": {
+      "Triangles": 315345,
+      "Drawcalls": 60
+    },
+    "TriangleComposition/Terrain": {
+      "Triangles": 58312,
+      "Drawcalls": 70
+    },
+    "TriangleComposition/Particles": {
+      "Triangles": 38,
+      "Drawcalls": 1
+    },
+    "TriangleComposition/UI": {
+      "Triangles": 200,
+      "Drawcalls": 1
+    },
+    "TriangleComposition/Grass": {
+      "Triangles": 7912,
+      "Drawcalls": 8
+    }
+  },
+  "arena_hidden": {
+    "TriangleComposition": {
+      "Triangles": 315203,
+      "Drawcalls": 129
+    },
+    "TriangleComposition/Transparent": {
+      "Triangles": 4,
+      "Drawcalls": 1
+    },
+    "TriangleComposition/Opaque": {
+      "Triangles": 248739,
+      "Drawcalls": 48
+    },
+    "TriangleComposition/Terrain": {
+      "Triangles": 58312,
+      "Drawcalls": 70
+    },
+    "TriangleComposition/Particles": {
+      "Triangles": 36,
+      "Drawcalls": 1
+    },
+    "TriangleComposition/UI": {
+      "Triangles": 200,
+      "Drawcalls": 1
+    },
+    "TriangleComposition/Grass": {
+      "Triangles": 7912,
+      "Drawcalls": 8
+    }
+  },
+  "moon_gate_present": {
+    "TriangleComposition": {
+      "Triangles": 283515,
+      "Drawcalls": 130
+    },
+    "TriangleComposition/Transparent": {
+      "Triangles": 28,
+      "Drawcalls": 8
+    },
+    "TriangleComposition/Opaque": {
+      "Triangles": 234099,
+      "Drawcalls": 60
+    },
+    "TriangleComposition/Terrain": {
+      "Triangles": 41234,
+      "Drawcalls": 52
+    },
+    "TriangleComposition/Particles": {
+      "Triangles": 42,
+      "Drawcalls": 1
+    },
+    "TriangleComposition/UI": {
+      "Triangles": 200,
+      "Drawcalls": 1
+    },
+    "TriangleComposition/Grass": {
+      "Triangles": 7912,
+      "Drawcalls": 8
+    }
+  },
+  "moon_gate_hidden": {
+    "TriangleComposition": {
+      "Triangles": 220224,
+      "Drawcalls": 129
+    },
+    "TriangleComposition/Transparent": {
+      "Triangles": 32,
+      "Drawcalls": 10
+    },
+    "TriangleComposition/Opaque": {
+      "Triangles": 169266,
+      "Drawcalls": 55
+    },
+    "TriangleComposition/Terrain": {
+      "Triangles": 42770,
+      "Drawcalls": 54
+    },
+    "TriangleComposition/Particles": {
+      "Triangles": 44,
+      "Drawcalls": 1
+    },
+    "TriangleComposition/UI": {
+      "Triangles": 200,
+      "Drawcalls": 1
+    },
+    "TriangleComposition/Grass": {
+      "Triangles": 7912,
+      "Drawcalls": 8
+    }
+  },
+  "_note": "after south-grove budget (plain crowns, one fern per clump); character stood at (0,3.2,-1561); Mac Studio diagnostic"
+}

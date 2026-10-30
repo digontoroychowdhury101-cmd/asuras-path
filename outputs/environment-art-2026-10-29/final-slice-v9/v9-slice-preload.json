@@ -1,0 +1,262 @@
+{
+  "kind": "Typed Edit-mode PreloadAsync (SpecialMesh/Decal) of every mesh and PBR map in the slice's source templates; temporary instances destroyed",
+  "templates": [
+    "AsuraLivingBamboo",
+    "AsuraBambooBreakage",
+    "BoulderSmall",
+    "CragA",
+    "CragB",
+    "AsuraDeadTrunk",
+    "AsuraRoots"
+  ],
+  "success": 49,
+  "failed": 0,
+  "newAssetIds": 0,
+  "assets": [
+    {
+      "id": "rbxassetid://100711174339712",
+      "kind": "map",
+      "status": "Success"
+    },
+    {
+      "id": "rbxassetid://101981203948515",
+      "kind": "mesh",
+      "status": "Success"
+    },
+    {
+      "id": "rbxassetid://103278282137922",
+      "kind": "map",
+      "status": "Success"
+    },
+    {
+      "id": "rbxassetid://104799255463643",
+      "kind": "map",
+      "status": "Success"
+    },
+    {
+      "id": "rbxassetid://106239035416325",
+      "kind": "map",
+      "status": "Success"
+    },
+    {
+      "id": "rbxassetid://109511720196112",
+      "kind": "mesh",
+      "status": "Success"
+    },
+    {
+      "id": "rbxassetid://110939704894454",
+      "kind": "mesh",
+      "status": "Success"
+    },
+    {
+      "id": "rbxassetid://111860992283534",
+      "kind": "map",
+      "status": "Success"
+    },
+    {
+      "id": "rbxassetid://113003747264853",
+      "kind": "map",
+      "status": "Success"
+    },
+    {
+      "id": "rbxassetid://115196481403224",
+      "kind": "map",
+      "status": "Success"
+    },
+    {
+      "id": "rbxassetid://116611612863005",
+      "kind": "map",
+      "status": "Success"
+    },
+    {
+      "id": "rbxassetid://117853702698728",
+      "kind": "map",
+      "status": "Success"
+    },
+    {
+      "id": "rbxassetid://118240936139884",
+      "kind": "map",
+      "status": "Success"
+    },
+    {
+      "id": "rbxassetid://120675287744369",
+      "kind": "map",
+      "status": "Success"
+    },
+    {
+      "id": "rbxassetid://121078201937253",
+      "kind": "map",
+      "status": "Success"
+    },
+    {
+      "id": "rbxassetid://121334908599331",
+      "kind": "map",
+      "status": "Success"
+    },
+    {
+      "id": "rbxassetid://122140868243983",
+      "kind": "mesh",
+      "status": "Success"
+    },
+    {
+      "id": "rbxassetid://122359992555222",
+      "kind": "map",
+      "status": "Success"
+    },
+    {
+      "id": "rbxassetid://125101949703524",
+      "kind": "mesh",
+      "status": "Success"
+    },
+    {
+      "id": "rbxassetid://125164692206798",
+      "kind": "map",
+      "status": "Success"
+    },
+    {
+      "id": "rbxassetid://125206876878081",
+      "kind": "mesh",
+      "status": "Success"
+    },
+    {
+      "id": "rbxassetid://125682180747589",
+      "kind": "mesh",
+      "status": "Success"
+    },
+    {
+      "id": "rbxassetid://125819066547895",
+      "kind": "map",
+      "status": "Success"
+    },
+    {
+      "id": "rbxassetid://128122577701907",
+      "kind": "map",
+      "status": "Success"
+    },
+    {
+      "id": "rbxassetid://128208407391331",
+      "kind": "map",
+      "status": "Success"
+    },
+    {
+      "id": "rbxassetid://128332031002584",
+      "kind": "mesh",
+      "status": "Success"
+    },
+    {
+      "id": "rbxassetid://129881729371111",
+      "kind": "map",
+      "status": "Success"
+    },
+    {
+      "id": "rbxassetid://131276137588867",
+      "kind": "map",
+      "status": "Success"
+    },
+    {
+      "id": "rbxassetid://132647085814431",
+      "kind": "map",
+      "status": "Success"
+    },
+    {
+      "id": "rbxassetid://139842784818646",
+      "kind": "map",
+      "status": "Success"
+    },
+    {
+      "id": "rbxassetid://140526033686426",
+      "kind": "map",
+      "status": "Success"
+    },
+    {
+      "id": "rbxassetid://140700450900041",
+      "kind": "mesh",
+      "status": "Success"
+    },
+    {
+      "id": "rbxassetid://72082952604136",
+      "kind": "mesh",
+      "status": "Success"
+    },
+    {
+      "id": "rbxassetid://73139532777983",
+      "kind": "map",
+      "status": "Success"
+    },
+    {
+      "id": "rbxassetid://75759511497970",
+      "kind": "map",
+      "status": "Success"
+    },
+    {
+      "id": "rbxassetid://76189316403390",
+      "kind": "mesh",
+      "status": "Success"
+    },
+    {
+      "id": "rbxassetid://79352866120849",
+      "kind": "map",
+      "status": "Success"
+    },
+    {
+      "id": "rbxassetid://80998998366059",
+      "kind": "map",
+      "status": "Success"
+    },
+    {
+      "id": "rbxassetid://81217906286631",
+      "kind": "map",
+      "status": "Success"
+    },
+    {
+      "id": "rbxassetid://81752398968484",
+      "kind": "mesh",
+      "status": "Success"
+    },
+    {
+      "id": "rbxassetid://81908685503578",
+      "kind": "map",
+      "status": "Success"
+    },
+    {
+      "id": "rbxassetid://87737302473702",
+      "kind": "mesh",
+      "status": "Success"
+    },
+    {
+      "id": "rbxassetid://88649990947605",
+      "kind": "map",
+      "status": "Success"
+    },
+    {
+      "id": "rbxassetid://88664957677846",
+      "kind": "mesh",
+      "status": "Success"
+    },
+    {
+      "id": "rbxassetid://88730331781199",
+      "kind": "map",
+      "status": "Success"
+    },
+    {
+      "id": "rbxassetid://88869500477424",
+      "kind": "map",
+      "status": "Success"
+    },
+    {
+      "id": "rbxassetid://92680686510100",
+      "kind": "mesh",
+      "status": "Success"
+    },
+    {
+      "id": "rbxassetid://99302435029656",
+      "kind": "map",
+      "status": "Success"
+    },
+    {
+      "id": "rbxassetid://99847793018372",
+      "kind": "map",
+      "status": "Success"
+    }
+  ]
+}

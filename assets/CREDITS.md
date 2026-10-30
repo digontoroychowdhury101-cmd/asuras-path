@@ -8,7 +8,7 @@ Processed, Roblox-ready exports are written to `assets/build/` by `tools/blender
 | Gothic Statue | https://polyhaven.com/a/gothic_statue | CC0 | Sanctuary colossus |
 | Large Iron Gate | https://polyhaven.com/a/large_iron_gate | CC0 | Ascension Gateway |
 | Dead Tree Trunk 02 | https://polyhaven.com/a/dead_tree_trunk_02 | CC0 | Sacred tree trunk |
-| Pine Roots | https://polyhaven.com/a/pine_roots | CC0 | Roots around the colossus dais (fallback) |
+| Pine Roots | https://polyhaven.com/a/pine_roots | CC0 | Roots around the colossus dais (fallback); Bamboo Pass root banks and fallen trunk surround |
 | Rock Face 03 (texture) | https://polyhaven.com/a/rock_face_03 | CC0 | Granite baked into the Veiled Ascetic |
 | Bark Platanus (texture) | https://polyhaven.com/a/bark_platanus | CC0 | Pale root / canopy wood (desaturated, lifted) |
 | Leaf Set 024 (texture) | https://ambientcg.com/view?id=LeafSet024 | CC0 | Crimson leaf atlas, particle leaf, ground decal |
@@ -165,3 +165,9 @@ Entry-grove rocks reuse the already credited HungryProton/scatter BoulderSmall g
 from its measured 0.60-stud source width to a useful 3.6–6-stud landscape width. Native grass openings
 reuse the previously credited ambientCG Ground037 maps through a Grass-compatible MaterialVariant;
 deep shaded ground retains the existing LeafyGrass/moss material.
+
+## Bamboo Pass breakage and reused nature — 29 October 2026
+
+`AsuraBambooBreakage` contains original project-authored hollow/splintered culms and a fallen pole, generated in a separate live Blender scene by `tools/blender/bamboo_breakage.py`. Four material sections, 2,704 evaluated triangles total (maximum 1,854); no decimation or alpha cards. 2048 PBR masters and separate 1024 upload maps are preserved in `assets/build/bamboo_breakage_v2/`; the initial v1 master remains untouched. The validated export is restricted to the active scene, avoiding selected objects from earlier scenes. Real uploaded IDs, pivots, dimensions, import settings and source hashes are in `assets/BAMBOO_BREAKAGE_UPLOADED.json`.
+
+The conspicuous Bamboo Pass green-cylinder log is replaced using the existing CC0 `AsuraDeadTrunk` upload, with `AsuraRoots` (Poly Haven Pine Roots) around its base and the shrine. Existing original lobby-kit columns/roof/joinery and ruined pillars, plus the already credited 0 A.D. Han shrine, are reused without changing their masters or licenses. No paid generation or public game publishing occurred.

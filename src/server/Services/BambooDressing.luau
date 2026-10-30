@@ -49,6 +49,34 @@ local function entryGate(parent: Instance, map: Instance): boolean
 	return true
 end
 
+local function fallenRoots(parent: Instance): boolean
+	local y = Ground.surfaceHeight(-56, -1150, -0.1)
+	-- The scan's underside sits ~4 studs above its pivot and bows upward in the middle: sink and
+	-- roll it so both ends bear on the soil (measured within 0.5 stud of the surface in v9).
+	local trunk = Decor.nature(parent, "AsuraDeadTrunk", CFrame.new(-56, y - 3.62, -1150)
+		* CFrame.Angles(0, math.rad(68), 0) * CFrame.Angles(0, 0, math.rad(4.4)), 32)
+	if not trunk then return false end
+	Ground.forestFloor(-56, -1150, 9, 15)
+	trunk.Name = "FallenJadeTrunk"
+	for _, c in { { -62, -1162, 17, 22 }, { -21, -1177, 9, 115 } } do
+		local floor = Ground.surfaceHeight(c[1], c[2], -0.1)
+		Decor.nature(parent, "AsuraRoots", CFrame.new(c[1], floor - 0.08, c[2])
+			* CFrame.Angles(0, math.rad(c[4]), 0), c[3])
+	end
+	return true
+end
+
+local function shrineShelter(parent: Instance, map: Instance): boolean
+	local model = Decor.han(parent, "AsuraHanKit", "HanShrine", Decor.facing(
+		Vector3.new(-36, 0.2, -1346), Vector3.new(-36, 0.2, -1328)), 1.15)
+	if not model then return false end
+	local structure = map:FindFirstChild("Structure")
+	for _, p in if structure then structure:GetChildren() else {} do
+		if p:IsA("BasePart") and p.Name == "ShrineHall" then p.Transparency, p.CastShadow = 1, false end
+	end
+	return true
+end
+
 local function spire(parent: Instance, x: number, z: number, height: number, rng: Random)
 	local base = CFrame.new(x, -2, z) * CFrame.Angles(0, rng:NextNumber(0, math.pi), 0)
 	local tower = Decor.kit("Karst", rng)
@@ -66,12 +94,11 @@ function Dressing.Build(map: Instance, layout: any, rng: Random)
 	local groves = Kit.folder("BambooGroves", map)
 	for i, grove in layout.Groves or {} do
 		if i ~= 1 and i ~= 4 then
-			Decor.scatter(grove, rng, function(x, floor, z)
-				Decor.bamboo(groves, x, floor, z, rng)
-			end)
+			Ecology.Grove(groves, layout, grove, Random.new(291030 + i * 971))
 		end
 	end
-	Ecology.Entry(map, layout, rng)
+	Ecology.Entry(map, layout, Random.new(291026))
+	Ecology.Shrine(map, layout, Random.new(291027))
 	local set = Kit.folder("PassDressing", map)
 	-- Karst spires beyond the thicket: the pass's skyline on both sides.
 	for i = 0, 9 do
@@ -112,37 +139,68 @@ function Dressing.Build(map: Instance, layout: any, rng: Random)
 		Kit.part(set, "GateBoard", Vector3.new(3, 2.4, 0.4), CFrame.new(0, 15, -1149.4), P.WoodDark, M.Wood, Kit.decor())
 	end
 	-- The fallen jade-root giant beside tablet V (outside the veil, seen from the path).
-	Kit.part(set, "JadeRootGiant", Vector3.new(38, 6, 6), CFrame.new(-56, 2.9, -1150) * CFrame.Angles(0, math.rad(68), 0),
-		rgb(96, 128, 98), M.Wood, { Collide = false, Query = false, Shadow = true, Shape = Enum.PartType.Cylinder })
+	if not fallenRoots(set) then
+		Kit.part(set, "JadeRootGiant", Vector3.new(38, 6, 6), CFrame.new(-56, 2.9, -1150) * CFrame.Angles(0, math.rad(68), 0),
+			rgb(96, 128, 98), M.Wood, { Collide = false, Query = false, Shadow = true, Shape = Enum.PartType.Cylinder })
+	end
 	-- A pilgrim's hat and staff where the first swordsman waits.
 	Kit.part(set, "PilgrimHat", Vector3.new(0.5, 3.2, 3.2), CFrame.new(-4, 0.3, -1200) * CFrame.Angles(0, 0, math.rad(90)), rgb(150, 128, 86), M.Fabric,
 		{ Collide = false, Query = false, Shadow = true, Shape = Enum.PartType.Cylinder })
 	Kit.beam(set, "PilgrimStaff", Vector3.new(-6, 0.2, -1197), Vector3.new(-2, 0.5, -1205), 0.25, P.WoodDark)
 	-- The whispering shrine: roof over its back screen, wind ribbons, a bronze bell.
-	Decor.roof(set, CFrame.new(-36, 9.2, -1346), 22, 8, 2.4)
+	local shelter = shrineShelter(set, map)
+	if not shelter then Decor.roof(set, CFrame.new(-36, 9.2, -1346), 22, 8, 2.4) end
 	for k = 0, 5 do
 		local x = -45 + k * 3.6
-		Kit.part(set, "WindRibbon", Vector3.new(0.5, 3.2, 0.05), CFrame.new(x, 7, -1344.6) * CFrame.Angles(0, 0, math.rad(rng:NextNumber(-8, 8))),
+		Kit.part(set, "WindRibbon", Vector3.new(0.5, 3.2, 0.05), CFrame.new(x, if shelter then 10.2 else 7, if shelter then -1342.3 else -1344.6) * CFrame.Angles(0, 0, math.rad(rng:NextNumber(-8, 8))),
 			if k % 2 == 0 then P.Lacquer else rgb(214, 204, 176), M.Fabric, Kit.decor())
 	end
 	local bell = Kit.part(set, "ShrineBell", Vector3.new(1.6, 2, 1.6), CFrame.new(-28, 7.2, -1344.4), rgb(112, 91, 57), M.Metal, Kit.decor())
 	bell.Shape = Enum.PartType.Ball
-	-- Frost ridge: snow drifts, frost on the stones, mist pooling in the arena basin below.
-	for _ = 1, 14 do
-		Kit.part(set, "SnowDrift", Vector3.new(rng:NextNumber(6, 14), 0.6, rng:NextNumber(4, 10)),
-			CFrame.new(rng:NextNumber(110, 156), 18.15, rng:NextNumber(-1296, -1388)) * CFrame.Angles(0, rng:NextNumber(0, math.pi), 0), FROST, M.Snow, Kit.decor())
+	-- Frost ridge: drifts are clusters of overlapping low discs, so their margins read as wind-cut
+	-- edges rather than rectangles; frost on the stones, mist pooling in the arena basin below.
+	-- Discs are sunk so only a thin rim rises over the ground; none are laid on paved floors.
+	local function drift(x: number, y: number, z: number, span: number)
+		for _ = 1, 4 do
+			local d = span * rng:NextNumber(0.45, 0.8)
+			Kit.part(set, "SnowDrift", Vector3.new(0.4, d, d * rng:NextNumber(0.9, 1)),
+				CFrame.new(x + rng:NextNumber(-span, span) * 0.35, y - rng:NextNumber(0.02, 0.1), z + rng:NextNumber(-span, span) * 0.35) * CFrame.Angles(0, 0, math.rad(90)),
+				rgb(204, 212, 216), M.Snow, { Collide = false, Query = false, Shadow = false, Shape = Enum.PartType.Cylinder })
+		end
 	end
-	for _, x in { -30, -18, 18, 28 } do
-		Kit.part(set, "SnowDrift", Vector3.new(8, 0.6, 5), CFrame.new(x, 12.15, -1270 + rng:NextNumber(-12, 12)), FROST, M.Snow, Kit.decor())
+	for _ = 1, 9 do drift(rng:NextNumber(118, 156), 18, rng:NextNumber(-1296, -1384), rng:NextNumber(6, 11)) end
+	for _, x in { -30, -18, 18, 28 } do drift(x, 12, -1270 + rng:NextNumber(-12, 12), 7) end
+	-- Overlook: rough coping along the parapet's top and frost-heaped crags at its ends (all decor).
+	for z = -1390, -1434, -4 do
+		Kit.part(set, "ParapetCoping", Vector3.new(1.9, 0.5, rng:NextNumber(3.6, 4.3)),
+			CFrame.new(106.8, 20.85, z) * CFrame.Angles(0, rng:NextNumber(-0.05, 0.05), math.rad(rng:NextNumber(-2, 2))), rgb(118, 122, 124), M.Slate, Kit.decor())
 	end
-	Fx.mist(set, CFrame.new(0, 4, -1470), Vector3.new(170, 6, 170), 3, 26, FROST)
-	Fx.mist(set, CFrame.new(-120, 6, -1250), Vector3.new(120, 8, 220), 2, 30)
-	-- Moon gate: a half ring of stone voussoirs springing from the jambs (decor; the jambs are the layout's).
-	for k = 0, 12 do
-		local a = math.rad(k * 15)
-		Kit.part(set, "MoonRing", Vector3.new(4.6, 2, 3), CFrame.new(math.cos(a) * 17, 18 + math.sin(a) * 17, -1577) * CFrame.Angles(0, 0, a + math.pi / 2),
-			P.Stone, M.Slate, Kit.decor())
+	for _, c in { { 110, -1389, "CragB" }, { 110, -1435, "CragA" } } do
+		Decor.han(set, "AsuraHanKit", c[3], CFrame.new(c[1], 17.6, c[2]) * CFrame.Angles(0, rng:NextNumber(0, 6.28), 0), 1.1)
 	end
+	for _, spec in { { 0, -1470, 170, 170 }, { -120, -1250, 100, 180 } } do
+		local mist = Fx.mist(set, CFrame.new(spec[1], 1.5, spec[2]), Vector3.new(spec[3], 2, spec[4]), 1, 17, rgb(177, 188, 180))
+		mist.Squash = NumberSequence.new(2)
+		mist.Lifetime = NumberRange.new(12, 18)
+		mist.Transparency = Kit.sequence({ { 0, 1 }, { 0.25, 0.91 }, { 0.75, 0.94 }, { 1, 1 } })
+		mist.Color, mist.LightInfluence = ColorSequence.new(rgb(177, 188, 180)), 0.15
+	end
+	-- Moon gate: fine voussoirs under a slate coping band and keystone, springing from dressed jambs.
+	-- Everything here is decor; the layout's 3 x 18 x 3 MoonJamb boxes stay the only colliders.
+	local STONE = rgb(128, 131, 128)
+	for k = 0, 24 do
+		local a = math.rad(k * 7.5)
+		local frame = CFrame.new(math.cos(a) * 17.3, 18 + math.sin(a) * 17.3, -1577) * CFrame.Angles(0, 0, a + math.pi / 2)
+		local tone = STONE:Lerp(rgb(104, 108, 104), rng:NextNumber(0, 1))
+		Kit.part(set, "MoonRing", Vector3.new(if k == 12 then 2.9 else 2.35, 3.4, 3.4), frame, tone, M.Slate, Kit.decor())
+		Kit.part(set, "MoonCoping", Vector3.new(2.4, 0.7, 3.9), frame * CFrame.new(0, 2, 0), rgb(92, 96, 94), M.Slate, Kit.decor())
+	end
+	for _, x in { -17.1, 17.1 } do
+		Kit.part(set, "MoonJambShell", Vector3.new(3.4, 16.6, 3.4), CFrame.new(x, 9.3, -1577), STONE, M.Slate, Kit.decor())
+		Kit.part(set, "MoonPlinth", Vector3.new(4.6, 1.6, 4.6), CFrame.new(x, 0.7, -1577), rgb(98, 101, 98), M.Slate, Kit.decor())
+		Kit.part(set, "MoonImpost", Vector3.new(4.2, 0.9, 4.2), CFrame.new(x, 17.6, -1577), rgb(98, 101, 98), M.Slate, Kit.decor())
+	end
+	Ecology.South(map, layout, Random.new(291034))
 	-- Baize's palisade: frost-rimed caps and torn prayer flags along its top.
 	for z = -1386, -1556, -34 do
 		Decor.banner(set, CFrame.new(-104, 9.5, z) * CFrame.Angles(0, math.rad(90), 0), 5, rgb(214, 204, 176))

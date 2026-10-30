@@ -1,0 +1,65 @@
+{
+  "kind": "seeded Studio running-client diagnostic; original scene and HUD",
+  "stage": "before",
+  "views": [
+    {
+      "name": "root_detail",
+      "eye": [
+        -27,
+        5.5,
+        -1131
+      ],
+      "target": [
+        -56,
+        1.5,
+        -1153
+      ],
+      "stand": [
+        -24,
+        3.2,
+        -1127
+      ],
+      "files": [
+        "before_root_detail.jpg"
+      ],
+      "conditions": {
+        "maxFramerate": "unavailable",
+        "studioVersion": "0.745.0.7451137",
+        "editorQuality": "Automatic",
+        "place": "AsurasPath.rbxlx",
+        "terrainDecoration": "unavailable",
+        "wind": "6, 0, 2",
+        "lighting": {
+          "density": 0.3100000023841858,
+          "ambient": "0.317647, 0.341176, 0.313726",
+          "outdoor": "0.47451, 0.501961, 0.454902",
+          "clock": 15.300000190734863,
+          "haze": 1.5499999523162842,
+          "exposure": 0.020000003278255463
+        },
+        "camera": "-27, 5.5, -1131, 0.604386449, -0.0870233178, 0.791924179, 0, 0.99401629, 0.109230921, -0.796691239, -0.0660176873, 0.600770056",
+        "hud": {
+          "JadeDialogue": false,
+          "AsuraColosseum": true,
+          "BubbleChat": true,
+          "AsuraTouchControls": false,
+          "ProximityPrompts": true,
+          "Chat": true,
+          "AsuraHUD": true,
+          "AsuraVignette": true,
+          "SpectatorWagers": false,
+          "Freecam": true
+        },
+        "fov": 70,
+        "viewport": [
+          1221,
+          503
+        ],
+        "region": "BambooPass",
+        "quality": "Automatic"
+      },
+      "cost": null
+    }
+  ],
+  "restoration_errors": []
+}

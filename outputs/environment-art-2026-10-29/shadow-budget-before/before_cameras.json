@@ -1,0 +1,273 @@
+{
+  "kind": "seeded Studio running-client diagnostic; original scene and HUD",
+  "stage": "before",
+  "views": [
+    {
+      "name": "entry",
+      "eye": [
+        1.8,
+        6.5,
+        -1124
+      ],
+      "target": [
+        0,
+        7,
+        -1174
+      ],
+      "stand": [
+        0,
+        3.2,
+        -1135
+      ],
+      "files": [
+        "before_entry.jpg"
+      ],
+      "conditions": {
+        "maxFramerate": "unavailable",
+        "studioVersion": "0.745.0.7451137",
+        "editorQuality": "Automatic",
+        "place": "AsurasPath.rbxlx",
+        "terrainDecoration": "unavailable",
+        "wind": "6, 0, 2",
+        "lighting": {
+          "density": 0.3100000023841858,
+          "ambient": "0.317647, 0.341176, 0.313726",
+          "outdoor": "0.47451, 0.501961, 0.454902",
+          "clock": 15.300000190734863,
+          "haze": 1.5499999523162842,
+          "exposure": 0.020000003278255463
+        },
+        "camera": "1.79999995, 6.5, -1124, 0.999352694, 0.000359516125, 0.0359748974, 0, 0.999950111, -0.00999302696, -0.0359767005, 0.009986558, 0.999302685",
+        "hud": {
+          "JadeDialogue": false,
+          "AsuraColosseum": true,
+          "BubbleChat": true,
+          "AsuraTouchControls": false,
+          "ProximityPrompts": true,
+          "Chat": true,
+          "AsuraHUD": true,
+          "AsuraVignette": true,
+          "SpectatorWagers": false,
+          "Freecam": true
+        },
+        "fov": 70,
+        "viewport": [
+          1221,
+          503
+        ],
+        "region": "BambooPass",
+        "quality": "Automatic"
+      },
+      "cost": {
+        "gpu": {
+          "p95Ms": 0.000625001177922968,
+          "count": 91,
+          "meanMs": 0.00042536596838245103
+        },
+        "seconds": 6.019778458332439,
+        "composition": {
+          "Name": "TriangleComposition",
+          "Children": [
+            {
+              "Sizes": {
+                "Triangles": 581098,
+                "Drawcalls": 83
+              },
+              "Name": "Opaque"
+            },
+            {
+              "Sizes": {
+                "Triangles": 16,
+                "Drawcalls": 5
+              },
+              "Name": "Transparent"
+            },
+            {
+              "Sizes": {
+                "Triangles": 53034,
+                "Drawcalls": 64
+              },
+              "Name": "Terrain"
+            },
+            {
+              "Sizes": {
+                "Triangles": 29382,
+                "Drawcalls": 20
+              },
+              "Name": "Grass"
+            },
+            {
+              "Sizes": {
+                "Triangles": 320,
+                "Drawcalls": 2
+              },
+              "Name": "UI"
+            },
+            {
+              "Sizes": {
+                "Triangles": 18,
+                "Drawcalls": 1
+              },
+              "Name": "Particles"
+            }
+          ],
+          "Sizes": {
+            "Triangles": 663868,
+            "Drawcalls": 175
+          }
+        },
+        "unknownFocusFrames": 91,
+        "autoFRM": "2",
+        "memoryMb": 4713.9892578125,
+        "quality": "Automatic",
+        "frm": "true",
+        "cpu": {
+          "p95Ms": 7.786541245877743,
+          "count": 91,
+          "meanMs": 6.308406570946778
+        },
+        "kind": "short fixed-view Studio diagnostic; not acceptance",
+        "frame": {
+          "p95Ms": 69.9368342757225,
+          "count": 91,
+          "meanMs": 66.68271513266878
+        },
+        "unfocusedFrames": 0
+      }
+    },
+    {
+      "name": "ground_transition",
+      "eye": [
+        -10,
+        5.5,
+        -1200
+      ],
+      "target": [
+        -37,
+        2,
+        -1220
+      ],
+      "stand": [
+        -17,
+        3.2,
+        -1205
+      ],
+      "files": [
+        "before_ground_transition.jpg"
+      ],
+      "conditions": {
+        "maxFramerate": "unavailable",
+        "studioVersion": "0.745.0.7451137",
+        "editorQuality": "Automatic",
+        "place": "AsurasPath.rbxlx",
+        "terrainDecoration": "unavailable",
+        "wind": "6, 0, 2",
+        "lighting": {
+          "density": 0.3100000023841858,
+          "ambient": "0.317647, 0.341176, 0.313726",
+          "outdoor": "0.47451, 0.501961, 0.454902",
+          "clock": 15.300000190734863,
+          "haze": 1.5499999523162842,
+          "exposure": 0.020000003278255463
+        },
+        "camera": "-10, 5.5, -1200, 0.59522754, -0.083251968, 0.79923296, 0, 0.994618654, 0.103604272, -0.803557277, -0.0616681166, 0.592024386",
+        "hud": {
+          "JadeDialogue": false,
+          "AsuraColosseum": true,
+          "BubbleChat": true,
+          "AsuraTouchControls": false,
+          "ProximityPrompts": true,
+          "Chat": true,
+          "AsuraHUD": true,
+          "AsuraVignette": true,
+          "SpectatorWagers": false,
+          "Freecam": true
+        },
+        "fov": 70,
+        "viewport": [
+          1221,
+          503
+        ],
+        "region": "BambooPass",
+        "quality": "Automatic"
+      },
+      "cost": {
+        "gpu": {
+          "p95Ms": 0.0007083363016135991,
+          "count": 91,
+          "meanMs": 0.0004239926869768869
+        },
+        "seconds": 6.004022458331747,
+        "composition": {
+          "Name": "TriangleComposition",
+          "Children": [
+            {
+              "Sizes": {
+                "Triangles": 222186,
+                "Drawcalls": 45
+              },
+              "Name": "Opaque"
+            },
+            {
+              "Sizes": {
+                "Triangles": 24,
+                "Drawcalls": 6
+              },
+              "Name": "Transparent"
+            },
+            {
+              "Sizes": {
+                "Triangles": 42000,
+                "Drawcalls": 51
+              },
+              "Name": "Terrain"
+            },
+            {
+              "Sizes": {
+                "Triangles": 12040,
+                "Drawcalls": 12
+              },
+              "Name": "Grass"
+            },
+            {
+              "Sizes": {
+                "Triangles": 200,
+                "Drawcalls": 1
+              },
+              "Name": "UI"
+            },
+            {
+              "Sizes": {
+                "Triangles": 28,
+                "Drawcalls": 1
+              },
+              "Name": "Particles"
+            }
+          ],
+          "Sizes": {
+            "Triangles": 276478,
+            "Drawcalls": 116
+          }
+        },
+        "unknownFocusFrames": 91,
+        "autoFRM": "2",
+        "memoryMb": 4759.6455078125,
+        "quality": "Automatic",
+        "frm": "true",
+        "cpu": {
+          "p95Ms": 7.888416759669781,
+          "count": 91,
+          "meanMs": 6.450972494229183
+        },
+        "kind": "short fixed-view Studio diagnostic; not acceptance",
+        "frame": {
+          "p95Ms": 69.08383220434189,
+          "count": 91,
+          "meanMs": 66.68503729851692
+        },
+        "unfocusedFrames": 0
+      }
+    }
+  ],
+  "restoration_errors": []
+}

@@ -25,8 +25,9 @@ end
 
 local function detail(parent: Instance, name: string, base: CFrame, scale: number, tint: Color3): Model?
 	local living = Storage:FindFirstChild("AsuraLivingBamboo")
+	local breakage = Storage:FindFirstChild("AsuraBambooBreakage")
 	local mapped = if name == "Detail_Fern" then "Ground_Fern" else name
-	local template = living and living:FindFirstChild(mapped)
+	local template = (living and living:FindFirstChild(mapped)) or (breakage and breakage:FindFirstChild(mapped))
 	local imported = template ~= nil
 	if not template then
 		local lib = Storage:FindFirstChild("AsuraSanctuaryDetail")
@@ -51,14 +52,15 @@ local function detail(parent: Instance, name: string, base: CFrame, scale: numbe
 	return model
 end
 
-local function clump(parent: Instance, layout: any, x: number, z: number, styleIndex: number, rng: Random)
+local function clump(parent: Instance, layout: any, x: number, z: number, styleIndex: number, rng: Random, plain: boolean?)
 	local style = styles[styleIndex]
 	local group = Instance.new("Model")
 	group.Name = "GroveClump_" .. styleIndex
 	group:SetAttribute("ClumpSilhouette", styleIndex)
 	local phase = rng:NextNumber(0, math.pi * 2)
 	local library = Storage:FindFirstChild("AsuraLivingBamboo")
-	local sculptedCrown = math.abs(x) < 65 and library and library:FindFirstChild("Bamboo_LeafSpray") ~= nil
+	-- `plain` keeps the compressed crown of the outer groves where a view sees many clumps at once.
+	local sculptedCrown = not plain and math.abs(x) < 65 and library and library:FindFirstChild("Bamboo_LeafSpray") ~= nil
 	for i = 1, style.Count do
 		local angle = phase + i * 2.39996
 		local radius = style.Spread * math.sqrt(i / style.Count) * rng:NextNumber(0.55, 1)
@@ -101,6 +103,7 @@ local function clump(parent: Instance, layout: any, x: number, z: number, styleI
 				spray.CFrame = base * CFrame.new(0, height * 0.53, 0) * CFrame.Angles(0.1, phase + 1.3, -0.12)
 				spray.Parent = stalk
 			end
+			Decor.foliageShadows(stalk)
 			wind(stalk, base, height, "Bamboo")
 		else
 			-- Keep the established fallback only when the uploaded library is absent.
@@ -171,9 +174,80 @@ function Ecology.Entry(map: Instance, layout: any, rng: Random)
 			end
 		end
 	end
+	for _, c in { { -25, -1166, 0.7 }, { 26, -1214, 0.9 } } do
+		local y = Ground.surfaceHeight(c[1], c[2], -0.1)
+		detail(habitat, "Bamboo_BrokenClump", CFrame.new(c[1], y, c[2]) * CFrame.Angles(0, c[3], 0), 1, rgb(255, 255, 255))
+	end
+	for _, c in { { -27, -1188, 1.4 }, { 25, -1206, -0.3 } } do
+		local y = Ground.surfaceHeight(c[1], c[2], -0.1)
+		detail(habitat, "Bamboo_FallenPole", CFrame.new(c[1], y, c[2]) * CFrame.Angles(0, c[3], 0), 1, rgb(255, 255, 255))
+	end
 	map:SetAttribute("BambooArtPass", "Entry slice v5; remaining pass retains baseline dressing")
 	local lib = Storage:FindFirstChild("AsuraLivingBamboo")
 	map:SetAttribute("BambooImportedEcologyReady", lib ~= nil and #lib:GetChildren() == 5)
+end
+
+function Ecology.Shrine(map: Instance, layout: any, rng: Random)
+	local habitat = Kit.folder("LivingBambooShrine", map)
+	for i, c in { { -59, -1315 }, { -60, -1334 }, { -58, -1350 }, { -15, -1349 } } do
+		clump(habitat, layout, c[1], c[2], if i == 4 then 4 else i, rng)
+	end
+	for _, side in { -54, -18 } do
+		for i = 0, 3 do
+			local z = -1316 - i * 10
+			local x = side + rng:NextNumber(-2, 2)
+			local y = Ground.surfaceHeight(x, z, Decor.layoutTop(layout, x, z) or -0.1)
+			local frame = CFrame.new(x, y + 0.02, z) * CFrame.Angles(0, rng:NextNumber(0, math.pi * 2), 0)
+			local fern = detail(habitat, "Ground_Fern", frame, rng:NextNumber(0.8, 1.3), rgb(255, 255, 255))
+			if fern then wind(fern, frame, 2, "Fern") end
+			detail(habitat, "Ground_LeafLitter", frame * CFrame.new(-1, -0.04, 2), 0.8, rgb(255, 255, 255))
+		end
+	end
+	Ground.forestFloor(-57, -1331, 7, 21)
+	Ground.grassPatch(-17, -1349, 4, 7)
+	Decor.nature(habitat, "AsuraRoots", CFrame.new(-56, Ground.surfaceHeight(-56, -1337, -0.1) - 0.05, -1337)
+		* CFrame.Angles(0, 0.8, 0), 12)
+	detail(habitat, "Bamboo_BrokenClump", CFrame.new(-53, Ground.surfaceHeight(-53, -1334, -0.1), -1334)
+		* CFrame.Angles(0, 2.1, 0), 0.8, rgb(255, 255, 255))
+	map:SetAttribute("BambooArtPass", "Living groves, breakage and shrine v8; arena/ridge/exit in review")
+end
+
+-- Moon-gate shoulders and the ash descent beyond it: the road keeps its flags clear (|x| < 14),
+-- clumps stand between the flags and the veil (|x| < 30), and planting hugs the palisade feet.
+-- Budgeted: these clumps are seen through the gate from Baize's arena, so they use plain crowns
+-- and one fern each (sculpted crowns cost ~72k triangles at the arena camera; PERFORMANCE.md).
+function Ecology.South(map: Instance, layout: any, rng: Random)
+	local habitat = Kit.folder("LivingBambooSouth", map)
+	for _, side in { -1, 1 } do
+		for i = 0, 4 do
+			local z = -1596 - i * 17 + rng:NextNumber(-3, 3)
+			local x = side * rng:NextNumber(20, 25)
+			Ground.forestFloor(x, z, 7, 9)
+			clump(habitat, layout, x, z, (i + (if side > 0 then 2 else 0)) % #styles + 1, rng, true)
+			for k = 1, 1 do
+				local fx, fz = x - side * rng:NextNumber(2, 5), z + rng:NextNumber(-5, 5)
+				local frame = CFrame.new(fx, Ground.surfaceHeight(fx, fz, -0.1) + 0.02, fz) * CFrame.Angles(0, rng:NextNumber(0, 6.28), 0)
+				local fern = detail(habitat, "Ground_Fern", frame, rng:NextNumber(0.8, 1.4), rgb(255, 255, 255))
+				if fern then wind(fern, frame, 2, "Fern") end
+				if k == 1 then detail(habitat, "Ground_LeafLitter", frame * CFrame.new(1, -0.04, -1), 0.9, rgb(255, 255, 255)) end
+			end
+			if i % 2 == 1 then Ground.grassPatch(side * rng:NextNumber(15, 18), z + 6, 3.5, 7) end
+		end
+		-- Planted shoulders at the jamb feet, both faces of the palisade.
+		for _, z in { -1569, -1585 } do
+			local x = side * rng:NextNumber(21, 25)
+			local y = Ground.surfaceHeight(x, z, -0.1)
+			Decor.han(habitat, "AsuraHanKit", "BoulderSmall", CFrame.new(x, y - 0.25, z) * CFrame.Angles(0, rng:NextNumber(0, 6.28), 0), rng:NextNumber(7, 9))
+			local frame = CFrame.new(x - side * 2.5, y + 0.02, z + 1) * CFrame.Angles(0, rng:NextNumber(0, 6.28), 0)
+			local fern = detail(habitat, "Ground_Fern", frame, 1.1, rgb(255, 255, 255))
+			if fern then wind(fern, frame, 2, "Fern") end
+			local shootFrame = CFrame.new(x + side * 2, y - 0.03, z - 1.5) * CFrame.Angles(0, rng:NextNumber(0, 6.28), 0)
+			local shoots = detail(habitat, "Bamboo_YoungShoots", shootFrame, 0.75, rgb(255, 255, 255))
+			if shoots then wind(shoots, shootFrame, 4, "Shoot") end
+		end
+	end
+	detail(habitat, "Bamboo_FallenPole", CFrame.new(-19, Ground.surfaceHeight(-19, -1640, -0.1), -1640) * CFrame.Angles(0, 0.4, 0), 1, rgb(255, 255, 255))
+	map:SetAttribute("BambooArtPass", "Living groves, breakage, shrine, moon gate and ridge margins v9")
 end
 
 return Ecology

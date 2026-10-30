@@ -1,0 +1,8 @@
+{
+  "kind": "Actual Respite Settings Reduced motion UI toggle in Bamboo (character at 0,3.4,-1600); no Apply/save. Backspace reverted preview; Resume closed menu.",
+  "culm": "Workspace.Map_BambooPass.LivingBambooSouth.GroveClump_1.Bamboo_A.Bamboo_A__Culm",
+  "normal": "active=112 registered=792 wind=6, 0, 2 southCulmDelta=0.02480",
+  "reduced": "button=On active=0 registered=792 wind=0.6, 0, 0.2 southCulmDelta=0.00000",
+  "restored": "menu=false active=112 registered=792 wind=6, 0, 2 southCulmDelta=0.04416",
+  "invalidAttempts": "A script-side Effects.set preview had no effect (execute_luau uses a separate module instance); a first UI attempt ran with the character in the lobby (active 0 from distance). Neither is cited as a result."
+}

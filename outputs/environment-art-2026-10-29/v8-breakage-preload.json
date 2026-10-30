@@ -1,0 +1,23 @@
+{
+  "models": 2,
+  "shadowCount": 0,
+  "registered": 736,
+  "statuses": [
+    {
+      "id": "rbxassetid://125101949703524",
+      "status": "Enum.AssetFetchStatus.Success"
+    },
+    {
+      "id": "rbxassetid://125206876878081",
+      "status": "Enum.AssetFetchStatus.Success"
+    },
+    {
+      "id": "rbxassetid://87737302473702",
+      "status": "Enum.AssetFetchStatus.Success"
+    },
+    {
+      "id": "rbxassetid://88664957677846",
+      "status": "Enum.AssetFetchStatus.Success"
+    }
+  ]
+}

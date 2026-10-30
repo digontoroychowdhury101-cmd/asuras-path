@@ -725,6 +725,9 @@
       },
       "AsuraLivingBamboo": {
         "$path": "assets/models/AsuraLivingBamboo.rbxmx"
+      },
+      "AsuraBambooBreakage": {
+        "$path": "assets/models/AsuraBambooBreakage.rbxmx"
       }
     },
     "StarterPlayer": {
