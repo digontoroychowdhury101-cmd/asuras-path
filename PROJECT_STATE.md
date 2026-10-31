@@ -1,5 +1,9 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## General Zhao L2 and wrist polish — 2026-10-31 (Mac)
+
+Elbow swivel now follows a least-cost path (no blurred flips); Oath layer tucks keyed elbows instead of replacing them. Worst wrists: Strike 105→91°, L3 83°, Heavy 91°, Art 83°; Art forearm no longer enters body. L2 pop fixed, clip 0.29 at peak swing. Forearm-in-body check added. Next: guard left-forearm contact, Studio recheck, upload.
+
 ## General Zhao attack polish — 2026-10-31 (Mac)
 
 Re-authored Zhao attack windups (Heavy, L1, L2, Art, Quickstep); smooth per-frame clearance/elbow fields; attacks now start/end exactly on idle guard; Art spin unwind bug fixed. 27/59 clips validate; residual grazes ≤0.16 except L2 (0.32), wrists ~90°. Studio recheck skipped (Play mode). Next: L2/wrist polish, then upload.

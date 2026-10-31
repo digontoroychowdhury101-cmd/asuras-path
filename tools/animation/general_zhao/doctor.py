@@ -39,6 +39,9 @@ def main():
         flags = []
         if hits:
             flags.append(" ".join(hits))
+        arm = max(clip.arm_in_body(w, "Right"), clip.arm_in_body(w, "Left"))
+        if arm > 0.08:
+            flags.append("arm%s %.2f" % ("R" if clip.arm_in_body(w, "Right") >= arm else "L", arm))
         rb = clip.wrist_bend(w, "Right")
         if rb > 80:
             flags.append("Rwrist %d" % rb)

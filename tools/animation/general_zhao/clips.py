@@ -172,9 +172,12 @@ def oath_layer(c, t, clip):
     c["chest"] = (c["chest"][0] + 5, c["chest"][1], c["chest"][2])
     c["neck"] = (c["neck"][0] + 3, c["neck"][1], c["neck"][2])
     g = c["grip"]
-    c["grip"] = (g[0] - 0.05, g[1] - 0.04, g[2] + 0.04)
+    c["grip"] = (g[0], g[1] - 0.12, g[2])  # the hands sink with the centre (held up, the wrists break over)
     c["s"] = min(c["sMax"], c["s"] + 0.3)
-    c["relb"] = (0.7, -0.8, 0.6)
+    # elbows in: the keyed pole turned in and down (the guard's (1, -0.4, 0.8) becomes about (0.7, -0.8, 0.6)), not
+    # replaced, so a pole keyed for a spin or a cleave keeps its job
+    e = np.asarray(c["relb"], float)
+    c["relb"] = tuple(e / np.linalg.norm(e) * 1.34 + np.array([-0.15, -0.2, -0.1]))
     return c
 
 
@@ -214,7 +217,7 @@ def strike():
     cut = pose(root=(0.0, -0.5, -0.2), rootR=(6, -12, 0), chest=(14, 4, 0), grip=(0.55, -0.6, -0.95),
                dir=yawdir(14, -10), edge=(-0.4, -1, 0), s=-1.2,
                lf=foot(GUARD["lf"], dz=-0.35))
-    follow = at(cut, dir=yawdir(32, -12), chest=(16, 12, 0), grip=(0.35, -0.75, -0.8))
+    follow = at(cut, dir=yawdir(40, -6), chest=(16, 12, 0), grip=(0.35, -0.35, -0.95))
     return Clip(key_name("Strike"), 1.2, [
         (0.0, GUARD, "inout"), (0.32, raise_, "out"), (0.40, at(raise_, chest=(-6, -38, 0)), "inout"),
         (0.50, cut, "in"), (0.62, follow, "out"), (1.2, GUARD, "inout"),
@@ -457,23 +460,28 @@ def melee():
     out_ = at(hit, chest=(6, -28, 0), rootR=(4, -28, 0), grip=(1.0, -0.2, -0.7), dir=yawdir(-110, 20), edge=(0.6, 0.2, 0.8))
     out.append(Clip(key_name("Guandao_L2"), sec(t2), [(0, GUARD, "inout"), (0.07, wind, "out"), (c, hit, "in"),
                                                       (e, out_, "linear"), (0.31, at(out_, dir=yawdir(-120, 28), grip=(1.0, -0.1, -0.7)), "out"),
-                                                      (0.36, at(out_, dir=yawdir(-60, 30), grip=(0.95, -0.3, -0.7)), "inout"),
+                                                      # the blade comes back up and over his right side (swung back
+                                                      # level, the butt would sweep through his belly)
+                                                      (0.345, at(out_, dir=yawdir(-95, 78), grip=(1.15, -0.2, -0.75)), "inout"),
                                                       (sec(t2), GUARD, "inout")],
                     contacts=(c,), group="Melee", action="Guandao_L2", preview=(0, 0.07, c, e, 0.31, sec(t2)),
                     markers=melee_markers(c, e),
                     timing="WeaponSchema Guandao_L2 Returning Tide: startup 9f, active 4f, total 25f (Tempo 1.4)",
                     hook="NEW: AIService BossSwing -> resolve(Guandao_L2)", wiring="needs-hook",
                     notes="Backhand return sweep from his left, rising slightly; edge turned to lead."))
-    # L3 Heaven-Splitting Cleave: overhead vertical cleave
+    # L3 Heaven-Splitting Cleave: overhead vertical cleave; it finishes with the rear hand drawn back to the right hip,
+    # elbow out and forearm across the shaft (a straight wrist), the front hand driving the blade down the centre line
     s3, a3, _, t3 = GUANDAO["Guandao_L3"]
     c, e = sec(s3), sec(s3 + a3)
     up = pose(root=(0.04, -0.28, 0.12), rootR=(2, -24, 0), chest=(-8, -20, 0), grip=(0.8, 0.6, 0.05),
-              dir=unitv(-0.05, 0.75, 0.66), edge=(0, 0.66, -0.75), s=-1.2)
-    hit = pose(root=(0.0, -0.62, -0.3), rootR=(8, -16, 0), chest=(18, -10, 0), grip=(0.5, -0.55, -0.7),
-               dir=unitv(-0.05, -0.12, -1), edge=(0, -1, 0.1), s=-1.7, lf=foot(GUARD["lf"], dz=-0.3))
-    down = at(hit, dir=unitv(-0.05, -0.16, -1), chest=(22, -10, 0), grip=(0.5, -0.65, -0.65))
+              dir=unitv(-0.05, 0.75, 0.66), edge=(0, 0.66, -0.75), s=-1.2, lelb=(-1, -0.4, -0.6), relb=(0.3, -1, 0.3))
+    hit = pose(root=(0.0, -0.62, -0.3), rootR=(8, -16, 0), chest=(18, -10, 0), grip=(1.05, -0.25, -0.25),
+               dir=unitv(-0.22, -0.12, -1), edge=(0, -1, 0.1), s=-1.7, lf=foot(GUARD["lf"], dz=-0.3))
+    down = at(hit, dir=unitv(-0.22, -0.16, -1), chest=(22, -10, 0), grip=(1.05, -0.3, -0.2))
     out.append(Clip(key_name("Guandao_L3"), sec(t3), [(0, GUARD, "inout"), (0.11, up, "out"), (c, hit, "in"), (e, down, "linear"),
-                                                      (0.36, at(down, chest=(20, -12, 0)), "out"), (sec(t3), GUARD, "inout")],
+                                                      (0.36, at(down, chest=(20, -12, 0)), "out"),
+                                                      # the blade lifts first, so the elbow tucks behind a rising shaft
+                                                      (0.43, {"dir": unitv(-0.2, 0.3, -0.93)}, "inout"), (sec(t3), GUARD, "inout")],
                     contacts=(c,), group="Melee", action="Guandao_L3", preview=(0, 0.11, c, e, 0.36, sec(t3)),
                     markers=melee_markers(c, e, 0.06, [(c, "FootstepL", "Stamp")]),
                     timing="WeaponSchema Guandao_L3 Heaven-Splitting Cleave: startup 11f, active 4f, total 31f",
@@ -482,16 +490,20 @@ def melee():
     # Heavy Green Dragon Reaping: high-right to low-left reaping arc with full-body turn (hyper armour)
     sh, ah, _, th = GUANDAO["Guandao_Heavy"]
     c, e = sec(sh), sec(sh + ah)
-    wind = pose(root=(0.08, -0.36, 0.18), rootR=(2, -48, 0), chest=(-4, -46, 0), grip=(0.95, 0.35, 0.1),
-                dir=yawdir(180, 40), edge=(0, -0.3, -1), s=-1.0, sMax=-0.7,
+    wind = pose(root=(0.08, -0.36, 0.18), rootR=(2, -48, 0), chest=(-4, -46, 0), grip=(1.15, 0.5, 0.4),
+                dir=yawdir(180, 55), edge=(0, -0.3, -1), s=-1.0, sMax=-0.7,
                 lf=foot(GUARD["lf"], dz=0.05), rf=foot(GUARD["rf"], pitch=0))
     hold = at(wind, chest=(-6, -50, 0), root=(0.09, -0.42, 0.22))
     hit = pose(root=(0.0, -0.66, -0.2), rootR=(6, -10, 0), chest=(14, 4, 0), grip=(0.5, -0.45, -0.9),
                dir=yawdir(6, -8), edge=(-1, -0.2, 0), s=-0.9, sMax=-0.7, lf=foot(GUARD["lf"], dz=-0.35))
-    out_ = at(hit, chest=(16, 26, 0), rootR=(6, 4, 0), grip=(0.2, -0.6, -0.8), dir=yawdir(55, -16), edge=(-0.6, -0.2, 0.8))
-    follow = at(out_, chest=(18, 34, 0), dir=yawdir(85, -20), grip=(0.05, -0.65, -0.6))
+    # the rear hand stays out in front at the waist through the follow-through (drawn to the belly, the forearm would
+    # sink into it)
+    out_ = at(hit, chest=(16, 26, 0), rootR=(6, 4, 0), grip=(0.35, -0.3, -0.8), dir=yawdir(55, -8), edge=(-0.6, -0.2, 0.8))
+    follow = at(out_, chest=(18, 34, 0), dir=yawdir(85, -10), grip=(0.35, -0.35, -0.9))
     out.append(Clip(key_name("Guandao_Heavy"), sec(th), [(0, GUARD, "inout"), (0.2, wind, "out"), (0.31, hold, "inout"),
                                                          (c, hit, "in"), (e, out_, "linear"), (0.6, follow, "out"),
+                                                         # the rear hand leads the way back out to the right
+                                                         (0.66, {"grip": (0.55, -0.25, -0.85)}, "inout"),
                                                          (sec(th), GUARD, "inout")],
                     contacts=(c,), group="Melee", action="Guandao_Heavy", preview=(0, 0.2, 0.31, c, e, 0.6, sec(th)),
                     markers=melee_markers(c, e, 0.08, [(0.12, "Charge", "Heavy"), (c, "FootstepL", "Stamp")]),
@@ -545,7 +557,10 @@ def melee():
         held = rig.ry(ang - 30) @ np.array([0.75, -0.3, -0.85])  # arm's length, carried round with the torso
         keys.append((t, pose(root=(0.0, -0.6, -0.05), rootR=(5, body, 0), chest=(8, ang * 0.25, 0),
                              grip=tuple(held), dir=yawdir(ang + 4, 2), edge=tuple(rig.ry(ang) @ np.array([-1.0, 0, 0])),
-                             s=-0.8, sMax=-0.7, lfree=1.0, larm=(70, 0, -60), lfore=(10, 0, 0), lhand=(0, 0, 0)),
+                             s=-0.8, sMax=-0.7, lfree=1.0, larm=(70, 0, -60), lfore=(10, 0, 0), lhand=(0, 0, 0),
+                             # the elbow, down and forward, turns with the torso (the guard's pole, fixed in the root,
+                             # swings it through his side as he spins)
+                             relb=tuple(rig.ry(ang - 30) @ np.array([0.5, -1, -0.5]))),
                      "linear" if t > c else "in"))
     # the hand rides the arc a little past the window before heading for the recovery (no kink in its path)
     keys.append((e + 0.05, {"grip": tuple(rig.ry(250) @ np.array([0.75, -0.3, -0.85]))}, "linear"))

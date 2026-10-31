@@ -17,6 +17,7 @@ import numpy as np
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
+import clip as cliplib  # noqa: E402
 import clips  # noqa: E402
 import rig  # noqa: E402
 
@@ -132,12 +133,13 @@ def pop(a, b, c):
 
 
 POP_KINK = 0.75
+ARM_IN_BODY = 0.08  # contact allowed: a front arm reaching across to the shaft presses on the boxy R15 chest
 
 
 def validate(clip, baked):
     worst = {"grip_error": 0.0, "right_reach": 0.0, "leg_reach": 0.0, "sole_below_ground": 0.0, "planted_slide": 0.0,
              "blade_below_ground": 0.0, "shaft_in_body": 0.0, "tip_distance_min": 99.0, "tip_distance_max": 0.0,
-             "wrist_bend_max": 0.0, "loop_seam_deg": 0.0, "right_pull": 0.0, "hand_jerk": 0.0}
+             "wrist_bend_max": 0.0, "loop_seam_deg": 0.0, "right_pull": 0.0, "hand_jerk": 0.0, "arm_in_body": 0.0}
     frames_shaft = []
     hands = []
     prev_soles = None
@@ -181,6 +183,7 @@ def validate(clip, baked):
             if clearance < -0.02:
                 worst["shaft_in_body"] = max(worst["shaft_in_body"], -clearance)
                 frames_shaft.append((round(t, 3), part))
+        worst["arm_in_body"] = max(worst["arm_in_body"], cliplib.arm_in_body(world, "Right"), cliplib.arm_in_body(world, "Left"))
         for side in ("Right", "Left"):  # flexion/deviation: hand +Y against the forearm's axis (twist excluded)
             if side == "Left" and diag.get("grip_s") is None:
                 continue
@@ -213,6 +216,8 @@ def validate(clip, baked):
         problems.append("blade %.2f below ground" % worst["blade_below_ground"])
     if worst["shaft_in_body"] > 0.0:
         problems.append("shaft passes %.2f into the body (%s)" % (worst["shaft_in_body"], frames_shaft[:3]))
+    if worst["arm_in_body"] > ARM_IN_BODY:
+        problems.append("forearm passes %.2f into the body" % worst["arm_in_body"])
     if worst["wrist_bend_max"] > 80:
         problems.append("wrist bent %.0f degrees" % worst["wrist_bend_max"])
     if worst["hand_jerk"] > HAND_JERK:

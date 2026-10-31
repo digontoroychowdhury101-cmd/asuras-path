@@ -338,36 +338,39 @@ class Clip:
         grip, rsw, lsw, free = np.zeros((n, 3)), np.zeros(n), np.zeros(n), np.zeros(n)
         self.field = (grip, rsw, lsw, free)
         for r in range(rounds):
-            push, rbest, lbest, gap = np.zeros((n, 3)), np.zeros(n), np.zeros(n), np.zeros(n)
+            push, gap = np.zeros((n, 3)), np.zeros(n)
+            rcost, lcost = np.zeros((n, len(SWIVELS))), np.zeros((n, len(SWIVELS)))
             for i, t in enumerate(times):
                 c = self.controls(t)
                 _, world, diag = self.solve(c)
                 push[i] = self.clearance_push(c, world)
-                rbest[i] = self.best_swivel(c, "rswivel", "Right", rsw[i])
+                rcost[i] = self.swivel_costs(c, "rswivel", "Right")
                 if diag.get("grip_s") is not None and c["lfree"] <= 1e-3:
-                    lbest[i] = self.best_swivel(c, "lswivel", "Left", lsw[i])
+                    lcost[i] = self.swivel_costs(c, "lswivel", "Left")
                     gap[i] = 1.0 if (diag.get("grip_error") or 0.0) > 0.06 else 0.0
                 else:
-                    lbest[i] = lsw[i]
+                    # the front hand is off the haft: its elbow stays where it is, unless that puts it in the torso
+                    lcost[i] = self.swivel_costs(c, "lswivel", "Left", hold=lsw[i])
                     gap[i] = free[i]
             if r == 0:
                 opens_released = gap[0] > 0  # the keyed first frame itself has the front hand out of reach
             grip += smooth_field(push)
-            rsw[:] = smooth_field(rbest[:, None])[:, 0]
-            lsw[:] = smooth_field(lbest[:, None])[:, 0]
+            rsw[:] = blur_field(swivel_path(rcost)[:, None])[:, 0]
+            lsw[:] = blur_field(swivel_path(lcost)[:, None])[:, 0]
             # the front hand lets go (smoothly) where no point of the haft is in its reach, instead of floating
             free[:] = np.maximum(free, np.clip(smooth_field(gap[:, None])[:, 0], 0.0, 1.0))
             if log is not None:
                 log.append(("field", round(float(np.abs(push).max()), 3)))
         # taper to nothing at both ends, so every attack starts and ends exactly on its keyed pose (the idle guard): the
         # elbow swivels (non-zero even on the clean guard) over FIELD_EDGE, the grip, which a fast swing may need from
-        # its second frame, over FIELD_EDGE_GRIP; the front hand's release over FIELD_EDGE too, except at a start whose
+        # its second frame, over FIELD_EDGE_GRIP at the start (FIELD_EDGE at the end: a push still on two frames from
+        # the end snaps the hand onto the guard); the front hand's release over FIELD_EDGE too, except at a start whose
         # keyed pose already has the front hand out of reach (a clip that opens from a run needs the release at once)
         tail = self.length - np.asarray(times)
         edge = np.minimum(times, tail)
         smooth = lambda x: x * x * (3 - 2 * x)  # noqa: E731
         w = smooth(np.clip(edge / FIELD_EDGE, 0.0, 1.0))
-        wg = smooth(np.clip(edge / FIELD_EDGE_GRIP, 0.0, 1.0))
+        wg = smooth(np.clip(np.minimum(np.asarray(times) / FIELD_EDGE_GRIP, tail / FIELD_EDGE), 0.0, 1.0))
         wf = smooth(np.clip((tail if opens_released else edge) / FIELD_EDGE, 0.0, 1.0))
         self.field = (grip * wg[:, None], rsw * w, lsw * w, free * wf)
 
@@ -400,18 +403,22 @@ class Clip:
                     best = (k, v * a)
         return best[1]
 
-    def best_swivel(self, c, channel, side, current):
-        """The swivel (degrees, within SWIVEL_RANGE of the authored pole) whose solve bends this wrist least; turning
-        away from the authored elbow costs a little so near-ties keep the animator's choice."""
-        best = (1e9, current)
-        for sw in np.arange(-SWIVEL_RANGE, SWIVEL_RANGE + 1e-6, 15.0):
+    def swivel_costs(self, c, channel, side, hold=None):
+        """Per swivel in SWIVELS (degrees about the shoulder-wrist line, from the authored pole): this wrist's bend,
+        plus a heavy price on driving the elbow or forearm into the torso and a little for turning away from the
+        authored elbow, so near-ties keep the animator's choice. With `hold` (a hand off the haft, whose wrist is not
+        posed on it) the bend is replaced by the turn away from that swivel."""
+        out = np.zeros(len(SWIVELS))
+        for k, sw in enumerate(SWIVELS):
             trial = dict(c)
             trial[channel] = float(sw)
             _, world, _ = self.solve(trial)
-            cost = wrist_bend(world, side) + abs(sw) * 0.15
-            if cost < best[0]:
-                best = (cost, float(sw))
-        return best[1]
+            bend = wrist_bend(world, side) + abs(sw) * 0.15 if hold is None else abs(sw - hold)
+            out[k] = bend + arm_in_body(world, side) * ARM_BODY_COST
+        return out
+
+    def best_swivel(self, c, channel, side, current=0.0):
+        return float(SWIVELS[int(np.argmin(self.swivel_costs(c, channel, side)))])
 
     def bake(self):
         out = []
@@ -427,6 +434,11 @@ CLEAR_MARGIN = 0.08
 MAX_FORWARD = 0.5  # beyond this the correction rewrites the pose instead of nudging it
 SLIDE = (-3.6, -0.45)  # how far along the haft the front hand may slide when its keyed range is out of reach
 SWIVEL_RANGE = 75.0
+SWIVELS = np.arange(-SWIVEL_RANGE, SWIVEL_RANGE + 1e-6, 15.0)
+SWIVEL_SIGMA = 2.0  # frames: rounds off the path's steps, no wider (a wide blur
+# carries the elbow off the path, back through the swivels it turned to avoid)
+SWIVEL_TURN_COST = 0.3  # degrees of wrist bend (one frame) per degree the elbow swivel turns between frames
+ARM_BODY_COST, ARM_MARGIN = 300.0, 0.0  # degrees of wrist bend per stud of arm in the torso
 FIELD_DILATE, FIELD_SIGMA = 3, 3.0  # frames
 FIELD_EDGE, FIELD_EDGE_GRIP = 0.1, 2 / 60  # seconds
 
@@ -435,6 +447,45 @@ def wrist_bend(world, side):
     """Degrees between the hand's +Y and its forearm's axis (flexion/deviation; twist excluded)."""
     hy, fy = world[side + "Hand"][:3, 1], world[side + "LowerArm"][:3, 1]
     return math.degrees(math.acos(max(-1.0, min(1.0, float(np.dot(hy, fy))))))
+
+
+def arm_in_body(world, side):
+    """How deep (studs) the elbow and forearm sink into the torso boxes."""
+    elbow = rig.joint_world(world, side + "LowerArm")
+    wrist = rig.joint_world(world, side + "Hand")
+    return max(0.0, -min(rig.segment_obb_distance(world, p, elbow, wrist, ARM_MARGIN, 6) for p in ("UpperTorso", "LowerTorso")))
+
+
+def swivel_path(cost):
+    """The elbow-swivel track (one SWIVELS step per frame at most) with the least total cost, turning included: the
+    per-frame best can jump 75 degrees between neighbours, and blurring such a jump walks the elbow through swivels
+    worse than either end, so the turn is placed where its in-between frames cost least."""
+    n, m = cost.shape
+    acc, back = cost[0].copy(), np.zeros((n, m), int)
+    for i in range(1, n):
+        nxt = np.full(m, np.inf)
+        for k in range(m):
+            for j in (k - 1, k, k + 1):
+                if 0 <= j < m:
+                    v = acc[j] + SWIVEL_TURN_COST * abs(SWIVELS[k] - SWIVELS[j])
+                    if v < nxt[k]:
+                        nxt[k], back[i, k] = v, j
+        acc = nxt + cost[i]
+    path = np.zeros(n, int)
+    path[-1] = int(np.argmin(acc))
+    for i in range(n - 1, 0, -1):
+        path[i - 1] = back[i, path[i]]
+    return SWIVELS[path]
+
+
+def blur_field(v, sigma=None):
+    """Gaussian blur (sigma frames, default SWIVEL_SIGMA) of a per-frame track that is already continuous."""
+    sigma = SWIVEL_SIGMA if sigma is None else sigma
+    k = np.arange(-int(3 * sigma + 0.5), int(3 * sigma + 0.5) + 1)
+    w = np.exp(-0.5 * (k / sigma) ** 2)
+    w /= w.sum()
+    pad = np.pad(v, ((len(k) // 2, len(k) // 2), (0, 0)), mode="edge")
+    return np.stack([np.convolve(pad[:, j], w, mode="valid") for j in range(v.shape[1])], axis=1)
 
 
 def smooth_field(v):
@@ -455,21 +506,22 @@ MOVE_COST = 0.12
 BREAKDOWN_REACH = 0.35
 BREAKDOWN_GAP = 0.04
 CLEAR_PARTS = ("UpperTorso", "LowerTorso", "Head", "LeftUpperLeg", "RightUpperLeg")
+ROLL_HANDOVER = 0.5  # forearm-across-shaft fraction below which the fist follows the keyed edge instead
 MAX_ROLL = 40.0  # turning the edge further about the shaft is wrist flexion a rigid fist cannot fake
 
 
 def roll_toward(d, natural, want, max_deg):
-    """A hand +Y hint about shaft d: the natural direction (toward the forearm) turned toward `want` by at most
-    max_deg degrees."""
-    n = unit(natural - d * np.dot(natural, d))
+    """A hand +Y hint about shaft d: the natural direction (toward the forearm) turned toward `want`, by up to max_deg
+    degrees (when `want` is square to it). A weighted sum, not a clamped turn: a clamp flips sides wherever `want`
+    passes opposite the forearm, rolling the fist (and the hand, 0.2 studs off the haft) in a single frame. Where the
+    forearm lines up with the shaft, its direction about the shaft is undefined, so the keyed edge takes over."""
+    across = natural - d * np.dot(natural, d)
     w = unit(want - d * np.dot(want, d))
-    if np.linalg.norm(n) < 1e-6:
-        return w if np.linalg.norm(w) > 1e-6 else np.array([0, 1.0, 0])
-    if np.linalg.norm(w) < 1e-6 or max_deg <= 0:
-        return n
-    ang = math.degrees(math.atan2(np.dot(np.cross(n, w), d), np.dot(n, w)))
-    ang = max(-max_deg, min(max_deg, ang))
-    return rig.axis_angle(d, ang) @ n
+    if np.linalg.norm(w) < 1e-6:
+        return unit(across) if np.linalg.norm(across) > 1e-6 else np.array([0, 1.0, 0])
+    k = min(1.0, float(np.linalg.norm(across)) / max(float(np.linalg.norm(natural)), 1e-9) / ROLL_HANDOVER)
+    r = k * unit(across) + math.tan(math.radians(max_deg)) * w if np.linalg.norm(across) > 1e-6 else w
+    return unit(r) if np.linalg.norm(r) > 1e-6 else w
 
 
 def grip_error(world, s):
