@@ -1,0 +1,774 @@
+{
+  "provenance": "Original project-authored v2 rebuild: constructed forms in tools/blender/zhao_v2 (no TRELLIS, no Rodin); procedural PBR baked from the master onto game atlases",
+  "units": "studs, scale 1, default R15 rest pose (arms down)",
+  "axes": "Blender Z = Roblox +Y; Blender +Y = Roblox -Z (forward); GLB exported Y-up",
+  "limb_centres": "R15 centres measured in Studio (same table as v1)",
+  "limits": {
+    "triangles_target": 22000,
+    "piece_limit": 10000,
+    "body_texture": 1024,
+    "weapon_texture": 512,
+    "tip_target": 9.2,
+    "tip_tolerance": 0.5
+  },
+  "measured": {
+    "game_total_triangles": 22090,
+    "game_max_piece_triangles": 4536,
+    "game_limbs_covered": 15,
+    "tip_farthest_vertex_from_hand_centre": 9.242,
+    "tip_extent_along_hand_minus_z": 9.2,
+    "tip_bounding_corner_from_hand_centre": 9.246,
+    "tip_within_tolerance": true,
+    "head_top_without_plumes_y": 2.36,
+    "sole_y": -3.0,
+    "plume_top_y": 4.559
+  },
+  "levels": {
+    "master": {
+      "mesh_count": 19,
+      "total_triangles": 224462,
+      "body_triangles": 218338,
+      "weapon_triangles": 6124,
+      "max_piece_triangles": 69836,
+      "limbs_covered": 15,
+      "limbs_missing": [],
+      "bounds_roblox_y": [
+        -3.0,
+        4.56
+      ],
+      "objects": {
+        "Zhao_Head_Master": {
+          "bone": "Head",
+          "role": null,
+          "triangles": 69836,
+          "vertices": 36455,
+          "pivot_roblox": [
+            0.0,
+            1.586,
+            -0.0
+          ],
+          "size_roblox": [
+            0.921,
+            1.41,
+            0.957
+          ]
+        },
+        "Zhao_Plumes_Master": {
+          "bone": "Head",
+          "role": null,
+          "triangles": 5656,
+          "vertices": 2840,
+          "pivot_roblox": [
+            0.0,
+            1.586,
+            -0.0
+          ],
+          "size_roblox": [
+            0.855,
+            2.302,
+            1.448
+          ]
+        },
+        "Zhao_UpperTorso_Master": {
+          "bone": "UpperTorso",
+          "role": null,
+          "triangles": 64670,
+          "vertices": 33617,
+          "pivot_roblox": [
+            0.0,
+            0.2,
+            -0.0
+          ],
+          "size_roblox": [
+            1.851,
+            1.69,
+            1.188
+          ]
+        },
+        "Zhao_Pennants_Master": {
+          "bone": "UpperTorso",
+          "role": null,
+          "triangles": 3148,
+          "vertices": 1602,
+          "pivot_roblox": [
+            0.0,
+            0.2,
+            -0.0
+          ],
+          "size_roblox": [
+            1.485,
+            3.772,
+            0.82
+          ]
+        },
+        "Zhao_LowerTorso_Master": {
+          "bone": "LowerTorso",
+          "role": null,
+          "triangles": 8432,
+          "vertices": 4325,
+          "pivot_roblox": [
+            0.0,
+            -0.8,
+            -0.0
+          ],
+          "size_roblox": [
+            1.621,
+            2.53,
+            1.262
+          ]
+        },
+        "Zhao_RightUpperArm_Master": {
+          "bone": "RightUpperArm",
+          "role": null,
+          "triangles": 10792,
+          "vertices": 5584,
+          "pivot_roblox": [
+            1.5,
+            0.369,
+            -0.0
+          ],
+          "size_roblox": [
+            1.006,
+            1.057,
+            1.124
+          ]
+        },
+        "Zhao_RightLowerArm_Master": {
+          "bone": "RightLowerArm",
+          "role": null,
+          "triangles": 2890,
+          "vertices": 1481,
+          "pivot_roblox": [
+            1.5,
+            -0.224,
+            -0.0
+          ],
+          "size_roblox": [
+            0.458,
+            0.884,
+            0.448
+          ]
+        },
+        "Zhao_RightHand_Master": {
+          "bone": "RightHand",
+          "role": null,
+          "triangles": 3172,
+          "vertices": 1622,
+          "pivot_roblox": [
+            1.5,
+            -0.85,
+            -0.0
+          ],
+          "size_roblox": [
+            0.318,
+            0.382,
+            0.369
+          ]
+        },
+        "Zhao_RightUpperLeg_Master": {
+          "bone": "RightUpperLeg",
+          "role": null,
+          "triangles": 10438,
+          "vertices": 5347,
+          "pivot_roblox": [
+            0.5,
+            -1.421,
+            -0.0
+          ],
+          "size_roblox": [
+            0.96,
+            2.108,
+            1.022
+          ]
+        },
+        "Zhao_RightLowerLeg_Master": {
+          "bone": "RightLowerLeg",
+          "role": null,
+          "triangles": 4328,
+          "vertices": 2215,
+          "pivot_roblox": [
+            0.5,
+            -2.201,
+            -0.0
+          ],
+          "size_roblox": [
+            0.463,
+            1.106,
+            0.54
+          ]
+        },
+        "Zhao_RightFoot_Master": {
+          "bone": "RightFoot",
+          "role": null,
+          "triangles": 1408,
+          "vertices": 734,
+          "pivot_roblox": [
+            0.5,
+            -2.85,
+            -0.0
+          ],
+          "size_roblox": [
+            0.36,
+            0.4,
+            0.7
+          ]
+        },
+        "Zhao_LeftUpperArm_Master": {
+          "bone": "LeftUpperArm",
+          "role": null,
+          "triangles": 11332,
+          "vertices": 5865,
+          "pivot_roblox": [
+            -1.5,
+            0.369,
+            -0.0
+          ],
+          "size_roblox": [
+            1.006,
+            1.082,
+            1.124
+          ]
+        },
+        "Zhao_LeftLowerArm_Master": {
+          "bone": "LeftLowerArm",
+          "role": null,
+          "triangles": 2890,
+          "vertices": 1481,
+          "pivot_roblox": [
+            -1.5,
+            -0.224,
+            -0.0
+          ],
+          "size_roblox": [
+            0.458,
+            0.884,
+            0.448
+          ]
+        },
+        "Zhao_LeftHand_Master": {
+          "bone": "LeftHand",
+          "role": null,
+          "triangles": 3172,
+          "vertices": 1622,
+          "pivot_roblox": [
+            -1.5,
+            -0.85,
+            -0.0
+          ],
+          "size_roblox": [
+            0.35,
+            0.422,
+            0.392
+          ]
+        },
+        "Zhao_LeftUpperLeg_Master": {
+          "bone": "LeftUpperLeg",
+          "role": null,
+          "triangles": 10438,
+          "vertices": 5347,
+          "pivot_roblox": [
+            -0.5,
+            -1.421,
+            -0.0
+          ],
+          "size_roblox": [
+            0.961,
+            2.172,
+            1.021
+          ]
+        },
+        "Zhao_LeftLowerLeg_Master": {
+          "bone": "LeftLowerLeg",
+          "role": null,
+          "triangles": 4328,
+          "vertices": 2215,
+          "pivot_roblox": [
+            -0.5,
+            -2.201,
+            -0.0
+          ],
+          "size_roblox": [
+            0.463,
+            1.106,
+            0.54
+          ]
+        },
+        "Zhao_LeftFoot_Master": {
+          "bone": "LeftFoot",
+          "role": null,
+          "triangles": 1408,
+          "vertices": 734,
+          "pivot_roblox": [
+            -0.5,
+            -2.85,
+            -0.0
+          ],
+          "size_roblox": [
+            0.36,
+            0.4,
+            0.7
+          ]
+        },
+        "Zhao_GuandaoHaft_Master": {
+          "bone": "RightHand",
+          "role": "Weapon",
+          "triangles": 3520,
+          "vertices": 1876,
+          "pivot_roblox": [
+            1.5,
+            -0.85,
+            -0.0
+          ],
+          "size_roblox": [
+            0.184,
+            0.184,
+            8.86
+          ]
+        },
+        "Zhao_GuandaoBlade_Master": {
+          "bone": "RightHand",
+          "role": "Weapon",
+          "triangles": 2604,
+          "vertices": 1370,
+          "pivot_roblox": [
+            1.5,
+            -0.85,
+            -0.0
+          ],
+          "size_roblox": [
+            0.333,
+            1.594,
+            2.343
+          ]
+        }
+      }
+    },
+    "game": {
+      "mesh_count": 19,
+      "total_triangles": 22090,
+      "body_triangles": 20812,
+      "weapon_triangles": 1278,
+      "max_piece_triangles": 4536,
+      "limbs_covered": 15,
+      "limbs_missing": [],
+      "bounds_roblox_y": [
+        -3.0,
+        4.559
+      ],
+      "objects": {
+        "Zhao_Head": {
+          "bone": "Head",
+          "role": null,
+          "triangles": 4476,
+          "vertices": 2319,
+          "pivot_roblox": [
+            0.0,
+            1.586,
+            -0.0
+          ],
+          "size_roblox": [
+            0.935,
+            1.41,
+            0.945
+          ]
+        },
+        "Zhao_Plumes": {
+          "bone": "Head",
+          "role": null,
+          "triangles": 1232,
+          "vertices": 624,
+          "pivot_roblox": [
+            0.0,
+            1.586,
+            -0.0
+          ],
+          "size_roblox": [
+            0.855,
+            2.301,
+            1.436
+          ]
+        },
+        "Zhao_UpperTorso": {
+          "bone": "UpperTorso",
+          "role": null,
+          "triangles": 4536,
+          "vertices": 2396,
+          "pivot_roblox": [
+            0.0,
+            0.2,
+            -0.0
+          ],
+          "size_roblox": [
+            1.866,
+            1.69,
+            1.194
+          ]
+        },
+        "Zhao_Pennants": {
+          "bone": "UpperTorso",
+          "role": null,
+          "triangles": 832,
+          "vertices": 444,
+          "pivot_roblox": [
+            0.0,
+            0.2,
+            -0.0
+          ],
+          "size_roblox": [
+            1.482,
+            3.772,
+            0.817
+          ]
+        },
+        "Zhao_LowerTorso": {
+          "bone": "LowerTorso",
+          "role": null,
+          "triangles": 1648,
+          "vertices": 875,
+          "pivot_roblox": [
+            0.0,
+            -0.8,
+            -0.0
+          ],
+          "size_roblox": [
+            1.622,
+            2.517,
+            1.262
+          ]
+        },
+        "Zhao_RightUpperArm": {
+          "bone": "RightUpperArm",
+          "role": null,
+          "triangles": 620,
+          "vertices": 332,
+          "pivot_roblox": [
+            1.5,
+            0.369,
+            -0.0
+          ],
+          "size_roblox": [
+            0.979,
+            1.057,
+            1.097
+          ]
+        },
+        "Zhao_RightLowerArm": {
+          "bone": "RightLowerArm",
+          "role": null,
+          "triangles": 608,
+          "vertices": 319,
+          "pivot_roblox": [
+            1.5,
+            -0.224,
+            -0.0
+          ],
+          "size_roblox": [
+            0.458,
+            0.886,
+            0.45
+          ]
+        },
+        "Zhao_RightHand": {
+          "bone": "RightHand",
+          "role": null,
+          "triangles": 648,
+          "vertices": 350,
+          "pivot_roblox": [
+            1.5,
+            -0.85,
+            -0.0
+          ],
+          "size_roblox": [
+            0.318,
+            0.373,
+            0.369
+          ]
+        },
+        "Zhao_RightUpperLeg": {
+          "bone": "RightUpperLeg",
+          "role": null,
+          "triangles": 924,
+          "vertices": 480,
+          "pivot_roblox": [
+            0.5,
+            -1.421,
+            -0.0
+          ],
+          "size_roblox": [
+            0.96,
+            2.005,
+            1.022
+          ]
+        },
+        "Zhao_RightLowerLeg": {
+          "bone": "RightLowerLeg",
+          "role": null,
+          "triangles": 722,
+          "vertices": 391,
+          "pivot_roblox": [
+            0.5,
+            -2.201,
+            -0.0
+          ],
+          "size_roblox": [
+            0.467,
+            1.097,
+            0.531
+          ]
+        },
+        "Zhao_RightFoot": {
+          "bone": "RightFoot",
+          "role": null,
+          "triangles": 360,
+          "vertices": 198,
+          "pivot_roblox": [
+            0.5,
+            -2.85,
+            -0.0
+          ],
+          "size_roblox": [
+            0.36,
+            0.4,
+            0.7
+          ]
+        },
+        "Zhao_LeftUpperArm": {
+          "bone": "LeftUpperArm",
+          "role": null,
+          "triangles": 912,
+          "vertices": 487,
+          "pivot_roblox": [
+            -1.5,
+            0.369,
+            -0.0
+          ],
+          "size_roblox": [
+            0.979,
+            1.082,
+            1.097
+          ]
+        },
+        "Zhao_LeftLowerArm": {
+          "bone": "LeftLowerArm",
+          "role": null,
+          "triangles": 608,
+          "vertices": 319,
+          "pivot_roblox": [
+            -1.5,
+            -0.224,
+            -0.0
+          ],
+          "size_roblox": [
+            0.458,
+            0.886,
+            0.45
+          ]
+        },
+        "Zhao_LeftHand": {
+          "bone": "LeftHand",
+          "role": null,
+          "triangles": 648,
+          "vertices": 350,
+          "pivot_roblox": [
+            -1.5,
+            -0.85,
+            -0.0
+          ],
+          "size_roblox": [
+            0.338,
+            0.414,
+            0.392
+          ]
+        },
+        "Zhao_LeftUpperLeg": {
+          "bone": "LeftUpperLeg",
+          "role": null,
+          "triangles": 956,
+          "vertices": 498,
+          "pivot_roblox": [
+            -0.5,
+            -1.421,
+            -0.0
+          ],
+          "size_roblox": [
+            0.96,
+            2.172,
+            1.022
+          ]
+        },
+        "Zhao_LeftLowerLeg": {
+          "bone": "LeftLowerLeg",
+          "role": null,
+          "triangles": 722,
+          "vertices": 391,
+          "pivot_roblox": [
+            -0.5,
+            -2.201,
+            -0.0
+          ],
+          "size_roblox": [
+            0.467,
+            1.097,
+            0.531
+          ]
+        },
+        "Zhao_LeftFoot": {
+          "bone": "LeftFoot",
+          "role": null,
+          "triangles": 360,
+          "vertices": 198,
+          "pivot_roblox": [
+            -0.5,
+            -2.85,
+            -0.0
+          ],
+          "size_roblox": [
+            0.36,
+            0.4,
+            0.7
+          ]
+        },
+        "Zhao_GuandaoHaft": {
+          "bone": "RightHand",
+          "role": "Weapon",
+          "triangles": 840,
+          "vertices": 494,
+          "pivot_roblox": [
+            1.5,
+            -0.85,
+            -0.0
+          ],
+          "size_roblox": [
+            0.184,
+            0.175,
+            8.86
+          ]
+        },
+        "Zhao_GuandaoBlade": {
+          "bone": "RightHand",
+          "role": "Weapon",
+          "triangles": 438,
+          "vertices": 236,
+          "pivot_roblox": [
+            1.5,
+            -0.85,
+            -0.0
+          ],
+          "size_roblox": [
+            0.29,
+            1.59,
+            2.359
+          ]
+        }
+      }
+    }
+  },
+  "textures": {
+    "body": {
+      "Color": {
+        "master": "assets/source/bosses/general_zhao/v2_design/textures/master/ZhaoBodyV2_Color_2048.png",
+        "game": "assets/source/bosses/general_zhao/v2_design/textures/game/ZhaoBodyV2_Color_1024.png",
+        "master_size": [
+          2048,
+          2048
+        ],
+        "game_size": [
+          1024,
+          1024
+        ]
+      },
+      "Rough": {
+        "master": "assets/source/bosses/general_zhao/v2_design/textures/master/ZhaoBodyV2_Rough_2048.png",
+        "game": "assets/source/bosses/general_zhao/v2_design/textures/game/ZhaoBodyV2_Rough_1024.png",
+        "master_size": [
+          2048,
+          2048
+        ],
+        "game_size": [
+          1024,
+          1024
+        ]
+      },
+      "Metal": {
+        "master": "assets/source/bosses/general_zhao/v2_design/textures/master/ZhaoBodyV2_Metal_2048.png",
+        "game": "assets/source/bosses/general_zhao/v2_design/textures/game/ZhaoBodyV2_Metal_1024.png",
+        "master_size": [
+          2048,
+          2048
+        ],
+        "game_size": [
+          1024,
+          1024
+        ]
+      },
+      "Normal": {
+        "master": "assets/source/bosses/general_zhao/v2_design/textures/master/ZhaoBodyV2_Normal_2048.png",
+        "game": "assets/source/bosses/general_zhao/v2_design/textures/game/ZhaoBodyV2_Normal_1024.png",
+        "master_size": [
+          2048,
+          2048
+        ],
+        "game_size": [
+          1024,
+          1024
+        ]
+      }
+    },
+    "weapon": {
+      "Color": {
+        "master": "assets/source/bosses/general_zhao/v2_design/textures/master/ZhaoWeaponV2_Color_1024.png",
+        "game": "assets/source/bosses/general_zhao/v2_design/textures/game/ZhaoWeaponV2_Color_512.png",
+        "master_size": [
+          1024,
+          1024
+        ],
+        "game_size": [
+          512,
+          512
+        ]
+      },
+      "Rough": {
+        "master": "assets/source/bosses/general_zhao/v2_design/textures/master/ZhaoWeaponV2_Rough_1024.png",
+        "game": "assets/source/bosses/general_zhao/v2_design/textures/game/ZhaoWeaponV2_Rough_512.png",
+        "master_size": [
+          1024,
+          1024
+        ],
+        "game_size": [
+          512,
+          512
+        ]
+      },
+      "Metal": {
+        "master": "assets/source/bosses/general_zhao/v2_design/textures/master/ZhaoWeaponV2_Metal_1024.png",
+        "game": "assets/source/bosses/general_zhao/v2_design/textures/game/ZhaoWeaponV2_Metal_512.png",
+        "master_size": [
+          1024,
+          1024
+        ],
+        "game_size": [
+          512,
+          512
+        ]
+      },
+      "Normal": {
+        "master": "assets/source/bosses/general_zhao/v2_design/textures/master/ZhaoWeaponV2_Normal_1024.png",
+        "game": "assets/source/bosses/general_zhao/v2_design/textures/game/ZhaoWeaponV2_Normal_512.png",
+        "master_size": [
+          1024,
+          1024
+        ],
+        "game_size": [
+          512,
+          512
+        ]
+      }
+    }
+  },
+  "exports": {
+    "game_glb": "assets/source/bosses/general_zhao/v2_design/export/GeneralZhao_v2_Game.glb",
+    "game_fbx": "assets/source/bosses/general_zhao/v2_design/export/GeneralZhao_v2_Game.fbx",
+    "guandao_glb": "assets/source/bosses/general_zhao/v2_design/export/Zhao_Guandao_v2.glb"
+  },
+  "blend": "assets/source/bosses/general_zhao/v2_design/GeneralZhao_v2.blend"
+}
