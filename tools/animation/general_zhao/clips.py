@@ -214,7 +214,7 @@ def strike():
     cut = pose(root=(0.0, -0.5, -0.2), rootR=(6, -12, 0), chest=(14, 4, 0), grip=(0.55, -0.6, -0.95),
                dir=yawdir(14, -10), edge=(-0.4, -1, 0), s=-1.2,
                lf=foot(GUARD["lf"], dz=-0.35))
-    follow = at(cut, dir=yawdir(32, -22), chest=(16, 12, 0), grip=(0.35, -0.75, -0.8))
+    follow = at(cut, dir=yawdir(32, -12), chest=(16, 12, 0), grip=(0.35, -0.75, -0.8))
     return Clip(key_name("Strike"), 1.2, [
         (0.0, GUARD, "inout"), (0.32, raise_, "out"), (0.40, at(raise_, chest=(-6, -38, 0)), "inout"),
         (0.50, cut, "in"), (0.62, follow, "out"), (1.2, GUARD, "inout"),
@@ -286,18 +286,27 @@ def thunder_quickstep():
                lf=foot(GUARD["lf"], dx=-0.1, dz=-0.1), rf=foot(GUARD["rf"], dx=0.1, dz=0.25, pitch=-10))
     load = at(low, root=(0.12, -0.84, 0.32), chest=(18, -32, 0), rf=foot(GUARD["rf"], dx=0.1, dz=0.25, pitch=-22))
     drive = at(low, root=(0.0, -0.7, -0.35), rootR=(10, -30, 0), chest=(20, -22, 0),
-               grip=(1.0, -0.85, 0.35), dir=aim((1.0, -0.85, 0.35), (3.5, -2.8, 6.0)))
+               grip=(1.0, -0.85, 0.35), dir=aim((1.0, -0.85, 0.35), (3.5, -2.0, 6.0)))
     hit_g = (0.35, -0.2, -1.05)
     hit = pose(root=(-0.05, -0.62, -0.3), rootR=(6, 8, 0), chest=(8, 22, -4), grip=hit_g,
                dir=unitv(-0.5, 0.48, -0.72), edge=(-0.55, 0.6, 0.55), s=-1.2, sMax=-0.7, lfree=0.0)
     follow = at(hit, chest=(4, 34, -6), grip=(0.05, 0.1, -0.85), dir=unitv(-0.8, 0.5, -0.33), edge=(-0.4, 0.4, 0.8))
     stop = at(GUARD, root=(0.05, -0.55, 0.0), chest=(10, -20, 0))
-    keys = [(0.0, GUARD, "inout"), (0.35, low, "out"), (0.72, load, "inout"), (0.84, drive, "in"),
-            (0.92, {"lfree": 0.0}, "inout"), (1.0, hit, "snap"), (1.16, follow, "out"), (1.45, stop, "inout"), (1.8, GUARD, "inout")]
-    feet = footwork(1.8, {"rf": [(0.8, 0.98, foot(GUARD["lf"], dx=1.2, dz=-0.2, yaw=30))],
-                          "lf": [(0.98, 1.14, foot(GUARD["lf"], dz=-0.4)), (1.45, 1.62, GUARD["lf"])],
-                          }, start=dict(lf=foot(GUARD["lf"], dx=-0.1, dz=-0.1), rf=foot(GUARD["rf"], dx=0.1, dz=0.25)),
-                    end=FEET, lift=0.38)
+    # the blade rises and goes over (shaft upright beside the right hip) on its way to trailing behind: a polearm
+    # this long cannot swing through the side without its butt crossing the body
+    swing_g = (1.25, -0.35, -0.3)
+    swing = at(low, grip=swing_g, dir=unitv(0.12, 1.0, 0.15), edge=(0, 0, -1), root=(0.06, -0.5, 0.1),
+               chest=(8, -20, 0), lfree=0.7)
+    keys = [(0.0, GUARD, "inout"), (0.16, swing, "inout"), (0.35, low, "out"), (0.72, load, "inout"), (0.84, drive, "in"),
+            (0.92, {"lfree": 0.0}, "inout"),
+            # the trailing blade rises upright beside his right shoulder (butt down by the hip), not over his head
+            (0.94, {"grip": (1.15, -0.45, -0.6), "dir": unitv(0.35, 0.92, -0.15), "edge": (0, 0, -1)}, "in"),
+            (1.0, hit, "snap"), (1.16, follow, "out"), (1.45, stop, "inout"), (1.8, GUARD, "inout")]
+    # from the guard stance he settles low (two small steps), then launches
+    feet = footwork(1.8, {"rf": [(0.15, 0.32, foot(GUARD["rf"], dx=0.1, dz=0.25)), (0.8, 0.98, foot(GUARD["lf"], dx=1.2, dz=-0.2, yaw=30))],
+                          "lf": [(0.05, 0.2, foot(GUARD["lf"], dx=-0.1, dz=-0.1)), (0.98, 1.14, foot(GUARD["lf"], dz=-0.4)),
+                                 (1.45, 1.62, GUARD["lf"])],
+                          }, start=FEET, end=FEET, lift=0.38)
     feet = [k for k in feet if not ("rf" in k[1] and k[0] > 1.62)]
     feet += [(1.62, {"rf": foot(GUARD["lf"], dx=1.2, dz=-0.2, yaw=30), "_feet": True}, "linear"),
              (1.8, {"rf": GUARD["rf"], "_feet": True}, "inout")]
@@ -354,9 +363,11 @@ def iron_charge():
     keys = [(0.0, GUARD, "inout"), (0.45, bar, "inout"), (1.1, brace, "inout"), (1.3, at(bar, root=(0.02, -0.7, -0.1)), "in"),
             (1.5, ram, "snap"), (1.75, at(ram, chest=(18, -6, 0), grip=(0.95, -0.35, -1.05)), "out"),
             (2.3, GUARD, "inout")]
-    feet = footwork(2.3, {"rf": [(1.22, 1.42, foot(GUARD["lf"], dx=1.25, dz=-0.15, yaw=25))],
-                          "lf": [(1.42, 1.58, foot(GUARD["lf"], dz=-0.45)), (1.9, 2.1, GUARD["lf"])],
-                          "_": []}, start=dict(lf=foot(GUARD["lf"], dx=-0.1), rf=foot(GUARD["rf"], dz=0.2)), end=FEET)
+    # from the guard stance he settles into a braced stance (two small steps) before the charge
+    feet = footwork(2.3, {"rf": [(0.15, 0.32, foot(GUARD["rf"], dz=0.2)), (1.22, 1.42, foot(GUARD["lf"], dx=1.25, dz=-0.15, yaw=25))],
+                          "lf": [(0.05, 0.2, foot(GUARD["lf"], dx=-0.1)), (1.42, 1.58, foot(GUARD["lf"], dz=-0.45)),
+                                 (1.9, 2.1, GUARD["lf"])],
+                          "_": []}, start=FEET, end=FEET)
     feet = [k for k in feet if not ("rf" in k[1] and k[0] > 2.1)]
     feet += [(2.1, {"rf": foot(GUARD["lf"], dx=1.25, dz=-0.15, yaw=25), "_feet": True}, "linear"),
              (2.3, {"rf": GUARD["rf"], "_feet": True}, "inout")]
@@ -387,7 +398,7 @@ def colossal_hammer():
     keys = [(0.0, GUARD, "inout"), (0.5, lift, "out"), (1.25, apex, "inout"), (1.58, at(apex, chest=(-14, -6, 0)), "inout"),
             (1.8, slam, "whip"), (2.05, at(slam, chest=(28, -4, 0)), "out"), (2.4, at(slam, root=(0.02, -0.8, -0.05), chest=(18, -8, 0)), "inout"),
             (2.8, GUARD, "inout")]
-    feet = footwork(2.8, {"lf": [(1.5, 1.78, foot(GUARD["lf"], dx=-0.45, dz=-0.05))],
+    feet = footwork(2.8, {"lf": [(1.5, 1.78, foot(GUARD["lf"], dx=-0.45, dz=-0.05)), (2.1, 2.38, GUARD["lf"])],
                           "rf": [(2.45, 2.7, GUARD["rf"])]},
                     start=dict(lf=foot(GUARD["lf"], dx=-0.2, dz=0.2), rf=foot(GUARD["rf"], dx=0.05, dz=-0.15)), end=FEET)
     feet = [k for k in feet if k[0] >= 0.5]
@@ -417,13 +428,18 @@ def melee():
     # L1 Crescent Reap: horizontal reap right -> left, hands close for reach
     s1, a1, _, t1 = GUANDAO["Guandao_L1"]
     c, e = sec(s1), sec(s1 + a1)
-    wind = pose(root=(0.06, -0.38, 0.1), rootR=(3, -40, 0), chest=(6, -40, 0), grip=(0.9, -0.45, -0.35),
-                dir=yawdir(-70, 4), edge=(0, 0.2, -1), s=-0.8, sMax=-0.7)
-    hit = pose(root=(0.0, -0.44, -0.12), rootR=(5, -14, 0), chest=(9, -2, 0), grip=(0.55, -0.5, -0.85),
-               dir=yawdir(4, 0), edge=(-1, 0.1, 0), s=-0.8, sMax=-0.7)
-    out_ = at(hit, chest=(9, 20, 0), rootR=(5, -4, 0), grip=(0.25, -0.5, -0.8), dir=yawdir(52, -2), edge=(-0.6, 0, 0.8))
-    follow = at(out_, chest=(8, 30, 0), dir=yawdir(80, -6), grip=(0.1, -0.55, -0.6))
-    out.append(Clip(key_name("Guandao_L1"), sec(t1), [(0, GUARD, "inout"), (0.07, wind, "out"), (c, hit, "in"),
+    # both hands stay well in front of the belly, so the shaft (and its butt spike) sweeps in front of the body
+    # the right hand rides beside the right hip as the blade comes round, so the butt spike never crosses the body
+    # hands together near the butt for the big side swing (the front hand cannot reach far up a shaft pointing right)
+    wind = pose(root=(0.06, -0.38, 0.1), rootR=(3, -32, 0), chest=(6, -26, 0), grip=(1.05, -0.22, -0.55),
+                dir=yawdir(-120, 0), edge=(0, 0.2, -1), s=-0.5, sMin=-0.9, sMax=-0.45)
+    lift = at(wind, grip=(1.1, -0.15, -0.5), dir=yawdir(-105, 60))  # hands rise, blade up and over, butt clear of the hip
+    sweep = at(wind, grip=(1.05, -0.45, -0.8), dir=yawdir(-105, -8), chest=(8, -16, 0), rootR=(4, -24, 0))
+    hit = pose(root=(0.0, -0.44, -0.12), rootR=(5, -14, 0), chest=(9, -2, 0), grip=(1.0, -0.5, -0.8),
+               dir=yawdir(8, 0), edge=(-1, 0.1, 0), s=-0.6, sMin=-1.0, sMax=-0.45)
+    out_ = at(hit, chest=(9, 20, 0), rootR=(5, -4, 0), grip=(0.2, -0.5, -1.0), dir=yawdir(52, -2), edge=(-0.6, 0, 0.8))
+    follow = at(out_, chest=(8, 30, 0), dir=yawdir(82, -6), grip=(0.05, -0.55, -0.9))
+    out.append(Clip(key_name("Guandao_L1"), sec(t1), [(0, GUARD, "inout"), (0.035, lift, "in"), (0.07, wind, "linear"), (0.115, sweep, "in"), (c, hit, "out"),
                                                       (e, out_, "linear"), (0.31, follow, "out"), (sec(t1), GUARD, "inout")],
                     contacts=(c,), group="Melee", action="Guandao_L1", preview=(0, 0.07, c, e, 0.31, sec(t1)),
                     markers=melee_markers(c, e),
@@ -438,9 +454,10 @@ def melee():
                 larm=(30, 0, -30), lfore=(50, 0, 0), lhand=(0, 0, 0))
     hit = pose(root=(0.04, -0.44, -0.12), rootR=(5, -20, 0), chest=(8, -6, 0), grip=(0.6, -0.4, -0.85),
                dir=yawdir(-4, 6), edge=(1, 0.1, 0), s=-0.8, sMax=-0.7, lfree=0.0)
-    out_ = at(hit, chest=(6, -32, 0), rootR=(4, -30, 0), grip=(0.95, -0.3, -0.45), dir=yawdir(-55, 12), edge=(0.6, 0.2, 0.8))
+    out_ = at(hit, chest=(6, -28, 0), rootR=(4, -28, 0), grip=(1.0, -0.2, -0.7), dir=yawdir(-110, 20), edge=(0.6, 0.2, 0.8))
     out.append(Clip(key_name("Guandao_L2"), sec(t2), [(0, GUARD, "inout"), (0.07, wind, "out"), (c, hit, "in"),
-                                                      (e, out_, "linear"), (0.31, at(out_, dir=yawdir(-75, 16)), "out"),
+                                                      (e, out_, "linear"), (0.31, at(out_, dir=yawdir(-120, 28), grip=(1.0, -0.1, -0.7)), "out"),
+                                                      (0.36, at(out_, dir=yawdir(-60, 30), grip=(0.95, -0.3, -0.7)), "inout"),
                                                       (sec(t2), GUARD, "inout")],
                     contacts=(c,), group="Melee", action="Guandao_L2", preview=(0, 0.07, c, e, 0.31, sec(t2)),
                     markers=melee_markers(c, e),
@@ -452,9 +469,9 @@ def melee():
     c, e = sec(s3), sec(s3 + a3)
     up = pose(root=(0.04, -0.28, 0.12), rootR=(2, -24, 0), chest=(-8, -20, 0), grip=(0.8, 0.6, 0.05),
               dir=unitv(-0.05, 0.75, 0.66), edge=(0, 0.66, -0.75), s=-1.2)
-    hit = pose(root=(0.0, -0.62, -0.3), rootR=(8, -16, 0), chest=(18, -10, 0), grip=(0.55, -0.35, -1.05),
-               dir=unitv(-0.05, -0.12, -1), edge=(0, -1, 0.1), s=-1.3, lf=foot(GUARD["lf"], dz=-0.3))
-    down = at(hit, dir=unitv(-0.05, -0.3, -1), chest=(22, -10, 0), grip=(0.55, -0.55, -0.95))
+    hit = pose(root=(0.0, -0.62, -0.3), rootR=(8, -16, 0), chest=(18, -10, 0), grip=(0.5, -0.55, -0.7),
+               dir=unitv(-0.05, -0.12, -1), edge=(0, -1, 0.1), s=-1.7, lf=foot(GUARD["lf"], dz=-0.3))
+    down = at(hit, dir=unitv(-0.05, -0.16, -1), chest=(22, -10, 0), grip=(0.5, -0.65, -0.65))
     out.append(Clip(key_name("Guandao_L3"), sec(t3), [(0, GUARD, "inout"), (0.11, up, "out"), (c, hit, "in"), (e, down, "linear"),
                                                       (0.36, at(down, chest=(20, -12, 0)), "out"), (sec(t3), GUARD, "inout")],
                     contacts=(c,), group="Melee", action="Guandao_L3", preview=(0, 0.11, c, e, 0.36, sec(t3)),
@@ -466,7 +483,7 @@ def melee():
     sh, ah, _, th = GUANDAO["Guandao_Heavy"]
     c, e = sec(sh), sec(sh + ah)
     wind = pose(root=(0.08, -0.36, 0.18), rootR=(2, -48, 0), chest=(-4, -46, 0), grip=(0.95, 0.35, 0.1),
-                dir=unitv(0.8, 0.45, 0.4), edge=(0, -0.3, -1), s=-1.0, sMax=-0.7,
+                dir=yawdir(180, 40), edge=(0, -0.3, -1), s=-1.0, sMax=-0.7,
                 lf=foot(GUARD["lf"], dz=0.05), rf=foot(GUARD["rf"], pitch=0))
     hold = at(wind, chest=(-6, -50, 0), root=(0.09, -0.42, 0.22))
     hit = pose(root=(0.0, -0.66, -0.2), rootR=(6, -10, 0), chest=(14, 4, 0), grip=(0.5, -0.45, -0.9),
@@ -496,7 +513,8 @@ def melee():
                                                            (c, th_, "snap"), (e, th_, "linear"),
                                                            (0.42, at(th_, dir=aim(thrust_g, (0, -0.8, -10))), "out"),
                                                            (sec(tr), GUARD, "inout")]
-                    + footwork(sec(tr), {"lf": [(0.06, c, foot(GUARD["lf"], dz=-0.75))], "rf": [(0.44, 0.58, GUARD["rf"])]},
+                    + footwork(sec(tr), {"lf": [(0.06, c, foot(GUARD["lf"], dz=-0.75)), (0.3, 0.42, GUARD["lf"])],
+                                              "rf": [(0.44, 0.58, GUARD["rf"])]},
                                start=dict(lf=foot(GUARD["lf"], dz=0.3), rf=GUARD["rf"]), end=FEET),
                     contacts=(c,), group="Melee", action="Guandao_Running", preview=(0, 0.1, c, e, 0.42, sec(tr)),
                     markers=melee_markers(c, e, 0.08, [(c, "FootstepL", "Stamp")]),
@@ -507,20 +525,33 @@ def melee():
     sa, aa, _, ta = GUANDAO["Guandao_Art"]
     c, e = sec(sa), sec(sa + aa)
     keys = [(0, GUARD, "inout")]
-    coil = pose(root=(0.05, -0.55, 0.15), rootR=(4, -60, 0), chest=(8, -50, 0), grip=(1.0, -0.4, -0.5),
-                dir=yawdir(-120, 2), edge=(0.3, 0, -1), s=-0.8, sMax=-0.7, lfree=0.8,
+    # hand in front of the twisted chest, blade trailing behind his right side (chest frame (0.4, -0.35, -0.95))
+    coil = pose(root=(0.05, -0.55, 0.15), rootR=(4, -60, 0), chest=(8, -50, 0), grip=(0.74, -0.67, 0.95),
+                dir=unitv(-0.9, 0.05, 0.41), edge=(0.3, 0, -1), s=-0.8, sMax=-0.7, lfree=0.8,
                 larm=(70, 0, -60), lfore=(10, 0, 0), lhand=(0, 0, 0))
+    # breakdowns authored in the chest frame (the chest turns ~100 degrees, so a root-frame blend would cut the haft
+    # through it): the blade rises out over his right side as he coils, and leads round his right as the spin starts
+    keys.append((0.1, at(coil, chest=(7, -40, 0), rootR=(3, -45, 0), root=(0.05, -0.45, 0.1), grip=(1.09, -0.56, 0.55),
+                         dir=unitv(0.41, 0.54, 0.74)), "inout"))
     keys.append((0.22, coil, "out"))
-    spin = [(0.22, -120), (c, 0), (c + 0.06, 60), (c + 0.12, 120), (e, 240)]
+    keys.append((0.27, at(coil, chest=(8, -43, 0), rootR=(4.1, -55.9, 0), root=(0.04, -0.56, 0.12), lfree=0.83,
+                          grip=(0.77, -0.64, 0.97), dir=unitv(-0.08, 0.15, 0.99)), "inout"))
+    # constant turn rate through the active window (uneven key spacing doubled the hand speed mid-spin: a pop)
+    # keys 30 degrees apart at a constant turn rate (the grip blends straight between keys, so wider or uneven steps
+    # kink the hand's path)
+    spin = [(0.22, -120)] + [(c + (e - c) * k / 8, 240 * k / 8) for k in range(9)]
     for t, ang in spin[1:]:
         body = ang * 0.75 - 30
+        held = rig.ry(ang - 30) @ np.array([0.75, -0.3, -0.85])  # arm's length, carried round with the torso
         keys.append((t, pose(root=(0.0, -0.6, -0.05), rootR=(5, body, 0), chest=(8, ang * 0.25, 0),
-                             grip=(0.9, -0.3, -0.75), dir=yawdir(ang + 4, 2), edge=tuple(rig.ry(ang) @ np.array([-1.0, 0, 0])),
+                             grip=tuple(held), dir=yawdir(ang + 4, 2), edge=tuple(rig.ry(ang) @ np.array([-1.0, 0, 0])),
                              s=-0.8, sMax=-0.7, lfree=1.0, larm=(70, 0, -60), lfore=(10, 0, 0), lhand=(0, 0, 0)),
                      "linear" if t > c else "in"))
+    # the hand rides the arc a little past the window before heading for the recovery (no kink in its path)
+    keys.append((e + 0.05, {"grip": tuple(rig.ry(250) @ np.array([0.75, -0.3, -0.85]))}, "linear"))
     keys += [(0.68, pose(root=(0.03, -0.55, 0.05), rootR=(4, 210, 0), chest=(8, 90, 0), grip=(0.65, -0.55, -0.6),
-                         dir=yawdir(330, -4), edge=(0, 1, 0), s=-1.1, lfree=0.5, larm=(70, 0, -60), lfore=(10, 0, 0)), "out")]
-    keys += [(sec(ta), GUARD, "inout")]
+                         dir=yawdir(330, -4), edge=(0, 1, 0), s=-1.1, lfree=0.5, larm=(70, 0, -60), lfore=(10, 0, 0)), "settle")]
+    keys += [(sec(ta), at(GUARD, rootR=(3, 330, 0)), "inout")]  # 330 == the guard's -30, reached by turning on, not back
     # spin on the lead foot drawn in under the hips; the rear foot leaves the ground and orbits, then replants
     body_turn = lambda t: float(np.interp(t, [0, 0.22, c, e, 0.68, sec(ta)], [0, -30, -30, 150, 240, 330]))  # noqa: E731
     pivot = (-0.25, -0.25)
@@ -542,13 +573,17 @@ def melee():
         air = 0.22 < t < 0.74
         rf_air = 0.3 * math.sin(math.pi * min(1.0, max(0.0, (t - 0.22) / 0.52)))
         rf = (float(r[0]), float(r[2]), rf_air if air else 0.0, GUARD["rf"][3] + rel, -12 if air else 0.0)
+        if t <= 0.3:  # planted on the guard until it lifts at 0.22, then eased onto the orbit while in the air
+            w = min(1.0, max(0.0, (t - 0.22) / 0.08))
+            w = w * w * (3 - 2 * w)
+            rf = tuple(float(a + (b - a) * w) for a, b in zip(GUARD["rf"], rf))
         if t >= 0.78:
             w = (t - 0.78) / (sec(ta) - 0.78)
             r0 = rig.ry(360.0) @ np.array([0.8, 0, 0.55])
             rf = (float(r0[0] + (GUARD["rf"][0] - r0[0]) * w), float(r0[2] + (GUARD["rf"][1] - r0[2]) * w),
                   0.18 * math.sin(math.pi * w), GUARD["rf"][3], 0.0)
         feet.append((t, {"_feet": True, "lf": lf, "rf": rf}, "linear"))
-    out.append(Clip(key_name("Guandao_Art"), sec(ta), [(t, at(p, rootR=(p["rootR"][0], p["rootR"][1] - 0, 0)), es) for t, p, es in keys] + feet,
+    out.append(Clip(key_name("Guandao_Art"), sec(ta), keys + feet,
                     contacts=(c,), group="Melee", action="Guandao_Art", preview=(0, 0.22, c, c + 0.12, e, 0.68, sec(ta)),
                     markers=melee_markers(c, e, 0.1, [(0.05, "Charge", "Art"), (0.3, "FootstepR", "Pivot"), (0.75, "FootstepR", "Plant")]),
                     timing="WeaponSchema Guandao_Art Crescent Moon Cyclone: startup 19f, active 11f, total 54f, Arc 360",

@@ -35,13 +35,13 @@
     "sole_below_ground": 0.0,
     "planted_slide": 0.0,
     "blade_below_ground": 0.0,
-    "shaft_in_body": 0.0762,
+    "shaft_in_body": 0.0744,
     "tip_distance_min": 9.2416,
     "tip_distance_max": 9.2416,
-    "wrist_bend_max": 79.6897,
+    "wrist_bend_max": 53.7003,
     "loop_seam_deg": 0.0,
-    "right_pull": 0.0115,
-    "hand_jerk": 0.1225,
+    "right_pull": 0.0026,
+    "hand_jerk": 0.4247,
     "shaft_in_body_frames": [
      [
       0.017,
@@ -50,38 +50,17 @@
     ]
    },
    "problems": [
-    "shaft passes 0.08 into the body ([(0.017, 'RightUpperLeg')])"
+    "shaft passes 0.07 into the body ([(0.017, 'RightUpperLeg')])",
+    "hand pops 0.42 between frames"
    ],
    "key_repairs": [
     [
-     0.0,
-     0.2,
-     0.698,
-     0.024
+     "field",
+     0.293
     ],
     [
-     0.3,
-     0.0,
-     1.161,
+     "field",
      0.0
-    ],
-    [
-     0.55,
-     0.05,
-     0.016,
-     0.006
-    ],
-    [
-     0.05,
-     0.15,
-     0.283,
-     0.05
-    ],
-    [
-     0.383,
-     0.1,
-     0.246,
-     0.012
     ]
    ]
   },
@@ -109,7 +88,7 @@
    "wiring": "needs-hook",
    "notes": "Front foot slides in, rear foot follows (yori-ashi), guard steady.",
    "nominal_ground_speed_scale1": 0.0,
-   "keyframes": 36,
+   "keyframes": 37,
    "file": "GeneralZhao_P1_Approach.rbxmx",
    "uploaded": false,
    "asset_id": null,
@@ -123,14 +102,23 @@
     "shaft_in_body": 0.0,
     "tip_distance_min": 9.2416,
     "tip_distance_max": 9.2416,
-    "wrist_bend_max": 60.4165,
+    "wrist_bend_max": 53.7173,
     "loop_seam_deg": 0.0,
-    "right_pull": 0.0097,
-    "hand_jerk": 0.0043,
+    "right_pull": 0.0,
+    "hand_jerk": 0.0054,
     "shaft_in_body_frames": []
    },
    "problems": [],
-   "key_repairs": []
+   "key_repairs": [
+    [
+     "field",
+     0.0
+    ],
+    [
+     "field",
+     0.0
+    ]
+   ]
   },
   "GeneralZhao_P1_ColossalHammer": {
    "group": "Resolver",
@@ -178,176 +166,51 @@
    "wiring": "needs-id",
    "notes": "Lifts the guandao upright overhead and drives the iron-shod butt down into the stone beside his lead foot: the contact sits at his own position, where the server's shockwave starts. No maul is equipped.",
    "nominal_ground_speed_scale1": 0.0,
-   "keyframes": 118,
+   "keyframes": 134,
    "file": "GeneralZhao_P1_ColossalHammer.rbxmx",
    "uploaded": false,
    "asset_id": null,
    "validation": {
-    "grip_error": 0.329,
+    "grip_error": 0.0385,
     "right_reach": 0.0,
     "leg_reach": 0.0,
     "sole_below_ground": 0.0,
     "planted_slide": 0.0,
     "blade_below_ground": 0.0,
-    "shaft_in_body": 0.4544,
+    "shaft_in_body": 0.0777,
     "tip_distance_min": 9.2416,
     "tip_distance_max": 9.2416,
-    "wrist_bend_max": 78.3021,
+    "wrist_bend_max": 53.7003,
     "loop_seam_deg": 0.0,
-    "right_pull": 0.5531,
-    "hand_jerk": 0.3191,
+    "right_pull": 0.5043,
+    "hand_jerk": 0.1517,
     "shaft_in_body_frames": [
      [
-      0.033,
-      "UpperTorso"
+      2.55,
+      "RightLowerLeg"
      ],
      [
-      0.05,
-      "UpperTorso"
+      2.567,
+      "RightLowerLeg"
      ],
      [
-      0.067,
-      "UpperTorso"
-     ],
-     [
-      0.083,
-      "UpperTorso"
-     ],
-     [
-      0.1,
-      "UpperTorso"
-     ],
-     [
-      0.1,
-      "LowerTorso"
-     ],
-     [
-      0.117,
-      "UpperTorso"
-     ],
-     [
-      0.117,
-      "LowerTorso"
-     ],
-     [
-      0.117,
-      "RightUpperLeg"
-     ],
-     [
-      0.133,
-      "LowerTorso"
-     ],
-     [
-      0.133,
-      "RightUpperLeg"
-     ],
-     [
-      0.15,
-      "LowerTorso"
+      2.583,
+      "RightLowerLeg"
      ]
     ]
    },
    "problems": [
-    "left hand leaves the shaft by 0.33",
-    "grip pulled in 0.55 from its key (overreach)",
-    "shaft passes 0.45 into the body ([(0.033, 'UpperTorso'), (0.05, 'UpperTorso'), (0.067, 'UpperTorso')])"
+    "grip pulled in 0.50 from its key (overreach)",
+    "shaft passes 0.08 into the body ([(2.55, 'RightLowerLeg'), (2.567, 'RightLowerLeg'), (2.583, 'RightLowerLeg')])"
    ],
    "key_repairs": [
     [
-     0.5,
-     0.05,
-     0.148,
-     0.006
+     "field",
+     0.49
     ],
     [
-     1.25,
-     0.75,
-     1.172,
-     0.09
-    ],
-    [
-     1.58,
-     0.8,
-     1.247,
-     0.096
-    ],
-    [
-     1.8,
-     0.9,
-     3.275,
-     1.621
-    ],
-    [
-     2.05,
-     0.9,
-     3.395,
-     1.585
-    ],
-    [
-     2.4,
-     0.65,
-     3.694,
-     1.726
-    ],
-    [
-     2.283,
-     0.3,
-     2.623,
-     0.929
-    ],
-    [
-     2.217,
-     0.3,
-     2.587,
-     0.656
-    ],
-    [
-     2.15,
-     0.25,
-     2.559,
-     0.688
-    ],
-    [
-     2.5,
-     0.3,
-     2.513,
-     0.861
-    ],
-    [
-     2.1,
-     0.3,
-     2.164,
-     0.839
-    ],
-    [
-     2.55,
-     0.3,
-     1.659,
-     0.542
-    ],
-    [
-     1.867,
-     0.25,
-     1.615,
-     0.789
-    ],
-    [
-     2.6,
-     0.3,
-     1.482,
-     0.424
-    ],
-    [
-     2.0,
-     0.2,
-     1.463,
-     0.767
-    ],
-    [
-     2.35,
-     0.3,
-     1.406,
-     0.666
+     "field",
+     0.269
     ]
    ]
   },
@@ -380,7 +243,7 @@
    "wiring": "needs-hook",
    "notes": "Lifts his head once toward the victor, then slumps over the planted guandao, still kneeling: a general who does not fall.",
    "nominal_ground_speed_scale1": 0.0,
-   "keyframes": 21,
+   "keyframes": 18,
    "file": "GeneralZhao_P1_Death.rbxmx",
    "uploaded": false,
    "asset_id": null,
@@ -391,42 +254,40 @@
     "sole_below_ground": 0.0,
     "planted_slide": 0.0,
     "blade_below_ground": 0.0,
-    "shaft_in_body": 0.0,
+    "shaft_in_body": 0.0471,
     "tip_distance_min": 9.2416,
     "tip_distance_max": 9.2416,
-    "wrist_bend_max": 85.3544,
+    "wrist_bend_max": 44.9559,
     "loop_seam_deg": 0.0,
-    "right_pull": 0.0128,
-    "hand_jerk": 0.0219,
-    "shaft_in_body_frames": []
+    "right_pull": 0.6303,
+    "hand_jerk": 0.0326,
+    "shaft_in_body_frames": [
+     [
+      1.5,
+      "RightLowerLeg"
+     ],
+     [
+      2.983,
+      "RightLowerLeg"
+     ],
+     [
+      3.0,
+      "RightLowerLeg"
+     ]
+    ]
    },
    "problems": [
-    "wrist bent 85 degrees"
+    "grip pulled in 0.63 from its key (overreach)",
+    "shaft passes 0.05 into the body ([(1.5, 'RightLowerLeg'), (2.983, 'RightLowerLeg'), (3.0, 'RightLowerLeg')])"
    ],
    "key_repairs": [
     [
-     0.0,
-     0.25,
-     1.952,
-     0.03
+     "field",
+     0.08
     ],
     [
-     0.8,
-     0.05,
-     1.583,
-     0.006
-    ],
-    [
-     1.6,
-     0.55,
-     0.949,
-     0.066
-    ],
-    [
-     3.0,
-     0.65,
-     1.377,
-     0.078
+     "field",
+     0.0
     ]
    ]
   },
@@ -454,7 +315,7 @@
    "wiring": "needs-hook",
    "notes": "Rigid jolt at the blow, a breath, then he sinks to his right knee with the guandao planted upright as a support.",
    "nominal_ground_speed_scale1": 0.0,
-   "keyframes": 44,
+   "keyframes": 50,
    "file": "GeneralZhao_P1_DeathblowVictim.rbxmx",
    "uploaded": false,
    "asset_id": null,
@@ -465,73 +326,44 @@
     "sole_below_ground": 0.0,
     "planted_slide": 0.0,
     "blade_below_ground": 0.0,
-    "shaft_in_body": 0.0208,
+    "shaft_in_body": 0.0442,
     "tip_distance_min": 9.2416,
     "tip_distance_max": 9.2416,
-    "wrist_bend_max": 101.0434,
+    "wrist_bend_max": 84.5445,
     "loop_seam_deg": 0.0,
-    "right_pull": 0.1302,
-    "hand_jerk": 0.4461,
+    "right_pull": 0.2788,
+    "hand_jerk": 0.256,
     "shaft_in_body_frames": [
      [
-      0.1,
+      0.833,
+      "UpperTorso"
+     ],
+     [
+      0.85,
+      "UpperTorso"
+     ],
+     [
+      0.867,
+      "UpperTorso"
+     ],
+     [
+      0.883,
       "UpperTorso"
      ]
     ]
    },
    "problems": [
-    "shaft passes 0.02 into the body ([(0.1, 'UpperTorso')])",
-    "wrist bent 101 degrees",
-    "hand pops 0.45 between frames"
+    "shaft passes 0.04 into the body ([(0.833, 'UpperTorso'), (0.85, 'UpperTorso'), (0.867, 'UpperTorso')])",
+    "wrist bent 85 degrees"
    ],
    "key_repairs": [
     [
-     0.0,
-     0.4,
-     0.6,
-     0.048
+     "field",
+     0.268
     ],
     [
-     1.2,
-     0.25,
-     1.434,
-     0.03
-    ],
-    [
-     2.2,
-     0.25,
-     1.821,
-     0.03
-    ],
-    [
-     1.15,
-     0.3,
-     1.601,
-     0.676
-    ],
-    [
-     0.05,
-     0.3,
-     1.547,
-     0.515
-    ],
-    [
-     1.1,
-     0.2,
-     0.806,
-     0.322
-    ],
-    [
-     0.1,
-     0.1,
-     0.149,
-     0.012
-    ],
-    [
-     1.05,
-     0.05,
-     0.067,
-     0.006
+     "field",
+     0.0
     ]
    ]
   },
@@ -578,25 +410,21 @@
     "shaft_in_body": 0.0,
     "tip_distance_min": 9.2416,
     "tip_distance_max": 9.2416,
-    "wrist_bend_max": 57.9522,
+    "wrist_bend_max": 53.702,
     "loop_seam_deg": 0.0,
-    "right_pull": 0.0097,
-    "hand_jerk": 0.1926,
+    "right_pull": 0.0,
+    "hand_jerk": 0.2001,
     "shaft_in_body_frames": []
    },
    "problems": [],
    "key_repairs": [
     [
-     0.08,
-     0.1,
-     0.385,
-     0.012
+     "field",
+     0.089
     ],
     [
-     0.35,
-     0.05,
-     0.137,
-     0.006
+     "field",
+     0.0
     ]
    ]
   },
@@ -634,7 +462,7 @@
    "wiring": "needs-hook",
    "notes": "One-handed overhead wheel of the guandao into the two-handed guard; the left hand catches the shaft at 0.72 s.",
    "nominal_ground_speed_scale1": 0.0,
-   "keyframes": 50,
+   "keyframes": 53,
    "file": "GeneralZhao_P1_Equip.rbxmx",
    "uploaded": false,
    "asset_id": null,
@@ -645,66 +473,45 @@
     "sole_below_ground": 0.0,
     "planted_slide": 0.0,
     "blade_below_ground": 0.0,
-    "shaft_in_body": 0.1505,
+    "shaft_in_body": 0.2388,
     "tip_distance_min": 9.2416,
     "tip_distance_max": 9.2416,
-    "wrist_bend_max": 93.4834,
+    "wrist_bend_max": 91.0979,
     "loop_seam_deg": 0.0,
-    "right_pull": 0.0097,
-    "hand_jerk": 0.2878,
+    "right_pull": 0.0,
+    "hand_jerk": 0.6409,
     "shaft_in_body_frames": [
      [
-      0.283,
+      0.35,
       "Head"
      ],
      [
-      0.3,
+      0.367,
       "Head"
      ],
      [
-      0.317,
+      0.383,
       "Head"
      ],
      [
-      0.333,
+      0.4,
       "Head"
      ]
     ]
    },
    "problems": [
-    "shaft passes 0.15 into the body ([(0.283, 'Head'), (0.3, 'Head'), (0.317, 'Head')])",
-    "wrist bent 93 degrees"
+    "shaft passes 0.24 into the body ([(0.35, 'Head'), (0.367, 'Head'), (0.383, 'Head')])",
+    "wrist bent 91 degrees",
+    "hand pops 0.64 between frames"
    ],
    "key_repairs": [
     [
-     0.0,
-     0.2,
-     0.698,
-     0.024
+     "field",
+     0.464
     ],
     [
-     0.22,
-     0.1,
-     0.372,
-     0.012
-    ],
-    [
-     0.42,
-     0.3,
-     0.837,
-     0.036
-    ],
-    [
-     0.58,
-     0.0,
-     0.568,
-     0.0
-    ],
-    [
-     0.333,
-     0.3,
-     1.171,
-     0.361
+     "field",
+     0.464
     ]
    ]
   },
@@ -766,147 +573,41 @@
    "validation": {
     "grip_error": 0.0,
     "right_reach": 0.0,
-    "leg_reach": 0.0664,
+    "leg_reach": 0.0,
     "sole_below_ground": 0.0,
     "planted_slide": 12.1363,
     "blade_below_ground": 0.0,
-    "shaft_in_body": 0.5315,
+    "shaft_in_body": 0.0596,
     "tip_distance_min": 9.2416,
     "tip_distance_max": 9.2416,
-    "wrist_bend_max": 97.9598,
+    "wrist_bend_max": 91.0022,
     "loop_seam_deg": 0.0,
-    "right_pull": 0.3424,
-    "hand_jerk": 0.5925,
+    "right_pull": 0.238,
+    "hand_jerk": 0.4568,
     "shaft_in_body_frames": [
      [
-      0.033,
-      "Head"
-     ],
-     [
-      0.033,
-      "UpperTorso"
-     ],
-     [
-      0.05,
-      "Head"
+      0.067,
+      "RightUpperLeg"
      ],
      [
       0.067,
-      "UpperTorso"
-     ],
-     [
-      0.083,
-      "UpperTorso"
-     ],
-     [
-      0.283,
-      "UpperTorso"
-     ],
-     [
-      0.3,
-      "UpperTorso"
-     ],
-     [
-      0.383,
-      "UpperTorso"
-     ],
-     [
-      0.4,
-      "UpperTorso"
-     ],
-     [
-      0.417,
-      "UpperTorso"
-     ],
-     [
-      0.467,
-      "UpperTorso"
-     ],
-     [
-      0.483,
-      "UpperTorso"
+      "RightLowerLeg"
      ]
     ]
    },
    "problems": [
-    "grip pulled in 0.34 from its key (overreach)",
-    "leg short of its foot target by 0.07",
-    "shaft passes 0.53 into the body ([(0.033, 'Head'), (0.033, 'UpperTorso'), (0.05, 'Head')])",
-    "wrist bent 98 degrees",
-    "hand pops 0.59 between frames"
+    "shaft passes 0.06 into the body ([(0.067, 'RightUpperLeg'), (0.067, 'RightLowerLeg')])",
+    "wrist bent 91 degrees",
+    "hand pops 0.46 between frames"
    ],
    "key_repairs": [
     [
-     0.22,
-     0.5,
-     2.078,
-     0.06
+     "field",
+     0.486
     ],
     [
-     0.317,
-     0.15,
-     0.514,
-     0.018
-    ],
-    [
-     0.377,
-     0.0,
-     0.207,
-     0.0
-    ],
-    [
-     0.437,
-     0.0,
-     2.405,
-     0.0
-    ],
-    [
-     0.5,
-     0.2,
-     0.913,
-     0.533
-    ],
-    [
-     0.68,
-     0.75,
-     2.46,
-     0.09
-    ],
-    [
-     0.75,
-     0.3,
-     3.145,
-     0.904
-    ],
-    [
-     0.05,
-     0.3,
-     2.202,
-     1.312
-    ],
-    [
-     0.8,
-     0.3,
-     1.739,
-     0.673
-    ],
-    [
-     0.85,
-     0.25,
-     1.727,
-     0.832
-    ],
-    [
-     0.55,
-     0.3,
-     1.703,
-     0.861
-    ],
-    [
-     0.267,
-     0.1,
-     0.263,
-     0.012
+     "field",
+     0.348
     ]
    ]
   },
@@ -956,94 +657,58 @@
    "wiring": "needs-id",
    "notes": "Blade cocked high over the right shoulder, held, then a descending reaping arc through the front to his low left with the whole body turning; heavy follow-through.",
    "nominal_ground_speed_scale1": 0.0,
-   "keyframes": 48,
+   "keyframes": 51,
    "file": "GeneralZhao_P1_Guandao_Heavy.rbxmx",
    "uploaded": false,
    "asset_id": null,
    "validation": {
-    "grip_error": 0.0016,
+    "grip_error": 0.0,
     "right_reach": 0.0,
     "leg_reach": 0.0,
     "sole_below_ground": 0.0,
     "planted_slide": 0.6892,
     "blade_below_ground": 0.0,
-    "shaft_in_body": 0.074,
+    "shaft_in_body": 0.0329,
     "tip_distance_min": 9.2416,
     "tip_distance_max": 9.2416,
-    "wrist_bend_max": 92.9297,
+    "wrist_bend_max": 76.3604,
     "loop_seam_deg": 0.0,
-    "right_pull": 0.0097,
-    "hand_jerk": 0.3618,
+    "right_pull": 0.0304,
+    "hand_jerk": 0.3163,
     "shaft_in_body_frames": [
      [
-      0.367,
+      0.05,
       "Head"
      ],
      [
-      0.367,
-      "LowerTorso"
-     ],
-     [
-      0.767,
+      0.483,
       "UpperTorso"
      ],
      [
-      0.783,
-      "UpperTorso"
-     ],
-     [
-      0.8,
+      0.7,
       "UpperTorso"
      ]
     ]
    },
    "problems": [
-    "shaft passes 0.07 into the body ([(0.367, 'Head'), (0.367, 'LowerTorso'), (0.767, 'UpperTorso')])",
-    "wrist bent 93 degrees",
-    "hand pops 0.36 between frames"
+    "shaft passes 0.03 into the body ([(0.05, 'Head'), (0.483, 'UpperTorso'), (0.7, 'UpperTorso')])"
    ],
    "key_repairs": [
     [
-     0.2,
-     0.0,
-     2.246,
-     0.0
-    ],
-    [
-     0.31,
-     0.0,
-     1.944,
-     0.0
-    ],
-    [
-     0.383,
-     0.85,
-     2.942,
-     0.292
-    ],
-    [
      0.45,
-     0.4,
-     1.921,
-     0.048
+     "blade lifted off the floor"
     ],
     [
      0.6,
-     0.55,
-     1.445,
-     0.066
+     "blade lifted off the floor"
     ],
     [
-     0.717,
-     0.15,
-     0.562,
-     0.018
+     "field",
+     0.497
     ],
     [
-     0.767,
-     0.05,
-     0.098,
-     0.006
+     "field",
+     0.196
     ]
    ]
   },
@@ -1088,94 +753,39 @@
    "uploaded": false,
    "asset_id": null,
    "validation": {
-    "grip_error": 0.5889,
+    "grip_error": 0.0,
     "right_reach": 0.0,
     "leg_reach": 0.0,
     "sole_below_ground": 0.0,
     "planted_slide": 0.0,
     "blade_below_ground": 0.0,
-    "shaft_in_body": 0.392,
+    "shaft_in_body": 0.0328,
     "tip_distance_min": 9.2416,
     "tip_distance_max": 9.2416,
-    "wrist_bend_max": 100.0886,
+    "wrist_bend_max": 92.2393,
     "loop_seam_deg": 0.0,
-    "right_pull": 0.0202,
-    "hand_jerk": 0.4235,
+    "right_pull": 0.1073,
+    "hand_jerk": 0.4722,
     "shaft_in_body_frames": [
      [
-      0.017,
-      "UpperTorso"
-     ],
-     [
-      0.017,
-      "LowerTorso"
-     ],
-     [
-      0.033,
-      "UpperTorso"
-     ],
-     [
-      0.05,
-      "UpperTorso"
-     ],
-     [
-      0.067,
-      "UpperTorso"
-     ],
-     [
-      0.083,
-      "UpperTorso"
-     ],
-     [
-      0.1,
-      "UpperTorso"
-     ],
-     [
-      0.117,
-      "UpperTorso"
-     ],
-     [
       0.133,
-      "UpperTorso"
-     ],
-     [
-      0.15,
-      "UpperTorso"
-     ],
-     [
-      0.333,
-      "UpperTorso"
-     ],
-     [
-      0.35,
       "UpperTorso"
      ]
     ]
    },
    "problems": [
-    "left hand leaves the shaft by 0.59",
-    "shaft passes 0.39 into the body ([(0.017, 'UpperTorso'), (0.017, 'LowerTorso'), (0.033, 'UpperTorso')])",
-    "wrist bent 100 degrees",
-    "hand pops 0.42 between frames"
+    "shaft passes 0.03 into the body ([(0.133, 'UpperTorso')])",
+    "wrist bent 92 degrees",
+    "hand pops 0.47 between frames"
    ],
    "key_repairs": [
     [
-     0.15,
-     0.4,
-     2.723,
-     1.338
+     "field",
+     0.097
     ],
     [
-     0.217,
-     0.0,
-     1.288,
-     0.0
-    ],
-    [
-     0.31,
-     0.5,
-     1.376,
-     0.06
+     "field",
+     0.097
     ]
    ]
   },
@@ -1215,25 +825,33 @@
    "wiring": "needs-hook",
    "notes": "Backhand return sweep from his left, rising slightly; edge turned to lead.",
    "nominal_ground_speed_scale1": 0.0,
-   "keyframes": 25,
+   "keyframes": 26,
    "file": "GeneralZhao_P1_Guandao_L2.rbxmx",
    "uploaded": false,
    "asset_id": null,
    "validation": {
-    "grip_error": 0.3523,
+    "grip_error": 0.0,
     "right_reach": 0.0,
     "leg_reach": 0.0,
     "sole_below_ground": 0.0,
     "planted_slide": 0.0,
     "blade_below_ground": 0.0,
-    "shaft_in_body": 0.3369,
+    "shaft_in_body": 0.3234,
     "tip_distance_min": 9.2416,
     "tip_distance_max": 9.2416,
-    "wrist_bend_max": 82.9075,
+    "wrist_bend_max": 79.338,
     "loop_seam_deg": 0.0,
-    "right_pull": 0.1764,
-    "hand_jerk": 0.3443,
+    "right_pull": 0.0459,
+    "hand_jerk": 0.5239,
     "shaft_in_body_frames": [
+     [
+      0.117,
+      "UpperTorso"
+     ],
+     [
+      0.183,
+      "UpperTorso"
+     ],
      [
       0.2,
       "UpperTorso"
@@ -1243,36 +861,24 @@
       "UpperTorso"
      ],
      [
-      0.233,
-      "UpperTorso"
-     ],
-     [
-      0.233,
-      "LowerTorso"
-     ],
-     [
-      0.25,
-      "UpperTorso"
-     ],
-     [
-      0.25,
-      "LowerTorso"
-     ],
-     [
       0.333,
       "UpperTorso"
      ],
      [
+      0.333,
+      "LowerTorso"
+     ],
+     [
+      0.333,
+      "RightUpperLeg"
+     ],
+     [
       0.35,
       "UpperTorso"
      ],
      [
       0.35,
       "LowerTorso"
-     ],
-     [
-      0.35,
-      "LeftUpperLeg"
      ],
      [
       0.367,
@@ -1285,40 +891,17 @@
     ]
    },
    "problems": [
-    "left hand leaves the shaft by 0.35",
-    "shaft passes 0.34 into the body ([(0.2, 'UpperTorso'), (0.217, 'UpperTorso'), (0.233, 'UpperTorso')])",
-    "wrist bent 83 degrees"
+    "shaft passes 0.32 into the body ([(0.117, 'UpperTorso'), (0.183, 'UpperTorso'), (0.2, 'UpperTorso')])",
+    "hand pops 0.52 between frames"
    ],
    "key_repairs": [
     [
-     0.07,
-     0.0,
-     0.502,
-     0.0
+     "field",
+     0.45
     ],
     [
-     0.15,
-     0.6,
-     2.866,
-     0.878
-    ],
-    [
-     0.217,
-     0.0,
-     2.958,
-     0.0
-    ],
-    [
-     0.367,
-     0.15,
-     1.388,
-     0.583
-    ],
-    [
-     0.267,
-     0.1,
-     0.826,
-     0.717
+     "field",
+     0.417
     ]
    ]
   },
@@ -1363,7 +946,7 @@
    "wiring": "needs-hook",
    "notes": "Blade rises behind the head and splits straight down the centre line; front foot stamps.",
    "nominal_ground_speed_scale1": 0.0,
-   "keyframes": 31,
+   "keyframes": 32,
    "file": "GeneralZhao_P1_Guandao_L3.rbxmx",
    "uploaded": false,
    "asset_id": null,
@@ -1374,59 +957,26 @@
     "sole_below_ground": 0.0,
     "planted_slide": 0.0,
     "blade_below_ground": 0.0,
-    "shaft_in_body": 0.0602,
+    "shaft_in_body": 0.0,
     "tip_distance_min": 9.2416,
     "tip_distance_max": 9.2416,
-    "wrist_bend_max": 88.9482,
+    "wrist_bend_max": 89.991,
     "loop_seam_deg": 0.0,
-    "right_pull": 0.029,
-    "hand_jerk": 0.4138,
-    "shaft_in_body_frames": [
-     [
-      0.167,
-      "UpperTorso"
-     ],
-     [
-      0.167,
-      "LowerTorso"
-     ]
-    ]
+    "right_pull": 0.018,
+    "hand_jerk": 0.2952,
+    "shaft_in_body_frames": []
    },
    "problems": [
-    "shaft passes 0.06 into the body ([(0.167, 'UpperTorso'), (0.167, 'LowerTorso')])",
-    "wrist bent 89 degrees",
-    "hand pops 0.41 between frames"
+    "wrist bent 90 degrees"
    ],
    "key_repairs": [
     [
-     0.11,
-     0.35,
-     0.212,
-     0.042
+     "field",
+     0.478
     ],
     [
-     0.183,
-     0.9,
-     2.007,
-     0.209
-    ],
-    [
-     0.25,
-     0.9,
-     3.296,
-     0.108
-    ],
-    [
-     0.36,
-     0.9,
-     3.201,
-     0.108
-    ],
-    [
-     0.417,
-     0.2,
-     0.608,
-     0.024
+     "field",
+     0.077
     ]
    ]
   },
@@ -1476,99 +1026,32 @@
    "uploaded": false,
    "asset_id": null,
    "validation": {
-    "grip_error": 0.1069,
+    "grip_error": 0.0,
     "right_reach": 0.0,
-    "leg_reach": 0.1539,
+    "leg_reach": 0.0,
     "sole_below_ground": 0.0,
     "planted_slide": 0.0,
     "blade_below_ground": 0.0,
-    "shaft_in_body": 0.0892,
+    "shaft_in_body": 0.0,
     "tip_distance_min": 9.2416,
     "tip_distance_max": 9.2416,
-    "wrist_bend_max": 95.1776,
+    "wrist_bend_max": 81.5741,
     "loop_seam_deg": 0.0,
-    "right_pull": 0.1161,
-    "hand_jerk": 0.4053,
-    "shaft_in_body_frames": [
-     [
-      0.183,
-      "UpperTorso"
-     ],
-     [
-      0.2,
-      "UpperTorso"
-     ],
-     [
-      0.217,
-      "Head"
-     ],
-     [
-      0.217,
-      "UpperTorso"
-     ]
-    ]
+    "right_pull": 0.0738,
+    "hand_jerk": 0.1158,
+    "shaft_in_body_frames": []
    },
    "problems": [
-    "left hand leaves the shaft by 0.11",
-    "leg short of its foot target by 0.15",
-    "shaft passes 0.09 into the body ([(0.183, 'UpperTorso'), (0.2, 'UpperTorso'), (0.217, 'Head')])",
-    "wrist bent 95 degrees",
-    "hand pops 0.41 between frames"
+    "wrist bent 82 degrees"
    ],
    "key_repairs": [
     [
-     0.0,
-     0.45,
-     0.526,
-     0.054
+     "field",
+     0.457
     ],
     [
-     0.1,
-     0.6,
-     0.662,
-     0.072
-    ],
-    [
-     0.217,
-     0.9,
-     2.526,
-     0.829
-    ],
-    [
-     0.283,
-     0.9,
-     2.526,
-     0.202
-    ],
-    [
-     0.42,
-     0.9,
-     2.425,
-     0.208
-    ],
-    [
-     0.483,
-     0.25,
-     0.651,
-     0.03
-    ],
-    [
-     0.15,
-     0.15,
-     0.479,
-     0.018
-    ],
-    [
-     0.35,
-     0.15,
-     0.369,
-     0.018
-    ],
-    [
-     0.05,
-     0.05,
-     0.051,
-     0.006
+     "field",
+     0.091
     ]
    ]
   },
@@ -1599,25 +1082,21 @@
     "shaft_in_body": 0.0,
     "tip_distance_min": 9.2416,
     "tip_distance_max": 9.2416,
-    "wrist_bend_max": 76.2855,
+    "wrist_bend_max": 53.7554,
     "loop_seam_deg": 0.0,
-    "right_pull": 0.0159,
-    "hand_jerk": 0.0255,
+    "right_pull": 0.0088,
+    "hand_jerk": 0.0733,
     "shaft_in_body_frames": []
    },
    "problems": [],
    "key_repairs": [
     [
-     0.25,
-     0.05,
-     0.061,
-     0.006
+     "field",
+     0.08
     ],
     [
-     0.117,
-     0.05,
-     0.027,
-     0.006
+     "field",
+     0.08
     ]
    ]
   },
@@ -1648,25 +1127,21 @@
     "shaft_in_body": 0.0,
     "tip_distance_min": 9.2416,
     "tip_distance_max": 9.2416,
-    "wrist_bend_max": 76.281,
+    "wrist_bend_max": 53.7562,
     "loop_seam_deg": 0.0,
-    "right_pull": 0.0159,
-    "hand_jerk": 0.0285,
+    "right_pull": 0.0,
+    "hand_jerk": 0.0555,
     "shaft_in_body_frames": []
    },
    "problems": [],
    "key_repairs": [
     [
-     0.0,
-     0.05,
-     0.061,
-     0.006
+     "field",
+     0.08
     ],
     [
-     0.183,
-     0.05,
-     0.028,
-     0.006
+     "field",
+     0.0
     ]
    ]
   },
@@ -1694,7 +1169,7 @@
    "wiring": "needs-hook",
    "notes": "The haft is driven back toward his chest, rear foot braces a quarter step.",
    "nominal_ground_speed_scale1": 0.0,
-   "keyframes": 25,
+   "keyframes": 27,
    "file": "GeneralZhao_P1_GuardHit.rbxmx",
    "uploaded": false,
    "asset_id": null,
@@ -1705,36 +1180,52 @@
     "sole_below_ground": 0.0,
     "planted_slide": 0.0,
     "blade_below_ground": 0.0,
-    "shaft_in_body": 0.0,
+    "shaft_in_body": 0.0706,
     "tip_distance_min": 9.2416,
     "tip_distance_max": 9.2416,
-    "wrist_bend_max": 80.7436,
+    "wrist_bend_max": 48.6217,
     "loop_seam_deg": 0.0,
-    "right_pull": 0.0159,
-    "hand_jerk": 0.0695,
-    "shaft_in_body_frames": []
+    "right_pull": 0.0442,
+    "hand_jerk": 0.3713,
+    "shaft_in_body_frames": [
+     [
+      0.067,
+      "UpperTorso"
+     ],
+     [
+      0.083,
+      "UpperTorso"
+     ],
+     [
+      0.1,
+      "UpperTorso"
+     ],
+     [
+      0.117,
+      "UpperTorso"
+     ],
+     [
+      0.133,
+      "UpperTorso"
+     ],
+     [
+      0.15,
+      "UpperTorso"
+     ]
+    ]
    },
    "problems": [
-    "wrist bent 81 degrees"
+    "shaft passes 0.07 into the body ([(0.067, 'UpperTorso'), (0.083, 'UpperTorso'), (0.1, 'UpperTorso')])",
+    "hand pops 0.37 between frames"
    ],
    "key_repairs": [
     [
-     0.0,
-     0.05,
-     0.061,
-     0.006
+     "field",
+     0.396
     ],
     [
-     0.07,
-     0.0,
-     0.242,
-     0.0
-    ],
-    [
-     0.45,
-     0.05,
-     0.061,
-     0.006
+     "field",
+     0.08
     ]
    ]
   },
@@ -1751,7 +1242,7 @@
    "wiring": "needs-hook",
    "notes": "Braced block, small breath.",
    "nominal_ground_speed_scale1": 0.0,
-   "keyframes": 6,
+   "keyframes": 7,
    "file": "GeneralZhao_P1_GuardLoop.rbxmx",
    "uploaded": false,
    "asset_id": null,
@@ -1765,27 +1256,14 @@
     "shaft_in_body": 0.0,
     "tip_distance_min": 9.2416,
     "tip_distance_max": 9.2416,
-    "wrist_bend_max": 75.8249,
+    "wrist_bend_max": 43.2476,
     "loop_seam_deg": 0.0,
-    "right_pull": 0.0159,
-    "hand_jerk": 0.0001,
+    "right_pull": 0.0,
+    "hand_jerk": 0.0,
     "shaft_in_body_frames": []
    },
    "problems": [],
-   "key_repairs": [
-    [
-     0.0,
-     0.05,
-     0.061,
-     0.006
-    ],
-    [
-     0.8,
-     0.05,
-     0.066,
-     0.006
-    ]
-   ]
+   "key_repairs": []
   },
   "GeneralZhao_P1_HitHeavyBack": {
    "group": "State",
@@ -1811,7 +1289,7 @@
    "wiring": "needs-hook",
    "notes": "Stumbles from the back with a recovery step; front hand slips and re-grips.",
    "nominal_ground_speed_scale1": 0.0,
-   "keyframes": 39,
+   "keyframes": 42,
    "file": "GeneralZhao_P1_HitHeavyBack.rbxmx",
    "uploaded": false,
    "asset_id": null,
@@ -1825,25 +1303,21 @@
     "shaft_in_body": 0.0,
     "tip_distance_min": 9.2416,
     "tip_distance_max": 9.2416,
-    "wrist_bend_max": 79.718,
+    "wrist_bend_max": 62.7039,
     "loop_seam_deg": 0.0,
-    "right_pull": 0.0155,
-    "hand_jerk": 0.0413,
+    "right_pull": 0.0,
+    "hand_jerk": 0.0212,
     "shaft_in_body_frames": []
    },
    "problems": [],
    "key_repairs": [
     [
-     0.08,
-     0.15,
-     0.187,
-     0.018
+     "field",
+     0.0
     ],
     [
-     0.4,
-     0.15,
-     0.187,
-     0.018
+     "field",
+     0.0
     ]
    ]
   },
@@ -1871,7 +1345,7 @@
    "wiring": "needs-hook",
    "notes": "Stumbles from the front with a recovery step; front hand slips and re-grips.",
    "nominal_ground_speed_scale1": 0.0,
-   "keyframes": 39,
+   "keyframes": 44,
    "file": "GeneralZhao_P1_HitHeavyFront.rbxmx",
    "uploaded": false,
    "asset_id": null,
@@ -1885,14 +1359,23 @@
     "shaft_in_body": 0.0,
     "tip_distance_min": 9.2416,
     "tip_distance_max": 9.2416,
-    "wrist_bend_max": 57.9522,
+    "wrist_bend_max": 53.9527,
     "loop_seam_deg": 0.0,
-    "right_pull": 0.0097,
-    "hand_jerk": 0.0097,
+    "right_pull": 0.0,
+    "hand_jerk": 0.0166,
     "shaft_in_body_frames": []
    },
    "problems": [],
-   "key_repairs": []
+   "key_repairs": [
+    [
+     "field",
+     0.0
+    ],
+    [
+     "field",
+     0.0
+    ]
+   ]
   },
   "GeneralZhao_P1_HitHeavyLeft": {
    "group": "State",
@@ -1918,7 +1401,7 @@
    "wiring": "needs-hook",
    "notes": "Stumbles from the left with a recovery step; front hand slips and re-grips.",
    "nominal_ground_speed_scale1": 0.0,
-   "keyframes": 39,
+   "keyframes": 45,
    "file": "GeneralZhao_P1_HitHeavyLeft.rbxmx",
    "uploaded": false,
    "asset_id": null,
@@ -1932,25 +1415,21 @@
     "shaft_in_body": 0.0,
     "tip_distance_min": 9.2416,
     "tip_distance_max": 9.2416,
-    "wrist_bend_max": 74.6911,
+    "wrist_bend_max": 66.0031,
     "loop_seam_deg": 0.0,
-    "right_pull": 0.0097,
-    "hand_jerk": 0.0664,
+    "right_pull": 0.1361,
+    "hand_jerk": 0.0578,
     "shaft_in_body_frames": []
    },
    "problems": [],
    "key_repairs": [
     [
-     0.08,
-     0.35,
-     0.354,
-     0.042
+     "field",
+     0.0
     ],
     [
-     0.4,
-     0.35,
-     0.354,
-     0.042
+     "field",
+     0.0
     ]
    ]
   },
@@ -1978,7 +1457,7 @@
    "wiring": "needs-hook",
    "notes": "Stumbles from the right with a recovery step; front hand slips and re-grips.",
    "nominal_ground_speed_scale1": 0.0,
-   "keyframes": 37,
+   "keyframes": 48,
    "file": "GeneralZhao_P1_HitHeavyRight.rbxmx",
    "uploaded": false,
    "asset_id": null,
@@ -1992,24 +1471,20 @@
     "shaft_in_body": 0.0,
     "tip_distance_min": 9.2416,
     "tip_distance_max": 9.2416,
-    "wrist_bend_max": 60.0021,
+    "wrist_bend_max": 53.7003,
     "loop_seam_deg": 0.0,
-    "right_pull": 0.0097,
-    "hand_jerk": 0.0177,
+    "right_pull": 0.0,
+    "hand_jerk": 0.0151,
     "shaft_in_body_frames": []
    },
    "problems": [],
    "key_repairs": [
     [
-     0.08,
-     0.0,
-     0.82,
+     "field",
      0.0
     ],
     [
-     0.4,
-     0.0,
-     0.82,
+     "field",
      0.0
     ]
    ]
@@ -2033,7 +1508,7 @@
    "wiring": "needs-hook",
    "notes": "Light flinch from the back; guard and grip hold.",
    "nominal_ground_speed_scale1": 0.0,
-   "keyframes": 18,
+   "keyframes": 24,
    "file": "GeneralZhao_P1_HitLightBack.rbxmx",
    "uploaded": false,
    "asset_id": null,
@@ -2047,19 +1522,21 @@
     "shaft_in_body": 0.0,
     "tip_distance_min": 9.2416,
     "tip_distance_max": 9.2416,
-    "wrist_bend_max": 67.6132,
+    "wrist_bend_max": 55.4901,
     "loop_seam_deg": 0.0,
-    "right_pull": 0.0097,
-    "hand_jerk": 0.0201,
+    "right_pull": 0.0,
+    "hand_jerk": 0.0084,
     "shaft_in_body_frames": []
    },
    "problems": [],
    "key_repairs": [
     [
-     0.06,
-     0.1,
-     0.062,
-     0.012
+     "field",
+     0.0
+    ],
+    [
+     "field",
+     0.0
     ]
    ]
   },
@@ -2082,7 +1559,7 @@
    "wiring": "needs-hook",
    "notes": "Light flinch from the front; guard and grip hold.",
    "nominal_ground_speed_scale1": 0.0,
-   "keyframes": 18,
+   "keyframes": 25,
    "file": "GeneralZhao_P1_HitLightFront.rbxmx",
    "uploaded": false,
    "asset_id": null,
@@ -2096,14 +1573,23 @@
     "shaft_in_body": 0.0,
     "tip_distance_min": 9.2416,
     "tip_distance_max": 9.2416,
-    "wrist_bend_max": 57.9522,
+    "wrist_bend_max": 53.7435,
     "loop_seam_deg": 0.0,
-    "right_pull": 0.0097,
-    "hand_jerk": 0.0079,
+    "right_pull": 0.0,
+    "hand_jerk": 0.0177,
     "shaft_in_body_frames": []
    },
    "problems": [],
-   "key_repairs": []
+   "key_repairs": [
+    [
+     "field",
+     0.0
+    ],
+    [
+     "field",
+     0.0
+    ]
+   ]
   },
   "GeneralZhao_P1_HitLightLeft": {
    "group": "State",
@@ -2124,7 +1610,7 @@
    "wiring": "needs-hook",
    "notes": "Light flinch from the left; guard and grip hold.",
    "nominal_ground_speed_scale1": 0.0,
-   "keyframes": 21,
+   "keyframes": 25,
    "file": "GeneralZhao_P1_HitLightLeft.rbxmx",
    "uploaded": false,
    "asset_id": null,
@@ -2138,19 +1624,21 @@
     "shaft_in_body": 0.0,
     "tip_distance_min": 9.2416,
     "tip_distance_max": 9.2416,
-    "wrist_bend_max": 67.5163,
+    "wrist_bend_max": 59.0944,
     "loop_seam_deg": 0.0,
-    "right_pull": 0.0097,
-    "hand_jerk": 0.0261,
+    "right_pull": 0.045,
+    "hand_jerk": 0.0245,
     "shaft_in_body_frames": []
    },
    "problems": [],
    "key_repairs": [
     [
-     0.06,
-     0.1,
-     0.127,
-     0.012
+     "field",
+     0.0
+    ],
+    [
+     "field",
+     0.0
     ]
    ]
   },
@@ -2173,7 +1661,7 @@
    "wiring": "needs-hook",
    "notes": "Light flinch from the right; guard and grip hold.",
    "nominal_ground_speed_scale1": 0.0,
-   "keyframes": 19,
+   "keyframes": 22,
    "file": "GeneralZhao_P1_HitLightRight.rbxmx",
    "uploaded": false,
    "asset_id": null,
@@ -2187,18 +1675,20 @@
     "shaft_in_body": 0.0,
     "tip_distance_min": 9.2416,
     "tip_distance_max": 9.2416,
-    "wrist_bend_max": 57.9522,
+    "wrist_bend_max": 53.7184,
     "loop_seam_deg": 0.0,
-    "right_pull": 0.0097,
-    "hand_jerk": 0.0095,
+    "right_pull": 0.0,
+    "hand_jerk": 0.0044,
     "shaft_in_body_frames": []
    },
    "problems": [],
    "key_repairs": [
     [
-     0.06,
-     0.0,
-     0.276,
+     "field",
+     0.0
+    ],
+    [
+     "field",
      0.0
     ]
    ]
@@ -2216,7 +1706,7 @@
    "wiring": "existing",
    "notes": "Guarded two-handed stance: breath at 1.0 s, weight onto the rear foot at 2.7 s; the point stays on the opponent's throat.",
    "nominal_ground_speed_scale1": 0.0,
-   "keyframes": 25,
+   "keyframes": 23,
    "file": "GeneralZhao_P1_Idle.rbxmx",
    "uploaded": false,
    "asset_id": null,
@@ -2230,21 +1720,14 @@
     "shaft_in_body": 0.0,
     "tip_distance_min": 9.2416,
     "tip_distance_max": 9.2416,
-    "wrist_bend_max": 58.9066,
+    "wrist_bend_max": 55.1688,
     "loop_seam_deg": 0.0,
-    "right_pull": 0.0174,
-    "hand_jerk": 0.0009,
+    "right_pull": 0.0018,
+    "hand_jerk": 0.0001,
     "shaft_in_body_frames": []
    },
    "problems": [],
-   "key_repairs": [
-    [
-     1.0,
-     0.05,
-     0.024,
-     0.006
-    ]
-   ]
+   "key_repairs": []
   },
   "GeneralZhao_P1_IdleNeutral": {
    "group": "State",
@@ -2259,7 +1742,7 @@
    "wiring": "needs-hook",
    "notes": "Upright, guandao standing beside him in the right hand, left hand at his side; slow breath and a glance.",
    "nominal_ground_speed_scale1": 0.0,
-   "keyframes": 13,
+   "keyframes": 12,
    "file": "GeneralZhao_P1_IdleNeutral.rbxmx",
    "uploaded": false,
    "asset_id": null,
@@ -2273,39 +1756,14 @@
     "shaft_in_body": 0.0,
     "tip_distance_min": 9.2416,
     "tip_distance_max": 9.2416,
-    "wrist_bend_max": 79.6897,
+    "wrist_bend_max": 53.1079,
     "loop_seam_deg": 0.0,
     "right_pull": 0.0,
-    "hand_jerk": 0.0001,
+    "hand_jerk": 0.0,
     "shaft_in_body_frames": []
    },
    "problems": [],
-   "key_repairs": [
-    [
-     0.0,
-     0.2,
-     0.698,
-     0.024
-    ],
-    [
-     1.4,
-     0.15,
-     0.495,
-     0.018
-    ],
-    [
-     2.6,
-     0.2,
-     0.698,
-     0.024
-    ],
-    [
-     3.5,
-     0.2,
-     0.698,
-     0.024
-    ]
-   ]
+   "key_repairs": []
   },
   "GeneralZhao_P1_Intro": {
    "group": "State",
@@ -2336,7 +1794,7 @@
    "wiring": "needs-hook",
    "notes": "Head bowed, guandao upright: the helmet and plumes read as a silhouette; the head lifts at 1.4 s so the crest and chest diamond face the camera; holds for the shot.",
    "nominal_ground_speed_scale1": 0.0,
-   "keyframes": 14,
+   "keyframes": 24,
    "file": "GeneralZhao_P1_Intro.rbxmx",
    "uploaded": false,
    "asset_id": null,
@@ -2350,43 +1808,21 @@
     "shaft_in_body": 0.0,
     "tip_distance_min": 9.2416,
     "tip_distance_max": 9.2416,
-    "wrist_bend_max": 79.9463,
+    "wrist_bend_max": 53.2529,
     "loop_seam_deg": 0.0,
     "right_pull": 0.0,
-    "hand_jerk": 0.0044,
+    "hand_jerk": 0.006,
     "shaft_in_body_frames": []
    },
    "problems": [],
    "key_repairs": [
     [
-     0.0,
-     0.2,
-     0.67,
-     0.024
+     "field",
+     0.0
     ],
     [
-     0.9,
-     0.2,
-     0.67,
-     0.024
-    ],
-    [
-     1.4,
-     0.2,
-     0.707,
-     0.024
-    ],
-    [
-     1.9,
-     0.2,
-     0.709,
-     0.024
-    ],
-    [
-     2.4,
-     0.2,
-     0.704,
-     0.024
+     "field",
+     0.0
     ]
    ]
   },
@@ -2414,7 +1850,7 @@
    "wiring": "needs-hook",
    "notes": "Snaps from the presentation pose into guard inside the handoff's readable lead.",
    "nominal_ground_speed_scale1": 0.0,
-   "keyframes": 34,
+   "keyframes": 37,
    "file": "GeneralZhao_P1_IntroReady.rbxmx",
    "uploaded": false,
    "asset_id": null,
@@ -2428,25 +1864,21 @@
     "shaft_in_body": 0.0,
     "tip_distance_min": 9.2416,
     "tip_distance_max": 9.2416,
-    "wrist_bend_max": 79.7663,
+    "wrist_bend_max": 61.6105,
     "loop_seam_deg": 0.0,
-    "right_pull": 0.0097,
-    "hand_jerk": 0.048,
+    "right_pull": 0.0,
+    "hand_jerk": 0.3274,
     "shaft_in_body_frames": []
    },
    "problems": [],
    "key_repairs": [
     [
-     0.0,
-     0.2,
-     0.704,
-     0.024
+     "field",
+     0.293
     ],
     [
-     0.25,
-     0.0,
-     1.059,
-     0.0
+     "field",
+     0.098
     ]
    ]
   },
@@ -2506,12 +1938,12 @@
    "wiring": "needs-id",
    "notes": "The haft becomes a battering bar across the chest, wide grip; shoulders and haft lead a heavy rush; the blade stays to his left so the silhouette remains Zhao's, not the Bull's.",
    "nominal_ground_speed_scale1": 0.0,
-   "keyframes": 106,
+   "keyframes": 119,
    "file": "GeneralZhao_P1_IronCharge.rbxmx",
    "uploaded": false,
    "asset_id": null,
    "validation": {
-    "grip_error": 0.0,
+    "grip_error": 0.0136,
     "right_reach": 0.0,
     "leg_reach": 0.0,
     "sole_below_ground": 0.0,
@@ -2520,80 +1952,20 @@
     "shaft_in_body": 0.0,
     "tip_distance_min": 9.2416,
     "tip_distance_max": 9.2416,
-    "wrist_bend_max": 79.2689,
+    "wrist_bend_max": 55.9862,
     "loop_seam_deg": 0.0,
-    "right_pull": 0.09,
-    "hand_jerk": 0.4349,
+    "right_pull": 0.1176,
+    "hand_jerk": 0.2838,
     "shaft_in_body_frames": []
    },
-   "problems": [
-    "hand pops 0.43 between frames"
-   ],
+   "problems": [],
    "key_repairs": [
     [
-     0.45,
-     0.1,
-     0.488,
-     0.012
+     "field",
+     0.0
     ],
     [
-     1.1,
-     0.1,
-     0.088,
-     0.012
-    ],
-    [
-     1.5,
-     0.05,
-     0.012,
-     0.006
-    ],
-    [
-     1.75,
-     0.1,
-     0.107,
-     0.012
-    ],
-    [
-     0.4,
-     0.15,
-     0.358,
-     0.018
-    ],
-    [
-     1.417,
-     0.05,
-     0.282,
-     0.006
-    ],
-    [
-     1.567,
-     0.05,
-     0.264,
-     0.006
-    ],
-    [
-     0.35,
-     0.15,
-     0.182,
-     0.018
-    ],
-    [
-     1.367,
-     0.05,
-     0.148,
-     0.006
-    ],
-    [
-     1.617,
-     0.05,
-     0.123,
-     0.006
-    ],
-    [
-     1.667,
-     0.0,
-     0.004,
+     "field",
      0.0
     ]
    ]
@@ -2686,200 +2058,35 @@
    "wiring": "needs-hook",
    "notes": "Point aligned and stance compressed by 0.32 s; the rear hand drives the shaft through the guiding front hand; distinct recoil between impacts; the third thrust over-extends with the blade dipping (punishable 2.42-2.8 s).",
    "nominal_ground_speed_scale1": 0.0,
-   "keyframes": 152,
+   "keyframes": 165,
    "file": "GeneralZhao_P1_LightningSpear.rbxmx",
    "uploaded": false,
    "asset_id": null,
    "validation": {
-    "grip_error": 0.0454,
+    "grip_error": 0.0,
     "right_reach": 0.0,
     "leg_reach": 0.0,
     "sole_below_ground": 0.0,
     "planted_slide": 0.6746,
     "blade_below_ground": 0.0,
-    "shaft_in_body": 0.2059,
+    "shaft_in_body": 0.0,
     "tip_distance_min": 9.2416,
     "tip_distance_max": 9.2416,
-    "wrist_bend_max": 94.5913,
+    "wrist_bend_max": 79.4301,
     "loop_seam_deg": 0.0,
-    "right_pull": 0.2247,
-    "hand_jerk": 0.5147,
-    "shaft_in_body_frames": [
-     [
-      0.767,
-      "UpperTorso"
-     ],
-     [
-      0.783,
-      "UpperTorso"
-     ],
-     [
-      0.8,
-      "UpperTorso"
-     ],
-     [
-      0.817,
-      "UpperTorso"
-     ],
-     [
-      0.833,
-      "UpperTorso"
-     ],
-     [
-      0.85,
-      "UpperTorso"
-     ],
-     [
-      1.45,
-      "UpperTorso"
-     ],
-     [
-      1.467,
-      "UpperTorso"
-     ],
-     [
-      1.483,
-      "UpperTorso"
-     ],
-     [
-      1.5,
-      "Head"
-     ],
-     [
-      1.5,
-      "UpperTorso"
-     ],
-     [
-      1.517,
-      "UpperTorso"
-     ]
-    ]
+    "right_pull": 0.1888,
+    "hand_jerk": 0.0995,
+    "shaft_in_body_frames": []
    },
-   "problems": [
-    "shaft passes 0.21 into the body ([(0.767, 'UpperTorso'), (0.783, 'UpperTorso'), (0.8, 'UpperTorso')])",
-    "wrist bent 95 degrees",
-    "hand pops 0.51 between frames"
-   ],
+   "problems": [],
    "key_repairs": [
     [
-     0.62,
-     0.05,
-     0.098,
-     0.006
+     "field",
+     0.434
     ],
     [
-     0.7,
-     0.05,
-     0.098,
-     0.006
-    ],
-    [
-     0.8,
-     0.9,
-     2.147,
-     0.853
-    ],
-    [
-     1.3,
-     0.05,
-     0.098,
-     0.006
-    ],
-    [
-     1.5,
-     0.9,
-     2.235,
-     0.842
-    ],
-    [
-     2.0,
-     0.05,
-     0.03,
-     0.006
-    ],
-    [
-     2.08,
-     0.05,
-     0.03,
-     0.006
-    ],
-    [
-     2.2,
-     0.9,
-     2.511,
-     1.298
-    ],
-    [
-     2.42,
-     0.9,
-     2.667,
-     0.351
-    ],
-    [
-     2.66,
-     0.9,
-     2.36,
-     0.306
-    ],
-    [
-     1.45,
-     0.3,
-     1.185,
-     0.036
-    ],
-    [
-     2.733,
-     0.15,
-     0.627,
-     0.018
-    ],
-    [
-     2.25,
-     0.2,
-     0.378,
-     0.042
-    ],
-    [
-     2.15,
-     0.1,
-     0.313,
-     0.012
-    ],
-    [
-     2.467,
-     0.15,
-     0.237,
-     0.018
-    ],
-    [
-     2.367,
-     0.15,
-     0.233,
-     0.018
-    ],
-    [
-     2.617,
-     0.1,
-     0.141,
-     0.012
-    ],
-    [
-     1.367,
-     0.05,
-     0.063,
-     0.006
-    ],
-    [
-     1.55,
-     0.05,
-     0.057,
-     0.006
-    ],
-    [
-     0.75,
-     0.05,
-     0.021,
-     0.006
+     "field",
+     0.171
     ]
    ]
   },
@@ -2945,129 +2152,49 @@
     "sole_below_ground": 0.0,
     "planted_slide": 12.1363,
     "blade_below_ground": 0.0,
-    "shaft_in_body": 0.5145,
+    "shaft_in_body": 0.1048,
     "tip_distance_min": 9.2416,
     "tip_distance_max": 9.2416,
-    "wrist_bend_max": 98.3261,
+    "wrist_bend_max": 91.253,
     "loop_seam_deg": 0.0,
-    "right_pull": 0.1034,
-    "hand_jerk": 0.697,
+    "right_pull": 0.1283,
+    "hand_jerk": 0.6658,
     "shaft_in_body_frames": [
      [
-      0.05,
-      "Head"
+      0.067,
+      "RightUpperLeg"
      ],
      [
-      0.283,
-      "Head"
-     ],
-     [
-      0.283,
-      "UpperTorso"
+      0.067,
+      "RightLowerLeg"
      ],
      [
       0.3,
       "UpperTorso"
      ],
      [
-      0.4,
+      0.617,
       "UpperTorso"
      ],
      [
-      0.417,
-      "UpperTorso"
-     ],
-     [
-      0.483,
-      "UpperTorso"
-     ],
-     [
-      0.5,
-      "UpperTorso"
-     ],
-     [
-      0.517,
-      "UpperTorso"
-     ],
-     [
-      0.533,
-      "UpperTorso"
-     ],
-     [
-      0.55,
-      "UpperTorso"
-     ],
-     [
-      0.717,
+      0.683,
       "UpperTorso"
      ]
     ]
    },
    "problems": [
-    "shaft passes 0.51 into the body ([(0.05, 'Head'), (0.283, 'Head'), (0.283, 'UpperTorso')])",
-    "wrist bent 98 degrees",
-    "hand pops 0.70 between frames"
+    "shaft passes 0.10 into the body ([(0.067, 'RightUpperLeg'), (0.067, 'RightLowerLeg'), (0.3, 'UpperTorso')])",
+    "wrist bent 91 degrees",
+    "hand pops 0.67 between frames"
    ],
    "key_repairs": [
     [
-     0.22,
-     0.55,
-     2.131,
-     0.066
+     "field",
+     0.493
     ],
     [
-     0.317,
-     0.2,
-     0.639,
-     0.024
-    ],
-    [
-     0.5,
-     0.15,
-     0.7,
-     0.175
-    ],
-    [
-     0.68,
-     0.0,
-     2.258,
-     0.0
-    ],
-    [
-     0.767,
-     0.3,
-     2.49,
-     1.522
-    ],
-    [
-     0.817,
-     0.3,
-     1.927,
-     0.722
-    ],
-    [
-     0.05,
-     0.3,
-     1.852,
-     0.564
-    ],
-    [
-     0.55,
-     0.3,
-     1.764,
-     0.66
-    ],
-    [
-     0.267,
-     0.1,
-     0.139,
-     0.012
-    ],
-    [
-     0.1,
-     0.05,
-     0.095,
-     0.006
+     "field",
+     0.383
     ]
    ]
   },
@@ -3117,106 +2244,71 @@
    "wiring": "needs-hook",
    "notes": "Oath posture layer over GeneralZhao_P1_Guandao_Heavy: lower centre, chest and head forward, tighter two-hand grip, elbows in; timing identical.",
    "nominal_ground_speed_scale1": 0.0,
-   "keyframes": 48,
+   "keyframes": 51,
    "file": "GeneralZhao_P1_Oath_Guandao_Heavy.rbxmx",
    "uploaded": false,
    "asset_id": null,
    "validation": {
-    "grip_error": 0.0124,
+    "grip_error": 0.0,
     "right_reach": 0.0,
     "leg_reach": 0.0,
     "sole_below_ground": 0.0,
     "planted_slide": 0.6892,
     "blade_below_ground": 0.0,
-    "shaft_in_body": 0.1681,
+    "shaft_in_body": 0.0492,
     "tip_distance_min": 9.2416,
     "tip_distance_max": 9.2416,
-    "wrist_bend_max": 90.4093,
+    "wrist_bend_max": 71.9881,
     "loop_seam_deg": 0.0,
-    "right_pull": 0.0148,
-    "hand_jerk": 0.4622,
+    "right_pull": 0.0,
+    "hand_jerk": 0.3551,
     "shaft_in_body_frames": [
      [
-      0.033,
-      "LowerTorso"
-     ],
-     [
-      0.033,
-      "RightUpperLeg"
-     ],
-     [
-      0.367,
-      "LowerTorso"
-     ],
-     [
       0.383,
-      "Head"
+      "UpperTorso"
+     ],
+     [
+      0.683,
+      "UpperTorso"
+     ],
+     [
+      0.7,
+      "UpperTorso"
+     ],
+     [
+      0.717,
+      "UpperTorso"
+     ],
+     [
+      0.733,
+      "UpperTorso"
      ],
      [
       0.75,
-      "UpperTorso"
-     ],
-     [
-      0.767,
-      "UpperTorso"
-     ],
-     [
-      0.783,
-      "UpperTorso"
-     ],
-     [
-      0.8,
       "UpperTorso"
      ]
     ]
    },
    "problems": [
-    "shaft passes 0.17 into the body ([(0.033, 'LowerTorso'), (0.033, 'RightUpperLeg'), (0.367, 'LowerTorso')])",
-    "wrist bent 90 degrees",
-    "hand pops 0.46 between frames"
+    "shaft passes 0.05 into the body ([(0.383, 'UpperTorso'), (0.683, 'UpperTorso'), (0.7, 'UpperTorso')])",
+    "hand pops 0.36 between frames"
    ],
    "key_repairs": [
     [
-     0.2,
-     0.0,
-     2.216,
-     0.0
-    ],
-    [
-     0.31,
-     0.0,
-     1.958,
-     0.0
-    ],
-    [
-     0.383,
-     0.9,
-     2.812,
-     0.357
-    ],
-    [
      0.45,
-     0.3,
-     1.637,
-     0.036
+     "blade lifted off the floor"
     ],
     [
      0.6,
-     0.4,
-     1.13,
-     0.048
+     "blade lifted off the floor"
     ],
     [
-     0.733,
-     0.15,
-     0.547,
-     0.018
+     "field",
+     0.497
     ],
     [
-     0.783,
-     0.05,
-     0.029,
-     0.006
+     "field",
+     0.154
     ]
    ]
   },
@@ -3261,94 +2353,38 @@
    "uploaded": false,
    "asset_id": null,
    "validation": {
-    "grip_error": 0.3238,
+    "grip_error": 0.0,
     "right_reach": 0.0,
     "leg_reach": 0.0,
     "sole_below_ground": 0.0,
     "planted_slide": 0.0,
     "blade_below_ground": 0.0,
-    "shaft_in_body": 0.3904,
+    "shaft_in_body": 0.0565,
     "tip_distance_min": 9.2416,
     "tip_distance_max": 9.2416,
-    "wrist_bend_max": 85.3744,
+    "wrist_bend_max": 74.4228,
     "loop_seam_deg": 0.0,
-    "right_pull": 0.029,
-    "hand_jerk": 0.3671,
+    "right_pull": 0.1042,
+    "hand_jerk": 0.474,
     "shaft_in_body_frames": [
      [
-      0.017,
-      "UpperTorso"
-     ],
-     [
-      0.017,
-      "LowerTorso"
-     ],
-     [
       0.033,
-      "UpperTorso"
-     ],
-     [
-      0.05,
-      "UpperTorso"
-     ],
-     [
-      0.067,
-      "UpperTorso"
-     ],
-     [
-      0.083,
-      "UpperTorso"
-     ],
-     [
-      0.1,
-      "UpperTorso"
-     ],
-     [
-      0.117,
-      "UpperTorso"
-     ],
-     [
-      0.133,
-      "UpperTorso"
-     ],
-     [
-      0.15,
-      "UpperTorso"
-     ],
-     [
-      0.267,
-      "UpperTorso"
-     ],
-     [
-      0.283,
-      "UpperTorso"
+      "RightUpperLeg"
      ]
     ]
    },
    "problems": [
-    "left hand leaves the shaft by 0.32",
-    "shaft passes 0.39 into the body ([(0.017, 'UpperTorso'), (0.017, 'LowerTorso'), (0.033, 'UpperTorso')])",
-    "wrist bent 85 degrees",
-    "hand pops 0.37 between frames"
+    "shaft passes 0.06 into the body ([(0.033, 'RightUpperLeg')])",
+    "hand pops 0.47 between frames"
    ],
    "key_repairs": [
     [
-     0.15,
-     0.9,
-     2.929,
-     1.076
+     "field",
+     0.19
     ],
     [
-     0.217,
-     0.0,
-     1.13,
+     "field",
      0.0
-    ],
-    [
-     0.31,
-     0.45,
-     1.153,
-     0.054
     ]
    ]
   },
@@ -3388,24 +2424,24 @@
    "wiring": "needs-hook",
    "notes": "Oath posture layer over GeneralZhao_P1_Guandao_L2: lower centre, chest and head forward, tighter two-hand grip, elbows in; timing identical.",
    "nominal_ground_speed_scale1": 0.0,
-   "keyframes": 25,
+   "keyframes": 26,
    "file": "GeneralZhao_P1_Oath_Guandao_L2.rbxmx",
    "uploaded": false,
    "asset_id": null,
    "validation": {
-    "grip_error": 0.3419,
+    "grip_error": 0.0,
     "right_reach": 0.0,
     "leg_reach": 0.0,
     "sole_below_ground": 0.0,
     "planted_slide": 0.0,
     "blade_below_ground": 0.0,
-    "shaft_in_body": 0.3124,
+    "shaft_in_body": 0.3942,
     "tip_distance_min": 9.2416,
     "tip_distance_max": 9.2416,
-    "wrist_bend_max": 84.9581,
+    "wrist_bend_max": 82.1937,
     "loop_seam_deg": 0.0,
-    "right_pull": 0.2066,
-    "hand_jerk": 0.3548,
+    "right_pull": 0.1106,
+    "hand_jerk": 0.5248,
     "shaft_in_body_frames": [
      [
       0.167,
@@ -3428,71 +2464,36 @@
       "UpperTorso"
      ],
      [
-      0.25,
-      "UpperTorso"
-     ],
-     [
-      0.25,
-      "LowerTorso"
-     ],
-     [
-      0.25,
-      "LeftUpperLeg"
-     ],
-     [
-      0.267,
-      "UpperTorso"
-     ],
-     [
       0.333,
       "UpperTorso"
      ],
      [
+      0.333,
+      "LowerTorso"
+     ],
+     [
       0.35,
       "UpperTorso"
      ],
      [
-      0.35,
-      "LowerTorso"
+      0.367,
+      "UpperTorso"
      ]
     ]
    },
    "problems": [
-    "left hand leaves the shaft by 0.34",
-    "shaft passes 0.31 into the body ([(0.167, 'UpperTorso'), (0.183, 'UpperTorso'), (0.2, 'UpperTorso')])",
-    "wrist bent 85 degrees",
-    "hand pops 0.35 between frames"
+    "shaft passes 0.39 into the body ([(0.167, 'UpperTorso'), (0.183, 'UpperTorso'), (0.2, 'UpperTorso')])",
+    "wrist bent 82 degrees",
+    "hand pops 0.52 between frames"
    ],
    "key_repairs": [
     [
-     0.07,
-     0.0,
-     0.543,
-     0.0
+     "field",
+     0.45
     ],
     [
-     0.15,
-     0.65,
-     2.952,
-     1.025
-    ],
-    [
-     0.217,
-     0.0,
-     2.977,
-     0.0
-    ],
-    [
-     0.367,
-     0.3,
-     1.074,
-     0.671
-    ],
-    [
-     0.267,
-     0.1,
-     0.89,
-     0.708
+     "field",
+     0.418
     ]
    ]
   },
@@ -3537,100 +2538,48 @@
    "wiring": "needs-hook",
    "notes": "Oath posture layer over GeneralZhao_P1_Guandao_L3: lower centre, chest and head forward, tighter two-hand grip, elbows in; timing identical.",
    "nominal_ground_speed_scale1": 0.0,
-   "keyframes": 32,
+   "keyframes": 30,
    "file": "GeneralZhao_P1_Oath_Guandao_L3.rbxmx",
    "uploaded": false,
    "asset_id": null,
    "validation": {
-    "grip_error": 0.0517,
+    "grip_error": 0.0,
     "right_reach": 0.0,
     "leg_reach": 0.0,
     "sole_below_ground": 0.0,
     "planted_slide": 0.0,
     "blade_below_ground": 0.0,
-    "shaft_in_body": 0.2773,
+    "shaft_in_body": 0.0318,
     "tip_distance_min": 9.2416,
     "tip_distance_max": 9.2416,
-    "wrist_bend_max": 93.4423,
+    "wrist_bend_max": 80.0994,
     "loop_seam_deg": 0.0,
-    "right_pull": 0.0687,
-    "hand_jerk": 0.466,
+    "right_pull": 0.0,
+    "hand_jerk": 0.3578,
     "shaft_in_body_frames": [
      [
-      0.033,
-      "LowerTorso"
-     ],
-     [
-      0.083,
+      0.35,
       "UpperTorso"
      ],
      [
-      0.1,
-      "UpperTorso"
-     ],
-     [
-      0.117,
-      "UpperTorso"
-     ],
-     [
-      0.133,
-      "UpperTorso"
-     ],
-     [
-      0.167,
-      "UpperTorso"
-     ],
-     [
-      0.433,
-      "UpperTorso"
-     ],
-     [
-      0.45,
+      0.367,
       "UpperTorso"
      ]
     ]
    },
    "problems": [
-    "shaft passes 0.28 into the body ([(0.033, 'LowerTorso'), (0.083, 'UpperTorso'), (0.1, 'UpperTorso')])",
-    "wrist bent 93 degrees",
-    "hand pops 0.47 between frames"
+    "shaft passes 0.03 into the body ([(0.35, 'UpperTorso'), (0.367, 'UpperTorso')])",
+    "wrist bent 80 degrees",
+    "hand pops 0.36 between frames"
    ],
    "key_repairs": [
     [
-     0.183,
-     0.9,
-     2.076,
-     0.279
+     "field",
+     0.482
     ],
     [
-     0.25,
-     0.9,
-     3.134,
-     0.108
-    ],
-    [
-     0.36,
-     0.9,
-     3.063,
-     0.108
-    ],
-    [
-     0.417,
-     0.25,
-     0.84,
-     0.03
-    ],
-    [
-     0.05,
-     0.1,
-     0.284,
-     0.012
-    ],
-    [
-     0.317,
-     0.05,
-     0.011,
-     0.006
+     "field",
+     0.09
     ]
    ]
   },
@@ -3680,107 +2629,33 @@
    "uploaded": false,
    "asset_id": null,
    "validation": {
-    "grip_error": 0.1073,
+    "grip_error": 0.0588,
     "right_reach": 0.0,
-    "leg_reach": 0.0763,
+    "leg_reach": 0.0,
     "sole_below_ground": 0.0,
     "planted_slide": 0.0,
     "blade_below_ground": 0.0,
-    "shaft_in_body": 0.2488,
+    "shaft_in_body": 0.0,
     "tip_distance_min": 9.2416,
     "tip_distance_max": 9.2416,
-    "wrist_bend_max": 98.253,
+    "wrist_bend_max": 98.598,
     "loop_seam_deg": 0.0,
-    "right_pull": 0.2039,
-    "hand_jerk": 0.748,
-    "shaft_in_body_frames": [
-     [
-      0.167,
-      "UpperTorso"
-     ],
-     [
-      0.183,
-      "UpperTorso"
-     ],
-     [
-      0.2,
-      "UpperTorso"
-     ],
-     [
-      0.217,
-      "UpperTorso"
-     ],
-     [
-      0.233,
-      "UpperTorso"
-     ],
-     [
-      0.55,
-      "UpperTorso"
-     ]
-    ]
+    "right_pull": 0.077,
+    "hand_jerk": 0.6468,
+    "shaft_in_body_frames": []
    },
    "problems": [
-    "left hand leaves the shaft by 0.11",
-    "leg short of its foot target by 0.08",
-    "shaft passes 0.25 into the body ([(0.167, 'UpperTorso'), (0.183, 'UpperTorso'), (0.2, 'UpperTorso')])",
-    "wrist bent 98 degrees",
-    "hand pops 0.75 between frames"
+    "wrist bent 99 degrees",
+    "hand pops 0.65 between frames"
    ],
    "key_repairs": [
     [
-     0.0,
-     0.15,
-     0.52,
-     0.018
+     "field",
+     0.458
     ],
     [
-     0.1,
-     0.15,
-     0.715,
-     0.018
-    ],
-    [
-     0.217,
-     0.7,
-     2.626,
-     1.018
-    ],
-    [
-     0.283,
-     0.7,
-     2.626,
-     0.323
-    ],
-    [
-     0.42,
-     0.9,
-     2.472,
-     0.244
-    ],
-    [
-     0.5,
-     0.25,
-     0.907,
-     0.03
-    ],
-    [
-     0.167,
-     0.2,
-     0.749,
-     0.024
-    ],
-    [
-     0.333,
-     0.05,
-     0.271,
-     0.006
-    ],
-    [
-     0.05,
-     0.1,
-     0.019,
-     0.012
+     "field",
+     0.183
     ]
    ]
   },
@@ -3797,7 +2672,7 @@
    "wiring": "needs-hook",
    "notes": "Oath posture layer over GeneralZhao_P1_GuardLoop: lower centre, chest and head forward, tighter two-hand grip, elbows in; timing identical.",
    "nominal_ground_speed_scale1": 0.0,
-   "keyframes": 7,
+   "keyframes": 10,
    "file": "GeneralZhao_P1_Oath_GuardLoop.rbxmx",
    "uploaded": false,
    "asset_id": null,
@@ -3811,27 +2686,14 @@
     "shaft_in_body": 0.0,
     "tip_distance_min": 9.2416,
     "tip_distance_max": 9.2416,
-    "wrist_bend_max": 77.0242,
+    "wrist_bend_max": 44.9408,
     "loop_seam_deg": 0.0,
     "right_pull": 0.0,
-    "hand_jerk": 0.0001,
+    "hand_jerk": 0.0003,
     "shaft_in_body_frames": []
    },
    "problems": [],
-   "key_repairs": [
-    [
-     0.0,
-     0.05,
-     0.073,
-     0.006
-    ],
-    [
-     0.8,
-     0.1,
-     0.122,
-     0.012
-    ]
-   ]
+   "key_repairs": []
   },
   "GeneralZhao_P1_Oath_Idle": {
    "group": "Oath",
@@ -3846,7 +2708,7 @@
    "wiring": "needs-hook",
    "notes": "Oath posture layer over GeneralZhao_P1_Idle: lower centre, chest and head forward, tighter two-hand grip, elbows in; timing identical.",
    "nominal_ground_speed_scale1": 0.0,
-   "keyframes": 20,
+   "keyframes": 19,
    "file": "GeneralZhao_P1_Oath_Idle.rbxmx",
    "uploaded": false,
    "asset_id": null,
@@ -3860,10 +2722,10 @@
     "shaft_in_body": 0.0,
     "tip_distance_min": 9.2416,
     "tip_distance_max": 9.2416,
-    "wrist_bend_max": 66.3179,
+    "wrist_bend_max": 63.6308,
     "loop_seam_deg": 0.0,
-    "right_pull": 0.018,
-    "hand_jerk": 0.0004,
+    "right_pull": 0.0,
+    "hand_jerk": 0.0001,
     "shaft_in_body_frames": []
    },
    "problems": [],
@@ -3957,201 +2819,38 @@
    "wiring": "needs-hook",
    "notes": "Oath posture layer over GeneralZhao_P1_LightningSpear: lower centre, chest and head forward, tighter two-hand grip, elbows in; timing identical.",
    "nominal_ground_speed_scale1": 0.0,
-   "keyframes": 162,
+   "keyframes": 170,
    "file": "GeneralZhao_P1_Oath_LightningSpear.rbxmx",
    "uploaded": false,
    "asset_id": null,
    "validation": {
-    "grip_error": 0.161,
+    "grip_error": 0.0,
     "right_reach": 0.0,
     "leg_reach": 0.0,
     "sole_below_ground": 0.0,
     "planted_slide": 0.6746,
     "blade_below_ground": 0.0,
-    "shaft_in_body": 0.2454,
+    "shaft_in_body": 0.0,
     "tip_distance_min": 9.2416,
     "tip_distance_max": 9.2416,
-    "wrist_bend_max": 99.8095,
+    "wrist_bend_max": 86.5337,
     "loop_seam_deg": 0.0,
-    "right_pull": 0.2133,
-    "hand_jerk": 0.9252,
-    "shaft_in_body_frames": [
-     [
-      0.75,
-      "UpperTorso"
-     ],
-     [
-      0.767,
-      "UpperTorso"
-     ],
-     [
-      0.783,
-      "UpperTorso"
-     ],
-     [
-      0.8,
-      "Head"
-     ],
-     [
-      0.8,
-      "UpperTorso"
-     ],
-     [
-      0.817,
-      "UpperTorso"
-     ],
-     [
-      0.833,
-      "UpperTorso"
-     ],
-     [
-      0.85,
-      "UpperTorso"
-     ],
-     [
-      1.417,
-      "UpperTorso"
-     ],
-     [
-      1.433,
-      "UpperTorso"
-     ],
-     [
-      1.45,
-      "UpperTorso"
-     ],
-     [
-      1.467,
-      "UpperTorso"
-     ]
-    ]
+    "right_pull": 0.5255,
+    "hand_jerk": 0.1606,
+    "shaft_in_body_frames": []
    },
    "problems": [
-    "left hand leaves the shaft by 0.16",
-    "shaft passes 0.25 into the body ([(0.75, 'UpperTorso'), (0.767, 'UpperTorso'), (0.783, 'UpperTorso')])",
-    "wrist bent 100 degrees",
-    "hand pops 0.93 between frames"
+    "grip pulled in 0.53 from its key (overreach)",
+    "wrist bent 87 degrees"
    ],
    "key_repairs": [
     [
-     0.62,
-     0.05,
-     0.132,
-     0.006
+     "field",
+     0.428
     ],
     [
-     0.7,
-     0.05,
-     0.132,
-     0.006
-    ],
-    [
-     0.8,
-     0.9,
-     2.261,
-     0.798
-    ],
-    [
-     1.3,
-     0.05,
-     0.132,
-     0.006
-    ],
-    [
-     1.5,
-     0.9,
-     2.338,
-     0.732
-    ],
-    [
-     2.0,
-     0.05,
-     0.133,
-     0.006
-    ],
-    [
-     2.08,
-     0.05,
-     0.133,
-     0.006
-    ],
-    [
-     2.2,
-     0.9,
-     2.657,
-     1.078
-    ],
-    [
-     2.42,
-     0.9,
-     2.735,
-     0.423
-    ],
-    [
-     2.66,
-     0.9,
-     2.452,
-     0.211
-    ],
-    [
-     1.433,
-     0.3,
-     1.074,
-     0.036
-    ],
-    [
-     2.733,
-     0.25,
-     0.849,
-     0.03
-    ],
-    [
-     2.617,
-     0.1,
-     0.566,
-     0.019
-    ],
-    [
-     2.25,
-     0.15,
-     0.549,
-     0.051
-    ],
-    [
-     2.15,
-     0.15,
-     0.481,
-     0.018
-    ],
-    [
-     2.367,
-     0.25,
-     0.457,
-     0.03
-    ],
-    [
-     2.467,
-     0.25,
-     0.454,
-     0.03
-    ],
-    [
-     2.567,
-     0.15,
-     0.34,
-     0.018
-    ],
-    [
-     1.55,
-     0.1,
-     0.335,
-     0.012
-    ],
-    [
-     0.85,
-     0.1,
-     0.303,
-     0.012
+     "field",
+     0.256
     ]
    ]
   },
@@ -4184,101 +2883,27 @@
    "uploaded": false,
    "asset_id": null,
    "validation": {
-    "grip_error": 0.0,
+    "grip_error": 0.1633,
     "right_reach": 0.0,
     "leg_reach": 0.0,
     "sole_below_ground": 0.0,
     "planted_slide": 1.2718,
     "blade_below_ground": 0.0,
-    "shaft_in_body": 0.0467,
+    "shaft_in_body": 0.0,
     "tip_distance_min": 9.2416,
     "tip_distance_max": 9.2416,
-    "wrist_bend_max": 91.7426,
-    "loop_seam_deg": 8.2497,
+    "wrist_bend_max": 90.4287,
+    "loop_seam_deg": 14.4204,
     "right_pull": 0.0,
-    "hand_jerk": 0.0321,
-    "shaft_in_body_frames": [
-     [
-      0.117,
-      "UpperTorso"
-     ],
-     [
-      0.133,
-      "UpperTorso"
-     ],
-     [
-      0.15,
-      "UpperTorso"
-     ],
-     [
-      0.167,
-      "UpperTorso"
-     ],
-     [
-      0.183,
-      "UpperTorso"
-     ],
-     [
-      0.2,
-      "UpperTorso"
-     ],
-     [
-      0.217,
-      "UpperTorso"
-     ],
-     [
-      0.233,
-      "UpperTorso"
-     ],
-     [
-      0.417,
-      "UpperTorso"
-     ],
-     [
-      0.433,
-      "UpperTorso"
-     ],
-     [
-      0.45,
-      "UpperTorso"
-     ],
-     [
-      0.467,
-      "UpperTorso"
-     ]
-    ]
+    "hand_jerk": 0.1328,
+    "shaft_in_body_frames": []
    },
    "problems": [
-    "shaft passes 0.05 into the body ([(0.117, 'UpperTorso'), (0.133, 'UpperTorso'), (0.15, 'UpperTorso')])",
-    "wrist bent 92 degrees",
-    "loop seam 8.2 degrees"
+    "left hand leaves the shaft by 0.16",
+    "wrist bent 90 degrees",
+    "loop seam 14.4 degrees"
    ],
-   "key_repairs": [
-    [
-     0.0,
-     0.3,
-     0.319,
-     0.036
-    ],
-    [
-     0.15,
-     0.05,
-     0.057,
-     0.006
-    ],
-    [
-     0.5,
-     0.05,
-     0.018,
-     0.006
-    ],
-    [
-     0.333,
-     0.05,
-     0.019,
-     0.006
-    ]
-   ]
+   "key_repairs": []
   },
   "GeneralZhao_P1_Oath_Strike": {
    "group": "Oath",
@@ -4331,73 +2956,79 @@
     "leg_reach": 0.0,
     "sole_below_ground": 0.0,
     "planted_slide": 0.0,
-    "blade_below_ground": 0.0,
-    "shaft_in_body": 0.0,
+    "blade_below_ground": 0.1144,
+    "shaft_in_body": 0.0623,
     "tip_distance_min": 9.2416,
     "tip_distance_max": 9.2416,
-    "wrist_bend_max": 93.3083,
+    "wrist_bend_max": 102.7761,
     "loop_seam_deg": 0.0,
     "right_pull": 0.0,
-    "hand_jerk": 0.1573,
-    "shaft_in_body_frames": []
+    "hand_jerk": 0.596,
+    "shaft_in_body_frames": [
+     [
+      0.65,
+      "UpperTorso"
+     ],
+     [
+      0.667,
+      "UpperTorso"
+     ],
+     [
+      0.683,
+      "UpperTorso"
+     ],
+     [
+      0.7,
+      "UpperTorso"
+     ],
+     [
+      0.717,
+      "UpperTorso"
+     ],
+     [
+      0.733,
+      "UpperTorso"
+     ],
+     [
+      0.75,
+      "UpperTorso"
+     ],
+     [
+      0.767,
+      "UpperTorso"
+     ],
+     [
+      0.783,
+      "UpperTorso"
+     ],
+     [
+      0.8,
+      "UpperTorso"
+     ],
+     [
+      0.817,
+      "UpperTorso"
+     ],
+     [
+      0.833,
+      "UpperTorso"
+     ]
+    ]
    },
    "problems": [
-    "wrist bent 93 degrees"
+    "blade 0.11 below ground",
+    "shaft passes 0.06 into the body ([(0.65, 'UpperTorso'), (0.667, 'UpperTorso'), (0.683, 'UpperTorso')])",
+    "wrist bent 103 degrees",
+    "hand pops 0.60 between frames"
    ],
    "key_repairs": [
     [
-     0.32,
-     0.0,
-     1.133,
-     0.0
+     "field",
+     0.297
     ],
     [
-     0.4,
-     0.0,
-     1.102,
-     0.0
-    ],
-    [
-     0.5,
-     0.9,
-     2.561,
-     0.44
-    ],
-    [
-     0.62,
-     0.75,
-     1.677,
-     0.09
-    ],
-    [
-     0.567,
-     0.05,
-     0.039,
-     0.006
-    ],
-    [
-     0.933,
-     0.05,
-     0.026,
-     0.006
-    ],
-    [
-     0.783,
-     0.05,
-     0.151,
-     0.006
-    ],
-    [
-     0.733,
-     0.1,
-     0.247,
-     0.012
-    ],
-    [
-     0.683,
-     0.05,
-     0.029,
-     0.006
+     "field",
+     0.198
     ]
    ]
   },
@@ -4457,166 +3088,48 @@
    "wiring": "needs-hook",
    "notes": "Oath posture layer over GeneralZhao_P1_ThunderQuickstep: lower centre, chest and head forward, tighter two-hand grip, elbows in; timing identical.",
    "nominal_ground_speed_scale1": 0.0,
-   "keyframes": 93,
+   "keyframes": 104,
    "file": "GeneralZhao_P1_Oath_ThunderQuickstep.rbxmx",
    "uploaded": false,
    "asset_id": null,
    "validation": {
-    "grip_error": 0.1187,
+    "grip_error": 0.0,
     "right_reach": 0.0,
     "leg_reach": 0.0,
     "sole_below_ground": 0.0,
     "planted_slide": 0.0,
-    "blade_below_ground": 0.3537,
-    "shaft_in_body": 0.5673,
+    "blade_below_ground": 0.0119,
+    "shaft_in_body": 0.0449,
     "tip_distance_min": 9.2416,
     "tip_distance_max": 9.2416,
-    "wrist_bend_max": 93.0665,
+    "wrist_bend_max": 90.6692,
     "loop_seam_deg": 0.0,
-    "right_pull": 0.1778,
-    "hand_jerk": 0.8308,
+    "right_pull": 0.0817,
+    "hand_jerk": 0.3667,
     "shaft_in_body_frames": [
      [
-      0.033,
-      "UpperTorso"
-     ],
-     [
-      0.05,
-      "UpperTorso"
-     ],
-     [
-      0.067,
-      "UpperTorso"
-     ],
-     [
       0.083,
-      "UpperTorso"
+      "RightUpperLeg"
      ],
      [
-      0.1,
-      "UpperTorso"
-     ],
-     [
-      0.117,
-      "UpperTorso"
-     ],
-     [
-      0.133,
-      "UpperTorso"
-     ],
-     [
-      0.133,
-      "LeftUpperLeg"
-     ],
-     [
-      0.15,
-      "UpperTorso"
-     ],
-     [
-      0.9,
-      "UpperTorso"
-     ],
-     [
-      0.917,
-      "Head"
-     ],
-     [
-      0.917,
-      "UpperTorso"
+      0.933,
+      "RightLowerLeg"
      ]
     ]
    },
    "problems": [
-    "left hand leaves the shaft by 0.12",
-    "blade 0.35 below ground",
-    "shaft passes 0.57 into the body ([(0.033, 'UpperTorso'), (0.05, 'UpperTorso'), (0.067, 'UpperTorso')])",
-    "wrist bent 93 degrees",
-    "hand pops 0.83 between frames"
+    "shaft passes 0.04 into the body ([(0.083, 'RightUpperLeg'), (0.933, 'RightLowerLeg')])",
+    "wrist bent 91 degrees",
+    "hand pops 0.37 between frames"
    ],
    "key_repairs": [
     [
-     0.35,
-     0.15,
-     0.87,
-     0.018
+     "field",
+     0.5
     ],
     [
-     0.72,
-     0.3,
-     0.96,
-     0.036
-    ],
-    [
-     0.84,
-     0.3,
-     1.225,
-     0.036
-    ],
-    [
-     1.0,
-     0.5,
-     1.985,
-     1.461
-    ],
-    [
-     1.16,
-     0.5,
-     1.192,
-     0.06
-    ],
-    [
-     0.1,
-     0.3,
-     4.094,
-     2.479
-    ],
-    [
-     0.15,
-     0.25,
-     3.456,
-     2.473
-    ],
-    [
-     0.2,
-     0.2,
-     2.707,
-     2.073
-    ],
-    [
-     0.25,
-     0.3,
-     2.006,
-     1.569
-    ],
-    [
-     0.3,
-     0.3,
-     1.849,
-     1.395
-    ],
-    [
-     0.05,
-     0.3,
-     1.712,
-     0.891
-    ],
-    [
-     0.95,
-     0.3,
-     1.671,
-     0.561
-    ],
-    [
-     0.883,
-     0.3,
-     1.769,
-     0.309
-    ],
-    [
-     1.05,
-     0.05,
-     0.242,
-     0.006
+     "field",
+     0.391
     ]
    ]
   },
@@ -4658,10 +3171,10 @@
     "shaft_in_body": 0.0,
     "tip_distance_min": 9.2416,
     "tip_distance_max": 9.2416,
-    "wrist_bend_max": 75.9386,
-    "loop_seam_deg": 2.7761,
+    "wrist_bend_max": 72.7237,
+    "loop_seam_deg": 2.7801,
     "right_pull": 0.0,
-    "hand_jerk": 0.0,
+    "hand_jerk": 0.0082,
     "shaft_in_body_frames": []
    },
    "problems": [
@@ -4698,7 +3211,7 @@
    "wiring": "needs-hook",
    "notes": "Jolted upright by the discharge, then the knees buckle; the blade drops to the stone and the front hand falls away.",
    "nominal_ground_speed_scale1": 0.0,
-   "keyframes": 27,
+   "keyframes": 20,
    "file": "GeneralZhao_P1_PostureBreak.rbxmx",
    "uploaded": false,
    "asset_id": null,
@@ -4709,48 +3222,81 @@
     "sole_below_ground": 0.0,
     "planted_slide": 0.6528,
     "blade_below_ground": 0.0,
-    "shaft_in_body": 0.0,
+    "shaft_in_body": 0.049,
     "tip_distance_min": 9.2416,
     "tip_distance_max": 9.2416,
-    "wrist_bend_max": 87.9983,
+    "wrist_bend_max": 85.8649,
     "loop_seam_deg": 0.0,
-    "right_pull": 0.1346,
-    "hand_jerk": 0.3324,
-    "shaft_in_body_frames": []
+    "right_pull": 0.3042,
+    "hand_jerk": 0.0857,
+    "shaft_in_body_frames": [
+     [
+      0.1,
+      "UpperTorso"
+     ],
+     [
+      0.117,
+      "UpperTorso"
+     ],
+     [
+      0.133,
+      "UpperTorso"
+     ],
+     [
+      0.15,
+      "UpperTorso"
+     ],
+     [
+      0.167,
+      "UpperTorso"
+     ],
+     [
+      0.183,
+      "UpperTorso"
+     ],
+     [
+      0.2,
+      "UpperTorso"
+     ],
+     [
+      0.217,
+      "UpperTorso"
+     ],
+     [
+      0.233,
+      "UpperTorso"
+     ],
+     [
+      0.25,
+      "UpperTorso"
+     ],
+     [
+      0.267,
+      "UpperTorso"
+     ],
+     [
+      0.283,
+      "UpperTorso"
+     ]
+    ]
    },
    "problems": [
-    "wrist bent 88 degrees"
+    "grip pulled in 0.30 from its key (overreach)",
+    "shaft passes 0.05 into the body ([(0.1, 'UpperTorso'), (0.117, 'UpperTorso'), (0.133, 'UpperTorso')])",
+    "wrist bent 86 degrees"
    ],
    "key_repairs": [
     [
      0.1,
-     0.9,
-     1.924,
-     0.108
+     "blade lifted off the floor"
     ],
     [
-     0.45,
-     0.4,
-     0.6,
-     0.048
+     "field",
+     0.0
     ],
     [
-     1.0,
-     0.45,
-     0.651,
-     0.054
-    ],
-    [
-     0.4,
-     0.3,
-     1.17,
-     0.267
-    ],
-    [
-     0.35,
-     0.05,
-     0.059,
-     0.006
+     "field",
+     0.0
     ]
    ]
   },
@@ -4792,16 +3338,25 @@
     "shaft_in_body": 0.0,
     "tip_distance_min": 9.2416,
     "tip_distance_max": 9.2416,
-    "wrist_bend_max": 57.9522,
+    "wrist_bend_max": 53.7003,
     "loop_seam_deg": 0.0,
-    "right_pull": 0.0174,
-    "hand_jerk": 0.0004,
+    "right_pull": 0.0,
+    "hand_jerk": 0.0,
     "shaft_in_body_frames": []
    },
    "problems": [
     "leg short of its foot target by 0.17"
    ],
-   "key_repairs": []
+   "key_repairs": [
+    [
+     "field",
+     0.0
+    ],
+    [
+     "field",
+     0.0
+    ]
+   ]
   },
   "GeneralZhao_P1_RunForward": {
    "group": "State",
@@ -4832,7 +3387,7 @@
    "uploaded": false,
    "asset_id": null,
    "validation": {
-    "grip_error": 0.0,
+    "grip_error": 0.3527,
     "right_reach": 0.0,
     "leg_reach": 0.0,
     "sole_below_ground": 0.0,
@@ -4841,36 +3396,18 @@
     "shaft_in_body": 0.0,
     "tip_distance_min": 9.2416,
     "tip_distance_max": 9.2416,
-    "wrist_bend_max": 89.7408,
-    "loop_seam_deg": 15.355,
+    "wrist_bend_max": 80.3685,
+    "loop_seam_deg": 7.8688,
     "right_pull": 0.0,
-    "hand_jerk": 0.0329,
+    "hand_jerk": 0.0004,
     "shaft_in_body_frames": []
    },
    "problems": [
-    "wrist bent 90 degrees",
-    "loop seam 15.4 degrees"
+    "left hand leaves the shaft by 0.35",
+    "wrist bent 80 degrees",
+    "loop seam 7.9 degrees"
    ],
-   "key_repairs": [
-    [
-     0.0,
-     0.55,
-     0.631,
-     0.066
-    ],
-    [
-     0.15,
-     0.05,
-     0.061,
-     0.006
-    ],
-    [
-     0.5,
-     0.05,
-     0.041,
-     0.006
-    ]
-   ]
+   "key_repairs": []
   },
   "GeneralZhao_P1_StaggerLoop": {
    "group": "State",
@@ -4905,29 +3442,16 @@
     "shaft_in_body": 0.0,
     "tip_distance_min": 9.2416,
     "tip_distance_max": 9.2416,
-    "wrist_bend_max": 88.6471,
+    "wrist_bend_max": 86.1048,
     "loop_seam_deg": 0.0,
-    "right_pull": 0.0088,
-    "hand_jerk": 0.0002,
+    "right_pull": 0.2788,
+    "hand_jerk": 0.0001,
     "shaft_in_body_frames": []
    },
    "problems": [
-    "wrist bent 89 degrees"
+    "wrist bent 86 degrees"
    ],
-   "key_repairs": [
-    [
-     0.0,
-     0.4,
-     0.6,
-     0.048
-    ],
-    [
-     0.7,
-     0.35,
-     0.515,
-     0.042
-    ]
-   ]
+   "key_repairs": []
   },
   "GeneralZhao_P1_StaggerRecover": {
    "group": "State",
@@ -4953,7 +3477,7 @@
    "wiring": "needs-hook",
    "notes": "Regrips and resets the guard.",
    "nominal_ground_speed_scale1": 0.0,
-   "keyframes": 31,
+   "keyframes": 38,
    "file": "GeneralZhao_P1_StaggerRecover.rbxmx",
    "uploaded": false,
    "asset_id": null,
@@ -4967,27 +3491,23 @@
     "shaft_in_body": 0.0,
     "tip_distance_min": 9.2416,
     "tip_distance_max": 9.2416,
-    "wrist_bend_max": 87.6745,
+    "wrist_bend_max": 84.1352,
     "loop_seam_deg": 0.0,
-    "right_pull": 0.0504,
-    "hand_jerk": 0.1849,
+    "right_pull": 0.2788,
+    "hand_jerk": 0.0434,
     "shaft_in_body_frames": []
    },
    "problems": [
-    "wrist bent 88 degrees"
+    "wrist bent 84 degrees"
    ],
    "key_repairs": [
     [
-     0.0,
-     0.4,
-     0.6,
-     0.048
+     "field",
+     0.0
     ],
     [
-     0.05,
-     0.3,
-     1.114,
-     0.202
+     "field",
+     0.0
     ]
    ]
   },
@@ -5010,7 +3530,7 @@
    "wiring": "needs-hook",
    "notes": "Plants the lead foot and sinks back into guard.",
    "nominal_ground_speed_scale1": 0.0,
-   "keyframes": 24,
+   "keyframes": 31,
    "file": "GeneralZhao_P1_Stop.rbxmx",
    "uploaded": false,
    "asset_id": null,
@@ -5024,18 +3544,20 @@
     "shaft_in_body": 0.0,
     "tip_distance_min": 9.2416,
     "tip_distance_max": 9.2416,
-    "wrist_bend_max": 75.2717,
+    "wrist_bend_max": 68.5544,
     "loop_seam_deg": 0.0,
-    "right_pull": 0.0097,
-    "hand_jerk": 0.0048,
+    "right_pull": 0.0,
+    "hand_jerk": 0.0057,
     "shaft_in_body_frames": []
    },
    "problems": [],
    "key_repairs": [
     [
-     0.0,
-     0.0,
-     0.564,
+     "field",
+     0.0
+    ],
+    [
+     "field",
      0.0
     ]
    ]
@@ -5078,7 +3600,7 @@
     "shaft_in_body": 0.0,
     "tip_distance_min": 9.2416,
     "tip_distance_max": 9.2416,
-    "wrist_bend_max": 62.193,
+    "wrist_bend_max": 61.1668,
     "loop_seam_deg": 0.0,
     "right_pull": 0.0,
     "hand_jerk": 0.0,
@@ -5125,7 +3647,7 @@
     "shaft_in_body": 0.0,
     "tip_distance_min": 9.2416,
     "tip_distance_max": 9.2416,
-    "wrist_bend_max": 62.193,
+    "wrist_bend_max": 61.1668,
     "loop_seam_deg": 0.0,
     "right_pull": 0.0,
     "hand_jerk": 0.0,
@@ -5175,7 +3697,7 @@
    "wiring": "existing",
    "notes": "Diagonal cut from high right; returns naturally to guard.",
    "nominal_ground_speed_scale1": 0.0,
-   "keyframes": 69,
+   "keyframes": 70,
    "file": "GeneralZhao_P1_Strike.rbxmx",
    "uploaded": false,
    "asset_id": null,
@@ -5185,55 +3707,78 @@
     "leg_reach": 0.0,
     "sole_below_ground": 0.0,
     "planted_slide": 0.0,
-    "blade_below_ground": 0.0,
-    "shaft_in_body": 0.0,
+    "blade_below_ground": 0.0969,
+    "shaft_in_body": 0.0984,
     "tip_distance_min": 9.2416,
     "tip_distance_max": 9.2416,
-    "wrist_bend_max": 94.8315,
+    "wrist_bend_max": 92.2272,
     "loop_seam_deg": 0.0,
-    "right_pull": 0.0097,
-    "hand_jerk": 0.1913,
-    "shaft_in_body_frames": []
+    "right_pull": 0.0,
+    "hand_jerk": 0.2959,
+    "shaft_in_body_frames": [
+     [
+      0.6,
+      "UpperTorso"
+     ],
+     [
+      0.617,
+      "UpperTorso"
+     ],
+     [
+      0.633,
+      "UpperTorso"
+     ],
+     [
+      0.65,
+      "UpperTorso"
+     ],
+     [
+      0.667,
+      "UpperTorso"
+     ],
+     [
+      0.683,
+      "UpperTorso"
+     ],
+     [
+      0.7,
+      "UpperTorso"
+     ],
+     [
+      0.717,
+      "UpperTorso"
+     ],
+     [
+      0.733,
+      "UpperTorso"
+     ],
+     [
+      0.75,
+      "UpperTorso"
+     ],
+     [
+      0.767,
+      "UpperTorso"
+     ],
+     [
+      0.783,
+      "UpperTorso"
+     ]
+    ]
    },
    "problems": [
-    "wrist bent 95 degrees"
+    "blade 0.10 below ground",
+    "shaft passes 0.10 into the body ([(0.6, 'UpperTorso'), (0.617, 'UpperTorso'), (0.633, 'UpperTorso')])",
+    "wrist bent 92 degrees"
    ],
    "key_repairs": [
     [
-     0.32,
-     0.0,
-     1.042,
-     0.0
+     "field",
+     0.296
     ],
     [
-     0.4,
-     0.0,
-     1.084,
-     0.0
-    ],
-    [
-     0.5,
-     0.9,
-     2.382,
-     0.624
-    ],
-    [
-     0.62,
-     0.75,
-     1.695,
-     0.09
-    ],
-    [
-     0.45,
-     0.05,
-     0.169,
-     0.006
-    ],
-    [
-     0.9,
-     0.05,
-     0.012,
-     0.006
+     "field",
+     0.096
     ]
    ]
   },
@@ -5293,153 +3838,37 @@
    "wiring": "needs-hook",
    "notes": "Lowered centre with the blade trailing low behind, rear foot loads, explosive drive (the server carries him), rising diagonal guandao finish across the body, controlled stop. No teleport.",
    "nominal_ground_speed_scale1": 0.0,
-   "keyframes": 90,
+   "keyframes": 107,
    "file": "GeneralZhao_P1_ThunderQuickstep.rbxmx",
    "uploaded": false,
    "asset_id": null,
    "validation": {
-    "grip_error": 0.393,
+    "grip_error": 0.0,
     "right_reach": 0.0,
     "leg_reach": 0.0,
     "sole_below_ground": 0.0,
     "planted_slide": 0.0,
     "blade_below_ground": 0.0,
-    "shaft_in_body": 0.4717,
+    "shaft_in_body": 0.0,
     "tip_distance_min": 9.2416,
     "tip_distance_max": 9.2416,
-    "wrist_bend_max": 111.5262,
+    "wrist_bend_max": 75.4051,
     "loop_seam_deg": 0.0,
-    "right_pull": 0.2232,
-    "hand_jerk": 0.6291,
-    "shaft_in_body_frames": [
-     [
-      0.067,
-      "UpperTorso"
-     ],
-     [
-      0.083,
-      "UpperTorso"
-     ],
-     [
-      0.1,
-      "UpperTorso"
-     ],
-     [
-      0.117,
-      "UpperTorso"
-     ],
-     [
-      0.133,
-      "UpperTorso"
-     ],
-     [
-      0.133,
-      "LeftUpperLeg"
-     ],
-     [
-      0.15,
-      "UpperTorso"
-     ],
-     [
-      0.167,
-      "UpperTorso"
-     ],
-     [
-      0.183,
-      "UpperTorso"
-     ],
-     [
-      0.2,
-      "UpperTorso"
-     ],
-     [
-      0.233,
-      "UpperTorso"
-     ],
-     [
-      0.25,
-      "UpperTorso"
-     ]
-    ]
+    "right_pull": 0.0721,
+    "hand_jerk": 0.3627,
+    "shaft_in_body_frames": []
    },
    "problems": [
-    "left hand leaves the shaft by 0.39",
-    "shaft passes 0.47 into the body ([(0.067, 'UpperTorso'), (0.083, 'UpperTorso'), (0.1, 'UpperTorso')])",
-    "wrist bent 112 degrees",
-    "hand pops 0.63 between frames"
+    "hand pops 0.36 between frames"
    ],
    "key_repairs": [
     [
-     1.0,
-     0.3,
-     1.938,
-     0.822
+     "field",
+     0.5
     ],
     [
-     1.16,
-     0.6,
-     1.629,
-     0.072
-    ],
-    [
-     0.1,
-     0.3,
-     4.16,
-     2.586
-    ],
-    [
-     0.15,
-     0.3,
-     3.674,
-     2.658
-    ],
-    [
-     0.2,
-     0.25,
-     2.545,
-     1.957
-    ],
-    [
-     0.25,
-     0.3,
-     1.901,
-     1.254
-    ],
-    [
-     0.3,
-     0.3,
-     1.782,
-     1.21
-    ],
-    [
-     0.05,
-     0.3,
-     1.458,
-     0.889
-    ],
-    [
-     0.883,
-     0.3,
-     1.155,
-     0.33
-    ],
-    [
-     0.933,
-     0.3,
-     1.073,
-     0.514
-    ],
-    [
-     1.05,
-     0.15,
-     0.176,
-     0.018
-    ],
-    [
-     1.267,
-     0.05,
-     0.075,
-     0.006
+     "field",
+     0.391
     ]
    ]
   },
@@ -5487,122 +3916,66 @@
    "wiring": "existing",
    "notes": "0-0.62 head turns to the fallen partner and bows; 0.95 grip tightens, stance lowers; 1.25-1.52 guandao upright before the chest diamond, power gathers; 1.66 release into the oath guard (seen from the gameplay camera after the 1.45 s shot+blend); ready by 2.0 s.",
    "nominal_ground_speed_scale1": 0.0,
-   "keyframes": 88,
+   "keyframes": 98,
    "file": "GeneralZhao_P1_Transform.rbxmx",
    "uploaded": false,
    "asset_id": null,
    "validation": {
-    "grip_error": 0.0308,
+    "grip_error": 0.0,
     "right_reach": 0.0,
     "leg_reach": 0.0,
     "sole_below_ground": 0.0,
     "planted_slide": 0.0,
     "blade_below_ground": 0.0,
-    "shaft_in_body": 0.1072,
+    "shaft_in_body": 0.0497,
     "tip_distance_min": 9.2416,
     "tip_distance_max": 9.2416,
-    "wrist_bend_max": 96.6856,
+    "wrist_bend_max": 70.8911,
     "loop_seam_deg": 0.0,
-    "right_pull": 0.1875,
-    "hand_jerk": 0.4624,
+    "right_pull": 0.1098,
+    "hand_jerk": 0.1033,
     "shaft_in_body_frames": [
      [
-      1.55,
-      "RightUpperLeg"
+      0.85,
+      "UpperTorso"
      ],
      [
-      1.567,
-      "RightUpperLeg"
+      0.867,
+      "UpperTorso"
      ],
      [
-      1.567,
-      "RightLowerLeg"
+      0.883,
+      "UpperTorso"
      ],
      [
-      1.583,
-      "RightLowerLeg"
+      0.9,
+      "UpperTorso"
      ],
      [
-      1.6,
-      "LowerTorso"
-     ],
-     [
-      1.6,
-      "RightUpperLeg"
+      0.917,
+      "UpperTorso"
      ]
     ]
    },
    "problems": [
-    "shaft passes 0.11 into the body ([(1.55, 'RightUpperLeg'), (1.567, 'RightUpperLeg'), (1.567, 'RightLowerLeg')])",
-    "wrist bent 97 degrees",
-    "hand pops 0.46 between frames"
+    "shaft passes 0.05 into the body ([(0.85, 'UpperTorso'), (0.867, 'UpperTorso'), (0.883, 'UpperTorso')])"
    ],
    "key_repairs": [
     [
      0.3,
-     0.9,
-     1.864,
-     0.108
+     "blade lifted off the floor"
     ],
     [
      0.62,
-     0.9,
-     2.381,
-     0.108
+     "blade lifted off the floor"
     ],
     [
-     1.66,
-     0.05,
-     0.036,
-     0.006
+     "field",
+     0.446
     ],
     [
-     1.583,
-     0.3,
-     1.56,
-     0.382
-    ],
-    [
-     1.167,
-     0.3,
-     1.026,
-     0.036
-    ],
-    [
-     1.1,
-     0.15,
-     0.518,
-     0.02
-    ],
-    [
-     0.9,
-     0.25,
-     0.342,
-     0.03
-    ],
-    [
-     1.0,
-     0.25,
-     0.234,
-     0.03
-    ],
-    [
-     1.05,
-     0.05,
-     0.054,
-     0.006
-    ],
-    [
-     0.75,
-     0.1,
-     0.036,
-     0.012
-    ],
-    [
-     0.8,
-     0.05,
-     0.02,
-     0.006
+     "field",
+     0.176
     ]
    ]
   },
@@ -5644,31 +4017,21 @@
     "shaft_in_body": 0.0,
     "tip_distance_min": 9.2416,
     "tip_distance_max": 9.2416,
-    "wrist_bend_max": 63.357,
+    "wrist_bend_max": 53.7026,
     "loop_seam_deg": 0.0,
-    "right_pull": 0.0097,
-    "hand_jerk": 0.0104,
+    "right_pull": 0.0,
+    "hand_jerk": 0.0043,
     "shaft_in_body_frames": []
    },
    "problems": [],
    "key_repairs": [
     [
-     0.25,
-     0.0,
-     1.031,
+     "field",
+     0.165
+    ],
+    [
+     "field",
      0.0
-    ],
-    [
-     0.383,
-     0.05,
-     0.046,
-     0.006
-    ],
-    [
-     0.183,
-     0.05,
-     0.043,
-     0.006
     ]
    ]
   },
@@ -5710,19 +4073,21 @@
     "shaft_in_body": 0.0,
     "tip_distance_min": 9.2416,
     "tip_distance_max": 9.2416,
-    "wrist_bend_max": 77.5105,
+    "wrist_bend_max": 53.7003,
     "loop_seam_deg": 0.0,
-    "right_pull": 0.0159,
-    "hand_jerk": 0.0111,
+    "right_pull": 0.1952,
+    "hand_jerk": 0.0038,
     "shaft_in_body_frames": []
    },
    "problems": [],
    "key_repairs": [
     [
-     0.25,
-     0.45,
-     0.467,
-     0.054
+     "field",
+     0.0
+    ],
+    [
+     "field",
+     0.0
     ]
    ]
   },
@@ -5764,7 +4129,7 @@
     "shaft_in_body": 0.0,
     "tip_distance_min": 9.2416,
     "tip_distance_max": 9.2416,
-    "wrist_bend_max": 62.193,
+    "wrist_bend_max": 61.1668,
     "loop_seam_deg": 0.0,
     "right_pull": 0.0,
     "hand_jerk": 0.0,
@@ -5811,10 +4176,10 @@
     "shaft_in_body": 0.0,
     "tip_distance_min": 9.2416,
     "tip_distance_max": 9.2416,
-    "wrist_bend_max": 63.2297,
+    "wrist_bend_max": 62.4472,
     "loop_seam_deg": 3.4182,
     "right_pull": 0.0,
-    "hand_jerk": 0.0,
+    "hand_jerk": 0.002,
     "shaft_in_body_frames": []
    },
    "problems": [

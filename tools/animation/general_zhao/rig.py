@@ -265,6 +265,31 @@ def obb_points(world, part, inflate=0.0):
     return [(M @ np.array([x, y, z, 1]))[:3] for x in (-sx, sx) for y in (-sy, sy) for z in (-sz, sz)]
 
 
+# Exit cost per local axis when pushing a shaft out of a part box: through the front or back first (the weapon passes
+# in front of a body), then the sides, and over the top or under the bottom last.
+EXIT_WEIGHT = np.array([1.4, 2.0, 1.0])
+
+
+def segment_obb_push(world, part, p0, p1, inflate=0.0, samples=24):
+    """The smallest world translation (by EXIT_WEIGHT) that carries a segment's deepest point out of a part box; zero
+    when the segment is already clear."""
+    M = world[part]
+    inv = np.linalg.inv(M)
+    half = np.asarray(SIZES[part]) / 2 + inflate
+    best, push = 0.0, np.zeros(3)
+    for i in range(samples + 1):
+        q = (inv @ np.append(p0 + (p1 - p0) * (i / samples), 1))[:3]
+        if np.any(np.abs(q) >= half):
+            continue
+        depth = half - np.abs(q)  # distance to the nearer face on each axis
+        axis = int(np.argmin(depth * EXIT_WEIGHT))
+        if depth[axis] > best:
+            v = np.zeros(3)
+            v[axis] = (depth[axis] + 0.01) * (1.0 if q[axis] >= 0 else -1.0)
+            best, push = depth[axis], M[:3, :3] @ v
+    return push
+
+
 def segment_obb_distance(world, part, p0, p1, inflate=0.0, samples=24):
     """Smallest signed clearance from a segment to a part box (negative = inside)."""
     M = world[part]

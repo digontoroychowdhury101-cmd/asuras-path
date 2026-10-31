@@ -15,7 +15,7 @@ LOCO_HOOK = ("NEW: client locomotion layer (Movement priority) chosen from the b
 
 
 def neutral_pose():
-    upright_g = (1.25, -0.25, -0.35)
+    upright_g = (1.25, -0.25, -0.5)  # far enough forward that the butt clears the right thigh
     return pose(root=(0.0, -0.06, 0.0), rootR=(0, -6, 0), chest=(-2, -4, 0), lookW=0.8,
                 grip=upright_g, dir=unitv(0.0, 1, 0.06), edge=(0, 0, -1), s=-1.0,
                 lf=(-0.52, -0.08, 0, 6, 0), rf=(0.52, 0.06, 0, -4, 0), **FREE_LEFT,
@@ -34,7 +34,7 @@ def clip(name, length, keys, **kw):
 def states():
     out = []
     # ------------------------------------------------------------------ neutral idle and alert
-    breath = at(NEUTRAL, chest=(-3.2, -4, 0), root=(0.0, -0.04, 0.0), grip=(1.25, -0.23, -0.35))
+    breath = at(NEUTRAL, chest=(-3.2, -4, 0), root=(0.0, -0.04, 0.0), grip=(1.25, -0.23, -0.5))
     out.append(clip("IdleNeutral", 4.6, [(0, NEUTRAL, "inout"), (1.4, breath, "inout"), (2.6, NEUTRAL, "inout"),
                                          (3.5, at(NEUTRAL, neck=(-4, 8, 0)), "inout")],
                     loop=True, priority="Idle", preview=(0, 1.4, 3.5), timing="Authored loop",
@@ -142,7 +142,7 @@ def states():
                     hook="NEW: BossIntro cue -> play Intro on the boss for the 2.4 s shot (EncounterHandoffController)",
                     notes="Head bowed, guandao upright: the helmet and plumes read as a silhouette; the head lifts at "
                           "1.4 s so the crest and chest diamond face the camera; holds for the shot."))
-    out.append(clip("IntroReady", 0.6, [(0, at(intro_rise, chest=(-5, -6, 0)), "inout"), (0.25, at(NEUTRAL, lfree=0.5, dir=yawdir(-12, 45)), "out"),
+    out.append(clip("IntroReady", 0.6, [(0, at(intro_rise, chest=(-5, -6, 0)), "inout"), (0.25, at(NEUTRAL, lfree=0.5, dir=yawdir(-12, 45), grip=(1.2, -0.25, -0.75)), "out"),
                                         (0.6, GUARD, "settle")]
                     + footwork(0.6, {"lf": [(0.12, 0.34, GUARD["lf"])], "rf": [(0.26, 0.48, GUARD["rf"])]},
                                start=dict(lf=NEUTRAL["lf"], rf=NEUTRAL["rf"]), end=FEET),

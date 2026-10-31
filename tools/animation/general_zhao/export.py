@@ -123,6 +123,17 @@ def write_rbxmx(clip, baked, path):
 HAND_JERK = 0.35  # a 1.6-stud thrust over 6 frames peaks near 0.27 even when eased rest-to-rest
 
 
+def pop(a, b, c):
+    """A hand's second difference across three frames, counted only where it kinks the path (at least POP_KINK of
+    its speed): a fast arc (a spinning cyclone) bends steadily and is not a pop."""
+    jerk = float(np.linalg.norm(a - 2 * b + c))
+    speed = max(float(np.linalg.norm(b - a)), float(np.linalg.norm(c - b)))
+    return jerk if jerk >= POP_KINK * speed else 0.0
+
+
+POP_KINK = 0.75
+
+
 def validate(clip, baked):
     worst = {"grip_error": 0.0, "right_reach": 0.0, "leg_reach": 0.0, "sole_below_ground": 0.0, "planted_slide": 0.0,
              "blade_below_ground": 0.0, "shaft_in_body": 0.0, "tip_distance_min": 99.0, "tip_distance_max": 0.0,
@@ -181,7 +192,7 @@ def validate(clip, baked):
     for k, (a, b, c2) in enumerate(zip(hands, hands[1:], hands[2:])):
         if any(abs(times[k + 1] - ct) < 0.035 for ct in clip.contacts):
             continue
-        worst["hand_jerk"] = max(worst["hand_jerk"], float(np.linalg.norm(a - 2 * b + c2)))
+        worst["hand_jerk"] = max(worst["hand_jerk"], pop(a, b, c2))
     if clip.loop:
         a, b = baked[0][1], baked[-1][1]
         worst["loop_seam_deg"] = max(rig.angle_of(a[p][:3, :3].T @ b[p][:3, :3]) for p in rig.ORDER)
@@ -234,7 +245,8 @@ def main():
     for clip in chosen:
         fixes = []
         clip.repair(fixes)
-        clip.breakdowns(fixes)
+        if not clip.loop:  # a loop's corrections would have to wrap; the loops are clean without them
+            clip.fields(log=fixes)
         baked = clip.bake()
         stats, problems = validate(clip, baked)
         keys = write_rbxmx(clip, baked, OUT / (clip.name + ".rbxmx"))

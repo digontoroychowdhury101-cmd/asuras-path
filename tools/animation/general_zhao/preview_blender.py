@@ -5,7 +5,7 @@ way BossSkin welds it in game) or, with --costume, on the blocky LooksDuelists f
     Blender -b --factory-startup -P tools/animation/general_zhao/preview_blender.py -- BAKE_DIR OUT_DIR [clip ...] [--video] [--costume]
 
 Per clip: a contact sheet of key frames from the front, the right side and the gameplay camera (Roblox 70 degree FOV,
-boss at runtime scale 1.2, player stand-in 14 studs away); with --video, an MP4 from the gameplay camera.
+boss at runtime scale 1.2, player stand-in 8 studs away (melee range)); with --video, an MP4 from the gameplay camera.
 Roblox root space (+X right, +Y up, -Z forward) maps to Blender as (x, -z, y), so Zhao faces Blender +Y.
 """
 import json
@@ -24,7 +24,7 @@ import rig  # noqa: E402
 C = np.array([[1, 0, 0], [0, 0, -1], [0, 1, 0]], float)
 SCALE = rig.BOSS_SCALE
 LIFT = -rig.GROUND  # raise the rig so its soles sit on z = 0
-PLAYER_DIST = 14.0
+PLAYER_DIST = 8.0  # melee range: the guandao reaches about 9 studs
 SHEET_W, SHEET_H = int(__import__("os").environ.get("SW", 400)), int(__import__("os").environ.get("SH", 400))
 GAME_W, GAME_H = 640, 360
 
@@ -279,8 +279,8 @@ def main():
     lift_z = 0.0
     front = camera("Front", (0, 60, 11.0), (0, 0, 2.9), ortho=12)
     side = camera("Side", (60, 3.6, 11.0), (0, 3.6, 2.9), ortho=15)
-    eye = Vector((-1.2, PLAYER_DIST + 9.5, 7.2))
-    game = camera("Game", eye, (0, 2.0, 3.6), lens_fov=70)
+    eye = Vector((-2.0, PLAYER_DIST + 6.0, 6.2))  # a third-person camera just behind the player's shoulder
+    game = camera("Game", eye, (0, 1.0, 4.4), lens_fov=70)
     for name in names:
         data = json.loads((bake_dir / (name + ".json")).read_text())
         frames = data["frames"]

@@ -1,6 +1,6 @@
 """End-to-end check of an exported clip in Roblox Studio (Edit datamodel, no upload, no Play session).
 
-    python3 tools/animation/general_zhao/studio_check.py GeneralZhao_P1_Guandao_L1 [--keys N] > check.luau
+    python3 tools/animation/general_zhao/studio_check.py GeneralZhao_P1_Guandao_L1 [--keys N] [--bake-dir DIR] > check.luau
 
 Writes a Luau script that rebuilds the clip's .rbxmx KeyframeSequence, registers it with
 KeyframeSequenceProvider:RegisterKeyframeSequence (a temporary local id), plays it on a fresh default R15 rig built
@@ -39,7 +39,8 @@ def main():
     if keep:
         step = max(1, (len(frames) - 1) / max(keep - 1, 1))
         frames = [frames[min(len(frames) - 1, round(i * step))] for i in range(keep)]
-    bake = json.loads((ROOT / "work/zhao_anim_bake" / (name + ".json")).read_text())
+    bake_dir = Path(sys.argv[sys.argv.index("--bake-dir") + 1]) if "--bake-dir" in sys.argv else ROOT / "work/zhao_anim_bake"
+    bake = json.loads((bake_dir / (name + ".json")).read_text())
     picks = [round(bake["length"] * i / 8, 4) for i in range(9)] + list(bake.get("contacts", []))
     if keep:
         picks = [float(f[1:f.index(",")]) for f in frames]
@@ -87,7 +88,7 @@ track:AdjustSpeed(0)
 local worstPos, worstAng, where = 0, 0, ""
 local samples = 0
 for _, e in EXPECT do
-	track.TimePosition = e[1]
+	track.TimePosition = math.min(e[1], track.Length - 1e-3) -- exactly Length wraps to the first frame
 	animator:StepAnimations(0.03)
 	for part, m in e[2] do
 		local limb = rig:FindFirstChild(part)
@@ -108,7 +109,6 @@ for _, d in rig:GetDescendants() do if d:IsA("Motor6D") or d:IsA("AnimationConst
 local length = track.Length
 track:Stop(0)
 rig:Destroy()
-game:GetService("KeyframeSequenceProvider"):UnregisterAssetId(id)
 return { clip = "%(name)s", samples = samples, joints = joints, worst_position = worstPos, worst_degrees = worstAng, at = where, length = length }
 '''
 

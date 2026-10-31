@@ -1,5 +1,9 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## General Zhao attack polish — 2026-10-31 (Mac)
+
+Re-authored Zhao attack windups (Heavy, L1, L2, Art, Quickstep); smooth per-frame clearance/elbow fields; attacks now start/end exactly on idle guard; Art spin unwind bug fixed. 27/59 clips validate; residual grazes ≤0.16 except L2 (0.32), wrists ~90°. Studio recheck skipped (Play mode). Next: L2/wrist polish, then upload.
+
 ## General Zhao animation phase 1 — 2026-10-31 (Mac)
 
 59 procedurally authored clips (`assets/animations/general_zhao/`, not uploaded), previewed on the v2 mesh; Studio playback matches bake (0.0006 studs). Client phase-locks authored attacks to server impact, re-times Lightning Spear pulses, Oath_ keys, Zhao Guandao BossSwing. 25/59 clips validate; attacks still clip/pop. Next: polish attack clips, then upload.

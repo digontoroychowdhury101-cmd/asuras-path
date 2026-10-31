@@ -33,7 +33,7 @@ DEFAULT = {
     "look": (0, 1.6, -40), "lookW": 0.85,
     "grip": (0.75, -0.95, 0.15), "dir": (0, 0, -1), "edge": (0, 1, 0), "roll": 0,
     "s": -1.7, "sMin": -2.8, "sMax": -0.9, "lroll": 0, "lfree": 0.0,
-    "larm": (0, 0, 0), "lfore": (0, 0, 0), "lhand": (0, 0, 0),
+    "larm": (30, 0, -25), "lfore": (40, 0, 0), "lhand": (0, 0, 0),  # a released front hand: forward, for balance
     "lf": (-0.55, -0.55, 0, 10, 0), "rf": (0.75, 0.6, 0, 35, 0),  # x, z, lift, yaw, pitch (pitch pivots at toe)
     "relb": (1, -0.6, 0.6), "lelb": (-1, -0.8, 0.2), "lknee": (0, 0, -1), "rknee": (0.3, 0, -1),
 }
@@ -63,6 +63,7 @@ class Clip:
         self.preview = [float(p) for p in preview]
         self.group, self.action, self.wiring = group, action, wiring
         self.root_motion = root_motion  # footwork built against an assumed server turn/travel: feet move in root space
+        self.field = None  # per-frame corrections from fields(): grip offset (N, 3), elbow swivels and front-hand release
 
     def ground_contact(self, t):
         return any(a - 1e-6 <= t <= b + 1e-6 for a, b in self.ground)
@@ -102,6 +103,13 @@ class Clip:
         c = {name: self.channel(name, t) for name in self.base}
         for layer in self.layers:
             c = layer(c, t, self)
+        c["rswivel"] = c["lswivel"] = 0.0
+        if self.field is not None:
+            grip, rsw, lsw, free = self.field
+            x = np.arange(len(rsw)) / FPS
+            c["grip"] = tuple(np.asarray(c["grip"], float) + [np.interp(t, x, grip[:, k]) for k in range(3)])
+            c["rswivel"], c["lswivel"] = float(np.interp(t, x, rsw)), float(np.interp(t, x, lsw))
+            c["lfree"] = max(float(c["lfree"]), float(np.interp(t, x, free)))
         return c
 
     # -------------------------------------------------------------------------- solve
@@ -170,8 +178,8 @@ class Clip:
             if over > 0:  # never ask the arm for more than it has: pull the grip in along the overreach
                 pH = pH - unit(W - S) * over
             trial_w, trial_l = dict(world), dict(local)
-            excess = rig.solve_limb(trial_w, trial_l, "RightUpperArm", "RightLowerArm", "RightHand", RH, pH,
-                                    c["relb"], -1)
+            pole = rig.axis_angle(unit(pH - S), c.get("rswivel", 0.0)) @ np.asarray(c["relb"], float)
+            excess = rig.solve_limb(trial_w, trial_l, "RightUpperArm", "RightLowerArm", "RightHand", RH, pH, pole, -1)
             elbow = rig.joint_world(trial_w, "RightLowerArm")
             hint = roll_toward(d, elbow - (pH + RH @ np.array([0, 0.1316, 0])), want, MAX_ROLL)
         world.update(trial_w)
@@ -186,6 +194,9 @@ class Clip:
         hand = world["RightHand"]
         S = rig.joint_world(world, "LeftUpperArm")
         ok = [s for s in np.arange(lo, hi + 1e-6, 0.02) if np.linalg.norm(rig.shaft_point(hand, s) - S) <= REACH - 0.03]
+        if not ok:  # out of reach in the keyed range: slide along the haft, as real hands do, before giving up
+            ok = [s for s in np.arange(SLIDE[0], SLIDE[1] + 1e-6, 0.02)
+                  if np.linalg.norm(rig.shaft_point(hand, s) - S) <= REACH - 0.03]
         if ok:
             s = min(ok, key=lambda v: abs(v - want))
         else:
@@ -197,7 +208,8 @@ class Clip:
             RL = rig.hand_frame((0, 0, 0), d, c["lroll"], hint)[0]
             pL = rig.shaft_point(hand, s) - RL @ rig.LEFT_PALM
             trial_w, trial_l = dict(world), dict(local)
-            excess = rig.solve_limb(trial_w, trial_l, "LeftUpperArm", "LeftLowerArm", "LeftHand", RL, pL, c["lelb"], -1)
+            pole = rig.axis_angle(unit(pL - S), c.get("lswivel", 0.0)) @ np.asarray(c["lelb"], float)
+            excess = rig.solve_limb(trial_w, trial_l, "LeftUpperArm", "LeftLowerArm", "LeftHand", RL, pL, pole, -1)
             elbow = rig.joint_world(trial_w, "LeftLowerArm")
             hint = roll_toward(d, elbow - (pL + RL @ np.array([0, 0.1316, 0])), hint, 0.0)
         local.update(trial_l)
@@ -218,9 +230,8 @@ class Clip:
         return pen, world
 
     def repair(self, log=None):
-        """Nudges each weapon key the least amount that keeps the shaft out of the body, the arms within reach and
-        the blade off the floor. Intent (direction, edge, timing) is kept; only the grip position moves (and the
-        direction tilts up when the blade would cut the floor)."""
+        """Tilts a weapon key's direction up when its blade would cut the floor (outside the clip's ground windows).
+        Everything else about the key is kept as authored."""
         for i, (t, c, e) in enumerate(self.keys):
             if "grip" not in c:
                 continue
@@ -238,8 +249,10 @@ class Clip:
                     d = unit(flat * math.sqrt(max(0.0, 1 - y * y)) + np.array([0, y, 0]))
                     c["dir"] = tuple(d)
                     ctl["dir"] = c["dir"]
-                    pen, world = self.score(ctl, t)
-            self.nudge(i, t, c, ctl, pen, world, log)
+                    if log is not None:
+                        log.append((round(t, 3), "blade lifted off the floor"))
+            # body clearance is the per-frame correction fields' job (smooth, small, intent-keeping); the old key
+            # nudge searched up to a stud and 60 degrees and could turn a follow-through backwards
 
     def nudge(self, i, t, c, ctl, pen, world, log):
         if True:
@@ -315,6 +328,91 @@ class Clip:
             pen, world = self.score(ctl, t)
             self.nudge(None, t, entry, ctl, pen, world, log)
 
+    # -------------------------------------------------------------------------- per-frame correction fields
+    def fields(self, rounds=2, log=None):
+        """Smooth per-frame corrections, solved on every 60 Hz frame and then dilated and blurred so they never pop:
+        a grip offset that carries the shaft out of the body (in front of it by preference, rig.EXIT_WEIGHT) and,
+        per arm, the elbow swivel about the shoulder-wrist line that bends the wrist least."""
+        times = self.frames()
+        n = len(times)
+        grip, rsw, lsw, free = np.zeros((n, 3)), np.zeros(n), np.zeros(n), np.zeros(n)
+        self.field = (grip, rsw, lsw, free)
+        for r in range(rounds):
+            push, rbest, lbest, gap = np.zeros((n, 3)), np.zeros(n), np.zeros(n), np.zeros(n)
+            for i, t in enumerate(times):
+                c = self.controls(t)
+                _, world, diag = self.solve(c)
+                push[i] = self.clearance_push(c, world)
+                rbest[i] = self.best_swivel(c, "rswivel", "Right", rsw[i])
+                if diag.get("grip_s") is not None and c["lfree"] <= 1e-3:
+                    lbest[i] = self.best_swivel(c, "lswivel", "Left", lsw[i])
+                    gap[i] = 1.0 if (diag.get("grip_error") or 0.0) > 0.06 else 0.0
+                else:
+                    lbest[i] = lsw[i]
+                    gap[i] = free[i]
+            if r == 0:
+                opens_released = gap[0] > 0  # the keyed first frame itself has the front hand out of reach
+            grip += smooth_field(push)
+            rsw[:] = smooth_field(rbest[:, None])[:, 0]
+            lsw[:] = smooth_field(lbest[:, None])[:, 0]
+            # the front hand lets go (smoothly) where no point of the haft is in its reach, instead of floating
+            free[:] = np.maximum(free, np.clip(smooth_field(gap[:, None])[:, 0], 0.0, 1.0))
+            if log is not None:
+                log.append(("field", round(float(np.abs(push).max()), 3)))
+        # taper to nothing at both ends, so every attack starts and ends exactly on its keyed pose (the idle guard): the
+        # elbow swivels (non-zero even on the clean guard) over FIELD_EDGE, the grip, which a fast swing may need from
+        # its second frame, over FIELD_EDGE_GRIP; the front hand's release over FIELD_EDGE too, except at a start whose
+        # keyed pose already has the front hand out of reach (a clip that opens from a run needs the release at once)
+        tail = self.length - np.asarray(times)
+        edge = np.minimum(times, tail)
+        smooth = lambda x: x * x * (3 - 2 * x)  # noqa: E731
+        w = smooth(np.clip(edge / FIELD_EDGE, 0.0, 1.0))
+        wg = smooth(np.clip(edge / FIELD_EDGE_GRIP, 0.0, 1.0))
+        wf = smooth(np.clip((tail if opens_released else edge) / FIELD_EDGE, 0.0, 1.0))
+        self.field = (grip * wg[:, None], rsw * w, lsw * w, free * wf)
+
+    def clearance_push(self, c, world):
+        """The smallest reachable move of the hands, forward, out to his right or between (in the chest's frame),
+        that lets the shaft clear the body by CLEAR_MARGIN: a polearm crossing the body passes in front of it, and a
+        forward-pointing one keeps its butt beside the right hip. Zero when already clear."""
+        def clear(w):
+            hand = w["RightHand"]
+            tip = (hand @ np.append(rig.TIP, 1))[:3]
+            butt = rig.shaft_point(hand, rig.BUTT_Z)
+            return min(rig.segment_obb_distance(w, p, butt, tip, CLEAR_MARGIN, 16) for p in CLEAR_PARTS)
+        if clear(world) >= 0:
+            return 0.0
+        d0 = self.solve(c)[2]
+        R = world["UpperTorso"][:3, :3]
+        g0 = np.asarray(c["grip"], float)
+        best = (clear(world), np.zeros(3))
+        for a in np.arange(0.1, MAX_FORWARD + 1e-6, 0.1):  # the smallest move first, whichever way works
+            for v in (-R[:, 2], R[:, 0], unit(R[:, 0] - R[:, 2])):
+                trial = dict(c)
+                trial["grip"] = tuple(g0 + v * a)
+                _, w, d = self.solve(trial)
+                if d["right_pull"] > 0.05 + d0["right_pull"]:  # beyond the arm's reach the grip is pulled back anyway
+                    continue
+                k = clear(w)
+                if k >= 0:
+                    return v * a
+                if k > best[0] + 1e-3:
+                    best = (k, v * a)
+        return best[1]
+
+    def best_swivel(self, c, channel, side, current):
+        """The swivel (degrees, within SWIVEL_RANGE of the authored pole) whose solve bends this wrist least; turning
+        away from the authored elbow costs a little so near-ties keep the animator's choice."""
+        best = (1e9, current)
+        for sw in np.arange(-SWIVEL_RANGE, SWIVEL_RANGE + 1e-6, 15.0):
+            trial = dict(c)
+            trial[channel] = float(sw)
+            _, world, _ = self.solve(trial)
+            cost = wrist_bend(world, side) + abs(sw) * 0.15
+            if cost < best[0]:
+                best = (cost, float(sw))
+        return best[1]
+
     def bake(self):
         out = []
         for t in self.frames():
@@ -325,11 +423,39 @@ class Clip:
 
 
 REACH = 0.9216 + 0.8069 - 0.01
+CLEAR_MARGIN = 0.08
+MAX_FORWARD = 0.5  # beyond this the correction rewrites the pose instead of nudging it
+SLIDE = (-3.6, -0.45)  # how far along the haft the front hand may slide when its keyed range is out of reach
+SWIVEL_RANGE = 75.0
+FIELD_DILATE, FIELD_SIGMA = 3, 3.0  # frames
+FIELD_EDGE, FIELD_EDGE_GRIP = 0.1, 2 / 60  # seconds
+
+
+def wrist_bend(world, side):
+    """Degrees between the hand's +Y and its forearm's axis (flexion/deviation; twist excluded)."""
+    hy, fy = world[side + "Hand"][:3, 1], world[side + "LowerArm"][:3, 1]
+    return math.degrees(math.acos(max(-1.0, min(1.0, float(np.dot(hy, fy))))))
+
+
+def smooth_field(v):
+    """Dilates each frame to the strongest correction within FIELD_DILATE frames, then Gaussian-blurs it, so a
+    correction starts before and ends after the frames that need it and never steps."""
+    n = len(v)
+    mag = np.linalg.norm(v, axis=1)
+    out = np.zeros_like(v)
+    for i in range(n):
+        lo, hi = max(0, i - FIELD_DILATE), min(n, i + FIELD_DILATE + 1)
+        out[i] = v[lo + int(np.argmax(mag[lo:hi]))]
+    k = np.arange(-3 * int(FIELD_SIGMA), 3 * int(FIELD_SIGMA) + 1)
+    w = np.exp(-0.5 * (k / FIELD_SIGMA) ** 2)
+    w /= w.sum()
+    pad = np.pad(out, ((len(k) // 2, len(k) // 2), (0, 0)), mode="edge")
+    return np.stack([np.convolve(pad[:, j], w, mode="valid") for j in range(v.shape[1])], axis=1)
 MOVE_COST = 0.12
 BREAKDOWN_REACH = 0.35
 BREAKDOWN_GAP = 0.04
 CLEAR_PARTS = ("UpperTorso", "LowerTorso", "Head", "LeftUpperLeg", "RightUpperLeg")
-MAX_ROLL = 75.0
+MAX_ROLL = 40.0  # turning the edge further about the shaft is wrist flexion a rigid fist cannot fake
 
 
 def roll_toward(d, natural, want, max_deg):
