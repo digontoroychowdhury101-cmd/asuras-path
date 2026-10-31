@@ -1,5 +1,9 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## Sanctuary reliquary — 2026-10-31 (Mac)
+
+Tiled shelter and bronze vessel replace exposed cache dressing; coplanar timber visual hidden. Original colliders/query/prompt remain. Normal Z hold grants Catalyst/two spells in mock Play. Verifier 14/14; digest 458197530. Evidence: `outputs/environment-art-2026-10-30/`. Next: root/canopy, side routes, other regions. Hardware/video/full-route gates open; General Zhao work preserved.
+
 ## Environment continuation — 2026-10-30 (Mac)
 
 Bamboo snow edge corrected; Balanced emulator 792/64 plants; Baize body/pounce captured with normal health. Sanctuary bark tint separates figure; original 1.18M-triangle asset preserved/profiled. Verifier passes; digest 1384380081. Evidence: `outputs/environment-art-2026-10-30/`. Performance/video/full-route gates remain open. Next: Sanctuary side routes, root detail and canopy; remaining regions. General Zhao work preserved.

@@ -21,7 +21,7 @@ Status: **Active again, 30 October 2026.** Bamboo v10 snow/graphics/combat refin
 
 - Branch `ux/onboarding-overhaul`; starting commit `8438e42`. Baseline documentation commits `d97e8d5` and `b881688` were pushed.
 - User confirmed the local `places/AsurasPath.rbxlx` instance, approved future goal-related art uploads to their Roblox inventory, and approved goal-related pushes to this branch. No game publishing or spending is authorized or performed.
-- Canonical source checkpoint: **261 scripts / 1,941,899 bytes / digest 1384380081**, 274 mapped sources, 660 referenced asset IDs. Build mirrored to `places/AsurasPath.rbxlx`.
+- Canonical source checkpoint: **261 scripts / 1,943,649 bytes / digest 458197530**, 274 mapped sources, 660 referenced asset IDs. Build mirrored to `places/AsurasPath.rbxlx`.
 - Current confirmed local Studio: `dda73794-0660-4c62-90bf-0914a7187a38`, Edit resync digest matches the current canonical build; fresh production Play inspected. V9's fresh reopen remains historical evidence for v9.
 - Existing unrelated untracked `outputs/blender-connection-2026-10-29/` is preserved and excluded from staging.
 - Desktop: Apple M5 MacBook Air, 10 CPU cores, 8 GPU cores, 16 GB RAM. Physical mobile availability remains unverified.
@@ -88,3 +88,5 @@ Full-world scope remains: finished Bamboo Pass; Sanctuary; Desecrated Monastery;
 Still incomplete: final eight matching Bamboo views including active Baize combat; three final gameplay views per other region; continuous wind/traversal capture; desktop target; physical mobile/device limitation audit; Balanced-tier and respawn/camera/lock-on/glide/interactions/full-route regressions; final fresh canonical reopen and complete visual defect audit. Passing imports and checks do not establish visual completion.
 
 Diagnostic file boundaries: failed baseline read/start logs are retained for provenance; `baseline_sample.json` is the recovered complete baseline result. Overlay-obstructed/failed capture folders stay local and ignored. `entry-wind-v5/motion_summary.json` records the pre-repair zero-motion failure.
+
+31 October: Cloud Reliquary roof/supports, exposed carved floor and bronze cache vessel integrated. Real prompt/input mock-inventory test passes; final source digest 458197530, verifier 14/14. Details and evidence in the 30–31 October ledger.

@@ -1,0 +1,78 @@
+{
+  "kind": "seeded local Studio integration; normal prompt input; mock persistence",
+  "restoration_errors": [],
+  "placed": {
+    "before": {
+      "ember": false,
+      "proxyQueries": true,
+      "proxyPosition": "46, 605, 988",
+      "holdSeconds": 0.6000000238418579,
+      "proxySize": "3, 1.7999999523162842, 2",
+      "promptEnabled": true,
+      "requiresLineOfSight": true,
+      "mockPersistence": true,
+      "claimed": false,
+      "proxyCollides": true,
+      "key": "Z",
+      "promptTriggered": 0,
+      "blazingSun": false,
+      "catalyst": false
+    },
+    "current": {
+      "ember": false,
+      "proxyQueries": true,
+      "proxyPosition": "46, 605, 988",
+      "holdSeconds": 0.6000000238418579,
+      "proxySize": "3, 1.7999999523162842, 2",
+      "promptEnabled": true,
+      "requiresLineOfSight": true,
+      "mockPersistence": true,
+      "claimed": false,
+      "proxyCollides": true,
+      "key": "Z",
+      "promptTriggered": 0,
+      "blazingSun": false,
+      "catalyst": false
+    }
+  },
+  "controlsVisible": false,
+  "after": {
+    "before": {
+      "ember": false,
+      "proxyQueries": true,
+      "proxyPosition": "46, 605, 988",
+      "holdSeconds": 0.6000000238418579,
+      "proxySize": "3, 1.7999999523162842, 2",
+      "promptEnabled": true,
+      "requiresLineOfSight": true,
+      "mockPersistence": true,
+      "claimed": false,
+      "proxyCollides": true,
+      "key": "Z",
+      "promptTriggered": 0,
+      "blazingSun": false,
+      "catalyst": false
+    },
+    "current": {
+      "ember": true,
+      "proxyQueries": true,
+      "proxyPosition": "46, 605, 988",
+      "holdSeconds": 0.6000000238418579,
+      "proxySize": "3, 1.7999999523162842, 2",
+      "promptEnabled": true,
+      "requiresLineOfSight": true,
+      "mockPersistence": true,
+      "claimed": true,
+      "proxyCollides": true,
+      "key": "Z",
+      "promptTriggered": 1,
+      "blazingSun": true,
+      "catalyst": true
+    }
+  },
+  "clientEvents": [
+    "shown",
+    "triggered"
+  ],
+  "passed": true
+}

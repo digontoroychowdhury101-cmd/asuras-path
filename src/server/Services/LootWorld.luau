@@ -46,6 +46,26 @@ function LootWorld.build(claim: (Player,string)->(),openSmith: (Player)->()): (F
    d.Material=Enum.Material.Wood;d.MaterialVariant="AsuraTimber";d.Color=Color3.fromRGB(255,255,255)
   end
  end
+ -- The reliquary kit already draws this exact Y=604 floor. Keep its original collision/query
+ -- ledge, but hide the coplanar timber patch beneath the cache's carved stone/inlaid ring.
+ local sanctuary=Workspace:FindFirstChild("Sanctuary")
+ local routes=sanctuary and sanctuary:FindFirstChild("PilgrimRoutes")
+ local isle=routes and routes:FindFirstChild("Reliquary_Isle")
+ local ledge=root:FindFirstChild("SanctuaryReliquaryLedge")
+ if isle and isle:FindFirstChild("Reliquary_Isle__Stone") and ledge and ledge:IsA("BasePart") then
+  ledge.Transparency=1;ledge.CastShadow=false
+  local chest=root:FindFirstChild("SanctuaryReliquary")
+  if chest and chest:IsA("BasePart") then
+   local ok,vessel=pcall(function()
+    local decor=require(script.Parent.RegionDecor)
+    return decor.han(root,"AsuraHanKit","HanCauldron",CFrame.new(chest.Position.X,ledge.Position.Y+ledge.Size.Y/2,chest.Position.Z),1.25)
+   end)
+   if ok and vessel then
+    vessel.Name="SanctuaryReliquaryVessel"
+    chest.Transparency=1;chest.CastShadow=false -- original collision and prompt anchor remain
+   end
+  end
+ end
  local l=World.Sanctuary.Loggia
  -- Beside Gao, not in front of him (F13): at l.X+5 it stood where a player stops to talk, so its Z
  -- prompt always beat "Speak to Master Smith Gao" and his dialogue only opened from the side.

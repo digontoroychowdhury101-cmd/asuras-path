@@ -20349,6 +20349,26 @@ function LootWorld.build(claim: (Player,string)-&gt;(),openSmith: (Player)-&gt;(
    d.Material=Enum.Material.Wood;d.MaterialVariant="AsuraTimber";d.Color=Color3.fromRGB(255,255,255)
   end
  end
+ -- The reliquary kit already draws this exact Y=604 floor. Keep its original collision/query
+ -- ledge, but hide the coplanar timber patch beneath the cache's carved stone/inlaid ring.
+ local sanctuary=Workspace:FindFirstChild("Sanctuary")
+ local routes=sanctuary and sanctuary:FindFirstChild("PilgrimRoutes")
+ local isle=routes and routes:FindFirstChild("Reliquary_Isle")
+ local ledge=root:FindFirstChild("SanctuaryReliquaryLedge")
+ if isle and isle:FindFirstChild("Reliquary_Isle__Stone") and ledge and ledge:IsA("BasePart") then
+  ledge.Transparency=1;ledge.CastShadow=false
+  local chest=root:FindFirstChild("SanctuaryReliquary")
+  if chest and chest:IsA("BasePart") then
+   local ok,vessel=pcall(function()
+    local decor=require(script.Parent.RegionDecor)
+    return decor.han(root,"AsuraHanKit","HanCauldron",CFrame.new(chest.Position.X,ledge.Position.Y+ledge.Size.Y/2,chest.Position.Z),1.25)
+   end)
+   if ok and vessel then
+    vessel.Name="SanctuaryReliquaryVessel"
+    chest.Transparency=1;chest.CastShadow=false -- original collision and prompt anchor remain
+   end
+  end
+ end
  local l=World.Sanctuary.Loggia
  -- Beside Gao, not in front of him (F13): at l.X+5 it stood where a player stops to talk, so its Z
  -- prompt always beat "Speak to Master Smith Gao" and his dialogue only opened from the side.
@@ -24122,6 +24142,19 @@ function Approach.Build(parent: Instance): Folder
 				stoneLantern(group, CFrame.new(box.X - 4.4, y, box.Z + dz))
 			end
 			Lobby.place(group, "Tree_MapleSmall", CFrame.new(box.X + 3.2, y, box.Z - 5.6) * CFrame.Angles(0, math.rad(35), 0), 0.48)
+			-- Shelter the small stone reliquary with the shrine's existing tiled/joined kit. Posts
+			-- sit behind the central cache and off the west jump landing; all pieces are decoration.
+			local roof = Lobby.place(group, "Roof_Square", CFrame.new(box.X + 4.4, y + 7, box.Z), Vector3.new(0.45, 0.3, 0.45))
+			if roof then
+				roof.Name = "CloudReliquaryRoof"
+				for _, dx in { 3, 5.5 } do
+					for _, dz in { -2.7, 2.7 } do
+						local foot = CFrame.new(box.X + dx, y, box.Z + dz)
+						Lobby.place(group, "Column_Base", foot, 0.45)
+						Lobby.place(group, "Column_Lacquer", foot * CFrame.new(0, 0.4, 0), Vector3.new(0.45, 0.64, 0.45))
+					end
+				end
+			end
 		end
 	end
 	return group

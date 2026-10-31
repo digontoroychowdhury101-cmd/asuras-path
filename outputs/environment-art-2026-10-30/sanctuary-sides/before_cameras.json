@@ -1,0 +1,378 @@
+{
+  "kind": "seeded Studio running-client diagnostic; original scene and HUD",
+  "stage": "before",
+  "views": [
+    {
+      "name": "pilgrim_reveal",
+      "eye": [
+        137.8,
+        627.7,
+        721
+      ],
+      "target": [
+        0,
+        825,
+        595
+      ],
+      "stand": [
+        131.77,
+        624.4,
+        712.04
+      ],
+      "files": [
+        "before_pilgrim_reveal.jpg"
+      ],
+      "settle": 8.0,
+      "conditions": {
+        "maxFramerate": "unavailable",
+        "wind": "6, 0, 2",
+        "place": "AsurasPath.rbxlx",
+        "foliageRegistered": 792,
+        "foliageActive": 0,
+        "tier": "Detailed",
+        "quality": "Automatic",
+        "studioVersion": "0.745.0.7451137",
+        "editorQuality": "Automatic",
+        "terrainDecoration": "unavailable",
+        "lighting": {
+          "density": 0.3799999952316284,
+          "ambient": "0.235294, 0.27451, 0.360784",
+          "outdoor": "0.411765, 0.458824, 0.545098",
+          "clock": 17.399999618530273,
+          "haze": 2.200000047683716,
+          "exposure": -0.11999999731779099
+        },
+        "touch": false,
+        "camera": "137.800003, 627.700012, 721, 0.674802482, 0.53601557, 0.507275879, 0, 0.687367201, -0.726310015, -0.737998307, 0.490115792, 0.463837147",
+        "foliageShadows": 0,
+        "fov": 70,
+        "viewport": [
+          1221,
+          503
+        ],
+        "hud": {
+          "JadeDialogue": false,
+          "AsuraColosseum": true,
+          "BubbleChat": true,
+          "AsuraTouchControls": false,
+          "ProximityPrompts": true,
+          "Chat": true,
+          "AsuraHUD": true,
+          "AsuraVignette": true,
+          "SpectatorWagers": false,
+          "Freecam": true
+        },
+        "region": "Sanctuary"
+      },
+      "cost": {
+        "gpu": {
+          "p95Ms": 0.0009999930625781417,
+          "count": 31,
+          "meanMs": 0.0008024198318561239
+        },
+        "seconds": 2.050633958329854,
+        "composition": {
+          "Name": "TriangleComposition",
+          "Children": [
+            {
+              "Sizes": {
+                "Triangles": 1187927,
+                "Drawcalls": 90
+              },
+              "Name": "Opaque"
+            },
+            {
+              "Sizes": {
+                "Triangles": 38,
+                "Drawcalls": 11
+              },
+              "Name": "Transparent"
+            },
+            {
+              "Sizes": {
+                "Triangles": 38,
+                "Drawcalls": 1
+              },
+              "Name": "Particles"
+            }
+          ],
+          "Sizes": {
+            "Triangles": 1188003,
+            "Drawcalls": 102
+          }
+        },
+        "unknownFocusFrames": 31,
+        "autoFRM": "4",
+        "memoryMb": 4975.25537109375,
+        "foliageShadows": 0,
+        "quality": "Automatic",
+        "frm": "true",
+        "cpu": {
+          "p95Ms": 10.739291086792946,
+          "count": 31,
+          "meanMs": 9.410016043412108
+        },
+        "kind": "short fixed-view Studio diagnostic; not acceptance",
+        "frame": {
+          "p95Ms": 79.38283681869507,
+          "count": 31,
+          "meanMs": 66.66189540297755
+        },
+        "unfocusedFrames": 0
+      }
+    },
+    {
+      "name": "cloud_reliquary",
+      "eye": [
+        10.2,
+        606.5,
+        995
+      ],
+      "target": [
+        112,
+        553,
+        1000
+      ],
+      "stand": [
+        10,
+        603.2,
+        990
+      ],
+      "files": [
+        "before_cloud_reliquary.jpg"
+      ],
+      "settle": 8.0,
+      "conditions": {
+        "maxFramerate": "unavailable",
+        "wind": "6, 0, 2",
+        "place": "AsurasPath.rbxlx",
+        "foliageRegistered": 792,
+        "foliageActive": 0,
+        "tier": "Detailed",
+        "quality": "Automatic",
+        "studioVersion": "0.745.0.7451137",
+        "editorQuality": "Automatic",
+        "terrainDecoration": "unavailable",
+        "lighting": {
+          "density": 0.3799999952316284,
+          "ambient": "0.235294, 0.27451, 0.360784",
+          "outdoor": "0.411765, 0.458824, 0.545098",
+          "clock": 17.399999618530273,
+          "haze": 2.200000047683716,
+          "exposure": -0.11999999731779099
+        },
+        "touch": false,
+        "camera": "10.1999998, 606.5, 995, -0.0490567759, 0.464210123, -0.884365618, 0, 0.885431707, 0.464769721, 0.998795986, 0.0228001047, -0.0434364229",
+        "foliageShadows": 0,
+        "fov": 70,
+        "viewport": [
+          1221,
+          503
+        ],
+        "hud": {
+          "JadeDialogue": false,
+          "AsuraColosseum": true,
+          "BubbleChat": true,
+          "AsuraTouchControls": false,
+          "ProximityPrompts": true,
+          "Chat": true,
+          "AsuraHUD": true,
+          "AsuraVignette": true,
+          "SpectatorWagers": false,
+          "Freecam": true
+        },
+        "region": "Sanctuary"
+      },
+      "cost": {
+        "gpu": {
+          "p95Ms": 0.004791669198311865,
+          "count": 31,
+          "meanMs": 0.0007755382086777958
+        },
+        "seconds": 2.0617101666648523,
+        "composition": {
+          "Name": "TriangleComposition",
+          "Children": [
+            {
+              "Sizes": {
+                "Triangles": 269138,
+                "Drawcalls": 84
+              },
+              "Name": "Opaque"
+            },
+            {
+              "Sizes": {
+                "Triangles": 62,
+                "Drawcalls": 19
+              },
+              "Name": "Transparent"
+            },
+            {
+              "Sizes": {
+                "Triangles": 62,
+                "Drawcalls": 1
+              },
+              "Name": "Particles"
+            }
+          ],
+          "Sizes": {
+            "Triangles": 269262,
+            "Drawcalls": 104
+          }
+        },
+        "unknownFocusFrames": 31,
+        "autoFRM": "4",
+        "memoryMb": 4983.19287109375,
+        "foliageShadows": 0,
+        "quality": "Automatic",
+        "frm": "true",
+        "cpu": {
+          "p95Ms": 10.586916469037533,
+          "count": 31,
+          "meanMs": 8.973631662346664
+        },
+        "kind": "short fixed-view Studio diagnostic; not acceptance",
+        "frame": {
+          "p95Ms": 78.83571088314056,
+          "count": 31,
+          "meanMs": 66.63798889325511
+        },
+        "unfocusedFrames": 0
+      }
+    },
+    {
+      "name": "terrace_reverse",
+      "eye": [
+        131,
+        627.7,
+        716
+      ],
+      "target": [
+        0,
+        605,
+        920
+      ],
+      "stand": [
+        131.77,
+        624.4,
+        712.04
+      ],
+      "files": [
+        "before_terrace_reverse.jpg"
+      ],
+      "settle": 8.0,
+      "conditions": {
+        "maxFramerate": "unavailable",
+        "wind": "6, 0, 2",
+        "place": "AsurasPath.rbxlx",
+        "foliageRegistered": 792,
+        "foliageActive": 0,
+        "tier": "Detailed",
+        "quality": "Automatic",
+        "studioVersion": "0.745.0.7451137",
+        "editorQuality": "Automatic",
+        "terrainDecoration": "unavailable",
+        "lighting": {
+          "density": 0.3799999952316284,
+          "ambient": "0.235294, 0.27451, 0.360784",
+          "outdoor": "0.411765, 0.458824, 0.545098",
+          "clock": 17.399999618530273,
+          "haze": 2.200000047683716,
+          "exposure": -0.11999999731779099
+        },
+        "touch": false,
+        "camera": "131, 627.700012, 716, -0.84144634, -0.0503726266, 0.53798753, 0, 0.995645165, 0.09322384, -0.540340602, 0.0784428567, -0.837782085",
+        "foliageShadows": 0,
+        "fov": 70,
+        "viewport": [
+          1221,
+          503
+        ],
+        "hud": {
+          "JadeDialogue": false,
+          "AsuraColosseum": true,
+          "BubbleChat": true,
+          "AsuraTouchControls": false,
+          "ProximityPrompts": true,
+          "Chat": true,
+          "AsuraHUD": true,
+          "AsuraVignette": true,
+          "SpectatorWagers": false,
+          "Freecam": true
+        },
+        "region": "Sanctuary"
+      },
+      "cost": {
+        "gpu": {
+          "p95Ms": 0.001250002355845936,
+          "count": 31,
+          "meanMs": 0.0012701608768346036
+        },
+        "seconds": 2.0502662083381438,
+        "composition": {
+          "Name": "TriangleComposition",
+          "Children": [
+            {
+              "Sizes": {
+                "Triangles": 734602,
+                "Drawcalls": 289
+              },
+              "Name": "Opaque"
+            },
+            {
+              "Sizes": {
+                "Triangles": 342,
+                "Drawcalls": 26
+              },
+              "Name": "Transparent"
+            },
+            {
+              "Sizes": {
+                "Triangles": 1776,
+                "Drawcalls": 8
+              },
+              "Name": "Terrain"
+            },
+            {
+              "Sizes": {
+                "Triangles": 204,
+                "Drawcalls": 6
+              },
+              "Name": "UI"
+            },
+            {
+              "Sizes": {
+                "Triangles": 514,
+                "Drawcalls": 1
+              },
+              "Name": "Particles"
+            }
+          ],
+          "Sizes": {
+            "Triangles": 737438,
+            "Drawcalls": 330
+          }
+        },
+        "unknownFocusFrames": 31,
+        "autoFRM": "4",
+        "memoryMb": 4992.33349609375,
+        "foliageShadows": 0,
+        "quality": "Automatic",
+        "frm": "true",
+        "cpu": {
+          "p95Ms": 16.67950116097927,
+          "count": 31,
+          "meanMs": 12.737927627899955
+        },
+        "kind": "short fixed-view Studio diagnostic; not acceptance",
+        "frame": {
+          "p95Ms": 67.79491901397705,
+          "count": 31,
+          "meanMs": 66.65334225662293
+        },
+        "unfocusedFrames": 0
+      }
+    }
+  ],
+  "restoration_errors": []
+}

@@ -1,7 +1,7 @@
 {
-  "editDigest": "scripts 261 bytes 1941899 digest 1384380081 | AsuraAssets children 13 | place AsurasPath.rbxlx",
-  "canonicalDigest": "scripts 261 bytes 1941899 digest 1384380081",
-  "method": "canonical build plus script resync; final reopen not claimed",
-  "sha256": "2bee9634101930706a51066e1ec6ee91d87276dca53c071fa261c6a27b949187",
-  "mirrorSha256": "2bee9634101930706a51066e1ec6ee91d87276dca53c071fa261c6a27b949187"
+  "editDigest": "scripts 261 bytes 1943649 digest 458197530 | AsuraAssets children 13 | place AsurasPath.rbxlx",
+  "canonicalDigest": "scripts 261 bytes 1943649 digest 458197530",
+  "method": "canonical build plus Edit resync; fresh Play; reopen not claimed",
+  "sha256": "2d9092d9a877c087a8a406f76d26cfc917942a8a93ca3fb800547eaf27d69c04",
+  "mirrorSha256": "2d9092d9a877c087a8a406f76d26cfc917942a8a93ca3fb800547eaf27d69c04"
 }

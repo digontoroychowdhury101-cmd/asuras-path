@@ -1,9 +1,9 @@
-# Environment continuation — 30 October 2026
+# Environment continuation — 30–31 October 2026
 
 Active goal; Bamboo performance/video/full-route gates and the broader world remain unfinished.
-Canonical: **261 scripts / 1,941,899 bytes / digest 1384380081**. Edit resync matches disk;
+Canonical: **261 scripts / 1,943,649 bytes / digest 458197530**. Edit resync matches disk;
 this batch does not claim a fresh canonical reopen. Both build hashes are in `checkpoint-digest.json`.
-Full verifier: `verify-sanctuary-v1.log`, all 14 stages pass. Campaign build: 27/0, Bamboo 73 colliders.
+Full verifier: `verify-reliquary-final.log`, all 14 stages pass. Campaign build: 27/0, Bamboo 73 colliders.
 
 ## Bamboo v10
 
@@ -71,3 +71,41 @@ video. No target is relaxed. Other campaign regions still need their own finish 
 Existing unrelated General Zhao files and `outputs/blender-connection-2026-10-29/` are preserved
 and excluded from this environment checkpoint. Connected Blender is currently on General Zhao v2;
 its scene was inspected read-only and left intact. No art upload, public publishing or spending.
+
+## Sanctuary v2 — Cloud Reliquary (31 October 2026)
+
+The same side cameras in `sanctuary-sides/` exposed an uncovered stone lintel, a timber patch
+coplanar with the carved floor, and the visible cache proxy. The fresh final comparison is
+`reliquary-final-clean/`; its close view shows the whole shelter and vessel. Earlier `sanctuary-sides/`
+after-images show the roof-only intermediate. The two `*-preview/` directories retain floor and
+vessel experiments; they are not the final build proof.
+
+- Reused the original uploaded `AsuraLobbyKit.Roof_Square`, four `Column_Base` and four
+  `Column_Lacquer` instances. Four support tops Y=610.800 meet the lowest eave Y=610.779 (0.021 stud
+  overlap); all 15 MeshParts are noncolliding, nontouching and nonqueryable. Original jump floors,
+  gaps and routes stay fixed. The roof is 6.78 studs above the isle's Y=604 floor.
+- Hid the duplicate 8×1×8 timber ledge's visual, retaining its collider and query behavior at
+  (46,603.5,988). The existing carved floor and ring now show without that dark coplanar patch.
+- Reused the existing licensed `AsuraHanKit.HanCauldron` as a 1.79-stud-high bronze ritual vessel.
+  The original 3×1.8×2 cache proxy remains at (46,605,988), invisible but colliding/queryable;
+  prompt position, range, hold duration and line-of-sight requirement stay intact. No new asset ID.
+- `reliquary-interaction-final/result.json`: **passed** in a fresh mock-persistence Play test.
+  A normal one-second Z hold causes one real ProximityPrompt trigger, grants Catalyst,
+  EmberCataclysm and BlazingSunAwakening, and marks SanctuaryReliquary claimed. Each was false
+  before and true afterwards. No direct Claim invocation or live store write. Camera/player restored,
+  temporary observers removed, owned Play test stopped. `cache_interaction_view.jpg` shows the unobstructed game view; native prompt visibility/trigger are recorded by the actual engine events.
+- Final captures record actual character positions, 100 HP and controlsVisible=false, with no restoration errors. The first final-shot attempt caught the late onboarding card and is preserved locally under ignored camera-failures, excluded from visual proof.
+  The capture helper now offers `--play-session` so startup, captures and cleanup share one owned
+  connection; existing Play sessions remain untouched by that option.
+- `verify-reliquary-final.log`: 14/14 local stages pass. Canonical/resynced Edit digest **458197530**.
+  274 mapped sources and 660 distinct referenced asset IDs, unchanged. Fresh production Play verified;
+  a new canonical reopen is not claimed. General Zhao work remains excluded from this checkpoint.
+
+The east pilgrim view still looks through a large root silhouette; actual feet remain on the authored
+dais (root Y=624.20, floor Y=621.2). This is a composition/surface problem, not evidence that the
+route floor moved. Upper-root detail, angular canopy, broader route inspection and all hardware /
+continuous-video acceptance gates remain open. Raw original tree/statue GLBs are present locally;
+the registry's prepared fused export/master folder is not present on this Mac. Existing sources
+and the active General Zhao Blender scene were left intact.
+
+The fresh prompt check was repeated after the normal onboarding handoff and Help dismissal: controlsVisible=false, one real prompt trigger, all expected inventory grants, no cleanup errors.

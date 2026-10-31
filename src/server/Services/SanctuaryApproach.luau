@@ -178,6 +178,19 @@ function Approach.Build(parent: Instance): Folder
 				stoneLantern(group, CFrame.new(box.X - 4.4, y, box.Z + dz))
 			end
 			Lobby.place(group, "Tree_MapleSmall", CFrame.new(box.X + 3.2, y, box.Z - 5.6) * CFrame.Angles(0, math.rad(35), 0), 0.48)
+			-- Shelter the small stone reliquary with the shrine's existing tiled/joined kit. Posts
+			-- sit behind the central cache and off the west jump landing; all pieces are decoration.
+			local roof = Lobby.place(group, "Roof_Square", CFrame.new(box.X + 4.4, y + 7, box.Z), Vector3.new(0.45, 0.3, 0.45))
+			if roof then
+				roof.Name = "CloudReliquaryRoof"
+				for _, dx in { 3, 5.5 } do
+					for _, dz in { -2.7, 2.7 } do
+						local foot = CFrame.new(box.X + dx, y, box.Z + dz)
+						Lobby.place(group, "Column_Base", foot, 0.45)
+						Lobby.place(group, "Column_Lacquer", foot * CFrame.new(0, 0.4, 0), Vector3.new(0.45, 0.64, 0.45))
+					end
+				end
+			end
 		end
 	end
 	return group

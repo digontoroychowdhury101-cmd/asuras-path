@@ -2,7 +2,8 @@
 """Repeatable player-height Bamboo Pass captures in the unmodified running client.
 
 Usage: python3 tools/qa/bamboo_capture.py STUDIO OUTDIR before|after [view,...]
-Requires a confirmed Studio instance already in Play. It never starts Play, changes lighting,
+Requires a confirmed Studio instance already in Play, or --play-session to own a temporary test.
+It never changes lighting,
 graphics, geometry, actor visibility, HUD visibility, saves, or progression. Temporary server teleports and
 client camera pins are restored in finally. These are seeded Studio diagnostics, not earned play.
 """
@@ -59,6 +60,7 @@ def main():
     parser.add_argument("stage", choices=("before", "after"))
     parser.add_argument("views", nargs="?", help="comma-separated views; defaults to every camera")
     parser.add_argument("--cameras", type=Path, help="optional JSON mapping of names to [eye, target, stand] vectors")
+    parser.add_argument("--play-session", action="store_true", help="start from Edit, capture in one connection, then stop the owned test")
     parser.add_argument("--settle", type=float, default=3.0, help="seconds to let lighting and material maps settle")
     parser.add_argument("--cost-seconds", type=float, default=0, help="optional 1..10 second fixed-view cost diagnostic")
     args = parser.parse_args()
@@ -80,9 +82,31 @@ def main():
     sid = args.studio
     manifest = {"kind": "seeded Studio running-client diagnostic; original scene and HUD",
                 "stage": args.stage, "views": [], "restoration_errors": []}
-    saved_server = saved_client = False
+    saved_server = saved_client = started_play = False
     try:
         state = call(client, sid, "get_studio_state")[1]
+        if args.play_session:
+            if "Client" in state or "Server" in state:
+                raise RuntimeError("--play-session requires Edit; an existing Play test is not owned by this capture")
+            call(client, sid, "start_stop_play", is_start=True)
+            started_play = True
+            deadline = time.monotonic() + 25
+            while True:
+                state = call(client, sid, "get_studio_state")[1]
+                if "Client" in state and "Server" in state:
+                    ready = json.loads(lua(client, sid, "Client", """local p=game.Players.LocalPlayer
+return game.HttpService:JSONEncode({ready=p and p:GetAttribute('AsuraClientReady')==true,
+prologue=p and p.PlayerGui:FindFirstChild('AsuraPrologue')~=nil})"""))
+                    if ready.get("prologue"):
+                        call(client, sid, "user_keyboard_input", datamodel_type="Client", actions=[{"action": "keyPress", "key_code": "Space"}])
+                    if ready.get("ready") and not ready.get("prologue"):
+                        break
+                if time.monotonic() > deadline:
+                    raise RuntimeError("owned Play session did not become ready")
+                time.sleep(.25)
+            card = lua(client, sid, "Client", "local c=game.Players.LocalPlayer.PlayerGui:FindFirstChild('ControlsCard',true) return tostring(c and c.Visible)")
+            if card == "true":
+                call(client, sid, "user_keyboard_input", datamodel_type="Client", actions=[{"action": "keyPress", "key_code": "Backspace"}])
         if "Client" not in state or "Server" not in state:
             raise RuntimeError("Start Play in the confirmed instance before capturing")
         lua(client, sid, "Client", """local pg=game.Players.LocalPlayer.PlayerGui
@@ -114,6 +138,13 @@ rs:BindToRenderStep('{BINDING}',Enum.RenderPriority.Last.Value+50,function()
 c.CameraType=Enum.CameraType.Scriptable c.FieldOfView=70 c.CFrame=frame end)
 return 'pinned'""")
             time.sleep(args.settle)  # regional lighting blend and material-variant maps settle
+            # The onboarding card can open after the prologue's GUI has disappeared. Use its
+            # normal close key at the actual shot, so a late card cannot silently cover evidence.
+            card = lua(client, sid, "Client", "local c=game.Players.LocalPlayer.PlayerGui:FindFirstChild('ControlsCard',true) return tostring(c and c.Visible)")
+            if card == "true":
+                call(client, sid, "user_keyboard_input", datamodel_type="Client", actions=[{"action": "keyPress", "key_code": "H"}])
+                time.sleep(.25)
+            lua(client, sid, "Client", "local c=game.Players.LocalPlayer.PlayerGui:FindFirstChild('ControlsCard',true) assert(not c or not c.Visible,'controls card still covers the shot') return 'shot unobstructed'")
             metadata = lua(client, sid, "Client", """local p=game:GetService('Players').LocalPlayer
 local c=workspace.CurrentCamera local l=game:GetService('Lighting') local a=l:FindFirstChildOfClass('Atmosphere')
 local gui={} for _,g in p.PlayerGui:GetChildren() do if g:IsA('ScreenGui') then gui[g.Name]=g.Enabled end end
@@ -124,9 +155,12 @@ quality=safe(function() return UserSettings():GetService('UserGameSettings').Sav
 editorQuality=safe(function() return settings().Rendering.QualityLevel.Name end),
 maxFramerate=safe(function() return UserSettings():GetService('UserGameSettings').FramerateCap end),
 region=p:GetAttribute('AsuraRegion'),encounter=p:GetAttribute('AsuraEncounter'),hud=gui,
+characterPosition=p.Character and {p.Character:GetPivot().X,p.Character:GetPivot().Y,p.Character:GetPivot().Z},
+health=p.Character and p.Character:FindFirstChildOfClass('Humanoid') and p.Character:FindFirstChildOfClass('Humanoid').Health,
 tier=p:GetAttribute('LandscapeTier'),foliageRegistered=p:GetAttribute('FoliageRegistered'),
 foliageActive=p:GetAttribute('FoliageActive'),foliageShadows=p:GetAttribute('LandscapeFoliageShadows'),
 touch=game:GetService('UserInputService').TouchEnabled,
+controlsVisible=(function() local g=p.PlayerGui:FindFirstChild('ControlsCard',true) return g and g.Visible or false end)(),
 lighting={clock=l.ClockTime,exposure=l.ExposureCompensation,ambient=tostring(l.Ambient),
 outdoor=tostring(l.OutdoorAmbient),density=a and a.Density,haze=a and a.Haze},
 wind=tostring(workspace.GlobalWind),terrainDecoration=safe(function() return workspace.Terrain.Decoration end)})""")
@@ -164,6 +198,11 @@ _G.AsuraBambooCaptureCamera=nil return 'camera restored'""")
 local p=s and game:GetService('Players'):GetPlayerByUserId(s.UserId)
 if p and p.Character then p.Character:PivotTo(s.Frame) p.Character.HumanoidRootPart.AssemblyLinearVelocity=Vector3.zero end
 _G.AsuraBambooCaptureOrigin=nil return 'player restored'""")
+            except Exception as exc:
+                manifest["restoration_errors"].append(str(exc))
+        if started_play:
+            try:
+                call(client, sid, "start_stop_play", is_start=False)
             except Exception as exc:
                 manifest["restoration_errors"].append(str(exc))
         manifest_path.write_text(json.dumps(manifest, indent=2) + "\n")

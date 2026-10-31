@@ -1,0 +1,77 @@
+{
+  "kind": "seeded Studio running-client diagnostic; original scene and HUD",
+  "stage": "after",
+  "views": [
+    {
+      "name": "reliquary_close",
+      "eye": [
+        29,
+        609.5,
+        990
+      ],
+      "target": [
+        49.4,
+        608.3,
+        988
+      ],
+      "stand": [
+        35,
+        606.2,
+        988
+      ],
+      "files": [
+        "after_reliquary_close.jpg"
+      ],
+      "settle": 5.0,
+      "conditions": {
+        "maxFramerate": "unavailable",
+        "wind": "6, 0, 2",
+        "place": "AsurasPath.rbxlx",
+        "foliageRegistered": 792,
+        "foliageActive": 0,
+        "tier": "Detailed",
+        "quality": "Automatic",
+        "studioVersion": "0.745.0.7451137",
+        "editorQuality": "Automatic",
+        "terrainDecoration": "unavailable",
+        "lighting": {
+          "density": 0.3799999952316284,
+          "ambient": "0.235294, 0.27451, 0.360784",
+          "outdoor": "0.411765, 0.458824, 0.545098",
+          "clock": 17.399999618530273,
+          "haze": 2.200000047683716,
+          "exposure": -0.11999999731779099
+        },
+        "touch": false,
+        "foliageShadows": 0,
+        "hud": {
+          "JadeDialogue": false,
+          "AsuraColosseum": true,
+          "BubbleChat": true,
+          "AsuraTouchControls": false,
+          "ProximityPrompts": true,
+          "Chat": true,
+          "AsuraHUD": true,
+          "AsuraVignette": true,
+          "SpectatorWagers": false,
+          "Freecam": true
+        },
+        "camera": "29, 609.5, 990, 0.0975714251, 0.0581645183, -0.993527353, -0, 0.998290718, 0.0584433749, 0.995228589, -0.00570240337, 0.0974046364",
+        "health": 100,
+        "fov": 70,
+        "viewport": [
+          1221,
+          503
+        ],
+        "characterPosition": [
+          35,
+          605.9999389648438,
+          988
+        ],
+        "region": "Sanctuary"
+      },
+      "cost": null
+    }
+  ],
+  "restoration_errors": []
+}
