@@ -24,7 +24,7 @@
    "wiring": "needs-hook",
    "notes": "The guandao tips down from upright into the point-forward guard as the feet blade.",
    "nominal_ground_speed_scale1": 0.0,
-   "keyframes": 48,
+   "keyframes": 46,
    "file": "GeneralZhao_P1_AlertTransition.rbxmx",
    "uploaded": false,
    "asset_id": null,
@@ -42,7 +42,7 @@
     "loop_seam_deg": 0.0,
     "right_pull": 0.0,
     "hand_jerk": 0.2774,
-    "arm_in_body": 0.0692,
+    "arm_in_body": 0.0101,
     "shaft_in_body_frames": [
      [
       0.017,
@@ -106,7 +106,7 @@
     "loop_seam_deg": 0.0,
     "right_pull": 0.0,
     "hand_jerk": 0.0027,
-    "arm_in_body": 0.0703,
+    "arm_in_body": 0.0141,
     "shaft_in_body_frames": []
    },
    "problems": [],
@@ -172,7 +172,7 @@
    "uploaded": false,
    "asset_id": null,
    "validation": {
-    "grip_error": 0.0411,
+    "grip_error": 0.0442,
     "right_reach": 0.0,
     "leg_reach": 0.0,
     "sole_below_ground": 0.0,
@@ -185,7 +185,7 @@
     "loop_seam_deg": 0.0,
     "right_pull": 0.586,
     "hand_jerk": 0.0493,
-    "arm_in_body": 0.2457,
+    "arm_in_body": 0.0,
     "shaft_in_body_frames": [
      [
       2.567,
@@ -195,8 +195,7 @@
    },
    "problems": [
     "grip pulled in 0.59 from its key (overreach)",
-    "shaft passes 0.03 into the body ([(2.567, 'RightLowerLeg')])",
-    "forearm passes 0.25 into the body"
+    "shaft passes 0.03 into the body ([(2.567, 'RightLowerLeg')])"
    ],
    "key_repairs": [
     [
@@ -448,12 +447,10 @@
     "loop_seam_deg": 0.0,
     "right_pull": 0.0,
     "hand_jerk": 0.1998,
-    "arm_in_body": 0.091,
+    "arm_in_body": 0.0,
     "shaft_in_body_frames": []
    },
-   "problems": [
-    "forearm passes 0.09 into the body"
-   ],
+   "problems": [],
    "key_repairs": [
     [
      "field",
@@ -517,7 +514,7 @@
     "loop_seam_deg": 0.0,
     "right_pull": 0.0,
     "hand_jerk": 0.1107,
-    "arm_in_body": 0.1068,
+    "arm_in_body": 0.0021,
     "shaft_in_body_frames": [
      [
       0.35,
@@ -538,8 +535,7 @@
     ]
    },
    "problems": [
-    "shaft passes 0.26 into the body ([(0.35, 'Head'), (0.367, 'Head'), (0.383, 'Head')])",
-    "forearm passes 0.11 into the body"
+    "shaft passes 0.26 into the body ([(0.35, 'Head'), (0.367, 'Head'), (0.383, 'Head')])"
    ],
    "key_repairs": [
     [
@@ -621,7 +617,7 @@
     "loop_seam_deg": 0.0,
     "right_pull": 0.1669,
     "hand_jerk": 0.4509,
-    "arm_in_body": 0.0683,
+    "arm_in_body": 0.0,
     "shaft_in_body_frames": [
      [
       0.067,
@@ -733,11 +729,11 @@
     "loop_seam_deg": 0.0,
     "right_pull": 0.0,
     "hand_jerk": 0.209,
-    "arm_in_body": 0.1076,
+    "arm_in_body": 0.0976,
     "shaft_in_body_frames": []
    },
    "problems": [
-    "forearm passes 0.11 into the body",
+    "forearm passes 0.10 into the body",
     "wrist bent 91 degrees"
    ],
    "key_repairs": [
@@ -805,7 +801,7 @@
     "loop_seam_deg": 0.0,
     "right_pull": 0.0888,
     "hand_jerk": 0.4155,
-    "arm_in_body": 0.1357,
+    "arm_in_body": 0.0,
     "shaft_in_body_frames": [
      [
       0.133,
@@ -815,7 +811,6 @@
    },
    "problems": [
     "shaft passes 0.03 into the body ([(0.133, 'UpperTorso')])",
-    "forearm passes 0.14 into the body",
     "hand pops 0.42 between frames"
    ],
    "key_repairs": [
@@ -883,7 +878,7 @@
     "loop_seam_deg": 0.0,
     "right_pull": 0.1231,
     "hand_jerk": 0.2291,
-    "arm_in_body": 0.0683,
+    "arm_in_body": 0.0,
     "shaft_in_body_frames": [
      [
       0.167,
@@ -992,7 +987,7 @@
     "loop_seam_deg": 0.0,
     "right_pull": 0.0,
     "hand_jerk": 0.1197,
-    "arm_in_body": 0.0781,
+    "arm_in_body": 0.0,
     "shaft_in_body_frames": []
    },
    "problems": [
@@ -1068,7 +1063,7 @@
     "loop_seam_deg": 0.0,
     "right_pull": 0.0578,
     "hand_jerk": 0.0722,
-    "arm_in_body": 0.0683,
+    "arm_in_body": 0.0,
     "shaft_in_body_frames": []
    },
    "problems": [],
@@ -1114,12 +1109,10 @@
     "loop_seam_deg": 0.0,
     "right_pull": 0.0,
     "hand_jerk": 0.0,
-    "arm_in_body": 0.1047,
+    "arm_in_body": 0.0,
     "shaft_in_body_frames": []
    },
-   "problems": [
-    "forearm passes 0.10 into the body"
-   ],
+   "problems": [],
    "key_repairs": [
     [
      "field",
@@ -1162,12 +1155,10 @@
     "loop_seam_deg": 0.0,
     "right_pull": 0.0167,
     "hand_jerk": 0.0376,
-    "arm_in_body": 0.1062,
+    "arm_in_body": 0.0,
     "shaft_in_body_frames": []
    },
-   "problems": [
-    "forearm passes 0.11 into the body"
-   ],
+   "problems": [],
    "key_repairs": [
     [
      "field",
@@ -1203,7 +1194,7 @@
    "wiring": "needs-hook",
    "notes": "The haft is driven back toward his chest, rear foot braces a quarter step.",
    "nominal_ground_speed_scale1": 0.0,
-   "keyframes": 27,
+   "keyframes": 28,
    "file": "GeneralZhao_P1_GuardHit.rbxmx",
    "uploaded": false,
    "asset_id": null,
@@ -1346,12 +1337,10 @@
     "loop_seam_deg": 0.0,
     "right_pull": 0.0,
     "hand_jerk": 0.0105,
-    "arm_in_body": 0.1071,
+    "arm_in_body": 0.0325,
     "shaft_in_body_frames": []
    },
-   "problems": [
-    "forearm passes 0.11 into the body"
-   ],
+   "problems": [],
    "key_repairs": [
     [
      "field",
@@ -1387,7 +1376,7 @@
    "wiring": "needs-hook",
    "notes": "Stumbles from the front with a recovery step; front hand slips and re-grips.",
    "nominal_ground_speed_scale1": 0.0,
-   "keyframes": 47,
+   "keyframes": 44,
    "file": "GeneralZhao_P1_HitHeavyFront.rbxmx",
    "uploaded": false,
    "asset_id": null,
@@ -1405,12 +1394,10 @@
     "loop_seam_deg": 0.0,
     "right_pull": 0.0,
     "hand_jerk": 0.0085,
-    "arm_in_body": 0.11,
+    "arm_in_body": 0.0,
     "shaft_in_body_frames": []
    },
-   "problems": [
-    "forearm passes 0.11 into the body"
-   ],
+   "problems": [],
    "key_repairs": [
     [
      "field",
@@ -1464,12 +1451,10 @@
     "loop_seam_deg": 0.0,
     "right_pull": 0.1201,
     "hand_jerk": 0.0636,
-    "arm_in_body": 0.144,
+    "arm_in_body": 0.0235,
     "shaft_in_body_frames": []
    },
-   "problems": [
-    "forearm passes 0.14 into the body"
-   ],
+   "problems": [],
    "key_repairs": [
     [
      "field",
@@ -1523,7 +1508,7 @@
     "loop_seam_deg": 0.0,
     "right_pull": 0.0,
     "hand_jerk": 0.0106,
-    "arm_in_body": 0.0794,
+    "arm_in_body": 0.0,
     "shaft_in_body_frames": []
    },
    "problems": [],
@@ -1575,7 +1560,7 @@
     "loop_seam_deg": 0.0,
     "right_pull": 0.0,
     "hand_jerk": 0.0047,
-    "arm_in_body": 0.069,
+    "arm_in_body": 0.0,
     "shaft_in_body_frames": []
    },
    "problems": [],
@@ -1627,12 +1612,10 @@
     "loop_seam_deg": 0.0,
     "right_pull": 0.0,
     "hand_jerk": 0.0081,
-    "arm_in_body": 0.0928,
+    "arm_in_body": 0.0026,
     "shaft_in_body_frames": []
    },
-   "problems": [
-    "forearm passes 0.09 into the body"
-   ],
+   "problems": [],
    "key_repairs": [
     [
      "field",
@@ -1663,7 +1646,7 @@
    "wiring": "needs-hook",
    "notes": "Light flinch from the left; guard and grip hold.",
    "nominal_ground_speed_scale1": 0.0,
-   "keyframes": 25,
+   "keyframes": 23,
    "file": "GeneralZhao_P1_HitLightLeft.rbxmx",
    "uploaded": false,
    "asset_id": null,
@@ -1681,12 +1664,10 @@
     "loop_seam_deg": 0.0,
     "right_pull": 0.0133,
     "hand_jerk": 0.0182,
-    "arm_in_body": 0.1275,
+    "arm_in_body": 0.0213,
     "shaft_in_body_frames": []
    },
-   "problems": [
-    "forearm passes 0.13 into the body"
-   ],
+   "problems": [],
    "key_repairs": [
     [
      "field",
@@ -1735,7 +1716,7 @@
     "loop_seam_deg": 0.0,
     "right_pull": 0.0,
     "hand_jerk": 0.0051,
-    "arm_in_body": 0.0754,
+    "arm_in_body": 0.0,
     "shaft_in_body_frames": []
    },
    "problems": [],
@@ -1781,12 +1762,10 @@
     "loop_seam_deg": 0.0,
     "right_pull": 0.0,
     "hand_jerk": 0.0001,
-    "arm_in_body": 0.1507,
+    "arm_in_body": 0.0209,
     "shaft_in_body_frames": []
    },
-   "problems": [
-    "forearm passes 0.15 into the body"
-   ],
+   "problems": [],
    "key_repairs": []
   },
   "GeneralZhao_P1_IdleNeutral": {
@@ -1930,7 +1909,7 @@
     "loop_seam_deg": 0.0,
     "right_pull": 0.0,
     "hand_jerk": 0.3008,
-    "arm_in_body": 0.0686,
+    "arm_in_body": 0.0,
     "shaft_in_body_frames": []
    },
    "problems": [],
@@ -2019,7 +1998,7 @@
     "loop_seam_deg": 0.0,
     "right_pull": 0.1885,
     "hand_jerk": 0.0373,
-    "arm_in_body": 0.0715,
+    "arm_in_body": 0.0044,
     "shaft_in_body_frames": []
    },
    "problems": [],
@@ -2122,7 +2101,7 @@
    "wiring": "needs-hook",
    "notes": "Point aligned and stance compressed by 0.32 s; the rear hand drives the shaft through the guiding front hand; distinct recoil between impacts; the third thrust over-extends with the blade dipping (punishable 2.42-2.8 s).",
    "nominal_ground_speed_scale1": 0.0,
-   "keyframes": 157,
+   "keyframes": 161,
    "file": "GeneralZhao_P1_LightningSpear.rbxmx",
    "uploaded": false,
    "asset_id": null,
@@ -2140,7 +2119,7 @@
     "loop_seam_deg": 0.0,
     "right_pull": 0.1921,
     "hand_jerk": 0.1619,
-    "arm_in_body": 0.0762,
+    "arm_in_body": 0.0045,
     "shaft_in_body_frames": []
    },
    "problems": [],
@@ -2211,7 +2190,7 @@
    "uploaded": false,
    "asset_id": null,
    "validation": {
-    "grip_error": 0.0602,
+    "grip_error": 0.0603,
     "right_reach": 0.0,
     "leg_reach": 0.0,
     "sole_below_ground": 0.0,
@@ -2319,7 +2298,7 @@
    "uploaded": false,
    "asset_id": null,
    "validation": {
-    "grip_error": 0.0602,
+    "grip_error": 0.0603,
     "right_reach": 0.0,
     "leg_reach": 0.0,
     "sole_below_ground": 0.0,
@@ -2390,7 +2369,7 @@
    "uploaded": false,
    "asset_id": null,
    "validation": {
-    "grip_error": 0.0602,
+    "grip_error": 0.0603,
     "right_reach": 0.0,
     "leg_reach": 0.0,
     "sole_below_ground": 0.0,
@@ -2403,7 +2382,7 @@
     "loop_seam_deg": 0.0,
     "right_pull": 0.1929,
     "hand_jerk": 0.3946,
-    "arm_in_body": 0.0522,
+    "arm_in_body": 0.0,
     "shaft_in_body_frames": [
      [
       0.033,
@@ -2472,7 +2451,7 @@
    "uploaded": false,
    "asset_id": null,
    "validation": {
-    "grip_error": 0.0602,
+    "grip_error": 0.0603,
     "right_reach": 0.0,
     "leg_reach": 0.0,
     "sole_below_ground": 0.0,
@@ -2577,7 +2556,7 @@
    "uploaded": false,
    "asset_id": null,
    "validation": {
-    "grip_error": 0.0602,
+    "grip_error": 0.0603,
     "right_reach": 0.0,
     "leg_reach": 0.0,
     "sole_below_ground": 0.0,
@@ -2590,7 +2569,7 @@
     "loop_seam_deg": 0.0,
     "right_pull": 0.0013,
     "hand_jerk": 0.3119,
-    "arm_in_body": 0.0444,
+    "arm_in_body": 0.0,
     "shaft_in_body_frames": []
    },
    "problems": [
@@ -2653,7 +2632,7 @@
    "uploaded": false,
    "asset_id": null,
    "validation": {
-    "grip_error": 0.0602,
+    "grip_error": 0.0603,
     "right_reach": 0.0,
     "leg_reach": 0.0,
     "sole_below_ground": 0.0,
@@ -2666,7 +2645,7 @@
     "loop_seam_deg": 0.0,
     "right_pull": 0.1775,
     "hand_jerk": 0.0706,
-    "arm_in_body": 0.0451,
+    "arm_in_body": 0.0,
     "shaft_in_body_frames": []
    },
    "problems": [
@@ -2696,7 +2675,7 @@
    "wiring": "needs-hook",
    "notes": "Oath posture layer over GeneralZhao_P1_GuardLoop: lower centre, chest and head forward, tighter two-hand grip, elbows in; timing identical.",
    "nominal_ground_speed_scale1": 0.0,
-   "keyframes": 4,
+   "keyframes": 5,
    "file": "GeneralZhao_P1_Oath_GuardLoop.rbxmx",
    "uploaded": false,
    "asset_id": null,
@@ -2845,12 +2824,12 @@
    "wiring": "needs-hook",
    "notes": "Oath posture layer over GeneralZhao_P1_LightningSpear: lower centre, chest and head forward, tighter two-hand grip, elbows in; timing identical.",
    "nominal_ground_speed_scale1": 0.0,
-   "keyframes": 158,
+   "keyframes": 159,
    "file": "GeneralZhao_P1_Oath_LightningSpear.rbxmx",
    "uploaded": false,
    "asset_id": null,
    "validation": {
-    "grip_error": 0.0602,
+    "grip_error": 0.0603,
     "right_reach": 0.0,
     "leg_reach": 0.0,
     "sole_below_ground": 0.0,
@@ -2863,7 +2842,7 @@
     "loop_seam_deg": 0.0,
     "right_pull": 0.3108,
     "hand_jerk": 0.1029,
-    "arm_in_body": 0.0337,
+    "arm_in_body": 0.0408,
     "shaft_in_body_frames": []
    },
    "problems": [
@@ -2910,7 +2889,7 @@
    "uploaded": false,
    "asset_id": null,
    "validation": {
-    "grip_error": 0.3967,
+    "grip_error": 0.0,
     "right_reach": 0.0,
     "leg_reach": 0.0,
     "sole_below_ground": 0.0,
@@ -2923,12 +2902,10 @@
     "loop_seam_deg": 6.3838,
     "right_pull": 0.0,
     "hand_jerk": 0.0082,
-    "arm_in_body": 0.1879,
+    "arm_in_body": 0.0,
     "shaft_in_body_frames": []
    },
    "problems": [
-    "left hand leaves the shaft by 0.40",
-    "forearm passes 0.19 into the body",
     "wrist bent 89 degrees",
     "loop seam 6.4 degrees"
    ],
@@ -2980,7 +2957,7 @@
    "uploaded": false,
    "asset_id": null,
    "validation": {
-    "grip_error": 0.0602,
+    "grip_error": 0.0603,
     "right_reach": 0.0,
     "leg_reach": 0.0,
     "sole_below_ground": 0.0,
@@ -2993,7 +2970,7 @@
     "loop_seam_deg": 0.0,
     "right_pull": 0.0013,
     "hand_jerk": 0.3397,
-    "arm_in_body": 0.0343,
+    "arm_in_body": 0.0,
     "shaft_in_body_frames": [
      [
       0.683,
@@ -3121,7 +3098,7 @@
    "uploaded": false,
    "asset_id": null,
    "validation": {
-    "grip_error": 0.0602,
+    "grip_error": 0.0603,
     "right_reach": 0.0,
     "leg_reach": 0.0,
     "sole_below_ground": 0.0,
@@ -3134,7 +3111,7 @@
     "loop_seam_deg": 0.0,
     "right_pull": 0.2715,
     "hand_jerk": 0.2154,
-    "arm_in_body": 0.0359,
+    "arm_in_body": 0.0221,
     "shaft_in_body_frames": [
      [
       0.083,
@@ -3200,14 +3177,14 @@
     "tip_distance_min": 9.2416,
     "tip_distance_max": 9.2416,
     "wrist_bend_max": 61.782,
-    "loop_seam_deg": 5.6809,
+    "loop_seam_deg": 5.8017,
     "right_pull": 0.0,
     "hand_jerk": 0.0012,
-    "arm_in_body": 0.0586,
+    "arm_in_body": 0.0,
     "shaft_in_body_frames": []
    },
    "problems": [
-    "loop seam 5.7 degrees"
+    "loop seam 5.8 degrees"
    ],
    "key_repairs": []
   },
@@ -3258,7 +3235,7 @@
     "loop_seam_deg": 0.0,
     "right_pull": 0.3635,
     "hand_jerk": 0.0549,
-    "arm_in_body": 0.0683,
+    "arm_in_body": 0.0,
     "shaft_in_body_frames": [
      [
       0.1,
@@ -3372,12 +3349,11 @@
     "loop_seam_deg": 0.0,
     "right_pull": 0.0,
     "hand_jerk": 0.0046,
-    "arm_in_body": 0.0833,
+    "arm_in_body": 0.0,
     "shaft_in_body_frames": []
    },
    "problems": [
-    "leg short of its foot target by 0.17",
-    "forearm passes 0.08 into the body"
+    "leg short of its foot target by 0.17"
    ],
    "key_repairs": [
     [
@@ -3412,14 +3388,14 @@
    "timing_source": "Authored cycle 0.66 s at 8.0 studs/s (scale 1)",
    "playback_hook": "NEW: client locomotion layer (Movement priority) chosen from the boss root's planar velocity relative to its facing; playback speed = measured ground speed / (nominal speed x 1.2)",
    "wiring": "needs-hook",
-   "notes": "Charging run with the blade carried low and forward. Nominal 9.6 studs/s at scale 1.2; the boss WalkSpeed (about 20 studs/s) needs playback speed ~2.1 or the feet slide.",
+   "notes": "Charging run with the blade carried low and forward in the right hand, the left arm pumping. Nominal 9.6 studs/s at scale 1.2; the boss WalkSpeed (about 20 studs/s) needs playback speed ~2.1 or the feet slide.",
    "nominal_ground_speed_scale1": 8.0,
    "keyframes": 41,
    "file": "GeneralZhao_P1_RunForward.rbxmx",
    "uploaded": false,
    "asset_id": null,
    "validation": {
-    "grip_error": 0.3415,
+    "grip_error": 0.0,
     "right_reach": 0.0,
     "leg_reach": 0.0,
     "sole_below_ground": 0.0,
@@ -3432,12 +3408,10 @@
     "loop_seam_deg": 7.8688,
     "right_pull": 0.0,
     "hand_jerk": 0.0084,
-    "arm_in_body": 0.1881,
+    "arm_in_body": 0.0,
     "shaft_in_body_frames": []
    },
    "problems": [
-    "left hand leaves the shaft by 0.34",
-    "forearm passes 0.19 into the body",
     "loop seam 7.9 degrees"
    ],
    "key_repairs": []
@@ -3512,7 +3486,7 @@
    "wiring": "needs-hook",
    "notes": "Regrips and resets the guard.",
    "nominal_ground_speed_scale1": 0.0,
-   "keyframes": 40,
+   "keyframes": 36,
    "file": "GeneralZhao_P1_StaggerRecover.rbxmx",
    "uploaded": false,
    "asset_id": null,
@@ -3530,12 +3504,11 @@
     "loop_seam_deg": 0.0,
     "right_pull": 0.3357,
     "hand_jerk": 0.0299,
-    "arm_in_body": 0.1102,
+    "arm_in_body": 0.0031,
     "shaft_in_body_frames": []
    },
    "problems": [
     "grip pulled in 0.34 from its key (overreach)",
-    "forearm passes 0.11 into the body",
     "wrist bent 91 degrees"
    ],
    "key_repairs": [
@@ -3568,7 +3541,7 @@
    "wiring": "needs-hook",
    "notes": "Plants the lead foot and sinks back into guard.",
    "nominal_ground_speed_scale1": 0.0,
-   "keyframes": 29,
+   "keyframes": 28,
    "file": "GeneralZhao_P1_Stop.rbxmx",
    "uploaded": false,
    "asset_id": null,
@@ -3586,7 +3559,7 @@
     "loop_seam_deg": 0.0,
     "right_pull": 0.0,
     "hand_jerk": 0.0085,
-    "arm_in_body": 0.0704,
+    "arm_in_body": 0.0,
     "shaft_in_body_frames": []
    },
    "problems": [],
@@ -3643,12 +3616,10 @@
     "loop_seam_deg": 0.0,
     "right_pull": 0.0,
     "hand_jerk": 0.0,
-    "arm_in_body": 0.1529,
+    "arm_in_body": 0.0,
     "shaft_in_body_frames": []
    },
-   "problems": [
-    "forearm passes 0.15 into the body"
-   ],
+   "problems": [],
    "key_repairs": []
   },
   "GeneralZhao_P1_StrafeRight": {
@@ -3693,12 +3664,10 @@
     "loop_seam_deg": 0.0,
     "right_pull": 0.0,
     "hand_jerk": 0.0,
-    "arm_in_body": 0.1529,
+    "arm_in_body": 0.0,
     "shaft_in_body_frames": []
    },
-   "problems": [
-    "forearm passes 0.15 into the body"
-   ],
+   "problems": [],
    "key_repairs": []
   },
   "GeneralZhao_P1_Strike": {
@@ -3742,7 +3711,7 @@
    "wiring": "existing",
    "notes": "Diagonal cut from high right; returns naturally to guard.",
    "nominal_ground_speed_scale1": 0.0,
-   "keyframes": 68,
+   "keyframes": 67,
    "file": "GeneralZhao_P1_Strike.rbxmx",
    "uploaded": false,
    "asset_id": null,
@@ -3760,7 +3729,7 @@
     "loop_seam_deg": 0.0,
     "right_pull": 0.0,
     "hand_jerk": 0.1662,
-    "arm_in_body": 0.0684,
+    "arm_in_body": 0.0,
     "shaft_in_body_frames": [
      [
       0.45,
@@ -3901,7 +3870,7 @@
     "loop_seam_deg": 0.0,
     "right_pull": 0.0746,
     "hand_jerk": 0.2183,
-    "arm_in_body": 0.0692,
+    "arm_in_body": 0.0318,
     "shaft_in_body_frames": []
    },
    "problems": [
@@ -3980,7 +3949,7 @@
     "loop_seam_deg": 0.0,
     "right_pull": 0.0719,
     "hand_jerk": 0.0966,
-    "arm_in_body": 0.0715,
+    "arm_in_body": 0.0064,
     "shaft_in_body_frames": [
      [
       0.833,
@@ -4064,7 +4033,7 @@
     "loop_seam_deg": 0.0,
     "right_pull": 0.0,
     "hand_jerk": 0.0029,
-    "arm_in_body": 0.072,
+    "arm_in_body": 0.0,
     "shaft_in_body_frames": []
    },
    "problems": [],
@@ -4121,7 +4090,7 @@
     "loop_seam_deg": 0.0,
     "right_pull": 0.1569,
     "hand_jerk": 0.0047,
-    "arm_in_body": 0.076,
+    "arm_in_body": 0.0124,
     "shaft_in_body_frames": []
    },
    "problems": [],
@@ -4178,12 +4147,10 @@
     "loop_seam_deg": 0.0,
     "right_pull": 0.0,
     "hand_jerk": 0.0,
-    "arm_in_body": 0.1529,
+    "arm_in_body": 0.0,
     "shaft_in_body_frames": []
    },
-   "problems": [
-    "forearm passes 0.15 into the body"
-   ],
+   "problems": [],
    "key_repairs": []
   },
   "GeneralZhao_P1_WalkForward": {
@@ -4228,11 +4195,10 @@
     "loop_seam_deg": 3.4182,
     "right_pull": 0.0,
     "hand_jerk": 0.0009,
-    "arm_in_body": 0.1606,
+    "arm_in_body": 0.0,
     "shaft_in_body_frames": []
    },
    "problems": [
-    "forearm passes 0.16 into the body",
     "loop seam 3.4 degrees"
    ],
    "key_repairs": []

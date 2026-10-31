@@ -51,7 +51,8 @@ GUARD = dict(root=(0.05, -0.34, 0.06), rootR=(3, -30, 0), chest=(6, -26, 0), nec
              grip=GUARD_GRIP, dir=aim(GUARD_GRIP, (-0.35, 1.25, -8.6)), edge=(0.3, 1, 0), roll=0,
              s=-1.6, sMin=-2.6, sMax=-0.7, lroll=0, lfree=0.0, larm=(4, 0, -6), lfore=(10, 0, 0), lhand=(0, 0, 0),
              lf=(-0.62, -0.75, 0, 12, 0), rf=(0.85, 0.72, 0, 42, 0),
-             relb=(1, -0.4, 0.8), lelb=(-0.6, -1, 0.3), lknee=(0.1, 0, -1), rknee=(0.4, 0, -1))
+             # left elbow out and a little forward, so the forearm reaches round in front of the belly to the haft
+             relb=(1, -0.4, 0.8), lelb=(-1, -0.3, -0.5), lknee=(0.1, 0, -1), rknee=(0.4, 0, -1))
 FEET = dict(lf=GUARD["lf"], rf=GUARD["rf"])
 FREE_LEFT = dict(lfree=1.0, larm=(6, 0, -8), lfore=(14, 0, 0), lhand=(0, 0, 0))
 
@@ -213,7 +214,8 @@ def add3(a, b):
 def strike():
     """Ordinary-attack fallback for any move without its own clip: rising-then-falling diagonal cut, contact 0.5 s."""
     raise_ = pose(root=(0.05, -0.3, 0.12), rootR=(2, -36, 0), chest=(-4, -34, 0), grip=(0.95, 0.65, 0.35),
-                  dir=yawdir(-30, 62), edge=(0, 0, -1), s=-1.3)
+                  dir=yawdir(-30, 62), edge=(0, 0, -1), s=-1.3,
+                  lelb=(-0.6, -1, 0.3))  # elbow hangs under the raised haft
     cut = pose(root=(0.0, -0.5, -0.2), rootR=(6, -12, 0), chest=(14, 4, 0), grip=(0.55, -0.6, -0.95),
                dir=yawdir(14, -10), edge=(-0.4, -1, 0), s=-1.2,
                lf=foot(GUARD["lf"], dz=-0.35))

@@ -63,14 +63,20 @@ def states():
                           "stance (feet never cross)."))
     run_g = (1.05, -0.7, 0.35)
     run_base = pose(root=(0.0, -0.5, -0.1), rootR=(12, -20, 0), chest=(10, -18, 0), grip=run_g,
-                    dir=aim(run_g, (0.2, -0.6, -8.8)), edge=(0, 1, 0), s=-1.8)
+                    dir=aim(run_g, (0.2, -0.6, -8.8)), edge=(0, 1, 0), s=-1.8, lfree=1.0, lhand=(0, 0, 0),
+                    larm=(-30, 0, -10), lfore=(55, 0, 0))
     run_feet = dict(lf=(-0.5, -0.3, 0, 10, 0), rf=(0.6, 0.3, 0, 20, 0))
     run = gait(0.66, (0, -8.0), 0.36, {"lf": 0.0, "rf": 0.5}, 0.5, run_feet, pitch_off=-24)
     bob = [(t, {"root": (0.0, -0.5 - 0.07 * math.cos(4 * math.pi * t / 0.66), -0.1)}, "linear") for t in np.linspace(0, 0.66, 23)]
-    out.append(clip("RunForward", 0.66, [(0, run_base, "linear")] + run + bob, loop=True, priority="Movement",
+    # the haft is carried low at his right side, out of the front hand's reach at a sprint: the left arm pumps
+    # instead, back as the left foot lands, forward as the right does
+    pump = [(t, {"larm": (-30, 0, -10) if k % 2 == 0 else (25, 0, -8), "lfore": (55, 0, 0) if k % 2 == 0 else (75, 0, 0)},
+             "inout") for k, t in enumerate(np.linspace(0, 0.66, 3)) if k]  # k = 0 is run_base
+    out.append(clip("RunForward", 0.66, [(0, run_base, "linear")] + run + bob + pump, loop=True, priority="Movement",
                     velocity=(0, -8.0), preview=(0, 0.165, 0.33, 0.5), timing="Authored cycle 0.66 s at 8.0 studs/s (scale 1)",
                     markers=[(0.0, "FootstepL", ""), (0.33, "FootstepR", "")], hook=LOCO_HOOK,
-                    notes="Charging run with the blade carried low and forward. Nominal 9.6 studs/s at scale 1.2; the "
+                    notes="Charging run with the blade carried low and forward in the right hand, the left arm "
+                          "pumping. Nominal 9.6 studs/s at scale 1.2; the "
                           "boss WalkSpeed (about 20 studs/s) needs playback speed ~2.1 or the feet slide."))
     out.append(clip("WalkBackward", 1.3, [(0, walk_base, "linear")] + gait(1.3, (0, 1.9), 0.6, {"lf": 0.0, "rf": 0.5}, 0.22, walk_feet),
                     loop=True, priority="Movement", velocity=(0, 1.9), preview=(0, 0.33, 0.65, 1.0),

@@ -1,5 +1,9 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## General Zhao forearm contact — 2026-10-31 (Mac)
+
+Guard left elbow now points out and forward, clearing forearm-in-body across idle, locomotion, hit reactions and Hammer; Strike's raise keeps the elbow down; RunForward frees the left hand to pump. 28/59 clips validate under the stricter check; only Heavy grazes (0.10). Next: Studio recheck in Edit mode, then upload.
+
 ## General Zhao L2 and wrist polish — 2026-10-31 (Mac)
 
 Elbow swivel now follows a least-cost path (no blurred flips); Oath layer tucks keyed elbows instead of replacing them. Worst wrists: Strike 105→91°, L3 83°, Heavy 91°, Art 83°; Art forearm no longer enters body. L2 pop fixed, clip 0.29 at peak swing. Forearm-in-body check added. Next: guard left-forearm contact, Studio recheck, upload.
