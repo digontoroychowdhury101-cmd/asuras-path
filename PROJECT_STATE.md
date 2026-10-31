@@ -1,5 +1,9 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## Root material investigation — 2026-10-31 (Mac)
+
+Recovered uploaded root geometry; diagnosed low UV density. Separate four-section bark pilot preserves geometry/normals; GLB round-trip passes. Uninstalled, no game-source change; digest 458197530. Evidence: `outputs/environment-art-2026-10-31/`. Mac lock blocks video/Play review. Blender crashed on Scene-library writing; headless collection workflow fixed, saved Zhao master intact, editor reopening pending. Next: unlock, restore editor, Studio pilot comparison.
+
 ## Sanctuary reliquary — 2026-10-31 (Mac)
 
 Tiled shelter and bronze vessel replace exposed cache dressing; coplanar timber visual hidden. Original colliders/query/prompt remain. Normal Z hold grants Catalyst/two spells in mock Play. Verifier 14/14; digest 458197530. Evidence: `outputs/environment-art-2026-10-30/`. Next: root/canopy, side routes, other regions. Hardware/video/full-route gates open; General Zhao work preserved.

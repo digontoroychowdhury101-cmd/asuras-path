@@ -1,0 +1,370 @@
+{
+  "canonicalEdit": {
+    "scripts": 261,
+    "bytes": 1943649,
+    "digest": 458197530,
+    "templateFigureHeight": 100.00000190734863
+  },
+  "recovery": {
+    "kind": "read-only recovery of uploaded geometry; not original master",
+    "studio": "dda73794-0660-4c62-90bf-0914a7187a38",
+    "coordinateSystem": "Roblox local mesh, zero-based face indices",
+    "cornerLayout": "vertex[3], normal[3], UV[3]",
+    "parts": [
+      {
+        "name": "Titan_Canopy_01",
+        "file": "Titan_Canopy_01.json.gz",
+        "mesh": "rbxassetid://120625131341198",
+        "triangles": 15602,
+        "vertices": 9491,
+        "bytes": 676633,
+        "sha256": "a62fbe1fd639601378f56ca1c5a16b6a0b3150daeaa691dc3eec78c702dba641"
+      },
+      {
+        "name": "Titan_Canopy_02",
+        "file": "Titan_Canopy_02.json.gz",
+        "mesh": "rbxassetid://90809587708299",
+        "triangles": 15601,
+        "vertices": 9081,
+        "bytes": 663925,
+        "sha256": "47a188751ec1dd91aac3a454fb709dc79971afeed474a7c68dfe434df88f5d68"
+      },
+      {
+        "name": "Titan_Canopy_03",
+        "file": "Titan_Canopy_03.json.gz",
+        "mesh": "rbxassetid://128888680651760",
+        "triangles": 15602,
+        "vertices": 9672,
+        "bytes": 691615,
+        "sha256": "0ef685482ca289f1b647a6cd9aa9b51c4550ce6267f7df0cf680cc70aae8e374"
+      },
+      {
+        "name": "Titan_Canopy_04",
+        "file": "Titan_Canopy_04.json.gz",
+        "mesh": "rbxassetid://127723213639093",
+        "triangles": 15602,
+        "vertices": 9425,
+        "bytes": 680718,
+        "sha256": "7db3fdb88790996ecad21c6875af604dd53f733a9b5056742bd217b832bb0b4c"
+      },
+      {
+        "name": "Titan_Canopy_05",
+        "file": "Titan_Canopy_05.json.gz",
+        "mesh": "rbxassetid://105006220445842",
+        "triangles": 15601,
+        "vertices": 9391,
+        "bytes": 674640,
+        "sha256": "93e310132524e7053efdde9c33a8f2b1b5a80a22c06d7e6e2fd84f6c3513d55c"
+      },
+      {
+        "name": "Titan_Canopy_06",
+        "file": "Titan_Canopy_06.json.gz",
+        "mesh": "rbxassetid://112760849458232",
+        "triangles": 15602,
+        "vertices": 9288,
+        "bytes": 678428,
+        "sha256": "0b8027c74d8f6f914f4c950a685a627f2483dd1d71b201aab2b9d7838dbc8058"
+      },
+      {
+        "name": "Titan_Canopy_07",
+        "file": "Titan_Canopy_07.json.gz",
+        "mesh": "rbxassetid://123439815910865",
+        "triangles": 15601,
+        "vertices": 9567,
+        "bytes": 699607,
+        "sha256": "7dc655ace77fac7a2127803c13527a34a465f79d094c2e6a4a8a6e1da1be8530"
+      },
+      {
+        "name": "Titan_Canopy_08",
+        "file": "Titan_Canopy_08.json.gz",
+        "mesh": "rbxassetid://136117236410193",
+        "triangles": 15602,
+        "vertices": 9321,
+        "bytes": 671480,
+        "sha256": "6cdec234739126be37a6c4c455170511e93c59b86ac8552cd51898d29efc3bbb"
+      },
+      {
+        "name": "Titan_Canopy_09",
+        "file": "Titan_Canopy_09.json.gz",
+        "mesh": "rbxassetid://123193537012402",
+        "triangles": 15601,
+        "vertices": 9548,
+        "bytes": 681977,
+        "sha256": "cd4959bf53dc426a5c9c45e52bb49843991865353da5152f89930118cb33c4ae"
+      },
+      {
+        "name": "Titan_Canopy_10",
+        "file": "Titan_Canopy_10.json.gz",
+        "mesh": "rbxassetid://85983612042445",
+        "triangles": 15601,
+        "vertices": 9596,
+        "bytes": 701990,
+        "sha256": "39e5bff577beb31d13557e74ed079d73fe08678ff98f0b77b8ae0f5954cc96ba"
+      },
+      {
+        "name": "Titan_Canopy_11",
+        "file": "Titan_Canopy_11.json.gz",
+        "mesh": "rbxassetid://72521528909069",
+        "triangles": 15601,
+        "vertices": 9367,
+        "bytes": 693120,
+        "sha256": "c0b5ed82ceef7b9d2c819ba90fec6d27cb2ee25def4f8fd67dc1c984b3bd22c0"
+      },
+      {
+        "name": "Titan_Canopy_12",
+        "file": "Titan_Canopy_12.json.gz",
+        "mesh": "rbxassetid://128856236645984",
+        "triangles": 15601,
+        "vertices": 9485,
+        "bytes": 680273,
+        "sha256": "d28a94a7305e31b7fb0430ade35d8413f3bfc60bf7cf660310d63dd2c33bf54c"
+      },
+      {
+        "name": "Titan_Canopy_13",
+        "file": "Titan_Canopy_13.json.gz",
+        "mesh": "rbxassetid://80079804796757",
+        "triangles": 15602,
+        "vertices": 9710,
+        "bytes": 692960,
+        "sha256": "6de6bfec98149638387cffe37cc7dcee98d757d12ddd9ac5dd427e750dc024d8"
+      },
+      {
+        "name": "Titan_Canopy_14",
+        "file": "Titan_Canopy_14.json.gz",
+        "mesh": "rbxassetid://125246995498962",
+        "triangles": 15601,
+        "vertices": 9316,
+        "bytes": 672827,
+        "sha256": "3d2ca87717ce1c6be46db68ce2f69a9d4a834d561e5df3fc3d749ac109cd8648"
+      },
+      {
+        "name": "Titan_Canopy_15",
+        "file": "Titan_Canopy_15.json.gz",
+        "mesh": "rbxassetid://135002224687620",
+        "triangles": 15601,
+        "vertices": 9654,
+        "bytes": 691765,
+        "sha256": "bb3a70cd452935c49cacaf395156c9e8d21cc757561f7d81781fabf29508235c"
+      },
+      {
+        "name": "Titan_Canopy_16",
+        "file": "Titan_Canopy_16.json.gz",
+        "mesh": "rbxassetid://140075454600175",
+        "triangles": 15601,
+        "vertices": 9017,
+        "bytes": 654882,
+        "sha256": "e09abbd9f68d1400326b2d65a26da0a3cd8b2fb2cec352568187e0629871201f"
+      }
+    ],
+    "complete": true,
+    "totalTriangles": 249622,
+    "mapRecovery": {
+      "kind": "EditableImage readback, capped at 1024; not proof of native renderer resolution",
+      "maps": [
+        {
+          "uri": "rbxassetid://107067438708069",
+          "size": [
+            1024,
+            1024
+          ],
+          "file": "maps/107067438708069.png",
+          "sha256": "05fc66fbef5d549f2f8d4abb9c711ab8c84c7a89be5488ef639503c147862666"
+        },
+        {
+          "uri": "rbxassetid://116461852435622",
+          "size": [
+            1024,
+            1024
+          ],
+          "file": "maps/116461852435622.png",
+          "sha256": "e0092ab0a130fd3b3ff65341faf2e794f0d7cceec336462802d0a2c8479f1009"
+        },
+        {
+          "uri": "rbxassetid://134323155340554",
+          "size": [
+            1024,
+            1024
+          ],
+          "file": "maps/134323155340554.png",
+          "sha256": "9a29a443f735f89400bab41fc1e78b5d1f74edca893166a2f3d51de2ef9e619e"
+        },
+        {
+          "uri": "rbxassetid://138922704904080",
+          "size": [
+            1024,
+            1024
+          ],
+          "file": "maps/138922704904080.png",
+          "sha256": "0a589f849ddede0523caf3da869e7f02985981e55a603864306ba819ef44d945"
+        }
+      ]
+    }
+  },
+  "sourceUvDensity": {
+    "kind": "derived uploaded-geometry inspection; not running-game proof",
+    "source": "/Users/digonto/Documents/ChatGPT/Roblox game 2/assets/build/fused_tree_base_recovered_2026-10-31",
+    "parts": [
+      {
+        "name": "Titan_Canopy_01",
+        "vertices": 9491,
+        "triangles": 15602,
+        "density1024PixelsPerProductionStud": {
+          "0.1": 0.7151563792778383,
+          "0.5": 0.7510176577149523,
+          "0.9": 0.8892171458971665
+        }
+      },
+      {
+        "name": "Titan_Canopy_02",
+        "vertices": 9081,
+        "triangles": 15601,
+        "density1024PixelsPerProductionStud": {
+          "0.1": 0.6472670762945218,
+          "0.5": 0.7466148168982277,
+          "0.9": 0.8097656839120159
+        }
+      },
+      {
+        "name": "Titan_Canopy_03",
+        "vertices": 9672,
+        "triangles": 15602,
+        "density1024PixelsPerProductionStud": {
+          "0.1": 0.7103593926793388,
+          "0.5": 0.7479720559293784,
+          "0.9": 0.8636045766567575
+        }
+      },
+      {
+        "name": "Titan_Canopy_04",
+        "vertices": 9425,
+        "triangles": 15602,
+        "density1024PixelsPerProductionStud": {
+          "0.1": 0.715944606407586,
+          "0.5": 0.751503006291575,
+          "0.9": 0.8829881707133983
+        }
+      },
+      {
+        "name": "Titan_Canopy_05",
+        "vertices": 9391,
+        "triangles": 15601,
+        "density1024PixelsPerProductionStud": {
+          "0.1": 0.710385426854492,
+          "0.5": 0.748151707150508,
+          "0.9": 0.834260718277961
+        }
+      },
+      {
+        "name": "Titan_Canopy_06",
+        "vertices": 9288,
+        "triangles": 15602,
+        "density1024PixelsPerProductionStud": {
+          "0.1": 0.7135939271897828,
+          "0.5": 0.7601283017504287,
+          "0.9": 0.9284626664332126
+        }
+      },
+      {
+        "name": "Titan_Canopy_07",
+        "vertices": 9567,
+        "triangles": 15601,
+        "density1024PixelsPerProductionStud": {
+          "0.1": 0.7177287124114814,
+          "0.5": 0.7541995384671554,
+          "0.9": 0.9301973171413618
+        }
+      },
+      {
+        "name": "Titan_Canopy_08",
+        "vertices": 9321,
+        "triangles": 15602,
+        "density1024PixelsPerProductionStud": {
+          "0.1": 0.6961864449329533,
+          "0.5": 0.7472966225949478,
+          "0.9": 0.8019549664242157
+        }
+      },
+      {
+        "name": "Titan_Canopy_09",
+        "vertices": 9548,
+        "triangles": 15601,
+        "density1024PixelsPerProductionStud": {
+          "0.1": 0.702911619313844,
+          "0.5": 0.7461634404738433,
+          "0.9": 0.7950447814667078
+        }
+      },
+      {
+        "name": "Titan_Canopy_10",
+        "vertices": 9596,
+        "triangles": 15601,
+        "density1024PixelsPerProductionStud": {
+          "0.1": 0.720714892354338,
+          "0.5": 0.7590682899793758,
+          "0.9": 0.9289658321214816
+        }
+      },
+      {
+        "name": "Titan_Canopy_11",
+        "vertices": 9367,
+        "triangles": 15601,
+        "density1024PixelsPerProductionStud": {
+          "0.1": 0.7061487695263133,
+          "0.5": 0.7586816722814835,
+          "0.9": 0.9216958671495616
+        }
+      },
+      {
+        "name": "Titan_Canopy_12",
+        "vertices": 9485,
+        "triangles": 15601,
+        "density1024PixelsPerProductionStud": {
+          "0.1": 0.7074746737070786,
+          "0.5": 0.7463856089092171,
+          "0.9": 0.7877843865322073
+        }
+      },
+      {
+        "name": "Titan_Canopy_13",
+        "vertices": 9710,
+        "triangles": 15602,
+        "density1024PixelsPerProductionStud": {
+          "0.1": 0.7150470827256804,
+          "0.5": 0.7480052129488826,
+          "0.9": 0.8119740604412334
+        }
+      },
+      {
+        "name": "Titan_Canopy_14",
+        "vertices": 9316,
+        "triangles": 15601,
+        "density1024PixelsPerProductionStud": {
+          "0.1": 0.699958247641391,
+          "0.5": 0.747404604146876,
+          "0.9": 0.7950811251739661
+        }
+      },
+      {
+        "name": "Titan_Canopy_15",
+        "vertices": 9654,
+        "triangles": 15601,
+        "density1024PixelsPerProductionStud": {
+          "0.1": 0.711143992881297,
+          "0.5": 0.7485487512548905,
+          "0.9": 0.8068816786507781
+        }
+      },
+      {
+        "name": "Titan_Canopy_16",
+        "vertices": 9017,
+        "triangles": 15601,
+        "density1024PixelsPerProductionStud": {
+          "0.1": 0.6605587982254332,
+          "0.5": 0.7460101765185855,
+          "0.9": 0.8334082102571655
+        }
+      }
+    ],
+    "uvConvention": "Blender (u, 1-v); raw Roblox UVs retained in JSON"
+  }
+}

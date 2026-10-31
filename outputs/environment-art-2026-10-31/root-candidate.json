@@ -1,0 +1,55 @@
+{
+  "kind": "uninstalled UV/material candidate; requires Studio import and visual validation",
+  "density2048PixelsPerProductionStudMedian": 3.8015045004408328,
+  "sourceRecovery": "/Users/digonto/Documents/ChatGPT/Roblox game 2/assets/build/fused_tree_base_recovered_2026-10-31",
+  "mapReadbackLimit": 1024,
+  "masterMaps": {
+    "Color": 2048,
+    "Normal": 2048,
+    "Roughness": 1024
+  },
+  "detailSource": "Poly Haven bark_platanus, CC0, existing licensed project source",
+  "parts": [
+    {
+      "name": "Titan_Canopy_13",
+      "triangles": 15602,
+      "positionMaxDelta": 0.0,
+      "normalMaxDelta": 0.0
+    },
+    {
+      "name": "Titan_Canopy_14",
+      "triangles": 15601,
+      "positionMaxDelta": 0.0,
+      "normalMaxDelta": 0.0
+    },
+    {
+      "name": "Titan_Canopy_15",
+      "triangles": 15601,
+      "positionMaxDelta": 0.0,
+      "normalMaxDelta": 0.0
+    },
+    {
+      "name": "Titan_Canopy_16",
+      "triangles": 15601,
+      "positionMaxDelta": 0.0,
+      "normalMaxDelta": 0.0
+    }
+  ],
+  "totalTriangles": 62405,
+  "files": {
+    "FusedRootDetail.glb": "0c8aaf0ef74b6952f8caaefaef426e37699a7032f21438608e2a700ae74513a3",
+    "FusedRootDetail.blend": "e8b6e0d4cb2508acf417bdc85093d75b18aef2e10a9f555532ac0086618ed4b0",
+    "maps/FusedRootDetail_Normal.png": "0d5542c4560227f322d4b67d221823a9215db1a779765784481d98967e8f97e5",
+    "maps/FusedRootDetail_Roughness.png": "46911d27926456ce00a81328a73809bf3adf9207c47daa8ba5d0f3869cb9dcda",
+    "maps/FusedRootDetail_Color.png": "ee8e9fde903513b880af4d12c870a3f615df4472927ddc3df22c8ca30e2c1fef",
+    "original_geometry/report.json": "aea8fbe2639a51e2f4842325c9147eedc34624c94ed83aac74f0b8d4fca323a6",
+    "original_geometry/RecoveredMonument.blend": "1081c27295bbdc9182e2e1a357bc8dbe2aa8c20c15b1749803be3f8fa09a5102"
+  },
+  "preferredExport": {
+    "path": "assets/build/fused_root_detail_pilot_v4/FusedRootDetail_Tangents.glb",
+    "sha256": "200a2dff12ae85169f1fe7862ab46945ba621d42d65f2dae2773a6be3bb1f28e",
+    "bytes": 12510268,
+    "tangentExportEnabled": true,
+    "installed": false
+  }
+}

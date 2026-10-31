@@ -1,0 +1,21 @@
+{
+  "kind": "offline material review; uninstalled candidate; no game acceptance claim",
+  "parts": [
+    {
+      "name": "Titan_Canopy_13",
+      "density2048PixelsPerProductionStudMedian": 3.803165308773258
+    },
+    {
+      "name": "Titan_Canopy_14",
+      "density2048PixelsPerProductionStudMedian": 3.800113620137156
+    },
+    {
+      "name": "Titan_Canopy_15",
+      "density2048PixelsPerProductionStudMedian": 3.8059203150954257
+    },
+    {
+      "name": "Titan_Canopy_16",
+      "density2048PixelsPerProductionStudMedian": 3.793019194078513
+    }
+  ]
+}

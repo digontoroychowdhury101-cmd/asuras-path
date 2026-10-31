@@ -145,6 +145,7 @@ return 'pinned'""")
                 call(client, sid, "user_keyboard_input", datamodel_type="Client", actions=[{"action": "keyPress", "key_code": "H"}])
                 time.sleep(.25)
             lua(client, sid, "Client", "local c=game.Players.LocalPlayer.PlayerGui:FindFirstChild('ControlsCard',true) assert(not c or not c.Visible,'controls card still covers the shot') return 'shot unobstructed'")
+            lua(client, sid, "Client", "local v=workspace.CurrentCamera.ViewportSize assert(v.X>=200 and v.Y>=100,'inactive or undersized Studio viewport') return 'viewport active'")
             metadata = lua(client, sid, "Client", """local p=game:GetService('Players').LocalPlayer
 local c=workspace.CurrentCamera local l=game:GetService('Lighting') local a=l:FindFirstChildOfClass('Atmosphere')
 local gui={} for _,g in p.PlayerGui:GetChildren() do if g:IsA('ScreenGui') then gui[g.Name]=g.Enabled end end

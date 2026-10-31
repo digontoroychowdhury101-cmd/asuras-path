@@ -1,0 +1,35 @@
+{
+  "kind": "actual GLB round-trip check; offline, not Studio visual acceptance",
+  "model": "assets/build/fused_root_detail_pilot_v4/FusedRootDetail_Tangents.glb",
+  "parts": [
+    {
+      "name": "Titan_Canopy_13",
+      "evaluatedTriangles": 15602,
+      "maxVertexPositionDelta": 0.0,
+      "uvSets": 1,
+      "materials": 1
+    },
+    {
+      "name": "Titan_Canopy_14",
+      "evaluatedTriangles": 15601,
+      "maxVertexPositionDelta": 0.0,
+      "uvSets": 1,
+      "materials": 1
+    },
+    {
+      "name": "Titan_Canopy_15",
+      "evaluatedTriangles": 15601,
+      "maxVertexPositionDelta": 0.0,
+      "uvSets": 1,
+      "materials": 1
+    },
+    {
+      "name": "Titan_Canopy_16",
+      "evaluatedTriangles": 15601,
+      "maxVertexPositionDelta": 0.0,
+      "uvSets": 1,
+      "materials": 1
+    }
+  ],
+  "totalTriangles": 62405
+}
