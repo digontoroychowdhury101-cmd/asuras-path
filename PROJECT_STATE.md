@@ -1,5 +1,9 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## General Zhao v2 design review — 2026-10-31 (Mac)
+
+Rebuilt Zhao in Blender by script (`tools/blender/zhao_v2/`): strand facial hair, irises, lacquered collar, calmer blade. Game mesh 22,090 tris, tip 9.246 studs, 1024²/512² textures. Assets in gitignored `assets/source/.../v2_design/` (local only). Not uploaded, not Studio-tested. Next: user visual review, then fix face bake and 40-stud read.
+
 ## Root material investigation — 2026-10-31 (Mac)
 
 Recovered uploaded root geometry; diagnosed low UV density. Separate four-section bark pilot preserves geometry/normals; GLB round-trip passes. Uninstalled, no game-source change; digest 458197530. Evidence: `outputs/environment-art-2026-10-31/`. Mac lock blocks video/Play review. Blender crashed on Scene-library writing; headless collection workflow fixed, saved Zhao master intact, editor reopening pending. Next: unlock, restore editor, Studio pilot comparison.
