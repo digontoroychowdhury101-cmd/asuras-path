@@ -1,5 +1,9 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## General Zhao animation phase 1 — 2026-10-31 (Mac)
+
+59 procedurally authored clips (`assets/animations/general_zhao/`, not uploaded), previewed on the v2 mesh; Studio playback matches bake (0.0006 studs). Client phase-locks authored attacks to server impact, re-times Lightning Spear pulses, Oath_ keys, Zhao Guandao BossSwing. 25/59 clips validate; attacks still clip/pop. Next: polish attack clips, then upload.
+
 ## General Zhao v2 design review — 2026-10-31 (Mac)
 
 Rebuilt Zhao in Blender by script (`tools/blender/zhao_v2/`): strand facial hair, irises, lacquered collar, calmer blade. Game mesh 22,090 tris, tip 9.246 studs, 1024²/512² textures. Assets in gitignored `assets/source/.../v2_design/` (local only). Not uploaded, not Studio-tested. Next: user visual review, then fix face bake and 40-stud read.

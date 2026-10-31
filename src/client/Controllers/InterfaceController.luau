@@ -1029,7 +1029,7 @@ function Controller.OnCue(self: Interface, cue: Cue)
 	if isBossCue or (sourceEntity and sourceEntity.Model:GetAttribute("AsuraEncounter") == self.BossId and self.BossId ~= nil) then
 		BossEffects.cue(cue, self.State)
 		if sourceEntity and (cue.Kind == "Telegraph" or cue.Kind == "BossSwing" or cue.Kind == "BossPhase" or cue.Kind == "BossEnrage") then
-			BossAnimations.action(sourceEntity.Model, cue.Kind == "BossPhase" or cue.Kind == "BossEnrage", data.move, data.kind)
+			BossAnimations.action(sourceEntity.Model, cue.Kind == "BossPhase" or cue.Kind == "BossEnrage", data.move, data.kind, data.impact)
 		end
 	end
 	if cue.Kind == "AltarRest" and cue.Source == own then
@@ -1207,7 +1207,7 @@ function Controller.UpdateBoss(self: Interface)
 	if self.BossEntity == nil then return end
 	for _, id in self.BossMembers do
 		local entity = self.State:Get(id)
-		if entity then BossAnimations.sync(entity.Model) end
+		if entity then BossAnimations.sync(entity.Model, entity.Snapshot and entity.Snapshot.State) end
 	end
 	if #self.Duo.Rows > 0 then
 		DuoBars.update(self.Duo, self.State, self.Camera:LockedEntity(), not Visibility.of(self).Boss)

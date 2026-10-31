@@ -96,9 +96,9 @@ local spread = math.deg(math.abs(((math.atan2(bz, bx) - math.atan2(zz, zx)) + ma
 check(string.format("Bull at %.1f, Zhao at %.1f, %.0f deg apart: one guard covers both", bullStop, zhaoStop, spread), spread <= 2 * math.deg(math.acos(0.15)))
 
 -- 8. Every Bull swing plays its own clip slot; other bosses are unchanged.
-check("swing cue for boss-only arms only", has("src/server/Services/AIService.luau", "elseif agent.Boss and e and Weapons.isBossOnly(e.Fighter.Weapon) then"))
+check("swing cue for boss-only arms and looks with melee clips only", has("src/server/Services/AIService.luau", "elseif agent.Boss and e and (Weapons.isBossOnly(e.Fighter.Weapon) or AnimationRules.Melee[e.Model:GetAttribute(\"AsuraLookKey\")]) then"))
 check("client plays BossSwing as an action, not a transform", has("src/client/Controllers/InterfaceController.luau", "cue.Kind == \"BossSwing\""))
-check("clip slots match the moveset", #AnimRules.slots("IronBull", 1) == 11 and #AnimRules.slots("GeneralZhao", 1) == 5)
+check("clip slots match the moveset", #AnimRules.slots("IronBull", 1) == 13 and #AnimRules.slots("GeneralZhao", 1) == 13)
 
 print(string.format("iron bull: %d passed, %d failed", passed, failed))
 if failed > 0 then error("iron bull regression failed") end

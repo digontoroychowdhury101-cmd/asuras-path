@@ -22,6 +22,7 @@ local BossRules = require(Shared.Shared.BossEncounterRules)
 local Handoff = require(script.Parent.EncounterHandoff)
 local HandoffRules = require(Shared.Shared.BossHandoff)
 local Bodies = require(Shared.Shared.BossBodies)
+local AnimationRules = require(Shared.Shared.BossAnimationRules)
 local Zones = require(Shared.Shared.MonasteryZones)
 local Campaign = require(Shared.Shared.CampaignZones)
 
@@ -260,8 +261,9 @@ local function publishTelegraph(agent: Agent, move: Combat.MoveData, class: Tele
 	end
 	if class ~= "Light" then
 		Characters.Cue("Telegraph", agent.Id, { class = class, move = move.Id, impact = impactAt })
-	elseif agent.Boss and e and Weapons.isBossOnly(e.Fighter.Weapon) then
-		-- A boss-only weapon's light swing plays its own clip slot too (BossAnimationRules.Melee); no warning UI.
+	elseif agent.Boss and e and (Weapons.isBossOnly(e.Fighter.Weapon) or AnimationRules.Melee[e.Model:GetAttribute("AsuraLookKey")]) then
+		-- A light swing of a boss-only weapon, or of a look with its own melee clips (Zhao's Guandao),
+		-- plays its own clip slot too (BossAnimationRules.Melee); no warning UI.
 		Characters.Cue("BossSwing", agent.Id, { move = move.Id, impact = impactAt })
 	end
 end

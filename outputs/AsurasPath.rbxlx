@@ -2125,7 +2125,8 @@ return L.freeze(r)
 -- and at each key takes, in order: the actor's AsuraBossAnimation_&lt;key&gt; attribute (copied by
 -- BossAppearance from ServerStorage.AsuraAssets.AsuraBossAnimations, so it survives phase changes
 -- and retries), then an authored id in `Custom` below (Shen's four legacy AnimationCatalog slots
--- count too). With nothing authored a humanoid plays the stock stand-in for the move's kind and a
+-- count too). A Twin under the oath (AsuraBossEnraged) first tries &lt;Look&gt;_P&lt;n&gt;_Oath_&lt;Action&gt; and
+-- &lt;Look&gt;_Oath_&lt;Action&gt;. With nothing authored a humanoid plays the stock stand-in for the move's kind and a
 -- creature keeps its procedural CreatureMotion pose. Animation is cosmetic only: no gameplay
 -- reads tracks or markers; damage stays on the server's impact times.
 local hasScript = pcall(function() return script.Parent end)
@@ -2138,7 +2139,7 @@ end
 
 local Rules = {}
 
-export type Source = "Override" | "Custom" | "Stock" | "Procedural"
+export type Source = "Override" | "Custom" | "Stock" | "Procedural" | "None"
 export type Resolved = { Key: string, Id: string?, Source: Source, Speed: number, Looped: boolean, Priority: string }
 
 -- Paste published ids here ("rbxassetid://&lt;digits&gt;") under the slot key, e.g.
@@ -2152,11 +2153,36 @@ Rules.Moves = table.freeze({
 	SovereignWu = { "Wu", "Wu" }, AzureWyrm = { "Wyrm", "Wyrm" },
 } :: { [string]: { string } })
 Rules.Oath = table.freeze({ GeneralZhao = true, IronBull = true } :: { [string]: boolean })
--- Boss-only melee sets whose every swing is its own clip slot (post-F26 step 6, D1: the Bull's maul and
--- shield). Ids are WeaponSchema's IronBullMaul moves; AIService cues each swing as "BossSwing".
+-- On the oath the survivor also fights with the fallen partner's set (BossDuo: Tactics.enrage).
+Rules.OathMoves = table.freeze({ GeneralZhao = "Bull", IronBull = "Zhao" } :: { [string]: string })
+-- Melee sets whose every swing is its own clip slot: the Bull's boss-only maul and shield (post-F26
+-- step 6, D1) and Zhao's shared Guandao (phase 1 animation package). Ids are WeaponSchema moves;
+-- AIService cues each light swing of a look listed here as "BossSwing".
 Rules.Melee = table.freeze({
 	IronBull = table.freeze({ "IronBullMaul_L1", "IronBullMaul_L2", "IronBullMaul_L3", "IronBullMaul_Heavy", "IronBullMaul_Running", "IronBullMaul_Art" }),
+	GeneralZhao = table.freeze({ "Guandao_L1", "Guandao_L2", "Guandao_L3", "Guandao_Heavy", "Guandao_Running", "Guandao_Art" }),
 } :: { [string]: { string } })
+
+-- Contact times (seconds into the authored clip, at speed 1) per look and action, from the clip
+-- manifest (assets/animations/general_zhao/manifest.json; the Oath_ variants share them). The client
+-- phase-locks an authored attack so a contact lands on the server's impact time; markers and contacts
+-- never decide damage.
+Rules.Contacts = table.freeze({
+	GeneralZhao = table.freeze({
+		Strike = { 0.5 }, LightningSpear = { 0.8, 1.5, 2.2 }, ThunderQuickstep = { 1.0 }, IronCharge = { 1.5 }, ColossalHammer = { 1.8 },
+		Guandao_L1 = { 0.15 }, Guandao_L2 = { 0.15 }, Guandao_L3 = { 0.183 }, Guandao_Heavy = { 0.383 }, Guandao_Running = { 0.217 },
+		Guandao_Art = { 0.317 },
+	}),
+} :: { [string]: { [string]: { number } } })
+-- How far a track may be sped up or slowed to make its contact; beyond that it holds or skips ahead.
+Rules.SyncSpeed = table.freeze({ Min = 0.6, Max = 1.6 })
+
+-- Server states that cancel an attack (BossAttackService.step) and the clip that answers each. A
+-- reaction has no Strike or stock stand-in: unauthored, it resolves to nothing and the actor idles.
+Rules.Reactions = table.freeze({ StanceBroken = "PostureBreak", GuardBroken = "PostureBreak", Hitstun = "HitLightFront",
+	DeathblowVictim = "DeathblowVictim", KO = "Death" } :: { [string]: string })
+local REACTION: { [string]: boolean } = {}
+for _, action in Rules.Reactions do REACTION[action] = true end
 
 -- Shen's original catalog slots (and their AsuraBossAnimation_&lt;legacy&gt; attributes) still count.
 local LEGACY: { [string]: { Slot: string, Speed: number } } = {
@@ -2191,9 +2217,10 @@ local KINDS: { [string]: string } = {}
 for _, list in Attacks do for _, move in list do KINDS[move.Id] = move.Kind end end
 function Rules.kind(move: string): string? return KINDS[move] end
 
-local function keys(look: string, phase: number, action: string): { string }
+local function keys(look: string, phase: number, action: string, oath: boolean?): { string }
 	local list = { look .. "_P" .. phase .. "_" .. action, look .. "_" .. action }
-	if action ~= "Idle" and action ~= "Transform" and action ~= "Strike" then
+	if oath then table.insert(list, 1, look .. "_Oath_" .. action); table.insert(list, 1, look .. "_P" .. phase .. "_Oath_" .. action) end
+	if action ~= "Idle" and action ~= "Transform" and action ~= "Strike" and not REACTION[action] then
 		table.insert(list, look .. "_P" .. phase .. "_Strike"); table.insert(list, look .. "_Strike")
 	end
 	return list
@@ -2202,8 +2229,9 @@ end
 -- rig: "R15" | "R6" | "Creature"; attribute reads the actor (nil-safe for pure use).
 function Rules.resolve(look: string, phase: number, action: string, kind: string?, rig: string, attribute: (string) -&gt; any): Resolved
 	local looped = action == "Idle"
-	local priority = if looped then "Idle" elseif action == "Transform" then "Action4" else "Action"
-	for _, key in keys(look, phase, action) do
+	local priority = if looped then "Idle" elseif action == "Transform" then "Action4" elseif REACTION[action] then "Action3" else "Action"
+	local oath = Rules.Oath[look] == true and attribute("AsuraBossEnraged") == true
+	for _, key in keys(look, phase, action, oath) do
 		local legacy = LEGACY[key]
 		local override = attribute("AsuraBossAnimation_" .. key)
 		if not Rules.validId(override) and legacy then override = attribute("AsuraBossAnimation_" .. legacy.Slot) end
@@ -2216,6 +2244,9 @@ function Rules.resolve(look: string, phase: number, action: string, kind: string
 		end
 	end
 	local key = keys(look, phase, action)[1]
+	if REACTION[action] then
+		return { Key = key, Id = nil, Source = "None", Speed = 1, Looped = false, Priority = priority }
+	end
 	if rig == "Creature" then
 		return { Key = key, Id = nil, Source = "Procedural", Speed = 1, Looped = looped, Priority = priority }
 	end
@@ -2234,7 +2265,36 @@ function Rules.slots(look: string, phase: number): { string }
 	local set = sets and Attacks[sets[math.clamp(phase, 1, #sets)]]
 	for _, move in set or {} do table.insert(list, move.Id) end
 	for _, id in Rules.Melee[look] or {} do table.insert(list, id) end
+	for _, move in (Rules.OathMoves[look] and Attacks[Rules.OathMoves[look]]) or {} do
+		if not table.find(list, move.Id) then table.insert(list, move.Id) end
+	end
 	return list
+end
+
+-- Phase lock (pure). A fresh authored attack: the clip position to start from, the playback speed, and
+-- how long to hold the first frame, so `contact` (clip seconds) lands `untilImpact` seconds from now.
+function Rules.startPlan(contact: number, untilImpact: number): (number, number, number)
+	local u = math.max(untilImpact, 0)
+	local speed = if u &gt; 1e-3 then math.clamp(contact / u, Rules.SyncSpeed.Min, Rules.SyncSpeed.Max) else Rules.SyncSpeed.Max
+	return math.max(0, contact - u * speed), speed, math.max(0, u - contact / speed)
+end
+-- Which contact a cue for an already-playing move means: the one whose spacing from the first contact
+-- best matches `offset` (this cue's impact minus the move's first impact). A repeat pulse picks the
+-- next thrust; a deferred first impact still picks the first.
+function Rules.contactFor(contacts: { number }, offset: number): number
+	local best, gap = 1, math.huge
+	for i, c in contacts do
+		local d = math.abs(c - contacts[1] - offset)
+		if d &lt; gap then best, gap = i, d end
+	end
+	return best
+end
+-- The speed that carries a playing track from `position` to `target` in `untilImpact` seconds; a
+-- contact already passed just plays on at 1.
+function Rules.retime(target: number, position: number, untilImpact: number): number
+	if target &lt;= position then return 1 end
+	if untilImpact &lt;= 1e-3 then return Rules.SyncSpeed.Max end
+	return math.clamp((target - position) / untilImpact, Rules.SyncSpeed.Min, Rules.SyncSpeed.Max)
 end
 
 -- Honest one-line status for the AsuraAnimationStatus attribute.
@@ -11919,6 +11979,7 @@ local BossRules = require(Shared.Shared.BossEncounterRules)
 local Handoff = require(script.Parent.EncounterHandoff)
 local HandoffRules = require(Shared.Shared.BossHandoff)
 local Bodies = require(Shared.Shared.BossBodies)
+local AnimationRules = require(Shared.Shared.BossAnimationRules)
 local Zones = require(Shared.Shared.MonasteryZones)
 local Campaign = require(Shared.Shared.CampaignZones)
 
@@ -12157,8 +12218,9 @@ local function publishTelegraph(agent: Agent, move: Combat.MoveData, class: Tele
 	end
 	if class ~= "Light" then
 		Characters.Cue("Telegraph", agent.Id, { class = class, move = move.Id, impact = impactAt })
-	elseif agent.Boss and e and Weapons.isBossOnly(e.Fighter.Weapon) then
-		-- A boss-only weapon's light swing plays its own clip slot too (BossAnimationRules.Melee); no warning UI.
+	elseif agent.Boss and e and (Weapons.isBossOnly(e.Fighter.Weapon) or AnimationRules.Melee[e.Model:GetAttribute("AsuraLookKey")]) then
+		-- A light swing of a boss-only weapon, or of a look with its own melee clips (Zhao's Guandao),
+		-- plays its own clip slot too (BossAnimationRules.Melee); no warning UI.
 		Characters.Cue("BossSwing", agent.Id, { move = move.Id, impact = impactAt })
 	end
 end
@@ -83838,10 +83900,19 @@ return table.freeze(Show)
 -- stand-in. A creature with nothing authored keeps CreatureMotion's procedural pose; when an
 -- authored track plays on it, AsuraAuthoredMotion (local to this client) makes CreatureMotion
 -- release its welds so the two never transform the same joints. Cosmetic only.
+-- An authored attack is phase-locked to the cue's server impact time (Rules.Contacts): it starts,
+-- speeds up, slows or holds so its contact lands on the impact; a repeat cue for the same move (the
+-- Lightning Spear's later thrusts, a deferred impact) re-times the running track instead of
+-- restarting it. A cancelling server state stops the attack and plays its reaction, if authored.
 local Rules = require(game:GetService("ReplicatedStorage").AsurasPath.Shared.BossAnimationRules)
 local Animations = {}
-type Playing = { Signature: string, Key: string, Source: string, Track: AnimationTrack? }
+type Playing = { Signature: string, Key: string, Source: string, Track: AnimationTrack?, Move: string?, Contacts: { number }?,
+	First: number?, Target: number?, Speed: number?, HoldUntil: number? }
 local playing: { [Model]: Playing } = {}
+local reacted: { [Model]: string } = {}
+
+-- Server clock, the time base of every cue's impact (overridable for tests).
+function Animations.now(): number return workspace:GetServerTimeNow() end
 
 local function rigOf(model: Model, humanoid: Humanoid?): string
 	if model:GetAttribute("AsuraRig") == "Creature" then return "Creature" end
@@ -83861,7 +83932,7 @@ local function stop(model: Model)
 	playing[model] = nil
 end
 
-local function play(model: Model, action: string, kind: string?): Rules.Resolved?
+local function play(model: Model, action: string, kind: string?, impact: number?): Rules.Resolved?
 	local humanoid = model:FindFirstChildOfClass("Humanoid")
 	local look, phase, sig = signature(model)
 	local resolved = Rules.resolve(look, phase, action, kind, rigOf(model, humanoid), function(name) return model:GetAttribute(name) end)
@@ -83880,24 +83951,76 @@ local function play(model: Model, action: string, kind: string?): Rules.Resolved
 	if not ok then return nil end
 	track.Priority = (Enum.AnimationPriority :: any)[resolved.Priority]
 	track.Looped = resolved.Looped
-	track:Play(0.15, 1, resolved.Speed)
-	model:SetAttribute("AsuraAuthoredMotion", if resolved.Source == "Override" or resolved.Source == "Custom" then true else nil)
-	playing[model] = { Signature = sig, Key = resolved.Key, Source = resolved.Source, Track = track }
+	local authored = resolved.Source == "Override" or resolved.Source == "Custom"
+	local entry: Playing = { Signature = sig, Key = resolved.Key, Source = resolved.Source, Track = track }
+	local contacts = authored and impact and (Rules.Contacts[look] or {})[action]
+	if contacts then
+		local now = Animations.now()
+		local position, speed, hold = Rules.startPlan(contacts[1], impact - now)
+		track:Play(0.1, 1, if hold &gt; 0 then 0 else speed)
+		track.TimePosition = position
+		entry.Move, entry.Contacts, entry.First, entry.Target, entry.Speed = action, contacts, impact, contacts[1], speed
+		entry.HoldUntil = if hold &gt; 0 then now + hold else nil
+	else
+		track:Play(0.15, 1, resolved.Speed)
+	end
+	model:SetAttribute("AsuraAuthoredMotion", if authored then true else nil)
+	playing[model] = entry
 	return resolved
 end
 Animations.play = play
 
--- Keeps the idle for the current look and phase; a phase change re-resolves (and re-reads overrides).
-function Animations.sync(model: Model)
+-- Every frame: releases a held windup, returns to speed 1 once a contact passes, answers a cancelling
+-- server state (`state`: the actor's replicated fighter state) and otherwise keeps the idle for the
+-- current look and phase; a phase change re-resolves (and re-reads overrides).
+function Animations.sync(model: Model, state: string?)
+	local reaction = state and Rules.Reactions[state]
+	if not reaction then
+		reacted[model] = nil
+	elseif reacted[model] ~= state then
+		reacted[model] = state
+		local resolved = play(model, reaction)
+		if not resolved or not resolved.Id then play(model, "Idle") end
+		return
+	end
 	local _, _, sig = signature(model)
 	local previous = playing[model]
-	if previous and previous.Signature == sig and (previous.Track == nil or previous.Track.IsPlaying) then return end
+	local track = previous and previous.Track
+	if previous and track and previous.Move and track.IsPlaying then
+		if previous.HoldUntil and Animations.now() &gt;= previous.HoldUntil then
+			previous.HoldUntil = nil
+			track:AdjustSpeed(previous.Speed or 1)
+		elseif not previous.HoldUntil and previous.Target and track.TimePosition &gt;= previous.Target - 1e-3 then
+			previous.Target = nil
+			track:AdjustSpeed(1)
+		end
+	end
+	if previous and previous.Signature == sig and (track == nil or track.IsPlaying) then return end
 	play(model, "Idle")
 end
 
--- A telegraphed move (its catalogue id and kind) or the phase/oath transform.
-function Animations.action(model: Model, transform: boolean, move: string?, kind: string?)
-	play(model, if transform then "Transform" elseif move and move ~= "" then move else "Strike", kind)
+-- A telegraphed move (its catalogue id, kind and server impact time) or the phase/oath transform. A
+-- cue for the move already playing re-times it toward the contact this impact belongs to.
+function Animations.action(model: Model, transform: boolean, move: string?, kind: string?, impact: number?)
+	local action = if transform then "Transform" elseif move and move ~= "" then move else "Strike"
+	local current = playing[model]
+	local track = current and current.Track
+	if current and track and track.IsPlaying and current.Move == action and current.Contacts and current.First and type(impact) == "number" then
+		local contacts = current.Contacts :: { number }
+		local index = Rules.contactFor(contacts, impact - current.First)
+		current.First = impact - (contacts[index] - contacts[1])
+		local now = Animations.now()
+		local position = track.TimePosition
+		local speed = Rules.retime(contacts[index], position, impact - now)
+		current.Target, current.Speed = if contacts[index] &gt; position then contacts[index] else nil, speed
+		if current.HoldUntil then -- still holding the windup: move the release so the contact lands on time
+			current.HoldUntil = math.max(now, impact - (contacts[index] - position) / speed)
+		else
+			track:AdjustSpeed(speed)
+		end
+		return
+	end
+	play(model, action, kind, if type(impact) == "number" then impact else nil)
 end
 
 -- Drops tracks of actors that have left the world (defeat, reset); called with the boss cues.
@@ -91165,7 +91288,7 @@ function Controller.OnCue(self: Interface, cue: Cue)
 	if isBossCue or (sourceEntity and sourceEntity.Model:GetAttribute("AsuraEncounter") == self.BossId and self.BossId ~= nil) then
 		BossEffects.cue(cue, self.State)
 		if sourceEntity and (cue.Kind == "Telegraph" or cue.Kind == "BossSwing" or cue.Kind == "BossPhase" or cue.Kind == "BossEnrage") then
-			BossAnimations.action(sourceEntity.Model, cue.Kind == "BossPhase" or cue.Kind == "BossEnrage", data.move, data.kind)
+			BossAnimations.action(sourceEntity.Model, cue.Kind == "BossPhase" or cue.Kind == "BossEnrage", data.move, data.kind, data.impact)
 		end
 	end
 	if cue.Kind == "AltarRest" and cue.Source == own then
@@ -91343,7 +91466,7 @@ function Controller.UpdateBoss(self: Interface)
 	if self.BossEntity == nil then return end
 	for _, id in self.BossMembers do
 		local entity = self.State:Get(id)
-		if entity then BossAnimations.sync(entity.Model) end
+		if entity then BossAnimations.sync(entity.Model, entity.Snapshot and entity.Snapshot.State) end
 	end
 	if #self.Duo.Rows &gt; 0 then
 		DuoBars.update(self.Duo, self.State, self.Camera:LockedEntity(), not Visibility.of(self).Boss)

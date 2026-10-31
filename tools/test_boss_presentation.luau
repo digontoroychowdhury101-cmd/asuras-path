@@ -477,9 +477,49 @@ check("status names the stand-ins honestly", AnimRules.status("GrandmasterShen",
 	and string.find(AnimRules.status("AzureWyrm", 2, "Creature", none), "Fallback:CreatureMotion 0/6", 1, true) ~= nil)
 local all = {}
 for _, action in AnimRules.slots("IronBull", 1) do all["AsuraBossAnimation_IronBull_" .. action] = "rbxassetid://9" end
-check("status reports a fully authored actor (Bull: 5 + 6 maul/shield swings, step 6 D1)", AnimRules.status("IronBull", 1, "R15", attrs(all)) == "Authored 11/11")
+check("status reports a fully authored actor (Bull: 5 + 6 maul/shield swings + Zhao's 2 on the oath)", AnimRules.status("IronBull", 1, "R15", attrs(all)) == "Authored 13/13")
 check("the Bull's swings are their own slots, in WeaponSchema order", #AnimRules.Melee.IronBull == 6 and AnimRules.Melee.IronBull[1] == Weapons.get("IronBullMaul").Light[1].Id
-	and AnimRules.Melee.IronBull[6] == Weapons.get("IronBullMaul").WeaponArt.Id and AnimRules.Melee.GeneralZhao == nil)
+	and AnimRules.Melee.IronBull[6] == Weapons.get("IronBullMaul").WeaponArt.Id)
+local guandao = Weapons.get("Guandao")
+check("Zhao's Guandao swings are their own slots, in WeaponSchema order", #AnimRules.Melee.GeneralZhao == 6 and AnimRules.Melee.GeneralZhao[1] == guandao.Light[1].Id
+	and AnimRules.Melee.GeneralZhao[3] == guandao.Light[3].Id and AnimRules.Melee.GeneralZhao[4] == guandao.Heavy.Id
+	and AnimRules.Melee.GeneralZhao[6] == guandao.WeaponArt.Id)
+local zhaoSlots = AnimRules.slots("GeneralZhao", 1)
+check("Zhao requests the brief's keys, the Bull's two on the oath included", #zhaoSlots == 13 and table.find(zhaoSlots, "IronCharge")
+	and table.find(zhaoSlots, "ColossalHammer") and table.find(zhaoSlots, "Transform") and table.find(zhaoSlots, "Guandao_Art"))
+for action, list in AnimRules.Contacts.GeneralZhao do
+	check("Zhao's " .. action .. " contacts are a slot with rising times", (table.find(zhaoSlots, action) ~= nil) and list[1] > 0
+		and (list[2] == nil or list[2] > list[1]))
+end
+local spearMove = Attacks.Zhao[1]
+check("the Lightning Spear clip's thrusts sit on the server's pulse spacing", spearMove.Id == "LightningSpear"
+	and math.abs(AnimRules.Contacts.GeneralZhao.LightningSpear[1] - spearMove.Windup) < 1e-6
+	and math.abs(AnimRules.Contacts.GeneralZhao.LightningSpear[2] - AnimRules.Contacts.GeneralZhao.LightningSpear[1] - spearMove.Interval) < 1e-6
+	and #AnimRules.Contacts.GeneralZhao.LightningSpear == spearMove.Repeats)
+local sworn = attrs({ AsuraBossEnraged = true, AsuraBossAnimation_GeneralZhao_P1_Oath_Idle = "rbxassetid://61", AsuraBossAnimation_GeneralZhao_P1_Idle = "rbxassetid://60",
+	AsuraBossAnimation_GeneralZhao_P1_IronCharge = "rbxassetid://62" })
+check("under the oath Zhao prefers his Oath_ clip and falls back to the plain one", AnimRules.resolve("GeneralZhao", 1, "Idle", nil, "R15", sworn).Id == "rbxassetid://61"
+	and AnimRules.resolve("GeneralZhao", 1, "IronCharge", nil, "R15", sworn).Id == "rbxassetid://62"
+	and AnimRules.resolve("GeneralZhao", 1, "Idle", nil, "R15", attrs({ AsuraBossAnimation_GeneralZhao_P1_Oath_Idle = "rbxassetid://61" })).Source == "Stock")
+check("an unauthored reaction resolves to nothing, never a stock strike", AnimRules.resolve("GeneralZhao", 1, "PostureBreak", nil, "R15", none).Id == nil
+	and AnimRules.resolve("GeneralZhao", 1, "PostureBreak", nil, "R15", none).Source == "None"
+	and AnimRules.resolve("GeneralZhao", 1, "PostureBreak", nil, "R15", attrs({ AsuraBossAnimation_GeneralZhao_PostureBreak = "rbxassetid://63" })).Priority == "Action3")
+check("every attack-cancelling server state has a reaction", AnimRules.Reactions.KO and AnimRules.Reactions.StanceBroken and AnimRules.Reactions.DeathblowVictim
+	and AnimRules.Reactions.Hitstun and AnimRules.Reactions.GuardBroken)
+-- Phase lock: the contact lands on the impact; out-of-range time holds or skips ahead.
+local function near(a, b) return math.abs(a - b) < 1e-6 end
+local p0, s0, h0 = AnimRules.startPlan(0.8, 0.8)
+local p1, s1, h1 = AnimRules.startPlan(0.8, 2.0)
+local p2, s2, h2 = AnimRules.startPlan(0.8, 0.2)
+local p3, s3, h3 = AnimRules.startPlan(0.15, -0.1)
+check("a fresh attack lands its contact on the impact", near(p0, 0) and near(s0, 1) and near(h0, 0)
+	and near(p1, 0) and near(s1, AnimRules.SyncSpeed.Min) and near(h1 + 0.8 / s1, 2.0)
+	and near(s2, AnimRules.SyncSpeed.Max) and near(h2, 0) and near(p2 + 0.2 * s2, 0.8)
+	and near(p3, 0.15) and near(h3, 0))
+check("a repeat cue means the thrust its impact spacing names", AnimRules.contactFor({ 0.8, 1.5, 2.2 }, 0) == 1 and AnimRules.contactFor({ 0.8, 1.5, 2.2 }, 0.7) == 2
+	and AnimRules.contactFor({ 0.8, 1.5, 2.2 }, 1.45) == 3 and AnimRules.contactFor({ 0.8, 1.5, 2.2 }, 0.2) == 1)
+check("re-timing reaches the next contact or plays on", near(AnimRules.retime(1.5, 0.8, 0.7), 1) and near(AnimRules.retime(1.5, 0.8, 0.5), 1.4)
+	and near(AnimRules.retime(1.5, 1.6, 0.5), 1) and near(AnimRules.retime(1.5, 0.8, 0), AnimRules.SyncSpeed.Max))
 check("an unauthored Bull swing stands in with the stock strike", AnimRules.resolve("IronBull", 1, "IronBullMaul_L3", nil, "R15", none).Source == "Stock")
 check("cosmetic tracks drive no gameplay (no marker/keyframe hooks)", not string.find(src("src/server/Services/BossAttackService.luau") .. src("src/simulation/CombatRules.luau")
 	.. src("src/server/Services/AIService.luau") .. src("src/server/CharacterService.luau"), "MarkerReached", 1, true))
@@ -517,8 +557,9 @@ local function fakeActor(look, rig, attributes)
 	function a:GetAttribute(n) return self.attributes[n] end
 	function a:SetAttribute(n, v) self.attributes[n] = v end
 	local animator = { LoadAnimation = function(_, animation)
-		local t = { Id = animation.AnimationId, IsPlaying = true }
+		local t = { Id = animation.AnimationId, IsPlaying = true, TimePosition = 0 }
 		function t:Play(_, _, speed) self.Speed = speed end
+		function t:AdjustSpeed(speed) self.Speed = speed end
 		function t:Stop() self.IsPlaying = false end
 		function t:Destroy() end
 		table.insert(a.loads, t)
@@ -550,7 +591,38 @@ wyrmA.attributes.AsuraBossAnimation_AzureWyrm_AzureTail = "rbxassetid://880"
 Dispatch.action(wyrmA, false, "AzureTail", "Tail")
 check("an authored creature track plays and claims the joints", #wyrmA.loads == 1 and wyrmA.attributes.AsuraAuthoredMotion == true)
 check("CreatureMotion releases joints an authored track owns", string.find(src("src/client/Controllers/CreatureMotion.luau"), "AsuraAuthoredMotion\") == true", 1, true) ~= nil)
-check("telegraphs pass the move and kind to the dispatcher", string.find(src("src/client/Controllers/InterfaceController.luau"), "BossAnimations.action(sourceEntity.Model, cue.Kind == \"BossPhase\" or cue.Kind == \"BossEnrage\", data.move, data.kind)", 1, true) ~= nil)
+check("telegraphs pass the move, kind and impact to the dispatcher", string.find(src("src/client/Controllers/InterfaceController.luau"), "BossAnimations.action(sourceEntity.Model, cue.Kind == \"BossPhase\" or cue.Kind == \"BossEnrage\", data.move, data.kind, data.impact)", 1, true) ~= nil)
+check("the boss frame hands each actor's server state to the dispatcher", string.find(src("src/client/Controllers/InterfaceController.luau"), "BossAnimations.sync(entity.Model, entity.Snapshot and entity.Snapshot.State)", 1, true) ~= nil)
+check("Zhao's shared-Guandao light swings are cued for their clips", string.find(src("src/server/Services/AIService.luau"), "AnimationRules.Melee[e.Model:GetAttribute(\"AsuraLookKey\")]", 1, true) ~= nil)
+
+-- The Lightning Spear plays once across its three pulses: phase-locked, re-timed, never restarted.
+local clock = 100
+Dispatch.now = function() return clock end
+local spearA = fakeActor("GeneralZhao", "Humanoid", { AsuraBossAnimation_GeneralZhao_LightningSpear = "rbxassetid://70",
+	AsuraBossAnimation_GeneralZhao_P1_Idle = "rbxassetid://71" })
+Dispatch.sync(spearA)
+Dispatch.action(spearA, false, "LightningSpear", "PerilousThrust", clock + 0.8)
+local spear = spearA.loads[2]
+check("the spear starts from its first frame at speed 1 for a 0.8 s windup", #spearA.loads == 2 and spear.Id == "rbxassetid://70" and near(spear.Speed, 1)
+	and near(spear.TimePosition, 0))
+local function advance(dt) clock += dt; spear.TimePosition += dt * spear.Speed; Dispatch.sync(spearA) end
+advance(0.8)
+check("speed returns to 1 once the first thrust lands", near(spear.Speed, 1) and near(spear.TimePosition, 0.8))
+advance(0.1)
+Dispatch.action(spearA, false, "LightningSpear", "PerilousThrust", 100 + 1.5 + 0.2) -- pulse 2, impact deferred 0.2 s
+check("a repeat pulse re-times the running track instead of restarting it", #spearA.loads == 2 and spear.IsPlaying
+	and near(spear.Speed, (1.5 - 0.9) / 0.8) and spearA.attributes.AsuraAnimationPlaying == "GeneralZhao_LightningSpear|Override")
+advance(0.8)
+check("the deferred second thrust lands on its server impact", near(spear.TimePosition, 1.5) and near(spear.Speed, 1))
+spearA.attributes.AsuraBossAnimation_GeneralZhao_PostureBreak = "rbxassetid://72"
+Dispatch.sync(spearA, "StanceBroken")
+check("a posture break stops the spear and plays the authored reaction", not spear.IsPlaying and #spearA.loads == 3 and spearA.loads[3].Id == "rbxassetid://72")
+Dispatch.sync(spearA, "StanceBroken")
+check("a reaction plays once per state", #spearA.loads == 3)
+local hollow = fakeActor("GeneralZhao", "Humanoid")
+Dispatch.action(hollow, false, "Guandao_L1", "Light", clock + 0.4)
+Dispatch.sync(hollow, "KO")
+check("an unauthored reaction returns the actor to its idle", hollow.attributes.AsuraAnimationPlaying == "GeneralZhao_P1_Idle|Stock" and not hollow.loads[1].IsPlaying)
 
 -- 12. The Twins flank instead of sharing one engage point (F10: 0.6 studs apart in Studio).
 do
