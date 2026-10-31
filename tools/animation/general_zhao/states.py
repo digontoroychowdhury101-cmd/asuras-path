@@ -42,7 +42,8 @@ def states():
                     notes="Upright, guandao standing beside him in the right hand, left hand at his side; slow breath "
                           "and a glance."))
     alert_mid = at(NEUTRAL, lfree=0.6, grip=(1.1, -0.35, -0.4), dir=yawdir(-10, 55), chest=(2, -12, 0), root=(0.03, -0.18, 0.03))
-    out.append(clip("AlertTransition", 0.8, [(0, NEUTRAL, "inout"), (0.3, alert_mid, "out"),
+    out.append(clip("AlertTransition", 0.8, [(0, NEUTRAL, "inout"), (0.08, at(NEUTRAL, grip=(1.3, -0.1, -0.55)), "inout"),  # lifted clear of the thigh first
+                                             (0.3, alert_mid, "out"),
                                              (0.55, at(GUARD, chest=(4, -30, 0)), "inout"), (0.8, GUARD, "settle")]
                     + footwork(0.8, {"lf": [(0.25, 0.45, GUARD["lf"])], "rf": [(0.38, 0.58, GUARD["rf"])]},
                                start=dict(lf=NEUTRAL["lf"], rf=NEUTRAL["rf"]), end=FEET),
@@ -56,7 +57,8 @@ def states():
     walk = gait(1.1, (0, -2.2), 0.6, {"lf": 0.0, "rf": 0.5}, 0.26, walk_feet)
     bob = [(t, {"root": (0.05, -0.48 - 0.03 * math.cos(4 * math.pi * t / 1.1), 0.04)}, "linear")
            for t in np.linspace(0, 1.1, 23)]
-    out.append(clip("WalkForward", 1.1, [(0, walk_base, "linear")] + walk + bob, loop=True, priority="Movement",
+    # the bob owns the root height: a base key at t = 0 holding another height would win the first frame only (a seam)
+    out.append(clip("WalkForward", 1.1, [(0, at(walk_base, root=bob[0][1]["root"]), "linear")] + walk + bob, loop=True, priority="Movement",
                     velocity=(0, -2.2), preview=(0, 0.275, 0.55, 0.825), timing="Authored cycle 1.1 s at 2.2 studs/s (scale 1)",
                     markers=[(0.0, "FootstepL", ""), (0.55, "FootstepR", "")], hook=LOCO_HOOK,
                     notes="Guarded stalking walk: the point stays on the target while the feet shuffle in the bladed "
@@ -72,7 +74,7 @@ def states():
     # instead, back as the left foot lands, forward as the right does
     pump = [(t, {"larm": (-30, 0, -10) if k % 2 == 0 else (25, 0, -8), "lfore": (55, 0, 0) if k % 2 == 0 else (75, 0, 0)},
              "inout") for k, t in enumerate(np.linspace(0, 0.66, 3)) if k]  # k = 0 is run_base
-    out.append(clip("RunForward", 0.66, [(0, run_base, "linear")] + run + bob + pump, loop=True, priority="Movement",
+    out.append(clip("RunForward", 0.66, [(0, at(run_base, root=bob[0][1]["root"]), "linear")] + run + bob + pump, loop=True, priority="Movement",
                     velocity=(0, -8.0), preview=(0, 0.165, 0.33, 0.5), timing="Authored cycle 0.66 s at 8.0 studs/s (scale 1)",
                     markers=[(0.0, "FootstepL", ""), (0.33, "FootstepR", "")], hook=LOCO_HOOK,
                     notes="Charging run with the blade carried low and forward in the right hand, the left arm "
@@ -120,16 +122,17 @@ def states():
     back = smooth(0.0, 2.0, 0.7)
     out.append(clip("Retreat", 0.7, [(0, GUARD, "inout"), (0.25, at(GUARD, root=(0.05, -0.38, 0.18), chest=(2, -26, 0)), "out"),
                                      (0.7, GUARD, "inout")]
-                    + footwork(0.7, {"rf": [(0.02, 0.3, None)], "lf": [(0.28, 0.56, None)]}, start=FEET, end=FEET,
+                    + footwork(0.7, {"rf": [(0.02, 0.3, None)], "lf": [(0.22, 0.52, None)]}, start=FEET, end=FEET,
                                shift=lambda t: (0.0, back(t))),
                     priority="Movement", preview=(0, 0.25, 0.45, 0.7), root_motion=True, timing="Authored 0.7 s for a 2-stud retreat",
-                    markers=[(0.3, "FootstepR", ""), (0.56, "FootstepL", "")],
+                    markers=[(0.3, "FootstepR", ""), (0.52, "FootstepL", "")],
                     hook="NEW: backward hop-step when the server retreats the boss", notes="Rear foot first, guard kept."))
     # ------------------------------------------------------------------ equip and intro
     over = pose(root=(0.02, -0.15, 0.0), rootR=(0, -12, 0), chest=(-4, -10, 0), grip=(0.9, 0.55, -0.4),
                 dir=unitv(-0.9, 0.35, -0.2), edge=(0, 1, 0), **FREE_LEFT)
     spin_mid = at(over, dir=unitv(-0.2, -0.3, -0.95), grip=(1.0, 0.2, -0.6), edge=(0, 0, 1))
     out.append(clip("Equip", 0.9, [(0, NEUTRAL, "inout"), (0.22, at(over, dir=unitv(0.1, 0.9, 0.42)), "out"),
+                                   (0.33, {"dir": unitv(-0.5, 0.75, -0.45)}, "inout"),  # tips forward past his face
                                    (0.42, over, "linear"), (0.58, spin_mid, "linear"),
                                    (0.72, at(GUARD, lfree=0.3), "out"), (0.9, GUARD, "settle")]
                     + footwork(0.9, {"lf": [(0.4, 0.62, GUARD["lf"])], "rf": [(0.55, 0.78, GUARD["rf"])]},
@@ -148,7 +151,8 @@ def states():
                     hook="NEW: BossIntro cue -> play Intro on the boss for the 2.4 s shot (EncounterHandoffController)",
                     notes="Head bowed, guandao upright: the helmet and plumes read as a silhouette; the head lifts at "
                           "1.4 s so the crest and chest diamond face the camera; holds for the shot."))
-    out.append(clip("IntroReady", 0.6, [(0, at(intro_rise, chest=(-5, -6, 0)), "inout"), (0.25, at(NEUTRAL, lfree=0.5, dir=yawdir(-12, 45), grip=(1.2, -0.25, -0.75)), "out"),
+    out.append(clip("IntroReady", 0.6, [(0, at(intro_rise, chest=(-5, -6, 0)), "inout"),
+                                        (0.1, {"grip": (1.35, -0.2, -0.45), "dir": yawdir(-5, 70)}, "inout"), (0.25, at(NEUTRAL, lfree=0.5, dir=yawdir(-12, 45), grip=(1.2, -0.25, -0.75)), "out"),
                                         (0.6, GUARD, "settle")]
                     + footwork(0.6, {"lf": [(0.12, 0.34, GUARD["lf"])], "rf": [(0.26, 0.48, GUARD["rf"])]},
                                start=dict(lf=NEUTRAL["lf"], rf=NEUTRAL["rf"]), end=FEET),
@@ -212,12 +216,13 @@ def states():
                         hook="NEW: heavy Hit cue on the boss with direction -> HitHeavy<dir>",
                         notes="Stumbles from the %s with a recovery step; front hand slips and re-grips." % side.lower()))
     # ------------------------------------------------------------------ posture break, stagger, recovery
-    slump_g = (1.15, -1.05, -0.25)
+    slump_g = (1.22, -0.97, 0.0)  # at the slumped shoulder's reach (further forward the arm cannot follow)
     broken = pose(root=(0.05, -0.92, 0.18), rootR=(14, -16, 0), chest=(30, -8, 6), lookW=0.1, neck=(-30, 0, 0),
-                  grip=slump_g, dir=aim(slump_g, (1.6, -3.1, -7.4)), edge=(0, 1, 0), s=-1.4,
+                  grip=slump_g, dir=aim(slump_g, (1.6, -3.1, -7.4)), edge=(-1, 0, 0), s=-1.4, relb=(0.5, -1, -0.5),
                   lf=foot(GUARD["lf"], dx=0.1, dz=0.1), rf=foot(GUARD["rf"], dx=-0.05), **FREE_LEFT)
     broken["larm"], broken["lfore"] = (20, 0, -12), (30, 0, 0)
-    out.append(clip("PostureBreak", 1.0, [(0, GUARD, "inout"), (0.1, at(broken, chest=(-6, -20, 0), root=(0.05, -0.4, 0.3), lfree=0.6), "snap"),
+    out.append(clip("PostureBreak", 1.0, [(0, GUARD, "inout"), (0.1, at(broken, chest=(-6, -20, 0), root=(0.05, -0.4, 0.3), lfree=0.6, grip=(1.15, -0.6, -0.3),
+                                                                        dir=aim((1.15, -0.6, -0.3), (1.2, -1.5, -8.6)), edge=(0, 1, 0)), "snap"),
                                           (0.45, broken, "in"), (1.0, at(broken, chest=(32, -8, 6)), "inout")],
                     priority="Action3", preview=(0, 0.1, 0.45, 1.0), ground=[(0.35, 1.0)], timing="Authored 1.0 s",
                     markers=[(0.0, "ImpactFX", "PostureBreak"), (0.1, "Charge", "Discharge"), (0.45, "FootstepR", "Buckle")],
@@ -228,18 +233,20 @@ def states():
                     loop=True, priority="Action3", preview=(0, 0.7), ground=[(0, 1.4)], timing="Authored loop",
                     markers=[(0.0, "StaggerAura", "On")], hook="NEW: held while StanceBroken",
                     notes="Heaving breath, head down, guandao point resting on the ground (deathblow window)."))
-    out.append(clip("StaggerRecover", 0.8, [(0, broken, "inout"), (0.35, at(GUARD, lfree=0.4, root=(0.05, -0.55, 0.1)), "out"),
+    out.append(clip("StaggerRecover", 0.8, [(0, broken, "inout"), (0.06, at(broken, edge=(-0.7, 1, 0)), "inout"), (0.35, at(GUARD, lfree=0.4, root=(0.05, -0.55, 0.1)), "out"),
                                             (0.8, GUARD, "inout")], priority="Action3", preview=(0, 0.35, 0.8),
                     ground=[(0, 0.1)], timing="Authored 0.8 s", markers=[(0.0, "StaggerAura", "Off"), (0.35, "Recovery", "")],
                     hook="NEW: StanceBroken ends without a deathblow", notes="Regrips and resets the guard."))
     # ------------------------------------------------------------------ deathblow and death
-    kneel_g = (1.0, -1.25, -0.6)
+    kneel_g = (1.15, -1.2, -0.38)  # within the kneeling arm's reach
     kneel = pose(root=(0.05, -1.3, 0.3), rootR=(10, -10, 0), chest=(24, -6, 0), lookW=0.0, neck=(-26, 0, 0),
                  grip=kneel_g, dir=unitv(0.05, 1, 0.08), edge=(0, 0, -1), s=-0.9,
                  lf=(-0.6, -0.6, 0, 8, 0), rf=(0.6, 1.25, 0.12, 10, -70), rknee=(0, -0.4, -1), **FREE_LEFT)
     kneel["larm"], kneel["lfore"] = (40, 0, -6), (50, 0, 0)
     jolt = at(GUARD, chest=(-14, -20, 0), root=(0.05, -0.36, 0.25), lookW=0.3, neck=(-14, 0, 0), lfree=0.8)
-    out.append(clip("DeathblowVictim", 2.2, [(0, at(broken, lfree=1.0), "inout"), (0.15, jolt, "snap"), (0.55, at(jolt, chest=(-18, -18, 0)), "out"),
+    out.append(clip("DeathblowVictim", 2.2, [(0, at(broken, lfree=1.0), "inout"), (0.05, at(broken, lfree=1.0, edge=(-0.3, 1, 0)), "inout"),
+                                             (0.15, jolt, "snap"), (0.55, at(jolt, chest=(-18, -18, 0)), "out"),
+                                             (0.9, {"grip": (1.35, -0.85, -0.55)}, "inout"),  # the haft tips upright outside his chest
                                              (1.2, kneel, "in"), (2.2, at(kneel, chest=(28, -6, 0)), "settle")]
                     + footwork(2.2, {"rf": [(0.7, 1.15, (0.6, 1.25, 0, 10, -70))]}, start=dict(lf=broken["lf"], rf=broken["rf"]),
                                end=dict(lf=(-0.6, -0.6, 0, 8, 0), rf=(0.6, 1.25, 0, 10, -70)), lift=0.15),
@@ -248,8 +255,8 @@ def states():
                     hook="NEW: fighter state DeathblowVictim -> DeathblowVictim (Action4); holds the last frame",
                     notes="Rigid jolt at the blow, a breath, then he sinks to his right knee with the guandao planted "
                           "upright as a support."))
-    slump = at(kneel, chest=(40, -4, 8), neck=(-34, 0, 6), root=(0.05, -1.42, 0.25), grip=(1.05, -1.5, -0.65),
-               dir=unitv(0.25, 0.95, 0.15))
+    slump = at(kneel, chest=(40, -4, 8), neck=(-34, 0, 6), root=(0.05, -1.42, 0.25), grip=(1.18, -1.45, -0.1),
+               dir=unitv(0.05, 0.98, 0.15))  # leaning in, the butt stays clear of his right knee
     out.append(clip("Death", 3.0, [(0, kneel, "inout"), (0.8, at(kneel, neck=(-6, 0, 0), lookW=0.5, chest=(16, -6, 0)), "inout"),
                                    (1.6, slump, "in"), (3.0, at(slump, chest=(44, -4, 10)), "settle")],
                     priority="Action4", preview=(0, 0.8, 1.6, 3.0), ground=[(0, 3.0)], timing="Authored 3.0 s; holds",

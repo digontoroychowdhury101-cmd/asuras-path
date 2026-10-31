@@ -329,7 +329,7 @@ class Clip:
             self.nudge(None, t, entry, ctl, pen, world, log)
 
     # -------------------------------------------------------------------------- per-frame correction fields
-    def fields(self, rounds=2, log=None):
+    def fields(self, rounds=4, log=None):
         """Smooth per-frame corrections, solved on every 60 Hz frame and then dilated and blurred so they never pop:
         a grip offset that carries the shaft out of the body (in front of it by preference, rig.EXIT_WEIGHT) and,
         per arm, the elbow swivel about the shoulder-wrist line that bends the wrist least."""
@@ -362,9 +362,10 @@ class Clip:
             if log is not None:
                 log.append(("field", round(float(np.abs(push).max()), 3)))
         # taper to nothing at both ends, so every attack starts and ends exactly on its keyed pose (the idle guard): the
-        # elbow swivels (non-zero even on the clean guard) over FIELD_EDGE, the grip, which a fast swing may need from
-        # its second frame, over FIELD_EDGE_GRIP at the start (FIELD_EDGE at the end: a push still on two frames from
-        # the end snaps the hand onto the guard); the front hand's release over FIELD_EDGE too, except at a start whose
+        # elbow swivels (non-zero even on the clean guard) over FIELD_EDGE; the grip, which a fast swing may need from
+        # its first frames, over FIELD_EDGE_GRIP at the start (any shorter and it snaps on: a pop) and FIELD_EDGE at the
+        # end (a push still on two frames from the end snaps the hand onto the guard); the front hand's release over
+        # FIELD_EDGE too, except at a start whose
         # keyed pose already has the front hand out of reach (a clip that opens from a run needs the release at once)
         tail = self.length - np.asarray(times)
         edge = np.minimum(times, tail)
@@ -440,7 +441,7 @@ SWIVEL_SIGMA = 2.0  # frames: rounds off the path's steps, no wider (a wide blur
 SWIVEL_TURN_COST = 0.3  # degrees of wrist bend (one frame) per degree the elbow swivel turns between frames
 ARM_BODY_COST, ARM_MARGIN = 300.0, 0.0  # degrees of wrist bend per stud of arm in the torso
 FIELD_DILATE, FIELD_SIGMA = 3, 3.0  # frames
-FIELD_EDGE, FIELD_EDGE_GRIP = 0.1, 2 / 60  # seconds
+FIELD_EDGE, FIELD_EDGE_GRIP = 0.1, 4 / 60  # seconds
 
 
 def wrist_bend(world, side):
@@ -507,7 +508,7 @@ BREAKDOWN_REACH = 0.35
 BREAKDOWN_GAP = 0.04
 CLEAR_PARTS = ("UpperTorso", "LowerTorso", "Head", "LeftUpperLeg", "RightUpperLeg")
 ROLL_HANDOVER = 0.5  # forearm-across-shaft fraction below which the fist follows the keyed edge instead
-MAX_ROLL = 40.0  # turning the edge further about the shaft is wrist flexion a rigid fist cannot fake
+MAX_ROLL = 30.0  # turning the edge further about the shaft is wrist flexion a rigid fist cannot fake
 
 
 def roll_toward(d, natural, want, max_deg):

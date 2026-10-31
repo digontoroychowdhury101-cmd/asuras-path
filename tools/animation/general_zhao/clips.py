@@ -167,18 +167,15 @@ def smooth(a, b, length):
 # ------------------------------------------------------------------------------------------------ oath layer
 def oath_layer(c, t, clip):
     """Oath of the Fallen posture: lower centre, chest and head pressed forward, tighter grip (front hand closer to
-    the rear hand), elbows in. Timing is untouched."""
+    the rear hand). Timing is untouched."""
     c = dict(c)
     c["root"] = (c["root"][0], c["root"][1] - 0.12, c["root"][2] + 0.02)
-    c["chest"] = (c["chest"][0] + 5, c["chest"][1], c["chest"][2])
+    c["chest"] = (c["chest"][0] + 3, c["chest"][1], c["chest"][2])
     c["neck"] = (c["neck"][0] + 3, c["neck"][1], c["neck"][2])
     g = c["grip"]
-    c["grip"] = (g[0], g[1] - 0.12, g[2])  # the hands sink with the centre (held up, the wrists break over)
+    c["grip"] = (g[0], g[1] - 0.12, g[2] + 0.02)  # the hands move with the centre (held up, the wrists break over)
     c["s"] = min(c["sMax"], c["s"] + 0.3)
-    # elbows in: the keyed pole turned in and down (the guard's (1, -0.4, 0.8) becomes about (0.7, -0.8, 0.6)), not
-    # replaced, so a pole keyed for a spin or a cleave keeps its job
-    e = np.asarray(c["relb"], float)
-    c["relb"] = tuple(e / np.linalg.norm(e) * 1.34 + np.array([-0.15, -0.2, -0.1]))
+    # the elbows keep their keyed poles: turned in, the rear forearm lines up with the haft and the wrist breaks
     return c
 
 
@@ -186,7 +183,7 @@ def oath(clip, name_action):
     import copy
     o = Clip(key_name(name_action, oath=True), clip.length, copy.deepcopy(clip.keys), loop=clip.loop, priority=clip.priority,
              markers=clip.markers, contacts=clip.contacts, notes="Oath posture layer over %s: lower centre, chest "
-             "and head forward, tighter two-hand grip, elbows in; timing identical." % clip.name,
+             "and head forward, tighter two-hand grip; timing identical." % clip.name,
              hook="NEW: BossAnimationRules tries <Look>_P1_Oath_<Action> first while AsuraBossEnraged is set",
              timing=clip.timing, base=clip.base, layers=clip.layers + [oath_layer], ground=clip.ground,
              velocity=clip.velocity, preview=clip.preview, group="Oath", action=name_action, wiring="needs-hook")
@@ -216,13 +213,15 @@ def strike():
     raise_ = pose(root=(0.05, -0.3, 0.12), rootR=(2, -36, 0), chest=(-4, -34, 0), grip=(0.95, 0.65, 0.35),
                   dir=yawdir(-30, 62), edge=(0, 0, -1), s=-1.3,
                   lelb=(-0.6, -1, 0.3))  # elbow hangs under the raised haft
-    cut = pose(root=(0.0, -0.5, -0.2), rootR=(6, -12, 0), chest=(14, 4, 0), grip=(0.55, -0.6, -0.95),
-               dir=yawdir(14, -10), edge=(-0.4, -1, 0), s=-1.2,
+    cut = pose(root=(0.0, -0.5, -0.2), rootR=(6, -12, 0), chest=(14, 4, 0), grip=(0.55, -0.4, -0.95),
+               dir=yawdir(10, -8), edge=(-0.4, -1, 0), s=-1.2,
                lf=foot(GUARD["lf"], dz=-0.35))
-    follow = at(cut, dir=yawdir(40, -6), chest=(16, 12, 0), grip=(0.35, -0.35, -0.95))
+    follow = at(cut, dir=yawdir(55, -8), chest=(16, 26, 0), rootR=(6, 4, 0), grip=(0.35, -0.3, -0.8), edge=(-0.6, -0.2, 0.8))
     return Clip(key_name("Strike"), 1.2, [
         (0.0, GUARD, "inout"), (0.32, raise_, "out"), (0.40, at(raise_, chest=(-6, -38, 0)), "inout"),
-        (0.50, cut, "in"), (0.62, follow, "out"), (1.2, GUARD, "inout"),
+        (0.46, {"grip": (1.0, -0.05, -0.75)}, "in"), (0.50, cut, "out"),  # hands drive forward as the blade drops (0.62, follow, "out"),
+        (0.82, {"grip": (0.8, -0.15, -0.75), "dir": yawdir(30, 70)}, "inout"),  # back up and over
+        (1.2, GUARD, "inout"),
     ], contacts=(0.5,), group="Resolver", action="Strike", preview=(0, 0.32, 0.5, 0.62, 1.2),
         markers=melee_markers(0.5, 0.58, 0.1, [(0.5, "FootstepL", "Plant")]),
         timing="Fallback: contact 0.5 s; BossAnimations re-times the contact to the cue's impact",
@@ -263,7 +262,7 @@ def lightning_spear():
         (2.00, at(coil(0.2), root=(0.06, -0.6, 0.22), **planted), "inout"),
         (2.08, at(coil(0.2), root=(0.06, -0.6, 0.22), lf=foot(GUARD["lf"], dz=-0.85, lift=0.3, pitch=-8)), "in"),
         (2.20, at(thrust(0.3, 0.45), **lunge), "snap"),                 # IMPACT 3, full lunge
-        (2.42, at(thrust(0.3, -0.7), chest=(15, -12, 0), **lunge), "out"),  # over-extended: blade dips
+        (2.42, at(thrust(0.3, -0.5), chest=(15, -12, 0), **lunge), "out"),  # over-extended: blade dips
         (2.66, at(thrust(0.2, -0.45), **lunge), "inout"),
         (2.82, at(GUARD, lf=foot(GUARD["lf"], dz=-0.5, lift=0.28, pitch=-8), root=(0.05, -0.42, 0.0)), "inout"),
         (3.00, GUARD, "inout"),
@@ -299,7 +298,7 @@ def thunder_quickstep():
     stop = at(GUARD, root=(0.05, -0.55, 0.0), chest=(10, -20, 0))
     # the blade rises and goes over (shaft upright beside the right hip) on its way to trailing behind: a polearm
     # this long cannot swing through the side without its butt crossing the body
-    swing_g = (1.25, -0.35, -0.3)
+    swing_g = (1.3, -0.35, -0.3)
     swing = at(low, grip=swing_g, dir=unitv(0.12, 1.0, 0.15), edge=(0, 0, -1), root=(0.06, -0.5, 0.1),
                chest=(8, -20, 0), lfree=0.7)
     keys = [(0.0, GUARD, "inout"), (0.16, swing, "inout"), (0.35, low, "out"), (0.72, load, "inout"), (0.84, drive, "in"),
@@ -343,7 +342,9 @@ def transform():
                   lf=foot(GUARD["lf"], dx=-0.15, dz=-0.1), rf=foot(GUARD["rf"], dx=0.1))
     surge = at(gather, chest=(-7, -6, 0), root=(0.03, -0.56, 0.05))
     ready = at(GUARD, root=(0.05, -0.48, 0.08), chest=(11, -26, 0))
-    keys = [(0.0, GUARD, "inout"), (0.3, ack, "inout"), (0.62, bow, "inout"), (0.95, tighten, "inout"),
+    keys = [(0.0, GUARD, "inout"), (0.3, ack, "inout"), (0.62, bow, "inout"),
+            (0.82, {"grip": (1.05, -0.65, -0.8)}, "inout"),  # the haft rises in front of him, not through his chest
+            (0.95, tighten, "inout"),
             (1.25, gather, "inout"), (1.52, surge, "inout"), (1.66, at(ready, chest=(14, -24, 0)), "snap"),
             (2.0, ready, "settle")]
     return Clip(key_name("Transform"), 2.0, keys, priority="Action4", group="Resolver", action="Transform",
@@ -396,12 +397,12 @@ def colossal_hammer():
                 lf=foot(GUARD["lf"], dx=-0.2, dz=0.2), rf=foot(GUARD["rf"], dx=0.05, dz=-0.15))
     apex_g = (0.55, 1.05, -0.45)
     apex = at(lift, grip=apex_g, chest=(-12, -6, 0), root=(0.03, -0.1, 0.0), dir=unitv(0.0, 1, 0.18))
-    slam_g = (0.45, -1.55, -0.95)
+    slam_g = (0.65, -1.4, -0.65)  # the push carries it out beside the lead foot; further out is past his reach
     slam = pose(root=(0.0, -1.0, -0.15), rootR=(14, -8, 0), chest=(26, -4, 0), lookW=0.7, grip=slam_g,
                 dir=unitv(0.0, 1, 0.05), edge=(0, 0, -1), s=-1.0, sMax=-0.7,
                 lf=foot(GUARD["lf"], dx=-0.45, dz=-0.05), rf=foot(GUARD["rf"], dx=0.25, dz=0.1))
     keys = [(0.0, GUARD, "inout"), (0.5, lift, "out"), (1.25, apex, "inout"), (1.58, at(apex, chest=(-14, -6, 0)), "inout"),
-            (1.8, slam, "whip"), (2.05, at(slam, chest=(28, -4, 0)), "out"), (2.4, at(slam, root=(0.02, -0.8, -0.05), chest=(18, -8, 0)), "inout"),
+            (1.8, slam, "whip"), (2.05, at(slam, chest=(28, -4, 0)), "out"), (2.4, at(slam, root=(0.02, -0.8, -0.05), chest=(18, -8, 0), grip=(0.8, -1.0, -0.6)), "inout"),
             (2.8, GUARD, "inout")]
     feet = footwork(2.8, {"lf": [(1.5, 1.78, foot(GUARD["lf"], dx=-0.45, dz=-0.05)), (2.1, 2.38, GUARD["lf"])],
                           "rf": [(2.45, 2.7, GUARD["rf"])]},
@@ -438,8 +439,10 @@ def melee():
     # hands together near the butt for the big side swing (the front hand cannot reach far up a shaft pointing right)
     wind = pose(root=(0.06, -0.38, 0.1), rootR=(3, -32, 0), chest=(6, -26, 0), grip=(1.05, -0.22, -0.55),
                 dir=yawdir(-120, 0), edge=(0, 0.2, -1), s=-0.5, sMin=-0.9, sMax=-0.45)
-    lift = at(wind, grip=(1.1, -0.15, -0.5), dir=yawdir(-105, 60))  # hands rise, blade up and over, butt clear of the hip
-    sweep = at(wind, grip=(1.05, -0.45, -0.8), dir=yawdir(-105, -8), chest=(8, -16, 0), rootR=(4, -24, 0))
+    # blade up and over, butt clear of the hip; the hands only start along their way to the windup (a higher hand
+    # rise in two frames, then back, reads as a pop)
+    lift = at(wind, grip=(1.1, -0.35, -0.4), dir=yawdir(-105, 45))
+    sweep = at(wind, grip=(1.1, -0.45, -0.8), dir=yawdir(-105, -8), chest=(8, -16, 0), rootR=(4, -24, 0))
     hit = pose(root=(0.0, -0.44, -0.12), rootR=(5, -14, 0), chest=(9, -2, 0), grip=(1.0, -0.5, -0.8),
                dir=yawdir(8, 0), edge=(-1, 0.1, 0), s=-0.6, sMin=-1.0, sMax=-0.45)
     out_ = at(hit, chest=(9, 20, 0), rootR=(5, -4, 0), grip=(0.2, -0.5, -1.0), dir=yawdir(52, -2), edge=(-0.6, 0, 0.8))
@@ -476,7 +479,7 @@ def melee():
     s3, a3, _, t3 = GUANDAO["Guandao_L3"]
     c, e = sec(s3), sec(s3 + a3)
     up = pose(root=(0.04, -0.28, 0.12), rootR=(2, -24, 0), chest=(-8, -20, 0), grip=(0.8, 0.6, 0.05),
-              dir=unitv(-0.05, 0.75, 0.66), edge=(0, 0.66, -0.75), s=-1.2, lelb=(-1, -0.4, -0.6), relb=(0.3, -1, 0.3))
+              dir=unitv(-0.05, 0.75, 0.66), edge=(0, 0.66, -0.75), s=-1.2, lelb=(-1, -0.4, -0.6), relb=(0.3, -1, 0.6))
     hit = pose(root=(0.0, -0.62, -0.3), rootR=(8, -16, 0), chest=(18, -10, 0), grip=(1.05, -0.25, -0.25),
                dir=unitv(-0.22, -0.12, -1), edge=(0, -1, 0.1), s=-1.7, lf=foot(GUARD["lf"], dz=-0.3))
     down = at(hit, dir=unitv(-0.22, -0.16, -1), chest=(22, -10, 0), grip=(1.05, -0.3, -0.2))
@@ -494,18 +497,21 @@ def melee():
     c, e = sec(sh), sec(sh + ah)
     wind = pose(root=(0.08, -0.36, 0.18), rootR=(2, -48, 0), chest=(-4, -46, 0), grip=(1.15, 0.5, 0.4),
                 dir=yawdir(180, 55), edge=(0, -0.3, -1), s=-1.0, sMax=-0.7,
-                lf=foot(GUARD["lf"], dz=0.05), rf=foot(GUARD["rf"], pitch=0))
+                lf=foot(GUARD["lf"], dz=0.05), rf=foot(GUARD["rf"], pitch=0),
+                lelb=(0, -1, 0.3))  # left elbow hangs under the cocked haft
     hold = at(wind, chest=(-6, -50, 0), root=(0.09, -0.42, 0.22))
     hit = pose(root=(0.0, -0.66, -0.2), rootR=(6, -10, 0), chest=(14, 4, 0), grip=(0.5, -0.45, -0.9),
-               dir=yawdir(6, -8), edge=(-1, -0.2, 0), s=-0.9, sMax=-0.7, lf=foot(GUARD["lf"], dz=-0.35))
+               dir=yawdir(6, -8), edge=(-1, -0.2, 0), s=-0.9, sMax=-0.7, lf=foot(GUARD["lf"], dz=-0.35),
+               relb=(1, -0.8, 0.2))  # elbow dropped behind the drive (out wide, the wrist breaks at impact)
     # the rear hand stays out in front at the waist through the follow-through (drawn to the belly, the forearm would
     # sink into it)
     out_ = at(hit, chest=(16, 26, 0), rootR=(6, 4, 0), grip=(0.35, -0.3, -0.8), dir=yawdir(55, -8), edge=(-0.6, -0.2, 0.8))
     follow = at(out_, chest=(18, 34, 0), dir=yawdir(85, -10), grip=(0.35, -0.35, -0.9))
     out.append(Clip(key_name("Guandao_Heavy"), sec(th), [(0, GUARD, "inout"), (0.2, wind, "out"), (0.31, hold, "inout"),
                                                          (c, hit, "in"), (e, out_, "linear"), (0.6, follow, "out"),
-                                                         # the rear hand leads the way back out to the right
-                                                         (0.66, {"grip": (0.55, -0.25, -0.85)}, "inout"),
+                                                         # the blade comes back up and over (swept back level, the
+                                                         # forearm lines up with the haft and the wrist breaks)
+                                                         (0.68, {"grip": (0.8, -0.15, -0.75), "dir": yawdir(40, 70)}, "inout"),
                                                          (sec(th), GUARD, "inout")],
                     contacts=(c,), group="Melee", action="Guandao_Heavy", preview=(0, 0.2, 0.31, c, e, 0.6, sec(th)),
                     markers=melee_markers(c, e, 0.08, [(0.12, "Charge", "Heavy"), (c, "FootstepL", "Stamp")]),
@@ -519,7 +525,7 @@ def melee():
     run_g = (1.0, -0.75, 0.3)
     start = pose(root=(0.0, -0.45, -0.2), rootR=(10, -24, 0), chest=(12, -22, 0), grip=run_g,
                  dir=aim(run_g, (0.0, -0.4, -8.8)), edge=(0, 1, 0), s=-1.8)
-    thrust_g = (0.55, -0.4, -1.4)
+    thrust_g = (0.5, -0.45, -1.35)
     th_ = pose(root=(0.0, -0.74, -0.45), rootR=(8, -14, 0), chest=(14, -10, 0), grip=thrust_g,
                dir=aim(thrust_g, (0.0, 0.3, -10)), edge=(0, 1, 0), s=-0.9, sMax=-0.75,
                lf=foot(GUARD["lf"], dz=-0.75), rf=foot(GUARD["rf"], pitch=-16))
@@ -545,6 +551,7 @@ def melee():
                 larm=(70, 0, -60), lfore=(10, 0, 0), lhand=(0, 0, 0))
     # breakdowns authored in the chest frame (the chest turns ~100 degrees, so a root-frame blend would cut the haft
     # through it): the blade rises out over his right side as he coils, and leads round his right as the spin starts
+    keys.append((0.05, {"grip": (1.15, -0.22, 0.2)}, "out"))  # hands up first, so the butt clears his right knee
     keys.append((0.1, at(coil, chest=(7, -40, 0), rootR=(3, -45, 0), root=(0.05, -0.45, 0.1), grip=(1.09, -0.56, 0.55),
                          dir=unitv(0.41, 0.54, 0.74)), "inout"))
     keys.append((0.22, coil, "out"))
@@ -565,9 +572,9 @@ def melee():
                              relb=tuple(rig.ry(ang - 30) @ np.array([0.5, -1, -0.5]))),
                      "linear" if t > c else "in"))
     # the hand rides the arc a little past the window before heading for the recovery (no kink in its path)
-    keys.append((e + 0.05, {"grip": tuple(rig.ry(250) @ np.array([0.75, -0.3, -0.85]))}, "linear"))
-    keys += [(0.68, pose(root=(0.03, -0.55, 0.05), rootR=(4, 210, 0), chest=(8, 90, 0), grip=(0.65, -0.55, -0.6),
-                         dir=yawdir(330, -4), edge=(0, 1, 0), s=-1.1, lfree=0.5, larm=(70, 0, -60), lfore=(10, 0, 0)), "settle")]
+    keys.append((e + 0.06, {"grip": tuple(rig.ry(268) @ np.array([0.75, -0.3, -0.85]))}, "out"))
+    keys += [(0.68, pose(root=(0.03, -0.55, 0.05), rootR=(4, 210, 0), chest=(8, 90, 0), grip=(0.7, -0.45, -0.7),
+                         dir=yawdir(320, -4), edge=(0, 1, 0), s=-1.1, lfree=0.5, larm=(70, 0, -60), lfore=(10, 0, 0)), "settle")]
     keys += [(sec(ta), at(GUARD, rootR=(3, 330, 0)), "inout")]  # 330 == the guard's -30, reached by turning on, not back
     # spin on the lead foot drawn in under the hips; the rear foot leaves the ground and orbits, then replants
     body_turn = lambda t: float(np.interp(t, [0, 0.22, c, e, 0.68, sec(ta)], [0, -30, -30, 150, 240, 330]))  # noqa: E731

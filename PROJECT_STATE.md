@@ -1,5 +1,9 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## General Zhao validation pass — 2026-11-01 (Mac)
+
+Elbow swivels now follow a smoothed least-cost path; per-clip key fixes cleared shaft grazes, wrist bends, pops, loop seams and leg reach. 57/59 clips validate; only L2 and Oath L2 graze (0.14–0.16), a geometric limit needing a hand-slide mechanic. Studio Edit check matches the bake. Next: upload with approval.
+
 ## General Zhao forearm contact — 2026-10-31 (Mac)
 
 Guard left elbow now points out and forward, clearing forearm-in-body across idle, locomotion, hit reactions and Hammer; Strike's raise keeps the elbow down; RunForward frees the left hand to pump. 28/59 clips validate under the stricter check; only Heavy grazes (0.10). Next: Studio recheck in Edit mode, then upload.
