@@ -1,5 +1,9 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## Bamboo limestone and native motion evidence — 2026-11-01 (Mac)
+
+Eight entry rocks now reuse textured limestone; matching Studio views, grounded bounds and 73 unchanged colliders checked. Real wind clips and seeded normal-camera traversal retained with quality/crop limits. Temporary graphics restored. Canonical build and 14-stage verifier pass. Next: foreground capture/performance, grove floor and crest composition; root pilot remains uninstalled. See `outputs/environment-art-2026-10-31/README.md`.
+
 ## General Zhao validation pass — 2026-11-01 (Mac)
 
 Elbow swivels now follow a smoothed least-cost path; per-clip key fixes cleared shaft grazes, wrist bends, pops, loop seams and leg reach. 57/59 clips validate; only L2 and Oath L2 graze (0.14–0.16), a geometric limit needing a hand-slide mechanic. Studio Edit check matches the bake. Next: upload with approval.

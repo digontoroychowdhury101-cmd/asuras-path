@@ -13425,6 +13425,40 @@ local function detail(parent: Instance, name: string, base: CFrame, scale: numbe
 	return model
 end
 
+-- Reuse the textured limestone kit at the small scatter rocks' established footprints.
+-- Lay the crags on their sides, then measure world bounds before grounding.
+local function worldBounds(model: Model): (Vector3, Vector3)
+	local low, high = Vector3.new(math.huge, math.huge, math.huge), Vector3.new(-math.huge, -math.huge, -math.huge)
+	for _, part in model:GetDescendants() do
+		if part:IsA("BasePart") then
+			for _, x in { -0.5, 0.5 } do for _, y in { -0.5, 0.5 } do for _, z in { -0.5, 0.5 } do
+				local p = part.CFrame:PointToWorldSpace(part.Size * Vector3.new(x, y, z))
+				low, high = low:Min(p), high:Max(p)
+			end end end
+		end
+	end
+	return low, high
+end
+
+local function entryRock(parent: Instance, at: Vector3, yaw: number, span: number, variant: number)
+	local piece = ({ "CragA", "CragB", "CragC" })[variant]
+	local rotation = CFrame.Angles(0, yaw, 0) * CFrame.Angles(0, 0, math.pi / 2)
+	local model = Decor.han(parent, "AsuraHanKit", piece, rotation, 1)
+	if not model then return end
+	local low, high = worldBounds(model)
+	local size = high - low
+	model:ScaleTo(span / math.max(size.X, size.Z))
+	low, high = worldBounds(model)
+	local center = (low + high) / 2
+	model:PivotTo(CFrame.new(at.X - center.X, at.Y - low.Y, at.Z - center.Z) * model:GetPivot())
+	for _, part in model:GetDescendants() do
+		local surface = part:FindFirstChildOfClass("SurfaceAppearance")
+		if surface then surface.Color = rgb(170, 180, 163) end
+	end
+	model.Name = "EntryLimestone_" .. variant
+	model:SetAttribute("ScatterSpan", span)
+end
+
 local function clump(parent: Instance, layout: any, x: number, z: number, styleIndex: number, rng: Random, plain: boolean?)
 	local style = styles[styleIndex]
 	local group = Instance.new("Model")
@@ -13537,8 +13571,8 @@ function Ecology.Entry(map: Instance, layout: any, rng: Random)
 				local shoots = detail(habitat, "Bamboo_YoungShoots", shootFrame, rng:NextNumber(0.6, 0.95), rgb(255, 255, 255))
 				if shoots then wind(shoots, shootFrame, 4, "Shoot") end
 				local bx = x + side * 5
-				Decor.han(habitat, "AsuraHanKit", "BoulderSmall", CFrame.new(bx, Ground.surfaceHeight(bx, z + 4, -0.1) - 0.2, z + 4)
-					* CFrame.Angles(0, rng:NextNumber(0, 6.28), 0), rng:NextNumber(6, 10))
+				entryRock(habitat, Vector3.new(bx, Ground.surfaceHeight(bx, z + 4, -0.1) - 0.2, z + 4),
+					rng:NextNumber(0, 6.28), rng:NextNumber(6, 10) * 0.5983, (i / 2 + (if side &lt; 0 then 0 else 1)) % 3 + 1)
 			end
 			for _ = 1, 2 do
 				local lx, lz = side * rng:NextNumber(11, 27), z + rng:NextNumber(-5, 5)

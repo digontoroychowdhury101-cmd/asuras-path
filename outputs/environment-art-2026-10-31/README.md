@@ -1,8 +1,9 @@
 # Root material investigation — 31 October 2026
 
-The world goal remains active and unfinished. Production still has **261 scripts / 1,943,649 bytes /
-digest 458197530**; the connected canonical place matches in Edit. This batch changes tools and prepares
-an **uninstalled** art candidate. It does not claim another region is finished or a new performance pass.
+The world goal remains active and unfinished. The root-material checkpoint used **261 scripts /
+1,943,649 bytes / digest 458197530**. Later General Zhao source commits were script-synced and matched
+**261 / 1,951,058 / 193360600** before the entry-rock change below. The root candidate remains
+**uninstalled**. No region or new performance gate is claimed complete.
 
 ## What the inspection found
 
@@ -51,40 +52,94 @@ Reproduction uses `recover_fused_tree.py`, `recovered_monument.py`, `fused_root_
 factory-startup background process. The detail uses the existing licensed Poly Haven
 [bark_platanus](https://polyhaven.com/a/bark_platanus) CC0 source, already credited in `assets/CREDITS.md`.
 
-## Capture and editor state
+## Running-client recordings — 31 October / 1 November
 
-Computer control still reports the Mac locked after the focus reply. A new owned Play attempt could
-not finish normal startup, produced no images and was stopped. The empty Ash attempts remain local
-under ignored paths. New camera JSONs for Ash, Crypt, Citadel, Monastery and Pagoda are **capture
-candidates**, not accepted views. The recorder helper now owns startup/cleanup and rejects inactive
-viewports; it has not recorded video yet.
+The user approved command-line viewport recording and activation of the confirmed local Studio.
+`studio_record.swift` uses Apple's window-specific ScreenCaptureKit filter, audio/microphone/cursor off,
+with bounded clips; `studio_activate.swift` targets the canonical window's verified Roblox PID only.
+These replace the native Screenshot/QuickTime automation that repeatedly hung. No game publication,
+spending or new art upload occurred.
 
-Blender 5.2.2 crashed when writing an inactive temporary Scene with `bpy.data.libraries.write`.
-The crash was reproduced headlessly and traced to Scene/view-layer copying. Collection-only writing
-then passed in separate processes. The helpers now require headless mode. The saved General Zhao v2
-master remains untouched on disk, but its editor needs reopening after unlock. This is an editor
-crash, not a game/source regression. Unrelated General Zhao working-tree changes remain excluded.
+- `wind-wide-video-v2/clip.mp4` (19.97 s) and `wind-ground-video/clip.mp4` (20.12 s) are real running-client
+  motion recordings, decoded and resized for viewing without retiming or synthetic frames. Their
+  source masters remain local under ignored `video-take3/`; `media.json` records both SHA-256 hashes.
+  Frames, capture metadata and phase-specific session snapshots accompany the viewing copies.
+- Both use a seeded observer camera and a mock avatar parked outside combat. Production lighting,
+  HUD, wind and geometry were retained. Studio was in the background during these clips: these are
+  **motion diagnostics, not foreground performance or final gameplay-quality acceptance**. The
+  source was digest 458197530. Native terrain grass is not established by these lower-quality clips.
+- The wide view sampled the same **visible** plant of each kind 32 times over about 16 seconds.
+  Tip spans: grass 0.0793, bamboo 0.2137, shoots 0.0718, fern 0.0903 studs. Bamboo base error peaked
+  at 0.000736 studs; other plant base errors were **unmeasured** (`null`), not zero. This proves actual
+  custom-plant transforms rather than inferring motion from GlobalWind. Review subtle motion at full size.
+- `entry-traversal-video/clip.mp4` records normal W / Q dash / Space jump controls and the production
+  camera after a seeded entry start. Normal portal touch established Monastery arrival, and documented
+  `VirtualInput.SendMouseDelta` turned the existing camera into Bamboo. Start: (0,3.2,-1126), 100 HP;
+  end: (2.53,3,-1404.03), 100 HP, Baize encounter. This is a **seeded route segment, not an earned
+  campaign run or sustained fight**. Its source digest is 193360600.
+- The entry clip's crop became stale after Studio resized: part of the command bar appears at the
+  bottom and the top CoreGui is clipped. Retained as diagnostic footage; **not final viewport-only
+  acceptance**. Earlier wrong-heading and narrower-crop attempts remain local and excluded.
+- Play used Automatic quality with FRM enabled, measured around levels 19–20; it was **not fixed
+  Level21**. EditQualityLevel was temporarily 21 for inspection, then restored to the original
+  Automatic. `graphics-before.json` / `graphics-restored.json` record this. The owned test returned
+  to Edit, removed its probe, restored camera/keys, and reported no cleanup errors.
 
-No new art upload, public publishing, spending, gameplay-source change or saved-place replacement.
-The last full 14-stage verifier still applies to unchanged production. New Python syntax checks,
-actual mesh/map readback, Blender baking and GLB round-trip checks passed; no fresh game validation.
+The saved General Zhao Blender master was preserved. The earlier inactive-Scene library write crash
+was reproduced headlessly and fixed by collection-only writing; root helpers require a separate
+factory-startup background process. Subsequent unrelated animation work remains outside this batch.
+
+## Entry limestone — 1 November
+
+The matching `entry-crags/before_*` views showed eight flat-grey faceted scatter rocks close to the
+path. Production now reuses the existing MIT Terrain3D Crag A/B/C meshes and their ambientCG Rock023
+PBR maps. Horizontal placement, a muted green-grey tint and measured world bounds replace the
+oversized scatter silhouettes. The first upright/incorrect-bound attempt is retained in
+`entry-crags/rejected-v1/`; it was corrected before acceptance of this small treatment.
+
+`entry-crags/after_*` uses the same cameras, 1271×685, normal HUD and ordinary Automatic settings.
+The after shots report FRM 2 (Studio had lost foreground); these show placement/materials, **not a
+fixed-quality or performance comparison**. Later foreground capture remains necessary. Both captures
+report 100 HP, no controls overlay and no cleanup errors. No actors or scene elements were hidden.
+
+The Play server audit found all eight decorative rocks noncolliding, nonqueryable and nontouching,
+with rotated bounds embedded 0.2000 studs into the Terrain under their centres; no floating bounds.
+Spans are 3.68–5.54 studs, heights 1.68–2.90. The map retains **73 colliders**. The same random draws
+are retained, so subsequent plant positions do not change. Uploaded-mesh readback counts:
+Crag A/B/C 248/290/246 triangles; eight rocks total **2,106 triangles**, versus 784 before (+1,322),
+with the same eight MeshParts and an already-loaded shared texture set. `runtime-audit.json` and
+`mesh-counts.json` record the actual measurements. Original mesh masters and uploads are unchanged.
+
+The three largest visible remaining Bamboo problems in these and the wind views:
+
+1. Mid-distance grove floors still have broad bare, flat patches. Add irregular leaf-litter/moss
+   colonies around existing clumps and use low groundcover masses outside the route and combat lane.
+2. The crest reads as one hard horizontal wall behind a straight stair. Break its visible edge with
+   grounded stone/root transitions while preserving its traversable surfaces and approach sightline.
+3. Canopy/sky balance remains thin in reverse and side views. Add selective overlapping crowns in
+   background gaps, retaining shrine/karst landmarks and the established camera-clearance volume.
+
+`python3 tools/build.py` rebuilt both canonical places. All 14 local verifier stages passed
+(`verification.log`), including 333 campaign-region and 27 campaign-build checks. After a comment-only clarification and rebuild, the saved place and connected Edit scripts match
+**261 scripts / 1,952,592 bytes / digest 42186667**. The verifier exercised the same functional code. New Swift helpers were compiled and exercised; Python helpers compile.
+These checks do not certify foreground timing, physical mobile or completion of the whole pass.
 
 ## Next concrete actions
 
-1. Unlock the Mac; reopen the existing General Zhao master and restore its editor. Bring the local
-   `AsurasPath.rbxlx` viewport forward. The pending unlock request is still required.
-2. Import one root-pilot section, verify actual scale/UVs/tangent normal/permissions, then compare the
-   same Sanctuary cameras before deciding whether to install the four-section treatment. Judge
-   grain, seams and added texture cost; do not multiply it from offline renders alone.
-3. Record continuous Bamboo wind and normal-camera traversal into the project video folder. Complete
-   the representative 60-second traversal/combat measurement, full route checks and remaining regions.
+1. Complete foreground views and improve the three remaining Bamboo composition defects above.
+2. Make recording bounds resilient to Studio viewport changes; capture foreground native grass and
+   the full normal-camera route, then complete the representative 60-second traversal/combat measurement.
+3. Import one root-pilot section, verify actual scale/UVs/tangent normal/permissions, and compare the
+   same Sanctuary cameras before deciding whether to install its material treatment.
 
 All earlier incomplete gates remain open: desktop ≤16.7 ms (last qualified run 17.57), physical mobile
-Balanced ≤33.3 ms, full traversal/combat/respawn, continuous video, root/canopy composition and broader
-world finish. No target has been relaxed.
+Balanced ≤33.3 ms, full traversal/combat/respawn, final continuous video, root/canopy composition and
+broader world finish. No target has been relaxed.
 
 API references checked: [EditableMesh](https://create.roblox.com/docs/reference/engine/classes/EditableMesh),
 [EditableImage](https://create.roblox.com/docs/reference/engine/classes/EditableImage),
 [EncodingService](https://create.roblox.com/docs/reference/engine/classes/EncodingService),
 [AssetService](https://create.roblox.com/docs/reference/engine/classes/AssetService),
-[texture specifications](https://create.roblox.com/docs/art/modeling/texture-specifications).
+[texture specifications](https://create.roblox.com/docs/art/modeling/texture-specifications),
+[RenderSettings](https://create.roblox.com/docs/reference/engine/classes/RenderSettings),
+[VirtualInput](https://create.roblox.com/docs/reference/engine/classes/VirtualInput).

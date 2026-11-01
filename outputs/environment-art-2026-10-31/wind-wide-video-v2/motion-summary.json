@@ -1,0 +1,49 @@
+{
+  "samples": 32,
+  "kinds": {
+    "Grass": {
+      "name": "Workspace.Map_BambooPass.LivingBambooEntry.Ground_GrassTuft.Ground_GrassTuft",
+      "samePlantSamples": 32,
+      "tipSpanStuds": 0.07929134072138572,
+      "rootErrorMax": null,
+      "screen": [
+        625.9584350585938,
+        392.84356689453125,
+        31.191242218017578
+      ]
+    },
+    "Bamboo": {
+      "name": "Workspace.Map_BambooPass.LivingBambooEntry.GroveClump_5.Bamboo_A.Bamboo_A__Culm",
+      "samePlantSamples": 32,
+      "tipSpanStuds": 0.21373306905061995,
+      "rootErrorMax": 0.0007354117115028203,
+      "screen": [
+        580.08203125,
+        203.0745849609375,
+        43.40818786621094
+      ]
+    },
+    "Shoot": {
+      "name": "Workspace.Map_BambooPass.LivingBambooEntry.Bamboo_YoungShoots.Bamboo_YoungShoots",
+      "samePlantSamples": 32,
+      "tipSpanStuds": 0.07175364147198003,
+      "rootErrorMax": null,
+      "screen": [
+        590.310791015625,
+        363.7073669433594,
+        46.12333679199219
+      ]
+    },
+    "Fern": {
+      "name": "Workspace.Map_BambooPass.LivingBambooEntry.Ground_Fern.Ground_Fern",
+      "samePlantSamples": 32,
+      "tipSpanStuds": 0.09034413775301978,
+      "rootErrorMax": null,
+      "screen": [
+        492.9592590332031,
+        381.31573486328125,
+        33.95747756958008
+      ]
+    }
+  }
+}

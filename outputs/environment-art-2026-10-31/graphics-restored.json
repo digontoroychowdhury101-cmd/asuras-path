@@ -1,0 +1,9 @@
+{
+  "mode": "Edit",
+  "quality": "Automatic",
+  "editQuality": "Automatic",
+  "frmEnabled": false,
+  "autoFRMLevel": 21,
+  "recordingProbe": false,
+  "note": "AutoFRMLevel is stale in Edit with FRM off; original Automatic settings restored."
+}

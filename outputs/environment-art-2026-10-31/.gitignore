@@ -3,3 +3,7 @@ ash-baseline-retry/
 root-detail-offline-v1/
 root-detail-offline-v3/
 video/
+
+# Native masters and rejected recording attempts retained locally.
+video-take*/
+wind-wide-video/

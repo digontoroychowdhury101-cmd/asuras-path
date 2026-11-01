@@ -1,0 +1,14 @@
+{
+  "before": {
+    "quality": "Automatic",
+    "editQuality": "Automatic",
+    "frmEnabled": false,
+    "autoFRMLevel": 4
+  },
+  "diagnostic": {
+    "editQuality": "Level21",
+    "frmEnabled": false
+  },
+  "scope": "temporary Studio graphics inspection; restore before settings after tests",
+  "nativePropertySource": true
+}

@@ -1,0 +1,46 @@
+{
+  "audioTracks" : 0,
+  "copy" : "clip.mp4",
+  "copySHA256" : "53cc1af9146421975e78f49c6861bcaf23e7c5362639f255f7efec748c3dd199",
+  "durationSeconds" : 14.751666666666667,
+  "encodedSamples" : 835,
+  "firstPTS" : 0.053333333333333337,
+  "frames" : [
+    {
+      "actualSeconds" : 0,
+      "file" : "frame_00.00.png",
+      "requestedSeconds" : 0
+    },
+    {
+      "actualSeconds" : 3.9883333333333333,
+      "file" : "frame_04.00.png",
+      "requestedSeconds" : 4
+    },
+    {
+      "actualSeconds" : 7.9833333333333334,
+      "file" : "frame_08.00.png",
+      "requestedSeconds" : 8
+    },
+    {
+      "actualSeconds" : 11.991666666666667,
+      "file" : "frame_12.00.png",
+      "requestedSeconds" : 12
+    },
+    {
+      "actualSeconds" : 14.645,
+      "file" : "frame_14.65.png",
+      "requestedSeconds" : 14.651666666666667
+    }
+  ],
+  "kind" : "decoded recorded video; resized viewing copy, no retiming or synthetic frames",
+  "lastPTS" : 14.786666666666667,
+  "nominalCaptureFps" : 56.585365295410156,
+  "pixels" : [
+    1920,
+    1036
+  ],
+  "source" : "\/Users\/digonto\/Documents\/ChatGPT\/Roblox game 2\/outputs\/environment-art-2026-10-31\/video-take5\/bamboo-entry-traversal-full.mp4",
+  "sourceDurationSeconds" : 14.743333333333334,
+  "sourceSHA256" : "6fc4b05f9c8f4fd5b8ec0449f421641bcce293d8058cf765721c4d07712e673e",
+  "warning" : "capture FPS is not foreground game performance"
+}

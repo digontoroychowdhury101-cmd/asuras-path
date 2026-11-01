@@ -166,6 +166,10 @@ from its measured 0.60-stud source width to a useful 3.6–6-stud landscape widt
 reuse the previously credited ambientCG Ground037 maps through a Grass-compatible MaterialVariant;
 deep shaded ground retains the existing LeafyGrass/moss material.
 
+On 1 November the eight entry scatter rocks were replaced by the already credited Terrain3D
+Crag A/B/C meshes and ambientCG Rock023 PBR maps. Only placement, scale and a runtime tint changed;
+the original assets, uploads and license notices remain intact.
+
 ## Bamboo Pass breakage and reused nature — 29 October 2026
 
 `AsuraBambooBreakage` contains original project-authored hollow/splintered culms and a fallen pole, generated in a separate live Blender scene by `tools/blender/bamboo_breakage.py`. Four material sections, 2,704 evaluated triangles total (maximum 1,854); no decimation or alpha cards. 2048 PBR masters and separate 1024 upload maps are preserved in `assets/build/bamboo_breakage_v2/`; the initial v1 master remains untouched. The validated export is restricted to the active scene, avoiding selected objects from earlier scenes. Real uploaded IDs, pivots, dimensions, import settings and source hashes are in `assets/BAMBOO_BREAKAGE_UPLOADED.json`.

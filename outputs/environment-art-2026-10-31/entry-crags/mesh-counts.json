@@ -1,0 +1,30 @@
+{
+  "method": "permission-checked AssetService.CreateEditableMeshAsync in Studio Edit; actual uploaded geometry",
+  "counts": {
+    "CragA": {
+      "vertices": 190,
+      "triangles": 248
+    },
+    "CragB": {
+      "vertices": 215,
+      "triangles": 290
+    },
+    "CragC": {
+      "vertices": 183,
+      "triangles": 246
+    },
+    "BoulderSmall": {
+      "vertices": 284,
+      "triangles": 98
+    }
+  },
+  "runtimeTotals": {
+    "rocks": 8,
+    "beforeTriangles": 784,
+    "afterTriangles": 2106,
+    "triangleDelta": 1322,
+    "newMeshParts": 0,
+    "newTextureSets": 0,
+    "sourceMaps": "existing Crag set already used on ridge"
+  }
+}

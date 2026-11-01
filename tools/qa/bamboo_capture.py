@@ -106,13 +106,13 @@ prologue=p and p.PlayerGui:FindFirstChild('AsuraPrologue')~=nil})"""))
                 time.sleep(.25)
             card = lua(client, sid, "Client", "local c=game.Players.LocalPlayer.PlayerGui:FindFirstChild('ControlsCard',true) return tostring(c and c.Visible)")
             if card == "true":
-                call(client, sid, "user_keyboard_input", datamodel_type="Client", actions=[{"action": "keyPress", "key_code": "Backspace"}])
+                call(client, sid, "user_keyboard_input", datamodel_type="Client", actions=[{"action": "keyPress", "key_code": "H"}])
         if "Client" not in state or "Server" not in state:
             raise RuntimeError("Start Play in the confirmed instance before capturing")
         lua(client, sid, "Client", """local pg=game.Players.LocalPlayer.PlayerGui
 assert(not pg:FindFirstChild('AsuraPrologue'),'wait for the normal prologue to finish before capturing')
 local card=pg:FindFirstChild('ControlsCard',true)
-assert(not card or not card.Visible,'close the normal controls card with Backspace before capturing')
+assert(not card or not card.Visible,'close the normal controls card with H before capturing')
 return 'normal gameplay HUD ready'""")
         lua(client, sid, "Server", """local p=game:GetService('Players'):GetPlayers()[1]
 assert(p and p.Character and p.Character:FindFirstChild('HumanoidRootPart'),'player character not ready')
@@ -154,6 +154,8 @@ return game:GetService('HttpService'):JSONEncode({studioVersion=version(),place=
 viewport={c.ViewportSize.X,c.ViewportSize.Y},fov=c.FieldOfView,camera=tostring(c.CFrame),
 quality=safe(function() return UserSettings():GetService('UserGameSettings').SavedQualityLevel.Name end),
 editorQuality=safe(function() return settings().Rendering.QualityLevel.Name end),
+editQuality=safe(function() return settings().Rendering.EditQualityLevel.Name end),
+frmEnabled=settings().Rendering.EnableFRM,autoFRMLevel=settings().Rendering.AutoFRMLevel,
 maxFramerate=safe(function() return UserSettings():GetService('UserGameSettings').FramerateCap end),
 region=p:GetAttribute('AsuraRegion'),encounter=p:GetAttribute('AsuraEncounter'),hud=gui,
 characterPosition=p.Character and {p.Character:GetPivot().X,p.Character:GetPivot().Y,p.Character:GetPivot().Z},

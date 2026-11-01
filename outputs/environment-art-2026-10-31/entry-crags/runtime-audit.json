@@ -1,0 +1,126 @@
+{
+  "colliders": 73,
+  "rocks": [
+    {
+      "touch": false,
+      "collide": false,
+      "baseGap": -0.20000004768371582,
+      "span": 5.497203364037137,
+      "name": "EntryLimestone_1",
+      "position": [
+        -35.035926818847656,
+        1.6580984592437744,
+        -1140.9599609375
+      ],
+      "height": 2.9036970138549805,
+      "mesh": "rbxassetid://110939704894454",
+      "query": false
+    },
+    {
+      "touch": false,
+      "collide": false,
+      "baseGap": -0.1999986171722412,
+      "span": 3.6776859341368255,
+      "name": "EntryLimestone_2",
+      "position": [
+        -32.86260986328125,
+        1.0445820093154907,
+        -1162.182373046875
+      ],
+      "height": 1.6766650676727295,
+      "mesh": "rbxassetid://140700450900041",
+      "query": false
+    },
+    {
+      "touch": false,
+      "collide": false,
+      "baseGap": -0.20000004768371582,
+      "span": 5.193454849498617,
+      "name": "EntryLimestone_3",
+      "position": [
+        -35.10271453857422,
+        1.3913666009902954,
+        -1189.935791015625
+      ],
+      "height": 2.3702332973480225,
+      "mesh": "rbxassetid://103452322924424",
+      "query": false
+    },
+    {
+      "touch": false,
+      "collide": false,
+      "baseGap": -0.199998140335083,
+      "span": 5.349897889481896,
+      "name": "EntryLimestone_1",
+      "position": [
+        -34.23530578613281,
+        1.5701407194137573,
+        -1213.2484130859375
+      ],
+      "height": 2.7277815341949463,
+      "mesh": "rbxassetid://110939704894454",
+      "query": false
+    },
+    {
+      "touch": false,
+      "collide": false,
+      "baseGap": -0.2000001072883606,
+      "span": 4.015614695352235,
+      "name": "EntryLimestone_2",
+      "position": [
+        35.45415496826172,
+        1.1208817958831787,
+        -1139.527587890625
+      ],
+      "height": 1.8292637467384338,
+      "mesh": "rbxassetid://140700450900041",
+      "query": false
+    },
+    {
+      "touch": false,
+      "collide": false,
+      "baseGap": -0.20000004768371582,
+      "span": 5.315348581996881,
+      "name": "EntryLimestone_3",
+      "position": [
+        32.275997161865234,
+        1.3679718971252441,
+        -1164.232421875
+      ],
+      "height": 2.32344388961792,
+      "mesh": "rbxassetid://103452322924424",
+      "query": false
+    },
+    {
+      "touch": false,
+      "collide": false,
+      "baseGap": -0.19999957084655762,
+      "span": 5.543799125011807,
+      "name": "EntryLimestone_1",
+      "position": [
+        34.931270599365234,
+        1.6177273988723755,
+        -1191.5863037109375
+      ],
+      "height": 2.822953939437866,
+      "mesh": "rbxassetid://110939704894454",
+      "query": false
+    },
+    {
+      "touch": false,
+      "collide": false,
+      "baseGap": -0.20000004768371582,
+      "span": 5.094184066233547,
+      "name": "EntryLimestone_2",
+      "position": [
+        38.683082580566406,
+        1.3788542747497559,
+        -1213.5750732421875
+      ],
+      "height": 2.3452086448669434,
+      "mesh": "rbxassetid://140700450900041",
+      "query": false
+    }
+  ],
+  "method": "Studio Play server: rotated mesh-part bounds and Terrain-only downward ray; low bounds embedded 0.2 studs. Not a sustained gameplay test."
+}

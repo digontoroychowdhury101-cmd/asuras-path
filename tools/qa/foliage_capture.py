@@ -27,9 +27,11 @@ for _,m in game.CollectionService:GetTagged('AsuraWindPlant') do
    local part=nil
    for _,d in m:GetDescendants() do if d:IsA('BasePart') and (kind~='Bamboo' or d.Name:find('Culm',1,true)) then part=d break end end
    if part then
+    local screen,visible=c:WorldToViewportPoint(part.Position)
+    if not visible or screen.Z<=0 then continue end
     local root=part:GetAttribute('WindRootLocal')
     local tip=part.CFrame:PointToWorldSpace(Vector3.new(0,part.Size.Y/2,0))
-    plants[kind]={name=part:GetFullName(),frame={part.CFrame:GetComponents()},tip={tip.X,tip.Y,tip.Z},
+    plants[kind]={name=part:GetFullName(),screen={screen.X,screen.Y,screen.Z},frame={part.CFrame:GetComponents()},tip={tip.X,tip.Y,tip.Z},
      rootError=typeof(root)=='Vector3' and (part.CFrame:PointToWorldSpace(root)-base.Position).Magnitude or nil}
    end
   end
@@ -38,7 +40,12 @@ end
 return game.HttpService:JSONEncode({clock=os.clock(),plants=plants,wind=tostring(workspace.GlobalWind),
 active=p:GetAttribute('FoliageActive'),registered=p:GetAttribute('FoliageRegistered'),
 updateMs=p:GetAttribute('FoliageUpdateMs'),peakMs=p:GetAttribute('FoliagePeakUpdateMs'),
-viewport={c.ViewportSize.X,c.ViewportSize.Y},fov=c.FieldOfView,region=p:GetAttribute('AsuraRegion')})"""
+viewport={c.ViewportSize.X,c.ViewportSize.Y},camera={c.CFrame:GetComponents()},
+quality=UserSettings():GetService('UserGameSettings').SavedQualityLevel.Name,
+editorQuality=settings().Rendering.QualityLevel.Name,
+editQuality=settings().Rendering.EditQualityLevel.Name,frmEnabled=settings().Rendering.EnableFRM,
+autoFRMLevel=settings().Rendering.AutoFRMLevel,wallClockMs=DateTime.now().UnixTimestampMillis,
+fov=c.FieldOfView,region=p:GetAttribute('AsuraRegion')})"""
 
 
 def main():
