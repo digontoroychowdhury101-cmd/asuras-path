@@ -36,3 +36,19 @@ Found while testing:
 - **Second client's view.** No other client was available. By design, a player's tracks replicate through its Animator.
 - **Hits landing on an enemy.** The phantom kept the player in hitstun, so this wasn't observed.
 - **Live persistence, mobile and video capture.** Not covered; these are stills only.
+
+## Observer-side playback (late-windup fix)
+- **Each client plays every fighter from the server state.** Other players' characters now get their clips from that client's own state-driven tracks. The owner's replicated copies of authored clips are stopped locally on those characters, so nothing plays twice.
+- **Late attacks catch up instead of skipping the windup.** A swing seen late starts earlier in the clip and plays up to 2× fast, so its contact still lands on the server's hit frame, then returns to normal speed. This applies to your own character and to remote ones.
+- **First two-client run (before the final speed-reset fix):**
+  - Player2 played Player1's Heavy from its own track, catching up at 2× from mid-windup (around 0.16 s, versus 0.36 s replicated before the fix).
+  - Doubled authored tracks: 0.
+  - Defect found: a throttled observer could skip from Startup straight to Idle and leave the clip at 2×. The speed reset now runs every frame.
+
+### To do later
+- Re-run the local two-client check (Studio *Server & Clients*, 2 players) after the speed-reset fix:
+  - Player2 sees Player1's Heavy, Art and dodge start near frame 0.
+  - Each returns to 1× at contact.
+  - No doubled tracks.
+  - Player1's own view is unchanged.
+- Setup note: keep the test Server window focused while it boots. Unfocused, it hit Studio's script timeout during world build and never spawned characters.

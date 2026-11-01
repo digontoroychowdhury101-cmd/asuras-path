@@ -1,5 +1,9 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## Observer-side fighter animation — 2026-11-01 (Windows)
+
+Clients now animate every fighter from server state; replicated copies on other players are stopped locally. Late swings catch up (up to 2×) so contact lands on time. First two-client run: no doubled tracks, windup visible. Verifier 14/14; digest 44630729. TODO: re-run two-client check after speed-reset fix.
+
 ## Jian combo and multiplayer check — 2026-11-01 (Windows)
 
 Real OS clicks chained L1→L4 with each published clip on the server clock; phantom blocked L1–L3 (blockstun, posture 23). Second client sees Player1's stance and heavy, but windups arrive late under replication lag. No clean NPC hit reaction yet. Next: decide observer-side playback for remote windups.

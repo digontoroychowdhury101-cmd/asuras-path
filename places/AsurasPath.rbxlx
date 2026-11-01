@@ -89120,11 +89120,15 @@ return Controller
 -- attacks, guard, deflect, dodges, hit reactions, posture break and recovery. Cosmetic only: damage
 -- and timing stay on the server and no animation marker reports contact.
 -- Attacks are phase-locked to the server's move clock (state elapsed + snapshot age), so the authored
--- contact lands inside the authoritative active frames; drift is corrected, hit-stop is respected.
+-- contact lands inside the authoritative active frames; a swing seen late catches up (starts earlier in
+-- the clip and plays up to CATCH_UP x fast until contact) instead of skipping its windup. Drift is
+-- corrected, hit-stop is respected.
 -- Only authored slots play (a Custom id, or in Studio a review override set as the LocalPlayer
 -- attribute AsuraAnimReview_&lt;slot name&gt;); stock stand-ins stay off, so a slot without an authored clip
--- looks exactly as before. Ownership: a character's own client animates it and the tracks replicate
--- through its Animator, so this client animates its own character and server-owned NPCs only.
+-- looks exactly as before. Every client animates every fighter it sees from the server state: the owner's
+-- tracks reach observers by Animator replication only after the owner has seen its own state and a
+-- second hop, which cut remote windups short (Studio two-client test), so on other players' characters
+-- the replicated copies of authored clips are stopped locally and this client's own tracks show instead.
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local Shared = game:GetService("ReplicatedStorage").AsurasPath
@@ -89135,11 +89139,27 @@ local Animations = {}
 Animations.__index = Animations
 
 local DRIFT = 0.06 -- seconds an attack may stray from the server's move clock before it is re-seated
+local CATCH_UP = 2 -- fastest playback a late swing uses to reach its contact on time
 local FADE_IN, FADE_OUT = 0.06, 0.12
 local MOVING_SPEED = 2 -- studs/s of horizontal root speed that swaps the ready stance for the carry
 local ATTACK = { Startup = true, Active = true, Recovery = true }
 local BROKEN = { GuardBroken = true, StaminaBroken = true, StanceBroken = true }
 local SILENT = { KO = true, DeathblowAttacker = true, DeathblowVictim = true, RestingAtShrine = true }
+
+-- Every authored id, so replicated copies on other players' characters can be recognised.
+local AUTHORED: { [string]: boolean } = {}
+for _, entry in Catalog.Universal do
+	if entry.Custom then
+		AUTHORED[entry.Custom] = true
+	end
+end
+for _, set in Catalog.Weapons do
+	for _, entry in set do
+		if entry.Custom then
+			AUTHORED[entry.Custom] = true
+		end
+	end
+end
 
 -- Move id -&gt; (weapon slot key, built move with its tempo-scaled Timing).
 local MOVES: { [string]: { Key: string, Move: any } } = {}
@@ -89167,6 +89187,8 @@ type Actor = {
 	AttackMove: string?,
 	LastState: string?,
 	Weapon: string?,
+	CatchUntil: number?, -- clip time of the contact a late swing is catching up to
+	Replicated: RBXScriptConnection?,
 }
 
 local function review(slot: Catalog.Slot): string?
@@ -89211,18 +89233,20 @@ local function stopAction(actor: Actor, fade: number?)
 	if actor.Action and actor.Action.IsPlaying then
 		actor.Action:Stop(fade or FADE_OUT)
 	end
-	actor.Action, actor.ActionKey, actor.Attack = nil, nil, false
+	actor.Action, actor.ActionKey, actor.Attack, actor.CatchUntil = nil, nil, false, nil
 end
 
 -- Starts (or keeps) the action layer. `key` identifies one occurrence, so a repeat of the same clip
 -- (a second heavy, another hit) restarts it while the same occurrence is only kept in sync.
-local function action(actor: Actor, key: string, slot: Catalog.Slot?, position: number?, attack: boolean)
+-- `contact` (attacks only) is the clip time of the strike: a swing first seen after it started begins
+-- early enough, at up to CATCH_UP x, that the contact still lands when the server's does.
+local function action(actor: Actor, key: string, slot: Catalog.Slot?, position: number?, attack: boolean, contact: number?)
 	if actor.Finished == key then
 		return -- this occurrence already played out; the server state just outlasted the clip
 	end
 	if actor.ActionKey == key then
 		local current = actor.Action
-		if current and position and current.IsPlaying and current.Speed &gt; 0 and math.abs(current.TimePosition - position) &gt; DRIFT then
+		if current and not actor.CatchUntil and position and current.IsPlaying and current.Speed &gt; 0 and math.abs(current.TimePosition - position) &gt; DRIFT then
 			current.TimePosition = math.min(position, math.max(current.Length - 1 / 60, 0))
 		end
 		return
@@ -89231,11 +89255,18 @@ local function action(actor: Actor, key: string, slot: Catalog.Slot?, position: 
 	if actor.Action and actor.Action ~= nextTrack and actor.Action.IsPlaying then
 		actor.Action:Stop(FADE_IN)
 	end
-	actor.Action, actor.ActionKey, actor.Attack, actor.Finished = nextTrack, key, attack, nil
+	actor.Action, actor.ActionKey, actor.Attack, actor.Finished, actor.CatchUntil = nextTrack, key, attack, nil, nil
 	if nextTrack then
-		nextTrack:Play(FADE_IN, 1, 1)
-		if position then
-			nextTrack.TimePosition = math.clamp(position, 0, math.max(nextTrack.Length - 1 / 60, 0))
+		local seat, speed = position, 1
+		if contact and position and position &gt; 1 / 60 and position &lt; contact then
+			local remaining = contact - position -- server seconds until the strike lands
+			seat = math.max(0, contact - remaining * CATCH_UP)
+			speed = (contact - seat) / remaining
+			actor.CatchUntil = contact
+		end
+		nextTrack:Play(FADE_IN, 1, speed)
+		if seat then
+			nextTrack.TimePosition = math.clamp(seat, 0, math.max(nextTrack.Length - 1 / 60, 0))
 		end
 	end
 end
@@ -89258,6 +89289,9 @@ local function base(actor: Actor, slot: Catalog.Slot?)
 end
 
 local function release(actor: Actor)
+	if actor.Replicated then
+		actor.Replicated:Disconnect()
+	end
 	for _, playing in actor.Tracks do
 		if playing.IsPlaying then
 			playing:Stop(0.2)
@@ -89298,11 +89332,21 @@ local function eligible(entity: any): boolean
 	if not model.Parent or entity.Boss or not entity.Snapshot or not entity.Root then
 		return false
 	end
-	if model:GetAttribute("AsuraRig") == "Creature" or model:GetAttribute("AsuraAnimationPlaying") ~= nil then
-		return false
+	return model:GetAttribute("AsuraRig") ~= "Creature" and model:GetAttribute("AsuraAnimationPlaying") == nil
+end
+
+-- On another player's character, an authored clip this client did not start is the owner's replicated
+-- copy, which arrives late: stop it here so only this client's state-driven track shows.
+local function suppress(actor: Actor, playing: AnimationTrack)
+	if not AUTHORED[playing.Animation and playing.Animation.AnimationId or ""] then
+		return
 	end
-	local owner = Players:GetPlayerFromCharacter(model)
-	return owner == nil or owner == Players.LocalPlayer
+	for _, own in actor.Tracks do
+		if own == playing then
+			return
+		end
+	end
+	playing:Stop(0)
 end
 
 function Animations.Step(self: any, entity: any, actor: Actor)
@@ -89346,7 +89390,8 @@ function Animations.Step(self: any, entity: any, actor: Actor)
 			actor.AttackSerial += 1
 			actor.AttackMove = s.Move
 		end
-		action(actor, s.Move .. "#" .. actor.AttackSerial, Catalog.weapon(weapon, entry.Key :: any), into, true)
+		action(actor, s.Move .. "#" .. actor.AttackSerial, Catalog.weapon(weapon, entry.Key :: any), into, true,
+			timing.StartupSeconds + timing.ActiveSeconds * 0.5)
 	elseif state == "Blocking" then
 		if not (actor.Action and actor.ActionKey and string.sub(actor.ActionKey, 1, 11) == "GuardImpact" and actor.Action.IsPlaying) then
 			action(actor, "Guard", Catalog.weapon(weapon, "Guard"), nil, false)
@@ -89376,11 +89421,19 @@ function Animations.Step(self: any, entity: any, actor: Actor)
 	if not ATTACK[state] then
 		actor.AttackMove = nil
 	end
+	-- A swing catching up returns to authored speed at its contact, whatever state the server has reached.
+	local catching = actor.Action
+	if actor.CatchUntil and (not catching or not catching.IsPlaying or catching.TimePosition &gt;= actor.CatchUntil - 1e-3) then
+		actor.CatchUntil = nil
+		if catching and catching.Speed &gt; 0 then
+			catching:AdjustSpeed(1)
+		end
+	end
 	-- A finished one-shot releases the layer and remembers its occurrence, so a clip that ends a frame
 	-- before the server leaves the state (a swing's Recovery, a hitstun) is not restarted on its last frame.
 	if actor.Action and not actor.Action.IsPlaying and not actor.Action.Looped then
 		actor.Finished = actor.ActionKey
-		actor.Action, actor.ActionKey, actor.Attack = nil, nil, false
+		actor.Action, actor.ActionKey, actor.Attack, actor.CatchUntil = nil, nil, false, nil
 	end
 	actor.LastState = state
 end
@@ -89400,7 +89453,18 @@ function Animations.Update(self: any, _dt: number)
 				continue
 			end
 			actor = { Model = model, Animator = animator, Root = entity.Root, Tracks = {}, Base = nil, Action = nil,
-				ActionKey = nil, Attack = false, Finished = nil, Serial = 0, AttackSerial = 0, AttackMove = nil, LastState = nil, Weapon = nil }
+				ActionKey = nil, Attack = false, Finished = nil, Serial = 0, AttackSerial = 0, AttackMove = nil, LastState = nil,
+				Weapon = nil, CatchUntil = nil, Replicated = nil }
+			local owner = Players:GetPlayerFromCharacter(model)
+			if owner and owner ~= Players.LocalPlayer then
+				local created = actor :: Actor
+				created.Replicated = animator.AnimationPlayed:Connect(function(playing: AnimationTrack)
+					suppress(created, playing)
+				end)
+				for _, playing in animator:GetPlayingAnimationTracks() do
+					suppress(created, playing)
+				end
+			end
 			self.Actors[model] = actor
 		end
 		local current = actor :: Actor
