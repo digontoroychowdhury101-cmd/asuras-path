@@ -25,6 +25,7 @@ local Bodies = require(Shared.Shared.BossBodies)
 local AnimationRules = require(Shared.Shared.BossAnimationRules)
 local Zones = require(Shared.Shared.MonasteryZones)
 local Campaign = require(Shared.Shared.CampaignZones)
+local Spacing = require(Shared.Shared.MobSpacing)
 
 type Entity = Characters.Entity
 type MobDef = World.MobDef
@@ -335,6 +336,22 @@ end
 -- A Twin flanks: it never takes the engage point its living partner already holds (Bodies.flank).
 local function closeIn(agent: Agent, self: Entity, target: Entity, reach: number)
 	local at, to = self.Root.Position, target.Root.Position
+	if not agent.Boss then
+		-- Ordinary foes stand off just inside reach (MobSpacing) and fan out round a shared target.
+		local stop = Spacing.standoff(reach, self.Model:GetScale(), target.Model:GetScale())
+		local x, z = Bodies.closeIn(at.X, at.Z, to.X, to.Z, stop)
+		for id, other in agents do
+			local ally = if id ~= agent.Id and other.Target == agent.Target and not other.Boss then Characters.GetEntity(id) else nil
+			if ally and ally.Fighter.State ~= "KO" then
+				local o = ally.Root.Position
+				if (x - o.X) ^ 2 + (z - o.Z) ^ 2 < Spacing.AllyGap ^ 2 then
+					x, z = Bodies.flank(at.X, at.Z, to.X, to.Z, stop, o.X, o.Z, Spacing.AllyGap)
+				end
+			end
+		end
+		moveTo(agent, Vector3.new(x, to.Y, z))
+		return
+	end
 	local x, z = Bodies.closeIn(at.X, at.Z, to.X, to.Z, reach * 0.6)
 	local encounter = self.Model:GetAttribute("AsuraEncounter")
 	for _, id in if type(encounter) == "string" then BossDuo.members(encounter) else {} do
@@ -397,6 +414,12 @@ local function decide(agent: Agent, self: Entity, target: Entity, now: number)
 		closeIn(agent, self, target, reach)
 		return
 	end
+	-- An ordinary foe left on top of its target (the player stepped in) steps back out before swinging.
+	if not agent.Boss and f.State == "Idle" and agent.Pending == nil
+		and Spacing.crowded(flat(target.Root.Position - self.Root.Position).Magnitude, self.Model:GetScale(), target.Model:GetScale()) then
+		closeIn(agent, self, target, reach)
+		return
+	end
 	-- A Twin left on top of the player or its partner (after a lunge) steps back out to its flank
 	-- point before the next swing (BossRules.crowded, post-F26 Step 4).
 	local partner = if agent.Boss and f.State == "Idle" and agent.Pending == nil then BossMotion.partner(self) else nil
@@ -425,6 +448,8 @@ local function decide(agent: Agent, self: Entity, target: Entity, now: number)
 	end
 	if comboOpen then
 		if agent.Rng:NextNumber() <= profile.ComboContinueChance then
+			-- Plant before the follow-up: the body used to keep walking into the target through the chain.
+			Characters.StopMoving(agent.Id)
 			queueAttack(agent, f, "Light", now)
 		end
 		return
@@ -1125,6 +1150,12 @@ function AIService.Start()
 		end
 		for _, agent in agents do
 			update(agent, now)
+			if not agent.Boss then
+				local self = Characters.GetEntity(agent.Id)
+				local target = if self and agent.Target ~= 0 then Characters.GetEntity(agent.Target) else nil
+				local distance = if self and target then flat(target.Root.Position - self.Root.Position).Magnitude else math.huge
+				Characters.SetPace(agent.Id, Spacing.pace(agent.Mode, distance, if self then reachOf(agent, self.Fighter) else 1))
+			end
 		end
 	end))
 	table.insert(disconnectors, Characters.Subscribe(onEvent))

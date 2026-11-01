@@ -78,6 +78,7 @@ export type Entity = {
 	Packed: string,
 	MirroredHealth: number,
 	WalkSpeed: number,
+	Pace: number, -- AI walk/run fraction of the combat walk speed (MobSpacing.pace); players stay at 1
 	JumpHeight: number,
 	AppliedDashSeq: number,
 	WeaponPart: BasePart?,
@@ -510,6 +511,7 @@ local function newEntity(id: number, kind: EntityKind, player: Player?, model: M
 		Packed = "",
 		MirroredHealth = -1,
 		WalkSpeed = 0,
+		Pace = 1,
 		JumpHeight = 0,
 		AppliedDashSeq = 0,
 		WeaponPart = nil,
@@ -1299,7 +1301,7 @@ end
 local function applyLocomotion(e: Entity)
 	local f = e.Fighter
 	e.Model:SetAttribute("JadeAegisUntil",f.WardUntil)
-	local speed = if f.RootUntil > simTime then 0 else Settings.Movement.WalkSpeed * Combat.speedMultiplier(f)
+	local speed = if f.RootUntil > simTime then 0 else Settings.Movement.WalkSpeed * Combat.speedMultiplier(f) * e.Pace
 	if math.abs(speed - e.WalkSpeed) > 0.01 then
 		e.WalkSpeed = speed
 		e.Humanoid.WalkSpeed = speed
@@ -1625,6 +1627,13 @@ function Service.MoveTo(id: number, position: Vector3)
 	end
 end
 
+function Service.SetPace(id: number, pace: number)
+	local e = entities[id]
+	if e and e.Kind == "Enemy" then
+		e.Pace = math.clamp(pace, 0, 1)
+	end
+end
+
 function Service.StopMoving(id: number)
 	local e = entities[id]
 	if e and alive(e) and e.Kind == "Enemy" then
@@ -1654,6 +1663,13 @@ function Service.Face(id: number, position: Vector3)
 		local step = Strike.turnStep(f.State, simTime - f.StateStart, startup, dt)
 		local yaw = Strike.turn(yawOf(e.Root.CFrame), Strike.yaw(direction.X, direction.Z) :: number, step)
 		e.Root.CFrame = CFrame.new(origin) * CFrame.Angles(0, yaw, 0)
+		-- Writing the root CFrame cancels the Humanoid's MoveTo. MoveTo only renewed it when the goal
+		-- moved or every MOVE_RENEW s, so a chasing foe froze and then lurched a whole think tick into
+		-- the player (Studio trace 2026-11-01). Keep the walk going through every turn.
+		local goal = e.LastMoveTo
+		if goal.X < math.huge and Vector3.new(goal.X - origin.X, 0, goal.Z - origin.Z).Magnitude > 0.5 then
+			e.Humanoid:MoveTo(goal)
+		end
 	end
 end
 

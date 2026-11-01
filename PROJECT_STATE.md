@@ -1,5 +1,9 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## Enemy "knocks into you" fix — 2026-11-01 (Windows)
+
+Cause: AI Face wrote the root CFrame each think, cancelling Humanoid MoveTo, so chasers froze then lurched; they also engaged at 2.7 studs, walked at 23.5 and kept walking through combos. MobSpacing adds standoff, crowd step-back, pace and ally fan-out. Studio trace: no shove, 3.4–3.9 stud standoff. Next: monk production model and clips.
+
 ## Observer-side fighter animation — 2026-11-01 (Windows)
 
 Clients now animate every fighter from server state; replicated copies on other players are stopped locally. Late swings catch up (up to 2×) so contact lands on time. First two-client run: no doubled tracks, windup visible. Verifier 14/14; digest 44630729. TODO: re-run two-client check after speed-reset fix.

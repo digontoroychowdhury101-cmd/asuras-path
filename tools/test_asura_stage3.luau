@@ -270,4 +270,17 @@ assert(Combat.tryAttack(swapper, "Light", T))
 Combat.forceWeapon(swapper, "Guandao")
 assert(swapper.Weapon == "Guandao" and swapper.Move == nil)
 
+-- Ordinary foes stand off inside their reach but outside body contact, and walk unless chasing from afar.
+local Spacing = require("../src/shared/MobSpacing")
+local Contact = require("../src/shared/ContactCues")
+for _, weapon in { "Unarmed", "Dao" } do
+	local reach = Weapons.get(weapon).Light[1].Reach
+	local stop = Spacing.standoff(reach, 1, 1)
+	assert(stop <= reach + Contact.BodyRadius - 0.5, weapon .. " standoff must leave its jab in range")
+	assert(stop >= 2 * Contact.BodyRadius + 0.5, weapon .. " standoff must keep bodies apart")
+	assert(not Spacing.crowded(stop, 1, 1) and Spacing.crowded(2.4, 1, 1))
+end
+assert(Spacing.standoff(4, 1.2, 1) > Spacing.standoff(4, 1, 1), "a bigger body stands further off")
+assert(Spacing.pace("Patrol", 50, 4) < 0.5 and Spacing.pace("Combat", 3, 4) < 1 and Spacing.pace("Engage", 30, 4) == 1)
+
 print("Asura Stage 3: all checks passed")
