@@ -951,6 +951,9 @@
             "WeaponTrails": {
               "$path": "src/client/Controllers/WeaponTrails.luau"
             },
+            "FighterAnimations": {
+              "$path": "src/client/Controllers/FighterAnimations.luau"
+            },
             "QiVfx": {
               "$path": "src/client/Controllers/QiVfx.luau"
             },

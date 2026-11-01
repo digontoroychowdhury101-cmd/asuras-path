@@ -45,8 +45,9 @@ export type UniversalKey =
 	| "Deathblow_Attacker"
 	| "Deathblow_Victim"
 	| "AltarRest"
+	| "Recover"
 
-export type WeaponKey = "Idle" | "Equip" | "Light1" | "Light2" | "Light3" | "Light4" | "Heavy" | "WeaponArt"
+export type WeaponKey = "Idle" | "Move" | "Equip" | "Light1" | "Light2" | "Light3" | "Light4" | "Heavy" | "Running" | "WeaponArt" | "Guard" | "GuardImpact"
 
 export type EnemyKey = "Shen_Phase1_Idle" | "Shen_Phase1_SwordCombo" | "Shen_Phase2_Transform" | "Shen_Phase2_GlaiveCombo"
 
@@ -102,62 +103,82 @@ end
 -------------------------------------------------------------------------------------------------
 
 Catalog.Universal = {
-	Roll = slot("Roll", nil, "Fall", false, "Action2", 1.6),
-	Backdash = slot("Backdash", nil, "Jump", false, "Action2", 1.4),
-	Deflect = slot("Deflect", nil, "ToolHold", false, "Action3", 1.8),
-	Hitstun_Light = slot("Hitstun_Light", nil, "Fall", false, "Action3", 2.0),
-	Hitstun_Heavy = slot("Hitstun_Heavy", nil, "Fall", false, "Action3", 1.2),
-	StanceBroken = slot("StanceBroken", nil, "Sit", true, "Action4", 1),
+	Roll = slot("Roll", "rbxassetid://76668598902693", "Fall", false, "Action2", 1.6),
+	Backdash = slot("Backdash", "rbxassetid://135695988461681", "Jump", false, "Action2", 1.4),
+	Deflect = slot("Deflect", "rbxassetid://111115189726174", "ToolHold", false, "Action3", 1.8),
+	Hitstun_Light = slot("Hitstun_Light", "rbxassetid://74668214273745", "Fall", false, "Action3", 2.0),
+	Hitstun_Heavy = slot("Hitstun_Heavy", "rbxassetid://139439892303244", "Fall", false, "Action3", 1.2),
+	StanceBroken = slot("StanceBroken", "rbxassetid://120106199751337", "Sit", true, "Action4", 1),
 	Deathblow_Attacker = slot("Deathblow_Attacker", nil, "ToolLunge", false, "Action4", 0.7),
 	Deathblow_Victim = slot("Deathblow_Victim", nil, "Sit", false, "Action4", 1),
 	AltarRest = slot("AltarRest", nil, "Sit", true, "Action", 1),
+	Recover = slot("Recover", "rbxassetid://129007326029291", "IdleLook", false, "Action3", 1.4),
 } :: { [UniversalKey]: Slot }
 
 -------------------------------------------------------------------------------------------------
 -- Per-weapon movesets. Guandao's light string is three hits; its Light4 slot is reserved for a
--- future fourth hit and is never requested by the current move data.
+-- future fourth hit and is never requested by the current move data. Idle is the full-body ready
+-- stance while standing; Move is an arms-only carry layered over Roblox's walk/run; Guard is
+-- upper-body only, so a guarding fighter can still walk. Client playback: FighterAnimations, which
+-- plays only authored (Custom) slots and leaves stock stand-ins off.
 -------------------------------------------------------------------------------------------------
 
 Catalog.Weapons = {
 	Unarmed = {
 		Idle = slot("Unarmed.Idle", nil, "Idle", true, "Idle"),
+		Move = slot("Unarmed.Move", nil, "ToolHold", true, "Movement"),
 		Equip = slot("Unarmed.Equip", nil, "IdleLook", false, "Action", 1.5),
 		Light1 = slot("Unarmed.Light1", nil, "ToolSlash", false, "Action", 1.6),
 		Light2 = slot("Unarmed.Light2", nil, "ToolLunge", false, "Action", 1.6),
 		Light3 = slot("Unarmed.Light3", nil, "ToolSlash", false, "Action", 1.5),
 		Light4 = slot("Unarmed.Light4", nil, "ToolLunge", false, "Action", 1.3),
 		Heavy = slot("Unarmed.Heavy", nil, "ToolLunge", false, "Action", 0.9),
+		Running = slot("Unarmed.Running", nil, "ToolLunge", false, "Action", 1.0),
 		WeaponArt = slot("Unarmed.WeaponArt", nil, "ToolSlash", false, "Action2", 0.8),
+		Guard = slot("Unarmed.Guard", nil, "ToolHold", true, "Action"),
+		GuardImpact = slot("Unarmed.GuardImpact", nil, "ToolHold", false, "Action2", 1.5),
 	},
 	Jian = {
-		Idle = slot("Jian.Idle", nil, "ToolHold", true, "Idle"),
-		Equip = slot("Jian.Equip", nil, "ToolHold", false, "Action", 1.5),
-		Light1 = slot("Jian.Light1", nil, "ToolSlash", false, "Action", 1.4),
-		Light2 = slot("Jian.Light2", nil, "ToolSlash", false, "Action", 1.5),
-		Light3 = slot("Jian.Light3", nil, "ToolLunge", false, "Action", 1.4),
-		Light4 = slot("Jian.Light4", nil, "ToolSlash", false, "Action", 1.2),
-		Heavy = slot("Jian.Heavy", nil, "ToolLunge", false, "Action", 0.85),
-		WeaponArt = slot("Jian.WeaponArt", nil, "ToolLunge", false, "Action2", 0.7),
+		Idle = slot("Jian.Idle", "rbxassetid://97729334147895", "ToolHold", true, "Movement"),
+		Move = slot("Jian.Move", "rbxassetid://135406303189832", "ToolHold", true, "Movement"),
+		Equip = slot("Jian.Equip", "rbxassetid://138487014275939", "ToolHold", false, "Action", 1.5),
+		Light1 = slot("Jian.Light1", "rbxassetid://87800015669250", "ToolSlash", false, "Action2", 1.4),
+		Light2 = slot("Jian.Light2", "rbxassetid://113542530241474", "ToolSlash", false, "Action2", 1.5),
+		Light3 = slot("Jian.Light3", "rbxassetid://115589583211296", "ToolLunge", false, "Action2", 1.4),
+		Light4 = slot("Jian.Light4", "rbxassetid://88372590503565", "ToolSlash", false, "Action2", 1.2),
+		Heavy = slot("Jian.Heavy", "rbxassetid://137612205425483", "ToolLunge", false, "Action2", 0.85),
+		Running = slot("Jian.Running", "rbxassetid://124446470934584", "ToolLunge", false, "Action2", 1.0),
+		WeaponArt = slot("Jian.WeaponArt", "rbxassetid://96229215657784", "ToolLunge", false, "Action2", 0.7),
+		Guard = slot("Jian.Guard", "rbxassetid://71182885805704", "ToolHold", true, "Action"),
+		GuardImpact = slot("Jian.GuardImpact", "rbxassetid://76420751200151", "ToolHold", false, "Action3", 1.5),
 	},
 	Dao = {
 		Idle = slot("Dao.Idle", nil, "ToolHold", true, "Idle"),
+		Move = slot("Dao.Move", nil, "ToolHold", true, "Movement"),
 		Equip = slot("Dao.Equip", nil, "ToolHold", false, "Action", 1.4),
 		Light1 = slot("Dao.Light1", nil, "ToolSlash", false, "Action", 1.3),
 		Light2 = slot("Dao.Light2", nil, "ToolSlash", false, "Action", 1.35),
 		Light3 = slot("Dao.Light3", nil, "ToolSlash", false, "Action", 1.25),
 		Light4 = slot("Dao.Light4", nil, "ToolLunge", false, "Action", 1.1),
 		Heavy = slot("Dao.Heavy", nil, "ToolSlash", false, "Action", 0.8),
+		Running = slot("Dao.Running", nil, "ToolLunge", false, "Action", 1.0),
 		WeaponArt = slot("Dao.WeaponArt", nil, "ToolSlash", false, "Action2", 0.65),
+		Guard = slot("Dao.Guard", nil, "ToolHold", true, "Action"),
+		GuardImpact = slot("Dao.GuardImpact", nil, "ToolHold", false, "Action2", 1.5),
 	},
 	Guandao = {
 		Idle = slot("Guandao.Idle", nil, "ToolHold", true, "Idle"),
+		Move = slot("Guandao.Move", nil, "ToolHold", true, "Movement"),
 		Equip = slot("Guandao.Equip", nil, "ToolHold", false, "Action", 1.2),
 		Light1 = slot("Guandao.Light1", nil, "ToolSlash", false, "Action", 1.1),
 		Light2 = slot("Guandao.Light2", nil, "ToolLunge", false, "Action", 1.1),
 		Light3 = slot("Guandao.Light3", nil, "ToolSlash", false, "Action", 1.0),
 		Light4 = slot("Guandao.Light4", nil, "ToolLunge", false, "Action", 1.0),
 		Heavy = slot("Guandao.Heavy", nil, "ToolLunge", false, "Action", 0.7),
+		Running = slot("Guandao.Running", nil, "ToolLunge", false, "Action", 1.0),
 		WeaponArt = slot("Guandao.WeaponArt", nil, "ToolSlash", false, "Action2", 0.6),
+		Guard = slot("Guandao.Guard", nil, "ToolHold", true, "Action"),
+		GuardImpact = slot("Guandao.GuardImpact", nil, "ToolHold", false, "Action2", 1.5),
 	},
 } :: { [WeaponName]: { [WeaponKey]: Slot } }
 
@@ -182,9 +203,10 @@ Catalog.UniversalKeys = table.freeze({
 	"Deathblow_Attacker",
 	"Deathblow_Victim",
 	"AltarRest",
+	"Recover",
 } :: { UniversalKey })
 Catalog.WeaponNames = table.freeze({ "Unarmed", "Jian", "Dao", "Guandao" } :: { WeaponName })
-Catalog.WeaponKeys = table.freeze({ "Idle", "Equip", "Light1", "Light2", "Light3", "Light4", "Heavy", "WeaponArt" } :: { WeaponKey })
+Catalog.WeaponKeys = table.freeze({ "Idle", "Move", "Equip", "Light1", "Light2", "Light3", "Light4", "Heavy", "Running", "WeaponArt", "Guard", "GuardImpact" } :: { WeaponKey })
 Catalog.EnemyKeys = table.freeze({
 	"Shen_Phase1_Idle",
 	"Shen_Phase1_SwordCombo",
@@ -196,18 +218,19 @@ Catalog.EnemyKeys = table.freeze({
 -- Resolution
 -------------------------------------------------------------------------------------------------
 
--- The id to load for a slot on the given rig: the custom id when set, else the stock fallback.
+-- The id to load for a slot on the given rig: the custom id when set (authored on R15, so R6 rigs keep
+-- their stock stand-in), else the stock fallback.
 function Catalog.resolve(entry: Slot, rig: Rig?): string
 	local custom = entry.Custom
-	if custom then
+	if custom and rig ~= "R6" then
 		return custom
 	end
 	return if rig == "R6" then entry.FallbackR6 else entry.Fallback
 end
 
 -- Playback speed for a slot: authored speed for custom ids, tuned speed for stock stand-ins.
-function Catalog.speed(entry: Slot): number
-	return if entry.Custom then 1 else entry.FallbackSpeed
+function Catalog.speed(entry: Slot, rig: Rig?): number
+	return if entry.Custom and rig ~= "R6" then 1 else entry.FallbackSpeed
 end
 
 function Catalog.isCustom(entry: Slot): boolean

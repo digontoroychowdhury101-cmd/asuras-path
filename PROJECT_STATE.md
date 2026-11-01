@@ -1,5 +1,9 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## Jian combat animation — 2026-11-01 (Windows)
+
+Players had no attack playback; new FighterAnimations plays catalog slots phase-locked to server state. 19 Jian/shared clips authored, published, load-back verified (assets/animations/jian). Studio play confirms attacks, guard, parry, dodges, reactions, posture break. Verifier 14/14; digest 1369716346. L2–L4 untested by live press (Studio fps). Next: two-client and real-press combo check.
+
 ## Frost Ridge step checkpoint — 2026-11-01 (Mac)
 
 Imported original PBR stone; six reused meshes replace white step visuals and add grounded supports. Original landing boxes/gaps retained; three narrow footings added (76 colliders). Three Play comparisons saved; viewport/Automatic-quality differences disclosed. Support texture stretching and normal jump/return test remain open. Canonical build matches Studio; 14 local checks pass. Next: support material refinement, traversal, then Bamboo/performance gates.

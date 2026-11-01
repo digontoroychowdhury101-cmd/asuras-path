@@ -1,0 +1,100 @@
+{
+ "note": "Published Roblox ids for the Jian starting set and shared fighter actions (uploaded 2026-11-01 via Studio Save to Roblox on Windows, each verified by loading it back: keyframes, poses, weights, loop and priority match). sha256 is the referent-free content of the uploaded .rbxmx: export.py marks a clip stale when its rebake no longer matches.",
+ "clips": {
+  "Fighter_Backstep": {
+   "asset_id": "rbxassetid://135695988461681",
+   "sha256": "b31c4afc9415fb34dc21bba347727dc6bd2e625a0c643342cdde221fda31b3b0",
+   "slot": "Backdash"
+  },
+  "Fighter_Deflect": {
+   "asset_id": "rbxassetid://111115189726174",
+   "sha256": "290d859b8397cf8dc718552c044a676d76fb2c377f5c63fcc21948b0ca7ffdad",
+   "slot": "Deflect"
+  },
+  "Fighter_Dodge": {
+   "asset_id": "rbxassetid://76668598902693",
+   "sha256": "9d9142a7d3e58d769fdfc4b534ece4e2109200a7a3b960b12bf5791716143802",
+   "slot": "Roll"
+  },
+  "Fighter_HitHeavy": {
+   "asset_id": "rbxassetid://139439892303244",
+   "sha256": "06c1db0b51912e5313d85ede5b3a896eaf2f976203eec418487b2785e5ae8c2c",
+   "slot": "Hitstun_Heavy"
+  },
+  "Fighter_HitLight": {
+   "asset_id": "rbxassetid://74668214273745",
+   "sha256": "14e8b55536d9a946de76b2eb0707706029a83ea5b772348b2bdca371138a2b56",
+   "slot": "Hitstun_Light"
+  },
+  "Fighter_PostureBroken": {
+   "asset_id": "rbxassetid://120106199751337",
+   "sha256": "52f8c62ef9b351eaa597f539f739d9510d302bee0b29e274752daa095a60f39e",
+   "slot": "StanceBroken"
+  },
+  "Fighter_Recover": {
+   "asset_id": "rbxassetid://129007326029291",
+   "sha256": "fe87cfa49ff8685237c67f8ff9b926d758e0f41cf228dd6ae47b629a1f051c9a",
+   "slot": "Recover"
+  },
+  "Jian_Art": {
+   "asset_id": "rbxassetid://96229215657784",
+   "sha256": "720d47ba6348bd0b476fc42ddca18368c2b7f0d558ab94e7662c9be45f800707",
+   "slot": "Jian.WeaponArt"
+  },
+  "Jian_Equip": {
+   "asset_id": "rbxassetid://138487014275939",
+   "sha256": "1b0ffbb1ed358489d36af30112e5e16025dcb90d64c088df53bb897900718a84",
+   "slot": "Jian.Equip"
+  },
+  "Jian_Guard": {
+   "asset_id": "rbxassetid://71182885805704",
+   "sha256": "7f6d7c06df77c4376be3a210e2b39314d00e51f0573559a0445e581e3b5c3153",
+   "slot": "Jian.Guard"
+  },
+  "Jian_GuardImpact": {
+   "asset_id": "rbxassetid://76420751200151",
+   "sha256": "a8de144e5fa812bb22a6515af0b953715cad3108fe08ec6c47ac9ad517429a28",
+   "slot": "Jian.GuardImpact"
+  },
+  "Jian_Heavy": {
+   "asset_id": "rbxassetid://137612205425483",
+   "sha256": "36ee1f65d868c7c6bb61b81bfbe34fa22f1d399f323dfb455e8af31a4a8c143b",
+   "slot": "Jian.Heavy"
+  },
+  "Jian_Idle": {
+   "asset_id": "rbxassetid://97729334147895",
+   "sha256": "6850842136aa1a44669ea96bbc9189b9850f3390b01e3a91d59a9479138504d1",
+   "slot": "Jian.Idle"
+  },
+  "Jian_L1": {
+   "asset_id": "rbxassetid://87800015669250",
+   "sha256": "ebe9b0a6ac2387566766986d5293b5e8c171cfd44b76ca6766a3e162c7ff7963",
+   "slot": "Jian.Light1"
+  },
+  "Jian_L2": {
+   "asset_id": "rbxassetid://113542530241474",
+   "sha256": "ee66798f7c0daea8b61f12858e685f31b110dbc0614a698dfbc91982e7b8a212",
+   "slot": "Jian.Light2"
+  },
+  "Jian_L3": {
+   "asset_id": "rbxassetid://115589583211296",
+   "sha256": "109d6c1004c00246a204f8fe562d5dabbacf944029b0aa13feb2103a1176f373",
+   "slot": "Jian.Light3"
+  },
+  "Jian_L4": {
+   "asset_id": "rbxassetid://88372590503565",
+   "sha256": "0086dbd40ebb0287e864993b4603bb06824f708794c0357d12449cff94d0bcd4",
+   "slot": "Jian.Light4"
+  },
+  "Jian_Move": {
+   "asset_id": "rbxassetid://135406303189832",
+   "sha256": "ef8a2427a4a73dd025904f5b4bf7ee370e3a741bcf1837d8149edd268d0e7a65",
+   "slot": "Jian.Move"
+  },
+  "Jian_Running": {
+   "asset_id": "rbxassetid://124446470934584",
+   "sha256": "490cc01c73f313261c3734b9b981eef4750322202e05e761d0baaf03c3d40a74",
+   "slot": "Jian.Running"
+  }
+ }
+}

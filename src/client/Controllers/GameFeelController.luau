@@ -6,13 +6,14 @@ local Vfx = require(script.Parent.CombatVfx)
 local Feedback = require(script.Parent.CombatFeedback)
 local Trails = require(script.Parent.WeaponTrails)
 local Dissolve = require(script.Parent.EnemyDissolve)
+local FighterAnimations = require(script.Parent.FighterAnimations)
 local Controller = {}
 Controller.__index = Controller
 export type GameFeel = any
 function Controller.new(state: any, camera: any): GameFeel
  local folder = Instance.new("Folder"); folder.Name, folder.Parent = "AsuraFeel", workspace
  local self = setmetatable({State=state, Camera=camera, Folder=folder, Vfx=Vfx.new(folder),
-  Feedback=Feedback.new(state,camera), Trails=Trails.new(state), Dissolve=Dissolve.new(state), Disconnects={}}, Controller)
+  Feedback=Feedback.new(state,camera), Trails=Trails.new(state), Dissolve=Dissolve.new(state), Animations=FighterAnimations.new(state), Disconnects={}}, Controller)
  table.insert(self.Disconnects,state:OnEvent(function(event: any) self:OnEvent(event) end))
  table.insert(self.Disconnects,state:OnCue(function(cue: any) self:OnCue(cue) end))
  return self
@@ -69,10 +70,10 @@ function Controller.OnCue(self: GameFeel, cue: any)
  end
 end
 function Controller.Update(self: GameFeel,dt: number)
- self.Feedback:Update(dt); self.Vfx:Update(dt); self.Trails:Update(dt); self.Dissolve:Update(dt)
+ self.Animations:Update(dt); self.Feedback:Update(dt); self.Vfx:Update(dt); self.Trails:Update(dt); self.Dissolve:Update(dt)
 end
 function Controller.Destroy(self: GameFeel)
  for _,disconnect in self.Disconnects do disconnect() end
- self.Feedback:Destroy();self.Trails:Destroy();self.Dissolve:Destroy();self.Vfx:Destroy();self.Folder:Destroy()
+ self.Animations:Destroy();self.Feedback:Destroy();self.Trails:Destroy();self.Dissolve:Destroy();self.Vfx:Destroy();self.Folder:Destroy()
 end
 return Controller

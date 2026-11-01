@@ -1,0 +1,609 @@
+{
+ "clips": {
+  "Fighter_Backstep": {
+   "slot": "Backdash",
+   "length": 0.22,
+   "loop": false,
+   "priority": "Action2",
+   "move": null,
+   "contacts": [],
+   "keyframes": 12,
+   "notes": "Backstep hop, guard kept forward.",
+   "validation": {
+    "right_reach": 0.0,
+    "right_pull": 0.0,
+    "left_reach": 0.0167,
+    "leg_reach": 0.0,
+    "sole_below_ground": 0.0,
+    "planted_slide": 0.0,
+    "blade_in_body": 0.0,
+    "blade_below_ground": 0.0,
+    "hand_jerk": 0.0,
+    "loop_seam_deg": 0.0,
+    "strike": {}
+   },
+   "problems": [],
+   "uploaded": true,
+   "asset_id": "rbxassetid://135695988461681"
+  },
+  "Fighter_Deflect": {
+   "slot": "Deflect",
+   "length": 0.32,
+   "loop": false,
+   "priority": "Action3",
+   "move": null,
+   "contacts": [],
+   "keyframes": 20,
+   "notes": "Beat parry, upper body only.",
+   "validation": {
+    "right_reach": 0.0,
+    "right_pull": 0.0,
+    "left_reach": 0.0,
+    "leg_reach": 0.0,
+    "sole_below_ground": 0.0,
+    "planted_slide": 0.0,
+    "blade_in_body": 0.0,
+    "blade_below_ground": 0.0,
+    "hand_jerk": 0.2794,
+    "loop_seam_deg": 0.0,
+    "strike": {}
+   },
+   "problems": [],
+   "uploaded": true,
+   "asset_id": "rbxassetid://111115189726174"
+  },
+  "Fighter_Dodge": {
+   "slot": "Roll",
+   "length": 0.36,
+   "loop": false,
+   "priority": "Action2",
+   "move": null,
+   "contacts": [],
+   "keyframes": 21,
+   "notes": "Low evasive duck; the server moves the root, the clip keeps the body compact.",
+   "validation": {
+    "right_reach": 0.0,
+    "right_pull": 0.0,
+    "left_reach": 0.0,
+    "leg_reach": 0.0,
+    "sole_below_ground": 0.0,
+    "planted_slide": 0.0,
+    "blade_in_body": 0.0,
+    "blade_below_ground": 0.0,
+    "hand_jerk": 0.0,
+    "loop_seam_deg": 0.0,
+    "strike": {}
+   },
+   "problems": [],
+   "uploaded": true,
+   "asset_id": "rbxassetid://76668598902693"
+  },
+  "Fighter_HitHeavy": {
+   "slot": "Hitstun_Heavy",
+   "length": 0.48,
+   "loop": false,
+   "priority": "Action3",
+   "move": null,
+   "contacts": [],
+   "keyframes": 30,
+   "notes": "Heavy recoil with a stagger step back.",
+   "validation": {
+    "right_reach": 0.0,
+    "right_pull": 0.0,
+    "left_reach": 0.0,
+    "leg_reach": 0.0,
+    "sole_below_ground": 0.0,
+    "planted_slide": 0.0091,
+    "blade_in_body": 0.0,
+    "blade_below_ground": 0.0,
+    "hand_jerk": 0.0,
+    "loop_seam_deg": 0.0,
+    "strike": {}
+   },
+   "problems": [],
+   "uploaded": true,
+   "asset_id": "rbxassetid://139439892303244"
+  },
+  "Fighter_HitLight": {
+   "slot": "Hitstun_Light",
+   "length": 0.28,
+   "loop": false,
+   "priority": "Action3",
+   "move": null,
+   "contacts": [],
+   "keyframes": 17,
+   "notes": "Light flinch.",
+   "validation": {
+    "right_reach": 0.0,
+    "right_pull": 0.0,
+    "left_reach": 0.0,
+    "leg_reach": 0.0,
+    "sole_below_ground": 0.0,
+    "planted_slide": 0.0,
+    "blade_in_body": 0.0,
+    "blade_below_ground": 0.0,
+    "hand_jerk": 0.0,
+    "loop_seam_deg": 0.0,
+    "strike": {}
+   },
+   "problems": [],
+   "uploaded": true,
+   "asset_id": "rbxassetid://74668214273745"
+  },
+  "Fighter_PostureBroken": {
+   "slot": "StanceBroken",
+   "length": 1.2,
+   "loop": true,
+   "priority": "Action4",
+   "move": null,
+   "contacts": [],
+   "keyframes": 20,
+   "notes": "Posture broken: hunched, sword arm hanging, swaying.",
+   "validation": {
+    "right_reach": 0.0,
+    "right_pull": 0.2308,
+    "left_reach": 0.0355,
+    "leg_reach": 0.0,
+    "sole_below_ground": 0.0,
+    "planted_slide": 0.0,
+    "blade_in_body": 0.0,
+    "blade_below_ground": 0.0,
+    "hand_jerk": 0.0,
+    "loop_seam_deg": 0.0,
+    "strike": {}
+   },
+   "problems": [],
+   "uploaded": true,
+   "asset_id": "rbxassetid://120106199751337"
+  },
+  "Fighter_Recover": {
+   "slot": "Recover",
+   "length": 0.45,
+   "loop": false,
+   "priority": "Action3",
+   "move": null,
+   "contacts": [],
+   "keyframes": 25,
+   "notes": "Posture recovery: shake off, re-raise the blade into the ready stance.",
+   "validation": {
+    "right_reach": 0.0,
+    "right_pull": 0.2308,
+    "left_reach": 0.0,
+    "leg_reach": 0.0,
+    "sole_below_ground": 0.0,
+    "planted_slide": 0.0,
+    "blade_in_body": 0.0,
+    "blade_below_ground": 0.0,
+    "hand_jerk": 0.0,
+    "loop_seam_deg": 0.0,
+    "strike": {}
+   },
+   "problems": [],
+   "uploaded": true,
+   "asset_id": "rbxassetid://129007326029291"
+  },
+  "Jian_Art": {
+   "slot": "Jian.WeaponArt",
+   "length": 0.7167,
+   "loop": false,
+   "priority": "Action2",
+   "move": "Jian_Art",
+   "contacts": [
+    0.17,
+    0.203,
+    0.236,
+    0.269,
+    0.302,
+    0.335,
+    0.3383
+   ],
+   "keyframes": 44,
+   "notes": "Seven Star Flurry: qi drawn along the flat, six star points, seventh as a full lunge.",
+   "validation": {
+    "right_reach": 0.0,
+    "right_pull": 0.0858,
+    "left_reach": 0.0,
+    "leg_reach": 0.0,
+    "sole_below_ground": 0.0,
+    "planted_slide": 0.392,
+    "blade_in_body": 0.0,
+    "blade_below_ground": 0.0,
+    "hand_jerk": 0.2483,
+    "loop_seam_deg": 0.0,
+    "strike": {
+     "tip_start": [
+      0.19,
+      -0.58,
+      -5.37
+     ],
+     "tip_end": [
+      0.1,
+      -0.01,
+      -5.71
+     ],
+     "advance": 0.34,
+     "tip_reach": 5.71
+    }
+   },
+   "problems": [],
+   "uploaded": true,
+   "asset_id": "rbxassetid://96229215657784"
+  },
+  "Jian_Equip": {
+   "slot": "Jian.Equip",
+   "length": 0.65,
+   "loop": false,
+   "priority": "Action",
+   "move": null,
+   "contacts": [],
+   "keyframes": 40,
+   "notes": "Draw flourish into the ready stance.",
+   "validation": {
+    "right_reach": 0.0,
+    "right_pull": 0.1757,
+    "left_reach": 0.0,
+    "leg_reach": 0.0,
+    "sole_below_ground": 0.0,
+    "planted_slide": 0.3395,
+    "blade_in_body": 0.0,
+    "blade_below_ground": 0.0,
+    "hand_jerk": 0.1724,
+    "loop_seam_deg": 0.0,
+    "strike": {}
+   },
+   "problems": [],
+   "uploaded": true,
+   "asset_id": "rbxassetid://138487014275939"
+  },
+  "Jian_Guard": {
+   "slot": "Jian.Guard",
+   "length": 2.0,
+   "loop": true,
+   "priority": "Action",
+   "move": null,
+   "contacts": [],
+   "keyframes": 6,
+   "notes": "Upright guard, upper body only.",
+   "validation": {
+    "right_reach": 0.0,
+    "right_pull": 0.1453,
+    "left_reach": 0.0,
+    "leg_reach": 0.0,
+    "sole_below_ground": 0.0,
+    "planted_slide": 0.0,
+    "blade_in_body": 0.0,
+    "blade_below_ground": 0.0,
+    "hand_jerk": 0.0,
+    "loop_seam_deg": 0.0,
+    "strike": {}
+   },
+   "problems": [],
+   "uploaded": true,
+   "asset_id": "rbxassetid://71182885805704"
+  },
+  "Jian_GuardImpact": {
+   "slot": "Jian.GuardImpact",
+   "length": 0.35,
+   "loop": false,
+   "priority": "Action3",
+   "move": null,
+   "contacts": [],
+   "keyframes": 19,
+   "notes": "Guard recoil under a blocked hit; ends on the guard pose.",
+   "validation": {
+    "right_reach": 0.0,
+    "right_pull": 0.1251,
+    "left_reach": 0.0,
+    "leg_reach": 0.0,
+    "sole_below_ground": 0.0,
+    "planted_slide": 0.0,
+    "blade_in_body": 0.0,
+    "blade_below_ground": 0.0,
+    "hand_jerk": 0.0276,
+    "loop_seam_deg": 0.0,
+    "strike": {}
+   },
+   "problems": [],
+   "uploaded": true,
+   "asset_id": "rbxassetid://76420751200151"
+  },
+  "Jian_Heavy": {
+   "slot": "Jian.Heavy",
+   "length": 0.6833,
+   "loop": false,
+   "priority": "Action2",
+   "move": "Jian_Heavy",
+   "contacts": [
+    0.3417
+   ],
+   "keyframes": 42,
+   "notes": "Falling Star Thrust: overhead rise and hold, then a deep falling lunge thrust.",
+   "validation": {
+    "right_reach": 0.0,
+    "right_pull": 0.0908,
+    "left_reach": 0.0,
+    "leg_reach": 0.0148,
+    "sole_below_ground": 0.0,
+    "planted_slide": 0.3587,
+    "blade_in_body": 0.0,
+    "blade_below_ground": 0.0,
+    "hand_jerk": 0.0,
+    "loop_seam_deg": 0.0,
+    "strike": {
+     "tip_start": [
+      0.33,
+      -0.82,
+      -5.08
+     ],
+     "tip_end": [
+      0.1,
+      -1.02,
+      -5.79
+     ],
+     "advance": 0.71,
+     "tip_reach": 5.79
+    }
+   },
+   "problems": [],
+   "uploaded": true,
+   "asset_id": "rbxassetid://137612205425483"
+  },
+  "Jian_Idle": {
+   "slot": "Jian.Idle",
+   "length": 2.4,
+   "loop": true,
+   "priority": "Movement",
+   "move": null,
+   "contacts": [],
+   "keyframes": 12,
+   "notes": "Ready stance loop (Movement priority, above avatar idle packs); legs keyed, so it only plays while standing.",
+   "validation": {
+    "right_reach": 0.0,
+    "right_pull": 0.0,
+    "left_reach": 0.0,
+    "leg_reach": 0.0,
+    "sole_below_ground": 0.0,
+    "planted_slide": 0.0,
+    "blade_in_body": 0.0,
+    "blade_below_ground": 0.0,
+    "hand_jerk": 0.0,
+    "loop_seam_deg": 0.0,
+    "strike": {}
+   },
+   "problems": [],
+   "uploaded": true,
+   "asset_id": "rbxassetid://97729334147895"
+  },
+  "Jian_L1": {
+   "slot": "Jian.Light1",
+   "length": 0.2833,
+   "loop": false,
+   "priority": "Action2",
+   "move": "Jian_L1",
+   "contacts": [
+    0.1167
+   ],
+   "keyframes": 18,
+   "notes": "Darting Thrust: level thrust, front-foot step, rear hand counterweights.",
+   "validation": {
+    "right_reach": 0.0,
+    "right_pull": 0.0847,
+    "left_reach": 0.0,
+    "leg_reach": 0.0,
+    "sole_below_ground": 0.0,
+    "planted_slide": 0.239,
+    "blade_in_body": 0.0,
+    "blade_below_ground": 0.0,
+    "hand_jerk": 0.2525,
+    "loop_seam_deg": 0.0,
+    "strike": {
+     "tip_start": [
+      0.19,
+      -0.0,
+      -5.52
+     ],
+     "tip_end": [
+      0.04,
+      0.23,
+      -5.91
+     ],
+     "advance": 0.39,
+     "tip_reach": 5.95
+    }
+   },
+   "problems": [],
+   "uploaded": true,
+   "asset_id": "rbxassetid://87800015669250"
+  },
+  "Jian_L2": {
+   "slot": "Jian.Light2",
+   "length": 0.3,
+   "loop": false,
+   "priority": "Action2",
+   "move": "Jian_L2",
+   "contacts": [
+    0.125
+   ],
+   "keyframes": 19,
+   "notes": "Rising Willow Cut: backhand diagonal, left hip to right shoulder height, hips unwind.",
+   "validation": {
+    "right_reach": 0.0,
+    "right_pull": 0.0838,
+    "left_reach": 0.0,
+    "leg_reach": 0.0,
+    "sole_below_ground": 0.0,
+    "planted_slide": 0.0829,
+    "blade_in_body": 0.0,
+    "blade_below_ground": 0.0,
+    "hand_jerk": 0.2777,
+    "loop_seam_deg": 0.0,
+    "strike": {
+     "tip_start": [
+      -2.22,
+      -1.31,
+      -4.25
+     ],
+     "tip_end": [
+      3.0,
+      2.09,
+      -3.58
+     ],
+     "sweep_deg": 67.6,
+     "tip_reach": 5.26
+    }
+   },
+   "problems": [],
+   "uploaded": true,
+   "asset_id": "rbxassetid://113542530241474"
+  },
+  "Jian_L3": {
+   "slot": "Jian.Light3",
+   "length": 0.3167,
+   "loop": false,
+   "priority": "Action2",
+   "move": "Jian_L3",
+   "contacts": [
+    0.125
+   ],
+   "keyframes": 20,
+   "notes": "Horizon Sweep: flat chest-height cut, full pivot on a right-foot step, left arm counterbalance.",
+   "validation": {
+    "right_reach": 0.0,
+    "right_pull": 0.0,
+    "left_reach": 0.0,
+    "leg_reach": 0.0,
+    "sole_below_ground": 0.0,
+    "planted_slide": 0.0463,
+    "blade_in_body": 0.0,
+    "blade_below_ground": 0.0,
+    "hand_jerk": 0.2838,
+    "loop_seam_deg": 0.0,
+    "strike": {
+     "tip_start": [
+      -3.34,
+      -0.15,
+      -3.24
+     ],
+     "tip_end": [
+      4.14,
+      -0.15,
+      -3.14
+     ],
+     "sweep_deg": 98.7,
+     "tip_reach": 5.48
+    }
+   },
+   "problems": [],
+   "uploaded": true,
+   "asset_id": "rbxassetid://115589583211296"
+  },
+  "Jian_L4": {
+   "slot": "Jian.Light4",
+   "length": 0.4,
+   "loop": false,
+   "priority": "Action2",
+   "move": "Jian_L4",
+   "contacts": [
+    0.1583
+   ],
+   "keyframes": 25,
+   "notes": "Piercing Heron Lunge: hip chamber, long lunge thrust, rear arm flung back as a wing.",
+   "validation": {
+    "right_reach": 0.0,
+    "right_pull": 0.1311,
+    "left_reach": 0.007,
+    "leg_reach": 0.0,
+    "sole_below_ground": 0.0,
+    "planted_slide": 0.2773,
+    "blade_in_body": 0.0,
+    "blade_below_ground": 0.0,
+    "hand_jerk": 0.1238,
+    "loop_seam_deg": 0.0,
+    "strike": {
+     "tip_start": [
+      0.54,
+      -0.31,
+      -5.34
+     ],
+     "tip_end": [
+      0.05,
+      -0.02,
+      -6.12
+     ],
+     "advance": 0.78,
+     "tip_reach": 6.21
+    }
+   },
+   "problems": [],
+   "uploaded": true,
+   "asset_id": "rbxassetid://88372590503565"
+  },
+  "Jian_Move": {
+   "slot": "Jian.Move",
+   "length": 0.8,
+   "loop": true,
+   "priority": "Movement",
+   "move": null,
+   "contacts": [],
+   "keyframes": 6,
+   "notes": "Arms-only carry layered over Roblox's walk/run.",
+   "validation": {
+    "right_reach": 0.0,
+    "right_pull": 0.0,
+    "left_reach": 0.0,
+    "leg_reach": 0.0,
+    "sole_below_ground": 0.0,
+    "planted_slide": 0.0,
+    "blade_in_body": 0.0,
+    "blade_below_ground": 0.0,
+    "hand_jerk": 0.0,
+    "loop_seam_deg": 0.0,
+    "strike": {}
+   },
+   "problems": [],
+   "uploaded": true,
+   "asset_id": "rbxassetid://135406303189832"
+  },
+  "Jian_Running": {
+   "slot": "Jian.Running",
+   "length": 0.4833,
+   "loop": false,
+   "priority": "Action2",
+   "move": "Jian_Running",
+   "contacts": [
+    0.2167
+   ],
+   "keyframes": 30,
+   "notes": "Swallow Skims Water: low skimming lunge out of a sprint, point lifts at the end.",
+   "validation": {
+    "right_reach": 0.0,
+    "right_pull": 0.072,
+    "left_reach": 0.0346,
+    "leg_reach": 0.0,
+    "sole_below_ground": 0.0,
+    "planted_slide": 0.4284,
+    "blade_in_body": 0.0,
+    "blade_below_ground": 0.0,
+    "hand_jerk": 0.1197,
+    "loop_seam_deg": 0.0,
+    "strike": {
+     "tip_start": [
+      0.93,
+      -1.46,
+      -5.09
+     ],
+     "tip_end": [
+      0.2,
+      -0.0,
+      -5.69
+     ],
+     "advance": 0.6,
+     "tip_reach": 5.77
+    }
+   },
+   "problems": [],
+   "uploaded": true,
+   "asset_id": "rbxassetid://124446470934584"
+  }
+ }
+}
