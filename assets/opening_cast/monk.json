@@ -1,0 +1,297 @@
+{
+  "character": "CorruptWanderingMonk",
+  "version": 1,
+  "provenance": "Original project-authored constructed forms (tools/blender/opening_cast); procedural PBR baked from the subdivided master onto one game atlas",
+  "units": "studs, scale 1, default R15 rest pose (arms down); each piece's origin is its R15 limb centre",
+  "axes": "Blender Z = Roblox +Y; Blender +Y = Roblox -Z (forward); GLB exported Y-up",
+  "limits": {
+    "piece_triangle_cap": 18000,
+    "body_texture": 1024,
+    "weapon_texture": 512
+  },
+  "measured": {
+    "game_total_triangles": 19414,
+    "game_max_piece_triangles": 8266,
+    "master_triangles_before_subdivision": 115760,
+    "limbs_covered": 15,
+    "limbs_missing": [],
+    "sole_y": -3.0,
+    "top_y": 2.005,
+    "width_x": 2.417
+  },
+  "pieces": {
+    "Monk_Head": {
+      "bone": "Head",
+      "role": null,
+      "triangles": 8266,
+      "vertices": 4211,
+      "pivot_roblox": [
+        0.0,
+        1.586,
+        -0.0
+      ],
+      "size_roblox": [
+        1.473,
+        1.567,
+        1.485
+      ]
+    },
+    "Monk_UpperTorso": {
+      "bone": "UpperTorso",
+      "role": null,
+      "triangles": 4136,
+      "vertices": 2188,
+      "pivot_roblox": [
+        0.0,
+        0.2,
+        -0.0
+      ],
+      "size_roblox": [
+        2.305,
+        1.687,
+        1.11
+      ]
+    },
+    "Monk_LowerTorso": {
+      "bone": "LowerTorso",
+      "role": null,
+      "triangles": 1596,
+      "vertices": 851,
+      "pivot_roblox": [
+        0.0,
+        -0.8,
+        -0.0
+      ],
+      "size_roblox": [
+        1.496,
+        1.925,
+        0.934
+      ]
+    },
+    "Monk_RightUpperArm": {
+      "bone": "RightUpperArm",
+      "role": null,
+      "triangles": 372,
+      "vertices": 214,
+      "pivot_roblox": [
+        1.5,
+        0.369,
+        -0.0
+      ],
+      "size_roblox": [
+        0.479,
+        0.878,
+        0.38
+      ]
+    },
+    "Monk_RightLowerArm": {
+      "bone": "RightLowerArm",
+      "role": null,
+      "triangles": 256,
+      "vertices": 170,
+      "pivot_roblox": [
+        1.5,
+        -0.224,
+        -0.0
+      ],
+      "size_roblox": [
+        0.333,
+        0.863,
+        0.297
+      ]
+    },
+    "Monk_RightHand": {
+      "bone": "RightHand",
+      "role": null,
+      "triangles": 592,
+      "vertices": 326,
+      "pivot_roblox": [
+        1.5,
+        -0.85,
+        -0.0
+      ],
+      "size_roblox": [
+        0.252,
+        0.279,
+        0.332
+      ]
+    },
+    "Monk_RightUpperLeg": {
+      "bone": "RightUpperLeg",
+      "role": null,
+      "triangles": 640,
+      "vertices": 326,
+      "pivot_roblox": [
+        0.5,
+        -1.421,
+        -0.0
+      ],
+      "size_roblox": [
+        0.784,
+        1.499,
+        0.886
+      ]
+    },
+    "Monk_RightLowerLeg": {
+      "bone": "RightLowerLeg",
+      "role": null,
+      "triangles": 300,
+      "vertices": 192,
+      "pivot_roblox": [
+        0.5,
+        -2.201,
+        -0.0
+      ],
+      "size_roblox": [
+        0.45,
+        1.144,
+        0.451
+      ]
+    },
+    "Monk_RightFoot": {
+      "bone": "RightFoot",
+      "role": null,
+      "triangles": 538,
+      "vertices": 290,
+      "pivot_roblox": [
+        0.5,
+        -2.85,
+        -0.0
+      ],
+      "size_roblox": [
+        0.37,
+        0.3,
+        0.7
+      ]
+    },
+    "Monk_LeftUpperArm": {
+      "bone": "LeftUpperArm",
+      "role": null,
+      "triangles": 392,
+      "vertices": 214,
+      "pivot_roblox": [
+        -1.5,
+        0.369,
+        -0.0
+      ],
+      "size_roblox": [
+        0.568,
+        0.878,
+        0.555
+      ]
+    },
+    "Monk_LeftLowerArm": {
+      "bone": "LeftLowerArm",
+      "role": null,
+      "triangles": 256,
+      "vertices": 170,
+      "pivot_roblox": [
+        -1.5,
+        -0.224,
+        -0.0
+      ],
+      "size_roblox": [
+        0.33,
+        0.879,
+        0.297
+      ]
+    },
+    "Monk_LeftHand": {
+      "bone": "LeftHand",
+      "role": null,
+      "triangles": 592,
+      "vertices": 326,
+      "pivot_roblox": [
+        -1.5,
+        -0.85,
+        -0.0
+      ],
+      "size_roblox": [
+        0.252,
+        0.279,
+        0.332
+      ]
+    },
+    "Monk_LeftUpperLeg": {
+      "bone": "LeftUpperLeg",
+      "role": null,
+      "triangles": 640,
+      "vertices": 326,
+      "pivot_roblox": [
+        -0.5,
+        -1.421,
+        -0.0
+      ],
+      "size_roblox": [
+        0.784,
+        1.498,
+        0.886
+      ]
+    },
+    "Monk_LeftLowerLeg": {
+      "bone": "LeftLowerLeg",
+      "role": null,
+      "triangles": 300,
+      "vertices": 192,
+      "pivot_roblox": [
+        -0.5,
+        -2.201,
+        -0.0
+      ],
+      "size_roblox": [
+        0.45,
+        1.144,
+        0.451
+      ]
+    },
+    "Monk_LeftFoot": {
+      "bone": "LeftFoot",
+      "role": null,
+      "triangles": 538,
+      "vertices": 290,
+      "pivot_roblox": [
+        -0.5,
+        -2.85,
+        -0.0
+      ],
+      "size_roblox": [
+        0.37,
+        0.3,
+        0.7
+      ]
+    }
+  },
+  "textures": {
+    "body": {
+      "Color": {
+        "master": "assets/source/opening_cast/monk/textures/master/MonkBody_Color_2048.png",
+        "game": "assets/source/opening_cast/monk/textures/game/MonkBody_Color_1024.png",
+        "master_size": 2048,
+        "game_size": 1024
+      },
+      "Rough": {
+        "master": "assets/source/opening_cast/monk/textures/master/MonkBody_Rough_2048.png",
+        "game": "assets/source/opening_cast/monk/textures/game/MonkBody_Rough_1024.png",
+        "master_size": 2048,
+        "game_size": 1024
+      },
+      "Metal": {
+        "master": "assets/source/opening_cast/monk/textures/master/MonkBody_Metal_2048.png",
+        "game": "assets/source/opening_cast/monk/textures/game/MonkBody_Metal_1024.png",
+        "master_size": 2048,
+        "game_size": 1024
+      },
+      "Normal": {
+        "master": "assets/source/opening_cast/monk/textures/master/MonkBody_Normal_2048.png",
+        "game": "assets/source/opening_cast/monk/textures/game/MonkBody_Normal_1024.png",
+        "master_size": 2048,
+        "game_size": 1024
+      }
+    }
+  },
+  "exports": {
+    "game_glb": "assets/build/opening_cast/monk/Monk_v1_Game.glb",
+    "game_fbx": "assets/build/opening_cast/monk/Monk_v1_Game.fbx"
+  },
+  "bake_device": "OPTIX"
+}

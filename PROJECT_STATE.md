@@ -1,5 +1,9 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## Corrupt Wandering Monk production skin — 2026-11-02 (Windows)
+
+Monk redesigned as hat-shadowed wanderer (douli, wrapped jaw, straw mantle); 15 baked PBR MeshParts imported, bound and extracted to `AsuraBoss_CorruptWanderingMonk.rbxmx`. 15 monk clips published with read-back; rebuilt place: all 11 monks skinned, authored idle/move/attacks play. Fixed unmapped MobSpacing. Next: Cursed Swordsman, Hollow-Bell Warden, group/footage acceptance.
+
 ## Enemy "knocks into you" fix — 2026-11-01 (Windows)
 
 Cause: AI Face wrote the root CFrame each think, cancelling Humanoid MoveTo, so chasers froze then lurched; they also engaged at 2.7 studs, walked at 23.5 and kept walking through combos. MobSpacing adds standoff, crowd step-back, pace and ally fan-out. Studio trace: no shove, 3.4–3.9 stud standoff. Next: monk production model and clips.

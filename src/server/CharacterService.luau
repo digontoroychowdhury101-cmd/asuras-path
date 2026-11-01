@@ -830,6 +830,17 @@ local function spawnEnemy(spec: EnemySpec, existing: Model?): number?
 	if spec.BodyColor and not dressed then
 		tint(model, spec.BodyColor)
 	end
+	-- A production enemy mesh (AsuraBoss_<Definition> in AsuraAssets) skins the rig over the authored
+	-- look, which stays as the fallback; mobs without a template are untouched.
+	local assets = game:GetService("ServerStorage"):FindFirstChild("AsuraAssets")
+	if spec.Definition and not spec.Boss and assets and assets:FindFirstChild("AsuraBoss_" .. spec.Definition) then
+		model:SetAttribute("AsuraLookKey", spec.Definition)
+		local Skin = require(script.Parent:WaitForChild("BossSkin") :: ModuleScript) :: any
+		local ok, err = pcall(Skin.attach, model)
+		if not ok then
+			warn("[CharacterService] skin failed for " .. spec.Name .. ": " .. tostring(err))
+		end
+	end
 	if not existing then
 		model.Parent = rootFolder("Entities")
 	end

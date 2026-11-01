@@ -193,6 +193,62 @@ Catalog.Enemies = {
 	Shen_Phase2_GlaiveCombo = slot("Shen_Phase2_GlaiveCombo", nil, "ToolLunge", false, "Action", 1.0),
 } :: { [EnemyKey]: Slot }
 
+-------------------------------------------------------------------------------------------------
+-- Per-character sets for production enemies, keyed by the fighter's AsuraDefinition. A character's
+-- authored slot replaces the weapon or universal slot of the same key; a key it lacks (or one not yet
+-- published) falls back to the weapon set, so dodges and deflects stay shared. Death plays on KO and
+-- holds its last frame until the corpse dissolves. Timings are authored against the definition's
+-- weapon at 1.4x tempo (tools/animation/opening_cast).
+-------------------------------------------------------------------------------------------------
+
+export type CharacterKey = WeaponKey | "Hitstun_Light" | "Hitstun_Heavy" | "StanceBroken" | "Death"
+
+local function character(definition: string, ids: { [string]: string }): { [CharacterKey]: Slot }
+	local function c(key: string, stock: StockName, looped: boolean, priority: Priority): Slot
+		return slot(definition .. "." .. key, ids[key], stock, looped, priority)
+	end
+	return {
+		Idle = c("Idle", "Idle", true, "Idle"),
+		Move = c("Move", "ToolHold", true, "Movement"),
+		Light1 = c("Light1", "ToolSlash", false, "Action2"),
+		Light2 = c("Light2", "ToolSlash", false, "Action2"),
+		Light3 = c("Light3", "ToolSlash", false, "Action2"),
+		Light4 = c("Light4", "ToolLunge", false, "Action2"),
+		Heavy = c("Heavy", "ToolLunge", false, "Action2"),
+		Running = c("Running", "ToolLunge", false, "Action2"),
+		WeaponArt = c("WeaponArt", "ToolSlash", false, "Action2"),
+		Guard = c("Guard", "ToolHold", true, "Action"),
+		GuardImpact = c("GuardImpact", "ToolHold", false, "Action3"),
+		Hitstun_Light = c("Hitstun_Light", "Fall", false, "Action3"),
+		Hitstun_Heavy = c("Hitstun_Heavy", "Fall", false, "Action3"),
+		StanceBroken = c("StanceBroken", "Sit", true, "Action4"),
+		Death = c("Death", "Sit", false, "Action4"),
+	} :: any
+end
+
+-- Published ids per character (tools/animation/opening_cast/<key>/published.json mirrors these).
+Catalog.Characters = {
+	CorruptWanderingMonk = character("CorruptWanderingMonk", {
+		Death = "rbxassetid://82065381623710",
+		Guard = "rbxassetid://89391756631562",
+		GuardImpact = "rbxassetid://96590951733793",
+		Heavy = "rbxassetid://76312818754143",
+		Hitstun_Heavy = "rbxassetid://71073626356373",
+		Hitstun_Light = "rbxassetid://81542772922509",
+		Idle = "rbxassetid://101598140758714",
+		Light1 = "rbxassetid://90748494920364",
+		Light2 = "rbxassetid://76346092169919",
+		Light3 = "rbxassetid://108062301374603",
+		Light4 = "rbxassetid://103272727896878",
+		Move = "rbxassetid://112262064404137",
+		Running = "rbxassetid://115921357540400",
+		StanceBroken = "rbxassetid://108521705818233",
+		WeaponArt = "rbxassetid://135854349242310",
+	}),
+} :: { [string]: { [CharacterKey]: Slot } }
+Catalog.CharacterKeys = table.freeze({ "Idle", "Move", "Light1", "Light2", "Light3", "Light4", "Heavy", "Running", "WeaponArt",
+	"Guard", "GuardImpact", "Hitstun_Light", "Hitstun_Heavy", "StanceBroken", "Death" } :: { CharacterKey })
+
 Catalog.UniversalKeys = table.freeze({
 	"Roll",
 	"Backdash",
@@ -258,6 +314,12 @@ function Catalog.enemy(key: EnemyKey): Slot
 	return Catalog.Enemies[key]
 end
 
+-- The character's own slot for a key, or nil when the definition has no set or lacks the key.
+function Catalog.character(definition: string?, key: string): Slot?
+	local set = if definition then Catalog.Characters[definition] else nil
+	return if set then (set :: any)[key] else nil
+end
+
 -- Every slot still playing a stock fallback, for content audits.
 function Catalog.pending(): { string }
 	local result: { string } = {}
@@ -304,6 +366,13 @@ function Catalog.allIds(rig: Rig?): { string }
 	for _, entry in Catalog.Enemies do
 		add(entry)
 	end
+	for _, set in Catalog.Characters do
+		for _, entry in set do
+			if entry.Custom then
+				add(entry)
+			end
+		end
+	end
 	table.sort(result)
 	return result
 end
@@ -346,6 +415,11 @@ end
 for _, key in Catalog.EnemyKeys do
 	check(Catalog.Enemies[key], "Enemies." .. key)
 end
+for definition, set in Catalog.Characters do
+	for _, key in Catalog.CharacterKeys do
+		check(set[key], "Characters." .. definition .. "." .. key)
+	end
+end
 
 local function deepFreeze(value: any)
 	if type(value) ~= "table" or table.isfrozen(value) then
@@ -359,5 +433,6 @@ end
 deepFreeze(Catalog.Universal)
 deepFreeze(Catalog.Weapons)
 deepFreeze(Catalog.Enemies)
+deepFreeze(Catalog.Characters)
 
 return table.freeze(Catalog)

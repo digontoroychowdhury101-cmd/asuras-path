@@ -1,0 +1,92 @@
+{
+  "Monk_Art": {
+    "id": "rbxassetid://135854349242310",
+    "keyframes": 37,
+    "length": 0.6000000238418579,
+    "slot": "CorruptWanderingMonk.WeaponArt"
+  },
+  "Monk_Death": {
+    "id": "rbxassetid://82065381623710",
+    "keyframes": 43,
+    "length": 0.8999999761581421,
+    "slot": "CorruptWanderingMonk.Death"
+  },
+  "Monk_Guard": {
+    "id": "rbxassetid://89391756631562",
+    "keyframes": 6,
+    "length": 1.600000023841858,
+    "slot": "CorruptWanderingMonk.Guard"
+  },
+  "Monk_GuardImpact": {
+    "id": "rbxassetid://96590951733793",
+    "keyframes": 15,
+    "length": 0.3166700005531311,
+    "slot": "CorruptWanderingMonk.GuardImpact"
+  },
+  "Monk_Heavy": {
+    "id": "rbxassetid://76312818754143",
+    "keyframes": 38,
+    "length": 0.6166700124740601,
+    "slot": "CorruptWanderingMonk.Heavy"
+  },
+  "Monk_Hit_Heavy": {
+    "id": "rbxassetid://71073626356373",
+    "keyframes": 43,
+    "length": 0.699999988079071,
+    "slot": "CorruptWanderingMonk.Hitstun_Heavy"
+  },
+  "Monk_Hit_Light": {
+    "id": "rbxassetid://81542772922509",
+    "keyframes": 22,
+    "length": 0.36667001247406006,
+    "slot": "CorruptWanderingMonk.Hitstun_Light"
+  },
+  "Monk_Idle": {
+    "id": "rbxassetid://101598140758714",
+    "keyframes": 17,
+    "length": 2.4000000953674316,
+    "slot": "CorruptWanderingMonk.Idle"
+  },
+  "Monk_L1": {
+    "id": "rbxassetid://90748494920364",
+    "keyframes": 15,
+    "length": 0.23332999646663666,
+    "slot": "CorruptWanderingMonk.Light1"
+  },
+  "Monk_L2": {
+    "id": "rbxassetid://76346092169919",
+    "keyframes": 16,
+    "length": 0.25,
+    "slot": "CorruptWanderingMonk.Light2"
+  },
+  "Monk_L3": {
+    "id": "rbxassetid://108062301374603",
+    "keyframes": 18,
+    "length": 0.2833299934864044,
+    "slot": "CorruptWanderingMonk.Light3"
+  },
+  "Monk_L4": {
+    "id": "rbxassetid://103272727896878",
+    "keyframes": 21,
+    "length": 0.3333300054073334,
+    "slot": "CorruptWanderingMonk.Light4"
+  },
+  "Monk_Move": {
+    "id": "rbxassetid://112262064404137",
+    "keyframes": 10,
+    "length": 0.699999988079071,
+    "slot": "CorruptWanderingMonk.Move"
+  },
+  "Monk_Running": {
+    "id": "rbxassetid://115921357540400",
+    "keyframes": 29,
+    "length": 0.4666700065135956,
+    "slot": "CorruptWanderingMonk.Running"
+  },
+  "Monk_StanceBroken": {
+    "id": "rbxassetid://108521705818233",
+    "keyframes": 19,
+    "length": 1.600000023841858,
+    "slot": "CorruptWanderingMonk.StanceBroken"
+  }
+}

@@ -190,6 +190,9 @@
           "CombatSettings": {
             "$path": "src/shared/CombatSettings.luau"
           },
+          "MobSpacing": {
+            "$path": "src/shared/MobSpacing.luau"
+          },
           "InputMap": {
             "$path": "src/shared/InputMap.luau"
           },
@@ -697,6 +700,9 @@
         "$path": "assets/models/AsuraAssets_Phase5.rbxmx",
         "AsuraBossAnimations": {
           "$path": "assets/animations/general_zhao/AsuraBossAnimations.model.json"
+        },
+        "AsuraBoss_CorruptWanderingMonk": {
+          "$path": "assets/models/AsuraBoss_CorruptWanderingMonk.rbxmx"
         }
       },
       "AsuraLobbyKit": {

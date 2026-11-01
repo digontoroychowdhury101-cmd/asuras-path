@@ -38,10 +38,12 @@ for _, entry in Catalog.Universal do
 		AUTHORED[entry.Custom] = true
 	end
 end
-for _, set in Catalog.Weapons do
-	for _, entry in set do
-		if entry.Custom then
-			AUTHORED[entry.Custom] = true
+for _, group in { Catalog.Weapons, Catalog.Characters } :: { any } do
+	for _, set in group do
+		for _, entry in set do
+			if entry.Custom then
+				AUTHORED[entry.Custom] = true
+			end
 		end
 	end
 end
@@ -72,6 +74,7 @@ type Actor = {
 	AttackMove: string?,
 	LastState: string?,
 	Weapon: string?,
+	Definition: string?, -- AsuraDefinition: a production enemy's own clips replace its weapon's
 	CatchUntil: number?, -- clip time of the contact a late swing is catching up to
 	Replicated: RBXScriptConnection?,
 }
@@ -112,6 +115,20 @@ local function track(actor: Actor, slot: Catalog.Slot?): AnimationTrack?
 	loaded.Looped = slot.Looped
 	actor.Tracks[id] = loaded
 	return loaded
+end
+
+-- The fighter's own authored clip for a key when its character set has one, else the shared slot.
+local function pick(actor: Actor, key: string, shared: Catalog.Slot?): Catalog.Slot?
+	local own = Catalog.character(actor.Definition, key)
+	return if own and review(own) then own else shared
+end
+
+local function weaponSlot(actor: Actor, weapon: string, key: Catalog.WeaponKey): Catalog.Slot?
+	return pick(actor, key, Catalog.weapon(weapon, key))
+end
+
+local function universalSlot(actor: Actor, key: Catalog.UniversalKey): Catalog.Slot?
+	return pick(actor, key, Catalog.universal(key))
 end
 
 local function stopAction(actor: Actor, fade: number?)
@@ -190,11 +207,12 @@ end
 -- length and is seated on the server's clock (a never-loaded track reports Length 0 and would start late).
 local function warm(actor: Actor, weapon: string)
 	for _, key in Catalog.WeaponKeys do
-		track(actor, Catalog.weapon(weapon, key))
+		track(actor, weaponSlot(actor, weapon, key))
 	end
 	for _, key in Catalog.UniversalKeys do
-		track(actor, Catalog.universal(key))
+		track(actor, universalSlot(actor, key))
 	end
+	track(actor, Catalog.character(actor.Definition, "Death"))
 end
 
 function Animations.new(state: any): any
@@ -248,8 +266,20 @@ function Animations.Step(self: any, entity: any, actor: Actor)
 		actor.Weapon = weapon
 		warm(actor, weapon)
 		if not first and state == "Idle" then
-			action(actor, "Equip" .. actor.Serial, Catalog.weapon(weapon, "Equip"), 0, false)
+			action(actor, "Equip" .. actor.Serial, weaponSlot(actor, weapon, "Equip"), 0, false)
 		end
+	end
+	local death = if state == "KO" then Catalog.character(actor.Definition, "Death") else nil
+	if death and review(death) then
+		-- A production enemy falls with its own death and holds the last frame while the corpse dissolves.
+		base(actor, nil)
+		action(actor, "Death", death, nil, false)
+		local dying = actor.Action
+		if dying and dying.IsPlaying and dying.Length > 0 and dying.TimePosition >= dying.Length - 0.05 then
+			dying:AdjustSpeed(0)
+		end
+		actor.LastState = state
+		return
 	end
 	if SILENT[state] then
 		stopAction(actor, 0.2)
@@ -260,7 +290,7 @@ function Animations.Step(self: any, entity: any, actor: Actor)
 	-- Underneath: the full-body ready stance while standing, the arms-only carry while moving.
 	local velocity = actor.Root.AssemblyLinearVelocity
 	local moving = Vector3.new(velocity.X, 0, velocity.Z).Magnitude > MOVING_SPEED
-	base(actor, Catalog.weapon(weapon, if moving then "Move" else "Idle"))
+	base(actor, weaponSlot(actor, weapon, if moving then "Move" else "Idle"))
 	if ATTACK[state] and s.Move and MOVES[s.Move] then
 		local entry = MOVES[s.Move]
 		local timing = entry.Move.Timing
@@ -275,28 +305,28 @@ function Animations.Step(self: any, entity: any, actor: Actor)
 			actor.AttackSerial += 1
 			actor.AttackMove = s.Move
 		end
-		action(actor, s.Move .. "#" .. actor.AttackSerial, Catalog.weapon(weapon, entry.Key :: any), into, true,
+		action(actor, s.Move .. "#" .. actor.AttackSerial, weaponSlot(actor, weapon, entry.Key :: any), into, true,
 			timing.StartupSeconds + timing.ActiveSeconds * 0.5)
 	elseif state == "Blocking" then
 		if not (actor.Action and actor.ActionKey and string.sub(actor.ActionKey, 1, 11) == "GuardImpact" and actor.Action.IsPlaying) then
-			action(actor, "Guard", Catalog.weapon(weapon, "Guard"), nil, false)
+			action(actor, "Guard", weaponSlot(actor, weapon, "Guard"), nil, false)
 		end
 	elseif state == "Blockstun" then
-		action(actor, "GuardImpact" .. actor.Serial, Catalog.weapon(weapon, "GuardImpact"), elapsed, false)
+		action(actor, "GuardImpact" .. actor.Serial, weaponSlot(actor, weapon, "GuardImpact"), elapsed, false)
 	elseif state == "Deflecting" then
-		action(actor, "Deflect" .. actor.Serial, Catalog.universal("Deflect"), elapsed, false)
+		action(actor, "Deflect" .. actor.Serial, universalSlot(actor, "Deflect"), elapsed, false)
 	elseif state == "Dashing" then
 		local look = actor.Root.CFrame.LookVector
 		local backward = s.DashDirX * look.X + s.DashDirZ * look.Z < -0.5
 		local key = if backward then "Backdash" else "Roll"
-		action(actor, key .. actor.Serial, Catalog.universal(key :: any), elapsed, false)
+		action(actor, key .. actor.Serial, universalSlot(actor, key :: any), elapsed, false)
 	elseif state == "Hitstun" then
 		local key = if s.StateDuration >= 0.4 then "Hitstun_Heavy" else "Hitstun_Light"
-		action(actor, key .. actor.Serial, Catalog.universal(key :: any), elapsed, false)
+		action(actor, key .. actor.Serial, universalSlot(actor, key :: any), elapsed, false)
 	elseif BROKEN[state] then
-		action(actor, "StanceBroken", Catalog.universal("StanceBroken"), nil, false)
+		action(actor, "StanceBroken", universalSlot(actor, "StanceBroken"), nil, false)
 	elseif actor.LastState and BROKEN[actor.LastState] then
-		action(actor, "Recover" .. actor.Serial, Catalog.universal("Recover"), 0, false)
+		action(actor, "Recover" .. actor.Serial, universalSlot(actor, "Recover"), 0, false)
 	elseif actor.Action and (actor.Attack or actor.ActionKey == "Guard" or actor.ActionKey == "StanceBroken") then
 		-- Back to neutral: an attack plays out its last recovery frames, held poses release.
 		if not actor.Attack or not actor.Action.IsPlaying or actor.Action.Length - actor.Action.TimePosition > 0.15 then
@@ -339,7 +369,7 @@ function Animations.Update(self: any, _dt: number)
 			end
 			actor = { Model = model, Animator = animator, Root = entity.Root, Tracks = {}, Base = nil, Action = nil,
 				ActionKey = nil, Attack = false, Finished = nil, Serial = 0, AttackSerial = 0, AttackMove = nil, LastState = nil,
-				Weapon = nil, CatchUntil = nil, Replicated = nil }
+				Weapon = nil, Definition = nil, CatchUntil = nil, Replicated = nil }
 			local owner = Players:GetPlayerFromCharacter(model)
 			if owner and owner ~= Players.LocalPlayer then
 				local created = actor :: Actor
@@ -354,6 +384,8 @@ function Animations.Update(self: any, _dt: number)
 		end
 		local current = actor :: Actor
 		current.Root = entity.Root
+		local definition = model:GetAttribute("AsuraDefinition")
+		current.Definition = if type(definition) == "string" then definition else nil
 		seen[model] = true
 		self:Step(entity, current)
 		model:SetAttribute("AsuraFighterAnimation", current.ActionKey)

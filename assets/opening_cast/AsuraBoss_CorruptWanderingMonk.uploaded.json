@@ -1,0 +1,129 @@
+{
+  "model": "AsuraBoss_CorruptWanderingMonk",
+  "importer": "Roblox Studio 3D Importer, Creator: Me",
+  "parts": {
+    "Monk_UpperTorso": {
+      "bone": "UpperTorso",
+      "MeshId": "rbxassetid://80452497510880",
+      "ColorMap": "rbxassetid://110812160520238",
+      "NormalMap": "rbxassetid://83292265940201",
+      "RoughnessMap": "rbxassetid://76612950329031",
+      "MetalnessMap": "rbxassetid://126151203917976"
+    },
+    "Monk_RightUpperLeg": {
+      "bone": "RightUpperLeg",
+      "MeshId": "rbxassetid://137328715046288",
+      "ColorMap": "rbxassetid://110812160520238",
+      "NormalMap": "rbxassetid://83292265940201",
+      "RoughnessMap": "rbxassetid://76612950329031",
+      "MetalnessMap": "rbxassetid://126151203917976"
+    },
+    "Monk_RightUpperArm": {
+      "bone": "RightUpperArm",
+      "MeshId": "rbxassetid://117697340167492",
+      "ColorMap": "rbxassetid://110812160520238",
+      "NormalMap": "rbxassetid://83292265940201",
+      "RoughnessMap": "rbxassetid://76612950329031",
+      "MetalnessMap": "rbxassetid://126151203917976"
+    },
+    "Monk_RightLowerLeg": {
+      "bone": "RightLowerLeg",
+      "MeshId": "rbxassetid://134512092571926",
+      "ColorMap": "rbxassetid://110812160520238",
+      "NormalMap": "rbxassetid://83292265940201",
+      "RoughnessMap": "rbxassetid://76612950329031",
+      "MetalnessMap": "rbxassetid://126151203917976"
+    },
+    "Monk_RightLowerArm": {
+      "bone": "RightLowerArm",
+      "MeshId": "rbxassetid://92999280543913",
+      "ColorMap": "rbxassetid://110812160520238",
+      "NormalMap": "rbxassetid://83292265940201",
+      "RoughnessMap": "rbxassetid://76612950329031",
+      "MetalnessMap": "rbxassetid://126151203917976"
+    },
+    "Monk_RightHand": {
+      "bone": "RightHand",
+      "MeshId": "rbxassetid://140362173177443",
+      "ColorMap": "rbxassetid://110812160520238",
+      "NormalMap": "rbxassetid://83292265940201",
+      "RoughnessMap": "rbxassetid://76612950329031",
+      "MetalnessMap": "rbxassetid://126151203917976"
+    },
+    "Monk_RightFoot": {
+      "bone": "RightFoot",
+      "MeshId": "rbxassetid://72466781446159",
+      "ColorMap": "rbxassetid://110812160520238",
+      "NormalMap": "rbxassetid://83292265940201",
+      "RoughnessMap": "rbxassetid://76612950329031",
+      "MetalnessMap": "rbxassetid://126151203917976"
+    },
+    "Monk_LeftUpperLeg": {
+      "bone": "LeftUpperLeg",
+      "MeshId": "rbxassetid://96330825276081",
+      "ColorMap": "rbxassetid://110812160520238",
+      "NormalMap": "rbxassetid://83292265940201",
+      "RoughnessMap": "rbxassetid://76612950329031",
+      "MetalnessMap": "rbxassetid://126151203917976"
+    },
+    "Monk_LeftUpperArm": {
+      "bone": "LeftUpperArm",
+      "MeshId": "rbxassetid://137366325458686",
+      "ColorMap": "rbxassetid://110812160520238",
+      "NormalMap": "rbxassetid://83292265940201",
+      "RoughnessMap": "rbxassetid://76612950329031",
+      "MetalnessMap": "rbxassetid://126151203917976"
+    },
+    "Monk_LeftLowerLeg": {
+      "bone": "LeftLowerLeg",
+      "MeshId": "rbxassetid://106580706664366",
+      "ColorMap": "rbxassetid://110812160520238",
+      "NormalMap": "rbxassetid://83292265940201",
+      "RoughnessMap": "rbxassetid://76612950329031",
+      "MetalnessMap": "rbxassetid://126151203917976"
+    },
+    "Monk_LowerTorso": {
+      "bone": "LowerTorso",
+      "MeshId": "rbxassetid://123945441636583",
+      "ColorMap": "rbxassetid://110812160520238",
+      "NormalMap": "rbxassetid://83292265940201",
+      "RoughnessMap": "rbxassetid://76612950329031",
+      "MetalnessMap": "rbxassetid://126151203917976"
+    },
+    "Monk_Head": {
+      "bone": "Head",
+      "MeshId": "rbxassetid://94967658619584",
+      "ColorMap": "rbxassetid://110812160520238",
+      "NormalMap": "rbxassetid://83292265940201",
+      "RoughnessMap": "rbxassetid://76612950329031",
+      "MetalnessMap": "rbxassetid://126151203917976"
+    },
+    "Monk_LeftFoot": {
+      "bone": "LeftFoot",
+      "MeshId": "rbxassetid://86381135023638",
+      "ColorMap": "rbxassetid://110812160520238",
+      "NormalMap": "rbxassetid://83292265940201",
+      "RoughnessMap": "rbxassetid://76612950329031",
+      "MetalnessMap": "rbxassetid://126151203917976"
+    },
+    "Monk_LeftHand": {
+      "bone": "LeftHand",
+      "MeshId": "rbxassetid://91017770721257",
+      "ColorMap": "rbxassetid://110812160520238",
+      "NormalMap": "rbxassetid://83292265940201",
+      "RoughnessMap": "rbxassetid://76612950329031",
+      "MetalnessMap": "rbxassetid://126151203917976"
+    },
+    "Monk_LeftLowerArm": {
+      "bone": "LeftLowerArm",
+      "MeshId": "rbxassetid://89503258833262",
+      "ColorMap": "rbxassetid://110812160520238",
+      "NormalMap": "rbxassetid://83292265940201",
+      "RoughnessMap": "rbxassetid://76612950329031",
+      "MetalnessMap": "rbxassetid://126151203917976"
+    }
+  },
+  "sharedStringCount": 2,
+  "validation": "15 uploaded MeshParts, complete uploaded PBR, AsuraBone + AsuraBind on each, non-colliding",
+  "savedPlace": "outputs\\opening-cast\\monk\\monk_import_capture.rbxlx"
+}
