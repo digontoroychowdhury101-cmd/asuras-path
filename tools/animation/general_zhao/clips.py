@@ -462,18 +462,17 @@ def melee():
                 larm=(30, 0, -30), lfore=(50, 0, 0), lhand=(0, 0, 0))
     hit = pose(root=(0.04, -0.44, -0.12), rootR=(5, -20, 0), chest=(8, -6, 0), grip=(0.6, -0.4, -0.85),
                dir=yawdir(-4, 6), edge=(1, 0.1, 0), s=-0.8, sMax=-0.7, lfree=0.0)
-    out_ = at(hit, chest=(6, -28, 0), rootR=(4, -28, 0), grip=(1.0, -0.2, -0.7), dir=yawdir(-110, 20), edge=(0.6, 0.2, 0.8))
+    # the follow-through stops 60 degrees right of forward: past that the butt, 1.74 studs behind the rear hand,
+    # has to sweep through his right hip (the arms cannot carry it round the outside)
+    out_ = at(hit, chest=(6, -24, 0), rootR=(4, -24, 0), grip=(1.0, -0.25, -0.75), dir=yawdir(-60, 15), edge=(0.6, 0.2, 0.8))
     out.append(Clip(key_name("Guandao_L2"), sec(t2), [(0, GUARD, "inout"), (0.07, wind, "out"), (c, hit, "in"),
-                                                      (e, out_, "linear"), (0.31, at(out_, dir=yawdir(-120, 28), grip=(1.0, -0.1, -0.7)), "out"),
-                                                      # the blade comes back up and over his right side (swung back
-                                                      # level, the butt would sweep through his belly)
-                                                      (0.345, at(out_, dir=yawdir(-95, 78), grip=(1.15, -0.2, -0.75)), "inout"),
+                                                      (e, out_, "linear"), (0.31, at(out_, dir=yawdir(-55, 18)), "out"),
                                                       (sec(t2), GUARD, "inout")],
                     contacts=(c,), group="Melee", action="Guandao_L2", preview=(0, 0.07, c, e, 0.31, sec(t2)),
                     markers=melee_markers(c, e),
                     timing="WeaponSchema Guandao_L2 Returning Tide: startup 9f, active 4f, total 25f (Tempo 1.4)",
                     hook="NEW: AIService BossSwing -> resolve(Guandao_L2)", wiring="needs-hook",
-                    notes="Backhand return sweep from his left, rising slightly; edge turned to lead."))
+                    notes="Backhand return sweep from his left across the front, rising slightly; edge turned to lead."))
     # L3 Heaven-Splitting Cleave: overhead vertical cleave; it finishes with the rear hand drawn back to the right hip,
     # elbow out and forearm across the shaft (a straight wrist), the front hand driving the blade down the centre line
     s3, a3, _, t3 = GUANDAO["Guandao_L3"]
@@ -637,5 +636,5 @@ def manifest_header():
         "weapon_binding": "LooksDuelists RightHand pieces; tip 9.40 studs from the RightHand centre at scale 1 "
                           "(target 9.2 +/- 0.5); animation never moves the binding",
         "in_place": "Root translation only shifts weight and height; the server owns all travel and facing",
-        "upload_status": "No clip is uploaded. Every asset_id is null until a genuine published id exists.",
+        "upload_status": "Set by export.py from published.json; an asset_id stays null until a genuine published id exists.",
     }

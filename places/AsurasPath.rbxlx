@@ -50494,8 +50494,485 @@ return WorldService
           </Item>
         </Item>
       </Item>
+      <Item class="Folder" referent="458">
+        <Properties>
+          <string name="Name">AsuraBossAnimations</string>
+        </Properties>
+        <Item class="Animation" referent="459">
+          <Properties>
+            <string name="Name">GeneralZhao_P1_AlertTransition</string>
+            <Content name="AnimationContent">
+              <uri>rbxassetid://127133021899022</uri>
+            </Content>
+          </Properties>
+        </Item>
+        <Item class="Animation" referent="460">
+          <Properties>
+            <string name="Name">GeneralZhao_P1_Approach</string>
+            <Content name="AnimationContent">
+              <uri>rbxassetid://85531437373622</uri>
+            </Content>
+          </Properties>
+        </Item>
+        <Item class="Animation" referent="461">
+          <Properties>
+            <string name="Name">GeneralZhao_P1_ColossalHammer</string>
+            <Content name="AnimationContent">
+              <uri>rbxassetid://93359276356611</uri>
+            </Content>
+          </Properties>
+        </Item>
+        <Item class="Animation" referent="462">
+          <Properties>
+            <string name="Name">GeneralZhao_P1_Death</string>
+            <Content name="AnimationContent">
+              <uri>rbxassetid://91951518681926</uri>
+            </Content>
+          </Properties>
+        </Item>
+        <Item class="Animation" referent="463">
+          <Properties>
+            <string name="Name">GeneralZhao_P1_DeathblowVictim</string>
+            <Content name="AnimationContent">
+              <uri>rbxassetid://136397071657642</uri>
+            </Content>
+          </Properties>
+        </Item>
+        <Item class="Animation" referent="464">
+          <Properties>
+            <string name="Name">GeneralZhao_P1_DeflectRecoil</string>
+            <Content name="AnimationContent">
+              <uri>rbxassetid://127831459545816</uri>
+            </Content>
+          </Properties>
+        </Item>
+        <Item class="Animation" referent="465">
+          <Properties>
+            <string name="Name">GeneralZhao_P1_Equip</string>
+            <Content name="AnimationContent">
+              <uri>rbxassetid://121747729384282</uri>
+            </Content>
+          </Properties>
+        </Item>
+        <Item class="Animation" referent="466">
+          <Properties>
+            <string name="Name">GeneralZhao_P1_Guandao_Art</string>
+            <Content name="AnimationContent">
+              <uri>rbxassetid://104589140222776</uri>
+            </Content>
+          </Properties>
+        </Item>
+        <Item class="Animation" referent="467">
+          <Properties>
+            <string name="Name">GeneralZhao_P1_Guandao_Heavy</string>
+            <Content name="AnimationContent">
+              <uri>rbxassetid://92622207390418</uri>
+            </Content>
+          </Properties>
+        </Item>
+        <Item class="Animation" referent="468">
+          <Properties>
+            <string name="Name">GeneralZhao_P1_Guandao_L1</string>
+            <Content name="AnimationContent">
+              <uri>rbxassetid://129602664895532</uri>
+            </Content>
+          </Properties>
+        </Item>
+        <Item class="Animation" referent="469">
+          <Properties>
+            <string name="Name">GeneralZhao_P1_Guandao_L2</string>
+            <Content name="AnimationContent">
+              <uri>rbxassetid://125584049105524</uri>
+            </Content>
+          </Properties>
+        </Item>
+        <Item class="Animation" referent="470">
+          <Properties>
+            <string name="Name">GeneralZhao_P1_Guandao_L3</string>
+            <Content name="AnimationContent">
+              <uri>rbxassetid://125059655809539</uri>
+            </Content>
+          </Properties>
+        </Item>
+        <Item class="Animation" referent="471">
+          <Properties>
+            <string name="Name">GeneralZhao_P1_Guandao_Running</string>
+            <Content name="AnimationContent">
+              <uri>rbxassetid://108205290655865</uri>
+            </Content>
+          </Properties>
+        </Item>
+        <Item class="Animation" referent="472">
+          <Properties>
+            <string name="Name">GeneralZhao_P1_GuardEnter</string>
+            <Content name="AnimationContent">
+              <uri>rbxassetid://74853472756900</uri>
+            </Content>
+          </Properties>
+        </Item>
+        <Item class="Animation" referent="473">
+          <Properties>
+            <string name="Name">GeneralZhao_P1_GuardExit</string>
+            <Content name="AnimationContent">
+              <uri>rbxassetid://98641970881934</uri>
+            </Content>
+          </Properties>
+        </Item>
+        <Item class="Animation" referent="474">
+          <Properties>
+            <string name="Name">GeneralZhao_P1_GuardHit</string>
+            <Content name="AnimationContent">
+              <uri>rbxassetid://127195229700419</uri>
+            </Content>
+          </Properties>
+        </Item>
+        <Item class="Animation" referent="475">
+          <Properties>
+            <string name="Name">GeneralZhao_P1_GuardLoop</string>
+            <Content name="AnimationContent">
+              <uri>rbxassetid://111834036898043</uri>
+            </Content>
+          </Properties>
+        </Item>
+        <Item class="Animation" referent="476">
+          <Properties>
+            <string name="Name">GeneralZhao_P1_HitHeavyBack</string>
+            <Content name="AnimationContent">
+              <uri>rbxassetid://84762163886991</uri>
+            </Content>
+          </Properties>
+        </Item>
+        <Item class="Animation" referent="477">
+          <Properties>
+            <string name="Name">GeneralZhao_P1_HitHeavyFront</string>
+            <Content name="AnimationContent">
+              <uri>rbxassetid://125196168277321</uri>
+            </Content>
+          </Properties>
+        </Item>
+        <Item class="Animation" referent="478">
+          <Properties>
+            <string name="Name">GeneralZhao_P1_HitHeavyLeft</string>
+            <Content name="AnimationContent">
+              <uri>rbxassetid://132550580767821</uri>
+            </Content>
+          </Properties>
+        </Item>
+        <Item class="Animation" referent="479">
+          <Properties>
+            <string name="Name">GeneralZhao_P1_HitHeavyRight</string>
+            <Content name="AnimationContent">
+              <uri>rbxassetid://84025727633776</uri>
+            </Content>
+          </Properties>
+        </Item>
+        <Item class="Animation" referent="480">
+          <Properties>
+            <string name="Name">GeneralZhao_P1_HitLightBack</string>
+            <Content name="AnimationContent">
+              <uri>rbxassetid://124919327446338</uri>
+            </Content>
+          </Properties>
+        </Item>
+        <Item class="Animation" referent="481">
+          <Properties>
+            <string name="Name">GeneralZhao_P1_HitLightFront</string>
+            <Content name="AnimationContent">
+              <uri>rbxassetid://134712701817739</uri>
+            </Content>
+          </Properties>
+        </Item>
+        <Item class="Animation" referent="482">
+          <Properties>
+            <string name="Name">GeneralZhao_P1_HitLightLeft</string>
+            <Content name="AnimationContent">
+              <uri>rbxassetid://80203755918569</uri>
+            </Content>
+          </Properties>
+        </Item>
+        <Item class="Animation" referent="483">
+          <Properties>
+            <string name="Name">GeneralZhao_P1_HitLightRight</string>
+            <Content name="AnimationContent">
+              <uri>rbxassetid://74530429973921</uri>
+            </Content>
+          </Properties>
+        </Item>
+        <Item class="Animation" referent="484">
+          <Properties>
+            <string name="Name">GeneralZhao_P1_Idle</string>
+            <Content name="AnimationContent">
+              <uri>rbxassetid://93332880271451</uri>
+            </Content>
+          </Properties>
+        </Item>
+        <Item class="Animation" referent="485">
+          <Properties>
+            <string name="Name">GeneralZhao_P1_IdleNeutral</string>
+            <Content name="AnimationContent">
+              <uri>rbxassetid://106044582504737</uri>
+            </Content>
+          </Properties>
+        </Item>
+        <Item class="Animation" referent="486">
+          <Properties>
+            <string name="Name">GeneralZhao_P1_Intro</string>
+            <Content name="AnimationContent">
+              <uri>rbxassetid://96106117705608</uri>
+            </Content>
+          </Properties>
+        </Item>
+        <Item class="Animation" referent="487">
+          <Properties>
+            <string name="Name">GeneralZhao_P1_IntroReady</string>
+            <Content name="AnimationContent">
+              <uri>rbxassetid://89736440155267</uri>
+            </Content>
+          </Properties>
+        </Item>
+        <Item class="Animation" referent="488">
+          <Properties>
+            <string name="Name">GeneralZhao_P1_IronCharge</string>
+            <Content name="AnimationContent">
+              <uri>rbxassetid://133184221531855</uri>
+            </Content>
+          </Properties>
+        </Item>
+        <Item class="Animation" referent="489">
+          <Properties>
+            <string name="Name">GeneralZhao_P1_LightningSpear</string>
+            <Content name="AnimationContent">
+              <uri>rbxassetid://73671419056664</uri>
+            </Content>
+          </Properties>
+        </Item>
+        <Item class="Animation" referent="490">
+          <Properties>
+            <string name="Name">GeneralZhao_P1_Oath_Guandao_Art</string>
+            <Content name="AnimationContent">
+              <uri>rbxassetid://97756948713906</uri>
+            </Content>
+          </Properties>
+        </Item>
+        <Item class="Animation" referent="491">
+          <Properties>
+            <string name="Name">GeneralZhao_P1_Oath_Guandao_Heavy</string>
+            <Content name="AnimationContent">
+              <uri>rbxassetid://90347702215381</uri>
+            </Content>
+          </Properties>
+        </Item>
+        <Item class="Animation" referent="492">
+          <Properties>
+            <string name="Name">GeneralZhao_P1_Oath_Guandao_L1</string>
+            <Content name="AnimationContent">
+              <uri>rbxassetid://131940901061421</uri>
+            </Content>
+          </Properties>
+        </Item>
+        <Item class="Animation" referent="493">
+          <Properties>
+            <string name="Name">GeneralZhao_P1_Oath_Guandao_L2</string>
+            <Content name="AnimationContent">
+              <uri>rbxassetid://71122340818018</uri>
+            </Content>
+          </Properties>
+        </Item>
+        <Item class="Animation" referent="494">
+          <Properties>
+            <string name="Name">GeneralZhao_P1_Oath_Guandao_L3</string>
+            <Content name="AnimationContent">
+              <uri>rbxassetid://73690059521242</uri>
+            </Content>
+          </Properties>
+        </Item>
+        <Item class="Animation" referent="495">
+          <Properties>
+            <string name="Name">GeneralZhao_P1_Oath_Guandao_Running</string>
+            <Content name="AnimationContent">
+              <uri>rbxassetid://80675649448907</uri>
+            </Content>
+          </Properties>
+        </Item>
+        <Item class="Animation" referent="496">
+          <Properties>
+            <string name="Name">GeneralZhao_P1_Oath_GuardLoop</string>
+            <Content name="AnimationContent">
+              <uri>rbxassetid://99116669951665</uri>
+            </Content>
+          </Properties>
+        </Item>
+        <Item class="Animation" referent="497">
+          <Properties>
+            <string name="Name">GeneralZhao_P1_Oath_Idle</string>
+            <Content name="AnimationContent">
+              <uri>rbxassetid://110263386521407</uri>
+            </Content>
+          </Properties>
+        </Item>
+        <Item class="Animation" referent="498">
+          <Properties>
+            <string name="Name">GeneralZhao_P1_Oath_LightningSpear</string>
+            <Content name="AnimationContent">
+              <uri>rbxassetid://73610670043216</uri>
+            </Content>
+          </Properties>
+        </Item>
+        <Item class="Animation" referent="499">
+          <Properties>
+            <string name="Name">GeneralZhao_P1_Oath_RunForward</string>
+            <Content name="AnimationContent">
+              <uri>rbxassetid://115515026527765</uri>
+            </Content>
+          </Properties>
+        </Item>
+        <Item class="Animation" referent="500">
+          <Properties>
+            <string name="Name">GeneralZhao_P1_Oath_Strike</string>
+            <Content name="AnimationContent">
+              <uri>rbxassetid://94877060209962</uri>
+            </Content>
+          </Properties>
+        </Item>
+        <Item class="Animation" referent="501">
+          <Properties>
+            <string name="Name">GeneralZhao_P1_Oath_ThunderQuickstep</string>
+            <Content name="AnimationContent">
+              <uri>rbxassetid://139856362667978</uri>
+            </Content>
+          </Properties>
+        </Item>
+        <Item class="Animation" referent="502">
+          <Properties>
+            <string name="Name">GeneralZhao_P1_Oath_WalkForward</string>
+            <Content name="AnimationContent">
+              <uri>rbxassetid://74266698315063</uri>
+            </Content>
+          </Properties>
+        </Item>
+        <Item class="Animation" referent="503">
+          <Properties>
+            <string name="Name">GeneralZhao_P1_PostureBreak</string>
+            <Content name="AnimationContent">
+              <uri>rbxassetid://74127943676745</uri>
+            </Content>
+          </Properties>
+        </Item>
+        <Item class="Animation" referent="504">
+          <Properties>
+            <string name="Name">GeneralZhao_P1_Retreat</string>
+            <Content name="AnimationContent">
+              <uri>rbxassetid://96759854099054</uri>
+            </Content>
+          </Properties>
+        </Item>
+        <Item class="Animation" referent="505">
+          <Properties>
+            <string name="Name">GeneralZhao_P1_RunForward</string>
+            <Content name="AnimationContent">
+              <uri>rbxassetid://133176256793259</uri>
+            </Content>
+          </Properties>
+        </Item>
+        <Item class="Animation" referent="506">
+          <Properties>
+            <string name="Name">GeneralZhao_P1_StaggerLoop</string>
+            <Content name="AnimationContent">
+              <uri>rbxassetid://103611120393384</uri>
+            </Content>
+          </Properties>
+        </Item>
+        <Item class="Animation" referent="507">
+          <Properties>
+            <string name="Name">GeneralZhao_P1_StaggerRecover</string>
+            <Content name="AnimationContent">
+              <uri>rbxassetid://118275414580777</uri>
+            </Content>
+          </Properties>
+        </Item>
+        <Item class="Animation" referent="508">
+          <Properties>
+            <string name="Name">GeneralZhao_P1_Stop</string>
+            <Content name="AnimationContent">
+              <uri>rbxassetid://87868215346153</uri>
+            </Content>
+          </Properties>
+        </Item>
+        <Item class="Animation" referent="509">
+          <Properties>
+            <string name="Name">GeneralZhao_P1_StrafeLeft</string>
+            <Content name="AnimationContent">
+              <uri>rbxassetid://79228685638380</uri>
+            </Content>
+          </Properties>
+        </Item>
+        <Item class="Animation" referent="510">
+          <Properties>
+            <string name="Name">GeneralZhao_P1_StrafeRight</string>
+            <Content name="AnimationContent">
+              <uri>rbxassetid://137339758551664</uri>
+            </Content>
+          </Properties>
+        </Item>
+        <Item class="Animation" referent="511">
+          <Properties>
+            <string name="Name">GeneralZhao_P1_Strike</string>
+            <Content name="AnimationContent">
+              <uri>rbxassetid://97525853143850</uri>
+            </Content>
+          </Properties>
+        </Item>
+        <Item class="Animation" referent="512">
+          <Properties>
+            <string name="Name">GeneralZhao_P1_ThunderQuickstep</string>
+            <Content name="AnimationContent">
+              <uri>rbxassetid://135881005810178</uri>
+            </Content>
+          </Properties>
+        </Item>
+        <Item class="Animation" referent="513">
+          <Properties>
+            <string name="Name">GeneralZhao_P1_Transform</string>
+            <Content name="AnimationContent">
+              <uri>rbxassetid://75749997268879</uri>
+            </Content>
+          </Properties>
+        </Item>
+        <Item class="Animation" referent="514">
+          <Properties>
+            <string name="Name">GeneralZhao_P1_TurnLeft</string>
+            <Content name="AnimationContent">
+              <uri>rbxassetid://78096520157110</uri>
+            </Content>
+          </Properties>
+        </Item>
+        <Item class="Animation" referent="515">
+          <Properties>
+            <string name="Name">GeneralZhao_P1_TurnRight</string>
+            <Content name="AnimationContent">
+              <uri>rbxassetid://130127773789747</uri>
+            </Content>
+          </Properties>
+        </Item>
+        <Item class="Animation" referent="516">
+          <Properties>
+            <string name="Name">GeneralZhao_P1_WalkBackward</string>
+            <Content name="AnimationContent">
+              <uri>rbxassetid://97941513136110</uri>
+            </Content>
+          </Properties>
+        </Item>
+        <Item class="Animation" referent="517">
+          <Properties>
+            <string name="Name">GeneralZhao_P1_WalkForward</string>
+            <Content name="AnimationContent">
+              <uri>rbxassetid://136380273629469</uri>
+            </Content>
+          </Properties>
+        </Item>
+      </Item>
     </Item>
-    <Item class="Folder" referent="458">
+    <Item class="Folder" referent="518">
       <Properties>
         <string name="Name">AsuraBambooBreakage</string>
         <BinaryString name="AttributesSerialize" />
@@ -50513,7 +50990,7 @@ return WorldService
         <BinaryString name="Tags" />
         <UniqueId name="UniqueId">587c24bfb5c37c470af45fbb0003db1b</UniqueId>
       </Properties>
-      <Item class="Model" referent="459">
+      <Item class="Model" referent="519">
         <Properties>
           <string name="Name">Bamboo_BrokenClump</string>
           <BinaryString name="AttributesSerialize" />
@@ -50568,7 +51045,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="460">
+        <Item class="MeshPart" referent="520">
           <Properties>
             <string name="Name">Bamboo_BrokenClump_V2__Cut</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -50712,7 +51189,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="461">
+          <Item class="SurfaceAppearance" referent="521">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -50760,7 +51237,7 @@ return WorldService
             </Properties>
           </Item>
         </Item>
-        <Item class="MeshPart" referent="462">
+        <Item class="MeshPart" referent="522">
           <Properties>
             <string name="Name">Bamboo_BrokenClump_V2__Culm</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -50904,7 +51381,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="463">
+          <Item class="SurfaceAppearance" referent="523">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -50953,7 +51430,7 @@ return WorldService
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="464">
+      <Item class="Model" referent="524">
         <Properties>
           <string name="Name">Bamboo_FallenPole</string>
           <BinaryString name="AttributesSerialize" />
@@ -51008,7 +51485,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="465">
+        <Item class="MeshPart" referent="525">
           <Properties>
             <string name="Name">Bamboo_FallenPole_V2__Cut</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -51152,7 +51629,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="466">
+          <Item class="SurfaceAppearance" referent="526">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -51200,7 +51677,7 @@ return WorldService
             </Properties>
           </Item>
         </Item>
-        <Item class="MeshPart" referent="467">
+        <Item class="MeshPart" referent="527">
           <Properties>
             <string name="Name">Bamboo_FallenPole_V2__Culm</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -51344,7 +51821,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="468">
+          <Item class="SurfaceAppearance" referent="528">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -51394,7 +51871,7 @@ return WorldService
         </Item>
       </Item>
     </Item>
-    <Item class="Folder" referent="469">
+    <Item class="Folder" referent="529">
       <Properties>
         <string name="Name">AsuraBambooKit</string>
         <BinaryString name="AttributesSerialize" />
@@ -51412,7 +51889,7 @@ return WorldService
         <BinaryString name="Tags" />
         <UniqueId name="UniqueId">78080a85192c7ffb0aed1bb3000113e8</UniqueId>
       </Properties>
-      <Item class="Model" referent="470">
+      <Item class="Model" referent="530">
         <Properties>
           <string name="Name">Bamboo_C</string>
           <BinaryString name="AttributesSerialize" />
@@ -51467,7 +51944,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="471">
+        <Item class="MeshPart" referent="531">
           <Properties>
             <string name="Name">Bamboo_C__Leaves</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -51611,7 +52088,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="472">
+          <Item class="SurfaceAppearance" referent="532">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -51661,7 +52138,7 @@ return WorldService
             </Properties>
           </Item>
         </Item>
-        <Item class="MeshPart" referent="473">
+        <Item class="MeshPart" referent="533">
           <Properties>
             <string name="Name">Bamboo_C__Culm</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -51805,7 +52282,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="474">
+          <Item class="SurfaceAppearance" referent="534">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -51853,7 +52330,7 @@ return WorldService
             </Properties>
           </Item>
         </Item>
-        <Item class="MeshPart" referent="475">
+        <Item class="MeshPart" referent="535">
           <Properties>
             <string name="Name">Bamboo_C__Twigs</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -51997,7 +52474,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="476">
+          <Item class="SurfaceAppearance" referent="536">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -52046,7 +52523,7 @@ return WorldService
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="477">
+      <Item class="Model" referent="537">
         <Properties>
           <string name="Name">Bamboo_A</string>
           <BinaryString name="AttributesSerialize" />
@@ -52101,7 +52578,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="478">
+        <Item class="MeshPart" referent="538">
           <Properties>
             <string name="Name">Bamboo_A__Culm</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -52245,7 +52722,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="479">
+          <Item class="SurfaceAppearance" referent="539">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -52293,7 +52770,7 @@ return WorldService
             </Properties>
           </Item>
         </Item>
-        <Item class="MeshPart" referent="480">
+        <Item class="MeshPart" referent="540">
           <Properties>
             <string name="Name">Bamboo_A__Leaves</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -52437,7 +52914,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="481">
+          <Item class="SurfaceAppearance" referent="541">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -52487,7 +52964,7 @@ return WorldService
             </Properties>
           </Item>
         </Item>
-        <Item class="MeshPart" referent="482">
+        <Item class="MeshPart" referent="542">
           <Properties>
             <string name="Name">Bamboo_A__Twigs</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -52631,7 +53108,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="483">
+          <Item class="SurfaceAppearance" referent="543">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -52680,7 +53157,7 @@ return WorldService
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="484">
+      <Item class="Model" referent="544">
         <Properties>
           <string name="Name">Bamboo_B</string>
           <BinaryString name="AttributesSerialize" />
@@ -52735,7 +53212,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="485">
+        <Item class="MeshPart" referent="545">
           <Properties>
             <string name="Name">Bamboo_B__Culm</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -52879,7 +53356,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="486">
+          <Item class="SurfaceAppearance" referent="546">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -52927,7 +53404,7 @@ return WorldService
             </Properties>
           </Item>
         </Item>
-        <Item class="MeshPart" referent="487">
+        <Item class="MeshPart" referent="547">
           <Properties>
             <string name="Name">Bamboo_B__Leaves</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -53071,7 +53548,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="488">
+          <Item class="SurfaceAppearance" referent="548">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -53121,7 +53598,7 @@ return WorldService
             </Properties>
           </Item>
         </Item>
-        <Item class="MeshPart" referent="489">
+        <Item class="MeshPart" referent="549">
           <Properties>
             <string name="Name">Bamboo_B__Twigs</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -53265,7 +53742,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="490">
+          <Item class="SurfaceAppearance" referent="550">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -53314,7 +53791,7 @@ return WorldService
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="491">
+      <Item class="Model" referent="551">
         <Properties>
           <string name="Name">Karst_A</string>
           <BinaryString name="AttributesSerialize" />
@@ -53369,7 +53846,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="492">
+        <Item class="MeshPart" referent="552">
           <Properties>
             <string name="Name">Karst_A__Rock</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -53513,7 +53990,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="493">
+          <Item class="SurfaceAppearance" referent="553">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -53561,7 +54038,7 @@ return WorldService
             </Properties>
           </Item>
         </Item>
-        <Item class="MeshPart" referent="494">
+        <Item class="MeshPart" referent="554">
           <Properties>
             <string name="Name">Karst_A__Snow</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -53707,7 +54184,7 @@ return WorldService
           </Properties>
         </Item>
       </Item>
-      <Item class="Model" referent="495">
+      <Item class="Model" referent="555">
         <Properties>
           <string name="Name">Karst_B</string>
           <BinaryString name="AttributesSerialize" />
@@ -53762,7 +54239,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="496">
+        <Item class="MeshPart" referent="556">
           <Properties>
             <string name="Name">Karst_B__Rock</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -53906,7 +54383,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="497">
+          <Item class="SurfaceAppearance" referent="557">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -53954,7 +54431,7 @@ return WorldService
             </Properties>
           </Item>
         </Item>
-        <Item class="MeshPart" referent="498">
+        <Item class="MeshPart" referent="558">
           <Properties>
             <string name="Name">Karst_B__Snow</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -54100,7 +54577,7 @@ return WorldService
           </Properties>
         </Item>
       </Item>
-      <Item class="Model" referent="499">
+      <Item class="Model" referent="559">
         <Properties>
           <string name="Name">Karst_C</string>
           <BinaryString name="AttributesSerialize" />
@@ -54155,7 +54632,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="500">
+        <Item class="MeshPart" referent="560">
           <Properties>
             <string name="Name">Karst_C__Rock</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -54299,7 +54776,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="501">
+          <Item class="SurfaceAppearance" referent="561">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -54347,7 +54824,7 @@ return WorldService
             </Properties>
           </Item>
         </Item>
-        <Item class="MeshPart" referent="502">
+        <Item class="MeshPart" referent="562">
           <Properties>
             <string name="Name">Karst_C__Snow</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -54494,7 +54971,7 @@ return WorldService
         </Item>
       </Item>
     </Item>
-    <Item class="Model" referent="503">
+    <Item class="Model" referent="563">
       <Properties>
         <string name="Name">AsuraGuardianLion</string>
         <BinaryString name="AttributesSerialize" />
@@ -54549,7 +55026,7 @@ return WorldService
           </CFrame>
         </OptionalCoordinateFrame>
       </Properties>
-      <Item class="MeshPart" referent="504">
+      <Item class="MeshPart" referent="564">
         <Properties>
           <string name="Name">GuardianCarving</string>
           <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -54693,7 +55170,7 @@ return WorldService
           </Vector3>
           <int name="VertexCount">0</int>
         </Properties>
-        <Item class="SurfaceAppearance" referent="505">
+        <Item class="SurfaceAppearance" referent="565">
           <Properties>
             <string name="Name">SurfaceAppearance</string>
             <token name="AlphaMode">0</token>
@@ -54742,7 +55219,7 @@ return WorldService
         </Item>
       </Item>
     </Item>
-    <Item class="Model" referent="506">
+    <Item class="Model" referent="566">
       <Properties>
         <string name="Name">AsuraGuardianLionMirror</string>
         <BinaryString name="AttributesSerialize" />
@@ -54797,7 +55274,7 @@ return WorldService
           </CFrame>
         </OptionalCoordinateFrame>
       </Properties>
-      <Item class="MeshPart" referent="507">
+      <Item class="MeshPart" referent="567">
         <Properties>
           <string name="Name">GuardianCarving</string>
           <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -54941,7 +55418,7 @@ return WorldService
           </Vector3>
           <int name="VertexCount">0</int>
         </Properties>
-        <Item class="SurfaceAppearance" referent="508">
+        <Item class="SurfaceAppearance" referent="568">
           <Properties>
             <string name="Name">SurfaceAppearance</string>
             <token name="AlphaMode">0</token>
@@ -54990,7 +55467,7 @@ return WorldService
         </Item>
       </Item>
     </Item>
-    <Item class="Folder" referent="509">
+    <Item class="Folder" referent="569">
       <Properties>
         <string name="Name">AsuraHanHD</string>
         <BinaryString name="AttributesSerialize" />
@@ -55008,7 +55485,7 @@ return WorldService
         <BinaryString name="Tags" />
         <UniqueId name="UniqueId">56127b6abbf8282b0af0befa0004d5b3</UniqueId>
       </Properties>
-      <Item class="Model" referent="510">
+      <Item class="Model" referent="570">
         <Properties>
           <string name="Name">HanGateHD</string>
           <BinaryString name="AttributesSerialize" />
@@ -55063,7 +55540,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="511">
+        <Item class="MeshPart" referent="571">
           <Properties>
             <string name="Name">HanGateHD_Frame__Bronze</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -55207,7 +55684,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="512">
+          <Item class="SurfaceAppearance" referent="572">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -55255,7 +55732,7 @@ return WorldService
             </Properties>
           </Item>
         </Item>
-        <Item class="MeshPart" referent="513">
+        <Item class="MeshPart" referent="573">
           <Properties>
             <string name="Name">HanGateHD_Frame__Lacquer</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -55399,7 +55876,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="514">
+          <Item class="SurfaceAppearance" referent="574">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -55447,7 +55924,7 @@ return WorldService
             </Properties>
           </Item>
         </Item>
-        <Item class="MeshPart" referent="515">
+        <Item class="MeshPart" referent="575">
           <Properties>
             <string name="Name">HanGateHD_Frame__Stone</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -55591,7 +56068,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="516">
+          <Item class="SurfaceAppearance" referent="576">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -55639,7 +56116,7 @@ return WorldService
             </Properties>
           </Item>
         </Item>
-        <Item class="MeshPart" referent="517">
+        <Item class="MeshPart" referent="577">
           <Properties>
             <string name="Name">HanGateHD_Frame__Timber</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -55783,7 +56260,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="518">
+          <Item class="SurfaceAppearance" referent="578">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -55831,7 +56308,7 @@ return WorldService
             </Properties>
           </Item>
         </Item>
-        <Item class="MeshPart" referent="519">
+        <Item class="MeshPart" referent="579">
           <Properties>
             <string name="Name">HanGateHD_Roofs__Bronze</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -55975,7 +56452,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="520">
+          <Item class="SurfaceAppearance" referent="580">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -56023,7 +56500,7 @@ return WorldService
             </Properties>
           </Item>
         </Item>
-        <Item class="MeshPart" referent="521">
+        <Item class="MeshPart" referent="581">
           <Properties>
             <string name="Name">HanGateHD_Roofs__Roof</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -56167,7 +56644,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="522">
+          <Item class="SurfaceAppearance" referent="582">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -56215,7 +56692,7 @@ return WorldService
             </Properties>
           </Item>
         </Item>
-        <Item class="MeshPart" referent="523">
+        <Item class="MeshPart" referent="583">
           <Properties>
             <string name="Name">HanGateHD_Roofs__Timber</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -56359,7 +56836,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="524">
+          <Item class="SurfaceAppearance" referent="584">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -56408,7 +56885,7 @@ return WorldService
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="525">
+      <Item class="Model" referent="585">
         <Properties>
           <string name="Name">HanPagodaHD</string>
           <BinaryString name="AttributesSerialize" />
@@ -56463,7 +56940,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="526">
+        <Item class="MeshPart" referent="586">
           <Properties>
             <string name="Name">HanPagodaHD_Base__Stone</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -56607,7 +57084,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="527">
+          <Item class="SurfaceAppearance" referent="587">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -56655,7 +57132,7 @@ return WorldService
             </Properties>
           </Item>
         </Item>
-        <Item class="MeshPart" referent="528">
+        <Item class="MeshPart" referent="588">
           <Properties>
             <string name="Name">HanPagodaHD_T3__Timber</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -56799,7 +57276,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="529">
+          <Item class="SurfaceAppearance" referent="589">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -56847,7 +57324,7 @@ return WorldService
             </Properties>
           </Item>
         </Item>
-        <Item class="MeshPart" referent="530">
+        <Item class="MeshPart" referent="590">
           <Properties>
             <string name="Name">HanPagodaHD_Spire__Bronze</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -56991,7 +57468,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="531">
+          <Item class="SurfaceAppearance" referent="591">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -57039,7 +57516,7 @@ return WorldService
             </Properties>
           </Item>
         </Item>
-        <Item class="MeshPart" referent="532">
+        <Item class="MeshPart" referent="592">
           <Properties>
             <string name="Name">HanPagodaHD_T1__Bronze</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -57183,7 +57660,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="533">
+          <Item class="SurfaceAppearance" referent="593">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -57231,7 +57708,7 @@ return WorldService
             </Properties>
           </Item>
         </Item>
-        <Item class="MeshPart" referent="534">
+        <Item class="MeshPart" referent="594">
           <Properties>
             <string name="Name">HanPagodaHD_T1__Lacquer</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -57375,7 +57852,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="535">
+          <Item class="SurfaceAppearance" referent="595">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -57423,7 +57900,7 @@ return WorldService
             </Properties>
           </Item>
         </Item>
-        <Item class="MeshPart" referent="536">
+        <Item class="MeshPart" referent="596">
           <Properties>
             <string name="Name">HanPagodaHD_T1__Roof</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -57567,7 +58044,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="537">
+          <Item class="SurfaceAppearance" referent="597">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -57615,7 +58092,7 @@ return WorldService
             </Properties>
           </Item>
         </Item>
-        <Item class="MeshPart" referent="538">
+        <Item class="MeshPart" referent="598">
           <Properties>
             <string name="Name">HanPagodaHD_T1__Stone</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -57759,7 +58236,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="539">
+          <Item class="SurfaceAppearance" referent="599">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -57807,7 +58284,7 @@ return WorldService
             </Properties>
           </Item>
         </Item>
-        <Item class="MeshPart" referent="540">
+        <Item class="MeshPart" referent="600">
           <Properties>
             <string name="Name">HanPagodaHD_T1__Timber1</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -57951,7 +58428,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="541">
+          <Item class="SurfaceAppearance" referent="601">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -57999,7 +58476,7 @@ return WorldService
             </Properties>
           </Item>
         </Item>
-        <Item class="MeshPart" referent="542">
+        <Item class="MeshPart" referent="602">
           <Properties>
             <string name="Name">HanPagodaHD_T1__Timber2</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -58143,7 +58620,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="543">
+          <Item class="SurfaceAppearance" referent="603">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -58191,7 +58668,7 @@ return WorldService
             </Properties>
           </Item>
         </Item>
-        <Item class="MeshPart" referent="544">
+        <Item class="MeshPart" referent="604">
           <Properties>
             <string name="Name">HanPagodaHD_T2__Bronze</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -58335,7 +58812,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="545">
+          <Item class="SurfaceAppearance" referent="605">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -58383,7 +58860,7 @@ return WorldService
             </Properties>
           </Item>
         </Item>
-        <Item class="MeshPart" referent="546">
+        <Item class="MeshPart" referent="606">
           <Properties>
             <string name="Name">HanPagodaHD_T2__Lacquer</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -58527,7 +59004,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="547">
+          <Item class="SurfaceAppearance" referent="607">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -58575,7 +59052,7 @@ return WorldService
             </Properties>
           </Item>
         </Item>
-        <Item class="MeshPart" referent="548">
+        <Item class="MeshPart" referent="608">
           <Properties>
             <string name="Name">HanPagodaHD_T2__Roof</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -58719,7 +59196,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="549">
+          <Item class="SurfaceAppearance" referent="609">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -58767,7 +59244,7 @@ return WorldService
             </Properties>
           </Item>
         </Item>
-        <Item class="MeshPart" referent="550">
+        <Item class="MeshPart" referent="610">
           <Properties>
             <string name="Name">HanPagodaHD_T2__Timber1</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -58911,7 +59388,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="551">
+          <Item class="SurfaceAppearance" referent="611">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -58959,7 +59436,7 @@ return WorldService
             </Properties>
           </Item>
         </Item>
-        <Item class="MeshPart" referent="552">
+        <Item class="MeshPart" referent="612">
           <Properties>
             <string name="Name">HanPagodaHD_T2__Timber2</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -59103,7 +59580,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="553">
+          <Item class="SurfaceAppearance" referent="613">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -59151,7 +59628,7 @@ return WorldService
             </Properties>
           </Item>
         </Item>
-        <Item class="MeshPart" referent="554">
+        <Item class="MeshPart" referent="614">
           <Properties>
             <string name="Name">HanPagodaHD_T3__Bronze</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -59295,7 +59772,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="555">
+          <Item class="SurfaceAppearance" referent="615">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -59343,7 +59820,7 @@ return WorldService
             </Properties>
           </Item>
         </Item>
-        <Item class="MeshPart" referent="556">
+        <Item class="MeshPart" referent="616">
           <Properties>
             <string name="Name">HanPagodaHD_T3__Lacquer</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -59487,7 +59964,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="557">
+          <Item class="SurfaceAppearance" referent="617">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -59535,7 +60012,7 @@ return WorldService
             </Properties>
           </Item>
         </Item>
-        <Item class="MeshPart" referent="558">
+        <Item class="MeshPart" referent="618">
           <Properties>
             <string name="Name">HanPagodaHD_T3__Roof</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -59679,7 +60156,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="559">
+          <Item class="SurfaceAppearance" referent="619">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -59727,7 +60204,7 @@ return WorldService
             </Properties>
           </Item>
         </Item>
-        <Item class="MeshPart" referent="560">
+        <Item class="MeshPart" referent="620">
           <Properties>
             <string name="Name">HanPagodaHD_T4__Bronze</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -59871,7 +60348,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="561">
+          <Item class="SurfaceAppearance" referent="621">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -59919,7 +60396,7 @@ return WorldService
             </Properties>
           </Item>
         </Item>
-        <Item class="MeshPart" referent="562">
+        <Item class="MeshPart" referent="622">
           <Properties>
             <string name="Name">HanPagodaHD_T4__Lacquer</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -60063,7 +60540,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="563">
+          <Item class="SurfaceAppearance" referent="623">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -60111,7 +60588,7 @@ return WorldService
             </Properties>
           </Item>
         </Item>
-        <Item class="MeshPart" referent="564">
+        <Item class="MeshPart" referent="624">
           <Properties>
             <string name="Name">HanPagodaHD_T4__Roof</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -60255,7 +60732,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="565">
+          <Item class="SurfaceAppearance" referent="625">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -60303,7 +60780,7 @@ return WorldService
             </Properties>
           </Item>
         </Item>
-        <Item class="MeshPart" referent="566">
+        <Item class="MeshPart" referent="626">
           <Properties>
             <string name="Name">HanPagodaHD_T4__Timber</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -60447,7 +60924,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="567">
+          <Item class="SurfaceAppearance" referent="627">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -60495,7 +60972,7 @@ return WorldService
             </Properties>
           </Item>
         </Item>
-        <Item class="MeshPart" referent="568">
+        <Item class="MeshPart" referent="628">
           <Properties>
             <string name="Name">HanPagodaHD_T5__Bronze</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -60639,7 +61116,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="569">
+          <Item class="SurfaceAppearance" referent="629">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -60687,7 +61164,7 @@ return WorldService
             </Properties>
           </Item>
         </Item>
-        <Item class="MeshPart" referent="570">
+        <Item class="MeshPart" referent="630">
           <Properties>
             <string name="Name">HanPagodaHD_T5__Lacquer</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -60831,7 +61308,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="571">
+          <Item class="SurfaceAppearance" referent="631">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -60879,7 +61356,7 @@ return WorldService
             </Properties>
           </Item>
         </Item>
-        <Item class="MeshPart" referent="572">
+        <Item class="MeshPart" referent="632">
           <Properties>
             <string name="Name">HanPagodaHD_T5__Roof</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -61023,7 +61500,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="573">
+          <Item class="SurfaceAppearance" referent="633">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -61071,7 +61548,7 @@ return WorldService
             </Properties>
           </Item>
         </Item>
-        <Item class="MeshPart" referent="574">
+        <Item class="MeshPart" referent="634">
           <Properties>
             <string name="Name">HanPagodaHD_T5__Timber</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -61215,7 +61692,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="575">
+          <Item class="SurfaceAppearance" referent="635">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -61265,7 +61742,7 @@ return WorldService
         </Item>
       </Item>
     </Item>
-    <Item class="Folder" referent="576">
+    <Item class="Folder" referent="636">
       <Properties>
         <string name="Name">AsuraHanKit</string>
         <BinaryString name="AttributesSerialize" />
@@ -61283,7 +61760,7 @@ return WorldService
         <BinaryString name="Tags" />
         <UniqueId name="UniqueId">56127b6abbf8282b0af0befa0004d5b6</UniqueId>
       </Properties>
-      <Item class="Model" referent="577">
+      <Item class="Model" referent="637">
         <Properties>
           <string name="Name">HanBixie</string>
           <BinaryString name="AttributesSerialize" />
@@ -61338,7 +61815,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="578">
+        <Item class="MeshPart" referent="638">
           <Properties>
             <string name="Name">HanBixie__HanBixie</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -61482,7 +61959,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="579">
+          <Item class="SurfaceAppearance" referent="639">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -61531,7 +62008,7 @@ return WorldService
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="580">
+      <Item class="Model" referent="640">
         <Properties>
           <string name="Name">HanPagoda</string>
           <BinaryString name="AttributesSerialize" />
@@ -61586,7 +62063,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="581">
+        <Item class="MeshPart" referent="641">
           <Properties>
             <string name="Name">HanPagoda__HanStruct</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -61730,7 +62207,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="582">
+          <Item class="SurfaceAppearance" referent="642">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -61779,7 +62256,7 @@ return WorldService
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="583">
+      <Item class="Model" referent="643">
         <Properties>
           <string name="Name">HanTemple</string>
           <BinaryString name="AttributesSerialize" />
@@ -61834,7 +62311,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="584">
+        <Item class="MeshPart" referent="644">
           <Properties>
             <string name="Name">HanTemple__HanStruct</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -61978,7 +62455,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="585">
+          <Item class="SurfaceAppearance" referent="645">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -62027,7 +62504,7 @@ return WorldService
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="586">
+      <Item class="Model" referent="646">
         <Properties>
           <string name="Name">HanGreatTower</string>
           <BinaryString name="AttributesSerialize" />
@@ -62082,7 +62559,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="587">
+        <Item class="MeshPart" referent="647">
           <Properties>
             <string name="Name">HanGreatTower__HanStruct</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -62226,7 +62703,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="588">
+          <Item class="SurfaceAppearance" referent="648">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -62275,7 +62752,7 @@ return WorldService
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="589">
+      <Item class="Model" referent="649">
         <Properties>
           <string name="Name">CragB</string>
           <BinaryString name="AttributesSerialize" />
@@ -62330,7 +62807,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="590">
+        <Item class="MeshPart" referent="650">
           <Properties>
             <string name="Name">CragB__Crag</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -62474,7 +62951,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="591">
+          <Item class="SurfaceAppearance" referent="651">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -62523,7 +63000,7 @@ return WorldService
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="592">
+      <Item class="Model" referent="652">
         <Properties>
           <string name="Name">HanWallTower</string>
           <BinaryString name="AttributesSerialize" />
@@ -62578,7 +63055,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="593">
+        <Item class="MeshPart" referent="653">
           <Properties>
             <string name="Name">HanWallTower__HanStruct</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -62722,7 +63199,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="594">
+          <Item class="SurfaceAppearance" referent="654">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -62771,7 +63248,7 @@ return WorldService
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="595">
+      <Item class="Model" referent="655">
         <Properties>
           <string name="Name">HanBixiePedestal</string>
           <BinaryString name="AttributesSerialize" />
@@ -62826,7 +63303,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="596">
+        <Item class="MeshPart" referent="656">
           <Properties>
             <string name="Name">HanBixiePedestal__HanStruct</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -62970,7 +63447,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="597">
+          <Item class="SurfaceAppearance" referent="657">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -63019,7 +63496,7 @@ return WorldService
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="598">
+      <Item class="Model" referent="658">
         <Properties>
           <string name="Name">CragA</string>
           <BinaryString name="AttributesSerialize" />
@@ -63074,7 +63551,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="599">
+        <Item class="MeshPart" referent="659">
           <Properties>
             <string name="Name">CragA__Crag</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -63218,7 +63695,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="600">
+          <Item class="SurfaceAppearance" referent="660">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -63267,7 +63744,7 @@ return WorldService
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="601">
+      <Item class="Model" referent="661">
         <Properties>
           <string name="Name">CragC</string>
           <BinaryString name="AttributesSerialize" />
@@ -63322,7 +63799,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="602">
+        <Item class="MeshPart" referent="662">
           <Properties>
             <string name="Name">CragC__Crag</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -63466,7 +63943,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="603">
+          <Item class="SurfaceAppearance" referent="663">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -63515,7 +63992,7 @@ return WorldService
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="604">
+      <Item class="Model" referent="664">
         <Properties>
           <string name="Name">Pine</string>
           <BinaryString name="AttributesSerialize" />
@@ -63570,7 +64047,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="605">
+        <Item class="MeshPart" referent="665">
           <Properties>
             <string name="Name">Pine__PineBark</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -63714,7 +64191,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="606">
+          <Item class="SurfaceAppearance" referent="666">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -63762,7 +64239,7 @@ return WorldService
             </Properties>
           </Item>
         </Item>
-        <Item class="MeshPart" referent="607">
+        <Item class="MeshPart" referent="667">
           <Properties>
             <string name="Name">Pine__PineNeedles</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -63906,7 +64383,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="608">
+          <Item class="SurfaceAppearance" referent="668">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">1</token>
@@ -63955,7 +64432,7 @@ return WorldService
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="609">
+      <Item class="Model" referent="669">
         <Properties>
           <string name="Name">HanLantern</string>
           <BinaryString name="AttributesSerialize" />
@@ -64010,7 +64487,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="610">
+        <Item class="MeshPart" referent="670">
           <Properties>
             <string name="Name">HanLantern__HanLantern</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -64154,7 +64631,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="611">
+          <Item class="SurfaceAppearance" referent="671">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -64203,7 +64680,7 @@ return WorldService
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="612">
+      <Item class="Model" referent="672">
         <Properties>
           <string name="Name">BoulderSmall</string>
           <BinaryString name="AttributesSerialize" />
@@ -64258,7 +64735,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="613">
+        <Item class="MeshPart" referent="673">
           <Properties>
             <string name="Name">BoulderSmall__ScatterRock</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -64402,7 +64879,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="614">
+          <Item class="SurfaceAppearance" referent="674">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -64451,7 +64928,7 @@ return WorldService
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="615">
+      <Item class="Model" referent="675">
         <Properties>
           <string name="Name">HanCauldron</string>
           <BinaryString name="AttributesSerialize" />
@@ -64506,7 +64983,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="616">
+        <Item class="MeshPart" referent="676">
           <Properties>
             <string name="Name">HanCauldron__HanCauldron</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -64650,7 +65127,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="617">
+          <Item class="SurfaceAppearance" referent="677">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -64699,7 +65176,7 @@ return WorldService
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="618">
+      <Item class="Model" referent="678">
         <Properties>
           <string name="Name">HanWallGate</string>
           <BinaryString name="AttributesSerialize" />
@@ -64754,7 +65231,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="619">
+        <Item class="MeshPart" referent="679">
           <Properties>
             <string name="Name">HanWallGate__HanStruct</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -64898,7 +65375,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="620">
+          <Item class="SurfaceAppearance" referent="680">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -64947,7 +65424,7 @@ return WorldService
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="621">
+      <Item class="Model" referent="681">
         <Properties>
           <string name="Name">HanHouse</string>
           <BinaryString name="AttributesSerialize" />
@@ -65002,7 +65479,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="622">
+        <Item class="MeshPart" referent="682">
           <Properties>
             <string name="Name">HanHouse__HanStruct</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -65146,7 +65623,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="623">
+          <Item class="SurfaceAppearance" referent="683">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -65195,7 +65672,7 @@ return WorldService
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="624">
+      <Item class="Model" referent="684">
         <Properties>
           <string name="Name">HanWallLong</string>
           <BinaryString name="AttributesSerialize" />
@@ -65250,7 +65727,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="625">
+        <Item class="MeshPart" referent="685">
           <Properties>
             <string name="Name">HanWallLong__HanStruct</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -65394,7 +65871,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="626">
+          <Item class="SurfaceAppearance" referent="686">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -65443,7 +65920,7 @@ return WorldService
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="627">
+      <Item class="Model" referent="687">
         <Properties>
           <string name="Name">BoulderLarge</string>
           <BinaryString name="AttributesSerialize" />
@@ -65498,7 +65975,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="628">
+        <Item class="MeshPart" referent="688">
           <Properties>
             <string name="Name">BoulderLarge__ScatterRock</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -65642,7 +66119,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="629">
+          <Item class="SurfaceAppearance" referent="689">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -65691,7 +66168,7 @@ return WorldService
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="630">
+      <Item class="Model" referent="690">
         <Properties>
           <string name="Name">HanDefenseTower</string>
           <BinaryString name="AttributesSerialize" />
@@ -65746,7 +66223,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="631">
+        <Item class="MeshPart" referent="691">
           <Properties>
             <string name="Name">HanDefenseTower__HanStruct</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -65890,7 +66367,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="632">
+          <Item class="SurfaceAppearance" referent="692">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -65939,7 +66416,7 @@ return WorldService
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="633">
+      <Item class="Model" referent="693">
         <Properties>
           <string name="Name">HanShrine</string>
           <BinaryString name="AttributesSerialize" />
@@ -65994,7 +66471,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="634">
+        <Item class="MeshPart" referent="694">
           <Properties>
             <string name="Name">HanShrine__HanStruct</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -66138,7 +66615,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="635">
+          <Item class="SurfaceAppearance" referent="695">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -66188,7 +66665,7 @@ return WorldService
         </Item>
       </Item>
     </Item>
-    <Item class="Folder" referent="636">
+    <Item class="Folder" referent="696">
       <Properties>
         <string name="Name">AsuraLivingBamboo</string>
         <BinaryString name="AttributesSerialize" />
@@ -66206,7 +66683,7 @@ return WorldService
         <BinaryString name="Tags" />
         <UniqueId name="UniqueId">339bb7b72d1784940af44e030000debf</UniqueId>
       </Properties>
-      <Item class="Model" referent="637">
+      <Item class="Model" referent="697">
         <Properties>
           <string name="Name">Ground_LeafLitter</string>
           <BinaryString name="AttributesSerialize" />
@@ -66261,7 +66738,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="638">
+        <Item class="MeshPart" referent="698">
           <Properties>
             <string name="Name">Ground_LeafLitter</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -66405,7 +66882,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="639">
+          <Item class="SurfaceAppearance" referent="699">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -66454,7 +66931,7 @@ return WorldService
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="640">
+      <Item class="Model" referent="700">
         <Properties>
           <string name="Name">Ground_GrassTuft</string>
           <BinaryString name="AttributesSerialize" />
@@ -66509,7 +66986,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="641">
+        <Item class="MeshPart" referent="701">
           <Properties>
             <string name="Name">Ground_GrassTuft</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -66653,7 +67130,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="642">
+          <Item class="SurfaceAppearance" referent="702">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -66702,7 +67179,7 @@ return WorldService
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="643">
+      <Item class="Model" referent="703">
         <Properties>
           <string name="Name">Bamboo_YoungShoots</string>
           <BinaryString name="AttributesSerialize" />
@@ -66757,7 +67234,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="644">
+        <Item class="MeshPart" referent="704">
           <Properties>
             <string name="Name">Bamboo_YoungShoots</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -66901,7 +67378,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="645">
+          <Item class="SurfaceAppearance" referent="705">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -66950,7 +67427,7 @@ return WorldService
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="646">
+      <Item class="Model" referent="706">
         <Properties>
           <string name="Name">Ground_Fern</string>
           <BinaryString name="AttributesSerialize" />
@@ -67005,7 +67482,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="647">
+        <Item class="MeshPart" referent="707">
           <Properties>
             <string name="Name">Ground_Fern</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -67149,7 +67626,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="648">
+          <Item class="SurfaceAppearance" referent="708">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -67198,7 +67675,7 @@ return WorldService
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="649">
+      <Item class="Model" referent="709">
         <Properties>
           <string name="Name">Bamboo_LeafSpray</string>
           <BinaryString name="AttributesSerialize" />
@@ -67253,7 +67730,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="650">
+        <Item class="MeshPart" referent="710">
           <Properties>
             <string name="Name">Bamboo_LeafSpray</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -67397,7 +67874,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="651">
+          <Item class="SurfaceAppearance" referent="711">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -67447,7 +67924,7 @@ return WorldService
         </Item>
       </Item>
     </Item>
-    <Item class="Model" referent="652">
+    <Item class="Model" referent="712">
       <Properties>
         <string name="Name">AsuraLobbyKit</string>
         <BinaryString name="AttributesSerialize">AQAAAA8AAABBc3VyYUtpdFZlcnNpb24GAAAAAAAA8D8=</BinaryString>
@@ -67502,7 +67979,7 @@ return WorldService
           </CFrame>
         </OptionalCoordinateFrame>
       </Properties>
-      <Item class="Model" referent="653">
+      <Item class="Model" referent="713">
         <Properties>
           <string name="Name">Roof_Hall</string>
           <BinaryString name="AttributesSerialize" />
@@ -67557,7 +68034,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="654">
+        <Item class="MeshPart" referent="714">
           <Properties>
             <string name="Name">Roof_Hall__Roof</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -67701,7 +68178,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="655">
+          <Item class="SurfaceAppearance" referent="715">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -67749,7 +68226,7 @@ return WorldService
             </Properties>
           </Item>
         </Item>
-        <Item class="MeshPart" referent="656">
+        <Item class="MeshPart" referent="716">
           <Properties>
             <string name="Name">Roof_Hall__Timber</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -67893,7 +68370,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="657">
+          <Item class="SurfaceAppearance" referent="717">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -67941,7 +68418,7 @@ return WorldService
             </Properties>
           </Item>
         </Item>
-        <Item class="MeshPart" referent="658">
+        <Item class="MeshPart" referent="718">
           <Properties>
             <string name="Name">Roof_Hall__Bronze</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -68085,7 +68562,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="659">
+          <Item class="SurfaceAppearance" referent="719">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -68134,7 +68611,7 @@ return WorldService
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="660">
+      <Item class="Model" referent="720">
         <Properties>
           <string name="Name">Roof_Square</string>
           <BinaryString name="AttributesSerialize" />
@@ -68189,7 +68666,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="661">
+        <Item class="MeshPart" referent="721">
           <Properties>
             <string name="Name">Roof_Square__Roof</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -68333,7 +68810,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="662">
+          <Item class="SurfaceAppearance" referent="722">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -68381,7 +68858,7 @@ return WorldService
             </Properties>
           </Item>
         </Item>
-        <Item class="MeshPart" referent="663">
+        <Item class="MeshPart" referent="723">
           <Properties>
             <string name="Name">Roof_Square__Timber</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -68525,7 +69002,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="664">
+          <Item class="SurfaceAppearance" referent="724">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -68573,7 +69050,7 @@ return WorldService
             </Properties>
           </Item>
         </Item>
-        <Item class="MeshPart" referent="665">
+        <Item class="MeshPart" referent="725">
           <Properties>
             <string name="Name">Roof_Square__Bronze</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -68717,7 +69194,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="666">
+          <Item class="SurfaceAppearance" referent="726">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -68766,7 +69243,7 @@ return WorldService
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="667">
+      <Item class="Model" referent="727">
         <Properties>
           <string name="Name">Roof_Gallery</string>
           <BinaryString name="AttributesSerialize" />
@@ -68821,7 +69298,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="668">
+        <Item class="MeshPart" referent="728">
           <Properties>
             <string name="Name">Roof_Gallery__Roof</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -68965,7 +69442,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="669">
+          <Item class="SurfaceAppearance" referent="729">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -69013,7 +69490,7 @@ return WorldService
             </Properties>
           </Item>
         </Item>
-        <Item class="MeshPart" referent="670">
+        <Item class="MeshPart" referent="730">
           <Properties>
             <string name="Name">Roof_Gallery__Timber</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -69157,7 +69634,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="671">
+          <Item class="SurfaceAppearance" referent="731">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -69206,7 +69683,7 @@ return WorldService
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="672">
+      <Item class="Model" referent="732">
         <Properties>
           <string name="Name">Roof_GalleryEnd</string>
           <BinaryString name="AttributesSerialize" />
@@ -69261,7 +69738,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="673">
+        <Item class="MeshPart" referent="733">
           <Properties>
             <string name="Name">Roof_GalleryEnd__Roof</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -69405,7 +69882,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="674">
+          <Item class="SurfaceAppearance" referent="734">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -69453,7 +69930,7 @@ return WorldService
             </Properties>
           </Item>
         </Item>
-        <Item class="MeshPart" referent="675">
+        <Item class="MeshPart" referent="735">
           <Properties>
             <string name="Name">Roof_GalleryEnd__Timber</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -69597,7 +70074,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="676">
+          <Item class="SurfaceAppearance" referent="736">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -69646,7 +70123,7 @@ return WorldService
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="677">
+      <Item class="Model" referent="737">
         <Properties>
           <string name="Name">Column_Lacquer</string>
           <BinaryString name="AttributesSerialize" />
@@ -69701,7 +70178,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="678">
+        <Item class="MeshPart" referent="738">
           <Properties>
             <string name="Name">Column_Lacquer__Lacquer</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -69845,7 +70322,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="679">
+          <Item class="SurfaceAppearance" referent="739">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -69893,7 +70370,7 @@ return WorldService
             </Properties>
           </Item>
         </Item>
-        <Item class="MeshPart" referent="680">
+        <Item class="MeshPart" referent="740">
           <Properties>
             <string name="Name">Column_Lacquer__Bronze</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -70037,7 +70514,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="681">
+          <Item class="SurfaceAppearance" referent="741">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -70086,7 +70563,7 @@ return WorldService
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="682">
+      <Item class="Model" referent="742">
         <Properties>
           <string name="Name">Column_Base</string>
           <BinaryString name="AttributesSerialize" />
@@ -70141,7 +70618,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="683">
+        <Item class="MeshPart" referent="743">
           <Properties>
             <string name="Name">Column_Base__Stone</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -70285,7 +70762,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="684">
+          <Item class="SurfaceAppearance" referent="744">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -70334,7 +70811,7 @@ return WorldService
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="685">
+      <Item class="Model" referent="745">
         <Properties>
           <string name="Name">Bracket_Set</string>
           <BinaryString name="AttributesSerialize" />
@@ -70389,7 +70866,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="686">
+        <Item class="MeshPart" referent="746">
           <Properties>
             <string name="Name">Bracket_Set__Timber</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -70533,7 +71010,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="687">
+          <Item class="SurfaceAppearance" referent="747">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -70582,7 +71059,7 @@ return WorldService
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="688">
+      <Item class="Model" referent="748">
         <Properties>
           <string name="Name">Beam_Architrave</string>
           <BinaryString name="AttributesSerialize" />
@@ -70637,7 +71114,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="689">
+        <Item class="MeshPart" referent="749">
           <Properties>
             <string name="Name">Beam_Architrave__Timber</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -70781,7 +71258,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="690">
+          <Item class="SurfaceAppearance" referent="750">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -70829,7 +71306,7 @@ return WorldService
             </Properties>
           </Item>
         </Item>
-        <Item class="MeshPart" referent="691">
+        <Item class="MeshPart" referent="751">
           <Properties>
             <string name="Name">Beam_Architrave__Lacquer</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -70973,7 +71450,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="692">
+          <Item class="SurfaceAppearance" referent="752">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -71022,7 +71499,7 @@ return WorldService
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="693">
+      <Item class="Model" referent="753">
         <Properties>
           <string name="Name">Rail_Bay</string>
           <BinaryString name="AttributesSerialize" />
@@ -71077,7 +71554,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="694">
+        <Item class="MeshPart" referent="754">
           <Properties>
             <string name="Name">Rail_Bay__Stone</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -71221,7 +71698,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="695">
+          <Item class="SurfaceAppearance" referent="755">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -71270,7 +71747,7 @@ return WorldService
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="696">
+      <Item class="Model" referent="756">
         <Properties>
           <string name="Name">Rail_BayStair</string>
           <BinaryString name="AttributesSerialize" />
@@ -71325,7 +71802,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="697">
+        <Item class="MeshPart" referent="757">
           <Properties>
             <string name="Name">Rail_BayStair__Stone</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -71469,7 +71946,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="698">
+          <Item class="SurfaceAppearance" referent="758">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -71518,7 +71995,7 @@ return WorldService
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="699">
+      <Item class="Model" referent="759">
         <Properties>
           <string name="Name">Rail_Post</string>
           <BinaryString name="AttributesSerialize" />
@@ -71573,7 +72050,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="700">
+        <Item class="MeshPart" referent="760">
           <Properties>
             <string name="Name">Rail_Post__Stone</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -71717,7 +72194,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="701">
+          <Item class="SurfaceAppearance" referent="761">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -71766,7 +72243,7 @@ return WorldService
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="702">
+      <Item class="Model" referent="762">
         <Properties>
           <string name="Name">Lantern_Stone</string>
           <BinaryString name="AttributesSerialize" />
@@ -71821,7 +72298,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="703">
+        <Item class="MeshPart" referent="763">
           <Properties>
             <string name="Name">Lantern_Stone__Stone</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -71965,7 +72442,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="704">
+          <Item class="SurfaceAppearance" referent="764">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -72014,7 +72491,7 @@ return WorldService
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="705">
+      <Item class="Model" referent="765">
         <Properties>
           <string name="Name">Lantern_Hanging</string>
           <BinaryString name="AttributesSerialize" />
@@ -72069,7 +72546,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="706">
+        <Item class="MeshPart" referent="766">
           <Properties>
             <string name="Name">Lantern_Hanging__Timber</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -72213,7 +72690,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="707">
+          <Item class="SurfaceAppearance" referent="767">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -72261,7 +72738,7 @@ return WorldService
             </Properties>
           </Item>
         </Item>
-        <Item class="MeshPart" referent="708">
+        <Item class="MeshPart" referent="768">
           <Properties>
             <string name="Name">Lantern_Hanging__Bronze</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -72405,7 +72882,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="709">
+          <Item class="SurfaceAppearance" referent="769">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -72454,7 +72931,7 @@ return WorldService
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="710">
+      <Item class="Model" referent="770">
         <Properties>
           <string name="Name">Stele_Dragon</string>
           <BinaryString name="AttributesSerialize" />
@@ -72509,7 +72986,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="711">
+        <Item class="MeshPart" referent="771">
           <Properties>
             <string name="Name">Stele_Dragon__Stone</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -72653,7 +73130,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="712">
+          <Item class="SurfaceAppearance" referent="772">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -72702,7 +73179,7 @@ return WorldService
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="713">
+      <Item class="Model" referent="773">
         <Properties>
           <string name="Name">Stele_Broken</string>
           <BinaryString name="AttributesSerialize" />
@@ -72757,7 +73234,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="714">
+        <Item class="MeshPart" referent="774">
           <Properties>
             <string name="Name">Stele_Broken__Stone</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -72901,7 +73378,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="715">
+          <Item class="SurfaceAppearance" referent="775">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -72950,7 +73427,7 @@ return WorldService
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="716">
+      <Item class="Model" referent="776">
         <Properties>
           <string name="Name">Ruin_Pillar</string>
           <BinaryString name="AttributesSerialize" />
@@ -73005,7 +73482,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="717">
+        <Item class="MeshPart" referent="777">
           <Properties>
             <string name="Name">Ruin_Pillar__Stone</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -73149,7 +73626,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="718">
+          <Item class="SurfaceAppearance" referent="778">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -73198,7 +73675,7 @@ return WorldService
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="719">
+      <Item class="Model" referent="779">
         <Properties>
           <string name="Name">Ruin_Gate</string>
           <BinaryString name="AttributesSerialize" />
@@ -73253,7 +73730,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="720">
+        <Item class="MeshPart" referent="780">
           <Properties>
             <string name="Name">Ruin_Gate__Stone</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -73397,7 +73874,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="721">
+          <Item class="SurfaceAppearance" referent="781">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -73446,7 +73923,7 @@ return WorldService
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="722">
+      <Item class="Model" referent="782">
         <Properties>
           <string name="Name">Pool_Rim</string>
           <BinaryString name="AttributesSerialize" />
@@ -73501,7 +73978,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="723">
+        <Item class="MeshPart" referent="783">
           <Properties>
             <string name="Name">Pool_Rim__Stone</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -73645,7 +74122,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="724">
+          <Item class="SurfaceAppearance" referent="784">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -73694,7 +74171,7 @@ return WorldService
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="725">
+      <Item class="Model" referent="785">
         <Properties>
           <string name="Name">Pool_Corner</string>
           <BinaryString name="AttributesSerialize" />
@@ -73749,7 +74226,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="726">
+        <Item class="MeshPart" referent="786">
           <Properties>
             <string name="Name">Pool_Corner__Stone</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -73893,7 +74370,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="727">
+          <Item class="SurfaceAppearance" referent="787">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -73942,7 +74419,7 @@ return WorldService
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="728">
+      <Item class="Model" referent="788">
         <Properties>
           <string name="Name">Dais_Bonfire</string>
           <BinaryString name="AttributesSerialize" />
@@ -73997,7 +74474,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="729">
+        <Item class="MeshPart" referent="789">
           <Properties>
             <string name="Name">Dais_Bonfire__Stone</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -74141,7 +74618,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="730">
+          <Item class="SurfaceAppearance" referent="790">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -74189,7 +74666,7 @@ return WorldService
             </Properties>
           </Item>
         </Item>
-        <Item class="MeshPart" referent="731">
+        <Item class="MeshPart" referent="791">
           <Properties>
             <string name="Name">Dais_Bonfire__Bronze</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -74333,7 +74810,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="732">
+          <Item class="SurfaceAppearance" referent="792">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -74382,7 +74859,7 @@ return WorldService
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="733">
+      <Item class="Model" referent="793">
         <Properties>
           <string name="Name">Paving_Medallion</string>
           <BinaryString name="AttributesSerialize" />
@@ -74437,7 +74914,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="734">
+        <Item class="MeshPart" referent="794">
           <Properties>
             <string name="Name">Paving_Medallion__Paving</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -74581,7 +75058,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="735">
+          <Item class="SurfaceAppearance" referent="795">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -74630,7 +75107,7 @@ return WorldService
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="736">
+      <Item class="Model" referent="796">
         <Properties>
           <string name="Name">Gate_Plaque</string>
           <BinaryString name="AttributesSerialize" />
@@ -74685,7 +75162,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="737">
+        <Item class="MeshPart" referent="797">
           <Properties>
             <string name="Name">Gate_Plaque__Timber</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -74829,7 +75306,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="738">
+          <Item class="SurfaceAppearance" referent="798">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -74877,7 +75354,7 @@ return WorldService
             </Properties>
           </Item>
         </Item>
-        <Item class="MeshPart" referent="739">
+        <Item class="MeshPart" referent="799">
           <Properties>
             <string name="Name">Gate_Plaque__Bronze</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -75021,7 +75498,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="740">
+          <Item class="SurfaceAppearance" referent="800">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -75070,7 +75547,7 @@ return WorldService
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="741">
+      <Item class="Model" referent="801">
         <Properties>
           <string name="Name">Cliff_Ledge</string>
           <BinaryString name="AttributesSerialize" />
@@ -75125,7 +75602,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="742">
+        <Item class="MeshPart" referent="802">
           <Properties>
             <string name="Name">Cliff_Ledge__Rock</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -75269,7 +75746,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="743">
+          <Item class="SurfaceAppearance" referent="803">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -75318,7 +75795,7 @@ return WorldService
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="744">
+      <Item class="Model" referent="804">
         <Properties>
           <string name="Name">Cliff_Shelf</string>
           <BinaryString name="AttributesSerialize" />
@@ -75373,7 +75850,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="745">
+        <Item class="MeshPart" referent="805">
           <Properties>
             <string name="Name">Cliff_Shelf__Rock</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -75517,7 +75994,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="746">
+          <Item class="SurfaceAppearance" referent="806">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -75566,7 +76043,7 @@ return WorldService
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="747">
+      <Item class="Model" referent="807">
         <Properties>
           <string name="Name">Cliff_Spur</string>
           <BinaryString name="AttributesSerialize" />
@@ -75621,7 +76098,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="748">
+        <Item class="MeshPart" referent="808">
           <Properties>
             <string name="Name">Cliff_Spur__Rock</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -75765,7 +76242,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="749">
+          <Item class="SurfaceAppearance" referent="809">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -75814,7 +76291,7 @@ return WorldService
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="750">
+      <Item class="Model" referent="810">
         <Properties>
           <string name="Name">Karst_Spire</string>
           <BinaryString name="AttributesSerialize" />
@@ -75869,7 +76346,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="751">
+        <Item class="MeshPart" referent="811">
           <Properties>
             <string name="Name">Karst_Spire__Rock</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -76013,7 +76490,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="752">
+          <Item class="SurfaceAppearance" referent="812">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -76062,7 +76539,7 @@ return WorldService
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="753">
+      <Item class="Model" referent="813">
         <Properties>
           <string name="Name">Rock_Outcrop</string>
           <BinaryString name="AttributesSerialize" />
@@ -76117,7 +76594,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="754">
+        <Item class="MeshPart" referent="814">
           <Properties>
             <string name="Name">Rock_Outcrop__Rock</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -76261,7 +76738,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="755">
+          <Item class="SurfaceAppearance" referent="815">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -76310,7 +76787,7 @@ return WorldService
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="756">
+      <Item class="Model" referent="816">
         <Properties>
           <string name="Name">Cloud_A</string>
           <BinaryString name="AttributesSerialize" />
@@ -76365,7 +76842,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="757">
+        <Item class="MeshPart" referent="817">
           <Properties>
             <string name="Name">Cloud_A__Cloud</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -76509,7 +76986,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="758">
+          <Item class="SurfaceAppearance" referent="818">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -76558,7 +77035,7 @@ return WorldService
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="759">
+      <Item class="Model" referent="819">
         <Properties>
           <string name="Name">Cloud_B</string>
           <BinaryString name="AttributesSerialize" />
@@ -76613,7 +77090,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="760">
+        <Item class="MeshPart" referent="820">
           <Properties>
             <string name="Name">Cloud_B__Cloud</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -76757,7 +77234,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="761">
+          <Item class="SurfaceAppearance" referent="821">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -76806,7 +77283,7 @@ return WorldService
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="762">
+      <Item class="Model" referent="822">
         <Properties>
           <string name="Name">Cloud_C</string>
           <BinaryString name="AttributesSerialize" />
@@ -76861,7 +77338,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="763">
+        <Item class="MeshPart" referent="823">
           <Properties>
             <string name="Name">Cloud_C__Cloud</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -77005,7 +77482,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="764">
+          <Item class="SurfaceAppearance" referent="824">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -77054,7 +77531,7 @@ return WorldService
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="765">
+      <Item class="Model" referent="825">
         <Properties>
           <string name="Name">Tree_Maple</string>
           <BinaryString name="AttributesSerialize" />
@@ -77109,7 +77586,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="766">
+        <Item class="MeshPart" referent="826">
           <Properties>
             <string name="Name">Tree_Maple__Bark</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -77253,7 +77730,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="767">
+          <Item class="SurfaceAppearance" referent="827">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -77301,7 +77778,7 @@ return WorldService
             </Properties>
           </Item>
         </Item>
-        <Item class="MeshPart" referent="768">
+        <Item class="MeshPart" referent="828">
           <Properties>
             <string name="Name">Tree_Maple__Foliage</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -77445,7 +77922,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="769">
+          <Item class="SurfaceAppearance" referent="829">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -77494,7 +77971,7 @@ return WorldService
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="770">
+      <Item class="Model" referent="830">
         <Properties>
           <string name="Name">Tree_MapleSmall</string>
           <BinaryString name="AttributesSerialize" />
@@ -77549,7 +78026,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="771">
+        <Item class="MeshPart" referent="831">
           <Properties>
             <string name="Name">Tree_MapleSmall__Bark</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -77693,7 +78170,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="772">
+          <Item class="SurfaceAppearance" referent="832">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -77741,7 +78218,7 @@ return WorldService
             </Properties>
           </Item>
         </Item>
-        <Item class="MeshPart" referent="773">
+        <Item class="MeshPart" referent="833">
           <Properties>
             <string name="Name">Tree_MapleSmall__Foliage</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -77885,7 +78362,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="774">
+          <Item class="SurfaceAppearance" referent="834">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -77934,7 +78411,7 @@ return WorldService
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="775">
+      <Item class="Model" referent="835">
         <Properties>
           <string name="Name">Shrub_Crimson</string>
           <BinaryString name="AttributesSerialize" />
@@ -77989,7 +78466,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="776">
+        <Item class="MeshPart" referent="836">
           <Properties>
             <string name="Name">Shrub_Crimson__Foliage</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -78133,7 +78610,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="777">
+          <Item class="SurfaceAppearance" referent="837">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -78182,7 +78659,7 @@ return WorldService
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="778">
+      <Item class="Model" referent="838">
         <Properties>
           <string name="Name">Banner_Cloth</string>
           <BinaryString name="AttributesSerialize" />
@@ -78237,7 +78714,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="779">
+        <Item class="MeshPart" referent="839">
           <Properties>
             <string name="Name">Banner_Cloth__Banner</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -78381,7 +78858,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="780">
+          <Item class="SurfaceAppearance" referent="840">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -78431,7 +78908,7 @@ return WorldService
         </Item>
       </Item>
     </Item>
-    <Item class="Folder" referent="781">
+    <Item class="Folder" referent="841">
       <Properties>
         <string name="Name">AsuraReliquaryKit</string>
         <BinaryString name="AttributesSerialize" />
@@ -78449,7 +78926,7 @@ return WorldService
         <BinaryString name="Tags" />
         <UniqueId name="UniqueId">457b095fa2aaf9460aeccb0100032def</UniqueId>
       </Properties>
-      <Item class="Model" referent="782">
+      <Item class="Model" referent="842">
         <Properties>
           <string name="Name">Reliquary_Isle</string>
           <BinaryString name="AttributesSerialize" />
@@ -78504,7 +78981,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="783">
+        <Item class="MeshPart" referent="843">
           <Properties>
             <string name="Name">Reliquary_Isle__Stone</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -78648,7 +79125,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="784">
+          <Item class="SurfaceAppearance" referent="844">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -78696,7 +79173,7 @@ return WorldService
             </Properties>
           </Item>
         </Item>
-        <Item class="MeshPart" referent="785">
+        <Item class="MeshPart" referent="845">
           <Properties>
             <string name="Name">Reliquary_Isle__Gilt</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -78841,7 +79318,7 @@ return WorldService
             <int name="VertexCount">0</int>
           </Properties>
         </Item>
-        <Item class="MeshPart" referent="786">
+        <Item class="MeshPart" referent="846">
           <Properties>
             <string name="Name">Reliquary_Isle__Leaves</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -78986,7 +79463,7 @@ return WorldService
             <int name="VertexCount">0</int>
           </Properties>
         </Item>
-        <Item class="MeshPart" referent="787">
+        <Item class="MeshPart" referent="847">
           <Properties>
             <string name="Name">Reliquary_Isle__Niche</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -79131,7 +79608,7 @@ return WorldService
             <int name="VertexCount">0</int>
           </Properties>
         </Item>
-        <Item class="MeshPart" referent="788">
+        <Item class="MeshPart" referent="848">
           <Properties>
             <string name="Name">Reliquary_Isle__Rock</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -79275,7 +79752,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="789">
+          <Item class="SurfaceAppearance" referent="849">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -79323,7 +79800,7 @@ return WorldService
             </Properties>
           </Item>
         </Item>
-        <Item class="MeshPart" referent="790">
+        <Item class="MeshPart" referent="850">
           <Properties>
             <string name="Name">Reliquary_Isle__Roots</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -79467,7 +79944,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="791">
+          <Item class="SurfaceAppearance" referent="851">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -79516,7 +79993,7 @@ return WorldService
             </Properties>
           </Item>
         </Item>
-        <Item class="MeshPart" referent="792">
+        <Item class="MeshPart" referent="852">
           <Properties>
             <string name="Name">Reliquary_Isle__Rope</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -79662,7 +80139,7 @@ return WorldService
           </Properties>
         </Item>
       </Item>
-      <Item class="Model" referent="793">
+      <Item class="Model" referent="853">
         <Properties>
           <string name="Name">Reliquary_Shard</string>
           <BinaryString name="AttributesSerialize" />
@@ -79717,7 +80194,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="794">
+        <Item class="MeshPart" referent="854">
           <Properties>
             <string name="Name">Reliquary_Shard__Leaves</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -79862,7 +80339,7 @@ return WorldService
             <int name="VertexCount">0</int>
           </Properties>
         </Item>
-        <Item class="MeshPart" referent="795">
+        <Item class="MeshPart" referent="855">
           <Properties>
             <string name="Name">Reliquary_Shard__Rock</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -80006,7 +80483,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="796">
+          <Item class="SurfaceAppearance" referent="856">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -80054,7 +80531,7 @@ return WorldService
             </Properties>
           </Item>
         </Item>
-        <Item class="MeshPart" referent="797">
+        <Item class="MeshPart" referent="857">
           <Properties>
             <string name="Name">Reliquary_Shard__Roots</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -80198,7 +80675,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="798">
+          <Item class="SurfaceAppearance" referent="858">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -80247,7 +80724,7 @@ return WorldService
             </Properties>
           </Item>
         </Item>
-        <Item class="MeshPart" referent="799">
+        <Item class="MeshPart" referent="859">
           <Properties>
             <string name="Name">Reliquary_Shard__Stone</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -80391,7 +80868,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="800">
+          <Item class="SurfaceAppearance" referent="860">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -80441,7 +80918,7 @@ return WorldService
         </Item>
       </Item>
     </Item>
-    <Item class="Folder" referent="801">
+    <Item class="Folder" referent="861">
       <Properties>
         <string name="Name">AsuraSanctuaryDetail</string>
         <BinaryString name="AttributesSerialize" />
@@ -80459,7 +80936,7 @@ return WorldService
         <BinaryString name="Tags" />
         <UniqueId name="UniqueId">6443070b744d572f0aec8a73000063ec</UniqueId>
       </Properties>
-      <Item class="Model" referent="802">
+      <Item class="Model" referent="862">
         <Properties>
           <string name="Name">Detail_Strata</string>
           <BinaryString name="AttributesSerialize" />
@@ -80514,7 +80991,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="803">
+        <Item class="MeshPart" referent="863">
           <Properties>
             <string name="Name">Detail_Strata</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -80658,7 +81135,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="804">
+          <Item class="SurfaceAppearance" referent="864">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -80707,7 +81184,7 @@ return WorldService
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="805">
+      <Item class="Model" referent="865">
         <Properties>
           <string name="Name">Detail_Fissure</string>
           <BinaryString name="AttributesSerialize" />
@@ -80762,7 +81239,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="806">
+        <Item class="MeshPart" referent="866">
           <Properties>
             <string name="Name">Detail_Fissure</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -80906,7 +81383,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="807">
+          <Item class="SurfaceAppearance" referent="867">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -80955,7 +81432,7 @@ return WorldService
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="808">
+      <Item class="Model" referent="868">
         <Properties>
           <string name="Name">Detail_MapleSpray</string>
           <BinaryString name="AttributesSerialize" />
@@ -81010,7 +81487,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="809">
+        <Item class="MeshPart" referent="869">
           <Properties>
             <string name="Name">Detail_MapleSpray</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -81156,7 +81633,7 @@ return WorldService
           </Properties>
         </Item>
       </Item>
-      <Item class="Model" referent="810">
+      <Item class="Model" referent="870">
         <Properties>
           <string name="Name">Detail_Fern</string>
           <BinaryString name="AttributesSerialize" />
@@ -81211,7 +81688,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="811">
+        <Item class="MeshPart" referent="871">
           <Properties>
             <string name="Name">Detail_Fern</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -81357,7 +81834,7 @@ return WorldService
           </Properties>
         </Item>
       </Item>
-      <Item class="Model" referent="812">
+      <Item class="Model" referent="872">
         <Properties>
           <string name="Name">Detail_BranchCard</string>
           <BinaryString name="AttributesSerialize" />
@@ -81412,7 +81889,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="813">
+        <Item class="MeshPart" referent="873">
           <Properties>
             <string name="Name">Detail_BranchCard</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -81556,7 +82033,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="814">
+          <Item class="SurfaceAppearance" referent="874">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">1</token>
@@ -81609,7 +82086,7 @@ return WorldService
         </Item>
       </Item>
     </Item>
-    <Item class="Folder" referent="815">
+    <Item class="Folder" referent="875">
       <Properties>
         <string name="Name">AsuraSanctuaryVista</string>
         <BinaryString name="AttributesSerialize" />
@@ -81627,7 +82104,7 @@ return WorldService
         <BinaryString name="Tags" />
         <UniqueId name="UniqueId">4207b6c592fe173a0aeb3ce900005a0a</UniqueId>
       </Properties>
-      <Item class="Model" referent="816">
+      <Item class="Model" referent="876">
         <Properties>
           <string name="Name">Vista_Waterfall</string>
           <BinaryString name="AttributesSerialize" />
@@ -81682,7 +82159,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="817">
+        <Item class="MeshPart" referent="877">
           <Properties>
             <string name="Name">Vista_Waterfall__Water</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -81828,7 +82305,7 @@ return WorldService
           </Properties>
         </Item>
       </Item>
-      <Item class="Model" referent="818">
+      <Item class="Model" referent="878">
         <Properties>
           <string name="Name">Vista_Ridge</string>
           <BinaryString name="AttributesSerialize" />
@@ -81883,7 +82360,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="819">
+        <Item class="MeshPart" referent="879">
           <Properties>
             <string name="Name">Vista_Ridge__Moss</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -82028,7 +82505,7 @@ return WorldService
             <int name="VertexCount">0</int>
           </Properties>
         </Item>
-        <Item class="MeshPart" referent="820">
+        <Item class="MeshPart" referent="880">
           <Properties>
             <string name="Name">Vista_Ridge__Rock</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -82172,7 +82649,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="821">
+          <Item class="SurfaceAppearance" referent="881">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -82221,7 +82698,7 @@ return WorldService
           </Item>
         </Item>
       </Item>
-      <Item class="Model" referent="822">
+      <Item class="Model" referent="882">
         <Properties>
           <string name="Name">Vista_Needle</string>
           <BinaryString name="AttributesSerialize" />
@@ -82276,7 +82753,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="823">
+        <Item class="MeshPart" referent="883">
           <Properties>
             <string name="Name">Vista_Needle__Rock</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -82420,7 +82897,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="824">
+          <Item class="SurfaceAppearance" referent="884">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -82468,7 +82945,7 @@ return WorldService
             </Properties>
           </Item>
         </Item>
-        <Item class="MeshPart" referent="825">
+        <Item class="MeshPart" referent="885">
           <Properties>
             <string name="Name">Vista_Needle__Moss</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -82614,7 +83091,7 @@ return WorldService
           </Properties>
         </Item>
       </Item>
-      <Item class="Model" referent="826">
+      <Item class="Model" referent="886">
         <Properties>
           <string name="Name">Vista_Crown</string>
           <BinaryString name="AttributesSerialize" />
@@ -82669,7 +83146,7 @@ return WorldService
             </CFrame>
           </OptionalCoordinateFrame>
         </Properties>
-        <Item class="MeshPart" referent="827">
+        <Item class="MeshPart" referent="887">
           <Properties>
             <string name="Name">Vista_Crown__Rock</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -82813,7 +83290,7 @@ return WorldService
             </Vector3>
             <int name="VertexCount">0</int>
           </Properties>
-          <Item class="SurfaceAppearance" referent="828">
+          <Item class="SurfaceAppearance" referent="888">
             <Properties>
               <string name="Name">SurfaceAppearance</string>
               <token name="AlphaMode">0</token>
@@ -82861,7 +83338,7 @@ return WorldService
             </Properties>
           </Item>
         </Item>
-        <Item class="MeshPart" referent="829">
+        <Item class="MeshPart" referent="889">
           <Properties>
             <string name="Name">Vista_Crown__Moss</string>
             <SharedString name="AeroMeshData">rxNJufX5oaagQE3qNtzJSQ==</SharedString>
@@ -83009,23 +83486,23 @@ return WorldService
       </Item>
     </Item>
   </Item>
-  <Item class="StarterPlayer" referent="830">
+  <Item class="StarterPlayer" referent="890">
     <Properties>
       <string name="Name">StarterPlayer</string>
     </Properties>
-    <Item class="StarterPlayerScripts" referent="831">
+    <Item class="StarterPlayerScripts" referent="891">
       <Properties>
         <string name="Name">StarterPlayerScripts</string>
       </Properties>
-      <Item class="Folder" referent="832">
+      <Item class="Folder" referent="892">
         <Properties>
           <string name="Name">AsurasPath</string>
         </Properties>
-        <Item class="Folder" referent="833">
+        <Item class="Folder" referent="893">
           <Properties>
             <string name="Name">Controllers</string>
           </Properties>
-          <Item class="ModuleScript" referent="834">
+          <Item class="ModuleScript" referent="894">
             <Properties>
               <string name="Name">ActionBar</string>
               <string name="Source">--!strict
@@ -83144,7 +83621,7 @@ return table.freeze(Bar)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="835">
+          <Item class="ModuleScript" referent="895">
             <Properties>
               <string name="Name">AltarAscension</string>
               <string name="Source">--!strict
@@ -83217,7 +83694,7 @@ return table.freeze(Ascension)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="836">
+          <Item class="ModuleScript" referent="896">
             <Properties>
               <string name="Name">ArenaAsh</string>
               <string name="Source">--!strict
@@ -83273,7 +83750,7 @@ return Ash
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="837">
+          <Item class="ModuleScript" referent="897">
             <Properties>
               <string name="Name">ArsenalPanel</string>
               <string name="Source">--!strict
@@ -83395,7 +83872,7 @@ return table.freeze(Panel)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="838">
+          <Item class="ModuleScript" referent="898">
             <Properties>
               <string name="Name">ArsenalTabs</string>
               <string name="Source">--!strict
@@ -83550,7 +84027,7 @@ return table.freeze(Tabs)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="839">
+          <Item class="ModuleScript" referent="899">
             <Properties>
               <string name="Name">BillboardFx</string>
               <string name="Source">--!strict
@@ -83695,7 +84172,7 @@ return table.freeze(Bb)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="840">
+          <Item class="ModuleScript" referent="900">
             <Properties>
               <string name="Name">BillboardShapes</string>
               <string name="Source">--!strict
@@ -83770,7 +84247,7 @@ return table.freeze(Shapes)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="841">
+          <Item class="ModuleScript" referent="901">
             <Properties>
               <string name="Name">BlazingSunShow</string>
               <string name="Source">--!strict
@@ -83925,7 +84402,7 @@ return table.freeze(Show)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="842">
+          <Item class="ModuleScript" referent="902">
             <Properties>
               <string name="Name">BossAnimations</string>
               <string name="Source">--!strict
@@ -84076,7 +84553,7 @@ return Animations
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="843">
+          <Item class="ModuleScript" referent="903">
             <Properties>
               <string name="Name">BossCinematics</string>
               <string name="Source">--!strict
@@ -84136,7 +84613,7 @@ return Cinematics
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="844">
+          <Item class="ModuleScript" referent="904">
             <Properties>
               <string name="Name">BossEffects</string>
               <string name="Source">--!strict
@@ -84216,7 +84693,7 @@ return Effects
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="845">
+          <Item class="ModuleScript" referent="905">
             <Properties>
               <string name="Name">BossHud</string>
               <string name="Source">--!strict
@@ -84266,7 +84743,7 @@ return Hud
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="846">
+          <Item class="ModuleScript" referent="906">
             <Properties>
               <string name="Name">BossMusic</string>
               <string name="Source">--!strict
@@ -84304,7 +84781,7 @@ return Music
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="847">
+          <Item class="ModuleScript" referent="907">
             <Properties>
               <string name="Name">CameraClearance</string>
               <string name="Source">--!strict
@@ -84443,7 +84920,7 @@ return Clearance
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="848">
+          <Item class="ModuleScript" referent="908">
             <Properties>
               <string name="Name">CameraController</string>
               <string name="Source">--!strict
@@ -84972,7 +85449,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="849">
+          <Item class="ModuleScript" referent="909">
             <Properties>
               <string name="Name">CelestialForms</string>
               <string name="Source">--!strict
@@ -85103,7 +85580,7 @@ return table.freeze(Forms)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="850">
+          <Item class="ModuleScript" referent="910">
             <Properties>
               <string name="Name">CelestialPillar</string>
               <string name="Source">--!strict
@@ -85216,7 +85693,7 @@ return table.freeze(Pillar)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="851">
+          <Item class="ModuleScript" referent="911">
             <Properties>
               <string name="Name">CodexView</string>
               <string name="Source">--!strict
@@ -85326,7 +85803,7 @@ return table.freeze(Codex)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="852">
+          <Item class="ModuleScript" referent="912">
             <Properties>
               <string name="Name">ColosseumController</string>
               <string name="Source">--!strict
@@ -86074,7 +86551,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="853">
+          <Item class="ModuleScript" referent="913">
             <Properties>
               <string name="Name">CombatCallouts</string>
               <string name="Source">--!strict
@@ -86229,7 +86706,7 @@ return table.freeze(Callouts)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="854">
+          <Item class="ModuleScript" referent="914">
             <Properties>
               <string name="Name">CombatFeedback</string>
               <string name="Source">--!strict
@@ -86381,7 +86858,7 @@ return Feedback
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="855">
+          <Item class="ModuleScript" referent="915">
             <Properties>
               <string name="Name">CombatHud</string>
               <string name="Source">--!strict
@@ -86480,7 +86957,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="856">
+          <Item class="ModuleScript" referent="916">
             <Properties>
               <string name="Name">CombatSurfaces</string>
               <string name="Source">--!strict
@@ -86549,7 +87026,7 @@ return Surfaces
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="857">
+          <Item class="ModuleScript" referent="917">
             <Properties>
               <string name="Name">CombatVfx</string>
               <string name="Source">--!strict
@@ -86690,7 +87167,7 @@ return Vfx
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="858">
+          <Item class="ModuleScript" referent="918">
             <Properties>
               <string name="Name">ComfortSettings</string>
               <string name="Source">--!strict
@@ -86758,7 +87235,7 @@ return table.freeze(Comfort)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="859">
+          <Item class="ModuleScript" referent="919">
             <Properties>
               <string name="Name">ControlsCard</string>
               <string name="Source">--!strict
@@ -86916,7 +87393,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="860">
+          <Item class="ModuleScript" referent="920">
             <Properties>
               <string name="Name">CoreGuiPolicy</string>
               <string name="Source">--!strict
@@ -86960,7 +87437,7 @@ return table.freeze(Policy)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="861">
+          <Item class="ModuleScript" referent="921">
             <Properties>
               <string name="Name">CreatureMotion</string>
               <string name="Source">--!strict
@@ -87080,7 +87557,7 @@ return Motion
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="862">
+          <Item class="ModuleScript" referent="922">
             <Properties>
               <string name="Name">DeviceLayout</string>
               <string name="Source">--!strict
@@ -87228,7 +87705,7 @@ return Device
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="863">
+          <Item class="ModuleScript" referent="923">
             <Properties>
               <string name="Name">DialogueController</string>
               <string name="Source">--!strict
@@ -87374,7 +87851,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="864">
+          <Item class="ModuleScript" referent="924">
             <Properties>
               <string name="Name">DialogueView</string>
               <string name="Source">--!strict
@@ -87497,7 +87974,7 @@ return table.freeze(View)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="865">
+          <Item class="ModuleScript" referent="925">
             <Properties>
               <string name="Name">DuoBars</string>
               <string name="Source">--!strict
@@ -87622,7 +88099,7 @@ return table.freeze(Duo)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="866">
+          <Item class="ModuleScript" referent="926">
             <Properties>
               <string name="Name">EncounterHandoffController</string>
               <string name="Source">--!strict
@@ -87716,7 +88193,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="867">
+          <Item class="ModuleScript" referent="927">
             <Properties>
               <string name="Name">EndingController</string>
               <string name="Source">--!strict
@@ -87882,7 +88359,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="868">
+          <Item class="ModuleScript" referent="928">
             <Properties>
               <string name="Name">EnemyBars</string>
               <string name="Source">--!strict
@@ -87973,7 +88450,7 @@ return table.freeze(Bars)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="869">
+          <Item class="ModuleScript" referent="929">
             <Properties>
               <string name="Name">EnemyDissolve</string>
               <string name="Source">--!strict
@@ -88086,7 +88563,7 @@ return Dissolve
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="870">
+          <Item class="ModuleScript" referent="930">
             <Properties>
               <string name="Name">EnemyPlate</string>
               <string name="Source">--!strict
@@ -88218,7 +88695,7 @@ return table.freeze(Plate)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="871">
+          <Item class="ModuleScript" referent="931">
             <Properties>
               <string name="Name">EnvironmentController</string>
               <string name="Source">--!strict
@@ -88308,7 +88785,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="872">
+          <Item class="ModuleScript" referent="932">
             <Properties>
               <string name="Name">FireCanvas</string>
               <string name="Source">--!strict
@@ -88411,7 +88888,7 @@ return table.freeze(Canvas)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="873">
+          <Item class="ModuleScript" referent="933">
             <Properties>
               <string name="Name">FireStorm</string>
               <string name="Source">--!strict
@@ -88531,7 +89008,7 @@ return table.freeze(Storm)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="874">
+          <Item class="ModuleScript" referent="934">
             <Properties>
               <string name="Name">FlameForms</string>
               <string name="Source">--!strict
@@ -88648,7 +89125,7 @@ return table.freeze(Flame)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="875">
+          <Item class="ModuleScript" referent="935">
             <Properties>
               <string name="Name">FoliageWind</string>
               <string name="Source">--!strict
@@ -88886,7 +89363,7 @@ return Wind
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="876">
+          <Item class="ModuleScript" referent="936">
             <Properties>
               <string name="Name">GameFeelController</string>
               <string name="Source">--!strict
@@ -88970,7 +89447,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="877">
+          <Item class="ModuleScript" referent="937">
             <Properties>
               <string name="Name">HudKit</string>
               <string name="Source">--!strict
@@ -89112,7 +89589,7 @@ return HudKit
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="878">
+          <Item class="ModuleScript" referent="938">
             <Properties>
               <string name="Name">HudLayout</string>
               <string name="Source">--!strict
@@ -89249,7 +89726,7 @@ return table.freeze(Layout)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="879">
+          <Item class="ModuleScript" referent="939">
             <Properties>
               <string name="Name">HudVisibility</string>
               <string name="Source">--!strict
@@ -89334,7 +89811,7 @@ return table.freeze(Visibility)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="880">
+          <Item class="ModuleScript" referent="940">
             <Properties>
               <string name="Name">IconShapes</string>
               <string name="Source">--!strict
@@ -89394,7 +89871,7 @@ return table.freeze(Shapes)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="881">
+          <Item class="ModuleScript" referent="941">
             <Properties>
               <string name="Name">ImpactFrame</string>
               <string name="Source">--!strict
@@ -89543,7 +90020,7 @@ return table.freeze(Screen)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="882">
+          <Item class="ModuleScript" referent="942">
             <Properties>
               <string name="Name">InkFrames</string>
               <string name="Source">--!strict
@@ -89630,7 +90107,7 @@ return table.freeze(Ink)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="883">
+          <Item class="ModuleScript" referent="943">
             <Properties>
               <string name="Name">InputController</string>
               <string name="Source">--!strict
@@ -90288,7 +90765,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="884">
+          <Item class="ModuleScript" referent="944">
             <Properties>
               <string name="Name">InterfaceController</string>
               <string name="Source">--!strict
@@ -91592,7 +92069,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="885">
+          <Item class="ModuleScript" referent="945">
             <Properties>
               <string name="Name">LandscapeBudget</string>
               <string name="Source">--!strict
@@ -91739,7 +92216,7 @@ return Budget
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="886">
+          <Item class="ModuleScript" referent="946">
             <Properties>
               <string name="Name">MangaFx</string>
               <string name="Source">--!strict
@@ -91884,7 +92361,7 @@ return table.freeze(Manga)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="887">
+          <Item class="ModuleScript" referent="947">
             <Properties>
               <string name="Name">MasteryEffects</string>
               <string name="Source">--!strict
@@ -91924,7 +92401,7 @@ return table.freeze(Effects)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="888">
+          <Item class="ModuleScript" referent="948">
             <Properties>
               <string name="Name">MinimapRoute</string>
               <string name="Source">--!strict
@@ -92033,7 +92510,7 @@ return table.freeze(Layer)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="889">
+          <Item class="ModuleScript" referent="949">
             <Properties>
               <string name="Name">MoveIcons</string>
               <string name="Source">--!strict
@@ -92159,7 +92636,7 @@ return table.freeze(Icons)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="890">
+          <Item class="ModuleScript" referent="950">
             <Properties>
               <string name="Name">MovementController</string>
               <string name="Source">--!strict
@@ -92341,7 +92818,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="891">
+          <Item class="ModuleScript" referent="951">
             <Properties>
               <string name="Name">MovementEffects</string>
               <string name="Source">--!strict
@@ -92457,7 +92934,7 @@ return Effects
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="892">
+          <Item class="ModuleScript" referent="952">
             <Properties>
               <string name="Name">MovementMath</string>
               <string name="Source">--!strict
@@ -92500,7 +92977,7 @@ return Motion
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="893">
+          <Item class="ModuleScript" referent="953">
             <Properties>
               <string name="Name">NovaInk</string>
               <string name="Source">--!strict
@@ -92636,7 +93113,7 @@ return table.freeze(Nova)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="894">
+          <Item class="ModuleScript" referent="954">
             <Properties>
               <string name="Name">NovaScenery</string>
               <string name="Source">--!strict
@@ -92754,7 +93231,7 @@ return table.freeze(Scenery)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="895">
+          <Item class="ModuleScript" referent="955">
             <Properties>
               <string name="Name">ObjectiveController</string>
               <string name="Source">--!strict
@@ -92918,7 +93395,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="896">
+          <Item class="ModuleScript" referent="956">
             <Properties>
               <string name="Name">PauseMenu</string>
               <string name="Source">--!strict
@@ -93100,7 +93577,7 @@ return Menu
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="897">
+          <Item class="ModuleScript" referent="957">
             <Properties>
               <string name="Name">PlanetForms</string>
               <string name="Source">--!strict
@@ -93213,7 +93690,7 @@ return table.freeze(Planet)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="898">
+          <Item class="ModuleScript" referent="958">
             <Properties>
               <string name="Name">PlateLayout</string>
               <string name="Source">--!strict
@@ -93284,7 +93761,7 @@ return table.freeze(Layout)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="899">
+          <Item class="ModuleScript" referent="959">
             <Properties>
               <string name="Name">PortraitCamera</string>
               <string name="Source">--!strict
@@ -93409,7 +93886,7 @@ return table.freeze(Portrait)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="900">
+          <Item class="ModuleScript" referent="960">
             <Properties>
               <string name="Name">PrologueController</string>
               <string name="Source">--!strict
@@ -93530,7 +94007,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="901">
+          <Item class="ModuleScript" referent="961">
             <Properties>
               <string name="Name">QiVfx</string>
               <string name="Source">--!strict
@@ -93578,7 +94055,7 @@ return Qi
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="902">
+          <Item class="ModuleScript" referent="962">
             <Properties>
               <string name="Name">SakuraCompass</string>
               <string name="Source">--!strict
@@ -93672,7 +94149,7 @@ return table.freeze(Compass)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="903">
+          <Item class="ModuleScript" referent="963">
             <Properties>
               <string name="Name">SakuraHud</string>
               <string name="Source">--!strict
@@ -93795,7 +94272,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="904">
+          <Item class="ModuleScript" referent="964">
             <Properties>
               <string name="Name">SakuraKit</string>
               <string name="Source">--!strict
@@ -93945,7 +94422,7 @@ return table.freeze(Kit)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="905">
+          <Item class="ModuleScript" referent="965">
             <Properties>
               <string name="Name">SakuraMinimap</string>
               <string name="Source">--!strict
@@ -94084,7 +94561,7 @@ return table.freeze(Map)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="906">
+          <Item class="ModuleScript" referent="966">
             <Properties>
               <string name="Name">SanguineCombat</string>
               <string name="Source">--!strict
@@ -94136,7 +94613,7 @@ return table.freeze(Combat)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="907">
+          <Item class="ModuleScript" referent="967">
             <Properties>
               <string name="Name">SanguineController</string>
               <string name="Source">--!strict
@@ -94207,7 +94684,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="908">
+          <Item class="ModuleScript" referent="968">
             <Properties>
               <string name="Name">SanguineDispatch</string>
               <string name="Source">--!strict
@@ -94265,7 +94742,7 @@ return table.freeze(Dispatch)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="909">
+          <Item class="ModuleScript" referent="969">
             <Properties>
               <string name="Name">SanguineGeometry</string>
               <string name="Source">--!strict
@@ -94315,7 +94792,7 @@ return table.freeze(Geometry)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="910">
+          <Item class="ModuleScript" referent="970">
             <Properties>
               <string name="Name">SanguineGhost</string>
               <string name="Source">--!strict
@@ -94337,7 +94814,7 @@ return table.freeze(Ghost)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="911">
+          <Item class="ModuleScript" referent="971">
             <Properties>
               <string name="Name">SanguineMagic</string>
               <string name="Source">--!strict
@@ -94390,7 +94867,7 @@ return table.freeze(Magic)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="912">
+          <Item class="ModuleScript" referent="972">
             <Properties>
               <string name="Name">SanguineRuntime</string>
               <string name="Source">--!strict
@@ -94479,7 +94956,7 @@ return Runtime
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="913">
+          <Item class="ModuleScript" referent="973">
             <Properties>
               <string name="Name">SkillAudio</string>
               <string name="Source">--!strict
@@ -94537,7 +95014,7 @@ return table.freeze(Sfx)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="914">
+          <Item class="ModuleScript" referent="974">
             <Properties>
               <string name="Name">SkillCinema</string>
               <string name="Source">--!strict
@@ -94661,7 +95138,7 @@ return table.freeze(Cinema)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="915">
+          <Item class="ModuleScript" referent="975">
             <Properties>
               <string name="Name">SkillFx</string>
               <string name="Source">--!strict
@@ -94807,7 +95284,7 @@ return table.freeze(Fx)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="916">
+          <Item class="ModuleScript" referent="976">
             <Properties>
               <string name="Name">SkillKit</string>
               <string name="Source">--!strict
@@ -94961,7 +95438,7 @@ return table.freeze(Kit)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="917">
+          <Item class="ModuleScript" referent="977">
             <Properties>
               <string name="Name">SkillShowcase</string>
               <string name="Source">--!strict
@@ -95055,7 +95532,7 @@ return table.freeze(Showcase)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="918">
+          <Item class="ModuleScript" referent="978">
             <Properties>
               <string name="Name">SolarForms</string>
               <string name="Source">--!strict
@@ -95182,7 +95659,7 @@ return table.freeze(Solar)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="919">
+          <Item class="ModuleScript" referent="979">
             <Properties>
               <string name="Name">SoundscapeController</string>
               <string name="Source">--!strict
@@ -95250,7 +95727,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="920">
+          <Item class="ModuleScript" referent="980">
             <Properties>
               <string name="Name">SpatialAudio</string>
               <string name="Source">--!strict
@@ -95354,7 +95831,7 @@ return Audio
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="921">
+          <Item class="ModuleScript" referent="981">
             <Properties>
               <string name="Name">SpellController</string>
               <string name="Source">--!strict
@@ -95444,7 +95921,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="922">
+          <Item class="ModuleScript" referent="982">
             <Properties>
               <string name="Name">SpellHud</string>
               <string name="Source">--!strict
@@ -95588,7 +96065,7 @@ return table.freeze(Hud)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="923">
+          <Item class="ModuleScript" referent="983">
             <Properties>
               <string name="Name">SpellVfx</string>
               <string name="Source">--!strict
@@ -95704,7 +96181,7 @@ return table.freeze(Vfx)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="924">
+          <Item class="ModuleScript" referent="984">
             <Properties>
               <string name="Name">SunForms</string>
               <string name="Source">--!strict
@@ -95831,7 +96308,7 @@ return table.freeze(Sun)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="925">
+          <Item class="ModuleScript" referent="985">
             <Properties>
               <string name="Name">SunShots</string>
               <string name="Source">--!strict
@@ -95909,7 +96386,7 @@ return table.freeze(Shots)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="926">
+          <Item class="ModuleScript" referent="986">
             <Properties>
               <string name="Name">SupernovaShots</string>
               <string name="Source">--!strict
@@ -95976,7 +96453,7 @@ return table.freeze(Shots)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="927">
+          <Item class="ModuleScript" referent="987">
             <Properties>
               <string name="Name">SupernovaShow</string>
               <string name="Source">--!strict
@@ -96125,7 +96602,7 @@ return table.freeze(Show)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="928">
+          <Item class="ModuleScript" referent="988">
             <Properties>
               <string name="Name">TargetPlate</string>
               <string name="Source">--!strict
@@ -96213,7 +96690,7 @@ return table.freeze(Target)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="929">
+          <Item class="ModuleScript" referent="989">
             <Properties>
               <string name="Name">TutorialController</string>
               <string name="Source">--!strict
@@ -96354,7 +96831,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="930">
+          <Item class="ModuleScript" referent="990">
             <Properties>
               <string name="Name">UiKit</string>
               <string name="Source">--!strict
@@ -96506,7 +96983,7 @@ return table.freeze(UiKit)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="931">
+          <Item class="ModuleScript" referent="991">
             <Properties>
               <string name="Name">UiWindow</string>
               <string name="Source">--!strict
@@ -96654,7 +97131,7 @@ return table.freeze(Window)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="932">
+          <Item class="ModuleScript" referent="992">
             <Properties>
               <string name="Name">VitalsTags</string>
               <string name="Source">--!strict
@@ -96736,7 +97213,7 @@ return table.freeze(Tags)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="933">
+          <Item class="ModuleScript" referent="993">
             <Properties>
               <string name="Name">VoidStage</string>
               <string name="Source">--!strict
@@ -96883,7 +97360,7 @@ return table.freeze(Stage)
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="934">
+          <Item class="ModuleScript" referent="994">
             <Properties>
               <string name="Name">WagerController</string>
               <string name="Source">--!strict
@@ -96940,7 +97417,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="935">
+          <Item class="ModuleScript" referent="995">
             <Properties>
               <string name="Name">WaypointMarker</string>
               <string name="Source">--!strict
@@ -97026,7 +97503,7 @@ return Marker
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="936">
+          <Item class="ModuleScript" referent="996">
             <Properties>
               <string name="Name">WeaponTrails</string>
               <string name="Source">--!strict
@@ -97150,7 +97627,7 @@ return Controller
 </string>
             </Properties>
           </Item>
-          <Item class="ModuleScript" referent="937">
+          <Item class="ModuleScript" referent="997">
             <Properties>
               <string name="Name">WorldStateController</string>
               <string name="Source">--!strict
@@ -97603,7 +98080,7 @@ return Controller
           </Item>
         </Item>
       </Item>
-      <Item class="LocalScript" referent="938">
+      <Item class="LocalScript" referent="998">
         <Properties>
           <string name="Name">AsurasPathClient</string>
           <string name="Source">--!strict
@@ -97851,7 +98328,7 @@ print("[Asura's Path] Client ready: camlock, game feel, Souls HUD and Colosseum 
       </Item>
     </Item>
   </Item>
-  <Item class="Workspace" referent="939">
+  <Item class="Workspace" referent="999">
     <Properties>
       <string name="Name">Workspace</string>
       <float name="FallenPartsDestroyHeight">-400</float>
@@ -97863,13 +98340,13 @@ print("[Asura's Path] Client ready: camlock, game feel, Souls HUD and Colosseum 
       <float name="Gravity">196.2</float>
       <bool name="NeedsPivotMigration">false</bool>
       <bool name="StreamingEnabled">false</bool>
-    <Ref name="CurrentCamera">941</Ref></Properties>
-    <Item class="Folder" referent="940">
+    <Ref name="CurrentCamera">1001</Ref></Properties>
+    <Item class="Folder" referent="1000">
       <Properties>
         <string name="Name">AsurasPath</string>
       </Properties>
     </Item>
-    <Item class="Camera" referent="941">
+    <Item class="Camera" referent="1001">
       <Properties>
         <string name="Name">Camera</string>
         <CoordinateFrame name="CFrame">
@@ -97903,7 +98380,7 @@ print("[Asura's Path] Client ready: camlock, game feel, Souls HUD and Colosseum 
         </CoordinateFrame>
       </Properties>
     </Item>
-    <Item class="Terrain" referent="942">
+    <Item class="Terrain" referent="1002">
       <Properties>
         <string name="Name">Terrain</string>
         <bool name="Decoration">true</bool>

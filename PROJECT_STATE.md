@@ -1,5 +1,9 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## General Zhao clips published — 2026-11-01 (Mac)
+
+L2 and Oath L2 follow-through now stops 60° right, so the shaft clears his hip: 59/59 clips validate. All 59 uploaded via Studio and each verified by loading it back. IDs live in `published.json` and bind through `AsuraBossAnimations.model.json`; export flags clips rebaked since upload. Next: in-game playback review of the hooks.
+
 ## Bamboo limestone and native motion evidence — 2026-11-01 (Mac)
 
 Eight entry rocks now reuse textured limestone; matching Studio views, grounded bounds and 73 unchanged colliders checked. Real wind clips and seeded normal-camera traversal retained with quality/crop limits. Temporary graphics restored. Canonical build and 14-stage verifier pass. Next: foreground capture/performance, grove floor and crest composition; root pilot remains uninstalled. See `outputs/environment-art-2026-10-31/README.md`.

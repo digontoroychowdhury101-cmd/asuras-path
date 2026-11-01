@@ -694,7 +694,10 @@
     "ServerStorage": {
       "$className": "ServerStorage",
       "AsuraAssets": {
-        "$path": "assets/models/AsuraAssets_Phase5.rbxmx"
+        "$path": "assets/models/AsuraAssets_Phase5.rbxmx",
+        "AsuraBossAnimations": {
+          "$path": "assets/animations/general_zhao/AsuraBossAnimations.model.json"
+        }
       },
       "AsuraLobbyKit": {
         "$path": "assets/models/AsuraLobbyKit.rbxmx"

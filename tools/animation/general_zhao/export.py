@@ -7,8 +7,10 @@ Writes assets/animations/general_zhao/<Clip>.rbxmx (KeyframeSequence, 60 Hz keys
 previews, one JSON of root-space part frames per clip in the bake directory.
 """
 import argparse
+import hashlib
 import json
 import math
+import re
 import sys
 from pathlib import Path
 from xml.sax.saxutils import escape
@@ -23,6 +25,8 @@ import rig  # noqa: E402
 
 ROOT = HERE.parents[2]
 OUT = ROOT / "assets/animations/general_zhao"
+PUBLISHED = OUT / "published.json"  # clip name -> published asset id and the sha256 of the .rbxmx that was uploaded
+BINDINGS = OUT / "AsuraBossAnimations.model.json"
 PRIORITY = {"Idle": 0, "Movement": 1, "Action": 2, "Action2": 3, "Action3": 4, "Action4": 5, "Core": 1000}
 TOL_DEG, TOL_POS = 0.25, 0.004
 BODY = ["Head", "UpperTorso", "LowerTorso", "LeftUpperLeg", "RightUpperLeg", "LeftLowerLeg", "RightLowerLeg"]
@@ -100,6 +104,7 @@ def decimate(baked, keep_times):
 
 
 def write_rbxmx(clip, baked, path):
+    _ref[0] = 0  # referents restart per file, so a rebake of one clip writes the same bytes as a full run
     marker_at = {}
     for t, name, val in clip.markers:
         f = int(round(t * clips.FPS))
@@ -247,6 +252,7 @@ def main():
     chosen = [c for c in library if not a.names or c.name in a.names]
     manifest_path = OUT / "manifest.json"
     manifest = json.loads(manifest_path.read_text()) if manifest_path.exists() and a.names else {"clips": {}}
+    published = json.loads(PUBLISHED.read_text())["clips"] if PUBLISHED.exists() else {}
     for clip in chosen:
         fixes = []
         clip.repair(fixes)
@@ -258,13 +264,43 @@ def main():
         frames_json(clip, baked, bake / (clip.name + ".json"))
         manifest["clips"][clip.name] = clip.manifest(keys, stats, problems)
         manifest["clips"][clip.name]["key_repairs"] = fixes
+        mark_published(manifest["clips"][clip.name], published.get(clip.name), OUT / (clip.name + ".rbxmx"))
         flag = "OK " if not problems else "FIX"
         print("%s %-44s %5.2fs keys %3d grip %.3f slide %.2f %s" % (flag, clip.name, clip.length, keys,
                                                                    stats["grip_error"], stats["planted_slide"],
                                                                    "; ".join(problems)))
     manifest.update(clips.manifest_header())
     manifest["clips"] = dict(sorted(manifest["clips"].items()))
+    live = sum(1 for c in manifest["clips"].values() if c["uploaded"])
+    stale = sorted(n for n, c in manifest["clips"].items() if c.get("stale_asset_id"))
+    manifest["upload_status"] = ("%d of %d clips published (ids in published.json, bound through "
+                                 "AsuraBossAnimations.model.json)." % (live, len(manifest["clips"]))
+                                 + (" Rebaked since upload, re-upload: " + ", ".join(stale) if stale else ""))
     manifest_path.write_text(json.dumps(manifest, indent=1))
+    write_bindings(published)
+
+
+def content_hash(path):
+    """sha256 of a clip file with its referents removed: they name instances, not motion."""
+    return hashlib.sha256(re.sub(r' referent="RBX[0-9A-F]+"', "", path.read_text()).encode()).hexdigest()
+
+
+def mark_published(entry, record, path):
+    """A clip counts as uploaded only while its .rbxmx is byte-identical to the one that was published."""
+    if not record:
+        return
+    if content_hash(path) == record["sha256"]:
+        entry["uploaded"], entry["asset_id"] = True, record["asset_id"]
+    else:
+        entry["stale_asset_id"] = record["asset_id"]
+
+
+def write_bindings(published):
+    """ServerStorage.AsuraAssets.AsuraBossAnimations: one Animation per published clip, named by slot key, which
+    BossAppearance.bindAnimations copies onto the boss as AsuraBossAnimation_<name> attributes."""
+    children = [{"name": n, "className": "Animation", "properties": {"AnimationId": r["asset_id"]}}
+                for n, r in sorted(published.items())]
+    BINDINGS.write_text(json.dumps({"className": "Folder", "children": children}, indent=1) + "\n")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,54 @@
+{
+  "checked_at": "2026-10-29T02:27:30.952834+00:00",
+  "config": "/Users/digonto/.codex/config.toml",
+  "server": "Blender",
+  "attempts": [
+    {
+      "success": true,
+      "seconds": 0.435,
+      "server_info": {
+        "name": "MCP for Blender",
+        "version": "1.30.0"
+      },
+      "protocol_version": "2024-11-05",
+      "tool_count": 9,
+      "tools": [
+        "get_addon_status",
+        "disable_telemetry",
+        "get_scene_info",
+        "execute_blender_code",
+        "record_trajectory_feedback",
+        "look",
+        "generate_3d",
+        "search_assets",
+        "import_asset"
+      ],
+      "scene": "Scene 'Scene' | 1 camera, 1 light | active none | selected none | mode OBJECT\n\nShowing 2 of 2 (name | type | location | size | hidden | children):\nLight | light | at (4.08, 1.01, 5.9)\nCamera | camera | at (7.36, -6.93, 4.96)",
+      "probe": "Code executed successfully: CONNECTION_VERIFIED {\"blender_version\": \"5.2.2 LTS\", \"scene\": \"Scene\", \"object_count\": 2, \"addon_enabled\": true, \"auto_start\": true, \"port\": 9876}\n"
+    },
+    {
+      "success": true,
+      "seconds": 0.356,
+      "server_info": {
+        "name": "MCP for Blender",
+        "version": "1.30.0"
+      },
+      "protocol_version": "2024-11-05",
+      "tool_count": 9,
+      "tools": [
+        "get_addon_status",
+        "disable_telemetry",
+        "get_scene_info",
+        "execute_blender_code",
+        "record_trajectory_feedback",
+        "look",
+        "generate_3d",
+        "search_assets",
+        "import_asset"
+      ],
+      "scene": "Scene 'Scene' | 1 camera, 1 light | active none | selected none | mode OBJECT\n\nShowing 2 of 2 (name | type | location | size | hidden | children):\nLight | light | at (4.08, 1.01, 5.9)\nCamera | camera | at (7.36, -6.93, 4.96)",
+      "probe": "Code executed successfully: CONNECTION_VERIFIED {\"blender_version\": \"5.2.2 LTS\", \"scene\": \"Scene\", \"object_count\": 2, \"addon_enabled\": true, \"auto_start\": true, \"port\": 9876}\n"
+    }
+  ],
+  "success": true
+}

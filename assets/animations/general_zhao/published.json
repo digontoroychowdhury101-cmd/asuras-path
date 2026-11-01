@@ -1,0 +1,241 @@
+{
+ "note": "Published Roblox ids for the Zhao clips (uploaded 2026-11-01 via Studio Save to Roblox, each verified by loading it back). sha256 is the referent-free content of the .rbxmx that was uploaded: export.py marks a clip stale when its rebaked file no longer matches.",
+ "clips": {
+  "GeneralZhao_P1_AlertTransition": {
+   "asset_id": "rbxassetid://127133021899022",
+   "sha256": "710f065afea2ee688d80442c7ce690a93edc8fb2a4f32e0f2c1c98bf965df8d1"
+  },
+  "GeneralZhao_P1_Approach": {
+   "asset_id": "rbxassetid://85531437373622",
+   "sha256": "9b2566b7748d965fd0e635330202f4dc28a832c8ee8070ff929956544c85a160"
+  },
+  "GeneralZhao_P1_ColossalHammer": {
+   "asset_id": "rbxassetid://93359276356611",
+   "sha256": "2b4480d602dd57d65e29f5182253974c6aa6eff1d978fa5ffa11ee048cf32a22"
+  },
+  "GeneralZhao_P1_Death": {
+   "asset_id": "rbxassetid://91951518681926",
+   "sha256": "4c2b6cf31c615183a8887b862bf13e1317338a92be7fb77850660755ec4b48ac"
+  },
+  "GeneralZhao_P1_DeathblowVictim": {
+   "asset_id": "rbxassetid://136397071657642",
+   "sha256": "968a358daa962fe30f6c2c8812ffcae66a00cbc22fd17642b49eac80b111bbd5"
+  },
+  "GeneralZhao_P1_DeflectRecoil": {
+   "asset_id": "rbxassetid://127831459545816",
+   "sha256": "f1ebf6c443a94d394e8f1c0aa9512423ad2cf75e5799289a4f7f4b59f1946751"
+  },
+  "GeneralZhao_P1_Equip": {
+   "asset_id": "rbxassetid://121747729384282",
+   "sha256": "16d72b907c298a6a65651534e443e70fcc175bb17c3639e1906bb330a594e0c4"
+  },
+  "GeneralZhao_P1_Guandao_Art": {
+   "asset_id": "rbxassetid://104589140222776",
+   "sha256": "fbb09b34259260d3d7bb2a9377a5c5f97626dc5f761583c17e2c950bff447048"
+  },
+  "GeneralZhao_P1_Guandao_Heavy": {
+   "asset_id": "rbxassetid://92622207390418",
+   "sha256": "d0f31c8269aaadb24c61c91a3489d0e0629dca0c9b85bb37932924ce186b9ff4"
+  },
+  "GeneralZhao_P1_Guandao_L1": {
+   "asset_id": "rbxassetid://129602664895532",
+   "sha256": "510dea7a565da7fe217c72e0248ffb19160aef9b75744eb25206b5ac0dd2ba87"
+  },
+  "GeneralZhao_P1_Guandao_L2": {
+   "asset_id": "rbxassetid://125584049105524",
+   "sha256": "48c8eddbbfeee94e5e9b7b7dc4847acc370f7f50927fc1db5afc205d26707cb3"
+  },
+  "GeneralZhao_P1_Guandao_L3": {
+   "asset_id": "rbxassetid://125059655809539",
+   "sha256": "dccbd3e9f17bb126c68f68508b01d6a6b43b509f36413d30069f757633e77c88"
+  },
+  "GeneralZhao_P1_Guandao_Running": {
+   "asset_id": "rbxassetid://108205290655865",
+   "sha256": "a31f6f8037117af311d6fab67f439e63d04618b043ad8a8d3186d709d08c9fd0"
+  },
+  "GeneralZhao_P1_GuardEnter": {
+   "asset_id": "rbxassetid://74853472756900",
+   "sha256": "b44bd279ea5f240404714d05e14cabea908483a56897c30324537d79207cabda"
+  },
+  "GeneralZhao_P1_GuardExit": {
+   "asset_id": "rbxassetid://98641970881934",
+   "sha256": "b6f9f3259f1c34b7b9455c3aeaf2673e549071bd3bb5a240311354caec3930f6"
+  },
+  "GeneralZhao_P1_GuardHit": {
+   "asset_id": "rbxassetid://127195229700419",
+   "sha256": "e09c2b26aad186c733751046a35defca44b95578f48ea573d758e9c7657c6228"
+  },
+  "GeneralZhao_P1_GuardLoop": {
+   "asset_id": "rbxassetid://111834036898043",
+   "sha256": "07ba0736a152de60701358b697ad33a177627de7a5b8a7d14b145450f758055d"
+  },
+  "GeneralZhao_P1_HitHeavyBack": {
+   "asset_id": "rbxassetid://84762163886991",
+   "sha256": "cf1fb9d41205fcfbdb6529227409db3c293c3e775d540a7cd834efc5f9831364"
+  },
+  "GeneralZhao_P1_HitHeavyFront": {
+   "asset_id": "rbxassetid://125196168277321",
+   "sha256": "1112d67fcfe5e0609a790bed693c6528b0634dcec3295acdf0c92dabb582aec6"
+  },
+  "GeneralZhao_P1_HitHeavyLeft": {
+   "asset_id": "rbxassetid://132550580767821",
+   "sha256": "e6d4bddcd4cd132c9165e3696de1d1bb784d5146a90d8dbc9de65841b0b830e3"
+  },
+  "GeneralZhao_P1_HitHeavyRight": {
+   "asset_id": "rbxassetid://84025727633776",
+   "sha256": "96323c721756efcfaa5cb0632f50366c3572d5b4d618d7e905230cb00101a97e"
+  },
+  "GeneralZhao_P1_HitLightBack": {
+   "asset_id": "rbxassetid://124919327446338",
+   "sha256": "9ece201986ae065ee938655960c2d76b4bbb0822078276b80c1f6779aecd2de3"
+  },
+  "GeneralZhao_P1_HitLightFront": {
+   "asset_id": "rbxassetid://134712701817739",
+   "sha256": "67457d74bd48b08bbbba67eb5c1dee2a582126c05eb3830bdf4636f52df8cda4"
+  },
+  "GeneralZhao_P1_HitLightLeft": {
+   "asset_id": "rbxassetid://80203755918569",
+   "sha256": "116b364c9de9fac172bcf5e03c5eb751dff8ad0d48ca19cf380cd4ef03deceb3"
+  },
+  "GeneralZhao_P1_HitLightRight": {
+   "asset_id": "rbxassetid://74530429973921",
+   "sha256": "0b9ac491d5c8a3e84da3b5079ca67f83c004cdafbe337b3b9c0d71eacce436c1"
+  },
+  "GeneralZhao_P1_Idle": {
+   "asset_id": "rbxassetid://93332880271451",
+   "sha256": "616f5b94c36dac1f48593be1c134d2dc1912b19d79f991531041fee57383529b"
+  },
+  "GeneralZhao_P1_IdleNeutral": {
+   "asset_id": "rbxassetid://106044582504737",
+   "sha256": "c0380a193016e0d81529a5ad474fc789e7b02ae19c6b697a3640a992b099b63e"
+  },
+  "GeneralZhao_P1_Intro": {
+   "asset_id": "rbxassetid://96106117705608",
+   "sha256": "ef429e0d37384ce8aab4e9dc2d1237989c5e165b470cac1344d1d9f1cf9302c3"
+  },
+  "GeneralZhao_P1_IntroReady": {
+   "asset_id": "rbxassetid://89736440155267",
+   "sha256": "d9f04ce33aac1ee1eed5f0f14ed63f4f856df2c53472e3b2aa63531f3005eafc"
+  },
+  "GeneralZhao_P1_IronCharge": {
+   "asset_id": "rbxassetid://133184221531855",
+   "sha256": "f4ced97f5a4996853dc5778e43e93ff72fc603acb6a573bfb1e475d82918228d"
+  },
+  "GeneralZhao_P1_LightningSpear": {
+   "asset_id": "rbxassetid://73671419056664",
+   "sha256": "ff631949fd32725e16361d787bdce5542a2eeb87c991a29f4d795778015fd276"
+  },
+  "GeneralZhao_P1_Oath_Guandao_Art": {
+   "asset_id": "rbxassetid://97756948713906",
+   "sha256": "4bfccbfbca9d0cf01d14c6a8f0867273612ce2ed52ae67d096b2147ad5a07695"
+  },
+  "GeneralZhao_P1_Oath_Guandao_Heavy": {
+   "asset_id": "rbxassetid://90347702215381",
+   "sha256": "2edee49ded3e2bbcffb34abd11f32cc7b1b8af8015f7f0cc02f63639b14042f4"
+  },
+  "GeneralZhao_P1_Oath_Guandao_L1": {
+   "asset_id": "rbxassetid://131940901061421",
+   "sha256": "5af04442492ac19920942852fb65c9023a0520b6435d958e49f42ba9c6003f0c"
+  },
+  "GeneralZhao_P1_Oath_Guandao_L2": {
+   "asset_id": "rbxassetid://71122340818018",
+   "sha256": "ca8670384fcbacb995f3838bcb9c86643b864376d83b2f183401c9e499f8fb68"
+  },
+  "GeneralZhao_P1_Oath_Guandao_L3": {
+   "asset_id": "rbxassetid://73690059521242",
+   "sha256": "a92514163bb36d7ff8549e35528f3d15751b8f5424f099f4c22c58bee061ffc0"
+  },
+  "GeneralZhao_P1_Oath_Guandao_Running": {
+   "asset_id": "rbxassetid://80675649448907",
+   "sha256": "b0b4972586741d4dcd941fde83e60f53a45be75ce08c489bdc6b9b5a24ae0a14"
+  },
+  "GeneralZhao_P1_Oath_GuardLoop": {
+   "asset_id": "rbxassetid://99116669951665",
+   "sha256": "0e661841fae9aa1d499e51c9412d703c6eef107ce067425c414c58d5b4d8b285"
+  },
+  "GeneralZhao_P1_Oath_Idle": {
+   "asset_id": "rbxassetid://110263386521407",
+   "sha256": "76f3eac103c7b84ca1236a8f7e37bc7c4de0bada947f1940a5a5ceb129023806"
+  },
+  "GeneralZhao_P1_Oath_LightningSpear": {
+   "asset_id": "rbxassetid://73610670043216",
+   "sha256": "d1f98cd6d08f65f8a05ae799ec9c47d099e1f38874ce508d97dfe8aaa1235eec"
+  },
+  "GeneralZhao_P1_Oath_RunForward": {
+   "asset_id": "rbxassetid://115515026527765",
+   "sha256": "992aca04861d78862bfa666d342accc6970e51573f055164f422843830e7d99f"
+  },
+  "GeneralZhao_P1_Oath_Strike": {
+   "asset_id": "rbxassetid://94877060209962",
+   "sha256": "79954408d74b402d4842e5d0fee2f8b2c6c86606d0b9f607b2cf96b6e6ba47cc"
+  },
+  "GeneralZhao_P1_Oath_ThunderQuickstep": {
+   "asset_id": "rbxassetid://139856362667978",
+   "sha256": "352f3b2a02e7eefab5ce539ed7d90c69693b6682b8626b7db08316a282dc7b17"
+  },
+  "GeneralZhao_P1_Oath_WalkForward": {
+   "asset_id": "rbxassetid://74266698315063",
+   "sha256": "8e55ea6f2c80ebd8b11a0231621d8130d103d7d0f4fe925d9eaba0c0339e5a73"
+  },
+  "GeneralZhao_P1_PostureBreak": {
+   "asset_id": "rbxassetid://74127943676745",
+   "sha256": "b4e9ba41c492be12e31b401e0f46dfee92ced29f00443a26dcabb44a71d23361"
+  },
+  "GeneralZhao_P1_Retreat": {
+   "asset_id": "rbxassetid://96759854099054",
+   "sha256": "b78e50f3d53c2c5b1c2d0078775b3c2a7402aaeeb7ed0df664379a18783af486"
+  },
+  "GeneralZhao_P1_RunForward": {
+   "asset_id": "rbxassetid://133176256793259",
+   "sha256": "d8013cf69b07ae093bba6aede0a4214c90194fc15bb6922b616a3bab47fc5aeb"
+  },
+  "GeneralZhao_P1_StaggerLoop": {
+   "asset_id": "rbxassetid://103611120393384",
+   "sha256": "9f480c9591649ef6a12871c0f56730dc92221b199ea0b9dd369c36fadb922e35"
+  },
+  "GeneralZhao_P1_StaggerRecover": {
+   "asset_id": "rbxassetid://118275414580777",
+   "sha256": "c936f526c0b8108e3b8d2bddd39c0d0e4269b3986488d6eda868f79ed08e16a7"
+  },
+  "GeneralZhao_P1_Stop": {
+   "asset_id": "rbxassetid://87868215346153",
+   "sha256": "a591f681e1443bf1b6ce0dfca7b3bd39a87e0592b7bbf87bef24193ab7c3dfba"
+  },
+  "GeneralZhao_P1_StrafeLeft": {
+   "asset_id": "rbxassetid://79228685638380",
+   "sha256": "1c9edf6ca5852f1d71d6cc903670f14e914a07c865b22b9292333c497d8a10e1"
+  },
+  "GeneralZhao_P1_StrafeRight": {
+   "asset_id": "rbxassetid://137339758551664",
+   "sha256": "c73dfb4ea027cf6428cf5bdb83e4ee615dd9aa50e59d1f0624999663966437e5"
+  },
+  "GeneralZhao_P1_Strike": {
+   "asset_id": "rbxassetid://97525853143850",
+   "sha256": "2e7eb3e166d4d521c570b09bf66376b147f320ac34e1bbaf2cf5ea25730f386a"
+  },
+  "GeneralZhao_P1_ThunderQuickstep": {
+   "asset_id": "rbxassetid://135881005810178",
+   "sha256": "31f06a7553404f4810748883b8480a1e7a7380619ab9a815279bc8ca5d2a70b1"
+  },
+  "GeneralZhao_P1_Transform": {
+   "asset_id": "rbxassetid://75749997268879",
+   "sha256": "dd3faf0938344a23416ce5104456aa57f826ecc71e764d3bd8b93b43b65bf8f4"
+  },
+  "GeneralZhao_P1_TurnLeft": {
+   "asset_id": "rbxassetid://78096520157110",
+   "sha256": "595f00512ef4f986768e0ee0c21eb5fe9ba5e61cf74ff06e8469dd18ae913830"
+  },
+  "GeneralZhao_P1_TurnRight": {
+   "asset_id": "rbxassetid://130127773789747",
+   "sha256": "1f855fed2500838397242cfe2ec47029387002836ea38292f498f1860acd9cd4"
+  },
+  "GeneralZhao_P1_WalkBackward": {
+   "asset_id": "rbxassetid://97941513136110",
+   "sha256": "f985c42cfc829e929e923930f1eb9310f00bc8b0d1204d3237475b1d715802d2"
+  },
+  "GeneralZhao_P1_WalkForward": {
+   "asset_id": "rbxassetid://136380273629469",
+   "sha256": "63c26b1da11c93f3037c2078592f19ad2c4fbd585b6eb9c94912b66977375aa2"
+  }
+ }
+}

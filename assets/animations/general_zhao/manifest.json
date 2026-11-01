@@ -26,8 +26,8 @@
    "nominal_ground_speed_scale1": 0.0,
    "keyframes": 46,
    "file": "GeneralZhao_P1_AlertTransition.rbxmx",
-   "uploaded": false,
-   "asset_id": null,
+   "uploaded": true,
+   "asset_id": "rbxassetid://127133021899022",
    "validation": {
     "grip_error": 0.0,
     "right_reach": 0.0,
@@ -91,8 +91,8 @@
    "nominal_ground_speed_scale1": 0.0,
    "keyframes": 37,
    "file": "GeneralZhao_P1_Approach.rbxmx",
-   "uploaded": false,
-   "asset_id": null,
+   "uploaded": true,
+   "asset_id": "rbxassetid://85531437373622",
    "validation": {
     "grip_error": 0.0,
     "right_reach": 0.0,
@@ -178,8 +178,8 @@
    "nominal_ground_speed_scale1": 0.0,
    "keyframes": 134,
    "file": "GeneralZhao_P1_ColossalHammer.rbxmx",
-   "uploaded": false,
-   "asset_id": null,
+   "uploaded": true,
+   "asset_id": "rbxassetid://93359276356611",
    "validation": {
     "grip_error": 0.0294,
     "right_reach": 0.0,
@@ -248,8 +248,8 @@
    "nominal_ground_speed_scale1": 0.0,
    "keyframes": 27,
    "file": "GeneralZhao_P1_Death.rbxmx",
-   "uploaded": false,
-   "asset_id": null,
+   "uploaded": true,
+   "asset_id": "rbxassetid://91951518681926",
    "validation": {
     "grip_error": 0.0,
     "right_reach": 0.0,
@@ -313,8 +313,8 @@
    "nominal_ground_speed_scale1": 0.0,
    "keyframes": 53,
    "file": "GeneralZhao_P1_DeathblowVictim.rbxmx",
-   "uploaded": false,
-   "asset_id": null,
+   "uploaded": true,
+   "asset_id": "rbxassetid://136397071657642",
    "validation": {
     "grip_error": 0.0,
     "right_reach": 0.0,
@@ -383,8 +383,8 @@
    "nominal_ground_speed_scale1": 0.0,
    "keyframes": 37,
    "file": "GeneralZhao_P1_DeflectRecoil.rbxmx",
-   "uploaded": false,
-   "asset_id": null,
+   "uploaded": true,
+   "asset_id": "rbxassetid://127831459545816",
    "validation": {
     "grip_error": 0.0,
     "right_reach": 0.0,
@@ -458,8 +458,8 @@
    "nominal_ground_speed_scale1": 0.0,
    "keyframes": 55,
    "file": "GeneralZhao_P1_Equip.rbxmx",
-   "uploaded": false,
-   "asset_id": null,
+   "uploaded": true,
+   "asset_id": "rbxassetid://121747729384282",
    "validation": {
     "grip_error": 0.0,
     "right_reach": 0.0,
@@ -550,8 +550,8 @@
    "nominal_ground_speed_scale1": 0.0,
    "keyframes": 55,
    "file": "GeneralZhao_P1_Guandao_Art.rbxmx",
-   "uploaded": false,
-   "asset_id": null,
+   "uploaded": true,
+   "asset_id": "rbxassetid://104589140222776",
    "validation": {
     "grip_error": 0.0,
     "right_reach": 0.0,
@@ -637,8 +637,8 @@
    "nominal_ground_speed_scale1": 0.0,
    "keyframes": 48,
    "file": "GeneralZhao_P1_Guandao_Heavy.rbxmx",
-   "uploaded": false,
-   "asset_id": null,
+   "uploaded": true,
+   "asset_id": "rbxassetid://92622207390418",
    "validation": {
     "grip_error": 0.0,
     "right_reach": 0.0,
@@ -714,8 +714,8 @@
    "nominal_ground_speed_scale1": 0.0,
    "keyframes": 25,
    "file": "GeneralZhao_P1_Guandao_L1.rbxmx",
-   "uploaded": false,
-   "asset_id": null,
+   "uploaded": true,
+   "asset_id": "rbxassetid://129602664895532",
    "validation": {
     "grip_error": 0.0,
     "right_reach": 0.0,
@@ -787,12 +787,12 @@
    "timing_source": "WeaponSchema Guandao_L2 Returning Tide: startup 9f, active 4f, total 25f (Tempo 1.4)",
    "playback_hook": "NEW: AIService BossSwing -> resolve(Guandao_L2)",
    "wiring": "needs-hook",
-   "notes": "Backhand return sweep from his left, rising slightly; edge turned to lead.",
+   "notes": "Backhand return sweep from his left across the front, rising slightly; edge turned to lead.",
    "nominal_ground_speed_scale1": 0.0,
    "keyframes": 26,
    "file": "GeneralZhao_P1_Guandao_L2.rbxmx",
-   "uploaded": false,
-   "asset_id": null,
+   "uploaded": true,
+   "asset_id": "rbxassetid://125584049105524",
    "validation": {
     "grip_error": 0.0,
     "right_reach": 0.0,
@@ -800,40 +800,17 @@
     "sole_below_ground": 0.0,
     "planted_slide": 0.0,
     "blade_below_ground": 0.0,
-    "shaft_in_body": 0.1351,
+    "shaft_in_body": 0.0,
     "tip_distance_min": 9.2416,
     "tip_distance_max": 9.2416,
-    "wrist_bend_max": 73.8176,
+    "wrist_bend_max": 73.744,
     "loop_seam_deg": 0.0,
-    "right_pull": 0.0935,
-    "hand_jerk": 0.3083,
+    "right_pull": 0.0662,
+    "hand_jerk": 0.2913,
     "arm_in_body": 0.0,
-    "shaft_in_body_frames": [
-     [
-      0.2,
-      "UpperTorso"
-     ],
-     [
-      0.2,
-      "LowerTorso"
-     ],
-     [
-      0.367,
-      "RightUpperLeg"
-     ],
-     [
-      0.367,
-      "RightLowerLeg"
-     ],
-     [
-      0.383,
-      "RightUpperLeg"
-     ]
-    ]
+    "shaft_in_body_frames": []
    },
-   "problems": [
-    "shaft passes 0.14 into the body ([(0.2, 'UpperTorso'), (0.2, 'LowerTorso'), (0.367, 'RightUpperLeg')])"
-   ],
+   "problems": [],
    "key_repairs": [
     [
      "field",
@@ -841,15 +818,15 @@
     ],
     [
      "field",
-     0.417
+     0.4
     ],
     [
      "field",
-     0.378
+     0.368
     ],
     [
      "field",
-     0.151
+     0.074
     ]
    ]
   },
@@ -896,8 +873,8 @@
    "nominal_ground_speed_scale1": 0.0,
    "keyframes": 32,
    "file": "GeneralZhao_P1_Guandao_L3.rbxmx",
-   "uploaded": false,
-   "asset_id": null,
+   "uploaded": true,
+   "asset_id": "rbxassetid://125059655809539",
    "validation": {
     "grip_error": 0.0,
     "right_reach": 0.0,
@@ -978,8 +955,8 @@
    "nominal_ground_speed_scale1": 0.0,
    "keyframes": 36,
    "file": "GeneralZhao_P1_Guandao_Running.rbxmx",
-   "uploaded": false,
-   "asset_id": null,
+   "uploaded": true,
+   "asset_id": "rbxassetid://108205290655865",
    "validation": {
     "grip_error": 0.0,
     "right_reach": 0.0,
@@ -1032,8 +1009,8 @@
    "nominal_ground_speed_scale1": 0.0,
    "keyframes": 16,
    "file": "GeneralZhao_P1_GuardEnter.rbxmx",
-   "uploaded": false,
-   "asset_id": null,
+   "uploaded": true,
+   "asset_id": "rbxassetid://74853472756900",
    "validation": {
     "grip_error": 0.0,
     "right_reach": 0.0,
@@ -1086,8 +1063,8 @@
    "nominal_ground_speed_scale1": 0.0,
    "keyframes": 19,
    "file": "GeneralZhao_P1_GuardExit.rbxmx",
-   "uploaded": false,
-   "asset_id": null,
+   "uploaded": true,
+   "asset_id": "rbxassetid://98641970881934",
    "validation": {
     "grip_error": 0.0,
     "right_reach": 0.0,
@@ -1151,8 +1128,8 @@
    "nominal_ground_speed_scale1": 0.0,
    "keyframes": 21,
    "file": "GeneralZhao_P1_GuardHit.rbxmx",
-   "uploaded": false,
-   "asset_id": null,
+   "uploaded": true,
+   "asset_id": "rbxassetid://127195229700419",
    "validation": {
     "grip_error": 0.0,
     "right_reach": 0.0,
@@ -1205,8 +1182,8 @@
    "nominal_ground_speed_scale1": 0.0,
    "keyframes": 6,
    "file": "GeneralZhao_P1_GuardLoop.rbxmx",
-   "uploaded": false,
-   "asset_id": null,
+   "uploaded": true,
+   "asset_id": "rbxassetid://111834036898043",
    "validation": {
     "grip_error": 0.0,
     "right_reach": 0.0,
@@ -1253,8 +1230,8 @@
    "nominal_ground_speed_scale1": 0.0,
    "keyframes": 36,
    "file": "GeneralZhao_P1_HitHeavyBack.rbxmx",
-   "uploaded": false,
-   "asset_id": null,
+   "uploaded": true,
+   "asset_id": "rbxassetid://84762163886991",
    "validation": {
     "grip_error": 0.0,
     "right_reach": 0.0,
@@ -1318,8 +1295,8 @@
    "nominal_ground_speed_scale1": 0.0,
    "keyframes": 44,
    "file": "GeneralZhao_P1_HitHeavyFront.rbxmx",
-   "uploaded": false,
-   "asset_id": null,
+   "uploaded": true,
+   "asset_id": "rbxassetid://125196168277321",
    "validation": {
     "grip_error": 0.0,
     "right_reach": 0.0,
@@ -1383,8 +1360,8 @@
    "nominal_ground_speed_scale1": 0.0,
    "keyframes": 48,
    "file": "GeneralZhao_P1_HitHeavyLeft.rbxmx",
-   "uploaded": false,
-   "asset_id": null,
+   "uploaded": true,
+   "asset_id": "rbxassetid://132550580767821",
    "validation": {
     "grip_error": 0.0,
     "right_reach": 0.0,
@@ -1448,8 +1425,8 @@
    "nominal_ground_speed_scale1": 0.0,
    "keyframes": 36,
    "file": "GeneralZhao_P1_HitHeavyRight.rbxmx",
-   "uploaded": false,
-   "asset_id": null,
+   "uploaded": true,
+   "asset_id": "rbxassetid://84025727633776",
    "validation": {
     "grip_error": 0.0,
     "right_reach": 0.0,
@@ -1508,8 +1485,8 @@
    "nominal_ground_speed_scale1": 0.0,
    "keyframes": 18,
    "file": "GeneralZhao_P1_HitLightBack.rbxmx",
-   "uploaded": false,
-   "asset_id": null,
+   "uploaded": true,
+   "asset_id": "rbxassetid://124919327446338",
    "validation": {
     "grip_error": 0.0,
     "right_reach": 0.0,
@@ -1568,8 +1545,8 @@
    "nominal_ground_speed_scale1": 0.0,
    "keyframes": 23,
    "file": "GeneralZhao_P1_HitLightFront.rbxmx",
-   "uploaded": false,
-   "asset_id": null,
+   "uploaded": true,
+   "asset_id": "rbxassetid://134712701817739",
    "validation": {
     "grip_error": 0.0,
     "right_reach": 0.0,
@@ -1628,8 +1605,8 @@
    "nominal_ground_speed_scale1": 0.0,
    "keyframes": 23,
    "file": "GeneralZhao_P1_HitLightLeft.rbxmx",
-   "uploaded": false,
-   "asset_id": null,
+   "uploaded": true,
+   "asset_id": "rbxassetid://80203755918569",
    "validation": {
     "grip_error": 0.0,
     "right_reach": 0.0,
@@ -1688,8 +1665,8 @@
    "nominal_ground_speed_scale1": 0.0,
    "keyframes": 18,
    "file": "GeneralZhao_P1_HitLightRight.rbxmx",
-   "uploaded": false,
-   "asset_id": null,
+   "uploaded": true,
+   "asset_id": "rbxassetid://74530429973921",
    "validation": {
     "grip_error": 0.0,
     "right_reach": 0.0,
@@ -1742,8 +1719,8 @@
    "nominal_ground_speed_scale1": 0.0,
    "keyframes": 22,
    "file": "GeneralZhao_P1_Idle.rbxmx",
-   "uploaded": false,
-   "asset_id": null,
+   "uploaded": true,
+   "asset_id": "rbxassetid://93332880271451",
    "validation": {
     "grip_error": 0.0,
     "right_reach": 0.0,
@@ -1779,8 +1756,8 @@
    "nominal_ground_speed_scale1": 0.0,
    "keyframes": 12,
    "file": "GeneralZhao_P1_IdleNeutral.rbxmx",
-   "uploaded": false,
-   "asset_id": null,
+   "uploaded": true,
+   "asset_id": "rbxassetid://106044582504737",
    "validation": {
     "grip_error": 0.0,
     "right_reach": 0.0,
@@ -1832,8 +1809,8 @@
    "nominal_ground_speed_scale1": 0.0,
    "keyframes": 29,
    "file": "GeneralZhao_P1_Intro.rbxmx",
-   "uploaded": false,
-   "asset_id": null,
+   "uploaded": true,
+   "asset_id": "rbxassetid://96106117705608",
    "validation": {
     "grip_error": 0.0,
     "right_reach": 0.0,
@@ -1897,8 +1874,8 @@
    "nominal_ground_speed_scale1": 0.0,
    "keyframes": 37,
    "file": "GeneralZhao_P1_IntroReady.rbxmx",
-   "uploaded": false,
-   "asset_id": null,
+   "uploaded": true,
+   "asset_id": "rbxassetid://89736440155267",
    "validation": {
     "grip_error": 0.0,
     "right_reach": 0.0,
@@ -1994,8 +1971,8 @@
    "nominal_ground_speed_scale1": 0.0,
    "keyframes": 100,
    "file": "GeneralZhao_P1_IronCharge.rbxmx",
-   "uploaded": false,
-   "asset_id": null,
+   "uploaded": true,
+   "asset_id": "rbxassetid://133184221531855",
    "validation": {
     "grip_error": 0.0,
     "right_reach": 0.0,
@@ -2123,8 +2100,8 @@
    "nominal_ground_speed_scale1": 0.0,
    "keyframes": 157,
    "file": "GeneralZhao_P1_LightningSpear.rbxmx",
-   "uploaded": false,
-   "asset_id": null,
+   "uploaded": true,
+   "asset_id": "rbxassetid://73671419056664",
    "validation": {
     "grip_error": 0.0,
     "right_reach": 0.0,
@@ -2215,8 +2192,8 @@
    "nominal_ground_speed_scale1": 0.0,
    "keyframes": 55,
    "file": "GeneralZhao_P1_Oath_Guandao_Art.rbxmx",
-   "uploaded": false,
-   "asset_id": null,
+   "uploaded": true,
+   "asset_id": "rbxassetid://97756948713906",
    "validation": {
     "grip_error": 0.0208,
     "right_reach": 0.0,
@@ -2302,8 +2279,8 @@
    "nominal_ground_speed_scale1": 0.0,
    "keyframes": 51,
    "file": "GeneralZhao_P1_Oath_Guandao_Heavy.rbxmx",
-   "uploaded": false,
-   "asset_id": null,
+   "uploaded": true,
+   "asset_id": "rbxassetid://90347702215381",
    "validation": {
     "grip_error": 0.0208,
     "right_reach": 0.0,
@@ -2379,8 +2356,8 @@
    "nominal_ground_speed_scale1": 0.0,
    "keyframes": 25,
    "file": "GeneralZhao_P1_Oath_Guandao_L1.rbxmx",
-   "uploaded": false,
-   "asset_id": null,
+   "uploaded": true,
+   "asset_id": "rbxassetid://131940901061421",
    "validation": {
     "grip_error": 0.0208,
     "right_reach": 0.0,
@@ -2456,8 +2433,8 @@
    "nominal_ground_speed_scale1": 0.0,
    "keyframes": 26,
    "file": "GeneralZhao_P1_Oath_Guandao_L2.rbxmx",
-   "uploaded": false,
-   "asset_id": null,
+   "uploaded": true,
+   "asset_id": "rbxassetid://71122340818018",
    "validation": {
     "grip_error": 0.0208,
     "right_reach": 0.0,
@@ -2465,32 +2442,17 @@
     "sole_below_ground": 0.0,
     "planted_slide": 0.0,
     "blade_below_ground": 0.0,
-    "shaft_in_body": 0.1625,
+    "shaft_in_body": 0.0,
     "tip_distance_min": 9.2416,
     "tip_distance_max": 9.2416,
-    "wrist_bend_max": 70.8009,
+    "wrist_bend_max": 70.649,
     "loop_seam_deg": 0.0,
-    "right_pull": 0.159,
-    "hand_jerk": 0.3112,
+    "right_pull": 0.0633,
+    "hand_jerk": 0.2926,
     "arm_in_body": 0.0,
-    "shaft_in_body_frames": [
-     [
-      0.2,
-      "UpperTorso"
-     ],
-     [
-      0.2,
-      "LowerTorso"
-     ],
-     [
-      0.367,
-      "RightLowerLeg"
-     ]
-    ]
+    "shaft_in_body_frames": []
    },
-   "problems": [
-    "shaft passes 0.16 into the body ([(0.2, 'UpperTorso'), (0.2, 'LowerTorso'), (0.367, 'RightLowerLeg')])"
-   ],
+   "problems": [],
    "key_repairs": [
     [
      "field",
@@ -2498,15 +2460,15 @@
     ],
     [
      "field",
-     0.418
+     0.4
     ],
     [
      "field",
-     0.378
+     0.293
     ],
     [
      "field",
-     0.151
+     0.073
     ]
    ]
   },
@@ -2553,8 +2515,8 @@
    "nominal_ground_speed_scale1": 0.0,
    "keyframes": 32,
    "file": "GeneralZhao_P1_Oath_Guandao_L3.rbxmx",
-   "uploaded": false,
-   "asset_id": null,
+   "uploaded": true,
+   "asset_id": "rbxassetid://73690059521242",
    "validation": {
     "grip_error": 0.0208,
     "right_reach": 0.0,
@@ -2635,8 +2597,8 @@
    "nominal_ground_speed_scale1": 0.0,
    "keyframes": 37,
    "file": "GeneralZhao_P1_Oath_Guandao_Running.rbxmx",
-   "uploaded": false,
-   "asset_id": null,
+   "uploaded": true,
+   "asset_id": "rbxassetid://80675649448907",
    "validation": {
     "grip_error": 0.0208,
     "right_reach": 0.0,
@@ -2689,8 +2651,8 @@
    "nominal_ground_speed_scale1": 0.0,
    "keyframes": 7,
    "file": "GeneralZhao_P1_Oath_GuardLoop.rbxmx",
-   "uploaded": false,
-   "asset_id": null,
+   "uploaded": true,
+   "asset_id": "rbxassetid://99116669951665",
    "validation": {
     "grip_error": 0.0,
     "right_reach": 0.0,
@@ -2726,8 +2688,8 @@
    "nominal_ground_speed_scale1": 0.0,
    "keyframes": 28,
    "file": "GeneralZhao_P1_Oath_Idle.rbxmx",
-   "uploaded": false,
-   "asset_id": null,
+   "uploaded": true,
+   "asset_id": "rbxassetid://110263386521407",
    "validation": {
     "grip_error": 0.0525,
     "right_reach": 0.0,
@@ -2838,8 +2800,8 @@
    "nominal_ground_speed_scale1": 0.0,
    "keyframes": 152,
    "file": "GeneralZhao_P1_Oath_LightningSpear.rbxmx",
-   "uploaded": false,
-   "asset_id": null,
+   "uploaded": true,
+   "asset_id": "rbxassetid://73610670043216",
    "validation": {
     "grip_error": 0.0208,
     "right_reach": 0.0,
@@ -2903,8 +2865,8 @@
    "nominal_ground_speed_scale1": 8.0,
    "keyframes": 41,
    "file": "GeneralZhao_P1_Oath_RunForward.rbxmx",
-   "uploaded": false,
-   "asset_id": null,
+   "uploaded": true,
+   "asset_id": "rbxassetid://115515026527765",
    "validation": {
     "grip_error": 0.0,
     "right_reach": 0.0,
@@ -2968,8 +2930,8 @@
    "nominal_ground_speed_scale1": 0.0,
    "keyframes": 72,
    "file": "GeneralZhao_P1_Oath_Strike.rbxmx",
-   "uploaded": false,
-   "asset_id": null,
+   "uploaded": true,
+   "asset_id": "rbxassetid://94877060209962",
    "validation": {
     "grip_error": 0.0208,
     "right_reach": 0.0,
@@ -3065,8 +3027,8 @@
    "nominal_ground_speed_scale1": 0.0,
    "keyframes": 97,
    "file": "GeneralZhao_P1_Oath_ThunderQuickstep.rbxmx",
-   "uploaded": false,
-   "asset_id": null,
+   "uploaded": true,
+   "asset_id": "rbxassetid://139856362667978",
    "validation": {
     "grip_error": 0.0208,
     "right_reach": 0.0,
@@ -3130,8 +3092,8 @@
    "nominal_ground_speed_scale1": 2.2,
    "keyframes": 51,
    "file": "GeneralZhao_P1_Oath_WalkForward.rbxmx",
-   "uploaded": false,
-   "asset_id": null,
+   "uploaded": true,
+   "asset_id": "rbxassetid://74266698315063",
    "validation": {
     "grip_error": 0.0,
     "right_reach": 0.0,
@@ -3183,8 +3145,8 @@
    "nominal_ground_speed_scale1": 0.0,
    "keyframes": 24,
    "file": "GeneralZhao_P1_PostureBreak.rbxmx",
-   "uploaded": false,
-   "asset_id": null,
+   "uploaded": true,
+   "asset_id": "rbxassetid://74127943676745",
    "validation": {
     "grip_error": 0.0,
     "right_reach": 0.0,
@@ -3248,8 +3210,8 @@
    "nominal_ground_speed_scale1": 0.0,
    "keyframes": 41,
    "file": "GeneralZhao_P1_Retreat.rbxmx",
-   "uploaded": false,
-   "asset_id": null,
+   "uploaded": true,
+   "asset_id": "rbxassetid://96759854099054",
    "validation": {
     "grip_error": 0.0,
     "right_reach": 0.0,
@@ -3313,8 +3275,8 @@
    "nominal_ground_speed_scale1": 8.0,
    "keyframes": 41,
    "file": "GeneralZhao_P1_RunForward.rbxmx",
-   "uploaded": false,
-   "asset_id": null,
+   "uploaded": true,
+   "asset_id": "rbxassetid://133176256793259",
    "validation": {
     "grip_error": 0.0,
     "right_reach": 0.0,
@@ -3356,8 +3318,8 @@
    "nominal_ground_speed_scale1": 0.0,
    "keyframes": 10,
    "file": "GeneralZhao_P1_StaggerLoop.rbxmx",
-   "uploaded": false,
-   "asset_id": null,
+   "uploaded": true,
+   "asset_id": "rbxassetid://103611120393384",
    "validation": {
     "grip_error": 0.0,
     "right_reach": 0.0,
@@ -3404,8 +3366,8 @@
    "nominal_ground_speed_scale1": 0.0,
    "keyframes": 37,
    "file": "GeneralZhao_P1_StaggerRecover.rbxmx",
-   "uploaded": false,
-   "asset_id": null,
+   "uploaded": true,
+   "asset_id": "rbxassetid://118275414580777",
    "validation": {
     "grip_error": 0.0,
     "right_reach": 0.0,
@@ -3464,8 +3426,8 @@
    "nominal_ground_speed_scale1": 0.0,
    "keyframes": 28,
    "file": "GeneralZhao_P1_Stop.rbxmx",
-   "uploaded": false,
-   "asset_id": null,
+   "uploaded": true,
+   "asset_id": "rbxassetid://87868215346153",
    "validation": {
     "grip_error": 0.0,
     "right_reach": 0.0,
@@ -3529,8 +3491,8 @@
    "nominal_ground_speed_scale1": 2.0,
    "keyframes": 49,
    "file": "GeneralZhao_P1_StrafeLeft.rbxmx",
-   "uploaded": false,
-   "asset_id": null,
+   "uploaded": true,
+   "asset_id": "rbxassetid://79228685638380",
    "validation": {
     "grip_error": 0.0,
     "right_reach": 0.0,
@@ -3577,8 +3539,8 @@
    "nominal_ground_speed_scale1": 2.0,
    "keyframes": 52,
    "file": "GeneralZhao_P1_StrafeRight.rbxmx",
-   "uploaded": false,
-   "asset_id": null,
+   "uploaded": true,
+   "asset_id": "rbxassetid://137339758551664",
    "validation": {
     "grip_error": 0.0,
     "right_reach": 0.0,
@@ -3642,8 +3604,8 @@
    "nominal_ground_speed_scale1": 0.0,
    "keyframes": 73,
    "file": "GeneralZhao_P1_Strike.rbxmx",
-   "uploaded": false,
-   "asset_id": null,
+   "uploaded": true,
+   "asset_id": "rbxassetid://97525853143850",
    "validation": {
     "grip_error": 0.0,
     "right_reach": 0.0,
@@ -3739,8 +3701,8 @@
    "nominal_ground_speed_scale1": 0.0,
    "keyframes": 95,
    "file": "GeneralZhao_P1_ThunderQuickstep.rbxmx",
-   "uploaded": false,
-   "asset_id": null,
+   "uploaded": true,
+   "asset_id": "rbxassetid://135881005810178",
    "validation": {
     "grip_error": 0.0,
     "right_reach": 0.0,
@@ -3824,8 +3786,8 @@
    "nominal_ground_speed_scale1": 0.0,
    "keyframes": 104,
    "file": "GeneralZhao_P1_Transform.rbxmx",
-   "uploaded": false,
-   "asset_id": null,
+   "uploaded": true,
+   "asset_id": "rbxassetid://75749997268879",
    "validation": {
     "grip_error": 0.0,
     "right_reach": 0.0,
@@ -3897,8 +3859,8 @@
    "nominal_ground_speed_scale1": 0.0,
    "keyframes": 43,
    "file": "GeneralZhao_P1_TurnLeft.rbxmx",
-   "uploaded": false,
-   "asset_id": null,
+   "uploaded": true,
+   "asset_id": "rbxassetid://78096520157110",
    "validation": {
     "grip_error": 0.0,
     "right_reach": 0.0,
@@ -3962,8 +3924,8 @@
    "nominal_ground_speed_scale1": 0.0,
    "keyframes": 43,
    "file": "GeneralZhao_P1_TurnRight.rbxmx",
-   "uploaded": false,
-   "asset_id": null,
+   "uploaded": true,
+   "asset_id": "rbxassetid://130127773789747",
    "validation": {
     "grip_error": 0.0,
     "right_reach": 0.0,
@@ -4027,8 +3989,8 @@
    "nominal_ground_speed_scale1": 1.9,
    "keyframes": 55,
    "file": "GeneralZhao_P1_WalkBackward.rbxmx",
-   "uploaded": false,
-   "asset_id": null,
+   "uploaded": true,
+   "asset_id": "rbxassetid://97941513136110",
    "validation": {
     "grip_error": 0.0,
     "right_reach": 0.0,
@@ -4075,8 +4037,8 @@
    "nominal_ground_speed_scale1": 2.2,
    "keyframes": 50,
    "file": "GeneralZhao_P1_WalkForward.rbxmx",
-   "uploaded": false,
-   "asset_id": null,
+   "uploaded": true,
+   "asset_id": "rbxassetid://136380273629469",
    "validation": {
     "grip_error": 0.0,
     "right_reach": 0.0,
@@ -4106,5 +4068,5 @@
  "space": "HumanoidRootPart, +X right +Y up -Z forward",
  "weapon_binding": "LooksDuelists RightHand pieces; tip 9.40 studs from the RightHand centre at scale 1 (target 9.2 +/- 0.5); animation never moves the binding",
  "in_place": "Root translation only shifts weight and height; the server owns all travel and facing",
- "upload_status": "No clip is uploaded. Every asset_id is null until a genuine published id exists."
+ "upload_status": "59 of 59 clips published (ids in published.json, bound through AsuraBossAnimations.model.json)."
 }

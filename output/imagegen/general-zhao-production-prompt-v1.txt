@@ -1,0 +1,143 @@
+Create a complete animation, VFX, SFX, music, cinematic, and presentation package for General Zhao in the Roblox game Asura’s Path.
+
+Use this approved character image as the visual reference:
+output/imagegen/general-zhao-sekiro-dark-souls-v1.png
+
+Aim for the disciplined Chinese martial movement, sharp weapon contact, and grounded material detail associated with Sekiro, combined with the oppressive atmosphere and weight of Dark Souls. Create original assets and audio.
+
+1. CHARACTER AND MOVEMENT IDENTITY
+
+Zhao is the tall, narrow, precise fighter of the Twin Sentinels encounter in the Desecrated Monastery. Preserve his black lacquer and indigo lamellar armor, azure cloth coat, aged gold trim, moustache and pointed goatee, two long golden-tan pheasant plumes, two azure back pennants, luminous diamond crests, red-shafted guandao, red tassel, and lightning-edged steel blade.
+
+His movement communicates military discipline: planted feet, deliberate weight transfer, economical preparation, sudden acceleration, heavy follow-through, and readable recovery. His long guandao controls distance. Keep the weapon fixed to its authored hand binding; pose the supporting hand around the shaft with believable spacing. Give plumes, pennants, tassel, and coat restrained secondary motion through the available rig; identify any additional joints or client animation needed.
+
+2. CONFIRMED GAMEPLAY AND TIMING
+
+Preserve server-authoritative combat, movement, reach, counter rules, and damage. Animation markers may trigger cosmetic effects but must never decide damage, invulnerability, hitboxes, or movement.
+
+The current encounter has one normal phase and an oath state:
+- LightningSpear: three perilous guandao thrusts. Nominal first impact follows a 0.8-second windup; later impacts are spaced 0.7 seconds apart. At an undeferred start these land at 0.8, 1.5, and 2.2 seconds. Counter: Deflect.
+- ThunderQuickstep: a fast advancing attack with a 1.0-second nominal windup. Gameplay kind is ShieldCharge; present it using Zhao’s body and guandao. Counter: Evade.
+- If the Iron Bull dies first, Zhao performs Oath of the Fallen. BossDuo gives a two-second cinematic state and sets Lightning+Iron affinity; it also adds IronCharge and ColossalHammer to his available attacks.
+- Inherited IronCharge: 1.5-second nominal windup; Counter: Evade.
+- Inherited ColossalHammer: 1.8-second nominal windup, followed by a server-driven traveling shockwave; Counter: Air Glide.
+- Zhao remains GeneralZhao phase 1 during the oath. Do not require an unimplemented phase 2.
+
+The server can defer an impact during encounter handoffs. Synchronize anticipation, strike, VFX, and SFX to the incoming impact timestamp instead of blindly relying on the nominal duration. Repeated LightningSpear telegraphs describe subsequent impacts in the same sequence: do not restart a complete three-thrust clip on every repeat. Use one synchronized sequence or deliberate anticipation/strike segments.
+
+3. ANIMATION PACKAGE
+
+Deliver clean, individually named clips with loop settings, priorities, duration, contact timing, transitions, and required playback hooks.
+
+Core existing resolver keys:
+- GeneralZhao_P1_Idle: guarded two-handed guandao stance; subtle breathing, weight adjustment, cloth motion.
+- GeneralZhao_P1_Strike: ordinary attack fallback that returns naturally to guard.
+- GeneralZhao_P1_LightningSpear: clear point alignment, compressed stance, three precise advancing thrusts, distinct recoil between impacts, punishable recovery.
+- GeneralZhao_P1_ThunderQuickstep: lowered center of gravity, visible preparation, explosive forward drive, diagonal guandao finish, controlled stop.
+- GeneralZhao_P1_Transform: Oath of the Fallen. Brief acknowledgment of his fallen partner, tightened grip and lowered stance, power gathering into the chest diamond and guandao, ending ready to fight. Fit the two-second boss state while respecting the existing shorter camera shot and return blend.
+
+Also provide these resolvable action keys for inherited moves:
+- GeneralZhao_P1_IronCharge: a heavier iron-infused body-and-haft rush, preserving Zhao’s silhouette.
+- GeneralZhao_P1_ColossalHammer: a two-handed guandao slam using a plausible reinforced contact point, producing the inherited iron shockwave without equipping a permanent maul.
+
+Complete the asset library with these additional clips, explicitly marking any new wiring required:
+- Neutral idle and alert transition.
+- Forward walk and run; backward steps; left/right strafes.
+- Left/right turns, short approach, stop, and retreat.
+- Guandao ready/equip.
+- Three distinct light attacks: Crescent Reap, Returning Tide, Heaven-Splitting Cleave.
+- Heavy attack: Green Dragon Reaping.
+- Running attack: Charging Dragon Thrust.
+- Weapon art: Crescent Moon Cyclone.
+- Guard enter, guard loop, guard exit, blocked-hit reaction.
+- Deflect recoil; light and heavy hit reactions with directional variants.
+- Posture break, vulnerable stagger loop, recovery.
+- Deathblow victim and final death/collapse.
+- Intro pose and combat-ready transition.
+- Oath versions of idle, locomotion, and attacks where the posture changes materially.
+
+Use the existing WeaponSchema timing and Tempo conversion for ordinary guandao moves. Do not substitute guessed timings or add an unused fourth light attack. Separate authored clips from currently connected playback: Zhao’s shared-weapon light swings and additional locomotion/reaction clips need explicit cue or state integration. Identify those hooks.
+
+Thunderfall is associated with the encounter’s reward weapon/spell; it is not one of Zhao’s current boss specials. If included, deliver it as a separately labeled optional reward/extension package rather than claiming it already belongs to the boss attack loop.
+
+4. VFX PACKAGE
+
+Create a consistent visual vocabulary: thin branching azure electricity, pale blue-white hot contact cores, sparse gold metal sparks, cold dust, and weathered material fragments. Keep Zhao, his weapon path, the player, and ground warnings readable.
+
+Deliver:
+- Subtle idle blade-edge arcs and soft crest glow.
+- Attack-only guandao trails that closely follow the blade.
+- Charge buildup and precise three-pulse LightningSpear thrust bursts.
+- ThunderQuickstep foot sparks, a short motion trace, and a restrained arrival burst.
+- Separate metal hit, blocked strike, successful deflect, and environment impact effects.
+- Posture-break discharge and a brief fading stagger aura.
+- Oath buildup, localized energy transfer, and brief body-sized release.
+- Oath blade/body accents blending azure lightning with warm iron-gold particles.
+- IronCharge sparks and a distinct ColossalHammer contact burst plus traveling ground wave.
+- Death discharge, crest dimming, and controlled particle dissipation.
+- Footstep dust or wet-stone splashes and subtle cloth movement accents.
+
+Separate warnings, charge buildup, impact effects, and aftermath. Damage-shaped effects must match the actual server geometry and hazard progression. ThunderQuickstep remains an advancing charge; do not imply a gameplay teleport. Do not turn LightningSpear into an invented damaging projectile.
+
+Use a Zhao-specific palette override where appropriate; the shared Lightning palette currently differs from his azure costume. Preserve the existing warning and counter meanings instead of globally recoloring every lightning enemy.
+
+Supply transparent particle textures, trails, beam textures, any flipbooks, material settings, and explicit attachment placement. Prefer reusable Roblox-native effects with distance and quality scaling.
+
+5. SFX AND VOICE PACKAGE
+
+Produce separate original layers for:
+- Stone footsteps, armor articulation, cloth, pennants, and weapon handling.
+- Light and heavy guandao swings, thrust air cuts, and recoveries.
+- Electrical charge, sustained low blade crackle, discharge, and short thunder tails.
+- Three individually readable LightningSpear pulses.
+- ThunderQuickstep preparation, launch, and finish.
+- IronCharge launch/contact and ColossalHammer contact/travel.
+- Flesh, metal, shield/guard, and stone contacts.
+- Deflect, guard break, posture break, hit reactions, deathblow, and death.
+- Oath preparation, power gathering, release, and restrained sustained state.
+
+Use a mature, controlled male voice: short exertions, pain reactions, oath delivery, and final breath. Supply several variations without constant shouting. Optional original lines: “Hold the line.” “Your oath ends here.” “Brother… I carry the oath.” Deliver clean dialogue and subtitle text; no cloned performer voice.
+
+Provide dry, separately editable WAV masters at 48 kHz/24 bit; mono for positional one-shots and stereo for music/ambience. Give loop points, variation groups, suggested spatial rolloff, gain, and cooldowns. Use a consistent mix with headroom; keep warnings and deflect sounds audible over music. Any additional per-Zhao audio routing must be identified rather than treated as an existing hook.
+
+6. MUSIC, AMBIENCE, CAMERA, AND UI
+
+Compose an original encounter score using low strings, restrained Chinese bowed/plucked textures, war drums, metal percussion, and sparse choir texture. Deliver a seamless full encounter loop plus optional synchronized stems for tension, combat, and oath intensity. Match the existing TwinSentinels encounter music hook; dynamic stem mixing needs additional implementation.
+
+Create supporting monastery ambience: cold wind, distant thunder, cloth banners, occasional bell resonance, and subdued stone courtyard reflections. Keep these spatial and unobtrusive.
+
+Storyboard:
+- Intro: plume/helmet silhouette, chest diamond, guandao readiness, then return to gameplay.
+- Oath: acknowledgment, power transfer, and readiness; support existing skip and camera-return behavior.
+- Defeat: short readable final collapse and fading energy, without delaying the encounter’s existing completion flow.
+
+Respect BossHandoff’s shot, blend, skip, protection, and minimum warning lead. Keep camera shake brief, directional, optional, and appropriate to the player’s distance. Preserve reduced-flash and reduced-motion preferences.
+
+Provide optional transparent portrait, encounter/title treatment, and lightning/iron status icons consistent with Zhao’s diamond motif. Keep counter prompts and warning timing tied to existing gameplay.
+
+7. ROBLOX TECHNICAL HANDOFF
+
+Author animation on the project’s R15 rig at template scale 1. Zhao’s runtime body scale is 1.2. Preserve all fifteen visible limb regions and the costume’s hand/weapon binding. The modeled guandao tip target is approximately 9.2 studs from the RightHand center at scale 1, tolerance 0.5; do not change the mesh scale or server reach for animation convenience.
+
+Use in-place animation; server motion owns translation. Avoid foot sliding, floating feet, broken grips, armor penetration, and duplicate procedural/track control. Existing priorities are Idle for idle, Action for attacks, and Action4 for Transform; extend deliberately if needed.
+
+Preserve BossSkin/PbrAssets requirements if model edits are needed: uploaded MeshParts, AsuraBone attributes, AsuraBind attachments, separate weapon-role meshes, and complete color/normal/roughness/metalness maps. Keep the current AsuraAssets mapping intact.
+
+Current animation integration supports BossAnimationRules.Custom or AsuraBossAnimation_<slot> overrides copied from ServerStorage.AsuraAssets.AsuraBossAnimations. Audio can use PresentationAssets and SoundService.AsuraAudio templates. The full music override is SoundService.BossMusic_TwinSentinels.
+
+Use cosmetic marker names such as TrailOn, TrailOff, FootstepL, FootstepR, Charge, ImpactFX, and Recovery only with documented client handlers. Never use cosmetic markers as damage authority. Published IDs must be genuine uploaded assets; leave unuploaded entries clearly unassigned.
+
+8. DELIVERABLES AND ACCEPTANCE
+
+Return:
+- The complete editable animation library and exported clips.
+- Modular VFX prefabs, textures, attachment map, and quality tiers.
+- Organized SFX, voice variations, music, and ambience files.
+- A manifest mapping every action to its animation, effects, sound layers, durations, timing source, priority, loop state, upload status, and required playback hook.
+- A clear distinction between assets authored, assets uploaded, and assets connected and verified.
+- Front, side, and gameplay-camera previews of every attack and major state.
+
+Verify normal and oath combat, both Twins’ defeat orders, all three thrust timings, inherited attacks, deferred impacts, interruptions, skipped cinematics, reset/death, cleanup, multiple clients, mobile readability, and reduced-effects settings. Prevent orphaned sounds/trails, duplicate cues, stuck auras, or effects continuing after cancellation.
+
+Keep the final result severe, precise, and readable: Zhao’s identity comes from disciplined guandao technique and controlled lightning, with the oath adding the weight of his fallen partner.
+

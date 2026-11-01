@@ -1,0 +1,51 @@
+{
+  "audioTracks" : 0,
+  "copy" : "clip.mp4",
+  "copySHA256" : "c3194288f9d3907dd53dc8d33c28641d688ef2d179ad54941a45b8e292608bcf",
+  "durationSeconds" : 20.188333333333333,
+  "encodedSamples" : 1163,
+  "firstPTS" : 0.051666666666666666,
+  "frames" : [
+    {
+      "actualSeconds" : 0,
+      "file" : "frame_00.00.png",
+      "requestedSeconds" : 0
+    },
+    {
+      "actualSeconds" : 3.9983333333333335,
+      "file" : "frame_04.00.png",
+      "requestedSeconds" : 4
+    },
+    {
+      "actualSeconds" : 7.9883333333333333,
+      "file" : "frame_08.00.png",
+      "requestedSeconds" : 8
+    },
+    {
+      "actualSeconds" : 11.99,
+      "file" : "frame_12.00.png",
+      "requestedSeconds" : 12
+    },
+    {
+      "actualSeconds" : 15.993333333333334,
+      "file" : "frame_16.00.png",
+      "requestedSeconds" : 16
+    },
+    {
+      "actualSeconds" : 18.989999999999998,
+      "file" : "frame_19.00.png",
+      "requestedSeconds" : 19
+    }
+  ],
+  "kind" : "decoded recorded video; resized viewing copy, no retiming or synthetic frames",
+  "lastPTS" : 20.225000000000001,
+  "nominalCaptureFps" : 57.600791931152344,
+  "pixels" : [
+    1920,
+    1036
+  ],
+  "source" : "\/Users\/digonto\/Documents\/ChatGPT\/Roblox game 2\/outputs\/environment-art-2026-10-31\/video-take6\/bamboo-ground-foreground.mp4",
+  "sourceDurationSeconds" : 20.188333333333333,
+  "sourceSHA256" : "c4ccef48231a3d6ffac36640d5f89346871015f908b0730a405049421e249ff1",
+  "warning" : "capture FPS is not foreground game performance"
+}

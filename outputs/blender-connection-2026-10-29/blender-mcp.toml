@@ -1,0 +1,9 @@
+[mcp_servers.Blender]
+command = "/Users/digonto/.local/share/uv/tools/mcp-for-blender/bin/mcp-for-blender"
+args = ["--host", "127.0.0.1", "--port", "9876"]
+enabled = true
+startup_timeout_sec = 60
+tool_timeout_sec = 180
+
+[mcp_servers.Blender.env]
+BLENDER_MCP_DISABLE_TELEMETRY = "true"

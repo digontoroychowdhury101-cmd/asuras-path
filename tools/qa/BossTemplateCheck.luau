@@ -15,8 +15,10 @@ local Players = game:GetService("Players")
 local LIMBS = { "Head", "UpperTorso", "LowerTorso", "LeftUpperArm", "LeftLowerArm", "LeftHand", "RightUpperArm", "RightLowerArm",
 	"RightHand", "LeftUpperLeg", "LeftLowerLeg", "LeftFoot", "RightUpperLeg", "RightLowerLeg", "RightFoot" }
 -- Weapon tip distance from the RightHand centre at scale 1, matching the costume blades that already
--- line up with the server's reach (LooksDuelists: Jian 7.5, Guandao 11 + 2.5 bonus).
-local TIP = { AsuraBoss_GrandmasterShen_P1 = { 6.75, "Jian" }, AsuraBoss_GrandmasterShen_P2 = { 12.7, "Guandao" } }
+-- line up with the server's reach (LooksDuelists: Jian 7.5, Guandao 11 + 2.5 bonus). Zhao's guandao is
+-- reach 11 / his 1.2 scale (STEP6_TWINS_ASSET_BRIEF §1), held to ±0.5.
+local TIP = { AsuraBoss_GrandmasterShen_P1 = { 6.75, "Jian" }, AsuraBoss_GrandmasterShen_P2 = { 12.7, "Guandao" },
+	AsuraBoss_GeneralZhao = { 9.2, "Guandao", 0.5 } }
 
 local function reference(): Model
 	local rig = workspace:FindFirstChild("AsuraRigReference")
@@ -100,10 +102,12 @@ if tip then
 	for _, w in weapons do
 		local placed = hand.CFrame * w.AsuraBind.CFrame:Inverse()
 		local half = w.Size / 2
-		for _, corner in { Vector3.new(half.X, half.Y, half.Z), Vector3.new(-half.X, -half.Y, -half.Z), Vector3.new(half.X, -half.Y, -half.Z), Vector3.new(-half.X, half.Y, half.Z) } do
+		for i = 0, 7 do
+			local corner = Vector3.new(if i % 2 == 0 then half.X else -half.X, if i % 4 < 2 then half.Y else -half.Y, if i < 4 then half.Z else -half.Z)
 			far = math.max(far, (placed:PointToWorldSpace(corner) - hand.Position).Magnitude)
 		end
 	end
-	check(math.abs(far - tip[1]) <= 0.6, string.format("%s tip %.2f studs from the RightHand centre (target %.2f ± 0.6)", tip[2], far, tip[1]))
+	local tolerance = tip[3] or 0.6
+	check(math.abs(far - tip[1]) <= tolerance, string.format("%s tip %.2f studs from the RightHand centre (target %.2f ± %.1f)", tip[2], far, tip[1], tolerance))
 end
 return string.format("%s: %d checks, %d failed\n%s", NAME, #out, fails, table.concat(out, "\n"))
