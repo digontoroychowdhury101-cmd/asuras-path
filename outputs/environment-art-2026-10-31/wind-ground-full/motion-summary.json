@@ -1,0 +1,58 @@
+{
+  "samples": 32,
+  "kinds": {
+    "Grass": {
+      "name": "Workspace.Map_BambooPass.LivingBambooEntry.Ground_GrassTuft.Ground_GrassTuft",
+      "samePlantSamples": 32,
+      "tipSpanStuds": 0.08016663380988229,
+      "rootErrorMax": null,
+      "firstScreen": [
+        861.6907348632812,
+        329.58209228515625,
+        28.776458740234375
+      ]
+    },
+    "Fern": {
+      "name": "Workspace.Map_BambooPass.LivingBambooEntry.Ground_Fern.Ground_Fern",
+      "samePlantSamples": 32,
+      "tipSpanStuds": 0.0507655602085844,
+      "rootErrorMax": null,
+      "firstScreen": [
+        630.39013671875,
+        320.3087463378906,
+        32.80845260620117
+      ]
+    },
+    "Bamboo": {
+      "name": "Workspace.Map_BambooPass.LivingBambooEntry.GroveClump_2.Bamboo_C.Bamboo_C__Culm",
+      "samePlantSamples": 32,
+      "tipSpanStuds": 0.21925499971540904,
+      "rootErrorMax": 0.00048127639456652105,
+      "firstScreen": [
+        811.0619506835938,
+        58.385040283203125,
+        37.123779296875
+      ]
+    },
+    "Shoot": {
+      "name": "Workspace.Map_BambooPass.LivingBambooEntry.Bamboo_YoungShoots.Bamboo_YoungShoots",
+      "samePlantSamples": 32,
+      "tipSpanStuds": 0.07311867123815606,
+      "rootErrorMax": null,
+      "firstScreen": [
+        751.6253051757812,
+        289.37127685546875,
+        43.11328887939453
+      ]
+    }
+  },
+  "viewportSamples": [
+    [
+      1271,
+      685
+    ]
+  ],
+  "autoFRMLevels": [
+    14
+  ]
+}

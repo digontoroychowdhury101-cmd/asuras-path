@@ -1,0 +1,1 @@
+Rejected framing diagnostic. The stream uses a different vertical origin than the still screenshot API in this Studio/window setup. This video clips top CoreGui and includes the command bar; it is not viewport-only acceptance. Native master remains local under video-take6; do not use its encoded FPS as game performance.

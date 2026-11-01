@@ -2,6 +2,8 @@
 // swiftc -parse-as-library -module-cache-path work/swift-module-cache tools/qa/studio_record.swift -o work/bin/studio_record
 // studio_record frame|record WINDOW_ID X Y WIDTH HEIGHT OUTPUT [SECONDS <= 20]
 // Uses a window-specific ScreenCaptureKit filter; no other app, audio, microphone or cursor capture.
+// Calibrate record mode with a short decoded video. In the tested macOS window, frame and record
+// interpreted the vertical crop origin differently; a correct still did not prove video framing.
 import Foundation
 import ScreenCaptureKit
 import AVFoundation

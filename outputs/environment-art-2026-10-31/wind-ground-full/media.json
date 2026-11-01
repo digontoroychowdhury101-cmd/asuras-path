@@ -1,0 +1,51 @@
+{
+  "audioTracks" : 0,
+  "copy" : "clip.mp4",
+  "copySHA256" : "f1f7dd1ecf0f4b587f06ccc277371a8d2f15ce9ed485e3d12631943fa86e50f4",
+  "durationSeconds" : 20.036666666666665,
+  "encodedSamples" : 1162,
+  "firstPTS" : 0.03833333333333333,
+  "frames" : [
+    {
+      "actualSeconds" : 0,
+      "file" : "frame_00.00.png",
+      "requestedSeconds" : 0
+    },
+    {
+      "actualSeconds" : 3.9883333333333333,
+      "file" : "frame_04.00.png",
+      "requestedSeconds" : 4
+    },
+    {
+      "actualSeconds" : 7.9983333333333331,
+      "file" : "frame_08.00.png",
+      "requestedSeconds" : 8
+    },
+    {
+      "actualSeconds" : 11.988333333333333,
+      "file" : "frame_12.00.png",
+      "requestedSeconds" : 12
+    },
+    {
+      "actualSeconds" : 15.996666666666666,
+      "file" : "frame_16.00.png",
+      "requestedSeconds" : 16
+    },
+    {
+      "actualSeconds" : 18.984999999999999,
+      "file" : "frame_19.00.png",
+      "requestedSeconds" : 19
+    }
+  ],
+  "kind" : "decoded recorded video; resized viewing copy, no retiming or synthetic frames",
+  "lastPTS" : 20.059999999999999,
+  "nominalCaptureFps" : 57.987178802490234,
+  "pixels" : [
+    1920,
+    1036
+  ],
+  "source" : "\/Users\/digonto\/Documents\/ChatGPT\/Roblox game 2\/outputs\/environment-art-2026-10-31\/video-take8\/bamboo-wind-full.mp4",
+  "sourceDurationSeconds" : 20.036666666666665,
+  "sourceSHA256" : "e96adbd4fb54cf6f4e482f380d38d0e9e85adef9c7d0f37a32c18561c842410d",
+  "warning" : "capture FPS is not foreground game performance"
+}

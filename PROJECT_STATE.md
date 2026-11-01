@@ -1,5 +1,9 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## Full-viewport Bamboo motion clips — 2026-11-01 (Mac)
+
+Decoded-video calibration fixed the stream crop. Captured 20-second wind and 14.7-second normal-camera entry/crest/Baize-approach clips with full HUD; 32 visible plant samples confirm rooted motion. Both owned tests stopped cleanly; Automatic settings retained. Next: replace three white ridge climb-block visuals without changing jumps, then full-route/performance checks. Physical-mobile and whole-world acceptance remain open.
+
 ## General Zhao clips published — 2026-11-01 (Mac)
 
 L2 and Oath L2 follow-through now stops 60° right, so the shaft clears his hip: 59/59 clips validate. All 59 uploaded via Studio and each verified by loading it back. IDs live in `published.json` and bind through `AsuraBossAnimations.model.json`; export flags clips rebaked since upload. Next: in-game playback review of the hooks.

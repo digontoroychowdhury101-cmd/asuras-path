@@ -77,8 +77,9 @@ spending or new art upload occurred.
   `VirtualInput.SendMouseDelta` turned the existing camera into Bamboo. Start: (0,3.2,-1126), 100 HP;
   end: (2.53,3,-1404.03), 100 HP, Baize encounter. This is a **seeded route segment, not an earned
   campaign run or sustained fight**. Its source digest is 193360600.
-- The entry clip's crop became stale after Studio resized: part of the command bar appears at the
-  bottom and the top CoreGui is clipped. Retained as diagnostic footage; **not final viewport-only
+- The entry clip used coordinates calibrated with the still-image API: part of the command bar
+  appears at the bottom and top CoreGui is clipped. A later decoded-video calibration established
+  a 33-point vertical difference between still and stream capture in this window setup. Retained as diagnostic footage; **not final viewport-only
   acceptance**. Earlier wrong-heading and narrower-crop attempts remain local and excluded.
 - Play used Automatic quality with FRM enabled, measured around levels 19–20; it was **not fixed
   Level21**. EditQualityLevel was temporarily 21 for inspection, then restored to the original
@@ -124,11 +125,46 @@ The three largest visible remaining Bamboo problems in these and the wind views:
 **261 scripts / 1,952,592 bytes / digest 42186667**. The verifier exercised the same functional code. New Swift helpers were compiled and exercised; Python helpers compile.
 These checks do not certify foreground timing, physical mobile or completion of the whole pass.
 
+## Corrected full-viewport videos — 1 November
+
+- `entry-traversal-full/clip.mp4`: **14.68 seconds**, normal production camera and W / Q / Space
+  controls, from seeded entry (0,3.2,-1126), 100 HP to (1.93,3,-1395.11), 100 HP, Baize encounter.
+  Reviewed decoded frames at 0, 8 and 14.58 seconds: full CoreGui/HUD, no Studio panels, no foliage
+  covering the route or camera along this segment. This covers entry, crest and arena approach;
+  **not the full pass, optional ridge/glide route, lock-on clearance or a sustained fight**.
+- `wind-ground-full/clip.mp4`: **20.04 seconds**, player-height observer at (-8,5.5,-1184), looking
+  at (-25,1.3,-1200), FOV 70. Reviewed full-size decoded frames at 0, 8 and 19 seconds: full HUD,
+  no Studio panels; native blades in the foreground and custom plants in the grove. Studio was
+  foreground at both recording endpoints; Automatic quality, measured FRM **14** throughout the
+  32 plant samples. No quality, lighting, wind, combat, health or geometry override was applied.
+- Same visible custom plants over 32 samples: grass tip span **0.0802**, fern **0.0508**, bamboo
+  **0.2193**, shoot **0.0731** studs; bamboo base error ≤**0.000482** studs. Other base errors remain
+  unmeasured. `motion-summary.json` and `session.json` retain transforms, on-screen coordinates,
+  wall-clock times and a stable 1271×685 viewport. Motion is subtle, rather than whole-plant swaying.
+- Both are actual video, resized to 1920×1036 without retiming, synthetic frames or audio. Source
+  masters remain local under ignored `video-take6/` and `video-take8/`; hashes and durations accompany
+  each copy. **Encoded frame rate is not game performance**. Endpoint foreground checks do not
+  replace a continuous focus-qualified 60-second performance run.
+- A bounded two-second **video** calibration fixed framing. For this exact window [0,33,1470,923],
+  stream rect [2,162,1271,685] works; the still-image API used Y=195. Recalibrate actual video after
+  layout/window changes. `wind-ground-foreground/` is the earlier rejected still-calibrated crop,
+  explicitly labeled. The setup-only take7 returned to Edit before recording and produced no movie.
+- Both owned tests reported `ownedTestStopped=true`; Studio is confirmed Edit, original Automatic
+  graphics retained, and their temporary probes/camera/keys removed. Source digest remains 42186667.
+  The concurrent General Zhao animation-library commit is preserved; these source and art checks
+  do not certify its authored animation playback.
+
+New footage makes the three **white FrostStone climb blocks** conspicuous beside the crest.
+They are established optional-route colliders at (39,13.5,-1268), (46,15,-1270), (53,16.5,-1268).
+Next, prepare convincing frost-worn step-stone visuals while preserving those exact surfaces and
+jump gaps; then address the broader floor/crest/canopy defects listed above. Nothing in these
+clips establishes whole-region visual completion or either device performance gate.
+
 ## Next concrete actions
 
-1. Complete foreground views and improve the three remaining Bamboo composition defects above.
-2. Make recording bounds resilient to Studio viewport changes; capture foreground native grass and
-   the full normal-camera route, then complete the representative 60-second traversal/combat measurement.
+1. Dress the three white FrostStone climb blocks, preserving the optional ridge route, then improve floor/crest/canopy composition.
+2. Extend the verified video framing to the full route, optional ridge/glide and lock-on tests; complete
+   the representative 60-second traversal/combat measurement with continuous observed focus.
 3. Import one root-pilot section, verify actual scale/UVs/tangent normal/permissions, and compare the
    same Sanctuary cameras before deciding whether to install its material treatment.
 

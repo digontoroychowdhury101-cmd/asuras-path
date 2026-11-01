@@ -1,0 +1,31 @@
+{
+  "audio" : false,
+  "cursor" : false,
+  "endedUtc" : "2026-11-01T04:12:52Z",
+  "frontmostAtEnd" : "com.Roblox.RobloxStudio",
+  "frontmostAtStart" : "com.Roblox.RobloxStudio",
+  "kind" : "actual Studio viewport recording; window-specific filter",
+  "microphone" : false,
+  "pixels" : [
+    2542,
+    1370
+  ],
+  "recordedBytes" : 89441609,
+  "recordedSeconds" : 20,
+  "requestedSeconds" : 19,
+  "sourceRectPoints" : [
+    2,
+    162,
+    1271,
+    685
+  ],
+  "startedUtc" : "2026-11-01T04:12:31Z",
+  "windowBounds" : [
+    0,
+    33,
+    1470,
+    923
+  ],
+  "windowID" : 8899,
+  "windowTitle" : "\/Users\/digonto\/Documents\/ChatGPT\/Roblox game 2\/places\/AsurasPath.rbxlx - Roblox Studio"
+}
