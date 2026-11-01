@@ -1,0 +1,38 @@
+{
+  "topVertices": 69,
+  "template": "ServerStorage.AsuraBambooFrostSteps.FrostStep_A",
+  "bottom": 0,
+  "top": 4,
+  "maps": {
+    "color": "rbxassetid://103863113700720",
+    "metalness": "rbxassetid://129614262041995",
+    "normal": "rbxassetid://94149514080696",
+    "roughness": "rbxassetid://101870070700021"
+  },
+  "landingCornerErrors": [
+    0.000002396076979493955,
+    0.000002396076979493955,
+    0.000001922192041092785,
+    0.000001922192041092785
+  ],
+  "triangles": 384,
+  "preloads": [
+    {
+      "id": "rbxassetid://77301153602166",
+      "status": "Success"
+    }
+  ],
+  "mesh": "rbxassetid://77301153602166",
+  "size": [
+    4.864460468292236,
+    4,
+    4.805690288543701
+  ],
+  "typedImagePreload": {
+    "method": "four ImageLabel.Image references; untyped URI strings are not used to certify image loading",
+    "status": "4/4 Success"
+  },
+  "userImported": true,
+  "uploadedVariant": "A",
+  "reuse": "three existing rotations; variants B/C remain local source options"
+}

@@ -1,0 +1,131 @@
+[
+  {
+    "name": "FrostStep_A__Stone",
+    "triangles": 384,
+    "dimensions": [
+      4.864459991455078,
+      4.805689811706543,
+      4.0
+    ],
+    "uvSets": 1,
+    "materials": 1,
+    "landingHits": [
+      {
+        "x": -2,
+        "y": -2,
+        "surfaceZ": 4.0,
+        "normalZ": 1.0
+      },
+      {
+        "x": -2,
+        "y": 2,
+        "surfaceZ": 4.0,
+        "normalZ": 1.0
+      },
+      {
+        "x": 2,
+        "y": -2,
+        "surfaceZ": 4.0,
+        "normalZ": 1.0
+      },
+      {
+        "x": 2,
+        "y": 2,
+        "surfaceZ": 4.0,
+        "normalZ": 1.0
+      },
+      {
+        "x": 0,
+        "y": 0,
+        "surfaceZ": 4.0,
+        "normalZ": 1.0
+      }
+    ]
+  },
+  {
+    "name": "FrostStep_B__Stone",
+    "triangles": 384,
+    "dimensions": [
+      4.864329814910889,
+      4.802760124206543,
+      4.0
+    ],
+    "uvSets": 1,
+    "materials": 1,
+    "landingHits": [
+      {
+        "x": -2,
+        "y": -2,
+        "surfaceZ": 4.0,
+        "normalZ": 1.0
+      },
+      {
+        "x": -2,
+        "y": 2,
+        "surfaceZ": 4.0,
+        "normalZ": 1.0
+      },
+      {
+        "x": 2,
+        "y": -2,
+        "surfaceZ": 4.0,
+        "normalZ": 1.0
+      },
+      {
+        "x": 2,
+        "y": 2,
+        "surfaceZ": 4.0,
+        "normalZ": 1.0
+      },
+      {
+        "x": 0,
+        "y": 0,
+        "surfaceZ": 4.0,
+        "normalZ": 1.0
+      }
+    ]
+  },
+  {
+    "name": "FrostStep_C__Stone",
+    "triangles": 384,
+    "dimensions": [
+      4.8769330978393555,
+      4.881430625915527,
+      4.0
+    ],
+    "uvSets": 1,
+    "materials": 1,
+    "landingHits": [
+      {
+        "x": -2,
+        "y": -2,
+        "surfaceZ": 4.0,
+        "normalZ": 1.0
+      },
+      {
+        "x": -2,
+        "y": 2,
+        "surfaceZ": 4.0,
+        "normalZ": 1.0
+      },
+      {
+        "x": 2,
+        "y": -2,
+        "surfaceZ": 4.0,
+        "normalZ": 1.0
+      },
+      {
+        "x": 2,
+        "y": 2,
+        "surfaceZ": 4.0,
+        "normalZ": 1.0
+      },
+      {
+        "x": 0,
+        "y": 0,
+        "surfaceZ": 4.0,
+        "normalZ": 1.0
+      }
+    ]
+  }
+]

@@ -1,0 +1,229 @@
+{
+  "kind": "seeded Studio running-client diagnostic; original scene and HUD",
+  "stage": "before",
+  "views": [
+    {
+      "name": "ridge_steps_approach",
+      "eye": [
+        29,
+        18.5,
+        -1261
+      ],
+      "target": [
+        47,
+        14.5,
+        -1269
+      ],
+      "stand": [
+        27,
+        15.2,
+        -1254
+      ],
+      "files": [
+        "before_ridge_steps_approach.jpg"
+      ],
+      "settle": 5.0,
+      "conditions": {
+        "maxFramerate": "unavailable",
+        "wind": "6, 0, 2",
+        "place": "AsurasPath_frost_import.rbxlx",
+        "foliageRegistered": 792,
+        "foliageActive": 112,
+        "tier": "Detailed",
+        "terrainDecoration": "unavailable",
+        "lighting": {
+          "density": 0.3100000023841858,
+          "ambient": "0.317647, 0.341176, 0.313726",
+          "outdoor": "0.47451, 0.501961, 0.454902",
+          "clock": 15.300000190734863,
+          "haze": 1.5499999523162842,
+          "exposure": 0.020000003278255463
+        },
+        "quality": "Automatic",
+        "controlsVisible": false,
+        "studioVersion": "0.745.0.7451137",
+        "touch": false,
+        "editorQuality": "Automatic",
+        "foliageShadows": 28,
+        "autoFRMLevel": 10,
+        "region": "BambooPass",
+        "hud": {
+          "JadeDialogue": false,
+          "AsuraColosseum": true,
+          "BubbleChat": true,
+          "AsuraTouchControls": false,
+          "ProximityPrompts": true,
+          "Chat": true,
+          "AsuraHUD": true,
+          "AsuraVignette": true,
+          "SpectatorWagers": false,
+          "Freecam": true
+        },
+        "camera": "29, 18.5, -1261, 0.40613845, 0.181855306, -0.895533562, -0, 0.979998112, 0.199007452, 0.913811564, -0.0808245763, 0.398014903",
+        "health": 100,
+        "fov": 70,
+        "viewport": [
+          1271,
+          685
+        ],
+        "characterPosition": [
+          27,
+          15.622152328491211,
+          -1254
+        ],
+        "frmEnabled": true,
+        "editQuality": "Automatic"
+      },
+      "cost": null
+    },
+    {
+      "name": "ridge_steps_ground",
+      "eye": [
+        45,
+        6.5,
+        -1257
+      ],
+      "target": [
+        46,
+        10.5,
+        -1269
+      ],
+      "stand": [
+        45,
+        3.2,
+        -1255
+      ],
+      "files": [
+        "before_ridge_steps_ground.jpg"
+      ],
+      "settle": 5.0,
+      "conditions": {
+        "maxFramerate": "unavailable",
+        "wind": "6, 0, 2",
+        "place": "AsurasPath_frost_import.rbxlx",
+        "foliageRegistered": 792,
+        "foliageActive": 112,
+        "tier": "Detailed",
+        "terrainDecoration": "unavailable",
+        "lighting": {
+          "density": 0.3100000023841858,
+          "ambient": "0.317647, 0.341176, 0.313726",
+          "outdoor": "0.47451, 0.501961, 0.454902",
+          "clock": 15.300000190734863,
+          "haze": 1.5499999523162842,
+          "exposure": 0.020000003278255463
+        },
+        "quality": "Automatic",
+        "controlsVisible": false,
+        "studioVersion": "0.745.0.7451137",
+        "touch": false,
+        "editorQuality": "Automatic",
+        "foliageShadows": 32,
+        "autoFRMLevel": 12,
+        "region": "BambooPass",
+        "hud": {
+          "JadeDialogue": false,
+          "AsuraColosseum": true,
+          "BubbleChat": true,
+          "AsuraTouchControls": false,
+          "ProximityPrompts": true,
+          "Chat": true,
+          "AsuraHUD": true,
+          "AsuraVignette": true,
+          "SpectatorWagers": false,
+          "Freecam": true
+        },
+        "camera": "45, 6.5, -1257, 0.996545792, -0.0261796042, -0.078811042, -0, 0.949010611, -0.315244168, 0.0830454826, 0.314155251, 0.945732474",
+        "health": 100,
+        "fov": 70,
+        "viewport": [
+          1271,
+          685
+        ],
+        "characterPosition": [
+          45,
+          3.561854124069214,
+          -1255
+        ],
+        "frmEnabled": true,
+        "editQuality": "Automatic"
+      },
+      "cost": null
+    },
+    {
+      "name": "ridge_steps_reverse",
+      "eye": [
+        62,
+        24.5,
+        -1278
+      ],
+      "target": [
+        43,
+        13.5,
+        -1269
+      ],
+      "stand": [
+        63,
+        21.2,
+        -1273
+      ],
+      "files": [
+        "before_ridge_steps_reverse.jpg"
+      ],
+      "settle": 5.0,
+      "conditions": {
+        "maxFramerate": "unavailable",
+        "wind": "6, 0, 2",
+        "place": "AsurasPath_frost_import.rbxlx",
+        "foliageRegistered": 792,
+        "foliageActive": 112,
+        "tier": "Detailed",
+        "terrainDecoration": "unavailable",
+        "lighting": {
+          "density": 0.3100000023841858,
+          "ambient": "0.317647, 0.341176, 0.313726",
+          "outdoor": "0.47451, 0.501961, 0.454902",
+          "clock": 15.300000190734863,
+          "haze": 1.5499999523162842,
+          "exposure": 0.020000003278255463
+        },
+        "quality": "Automatic",
+        "controlsVisible": false,
+        "studioVersion": "0.745.0.7451137",
+        "touch": false,
+        "editorQuality": "Automatic",
+        "foliageShadows": 27,
+        "autoFRMLevel": 15,
+        "region": "BambooPass",
+        "hud": {
+          "JadeDialogue": false,
+          "AsuraColosseum": true,
+          "BubbleChat": true,
+          "AsuraTouchControls": false,
+          "ProximityPrompts": true,
+          "Chat": true,
+          "AsuraHUD": true,
+          "AsuraVignette": true,
+          "SpectatorWagers": false,
+          "Freecam": true
+        },
+        "camera": "62, 24.5, -1278, -0.42808634, -0.418968081, 0.800754547, 0, 0.886047363, 0.463594735, -0.903737783, 0.198458567, -0.379304796",
+        "health": 100,
+        "fov": 70,
+        "viewport": [
+          1271,
+          685
+        ],
+        "characterPosition": [
+          62.99777603149414,
+          22.08273696899414,
+          -1273.00439453125
+        ],
+        "frmEnabled": true,
+        "editQuality": "Automatic"
+      },
+      "cost": null
+    }
+  ],
+  "restoration_errors": []
+}

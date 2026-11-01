@@ -90,6 +90,36 @@ local function spire(parent: Instance, x: number, z: number, height: number, rng
 	Kit.part(parent, "FrostCap", Vector3.new(width * 0.9, 3, width * 0.7), base * CFrame.new(0, height - 0.5, 0), FROST, M.Snow, Kit.decor())
 end
 
+local function frostSteps(parent: Instance, map: Instance)
+	local structure = map:FindFirstChild("Structure")
+	for _, box in if structure then structure:GetChildren() else {} do
+		if not box:IsA("BasePart") then continue end
+		if box.Name:match("^FrostStone[123]$") then
+			local stone = Decor.han(parent, "AsuraBambooFrostSteps", "FrostStep_A",
+				box.CFrame * CFrame.new(0, -box.Size.Y / 2, 0), 1)
+			if stone then
+				stone.Name = box.Name .. "_WornStone"
+				box.Transparency, box.CastShadow = 1, false
+			end
+		elseif box.Name:match("^FrostFooting[123]$") then
+			local column = Decor.han(parent, "AsuraBambooFrostSteps", "FrostStep_A", CFrame.identity, 1)
+			local rock = column and column:FindFirstChildWhichIsA("MeshPart", true)
+			if column and rock then
+				-- The broad stem meets the tread's underside, rather than balancing it on a crag tip.
+				-- Its existing cliff maps remove the frost band from this stretched support copy.
+				local cliff = game.ServerStorage.AsuraHanKit.CragC:FindFirstChildWhichIsA("SurfaceAppearance", true)
+				local surface = rock:FindFirstChildOfClass("SurfaceAppearance")
+				if cliff and surface then surface:Destroy(); cliff:Clone().Parent = rock end
+				rock.Size = Vector3.new(box.Size.X + 1.2, box.Size.Y + 0.4, box.Size.Z + 1.2)
+				rock.CFrame = box.CFrame
+				column.WorldPivot = box.CFrame * CFrame.new(0, -rock.Size.Y / 2, 0)
+				column.Name = box.Name .. "_Limestone"
+				box.Transparency, box.CastShadow = 1, false
+			end
+		end
+	end
+end
+
 function Dressing.Build(map: Instance, layout: any, rng: Random)
 	local groves = Kit.folder("BambooGroves", map)
 	for i, grove in layout.Groves or {} do
@@ -100,6 +130,7 @@ function Dressing.Build(map: Instance, layout: any, rng: Random)
 	Ecology.Entry(map, layout, Random.new(291026))
 	Ecology.Shrine(map, layout, Random.new(291027))
 	local set = Kit.folder("PassDressing", map)
+	frostSteps(set, map)
 	-- Karst spires beyond the thicket: the pass's skyline on both sides.
 	for i = 0, 9 do
 		local z = -1160 - i * 54

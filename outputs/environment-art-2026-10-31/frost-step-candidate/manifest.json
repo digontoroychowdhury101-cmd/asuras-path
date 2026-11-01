@@ -1,0 +1,74 @@
+{
+  "kind": "uninstalled frost-step import candidate",
+  "units": "studs; Blender Z up, export Y up",
+  "landingSquare": 4,
+  "landingTop": 4,
+  "totalTriangles": 1152,
+  "parts": [
+    {
+      "name": "FrostStep_A__Stone",
+      "triangles": 384,
+      "dimensions": [
+        4.864459991455078,
+        4.805689811706543,
+        4.0
+      ],
+      "file": "FrostStep_A.glb",
+      "sha256": "60b636808b49dfae263a17a1a2e763f9ae082158289ad0c90a98a0e5ef1fd992"
+    },
+    {
+      "name": "FrostStep_B__Stone",
+      "triangles": 384,
+      "dimensions": [
+        4.864329814910889,
+        4.802760124206543,
+        4.0
+      ],
+      "file": "FrostStep_B.glb",
+      "sha256": "081de7a5d0a06258c9661c8c4e48b11eb4f7cfa950d287185101b0f8a7d9737c"
+    },
+    {
+      "name": "FrostStep_C__Stone",
+      "triangles": 384,
+      "dimensions": [
+        4.8769330978393555,
+        4.881430625915527,
+        4.0
+      ],
+      "file": "FrostStep_C.glb",
+      "sha256": "a68f115f6389a57d41d2bcab540b68e2d92df1200ced2022189fa0f999dcf6df"
+    }
+  ],
+  "maps": {
+    "Color": {
+      "file": "Color.png",
+      "pixels": [
+        2048,
+        2048
+      ],
+      "sha256": "e01c0c642ed54835e4f3c29d7ccfc82ab48fcfb8babad4993307d2f96cdf4b10"
+    },
+    "Normal": {
+      "file": "Normal.png",
+      "pixels": [
+        2048,
+        2048
+      ],
+      "sha256": "43519e3d97492c07388694db86ec6648cfcdc8134f626ef049b4fc660ac6bbc0"
+    },
+    "Roughness": {
+      "file": "Roughness.png",
+      "pixels": [
+        1024,
+        1024
+      ],
+      "sha256": "d110fb17c9ba6e6028c770f9010d6d936ab3d18b5961334f0cef4be8bff87691"
+    }
+  },
+  "credits": "Original project geometry; existing MIT Terrain3D / ambientCG Rock023 maps; see assets/CREDITS.md",
+  "collision": "decor only; exact existing 4x4 climb colliders retained; not yet integrated",
+  "sourceMaster": "assets/build/frost_steps_v1/FrostSteps_Master.blend",
+  "exportDirectory": "assets/build/frost_steps_v1",
+  "studioStatus": "First textured mesh open in Import Preview, anchored, Creator Me; upload not started/confirmed; no game integration or asset IDs yet.",
+  "productionStatus": "Variant A imported and integrated; B/C remain local candidates. See BAMBOO_FROST_STEPS_UPLOADED.json."
+}

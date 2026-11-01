@@ -1,5 +1,9 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## Frost Ridge step checkpoint — 2026-11-01 (Mac)
+
+Imported original PBR stone; six reused meshes replace white step visuals and add grounded supports. Original landing boxes/gaps retained; three narrow footings added (76 colliders). Three Play comparisons saved; viewport/Automatic-quality differences disclosed. Support texture stretching and normal jump/return test remain open. Canonical build matches Studio; 14 local checks pass. Next: support material refinement, traversal, then Bamboo/performance gates.
+
 ## Full-viewport Bamboo motion clips — 2026-11-01 (Mac)
 
 Decoded-video calibration fixed the stream crop. Captured 20-second wind and 14.7-second normal-camera entry/crest/Baize-approach clips with full HUD; 32 visible plant samples confirm rooted motion. Both owned tests stopped cleanly; Automatic settings retained. Next: replace three white ridge climb-block visuals without changing jumps, then full-route/performance checks. Physical-mobile and whole-world acceptance remain open.

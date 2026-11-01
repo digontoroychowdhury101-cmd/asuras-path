@@ -179,3 +179,24 @@ API references checked: [EditableMesh](https://create.roblox.com/docs/reference/
 [texture specifications](https://create.roblox.com/docs/art/modeling/texture-specifications),
 [RenderSettings](https://create.roblox.com/docs/reference/engine/classes/RenderSettings),
 [VirtualInput](https://create.roblox.com/docs/reference/engine/classes/VirtualInput).
+
+## Frost Ridge steps checkpoint — 1 November
+
+Replaced three floating white climb-block visuals with an original 384-triangle PBR stone, uploaded
+once and reused. Native import scale, foot pivot, real asset IDs and typed map loads were checked;
+the native library is mapped into the canonical build. Three broad ground-bearing supports now meet
+the landings. Original landing boxes and jump gaps remain; three narrow footings add collision below
+them (Bamboo 73→76). Six decorative mesh copies total 2,304 triangles. Source/master locations,
+reproduction scripts and remaining checks are documented in `frost-step-candidate/README.md`.
+
+`frost-steps/before_*` and `after_*` contain three actual Play views at identical poses with the normal
+HUD and 100 HP. Before viewport 1271×685 and after 1221×503, with differing Automatic FRM levels;
+these establish placement and material changes only. The earlier pointed support design is retained
+as rejected. Broad supports fix floating contact, but their vertical map stretch still looks poor.
+The normal jump/return route, matched foreground-quality images and timing remain unverified.
+No Bamboo or world completion is claimed. Next: correct support texel scale, ordinary ridge traversal,
+then grove-floor/crest/canopy refinement and the 60-second desktop route/combat benchmark.
+
+Final checkpoint: 14/14 local verifier stages pass; canonical and open Edit scripts match **261 /
+1,954,426 / 781841931**. Native library ID/size/flags were read back separately. Owned Play returned to
+Edit with no comparison-restoration errors. See `frost-steps/checkpoint.json` and `verification-final.log`.

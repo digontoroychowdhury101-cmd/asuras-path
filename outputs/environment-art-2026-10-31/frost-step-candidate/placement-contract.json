@@ -1,0 +1,83 @@
+{
+  "source": "src/shared/BambooPassLayout.luau",
+  "preserve": [
+    "box CFrame",
+    "4x4x4 collider size",
+    "CanCollide/CanQuery/CanTouch",
+    "top height and jump gaps"
+  ],
+  "steps": [
+    {
+      "name": "FrostStone1",
+      "top": [
+        39,
+        13.5,
+        -1268
+      ],
+      "foot": [
+        39,
+        9.5,
+        -1268
+      ],
+      "yawDegrees": 17
+    },
+    {
+      "name": "FrostStone2",
+      "top": [
+        46,
+        15,
+        -1270
+      ],
+      "foot": [
+        46,
+        11,
+        -1270
+      ],
+      "yawDegrees": 34
+    },
+    {
+      "name": "FrostStone3",
+      "top": [
+        53,
+        16.5,
+        -1268
+      ],
+      "foot": [
+        53,
+        12.5,
+        -1268
+      ],
+      "yawDegrees": 51
+    }
+  ],
+  "candidate": {
+    "sourceLandingSquare": 4.05,
+    "requiredCoveredSquare": 4,
+    "sourceTop": 4,
+    "decorativeOnly": true
+  },
+  "pending": [
+    "normal jump and ridge-return route",
+    "support texture stretching refinement",
+    "matched foreground final-quality comparison",
+    "desktop and physical-mobile performance"
+  ],
+  "verified": [
+    "actual importer orientation and 1:1 scale",
+    "typed mesh and four image preloads",
+    "three running-client comparison poses; differing viewport and Automatic quality",
+    "original landing layout fields preserved in source"
+  ],
+  "additionalFootings": {
+    "count": 3,
+    "width": 3.5,
+    "depth": 3.5,
+    "bottomY": -2,
+    "topY": [
+      10.3,
+      11.8,
+      13.3
+    ],
+    "note": "narrow supporting collision below original landing blocks; Bamboo colliders 73 to 76"
+  }
+}

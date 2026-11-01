@@ -33,6 +33,10 @@ L.slab(r, "RidgeMass", "Rock", 106, 160, -1290, -1440, 18, 20)
 L.slab(r, "RidgeShoulder", "Rock", 106, 160, -1440, -1582, 36, 38)
 for i, s in { { 39, 13.5, -1268 }, { 46, 15, -1270 }, { 53, 16.5, -1268 } } do
 	L.box(r, "FrostStone" .. i, "Snow", s[1], s[2] - 2, s[3], 4, 4, 4, i * 17)
+	-- Narrow ground-bearing stems below the unchanged landing blocks. Their tops overlap the
+	-- blocks' undersides; they add no landing or bridge across the established jump gaps.
+	local bottom, top = -2, s[2] - 3.2
+	L.box(r, "FrostFooting" .. i, "Rock", s[1], (bottom + top) / 2, s[3], 3.5, top - bottom, 3.5, i * 17)
 end
 L.slab(r, "OverlookFlags", "Path", 108, 150, -1392, -1432, 18.2, 1)
 L.wall(r, "OverlookParapet", "Stone", 106.8, -1388, 106.8, -1436, 18, 2.6, 1.4)

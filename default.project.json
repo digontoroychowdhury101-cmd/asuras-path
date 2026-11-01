@@ -731,6 +731,9 @@
       },
       "AsuraBambooBreakage": {
         "$path": "assets/models/AsuraBambooBreakage.rbxmx"
+      },
+      "AsuraBambooFrostSteps": {
+        "$path": "assets/models/AsuraBambooFrostSteps.rbxmx"
       }
     },
     "StarterPlayer": {

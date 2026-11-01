@@ -7,3 +7,6 @@ video/
 # Native masters and rejected recording attempts retained locally.
 video-take*/
 wind-wide-video/
+
+# Native imported-asset snapshot; extracted library is committed.
+frost-import/

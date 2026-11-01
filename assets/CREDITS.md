@@ -175,3 +175,12 @@ the original assets, uploads and license notices remain intact.
 `AsuraBambooBreakage` contains original project-authored hollow/splintered culms and a fallen pole, generated in a separate live Blender scene by `tools/blender/bamboo_breakage.py`. Four material sections, 2,704 evaluated triangles total (maximum 1,854); no decimation or alpha cards. 2048 PBR masters and separate 1024 upload maps are preserved in `assets/build/bamboo_breakage_v2/`; the initial v1 master remains untouched. The validated export is restricted to the active scene, avoiding selected objects from earlier scenes. Real uploaded IDs, pivots, dimensions, import settings and source hashes are in `assets/BAMBOO_BREAKAGE_UPLOADED.json`.
 
 The conspicuous Bamboo Pass green-cylinder log is replaced using the existing CC0 `AsuraDeadTrunk` upload, with `AsuraRoots` (Poly Haven Pine Roots) around its base and the shrine. Existing original lobby-kit columns/roof/joinery and ruined pillars, plus the already credited 0 A.D. Han shrine, are reused without changing their masters or licenses. No paid generation or public game publishing occurred.
+
+## Bamboo frost steps — 1 November 2026
+
+Original stone geometry and frost blending were authored by `tools/blender/frost_steps.py`, without
+decimation, in a separate Blender master. The baked stone colour, normal and roughness reuse the
+already credited Terrain3D / ambientCG Rock023 CC0 maps above; the original Terrain3D license notices
+remain intact. Variant A is uploaded in `AsuraBambooFrostSteps`; B/C remain local source options.
+Three supports reuse that geometry and the existing CragC material. Real creator-owned IDs and the
+source hash are recorded in `assets/BAMBOO_FROST_STEPS_UPLOADED.json`.

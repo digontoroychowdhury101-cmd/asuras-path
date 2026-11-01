@@ -1,0 +1,39 @@
+{
+  "kind": "checkpoint validation; incomplete gameplay and performance acceptance",
+  "studioId": "37910d5a-c627-4fc5-81ba-0c4520f27138",
+  "canonical": "places/AsurasPath.rbxlx",
+  "sourceDigest": {
+    "scripts": 261,
+    "bytes": 1954426,
+    "digest": 781841931,
+    "matchesOpenEdit": true
+  },
+  "nativeLibrary": {
+    "path": "ServerStorage.AsuraBambooFrostSteps.FrostStep_A",
+    "meshId": "rbxassetid://77301153602166",
+    "size": [
+      4.864460468292236,
+      4,
+      4.805690288543701
+    ],
+    "anchored": true,
+    "CanCollide": false,
+    "CanQuery": false,
+    "CanTouch": false
+  },
+  "localVerifier": {
+    "stagesPassed": 14,
+    "campaignRegionChecksPassed": 333,
+    "BambooParts": 1383,
+    "BambooColliders": 76,
+    "log": "verification-final.log"
+  },
+  "ownedPlayStopped": true,
+  "finalMode": "Edit",
+  "pending": [
+    "normal ridge jump and return regression",
+    "support texture scale refinement",
+    "matched foreground quality comparison",
+    "qualified desktop 60-second route/combat and physical mobile timing"
+  ]
+}

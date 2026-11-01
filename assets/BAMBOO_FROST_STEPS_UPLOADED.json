@@ -1,0 +1,28 @@
+{
+  "library": "AsuraBambooFrostSteps",
+  "importer": "Studio 3D Importer, Creator Me; representative A import verified in Edit",
+  "master": "assets/build/frost_steps_v1/FrostSteps_Master.blend",
+  "export": "assets/build/frost_steps_v1/FrostStep_A.glb",
+  "meshId": "rbxassetid://77301153602166",
+  "maps": {
+    "color": "rbxassetid://103863113700720",
+    "metalness": "rbxassetid://129614262041995",
+    "normal": "rbxassetid://94149514080696",
+    "roughness": "rbxassetid://101870070700021"
+  },
+  "size": [
+    4.864460468292236,
+    4,
+    4.805690288543701
+  ],
+  "triangles": 384,
+  "pivot": "base origin; 4-stud flat landing top",
+  "readbackLandingCornerErrorMax": 2.396076979493955e-06,
+  "preloads": "mesh Success and 4/4 typed ImageLabel image Success",
+  "reuse": "variant A at the three established tread rotations plus three scaled supports with existing CragC maps; B/C remain local source options",
+  "collisions": "three original 4x4x4 landing blocks retained; three narrow ground-bearing footings added in BambooPassLayout; decorative meshes noncolliding/nonqueryable/nontouching",
+  "sourceSHA256": "60b636808b49dfae263a17a1a2e763f9ae082158289ad0c90a98a0e5ef1fd992",
+  "runtimeMeshCount": 6,
+  "runtimeTriangles": 2304,
+  "acceptance": "integrated checkpoint; normal jump/return and support texture refinement pending"
+}
