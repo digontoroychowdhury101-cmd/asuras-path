@@ -1,5 +1,9 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## Jian combo and multiplayer check — 2026-11-01 (Windows)
+
+Real OS clicks chained L1→L4 with each published clip on the server clock; phantom blocked L1–L3 (blockstun, posture 23). Second client sees Player1's stance and heavy, but windups arrive late under replication lag. No clean NPC hit reaction yet. Next: decide observer-side playback for remote windups.
+
 ## Jian combat animation — 2026-11-01 (Windows)
 
 Players had no attack playback; new FighterAnimations plays catalog slots phase-locked to server state. 19 Jian/shared clips authored, published, load-back verified (assets/animations/jian). Studio play confirms attacks, guard, parry, dodges, reactions, posture break. Verifier 14/14; digest 1369716346. L2–L4 untested by live press (Studio fps). Next: two-client and real-press combo check.
