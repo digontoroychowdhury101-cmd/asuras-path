@@ -1,5 +1,9 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## Combat Stage 3 Mac implementation — 2026-11-02 (Mac)
+
+Predicted dash and combo clips, bounded phase correction, footwork, shared blade data and 119 published weapon clips landed; offline suites pass; A1 still fails at 60 fps. Not accepted. Next: Windows queue in `MAC_TO_WINDOWS.md`, then Stages 4–5.
+
 ## Sequential Mac queue and full Windows acceptance — 2026-11-02 (Mac)
 
 Added authorized sequential dispatch for all four post-Stage-3A Mac batches, retaining local tests/build/commit checkpoints. Added Windows acceptance prompt covering combat plus opening/forge, Twins, armour, route and the integrated earned loop. Documentation only. Next: Mac executes sequential dispatch; Windows verifies the latest coherent handoff after reset.
