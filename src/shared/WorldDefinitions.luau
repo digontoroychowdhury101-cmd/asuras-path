@@ -87,6 +87,13 @@ export type MobDef = {
 	AI: AIProfile,
 	Essence: number,
 	BodyColor: { number },
+	-- Optional foes (the Monastery's Hollow-Bell Warden): a telegraphed signature shockwave thrown
+	-- when its target is within Range, and a one-time reward kept under its own profile flag
+	-- (world.minibosses), apart from the sovereign bosses and their arsenal.
+	Signature: { Id: string, Range: number, IntervalMin: number, IntervalMax: number, Shockwave: Shockwave }?,
+	Reward: { Flag: string, Essence: number, ElixirCapacity: boolean, Banner: string }?,
+	-- Body scale (Characters.ScaleEnemy: rig, skin, clips and hurtboxes together); nil is 1.
+	Scale: number?,
 }
 
 export type MobSpawn = {
@@ -357,6 +364,7 @@ World.Mobs = {
 		Id = "CursedSwordsman",
 		Name = "Cursed Swordsman",
 		Weapon = "Dao",
+		Scale = 1.2, -- the dead pagoda guard looms a head over the player
 		Stats = { MaxHP = 120, MaxStamina = 110, PostureCapacity = 110, StrengthScale = 1.0, DexterityScale = 1.0, PoiseArmor = 0.2 },
 		AI = profile({
 			SightRange = 65,
@@ -375,6 +383,42 @@ World.Mobs = {
 		}),
 		Essence = 80,
 		BodyColor = { 46, 50, 62 },
+	},
+	-- Optional Monastery miniboss: the grave-keeper of the desecrated cemetery, a hulking monk under
+	-- a cracked bronze bell, sweeping a crescent-moon spade (Guandao moveset, its own mesh). Its
+	-- signature, the Hollow Toll, rings the bell with the spade haft: an unblockable shockwave the
+	-- player must leave or Air Glide over. It never leaves the grave field; leashed or rested, it
+	-- walks home whole. The first defeat adds a gourd charge and 400 Essence (Reward).
+	HollowBellWarden = {
+		Id = "HollowBellWarden",
+		Name = "Hollow-Bell Warden",
+		Weapon = "Guandao",
+		Stats = { MaxHP = 480, MaxStamina = 160, PostureCapacity = 190, StrengthScale = 1.15, DexterityScale = 0.85, PoiseArmor = 0.45 },
+		AI = profile({
+			SightRange = 40,
+			FieldOfView = 140,
+			HearingRange = 24,
+			Aggression = 0.6,
+			DeflectChance = 0.3,
+			GuardChance = 0.3,
+			ReactionTime = 0.26,
+			PatrolRadius = 4,
+			LeashRange = 70,
+			ComboContinueChance = 0.6,
+			HeavyChance = 0.3,
+			ArtChance = 0.1,
+			StrafeChance = 0.25,
+		}),
+		Essence = 60,
+		BodyColor = { 92, 84, 76 },
+		Signature = {
+			Id = "HollowToll",
+			Range = 12,
+			IntervalMin = 10,
+			IntervalMax = 15,
+			Shockwave = { Windup = 1.1, Radius = 13, Damage = 26, Posture = 40, Unblockable = true },
+		},
+		Reward = { Flag = "HollowBellWarden", Essence = 400, ElixirCapacity = true, Banner = "THE HOLLOW BELL FALLS SILENT" },
 	},
 	-- Opening training partner (batch 10, TutorialService): waits on the Monastery Gate landing,
 	-- notices only someone who walks up to it, stays on the landing, strikes gently, uses its
@@ -435,6 +479,8 @@ World.Spawns = {
 	spawn("DM_Swordsman_Bridge", "CursedSwordsman", "DesecratedMonastery", 0, -960, 180, 6),
 	spawn("DM_Monk_Cloister", "CorruptWanderingMonk", "DesecratedMonastery", 40, -1060, 180, 10),
 	spawn("DM_Swordsman_Cloister", "CursedSwordsman", "DesecratedMonastery", 90, -1080, 220, 8),
+	-- Optional miniboss (stable id): the clearing by the toppled pagoda in the grave field.
+	spawn("DM_Warden_Graves", "HollowBellWarden", "DesecratedMonastery", -90, -1024, 90, 4),
 	-- Batches 17-21: stable ids, now placed on the authored routes (two Bamboo swordsmen stood
 	-- inside Baize's arena); each fights only inside its layout zone (CampaignZones).
 	spawn("BP_Swordsman_Trail_A", "CursedSwordsman", "BambooPass", 6, -1212, 180, 6),
@@ -670,6 +716,15 @@ do
 		-- Only the training partner gives nothing; every hostile mob must pay out.
 		assert(mob.Essence > 0 or id == "SparringPhantom", "Mob essence " .. id)
 		validateProfile(mob.AI, id)
+		local sig = mob.Signature
+		if sig then
+			assert(sig.Range > 0 and sig.IntervalMin > 0 and sig.IntervalMax >= sig.IntervalMin, "Mob signature " .. id)
+			assert(sig.Shockwave.Windup >= 0.65 and sig.Shockwave.Radius > 0, "Mob signature shockwave " .. id)
+		end
+		assert(mob.Scale == nil or (mob.Scale >= 0.8 and mob.Scale <= 1.6), "Mob scale " .. id)
+		if mob.Reward then
+			assert(mob.Reward.Flag == id and mob.Reward.Essence >= 0, "Mob reward " .. id)
+		end
 	end
 	local seen: { [string]: boolean } = {}
 	for _, entry in World.Spawns do

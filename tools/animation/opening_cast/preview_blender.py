@@ -130,7 +130,7 @@ def render_clip(key, clip, objs, picks=7):
 if __name__ == "__main__":
     args = sys.argv[sys.argv.index("--") + 1:]
     key, clips = args[0], args[1:]
-    name = {"monk": "Monk"}[key]
+    name = {"monk": "Monk", "swordsman": "Swordsman"}[key]
     objs = setup(name)
     for clip in clips:
         render_clip(key, clip, objs)

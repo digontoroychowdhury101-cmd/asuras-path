@@ -1,0 +1,339 @@
+{
+  "character": "CursedSwordsman",
+  "version": 1,
+  "provenance": "Original project-authored constructed forms (tools/blender/opening_cast); procedural PBR baked from the subdivided master onto one game atlas",
+  "units": "studs, scale 1, default R15 rest pose (arms down); each piece's origin is its R15 limb centre",
+  "axes": "Blender Z = Roblox +Y; Blender +Y = Roblox -Z (forward); GLB exported Y-up",
+  "limits": {
+    "piece_triangle_cap": 18000,
+    "body_texture": 1024,
+    "weapon_texture": 512
+  },
+  "measured": {
+    "game_total_triangles": 12924,
+    "game_max_piece_triangles": 2888,
+    "master_triangles_before_subdivision": 160220,
+    "limbs_covered": 15,
+    "limbs_missing": [],
+    "sole_y": -3.728,
+    "top_y": 2.16,
+    "width_x": 2.858
+  },
+  "pieces": {
+    "Swordsman_Head": {
+      "bone": "Head",
+      "role": null,
+      "triangles": 2204,
+      "vertices": 1180,
+      "pivot_roblox": [
+        0.0,
+        1.586,
+        -0.0
+      ],
+      "size_roblox": [
+        0.908,
+        1.168,
+        0.984
+      ]
+    },
+    "Swordsman_UpperTorso": {
+      "bone": "UpperTorso",
+      "role": null,
+      "triangles": 2888,
+      "vertices": 1504,
+      "pivot_roblox": [
+        0.0,
+        0.2,
+        -0.0
+      ],
+      "size_roblox": [
+        1.468,
+        1.707,
+        1.037
+      ]
+    },
+    "Swordsman_LowerTorso": {
+      "bone": "LowerTorso",
+      "role": null,
+      "triangles": 1396,
+      "vertices": 732,
+      "pivot_roblox": [
+        0.0,
+        -0.8,
+        -0.0
+      ],
+      "size_roblox": [
+        1.659,
+        1.906,
+        2.669
+      ]
+    },
+    "Swordsman_Dao": {
+      "bone": "RightHand",
+      "role": "Weapon",
+      "triangles": 344,
+      "vertices": 184,
+      "pivot_roblox": [
+        1.5,
+        -0.85,
+        -0.0
+      ],
+      "size_roblox": [
+        0.149,
+        3.149,
+        1.604
+      ]
+    },
+    "Swordsman_RightUpperArm": {
+      "bone": "RightUpperArm",
+      "role": null,
+      "triangles": 620,
+      "vertices": 332,
+      "pivot_roblox": [
+        1.5,
+        0.369,
+        -0.0
+      ],
+      "size_roblox": [
+        0.916,
+        1.052,
+        1.038
+      ]
+    },
+    "Swordsman_RightLowerArm": {
+      "bone": "RightLowerArm",
+      "role": null,
+      "triangles": 608,
+      "vertices": 319,
+      "pivot_roblox": [
+        1.5,
+        -0.224,
+        -0.0
+      ],
+      "size_roblox": [
+        0.407,
+        0.883,
+        0.429
+      ]
+    },
+    "Swordsman_RightHand": {
+      "bone": "RightHand",
+      "role": null,
+      "triangles": 576,
+      "vertices": 310,
+      "pivot_roblox": [
+        1.5,
+        -0.85,
+        -0.0
+      ],
+      "size_roblox": [
+        0.289,
+        0.46,
+        0.394
+      ]
+    },
+    "Swordsman_RightUpperLeg": {
+      "bone": "RightUpperLeg",
+      "role": null,
+      "triangles": 332,
+      "vertices": 178,
+      "pivot_roblox": [
+        0.5,
+        -1.421,
+        -0.0
+      ],
+      "size_roblox": [
+        0.783,
+        1.371,
+        0.812
+      ]
+    },
+    "Swordsman_RightLowerLeg": {
+      "bone": "RightLowerLeg",
+      "role": null,
+      "triangles": 658,
+      "vertices": 381,
+      "pivot_roblox": [
+        0.5,
+        -2.201,
+        -0.0
+      ],
+      "size_roblox": [
+        0.485,
+        1.08,
+        0.52
+      ]
+    },
+    "Swordsman_RightFoot": {
+      "bone": "RightFoot",
+      "role": null,
+      "triangles": 252,
+      "vertices": 138,
+      "pivot_roblox": [
+        0.5,
+        -2.85,
+        -0.0
+      ],
+      "size_roblox": [
+        0.36,
+        0.4,
+        0.68
+      ]
+    },
+    "Swordsman_LeftUpperArm": {
+      "bone": "LeftUpperArm",
+      "role": null,
+      "triangles": 620,
+      "vertices": 332,
+      "pivot_roblox": [
+        -1.5,
+        0.369,
+        -0.0
+      ],
+      "size_roblox": [
+        0.916,
+        1.052,
+        1.038
+      ]
+    },
+    "Swordsman_LeftLowerArm": {
+      "bone": "LeftLowerArm",
+      "role": null,
+      "triangles": 608,
+      "vertices": 319,
+      "pivot_roblox": [
+        -1.5,
+        -0.224,
+        -0.0
+      ],
+      "size_roblox": [
+        0.407,
+        0.883,
+        0.429
+      ]
+    },
+    "Swordsman_LeftHand": {
+      "bone": "LeftHand",
+      "role": null,
+      "triangles": 576,
+      "vertices": 310,
+      "pivot_roblox": [
+        -1.5,
+        -0.85,
+        -0.0
+      ],
+      "size_roblox": [
+        0.289,
+        0.382,
+        0.377
+      ]
+    },
+    "Swordsman_LeftUpperLeg": {
+      "bone": "LeftUpperLeg",
+      "role": null,
+      "triangles": 332,
+      "vertices": 178,
+      "pivot_roblox": [
+        -0.5,
+        -1.421,
+        -0.0
+      ],
+      "size_roblox": [
+        0.783,
+        1.371,
+        0.812
+      ]
+    },
+    "Swordsman_LeftLowerLeg": {
+      "bone": "LeftLowerLeg",
+      "role": null,
+      "triangles": 658,
+      "vertices": 381,
+      "pivot_roblox": [
+        -0.5,
+        -2.201,
+        -0.0
+      ],
+      "size_roblox": [
+        0.485,
+        1.08,
+        0.52
+      ]
+    },
+    "Swordsman_LeftFoot": {
+      "bone": "LeftFoot",
+      "role": null,
+      "triangles": 252,
+      "vertices": 138,
+      "pivot_roblox": [
+        -0.5,
+        -2.85,
+        -0.0
+      ],
+      "size_roblox": [
+        0.36,
+        0.4,
+        0.68
+      ]
+    }
+  },
+  "textures": {
+    "body": {
+      "Color": {
+        "master": "assets/source/opening_cast/swordsman/textures/master/SwordsmanBody_Color_2048.png",
+        "game": "assets/source/opening_cast/swordsman/textures/game/SwordsmanBody_Color_1024.png",
+        "master_size": 2048,
+        "game_size": 1024
+      },
+      "Rough": {
+        "master": "assets/source/opening_cast/swordsman/textures/master/SwordsmanBody_Rough_2048.png",
+        "game": "assets/source/opening_cast/swordsman/textures/game/SwordsmanBody_Rough_1024.png",
+        "master_size": 2048,
+        "game_size": 1024
+      },
+      "Metal": {
+        "master": "assets/source/opening_cast/swordsman/textures/master/SwordsmanBody_Metal_2048.png",
+        "game": "assets/source/opening_cast/swordsman/textures/game/SwordsmanBody_Metal_1024.png",
+        "master_size": 2048,
+        "game_size": 1024
+      },
+      "Normal": {
+        "master": "assets/source/opening_cast/swordsman/textures/master/SwordsmanBody_Normal_2048.png",
+        "game": "assets/source/opening_cast/swordsman/textures/game/SwordsmanBody_Normal_1024.png",
+        "master_size": 2048,
+        "game_size": 1024
+      }
+    },
+    "weapon": {
+      "Color": {
+        "master": "assets/source/opening_cast/swordsman/textures/master/SwordsmanWeapon_Color_1024.png",
+        "game": "assets/source/opening_cast/swordsman/textures/game/SwordsmanWeapon_Color_512.png",
+        "master_size": 1024,
+        "game_size": 512
+      },
+      "Rough": {
+        "master": "assets/source/opening_cast/swordsman/textures/master/SwordsmanWeapon_Rough_1024.png",
+        "game": "assets/source/opening_cast/swordsman/textures/game/SwordsmanWeapon_Rough_512.png",
+        "master_size": 1024,
+        "game_size": 512
+      },
+      "Metal": {
+        "master": "assets/source/opening_cast/swordsman/textures/master/SwordsmanWeapon_Metal_1024.png",
+        "game": "assets/source/opening_cast/swordsman/textures/game/SwordsmanWeapon_Metal_512.png",
+        "master_size": 1024,
+        "game_size": 512
+      },
+      "Normal": {
+        "master": "assets/source/opening_cast/swordsman/textures/master/SwordsmanWeapon_Normal_1024.png",
+        "game": "assets/source/opening_cast/swordsman/textures/game/SwordsmanWeapon_Normal_512.png",
+        "master_size": 1024,
+        "game_size": 512
+      }
+    }
+  },
+  "exports": {
+    "game_glb": "assets/build/opening_cast/swordsman/Swordsman_v1_Game.glb",
+    "game_fbx": "assets/build/opening_cast/swordsman/Swordsman_v1_Game.fbx"
+  },
+  "bake_device": "OPTIX"
+}

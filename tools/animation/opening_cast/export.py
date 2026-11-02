@@ -16,7 +16,7 @@ sys.path.insert(0, str(HERE))
 import castlib as C  # noqa: E402
 import jianlib as J  # noqa: E402
 
-SETS = {"monk": "monk_clips"}
+SETS = {"monk": "monk_clips", "swordsman": "swordsman_clips"}
 
 
 def main(key, names):
@@ -28,7 +28,8 @@ def main(key, names):
     bake.mkdir(parents=True, exist_ok=True)
     manifest_path, published_path = out / "manifest.json", out / "published.json"
     manifest = json.loads(manifest_path.read_text()) if manifest_path.exists() else {"clips": {}}
-    published = json.loads(published_path.read_text())["clips"] if published_path.exists() else {}
+    published = json.loads(published_path.read_text()) if published_path.exists() else {}
+    published = published.get("clips", published)   # publish.py writes {clip: record}
     failed = 0
     for clip in lib.library():
         if names and clip.name not in names:
@@ -42,7 +43,9 @@ def main(key, names):
                  "contacts": [round(c, 4) for c in clip.contacts], "keyframes": keys, "notes": clip.notes,
                  "validation": stats, "problems": problems, "uploaded": False, "asset_id": None}
         record = published.get(clip.name)
-        if record:
+        if record and "sha256" not in record:   # publish.py's record: the id the slot plays, no content hash
+            entry["asset_id"] = record["id"]
+        elif record:
             if zx.content_hash(path) == record["sha256"]:
                 entry["uploaded"], entry["asset_id"] = True, record["asset_id"]
             else:

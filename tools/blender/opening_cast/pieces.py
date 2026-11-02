@@ -14,7 +14,7 @@ import bpy
 from mathutils import Vector
 
 ROOT = Path(__file__).resolve().parents[3]
-NAMES = {"monk": "Monk"}
+NAMES = {"monk": "Monk", "swordsman": "Swordsman"}
 
 
 def roblox(v):
@@ -30,7 +30,7 @@ for o in bpy.data.collections[f"{NAMES[key]}_Game"].all_objects:
     lo = Vector((min(p.x for p in pts), min(p.y for p in pts), min(p.z for p in pts)))
     hi = Vector((max(p.x for p in pts), max(p.y for p in pts), max(p.z for p in pts)))
     c, s = (lo + hi) / 2, hi - lo
-    out[o.name] = {"bone": o["AsuraBone"], "centre": roblox(c), "size": [s.x, s.z, s.y], "origin": roblox(o.matrix_world.translation)}
+    out[o.name] = {"bone": o["AsuraBone"], "role": o.get("AsuraRole"), "centre": roblox(c), "size": [s.x, s.z, s.y], "origin": roblox(o.matrix_world.translation)}
 dst = ROOT / "work/opening_cast_bake" / key / "pieces.json"
 dst.parent.mkdir(parents=True, exist_ok=True)
 dst.write_text(json.dumps(out, indent=1))

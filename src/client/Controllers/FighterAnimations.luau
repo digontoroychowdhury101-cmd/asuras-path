@@ -17,8 +17,10 @@
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local Shared = game:GetService("ReplicatedStorage").AsurasPath
+local Workspace = game:GetService("Workspace")
 local Catalog = require(Shared.Shared.AnimationCatalog)
 local Weapons = require(Shared.Simulation.WeaponSchema)
+local World = require(Shared.Shared.WorldDefinitions)
 
 local Animations = {}
 Animations.__index = Animations
@@ -76,6 +78,9 @@ type Actor = {
 	Weapon: string?,
 	Definition: string?, -- AsuraDefinition: a production enemy's own clips replace its weapon's
 	CatchUntil: number?, -- clip time of the contact a late swing is catching up to
+	Ground: Vector3, -- smoothed planar root speed measured from its replicated positions (gait playback)
+	GroundPos: Vector3?,
+	GroundAt: number?,
 	Replicated: RBXScriptConnection?,
 }
 
@@ -190,6 +195,32 @@ local function base(actor: Actor, slot: Catalog.Slot?)
 	end
 end
 
+-- Plays the foe's walk or run cycle so its planted feet hold the ground: rate = ground speed over the speed the
+-- cycle was authored for at the model's scale, reversed while it backs away. False when it has no gait.
+local function gait(actor: Actor, planar: Vector3): boolean
+	local speeds = if actor.Definition then Catalog.Gaits[actor.Definition] else nil
+	local walk = if speeds then Catalog.character(actor.Definition, "Walk") else nil
+	if not speeds or not walk or not review(walk) then
+		return false
+	end
+	local scale = actor.Model:GetScale()
+	local speed = planar.Magnitude
+	local run = Catalog.character(actor.Definition, "Run")
+	local running = run ~= nil and speeds.Run ~= nil and review(run) ~= nil and speed > (speeds.Walk + speeds.Run) * 0.5 * scale
+	base(actor, if running then run else walk)
+	local cycle = actor.Base
+	if cycle then
+		local look = actor.Root.CFrame.LookVector
+		local along = planar.Unit:Dot(Vector3.new(look.X, 0, look.Z).Unit)
+		local rate = math.clamp(speed / ((if running then speeds.Run :: number else speeds.Walk) * scale), 0.4, 2)
+		rate = if along < -0.3 then -rate else rate
+		if math.abs(cycle.Speed - rate) > 0.02 then
+			cycle:AdjustSpeed(rate)
+		end
+	end
+	return true
+end
+
 local function release(actor: Actor)
 	if actor.Replicated then
 		actor.Replicated:Disconnect()
@@ -213,6 +244,30 @@ local function warm(actor: Actor, weapon: string)
 		track(actor, universalSlot(actor, key))
 	end
 	track(actor, Catalog.character(actor.Definition, "Death"))
+	for _, key in { "Signature", "Walk", "Run" } do
+		track(actor, Catalog.character(actor.Definition, key))
+	end
+end
+
+-- An optional foe's signature (the Warden's Hollow Toll): while its Perilous shockwave telegraph
+-- ("Perilous|Shockwave|impact") stands, the clip is seated on the server's clock so its authored
+-- contact (the shockwave's Windup into the clip) lands at the impact, then plays its recovery out.
+-- Returns the clip time, or nil when no signature is under way.
+local function signatureTime(actor: Actor, state: string): number?
+	local mob = if actor.Definition then World.Mobs[actor.Definition] else nil
+	if not mob or not mob.Signature or state ~= "Idle" then
+		return nil
+	end
+	local raw = actor.Model:GetAttribute("AsuraTelegraph")
+	local impact = if type(raw) == "string" then tonumber(string.match(raw, "^Perilous|Shockwave|([%d%.]+)$")) else nil
+	if not impact then
+		return nil
+	end
+	local contact = mob.Signature.Shockwave.Windup
+	local position = contact - (impact - Workspace:GetServerTimeNow())
+	local loaded = track(actor, Catalog.character(actor.Definition, "Signature"))
+	local length = if loaded and loaded.Length > 0 then loaded.Length else contact
+	return if position < length then math.max(position, 0) else nil
 end
 
 function Animations.new(state: any): any
@@ -287,11 +342,31 @@ function Animations.Step(self: any, entity: any, actor: Actor)
 		actor.LastState = state
 		return
 	end
-	-- Underneath: the full-body ready stance while standing, the arms-only carry while moving.
+	-- Underneath: the full-body ready stance while standing, the arms-only carry while moving (or a production
+	-- foe's own full-body gait, which it needs because no Animate script moves its legs).
 	local velocity = actor.Root.AssemblyLinearVelocity
 	local moving = Vector3.new(velocity.X, 0, velocity.Z).Magnitude > MOVING_SPEED
-	base(actor, weaponSlot(actor, weapon, if moving then "Move" else "Idle"))
-	if ATTACK[state] and s.Move and MOVES[s.Move] then
+	-- A gait follows the root's measured travel: a remote root's replicated velocity can read a stride while it is
+	-- held in place, which would walk it on the spot.
+	local clock, position = os.clock(), actor.Root.Position
+	if actor.GroundPos and actor.GroundAt and clock > actor.GroundAt then
+		local dt = clock - actor.GroundAt
+		local travel = Vector3.new(position.X - actor.GroundPos.X, 0, position.Z - actor.GroundPos.Z) / dt
+		if travel.Magnitude < 60 then -- a teleport or strike snap is not a stride
+			actor.Ground = actor.Ground:Lerp(travel, math.clamp(dt * 8, 0, 1))
+		end
+	end
+	actor.GroundPos, actor.GroundAt = position, clock
+	local walking = actor.Ground.Magnitude > MOVING_SPEED
+	if not (walking and gait(actor, actor.Ground)) then
+		local paced = if actor.Definition and Catalog.Gaits[actor.Definition] then walking else moving
+		base(actor, weaponSlot(actor, weapon, if paced then "Move" else "Idle"))
+	end
+	local signature = signatureTime(actor, state)
+	if signature then
+		local raw = actor.Model:GetAttribute("AsuraTelegraph")
+		action(actor, "Signature" .. tostring(raw), Catalog.character(actor.Definition, "Signature"), signature, true)
+	elseif ATTACK[state] and s.Move and MOVES[s.Move] then
 		local entry = MOVES[s.Move]
 		local timing = entry.Move.Timing
 		local into = elapsed
@@ -368,7 +443,7 @@ function Animations.Update(self: any, _dt: number)
 				continue
 			end
 			actor = { Model = model, Animator = animator, Root = entity.Root, Tracks = {}, Base = nil, Action = nil,
-				ActionKey = nil, Attack = false, Finished = nil, Serial = 0, AttackSerial = 0, AttackMove = nil, LastState = nil,
+				ActionKey = nil, Attack = false, Finished = nil, Serial = 0, AttackSerial = 0, AttackMove = nil, LastState = nil, Ground = Vector3.zero,
 				Weapon = nil, Definition = nil, CatchUntil = nil, Replicated = nil }
 			local owner = Players:GetPlayerFromCharacter(model)
 			if owner and owner ~= Players.LocalPlayer then

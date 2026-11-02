@@ -1,0 +1,445 @@
+{
+ "clips": {
+  "Swordsman_Art": {
+   "slot": "CursedSwordsman.WeaponArt",
+   "length": 0.7833,
+   "loop": false,
+   "priority": "Action2",
+   "move": "Dao_Art",
+   "contacts": [
+    0.35
+   ],
+   "keyframes": 48,
+   "notes": "Crimson Gale Massacre: deep wind-up, 180-degree unwinding sweep carried round past the left side.",
+   "validation": {
+    "arm_reach": 0.0424,
+    "leg_reach": 0.0,
+    "sole_below_ground": 0.0,
+    "planted_slide": 0.0289,
+    "hand_jerk": 0.0,
+    "loop_seam_deg": 0.0,
+    "strike": {
+     "contact": [
+      -0.38,
+      1.49,
+      -3.34
+     ],
+     "forward": 3.34,
+     "yaw": -6.5,
+     "sweep_deg": -101.0
+    }
+   },
+   "problems": [],
+   "uploaded": false,
+   "asset_id": "rbxassetid://125540053579064"
+  },
+  "Swordsman_Death": {
+   "slot": "CursedSwordsman.Death",
+   "length": 0.9,
+   "loop": false,
+   "priority": "Action4",
+   "move": null,
+   "contacts": [],
+   "keyframes": 43,
+   "notes": "Knees give, the point drives into the ground, the helmet drops; held while the body burns away.",
+   "validation": {
+    "arm_reach": 0.0,
+    "leg_reach": 0.0,
+    "sole_below_ground": 0.0,
+    "planted_slide": 0.0,
+    "hand_jerk": 0.0,
+    "loop_seam_deg": 0.0
+   },
+   "problems": [],
+   "uploaded": false,
+   "asset_id": "rbxassetid://97875436719077"
+  },
+  "Swordsman_Guard": {
+   "slot": "CursedSwordsman.Guard",
+   "length": 1.6,
+   "loop": true,
+   "priority": "Action",
+   "move": null,
+   "contacts": [],
+   "keyframes": 6,
+   "notes": "Hanging guard: the dao held flat across the brow, left hand braced behind it.",
+   "validation": {
+    "arm_reach": 0.0,
+    "leg_reach": 0.0,
+    "sole_below_ground": 0.0,
+    "planted_slide": 0.0,
+    "hand_jerk": 0.0,
+    "loop_seam_deg": 0.0
+   },
+   "problems": [],
+   "uploaded": false,
+   "asset_id": "rbxassetid://130795857635813"
+  },
+  "Swordsman_GuardImpact": {
+   "slot": "CursedSwordsman.GuardImpact",
+   "length": 0.32,
+   "loop": false,
+   "priority": "Action2",
+   "move": null,
+   "contacts": [],
+   "keyframes": 13,
+   "notes": "A blocked blow drives the guard back toward the helmet, then it re-settles.",
+   "validation": {
+    "arm_reach": 0.0,
+    "leg_reach": 0.0,
+    "sole_below_ground": 0.0,
+    "planted_slide": 0.0,
+    "hand_jerk": 0.0559,
+    "loop_seam_deg": 0.0
+   },
+   "problems": [],
+   "uploaded": false,
+   "asset_id": "rbxassetid://72996160202085"
+  },
+  "Swordsman_Heavy": {
+   "slot": "CursedSwordsman.Heavy",
+   "length": 0.7,
+   "loop": false,
+   "priority": "Action2",
+   "move": "Dao_Heavy",
+   "contacts": [
+    0.35
+   ],
+   "keyframes": 43,
+   "notes": "Moon Arc: long coil behind the shoulder, stamping step, high-right to low-left arc.",
+   "validation": {
+    "arm_reach": 0.0447,
+    "leg_reach": 0.0,
+    "sole_below_ground": 0.0,
+    "planted_slide": 0.0,
+    "hand_jerk": 0.0,
+    "loop_seam_deg": 0.0,
+    "strike": {
+     "contact": [
+      -0.24,
+      0.12,
+      -3.54
+     ],
+     "forward": 3.54,
+     "yaw": -3.9,
+     "sweep_deg": -87.7
+    }
+   },
+   "problems": [],
+   "uploaded": false,
+   "asset_id": "rbxassetid://71766330781056"
+  },
+  "Swordsman_Hit_Heavy": {
+   "slot": "CursedSwordsman.Hitstun_Heavy",
+   "length": 0.7,
+   "loop": false,
+   "priority": "Action3",
+   "move": null,
+   "contacts": [],
+   "keyframes": 42,
+   "notes": "Rocked back a step, doubles over the point, recovers the guard.",
+   "validation": {
+    "arm_reach": 0.0,
+    "leg_reach": 0.0,
+    "sole_below_ground": 0.0,
+    "planted_slide": 0.0,
+    "hand_jerk": 0.0,
+    "loop_seam_deg": 0.0
+   },
+   "problems": [],
+   "uploaded": false,
+   "asset_id": "rbxassetid://85881768455696"
+  },
+  "Swordsman_Hit_Light": {
+   "slot": "CursedSwordsman.Hitstun_Light",
+   "length": 0.36,
+   "loop": false,
+   "priority": "Action3",
+   "move": null,
+   "contacts": [],
+   "keyframes": 20,
+   "notes": "Helmet snaps back, the guard knocked wide, then back on the line.",
+   "validation": {
+    "arm_reach": 0.0,
+    "leg_reach": 0.0,
+    "sole_below_ground": 0.0,
+    "planted_slide": 0.0,
+    "hand_jerk": 0.0,
+    "loop_seam_deg": 0.0
+   },
+   "problems": [],
+   "uploaded": false,
+   "asset_id": "rbxassetid://79845182367548"
+  },
+  "Swordsman_Idle": {
+   "slot": "CursedSwordsman.Idle",
+   "length": 3.2,
+   "loop": true,
+   "priority": "Movement",
+   "move": null,
+   "contacts": [],
+   "keyframes": 18,
+   "notes": "Guard loop: right foot leading, dao low and forward, the point at the throat.",
+   "validation": {
+    "arm_reach": 0.0,
+    "leg_reach": 0.0,
+    "sole_below_ground": 0.0,
+    "planted_slide": 0.0,
+    "hand_jerk": 0.0,
+    "loop_seam_deg": 0.0
+   },
+   "problems": [],
+   "uploaded": false,
+   "asset_id": "rbxassetid://92733401704195"
+  },
+  "Swordsman_L1": {
+   "slot": "CursedSwordsman.Light1",
+   "length": 0.3,
+   "loop": false,
+   "priority": "Action2",
+   "move": "Dao_L1",
+   "contacts": [
+    0.125
+   ],
+   "keyframes": 19,
+   "notes": "Rising Crescent: low-right to high-left rising cut on a short step.",
+   "validation": {
+    "arm_reach": 0.0557,
+    "leg_reach": 0.0,
+    "sole_below_ground": 0.0,
+    "planted_slide": 0.0,
+    "hand_jerk": 0.1864,
+    "loop_seam_deg": 0.0,
+    "strike": {
+     "contact": [
+      0.06,
+      1.06,
+      -3.34
+     ],
+     "forward": 3.34,
+     "yaw": 1.1,
+     "sweep_deg": -42.6
+    }
+   },
+   "problems": [],
+   "uploaded": false,
+   "asset_id": "rbxassetid://137250040297302"
+  },
+  "Swordsman_L2": {
+   "slot": "CursedSwordsman.Light2",
+   "length": 0.3,
+   "loop": false,
+   "priority": "Action2",
+   "move": "Dao_L2",
+   "contacts": [
+    0.125
+   ],
+   "keyframes": 19,
+   "notes": "Descending Crescent: over the left shoulder and down the diagonal to the right hip.",
+   "validation": {
+    "arm_reach": 0.0076,
+    "leg_reach": 0.0,
+    "sole_below_ground": 0.0,
+    "planted_slide": 0.0,
+    "hand_jerk": 0.0804,
+    "loop_seam_deg": 0.0,
+    "strike": {
+     "contact": [
+      0.8,
+      1.01,
+      -3.38
+     ],
+     "forward": 3.38,
+     "yaw": 13.4,
+     "sweep_deg": 30.5
+    }
+   },
+   "problems": [],
+   "uploaded": false,
+   "asset_id": "rbxassetid://137835669576121"
+  },
+  "Swordsman_L3": {
+   "slot": "CursedSwordsman.Light3",
+   "length": 0.3667,
+   "loop": false,
+   "priority": "Action2",
+   "move": "Dao_L3",
+   "contacts": [
+    0.15
+   ],
+   "keyframes": 23,
+   "notes": "Whirling Butcher Cut: flat 150-degree sweep right to left, pivoting on the lead foot.",
+   "validation": {
+    "arm_reach": 0.0489,
+    "leg_reach": 0.0,
+    "sole_below_ground": 0.0,
+    "planted_slide": 0.0,
+    "hand_jerk": 0.0888,
+    "loop_seam_deg": 0.0,
+    "strike": {
+     "contact": [
+      0.09,
+      0.75,
+      -3.54
+     ],
+     "forward": 3.54,
+     "yaw": 1.4,
+     "sweep_deg": -61.6
+    }
+   },
+   "problems": [],
+   "uploaded": false,
+   "asset_id": "rbxassetid://81317418914365"
+  },
+  "Swordsman_L4": {
+   "slot": "CursedSwordsman.Light4",
+   "length": 0.45,
+   "loop": false,
+   "priority": "Action2",
+   "move": "Dao_L4",
+   "contacts": [
+    0.1833
+   ],
+   "keyframes": 28,
+   "notes": "Tiger Tail Cleave: overhead gather, lunge, straight cleave down the centre line.",
+   "validation": {
+    "arm_reach": 0.0,
+    "leg_reach": 0.0,
+    "sole_below_ground": 0.0,
+    "planted_slide": 0.03,
+    "hand_jerk": 0.0,
+    "loop_seam_deg": 0.0,
+    "strike": {
+     "contact": [
+      0.62,
+      0.98,
+      -3.66
+     ],
+     "forward": 3.66,
+     "yaw": 9.6,
+     "sweep_deg": -9.3
+    }
+   },
+   "problems": [],
+   "uploaded": false,
+   "asset_id": "rbxassetid://108101370082647"
+  },
+  "Swordsman_Move": {
+   "slot": "CursedSwordsman.Move",
+   "length": 0.7,
+   "loop": true,
+   "priority": "Movement",
+   "move": null,
+   "contacts": [],
+   "keyframes": 15,
+   "notes": "Upper-body guard carried over the walk/run: the dao stays on the line.",
+   "validation": {
+    "arm_reach": 0.0,
+    "leg_reach": 0.0,
+    "sole_below_ground": 0.0,
+    "planted_slide": 0.0,
+    "hand_jerk": 0.0,
+    "loop_seam_deg": 0.0
+   },
+   "problems": [],
+   "uploaded": false,
+   "asset_id": "rbxassetid://75315756560710"
+  },
+  "Swordsman_Run": {
+   "slot": "CursedSwordsman.Run",
+   "length": 0.6,
+   "loop": true,
+   "priority": "Movement",
+   "move": null,
+   "contacts": [],
+   "keyframes": 37,
+   "notes": "Charging run at 11.0 studs/s (scale 1): forward lean, dao trailed low, left arm pumping.",
+   "validation": {
+    "arm_reach": 0.0564,
+    "leg_reach": 0.0,
+    "sole_below_ground": 0.0,
+    "planted_slide": 0.4413,
+    "hand_jerk": 0.0,
+    "loop_seam_deg": 0.0
+   },
+   "problems": [],
+   "uploaded": false,
+   "asset_id": "rbxassetid://110196475389156"
+  },
+  "Swordsman_Running": {
+   "slot": "CursedSwordsman.Running",
+   "length": 0.5167,
+   "loop": false,
+   "priority": "Action2",
+   "move": "Dao_Running",
+   "contacts": [
+    0.2167
+   ],
+   "keyframes": 32,
+   "notes": "Charging Tiger: dao drawn back at the hip, flat lunging thrust-cut.",
+   "validation": {
+    "arm_reach": 0.0201,
+    "leg_reach": 0.0,
+    "sole_below_ground": 0.0,
+    "planted_slide": 0.0385,
+    "hand_jerk": 0.0,
+    "loop_seam_deg": 0.0,
+    "strike": {
+     "contact": [
+      0.4,
+      1.01,
+      -3.75
+     ],
+     "forward": 3.75,
+     "yaw": 6.1,
+     "sweep_deg": -0.9
+    }
+   },
+   "problems": [],
+   "uploaded": false,
+   "asset_id": "rbxassetid://93013217748649"
+  },
+  "Swordsman_StanceBroken": {
+   "slot": "CursedSwordsman.StanceBroken",
+   "length": 1.6,
+   "loop": true,
+   "priority": "Action4",
+   "move": null,
+   "contacts": [],
+   "keyframes": 23,
+   "notes": "Posture break: the point sags to the ground, the helmet lolls, the punish window.",
+   "validation": {
+    "arm_reach": 0.0,
+    "leg_reach": 0.0,
+    "sole_below_ground": 0.0,
+    "planted_slide": 0.0,
+    "hand_jerk": 0.0,
+    "loop_seam_deg": 0.0
+   },
+   "problems": [],
+   "uploaded": false,
+   "asset_id": "rbxassetid://92933887269942"
+  },
+  "Swordsman_Walk": {
+   "slot": "CursedSwordsman.Walk",
+   "length": 0.7,
+   "loop": true,
+   "priority": "Movement",
+   "move": null,
+   "contacts": [],
+   "keyframes": 43,
+   "notes": "Guarded stalk at 6.4 studs/s (scale 1): planted feet, hip lift and sway, counter-twist.",
+   "validation": {
+    "arm_reach": 0.0,
+    "leg_reach": 0.0367,
+    "sole_below_ground": 0.0,
+    "planted_slide": 0.0,
+    "hand_jerk": 0.0,
+    "loop_seam_deg": 0.0
+   },
+   "problems": [],
+   "uploaded": false,
+   "asset_id": "rbxassetid://122806607020356"
+  }
+ }
+}

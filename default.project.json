@@ -703,6 +703,9 @@
         },
         "AsuraBoss_CorruptWanderingMonk": {
           "$path": "assets/models/AsuraBoss_CorruptWanderingMonk.rbxmx"
+        },
+        "AsuraBoss_CursedSwordsman": {
+          "$path": "assets/models/AsuraBoss_CursedSwordsman.rbxmx"
         }
       },
       "AsuraLobbyKit": {

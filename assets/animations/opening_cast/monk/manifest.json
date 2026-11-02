@@ -30,7 +30,7 @@
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://135854349242310"
   },
   "Monk_Death": {
    "slot": "CorruptWanderingMonk.Death",
@@ -51,7 +51,7 @@
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://82065381623710"
   },
   "Monk_Guard": {
    "slot": "CorruptWanderingMonk.Guard",
@@ -72,7 +72,7 @@
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://89391756631562"
   },
   "Monk_GuardImpact": {
    "slot": "CorruptWanderingMonk.GuardImpact",
@@ -93,7 +93,7 @@
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://96590951733793"
   },
   "Monk_Heavy": {
    "slot": "CorruptWanderingMonk.Heavy",
@@ -125,7 +125,7 @@
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://76312818754143"
   },
   "Monk_Hit_Heavy": {
    "slot": "CorruptWanderingMonk.Hitstun_Heavy",
@@ -146,7 +146,7 @@
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://71073626356373"
   },
   "Monk_Hit_Light": {
    "slot": "CorruptWanderingMonk.Hitstun_Light",
@@ -167,7 +167,7 @@
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://81542772922509"
   },
   "Monk_Idle": {
    "slot": "CorruptWanderingMonk.Idle",
@@ -188,7 +188,7 @@
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://101598140758714"
   },
   "Monk_L1": {
    "slot": "CorruptWanderingMonk.Light1",
@@ -220,7 +220,7 @@
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://90748494920364"
   },
   "Monk_L2": {
    "slot": "CorruptWanderingMonk.Light2",
@@ -252,7 +252,7 @@
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://76346092169919"
   },
   "Monk_L3": {
    "slot": "CorruptWanderingMonk.Light3",
@@ -285,7 +285,7 @@
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://108062301374603"
   },
   "Monk_L4": {
    "slot": "CorruptWanderingMonk.Light4",
@@ -317,7 +317,7 @@
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://103272727896878"
   },
   "Monk_Move": {
    "slot": "CorruptWanderingMonk.Move",
@@ -338,7 +338,7 @@
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://112262064404137"
   },
   "Monk_Running": {
    "slot": "CorruptWanderingMonk.Running",
@@ -370,7 +370,7 @@
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://115921357540400"
   },
   "Monk_StanceBroken": {
    "slot": "CorruptWanderingMonk.StanceBroken",
@@ -391,7 +391,7 @@
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://108521705818233"
   }
  }
 }

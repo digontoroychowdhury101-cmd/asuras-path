@@ -36,7 +36,7 @@ export type Inventory = {
 	elixirs: Elixirs,
 	reinforcement: { [string]: number },
 }
-export type WorldState = { altars: { [string]: boolean }, activeAltar: string, bosses: { [string]: boolean }, bloodstain: Bloodstain?, tutorial: { [string]: boolean }?, story: { [string]: boolean }? }
+export type WorldState = { altars: { [string]: boolean }, activeAltar: string, bosses: { [string]: boolean }, bloodstain: Bloodstain?, tutorial: { [string]: boolean }?, story: { [string]: boolean }?, minibosses: { [string]: boolean }? }
 export type Souls = {
 	version: number,
 	level: number,
@@ -237,7 +237,8 @@ function Store.DefaultSouls(startingAltar: string?): Souls
 		},
 		-- tutorial: opening-training steps completed (TutorialRules ids, "Skipped" when declined).
 		-- story: six-sovereign ending flags (EndingRules.Flags); they only ever gain entries.
-		world = { altars = { [altar] = true }, activeAltar = altar, bosses = {}, bloodstain = nil, tutorial = {}, story = {} },
+		-- minibosses: optional foes whose one-time reward was claimed (World.Mobs[...].Reward.Flag).
+		world = { altars = { [altar] = true }, activeAltar = altar, bosses = {}, bloodstain = nil, tutorial = {}, story = {}, minibosses = {} },
 		deaths = 0,
 	}
 end
@@ -345,6 +346,9 @@ function Store.ValidateSouls(raw: any): (boolean, string?)
 	if world.story ~= nil and not validFlagSet(world.story) then
 		return false, "Invalid story progress"
 	end
+	if world.minibosses ~= nil and not validFlagSet(world.minibosses) then
+		return false, "Invalid miniboss progress"
+	end
 	if world.bloodstain ~= nil and not validBloodstain(world.bloodstain) then
 		return false, "Invalid bloodstain"
 	end
@@ -433,6 +437,11 @@ function Store.MigrateSouls(raw: any, startingAltar: string?): Souls
 		if validFlagSet(world.bosses) then
 			for id in world.bosses do
 				souls.world.bosses[id] = true
+			end
+		end
+		if validFlagSet(world.minibosses) then -- older records have claimed none
+			for id in world.minibosses do
+				(souls.world.minibosses :: { [string]: boolean })[id] = true
 			end
 		end
 		if identifier(world.activeAltar) and souls.world.altars[world.activeAltar] then
@@ -848,6 +857,37 @@ function Store.RecordBossDefeat(self: Engine, id: number, bossId: string, essenc
 			p.souls.essence = math.min(MAX_SAFE_INTEGER, p.souls.essence + essence)
 		end
 	end)
+end
+
+-- Optional foes (the Hollow-Bell Warden): the first defeat sets world.minibosses[flag] and banks
+-- `essence`; a gourd charge comes with it when `elixirCapacity` and the gourd is below its cap.
+-- Kept apart from RecordBossDefeat so no sovereign flag, arsenal award or ending count moves.
+-- Returns whether this call claimed the reward (false on every later defeat).
+function Store.RecordMinibossDefeat(self: Engine, id: number, flag: string, essence: number, elixirCapacity: boolean): (boolean, string?, boolean)
+	if not identifier(flag) or not integer(essence, 0, MAX_SAFE_INTEGER) then
+		return false, "Invalid miniboss record", false
+	end
+	local claimed = false
+	local ok, err = self:Transaction(id, function(p)
+		local world = p.souls.world
+		world.minibosses = world.minibosses or {}
+		local flags = world.minibosses :: { [string]: boolean }
+		local count = 0
+		for _ in flags do
+			count += 1
+		end
+		if flags[flag] or count >= MAX_WORLD_ENTRIES then
+			return
+		end
+		flags[flag] = true
+		p.souls.essence = math.min(MAX_SAFE_INTEGER, p.souls.essence + essence)
+		claimed = true
+	end)
+	if ok and claimed and elixirCapacity then
+		-- Store.AddElixirCapacity refuses a full gourd; the flag and essence above stand either way.
+		self:AddElixirCapacity(id)
+	end
+	return ok, err, ok and claimed
 end
 
 function Store.UnlockWeapon(self: Engine, id: number, weapon: string): (boolean, string?)

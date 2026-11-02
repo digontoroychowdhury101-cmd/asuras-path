@@ -79,7 +79,7 @@ def surf_normal(surf, a, z, centre):
     return n
 
 
-def lamellar(pc, surf, centre, rows, hi, plate_mat="LACQUER", cord=True, lo_group=2, thick=0.016, tilt=0.05):
+def lamellar(pc, surf, centre, rows, hi, plate_mat="LACQUER", cord=True, lo_group=2, thick=0.016, tilt=0.05, lace="CORD"):
     """Rows of lamellae on a surface. rows: (z_top, height, a0, a1, n_plates, offset).
     Master: individual curved plates (alternately stepped so they overlap), a lacing cord per row.
     Game: one slab band per row with a notched lower edge every `lo_group` plates."""
@@ -108,13 +108,13 @@ def lamellar(pc, surf, centre, rows, hi, plate_mat="LACQUER", cord=True, lo_grou
                 for k in range(m + 1):
                     a = a0 + (a1 - a0) * k / m
                     ring.append(surf(a, zc) + surf_normal(surf, a, zc, centre) * (off + tilt * 0.16 + 0.0045 + 0.002 * r + thick * 0.5 + 0.006))
-                tube(pc, ring, 0.0065, 5, "CORD", cap0=True, cap1=True)
+                tube(pc, ring, 0.0065, 5, lace, cap0=True, cap1=True)
                 ring = []
                 zc = zt - h * 0.55
                 for k in range(m + 1):
                     a = a0 + (a1 - a0) * k / m
                     ring.append(surf(a, zc) + surf_normal(surf, a, zc, centre) * (off + tilt * 0.55 + 0.0045 + 0.002 * r + thick * 0.5 + 0.005))
-                tube(pc, ring, 0.005, 4, "CORD", cap0=True, cap1=True)
+                tube(pc, ring, 0.005, 4, lace, cap0=True, cap1=True)
         else:
             cols = max(3, n // lo_group)
             P = []

@@ -52,6 +52,7 @@ python3 tools/test_movement.py
 
 echo "[8/14] Testing Boss Encounters & Runtime..."
 "$LUAU" tools/test_boss_encounters.luau
+"$LUAU" tools/test_miniboss_reward.luau
 python3 tools/test_boss_runtime.py
 
 echo "[9/14] Testing Objectives System..."

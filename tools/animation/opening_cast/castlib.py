@@ -15,6 +15,9 @@ Controls (HumanoidRootPart space, +X right, +Y up, -Z forward):
     rflex, lflex  wrist flex in degrees (+ bends the fist toward the forearm's front)
     rspace, lspace  0 = that hand's target is in root space, 1 = in UpperTorso space (an off hand that rides the turn)
     lf, rf        feet (x, z, lift, yaw, pitch); lknee, rknee their knee poles
+
+Locomotion cycles (gait) are in place: the planted foot travels backward at the clip's `velocity`, and the client
+plays them at measured ground speed / (velocity x the model's scale), so the feet stay put on the ground.
 """
 import json
 import math
@@ -118,11 +121,12 @@ def pose(**over):
 class Clip(J.Clip):
     """jianlib's keyed Catmull-Rom clip with the cast's fist controls and solver."""
 
-    def __init__(self, *a, body=MONK, striker=None, **kw):
+    def __init__(self, *a, body=MONK, striker=None, velocity=(0.0, 0.0), **kw):
         super().__init__(*a, **kw)
         self.base = dict(READY)
         self.body = body
         self.striker = striker  # (part, "fist" | (x, y, z) part-local point) that lands the blow
+        self.velocity = velocity  # (vx, vz) root ground speed a locomotion cycle is authored for (scale 1)
 
     def channel(self, name, t):
         if name in ("rflex", "lflex", "lookW", "rspace", "lspace"):
@@ -160,6 +164,33 @@ class Clip(J.Clip):
         return local, world, diag
 
 
+def gait(length, velocity, duty, lift, neutral, pitch_off=-16.0, samples=30):
+    """Per-sample feet for an in-place cycle (General Zhao's gait): [(t, lf, rf)], the left foot landing at t = 0 and
+    the right at length / 2; a planted foot travels backward at exactly `velocity` (vx, vz), the swing foot arcs over."""
+    V = np.asarray(velocity, float)
+    half = V * duty * length / 2
+    n = int(samples * length / 0.5)
+    out = []
+    for i in range(n + 1):
+        t = length * i / n
+        feet = []
+        for side, phase in (("lf", 0.0), ("rf", 0.5)):
+            x0, z0, _, yaw, _ = neutral[side]
+            p0 = np.array([x0, z0])
+            u = (t / length + phase) % 1.0
+            if u < duty:
+                p, h, pt = p0 + half - V * (u * length), 0.0, 0.0
+            else:
+                w = (u - duty) / (1 - duty)
+                e = w * w * (3 - 2 * w)
+                p = (p0 - half) + (2 * half) * e
+                h = lift * math.sin(math.pi * w)
+                pt = pitch_off * math.sin(math.pi * min(1.0, w * 1.6)) if w < 0.62 else 0.0
+            feet.append((float(p[0]), float(p[1]), h, yaw, pt))
+        out.append((t, feet[0], feet[1]))
+    return out
+
+
 def visible(world, part, body, rest_point):
     """Where a rest-space point carried by `part` is now (the mesh rides the part rigidly)."""
     M = world[part] @ np.linalg.inv(REST[part])
@@ -173,10 +204,21 @@ def striker_point(clip, world):
     return visible(world, part, clip.body, pt)
 
 
+def pop_point(clip, world):
+    """The point the pop check follows. A held weapon's striker is tracked at the hand that holds it, as jianlib does
+    for the Jian: the blade only amplifies the wrist's rotation, and the swept blade is checked by the blow test."""
+    if not clip.striker:
+        return visible(world, "RightHand", clip.body, clip.body.fist["Right"])
+    part, pt = clip.striker
+    if pt != "fist" and part.endswith("Hand"):
+        return visible(world, part, clip.body, clip.body.fist["Right" if part.startswith("Right") else "Left"])
+    return striker_point(clip, world)
+
+
 def validate(clip, baked):
     """Reach, ground, planted-foot slide, pops, loop seam, and the blow against the server's swept shape."""
     w = {"arm_reach": 0.0, "leg_reach": 0.0, "sole_below_ground": 0.0, "planted_slide": 0.0, "hand_jerk": 0.0, "loop_seam_deg": 0.0}
-    prev, pts = None, []
+    prev, pts, hand = None, [], []
     for t, local, world, diag, c in baked:
         w["arm_reach"] = max(w["arm_reach"], diag["right_excess"], diag["left_excess"])
         w["leg_reach"] = max(w["leg_reach"], diag["left_leg_excess"], diag["right_leg_excess"])
@@ -192,13 +234,16 @@ def validate(clip, baked):
                 p0, low0 = prev[foot]
                 if low - rig.GROUND < 0.01 and low0 - rig.GROUND < 0.01:
                     k = int(np.argmin([q[1] for q in p]))
-                    w["planted_slide"] = max(w["planted_slide"], float(np.linalg.norm((p[k] - p0[k])[[0, 2]])) * FPS)
+                    # a locomotion cycle's planted foot rides the ground backward at exactly the root's speed
+                    slip = (p[k] - p0[k])[[0, 2]] * FPS + np.asarray(clip.velocity, float)
+                    w["planted_slide"] = max(w["planted_slide"], float(np.linalg.norm(slip)))
         prev = soles
         pts.append(striker_point(clip, world) if clip.striker else visible(world, "RightHand", clip.body, clip.body.fist["Right"]))
-    for k in range(1, len(pts) - 1):
+        hand.append(pop_point(clip, world))
+    for k in range(1, len(hand) - 1):
         if any(abs(baked[k][0] - ct) < 0.035 for ct in clip.contacts):
             continue
-        a, b, c2 = pts[k - 1], pts[k], pts[k + 1]
+        a, b, c2 = hand[k - 1], hand[k], hand[k + 1]
         v0, v1 = b - a, c2 - b
         jerk = float(np.linalg.norm(a - 2 * b + c2))
         speed = max(float(np.linalg.norm(v0)), float(np.linalg.norm(v1)))

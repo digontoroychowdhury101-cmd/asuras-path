@@ -3,7 +3,7 @@
     blender -b assets/source/opening_cast/monk/Monk_v1.blend -P tools/blender/opening_cast/review.py -- monk [game] [shot ...]
 
 Renders the master (or with `game`, the baked game mesh) under a key/fill/rim rig into
-outputs/opening-cast/<key>/review_<shot>_<master|game>.png. Shots: face_front, face_34, face_side, body_front, body_34.
+outputs/opening-cast/<key>/review_<shot>_<master|game>.png. Shots: face_front, face_34, face_side, body_front, body_34, hand_34.
 """
 import sys
 from pathlib import Path
@@ -12,7 +12,7 @@ import bpy
 from mathutils import Vector
 
 ROOT = Path(__file__).resolve().parents[3]
-NAMES = {"monk": "Monk"}
+NAMES = {"monk": "Monk", "swordsman": "Swordsman"}
 # shot: target, direction from target, distance, lens
 SHOTS = {
     "face_front": ((0, 0, 1.5), (0, 1, 0.05), 3.2, 85),
@@ -20,6 +20,7 @@ SHOTS = {
     "face_side": ((0, 0, 1.5), (1, 0.05, 0.05), 3.2, 85),
     "body_front": ((0, 0, -0.75), (0, 1, 0.1), 13, 50),
     "body_34": ((0, 0, -0.75), (0.75, 1, 0.15), 13, 50),
+    "hand_34": ((1.0, 0, -0.95), (0.9, 0.8, 0.15), 3.6, 85),   # the right fist and a weapon's grip
 }
 
 

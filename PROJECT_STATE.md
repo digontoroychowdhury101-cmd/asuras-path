@@ -1,5 +1,9 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## Cursed Swordsman production + Warden server — 2026-11-02 (Windows)
+
+Swordsman skin (dao owns weapon), 17 clips incl. foot-planted Walk/Run played at measured speed, stepped cuts, 1.2× scale, crimson blade trail/embers/flame (SkinWeaponFx). Fixed AI ignoring respawned players (LOS ignore list). Bridge verified both ends. Warden server: HollowToll, reward, open-pocket spawn. Next: monk gait, Warden model/clips, footage.
+
 ## Corrupt Wandering Monk production skin — 2026-11-02 (Windows)
 
 Monk redesigned as hat-shadowed wanderer (douli, wrapped jaw, straw mantle); 15 baked PBR MeshParts imported, bound and extracted to `AsuraBoss_CorruptWanderingMonk.rbxmx`. 15 monk clips published with read-back; rebuilt place: all 11 monks skinned, authored idle/move/attacks play. Fixed unmapped MobSpacing. Next: Cursed Swordsman, Hollow-Bell Warden, group/footage acceptance.

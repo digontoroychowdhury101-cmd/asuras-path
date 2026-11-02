@@ -295,6 +295,23 @@ end
 -- Weapon visuals, tint and procedural weapon volumes
 -------------------------------------------------------------------------------------------------
 
+-- A production skin that carries its own weapon mesh (BossSkin: OwnsWeapon) keeps the held weapon
+-- visual hidden; the weapon is attached after the skin, so the skin's own pass never sees it.
+local function hideSkinnedWeapon(e: Entity)
+	local skin = e.Model:FindFirstChild("AsuraBossSkin")
+	if not skin or skin:GetAttribute("OwnsWeapon") ~= true then
+		return
+	end
+	for _, name in { "AsuraWeapon", "ArsenalWeapon" } do
+		local held = e.Model:FindFirstChild(name)
+		if not held then continue end
+		for _, part in held:GetDescendants() do
+			if part:IsA("BasePart") then part.Transparency, part.CastShadow = 1, false end
+		end
+		if held:IsA("BasePart") then held.Transparency, held.CastShadow = 1, false end
+	end
+end
+
 local function attachWeapon(e: Entity)
 	if e.WeaponPart then
 		e.WeaponPart:Destroy()
@@ -304,7 +321,7 @@ local function attachWeapon(e: Entity)
 		e.Model:SetAttribute("AsuraWeapon", e.Fighter.Weapon);return -- the boss look carries its weapon
 	end
 	if WeaponModels.attach(e.Model,e.Fighter.Weapon) then
-		e.Model:SetAttribute("AsuraWeapon",e.Fighter.Weapon);return
+		e.Model:SetAttribute("AsuraWeapon",e.Fighter.Weapon);hideSkinnedWeapon(e);return
 	end
 	local visual = WEAPON_VISUALS[e.Fighter.Weapon]
 	e.Model:SetAttribute("AsuraWeapon", e.Fighter.Weapon)
@@ -333,6 +350,7 @@ local function attachWeapon(e: Entity)
 	part.Parent = e.Model
 	WeaponModels.dress(part, e.Fighter.Weapon)
 	e.WeaponPart = part
+	hideSkinnedWeapon(e)
 end
 
 local function tint(model: Model, rgb: { number })

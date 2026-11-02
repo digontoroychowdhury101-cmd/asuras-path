@@ -201,7 +201,7 @@ Catalog.Enemies = {
 -- weapon at 1.4x tempo (tools/animation/opening_cast).
 -------------------------------------------------------------------------------------------------
 
-export type CharacterKey = WeaponKey | "Hitstun_Light" | "Hitstun_Heavy" | "StanceBroken" | "Death"
+export type CharacterKey = WeaponKey | "Hitstun_Light" | "Hitstun_Heavy" | "StanceBroken" | "Death" | "Signature" | "Walk" | "Run"
 
 local function character(definition: string, ids: { [string]: string }): { [CharacterKey]: Slot }
 	local function c(key: string, stock: StockName, looped: boolean, priority: Priority): Slot
@@ -223,6 +223,12 @@ local function character(definition: string, ids: { [string]: string }): { [Char
 		Hitstun_Heavy = c("Hitstun_Heavy", "Fall", false, "Action3"),
 		StanceBroken = c("StanceBroken", "Sit", true, "Action4"),
 		Death = c("Death", "Sit", false, "Action4"),
+		-- Optional: a foe's signature move (World.Mobs[...].Signature), contact at its shockwave's Windup.
+		Signature = if ids.Signature then c("Signature", "ToolLunge", false, "Action2") else nil,
+		-- Optional: full-body in-place gait cycles (a foe has no Animate script to move its legs); played at the
+		-- measured ground speed over Catalog.Gaits[definition] so the planted feet hold the ground.
+		Walk = if ids.Walk then c("Walk", "ToolHold", true, "Movement") else nil,
+		Run = if ids.Run then c("Run", "ToolHold", true, "Movement") else nil,
 	} :: any
 end
 
@@ -245,7 +251,30 @@ Catalog.Characters = {
 		StanceBroken = "rbxassetid://108521705818233",
 		WeaponArt = "rbxassetid://135854349242310",
 	}),
+	CursedSwordsman = character("CursedSwordsman", {
+		Death = "rbxassetid://97875436719077",
+		Guard = "rbxassetid://130795857635813",
+		GuardImpact = "rbxassetid://72996160202085",
+		Heavy = "rbxassetid://71766330781056",
+		Hitstun_Heavy = "rbxassetid://85881768455696",
+		Hitstun_Light = "rbxassetid://79845182367548",
+		Idle = "rbxassetid://92733401704195",
+		Light1 = "rbxassetid://137250040297302",
+		Light2 = "rbxassetid://137835669576121",
+		Light3 = "rbxassetid://81317418914365",
+		Light4 = "rbxassetid://108101370082647",
+		Move = "rbxassetid://75315756560710",
+		Run = "rbxassetid://110196475389156",
+		Running = "rbxassetid://93013217748649",
+		StanceBroken = "rbxassetid://92933887269942",
+		Walk = "rbxassetid://122806607020356",
+		WeaponArt = "rbxassetid://125540053579064",
+	}),
 } :: { [string]: { [CharacterKey]: Slot } }
+-- Ground speed (studs/s at model scale 1) each gait cycle was authored for (swordsman_clips.py WALK_SPEED/RUN_SPEED).
+Catalog.Gaits = {
+	CursedSwordsman = { Walk = 6.4, Run = 11.0 },
+} :: { [string]: { Walk: number, Run: number? } }
 Catalog.CharacterKeys = table.freeze({ "Idle", "Move", "Light1", "Light2", "Light3", "Light4", "Heavy", "Running", "WeaponArt",
 	"Guard", "GuardImpact", "Hitstun_Light", "Hitstun_Heavy", "StanceBroken", "Death" } :: { CharacterKey })
 
@@ -418,6 +447,15 @@ end
 for definition, set in Catalog.Characters do
 	for _, key in Catalog.CharacterKeys do
 		check(set[key], "Characters." .. definition .. "." .. key)
+	end
+	for _, key in { "Walk", "Run" } do
+		if (set :: any)[key] then
+			check((set :: any)[key], "Characters." .. definition .. "." .. key)
+			assert(Catalog.Gaits[definition] and (Catalog.Gaits[definition] :: any)[key], "Characters." .. definition .. "." .. key .. " has no authored gait speed")
+		end
+	end
+	if set.Signature then
+		check(set.Signature, "Characters." .. definition .. ".Signature")
 	end
 end
 

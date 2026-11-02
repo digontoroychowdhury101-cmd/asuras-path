@@ -42,6 +42,7 @@ type Session = {
 	ActiveAltar: string,
 	Altars: { [string]: boolean },
 	Bosses: { [string]: boolean },
+	Minibosses: { [string]: boolean },
 	Region: string?,
 	Fight: string?,
 	Stain: BasePart?,
@@ -166,6 +167,7 @@ local function session(userId: number): Session?
 		ActiveAltar = record.world.activeAltar,
 		Altars = table.clone(record.world.altars),
 		Bosses = table.clone(record.world.bosses),
+		Minibosses = table.clone(record.world.minibosses or {}),
 		Region = nil,
 		Fight = nil,
 		Stain = nil,
@@ -918,6 +920,49 @@ end
 -- Event wiring
 -------------------------------------------------------------------------------------------------
 
+-- An optional foe's one-time reward (World.Mobs[...].Reward: the Hollow-Bell Warden's gourd charge
+-- and 400 Essence) goes to the killer and every living player standing in the fight with it. The
+-- profile flag (world.minibosses) makes it once per player; later defeats pay only the mob's Essence.
+local MINIBOSS_SHARE = 40
+local function grantMinibossReward(mob: any, victimId: number, killer: Session?)
+	local reward = mob.Reward
+	local victim = Characters.GetEntity(victimId)
+	local recipients: { [number]: Session } = {}
+	if killer then recipients[killer.UserId] = killer end
+	for userId, s in sessions do
+		local e = Characters.GetEntity(userId)
+		if victim and e and e.Fighter.State ~= "KO" and not Characters.IsInDuel(userId)
+			and (e.Root.Position - victim.Root.Position).Magnitude <= MINIBOSS_SHARE then
+			recipients[userId] = s
+		end
+	end
+	for userId, s in recipients do
+		if s.Minibosses[reward.Flag] then continue end
+		s.Minibosses[reward.Flag] = true
+		flush(s) -- commit live gourd charges first, so the new capacity is not overwritten
+		enqueue(s, "MinibossReward", function(store: any): (boolean, string?)
+			local ok, err, claimed = store:RecordMinibossDefeat(userId, reward.Flag, reward.Essence, reward.ElixirCapacity)
+			if ok and claimed then
+				local record = souls(userId)
+				local gourd = if record then record.inventory.elixirs else nil
+				local grew = gourd ~= nil and gourd.max > s.MaxElixirs
+				if gourd and grew then
+					s.MaxElixirs = gourd.max
+					s.Elixirs = math.min(s.Elixirs + 1, s.MaxElixirs)
+				end
+				publish(s)
+				Characters.Cue("MinibossReward", userId, { mob = mob.Id, banner = reward.Banner, essence = reward.Essence,
+					gourd = grew, max = s.MaxElixirs })
+			elseif ok then
+				s.Minibosses[reward.Flag] = true -- already claimed on an earlier visit
+			else
+				s.Minibosses[reward.Flag] = nil -- a failed write may retry on the next defeat
+			end
+			return ok, err
+		end)
+	end
+end
+
 local function onEvent(event: any, _point: Vector3?)
 	if event.Kind ~= "KO" then
 		return
@@ -953,6 +998,8 @@ local function onEvent(event: any, _point: Vector3?)
    killer.Unbanked+=agent.Essence;killer.Player:SetAttribute("AsuraUnbanked",killer.Unbanked)
   end
  end
+ local mob=if agent.Kind=="Mob" and agent.Definition then World.Mobs[agent.Definition] else nil
+ if mob and mob.Reward then grantMinibossReward(mob,event.Target,killer) end
 end
 
 local function onBossDefeated(bossId: string, _entityId: number)

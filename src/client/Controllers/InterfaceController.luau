@@ -1136,6 +1136,12 @@ function Controller.OnCue(self: Interface, cue: Cue)
 		else
 			self:ShowToast("The smith sets down his hammer.")
 		end
+	elseif cue.Kind == "MinibossReward" and cue.Source == own then
+		local sub = string.format("+%d essence", tonumber(data.essence) or 0)
+		if data.gourd then sub ..= string.format("   ·   gourd +1  (x%d)", tonumber(data.max) or 0) end
+		self:ShowBanner(tostring(data.banner or "FOE VANQUISHED"), sub, 4)
+		self.Banner.TextColor3 = GOLD
+		HudKit.cue(HudKit.Sounds.Objective, 0.8, 0.7)
 	elseif cue.Kind == "GourdRefilled" and cue.Source == own then
 		self:ShowToast(string.format("Gourd refilled  (x%d)", tonumber(data.charges) or 0))
 	elseif cue.Kind == "Telegraph" then

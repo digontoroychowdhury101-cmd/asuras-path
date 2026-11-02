@@ -40,6 +40,7 @@ Zones.Spawns = table.freeze({
 	DM_Monk_Courtyard_A = "Courtyard", DM_Monk_Courtyard_B = "Courtyard", DM_Monk_Courtyard_C = "Courtyard",
 	DM_Monk_Hall_A = "Halls", DM_Monk_Hall_B = "Halls", DM_Swordsman_Bridge = "Bridge",
 	DM_Monk_Cloister = "Cloister", DM_Swordsman_Cloister = "Cloister",
+	DM_Warden_Graves = "Graves",
 })
 Zones.Grace = 6 -- studs a foe may follow past its zone edge (doorway fights stay fair)
 

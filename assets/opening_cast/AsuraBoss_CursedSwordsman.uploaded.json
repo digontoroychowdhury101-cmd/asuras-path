@@ -1,0 +1,137 @@
+{
+  "model": "AsuraBoss_CursedSwordsman",
+  "importer": "Roblox Studio 3D Importer, Creator: Me",
+  "parts": {
+    "Swordsman_UpperTorso": {
+      "bone": "UpperTorso",
+      "MeshId": "rbxassetid://73958815188925",
+      "ColorMap": "rbxassetid://120813085850146",
+      "NormalMap": "rbxassetid://111187115307720",
+      "RoughnessMap": "rbxassetid://92460234502568",
+      "MetalnessMap": "rbxassetid://94087212318660"
+    },
+    "Swordsman_RightUpperLeg": {
+      "bone": "RightUpperLeg",
+      "MeshId": "rbxassetid://80258572458020",
+      "ColorMap": "rbxassetid://120813085850146",
+      "NormalMap": "rbxassetid://111187115307720",
+      "RoughnessMap": "rbxassetid://92460234502568",
+      "MetalnessMap": "rbxassetid://94087212318660"
+    },
+    "Swordsman_RightUpperArm": {
+      "bone": "RightUpperArm",
+      "MeshId": "rbxassetid://135449123695941",
+      "ColorMap": "rbxassetid://120813085850146",
+      "NormalMap": "rbxassetid://111187115307720",
+      "RoughnessMap": "rbxassetid://92460234502568",
+      "MetalnessMap": "rbxassetid://94087212318660"
+    },
+    "Swordsman_RightLowerLeg": {
+      "bone": "RightLowerLeg",
+      "MeshId": "rbxassetid://103405376616148",
+      "ColorMap": "rbxassetid://120813085850146",
+      "NormalMap": "rbxassetid://111187115307720",
+      "RoughnessMap": "rbxassetid://92460234502568",
+      "MetalnessMap": "rbxassetid://94087212318660"
+    },
+    "Swordsman_RightLowerArm": {
+      "bone": "RightLowerArm",
+      "MeshId": "rbxassetid://102458443484159",
+      "ColorMap": "rbxassetid://120813085850146",
+      "NormalMap": "rbxassetid://111187115307720",
+      "RoughnessMap": "rbxassetid://92460234502568",
+      "MetalnessMap": "rbxassetid://94087212318660"
+    },
+    "Swordsman_RightHand": {
+      "bone": "RightHand",
+      "MeshId": "rbxassetid://126291075909626",
+      "ColorMap": "rbxassetid://120813085850146",
+      "NormalMap": "rbxassetid://111187115307720",
+      "RoughnessMap": "rbxassetid://92460234502568",
+      "MetalnessMap": "rbxassetid://94087212318660"
+    },
+    "Swordsman_LowerTorso": {
+      "bone": "LowerTorso",
+      "MeshId": "rbxassetid://139285409997336",
+      "ColorMap": "rbxassetid://120813085850146",
+      "NormalMap": "rbxassetid://111187115307720",
+      "RoughnessMap": "rbxassetid://92460234502568",
+      "MetalnessMap": "rbxassetid://94087212318660"
+    },
+    "Swordsman_LeftUpperArm": {
+      "bone": "LeftUpperArm",
+      "MeshId": "rbxassetid://139697341255390",
+      "ColorMap": "rbxassetid://120813085850146",
+      "NormalMap": "rbxassetid://111187115307720",
+      "RoughnessMap": "rbxassetid://92460234502568",
+      "MetalnessMap": "rbxassetid://94087212318660"
+    },
+    "Swordsman_LeftLowerLeg": {
+      "bone": "LeftLowerLeg",
+      "MeshId": "rbxassetid://77546836546827",
+      "ColorMap": "rbxassetid://120813085850146",
+      "NormalMap": "rbxassetid://111187115307720",
+      "RoughnessMap": "rbxassetid://92460234502568",
+      "MetalnessMap": "rbxassetid://94087212318660"
+    },
+    "Swordsman_LeftLowerArm": {
+      "bone": "LeftLowerArm",
+      "MeshId": "rbxassetid://139684939650447",
+      "ColorMap": "rbxassetid://120813085850146",
+      "NormalMap": "rbxassetid://111187115307720",
+      "RoughnessMap": "rbxassetid://92460234502568",
+      "MetalnessMap": "rbxassetid://94087212318660"
+    },
+    "Swordsman_LeftHand": {
+      "bone": "LeftHand",
+      "MeshId": "rbxassetid://122175653105185",
+      "ColorMap": "rbxassetid://120813085850146",
+      "NormalMap": "rbxassetid://111187115307720",
+      "RoughnessMap": "rbxassetid://92460234502568",
+      "MetalnessMap": "rbxassetid://94087212318660"
+    },
+    "Swordsman_LeftFoot": {
+      "bone": "LeftFoot",
+      "MeshId": "rbxassetid://75369942153964",
+      "ColorMap": "rbxassetid://120813085850146",
+      "NormalMap": "rbxassetid://111187115307720",
+      "RoughnessMap": "rbxassetid://92460234502568",
+      "MetalnessMap": "rbxassetid://94087212318660"
+    },
+    "Swordsman_LeftUpperLeg": {
+      "bone": "LeftUpperLeg",
+      "MeshId": "rbxassetid://101406716516216",
+      "ColorMap": "rbxassetid://120813085850146",
+      "NormalMap": "rbxassetid://111187115307720",
+      "RoughnessMap": "rbxassetid://92460234502568",
+      "MetalnessMap": "rbxassetid://94087212318660"
+    },
+    "Swordsman_Dao": {
+      "bone": "RightHand",
+      "MeshId": "rbxassetid://75139284275622",
+      "ColorMap": "rbxassetid://72501901257498",
+      "NormalMap": "rbxassetid://74895591891330",
+      "RoughnessMap": "rbxassetid://97447075509359",
+      "MetalnessMap": "rbxassetid://71493407306042"
+    },
+    "Swordsman_Head": {
+      "bone": "Head",
+      "MeshId": "rbxassetid://106785456767755",
+      "ColorMap": "rbxassetid://120813085850146",
+      "NormalMap": "rbxassetid://111187115307720",
+      "RoughnessMap": "rbxassetid://92460234502568",
+      "MetalnessMap": "rbxassetid://94087212318660"
+    },
+    "Swordsman_RightFoot": {
+      "bone": "RightFoot",
+      "MeshId": "rbxassetid://120914435938550",
+      "ColorMap": "rbxassetid://120813085850146",
+      "NormalMap": "rbxassetid://111187115307720",
+      "RoughnessMap": "rbxassetid://92460234502568",
+      "MetalnessMap": "rbxassetid://94087212318660"
+    }
+  },
+  "sharedStringCount": 2,
+  "validation": "15 uploaded MeshParts, complete uploaded PBR, AsuraBone + AsuraBind on each, non-colliding",
+  "savedPlace": "outputs\\opening-cast\\swordsman\\swordsman_import_capture.rbxlx"
+}

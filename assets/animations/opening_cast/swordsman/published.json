@@ -1,0 +1,104 @@
+{
+  "Swordsman_Art": {
+    "id": "rbxassetid://125540053579064",
+    "keyframes": 48,
+    "length": 0.7833300232887268,
+    "slot": "CursedSwordsman.WeaponArt"
+  },
+  "Swordsman_Death": {
+    "id": "rbxassetid://97875436719077",
+    "keyframes": 43,
+    "length": 0.8999999761581421,
+    "slot": "CursedSwordsman.Death"
+  },
+  "Swordsman_Guard": {
+    "id": "rbxassetid://130795857635813",
+    "keyframes": 6,
+    "length": 1.600000023841858,
+    "slot": "CursedSwordsman.Guard"
+  },
+  "Swordsman_GuardImpact": {
+    "id": "rbxassetid://72996160202085",
+    "keyframes": 13,
+    "length": 0.3166700005531311,
+    "slot": "CursedSwordsman.GuardImpact"
+  },
+  "Swordsman_Heavy": {
+    "id": "rbxassetid://71766330781056",
+    "keyframes": 43,
+    "length": 0.699999988079071,
+    "slot": "CursedSwordsman.Heavy"
+  },
+  "Swordsman_Hit_Heavy": {
+    "id": "rbxassetid://85881768455696",
+    "keyframes": 42,
+    "length": 0.699999988079071,
+    "slot": "CursedSwordsman.Hitstun_Heavy"
+  },
+  "Swordsman_Hit_Light": {
+    "id": "rbxassetid://79845182367548",
+    "keyframes": 20,
+    "length": 0.36667001247406006,
+    "slot": "CursedSwordsman.Hitstun_Light"
+  },
+  "Swordsman_Idle": {
+    "id": "rbxassetid://92733401704195",
+    "keyframes": 18,
+    "length": 3.200000047683716,
+    "slot": "CursedSwordsman.Idle"
+  },
+  "Swordsman_L1": {
+    "id": "rbxassetid://137250040297302",
+    "keyframes": 19,
+    "length": 0.30000001192092896,
+    "slot": "CursedSwordsman.Light1"
+  },
+  "Swordsman_L2": {
+    "id": "rbxassetid://137835669576121",
+    "keyframes": 19,
+    "length": 0.30000001192092896,
+    "slot": "CursedSwordsman.Light2"
+  },
+  "Swordsman_L3": {
+    "id": "rbxassetid://81317418914365",
+    "keyframes": 23,
+    "length": 0.36667001247406006,
+    "slot": "CursedSwordsman.Light3"
+  },
+  "Swordsman_L4": {
+    "id": "rbxassetid://108101370082647",
+    "keyframes": 28,
+    "length": 0.44999998807907104,
+    "slot": "CursedSwordsman.Light4"
+  },
+  "Swordsman_Move": {
+    "id": "rbxassetid://75315756560710",
+    "keyframes": 15,
+    "length": 0.699999988079071,
+    "slot": "CursedSwordsman.Move"
+  },
+  "Swordsman_Run": {
+    "id": "rbxassetid://110196475389156",
+    "keyframes": 37,
+    "length": 0.6000000238418579,
+    "slot": "CursedSwordsman.Run"
+  },
+  "Swordsman_Running": {
+    "id": "rbxassetid://93013217748649",
+    "keyframes": 32,
+    "length": 0.5166699886322021,
+    "slot": "CursedSwordsman.Running"
+  },
+  "Swordsman_StanceBroken": {
+    "id": "rbxassetid://92933887269942",
+    "keyframes": 23,
+    "length": 1.600000023841858,
+    "slot": "CursedSwordsman.StanceBroken"
+  },
+  "Swordsman_Walk": {
+    "id": "rbxassetid://122806607020356",
+    "keyframes": 43,
+    "length": 0.699999988079071,
+    "slot": "CursedSwordsman.Walk"
+  }
+}

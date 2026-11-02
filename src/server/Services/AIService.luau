@@ -497,8 +497,10 @@ local function releaseShockwave(agent: Agent, self: Entity)
 	local wave = pending.Wave
 	local origin = self.Root.Position
 	Characters.Cue("Shockwave", agent.Id, { radius = wave.Radius, x = origin.X, y = origin.Y, z = origin.Z })
+	-- A boss strikes only its fight's participants; a mob's signature reaches whoever stands in it.
+	local open = agent.Kind == "Mob"
 	for _, e in Characters.Entities() do
-		if e.Kind == "Player" and agent.Allowed and agent.Allowed[e.Id] and e.Model.Parent and e.Root.Position.Y - 3 <= 6 and (e.Root.Position - origin).Magnitude <= wave.Radius then
+		if e.Kind == "Player" and (open or agent.Allowed and agent.Allowed[e.Id]) and e.Model.Parent and e.Root.Position.Y - 3 <= 6 and (e.Root.Position - origin).Magnitude <= wave.Radius then
 			Characters.ApplyArea(agent.Id, e.Id, wave.Damage, wave.Posture, wave.Unblockable)
 		end
 	end
@@ -604,6 +606,45 @@ local function updateBoss(agent: Agent, boss: BossDef, self: Entity, now: number
 	return false
 end
 
+-- An optional foe's signature (the Hollow-Bell Warden's Hollow Toll): the cancelable, telegraphed
+-- shockwave a sovereign's Special throws, called when its target stands within Range. The foe
+-- holds still through the windup; a stagger, stance break or the walk home cancels it.
+local function updateSignature(agent: Agent, signature: any, self: Entity, now: number): boolean
+	local f = self.Fighter
+	local pending = agent.Shockwave
+	if pending then
+		if Schema.isStunned(f.State) or f.State == "StanceBroken" or f.State == "DeathblowVictim" or agent.Mode == "Return" then
+			agent.Shockwave = nil
+			self.Model:SetAttribute("AsuraTelegraph", nil) -- the clip and the warning stop with it
+			return false
+		end
+		if now >= pending.At then
+			releaseShockwave(agent, self) -- the telegraph stays: the client plays the toll's recovery out
+		end
+		Characters.StopMoving(agent.Id)
+		return true
+	end
+	if agent.Mode ~= "Combat" then
+		agent.NextSpecial = now + agent.Rng:NextNumber(signature.IntervalMin * 0.4, signature.IntervalMin * 0.7)
+		return false
+	end
+	local target = if agent.Target ~= 0 then Characters.GetEntity(agent.Target) else nil
+	if not target or now < agent.NextSpecial or f.State ~= "Idle" then
+		return false
+	end
+	if (target.Root.Position - self.Root.Position).Magnitude > signature.Range then
+		return false
+	end
+	agent.NextSpecial = now + agent.Rng:NextNumber(signature.IntervalMin, signature.IntervalMax)
+	agent.Pending = nil
+	Characters.StopMoving(agent.Id)
+	Characters.SetGuard(agent.Id, false)
+	Characters.Face(agent.Id, target.Root.Position)
+	scheduleShockwave(agent, signature.Shockwave, now, true)
+	self.Model:SetAttribute("AsuraSignature", signature.Id)
+	return true
+end
+
 -------------------------------------------------------------------------------------------------
 -- Agent loop
 -------------------------------------------------------------------------------------------------
@@ -621,6 +662,10 @@ local function update(agent: Agent, now: number)
 
 	local boss = agent.Boss
 	if boss and updateBoss(agent, boss, self, now) then
+		return
+	end
+	local mob = if boss then nil else World.Mobs[agent.Definition]
+	if mob and mob.Signature and updateSignature(agent, mob.Signature, self, now) then
 		return
 	end
 
@@ -842,6 +887,9 @@ function AIService.SpawnMob(spawnId: string): number?
 	if not id then
 		return nil
 	end
+	if mob.Scale and mob.Scale ~= 1 then
+		Characters.ScaleEnemy(id, mob.Scale)
+	end
 	local patrol: { Vector3 } = {}
 	for _, point in entry.Patrol do
 		table.insert(patrol, Vector3.new(point.X, point.Y, point.Z))
@@ -866,6 +914,8 @@ function AIService.ResetMob(spawnId: string): boolean
 	Characters.RestoreFighter(id)
 	agent.Target = 0
 	agent.Pending = nil
+	agent.Shockwave = nil
+	agent.NextSpecial = math.huge
 	agent.DeflectAt = math.huge
 	agent.PatrolIndex = 1
 	setMode(agent, if #agent.Patrol > 0 then "Patrol" else "Idle", Characters.Now())
@@ -1161,6 +1211,8 @@ function AIService.Start()
 	table.insert(disconnectors, Characters.Subscribe(onEvent))
 	table.insert(disconnectors, Characters.OnEntityRemoved(onRemoved))
 	table.insert(disconnectors, Characters.OnEntityAdded(onAdded))
+	-- A respawn binds a new body to the same entity; the sight ray must ignore it, not hit it.
+	table.insert(disconnectors, Characters.OnCharacterSpawned(function() ignoreDirty = true end))
 end
 
 function AIService.Destroy()

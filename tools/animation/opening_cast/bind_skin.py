@@ -9,6 +9,7 @@ faces it toward the camera). This step, run over the local StudioMCP proxy:
   - measures the R15 rest pose of a default enemy rig (CharacterService builds enemies from a blank
     HumanoidDescription) and writes each part's AsuraBone attribute and AsuraBind Attachment, so BossSkin welds the
     part where it sat in the authored root space: part = limb * bind:Inverse();
+  - tags weapon pieces AsuraRole=Weapon (pieces.json role) so the skin replaces the procedural weapon;
   - makes every part massless, non-colliding, non-querying, Box collision, and parents the template to
     ServerStorage.AsuraAssets for extract_skin.py.
 """
@@ -20,7 +21,7 @@ ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT / "tools"))
 from studio_mcp import Client  # noqa: E402
 
-TEMPLATES = {"monk": ("Monk", "AsuraBoss_CorruptWanderingMonk")}
+TEMPLATES = {"monk": ("Monk", "AsuraBoss_CorruptWanderingMonk"), "swordsman": ("Swordsman", "AsuraBoss_CursedSwordsman")}
 
 LUAU = """local PIECES = game:GetService("HttpService"):JSONDecode([==[%s]==])
 local PREFIX, NAME = "%s_", "%s"
@@ -50,6 +51,7 @@ for _, p in parts do
 	bind.CFrame = rest:Inverse() * rl
 	bind.Parent = p
 	p:SetAttribute("AsuraBone", info.bone)
+	p:SetAttribute("AsuraRole", info.role) -- "Weapon" makes BossSkin hide the costume weapon (OwnsWeapon)
 	p.Anchored, p.Massless, p.CanCollide, p.CanQuery, p.CanTouch, p.CastShadow = true, true, false, false, false, true
 	pcall(function() (p :: any).CollisionFidelity = Enum.CollisionFidelity.Box end)
 	table.insert(report, string.format("%%s->%%s err %%.4f", p.Name, info.bone, err))

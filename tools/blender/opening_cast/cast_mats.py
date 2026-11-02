@@ -111,6 +111,12 @@ def ember_eye(g):
     g.finish(col, 0.1, 0.0, None, coat=1.0, coat_rough=0.02)
 
 
+def ember(g):
+    """Solid burning ember (the swordsman's eyes in the helmet's shadow): white-hot core, red rim, no eyeball."""
+    col = g.mix((1.0, 0.42, 0.08), (0.75, 0.10, 0.02), g.rng(g.edges(0.5, 0.56), 0.0, 1.0))
+    g.finish(col, 0.25, 0.0, None)
+
+
 def bead(g, cracked=False):
     grain = g.wave(18, g.scale(g.coord(), (6, 6, 0.4)), 5.0, "RINGS", "Z")
     col = g.mix((0.050, 0.024, 0.012), (0.022, 0.011, 0.007), g.rng(g.noise(9, 4), 0.3, 0.7))
@@ -174,11 +180,15 @@ BUILDERS = {
     "ROBE": lambda g: zm.cloth(g, (0.10, 0.085, 0.065), (0.055, 0.047, 0.038), (0.16, 0.14, 0.11), weave=380),
     "TROUSER": lambda g: zm.cloth(g, (0.028, 0.026, 0.024), (0.014, 0.013, 0.012), (0.06, 0.055, 0.05)),
     "LINEN": lambda g: wrap_linen(g, (0.21, 0.18, 0.14), (0.15, 0.125, 0.095), (0.05, 0.038, 0.028)),
-    "SKIN": ash_skin, "SCAR": lambda g: ash_skin(g, True), "EYE": ember_eye,
+    "SKIN": ash_skin, "SCAR": lambda g: ash_skin(g, True), "EYE": ember_eye, "EMBER": ember,
     "BEAD": bead, "BEAD_CRACK": lambda g: bead(g, True),
     "STRAW": straw, "ROPE": rope, "CORD": zm.cord,
     "IRON": zm.iron, "BRONZE": zm.bronze, "LEATHER": zm.leather, "STEEL": zm.steel, "LACQUER": zm.lacquer,
     "HAIR": zm.hair, "HAIR_CORE": lambda g: zm.hair(g, True), "WOOD_RED": zm.wood_red, "POLE": zm.pole,
+    # Cursed Swordsman: near-black guard's robe, a blood-crimson silk scarf, crimson lacing through the lamellar
+    "ROBE_DARK": lambda g: zm.cloth(g, (0.020, 0.020, 0.026), (0.010, 0.010, 0.013), (0.045, 0.044, 0.048), weave=360),
+    "SCARF": lambda g: zm.cloth(g, (0.15, 0.016, 0.014), (0.062, 0.009, 0.008), (0.17, 0.065, 0.05), weave=420),
+    "LACE": lambda g: rope(g, (0.22, 0.025, 0.02), (0.08, 0.012, 0.01)),
 }
 
 
