@@ -17,6 +17,12 @@ After reviewing that checkpoint, dispatch the other files individually in this o
 
 These numbers identify follow-up batches, not new combat recovery stages. Each prompt stands alone, reads this contract and stops at a usable checkpoint. There is no requirement to finish this entire queue before Windows resumes combat verification. If Windows becomes available sooner, hand over the latest completed batch instead of starting another large task.
 
+## Authorized sequential option
+
+The creator has also authorized running all four in sequence before the Wednesday Windows handoff. Send `RUN_ALL_FOUR_ON_MAC.md` for that workflow. It overrides only the stop-and-await-next-dispatch instruction: the Mac still tests, rebuilds and commits each batch, then proceeds without routine confirmation. Do not defer all debugging until Windows or stack dependent work on an unresolved broken foundation.
+
+After the final Mac handoff, send Windows `WINDOWS_ALL_FOUR_ACCEPTANCE.md`. It includes the existing combat Stage 3B sequence and explicitly adds runtime, transaction, equipment, boss/duo, route and integrated earned-loop checks for all four installed batches. Completion by Wednesday is not assumed; incomplete batches remain identified and acceptance depends on actual evidence.
+
 ## What overlaps or already exists
 
 Review baseline: branch `ux/onboarding-overhaul`, HEAD `8496e13`. Stage 3A was not implemented in this reviewed checkout. The executor must inspect the newer Stage 3A result before deciding what remains.

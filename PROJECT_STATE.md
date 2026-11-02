@@ -1,5 +1,9 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## Sequential Mac queue and full Windows acceptance — 2026-11-02 (Mac)
+
+Added authorized sequential dispatch for all four post-Stage-3A Mac batches, retaining local tests/build/commit checkpoints. Added Windows acceptance prompt covering combat plus opening/forge, Twins, armour, route and the integrated earned loop. Documentation only. Next: Mac executes sequential dispatch; Windows verifies the latest coherent handoff after reset.
+
 ## Post-combat Mac implementation queue — 2026-11-02 (Mac)
 
 Deduplicated supplied plans against source/history. Added bounded Mac prompts for opening/forge, Iron Bull, armour and one route expansion after Stage 3A, with existing cast/Jian/Zhao preservation and Windows recheck requirements. Documentation only; no new gameplay acceptance. Next: complete Stage 3A handoff, then dispatch opening/forge independently.
