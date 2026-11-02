@@ -1,0 +1,137 @@
+{
+  "model": "AsuraBoss_HollowBellWarden",
+  "importer": "Roblox Studio 3D Importer, Creator: Me",
+  "parts": {
+    "Warden_UpperTorso": {
+      "bone": "UpperTorso",
+      "MeshId": "rbxassetid://83784109622246",
+      "ColorMap": "rbxassetid://122229771132884",
+      "NormalMap": "rbxassetid://136097197633514",
+      "RoughnessMap": "rbxassetid://121669023399559",
+      "MetalnessMap": "rbxassetid://71645928125846"
+    },
+    "Warden_Spade": {
+      "bone": "RightHand",
+      "MeshId": "rbxassetid://91321493796430",
+      "ColorMap": "rbxassetid://116062859597118",
+      "NormalMap": "rbxassetid://130404729800428",
+      "RoughnessMap": "rbxassetid://72173508181361",
+      "MetalnessMap": "rbxassetid://109237611219362"
+    },
+    "Warden_RightUpperLeg": {
+      "bone": "RightUpperLeg",
+      "MeshId": "rbxassetid://101390946674333",
+      "ColorMap": "rbxassetid://122229771132884",
+      "NormalMap": "rbxassetid://136097197633514",
+      "RoughnessMap": "rbxassetid://121669023399559",
+      "MetalnessMap": "rbxassetid://71645928125846"
+    },
+    "Warden_RightUpperArm": {
+      "bone": "RightUpperArm",
+      "MeshId": "rbxassetid://110335492606281",
+      "ColorMap": "rbxassetid://122229771132884",
+      "NormalMap": "rbxassetid://136097197633514",
+      "RoughnessMap": "rbxassetid://121669023399559",
+      "MetalnessMap": "rbxassetid://71645928125846"
+    },
+    "Warden_RightLowerLeg": {
+      "bone": "RightLowerLeg",
+      "MeshId": "rbxassetid://140405861080524",
+      "ColorMap": "rbxassetid://122229771132884",
+      "NormalMap": "rbxassetid://136097197633514",
+      "RoughnessMap": "rbxassetid://121669023399559",
+      "MetalnessMap": "rbxassetid://71645928125846"
+    },
+    "Warden_RightLowerArm": {
+      "bone": "RightLowerArm",
+      "MeshId": "rbxassetid://132948545365728",
+      "ColorMap": "rbxassetid://122229771132884",
+      "NormalMap": "rbxassetid://136097197633514",
+      "RoughnessMap": "rbxassetid://121669023399559",
+      "MetalnessMap": "rbxassetid://71645928125846"
+    },
+    "Warden_RightFoot": {
+      "bone": "RightFoot",
+      "MeshId": "rbxassetid://87486340482401",
+      "ColorMap": "rbxassetid://122229771132884",
+      "NormalMap": "rbxassetid://136097197633514",
+      "RoughnessMap": "rbxassetid://121669023399559",
+      "MetalnessMap": "rbxassetid://71645928125846"
+    },
+    "Warden_LeftUpperLeg": {
+      "bone": "LeftUpperLeg",
+      "MeshId": "rbxassetid://100490015171068",
+      "ColorMap": "rbxassetid://122229771132884",
+      "NormalMap": "rbxassetid://136097197633514",
+      "RoughnessMap": "rbxassetid://121669023399559",
+      "MetalnessMap": "rbxassetid://71645928125846"
+    },
+    "Warden_LeftUpperArm": {
+      "bone": "LeftUpperArm",
+      "MeshId": "rbxassetid://128574470566099",
+      "ColorMap": "rbxassetid://122229771132884",
+      "NormalMap": "rbxassetid://136097197633514",
+      "RoughnessMap": "rbxassetid://121669023399559",
+      "MetalnessMap": "rbxassetid://71645928125846"
+    },
+    "Warden_LeftLowerLeg": {
+      "bone": "LeftLowerLeg",
+      "MeshId": "rbxassetid://78435071538337",
+      "ColorMap": "rbxassetid://122229771132884",
+      "NormalMap": "rbxassetid://136097197633514",
+      "RoughnessMap": "rbxassetid://121669023399559",
+      "MetalnessMap": "rbxassetid://71645928125846"
+    },
+    "Warden_LeftLowerArm": {
+      "bone": "LeftLowerArm",
+      "MeshId": "rbxassetid://97052112170031",
+      "ColorMap": "rbxassetid://122229771132884",
+      "NormalMap": "rbxassetid://136097197633514",
+      "RoughnessMap": "rbxassetid://121669023399559",
+      "MetalnessMap": "rbxassetid://71645928125846"
+    },
+    "Warden_LeftHand": {
+      "bone": "LeftHand",
+      "MeshId": "rbxassetid://105950213403132",
+      "ColorMap": "rbxassetid://122229771132884",
+      "NormalMap": "rbxassetid://136097197633514",
+      "RoughnessMap": "rbxassetid://121669023399559",
+      "MetalnessMap": "rbxassetid://71645928125846"
+    },
+    "Warden_LowerTorso": {
+      "bone": "LowerTorso",
+      "MeshId": "rbxassetid://110163967996295",
+      "ColorMap": "rbxassetid://122229771132884",
+      "NormalMap": "rbxassetid://136097197633514",
+      "RoughnessMap": "rbxassetid://121669023399559",
+      "MetalnessMap": "rbxassetid://71645928125846"
+    },
+    "Warden_Head": {
+      "bone": "Head",
+      "MeshId": "rbxassetid://87672548613181",
+      "ColorMap": "rbxassetid://122229771132884",
+      "NormalMap": "rbxassetid://136097197633514",
+      "RoughnessMap": "rbxassetid://121669023399559",
+      "MetalnessMap": "rbxassetid://71645928125846"
+    },
+    "Warden_LeftFoot": {
+      "bone": "LeftFoot",
+      "MeshId": "rbxassetid://88927357856241",
+      "ColorMap": "rbxassetid://122229771132884",
+      "NormalMap": "rbxassetid://136097197633514",
+      "RoughnessMap": "rbxassetid://121669023399559",
+      "MetalnessMap": "rbxassetid://71645928125846"
+    },
+    "Warden_RightHand": {
+      "bone": "RightHand",
+      "MeshId": "rbxassetid://109033120673145",
+      "ColorMap": "rbxassetid://122229771132884",
+      "NormalMap": "rbxassetid://136097197633514",
+      "RoughnessMap": "rbxassetid://121669023399559",
+      "MetalnessMap": "rbxassetid://71645928125846"
+    }
+  },
+  "sharedStringCount": 2,
+  "validation": "15 uploaded MeshParts, complete uploaded PBR, AsuraBone + AsuraBind on each, non-colliding",
+  "savedPlace": "outputs\\opening-cast\\warden\\warden_import_capture.rbxlx"
+}

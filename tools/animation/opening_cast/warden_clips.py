@@ -2,10 +2,11 @@
 
 Attacks are timed from the built WeaponSchema Guandao moves (castlib.timing): clip length = the move's total and the
 blow lands at startup + active/2. The spade is part of his skin (bound to the right hand, warden.py), its shaft on the
-grip line through the right fist (root -Z at rest), the crescent 2.95 studs ahead of the fist, the burial spade 2.8
-behind it. Every key names where the right fist is and where the shaft points; the left fist then takes the shaft
-wherever along it sits comfortably for the left shoulder (in front of the right hand or behind it, as hands slide on
-a polearm) and turns its grip to lie along the shaft. Hollow Toll swings the haft crosswise into his own bell, like a
+grip line through the right fist (root -Z at rest), the fist low on the haft just above the butt and the crescent
+4.7 studs ahead of it, so at his 1.35 scale each blow lands on a body where his AI swings from (castlib checks it).
+Every key names where the right fist is and where the shaft points; the left fist then takes the shaft wherever
+ahead of the right hand sits comfortably for the left shoulder, as hands slide on a polearm, and turns its grip to
+lie along the shaft. Hollow Toll swings the haft crosswise into his own bell, like a
 temple's striker log, its contact on the shockwave's Windup (FighterAnimations.signatureTime).
 """
 import math
@@ -18,6 +19,12 @@ from castlib import Clip
 GRIP = (1.22, -0.88, 0.0)            # warden.py FIST: the grip line through the visible right fist (root space at rest)
 LGRIP = (-1.22, -0.88, 0.0)
 GRIP_TILT = -65.0  # warden.py: the shaft crosses each palm diagonally, forward and down at rest
+SPADE_HOLD = 1.75  # warden.py: the right fist rides this far down the haft, just above the butt socket
+SCALE = 1.35       # WorldDefinitions: his game scale; a contact this far forward x SCALE meets the Guandao's reach
+# Where his blows meet a body: the AI stands off at 0.75 x the Guandao's light reach (MobSpacing.standoff, 10.5 ->
+# 7.9; the Studio duel trace held 8.7 root to root) and the target's surface is 1.2 in from its root.
+MEET = 7.5
+LEFT_ON = (0.55, 3.4)  # the stretch of haft ahead of the right fist the left hand may hold (butt behind, crescent ahead)
 
 
 def along(grip, d):
@@ -26,7 +33,7 @@ def along(grip, d):
     return (grip[0], grip[1] + d * math.sin(a), grip[2] - d * math.cos(a))
 
 
-CRESCENT = ("RightHand", along(GRIP, 2.95))
+CRESCENT = ("RightHand", along(GRIP, 2.95 + SPADE_HOLD))
 FLEX = (-45.0, 25.0)
 WARDEN = C.Body("Warden", GRIP)
 UPPER = {"UpperTorso", "Head", "RightUpperArm", "RightLowerArm", "RightHand", "LeftUpperArm", "LeftLowerArm", "LeftHand"}
@@ -55,6 +62,7 @@ class WClip(Clip):
     def __init__(self, *a, **kw):
         super().__init__(*a, body=WARDEN, **kw)
         self.base = dict(READY)
+        self.scale, self.meet = SCALE, MEET
 
 
 _SOLVER = None
@@ -131,11 +139,10 @@ def grip(want, prev=None, prev_l=None, d_pref=1.0, **over):
     G, D = axis(world, "RightHand", GRIP)
     S = C.rig.joint_world(world, "LeftUpperArm")
     best = None
-    for d in [x / 20 for x in range(-28, 29)]:
-        if abs(d) < 0.55:
-            continue
+    d_pref = d_pref if d_pref > 0 else LEFT_ON[0] + 0.2  # "behind" now means hands together just above the butt
+    for d in [x / 20 for x in range(int(LEFT_ON[0] * 20), int(LEFT_ON[1] * 20) + 1)]:
         p = G + D * d
-        v = abs(float(np.linalg.norm(p - S)) - REACH) + 0.25 * abs(d - d_pref) + (0.4 if d * d_pref < 0 else 0.0)
+        v = abs(float(np.linalg.norm(p - S)) - REACH) + 0.25 * abs(d - d_pref)
         if best is None or v < best[0]:
             best = (v, d, p)
     lh = tuple(round(float(x), 3) for x in best[2])

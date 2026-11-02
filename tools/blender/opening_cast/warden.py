@@ -30,6 +30,10 @@ SHAFT_R = 0.054
 # the shaft crosses each palm diagonally (as a polearm's does), not square to the forearm: the curled fingers and the
 # whole spade are turned this far about X through the fist centre, the crescent forward and down at rest
 GRIP_TILT = -65.0
+# the right fist rides low on the haft, just above the butt socket (as a guandao is held), so the crescent reaches the
+# Guandao's authoritative 7-9 stud strike reach at his 1.35 scale; the left hand works the leather grips ahead of it.
+# A pure slide of the whole spade along its own shaft line: the imported mesh is unchanged, only its bind moves.
+SPADE_HOLD = 1.75
 BELL_C = V((0.0, 0.17, 0.0))   # the bell's axis sits a little forward: it overhangs the chest
 
 # barrel chest and hump under the robe, the top pitched forward (he stoops under the bell): z, half-width, front depth, back depth, centre y, superellipse power
@@ -527,7 +531,8 @@ def tilt_grip(pc, n0, F):
 
 # ---------------------------------------------------------------------------------------------------------
 def spade(hi):
-    """Crescent-moon spade on the grip line through the right fist (+Y = his front at rest): a dark shaft with leather
+    """Crescent-moon spade on the grip line through the right fist (+Y = his front at rest), held SPADE_HOLD above the
+    butt: a dark shaft with leather
     grips for both hands and iron rings, the crescent blade (horns forward, sharp on its concave edge) in the
     vertical plane with two loose iron rings on its back, and a flat burial spade on the butt."""
     pc = Piece(NAME + "_Spade", "RightHand", role="Weapon")
@@ -584,6 +589,8 @@ def spade(hi):
             row.append(V((gx + g * hw, y, gz + 0.035 * g * g * smooth(f / 0.3))))
         P.append(row)
     slab(pc, P, lambda i, j: 0.04 * (1 - i / nr) + 0.01, "STEEL")
+    pc.bm.verts.ensure_lookup_table()
+    pc.transform(pc.bm.verts[:], tr(V((0.0, SPADE_HOLD, 0.0))))
     tilt_grip(pc, 0, F)
     return pc
 

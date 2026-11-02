@@ -12,7 +12,7 @@
    "keyframes": 54,
    "notes": "Tolling Cyclone: deep wind to the right, the crescent unwinds through the whole front arc.",
    "validation": {
-    "arm_reach": 0.0256,
+    "arm_reach": 0.0152,
     "leg_reach": 0.0,
     "sole_below_ground": 0.0,
     "planted_slide": 0.0335,
@@ -20,18 +20,19 @@
     "loop_seam_deg": 0.0,
     "strike": {
      "contact": [
-      0.03,
-      0.82,
-      -3.57
+      -0.23,
+      1.1,
+      -5.28
      ],
-     "forward": 3.57,
-     "yaw": 0.5,
-     "sweep_deg": -73.8
+     "forward": 5.28,
+     "yaw": -2.5,
+     "sweep_deg": -74.9,
+     "game_reach": 7.13
     }
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://82843854612681"
   },
   "Warden_Death": {
    "slot": "HollowBellWarden.Death",
@@ -52,7 +53,7 @@
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://135796526374193"
   },
   "Warden_Guard": {
    "slot": "HollowBellWarden.Guard",
@@ -73,7 +74,7 @@
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://111594189369970"
   },
   "Warden_GuardImpact": {
    "slot": "HollowBellWarden.GuardImpact",
@@ -94,7 +95,7 @@
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://89274945535822"
   },
   "Warden_Heavy": {
    "slot": "HollowBellWarden.Heavy",
@@ -116,18 +117,19 @@
     "loop_seam_deg": 0.0,
     "strike": {
      "contact": [
-      -0.02,
-      -0.66,
-      -3.68
+      -0.35,
+      -1.23,
+      -5.3
      ],
-     "forward": 3.68,
-     "yaw": -0.3,
-     "sweep_deg": -127.6
+     "forward": 5.3,
+     "yaw": -3.8,
+     "sweep_deg": -141.2,
+     "game_reach": 7.17
     }
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://118254162566149"
   },
   "Warden_Hit_Heavy": {
    "slot": "HollowBellWarden.Hitstun_Heavy",
@@ -148,7 +150,7 @@
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://120364294554446"
   },
   "Warden_Hit_Light": {
    "slot": "HollowBellWarden.Hitstun_Light",
@@ -169,7 +171,7 @@
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://123540264050232"
   },
   "Warden_Idle": {
    "slot": "HollowBellWarden.Idle",
@@ -190,7 +192,7 @@
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://124722344286007"
   },
   "Warden_L1": {
    "slot": "HollowBellWarden.Light1",
@@ -212,18 +214,19 @@
     "loop_seam_deg": 0.0,
     "strike": {
      "contact": [
-      0.52,
-      1.24,
-      -3.61
+      0.44,
+      1.85,
+      -5.24
      ],
-     "forward": 3.61,
-     "yaw": 8.1,
-     "sweep_deg": -41.2
+     "forward": 5.24,
+     "yaw": 4.8,
+     "sweep_deg": -44.6,
+     "game_reach": 7.1
     }
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://139901685924316"
   },
   "Warden_L2": {
    "slot": "HollowBellWarden.Light2",
@@ -245,18 +248,19 @@
     "loop_seam_deg": 0.0,
     "strike": {
      "contact": [
-      0.17,
-      1.22,
-      -3.53
+      -0.14,
+      1.8,
+      -5.16
      ],
-     "forward": 3.53,
-     "yaw": 2.8,
-     "sweep_deg": 69.9
+     "forward": 5.16,
+     "yaw": -1.6,
+     "sweep_deg": 76.1,
+     "game_reach": 6.96
     }
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://75414684963161"
   },
   "Warden_L3": {
    "slot": "HollowBellWarden.Light3",
@@ -278,17 +282,18 @@
     "loop_seam_deg": 0.0,
     "strike": {
      "contact": [
-      0.9,
-      0.28,
-      -3.91
+      1.17,
+      0.17,
+      -5.64
      ],
-     "forward": 3.91,
-     "yaw": 12.9
+     "forward": 5.64,
+     "yaw": 11.7,
+     "game_reach": 7.77
     }
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://80251693429323"
   },
   "Warden_Move": {
    "slot": "HollowBellWarden.Move",
@@ -309,7 +314,7 @@
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://113707235032422"
   },
   "Warden_Run": {
    "slot": "HollowBellWarden.Run",
@@ -330,7 +335,7 @@
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://92072596908213"
   },
   "Warden_Running": {
    "slot": "HollowBellWarden.Running",
@@ -352,17 +357,18 @@
     "loop_seam_deg": 0.0,
     "strike": {
      "contact": [
-      1.02,
-      1.13,
-      -3.8
+      1.28,
+      1.71,
+      -5.43
      ],
-     "forward": 3.8,
-     "yaw": 15.1
+     "forward": 5.43,
+     "yaw": 13.2,
+     "game_reach": 7.53
     }
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://80666322516323"
   },
   "Warden_Signature": {
    "slot": "HollowBellWarden.Signature",
@@ -385,7 +391,7 @@
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://121126042509475"
   },
   "Warden_StanceBroken": {
    "slot": "HollowBellWarden.StanceBroken",
@@ -406,7 +412,7 @@
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://89400894565036"
   },
   "Warden_Walk": {
    "slot": "HollowBellWarden.Walk",
@@ -427,7 +433,7 @@
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://92491485517905"
   }
  }
 }

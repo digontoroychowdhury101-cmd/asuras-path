@@ -706,6 +706,9 @@
         },
         "AsuraBoss_CursedSwordsman": {
           "$path": "assets/models/AsuraBoss_CursedSwordsman.rbxmx"
+        },
+        "AsuraBoss_HollowBellWarden": {
+          "$path": "assets/models/AsuraBoss_HollowBellWarden.rbxmx"
         }
       },
       "AsuraLobbyKit": {
@@ -779,6 +782,9 @@
             },
             "GameFeelController": {
               "$path": "src/client/Controllers/GameFeelController.luau"
+            },
+            "SkinWeaponFx": {
+              "$path": "src/client/Controllers/SkinWeaponFx.luau"
             },
             "InterfaceController": {
               "$path": "src/client/Controllers/InterfaceController.luau"

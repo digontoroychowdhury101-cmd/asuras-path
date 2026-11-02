@@ -1,5 +1,9 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## Hollow-Bell Warden in game — 2026-11-02 (Windows)
+
+Warden skin imported, bound, extracted, mapped. Spade slid down the haft (SPADE_HOLD) so blows meet a body at the AI's 7.5-stud standoff (castlib checks). Fixed client crash: SkinWeaponFx was unmapped. Studio duel at normal health won; 400 Essence, gourd +1, banner verified. Next: small-group test, footage.
+
 ## Hollow-Bell Warden clips — 2026-11-02 (Windows)
 
 17 Warden clips (warden_clips.py: two-handed spade, left fist solved onto the shaft, -65° palm grip; Hollow Toll strikes his own bell at the 1.1 s Windup) validated, published, in AnimationCatalog + Gaits; Scale 1.35; spade ember VFX. Mesh rebaked with tilted grip. Next: re-import GLB, bind, extract skin, playtest.

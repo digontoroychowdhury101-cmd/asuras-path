@@ -268,7 +268,7 @@ def validate(clip, baked):
     if clip.loop and w["loop_seam_deg"] > 1.0:
         problems.append("loop seam %.1f deg" % w["loop_seam_deg"])
     if clip.move and clip.active is not None and clip.striker:
-        start, length, arc, _ = clip.active
+        start, length, arc, reach = clip.active
         times = [b[0] for b in baked]
         i0 = int(np.argmin([abs(t - start) for t in times]))
         i1 = int(np.argmin([abs(t - (start + length)) for t in times]))
@@ -282,6 +282,14 @@ def validate(clip, baked):
             problems.append("blow lands only %.2f studs forward" % -hit[2])
         if abs(yaw(hit)) > max(25, arc * 0.5):
             problems.append("blow lands %.0f deg off the facing" % yaw(hit))
+        # A scaled body's blow should land on the target's body where the AI actually swings from (clip.meet, studs
+        # from his root at game scale), not short of it in clear air.
+        scale, meet = getattr(clip, "scale", None), getattr(clip, "meet", None)
+        if scale and meet:
+            radial = float(math.hypot(hit[0], hit[2])) * scale
+            s["game_reach"] = round(radial, 2)
+            if abs(radial - meet) > 0.8:
+                problems.append("blow lands %.1f studs out at scale %.2f; the body is met at %.1f" % (radial, scale, meet))
         w["strike"] = s
     return w, problems
 

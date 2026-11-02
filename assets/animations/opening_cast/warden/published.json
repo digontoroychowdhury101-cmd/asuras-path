@@ -1,6 +1,6 @@
 {
   "Warden_Art": {
-    "id": "rbxassetid://82843854612681",
+    "id": "rbxassetid://105743978323726",
     "keyframes": 54,
     "length": 0.8999999761581421,
     "slot": "HollowBellWarden.WeaponArt"
@@ -24,7 +24,7 @@
     "slot": "HollowBellWarden.GuardImpact"
   },
   "Warden_Heavy": {
-    "id": "rbxassetid://118254162566149",
+    "id": "rbxassetid://125815452854563",
     "keyframes": 51,
     "length": 0.833329975605011,
     "slot": "HollowBellWarden.Heavy"
@@ -48,19 +48,19 @@
     "slot": "HollowBellWarden.Idle"
   },
   "Warden_L1": {
-    "id": "rbxassetid://74202148679159",
+    "id": "rbxassetid://139901685924316",
     "keyframes": 25,
     "length": 0.4000000059604645,
     "slot": "HollowBellWarden.Light1"
   },
   "Warden_L2": {
-    "id": "rbxassetid://75414684963161",
+    "id": "rbxassetid://95901465911475",
     "keyframes": 26,
     "length": 0.4166699945926666,
     "slot": "HollowBellWarden.Light2"
   },
   "Warden_L3": {
-    "id": "rbxassetid://80251693429323",
+    "id": "rbxassetid://85593628340035",
     "keyframes": 32,
     "length": 0.5166699886322021,
     "slot": "HollowBellWarden.Light3"
