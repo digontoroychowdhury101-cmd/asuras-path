@@ -38,7 +38,7 @@ Installed or offline-tested is not runtime accepted. Nothing above certifies hum
 2. **Refused dash floated on stairs and kept a downhill drop (W-07).** The rollback now sweeps the legged travel, follows grade up to 1:1 and settles on the ground (`WorldStateController.Rollback`). `test_stage3_motion` T-RB-11–13; Studio `w07/fix1/`.
 3. **Campaign terrain boot error.** The `ReplaceMaterial` region was not voxel-aligned and was refused at boot (`CampaignTerrain`, `ExpandToGrid`). Boot is clean on fix1/fix2.
 4. **Foes camped the Cloister respawn.** After killing the player, the monk and swordsman stayed "engaged" with no target, so the death respawn skipped them. They waited at the altar and killed the player on each respawn. `RespawnRegion` now resets foes whose fight was with the player who died, or with no one (F-05). Studio: at each respawn they were back at their posts (~45 and ~70 studs).
-5. **The Cloister altar could not be used.** Resting revives the region's foes, and their posts see the altar. They re-engaged within ~4 s, so Travel and rest were refused ("EnemiesNearby") and an idle player died 8 times in ~2 minutes. The ForgeHome instruction "Kneel at the Desecrated Cloister and Travel" was effectively unreachable. Fix: **altar shelter.** After a rest or respawn at an altar, ordinary foes leave the player alone until they step out of the altar circle (radius + 4 studs) or attack, including a spell that lands. Bosses ignore it. It never starts mid-fight, because rest is still refused while hunted. F-06; Studio `cloister/shelter_journey_fix2.json`: 40+ s idle untouched, Travel accepted, stepping out gets a normal fight, the respawn after that death is left alone. **This is a rule addition, stated here for the creator** (see Decisions).
+5. **The Cloister altar could not be used.** Resting revives the region's foes, and their posts see the altar. They re-engaged within ~4 s, so Travel and rest were refused ("EnemiesNearby") and an idle player died 8 times in ~2 minutes. The ForgeHome instruction "Kneel at the Desecrated Cloister and Travel" was effectively unreachable. Fix: **altar shelter.** After a rest or respawn at an altar, ordinary foes leave the player alone until they step out of the altar circle (radius + 4 studs) or attack, including a spell that lands. Bosses ignore it. It never starts mid-fight, because rest is still refused while hunted. F-06; Studio `cloister/shelter_journey_fix2.json`: 40+ s idle untouched, Travel accepted, stepping out gets a normal fight, the respawn after that death is left alone. **This is a rule addition; the creator approved it on 3 November 2026.**
 
 ## Observations (not fixed)
 
@@ -54,7 +54,7 @@ Installed or offline-tested is not runtime accepted. Nothing above certifies hum
 
 ## Decisions for the creator
 
-1. Keep the **altar shelter** (fix 5)? The alternative is moving the Cloister monk/swordsman posts out of sight of the altar, a level change.
+1. **Altar shelter** (fix 5): **kept** (creator, 3 November 2026). The Cloister posts stay where they are.
 2. **Monk pressure:** choose any of a lower ordinary-foe deathblow fraction, a short pause after a string, or lighter posture/stamina pressure. A human W-12 run should decide.
 3. **Borrowed Force** stays unimplemented (no approval given).
 
