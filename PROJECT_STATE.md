@@ -1,5 +1,9 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## Post-combat Mac implementation queue — 2026-11-02 (Mac)
+
+Deduplicated supplied plans against source/history. Added bounded Mac prompts for opening/forge, Iron Bull, armour and one route expansion after Stage 3A, with existing cast/Jian/Zhao preservation and Windows recheck requirements. Documentation only; no new gameplay acceptance. Next: complete Stage 3A handoff, then dispatch opening/forge independently.
+
 ## Combat recovery two-machine prompts — 2026-11-02 (Mac)
 
 Added Mac-first Stage 3 implementation and Windows-second completion/verification prompts, incorporating the original Stage 3, six-point follow-up and closure carryovers. Mac writes MAC_TO_WINDOWS.md; Windows finishes runtime checks, multiplayer and applicable acceptance. Documentation only. Next: execute 03A, then 03B with exclusive branch ownership.

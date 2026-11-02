@@ -11,6 +11,8 @@ Use these two replacement dispatch prompts for the remaining work:
 
 These prompts refer to the master and original stage files in the repository; Claude should read those files directly. You do not need to paste all the older prompts again. Their explicit scope overrides the master's instruction to execute every stage in one session. Do not run both workers against the branch simultaneously. Sync the handoff before switching machines.
 
+After the Mac reaches its Stage 3A handoff, additional Mac implementation work is organized in `outputs/post-combat-mac-prompts-2026-11-02/README.md`. Dispatch those batches individually. Windows should read that package's later handoff as well as the combat handoff; its RPG/content checks are additional to combat acceptance.
+
 ## How to use
 
 Paste `MASTER_PROMPT.md` into Opus first. It is a self-contained instruction to execute all five stages in order. For smaller sessions, also paste the corresponding numbered stage file, one stage at a time. Every stage inherits the master contract; do not send a numbered file alone without providing the master.
