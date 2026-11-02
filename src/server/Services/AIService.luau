@@ -91,6 +91,7 @@ local LOS_HEIGHT = Vector3.new(0, 1.5, 0)
 local CLOSE_DETECT = 6
 
 local agents: { [number]: Agent } = {}
+local turns: { [number]: { Holder: number, Since: number, Until: number } } = {} -- target id -> whose attack turn (MobSpacing)
 local spawnAgents: { [string]: number } = {}
 local bossAgents: { [string]: number } = {}
 local noises: { Noise } = {}
@@ -388,6 +389,11 @@ local function decide(agent: Agent, self: Entity, target: Entity, now: number)
 	end
 	local distance = (target.Root.Position - self.Root.Position).Magnitude
 	local reach = reachOf(agent, f)
+	-- An ordinary foe keeps its attack turn while its own swing runs or it reels from the player's punish.
+	local turn = if agent.Boss then nil else turns[target.Id]
+	if turn and turn.Holder == agent.Id and (agent.Pending ~= nil or f.State ~= "Idle") then
+		turn.Until = now + Spacing.TurnGap
+	end
 
 	Characters.Face(agent.Id, leadPoint(target))
 
@@ -454,6 +460,15 @@ local function decide(agent: Agent, self: Entity, target: Entity, now: number)
 		end
 		return
 	end
+	-- Another of the pack is mid-swing on this target: wait in reach on the target's front arc, so the
+	-- swing that opens when the turn passes is one the player can see coming, never a blind flank crit.
+	if turn and not Spacing.mayOpen(turn.Holder, agent.Id, turn.Since, turn.Until, now) then
+		local look = flatUnit(target.Root.CFrame.LookVector)
+		local away = flatUnit(self.Root.Position - target.Root.Position)
+		local side = if away.Magnitude > 0 then flatUnit(away + look) else look
+		moveTo(agent, target.Root.Position + (if side.Magnitude > 0 then side else look) * reach * 0.8)
+		return
+	end
 	if agent.Rng:NextNumber() < profile.StrafeChance * (1 - profile.Aggression) then
 		moveTo(agent, strafePoint(agent, self, target, reach * 0.8, now))
 		return
@@ -461,6 +476,9 @@ local function decide(agent: Agent, self: Entity, target: Entity, now: number)
 	Characters.StopMoving(agent.Id)
 	if agent.Rng:NextNumber() > profile.Aggression then
 		return
+	end
+	if not agent.Boss then
+		turns[target.Id] = { Holder = agent.Id, Since = now, Until = now + Spacing.TurnGap }
 	end
 	local weapon = Weapons.get(f.Weapon)
 	local roll = agent.Rng:NextNumber()

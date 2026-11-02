@@ -1,5 +1,9 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## Group attack turns, Lv1 swordsman tune — 2026-11-02 (Windows)
+
+Ordinary foes sharing a target take attack turns (MobSpacing.TurnGap/TurnMax); waiters hold the player's front arc. Swordsman Dex 0.85, combo 0.55. Cloister pair, normal health: perfect reads win unhurt (21.7 s); 20% misses win at 81 HP; 35% misses last 19 s (was ~10). Next: Lune spec for mayOpen; human playtest.
+
 ## Opening cast group test & footage — 2026-11-02 (Windows)
 
 Cloister monk + Cursed Swordsman fought together: both engage, deflects/counters/deathblows land on each; cleared twice (~30 s) with seeded tank stats. A scripted Lv1 bot at 100 HP falls in ~11 s (swordsman hits 30+). Added tools/qa/viewport_footage.py (~1 fps MP4); clip + sheet in outputs/opening-cast/footage. Next: Lv1 group tuning playtest.

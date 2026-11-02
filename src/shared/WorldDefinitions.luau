@@ -365,7 +365,9 @@ World.Mobs = {
 		Name = "Cursed Swordsman",
 		Weapon = "Dao",
 		Scale = 1.2, -- the dead pagoda guard looms a head over the player
-		Stats = { MaxHP = 120, MaxStamina = 110, PostureCapacity = 110, StrengthScale = 1.0, DexterityScale = 1.0, PoiseArmor = 0.2 },
+		-- Lv1 tuning (2026-11-02 group trace): one unread chain at Dexterity 1.0 (the Dao's scaling) and combo
+		-- 0.75 took 40-80 of a fresh player's 100 HP in under a second.
+		Stats = { MaxHP = 120, MaxStamina = 110, PostureCapacity = 110, StrengthScale = 1.0, DexterityScale = 0.85, PoiseArmor = 0.2 },
 		AI = profile({
 			SightRange = 65,
 			FieldOfView = 100,
@@ -376,7 +378,7 @@ World.Mobs = {
 			ReactionTime = 0.22,
 			PatrolRadius = 10,
 			LeashRange = 110,
-			ComboContinueChance = 0.75,
+			ComboContinueChance = 0.55,
 			HeavyChance = 0.2,
 			ArtChance = 0.08,
 			StrafeChance = 0.4,

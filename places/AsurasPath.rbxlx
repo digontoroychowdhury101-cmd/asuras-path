@@ -5325,6 +5325,13 @@ Spacing.ContactRadius = 1.2 -- studs from root to body surface at scale 1 (Conta
 Spacing.MinGap = 0.9 -- clear air kept between two bodies at the standoff point
 Spacing.CrowdGap = 0.35 -- closer than this and the foe steps back before it swings
 Spacing.AllyGap = 3.4 -- two foes closing on one target keep at least this far apart
+-- Attack turns (Studio group trace, 2026-11-02): a Cloister monk and swordsman swung together, and the
+-- swordsman's 30-damage blows landed while a Lv1 player was punishing the monk, killing them in ~11 s.
+-- Ordinary foes sharing a target now take turns: one opens an attack, the rest circle in reach until
+-- its swing (or the stagger the player punished it into) has been over this long. No turn is held past
+-- TurnMax, so a player who stunlocks one foe still has the other to answer.
+Spacing.TurnGap = 0.8
+Spacing.TurnMax = 3.0
 
 -- Fraction of the weapon-scaled run speed per AI mode. Engage only sprints from far away.
 local PACE = table.freeze({ Idle = 0.38, Patrol = 0.38, Alert = 0.42, Return = 0.5, Combat = 0.55, Engage = 0.7 })
@@ -5338,6 +5345,11 @@ end
 -- True when the foe stands so close it would swing through the target's body.
 function Spacing.crowded(distance: number, scale: number, targetScale: number?): boolean
 	return distance &lt; Spacing.ContactRadius * (scale + (targetScale or 1)) + Spacing.CrowdGap
+end
+
+-- May this foe open a new attack on a target whose turn `holder` took at `since` and holds until `heldUntil`?
+function Spacing.mayOpen(holder: number?, self: number, since: number, heldUntil: number, now: number): boolean
+	return holder == nil or holder == self or now &gt;= heldUntil or now &gt;= since + Spacing.TurnMax
 end
 
 -- The walk-speed multiplier for a mode; Engage runs at full speed only while far beyond reach.
@@ -7089,7 +7101,9 @@ World.Mobs = {
 		Name = "Cursed Swordsman",
 		Weapon = "Dao",
 		Scale = 1.2, -- the dead pagoda guard looms a head over the player
-		Stats = { MaxHP = 120, MaxStamina = 110, PostureCapacity = 110, StrengthScale = 1.0, DexterityScale = 1.0, PoiseArmor = 0.2 },
+		-- Lv1 tuning (2026-11-02 group trace): one unread chain at Dexterity 1.0 (the Dao's scaling) and combo
+		-- 0.75 took 40-80 of a fresh player's 100 HP in under a second.
+		Stats = { MaxHP = 120, MaxStamina = 110, PostureCapacity = 110, StrengthScale = 1.0, DexterityScale = 0.85, PoiseArmor = 0.2 },
 		AI = profile({
 			SightRange = 65,
 			FieldOfView = 100,
@@ -7100,7 +7114,7 @@ World.Mobs = {
 			ReactionTime = 0.22,
 			PatrolRadius = 10,
 			LeashRange = 110,
-			ComboContinueChance = 0.75,
+			ComboContinueChance = 0.55,
 			HeavyChance = 0.2,
 			ArtChance = 0.08,
 			StrafeChance = 0.4,
@@ -12313,6 +12327,7 @@ local LOS_HEIGHT = Vector3.new(0, 1.5, 0)
 local CLOSE_DETECT = 6
 
 local agents: { [number]: Agent } = {}
+local turns: { [number]: { Holder: number, Since: number, Until: number } } = {} -- target id -&gt; whose attack turn (MobSpacing)
 local spawnAgents: { [string]: number } = {}
 local bossAgents: { [string]: number } = {}
 local noises: { Noise } = {}
@@ -12610,6 +12625,11 @@ local function decide(agent: Agent, self: Entity, target: Entity, now: number)
 	end
 	local distance = (target.Root.Position - self.Root.Position).Magnitude
 	local reach = reachOf(agent, f)
+	-- An ordinary foe keeps its attack turn while its own swing runs or it reels from the player's punish.
+	local turn = if agent.Boss then nil else turns[target.Id]
+	if turn and turn.Holder == agent.Id and (agent.Pending ~= nil or f.State ~= "Idle") then
+		turn.Until = now + Spacing.TurnGap
+	end
 
 	Characters.Face(agent.Id, leadPoint(target))
 
@@ -12676,6 +12696,15 @@ local function decide(agent: Agent, self: Entity, target: Entity, now: number)
 		end
 		return
 	end
+	-- Another of the pack is mid-swing on this target: wait in reach on the target's front arc, so the
+	-- swing that opens when the turn passes is one the player can see coming, never a blind flank crit.
+	if turn and not Spacing.mayOpen(turn.Holder, agent.Id, turn.Since, turn.Until, now) then
+		local look = flatUnit(target.Root.CFrame.LookVector)
+		local away = flatUnit(self.Root.Position - target.Root.Position)
+		local side = if away.Magnitude &gt; 0 then flatUnit(away + look) else look
+		moveTo(agent, target.Root.Position + (if side.Magnitude &gt; 0 then side else look) * reach * 0.8)
+		return
+	end
 	if agent.Rng:NextNumber() &lt; profile.StrafeChance * (1 - profile.Aggression) then
 		moveTo(agent, strafePoint(agent, self, target, reach * 0.8, now))
 		return
@@ -12683,6 +12712,9 @@ local function decide(agent: Agent, self: Entity, target: Entity, now: number)
 	Characters.StopMoving(agent.Id)
 	if agent.Rng:NextNumber() &gt; profile.Aggression then
 		return
+	end
+	if not agent.Boss then
+		turns[target.Id] = { Holder = agent.Id, Since = now, Until = now + Spacing.TurnGap }
 	end
 	local weapon = Weapons.get(f.Weapon)
 	local roll = agent.Rng:NextNumber()
