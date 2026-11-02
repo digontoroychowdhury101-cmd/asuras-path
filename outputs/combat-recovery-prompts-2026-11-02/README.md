@@ -2,6 +2,15 @@
 
 Prepared 2 November 2026. This package requests implementation, repository research and integration, followed by genuine multiplayer verification. Creating these prompts does not implement or verify the fixes.
 
+## Mac first, Windows second (updated after Stage 2 closure)
+
+Use these two replacement dispatch prompts for the remaining work:
+
+1. **`03A_MAC_IMPLEMENTATION.md`** — send to Mac Claude first. Combines original Stage 3, the six-point follow-up and closure carryovers. Implements/validates what is feasible, then writes `MAC_TO_WINDOWS.md`. It deliberately stops before final multiplayer acceptance.
+2. **`03B_WINDOWS_VERIFY_AND_COMPLETE.md`** — send to Windows Claude after the Mac handoff is committed/pushed and the Mac worker is paused. Finishes Stage 3 runtime work, then executes Stage 4 and available Stage 5 checks.
+
+These prompts refer to the master and original stage files in the repository; Claude should read those files directly. You do not need to paste all the older prompts again. Their explicit scope overrides the master's instruction to execute every stage in one session. Do not run both workers against the branch simultaneously. Sync the handoff before switching machines.
+
 ## How to use
 
 Paste `MASTER_PROMPT.md` into Opus first. It is a self-contained instruction to execute all five stages in order. For smaller sessions, also paste the corresponding numbered stage file, one stage at a time. Every stage inherits the master contract; do not send a numbered file alone without providing the master.
