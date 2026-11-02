@@ -1,5 +1,9 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## Monk gait — 2026-11-02 (Windows)
+
+Corrupt Wandering Monk gets foot-planted Monk_Walk (6.4 studs/s) and Monk_Run (11) cycles, published and in Catalog.Gaits; Studio play shows run on approach, walk on shuffles, idle in combat (no more gliding). Next: Hollow-Bell Warden model/clips, group/footage acceptance.
+
 ## Cursed Swordsman production + Warden server — 2026-11-02 (Windows)
 
 Swordsman skin (dao owns weapon), 17 clips incl. foot-planted Walk/Run played at measured speed, stepped cuts, 1.2× scale, crimson blade trail/embers/flame (SkinWeaponFx). Fixed AI ignoring respawned players (LOS ignore list). Bridge verified both ends. Warden server: HollowToll, reward, open-pocket spawn. Next: monk gait, Warden model/clips, footage.

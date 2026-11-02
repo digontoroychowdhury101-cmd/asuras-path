@@ -340,6 +340,27 @@
    "uploaded": false,
    "asset_id": "rbxassetid://112262064404137"
   },
+  "Monk_Run": {
+   "slot": "CorruptWanderingMonk.Run",
+   "length": 0.6,
+   "loop": true,
+   "priority": "Movement",
+   "move": null,
+   "contacts": [],
+   "keyframes": 37,
+   "notes": "Brawler's charge at 11.0 studs/s (scale 1): hunched lean, fists pumping.",
+   "validation": {
+    "arm_reach": 0.0,
+    "leg_reach": 0.0,
+    "sole_below_ground": 0.0,
+    "planted_slide": 0.4413,
+    "hand_jerk": 0.0,
+    "loop_seam_deg": 0.0
+   },
+   "problems": [],
+   "uploaded": false,
+   "asset_id": "rbxassetid://81883804287252"
+  },
   "Monk_Running": {
    "slot": "CorruptWanderingMonk.Running",
    "length": 0.4667,
@@ -392,6 +413,27 @@
    "problems": [],
    "uploaded": false,
    "asset_id": "rbxassetid://108521705818233"
+  },
+  "Monk_Walk": {
+   "slot": "CorruptWanderingMonk.Walk",
+   "length": 0.7,
+   "loop": true,
+   "priority": "Movement",
+   "move": null,
+   "contacts": [],
+   "keyframes": 43,
+   "notes": "Prowling walk at 6.4 studs/s (scale 1): guard up, planted feet, hip roll and counter-twist.",
+   "validation": {
+    "arm_reach": 0.0,
+    "leg_reach": 0.0247,
+    "sole_below_ground": 0.0,
+    "planted_slide": 0.0,
+    "hand_jerk": 0.0,
+    "loop_seam_deg": 0.0
+   },
+   "problems": [],
+   "uploaded": false,
+   "asset_id": "rbxassetid://119439610866025"
   }
  }
 }

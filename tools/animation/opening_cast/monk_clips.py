@@ -6,6 +6,8 @@ real ones: a planted support foot, the hips turning the shoulder through, the fi
 or knee arriving on the facing, then a recovery back to the guard. Hit reactions, posture break and the death are his
 too; Deflect, Backdash, Roll and Recover stay on the shared universal clips.
 """
+import math
+
 import castlib as C
 from castlib import Clip, pose
 
@@ -37,6 +39,49 @@ def move():
     keys = [(0.0, pose(), "inout"), (0.35, {"rh": (0.36, 0.82, -0.6), "lh": (-0.24, 0.8, -1.12), "chest": (-8, 8, 0)}, "inout")]
     return Clip("Monk_Move", 0.7, keys, loop=True, priority="Movement", mask=UPPER, slot="CorruptWanderingMonk.Move",
                 notes="Upper-body guard carried over Roblox's walk/run.")
+
+
+WALK_SPEED = 6.4    # studs/s at scale 1: his patrol pace (about 8) plays this about 1.25 x
+RUN_SPEED = 11.0    # his chase (about 12 studs/s) plays this about 1.1 x
+
+
+def cycle(name, length, velocity, duty, lift, feet, body, slot, notes, pitch_off=-16.0):
+    """A full-body in-place locomotion loop: castlib.gait feet with body(u) -> channels at each sample (u = 0..1)."""
+    keys = [(t, pose(**dict(body(t / length), lf=lf, rf=rf)), "linear")
+            for t, lf, rf in C.gait(length, velocity, duty, lift, feet, pitch_off=pitch_off)]
+    return Clip(name, length, keys, loop=True, priority="Movement", slot="CorruptWanderingMonk." + slot, velocity=velocity,
+                notes=notes)
+
+
+def walk():
+    # Prowling walk: guard up, lead fist hunting, the hips rolling over each stance leg and the shoulders countering.
+    feet = {"lf": (-0.4, 0.05, 0, -8, 0), "rf": (0.4, -0.05, 0, 8, 0)}
+
+    def body(u):
+        c2, c1 = math.cos(4 * math.pi * u), math.cos(2 * math.pi * u)
+        return dict(pel=(-0.045 * math.cos(2 * math.pi * (u - 0.3)), -0.46 - 0.05 * c2, 0.05),
+                    pelR=(0, -10 - 9 * c1, 2 * math.sin(2 * math.pi * u)), chest=(-7 + 1.5 * c2, 6 + 8 * c1, 0),
+                    rh=(0.36, 0.82 + 0.03 * c2, -0.62 - 0.06 * c1), lh=(-0.24, 0.8 + 0.03 * c2, -1.1 + 0.08 * c1),
+                    neck=(5, -5 * c1, 0))
+
+    return cycle("Monk_Walk", 0.7, (0.0, -WALK_SPEED), 0.55, 0.28, feet, body, "Walk",
+                 "Prowling walk at %.1f studs/s (scale 1): guard up, planted feet, hip roll and counter-twist." % WALK_SPEED)
+
+
+def run():
+    # Brawler's charge: hunched and leaning in, both fists pumping close to the body, chin tucked.
+    feet = {"lf": (-0.36, 0.05, 0, -4, 0), "rf": (0.36, -0.05, 0, 4, 0)}
+
+    def body(u):
+        c2, c1 = math.cos(4 * math.pi * u), math.cos(2 * math.pi * u)
+        swing = c1                                     # +1 as the left foot lands: right fist forward, left back
+        return dict(pel=(-0.05 * math.cos(2 * math.pi * (u - 0.2)), -0.47 + 0.08 * math.cos(4 * math.pi * (u - 0.18)), -0.1),
+                    pelR=(-8, -10 * c1, 0), chest=(-16 + 2 * c2, 8 * c1, 0), neck=(12, -6 * c1, 0), lookW=0.7,
+                    rh=(0.3, 0.05 + 0.25 * max(0.0, swing), -0.2 - 0.35 * swing), relb=(0.15, -1, 0.5),
+                    lh=(-0.3, 0.05 + 0.25 * max(0.0, -swing), -0.2 + 0.35 * swing), lelb=(-0.15, -1, 0.5))
+
+    return cycle("Monk_Run", 36 / 60, (0.0, -RUN_SPEED), 0.36, 0.5, feet, body, "Run",
+                 "Brawler's charge at %.1f studs/s (scale 1): hunched lean, fists pumping." % RUN_SPEED, pitch_off=-26.0)
 
 
 def light1(T):
@@ -241,5 +286,5 @@ def death():
 
 def library():
     T = C.timing()
-    return [idle(), move(), light1(T), light2(T), light3(T), light4(T), heavy(T), running(T), art(T), guard(), guard_impact(),
+    return [idle(), move(), walk(), run(), light1(T), light2(T), light3(T), light4(T), heavy(T), running(T), art(T), guard(), guard_impact(),
             hit_light(), hit_heavy(), stance_broken(), death()]

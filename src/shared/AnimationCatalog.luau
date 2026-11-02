@@ -247,8 +247,10 @@ Catalog.Characters = {
 		Light3 = "rbxassetid://108062301374603",
 		Light4 = "rbxassetid://103272727896878",
 		Move = "rbxassetid://112262064404137",
+		Run = "rbxassetid://81883804287252",
 		Running = "rbxassetid://115921357540400",
 		StanceBroken = "rbxassetid://108521705818233",
+		Walk = "rbxassetid://119439610866025",
 		WeaponArt = "rbxassetid://135854349242310",
 	}),
 	CursedSwordsman = character("CursedSwordsman", {
@@ -271,8 +273,9 @@ Catalog.Characters = {
 		WeaponArt = "rbxassetid://125540053579064",
 	}),
 } :: { [string]: { [CharacterKey]: Slot } }
--- Ground speed (studs/s at model scale 1) each gait cycle was authored for (swordsman_clips.py WALK_SPEED/RUN_SPEED).
+-- Ground speed (studs/s at model scale 1) each gait cycle was authored for (monk_clips.py, swordsman_clips.py WALK_SPEED/RUN_SPEED).
 Catalog.Gaits = {
+	CorruptWanderingMonk = { Walk = 6.4, Run = 11.0 },
 	CursedSwordsman = { Walk = 6.4, Run = 11.0 },
 } :: { [string]: { Walk: number, Run: number? } }
 Catalog.CharacterKeys = table.freeze({ "Idle", "Move", "Light1", "Light2", "Light3", "Light4", "Heavy", "Running", "WeaponArt",
