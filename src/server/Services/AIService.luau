@@ -127,12 +127,16 @@ function Telegraph.lead(class: TelegraphClass, reactionFloor: number): number
 end
 
 -- Returns (attackAt, warnAt, impactAt). The warning is published at `now`; if the move's own startup
--- is shorter than the required lead the attack itself is delayed so impact - warn >= lead.
-function Telegraph.plan(move: Combat.MoveData, now: number, reactionFloor: number): (number, number, number)
+-- is shorter than the required lead the attack itself is delayed so impact - warn >= lead. `ready` is when
+-- the target can first answer (Combat.defendableAt); the lead is counted from it, so a target still in
+-- hitstun gets its full reaction floor once it can act (Windows acceptance 2026-11-03: a monk's Heavy
+-- chosen during the player's heavy hitstun landed 0.14-0.24 s after the player could act).
+function Telegraph.plan(move: Combat.MoveData, now: number, reactionFloor: number, ready: number?): (number, number, number)
 	local class = Telegraph.classify(move)
 	local lead = Telegraph.lead(class, reactionFloor)
 	local startup = move.Timing.StartupSeconds
-	local attackAt = Tempo.quantizeUp(now + math.max(0, lead - startup))
+	local from = math.max(now, ready or now)
+	local attackAt = Tempo.quantizeUp(now + math.max(0, from - now + lead - startup))
 	return attackAt, now, attackAt + startup
 end
 
@@ -270,9 +274,9 @@ local function publishTelegraph(agent: Agent, move: Combat.MoveData, class: Tele
 	end
 end
 
-local function queueAttack(agent: Agent, f: Combat.Fighter, action: "Light" | "Heavy" | "WeaponArt", now: number)
+local function queueAttack(agent: Agent, f: Combat.Fighter, action: "Light" | "Heavy" | "WeaponArt", now: number, ready: number?)
 	local move = Combat.selectMove(f, action, now)
-	local attackAt, _, impactAt = Telegraph.plan(move, now, PLAYER_REACTION)
+	local attackAt, _, impactAt = Telegraph.plan(move, now, PLAYER_REACTION, ready)
 	publishTelegraph(agent, move, Telegraph.classify(move), impactAt)
 	if attackAt <= now + 1e-6 then
 		Characters.PushIntent(agent.Id, action)
@@ -482,12 +486,15 @@ local function decide(agent: Agent, self: Entity, target: Entity, now: number)
 	end
 	local weapon = Weapons.get(f.Weapon)
 	local roll = agent.Rng:NextNumber()
+	-- An ordinary foe's new opener waits for the target to be able to answer; combo follow-ups stay true links
+	-- (light-hitstun defend point) and bosses keep their own tuned pressure.
+	local ready = if agent.Boss then nil else Combat.defendableAt(target.Fighter, now)
 	if roll < profile.ArtChance and f.Qi >= weapon.WeaponArt.QiCost then
-		queueAttack(agent, f, "WeaponArt", now)
+		queueAttack(agent, f, "WeaponArt", now, ready)
 	elseif roll < profile.ArtChance + profile.HeavyChance then
-		queueAttack(agent, f, "Heavy", now)
+		queueAttack(agent, f, "Heavy", now, ready)
 	else
-		queueAttack(agent, f, "Light", now)
+		queueAttack(agent, f, "Light", now, ready)
 	end
 end
 
@@ -941,15 +948,18 @@ function AIService.ResetMob(spawnId: string): boolean
 end
 
 -- Respawns every non-boss mob in a region. Engaged mobs can be left alone so another player's
--- fight is not reset underneath them.
-function AIService.RespawnRegion(region: string, skipEngaged: boolean)
+-- fight is not reset underneath them; a mob whose fight was with `freed` (the player who just died) or
+-- with no one any more is not someone else's fight, and goes home (Windows acceptance: the Cloister monk and
+-- swordsman waited at the altar for the respawn and killed the player twice more).
+function AIService.RespawnRegion(region: string, skipEngaged: boolean, freed: number?)
 	for _, entry in World.Spawns do
 		if entry.Region == region then
 			local id = spawnAgents[entry.Id]
 			local agent = if id then agents[id] else nil
 			local entity = if id then Characters.GetEntity(id) else nil
 			if agent and entity and entity.Fighter.State ~= "KO" then
-				local engaged = agent.Mode == "Engage" or agent.Mode == "Combat" or agent.Mode == "StanceBroken"
+				local engaged = (agent.Mode == "Engage" or agent.Mode == "Combat" or agent.Mode == "StanceBroken")
+					and agent.Target ~= 0 and agent.Target ~= freed
 				if not (skipEngaged and engaged) then
 					AIService.ResetMob(entry.Id)
 				end

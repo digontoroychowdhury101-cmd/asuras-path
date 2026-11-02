@@ -577,7 +577,7 @@ do
 	local services = {
 		Players = { LocalPlayer = player, PlayerAdded = quiet, GetPlayers = function() return {} end },
 		Workspace = { GetServerTimeNow = function() return clock end, WaitForChild = function() return nil end, GetAttribute = function() return nil end,
-			Blockcast = function() return nil end },
+			Blockcast = function() return nil end, Raycast = function() return nil end },
 		CollectionService = { GetTagged = function() return {} end, GetInstanceAddedSignal = function() return quiet end },
 		ReplicatedStorage = finder({ AsurasPath = finder({ Simulation = finder({ CombatRules = Combat, LocalPrediction = Prediction }) }) }),
 	}

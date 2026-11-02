@@ -17,9 +17,13 @@ export type Snapshot = Combat.Snapshot
 -- Transit age correction is capped (TIMING_CONTRACT §4): beyond this a remote action is shown late rather than
 -- fast-forwarded, so a lag spike never skips a windup. Equal to the server's 150 ms rewind envelope.
 local MAX_SAMPLE_AGE = 0.15
--- A refused dash's correction follows a height change up to this many studs (a slope or step); a larger one was a
--- fall or a jump, and only the horizontal travel is undone.
+-- A refused dash's correction climbs back up a height change up to this many studs (a step), or any larger one
+-- along a walkable grade (rise <= run, e.g. stairs: MAX_FOLLOW_GRADE); a steeper drop was a fall off a ledge, and
+-- only the horizontal travel is undone. Coming back down is always followed, then settled on the ground: Windows
+-- acceptance W-07 (2026-11-03) saw a dash up the Sanctuary stairs corrected 13 studs back at its top height,
+-- leaving the body 10 studs in the air, and one down them kept 10 of its 14 studs (the flat sweep hit the steps).
 local STEP_FOLLOW = 3
+local MAX_FOLLOW_GRADE = 1
 -- The states an unconfirmed action is shown over. Anything else (hit, stagger, break, KO) is the server overriding it.
 local CALM = { Idle = true, Startup = true, Active = true, Recovery = true, Deflecting = true, Blocking = true }
 
@@ -587,9 +591,9 @@ end
 -- Undoes an unconfirmed prediction: a predicted dash stops and only the travel its own drive produced is taken
 -- back (Prediction.dashTravel), and only the velocity it commanded comes off (Prediction.residualVelocity), so a
 -- refused dash grants no displacement while knockback or a walk that happened meanwhile continues. The correction
--- is swept with the root's box along the actual line back, climbing or descending with the dash when the height
--- change is a slope or step (STEP_FOLLOW), so it stops short of a wall or the ground instead of passing through,
--- and it never floats the body far off the ground. A character that has since respawned, died or been replaced is
+-- is swept with the root's box in safe legs (up then across when it climbs back, across then down when it
+-- descends; STEP_FOLLOW), so it stops short of a wall, a ceiling or the ground instead of passing through, and it
+-- then settles the body onto the ground at its hip height rather than leaving it in the air. A character that has since respawned, died or been replaced is
 -- never moved. A predicted swing or guard pose simply falls back to the server's state.
 function Controller.Rollback(self: WorldState)
 	local predicted = self.Predicted
@@ -628,17 +632,41 @@ function Controller.Rollback(self: WorldState)
 	if distance < 1e-3 then
 		return
 	end
-	-- Height the dash gained or lost, in proportion to the travel undone; a fall off a ledge is not followed back up.
+	-- Height the dash gained or lost, in proportion to the travel undone. Coming back down is always followed; going
+	-- back up only for a step or a walkable grade, so a fall off a ledge is not lifted back up.
 	local whole = Vector3.new(stop.X - self.DashFrom.X, 0, stop.Z - self.DashFrom.Z).Magnitude
 	local rise = stop.Y - self.DashFrom.Y
-	local climb = if whole > 1e-3 and math.abs(rise) <= STEP_FOLLOW then -rise * math.min(distance / whole, 1) else 0
-	local back = -unit * distance + Vector3.new(0, climb, 0)
+	local liftable = rise >= 0 or -rise <= STEP_FOLLOW or -rise <= whole * MAX_FOLLOW_GRADE
+	local climb = if whole > 1e-3 and liftable then -rise * math.min(distance / whole, 1) else 0
 	local params = RaycastParams.new()
 	params.FilterType = Enum.RaycastFilterType.Exclude
 	params.FilterDescendantsInstances = { own.Model }
-	local hit = Workspace:Blockcast(root.CFrame, root.Size, back, params)
-	local allowed = if hit then math.max(hit.Distance - 0.05, 0) else back.Magnitude
-	root.CFrame = root.CFrame + back.Unit * allowed
+	-- Hip height over the ground where the dash stopped, kept when the body is settled at the corrected spot.
+	local below = Workspace:Raycast(root.Position, Vector3.new(0, -(STEP_FOLLOW + 6), 0), params)
+	local hip = if below then root.Position.Y - below.Position.Y else nil
+	local function sweep(offset: Vector3)
+		if offset.Magnitude < 1e-3 then
+			return
+		end
+		local hit = Workspace:Blockcast(root.CFrame, root.Size, offset, params)
+		local allowed = if hit then math.max(hit.Distance - 0.05, 0) else offset.Magnitude
+		root.CFrame = root.CFrame + offset.Unit * allowed
+	end
+	local across = -unit * distance
+	if climb > 0 then
+		sweep(Vector3.new(0, climb, 0))
+		sweep(across)
+	else
+		sweep(across)
+		sweep(Vector3.new(0, climb, 0))
+	end
+	if hip then
+		local ground = Workspace:Raycast(root.Position, Vector3.new(0, -(hip + math.max(STEP_FOLLOW, math.abs(rise))), 0), params)
+		local gap = if ground then root.Position.Y - ground.Position.Y - hip else 0
+		if gap > 0.05 then
+			sweep(Vector3.new(0, -gap, 0))
+		end
+	end
 end
 
 local function stopDash(self: WorldState, root: BasePart)

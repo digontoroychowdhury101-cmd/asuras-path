@@ -117,7 +117,8 @@ function CampaignTerrain.convert(part: BasePart, box: any, solids: { any }?): bo
 				local inward = math.min(halfX - math.abs(x + VOXEL / 2 - box.X), halfZ - math.abs(z + VOXEL / 2 - box.Z))
 				local margin = 6 + math.noise(x / 11, z / 13, 8.2) * 8
 				if inward < margin then
-					t:ReplaceMaterial(Region3.new(Vector3.new(x, bottom - VOXEL, z), Vector3.new(x + VOXEL, top + VOXEL, z + VOXEL)),
+					-- ExpandToGrid: slab tops sit off the voxel grid, and an unaligned region is refused with a boot error.
+					t:ReplaceMaterial(Region3.new(Vector3.new(x, bottom - VOXEL, z), Vector3.new(x + VOXEL, top + VOXEL, z + VOXEL)):ExpandToGrid(VOXEL),
 						VOXEL, M.Snow, M.Rock)
 				end
 			end

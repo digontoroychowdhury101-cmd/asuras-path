@@ -542,6 +542,19 @@ function Rules.lightHitstunDefendable(f: Fighter, now: number): boolean
 		and now - f.StateStart >= Settings.Stun.LightDefendCancel - Tempo.HalfTick
 end
 
+-- Earliest time the fighter can answer a new attack (deflect, guard or dodge): the light-hitstun defend point,
+-- the end of a heavy hitstun, otherwise now. AI telegraphs count their reaction lead from here, not from the
+-- moment they decide, so a swing chosen while the target still reels cannot land inside its reaction floor.
+function Rules.defendableAt(f: Fighter, now: number): number
+	if f.State ~= "Hitstun" then
+		return now
+	end
+	if f.StateEnd - f.StateStart < Settings.Stun.HitstunHeavy - 1e-6 then
+		return math.max(now, f.StateStart + Settings.Stun.LightDefendCancel)
+	end
+	return math.max(now, f.StateEnd)
+end
+
 function Rules.cancelWindowOpen(f: Fighter, now: number): boolean
 	if f.State == "Hitstun" then
 		return Rules.lightHitstunDefendable(f, now)

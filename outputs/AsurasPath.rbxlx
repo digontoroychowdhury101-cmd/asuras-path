@@ -9415,6 +9415,19 @@ function Rules.lightHitstunDefendable(f: Fighter, now: number): boolean
 		and now - f.StateStart &gt;= Settings.Stun.LightDefendCancel - Tempo.HalfTick
 end
 
+-- Earliest time the fighter can answer a new attack (deflect, guard or dodge): the light-hitstun defend point,
+-- the end of a heavy hitstun, otherwise now. AI telegraphs count their reaction lead from here, not from the
+-- moment they decide, so a swing chosen while the target still reels cannot land inside its reaction floor.
+function Rules.defendableAt(f: Fighter, now: number): number
+	if f.State ~= "Hitstun" then
+		return now
+	end
+	if f.StateEnd - f.StateStart &lt; Settings.Stun.HitstunHeavy - 1e-6 then
+		return math.max(now, f.StateStart + Settings.Stun.LightDefendCancel)
+	end
+	return math.max(now, f.StateEnd)
+end
+
 function Rules.cancelWindowOpen(f: Fighter, now: number): boolean
 	if f.State == "Hitstun" then
 		return Rules.lightHitstunDefendable(f, now)
@@ -13942,12 +13955,16 @@ function Telegraph.lead(class: TelegraphClass, reactionFloor: number): number
 end
 
 -- Returns (attackAt, warnAt, impactAt). The warning is published at `now`; if the move's own startup
--- is shorter than the required lead the attack itself is delayed so impact - warn &gt;= lead.
-function Telegraph.plan(move: Combat.MoveData, now: number, reactionFloor: number): (number, number, number)
+-- is shorter than the required lead the attack itself is delayed so impact - warn &gt;= lead. `ready` is when
+-- the target can first answer (Combat.defendableAt); the lead is counted from it, so a target still in
+-- hitstun gets its full reaction floor once it can act (Windows acceptance 2026-11-03: a monk's Heavy
+-- chosen during the player's heavy hitstun landed 0.14-0.24 s after the player could act).
+function Telegraph.plan(move: Combat.MoveData, now: number, reactionFloor: number, ready: number?): (number, number, number)
 	local class = Telegraph.classify(move)
 	local lead = Telegraph.lead(class, reactionFloor)
 	local startup = move.Timing.StartupSeconds
-	local attackAt = Tempo.quantizeUp(now + math.max(0, lead - startup))
+	local from = math.max(now, ready or now)
+	local attackAt = Tempo.quantizeUp(now + math.max(0, from - now + lead - startup))
 	return attackAt, now, attackAt + startup
 end
 
@@ -14085,9 +14102,9 @@ local function publishTelegraph(agent: Agent, move: Combat.MoveData, class: Tele
 	end
 end
 
-local function queueAttack(agent: Agent, f: Combat.Fighter, action: "Light" | "Heavy" | "WeaponArt", now: number)
+local function queueAttack(agent: Agent, f: Combat.Fighter, action: "Light" | "Heavy" | "WeaponArt", now: number, ready: number?)
 	local move = Combat.selectMove(f, action, now)
-	local attackAt, _, impactAt = Telegraph.plan(move, now, PLAYER_REACTION)
+	local attackAt, _, impactAt = Telegraph.plan(move, now, PLAYER_REACTION, ready)
 	publishTelegraph(agent, move, Telegraph.classify(move), impactAt)
 	if attackAt &lt;= now + 1e-6 then
 		Characters.PushIntent(agent.Id, action)
@@ -14297,12 +14314,15 @@ local function decide(agent: Agent, self: Entity, target: Entity, now: number)
 	end
 	local weapon = Weapons.get(f.Weapon)
 	local roll = agent.Rng:NextNumber()
+	-- An ordinary foe's new opener waits for the target to be able to answer; combo follow-ups stay true links
+	-- (light-hitstun defend point) and bosses keep their own tuned pressure.
+	local ready = if agent.Boss then nil else Combat.defendableAt(target.Fighter, now)
 	if roll &lt; profile.ArtChance and f.Qi &gt;= weapon.WeaponArt.QiCost then
-		queueAttack(agent, f, "WeaponArt", now)
+		queueAttack(agent, f, "WeaponArt", now, ready)
 	elseif roll &lt; profile.ArtChance + profile.HeavyChance then
-		queueAttack(agent, f, "Heavy", now)
+		queueAttack(agent, f, "Heavy", now, ready)
 	else
-		queueAttack(agent, f, "Light", now)
+		queueAttack(agent, f, "Light", now, ready)
 	end
 end
 
@@ -14756,15 +14776,18 @@ function AIService.ResetMob(spawnId: string): boolean
 end
 
 -- Respawns every non-boss mob in a region. Engaged mobs can be left alone so another player's
--- fight is not reset underneath them.
-function AIService.RespawnRegion(region: string, skipEngaged: boolean)
+-- fight is not reset underneath them; a mob whose fight was with `freed` (the player who just died) or
+-- with no one any more is not someone else's fight, and goes home (Windows acceptance: the Cloister monk and
+-- swordsman waited at the altar for the respawn and killed the player twice more).
+function AIService.RespawnRegion(region: string, skipEngaged: boolean, freed: number?)
 	for _, entry in World.Spawns do
 		if entry.Region == region then
 			local id = spawnAgents[entry.Id]
 			local agent = if id then agents[id] else nil
 			local entity = if id then Characters.GetEntity(id) else nil
 			if agent and entity and entity.Fighter.State ~= "KO" then
-				local engaged = agent.Mode == "Engage" or agent.Mode == "Combat" or agent.Mode == "StanceBroken"
+				local engaged = (agent.Mode == "Engage" or agent.Mode == "Combat" or agent.Mode == "StanceBroken")
+					and agent.Target ~= 0 and agent.Target ~= freed
 				if not (skipEngaged and engaged) then
 					AIService.ResetMob(entry.Id)
 				end
@@ -16697,7 +16720,8 @@ function CampaignTerrain.convert(part: BasePart, box: any, solids: { any }?): bo
 				local inward = math.min(halfX - math.abs(x + VOXEL / 2 - box.X), halfZ - math.abs(z + VOXEL / 2 - box.Z))
 				local margin = 6 + math.noise(x / 11, z / 13, 8.2) * 8
 				if inward &lt; margin then
-					t:ReplaceMaterial(Region3.new(Vector3.new(x, bottom - VOXEL, z), Vector3.new(x + VOXEL, top + VOXEL, z + VOXEL)),
+					-- ExpandToGrid: slab tops sit off the voxel grid, and an unaligned region is refused with a boot error.
+					t:ReplaceMaterial(Region3.new(Vector3.new(x, bottom - VOXEL, z), Vector3.new(x + VOXEL, top + VOXEL, z + VOXEL)):ExpandToGrid(VOXEL),
 						VOXEL, M.Snow, M.Rock)
 				end
 			end
@@ -31133,7 +31157,7 @@ local function onPlayerDeath(s: Session)
 	local altar = World.Altars[s.ActiveAltar] or World.startingAltar()
 	task.delay(Settings.Respawn.PlayerDelay, function()
 		if running then
-			AI.RespawnRegion(altar.Region, true)
+			AI.RespawnRegion(altar.Region, true, s.UserId)
 		end
 	end)
 end
@@ -112504,9 +112528,13 @@ export type Snapshot = Combat.Snapshot
 -- Transit age correction is capped (TIMING_CONTRACT §4): beyond this a remote action is shown late rather than
 -- fast-forwarded, so a lag spike never skips a windup. Equal to the server's 150 ms rewind envelope.
 local MAX_SAMPLE_AGE = 0.15
--- A refused dash's correction follows a height change up to this many studs (a slope or step); a larger one was a
--- fall or a jump, and only the horizontal travel is undone.
+-- A refused dash's correction climbs back up a height change up to this many studs (a step), or any larger one
+-- along a walkable grade (rise &lt;= run, e.g. stairs: MAX_FOLLOW_GRADE); a steeper drop was a fall off a ledge, and
+-- only the horizontal travel is undone. Coming back down is always followed, then settled on the ground: Windows
+-- acceptance W-07 (2026-11-03) saw a dash up the Sanctuary stairs corrected 13 studs back at its top height,
+-- leaving the body 10 studs in the air, and one down them kept 10 of its 14 studs (the flat sweep hit the steps).
 local STEP_FOLLOW = 3
+local MAX_FOLLOW_GRADE = 1
 -- The states an unconfirmed action is shown over. Anything else (hit, stagger, break, KO) is the server overriding it.
 local CALM = { Idle = true, Startup = true, Active = true, Recovery = true, Deflecting = true, Blocking = true }
 
@@ -113074,9 +113102,9 @@ end
 -- Undoes an unconfirmed prediction: a predicted dash stops and only the travel its own drive produced is taken
 -- back (Prediction.dashTravel), and only the velocity it commanded comes off (Prediction.residualVelocity), so a
 -- refused dash grants no displacement while knockback or a walk that happened meanwhile continues. The correction
--- is swept with the root's box along the actual line back, climbing or descending with the dash when the height
--- change is a slope or step (STEP_FOLLOW), so it stops short of a wall or the ground instead of passing through,
--- and it never floats the body far off the ground. A character that has since respawned, died or been replaced is
+-- is swept with the root's box in safe legs (up then across when it climbs back, across then down when it
+-- descends; STEP_FOLLOW), so it stops short of a wall, a ceiling or the ground instead of passing through, and it
+-- then settles the body onto the ground at its hip height rather than leaving it in the air. A character that has since respawned, died or been replaced is
 -- never moved. A predicted swing or guard pose simply falls back to the server's state.
 function Controller.Rollback(self: WorldState)
 	local predicted = self.Predicted
@@ -113115,17 +113143,41 @@ function Controller.Rollback(self: WorldState)
 	if distance &lt; 1e-3 then
 		return
 	end
-	-- Height the dash gained or lost, in proportion to the travel undone; a fall off a ledge is not followed back up.
+	-- Height the dash gained or lost, in proportion to the travel undone. Coming back down is always followed; going
+	-- back up only for a step or a walkable grade, so a fall off a ledge is not lifted back up.
 	local whole = Vector3.new(stop.X - self.DashFrom.X, 0, stop.Z - self.DashFrom.Z).Magnitude
 	local rise = stop.Y - self.DashFrom.Y
-	local climb = if whole &gt; 1e-3 and math.abs(rise) &lt;= STEP_FOLLOW then -rise * math.min(distance / whole, 1) else 0
-	local back = -unit * distance + Vector3.new(0, climb, 0)
+	local liftable = rise &gt;= 0 or -rise &lt;= STEP_FOLLOW or -rise &lt;= whole * MAX_FOLLOW_GRADE
+	local climb = if whole &gt; 1e-3 and liftable then -rise * math.min(distance / whole, 1) else 0
 	local params = RaycastParams.new()
 	params.FilterType = Enum.RaycastFilterType.Exclude
 	params.FilterDescendantsInstances = { own.Model }
-	local hit = Workspace:Blockcast(root.CFrame, root.Size, back, params)
-	local allowed = if hit then math.max(hit.Distance - 0.05, 0) else back.Magnitude
-	root.CFrame = root.CFrame + back.Unit * allowed
+	-- Hip height over the ground where the dash stopped, kept when the body is settled at the corrected spot.
+	local below = Workspace:Raycast(root.Position, Vector3.new(0, -(STEP_FOLLOW + 6), 0), params)
+	local hip = if below then root.Position.Y - below.Position.Y else nil
+	local function sweep(offset: Vector3)
+		if offset.Magnitude &lt; 1e-3 then
+			return
+		end
+		local hit = Workspace:Blockcast(root.CFrame, root.Size, offset, params)
+		local allowed = if hit then math.max(hit.Distance - 0.05, 0) else offset.Magnitude
+		root.CFrame = root.CFrame + offset.Unit * allowed
+	end
+	local across = -unit * distance
+	if climb &gt; 0 then
+		sweep(Vector3.new(0, climb, 0))
+		sweep(across)
+	else
+		sweep(across)
+		sweep(Vector3.new(0, climb, 0))
+	end
+	if hip then
+		local ground = Workspace:Raycast(root.Position, Vector3.new(0, -(hip + math.max(STEP_FOLLOW, math.abs(rise))), 0), params)
+		local gap = if ground then root.Position.Y - ground.Position.Y - hip else 0
+		if gap &gt; 0.05 then
+			sweep(Vector3.new(0, -gap, 0))
+		end
+	end
 end
 
 local function stopDash(self: WorldState, root: BasePart)

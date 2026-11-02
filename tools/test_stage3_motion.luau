@@ -417,21 +417,52 @@ do
 	s.State:Destroy()
 
 	-- Slopes: climbing dash comes back down the slope; descending dash comes back up it; a fall is not retraced.
+	-- The fake ground matches each slope (hip 3 over it), since the correction settles on the ground it finds.
+	groundY = function(x) return x / 3 end
 	s = dashed(106, CF.new(6, 5, 0))
 	setIntent("106:Rejected:Exhausted:" .. sampleTick)
 	check("T-RB-08 rising ground: the correction descends with the slope", near(s.Root.Position.X, 0, 1e-3) and near(s.Root.Position.Y, 3, 1e-3), s.Root.Position)
 	s.State:Destroy()
+	groundY = function(x) return -x / 4 end
 	s = dashed(107, CF.new(6, 1.5, 0))
 	setIntent("107:Rejected:Exhausted:" .. sampleTick)
 	check("T-RB-08 descending ground: the correction climbs back", near(s.Root.Position.X, 0, 1e-3) and near(s.Root.Position.Y, 3, 1e-3), s.Root.Position)
 	s.State:Destroy()
+	groundY = function(x) return if x > 3 then -12 else 0 end
 	s = dashed(108, CF.new(6, -9, 0))
 	setIntent("108:Rejected:Exhausted:" .. sampleTick)
 	check("T-RB-08 a fall off a ledge is not lifted back up", near(s.Root.Position.Y, -9, 1e-3) and near(s.Root.Position.X, 0, 1e-3), s.Root.Position)
 	s.State:Destroy()
+	groundY = function(x) return x / 4 end
 	s = dashed(109, CF.new(6, 4.5, 0))
 	check("T-RB-08 a step inside STEP_FOLLOW is followed", (function() setIntent("109:Rejected:Exhausted:" .. sampleTick); return near(s.Root.Position.Y, 3, 1e-3) end)())
 	s.State:Destroy()
+
+	-- Windows acceptance W-07 (Studio, Sanctuary stairs): a climb beyond STEP_FOLLOW used to keep its top height
+	-- (10 studs in the air), and a descent down stairs used to be swept flat into the steps (10 of 14 studs kept).
+	groundY = function(x) return x / 2 end
+	s = dashed(111, CF.new(14, 10, 0), 0.3)
+	table.clear(casts)
+	setIntent("111:Rejected:Exhausted:" .. sampleTick)
+	check("T-RB-11 a dash up stairs beyond STEP_FOLLOW comes back down to the ground", near(s.Root.Position.X, 0, 1e-3) and near(s.Root.Position.Y, 3, 1e-3), s.Root.Position)
+	check("T-RB-11 coming down: across first, then down", casts[1] and casts[1].Direction.Y == 0 and casts[2] and casts[2].Direction.Y < 0)
+	s.State:Destroy()
+	groundY = function(x) return -x / 2 end
+	s = dashed(112, CF.new(14, -4, 0), 0.3)
+	table.clear(casts)
+	setIntent("112:Rejected:Exhausted:" .. sampleTick)
+	check("T-RB-12 a dash down stairs (walkable grade) is climbed back", near(s.Root.Position.X, 0, 1e-3) and near(s.Root.Position.Y, 3, 1e-3), s.Root.Position)
+	check("T-RB-12 going up: up first, then across over the steps", casts[1] and casts[1].Direction.Y > 0 and casts[2] and casts[2].Direction.Y == 0)
+	s.State:Destroy()
+	-- Partly undone climb over uneven ground: the body is settled on the ground at its hip height, not left floating.
+	groundY = function(x) return if x >= 10 then 7 else 0 end
+	s = dashed(113, CF.new(14, 10, 0), 0.12)
+	setIntent("113:Rejected:Exhausted:" .. sampleTick)
+	local undone = s.State.DashDriven
+	check("T-RB-13 a partial correction settles on the ground below", undone < 14 and near(s.Root.Position.X, 14 - undone, 1e-3)
+		and near(s.Root.Position.Y, if 14 - undone >= 10 then 10 else 3, 1e-3), tostring(s.Root.Position) .. " undone " .. undone)
+	s.State:Destroy()
+	groundY = function() return 0 end
 
 	-- Timeout, and interruption then refusal.
 	s = dashed(110, CF.new(5, 3, 0), 0.08)

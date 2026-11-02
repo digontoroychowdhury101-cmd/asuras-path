@@ -601,7 +601,7 @@ local function onPlayerDeath(s: Session)
 	local altar = World.Altars[s.ActiveAltar] or World.startingAltar()
 	task.delay(Settings.Respawn.PlayerDelay, function()
 		if running then
-			AI.RespawnRegion(altar.Region, true)
+			AI.RespawnRegion(altar.Region, true, s.UserId)
 		end
 	end)
 end

@@ -73,6 +73,7 @@ local services = {
 			table.insert(casts, { From = cframe.Position, Direction = direction, Filter = params.FilterDescendantsInstances })
 			return blockHit
 		end,
+		Raycast = function() return nil end, -- no ground under the fakes: the correction's ground settle is skipped
 	},
 	CollectionService = { GetTagged = function() return {} end, GetInstanceAddedSignal = function() return quiet end },
 	ReplicatedStorage = finder({ AsurasPath = finder({ Simulation = finder({ CombatRules = Combat, LocalPrediction = Prediction }) }) }),
@@ -255,14 +256,18 @@ do
 	state:Destroy()
 
 	-- Rising ground on the way back is a hit like a wall: the slope is followed only as far as the contact and the
-	-- correction never sinks the body (Stage 3: it follows a slope's height rather than cutting through it).
+	-- correction never sinks the body (Stage 3: it follows a slope's height rather than cutting through it; Windows
+	-- acceptance: in legs, climbing first, so each leg stops at its own contact).
 	state, root = rig()
 	assert(state:Predict(22, "Dash", 1, 0))
 	driveTo(state, root, CF.new(5, 2, 0))
 	blockHit = { Distance = 0.5, Position = V3.new(4.5, 2, 0) }
+	table.clear(casts)
 	setIntent("22:Rejected:Exhausted:" .. sampleTick)
-	local along = (root.Position - V3.new(5, 2, 0)).Magnitude
-	check("R-02 rising ground: corrected only to the contact, never sunk", math.abs(along - 0.45) < 1e-6 and root.Position.Y >= 2, root.Position)
+	check("R-02 rising ground: corrected only to the contact, never sunk", root.Position.X >= 4.5 - 1e-6 and root.Position.Y >= 2
+		and math.abs(root.Position.X - 4.55) < 1e-6, root.Position)
+	check("R-02 the climb leg is swept before the leg across", casts[1] and casts[1].Direction.Y > 0 and casts[1].Direction.X == 0
+		and casts[2] and casts[2].Direction.Y == 0, casts[1] and casts[1].Direction)
 	state:Destroy()
 
 	-- Respawn: the prediction belonged to the previous character; the new one is never moved.
