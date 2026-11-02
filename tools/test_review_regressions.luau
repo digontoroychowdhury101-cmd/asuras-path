@@ -44,7 +44,7 @@ do
 	local eventPoints: any = {}
 	local TICK, FACING_DOT = 1/60, 0.15
 	local region = "LeftLeg"
-	local Lag = {queryHit=function() return {Region=region,Point=vec(0,0,0)} end}
+	local Lag = {queryHit=function() return {Region=region,Point=vec(0,0,0)} end,samplePoseAt=function() return nil end}
 	local function weaponSegment(...: any): (any,any) return vec(0,0,0),vec(0,0,0) end
 	local function strikeFrame(e: any): any return e.Root.CFrame end
 	local function weaponRadius(...: any): number return 0.3 end

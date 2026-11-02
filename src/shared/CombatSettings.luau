@@ -150,6 +150,10 @@ local Settings = {
 		StanceBroken = 2.5,
 		HitstunLight = 0.28,
 		HitstunHeavy = 0.48,
+		-- Combat recovery Stage 2 (TIMING_CONTRACT §5.5): this far into a light hitstun the defender may deflect
+		-- or raise a guard, but not attack, dodge or heal until the hitstun ends. A light string stays safe from
+		-- counter-attacks yet every link can be answered defensively by anticipation. Heavy hitstun is unchanged.
+		LightDefendCancel = 0.10,
 		Blockstun = 0.18,
 		DeflectRecoil = 0.32,
 		DeathblowAttacker = 1.1,
@@ -260,7 +264,11 @@ local Settings = {
 	},
 
 	Input = {
+		-- Queue lifetime counted from server receipt (combat recovery Stage 2, TIMING_CONTRACT §3). It was counted
+		-- from the rewound press time, so a press that arrived >= 100 ms after it was made expired unexecuted.
 		BufferWindow = 0.10,
+		-- Absolute execute-by limit from the accepted press time: rewind cap (0.15) + queue lifetime (0.10).
+		ExecuteBy = 0.25,
 		BufferCapacity = 16,
 		DuplicateWindow = 0.033,
 		Priority = {

@@ -95,7 +95,7 @@ local cs = src("src/server/CharacterService.luau")
 check("weapon segment reach formula unchanged", string.find(src("src/simulation/StrikeGeometry.luau"), "local reach = shape.Reach + bonus + shape.Lunge * 0.35 * progress", 1, true) ~= nil and string.find(cs, "Strike.segment(move, progress, bonus)", 1, true) ~= nil)
 check("weapon radius unchanged", string.find(cs, 'return if f.Weapon == "Unarmed" then 0.55 else 0.3', 1, true) ~= nil)
 check("rewind query unchanged", string.find(cs, "Lag.queryHit(prevA, prevB, curA, curB, radius, defender.History, rewindTo, TICK)", 1, true) ~= nil)
-check("whiffs annotated after the step, before contacts", string.find(cs, "annotateWhiffs(stepped)\n\n\tfor _, e in live do\n\t\tif entities[e.Id] == e and e.Fighter.State == \"Active\" then", 1, true) ~= nil)
+check("whiffs annotated once every fighter has stepped (closing windows included)", string.find(cs, "\t\t\tstepFighter(e, now)\n\t\tend\n\tend\n\tannotateWhiffs(stepped)", 1, true) ~= nil)
 
 -- 8. ContactCues wording.
 check("gap is flat distance beyond body and reach", math.abs(Contact.gap(roblox.Vector3.new(0, 0, 0), roblox.Vector3.new(0, 5, -10), 6) - 2.8) < 1e-9)
@@ -172,8 +172,9 @@ do
 end
 
 -- 10b. F07 (Studio, seeded): a Jian thrust 7.8 studs from the Sparring Phantom whiffed every time
--- although its authored reach covers that body. The real weaponSegment / resolveContacts /
--- sweepClosingWindows, real LagCompensation and CombatRules run in the server's tick order.
+-- although its authored reach covers that body. The real weaponSegment / resolveContacts, real
+-- LagCompensation and CombatRules run in the server's tick order: since Stage 2 a window closing this tick
+-- is swept with the tick's contacts before its fighter steps (before: a separate sweep ahead of the step).
 local Tempo = require("../src/simulation/Tempo")
 local function between(text, from, to)
 	local s = assert(string.find(text, from, 1, true), from)
@@ -186,12 +187,13 @@ local Strike = require("../src/simulation/StrikeGeometry")
 local chunk = "local Combat, Lag, TICK, FACING_DOT, entities, frameEvents, eventPoints, Strike = ...\n"
 	.. "local function alive() return true end\nlocal function hostile() return true end\n"
 	.. "local function facingDot() return 1 end\nlocal function awardXp() end\n"
+	.. between(cs, "local function flatUnit(", "\nlocal function facingDot(") .. "\n"
 	.. between(cs, "local function weaponSegment(", "\n-------") .. "\n"
-	.. between(cs, "local function resolveContacts(", "\n-- Whiffs (batch 09)")
-	.. "\nreturn resolveContacts, sweepClosingWindows"
+	.. between(cs, "local function facingAt(", "\n-- Whiffs (batch 09)")
+	.. "\nreturn resolveContacts"
 local function duel(flat: number, closingSweep: boolean): string
 	local entities, frameEvents = {}, {}
-	local resolve, sweep = luau.load(chunk, { debugName = "Contacts", environment = geo })(Combat, Lag, Tempo.TickSeconds, 0.15, entities, frameEvents, {}, Strike)
+	local resolve = luau.load(chunk, { debugName = "Contacts", environment = geo })(Combat, Lag, Tempo.TickSeconds, 0.15, entities, frameEvents, {}, Strike)
 	local a, b = Combat.new(1, "Jian", T), Combat.new(-1, "Jian", T)
 	local aRoot = roblox.CFrame.lookAt(roblox.Vector3.new(0, 3.2, 0), roblox.Vector3.new(0, 3.2, -10))
 	local bRoot = roblox.CFrame.lookAt(roblox.Vector3.new(0, 3.39, -flat), roblox.Vector3.new(0, 3.39, 0))
@@ -205,16 +207,17 @@ local function duel(flat: number, closingSweep: boolean): string
 	for _ = 1, 40 do
 		t += Tempo.TickSeconds
 		Lag.record(history, t, bRoot, roblox.Vector3.zero)
-		if closingSweep then sweep({ ea, eb }, t) end
+		if closingSweep and a.State == "Active" then resolve(ea, t) end -- contacts, then the closing fighter steps
 		Combat.step(a, t, Tempo.TickSeconds, frameEvents); Combat.step(b, t, Tempo.TickSeconds, frameEvents)
-		if a.State == "Active" then resolve(ea, t) end
+		if not closingSweep and a.State == "Active" then resolve(ea, t) end
 	end
 	return kinds(frameEvents)
 end
 check("old tick order never swept the final active frame (the Studio whiff)", duel(7.8, false) == "Whiff")
 check("closing sweep lands the thrust at its authored reach", string.find(duel(7.8, true), "Hit", 1, true) ~= nil and not string.find(duel(7.8, true), "Whiff", 1, true))
 check("beyond blade + body the thrust still whiffs", duel(9.6, true) == "Whiff")
-check("closing sweep runs before the step ends the window", string.find(cs, "sweepClosingWindows(live, now)\n\tlocal stepped = #frameEvents + 1", 1, true) ~= nil)
+check("a closing window steps after the tick's contacts", string.find(cs, "if f.State == \"Active\" and f.Move and now >= f.StateEnd then\n\t\t\t\ttable.insert(closing, e)", 1, true) ~= nil
+	and string.find(cs, "for _, e in closing do\n\t\tif entities[e.Id] == e then\n\t\t\tstepFighter(e, now)", 1, true) ~= nil)
 
 -- 10c. F08 (Studio): the Sparring Phantom stood in Engage 8.4 studs from a player who waited, because
 -- Humanoid:MoveTo times out after 8 s and the same target point was never re-issued.

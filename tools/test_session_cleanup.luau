@@ -33,6 +33,9 @@ end
 -- 1. WorldState: 400 enemy respawns, each model arriving before its id, then leaving.
 local Combat = require("../src/simulation/CombatRules")
 local player = { UserId = 1, Name = "Tester", CharacterAdded = signal(), Character = nil }
+local intentSignal = signal() -- AsuraIntent (Stage 2 prediction rollback)
+function player.GetAttributeChangedSignal() return intentSignal end
+function player.GetAttribute() return nil end
 local Players = { LocalPlayer = player, PlayerAdded = signal(), GetPlayers = function() return { player } end }
 local tagged = signal()
 local services = { Players = Players, Workspace = Instance.new("Workspace"),

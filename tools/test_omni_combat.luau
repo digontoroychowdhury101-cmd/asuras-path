@@ -24,7 +24,16 @@ local RATE = math.rad(Tracking.StartupTurnRate)
 
 -- 0. Invariants this batch must not move.
 check("tempo stays 1.4x at 60 Hz", Settings.Tempo.Scalar == 1.4 and Settings.Tempo.TickRate == 60)
-check("deflect baseline stays 100 ms", string.find(src("src/shared/CombatSettings.luau"), "Deflect = 100,", 1, true) ~= nil)
+-- Behaviour, not text (Stage 2): a fresh press deflects a contact 100 ms (+ half a tick) after it, and not
+-- one tick beyond. The old check matched "Deflect = 100," in Input.Priority, not the window.
+do
+	local function deflectsAt(offset: number): boolean
+		local f = Combat.new(1, "Jian", T)
+		assert(Combat.tryDeflect(f, T, T))
+		return Combat.isDeflectTimed(f, T + offset)
+	end
+	check("deflect baseline stays 100 ms", Settings.Posture.DeflectWindow == 0.10 and deflectsAt(0.10) and deflectsAt(0) and not deflectsAt(0.10 + DT))
+end
 check("tri-layer health unchanged", table.concat(Settings.Health.Layers, ",") == "ActiveHP,RecoverableHP,PermanentDeficit")
 check("lag compensation stays 60 Hz / 150 ms", has("src/server/LagCompensation.luau", "LagCompensation.TICK_RATE = 60") and has("src/server/LagCompensation.luau", "LagCompensation.MAX_REWIND = 0.15"))
 check("profiles stay schema v4", has("src/shared/ProfileSchema.luau", "local CURRENT_SCHEMA_VERSION = 4"))
@@ -206,7 +215,7 @@ check("malformed record ignored", Strike.decode("nope") == nil and Strike.decode
 -- 8. Wiring: one path for players, enemies, bosses and duels.
 local cs = "src/server/CharacterService.luau"
 check("server sweeps the committed frame", has(cs, "local rootCFrame = strikeFrame(attacker)") and has(cs, "weaponSegment(strikeFrame(e), move, 1"))
-check("commit happens before contacts each tick", has(cs, "commitStrike(e)\n\t\t\tresolveContacts(e, now)"))
+check("commit happens before contacts each tick", has(cs, "commitStrike(e)\n\t\t\tresolveContacts(e, now, found)"))
 check("strike record published for the client", has(cs, 'SetAttribute("AsuraStrike", Strike.encode('))
 check("enemy Face uses the shared turn budget", has(cs, "Strike.turnStep(f.State, simTime - f.StateStart, startup, dt)"))
 check("enemies cannot walk-turn while committed", has(cs, "e.Humanoid.AutoRotate = free"))
@@ -239,8 +248,9 @@ local service = src(cs)
 local chunk = "local Combat, Lag, TICK, FACING_DOT, entities, frameEvents, eventPoints, Strike = ...\n"
 	.. "local function alive() return true end\nlocal function hostile() return true end\n"
 	.. "local function facingDot() return 1 end\nlocal function awardXp() end\n"
+	.. between(service, "local function flatUnit(", "\nlocal function facingDot(") .. "\n"
 	.. between(service, "local function weaponSegment(", "\n-------") .. "\n"
-	.. between(service, "local function resolveContacts(", "\n-- Whiffs (batch 09)")
+	.. between(service, "local function facingAt(", "\n-- Whiffs (batch 09)")
 	.. "\nreturn resolveContacts"
 local function spun(defenderZ: number): string
 	local entities, frameEvents = {}, {}

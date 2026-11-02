@@ -71,6 +71,7 @@ export type Entity = {
 	Fighter: Fighter,
 	History: History,
 	Buffer: InputBuffer.Buffer,
+	IntentLog: { string }, -- the latest terminal intent records, replicated as AsuraIntent
 	Eligible: InputBuffer.Filter,
 	Actions: Bucket,
 	LastSeq: number,
@@ -192,6 +193,11 @@ local droppedSteps = 0
 local running = false
 local accumulator = 0
 local tickCount = 0
+local terminal: (e: any, seq: number, status: string, reason: string) -> () -- intent records, defined with report
+-- Boss pulses submitted by step listeners this tick (BossAttackService, BossHazards); resolved in the
+-- contact phase after the tick's intents drain, so a deflect pressed for the impact tick counts.
+local bossContacts: { { Source: number, Target: number, Damage: number, Posture: number, Kind: string } } = {}
+local resolveBossContacts: () -> ()
 local simTime = 0
 -- Enemy entity ids count down from far below zero: Studio's local test players get UserIds -1, -2, ...,
 -- and an enemy holding the same id made ensurePlayer skip spawning them (no multi-client tests).
@@ -520,6 +526,7 @@ local function newEntity(id: number, kind: EntityKind, player: Player?, model: M
 		Fighter = Combat.new(id, weapon, simTime),
 		History = Lag.newHistory(),
 		Buffer = InputBuffer.new(),
+		IntentLog = {},
 		Eligible = function()
 			return false
 		end,
@@ -552,6 +559,9 @@ local function newEntity(id: number, kind: EntityKind, player: Player?, model: M
 		Omni = { Aim = nil, AimFor = -1, Yaw = nil, YawFor = -1, LastFace = 0, Air = Strike.newAir() },
 	}
 	e.Eligible = eligibleFor(e)
+	e.Buffer.OnDrop = function(seq: number, action: string, status: string)
+		terminal(e, seq, status, action)
+	end
 	return e
 end
 
@@ -936,12 +946,32 @@ local function validIntent(packet: any, lastSeq: number): boolean
 	return true
 end
 
+-- Terminal intent records (combat recovery Stage 2): every client intent ends exactly once as
+-- `seq:status:reason:tick` with status Executed | Rejected | Expired | Stale | Superseded | Cancelled |
+-- Flushed | Evicted. AsuraIntent carries the latest INTENT_RECORDS of them (`;`-separated): ticks run in
+-- bursts between replication frames, so one attribute write per record would lose all but the last to
+-- coalescing. Clients key them by seq. AsuraResult keeps its HUD meaning (a reason, "!" = refused).
+local INTENT_RECORDS = 8
+function terminal(e: Entity, seq: number, status: string, reason: string)
+	local player = e.Player
+	if not player or seq == 0 then
+		return
+	end
+	local log = e.IntentLog
+	table.insert(log, string.format("%d:%s:%s:%d", seq, status, reason, tickCount))
+	if #log > INTENT_RECORDS then
+		table.remove(log, 1)
+	end
+	player:SetAttribute("AsuraIntent", table.concat(log, ";"))
+end
+
 local function report(e: Entity, seq: number, ok: boolean, reason: string)
 	local player = e.Player
 	if player then
 		player:SetAttribute("AsuraAck", seq)
 		player:SetAttribute("AsuraResult", (if ok then "" else "!") .. reason)
 	end
+	terminal(e, seq, if ok then "Executed" else "Rejected", reason)
 end
 
 local function findDeathblowTarget(attacker: Entity, now: number): Entity?
@@ -1125,9 +1155,13 @@ local function onIntent(player: Player, packet: any)
 	e.LastSeq = packet.seq
 	local action: string = packet.action
 	if BUFFERED[action] then
-		local pressTime = Tempo.reconcile(packet.time, simTime, Lag.MAX_REWIND)
-		InputBuffer.push(e.Buffer, action :: InputBuffer.BufferedAction, pressTime, packet.variant, packet.x, packet.z)
-		report(e, packet.seq, true, "Buffered")
+		-- The press time is accepted (rewound at most Lag.MAX_REWIND) for defense timing; the queue lifetime
+		-- starts now, at receipt, so transit no longer eats the buffer window (Stage 2, defect #1).
+		-- reconcile snaps to the tick grid; once simTime has drifted below it (hours of accumulated TICK), the
+		-- snapped press could land after receipt, so it is clamped to receipt.
+		local pressTime = math.min(Tempo.reconcile(packet.time, simTime, Lag.MAX_REWIND), simTime)
+		player:SetAttribute("AsuraAck", packet.seq)
+		InputBuffer.push(e.Buffer, action :: InputBuffer.BufferedAction, pressTime, packet.variant, packet.x, packet.z, simTime, packet.seq)
 		return
 	end
 	local ok, reason = immediate(e, packet)
@@ -1138,7 +1172,7 @@ local function drainBuffer(e: Entity)
 	if InputBuffer.count(e.Buffer) == 0 then
 		return
 	end
-	local action, pressTime, _variant, dirX, dirZ = InputBuffer.pop(e.Buffer, simTime, e.Eligible)
+	local action, pressTime, _variant, dirX, dirZ, seq = InputBuffer.pop(e.Buffer, simTime, e.Eligible)
 	if action == nil then
 		return
 	end
@@ -1146,6 +1180,11 @@ local function drainBuffer(e: Entity)
 	local player = e.Player
 	if player then
 		player:SetAttribute("AsuraResult", (if ok then "" else "!") .. reason)
+	end
+	terminal(e, seq or 0, if ok then "Executed" else "Rejected", reason)
+	if ok then
+		-- One action start per tick; lower-priority presses still waiting may run later, else leave Superseded.
+		InputBuffer.outrank(e.Buffer, InputBuffer.priority(action))
 	end
 end
 
@@ -1173,7 +1212,71 @@ local function commitStrike(e: Entity)
 	end
 end
 
-local function resolveContacts(attacker: Entity, now: number)
+-- Contacts (combat recovery Stage 2, TIMING_CONTRACT §4-5). Every active volume is swept before any of the
+-- tick's outcomes apply, and each contact keeps the defender's state and facing at the contact instant t_c:
+-- the order fighters are visited in never changes an outcome (two fighters striking each other trade). A
+-- contact on a player who could still deflect or dash waits up to that player's grace for a press stamped
+-- at or before t_c; nothing pressed after t_c changes it, and nothing waits longer than GRACE_CAP.
+-- Facing at the rewound instant the geometry was tested at, so state, facing and position describe one moment.
+local function facingAt(defender: Entity, attacker: Entity, at: number): number
+	local pose = Lag.samplePoseAt(defender.History, at)
+	if pose == nil then
+		return facingDot(defender, attacker)
+	end
+	local look = flatUnit(pose.LookVector)
+	return look:Dot(flatUnit(attacker.Root.Position - pose.Position))
+end
+
+type Contact = {
+	Attacker: Entity,
+	Defender: Entity,
+	Move: any,
+	At: number, -- t_c
+	State: string, -- the defender's state at t_c
+	Facing: boolean,
+	Region: string,
+	Point: Vector3,
+	Bonus: number?,
+	Until: number,
+}
+local GRACE_CAP = 0.1
+local pendingContacts: { Contact } = {}
+
+-- Upstream half of the defender's round trip plus a tick, capped; NPC defenders resolve at once.
+local function graceFor(defender: Entity): number
+	local player = defender.Player
+	if not player then
+		return 0
+	end
+	return math.min(player:GetNetworkPing() * 0.5 + TICK, GRACE_CAP)
+end
+
+local function resolveContact(c: Contact, now: number)
+	local attacker, defender = c.Attacker, c.Defender
+	local before = #frameEvents
+	local outcome = Combat.resolveHit(attacker.Fighter, defender.Fighter, now, {
+		Facing = c.Facing,
+		Region = c.Region :: any,
+		PostureBonus = c.Bonus,
+		Move = c.Move,
+		DefenderState = c.State :: any,
+		At = c.At,
+	}, frameEvents)
+	for index = before + 1, #frameEvents do
+		eventPoints[frameEvents[index]] = c.Point
+	end
+	if outcome == "Deflected" then
+		awardXp(defender, 15)
+	elseif outcome == "Hit" or outcome == "CounterHit" or outcome == "Armored" then
+		awardXp(attacker, if outcome == "CounterHit" then 20 else 10)
+	elseif outcome == "KO" then
+		awardXp(attacker, 100)
+	end
+end
+
+-- Sweeps the attacker's blade over this tick. Each defender is contacted once per swing (the HitRegistry
+-- claim). Contacts go to `found` when given, else resolve at once.
+local function resolveContacts(attacker: Entity, now: number, found: { Contact }?)
 	local f = attacker.Fighter
 	local move = f.Move
 	if move and Combat.RangedEffects[move.Effect or ""] then return end
@@ -1192,38 +1295,57 @@ local function resolveContacts(attacker: Entity, now: number)
 		if defender ~= attacker and not f.HitRegistry[defender.Id] and defender.Fighter.State ~= "KO" and alive(defender) and hostile(attacker, defender) then
 			local hit = Lag.queryHit(prevA, prevB, curA, curB, radius, defender.History, rewindTo, TICK)
 			if hit then
-				local before = #frameEvents
+				f.HitRegistry[defender.Id] = true
 				local ankleTarget = defender.Model:GetAttribute("AsuraVisceralTarget") == "Ankles"
 				local ankleHit = ankleTarget and (hit.Region == "LeftLeg" or hit.Region == "RightLeg")
-				local outcome = Combat.resolveHit(f, defender.Fighter, now, {
-					Facing = facingDot(defender, attacker) >= FACING_DOT,
-					Region = hit.Region :: any,
-					PostureBonus = if ankleHit then move.PostureDamage * 1.8 else nil,
-				}, frameEvents)
-				for index = before + 1, #frameEvents do
-					eventPoints[frameEvents[index]] = hit.Point
-				end
-				if outcome == "Deflected" then
-					awardXp(defender, 15)
-				elseif outcome == "Hit" or outcome == "CounterHit" or outcome == "Armored" then
-					awardXp(attacker, if outcome == "CounterHit" then 20 else 10)
-				elseif outcome == "KO" then
-					awardXp(attacker, 100)
+				local contact: Contact = {
+					Attacker = attacker, Defender = defender, Move = move, At = now, State = defender.Fighter.State,
+					Facing = facingAt(defender, attacker, rewindTo) >= FACING_DOT, Region = hit.Region, Point = hit.Point,
+					Bonus = if ankleHit then move.PostureDamage * 1.8 else nil, Until = now,
+				}
+				if found then
+					table.insert(found, contact)
+				else
+					resolveContact(contact, now)
 				end
 			end
 		end
 	end
 end
 
--- F07: Combat.step ends an active window before contacts are resolved, so the tick that closes it
--- never swept the blade to full extension and every move fell short of its authored reach (a Jian
--- thrust touched ~6 of 7.5 studs and read as MISSED). Sweep that last stretch first; a hit lands on
--- the same tick and fills HitRegistry, so the expiring window no longer reports a whiff.
-local function sweepClosingWindows(live: { Entity }, now: number)
-	for _, e in live do
-		local f = e.Fighter
-		if entities[e.Id] == e and f.State == "Active" and f.Move and now >= f.StateEnd then
-			resolveContacts(e, now)
+-- The contact's outcome no longer depends on a press still in flight: evaded or deflected as of t_c.
+local function contactSettled(c: Contact): boolean
+	local df = c.Defender.Fighter
+	return Combat.isInvulnerable(df, c.At) or (c.Facing and c.Move.Deflectable == true and Combat.isDeflectTimed(df, c.At))
+end
+
+-- Holds a fresh contact for the defender's grace when a deflect or dash could still legally answer it.
+local function deferContact(c: Contact, now: number): boolean
+	local grace = graceFor(c.Defender)
+	if grace <= 0 or contactSettled(c) or not Combat.couldDefend(c.Defender.Fighter, now) then
+		return false
+	end
+	c.Until = now + grace
+	table.insert(pendingContacts, c)
+	return true
+end
+
+-- Runs after the tick's intents drain: a held contact resolves once a deflect or dash covering t_c has
+-- started, when its grace runs out, or as soon as the defender starts something new (overridden by the hit).
+local function settleContacts(now: number)
+	local index = 1
+	while index <= #pendingContacts do
+		local c = pendingContacts[index]
+		local df = c.Defender.Fighter
+		local live = entities[c.Attacker.Id] == c.Attacker and entities[c.Defender.Id] == c.Defender and alive(c.Defender)
+		local acted = df.StateStart > c.At and (df.State == "Startup" or df.State == "Active")
+		if not live or contactSettled(c) or now >= c.Until - 1e-6 or acted then
+			table.remove(pendingContacts, index)
+			if live then
+				resolveContact(c, now)
+			end
+		else
+			index += 1
 		end
 	end
 end
@@ -1349,8 +1471,8 @@ local function applyLocomotion(e: Entity)
 	end
 end
 
-local function replicate(e: Entity, now: number)
-	local packed = Combat.packString(e.Fighter, now, e.Scratch)
+local function replicate(e: Entity, now: number, stamp: number)
+	local packed = Combat.packString(e.Fighter, now, e.Scratch, tickCount, stamp)
 	if packed ~= e.Packed then
 		e.Packed = packed
 		e.Model:SetAttribute(STATE_ATTRIBUTE, packed)
@@ -1382,6 +1504,15 @@ local function flushEvents(now: number)
 	table.clear(frameEvents)
 	table.clear(eventPoints)
 	eventRemote:FireAllClients({ v = PROTOCOL_TAG, t = now, e = batch })
+end
+
+local function stepFighter(e: Entity, now: number)
+	local f = e.Fighter
+	Combat.step(f, now, TICK, frameEvents)
+	if f.GuardHeld and (f.State == "Idle" or f.State == "Hitstun") then
+		Combat.setGuard(f, true, now) -- a held guard rises again once allowed (light hitstun defend window)
+	end
+	drainBuffer(e)
 end
 
 local function step()
@@ -1423,8 +1554,11 @@ local function step()
 		end
 	end
 
-	sweepClosingWindows(live, now)
+	-- Stage 2 phase order (TIMING_CONTRACT §4): timers and this tick's intents first, then every contact.
+	-- F07: an active window that closes this tick is swept to full extension before its fighter steps, so a
+	-- move reaches its authored length; that fighter's step and intents run after the contacts.
 	local stepped = #frameEvents + 1
+	local closing: { Entity } = {}
 	for _, e in live do
 		if entities[e.Id] == e then
 			local f = e.Fighter
@@ -1435,24 +1569,37 @@ local function step()
 			if air.Landing and not air.Airborne and Combat.landingRecovery(f, now, Settings.Tracking.LandingRecoverySeconds) ~= "Wait" then
 				air.Landing = false
 			end
-			Combat.step(f, now, TICK, frameEvents)
-			if f.GuardHeld and f.State == "Idle" then
-				Combat.setGuard(f, true, now)
+			if f.State == "Active" and f.Move and now >= f.StateEnd then
+				table.insert(closing, e)
+			else
+				stepFighter(e, now)
 			end
-			drainBuffer(e)
 		end
 	end
 
-	annotateWhiffs(stepped)
-
+	settleContacts(now)
+	local found: { Contact } = {}
 	for _, e in live do
 		if entities[e.Id] == e and e.Fighter.State == "Active" then
 			commitStrike(e)
-			resolveContacts(e, now)
+			resolveContacts(e, now, found)
 		end
 	end
+	for _, c in found do
+		if not deferContact(c, now) then
+			resolveContact(c, now)
+		end
+	end
+	resolveBossContacts()
+	for _, e in closing do
+		if entities[e.Id] == e then
+			stepFighter(e, now)
+		end
+	end
+	annotateWhiffs(stepped)
 
 	local replicateNow = tickCount % SNAPSHOT_INTERVAL == 0
+	local stamp = if replicateNow then serverNow() else 0
 	for _, e in live do
 		if entities[e.Id] == e then
 			handleDefeat(e, now)
@@ -1462,7 +1609,7 @@ local function step()
 			applyLocomotion(e)
 			mirrorHealth(e)
 			if replicateNow then
-				replicate(e, now)
+				replicate(e, now, stamp)
 			end
 		end
 	end
@@ -1834,6 +1981,11 @@ end
 
 -- Geometry is evaluated by the boss scheduler; combat remains authoritative here.
 function Service.ApplyBossAttack(sourceId: number, targetId: number, damage: number, posture: number, kind: string): string
+	table.insert(bossContacts, { Source = sourceId, Target = targetId, Damage = damage, Posture = posture, Kind = kind })
+	return "Queued"
+end
+
+local function resolveBossContact(sourceId: number, targetId: number, damage: number, posture: number, kind: string): string
 	local source, target = entities[sourceId], entities[targetId]
 	if not source or not target or not alive(target) or not hostile(source, target) then return "Ignored" end
 	local velocity = target.Root.AssemblyLinearVelocity
@@ -1848,6 +2000,14 @@ function Service.ApplyBossAttack(sourceId: number, targetId: number, damage: num
 		Service.Cue("BossGrab", sourceId, { target = targetId, duration = 1.2 })
 	end
 	return result
+end
+
+function resolveBossContacts()
+	local queued = table.clone(bossContacts)
+	table.clear(bossContacts)
+	for _, c in queued do
+		resolveBossContact(c.Source, c.Target, c.Damage, c.Posture, c.Kind)
+	end
 end
 
 -- Broadcast a presentation cue (telegraph, boss phase, fog gate) on the shared event stream.

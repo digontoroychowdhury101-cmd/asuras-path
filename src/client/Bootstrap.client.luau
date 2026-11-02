@@ -67,9 +67,9 @@ local connections: { RBXScriptConnection } = {}
 
 -- Outgoing intents carry a strictly increasing sequence and the client's server-clock press time;
 -- the server reconciles that time against its own tick inside the lag-compensation window.
-local function send(action: string, variant: string?, x: number?, z: number?, held: boolean?, time: number?)
+local function send(action: string, variant: string?, x: number?, z: number?, held: boolean?, time: number?): number
 	if not alive then
-		return
+		return 0
 	end
 	sequence = if sequence >= MAX_SEQUENCE then 1 else sequence + 1
 	local packet: { [string]: any } = {
@@ -88,6 +88,7 @@ local function send(action: string, variant: string?, x: number?, z: number?, he
 		packet.held = held
 	end
 	actionRemote:FireServer(packet)
+	return sequence
 end
 
 -- Replication mirror first: every presentation controller reads fighters through it.

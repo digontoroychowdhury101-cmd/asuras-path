@@ -55,5 +55,39 @@ What it does **not** prove, with weaknesses:
 - `frame_table.md`: every weapon's tempo-scaled frame data and the light-link exchange classification.
 - `anim_coverage_baseline.md`: authored/borrowed/silent animation slots per weapon.
 
-## 6. Defect ledger
+## 6. Stage 2 before/after (seeded Studio diagnostic, single client)
+
+**Provenance.** Each place was built from the checkout into `places/`, opened in its own Studio session and digest-checked in Edit with `tools/qa/SourceDigest.luau` before Play. The user's open place was never touched.
+
+| Place | Source | Scripts / bytes / digest | Studio |
+|---|---|---|---|
+| Before | HEAD `be08811` → `stage2_before_be08811.rbxlx` | Verified in Edit | pid 28236 |
+| After | Working tree → `stage2_after.rbxlx` | 265 / 2035921 / 454417533 | pid 29064 |
+| After, fixed | `stage2_after_fix.rbxlx` (adds the drift clamp) | 265 / 2036120 / 1262899227 | `CharacterService` synced into pid 29064 Edit; the live digest then matched exactly |
+
+**Temporary QA additions.** `MonasteryProbe.server.luau` and `Stage2Timing.{server,client}.luau` were inserted at Play by `qa_inject.py` and removed by Stop; the Edit digest afterwards equalled the build. The test area was cleared of foes and the player KO-protected and placed at (0, 3.5, −740). `IncomingReplicationLag` was set on client and server, then reset to 0. Window focus was confirmed for every run (`focused_share` 1.0, OS foreground recorded in each summary).
+
+| Run | Inputs | Frame p50 / p95 ms | Server tick p99 ms | Press→ack p50 ms | Receipt→start | Press→local pose |
+|---|---|---|---|---|---|---|
+| before_lag0 | 6 L1, 3 F | 41.7 / 42.9 | 43.4 | 86.5 | 33.3 ms | L1 ≈ 126 ms. F 126–168 ms |
+| before_lag0_b | 4 dash, 3 heavy, 3 F | 41.8 / 43.8 | 48.1 | 90.9 | 33.3 ms | Dash 126–167. Heavy 126–169. F 132–168 |
+| before_lag100 | 2 dash, 2 heavy, 2 F, 4 L1 | 41.8 / 43.6 | 49.0 | 337.7 | 33.3 ms | All ≈ 375–389 ms |
+| before_lag100_combo | 3 × 4 clicks | 42.9 / 55.1 | 52.3 | 340.5 | 33.3 ms | Pose for only 3 of 12 presses (≈ 371–378 ms); the other 9 were not seen |
+| after_lag0 | as before_lag0 + dashes | 41.9 / 45.0 | 45.4 | 127.6 | 33.3 ms | L1/F/Heavy ≈ 1.0–1.2 ms. Dash ≈ 42 ms. Contaminated: a Sparring Phantom hit and KO'd the player, so 2 presses Expired legitimately |
+| after_lag0_b (fixed) | 4 dash, 3 heavy, 3 F | 44.3 / 48.2 | 49.4 | 135.2 | 33.3 ms | Heavy/F 1.3–1.9 ms. Dash 46–51 ms. 10/10 Executed |
+| after_lag100 (fixed) | 2 dash, 2 heavy, 2 F, 4 L1 | 44.5 / 47.6 | 48.1 | 363.2 | 33.3 ms | L1/Heavy/F 1.3–2.2 ms. Dash ≈ 45 ms. 10/10 Executed |
+| after_lag100_combo (fixed) | 3 × 4 clicks | 46.1 / 51.6 | 51.9 | 381.3 | 33.3 ms | First click of each string ≈ 2 ms (predicted from Idle). Follow-ups 412–945 ms (not predicted, by scope); 2 of 12 not seen (see note). 12/12 Executed |
+
+**Notes.**
+- The before runs have no terminal column because HEAD has no `AsuraIntent` records.
+- The press→ack figure rises by about 40 ms (one client frame) after the change. The ack is still written when the server receives the press, so the cause is **not isolated**. Candidates are the larger v4 record or the extra `AsuraIntent` attribute sharing the frame. Receipt→start is unchanged, and the prediction removes the visible cost.
+- The dash pose takes about 45 ms. That is about one frame at the measured 44 ms frame time, and fits the drive starting on the next render step. It was not traced further.
+- "Local pose" is the next `AnimationPlayed` after the press. A follow-up swing of the same move re-seeks the existing track, so this probe does not see it. That is why the combo run shows 2 misses and the 945 ms values. This is Stage 3 animation work, not a server timing fault.
+- Scripted MCP clicks arrived about 460 ms apart, not 160 ms, so neither run chained L1→L2.
+- The one-tick server receipt→start (33.3 ms = 2 ticks) is the drain point after `Combat.step`, as specified.
+- **Remote windup visibility (A10) was NOT RUN.** It needs a second observer client, which is Stage 4.
+
+**Defect found while measuring.** After about 2 h of uptime, `InputBuffer.push` raised "receipt precedes the press" after the ack had already been set. Seqs 20–25 of the first after_lag0_b attempt were lost with no terminal record (the fixed rerun overwrote those logs). Studio output said `InputBuffer:201: InputBuffer.push: receipt precedes the press`. It is fixed by clamping the accepted press to receipt, and offline case T-IN-06 covers it.
+
+## 7. Defect ledger
 See `DEFECT_LEDGER.md`. 13 of 14 master findings are confirmed in source (one is partially inspected, and #14 is measured with a provenance caveat).

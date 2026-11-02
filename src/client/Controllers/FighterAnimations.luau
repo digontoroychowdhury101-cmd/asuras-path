@@ -74,6 +74,9 @@ type Actor = {
 	Serial: number,
 	AttackSerial: number,
 	AttackMove: string?,
+	AttackSeq: number?,
+	OwnLead: boolean?, -- the owner's adopted predicted swing: no drift correction toward the server clock
+	LastSeq: number?,
 	LastState: string?,
 	Weapon: string?,
 	Definition: string?, -- AsuraDefinition: a production enemy's own clips replace its weapon's
@@ -311,8 +314,22 @@ function Animations.Step(self: any, entity: any, actor: Actor)
 	local s = entity.Snapshot
 	local state: string = s.State
 	local weapon: string = s.Weapon
-	local elapsed = s.StateElapsed + math.max(0, os.clock() - entity.UpdatedAt)
-	local entered = actor.LastState ~= state
+	local elapsed = s.StateElapsed + (entity.Age or 0) + math.max(0, os.clock() - entity.UpdatedAt)
+	local move: string? = s.Move
+	local actionSeq: number = s.ActionSeq
+	-- The owner's unconfirmed press (LocalPrediction via WorldState.Predict) shows its windup or guard pose at
+	-- once over the Idle snapshot it was predicted on. ActionSeq -1 marks it so the server's start is adopted.
+	local own = entity.Id == self.State.LocalId
+	local predicted = if own then self.State.Predicted else nil
+	if predicted and predicted.Move and state == "Idle" and s.ActionSeq == predicted.Base then
+		state, move, actionSeq, elapsed = "Startup", predicted.Move, -1, os.clock() - predicted.Started
+	elseif own and state == "Idle" and self.State.GuardPredicted then
+		state = "Blocking"
+	end
+	-- ActionSeq (codec v4) names each action, so a repeat of the same state or move between two snapshots,
+	-- with the in-between update skipped, still starts a fresh occurrence.
+	local entered = actor.LastState ~= state or actor.LastSeq ~= actionSeq
+	actor.LastSeq = actionSeq
 	if entered then
 		actor.Serial += 1
 	end
@@ -366,8 +383,8 @@ function Animations.Step(self: any, entity: any, actor: Actor)
 	if signature then
 		local raw = actor.Model:GetAttribute("AsuraTelegraph")
 		action(actor, "Signature" .. tostring(raw), Catalog.character(actor.Definition, "Signature"), signature, true)
-	elseif ATTACK[state] and s.Move and MOVES[s.Move] then
-		local entry = MOVES[s.Move]
+	elseif ATTACK[state] and move and MOVES[move] then
+		local entry = MOVES[move]
 		local timing = entry.Move.Timing
 		local into = elapsed
 		if state == "Active" then
@@ -375,12 +392,18 @@ function Animations.Step(self: any, entity: any, actor: Actor)
 		elseif state == "Recovery" then
 			into += timing.StartupSeconds + timing.ActiveSeconds
 		end
-		-- One swing keeps one key from Startup through Recovery; a new Startup (a second heavy) restarts.
-		if actor.AttackMove ~= s.Move or (state == "Startup" and entered) then
-			actor.AttackSerial += 1
-			actor.AttackMove = s.Move
+		-- One swing keeps one key from Startup through Recovery; a new action (a second heavy) restarts.
+		if actor.AttackMove ~= move or actor.AttackSeq ~= actionSeq then
+			if actor.AttackSeq == -1 and actor.AttackMove == move and actionSeq >= 0 then
+				-- The server started the predicted swing: it keeps playing on the owner's clock, a little ahead of
+				-- the server's, instead of being pulled back by the drift correction.
+				actor.AttackSeq, actor.OwnLead = actionSeq, true
+			else
+				actor.AttackSerial += 1
+				actor.AttackMove, actor.AttackSeq, actor.OwnLead = move, actionSeq, false
+			end
 		end
-		action(actor, s.Move .. "#" .. actor.AttackSerial, weaponSlot(actor, weapon, entry.Key :: any), into, true,
+		action(actor, move .. "#" .. actor.AttackSerial, weaponSlot(actor, weapon, entry.Key :: any), if actor.OwnLead then nil else into, true,
 			timing.StartupSeconds + timing.ActiveSeconds * 0.5)
 	elseif state == "Blocking" then
 		if not (actor.Action and actor.ActionKey and string.sub(actor.ActionKey, 1, 11) == "GuardImpact" and actor.Action.IsPlaying) then
@@ -443,7 +466,7 @@ function Animations.Update(self: any, _dt: number)
 				continue
 			end
 			actor = { Model = model, Animator = animator, Root = entity.Root, Tracks = {}, Base = nil, Action = nil,
-				ActionKey = nil, Attack = false, Finished = nil, Serial = 0, AttackSerial = 0, AttackMove = nil, LastState = nil, Ground = Vector3.zero,
+				ActionKey = nil, Attack = false, Finished = nil, Serial = 0, AttackSerial = 0, AttackMove = nil, AttackSeq = nil, OwnLead = nil, LastSeq = nil, LastState = nil, Ground = Vector3.zero,
 				Weapon = nil, Definition = nil, CatchUntil = nil, Replicated = nil }
 			local owner = Players:GetPlayerFromCharacter(model)
 			if owner and owner ~= Players.LocalPlayer then

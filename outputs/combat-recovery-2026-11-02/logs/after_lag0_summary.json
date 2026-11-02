@@ -1,0 +1,214 @@
+{
+ "label": "after_lag0",
+ "os_foreground": "RobloxStudioBeta (pid 29064, stage2_after.rbxlx)",
+ "frames": {
+  "n": 708,
+  "p50": 41.86,
+  "p95": 45.01,
+  "p99": 47.62,
+  "focused_share": 1.0
+ },
+ "server_ticks": {
+  "n": 1800,
+  "p50": 0.64,
+  "p95": 42.9,
+  "p99": 45.4,
+  "heartbeat_ms": 1.2614589929580688
+ },
+ "presses": [
+  {
+   "kind": "Light",
+   "seq": "1",
+   "press_to_ack_seen_ms": null,
+   "receipt_to_start_ms": 33.3,
+   "start_state": "Startup",
+   "press_to_local_pose_ms": 757.1,
+   "results_after_receipt": [
+    "Jian_L1",
+    "Blocking"
+   ],
+   "terminal": "Executed:Jian_L1"
+  },
+  {
+   "kind": "Light",
+   "seq": "1",
+   "press_to_ack_seen_ms": 128.8,
+   "receipt_to_start_ms": 33.3,
+   "start_state": "Startup",
+   "press_to_local_pose_ms": 1.2,
+   "results_after_receipt": [
+    "Jian_L1",
+    "Blocking"
+   ],
+   "terminal": "Executed:Jian_L1"
+  },
+  {
+   "kind": "Light",
+   "seq": "2",
+   "press_to_ack_seen_ms": 130.7,
+   "receipt_to_start_ms": 33.3,
+   "start_state": "Startup",
+   "press_to_local_pose_ms": 1.1,
+   "results_after_receipt": [
+    "Blocking",
+    "Deflect"
+   ],
+   "terminal": "Executed:Jian_L1"
+  },
+  {
+   "kind": "Light",
+   "seq": "3",
+   "press_to_ack_seen_ms": 128.0,
+   "receipt_to_start_ms": 33.3,
+   "start_state": "Startup",
+   "press_to_local_pose_ms": 1.1,
+   "results_after_receipt": [
+    "Blocking",
+    "Deflect"
+   ],
+   "terminal": "Executed:Jian_L1"
+  },
+  {
+   "kind": "Light",
+   "seq": "4",
+   "press_to_ack_seen_ms": null,
+   "receipt_to_start_ms": 33.3,
+   "start_state": "Startup",
+   "press_to_local_pose_ms": null,
+   "results_after_receipt": [
+    "Blocking",
+    "Deflect"
+   ],
+   "terminal": "Executed:Jian_L1"
+  },
+  {
+   "kind": "Light",
+   "seq": "4",
+   "press_to_ack_seen_ms": 87.3,
+   "receipt_to_start_ms": 33.3,
+   "start_state": "Startup",
+   "press_to_local_pose_ms": 1.0,
+   "results_after_receipt": [
+    "Blocking",
+    "Deflect"
+   ],
+   "terminal": "Executed:Jian_L1"
+  },
+  {
+   "kind": "F",
+   "seq": "6",
+   "press_to_ack_seen_ms": 86.9,
+   "receipt_to_start_ms": 33.3,
+   "start_state": "Deflecting",
+   "press_to_local_pose_ms": 1.0,
+   "results_after_receipt": [
+    "Blocking",
+    "Deflect"
+   ],
+   "terminal": "Executed:Deflect"
+  },
+  {
+   "kind": "F",
+   "seq": "9",
+   "press_to_ack_seen_ms": 127.6,
+   "receipt_to_start_ms": 33.3,
+   "start_state": "Deflecting",
+   "press_to_local_pose_ms": 1.1,
+   "results_after_receipt": [
+    "Blocking",
+    "Deflect"
+   ],
+   "terminal": "Executed:Deflect"
+  },
+  {
+   "kind": "F",
+   "seq": "12",
+   "press_to_ack_seen_ms": 88.0,
+   "receipt_to_start_ms": 33.3,
+   "start_state": "Deflecting",
+   "press_to_local_pose_ms": 1.2,
+   "results_after_receipt": [
+    "Blocking",
+    "Deflect"
+   ],
+   "terminal": "Executed:Deflect"
+  },
+  {
+   "kind": "Dash",
+   "seq": "14",
+   "press_to_ack_seen_ms": 132.5,
+   "receipt_to_start_ms": 33.3,
+   "start_state": "Dashing",
+   "press_to_local_pose_ms": 43.2,
+   "results_after_receipt": [
+    "Dash",
+    "Jian_Heavy"
+   ],
+   "terminal": "Executed:Dash"
+  },
+  {
+   "kind": "Dash",
+   "seq": "15",
+   "press_to_ack_seen_ms": 86.9,
+   "receipt_to_start_ms": 33.3,
+   "start_state": "Dashing",
+   "press_to_local_pose_ms": 42.2,
+   "results_after_receipt": [
+    "Jian_Heavy"
+   ],
+   "terminal": "Executed:Dash"
+  },
+  {
+   "kind": "Dash",
+   "seq": "16",
+   "press_to_ack_seen_ms": 144.5,
+   "receipt_to_start_ms": null,
+   "start_state": "Startup",
+   "press_to_local_pose_ms": 1.7,
+   "results_after_receipt": [
+    "Jian_Heavy"
+   ],
+   "terminal": "Expired:Dash"
+  },
+  {
+   "kind": "Heavy",
+   "seq": "17",
+   "press_to_ack_seen_ms": 89.5,
+   "receipt_to_start_ms": 33.3,
+   "start_state": "Startup",
+   "press_to_local_pose_ms": null,
+   "results_after_receipt": [
+    "Jian_Heavy"
+   ],
+   "terminal": "Executed:Jian_Heavy"
+  },
+  {
+   "kind": "Heavy",
+   "seq": "18",
+   "press_to_ack_seen_ms": 89.4,
+   "receipt_to_start_ms": null,
+   "start_state": null,
+   "press_to_local_pose_ms": 1.2,
+   "results_after_receipt": [],
+   "terminal": "Expired:Heavy"
+  }
+ ],
+ "press_to_ack_seen_ms": {
+  "n": 12,
+  "p50": 127.6,
+  "p95": 132.5,
+  "max": 144.5
+ },
+ "receipt_to_start_ms": {
+  "n": 12,
+  "p50": 33.3,
+  "p95": 33.3,
+  "max": 33.3
+ },
+ "press_to_local_pose_ms": {
+  "n": 12,
+  "p50": 1.2,
+  "p95": 43.2,
+  "max": 757.1
+ }
+}

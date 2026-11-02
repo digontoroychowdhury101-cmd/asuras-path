@@ -27,3 +27,17 @@ Nothing below has been fixed yet. Stage 1 changes no gameplay code.
 - `SchemaVersion = 2` in `CombatSettings` is unrelated to player data schema v4 (ProfileSchema). No conflict, but the names are confusing.
 - `onIntent` reports `AsuraAck`/`"Buffered"` before execution, and `drainBuffer` later overwrites only `AsuraResult` (no seq), so the client cannot tell which intent a result belongs to.
 - The client `InputBuffer` (`InputController`) only coalesces presses into one send per frame. Its 100 ms lifetime is irrelevant because it drains every RenderStep.
+
+## Stage 2 status (2 November 2026)
+
+| # | Stage 2 outcome | Evidence |
+|---|---|---|
+| 1 | **Fixed.** Queue lifetime counts from receipt, with execute-by at press + 250 ms. Every intent gets one terminal record. A drift defect found live is also fixed: the press is clamped to receipt. | O (T-IN-01..06), D |
+| 2 | **Fixed for the scoped actions.** L1, Heavy, Dash and Roll from Idle, and the guard pose, now start locally. Follow-ups and Arts still wait for the server. | O (T-PR); D (attack pose about 2 ms, dash about 1 frame) |
+| 3 | **Fixed in the record and the keying.** v4 records carry SampleTick, SampleStamp and ActionSeq, and age is included in elapsed. Bounded phase correction is Stage 3. | O (T-RT) |
+| 8 | **(a), (b) and (d) fixed:** defender grace, contact-time defense and the shared thrust rule. **(c) re-decided:** every distinct contact can be deflected, not 1:1, per the creator's clarification. | O (T-PA) |
+| 9 | **Fixed.** Phase order, simultaneous resolution, closing windows swept before step, and boss impacts resolved after drain. AI area waves are still resolved at listener time. | O (T-OR-01, `test_combat_contact`) |
+| 10 | **Partly addressed.** A light-hitstun defend point makes every link answerable by deflect. String seams for attacking are undecided. | O (`frame_table_stage2.md`) |
+| 13 | **Fixed:** spells use the boundary queue. | O (T-SP) |
+| 4, 5, 6, 7, 11, 12 | Unchanged. These belong to Stage 3 (animation, footwork, contact geometry, hitstop) or Stage 4. | — |
+| 14 | Re-measured on the verified build with focus: p50 about 44 ms, p95 about 48–52 ms (still about 23 fps). | D |

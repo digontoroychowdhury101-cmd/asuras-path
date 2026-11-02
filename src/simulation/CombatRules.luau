@@ -147,6 +147,9 @@ export type Fighter = {
 	DashChain: number,
 	LastDashAt: number,
 	DashSeq: number,
+	ActionSeq: number,
+	ActionMark: number,
+	ActionState: string,
 	DashDistance: number,
 	DashDuration: number,
 	DashDirX: number,
@@ -190,6 +193,14 @@ export type HitContext = {
 	Region: InjuryRegion,
 	-- Server-authored weak-point bonus, applied only after defenses accept a clean hit.
 	PostureBonus: number?,
+	-- A contact resolved after a bounded defender grace (TIMING_CONTRACT §5.3): the move that made it and the
+	-- defender's state at the contact instant. `now` is then the contact time t_c. The defender's guard and
+	-- counter state are judged as of t_c; only a deflect or dash pressed at or before t_c can change it.
+	Move: MoveData?,
+	DefenderState: State?,
+	-- t_c when resolution happens later than the contact: invulnerability and deflect timing are judged at it,
+	-- while the stun or recoil the outcome applies starts at `now`.
+	At: number?,
 }
 
 export type HitOutcome = "Ignored" | "Whiff" | "Deflected" | "Blocked" | "GuardBroken" | "Hit" | "CounterHit" | "Armored" | "KO"
@@ -333,6 +344,9 @@ function Rules.new(id: number, weapon: WeaponType?, now: number): Fighter
 		DashChain = 0,
 		LastDashAt = -NEVER,
 		DashSeq = 0,
+		ActionSeq = 0,
+		ActionMark = -NEVER,
+		ActionState = "",
 		DashDistance = 0,
 		DashDuration = 0,
 		DashDirX = 0,
@@ -490,8 +504,16 @@ function Rules.comboWindowOpen(f: Fighter, now: number): boolean
 	return now - Rules.recoveryStart(f) <= move.Timing.ComboWindowSeconds + Tempo.HalfTick
 end
 
+-- A light hitstun (shorter than the heavy one) opens to Deflect/Block after Stun.LightDefendCancel.
+function Rules.lightHitstunDefendable(f: Fighter, now: number): boolean
+	return f.State == "Hitstun" and f.StateEnd - f.StateStart < Settings.Stun.HitstunHeavy - 1e-6
+		and now - f.StateStart >= Settings.Stun.LightDefendCancel - Tempo.HalfTick
+end
+
 function Rules.cancelWindowOpen(f: Fighter, now: number): boolean
-	if f.State == "Recovery" then
+	if f.State == "Hitstun" then
+		return Rules.lightHitstunDefendable(f, now)
+	elseif f.State == "Recovery" then
 		local move = f.Move
 		return move ~= nil and now - f.MoveStart >= Tempo.framesToSeconds(move.Timing.CancelFrame) - Tempo.HalfTick
 	elseif f.State == "Dashing" then
@@ -910,6 +932,9 @@ function Rules.tryDeflect(f: Fighter, now: number, pressTime: number?): (boolean
 	end
 	local posture = Settings.Posture
 	local pressed = math.min(pressTime or now, now)
+	if f.State == "Hitstun" or f.State == "Blockstun" then
+		pressed = math.max(pressed, f.StateStart) -- never retroactive: a window cannot cover a contact already resolved
+	end
 	if pressed - f.LastDeflectPress <= posture.DeflectSpamLockout then
 		f.DeflectChain += 1
 	else
@@ -927,13 +952,21 @@ function Rules.tryDeflect(f: Fighter, now: number, pressTime: number?): (boolean
 	return true, "Deflect"
 end
 
+-- Whether a deflect or a dash started now would be legal: a contact on a player may then wait for one that is
+-- still in flight (CharacterService bounded grace).
+function Rules.couldDefend(f: Fighter, now: number): boolean
+	local ctx = Rules.context(f, now)
+	return (Schema.canAct(f.State, "Deflect", f.Stamina, f.Posture, ctx))
+		or (f.RootUntil <= now and (Schema.canAct(f.State, "Dash", f.Stamina, f.Posture, ctx)))
+end
+
 function Rules.setGuard(f: Fighter, held: boolean, now: number): (boolean, string)
 	f.GuardHeld = held
 	if held then
 		if f.State == "Blocking" then
 			return true, "Blocking"
 		end
-		if f.State ~= "Idle" and f.State ~= "Recovery" then
+		if f.State ~= "Idle" and f.State ~= "Recovery" and f.State ~= "Hitstun" then
 			return false, Schema.Reasons.NotInWindow
 		end
 		local ok, reason = Schema.canAct(f.State, "Block", f.Stamina, f.Posture, Rules.context(f, now))
@@ -1144,9 +1177,12 @@ end
 
 -- Boss perilous contracts use the same damage, posture and event pipeline as all combat.
 function Rules.applyBossAttack(source: Fighter, target: Fighter, now: number, damage: number, posture: number, kind: string, facing: boolean, events: { Event }?): HitOutcome
-	if kind == "PerilousThrust" and facing and target.State == "Deflecting" then
-		local delta = now - target.DeflectPressedAt
-		if delta >= 0 and delta <= 0.1 + 1e-9 and not Rules.isInvulnerable(target, now) then
+	-- Same deflect rule as every other contact (Stage 2): the press's own window, scaled by head injury and spam
+	-- decay, with half-tick tolerance, never wider than the baseline window. A success resets the spam chain.
+	if kind == "PerilousThrust" and facing and Rules.isDeflectTimed(target, now, Settings.Posture.DeflectWindow) then
+		if not Rules.isInvulnerable(target, now) then
+			target.DeflectChain = 0
+			target.LastDeflectPress = -NEVER
 			Rules.addPosture(source, posture * 2.5, now, events, target.Id)
 			Rules.addPosture(target, posture * Settings.Posture.DeflectSelfScale, now, events, source.Id, true)
 			target.Qi = math.min(target.MaxQi, target.Qi + Settings.Qi.GainOnDeflect)
@@ -1204,12 +1240,14 @@ end
 -- 2 + 4 + 5. Hit resolution: deflect -> block -> counter-hit -> damage, rally, posture, bleed, trauma
 -------------------------------------------------------------------------------------------------
 
-function Rules.isDeflectTimed(defender: Fighter, hitTime: number): boolean
+-- `cap` bounds the press's window (a perilous thrust never deflects wider than the baseline window).
+function Rules.isDeflectTimed(defender: Fighter, hitTime: number, cap: number?): boolean
 	if defender.State ~= "Deflecting" then
 		return false
 	end
 	local delta = hitTime - defender.DeflectPressedAt
-	return delta >= -Tempo.HalfTick and delta <= defender.DeflectWindow + Tempo.HalfTick
+	local window = if cap then math.min(defender.DeflectWindow, cap) else defender.DeflectWindow
+	return delta >= -Tempo.HalfTick and delta <= window + Tempo.HalfTick
 end
 
 local function hitstunFor(move: MoveData): number
@@ -1217,15 +1255,18 @@ local function hitstunFor(move: MoveData): number
 end
 
 function Rules.resolveHit(attacker: Fighter, defender: Fighter, now: number, hit: HitContext, events: { Event }?): HitOutcome
-	local move = attacker.Move
-	if attacker.State ~= "Active" or move == nil or attacker.HitRegistry[defender.Id] or defender.Id == attacker.Id then
-		return "Ignored"
+	local deferred = hit.Move
+	local move = deferred or attacker.Move
+	if deferred == nil and (attacker.State ~= "Active" or attacker.HitRegistry[defender.Id]) then
+		return "Ignored" -- a deferred contact already claimed its HitRegistry entry when it was detected
 	end
-	if defender.State == "KO" then
+	if move == nil or defender.Id == attacker.Id or defender.State == "KO" then
 		return "Ignored"
 	end
 	attacker.HitRegistry[defender.Id] = true
-	if Rules.isInvulnerable(defender, now) then
+	local defenderState: State = hit.DefenderState or defender.State
+	local at = hit.At or now
+	if Rules.isInvulnerable(defender, at) then
 		emit(defender, events, "Evade", defender.Id, attacker.Id, 0)
 		return "Whiff"
 	end
@@ -1234,7 +1275,7 @@ function Rules.resolveHit(attacker: Fighter, defender: Fighter, now: number, hit
 	local defenderWeapon = weaponOf(defender)
 
 	-- 2. Perfect deflect: negate damage, heavy posture onto the attacker, spark.
-	if hit.Facing and move.Deflectable and Rules.isDeflectTimed(defender, now) then
+	if hit.Facing and move.Deflectable and Rules.isDeflectTimed(defender, at) then
 		local outcome = Weapons.deflectOutcome(move, attackerWeapon, defenderWeapon)
 		local bonus = Weapons.postureDamage(move,attackerWeapon)*(defenderWeapon.PostureReflect or 0)
 		local reflected = math.max(outcome.AttackerPosture-bonus, Settings.Posture.DeflectMinimumReflect)+bonus
@@ -1257,12 +1298,12 @@ function Rules.resolveHit(attacker: Fighter, defender: Fighter, now: number, hit
 		return "Deflected"
 	end
 
-	-- Guard (held block, blockstun, or a mistimed deflect).
-	local guarding = hit.Facing and (defender.State == "Blocking" or defender.State == "Blockstun" or defender.State == "Deflecting")
+	-- Guard (held block, blockstun, or a mistimed deflect), as of the contact instant.
+	local guarding = hit.Facing and (defenderState == "Blocking" or defenderState == "Blockstun" or defenderState == "Deflecting")
 	local guardShattered = false
 	if guarding and not move.Unblockable then
 		local outcome = Weapons.blockOutcome(move, attackerWeapon, defenderWeapon, defender.Stamina)
-		local cost = if defender.State == "Deflecting" then Settings.Stamina.Costs.DeflectMiss else outcome.DefenderStamina
+		local cost = if defenderState == "Deflecting" then Settings.Stamina.Costs.DeflectMiss else outcome.DefenderStamina
 		local depleted = Rules.spendStamina(defender, cost, now)
 		local pierce=move.BaseDamage*Rules.damageScale(attacker,move)*attacker.GuardPierce
   local chip = Rules.applyDamage(defender, outcome.DefenderChip+pierce, "Chip", now)
@@ -1300,9 +1341,9 @@ function Rules.resolveHit(attacker: Fighter, defender: Fighter, now: number, hit
 	local defenderMove = defender.Move
 	local poise = Settings.Poise
 	local poiseThreshold = if move.Kind == "Light" then poise.LightThreshold else poise.HeavyThreshold
-	local armored = (defenderMove ~= nil and defenderMove.HyperArmor and (defender.State == "Startup" or defender.State == "Active"))
+	local armored = (defenderMove ~= nil and defenderMove.HyperArmor and (defenderState == "Startup" or defenderState == "Active"))
 		or defender.PoiseArmor >= poiseThreshold
-	local counter = defender.State == "Startup" and not armored
+	local counter = defenderState == "Startup" and not armored
 	local counterScale = Settings.Counter
 	local critical = if hit.Facing then 1 else (attackerWeapon.CriticalMultiplier or 1.5)
 	local damage = critical * Schema.damage(move.BaseDamage, Rules.armTier(attacker)) * Rules.damageScale(attacker, move) * (if counter then counterScale.HitMultiplier else 1)
@@ -1417,6 +1458,7 @@ export type Snapshot = {
 	RallyActive: boolean,
 	DeathblowLocked: boolean,
 	DashSeq: number,
+	ActionSeq: number,
 	DashDistance: number,
 	DashDuration: number,
 	DashDirX: number,
@@ -1430,10 +1472,16 @@ export type Snapshot = {
 	PostureCapacity: number,
 	PoiseArmor: number,
 	KOProtected: boolean,
+	SampleTick: number,
+	SampleStamp: number,
 }
 
-Rules.PACKET_SIZE = 58
-Rules.PACKET_VERSION = 3
+-- v4 (combat recovery Stage 2, TIMING_CONTRACT §4): byte 39 carries ActionSeq, a wrapping id that changes
+-- whenever a new action starts (a move, or entry to a non-move state), so a repeated identical move and a
+-- skipped update are distinguishable. Bytes 58-61 carry the server tick of the sample and 62-69 its server
+-- clock (Workspace:GetServerTimeNow at sampling) so a client can age StateElapsed across transit.
+Rules.PACKET_SIZE = 70
+Rules.PACKET_VERSION = 4
 local HP_SCALE = 40
 
 local STATE_INDEX: { [string]: number } = {}
@@ -1465,7 +1513,21 @@ local function i16(value: number, scale: number): number
 	return math.clamp(math.floor(value * scale + 0.5), -32768, 32767)
 end
 
-function Rules.pack(f: Fighter, now: number, into: buffer?): buffer
+-- The identity of the action a fighter is in: a move is one action from Startup through Recovery; any other
+-- state is one action per entry. Bumps the fighter's wrapping ActionSeq when that identity changes.
+local function actionSeq(f: Fighter): number
+	local mark = if f.Move then f.MoveStart else f.StateStart
+	local state = if f.Move then "Move" else f.State
+	if mark ~= f.ActionMark or state ~= f.ActionState then
+		f.ActionMark, f.ActionState = mark, state
+		f.ActionSeq = (f.ActionSeq + 1) % 256
+	end
+	return f.ActionSeq
+end
+Rules.actionSeq = actionSeq
+
+-- `tick` and `stamp` name the sample (server tick, server clock); both default to 0 for offline packing.
+function Rules.pack(f: Fighter, now: number, into: buffer?, tick: number?, stamp: number?): buffer
 	local b = into or buffer.create(Rules.PACKET_SIZE)
 	local move = f.Move
 	buffer.writeu8(b, 0, Rules.PACKET_VERSION)
@@ -1514,7 +1576,7 @@ function Rules.pack(f: Fighter, now: number, into: buffer?): buffer
 	buffer.writeu16(b, 34, u16(math.max(f.RallyUntil - now, 0), 1000))
 	buffer.writeu16(b, 36, f.EventSeq)
 	buffer.writeu8(b, 38, f.LastEvent)
-	buffer.writeu8(b, 39, 0)
+	buffer.writeu8(b, 39, actionSeq(f))
 	buffer.writeu16(b, 40, u16(f.DashDuration, 1000))
 	buffer.writef64(b, 42, f.DeathblowPartner)
 	buffer.writeu16(b, 50, u16(f.MaxHP, HP_SCALE))
@@ -1522,6 +1584,8 @@ function Rules.pack(f: Fighter, now: number, into: buffer?): buffer
 	buffer.writeu16(b, 54, u16(f.PostureCapacity, 100))
 	buffer.writeu8(b, 56, math.clamp(math.floor(f.PoiseArmor * 255 + 0.5), 0, 255))
 	buffer.writeu8(b, 57, if f.KOProtected then 1 else 0)
+	buffer.writeu32(b, 58, (tick or 0) % 4294967296)
+	buffer.writef64(b, 62, stamp or 0)
 	return b
 end
 
@@ -1581,6 +1645,9 @@ function Rules.unpack(b: buffer): Snapshot?
 		PostureCapacity = buffer.readu16(b, 54) / 100,
 		PoiseArmor = buffer.readu8(b, 56) / 255,
 		KOProtected = buffer.readu8(b, 57) == 1,
+		ActionSeq = buffer.readu8(b, 39),
+		SampleTick = buffer.readu32(b, 58),
+		SampleStamp = buffer.readf64(b, 62),
 	}
 end
 
@@ -1643,8 +1710,8 @@ function Rules.decode(text: string): buffer?
 	return out
 end
 
-function Rules.packString(f: Fighter, now: number, scratch: buffer?): string
-	return Rules.encode(Rules.pack(f, now, scratch))
+function Rules.packString(f: Fighter, now: number, scratch: buffer?, tick: number?, stamp: number?): string
+	return Rules.encode(Rules.pack(f, now, scratch, tick, stamp))
 end
 
 function Rules.unpackString(text: string): Snapshot?

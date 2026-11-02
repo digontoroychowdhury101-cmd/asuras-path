@@ -11,6 +11,15 @@ local TICK = 1 / 60
 local HITSTUN = Settings.Stun.HitstunLight
 local HITSTUN_HEAVY = Settings.Stun.HitstunHeavy
 local DEFLECT = Settings.Posture.DeflectWindow
+-- Stage 2: light hitstun opens to Deflect/Block this far in (CombatSettings.Stun.LightDefendCancel).
+local DEFEND = Settings.Stun.LightDefendCancel or HITSTUN
+
+-- Width (s) of the press times whose deflect window covers a contact `interval` after the last one, when the
+-- defender may first press at `from`: presses in [interval - W - half tick, interval + half tick], from `from` on.
+local function deflectAnswer(interval: number, from: number): number
+	local half = TICK / 2
+	return math.max(0, interval + half - math.max(from, interval - DEFLECT - half))
+end
 local json = (({ ... } :: { any })[1] == "--json")
 
 local function ms(seconds: number): number
@@ -50,6 +59,10 @@ for _, key in Weapons.WeaponKeys do
 				gapFastest = ms(fastest - HITSTUN), gapSlowest = ms(slowest - HITSTUN),
 				trueCombo = fastest <= HITSTUN,
 				deflectAnswer = slowest - HITSTUN >= TICK,
+				-- Deflect press width at the fastest..slowest continuation: before Stage 2 (nothing legal in
+				-- hitstun) and with the light-hitstun defend window.
+				answerBefore = { ms(deflectAnswer(fastest, HITSTUN)), ms(deflectAnswer(slowest, HITSTUN)) },
+				answerAfter = { ms(deflectAnswer(fastest, DEFEND)), ms(deflectAnswer(slowest, DEFEND)) },
 			})
 		end
 	end
@@ -85,7 +98,7 @@ if json then
 	return
 end
 
-print(string.format("Light hitstun %d ms, heavy hitstun %d ms, deflect window %d ms, tempo %.1fx", ms(HITSTUN), ms(HITSTUN_HEAVY), ms(DEFLECT), Settings.Tempo.Scalar))
+print(string.format("Light hitstun %d ms (defend from %d ms), heavy hitstun %d ms, deflect window %d ms, tempo %.1fx", ms(HITSTUN), ms(DEFEND), ms(HITSTUN_HEAVY), ms(DEFLECT), Settings.Tempo.Scalar))
 print("| Weapon | Slot | Startup | Active | Recovery | Combo | Cancel@ | Total | Reach | Arc | Lunge |")
 print("|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|")
 for _, r in rows do
@@ -93,11 +106,12 @@ for _, r in rows do
 		r.combo, r.cancel, r.total, r.reach, tostring(r.arc), r.lunge or 0))
 end
 print("")
-print("| Weapon | Link | Contact interval (ms, fastest..slowest) | Gap after light hitstun (ms) | Class |")
-print("|---|---|---|---|---|")
+print("| Weapon | Link | Contact interval (ms, fastest..slowest) | Gap after light hitstun (ms) | Class (attack answer) | Deflect press width before (ms) | after (ms) |")
+print("|---|---|---|---|---|---|---|")
 for _, l in links do
 	local class = if l.trueCombo and not l.deflectAnswer then "true combo"
 		elseif l.trueCombo then "true if pressed early; answerable if delayed"
 		else "answerable (gap)"
-	print(string.format("| %s | %s | %d..%d | %d..%d | %s |", l.weapon, l.link, l.fastest, l.slowest, l.gapFastest, l.gapSlowest, class))
+	print(string.format("| %s | %s | %d..%d | %d..%d | %s | %d..%d | %d..%d |", l.weapon, l.link, l.fastest, l.slowest, l.gapFastest, l.gapSlowest, class,
+		l.answerBefore[1], l.answerBefore[2], l.answerAfter[1], l.answerAfter[2]))
 end

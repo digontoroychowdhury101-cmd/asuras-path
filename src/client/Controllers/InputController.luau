@@ -113,7 +113,8 @@ local TOUCH_SCALE = 1.4
 -- Authored minimum button size: at the smallest HUD factor (0.7) it is still a 44-point target (batch 25).
 local MIN_TOUCH = 64
 
-export type Sender = (action: string, variant: string?, x: number?, z: number?, held: boolean?, time: number?) -> ()
+-- Returns the intent sequence the packet was sent with (0 = not sent).
+export type Sender = (action: string, variant: string?, x: number?, z: number?, held: boolean?, time: number?) -> number
 
 type Fields = {
 	State: WorldState,
@@ -321,10 +322,14 @@ function Controller.new(state: WorldState, camera: CameraController, send: Sende
 	table.insert(self.Connections, UserInputService.WindowFocusReleased:Connect(function()
 		self.Movement:Cancel()
 		self.CursorFree = false -- the Alt release is lost when focus leaves mid-press
+		self:Release("Guard") -- likewise the guard release: a held guard must not stay raised on the server
 	end))
 	table.insert(self.Connections, UserInputService.WindowFocused:Connect(function() self.CursorFree = false end))
 	table.insert(self.Connections, UserInputService.TextBoxFocused:Connect(function() self.Movement:SetEnabled(false) end))
-	table.insert(self.Connections, GuiService.MenuOpened:Connect(function() self.Movement:SetEnabled(false) end))
+	table.insert(self.Connections, GuiService.MenuOpened:Connect(function()
+		self.Movement:SetEnabled(false)
+		self:Release("Guard")
+	end))
 	ContextActionService:BindActionAtPriority(MOVEMENT_ACTION, function(_name: string, inputState: Enum.UserInputState, event: InputObject): Enum.ContextActionResult
 		if UserInputService:GetFocusedTextBox() then return Enum.ContextActionResult.Pass end
 		-- B is Dash and also every window's back button: an open window gets it unprocessed.
@@ -470,6 +475,7 @@ function Controller.Press(self: InputController, command: Command)
 		if not self.GuardHeld then
 			self.GuardHeld = true
 			self.Send("Block", nil, nil, nil, true, stamp)
+			self.State:PredictGuard(true)
 		end
 	elseif command == "Roll" or command == "Dash" then
 		self.Movement:Release("Slide")
@@ -528,6 +534,7 @@ function Controller.Release(self: InputController, command: Command)
 	elseif command == "Guard" and self.GuardHeld then
 		self.GuardHeld = false
 		self.Send("Block", nil, nil, nil, false, now())
+		self.State:PredictGuard(false)
 	elseif command == "Sprint" and self.Device == "Touch" and self.SprintHeld then
 		self.SprintHeld = false
 		self.Send("Sprint", nil, nil, nil, false, now())
@@ -634,7 +641,10 @@ function Controller.Step(self: InputController, dt: number)
 		if attack and x and z then
 			self:FaceAttack(x, z)
 		end
-		self.Send(action, if variant ~= "" then variant else nil, if hasDirection then x else nil, if hasDirection then z else nil, nil, time)
+		local seq = self.Send(action, if variant ~= "" then variant else nil, if hasDirection then x else nil, if hasDirection then z else nil, nil, time)
+		if seq ~= 0 and (action == "Light" or action == "Heavy" or action == "Dash" or action == "Roll") then
+			self.State:Predict(seq, action, x, z) -- shown at once only where LocalPrediction is sure
+		end
 	end
 end
 

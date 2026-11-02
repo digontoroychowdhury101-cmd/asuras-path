@@ -53,12 +53,15 @@ for _, kind in { "PerilousSweep", "PerilousGrab" } do
 	check(target.ActiveHP < target.MaxHP, "blocked perilous still deals damage")
 	if kind == "PerilousGrab" then check(target.State == "Recovery" and target.InvulnerableUntil > 5, "grab locks cinematic victim") end
 end
-for _, timing in { 0, 0.05, 0.1, 0.1001, -0.001 } do
+-- Stage 2: the thrust shares the ordinary deflect rule (half-tick tolerance, injury/spam scaling) but is
+-- capped at the baseline window, so a widened window (0.4 here) never widens a perilous deflect.
+local HALF = 0.5 / 60
+for _, timing in { 0, 0.05, 0.1, 0.1 + HALF - 1e-4, 0.1 + 1 / 60, -0.001, -1 / 60 } do
 	local source, target = fighter(1), fighter(2)
 	source.PostureCapacity = 400
 	target.State, target.DeflectPressedAt, target.DeflectWindow = "Deflecting", 5, 0.4
 	local outcome = Combat.applyBossAttack(source, target, 5 + timing, 20, 30, "PerilousThrust", true, {})
-	local valid = timing >= 0 and timing <= 0.1
+	local valid = timing >= -HALF and timing <= 0.1 + HALF
 	check((outcome == "Deflected") == valid, "boss thrust ignores the ordinary wide deflect window")
 	if valid then check(source.Posture >= 75 and target.ActiveHP == target.MaxHP, "tight deflect reflects massive posture") end
 end

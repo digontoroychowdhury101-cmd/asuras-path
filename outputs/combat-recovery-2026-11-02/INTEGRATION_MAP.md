@@ -10,6 +10,16 @@ This is the minimum coherent set: one transition and foot-contact technique, one
 | **I-4** | Phase-tagged moves and baked blade trajectories swept between consecutive ticks, with a per-pulse hit registry | Epic Fight `AttackAnimation.Phase` / `hurtCollidingEntities` (concept only, GPL). Better Combat `upswing` (concept only, ARR) | **Independent implementation** from `TIMING_CONTRACT.md` §2 and §7. No code or expression reuse. | Generated `src/shared/StrikeTrajectories.luau` (hilt/tip samples per move in root space at 60 Hz plus clip phase times), read by `CharacterService.weaponSegment` and `StrikeGeometry` (server) and by `WeaponTrails` (client). Phase metadata in `AnimationCatalog`. | 5, 7, 12 | A3 / A4 / T-CT-01..03: clip contact = first active tick ±1. Blade-vs-volume error ≤ 0.5 stud at each active tick. A missing trajectory falls back to the arc **and is flagged** in the coverage report | 3 |
 | **I-5** | One press, one parry token. Immediate re-arm on success. Spam decay on failure | Epic Fight `ParryingSkill` (concept only). Overgrowth `UpdateActiveBlockMechanics` (Apache, concept) | Independent implementation | `CombatRules.tryDeflect`/`resolveHit`/`applyBossAttack`, `CharacterService` contact queue and pending-contact grace | 8, 9, 13 | A8 / T-PA-01..10 | 2 |
 
+## Stage 2 landing (2 November 2026)
+
+| ID | State | Where in code |
+|---|---|---|
+| I-2 (dash half) | **Partly landed, simplified.** A predicted dash runs the exact grant distance and adopts the server grant without restarting it. Rejection or timeout snaps it back. Because the predicted distance equals the grant, no per-frame correction was needed for the cases tested (T-PR-02). The bounded rate correction for animation phase remains Stage 3. | `src/simulation/LocalPrediction.luau` (new, mapped under Simulation), `WorldStateController.Predict`/`Rollback`/`startDash`, `InputController` send → `Predict` |
+| I-5 | **Landed, with a changed multi-contact policy.** Each distinct contact in a press's window is deflected once; the same contact never twice (`TIMING_CONTRACT.md` §0). Re-arm on success, spam decay, injury scaling and the boss thrust are now on one rule. Defender grace and the contact-time snapshot are in. | `CombatRules.tryDeflect`/`isDeflectTimed`/`resolveHit`/`couldDefend`/`applyBossAttack`, `CharacterService` contact block (`resolveContacts`, `deferContact`, `settleContacts`, `resolveBossContacts`) |
+| I-1, I-3, I-4, I-2 (animation half) | Not started (Stage 3) | — |
+
+No third-party code or expressions were used in Stage 2, so `THIRD_PARTY_NOTICES.md` is still not needed; it is due when I-1, I-2 or I-3 code lands.
+
 ## Rejected or deferred
 
 | Candidate | Decision | Reason |

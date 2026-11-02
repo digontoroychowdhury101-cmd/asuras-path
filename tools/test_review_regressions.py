@@ -14,7 +14,7 @@ def section(path, start, end):
 bootstrap = "src/server/Bootstrap.server.luau"
 replacements = {
     "-- POLL_INSERT": section("src/server/Services/SanctuaryService.luau", "local function poll()", "\n---"),
-    "-- CONTACT_INSERT": section("src/server/CharacterService.luau", "local function resolveContacts(", "\nlocal function finishDuel("),
+    "-- CONTACT_INSERT": section("src/server/CharacterService.luau", "local function facingAt(", "\nlocal function finishDuel("),
     "-- LOOT_SYNC_INSERT": section("src/server/Services/LootService.luau", "function Loot.Sync(", "\nlocal function transact("),
     "-- PROFILE_SYNC_INSERT": section(bootstrap, "local function syncProfile(", "\n---"),
     "-- HYDRATE_INSERT": section(bootstrap, "local function hydrate(", "\nlocal function release("),

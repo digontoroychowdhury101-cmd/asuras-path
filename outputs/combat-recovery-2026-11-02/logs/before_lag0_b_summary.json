@@ -1,0 +1,158 @@
+{
+ "label": "before_lag0_b",
+ "os_foreground": "RobloxStudioBeta (test Studio, pid 28236) at start",
+ "frames": {
+  "n": 711,
+  "p50": 41.8,
+  "p95": 43.83,
+  "p99": 53.24,
+  "focused_share": 1.0
+ },
+ "server_ticks": {
+  "n": 1798,
+  "p50": 0.45,
+  "p95": 42.74,
+  "p99": 48.05,
+  "heartbeat_ms": 1.0017250776290894
+ },
+ "presses": [
+  {
+   "kind": "Dash",
+   "seq": "20",
+   "press_to_ack_seen_ms": 89.6,
+   "receipt_to_start_ms": 33.3,
+   "start_state": "Dashing",
+   "press_to_local_pose_ms": 131.1,
+   "results_after_receipt": [
+    "Buffered",
+    "Dash"
+   ]
+  },
+  {
+   "kind": "Dash",
+   "seq": "21",
+   "press_to_ack_seen_ms": 127.3,
+   "receipt_to_start_ms": 33.3,
+   "start_state": "Dashing",
+   "press_to_local_pose_ms": 167.1,
+   "results_after_receipt": [
+    "Buffered",
+    "Dash"
+   ]
+  },
+  {
+   "kind": "Dash",
+   "seq": "22",
+   "press_to_ack_seen_ms": 86.9,
+   "receipt_to_start_ms": 33.3,
+   "start_state": "Dashing",
+   "press_to_local_pose_ms": 126.2,
+   "results_after_receipt": [
+    "Buffered",
+    "Dash"
+   ]
+  },
+  {
+   "kind": "Dash",
+   "seq": "23",
+   "press_to_ack_seen_ms": 88.1,
+   "receipt_to_start_ms": 33.3,
+   "start_state": "Dashing",
+   "press_to_local_pose_ms": 128.4,
+   "results_after_receipt": [
+    "Buffered",
+    "Dash"
+   ]
+  },
+  {
+   "kind": "Heavy",
+   "seq": "24",
+   "press_to_ack_seen_ms": 86.4,
+   "receipt_to_start_ms": 33.3,
+   "start_state": "Startup",
+   "press_to_local_pose_ms": 126.8,
+   "results_after_receipt": [
+    "Buffered",
+    "Jian_Heavy"
+   ]
+  },
+  {
+   "kind": "Heavy",
+   "seq": "25",
+   "press_to_ack_seen_ms": 128.0,
+   "receipt_to_start_ms": 33.3,
+   "start_state": "Startup",
+   "press_to_local_pose_ms": 169.0,
+   "results_after_receipt": [
+    "Buffered",
+    "Jian_Heavy"
+   ]
+  },
+  {
+   "kind": "Heavy",
+   "seq": "26",
+   "press_to_ack_seen_ms": 86.1,
+   "receipt_to_start_ms": 33.3,
+   "start_state": "Startup",
+   "press_to_local_pose_ms": 126.1,
+   "results_after_receipt": [
+    "Buffered",
+    "Jian_Heavy"
+   ]
+  },
+  {
+   "kind": "F",
+   "seq": "28",
+   "press_to_ack_seen_ms": 128.0,
+   "receipt_to_start_ms": 33.3,
+   "start_state": "Deflecting",
+   "press_to_local_pose_ms": 167.5,
+   "results_after_receipt": [
+    "Blocking",
+    "Buffered"
+   ]
+  },
+  {
+   "kind": "F",
+   "seq": "31",
+   "press_to_ack_seen_ms": 128.2,
+   "receipt_to_start_ms": 33.3,
+   "start_state": "Deflecting",
+   "press_to_local_pose_ms": 168.1,
+   "results_after_receipt": [
+    "Blocking",
+    "Buffered"
+   ]
+  },
+  {
+   "kind": "F",
+   "seq": "34",
+   "press_to_ack_seen_ms": 90.9,
+   "receipt_to_start_ms": 33.3,
+   "start_state": "Deflecting",
+   "press_to_local_pose_ms": 132.0,
+   "results_after_receipt": [
+    "Blocking",
+    "Buffered"
+   ]
+  }
+ ],
+ "press_to_ack_seen_ms": {
+  "n": 10,
+  "p50": 90.9,
+  "p95": 128.2,
+  "max": 128.2
+ },
+ "receipt_to_start_ms": {
+  "n": 10,
+  "p50": 33.3,
+  "p95": 33.3,
+  "max": 33.3
+ },
+ "press_to_local_pose_ms": {
+  "n": 10,
+  "p50": 132.0,
+  "p95": 169.0,
+  "max": 169.0
+ }
+}

@@ -1,0 +1,143 @@
+{
+ "label": "before_lag0",
+ "os_foreground": "RobloxStudioBeta (test Studio, pid 28236) at start",
+ "frames": {
+  "n": 715,
+  "p50": 41.72,
+  "p95": 42.87,
+  "p99": 45.98,
+  "focused_share": 1.0
+ },
+ "server_ticks": {
+  "n": 1798,
+  "p50": 0.52,
+  "p95": 42.17,
+  "p99": 43.43,
+  "heartbeat_ms": 1.087907075881958
+ },
+ "presses": [
+  {
+   "kind": "Light",
+   "seq": "1",
+   "press_to_ack_seen_ms": null,
+   "receipt_to_start_ms": 33.3,
+   "start_state": "Startup",
+   "press_to_local_pose_ms": null,
+   "results_after_receipt": [
+    "Buffered",
+    "Jian_L1"
+   ]
+  },
+  {
+   "kind": "Light",
+   "seq": "1",
+   "press_to_ack_seen_ms": 86.5,
+   "receipt_to_start_ms": 33.3,
+   "start_state": "Startup",
+   "press_to_local_pose_ms": 126.2,
+   "results_after_receipt": [
+    "Buffered",
+    "Jian_L1"
+   ]
+  },
+  {
+   "kind": "Light",
+   "seq": "2",
+   "press_to_ack_seen_ms": 86.1,
+   "receipt_to_start_ms": 33.3,
+   "start_state": "Startup",
+   "press_to_local_pose_ms": 126.2,
+   "results_after_receipt": [
+    "Buffered",
+    "Jian_L1"
+   ]
+  },
+  {
+   "kind": "Light",
+   "seq": "3",
+   "press_to_ack_seen_ms": 87.2,
+   "receipt_to_start_ms": 33.3,
+   "start_state": "Startup",
+   "press_to_local_pose_ms": 126.6,
+   "results_after_receipt": [
+    "Buffered",
+    "Jian_L1"
+   ]
+  },
+  {
+   "kind": "Light",
+   "seq": "4",
+   "press_to_ack_seen_ms": 86.5,
+   "receipt_to_start_ms": 33.3,
+   "start_state": "Startup",
+   "press_to_local_pose_ms": 126.1,
+   "results_after_receipt": [
+    "Buffered",
+    "Jian_L1"
+   ]
+  },
+  {
+   "kind": "Light",
+   "seq": "5",
+   "press_to_ack_seen_ms": 86.4,
+   "receipt_to_start_ms": 33.3,
+   "start_state": "Startup",
+   "press_to_local_pose_ms": 126.0,
+   "results_after_receipt": [
+    "Buffered",
+    "Jian_L1"
+   ]
+  },
+  {
+   "kind": "F",
+   "seq": "7",
+   "press_to_ack_seen_ms": 127.5,
+   "receipt_to_start_ms": 33.3,
+   "start_state": "Deflecting",
+   "press_to_local_pose_ms": 167.4,
+   "results_after_receipt": [
+    "Blocking",
+    "Buffered"
+   ]
+  },
+  {
+   "kind": "F",
+   "seq": "10",
+   "press_to_ack_seen_ms": 128.4,
+   "receipt_to_start_ms": 33.3,
+   "start_state": "Deflecting",
+   "press_to_local_pose_ms": 167.7,
+   "results_after_receipt": [
+    "Blocking",
+    "Buffered"
+   ]
+  },
+  {
+   "kind": "F",
+   "seq": "13",
+   "press_to_ack_seen_ms": 86.5,
+   "receipt_to_start_ms": null,
+   "start_state": null,
+   "press_to_local_pose_ms": 126.2,
+   "results_after_receipt": []
+  }
+ ],
+ "press_to_ack_seen_ms": {
+  "n": 8,
+  "p50": 86.5,
+  "p95": 128.4,
+  "max": 128.4
+ },
+ "receipt_to_start_ms": {
+  "n": 8,
+  "p50": 33.3,
+  "p95": 33.3,
+  "max": 33.3
+ },
+ "press_to_local_pose_ms": {
+  "n": 8,
+  "p50": 126.2,
+  "p95": 167.7,
+  "max": 167.7
+ }
+}

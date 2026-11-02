@@ -117,5 +117,297 @@
   "georgehuan1994/Unreal-Melee-Combat-System": "dde95ebb68d2b355428acfbca0137ccc7080dd58",
   "Swordphin/raycastHitboxRbxl": "ed076f39a30bf83a77f799fcc95987bac7b1dfeb",
   "1Axen/Secure-Cast": "fe3c585d5803edc8b6374ecde88ec6b22d7780b5"
+ },
+ "stage2": {
+  "date": "2026-11-02",
+  "base_head": "be08811",
+  "branch": "ux/onboarding-overhaul",
+  "places": {
+   "before": {
+    "file": "places/stage2_before_be08811.rbxlx",
+    "studio_pid": 28236
+   },
+   "after": {
+    "file": "places/stage2_after.rbxlx",
+    "scripts": 265,
+    "bytes": 2035921,
+    "digest": 454417533,
+    "studio_pid": 29064
+   },
+   "after_fix": {
+    "file": "places/stage2_after_fix.rbxlx",
+    "scripts": 265,
+    "bytes": 2036120,
+    "digest": 1262899227,
+    "studio_edit_digest_matches": true
+   }
+  },
+  "offline": {
+   "test_stage2_timing": {
+    "class": "O",
+    "status": "PASS",
+    "checks": 111
+   },
+   "verify_all": {
+    "class": "O",
+    "status": "PASS"
+   }
+  },
+  "studio_runs": {
+   "before_lag0": {
+    "class": "D",
+    "frames": {
+     "n": 715,
+     "p50": 41.72,
+     "p95": 42.87,
+     "p99": 45.98,
+     "focused_share": 1.0
+    },
+    "server_tick_p99": 43.43,
+    "press_to_ack_seen_ms": {
+     "n": 8,
+     "p50": 86.5,
+     "p95": 128.4,
+     "max": 128.4
+    },
+    "receipt_to_start_ms": {
+     "n": 8,
+     "p50": 33.3,
+     "p95": 33.3,
+     "max": 33.3
+    },
+    "press_to_local_pose_ms": {
+     "n": 8,
+     "p50": 126.2,
+     "p95": 167.7,
+     "max": 167.7
+    },
+    "presses": 9,
+    "executed": null
+   },
+   "before_lag0_b": {
+    "class": "D",
+    "frames": {
+     "n": 711,
+     "p50": 41.8,
+     "p95": 43.83,
+     "p99": 53.24,
+     "focused_share": 1.0
+    },
+    "server_tick_p99": 48.05,
+    "press_to_ack_seen_ms": {
+     "n": 10,
+     "p50": 90.9,
+     "p95": 128.2,
+     "max": 128.2
+    },
+    "receipt_to_start_ms": {
+     "n": 10,
+     "p50": 33.3,
+     "p95": 33.3,
+     "max": 33.3
+    },
+    "press_to_local_pose_ms": {
+     "n": 10,
+     "p50": 132.0,
+     "p95": 169.0,
+     "max": 169.0
+    },
+    "presses": 10,
+    "executed": null
+   },
+   "before_lag100": {
+    "class": "D",
+    "frames": {
+     "n": 712,
+     "p50": 41.77,
+     "p95": 43.61,
+     "p99": 52.92,
+     "focused_share": 1.0
+    },
+    "server_tick_p99": 49,
+    "press_to_ack_seen_ms": {
+     "n": 10,
+     "p50": 337.7,
+     "p95": 349.3,
+     "max": 349.3
+    },
+    "receipt_to_start_ms": {
+     "n": 10,
+     "p50": 33.3,
+     "p95": 33.3,
+     "max": 33.3
+    },
+    "press_to_local_pose_ms": {
+     "n": 10,
+     "p50": 377.7,
+     "p95": 389.4,
+     "max": 389.4
+    },
+    "presses": 10,
+    "executed": null
+   },
+   "before_lag100_combo": {
+    "class": "D",
+    "frames": {
+     "n": 646,
+     "p50": 42.9,
+     "p95": 55.07,
+     "p99": 58.96,
+     "focused_share": 1.0
+    },
+    "server_tick_p99": 52.28,
+    "press_to_ack_seen_ms": {
+     "n": 12,
+     "p50": 340.5,
+     "p95": 347.0,
+     "max": 359.7
+    },
+    "receipt_to_start_ms": {
+     "n": 12,
+     "p50": 33.3,
+     "p95": 33.3,
+     "max": 33.3
+    },
+    "press_to_local_pose_ms": {
+     "n": 3,
+     "p50": 376.9,
+     "p95": 377.8,
+     "max": 377.8
+    },
+    "presses": 12,
+    "executed": null
+   },
+   "after_lag0": {
+    "class": "D",
+    "frames": {
+     "n": 708,
+     "p50": 41.86,
+     "p95": 45.01,
+     "p99": 47.62,
+     "focused_share": 1.0
+    },
+    "server_tick_p99": 45.4,
+    "press_to_ack_seen_ms": {
+     "n": 12,
+     "p50": 127.6,
+     "p95": 132.5,
+     "max": 144.5
+    },
+    "receipt_to_start_ms": {
+     "n": 12,
+     "p50": 33.3,
+     "p95": 33.3,
+     "max": 33.3
+    },
+    "press_to_local_pose_ms": {
+     "n": 12,
+     "p50": 1.2,
+     "p95": 43.2,
+     "max": 757.1
+    },
+    "presses": 14,
+    "executed": 12,
+    "note": "contaminated: a Sparring Phantom KO'd the player; 2 legitimate Expired"
+   },
+   "after_lag0_b": {
+    "class": "D",
+    "frames": {
+     "n": 669,
+     "p50": 44.33,
+     "p95": 48.21,
+     "p99": 53.08,
+     "focused_share": 1.0
+    },
+    "server_tick_p99": 49.39,
+    "press_to_ack_seen_ms": {
+     "n": 10,
+     "p50": 135.2,
+     "p95": 148.4,
+     "max": 148.4
+    },
+    "receipt_to_start_ms": {
+     "n": 10,
+     "p50": 33.3,
+     "p95": 33.3,
+     "max": 33.3
+    },
+    "press_to_local_pose_ms": {
+     "n": 10,
+     "p50": 1.9,
+     "p95": 51.3,
+     "max": 51.3
+    },
+    "presses": 10,
+    "executed": 10
+   },
+   "after_lag100": {
+    "class": "D",
+    "frames": {
+     "n": 669,
+     "p50": 44.5,
+     "p95": 47.55,
+     "p99": 49.77,
+     "focused_share": 1.0
+    },
+    "server_tick_p99": 48.06,
+    "press_to_ack_seen_ms": {
+     "n": 10,
+     "p50": 363.2,
+     "p95": 368.3,
+     "max": 368.3
+    },
+    "receipt_to_start_ms": {
+     "n": 10,
+     "p50": 33.3,
+     "p95": 33.3,
+     "max": 33.3
+    },
+    "press_to_local_pose_ms": {
+     "n": 10,
+     "p50": 1.9,
+     "p95": 45.5,
+     "max": 45.5
+    },
+    "presses": 10,
+    "executed": 10
+   },
+   "after_lag100_combo": {
+    "class": "D",
+    "frames": {
+     "n": 642,
+     "p50": 46.07,
+     "p95": 51.55,
+     "p99": 57.72,
+     "focused_share": 1.0
+    },
+    "server_tick_p99": 51.94,
+    "press_to_ack_seen_ms": {
+     "n": 12,
+     "p50": 381.3,
+     "p95": 392.0,
+     "max": 394.8
+    },
+    "receipt_to_start_ms": {
+     "n": 12,
+     "p50": 33.3,
+     "p95": 33.3,
+     "max": 33.3
+    },
+    "press_to_local_pose_ms": {
+     "n": 10,
+     "p50": 428.3,
+     "p95": 945.2,
+     "max": 945.2
+    },
+    "presses": 12,
+    "executed": 12
+   }
+  },
+  "multiplayer": "NOT VERIFIED (Stage 4)",
+  "animation": "NOT COMPLETE (Stage 3)",
+  "a10_remote_windup": "NOT RUN",
+  "borrowed_force": "proposal only",
+  "defect_found_live": "InputBuffer.push raised after ack on drifted simTime; fixed by clamping press to receipt (T-IN-06)"
  }
 }

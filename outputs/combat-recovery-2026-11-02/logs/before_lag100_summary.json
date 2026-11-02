@@ -1,0 +1,158 @@
+{
+ "label": "before_lag100",
+ "os_foreground": "RobloxStudioBeta (pid 28236); IncomingReplicationLag=0.1 on client and server",
+ "frames": {
+  "n": 712,
+  "p50": 41.77,
+  "p95": 43.61,
+  "p99": 52.92,
+  "focused_share": 1.0
+ },
+ "server_ticks": {
+  "n": 1799,
+  "p50": 0.46,
+  "p95": 42.64,
+  "p99": 49,
+  "heartbeat_ms": 0.8789904713630676
+ },
+ "presses": [
+  {
+   "kind": "Dash",
+   "seq": "36",
+   "press_to_ack_seen_ms": 337.6,
+   "receipt_to_start_ms": 33.3,
+   "start_state": "Dashing",
+   "press_to_local_pose_ms": 377.7,
+   "results_after_receipt": [
+    "Buffered",
+    "Dash"
+   ]
+  },
+  {
+   "kind": "Dash",
+   "seq": "37",
+   "press_to_ack_seen_ms": 337.4,
+   "receipt_to_start_ms": 33.3,
+   "start_state": "Dashing",
+   "press_to_local_pose_ms": 377.4,
+   "results_after_receipt": [
+    "Buffered",
+    "Dash"
+   ]
+  },
+  {
+   "kind": "Heavy",
+   "seq": "38",
+   "press_to_ack_seen_ms": 337.4,
+   "receipt_to_start_ms": 33.3,
+   "start_state": "Startup",
+   "press_to_local_pose_ms": 377.8,
+   "results_after_receipt": [
+    "Buffered",
+    "Jian_Heavy"
+   ]
+  },
+  {
+   "kind": "Heavy",
+   "seq": "39",
+   "press_to_ack_seen_ms": 341.2,
+   "receipt_to_start_ms": 33.3,
+   "start_state": "Startup",
+   "press_to_local_pose_ms": 381.5,
+   "results_after_receipt": [
+    "Buffered",
+    "Jian_Heavy"
+   ]
+  },
+  {
+   "kind": "F",
+   "seq": "41",
+   "press_to_ack_seen_ms": 336.6,
+   "receipt_to_start_ms": 33.3,
+   "start_state": "Deflecting",
+   "press_to_local_pose_ms": 376.7,
+   "results_after_receipt": [
+    "Blocking",
+    "Buffered"
+   ]
+  },
+  {
+   "kind": "F",
+   "seq": "44",
+   "press_to_ack_seen_ms": 337.9,
+   "receipt_to_start_ms": 33.3,
+   "start_state": "Deflecting",
+   "press_to_local_pose_ms": 377.7,
+   "results_after_receipt": [
+    "Blocking",
+    "Buffered"
+   ]
+  },
+  {
+   "kind": "Light",
+   "seq": "46",
+   "press_to_ack_seen_ms": 335.8,
+   "receipt_to_start_ms": 33.3,
+   "start_state": "Startup",
+   "press_to_local_pose_ms": 375.4,
+   "results_after_receipt": [
+    "Buffered",
+    "Jian_L1"
+   ]
+  },
+  {
+   "kind": "Light",
+   "seq": "47",
+   "press_to_ack_seen_ms": 339.1,
+   "receipt_to_start_ms": 33.3,
+   "start_state": "Startup",
+   "press_to_local_pose_ms": 378.9,
+   "results_after_receipt": [
+    "Buffered",
+    "Jian_L1"
+   ]
+  },
+  {
+   "kind": "Light",
+   "seq": "48",
+   "press_to_ack_seen_ms": 337.7,
+   "receipt_to_start_ms": 33.3,
+   "start_state": "Startup",
+   "press_to_local_pose_ms": 377.5,
+   "results_after_receipt": [
+    "Buffered",
+    "Jian_L1"
+   ]
+  },
+  {
+   "kind": "Light",
+   "seq": "49",
+   "press_to_ack_seen_ms": 349.3,
+   "receipt_to_start_ms": 33.3,
+   "start_state": "Startup",
+   "press_to_local_pose_ms": 389.4,
+   "results_after_receipt": [
+    "Buffered",
+    "Jian_L1"
+   ]
+  }
+ ],
+ "press_to_ack_seen_ms": {
+  "n": 10,
+  "p50": 337.7,
+  "p95": 349.3,
+  "max": 349.3
+ },
+ "receipt_to_start_ms": {
+  "n": 10,
+  "p50": 33.3,
+  "p95": 33.3,
+  "max": 33.3
+ },
+ "press_to_local_pose_ms": {
+  "n": 10,
+  "p50": 377.7,
+  "p95": 389.4,
+  "max": 389.4
+ }
+}

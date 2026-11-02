@@ -5,6 +5,7 @@ local Spells=require(Shared.Simulation.SpellSchema)
 local Rules=require(Shared.Simulation.SpellRules)
 local Protocol=require(Shared.Shared.ArsenalProtocol)
 local Budget=require(Shared.Shared.IntentProtocol)
+local Settings=require(Shared.Shared.CombatSettings)
 local Characters=require(script.Parent.CharacterService)
 local Persistence=require(script.Parent.PersistenceService) :: any
 local Effects=require(script.Parent.SpellEffects)
@@ -13,6 +14,10 @@ local Magic={}
 local pending: {[number]: {Cast: Rules.Cast,Actor: any,Fighter: any}}={}
 local cooldowns: {[number]: {[string]: number}}={}
 local buckets: {[number]: Budget.Bucket}={}
+-- Boundary queue (combat recovery Stage 2): a cast refused only because the fighter is not Idle yet waits
+-- Input.BufferWindow from receipt and starts on the first legal tick, like a buffered attack. Cost and
+-- cooldown are only charged when Rules.begin succeeds; a newer press replaces the waiting one.
+local queued: {[number]: {Slot: number,Until: number}}={}
 local connections: {RBXScriptConnection}={}
 local disconnect: (() -> ())?=nil
 function Magic.Cast(userId: number,slot: number): (boolean,string)
@@ -37,6 +42,14 @@ end
 function Magic.Start()
  assert(not disconnect,"MagicService already started")
  disconnect=Characters.OnStep(function(now: number,dt: number)
+  for id,q in queued do
+   local player=Players:GetPlayerByUserId(id)
+   local ok,reason=Magic.Cast(id,q.Slot)
+   if ok or reason~="Cannot cast now" or now>q.Until then
+    queued[id]=nil
+    if player then remote:FireClient(player,{action="Result",ok=ok,message=reason}) end
+   end
+  end
   for id,p in pending do
    if Characters.GetActor(id)~=p.Actor or p.Actor.Fighter~=p.Fighter or not Rules.valid(p.Fighter,p.Cast) then
     pending[id]=nil;Characters.Cue("SpellInterrupted",id,{spell=p.Cast.Id})
@@ -49,15 +62,19 @@ function Magic.Start()
   local now=Characters.Now();local bucket=buckets[player.UserId] or {tokens=4,time=now};buckets[player.UserId]=bucket
   if not Budget.Take(bucket,now,1,3,4) then return end
   local ok,reason=Magic.Cast(player.UserId,packet.slot)
+  if not ok and reason=="Cannot cast now" then
+   queued[player.UserId]={Slot=packet.slot,Until=now+Settings.Input.BufferWindow};return
+  end
+  queued[player.UserId]=nil
   remote:FireClient(player,{action="Result",ok=ok,message=reason})
  end))
  table.insert(connections,Players.PlayerRemoving:Connect(function(player: Player)
-  pending[player.UserId]=nil;cooldowns[player.UserId]=nil;buckets[player.UserId]=nil
+  pending[player.UserId]=nil;cooldowns[player.UserId]=nil;buckets[player.UserId]=nil;queued[player.UserId]=nil
  end))
 end
 function Magic.Destroy()
  if disconnect then disconnect();disconnect=nil end
  for _,c in connections do c:Disconnect() end
- table.clear(connections);table.clear(pending);table.clear(cooldowns);table.clear(buckets);Effects.clear()
+ table.clear(connections);table.clear(pending);table.clear(cooldowns);table.clear(buckets);table.clear(queued);Effects.clear()
 end
 return Magic

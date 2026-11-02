@@ -358,6 +358,9 @@
           "StrikeGeometry": {
             "$path": "src/simulation/StrikeGeometry.luau"
           },
+          "LocalPrediction": {
+            "$path": "src/simulation/LocalPrediction.luau"
+          },
           "MatchmakingRules": {
             "$path": "src/simulation/MatchmakingRules.luau"
           },

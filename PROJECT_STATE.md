@@ -1,5 +1,9 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## Combat recovery Stage 2 — 2026-11-02 (Windows)
+
+Receipt-based input lifetimes with one terminal record per intent, codec v4 (ActionSeq/sample time), local attack/dash/guard prediction, phase-ordered simultaneous contacts, ≤100 ms defender grace, light-hitstun defend point. Fixed live-found clock-drift press loss. Verified offline + single-client Studio; multiplayer unverified. Next: Stage 3 animation.
+
 ## Combat recovery Stage 1 — 2026-11-02 (Windows)
 
 Baseline, ledger, research pins and timing contract in `outputs/combat-recovery-2026-11-02/`. Confirmed: rewound presses expire, no local prediction, non-1:1 parries, 10/12 weapons lack clips, hitstop speed fights. Added wuxia DESIGN_INTENT, T-MX cases, Borrowed Force proposal. Studio place ≠ build (live timings blocked). Next: Stage 2.

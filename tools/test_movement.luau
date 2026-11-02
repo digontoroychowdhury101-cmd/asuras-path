@@ -112,7 +112,8 @@ local function character()
 	return model, root, humanoid
 end
 local snapshot = { State = "Idle" }
-local world = { DashEnds = 0, OwnSnapshot = function() return snapshot end }
+local world = { DashEnds = 0, OwnSnapshot = function() return snapshot end,
+	Predict = function() return false end, PredictGuard = function() end } -- Stage 2 prediction: not under test here
 local camera = { Camera = workspace.CurrentCamera, FovPunch = { Value = 0 },
 	SetMovement = function(self, glide, slide, turn) self.Glide, self.Slide, self.Turn = glide, slide, turn end,
 	Impulse = function(self) self.Rumbles = (self.Rumbles or 0)+1 end }
@@ -195,7 +196,7 @@ check(oldHumanoid.HipHeight==2 and oldHumanoid.AutoJumpEnabled and not move.Doub
 -- Real input mappings, CAS callback and touch button events, with the real InputBuffer.
 function world:Own() return { Humanoid = humanoid } end
 local sent = {}
-local input = registry.InputController.new(world,camera,function(action) table.insert(sent,action) end,move)
+local input = registry.InputController.new(world,camera,function(action) table.insert(sent,action) return #sent end,move)
 
 -- Capability changes may arrive without LastInputTypeChanged (Studio emulator and hot-plugging).
 UIS.TouchEnabled,UIS.KeyboardEnabled=true,false

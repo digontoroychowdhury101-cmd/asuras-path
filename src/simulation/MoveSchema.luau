@@ -166,6 +166,8 @@ local CANCEL_UNLOCKS: { [State]: { [Action]: boolean } } = {
 	Startup = set({ "Deflect", "Roll", "Dash" } :: { Action }),
 	Recovery = set({ "Roll", "Dash", "WeaponArt" } :: { Action }),
 	Dashing = set({ "Light", "Heavy", "RunningAttack", "Deflect", "Block" } :: { Action }),
+	-- Light hitstun after Stun.LightDefendCancel: defend only (CombatRules.cancelWindowOpen).
+	Hitstun = set({ "Deflect", "Block" } :: { Action }),
 }
 
 local TRANSITIONS: { [State]: { [State]: boolean } } = {
@@ -177,7 +179,7 @@ local TRANSITIONS: { [State]: { [State]: boolean } } = {
 	Blocking = set({ "Idle", "Deflecting", "Startup", "Dashing", "Blockstun", "GuardBroken", "Hitstun", "StaminaBroken", "StanceBroken", "DeathblowAttacker", "KO" } :: { State }),
 	Blockstun = set({ "Idle", "Blocking", "Deflecting", "GuardBroken", "Hitstun", "StaminaBroken", "StanceBroken", "KO" } :: { State }),
 	Dashing = set({ "Idle", "Startup", "Deflecting", "Blocking", "Hitstun", "StaminaBroken", "StanceBroken", "KO" } :: { State }),
-	Hitstun = set({ "Idle", "Hitstun", "StaminaBroken", "StanceBroken", "KO" } :: { State }),
+	Hitstun = set({ "Idle", "Hitstun", "Deflecting", "Blocking", "StaminaBroken", "StanceBroken", "KO" } :: { State }),
 	GuardBroken = set({ "Idle", "Hitstun", "StanceBroken", "KO" } :: { State }),
 	StaminaBroken = set({ "Idle", "Hitstun", "StanceBroken", "KO" } :: { State }),
 	StanceBroken = set({ "Idle", "Hitstun", "DeathblowVictim", "KO" } :: { State }),

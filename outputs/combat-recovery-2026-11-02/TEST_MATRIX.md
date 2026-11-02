@@ -15,6 +15,37 @@ Status: **PASS** = ran and met its criterion · **FAIL** = ran and missed · **B
 | B-07 | Ordinary-input captures (Jian chain/heavy/guard/parry/dash, orbit, monk, swordsman, groups, bosses) | Real ordinary input / human | **BLOCKED** | No verified Studio build open, and there is no instrumented pipeline yet. Stage 4/5. |
 | B-08 | Reference-game inspection | Primary-source review | **NOT RUN** | See `RESEARCH.md`. |
 
+## Stage 2 runs (2 November 2026)
+
+Evidence classes: **O** = offline fixture (the real server and client modules under Lune, with engine fakes); **D** = seeded Studio diagnostic (single client, digest-verified build, injected lag). Where a case is marked "failed on old code", it was run against HEAD `be08811` or the old code path first and failed there.
+
+| ID | Class | Status | Result |
+|---|---|---|---|
+| S2-01 `tools/test_stage2_timing.luau` | O | **PASS** | 111/111 checks |
+| S2-02 `bash tools/verify_all.sh` after all changes | O | **PASS** | All suites pass. The extraction markers in `test_omni_combat`, `test_combat_contact` and `test_review_regressions` now point at the new contact block. The literal `"Deflect = 100,"` check was replaced by a behavioural window check. |
+| T-IN-01 | O | **PASS** (failed on old code) | A press made in Recovery with 0/50/100/140 ms transit executes on the first legal tick. On the old code, transit of 50 ms or more never executes. |
+| T-IN-02 / 03 / 04 | O | **PASS** | A press that waits 130 ms expires with one record. A forged-old press is clamped and never executes. A push older than ExecuteBy is Stale. Light + Deflect on the same tick resolves deterministically. |
+| T-IN-05 | O | **PASS** | Seeded 600-tick mixed stream with 0–150 ms transit, a respawn flush and buffer overflow: every seq got exactly one terminal record. |
+| T-IN-06 (new) | O + D | **PASS** (failed on old code and live) | `push` no longer raises when `simTime` has drifted below the tick grid. |
+| T-SP-01 / 02 | O | **PASS** (failed on old code) | A cast pressed in Recovery starts on the first legal tick and charges Qi once. A cast that cannot start in time is refused and costs nothing. |
+| T-RT-01 / 02 (= T-TB) | O | **PASS** | The v4 round trip keeps the tick, stamp and ActionSeq, and a v3 record is refused. One swing keeps one ActionSeq. The same move again is a new action. Two dashes with an unseen Idle between them count as two. |
+| T-PR-01 / 02 | O | **PASS** | Prediction gates hold. The dash starts at once. The grant is adopted, not reapplied. The snapshot confirms. A rejected dash returns to its start. The timeout rolls back. A Light from Idle is predicted as L1. |
+| T-PA-01 / 02 | O | **PASS** | Parry: no HP lost, Qi gained once, posture reflected, exactly one spark. Miss: nothing happens. |
+| T-PA-03 | O | **Policy changed** | Two attackers on the same tick are **both** deflected, one spark each (T-PA-06 in the suite). This is the creator-clarified policy (`TIMING_CONTRACT.md` §0), not 1:1. |
+| T-PA-04 (spec T-PA-07/08) | O | **PASS** (failed on old code) | Pressed 30 ms before t_c and arriving 3 ticks later: deflected. Pressed 20 ms after t_c: never deflected. Grace is capped at 100 ms. |
+| T-PA-05 | O | **PASS** | An NPC defender resolves on the contact tick. A player defender is held for G. Attacking after t_c ends the hold. |
+| T-PA-07 (spec T-PA-05/06) | O | **PASS** | Head injury and spam decay apply. A success resets the chain and the next press is legal at once. |
+| T-PA-08 (spec T-PA-10) | O | **PASS** (failed on old code: +105 ms refused) | The thrust uses the shared window with half-tick tolerance and head injury, capped at 100 ms. No retroactive parry. |
+| T-OR-01 | O | **PASS** (failed on old code: the higher id always won) | A mutual strike is a trade, and the result does not depend on id order. |
+| T-HS (light hitstun) | O | **PASS** (failed on old code) | Deflect and guard are legal after the 100 ms defend point; attack and dash are not. Heavy hitstun is unchanged. No window opens before the hit. |
+| T-EX-01 | O | **PASS** (ran) | `frame_table_stage2.md`: every light link now leaves at least 25 ms to answer with a deflect (before: 20/28 left 0). The attack-answer classes are unchanged. |
+| S2-D1 after_lag0_b / after_lag100 | D | **PASS** for A1 (attack, deflect) and A5 (terminals) | 20/20 Executed. Local pose for attack and deflect in 1.3–2.2 ms. Receipt→start 33.3 ms. |
+| S2-D2 dash start (A7 timing) | D | **FAIL** against "≤ 1 frame" (borderline) | 45–51 ms, about one frame at the measured 44 ms. End-distance error not measured live. |
+| S2-D3 after_lag100_combo | D | **PASS** for terminals (12/12) | Follow-up swings are not predicted, by scope. The local-pose probe misses re-seeked tracks (Stage 3). Real 160 ms click spacing was not achievable through the MCP. |
+| A9 frame time | D | **FAIL** | p95 47.6–51.6 ms with focus confirmed. Not a Stage 2 change; tracked for Stage 4. |
+| A10 / T-MX-08 remote windups | — | **NOT RUN** | Needs an observer client (Stage 4). |
+| T-MP / T-MX-07 two-client | — | **BLOCKED** until Stage 4 | Multiplayer is not verified. |
+
 ## Acceptance cases to build (Stages 2–5)
 
 | ID | Case | Class | Target | Stage | Status |

@@ -46,13 +46,13 @@ local function step(self: any, dt: number)
 		if not snap or not root or not self:Near(root.Position) then self.Last[id] = nil; continue end
 		local previous = self.Last[id]
 		local active = snap.State == "Active"
-		local newSwing = active and (not previous or previous.State ~= "Active" or previous.Move ~= snap.Move or snap.StateElapsed < previous.Elapsed)
+		local newSwing = active and (not previous or previous.State ~= "Active" or previous.Seq ~= snap.ActionSeq)
 		if newSwing and snap.Move then
 			local weapon = Weapons.Weapons[snap.Weapon] -- snapshots carry family keys (Jian), not asset ids (Jian_Sword).
 			local move = if weapon then Weapons.findMove(weapon, snap.Move) else nil
 			if move then Combat.slash(self.Context, root, move) end
 		end
-		self.Last[id] = { State = snap.State, Move = snap.Move, Elapsed = snap.StateElapsed }
+		self.Last[id] = { State = snap.State, Seq = snap.ActionSeq }
 	end
 end
 function Controller.Update(self: any, dt: number) self:Safe(step, dt) end
