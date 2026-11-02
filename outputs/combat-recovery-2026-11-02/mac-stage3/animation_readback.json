@@ -1,0 +1,1139 @@
+{
+"note": "KeyframeSequenceProvider read-back in Studio on the Mac (Edit, signed-in owner account). Evidence: runtime asset load.",
+"ids": {
+"rbxassetid://103343311904628": {
+"keyframes": 52,
+"length": 0.8500000238418579,
+"loop": false,
+"poses": 832
+},
+"rbxassetid://105743978323726": {
+"keyframes": 54,
+"length": 0.8999999761581421,
+"loop": false,
+"poses": 864
+},
+"rbxassetid://104535508938312": {
+"keyframes": 6,
+"length": 0.800000011920929,
+"loop": true,
+"poses": 36
+},
+"rbxassetid://104421610325112": {
+"keyframes": 23,
+"length": 0.36667001247406006,
+"loop": false,
+"poses": 207
+},
+"rbxassetid://104525284973861": {
+"keyframes": 55,
+"length": 0.8999999761581421,
+"loop": false,
+"poses": 880
+},
+"rbxassetid://106185106074505": {
+"keyframes": 15,
+"length": 0.23332999646663666,
+"loop": false,
+"poses": 240
+},
+"rbxassetid://104898274398784": {
+"keyframes": 21,
+"length": 0.3333300054073334,
+"loop": false,
+"poses": 336
+},
+"rbxassetid://103272727896878": {
+"keyframes": 21,
+"length": 0.3333300054073334,
+"loop": false,
+"poses": 336
+},
+"rbxassetid://101974492117556": {
+"keyframes": 7,
+"length": 2.4000000953674316,
+"loop": true,
+"poses": 112
+},
+"rbxassetid://101002335528930": {
+"keyframes": 32,
+"length": 0.5166699886322021,
+"loop": false,
+"poses": 512
+},
+"rbxassetid://101598140758714": {
+"keyframes": 17,
+"length": 2.4000000953674316,
+"loop": true,
+"poses": 272
+},
+"rbxassetid://102445772447092": {
+"keyframes": 7,
+"length": 2.4000000953674316,
+"loop": true,
+"poses": 112
+},
+"rbxassetid://110176696923573": {
+"keyframes": 26,
+"length": 0.4166699945926666,
+"loop": false,
+"poses": 416
+},
+"rbxassetid://108101370082647": {
+"keyframes": 28,
+"length": 0.44999998807907104,
+"loop": false,
+"poses": 448
+},
+"rbxassetid://109210126462403": {
+"keyframes": 39,
+"length": 0.6333299875259399,
+"loop": false,
+"poses": 624
+},
+"rbxassetid://108062301374603": {
+"keyframes": 18,
+"length": 0.2833299934864044,
+"loop": false,
+"poses": 288
+},
+"rbxassetid://106808174620367": {
+"keyframes": 43,
+"length": 0.699999988079071,
+"loop": false,
+"poses": 688
+},
+"rbxassetid://111115189726174": {
+"keyframes": 20,
+"length": 0.3166700005531311,
+"loop": false,
+"poses": 160
+},
+"rbxassetid://109939982252584": {
+"keyframes": 48,
+"length": 0.800000011920929,
+"loop": false,
+"poses": 768
+},
+"rbxassetid://106527471680029": {
+"keyframes": 45,
+"length": 0.7333300113677979,
+"loop": false,
+"poses": 720
+},
+"rbxassetid://110196475389156": {
+"keyframes": 37,
+"length": 0.6000000238418579,
+"loop": true,
+"poses": 592
+},
+"rbxassetid://111572747264458": {
+"keyframes": 37,
+"length": 0.6166700124740601,
+"loop": false,
+"poses": 592
+},
+"rbxassetid://108521705818233": {
+"keyframes": 19,
+"length": 1.600000023841858,
+"loop": true,
+"poses": 304
+},
+"rbxassetid://110146875148769": {
+"keyframes": 45,
+"length": 0.7333300113677979,
+"loop": false,
+"poses": 720
+},
+"rbxassetid://113542530241474": {
+"keyframes": 19,
+"length": 0.30000001192092896,
+"loop": false,
+"poses": 304
+},
+"rbxassetid://112262064404137": {
+"keyframes": 10,
+"length": 0.699999988079071,
+"loop": true,
+"poses": 80
+},
+"rbxassetid://111594189369970": {
+"keyframes": 7,
+"length": 1.600000023841858,
+"loop": true,
+"poses": 56
+},
+"rbxassetid://114509683090421": {
+"keyframes": 6,
+"length": 2,
+"loop": true,
+"poses": 48
+},
+"rbxassetid://112910657119156": {
+"keyframes": 55,
+"length": 0.8999999761581421,
+"loop": false,
+"poses": 880
+},
+"rbxassetid://113647644024299": {
+"keyframes": 7,
+"length": 2.4000000953674316,
+"loop": true,
+"poses": 112
+},
+"rbxassetid://113991716117177": {
+"keyframes": 19,
+"length": 0.3499999940395355,
+"loop": false,
+"poses": 152
+},
+"rbxassetid://112130067009952": {
+"keyframes": 6,
+"length": 2,
+"loop": true,
+"poses": 48
+},
+"rbxassetid://112718897745358": {
+"keyframes": 33,
+"length": 0.6166700124740601,
+"loop": false,
+"poses": 528
+},
+"rbxassetid://113707235032422": {
+"keyframes": 7,
+"length": 0.800000011920929,
+"loop": true,
+"poses": 56
+},
+"rbxassetid://114573001047718": {
+"keyframes": 7,
+"length": 2.4000000953674316,
+"loop": true,
+"poses": 112
+},
+"rbxassetid://113742865810885": {
+"keyframes": 27,
+"length": 0.4333299994468689,
+"loop": false,
+"poses": 432
+},
+"rbxassetid://117347808015354": {
+"keyframes": 6,
+"length": 2,
+"loop": true,
+"poses": 48
+},
+"rbxassetid://118118844307962": {
+"keyframes": 45,
+"length": 0.7333300113677979,
+"loop": false,
+"poses": 720
+},
+"rbxassetid://120127840832319": {
+"keyframes": 27,
+"length": 0.4333299994468689,
+"loop": false,
+"poses": 432
+},
+"rbxassetid://119439610866025": {
+"keyframes": 43,
+"length": 0.699999988079071,
+"loop": true,
+"poses": 688
+},
+"rbxassetid://119488243103409": {
+"keyframes": 7,
+"length": 2.4000000953674316,
+"loop": true,
+"poses": 112
+},
+"rbxassetid://115589583211296": {
+"keyframes": 20,
+"length": 0.3166700005531311,
+"loop": false,
+"poses": 320
+},
+"rbxassetid://116902276870283": {
+"keyframes": 7,
+"length": 0.800000011920929,
+"loop": true,
+"poses": 42
+},
+"rbxassetid://115921357540400": {
+"keyframes": 29,
+"length": 0.4666700065135956,
+"loop": false,
+"poses": 464
+},
+"rbxassetid://115581469679850": {
+"keyframes": 7,
+"length": 2.4000000953674316,
+"loop": true,
+"poses": 112
+},
+"rbxassetid://115441156913645": {
+"keyframes": 18,
+"length": 0.3499999940395355,
+"loop": false,
+"poses": 144
+},
+"rbxassetid://120106199751337": {
+"keyframes": 20,
+"length": 1.2000000476837158,
+"loop": true,
+"poses": 320
+},
+"rbxassetid://119434885097125": {
+"keyframes": 19,
+"length": 0.3499999940395355,
+"loop": false,
+"poses": 152
+},
+"rbxassetid://123540264050232": {
+"keyframes": 20,
+"length": 0.4000000059604645,
+"loop": false,
+"poses": 320
+},
+"rbxassetid://120364294554446": {
+"keyframes": 41,
+"length": 0.75,
+"loop": false,
+"poses": 656
+},
+"rbxassetid://123909192962532": {
+"keyframes": 23,
+"length": 0.36667001247406006,
+"loop": false,
+"poses": 368
+},
+"rbxassetid://121126042509475": {
+"keyframes": 82,
+"length": 1.7999999523162842,
+"loop": false,
+"poses": 1312
+},
+"rbxassetid://124446470934584": {
+"keyframes": 30,
+"length": 0.48333001136779785,
+"loop": false,
+"poses": 480
+},
+"rbxassetid://124722344286007": {
+"keyframes": 8,
+"length": 3.5999999046325684,
+"loop": true,
+"poses": 128
+},
+"rbxassetid://122806607020356": {
+"keyframes": 43,
+"length": 0.699999988079071,
+"loop": true,
+"poses": 688
+},
+"rbxassetid://121121867722050": {
+"keyframes": 46,
+"length": 0.7666699886322021,
+"loop": false,
+"poses": 736
+},
+"rbxassetid://121908041152492": {
+"keyframes": 6,
+"length": 2,
+"loop": true,
+"poses": 48
+},
+"rbxassetid://121674010262861": {
+"keyframes": 18,
+"length": 0.2833299934864044,
+"loop": false,
+"poses": 288
+},
+"rbxassetid://120740250970684": {
+"keyframes": 10,
+"length": 0.800000011920929,
+"loop": true,
+"poses": 60
+},
+"rbxassetid://123508856782488": {
+"keyframes": 36,
+"length": 0.6166700124740601,
+"loop": false,
+"poses": 576
+},
+"rbxassetid://129107098206825": {
+"keyframes": 36,
+"length": 0.6166700124740601,
+"loop": false,
+"poses": 576
+},
+"rbxassetid://130222926015008": {
+"keyframes": 23,
+"length": 0.36667001247406006,
+"loop": false,
+"poses": 207
+},
+"rbxassetid://130467811685684": {
+"keyframes": 49,
+"length": 0.800000011920929,
+"loop": false,
+"poses": 784
+},
+"rbxassetid://125385891654116": {
+"keyframes": 6,
+"length": 0.800000011920929,
+"loop": true,
+"poses": 36
+},
+"rbxassetid://130795857635813": {
+"keyframes": 6,
+"length": 1.600000023841858,
+"loop": true,
+"poses": 48
+},
+"rbxassetid://125540053579064": {
+"keyframes": 48,
+"length": 0.7833300232887268,
+"loop": false,
+"poses": 768
+},
+"rbxassetid://130982544457949": {
+"keyframes": 7,
+"length": 2,
+"loop": true,
+"poses": 56
+},
+"rbxassetid://131234149806926": {
+"keyframes": 20,
+"length": 0.3499999940395355,
+"loop": false,
+"poses": 160
+},
+"rbxassetid://125815452854563": {
+"keyframes": 51,
+"length": 0.833329975605011,
+"loop": false,
+"poses": 816
+},
+"rbxassetid://129007326029291": {
+"keyframes": 25,
+"length": 0.44999998807907104,
+"loop": false,
+"poses": 400
+},
+"rbxassetid://126967146682298": {
+"keyframes": 23,
+"length": 0.36667001247406006,
+"loop": false,
+"poses": 368
+},
+"rbxassetid://130127023005730": {
+"keyframes": 7,
+"length": 2.4000000953674316,
+"loop": true,
+"poses": 112
+},
+"rbxassetid://131460144296428": {
+"keyframes": 51,
+"length": 0.833329975605011,
+"loop": false,
+"poses": 816
+},
+"rbxassetid://135096481721996": {
+"keyframes": 23,
+"length": 0.36667001247406006,
+"loop": false,
+"poses": 368
+},
+"rbxassetid://135796526374193": {
+"keyframes": 45,
+"length": 1,
+"loop": false,
+"poses": 720
+},
+"rbxassetid://131965122993302": {
+"keyframes": 21,
+"length": 0.3333300054073334,
+"loop": false,
+"poses": 336
+},
+"rbxassetid://135695988461681": {
+"keyframes": 12,
+"length": 0.21667000651359558,
+"loop": false,
+"poses": 192
+},
+"rbxassetid://133172048576156": {
+"keyframes": 27,
+"length": 0.4333299994468689,
+"loop": false,
+"poses": 432
+},
+"rbxassetid://132458055401502": {
+"keyframes": 18,
+"length": 0.2833299934864044,
+"loop": false,
+"poses": 288
+},
+"rbxassetid://132109593496761": {
+"keyframes": 18,
+"length": 0.2833299934864044,
+"loop": false,
+"poses": 288
+},
+"rbxassetid://135406303189832": {
+"keyframes": 6,
+"length": 0.800000011920929,
+"loop": true,
+"poses": 36
+},
+"rbxassetid://131262948038101": {
+"keyframes": 7,
+"length": 2.4000000953674316,
+"loop": true,
+"poses": 112
+},
+"rbxassetid://131771774487611": {
+"keyframes": 16,
+"length": 0.25,
+"loop": false,
+"poses": 256
+},
+"rbxassetid://135197977702942": {
+"keyframes": 37,
+"length": 0.6166700124740601,
+"loop": false,
+"poses": 592
+},
+"rbxassetid://136947850613334": {
+"keyframes": 27,
+"length": 0.4333299994468689,
+"loop": false,
+"poses": 432
+},
+"rbxassetid://137835669576121": {
+"keyframes": 19,
+"length": 0.30000001192092896,
+"loop": false,
+"poses": 304
+},
+"rbxassetid://136418512496041": {
+"keyframes": 6,
+"length": 2,
+"loop": true,
+"poses": 48
+},
+"rbxassetid://135854349242310": {
+"keyframes": 37,
+"length": 0.6000000238418579,
+"loop": false,
+"poses": 592
+},
+"rbxassetid://138487014275939": {
+"keyframes": 40,
+"length": 0.6499999761581421,
+"loop": false,
+"poses": 640
+},
+"rbxassetid://137177624015160": {
+"keyframes": 36,
+"length": 0.6166700124740601,
+"loop": false,
+"poses": 576
+},
+"rbxassetid://137612205425483": {
+"keyframes": 42,
+"length": 0.6833299994468689,
+"loop": false,
+"poses": 672
+},
+"rbxassetid://136787153642362": {
+"keyframes": 38,
+"length": 0.6166700124740601,
+"loop": false,
+"poses": 608
+},
+"rbxassetid://138252931971647": {
+"keyframes": 37,
+"length": 0.6000000238418579,
+"loop": false,
+"poses": 592
+},
+"rbxassetid://137789851693157": {
+"keyframes": 48,
+"length": 0.7833300232887268,
+"loop": false,
+"poses": 768
+},
+"rbxassetid://137238777203559": {
+"keyframes": 19,
+"length": 0.30000001192092896,
+"loop": false,
+"poses": 304
+},
+"rbxassetid://137250040297302": {
+"keyframes": 19,
+"length": 0.30000001192092896,
+"loop": false,
+"poses": 304
+},
+"rbxassetid://71602853390168": {
+"keyframes": 49,
+"length": 0.800000011920929,
+"loop": false,
+"poses": 784
+},
+"rbxassetid://71831816035349": {
+"keyframes": 23,
+"length": 0.36667001247406006,
+"loop": false,
+"poses": 207
+},
+"rbxassetid://139901685924316": {
+"keyframes": 25,
+"length": 0.4000000059604645,
+"loop": false,
+"poses": 400
+},
+"rbxassetid://140072619908862": {
+"keyframes": 20,
+"length": 0.3499999940395355,
+"loop": false,
+"poses": 160
+},
+"rbxassetid://72742647397985": {
+"keyframes": 6,
+"length": 2,
+"loop": true,
+"poses": 48
+},
+"rbxassetid://140207015674578": {
+"keyframes": 10,
+"length": 0.800000011920929,
+"loop": true,
+"poses": 60
+},
+"rbxassetid://71766330781056": {
+"keyframes": 43,
+"length": 0.699999988079071,
+"loop": false,
+"poses": 688
+},
+"rbxassetid://71073626356373": {
+"keyframes": 43,
+"length": 0.699999988079071,
+"loop": false,
+"poses": 688
+},
+"rbxassetid://70747558788585": {
+"keyframes": 6,
+"length": 2,
+"loop": true,
+"poses": 48
+},
+"rbxassetid://138560739384272": {
+"keyframes": 46,
+"length": 0.7666699886322021,
+"loop": false,
+"poses": 736
+},
+"rbxassetid://71182885805704": {
+"keyframes": 6,
+"length": 2,
+"loop": true,
+"poses": 48
+},
+"rbxassetid://139439892303244": {
+"keyframes": 30,
+"length": 0.48333001136779785,
+"loop": false,
+"poses": 480
+},
+"rbxassetid://76346092169919": {
+"keyframes": 16,
+"length": 0.25,
+"loop": false,
+"poses": 256
+},
+"rbxassetid://73851015538149": {
+"keyframes": 55,
+"length": 0.916670024394989,
+"loop": false,
+"poses": 880
+},
+"rbxassetid://76312818754143": {
+"keyframes": 38,
+"length": 0.6166700124740601,
+"loop": false,
+"poses": 608
+},
+"rbxassetid://73518070047035": {
+"keyframes": 28,
+"length": 0.44999998807907104,
+"loop": false,
+"poses": 448
+},
+"rbxassetid://72805604693532": {
+"keyframes": 27,
+"length": 0.4333299994468689,
+"loop": false,
+"poses": 432
+},
+"rbxassetid://74668214273745": {
+"keyframes": 17,
+"length": 0.2833299934864044,
+"loop": false,
+"poses": 272
+},
+"rbxassetid://73965973781474": {
+"keyframes": 7,
+"length": 2,
+"loop": true,
+"poses": 56
+},
+"rbxassetid://74174532107367": {
+"keyframes": 43,
+"length": 1.600000023841858,
+"loop": false,
+"poses": 688
+},
+"rbxassetid://75860464697994": {
+"keyframes": 38,
+"length": 0.6333299875259399,
+"loop": false,
+"poses": 608
+},
+"rbxassetid://74154289569139": {
+"keyframes": 18,
+"length": 0.2833299934864044,
+"loop": false,
+"poses": 288
+},
+"rbxassetid://72996160202085": {
+"keyframes": 13,
+"length": 0.3166700005531311,
+"loop": false,
+"poses": 104
+},
+"rbxassetid://75315756560710": {
+"keyframes": 15,
+"length": 0.699999988079071,
+"loop": true,
+"poses": 120
+},
+"rbxassetid://80666322516323": {
+"keyframes": 37,
+"length": 0.6000000238418579,
+"loop": false,
+"poses": 592
+},
+"rbxassetid://76420751200151": {
+"keyframes": 19,
+"length": 0.3499999940395355,
+"loop": false,
+"poses": 152
+},
+"rbxassetid://80689159659772": {
+"keyframes": 19,
+"length": 0.3499999940395355,
+"loop": false,
+"poses": 152
+},
+"rbxassetid://80608378079752": {
+"keyframes": 36,
+"length": 0.6166700124740601,
+"loop": false,
+"poses": 576
+},
+"rbxassetid://80463692485498": {
+"keyframes": 18,
+"length": 0.2833299934864044,
+"loop": false,
+"poses": 288
+},
+"rbxassetid://76694503916486": {
+"keyframes": 27,
+"length": 0.4333299994468689,
+"loop": false,
+"poses": 432
+},
+"rbxassetid://79035424835727": {
+"keyframes": 37,
+"length": 0.6166700124740601,
+"loop": false,
+"poses": 592
+},
+"rbxassetid://79365690281407": {
+"keyframes": 18,
+"length": 0.3499999940395355,
+"loop": false,
+"poses": 144
+},
+"rbxassetid://80221363510017": {
+"keyframes": 46,
+"length": 0.7666699886322021,
+"loop": false,
+"poses": 736
+},
+"rbxassetid://79845182367548": {
+"keyframes": 20,
+"length": 0.36667001247406006,
+"loop": false,
+"poses": 320
+},
+"rbxassetid://76826677130599": {
+"keyframes": 55,
+"length": 0.8999999761581421,
+"loop": false,
+"poses": 880
+},
+"rbxassetid://76668598902693": {
+"keyframes": 21,
+"length": 0.36667001247406006,
+"loop": false,
+"poses": 336
+},
+"rbxassetid://82958755851100": {
+"keyframes": 54,
+"length": 0.916670024394989,
+"loop": false,
+"poses": 864
+},
+"rbxassetid://81274172822563": {
+"keyframes": 52,
+"length": 0.8500000238418579,
+"loop": false,
+"poses": 832
+},
+"rbxassetid://81317418914365": {
+"keyframes": 23,
+"length": 0.36667001247406006,
+"loop": false,
+"poses": 368
+},
+"rbxassetid://85392865694319": {
+"keyframes": 63,
+"length": 1.100000023841858,
+"loop": false,
+"poses": 1008
+},
+"rbxassetid://82065381623710": {
+"keyframes": 43,
+"length": 0.8999999761581421,
+"loop": false,
+"poses": 688
+},
+"rbxassetid://85232167407270": {
+"keyframes": 55,
+"length": 0.916670024394989,
+"loop": false,
+"poses": 880
+},
+"rbxassetid://84214389318404": {
+"keyframes": 19,
+"length": 0.30000001192092896,
+"loop": false,
+"poses": 304
+},
+"rbxassetid://81182881857027": {
+"keyframes": 10,
+"length": 0.800000011920929,
+"loop": true,
+"poses": 60
+},
+"rbxassetid://82056136078127": {
+"keyframes": 6,
+"length": 3,
+"loop": true,
+"poses": 96
+},
+"rbxassetid://81552189321610": {
+"keyframes": 37,
+"length": 0.6333299875259399,
+"loop": false,
+"poses": 592
+},
+"rbxassetid://81542772922509": {
+"keyframes": 22,
+"length": 0.36667001247406006,
+"loop": false,
+"poses": 352
+},
+"rbxassetid://81883804287252": {
+"keyframes": 37,
+"length": 0.6000000238418579,
+"loop": true,
+"poses": 592
+},
+"rbxassetid://85745957326019": {
+"keyframes": 19,
+"length": 0.30000001192092896,
+"loop": false,
+"poses": 304
+},
+"rbxassetid://89326840672872": {
+"keyframes": 29,
+"length": 0.4666700065135956,
+"loop": false,
+"poses": 464
+},
+"rbxassetid://88372590503565": {
+"keyframes": 25,
+"length": 0.4000000059604645,
+"loop": false,
+"poses": 400
+},
+"rbxassetid://89274945535822": {
+"keyframes": 13,
+"length": 0.3333300054073334,
+"loop": false,
+"poses": 104
+},
+"rbxassetid://88521507824708": {
+"keyframes": 7,
+"length": 2.4000000953674316,
+"loop": true,
+"poses": 112
+},
+"rbxassetid://87800015669250": {
+"keyframes": 18,
+"length": 0.2833299934864044,
+"loop": false,
+"poses": 288
+},
+"rbxassetid://87390266416414": {
+"keyframes": 36,
+"length": 0.6166700124740601,
+"loop": false,
+"poses": 576
+},
+"rbxassetid://87747368815279": {
+"keyframes": 6,
+"length": 0.800000011920929,
+"loop": true,
+"poses": 36
+},
+"rbxassetid://85593628340035": {
+"keyframes": 32,
+"length": 0.5166699886322021,
+"loop": false,
+"poses": 512
+},
+"rbxassetid://85881768455696": {
+"keyframes": 42,
+"length": 0.699999988079071,
+"loop": false,
+"poses": 672
+},
+"rbxassetid://85580130698576": {
+"keyframes": 37,
+"length": 0.6166700124740601,
+"loop": false,
+"poses": 592
+},
+"rbxassetid://87766319466664": {
+"keyframes": 21,
+"length": 0.3333300054073334,
+"loop": false,
+"poses": 336
+},
+"rbxassetid://91655621374734": {
+"keyframes": 7,
+"length": 0.800000011920929,
+"loop": true,
+"poses": 42
+},
+"rbxassetid://90189999399007": {
+"keyframes": 19,
+"length": 0.3499999940395355,
+"loop": false,
+"poses": 152
+},
+"rbxassetid://90558001385855": {
+"keyframes": 6,
+"length": 0.800000011920929,
+"loop": true,
+"poses": 36
+},
+"rbxassetid://90748494920364": {
+"keyframes": 15,
+"length": 0.23332999646663666,
+"loop": false,
+"poses": 240
+},
+"rbxassetid://92435848864098": {
+"keyframes": 7,
+"length": 2.4000000953674316,
+"loop": true,
+"poses": 112
+},
+"rbxassetid://91645812573921": {
+"keyframes": 63,
+"length": 1.100000023841858,
+"loop": false,
+"poses": 1008
+},
+"rbxassetid://89391756631562": {
+"keyframes": 6,
+"length": 1.600000023841858,
+"loop": true,
+"poses": 48
+},
+"rbxassetid://89400894565036": {
+"keyframes": 34,
+"length": 1.7999999523162842,
+"loop": true,
+"poses": 544
+},
+"rbxassetid://92314934316030": {
+"keyframes": 19,
+"length": 0.30000001192092896,
+"loop": false,
+"poses": 304
+},
+"rbxassetid://89648692451516": {
+"keyframes": 18,
+"length": 0.3499999940395355,
+"loop": false,
+"poses": 144
+},
+"rbxassetid://89896881914029": {
+"keyframes": 21,
+"length": 0.3333300054073334,
+"loop": false,
+"poses": 336
+},
+"rbxassetid://92072596908213": {
+"keyframes": 43,
+"length": 0.699999988079071,
+"loop": true,
+"poses": 688
+},
+"rbxassetid://93781394509239": {
+"keyframes": 19,
+"length": 0.30000001192092896,
+"loop": false,
+"poses": 304
+},
+"rbxassetid://95768898480093": {
+"keyframes": 52,
+"length": 0.8500000238418579,
+"loop": false,
+"poses": 832
+},
+"rbxassetid://95901465911475": {
+"keyframes": 26,
+"length": 0.4166699945926666,
+"loop": false,
+"poses": 416
+},
+"rbxassetid://96229215657784": {
+"keyframes": 44,
+"length": 0.7166699767112732,
+"loop": false,
+"poses": 704
+},
+"rbxassetid://92933887269942": {
+"keyframes": 23,
+"length": 1.600000023841858,
+"loop": true,
+"poses": 368
+},
+"rbxassetid://94113859837520": {
+"keyframes": 7,
+"length": 0.800000011920929,
+"loop": true,
+"poses": 42
+},
+"rbxassetid://93584479711686": {
+"keyframes": 59,
+"length": 1.100000023841858,
+"loop": false,
+"poses": 944
+},
+"rbxassetid://93576550342658": {
+"keyframes": 25,
+"length": 0.4000000059604645,
+"loop": false,
+"poses": 400
+},
+"rbxassetid://92764554990580": {
+"keyframes": 17,
+"length": 0.3499999940395355,
+"loop": false,
+"poses": 136
+},
+"rbxassetid://93013217748649": {
+"keyframes": 32,
+"length": 0.5166699886322021,
+"loop": false,
+"poses": 512
+},
+"rbxassetid://92733401704195": {
+"keyframes": 18,
+"length": 3.200000047683716,
+"loop": true,
+"poses": 288
+},
+"rbxassetid://92491485517905": {
+"keyframes": 46,
+"length": 0.75,
+"loop": true,
+"poses": 736
+},
+"rbxassetid://97729334147895": {
+"keyframes": 12,
+"length": 2.4000000953674316,
+"loop": true,
+"poses": 192
+},
+"rbxassetid://96743469488313": {
+"keyframes": 32,
+"length": 0.5166699886322021,
+"loop": false,
+"poses": 512
+},
+"rbxassetid://98067918079297": {
+"keyframes": 54,
+"length": 0.8999999761581421,
+"loop": false,
+"poses": 864
+},
+"rbxassetid://97875436719077": {
+"keyframes": 43,
+"length": 0.8999999761581421,
+"loop": false,
+"poses": 688
+},
+"rbxassetid://98000299490632": {
+"keyframes": 63,
+"length": 1.100000023841858,
+"loop": false,
+"poses": 1008
+},
+"rbxassetid://99623983314802": {
+"keyframes": 6,
+"length": 2,
+"loop": true,
+"poses": 48
+},
+"rbxassetid://97457181755599": {
+"keyframes": 23,
+"length": 0.36667001247406006,
+"loop": false,
+"poses": 368
+},
+"rbxassetid://96590951733793": {
+"keyframes": 15,
+"length": 0.3166700005531311,
+"loop": false,
+"poses": 120
+},
+"rbxassetid://99505718277592": {
+"keyframes": 37,
+"length": 0.6000000238418579,
+"loop": false,
+"poses": 592
+}
+}
+}

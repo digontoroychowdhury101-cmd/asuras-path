@@ -1,0 +1,838 @@
+{
+ "note": "Published Roblox ids for the weapon-family and universal clips of tools/animation/families (Mac Stage 3), each verified by loading it back. sha256 is the referent-free content of the uploaded .rbxmx.",
+ "clips": {
+  "Catalyst_Equip": {
+   "asset_id": "rbxassetid://112718897745358",
+   "sha256": "bb1b93ed98ae32a7ebbbc82af75aea05fe7743bddecc30e789145e59233a64b6",
+   "slot": "Catalyst.Equip",
+   "keyframes": 33,
+   "length": 0.6167
+  },
+  "Catalyst_Guard": {
+   "asset_id": "rbxassetid://99623983314802",
+   "sha256": "4410fe60a307387a0f33e237b6351d69fbe2ed48b95c37b824494c0752a5c594",
+   "slot": "Catalyst.Guard",
+   "keyframes": 6,
+   "length": 2
+  },
+  "Catalyst_GuardImpact": {
+   "asset_id": "rbxassetid://89648692451516",
+   "sha256": "517283985ccf7830f419027ed5988c1f11abf8ad44def5c291b77b33aa61823a",
+   "slot": "Catalyst.GuardImpact",
+   "keyframes": 18,
+   "length": 0.35
+  },
+  "Catalyst_Heavy": {
+   "asset_id": "rbxassetid://71602853390168",
+   "sha256": "1ec8e55b16c4b45ec7b949bff5c4eff3dd4630226c59d3f700ac8ba2575e8a74",
+   "slot": "Catalyst.Heavy",
+   "keyframes": 49,
+   "length": 0.8
+  },
+  "Catalyst_Idle": {
+   "asset_id": "rbxassetid://92435848864098",
+   "sha256": "25f1314529ed9e371407ded9a7ae24ee34157ade956ba78dba758c64c0c2eb9d",
+   "slot": "Catalyst.Idle",
+   "keyframes": 7,
+   "length": 2.4
+  },
+  "Catalyst_Light1": {
+   "asset_id": "rbxassetid://104898274398784",
+   "sha256": "0db06ec8d0128ddb837fd12d05ffa56de8ee5c8a1cb2959d3fe3523f5ea9c0d8",
+   "slot": "Catalyst.Light1",
+   "keyframes": 21,
+   "length": 0.3333
+  },
+  "Catalyst_Light2": {
+   "asset_id": "rbxassetid://89896881914029",
+   "sha256": "9417bf0407d305966d5849df6bba250e6d78daa33615e0e7f186e87180b9ce29",
+   "slot": "Catalyst.Light2",
+   "keyframes": 21,
+   "length": 0.3333
+  },
+  "Catalyst_Light3": {
+   "asset_id": "rbxassetid://131965122993302",
+   "sha256": "0798dc1f38e27c8d7ba625b647f20b25db6fe17b71e1dda06dc5aa153b76bb43",
+   "slot": "Catalyst.Light3",
+   "keyframes": 21,
+   "length": 0.3333
+  },
+  "Catalyst_Move": {
+   "asset_id": "rbxassetid://104535508938312",
+   "sha256": "c85ec052fbb27eba5cd34b9dfb201237b47017dc55fee36883c2273ca1b39f3d",
+   "slot": "Catalyst.Move",
+   "keyframes": 6,
+   "length": 0.8
+  },
+  "Catalyst_Running": {
+   "asset_id": "rbxassetid://130467811685684",
+   "sha256": "a474916cbbd6b6a0e11367dc744d1fd4fdb6a465f9a27456304fd415e7b21773",
+   "slot": "Catalyst.Running",
+   "keyframes": 49,
+   "length": 0.8
+  },
+  "Catalyst_WeaponArt": {
+   "asset_id": "rbxassetid://109939982252584",
+   "sha256": "34a046c682d6568b651e90f49d53c74e9e2161a608f0d9583515bcf8fe474818",
+   "slot": "Catalyst.WeaponArt",
+   "keyframes": 48,
+   "length": 0.8
+  },
+  "ChainScythe_Equip": {
+   "asset_id": "rbxassetid://129107098206825",
+   "sha256": "30b3b23ef315d198a87a6001b82987c49a062a2f18c973b292630f57f92bf457",
+   "slot": "ChainScythe.Equip",
+   "keyframes": 36,
+   "length": 0.6167
+  },
+  "ChainScythe_Guard": {
+   "asset_id": "rbxassetid://72742647397985",
+   "sha256": "c9e9e2298826005f4dbbc1fdfbbdbca5aa042b1af2681f9d48488b311cc2f709",
+   "slot": "ChainScythe.Guard",
+   "keyframes": 6,
+   "length": 2
+  },
+  "ChainScythe_GuardImpact": {
+   "asset_id": "rbxassetid://92764554990580",
+   "sha256": "ef43c337893047573edad16aad45bfa9399695bc44277db7eab9256ccc2163a6",
+   "slot": "ChainScythe.GuardImpact",
+   "keyframes": 17,
+   "length": 0.35
+  },
+  "ChainScythe_Heavy": {
+   "asset_id": "rbxassetid://81274172822563",
+   "sha256": "ce5068c2ea400b7f5033a6f876d6a33b96e139e605335485b784489b549c7661",
+   "slot": "ChainScythe.Heavy",
+   "keyframes": 52,
+   "length": 0.85
+  },
+  "ChainScythe_Idle": {
+   "asset_id": "rbxassetid://131262948038101",
+   "sha256": "4e2cd4dd70679b7c6b748219be7cba97d2e53a8679ca04b14fcd128890aa5043",
+   "slot": "ChainScythe.Idle",
+   "keyframes": 7,
+   "length": 2.4
+  },
+  "ChainScythe_Light1": {
+   "asset_id": "rbxassetid://135096481721996",
+   "sha256": "ab61fd40e02ce80ef7ca8be09dae6f478987a3a11a0b94c4f39a05217a15b8a2",
+   "slot": "ChainScythe.Light1",
+   "keyframes": 23,
+   "length": 0.3667
+  },
+  "ChainScythe_Light2": {
+   "asset_id": "rbxassetid://126967146682298",
+   "sha256": "31e810b8dec26592e3e95869d8edc63d044743543d72ca2ced999c7c6b3d3b06",
+   "slot": "ChainScythe.Light2",
+   "keyframes": 23,
+   "length": 0.3667
+  },
+  "ChainScythe_Light3": {
+   "asset_id": "rbxassetid://123909192962532",
+   "sha256": "ee80dc971da2078d152a81cb8255729f7aa14594c646dbb5ea5694d8d5e38702",
+   "slot": "ChainScythe.Light3",
+   "keyframes": 23,
+   "length": 0.3667
+  },
+  "ChainScythe_Move": {
+   "asset_id": "rbxassetid://90558001385855",
+   "sha256": "a94609f21850769f7169ed6119e4e47da4114fc6b48f1e1ef13f4eeaa851150f",
+   "slot": "ChainScythe.Move",
+   "keyframes": 6,
+   "length": 0.8
+  },
+  "ChainScythe_Running": {
+   "asset_id": "rbxassetid://103343311904628",
+   "sha256": "104fea51df29f50d1510392556b8168014bc59974367e22837090b72ec031f86",
+   "slot": "ChainScythe.Running",
+   "keyframes": 52,
+   "length": 0.85
+  },
+  "ChainScythe_WeaponArt": {
+   "asset_id": "rbxassetid://95768898480093",
+   "sha256": "7f7735a8f9b68bdbd8037e6ee424f0c2279e55d711773c1bf07a0dd9b33532ac",
+   "slot": "ChainScythe.WeaponArt",
+   "keyframes": 52,
+   "length": 0.85
+  },
+  "Dao_Equip": {
+   "asset_id": "rbxassetid://123508856782488",
+   "sha256": "5438261c8adafb82cd52d29dbb682ad0f154a50ee10f070935dd88b3429b2f0e",
+   "slot": "Dao.Equip",
+   "keyframes": 36,
+   "length": 0.6167
+  },
+  "Dao_Guard": {
+   "asset_id": "rbxassetid://121908041152492",
+   "sha256": "995481c3803d034499b87016fba50598c78e07167ecc2d2afcfd28068949b637",
+   "slot": "Dao.Guard",
+   "keyframes": 6,
+   "length": 2
+  },
+  "Dao_GuardImpact": {
+   "asset_id": "rbxassetid://90189999399007",
+   "sha256": "e46f16e4e501530bc18b301e59cc215a0a9243f487c4102e6d2ca77b58b1b954",
+   "slot": "Dao.GuardImpact",
+   "keyframes": 19,
+   "length": 0.35
+  },
+  "Dao_Heavy": {
+   "asset_id": "rbxassetid://106808174620367",
+   "sha256": "3722723197719252a7983fa8175ef9997c58532f81e86147ffdc666a5a2cdd5e",
+   "slot": "Dao.Heavy",
+   "keyframes": 43,
+   "length": 0.7
+  },
+  "Dao_Idle": {
+   "asset_id": "rbxassetid://115581469679850",
+   "sha256": "5a7d0ab0dbd7e229f7dfdf9ef576a35f6d59a50d48a8fcf5a0b180c846125403",
+   "slot": "Dao.Idle",
+   "keyframes": 7,
+   "length": 2.4
+  },
+  "Dao_Light1": {
+   "asset_id": "rbxassetid://84214389318404",
+   "sha256": "7b7da51c0a0717c63805dc572a1db49bc4f127d37f8a4ee9daff6bd50e61f663",
+   "slot": "Dao.Light1",
+   "keyframes": 19,
+   "length": 0.3
+  },
+  "Dao_Light2": {
+   "asset_id": "rbxassetid://137238777203559",
+   "sha256": "7b4ea6bcd47446919fb898ac439ea785a95b085f5a2ce49abe92c8a59bd13646",
+   "slot": "Dao.Light2",
+   "keyframes": 19,
+   "length": 0.3
+  },
+  "Dao_Light3": {
+   "asset_id": "rbxassetid://97457181755599",
+   "sha256": "9138cf559ee195f577ea3080228dcd37f3337281ef29479b02b7b80927ea1e5a",
+   "slot": "Dao.Light3",
+   "keyframes": 23,
+   "length": 0.3667
+  },
+  "Dao_Light4": {
+   "asset_id": "rbxassetid://73518070047035",
+   "sha256": "552104c4fb0d010e9c5af895ce65ed753328a48e421b315a2dc40d581bb19bd2",
+   "slot": "Dao.Light4",
+   "keyframes": 28,
+   "length": 0.45
+  },
+  "Dao_Move": {
+   "asset_id": "rbxassetid://116902276870283",
+   "sha256": "7bbde4d554b70570d1799171f177e0be21323762ec1400a467316ccf1ea8b740",
+   "slot": "Dao.Move",
+   "keyframes": 7,
+   "length": 0.8
+  },
+  "Dao_Running": {
+   "asset_id": "rbxassetid://96743469488313",
+   "sha256": "7204ba46891b63875414fe80d802631dad78df98e780c4166682205a0da59d35",
+   "slot": "Dao.Running",
+   "keyframes": 32,
+   "length": 0.5167
+  },
+  "Dao_WeaponArt": {
+   "asset_id": "rbxassetid://137789851693157",
+   "sha256": "b9fd1c00736441ed5e44239b8378f78287ba8dfea1ae4e0cc7b542771d65517f",
+   "slot": "Dao.WeaponArt",
+   "keyframes": 48,
+   "length": 0.7833
+  },
+  "Fighter_AltarRest": {
+   "asset_id": "rbxassetid://82056136078127",
+   "sha256": "4e341cadefc6fb36f7b054d0044c5ca30c990a7bc88112e39552a234f03ccb9d",
+   "slot": "AltarRest",
+   "keyframes": 6,
+   "length": 3
+  },
+  "Fighter_DashForward": {
+   "asset_id": "rbxassetid://130222926015008",
+   "sha256": "4d548ef58e127b7104f657cb2f7c757bcf5a4eabeb03bddb72c6e5d24bed3c3a",
+   "slot": "DashForward",
+   "keyframes": 23,
+   "length": 0.3667
+  },
+  "Fighter_DashLeft": {
+   "asset_id": "rbxassetid://71831816035349",
+   "sha256": "1ae169285c68f8acf170ae0fdeaf6ac9ab882d01a4b93e44cf21814d0bab0d97",
+   "slot": "DashLeft",
+   "keyframes": 23,
+   "length": 0.3667
+  },
+  "Fighter_DashRight": {
+   "asset_id": "rbxassetid://104421610325112",
+   "sha256": "297cbd2ba7fb61526b4d389908c1a31fb1a6d8259e055783ad2ad52e3d44dd2a",
+   "slot": "DashRight",
+   "keyframes": 23,
+   "length": 0.3667
+  },
+  "Fighter_DeathblowAttacker": {
+   "asset_id": "rbxassetid://93584479711686",
+   "sha256": "06dfea1b741301f0dfd00a2bee68c1a3e70e42b8ec373b1bceebb5f58cae3550",
+   "slot": "Deathblow_Attacker",
+   "keyframes": 59,
+   "length": 1.1
+  },
+  "Fighter_DeathblowVictim": {
+   "asset_id": "rbxassetid://74174532107367",
+   "sha256": "9be743ffb20a935e7ceba7a7bf0ca7b439ad17ba9cef14b574a81d6bf48973e8",
+   "slot": "Deathblow_Victim",
+   "keyframes": 43,
+   "length": 1.6
+  },
+  "Guandao_Equip": {
+   "asset_id": "rbxassetid://111572747264458",
+   "sha256": "71a9ee2d14cd0ac730ff6fea838407141fa0cb4c3f7b52bd7e1eb90ff6c68b86",
+   "slot": "Guandao.Equip",
+   "keyframes": 37,
+   "length": 0.6167
+  },
+  "Guandao_Guard": {
+   "asset_id": "rbxassetid://130982544457949",
+   "sha256": "152cbeddba4498f71ce2df6a7fbd925af2911ccec32218285fc2418ad42a8ec0",
+   "slot": "Guandao.Guard",
+   "keyframes": 7,
+   "length": 2
+  },
+  "Guandao_GuardImpact": {
+   "asset_id": "rbxassetid://80689159659772",
+   "sha256": "6977e99013199e061bae588ad677117858654ad18bc4ce9dc175361155bc2bc1",
+   "slot": "Guandao.GuardImpact",
+   "keyframes": 19,
+   "length": 0.35
+  },
+  "Guandao_Heavy": {
+   "asset_id": "rbxassetid://131460144296428",
+   "sha256": "5230c01357d959dc2e0f3259d506efcf5c7a934bf242068d70a4bca6db3e5949",
+   "slot": "Guandao.Heavy",
+   "keyframes": 51,
+   "length": 0.8333
+  },
+  "Guandao_Idle": {
+   "asset_id": "rbxassetid://88521507824708",
+   "sha256": "8de495edaf89cc8ef3ff85725732f797d89975ce534a27c2f8acc1f847039aac",
+   "slot": "Guandao.Idle",
+   "keyframes": 7,
+   "length": 2.4
+  },
+  "Guandao_Light1": {
+   "asset_id": "rbxassetid://93576550342658",
+   "sha256": "b611d25fcaef0ca67c1460c4485f8f85290bd79e3d7bb58272e0a8a693b5e287",
+   "slot": "Guandao.Light1",
+   "keyframes": 25,
+   "length": 0.4
+  },
+  "Guandao_Light2": {
+   "asset_id": "rbxassetid://110176696923573",
+   "sha256": "73515a7719c185575e3fe46cfea3e17980665e90f108af3ad2d8d326739f6f3a",
+   "slot": "Guandao.Light2",
+   "keyframes": 26,
+   "length": 0.4167
+  },
+  "Guandao_Light3": {
+   "asset_id": "rbxassetid://101002335528930",
+   "sha256": "d53189c7859f9fd1eaee2a2b0066e1f17323c082c05e2777abd7de7edee3c2b6",
+   "slot": "Guandao.Light3",
+   "keyframes": 32,
+   "length": 0.5167
+  },
+  "Guandao_Move": {
+   "asset_id": "rbxassetid://81182881857027",
+   "sha256": "2d98589c645546b9e8fd5bbe48e1e7baa052d69bc0921f3ebe28d01104bb8b32",
+   "slot": "Guandao.Move",
+   "keyframes": 10,
+   "length": 0.8
+  },
+  "Guandao_Running": {
+   "asset_id": "rbxassetid://138252931971647",
+   "sha256": "5756649a12aaeb09b5008590d275614919e295aa8f0d7a867e83033a1e6c2681",
+   "slot": "Guandao.Running",
+   "keyframes": 37,
+   "length": 0.6
+  },
+  "Guandao_WeaponArt": {
+   "asset_id": "rbxassetid://76826677130599",
+   "sha256": "2f1571bda3f23b18d7c557b8406d4771b30e683fb83819000b6bd591c5e2ace5",
+   "slot": "Guandao.WeaponArt",
+   "keyframes": 55,
+   "length": 0.9
+  },
+  "HeavenPiercingGuandao_Equip": {
+   "asset_id": "rbxassetid://79035424835727",
+   "sha256": "0d7c86ed059c2305d28218e716c6249e4758385e509766bd37acdf826c599ac6",
+   "slot": "HeavenPiercingGuandao.Equip",
+   "keyframes": 37,
+   "length": 0.6167
+  },
+  "HeavenPiercingGuandao_Guard": {
+   "asset_id": "rbxassetid://73965973781474",
+   "sha256": "2970b1394be162b39e7886d8481441b3bd99fdf927810224c96e37be0578d906",
+   "slot": "HeavenPiercingGuandao.Guard",
+   "keyframes": 7,
+   "length": 2
+  },
+  "HeavenPiercingGuandao_GuardImpact": {
+   "asset_id": "rbxassetid://119434885097125",
+   "sha256": "d461f2a35651c32a390372a5d35f16bece7e196f566f0eb12f20be67566ab625",
+   "slot": "HeavenPiercingGuandao.GuardImpact",
+   "keyframes": 19,
+   "length": 0.35
+  },
+  "HeavenPiercingGuandao_Heavy": {
+   "asset_id": "rbxassetid://98067918079297",
+   "sha256": "6f5e41540b68b54ae83094e8d89818819bdeb3c01b2a5f82e11de5b90174ede7",
+   "slot": "HeavenPiercingGuandao.Heavy",
+   "keyframes": 54,
+   "length": 0.9
+  },
+  "HeavenPiercingGuandao_Idle": {
+   "asset_id": "rbxassetid://130127023005730",
+   "sha256": "d931e311f70718f061a13034acbdf84decb043af412576178fc0ff37f3807e72",
+   "slot": "HeavenPiercingGuandao.Idle",
+   "keyframes": 7,
+   "length": 2.4
+  },
+  "HeavenPiercingGuandao_Light1": {
+   "asset_id": "rbxassetid://133172048576156",
+   "sha256": "e673aa9ef8d28f1b318f7e8a8ef8817549a310fb281416648077b8473e219315",
+   "slot": "HeavenPiercingGuandao.Light1",
+   "keyframes": 27,
+   "length": 0.4333
+  },
+  "HeavenPiercingGuandao_Light2": {
+   "asset_id": "rbxassetid://113742865810885",
+   "sha256": "32eb2216ac5afbe23343b3a4ee38399149c94129c5d05b17495a5fb7cbd2b667",
+   "slot": "HeavenPiercingGuandao.Light2",
+   "keyframes": 27,
+   "length": 0.4333
+  },
+  "HeavenPiercingGuandao_Light3": {
+   "asset_id": "rbxassetid://76694503916486",
+   "sha256": "16c5755cd4fb9f543e2fdcf0e3e7145cbe8661e603ee8ab693972b3a09ad38cc",
+   "slot": "HeavenPiercingGuandao.Light3",
+   "keyframes": 27,
+   "length": 0.4333
+  },
+  "HeavenPiercingGuandao_Move": {
+   "asset_id": "rbxassetid://120740250970684",
+   "sha256": "34194ca35c6aabd81480c4df0e7c106530f87df664d2e89267b99773434bf80f",
+   "slot": "HeavenPiercingGuandao.Move",
+   "keyframes": 10,
+   "length": 0.8
+  },
+  "HeavenPiercingGuandao_Running": {
+   "asset_id": "rbxassetid://104525284973861",
+   "sha256": "d8377f6a26b49b198f697e4ac7bf90108accfbab376fd3adf38ccfc10ee7ff06",
+   "slot": "HeavenPiercingGuandao.Running",
+   "keyframes": 55,
+   "length": 0.9
+  },
+  "HeavenPiercingGuandao_WeaponArt": {
+   "asset_id": "rbxassetid://112910657119156",
+   "sha256": "261ac1936ae884edbb081dd8e17ab6323fe521d7ae244acd79c6a0d9e39a0b3d",
+   "slot": "HeavenPiercingGuandao.WeaponArt",
+   "keyframes": 55,
+   "length": 0.9
+  },
+  "Odachi_Equip": {
+   "asset_id": "rbxassetid://135197977702942",
+   "sha256": "0c5521506475efbbc9842fc6b9fd1755da884669b10df6acc8ab41ae200e334f",
+   "slot": "Odachi.Equip",
+   "keyframes": 37,
+   "length": 0.6167
+  },
+  "Odachi_Guard": {
+   "asset_id": "rbxassetid://70747558788585",
+   "sha256": "c41793420c6e89dfd02d8202a4b3bcd5d36b3bd455695b39cb0960e8747c4cf4",
+   "slot": "Odachi.Guard",
+   "keyframes": 6,
+   "length": 2
+  },
+  "Odachi_GuardImpact": {
+   "asset_id": "rbxassetid://113991716117177",
+   "sha256": "54fdc94e5f82da0e4e691660646af95c52ee4f17df34bdb6b187e0bd96785b91",
+   "slot": "Odachi.GuardImpact",
+   "keyframes": 19,
+   "length": 0.35
+  },
+  "Odachi_Heavy": {
+   "asset_id": "rbxassetid://85392865694319",
+   "sha256": "67521ba0c0d1009c4e759df7e4d7e4df4ed8152550e347fe76d8d9030ddaf366",
+   "slot": "Odachi.Heavy",
+   "keyframes": 63,
+   "length": 1.1
+  },
+  "Odachi_Idle": {
+   "asset_id": "rbxassetid://114573001047718",
+   "sha256": "aadb225817c52ad6473d086051f0c8750a29635bbfab6a6fc4df2fc858918cc6",
+   "slot": "Odachi.Idle",
+   "keyframes": 7,
+   "length": 2.4
+  },
+  "Odachi_Light1": {
+   "asset_id": "rbxassetid://75860464697994",
+   "sha256": "cfba45cac7c628b7ab5c9efb74cf041ea3e0630ddc4c15bd6bc7c75a49bbc677",
+   "slot": "Odachi.Light1",
+   "keyframes": 38,
+   "length": 0.6333
+  },
+  "Odachi_Light2": {
+   "asset_id": "rbxassetid://81552189321610",
+   "sha256": "49b531bad09ac4c618e26e984af6f2faada12a5f1d6c9a6f1824c1aae9dc6ee3",
+   "slot": "Odachi.Light2",
+   "keyframes": 37,
+   "length": 0.6333
+  },
+  "Odachi_Light3": {
+   "asset_id": "rbxassetid://109210126462403",
+   "sha256": "0d83955e45f9b281b27418537849c07ae78c3c8cfd829b3e13d0e6c9222a237b",
+   "slot": "Odachi.Light3",
+   "keyframes": 39,
+   "length": 0.6333
+  },
+  "Odachi_Move": {
+   "asset_id": "rbxassetid://140207015674578",
+   "sha256": "6cd6073c59b8ff691560bda65843bc5dd12735003de7958861eb5137b56383f2",
+   "slot": "Odachi.Move",
+   "keyframes": 10,
+   "length": 0.8
+  },
+  "Odachi_Running": {
+   "asset_id": "rbxassetid://91645812573921",
+   "sha256": "cc14c14f88076187fa857f03a86495b7b1f5ba11e6253c879785fd5812eb29b9",
+   "slot": "Odachi.Running",
+   "keyframes": 63,
+   "length": 1.1
+  },
+  "Odachi_WeaponArt": {
+   "asset_id": "rbxassetid://98000299490632",
+   "sha256": "9ccc86d95687a4be55b2c98221e2b536e82156157aa9ebd17c01d99cb660137e",
+   "slot": "Odachi.WeaponArt",
+   "keyframes": 63,
+   "length": 1.1
+  },
+  "PrayerOfTheDefiled_Equip": {
+   "asset_id": "rbxassetid://85580130698576",
+   "sha256": "2758fd7e4bc093bffb6b8f54d10d183e1ca47824ac877236afebe7f873afa234",
+   "slot": "PrayerOfTheDefiled.Equip",
+   "keyframes": 37,
+   "length": 0.6167
+  },
+  "PrayerOfTheDefiled_Guard": {
+   "asset_id": "rbxassetid://114509683090421",
+   "sha256": "8ee1c66a86e4e2d2a069178bdeecb2376726169de019b97c9a98800ce530b565",
+   "slot": "PrayerOfTheDefiled.Guard",
+   "keyframes": 6,
+   "length": 2
+  },
+  "PrayerOfTheDefiled_GuardImpact": {
+   "asset_id": "rbxassetid://131234149806926",
+   "sha256": "63a88b0c6891d8624c584d6036ed3853ef8e6c524072587604ab73969d2bebe0",
+   "slot": "PrayerOfTheDefiled.GuardImpact",
+   "keyframes": 20,
+   "length": 0.35
+  },
+  "PrayerOfTheDefiled_Heavy": {
+   "asset_id": "rbxassetid://85232167407270",
+   "sha256": "9dd5101966920e2df5611496dfe8286249cc768886c29dfd06a2f18dd6afe0a4",
+   "slot": "PrayerOfTheDefiled.Heavy",
+   "keyframes": 55,
+   "length": 0.9167
+  },
+  "PrayerOfTheDefiled_Idle": {
+   "asset_id": "rbxassetid://113647644024299",
+   "sha256": "76139176a13fdaac3a33f6b0fdaf425011e3d3649737fc2c128f218ea938dd03",
+   "slot": "PrayerOfTheDefiled.Idle",
+   "keyframes": 7,
+   "length": 2.4
+  },
+  "PrayerOfTheDefiled_Light1": {
+   "asset_id": "rbxassetid://136947850613334",
+   "sha256": "aae3023337d48838e125e6e8ac66bbead34741715926164580e962ed03895cb2",
+   "slot": "PrayerOfTheDefiled.Light1",
+   "keyframes": 27,
+   "length": 0.4333
+  },
+  "PrayerOfTheDefiled_Light2": {
+   "asset_id": "rbxassetid://72805604693532",
+   "sha256": "337c42ad8e31931393b4cd83d4b95527e017dd0cc8af0349e14f46d5f6a10760",
+   "slot": "PrayerOfTheDefiled.Light2",
+   "keyframes": 27,
+   "length": 0.4333
+  },
+  "PrayerOfTheDefiled_Light3": {
+   "asset_id": "rbxassetid://120127840832319",
+   "sha256": "f190cdeee59781d89f2fdacb402885a2c853358886de807584708ca079fead8c",
+   "slot": "PrayerOfTheDefiled.Light3",
+   "keyframes": 27,
+   "length": 0.4333
+  },
+  "PrayerOfTheDefiled_Move": {
+   "asset_id": "rbxassetid://94113859837520",
+   "sha256": "4d3d732912cf4db088b93fa3b2138dd942495ab03a7b50d9109ca560929f107b",
+   "slot": "PrayerOfTheDefiled.Move",
+   "keyframes": 7,
+   "length": 0.8
+  },
+  "PrayerOfTheDefiled_Running": {
+   "asset_id": "rbxassetid://73851015538149",
+   "sha256": "1abb9d63a5ee973754987f1c096cad19a2bc7e1c0b7e5c937b17b359c0659c77",
+   "slot": "PrayerOfTheDefiled.Running",
+   "keyframes": 55,
+   "length": 0.9167
+  },
+  "PrayerOfTheDefiled_WeaponArt": {
+   "asset_id": "rbxassetid://82958755851100",
+   "sha256": "fd33f5433bc54de30d394b9de2b42eea0003d2daee039cf72df1ada87de3d6eb",
+   "slot": "PrayerOfTheDefiled.WeaponArt",
+   "keyframes": 54,
+   "length": 0.9167
+  },
+  "TwinDaggers_Equip": {
+   "asset_id": "rbxassetid://87390266416414",
+   "sha256": "831b46d291af9753b67202cd52ec8f095480e2318e5f9a195a5b3058231a64db",
+   "slot": "TwinDaggers.Equip",
+   "keyframes": 36,
+   "length": 0.6167
+  },
+  "TwinDaggers_Guard": {
+   "asset_id": "rbxassetid://136418512496041",
+   "sha256": "e6b90793db7a7d452e04a66bbcb7e86a1d1a67d5f761ab029fa23b3c1d68a1c9",
+   "slot": "TwinDaggers.Guard",
+   "keyframes": 6,
+   "length": 2
+  },
+  "TwinDaggers_GuardImpact": {
+   "asset_id": "rbxassetid://79365690281407",
+   "sha256": "dfdfc6f1d758981b1847b5cd6d089996b189a1da0740b187998d5161bd530f03",
+   "slot": "TwinDaggers.GuardImpact",
+   "keyframes": 18,
+   "length": 0.35
+  },
+  "TwinDaggers_Heavy": {
+   "asset_id": "rbxassetid://106527471680029",
+   "sha256": "de22f872f6d5f2ed9f56612fe4c3d3771aa78e2be6b6d8bdd0a6f4cb2a2d55be",
+   "slot": "TwinDaggers.Heavy",
+   "keyframes": 45,
+   "length": 0.7333
+  },
+  "TwinDaggers_Idle": {
+   "asset_id": "rbxassetid://102445772447092",
+   "sha256": "3e74cbee93629c3218974f68cb2cdc08e42ff7531236ae17e41f9473c7128fd0",
+   "slot": "TwinDaggers.Idle",
+   "keyframes": 7,
+   "length": 2.4
+  },
+  "TwinDaggers_Light1": {
+   "asset_id": "rbxassetid://132109593496761",
+   "sha256": "f733f5dcd9bfaafac6b454247907b2003678f1cdae1cbe17696cbf61cee4d44f",
+   "slot": "TwinDaggers.Light1",
+   "keyframes": 18,
+   "length": 0.2833
+  },
+  "TwinDaggers_Light2": {
+   "asset_id": "rbxassetid://74154289569139",
+   "sha256": "63b15ae7eb9f556e08e6e6ffec489dc2f8ba0a0d35cf18d8bc89f69fa90ba0e9",
+   "slot": "TwinDaggers.Light2",
+   "keyframes": 18,
+   "length": 0.2833
+  },
+  "TwinDaggers_Light3": {
+   "asset_id": "rbxassetid://121674010262861",
+   "sha256": "88ac7fee18092abd63340e16568fa19d60196a9d7385ff1530d8f33953d3462f",
+   "slot": "TwinDaggers.Light3",
+   "keyframes": 18,
+   "length": 0.2833
+  },
+  "TwinDaggers_Light4": {
+   "asset_id": "rbxassetid://132458055401502",
+   "sha256": "30dd44965fca061d6e9e1ad7d46c9fd6701b41e63af2d1eac9c3555e293dff27",
+   "slot": "TwinDaggers.Light4",
+   "keyframes": 18,
+   "length": 0.2833
+  },
+  "TwinDaggers_Move": {
+   "asset_id": "rbxassetid://125385891654116",
+   "sha256": "02c8d5ac2e412cece2a46a2def7357424d8664a4c50e019372bf1c814298bb89",
+   "slot": "TwinDaggers.Move",
+   "keyframes": 6,
+   "length": 0.8
+  },
+  "TwinDaggers_Running": {
+   "asset_id": "rbxassetid://118118844307962",
+   "sha256": "08fe7851a5f1e780b24a681ff4543c805f8b845730bdc7e5c5a1565a44b1577d",
+   "slot": "TwinDaggers.Running",
+   "keyframes": 45,
+   "length": 0.7333
+  },
+  "TwinDaggers_WeaponArt": {
+   "asset_id": "rbxassetid://110146875148769",
+   "sha256": "38e9d672316d22989131bfd9c543df219efc54be608517b7ac8ea828b4e249cc",
+   "slot": "TwinDaggers.WeaponArt",
+   "keyframes": 45,
+   "length": 0.7333
+  },
+  "Unarmed_Equip": {
+   "asset_id": "rbxassetid://137177624015160",
+   "sha256": "42ecb9e2e16b932e9bbf2edf556665ed07ed9adeb9d8c5e219d7a33cccdc7c70",
+   "slot": "Unarmed.Equip",
+   "keyframes": 36,
+   "length": 0.6167
+  },
+  "Unarmed_Guard": {
+   "asset_id": "rbxassetid://117347808015354",
+   "sha256": "d26e9d975b91c395e26f223b2a736fcbbc5bf8d518f043f9da53b2c5992c2d97",
+   "slot": "Unarmed.Guard",
+   "keyframes": 6,
+   "length": 2
+  },
+  "Unarmed_GuardImpact": {
+   "asset_id": "rbxassetid://140072619908862",
+   "sha256": "863fb831d98567e081c19735c9af720657ff1b7662c94830e6833eadb1cf0bd1",
+   "slot": "Unarmed.GuardImpact",
+   "keyframes": 20,
+   "length": 0.35
+  },
+  "Unarmed_Heavy": {
+   "asset_id": "rbxassetid://136787153642362",
+   "sha256": "e9c336574de4e4d765481d8958a6938cec0f2f3e6ccca7f1a5a1577cb93ac836",
+   "slot": "Unarmed.Heavy",
+   "keyframes": 38,
+   "length": 0.6167
+  },
+  "Unarmed_Idle": {
+   "asset_id": "rbxassetid://101974492117556",
+   "sha256": "463081ad96c86ac742bbfa6e635b77a566afd974b63bf6bf7b8f2207303ef20d",
+   "slot": "Unarmed.Idle",
+   "keyframes": 7,
+   "length": 2.4
+  },
+  "Unarmed_Light1": {
+   "asset_id": "rbxassetid://106185106074505",
+   "sha256": "dc5ff1d89c6af819b8507dabaac631b0c40a4fa9cee39d5c558d8d5f8d302e0c",
+   "slot": "Unarmed.Light1",
+   "keyframes": 15,
+   "length": 0.2333
+  },
+  "Unarmed_Light2": {
+   "asset_id": "rbxassetid://131771774487611",
+   "sha256": "debdaccffd91b4d7e44fd0a038cc6eb06be16b5b006677abae9d159be60c7b59",
+   "slot": "Unarmed.Light2",
+   "keyframes": 16,
+   "length": 0.25
+  },
+  "Unarmed_Light3": {
+   "asset_id": "rbxassetid://80463692485498",
+   "sha256": "01eff1cd52ccea581c611530057ca534ef66f2a526ea21752c964f3438883773",
+   "slot": "Unarmed.Light3",
+   "keyframes": 18,
+   "length": 0.2833
+  },
+  "Unarmed_Light4": {
+   "asset_id": "rbxassetid://87766319466664",
+   "sha256": "b7039e462d7af2542b8a7e3455dad341aa913770f64ac8b8a0369bff752d4d4e",
+   "slot": "Unarmed.Light4",
+   "keyframes": 21,
+   "length": 0.3333
+  },
+  "Unarmed_Move": {
+   "asset_id": "rbxassetid://91655621374734",
+   "sha256": "dc4542980175827fbcfa0f620ce9f1b49829b79b3a6f6a4e50a8d369ebd9a559",
+   "slot": "Unarmed.Move",
+   "keyframes": 7,
+   "length": 0.8
+  },
+  "Unarmed_Running": {
+   "asset_id": "rbxassetid://89326840672872",
+   "sha256": "3d6783fc8ba7f9a21b411eea7834d5ff6bf54f3ceea5fd5a4988fc682735fe52",
+   "slot": "Unarmed.Running",
+   "keyframes": 29,
+   "length": 0.4667
+  },
+  "Unarmed_WeaponArt": {
+   "asset_id": "rbxassetid://99505718277592",
+   "sha256": "34d02202bc8e46d9998a6af11b957d6c2c7ff9ce14f64e2bbe7e26deb79186b0",
+   "slot": "Unarmed.WeaponArt",
+   "keyframes": 37,
+   "length": 0.6
+  },
+  "WarFan_Equip": {
+   "asset_id": "rbxassetid://80608378079752",
+   "sha256": "ffc3dd91ad939bc3e5d6a8fd9d4603c486bf4510a555d01d2d49c085d0190002",
+   "slot": "WarFan.Equip",
+   "keyframes": 36,
+   "length": 0.6167
+  },
+  "WarFan_Guard": {
+   "asset_id": "rbxassetid://112130067009952",
+   "sha256": "789628b0632ea887066d9fb752ee30030246b30ebf41993f981d70aa1fc2345a",
+   "slot": "WarFan.Guard",
+   "keyframes": 6,
+   "length": 2
+  },
+  "WarFan_GuardImpact": {
+   "asset_id": "rbxassetid://115441156913645",
+   "sha256": "6d3babf4a53ebc904f4824c9b5a1abc28d2ec78bc7e0847f4d5847a1523da2aa",
+   "slot": "WarFan.GuardImpact",
+   "keyframes": 18,
+   "length": 0.35
+  },
+  "WarFan_Heavy": {
+   "asset_id": "rbxassetid://138560739384272",
+   "sha256": "740eecc2b4280c7acca1168a2701999048582e3307694163a56d803f0d930c26",
+   "slot": "WarFan.Heavy",
+   "keyframes": 46,
+   "length": 0.7667
+  },
+  "WarFan_Idle": {
+   "asset_id": "rbxassetid://119488243103409",
+   "sha256": "8880f58c55560fcbc5333971bf56d8de237b63f4fc62d8311d2361f4a4ddf692",
+   "slot": "WarFan.Idle",
+   "keyframes": 7,
+   "length": 2.4
+  },
+  "WarFan_Light1": {
+   "asset_id": "rbxassetid://93781394509239",
+   "sha256": "b8fdb819d97c1464b860d2f37c4ab183fe3e69460903cb6e48b568ada2b9952e",
+   "slot": "WarFan.Light1",
+   "keyframes": 19,
+   "length": 0.3
+  },
+  "WarFan_Light2": {
+   "asset_id": "rbxassetid://85745957326019",
+   "sha256": "0a7f32854f26635115232602bcdd389b4caee369c29aed8bd4dd4d5f6b7f33d0",
+   "slot": "WarFan.Light2",
+   "keyframes": 19,
+   "length": 0.3
+  },
+  "WarFan_Light3": {
+   "asset_id": "rbxassetid://92314934316030",
+   "sha256": "a847dd8a9a2b16bc4f7c61a632fb52ad61365a020f4332b46ac24816f8cc57bf",
+   "slot": "WarFan.Light3",
+   "keyframes": 19,
+   "length": 0.3
+  },
+  "WarFan_Move": {
+   "asset_id": "rbxassetid://87747368815279",
+   "sha256": "c95054dfeb223d2bd586a99d07ffddbb1488486e7c6aecddae0ddb768d1f4442",
+   "slot": "WarFan.Move",
+   "keyframes": 6,
+   "length": 0.8
+  },
+  "WarFan_Running": {
+   "asset_id": "rbxassetid://121121867722050",
+   "sha256": "75d96d2dbf31ac088c5ee312d2eabed1f4dc1e39d1bd0703e1700753705c8c9f",
+   "slot": "WarFan.Running",
+   "keyframes": 46,
+   "length": 0.7667
+  },
+  "WarFan_WeaponArt": {
+   "asset_id": "rbxassetid://80221363510017",
+   "sha256": "71240603566c62ee81aee40a9900fdcf1734a001262db8b22936dec796d6dbac",
+   "slot": "WarFan.WeaponArt",
+   "keyframes": 46,
+   "length": 0.7667
+  }
+ }
+}

@@ -261,7 +261,7 @@ local function spun(defenderZ: number): string
 	local bRoot = roblox.CFrame.lookAt(roblox.Vector3.new(0, 3.39, defenderZ), roblox.Vector3.new(0, 3.39, 0))
 	local history = Lag.newHistory()
 	for i = -30, 0 do Lag.record(history, T + i * Tempo.TickSeconds, bRoot, roblox.Vector3.zero) end
-	local ea = { Id = 1, Fighter = a, Root = { CFrame = spin, Position = spin.Position }, Model = { GetAttribute = function() return nil end }, Omni = { YawFor = -1 } }
+	local ea = { Id = 1, Fighter = a, Root = { CFrame = spin, Position = spin.Position }, Model = { GetAttribute = function() return nil end }, Omni = { YawFor = -1 }, History = Lag.newHistory() }
 	local eb = { Id = -1, Fighter = b, Root = { CFrame = bRoot, Position = bRoot.Position }, Model = ea.Model, History = history }
 	entities[1], entities[-1] = ea, eb
 	assert(Combat.tryAttack(a, "Light", T))

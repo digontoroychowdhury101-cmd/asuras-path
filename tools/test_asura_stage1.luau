@@ -114,8 +114,8 @@ assert(InputBuffer.discard(buffer, "Block") == 1)
 InputBuffer.clear(buffer)
 assert(InputBuffer.count(buffer) == 0)
 
--- Animation catalog: every slot resolves, weapons fall back to Unarmed; the Jian set and the shared
--- reactions are authored (assets/animations/jian/published.json), everything else is still stock.
+-- Animation catalog: every slot resolves. The Jian set and shared reactions (assets/animations/jian/published.json) and the
+-- other weapon families and shared set pieces (assets/animations/families/published.json) are authored; enemy slots stay stock.
 local customs = 0
 for _, key in Animations.UniversalKeys do
 	customs += if Animations.isCustom(Animations.Universal[key]) then 1 else 0
@@ -128,9 +128,9 @@ end
 for _, key in Animations.WeaponKeys do
 	assert(Animations.isCustom(Animations.Weapons.Jian[key]), "Jian." .. key .. " must be authored")
 end
-assert(customs == 19)
+assert(customs == 138)
 assert(#Animations.pending() == #Animations.UniversalKeys + #Animations.WeaponNames * #Animations.WeaponKeys + #Animations.EnemyKeys - customs)
-assert(Animations.speed(Animations.Weapons.Jian.Light1) == 1 and Animations.speed(Animations.Weapons.Dao.Light1) ~= 1)
+assert(Animations.speed(Animations.Weapons.Jian.Light1) == 1 and Animations.speed(Animations.Weapons.Dao.Light1) == 1)
 for _, weapon in Animations.WeaponNames do
 	for _, key in Animations.WeaponKeys do
 		assert(string.match(Animations.resolve(Animations.weapon(weapon, key)), "^rbxassetid://%d+$"))

@@ -17,6 +17,7 @@ local Schema = require(Shared.Simulation.MoveSchema) :: any
 local Weapons = require(Shared.Simulation.WeaponSchema) :: any
 local Combat = require(Shared.Simulation.CombatRules)
 local Strike = require(Shared.Simulation.StrikeGeometry)
+local Trajectories = require(Shared.Shared.StrikeTrajectories)
 local Contact = require(Shared.Shared.ContactCues)
 local InputBuffer = require(Shared.Simulation.InputBuffer)
 local Tempo = require(Shared.Simulation.Tempo) :: any
@@ -101,7 +102,8 @@ export type Entity = {
 	Cosmetics: any,
 	-- StrikeGeometry facing/air state: press aim and committed yaw (each keyed by Fighter.MoveStart),
 	-- last enemy Face time and the airtime allowances.
-	Omni: { Aim: number?, AimFor: number, Yaw: number?, YawFor: number, LastFace: number, Air: Strike.Air },
+	Omni: { Aim: number?, AimFor: number, Yaw: number?, YawFor: number, LastFace: number, Air: Strike.Air,
+		Blade: any?, BladeFor: string?, BladeScale: number, SweepFor: number?, SweepAt: Vector3? },
 }
 
 type Duel = {
@@ -374,11 +376,18 @@ local function tint(model: Model, rgb: { number })
 	end
 end
 
--- World-space weapon segment for a move at `progress` through its active frames (StrikeGeometry:
--- slashes sweep the authored arc around the root, thrusts extend along the facing; lunge and reach
--- bonus fold into the tip). The client draws the same path from the AsuraStrike record.
-local function weaponSegment(rootCFrame: CFrame, move: Combat.MoveData, progress: number, bonus: number): (Vector3, Vector3)
-	local ax, ay, az, bx, by, bz = Strike.segment(move, progress, bonus)
+-- World-space weapon segment for a move at `progress` through its active frames: the visible blade baked from the
+-- clip this fighter plays (StrikeTrajectories, chosen at commit) where there is one, otherwise StrikeGeometry's
+-- generic path (slashes sweep the authored arc around the root, thrusts extend along the facing; lunge and reach bonus
+-- fold into the tip). The client draws the same path, so no client pose decides a hit.
+local function weaponSegment(rootCFrame: CFrame, move: Combat.MoveData, progress: number, bonus: number, omni: any?): (Vector3, Vector3)
+	local blade = if omni and omni.BladeFor == move.Id then omni.Blade else nil
+	local ax, ay, az, bx, by, bz
+	if blade then
+		ax, ay, az, bx, by, bz = Trajectories.segment(blade, progress, bonus, omni.BladeScale)
+	else
+		ax, ay, az, bx, by, bz = Strike.segment(move, progress, bonus)
+	end
 	return rootCFrame:PointToWorldSpace(Vector3.new(ax, ay, az)), rootCFrame:PointToWorldSpace(Vector3.new(bx, by, bz))
 end
 
@@ -556,7 +565,7 @@ local function newEntity(id: number, kind: EntityKind, player: Player?, model: M
 		Elo = 1000,
 		Vip = false,
 		Cosmetics = nil,
-		Omni = { Aim = nil, AimFor = -1, Yaw = nil, YawFor = -1, LastFace = 0, Air = Strike.newAir() },
+		Omni = { Aim = nil, AimFor = -1, Yaw = nil, YawFor = -1, LastFace = 0, Air = Strike.newAir(), Blade = nil, BladeFor = nil, BladeScale = 1, SweepFor = nil, SweepAt = nil },
 	}
 	e.Eligible = eligibleFor(e)
 	e.Buffer.OnDrop = function(seq: number, action: string, status: string)
@@ -1204,6 +1213,10 @@ local function commitStrike(e: Entity)
 	local actual = yawOf(e.Root.CFrame)
 	local aim = if omni.AimFor == f.MoveStart and omni.Aim then omni.Aim :: number else actual
 	omni.Yaw, omni.YawFor = Strike.commit(aim, actual, move.Timing.StartupSeconds), f.MoveStart
+	local definition = e.Model:GetAttribute("AsuraDefinition")
+	-- A boss plays its own clips (BossAnimations), so a weapon's baked blade does not describe its swing.
+	omni.Blade = if e.Boss then nil else Trajectories.forFighter(move.Id, if type(definition) == "string" then definition else nil)
+	omni.BladeFor, omni.BladeScale = move.Id, e.Model:GetScale()
 	if e.Kind == "Enemy" then
 		e.Root.CFrame = strikeFrame(e)
 	end
@@ -1218,14 +1231,19 @@ end
 -- the order fighters are visited in never changes an outcome (two fighters striking each other trade). A
 -- contact on a player who could still deflect or dash waits up to that player's grace for a press stamped
 -- at or before t_c; nothing pressed after t_c changes it, and nothing waits longer than GRACE_CAP.
--- Facing at the rewound instant the geometry was tested at, so state, facing and position describe one moment.
+-- Which clock governs what (TIMING_CONTRACT §5.1, Stage 3): the sweep is the attacker's view, the attacker's live
+-- swing against the defender as that attacker saw it (`at`, at most Lag.MAX_REWIND back). Guard facing is one real
+-- instant, `at`: where the defender faced and where the attacker stood at that same moment, both from history. A
+-- bearing built from a rewound defender and a present attacker never existed, and let a circling attacker read as
+-- flanking a defender who was still square to them. Falls back to present-time readings only without history.
 local function facingAt(defender: Entity, attacker: Entity, at: number): number
-	local pose = Lag.samplePoseAt(defender.History, at)
-	if pose == nil then
+	local defenderThen = Lag.samplePoseAt(defender.History, at)
+	if defenderThen == nil then
 		return facingDot(defender, attacker)
 	end
-	local look = flatUnit(pose.LookVector)
-	return look:Dot(flatUnit(attacker.Root.Position - pose.Position))
+	local attackerThen = Lag.samplePoseAt(attacker.History, at)
+	local attackerPosition = if attackerThen then attackerThen.Position else attacker.Root.Position
+	return flatUnit(defenderThen.LookVector):Dot(flatUnit(attackerPosition - defenderThen.Position))
 end
 
 type Contact = {
@@ -1279,6 +1297,8 @@ end
 
 -- Sweeps the attacker's blade over this tick. Each defender is contacted once per swing (the HitRegistry
 -- claim). Contacts go to `found` when given, else resolve at once.
+local MAX_SWEEP_TRAVEL = 6 -- studs in one tick: faster than any dash
+
 local function resolveContacts(attacker: Entity, now: number, found: { Contact }?)
 	local f = attacker.Fighter
 	local move = f.Move
@@ -1289,8 +1309,18 @@ local function resolveContacts(attacker: Entity, now: number, found: { Contact }
 	end
 	local previous = math.max(0, progress - TICK / math.max(move.Timing.ActiveSeconds, TICK))
 	local rootCFrame = strikeFrame(attacker)
-	local prevA, prevB = weaponSegment(rootCFrame, move, previous, f.ReachBonus)
-	local curA, curB = weaponSegment(rootCFrame, move, progress, f.ReachBonus)
+	-- The previous sample stands where the body was one tick ago, so the sweep covers what the blade crossed while the
+	-- root moved (a dash-cancelled swing, an arena push). A teleport is not a sweep.
+	local omni: any = attacker.Omni
+	local rootBefore = rootCFrame
+	if omni then
+		if omni.SweepFor == f.MoveStart and omni.SweepAt and (omni.SweepAt - rootCFrame.Position).Magnitude < MAX_SWEEP_TRAVEL then
+			rootBefore = rootCFrame.Rotation + omni.SweepAt
+		end
+		omni.SweepFor, omni.SweepAt = f.MoveStart, rootCFrame.Position
+	end
+	local prevA, prevB = weaponSegment(rootBefore, move, previous, f.ReachBonus, omni)
+	local curA, curB = weaponSegment(rootCFrame, move, progress, f.ReachBonus, omni)
 	local radius = weaponRadius(f)
 	local player = attacker.Player
 	local rewindTo = if player then Lag.rewindTime(now, nil, player:GetNetworkPing()) else now
@@ -1364,7 +1394,10 @@ local function annotateWhiffs(from: number)
 		local e = if event.Kind == "Whiff" then entities[event.Source] else nil
 		local move = e and e.Fighter.Move
 		if e and move then
-			local reach = move.Reach + e.Fighter.ReachBonus + move.Lunge * 0.35
+			local omni: any = e.Omni
+			local blade = if omni.BladeFor == move.Id then omni.Blade else nil
+			local reach = if blade then Trajectories.reach(blade, e.Fighter.ReachBonus, omni.BladeScale)
+				else move.Reach + e.Fighter.ReachBonus + move.Lunge * 0.35
 			local best, gap = nil :: Entity?, math.huge
 			for _, other in entities do
 				if other ~= e and other.Fighter.State ~= "KO" and alive(other) and hostile(e, other) then
@@ -1375,7 +1408,7 @@ local function annotateWhiffs(from: number)
 			if best and gap <= Contact.NoticeRange then
 				event.Target, event.Value = best.Id, gap
 			end
-			local _, tip = weaponSegment(strikeFrame(e), move, 1, e.Fighter.ReachBonus)
+			local _, tip = weaponSegment(strikeFrame(e), move, 1, e.Fighter.ReachBonus, omni)
 			eventPoints[event] = tip
 		end
 	end

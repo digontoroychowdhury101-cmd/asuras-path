@@ -639,6 +639,7 @@ do
 	-- Rejected: the root returns to its start, the drive stops.
 	state, root, fighter, publish = rig()
 	assert(state:Predict(7, "Dash", 1, 0))
+	state:Step(TICK); clock += 0.1 -- the drive commands 6.4 studs over this time; the body gets to x = 6 under it
 	root.CFrame = roblox.CFrame.new(6, 3, 0)
 	setIntent("6:Executed:Light:3;7:Rejected:Exhausted:4")
 	check("T-PR-02 a rejected dash returns the root to its start", planar(root) < 1e-6 and state.Predicted == nil and state.DashEnds == 0)
@@ -647,8 +648,9 @@ do
 	-- Unconfirmed: rolled back after CONFIRM_TIMEOUT.
 	state, root, fighter, publish = rig()
 	assert(state:Predict(8, "Roll", 1, 0))
+	state:Step(TICK); clock += 0.14
 	root.CFrame = roblox.CFrame.new(4, 3, 0)
-	clock += Prediction.CONFIRM_TIMEOUT + 0.05
+	clock += Prediction.CONFIRM_TIMEOUT - 0.09
 	publish()
 	state:Step(TICK)
 	check("T-PR-02 an unconfirmed dash is rolled back after the timeout", planar(root) < 1e-6 and state.Predicted == nil)

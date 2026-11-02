@@ -46,6 +46,31 @@ Evidence classes: **O** = offline fixture (the real server and client modules un
 | A10 / T-MX-08 remote windups | — | **NOT RUN** | Needs an observer client (Stage 4). |
 | T-MP / T-MX-07 two-client | — | **BLOCKED** until Stage 4 | Multiplayer is not verified. |
 
+## Stage 3 Mac runs (2 November 2026)
+
+Classes: **O** offline fixture (real modules under Lune with fake engine services); **D** seeded Studio diagnostic, single client, Studio-injected input, never ordinary human input. `B-03`'s tool `tools/combat_anim_coverage.luau` was replaced by `tools/animation/coverage.py`.
+
+| ID | Class | Status | Result |
+|---|---|---|---|
+| `bash tools/verify_all.sh` | O | **PASS** | 14 steps, no skips. `mac-stage3/verify_all.log` |
+| `tools/test_stage3_motion.luau` | O | **PASS** | 214/214: T-FC, T-RB, T-AN, T-HS, T-FW, T-CT |
+| `test_stage2_timing`, `test_stage2_closure` | O | **PASS** | 111/111, 56/56 |
+| `test_combat_contact`, `test_omni_combat`, `test_boss_presentation`, `test_cast_visuals` | O | **PASS** | 68, 84, 232, 48 |
+| `tools/qa/mutation_stage3.py` | O | **PASS** | 11 of 11 restored defects caught |
+| Analyzer | Static | **Separate outcome** | New hybrid modules report only missing engine globals and require paths, an environment limit. `WeaponSchema` union errors reached through `LocalPrediction`: file not changed in this batch. Not a pass. |
+| Clip read-back | D | **PASS** | 189/189 ids load with keyed poses. Loads only, not quality. |
+| Source digest in Studio | D | **PASS** | `scripts 272 bytes 2141351 digest 358582538` |
+| mac_s3_run1 | D | A1 **FAIL**, rest recorded | Earlier build. 60 fps, focus 1.0. First motion 50 ms. One click unsent; seq 7 pose and seq 10 receipt missing. |
+| mac_s3_run2_chains | D | Partial | Earlier build. Focus 0.893, throttled from 9.41 s. Found the restart gap, since fixed. |
+| mac_s3_run3_control | D | Control | Earlier build. Transition off, 15 fps. Clip pops ≥0.25 stud at once. |
+| mac_s3_run4_final | D | Recorded | Final source. p50 16.7, p95 66.9 ms; 66 ms frames until ~10.6 s, ~17 ms after. Seq 1–6 chain; seq 5 expired honestly; one click unsent. |
+| mac_s3_run5_dao_seeded | D | Recorded | Dao by seeded equip, 15 fps. Dao clips play, one start per traced press; repeats of the same track while still playing raise no start row. |
+| mac_s3_run6_final_foreground | D | Recorded | Focus attribute 1.0 yet 15 fps. Seq 3, 6 Unpredicted near link edges, seq 7 pose missing. |
+| T-FW real slopes, walls, knockback | Studio | **NOT RUN** | Windows W-07, W-08 |
+| Two-client, network simulation, ordinary input | Real | **NOT RUN** | pending — other computer |
+
+**Frame-rate note:** on this Mac the frame rate followed whether Studio was really in front, not the `WindowFocused` state: runs 3 and 6 reported focus 1.0 at 15 fps, and run 4 reported unfocused at 60 fps. Read frame times, not the focus share.
+
 ## Acceptance cases to build (Stages 2–5)
 
 | ID | Case | Class | Target | Stage | Status |

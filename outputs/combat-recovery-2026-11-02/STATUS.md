@@ -4,7 +4,7 @@
 |---|---|---|
 | 1 Baseline, research, specification | **Done** (specification and offline evidence). Live pipeline measurements are BLOCKED and carried into Stage 4. | 2026-11-02 |
 | 2 Timing, input and parry | **Done, closure pass applied** (implementation, offline fixtures and seeded single-client Studio diagnostics on digest-verified builds). Multiplayer is **not** verified; that is Stage 4. Pending: rejected-dash correction against real Studio walls and slopes; A1 is not met on the changed-pose measure. | 2026-11-02 |
-| 3 Animation, footwork and contact | Not started | — |
+| 3 Animation, footwork and contact | **Mac implementation complete; not accepted.** Runtime, multiplayer and feel gates are in `MAC_TO_WINDOWS.md`. Combat is not declared fixed. | 2026-11-02 |
 | 4 Real multiplayer verification | Not started | — |
 | 5 Feel acceptance and handoff | Not started | — |
 
@@ -58,14 +58,25 @@ Full tables: `closure/CLOSURE.md`. Old-code results: `closure/before_d6440f8.md`
 - The redirect budget (T-MX-04) and string seams are undecided.
 - Borrowed Force remains a proposal only.
 
+## Stage 3 Mac summary (2 November 2026)
+
+Mac implementation complete is not Stage 3 accepted, multiplayer verified or combat fixed.
+
+**Done in running code:** facing read at one instant; refused dash takes back only its own travel and velocity; predicted dash and L1→L4 start the frame of the press and are adopted by intent; bounded phase correction [0.75, 1.5]× with per-move phases replaces seats and 2× catch-up; one playback owner (`PlaybackScale`, `FighterAnimations`); pose inertialization, foot contact and one Transform writer (`ActorPose`, `FootStep`); baked hilt/tip blade data shared by server sweep, trail and presented step (`StrikeTrajectories`); root travel between sweep samples; 119 family and universal clips authored, published and read back, so all 12 weapon entries play clips; generated `ANIMATION_COVERAGE.md`; `THIRD_PARTY_NOTICES.md`.
+
+**Measured here (Mac, Studio 0.745, 1271×685, quality Automatic; seeded diagnostic with Studio-injected input, single client):**
+- L1 from idle at 60 fps (run 1, earlier build, same first-motion code): changed pose ≥0.25 stud at **50 ms** (3 frames), against 85 ms at ~24 fps in closure. **A1 (≤1 frame) still FAIL on that threshold.** Hand moves 0.018 stud at 17 ms. Control run: the clip itself pops ≥0.25 stud at once, so no authored windup caused the gap; what is left is the inertialization's smoothing. Threshold unchanged; `HALFLIFE` is a decision for Windows.
+- Predicted L1→L4 at 200 ms spacing (run 4): each one Predicted, occurrence ≤0.4 ms, one track start per intent. Those rows ran at 15→60 fps as the session changed state, so their pose times are not a clean 60 fps result.
+- Dash at 60 fps (run 4): occurrence ≤0.6 ms, small pose motion ≤18 ms, press to ack ≈50–65 ms.
+- Dao clips confirmed playing with the seeded equip (run 5, 15 fps).
+- Blade reach and arc are smaller than the old volume on several moves: an evidenced balance change awaiting human judgment (`MAC_TO_WINDOWS.md`).
+
+**Offline:** `verify_all.sh` PASS with no skipped suite (`mac-stage3/verify_all.log`); Stage 3 214/214, both Stage 2 suites green; 11 of 11 restored defects caught (`mac-stage3/mutation_checks.json`). Two were missed at first, and T-HS-06 and T-CT-13/14 were added for them. Fake-engine passes say nothing about real geometry.
+
+**Not done here:** real walls, slopes, knockback; high frame rate under scheduled clicks; two-client anything; full-world performance; human judgment of any motion. Borrowed Force is not implemented.
+
 ## Files
 `BASELINE.md`, `DESIGN_INTENT.md`, `DEFECT_LEDGER.md`, `RESEARCH.md`, `INTEGRATION_MAP.md`, `TIMING_CONTRACT.md`, `TEST_MATRIX.md`, `results.json`, `frame_table.md`, `frame_table_stage2.md`, `anim_coverage_baseline.md`, `logs/` (Stage 1 baseline log and Stage 2 `before_*`/`after_*` client, server and summary JSON), `places/` (the generated `stage2_before_be08811.rbxlx`, `stage2_after.rbxlx`, `stage2_after_fix.rbxlx` and `stage2_closure.rbxlx` test places), `closure/` (closure-pass results and before-probe). Stage 1 tools: `tools/combat_frame_table.luau`, `tools/combat_anim_coverage.luau`. Stage 2 tools: `tools/test_stage2_timing.luau` (111 checks), `tools/qa/Stage2Timing.{server,client}.luau` (QA probes, injected only and never mapped), `tools/qa/stage2_timing_report.py`, `tools/qa/place_script_diff.py`.
 
-## Next session (Stage 3)
-Start from `TIMING_CONTRACT.md` §7–§8 and `INTEGRATION_MAP.md` I-1, I-3, I-4 and the animation half of I-2:
-- Replace the `DRIFT` seat and the 2× catch-up with bounded rate correction.
-- Add the pose inertializer for combo links and give `FighterAnimations` sole ownership of hitstop speed.
-- Restart same-move swings by `ActionSeq`, then fix the probe so it records restarts.
-- Start the predicted dash's animation occurrence locally, and bring the changed pose to the first frame (A1). Use probe v2's changed-pose measure, not the track-start proxy.
-- Author or validate clips for the 10 silent families, and bake the blade trajectories.
-- Leave the two-client measurements to Stage 4. Do not implement Borrowed Force without explicit approval.
+## Next session (Windows)
+Start from `MAC_TO_WINDOWS.md` and `outputs/combat-recovery-prompts-2026-11-02/03B_WINDOWS_VERIFY_AND_COMPLETE.md`. Do not implement Borrowed Force without explicit approval.

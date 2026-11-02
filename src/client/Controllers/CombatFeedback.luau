@@ -3,6 +3,7 @@ local Players = game:GetService("Players")
 local Lighting = game:GetService("Lighting")
 local Schema = require(game:GetService("ReplicatedStorage").AsurasPath.Simulation.MoveSchema) :: any
 local Comfort = require(game:GetService("ReplicatedStorage").AsurasPath.Shared.EffectsPreference) :: any
+local PlaybackScale = require(script.Parent.PlaybackScale)
 local Feedback = {}
 Feedback.__index = Feedback
 local HITSTOP: { [string]: number } = {
@@ -14,6 +15,7 @@ local HITSTOP: { [string]: number } = {
 	StanceBreak = 0.07,
 	Deathblow = 0.08,
 }
+local DUPLICATE_CUE = 0.03 -- one contact can raise several events; between the same two bodies they are one stop
 local WEIGHT: { [string]: number } = {
 	Hit = 0.18,
 	Armored = 0.12,
@@ -70,27 +72,23 @@ function Feedback.new(state: any, camera: any): any
 		vignetteEdge(gui, "Top", UDim2.fromScale(1, 0.3), UDim2.fromScale(0, 0), 90),
 		vignetteEdge(gui, "Bottom", UDim2.fromScale(1, 0.3), UDim2.fromScale(0, 0.7), 270),
 	}
-	return setmetatable({ State=state, Camera=camera, Blur=blur, Vignette=gui, VignetteEdges=edges, Frozen={}, Tier="None" }, Feedback)
+	return setmetatable({ State=state, Camera=camera, Blur=blur, Vignette=gui, VignetteEdges=edges, Stops={}, Tier="None" }, Feedback)
 end
-local function animator(model: Model): Animator?
-	local humanoid = model:FindFirstChildOfClass("Humanoid")
-	return if humanoid then humanoid:FindFirstChildOfClass("Animator") else nil
-end
-function Feedback.HitStop(self: any, models: { Model }, duration: number)
-	local release = os.clock() + duration
-	for _, model in models do
-		local anim = animator(model)
-		if anim then
-			for _, track in anim:GetPlayingAnimationTracks() do
-				local frozen = self.Frozen[track]
-				if frozen then
-					frozen.Until = math.max(frozen.Until, release)
-				else
-					self.Frozen[track] = { Track = track, Speed = track.Speed, Until = release }
-					track:AdjustSpeed(0)
-				end
-			end
+-- Asks each body's playback owner to freeze its action layer. The owner keeps the clip on the server's timeline, so
+-- the frozen time is repaid afterward at a bounded rate; the server's clocks and the body's movement do not stop.
+function Feedback.HitStop(self: any, models: { Model }, duration: number, pair: string?)
+	local now = os.clock()
+	if pair then
+		local stop = self.Stops[pair]
+		if stop and now - stop.At < DUPLICATE_CUE then
+			duration = math.max(duration, stop.Duration)
+			now = stop.At
+		else
+			self.Stops[pair] = { At = now, Duration = duration }
 		end
+	end
+	for _, model in models do
+		PlaybackScale.request(model, "HitStop", 0, now + duration)
 	end
 end
 function Feedback.Event(self: any, event: any, direction: Vector3)
@@ -100,17 +98,14 @@ function Feedback.Event(self: any, event: any, direction: Vector3)
  for _, actorId in {event.Source, event.Target} do
   local e = self.State:Get(actorId); if e then table.insert(models, e.Model) end
  end
- if HITSTOP[event.Kind] then self:HitStop(models, HITSTOP[event.Kind]) end
+ if HITSTOP[event.Kind] then self:HitStop(models, HITSTOP[event.Kind], event.Source .. ":" .. event.Target) end
  if WEIGHT[event.Kind] then self.Camera:Impulse(direction, WEIGHT[event.Kind] * (if event.Target == id then 1 else 0.6), FOV_PUNCH[event.Kind]) end
 end
 function Feedback.Update(self: any, dt: number)
 	local now = os.clock()
-	for track, frozen in self.Frozen do
-		if now >= frozen.Until then
-			self.Frozen[track] = nil
-			if track.IsPlaying then
-				track:AdjustSpeed(frozen.Speed)
-			end
+	for pair, stop in self.Stops do
+		if now - stop.At > 1 then
+			self.Stops[pair] = nil
 		end
 	end
 	local snapshot = self.State:OwnSnapshot()
@@ -139,7 +134,7 @@ function Feedback.Update(self: any, dt: number)
 	end
 end
 function Feedback.Destroy(self: any)
- for track, frozen in self.Frozen do if track.IsPlaying then track:AdjustSpeed(frozen.Speed) end end
+ PlaybackScale.clear("HitStop")
  table.clear(self.Frozen); self.Blur:Destroy(); self.Vignette:Destroy()
  self.Camera:SetHeadTrauma("None"); self.Camera:SetFovClamp(0); self.Camera:SetSway(0)
 end

@@ -55,6 +55,18 @@ function CM.PointToWorldSpace(c, v) return c.P + apply(c.R, v) end
 function CM.PointToObjectSpace(c, v) return apply(transpose(c.R), v - c.P) end
 function CM.VectorToWorldSpace(c, v) return apply(c.R, v) end
 function CM.VectorToObjectSpace(c, v) return apply(transpose(c.R), v) end
+function CM.ToAxisAngle(c)
+	local r = c.R
+	local angle = math.acos(math.clamp((r[1] + r[5] + r[9] - 1) * 0.5, -1, 1))
+	if angle < 1e-6 then return v3(0, 0, 1), 0 end
+	local x, y, z = r[8] - r[6], r[3] - r[7], r[4] - r[2]
+	local s = math.sqrt(x * x + y * y + z * z)
+	if s < 1e-6 then -- 180 degrees: the axis is the largest diagonal column
+		local ax, ay, az = math.sqrt(math.max((r[1] + 1) * 0.5, 0)), math.sqrt(math.max((r[5] + 1) * 0.5, 0)), math.sqrt(math.max((r[9] + 1) * 0.5, 0))
+		return v3(ax, ay, az), angle
+	end
+	return v3(x / s, y / s, z / s), angle
+end
 function CM.GetComponents(c) local r = c.R; return c.P.X, c.P.Y, c.P.Z, r[1], r[2], r[3], r[4], r[5], r[6], r[7], r[8], r[9] end
 CM.components = CM.GetComponents
 function CM.ToEulerAnglesXYZ(c) local r = c.R; return math.atan2(-r[6], r[9]), math.asin(math.clamp(r[3], -1, 1)), math.atan2(-r[2], r[1]) end

@@ -82,7 +82,11 @@ table.insert(connections, RunService.RenderStepped:Connect(function(dt)
 	if root and hand then
 		local offset = root.CFrame:PointToObjectSpace(hand.Position)
 		local p = root.Position
-		table.insert(poses, { t = round(t), h = { round(offset.X), round(offset.Y), round(offset.Z) }, r = { round(p.X), round(p.Z) } })
+		-- The foot channel (Stage 3) is what a dodge moves: its hand barely leaves the root.
+		local foot = character:FindFirstChild("RightFoot") or character:FindFirstChild("Right Leg")
+		local down = if foot then root.CFrame:PointToObjectSpace(foot.Position) else Vector3.zero
+		table.insert(poses, { t = round(t), h = { round(offset.X), round(offset.Y), round(offset.Z) }, r = { round(p.X), round(p.Z) },
+			f = { round(down.X), round(down.Y), round(down.Z) } })
 	end
 	local humanoid = character and character:FindFirstChildOfClass("Humanoid")
 	local animator = humanoid and humanoid:FindFirstChildOfClass("Animator")

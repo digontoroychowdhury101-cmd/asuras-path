@@ -22,6 +22,8 @@ record). Four presentation measures are kept apart and named for what they are:
   occurrence_ms         the animation layer starts or adopts the occurrence for this intent (trace)
   track_start_proxy_ms  first new Action-priority track after the press (Stage 2's "2 ms" figure: a proxy)
   pose_change_ms        first frame the right hand moved >= 0.25 stud relative to the root
+  pose_small_ms         first frame the right hand moved >= 0.01 stud (genuine small motion, Stage 3; idle breathing is ~0.001 a frame); the 0.25 figure
+                        stays the contract's threshold, the gap between them is authored anticipation
   body_move_ms          first frame the root moved >= 0.25 stud horizontally (dash and roll presses)
 Each is a RenderStepped reading before that frame renders (display latency excluded). Missing values stay
 null with a reason, and each summary lists n, missing, every value and the outliers.
@@ -47,10 +49,18 @@ def pct(values, q):
 
 
 def fetch(client, sid, dm, code):
-    ok, text = client.call('execute_luau', {'studio_id': sid, 'datamodel_type': dm, 'code': code})
-    if not ok or not text.strip() or text.strip() == 'nil':
-        raise SystemExit(f'{dm} probe not ready: {text[:200]}')
-    return json.loads(text)
+    # Studio truncates one tool result at 100,000 characters, so a long probe log comes back in pieces.
+    expr = code.removeprefix('return ')
+    parts, start = [], 1
+    while True:
+        chunk = f'local v = {expr}; return v and string.sub(v, {start}, {start + 80000 - 1}) or nil'
+        ok, text = client.call('execute_luau', {'studio_id': sid, 'datamodel_type': dm, 'code': chunk})
+        if not ok or (start == 1 and (not text.strip() or text.strip() == 'nil')):
+            raise SystemExit(f'{dm} probe not ready: {text[:200]}')
+        parts.append(text)
+        if len(text) < 80000:
+            return json.loads(''.join(parts))
+        start += 80000
 
 
 def terminal(server, seq):
@@ -64,6 +74,7 @@ def terminal(server, seq):
 
 
 POSE_STUDS = 0.25
+POSE_SMALL_STUDS = 0.01
 SENT_MATCH = {'Light': {'Light', 'RunningAttack'}, 'Heavy': {'Heavy'}, 'Dash': {'Dash', 'Roll'}, 'Deflect': {'Deflect'}}
 
 
@@ -110,7 +121,7 @@ def analyse_v2(c, s, label, foreground):
         track = first_after(c['starts'], press['t'])
         row['track_start_proxy_ms'] = round((track['t'] - press['t']) * 1000, 1) if track else None
         before = next((q for q in reversed(poses) if q['t'] < press['t']), None)
-        pose = body = None
+        pose = body = small = None
         if before:
             def hand_moved(q):
                 return sum((a - b) ** 2 for a, b in zip(q['h'], before['h'])) ** 0.5 >= POSE_STUDS
@@ -118,9 +129,14 @@ def analyse_v2(c, s, label, foreground):
             def root_moved(q):
                 return ((q['r'][0] - before['r'][0]) ** 2 + (q['r'][1] - before['r'][1]) ** 2) ** 0.5 >= POSE_STUDS
             pose = first_after(poses, press['t'], hand_moved)
+            small = first_after(poses, press['t'], lambda q: sum((a - b) ** 2 for a, b in zip(q['h'], before['h'])) ** 0.5 >= POSE_SMALL_STUDS)
             if press['kind'] == 'Dash':
                 body = first_after(poses, press['t'], root_moved)
         row['pose_change_ms'] = round((pose['t'] - press['t']) * 1000, 1) if pose else None
+        row['pose_small_ms'] = round((small['t'] - press['t']) * 1000, 1) if small else None
+        if before and 'f' in before:
+            foot = first_after(poses, press['t'], lambda q: sum((a - b) ** 2 for a, b in zip(q['f'], before['f'])) ** 0.5 >= POSE_STUDS)
+            row['foot_change_ms'] = round((foot['t'] - press['t']) * 1000, 1) if foot else None
         row['body_move_ms'] = round((body['t'] - press['t']) * 1000, 1) if body else None
         seen = client_ack.get(str(seq))
         row['press_to_ack_seen_ms'] = round((seen['t'] - press['t']) * 1000, 1) if seen else None
@@ -146,7 +162,7 @@ def analyse_v2(c, s, label, foreground):
         'server_moves': [{'entered': st['entered'], 'state': st['state'], 'move': st.get('move'), 'intent': st.get('intent')}
                          for st in s['states'] if st['state'] in ('Startup', 'Dashing', 'Deflecting')],
     }
-    for key in ('press_to_ack_seen_ms', 'receipt_to_start_ms', 'occurrence_ms', 'track_start_proxy_ms', 'pose_change_ms', 'body_move_ms'):
+    for key in ('press_to_ack_seen_ms', 'receipt_to_start_ms', 'occurrence_ms', 'track_start_proxy_ms', 'pose_small_ms', 'pose_change_ms', 'foot_change_ms', 'body_move_ms'):
         relevant = [r for r in rows if r['seq'] is not None and (key != 'body_move_ms' or r['kind'] == 'Dash')]
         summary[key] = describe([r[key] for r in relevant if r.get(key) is not None],
                                 [r['seq'] for r in relevant if r.get(key) is None])

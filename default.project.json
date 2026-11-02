@@ -208,6 +208,15 @@
           "AnimationCatalog": {
             "$path": "src/shared/AnimationCatalog.luau"
           },
+          "StrikeTrajectories": {
+            "$path": "src/shared/StrikeTrajectories.luau"
+          },
+          "StrikeTrajectoryData": {
+            "$path": "src/shared/StrikeTrajectoryData.luau"
+          },
+          "AnimationFamilyIds": {
+            "$path": "src/shared/AnimationFamilyIds.luau"
+          },
           "IntentProtocol": {
             "$path": "src/infrastructure/IntentProtocol.luau"
           },
@@ -342,6 +351,12 @@
           "$className": "Folder",
           "Tempo": {
             "$path": "src/simulation/Tempo.luau"
+          },
+          "AnimationTiming": {
+            "$path": "src/simulation/AnimationTiming.luau"
+          },
+          "FootStep": {
+            "$path": "src/simulation/FootStep.luau"
           },
           "MoveSchema": {
             "$path": "src/simulation/MoveSchema.luau"
@@ -785,6 +800,12 @@
             },
             "GameFeelController": {
               "$path": "src/client/Controllers/GameFeelController.luau"
+            },
+            "PlaybackScale": {
+              "$path": "src/client/Controllers/PlaybackScale.luau"
+            },
+            "ActorPose": {
+              "$path": "src/client/Controllers/ActorPose.luau"
             },
             "SkinWeaponFx": {
               "$path": "src/client/Controllers/SkinWeaponFx.luau"

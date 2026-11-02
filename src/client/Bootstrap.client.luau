@@ -207,7 +207,10 @@ end
 
 table.insert(connections, script.Destroying:Connect(destroy))
 table.insert(connections, RunService.PreSimulation:Connect(function(dt: number)
-	if alive then movement:Step(math.min(dt, Config.Movement.MaxFrameDelta)) end
+	if alive then
+		movement:Step(math.min(dt, Config.Movement.MaxFrameDelta))
+		feel:PostAnimate(math.min(dt, Config.Movement.MaxFrameDelta)) -- the Animator has written this frame's pose; physics has not run
+	end
 end))
 
 -- One ordered frame after the engine camera: input -> dash execution -> camera -> feel -> HUD.

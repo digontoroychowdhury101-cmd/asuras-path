@@ -20,6 +20,22 @@ This is the minimum coherent set: one transition and foot-contact technique, one
 
 No third-party code or expressions were used in Stage 2, so `THIRD_PARTY_NOTICES.md` is still not needed; it is due when I-1, I-2 or I-3 code lands.
 
+## Stage 3 landing (Mac, 2 November 2026)
+
+Verified pins, licenses and text are in `THIRD_PARTY_NOTICES.md`. Local tests are in `tools/test_stage3_motion.luau`; each passed offline only.
+
+| Upstream symbol @ pin | Local code | Test / evidence |
+|---|---|---|
+| Orange Duck `spring.h decay_spring_damper_exact`, `damp_adjustment_exact` @ `57b7250` | `AnimationTiming` (`decay`, correction) | T-AN-32..35, mutation "phase correction uncapped" |
+| Orange Duck `spring.h inertialize_transition/update` @ `57b7250`; offset form from JLPM22 `Inertialization.cs` @ `35fc8ee` | `ActorPose` transition | T-AN-40..42; run 3 control |
+| Orange Duck `controller.cpp adjust_character_position_by_velocity` @ `57b7250` | `AnimationTiming` rate cap relative to current motion | T-AN-32 |
+| Orange Duck `controller.cpp contact_update`, `ik_two_bone` @ `57b7250` | `FootStep` unlock radius; `ActorPose` two-bone solve | T-FW-04..09 |
+| ALS-Refactored `AlsAnimationInstance.cpp RefreshFootLock` @ `b754d6f` | `FootStep` lock rules; `ActorPose` pelvis offset | T-FW-04, mutation "feet never unlock" |
+| Overgrowth `aschar.as HandleFootStance` (line 11746) @ `245fe48` | `FootStep` stepping (concepts only) | T-FW-01..03 |
+| Epic Fight, Better Combat | Concepts only, no code or assets: authored phase times, per-move mapping, blade sampled through active frames | T-AN-34, T-CT-01..11 |
+
+Not adopted: motion-matching database, ML runtime, foreign engine, active ragdoll.
+
 ## Rejected or deferred
 
 | Candidate | Decision | Reason |
@@ -30,5 +46,5 @@ No third-party code or expressions were used in Stage 2, so `THIRD_PARTY_NOTICES
 | Ragdoll and active physics reactions (Overgrowth) | Reject | Master prompt: not in active combat. |
 | Better Combat / Epic Fight code | Reject reuse | All rights reserved / GPL-3.0. Only concepts are used, independently written. |
 
-## Notices to add when code lands
+## Notices (done in Stage 3: `THIRD_PARTY_NOTICES.md`)
 Create `THIRD_PARTY_NOTICES.md` at the repository root with the MIT notices for Orange Duck Motion-Matching (`57b7250`) and ALS-Refactored (`b754d6f`) and the Apache-2.0 attribution for Overgrowth (`245fe48`). Each adapted function gets a one-line source comment naming the repo, file and symbol.

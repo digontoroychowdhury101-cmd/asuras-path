@@ -27,8 +27,8 @@ def pose_lua(item):
     return '{"%s",{%s},{%s},%s}' % (name, nums, kids, weight)
 
 
-def script(name, publish):
-    seq = ET.parse(ROOT / "assets/animations/jian" / (name + ".rbxmx")).getroot().find("Item")
+def script(name, publish, folder="assets/animations/jian", description="Asura's Path jian combat clip"):
+    seq = ET.parse(ROOT / folder / (name + ".rbxmx")).getroot().find("Item")
     props = seq.find("Properties")
     loop = props.find("bool[@name='Loop']").text == "true"
     priority = int(props.find("token[@name='Priority']").text)
@@ -67,7 +67,7 @@ return { slot = "%s", id = id, keyframes = #seq:GetKeyframes() }
     elif publish:
         body += """local AssetService = game:GetService("AssetService")
 local ok, result, id = pcall(function()
-	return AssetService:CreateAssetAsync(seq, Enum.AssetType.Animation, { Name = seq.Name, Description = "Asura's Path jian combat clip" })
+	return AssetService:CreateAssetAsync(seq, Enum.AssetType.Animation, { Name = seq.Name, Description = "%s" })
 end)
 if not ok then return { error = tostring(result) } end
 if result ~= Enum.CreateAssetResult.Success then return { error = tostring(result) } end
@@ -75,7 +75,7 @@ local back = game:GetService("KeyframeSequenceProvider"):GetKeyframeSequenceAsyn
 local last = 0
 for _, k in back:GetKeyframes() do last = math.max(last, k.Time) end
 return { id = id, keyframes = #back:GetKeyframes(), sent = #FRAMES, length = last, loop = back.Loop, priority = tostring(back.Priority) }
-"""
+""" % description
     else:
         body += """local folder = game:GetService("ServerStorage"):FindFirstChild("AsuraJianReview") or Instance.new("Folder")
 folder.Name = "AsuraJianReview"

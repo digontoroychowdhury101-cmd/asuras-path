@@ -15,6 +15,7 @@ function Controller.new(state: any, camera: any): GameFeel
  local folder = Instance.new("Folder"); folder.Name, folder.Parent = "AsuraFeel", workspace
  local self = setmetatable({State=state, Camera=camera, Folder=folder, Vfx=Vfx.new(folder),
   Feedback=Feedback.new(state,camera), Trails=Trails.new(state), SkinFx=SkinFx.new(state), Dissolve=Dissolve.new(state), Animations=FighterAnimations.new(state), Disconnects={}}, Controller)
+ self.Trails.Animations = self.Animations
  table.insert(self.Disconnects,state:OnEvent(function(event: any) self:OnEvent(event) end))
  table.insert(self.Disconnects,state:OnCue(function(cue: any) self:OnCue(cue) end))
  return self
@@ -69,6 +70,9 @@ function Controller.OnCue(self: GameFeel, cue: any)
  elseif cue.Kind=="BossPhase" and Players.LocalPlayer:GetAttribute("AsuraEncounter")==cue.Data.boss then
   self.Camera:Impulse(Vector3.yAxis,0.7,-5)
  end
+end
+function Controller.PostAnimate(self: GameFeel,dt: number)
+ self.Animations:PostAnimate(dt)
 end
 function Controller.Update(self: GameFeel,dt: number)
  self.Animations:Update(dt); self.Feedback:Update(dt); self.Vfx:Update(dt); self.Trails:Update(dt); self.SkinFx:Update(dt); self.Dissolve:Update(dt)

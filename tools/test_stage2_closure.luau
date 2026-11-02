@@ -117,6 +117,12 @@ local function planar(root): number
 	local p = root.Position
 	return math.sqrt(p.X * p.X + p.Z * p.Z)
 end
+-- The local drive commands a frame, the given time passes (the body gets there under it), as in Studio.
+local function driveTo(state, root, to, seconds)
+	state:Step(TICK)
+	clock += seconds or 0.1
+	root.CFrame = to
+end
 local function struck(f)
 	local attacker = Combat.new(99, "Jian", clock)
 	assert(Combat.tryAttack(attacker, "Light", clock))
@@ -130,8 +136,7 @@ end
 do
 	local state, root, fighter, publish = rig()
 	assert(state:Predict(11, "Dash", 1, 0))
-	root.CFrame = CF.new(3, 3, 0)
-	clock += 0.05
+	driveTo(state, root, CF.new(3, 3, 0), 0.05)
 	check("P-01 setup: the hit lands", struck(fighter) == "Hit")
 	publish()
 	state:Step(TICK)
@@ -161,15 +166,15 @@ end
 do
 	local state, root = rig()
 	assert(state:Predict(13, "Dash", 0, 1))
-	root.CFrame = CF.new(0, 3, 4)
+	driveTo(state, root, CF.new(0, 3, 4))
 	setIntent("13:Rejected:Exhausted:" .. sampleTick)
 	check("P-03 a rejected dash returns its travel", planar(root) < 1e-6 and state.Predicted == nil)
 	state:Destroy()
 	local publish
 	state, root, _, publish = rig()
 	assert(state:Predict(14, "Roll", 1, 0))
-	root.CFrame = CF.new(4, 3, 0)
-	clock += Prediction.CONFIRM_TIMEOUT + 0.05
+	driveTo(state, root, CF.new(4, 3, 0), 0.14)
+	clock += Prediction.CONFIRM_TIMEOUT - 0.09
 	publish()
 	state:Step(TICK)
 	check("P-04 no answer within the timeout rolls back", planar(root) < 1e-6 and state.Predicted == nil)
@@ -242,20 +247,22 @@ do
 	-- Wall: the swept box stops 0.05 studs short of the hit instead of passing through.
 	local state, root = rig()
 	assert(state:Predict(21, "Dash", 1, 0))
-	root.CFrame = CF.new(6, 3, 0)
+	driveTo(state, root, CF.new(6, 3, 0))
 	blockHit = { Distance = 2, Position = V3.new(4, 3, 0) }
 	setIntent("21:Rejected:Exhausted:" .. sampleTick)
 	check("R-02 a wall between stops the correction short of it", math.abs(root.Position.X - 4.05) < 1e-6, root.Position.X)
 	check("R-02 the sweep excludes the own character", casts[1] and casts[1].Filter[1] == state.Entities[1].Model)
 	state:Destroy()
 
-	-- Rising ground on the way back is a hit like a wall: horizontal-only correction never sinks the body.
+	-- Rising ground on the way back is a hit like a wall: the slope is followed only as far as the contact and the
+	-- correction never sinks the body (Stage 3: it follows a slope's height rather than cutting through it).
 	state, root = rig()
 	assert(state:Predict(22, "Dash", 1, 0))
-	root.CFrame = CF.new(5, 2, 0)
+	driveTo(state, root, CF.new(5, 2, 0))
 	blockHit = { Distance = 0.5, Position = V3.new(4.5, 2, 0) }
 	setIntent("22:Rejected:Exhausted:" .. sampleTick)
-	check("R-02 rising ground: corrected only to the contact, height kept", math.abs(root.Position.X - 4.55) < 1e-6 and root.Position.Y == 2, root.Position)
+	local along = (root.Position - V3.new(5, 2, 0)).Magnitude
+	check("R-02 rising ground: corrected only to the contact, never sunk", math.abs(along - 0.45) < 1e-6 and root.Position.Y >= 2, root.Position)
 	state:Destroy()
 
 	-- Respawn: the prediction belonged to the previous character; the new one is never moved.
@@ -276,7 +283,7 @@ do
 	local fighter
 	state, root, fighter, publish = rig()
 	assert(state:Predict(24, "Dash", 1, 0))
-	root.CFrame = CF.new(5, 3, 0)
+	driveTo(state, root, CF.new(5, 3, 0))
 	Combat.knockOut(fighter, clock)
 	publish()
 	setIntent("24:Flushed:Dash:" .. sampleTick)

@@ -1,0 +1,496 @@
+{
+ "label": "mac_s3_run4_final",
+ "probe_version": 2,
+ "os_foreground": "Stage3Final (open -a RobloxStudio before input)",
+ "frames": {
+  "n": 1676,
+  "p50": 16.71,
+  "p95": 66.92,
+  "p99": 68.08,
+  "focused_share": 0.094
+ },
+ "server_ticks": {
+  "n": 2400,
+  "p50": 16.65,
+  "p95": 17.54,
+  "p99": 18.01,
+  "heartbeat_ms": 0.5433255434036255
+ },
+ "presses": [
+  {
+   "kind": "Light",
+   "t": 8.3,
+   "seq": null,
+   "missing": [
+    "no Sent trace within 300 ms (press not sent: menu, focus or coalesced)"
+   ]
+  },
+  {
+   "kind": "Light",
+   "t": 10.032,
+   "seq": 1,
+   "missing": [],
+   "prediction": "Predicted",
+   "prediction_end": "Confirmed",
+   "occurrence_ms": 0.3,
+   "occurrence": "Startup:Jian_L1",
+   "track_start_proxy_ms": 0.9,
+   "pose_change_ms": 68.1,
+   "pose_small_ms": 68.1,
+   "foot_change_ms": 68.1,
+   "body_move_ms": null,
+   "press_to_ack_seen_ms": 64.8,
+   "start_state": "Startup",
+   "start_move": "Jian_L1",
+   "receipt_to_start_ms": 16.7,
+   "terminal": "Executed:Jian_L1"
+  },
+  {
+   "kind": "Light",
+   "t": 10.231,
+   "seq": 2,
+   "missing": [],
+   "prediction": "Predicted",
+   "prediction_end": "Confirmed",
+   "occurrence_ms": 0.3,
+   "occurrence": "Startup:Jian_L2",
+   "track_start_proxy_ms": 0.8,
+   "pose_change_ms": 0.7,
+   "pose_small_ms": 0.7,
+   "foot_change_ms": 67.7,
+   "body_move_ms": null,
+   "press_to_ack_seen_ms": 65.5,
+   "start_state": "Startup",
+   "start_move": "Jian_L2",
+   "receipt_to_start_ms": 16.7,
+   "terminal": "Executed:Jian_L2"
+  },
+  {
+   "kind": "Light",
+   "t": 10.432,
+   "seq": 3,
+   "missing": [],
+   "prediction": "Predicted",
+   "prediction_end": "Confirmed",
+   "occurrence_ms": 0.4,
+   "occurrence": "Startup:Jian_L3",
+   "track_start_proxy_ms": 1.5,
+   "pose_change_ms": 1.8,
+   "pose_small_ms": 1.8,
+   "foot_change_ms": 267.8,
+   "body_move_ms": null,
+   "press_to_ack_seen_ms": 64.0,
+   "start_state": "Startup",
+   "start_move": "Jian_L3",
+   "receipt_to_start_ms": 16.7,
+   "terminal": "Executed:Jian_L3"
+  },
+  {
+   "kind": "Light",
+   "t": 10.634,
+   "seq": 4,
+   "missing": [],
+   "prediction": "Predicted",
+   "prediction_end": "Confirmed",
+   "occurrence_ms": 0.4,
+   "occurrence": "Startup:Jian_L4",
+   "track_start_proxy_ms": 1.5,
+   "pose_change_ms": 15.4,
+   "pose_small_ms": 15.4,
+   "foot_change_ms": 66.4,
+   "body_move_ms": null,
+   "press_to_ack_seen_ms": 63.0,
+   "start_state": "Startup",
+   "start_move": "Jian_L4",
+   "receipt_to_start_ms": 16.7,
+   "terminal": "Executed:Jian_L4"
+  },
+  {
+   "kind": "Light",
+   "t": 10.849,
+   "seq": 5,
+   "missing": [
+    "occurrence_ms",
+    "receipt_to_start_ms"
+   ],
+   "prediction": "Unpredicted",
+   "prediction_end": null,
+   "occurrence_ms": null,
+   "occurrence": null,
+   "track_start_proxy_ms": 232.9,
+   "pose_change_ms": 18.5,
+   "pose_small_ms": 1.5,
+   "foot_change_ms": 83.5,
+   "body_move_ms": null,
+   "press_to_ack_seen_ms": 49.0,
+   "start_state": null,
+   "start_move": null,
+   "receipt_to_start_ms": null,
+   "terminal": "Expired:Light"
+  },
+  {
+   "kind": "Light",
+   "t": 11.081,
+   "seq": 6,
+   "missing": [],
+   "prediction": "Predicted",
+   "prediction_end": "Confirmed",
+   "occurrence_ms": 0.3,
+   "occurrence": "Startup:Jian_L1",
+   "track_start_proxy_ms": 0.9,
+   "pose_change_ms": 100.5,
+   "pose_small_ms": 17.5,
+   "foot_change_ms": 84.5,
+   "body_move_ms": null,
+   "press_to_ack_seen_ms": 49.0,
+   "start_state": "Startup",
+   "start_move": "Jian_L1",
+   "receipt_to_start_ms": 16.7,
+   "terminal": "Executed:Jian_L1"
+  },
+  {
+   "kind": "Dash",
+   "t": 12.433,
+   "seq": 7,
+   "missing": [],
+   "prediction": "Predicted",
+   "prediction_end": "Confirmed",
+   "occurrence_ms": 0.6,
+   "occurrence": "Dashing:",
+   "track_start_proxy_ms": 1.1,
+   "pose_change_ms": 1483.1,
+   "pose_small_ms": 18.1,
+   "foot_change_ms": 50.1,
+   "body_move_ms": 18.1,
+   "press_to_ack_seen_ms": 63.4,
+   "start_state": "Dashing",
+   "start_move": null,
+   "receipt_to_start_ms": 16.7,
+   "terminal": "Executed:Dash"
+  },
+  {
+   "kind": "Dash",
+   "t": 14.265,
+   "seq": 8,
+   "missing": [],
+   "prediction": "Predicted",
+   "prediction_end": "Confirmed",
+   "occurrence_ms": 0.3,
+   "occurrence": "Dashing:",
+   "track_start_proxy_ms": 0.8,
+   "pose_change_ms": 17.1,
+   "pose_small_ms": 1.1,
+   "foot_change_ms": 1.1,
+   "body_move_ms": 1.1,
+   "press_to_ack_seen_ms": 64.8,
+   "start_state": "Dashing",
+   "start_move": null,
+   "receipt_to_start_ms": 16.7,
+   "terminal": "Executed:Dash"
+  },
+  {
+   "kind": "Dash",
+   "t": 16.08,
+   "seq": 9,
+   "missing": [],
+   "prediction": "Predicted",
+   "prediction_end": "Confirmed",
+   "occurrence_ms": 0.3,
+   "occurrence": "Dashing:",
+   "track_start_proxy_ms": 0.9,
+   "pose_change_ms": 18.7,
+   "pose_small_ms": 0.7,
+   "foot_change_ms": 0.7,
+   "body_move_ms": 0.7,
+   "press_to_ack_seen_ms": 50.5,
+   "start_state": "Dashing",
+   "start_move": null,
+   "receipt_to_start_ms": 16.7,
+   "terminal": "Executed:Dash"
+  },
+  {
+   "kind": "Dash",
+   "t": 17.903,
+   "seq": 10,
+   "missing": [],
+   "prediction": "Predicted",
+   "prediction_end": "Confirmed",
+   "occurrence_ms": 0.4,
+   "occurrence": "Dashing:",
+   "track_start_proxy_ms": 1.2,
+   "pose_change_ms": 13.3,
+   "pose_small_ms": 1.3,
+   "foot_change_ms": 1.3,
+   "body_move_ms": 1.3,
+   "press_to_ack_seen_ms": 60.1,
+   "start_state": "Dashing",
+   "start_move": null,
+   "receipt_to_start_ms": 16.7,
+   "terminal": "Executed:Dash"
+  },
+  {
+   "kind": "Heavy",
+   "t": 19.213,
+   "seq": 11,
+   "missing": [],
+   "prediction": "Predicted",
+   "prediction_end": "Confirmed",
+   "occurrence_ms": 0.5,
+   "occurrence": "Startup:Jian_Heavy",
+   "track_start_proxy_ms": 1.0,
+   "pose_change_ms": 15.7,
+   "pose_small_ms": 0.7,
+   "foot_change_ms": 0.7,
+   "body_move_ms": null,
+   "press_to_ack_seen_ms": 51.0,
+   "start_state": "Startup",
+   "start_move": "Jian_Heavy",
+   "receipt_to_start_ms": 16.7,
+   "terminal": "Executed:Jian_Heavy"
+  }
+ ],
+ "server_moves": [
+  {
+   "entered": 1793619542.9835932,
+   "state": "Startup",
+   "move": "Jian_L1",
+   "intent": 1
+  },
+  {
+   "entered": 1793619543.183593,
+   "state": "Startup",
+   "move": "Jian_L2",
+   "intent": 2
+  },
+  {
+   "entered": 1793619543.3835928,
+   "state": "Startup",
+   "move": "Jian_L3",
+   "intent": 3
+  },
+  {
+   "entered": 1793619543.5835927,
+   "state": "Startup",
+   "move": "Jian_L4",
+   "intent": 4
+  },
+  {
+   "entered": 1793619544.0335922,
+   "state": "Startup",
+   "move": "Jian_L1",
+   "intent": 6
+  },
+  {
+   "entered": 1793619545.383591,
+   "state": "Dashing",
+   "move": null,
+   "intent": 7
+  },
+  {
+   "entered": 1793619547.2169225,
+   "state": "Dashing",
+   "move": null,
+   "intent": 8
+  },
+  {
+   "entered": 1793619549.0335875,
+   "state": "Dashing",
+   "move": null,
+   "intent": 9
+  },
+  {
+   "entered": 1793619550.8502524,
+   "state": "Dashing",
+   "move": null,
+   "intent": 10
+  },
+  {
+   "entered": 1793619552.1502512,
+   "state": "Startup",
+   "move": "Jian_Heavy",
+   "intent": 11
+  }
+ ],
+ "press_to_ack_seen_ms": {
+  "n": 11,
+  "missing": 0,
+  "missing_seqs": [],
+  "p50": 63.0,
+  "p95": 65.5,
+  "max": 65.5,
+  "values": [
+   49.0,
+   49.0,
+   50.5,
+   51.0,
+   60.1,
+   63.0,
+   63.4,
+   64.0,
+   64.8,
+   64.8,
+   65.5
+  ],
+  "outliers": []
+ },
+ "receipt_to_start_ms": {
+  "n": 10,
+  "missing": 1,
+  "missing_seqs": [
+   5
+  ],
+  "p50": 16.7,
+  "p95": 16.7,
+  "max": 16.7,
+  "values": [
+   16.7,
+   16.7,
+   16.7,
+   16.7,
+   16.7,
+   16.7,
+   16.7,
+   16.7,
+   16.7,
+   16.7
+  ],
+  "outliers": []
+ },
+ "occurrence_ms": {
+  "n": 10,
+  "missing": 1,
+  "missing_seqs": [
+   5
+  ],
+  "p50": 0.4,
+  "p95": 0.6,
+  "max": 0.6,
+  "values": [
+   0.3,
+   0.3,
+   0.3,
+   0.3,
+   0.3,
+   0.4,
+   0.4,
+   0.4,
+   0.5,
+   0.6
+  ],
+  "outliers": []
+ },
+ "track_start_proxy_ms": {
+  "n": 11,
+  "missing": 0,
+  "missing_seqs": [],
+  "p50": 1.0,
+  "p95": 232.9,
+  "max": 232.9,
+  "values": [
+   0.8,
+   0.8,
+   0.9,
+   0.9,
+   0.9,
+   1.0,
+   1.1,
+   1.2,
+   1.5,
+   1.5,
+   232.9
+  ],
+  "outliers": [
+   232.9
+  ]
+ },
+ "pose_small_ms": {
+  "n": 11,
+  "missing": 0,
+  "missing_seqs": [],
+  "p50": 1.5,
+  "p95": 68.1,
+  "max": 68.1,
+  "values": [
+   0.7,
+   0.7,
+   0.7,
+   1.1,
+   1.3,
+   1.5,
+   1.8,
+   15.4,
+   17.5,
+   18.1,
+   68.1
+  ],
+  "outliers": [
+   68.1
+  ]
+ },
+ "pose_change_ms": {
+  "n": 11,
+  "missing": 0,
+  "missing_seqs": [],
+  "p50": 17.1,
+  "p95": 1483.1,
+  "max": 1483.1,
+  "values": [
+   0.7,
+   1.8,
+   13.3,
+   15.4,
+   15.7,
+   17.1,
+   18.5,
+   18.7,
+   68.1,
+   100.5,
+   1483.1
+  ],
+  "outliers": [
+   68.1,
+   100.5,
+   1483.1
+  ]
+ },
+ "foot_change_ms": {
+  "n": 11,
+  "missing": 0,
+  "missing_seqs": [],
+  "p50": 66.4,
+  "p95": 267.8,
+  "max": 267.8,
+  "values": [
+   0.7,
+   0.7,
+   1.1,
+   1.3,
+   50.1,
+   66.4,
+   67.7,
+   68.1,
+   83.5,
+   84.5,
+   267.8
+  ],
+  "outliers": [
+   267.8
+  ]
+ },
+ "body_move_ms": {
+  "n": 4,
+  "missing": 0,
+  "missing_seqs": [],
+  "p50": 1.3,
+  "p95": 18.1,
+  "max": 18.1,
+  "values": [
+   0.7,
+   1.1,
+   1.3,
+   18.1
+  ],
+  "outliers": []
+ },
+ "unsent_presses": 1
+}

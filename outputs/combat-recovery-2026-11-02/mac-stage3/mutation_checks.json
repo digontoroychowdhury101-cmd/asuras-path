@@ -1,0 +1,129 @@
+[
+ {
+  "mutation": "facing read at the present, not one instant",
+  "file": "src/server/CharacterService.luau",
+  "caught": true,
+  "summary": "stage 3 motion: 212 passed, 2 failed (offline behaviour; Studio, frame order and feel separate)",
+  "failing": [
+   "FAIL     test_stage3_motion.luau:",
+   "FAIL  T-FC-01 moving attacker: guard reads the same instant (square then)  (-1)",
+   "FAIL  T-FC-02 frontal boundary: inside the cone at `at` guards"
+  ]
+ },
+ {
+  "mutation": "rollback zeroes velocity",
+  "file": "src/simulation/LocalPrediction.luau",
+  "caught": true,
+  "summary": "stage 3 motion: 210 passed, 4 failed (offline behaviour; Studio, frame order and feel separate)",
+  "failing": [
+   "FAIL     test_stage3_motion.luau:",
+   "FAIL  T-RB-02 velocity across the drive continues",
+   "FAIL  T-RB-02 knockback beyond the command continues",
+   "FAIL  T-RB-02 velocity against the drive is untouched",
+   "FAIL  T-RB-03 rejection keeps the shove's velocity, removes the drive's  (0, 0, 0)"
+  ]
+ },
+ {
+  "mutation": "rollback takes back the whole travelled line",
+  "file": "src/simulation/LocalPrediction.luau",
+  "caught": true,
+  "summary": "stage 3 motion: 206 passed, 8 failed (offline behaviour; Studio, frame order and feel separate)",
+  "failing": [
+   "FAIL     test_stage3_motion.luau:",
+   "FAIL  T-RB-01 a stopped dash undoes only what it moved",
+   "FAIL  T-RB-01 a shove back along the line is not undone further",
+   "FAIL  T-RB-03 rejection returns the travel along the line, keeps the shove across it  (-0.363636, 3, 2)",
+   "FAIL  T-RB-06 walled dash returns what it moved, not what was commanded",
+   "FAIL  T-RB-08 rising ground: the correction descends with the slope  (-0.363636, 3, 0)"
+  ]
+ },
+ {
+  "mutation": "chain confirms past the link window",
+  "file": "src/simulation/LocalPrediction.luau",
+  "caught": true,
+  "summary": "stage 3 motion: 213 passed, 1 failed (offline behaviour; Studio, frame order and feel separate)",
+  "failing": [
+   "FAIL     test_stage3_motion.luau:",
+   "FAIL  T-AN-20 no link once the combo window has passed"
+  ]
+ },
+ {
+  "mutation": "phase correction uncapped",
+  "file": "src/simulation/AnimationTiming.luau",
+  "caught": true,
+  "summary": "stage 3 motion: 209 passed, 5 failed (offline behaviour; Studio, frame order and feel separate)",
+  "failing": [
+   "FAIL     test_stage3_motion.luau:",
+   "FAIL  T-AN-30 close to contact: starts on the bounded path",
+   "FAIL  T-AN-32 catch-up stays within [0.75, 1.5] with no seat  (1.9902374752763907)",
+   "FAIL  T-AN-35 no speed beyond the bound  (2)",
+   "FAIL  T-HS-02 the debt is repaid at or under the bound  (2)",
+   "FAIL  T-HS-10 the plan's rate returns with its debt repaid at the bound  (2)"
+  ]
+ },
+ {
+  "mutation": "duplicate contact cues freeze twice",
+  "file": "src/client/Controllers/CombatFeedback.luau",
+  "caught": true,
+  "summary": "stage 3 motion: 212 passed, 2 failed (offline behaviour; Studio, frame order and feel separate)",
+  "failing": [
+   "FAIL     test_stage3_motion.luau:",
+   "FAIL  T-HS-06 a second cue 10 ms later does not lengthen the stop  (0)",
+   "FAIL  T-HS-06 of two cues for one contact the longer duration holds, from the first"
+  ]
+ },
+ {
+  "mutation": "feet never unlock",
+  "file": "src/simulation/FootStep.luau",
+  "caught": true,
+  "summary": "stage 3 motion: 213 passed, 1 failed (offline behaviour; Studio, frame order and feel separate)",
+  "failing": [
+   "FAIL     test_stage3_motion.luau:",
+   "FAIL  T-FW-05 a point out of reach lets go"
+  ]
+ },
+ {
+  "mutation": "sweep forgets the root's travel between samples",
+  "file": "src/server/CharacterService.luau",
+  "caught": true,
+  "summary": "stage 3 motion: 213 passed, 1 failed (offline behaviour; Studio, frame order and feel separate)",
+  "failing": [
+   "FAIL     test_stage3_motion.luau:",
+   "FAIL  T-CT-13 a root moving 5 studs a tick hits bodies its blade crossed between samples  (37 swept, 37 sampled)"
+  ]
+ },
+ {
+  "mutation": "the fade-in that delayed first motion returns",
+  "file": "src/client/Controllers/FighterAnimations.luau",
+  "caught": true,
+  "summary": "stage 3 motion: 213 passed, 1 failed (offline behaviour; Studio, frame order and feel separate)",
+  "failing": [
+   "FAIL     test_stage3_motion.luau:",
+   "FAIL  T-AN-42 with a pose writer a clip starts with no fade (first motion is not a fade-in)  (0.06)"
+  ]
+ },
+ {
+  "mutation": "a press past the link is shown as the next light",
+  "file": "src/simulation/LocalPrediction.luau",
+  "caught": true,
+  "summary": "stage 3 motion: 213 passed, 1 failed (offline behaviour; Studio, frame order and feel separate)",
+  "failing": [
+   "FAIL     test_stage3_motion.luau:",
+   "FAIL  T-AN-22 a press the buffer holds past the link opens at the swing's end"
+  ]
+ },
+ {
+  "mutation": "hitstop freezes nothing",
+  "file": "src/client/Controllers/PlaybackScale.luau",
+  "caught": true,
+  "summary": "stage 3 motion: 201 passed, 13 failed (offline behaviour; Studio, frame order and feel separate)",
+  "failing": [
+   "FAIL     test_stage3_motion.luau:",
+   "FAIL  T-HS-06 of two cues for one contact the longer duration holds, from the first",
+   "FAIL  T-HS-01 hitstop freezes the action layer",
+   "FAIL  T-HS-01 frozen means frozen",
+   "FAIL  T-HS-02 hitstop ends with no saved speed to restore",
+   "FAIL  T-HS-03 a clip starting in hitstop starts frozen"
+  ]
+ }
+]

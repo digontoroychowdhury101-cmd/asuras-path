@@ -21,7 +21,7 @@
 
 export type Priority = "Core" | "Idle" | "Movement" | "Action" | "Action2" | "Action3" | "Action4"
 export type Rig = "R15" | "R6"
-export type WeaponName = "Unarmed" | "Jian" | "Dao" | "Guandao"
+export type WeaponName = "Unarmed" | "Jian" | "Dao" | "Guandao" | "Odachi" | "TwinDaggers" | "ChainScythe" | "WarFan" | "Catalyst" | "PrayerOfTheDefiled" | "HeavenPiercingGuandao"
 
 export type Slot = {
 	Name: string,
@@ -37,6 +37,9 @@ export type Slot = {
 
 export type UniversalKey =
 	"Roll"
+	| "DashForward"
+	| "DashLeft"
+	| "DashRight"
 	| "Backdash"
 	| "Deflect"
 	| "Hitstun_Light"
@@ -52,6 +55,10 @@ export type WeaponKey = "Idle" | "Move" | "Equip" | "Light1" | "Light2" | "Light
 export type EnemyKey = "Shen_Phase1_Idle" | "Shen_Phase1_SwordCombo" | "Shen_Phase2_Transform" | "Shen_Phase2_GlaiveCombo"
 
 local Catalog = {}
+local hasScript = pcall(function()
+	return script.Parent
+end)
+local Families: any = if hasScript then require(script.Parent.AnimationFamilyIds) else require("./AnimationFamilyIds")
 
 -------------------------------------------------------------------------------------------------
 -- Stock Roblox animations (owned by Roblox, playable in every experience)
@@ -104,6 +111,9 @@ end
 
 Catalog.Universal = {
 	Roll = slot("Roll", "rbxassetid://76668598902693", "Fall", false, "Action2", 1.6),
+	DashForward = slot("DashForward", nil, "Fall", false, "Action2", 1.6),
+	DashLeft = slot("DashLeft", nil, "Fall", false, "Action2", 1.6),
+	DashRight = slot("DashRight", nil, "Fall", false, "Action2", 1.6),
 	Backdash = slot("Backdash", "rbxassetid://135695988461681", "Jump", false, "Action2", 1.4),
 	Deflect = slot("Deflect", "rbxassetid://111115189726174", "ToolHold", false, "Action3", 1.8),
 	Hitstun_Light = slot("Hitstun_Light", "rbxassetid://74668214273745", "Fall", false, "Action3", 2.0),
@@ -305,6 +315,9 @@ Catalog.CharacterKeys = table.freeze({ "Idle", "Move", "Light1", "Light2", "Ligh
 
 Catalog.UniversalKeys = table.freeze({
 	"Roll",
+	"DashForward",
+	"DashLeft",
+	"DashRight",
 	"Backdash",
 	"Deflect",
 	"Hitstun_Light",
@@ -315,8 +328,27 @@ Catalog.UniversalKeys = table.freeze({
 	"AltarRest",
 	"Recover",
 } :: { UniversalKey })
-Catalog.WeaponNames = table.freeze({ "Unarmed", "Jian", "Dao", "Guandao" } :: { WeaponName })
+Catalog.WeaponNames = table.freeze({ "Unarmed", "Jian", "Dao", "Guandao", "Odachi", "TwinDaggers", "ChainScythe", "WarFan", "Catalyst", "PrayerOfTheDefiled", "HeavenPiercingGuandao" } :: { WeaponName })
 Catalog.WeaponKeys = table.freeze({ "Idle", "Move", "Equip", "Light1", "Light2", "Light3", "Light4", "Heavy", "Running", "WeaponArt", "Guard", "GuardImpact" } :: { WeaponKey })
+
+-- The published family and universal clips (AnimationFamilyIds, read back after upload). Every set takes its priorities,
+-- looping and stock stand-ins from the Jian's, the set the rest were authored to match; a clip not yet published stays nil.
+for _, weapon in Catalog.WeaponNames do
+	if weapon ~= "Jian" then
+		local ids = (Families.Weapons :: any)[weapon] or {}
+		local set = {}
+		for _, key in Catalog.WeaponKeys do
+			local model = (Catalog.Weapons.Jian :: any)[key]
+			set[key] = table.clone(model)
+			set[key].Name = weapon .. "." .. key
+			set[key].Custom = ids[key]
+		end
+		(Catalog.Weapons :: any)[weapon] = set
+	end
+end
+for key, id in Families.Universal :: any do
+	(Catalog.Universal :: any)[key].Custom = id
+end
 Catalog.EnemyKeys = table.freeze({
 	"Shen_Phase1_Idle",
 	"Shen_Phase1_SwordCombo",
@@ -353,7 +385,8 @@ end
 
 -- Weapon slot lookup; unknown weapons use the Unarmed set so a new weapon never T-poses.
 function Catalog.weapon(weapon: string, key: WeaponKey): Slot
-	local family = ({Odachi="Guandao",TwinDaggers="Jian",ChainScythe="Guandao",WarFan="Dao",Catalyst="Guandao",PrayerOfTheDefiled="Guandao",CalamityBoneCleaver="Guandao",HeavenPiercingGuandao="Guandao"} :: {[string]: string})[weapon] or weapon
+	-- Each weapon has its own set, except the Bone Cleaver: the Odachi's blade, grip and frame data exactly, so its clips.
+	local family = if weapon == "CalamityBoneCleaver" then "Odachi" else weapon
 	local set = Catalog.Weapons[family :: WeaponName] or Catalog.Weapons.Unarmed
 	return set[key]
 end

@@ -570,7 +570,8 @@ local function fakeActor(look, rig, attributes)
 	return a
 end
 local Dispatch = Scene.load("src/client/Controllers/BossAnimations.luau", {
-	game = { GetService = function() return { AsurasPath = { Shared = { BossAnimationRules = AnimRules } } } end },
+	game = { GetService = function() return { AsurasPath = { Shared = { BossAnimationRules = AnimRules }, Simulation = { AnimationTiming = { MAX_RATE = 1.5 } } } } end },
+	script = { Parent = { PlaybackScale = { of = function() return 1, 1 end } } },
 	Instance = { new = function() return { Destroy = function() end } end },
 	Enum = { HumanoidRigType = { R6 = "R6" }, AnimationPriority = { Idle = 1, Action = 2, Action4 = 4 } } })
 local zhaoA, bullA = fakeActor("GeneralZhao", "Humanoid"), fakeActor("IronBull", "Humanoid")

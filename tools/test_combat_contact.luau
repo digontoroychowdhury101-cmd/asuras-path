@@ -92,7 +92,7 @@ check("ranged effect list shared", Combat.RangedEffects[fan.Light[3].Effect] == 
 -- 7. Hitboxes and rewind untouched.
 local cs = src("src/server/CharacterService.luau")
 -- Post-F26 step 2: the formula moved verbatim into StrikeGeometry (number-for-number parity in test_omni_combat).
-check("weapon segment reach formula unchanged", string.find(src("src/simulation/StrikeGeometry.luau"), "local reach = shape.Reach + bonus + shape.Lunge * 0.35 * progress", 1, true) ~= nil and string.find(cs, "Strike.segment(move, progress, bonus)", 1, true) ~= nil)
+check("weapon segment reach formula unchanged", string.find(src("src/simulation/StrikeGeometry.luau"), "local reach = shape.Reach + bonus + shape.Lunge * 0.35 * progress", 1, true) ~= nil and string.find(cs, "ax, ay, az, bx, by, bz = Strike.segment(move, progress, bonus)", 1, true) ~= nil)
 check("weapon radius unchanged", string.find(cs, 'return if f.Weapon == "Unarmed" then 0.55 else 0.3', 1, true) ~= nil)
 check("rewind query unchanged", string.find(cs, "Lag.queryHit(prevA, prevB, curA, curB, radius, defender.History, rewindTo, TICK)", 1, true) ~= nil)
 check("whiffs annotated once every fighter has stepped (closing windows included)", string.find(cs, "\t\t\tstepFighter(e, now)\n\t\tend\n\tend\n\tannotateWhiffs(stepped)", 1, true) ~= nil)
@@ -199,7 +199,7 @@ local function duel(flat: number, closingSweep: boolean): string
 	local bRoot = roblox.CFrame.lookAt(roblox.Vector3.new(0, 3.39, -flat), roblox.Vector3.new(0, 3.39, 0))
 	local history = Lag.newHistory()
 	for i = -30, 0 do Lag.record(history, T + i * Tempo.TickSeconds, bRoot, roblox.Vector3.zero) end
-	local ea = { Id = 1, Fighter = a, Root = { CFrame = aRoot, Position = aRoot.Position }, Model = { GetAttribute = function() return nil end }, Omni = { YawFor = -1 } }
+	local ea = { Id = 1, Fighter = a, Root = { CFrame = aRoot, Position = aRoot.Position }, Model = { GetAttribute = function() return nil end }, Omni = { YawFor = -1 }, History = Lag.newHistory() }
 	local eb = { Id = -1, Fighter = b, Root = { CFrame = bRoot, Position = bRoot.Position }, Model = ea.Model, History = history }
 	entities[1], entities[-1] = ea, eb
 	assert(Combat.tryAttack(a, "Light", T))

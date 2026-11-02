@@ -2,6 +2,21 @@
 
 This is the specification that Stages 2–3 implement. **Stage 2 implemented §2–§6 with the deviations listed in §0, as amended by the Stage 2 closure pass (`closure/CLOSURE.md`).** §7–§8 are Stage 3.
 
+## 0a. As implemented in Stage 3, Mac (2 November 2026)
+
+| § | Implemented | Deviation, or what stays open |
+|---|---|---|
+| 6 | Dash clip starts the frame of the press, in the direction travelled (`Fighter_DashForward/Left/Right`, Backdash behind the facing); L1→L4 are predicted (`Prediction.followUp`, start at the swing's Recovery at the earliest); a press past the link and within the buffer shows the opener at the swing's end (`Prediction.restart`). All named by intent; an Executed record for the same intent and move adopts, never restarts. | Presses within `LINK_MARGIN` (30 ms) of a link's edge wait for the server, because either answer is possible. Sprinting restarts wait too. Arts stay unpredicted. |
+| 6 | Refused dash: `Prediction.dashTravel` / `residualVelocity` remove only the drive's own displacement and velocity. | Real walls, slopes and knockback: Windows. |
+| 5 | `facingAt` reads attacker and defender at one rewound instant. | Two-client verification: Windows. |
+| 7 | `AnimationTiming`: piecewise-linear phases from authored per-move times (`StrikeTrajectories.phases`), rate correction clamped to [0.75, 1.5]×, one seat beyond 250 ms (counted, inertialized). Follow-through kept by rate, not cut. | Moves without baked times use a uniform map. |
+| 8 | One owner: `FighterAnimations` / `BossAnimations` write speed; hitstop and cinematics only submit `PlaybackScale` requests. Hitstop scale 0 on the action layer, debt repaid at ≤1.5×; a clip starting in hitstop starts frozen; a stopped clip gets no late write. Cues within 30 ms for one source:target pair are one stop. | **Limit:** stock Animate tracks are no longer frozen. Fighters past the pose budget (8 within 70 studs) fall back to fades. |
+| 9 A1 | Avoidable 60 ms fade removed; 50 ms to 0.25 stud at 60 fps. | **FAIL at ≤1 frame on the 0.25-stud threshold.** Threshold not changed. Knob: `ActorPose.HALFLIFE` 0.045 s against pop. |
+| 9 A4 | Server sweep, trail and step read one baked hilt/tip data set where a move is baked (27 moves: Jian 7, Dao 3, Guandao 4, TwinDaggers 7, WarFan 6). Previous sample uses the previous root unless it moved ≥6 studs in a tick. | Six family moves whose clip shows too little stay generic (more than 1 stud of reach lost, or under half of an arc ≥90°), as do Unarmed, Odachi, Cleaver, Heaven, Chain, Prayer, Catalyst, mobs and bosses (`ANIMATION_COVERAGE.md`). |
+| 9 A6 | Rate bound enforced by test. | Real drift across latency: Windows. |
+
+Unchanged: 60 Hz, 150 ms rewind ceiling, 1.4× tempo, 100 ms deflect baseline, all windows.
+
 ## 0. As implemented in Stage 2 (2 November 2026)
 
 | § | Implemented | Deviation from the spec below, and why |

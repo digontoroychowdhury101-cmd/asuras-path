@@ -41,3 +41,21 @@ Nothing below has been fixed yet. Stage 1 changes no gameplay code.
 | 13 | **Fixed:** spells use the boundary queue. | O (T-SP) |
 | 4, 5, 6, 7, 11, 12 | Unchanged. These belong to Stage 3 (animation, footwork, contact geometry, hitstop) or Stage 4. | — |
 | 14 | Re-measured on the verified build with focus: p50 about 44 ms, p95 about 48–52 ms (still about 23 fps). | D |
+
+## Stage 3 Mac status (2 November 2026)
+
+None of these is accepted until the Windows gates in `MAC_TO_WINDOWS.md` pass. O = offline fixture, D = seeded single-client Studio diagnostic.
+
+| # | Stage 3 outcome | Evidence |
+|---|---|---|
+| 2 | **Extended, open at A1.** L1→L4 links and dash clips now start locally. First motion improved to 50 ms at 60 fps to 0.25 stud; still 3 frames against ≤1. | O (T-AN), D (runs 1, 4) |
+| 3 | **Fixed offline.** Hard seats and 2× catch-up replaced by bounded correction; repeats restart by occurrence. | O (T-AN-30..36) |
+| 4 | **Partly fixed.** 27 moves share one baked blade; the rest stay generic and are listed. Root travel between samples is swept. | O (T-CT), `mac-stage3/blade_vs_volume.json` |
+| 5 | **Authored and loading, not accepted.** Every weapon entry plays clips; 119 new clips read back. Quality is unreviewed; several weapons' visible reach falls far short of their volume. | D (`animation_readback.json`, run 5), `ANIMATION_COVERAGE.md` |
+| 6 | **Fixed offline** (facing at one instant). | O (T-FC) |
+| 7 | **Footwork implemented.** Contact states, foot lock, IK. Drift unmeasured on real slopes and at real frame rates. | O (T-FW) |
+| 11 | **Fixed offline.** One playback owner, debt repaid, duplicate cues merged. Documented limit on stock Animate tracks. | O (T-HS) |
+| 12 | **Fixed offline** (refused dash). Real geometry open. | O (T-RB) |
+| New | **Open observation.** One untraced listener in a throttled session showed repeated `AnimationPlayed` rows (Dao_Light2, Dao_WeaponArt) and more rows than presses. Not reproduced in traced runs 4–6, which show one start per intent. Cause not established. | W-03 in `MAC_TO_WINDOWS.md` |
+| New | **Pre-existing warning.** `CampaignTerrain` line 120 "Region has to be aligned to the grid" at boot; that file is untouched in this batch. | Console, runs 4–6 |
+
