@@ -10,12 +10,12 @@
     "weapon_texture": 512
   },
   "measured": {
-    "game_total_triangles": 17398,
+    "game_total_triangles": 17446,
     "game_max_piece_triangles": 5992,
-    "master_triangles_before_subdivision": 65880,
+    "master_triangles_before_subdivision": 65952,
     "limbs_covered": 15,
     "limbs_missing": [],
-    "sole_y": -3.024,
+    "sole_y": -3.978,
     "top_y": 2.257,
     "width_x": 3.026
   },
@@ -71,8 +71,8 @@
     "Warden_Spade": {
       "bone": "RightHand",
       "role": "Weapon",
-      "triangles": 812,
-      "vertices": 434,
+      "triangles": 860,
+      "vertices": 460,
       "pivot_roblox": [
         1.5,
         -0.85,
@@ -80,8 +80,8 @@
       ],
       "size_roblox": [
         0.506,
-        1.158,
-        6.227
+        5.873,
+        3.124
       ]
     },
     "Warden_RightUpperArm": {
@@ -128,8 +128,8 @@
       ],
       "size_roblox": [
         0.312,
-        0.341,
-        0.406
+        0.424,
+        0.411
       ]
     },
     "Warden_RightUpperLeg": {
@@ -224,8 +224,8 @@
       ],
       "size_roblox": [
         0.312,
-        0.341,
-        0.406
+        0.424,
+        0.411
       ]
     },
     "Warden_LeftUpperLeg": {

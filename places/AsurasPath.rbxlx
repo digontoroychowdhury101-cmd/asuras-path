@@ -1457,11 +1457,33 @@ Catalog.Characters = {
 		Walk = "rbxassetid://122806607020356",
 		WeaponArt = "rbxassetid://125540053579064",
 	}),
+	-- The Guandao chain is three lights long: Light4 never plays, it shares the cleave's clip.
+	HollowBellWarden = character("HollowBellWarden", {
+		Death = "rbxassetid://135796526374193",
+		Guard = "rbxassetid://111594189369970",
+		GuardImpact = "rbxassetid://89274945535822",
+		Heavy = "rbxassetid://118254162566149",
+		Hitstun_Heavy = "rbxassetid://120364294554446",
+		Hitstun_Light = "rbxassetid://123540264050232",
+		Idle = "rbxassetid://124722344286007",
+		Light1 = "rbxassetid://74202148679159",
+		Light2 = "rbxassetid://75414684963161",
+		Light3 = "rbxassetid://80251693429323",
+		Light4 = "rbxassetid://80251693429323",
+		Move = "rbxassetid://113707235032422",
+		Run = "rbxassetid://92072596908213",
+		Running = "rbxassetid://80666322516323",
+		Signature = "rbxassetid://121126042509475",
+		StanceBroken = "rbxassetid://89400894565036",
+		Walk = "rbxassetid://92491485517905",
+		WeaponArt = "rbxassetid://82843854612681",
+	}),
 } :: { [string]: { [CharacterKey]: Slot } }
--- Ground speed (studs/s at model scale 1) each gait cycle was authored for (monk_clips.py, swordsman_clips.py WALK_SPEED/RUN_SPEED).
+-- Ground speed (studs/s at model scale 1) each gait cycle was authored for (monk_clips.py, swordsman_clips.py, warden_clips.py WALK_SPEED/RUN_SPEED).
 Catalog.Gaits = {
 	CorruptWanderingMonk = { Walk = 6.4, Run = 11.0 },
 	CursedSwordsman = { Walk = 6.4, Run = 11.0 },
+	HollowBellWarden = { Walk = 5.6, Run = 9.5 },
 } :: { [string]: { Walk: number, Run: number? } }
 Catalog.CharacterKeys = table.freeze({ "Idle", "Move", "Light1", "Light2", "Light3", "Light4", "Heavy", "Running", "WeaponArt",
 	"Guard", "GuardImpact", "Hitstun_Light", "Hitstun_Heavy", "StanceBroken", "Death" } :: { CharacterKey })
@@ -7095,6 +7117,7 @@ World.Mobs = {
 		Id = "HollowBellWarden",
 		Name = "Hollow-Bell Warden",
 		Weapon = "Guandao",
+		Scale = 1.35, -- the bell-crowned giant stands about 7 studs, head and bell over the swordsman
 		Stats = { MaxHP = 480, MaxStamina = 160, PostureCapacity = 190, StrengthScale = 1.15, DexterityScale = 0.85, PoiseArmor = 0.45 },
 		AI = profile({
 			SightRange = 40,

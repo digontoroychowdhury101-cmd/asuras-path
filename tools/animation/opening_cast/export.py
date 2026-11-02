@@ -16,7 +16,7 @@ sys.path.insert(0, str(HERE))
 import castlib as C  # noqa: E402
 import jianlib as J  # noqa: E402
 
-SETS = {"monk": "monk_clips", "swordsman": "swordsman_clips"}
+SETS = {"monk": "monk_clips", "swordsman": "swordsman_clips", "warden": "warden_clips"}
 
 
 def main(key, names):

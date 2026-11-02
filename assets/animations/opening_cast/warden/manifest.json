@@ -1,0 +1,433 @@
+{
+ "clips": {
+  "Warden_Art": {
+   "slot": "HollowBellWarden.WeaponArt",
+   "length": 0.9,
+   "loop": false,
+   "priority": "Action2",
+   "move": "Guandao_Art",
+   "contacts": [
+    0.4083
+   ],
+   "keyframes": 54,
+   "notes": "Tolling Cyclone: deep wind to the right, the crescent unwinds through the whole front arc.",
+   "validation": {
+    "arm_reach": 0.0256,
+    "leg_reach": 0.0,
+    "sole_below_ground": 0.0,
+    "planted_slide": 0.0335,
+    "hand_jerk": 0.0366,
+    "loop_seam_deg": 0.0,
+    "strike": {
+     "contact": [
+      0.03,
+      0.82,
+      -3.57
+     ],
+     "forward": 3.57,
+     "yaw": 0.5,
+     "sweep_deg": -73.8
+    }
+   },
+   "problems": [],
+   "uploaded": false,
+   "asset_id": null
+  },
+  "Warden_Death": {
+   "slot": "HollowBellWarden.Death",
+   "length": 1.0,
+   "loop": false,
+   "priority": "Action4",
+   "move": null,
+   "contacts": [],
+   "keyframes": 45,
+   "notes": "Knees give, the crescent drives into a grave, the bell drops; held while the body burns away.",
+   "validation": {
+    "arm_reach": 0.0559,
+    "leg_reach": 0.0,
+    "sole_below_ground": 0.0,
+    "planted_slide": 0.0,
+    "hand_jerk": 0.0,
+    "loop_seam_deg": 0.0
+   },
+   "problems": [],
+   "uploaded": false,
+   "asset_id": null
+  },
+  "Warden_Guard": {
+   "slot": "HollowBellWarden.Guard",
+   "length": 1.6,
+   "loop": true,
+   "priority": "Action",
+   "move": null,
+   "contacts": [],
+   "keyframes": 7,
+   "notes": "Haft guard: the shaft held crosswise before the bell in both fists.",
+   "validation": {
+    "arm_reach": 0.0,
+    "leg_reach": 0.0,
+    "sole_below_ground": 0.0,
+    "planted_slide": 0.0,
+    "hand_jerk": 0.0,
+    "loop_seam_deg": 0.0
+   },
+   "problems": [],
+   "uploaded": false,
+   "asset_id": null
+  },
+  "Warden_GuardImpact": {
+   "slot": "HollowBellWarden.GuardImpact",
+   "length": 0.34,
+   "loop": false,
+   "priority": "Action2",
+   "move": null,
+   "contacts": [],
+   "keyframes": 13,
+   "notes": "A blocked blow drives the haft back against the bell, then it re-settles.",
+   "validation": {
+    "arm_reach": 0.0,
+    "leg_reach": 0.0,
+    "sole_below_ground": 0.0,
+    "planted_slide": 0.0,
+    "hand_jerk": 0.0,
+    "loop_seam_deg": 0.0
+   },
+   "problems": [],
+   "uploaded": false,
+   "asset_id": null
+  },
+  "Warden_Heavy": {
+   "slot": "HollowBellWarden.Heavy",
+   "length": 0.8333,
+   "loop": false,
+   "priority": "Action2",
+   "move": "Guandao_Heavy",
+   "contacts": [
+    0.4167
+   ],
+   "keyframes": 51,
+   "notes": "Grave-Digger's Arc: long coil behind the right shoulder, stamping step, high-right to low-left arc.",
+   "validation": {
+    "arm_reach": 0.0385,
+    "leg_reach": 0.0,
+    "sole_below_ground": 0.0,
+    "planted_slide": 0.0148,
+    "hand_jerk": 0.0,
+    "loop_seam_deg": 0.0,
+    "strike": {
+     "contact": [
+      -0.02,
+      -0.66,
+      -3.68
+     ],
+     "forward": 3.68,
+     "yaw": -0.3,
+     "sweep_deg": -127.6
+    }
+   },
+   "problems": [],
+   "uploaded": false,
+   "asset_id": null
+  },
+  "Warden_Hit_Heavy": {
+   "slot": "HollowBellWarden.Hitstun_Heavy",
+   "length": 0.75,
+   "loop": false,
+   "priority": "Action3",
+   "move": null,
+   "contacts": [],
+   "keyframes": 41,
+   "notes": "Rocked back a step, doubles over the haft, recovers the guard.",
+   "validation": {
+    "arm_reach": 0.0135,
+    "leg_reach": 0.0,
+    "sole_below_ground": 0.0,
+    "planted_slide": 0.0,
+    "hand_jerk": 0.0,
+    "loop_seam_deg": 0.0
+   },
+   "problems": [],
+   "uploaded": false,
+   "asset_id": null
+  },
+  "Warden_Hit_Light": {
+   "slot": "HollowBellWarden.Hitstun_Light",
+   "length": 0.4,
+   "loop": false,
+   "priority": "Action3",
+   "move": null,
+   "contacts": [],
+   "keyframes": 20,
+   "notes": "The bell rocks back, the crescent knocked high, then back on the line.",
+   "validation": {
+    "arm_reach": 0.0,
+    "leg_reach": 0.0,
+    "sole_below_ground": 0.0,
+    "planted_slide": 0.0,
+    "hand_jerk": 0.1085,
+    "loop_seam_deg": 0.0
+   },
+   "problems": [],
+   "uploaded": false,
+   "asset_id": null
+  },
+  "Warden_Idle": {
+   "slot": "HollowBellWarden.Idle",
+   "length": 3.6,
+   "loop": true,
+   "priority": "Movement",
+   "move": null,
+   "contacts": [],
+   "keyframes": 8,
+   "notes": "Guard loop: bladed, the crescent raised forward on the left of the line, slow heavy breath.",
+   "validation": {
+    "arm_reach": 0.0,
+    "leg_reach": 0.0,
+    "sole_below_ground": 0.0,
+    "planted_slide": 0.0,
+    "hand_jerk": 0.0,
+    "loop_seam_deg": 0.0
+   },
+   "problems": [],
+   "uploaded": false,
+   "asset_id": null
+  },
+  "Warden_L1": {
+   "slot": "HollowBellWarden.Light1",
+   "length": 0.4,
+   "loop": false,
+   "priority": "Action2",
+   "move": "Guandao_L1",
+   "contacts": [
+    0.1833
+   ],
+   "keyframes": 25,
+   "notes": "Crescent Reap: right-to-left reaping sweep at waist height on a short step.",
+   "validation": {
+    "arm_reach": 0.0038,
+    "leg_reach": 0.0,
+    "sole_below_ground": 0.0,
+    "planted_slide": 0.0496,
+    "hand_jerk": 0.0446,
+    "loop_seam_deg": 0.0,
+    "strike": {
+     "contact": [
+      0.52,
+      1.24,
+      -3.61
+     ],
+     "forward": 3.61,
+     "yaw": 8.1,
+     "sweep_deg": -41.2
+    }
+   },
+   "problems": [],
+   "uploaded": false,
+   "asset_id": null
+  },
+  "Warden_L2": {
+   "slot": "HollowBellWarden.Light2",
+   "length": 0.4167,
+   "loop": false,
+   "priority": "Action2",
+   "move": "Guandao_L2",
+   "contacts": [
+    0.1833
+   ],
+   "keyframes": 26,
+   "notes": "Returning Tide: left-to-right return sweep, rising, the hands sliding on the shaft.",
+   "validation": {
+    "arm_reach": 0.0,
+    "leg_reach": 0.0,
+    "sole_below_ground": 0.0,
+    "planted_slide": 0.0376,
+    "hand_jerk": 0.0,
+    "loop_seam_deg": 0.0,
+    "strike": {
+     "contact": [
+      0.17,
+      1.22,
+      -3.53
+     ],
+     "forward": 3.53,
+     "yaw": 2.8,
+     "sweep_deg": 69.9
+    }
+   },
+   "problems": [],
+   "uploaded": false,
+   "asset_id": null
+  },
+  "Warden_L3": {
+   "slot": "HollowBellWarden.Light3",
+   "length": 0.5167,
+   "loop": false,
+   "priority": "Action2",
+   "move": "Guandao_L3",
+   "contacts": [
+    0.2167
+   ],
+   "keyframes": 32,
+   "notes": "Heaven-Splitting Cleave: overhead gather and a straight cleave down the centre line.",
+   "validation": {
+    "arm_reach": 0.0,
+    "leg_reach": 0.0,
+    "sole_below_ground": 0.0,
+    "planted_slide": 0.0265,
+    "hand_jerk": 0.0,
+    "loop_seam_deg": 0.0,
+    "strike": {
+     "contact": [
+      0.9,
+      0.28,
+      -3.91
+     ],
+     "forward": 3.91,
+     "yaw": 12.9
+    }
+   },
+   "problems": [],
+   "uploaded": false,
+   "asset_id": null
+  },
+  "Warden_Move": {
+   "slot": "HollowBellWarden.Move",
+   "length": 0.8,
+   "loop": true,
+   "priority": "Movement",
+   "move": null,
+   "contacts": [],
+   "keyframes": 7,
+   "notes": "Upper-body guard carried over the gait.",
+   "validation": {
+    "arm_reach": 0.0,
+    "leg_reach": 0.0,
+    "sole_below_ground": 0.0,
+    "planted_slide": 0.0,
+    "hand_jerk": 0.0,
+    "loop_seam_deg": 0.0
+   },
+   "problems": [],
+   "uploaded": false,
+   "asset_id": null
+  },
+  "Warden_Run": {
+   "slot": "HollowBellWarden.Run",
+   "length": 0.7,
+   "loop": true,
+   "priority": "Movement",
+   "move": null,
+   "contacts": [],
+   "keyframes": 43,
+   "notes": "Lumbering charge at 9.5 studs/s (scale 1): leaned in, spade low across the body.",
+   "validation": {
+    "arm_reach": 0.0093,
+    "leg_reach": 0.0257,
+    "sole_below_ground": 0.0,
+    "planted_slide": 0.0,
+    "hand_jerk": 0.0,
+    "loop_seam_deg": 0.0
+   },
+   "problems": [],
+   "uploaded": false,
+   "asset_id": null
+  },
+  "Warden_Running": {
+   "slot": "HollowBellWarden.Running",
+   "length": 0.6,
+   "loop": false,
+   "priority": "Action2",
+   "move": "Guandao_Running",
+   "contacts": [
+    0.25
+   ],
+   "keyframes": 37,
+   "notes": "Burial Thrust: drawn back at the hip on the charge, a long lunging thrust of the crescent.",
+   "validation": {
+    "arm_reach": 0.0,
+    "leg_reach": 0.0,
+    "sole_below_ground": 0.0,
+    "planted_slide": 0.0375,
+    "hand_jerk": 0.0,
+    "loop_seam_deg": 0.0,
+    "strike": {
+     "contact": [
+      1.02,
+      1.13,
+      -3.8
+     ],
+     "forward": 3.8,
+     "yaw": 15.1
+    }
+   },
+   "problems": [],
+   "uploaded": false,
+   "asset_id": null
+  },
+  "Warden_Signature": {
+   "slot": "HollowBellWarden.Signature",
+   "length": 1.8,
+   "loop": false,
+   "priority": "Action2",
+   "move": null,
+   "contacts": [
+    1.1
+   ],
+   "keyframes": 82,
+   "notes": "Hollow Toll: the haft swung crosswise into his own bell on the shockwave's Windup.",
+   "validation": {
+    "arm_reach": 0.0,
+    "leg_reach": 0.0,
+    "sole_below_ground": 0.0,
+    "planted_slide": 0.1622,
+    "hand_jerk": 0.0,
+    "loop_seam_deg": 0.0
+   },
+   "problems": [],
+   "uploaded": false,
+   "asset_id": null
+  },
+  "Warden_StanceBroken": {
+   "slot": "HollowBellWarden.StanceBroken",
+   "length": 1.8,
+   "loop": true,
+   "priority": "Action4",
+   "move": null,
+   "contacts": [],
+   "keyframes": 34,
+   "notes": "Posture break: the crescent sags to the earth, the bell lolls forward, the punish window.",
+   "validation": {
+    "arm_reach": 0.0339,
+    "leg_reach": 0.0,
+    "sole_below_ground": 0.0,
+    "planted_slide": 0.0,
+    "hand_jerk": 0.0,
+    "loop_seam_deg": 0.0
+   },
+   "problems": [],
+   "uploaded": false,
+   "asset_id": null
+  },
+  "Warden_Walk": {
+   "slot": "HollowBellWarden.Walk",
+   "length": 0.75,
+   "loop": true,
+   "priority": "Movement",
+   "move": null,
+   "contacts": [],
+   "keyframes": 46,
+   "notes": "Ponderous walk at 5.6 studs/s (scale 1): heavy planted feet, the hump rolling, spade at the port.",
+   "validation": {
+    "arm_reach": 0.0,
+    "leg_reach": 0.032,
+    "sole_below_ground": 0.0,
+    "planted_slide": 0.1173,
+    "hand_jerk": 0.0,
+    "loop_seam_deg": 0.0
+   },
+   "problems": [],
+   "uploaded": false,
+   "asset_id": null
+  }
+ }
+}

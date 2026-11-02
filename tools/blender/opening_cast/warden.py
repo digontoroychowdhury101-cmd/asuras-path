@@ -9,7 +9,7 @@ slit, a chain bound diagonally round it and yellowed talismans hanging from its 
 
 His crescent-moon spade is its own piece bound to the right hand (AsuraRole=Weapon) on the grip line through the
 right fist (+Y at rest): a crescent blade on the front end with two jingling rings, a burial spade on the butt. The
-left fist grips SHAFT_LEFT forward along it in the clips. build(hi): hi=True is the master, hi=False the game mesh.
+left fist takes the shaft wherever it sits comfortably in the clips (warden_clips.py). build(hi): hi=True is the master, hi=False the game mesh.
 """
 import math
 import random
@@ -25,8 +25,11 @@ NAME = "Warden"
 ARM_TOP, ARM_ELBOW, ARM_WRIST = V((1.08, 0, 0.80)), V((1.16, 0.0, 0.0)), V((1.20, 0.0, -0.68))
 FIST = V((1.22, 0.0, -0.88))
 HIP_X, SOLE_Z = 0.46, -3.0
-SHAFT_LEFT = 1.2          # the left hand's grip, this far forward of the right fist along the shaft
+SHAFT_LEFT = 1.0          # leather grips this far either side of the right fist: the left hand slides between them
 SHAFT_R = 0.054
+# the shaft crosses each palm diagonally (as a polearm's does), not square to the forearm: the curled fingers and the
+# whole spade are turned this far about X through the fist centre, the crescent forward and down at rest
+GRIP_TILT = -65.0
 BELL_C = V((0.0, 0.17, 0.0))   # the bell's axis sits a little forward: it overhangs the chest
 
 # barrel chest and hump under the robe, the top pitched forward (he stoops under the bell): z, half-width, front depth, back depth, centre y, superellipse power
@@ -494,6 +497,7 @@ def hand(hi, s):
     pc.grid(rows, "SKIN", closed_u=True, cap0=True, cap1=True)
     bands(pc, V((F.x + s * 0.085, 0.01, -0.70)), V((F.x + s * 0.085, 0.01, -0.80)), 0.08, 0.09, 2, "LINEN", hi, tilt=0.1,
           out=0.012, seg=16 if hi else 8)
+    n0 = len(pc.bm.verts)
     for f, (ly, L) in enumerate(zip((0.122, 0.042, -0.038, -0.114), (1.0, 1.07, 1.0, 0.82))):
         n = 22 if hi else 7
         pts = []
@@ -512,7 +516,13 @@ def hand(hi, s):
     th = [V((F.x + s * 0.075, 0.145, -0.72)), V((F.x + s * 0.035, 0.20, F.z + 0.07)), V((F.x - s * 0.035, 0.195, F.z + 0.025)),
           V((F.x - s * 0.085, 0.16, F.z - 0.035))]
     tube(pc, curve_pts(th, 16 if hi else 6), lambda t: 0.045 * (1 - 0.25 * t) + 0.005 * G((t - 0.5) ** 2, 0.02), 12 if hi else 6, "SKIN")
+    tilt_grip(pc, n0, F)
     return pc
+
+
+def tilt_grip(pc, n0, F):
+    pc.bm.verts.ensure_lookup_table()
+    pc.transform(pc.bm.verts[n0:], tr(F) @ rot("X", GRIP_TILT) @ tr(-F))
 
 
 # ---------------------------------------------------------------------------------------------------------
@@ -525,7 +535,7 @@ def spade(hi):
     gx, gz = F.x, F.z
     Y0, Y1 = -2.42, 2.38
     tube(pc, [V((gx, y, gz)) for y in (Y0, 0.0, Y1)], SHAFT_R, 12 if hi else 8, "POLE")
-    for y0, y1 in ((-0.24, 0.24), (SHAFT_LEFT - 0.22, SHAFT_LEFT + 0.22)):
+    for y0, y1 in ((-0.24, 0.24), (SHAFT_LEFT - 0.3, SHAFT_LEFT + 0.3), (-SHAFT_LEFT - 0.3, -SHAFT_LEFT + 0.3)):
         tube(pc, [V((gx, y, gz)) for y in (y0, (y0 + y1) / 2, y1)], SHAFT_R + 0.008, 12 if hi else 8, "LEATHER")
     for y in (-1.25, 0.55, 1.85):
         tube(pc, [V((gx, y - 0.025, gz)), V((gx, y + 0.025, gz))], SHAFT_R + 0.012, 12 if hi else 8, "IRON")
@@ -574,6 +584,7 @@ def spade(hi):
             row.append(V((gx + g * hw, y, gz + 0.035 * g * g * smooth(f / 0.3))))
         P.append(row)
     slab(pc, P, lambda i, j: 0.04 * (1 - i / nr) + 0.01, "STEEL")
+    tilt_grip(pc, 0, F)
     return pc
 
 

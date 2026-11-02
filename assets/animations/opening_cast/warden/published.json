@@ -1,0 +1,104 @@
+{
+  "Warden_Art": {
+    "id": "rbxassetid://82843854612681",
+    "keyframes": 54,
+    "length": 0.8999999761581421,
+    "slot": "HollowBellWarden.WeaponArt"
+  },
+  "Warden_Death": {
+    "id": "rbxassetid://135796526374193",
+    "keyframes": 45,
+    "length": 1,
+    "slot": "HollowBellWarden.Death"
+  },
+  "Warden_Guard": {
+    "id": "rbxassetid://111594189369970",
+    "keyframes": 7,
+    "length": 1.600000023841858,
+    "slot": "HollowBellWarden.Guard"
+  },
+  "Warden_GuardImpact": {
+    "id": "rbxassetid://89274945535822",
+    "keyframes": 13,
+    "length": 0.3333300054073334,
+    "slot": "HollowBellWarden.GuardImpact"
+  },
+  "Warden_Heavy": {
+    "id": "rbxassetid://118254162566149",
+    "keyframes": 51,
+    "length": 0.833329975605011,
+    "slot": "HollowBellWarden.Heavy"
+  },
+  "Warden_Hit_Heavy": {
+    "id": "rbxassetid://120364294554446",
+    "keyframes": 41,
+    "length": 0.75,
+    "slot": "HollowBellWarden.Hitstun_Heavy"
+  },
+  "Warden_Hit_Light": {
+    "id": "rbxassetid://123540264050232",
+    "keyframes": 20,
+    "length": 0.4000000059604645,
+    "slot": "HollowBellWarden.Hitstun_Light"
+  },
+  "Warden_Idle": {
+    "id": "rbxassetid://124722344286007",
+    "keyframes": 8,
+    "length": 3.5999999046325684,
+    "slot": "HollowBellWarden.Idle"
+  },
+  "Warden_L1": {
+    "id": "rbxassetid://74202148679159",
+    "keyframes": 25,
+    "length": 0.4000000059604645,
+    "slot": "HollowBellWarden.Light1"
+  },
+  "Warden_L2": {
+    "id": "rbxassetid://75414684963161",
+    "keyframes": 26,
+    "length": 0.4166699945926666,
+    "slot": "HollowBellWarden.Light2"
+  },
+  "Warden_L3": {
+    "id": "rbxassetid://80251693429323",
+    "keyframes": 32,
+    "length": 0.5166699886322021,
+    "slot": "HollowBellWarden.Light3"
+  },
+  "Warden_Move": {
+    "id": "rbxassetid://113707235032422",
+    "keyframes": 7,
+    "length": 0.800000011920929,
+    "slot": "HollowBellWarden.Move"
+  },
+  "Warden_Run": {
+    "id": "rbxassetid://92072596908213",
+    "keyframes": 43,
+    "length": 0.699999988079071,
+    "slot": "HollowBellWarden.Run"
+  },
+  "Warden_Running": {
+    "id": "rbxassetid://80666322516323",
+    "keyframes": 37,
+    "length": 0.6000000238418579,
+    "slot": "HollowBellWarden.Running"
+  },
+  "Warden_Signature": {
+    "id": "rbxassetid://121126042509475",
+    "keyframes": 82,
+    "length": 1.7999999523162842,
+    "slot": "HollowBellWarden.Signature"
+  },
+  "Warden_StanceBroken": {
+    "id": "rbxassetid://89400894565036",
+    "keyframes": 34,
+    "length": 1.7999999523162842,
+    "slot": "HollowBellWarden.StanceBroken"
+  },
+  "Warden_Walk": {
+    "id": "rbxassetid://92491485517905",
+    "keyframes": 46,
+    "length": 0.75,
+    "slot": "HollowBellWarden.Walk"
+  }
+}

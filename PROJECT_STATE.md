@@ -1,5 +1,9 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## Hollow-Bell Warden clips — 2026-11-02 (Windows)
+
+17 Warden clips (warden_clips.py: two-handed spade, left fist solved onto the shaft, -65° palm grip; Hollow Toll strikes his own bell at the 1.1 s Windup) validated, published, in AnimationCatalog + Gaits; Scale 1.35; spade ember VFX. Mesh rebaked with tilted grip. Next: re-import GLB, bind, extract skin, playtest.
+
 ## Hollow-Bell Warden model — 2026-11-02 (Windows)
 
 Warden gets a unique body (tools/blender/opening_cast/warden.py): stooped barrel torso, verdigris bell head with ember crack/slit, chain, talismans, grave robe, spirit tablets, iron-shod boots, crescent-moon spade (weapon piece). Baked GLB 17.4k tris. Concept sheet in Claude Design. Next: Studio 3D import + bind, clips incl. Hollow Toll, playtest.

@@ -15,6 +15,9 @@ type Look = { Edge: Color3, Core: Color3, Ember: Color3, Smoke: Color3, Glow: Co
 local LOOKS: { [string]: Look } = {
 	CursedSwordsman = { Edge = Color3.fromRGB(255, 70, 52), Core = Color3.fromRGB(90, 0, 12), Ember = Color3.fromRGB(255, 92, 58),
 		Smoke = Color3.fromRGB(44, 8, 12), Glow = Color3.fromRGB(255, 40, 30) },
+	-- the bell's ember leaking along the crescent, grave-verdigris smoke
+	HollowBellWarden = { Edge = Color3.fromRGB(255, 132, 60), Core = Color3.fromRGB(110, 40, 8), Ember = Color3.fromRGB(255, 150, 70),
+		Smoke = Color3.fromRGB(34, 52, 44), Glow = Color3.fromRGB(255, 110, 40) },
 }
 local RANGE = 90
 local LEAD = 0.1 -- the trail opens this far ahead of the active window, catching the cut's acceleration

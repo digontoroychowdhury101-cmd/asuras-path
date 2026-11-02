@@ -393,6 +393,7 @@ World.Mobs = {
 		Id = "HollowBellWarden",
 		Name = "Hollow-Bell Warden",
 		Weapon = "Guandao",
+		Scale = 1.35, -- the bell-crowned giant stands about 7 studs, head and bell over the swordsman
 		Stats = { MaxHP = 480, MaxStamina = 160, PostureCapacity = 190, StrengthScale = 1.15, DexterityScale = 0.85, PoiseArmor = 0.45 },
 		AI = profile({
 			SightRange = 40,
