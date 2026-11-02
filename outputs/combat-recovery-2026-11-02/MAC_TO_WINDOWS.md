@@ -88,16 +88,28 @@ Logs land in `logs/<case_label>_*`; put everything else in `windows-stage3/`. Li
 | W-02 | Dash animation and movement together. W, A, S, D, neutral, diagonals; flat ground | Real keys + Q | Occurrence same frame as press; foot channel moves within 1 frame of the body; ack does not restart (one start per seq); direction clip matches travel | `win_s3_w02_*`, real-speed video |
 | W-03 | L1→L4 chain, scheduled spacing | `powershell -File tools/qa/jian_combo_clicks.ps1 -StudioPid <pid> -X <px> -Y <px>` (0/160/320/520 ms); also 200 and 280 ms | All links Predicted away from edges; one track start per intent. **Check for any double start, the open observation.** Target and achieved spacing both recorded | `win_s3_w03_*` |
 | W-04 | Bounded correction, new observer. Second client needed: join after a swing starts, then 100 and 150 ms RTT | Real clicks | Rate stays in [0.75, 1.5]; no seat below 250 ms error; follow-through kept | `win_s3_w04_*` |
-| W-05 | Foot drift and rig. Flat, slope, stairs, moving platform if any; strafe, reverse, stance turn, sprint→attack; scaled rig; reduced motion on | Real keys | Planted foot drift below 0.1 stud while locked; no knee flip or floor penetration; lock releases for swing, jump, dash, death, teleport; reduced motion hands feet to clip | `windows-stage3/w05/` video, foot channel |
+| W-05 | Foot drift and rig. Flat, slope, stairs, moving platform if any; strafe, reverse, stance turn, sprint→attack; scaled rig; reduced motion on | Real keys | Planted foot drift below 0.1 stud while locked (proposed target; nothing has measured it yet); no knee flip or floor penetration; lock releases for swing, jump, dash, death, teleport; reduced motion hands feet to clip | `windows-stage3/w05/` video, foot channel |
 | W-06 | Blade and contact. Set `Workspace.AsuraDebugReach = true`; Jian L1, L3, Heavy, Running; Dao L1; Guandao L1; TwinDaggers L1; WarFan L1; a scaled body; a boss pulse; a signature attack; a fixed-aim strike | Real clicks against a target | Debug outline matches the visible blade through active frames; spark, trail, reaction and damage share one contact; one hit per pulse identity; hitstop one stop per contact | `windows-stage3/w06/` |
 | W-07 | Refused dash in real geometry: wall, corner, rising and falling slope, step, ongoing knockback, timeout, KO, respawn. Force refusal by draining stamina or seeding a state server-side | Real keys | Only the dash's own travel comes off; never through a wall or below ground; knockback continues | `windows-stage3/w07/` |
-| W-08 | Root owners. NPC standoff, crowd step-back, ally spacing, attack turn, boss motion, with footwork on | Ordinary fights | One mover per action, no slide or tug; audit in `STATUS.md` Stage 2/3 notes and source | `windows-stage3/w08/` |
+| W-08 | Root owners. NPC standoff, crowd step-back, ally spacing, attack turn, boss motion, with footwork on | Ordinary fights | One mover per action, no slide or tug; audit table below | `windows-stage3/w08/` |
 | W-09 | Stage 4 two-client matrix per `04_REAL_MULTIPLAYER_VERIFICATION.md`, including facing (moving attacker, front/rear boundary) and grace | One server, two real clients | Per that prompt | `windows-stage3/stage4/` |
 | W-10 | Coverage by eye. Every weapon: `ServerStorage:SetAttribute("AsuraStage3Weapon", "<Weapon>")`, then `python tools/qa/qa_inject.py tools/qa/Stage3Equip.server.luau <StudioName>` | Real input, each action in `ANIMATION_COVERAGE.md` | Grip holds, no body clipping, reads as the move. Failures go back to `tools/animation/families/families.py`, then `publish.py`, `catalog.py`, `bake_trajectories.py`, `coverage.py --readback <StudioName>` | Coverage file, `windows-stage3/w10/` |
 | W-11 | Full-world performance on the canonical place, 8+ fighters | Ordinary play | p50/p95/p99 and step times; pose budget holds | `windows-stage3/w11/` |
 | W-12 | Stage 5 feel acceptance, normal-input duel, PvE transfer | Person playing | Per `05_FEEL_ACCEPTANCE_AND_HANDOFF.md` | Per that prompt |
 
 Run after any change: `bash tools/verify_all.sh` and `python tools/qa/mutation_stage3.py`.
+
+## Root movement owners (static source audit; W-08 checks it at runtime)
+
+| Actor and action | Owner |
+|---|---|
+| Player walk | Client Humanoid |
+| Player dash | `WorldStateController` LinearVelocity |
+| Swing step | Presentation only (`ActorPose` Root Transform); the root does not move |
+| NPC walk | `Service.MoveTo` |
+| NPC attack turn and commit | Root CFrame, then MoveTo renewed |
+| Boss | `BossMotion` PivotTo |
+| Knockback | Velocity writes |
 
 ## Outstanding assets
 
