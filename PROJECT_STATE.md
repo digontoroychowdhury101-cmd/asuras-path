@@ -1,5 +1,9 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## Opening cast group test & footage — 2026-11-02 (Windows)
+
+Cloister monk + Cursed Swordsman fought together: both engage, deflects/counters/deathblows land on each; cleared twice (~30 s) with seeded tank stats. A scripted Lv1 bot at 100 HP falls in ~11 s (swordsman hits 30+). Added tools/qa/viewport_footage.py (~1 fps MP4); clip + sheet in outputs/opening-cast/footage. Next: Lv1 group tuning playtest.
+
 ## Hollow-Bell Warden in game — 2026-11-02 (Windows)
 
 Warden skin imported, bound, extracted, mapped. Spade slid down the haft (SPADE_HOLD) so blows meet a body at the AI's 7.5-stud standoff (castlib checks). Fixed client crash: SkinWeaponFx was unmapped. Studio duel at normal health won; 400 Essence, gourd +1, banner verified. Next: small-group test, footage.
