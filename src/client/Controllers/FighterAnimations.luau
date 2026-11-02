@@ -20,6 +20,7 @@ local Shared = game:GetService("ReplicatedStorage").AsurasPath
 local Workspace = game:GetService("Workspace")
 local Catalog = require(Shared.Shared.AnimationCatalog)
 local Weapons = require(Shared.Simulation.WeaponSchema)
+local Prediction = require(Shared.Simulation.LocalPrediction)
 local World = require(Shared.Shared.WorldDefinitions)
 
 local Animations = {}
@@ -332,6 +333,10 @@ function Animations.Step(self: any, entity: any, actor: Actor)
 	actor.LastSeq = actionSeq
 	if entered then
 		actor.Serial += 1
+		if own then
+			-- Diagnostic only: the intent behind this occurrence (the prediction's own seq while it is shown).
+			Prediction.trace(if predicted and actionSeq == -1 then predicted.Seq else s.IntentSeq, "Occurrence", state .. ":" .. (move or ""))
+		end
 	end
 	if actor.Weapon ~= weapon then
 		local first = actor.Weapon == nil

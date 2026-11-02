@@ -3,9 +3,11 @@
 -- authoritative snapshot whether a press may be shown before the server confirms it. Presentation and the
 -- owner's own movement only: damage, i-frames, deflect/parry, posture, Qi and rewards are never predicted.
 -- A prediction is made only where the server's answer is not in doubt from what the client can see (Idle,
--- stamina to spare, no injury or dash-spam scaling to guess). It is named by the intent sequence and ends
--- on the server's terminal record for that sequence (AsuraIntent), on the snapshot that shows the action,
--- or after CONFIRM_TIMEOUT, whichever comes first; anything but confirmation rolls it back.
+-- stamina to spare, no injury or dash-spam scaling to guess). It is named by the intent sequence and is
+-- confirmed only by a snapshot whose IntentSeq is that sequence (the server marks the action an intent
+-- started), never by an unrelated action change. A non-Executed terminal record or CONFIRM_TIMEOUT without
+-- an Executed record rolls it back; an Executed record followed by a later sample showing another action
+-- (the server's action was already interrupted) ends it without undoing anything.
 local hasScript = pcall(function()
 	return script.Parent
 end)
@@ -25,6 +27,20 @@ local Prediction = {}
 -- A predicted action the server has not confirmed by now is rolled back. Covers a 300 ms round trip plus
 -- one 100 ms queue wait, the envelope the timing contract supports.
 Prediction.CONFIRM_TIMEOUT = 0.5
+
+-- Opt-in diagnostic trace, off in play (a Studio QA probe sets Enabled). Every record names the intent seq, so
+-- a press, its prediction, the animation occurrence and the terminal outcome are matched by ID, not by time.
+-- Events: Sent (detail = action), Predicted / Unpredicted, Confirmed, Ended, RolledBack, Occurrence (the
+-- frame the owner's animation layer starts or adopts the action; detail = state:move).
+Prediction.Trace = { Enabled = false, Records = {} :: { any } }
+local TRACE_LIMIT = 4096
+
+function Prediction.trace(seq: number, event: string, detail: string?)
+	local trace = Prediction.Trace
+	if trace.Enabled and #trace.Records < TRACE_LIMIT then
+		table.insert(trace.Records, { seq = seq, e = event, d = detail, t = os.clock() })
+	end
+end
 
 -- Stamina kept in reserve so regen/drain between the snapshot and the server tick cannot flip the answer.
 local STAMINA_MARGIN = 2
@@ -85,19 +101,19 @@ function Prediction.guard(s: any): boolean
 	return settled(s)
 end
 
--- The terminal status the server reported for `seq` in an AsuraIntent attribute value, or nil if absent.
+-- The terminal status and server tick reported for `seq` in an AsuraIntent attribute value, or nil if absent.
 -- Records are "seq:status:reason:tick" joined by ";" (CharacterService terminal records).
-function Prediction.terminal(records: any, seq: number): string?
+function Prediction.terminal(records: any, seq: number): (string?, number?)
 	if type(records) ~= "string" then
-		return nil
+		return nil, nil
 	end
 	for record in string.gmatch(records, "[^;]+") do
-		local id, status = string.match(record, "^(%d+):(%a+):")
+		local id, status, tick = string.match(record, "^(%d+):(%a+):[^:]*:(%d+)$")
 		if tonumber(id) == seq then
-			return status
+			return status, tonumber(tick)
 		end
 	end
-	return nil
+	return nil, nil
 end
 
 return table.freeze(Prediction)

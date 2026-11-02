@@ -113,7 +113,7 @@ local function character()
 end
 local snapshot = { State = "Idle" }
 local world = { DashEnds = 0, OwnSnapshot = function() return snapshot end,
-	Predict = function() return false end, PredictGuard = function() end } -- Stage 2 prediction: not under test here
+	Predict = function() return false end, PredictGuard = function() end, Sent = function() end } -- Stage 2 prediction: not under test here
 local camera = { Camera = workspace.CurrentCamera, FovPunch = { Value = 0 },
 	SetMovement = function(self, glide, slide, turn) self.Glide, self.Slide, self.Turn = glide, slide, turn end,
 	Impulse = function(self) self.Rumbles = (self.Rumbles or 0)+1 end }

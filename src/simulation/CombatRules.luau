@@ -150,6 +150,12 @@ export type Fighter = {
 	ActionSeq: number,
 	ActionMark: number,
 	ActionState: string,
+	-- The intent that started the action identified by IntentMark/IntentState (Rules.markIntent); 0 = none.
+	IntentSeq: number,
+	IntentMark: number,
+	IntentState: string,
+	-- Accepted press time of the current dash (its i-frames may cover an earlier contact through the grace).
+	DashPressedAt: number,
 	DashDistance: number,
 	DashDuration: number,
 	DashDirX: number,
@@ -201,6 +207,28 @@ export type HitContext = {
 	-- t_c when resolution happens later than the contact: invulnerability and deflect timing are judged at it,
 	-- while the stun or recoil the outcome applies starts at `now`.
 	At: number?,
+	-- Everything else the outcome depends on, frozen at t_c (Rules.contactSnapshot). Built from the present
+	-- when absent, which is the same thing for a contact resolved on its own tick.
+	Snapshot: ContactSnapshot?,
+}
+
+-- A contact as of t_c (combat recovery Stage 2 closure, TIMING_CONTRACT §0). Frozen at detection: the defender's
+-- state, move, weapon, poise armor and invulnerability, and the attacker's weapon, arm tier, damage scale and
+-- infusions. Judged at resolution: a deflect or a dash whose accepted press is at or before t_c (the grace).
+-- Applied at resolution: HP, posture, stamina and Qi changes (running totals) and the stun, which starts then.
+export type ContactSnapshot = {
+	At: number,
+	DefenderState: State,
+	DefenderMove: MoveData?,
+	DefenderWeapon: WeaponType,
+	DefenderPoise: number,
+	Invulnerable: boolean,
+	AttackerWeapon: WeaponType,
+	ArmTier: InjuryTier,
+	DamageScale: number,
+	InfusionStun: number,
+	InfusionBurn: number,
+	GuardPierce: number,
 }
 
 export type HitOutcome = "Ignored" | "Whiff" | "Deflected" | "Blocked" | "GuardBroken" | "Hit" | "CounterHit" | "Armored" | "KO"
@@ -347,6 +375,10 @@ function Rules.new(id: number, weapon: WeaponType?, now: number): Fighter
 		ActionSeq = 0,
 		ActionMark = -NEVER,
 		ActionState = "",
+		IntentSeq = 0,
+		IntentMark = -NEVER,
+		IntentState = "",
+		DashPressedAt = -NEVER,
 		DashDistance = 0,
 		DashDuration = 0,
 		DashDirX = 0,
@@ -1011,7 +1043,9 @@ function Rules.landingRecovery(f: Fighter, now: number, seconds: number): "Appli
 	return "Applied"
 end
 
-function Rules.tryDash(f: Fighter, kind: "Roll" | "Dash", now: number, dirX: number, dirZ: number, events: { Event }?): (DashGrant?, string)
+-- `pressedAt` is the accepted press time (default `now`); it only anchors i-frames for a contact held in the
+-- defender's grace (Rules.dashCovers). Distance, duration and the grant's own i-frames start at `now`.
+function Rules.tryDash(f: Fighter, kind: "Roll" | "Dash", now: number, dirX: number, dirZ: number, events: { Event }?, pressedAt: number?): (DashGrant?, string)
 	if f.RootUntil > now then return nil, "Rooted" end
 	local ok, reason = Schema.canAct(f.State, kind, f.Stamina, f.Posture, Rules.context(f, now))
 	if not ok then
@@ -1039,6 +1073,7 @@ function Rules.tryDash(f: Fighter, kind: "Roll" | "Dash", now: number, dirX: num
 	f.DashDirZ = if magnitude > 1e-6 then dirZ / magnitude else 0
 	f.DashDistance = baseDistance * distanceScale * f.Penalties.DashDistanceMultiplier
 	f.DashDuration = duration
+	f.DashPressedAt = math.min(pressedAt or now, now)
 	f.IFrameStart = now + window.Start
 	f.IFrameEnd = now + window.Start + (window.Finish - window.Start) * iframeScale
 	if iframeScale <= 0 then
@@ -1240,6 +1275,35 @@ end
 -- 2 + 4 + 5. Hit resolution: deflect -> block -> counter-hit -> damage, rally, posture, bleed, trauma
 -------------------------------------------------------------------------------------------------
 
+-- A dash granted after `at` whose accepted press was at or before it: the same i-frame window, anchored to the
+-- press instead of the grant, covers `at`. Only a contact held in the defender's grace can ask this, so a press
+-- in flight evades as it would have at t_c; the dash's own i-frames from the grant are Rules.isInvulnerable.
+function Rules.dashCovers(f: Fighter, at: number): boolean
+	if f.State ~= "Dashing" or at >= f.StateStart or f.DashPressedAt > at + Tempo.HalfTick then
+		return false
+	end
+	local from = f.DashPressedAt + (f.IFrameStart - f.StateStart)
+	local to = f.DashPressedAt + (f.IFrameEnd - f.StateStart)
+	return to >= from and at >= from - Tempo.HalfTick and at <= to + Tempo.HalfTick
+end
+
+function Rules.contactSnapshot(attacker: Fighter, defender: Fighter, at: number, move: MoveData): ContactSnapshot
+	return {
+		At = at,
+		DefenderState = defender.State,
+		DefenderMove = defender.Move,
+		DefenderWeapon = defender.Weapon,
+		DefenderPoise = defender.PoiseArmor,
+		Invulnerable = Rules.isInvulnerable(defender, at),
+		AttackerWeapon = attacker.Weapon,
+		ArmTier = Rules.armTier(attacker),
+		DamageScale = Rules.damageScale(attacker, move),
+		InfusionStun = attacker.InfusionStun,
+		InfusionBurn = attacker.InfusionBurn,
+		GuardPierce = attacker.GuardPierce,
+	}
+end
+
 -- `cap` bounds the press's window (a perilous thrust never deflects wider than the baseline window).
 function Rules.isDeflectTimed(defender: Fighter, hitTime: number, cap: number?): boolean
 	if defender.State ~= "Deflecting" then
@@ -1263,16 +1327,21 @@ function Rules.resolveHit(attacker: Fighter, defender: Fighter, now: number, hit
 	if move == nil or defender.Id == attacker.Id or defender.State == "KO" then
 		return "Ignored"
 	end
-	attacker.HitRegistry[defender.Id] = true
-	local defenderState: State = hit.DefenderState or defender.State
+	if deferred == nil then
+		-- A deferred contact claimed its entry at detection; writing it now would land in the registry of any
+		-- newer swing the attacker started meanwhile and stop that swing from hitting this defender.
+		attacker.HitRegistry[defender.Id] = true
+	end
 	local at = hit.At or now
-	if Rules.isInvulnerable(defender, at) then
+	local snap = hit.Snapshot or Rules.contactSnapshot(attacker, defender, at, move)
+	local defenderState: State = hit.DefenderState or snap.DefenderState
+	if snap.Invulnerable or Rules.dashCovers(defender, at) then
 		emit(defender, events, "Evade", defender.Id, attacker.Id, 0)
 		return "Whiff"
 	end
 
-	local attackerWeapon = weaponOf(attacker)
-	local defenderWeapon = weaponOf(defender)
+	local attackerWeapon = Weapons.Weapons[snap.AttackerWeapon]
+	local defenderWeapon = Weapons.Weapons[snap.DefenderWeapon]
 
 	-- 2. Perfect deflect: negate damage, heavy posture onto the attacker, spark.
 	if hit.Facing and move.Deflectable and Rules.isDeflectTimed(defender, at) then
@@ -1291,7 +1360,9 @@ function Rules.resolveHit(attacker: Fighter, defender: Fighter, now: number, hit
 			emit(defender, events, "Rally", defender.Id, attacker.Id, restored)
 		end
 		emit(defender, events, "DeflectSpark", defender.Id, attacker.Id, reflected)
-		if not Rules.addPosture(attacker, reflected, now, events, defender.Id) then
+		-- An attacker KO'd while the contact waited is not stood back up into recoil. One that started a newer
+		-- action meanwhile is recoiled out of it: as of t_c the deflect came first, so that action could not start.
+		if (attacker.State :: State) ~= "KO" and not Rules.addPosture(attacker, reflected, now, events, defender.Id) then
 			clearMove(attacker)
 			enter(attacker, "Blockstun", now, Settings.Stun.DeflectRecoil)
 		end
@@ -1305,7 +1376,7 @@ function Rules.resolveHit(attacker: Fighter, defender: Fighter, now: number, hit
 		local outcome = Weapons.blockOutcome(move, attackerWeapon, defenderWeapon, defender.Stamina)
 		local cost = if defenderState == "Deflecting" then Settings.Stamina.Costs.DeflectMiss else outcome.DefenderStamina
 		local depleted = Rules.spendStamina(defender, cost, now)
-		local pierce=move.BaseDamage*Rules.damageScale(attacker,move)*attacker.GuardPierce
+		local pierce = move.BaseDamage * snap.DamageScale * snap.GuardPierce
   local chip = Rules.applyDamage(defender, outcome.DefenderChip+pierce, "Chip", now)
 		Rules.rally(attacker, chip, now, events, defender.Id)
 		attacker.Qi = math.min(attacker.MaxQi, attacker.Qi + Settings.Qi.GainOnHit * 0.5)
@@ -1315,7 +1386,7 @@ function Rules.resolveHit(attacker: Fighter, defender: Fighter, now: number, hit
 			emit(defender, events, "KO", attacker.Id, defender.Id, chip)
 			return "KO"
 		end
-		if Rules.addPosture(defender, outcome.DefenderPosture+attacker.InfusionStun, now, events, attacker.Id) then
+		if Rules.addPosture(defender, outcome.DefenderPosture + snap.InfusionStun, now, events, attacker.Id) then
 			return "Blocked"
 		end
 		if depleted or outcome.GuardBreak then
@@ -1325,6 +1396,7 @@ function Rules.resolveHit(attacker: Fighter, defender: Fighter, now: number, hit
 			emit(defender, events, "GuardBreak", attacker.Id, defender.Id, outcome.DefenderPosture)
 			return "GuardBroken"
 		end
+		clearMove(defender) -- a move begun after a guarded t_c is overridden by the blockstun
 		enter(defender, "Blockstun", now, Settings.Stun.Blockstun)
 		emit(defender, events, "Block", attacker.Id, defender.Id, chip)
 		return "Blocked"
@@ -1338,20 +1410,20 @@ function Rules.resolveHit(attacker: Fighter, defender: Fighter, now: number, hit
 	end
 
 	-- 5a. Counter-hit: struck during Startup cancels the move for bonus damage.
-	local defenderMove = defender.Move
+	local defenderMove = snap.DefenderMove
 	local poise = Settings.Poise
 	local poiseThreshold = if move.Kind == "Light" then poise.LightThreshold else poise.HeavyThreshold
 	local armored = (defenderMove ~= nil and defenderMove.HyperArmor and (defenderState == "Startup" or defenderState == "Active"))
-		or defender.PoiseArmor >= poiseThreshold
+		or snap.DefenderPoise >= poiseThreshold
 	local counter = defenderState == "Startup" and not armored
 	local counterScale = Settings.Counter
 	local critical = if hit.Facing then 1 else (attackerWeapon.CriticalMultiplier or 1.5)
-	local damage = critical * Schema.damage(move.BaseDamage, Rules.armTier(attacker)) * Rules.damageScale(attacker, move) * (if counter then counterScale.HitMultiplier else 1)
+	local damage = critical * Schema.damage(move.BaseDamage, snap.ArmTier) * snap.DamageScale * (if counter then counterScale.HitMultiplier else 1)
 	local category: DamageCategory = move.Kind
 	local dealt = Rules.applyDamage(defender, damage, category, now)
- if dealt>0 and attacker.InfusionBurn>0 then
-  defender.BurnRate=attacker.InfusionBurn;defender.BurnUntil=now+4;defender.BurnSource=attacker.Id
- end
+	if dealt > 0 and snap.InfusionBurn > 0 then
+		defender.BurnRate, defender.BurnUntil, defender.BurnSource = snap.InfusionBurn, now + 4, attacker.Id
+	end
 	Rules.rally(attacker, dealt, now, events, defender.Id)
 	attacker.Qi = math.min(attacker.MaxQi, attacker.Qi + Settings.Qi.GainOnHit)
 	attacker.DashChain = 0
@@ -1390,8 +1462,8 @@ function Rules.resolveHit(attacker: Fighter, defender: Fighter, now: number, hit
 		return if counter then "CounterHit" else "Hit"
 	end
 
-	local posture = attacker.InfusionStun + Weapons.postureDamage(move, attackerWeapon) * Settings.Posture.HitScale * (if counter then counterScale.PostureMultiplier else 1)
-		* (1 - defender.PoiseArmor * poise.PostureReduction)
+	local posture = snap.InfusionStun + Weapons.postureDamage(move, attackerWeapon) * Settings.Posture.HitScale * (if counter then counterScale.PostureMultiplier else 1)
+		* (1 - snap.DefenderPoise * poise.PostureReduction)
 	posture += hit.PostureBonus or 0
 	if Rules.addPosture(defender, posture, now, events, attacker.Id) then
 		return if counter then "CounterHit" else "Hit"
@@ -1407,7 +1479,7 @@ function Rules.resolveHit(attacker: Fighter, defender: Fighter, now: number, hit
 	end
 	clearMove(defender)
 	defender.Sprinting = false
-	enter(defender, "Hitstun", now, hitstunFor(move)+(if attacker.InfusionStun>0 then 0.15 else 0))
+	enter(defender, "Hitstun", now, hitstunFor(move) + (if snap.InfusionStun > 0 then 0.15 else 0))
 	return if counter then "CounterHit" else "Hit"
 end
 
@@ -1474,14 +1546,16 @@ export type Snapshot = {
 	KOProtected: boolean,
 	SampleTick: number,
 	SampleStamp: number,
+	IntentSeq: number,
 }
 
 -- v4 (combat recovery Stage 2, TIMING_CONTRACT §4): byte 39 carries ActionSeq, a wrapping id that changes
 -- whenever a new action starts (a move, or entry to a non-move state), so a repeated identical move and a
 -- skipped update are distinguishable. Bytes 58-61 carry the server tick of the sample and 62-69 its server
 -- clock (Workspace:GetServerTimeNow at sampling) so a client can age StateElapsed across transit.
-Rules.PACKET_SIZE = 70
-Rules.PACKET_VERSION = 4
+-- v5 (Stage 2 closure): bytes 70-73 carry the client intent that started the current action (0 = none).
+Rules.PACKET_SIZE = 74
+Rules.PACKET_VERSION = 5
 local HP_SCALE = 40
 
 local STATE_INDEX: { [string]: number } = {}
@@ -1525,6 +1599,22 @@ local function actionSeq(f: Fighter): number
 	return f.ActionSeq
 end
 Rules.actionSeq = actionSeq
+
+-- Records that client intent `seq` started the fighter's current action (CharacterService, after a buffered
+-- intent executes), so a snapshot of exactly that action names it and a prediction is confirmed by its own
+-- intent rather than by any action change (combat recovery Stage 2 closure).
+function Rules.markIntent(f: Fighter, seq: number)
+	f.IntentSeq = seq
+	f.IntentMark = if f.Move then f.MoveStart else f.StateStart
+	f.IntentState = if f.Move then "Move" else f.State
+end
+
+-- The intent that started the current action, or 0 once the fighter is in any other action.
+function Rules.actionIntent(f: Fighter): number
+	local mark = if f.Move then f.MoveStart else f.StateStart
+	local state = if f.Move then "Move" else f.State
+	return if mark == f.IntentMark and state == f.IntentState then f.IntentSeq else 0
+end
 
 -- `tick` and `stamp` name the sample (server tick, server clock); both default to 0 for offline packing.
 function Rules.pack(f: Fighter, now: number, into: buffer?, tick: number?, stamp: number?): buffer
@@ -1586,6 +1676,7 @@ function Rules.pack(f: Fighter, now: number, into: buffer?, tick: number?, stamp
 	buffer.writeu8(b, 57, if f.KOProtected then 1 else 0)
 	buffer.writeu32(b, 58, (tick or 0) % 4294967296)
 	buffer.writef64(b, 62, stamp or 0)
+	buffer.writeu32(b, 70, Rules.actionIntent(f) % 4294967296)
 	return b
 end
 
@@ -1648,6 +1739,7 @@ function Rules.unpack(b: buffer): Snapshot?
 		ActionSeq = buffer.readu8(b, 39),
 		SampleTick = buffer.readu32(b, 58),
 		SampleStamp = buffer.readf64(b, 62),
+		IntentSeq = buffer.readu32(b, 70),
 	}
 end
 

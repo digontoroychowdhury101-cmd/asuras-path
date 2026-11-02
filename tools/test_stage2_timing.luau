@@ -441,7 +441,7 @@ end
 -- B. Replicated timeline: codec v4, action identity, bounded local prediction
 -------------------------------------------------------------------------------------------------
 
--- T-RT-01: the v4 record carries ActionSeq, the sample tick and the sample's server clock; a v3 record is
+-- T-RT-01: the v5 record carries ActionSeq, the sample tick and the sample's server clock; a v3 record is
 -- refused rather than misread.
 do
 	local f = Combat.new(3, "Jian", 50)
@@ -576,7 +576,8 @@ do
 	end
 	local services = {
 		Players = { LocalPlayer = player, PlayerAdded = quiet, GetPlayers = function() return {} end },
-		Workspace = { GetServerTimeNow = function() return clock end, WaitForChild = function() return nil end, GetAttribute = function() return nil end },
+		Workspace = { GetServerTimeNow = function() return clock end, WaitForChild = function() return nil end, GetAttribute = function() return nil end,
+			Blockcast = function() return nil end },
 		CollectionService = { GetTagged = function() return {} end, GetInstanceAddedSignal = function() return quiet end },
 		ReplicatedStorage = finder({ AsurasPath = finder({ Simulation = finder({ CombatRules = Combat, LocalPrediction = Prediction }) }) }),
 	}
@@ -585,6 +586,7 @@ do
 		os = { clock = function() return clock end },
 		task = task, Vector3 = roblox.Vector3, Vector2 = roblox.Vector2, CFrame = roblox.CFrame, Enum = roblox.Enum,
 		Instance = roblox.Instance, require = function(m) return m end, warn = function() end,
+		RaycastParams = { new = function() return {} end },
 	}
 	local World = luau.load(fs.readFile("src/client/Controllers/WorldStateController.luau"), { debugName = "WorldState", environment = env })()
 	local net = finder({ StateSnapshots = { OnClientEvent = quiet } })
@@ -623,6 +625,7 @@ do
 	root.CFrame = roblox.CFrame.new(0, 3, 5) -- 5 studs travelled before the grant arrives
 	clock += 0.08
 	assert(Combat.tryDash(fighter, "Dash", clock - 0.03, 0, 1, {}))
+	Combat.markIntent(fighter, 1) -- the server names the action intent 1 started (CharacterService.drainBuffer)
 	publish()
 	state:Step(TICK)
 	check("T-PR-02 the grant is adopted, not applied again (start kept)", state.DashFrom == from)

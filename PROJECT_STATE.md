@@ -1,5 +1,9 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## Combat recovery Stage 2 closure — 2026-11-02 (Windows)
+
+Codec v5 IntentSeq confirms predictions by intent; contact snapshots frozen at t_c; press-anchored dodge grace (boss/area: none); ID-correlated probe v2. Receipt→start is one tick (33 ms was probe artifact). Automated L1→L4 chains executed 3/3. Pending: Studio wall/slope rollback, A1 (pose on 2nd frame). Next: Stage 3.
+
 ## Combat recovery Stage 2 — 2026-11-02 (Windows)
 
 Receipt-based input lifetimes with one terminal record per intent, codec v4 (ActionSeq/sample time), local attack/dash/guard prediction, phase-ordered simultaneous contacts, ≤100 ms defender grace, light-hitstun defend point. Fixed live-found clock-drift press loss. Verified offline + single-client Studio; multiplayer unverified. Next: Stage 3 animation.

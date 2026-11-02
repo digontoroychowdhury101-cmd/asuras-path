@@ -14,6 +14,17 @@ prints a JSON summary (also saved as LABEL_summary.json):
 Clocks are never mixed: server simTime runs in bursts and is only re-synced past 250 ms of drift, so it
 is not comparable with the client's GetServerTimeNow (a 1.5 s offset was observed). Evidence: seeded
 Studio diagnostic. `--from-logs` re-analyses saved LABEL_{client,server}.json without Studio.
+
+Probe version 2 (closure pass) logs are analysed by intent ID instead of by time: each press is tied to the
+intent seq its Sent trace record carries, and every later fact is looked up by that seq (prediction outcome,
+the animation occurrence for that intent, the server start whose actionIntent is that seq, the terminal
+record). Four presentation measures are kept apart and named for what they are:
+  occurrence_ms         the animation layer starts or adopts the occurrence for this intent (trace)
+  track_start_proxy_ms  first new Action-priority track after the press (Stage 2's "2 ms" figure: a proxy)
+  pose_change_ms        first frame the right hand moved >= 0.25 stud relative to the root
+  body_move_ms          first frame the root moved >= 0.25 stud horizontally (dash and roll presses)
+Each is a RenderStepped reading before that frame renders (display latency excluded). Missing values stay
+null with a reason, and each summary lists n, missing, every value and the outliers.
 """
 import json
 import statistics
@@ -52,6 +63,99 @@ def terminal(server, seq):
     return None
 
 
+POSE_STUDS = 0.25
+SENT_MATCH = {'Light': {'Light', 'RunningAttack'}, 'Heavy': {'Heavy'}, 'Dash': {'Dash', 'Roll'}, 'Deflect': {'Deflect'}}
+
+
+def describe(values, missing):
+    values = sorted(values)
+    p50 = pct(values, .5)
+    outliers = [v for v in values if p50 is not None and v > 2 * p50 and v > p50 + 50]
+    return {'n': len(values), 'missing': len(missing), 'missing_seqs': missing, 'p50': p50, 'p95': pct(values, .95),
+            'max': values[-1] if values else None, 'values': values, 'outliers': outliers}
+
+
+def first_after(rows, t, key=lambda r: True, within=1.5):
+    return next((r for r in rows if r['t'] >= t - 1e-9 and r['t'] - t <= within and key(r)), None)
+
+
+def analyse_v2(c, s, label, foreground):
+    trace, poses = c['trace'], c['poses']
+    server_ack, client_ack = {}, {}
+    for a in s['acks']:
+        if a['name'] == 'AsuraAck':
+            server_ack.setdefault(str(a['value']), a)
+    for a in c['acks']:
+        if a['name'] == 'AsuraAck':
+            client_ack.setdefault(str(a['value']), a)
+    used, rows = set(), []
+    for press in c['presses']:
+        kinds = SENT_MATCH.get(press['kind'], {press['kind']})
+        sent = first_after(trace, press['t'], lambda r: r['e'] == 'Sent' and r['d'] in kinds and r['seq'] not in used, 0.3)
+        row = {'kind': press['kind'], 't': round(press['t'], 3), 'seq': None, 'missing': []}
+        rows.append(row)
+        if not sent:
+            row['missing'].append('no Sent trace within 300 ms (press not sent: menu, focus or coalesced)')
+            continue
+        seq = sent['seq']
+        used.add(seq)
+        row['seq'] = seq
+        mine = [r for r in trace if r['seq'] == seq]
+        names = {r['e'] for r in mine}
+        row['prediction'] = next((e for e in ('Predicted', 'Unpredicted') if e in names), None)
+        row['prediction_end'] = next((e for e in ('Confirmed', 'Ended', 'RolledBack') if e in names), None)
+        occurrence = next((r for r in mine if r['e'] == 'Occurrence'), None)
+        row['occurrence_ms'] = round((occurrence['t'] - press['t']) * 1000, 1) if occurrence else None
+        row['occurrence'] = occurrence['d'] if occurrence else None
+        track = first_after(c['starts'], press['t'])
+        row['track_start_proxy_ms'] = round((track['t'] - press['t']) * 1000, 1) if track else None
+        before = next((q for q in reversed(poses) if q['t'] < press['t']), None)
+        pose = body = None
+        if before:
+            def hand_moved(q):
+                return sum((a - b) ** 2 for a, b in zip(q['h'], before['h'])) ** 0.5 >= POSE_STUDS
+
+            def root_moved(q):
+                return ((q['r'][0] - before['r'][0]) ** 2 + (q['r'][1] - before['r'][1]) ** 2) ** 0.5 >= POSE_STUDS
+            pose = first_after(poses, press['t'], hand_moved)
+            if press['kind'] == 'Dash':
+                body = first_after(poses, press['t'], root_moved)
+        row['pose_change_ms'] = round((pose['t'] - press['t']) * 1000, 1) if pose else None
+        row['body_move_ms'] = round((body['t'] - press['t']) * 1000, 1) if body else None
+        seen = client_ack.get(str(seq))
+        row['press_to_ack_seen_ms'] = round((seen['t'] - press['t']) * 1000, 1) if seen else None
+        receipt = server_ack.get(str(seq))
+        start = next((st for st in s['states'] if st.get('intent') == seq), None)
+        row['start_state'] = start['state'] if start else None
+        row['start_move'] = start.get('move') if start else None
+        row['receipt_to_start_ms'] = round((start['entered'] - receipt['s']) * 1000, 1) if start and receipt else None
+        row['terminal'] = terminal(s, seq)
+        for key in ('occurrence_ms', 'track_start_proxy_ms', 'pose_change_ms', 'receipt_to_start_ms', 'press_to_ack_seen_ms'):
+            if row[key] is None:
+                row['missing'].append(key)
+        if press['kind'] == 'Dash' and row['body_move_ms'] is None:
+            row['missing'].append('body_move_ms')
+    dts = [f['dt'] for f in c['frames']]
+    focus = sum(1 for f in c['frames'] if f['f']) / max(1, len(c['frames']))
+    summary = {
+        'label': label, 'probe_version': 2, 'os_foreground': foreground,
+        'frames': {'n': len(dts), 'p50': pct(dts, .5), 'p95': pct(dts, .95), 'p99': pct(dts, .99), 'focused_share': round(focus, 3)},
+        'server_ticks': {'n': len(s['ticks']), 'p50': pct(s['ticks'], .5), 'p95': pct(s['ticks'], .95), 'p99': pct(s['ticks'], .99),
+                         'heartbeat_ms': s.get('heartbeatMs')},
+        'presses': rows,
+        'server_moves': [{'entered': st['entered'], 'state': st['state'], 'move': st.get('move'), 'intent': st.get('intent')}
+                         for st in s['states'] if st['state'] in ('Startup', 'Dashing', 'Deflecting')],
+    }
+    for key in ('press_to_ack_seen_ms', 'receipt_to_start_ms', 'occurrence_ms', 'track_start_proxy_ms', 'pose_change_ms', 'body_move_ms'):
+        relevant = [r for r in rows if r['seq'] is not None and (key != 'body_move_ms' or r['kind'] == 'Dash')]
+        summary[key] = describe([r[key] for r in relevant if r.get(key) is not None],
+                                [r['seq'] for r in relevant if r.get(key) is None])
+    summary['unsent_presses'] = sum(1 for r in rows if r['seq'] is None)
+    (LOGS / f'{label}_summary.json').write_text(json.dumps(summary, indent=1))
+    print(json.dumps({k: v for k, v in summary.items() if k not in ('presses', 'server_moves')}, indent=1))
+    return 0
+
+
 def main() -> int:
     want, label = sys.argv[1], sys.argv[2]
     foreground = sys.argv[sys.argv.index('--foreground') + 1] if '--foreground' in sys.argv else 'not recorded'
@@ -69,6 +173,8 @@ def main() -> int:
         (LOGS / f'{label}_client.json').write_text(json.dumps(c))
         (LOGS / f'{label}_server.json').write_text(json.dumps(s))
 
+    if c.get('version') == 2:
+        return analyse_v2(c, s, label, foreground)
     dts = [f['dt'] for f in c['frames']]
     focus = sum(1 for f in c['frames'] if f['f']) / max(1, len(c['frames']))
     seen_acks = [a for a in c['acks'] if a['name'] == 'AsuraAck']

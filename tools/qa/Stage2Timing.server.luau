@@ -2,7 +2,9 @@
 -- Unmapped Studio-only probe (combat recovery Stage 2), the server half of Stage2Timing.client. Insert into
 -- ServerScriptService during Play with tools/qa/qa_inject.py (never save). For SECONDS it records:
 --   * the wall time between consecutive CharacterService ticks (os.clock) and Stats heartbeat time;
---   * each player fighter's state transitions with simTime and move id (action starts);
+--   * each player fighter's state transitions with the move id and the intent that started the action
+--     (CombatRules.actionIntent). Step listeners run before fighters step, so a listener at tick n sees the
+--     state tick n-1 left: `entered` is that tick's simTime (`s`, kept for old reports, is the observing tick);
 --   * when each AsuraAck / AsuraResult value is set on the server (receipt and terminal result).
 -- JSON lands in ServerStorage.AsuraStage2Probe. Evidence type: seeded Studio diagnostic. Changes no rule.
 local RunService = game:GetService("RunService")
@@ -13,6 +15,7 @@ local Players = game:GetService("Players")
 local HttpService = game:GetService("HttpService")
 local Stats = game:GetService("Stats")
 local Characters = require(game:GetService("ServerScriptService").AsurasPath.Services.CharacterService)
+local Combat = require(game:GetService("ReplicatedStorage").AsurasPath.Simulation.CombatRules)
 
 local SECONDS = tonumber(game:GetService("ServerStorage"):GetAttribute("AsuraStage2Seconds")) or 30
 local previous = game:GetService("ServerStorage"):FindFirstChild("AsuraStage2Probe")
@@ -23,6 +26,7 @@ local out = Instance.new("StringValue")
 out.Name, out.Value, out.Parent = "AsuraStage2Probe", "", game:GetService("ServerStorage")
 local ticks, states, acks = {}, {}, {}
 local last, lastState, t0 = nil, {}, os.clock()
+local previousNow = nil
 local connections = {}
 
 for _, player in Players:GetPlayers() do
@@ -45,12 +49,15 @@ unsubscribe = Characters.OnStep(function(now)
 		local f = e and e.Fighter
 		if f then
 			local key = f.State .. "|" .. (if f.Move then f.Move.Id else "-") .. "|" .. tostring(f.MoveStart)
-			if key ~= lastState[player.UserId] then
+			if key ~= lastState[player.UserId] and previousNow then
 				lastState[player.UserId] = key
-				table.insert(states, { id = player.UserId, s = now, state = f.State, move = if f.Move then f.Move.Id else nil, start = f.MoveStart })
+				local entered = previousNow
+				table.insert(states, { id = player.UserId, s = now, entered = entered, state = f.State, move = if f.Move then f.Move.Id else nil,
+					start = f.MoveStart, intent = Combat.actionIntent(f) })
 			end
 		end
 	end
+	previousNow = now
 	if clock - t0 > SECONDS then
 		unsubscribe()
 		for _, c in connections do

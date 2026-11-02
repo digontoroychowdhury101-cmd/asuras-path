@@ -642,6 +642,9 @@ function Controller.Step(self: InputController, dt: number)
 			self:FaceAttack(x, z)
 		end
 		local seq = self.Send(action, if variant ~= "" then variant else nil, if hasDirection then x else nil, if hasDirection then z else nil, nil, time)
+		if seq ~= 0 then
+			self.State:Sent(seq, action)
+		end
 		if seq ~= 0 and (action == "Light" or action == "Heavy" or action == "Dash" or action == "Roll") then
 			self.State:Predict(seq, action, x, z) -- shown at once only where LocalPrediction is sure
 		end

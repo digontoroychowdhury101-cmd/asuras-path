@@ -46,7 +46,8 @@ export type CombatEvent = {
 export type Cue = { Kind: string, Source: number, Data: { [string]: any }, Time: number }
 
 -- One unconfirmed local action (LocalPrediction): the intent seq that names it, the owner's ActionSeq it was
--- predicted on top of, and what is being shown. Confirmed (snapshot shows a new action) or rolled back.
+-- predicted on top of, and what is being shown. Confirmed by a snapshot naming its IntentSeq, rolled back on a
+-- refusal or timeout, or ended once the server executed it and moved on (Step).
 export type Predicted = {
 	Seq: number,
 	Kind: string, -- "Light" | "Heavy" | "Dash" | "Roll"
@@ -54,6 +55,9 @@ export type Predicted = {
 	Base: number,
 	Started: number,
 	DashSeq: number?,
+	ExecutedTick: number?, -- server tick of the Executed record, once seen
+	Model: Model, -- the character that made the prediction: a respawned one is never corrected
+	DashStop: Vector3?, -- where the predicted dash's own drive stopped (rollback undoes only that travel)
 }
 
 type EventListener = (event: CombatEvent) -> ()
@@ -135,8 +139,13 @@ function Controller.new(net: Instance): WorldState
 	local self = setmetatable(fields, Controller)
 	table.insert(self.Connections, player:GetAttributeChangedSignal("AsuraIntent"):Connect(function()
 		local predicted = self.Predicted
-		local status = if predicted then Prediction.terminal(player:GetAttribute("AsuraIntent"), predicted.Seq) else nil
-		if status and status ~= "Executed" then
+		if not predicted then
+			return
+		end
+		local status, tick = Prediction.terminal(player:GetAttribute("AsuraIntent"), predicted.Seq)
+		if status == "Executed" then
+			predicted.ExecutedTick = tick or 0
+		elseif status then
 			self:Rollback()
 		end
 	end))
@@ -238,7 +247,9 @@ function Controller.Track(self: WorldState, model: Model)
 		local text = model:GetAttribute("AsuraState")
 		if type(text) == "string" then
 			local snapshot = Combat.unpackString(text)
-			if snapshot then
+			local last = entity.Snapshot
+			-- A sample older than the one applied (reordered delivery) is dropped, never applied over it.
+			if snapshot and not (last and snapshot.SampleTick > 0 and snapshot.SampleTick < last.SampleTick) then
 				entity.Previous = entity.Snapshot
 				entity.Snapshot = snapshot
 				entity.UpdatedAt = os.clock()
@@ -414,6 +425,11 @@ local function startDash(self: WorldState, root: BasePart, direction: Vector3, d
 	self.LastDashAt = os.clock()
 end
 
+-- Diagnostic trace of an outgoing intent (no-op unless a QA probe enabled LocalPrediction.Trace).
+function Controller.Sent(_self: WorldState, seq: number, action: string)
+	Prediction.trace(seq, "Sent", action)
+end
+
 -- Shows a pressed action before the server confirms it, when LocalPrediction allows (combat recovery
 -- Stage 2). A dash starts the one local executor at once; the server's grant for the expected DashSeq is
 -- then adopted rather than applied again. Returns whether a prediction was made.
@@ -421,13 +437,15 @@ function Controller.Predict(self: WorldState, seq: number, kind: string, x: numb
 	local own = self:Own()
 	local snapshot = own and own.Snapshot
 	local root = own and own.Root
-	if not snapshot or not root or self.Predicted or os.clock() < self.DashEnds then
+	if not own or not snapshot or not root or self.Predicted or os.clock() < self.DashEnds then
+		Prediction.trace(seq, "Unpredicted", kind)
 		return false
 	end
-	local predicted: Predicted = { Seq = seq, Kind = kind, Base = snapshot.ActionSeq, Started = os.clock() }
+	local predicted: Predicted = { Seq = seq, Kind = kind, Base = snapshot.ActionSeq, Started = os.clock(), Model = own.Model }
 	if kind == "Dash" or kind == "Roll" then
 		local distance, duration = Prediction.dash(snapshot, kind, os.clock() - self.LastDashAt)
 		if not distance or not duration or self.DashSeq < 0 then
+			Prediction.trace(seq, "Unpredicted", kind)
 			return false
 		end
 		predicted.DashSeq = (self.DashSeq + 1) % 256
@@ -435,11 +453,13 @@ function Controller.Predict(self: WorldState, seq: number, kind: string, x: numb
 	else
 		local move = Prediction.attack(snapshot, kind)
 		if not move then
+			Prediction.trace(seq, "Unpredicted", kind)
 			return false
 		end
 		predicted.Move = move
 	end
 	self.Predicted = predicted
+	Prediction.trace(seq, "Predicted", kind)
 	return true
 end
 
@@ -449,25 +469,55 @@ function Controller.PredictGuard(self: WorldState, held: boolean)
 	self.GuardPredicted = held and snapshot ~= nil and Prediction.guard(snapshot)
 end
 
--- Undoes an unconfirmed prediction: a predicted dash stops and the root returns to where it started, so a
--- refused dash grants no displacement; a predicted swing or guard pose falls back to the server's state.
+-- Undoes an unconfirmed prediction: a predicted dash stops and only the travel its own drive produced is taken
+-- back, so a refused dash grants no displacement while any later motion (knockback, walking) is kept. The
+-- correction is horizontal and swept with the root's box: it stops short at a wall or rising ground instead of
+-- passing through. A character that has since respawned, died or been replaced is never moved. A predicted
+-- swing or guard pose simply falls back to the server's state.
 function Controller.Rollback(self: WorldState)
 	local predicted = self.Predicted
 	self.Predicted = nil
+	if predicted then
+		Prediction.trace(predicted.Seq, "RolledBack", predicted.Kind)
+	end
 	if not predicted or not predicted.DashSeq then
 		return
 	end
+	local own = self:Own()
+	local root = own and own.Root
+	local running = os.clock() < self.DashEnds
 	self.DashEnds = 0
 	local drive = self.DashDrive
 	if drive then
 		drive.Enabled = false
 	end
-	local own = self:Own()
-	local root = own and own.Root
-	if root then
-		local at = root.Position
-		root.CFrame = root.CFrame + Vector3.new(self.DashFrom.X - at.X, 0, self.DashFrom.Z - at.Z)
-		root.AssemblyLinearVelocity = Vector3.new(0, root.AssemblyLinearVelocity.Y, 0)
+	if not own or not root or own.Model ~= predicted.Model or (own.Snapshot and own.Snapshot.State == "KO") then
+		return
+	end
+	local stop = if running then root.Position else (predicted.DashStop or root.Position)
+	local back = Vector3.new(self.DashFrom.X - stop.X, 0, self.DashFrom.Z - stop.Z)
+	local distance = back.Magnitude
+	if distance < 1e-3 then
+		return
+	end
+	local params = RaycastParams.new()
+	params.FilterType = Enum.RaycastFilterType.Exclude
+	params.FilterDescendantsInstances = { own.Model }
+	local hit = Workspace:Blockcast(root.CFrame, root.Size, back, params)
+	local allowed = if hit then math.max(hit.Distance - 0.05, 0) else distance
+	root.CFrame = root.CFrame + back.Unit * allowed
+	root.AssemblyLinearVelocity = Vector3.new(0, root.AssemblyLinearVelocity.Y, 0)
+end
+
+local function stopDash(self: WorldState, root: BasePart)
+	self.DashEnds = 0
+	local drive = self.DashDrive
+	if drive then
+		drive.Enabled = false
+	end
+	local predicted = self.Predicted
+	if predicted and predicted.DashSeq then
+		predicted.DashStop = root.Position
 	end
 end
 
@@ -480,10 +530,17 @@ function Controller.Step(self: WorldState, dt: number)
 		return
 	end
 	local predicted = self.Predicted
+	local mine = predicted ~= nil and snapshot.IntentSeq == predicted.Seq
 	if predicted then
-		if snapshot.ActionSeq ~= predicted.Base and (predicted.DashSeq == nil or snapshot.DashSeq == predicted.DashSeq) then
-			self.Predicted = nil -- the server shows the action: authority takes over from here
-		elseif os.clock() - predicted.Started > Prediction.CONFIRM_TIMEOUT then
+		local waited = os.clock() - predicted.Started
+		if mine then
+			self.Predicted = nil -- the snapshot shows the action this intent started: authority takes over
+			Prediction.trace(predicted.Seq, "Confirmed", predicted.Kind)
+		elseif predicted.ExecutedTick and (snapshot.SampleTick >= predicted.ExecutedTick or waited > 2 * Prediction.CONFIRM_TIMEOUT) then
+			-- Executed, but by this sample the server had already left that action (hit, cancel): nothing to undo.
+			self.Predicted = nil
+			Prediction.trace(predicted.Seq, "Ended", predicted.Kind)
+		elseif predicted.ExecutedTick == nil and waited > Prediction.CONFIRM_TIMEOUT then
 			self:Rollback()
 		end
 	end
@@ -493,7 +550,7 @@ function Controller.Step(self: WorldState, dt: number)
 	if snapshot.DashSeq ~= self.DashSeq then
 		local first = self.DashSeq < 0
 		self.DashSeq = snapshot.DashSeq
-		if predicted and predicted.DashSeq == snapshot.DashSeq then
+		if mine and predicted and predicted.DashSeq then
 			-- The grant for the predicted dash: already executing locally, so it is adopted, not applied again.
 			-- The predicted distance is exact (LocalPrediction only predicts when nothing scales it).
 			self.DashLength = math.min(self.DashLength, snapshot.DashDistance)
@@ -508,10 +565,7 @@ function Controller.Step(self: WorldState, dt: number)
 		-- An interruption the server shows (hit, stagger) ends the dash; a predicted dash still waiting for its
 		-- grant sees the pre-dash Idle snapshot, which does not.
 		if snapshot.State ~= "Dashing" and snapshot.State ~= "Idle" then
-			self.DashEnds = 0
-			if drive then
-				drive.Enabled = false
-			end
+			stopDash(self, root)
 			return
 		end
 		-- Stop on the granted distance, not a frame boundary: at low frame rates the last frame is slowed
@@ -520,10 +574,7 @@ function Controller.Step(self: WorldState, dt: number)
 		local left = self.DashLength - moved
 		local full = self.DashVelocity.Magnitude
 		if left <= 0.05 or full < 1e-3 then
-			self.DashEnds = 0
-			if drive then
-				drive.Enabled = false
-			end
+			stopDash(self, root)
 			return
 		end
 		local planar = self.DashVelocity * math.min(1, left / (full * math.max(dt, 1 / 240)))

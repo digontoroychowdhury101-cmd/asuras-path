@@ -1063,7 +1063,7 @@ local function perform(e: Entity, action: string, pressTime: number, dirX: numbe
 	elseif action == "WeaponArt" then
 		return attack(e, "WeaponArt", now, dirX, dirZ)
 	elseif action == "Roll" or action == "Dash" then
-		local grant, reason = Combat.tryDash(f, action :: "Roll" | "Dash", now, dirX, dirZ, frameEvents)
+		local grant, reason = Combat.tryDash(f, action :: "Roll" | "Dash", now, dirX, dirZ, frameEvents, pressTime)
 		if grant then
 			Strike.airSpend(e.Omni.Air, action)
 			applyDash(e)
@@ -1183,6 +1183,7 @@ local function drainBuffer(e: Entity)
 	end
 	terminal(e, seq or 0, if ok then "Executed" else "Rejected", reason)
 	if ok then
+		Combat.markIntent(e.Fighter, seq or 0) -- the snapshot of this action names its intent (prediction confirm)
 		-- One action start per tick; lower-priority presses still waiting may run later, else leave Superseded.
 		InputBuffer.outrank(e.Buffer, InputBuffer.priority(action))
 	end
@@ -1233,6 +1234,7 @@ type Contact = {
 	Move: any,
 	At: number, -- t_c
 	State: string, -- the defender's state at t_c
+	Snapshot: Combat.ContactSnapshot, -- everything else the outcome reads, frozen at t_c
 	Facing: boolean,
 	Region: string,
 	Point: Vector3,
@@ -1261,6 +1263,7 @@ local function resolveContact(c: Contact, now: number)
 		Move = c.Move,
 		DefenderState = c.State :: any,
 		At = c.At,
+		Snapshot = c.Snapshot,
 	}, frameEvents)
 	for index = before + 1, #frameEvents do
 		eventPoints[frameEvents[index]] = c.Point
@@ -1300,6 +1303,7 @@ local function resolveContacts(attacker: Entity, now: number, found: { Contact }
 				local ankleHit = ankleTarget and (hit.Region == "LeftLeg" or hit.Region == "RightLeg")
 				local contact: Contact = {
 					Attacker = attacker, Defender = defender, Move = move, At = now, State = defender.Fighter.State,
+					Snapshot = Combat.contactSnapshot(f, defender.Fighter, now, move),
 					Facing = facingAt(defender, attacker, rewindTo) >= FACING_DOT, Region = hit.Region, Point = hit.Point,
 					Bonus = if ankleHit then move.PostureDamage * 1.8 else nil, Until = now,
 				}
@@ -1313,10 +1317,12 @@ local function resolveContacts(attacker: Entity, now: number, found: { Contact }
 	end
 end
 
--- The contact's outcome no longer depends on a press still in flight: evaded or deflected as of t_c.
+-- The contact's outcome no longer depends on a press still in flight: evaded (invulnerable at t_c, or a dash
+-- pressed by t_c whose press-anchored i-frames cover it) or deflected as of t_c.
 local function contactSettled(c: Contact): boolean
 	local df = c.Defender.Fighter
-	return Combat.isInvulnerable(df, c.At) or (c.Facing and c.Move.Deflectable == true and Combat.isDeflectTimed(df, c.At))
+	return c.Snapshot.Invulnerable or Combat.dashCovers(df, c.At)
+		or (c.Facing and c.Move.Deflectable == true and Combat.isDeflectTimed(df, c.At))
 end
 
 -- Holds a fresh contact for the defender's grace when a deflect or dash could still legally answer it.
