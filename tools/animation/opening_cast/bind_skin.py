@@ -21,7 +21,8 @@ ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT / "tools"))
 from studio_mcp import Client  # noqa: E402
 
-TEMPLATES = {"monk": ("Monk", "AsuraBoss_CorruptWanderingMonk"), "swordsman": ("Swordsman", "AsuraBoss_CursedSwordsman")}
+TEMPLATES = {"monk": ("Monk", "AsuraBoss_CorruptWanderingMonk"), "swordsman": ("Swordsman", "AsuraBoss_CursedSwordsman"),
+             "warden": ("Warden", "AsuraBoss_HollowBellWarden")}
 
 LUAU = """local PIECES = game:GetService("HttpService"):JSONDecode([==[%s]==])
 local PREFIX, NAME = "%s_", "%s"

@@ -14,7 +14,7 @@ import bpy
 from mathutils import Vector
 
 ROOT = Path(__file__).resolve().parents[3]
-NAMES = {"monk": "Monk", "swordsman": "Swordsman"}
+NAMES = {"monk": "Monk", "swordsman": "Swordsman", "warden": "Warden"}
 
 
 def roblox(v):

@@ -1,5 +1,9 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## Hollow-Bell Warden model — 2026-11-02 (Windows)
+
+Warden gets a unique body (tools/blender/opening_cast/warden.py): stooped barrel torso, verdigris bell head with ember crack/slit, chain, talismans, grave robe, spirit tablets, iron-shod boots, crescent-moon spade (weapon piece). Baked GLB 17.4k tris. Concept sheet in Claude Design. Next: Studio 3D import + bind, clips incl. Hollow Toll, playtest.
+
 ## Monk gait — 2026-11-02 (Windows)
 
 Corrupt Wandering Monk gets foot-planted Monk_Walk (6.4 studs/s) and Monk_Run (11) cycles, published and in Catalog.Gaits; Studio play shows run on approach, walk on shuffles, idle in combat (no more gliding). Next: Hollow-Bell Warden model/clips, group/footage acceptance.

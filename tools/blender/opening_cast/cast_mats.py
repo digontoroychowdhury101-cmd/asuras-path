@@ -173,6 +173,23 @@ def rope(g, a=(0.20, 0.15, 0.08), b=(0.08, 0.055, 0.03)):
     g.finish(col, 0.85, 0.0, tw, bump=0.45, dist=0.002, sheen=0.3)
 
 
+def bell(g):
+    """The Warden's cast bronze bell: darker than fittings bronze, heavy verdigris blooming out of the recesses and
+    streaking down from the bands, worn bright only on its edges."""
+    big = g.noise(10, 6)
+    col = g.mix((0.15, 0.10, 0.045), (0.06, 0.048, 0.03), g.rng(big, 0.3, 0.7))
+    pat = g.rng(g.cavity(0.04), 0.95, 0.2)
+    streak = g.rng(g.noise(8, 5, 0.6, g.scale(g.coord(), (14, 14, 2.0))), 0.5, 0.72)
+    green = g.mix((0.07, 0.15, 0.11), (0.03, 0.075, 0.058), g.noise(22, 4))
+    patch = g.rng(g.noise(3.5, 4), 0.40, 0.62)   # broad verdigris blooms across the panels, not only in the recesses
+    cover = g.math("ADD", g.math("MULTIPLY", g.math("ADD", pat, streak), 0.85), g.math("MULTIPLY", patch, 0.7), True)
+    col = g.mix(col, green, cover)
+    edge = g.edges(0.51, 0.56)
+    col = g.mix(col, (0.42, 0.30, 0.15), edge)
+    rough = g.mix(0.64, 0.3, edge, color=False)
+    g.finish(col, rough, g.mix(0.9, 0.2, pat, color=False), big, bump=0.2)
+
+
 BUILDERS = {
     "KASAYA": lambda g: patchwork(g, (0.085, 0.030, 0.018), (0.045, 0.021, 0.015), (0.12, 0.085, 0.06), burn=1.0),
     "SHROUD": lambda g: wrap_linen(g, (0.036, 0.029, 0.023), (0.022, 0.018, 0.015), (0.008, 0.006, 0.005), 0.05),
@@ -189,6 +206,10 @@ BUILDERS = {
     "ROBE_DARK": lambda g: zm.cloth(g, (0.020, 0.020, 0.026), (0.010, 0.010, 0.013), (0.045, 0.044, 0.048), weave=360),
     "SCARF": lambda g: zm.cloth(g, (0.15, 0.016, 0.014), (0.062, 0.009, 0.008), (0.17, 0.065, 0.05), weave=420),
     "LACE": lambda g: rope(g, (0.22, 0.025, 0.02), (0.08, 0.012, 0.01)),
+    # Hollow-Bell Warden: ashen grave-keeper's robe, yellowed talisman paper, the verdigris bell
+    "ROBE_GRAVE": lambda g: zm.cloth(g, (0.048, 0.052, 0.044), (0.022, 0.025, 0.022), (0.10, 0.10, 0.09), weave=300),
+    "PAPER": lambda g: zm.cloth(g, (0.42, 0.31, 0.10), (0.21, 0.14, 0.05), (0.52, 0.44, 0.22), mud=False, weave=520),
+    "BELL": bell,
 }
 
 

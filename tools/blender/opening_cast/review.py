@@ -12,7 +12,7 @@ import bpy
 from mathutils import Vector
 
 ROOT = Path(__file__).resolve().parents[3]
-NAMES = {"monk": "Monk", "swordsman": "Swordsman"}
+NAMES = {"monk": "Monk", "swordsman": "Swordsman", "warden": "Warden"}
 # shot: target, direction from target, distance, lens
 SHOTS = {
     "face_front": ((0, 0, 1.5), (0, 1, 0.05), 3.2, 85),
@@ -21,6 +21,8 @@ SHOTS = {
     "body_front": ((0, 0, -0.75), (0, 1, 0.1), 13, 50),
     "body_34": ((0, 0, -0.75), (0.75, 1, 0.15), 13, 50),
     "hand_34": ((1.0, 0, -0.95), (0.9, 0.8, 0.15), 3.6, 85),   # the right fist and a weapon's grip
+    "body_side": ((0, 0, -0.5), (1, 0.03, 0.1), 13, 50),
+    "body_back": ((0, 0, -0.5), (-0.6, -1, 0.15), 13, 50),
 }
 
 

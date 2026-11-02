@@ -1,0 +1,339 @@
+{
+  "character": "HollowBellWarden",
+  "version": 1,
+  "provenance": "Original project-authored constructed forms (tools/blender/opening_cast); procedural PBR baked from the subdivided master onto one game atlas",
+  "units": "studs, scale 1, default R15 rest pose (arms down); each piece's origin is its R15 limb centre",
+  "axes": "Blender Z = Roblox +Y; Blender +Y = Roblox -Z (forward); GLB exported Y-up",
+  "limits": {
+    "piece_triangle_cap": 18000,
+    "body_texture": 1024,
+    "weapon_texture": 512
+  },
+  "measured": {
+    "game_total_triangles": 17398,
+    "game_max_piece_triangles": 5992,
+    "master_triangles_before_subdivision": 65880,
+    "limbs_covered": 15,
+    "limbs_missing": [],
+    "sole_y": -3.024,
+    "top_y": 2.257,
+    "width_x": 3.026
+  },
+  "pieces": {
+    "Warden_Head": {
+      "bone": "Head",
+      "role": null,
+      "triangles": 5992,
+      "vertices": 3236,
+      "pivot_roblox": [
+        0.0,
+        1.586,
+        -0.0
+      ],
+      "size_roblox": [
+        1.409,
+        1.866,
+        1.207
+      ]
+    },
+    "Warden_UpperTorso": {
+      "bone": "UpperTorso",
+      "role": null,
+      "triangles": 1946,
+      "vertices": 1025,
+      "pivot_roblox": [
+        0.0,
+        0.2,
+        -0.0
+      ],
+      "size_roblox": [
+        1.883,
+        1.579,
+        1.415
+      ]
+    },
+    "Warden_LowerTorso": {
+      "bone": "LowerTorso",
+      "role": null,
+      "triangles": 2256,
+      "vertices": 1201,
+      "pivot_roblox": [
+        0.0,
+        -0.8,
+        -0.0
+      ],
+      "size_roblox": [
+        1.994,
+        2.095,
+        1.564
+      ]
+    },
+    "Warden_Spade": {
+      "bone": "RightHand",
+      "role": "Weapon",
+      "triangles": 812,
+      "vertices": 434,
+      "pivot_roblox": [
+        1.5,
+        -0.85,
+        -0.0
+      ],
+      "size_roblox": [
+        0.506,
+        1.158,
+        6.227
+      ]
+    },
+    "Warden_RightUpperArm": {
+      "bone": "RightUpperArm",
+      "role": null,
+      "triangles": 532,
+      "vertices": 286,
+      "pivot_roblox": [
+        1.5,
+        0.369,
+        -0.0
+      ],
+      "size_roblox": [
+        0.842,
+        1.056,
+        0.799
+      ]
+    },
+    "Warden_RightLowerArm": {
+      "bone": "RightLowerArm",
+      "role": null,
+      "triangles": 556,
+      "vertices": 286,
+      "pivot_roblox": [
+        1.5,
+        -0.224,
+        -0.0
+      ],
+      "size_roblox": [
+        0.413,
+        0.787,
+        0.423
+      ]
+    },
+    "Warden_RightHand": {
+      "bone": "RightHand",
+      "role": null,
+      "triangles": 592,
+      "vertices": 326,
+      "pivot_roblox": [
+        1.5,
+        -0.85,
+        -0.0
+      ],
+      "size_roblox": [
+        0.312,
+        0.341,
+        0.406
+      ]
+    },
+    "Warden_RightUpperLeg": {
+      "bone": "RightUpperLeg",
+      "role": null,
+      "triangles": 640,
+      "vertices": 326,
+      "pivot_roblox": [
+        0.5,
+        -1.421,
+        -0.0
+      ],
+      "size_roblox": [
+        0.914,
+        1.619,
+        1.067
+      ]
+    },
+    "Warden_RightLowerLeg": {
+      "bone": "RightLowerLeg",
+      "role": null,
+      "triangles": 392,
+      "vertices": 240,
+      "pivot_roblox": [
+        0.5,
+        -2.201,
+        -0.0
+      ],
+      "size_roblox": [
+        0.576,
+        1.008,
+        0.605
+      ]
+    },
+    "Warden_RightFoot": {
+      "bone": "RightFoot",
+      "role": null,
+      "triangles": 484,
+      "vertices": 266,
+      "pivot_roblox": [
+        0.5,
+        -2.85,
+        -0.0
+      ],
+      "size_roblox": [
+        0.51,
+        0.554,
+        0.758
+      ]
+    },
+    "Warden_LeftUpperArm": {
+      "bone": "LeftUpperArm",
+      "role": null,
+      "triangles": 532,
+      "vertices": 286,
+      "pivot_roblox": [
+        -1.5,
+        0.369,
+        -0.0
+      ],
+      "size_roblox": [
+        0.829,
+        1.056,
+        0.799
+      ]
+    },
+    "Warden_LeftLowerArm": {
+      "bone": "LeftLowerArm",
+      "role": null,
+      "triangles": 556,
+      "vertices": 286,
+      "pivot_roblox": [
+        -1.5,
+        -0.224,
+        -0.0
+      ],
+      "size_roblox": [
+        0.413,
+        0.787,
+        0.423
+      ]
+    },
+    "Warden_LeftHand": {
+      "bone": "LeftHand",
+      "role": null,
+      "triangles": 592,
+      "vertices": 326,
+      "pivot_roblox": [
+        -1.5,
+        -0.85,
+        -0.0
+      ],
+      "size_roblox": [
+        0.312,
+        0.341,
+        0.406
+      ]
+    },
+    "Warden_LeftUpperLeg": {
+      "bone": "LeftUpperLeg",
+      "role": null,
+      "triangles": 640,
+      "vertices": 326,
+      "pivot_roblox": [
+        -0.5,
+        -1.421,
+        -0.0
+      ],
+      "size_roblox": [
+        0.914,
+        1.618,
+        1.067
+      ]
+    },
+    "Warden_LeftLowerLeg": {
+      "bone": "LeftLowerLeg",
+      "role": null,
+      "triangles": 392,
+      "vertices": 240,
+      "pivot_roblox": [
+        -0.5,
+        -2.201,
+        -0.0
+      ],
+      "size_roblox": [
+        0.576,
+        1.008,
+        0.605
+      ]
+    },
+    "Warden_LeftFoot": {
+      "bone": "LeftFoot",
+      "role": null,
+      "triangles": 484,
+      "vertices": 266,
+      "pivot_roblox": [
+        -0.5,
+        -2.85,
+        -0.0
+      ],
+      "size_roblox": [
+        0.51,
+        0.554,
+        0.758
+      ]
+    }
+  },
+  "textures": {
+    "body": {
+      "Color": {
+        "master": "assets/source/opening_cast/warden/textures/master/WardenBody_Color_2048.png",
+        "game": "assets/source/opening_cast/warden/textures/game/WardenBody_Color_1024.png",
+        "master_size": 2048,
+        "game_size": 1024
+      },
+      "Rough": {
+        "master": "assets/source/opening_cast/warden/textures/master/WardenBody_Rough_2048.png",
+        "game": "assets/source/opening_cast/warden/textures/game/WardenBody_Rough_1024.png",
+        "master_size": 2048,
+        "game_size": 1024
+      },
+      "Metal": {
+        "master": "assets/source/opening_cast/warden/textures/master/WardenBody_Metal_2048.png",
+        "game": "assets/source/opening_cast/warden/textures/game/WardenBody_Metal_1024.png",
+        "master_size": 2048,
+        "game_size": 1024
+      },
+      "Normal": {
+        "master": "assets/source/opening_cast/warden/textures/master/WardenBody_Normal_2048.png",
+        "game": "assets/source/opening_cast/warden/textures/game/WardenBody_Normal_1024.png",
+        "master_size": 2048,
+        "game_size": 1024
+      }
+    },
+    "weapon": {
+      "Color": {
+        "master": "assets/source/opening_cast/warden/textures/master/WardenWeapon_Color_1024.png",
+        "game": "assets/source/opening_cast/warden/textures/game/WardenWeapon_Color_512.png",
+        "master_size": 1024,
+        "game_size": 512
+      },
+      "Rough": {
+        "master": "assets/source/opening_cast/warden/textures/master/WardenWeapon_Rough_1024.png",
+        "game": "assets/source/opening_cast/warden/textures/game/WardenWeapon_Rough_512.png",
+        "master_size": 1024,
+        "game_size": 512
+      },
+      "Metal": {
+        "master": "assets/source/opening_cast/warden/textures/master/WardenWeapon_Metal_1024.png",
+        "game": "assets/source/opening_cast/warden/textures/game/WardenWeapon_Metal_512.png",
+        "master_size": 1024,
+        "game_size": 512
+      },
+      "Normal": {
+        "master": "assets/source/opening_cast/warden/textures/master/WardenWeapon_Normal_1024.png",
+        "game": "assets/source/opening_cast/warden/textures/game/WardenWeapon_Normal_512.png",
+        "master_size": 1024,
+        "game_size": 512
+      }
+    }
+  },
+  "exports": {
+    "game_glb": "assets/build/opening_cast/warden/Warden_v1_Game.glb",
+    "game_fbx": "assets/build/opening_cast/warden/Warden_v1_Game.fbx"
+  },
+  "bake_device": "OPTIX"
+}

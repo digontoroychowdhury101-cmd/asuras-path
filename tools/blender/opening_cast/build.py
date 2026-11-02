@@ -25,6 +25,7 @@ ROOT = HERE.parents[2]
 CHARS = {
     "monk": ("monk", "Monk", "CorruptWanderingMonk", 1),
     "swordsman": ("swordsman", "Swordsman", "CursedSwordsman", 1),
+    "warden": ("warden", "Warden", "HollowBellWarden", 1),
 }
 
 # R15 limb centres at scale 1 in Roblox coordinates (x, y, z), measured in Studio (the Zhao v1 manifest table)
