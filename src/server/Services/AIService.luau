@@ -199,8 +199,31 @@ local function lineOfSight(from: Vector3, to: Vector3): boolean
 	return Workspace:Raycast(from, direction, rayParams) == nil
 end
 
+-- Altar shelter: a player who has just rested or respawned at an altar is left alone by ordinary foes until they
+-- step out of its circle or attack. Resting revives the region's foes, and at the Cloister their posts see the
+-- altar, so without it they re-engaged within seconds, refused Travel ("EnemiesNearby") and killed each respawn
+-- (Windows acceptance, 3 November 2026). Bosses ignore it; it never starts mid-fight (rest is refused while hunted).
+local sheltered: { [number]: { X: number, Z: number, Radius: number } } = {}
+
+local function isSheltered(e: Entity): boolean
+	local shelter = sheltered[e.Id]
+	if not shelter then
+		return false
+	end
+	local p, state = e.Root.Position, e.Fighter.State
+	local inside = (p.X - shelter.X) ^ 2 + (p.Z - shelter.Z) ^ 2 <= shelter.Radius ^ 2
+	if not inside or state == "Startup" or state == "Active" then
+		sheltered[e.Id] = nil
+		return false
+	end
+	return true
+end
+
 local function isTargetable(agent: Agent, e: Entity): boolean
 	if e.Kind ~= "Player" or e.Fighter.State == "KO" or e.Respawning or e.Duel ~= nil then
+		return false
+	end
+	if agent.Boss == nil and isSheltered(e) then
 		return false
 	end
 	local allowed = agent.Allowed
@@ -1100,6 +1123,11 @@ function AIService.GetMode(entityId: number): Mode?
 end
 
 -- True while any agent is actively fighting or chasing this player (blocks resting at an altar).
+-- Shelters a player at an altar (see isSheltered); called after a rest and on respawn there.
+function AIService.Shelter(playerId: number, x: number, z: number, radius: number)
+	sheltered[playerId] = { X = x, Z = z, Radius = radius }
+end
+
 function AIService.IsHunting(playerId: number): boolean
 	for _, agent in agents do
 		if agent.Target == playerId and (agent.Mode == "Engage" or agent.Mode == "Combat" or agent.Mode == "Cinematic") then
@@ -1145,6 +1173,7 @@ local function onEvent(event: Combat.Event, point: Vector3?)
 		if final then Characters.Cue("BossFinish", victim.Id, { boss = victim.Boss.Id }) end
 	elseif (event.Kind == "Hit" or event.Kind == "CounterHit") and victim.Mode ~= "Combat" and victim.Mode ~= "Cinematic" then
 		local source = Characters.GetEntity(event.Source)
+		sheltered[event.Source] = nil -- striking a foe (a spell included) ends the altar shelter
 		if source and isTargetable(victim, source) then
 			victim.Target = source.Id
 			victim.LastSeen = Characters.Now()

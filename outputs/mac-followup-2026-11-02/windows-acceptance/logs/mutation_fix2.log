@@ -1,0 +1,21 @@
+CAUGHT facing read at the present, not one instant | stage 3 motion: 282 passed, 2 failed (offline behaviour; Studio, frame order and feel sepa
+CAUGHT rollback zeroes velocity | stage 3 motion: 280 passed, 4 failed (offline behaviour; Studio, frame order and feel sepa
+CAUGHT rollback takes back the whole travelled line | stage 3 motion: 275 passed, 9 failed (offline behaviour; Studio, frame order and feel sepa
+CAUGHT chain confirms past the link window | stage 3 motion: 283 passed, 1 failed (offline behaviour; Studio, frame order and feel sepa
+CAUGHT phase correction uncapped | stage 3 motion: 279 passed, 5 failed (offline behaviour; Studio, frame order and feel sepa
+CAUGHT duplicate contact cues freeze twice | stage 3 motion: 282 passed, 2 failed (offline behaviour; Studio, frame order and feel sepa
+CAUGHT feet never unlock | stage 3 motion: 283 passed, 1 failed (offline behaviour; Studio, frame order and feel sepa
+CAUGHT sweep forgets the root's travel between samples | stage 3 motion: 283 passed, 1 failed (offline behaviour; Studio, frame order and feel sepa
+CAUGHT the fade-in that delayed first motion returns | stage 3 motion: 283 passed, 1 failed (offline behaviour; Studio, frame order and feel sepa
+CAUGHT a press past the link is shown as the next light | stage 3 motion: 283 passed, 1 failed (offline behaviour; Studio, frame order and feel sepa
+CAUGHT a confirmed prediction keeps its local clock | stage 3 motion: 277 passed, 7 failed (offline behaviour; Studio, frame order and feel sepa
+CAUGHT no step past the pose budget | stage 3 motion: 275 passed, 9 failed (offline behaviour; Studio, frame order and feel sepa
+CAUGHT the step ignores the rig's scale | stage 3 motion: 282 passed, 2 failed (offline behaviour; Studio, frame order and feel sepa
+CAUGHT a step writer accumulates | stage 3 motion: 282 passed, 2 failed (offline behaviour; Studio, frame order and feel sepa
+CAUGHT a step writer stays on under a new pose writer | stage 3 motion: 283 passed, 1 failed (offline behaviour; Studio, frame order and feel sepa
+CAUGHT trail points ignore the server's scale and bonus | stage 3 motion: 282 passed, 2 failed (offline behaviour; Studio, frame order and feel sepa
+CAUGHT trail points ignore the committed yaw | stage 3 motion: 282 passed, 2 failed (offline behaviour; Studio, frame order and feel sepa
+CAUGHT an earlier swing's record is applied | stage 3 motion: 283 passed, 1 failed (offline behaviour; Studio, frame order and feel sepa
+CAUGHT debug always draws the generic shape | stage 3 motion: 283 passed, 1 failed (offline behaviour; Studio, frame order and feel sepa
+CAUGHT Destroy clears a table that does not exist | stage 3 motion: 280 passed, 4 failed (offline behaviour; Studio, frame order and feel sepa
+CAUGHT hitstop freezes nothing | stage 3 motion: 270 passed, 14 failed (offline behaviour; Studio, frame order and feel sep

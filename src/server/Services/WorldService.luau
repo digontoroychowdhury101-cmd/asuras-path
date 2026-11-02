@@ -71,6 +71,7 @@ local INTERACT_RADIUS = 6
 -- plus a latency slack, so a key press never acts on something whose prompt is out of range.
 local GATE_RADIUS = 18
 local PROMPT_SLACK = 2
+local ALTAR_SHELTER = 4 -- studs past an altar's radius that its rest/respawn shelter covers (AIService.Shelter)
 local FLUSH_INTERVAL = 20
 local GATE_INTERVAL = 6 -- ticks (10 Hz)
 local BUSY_RETRIES = 40
@@ -602,6 +603,7 @@ local function onPlayerDeath(s: Session)
 	task.delay(Settings.Respawn.PlayerDelay, function()
 		if running then
 			AI.RespawnRegion(altar.Region, true, s.UserId)
+			AI.Shelter(s.UserId, altar.Placement.X, altar.Placement.Z, altar.Radius + ALTAR_SHELTER)
 		end
 	end)
 end
@@ -655,6 +657,7 @@ local function restAt(s: Session, altar: Altar): (boolean, string)
 	s.ElixirsDirty = false
 	Characters.SetRespawnPoint(s.UserId, toCFrame(altar.Spawn))
 	AI.RespawnRegion(altar.Region, true)
+	AI.Shelter(s.UserId, altar.Placement.X, altar.Placement.Z, altar.Radius + ALTAR_SHELTER)
 	Characters.Cue("AltarRest", s.UserId, { altar = altar.Id, name = altar.Name })
 	flush(s)
 	enqueue(s, "ActivateAltar", function(store: any): (boolean, string?)

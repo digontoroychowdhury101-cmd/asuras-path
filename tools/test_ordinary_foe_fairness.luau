@@ -108,4 +108,32 @@ check("F-05 a rest (no one freed) still skips every live fight", table.concat(re
 check("F-05 the death path frees the player who died",
 	string.find(fs.readFile("src/server/Services/WorldService.luau"), "AI.RespawnRegion(altar.Region, true, s.UserId)", 1, true) ~= nil)
 
+-- F-06 altar shelter: after a rest or respawn at an altar, ordinary foes leave the player alone until they step
+-- out of the circle or attack; bosses ignore it. (Windows acceptance: resting at the Cloister revived its pair,
+-- who saw the altar from their posts, re-engaged in ~4 s, refused Travel and killed each respawn.)
+local sFirst = string.find(source, "local sheltered:", 1, true)
+local sLast = string.find(source, "local function noisy", sFirst, true)
+assert(sFirst and sLast, "shelter block not found")
+local shelterBlock = "local Vector3 = ...\n" .. string.sub(source, sFirst, sLast - 1)
+	.. "\nreturn isTargetable, function(id, x, z, r) sheltered[id] = { X = x, Z = z, Radius = r } end, sheltered"
+local isTargetable, shelter, shelters = luau.load(shelterBlock, { debugName = "Shelter" })()
+local function body(x: number, z: number, state: string)
+	return { Id = 7, Kind = "Player", Respawning = false, Duel = nil, Root = { Position = { X = x, Y = 3, Z = z } },
+		Fighter = { State = state } }
+end
+local ordinary, boss = { Boss = nil }, { Boss = { Id = "B" } }
+shelter(7, 60, -1010, 13)
+check("F-06 a player resting/respawned at the altar is not acquired by ordinary foes",
+	isTargetable(ordinary, body(60, -1018, "Idle")) == false)
+check("F-06 bosses ignore the shelter", isTargetable(boss, body(60, -1018, "Idle")) == true)
+check("F-06 the shelter still holds after a boss check", shelters[7] ~= nil)
+check("F-06 stepping out of the circle ends it", isTargetable(ordinary, body(60, -1030, "Idle")) == true)
+check("F-06 and walking back in does not restore it", isTargetable(ordinary, body(60, -1018, "Idle")) == true)
+shelter(7, 60, -1010, 13)
+check("F-06 attacking from the altar ends it", isTargetable(ordinary, body(60, -1018, "Startup")) == true and shelters[7] == nil)
+check("F-06 wiring: rest and respawn shelter, a landed hit ends it",
+	select(2, string.gsub(fs.readFile("src/server/Services/WorldService.luau"), "AI%.Shelter%(s%.UserId, altar%.Placement%.X", "")) == 2
+	and string.find(source, "sheltered[event.Source] = nil", 1, true) ~= nil
+	and string.find(source, "if agent.Boss == nil and isSheltered(e) then", 1, true) ~= nil)
+
 print(string.format("ordinary foe fairness: %d passed, %d failed (offline behaviour; feel needs human play)", passed, failed))

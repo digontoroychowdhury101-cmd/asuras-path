@@ -1,0 +1,103 @@
+{
+ "failed": 0,
+ "kind": "2-client Studio diagnostic: casual Promenade duel, production ActionIntent remotes, seeded placement/cues; no human input",
+ "passed": true,
+ "checks": [
+  {
+   "details": {
+    "A": -2,
+    "B": -1
+   },
+   "name": "two real clients booted",
+   "passed": true
+  },
+  {
+   "name": "challenge / accept allocates both duelists",
+   "passed": true
+  },
+  {
+   "name": "countdown reaches Fighting on both duelists",
+   "passed": true
+  },
+  {
+   "details": {
+    "before": 100,
+    "after": 92
+   },
+   "name": "aimed Jian light hits the other client",
+   "passed": true
+  },
+  {
+   "details": {
+    "whiffs": 1
+   },
+   "name": "the same light aimed 35 degrees beside B whiffs (true miss)",
+   "passed": true
+  },
+  {
+   "details": "10|7.50|1.50|-0.6109|1793662397.511|0.033|Jian|0.00|1.000|Jian_L1|1",
+   "name": "A's committed strike record replicated",
+   "passed": true
+  },
+  {
+   "details": {
+    "whiffs": 1,
+    "hits": 0
+   },
+   "name": "a client spinning its body mid-swing cannot strike the fighter behind it",
+   "passed": true
+  },
+  {
+   "details": [
+    "hit=0 evade=1 whiff=0 deflect=0 block=0",
+    "hit=1 evade=0 whiff=0 deflect=0 block=0",
+    "hit=0 evade=1 whiff=0 deflect=0 block=0"
+   ],
+   "name": "B's client dodge, cued at A's heavy windup, avoids the strike",
+   "passed": true
+  },
+  {
+   "details": [
+    "hit=0 evade=0 whiff=0 deflect=1 block=0",
+    "hit=0 evade=0 whiff=0 deflect=1 block=0",
+    "hit=0 evade=0 whiff=0 deflect=1 block=0",
+    "hit=0 evade=0 whiff=0 deflect=1 block=0"
+   ],
+   "name": "B's client deflect, cued at A's heavy windup, parries",
+   "passed": true
+  },
+  {
+   "details": {
+    "attacks": 1,
+    "owed": true,
+    "airborne": true,
+    "landed": true
+   },
+   "name": "one air light only, then a landing recovery",
+   "passed": true
+  },
+  {
+   "details": {
+    "whiffs": 1,
+    "hits": 0
+   },
+   "name": "air sequence strikes recorded (information)",
+   "passed": true
+  },
+  {
+   "details": {
+    "A": 0.0005089999758638442,
+    "B": 0.0007880000048317015
+   },
+   "name": "network round trip (Studio local)",
+   "passed": true
+  }
+ ],
+ "run": {
+  "place": "acceptance_fix2 (+ shelter sources pushed, unsaved)",
+  "launcher": "StudioTestService:ExecuteMultiplayerTestAsync(2) from the Edit DM; QA scripts inserted unsaved and removed after (verified none left)",
+  "machine": "Windows",
+  "date": "2026-11-03",
+  "not_covered": "no injected latency (loopback RTT < 1 ms); no human input; prediction convergence under lag (W-04) and blade/contact frame matching (W-06) not measured"
+ }
+}
