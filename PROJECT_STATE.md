@@ -1,5 +1,9 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## Combat recovery execution prompts — 2026-11-02 (Mac)
+
+Created master and five staged Opus prompts in `outputs/combat-recovery-prompts-2026-11-02/`: source research/licensed integration, timing/input/parry, animation/footwork/contact, genuine two-client verification and human acceptance. Includes current OmniPvP aggregate-result/coverage gaps. Documentation only; no combat fixes or new gameplay verification. Next: execute Stage 1 against current source.
+
 ## Group attack turns, Lv1 swordsman tune — 2026-11-02 (Windows)
 
 Ordinary foes sharing a target take attack turns (MobSpacing.TurnGap/TurnMax); waiters hold the player's front arc. Swordsman Dex 0.85, combo 0.55. Cloister pair, normal health: perfect reads win unhurt (21.7 s); 20% misses win at 81 HP; 35% misses last 19 s (was ~10). Next: Lune spec for mayOpen; human playtest.
