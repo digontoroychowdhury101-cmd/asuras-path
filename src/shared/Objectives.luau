@@ -15,6 +15,11 @@ export type Facts = {
 	-- True once the player has rested at any altar this session (teaches the rest loop first).
 	Rested: boolean,
 	Story: { [string]: boolean }?, -- six-sovereign ending flags (batch 22)
+	-- The opening road (nil until the server has published them; the route then reads as before).
+	Opening: { [string]: boolean }?, -- durable milestones (ProgressionRules.milestones): Fought, Read, Forged
+	Training: boolean?, -- the ten-step training is unfinished and not skipped
+	Essence: number?, -- everything held, recorded and not yet recorded: Gao's conversation records the rest first
+	Forge: { Tier: number, Cost: number, Material: string, Need: number, Have: number }?, -- the weapon in hand's next tier
 }
 
 export type Target = { Kind: "Altar", Id: string } | { Kind: "Portal" } | { Kind: "Point", Position: Vector3 }
@@ -81,6 +86,86 @@ local ENCOUNTERS = {
 }
 Objectives.Encounters = ENCOUNTERS
 
+-- The opening road, once the Monastery Gate is kindled: training, the courtyard's lone monk, the
+-- inscription on the landing, the Cloister, then home to Gao. Each step falls away on durable progress, so a
+-- rejoin, a death or an out-of-order discovery resumes at the right place. Never a wall: any step can be
+-- walked past, and the road ends for good at the Bamboo Shrine or the first sovereign.
+local FIRST_MONK = Vector3.new(0, 3, -786) -- World spawn DM_Monk_Courtyard_A
+local TRAINING = Vector3.new(15, 3, -705) -- World spawn DM_Sparring_Phantom
+local INSCRIPTION = Vector3.new(13, 3, -740) -- NarrativeCatalog.Lore.Pillars: on the landing, out of every patrol's sight
+local SMITH = Vector3.new(-86, 603, 899) -- NarrativeCatalog.NPCs.Gao
+Objectives.Opening = table.freeze({ FirstMonk = FIRST_MONK, Training = TRAINING, Inscription = INSCRIPTION, Smith = SMITH })
+local CLOISTER = ROUTE[3]
+
+-- The last kindled altar in this region, from which Travel leaves it.
+local function altarHere(facts: Facts): AltarInfo?
+	local found: AltarInfo? = nil
+	for _, altar in ROUTE do
+		if altar.Region ~= "Sanctuary" and altar.Region == facts.Region and facts.Altars[altar.Id] then found = altar end
+	end
+	return found
+end
+
+local function inMonastery(facts: Facts, key: string, title: string, detail: string, leg: string, target: Target): Objective?
+	if facts.Region == "Sanctuary" or facts.Region == nil then
+		return { Key = "Ascend:" .. key, Title = "Climb the Ascension Stairs",
+			Detail = "The northern gate opens on the " .. PORTAL_ARRIVAL.Name .. " · then " .. leg, Target = { Kind = "Portal" } }
+	elseif facts.Region == PORTAL_ARRIVAL.Region then
+		return { Key = key, Title = title, Detail = detail, Target = target }
+	end
+	return nil
+end
+
+local function smithStep(facts: Facts): Objective?
+	local forge = facts.Forge
+	local essence = facts.Essence or 0
+	if not forge then return nil end
+	if essence < forge.Cost or forge.Have < forge.Need then
+		local short = string.format("+%d asks %d Essence and %d %s · you hold %d and %d", forge.Tier + 1, forge.Cost, forge.Need, forge.Material, essence, forge.Have)
+		return inMonastery(facts, "ForgeShort", "Earn what Gao asks", short .. " · foes pay both", "foes pay what Gao asks",
+			{ Kind = "Point", Position = FIRST_MONK })
+	end
+	local offer = string.format("+%d for %d Essence and %d %s · you hold enough", forge.Tier + 1, forge.Cost, forge.Need, forge.Material)
+	if facts.Region == "Sanctuary" or facts.Region == nil then
+		return { Key = "Forge", Title = "Reinforce with Master Smith Gao", Detail = offer .. " · his forge is west of the bonfire",
+			Target = { Kind = "Point", Position = SMITH } }
+	end
+	local altar = altarHere(facts)
+	return { Key = "ForgeHome", Title = "Return to Master Smith Gao",
+		Detail = if altar then "Kneel at the " .. altar.Name .. " and Travel to the " .. ROUTE[1].Name .. " · " .. offer
+			else "Rest at an altar and Travel to the " .. ROUTE[1].Name .. " · " .. offer,
+		Target = if altar then { Kind = "Altar", Id = altar.Id } else nil }
+end
+
+local function opening(facts: Facts): Objective?
+	local done = facts.Opening
+	if not done or not facts.Altars[PORTAL_ARRIVAL.Id] or facts.Altars[ROUTE[4].Id] or facts.Altars[ROUTE[5].Id] or next(facts.Bosses or {}) ~= nil then
+		return nil
+	end
+	local kindled = facts.Altars[CLOISTER.Id] == true
+	if done.Forged and kindled then return nil end
+	if not kindled and not done.Forged then
+		if facts.Training and not done.Fought then -- never sent back to train once past it: TutorialRules.hint covers the rest
+			return inMonastery(facts, "Training", "Train with the Sparring Phantom", "It cannot kill you · skip from its card if you already know the way",
+				"train at the landing", { Kind = "Point", Position = TRAINING })
+		elseif not done.Fought then
+			return inMonastery(facts, "FirstMonk", "Fell the monk in the courtyard", "Felled foes leave Essence and Spirit Iron Ore · Essence you carry falls where you die",
+				"fell the monk in the courtyard", { Kind = "Point", Position = FIRST_MONK })
+		elseif not done.Read then
+			return inMonastery(facts, "FirstInscription", "Read the glowing inscription", "It stands on the landing · inscriptions pay Essence once and the Codex keeps them",
+				"read the inscription on the landing", { Kind = "Point", Position = INSCRIPTION })
+		end
+	end
+	if not kindled then
+		local forge = facts.Forge
+		local ready = not done.Forged and forge ~= nil and (facts.Essence or 0) >= forge.Cost and forge.Have >= forge.Need
+		return inMonastery(facts, CLOISTER.Id, "Kindle the " .. CLOISTER.Name,
+			"Cross the ravine bridge · resting there moves your return point" .. (if ready then " · Gao can already reinforce your blade" else ""),
+			"cross the bridge to the " .. CLOISTER.Name, { Kind = "Altar", Id = CLOISTER.Id })
+	end
+	return smithStep(facts)
+end
+
 -- Whether the tracker must redraw: a new step, or the same step with new wording (the bloodstain
 -- card names a different leg after a death moves the player to another region; follow-up 14).
 function Objectives.changed(shown: Objective?, latest: Objective?): boolean
@@ -103,8 +188,12 @@ function Objectives.resolve(facts: Facts): Objective?
 				then "Take the northern gate first · the marker then leads to your bloodstain"
 				elseif facts.StainRegion == "Sanctuary" and (facts.Region == "SanctuaryDepths" or facts.Region == "SkyCitadel")
 				then "Take the return portal first · the marker then leads to your bloodstain"
+				elseif facts.StainRegion == "Sanctuary" and facts.Region ~= "Sanctuary" and altarHere(facts) ~= nil
+				then "Kneel at the " .. (altarHere(facts) :: AltarInfo).Name .. " and Travel to the " .. ROUTE[1].Name .. " · the marker then leads to your bloodstain"
 				else "Return to your bloodstain before you fall again",
-			Target = { Kind = "Point", Position = facts.Bloodstain },
+			Target = if facts.StainRegion == "Sanctuary" and facts.Region ~= "Sanctuary" and altarHere(facts) ~= nil
+				then { Kind = "Altar", Id = (altarHere(facts) :: AltarInfo).Id }
+				else { Kind = "Point", Position = facts.Bloodstain },
 		}
 	end
 	-- Six sovereigns at rest (batch 22): home to Lin, then the choice; PvP is never the conclusion.
@@ -126,6 +215,8 @@ function Objectives.resolve(facts: Facts): Objective?
 			Target = { Kind = "Altar", Id = bonfire.Id },
 		}
 	end
+	local road = opening(facts)
+	if road then return road end
 	for _, altar in ROUTE do
 		if not facts.Altars[altar.Id] and (not facts.Bosses or altar.Region == facts.Region or facts.Region == "Sanctuary" or facts.Region == nil) then
 			if altar.Region == "Sanctuary" then

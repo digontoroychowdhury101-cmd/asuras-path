@@ -1,3 +1,5 @@
+**Mac follow-up batch 1 (2026-11-02):** Opening route and Gao forge implemented and locally verified; ordinary earned monk route pending human play. Next: `02_IRON_BULL.md`. See `outputs/mac-followup-2026-11-02/HANDOFF.md`.
+
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
 ## Combat Stage 3A closure — 2026-11-02 (Mac)

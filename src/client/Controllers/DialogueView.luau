@@ -10,6 +10,7 @@ local Shared=game:GetService("ReplicatedStorage").AsurasPath.Shared
 local Catalog=require(Shared.NarrativeCatalog)
 local Progress=require(Shared.ProgressionRules)
 local Preview=require(Shared.LevelPreview)
+local Quote=require(Shared.ForgeQuote)
 local Codex=require(script.Parent.CodexView)
 local Effects=require(Shared.EffectsPreference)
 local View={}
@@ -23,7 +24,7 @@ function View.faceY(screen: number,inset: number): number
  return (inset+(height*View.Letterbox+top)/2)/screen
 end
 local T=UiKit.Theme
-local PURCHASES={Level=true,Upgrade=true,Infuse=true,Trade=true}
+local PURCHASES={Level=true,Upgrade=true,Infuse=true,Equip=true,Trade=true}
 function View.new(parent: Instance): any
  local gui=Kit.make("ScreenGui",parent,{Name="JadeDialogue",ResetOnSpawn=false,DisplayOrder=85,IgnoreGuiInset=true,Enabled=false})
  Kit.make("Frame",gui,{Size=UDim2.fromScale(1,View.Letterbox),BackgroundColor3=T.Ink,BorderSizePixel=0})
@@ -47,13 +48,18 @@ end
 function View.hint(v: any,device: string)
  v.Hint.Text=if device=="Gamepad" then "[B] leave" elseif device=="Touch" then "Tap Leave to return" else "[Backspace] leave"
 end
+-- Gao's panel is mostly choices: the flavour line gives up height so the weapons stay in view without scrolling.
+local function fit(v: any,dense: boolean)
+ local top=if dense then 0.1 else 0.24
+ v.Subtitle.Size=UDim2.new(1,-36,top,0);v.List.Position=UDim2.new(0,18,top,74);v.List.Size=UDim2.new(1,-36,1-top,-110)
+end
 -- Reading text follows the comfort text size (batch 25): long lore still shrinks to fit.
 local function readable(v: any)
  local c=v.Subtitle:FindFirstChildOfClass("UITextSizeConstraint");if not c then return end
  local s=Effects.textScale();c.MinTextSize=math.floor(13*s+0.5);c.MaxTextSize=math.floor(20*s+0.5)
 end
 function View.clear(v: any)
- for _,c in v.Links do c:Disconnect() end;table.clear(v.Links);table.clear(v.Buttons);table.clear(v.Enabled);v.Locked=false;v.Serial+=1;v.Order=0
+ for _,c in v.Links do c:Disconnect() end;table.clear(v.Links);table.clear(v.Buttons);table.clear(v.Enabled);v.Locked=false;v.Serial+=1;v.Order=0;v.Focus=nil
  for _,child in v.List:GetChildren() do if child:IsA("GuiObject") then child:Destroy() end end
 end
 function View.note(v: any,text: string,color: Color3)
@@ -67,6 +73,7 @@ function View.button(v: any,label: string,run: ()->(),variant: string?,enabled: 
 end
 function View.render(v: any,p: any,send: (any)->())
  readable(v)
+ fit(v,p.panel=="Forge")
  View.clear(v);local n=Catalog.NPCs[p.npc];local node=n.Nodes[p.node];local data=p.view
  local function buy(packet: any): ()->()
   return function()
@@ -92,15 +99,38 @@ function View.render(v: any,p: any,send: (any)->())
     buy({action="Level",id=id}),if open then "Primary" else "Secondary",open,58)
   end
  elseif p.panel=="Forge" then
-  local id=data.loadout.MainWeapon;local w=data.inventory.Weapons[id];local cost,ore,count=Progress.upgradeCost(w.Level)
-  View.note(v,id.." +"..w.Level.."  ·  Mastery "..Progress.masteryRank(data.mastery[id] or 0).."  ·  "..(w.Infusion or "Uninfused"),T.Ivory)
-  if w.Level<10 then
-   local have=data.inventory.Materials[ore] or 0
-   View.button(v,"Reinforce · "..cost.." Essence + "..count.." "..Catalog.Trades[ore].Name.." ("..have.." owned)",buy({action="Upgrade"}),nil,data.qi>=cost and have>=count)
+  local owned=Quote.weapons(data)
+  if not v.ForgeWeapon or not data.inventory.Weapons[v.ForgeWeapon] then v.ForgeWeapon=data.loadout.MainWeapon end
+  local q=Quote.of(data,v.ForgeWeapon)
+  View.note(v,q.Name.." +"..q.Tier.."  ·  "..(if q.Equipped then "in hand" else "not in hand").."  ·  scales with "..q.Attribute.."  ·  Mastery "..Progress.masteryRank(data.mastery[q.Weapon] or 0).."  ·  "..(q.Infusion or "Uninfused"),T.Ivory)
+  if q.Next then
+   local n=q.Next;local name=Catalog.Trades[n.Material].Name
+   View.note(v,string.format("Light hit %.1f → %.1f  ·  Heavy hit %.1f → %.1f",q.Light,n.Light,q.Heavy,n.Heavy),T.Gold)
+   View.button(v,"Reinforce to +"..n.Tier.." · "..n.Cost.." Essence + "..n.Need.." "..name.." ("..n.Have.." owned)",buy({action="Upgrade",id=q.Weapon,tier=q.Tier}),if q.Refusal then "Secondary" else "Primary",q.Refusal==nil)
+   if not q.Refusal then v.Focus=v.Buttons[#v.Buttons]
+   elseif data.qi<n.Cost then View.note(v,"Needs "..(n.Cost-data.qi).." more Essence. Felled foes and inscriptions pay it.",T.Muted)
+   elseif q.Refusal~="Weapon is locked" then View.note(v,"Needs "..(n.Need-n.Have).." more "..name..". "..(if n.Material=="SpiritIronOre" then "Each felled foe leaves one." else "Sovereigns leave it; the Hermit sells it."),T.Muted) end
+  else
+   View.note(v,string.format("Light hit %.1f  ·  Heavy hit %.1f  ·  Gao can forge this no further.",q.Light,q.Heavy),T.Gold)
   end
+  if not q.Equipped then View.button(v,"Take "..q.Name.." in hand",buy({action="Equip",id=q.Weapon})) end
+  if #owned>1 then
+   View.note(v,"Your weapons",T.Muted)
+   for _,id in owned do
+    local entry=Quote.of(data,id)
+    local function pick()
+     if v.Locked then return end
+     v.ForgeWeapon=id;p.message=nil;v.Picked=id;View.render(v,p,send);v.Picked=nil
+     if v.Refocus then v.Refocus() end
+    end
+    View.button(v,entry.Name.." +"..entry.Tier..(if entry.Equipped then "  ·  in hand" else ""),pick,if id==q.Weapon then "Primary" else "Secondary",nil,34)
+    if v.Picked==id then v.Focus=v.Buttons[#v.Buttons] end
+   end
+  end
+  View.note(v,"Infusion adds an element and replaces any other. Remembrances are forged under the Arsenal's Transmutation tab.",T.Muted)
   for _,affinity in {"CrimsonFire","CelestialLightning","AbyssalVoid"} do
-   local gem=Progress.Infusions[affinity];local have=data.inventory.Materials[gem] or 0
-   View.button(v,"Infuse "..string.gsub(Catalog.Trades[gem].Name," Gem$","").." · 300 Essence + 1 gem ("..have.." owned)",buy({action="Infuse",id=affinity}),nil,data.qi>=300 and have>=1)
+   local gem=Progress.Infusions[affinity];local have=data.inventory.Materials[gem] or 0;local same=q.Infusion==affinity
+   View.button(v,"Infuse "..string.gsub(Catalog.Trades[gem].Name," Gem$","")..(if same then " · already infused" else " · "..Progress.InfusionCost.." Essence + 1 gem ("..have.." owned)"),buy({action="Infuse",id=affinity,weapon=q.Weapon}),nil,not same and data.qi>=Progress.InfusionCost and have>=1)
   end
  elseif p.panel=="Trade" then
   local ids={};for id in Catalog.Trades do table.insert(ids,id) end;table.sort(ids)
@@ -110,7 +140,7 @@ function View.render(v: any,p: any,send: (any)->())
 end
 -- Codex: progress, instruction and sections from CodexView; only discovered entries open.
 function View.codex(v: any,data: any,selected: string?)
- readable(v)
+ readable(v);fit(v,false)
  View.clear(v)
  Codex.render(v,data,selected,{button=View.button,note=View.note,reopen=function(id: string) View.codex(v,data,id) end,Gold=T.Gold,Muted=T.Muted,Ivory=T.Ivory})
 end

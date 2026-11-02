@@ -1,0 +1,130 @@
+digest scripts 273 bytes 2164689 digest 1160571320 | AsuraAssets children 17 | place OpeningForge.rbxlx
+Game Started
+inserted QA_OpeningDiagnostic
+[   1.7s] OBJECTIVE | 20m | Kneel at the Primal Bonfire | Resting sets your respawn point and refills your gourd
+[   7.7s] rested OBJECTIVE | 106m | Climb the Ascension Stairs | The northern gate opens on the Monastery Gate · kneel at its altar
+[  20.1s] gate OBJECTIVE | 8m | Kindle the Monastery Gate | The altar stands just ahead of the portal · rest to set your checkpoint
+[  24.9s] kindled OBJECTIVE | 25m | Train with the Sparring Phantom | It cannot kill you · skip from its card if you already know the way
+[OpeningDiag] Hit src=3148600636 tgt=-1000000 dmg=8
+[OpeningDiag] Hit src=3148600636 tgt=-1000000 dmg=8
+[OpeningDiag] Hit src=3148600636 tgt=-1000000 dmg=8
+[OpeningDiag] Hit src=3148600636 tgt=-1000000 dmg=8
+[OpeningDiag] Hit src=3148600636 tgt=-1000000 dmg=8
+Sparring Phantom d=4 hp=113 @13,-709
+no button: Travel
+no button: Primal Bonfire   —
+[  47.9s] home OBJECTIVE | 23m | Train with the Sparring Phantom | It cannot kill you · skip from its card if you already know the way
+1
+inserted QA_OpeningSeed
+inserted QA_OpeningSeed
+inserted QA_OpeningSeed
+no button: Reinforce or infuse
+closed
+view=685 list y=291..446 canvas=154 pos=0 cam=348
+no button: Reinforce to +1
+closed
+attrs 0 500 0 {"jsonrpc": "2.0", "id": 54, "result": {"content": [{"type": "text", "text": ""}], "isError": false}}
+no button: Dao Sabre +0
+closed
+no button: Take Dao Sabre
+main Jian 0 Jian
+no button: Jian Sword +1
+no button: Take Jian Sword
+main Jian 0 Jian
+Traceback (most recent call last):
+  File "/var/folders/0h/ppzkjk7x4sd3qkr37t30hxmc0000gn/T//s3/ah.py", line 31, in <module>
+    r=lua(BYTEXT%'Reinforce to +2').split('|')[0];x,y=[int(v) for v in r.split(',')]
+                                                       ~~~^^^
+ValueError: invalid literal for int() with base 10: 'none'
+tapped Travel @212,333
+tapped Primal Bonfire @208,257
+home OBJECTIVE | 110m | Climb the Ascension Stairs | The northern gate opens on the Monastery Gate · then train at the landin
+tapped Reinforce or infuse @627,384
+6500 Essence
+Jian Sword +0  ·  in hand  ·  scales with Dexterity  ·  Mastery 1  ·  Uninfused
+Light hit 8.0 → 8.8  ·  Heavy hit 20.0 → 22.0
+[off] Reinforce to +1 · 250 Essence + 1 Spirit Iron Ore (3 owned)
+Your weapons
+[off] Jian Sword +0  ·  in hand
+[off] Dao Sabre +0
+[off] Iron Fist Discipline +0
+Infusion adds an element and replaces any other. Remembrances are forged under the Arsenal's Transmutation tab.
+[off] Return
+[off] Farewell
+view=685 list y=311..528 canvas=488 pos=0 cam=363
+A tapped Reinforce to +1 @627,376
+6250 Essence
+Jian Sword +1  ·  in hand  ·  scales with Dexterity  ·  Mastery 1  ·  Uninfused
+Light hit 8.8 → 9.6  ·  Heavy hit 22.0 → 24.0
+[off] Reinforce to +2 · 707 Essence + 2 Spirit Iron Ore (2 owned)
+Your weapons
+[off] Jian Sword +1  ·  in hand
+[off] Dao Sabre +0
+[off] Iron Fist Discipline +0
+Infusion adds an element and replaces any other. Remembrances
+attrs 1 6250 2
+Forged
+Tutorial=LockOn,Light
+A
+B tapped Dao Sabre @627,481
+6250 Essence
+Dao Sabre +0  ·  not in hand  ·  scales with Dexterity  ·  Mastery 1  ·  Uninfused
+Light hit 9.0 → 9.9  ·  Heavy hit 22.0 → 24.2
+[off] Reinforce to +1 · 250 Essence + 1 Spirit Iron Ore (2 owned)
+[off] Take Dao Sabre in hand
+Your weapons
+[off] Jian Sword +1  ·  in hand
+[off] Dao Sabre +0
+[off] Iron Fist Discipline +0
+Infusion adds an element and replaces any other. Remembrances are forged under the Arsena
+C tapped Take Dao Sabre @627,424
+main Dao 0 Dao
+D tapped Jian Sword @627,481
+E tapped Take Jian Sword @627,424
+main Jian 1 Jian
+6250 Essence
+Jian Sword +1  ·  in hand  ·  scales with Dexterity  ·  Mastery 1  ·  Uninfused
+Light hit 8.8 → 9.6  ·  Heavy hit 22.0 → 24.0
+[off] Reinforce to +2 · 707 Essence + 2 Spirit Iron Ore (2 owned)
+Your weapons
+[off] Jian Sword +1  ·  in hand
+[off] Dao Sabre +0
+[off] Iron Fist Discipline +0
+I
+627,376
+before double 1 6250 2
+after double 2 5543 0
+5543 Essence
+Jian Sword +2  ·  in hand  ·  scales with Dexterity  ·  Mastery 1  ·  Uninfused
+Light hit 9.6 → 10.4  ·  Heavy hit 24.0 → 26.0
+[off] Reinforce to +3 · 1299 Essence + 3 Spirit Iron Ore (0 
+closed: closed OBJECTIVE | 129m | Climb the Ascension Stairs | The northern gate opens on the Monastery Gate · then cross the bridge to
+tapped Reinforce or infuse @627,384
+reopen 5543 Essence
+Jian Sword +2  ·  in hand  ·  scales with Dexterity  ·  Mastery 1  ·  Uninfused
+Light hit 9.6 → 10.4  ·  Heavy hit 24.0 → 26.0
+[off] Reinforce to +3 · 1299 E
+tapped Travel @212,333
+tapped Monastery Gate @208,220
+gate OBJECTIVE | 333m | Kindle the Desecrated Cloister | Cross the ravine bridge · resting there moves your return point
+hits after forge: [' dmg=9.6', ' dmg=9.6', ' dmg=9.6']
+hits total 8
+errors: ['Stack Begin', 'Stack End']
+pos=14,3,-713
+Region=DesecratedMonastery
+Essence=5543
+Unbanked=0
+Ore=0
+Opening=Forged
+Tutorial=LockOn,Light
+Altars=Altar_MonasteryGate,Altar_SanctuaryBonfire
+Mainhand=Jian
+Reinforce=2
+Bloodstain=nil
+card=OBJECTIVE | 351m | Kindle the Desecrated Cloister | Cross the ravine bridge · resting there moves your return point
+Region has to be aligned to the grid (use Region3:ExpandToGrid with authoring resolution)
+Stack Begin
+Script 'ServerScriptService.AsurasPath.Services.CampaignTerrain', Line 120 - function convert
+Script 'ServerScriptService.AsurasPath.Services.CampaignWorld', Line 48
+Script 'ServerScriptService.AsurasPath.Services.CampaignWorld', Line 43 - function build
+Script 'ServerScriptService.AsurasPath.Services.CampaignWorld', Line 93 - function Start

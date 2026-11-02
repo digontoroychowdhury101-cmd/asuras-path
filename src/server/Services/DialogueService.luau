@@ -21,6 +21,7 @@ local links: {RBXScriptConnection}={}
 local root: Folder?=nil
 local serial=0
 local PRESENT=24 -- studs: an NPC this close to the summoning altar answers in person
+local PURCHASES={Upgrade=true,Infuse=true,Equip=true,Level=true,Trade=true}
 local function nearby(player: Player,point: Vector3): boolean
  local e=Characters.GetActor(player.UserId)
  return e~=nil and not e.Duel and (e.Fighter.State=="Idle" or e.Fighter.State=="RestingAtShrine")
@@ -45,6 +46,7 @@ function Service.Open(player: Player,npc: string,altarId: string?)
   point=Vector3.new(a.Placement.X,a.Placement.Y,a.Placement.Z)
   if (point-subject).Magnitude>PRESENT then subject=point;projection=true end
  end
+ if AI.IsHunting(player.UserId) then remote:FireClient(player,{action="Refused",message=n.Name.." cannot answer while foes hunt you"});return end
  if not nearby(player,point) or not Actions.view(player.UserId) then return end
  World.Flush(player.UserId,3)
  if not nearby(player,point) then return end
@@ -57,6 +59,7 @@ end
 local function lore(player: Player,id: string)
  local l=Catalog.Lore[id];if not l or busy[player.UserId] then return end
  local point=Vector3.new(l.X,l.Y,l.Z)
+ if AI.IsHunting(player.UserId) then remote:FireClient(player,{action="Refused",message="You cannot read while foes hunt you"});return end
  if not nearby(player,point) then return end
  busy[player.UserId]=true
  local ok,err=Actions.lore(player,id,function() return nearby(player,point) end);busy[player.UserId]=nil
@@ -78,7 +81,12 @@ local function handle(player: Player,p: any)
   Service.Open(player,"Lin",p.id)
   return
  end
- local s=sessions[id];if not s or not valid(player,s) or p.revision~=s.Revision then return end
+ local s=sessions[id];if not s or not valid(player,s) then return end
+ if p.revision~=s.Revision then
+  -- A purchase against a panel that has moved on is never charged; answering gives a client whose reply was lost a live quote.
+  if PURCHASES[p.action] then send(player,s,"The offer changed. Check it again.") end
+  return
+ end
  if p.action=="Choose" then
   local choice=Rules.choose(s.NPC,s.Node,p.index);if not choice then return end
   if choice.Close then sessions[id]=nil;remote:FireClient(player,{action="Close",reason="Farewell"});return end
@@ -98,11 +106,15 @@ local function handle(player: Player,p: any)
   end
   send(player,s);return
  end
+ -- The confirmation is spent before anything is charged: redelivering it can never buy again, even if
+ -- the session is briefly invalid when the answer is due and no fresh panel goes out straight away.
+ serial+=1;s.Revision=serial
  busy[id]=true
  local success,ok,err=pcall(Actions.run,player,s,p,function() return valid(player,s) end)
  busy[id]=nil
  if success and ok then Actions.refresh(id) end
- if valid(player,s) then send(player,s,if success and ok then "The path remembers." else string.gsub(tostring(if success then err else ok),"^.-:%d+: ","")) end
+ local message=if success and ok then (err or "The path remembers.") else string.gsub(tostring(if success then err else ok),"^.-:%d+: ","")
+ if valid(player,s) then send(player,s,message) else s.Owed=message end
 end
 function Service.Start()
  assert(not root,"DialogueService already started")
@@ -113,7 +125,8 @@ function Service.Start()
   elapsed+=dt;if elapsed<0.5 then return end;elapsed=0
   for id,s in sessions do
    local player=Players:GetPlayerByUserId(id)
-   if not player or not valid(player,s) then sessions[id]=nil;if player then remote:FireClient(player,{action="Close"}) end end
+   if not player or not valid(player,s) then sessions[id]=nil;if player then remote:FireClient(player,{action="Close"}) end
+   elseif s.Owed and not busy[id] then local message=s.Owed;s.Owed=nil;send(player,s,message) end
   end
  end))
  table.insert(links,Players.PlayerRemoving:Connect(function(p: Player) sessions[p.UserId]=nil;buckets[p.UserId]=nil;busy[p.UserId]=nil end))

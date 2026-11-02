@@ -67,6 +67,7 @@ local BODY_FONT = Enum.Font.Garamond
 local NUMBER_FONT = Enum.Font.GothamMedium
 
 local WEAPON_GLYPH: { [string]: string } = { Unarmed = "FIST", Jian = "JIAN", Dao = "DAO", Guandao = "GLAIVE" }
+local MATERIAL_NAME: { [string]: string } = { SpiritIronOre = "Spirit Iron Ore" }
 local WEAPON_NAME: { [string]: string } = { Unarmed = "Iron Fist", Jian = "Jian Sword", Dao = "Dao Sabre", Guandao = "Guandao Glaive", None = "—" }
 local REASONS: { [string]: string } = {
 	GourdEmpty = "The gourd is empty.",
@@ -1125,23 +1126,8 @@ function Controller.OnCue(self: Interface, cue: Cue)
 	elseif cue.Kind == "WeaponReinforced" and cue.Source == own then
 		local weapon = tostring(data.weapon or "")
 		self:ShowBanner("WEAPON REINFORCED", string.format("%s  +%d", WEAPON_NAME[weapon] or weapon, tonumber(data.level) or 0), 2.6)
-	elseif cue.Kind == "ReinforceRefused" and cue.Source == own then
-		local reason = tostring(data.reason or "")
-		if reason == "Not enough essence" then
-			self:ShowToast(string.format("The smith asks %d essence.", tonumber(data.cost) or 0))
-		elseif reason == "Reinforcement at maximum" then
-			self:ShowToast("This blade can be forged no further.")
-		elseif reason == "Weapon is locked" then
-			self:ShowToast("That weapon has not been earned.")
-		else
-			self:ShowToast("The smith sets down his hammer.")
-		end
-	elseif cue.Kind == "MinibossReward" and cue.Source == own then
-		local sub = string.format("+%d essence", tonumber(data.essence) or 0)
-		if data.gourd then sub ..= string.format("   ·   gourd +1  (x%d)", tonumber(data.max) or 0) end
-		self:ShowBanner(tostring(data.banner or "FOE VANQUISHED"), sub, 4)
-		self.Banner.TextColor3 = GOLD
-		HudKit.cue(HudKit.Sounds.Objective, 0.8, 0.7)
+	elseif cue.Kind == "MaterialFound" and cue.Source == own then
+		self:ShowToast("+1 " .. tostring(MATERIAL_NAME[tostring(data.material)] or data.material) .. "  ·  Master Smith Gao forges with it")
 	elseif cue.Kind == "GourdRefilled" and cue.Source == own then
 		self:ShowToast(string.format("Gourd refilled  (x%d)", tonumber(data.charges) or 0))
 	elseif cue.Kind == "Telegraph" then

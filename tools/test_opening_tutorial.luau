@@ -49,6 +49,23 @@ check("signals: deflect/evade, perilous when the strike was perilous", Rules.sig
 	and Rules.signal("DeflectSpark", 1, 9, 1, true) == "Perilous" and Rules.signal("Evade", 1, 9, 1, true, DASH) == "Perilous")
 check("signals: an evade outside a dash (deathblow or rest invulnerability) teaches nothing", Rules.signal("Evade", 1, 9, 1, false, { State = "DeathblowVictim" }) == nil and Rules.signal("Evade", 1, 9, 1, true) == nil)
 check("signals: whiffs and feints are not successes", Rules.signal("Whiff", 1, 9, 1, false) == nil and Rules.signal("Feint", 1, 1, 1, false) == nil)
+-- Post-combat batch 1: a lesson not yet learned (training skipped or left part way) is cued once, when it matters.
+do
+	local calm = { RecoverableHP = 0, PermanentDeficit = 0, ActiveHP = 100, MaxHP = 100 }
+	local hurt = { RecoverableHP = 12, PermanentDeficit = 0, ActiveHP = 80, MaxHP = 100 }
+	local seen = {}
+	check("nothing to say in a calm moment", Rules.hint({ Skipped = true }, calm, false, seen) == nil)
+	check("a skipper is cued about recoverable health when it appears", Rules.hint({ Skipped = true }, hurt, false, seen).Id == "Rally")
+	check("each cue plays once", Rules.hint({ Skipped = true }, hurt, false, seen) == nil)
+	check("a lowered ceiling is cued", Rules.hint({ Skipped = true }, { RecoverableHP = 0, PermanentDeficit = 9, ActiveHP = 80, MaxHP = 100 }, false, seen).Id == "Ceiling")
+	check("low health teaches the gourd", Rules.hint({ Skipped = true }, { RecoverableHP = 0, PermanentDeficit = 0, ActiveHP = 40, MaxHP = 100 }, false, seen).Id == "Heal")
+	check("a broken foe teaches the deathblow", Rules.hint({ Skipped = true }, calm, true, seen).Id == "Deathblow")
+	check("finished training needs no cues", Rules.hint(Rules.parse("Complete"), hurt, true, {}) == nil)
+	check("a lesson already learned is not repeated", Rules.hint({ Rally = true }, hurt, false, {}) == nil)
+	for _, h in Rules.Hints do
+		check(h.Id .. " cue has real keys", not string.find(Rules.text(h.Text, function(c) return InputMap.label(c, "Keyboard") end), "{", 1, true))
+	end
+end
 check("client may only report lock-on and glide", Rules.ClientSignals.LockOn and Rules.ClientSignals.Glide and not Rules.ClientSignals.Light and not Rules.ClientSignals.Deathblow)
 check("progress round-trips", Rules.serialize(Rules.parse("LockOn,Light,Bogus")) == "LockOn,Light" and Rules.serialize({ Skipped = true }) == "Skipped" and Rules.current(Rules.parse("Complete")) == nil)
 
@@ -126,7 +143,11 @@ check("deathblow and glide finish the training", attrs.AsuraTutorial == "Complet
 local last = cues[#cues]
 check("completion cued to the player", last.Kind == "TutorialStep" and last.Data.complete == true and last.Id == 7)
 poll()
-check("ring protection lifts once training is done", fighter.KOProtected == false)
+check("finishing mid-fight stays safe until the player walks out of the ring", fighter.KOProtected == true)
+entities[7].Root.Position = V3.new(0, 3, -760); poll()
+check("ring protection lifts on leaving", fighter.KOProtected == false)
+entities[7].Root.Position = V3.new(12, 3, -708); poll()
+check("the ring is not safe to come back to once training is done", fighter.KOProtected == false)
 handler(player, { action = "Replay" })
 check("replay restarts from step 1 and persists", attrs.AsuraTutorial == "" and next(profile.souls.world.tutorial) == nil)
 handler(player, { action = "Skip" })

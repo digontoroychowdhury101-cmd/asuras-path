@@ -11,6 +11,7 @@ local Store=require("../src/server/ProfileStore")
 local Progress=require("../src/shared/ProgressionRules")
 local CombatSettings=require("../src/shared/CombatSettings")
 local Catalog=require("../src/shared/NarrativeCatalog")
+local ForgeQuote=require("../src/shared/ForgeQuote")
 local DialogueRules=require("../src/shared/DialogueRules")
 local ArenaRules=require("../src/shared/ArenaRules")
 local Definitions=require("../src/shared/WorldDefinitions")
@@ -151,9 +152,8 @@ def module(name, path, imports):
 source = HEADER
 source += module("Forge", "src/server/ForgeService.luau", {
     "Shared.Shared.ProgressionRules": "Progress", "Shared.Shared.NarrativeCatalog": "Catalog",
-    "script.Parent.PersistenceService": "Persistence", "script.Parent.CharacterService": "Characters",
-    "Shared.Shared.WorldDefinitions": "Definitions"})
-source += "local Shop={UpgradeWeapon=Forge.Upgrade,InfuseWeapon=Forge.Infuse,Trade=Forge.Trade}\n"
+    "script.Parent.PersistenceService": "Persistence", "script.Parent.CharacterService": "Characters"})
+source += "local Shop={UpgradeWeapon=Forge.Upgrade,InfuseWeapon=Forge.Infuse,EquipForged=Forge.Equip,Trade=Forge.Trade}\n"
 source += module("EndingRules", "src/shared/EndingRules.luau", {})
 source += module("EndingCredits", "src/shared/EndingCredits.luau", {})
 source += module("Effects", "src/shared/EffectsPreference.luau", {})
@@ -191,7 +191,7 @@ source += module("CodexView", "src/client/Controllers/CodexView.luau", {"Shared.
 source += module("View", "src/client/Controllers/DialogueView.luau", {
     "script.Parent.CodexView": "CodexView",
     "script.Parent.HudKit": "Kit", "script.Parent.UiKit": "UiKit", "Shared.NarrativeCatalog": "Catalog",
-    "Shared.ProgressionRules": "Progress", "Shared.LevelPreview": "LevelPreview", "Shared.EffectsPreference": "Effects"})
+    "Shared.ProgressionRules": "Progress", "Shared.LevelPreview": "LevelPreview", "Shared.EffectsPreference": "Effects", "Shared.ForgeQuote": "ForgeQuote"})
 source += module("Portrait", "src/client/Controllers/PortraitCamera.luau", {})
 source += module("Visibility", "src/client/Controllers/HudVisibility.luau", {})
 source += module("DialogueClient", "src/client/Controllers/DialogueController.luau", {"script.Parent.DialogueView": "View", "script.Parent.HudKit": "Kit", "Shared.Shared.InputMap": "InputMap", "script.Parent.HudVisibility": "Visibility", "script.Parent.PortraitCamera": "Portrait"})
@@ -218,16 +218,109 @@ local packets=#remotes.DialogueIntent.Packets
 send({action="Choose",index=1,revision=revision})
 check(#remotes.DialogueIntent.Packets==packets,"stale choice ignored")
 local bank=engine:Get(7).qiEssence
-send({action="Upgrade",revision=latest().revision})
+send({action="Upgrade",id="Jian",tier=0,revision=latest().revision})
 check(engine:Get(7).qiEssence==bank and engine:Get(7).inventory.Weapons.Jian.Level==0,"unfunded forge leaves profile unchanged")
+check(string.find(latest().message,"Spirit Iron Ore",1,true)~=nil,"refusal names the missing material, not its id")
 assert(engine:Transaction(7,function(p) p.qiEssence=10000;p.inventory.Materials.SpiritIronOre=10;p.inventory.Materials.CrimsonFireGem=1 end))
-send({action="Upgrade",revision=latest().revision})
+send({action="Upgrade",id="Jian",tier=0,revision=latest().revision})
 check(engine:Get(7).inventory.Weapons.Jian.Level==1 and engine:Get(7).qiEssence==9750,"real dialogue action reinforces")
-send({action="Infuse",id="CrimsonFire",revision=latest().revision})
+send({action="Infuse",id="CrimsonFire",weapon="Jian",revision=latest().revision})
 check(engine:Get(7).inventory.Weapons.Jian.Infusion=="CrimsonFire","real dialogue action infuses")
 move(1000,600,1000);bank=engine:Get(7).qiEssence
-send({action="Upgrade",revision=latest().revision})
+send({action="Upgrade",id="Jian",tier=1,revision=latest().revision})
 check(engine:Get(7).qiEssence==bank,"remote forge fails distance check")
+-- Post-combat batch 1: Gao's transaction. Every case reads the saved record, not the panel.
+do
+ local function saved() return engine:Get(7) end
+ local function level(id) return saved().inventory.Weapons[id].Level end
+ local function up(id,tier,revision) send({action="Upgrade",id=id,tier=tier,revision=revision or latest().revision}) end
+ move(Catalog.NPCs.Gao.X,Catalog.NPCs.Gao.Y,Catalog.NPCs.Gao.Z)
+ assert(engine:Transaction(7,function(p) p.qiEssence=50000;p.inventory.Materials.SpiritIronOre=30;p.inventory.Materials.StarfallShard=1;p.inventory.Weapons.Dao={Level=0} end))
+ DialogueService.Open(player,"Gao");send({action="Choose",index=1,revision=latest().revision})
+ check(latest().panel=="Forge" and latest().view.inventory.Weapons.Dao~=nil,"forge panel carries every owned weapon")
+ -- Duplicate delivery of one confirmation buys one tier; a second deliberate confirmation buys the next.
+ local before,qi,ore=level("Jian"),saved().qiEssence,saved().inventory.Materials.SpiritIronOre
+ local cost,_,count=Progress.upgradeCost(before)
+ local confirmation={action="Upgrade",id="Jian",tier=before,revision=latest().revision}
+ send(confirmation);send(table.clone(confirmation));send(table.clone(confirmation))
+ check(level("Jian")==before+1 and saved().qiEssence==qi-cost and saved().inventory.Materials.SpiritIronOre==ore-count,"one confirmation delivered three times buys one tier and charges once")
+ up("Jian",before+1)
+ check(level("Jian")==before+2,"a second deliberate confirmation buys the next tier")
+ -- A quote for a tier the weapon has left is refused whole, even on a live revision.
+ local tier,purse=level("Jian"),saved().qiEssence
+ up("Jian",tier-1)
+ check(level("Jian")==tier and saved().qiEssence==purse and string.find(latest().message,"out of date",1,true)~=nil,"a stale quote charges nothing and says why")
+ -- A confirmation whose answer could not go out: the session was briefly invalid, then valid again.
+ local refresh=Characters.RefreshProgression
+ Characters.RefreshProgression=function() actors[7].Fighter.State="Attacking";Characters.RefreshProgression=refresh end
+ tier,purse=level("Jian"),saved().qiEssence
+ local spent={action="Upgrade",id="Jian",tier=tier,revision=latest().revision}
+ local sent=#remotes.DialogueIntent.Packets
+ send(spent)
+ check(level("Jian")==tier+1 and #remotes.DialogueIntent.Packets==sent,"bought while the fighter left Idle: no answer can go out yet")
+ actors[7].Fighter.State="Idle"
+ local afterFirst=saved().qiEssence
+ send({action="Upgrade",id="Jian",tier=tier+1,revision=spent.revision})
+ check(level("Jian")==tier+1 and saved().qiEssence==afterFirst,"the spent revision cannot buy again while no fresh panel has gone out")
+ Run.Heartbeat:Fire(1)
+ check(latest().view.inventory.Weapons.Jian.Level==tier+1,"the owed answer arrives with the live quote once the session is valid")
+ -- Forged, unowned and malformed selections.
+ purse=saved().qiEssence
+ up("Guandao",0)
+ check(saved().inventory.Weapons.Guandao==nil and saved().qiEssence==purse and string.find(latest().message,"locked",1,true)~=nil,"an unowned weapon is refused")
+ up("NotAWeapon",0)
+ check(saved().qiEssence==purse and saved().inventory.Weapons.NotAWeapon==nil,"an unknown weapon is refused")
+ sent=#remotes.DialogueIntent.Packets
+ send({action="Upgrade",revision=latest().revision})
+ send({action="Upgrade",id="Jian",tier=1.5,revision=latest().revision})
+ send({action="Upgrade",id="Jian",tier=level("Jian"),revision=latest().revision,qi=99})
+ check(#remotes.DialogueIntent.Packets==sent and saved().qiEssence==purse,"malformed confirmations are dropped by shape")
+ -- A weapon not in hand is forged by name; its level stays its own and the one in hand is untouched.
+ local jian=level("Jian")
+ up("Dao",0)
+ check(level("Dao")==1 and level("Jian")==jian and saved().equippedLoadout.MainWeapon=="Jian","forging the selected weapon leaves the one in hand alone")
+ check(Store.DeriveStats(saved().souls).DexterityScale==Progress.stats(saved().attributes,jian).DexterityScale,"stats still follow the weapon in hand")
+ -- Deliberate equip: saved loadout, compatibility view, fighter and stats all follow.
+ local equips={};local realEquip=Characters.EquipWeapon
+ Characters.EquipWeapon=function(_,id) table.insert(equips,id);return true,"ok" end
+ local refreshes0=refreshes
+ send({action="Equip",id="Dao",revision=latest().revision})
+ check(saved().equippedLoadout.MainWeapon=="Dao" and saved().souls.inventory.mainhand=="Dao" and equips[1]=="Dao","equipping the result moves the save and the fighter")
+ check(refreshes>refreshes0 and Store.DeriveStats(saved().souls).DexterityScale==Progress.stats(saved().attributes,1).DexterityScale,"combat stats refresh to the forged weapon")
+ check(level("Jian")==jian and level("Dao")==1,"switching keeps each weapon's own level")
+ send({action="Equip",id="Guandao",revision=latest().revision})
+ check(saved().equippedLoadout.MainWeapon=="Dao" and #equips==1,"an unowned weapon cannot be equipped")
+ send({action="Equip",id="Jian",revision=latest().revision})
+ check(saved().equippedLoadout.MainWeapon=="Jian",#equips==2 and "back to the first weapon" or "equip back")
+ Characters.EquipWeapon=realEquip
+ -- Exhausted resources and the cap: nothing moves.
+ assert(engine:Transaction(7,function(p) p.inventory.Weapons.Dao.Level=4;p.inventory.Materials.StarfallShard=0 end))
+ purse=saved().qiEssence;send({action="Choose",index=1,revision=latest().revision});send({action="Choose",index=1,revision=latest().revision})
+ up("Dao",4)
+ check(level("Dao")==4 and saved().qiEssence==purse and string.find(latest().message,"Starfall Shard",1,true)~=nil,"a missing tier material refuses without touching Essence")
+ assert(engine:Transaction(7,function(p) p.inventory.Weapons.Dao.Level=Progress.MaxTier;p.qiEssence=0;p.inventory.Materials.SpiritIronOre=9 end))
+ up("Dao",Progress.MaxTier)
+ check(level("Dao")==Progress.MaxTier and saved().inventory.Materials.SpiritIronOre==9,"the cap refuses")
+ up("Jian",level("Jian"))
+ check(saved().qiEssence==0 and saved().inventory.Materials.SpiritIronOre==9,"no Essence: the ore stays")
+ -- Wrong place or state, on a live revision.
+ assert(engine:Transaction(7,function(p) p.qiEssence=5000 end))
+ tier,purse=level("Jian"),saved().qiEssence
+ local live=latest().revision
+ actors[7].Fighter.State="Attacking";up("Jian",tier,live)
+ check(level("Jian")==tier and saved().qiEssence==purse,"a fighter mid-attack cannot buy")
+ actors[7].Fighter.State="Idle";actors[7].Duel={};up("Jian",tier,live)
+ check(level("Jian")==tier and saved().qiEssence==purse,"a duellist cannot buy")
+ actors[7].Duel=nil;actors[7].Fighter.State="KO";up("Jian",tier,live)
+ check(level("Jian")==tier and saved().qiEssence==purse,"the dead cannot buy")
+ actors[7].Fighter.State="Idle"
+ -- Reload through the store: levels, loadout and materials survive a real release and load of the record.
+ Run.Heartbeat:Fire(1)
+ assert(engine:Release(7));local reloaded=assert(engine:Load(7))
+ check(reloaded.inventory.Weapons.Dao.Level==Progress.MaxTier and reloaded.inventory.Weapons.Jian.Level==tier and reloaded.souls.inventory.reinforcement.Dao==Progress.MaxTier and reloaded.equippedLoadout.MainWeapon=="Jian","release and reload keep every weapon's level (in-memory store, not live DataStore)")
+ assert(engine:Transaction(7,function(p) p.inventory.Weapons.Dao=nil;p.qiEssence=10000;p.inventory.Materials.SpiritIronOre=10;p.inventory.Weapons.Jian.Level=1;p.inventory.Weapons.Jian.Infusion="CrimsonFire" end))
+end
+move(1000,600,1000)
 local altar=Definitions.Altars.Altar_SanctuaryBonfire.Placement
 move(altar.X,altar.Y+3,altar.Z)
 packets=#remotes.DialogueIntent.Packets
@@ -253,11 +346,18 @@ move(Catalog.NPCs.Hermit.X,Catalog.NPCs.Hermit.Y,Catalog.NPCs.Hermit.Z)
 DialogueService.Open(player,"Hermit");send({action="Choose",index=1,revision=latest().revision})
 send({action="Trade",id="LastBreathTalisman",revision=latest().revision})
 check(engine:Get(7).inventory.Materials.LastBreathTalisman==1,"hermit sells a real inventory item")
+hunting=true
+DialogueService.Open(player,"Hermit")
+check(latest().action=="Refused" and string.find(latest().message,"hunt",1,true)~=nil,"an NPC prompt while hunted says why instead of doing nothing")
+hunting=false
 local folder
 for _,c in workspace.Children or {} do if c.Name=="JadeCataclysm" then folder=c end end
 check(folder~=nil,"lore world is built")
 local stone=folder:FindFirstChild("Pillars");move(Catalog.Lore.Pillars.X,3,Catalog.Lore.Pillars.Z)
 bank=engine:Get(7).qiEssence
+hunting=true;stone:FindFirstChild("NarrativePrompt").Triggered:Fire(player)
+check(latest().action=="Refused" and not engine:Get(7).inventory.LoreEntries.Pillars,"a memorial read while hunted says why and pays nothing")
+hunting=false
 stone:FindFirstChild("NarrativePrompt").Triggered:Fire(player)
 stone:FindFirstChild("NarrativePrompt").Triggered:Fire(player)
 check(engine:Get(7).qiEssence==bank+Catalog.Lore.Pillars.Qi and engine:Get(7).inventory.LoreEntries.Pillars,"real memorial awards only once")
@@ -269,6 +369,40 @@ check(root.LocalTransparencyModifier==1,"the player's own avatar is hidden from 
 client.View.Buttons[1].Activated:Fire()
 check(remotes.DialogueIntent.Sent[#remotes.DialogueIntent.Sent].revision==latest().revision,"client choices carry current revision")
 check(client.View.Subtitle.RichText and client.View.Subtitle.MaxVisibleGraphemes>=1,"rich subtitle typewriter starts")
+-- Post-combat batch 1: the panel itself, from the real server view through the real client.
+do
+ local function shown() local all="";for _,c in client.View.List.Children do if not c.Destroyed then all..="\n"..tostring(c.Text) end end;return all end
+ local function button(text) for _,b in client.View.Buttons do if string.find(b.Text,text,1,true) then return b end end end
+ local function answer() client:Receive(latest()) end
+ assert(engine:Transaction(7,function(p) p.qiEssence=5000;p.inventory.Materials.SpiritIronOre=5;p.inventory.Weapons.Jian.Level=1;p.inventory.Weapons.Dao={Level=2} end))
+ send({action="Choose",index=1,revision=latest().revision});answer()
+ local view=latest().view;local q=ForgeQuote.of(view,"Jian")
+ check(latest().panel=="Forge" and string.find(shown(),"Jian Sword +1",1,true) and string.find(shown(),"in hand",1,true) and string.find(shown(),"scales with Dexterity",1,true),"panel names the weapon, tier, equip state and scaling attribute")
+ check(string.find(shown(),string.format("Light hit %.1f → %.1f",q.Light,q.Next.Light),1,true)~=nil and q.Next.Light>q.Light,"panel shows the real before and after blow")
+ local ctx={Attributes=view.attributes,Reinforcement={Jian=2},Mainhand="Jian"}
+ check(math.abs(q.Next.Light-require("../src/shared/ArsenalFacts").hit("Jian",require("../src/simulation/WeaponSchema").get("Jian").Light[1],ctx))<1e-6,"the preview is ArsenalFacts' damage at the next tier")
+ local buy=button("Reinforce to +2")
+ check(buy and not buy.Disabled and string.find(buy.Text,q.Next.Cost.." Essence",1,true) and string.find(buy.Text,"Spirit Iron Ore (5 owned)",1,true),"price, material and count are on the button")
+ local sent=#remotes.DialogueIntent.Sent
+ button("Dao Sabre +2").Activated:Fire()
+ check(#remotes.DialogueIntent.Sent==sent and string.find(shown(),"Dao Sabre +2",1,true) and string.find(shown(),"not in hand",1,true) and button("Take Dao Sabre in hand")~=nil,"selecting a weapon quotes it locally and offers a deliberate equip")
+ button("Reinforce to +3").Activated:Fire()
+ local out=remotes.DialogueIntent.Sent[#remotes.DialogueIntent.Sent]
+ check(out.action=="Upgrade" and out.id=="Dao" and out.tier==2 and out.revision==latest().revision,"the confirmation names the shown weapon and tier")
+ local again=#remotes.DialogueIntent.Sent
+ button("Reinforce to +3").Activated:Fire()
+ check(#remotes.DialogueIntent.Sent==again and client.View.Locked,"a second click before the answer sends nothing")
+ send(out);answer()
+ check(not client.View.Locked and string.find(shown(),"Dao Sabre +3",1,true) and string.find(client.View.Subtitle.Text,"Reinforced to +3",1,true),"the answer unlocks and the selection stays on the forged weapon")
+ assert(engine:Transaction(7,function(p) p.qiEssence=0 end))
+ send({action="Choose",index=1,revision=latest().revision});send({action="Choose",index=1,revision=latest().revision});answer()
+ local refused=button("Reinforce to +4")
+ check(refused and refused.Disabled and string.find(shown(),"more Essence",1,true),"an unaffordable tier is disabled and says what is short")
+ client:Close(true);client:Close()
+ check(client.View.ForgeWeapon==nil,"closing forgets the selection: reopening starts on the weapon in hand")
+ assert(engine:Transaction(7,function(p) p.qiEssence=10000;p.inventory.Weapons.Dao=nil end))
+ DialogueService.Open(player,"Gao");client:Receive(latest())
+end
 client:Close();check(not ui.Input.MenuOpen and camera.DialogueFrame==nil,"dialogue close restores camera and input")
 check(root.LocalTransparencyModifier~=1,"closing restores the player's avatar")
 send({action="Codex"});check(latest().action=="Codex","codex request answered with server discovery flags");client:Receive(latest())

@@ -13,6 +13,9 @@ local WaypointMarker = require(script.Parent:WaitForChild("WaypointMarker") :: M
 local Visibility = require(script.Parent:WaitForChild("HudVisibility") :: ModuleScript)
 local WorldState = require(script.Parent:WaitForChild("WorldStateController") :: ModuleScript)
 local RouteGuide = require(ReplicatedStorage.AsurasPath.Shared.RouteGuide)
+local Progress = require(ReplicatedStorage.AsurasPath.Shared.ProgressionRules)
+local TutorialRules = require(ReplicatedStorage.AsurasPath.Shared.TutorialRules)
+local Narrative = require(ReplicatedStorage.AsurasPath.Shared.NarrativeCatalog)
 
 local P = HudKit.Palette
 local REFRESH = 0.2
@@ -81,7 +84,19 @@ function Controller.Facts(self: ObjectiveController): Objectives.Facts
 	local region = player:GetAttribute("AsuraRegion")
 	local stain = player:GetAttribute("AsuraBloodstain")
 	local bosses = Objectives.parseAltars(player:GetAttribute("AsuraBosses"))
+	local opening = player:GetAttribute("AsuraOpening")
+	local training = player:GetAttribute("AsuraTutorial")
+	local tier = tonumber(player:GetAttribute("AsuraReinforce")) or 0
+	local forge: any = nil
+	if tier < Progress.MaxTier then
+		local cost, material, need = Progress.upgradeCost(tier)
+		forge = { Tier = tier, Cost = cost, Material = Narrative.Trades[material].Name, Need = need, Have = tonumber(player:GetAttribute("AsuraOre")) or 0 }
+	end
 	return {
+		Opening = if type(opening) == "string" then Objectives.parseAltars(opening) else nil,
+		Training = type(training) == "string" and TutorialRules.current(TutorialRules.parse(training)) ~= nil,
+		Essence = (tonumber(player:GetAttribute("AsuraEssence")) or 0) + (tonumber(player:GetAttribute("AsuraUnbanked")) or 0),
+		Forge = forge,
 		Bosses = bosses,
 		Region = self.PendingRegion or (if type(region) == "string" then region else nil),
 		Altars = Objectives.parseAltars(player:GetAttribute("AsuraAltars")),

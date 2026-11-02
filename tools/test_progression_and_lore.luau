@@ -50,6 +50,17 @@ for tier=0,9 do
  check(near(Progress.stats(a,tier+1).StrengthScale,1+0.1*(tier+1)),"ten percent reinforcement")
 end
 check(not pcall(Progress.upgrade,forge,"Jian"),"+10 cap")
+-- Post-combat batch 1: refusals, in the order the panel and the transaction give them.
+local refusal={qiEssence=100,inventory={Weapons={Jian={Level=0},Dao={Level=4}},Materials={SpiritIronOre=1}}}
+check(Progress.upgradeRefusal(refusal,"Guandao")=="Weapon is locked","unowned refused")
+check(Progress.upgradeRefusal(refusal,"Jian")=="Not enough Essence","short Essence refused")
+check(Progress.upgradeRefusal(refusal,"Jian",3)=="The quote is out of date","stale tier refused")
+refusal.qiEssence=99999
+check(Progress.upgradeRefusal(refusal,"Jian",0)==nil,"affordable")
+check(Progress.upgradeRefusal(refusal,"Dao")=="Missing StarfallShard","the tier's own material is asked for")
+local untouched=refusal.qiEssence;check(not pcall(Progress.upgrade,refusal,"Dao"),"upgrade refuses");check(refusal.qiEssence==untouched and refusal.inventory.Weapons.Dao.Level==4,"a refused upgrade moves nothing")
+check(Progress.milestones({weaponMastery={},inventory={LoreEntries={},Weapons={Jian={Level=0}}}})=="","a fresh save has no milestones")
+check(Progress.milestones({weaponMastery={Jian=30},inventory={LoreEntries={Feast=true},Weapons={Jian={Level=1}}}})=="Fought,Read,Forged","milestones derive from the save")
 for _,affinity in {"CrimsonFire","CelestialLightning","AbyssalVoid"} do
  Progress.infuse(forge,"Jian",affinity);check(forge.inventory.Weapons.Jian.Infusion==affinity,"infusion persisted")
  check(not pcall(Progress.infuse,forge,"Jian",affinity),"duplicate infusion refused")

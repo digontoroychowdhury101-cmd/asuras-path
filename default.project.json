@@ -271,6 +271,9 @@
           "ArsenalFacts": {
             "$path": "src/shared/ArsenalFacts.luau"
           },
+          "ForgeQuote": {
+            "$path": "src/shared/ForgeQuote.luau"
+          },
           "ContactCues": {
             "$path": "src/shared/ContactCues.luau"
           },

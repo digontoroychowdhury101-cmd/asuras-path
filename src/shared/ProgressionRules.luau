@@ -4,6 +4,8 @@ local Rules = {}
 local INFUSIONS: {[string]: string}={CrimsonFire="CrimsonFireGem", CelestialLightning="CelestialLightningGem", AbyssalVoid="AbyssalVoidGem"}
 Rules.Attributes = table.freeze({"Vigor", "Endurance", "Strength", "Dexterity", "ArcaneQi"})
 Rules.Infusions = table.freeze(INFUSIONS)
+Rules.MaxTier = 10
+Rules.InfusionCost = 300
 function Rules.level(a: {[string]: number}): number
  local n=1;for _,key in Rules.Attributes do n+=a[key]-10 end;return n
 end
@@ -23,18 +25,28 @@ function Rules.upgradeCost(tier: number): (number,string,number)
  local material=if tier<4 then "SpiritIronOre" elseif tier<8 then "StarfallShard" else "DragoniteCore"
  return math.floor(250*(tier+1)^1.5),material,if tier<4 then tier+1 elseif tier<8 then tier-3 else tier-7
 end
-function Rules.upgrade(p: any,weapon: string): string
- local w=assert(p.inventory.Weapons[weapon],"Weapon is locked");assert(w.Level<10,"Weapon is already +10")
+-- Why this profile cannot buy `weapon`'s next tier, or nil. `tier`, when given, is the level the quote was
+-- shown for: a weapon that has moved since refuses instead of charging a price nobody saw.
+function Rules.upgradeRefusal(p: any,weapon: string,tier: number?): string?
+ local w=p.inventory.Weapons[weapon];if not w then return "Weapon is locked" end
+ if tier~=nil and w.Level~=tier then return "The quote is out of date" end
+ if w.Level>=Rules.MaxTier then return "Weapon is already +"..Rules.MaxTier end
  local cost,ore,count=Rules.upgradeCost(w.Level)
- assert(p.qiEssence>=cost,"Not enough Essence");assert((p.inventory.Materials[ore] or 0)>=count,"Missing "..ore)
+ if p.qiEssence<cost then return "Not enough Essence" end
+ if (p.inventory.Materials[ore] or 0)<count then return "Missing "..ore end
+ return nil
+end
+function Rules.upgrade(p: any,weapon: string,tier: number?): string
+ local refused=Rules.upgradeRefusal(p,weapon,tier);assert(not refused,refused)
+ local w=p.inventory.Weapons[weapon];local cost,ore,count=Rules.upgradeCost(w.Level)
  p.qiEssence-=cost;p.inventory.Materials[ore]-=count;w.Level+=1
  return "Reinforced "..weapon.." +"..w.Level
 end
 function Rules.infuse(p: any,weapon: string,affinity: string): string
  local gem=assert(Rules.Infusions[affinity],"Unknown infusion")
  local w=assert(p.inventory.Weapons[weapon],"Weapon is locked");assert(w.Infusion~=affinity,"Already infused")
- assert((p.inventory.Materials[gem] or 0)>=1,"Missing "..gem);assert(p.qiEssence>=300,"Not enough Essence")
- p.inventory.Materials[gem]-=1;p.qiEssence-=300;w.Infusion=affinity;return "Infused "..weapon
+ assert((p.inventory.Materials[gem] or 0)>=1,"Missing "..gem);assert(p.qiEssence>=Rules.InfusionCost,"Not enough Essence")
+ p.inventory.Materials[gem]-=1;p.qiEssence-=Rules.InfusionCost;w.Infusion=affinity;return "Infused "..weapon
 end
 function Rules.affinity(id: string?,a: {[string]: number}): {[string]: number}
  return {Burn=if id=="CrimsonFire" then 2*(1+(a.Strength-10)*0.025) else 0,
@@ -48,6 +60,15 @@ end
 function Rules.discover(p: any,id: string,reward: number): boolean
  if p.inventory.LoreEntries[id] then return false end
  p.inventory.LoreEntries[id]=true;p.qiEssence+=reward;return true
+end
+-- Durable opening milestones, derived from what the save already holds (no new profile field): any mastery
+-- earned means a foe was felled, any inscription read, any weapon above +0 forged.
+function Rules.milestones(p: any): string
+ local list={}
+ if next(p.weaponMastery)~=nil then table.insert(list,"Fought") end
+ if next(p.inventory.LoreEntries)~=nil then table.insert(list,"Read") end
+ for _,w in p.inventory.Weapons do if w.Level>0 then table.insert(list,"Forged");break end end
+ return table.concat(list,",")
 end
 function Rules.mastery(p: any,weapon: string,xp: number)
  if not p.inventory.Weapons[weapon] then return end

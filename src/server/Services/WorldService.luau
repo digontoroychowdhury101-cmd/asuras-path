@@ -205,6 +205,13 @@ local function publish(s: Session)
 		local forged = ProfileStore.ReinforceLevel(record, record.inventory.mainhand)
 		player:SetAttribute("AsuraReinforce", forged)
 		player:SetAttribute("AsuraReinforceCost", if forged >= ProfileStore.ReinforceMax then 0 else ProfileStore.ReinforceCost(forged))
+		-- Read-only mirrors for the objective tracker: durable milestones and the next tier's material in hand.
+		local profile = Persistence.Get(s.UserId)
+		if profile then
+			local _, material = Progression.upgradeCost(forged)
+			player:SetAttribute("AsuraOpening", Progression.milestones(profile))
+			player:SetAttribute("AsuraOre", profile.inventory.Materials[material] or 0)
+		end
 		local altars: { string } = {}
 		for id in record.world.altars do
 			table.insert(altars, id)
@@ -990,6 +997,7 @@ local function onEvent(event: any, _point: Vector3?)
    end)
    if ok then
     Characters.RefreshProgression(killer.UserId)
+    Characters.Cue("MaterialFound",killer.UserId,{material="SpiritIronOre"})
     if unlocked then Characters.Cue("SignatureUnlocked",killer.UserId,{weapon=weapon}) end
    end
    return ok,err
@@ -1286,39 +1294,8 @@ function WorldService.Destroy()
 	table.clear(gateParts)
 end
 
--- Blacksmith: reinforce the equipped weapon with banked essence (unbanked essence is banked first).
 function WorldService.Refresh(userId: number)
  local s=session(userId);if s then publish(s) end
-end
-
-function WorldService.Reinforce(userId: number): (boolean, string)
-	local s = session(userId)
-	local record = souls(userId)
-	if not s or not record then
-		return false, "Unavailable"
-	end
-	if Characters.IsInDuel(userId) then
-		return false, "InDuel"
-	end
-	local weapon = record.inventory.mainhand
-	flush(s)
-	enqueue(s, "Reinforce", function(store: any): (boolean, string?)
-		local ok, err, level = store:ReinforceWeapon(userId, weapon)
-		if ok then
-			Characters.RefreshProgression(userId)
-			Characters.Cue("WeaponReinforced", userId, { weapon = weapon, level = level })
-		elseif err ~= "Profile is busy" and err ~= "Profile session unavailable" then
-			local current = souls(userId)
-			Characters.Cue("ReinforceRefused", userId, {
-				reason = err,
-				weapon = weapon,
-				cost = if current then ProfileStore.ReinforceCost(ProfileStore.ReinforceLevel(current, weapon)) else 0,
-			})
-			return true, nil
-		end
-		return ok, err
-	end)
-	return true, "ReinforceQueued"
 end
 
 -- Blacksmith: refill the gourd outside the rest ritual (no enemy respawn, no checkpoint change).

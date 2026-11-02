@@ -111,7 +111,7 @@ local function poll()
 		local e = Characters.GetEntity(id)
 		if s and e then
 			local training = Rules.current(s.Done) ~= nil
-			local inRing = training and (e.Root.Position - HOME).Magnitude <= Tutorial.RingRadius
+			local inRing = (training or s.Protected) and (e.Root.Position - HOME).Magnitude <= Tutorial.RingRadius -- safe until walked out of, even after a skip
 			if inRing or s.Protected then e.Fighter.KOProtected = inRing end -- re-applied to a respawned body
 			s.Protected = inRing
 			phantomNeeded = phantomNeeded or (training and (e.Root.Position - HOME).Magnitude <= Tutorial.RingRadius * 2)

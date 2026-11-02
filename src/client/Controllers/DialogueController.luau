@@ -33,6 +33,7 @@ function Controller.new(camera: any,input: any,ui: any): any
  self.Remote=Shared.Net:WaitForChild("DialogueIntent")
  self.View=View.new(Players.LocalPlayer:WaitForChild("PlayerGui"))
  self.View.Close.Activated:Connect(function() self:Close(true) end)
+ self.View.Refocus=function() if UserInput.GamepadEnabled then GuiService.SelectedObject=self.View.Focus or self.View.Buttons[1] or self.View.Close end end
  local codex=Instance.new("TextButton");codex.Name="CodexButton";codex.Text="Codex";codex.Size=UDim2.fromOffset(92,30)
  codex.Position=UDim2.new(0,14,0.55,0);codex.BackgroundColor3=Kit.Palette.Ink;codex.TextColor3=Kit.Palette.Ivory
  codex.Parent=ui.Gui;self.Codex=codex;Visibility.register(codex,"Pointer")
@@ -74,7 +75,7 @@ function Controller.Close(self: any,toAltar: boolean?)
  local altar=self.ReturnAltar;self.ReturnAltar=nil
  self.Generation+=1;local wasOpen=self.Open;self.Open=false;self.UI.DialogueOpen=false;self.View.Gui.Enabled=false;self.Camera.DialogueFrame=nil;hideAvatar(self,nil)
  if wasOpen then self.Input:SetMenu(false,"Dialogue");self.Remote:FireServer({action="Close"}) end
- View.clear(self.View)
+ View.clear(self.View);self.View.ForgeWeapon=nil
  if wasOpen and toAltar and altar and not self.UI.DeathShown then self.UI:OpenAltar(altar) end
 end
 function Controller.Frame(self: any,p: any)
@@ -132,7 +133,7 @@ function Controller.Receive(self: any,p: any)
    task.wait(0.022)
   end
  end)
- if UserInput.GamepadEnabled then GuiService.SelectedObject=self.View.Buttons[1] or self.View.Close end
+ self.View.Refocus()
 end
 function Controller.Destroy(self: any)
  self:Close(false);if self.DiedLink then self.DiedLink:Disconnect() end;for _,c in self.Links do c:Disconnect() end;self.RestoreDevice();self.UI.OnSummon=nil;self.UI.OpenCodex=nil;self.Codex:Destroy();self.View.Gui:Destroy()

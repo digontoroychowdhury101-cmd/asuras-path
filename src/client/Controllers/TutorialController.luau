@@ -37,7 +37,7 @@ function Controller.new(state: any, camera: any, movement: any, input: any, ui: 
 	end
 	local self = setmetatable({ State = state, Camera = camera, Movement = movement, Input = input, Ui = ui, Remote = remote, Card = card,
 		Header = text(1, 14, T.Gold, T.BodyFont), Title = text(2, 22, T.Ivory, T.TitleFont), Do = text(3, 17, T.Ivory, T.BodyFont),
-		Why = text(4, 15, T.Muted, T.BodyFont), Sent = {}, Glide = 0, Armed = false, StakesShown = false, Links = {} }, Controller)
+		Why = text(4, 15, T.Muted, T.BodyFont), Sent = {}, Glide = 0, Armed = false, StakesShown = false, Hints = {}, Links = {} }, Controller)
 	local skip: TextButton
 	skip = UiKit.button(card, "Skip training", "Ghost", function()
 		if not self.Armed then
@@ -106,6 +106,13 @@ function Controller.Update(self: any, dt: number)
 	local snapshot = self.State:OwnSnapshot()
 	if self.StakesPanel and self.StakesPanel.Parent and snapshot and snapshot.State ~= "Idle" then self.StakesPanel:Destroy() end
 	self.Card.Visible = step ~= nil and root ~= nil and not hidden and (root.Position - HOME).Magnitude <= Controller.ShowRadius
+	-- Away from the card, a lesson not yet learned gets its one line when it first matters.
+	if snapshot and root and not hidden and not self.Card.Visible then
+		local locked = self.Camera:LockedEntity()
+		local foe = locked and locked.Snapshot
+		local hint = Rules.hint(done, snapshot, foe ~= nil and foe.State == "StanceBroken", self.Hints)
+		if hint then ui:ShowToast(Rules.text(hint.Text, function(c: string) return self:Label(c) end)) end
+	end
 	if not step then return end
 	local count = 0
 	for _, s in Rules.Steps do if done[s.Id] then count += 1 end end

@@ -40,6 +40,32 @@ Rules.Skipped, Rules.Complete = "Skipped", "Complete"
 Rules.Stakes = "Essence you carry is dropped where you fall. Return to your bloodstain to reclaim it; fall again first and it is lost."
 	.. " Spend Essence at an altar to keep it safe. The courtyard beyond is not training."
 
+-- One line, once a session, the moment a lesson matters to someone who has not done its training step.
+Rules.Hints = {
+	{ Id = "Rally", Lesson = "Rally", Text = "The pale part of your bar is recoverable · strike back with {Light} before it fades" },
+	{ Id = "Ceiling", Lesson = "Rally", Text = "A heavy wound lowered your ceiling (▼) · resting at an altar restores it" },
+	{ Id = "Heal", Lesson = "Heal", Text = "Drink from your gourd with {Heal} · resting at an altar refills it" },
+	{ Id = "Deathblow", Lesson = "Deathblow", Text = "Its posture is broken · finish it with {Heavy}" },
+}
+local HINT_DUE: { [string]: (any, boolean) -> boolean } = {
+	Rally = function(s: any) return s.RecoverableHP > 0 end,
+	Ceiling = function(s: any) return s.PermanentDeficit > 0 end,
+	Heal = function(s: any) return s.ActiveHP < s.MaxHP * 0.5 end,
+	Deathblow = function(_: any, foeBroken: boolean) return foeBroken end,
+}
+
+-- The cue due now from the player's own snapshot, marked in `seen`, or nil. Session-only by design: a repeat
+-- next session is a reminder, and nothing durable depends on it.
+function Rules.hint(done: { [string]: boolean }, snapshot: any, foeBroken: boolean, seen: { [string]: boolean }): any
+	for _, hint in Rules.Hints do
+		if not seen[hint.Id] and not done[hint.Lesson] and HINT_DUE[hint.Id](snapshot, foeBroken) then
+			seen[hint.Id] = true
+			return hint
+		end
+	end
+	return nil
+end
+
 local index: { [string]: number } = {}
 for i, step in Rules.Steps do index[step.Id] = i end
 

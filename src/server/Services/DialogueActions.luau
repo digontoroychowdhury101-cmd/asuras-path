@@ -19,8 +19,9 @@ end
 function Actions.run(player: Player,s: any,packet: any,valid: ()->boolean): (boolean,string?)
  World.Flush(player.UserId,3)
  assert(valid(),"Conversation ended")
- if packet.action=="Upgrade" and s.Panel=="Forge" then return Shop.UpgradeWeapon(player.UserId)
- elseif packet.action=="Infuse" and s.Panel=="Forge" then return Shop.InfuseWeapon(player.UserId,packet.id)
+ if packet.action=="Upgrade" and s.Panel=="Forge" then return Shop.UpgradeWeapon(player.UserId,packet.id,packet.tier)
+ elseif packet.action=="Infuse" and s.Panel=="Forge" then return Shop.InfuseWeapon(player.UserId,packet.weapon,packet.id)
+ elseif packet.action=="Equip" and s.Panel=="Forge" then return Shop.EquipForged(player.UserId,packet.id)
  elseif packet.action=="Trade" and s.Panel=="Trade" then return Shop.Trade(player.UserId,packet.id)
  elseif packet.action=="Level" and s.Panel=="Level" then
   assert(table.find(Progress.Attributes,packet.id),"Unknown attribute")
