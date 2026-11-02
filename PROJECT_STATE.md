@@ -1,5 +1,9 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## Combat recovery Stage 1 — 2026-11-02 (Windows)
+
+Baseline, ledger, research pins and timing contract in `outputs/combat-recovery-2026-11-02/`. Confirmed: rewound presses expire, no local prediction, non-1:1 parries, 10/12 weapons lack clips, hitstop speed fights. Added wuxia DESIGN_INTENT, T-MX cases, Borrowed Force proposal. Studio place ≠ build (live timings blocked). Next: Stage 2.
+
 ## Combat recovery execution prompts — 2026-11-02 (Mac)
 
 Created master and five staged Opus prompts in `outputs/combat-recovery-prompts-2026-11-02/`: source research/licensed integration, timing/input/parry, animation/footwork/contact, genuine two-client verification and human acceptance. Includes current OmniPvP aggregate-result/coverage gaps. Documentation only; no combat fixes or new gameplay verification. Next: execute Stage 1 against current source.

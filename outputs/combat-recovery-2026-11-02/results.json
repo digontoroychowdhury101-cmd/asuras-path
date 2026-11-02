@@ -1,0 +1,121 @@
+{
+ "stage": 1,
+ "date": "2026-11-02",
+ "head": "7dae4f7",
+ "branch": "ux/onboarding-overhaul",
+ "build_digest": {
+  "scripts": 264,
+  "bytes": 2009167,
+  "digest": 1345127265
+ },
+ "studio_edit_digest": {
+  "scripts": 263,
+  "bytes": 1981562,
+  "digest": 192984849,
+  "matches_build": false
+ },
+ "runs": [
+  {
+   "id": "B-01",
+   "what": "tools/verify_all.sh",
+   "class": "offline regression / engine emulation",
+   "status": "PASS",
+   "seconds": 56
+  },
+  {
+   "id": "B-02",
+   "what": "tools/combat_frame_table.luau",
+   "class": "offline behavior table",
+   "status": "PASS",
+   "links": 28,
+   "true_combo_slowest": 17,
+   "true_combo_fastest": 24,
+   "always_answerable": 4
+  },
+  {
+   "id": "B-03",
+   "what": "tools/combat_anim_coverage.luau",
+   "class": "static catalog",
+   "status": "PASS",
+   "families_authored": 1,
+   "families_borrowed": 1,
+   "families_silent": 10
+  },
+  {
+   "id": "B-04",
+   "what": "Studio provenance",
+   "class": "seeded Studio diagnostic",
+   "status": "FAIL"
+  },
+  {
+   "id": "B-05",
+   "what": "client frame sample",
+   "class": "seeded Studio diagnostic (unverified provenance)",
+   "status": "RECORDED",
+   "frames": 94,
+   "p50_ms": 42.39,
+   "p95_ms": 45.62,
+   "p99_ms": 48.93,
+   "active_tracks": 30,
+   "fighters": 22,
+   "server_heartbeat_ms": 0.83,
+   "physics_hz": 59.9,
+   "ping_s": 0.0005,
+   "focus": "not measured"
+  },
+  {
+   "id": "B-06",
+   "what": "OmniPvP two-client",
+   "status": "BLOCKED"
+  },
+  {
+   "id": "B-07",
+   "what": "ordinary-input captures",
+   "status": "BLOCKED"
+  },
+  {
+   "id": "B-08",
+   "what": "reference-game inspection",
+   "status": "NOT RUN"
+  }
+ ],
+ "ledger": {
+  "confirmed": [
+   1,
+   2,
+   3,
+   4,
+   5,
+   7,
+   8,
+   9,
+   10,
+   11,
+   13
+  ],
+  "confirmed_partial": [
+   6
+  ],
+  "partially_inspected": [
+   12
+  ],
+  "measured_caveat": [
+   14
+  ]
+ },
+ "design": {
+  "new_gap": "combo redirect budget 0-24 deg (T-MX-04 fails by inspection)",
+  "proposal": "Borrowed Force (jieli), not implemented"
+ },
+ "research_pins": {
+  "WolfireGames/overgrowth": "245fe4828631c84c0023d29d1525f5716ccb6106",
+  "Sixze/ALS-Refactored": "b754d6f0f2bb03741d301f8fb88077ebfe561e17",
+  "orangeduck/Motion-Matching": "57b7250e0d34a4e456a34d47e24c2f05fdcc711e",
+  "JLPM22/MotionMatching": "35fc8ee9a0fd97f12de458ea81eaef7c8219d87a",
+  "Antikythera-Studios/epicfight": "a78aa24b72e90a9d09f5fd61925e4369d117abaf",
+  "ZsoltMolnarrr/BetterCombat": "d7ad3c27841f70b3bb4ebbbdfa11dace17c3d09d",
+  "georgehuan1994/Unreal-Melee-Combat-System": "dde95ebb68d2b355428acfbca0137ccc7080dd58",
+  "Swordphin/raycastHitboxRbxl": "ed076f39a30bf83a77f799fcc95987bac7b1dfeb",
+  "1Axen/Secure-Cast": "fe3c585d5803edc8b6374ecde88ec6b22d7780b5"
+ }
+}
