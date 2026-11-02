@@ -74,7 +74,7 @@ local blockHit: any = nil
 local casts = {}
 local groundY: ((x: number, z: number) -> number?) = function() return 0 end
 local Workspace: any = {
-	GetServerTimeNow = function() return clock end, WaitForChild = function() return nil end, GetAttribute = function() return nil end,
+	Children = {}, GetServerTimeNow = function() return clock end, WaitForChild = function() return nil end, GetAttribute = function() return nil end,
 	Blockcast = function(_, cframe, size, direction, params)
 		table.insert(casts, { From = cframe.Position, Direction = direction, Filter = params.FilterDescendantsInstances })
 		return blockHit
@@ -102,7 +102,9 @@ local services = {
 	ReplicatedStorage = finder({ AsurasPath = shared }),
 	RunService = { IsStudio = function() return false end },
 	ContentProvider = { PreloadAsync = function() end },
-	Lighting = {},
+	Lighting = roblox.Instance.new("Folder"),
+	TweenService = { Create = function() return { Play = function() end } end },
+	Debris = { AddItem = function() end },
 }
 local function environment(script)
 	return {
@@ -116,6 +118,9 @@ local function environment(script)
 		require = function(m) return m end, warn = function() end, script = script,
 		RaycastParams = { new = function() return {} end },
 		workspace = Workspace,
+		Color3 = roblox.Color3, ColorSequence = roblox.ColorSequence, NumberSequence = roblox.NumberSequence,
+		NumberSequenceKeypoint = { new = function(t, v) return { Time = t, Value = v } end }, UDim2 = roblox.UDim2,
+		TweenInfo = { new = function(...) return { ... } end },
 	}
 end
 local function load(path: string, script: any?)
@@ -201,13 +206,13 @@ local function newTrack(id: string)
 		end,
 	})
 end
-local function fakeModel(parts)
+local function fakeModel(parts, scale)
 	local attrs = {}
 	return {
 		Parent = {}, Name = "Fighter",
 		GetAttribute = function(_, n) return attrs[n] end, SetAttribute = function(_, n, v) attrs[n] = v end,
 		FindFirstChild = function(_, n) return parts and parts[n] end, FindFirstChildOfClass = function() return nil end,
-		GetScale = function() return 1 end, Attributes = attrs,
+		GetScale = function() return scale or 1 end, Attributes = attrs,
 	}
 end
 local function fakeRoot(at, look)
@@ -576,7 +581,6 @@ do
 	s.Frame()
 	check("T-AN-14 the server's L2 is adopted: no second play, no seek", l2.Plays == 1 and l2.Seeks == 0 and s.State.Predicted == nil)
 	local elapsed = l2.TimePosition
-	check("T-AN-14 the link keeps the owner's clock", near(elapsed, clock - (pressed + 0.06), 0.05), elapsed)
 	-- L3 and L4 from the snapshot's swing.
 	run(s, recovery(2) - elapsed)
 	check("T-AN-15 the third link is predicted from the running swing", s.State:Predict(213, "Light", 0, -1) == true)
@@ -912,7 +916,7 @@ local function makeRig(scale)
 		parts[row[1]] = part
 		motors[row[2]] = motor
 	end
-	local model = fakeModel(parts)
+	local model = fakeModel(parts, scale)
 	return model, motors
 end
 -- World position of a part from the Motor6D chain and the root.
@@ -1284,10 +1288,544 @@ do
 	for id, row in report do
 		print(string.format("      T-CT %s visible reach %.2f (design %.2f), largest tip step between ticks %.2f", id, row.Reach, row.Design, row.TipStep))
 	end
+end
 
-	-- Trails: a production trail grows; the whole fan is a debug outline.
-	local trails = fs.readFile("src/client/Controllers/WeaponTrails.luau")
-	check("T-CT-12 the full fan is behind the debug attribute", string.find(trails, 'GetAttribute("AsuraDebugReach") == true', 1, true) ~= nil and string.find(trails, "if debug then\n\t\t\t\t\tdraw(self.Folder, root, strike)", 1, true) ~= nil)
+-------------------------------------------------------------------------------------------------
+-- Stage 3A closure. Run against the source before these fixes: mac-stage3/closure_before_fix.txt.
+-- T-RC  a confirmed prediction converges on the server's phase; T-PB  the presented step survives the pose budget;
+-- T-TR  trail and debug follow the blade the server selected; T-FB  real construction and cleanup.
+-------------------------------------------------------------------------------------------------
+
+-- Runs a fighter's move on its own clock, as the server does: `start` is the server's start, not the press.
+local function serve(f, move, start, intent)
+	f.Move, f.MoveStart = move, start
+	if intent then
+		Combat.markIntent(f, intent)
+	end
+end
+local function serverTick(f)
+	local move = f.Move
+	if not move then
+		return
+	end
+	local t = move.Timing
+	local into = clock - f.MoveStart
+	local recovery = t.StartupSeconds + t.ActiveSeconds
+	if into < t.StartupSeconds then
+		f.State, f.StateStart, f.StateEnd = "Startup", f.MoveStart, f.MoveStart + t.StartupSeconds
+	elseif into < recovery then
+		f.State, f.StateStart, f.StateEnd = "Active", f.MoveStart + t.StartupSeconds, f.MoveStart + recovery
+	elseif into < t.TotalSeconds then
+		f.State, f.StateStart, f.StateEnd = "Recovery", f.MoveStart + recovery, f.MoveStart + t.TotalSeconds
+	else
+		f.State, f.Move = "Idle", nil
+	end
+end
+
+do
+	local jian = Weapons.Weapons.Jian
+	local function phaseError(track, move, start)
+		return track.TimePosition - Timing.clipTime(Trajectories.forMove(move.Id), clock - start)
+	end
+	-- A delayed confirmation: the press shows at once, the server's start comes `delay` later, the clip must reach it.
+	for index, delay in { 0.05, 0.1, 0.15 } do
+		local s = scene()
+		s.Root.CFrame = CF.new(0, 3, 0)
+		local move = jian.Heavy or Weapons.moveForKind(jian, "Heavy", nil)
+		assert(s.State:Predict(400 + index, "Heavy", 0, -1))
+		s.Frame()
+		local clip = s.Track("Jian_Heavy")
+		check("T-RC-01 the press shows at once", clip and clip.Plays == 1 and clip.Speed > 0)
+		run(s, delay)
+		local start = clock
+		serve(s.Fighter, move, start, 400 + index)
+		local first: number? = nil
+		while clock - start < move.Timing.TotalSeconds - 0.04 do
+			serverTick(s.Fighter)
+			s.Publish()
+			s.Frame()
+			first = first or phaseError(clip, move, start)
+		end
+		local last = phaseError(clip, move, start)
+		check("T-RC-01 confirmation arrives behind the clip: there is an error to correct", (first :: number) > delay * 0.7, first)
+		check(string.format("T-RC-01 %d ms late: the clip reaches the server's phase", delay * 1000), math.abs(last) <= 0.02, last)
+		check("T-RC-01 by rate alone: no restart, no seek", clip.Plays == 1 and clip.Seeks == 0, clip.Seeks)
+		check("T-RC-01 the rate stays bounded", clip.MaxSpeed <= 1.5 + 1e-6 and clip.MinMoving >= 0.75 - 1e-6, string.format("%.3f..%.3f", clip.MinMoving, clip.MaxSpeed))
+		s.State:Destroy()
+	end
+
+	-- A chain with every link confirmed late: each stays one occurrence and the last ends on the server's clock.
+	do
+		local s = scene()
+		s.Root.CFrame = CF.new(0, 3, 0)
+		local L = jian.Light
+		local delay = 0.06
+		local clips, errors = {}, {}
+		for link = 1, 4 do
+			local move = L[link]
+			assert(s.State:Predict(420 + link, "Light", 0, -1) == true, "link " .. link)
+			s.Frame()
+			local clip = s.Track(move.Id)
+			clips[link] = clip
+			run(s, delay)
+			local start = clock
+			serve(s.Fighter, move, start, 420 + link)
+			serverTick(s.Fighter)
+			s.Publish()
+			s.Frame()
+			errors[link] = { First = phaseError(clip, move, start) }
+			local t = move.Timing
+			-- The next press just inside this link's window, on the server's clock.
+			local until_ = if link < 4 then t.StartupSeconds + t.ActiveSeconds + 0.02 else t.TotalSeconds - 0.06
+			while clock - start < until_ do
+				serverTick(s.Fighter)
+				s.Publish()
+				s.Frame()
+			end
+			errors[link].Last = phaseError(clip, move, start)
+		end
+		for link, row in errors do
+			check(string.format("T-RC-02 link %d: the error shrinks while it plays", link), row.Last < row.First - 0.01, string.format("%.3f to %.3f", row.First, row.Last))
+			check(string.format("T-RC-02 link %d: one play, no seek", link), clips[link].Plays == 1 and clips[link].Seeks == 0)
+			check(string.format("T-RC-02 link %d: bounded", link), clips[link].MaxSpeed <= 1.5 + 1e-6 and clips[link].MinMoving >= 0.75 - 1e-6)
+		end
+		check("T-RC-02 the chain's last link ends on the server's phase", math.abs(errors[4].Last) <= 0.02, errors[4].Last)
+		s.State:Destroy()
+	end
+
+	-- A dash granted late: same occurrence, same convergence, on the clip stretched over the dash.
+	do
+		local s = scene()
+		s.Root.CFrame = CF.new(0, 3, 0)
+		assert(s.State:Predict(430, "Dash", 0, -1))
+		s.Frame()
+		local clip = s.Track("Fighter_DashForward")
+		run(s, 0.06)
+		local start = clock
+		assert(Combat.tryDash(s.Fighter, "Dash", clock, 0, -1, {}))
+		Combat.markIntent(s.Fighter, 430)
+		s.Publish()
+		s.Frame()
+		local phases = Timing.uniform(Settings.Movement.DashDuration, clip.Length)
+		local first = clip.TimePosition - Timing.clipTime(phases, clock - start)
+		for _ = 1, 10 do
+			s.Publish()
+			s.Frame()
+		end
+		local last = clip.TimePosition - Timing.clipTime(phases, clock - start)
+		check("T-RC-03 a late dash grant converges too", last < first - 0.015 and clip.Plays == 1 and clip.Seeks == 0, string.format("%.3f to %.3f", first, last))
+		s.State:Destroy()
+	end
+end
+
+-- T-PB. The hit data contains the presented step, so the body must show it whichever writer it has.
+do
+	groundY = function() return 0 end
+	local data = Trajectories.forMove("Jian_Heavy")
+	local heavy = Weapons.moveForKind(Weapons.Weapons.Jian, "Heavy", nil)
+	-- A second fighter in the owner's scene.
+	local function remote(s, id, scale, at)
+		local rig, motors = makeRig(scale)
+		local root = { CFrame = CF.new(at), Position = at, AssemblyLinearVelocity = V3.zero, Size = V3.new(2, 2, 1) }
+		local fighter = Combat.new(id, "Jian", clock)
+		local animator = {
+			LoadAnimation = function(_, animation)
+				local track = newTrack(animation.AnimationId)
+				s.Tracks[id .. ":" .. animation.AnimationId] = track
+				return track
+			end,
+			AnimationPlayed = quiet, GetPlayingAnimationTracks = function() return {} end,
+		}
+		local entity = { Id = id, Model = rig, Root = root, Boss = false, UpdatedAt = clock, Age = 0, Connections = {},
+			Humanoid = { RigType = roblox.Enum.HumanoidRigType.R15, FindFirstChildOfClass = function() return animator end } }
+		s.State.Entities[id] = entity
+		local function publish()
+			sampleTick += 2
+			entity.Snapshot = Combat.unpackString(Combat.packString(fighter, clock, nil, sampleTick, clock))
+			entity.UpdatedAt = clock
+		end
+		publish()
+		return { Rig = rig, Motors = motors, Root = root, Fighter = fighter, Publish = publish, Entity = entity,
+			Track = function() return s.Tracks[id .. ":" .. Catalog.weapon("Jian", "Heavy").Custom] end,
+			Move = function(to) root.CFrame, root.Position = CF.new(to), to end }
+	end
+	-- One swing of `r`, frame by frame: Update, the Animator's write (or not), PostAnimate. Returns the largest gap
+	-- between the body's offset and the step the server's samples include, and the largest step shown.
+	local function swing(s, r, scale, opts)
+		opts = opts or {}
+		local start = clock
+		serve(r.Fighter, heavy, start, nil)
+		r.Fighter.ActionSeq = (r.Fighter.ActionSeq + 1) % 256
+		local gap, shown, frames = 0, 0, 0
+		while clock - start < heavy.Timing.TotalSeconds - 0.02 do
+			serverTick(r.Fighter)
+			r.Publish()
+			local track = r.Track()
+			local at = if track and track.IsPlaying then track.TimePosition else 0
+			if opts.Each then opts.Each(frames) end
+			s.Frame()
+			track = r.Track()
+			at = if frames == 0 then 0 else at
+			if opts.AnimatorWrites ~= false then
+				r.Motors.Root.Transform = CF.identity
+			end
+			s.Animations:PostAnimate(1 / 60)
+			local expected = Trajectories.stepAt(data, at) * scale
+			local z = -r.Motors.Root.Transform.Position.Z
+			gap = math.max(gap, math.abs(z - expected))
+			shown = math.max(shown, z)
+			frames += 1
+		end
+		return gap, shown
+	end
+	local hold = Trajectories.stepAt(data, data.ClipContact + 0.01)
+
+	do
+		local s = scene()
+		local r = remote(s, 2, 1, V3.new(0, 3.2, -100))
+		s.Frame()
+		check("T-PB-01 setup: past the range there is no pose writer", s.Animations.Actors[r.Rig].Pose == nil)
+		local gap, shown = swing(s, r, 1)
+		check("T-PB-01 out of range the body still stands where its blade is", gap <= 0.05 and shown >= hold - 0.05, string.format("gap %.2f, shown %.2f of %.2f", gap, shown, hold))
+		s.Animations:Destroy()
+		s.State:Destroy()
+	end
+
+	do
+		local s = scene()
+		local others = {}
+		for id = 2, 9 do
+			others[id] = remote(s, id, 1, V3.new(0, 3.2, -8 - id))
+		end
+		s.Frame()
+		local last = others[9]
+		check("T-PB-02 setup: past the budget there is no pose writer", s.Animations.Actors[last.Rig].Pose == nil and s.Animations.Actors[others[2].Rig].Pose ~= nil)
+		local gap, shown = swing(s, last, 1)
+		check("T-PB-02 past the budget the body still stands where its blade is", gap <= 0.05 and shown >= hold - 0.05, string.format("gap %.2f, shown %.2f", gap, shown))
+		s.Animations:Destroy()
+		s.State:Destroy()
+	end
+
+	-- In and out of range during the swing: the step does not drop, jump or double.
+	for _, scale in { 1, 2 } do
+		local s = scene()
+		local r = remote(s, 2, scale, V3.new(0, 3.2, -10))
+		s.Frame()
+		local actor = s.Animations.Actors[r.Rig]
+		local lost, regained = false, false
+		local gap, shown = swing(s, r, scale, { Each = function(frame)
+			if frame == 12 then
+				r.Move(V3.new(0, 3.2, -100))
+			elseif frame == 13 then
+				lost = actor.Pose == nil
+			elseif frame == 26 then
+				r.Move(V3.new(0, 3.2, -10))
+			elseif frame == 27 then
+				regained = actor.Pose ~= nil
+			end
+		end })
+		check(string.format("T-PB-03 scale %d: the swing left and re-entered the budget", scale), lost and regained, tostring(lost) .. " " .. tostring(regained))
+		check(string.format("T-PB-03 scale %d: the step is continuous across both changes", scale), gap <= 0.08, string.format("gap %.2f", gap))
+		check(string.format("T-PB-04 scale %d: the step scales with the blade the server scales", scale), near(shown, hold * scale, 0.1), string.format("%.2f of %.2f", shown, hold * scale))
+		s.Animations:Destroy()
+		s.State:Destroy()
+	end
+
+	-- No clip writing the joint this frame: the offset is not added to what it wrote last frame, and it is handed back.
+	do
+		local s = scene()
+		local r = remote(s, 2, 1, V3.new(0, 3.2, -100))
+		s.Frame()
+		local gap = swing(s, r, 1, { AnimatorWrites = false })
+		check("T-PB-05 an Animator that did not write does not accumulate the step", gap <= 0.05, string.format("gap %.2f", gap))
+		run(s, 0.1)
+		s.Animations:PostAnimate(1 / 60)
+		check("T-PB-06 when the swing ends the joint is handed back", r.Motors.Root.Transform.Position.Magnitude <= 1e-3, r.Motors.Root.Transform.Position.Magnitude)
+		s.Animations:Destroy()
+		s.State:Destroy()
+	end
+
+	-- Handing over with nothing rewriting the joint: the step writer must let go before the pose writer reads the joint.
+	do
+		local s = scene()
+		local r = remote(s, 2, 1, V3.new(0, 3.2, -100))
+		s.Frame()
+		local actor = s.Animations.Actors[r.Rig]
+		local regained = false
+		local gap = swing(s, r, 1, { AnimatorWrites = false, Each = function(frame)
+			if frame == 22 then
+				r.Move(V3.new(0, 3.2, -10))
+			elseif frame == 23 then
+				regained = actor.Pose ~= nil
+			end
+		end })
+		check("T-PB-08 a new pose writer does not add the step to the one already shown", regained and gap <= 0.08, string.format("gap %.2f", gap))
+		s.Animations:Destroy()
+		s.State:Destroy()
+	end
+
+	-- Destroying mid-swing leaves no offset behind.
+	do
+		local s = scene()
+		local r = remote(s, 2, 1, V3.new(0, 3.2, -100))
+		s.Frame()
+		local start = clock
+		serve(r.Fighter, heavy, start, nil)
+		r.Fighter.ActionSeq = (r.Fighter.ActionSeq + 1) % 256
+		for _ = 1, 22 do
+			serverTick(r.Fighter)
+			r.Publish()
+			s.Frame()
+			s.Animations:PostAnimate(1 / 60)
+		end
+		check("T-PB-07 setup: the step is showing", r.Motors.Root.Transform.Position.Magnitude > 0.5)
+		s.Animations:Destroy()
+		check("T-PB-07 destroying the playback owner hands the joint back", r.Motors.Root.Transform.Position.Magnitude <= 1e-3, r.Motors.Root.Transform.Position.Magnitude)
+		s.State:Destroy()
+	end
+end
+
+-- T-TR. The trail against the server's own transform (the real weaponSegment and strikeFrame from CharacterService).
+do
+	shared.Shared.PresentationAssets = { Limits = { TrailActors = 16 } }
+	shared.Simulation.StrikeGeometry = Strike
+	local Trails = load("src/client/Controllers/WeaponTrails.luau")
+	local weaponSegment, strikeFrame = luau.load(
+		"local Trajectories, Strike = ...\n" .. between(service, "local function weaponSegment(", "\nlocal function weaponRadius(") .. "\nreturn weaponSegment, strikeFrame",
+		{ debugName = "Blade", environment = { Vector3 = V3, CFrame = CF, math = math } }
+	)(Trajectories, Strike)
+	local data = Trajectories.forMove("Jian_Heavy")
+	local count = #data.Samples
+	local move = { Id = "Jian_Heavy" }
+	local function fixture(scale)
+		local ownRoot = { Position = V3.new(0, 3, 40), CFrame = CF.new(0, 3, 40) }
+		local root = { CFrame = CF.new(0, 3, 0), Position = V3.new(0, 3, 0) }
+		local model = fakeModel(nil, scale)
+		local entity = { Root = root, Model = model }
+		local state = { Own = function() return { Root = ownRoot } end, Get = function() return entity end, Entities = { [7] = entity } }
+		local trails = Trails.new(state)
+		local swing = { Clip = 0, Key = "Jian_Heavy#1", Move = "Jian_Heavy" }
+		trails.Animations = { Swing = function()
+			if swing.Off then
+				return nil, 0, "", nil
+			end
+			return data, swing.Clip, swing.Key, swing.Move
+		end }
+		return trails, root, model, swing
+	end
+	local function clipAt(index)
+		return data.ClipContact + (data.ClipActiveEnd - data.ClipContact) * (index - 1) / (count - 1) + 1e-5
+	end
+	local function record(yaw, bonus, scale, blade, now)
+		return Strike.encode({ Arc = 90, Reach = 7 + bonus, Lunge = 2, Yaw = yaw, Start = now, Active = 0.05, Weapon = "Jian", Bonus = bonus, Scale = scale, Move = "Jian_Heavy", Baked = blade ~= "" })
+	end
+	local function serverTip(root, yaw, bonus, scale, index)
+		local e = { Root = { CFrame = root.CFrame }, Fighter = { MoveStart = 1 }, Omni = { Yaw = yaw, YawFor = 1, Blade = data, BladeFor = move.Id, BladeScale = scale } }
+		local _, tip = weaponSegment(strikeFrame(e), move, (index - 1) / (count - 1), bonus, e.Omni)
+		return tip
+	end
+	local function points(folder, name)
+		local out = {}
+		for _, carrier in folder:GetChildren() do
+			if carrier.Name == name then
+				for _, child in carrier:GetChildren() do
+					if child:IsA("Attachment") then
+						table.insert(out, carrier.CFrame:PointToWorldSpace(child.Position))
+					end
+				end
+			end
+		end
+		return out
+	end
+
+	do
+		local decoded = Strike.decode(record(0.7, 1.5, 2, "Jian_Heavy", 12.5))
+		check("T-TR-01 the record names the selected blade, its bonus and its scale", decoded and decoded.Move == "Jian_Heavy" and decoded.Baked == true and decoded.Bonus == 1.5 and decoded.Scale == 2 and decoded.Weapon == "Jian")
+		local plain = Strike.decode(Strike.encode({ Arc = 90, Reach = 7, Lunge = 2, Yaw = 0, Start = 1, Active = 0.05, Weapon = "Dao" }))
+		check("T-TR-01 a generic strike names none", plain and plain.Move == nil and plain.Baked == false and plain.Bonus == 0 and plain.Scale == 1 and plain.Weapon == "Dao")
+	end
+
+	-- Scaled, with a reach bonus, a committed yaw off the root's facing and a root moving between samples.
+	do
+		local trails, root, model, swing = fixture(2)
+		local yaw, bonus = 0.7, 1.5
+		model:SetAttribute("AsuraStrike", record(yaw, bonus, 2, "Jian_Heavy", clock))
+		local expected = {}
+		for index = 1, count do
+			local p = V3.new(index * 0.8, 3, 0)
+			root.Position, root.CFrame = p, CF.new(p)
+			swing.Clip = clipAt(index)
+			trails:Update(1 / 30)
+			expected[index] = serverTip(root, yaw, bonus, 2, index)
+			clock += 1 / 60
+		end
+		root.Position, root.CFrame = V3.new(30, 3, 0), CF.new(30, 3, 0)
+		trails:Update(1 / 30)
+		local drawn = points(trails.Folder, "StrikeArc")
+		local worst = if #drawn == count then 0 else math.huge
+		for index, at in drawn do
+			if expected[index] then
+				worst = math.max(worst, (at - expected[index]).Magnitude)
+			end
+		end
+		check("T-TR-02 each trail point is where the server's blade tip was when it was emitted", worst <= 0.01, string.format("%d of %d points, worst %.3f", #drawn, count, worst))
+		trails:Destroy()
+	end
+
+	-- A predicted swing draws before its record: root facing and model scale, then the record's transform for new points.
+	do
+		local trails, root, model, swing = fixture(2)
+		swing.Clip = clipAt(1)
+		trails:Update(1 / 30)
+		local first = points(trails.Folder, "StrikeArc")[1]
+		local ax, ay, az = select(4, Trajectories.segment(data, 0, 0, 2))
+		check("T-TR-03 before the record arrives the trail uses the root's facing and the model's scale", first and (first - root.CFrame:PointToWorldSpace(V3.new(ax, ay, az))).Magnitude <= 0.01)
+		model:SetAttribute("AsuraStrike", record(1.2, 1, 2, "Jian_Heavy", clock))
+		swing.Clip = clipAt(2)
+		trails:Update(1 / 30)
+		local second = points(trails.Folder, "StrikeArc")[2]
+		check("T-TR-03 once it arrives, new points use it", second and (second - serverTip(root, 1.2, 1, 2, 2)).Magnitude <= 0.01)
+		check("T-TR-03 points already drawn stay", first and (points(trails.Folder, "StrikeArc")[1] - first).Magnitude <= 1e-6)
+		trails:Destroy()
+	end
+
+	-- A record from an earlier swing does not describe this one.
+	do
+		local trails, root, model, swing = fixture(1)
+		model:SetAttribute("AsuraStrike", record(1.2, 3, 1, "Jian_Heavy", clock - 2))
+		swing.Clip = clipAt(1)
+		trails:Update(1 / 30)
+		local first = points(trails.Folder, "StrikeArc")[1]
+		local ax, ay, az = select(4, Trajectories.segment(data, 0, 0, 1))
+		check("T-TR-04 a finished swing's record is not applied to the next", first and (first - root.CFrame:PointToWorldSpace(V3.new(ax, ay, az))).Magnitude <= 0.01)
+		trails:Destroy()
+	end
+
+	-- The server's selection wins over what the client would pick.
+	do
+		local trails, root, model, swing = fixture(1)
+		model:SetAttribute("AsuraStrike", record(0, 0, 1, "", clock - 0.01))
+		swing.Clip = clipAt(count)
+		trails:Update(1 / 30)
+		local drawn = points(trails.Folder, "StrikeArc")
+		local _, _, _, tx, ty, tz = Trajectories.segment(data, 1, 0, 1)
+		local bakedTip = root.CFrame:PointToWorldSpace(V3.new(tx, ty, tz))
+		local onBake = false
+		for _, at in drawn do
+			onBake = onBake or (at - bakedTip).Magnitude <= 0.01
+		end
+		check("T-TR-05 a swing the server sweeps generically draws no baked blade", #drawn > 0 and not onBake, #drawn)
+		trails:Destroy()
+
+		trails, root, model, swing = fixture(1)
+		swing.Off = true
+		model:SetAttribute("AsuraStrike", record(0, 0, 1, "Jian_Heavy", clock - 0.06))
+		trails:Update(1 / 30)
+		drawn = points(trails.Folder, "StrikeArc")
+		onBake = false
+		for _, at in drawn do
+			onBake = onBake or (at - bakedTip).Magnitude <= 0.01
+		end
+		check("T-TR-06 with no local clip the server's selected blade still draws, on the strike's clock", onBake, #drawn)
+		trails:Destroy()
+	end
+
+	-- Debug describes the selected trajectory.
+	do
+		attributes.AsuraDebugReach = true
+		local getAttribute = Workspace.GetAttribute
+		Workspace.GetAttribute = function(_, name) return if name == "AsuraDebugReach" then true else nil end
+		local trails, root, model, swing = fixture(2)
+		swing.Clip = 0
+		model:SetAttribute("AsuraStrike", record(0.7, 1.5, 2, "Jian_Heavy", clock + 0.2))
+		trails:Update(1 / 30)
+		local outline = points(trails.Folder, "StrikeDebug")
+		local missing = 0
+		for index = 1, count do
+			local tip = serverTip(root, 0.7, 1.5, 2, index)
+			local found = false
+			for _, at in outline do
+				found = found or (at - tip).Magnitude <= 0.01
+			end
+			missing += if found then 0 else 1
+		end
+		check("T-TR-07 the debug outline is the selected blade, with its scale, bonus and yaw", #outline > 0 and missing == 0, string.format("%d points, %d tips missing", #outline, missing))
+		trails:Destroy()
+
+		trails, root, model, swing = fixture(1)
+		swing.Off = true
+		model:SetAttribute("AsuraStrike", record(0, 0, 1, "", clock + 0.2))
+		trails:Update(1 / 30)
+		outline = points(trails.Folder, "StrikeDebug")
+		local _, _, _, gx, gy, gz = Strike.segment({ Arc = 90, Reach = 7, Lunge = 2 }, 1, 0)
+		local tip = root.CFrame:PointToWorldSpace(V3.new(gx, gy, gz))
+		local found = false
+		for _, at in outline do
+			found = found or (at - tip).Magnitude <= 0.01
+		end
+		check("T-TR-08 a generic strike's debug outline is the generic shape", found, #outline)
+		trails:Destroy()
+		Workspace.GetAttribute = getAttribute
+		attributes.AsuraDebugReach = nil
+	end
+
+	-- Without the debug attribute nothing outlines the whole shape.
+	do
+		local trails, _, model, swing = fixture(1)
+		swing.Clip = 0
+		model:SetAttribute("AsuraStrike", record(0, 0, 1, "Jian_Heavy", clock + 0.2))
+		trails:Update(1 / 30)
+		check("T-TR-10 production draws no outline, and no trail before contact", #points(trails.Folder, "StrikeDebug") == 0 and #points(trails.Folder, "StrikeArc") == 0)
+		local folder = trails.Folder
+		trails:Destroy()
+		check("T-TR-11 Destroy removes the folder and forgets the records", folder.Parent == nil and next(trails.Strikes) == nil and next(trails.Ribbons) == nil)
+	end
+
+	-- The record the server writes.
+	do
+		local chunk = "local Combat, Strike, Trajectories = ...\nlocal function strikeFrame(e) return e.Root.CFrame end\nlocal function yawOf() return 0 end\n"
+			.. between(service, "local function commitStrike(", "\n-- Contacts (combat recovery Stage 2") .. "\nreturn commitStrike"
+		local commit = luau.load(chunk, { debugName = "Commit", environment = { math = math, type = type, Vector3 = V3, CFrame = CF } })(Combat, Strike, Trajectories)
+		local function published(boss, definition, scale, bonus)
+			local attrs = { AsuraDefinition = definition }
+			local f = { Move = Weapons.moveForKind(Weapons.Weapons.Jian, "Heavy", nil), MoveStart = 50, ReachBonus = bonus, Weapon = "Jian" }
+			local e = { Fighter = f, Boss = boss, Kind = "Player", Root = { CFrame = CF.new(0, 3, 0) }, Omni = { AimFor = -1, YawFor = -1 },
+				Model = { GetAttribute = function(_, n) return attrs[n] end, SetAttribute = function(_, n, v) attrs[n] = v end, GetScale = function() return scale end } }
+			commit(e)
+			return Strike.decode(attrs.AsuraStrike)
+		end
+		local mine = published(false, nil, 1.5, 2)
+		check("T-TR-09 the server publishes its selection, scale and bonus", mine and mine.Move == "Jian_Heavy" and mine.Baked == true and mine.Scale == 1.5 and mine.Bonus == 2)
+		local boss = published(true, nil, 1, 0)
+		check("T-TR-09 a boss publishes none", boss and boss.Move == "Jian_Heavy" and boss.Baked == false)
+		local own = published(false, "CursedSwordsman", 1, 0)
+		check("T-TR-09 a character with its own clips publishes none", own and own.Baked == false)
+	end
+end
+
+-- T-FB. CombatFeedback constructed and destroyed for real.
+do
+	local Feedback = load("src/client/Controllers/CombatFeedback.luau", { Parent = poseFor })
+	local gui = roblox.Instance.new("Folder")
+	player.WaitForChild = function() return gui end
+	local calls = {}
+	local camera = { SetHeadTrauma = function(_, v) calls.Trauma = v end, SetFovClamp = function(_, v) calls.Clamp = v end, SetSway = function(_, v) calls.Sway = v end }
+	local state = { OwnSnapshot = function() return nil end }
+	local feedback = Feedback.new(state, camera)
+	local blur, vignette = feedback.Blur, feedback.Vignette
+	check("T-FB-01 construction parents its blur and vignette", blur.Parent ~= nil and vignette.Parent == gui)
+	local body = {}
+	clock = 500
+	feedback:HitStop({ body }, 0.5, "1:2")
+	feedback:Update(1 / 60)
+	check("T-FB-02 setup: a stop is live", (PlaybackScale.of(body, clock + 0.1)) == 0)
+	local ok, why = pcall(feedback.Destroy, feedback)
+	check("T-FB-03 Destroy completes", ok, why)
+	check("T-FB-03 Destroy removes what it made", blur.Parent == nil and vignette.Parent == nil)
+	check("T-FB-03 Destroy releases live hitstop", (PlaybackScale.of(body, clock + 0.1)) == 1)
+	check("T-FB-03 Destroy forgets its stops", next(feedback.Stops) == nil)
+	check("T-FB-03 Destroy resets the camera", calls.Trauma == "None" and calls.Clamp == 0 and calls.Sway == 0)
+	player.WaitForChild = nil
 end
 
 print(string.format("stage 3 motion: %d passed, %d failed (offline behaviour; Studio, frame order and feel separate)", passed, failed))

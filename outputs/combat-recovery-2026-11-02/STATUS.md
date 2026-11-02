@@ -75,6 +75,10 @@ Mac implementation complete is not Stage 3 accepted, multiplayer verified or com
 
 **Not done here:** real walls, slopes, knockback; high frame rate under scheduled clicks; two-client anything; full-world performance; human judgment of any motion. Borrowed Force is not implemented.
 
+## Stage 3A closure pass (2 November 2026)
+
+Four source-review defects corrected with behavioural regressions: confirmed predictions now converge on the server's phase, trails and debug follow the server's selected blade, the presented step survives the pose budget and scales, and `CombatFeedback.Destroy` works. A1 remains FAILED. Attack coverage changes and unfinished weapon work stand. Details: `MAC_TO_WINDOWS.md`.
+
 ## Files
 `BASELINE.md`, `DESIGN_INTENT.md`, `DEFECT_LEDGER.md`, `RESEARCH.md`, `INTEGRATION_MAP.md`, `TIMING_CONTRACT.md`, `TEST_MATRIX.md`, `results.json`, `frame_table.md`, `frame_table_stage2.md`, `anim_coverage_baseline.md`, `logs/` (Stage 1 baseline log and Stage 2 `before_*`/`after_*` client, server and summary JSON), `places/` (the generated `stage2_before_be08811.rbxlx`, `stage2_after.rbxlx`, `stage2_after_fix.rbxlx` and `stage2_closure.rbxlx` test places), `closure/` (closure-pass results and before-probe). Stage 1 tools: `tools/combat_frame_table.luau`, `tools/combat_anim_coverage.luau`. Stage 2 tools: `tools/test_stage2_timing.luau` (111 checks), `tools/qa/Stage2Timing.{server,client}.luau` (QA probes, injected only and never mapped), `tools/qa/stage2_timing_report.py`, `tools/qa/place_script_diff.py`.
 

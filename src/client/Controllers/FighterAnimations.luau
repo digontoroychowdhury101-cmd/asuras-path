@@ -95,6 +95,8 @@ type Actor = {
 	BaseRate: number,
 	Held: boolean, -- the action layer holds its last frame (a corpse)
 	Pose: ActorPose.ActorPose?,
+	Step: Vector3, -- this frame's presented step, whichever writer shows it
+	Stepper: any?,
 	LastSeq: number?,
 	LastState: string?,
 	Weapon: string?,
@@ -189,7 +191,9 @@ local function action(actor: Actor, key: string, slot: Catalog.Slot?, elapsed: n
 		return -- this occurrence already played out; the server state just outlasted the clip
 	end
 	if actor.ActionKey == key then
-		actor.Timeline = elapsed
+		-- The same occurrence goes on playing. Once its prediction is confirmed `began` is nil, and drive() follows the
+		-- server's timeline from here: the clip was never restarted, and the bounded correction closes the difference.
+		actor.Timeline, actor.LocalBegan = elapsed, began
 		return
 	end
 	local nextTrack = track(actor, slot)
@@ -252,14 +256,16 @@ local function drive(self: any, actor: Actor, now: number, dt: number)
 	if under and under.IsPlaying then
 		setSpeed(under, actor.BaseRate * body)
 	end
-	local pose = actor.Pose
-	if pose then
-		local stepped = Vector3.zero
-		local data = actor.Attack and actor.AttackMove and Trajectories.forFighter(actor.AttackMove, actor.Definition)
-		if data and current and current.IsPlaying then
-			stepped = Vector3.new(0, 0, -Trajectories.stepAt(data, current.TimePosition))
-		end
-		pose:SetStep(stepped)
+	-- The server's blade includes this step at the model's scale, so every fighter shows it, whichever writer it has.
+	local stepped = Vector3.zero
+	local data = actor.Attack and actor.AttackMove and Trajectories.forFighter(actor.AttackMove, actor.Definition)
+	if data and current and current.IsPlaying then
+		local clip = if current.Length > 0 then current.TimePosition else Timing.clipTime(data, actor.Timeline or 0)
+		stepped = Vector3.new(0, 0, -Trajectories.stepAt(data, clip) * actor.Model:GetScale())
+	end
+	actor.Step = stepped
+	if actor.Pose then
+		actor.Pose:SetStep(stepped)
 	end
 end
 
@@ -311,6 +317,10 @@ local function release(actor: Actor)
 	if actor.Pose then
 		actor.Pose:Destroy()
 		actor.Pose = nil
+	end
+	if actor.Stepper then
+		actor.Stepper:Destroy()
+		actor.Stepper = nil
 	end
 	for _, playing in actor.Tracks do
 		if playing.IsPlaying then
@@ -592,7 +602,7 @@ function Animations.Update(self: any, dt: number)
 			end
 			actor = { Model = model, Animator = animator, Root = entity.Root, Tracks = {}, Base = nil, Action = nil,
 				ActionKey = nil, Attack = false, Finished = nil, Serial = 0, AttackSerial = 0, AttackMove = nil, AttackSeq = nil, AttackIntent = nil,
-				LocalBegan = nil, Timeline = nil, Phases = nil, Duration = nil, Nominal = nil, BaseRate = 1, Held = false, Pose = nil,
+				LocalBegan = nil, Timeline = nil, Phases = nil, Duration = nil, Nominal = nil, BaseRate = 1, Held = false, Pose = nil, Step = Vector3.zero, Stepper = nil,
 				LastSeq = nil, LastState = nil, Ground = Vector3.zero, Weapon = nil, Definition = nil, Replicated = nil }
 			local owner = Players:GetPlayerFromCharacter(model)
 			if owner and owner ~= Players.LocalPlayer then
@@ -633,7 +643,7 @@ function Animations.Update(self: any, dt: number)
 end
 
 -- The nearest fighters within range get a pose writer; the owner always does. A fighter leaving the set hands its
--- joints back and falls back to fades.
+-- joints back and falls back to fades; its presented step goes on through a step writer (PostAnimate).
 function Animations.AssignPoses(self: any)
 	local near = self.Near
 	table.clear(near)
@@ -657,7 +667,14 @@ function Animations.AssignPoses(self: any)
 	end
 	for _, actor in self.Actors do
 		if chosen[actor] and not actor.Pose then
+			if actor.Stepper then
+				actor.Stepper:Destroy()
+				actor.Stepper = nil
+			end
 			actor.Pose = ActorPose.attach(actor.Model, actor.Root, own ~= nil and own.Model == actor.Model)
+			if actor.Pose then
+				actor.Pose:SetStep(actor.Step)
+			end
 		elseif actor.Pose and not chosen[actor] then
 			actor.Pose:Destroy()
 			actor.Pose = nil
@@ -667,13 +684,13 @@ end
 
 -- The baked swing this model is showing, for its trail: the data, the clip time (frozen with the clip in hitstop),
 -- and a key naming the occurrence. nil when it shows none, or its clip has no baked blade.
-function Animations.Swing(self: any, model: Model): (any, number, string)
+function Animations.Swing(self: any, model: Model): (any, number, string, string?)
 	local actor = self.Actors[model]
 	local playing = actor and actor.Action
 	if not actor or not playing or not actor.Attack or not actor.AttackMove or not actor.ActionKey then
-		return nil, 0, ""
+		return nil, 0, "", nil
 	end
-	return Trajectories.forFighter(actor.AttackMove, actor.Definition), playing.TimePosition, actor.ActionKey
+	return Trajectories.forFighter(actor.AttackMove, actor.Definition), playing.TimePosition, actor.ActionKey, actor.AttackMove
 end
 
 -- After the Animator wrote this frame's clip pose, before physics (Bootstrap's PreSimulation).
@@ -682,6 +699,11 @@ function Animations.PostAnimate(self: any, dt: number)
 	for _, actor in self.Actors do
 		if actor.Pose then
 			actor.Pose:Apply(dt, now)
+		elseif actor.Stepper or actor.Step.Magnitude > 1e-3 then
+			actor.Stepper = actor.Stepper or ActorPose.stepWriter(actor.Model)
+			if actor.Stepper then
+				actor.Stepper:Apply(actor.Step)
+			end
 		end
 	end
 end

@@ -1222,7 +1222,8 @@ local function commitStrike(e: Entity)
 	end
 	if not Combat.RangedEffects[move.Effect or ""] then
 		e.Model:SetAttribute("AsuraStrike", Strike.encode({ Arc = move.Arc, Reach = move.Reach + f.ReachBonus, Lunge = move.Lunge,
-			Yaw = omni.Yaw :: number, Start = f.MoveStart + move.Timing.StartupSeconds, Active = move.Timing.ActiveSeconds, Weapon = f.Weapon }))
+			Yaw = omni.Yaw :: number, Start = f.MoveStart + move.Timing.StartupSeconds, Active = move.Timing.ActiveSeconds, Weapon = f.Weapon,
+			Bonus = f.ReachBonus, Scale = omni.BladeScale, Move = move.Id, Baked = omni.Blade ~= nil }))
 	end
 end
 

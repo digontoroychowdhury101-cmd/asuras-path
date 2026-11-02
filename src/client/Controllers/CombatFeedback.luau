@@ -135,7 +135,7 @@ function Feedback.Update(self: any, dt: number)
 end
 function Feedback.Destroy(self: any)
  PlaybackScale.clear("HitStop")
- table.clear(self.Frozen); self.Blur:Destroy(); self.Vignette:Destroy()
+ table.clear(self.Stops); self.Blur:Destroy(); self.Vignette:Destroy()
  self.Camera:SetHeadTrauma("None"); self.Camera:SetFovClamp(0); self.Camera:SetSway(0)
 end
 return Feedback

@@ -1,0 +1,25 @@
+tools/test_stage3_motion.luau closure cases against source at 4da01e9 (source unchanged, regressions added). Offline behaviour.
+FAIL     test_stage3_motion.luau:
+FAIL  T-PB-03 scale 2: the step is continuous across both changes  (gap 7.00)
+FAIL  T-PB-04 scale 2: the step scales with the blade the server scales  (2.86 of 6.95)
+FAIL  T-PB-05 an Animator that did not write does not accumulate the step  (gap 3.50)
+FAIL  T-PB-07 setup: the step is showing
+FAIL  T-TR-01 the record names the selected blade, its bonus and its scale
+FAIL  T-TR-01 a generic strike names none
+FAIL  T-TR-02 each trail point is where the server's blade tip was when it was emitted  (4 of 4 points, worst 13.349)
+FAIL  T-TR-03 before the record arrives the trail uses the root's facing and the model's scale
+FAIL  T-TR-03 once it arrives, new points use it
+FAIL  T-TR-05 a swing the server sweeps generically draws no baked blade  (4)
+FAIL  T-TR-06 with no local clip the server's selected blade still draws, on the strike's clock  (9)
+FAIL  T-TR-07 the debug outline is the selected blade, with its scale, bonus and yaw  (0 points, 4 tips missing)
+FAIL  T-TR-08 a generic strike's debug outline is the generic shape  (0)
+FAIL  T-TR-09 the server publishes its selection, scale and bonus
+FAIL  T-FB-03 Destroy completes  (src/client/Controllers/CombatFeedback.luau:138: invalid argument #1 to 'clear' (table expected, got nil))
+FAIL  T-FB-03 Destroy removes what it made
+FAIL  T-FB-03 Destroy forgets its stops
+FAIL  T-FB-03 Destroy resets the camera
+stage 3 motion: 248 passed, 29 failed (offline behaviour; Studio, frame order and feel separate)
+/Users/digonto/Documents/ChatGPT/Roblox game 2/tools/_lune_test_stage3_motion.generated.luau:95479: process.exit(1)
+[C] function error
+/Users/digonto/Documents/ChatGPT/Roblox game 2/tools/_lune_test_stage3_motion.generated.luau:93624 function exit
+/Users/digonto/Documents/ChatGPT/Roblox game 2/tools/_lune_test_stage3_motion.generated.luau:95479

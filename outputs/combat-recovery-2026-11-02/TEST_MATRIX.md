@@ -71,6 +71,16 @@ Classes: **O** offline fixture (real modules under Lune with fake engine service
 
 **Frame-rate note:** on this Mac the frame rate followed whether Studio was really in front, not the `WindowFocused` state: runs 3 and 6 reported focus 1.0 at 15 fps, and run 4 reported unfocused at 60 fps. Read frame times, not the focus share.
 
+## Stage 3A closure runs (2 November 2026)
+
+| ID | Class | Status | Result |
+|---|---|---|---|
+| T-RC, T-PB, T-TR, T-FB in `test_stage3_motion` | O | **PASS** after fixes | 279/279. Before fixes: 29 failed (`mac-stage3/closure_before_fix.txt`) |
+| `mutation_stage3.py` | O | **PASS** | 21 of 21 caught; one was missed at first, and T-PB-08 was added for it |
+| Scale probe, trail and debug in Play | D | Recorded | `mac-stage3/closure_studio_check.md`. Not a visual judgment |
+| A1 | — | **FAIL** (unchanged) | Pending controlled measurements |
+| Real latency, budget transitions, scaled rigs in play | Studio | **NOT RUN** | W-04, W-06, W-13 |
+
 ## Acceptance cases to build (Stages 2–5)
 
 | ID | Case | Class | Target | Stage | Status |

@@ -28,6 +28,16 @@ MUTATIONS = [
     ("sweep forgets the root's travel between samples", "src/server/CharacterService.luau", "MAX_SWEEP_TRAVEL = 6", "MAX_SWEEP_TRAVEL = 0", "test_stage3_motion"),
     ("the fade-in that delayed first motion returns", "src/client/Controllers/FighterAnimations.luau", "return if actor.Pose then 0 else fade", "return fade", "test_stage3_motion"),
     ("a press past the link is shown as the next light", "src/simulation/LocalPrediction.luau", "if opener.QiCost > 0 or s.Stamina - spent", "opener = Weapons.nextLight(weapon, current)\n\tif opener.QiCost > 0 or s.Stamina - spent", "test_stage3_motion"),
+    ("a confirmed prediction keeps its local clock", "src/client/Controllers/FighterAnimations.luau", "actor.Timeline, actor.LocalBegan = elapsed, began", "actor.Timeline = elapsed", "test_stage3_motion"),
+    ("no step past the pose budget", "src/client/Controllers/FighterAnimations.luau", "elseif actor.Stepper or actor.Step.Magnitude > 1e-3 then", "elseif false then", "test_stage3_motion"),
+    ("the step ignores the rig's scale", "src/client/Controllers/FighterAnimations.luau", "-Trajectories.stepAt(data, clip) * actor.Model:GetScale()", "-Trajectories.stepAt(data, clip)", "test_stage3_motion"),
+    ("a step writer accumulates", "src/client/Controllers/ActorPose.luau", "self.Written = CFrame.new(step) * self.Input", "self.Written = CFrame.new(step) * value", "test_stage3_motion"),
+    ("a step writer stays on under a new pose writer", "src/client/Controllers/FighterAnimations.luau", "if actor.Stepper then\n\t\t\t\tactor.Stepper:Destroy()\n\t\t\t\tactor.Stepper = nil\n\t\t\tend\n\t\t\tactor.Pose = ActorPose.attach", "actor.Pose = ActorPose.attach", "test_stage3_motion"),
+    ("trail points ignore the server's scale and bonus", "src/client/Controllers/WeaponTrails.luau", "local bonus = if strike then strike.Bonus else 0", "local bonus = 0", "test_stage3_motion"),
+    ("trail points ignore the committed yaw", "src/client/Controllers/WeaponTrails.luau", "local frame = strikeFrame(root.CFrame, if strike then strike.Yaw else nil)", "local frame = root.CFrame", "test_stage3_motion"),
+    ("an earlier swing's record is applied", "src/client/Controllers/WeaponTrails.luau", "and now - (latest.Start + latest.Active) < LIVE", "", "test_stage3_motion"),
+    ("debug always draws the generic shape", "src/client/Controllers/WeaponTrails.luau", "local data = if strike.Baked and strike.Move then Trajectories.forMove(strike.Move) else nil\n\tlocal shape = { Arc = strike.Arc, Reach = strike.Reach, Lunge = strike.Lunge }\n\tif data or strike.Arc > Strike.SlashArc then\n\t\t-- The tip's path", "local data = nil\n\tlocal shape = { Arc = strike.Arc, Reach = strike.Reach, Lunge = strike.Lunge }\n\tif data or strike.Arc > Strike.SlashArc then\n\t\t-- The tip's path", "test_stage3_motion"),
+    ("Destroy clears a table that does not exist", "src/client/Controllers/CombatFeedback.luau", "table.clear(self.Stops)", "table.clear(self.Frozen)", "test_stage3_motion"),
     ("hitstop freezes nothing", "src/client/Controllers/PlaybackScale.luau", "action = math.min(action, request.Scale)", "action = action", "test_stage3_motion"),
 ]
 

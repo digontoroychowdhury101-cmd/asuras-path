@@ -1,5 +1,9 @@
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## Combat Stage 3A closure — 2026-11-02 (Mac)
+
+Corrected prediction convergence, blade and trail consistency, pose-budget step and feedback cleanup, with behavioural regressions. A1 still fails; not accepted. Next: four Mac follow-up batches.
+
 ## Combat Stage 3 Mac implementation — 2026-11-02 (Mac)
 
 Predicted dash and combo clips, bounded phase correction, footwork, shared blade data and 119 published weapon clips landed; offline suites pass; A1 still fails at 60 fps. Not accepted. Next: Windows queue in `MAC_TO_WINDOWS.md`, then Stages 4–5.

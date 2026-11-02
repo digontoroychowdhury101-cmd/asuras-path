@@ -2,12 +2,38 @@
 
 **Mac implementation complete is not Stage 3 accepted, multiplayer verified or combat fixed.** Evidence here is offline behaviour and seeded single-client Studio diagnostics. Nothing below is ordinary human input, two-client play or human judgment.
 
+## Stage 3A closure pass (read this first)
+
+A source review found four defects in the handoff below; all are corrected at the closure checkpoint. **Its build digest replaces the one under Baseline:** `scripts 272 bytes 2147557 digest 696604417`. Cases W-01 to W-12 still apply, on this build.
+
+| Finding | What was wrong | Correction | Evidence |
+|---|---|---|---|
+| Confirmed prediction | `drive()` kept the press's local clock after confirmation, so a clip stayed as far ahead as the confirmation was late, for the whole action. The old test T-AN-14 asserted this | `action()` clears `LocalBegan` once the prediction is confirmed: same occurrence, no seek, then the bounded [0.75, 1.5]× correction follows the server | T-RC-01 to 03 (50, 100, 150 ms, L1→L4, dash) |
+| Blade, trail, debug | Trails ignored scale, reach bonus and committed yaw, and hung off one root; debug always drew the generic fan | `AsuraStrike` now names the server's selection, bonus and scale. Each point is placed once in world space by the root at that moment; debug outlines the selected trajectory | T-TR-01 to 11, compared with the real `weaponSegment` and `strikeFrame` |
+| Pose budget | Past range or budget the body lost up to 3.5 studs of step while the server's blade kept it; the step also ignored rig scale | Step computed for every fighter at model scale; `ActorPose.stepWriter` shows it without a pose writer and hands over before one attaches | T-PB-01 to 08; scale probe in Studio: `Transform` is in plain studs at scale 2 |
+| Cleanup | `CombatFeedback.Destroy` errored on `table.clear(self.Frozen)` and left its blur and vignette | Clears `Stops`; real construction and destruction exercised | T-FB-01 to 03 |
+
+Failing output against the uncorrected source: `mac-stage3/closure_before_fix.txt` (29 failed). Now: Stage 3 suite 279/279; 21 of 21 restored defects caught (`mac-stage3/mutation_checks.json`); Studio check in `mac-stage3/closure_studio_check.md`. `verify_all` is the log in `mac-stage3/verify_all.log`.
+
+**Limits of this pass:**
+- Rows from `mac_s3_run4`, `run5` and `run6` were recorded **before** these fixes. Their occurrence and ack numbers stand as history; phase and pose results must be re-measured here.
+- A predicted swing's first trail points use the root's facing and model scale, because the server publishes its record at the first active frame. New points use the record once it arrives.
+- A clip confirmed very late cannot always converge inside its own length: the correction removes at most 0.25 s per second, by design. Past 250 ms it is seated once and counted.
+- **A1 stays FAILED pending controlled measurements.** Nothing here changes first motion.
+- **Attack coverage is still changed** (D2 and the blade table): 27 moves sweep the visible blade, with smaller reach and arc than the old volume on several. Unchanged by this pass.
+- **Published or loading clips are not visual acceptance.** Weapon, grip and contact work listed under Outstanding assets remains unfinished.
+
+**Added or tightened for Windows:**
+- **W-04:** record `phase error` per move after confirmation at 50, 100, 150 ms; expect the error to shrink at a bounded rate with no restart, and a late L1→L4 chain to stay one occurrence per intent.
+- **W-06:** with `AsuraDebugReach`, check the outline against the visible blade on a scaled body, with a reach bonus, a committed yaw off facing, and a root moving through active frames; earlier trail points must stay where the blade passed.
+- **W-13 (new):** 9+ fighters plus one past 70 studs, one on a scaled rig. Move fighters across the range and budget during swings. Expected: no drop or jump in body offset at either transition, body stays with the blade, no leftover offset after the swing; record frame cost.
+
 ## Baseline
 
 | | |
 |---|---|
-| Implementation commit | `ffb4a4891ff3254ea9464c637928d5abf31a65c9` on `ux/onboarding-overhaul`; the handoff commit directly after it adds only this file and `PROJECT_STATE.md` |
-| Build digest | `scripts 272 bytes 2141351 digest 358582538`; matched by `tools/qa/SourceDigest.luau` in Studio on the Mac |
+| Implementation commit | `ffb4a4891ff3254ea9464c637928d5abf31a65c9` on `ux/onboarding-overhaul`, then the closure checkpoint named by its message: `fix(combat): Stage 3A closure`. Use the newest handoff on the branch |
+| Build digest | **Current:** `scripts 272 bytes 2147557 digest 696604417` (closure pass), matched by `tools/qa/SourceDigest.luau` in Studio on the Mac. Before it: `scripts 272 bytes 2141351 digest 358582538` |
 | Check it | `python tools/build.py`, then `python tools/studio_mcp.py --digest places/AsurasPath.rbxlx`. A different digest is not this build; Windows line endings or a newer commit are the first things to check |
 | Mac conditions | Studio 0.745, viewport 1271×685, quality Automatic, canonical world, Sanctuary (0, 603, 920), no injected lag |
 

@@ -65,7 +65,7 @@ local Lighting=instance('Lighting')
 for _,n in {'CB_Atmosphere','CB_ColorCorrection','CB_SunRays','CB_Bloom'}do local p=instance('Effect',n);p.Parent=Lighting end
 local player=instance('Player')
 local brazier=instance('PointLight')
-local Shared={PresentationAssets='PresentationAssets',EnvironmentProfiles='EnvironmentProfiles',WorldDefinitions='WorldDefinitions',EffectsPreference='EffectsPreference',EffectEasing='EffectEasing'}
+local Shared={StrikeTrajectories='StrikeTrajectories',PresentationAssets='PresentationAssets',EnvironmentProfiles='EnvironmentProfiles',WorldDefinitions='WorldDefinitions',EffectsPreference='EffectsPreference',EffectEasing='EffectEasing'}
 local AsurasPath={Shared=Shared,Simulation={StrikeGeometry='StrikeGeometry'}}
 local services={CollectionService={GetTagged=function()return {brazier}end},ReplicatedStorage={AsurasPath=AsurasPath,WaitForChild=function()return AsurasPath end},SoundService=SoundService,Lighting=Lighting,Players={LocalPlayer=player},TweenService=TweenService,
  Debris={AddItem=function()end},ServerStorage=instance('ServerStorage')}
@@ -75,6 +75,7 @@ local workspace=instance('Workspace');function workspace:Raycast()return nil end
 services.Workspace=workspace
 -- WeaponTrails only loads here; StrikeGeometry's real rules are covered by test_omni_combat.
 registry.StrikeGeometry={SlashArc=40,decode=function()return nil end}
+registry.StrikeTrajectories={forMove=function()return nil end}
 registry.WorldDefinitions={regionAt=function(x,y,z)return if z< -600 then 'DesecratedMonastery' else 'Sanctuary'end,Bosses={Shen={Region='AshColosseum'}}}
 -- MODULES_INSERT
 local assets=registry.PresentationAssets

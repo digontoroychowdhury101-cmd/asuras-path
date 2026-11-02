@@ -323,6 +323,10 @@ function Methods:Clone()
 end
 function Methods:GetPropertyChangedSignal(name) self.Signals[name] = self.Signals[name] or signal(); return self.Signals[name] end
 function Methods:GetAttributeChangedSignal(name) return self:GetPropertyChangedSignal("@" .. name) end
+function Methods:GetScale()
+	return 1
+end
+
 function Methods:GetPivot()
 	if self:IsA("BasePart") then return self.CFrame end
 	local primary = rawget(self, "PrimaryPart")

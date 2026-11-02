@@ -18,7 +18,8 @@ local RATE = math.rad(Tracking.StartupTurnRate)
 local TAU = math.pi * 2
 
 export type Shape = { Arc: number, Reach: number, Lunge: number }
-export type Strike = { Arc: number, Reach: number, Lunge: number, Yaw: number, Start: number, Active: number, Weapon: string }
+-- Bonus, Scale, Move and Baked say what the server sweeps: the move's baked blade at that scale and reach bonus, or the generic path.
+export type Strike = { Arc: number, Reach: number, Lunge: number, Yaw: number, Start: number, Active: number, Weapon: string, Bonus: number, Scale: number, Move: string?, Baked: boolean }
 export type Air = { Airborne: boolean, Attacks: number, Dodges: number, Landing: boolean }
 
 local Geometry = {}
@@ -165,14 +166,16 @@ end
 -------------------------------------------------------------------------------------------------
 
 function Geometry.encode(s: Strike): string
-	return string.format("%d|%.2f|%.2f|%.4f|%.3f|%.3f|%s", s.Arc, s.Reach, s.Lunge, s.Yaw, s.Start, s.Active, s.Weapon)
+	return string.format("%d|%.2f|%.2f|%.4f|%.3f|%.3f|%s|%.2f|%.3f|%s|%d", s.Arc, s.Reach, s.Lunge, s.Yaw, s.Start, s.Active, s.Weapon,
+		s.Bonus or 0, s.Scale or 1, s.Move or "", if s.Baked then 1 else 0)
 end
 
 function Geometry.decode(text: any): Strike?
 	if type(text) ~= "string" then
 		return nil
 	end
-	local arc, reach, lunge, yaw, start, active, weapon = string.match(text, "^(%-?%d+)|([%d%.%-]+)|([%d%.%-]+)|([%d%.%-]+)|([%d%.%-]+)|([%d%.%-]+)|(.*)$")
+	local arc, reach, lunge, yaw, start, active, weapon, bonus, scale, move, baked =
+		string.match(text, "^(%-?%d+)|([%d%.%-]+)|([%d%.%-]+)|([%d%.%-]+)|([%d%.%-]+)|([%d%.%-]+)|([^|]*)|([%d%.%-]+)|([%d%.%-]+)|([^|]*)|([01])$")
 	if not arc then
 		return nil
 	end
@@ -184,6 +187,10 @@ function Geometry.decode(text: any): Strike?
 		Start = tonumber(start) :: number,
 		Active = tonumber(active) :: number,
 		Weapon = weapon :: string,
+		Bonus = tonumber(bonus) :: number,
+		Scale = tonumber(scale) :: number,
+		Move = if move ~= "" then move else nil,
+		Baked = baked == "1",
 	}
 end
 

@@ -30,7 +30,7 @@ PASS progression and lore: 146 checks
 PASS progression runtime: 90 checks
 PASS ending credits: 25 sourced rows and project lines match assets/CREDITS.md
 Review regressions: 21 checks passed
-chain built and walked in 15.4s
+chain built and walked in 17.6s
 campaign regions: 333 passed, 0 failed
   BambooPass        1383 parts   76 colliding  10 lights  12 emitters
   AshColosseum       217 parts  105 colliding  20 lights  26 emitters
@@ -63,7 +63,7 @@ PASS     test_sanguine_dispatch.luau: sanguine dispatch: 30 passed, 0 failed (st
 PASS     test_session_cleanup.luau: session cleanup: 7 passed, 0 failed (emulated counts; no profiler or Studio session)
 PASS     test_stage2_closure.luau: stage 2 closure: 56 passed, 0 failed (offline behaviour; Studio and two-client fairness separate)
 PASS     test_stage2_timing.luau: stage 2 timing: 111 passed, 0 failed (offline behaviour; Studio, latency and feel separate)
-PASS     test_stage3_motion.luau: stage 3 motion: 214 passed, 0 failed (offline behaviour; Studio, frame order and feel separate)
+PASS     test_stage3_motion.luau: stage 3 motion: 279 passed, 0 failed (offline behaviour; Studio, frame order and feel separate)
 PASS     test_twins_monastery.luau: twins + monastery: 46 passed, 0 failed
 [11/14] Testing Backend Persistence & Commercial Systems (local mocks)...
 PASS backend: leases, expiry/fencing, bounded retries, load failure protection, callback replay, commit-response loss, receipts across reconnect, schema migration, durable result inbox recovery, exactly-once results, practice rejection and request schemas
@@ -83,7 +83,7 @@ PASS: 8 PBR exports validated; audio format/peak/DC checks passed (available med
 PASS: 280 GitHub terrain/effect numerical checks
 PASS: 3 qualifying pinned repositories, 8 verified CC0 assets
 [13/14] Syntax-compiling every source script...
-Compiled 46 KLOC into 1908 KB bytecode (read 0.01s, parse 0.03s, compile 0.06s)
+Compiled 46 KLOC into 1912 KB bytecode (read 0.04s, parse 0.03s, compile 0.06s)
 [14/14] Compiling Roblox Place to /var/folders/0h/ppzkjk7x4sd3qkr37t30hxmc0000gn/T//AsurasPath_verify.rbxlx ...
 Building project 'AsurasPath'
 Built project to AsurasPath_verify.rbxlx

@@ -59,3 +59,11 @@ None of these is accepted until the Windows gates in `MAC_TO_WINDOWS.md` pass. O
 | New | **Open observation.** One untraced listener in a throttled session showed repeated `AnimationPlayed` rows (Dao_Light2, Dao_WeaponArt) and more rows than presses. Not reproduced in traced runs 4–6, which show one start per intent. Cause not established. | W-03 in `MAC_TO_WINDOWS.md` |
 | New | **Pre-existing warning.** `CampaignTerrain` line 120 "Region has to be aligned to the grid" at boot; that file is untouched in this batch. | Console, runs 4–6 |
 
+## Stage 3A closure status (2 November 2026)
+
+| Finding | Status | Evidence |
+|---|---|---|
+| Confirmed prediction kept its local clock | **Fixed offline.** Real latency open | O (T-RC), W-04 |
+| Trail and debug disagreed with the server's blade | **Fixed offline**; runs live | O (T-TR), D, W-06 |
+| Step lost past the pose budget; ignored scale | **Fixed offline.** Scale rule measured in Studio | O (T-PB), D, W-13 |
+| `CombatFeedback.Destroy` errored | **Fixed** | O (T-FB) |

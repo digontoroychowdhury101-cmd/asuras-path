@@ -430,4 +430,39 @@ function Pose.Destroy(self: ActorPose)
 	table.clear(self.Ground)
 end
 
+-- The presented step alone, for a fighter with no full pose writer (past POSE_RANGE or the budget): the server's blade
+-- includes the step, so the body has to show it whoever writes the joint. Writes the root joint only, the same way Apply
+-- does. Handed back before a pose writer takes over, so there is still one writer.
+local StepWriter = {}
+StepWriter.__index = StepWriter
+
+function Pose.stepWriter(model: Model): any
+	local pelvis = model:FindFirstChild("LowerTorso")
+	local motor = pelvis and pelvis:FindFirstChild("Root")
+	if not motor or not motor:IsA("Motor6D") then
+		return nil
+	end
+	return setmetatable({ Motor = motor, Input = CFrame.identity, Written = nil }, StepWriter)
+end
+
+function StepWriter.Apply(self: any, step: Vector3)
+	local value = self.Motor.Transform
+	if value ~= self.Written then
+		self.Input = value
+	end
+	if step.Magnitude > 1e-3 then
+		self.Written = CFrame.new(step) * self.Input
+		self.Motor.Transform = self.Written
+	elseif self.Written and self.Written ~= self.Input then
+		self.Motor.Transform = self.Input
+		self.Written = self.Input
+	end
+end
+
+function StepWriter.Destroy(self: any)
+	if self.Written and self.Written ~= self.Input and self.Motor.Parent then
+		self.Motor.Transform = self.Input
+	end
+end
+
 return Pose

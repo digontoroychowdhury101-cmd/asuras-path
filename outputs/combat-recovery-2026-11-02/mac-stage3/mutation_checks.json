@@ -3,7 +3,7 @@
   "mutation": "facing read at the present, not one instant",
   "file": "src/server/CharacterService.luau",
   "caught": true,
-  "summary": "stage 3 motion: 212 passed, 2 failed (offline behaviour; Studio, frame order and feel separate)",
+  "summary": "stage 3 motion: 277 passed, 2 failed (offline behaviour; Studio, frame order and feel separate)",
   "failing": [
    "FAIL     test_stage3_motion.luau:",
    "FAIL  T-FC-01 moving attacker: guard reads the same instant (square then)  (-1)",
@@ -14,7 +14,7 @@
   "mutation": "rollback zeroes velocity",
   "file": "src/simulation/LocalPrediction.luau",
   "caught": true,
-  "summary": "stage 3 motion: 210 passed, 4 failed (offline behaviour; Studio, frame order and feel separate)",
+  "summary": "stage 3 motion: 275 passed, 4 failed (offline behaviour; Studio, frame order and feel separate)",
   "failing": [
    "FAIL     test_stage3_motion.luau:",
    "FAIL  T-RB-02 velocity across the drive continues",
@@ -27,7 +27,7 @@
   "mutation": "rollback takes back the whole travelled line",
   "file": "src/simulation/LocalPrediction.luau",
   "caught": true,
-  "summary": "stage 3 motion: 206 passed, 8 failed (offline behaviour; Studio, frame order and feel separate)",
+  "summary": "stage 3 motion: 271 passed, 8 failed (offline behaviour; Studio, frame order and feel separate)",
   "failing": [
    "FAIL     test_stage3_motion.luau:",
    "FAIL  T-RB-01 a stopped dash undoes only what it moved",
@@ -41,7 +41,7 @@
   "mutation": "chain confirms past the link window",
   "file": "src/simulation/LocalPrediction.luau",
   "caught": true,
-  "summary": "stage 3 motion: 213 passed, 1 failed (offline behaviour; Studio, frame order and feel separate)",
+  "summary": "stage 3 motion: 278 passed, 1 failed (offline behaviour; Studio, frame order and feel separate)",
   "failing": [
    "FAIL     test_stage3_motion.luau:",
    "FAIL  T-AN-20 no link once the combo window has passed"
@@ -51,7 +51,7 @@
   "mutation": "phase correction uncapped",
   "file": "src/simulation/AnimationTiming.luau",
   "caught": true,
-  "summary": "stage 3 motion: 209 passed, 5 failed (offline behaviour; Studio, frame order and feel separate)",
+  "summary": "stage 3 motion: 274 passed, 5 failed (offline behaviour; Studio, frame order and feel separate)",
   "failing": [
    "FAIL     test_stage3_motion.luau:",
    "FAIL  T-AN-30 close to contact: starts on the bounded path",
@@ -65,7 +65,7 @@
   "mutation": "duplicate contact cues freeze twice",
   "file": "src/client/Controllers/CombatFeedback.luau",
   "caught": true,
-  "summary": "stage 3 motion: 212 passed, 2 failed (offline behaviour; Studio, frame order and feel separate)",
+  "summary": "stage 3 motion: 277 passed, 2 failed (offline behaviour; Studio, frame order and feel separate)",
   "failing": [
    "FAIL     test_stage3_motion.luau:",
    "FAIL  T-HS-06 a second cue 10 ms later does not lengthen the stop  (0)",
@@ -76,7 +76,7 @@
   "mutation": "feet never unlock",
   "file": "src/simulation/FootStep.luau",
   "caught": true,
-  "summary": "stage 3 motion: 213 passed, 1 failed (offline behaviour; Studio, frame order and feel separate)",
+  "summary": "stage 3 motion: 278 passed, 1 failed (offline behaviour; Studio, frame order and feel separate)",
   "failing": [
    "FAIL     test_stage3_motion.luau:",
    "FAIL  T-FW-05 a point out of reach lets go"
@@ -86,7 +86,7 @@
   "mutation": "sweep forgets the root's travel between samples",
   "file": "src/server/CharacterService.luau",
   "caught": true,
-  "summary": "stage 3 motion: 213 passed, 1 failed (offline behaviour; Studio, frame order and feel separate)",
+  "summary": "stage 3 motion: 278 passed, 1 failed (offline behaviour; Studio, frame order and feel separate)",
   "failing": [
    "FAIL     test_stage3_motion.luau:",
    "FAIL  T-CT-13 a root moving 5 studs a tick hits bodies its blade crossed between samples  (37 swept, 37 sampled)"
@@ -96,7 +96,7 @@
   "mutation": "the fade-in that delayed first motion returns",
   "file": "src/client/Controllers/FighterAnimations.luau",
   "caught": true,
-  "summary": "stage 3 motion: 213 passed, 1 failed (offline behaviour; Studio, frame order and feel separate)",
+  "summary": "stage 3 motion: 278 passed, 1 failed (offline behaviour; Studio, frame order and feel separate)",
   "failing": [
    "FAIL     test_stage3_motion.luau:",
    "FAIL  T-AN-42 with a pose writer a clip starts with no fade (first motion is not a fade-in)  (0.06)"
@@ -106,17 +106,132 @@
   "mutation": "a press past the link is shown as the next light",
   "file": "src/simulation/LocalPrediction.luau",
   "caught": true,
-  "summary": "stage 3 motion: 213 passed, 1 failed (offline behaviour; Studio, frame order and feel separate)",
+  "summary": "stage 3 motion: 278 passed, 1 failed (offline behaviour; Studio, frame order and feel separate)",
   "failing": [
    "FAIL     test_stage3_motion.luau:",
    "FAIL  T-AN-22 a press the buffer holds past the link opens at the swing's end"
   ]
  },
  {
+  "mutation": "a confirmed prediction keeps its local clock",
+  "file": "src/client/Controllers/FighterAnimations.luau",
+  "caught": true,
+  "summary": "stage 3 motion: 272 passed, 7 failed (offline behaviour; Studio, frame order and feel separate)",
+  "failing": [
+   "FAIL     test_stage3_motion.luau:",
+   "FAIL  T-RC-01 50 ms late: the clip reaches the server's phase  (0.03333000000003694)",
+   "FAIL  T-RC-01 100 ms late: the clip reaches the server's phase  (0.03333000000003694)",
+   "FAIL  T-RC-01 150 ms late: the clip reaches the server's phase  (0.03333000000003694)",
+   "FAIL  T-RC-02 link 1: the error shrinks while it plays  (0.083 to 0.083)",
+   "FAIL  T-RC-02 link 2: the error shrinks while it plays  (0.083 to 0.083)"
+  ]
+ },
+ {
+  "mutation": "no step past the pose budget",
+  "file": "src/client/Controllers/FighterAnimations.luau",
+  "caught": true,
+  "summary": "stage 3 motion: 270 passed, 9 failed (offline behaviour; Studio, frame order and feel separate)",
+  "failing": [
+   "FAIL     test_stage3_motion.luau:",
+   "FAIL  T-PB-01 out of range the body still stands where its blade is  (gap 3.50, shown 0.00 of 3.48)",
+   "FAIL  T-PB-02 past the budget the body still stands where its blade is  (gap 3.50, shown 0.00)",
+   "FAIL  T-PB-03 scale 1: the step is continuous across both changes  (gap 3.50)",
+   "FAIL  T-PB-04 scale 1: the step scales with the blade the server scales  (3.07 of 3.48)",
+   "FAIL  T-PB-03 scale 2: the step is continuous across both changes  (gap 7.00)"
+  ]
+ },
+ {
+  "mutation": "the step ignores the rig's scale",
+  "file": "src/client/Controllers/FighterAnimations.luau",
+  "caught": true,
+  "summary": "stage 3 motion: 277 passed, 2 failed (offline behaviour; Studio, frame order and feel separate)",
+  "failing": [
+   "FAIL     test_stage3_motion.luau:",
+   "FAIL  T-PB-03 scale 2: the step is continuous across both changes  (gap 3.50)",
+   "FAIL  T-PB-04 scale 2: the step scales with the blade the server scales  (3.50 of 6.95)"
+  ]
+ },
+ {
+  "mutation": "a step writer accumulates",
+  "file": "src/client/Controllers/ActorPose.luau",
+  "caught": true,
+  "summary": "stage 3 motion: 277 passed, 2 failed (offline behaviour; Studio, frame order and feel separate)",
+  "failing": [
+   "FAIL     test_stage3_motion.luau:",
+   "FAIL  T-PB-05 an Animator that did not write does not accumulate the step  (gap 68.04)",
+   "FAIL  T-PB-08 a new pose writer does not add the step to the one already shown  (gap 30.13)"
+  ]
+ },
+ {
+  "mutation": "a step writer stays on under a new pose writer",
+  "file": "src/client/Controllers/FighterAnimations.luau",
+  "caught": true,
+  "summary": "stage 3 motion: 278 passed, 1 failed (offline behaviour; Studio, frame order and feel separate)",
+  "failing": [
+   "FAIL     test_stage3_motion.luau:",
+   "FAIL  T-PB-08 a new pose writer does not add the step to the one already shown  (gap 3.42)"
+  ]
+ },
+ {
+  "mutation": "trail points ignore the server's scale and bonus",
+  "file": "src/client/Controllers/WeaponTrails.luau",
+  "caught": true,
+  "summary": "stage 3 motion: 277 passed, 2 failed (offline behaviour; Studio, frame order and feel separate)",
+  "failing": [
+   "FAIL     test_stage3_motion.luau:",
+   "FAIL  T-TR-02 each trail point is where the server's blade tip was when it was emitted  (4 of 4 points, worst 1.500)",
+   "FAIL  T-TR-03 once it arrives, new points use it"
+  ]
+ },
+ {
+  "mutation": "trail points ignore the committed yaw",
+  "file": "src/client/Controllers/WeaponTrails.luau",
+  "caught": true,
+  "summary": "stage 3 motion: 277 passed, 2 failed (offline behaviour; Studio, frame order and feel separate)",
+  "failing": [
+   "FAIL     test_stage3_motion.luau:",
+   "FAIL  T-TR-02 each trail point is where the server's blade tip was when it was emitted  (4 of 4 points, worst 13.635)",
+   "FAIL  T-TR-03 once it arrives, new points use it"
+  ]
+ },
+ {
+  "mutation": "an earlier swing's record is applied",
+  "file": "src/client/Controllers/WeaponTrails.luau",
+  "caught": true,
+  "summary": "stage 3 motion: 278 passed, 1 failed (offline behaviour; Studio, frame order and feel separate)",
+  "failing": [
+   "FAIL     test_stage3_motion.luau:",
+   "FAIL  T-TR-04 a finished swing's record is not applied to the next"
+  ]
+ },
+ {
+  "mutation": "debug always draws the generic shape",
+  "file": "src/client/Controllers/WeaponTrails.luau",
+  "caught": true,
+  "summary": "stage 3 motion: 278 passed, 1 failed (offline behaviour; Studio, frame order and feel separate)",
+  "failing": [
+   "FAIL     test_stage3_motion.luau:",
+   "FAIL  T-TR-07 the debug outline is the selected blade, with its scale, bonus and yaw  (11 points, 4 tips missing)"
+  ]
+ },
+ {
+  "mutation": "Destroy clears a table that does not exist",
+  "file": "src/client/Controllers/CombatFeedback.luau",
+  "caught": true,
+  "summary": "stage 3 motion: 275 passed, 4 failed (offline behaviour; Studio, frame order and feel separate)",
+  "failing": [
+   "FAIL     test_stage3_motion.luau:",
+   "FAIL  T-FB-03 Destroy completes  (src/client/Controllers/CombatFeedback.luau:138: invalid argument #1 to 'clear' (table ",
+   "FAIL  T-FB-03 Destroy removes what it made",
+   "FAIL  T-FB-03 Destroy forgets its stops",
+   "FAIL  T-FB-03 Destroy resets the camera"
+  ]
+ },
+ {
   "mutation": "hitstop freezes nothing",
   "file": "src/client/Controllers/PlaybackScale.luau",
   "caught": true,
-  "summary": "stage 3 motion: 201 passed, 13 failed (offline behaviour; Studio, frame order and feel separate)",
+  "summary": "stage 3 motion: 265 passed, 14 failed (offline behaviour; Studio, frame order and feel separate)",
   "failing": [
    "FAIL     test_stage3_motion.luau:",
    "FAIL  T-HS-06 of two cues for one contact the longer duration holds, from the first",

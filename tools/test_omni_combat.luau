@@ -226,7 +226,7 @@ check("boss perilous attacks still lock aim at telegraph", has("src/server/Servi
 check("duels use the same CharacterService path", has("src/server/Services/ColosseumService.luau", "Characters.StartAllocatedMatch") or has("src/server/Services/ColosseumService.luau", "StartAllocatedMatch("))
 check("client sends attack aim", has("src/client/Controllers/InputController.luau", 'local hasDirection = attack or action == "Roll" or action == "Dash"'))
 check("client lock-on obeys the turn budget", has("src/client/Controllers/CameraController.luau", "Strike.turnStep(snapshot.State, snapshot.StateElapsed, snapshot.StateDuration, dt)"))
-check("arcs drawn from the validated record", has("src/client/Controllers/WeaponTrails.luau", "Strike.decode(record)") and has("src/client/Controllers/WeaponTrails.luau", "Strike.sweep(shape, 0, SAMPLES)"))
+check("arcs drawn from the validated record", has("src/client/Controllers/WeaponTrails.luau", "Strike.decode(record)") and has("src/client/Controllers/WeaponTrails.luau", "Strike.segment(shape, progress, 0)"))
 check("client dash is held by a horizontal LinearVelocity, not a per-frame write the humanoid brakes", has("src/client/Controllers/WorldStateController.luau", "made.VelocityConstraintMode = Enum.VelocityConstraintMode.Plane") and has("src/client/Controllers/WorldStateController.luau", "drive.PlaneVelocity = Vector2.new(planar.X, planar.Z)") and has("src/client/Controllers/WorldStateController.luau", "local left = self.DashLength - moved"))
 check("project maps StrikeGeometry", has("default.project.json", '"$path": "src/simulation/StrikeGeometry.luau"'))
 

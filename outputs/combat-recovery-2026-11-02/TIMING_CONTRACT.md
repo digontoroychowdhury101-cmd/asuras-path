@@ -15,6 +15,8 @@ This is the specification that Stages 2–3 implement. **Stage 2 implemented §2
 | 9 A4 | Server sweep, trail and step read one baked hilt/tip data set where a move is baked (27 moves: Jian 7, Dao 3, Guandao 4, TwinDaggers 7, WarFan 6). Previous sample uses the previous root unless it moved ≥6 studs in a tick. | Six family moves whose clip shows too little stay generic (more than 1 stud of reach lost, or under half of an arc ≥90°), as do Unarmed, Odachi, Cleaver, Heaven, Chain, Prayer, Catalyst, mobs and bosses (`ANIMATION_COVERAGE.md`). |
 | 9 A6 | Rate bound enforced by test. | Real drift across latency: Windows. |
 
+**Closure pass:** a confirmed prediction leaves the local clock: the same occurrence continues and bounded correction follows the server's timeline. `AsuraStrike` carries the server's bonus, scale, move and baked selection; the presented step is shown for every fighter at model scale, with or without a pose writer.
+
 Unchanged: 60 Hz, 150 ms rewind ceiling, 1.4× tempo, 100 ms deflect baseline, all windows.
 
 ## 0. As implemented in Stage 2 (2 November 2026)
