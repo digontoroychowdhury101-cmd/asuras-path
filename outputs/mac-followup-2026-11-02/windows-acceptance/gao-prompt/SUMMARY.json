@@ -1,0 +1,298 @@
+{
+ "place": "acceptance_fix2 with LootWorld (SealRange 4.5) pushed for 'after'; Gao prompt anchor (-86,899), seal (-84,890)",
+ "input": "real W/Z keys through Studio MCP; camera snapped behind the placed body with the portal-arrival cue; clicks via Studio MCP on dialogue buttons (a Roblox Player window blocked desktop clicks)",
+ "approaches": {
+  "before/front": [
+   [
+    "-",
+    [
+     -66,
+     899
+    ]
+   ],
+   [
+    "Speak to Master Smith Gao",
+    [
+     -76.6,
+     899
+    ]
+   ],
+   [
+    "end",
+    [
+     -84.4,
+     899.2
+    ],
+    "Speak to Master Smith Gao"
+   ]
+  ],
+  "before/front_north": [
+   [
+    "-",
+    [
+     -70,
+     911.9
+    ]
+   ],
+   [
+    "Speak to Master Smith Gao",
+    [
+     -78.2,
+     904.6
+    ]
+   ],
+   [
+    "Transmute Remembrance",
+    [
+     -83.8,
+     898.3
+    ]
+   ],
+   [
+    "end",
+    [
+     -84.4,
+     897.8
+    ],
+    "Transmute Remembrance"
+   ]
+  ],
+  "before/front_south": [
+   [
+    "-",
+    [
+     -69.3,
+     883.5
+    ]
+   ],
+   [
+    "Transmute Remembrance",
+    [
+     -73.3,
+     887.6
+    ]
+   ],
+   [
+    "-",
+    [
+     -77,
+     891.4
+    ]
+   ],
+   [
+    "Speak to Master Smith Gao",
+    [
+     -78.4,
+     892.8
+    ]
+   ],
+   [
+    "end",
+    [
+     -83.4,
+     901.1
+    ],
+    "Speak to Master Smith Gao"
+   ]
+  ],
+  "before/north": [
+   [
+    "-",
+    [
+     -83,
+     919
+    ]
+   ],
+   [
+    "end",
+    [
+     -83.1,
+     918.5
+    ],
+    "-"
+   ]
+  ],
+  "before/south": [
+   [
+    "-",
+    [
+     0,
+     920
+    ]
+   ],
+   [
+    "Rest",
+    [
+     0,
+     908
+    ]
+   ],
+   [
+    "end",
+    [
+     0,
+     895.2
+    ],
+    "Rest"
+   ]
+  ],
+  "after/front": [
+   [
+    "-",
+    [
+     -66,
+     899
+    ]
+   ],
+   [
+    "Speak to Master Smith Gao",
+    [
+     -76.3,
+     899
+    ]
+   ],
+   [
+    "end",
+    [
+     -84,
+     899.2
+    ],
+    "Speak to Master Smith Gao"
+   ]
+  ],
+  "after/front_north": [
+   [
+    "-",
+    [
+     -70,
+     911.9
+    ]
+   ],
+   [
+    "Speak to Master Smith Gao",
+    [
+     -78.3,
+     904.5
+    ]
+   ],
+   [
+    "end",
+    [
+     -83.6,
+     896.9
+    ],
+    "Speak to Master Smith Gao"
+   ]
+  ],
+  "after/front_south": [
+   [
+    "-",
+    [
+     -69.3,
+     883.5
+    ]
+   ],
+   [
+    "Speak to Master Smith Gao",
+    [
+     -78.6,
+     892.9
+    ]
+   ],
+   [
+    "end",
+    [
+     -83.6,
+     900.2
+    ],
+    "Speak to Master Smith Gao"
+   ]
+  ],
+  "after/north": [
+   [
+    "-",
+    [
+     -78,
+     915
+    ]
+   ],
+   [
+    "Speak to Master Smith Gao",
+    [
+     -82.8,
+     907.7
+    ]
+   ],
+   [
+    "end",
+    [
+     -86.3,
+     901.7
+    ],
+    "Speak to Master Smith Gao"
+   ]
+  ],
+  "after/seal": [
+   [
+    "-",
+    [
+     -74,
+     890
+    ]
+   ],
+   [
+    "Transmute Remembrance",
+    [
+     -80.5,
+     890
+    ]
+   ],
+   [
+    "end",
+    [
+     -81.8,
+     890
+    ],
+    "Transmute Remembrance"
+   ]
+  ],
+  "after/south_side": [
+   [
+    "-",
+    [
+     -78.9,
+     886.7
+    ]
+   ],
+   [
+    "Transmute Remembrance",
+    [
+     -81.2,
+     886.9
+    ]
+   ],
+   [
+    "Speak to Master Smith Gao",
+    [
+     -82.2,
+     892.2
+    ]
+   ],
+   [
+    "end",
+    [
+     -82.2,
+     892.2
+    ],
+    "Speak to Master Smith Gao"
+   ]
+  ]
+ },
+ "flow_after": [
+  "Speak (Z) opened Gao's dialogue from the front approach",
+  "Reinforce or infuse -> Reinforce to +1 (seeded 1000 Essence, 2 ore): Essence 1000->750, ore 2->1, Jian +1, Dao stays +0, milestone Forged",
+  "Leave closed the dialogue (no dialogue buttons left), walked 27 studs away, walked back, Z reopened at Gao's greeting",
+  "Seal: 'Transmute Remembrance' shown only within ~3.5-4.5 studs of the seal; Z opened the Arsenal (on the last-used tab, Qi Sorcery; existing behaviour)"
+ ],
+ "note": "In 'before', front_north flipped from Speak to Transmute 2.3 studs from Gao and front_south showed Transmute first: Roblox's same-key choice follows camera direction, not just distance."
+}

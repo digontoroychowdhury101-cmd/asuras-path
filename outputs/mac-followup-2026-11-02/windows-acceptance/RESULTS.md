@@ -49,7 +49,7 @@ Installed or offline-tested is not runtime accepted. Nothing above certifies hum
   - (e) rear hits are 1.5× criticals.
   - Idle Lv1 still falls in ~6 s; guard-only still breaks and is deathblown.
   - The Cloister swordsman killed an idle Lv1 player in ~5 s.
-- **Gao's prompts overlap.** At ~6 studs in front of Gao only "Transmute Remembrance" (the seal, 12-stud range) showed. "Speak to Master Smith Gao" appeared only after moving closer (anchor range 10). A player may open the Arsenal instead of the forge.
+- **Gao's prompts overlap: FIXED (follow-up, below).** Roblox chooses between same-key prompts partly by camera direction, so the seal's 12-stud prompt could replace "Speak" even two studs from Gao.
 - **W-07 oblique wall** and **dash confirm timeout**, as in the matrix.
 
 ## Decisions for the creator
@@ -71,9 +71,21 @@ Installed or offline-tested is not runtime accepted. Nothing above certifies hum
 - The open Studio place holds the pushed AIService/WorldService sources unsaved; it equals the canonical build.
 - New unmapped tools: `tools/qa/DashRefusal.*`, `MonkLethality`, `RespawnCamp`, `OpeningMilestones`. All Studio-only and refused outside Studio; the profile fixtures refuse anything but the mock store.
 
+## Follow-up: Gao's interaction (3 November 2026)
+
+- **Defect:** walking diagonally to Gao showed "Speak" at 7 studs, then flipped to "Transmute Remembrance" 2.3 studs from him. Approaching from the front-south showed the seal first (`gao-prompt/before/`).
+- **Fix:** the seal keeps its place, key and function. Its prompt range drops from 12 to 4.5 studs (`LootWorld.SealRange`), under half the 9.2-stud gap between Gao and the seal. It now appears only to a player nearer the seal than Gao. Gao's own prompt, range and dialogue are unchanged.
+- **Regression:** `test_rest_dialogue` checks that no spot nearer Gao than the seal is in the seal's range, plus the measured spot and use from beside the plinth (71/71). The test fails against the old 12-stud range.
+- **Studio:** real W/Z keys, camera behind the player (`gao-prompt/after/`, `gao-prompt/SUMMARY.json`):
+  - Front, front-north, front-south and north approaches show only "Speak" all the way to Gao.
+  - A south walk past the seal shows "Transmute" only within ~4 studs of it, then "Speak".
+  - Speak → Reinforce +1 (seeded 1000 Essence, 2 ore): 1000 → 750, ore 2 → 1, Jian +1, Dao keeps +0.
+  - Leave, walk 27 studs away, return: the dialogue reopens.
+  - Seal: Z opens the Arsenal, on the last-used tab (existing behaviour, not changed).
+
 ## Continuation checkpoint
 
-1. Human: W-12 feel and monk fairness; the full ordinary fresh-profile opening (handoff case 1) on this build, including training skip/replay and the Gao prompt overlap.
+1. Human: follow `../HUMAN_PLAYTEST.md` (fresh-profile opening, five monk attempts, death recovery, first earned upgrade). It is the W-12 / monk-fairness evidence.
 2. Two clients with latency: W-04 at 100/150 ms, W-06 blade/contact, the W-09 matrix (`outputs/combat-recovery-2026-11-02/MAC_TO_WINDOWS.md`).
 3. Remaining Stage 3 W-cases: W-01–W-03, W-05, W-08, W-10, W-13, W-07 KO.
 4. Batches 2–4 (`02_IRON_BULL.md`, `03_ARMOUR.md`, `04_ROUTE_EXPANSION.md`) are queued, not started; their acceptance is NOT RUN.

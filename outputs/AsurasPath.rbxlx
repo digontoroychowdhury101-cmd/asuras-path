@@ -22742,6 +22742,11 @@ local function part(parent: Instance,name: string,size: Vector3,position: Vector
  return p
 end
 LootWorld.SealOffset=-10 -- studs along Z from the loggia centre (Gao stands at Z-1, facing +X)
+-- The seal shares Gao's Interact key, and Roblox picks between same-key prompts partly by camera direction,
+-- not only distance: at 12 studs the seal covered his whole talking area and "Transmute Remembrance" could
+-- replace "Speak" two studs from him (Windows, 3 Nov). Its range stays under half the Gao-seal gap (9.2), so it
+-- shows only to a player nearer the seal than Gao.
+LootWorld.SealRange=4.5
 function LootWorld.build(claim: (Player,string)-&gt;(),openSmith: (Player)-&gt;()): (Folder,{RBXScriptConnection})
  local root=Instance.new("Folder");root.Name="WorldDiscoveryCaches";root.Parent=Workspace
  local connections: {RBXScriptConnection}={}
@@ -22813,7 +22818,7 @@ function LootWorld.build(claim: (Player,string)-&gt;(),openSmith: (Player)-&gt;(
  end
  local prompt=Instance.new("ProximityPrompt");prompt.Name="TransmutePrompt";prompt.ActionText="Transmute Remembrance"
  prompt.ObjectText="Master Smith Gao";InputMap.applyPrompt(prompt)
- prompt.MaxActivationDistance=12;prompt.HoldDuration=0.4;prompt.Parent=smith
+ prompt.MaxActivationDistance=LootWorld.SealRange;prompt.HoldDuration=0.4;prompt.Parent=smith
  table.insert(connections,prompt.Triggered:Connect(openSmith))
  return root,connections
 end

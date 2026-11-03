@@ -92,23 +92,32 @@ check("Gao resolves by his AsuraNPC tag", Portrait.speaker("Gao", jade, { lin, g
 local selfBlocked = function(from, to) return from:Lerp(to, 0.05) end
 local over = Portrait.choose(subject, viewer, selfBlocked)
 check("an unexcluded speaker body forces the overhead fallback (why the lookup matters)", over.Y >= subject.Y + 5)
--- F13: the Transmutation Seal stands beside Gao, so from any spot in front of him "Speak" (the nearer
--- Z prompt, OnePerButton) wins; beside the seal its own prompt wins. At Loggia.X+5 it stood in front.
+-- F13 + Windows 3 Nov: the Transmutation Seal stands beside Gao on the same Interact key. Roblox chooses between
+-- same-key prompts partly by camera direction, so nearness alone never decided it: two studs from Gao, looking
+-- past him, the seal's 12-stud prompt replaced "Speak". Now the seal is in range only where it is nearer than
+-- Gao, so every spot around him offers "Speak" alone, and the seal stays usable from beside its plinth.
 do
 	local Loggia = require("../src/shared/WorldDefinitions").Sanctuary.Loggia
-	local offset = tonumber(string.match(src(S .. "LootWorld.luau"), "LootWorld%.SealOffset=(%-?%d+)"))
+	local loot = src(S .. "LootWorld.luau")
+	local offset = tonumber(string.match(loot, "LootWorld%.SealOffset=(%-?%d+)"))
+	local range = tonumber(string.match(loot, "LootWorld%.SealRange=([%d%.]+)"))
+	local smithRange = tonumber(string.match(src(S .. "SanctuaryService.luau"), "local SMITH_RADIUS = ([%d%.]+)"))
 	local stand = V(Loggia.X - 2, Loggia.Y, Loggia.Z - 1) -- SanctuaryService: base * CFrame.new(-2, 0, -1)
-	local function speakWins(sealAt)
-		for dx = 3, 7 do for dz = -1, 1 do
-			local spot = stand + V(dx, 0, dz)
-			if (spot - stand).Magnitude + 1.5 > (spot - sealAt).Magnitude then return false end
-		end end
-		return true
-	end
 	local sealAt = V(Loggia.X, Loggia.Y, Loggia.Z + (offset or 0))
-	check("Speak beats the seal from in front of Gao", offset ~= nil and speakWins(sealAt) and not speakWins(V(Loggia.X + 5, Loggia.Y, Loggia.Z)))
-	local beside = sealAt + V(3, 0, 0)
-	check("the seal still wins beside itself and stays within its 12-stud prompt", (beside - sealAt).Magnitude < (beside - stand).Magnitude and (stand + V(5, 0, 0) - sealAt).Magnitude <= 12)
+	local clash, speakSpots = 0, 0
+	for dx = -10, 10 do for dz = -10, 10 do
+		local spot = stand + V(dx, 0, dz)
+		if (spot - stand).Magnitude <= (smithRange or 0) and (spot - stand).Magnitude <= (spot - sealAt).Magnitude then
+			speakSpots += 1
+			if (spot - sealAt).Magnitude <= (range or math.huge) then clash += 1 end
+		end
+	end end
+	check("the seal prompt reaches no spot nearer Gao than the seal (Speak never competes)", offset ~= nil and range ~= nil
+		and speakSpots > 100 and clash == 0, clash)
+	check("the windows-run spot two studs from Gao is outside the seal's range",
+		(V(-83.8 - (-86) + stand.X, 0, 898.3 - 899 + stand.Z) - V(sealAt.X, 0, sealAt.Z)).Magnitude > (range or 0))
+	check("the seal stays usable from beside its plinth", range ~= nil and range >= 3.5 and (sealAt + V(3, 0, 0) - sealAt).Magnitude <= range)
+	check("the seal prompt uses the shared range constant", string.find(loot, "prompt.MaxActivationDistance=LootWorld.SealRange", 1, true) ~= nil)
 end
 check("dialogue frames speakers through the tag lookup", has(C .. "DialogueController.luau", 'Portrait.speaker(p.npc,workspace:FindFirstChild("JadeCataclysm"),CollectionService:GetTagged("AsuraNPC"))')
 	and has(S .. "SanctuaryService.luau", 'model:SetAttribute("AsuraNPC", "Gao")'))
