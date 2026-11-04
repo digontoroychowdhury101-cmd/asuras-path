@@ -2,6 +2,9 @@
 
 Combat handoff stays historical: `outputs/combat-recovery-2026-11-02/` and `MAC_TO_WINDOWS.md` (W-01..W-13; A1 stays FAILED).
 
+## Batch 2: Iron Bull and Zhao (Mac, 4 November 2026)
+Implemented: Bull on the creator's sculpt, 45 clips, boss gait layer, Zhao v2 installed, authored Death playback, won-fight reset fix. Digest **438762895**. Tested: both kill orders, retry, Bull alone (seeded, single client). Pending: every case in `iron-bull/RESULTS.md`, including real-input duels, guard, camera, performance and repeats of shared boss death.
+
 ## Checkpoint (Windows, 3 November 2026)
 - Windows acceptance of combat Stage 3 and batch 1 ran on this branch. Matrix: `windows-acceptance/RESULTS.md` (final digest 975213241).
 - Fixed and re-checked in Studio: monk openers inside the reaction floor, W-07 stairs rollback, terrain boot error, foes camping the Cloister respawn, and the Cloister altar being unusable. **New rule:** an altar shelter after a rest or respawn, ended by leaving the circle or attacking. Creator approved it (3 Nov).

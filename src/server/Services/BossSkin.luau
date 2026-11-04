@@ -11,6 +11,7 @@
 -- remains the visible fallback until a valid template is imported.
 local ServerStorage = game:GetService("ServerStorage")
 local Schema = require(game:GetService("ReplicatedStorage"):WaitForChild("AsurasPath").Shared.CostumeSchema)
+local Rigs = require(game:GetService("ReplicatedStorage"):WaitForChild("AsurasPath").Shared.BossRigs)
 local Pbr = require(script.Parent.PbrAssets)
 
 local Skin = {}
@@ -54,6 +55,12 @@ function Skin.attach(actor: Model): boolean
 	if not valid then report(actor, "Invalid:" .. template.Name .. " " .. tostring(reason)); return false end
 	local rig = actor:GetAttribute("AsuraRig")
 	local required = Schema.RequiredBones[if type(rig) == "string" then rig else "Humanoid"] or Schema.RequiredBones.Humanoid
+	-- a sculpt that does not share the stock joints moves the pivots and adds its helper bones before any piece is placed
+	local rigDef = (Rigs.ByTemplate :: { [string]: Rigs.Def })[template.Name]
+	if rigDef then
+		local applied, why = Rigs.apply(actor, rigDef)
+		if not applied then report(actor, "Invalid:" .. template.Name .. " " .. tostring(why)); return false end
+	end
 	local model = template:Clone()
 	model:ScaleTo(actor:GetScale())
 	local coverage: { [string]: boolean } = {}

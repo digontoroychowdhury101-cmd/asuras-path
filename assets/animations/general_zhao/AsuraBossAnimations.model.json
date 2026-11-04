@@ -1,418 +1,733 @@
 {
- "className": "Folder",
- "children": [
-  {
-   "name": "GeneralZhao_P1_AlertTransition",
-   "className": "Animation",
-   "properties": {
-    "AnimationId": "rbxassetid://127133021899022"
-   }
-  },
-  {
-   "name": "GeneralZhao_P1_Approach",
-   "className": "Animation",
-   "properties": {
-    "AnimationId": "rbxassetid://85531437373622"
-   }
-  },
-  {
-   "name": "GeneralZhao_P1_ColossalHammer",
-   "className": "Animation",
-   "properties": {
-    "AnimationId": "rbxassetid://93359276356611"
-   }
-  },
-  {
-   "name": "GeneralZhao_P1_Death",
-   "className": "Animation",
-   "properties": {
-    "AnimationId": "rbxassetid://91951518681926"
-   }
-  },
-  {
-   "name": "GeneralZhao_P1_DeathblowVictim",
-   "className": "Animation",
-   "properties": {
-    "AnimationId": "rbxassetid://136397071657642"
-   }
-  },
-  {
-   "name": "GeneralZhao_P1_DeflectRecoil",
-   "className": "Animation",
-   "properties": {
-    "AnimationId": "rbxassetid://127831459545816"
-   }
-  },
-  {
-   "name": "GeneralZhao_P1_Equip",
-   "className": "Animation",
-   "properties": {
-    "AnimationId": "rbxassetid://121747729384282"
-   }
-  },
-  {
-   "name": "GeneralZhao_P1_Guandao_Art",
-   "className": "Animation",
-   "properties": {
-    "AnimationId": "rbxassetid://104589140222776"
-   }
-  },
-  {
-   "name": "GeneralZhao_P1_Guandao_Heavy",
-   "className": "Animation",
-   "properties": {
-    "AnimationId": "rbxassetid://92622207390418"
-   }
-  },
-  {
-   "name": "GeneralZhao_P1_Guandao_L1",
-   "className": "Animation",
-   "properties": {
-    "AnimationId": "rbxassetid://129602664895532"
-   }
-  },
-  {
-   "name": "GeneralZhao_P1_Guandao_L2",
-   "className": "Animation",
-   "properties": {
-    "AnimationId": "rbxassetid://125584049105524"
-   }
-  },
-  {
-   "name": "GeneralZhao_P1_Guandao_L3",
-   "className": "Animation",
-   "properties": {
-    "AnimationId": "rbxassetid://125059655809539"
-   }
-  },
-  {
-   "name": "GeneralZhao_P1_Guandao_Running",
-   "className": "Animation",
-   "properties": {
-    "AnimationId": "rbxassetid://108205290655865"
-   }
-  },
-  {
-   "name": "GeneralZhao_P1_GuardEnter",
-   "className": "Animation",
-   "properties": {
-    "AnimationId": "rbxassetid://74853472756900"
-   }
-  },
-  {
-   "name": "GeneralZhao_P1_GuardExit",
-   "className": "Animation",
-   "properties": {
-    "AnimationId": "rbxassetid://98641970881934"
-   }
-  },
-  {
-   "name": "GeneralZhao_P1_GuardHit",
-   "className": "Animation",
-   "properties": {
-    "AnimationId": "rbxassetid://127195229700419"
-   }
-  },
-  {
-   "name": "GeneralZhao_P1_GuardLoop",
-   "className": "Animation",
-   "properties": {
-    "AnimationId": "rbxassetid://111834036898043"
-   }
-  },
-  {
-   "name": "GeneralZhao_P1_HitHeavyBack",
-   "className": "Animation",
-   "properties": {
-    "AnimationId": "rbxassetid://84762163886991"
-   }
-  },
-  {
-   "name": "GeneralZhao_P1_HitHeavyFront",
-   "className": "Animation",
-   "properties": {
-    "AnimationId": "rbxassetid://125196168277321"
-   }
-  },
-  {
-   "name": "GeneralZhao_P1_HitHeavyLeft",
-   "className": "Animation",
-   "properties": {
-    "AnimationId": "rbxassetid://132550580767821"
-   }
-  },
-  {
-   "name": "GeneralZhao_P1_HitHeavyRight",
-   "className": "Animation",
-   "properties": {
-    "AnimationId": "rbxassetid://84025727633776"
-   }
-  },
-  {
-   "name": "GeneralZhao_P1_HitLightBack",
-   "className": "Animation",
-   "properties": {
-    "AnimationId": "rbxassetid://124919327446338"
-   }
-  },
-  {
-   "name": "GeneralZhao_P1_HitLightFront",
-   "className": "Animation",
-   "properties": {
-    "AnimationId": "rbxassetid://134712701817739"
-   }
-  },
-  {
-   "name": "GeneralZhao_P1_HitLightLeft",
-   "className": "Animation",
-   "properties": {
-    "AnimationId": "rbxassetid://80203755918569"
-   }
-  },
-  {
-   "name": "GeneralZhao_P1_HitLightRight",
-   "className": "Animation",
-   "properties": {
-    "AnimationId": "rbxassetid://74530429973921"
-   }
-  },
-  {
-   "name": "GeneralZhao_P1_Idle",
-   "className": "Animation",
-   "properties": {
-    "AnimationId": "rbxassetid://93332880271451"
-   }
-  },
-  {
-   "name": "GeneralZhao_P1_IdleNeutral",
-   "className": "Animation",
-   "properties": {
-    "AnimationId": "rbxassetid://106044582504737"
-   }
-  },
-  {
-   "name": "GeneralZhao_P1_Intro",
-   "className": "Animation",
-   "properties": {
-    "AnimationId": "rbxassetid://96106117705608"
-   }
-  },
-  {
-   "name": "GeneralZhao_P1_IntroReady",
-   "className": "Animation",
-   "properties": {
-    "AnimationId": "rbxassetid://89736440155267"
-   }
-  },
-  {
-   "name": "GeneralZhao_P1_IronCharge",
-   "className": "Animation",
-   "properties": {
-    "AnimationId": "rbxassetid://133184221531855"
-   }
-  },
-  {
-   "name": "GeneralZhao_P1_LightningSpear",
-   "className": "Animation",
-   "properties": {
-    "AnimationId": "rbxassetid://73671419056664"
-   }
-  },
-  {
-   "name": "GeneralZhao_P1_Oath_Guandao_Art",
-   "className": "Animation",
-   "properties": {
-    "AnimationId": "rbxassetid://97756948713906"
-   }
-  },
-  {
-   "name": "GeneralZhao_P1_Oath_Guandao_Heavy",
-   "className": "Animation",
-   "properties": {
-    "AnimationId": "rbxassetid://90347702215381"
-   }
-  },
-  {
-   "name": "GeneralZhao_P1_Oath_Guandao_L1",
-   "className": "Animation",
-   "properties": {
-    "AnimationId": "rbxassetid://131940901061421"
-   }
-  },
-  {
-   "name": "GeneralZhao_P1_Oath_Guandao_L2",
-   "className": "Animation",
-   "properties": {
-    "AnimationId": "rbxassetid://71122340818018"
-   }
-  },
-  {
-   "name": "GeneralZhao_P1_Oath_Guandao_L3",
-   "className": "Animation",
-   "properties": {
-    "AnimationId": "rbxassetid://73690059521242"
-   }
-  },
-  {
-   "name": "GeneralZhao_P1_Oath_Guandao_Running",
-   "className": "Animation",
-   "properties": {
-    "AnimationId": "rbxassetid://80675649448907"
-   }
-  },
-  {
-   "name": "GeneralZhao_P1_Oath_GuardLoop",
-   "className": "Animation",
-   "properties": {
-    "AnimationId": "rbxassetid://99116669951665"
-   }
-  },
-  {
-   "name": "GeneralZhao_P1_Oath_Idle",
-   "className": "Animation",
-   "properties": {
-    "AnimationId": "rbxassetid://110263386521407"
-   }
-  },
-  {
-   "name": "GeneralZhao_P1_Oath_LightningSpear",
-   "className": "Animation",
-   "properties": {
-    "AnimationId": "rbxassetid://73610670043216"
-   }
-  },
-  {
-   "name": "GeneralZhao_P1_Oath_RunForward",
-   "className": "Animation",
-   "properties": {
-    "AnimationId": "rbxassetid://115515026527765"
-   }
-  },
-  {
-   "name": "GeneralZhao_P1_Oath_Strike",
-   "className": "Animation",
-   "properties": {
-    "AnimationId": "rbxassetid://94877060209962"
-   }
-  },
-  {
-   "name": "GeneralZhao_P1_Oath_ThunderQuickstep",
-   "className": "Animation",
-   "properties": {
-    "AnimationId": "rbxassetid://139856362667978"
-   }
-  },
-  {
-   "name": "GeneralZhao_P1_Oath_WalkForward",
-   "className": "Animation",
-   "properties": {
-    "AnimationId": "rbxassetid://74266698315063"
-   }
-  },
-  {
-   "name": "GeneralZhao_P1_PostureBreak",
-   "className": "Animation",
-   "properties": {
-    "AnimationId": "rbxassetid://74127943676745"
-   }
-  },
-  {
-   "name": "GeneralZhao_P1_Retreat",
-   "className": "Animation",
-   "properties": {
-    "AnimationId": "rbxassetid://96759854099054"
-   }
-  },
-  {
-   "name": "GeneralZhao_P1_RunForward",
-   "className": "Animation",
-   "properties": {
-    "AnimationId": "rbxassetid://133176256793259"
-   }
-  },
-  {
-   "name": "GeneralZhao_P1_StaggerLoop",
-   "className": "Animation",
-   "properties": {
-    "AnimationId": "rbxassetid://103611120393384"
-   }
-  },
-  {
-   "name": "GeneralZhao_P1_StaggerRecover",
-   "className": "Animation",
-   "properties": {
-    "AnimationId": "rbxassetid://118275414580777"
-   }
-  },
-  {
-   "name": "GeneralZhao_P1_Stop",
-   "className": "Animation",
-   "properties": {
-    "AnimationId": "rbxassetid://87868215346153"
-   }
-  },
-  {
-   "name": "GeneralZhao_P1_StrafeLeft",
-   "className": "Animation",
-   "properties": {
-    "AnimationId": "rbxassetid://79228685638380"
-   }
-  },
-  {
-   "name": "GeneralZhao_P1_StrafeRight",
-   "className": "Animation",
-   "properties": {
-    "AnimationId": "rbxassetid://137339758551664"
-   }
-  },
-  {
-   "name": "GeneralZhao_P1_Strike",
-   "className": "Animation",
-   "properties": {
-    "AnimationId": "rbxassetid://97525853143850"
-   }
-  },
-  {
-   "name": "GeneralZhao_P1_ThunderQuickstep",
-   "className": "Animation",
-   "properties": {
-    "AnimationId": "rbxassetid://135881005810178"
-   }
-  },
-  {
-   "name": "GeneralZhao_P1_Transform",
-   "className": "Animation",
-   "properties": {
-    "AnimationId": "rbxassetid://75749997268879"
-   }
-  },
-  {
-   "name": "GeneralZhao_P1_TurnLeft",
-   "className": "Animation",
-   "properties": {
-    "AnimationId": "rbxassetid://78096520157110"
-   }
-  },
-  {
-   "name": "GeneralZhao_P1_TurnRight",
-   "className": "Animation",
-   "properties": {
-    "AnimationId": "rbxassetid://130127773789747"
-   }
-  },
-  {
-   "name": "GeneralZhao_P1_WalkBackward",
-   "className": "Animation",
-   "properties": {
-    "AnimationId": "rbxassetid://97941513136110"
-   }
-  },
-  {
-   "name": "GeneralZhao_P1_WalkForward",
-   "className": "Animation",
-   "properties": {
-    "AnimationId": "rbxassetid://136380273629469"
-   }
-  }
- ]
+  "className": "Folder",
+  "children": [
+    {
+      "name": "GeneralZhao_P1_AlertTransition",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://127133021899022"
+      }
+    },
+    {
+      "name": "GeneralZhao_P1_Approach",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://85531437373622"
+      }
+    },
+    {
+      "name": "GeneralZhao_P1_ColossalHammer",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://93359276356611"
+      }
+    },
+    {
+      "name": "GeneralZhao_P1_Death",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://91951518681926"
+      }
+    },
+    {
+      "name": "GeneralZhao_P1_DeathblowVictim",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://136397071657642"
+      }
+    },
+    {
+      "name": "GeneralZhao_P1_DeflectRecoil",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://127831459545816"
+      }
+    },
+    {
+      "name": "GeneralZhao_P1_Equip",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://121747729384282"
+      }
+    },
+    {
+      "name": "GeneralZhao_P1_Guandao_Art",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://104589140222776"
+      }
+    },
+    {
+      "name": "GeneralZhao_P1_Guandao_Heavy",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://92622207390418"
+      }
+    },
+    {
+      "name": "GeneralZhao_P1_Guandao_L1",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://129602664895532"
+      }
+    },
+    {
+      "name": "GeneralZhao_P1_Guandao_L2",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://125584049105524"
+      }
+    },
+    {
+      "name": "GeneralZhao_P1_Guandao_L3",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://125059655809539"
+      }
+    },
+    {
+      "name": "GeneralZhao_P1_Guandao_Running",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://108205290655865"
+      }
+    },
+    {
+      "name": "GeneralZhao_P1_GuardEnter",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://74853472756900"
+      }
+    },
+    {
+      "name": "GeneralZhao_P1_GuardExit",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://98641970881934"
+      }
+    },
+    {
+      "name": "GeneralZhao_P1_GuardHit",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://127195229700419"
+      }
+    },
+    {
+      "name": "GeneralZhao_P1_GuardLoop",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://111834036898043"
+      }
+    },
+    {
+      "name": "GeneralZhao_P1_HitHeavyBack",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://84762163886991"
+      }
+    },
+    {
+      "name": "GeneralZhao_P1_HitHeavyFront",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://125196168277321"
+      }
+    },
+    {
+      "name": "GeneralZhao_P1_HitHeavyLeft",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://132550580767821"
+      }
+    },
+    {
+      "name": "GeneralZhao_P1_HitHeavyRight",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://84025727633776"
+      }
+    },
+    {
+      "name": "GeneralZhao_P1_HitLightBack",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://124919327446338"
+      }
+    },
+    {
+      "name": "GeneralZhao_P1_HitLightFront",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://134712701817739"
+      }
+    },
+    {
+      "name": "GeneralZhao_P1_HitLightLeft",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://80203755918569"
+      }
+    },
+    {
+      "name": "GeneralZhao_P1_HitLightRight",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://74530429973921"
+      }
+    },
+    {
+      "name": "GeneralZhao_P1_Idle",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://93332880271451"
+      }
+    },
+    {
+      "name": "GeneralZhao_P1_IdleNeutral",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://106044582504737"
+      }
+    },
+    {
+      "name": "GeneralZhao_P1_Intro",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://96106117705608"
+      }
+    },
+    {
+      "name": "GeneralZhao_P1_IntroReady",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://89736440155267"
+      }
+    },
+    {
+      "name": "GeneralZhao_P1_IronCharge",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://133184221531855"
+      }
+    },
+    {
+      "name": "GeneralZhao_P1_LightningSpear",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://73671419056664"
+      }
+    },
+    {
+      "name": "GeneralZhao_P1_Oath_Guandao_Art",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://97756948713906"
+      }
+    },
+    {
+      "name": "GeneralZhao_P1_Oath_Guandao_Heavy",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://90347702215381"
+      }
+    },
+    {
+      "name": "GeneralZhao_P1_Oath_Guandao_L1",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://131940901061421"
+      }
+    },
+    {
+      "name": "GeneralZhao_P1_Oath_Guandao_L2",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://71122340818018"
+      }
+    },
+    {
+      "name": "GeneralZhao_P1_Oath_Guandao_L3",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://73690059521242"
+      }
+    },
+    {
+      "name": "GeneralZhao_P1_Oath_Guandao_Running",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://80675649448907"
+      }
+    },
+    {
+      "name": "GeneralZhao_P1_Oath_GuardLoop",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://99116669951665"
+      }
+    },
+    {
+      "name": "GeneralZhao_P1_Oath_Idle",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://110263386521407"
+      }
+    },
+    {
+      "name": "GeneralZhao_P1_Oath_LightningSpear",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://73610670043216"
+      }
+    },
+    {
+      "name": "GeneralZhao_P1_Oath_RunForward",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://115515026527765"
+      }
+    },
+    {
+      "name": "GeneralZhao_P1_Oath_Strike",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://94877060209962"
+      }
+    },
+    {
+      "name": "GeneralZhao_P1_Oath_ThunderQuickstep",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://139856362667978"
+      }
+    },
+    {
+      "name": "GeneralZhao_P1_Oath_WalkForward",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://74266698315063"
+      }
+    },
+    {
+      "name": "GeneralZhao_P1_PostureBreak",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://74127943676745"
+      }
+    },
+    {
+      "name": "GeneralZhao_P1_Retreat",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://96759854099054"
+      }
+    },
+    {
+      "name": "GeneralZhao_P1_RunForward",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://133176256793259"
+      }
+    },
+    {
+      "name": "GeneralZhao_P1_StaggerLoop",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://103611120393384"
+      }
+    },
+    {
+      "name": "GeneralZhao_P1_StaggerRecover",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://118275414580777"
+      }
+    },
+    {
+      "name": "GeneralZhao_P1_Stop",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://87868215346153"
+      }
+    },
+    {
+      "name": "GeneralZhao_P1_StrafeLeft",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://79228685638380"
+      }
+    },
+    {
+      "name": "GeneralZhao_P1_StrafeRight",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://137339758551664"
+      }
+    },
+    {
+      "name": "GeneralZhao_P1_Strike",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://97525853143850"
+      }
+    },
+    {
+      "name": "GeneralZhao_P1_ThunderQuickstep",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://135881005810178"
+      }
+    },
+    {
+      "name": "GeneralZhao_P1_Transform",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://75749997268879"
+      }
+    },
+    {
+      "name": "GeneralZhao_P1_TurnLeft",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://78096520157110"
+      }
+    },
+    {
+      "name": "GeneralZhao_P1_TurnRight",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://130127773789747"
+      }
+    },
+    {
+      "name": "GeneralZhao_P1_WalkBackward",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://97941513136110"
+      }
+    },
+    {
+      "name": "GeneralZhao_P1_WalkForward",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://136380273629469"
+      }
+    },
+    {
+      "name": "IronBull_P1_ColossalHammer",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://94722941246062"
+      }
+    },
+    {
+      "name": "IronBull_P1_Death",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://77822460582233"
+      }
+    },
+    {
+      "name": "IronBull_P1_DeathblowVictim",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://101105147616440"
+      }
+    },
+    {
+      "name": "IronBull_P1_DeflectRecoil",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://113136071721091"
+      }
+    },
+    {
+      "name": "IronBull_P1_GuardHit",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://87270988220487"
+      }
+    },
+    {
+      "name": "IronBull_P1_GuardLoop",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://75306239613996"
+      }
+    },
+    {
+      "name": "IronBull_P1_HitHeavyBack",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://101859830649223"
+      }
+    },
+    {
+      "name": "IronBull_P1_HitHeavyFront",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://75054770682529"
+      }
+    },
+    {
+      "name": "IronBull_P1_HitLightBack",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://133431882687358"
+      }
+    },
+    {
+      "name": "IronBull_P1_HitLightFront",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://76564576873620"
+      }
+    },
+    {
+      "name": "IronBull_P1_HitLightLeft",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://83836074661492"
+      }
+    },
+    {
+      "name": "IronBull_P1_HitLightRight",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://109447394714519"
+      }
+    },
+    {
+      "name": "IronBull_P1_Idle",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://129897467735355"
+      }
+    },
+    {
+      "name": "IronBull_P1_IronBullMaul_Art",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://84728894275312"
+      }
+    },
+    {
+      "name": "IronBull_P1_IronBullMaul_Heavy",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://126807319551241"
+      }
+    },
+    {
+      "name": "IronBull_P1_IronBullMaul_L1",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://93091478027124"
+      }
+    },
+    {
+      "name": "IronBull_P1_IronBullMaul_L2",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://134684561255803"
+      }
+    },
+    {
+      "name": "IronBull_P1_IronBullMaul_L3",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://101604086107464"
+      }
+    },
+    {
+      "name": "IronBull_P1_IronBullMaul_Running",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://83256923063798"
+      }
+    },
+    {
+      "name": "IronBull_P1_IronCharge",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://102543133535746"
+      }
+    },
+    {
+      "name": "IronBull_P1_LightningSpear",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://95875821026131"
+      }
+    },
+    {
+      "name": "IronBull_P1_Oath_GuardLoop",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://132240549042765"
+      }
+    },
+    {
+      "name": "IronBull_P1_Oath_Idle",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://72674683211984"
+      }
+    },
+    {
+      "name": "IronBull_P1_Oath_IronBullMaul_Art",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://130385166657547"
+      }
+    },
+    {
+      "name": "IronBull_P1_Oath_IronBullMaul_Heavy",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://139568843400797"
+      }
+    },
+    {
+      "name": "IronBull_P1_Oath_IronBullMaul_L1",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://130606237768312"
+      }
+    },
+    {
+      "name": "IronBull_P1_Oath_IronBullMaul_L2",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://133282925485521"
+      }
+    },
+    {
+      "name": "IronBull_P1_Oath_IronBullMaul_L3",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://122343696873444"
+      }
+    },
+    {
+      "name": "IronBull_P1_Oath_IronBullMaul_Running",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://101608522554594"
+      }
+    },
+    {
+      "name": "IronBull_P1_Oath_LightningSpear",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://123298361485152"
+      }
+    },
+    {
+      "name": "IronBull_P1_Oath_RunForward",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://123929257784800"
+      }
+    },
+    {
+      "name": "IronBull_P1_Oath_Strike",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://129063816358472"
+      }
+    },
+    {
+      "name": "IronBull_P1_Oath_ThunderQuickstep",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://136443768204803"
+      }
+    },
+    {
+      "name": "IronBull_P1_Oath_WalkForward",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://107252095378851"
+      }
+    },
+    {
+      "name": "IronBull_P1_PostureBreak",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://139689113713526"
+      }
+    },
+    {
+      "name": "IronBull_P1_RunForward",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://130518110269015"
+      }
+    },
+    {
+      "name": "IronBull_P1_StaggerLoop",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://105329016213854"
+      }
+    },
+    {
+      "name": "IronBull_P1_StaggerRecover",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://93705577388727"
+      }
+    },
+    {
+      "name": "IronBull_P1_StrafeLeft",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://133189451825460"
+      }
+    },
+    {
+      "name": "IronBull_P1_StrafeRight",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://103309133090284"
+      }
+    },
+    {
+      "name": "IronBull_P1_Strike",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://132701809192559"
+      }
+    },
+    {
+      "name": "IronBull_P1_ThunderQuickstep",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://79971975594696"
+      }
+    },
+    {
+      "name": "IronBull_P1_Transform",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://78875691933776"
+      }
+    },
+    {
+      "name": "IronBull_P1_WalkBackward",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://106713913389035"
+      }
+    },
+    {
+      "name": "IronBull_P1_WalkForward",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://120378367818488"
+      }
+    }
+  ]
 }

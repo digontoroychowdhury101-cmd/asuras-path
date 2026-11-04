@@ -55,6 +55,11 @@ Rules.Contacts = table.freeze({
 		Guandao_L1 = { 0.15 }, Guandao_L2 = { 0.15 }, Guandao_L3 = { 0.183 }, Guandao_Heavy = { 0.383 }, Guandao_Running = { 0.217 },
 		Guandao_Art = { 0.317 },
 	}),
+	IronBull = table.freeze({ -- assets/animations/opening_cast/bull/manifest.json: each contact is the move's first active frame
+		Strike = { 0.5 }, LightningSpear = { 0.8, 1.5, 2.2 }, ThunderQuickstep = { 1.0 }, IronCharge = { 1.5 }, ColossalHammer = { 1.8 },
+		IronBullMaul_L1 = { 0.217 }, IronBullMaul_L2 = { 0.167 }, IronBullMaul_L3 = { 0.317 }, IronBullMaul_Heavy = { 0.517 }, IronBullMaul_Running = { 0.283 },
+		IronBullMaul_Art = { 0.433 },
+	}),
 } :: { [string]: { [string]: { number } } })
 -- How far a track may be sped up or slowed to make its contact; beyond that it holds or skips ahead.
 Rules.SyncSpeed = table.freeze({ Min = 0.6, Max = 1.6 })
@@ -65,6 +70,42 @@ Rules.Reactions = table.freeze({ StanceBroken = "PostureBreak", GuardBroken = "P
 	DeathblowVictim = "DeathblowVictim", KO = "Death" } :: { [string]: string })
 local REACTION: { [string]: boolean } = {}
 for _, action in Rules.Reactions do REACTION[action] = true end
+
+-- The gait layer (Movement priority, below every attack): what the body does while the server slides his root. Rates are the clip's own planted-foot
+-- speed in rig studs per second at playback 1; a walking actor plays at speed / (rate x scale), so feet stay on the ground at any AI speed. Blocking replaces
+-- the gait because the guard pose owns the same joints. A look listed here without an authored clip simply has no layer: nothing stands in for it.
+Rules.Locomotion = table.freeze({
+	IronBull = table.freeze({ WalkForward = 1.65, RunForward = 5.25, WalkBackward = 1.25, StrafeLeft = 1.33, StrafeRight = 1.33 }),
+	GeneralZhao = table.freeze({ WalkForward = 2.2, RunForward = 8.0, WalkBackward = 1.9, StrafeLeft = 2.0, StrafeRight = 2.0 }),
+} :: { [string]: { [string]: number } })
+Rules.GaitRate = table.freeze({ Min = 0.45, Max = 1.9, Stand = 0.7, StandGrace = 0.35 })
+local GAIT: { [string]: boolean } = { WalkForward = true, RunForward = true, WalkBackward = true, StrafeLeft = true, StrafeRight = true, GuardLoop = true, GuardHit = true }
+
+-- Which gait action a moving or guarding actor plays, and at what rate. speed: planted root speed in studs/s; forward, right: components of the travel
+-- direction along his facing (unit); current: the action now playing, for hysteresis. Pure.
+function Rules.gait(look: string, speed: number, scale: number, forward: number, right: number, state: string?, current: string?): (string?, number)
+	if state == "Blockstun" or state == "Deflecting" then return "GuardHit", 1 end
+	if state == "Blocking" then return "GuardLoop", 1 end
+	local rates = Rules.Locomotion[look]
+	if not rates then return nil, 1 end
+	local moving = current ~= nil and current ~= "GuardLoop" and current ~= "GuardHit"
+	if speed < (if moving then Rules.GaitRate.Stand - Rules.GaitRate.StandGrace else Rules.GaitRate.Stand) then return nil, 1 end
+	local walk = rates.WalkForward * scale
+	local action: string
+	if math.abs(right) > math.abs(forward) * 1.2 then
+		action = if right > 0 then "StrafeRight" else "StrafeLeft"
+	elseif forward < 0 then
+		action = "WalkBackward"
+	else
+		local running = speed > walk * (if current == "RunForward" then 1.35 else 1.6)
+		action = if running then "RunForward" else "WalkForward"
+	end
+	return action, math.clamp(speed / (rates[action] * scale), Rules.GaitRate.Min, Rules.GaitRate.Max)
+end
+
+-- An actor with an authored Death clip (AsuraAuthoredDeath) stays on its feet for the clip instead of being folded by EnemyDissolve;
+-- it burns away from this many seconds after the fall, so the fade ends before Settings.Respawn.EnemyCorpseTime removes the body.
+Rules.DeathFadeAt = 2.6
 
 -- Shen's original catalog slots (and their AsuraBossAnimation_<legacy> attributes) still count.
 local LEGACY: { [string]: { Slot: string, Speed: number } } = {
@@ -102,7 +143,7 @@ function Rules.kind(move: string): string? return KINDS[move] end
 local function keys(look: string, phase: number, action: string, oath: boolean?): { string }
 	local list = { look .. "_P" .. phase .. "_" .. action, look .. "_" .. action }
 	if oath then table.insert(list, 1, look .. "_Oath_" .. action); table.insert(list, 1, look .. "_P" .. phase .. "_Oath_" .. action) end
-	if action ~= "Idle" and action ~= "Transform" and action ~= "Strike" and not REACTION[action] then
+	if action ~= "Idle" and action ~= "Transform" and action ~= "Strike" and not REACTION[action] and not GAIT[action] then
 		table.insert(list, look .. "_P" .. phase .. "_Strike"); table.insert(list, look .. "_Strike")
 	end
 	return list
@@ -110,8 +151,8 @@ end
 
 -- rig: "R15" | "R6" | "Creature"; attribute reads the actor (nil-safe for pure use).
 function Rules.resolve(look: string, phase: number, action: string, kind: string?, rig: string, attribute: (string) -> any): Resolved
-	local looped = action == "Idle"
-	local priority = if looped then "Idle" elseif action == "Transform" then "Action4" elseif REACTION[action] then "Action3" else "Action"
+	local looped = action == "Idle" or (GAIT[action] == true and action ~= "GuardHit")
+	local priority = if action == "Idle" then "Idle" elseif GAIT[action] then "Movement" elseif action == "Transform" then "Action4" elseif REACTION[action] then "Action3" else "Action"
 	local oath = Rules.Oath[look] == true and attribute("AsuraBossEnraged") == true
 	for _, key in keys(look, phase, action, oath) do
 		local legacy = LEGACY[key]
@@ -126,8 +167,8 @@ function Rules.resolve(look: string, phase: number, action: string, kind: string
 		end
 	end
 	local key = keys(look, phase, action)[1]
-	if REACTION[action] then
-		return { Key = key, Id = nil, Source = "None", Speed = 1, Looped = false, Priority = priority }
+	if REACTION[action] or GAIT[action] then
+		return { Key = key, Id = nil, Source = "None", Speed = 1, Looped = looped, Priority = priority }
 	end
 	if rig == "Creature" then
 		return { Key = key, Id = nil, Source = "Procedural", Speed = 1, Looped = looped, Priority = priority }

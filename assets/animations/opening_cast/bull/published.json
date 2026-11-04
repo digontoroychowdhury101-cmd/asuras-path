@@ -1,0 +1,272 @@
+{
+  "IronBull_P1_ColossalHammer": {
+    "id": "rbxassetid://94722941246062",
+    "keyframes": 74,
+    "length": 2.799999952316284,
+    "slot": "IronBull_P1_ColossalHammer"
+  },
+  "IronBull_P1_Death": {
+    "id": "rbxassetid://77822460582233",
+    "keyframes": 34,
+    "length": 3,
+    "slot": "IronBull_P1_Death"
+  },
+  "IronBull_P1_DeathblowVictim": {
+    "id": "rbxassetid://101105147616440",
+    "keyframes": 21,
+    "length": 2.200000047683716,
+    "slot": "IronBull_P1_DeathblowVictim"
+  },
+  "IronBull_P1_DeflectRecoil": {
+    "id": "rbxassetid://113136071721091",
+    "keyframes": 12,
+    "length": 0.6000000238418579,
+    "slot": "IronBull_P1_DeflectRecoil"
+  },
+  "IronBull_P1_GuardHit": {
+    "id": "rbxassetid://87270988220487",
+    "keyframes": 11,
+    "length": 0.4666700065135956,
+    "slot": "IronBull_P1_GuardHit"
+  },
+  "IronBull_P1_GuardLoop": {
+    "id": "rbxassetid://75306239613996",
+    "keyframes": 6,
+    "length": 1.600000023841858,
+    "slot": "IronBull_P1_GuardLoop"
+  },
+  "IronBull_P1_HitHeavyBack": {
+    "id": "rbxassetid://101859830649223",
+    "keyframes": 12,
+    "length": 0.800000011920929,
+    "slot": "IronBull_P1_HitHeavyBack"
+  },
+  "IronBull_P1_HitHeavyFront": {
+    "id": "rbxassetid://75054770682529",
+    "keyframes": 13,
+    "length": 0.800000011920929,
+    "slot": "IronBull_P1_HitHeavyFront"
+  },
+  "IronBull_P1_HitLightBack": {
+    "id": "rbxassetid://133431882687358",
+    "keyframes": 8,
+    "length": 0.4000000059604645,
+    "slot": "IronBull_P1_HitLightBack"
+  },
+  "IronBull_P1_HitLightFront": {
+    "id": "rbxassetid://76564576873620",
+    "keyframes": 8,
+    "length": 0.4000000059604645,
+    "slot": "IronBull_P1_HitLightFront"
+  },
+  "IronBull_P1_HitLightLeft": {
+    "id": "rbxassetid://83836074661492",
+    "keyframes": 8,
+    "length": 0.4000000059604645,
+    "slot": "IronBull_P1_HitLightLeft"
+  },
+  "IronBull_P1_HitLightRight": {
+    "id": "rbxassetid://109447394714519",
+    "keyframes": 9,
+    "length": 0.4000000059604645,
+    "slot": "IronBull_P1_HitLightRight"
+  },
+  "IronBull_P1_Idle": {
+    "id": "rbxassetid://129897467735355",
+    "keyframes": 8,
+    "length": 3.200000047683716,
+    "slot": "IronBull_P1_Idle"
+  },
+  "IronBull_P1_IronBullMaul_Art": {
+    "id": "rbxassetid://84728894275312",
+    "keyframes": 36,
+    "length": 1.1666699647903442,
+    "slot": "IronBull_P1_IronBullMaul_Art"
+  },
+  "IronBull_P1_IronBullMaul_Heavy": {
+    "id": "rbxassetid://126807319551241",
+    "keyframes": 37,
+    "length": 1.2000000476837158,
+    "slot": "IronBull_P1_IronBullMaul_Heavy"
+  },
+  "IronBull_P1_IronBullMaul_L1": {
+    "id": "rbxassetid://93091478027124",
+    "keyframes": 18,
+    "length": 0.5666700005531311,
+    "slot": "IronBull_P1_IronBullMaul_L1"
+  },
+  "IronBull_P1_IronBullMaul_L2": {
+    "id": "rbxassetid://134684561255803",
+    "keyframes": 16,
+    "length": 0.5,
+    "slot": "IronBull_P1_IronBullMaul_L2"
+  },
+  "IronBull_P1_IronBullMaul_L3": {
+    "id": "rbxassetid://101604086107464",
+    "keyframes": 28,
+    "length": 0.8999999761581421,
+    "slot": "IronBull_P1_IronBullMaul_L3"
+  },
+  "IronBull_P1_IronBullMaul_Running": {
+    "id": "rbxassetid://83256923063798",
+    "keyframes": 25,
+    "length": 0.800000011920929,
+    "slot": "IronBull_P1_IronBullMaul_Running"
+  },
+  "IronBull_P1_IronCharge": {
+    "id": "rbxassetid://102543133535746",
+    "keyframes": 64,
+    "length": 2.299999952316284,
+    "slot": "IronBull_P1_IronCharge"
+  },
+  "IronBull_P1_LightningSpear": {
+    "id": "rbxassetid://95875821026131",
+    "keyframes": 83,
+    "length": 3,
+    "slot": "IronBull_P1_LightningSpear"
+  },
+  "IronBull_P1_Oath_GuardLoop": {
+    "id": "rbxassetid://132240549042765",
+    "keyframes": 6,
+    "length": 1.600000023841858,
+    "slot": "IronBull_P1_Oath_GuardLoop"
+  },
+  "IronBull_P1_Oath_Idle": {
+    "id": "rbxassetid://72674683211984",
+    "keyframes": 8,
+    "length": 2.4000000953674316,
+    "slot": "IronBull_P1_Oath_Idle"
+  },
+  "IronBull_P1_Oath_IronBullMaul_Art": {
+    "id": "rbxassetid://130385166657547",
+    "keyframes": 36,
+    "length": 1.1666699647903442,
+    "slot": "IronBull_P1_Oath_IronBullMaul_Art"
+  },
+  "IronBull_P1_Oath_IronBullMaul_Heavy": {
+    "id": "rbxassetid://139568843400797",
+    "keyframes": 37,
+    "length": 1.2000000476837158,
+    "slot": "IronBull_P1_Oath_IronBullMaul_Heavy"
+  },
+  "IronBull_P1_Oath_IronBullMaul_L1": {
+    "id": "rbxassetid://130606237768312",
+    "keyframes": 18,
+    "length": 0.5666700005531311,
+    "slot": "IronBull_P1_Oath_IronBullMaul_L1"
+  },
+  "IronBull_P1_Oath_IronBullMaul_L2": {
+    "id": "rbxassetid://133282925485521",
+    "keyframes": 16,
+    "length": 0.5,
+    "slot": "IronBull_P1_Oath_IronBullMaul_L2"
+  },
+  "IronBull_P1_Oath_IronBullMaul_L3": {
+    "id": "rbxassetid://122343696873444",
+    "keyframes": 28,
+    "length": 0.8999999761581421,
+    "slot": "IronBull_P1_Oath_IronBullMaul_L3"
+  },
+  "IronBull_P1_Oath_IronBullMaul_Running": {
+    "id": "rbxassetid://101608522554594",
+    "keyframes": 25,
+    "length": 0.800000011920929,
+    "slot": "IronBull_P1_Oath_IronBullMaul_Running"
+  },
+  "IronBull_P1_Oath_LightningSpear": {
+    "id": "rbxassetid://123298361485152",
+    "keyframes": 83,
+    "length": 3,
+    "slot": "IronBull_P1_Oath_LightningSpear"
+  },
+  "IronBull_P1_Oath_RunForward": {
+    "id": "rbxassetid://123929257784800",
+    "keyframes": 25,
+    "length": 0.800000011920929,
+    "slot": "IronBull_P1_Oath_RunForward"
+  },
+  "IronBull_P1_Oath_Strike": {
+    "id": "rbxassetid://129063816358472",
+    "keyframes": 37,
+    "length": 1.2000000476837158,
+    "slot": "IronBull_P1_Oath_Strike"
+  },
+  "IronBull_P1_Oath_ThunderQuickstep": {
+    "id": "rbxassetid://136443768204803",
+    "keyframes": 52,
+    "length": 1.7999999523162842,
+    "slot": "IronBull_P1_Oath_ThunderQuickstep"
+  },
+  "IronBull_P1_Oath_WalkForward": {
+    "id": "rbxassetid://107252095378851",
+    "keyframes": 43,
+    "length": 1.5,
+    "slot": "IronBull_P1_Oath_WalkForward"
+  },
+  "IronBull_P1_PostureBreak": {
+    "id": "rbxassetid://139689113713526",
+    "keyframes": 25,
+    "length": 1,
+    "slot": "IronBull_P1_PostureBreak"
+  },
+  "IronBull_P1_RunForward": {
+    "id": "rbxassetid://130518110269015",
+    "keyframes": 25,
+    "length": 0.800000011920929,
+    "slot": "IronBull_P1_RunForward"
+  },
+  "IronBull_P1_StaggerLoop": {
+    "id": "rbxassetid://105329016213854",
+    "keyframes": 6,
+    "length": 1.399999976158142,
+    "slot": "IronBull_P1_StaggerLoop"
+  },
+  "IronBull_P1_StaggerRecover": {
+    "id": "rbxassetid://93705577388727",
+    "keyframes": 24,
+    "length": 0.800000011920929,
+    "slot": "IronBull_P1_StaggerRecover"
+  },
+  "IronBull_P1_StrafeLeft": {
+    "id": "rbxassetid://133189451825460",
+    "keyframes": 44,
+    "length": 1.5,
+    "slot": "IronBull_P1_StrafeLeft"
+  },
+  "IronBull_P1_StrafeRight": {
+    "id": "rbxassetid://103309133090284",
+    "keyframes": 42,
+    "length": 1.5,
+    "slot": "IronBull_P1_StrafeRight"
+  },
+  "IronBull_P1_Strike": {
+    "id": "rbxassetid://132701809192559",
+    "keyframes": 37,
+    "length": 1.2000000476837158,
+    "slot": "IronBull_P1_Strike"
+  },
+  "IronBull_P1_ThunderQuickstep": {
+    "id": "rbxassetid://79971975594696",
+    "keyframes": 52,
+    "length": 1.7999999523162842,
+    "slot": "IronBull_P1_ThunderQuickstep"
+  },
+  "IronBull_P1_Transform": {
+    "id": "rbxassetid://78875691933776",
+    "keyframes": 57,
+    "length": 2,
+    "slot": "IronBull_P1_Transform"
+  },
+  "IronBull_P1_WalkBackward": {
+    "id": "rbxassetid://106713913389035",
+    "keyframes": 49,
+    "length": 1.600000023841858,
+    "slot": "IronBull_P1_WalkBackward"
+  },
+  "IronBull_P1_WalkForward": {
+    "id": "rbxassetid://120378367818488",
+    "keyframes": 44,
+    "length": 1.5,
+    "slot": "IronBull_P1_WalkForward"
+  }
+}

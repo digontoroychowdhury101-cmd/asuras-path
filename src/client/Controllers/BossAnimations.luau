@@ -16,6 +16,11 @@ type Playing = { Signature: string, Key: string, Source: string, Track: Animatio
 	First: number?, Target: number?, Speed: number?, HoldUntil: number?, Rate: number?, Debt: number?, WrittenAt: number? }
 local playing: { [Model]: Playing } = {}
 local reacted: { [Model]: string } = {}
+-- The gait layer: one Movement-priority track per actor, chosen from his planted root velocity and fighter state. It runs under the idle's joints and
+-- stands down while any attack, transform or reaction owns the body, so a joint always has one owner and the root is never moved twice: the server slides the
+-- root, this only matches the feet to it.
+type Gait = { Action: string?, Id: string?, Track: AnimationTrack?, Last: Vector3?, At: number?, Velocity: Vector3, Rate: number }
+local gaits: { [Model]: Gait } = {}
 
 -- Server clock, the time base of every cue's impact (overridable for tests).
 function Animations.now(): number return workspace:GetServerTimeNow() end
@@ -106,12 +111,82 @@ local function writeRate(model: Model)
 	end
 end
 
+local function stopGait(gait: Gait)
+	if gait.Track then gait.Track:Stop(0.2); gait.Track:Destroy() end
+	gait.Track, gait.Action, gait.Id = nil, nil, nil
+end
+
+local function syncGait(model: Model, state: string?)
+	local root, humanoid = model:FindFirstChild("HumanoidRootPart"), model:FindFirstChildOfClass("Humanoid")
+	local look, phase = signature(model)
+	if not root or not root:IsA("BasePart") or not humanoid or not Rules.Locomotion[look] then return end
+	local gait = gaits[model]
+	if not gait then
+		gait = { Velocity = Vector3.zero, Rate = 1 }
+		gaits[model] = gait
+	end
+	local clock, at = os.clock(), root.Position
+	local dt = clock - (gait.At or clock)
+	if gait.Last and dt > 0 then
+		local v = (at - gait.Last) / dt
+		v = Vector3.new(v.X, 0, v.Z)
+		if v.Magnitude < 60 then gait.Velocity = gait.Velocity:Lerp(v, math.clamp(dt * 12, 0, 1)) end -- a teleport is not a gait
+	end
+	gait.Last, gait.At = at, clock
+	local entry = playing[model]
+	local busy = reacted[model] ~= nil or (entry ~= nil and entry.Track ~= nil and entry.Track.IsPlaying and not string.find(entry.Key, "_Idle", 1, true))
+	if busy then
+		if gait.Track then stopGait(gait) end
+		return
+	end
+	local speed = gait.Velocity.Magnitude
+	local look3 = root.CFrame.LookVector
+	local forward, right = 0, 0
+	if speed > 1e-3 then
+		local travel = gait.Velocity / speed
+		forward, right = travel:Dot(look3), travel:Dot(root.CFrame.RightVector)
+	end
+	local action, rate = Rules.gait(look, speed, model:GetScale(), forward, right, state, gait.Action)
+	if not action then
+		if gait.Track then stopGait(gait) end
+		return
+	end
+	local resolved = Rules.resolve(look, phase, action, nil, rigOf(model, humanoid), function(name) return model:GetAttribute(name) end)
+	if resolved.Id ~= gait.Id then
+		stopGait(gait)
+		local animator = humanoid:FindFirstChildOfClass("Animator")
+		if not resolved.Id or not animator then
+			gait.Action = action
+			return
+		end
+		local animation = Instance.new("Animation")
+		animation.AnimationId = resolved.Id
+		local ok, track = pcall(function() return animator:LoadAnimation(animation) end)
+		animation:Destroy()
+		if not ok then return end
+		track.Priority = Enum.AnimationPriority.Movement
+		track.Looped = resolved.Looped
+		track:Play(0.2, 1, rate * PlaybackScale.of(model, clock))
+		gait.Track, gait.Id, gait.Action, gait.Rate = track, resolved.Id, action, rate
+		return
+	end
+	gait.Action = action
+	local track = gait.Track
+	if track and track.IsPlaying then
+		local want = rate * PlaybackScale.of(model, clock)
+		if math.abs(track.Speed - want) > 0.02 then track:AdjustSpeed(want) end
+	elseif track and action == "GuardHit" then
+		-- the recoil finished; Blockstun holds its last frame until the state moves on
+	end
+end
+
 local syncFrame: (model: Model, state: string?) -> ()
 
 -- Every frame: see syncFrame, then the one speed write.
 function Animations.sync(model: Model, state: string?)
 	syncFrame(model, state)
 	writeRate(model)
+	syncGait(model, state)
 end
 
 -- Releases a held windup, returns to speed 1 once a contact passes, answers a cancelling
@@ -130,6 +205,10 @@ syncFrame = function(model: Model, state: string?)
 	local _, _, sig = signature(model)
 	local previous = playing[model]
 	local track = previous and previous.Track
+	if state == "KO" then -- the fall ends on its last frame; a corpse never goes back to idle
+		if previous and track and track.IsPlaying and track.Length > 0 and track.TimePosition >= track.Length - 0.12 then previous.Rate = 0 end
+		return
+	end
 	if previous and track and previous.Move and track.IsPlaying then
 		if previous.HoldUntil and Animations.now() >= previous.HoldUntil then
 			previous.HoldUntil = nil
@@ -176,11 +255,21 @@ function Animations.prune()
 			playing[model] = nil
 		end
 	end
+	for model, gait in gaits do
+		if not model.Parent then
+			stopGait(gait)
+			gaits[model] = nil
+		end
+	end
 end
 function Animations.clear()
 	for model in playing do
 		stop(model)
 		if model.Parent then model:SetAttribute("AsuraAuthoredMotion", nil) end
+	end
+	for model, gait in gaits do
+		stopGait(gait)
+		gaits[model] = nil
 	end
 end
 return Animations

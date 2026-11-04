@@ -9,6 +9,7 @@ faces it toward the camera). This step, run over the local StudioMCP proxy:
   - measures the R15 rest pose of a default enemy rig (CharacterService builds enemies from a blank
     HumanoidDescription) and writes each part's AsuraBone attribute and AsuraBind Attachment, so BossSkin welds the
     part where it sat in the authored root space: part = limb * bind:Inverse();
+  - a piece whose pieces.json entry has a "joint" binds to a helper bone that BossRigs builds at that root-space point;
   - tags weapon pieces AsuraRole=Weapon (pieces.json role) so the skin replaces the procedural weapon;
   - makes every part massless, non-colliding, non-querying, Box collision, and parents the template to
     ServerStorage.AsuraAssets for extract_skin.py.
@@ -22,7 +23,8 @@ sys.path.insert(0, str(ROOT / "tools"))
 from studio_mcp import Client  # noqa: E402
 
 TEMPLATES = {"monk": ("Monk", "AsuraBoss_CorruptWanderingMonk"), "swordsman": ("Swordsman", "AsuraBoss_CursedSwordsman"),
-             "warden": ("Warden", "AsuraBoss_HollowBellWarden")}
+             "warden": ("Warden", "AsuraBoss_HollowBellWarden"), "bull": ("Bull", "AsuraBoss_IronBull"),
+             "zhao": ("Zhao", "AsuraBoss_GeneralZhao")}
 
 LUAU = """local PIECES = game:GetService("HttpService"):JSONDecode([==[%s]==])
 local PREFIX, NAME = "%s_", "%s"
@@ -44,9 +46,10 @@ for _, p in parts do
 	local c = info.centre
 	local err = (rest.Position - Vector3.new(c[1], c[2], c[3])).Magnitude
 	worst = math.max(worst, err)
+	-- a helper bone (BossRigs: pauldron, cloth) is not an R15 limb; BossSkin builds it at this root-space joint
 	local limb = rig:FindFirstChild(info.bone)
-	if not limb then rig:Destroy(); return "rig lacks " .. info.bone end
-	local rl = root.CFrame:ToObjectSpace(limb.CFrame)
+	if not limb and not info.joint then rig:Destroy(); return "rig lacks " .. info.bone end
+	local rl = if info.joint then CFrame.new(info.joint[1], info.joint[2], info.joint[3]) else root.CFrame:ToObjectSpace(limb.CFrame)
 	local bind = p:FindFirstChild("AsuraBind") or Instance.new("Attachment")
 	bind.Name = "AsuraBind"
 	bind.CFrame = rest:Inverse() * rl

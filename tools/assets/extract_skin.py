@@ -22,6 +22,7 @@ ID = re.compile(r"rbxassetid://[1-9][0-9]{5,19}")
 MAPS = ("ColorMap", "NormalMap", "RoughnessMap", "MetalnessMap")
 R15 = {"Head", "UpperTorso", "LowerTorso", "LeftUpperArm", "LeftLowerArm", "LeftHand", "RightUpperArm", "RightLowerArm",
        "RightHand", "LeftUpperLeg", "LeftLowerLeg", "LeftFoot", "RightUpperLeg", "RightLowerLeg", "RightFoot"}
+HELPERS = {"RightPauldron", "LeftPauldron", "ClothFront", "ClothBack"}  # BossRigs builds these on the actor
 
 
 def name(item: ET.Element) -> str:
@@ -92,8 +93,8 @@ def extract(place: Path, model_name: str) -> tuple[ET.Element, dict]:
             if not ID.fullmatch(value):
                 raise ValueError(f"{label}: missing real uploaded {key} ({value!r})")
         bone = attributes(mesh).get("AsuraBone")
-        if bone not in R15:
-            raise ValueError(f"{label}: AsuraBone {bone!r} is not an R15 limb")
+        if bone not in R15 | HELPERS:
+            raise ValueError(f"{label}: AsuraBone {bone!r} is not an R15 limb or BossRigs helper")
         if not any(i.attrib.get("class") == "Attachment" and name(i) == "AsuraBind" for i in mesh.findall("Item")):
             raise ValueError(f"{label}: missing AsuraBind Attachment")
         if boolean(mesh, "CanCollide") or boolean(mesh, "CanQuery") or boolean(mesh, "CanTouch"):

@@ -591,7 +591,7 @@ function Controller.new(state: WorldState, camera: CameraController, input: Inpu
 		BossRecoverable = bossRecoverable,
 		BossPosture = bossPosture,
 		BossEntity = nil,
-		BossId = nil, BossMembers = {}, BossScore = BossMusic.new(), Duo = DuoBars.new(bossFrame, gui),
+		BossId = nil, BossMembers = {}, BossFallen = nil :: { number }?, BossScore = BossMusic.new(), Duo = DuoBars.new(bossFrame, gui),
 		Tags = VitalsTags.build(gui:FindFirstChild("Vitals") :: Frame), Vitals = gui:FindFirstChild("Vitals") :: Frame, Loadout = gui:FindFirstChild("Loadout") :: Frame,
 		Billboard = billboard,
 		LockPosture = lockPosture,
@@ -1096,6 +1096,11 @@ function Controller.OnCue(self: Interface, cue: Cue)
 		if constraint then constraint.MaxTextSize = 44 end
 		HudKit.cue(HudKit.Sounds.Objective, 0.8, 0.7)
 		HudKit.cue(HudKit.Sounds.Tick, 0.65, 1.4)
+		-- The bars close now, but whoever just fell still has a Death clip to play.
+		local fallen = self.BossFallen or {}
+		for _, id in self.BossMembers or {} do table.insert(fallen, id) end
+		self.BossFallen = fallen
+		task.delay(6, function() if self.BossFallen == fallen then self.BossFallen = nil end end)
 		self.BossEntity, self.BossId, self.BossMembers = nil, nil, {}
 		self.BossFrame.Visible = false
 		DuoBars.clear(self.Duo)
@@ -1196,6 +1201,10 @@ function Controller.UpdateLock(self: Interface, own: Entity?, ownSnapshot: Snaps
 end
 
 function Controller.UpdateBoss(self: Interface)
+	for _, id in self.BossFallen or {} do
+		local entity = self.State:Get(id)
+		if entity then BossAnimations.sync(entity.Model, entity.Snapshot and entity.Snapshot.State) end
+	end
 	if self.BossEntity == nil then return end
 	for _, id in self.BossMembers do
 		local entity = self.State:Get(id)

@@ -919,7 +919,7 @@ local function updateGates()
 				table.insert(remaining, userId)
 			end
 			AI.SetBossTargets(fight.BossId, remaining)
-			if BossRules.lifecycle(living, false, AI.GetBossEntity(fight.BossId) ~= nil) == "Reset" then
+			if BossRules.lifecycle(living, false, AI.IsBossPresent(fight.BossId)) == "Reset" then
 				endFight(gateId, false)
 			end
 		end

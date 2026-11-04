@@ -77,6 +77,10 @@ function Appearance.bindAnimations(model: Model, library: Instance?)
 			model:SetAttribute("AsuraBossAnimation_" .. animation.Name, animation.AnimationId)
 		end
 	end
+	local humanoid = model:FindFirstChildOfClass("Humanoid")
+	local rig = if humanoid and humanoid.RigType == Enum.HumanoidRigType.R6 then "R6" else "R15"
+	local death = AnimationRules.resolve(look, 1, "Death", nil, rig, function(name) return model:GetAttribute(name) end)
+	model:SetAttribute("AsuraAuthoredDeath", if death.Source == "Override" or death.Source == "Custom" then true else nil)
 end
 
 function Appearance.apply(model: Model, archetype: string?, scale: number?)

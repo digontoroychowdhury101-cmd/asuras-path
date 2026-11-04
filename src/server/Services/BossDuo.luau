@@ -20,6 +20,14 @@ function Duo.alive(bossId: string): number?
 	end
 	return nil
 end
+-- Any Twin still in the world, a corpse included. A killing blow landed outside the simulation step (an area hit) sets KO a
+-- frame before its KO event arrives, so "nobody alive" alone must not read as the boss having gone away.
+function Duo.present(bossId: string): boolean
+	for _, id in Duo.members(bossId) do
+		if Characters.GetEntity(id) then return true end
+	end
+	return false
+end
 -- True when the encounter is won; the second value is the Twin who just swore the oath (the
 -- caller opens the "Enrage" handoff for the participants).
 function Duo.onKO(bossId: string, victim: number): (boolean, number?)

@@ -11,6 +11,7 @@ local MODE = "VALIDATE" -- "STAMP" | "VALIDATE"
 local NAME = "AsuraBoss_GrandmasterShen_P1"
 
 local ServerStorage = game:GetService("ServerStorage")
+local Rigs = require(game:GetService("ReplicatedStorage").AsurasPath.Shared.BossRigs)
 local Players = game:GetService("Players")
 local LIMBS = { "Head", "UpperTorso", "LowerTorso", "LeftUpperArm", "LeftLowerArm", "LeftHand", "RightUpperArm", "RightLowerArm",
 	"RightHand", "LeftUpperLeg", "LeftLowerLeg", "LeftFoot", "RightUpperLeg", "RightLowerLeg", "RightFoot" }
@@ -18,7 +19,8 @@ local LIMBS = { "Head", "UpperTorso", "LowerTorso", "LeftUpperArm", "LeftLowerAr
 -- line up with the server's reach (LooksDuelists: Jian 7.5, Guandao 11 + 2.5 bonus). Zhao's guandao is
 -- reach 11 / his 1.2 scale (STEP6_TWINS_ASSET_BRIEF §1), held to ±0.5.
 local TIP = { AsuraBoss_GrandmasterShen_P1 = { 6.75, "Jian" }, AsuraBoss_GrandmasterShen_P2 = { 12.7, "Guandao" },
-	AsuraBoss_GeneralZhao = { 9.2, "Guandao", 0.5 } }
+	AsuraBoss_GeneralZhao = { 9.2, "Guandao", 0.5 },
+	AsuraBoss_IronBull = { 2.46, "IronBullMaul", 0.2 } } -- the supplied sculpt's short haft, not the costume maul's 5.7; the reach this leaves is reported, never painted over
 
 local function reference(): Model
 	local rig = workspace:FindFirstChild("AsuraRigReference")
@@ -78,7 +80,9 @@ for _, part in template:GetDescendants() do
 				if not content or not content.Uri or content.Uri == "" then maps = false end
 			end
 		end
-		check(table.find(LIMBS, bone) ~= nil, part.Name .. " AsuraBone=" .. tostring(bone))
+		local helper = false
+		for _, h in (Rigs.ByTemplate[NAME] and Rigs.ByTemplate[NAME].Helpers or {}) do helper = helper or h.Bone == bone end
+		check(table.find(LIMBS, bone) ~= nil or helper, part.Name .. " AsuraBone=" .. tostring(bone))
 		check(part:FindFirstChild("AsuraBind") ~= nil and part.AsuraBind:IsA("Attachment"), part.Name .. " has an AsuraBind Attachment")
 		check(maps, part.Name .. " SurfaceAppearance with Color/Normal/Roughness/Metalness maps")
 		check(part.MeshId ~= "" and string.match(part.MeshId, "^rbxassetid://%d+$") ~= nil, part.Name .. " uploaded MeshId")
@@ -92,7 +96,7 @@ end
 check(meshes > 0, meshes .. " MeshParts")
 for _, limb in LIMBS do check(coverage[limb] == true, "covers " .. limb) end
 local size = template:GetExtentsSize()
-check(size.Y > 4.6 and size.Y < 7.5, string.format("authored at scale 1: height %.2f studs (R15 body about 5.2; horns/mane may add)", size.Y))
+check(size.Y > 4.6 and size.Y < 7.6, string.format("authored at scale 1: height %.2f studs (R15 body about 5.2; horns, mane or plumes may add)", size.Y))
 check(template:GetScale() == 1, "Model scale 1 (BossSkin applies the actor's scale; never bake it)")
 local tip = TIP[NAME]
 if tip then

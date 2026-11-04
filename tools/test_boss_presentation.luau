@@ -215,7 +215,7 @@ check("the old straight-line pounce clipped the column (regression proof)", oldC
 check("perched feet rest on the pillar top", math.abs(high - 3 * boss.Scale - pillars[1].Top - 0.2) < 1e-6)
 
 -- 6. Real CostumeKit on rigs: non-colliding welded pieces, phases, hidden creature bodies.
-local Kit = Scene.load("src/server/Services/CostumeKit.luau", { game = { GetService = function() return { WaitForChild = function() return { Shared = { CostumeSchema = Schema } } end } end } })
+local Kit = Scene.load("src/server/Services/CostumeKit.luau", { game = { GetService = function() return { WaitForChild = function() return { Shared = { CostumeSchema = Schema, BossRigs = { ByTemplate = {} } } } end } end } })
 for key, look in LOOKS do
 	local rig = Scene.rig(key)
 	local stock = Instance.new("Part"); stock.Name = "AsuraWeapon"; stock.Parent = rig
@@ -275,7 +275,7 @@ template("AsuraBoss_IronBull_P1", full)
 template("AsuraBoss_GrandmasterShen_P2", { "Head", "UpperTorso" })
 local storage = { FindFirstChild = function(_, n) return if n == "AsuraAssets" then library else nil end }
 local Skin = Scene.load("src/server/Services/BossSkin.luau", {
-	game = { GetService = function(_, n) return if n == "ServerStorage" then storage else { WaitForChild = function() return { Shared = { CostumeSchema = Schema } } end } end },
+	game = { GetService = function(_, n) return if n == "ServerStorage" then storage else { WaitForChild = function() return { Shared = { CostumeSchema = Schema, BossRigs = { ByTemplate = {} } } } end } end },
 	script = { Parent = { PbrAssets = { validate = function() return true end } } } })
 local function actor(key, encounter, phase)
 	local rig = Scene.rig(key)
@@ -521,6 +521,23 @@ check("a repeat cue means the thrust its impact spacing names", AnimRules.contac
 check("re-timing reaches the next contact or plays on", near(AnimRules.retime(1.5, 0.8, 0.7), 1) and near(AnimRules.retime(1.5, 0.8, 0.5), 1.4)
 	and near(AnimRules.retime(1.5, 1.6, 0.5), 1) and near(AnimRules.retime(1.5, 0.8, 0), AnimRules.SyncSpeed.Max))
 check("an unauthored Bull swing stands in with the stock strike", AnimRules.resolve("IronBull", 1, "IronBullMaul_L3", nil, "R15", none).Source == "Stock")
+check("a gait follows the root: walk, run, back, strafe, standing, guard", AnimRules.gait("IronBull", 2.8, 1.7, 1, 0) == "WalkForward" and AnimRules.gait("IronBull", 9, 1.7, 1, 0) == "RunForward"
+	and AnimRules.gait("IronBull", 2, 1.7, -1, 0) == "WalkBackward" and AnimRules.gait("IronBull", 2, 1.7, 0.1, 1) == "StrafeRight" and AnimRules.gait("IronBull", 2, 1.7, 0.1, -1) == "StrafeLeft"
+	and AnimRules.gait("IronBull", 0.2, 1.7, 1, 0) == nil and AnimRules.gait("IronBull", 2, 1.7, 1, 0, "Blocking") == "GuardLoop" and AnimRules.gait("IronBull", 2, 1.7, 1, 0, "Blockstun") == "GuardHit")
+do
+	local _, rate = AnimRules.gait("IronBull", 2.805, 1.7, 1, 0)
+	local _, fast = AnimRules.gait("IronBull", 40, 1.7, 1, 0)
+	check("gait rate matches planted feet to the root and stays clamped", near(rate, 1) and fast == AnimRules.GaitRate.Max and AnimRules.gait("Nobody", 3, 1, 1, 0) == nil)
+	local walk = AnimRules.resolve("IronBull", 1, "WalkForward", nil, "R15", none)
+	check("an unauthored gait stands in with nothing, never a stock strike", walk.Source == "None" and walk.Looped and walk.Priority == "Movement")
+end
+check("the Bull's contacts are its schema's first active frames", (function()
+	local W = Weapons.get("IronBullMaul")
+	local contacts = AnimRules.Contacts.IronBull
+	local function near(a, b) return math.abs(a - b) < 0.002 end -- the manifest rounds to the nearest millisecond
+	return near(contacts.IronBullMaul_L1[1], W.Light[1].Timing.StartupSeconds) and near(contacts.IronBullMaul_L2[1], W.Light[2].Timing.StartupSeconds) and near(contacts.IronBullMaul_L3[1], W.Light[3].Timing.StartupSeconds)
+		and near(contacts.IronBullMaul_Heavy[1], W.Heavy.Timing.StartupSeconds) and near(contacts.IronBullMaul_Running[1], W.RunningAttack.Timing.StartupSeconds) and near(contacts.IronBullMaul_Art[1], W.WeaponArt.Timing.StartupSeconds)
+end)())
 check("cosmetic tracks drive no gameplay (no marker/keyframe hooks)", not string.find(src("src/server/Services/BossAttackService.luau") .. src("src/simulation/CombatRules.luau")
 	.. src("src/server/Services/AIService.luau") .. src("src/server/CharacterService.luau"), "MarkerReached", 1, true))
 
@@ -556,6 +573,7 @@ local function fakeActor(look, rig, attributes)
 	a.attributes.AsuraLookKey = look; a.attributes.AsuraRig = rig
 	function a:GetAttribute(n) return self.attributes[n] end
 	function a:SetAttribute(n, v) self.attributes[n] = v end
+	function a:FindFirstChild() return nil end
 	local animator = { LoadAnimation = function(_, animation)
 		local t = { Id = animation.AnimationId, IsPlaying = true, TimePosition = 0 }
 		function t:Play(_, _, speed) self.Speed = speed end
@@ -624,6 +642,23 @@ local hollow = fakeActor("GeneralZhao", "Humanoid")
 Dispatch.action(hollow, false, "Guandao_L1", "Light", clock + 0.4)
 Dispatch.sync(hollow, "KO")
 check("an unauthored reaction returns the actor to its idle", hollow.attributes.AsuraAnimationPlaying == "GeneralZhao_P1_Idle|Stock" and not hollow.loads[1].IsPlaying)
+local fallen = fakeActor("GeneralZhao", "Humanoid")
+fallen.attributes.AsuraBossAnimation_GeneralZhao_Death = "rbxassetid://73"
+Dispatch.sync(fallen, "KO")
+local fall = fallen.loads[#fallen.loads]
+check("a fallen boss plays its authored Death", fall.Id == "rbxassetid://73" and fall.IsPlaying)
+fall.Length, fall.TimePosition = 3, 1
+local loads = #fallen.loads
+Dispatch.sync(fallen, "KO")
+check("the fall is not interrupted", fall.IsPlaying and fall.Speed ~= 0 and #fallen.loads == loads)
+fall.TimePosition = 2.95
+Dispatch.sync(fallen, "KO")
+check("the fall holds its last frame instead of going back to idle", fall.Speed == 0 and #fallen.loads == loads)
+fall.IsPlaying = false
+Dispatch.sync(fallen, "KO")
+check("a corpse never restarts a clip", #fallen.loads == loads)
+check("a corpse fades before the server removes it", AnimRules.DeathFadeAt + 1.3 < 4.0)
+check("an authored fall keeps the Humanoid's Animator running", string.find(src("src/server/CharacterService.luau"), 'GetAttribute("AsuraAuthoredDeath") == true then 0.01 else 0', 1, true) ~= nil)
 
 -- 12. The Twins flank instead of sharing one engage point (F10: 0.6 studs apart in Studio).
 do

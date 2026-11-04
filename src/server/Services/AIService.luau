@@ -1109,6 +1109,10 @@ function AIService.GetBossEntity(bossId: string): number?
 	return BossDuo.alive(bossId)
 end
 
+function AIService.IsBossPresent(bossId: string): boolean
+	return BossDuo.present(bossId)
+end
+
 function AIService.GetAgent(entityId: number): AgentInfo?
 	local agent = agents[entityId]
 	if not agent then

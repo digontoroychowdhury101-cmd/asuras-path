@@ -16,12 +16,14 @@ sys.path.insert(0, str(HERE))
 import castlib as C  # noqa: E402
 import jianlib as J  # noqa: E402
 
-SETS = {"monk": "monk_clips", "swordsman": "swordsman_clips", "warden": "warden_clips"}
+SETS = {"monk": "monk_clips", "swordsman": "swordsman_clips", "warden": "warden_clips", "bull": "bull_clips"}
 
 
 def main(key, names):
     import export as zx  # general_zhao/export.py: content_hash
     lib = importlib.import_module(SETS[key])
+    if hasattr(lib, "check_rigs"):
+        lib.check_rigs()
     out = C.ROOT / "assets/animations/opening_cast" / key
     bake = C.ROOT / "work/opening_cast_bake" / key
     out.mkdir(parents=True, exist_ok=True)
@@ -35,9 +37,9 @@ def main(key, names):
         if names and clip.name not in names:
             continue
         baked = clip.bake()
-        stats, problems = C.validate(clip, baked)
+        stats, problems = getattr(lib, "validate", C.validate)(clip, baked)
         path = out / (clip.name + ".rbxmx")
-        keys = J.write_rbxmx(clip, baked, path)
+        keys = getattr(lib, "write_rbxmx", J.write_rbxmx)(clip, baked, path)
         C.frames_json(clip, baked, bake / (clip.name + ".json"))
         entry = {"slot": clip.slot, "length": round(clip.length, 4), "loop": clip.loop, "priority": clip.priority, "move": clip.move,
                  "contacts": [round(c, 4) for c in clip.contacts], "keyframes": keys, "notes": clip.notes,

@@ -51,7 +51,7 @@ def clip_index():
         for name, record in published.items():
             entry = manifest.get(name, {})
             index[record["asset_id"]] = {"name": name, "problems": entry.get("problems", []), "notes": entry.get("notes", ""), "length": entry.get("length")}
-    for key in ("monk", "swordsman", "warden"):
+    for key in ("monk", "swordsman", "warden", "bull"):
         path = ROOT / "assets/animations/opening_cast" / key / "published.json"
         if path.exists():
             for name, record in json.loads(path.read_text()).items():

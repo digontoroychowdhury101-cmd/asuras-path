@@ -887,7 +887,7 @@ do
 		local humanoid = { RigType = roblox.Enum.HumanoidRigType.R15, FindFirstChildOfClass = function() return animator end }
 		local attrs = { AsuraLookKey = "Boss" }
 		local model = { Name = "Boss", GetAttribute = function(_, n) return attrs[n] end, SetAttribute = function(_, n, v) attrs[n] = v end,
-			FindFirstChildOfClass = function() return humanoid end }
+			FindFirstChild = function() return nil end, FindFirstChildOfClass = function() return humanoid end }
 		local env = environment({ Parent = { PlaybackScale = PlaybackScale } })
 		env.game = { GetService = function() return { AsurasPath = { Shared = { BossAnimationRules = bossRules }, Simulation = { AnimationTiming = Timing } } } end }
 		local Boss = luau.load(fs.readFile("src/client/Controllers/BossAnimations.luau"), { debugName = "Boss", environment = env })()

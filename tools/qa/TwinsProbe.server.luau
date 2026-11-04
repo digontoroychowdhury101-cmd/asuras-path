@@ -138,6 +138,16 @@ function ops.kill(name)
 	end
 	return "none"
 end
+-- Seeded posture break on a named Twin (the reaction clip check; no health lost that matters).
+function ops.posture(name)
+	for _, e in twins() do
+		if string.find(e.Model.Name, name, 1, true) then
+			Characters.ApplyArea(own().Id, e.Id, 1, e.Fighter.PostureCapacity + 50, true)
+			return "posture " .. e.Fighter.State .. " " .. tostring(e.Fighter.Posture)
+		end
+	end
+	return "none"
+end
 -- Seeded player death by a Twin (retry/reset check) and a server Skip (same path as the key).
 function ops.die()
 	local me, list = own(), twins()
@@ -155,6 +165,32 @@ function ops.first(since)
 	return if best then string.format("%.3f %s %s (+%.3f s)", best.at, best.move, best.kind, best.at - since) else "none"
 end
 function ops.now() return Characters.Now() end
+-- Seeded: step the player `distance` studs straight away from the Bull, to watch it close the gap.
+function ops.away(distance)
+	for _, e in twins() do
+		if string.find(e.Model.Name, "Bull", 1, true) then
+			local me = own().Root.Position
+			local flat = (me - e.Root.Position) * Vector3.new(1, 0, 1)
+			local spot = e.Root.Position + flat.Unit * distance
+			Characters.Teleport(own().Id, CFrame.lookAt(Vector3.new(spot.X, 3, spot.Z), Vector3.new(e.Root.Position.X, 3, e.Root.Position.Z)))
+			return "away " .. distance
+		end
+	end
+	return "none"
+end
+-- Seeded: hold both Twins still for `seconds` (the AI's own entry hold) and face the player toward the Bull `distance` studs in front of it, for review stills.
+function ops.hold(seconds, distance)
+	AI.Hold("TwinSentinels", Characters.Now() + (seconds or 30))
+	local bull
+	for _, e in twins() do if string.find(e.Model.Name, "Bull", 1, true) then bull = e end end
+	if bull and distance then
+		local look = bull.Root.CFrame.LookVector * Vector3.new(1, 0, 1)
+		local spot = bull.Root.Position + look.Unit * distance
+		spot = Vector3.new(spot.X, 3, spot.Z)
+		Characters.Teleport(own().Id, CFrame.lookAt(spot, Vector3.new(bull.Root.Position.X, 3, bull.Root.Position.Z)))
+	end
+	return "held"
+end
 -- Seeded: take one Twin out without a KO (no Oath), to watch the other alone.
 function ops.remove(name)
 	for _, e in twins() do

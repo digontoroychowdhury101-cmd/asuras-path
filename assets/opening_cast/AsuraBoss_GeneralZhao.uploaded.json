@@ -1,0 +1,161 @@
+{
+  "model": "AsuraBoss_GeneralZhao",
+  "importer": "Roblox Studio 3D Importer, Creator: Me",
+  "parts": {
+    "Zhao_GuandaoBlade": {
+      "bone": "RightHand",
+      "MeshId": "rbxassetid://77718627528507",
+      "ColorMap": "rbxassetid://119567079449851",
+      "NormalMap": "rbxassetid://80040600398864",
+      "RoughnessMap": "rbxassetid://73396753804586",
+      "MetalnessMap": "rbxassetid://72259195482950"
+    },
+    "Zhao_LeftFoot": {
+      "bone": "LeftFoot",
+      "MeshId": "rbxassetid://109905972002177",
+      "ColorMap": "rbxassetid://110649758030812",
+      "NormalMap": "rbxassetid://92090700018760",
+      "RoughnessMap": "rbxassetid://76956265699379",
+      "MetalnessMap": "rbxassetid://134953668359267"
+    },
+    "Zhao_GuandaoHaft": {
+      "bone": "RightHand",
+      "MeshId": "rbxassetid://70980862210913",
+      "ColorMap": "rbxassetid://119567079449851",
+      "NormalMap": "rbxassetid://80040600398864",
+      "RoughnessMap": "rbxassetid://73396753804586",
+      "MetalnessMap": "rbxassetid://72259195482950"
+    },
+    "Zhao_RightUpperArm": {
+      "bone": "RightUpperArm",
+      "MeshId": "rbxassetid://133649136653478",
+      "ColorMap": "rbxassetid://110649758030812",
+      "NormalMap": "rbxassetid://92090700018760",
+      "RoughnessMap": "rbxassetid://76956265699379",
+      "MetalnessMap": "rbxassetid://134953668359267"
+    },
+    "Zhao_RightUpperLeg": {
+      "bone": "RightUpperLeg",
+      "MeshId": "rbxassetid://126570054202890",
+      "ColorMap": "rbxassetid://110649758030812",
+      "NormalMap": "rbxassetid://92090700018760",
+      "RoughnessMap": "rbxassetid://76956265699379",
+      "MetalnessMap": "rbxassetid://134953668359267"
+    },
+    "Zhao_LeftLowerArm": {
+      "bone": "LeftLowerArm",
+      "MeshId": "rbxassetid://134728218754279",
+      "ColorMap": "rbxassetid://110649758030812",
+      "NormalMap": "rbxassetid://92090700018760",
+      "RoughnessMap": "rbxassetid://76956265699379",
+      "MetalnessMap": "rbxassetid://134953668359267"
+    },
+    "Zhao_LeftUpperLeg": {
+      "bone": "LeftUpperLeg",
+      "MeshId": "rbxassetid://74830483932675",
+      "ColorMap": "rbxassetid://110649758030812",
+      "NormalMap": "rbxassetid://92090700018760",
+      "RoughnessMap": "rbxassetid://76956265699379",
+      "MetalnessMap": "rbxassetid://134953668359267"
+    },
+    "Zhao_LowerTorso": {
+      "bone": "LowerTorso",
+      "MeshId": "rbxassetid://77876064430030",
+      "ColorMap": "rbxassetid://110649758030812",
+      "NormalMap": "rbxassetid://92090700018760",
+      "RoughnessMap": "rbxassetid://76956265699379",
+      "MetalnessMap": "rbxassetid://134953668359267"
+    },
+    "Zhao_Head": {
+      "bone": "Head",
+      "MeshId": "rbxassetid://128418912455546",
+      "ColorMap": "rbxassetid://110649758030812",
+      "NormalMap": "rbxassetid://92090700018760",
+      "RoughnessMap": "rbxassetid://76956265699379",
+      "MetalnessMap": "rbxassetid://134953668359267"
+    },
+    "Zhao_LeftLowerLeg": {
+      "bone": "LeftLowerLeg",
+      "MeshId": "rbxassetid://108701722104286",
+      "ColorMap": "rbxassetid://110649758030812",
+      "NormalMap": "rbxassetid://92090700018760",
+      "RoughnessMap": "rbxassetid://76956265699379",
+      "MetalnessMap": "rbxassetid://134953668359267"
+    },
+    "Zhao_Pennants": {
+      "bone": "UpperTorso",
+      "MeshId": "rbxassetid://70737701370822",
+      "ColorMap": "rbxassetid://110649758030812",
+      "NormalMap": "rbxassetid://92090700018760",
+      "RoughnessMap": "rbxassetid://76956265699379",
+      "MetalnessMap": "rbxassetid://134953668359267"
+    },
+    "Zhao_RightLowerArm": {
+      "bone": "RightLowerArm",
+      "MeshId": "rbxassetid://112486144595057",
+      "ColorMap": "rbxassetid://110649758030812",
+      "NormalMap": "rbxassetid://92090700018760",
+      "RoughnessMap": "rbxassetid://76956265699379",
+      "MetalnessMap": "rbxassetid://134953668359267"
+    },
+    "Zhao_LeftUpperArm": {
+      "bone": "LeftUpperArm",
+      "MeshId": "rbxassetid://92207131861083",
+      "ColorMap": "rbxassetid://110649758030812",
+      "NormalMap": "rbxassetid://92090700018760",
+      "RoughnessMap": "rbxassetid://76956265699379",
+      "MetalnessMap": "rbxassetid://134953668359267"
+    },
+    "Zhao_LeftHand": {
+      "bone": "LeftHand",
+      "MeshId": "rbxassetid://92153148013784",
+      "ColorMap": "rbxassetid://110649758030812",
+      "NormalMap": "rbxassetid://92090700018760",
+      "RoughnessMap": "rbxassetid://76956265699379",
+      "MetalnessMap": "rbxassetid://134953668359267"
+    },
+    "Zhao_Plumes": {
+      "bone": "Head",
+      "MeshId": "rbxassetid://78678207167213",
+      "ColorMap": "rbxassetid://110649758030812",
+      "NormalMap": "rbxassetid://92090700018760",
+      "RoughnessMap": "rbxassetid://76956265699379",
+      "MetalnessMap": "rbxassetid://134953668359267"
+    },
+    "Zhao_UpperTorso": {
+      "bone": "UpperTorso",
+      "MeshId": "rbxassetid://129449866777038",
+      "ColorMap": "rbxassetid://110649758030812",
+      "NormalMap": "rbxassetid://92090700018760",
+      "RoughnessMap": "rbxassetid://76956265699379",
+      "MetalnessMap": "rbxassetid://134953668359267"
+    },
+    "Zhao_RightFoot": {
+      "bone": "RightFoot",
+      "MeshId": "rbxassetid://77139423377002",
+      "ColorMap": "rbxassetid://110649758030812",
+      "NormalMap": "rbxassetid://92090700018760",
+      "RoughnessMap": "rbxassetid://76956265699379",
+      "MetalnessMap": "rbxassetid://134953668359267"
+    },
+    "Zhao_RightHand": {
+      "bone": "RightHand",
+      "MeshId": "rbxassetid://116523209690825",
+      "ColorMap": "rbxassetid://110649758030812",
+      "NormalMap": "rbxassetid://92090700018760",
+      "RoughnessMap": "rbxassetid://76956265699379",
+      "MetalnessMap": "rbxassetid://134953668359267"
+    },
+    "Zhao_RightLowerLeg": {
+      "bone": "RightLowerLeg",
+      "MeshId": "rbxassetid://134989573295609",
+      "ColorMap": "rbxassetid://110649758030812",
+      "NormalMap": "rbxassetid://92090700018760",
+      "RoughnessMap": "rbxassetid://76956265699379",
+      "MetalnessMap": "rbxassetid://134953668359267"
+    }
+  },
+  "sharedStringCount": 2,
+  "validation": "15 uploaded MeshParts, complete uploaded PBR, AsuraBone + AsuraBind on each, non-colliding",
+  "savedPlace": "/var/folders/0h/ppzkjk7x4sd3qkr37t30hxmc0000gn/T/s3/BullTest.rbxlx"
+}

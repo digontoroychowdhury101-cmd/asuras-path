@@ -24,7 +24,8 @@ for _, p in t:GetDescendants() do
 	if p:IsA("MeshPart") then
 		local bone = p:GetAttribute("AsuraBone")
 		local limb = rig:FindFirstChild(bone)
-		local placed = root.CFrame:ToObjectSpace(limb.CFrame * p.AsuraBind.CFrame:Inverse())
+		local j = PIECES[p.Name].joint -- helper bone: BossRigs builds it at this root-space point
+		local placed = (if j then CFrame.new(j[1], j[2], j[3]) else root.CFrame:ToObjectSpace(limb.CFrame)) * p.AsuraBind.CFrame:Inverse()
 		local c = PIECES[p.Name].centre
 		local err = (placed.Position - Vector3.new(c[1], c[2], c[3])).Magnitude
 		local sa = p:FindFirstChildOfClass("SurfaceAppearance")

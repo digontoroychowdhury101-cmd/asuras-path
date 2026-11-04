@@ -3,12 +3,13 @@
 -- Authored enemy death (batch 09). When the server pins a fallen enemy (AsuraDissolve attribute;
 -- its parts no longer collide or answer queries and its joints stay intact), the body folds
 -- forward over its feet, then burns away into drifting ash while a gold Essence wisp rises from it
--- as the reward pulse. Local presentation only; the server removes the model afterwards
+-- as the reward pulse. An actor with an authored Death clip (AsuraAuthoredDeath) falls by that clip instead; only the burn-away is shared. Local presentation only; the server removes the model afterwards
 -- (Settings.Respawn.EnemyCorpseTime), and plates/lock already drop because IsAlive treats a
 -- dissolving body as dead.
 local TweenService = game:GetService("TweenService")
 local Debris = game:GetService("Debris")
 local Assets = require(game:GetService("ReplicatedStorage").AsurasPath.Shared.PresentationAssets)
+local BossRules = require(game:GetService("ReplicatedStorage").AsurasPath.Shared.BossAnimationRules)
 
 local Dissolve = {}
 Dissolve.__index = Dissolve
@@ -29,7 +30,7 @@ function Dissolve.pose(base: CFrame, t: number, hip: number, creature: boolean?)
 	return base * CFrame.new(0, -hip, 0) * fall * CFrame.new(0, hip * (if creature then 0.35 else 1) - Dissolve.Sink * e, 0)
 end
 
-export type Controller = typeof(setmetatable({} :: { State: any, Playing: { [Model]: { Started: number, Base: CFrame, Hip: number, Faded: boolean, Creature: boolean } } }, Dissolve))
+export type Controller = typeof(setmetatable({} :: { State: any, Playing: { [Model]: { Started: number, Base: CFrame, Hip: number, Faded: boolean, Creature: boolean, Authored: boolean } } }, Dissolve))
 
 function Dissolve.new(state: any): Controller
 	return setmetatable({ State = state, Playing = {} }, Dissolve)
@@ -79,8 +80,9 @@ function Dissolve.Update(self: Controller, _dt: number)
 		if entity.Kind == "Enemy" and root and not self.Playing[model] and model.Parent and model:GetAttribute("AsuraDissolve") ~= nil then
 			local humanoid = entity.Humanoid
 			local hip = if humanoid then humanoid.HipHeight + root.Size.Y * 0.5 else 3
-			self.Playing[model] = { Started = now, Base = root.CFrame, Hip = hip, Faded = false, Creature = model:GetAttribute("AsuraRig") == "Creature" }
-			emitAsh(root)
+			local authored = model:GetAttribute("AsuraAuthoredDeath") == true
+			self.Playing[model] = { Started = now, Base = root.CFrame, Hip = hip, Faded = false, Creature = model:GetAttribute("AsuraRig") == "Creature", Authored = authored }
+			if not authored then emitAsh(root) end
 		end
 	end
 	for model, play in self.Playing do
@@ -89,8 +91,9 @@ function Dissolve.Update(self: Controller, _dt: number)
 			self.Playing[model] = nil
 			continue
 		end
-		local t = (now - play.Started) / Dissolve.Collapse
-		root.CFrame = Dissolve.pose(play.Base, t, play.Hip, play.Creature)
+		-- An authored Death clip owns the body: the root stays pinned and only the burn-away is ours.
+		local t = (now - play.Started) / (if play.Authored then BossRules.DeathFadeAt else Dissolve.Collapse)
+		if not play.Authored then root.CFrame = Dissolve.pose(play.Base, t, play.Hip, play.Creature) end
 		if t >= 1 and not play.Faded then
 			play.Faded = true
 			fade(model, Dissolve.Fade)

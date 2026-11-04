@@ -1,0 +1,321 @@
+{
+  "model": "AsuraBoss_IronBull",
+  "importer": "Roblox Studio 3D Importer, Creator: Me",
+  "parts": {
+    "Bull_LowerTorso_1": {
+      "bone": "LowerTorso",
+      "MeshId": "rbxassetid://137974168684461",
+      "ColorMap": "rbxassetid://120589600990397",
+      "NormalMap": "rbxassetid://72440714638359",
+      "RoughnessMap": "rbxassetid://130831958238580",
+      "MetalnessMap": "rbxassetid://94938773043996"
+    },
+    "Bull_Shield_1": {
+      "bone": "LeftLowerArm",
+      "MeshId": "rbxassetid://140564026124024",
+      "ColorMap": "rbxassetid://120589600990397",
+      "NormalMap": "rbxassetid://72440714638359",
+      "RoughnessMap": "rbxassetid://130831958238580",
+      "MetalnessMap": "rbxassetid://94938773043996"
+    },
+    "Bull_Head_3": {
+      "bone": "Head",
+      "MeshId": "rbxassetid://82263580433932",
+      "ColorMap": "rbxassetid://120589600990397",
+      "NormalMap": "rbxassetid://72440714638359",
+      "RoughnessMap": "rbxassetid://130831958238580",
+      "MetalnessMap": "rbxassetid://94938773043996"
+    },
+    "Bull_Weapon_2": {
+      "bone": "RightHand",
+      "MeshId": "rbxassetid://122144036523828",
+      "ColorMap": "rbxassetid://120589600990397",
+      "NormalMap": "rbxassetid://72440714638359",
+      "RoughnessMap": "rbxassetid://130831958238580",
+      "MetalnessMap": "rbxassetid://94938773043996"
+    },
+    "Bull_RightLowerLeg": {
+      "bone": "RightLowerLeg",
+      "MeshId": "rbxassetid://103695882118902",
+      "ColorMap": "rbxassetid://120589600990397",
+      "NormalMap": "rbxassetid://72440714638359",
+      "RoughnessMap": "rbxassetid://130831958238580",
+      "MetalnessMap": "rbxassetid://94938773043996"
+    },
+    "Bull_ClothBack_2": {
+      "bone": "ClothBack",
+      "MeshId": "rbxassetid://119109475169848",
+      "ColorMap": "rbxassetid://120589600990397",
+      "NormalMap": "rbxassetid://72440714638359",
+      "RoughnessMap": "rbxassetid://130831958238580",
+      "MetalnessMap": "rbxassetid://94938773043996"
+    },
+    "Bull_RightUpperArm": {
+      "bone": "RightUpperArm",
+      "MeshId": "rbxassetid://78586366928029",
+      "ColorMap": "rbxassetid://120589600990397",
+      "NormalMap": "rbxassetid://72440714638359",
+      "RoughnessMap": "rbxassetid://130831958238580",
+      "MetalnessMap": "rbxassetid://94938773043996"
+    },
+    "Bull_Head_2": {
+      "bone": "Head",
+      "MeshId": "rbxassetid://111946019172303",
+      "ColorMap": "rbxassetid://120589600990397",
+      "NormalMap": "rbxassetid://72440714638359",
+      "RoughnessMap": "rbxassetid://130831958238580",
+      "MetalnessMap": "rbxassetid://94938773043996"
+    },
+    "Bull_Weapon_3": {
+      "bone": "RightHand",
+      "MeshId": "rbxassetid://128230001137197",
+      "ColorMap": "rbxassetid://120589600990397",
+      "NormalMap": "rbxassetid://72440714638359",
+      "RoughnessMap": "rbxassetid://130831958238580",
+      "MetalnessMap": "rbxassetid://94938773043996"
+    },
+    "Bull_UpperTorso_2": {
+      "bone": "UpperTorso",
+      "MeshId": "rbxassetid://85820291494177",
+      "ColorMap": "rbxassetid://120589600990397",
+      "NormalMap": "rbxassetid://72440714638359",
+      "RoughnessMap": "rbxassetid://130831958238580",
+      "MetalnessMap": "rbxassetid://94938773043996"
+    },
+    "Bull_RightHand": {
+      "bone": "RightHand",
+      "MeshId": "rbxassetid://113131382211805",
+      "ColorMap": "rbxassetid://120589600990397",
+      "NormalMap": "rbxassetid://72440714638359",
+      "RoughnessMap": "rbxassetid://130831958238580",
+      "MetalnessMap": "rbxassetid://94938773043996"
+    },
+    "Bull_Head_1": {
+      "bone": "Head",
+      "MeshId": "rbxassetid://100801428915672",
+      "ColorMap": "rbxassetid://120589600990397",
+      "NormalMap": "rbxassetid://72440714638359",
+      "RoughnessMap": "rbxassetid://130831958238580",
+      "MetalnessMap": "rbxassetid://94938773043996"
+    },
+    "Bull_UpperTorso_3": {
+      "bone": "UpperTorso",
+      "MeshId": "rbxassetid://73835992365222",
+      "ColorMap": "rbxassetid://120589600990397",
+      "NormalMap": "rbxassetid://72440714638359",
+      "RoughnessMap": "rbxassetid://130831958238580",
+      "MetalnessMap": "rbxassetid://94938773043996"
+    },
+    "Bull_LeftPauldron_1": {
+      "bone": "LeftPauldron",
+      "MeshId": "rbxassetid://110954939281939",
+      "ColorMap": "rbxassetid://120589600990397",
+      "NormalMap": "rbxassetid://72440714638359",
+      "RoughnessMap": "rbxassetid://130831958238580",
+      "MetalnessMap": "rbxassetid://94938773043996"
+    },
+    "Bull_LeftUpperArm": {
+      "bone": "LeftUpperArm",
+      "MeshId": "rbxassetid://125930655058343",
+      "ColorMap": "rbxassetid://120589600990397",
+      "NormalMap": "rbxassetid://72440714638359",
+      "RoughnessMap": "rbxassetid://130831958238580",
+      "MetalnessMap": "rbxassetid://94938773043996"
+    },
+    "Bull_UpperTorso_4": {
+      "bone": "UpperTorso",
+      "MeshId": "rbxassetid://81254039732004",
+      "ColorMap": "rbxassetid://120589600990397",
+      "NormalMap": "rbxassetid://72440714638359",
+      "RoughnessMap": "rbxassetid://130831958238580",
+      "MetalnessMap": "rbxassetid://94938773043996"
+    },
+    "Bull_UpperTorso_5": {
+      "bone": "UpperTorso",
+      "MeshId": "rbxassetid://123171632682362",
+      "ColorMap": "rbxassetid://120589600990397",
+      "NormalMap": "rbxassetid://72440714638359",
+      "RoughnessMap": "rbxassetid://130831958238580",
+      "MetalnessMap": "rbxassetid://94938773043996"
+    },
+    "Bull_RightUpperLeg": {
+      "bone": "RightUpperLeg",
+      "MeshId": "rbxassetid://140508719111624",
+      "ColorMap": "rbxassetid://120589600990397",
+      "NormalMap": "rbxassetid://72440714638359",
+      "RoughnessMap": "rbxassetid://130831958238580",
+      "MetalnessMap": "rbxassetid://94938773043996"
+    },
+    "Bull_LowerTorso_2": {
+      "bone": "LowerTorso",
+      "MeshId": "rbxassetid://132898362725319",
+      "ColorMap": "rbxassetid://120589600990397",
+      "NormalMap": "rbxassetid://72440714638359",
+      "RoughnessMap": "rbxassetid://130831958238580",
+      "MetalnessMap": "rbxassetid://94938773043996"
+    },
+    "Bull_UpperTorso_1": {
+      "bone": "UpperTorso",
+      "MeshId": "rbxassetid://116710357299195",
+      "ColorMap": "rbxassetid://120589600990397",
+      "NormalMap": "rbxassetid://72440714638359",
+      "RoughnessMap": "rbxassetid://130831958238580",
+      "MetalnessMap": "rbxassetid://94938773043996"
+    },
+    "Bull_RightLowerArm_1": {
+      "bone": "RightLowerArm",
+      "MeshId": "rbxassetid://88792297897827",
+      "ColorMap": "rbxassetid://120589600990397",
+      "NormalMap": "rbxassetid://72440714638359",
+      "RoughnessMap": "rbxassetid://130831958238580",
+      "MetalnessMap": "rbxassetid://94938773043996"
+    },
+    "Bull_RightLowerArm_2": {
+      "bone": "RightLowerArm",
+      "MeshId": "rbxassetid://78220270312499",
+      "ColorMap": "rbxassetid://120589600990397",
+      "NormalMap": "rbxassetid://72440714638359",
+      "RoughnessMap": "rbxassetid://130831958238580",
+      "MetalnessMap": "rbxassetid://94938773043996"
+    },
+    "Bull_LeftLowerArm": {
+      "bone": "LeftLowerArm",
+      "MeshId": "rbxassetid://86895662304665",
+      "ColorMap": "rbxassetid://120589600990397",
+      "NormalMap": "rbxassetid://72440714638359",
+      "RoughnessMap": "rbxassetid://130831958238580",
+      "MetalnessMap": "rbxassetid://94938773043996"
+    },
+    "Bull_LeftUpperLeg_1": {
+      "bone": "LeftUpperLeg",
+      "MeshId": "rbxassetid://89512622772644",
+      "ColorMap": "rbxassetid://120589600990397",
+      "NormalMap": "rbxassetid://72440714638359",
+      "RoughnessMap": "rbxassetid://130831958238580",
+      "MetalnessMap": "rbxassetid://94938773043996"
+    },
+    "Bull_LeftHand": {
+      "bone": "LeftHand",
+      "MeshId": "rbxassetid://126317453424715",
+      "ColorMap": "rbxassetid://120589600990397",
+      "NormalMap": "rbxassetid://72440714638359",
+      "RoughnessMap": "rbxassetid://130831958238580",
+      "MetalnessMap": "rbxassetid://94938773043996"
+    },
+    "Bull_RightPauldron": {
+      "bone": "RightPauldron",
+      "MeshId": "rbxassetid://73840864011690",
+      "ColorMap": "rbxassetid://120589600990397",
+      "NormalMap": "rbxassetid://72440714638359",
+      "RoughnessMap": "rbxassetid://130831958238580",
+      "MetalnessMap": "rbxassetid://94938773043996"
+    },
+    "Bull_RightFoot": {
+      "bone": "RightFoot",
+      "MeshId": "rbxassetid://96899394283885",
+      "ColorMap": "rbxassetid://120589600990397",
+      "NormalMap": "rbxassetid://72440714638359",
+      "RoughnessMap": "rbxassetid://130831958238580",
+      "MetalnessMap": "rbxassetid://94938773043996"
+    },
+    "Bull_ClothFront_2": {
+      "bone": "ClothFront",
+      "MeshId": "rbxassetid://90501651695969",
+      "ColorMap": "rbxassetid://120589600990397",
+      "NormalMap": "rbxassetid://72440714638359",
+      "RoughnessMap": "rbxassetid://130831958238580",
+      "MetalnessMap": "rbxassetid://94938773043996"
+    },
+    "Bull_LeftUpperLeg_2": {
+      "bone": "LeftUpperLeg",
+      "MeshId": "rbxassetid://70504048557413",
+      "ColorMap": "rbxassetid://120589600990397",
+      "NormalMap": "rbxassetid://72440714638359",
+      "RoughnessMap": "rbxassetid://130831958238580",
+      "MetalnessMap": "rbxassetid://94938773043996"
+    },
+    "Bull_LeftLowerLeg": {
+      "bone": "LeftLowerLeg",
+      "MeshId": "rbxassetid://116035694308541",
+      "ColorMap": "rbxassetid://120589600990397",
+      "NormalMap": "rbxassetid://72440714638359",
+      "RoughnessMap": "rbxassetid://130831958238580",
+      "MetalnessMap": "rbxassetid://94938773043996"
+    },
+    "Bull_LeftFoot": {
+      "bone": "LeftFoot",
+      "MeshId": "rbxassetid://84963534729333",
+      "ColorMap": "rbxassetid://120589600990397",
+      "NormalMap": "rbxassetid://72440714638359",
+      "RoughnessMap": "rbxassetid://130831958238580",
+      "MetalnessMap": "rbxassetid://94938773043996"
+    },
+    "Bull_LeftPauldron_2": {
+      "bone": "LeftPauldron",
+      "MeshId": "rbxassetid://101502791536069",
+      "ColorMap": "rbxassetid://120589600990397",
+      "NormalMap": "rbxassetid://72440714638359",
+      "RoughnessMap": "rbxassetid://130831958238580",
+      "MetalnessMap": "rbxassetid://94938773043996"
+    },
+    "Bull_ClothFront_1": {
+      "bone": "ClothFront",
+      "MeshId": "rbxassetid://75814577622963",
+      "ColorMap": "rbxassetid://120589600990397",
+      "NormalMap": "rbxassetid://72440714638359",
+      "RoughnessMap": "rbxassetid://130831958238580",
+      "MetalnessMap": "rbxassetid://94938773043996"
+    },
+    "Bull_ClothBack_1": {
+      "bone": "ClothBack",
+      "MeshId": "rbxassetid://113578009415391",
+      "ColorMap": "rbxassetid://120589600990397",
+      "NormalMap": "rbxassetid://72440714638359",
+      "RoughnessMap": "rbxassetid://130831958238580",
+      "MetalnessMap": "rbxassetid://94938773043996"
+    },
+    "Bull_Weapon_1": {
+      "bone": "RightHand",
+      "MeshId": "rbxassetid://75315237435444",
+      "ColorMap": "rbxassetid://120589600990397",
+      "NormalMap": "rbxassetid://72440714638359",
+      "RoughnessMap": "rbxassetid://130831958238580",
+      "MetalnessMap": "rbxassetid://94938773043996"
+    },
+    "Bull_Shield_2": {
+      "bone": "LeftLowerArm",
+      "MeshId": "rbxassetid://89874570125160",
+      "ColorMap": "rbxassetid://120589600990397",
+      "NormalMap": "rbxassetid://72440714638359",
+      "RoughnessMap": "rbxassetid://130831958238580",
+      "MetalnessMap": "rbxassetid://94938773043996"
+    },
+    "Bull_Shield_3": {
+      "bone": "LeftLowerArm",
+      "MeshId": "rbxassetid://137997953929379",
+      "ColorMap": "rbxassetid://120589600990397",
+      "NormalMap": "rbxassetid://72440714638359",
+      "RoughnessMap": "rbxassetid://130831958238580",
+      "MetalnessMap": "rbxassetid://94938773043996"
+    },
+    "Bull_Shield_4": {
+      "bone": "LeftLowerArm",
+      "MeshId": "rbxassetid://108383357733100",
+      "ColorMap": "rbxassetid://120589600990397",
+      "NormalMap": "rbxassetid://72440714638359",
+      "RoughnessMap": "rbxassetid://130831958238580",
+      "MetalnessMap": "rbxassetid://94938773043996"
+    },
+    "Bull_Shield_5": {
+      "bone": "LeftLowerArm",
+      "MeshId": "rbxassetid://104047474024423",
+      "ColorMap": "rbxassetid://120589600990397",
+      "NormalMap": "rbxassetid://72440714638359",
+      "RoughnessMap": "rbxassetid://130831958238580",
+      "MetalnessMap": "rbxassetid://94938773043996"
+    }
+  },
+  "sharedStringCount": 2,
+  "validation": "15 uploaded MeshParts, complete uploaded PBR, AsuraBone + AsuraBind on each, non-colliding",
+  "savedPlace": "/var/folders/0h/ppzkjk7x4sd3qkr37t30hxmc0000gn/T/s3/BullImport.rbxlx"
+}

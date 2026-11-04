@@ -464,7 +464,9 @@ end
 
 local function mirrorHealth(e: Entity)
 	local f = e.Fighter
-	local health = if f.State == "KO" then 0 else math.max(f.ActiveHP, 0.01)
+	-- A dead Humanoid's Animator stops stepping, so an actor with an authored Death clip stays nominally
+	-- alive while the clip plays. The fighter's KO state, not this mirror, is what every rule reads.
+	local health = if f.State == "KO" then (if e.Model:GetAttribute("AsuraAuthoredDeath") == true then 0.01 else 0) else math.max(f.ActiveHP, 0.01)
 	local maximum = f.MaxHP
 	if math.abs(e.Humanoid.MaxHealth - maximum) > 0.005 then
 		e.Humanoid.MaxHealth = maximum

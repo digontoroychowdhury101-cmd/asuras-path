@@ -265,7 +265,7 @@ local GateCoordinator=(function()
  local EncounterHandoff=registry.EncounterHandoff
  local sessions:any={};local fights:any={};local sealed:any={};local awards:any={};local drops=0;local present=true;local failSpawn=false
  local AI={SpawnBoss=function(_id:string,_participants:any) return if failSpawn then nil else -99 end,
-  DespawnBoss=function(_id:string) present=false end,GetBossEntity=function(_id:string) return if present then -99 else nil end,
+  DespawnBoss=function(_id:string) present=false end,IsBossPresent=function(_id:string) return present end,GetBossEntity=function(_id:string) return if present then -99 else nil end,
   SetBossTargets=function(_id:string,_participants:any) end}
  local BossArenas={loot=function(_position:any,_essence:number) drops+=1 end}
  local function setGate(id:string,value:boolean) sealed[id]=value end

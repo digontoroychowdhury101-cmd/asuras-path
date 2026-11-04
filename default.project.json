@@ -241,6 +241,9 @@
           "BossAnimationRules": {
             "$path": "src/shared/BossAnimationRules.luau"
           },
+          "BossRigs": {
+            "$path": "src/shared/BossRigs.luau"
+          },
           "BossRoster": {
             "$path": "src/shared/BossRoster.luau"
           },
@@ -730,6 +733,12 @@
         },
         "AsuraBoss_HollowBellWarden": {
           "$path": "assets/models/AsuraBoss_HollowBellWarden.rbxmx"
+        },
+        "AsuraBoss_IronBull": {
+          "$path": "assets/models/AsuraBoss_IronBull.rbxmx"
+        },
+        "AsuraBoss_GeneralZhao": {
+          "$path": "assets/models/AsuraBoss_GeneralZhao.rbxmx"
         }
       },
       "AsuraLobbyKit": {

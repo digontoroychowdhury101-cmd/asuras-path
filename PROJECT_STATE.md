@@ -6,6 +6,10 @@
 
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## Iron Bull and Zhao in game — 2026-11-04 (Mac)
+
+Bull runs on the creator's sculpt with 45 clips; Zhao v2 finally installed. Fixed frozen Death clips and a won-fight reset. Both kill orders pass seeded; real-input acceptance pending on Windows. Next: armour. See `outputs/mac-followup-2026-11-02/iron-bull/RESULTS.md`.
+
 ## Combat Stage 3A closure — 2026-11-02 (Mac)
 
 Corrected prediction convergence, blade and trail consistency, pose-budget step and feedback cleanup, with behavioural regressions. A1 still fails; not accepted. Next: four Mac follow-up batches.
