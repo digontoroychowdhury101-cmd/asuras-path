@@ -1,6 +1,6 @@
 # Grandmaster Shen: integration results
 
-Status: everything that can be built without Studio is done and passes local checks. **He is not yet in the game.** The skinned chunks are not imported, the 46 clips are not published, and nothing has been played. **Skinning and cloth have only ever run in Blender and in a standalone Luau simulation.** Until the steps in "Finish in Studio" run, he shows the costume fallback with a guandao and stock animations (`AsuraSkinStatus = Fallback:Costume`).
+Status: **He is in the game.** Both skinned forms are imported, uploaded and bound (`ServerStorage.AsuraAssets.AsuraBoss_GrandmasterShen_P1/P2`), all 64 clips and all 16 sound layers are published, and a single-client Studio fight ran both phases, the transition, defeat, death, reset and retry on the real templates. Still open: the two-client test (other computer) and device profiling.
 
 ## Evidence
 
@@ -9,10 +9,10 @@ Status: everything that can be built without Studio is done and passes local che
 | Static review | Both GLBs confirm a guandao in both phases. Callers traced before contracts changed. |
 | Local regression | `bash tools/verify_all.sh` passed, building only to a temp path. New: `tools/test_shen_integration.py` (data contracts), `tools/test_shen_presentation.luau` (the real effects module on engine fakes: timing, cancel, reset, departure). Updated for the loadout: `test_boss_runtime.py`, `test_asura_stage3.luau`, `test_boss_presentation.luau`. |
 | Blender render | All 46 clips pass the validator (reach, floor, hand contact, weapon through body, foot slide, loop seams). That proves contact and reach, not quality, so motion was judged from rendered sequences of the real skinned GLB with the real `ClothSim` code. `shen_motion_preview_blender.mp4` and `sheets/` show motion only: no VFX or sound, Blender lighting, not Studio. |
-| Studio integration | **Not done.** Studio reports "Place is not open"; desktop control of Studio was declined. |
+| Studio integration | **Done, single client (2026-11-06).** Fight in a throwaway build with an unmapped probe (`tools/qa/ShenProbe.server.luau`). Skin status `Template:AsuraBoss_GrandmasterShen_P1` → `_P2` at the phase change; 42/123 and 43/125 MeshParts/bones; 122 bones driven per frame. Clips seen live: P1 all specials (Flowing Jian, Hesitant Moon, Wheel of Heaven, Prayer Beads, Abbot Sweep, Feint, Flourish, Heavy, Art, L1-L3, turns); P2 Blood Wave, Crimson Embrace, Skyfall, Phantom Drift, Rending Arc, Feint, Flourish, Heavy, Art, L1-L3, turns. Defeat removed him; player death fired `BossReset`; retry brought back one P1 skin. No script errors. Stills in `studio_evidence/`. |
 | Multiplayer | **Pending, other computer.** |
 | Device profiling | **Not done.** 86 chunks across both forms, plus about 120 bone writes a frame and the simulation per boss. Legal per-mesh sizes prove nothing about frame time. |
-| Audio | **Not heard in the game.** Layers were generated and measured for level only, not listened to. |
+| Audio | **Uploaded, 16/16** (Creator: Me, 0 Robux), ids in `PresentationAssets.Audio` and `assets/opening_cast/GrandmasterShen_audio.uploaded.json`. Each id loaded in Studio with the WAV's exact length; `ShenSteelAir` heard playing in the fight. Not judged by ear. |
 
 ## Decisions to review
 
@@ -71,7 +71,7 @@ Timing and cleanup pass on engine fakes; how any of it looks is unverified until
 
 ## Sound
 
-16 original layers in `assets/build/shen_audio/` (ignored by git; `python3 tools/assets/build_shen_audio.py` reproduces them). They are not uploaded, so the owned stand-ins below play until they are. No ID was invented.
+16 original layers in `assets/build/shen_audio/` (ignored by git; `python3 tools/assets/build_shen_audio.py` reproduces them). They are uploaded (2026-11-06) and play in place of the stand-ins below. No ID was invented.
 
 | Event | Original layer | Owned stand-in | Attach | Onset | Vol | Pitch | Rolloff | Pri | Stop |
 |---|---|---|---|---:|---:|---:|---:|---:|---|
@@ -108,30 +108,10 @@ Sourcing briefs, if the synthesized layers do not hold up by ear:
 - **ShenBeadClick:** close recording of old wooden prayer beads, single clicks, dry.
 - **`SoundService.BossMusic_GrandmasterShen`:** not authored; the existing placeholder plays. Needs one looping track, restrained bowed bronze and low percussion, that can carry both phases.
 
-## Finish in Studio
+## Studio import (done 2026-11-06)
 
-0. **Pilot first.** Import `Shen_P1_Game.glb` alone in an empty place, move a few bones, and confirm every chunk deforms together. If Roblox gives each chunk its own bones, `BossCloth` must write to all copies.
-1. Open the place in Studio. 3D Importer, one file at a time, Creator: Me, Set Pivot to Scene Origin, 1 stud per unit: `Shen_P1_Game.glb` as `Shen1`, `Shen_P2_Game.glb` as `Shen2`, and each `Shen_P<n>_Props.glb` into the same scene as `Shen<n>_Props`.
-2. Bind and check (`STUDIO_ID` from the MCP list):
-```bash
-python3 tools/animation/opening_cast/bind_skin.py shen1 STUDIO_ID
-python3 tools/animation/opening_cast/bind_skin.py shen2 STUDIO_ID
-python3 tools/animation/opening_cast/check_skin.py shen1 STUDIO_ID
-python3 tools/animation/opening_cast/check_skin.py shen2 STUDIO_ID
-```
-3. Save as an XML place, then extract:
-```bash
-python3 tools/assets/extract_skin.py PLACE AsuraBoss_GrandmasterShen_P1
-python3 tools/assets/extract_skin.py PLACE AsuraBoss_GrandmasterShen_P2
-```
-4. Add both templates to `default.project.json` beside `AsuraBoss_GeneralZhao`.
-5. Publish and register:
-```bash
-python3 tools/animation/opening_cast/publish.py shen STUDIO_ID
-python3 tools/animation/opening_cast/register_shen.py
-```
-6. Upload the 16 WAVs as Audio and add `<Key> = "rbxassetid://..."` to `PresentationAssets.Audio`.
-7. Single-client fight on this computer: all six attacks, cancel by posture break, the transition, retry, deathblow. Check fissure glow, trails, wave sync, hitbox alignment. Capture matched Studio comparisons and the Studio preview.
-8. Two-client test on the other computer. Device profiling.
-
-Note: `bind_skin.py` passes pieces.json inline and expects the importer's part names; step 2 will report any mismatch rather than bind wrongly. Neither it nor its new Glow and attachment code has run in Studio yet.
+- **Pilot result:** the importer gives all chunks of a form **one** shared skeleton under the template's `RootPart` (P1 123 bones, P2 125), so one set of bone writes moves every chunk. That skeleton sits **180° about Y** from the rig's authored space. `BossCloth` assumed they matched and drove every bone to its mirror image; in the first play he was visibly torn apart. Fixed in `BossCloth.run`: each frame reads the root bone's offset from the HumanoidRootPart and applies it to limb and cloth targets. After the fix he renders whole and moves correctly (stills).
+- **Tools changed by the pilot:** `bind_skin.py` moves each props import onto the body's pivot, hides the skeleton's `RootPart` and drops Studio's editor-only `InitialPoses`. `check_skin.py` counts the shared skeleton's bones. `extract_skin.py` accepts the `Glaive` helper bone.
+- **Bind:** 85 parts, worst centre error 0.0000 studs. Capture place: `import/shen_import_capture.rbxlx`.
+- **Fresh-upload note:** for a while after upload, Studio logs "Asset content representation is being generated" for some new mesh ids. That is Roblox processing; it clears on its own.
+- **Not done:** two-client test (other computer, per house rule); device profiling (Studio client here: 60 Hz physics, 0.7 ms heartbeat, 5.4 GB Studio memory, not a device figure).

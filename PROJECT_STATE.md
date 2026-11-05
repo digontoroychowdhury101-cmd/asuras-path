@@ -1,3 +1,5 @@
+**Grandmaster Shen in game (2026-11-06):** Both skinned forms imported and bound, 64 clips and 16 sound layers published, BossCloth fixed for the importer's turned skeleton. Single-client Studio fight passed: phases, transition, defeat, reset, retry. Next: two-client test on the other computer, device profiling.
+
 **Grandmaster Shen rework (2026-11-06):** Gait, curved parryable cuts, mix-ups, sphere orbs, hair-only black, levitation, freer parted cloth, stable two-handed grip. Local verifier passes. Next: Studio import, bind, publish 64 clips, register, play-test.
 **Visual audit and production plan (2026-11-06):** Documented 36 issue families across seven regions with screenshots and exact locations. Added Rodin/image prompts, code/Blender ownership and six larger-arena redesign prompts. Boss models are creator-reported constructed; integration unverified. Temporary Studio overrides restored, place unchanged. Next: C00 intake, AR00 spatial prototypes, Shen pilot, then Windows acceptance.
 
