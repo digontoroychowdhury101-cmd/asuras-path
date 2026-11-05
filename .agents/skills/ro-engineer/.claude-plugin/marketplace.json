@@ -1,0 +1,21 @@
+{
+  "name": "ro-engineer",
+  "description": "Roblox/Luau development and game design skills.",
+  "owner": {
+    "name": "excaldev",
+    "url": "https://github.com/excaldev"
+  },
+  "plugins": [
+    {
+      "name": "ro-engineer",
+      "source": "./",
+      "description": "Project-aware Roblox/Luau engineering and optional gameplay design with security, lifecycle, and evidence-based validation.",
+      "category": "game-development",
+      "tags": [
+        "roblox",
+        "luau",
+        "game-design"
+      ]
+    }
+  ]
+}

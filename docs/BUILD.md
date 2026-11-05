@@ -1,6 +1,8 @@
 # Asura's Path — current build and verification (21 October 2026)
 
-Rojo project: `default.project.json` (project name `AsurasPath`; namespaces `ReplicatedStorage/AsurasPath`, `ServerScriptService/AsurasPath`, `StarterPlayer/StarterPlayerScripts/AsurasPath`, `ServerStorage/AsuraAssets`). Binaries: official Luau and Rojo 7.7.1 in `work/bin/luau` and `work/bin/rojo` (or on PATH).
+Rojo project: `default.project.json` (project name `AsurasPath`; namespaces `ReplicatedStorage/AsurasPath`, `ServerScriptService/AsurasPath`, `StarterPlayer/StarterPlayerScripts/AsurasPath`, `ServerStorage/AsuraAssets`). Binaries: official Luau 0.742 and Rojo 7.7.1 in `work/bin/luau` and `work/bin/rojo` (or on PATH).
+
+Pinned tool versions live in `tools/toolchain.env`; use those versions for local setup. `docs/ci-full-verifier.patch` makes GitHub CI read this file and run the same `tools/verify_all.sh` as local verification; it is not applied yet because pushing a workflow file needs a token with `workflow` scope (`git apply docs/ci-full-verifier.patch`, commit, push). Neither a local pass nor CI certifies Studio play.
 
 | Task | Command | Notes |
 |---|---|---|

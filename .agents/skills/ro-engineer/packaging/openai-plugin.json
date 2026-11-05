@@ -1,0 +1,21 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "ro-engineer",
+  "version": "1.0.1",
+  "description": "Project-aware Roblox/Luau engineering and optional gameplay design with security, lifecycle, and evidence-based validation.",
+  "author": {
+    "name": "excaldev",
+    "url": "https://github.com/excaldev"
+  },
+  "homepage": "https://github.com/excaldev/ro-engineer",
+  "repository": "https://github.com/excaldev/ro-engineer",
+  "license": "MIT",
+  "keywords": [
+    "roblox",
+    "luau",
+    "game-design",
+    "skill",
+    "ecs",
+    "object-pooling"
+  ]
+}

@@ -1,0 +1,75 @@
+diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml
+index 72ef182..9963e8a 100644
+--- a/.github/workflows/ci.yml
++++ b/.github/workflows/ci.yml
+@@ -20,53 +20,28 @@ jobs:
+         with:
+           python-version: "3.11"
+ 
+-      - name: Install Rojo & Luau
++      - name: Install pinned Rojo and Luau
++        shell: bash
+         run: |
+-          mkdir -p bin
+-          # Download official Rojo 7.7.1
+-          curl -sL https://github.com/rojo-rbx/rojo/releases/download/v7.7.1/rojo-7.7.1-linux.zip -o rojo.zip
+-          unzip -q rojo.zip -d bin/
+-          chmod +x bin/rojo
+-          
+-          # Download official Luau 0.640
+-          curl -sL https://github.com/luau-lang/luau/releases/download/0.640/luau-ubuntu.zip -o luau.zip
+-          unzip -q luau.zip -d bin/
+-          chmod +x bin/luau
+-          
+-          echo "$PWD/bin" >> $GITHUB_PATH
++          set -euo pipefail
++          source tools/toolchain.env
+           mkdir -p work/bin/rojo work/bin/luau
+-          cp bin/rojo work/bin/rojo/rojo
+-          cp bin/luau work/bin/luau/luau
+-
+-      - name: Run Stage 1 & 2 Tests
+-        run: |
+-          work/bin/luau/luau tools/test_asura_stage1.luau
+-          python3 tools/test_asura_stage2.py
+-
+-      - name: Run Stage 3 Tests & Profile Integrity
+-        run: |
+-          work/bin/luau/luau tools/test_asura_stage3.luau
+-          work/bin/luau/luau tools/test_profile_integrity.luau
+-
+-      - name: Run Weapons & Spells Tests
+-        run: |
+-          work/bin/luau/luau tools/test_weapons_and_spells.luau
+-          python3 tools/test_weapons_and_spells_runtime.py
+-
+-      - name: Run Movement, Boss & Objective Tests
+-        run: |
+-          python3 tools/test_movement.py
+-          python3 tools/test_boss_runtime.py
+-          python3 tools/test_objectives.py
+-          work/bin/luau/luau tools/test_progression_and_lore.luau
+-          python3 tools/test_review_regressions.py
+-
+-      - name: Build Place (AsurasPath.rbxlx)
+-        run: python3 tools/build.py
++          curl --fail --location --retry 3 "https://github.com/rojo-rbx/rojo/releases/download/v${ROJO_VERSION}/rojo-${ROJO_VERSION}-linux.zip" -o "$RUNNER_TEMP/rojo.zip"
++          unzip -q "$RUNNER_TEMP/rojo.zip" -d work/bin/rojo
++          curl --fail --location --retry 3 "https://github.com/luau-lang/luau/releases/download/${LUAU_VERSION}/luau-ubuntu.zip" -o "$RUNNER_TEMP/luau.zip"
++          unzip -q "$RUNNER_TEMP/luau.zip" -d work/bin/luau
++          chmod +x work/bin/rojo/rojo work/bin/luau/luau work/bin/luau/luau-compile work/bin/luau/luau-analyze
++          echo "$PWD/work/bin/rojo" >> "$GITHUB_PATH"
++          echo "$PWD/work/bin/luau" >> "$GITHUB_PATH"
++
++      - name: Run full verification and build
++        env:
++          ASURA_BUILD_OUTPUT: ${{ runner.temp }}/AsurasPath.rbxlx
++        run: bash tools/verify_all.sh
+ 
+       - name: Upload Place Artifact
+         uses: actions/upload-artifact@v4
+         with:
+           name: AsurasPath-Place
+-          path: outputs/AsurasPath.rbxlx
++          path: ${{ runner.temp }}/AsurasPath.rbxlx
+           if-no-files-found: error

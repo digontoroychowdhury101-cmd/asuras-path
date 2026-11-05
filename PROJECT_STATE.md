@@ -1,3 +1,5 @@
+**Coding workflow (2026-11-05):** Added AGENTS.md, ro-engineer skill and pinned toolchain. CI change saved as `docs/ci-full-verifier.patch`: pushing workflow files needs a token with `workflow` scope. Full local verifier green on 2eb5d6e.
+
 **Route (2026-11-05):** Foundry wing between Bamboo Gate and crest: yard, hall, Bell Terrace altar, Kiln cache, Bell Walk, barred ridge shortcut. Bridge to shrine 18.5 s becomes 29.0 s first visit, 18.6 s lifted. Digest 409185567, verifier green, single-client Studio. Mac writer paused; next Windows acceptance, then fresh-profile playthrough.
 
 **Armour (2026-11-05):** Three suits at Gao: ownership, forge, reinforce, compare, real combat effect (monk hits ×0.84, ×0.82). Digest 52738962, verifier green, single-client Studio. Windows cases, combat revalidation and human look pending: `outputs/mac-followup-2026-11-02/armour/RESULTS.md`. Next: route expansion.
