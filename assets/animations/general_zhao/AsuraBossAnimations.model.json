@@ -728,6 +728,454 @@
       "properties": {
         "AnimationId": "rbxassetid://120378367818488"
       }
+    },
+    {
+      "name": "GrandmasterShen_P1_AbbotSweep",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://122912129415413"
+      }
+    },
+    {
+      "name": "GrandmasterShen_P1_Death",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://101931218124886"
+      }
+    },
+    {
+      "name": "GrandmasterShen_P1_DeathblowVictim",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://91202694327075"
+      }
+    },
+    {
+      "name": "GrandmasterShen_P1_Feint",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://80237533072755"
+      }
+    },
+    {
+      "name": "GrandmasterShen_P1_Flourish",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://95086247485398"
+      }
+    },
+    {
+      "name": "GrandmasterShen_P1_FlowingJian",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://130228806026081"
+      }
+    },
+    {
+      "name": "GrandmasterShen_P1_Guandao_Art",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://113016961344542"
+      }
+    },
+    {
+      "name": "GrandmasterShen_P1_Guandao_Heavy",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://84483982609721"
+      }
+    },
+    {
+      "name": "GrandmasterShen_P1_Guandao_L1",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://90693278321537"
+      }
+    },
+    {
+      "name": "GrandmasterShen_P1_Guandao_L2",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://126579601061367"
+      }
+    },
+    {
+      "name": "GrandmasterShen_P1_Guandao_L3",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://71428835921087"
+      }
+    },
+    {
+      "name": "GrandmasterShen_P1_Guandao_Running",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://128283161159933"
+      }
+    },
+    {
+      "name": "GrandmasterShen_P1_GuardHit",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://87799715814857"
+      }
+    },
+    {
+      "name": "GrandmasterShen_P1_GuardLoop",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://72000709612577"
+      }
+    },
+    {
+      "name": "GrandmasterShen_P1_HesitantMoon",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://73331719679209"
+      }
+    },
+    {
+      "name": "GrandmasterShen_P1_HitLightBack",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://94589086172558"
+      }
+    },
+    {
+      "name": "GrandmasterShen_P1_HitLightFront",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://90652741413173"
+      }
+    },
+    {
+      "name": "GrandmasterShen_P1_HitLightLeft",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://121007074678154"
+      }
+    },
+    {
+      "name": "GrandmasterShen_P1_HitLightRight",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://129690996808616"
+      }
+    },
+    {
+      "name": "GrandmasterShen_P1_Idle",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://95368630147871"
+      }
+    },
+    {
+      "name": "GrandmasterShen_P1_PostureBreak",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://79907651380238"
+      }
+    },
+    {
+      "name": "GrandmasterShen_P1_PrayerBeads",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://85246830462267"
+      }
+    },
+    {
+      "name": "GrandmasterShen_P1_RunForward",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://112184891375884"
+      }
+    },
+    {
+      "name": "GrandmasterShen_P1_StrafeLeft",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://90568171943685"
+      }
+    },
+    {
+      "name": "GrandmasterShen_P1_StrafeRight",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://96281271835374"
+      }
+    },
+    {
+      "name": "GrandmasterShen_P1_Strike",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://94873022197045"
+      }
+    },
+    {
+      "name": "GrandmasterShen_P1_Transform",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://81061665400598"
+      }
+    },
+    {
+      "name": "GrandmasterShen_P1_TurnLeft",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://140732239975623"
+      }
+    },
+    {
+      "name": "GrandmasterShen_P1_TurnRight",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://120744812557792"
+      }
+    },
+    {
+      "name": "GrandmasterShen_P1_WalkBackward",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://100146219305818"
+      }
+    },
+    {
+      "name": "GrandmasterShen_P1_WalkForward",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://111139305130293"
+      }
+    },
+    {
+      "name": "GrandmasterShen_P1_WheelOfHeaven",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://79301054825657"
+      }
+    },
+    {
+      "name": "GrandmasterShen_P2_BloodWave",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://130644447357665"
+      }
+    },
+    {
+      "name": "GrandmasterShen_P2_CrimsonEmbrace",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://96183546097046"
+      }
+    },
+    {
+      "name": "GrandmasterShen_P2_Death",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://107623325499134"
+      }
+    },
+    {
+      "name": "GrandmasterShen_P2_DeathblowVictim",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://139754735053877"
+      }
+    },
+    {
+      "name": "GrandmasterShen_P2_Feint",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://117936671296928"
+      }
+    },
+    {
+      "name": "GrandmasterShen_P2_Flourish",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://76935383013589"
+      }
+    },
+    {
+      "name": "GrandmasterShen_P2_GuandaoSkyfall",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://107083410675703"
+      }
+    },
+    {
+      "name": "GrandmasterShen_P2_Guandao_Art",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://80836423877849"
+      }
+    },
+    {
+      "name": "GrandmasterShen_P2_Guandao_Heavy",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://139891517534747"
+      }
+    },
+    {
+      "name": "GrandmasterShen_P2_Guandao_L1",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://95787094565190"
+      }
+    },
+    {
+      "name": "GrandmasterShen_P2_Guandao_L2",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://72047599990376"
+      }
+    },
+    {
+      "name": "GrandmasterShen_P2_Guandao_L3",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://113003401811000"
+      }
+    },
+    {
+      "name": "GrandmasterShen_P2_Guandao_Running",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://138971034810541"
+      }
+    },
+    {
+      "name": "GrandmasterShen_P2_GuardHit",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://137512673001290"
+      }
+    },
+    {
+      "name": "GrandmasterShen_P2_GuardLoop",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://89628887933024"
+      }
+    },
+    {
+      "name": "GrandmasterShen_P2_HitLightBack",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://108791590457170"
+      }
+    },
+    {
+      "name": "GrandmasterShen_P2_HitLightFront",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://126263405590864"
+      }
+    },
+    {
+      "name": "GrandmasterShen_P2_HitLightLeft",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://136454566511055"
+      }
+    },
+    {
+      "name": "GrandmasterShen_P2_HitLightRight",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://82316826160909"
+      }
+    },
+    {
+      "name": "GrandmasterShen_P2_Idle",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://88576624798646"
+      }
+    },
+    {
+      "name": "GrandmasterShen_P2_PhantomDrift",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://96015799755804"
+      }
+    },
+    {
+      "name": "GrandmasterShen_P2_PostureBreak",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://119321164498892"
+      }
+    },
+    {
+      "name": "GrandmasterShen_P2_RendingArc",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://139401114764660"
+      }
+    },
+    {
+      "name": "GrandmasterShen_P2_RunForward",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://75764611446385"
+      }
+    },
+    {
+      "name": "GrandmasterShen_P2_StrafeLeft",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://122059756851988"
+      }
+    },
+    {
+      "name": "GrandmasterShen_P2_StrafeRight",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://102093636426715"
+      }
+    },
+    {
+      "name": "GrandmasterShen_P2_Strike",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://94204061315322"
+      }
+    },
+    {
+      "name": "GrandmasterShen_P2_Transform",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://73377155327994"
+      }
+    },
+    {
+      "name": "GrandmasterShen_P2_TurnLeft",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://136196974104889"
+      }
+    },
+    {
+      "name": "GrandmasterShen_P2_TurnRight",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://87434024964181"
+      }
+    },
+    {
+      "name": "GrandmasterShen_P2_WalkBackward",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://82418627089813"
+      }
+    },
+    {
+      "name": "GrandmasterShen_P2_WalkForward",
+      "className": "Animation",
+      "properties": {
+        "AnimationId": "rbxassetid://93136820789118"
+      }
     }
   ]
 }

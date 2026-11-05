@@ -43,6 +43,10 @@ for _, p in t:GetDescendants() do
 		table.insert(out, string.format("%%s %%s err %%.4f pbr %%s collide %%s bones %%d", p.Name, bone, err, tostring(pbr), tostring(p.CanCollide), bones))
 	end
 end
+-- the importer's multi-mesh skeleton lives under the template's RootPart, shared by every chunk
+for _, b in t:GetDescendants() do
+	if b:IsA("Bone") and b.Name:sub(1, 3) == "Sk_" then seen[b.Name:sub(4)] = true end
+end
 local missing = {}
 for _, b in {"Head","UpperTorso","LowerTorso","LeftUpperArm","LeftLowerArm","LeftHand","RightUpperArm","RightLowerArm","RightHand",
 	"LeftUpperLeg","LeftLowerLeg","LeftFoot","RightUpperLeg","RightLowerLeg","RightFoot"} do

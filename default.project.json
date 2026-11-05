@@ -767,6 +767,12 @@
         "AsuraBoss_GeneralZhao": {
           "$path": "assets/models/AsuraBoss_GeneralZhao.rbxmx"
         },
+        "AsuraBoss_GrandmasterShen_P1": {
+          "$path": "assets/models/AsuraBoss_GrandmasterShen_P1.rbxmx"
+        },
+        "AsuraBoss_GrandmasterShen_P2": {
+          "$path": "assets/models/AsuraBoss_GrandmasterShen_P2.rbxmx"
+        },
         "AsuraArmor_CinnabarGuard": {
           "$path": "assets/models/AsuraArmor_CinnabarGuard.rbxmx"
         },

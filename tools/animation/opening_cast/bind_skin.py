@@ -44,6 +44,7 @@ end
 -- a skinned form has its welded props (the guandao, floating beads) in a second import
 local propsModel = workspace:FindFirstChild("Scene" .. NAME .. "_Props") or workspace:FindFirstChild(NAME .. "_Props")
 if propsModel then
+	propsModel:PivotTo(origin) -- each import lands at its own spot; both pivots are the scene origin
 	for _, p in propsModel:GetDescendants() do
 		if p:IsA("MeshPart") then table.insert(parts, p) end
 	end
@@ -91,6 +92,13 @@ for name, fx in PIECES.__fx or {} do
 	a.Parent = p
 end
 if worst > 0.01 then return "MISMATCH worst " .. worst .. "\\n" .. table.concat(report, "\\n") end
+-- a skinned import also brings the skeleton's RootPart, which must stay unseen, and Studio's editor-only pose data
+local boneRoot = model:FindFirstChild("RootPart")
+if boneRoot and boneRoot:IsA("BasePart") then
+	boneRoot.Transparency, boneRoot.Anchored, boneRoot.Massless, boneRoot.CanCollide, boneRoot.CanQuery, boneRoot.CanTouch, boneRoot.CastShadow = 1, true, true, false, false, false, false
+end
+local poses = model:FindFirstChild("InitialPoses")
+if poses then poses:Destroy() end
 -- flatten the importer's per-node Models and park the template at the origin, facing -Z like the rig
 for _, p in parts do p.Parent = model end
 for _, d in model:GetChildren() do if d:IsA("Model") and #d:GetChildren() == 0 then d:Destroy() end end

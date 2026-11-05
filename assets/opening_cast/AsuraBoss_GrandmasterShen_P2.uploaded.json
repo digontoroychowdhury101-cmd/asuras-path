@@ -1,0 +1,345 @@
+{
+  "model": "AsuraBoss_GrandmasterShen_P2",
+  "importer": "Roblox Studio 3D Importer, Creator: Me",
+  "parts": {
+    "Shen2_RobeLeft_1": {
+      "bone": "HumanoidRootPart",
+      "MeshId": "rbxassetid://81350634489054",
+      "ColorMap": "rbxassetid://106064073296820",
+      "NormalMap": "rbxassetid://120746698604625",
+      "RoughnessMap": "rbxassetid://71984187294844",
+      "MetalnessMap": "rbxassetid://125752254921407"
+    },
+    "Shen2_RobeRight_2": {
+      "bone": "HumanoidRootPart",
+      "MeshId": "rbxassetid://131872631637319",
+      "ColorMap": "rbxassetid://106064073296820",
+      "NormalMap": "rbxassetid://120746698604625",
+      "RoughnessMap": "rbxassetid://71984187294844",
+      "MetalnessMap": "rbxassetid://125752254921407"
+    },
+    "Shen2_RobeRight_1": {
+      "bone": "HumanoidRootPart",
+      "MeshId": "rbxassetid://105790393902199",
+      "ColorMap": "rbxassetid://106064073296820",
+      "NormalMap": "rbxassetid://120746698604625",
+      "RoughnessMap": "rbxassetid://71984187294844",
+      "MetalnessMap": "rbxassetid://125752254921407"
+    },
+    "Shen2_RobeBack_4": {
+      "bone": "HumanoidRootPart",
+      "MeshId": "rbxassetid://137402088131049",
+      "ColorMap": "rbxassetid://106064073296820",
+      "NormalMap": "rbxassetid://120746698604625",
+      "RoughnessMap": "rbxassetid://71984187294844",
+      "MetalnessMap": "rbxassetid://125752254921407"
+    },
+    "Shen2_RobeFront": {
+      "bone": "HumanoidRootPart",
+      "MeshId": "rbxassetid://94648099391816",
+      "ColorMap": "rbxassetid://106064073296820",
+      "NormalMap": "rbxassetid://120746698604625",
+      "RoughnessMap": "rbxassetid://71984187294844",
+      "MetalnessMap": "rbxassetid://125752254921407"
+    },
+    "Shen2_RibbonLeft": {
+      "bone": "HumanoidRootPart",
+      "MeshId": "rbxassetid://109527218168027",
+      "ColorMap": "rbxassetid://106064073296820",
+      "NormalMap": "rbxassetid://120746698604625",
+      "RoughnessMap": "rbxassetid://71984187294844",
+      "MetalnessMap": "rbxassetid://125752254921407"
+    },
+    "Shen2_RibbonRight": {
+      "bone": "HumanoidRootPart",
+      "MeshId": "rbxassetid://92999819639882",
+      "ColorMap": "rbxassetid://106064073296820",
+      "NormalMap": "rbxassetid://120746698604625",
+      "RoughnessMap": "rbxassetid://71984187294844",
+      "MetalnessMap": "rbxassetid://125752254921407"
+    },
+    "Shen2_Bead2": {
+      "bone": "HumanoidRootPart",
+      "MeshId": "rbxassetid://125736440661552",
+      "ColorMap": "rbxassetid://106064073296820",
+      "NormalMap": "rbxassetid://120746698604625",
+      "RoughnessMap": "rbxassetid://71984187294844",
+      "MetalnessMap": "rbxassetid://125752254921407"
+    },
+    "Shen2_Beard": {
+      "bone": "HumanoidRootPart",
+      "MeshId": "rbxassetid://75087927786391",
+      "ColorMap": "rbxassetid://106064073296820",
+      "NormalMap": "rbxassetid://120746698604625",
+      "RoughnessMap": "rbxassetid://71984187294844",
+      "MetalnessMap": "rbxassetid://125752254921407"
+    },
+    "Shen2_HairBack_3": {
+      "bone": "HumanoidRootPart",
+      "MeshId": "rbxassetid://110931860205885",
+      "ColorMap": "rbxassetid://106064073296820",
+      "NormalMap": "rbxassetid://120746698604625",
+      "RoughnessMap": "rbxassetid://71984187294844",
+      "MetalnessMap": "rbxassetid://125752254921407"
+    },
+    "Shen2_UpperTorso_2": {
+      "bone": "HumanoidRootPart",
+      "MeshId": "rbxassetid://113077256152793",
+      "ColorMap": "rbxassetid://106064073296820",
+      "NormalMap": "rbxassetid://120746698604625",
+      "RoughnessMap": "rbxassetid://71984187294844",
+      "MetalnessMap": "rbxassetid://125752254921407"
+    },
+    "Shen2_HairBack_2": {
+      "bone": "HumanoidRootPart",
+      "MeshId": "rbxassetid://139782682670608",
+      "ColorMap": "rbxassetid://106064073296820",
+      "NormalMap": "rbxassetid://120746698604625",
+      "RoughnessMap": "rbxassetid://71984187294844",
+      "MetalnessMap": "rbxassetid://125752254921407"
+    },
+    "Shen2_RobeRight_3": {
+      "bone": "HumanoidRootPart",
+      "MeshId": "rbxassetid://89143572935951",
+      "ColorMap": "rbxassetid://106064073296820",
+      "NormalMap": "rbxassetid://120746698604625",
+      "RoughnessMap": "rbxassetid://71984187294844",
+      "MetalnessMap": "rbxassetid://125752254921407"
+    },
+    "Shen2_RightLowerArm": {
+      "bone": "HumanoidRootPart",
+      "MeshId": "rbxassetid://90845895580300",
+      "ColorMap": "rbxassetid://106064073296820",
+      "NormalMap": "rbxassetid://120746698604625",
+      "RoughnessMap": "rbxassetid://71984187294844",
+      "MetalnessMap": "rbxassetid://125752254921407"
+    },
+    "Shen2_HairBack_1": {
+      "bone": "HumanoidRootPart",
+      "MeshId": "rbxassetid://118018649797302",
+      "ColorMap": "rbxassetid://106064073296820",
+      "NormalMap": "rbxassetid://120746698604625",
+      "RoughnessMap": "rbxassetid://71984187294844",
+      "MetalnessMap": "rbxassetid://125752254921407"
+    },
+    "Shen2_RobeLeft_2": {
+      "bone": "HumanoidRootPart",
+      "MeshId": "rbxassetid://86445058678261",
+      "ColorMap": "rbxassetid://106064073296820",
+      "NormalMap": "rbxassetid://120746698604625",
+      "RoughnessMap": "rbxassetid://71984187294844",
+      "MetalnessMap": "rbxassetid://125752254921407"
+    },
+    "Shen2_Bead3": {
+      "bone": "HumanoidRootPart",
+      "MeshId": "rbxassetid://128942225609778",
+      "ColorMap": "rbxassetid://106064073296820",
+      "NormalMap": "rbxassetid://120746698604625",
+      "RoughnessMap": "rbxassetid://71984187294844",
+      "MetalnessMap": "rbxassetid://125752254921407"
+    },
+    "Shen2_RightFoot": {
+      "bone": "HumanoidRootPart",
+      "MeshId": "rbxassetid://124694130732242",
+      "ColorMap": "rbxassetid://106064073296820",
+      "NormalMap": "rbxassetid://120746698604625",
+      "RoughnessMap": "rbxassetid://71984187294844",
+      "MetalnessMap": "rbxassetid://125752254921407"
+    },
+    "Shen2_LeftFoot": {
+      "bone": "HumanoidRootPart",
+      "MeshId": "rbxassetid://103328298814728",
+      "ColorMap": "rbxassetid://106064073296820",
+      "NormalMap": "rbxassetid://120746698604625",
+      "RoughnessMap": "rbxassetid://71984187294844",
+      "MetalnessMap": "rbxassetid://125752254921407"
+    },
+    "Shen2_Fissure_UpperTorso": {
+      "bone": "HumanoidRootPart",
+      "MeshId": "rbxassetid://76949660226359"
+    },
+    "Shen2_LeftLowerLeg": {
+      "bone": "HumanoidRootPart",
+      "MeshId": "rbxassetid://125887444532873",
+      "ColorMap": "rbxassetid://106064073296820",
+      "NormalMap": "rbxassetid://120746698604625",
+      "RoughnessMap": "rbxassetid://71984187294844",
+      "MetalnessMap": "rbxassetid://125752254921407"
+    },
+    "Shen2_Fissure_RightUpperArm": {
+      "bone": "HumanoidRootPart",
+      "MeshId": "rbxassetid://134951888049206"
+    },
+    "Shen2_LeftSleeve": {
+      "bone": "HumanoidRootPart",
+      "MeshId": "rbxassetid://116302118183913",
+      "ColorMap": "rbxassetid://106064073296820",
+      "NormalMap": "rbxassetid://120746698604625",
+      "RoughnessMap": "rbxassetid://71984187294844",
+      "MetalnessMap": "rbxassetid://125752254921407"
+    },
+    "Shen2_RightLowerLeg": {
+      "bone": "HumanoidRootPart",
+      "MeshId": "rbxassetid://103912644755603",
+      "ColorMap": "rbxassetid://106064073296820",
+      "NormalMap": "rbxassetid://120746698604625",
+      "RoughnessMap": "rbxassetid://71984187294844",
+      "MetalnessMap": "rbxassetid://125752254921407"
+    },
+    "Shen2_RightUpperLeg": {
+      "bone": "HumanoidRootPart",
+      "MeshId": "rbxassetid://116746705374873",
+      "ColorMap": "rbxassetid://106064073296820",
+      "NormalMap": "rbxassetid://120746698604625",
+      "RoughnessMap": "rbxassetid://71984187294844",
+      "MetalnessMap": "rbxassetid://125752254921407"
+    },
+    "Shen2_RobeBack_2": {
+      "bone": "HumanoidRootPart",
+      "MeshId": "rbxassetid://90756710290167",
+      "ColorMap": "rbxassetid://106064073296820",
+      "NormalMap": "rbxassetid://120746698604625",
+      "RoughnessMap": "rbxassetid://71984187294844",
+      "MetalnessMap": "rbxassetid://125752254921407"
+    },
+    "Shen2_LeftHand": {
+      "bone": "HumanoidRootPart",
+      "MeshId": "rbxassetid://129746715813932",
+      "ColorMap": "rbxassetid://106064073296820",
+      "NormalMap": "rbxassetid://120746698604625",
+      "RoughnessMap": "rbxassetid://71984187294844",
+      "MetalnessMap": "rbxassetid://125752254921407"
+    },
+    "Shen2_LeftLowerArm": {
+      "bone": "HumanoidRootPart",
+      "MeshId": "rbxassetid://104526068769104",
+      "ColorMap": "rbxassetid://106064073296820",
+      "NormalMap": "rbxassetid://120746698604625",
+      "RoughnessMap": "rbxassetid://71984187294844",
+      "MetalnessMap": "rbxassetid://125752254921407"
+    },
+    "Shen2_LeftUpperArm": {
+      "bone": "HumanoidRootPart",
+      "MeshId": "rbxassetid://96685872571809",
+      "ColorMap": "rbxassetid://106064073296820",
+      "NormalMap": "rbxassetid://120746698604625",
+      "RoughnessMap": "rbxassetid://71984187294844",
+      "MetalnessMap": "rbxassetid://125752254921407"
+    },
+    "Shen2_LowerTorso_2": {
+      "bone": "HumanoidRootPart",
+      "MeshId": "rbxassetid://98998423096078",
+      "ColorMap": "rbxassetid://106064073296820",
+      "NormalMap": "rbxassetid://120746698604625",
+      "RoughnessMap": "rbxassetid://71984187294844",
+      "MetalnessMap": "rbxassetid://125752254921407"
+    },
+    "Shen2_LowerTorso_1": {
+      "bone": "HumanoidRootPart",
+      "MeshId": "rbxassetid://107756398064118",
+      "ColorMap": "rbxassetid://106064073296820",
+      "NormalMap": "rbxassetid://120746698604625",
+      "RoughnessMap": "rbxassetid://71984187294844",
+      "MetalnessMap": "rbxassetid://125752254921407"
+    },
+    "Shen2_UpperTorso_1": {
+      "bone": "HumanoidRootPart",
+      "MeshId": "rbxassetid://78374243509622",
+      "ColorMap": "rbxassetid://106064073296820",
+      "NormalMap": "rbxassetid://120746698604625",
+      "RoughnessMap": "rbxassetid://71984187294844",
+      "MetalnessMap": "rbxassetid://125752254921407"
+    },
+    "Shen2_RobeBack_1": {
+      "bone": "HumanoidRootPart",
+      "MeshId": "rbxassetid://101906562152190",
+      "ColorMap": "rbxassetid://106064073296820",
+      "NormalMap": "rbxassetid://120746698604625",
+      "RoughnessMap": "rbxassetid://71984187294844",
+      "MetalnessMap": "rbxassetid://125752254921407"
+    },
+    "Shen2_LeftUpperLeg": {
+      "bone": "HumanoidRootPart",
+      "MeshId": "rbxassetid://119500448142819",
+      "ColorMap": "rbxassetid://106064073296820",
+      "NormalMap": "rbxassetid://120746698604625",
+      "RoughnessMap": "rbxassetid://71984187294844",
+      "MetalnessMap": "rbxassetid://125752254921407"
+    },
+    "Shen2_RightUpperArm": {
+      "bone": "HumanoidRootPart",
+      "MeshId": "rbxassetid://80499454226408",
+      "ColorMap": "rbxassetid://106064073296820",
+      "NormalMap": "rbxassetid://120746698604625",
+      "RoughnessMap": "rbxassetid://71984187294844",
+      "MetalnessMap": "rbxassetid://125752254921407"
+    },
+    "Shen2_HairBack_4": {
+      "bone": "HumanoidRootPart",
+      "MeshId": "rbxassetid://85438145477424",
+      "ColorMap": "rbxassetid://106064073296820",
+      "NormalMap": "rbxassetid://120746698604625",
+      "RoughnessMap": "rbxassetid://71984187294844",
+      "MetalnessMap": "rbxassetid://125752254921407"
+    },
+    "Shen2_RobeBack_3": {
+      "bone": "HumanoidRootPart",
+      "MeshId": "rbxassetid://76211721415992",
+      "ColorMap": "rbxassetid://106064073296820",
+      "NormalMap": "rbxassetid://120746698604625",
+      "RoughnessMap": "rbxassetid://71984187294844",
+      "MetalnessMap": "rbxassetid://125752254921407"
+    },
+    "Shen2_Head": {
+      "bone": "HumanoidRootPart",
+      "MeshId": "rbxassetid://96316585494471",
+      "ColorMap": "rbxassetid://106064073296820",
+      "NormalMap": "rbxassetid://120746698604625",
+      "RoughnessMap": "rbxassetid://71984187294844",
+      "MetalnessMap": "rbxassetid://125752254921407"
+    },
+    "Shen2_RightHand": {
+      "bone": "HumanoidRootPart",
+      "MeshId": "rbxassetid://106420575101654",
+      "ColorMap": "rbxassetid://106064073296820",
+      "NormalMap": "rbxassetid://120746698604625",
+      "RoughnessMap": "rbxassetid://71984187294844",
+      "MetalnessMap": "rbxassetid://125752254921407"
+    },
+    "Shen2_Bead1": {
+      "bone": "HumanoidRootPart",
+      "MeshId": "rbxassetid://107503289249552",
+      "ColorMap": "rbxassetid://106064073296820",
+      "NormalMap": "rbxassetid://120746698604625",
+      "RoughnessMap": "rbxassetid://71984187294844",
+      "MetalnessMap": "rbxassetid://125752254921407"
+    },
+    "Shen2_Weapon_3": {
+      "bone": "Glaive",
+      "MeshId": "rbxassetid://83634882191599",
+      "ColorMap": "rbxassetid://106064073296820",
+      "NormalMap": "rbxassetid://120746698604625",
+      "RoughnessMap": "rbxassetid://71984187294844",
+      "MetalnessMap": "rbxassetid://125752254921407"
+    },
+    "Shen2_Weapon_2": {
+      "bone": "Glaive",
+      "MeshId": "rbxassetid://84278454370057",
+      "ColorMap": "rbxassetid://106064073296820",
+      "NormalMap": "rbxassetid://120746698604625",
+      "RoughnessMap": "rbxassetid://71984187294844",
+      "MetalnessMap": "rbxassetid://125752254921407"
+    },
+    "Shen2_Weapon_1": {
+      "bone": "Glaive",
+      "MeshId": "rbxassetid://98342391653474",
+      "ColorMap": "rbxassetid://106064073296820",
+      "NormalMap": "rbxassetid://120746698604625",
+      "RoughnessMap": "rbxassetid://71984187294844",
+      "MetalnessMap": "rbxassetid://125752254921407"
+    }
+  },
+  "sharedStringCount": 2,
+  "validation": "43 uploaded MeshParts, complete uploaded PBR, AsuraBone + AsuraBind on each, non-colliding",
+  "savedPlace": "outputs/grandmaster-shen-2026-11-05/import/shen_import_capture.rbxlx"
+}

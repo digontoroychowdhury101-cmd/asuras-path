@@ -23,7 +23,7 @@ MAPS = ("ColorMap", "NormalMap", "RoughnessMap", "MetalnessMap")
 R15 = {"Head", "UpperTorso", "LowerTorso", "LeftUpperArm", "LeftLowerArm", "LeftHand", "RightUpperArm", "RightLowerArm",
        "RightHand", "LeftUpperLeg", "LeftLowerLeg", "LeftFoot", "RightUpperLeg", "RightLowerLeg", "RightFoot"}
 HELPERS = {"RightPauldron", "LeftPauldron", "ClothFront", "ClothBack",  # BossRigs builds these on the actor
-           "Bead1", "Bead2", "Bead3"}  # Grandmaster Shen, phase 2's floating beads; his cloth is skinned
+           "Glaive"}  # Grandmaster Shen's two-handed weapon bone; his cloth and orbs are skinned
 
 
 def name(item: ET.Element) -> str:
