@@ -103,14 +103,11 @@ local function frostSteps(parent: Instance, map: Instance)
 				box.Transparency, box.CastShadow = 1, false
 			end
 		elseif box.Name:match("^FrostFooting[123]$") then
-			local column = Decor.han(parent, "AsuraBambooFrostSteps", "FrostStep_A", CFrame.identity, 1)
+			local column = Decor.han(parent, "AsuraBambooFrostSupport", "FrostSupport_A", CFrame.identity, 1)
 			local rock = column and column:FindFirstChildWhichIsA("MeshPart", true)
 			if column and rock then
-				-- The broad stem meets the tread's underside, rather than balancing it on a crag tip.
-				-- Its existing cliff maps remove the frost band from this stretched support copy.
-				local cliff = game.ServerStorage.AsuraHanKit.CragC:FindFirstChildWhichIsA("SurfaceAppearance", true)
-				local surface = rock:FindFirstChildOfClass("SurfaceAppearance")
-				if cliff and surface then surface:Destroy(); cliff:Clone().Parent = rock end
+				-- The support has its own limestone bake at the middle footing's height.
+				-- Fit it to the existing support envelope and keep the landing and footing colliders.
 				rock.Size = Vector3.new(box.Size.X + 1.2, box.Size.Y + 0.4, box.Size.Z + 1.2)
 				rock.CFrame = box.CFrame
 				column.WorldPivot = box.CFrame * CFrame.new(0, -rock.Size.Y / 2, 0)

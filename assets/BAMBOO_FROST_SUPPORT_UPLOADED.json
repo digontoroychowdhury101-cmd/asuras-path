@@ -1,0 +1,50 @@
+{
+  "library": "AsuraBambooFrostSupport",
+  "piece": "FrostSupport_A",
+  "creatorModelId": "128082003719775",
+  "source": "assets/build/frost_support_v2/FrostSupport_Source.blend",
+  "bakedMaster": "assets/build/frost_support_v2/FrostSupport_Baked_Master.blend",
+  "export": "assets/build/frost_support_v2/FrostSupport_A.glb",
+  "exportSHA256": "f169ebda0265e77e128eaf4bb2c891d12a2cad5f8b4cd67c024852fc138a453a",
+  "uploadOperationId": "48285619-9ee1-44a7-99f2-8574270e863d",
+  "moderation": "Approved",
+  "nativeSnapshot": "assets/build/frost_support_v2/AsuraAssetImportQA_calibrated.rbxlx.rbxl",
+  "nativeExtraction": "Rojo 7.7.1 syncback of only ServerStorage.AsuraBambooFrostSupport then model build to RBXMX",
+  "ids": {
+    "mesh": "rbxassetid://88640589607019",
+    "color": "rbxassetid://115418657527722",
+    "normal": "rbxassetid://140439286790704",
+    "roughness": "rbxassetid://95944985622142",
+    "metalness": "rbxassetid://79724746539602",
+    "texturePack": "rbxassetid://91299413202357"
+  },
+  "sourceDimensions": [
+    4.4410200119,
+    14.1999998093,
+    4.4754009247
+  ],
+  "footPivot": [
+    0,
+    0,
+    0
+  ],
+  "uploadedTriangles": 384,
+  "preloads": {
+    "rbxassetid://88640589607019": "Success",
+    "rbxassetid://115418657527722": "Success",
+    "rbxassetid://140439286790704": "Success",
+    "rbxassetid://95944985622142": "Success",
+    "rbxassetid://79724746539602": "Success"
+  },
+  "sharedStrings": 2,
+  "runtimeHeights": [
+    12.7,
+    14.2,
+    15.7
+  ],
+  "runtimeVisualMeshCount": 3,
+  "runtimeVisualTriangles": 1152,
+  "maxRuntimeSideUVAnisotropyP95": 1.221503,
+  "materialCredit": "Original project geometry with CC0 ambientCG Rock023 maps credited in assets/GITHUB_TERRAIN.json",
+  "physics": "Original footing and landing boxes preserved. Mesh copies are anchored with collision, query, and touch disabled."
+}

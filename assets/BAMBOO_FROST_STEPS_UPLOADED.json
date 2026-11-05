@@ -19,10 +19,10 @@
   "pivot": "base origin; 4-stud flat landing top",
   "readbackLandingCornerErrorMax": 2.396076979493955e-06,
   "preloads": "mesh Success and 4/4 typed ImageLabel image Success",
-  "reuse": "variant A at the three established tread rotations plus three scaled supports with existing CragC maps; B/C remain local source options",
+  "reuse": "variant A at the three established tread rotations; B/C remain local source options. The three supports use the separate library recorded in BAMBOO_FROST_SUPPORT_UPLOADED.json",
   "collisions": "three original 4x4x4 landing blocks retained; three narrow ground-bearing footings added in BambooPassLayout; decorative meshes noncolliding/nonqueryable/nontouching",
   "sourceSHA256": "60b636808b49dfae263a17a1a2e763f9ae082158289ad0c90a98a0e5ef1fd992",
   "runtimeMeshCount": 6,
   "runtimeTriangles": 2304,
-  "acceptance": "integrated checkpoint; normal jump/return and support texture refinement pending"
+  "acceptance": "integrated landing caps; normal jump and return acceptance tracked with the full-height support pass"
 }

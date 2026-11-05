@@ -1,0 +1,26 @@
+{
+  "kind": "editable uninstalled support source; existing landing meshes and colliders untouched",
+  "originalScenePreserved": "AsuraFrostSupport_Review",
+  "reviewScene": "AsuraFrostSupport_Review_v2",
+  "object": "FrostSupport_A__Limestone.001",
+  "collection": "AsuraFrostSupport_Source_v2",
+  "revision": "v2",
+  "sourceHeight": 14.2,
+  "dimensions": [
+    4.4410200119018555,
+    4.475400924682617,
+    14.199999809265137
+  ],
+  "sourceSeam": {
+    "sourceRepeats": 2,
+    "maxWrappedCoordinateError": 0.0,
+    "seamVertices": 8
+  },
+  "triangles": 384,
+  "sourceUV": {
+    "areaWeightedMedianSideAnisotropy": 1.032759013880507,
+    "p95SideAnisotropy": 1.1122961975730097,
+    "maxSideAnisotropy": 1.3268638261686994,
+    "sideTriangles": 336
+  }
+}

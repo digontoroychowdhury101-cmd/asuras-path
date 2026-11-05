@@ -803,6 +803,9 @@
       },
       "AsuraBambooFrostSteps": {
         "$path": "assets/models/AsuraBambooFrostSteps.rbxmx"
+      },
+      "AsuraBambooFrostSupport": {
+        "$path": "assets/models/AsuraBambooFrostSupport.rbxmx"
       }
     },
     "StarterPlayer": {

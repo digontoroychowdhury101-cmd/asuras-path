@@ -1,0 +1,36 @@
+{
+  "kind": "Single-client Studio scene and collider audit in the canonical local game",
+  "digest": "scripts 281 bytes 2240092 digest 30630584 | AsuraAssets children 22 | place AsurasPath.rbxlx",
+  "ownedPlayStopped": true,
+  "runtime": {
+    "decorationQueryCollisionTouch": false,
+    "studioVersion": "0.746.0.7461264",
+    "landings": [
+      {
+        "stone": 1,
+        "landingY": 13.5,
+        "footingY": -2.1999998092651367,
+        "supportMesh": "rbxassetid://88640589607019",
+        "supportHeight": 12.699999809265137,
+        "landingMesh": "rbxassetid://77301153602166"
+      },
+      {
+        "stone": 2,
+        "landingY": 15,
+        "footingY": -2.1999998092651367,
+        "supportMesh": "rbxassetid://88640589607019",
+        "supportHeight": 14.199999809265137,
+        "landingMesh": "rbxassetid://77301153602166"
+      },
+      {
+        "stone": 3,
+        "landingY": 16.5,
+        "footingY": -2.1999998092651367,
+        "supportMesh": "rbxassetid://88640589607019",
+        "supportHeight": 15.699999809265137,
+        "landingMesh": "rbxassetid://77301153602166"
+      }
+    ],
+    "originalColliders": 6
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "kind": "offline GLB roundtrip; not uploaded, not Studio appearance",
+  "object": "FrostSupport_A__Limestone.001",
+  "triangles": 384,
+  "dimensions": [
+    4.4410200119018555,
+    4.475400924682617,
+    14.199999809265137
+  ],
+  "uvSets": 1,
+  "materials": 1,
+  "closedOutwardVolume": 224.9520892971646,
+  "footZ": 0,
+  "topZ": 14.2,
+  "embeddedTextures": [
+    [
+      2048,
+      2048
+    ],
+    [
+      1024,
+      1024
+    ],
+    [
+      2048,
+      2048
+    ]
+  ],
+  "runtimeVariants": [
+    {
+      "height": 12.7,
+      "sideUV": {
+        "areaWeightedMedianSideAnisotropy": 1.1807955229637885,
+        "p95SideAnisotropy": 1.2215028349843544,
+        "maxSideAnisotropy": 1.412828232935236,
+        "sideTriangles": 336
+      }
+    },
+    {
+      "height": 14.2,
+      "sideUV": {
+        "areaWeightedMedianSideAnisotropy": 1.0575663026559452,
+        "p95SideAnisotropy": 1.123553832429448,
+        "maxSideAnisotropy": 1.3422891231770422,
+        "sideTriangles": 336
+      }
+    },
+    {
+      "height": 15.7,
+      "sideUV": {
+        "areaWeightedMedianSideAnisotropy": 1.0648745703770663,
+        "p95SideAnisotropy": 1.1277346369872272,
+        "maxSideAnisotropy": 1.3255263658339969,
+        "sideTriangles": 336
+      }
+    }
+  ]
+}

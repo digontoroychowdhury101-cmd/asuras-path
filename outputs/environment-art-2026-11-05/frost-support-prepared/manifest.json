@@ -1,0 +1,95 @@
+{
+  "kind": "uninstalled full-height frost-support candidate",
+  "file": "FrostSupport_A.glb",
+  "sha256": "f169ebda0265e77e128eaf4bb2c891d12a2cad5f8b4cd67c024852fc138a453a",
+  "bytes": 9676264,
+  "units": "project studs; Blender Z-up to glTF Y-up; verify representative import against 14.2-stud source",
+  "dimensions": [
+    4.4410200119018555,
+    4.475400924682617,
+    14.199999809265137
+  ],
+  "triangles": 384,
+  "UVSets": 1,
+  "materials": 1,
+  "runtimeReuse": [
+    {
+      "runtimeHeight": 12.7,
+      "resize": [
+        1.0583154292041204,
+        1.0501852412995403,
+        0.8943661971830986
+      ],
+      "UV": {
+        "areaWeightedMedianSideAnisotropy": 1.1807955229637885,
+        "p95SideAnisotropy": 1.2215025478388561,
+        "maxSideAnisotropy": 1.4128289950747026,
+        "sideTriangles": 336
+      }
+    },
+    {
+      "runtimeHeight": 14.2,
+      "resize": [
+        1.0583154292041204,
+        1.0501852412995403,
+        1.0
+      ],
+      "UV": {
+        "areaWeightedMedianSideAnisotropy": 1.0575661263028069,
+        "p95SideAnisotropy": 1.1235537113715421,
+        "maxSideAnisotropy": 1.3422900579454724,
+        "sideTriangles": 336
+      }
+    },
+    {
+      "runtimeHeight": 15.7,
+      "resize": [
+        1.0583154292041204,
+        1.0501852412995403,
+        1.1056338028169015
+      ],
+      "UV": {
+        "areaWeightedMedianSideAnisotropy": 1.0648745703770663,
+        "p95SideAnisotropy": 1.127734536931106,
+        "maxSideAnisotropy": 1.325526087298718,
+        "sideTriangles": 336
+      }
+    }
+  ],
+  "totalSupportTriangles": 1152,
+  "sourceSeam": {
+    "sourceRepeats": 2,
+    "maxWrappedCoordinateError": 0.0,
+    "seamVertices": 8
+  },
+  "maps": {
+    "Color": {
+      "file": "Color.png",
+      "pixels": [
+        2048,
+        2048
+      ],
+      "sha256": "20a49adb122d9fdab1ef7d9656d899281a7579e415cc49fd49e8746aa6b2a559"
+    },
+    "Normal": {
+      "file": "Normal.png",
+      "pixels": [
+        2048,
+        2048
+      ],
+      "sha256": "23b9678a308b6ef08df7a0c2a4b087e1f8f5582d885dc6dd9da16c8d68ffe677"
+    },
+    "Roughness": {
+      "file": "Roughness.png",
+      "pixels": [
+        1024,
+        1024
+      ],
+      "sha256": "0dc0b8839b4d9638d30fe2962f5b70e3836aa0de33f645abcc8d261737fd8842"
+    }
+  },
+  "credits": "Original project geometry/UVs; already credited Terrain3D / ambientCG Rock023 CC0 maps",
+  "collision": "decorative support only; original three landing and footing colliders unchanged",
+  "importLimitSource": "https://create.roblox.com/docs/art/modeling/specifications",
+  "currentImportLimitTriangles": 20000
+}

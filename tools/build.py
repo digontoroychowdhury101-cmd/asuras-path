@@ -5,6 +5,7 @@ Requires the official Rojo binary on PATH or in work/bin/rojo. Verifies that eve
 tree exists, builds outputs/AsurasPath.rbxlx (or --output PATH / $ASURA_BUILD_OUTPUT, so a
 verification build can leave the saved place untouched), points Workspace.CurrentCamera at the
 serialized editor camera and reports the distinct Roblox asset IDs the built place references.
+The default build refreshes both checked-in place formats from the same source tree.
 Does not install software, connect to Studio, or publish.
 """
 from __future__ import annotations
@@ -66,6 +67,8 @@ def build(output: Path = OUTPUT) -> None:
     if output == OUTPUT:
         places_target = ROOT / 'places' / 'AsurasPath.rbxlx'
         places_target.parent.mkdir(parents=True, exist_ok=True)
+        subprocess.run([rojo, 'build', str(PROJECT), '--output', str(places_target.with_suffix('.rbxl'))],
+                       cwd=ROOT, check=True)
         shutil.copy2(output, places_target)
     assets = set(ASSET_ID.findall(output.read_text(encoding='utf-8')))
     print(f'Built {output}: {len(paths(project["tree"], ""))} mapped sources; '

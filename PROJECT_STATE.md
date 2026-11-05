@@ -10,6 +10,10 @@
 
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## Frost Ridge support and shared build — 2026-11-05 (Mac)
+
+Replaced stretched frost supports with a baked 384-triangle limestone mesh. Studio verified three landing heights and six colliders. Refreshed both place formats and matched Studio digest 30630584. All 14 checks pass. Rejected the dark palisade prototype. Jump, foreground performance and broader art acceptance remain open.
+
 ## Bamboo ridge gate art — 2026-11-05 (Mac)
 
 Replaced ridge gate boxes with framed, braced timber using existing PBR meshes. Normal Z opens aligned visuals; original colliders retained. Nine observer comparisons, full verifier and canonical digest match. Automatic FRM1 views remain diagnostics. Next: frost-support texel scale, grove floor and arena boundaries; foreground performance, multiplayer and whole-world acceptance remain open.
