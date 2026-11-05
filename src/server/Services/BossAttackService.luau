@@ -38,11 +38,21 @@ function Service.start(id: number, attack: Types.Attack, target: number, allowed
 		radius = attack.Radius, ox = origin.X, oz = origin.Z, x = aim.X, y = 0, z = aim.Z, duration = attack.Duration, element = attack.Element })
 	if attack.Motion then Motion.begin(id, attack.Motion, Motion.approach(id, attack.Motion, aim), now, impact) end
 end
+-- A body feint or a flourish of the glaive: the motion only, no warning, no impact. He stands for it and any hit interrupts it like a real move.
+function Service.feint(id: number, name: string, now: number)
+	local spec = Rules.FeintMoves[name]
+	local e = Characters.GetEntity(id)
+	if not spec or not e then return end
+	Service.cancel(id)
+	active[id] = { Attack = { Id = name, Kind = "Feint", Windup = spec.Length, Radius = 0, Damage = 0, Posture = 0 } :: any, Impact = now + spec.Length, Origin = e.Root.Position, Aim = e.Root.Position, Target = id, Allowed = nil, Hazard = nil, Pulse = 0 }
+	Characters.StopMoving(id)
+	Characters.Cue("BossSwing", id, { move = name, impact = now + spec.Contact })
+end
 -- The final pulse of an attack in progress (the Twins' one-perilous-at-a-time rule), else nil.
 function Service.lastImpact(id: number): number?
 	local current = active[id]
 	if not current then return nil end
-	return current.Impact + ((current.Attack.Repeats or 1) - 1) * (current.Attack.Interval or 0.7)
+	return current.Impact + Rules.pulseOffset(current.Attack, Rules.pulseCount(current.Attack) - 1)
 end
 local function strike(id: number, current: Active)
 	local e = Characters.GetEntity(id)
@@ -58,6 +68,9 @@ local function strike(id: number, current: Active)
 		if a.Kind == "PerilousThrust" or a.Kind == "ShieldCharge" then
 			local p, origin, aim = victim.Root.Position, current.Origin, current.Aim
 			within = Rules.segmentHit(p.X, p.Z, origin.X, origin.Z, aim.X, aim.Z, 5) and math.abs(delta.Y) < 8
+		elseif a.Kind == "PerilousCut" then
+			local look = e.Root.CFrame.LookVector
+			within = Rules.cutHit(look.X, look.Z, flat.X, flat.Z, a.Radius, a.Arc or 150) and math.abs(delta.Y) < 8
 		elseif a.Kind == "PerilousSweep" or a.Kind == "Tail" then
 			within = within and victim.Root.Position.Y - current.Origin.Y <= (a.Height or 5)
 			if a.Kind == "Tail" and flat.Magnitude > 0.01 then within = within and e.Root.CFrame.LookVector:Dot(flat.Unit) < 0.3 end
@@ -75,13 +88,16 @@ function Service.step(id: number, now: number): boolean
 	if now < current.Impact then return true end
 	local a = current.Attack
 	local kind = a.Kind
-	if kind == "PerilousSweep" or kind == "PerilousThrust" or kind == "PerilousGrab" or kind == "Tail" or kind == "ShieldCharge" then
-		if now >= current.Impact + current.Pulse * (a.Interval or 0.7) then
+	if kind == "Feint" then -- a move that was never going to land: nothing to answer, nothing to deflect
+		Service.cancel(id)
+		return false
+	elseif kind == "PerilousSweep" or kind == "PerilousThrust" or kind == "PerilousCut" or kind == "PerilousGrab" or kind == "Tail" or kind == "ShieldCharge" then
+		if now >= current.Impact + Rules.pulseOffset(a, current.Pulse) then
 			strike(id, current)
 			current.Pulse += 1
-			if current.Pulse < (a.Repeats or 1) then
+			if current.Pulse < Rules.pulseCount(a) then
 				Characters.Cue("Telegraph", id, { class = "Perilous", kind = kind, counter = select(2, Rules.classify(kind)),
-					move = a.Id, impact = current.Impact + current.Pulse * (a.Interval or 0.7) })
+					move = a.Id, impact = current.Impact + Rules.pulseOffset(a, current.Pulse) })
 			else Service.cancel(id); return true end
 		end
 	else

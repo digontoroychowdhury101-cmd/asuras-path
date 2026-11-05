@@ -62,8 +62,9 @@ Rules.Contacts = table.freeze({
 		IronBullMaul_Art = { 0.433 },
 	}),
 	GrandmasterShen = table.freeze({ -- assets/animations/opening_cast/shen/manifest.json (both phases share the times)
-		Strike = { 0.5 }, FlowingJian = { 0.8, 1.45, 2.1, 2.75 }, PrayerBeads = { 1.1 }, AbbotSweep = { 1.0 },
-		BloodWave = { 1.1 }, GuandaoSkyfall = { 1.5 }, CrimsonEmbrace = { 1.2 },
+		Strike = { 0.5 }, FlowingJian = { 0.8, 1.45, 2.1, 2.75 }, PrayerBeads = { 1.1 }, AbbotSweep = { 1.0 }, HesitantMoon = { 1.3 }, WheelOfHeaven = { 1.35, 1.73 },
+		BloodWave = { 1.1 }, GuandaoSkyfall = { 1.5 }, CrimsonEmbrace = { 1.2 }, RendingArc = { 0.9, 1.32, 1.95 }, PhantomDrift = { 1.0 },
+		Feint = { 0.52 }, Flourish = { 0.6 },
 		Guandao_L1 = { 0.15 }, Guandao_L2 = { 0.15 }, Guandao_L3 = { 0.183 }, Guandao_Heavy = { 0.383 }, Guandao_Running = { 0.217 },
 		Guandao_Art = { 0.317 },
 	}),
@@ -73,10 +74,16 @@ Rules.SyncSpeed = table.freeze({ Min = 0.6, Max = 1.6 })
 
 -- Server states that cancel an attack (BossAttackService.step) and the clip that answers each. A
 -- reaction has no Strike or stock stand-in: unauthored, it resolves to nothing and the actor idles.
+-- From which side a blow came, in his own frame (x: his right, z: forward; unit), picks the flinch. Pure.
+function Rules.hitAction(x: number, z: number): string
+	if math.abs(x) > math.abs(z) then return if x > 0 then "HitLightRight" else "HitLightLeft" end
+	return if z > 0 then "HitLightFront" else "HitLightBack"
+end
 Rules.Reactions = table.freeze({ StanceBroken = "PostureBreak", GuardBroken = "PostureBreak", Hitstun = "HitLightFront",
 	DeathblowVictim = "DeathblowVictim", KO = "Death" } :: { [string]: string })
 local REACTION: { [string]: boolean } = {}
 for _, action in Rules.Reactions do REACTION[action] = true end
+REACTION.HitLightBack, REACTION.HitLightLeft, REACTION.HitLightRight = true, true, true
 
 -- The gait layer (Movement priority, below every attack): what the body does while the server slides his root. Rates are the clip's own planted-foot
 -- speed in rig studs per second at playback 1; a walking actor plays at speed / (rate x scale), so feet stay on the ground at any AI speed. Blocking replaces
@@ -92,7 +99,7 @@ Rules.Locomotion = table.freeze({
 -- new phase's Transform from its handoff pose, not its idle.
 Rules.RevealContinues = table.freeze({ GrandmasterShen = true } :: { [string]: boolean })
 Rules.GaitRate = table.freeze({ Min = 0.45, Max = 1.9, Stand = 0.7, StandGrace = 0.35 })
-local GAIT: { [string]: boolean } = { WalkForward = true, RunForward = true, WalkBackward = true, StrafeLeft = true, StrafeRight = true, GuardLoop = true, GuardHit = true }
+local GAIT: { [string]: boolean } = { TurnLeft = true, TurnRight = true, WalkForward = true, RunForward = true, WalkBackward = true, StrafeLeft = true, StrafeRight = true, GuardLoop = true, GuardHit = true }
 
 -- Which gait action a moving or guarding actor plays, and at what rate. speed: planted root speed in studs/s; forward, right: components of the travel
 -- direction along his facing (unit); current: the action now playing, for hysteresis. Pure.
@@ -116,6 +123,17 @@ function Rules.gait(look: string, speed: number, scale: number, forward: number,
 	return action, math.clamp(speed / (rates[action] * scale), Rules.GaitRate.Min, Rules.GaitRate.Max)
 end
 
+-- Turning on the spot: a look with turn clips steps round instead of pivoting on planted feet. yawRate: radians per second, + to his left. The server turns him at this rate (BossSkin: AsuraTurnRate).
+Rules.TurnRate = 220
+Rules.Turns = table.freeze({ GrandmasterShen = true } :: { [string]: boolean })
+function Rules.turning(look: string, yawRate: number, current: string?): (string?, number)
+	if not Rules.Turns[look] then return nil, 1 end
+	local deg = math.deg(yawRate)
+	local start = if current == "TurnLeft" or current == "TurnRight" then 18 else 40 -- it keeps stepping through a small tail of the turn, and does not start for a twitch
+	if math.abs(deg) < start then return nil, 1 end
+	return if deg > 0 then "TurnLeft" else "TurnRight", math.clamp(math.abs(deg) / Rules.TurnRate, 0.6, 1.4)
+end
+
 -- An actor with an authored Death clip (AsuraAuthoredDeath) stays on its feet for the clip instead of being folded by EnemyDissolve;
 -- it burns away from this many seconds after the fall, so the fade ends before Settings.Respawn.EnemyCorpseTime removes the body.
 Rules.DeathFadeAt = 2.6
@@ -132,7 +150,7 @@ local LEGACY: { [string]: { Slot: string, Speed: number } } = {
 -- Stock stand-in per action/kind: { stock slot in AnimationCatalog.Enemies style, speed }.
 local STOCK: { [string]: { string | number } } = {
 	Idle = { "ToolHold", 1 }, Transform = { "Cheer", 0.6 }, Strike = { "ToolSlash", 1.25 },
-	PerilousThrust = { "ToolLunge", 1.1 }, PerilousGrab = { "ToolLunge", 0.9 }, ShieldCharge = { "ToolLunge", 1 },
+	PerilousThrust = { "ToolLunge", 1.1 }, PerilousCut = { "ToolSlash", 1 }, PerilousGrab = { "ToolLunge", 0.9 }, ShieldCharge = { "ToolLunge", 1 },
 	PerilousSweep = { "ToolSlash", 1 }, Tail = { "ToolSlash", 0.9 }, Shockwave = { "ToolSlash", 0.8 }, Leap = { "ToolSlash", 0.8 },
 	Barrage = { "Cheer", 1.2 }, Gravity = { "Cheer", 0.8 }, Ritual = { "Cheer", 0.7 }, Breath = { "Cheer", 0.9 },
 }

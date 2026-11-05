@@ -7,12 +7,14 @@ Writes assets/build/grandmaster_shen/Shen_P<n>_Game.glb     the skinned body and
        work/opening_cast_bake/shen<n>/pieces.json            bone, role and bounds of every piece, for bind_skin.py and check_skin.py
        work/shen_import/samples_p<n>.npz                     per-bone rest points for the clip validator
        assets/source/bosses/grandmaster_shen/manifest_p<n>.json   the per-chunk manifest (tracked copy: outputs/grandmaster-shen-2026-11-05/)
+Trousers: skin_rig.split_trousers parts the dark trouser triangles from the robe tiers they were fused into (doubling the seam's vertices); every source triangle, normal and UV is kept.
 Underlayer: a sculpt is a surface, so what the robe covers is hollow. A dark closed core under the robe and a thin thigh inside it stop a lifting hem from showing the void. They are the only added triangles and are counted separately.
 """
 import json
 import os
 import struct
 import sys
+import zlib
 
 import numpy as np
 
@@ -194,22 +196,118 @@ def fissures(g, lab, J, vp, vn, cen):
     return out
 
 
+def png_bytes(a):
+    """A plain RGB PNG with no image library."""
+    h, w, _ = a.shape
+    raw = b"".join(b"\0" + a[y].tobytes() for y in range(h))
+
+    def chunk(t, d):
+        return struct.pack(">I", len(d)) + t + d + struct.pack(">I", zlib.crc32(t + d))
+    return b"\x89PNG\r\n\x1a\n" + chunk(b"IHDR", struct.pack(">IIBBBBB", w, h, 8, 2, 0, 0, 0)) + chunk(b"IDAT", zlib.compress(raw, 7)) + chunk(b"IEND", b"")
+
+
+def smoothstep(x, a, b):
+    t = np.clip((x - a) / (b - a), 0.0, 1.0)
+    return t * t * (3 - 2 * t)
+
+
+def paint_orbs(g, tex, normal, rough):
+    """The remade orbs' own patch: polished dark blood-glass with crimson veins and a lit heart, flat in the normal map and glossy in the roughness."""
+    cx, cy, half = g.orb_patch
+    h, w = tex.shape[:2]
+    x0, x1 = int((cx - half) * w) - 2, int((cx + half) * w) + 2
+    y0, y1 = int((cy - half) * h) - 2, int((cy + half) * h) + 2
+    xs, ys = np.meshgrid((np.arange(x0, x1) + 0.5) / w, (np.arange(y0, y1) + 0.5) / h)
+    px, py = (xs - cx) / (half * 0.9), (ys - cy) / (half * 0.9)
+    r = np.clip(np.hypot(px, py), 0, 1.2)
+    veins = np.sin(px * 13 + np.sin(py * 9) * 2.2) * np.sin(py * 11 + np.sin(px * 7) * 2.4)
+    veins = smoothstep(np.abs(veins), 0.28, 0.0)
+    heart = smoothstep(r, 0.95, 0.15)
+    colour = np.array([38.0, 3.0, 7.0])[None, None] + heart[..., None] * np.array([150.0, 8.0, 12.0]) + veins[..., None] * (0.35 + 0.65 * heart[..., None]) * np.array([120.0, 22.0, 16.0])
+    tex[y0:y1, x0:x1, :3] = np.clip(colour, 0, 255).astype(np.uint8)
+    normal[y0:y1, x0:x1, :3] = (128, 128, 255)
+    rough[y0:y1, x0:x1, :3] = (255, 38, 0)      # glTF: occlusion, roughness, metalness
+
+
+def blacken_hair(g, lab, J, vp):
+    """Phase 2: only his hair turns black, in this form's copy of the colour map; the source GLB and its map are never touched. It is decided texel by texel: on the scalp and the flowing hair whatever is not the red of a horn goes dark; on the face and in the beard only hair's cool silver does (his skin is warm, the hair blue-grey), so the skin, eyes, brows and horns keep their colour."""
+    root = os.path.join(ROOT, "work/shen_import")
+    tex = np.load(os.path.join(root, "tex_p2_color.npy"))
+    normal = np.load(os.path.join(root, "tex_p2_normal.npy")).copy()
+    rough = np.load(os.path.join(root, "tex_p2_orm.npy")).copy()
+    h, w = tex.shape[:2]
+    cen = vp[g.idx].mean(1)
+    head = lab == J.NAMES.index("Head")
+    frontal = head & (cen[:, 2] < -0.2) & (cen[:, 1] < 1.88)
+    scalp = (lab == J.NAMES.index("HairBack")) | (lab == J.NAMES.index("Beard")) | (head & ~frontal)
+    fine = frontal
+    rgb = tex[..., :3].astype(np.float32)
+    top = rgb.max(2)
+    sat = (top - rgb.min(2)) / np.maximum(top, 1.0)
+    cool = (rgb[..., 2] - rgb[..., 0]) / 255.0
+    by_colour = 1.0 - smoothstep(sat, 0.28, 0.55)
+    by_cool = smoothstep(cool, 0.0, 0.022)
+    amount = np.zeros((h, w), np.float32)
+    for wanted, rule, margin in ((scalp, by_colour, 0.3), (fine, by_cool, 0.25)):
+        for tri in g.uv[g.idx[wanted]]:
+            px = tri * (w, h)
+            x0, y0 = np.floor(px.min(0)).astype(int) - 1
+            x1, y1 = np.ceil(px.max(0)).astype(int) + 2
+            x0, y0, x1, y1 = max(x0, 0), max(y0, 0), min(x1, w), min(y1, h)
+            if x1 <= x0 or y1 <= y0:
+                continue
+            xs, ys = np.meshgrid(np.arange(x0, x1) + 0.5, np.arange(y0, y1) + 0.5)
+            a, b, c = px
+            d = (b[1] - c[1]) * (a[0] - c[0]) + (c[0] - b[0]) * (a[1] - c[1])
+            if abs(d) < 1e-9:
+                continue
+            u = ((b[1] - c[1]) * (xs - c[0]) + (c[0] - b[0]) * (ys - c[1])) / d
+            v = ((c[1] - a[1]) * (xs - c[0]) + (a[0] - c[0]) * (ys - c[1])) / d
+            inside = (u > -margin) & (v > -margin) & (u + v < 1 + margin)
+            slab = amount[y0:y1, x0:x1]
+            slab[inside] = np.maximum(slab[inside], rule[y0:y1, x0:x1][inside])
+    # hair's silver left along the seams between UV islands goes too, spreading only over cool texels so skin is never reached
+    for _ in range(5):
+        near = amount.copy()
+        near[1:] = np.maximum(near[1:], amount[:-1])
+        near[:-1] = np.maximum(near[:-1], amount[1:])
+        near[:, 1:] = np.maximum(near[:, 1:], amount[:, :-1])
+        near[:, :-1] = np.maximum(near[:, :-1], amount[:, 1:])
+        amount = np.maximum(amount, near * by_cool)
+    dark = rgb * 0.1 + np.array([7.0, 7.0, 9.0])
+    out = (rgb + (dark - rgb) * amount[..., None]).clip(0, 255).astype(np.uint8)
+    print(f"  P2 hair: {int(scalp.sum())} flowing and {int(fine.sum())} facial triangles, {int((amount > 0.5).sum())} texels blackened")
+    paint_orbs(g, out, normal, rough)
+    images = {}
+    for i, im in enumerate(g.json["images"]):
+        if im.get("name") == "texture_diffuse":
+            images[i] = png_bytes(out)
+        elif im.get("name") == "texture_normal":
+            images[i] = png_bytes(normal[..., :3])
+        elif im.get("name") == "texture_metallic-texture_roughness":
+            images[i] = png_bytes(rough[..., :3])
+    source = g.image
+
+    def image(i):
+        return images.get(i) or source(i)
+    g.image = image
+
+
 def build(phase):
     J = LM.PHASES[phase]
     g = glb.Glb(Seg.source(phase))
     lab = np.load(os.path.join(ROOT, f"work/shen_import/labels_p{phase}.npy"))
+    lab, _ = SR.split_trousers(g, lab, phase)   # the same parting the skin weights were made on
     assert len(lab) == len(g.idx)
     vp, vn = RS.to_rig(g.pos, phase), RS.normal_to_rig(g.nrm)
+    if phase == 2:
+        blacken_hair(g, lab, J, vp)
     cen = vp[g.idx].mean(1)
     # one dark texel: the darkest trouser surface
     px, _, _, val = Seg.sample_colour(g, phase)
     legs = (cen[:, 1] < -1.8) & (cen[:, 1] > -2.5) & (np.abs(cen[:, 0]) < 1.4)
     tri = np.nonzero(legs)[0][np.argmin(val[legs])]
     dark = g.uv[g.idx[tri]].mean(0)
-    # the thigh wears the under-robe's own cloth: where a lifted knee shows through the robe it reads as the robe, not as a hole
-    band = np.nonzero((cen[:, 1] < -0.9) & (cen[:, 1] > -1.8) & (np.abs(cen[:, 0]) < 0.9))[0]
-    pale = band[np.argsort(val[band])[int(len(band) * 0.92)]]
-    robe = g.uv[g.idx[pale]].mean(0)
     sv, sf = icosphere()
     body = np.isin(np.arange(len(J.NAMES)), [i for i, n in enumerate(J.NAMES) if n != "Weapon" and not n.startswith("Bead")])
     surface = vp[np.unique(g.idx[body[lab]])]
@@ -261,7 +359,7 @@ def build(phase):
                 tp, tn, tt = tubes[n]
                 base = len(P)
                 P, N = np.vstack((P, tp)), np.vstack((N, tn))
-                U = np.vstack((U, np.tile(robe, (len(tp), 1))))
+                U = np.vstack((U, np.tile(dark, (len(tp), 1))))    # the trouser
                 T = np.vstack((T, tt + base))
                 xj, xw = SR.limb_weights(J, tp, n)
                 Jt, Wt = np.vstack((Jt, xj)), np.vstack((Wt, xw))
@@ -300,7 +398,7 @@ def build(phase):
         json.dump(info, f, indent=1)
     report = os.path.join(ROOT, "outputs/grandmaster-shen-2026-11-05")
     os.makedirs(report, exist_ok=True)
-    manifest = {"phase": phase, "source_triangles": src_total, "underlayer_triangles": added_total, "fissure_glow_triangles": glow_total, "pieces": len(info), "largest_piece": max(v["tris"] for v in info.values()), "source_sha256_file": "asset-audit.json",
+    manifest = {"phase": phase, "source_triangles": src_total + getattr(g, "orb_replaced", 0) - getattr(g, "orb_new", 0), "orbs_remade": {"source_triangles_replaced": getattr(g, "orb_replaced", 0), "sphere_triangles": getattr(g, "orb_new", 0)}, "underlayer_triangles": added_total, "fissure_glow_triangles": glow_total, "pieces": len(info), "largest_piece": max(v["tris"] for v in info.values()), "source_sha256_file": "asset-audit.json",
                 "decimated": False, "transform": {"scale": RS.S, "ground": RS.GROUND, "offset_xz": RS.OFFSET[phase], "gy_min": RS.GY_MIN[phase]}, "chunks": {k: {x: v[x] for x in ("bone", "group", "role", "tris", "source_tris", "centre")} for k, v in info.items()}}
     with open(os.path.join(report, f"chunk_manifest_p{phase}.json"), "w") as f:
         json.dump(manifest, f, indent=1)

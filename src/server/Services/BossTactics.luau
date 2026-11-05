@@ -87,7 +87,17 @@ function Tactics.step(id: number, boss: World.BossDef, phase: number, targetId: 
 	local moves: { Types.Attack } = table.clone(p.Attacks or {})
 	for _, move in schedule.Extra do table.insert(moves, move) end
 	if #moves == 0 then return false end
-	local cursor = schedule.Cursor % #moves + 1
+	local mix = p.MixUp
+	if mix then -- no fixed order and no fixed beat: a read of the pattern never holds, and every real attack still carries its full warning
+		local choice = Rules.mixChoice(mix, schedule.Feinted == true, math.random())
+		schedule.Feinted = choice == "Feint"
+		if choice ~= "Attack" and not twin then
+			Attacks.feint(id, choice, now)
+			schedule.Next = now + Rules.FeintMoves[choice].Length + (if choice == "Feint" then 0 else math.random() * 0.4)
+			return true
+		end
+	end
+	local cursor = if mix then Rules.pickMove(moves, schedule.LastMove, math.random()) else schedule.Cursor % #moves + 1
 	-- Twins: one perilous at a time; this one waits (melee goes on) until the partner's last pulse
 	-- plus the readable lead (Rules.perilousClear, post-F26 Step 4).
 	if twin and not Rules.perilousClear(Rules.impact(now, moves[cursor].Windup), Attacks.lastImpact(twin.Id)) then
@@ -95,7 +105,8 @@ function Tactics.step(id: number, boss: World.BossDef, phase: number, targetId: 
 		return false
 	end
 	schedule.Cursor = cursor
-	schedule.Next = now + (p.AttackInterval or 3)
+	schedule.Next = now + (if mix then Rules.mixInterval(p.AttackInterval or 3, mix.Jitter, math.random()) else p.AttackInterval or 3)
+	schedule.LastMove = moves[cursor].Id
 	local attack = table.clone(moves[schedule.Cursor])
 	if e.Model:GetAttribute("AsuraBossEnraged") then
 		attack.Element, attack.Damage, attack.Posture = "Lightning+Iron", attack.Damage * 1.2, attack.Posture * 1.2

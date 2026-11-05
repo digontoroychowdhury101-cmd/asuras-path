@@ -7,7 +7,7 @@ local hasScript = pcall(function() return script.Parent end)
 local Roster: any
 if hasScript then Roster = require(script.Parent.BossRoster) else Roster = require("./BossRoster") end
 
-type AttackKind = "PerilousSweep" | "PerilousThrust" | "PerilousGrab" | "Shockwave" | "Barrage" | "Gravity" | "Ritual" | "Leap" | "Breath" | "Tail" | "ShieldCharge"
+type AttackKind = "PerilousSweep" | "PerilousThrust" | "PerilousCut" | "PerilousGrab" | "Shockwave" | "Barrage" | "Gravity" | "Ritual" | "Leap" | "Breath" | "Tail" | "ShieldCharge"
 type Motion = "Pillar" | "Aerial" | "Lunge" | "Teleport"
 export type BossAttack = {
 	Id: string, Kind: AttackKind, Windup: number, Radius: number, Damage: number, Posture: number,
@@ -116,6 +116,7 @@ export type Shockwave = {
 export type BossPhase = {
 	Attacks: { BossAttack }?,
 	AttackInterval: number?,
+	MixUp: { Jitter: number, Feint: number, Flourish: number }?, -- BossEncounterRules.pickMove and friends: moves in no fixed order, on no fixed beat
 	AnimationSet: string?,
 	GapCloser: GapCloser?,
 	Index: number,
@@ -538,6 +539,7 @@ World.Bosses = {
 				Index = 1,
 				Name = "Disciplined Master",
 				Weapon = "Guandao", -- the supplied sculpt carries the guandao in both forms (BossArmaments)
+				MixUp = { Jitter = 0.35, Feint = 0.2, Flourish = 0.14 },
 				HPFraction = nil,
 				OnDeathblow = false,
 				Stats = {
@@ -574,6 +576,7 @@ World.Bosses = {
 			},
 			{
 				Index = 2,
+				MixUp = { Jitter = 0.45, Feint = 0.28, Flourish = 0.08 },
 				Name = "Demonic Chimera",
 				Weapon = "Guandao",
 				HPFraction = 0.5,

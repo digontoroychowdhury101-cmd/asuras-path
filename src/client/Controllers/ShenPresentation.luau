@@ -365,6 +365,10 @@ function Presentation.cue(cue: any, source: any): boolean
 		elseif move == "AbbotSweep" then
 			sound(s, "AbbotSweep", impact)
 			trailWindow(s, "AbbotSweep", impact)
+		elseif move == "HesitantMoon" or move == "WheelOfHeaven" or move == "RendingArc" or move == "PhantomDrift" then
+			sound(s, "FlowingJian_Thrust", impact)
+			sound(s, "FlowingJian_Contact", impact)
+			trailWindow(s, "Cut", impact)
 			local aim = Vector3.new(tonumber(d.x) or 0, 0, tonumber(d.z) or 0)
 			table.insert(s.Events, { At = impact, Run = function() crescent(s, aim, tonumber(d.radius) or 16) end })
 		elseif move == "BloodWave" then

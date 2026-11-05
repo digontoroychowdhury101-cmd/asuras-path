@@ -1,10 +1,10 @@
 --!strict
-type AttackKind = "PerilousSweep" | "PerilousThrust" | "PerilousGrab" | "Shockwave" | "Barrage" | "Gravity" | "Ritual" | "Leap" | "Breath" | "Tail" | "ShieldCharge"
+type AttackKind = "PerilousSweep" | "PerilousThrust" | "PerilousCut" | "PerilousGrab" | "Shockwave" | "Barrage" | "Gravity" | "Ritual" | "Leap" | "Breath" | "Tail" | "ShieldCharge"
 type Motion = "Pillar" | "Aerial" | "Lunge" | "Teleport"
 type BossAttack = {
 	Id: string, Kind: AttackKind, Windup: number, Radius: number, Damage: number, Posture: number,
 	Height: number?, Speed: number?, Repeats: number?, Interval: number?, Duration: number?,
-	Count: number?, Motion: Motion?, Element: string?, Unblockable: boolean?, DisplayName: string?, Fan: boolean?, Rise: number?,
+	Count: number?, Pulses: { number }?, Arc: number?, Motion: Motion?, Element: string?, Unblockable: boolean?, DisplayName: string?, Fan: boolean?, Rise: number?,
 }
 type GapCloser = { Range: number, Delay: number, Cooldown: number, Motion: Motion }
 local function move(id: string, kind: AttackKind, radius: number, damage: number, windup: number, options: { [string]: any }?): BossAttack
@@ -14,8 +14,11 @@ local function move(id: string, kind: AttackKind, radius: number, damage: number
 end
 local Catalog = {
 	Shen = {
-		-- The id FlowingJian stays stable for clips, tests and saves; he thrusts with the guandao his sculpts carry.
-		move("FlowingJian", "PerilousThrust", 18, 15, 0.8, { Repeats = 4, Interval = 0.65, Motion = "Lunge", DisplayName = "Flowing Glaive" }),
+		-- The id FlowingJian stays stable for clips, tests and saves; four curved cuts of the guandao, each one deflected.
+		move("FlowingJian", "PerilousCut", 18, 15, 0.8, { Repeats = 4, Interval = 0.65, Arc = 150, Motion = "Lunge", DisplayName = "Flowing Glaive" }),
+		-- Parry timing is the point of these two: the blade hangs too long, and the second cut comes early.
+		move("HesitantMoon", "PerilousCut", 14, 20, 1.3, { Arc = 140, Motion = "Lunge", DisplayName = "Hesitant Moon" }),
+		move("WheelOfHeaven", "PerilousCut", 14, 16, 1.35, { Pulses = { 0, 0.38 }, Arc = 170, DisplayName = "Wheel of Heaven" }),
 		move("PrayerBeads", "Barrage", 90, 12, 1.1, { Count = 7, Speed = 34, Fan = true, Rise = 5, DisplayName = "Prayer Beads" }),
 		move("AbbotSweep", "PerilousSweep", 16, 24, 1, { DisplayName = "Abbot's Sweep" }),
 	},
@@ -24,6 +27,8 @@ local Catalog = {
 		move("GuandaoSkyfall", "Leap", 28, 35, 1.5, { Motion = "Aerial", Speed = 45, DisplayName = "Guandao Skyfall" }),
 		-- The lunge brings the visible claw to the server's 12 stud reach; nothing ever attaches to a player.
 		move("CrimsonEmbrace", "PerilousGrab", 12, 40, 1.2, { Motion = "Lunge", DisplayName = "Crimson Embrace" }),
+		move("RendingArc", "PerilousCut", 14, 20, 0.9, { Pulses = { 0, 0.42, 1.05 }, Arc = 160, DisplayName = "Rending Arc" }),
+		move("PhantomDrift", "PerilousCut", 15, 26, 1, { Arc = 150, Motion = "Lunge", DisplayName = "Phantom Drift" }),
 	},
 	Baize = {
 		move("MeteorPounce", "Leap", 100, 32, 2.1, { Motion = "Pillar", Speed = 32, Height = 9, Duration = 2.6, Element = "Frost" }),

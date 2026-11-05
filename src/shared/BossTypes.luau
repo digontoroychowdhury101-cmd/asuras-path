@@ -1,6 +1,6 @@
 --!strict
 -- Engine-free contracts shared by authored encounters, the server and verification.
-export type AttackKind = "PerilousSweep" | "PerilousThrust" | "PerilousGrab" | "Shockwave" | "Barrage" | "Gravity" | "Ritual" | "Leap" | "Breath" | "Tail" | "ShieldCharge"
+export type AttackKind = "PerilousSweep" | "PerilousThrust" | "PerilousCut" | "PerilousGrab" | "Shockwave" | "Barrage" | "Gravity" | "Ritual" | "Leap" | "Breath" | "Tail" | "ShieldCharge"
 export type Motion = "Pillar" | "Aerial" | "Lunge" | "Teleport"
 export type Attack = {
 	Id: string, Kind: AttackKind, Windup: number, Radius: number, Damage: number, Posture: number,

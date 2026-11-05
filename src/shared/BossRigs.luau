@@ -11,6 +11,7 @@ export type Def = { Joints: { Joint }, Helpers: { Helper } }
 
 local V = Vector3.new
 local Rigs = {}
+Rigs.TurnRate = 220 -- degrees per second: the turn his clips step at (BossAnimationRules.TurnRate)
 
 Rigs.ByTemplate = {
 	AsuraBoss_IronBull = {
@@ -51,7 +52,7 @@ Rigs.ByTemplate = {
 			{ Bone = "LeftUpperArm", Parent = "UpperTorso", Motor = "LeftShoulder", At = V(-0.80, 1.14, 0.00) },
 			{ Bone = "LeftLowerArm", Parent = "LeftUpperArm", Motor = "LeftElbow", At = V(-1.12, 0.31, 0.00) },
 			{ Bone = "LeftHand", Parent = "LeftLowerArm", Motor = "LeftWrist", At = V(-1.15, -0.26, -0.28) },
-			{ Bone = "RightUpperLeg", Parent = "LowerTorso", Motor = "RightHip", At = V(0.25, -0.55, -0.10) },
+			{ Bone = "RightUpperLeg", Parent = "LowerTorso", Motor = "RightHip", At = V(0.33, -0.58, -0.10) },
 			{ Bone = "RightLowerLeg", Parent = "RightUpperLeg", Motor = "RightKnee", At = V(0.68, -1.85, 0.02) },
 			{ Bone = "RightFoot", Parent = "RightLowerLeg", Motor = "RightAnkle", At = V(0.95, -2.85, 0.12) },
 			{ Bone = "LeftUpperLeg", Parent = "LowerTorso", Motor = "LeftHip", At = V(-0.45, -0.55, -0.10) },
@@ -59,6 +60,7 @@ Rigs.ByTemplate = {
 			{ Bone = "LeftFoot", Parent = "LeftLowerLeg", Motor = "LeftAnkle", At = V(-0.72, -2.85, 0.12) },
 		},
 		Helpers = {
+			{ Bone = "Glaive", Parent = "LowerTorso", At = V(0.96, -0.42, -0.45) },
 		},
 	} :: Def,
 	AsuraBoss_GrandmasterShen_P2 = {
@@ -72,7 +74,7 @@ Rigs.ByTemplate = {
 			{ Bone = "LeftUpperArm", Parent = "UpperTorso", Motor = "LeftShoulder", At = V(-0.80, 1.08, 0.00) },
 			{ Bone = "LeftLowerArm", Parent = "LeftUpperArm", Motor = "LeftElbow", At = V(-1.05, 0.18, -0.13) },
 			{ Bone = "LeftHand", Parent = "LeftLowerArm", Motor = "LeftWrist", At = V(-1.18, -0.39, -0.42) },
-			{ Bone = "RightUpperLeg", Parent = "LowerTorso", Motor = "RightHip", At = V(0.25, -0.55, -0.05) },
+			{ Bone = "RightUpperLeg", Parent = "LowerTorso", Motor = "RightHip", At = V(0.30, -0.58, -0.05) },
 			{ Bone = "RightLowerLeg", Parent = "RightUpperLeg", Motor = "RightKnee", At = V(0.72, -1.72, 0.10) },
 			{ Bone = "RightFoot", Parent = "RightLowerLeg", Motor = "RightAnkle", At = V(1.00, -2.79, 0.19) },
 			{ Bone = "LeftUpperLeg", Parent = "LowerTorso", Motor = "LeftHip", At = V(-0.38, -0.55, -0.05) },
@@ -80,9 +82,7 @@ Rigs.ByTemplate = {
 			{ Bone = "LeftFoot", Parent = "LeftLowerLeg", Motor = "LeftAnkle", At = V(-0.80, -2.79, 0.19) },
 		},
 		Helpers = {
-			{ Bone = "Bead1", Parent = "LowerTorso", At = V(1.62, 0.30, 0.38) },
-			{ Bone = "Bead2", Parent = "LowerTorso", At = V(1.26, -0.05, 0.23) },
-			{ Bone = "Bead3", Parent = "LowerTorso", At = V(1.72, 0.02, 0.42) },
+			{ Bone = "Glaive", Parent = "LowerTorso", At = V(1.09, -0.39, -0.35) },
 		},
 	} :: Def,
 }

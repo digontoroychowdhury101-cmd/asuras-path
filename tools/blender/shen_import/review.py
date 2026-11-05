@@ -74,6 +74,7 @@ nt.links.new(tc.outputs["Object"], mp.inputs["Vector"])
 mp.inputs["Scale"].default_value = (0.5, 0.5, 0.5)
 nt.links.new(mp.outputs["Vector"], ck.inputs["Vector"])
 nt.links.new(ck.outputs["Color"], nt.nodes["Principled BSDF"].inputs[0])
+nt.nodes["Principled BSDF"].inputs["Roughness"].default_value = 1.0
 floor.data.materials.append(mat)
 sc.render.resolution_x, sc.render.resolution_y = size
 sc.render.image_settings.file_format = "PNG"
@@ -83,10 +84,10 @@ cam.sensor_fit, cam.sensor_height = "VERTICAL", 36   # the same framing of him a
 co = bpy.data.objects.new("c", cam)
 sc.collection.objects.link(co)
 sc.camera = co
-SPOTS = {"combat": (9.0, 11.5, 1.6), "side": (10.5, 0, -0.2), "lside": (-10.5, 0, -0.2), "front": (0, 10.5, 0.0), "back": (0, -10.5, 0.0), "quarter": (7.5, 7.5, 0.4), "backq": (-7.0, -8.0, 0.8), "low": (7, 8, -2.0)}
-BASE = Vector(SPOTS[camera])
+SPOTS = {"head": (3.2, 7.5, 3.2), "face": (1.1, 3.2, 0.75), "combat": (9.0, 11.5, 1.6), "side": (10.5, 0, -0.2), "lside": (-10.5, 0, -0.2), "front": (0, 10.5, 0.0), "back": (0, -10.5, 0.0), "quarter": (7.5, 7.5, 0.4), "backq": (-7.0, -8.0, 0.8), "low": (7, 8, -2.0)}
+BASE = Vector(SPOTS[camera]) + Vector((0, 0, 1.55 if phase == 2 else 0))   # phase 2 floats
 co.location = BASE
-co.rotation_euler = (Vector((0, 0, -0.45)) - BASE).to_track_quat("-Z", "Y").to_euler()
+co.rotation_euler = (Vector((0.75 if camera == "face" else 0, 0, (2.45 if camera == "face" else 3.4) if phase == 2 and camera in ("head", "face") else 1.9 if camera in ("head", "face") else (0.9 if phase == 2 else -0.45))) - BASE).to_track_quat("-Z", "Y").to_euler()
 frames = data["frames"]
 first, last, step = span[0] or 0, span[1] if span[1] is not None else len(frames) - 1, span[2] or 1
 pose_bones = arm.pose.bones

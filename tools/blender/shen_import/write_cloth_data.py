@@ -26,7 +26,7 @@ def main():
            "local Data: { [number]: any } = {}"]
     for phase in (1, 2):
         c = json.load(open(os.path.join(ROOT, f"work/shen_import/cloth_p{phase}.json")))
-        keep = {k: c[k] for k in ("bones", "sheets", "particles", "links", "colliders", "hits", "limbs")}
+        keep = {k: c[k] for k in ("bones", "sheets", "particles", "links", "colliders", "hits", "limbs", "grip")}
         out.append("Data[%d] = %s" % (phase, lua(keep)))
     out.append("return Data\n")
     path = os.path.join(ROOT, "src/shared/ShenClothData.luau")

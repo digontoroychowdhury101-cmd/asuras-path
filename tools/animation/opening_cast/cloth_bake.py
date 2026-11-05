@@ -101,7 +101,7 @@ def run_sim(phase, frames, roots, warm=1.5):
             vals += [t[0], t[1], t[2]] + R.ravel().tolist()
         rows.append(" ".join("%.5f" % v for v in vals))
     src = (ROOT / "src/shared/ClothSim.luau").read_text()
-    code = ['local Sim = (function()\n', src, '\nend)()\n', 'local def = ', lua({k: cloth[k] for k in ("particles", "links", "colliders", "hits", "limbs", "sheets")}), '\n',
+    code = ['local Sim = (function()\n', src, '\nend)()\n', 'local def = ', lua({k: cloth[k] for k in ("particles", "links", "colliders", "hits", "limbs", "sheets", "grip")}), '\n',
             'local s = Sim.new(def, %r)\n' % SCALE, 'local text = [==[\n', "\n".join(rows), '\n]==]\n', '''
 local rows = {}
 for line in string.gmatch(text, "[^\\n]+") do
@@ -166,7 +166,7 @@ def bake_shot(name, phase, plan, fade=0.2):
             # the sim's R is world-from-rest; the rest frame is the sculpt's (root-aligned), so only the root's yaw comes off
             t = local - R @ at
             D[bones[p["bone"]]["name"]] = R.ravel().tolist() + t.tolist()
-        props = {k: pose[k].ravel().tolist() for k in ("RightHand", "Bead1", "Bead2", "Bead3") if k in pose}
+        props = {k: pose[k].ravel().tolist() for k in ("Glaive",) if k in pose}
         out.append({"root": [x / SCALE, y / SCALE, z / SCALE, yaw], "bones": {k: [round(v, 5) for v in vs] for k, vs in D.items()}, "props": {k: [round(v, 5) for v in vs] for k, vs in props.items()}})
     OUT.mkdir(parents=True, exist_ok=True)
     (OUT / (name + ".json")).write_text(json.dumps({"phase": phase, "frames": out}))
@@ -185,10 +185,16 @@ SHOTS = {
     "idle1": (1, [("Idle", 6.4, 0.0, 0.0)]),
     "melee1": (1, [("Idle", 1.0, 0.0, 0.0), ("Guandao_L1", None, 0.0, 0.0), ("Guandao_L2", None, 0.0, 0.0), ("Guandao_Heavy", None, 0.0, 0.0), ("Idle", 1.2, 0.0, 0.0)]),
     "arts1": (1, [("Idle", 0.8, 0.0, 0.0), ("FlowingJian", None, 0.0, 0.0), ("AbbotSweep", None, 0.0, 0.0), ("Guandao_Art", None, 0.0, 0.0), ("Idle", 1.0, 0.0, 0.0)]),
+    "tricks1": (1, [("Idle", 0.6, 0.0, 0.0), ("Flourish", None, 0.0, 0.0), ("Feint", None, 0.0, 0.0), ("HesitantMoon", None, 0.0, 0.0), ("WheelOfHeaven", None, 0.0, 0.0), ("Idle", 0.8, 0.0, 0.0)]),
+    "turn1": (1, [("Idle", 0.8, 0.0, 0.0), ("TurnLeft", 1.8, 0.0, 220.0), ("HitLightLeft", None, 0.0, 0.0), ("Idle", 0.8, 0.0, 0.0), ("TurnRight", 1.8, 0.0, -220.0), ("Idle", 1.0, 0.0, 0.0)]),
+    "back1": (1, [("Idle", 0.5, 0.0, 0.0), ("WalkBackward", 3.0, lambda t: -1.48 * SCALE * ramp(0.4, t), 0.0), ("StrafeLeft", 2.6, 0.0, 0.0), ("Idle", 0.8, 0.0, 0.0)]),
     "transform1": (1, [("Idle", 0.8, 0.0, 0.0), ("Transform", 0.9, 0.0, 0.0)]),
     "walk2": (2, [("Idle", 2.0, 0.0, 0.0), ("WalkForward", 4.4, lambda t: 2.40 * SCALE * ramp(0.5, t), 0.0), ("Idle", 1.5, lambda t: 2.40 * SCALE * max(1 - t / 0.4, 0), 0.0)]),
     "run2": (2, [("Idle", 1.0, 0.0, 0.0), ("RunForward", 3.7, lambda t: 7.48 * SCALE * ramp(0.4, t), lambda t: 0 if t < 2 else 90), ("Idle", 1.5, lambda t: 7.48 * SCALE * max(1 - t / 0.35, 0), 0.0)]),
     "arts2": (2, [("Transform", None, 0.0, 0.0), ("Idle", 0.8, 0.0, 0.0), ("BloodWave", None, 0.0, 0.0), ("CrimsonEmbrace", None, 0.0, 0.0), ("Idle", 0.8, 0.0, 0.0)]),
+    "deaths1": (1, [("PostureBreak", None, 0.0, 0.0), ("DeathblowVictim", None, 0.0, 0.0), ("Death", None, 0.0, 0.0)]),
+    "deaths2": (2, [("PostureBreak", None, 0.0, 0.0), ("DeathblowVictim", None, 0.0, 0.0), ("Death", None, 0.0, 0.0)]),
+    "cuts2": (2, [("Idle", 0.8, 0.0, 0.0), ("RendingArc", None, 0.0, 0.0), ("PhantomDrift", None, 0.0, 0.0), ("Flourish", None, 0.0, 0.0), ("Idle", 0.8, 0.0, 0.0)]),
     "sky2": (2, [("Idle", 0.5, 0.0, 0.0), ("GuandaoSkyfall", None, 0.0, 0.0, {"lift": lambda t: 28.0 * math.sin(math.pi * min(t / 1.5, 1))}), ("Idle", 0.8, 0.0, 0.0)]),
 }
 

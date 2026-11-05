@@ -46,6 +46,7 @@ Data.Cloth = table.freeze({ Color3.fromRGB(40, 48, 96), Color3.fromRGB(218, 208,
 Data.Trails = table.freeze({
 	FlowingJian = { Open = -0.13, Close = 0.12, Width = 0.13, Fade = 0.5 },
 	AbbotSweep = { Open = -0.14, Close = 0.3, Width = 0.2, Fade = 0.45 },
+	Cut = { Open = -0.14, Close = 0.2, Width = 0.17, Fade = 0.45 },
 	BloodWave = { Open = -0.3, Close = 0.2, Width = 0.34, Fade = 0.3 },
 	GuandaoSkyfall = { Open = -0.3, Close = 0.08, Width = 0.34, Fade = 0.3 },
 	Melee = { Open = -0.1, Close = 0.14, Width = 0.15, Fade = 0.45 },

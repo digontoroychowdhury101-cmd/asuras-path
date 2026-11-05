@@ -2,11 +2,11 @@
 local Rules = {}
 Rules.ThrustWindow = 0.1
 Rules.MinimumWarning = 0.65
-Rules.AttackKinds = table.freeze({ PerilousSweep = true, PerilousThrust = true, PerilousGrab = true,
+Rules.AttackKinds = table.freeze({ PerilousSweep = true, PerilousThrust = true, PerilousCut = true, PerilousGrab = true,
 	Shockwave = true, Barrage = true, Gravity = true, Ritual = true, Leap = true, Breath = true, Tail = true, ShieldCharge = true })
 function Rules.classify(kind: string): (boolean, string)
 	if kind == "PerilousSweep" or kind == "Tail" then return true, "Double Jump" end
-	if kind == "PerilousThrust" then return true, "Deflect" end
+	if kind == "PerilousThrust" or kind == "PerilousCut" then return true, "Deflect" end
 	if kind == "PerilousGrab" then return true, "Slide Dash" end
 	if kind == "Gravity" then return false, "Bullet Jump" end
 	if kind == "Shockwave" or kind == "Leap" or kind == "Ritual" or kind == "Breath" then return true, "Air Glide" end
@@ -17,6 +17,48 @@ end
 Rules.CounterKeys = table.freeze({ ["Air Glide"] = "{Jump} {Jump}, hold {Jump}", ["Double Jump"] = "{Jump} then {Jump} in the air",
 	Deflect = "tap {Guard} on impact", ["Slide Dash"] = "{Slide} away, then {Dash}", ["Bullet Jump"] = "{Slide} + {Jump}", Evade = "{Dash} through it" })
 Rules.CounterHintCount = 3
+-- When a move's nth strike (from 0) lands after its impact: its own broken rhythm, else an even beat.
+function Rules.pulseOffset(attack: any, n: number): number
+	if attack.Pulses then return attack.Pulses[n + 1] or attack.Pulses[#attack.Pulses] end
+	return n * (attack.Interval or 0.7)
+end
+function Rules.pulseCount(attack: any): number
+	return if attack.Pulses then #attack.Pulses else attack.Repeats or 1
+end
+-- A curved cut reaches the arc in front of him, not a line. Pure: forward and offset are flat vectors as x, z.
+function Rules.cutHit(fx: number, fz: number, dx: number, dz: number, radius: number, arc: number): boolean
+	local d = math.sqrt(dx * dx + dz * dz)
+	if d > radius then return false end
+	if d < 2 then return true end
+	return (fx * dx + fz * dz) / d >= math.cos(math.rad(arc) * 0.5)
+end
+-- The next move, in no fixed order: r in [0, 1), never the same move twice running when there is another.
+function Rules.pickMove(moves: { any }, last: string?, r: number): number
+	local total = 0
+	for _, move in moves do
+		if move.Id ~= last or #moves == 1 then total += move.Weight or 1 end
+	end
+	local at = r * total
+	for index, move in moves do
+		if move.Id ~= last or #moves == 1 then
+			at -= move.Weight or 1
+			if at < 0 then return index end
+		end
+	end
+	return #moves
+end
+-- The beat between moves: base +- jitter of itself, r in [0, 1).
+function Rules.mixInterval(base: number, jitter: number, r: number): number
+	return base * (1 + jitter * (r * 2 - 1))
+end
+-- What he does when his next move comes due. A feint is never followed by a feint, so one always ends in a real, fully warned attack.
+function Rules.mixChoice(mix: { Feint: number, Flourish: number }, justFeinted: boolean, r: number): string
+	if justFeinted then return "Attack" end
+	if r < mix.Feint then return "Feint" end
+	if r < mix.Feint + mix.Flourish then return "Flourish" end
+	return "Attack"
+end
+Rules.FeintMoves = table.freeze({ Feint = { Length = 1.05, Contact = 0.52 }, Flourish = { Length = 1.6, Contact = 0.6 } })
 function Rules.impact(now: number, windup: number): number
 	return now + math.max(Rules.MinimumWarning, windup)
 end

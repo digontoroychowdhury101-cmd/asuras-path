@@ -138,6 +138,7 @@ function Skin.attach(actor: Model): boolean
 	-- A template that carries its own weapon meshes (AsuraRole=Weapon) replaces the costume weapon too;
 	-- otherwise the costume weapon stays visible, so the drawn blade never doubles or vanishes.
 	model:SetAttribute("OwnsWeapon", ownsWeapon)
+	if anySkinned then actor:SetAttribute("AsuraTurnRate", Rigs.TurnRate) end
 	local phase = actor:GetAttribute("AsuraBossPhase") or 1
 	if old then old:Destroy() end
 	model.Name, model.Parent = "AsuraBossSkin", actor

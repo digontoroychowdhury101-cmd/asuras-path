@@ -1885,6 +1885,9 @@ function Service.Face(id: number, position: Vector3)
 		omni.LastFace = simTime
 		local startup = if f.Move then f.Move.Timing.StartupSeconds else 0
 		local step = Strike.turnStep(f.State, simTime - f.StateStart, startup, dt)
+		-- A skinned body with live cloth turns at a body's rate, never a snap (BossSkin: AsuraTurnRate); what it can do in combat is unchanged.
+		local limit = e.Model:GetAttribute("AsuraTurnRate")
+		if type(limit) == "number" then step = math.min(step, math.rad(limit) * dt) end
 		local yaw = Strike.turn(yawOf(e.Root.CFrame), Strike.yaw(direction.X, direction.Z) :: number, step)
 		e.Root.CFrame = CFrame.new(origin) * CFrame.Angles(0, yaw, 0)
 		-- Writing the root CFrame cancels the Humanoid's MoveTo. MoveTo only renewed it when the goal

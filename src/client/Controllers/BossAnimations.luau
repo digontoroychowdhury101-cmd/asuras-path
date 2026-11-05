@@ -147,6 +147,16 @@ local function syncGait(model: Model, state: string?)
 		forward, right = travel:Dot(look3), travel:Dot(root.CFrame.RightVector)
 	end
 	local action, rate = Rules.gait(look, speed, model:GetScale(), forward, right, state, gait.Action, phase)
+	local _, yaw = root.CFrame:ToOrientation()
+	if gait.Yaw and dt > 0 then
+		local turned = (yaw - gait.Yaw + math.pi) % (2 * math.pi) - math.pi
+		gait.YawRate = (gait.YawRate or 0) + (turned / dt - (gait.YawRate or 0)) * math.clamp(dt * 12, 0, 1)
+	end
+	gait.Yaw = yaw
+	if not action then -- standing still and being turned: he steps round rather than pivoting on planted feet
+		local turning, turnRate = Rules.turning(look, gait.YawRate or 0, gait.Action)
+		if turning then action, rate = turning, turnRate end
+	end
 	if not action then
 		if gait.Track then stopGait(gait) end
 		return
@@ -198,6 +208,14 @@ syncFrame = function(model: Model, state: string?)
 		reacted[model] = nil
 	elseif reacted[model] ~= state then
 		reacted[model] = state
+		if reaction == "HitLightFront" then -- the flinch answers the side the blow came from (AIService: AsuraHitFrom)
+			local from = model:GetAttribute("AsuraHitFrom")
+			local root = model:FindFirstChild("HumanoidRootPart")
+			if typeof(from) == "Vector3" and root and root:IsA("BasePart") then
+				local away = root.CFrame:VectorToObjectSpace(from)
+				reaction = Rules.hitAction(away.X, -away.Z)
+			end
+		end
 		local resolved = play(model, reaction)
 		if not resolved or not resolved.Id then play(model, "Idle") end
 		return

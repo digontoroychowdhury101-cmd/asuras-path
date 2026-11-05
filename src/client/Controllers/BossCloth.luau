@@ -16,7 +16,7 @@ local FAR, VERY_FAR, TELEPORT = 160, 320, 60
 Cloth.Rates = table.freeze({ Low = { Step = 1 / 30, Passes = 1 }, Mid = { Step = 1 / 60, Passes = 2 }, High = { Step = 1 / 60, Passes = 3 } })
 
 type Session = { Skin: Model, Actor: Model, Root: BasePart, Bone: Bone, State: any, Limbs: { BasePart }, RestInverse: { CFrame }, LimbBones: { Bone }, LimbAt: { CFrame }, LimbAtInverse: { CFrame },
-	ClothBones: { Bone }, ClothAtInverse: { CFrame }, M: { number }, Clock: number, Last: Vector3? }
+	ClothBones: { Bone }, ClothAtInverse: { CFrame }, M: { number }, Clock: number, Last: Vector3?, HitMark: any }
 local sessions: { [Model]: Session } = {}
 local waiting: { [Model]: boolean } = {}
 local beat: RBXScriptConnection? = nil
@@ -49,7 +49,12 @@ local function build(skin: Model): Session?
 	for i, name in data.limbs do
 		local limb = actor:FindFirstChild(name)
 		local bone = found["Sk_" .. name]
-		if not limb or not limb:IsA("BasePart") or not bone or not rest[name] then return nil end
+		if not limb or not limb:IsA("BasePart") then return nil end
+		if name == "Glaive" then -- the weapon is a collider for the cloth; it has its own joint and no skin bone
+			s.Limbs[i], s.RestInverse[i] = limb, CFrame.new((def.Helpers :: any)[1].At * scale):Inverse()
+			continue
+		end
+		if not bone or not rest[name] then return nil end
 		s.Limbs[i], s.RestInverse[i], s.LimbBones[i] = limb, rest[name]:Inverse(), bone
 		s.LimbAt[i], s.LimbAtInverse[i] = bone.CFrame, bone.CFrame:Inverse()
 	end
@@ -80,12 +85,20 @@ local function run(s: Session, dt: number, rate: any, eye: Vector3)
 		local d = limbs[i].CFrame * inverse[i]
 		local o = (i - 1) * 12
 		M[o + 1], M[o + 2], M[o + 3], M[o + 4], M[o + 5], M[o + 6], M[o + 7], M[o + 8], M[o + 9], M[o + 10], M[o + 11], M[o + 12] = d:GetComponents()
-		s.LimbBones[i].Transform = s.LimbAtInverse[i] * rootInverse * d * s.LimbAt[i]
+		local limbBone = s.LimbBones[i]
+		if limbBone then limbBone.Transform = s.LimbAtInverse[i] * rootInverse * d * s.LimbAt[i] end
 	end
 	-- a teleport is not motion: the cloth arrives with him rather than streaming across the map
 	if s.Last and (position - s.Last).Magnitude > TELEPORT then Sim.reset(s.State, M) end
 	s.Last = position
 	local step = rate.Step
+	-- a blow lands: the robe takes it the way the body does (AIService: AsuraHitFrom, AsuraHitMark)
+	local mark = s.Actor:GetAttribute("AsuraHitMark")
+	if mark ~= s.HitMark then
+		local from = s.Actor:GetAttribute("AsuraHitFrom")
+		if s.HitMark ~= nil and typeof(from) == "Vector3" then Sim.impulse(s.State, -from.X, 0.15, -from.Z, 11, step) end
+		s.HitMark = mark
+	end
 	if away > VERY_FAR then return end -- too far to read: the body still follows, the cloth rests on its last pose
 	if away > FAR then step = math.max(step, 1 / 20) end
 	s.Clock = math.min(s.Clock + dt, step * 3)

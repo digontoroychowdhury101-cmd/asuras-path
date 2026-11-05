@@ -1,10 +1,14 @@
 {
  "phase": 1,
  "source_triangles": 500000,
+ "orbs_remade": {
+  "source_triangles_replaced": 0,
+  "sphere_triangles": 0
+ },
  "underlayer_triangles": 1032,
  "fissure_glow_triangles": 0,
  "pieces": 42,
- "largest_piece": 17792,
+ "largest_piece": 17431,
  "source_sha256_file": "asset-audit.json",
  "decimated": false,
  "transform": {
@@ -141,12 +145,12 @@
    "bone": "HumanoidRootPart",
    "group": "RightUpperLeg",
    "role": null,
-   "tris": 1517,
-   "source_tris": 1321,
+   "tris": 4901,
+   "source_tris": 4705,
    "centre": [
-    0.6381851424383906,
-    -1.2653561508324063,
-    0.014050750970840492
+    0.5229263716936112,
+    -1.0858307531957627,
+    0.03030249083042147
    ]
   },
   "Shen1_RightLowerLeg": {
@@ -177,12 +181,12 @@
    "bone": "HumanoidRootPart",
    "group": "LeftUpperLeg",
    "role": null,
-   "tris": 1892,
-   "source_tris": 1696,
+   "tris": 6402,
+   "source_tris": 6206,
    "centre": [
-    -0.6382856583595276,
-    -1.2676775605990414,
-    0.08950739556550988
+    -0.6307098156213762,
+    -1.1207588425760269,
+    0.04994400942325594
    ]
   },
   "Shen1_LeftLowerLeg": {
@@ -309,58 +313,58 @@
    "bone": "HumanoidRootPart",
    "group": "RobeBack",
    "role": null,
-   "tris": 17791,
-   "source_tris": 17791,
+   "tris": 17431,
+   "source_tris": 17431,
    "centre": [
-    -0.9393269455432892,
-    -2.0135344139223097,
-    0.5420120915174484
+    -0.9304040974378587,
+    -2.0195278487091066,
+    0.549891149044037
    ]
   },
   "Shen1_RobeBack_2": {
    "bone": "HumanoidRootPart",
    "group": "RobeBack",
    "role": null,
-   "tris": 17791,
-   "source_tris": 17791,
+   "tris": 17431,
+   "source_tris": 17431,
    "centre": [
-    -0.9246014422178268,
-    -2.0448596796875,
-    1.4067061116695405
+    -0.9155327147245407,
+    -2.0460943422203064,
+    1.4120597651004791
    ]
   },
   "Shen1_RobeBack_3": {
    "bone": "HumanoidRootPart",
    "group": "RobeBack",
    "role": null,
-   "tris": 17791,
-   "source_tris": 17791,
+   "tris": 17431,
+   "source_tris": 17431,
    "centre": [
-    -0.911110601425171,
-    -0.7952837279920577,
-    0.29857071244716654
+    -0.9137707060575485,
+    -0.7964060476903914,
+    0.308795480966568
    ]
   },
   "Shen1_RobeBack_4": {
    "bone": "HumanoidRootPart",
    "group": "RobeBack",
    "role": null,
-   "tris": 17792,
-   "source_tris": 17792,
+   "tris": 17431,
+   "source_tris": 17431,
    "centre": [
-    -0.9180917477607728,
-    -1.0039989760999681,
-    1.3194308345913888
+    -0.9115034317970276,
+    -1.016726606238365,
+    1.3313279038071633
    ]
   },
   "Shen1_RobeBack_5": {
    "bone": "HumanoidRootPart",
    "group": "RobeBack",
    "role": null,
-   "tris": 17791,
-   "source_tris": 17791,
+   "tris": 17431,
+   "source_tris": 17431,
    "centre": [
-    0.3912839436531067,
+    0.40139650791883474,
     -2.001457743990898,
     0.8584747424125672
    ]
@@ -369,47 +373,47 @@
    "bone": "HumanoidRootPart",
    "group": "RobeBack",
    "role": null,
-   "tris": 17791,
-   "source_tris": 17791,
+   "tris": 17431,
+   "source_tris": 17431,
    "centre": [
-    1.4140632712841035,
-    -2.038933502781868,
-    0.7988545110225679
+    1.4182609298825264,
+    -2.0426036766653057,
+    0.7947354277372362
    ]
   },
   "Shen1_RobeBack_7": {
    "bone": "HumanoidRootPart",
    "group": "RobeBack",
    "role": null,
-   "tris": 17791,
-   "source_tris": 17791,
+   "tris": 17431,
+   "source_tris": 17431,
    "centre": [
-    0.7682645523548126,
-    -0.7836446962242126,
-    0.37334281408786785
+    0.7792189025878906,
+    -0.7924103937034607,
+    0.39559930616617206
    ]
   },
   "Shen1_RobeBack_8": {
    "bone": "HumanoidRootPart",
    "group": "RobeBack",
    "role": null,
-   "tris": 17792,
-   "source_tris": 17792,
+   "tris": 17431,
+   "source_tris": 17431,
    "centre": [
-    0.7705653631687166,
-    -0.9790263465528488,
-    1.3342460458874703
+    0.7821034157276153,
+    -0.9924162081365586,
+    1.3425740128159525
    ]
   },
   "Shen1_RobeRight_1": {
    "bone": "HumanoidRootPart",
    "group": "RobeRight",
    "role": null,
-   "tris": 11166,
-   "source_tris": 11166,
+   "tris": 9888,
+   "source_tris": 9888,
    "centre": [
     0.7981082969903945,
-    -1.981221528995514,
+    -1.987372114408493,
     -0.15975904262065888
    ]
   },
@@ -417,23 +421,23 @@
    "bone": "HumanoidRootPart",
    "group": "RobeRight",
    "role": null,
-   "tris": 11167,
-   "source_tris": 11167,
+   "tris": 9888,
+   "source_tris": 9888,
    "centre": [
-    0.5897857868671418,
-    -0.6849549344663618,
-    -0.23995214796066272
+    0.6287879669666291,
+    -0.7006568781023024,
+    -0.2597843537330627
    ]
   },
   "Shen1_RobeLeft_1": {
    "bone": "HumanoidRootPart",
    "group": "RobeLeft",
    "role": null,
-   "tris": 11367,
-   "source_tris": 11367,
+   "tris": 10179,
+   "source_tris": 10179,
    "centre": [
-    -0.8884949541091919,
-    -1.6957923850898742,
+    -0.8921314066648484,
+    -1.682615753162384,
     -0.3474300572872161
    ]
   },
@@ -441,20 +445,20 @@
    "bone": "HumanoidRootPart",
    "group": "RobeLeft",
    "role": null,
-   "tris": 11368,
-   "source_tris": 11368,
+   "tris": 10179,
+   "source_tris": 10179,
    "centre": [
-    -0.7238773173093795,
-    -0.6708693048839568,
-    -0.3377552697658538
+    -0.7197357839345931,
+    -0.6634728780870436,
+    -0.33667775785922993
    ]
   },
   "Shen1_RobeInner_1": {
    "bone": "HumanoidRootPart",
    "group": "RobeInner",
    "role": null,
-   "tris": 15771,
-   "source_tris": 15771,
+   "tris": 15732,
+   "source_tris": 15732,
    "centre": [
     -0.09384789228439328,
     -2.1157147488479615,
@@ -465,11 +469,11 @@
    "bone": "HumanoidRootPart",
    "group": "RobeInner",
    "role": null,
-   "tris": 15772,
-   "source_tris": 15772,
+   "tris": 15733,
+   "source_tris": 15733,
    "centre": [
     -0.05274695217609415,
-    -0.8448248854761122,
+    -0.8449595860128402,
     -0.43653473949432364
    ]
   },
@@ -486,7 +490,7 @@
    ]
   },
   "Shen1_Weapon_1": {
-   "bone": "RightHand",
+   "bone": "Glaive",
    "group": "Weapon",
    "role": "Weapon",
    "tris": 13091,
@@ -498,7 +502,7 @@
    ]
   },
   "Shen1_Weapon_2": {
-   "bone": "RightHand",
+   "bone": "Glaive",
    "group": "Weapon",
    "role": "Weapon",
    "tris": 13091,
@@ -510,7 +514,7 @@
    ]
   },
   "Shen1_Weapon_3": {
-   "bone": "RightHand",
+   "bone": "Glaive",
    "group": "Weapon",
    "role": "Weapon",
    "tris": 13092,

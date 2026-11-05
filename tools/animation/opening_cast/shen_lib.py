@@ -25,6 +25,7 @@ import rig as ZR  # noqa: E402  # quat, mat, slerp, angle_of
 import export as ZX  # noqa: E402  # cframe, ref, PRIORITY
 
 FPS = 30
+TOE_OUT = 9.0      # degrees a relaxed human foot turns out from the line of travel
 GROUND = -3.1924
 SCALE = 1.3        # WorldDefinitions: Shen's game scale, chosen so the sculpted guandao reaches the server's blow
 BODY_MET = 7.875   # MobSpacing.standoff: 0.75 x the Guandao's first swing, reach 10.5
@@ -119,7 +120,15 @@ def two_bone(S, T, u0, l0, pole0, pole1, label, diag):
     height = math.sqrt(max(a * a - along * along, 0.0))
     M = S + axis * along + orth(pole1, axis) * height
     W = S + axis * dist_c
-    return frame3(M - S, pole1) @ frame3(u0, pole0).T, frame3(W - M, pole1) @ frame3(l0, pole0).T, W
+    # the hinge's axis, from the whole limb: it holds steady even when the joint is folded tight and a bone lies along the pole
+    hinge = unit(np.cross(axis, orth(pole1, axis)))
+
+    def framed(bone):
+        x = unit(bone)
+        y = unit(np.cross(hinge, x))
+        return np.column_stack((x, y, np.cross(x, y)))
+
+    return framed(M - S) @ frame3(u0, pole0).T, framed(W - M) @ frame3(l0, pole0).T, W
 
 
 def foot_roll(pitch_deg):
@@ -152,7 +161,7 @@ class Rig:
         for k in self.ALL:
             self.CHILDREN.setdefault(self.PARENT[k], []).append(k)
         self.GRIP0 = np.array(J.RGRIP, float)
-        self.PALM0 = np.array(J.LHAND, float)
+        self.PALM0 = np.array(J.LHAND, float)     # set from the hand itself below, once the samples are loaded
         self.HAFT0 = unit(np.array(J.SOCKET, float) - np.array(J.BUTT, float))
         self.samples = {k: v.astype(float) for k, v in np.load(ROOT / f"work/shen_import/samples_p{phase}.npz").items()}
         w = self.samples["Weapon"]
@@ -163,20 +172,39 @@ class Rig:
         spine = spine if (off @ spine).max() > -(off @ spine).min() else -spine
         self.FACE0 = orth(-spine, self.HAFT0)              # the convex cutting edge is the other side
         self.TIP0 = w[int(np.argmax(t))]
+        hand = R.left_hand(J, self.samples["LeftHand"])
+        self.PALM0 = hand[6]
+        self.LHAND_ACROSS = hand[2]
         J_ = self.JOINT
         self.ARM_U, self.ARM_L = J_["RightLowerArm"] - J_["RightUpperArm"], J_["RightHand"] - J_["RightLowerArm"]
         self.ELBOW0 = pole_of(J_["RightUpperArm"], J_["RightLowerArm"], J_["RightHand"])
         self.LARM_U, self.LARM_L = J_["LeftLowerArm"] - J_["LeftUpperArm"], J_["LeftHand"] - J_["LeftLowerArm"]
         self.LELBOW0 = pole_of(J_["LeftUpperArm"], J_["LeftLowerArm"], J_["LeftHand"])
         self.LEGS = {}
+        centre = J_["LowerTorso"][0]
         for side in ("Left", "Right"):
             h, k, a = J_[side + "UpperLeg"], J_[side + "LowerLeg"], J_[side + "Foot"]
-            self.LEGS[side] = {"u": k - h, "l": a - k, "pole": pole_of(h, k, a), "ankle": a}
+            sign = 1.0 if side == "Right" else -1.0
+            # the sculpt stands in a wide A-frame with its toes turned far out. Every clip works from a body's own stance instead: ankles under the hips, feet toed out a few degrees, the knee over the foot.
+            f = self.samples[side + "Foot"]
+            low = f[f[:, 1] < f[:, 1].min() + 0.25][:, [0, 2]]
+            axis = np.linalg.svd(low - low.mean(0))[2][0]
+            axis = -axis if axis[1] > 0 else axis
+            psi = math.atan2(axis[0], -axis[1])                      # + toes toward +x
+            forward = np.array([math.sin(psi), 0.0, -math.cos(psi)])
+            u, l = k - h, a - k
+            ankle = np.array([h[0] + sign * 0.07, a[1], h[2] + 0.1])
+            self.LEGS[side] = {"u": u, "l": l, "pole": orth(forward, unit(u)), "ankle": ankle, "sculpt": a, "straight": ry(psi), "out": -sign * TOE_OUT, "reach": float(np.linalg.norm(u) + np.linalg.norm(l))}
+        self.PELVIS_UP = 0.0
+        s = (w - self.GRIP0) @ self.HAFT0
+        self.SMIN, self.SMAX = float(s.min()), float(s.max())
+        self.LAX0 = unit(self.LHAND_ACROSS if self.LHAND_ACROSS @ np.array([0, 0, -1.0]) > 0 else -self.LHAND_ACROSS)     # the thumb's side: the fingers close about this line, so the haft lies along it
         self.REST = {
             "pel": (0.0, 0.0, 0.0), "pelR": (0.0, 0.0, 0.0), "chest": (0.0, 0.0, 0.0), "neck": (0.0, 0.0, 0.0),
-            "rh": tuple(self.GRIP0 - J_["RightUpperArm"]), "haft": tuple(self.HAFT0), "face": tuple(self.FACE0), "relb": tuple(self.ELBOW0), "rgw": 0.0, "rg": tuple(self.GRIP0),
-            "lua": (0.0, 0.0, 0.0), "lfa": (0.0, 0.0, 0.0), "lha": (0.0, 0.0, 0.0), "lhw": 0.0, "lsl": -1.1, "ltw": 0.0, "lt": (-0.2, -1.2, -0.6), "lelb": (-0.5, -0.4, 0.7),
-            "rf": (0.0, 0.0, 0.0, 0.0, 0.0), "lf": (0.0, 0.0, 0.0, 0.0, 0.0), "rknee": tuple(self.LEGS["Right"]["pole"]), "lknee": tuple(self.LEGS["Left"]["pole"]),
+            "rp": tuple(self.GRIP0), "rsl": 0.0, "haft": tuple(self.HAFT0), "face": tuple(self.FACE0), "relb": tuple(self.ELBOW0), "rlk": 0.0, "rhx": tuple(self.HAFT0),
+            "lua": (0.0, 0.0, 0.0), "lfa": (0.0, 0.0, 0.0), "lha": (0.0, 0.0, 0.0), "lhw": 0.0, "lsl": 1.2, "ltw": 0.0, "lt": (-0.2, -1.2, -0.6), "lelb": (-0.5, -0.4, 0.7),
+            "rf": (0.0, 0.0, 0.0, 0.0, 0.0), "lf": (0.0, 0.0, 0.0, 0.0, 0.0), "rknee": (0.0, 0.0, -1.0), "lknee": (0.0, 0.0, -1.0), "hov": 0.0,
+            "rsw": 0.0, "lsw": 0.0,
         }
 
     def pivoted(self, W_parent, bone, L):
@@ -184,15 +212,57 @@ class Rig:
         return W_parent @ homog(None, j) @ L @ homog(None, -j)
 
     def hand_rotation(self, haft, face):
+        """The weapon's frame: its own bind axes carried onto the keyed haft and edge."""
         return frame3(haft, face) @ frame3(self.HAFT0, self.FACE0).T
 
-    def palm_rotation(self, haft, forearm):
-        """The left hand on the haft: its length wraps across the haft, thumb side toward the blade, continuing the forearm as far as the wrap allows."""
-        a0 = unit(self.PALM0 - self.JOINT["LeftHand"])
-        return frame3(orth(forearm, unit(haft)), haft) @ frame3(a0, (0, 0, -1)).T
+    def fist_rotation(self, axis, forearm, face):
+        """The right fist on the haft: the haft runs through it the way the sculpt holds it, and it rolls about the haft to continue the forearm. The weapon may roll inside the fist; the hand never turns backwards on the arm."""
+        v0 = orth(self.GRIP0 - self.JOINT["RightHand"], self.HAFT0)
+        return frame3(axis, _across(forearm, axis, face)) @ frame3(self.HAFT0, v0).T
+
+    def palm_rotation(self, axis, forearm, face):
+        """The left hand on the haft: thumb side toward the blade, the back of the hand continuing the forearm."""
+        v0 = orth(self.PALM0 - self.JOINT["LeftHand"], self.LAX0)
+        return frame3(axis, _across(forearm, axis, face)) @ frame3(self.LAX0, v0).T
 
 
-DIRECTION = {"haft", "face", "relb", "rknee", "lknee", "lelb"}
+def short_arc(a, b):
+    """The smallest rotation taking direction a onto direction b."""
+    a, b = unit(a), unit(b)
+    v = np.cross(a, b)
+    n = float(np.linalg.norm(v))
+    if n < 1e-6:
+        return np.eye(3) if a @ b > 0 else rodrigues(orth(np.array([0.3, 1.0, 0.2]), a) * math.pi)
+    return rodrigues(v / n * math.atan2(n, float(a @ b)))
+
+
+ROLL_LIMIT = 85.0
+
+
+def best_roll(a0, a, f, hint):
+    """The forearm roll, degrees, that brings the fist's axis nearest the haft. A haft nearly along the forearm asks nothing of the roll; beyond the limit it stays on the side it was already on."""
+    p, q = a0 - f * (a0 @ f), a - f * (a @ f)
+    want = math.degrees(math.atan2(float(f @ np.cross(p, q)), float(p @ q)))
+    want = hint + ((want - hint + 180.0) % 360.0 - 180.0)
+    weight = min(float(np.linalg.norm(p) * np.linalg.norm(q)) / 0.35, 1.0)
+    return float(np.clip(hint + (want - hint) * weight, -ROLL_LIMIT, ROLL_LIMIT))
+
+
+def _across(forearm, axis, fallback):
+    """The forearm's direction across the haft; a forearm running along the haft has none, so the edge's direction stands in."""
+    f = np.asarray(forearm, float)
+    a = np.asarray(axis, float)
+    p = f - a * np.dot(f, a)
+    n = float(np.linalg.norm(p))
+    b = np.asarray(fallback, float)
+    q = b - a * np.dot(b, a)
+    q = q / max(float(np.linalg.norm(q)), 1e-6)
+    w = min(n / 0.35, 1.0)
+    out = p / max(n, 1e-6) * w + q * (1 - w)
+    return out / max(float(np.linalg.norm(out)), 1e-6)
+
+
+DIRECTION = {"haft", "face", "relb", "rknee", "lknee", "lelb", "rhx"}
 FEET = {"rf", "lf"}
 EASE = {
     "lin": lambda u: u, "in": lambda u: u * u, "out": lambda u: 1 - (1 - u) * (1 - u), "io": lambda u: u * u * (3 - 2 * u),
@@ -204,8 +274,9 @@ class Clip:
     rise_guard = False
     """Timed partial control keys, Catmull-Rom between them; a channel a key omits holds through. Phase 2's corruption (lower, forward, more torque) is a layer over the shared technique."""
 
-    def __init__(self, rig, name, length, keys, loop=False, priority="Action", contacts=(), move=None, notes="", active=None, slot="", feet_free=(), corrupt=True, scrape=False, airborne=False, authored_feet=False, raw_after=None):
+    def __init__(self, rig, name, length, keys, loop=False, priority="Action", contacts=(), move=None, notes="", active=None, slot="", feet_free=(), corrupt=True, scrape=False, airborne=False, authored_feet=False, raw_after=None, hover=0.0):
         self.rig = rig
+        self.hover = float(hover)   # phase 2 floats: the height this clip holds when it does not key `hov` itself
         self.name, self.length, self.loop, self.priority = name, float(length), loop, priority
         self.keys = sorted(((float(t), c, e) for t, c, e in keys), key=lambda k: k[0])
         self.contacts = [float(c) for c in contacts]
@@ -256,14 +327,28 @@ class Clip:
 
     def controls(self, t):
         c = {name: self.channel(name, t) for name in self.rig.REST}
-        c["lhw"], c["ltw"], c["rgw"] = [float(np.clip(c[k], 0, 1)) for k in ("lhw", "ltw", "rgw")]
+        c["lhw"], c["ltw"], c["rlk"] = [float(np.clip(c[k], 0, 1)) for k in ("lhw", "ltw", "rlk")]
+        keyed = any("hov" in k[1] for k in self.keys)
+        hov = float(c["hov"]) if keyed else self.hover
+        if hov > 0.0:   # levitation carries the whole body and the weapon; the legs hang from it, toes down, one knee softer than the other
+            cycles = max(1, round(self.length / 2.4))
+            bob = 0.09 * math.sin(2 * math.pi * cycles * t / self.length) * min(hov / 0.6, 1.0)
+            if not self.loop:
+                bob *= smooth01(t / 0.2) * (1 - smooth01((t - (self.length - 0.2)) / 0.2))
+            hang = min(hov / 0.6, 1.0)
+            h = hov + bob
+            c["pel"] = c["pel"] + np.array([0, h, 0])
+            c["rp"] = c["rp"] + np.array([0, h, 0])
+            for key, drop, toes in (("rf", 0.14, -40), ("lf", 0.04, -32)):   # the legs hang nearly straight from the hips, not knelt on the air
+                f = np.array(c[key], float)
+                f[1] *= 1 - 0.65 * hang
+                f[3] *= 1 - 0.6 * hang
+                c[key] = f + np.array([0, 0, h + drop * hang, 0, toes * hang])
         if self.corrupt:  # the same technique, predatory: lower, forward, the torso wound further against the hips
-            c["pel"] = c["pel"] + np.array([0, -0.16, -0.03])
+            c["pel"] = c["pel"] + np.array([0, -0.1, -0.03])
             c["pelR"] = c["pelR"] * np.array([1, 1.18, 1]) + np.array([6.0, 0, 0])
             c["chest"] = c["chest"] * np.array([1, 1.28, 1]) + np.array([8.0, 0, 0])
-            c["neck"] = c["neck"] + np.array([-9.0, 0, 0])
-            c["rf"] = c["rf"] + np.array([0.06, 0, 0, 0, 0])
-            c["lf"] = c["lf"] + np.array([-0.06, 0, 0, 0, 0])
+            c["neck"] = c["neck"] + np.array([20.0, 0, 0])   # the torso hunches; the head stays up, glaring out from under the brows
         return c
 
     def clear_floor(self, fist, haft, face):
@@ -285,7 +370,48 @@ class Clip:
             haft, face = turn @ haft, turn @ face
         return haft, face
 
-    def solve(self, c):
+    def clear_body(self, rp, haft, rsl, world):
+        """The weapon never passes through his torso or head: the whole weapon shifts sideways off them, hands with it."""
+        rg = self.rig
+        J = rg.JOINT
+        Wc, Wp, Wh = world["UpperTorso"], world["LowerTorso"], world["Head"]
+        caps = [(Wc @ np.append(J["UpperTorso"] + (0, 0.1, 0), 1), Wc @ np.append(J["Head"] + (0, -0.25, 0), 1), 0.66), (Wp @ np.append(J["LowerTorso"] + (0, -0.5, 0), 1), Wp @ np.append(J["UpperTorso"], 1), 0.62),
+                (Wh @ np.append(J["Head"] + (0, 0.3, 0), 1), Wh @ np.append(J["Head"] + (0, 0.65, 0), 1), 0.5)]
+        ss = np.linspace(rg.SMIN - rsl, rg.SMAX - rsl, 26)
+        for _ in range(3):
+            pts = rp + np.outer(ss, haft)
+            worst, push = 0.0, None
+            for A, B, r in caps:
+                A, B = A[:3], B[:3]
+                d = B - A
+                u = np.clip((pts - A) @ d / max(float(d @ d), 1e-6), 0, 1)
+                near = A + np.outer(u, d)
+                gap = pts - near
+                dist = np.linalg.norm(gap, axis=1)
+                i = int(np.argmin(dist))
+                if r - dist[i] > worst:
+                    worst = r - float(dist[i])
+                    g = gap[i] - haft * float(gap[i] @ haft)
+                    n = float(np.linalg.norm(g))
+                    push = g / n if n > 1e-4 else np.array([1.0, 0, 0])
+            if push is None:
+                break
+            rp = rp + push * (worst + 0.02)
+        return rp
+
+    def arm(self, S, grip, axis, axis0, v0_len, pole_key, hand, u0, l0, pole0, label, diag, roll=None):
+        """How an arm really holds a haft. The elbow is a hinge, the forearm rolls about itself (pronation, carried by the lower arm bone), and the wrist only makes up what remains: the fist never turns backwards on the arm.
+        `hand` is the fist's turn, chosen across the whole clip by swivel(); its axis is laid on the haft, the arm goes exactly to it, and the forearm takes all the twist it can."""
+        Rh = short_arc(axis0, axis) if hand is None else short_arc(hand @ axis0, axis) @ hand
+        wrist = grip - Rh @ v0_len
+        ru, rl, reached = two_bone(S, wrist, u0, l0, pole0, unit(pole_key), label, diag)
+        elbow = S + ru @ u0
+        f = unit(reached - elbow)
+        phi = float(np.clip(twist_about(Rh @ rl.T, f), -ROLL_LIMIT, ROLL_LIMIT)) if roll is None else float(roll)
+        rr = rodrigues(f * math.radians(phi)) @ rl
+        return Rh, ru, rr, reached, elbow, phi
+
+    def solve(self, c, auto_swivel=False):
         rg = self.rig
         diag = {}
         local, world = {}, {"HumanoidRootPart": np.eye(4)}
@@ -296,55 +422,90 @@ class Clip:
         Rch = world["UpperTorso"][:3, :3]
         local["Head"] = homog(euler(c["neck"]))
         world["Head"] = rg.pivoted(world["UpperTorso"], "Head", local["Head"])
-        # right arm: a fist the haft runs through. Overreach pulls the fist in, never turns the weapon
+        # the weapon first: the hands go to it. `rp` is where the right hand holds it, `rsl` where on the haft that is
+        haft, face = unit(c["haft"]), unit(c["face"])
+        rsl = float(c["rsl"])
         S = (world["UpperTorso"] @ np.append(rg.JOINT["RightUpperArm"], 1))[:3]
-        fist = S + np.asarray(c["rh"], float)
-        if c["rgw"] > 0:
-            fist = fist + (np.asarray(c["rg"], float) - fist) * c["rgw"]
-        haft, face = self.clear_floor(fist, unit(c["haft"]), unit(c["face"]))
-        c["haft"], c["face"] = haft, face
-        Rh = rg.hand_rotation(haft, face)
-        wrist_off = Rh @ (rg.JOINT["RightHand"] - rg.GRIP0)
-        ru, rl, wrist = two_bone(S, fist + wrist_off, rg.ARM_U, rg.ARM_L, rg.ELBOW0, unit(c["relb"]), "arm_reach", diag)
+        rp = self.clear_body(np.asarray(c["rp"], float), haft, rsl, world)
+        arm_len = float(np.linalg.norm(rg.ARM_U) + np.linalg.norm(rg.ARM_L)) + 0.06
+        away = rp - S
+        far = float(np.linalg.norm(away))
+        if far > arm_len:   # past the reach of the arm the whole weapon comes in; it never leaves the hand
+            rp = S + away * (arm_len / far)
+        origin = rp - haft * rsl      # the haft point the sculpt's fist held
+        haft, face = self.clear_floor(origin, haft, face)
+        rp = origin + haft * rsl
+        # the lead hand slides on the haft: a keyed spot out of reach slips toward the shoulder, and what is still out of reach brings the whole weapon across to it
+        SL = (world["UpperTorso"] @ np.append(rg.JOINT["LeftUpperArm"], 1))[:3]
+        hold, reach = c["lhw"], c["ltw"]
+        v_l = rg.PALM0 - rg.JOINT["LeftHand"]
+        sl = float(c["lsl"])
+        maxr = 9.0
+        if hold > 0 and hold >= reach:
+            maxr = float(np.linalg.norm(rg.LARM_U) + np.linalg.norm(rg.LARM_L)) * 0.98 + float(np.linalg.norm(v_l)) * 0.8
+            near = float(np.clip(np.dot(SL - rp, haft), 0.5, sl))
+            for _ in range(14):
+                if np.linalg.norm(rp + haft * sl - SL) <= maxr:
+                    break
+                sl += (near - sl) * 0.35
+        for _ in range(8):      # both hands must reach: what the right arm cannot hold the weapon gives up, and the left the same
+            away = rp - S
+            far = float(np.linalg.norm(away))
+            if far > arm_len:
+                rp = S + away * (arm_len / far)
+            if hold > 0 and hold >= reach:
+                on = rp + haft * sl
+                gap = float(np.linalg.norm(on - SL)) - maxr
+                if gap > 0:
+                    rp = rp + unit(SL - on) * gap * hold * hold
+        away = rp - S
+        far = float(np.linalg.norm(away))
+        if far > arm_len:
+            rp = S + away * (arm_len / far)
+        if far < 0.6:     # an elbow only folds so far: a hand never comes in to the shoulder, the weapon stays out with it
+            rp = S + unit(away if far > 1e-3 else np.array([0.0, -0.5, -1.0])) * 0.6
+        origin = rp - haft * rsl
+        haft, face = self.clear_floor(origin, haft, face)      # the reach may have carried the weapon down: the blade still never goes through the ground
+        rp = origin + haft * rsl
+        c["haft"], c["face"], c["rp"] = haft, face, rp
+        Rw = rg.hand_rotation(haft, face)
+        W = homog(Rw, origin - Rw @ rg.GRIP0)
+        world["Glaive"] = W
+        j = rg.JOINT["Glaive"]
+        local["Glaive"] = homog(None, -j) @ np.linalg.inv(world[rg.PARENT["Glaive"]]) @ W @ homog(None, j)
+        # the right arm. During a pinwheel the fist keeps its own axis while the haft turns on the fingers
+        lock = float(c["rlk"])
+        axis = unit(haft + (unit(c["rhx"]) - haft) * lock) if lock > 0 else haft
+        v_r = rg.GRIP0 - rg.JOINT["RightHand"]
+        core = (world["UpperTorso"] @ np.append(rg.JOINT["UpperTorso"] + (0, 0.4, 0), 1))[:3]
+        c["_rgrip"] = (S, rp, axis, core)
+        Rh, ru, rl, _, elbow, c["_rroll"] = self.arm(S, rp, axis, rg.HAFT0, v_r, c.get("rpole", c["relb"]), c.get("rhand"), rg.ARM_U, rg.ARM_L, rg.ELBOW0, "arm_reach", diag, c.get("rpole_roll"))
         local["RightUpperArm"] = homog(Rch.T @ ru)
         world["RightUpperArm"] = rg.pivoted(world["UpperTorso"], "RightUpperArm", local["RightUpperArm"])
         local["RightLowerArm"] = homog(ru.T @ rl)
         world["RightLowerArm"] = rg.pivoted(world["RightUpperArm"], "RightLowerArm", local["RightLowerArm"])
         local["RightHand"] = homog(rl.T @ Rh)
         world["RightHand"] = rg.pivoted(world["RightLowerArm"], "RightHand", local["RightHand"])
-        grip_at = (world["RightHand"] @ np.append(rg.GRIP0, 1))[:3]
-        # left arm: free (forward kinematics in the chest's axes), on the haft, or reaching for a point; blended, so it can leave and rejoin the weapon in a move
+        # the left arm: on the haft, reaching for a point, or free; blended, so it can leave and rejoin the weapon in a move
         Su, Sf = Rch @ euler(c["lua"]), Rch @ euler(c["lfa"])
         Sh = Sf @ euler(c["lha"])
-        hold, reach = c["lhw"], c["ltw"]
         if hold > 0 or reach > 0:
-            SL = (world["UpperTorso"] @ np.append(rg.JOINT["LeftUpperArm"], 1))[:3]
             if hold >= reach:
-                ax = unit(c["haft"])
-                sl = float(c["lsl"])
-                # the free hand slides on the haft: when its keyed spot is out of reach it slips along toward the shoulder instead of leaving the wood
-                maxr = float(np.linalg.norm(rg.LARM_U) + np.linalg.norm(rg.LARM_L)) * 0.98
-                near = float(np.clip(np.dot(SL - grip_at, ax), -2.5, -0.4))
-                for _ in range(12):
-                    if np.linalg.norm(grip_at + ax * sl - SL) <= maxr:
-                        break
-                    sl += (near - sl) * 0.35
-                on = grip_at + ax * sl
-                forearm = unit(on - (SL + unit(c["lelb"]) * 0.7))
-                Rp = rg.palm_rotation(c["haft"], forearm)
-                target = on - Rp @ (rg.PALM0 - rg.JOINT["LeftHand"])
+                on = rp + haft * sl
+                if hold > 0.5:
+                    c["_lgrip"] = (SL, on, haft, core)
+                Rp, u_ik, f_ik, _, _, c["_lroll"] = self.arm(SL, on, haft, rg.LAX0, v_l, c.get("lpole", c["lelb"]), c.get("lhand"), rg.LARM_U, rg.LARM_L, rg.LELBOW0, "left_grip", scratch := {}, c.get("lpole_roll"))
+                c["_lsl"] = sl
                 w = hold
                 self_label = "left_grip"
             else:
                 target = SL + np.asarray(c["lt"], float)
-                Rp = None
+                scratch = {}
+                u_ik, f_ik, _ = two_bone(SL, target, rg.LARM_U, rg.LARM_L, rg.LELBOW0, unit(c["lelb"]), "left_reach", scratch)
+                Rp = f_ik @ euler(c["lha"])
                 w = reach
                 self_label = "left_reach"
-            scratch = {}
-            u_ik, f_ik, _ = two_bone(SL, target, rg.LARM_U, rg.LARM_L, rg.LELBOW0, unit(c["lelb"]), self_label, scratch)
             diag[self_label] = max(diag.get(self_label, 0.0), scratch[self_label] * w * w)   # a hand on its way to the haft is not yet expected there
-            if Rp is None:
-                Rp = f_ik @ euler(c["lha"])
             Su = ZR.mat(ZR.slerp(ZR.quat(Su), ZR.quat(u_ik), w))
             Sf = ZR.mat(ZR.slerp(ZR.quat(Sf), ZR.quat(f_ik), w))
             Sh = ZR.mat(ZR.slerp(ZR.quat(Sh), ZR.quat(Rp), w))
@@ -361,20 +522,20 @@ class Clip:
             leg = rg.LEGS[side]
             A = leg["ankle"] + np.array([x, lift, z])
             H = (world["LowerTorso"] @ np.append(rg.JOINT[side + "UpperLeg"], 1))[:3]
+            Yaw = ry(math.radians(yaw + leg["out"]))
             # a leg reaching its limit rolls up onto the ball of the foot rather than pulling the foot along or locking straight
             c[key + "_heel"] = 0.0
             if lift < 0.2 and not clip_airborne(self):
-                reach = float(np.linalg.norm(H - A)) / (float(np.linalg.norm(leg["u"])) + float(np.linalg.norm(leg["l"])))
-                k = min(max((reach - 0.9) / 0.09, 0.0), 1.0)
-                if k > 0:
-                    th = k * k * (3 - 2 * k) * 42.0
+                reach = float(np.linalg.norm(H - A)) / leg["reach"]
+                k = min(max((reach - 0.985) / 0.04, 0.0), 1.0)
+                if k > 0 and pitch > -5:
+                    th = k * k * (3 - 2 * k) * 36.0
                     up, fwd = foot_roll(-th)
-                    d = ry(math.radians(yaw)) @ np.array([0, 0, -1.0])
-                    A = A + np.array([0, up, 0]) + d * fwd
+                    A = A + np.array([0, up, 0]) + (Yaw @ np.array([0, 0, -1.0])) * fwd
                     pitch = pitch - th
                     c[key + "_heel"] = th
-            Rfoot = ry(math.radians(yaw)) @ rx(math.radians(pitch))
-            ru_, rl_, _ = two_bone(H, A, leg["u"], leg["l"], leg["pole"], ry(math.radians(yaw)) @ unit(c[pole]), "leg_reach", diag)
+            Rfoot = Yaw @ rx(math.radians(pitch)) @ leg["straight"]
+            ru_, rl_, _ = two_bone(H, A, leg["u"], leg["l"], leg["pole"], Yaw @ unit(c[pole]), "leg_reach", diag)
             local[side + "UpperLeg"] = homog(Rlt.T @ ru_)
             world[side + "UpperLeg"] = rg.pivoted(world["LowerTorso"], side + "UpperLeg", local[side + "UpperLeg"])
             local[side + "LowerLeg"] = homog(ru_.T @ rl_)
@@ -387,6 +548,7 @@ class Clip:
         times = self.frames()
         ctrl = [self.controls(t) for t in times]
         organic(self, times, ctrl)
+        swivel(self, ctrl)
         out = []
         for t, c in zip(times, ctrl):
             local, world, diag = self.solve(c)
@@ -423,7 +585,7 @@ def organic(clip, times, ctrl):
             v = np.array(c[ch], float)
             v[axis] += amp * (math.sin(2 * math.pi * f1 * t / length + p1) * 0.7 + math.sin(2 * math.pi * f2 * t / length + p2) * 0.3)
             c[ch] = v
-    if not clip.authored_feet:
+    if not clip.authored_feet and not clip.hover and not any("hov" in k[1] for k in clip.keys):
         step_feet(clip, times, ctrl)
     dt = 1.0 / FPS
     for ch, (omega, zeta) in OVERLAP[rg.phase].items():
@@ -521,33 +683,149 @@ def spring(targets, dt, omega, zeta, loop):
     return out
 
 
-def derive_helpers(clip, baked):
-    """Phase 2's floating beads drift on their own small orbit and swing behind the body's travel. Everything that hangs (robe, hair, beard, sleeves) is skinned and simulated at run time; no clip keys it."""
+def twist_about(A, f):
+    """How far rotation A turns about unit axis f: its nearest rotation about f, degrees."""
+    v = np.array([A[2, 1] - A[1, 2], A[0, 2] - A[2, 0], A[1, 0] - A[0, 1]])
+    return math.degrees(math.atan2(float(f @ v), float(np.trace(A) - f @ A @ f)))
+
+
+GRIP_TURNS = np.radians(np.arange(16) * 22.5)
+ELBOW_TURNS = np.arange(14) * 360.0 / 14
+
+
+def smooth_hold(Q, loop):
+    """A hand turning on the haft and an elbow finding its place are slow things: they are never allowed to flick."""
+    n = len(Q)
+    out = np.zeros_like(Q)
+    for i in range(n):
+        q = np.zeros(4)
+        for off, w in ((-2, 1.0), (-1, 2.0), (0, 3.0), (1, 2.0), (2, 1.0)):
+            k = i + off
+            if loop:
+                k = k % (n - 1)
+            else:
+                k = min(max(k, 0), n - 1)
+            q = q + w * (Q[k] if Q[k] @ Q[i] >= 0 else -Q[k])
+        out[i] = q / np.linalg.norm(q)
+    return out
+
+
+def swivel(clip, ctrl):
+    """How both arms hold the weapon across the whole clip. A hand on a haft has two free things: how far the fist has turned round the haft, and where the elbow sits about the shoulder-wrist line. Every combination is tried on every frame, and the one path through the clip that keeps the wrists least bent while moving the least is chosen at once, then smoothed. There is no iteration to fall on a wrong answer, so the arm cannot flick."""
     rg = clip.rig
-    if rg.phase != 2:
+    n = len(ctrl)
+    if n == 0:
         return
-    dt = 1.0 / FPS
-    speed, last = [], None
-    for t, local, world, diag, c in baked:
-        p = world["LowerTorso"][:3, 3]
-        speed.append(np.zeros(3) if last is None else (p - last) / dt)
-        last = p
-    if clip.loop and len(speed) > 1:
-        speed[0] = speed[-1]
-    cycles = max(1, round(clip.length / 2.8))
-    w0 = 2 * math.pi * cycles / clip.length
-    for k, (bone, r, phase_) in enumerate((("Bead1", 0.16, 0.0), ("Bead2", 0.10, 2.1), ("Bead3", 0.20, 4.2))):
-        lag = spring([np.clip(s, -8, 8) * -0.025 for s in speed], dt, 7.0, 0.5, clip.loop)
-        for i, entry in enumerate(baked):
-            t, local, world = entry[0], entry[1], entry[2]
-            a = w0 * (i / (len(baked) - 1) * clip.length) + phase_    # the last frame is the clip's end whatever the frame grid says
-            calm = min(1.0, clip.length / 2.8)   # a short clip carries the orbit's position, not its speed
-            off = np.array([math.cos(a) * r, math.sin(a * 2) * r * 0.55, math.sin(a) * r * 0.8]) * calm + lag[i]
-            local[bone] = homog(ry(math.sin(a) * 0.7 * calm) @ rx(math.sin(a) * 0.25 * calm), off)
-            world[bone] = rg.pivoted(world[rg.PARENT[bone]], bone, local[bone])
+    needs = []
+    for c in ctrl:
+        t2 = dict(c)
+        clip.solve(t2)
+        needs.append(t2)
+    arms = (("rpole", "rhand", "_rgrip", rg.HAFT0, rg.GRIP0 - rg.JOINT["RightHand"], "relb", rg.ARM_U, rg.ARM_L, rg.ELBOW0),
+            ("lpole", "lhand", "_lgrip", rg.LAX0, rg.PALM0 - rg.JOINT["LeftHand"], "lelb", rg.LARM_U, rg.LARM_L, rg.LELBOW0))
+    G, E = len(GRIP_TURNS), len(ELBOW_TURNS)
+    for key, hkey, gkey, axis0, v0, pole_key, u0, l0, pole0 in arms:
+        live = [i for i in range(n) if gkey in needs[i]]
+        if not live:
+            continue
+        costs = {}
+        quats = {}
+        hands = {}
+        poles = {}
+        twists = {}
+        scratch = {}
+        for i in live:
+            S, grip, axis, core = needs[i][gkey]
+            base = short_arc(axis0, axis)
+            C = np.zeros((G, E))
+            Qi = np.zeros((G, 4))
+            Hi = []
+            pole_base = unit(needs[i][pole_key])
+            Pi = np.zeros((G, E, 3))
+            Ti = np.zeros((G, E))
+            for g, turn in enumerate(GRIP_TURNS):
+                Rh = rodrigues(axis * turn) @ base
+                Hi.append(Rh)
+                Qi[g] = ZR.quat(Rh)
+                wrist = grip - Rh @ v0
+                d = unit(wrist - S)
+                keyed = orth(pole_base, d)
+                side = np.cross(d, keyed)
+                for e, a in enumerate(ELBOW_TURNS):
+                    scratch["x"] = 0.0
+                    ar = math.radians(a)
+                    pole = keyed * math.cos(ar) + side * math.sin(ar)
+                    Pi[g, e] = pole
+                    a = min(a, 360.0 - a)       # how far this elbow is from where the pose keys it
+                    ru, rl, reached = two_bone(S, wrist, u0, l0, pole0, pole, "x", scratch)
+                    elbow = S + ru @ u0
+                    f = unit(reached - elbow)
+                    A = Rh @ rl.T
+                    phi = float(np.clip(twist_about(A, f), -ROLL_LIMIT, ROLL_LIMIT))
+                    Ti[g, e] = phi
+                    bend = ZR.angle_of(rodrigues(f * math.radians(phi)).T @ A)
+                    inside = max(0.0, 0.85 - float(np.hypot(*(elbow - core)[[0, 2]])))      # an elbow never buries itself in his ribs
+                    C[g, e] = bend + 0.3 * max(0.0, bend - 55.0) + 1.6 * max(0.0, bend - 85.0) + 0.1 * abs(a) + 0.08 * abs(phi) + 90.0 * inside + 200.0 * scratch["x"]
+            costs[i], quats[i], hands[i], poles[i], twists[i] = C, Qi, Hi, Pi, Ti
+
+        def walk(fixed=None):
+            """Every state to every state: the fist's real turn, the elbow's real travel and the forearm's roll all cost what they move, so nothing whips round for one frame."""
+            total = costs[live[0]].ravel().copy()
+            if fixed is not None:
+                pin = np.full_like(total, 1e7)
+                pin[fixed[0] * E + fixed[1]] = 0.0
+                total = total + pin
+            back = {}
+            for p, i in zip(live, live[1:]):
+                Tg = np.degrees(2 * np.arccos(np.abs(quats[p] @ quats[i].T).clip(0.0, 1.0)))
+                pa, pb = poles[p].reshape(-1, 3), poles[i].reshape(-1, 3)
+                Te = np.degrees(np.arccos(np.clip(pa @ pb.T, -1.0, 1.0)))
+                Tr = np.abs(twists[p].ravel()[:, None] - twists[i].ravel()[None, :])
+                step = total[:, None] + 0.4 * np.repeat(np.repeat(Tg, E, axis=0), E, axis=1) + 0.35 * Te + 0.35 * Tr + 600.0 * (Tr > 45.0) + 600.0 * (Te > 75.0)    # a forearm or elbow can't whip round in a frame, whatever the wrist would save
+                back[i] = step.argmin(axis=0)
+                total = step.min(axis=0) + costs[i].ravel()
+                if fixed is not None and i == live[-1]:
+                    pin = np.full_like(total, 1e7)
+                    pin[fixed[0] * E + fixed[1]] = 0.0
+                    total = total + pin
+            at = int(total.argmin())
+            path = {}
+            for i in reversed(live):
+                path[i] = (at // E, at % E)
+                if i in back:
+                    at = int(back[i][at])
+            return path
+
+        path = walk()
+        if clip.loop and len(live) == n:
+            path = walk(path[live[0]])
+        Q = np.zeros((n, 4))
+        el = np.zeros((n, 3))
+        ro = np.zeros(n)
+        for i in range(n):
+            k = i if i in path else min(live, key=lambda q: abs(q - i))
+            g, e = path[k]
+            Q[i] = quats[k][g]
+            el[i] = poles[k][g, e]
+            ro[i] = twists[k][g, e]
+        Q = smooth_hold(Q, clip.loop)
+        kernel = np.array([1, 2, 3, 2, 1], float)
+        kernel /= kernel.sum()
+        for i, c in enumerate(ctrl):
+            v = np.zeros(3)
+            for off, w in zip(range(-2, 3), kernel):
+                k = (i + off) % (n - 1) if clip.loop else min(max(i + off, 0), n - 1)
+                v = v + w * el[k]
+            c[key] = unit(v) if np.linalg.norm(v) > 1e-3 else el[i]
+            c[hkey] = ZR.mat(Q[i])
+            c[key + "_roll"] = float(sum(w * ro[(i + off) % (n - 1) if clip.loop else min(max(i + off, 0), n - 1)] for off, w in zip(range(-2, 3), kernel)))
 
 
-# ---------------------------------------------------------------------------------------------------- export
+def derive_helpers(clip, baked):
+    """Nothing to derive: everything that hangs (robe, hair, beard, sleeves, the orbs) is skinned and simulated at run time; no clip keys it."""
+    return
+
+
 TOL_DEG, TOL_POS = 0.6, 0.008
 
 
@@ -630,6 +908,9 @@ def check_rigs():
             raise SystemExit("BossRigs.luau and rigdef.py disagree in P%d: %s" % (phase, ", ".join(sorted(k for k in set(found) | set(wanted) if found.get(k) != wanted.get(k)))))
 
 
+WRIST_LIMIT = 115.0   # past this a hand reads as facing the wrong way on the arm
+
+
 def validate(clip, baked):
     rg = clip.rig
     w = {"arm_reach": 0.0, "left_grip": 0.0, "left_reach": 0.0, "leg_reach": 0.0, "lowest": 9.0, "weapon_low": 9.0, "planted_slide": 0.0, "weapon_through_head": 0.0, "weapon_through_chest": 0.0, "left_off_haft": 0.0, "loop_seam_deg": 0.0}
@@ -644,7 +925,7 @@ def validate(clip, baked):
             w["weapon_low"] = min(w["weapon_low"], float(place(rg, world, "Weapon")[:, 1].min()))
         for side, key in (("Right", "rf"), ("Left", "lf")):
             A = (world[side + "Foot"] @ np.append(rg.JOINT[side + "Foot"], 1))[:3]
-            flat = float(c[key][2]) <= 1e-6 and c.get(key + "_heel", 0.0) < 0.5
+            flat = float(c[key][2]) <= 1e-6 and c.get(key + "_heel", 0.0) < 0.5 and abs(float(c[key][4])) < 1.0
             prev = last_feet.get(side)
             if prev is not None and flat and prev[1] and not any(a <= t <= b for a, b in clip.feet_free):
                 w["planted_slide"] = max(w["planted_slide"], float(np.linalg.norm((A - prev[0])[[0, 2]]) * FPS))
@@ -654,12 +935,16 @@ def validate(clip, baked):
         w["weapon_through_head"] = max(w["weapon_through_head"], float(0.42 - np.linalg.norm(wp - head, axis=1).min()))
         chest = (world["UpperTorso"] @ np.append(rg.JOINT["UpperTorso"] + (0, 0.5, 0), 1))[:3]
         w["weapon_through_chest"] = max(w["weapon_through_chest"], float(0.4 - np.linalg.norm(wp - chest, axis=1).min()))
+        w["wrist_right"] = max(w.get("wrist_right", 0.0), float(ZR.angle_of(local["RightHand"][:3, :3])))
         if c["lhw"] >= 0.99 and c["lhw"] >= c["ltw"]:
             palm = (world["LeftHand"] @ np.append(rg.PALM0, 1))[:3]
-            grip = (world["RightHand"] @ np.append(rg.GRIP0, 1))[:3]
             ax = unit(c["haft"])
-            d = palm - grip
+            d = palm - np.asarray(c["rp"], float)
             w["left_off_haft"] = max(w["left_off_haft"], float(np.linalg.norm(d - ax * np.dot(d, ax))))
+            w["wrist_left"] = max(w.get("wrist_left", 0.0), float(ZR.angle_of(local["LeftHand"][:3, :3])))
+        fist = (world["RightHand"] @ np.append(rg.GRIP0, 1))[:3]
+        d = fist - np.asarray(c["rp"], float)
+        w["right_off_haft"] = max(w.get("right_off_haft", 0.0), float(np.linalg.norm(d)))
     if w["arm_reach"] > 0.3:
         problems.append("right hand short by %.2f" % w["arm_reach"])
     if w["left_grip"] > 0.3:
@@ -680,6 +965,11 @@ def validate(clip, baked):
         problems.append("weapon %.2f through his chest" % w["weapon_through_chest"])
     if w["left_off_haft"] > 0.2:
         problems.append("left hand %.2f off the haft" % w["left_off_haft"])
+    if w.get("right_off_haft", 0) > 0.25:
+        problems.append("right hand %.2f off the haft" % w["right_off_haft"])
+    for side in ("right", "left"):
+        if w.get("wrist_" + side, 0) > WRIST_LIMIT:
+            problems.append("%s wrist turned %.0f deg on the arm" % (side, w["wrist_" + side]))
     if clip.loop:
         a, b = baked[0][1], baked[-1][1]
         w["loop_seam_deg"] = round(max(ZR.angle_of(a[p][:3, :3].T @ b[p][:3, :3]) for p in rg.ALL), 2)

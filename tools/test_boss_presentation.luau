@@ -475,7 +475,7 @@ check("an attack without its own track uses the look's Strike override", AnimRul
 check("Shen's legacy override names still count", AnimRules.resolve("GrandmasterShen", 2, "Transform", nil, "R15",
 	attrs({ AsuraBossAnimation_Shen_Phase2_Transform = "rbxassetid://555" })).Source == "Override")
 check("malformed overrides are ignored", AnimRules.resolve("SovereignWu", 1, "Idle", nil, "R15", attrs({ AsuraBossAnimation_SovereignWu_Idle = "555" })).Source == "Stock")
-check("status names the stand-ins honestly", AnimRules.status("GrandmasterShen", 1, "R15", none) == "Fallback:Stock 0/11 authored (first missing GrandmasterShen_P1_Idle)"
+check("status names the stand-ins honestly", AnimRules.status("GrandmasterShen", 1, "R15", none) == "Fallback:Stock 0/13 authored (first missing GrandmasterShen_P1_Idle)"
 	and string.find(AnimRules.status("AzureWyrm", 2, "Creature", none), "Fallback:CreatureMotion 0/6", 1, true) ~= nil)
 local all = {}
 for _, action in AnimRules.slots("IronBull", 1) do all["AsuraBossAnimation_IronBull_" .. action] = "rbxassetid://9" end

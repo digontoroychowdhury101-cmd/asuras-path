@@ -56,7 +56,7 @@ do
 		check("the charge may land a lead after the last pulse", Rules.perilousClear(last + Handoff.Lead, last))
 		check("no partner attack, no wait", Rules.perilousClear(100, nil))
 	end
-	check("lastImpact counts the pulses", has("src/server/Services/BossAttackService.luau", "current.Impact + ((current.Attack.Repeats or 1) - 1) * (current.Attack.Interval or 0.7)"))
+	check("lastImpact counts the pulses", has("src/server/Services/BossAttackService.luau", "current.Impact + Rules.pulseOffset(current.Attack, Rules.pulseCount(current.Attack) - 1)"))
 	local tactics = src("src/server/Services/BossTactics.luau")
 	local _, uses = string.gsub(tactics, "Rules%.perilousClear%(", "")
 	check("scheduled attacks and the gap closer both wait", uses >= 2)

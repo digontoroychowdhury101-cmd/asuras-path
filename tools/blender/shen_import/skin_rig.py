@@ -20,14 +20,16 @@ ROOT = os.path.abspath(os.path.join(HERE, "../../.."))
 sys.path[:0] = [HERE, os.path.join(ROOT, "tools/blender/bull_import")]
 import glb  # noqa: E402
 import landmarks as LM  # noqa: E402
+import rigdef as RD  # noqa: E402
 import rigspace as RS  # noqa: E402
 import segment as Seg  # noqa: E402
 
 LIMBS = ["LowerTorso", "UpperTorso", "Head", "RightUpperArm", "RightLowerArm", "RightHand", "LeftUpperArm", "LeftLowerArm", "LeftHand",
          "RightUpperLeg", "RightLowerLeg", "RightFoot", "LeftUpperLeg", "LeftLowerLeg", "LeftFoot"]
-RIGID = {"Weapon", "Bead1", "Bead2", "Bead3"}          # welded props, not skinned
+RIGID = {"Weapon"}          # welded to its own joint, not skinned
 CARRIER = {"RobeBack": "LowerTorso", "RobeRight": "LowerTorso", "RobeLeft": "LowerTorso", "RobeInner": "LowerTorso", "RobeFront": "LowerTorso", "HairBack": "Head", "Beard": "Head", "Beads": "UpperTorso",
-           "RightMantle": "UpperTorso", "LeftMantle": "UpperTorso", "LeftSleeve": "LeftUpperArm", "RibbonRight": "RightLowerArm", "RibbonLeft": "LeftLowerArm"}
+           "RightMantle": "UpperTorso", "LeftMantle": "UpperTorso", "LeftSleeve": "LeftUpperArm", "RibbonRight": "RightLowerArm", "RibbonLeft": "LeftLowerArm", "Bead1": "Head", "Bead2": "Head", "Bead3": "Head"}
+ROBE = ("RobeBack", "RobeRight", "RobeLeft", "RobeInner", "RobeFront")
 
 
 def sstep(x, a, b):
@@ -240,13 +242,13 @@ def heal(joints, weights, tv, nbones, jump=0.1, hops=14, passes=70):
 CLOTH_ONLY = "--cloth-only" in sys.argv   # rewrite cloth_p<n>.json alone, for tuning
 TUNE = {
     # row 0 pinned. shape: pull back to the sculpt per 60 Hz step, root to hem. reach: how far from the sculpt it may roam (rig studs). drag: air, root to hem. legs: how far it follows the nearest thigh, root to hem
-    "Coat": dict(shape=(0.1, 0.005), reach=(0.22, 1.5), drag=(0.5, 1.15), legs=(0.12, 0.1), along=0.95, across=0.5, bend=0.18),
-    "Under": dict(shape=(0.2, 0.05), reach=(0.18, 0.7), drag=(0.4, 0.7), legs=(0.5, 0.8), along=0.95, across=0.42, bend=0.2),
-    "Hair": dict(shape=(0.1, 0.018), reach=(0.14, 1.1), drag=(0.4, 1.05), legs=(0, 0), along=0.96, across=0.34, bend=0.3),
+    "Coat": dict(shape=(0.08, 0.003), reach=(0.26, 1.9), drag=(0.55, 1.25), legs=(0.06, 0.04), along=0.95, across=0.42, bend=0.12),
+    "Under": dict(shape=(0.12, 0.012), reach=(0.2, 1.25), drag=(0.45, 1.05), legs=(0.22, 0.3), along=0.95, across=0.38, bend=0.14),
+    "Hair": dict(shape=(0.08, 0.01), reach=(0.16, 1.3), drag=(0.45, 1.15), legs=(0, 0), along=0.96, across=0.34, bend=0.3),
     "Beard": dict(shape=(0.16, 0.05), reach=(0.06, 0.35), drag=(0.25, 0.5), legs=(0, 0), along=0.97, across=0.4, bend=0.3),
     "Beads": dict(shape=(0.2, 0.09), reach=(0.05, 0.28), drag=(0.03, 0.05), legs=(0, 0), along=0.98, across=0.4, bend=0.1),
-    "Mantle": dict(shape=(0.24, 0.1), reach=(0.05, 0.3), drag=(0.25, 0.55), legs=(0, 0), along=0.95, across=0.4, bend=0.1),
-    "Sleeve": dict(shape=(0.26, 0.18), reach=(0.05, 0.3), drag=(0.25, 0.45), legs=(0, 0), along=0.9, across=0.4, bend=0.1),
+    "Mantle": dict(shape=(0.18, 0.05), reach=(0.07, 0.5), drag=(0.3, 0.7), legs=(0, 0), along=0.95, across=0.4, bend=0.1),
+    "Sleeve": dict(shape=(0.16, 0.08), reach=(0.08, 0.55), drag=(0.3, 0.6), legs=(0, 0), along=0.9, across=0.4, bend=0.1),
     "Rag": dict(shape=(0.1, 0.02), reach=(0.1, 0.9), drag=(0.5, 1.2), legs=(0, 0), along=0.96, across=0.4, bend=0.15),
 }
 
@@ -272,12 +274,216 @@ def coat_split(J, P, ids, phase):
     return phi >= limit, O
 
 
+def components(tv, mask, n_w):
+    """Connected groups of the masked triangles through their welded vertices: an array of group ids, -1 outside the mask."""
+    ids = np.nonzero(mask)[0]
+    parent = np.arange(n_w)
+
+    def find(x):
+        while parent[x] != x:
+            parent[x] = parent[parent[x]]
+            x = parent[x]
+        return x
+    for a, b, c in tv[ids]:
+        ra, rb, rc = find(a), find(b), find(c)
+        parent[rb] = ra
+        parent[rc] = ra
+    out = np.full(len(tv), -1)
+    out[ids] = [find(a) for a in tv[ids, 0]]
+    return out
+
+
+def trouser_triangles(J, g, lab, V, weld, phase):
+    """The sculpt fused the dark trousers into the robe tiers. A triangle is trouser if it is dark and wraps a thigh; stray dark folds out on the robe are not, and small pale holes inside the trouser are."""
+    _, _, sat, val = Seg.sample_colour(g, phase)
+    tv = weld[g.idx]
+    n_w = int(weld.max()) + 1
+    cen = V[g.idx].mean(1)
+    robe = np.isin(lab, [J.NAMES.index(n) for n in ROBE if n in J.NAMES])
+    near = np.full(len(cen), 9.0)
+    for hip, kn, an in ((J.RHIP, J.RKN, J.RAN), (J.LHIP, J.LKN, J.LAN)):
+        for a_, b_ in ((np.array(hip, float) + (0, 0.25, 0), np.array(kn, float) + (0, -0.2, 0)),):
+            d = b_ - a_
+            u = np.clip((cen - a_) @ d / (d @ d), 0, 1)
+            near = np.minimum(near, np.linalg.norm(cen - a_ - np.outer(u, d), axis=1))
+    # trousers are near-black or a neutral grey where the bake fades them into the ivory; the navy coat is just as dark but strongly coloured
+    tr = robe & (near < 0.72) & (val < 0.3) & (sat < 0.3)
+    # one clean edge: each triangle takes the side most of its neighbours are on, so the painted blotches on either side go with their own garment
+    e = np.vstack((tv[:, [0, 1]], tv[:, [1, 2]], tv[:, [2, 0]]))
+    e.sort(axis=1)
+    key = e[:, 0] * (n_w + 1) + e[:, 1]
+    tri = np.tile(np.arange(len(tv)), 3)
+    order = np.argsort(key, kind="stable")
+    same = key[order][1:] == key[order][:-1]
+    a_, b_ = tri[order][:-1][same], tri[order][1:][same]
+    keep = robe[a_] & robe[b_]
+    a_, b_ = a_[keep], b_[keep]
+    for _ in range(12):
+        votes, total = np.zeros(len(tv)), np.zeros(len(tv))
+        np.add.at(votes, a_, tr[b_])
+        np.add.at(votes, b_, tr[a_])
+        np.add.at(total, a_, 1)
+        np.add.at(total, b_, 1)
+        flip = robe & (total > 0) & (near < 0.72)
+        tr[flip] = votes[flip] * 2 > total[flip]
+    group = components(tv, tr, n_w)
+    ids, counts = np.unique(group[tr], return_counts=True)
+    tr &= np.isin(group, ids[counts >= 600])
+    other = robe & ~tr & (near < 0.72)     # and no ivory crumbs left stranded on the trouser
+    group = components(tv, other, n_w)
+    ids, counts = np.unique(group[other], return_counts=True)
+    tr |= other & np.isin(group, ids[counts < 150])
+    return tr
+
+
+def split_trousers(g, lab, phase):
+    """Parts the trousers from the robe: their triangles join the thighs and every vertex the two shared is doubled, so each side moves on its own weights with no skin stretched between them. Every source triangle, normal and UV is kept. Returns the new weld."""
+    J = LM.PHASES[phase]
+    V = RS.to_rig(g.pos, phase)
+    weld = glb.weld(V, 1e-4)
+    tr = trouser_triangles(J, g, lab, V, weld, phase)
+    cen = V[g.idx].mean(1)
+    right, left = J.NAMES.index("RightUpperLeg"), J.NAMES.index("LeftUpperLeg")
+    tv = weld[g.idx]
+    n_w = int(weld.max()) + 1
+    in_t, in_o = np.zeros(n_w, bool), np.zeros(n_w, bool)
+    in_t[tv[tr].ravel()] = True
+    in_o[tv[~tr].ravel()] = True
+    shared = in_t & in_o
+    new_ids = np.full(n_w, -1)
+    new_ids[shared] = n_w + np.arange(shared.sum())
+    idx = g.idx.copy()
+    corners = g.idx[tr]
+    used = np.unique(corners[shared[weld[corners]]])     # source vertices the trouser side must have a copy of
+    remap = np.full(len(g.pos), -1)
+    remap[used] = len(g.pos) + np.arange(len(used))
+    hit = remap[corners] >= 0
+    corners[hit] = remap[corners][hit]
+    idx[tr] = corners
+    g.pos = np.vstack((g.pos, g.pos[used]))
+    g.nrm = np.vstack((g.nrm, g.nrm[used]))
+    g.uv = np.vstack((g.uv, g.uv[used]))
+    g.idx = idx
+    weld2 = np.concatenate((weld, new_ids[weld[used]]))
+    lab = lab.copy()
+    lab[tr] = np.where(cen[tr, 0] > J.PELVIS[0], right, left)
+    print(f"  P{phase}: {int(tr.sum())} trouser triangles parted from the robe, {len(used)} vertices doubled along the seam")
+    # phase 2's orbs: the sculpt strung them together on the ribbon and the blade. Each comes free as its own body, or a triangle bridging two would stretch across his head
+    for n in ("Bead1", "Bead2", "Bead3"):
+        if n not in J.NAMES:
+            continue
+        m = lab == J.NAMES.index(n)
+        tv = weld2[g.idx]
+        count = int(weld2.max()) + 1
+        in_m, in_o = np.zeros(count, bool), np.zeros(count, bool)
+        in_m[tv[m].ravel()] = True
+        in_o[tv[~m].ravel()] = True
+        shared = in_m & in_o
+        ids = np.full(count, -1)
+        ids[shared] = count + np.arange(shared.sum())
+        corners = g.idx[m]
+        used = np.unique(corners[shared[weld2[corners]]])
+        remap = np.full(len(g.pos), -1)
+        remap[used] = len(g.pos) + np.arange(len(used))
+        hit = remap[corners] >= 0
+        corners[hit] = remap[corners][hit]
+        g.idx[m] = corners
+        g.pos, g.nrm, g.uv = np.vstack((g.pos, g.pos[used])), np.vstack((g.nrm, g.nrm[used])), np.vstack((g.uv, g.uv[used]))
+        weld2 = np.concatenate((weld2, ids[weld2[used]]))
+    lab, weld2 = close_orbs(g, lab, weld2, J)
+    return lab, weld2
+
+
+ORB_RADIUS = 0.27
+ORB_REST = {"Bead1": (1.78, 0.32, 0.5), "Bead2": (1.3, 0.0, 0.25), "Bead3": (1.78, -0.3, 0.25)}
+
+
+def free_patch(g, keep):
+    """The largest square of the colour map no kept triangle uses (the old lumps' paint is free now): the new orbs' own paint goes there, in phase 2's copy of the maps."""
+    n = 512
+    used = np.zeros((n, n), bool)
+    uv = g.uv[g.idx[keep]]
+    lo = np.clip((uv.min(1) * n).astype(int), 0, n - 1)
+    hi = np.clip((uv.max(1) * n).astype(int) + 1, 1, n)
+    for (x0, y0), (x1, y1) in zip(lo, hi):
+        used[y0:y1, x0:x1] = True
+    table = np.zeros((n + 1, n + 1), int)
+    table[1:, 1:] = used.cumsum(0).cumsum(1)
+    for cells in (64, 48, 40, 32, 26, 20, 16, 12, 8):
+        filled = table[cells:, cells:] - table[:-cells, cells:] - table[cells:, :-cells] + table[:-cells, :-cells]
+        free = np.argwhere(filled == 0)
+        if len(free):
+            y, x = free[len(free) // 2]
+            print(f"  orb patch {cells * 4} texels square")
+            return (x + cells / 2) / n, (y + cells / 2) / n, (cells - 3) / n / 2
+    raise SystemExit("no free square in the colour map for the orbs")
+
+
+def close_orbs(g, lab, weld2, J):
+    """Remade orbs: the sculpt fused its beads into one lumpy mass and into the ribbon, so they could never read as orbs. The strand trailing from them goes back to the ribbon, the lumps leave the game mesh (the source GLB is untouched), and three true spheres take their labels, smooth normals and their own painted patch of the maps."""
+    if "Bead1" not in J.NAMES:
+        return lab, weld2
+    V = RS.to_rig(g.pos, 2)
+    rows = np.linspace(0, len(g.pos) - 1, 400).astype(int)
+    fit, *_ = np.linalg.lstsq(np.column_stack((g.pos[rows], np.ones(len(rows)))), V[rows], rcond=None)
+    A, b = fit[:3].T, fit[3]
+    Ai = np.linalg.inv(A)
+    ribbon = J.NAMES.index("RibbonRight")
+    drop = np.zeros(len(lab), bool)
+    for n in ORB_REST:
+        tris = np.nonzero(lab == J.NAMES.index(n))[0]
+        cen = V[g.idx[tris]].mean(1)
+        drop[tris[np.linalg.norm(cen - np.median(cen, axis=0), axis=1) <= 0.25]] = True
+    # the shed fragment and scraps of ribbon stuck to the lumps would float alone once the orbs have gone: they go with them
+    cen = V[g.idx].mean(1)
+    drop |= (lab == ribbon) & (np.linalg.norm(cen - np.array((1.68, 0.15, 0.4)), axis=1) < 0.4)
+    for n in ORB_REST:
+        drop |= lab == J.NAMES.index(n)
+    cx, cy, half = free_patch(g, ~drop)
+    g.orb_patch = (cx, cy, half)
+    pos, nrm, uv, wl, idx, labs = [], [], [], [], [], []
+    base = len(g.pos)
+    next_weld = int(weld2.max()) + 1
+    rings, sides = 18, 32
+    for n, rest in ORB_REST.items():
+        code = J.NAMES.index(n)
+        tris = np.nonzero(lab == code)[0]
+        start = base + len(pos)
+        for r in range(rings + 1):
+            th = math.pi * r / rings
+            for c in range(sides):
+                ph = 2 * math.pi * c / sides
+                d = np.array([math.sin(th) * math.cos(ph), math.cos(th), math.sin(th) * math.sin(ph)])
+                pos.append(Ai @ (np.array(rest) + d * ORB_RADIUS - b))
+                nn = Ai @ d
+                nrm.append(nn / np.linalg.norm(nn))
+                uv.append((cx + d[0] * half * 0.9, cy + d[1] * half * 0.9))
+                wl.append(next_weld)
+                next_weld += 1
+        for r in range(rings):
+            for c in range(sides):
+                p, q = start + r * sides + c, start + r * sides + (c + 1) % sides
+                u, w = p + sides, q + sides
+                idx.extend(((p, q, u), (q, w, u)))
+                labs.extend((code, code))
+    g.orb_replaced = int(drop.sum())
+    g.orb_new = len(idx)
+    g.pos = np.vstack((g.pos, np.array(pos, g.pos.dtype)))
+    g.nrm = np.vstack((g.nrm, np.array(nrm, g.nrm.dtype)))
+    g.uv = np.vstack((g.uv, np.array(uv, g.uv.dtype)))
+    g.idx = np.vstack((g.idx[~drop], np.array(idx, g.idx.dtype)))
+    weld2 = np.concatenate((weld2, np.array(wl, weld2.dtype)))
+    lab = np.concatenate((lab[~drop], np.array(labs, lab.dtype)))
+    print(f"  orbs remade: {g.orb_replaced} lumpy source triangles out of the game mesh, {g.orb_new} sphere triangles in; patch at {cx:.3f},{cy:.3f}")
+    return lab, weld2
+
+
 def build(phase):
     J = LM.PHASES[phase]
     g = glb.Glb(Seg.source(phase))
     lab = np.load(os.path.join(ROOT, f"work/shen_import/labels_p{phase}.npy"))
+    lab, weld = split_trousers(g, lab, phase)
     V = RS.to_rig(g.pos, phase)
-    weld = glb.weld(V, 1e-4)
     n_w = int(weld.max()) + 1
     # one position per welded vertex and the label most of its triangles carry
     P = np.zeros((n_w, 3))
@@ -289,7 +495,7 @@ def build(phase):
     vname = votes.argmax(1)
     names = np.array(J.NAMES)
     limb = {n: i for i, n in enumerate(LIMBS)}
-    carrier = np.array([limb[CARRIER.get(n, n)] if n not in RIGID else limb.get("RightHand") for n in J.NAMES])
+    carrier = np.array([limb[CARRIER.get(n, n)] if n not in RIGID else limb["RightHand"] for n in J.NAMES])
     body = body_weights(J, P, carrier[vname])
     of = lambda *ns: np.nonzero(np.isin(vname, [J.NAMES.index(n) for n in ns if n in J.NAMES]))[0]
 
@@ -302,7 +508,7 @@ def build(phase):
     sheets.append(ring("Under", ids_u, P, O, (0, -1, 0), (0, 0, 1), 10, 3, 0.42, True))
     head, chest = a(J.NECK), a(J.WAIST)
     if phase == 1:
-        sheets.append(fan("Hair", of("HairBack"), P, (-0.12, 2.05, 0.2), (1, 0, 0), (0, -0.9, 0.42), 5, 4, "Head"))
+        sheets.append(fan("Hair", of("HairBack"), P, (-0.12, 2.05, 0.2), (1, 0, 0), (0, -0.9, 0.42), 5, 3, "Head"))
         sheets.append(fan("Beard", of("Beard"), P, (-0.12, 1.75, -0.45), (1, 0, 0), (0, -1, -0.1), 2, 2, "Head"))
         sheets.append(spans("Beads", of("Beads"), P, (-0.1, 1.8, -0.35), (0.25, 0.65, -0.72), 1, 4, "UpperTorso"))
         for side, sh, el, wr in (("Right", J.RSH, J.REL, J.RWR), ("Left", J.LSH, J.LEL, J.LWR)):
@@ -349,9 +555,6 @@ def build(phase):
                     mix = (T["legs"][0] + (T["legs"][1] - T["legs"][0]) * f) * below * float(sstep(np.array(th), 0.28, 0.6)) * float(1 - sstep(np.array(away), 1.1, 2.0))
                     if mix > 0.02:
                         part["anchor2"], part["mix"] = side + "UpperLeg", round(mix, 3)
-                        if s.name == "Under":   # the panel over the knee rides the leg closely, so the baggy trouser stays under it instead of through it; only the back of this tier flows
-                            part["mix"] = round(min(1.0, mix * 1.3), 3)
-                            part["shape"] = round(max(part["shape"], 0.34 * min(1.0, mix * 1.3)), 4)
                 if s.name in ("Hair",) and r > 0:
                     part["anchor2"], part["mix"] = "UpperTorso", round(0.72 * f, 3)   # a head turn slides over hair that lies on his back
                 if s.name.endswith("Sleeve") and "Mantle" not in s.name and phase == 1:
@@ -375,6 +578,31 @@ def build(phase):
                     if r + 1 < Rw:
                         links.append((here, pid[(s.name, (c + 1) % C, r + 1)], T["across"] * 0.45))
         cloth_sheets.append({"name": s.name, "kind": kind, "cols": C, "rows": s.rows, "closed": s.closed, "first": pid[(s.name, 0, 0)]})
+    orbs = [n for n in ("Bead1", "Bead2", "Bead3") if n in J.NAMES]
+    orb_bone = {}
+    for k, n in enumerate(orbs):    # phase 2's floating orbs: free bodies circling his head, one bone each
+        at = P[of(n)].mean(0)
+        i = len(particles)
+        orb_bone[n] = len(bones)
+        bones.append({"name": f"Orb_{k + 1}", "at": [round(float(x), 4) for x in at]})
+        index[bones[-1]["name"]] = orb_bone[n]
+        particles.append({"sheet": "Orbs", "c": k, "r": 0, "at": bones[-1]["at"], "pin": False, "anchor": "Head", "shape": 0, "reach": 99, "drag": 0, "bone": orb_bone[n], "uA": i, "uB": i, "vA": i, "vB": i,
+                          "orb": {"k": k, "n": len(orbs), "around": [round(float(x), 3) for x in a(J.NECK) + (0, 0.6, 0)], "radius": 1.45}})
+    # the left hand closes on the haft: two bones through the fingers, curled whenever the palm is on the wood
+    hw, ha, hx, hp, hk, hm, hg = RD.left_hand(J, P[of("LeftHand")])
+    finger_bone = {}
+    for k, (nm, dist, curl) in enumerate((("Fing1", hk, 62.0), ("Fing2", hm, 70.0))):
+        at = hw + ha * dist + hp * 0.02
+        i = len(particles)
+        finger_bone[nm] = len(bones)
+        bones.append({"name": f"Sk_L{nm}", "at": [round(float(x), 4) for x in at]})
+        index[bones[-1]["name"]] = finger_bone[nm]
+        particles.append({"sheet": "Fingers", "c": k, "r": 0, "at": bones[-1]["at"], "pin": False, "anchor": "LeftHand", "shape": 0, "reach": 99, "drag": 0, "bone": finger_bone[nm], "uA": i, "uB": i, "vA": i, "vB": i,
+                          "finger": {"chain": k, "curl": curl, "axis": [round(float(x), 4) for x in hx]}})
+    cloth_sheets.append({"name": "Fingers", "kind": "Fingers", "cols": 2, "rows": 0, "closed": False, "first": len(particles) - 2})
+    grip = {"palm": [round(float(x), 4) for x in hg], "butt": [float(x) for x in J.BUTT], "socket": [float(x) for x in J.SOCKET], "tip": [float(x) for x in np.array(J.SOCKET) + 2.4 * unit(np.array(J.SOCKET) - np.array(J.BUTT))]}
+    if orbs:
+        cloth_sheets.append({"name": "Orbs", "kind": "Orbs", "cols": len(orbs), "rows": 0, "closed": False, "first": len(particles) - len(orbs)})
     # the frame of each free particle: its neighbours across and along
     for s in sheets:
         C, Rw = s.cols, s.rows + 1
@@ -391,20 +619,6 @@ def build(phase):
         joints = np.zeros((n_w, 4), np.int32)
         weights = np.zeros((n_w, 4))
         # start from the body
-        # the trouser the sculpt fused into the robe tier: near-black and inside the robe, it belongs to the thigh. Left on the lattice it would stretch across the ivory as a black smear.
-        _, _, _, val = Seg.sample_colour(g, phase)
-        shade, count = np.zeros(n_w), np.zeros(n_w)
-        for c in range(3):
-            np.add.at(shade, tv[:, c], val)
-            np.add.at(count, tv[:, c], 1)
-        shade /= np.maximum(count, 1)
-        hipline = max(J.RHIP[1], J.LHIP[1]) - 0.15
-        trouser = np.zeros(n_w, bool)
-        trouser[ids_u] = (shade[ids_u] < 0.2) & (P[ids_u, 1] < hipline) & (np.linalg.norm(P[ids_u][:, [0, 2]] - a(J.PELVIS)[[0, 2]], axis=1) < 0.95)
-        thigh = np.where(P[:, 0] - J.PELVIS[0] > 0, limb["RightUpperLeg"], limb["LeftUpperLeg"])
-        at_thigh = np.nonzero(trouser)[0]
-        body[at_thigh] = body_weights(J, P[at_thigh], thigh[at_thigh])
-        print(f"  {len(at_thigh)} trouser vertices returned to the thighs")
         order = np.argsort(-body, axis=1)[:, :4]
         bw = np.take_along_axis(body, order, 1)
         joints[:, :] = order + 1      # Sk_ bones follow Root in LIMBS order
@@ -412,7 +626,7 @@ def build(phase):
         for s in sheets:
             C = s.cols
             inf = s.influences()
-            mix = sstep(s.v, 0.0, 0.55) * ~trouser[s.ids]      # the attachment grows from the body's own weights into the lattice, so nothing tears at the belt or the scalp
+            mix = sstep(s.v, 0.0, 0.55)      # the attachment grows from the body's own weights into the lattice, so nothing tears at the belt or the scalp
             anchor_bone = index["Sk_" + s.anchor]
             for k, vid in enumerate(s.ids):
                 w = {}
@@ -431,18 +645,42 @@ def build(phase):
                 joints[vid] = [x[0] for x in top] + [0] * (4 - len(top))
                 weights[vid] = [x[1] / tot for x in top] + [0] * (4 - len(top))
         joints, weights = heal(joints, weights, tv, len(bones))
+        # the fingers: the hand's far half follows the two curl bones, blending across each knuckle
+        at = of("LeftHand")
+        dist = (P[at] - hw) @ ha
+        w1 = sstep(dist, hk - 0.03, hk + 0.03) * (1 - sstep(dist, hm - 0.03, hm + 0.03))
+        w2 = sstep(dist, hm - 0.03, hm + 0.03)
+        w0 = 1 - w1 - w2
+        moved = (w1 + w2) > 1e-3
+        ids = at[moved]
+        hand_bone = index["Sk_LeftHand"]
+        joints[ids] = 0
+        weights[ids] = 0
+        joints[ids, 0], joints[ids, 1], joints[ids, 2] = hand_bone, finger_bone["Fing1"], finger_bone["Fing2"]
+        weights[ids, 0], weights[ids, 1], weights[ids, 2] = w0[moved], w1[moved], w2[moved]
+        for n in orbs:
+            at = of(n)
+            joints[at] = 0
+            weights[at] = 0
+            joints[at, 0] = orb_bone[n]
+            weights[at, 0] = 1
         weights[weights < 1e-4] = 0
         weights /= weights.sum(1, keepdims=True)
         joints[weights == 0] = 0
         np.savez_compressed(os.path.join(out, f"skin_p{phase}.npz"), joints=joints[weld].astype(np.uint8), weights=weights[weld].astype(np.float32))
     # ------------------------------------------------------------ colliders: rest-space capsules on limbs (a, b, radius)
-    def cap(n, x, y, r):
-        return {"limb": n, "a": [round(float(v), 3) for v in x], "b": [round(float(v), 3) for v in y], "r": r}
-    colliders = [cap("RightUpperLeg", J.RHIP, J.RKN, 0.38), cap("LeftUpperLeg", J.LHIP, J.LKN, 0.38), cap("RightLowerLeg", J.RKN, J.RAN, 0.28), cap("LeftLowerLeg", J.LKN, J.LAN, 0.28),
-                 cap("LowerTorso", a(J.PELVIS) + (0, -0.25, 0), J.WAIST, 0.58), cap("UpperTorso", J.WAIST, a(J.NECK) + (0, -0.2, 0), 0.62), cap("Head", a(J.NECK) + (0, 0.3, 0), a(J.NECK) + (0, 0.6, -0.05), 0.42),
-                 cap("RightUpperLeg", a(J.RKN) + (0, 0.1, 0), a(J.RKN) + (0, -0.1, 0), 0.56), cap("LeftUpperLeg", a(J.LKN) + (0, 0.1, 0), a(J.LKN) + (0, -0.1, 0), 0.56)]   # the baggy trouser at the knee
-    hits = {"Coat": [0, 1, 2, 3, 4, 7, 8], "Under": [0, 1, 2, 3, 4, 7, 8], "Hair": [5, 6], "Beard": [5], "Beads": [5], "Mantle": [], "Sleeve": [], "Rag": []}
-    cloth = {"phase": phase, "bones": bones, "sheets": cloth_sheets, "particles": particles, "links": [[i, j, round(k, 3)] for i, j, k in links], "colliders": colliders, "hits": hits, "limbs": LIMBS}
+    def cap(n, x, y, r, firm=True):   # firm: the cloth stays out at the full radius even where the sculpt had it closer: the sculpt stood wide-legged, he does not
+        return {"limb": n, "a": [round(float(v), 3) for v in x], "b": [round(float(v), 3) for v in y], "r": r, "firm": firm}
+    colliders = [cap("RightUpperLeg", J.RHIP, J.RKN, 0.5), cap("LeftUpperLeg", J.LHIP, J.LKN, 0.5), cap("RightLowerLeg", J.RKN, J.RAN, 0.34), cap("LeftLowerLeg", J.LKN, J.LAN, 0.34),
+                 cap("LowerTorso", a(J.PELVIS) + (0, -0.25, 0), J.WAIST, 0.58, False), cap("UpperTorso", J.WAIST, a(J.NECK) + (0, -0.2, 0), 0.62, False), cap("Head", a(J.NECK) + (0, 0.3, 0), a(J.NECK) + (0, 0.6, -0.05), 0.42, False),
+                 cap("RightLowerLeg", a(J.RKN) + (0, -0.2, 0), a(J.RKN) + (0, -0.5, 0), 0.76), cap("LeftLowerLeg", a(J.LKN) + (0, -0.2, 0), a(J.LKN) + (0, -0.5, 0), 0.76),   # the baggy trouser blousing below the knee
+                 # what the arms and the glaive sweep through: the cloth lattice is coarse, so these stand a little proud of the arm itself
+                 cap("RightUpperArm", J.RSH, J.REL, 0.34), cap("RightLowerArm", J.REL, J.RWR, 0.34), cap("RightHand", J.RWR, a(J.RWR) + unit(a(J.RGRIP) - a(J.RWR)) * 0.3, 0.42),
+                 cap("LeftUpperArm", J.LSH, J.LEL, 0.34), cap("LeftLowerArm", J.LEL, J.LWR, 0.34), cap("LeftHand", J.LWR, J.LHAND, 0.42),
+                 cap("Glaive", J.BUTT, J.SOCKET, 0.3)]
+    arms = [9, 10, 11, 12, 13, 14, 15]
+    hits = {"Coat": [0, 1, 2, 3, 4, 7, 8] + arms, "Under": [0, 1, 2, 3, 4, 7, 8] + arms, "Hair": [5, 6, 15], "Beard": [5], "Beads": [5, 9, 12], "Mantle": [5, 15], "Sleeve": [], "Rag": [15], "Orbs": [], "Fingers": []}
+    cloth = {"phase": phase, "bones": bones, "sheets": cloth_sheets, "particles": particles, "links": [[i, j, round(k, 3)] for i, j, k in links], "colliders": colliders, "hits": hits, "limbs": LIMBS + ["Glaive"], "grip": grip}
     # rest length of every link
     for L in cloth["links"]:
         L.insert(2, round(float(np.linalg.norm(np.array(particles[L[0]]["at"]) - np.array(particles[L[1]]["at"]))), 4))

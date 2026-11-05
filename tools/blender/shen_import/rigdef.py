@@ -1,5 +1,7 @@
 """Grandmaster Shen's production rigs, one per form, measured on the supplied sculpts. Clip space: HumanoidRootPart space at scale 1 (rigspace.py); a zero Transform shows the sculpt as designed.
 src/shared/BossRigs.luau carries the same numbers (clips.py checks they agree). A helper bone is an invisible joint the stock rig lacks: only phase 2's floating beads, rigid props on their own orbit. Cloth, hair and beard are skinned and simulated (skin_rig.py, ClothSim), not keyed."""
+import numpy as np
+
 import landmarks as LM
 
 
@@ -15,12 +17,37 @@ def joints(J):
 
 JOINT = {1: joints(LM.P1), 2: joints(LM.P2)}
 HELPER = {
-    1: {},
-    2: {"Bead1": ("LowerTorso", (1.62, 0.30, 0.38)), "Bead2": ("LowerTorso", (1.26, -0.05, 0.23)), "Bead3": ("LowerTorso", (1.72, 0.02, 0.42))},
+    1: {"Glaive": ("LowerTorso", tuple(LM.P1.RGRIP))},
+    2: {"Glaive": ("LowerTorso", tuple(LM.P2.RGRIP))},
 }
-BONE_OF = {"Weapon": "RightHand"}   # the guandao is rigid in the fist that sculpted around it
+BONE_OF = {"Weapon": "Glaive"}   # the guandao has its own joint: both hands hold it, it can slide and roll in them and spin
 
 def bone_of(phase, name):
     if name in BONE_OF:
         return BONE_OF[name]
     return name
+
+
+def left_hand(J, points):
+    """The sculpt's open left hand, measured: (wrist, along the fingers, across the knuckles (the haft's way, thumb side +), toward the palm, knuckle distance, middle-joint distance, grip point). Both hands' grips and the finger bones work from this."""
+    pts = np.asarray(points, float)
+    wrist = np.array(J.LWR, float)
+    along = pts[np.argsort((pts - wrist) @ (np.array(J.LHAND, float) - wrist))[-max(len(pts) // 12, 5):]].mean(0) - wrist
+    along /= np.linalg.norm(along)
+    q = pts - wrist
+    q = q - np.outer(q @ along, along)
+    centre = q.mean(0)
+    u, _, _ = np.linalg.svd(np.cov((q - centre).T))
+    across, palm = u[:, 0], u[:, 2]      # the hand's width, and its flat normal
+    across = across - along * (across @ along)
+    across /= np.linalg.norm(across)
+    palm = np.cross(along, across)
+    if palm[0] < 0:                      # a hanging left hand's palm faces his body
+        palm = -palm
+    if np.cross(across, along) @ palm < 0:   # the curl about +across carries the fingers toward the palm
+        across = -across
+    d = (pts - wrist) @ along
+    far = float(np.percentile(d, 99.5))
+    knuckle, middle = far * 0.5, far * 0.74
+    grip = wrist + along * (far * 0.42) + palm * 0.13 + centre
+    return wrist, along, across, palm, knuckle, middle, grip

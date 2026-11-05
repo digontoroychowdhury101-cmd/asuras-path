@@ -1177,6 +1177,15 @@ local function onEvent(event: Combat.Event, point: Vector3?)
 	if not victim then
 		return
 	end
+	if victim.Boss and (event.Kind == "Hit" or event.Kind == "CounterHit") then
+		-- Cosmetic: which way the blow came from, for the flinch and the cloth (BossAnimations, BossCloth). The mark changes even if the side does not.
+		local struck, by = Characters.GetEntity(victim.Id), Characters.GetEntity(event.Source)
+		if struck and by then
+			local from = by.Root.Position - struck.Root.Position
+			struck.Model:SetAttribute("AsuraHitFrom", Vector3.new(from.X, 0, from.Z).Unit)
+			struck.Model:SetAttribute("AsuraHitMark", ((struck.Model:GetAttribute("AsuraHitMark") or 0) :: number + 1) % 1000)
+		end
+	end
 	if event.Kind == "Deathblow" and victim.Boss then
 		victim.Deathblows += 1
 		local e = Characters.GetEntity(victim.Id)

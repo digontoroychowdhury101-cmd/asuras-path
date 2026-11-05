@@ -25,7 +25,10 @@ ACTIONS = ["Idle", "Strike", "WalkForward", "RunForward", "WalkBackward", "Straf
 for phase, moves in ((1, ["FlowingJian", "PrayerBeads", "AbbotSweep"]), (2, ["BloodWave", "GuandaoSkyfall", "CrimsonEmbrace"])):
     for action in ACTIONS + moves:
         check("GrandmasterShen_P%d_%s" % (phase, action) in manifest, "clip for phase %d %s" % (phase, action))
-check(len(manifest) == 46, "46 clips")
+for phase, moves in ((1, ["HesitantMoon", "WheelOfHeaven", "Flourish", "Feint", "TurnLeft", "TurnRight"]), (2, ["RendingArc", "PhantomDrift", "Flourish", "Feint", "TurnLeft", "TurnRight"])):
+    for action in moves:
+        check("GrandmasterShen_P%d_%s" % (phase, action) in manifest, "clip for phase %d %s" % (phase, action))
+check(len(manifest) == 64, "64 clips")
 
 probe = (ROOT / "work/test_shen.generated.luau")
 data_src = (ROOT / "src/shared/ShenPresentationData.luau").read_text()

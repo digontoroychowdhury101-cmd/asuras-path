@@ -1239,7 +1239,7 @@ end
 function Rules.applyBossAttack(source: Fighter, target: Fighter, now: number, damage: number, posture: number, kind: string, facing: boolean, events: { Event }?): HitOutcome
 	-- Same deflect rule as every other contact (Stage 2): the press's own window, scaled by head injury and spam
 	-- decay, with half-tick tolerance, never wider than the baseline window. A success resets the spam chain.
-	if kind == "PerilousThrust" and facing and Rules.isDeflectTimed(target, now, Settings.Posture.DeflectWindow) then
+	if (kind == "PerilousThrust" or kind == "PerilousCut") and facing and Rules.isDeflectTimed(target, now, Settings.Posture.DeflectWindow) then
 		if not Rules.isInvulnerable(target, now) then
 			target.DeflectChain = 0
 			target.LastDeflectPress = -NEVER
