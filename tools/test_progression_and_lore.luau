@@ -87,7 +87,7 @@ for id,l in Catalog.Lore do
  check(Progress.discover(forge,id,l.Qi) and forge.qiEssence==qi+l.Qi,"first read rewards Qi")
  check(not Progress.discover(forge,id,l.Qi) and forge.qiEssence==qi+l.Qi,"repeat read cannot duplicate reward")
 end
-check(loreCount==8,"eight memorials")
+check(loreCount==9,"nine memorials")
 Progress.mastery(forge,"Jian",1499);check(Progress.masteryRank(forge.weaponMastery.Jian)==4,"finisher remains locked")
 Progress.mastery(forge,"Jian",1);check(Progress.masteryRank(forge.weaponMastery.Jian)==5,"rank five finisher")
 local db: {[string]: any}={};local now=1000

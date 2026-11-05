@@ -39,6 +39,7 @@ local Shop = require(Services:WaitForChild("ShopService") :: ModuleScript) :: an
 
 local Magic = require(Services:WaitForChild("MagicService") :: ModuleScript)
 local Loot = require(Services:WaitForChild("LootService") :: ModuleScript)
+local RouteGates = require(Services:WaitForChild("RouteGates") :: ModuleScript)
 local Dialogue = require(Services:WaitForChild("DialogueService") :: ModuleScript)
 local Wagering = require(Services:WaitForChild("WagerService") :: ModuleScript)
 local Presentation = require(Services:WaitForChild("PresentationService") :: ModuleScript)
@@ -377,6 +378,7 @@ local ok, problem = xpcall(function(): boolean
 	started.World = true
 	started.Arsenal = true
 	Magic.Start(); Loot.Start(); WeaponEffects.Start()
+	RouteGates.Start()
 	Colosseum.Start()
  Dialogue.Start();started.Dialogue=true
  Tutorial.Start();started.Tutorial=true

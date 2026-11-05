@@ -94,7 +94,7 @@ end
 local i: any=Inventory.defaults();i.weapons={Unarmed=true}
 for id,c in Catalog.Caches do
  check(Inventory.claim(i,id),"Discover cache")
- check(i.weapons[c.Weapon] and not Inventory.claim(i,id),"One-time cache unlock")
+ check((c.Weapon==nil or i.weapons[c.Weapon]) and not Inventory.claim(i,id),"One-time cache unlock")
  check(World.regionAt(c.X,c.Y,c.Z)==c.Region,"Cache inside authored region")
 end
 check(Inventory.validate(Inventory.migrate(i)),"Arsenal migration")

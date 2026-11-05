@@ -100,7 +100,7 @@ function Inventory.claim(i: any,cacheId: string): (boolean,string)
  local c=Catalog.Caches[cacheId]
  if not c then return false,"Unknown cache" end
  if i.caches[cacheId] then return false,"Cache already discovered" end
- i.caches[cacheId]=true;i.weapons[c.Weapon]=true
+ i.caches[cacheId]=true;if c.Weapon then i.weapons[c.Weapon]=true end
  for _,id in c.Spells do i.spells[id]=true end
  for _,id in c.Extras or {} do i.weapons[id]=true end
  return true,"Discovered "..c.Name

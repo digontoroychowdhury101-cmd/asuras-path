@@ -13,6 +13,7 @@ local WaypointMarker = require(script.Parent:WaitForChild("WaypointMarker") :: M
 local Visibility = require(script.Parent:WaitForChild("HudVisibility") :: ModuleScript)
 local WorldState = require(script.Parent:WaitForChild("WorldStateController") :: ModuleScript)
 local RouteGuide = require(ReplicatedStorage.AsurasPath.Shared.RouteGuide)
+local RouteGates = require(ReplicatedStorage.AsurasPath.Shared.RouteGates)
 local Progress = require(ReplicatedStorage.AsurasPath.Shared.ProgressionRules)
 local TutorialRules = require(ReplicatedStorage.AsurasPath.Shared.TutorialRules)
 local Narrative = require(ReplicatedStorage.AsurasPath.Shared.NarrativeCatalog)
@@ -148,7 +149,7 @@ function Controller.Update(self: ObjectiveController, dt: number)
 	local root = character and character:FindFirstChild("HumanoidRootPart") :: BasePart?
 	local goal = if objective then self.Marker:Locate(objective.Target) else nil
 	-- Staged route (#28): the next doorway or portal on the walked route, with the walked distance.
-	local stage = if goal and root then RouteGuide.next(root.Position, goal) else nil
+	local stage = if goal and root then RouteGuide.next(root.Position, goal, RouteGates.decode(self.Player:GetAttribute("AsuraOpenGates"))) else nil
 	if stage then goal = if stage.Kind == "Portal" then self.Marker:Locate({ Kind = "Portal" }) else stage.Position end
 	-- The minimap draws the same walked route (follow-up 14); the northern gate is the placed portal.
 	local route: any = nil

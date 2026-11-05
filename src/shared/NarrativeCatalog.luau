@@ -35,6 +35,7 @@ Catalog.Lore={
  Bell={Title="III · A Bell Without Echo",Region="DesecratedMonastery",X=-55,Y=3,Z=-918,Qi=125,Text="The monastery bell rang once when the first pillar fell. The second swallowed its echo. The sixth silenced the dead."},
  Emissary={Title="IV · The Uncrossed River",Region="DesecratedMonastery",X=72,Y=3,Z=-1070,Qi=150,Text="A phantom stood at the river of souls. The ferryman counted six chains around its heart. 'Return them to rest,' he said, 'and I shall return for you.'"},
  Bamboo={Title="V · Jade in the Roots",Region="BambooPass",X=-18,Y=3,Z=-1140,Qi=150,Text="Jade splinters fell like rain. Bamboo drank the scattered Qi, and its leaves began to whisper the disciples' forgotten prayers."},
+ Founder={Title="The Founders' Ledger",Region="BambooPass",X=-76,Y=9,Z=-1244,Qi=125,Text="Seven bells were poured in this yard. Six went up to the temples. The seventh rang flat, so we hung it on the terrace, where no pilgrim would ask why it stayed silent."},
  Wraith={Title="VI · What Death Cannot Keep",Region="BambooPass",X=128,Y=21.2,Z=-1428,Qi=175,Text="The Emissary left a crimson wraith where its borrowed body fell. One memory could be reclaimed. A second death erased the first."},
  Pagoda={Title="VII · The Empty Throne",Region="CelestialPagoda",X=-132,Y=17,Z=-2262,Qi=200,Text="Above the clouded stair, the throne stood empty. Sovereignty was never a crown. It was the wound left where a soul had been."},
  Dawn={Title="VIII · The Unwritten Dawn",Region="CelestialPagoda",X=-20,Y=3,Z=-2500,Qi=250,Text="Gao forged no chain for the seventh soul. Lin kept no incense for its passing. The hermit alone smiled: 'Some endings must be chosen by the dead.'"},
@@ -43,7 +44,7 @@ Catalog.Trades={SpiritIronOre={Name="Spirit Iron Ore",Price=80},StarfallShard={N
  CrimsonFireGem={Name="Crimson Fire Gem",Price=600},CelestialLightningGem={Name="Celestial Lightning Gem",Price=600},AbyssalVoidGem={Name="Abyssal Void Gem",Price=600},
  LastBreathTalisman={Name="Last Breath Talisman · prevents one fatal blow for 30s",Price=400}}
 Catalog.Sovereigns={"GrandmasterShen","VenerableBaize","SlumberingTitan","SovereignWu","TwinSentinels","AzureWyrm"}
-Catalog.LoreOrder={"Pillars","Feast","Bell","Emissary","Bamboo","Wraith","Pagoda","Dawn"}
+Catalog.LoreOrder={"Pillars","Feast","Bell","Emissary","Bamboo","Founder","Wraith","Pagoda","Dawn"}
 -- Batch 22: the six-sovereign ending (EndingRules picks the node). Release is spoken in person beside her
 -- bonfire; Cross and Remain are server-recorded choices (story flags) that grant nothing and can be repeated.
 Catalog.NPCs.Lin.Nodes.Release={Text="Six chains have fallen silent. The ferryman waits beyond the jade dawn. You may cross, Emissary—or remain a little longer, and carry their names where the living have forgotten.",Choices={{Label="Cross the river of souls",Next="Release",Action="Cross"},{Label="Remain a little longer",Next="Release",Action="Remain"},{Label="Guide my Ascension",Next="Ascend",Action="Level"},{Label="Farewell",Close=true}}}

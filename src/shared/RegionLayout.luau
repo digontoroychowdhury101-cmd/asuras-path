@@ -9,7 +9,7 @@ local Layout = {}
 export type Box = { Name: string, Kind: string, X: number, Y: number, Z: number, SX: number, SY: number, SZ: number, Yaw: number }
 export type Return = { Name: string, X0: number, X1: number, Z0: number, Z1: number, Below: number, To: { X: number, Y: number, Z: number, Yaw: number } }
 export type Zone = { Id: string, Name: string, X0: number, X1: number, Z0: number, Z1: number, Y0: number?, Y1: number? } -- Y band for stacked levels
-export type Door = { A: string, B: string, X: number, Y: number, Z: number, Name: string, OneWay: boolean? } -- OneWay: A -> B only (a drop)
+export type Door = { A: string, B: string, X: number, Y: number, Z: number, Name: string, OneWay: boolean?, Optional: boolean?, Gate: string? } -- OneWay: A -> B only (a drop); Gate: walked only once that RouteGates gate is open
 export type Mark = { Name: string, X: number, Y: number, Z: number, Yaw: number }
 export type Region = {
 	Region: string,
@@ -21,6 +21,9 @@ export type Region = {
 	Marks: { [string]: Mark },
 	Groves: { { number } }?, -- {x0, x1, z0, z1, floor, count}: decorative scatter strips (non-colliding)
 	Lights: { { number } }, -- {x, y, z}: lantern heads the dressing lights (their posts are Solids)
+	DressSeed: number?, -- fixes the dressing's random stream when the layout grows, so the art already placed stays where it is
+	GroveClear: { { number } }?, -- {x0, x1, z0, z1}: built-over ground the bamboo scatter stays out of
+	Gates: { [string]: Box }?, -- closed-state collider of each RouteGates gate; not a Solid, so it can open
 }
 
 -- Kinds the server renders; "Veil" is an invisible colliding boundary, "Decor" never collides.
@@ -96,8 +99,8 @@ function Layout.zone(r: Region, id: string, name: string, x0: number, x1: number
 end
 
 -- `optional`: a mobility route (jump chains) wayfinding uses only when no ordinary route exists.
-function Layout.door(r: Region, a: string, b: string, x: number, y: number, z: number, name: string, oneWay: boolean?, optional: boolean?)
-	table.insert(r.Doors, { A = a, B = b, X = x, Y = y, Z = z, Name = name, OneWay = oneWay, Optional = optional })
+function Layout.door(r: Region, a: string, b: string, x: number, y: number, z: number, name: string, oneWay: boolean?, optional: boolean?, gate: string?)
+	table.insert(r.Doors, { A = a, B = b, X = x, Y = y, Z = z, Name = name, OneWay = oneWay, Optional = optional, Gate = gate })
 end
 
 -- Falling below `below` inside the rectangle returns the body to `to` (Characters.Teleport).

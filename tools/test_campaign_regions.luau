@@ -72,7 +72,7 @@ for _, layout in Campaign.Layouts do byRegion[layout.Region] = layout end
 for id, altar in World.Altars do
 	local layout = byRegion[altar.Region]
 	if layout then
-		local m = layout.Marks.Altar
+		local m = layout.Marks[altar.Mark or "Altar"]
 		check(id .. " placement is its layout's altar pocket", m and m.X == altar.Placement.X and m.Y == altar.Placement.Y and m.Z == altar.Placement.Z)
 		check(id .. " spawns 3 above its floor, within its radius, facing away from the altar's back",
 			math.abs(altar.Spawn.Y - altar.Placement.Y - 3) < 0.01 and math.sqrt((altar.Spawn.X - altar.Placement.X) ^ 2 + (altar.Spawn.Z - altar.Placement.Z) ^ 2) <= altar.Radius)
@@ -117,7 +117,7 @@ for region, layout in byRegion do
 				check(region .. "." .. key .. " needs the deliberate route (jumps, not a walk)", jump.has(m.X, floor, m.Z) and not walk.has(m.X, floor, m.Z))
 			elseif key ~= "ReturnPortal" then
 				check(region .. "." .. key .. " is walked from the Monastery road", walk.has(m.X, floor, m.Z))
-				if key == "Altar" then -- respawning there must lead back as well as on
+				if key == "Altar" or key == "AltarBell" then -- respawning there must lead back as well as on
 					local home = cw:reach(m.X, floor, m.Z, "Walk")
 					check(region .. " altar walks back to the Monastery road and on to the summit", home and home.has(north.X, north.Y, north.Z) and home.has(summit.X, summit.Y, summit.Z))
 				end
@@ -149,6 +149,40 @@ check("the frost ridge drops back to the shrine", fromRidge and fromRidge.has(-3
 local hub = byRegion.CelestialPagoda.Marks.Hub
 local fromHub = cw:reach(hub.X, hub.Y, hub.Z, "Walk")
 check("a fall from the lantern rafter lands in the walkable gorge", fromHub and fromHub.has(0, -26, -2180))
+
+-- Route batch: the Foundry wing with the ridge gate shut, then open. A fresh profile walks it; the bar is the way back; arenas never moved.
+do
+	local bamboo = byRegion.BambooPass
+	local gate = bamboo.Gates.BambooRidge
+	local shut = Walk.world(arenaBoxes(concat(chain, { gate })), -240, 240, -1110, -3000)
+	local fresh = shut:reach(north.X, north.Y, north.Z, "Walk")
+	local crest = { 0, 12, -1270 }
+	check("gate shut: the crest is still walked from the Monastery road, through the wing", fresh.has(crest[1], crest[2], crest[3]))
+	for _, key in { "Foundry", "AltarBell", "Kiln", "Altar", "ArenaMouth", "SouthJoin" } do
+		local m = bamboo.Marks[key]
+		check("gate shut: " .. key .. " is walked from the road", fresh.has(m.X, m.Y, m.Z))
+	end
+	-- Take the Bell Walk away: the shut gate alone must stop a walker, or the wing is not the first way in.
+	local noWalk = {}
+	for _, b in chain do if b.Name ~= "BellWalkDeck" and b.Name ~= "RingersLookout" and b.Name ~= "WalkDescent" then table.insert(noWalk, b) end end
+	local cut = Walk.world(arenaBoxes(concat(noWalk, { gate })), -240, 240, -1110, -3000)
+	check("gate shut, walk removed: nobody walks onto the crest", not cut:reach(north.X, north.Y, north.Z, "Walk").has(crest[1], crest[2], crest[3]))
+	local openCut = Walk.world(arenaBoxes(table.clone(noWalk)), -240, 240, -1110, -3000)
+	check("gate open: the old stairs still walk both ways", openCut:reach(north.X, north.Y, north.Z, "Walk").has(crest[1], crest[2], crest[3])
+		and openCut:reach(crest[1], crest[2], crest[3], "Walk").has(north.X, north.Y, north.Z))
+	check("gate shut: from the crest a walker gets home through the wing", shut:reach(crest[1], crest[2], crest[3], "Walk").has(north.X, north.Y, north.Z))
+	local bell = bamboo.Marks.AltarBell
+	check("the terrace altar leads back to the road and on to the shrine with the gate shut",
+		shut:reach(bell.X, bell.Y, bell.Z, "Walk").has(north.X, north.Y, north.Z) and shut:reach(bell.X, bell.Y, bell.Z, "Walk").has(-36, 0.2, -1328))
+	-- Falls: both sides of the Bell Walk return to the landing; the deck itself is no fall.
+	for _, p in { { -110, 2, -1290 }, { -110, 2, -1255 }, { -55, 2, -1220 } } do
+		local fall = Layout.returnFor(bamboo, p[1], p[2], p[3])
+		check("a fall at " .. p[1] .. "," .. p[3] .. " returns to the walked landing", fall ~= nil and fresh.has(fall.To.X, fall.To.Y, fall.To.Z))
+	end
+	check("the Bell Walk's deck is not a fall", Layout.returnFor(bamboo, -110, 23, -1272) == nil)
+	check("the yard floor is not a fall", Layout.returnFor(bamboo, -80, 3, -1180) == nil)
+	check("the wing keeps out of Baize's arena", Campaign.get("BP_Kiln").X1 <= Campaign.get("BP_Arena").X0 - 30)
+end
 
 -- Every reachable cell lies inside a region's bounds (veils hold; nothing leaks between regions).
 local outside, total = 0, 0
@@ -402,6 +436,22 @@ end
 -- ROUTEGUIDE_INSERT
 local Guide = loadGuide({ Parent = { MonasteryZones = Zones, WorldDefinitions = World, CampaignZones = Campaign, SanctuaryRoutes = Routes } }, function(m) return m end)
 local function stage(from, goal) return Guide.next(vec(from[1], from[2], from[3]), vec(goal[1], goal[2], goal[3])) end
+-- A shut gate is never the marked way: the marker walks the wing until that player has lifted the bar.
+do
+	local road, shrine = { 0, 3, -1100 }, { -36, 3.2, -1328 }
+	local function names(open) return Guide.next(vec(road[1], road[2], road[3]), vec(shrine[1], shrine[2], shrine[3]), open).Route.Names end
+	local shut, lifted, default = names({}), names({ BambooRidge = true }), names(nil)
+	check("gate shut: the route takes the Foundry path, not the stairs", table.find(shut, "Foundry path") ~= nil and table.find(shut, "Ridge stairs") == nil
+		and table.find(shut, "Bell Walk stairs") ~= nil)
+	check("bar lifted: the route takes the stairs", table.find(lifted, "Ridge stairs") ~= nil and table.find(lifted, "Foundry path") == nil)
+	check("no gate list means all open (older callers)", table.find(default, "Ridge stairs") ~= nil)
+	local home = Guide.next(vec(0, 15, -1270), vec(0, 3, -1100), {}).Route.Names
+	check("gate shut: home from the crest is back through the wing", table.find(home, "Bell Walk stairs") ~= nil)
+	local homeOpen = Guide.next(vec(0, 15, -1270), vec(0, 3, -1100), { BambooRidge = true }).Route.Names
+	check("bar lifted: home from the crest is the stairs", table.find(homeOpen, "Ridge stairs") ~= nil and table.find(homeOpen, "Bell Walk stairs") == nil)
+	local kiln = Guide.next(vec(-150, 23, -1270), vec(-170, 13, -1336), {}).Route.Names
+	check("the kiln is staged down its own stair", table.find(kiln, "Kiln stair") ~= nil)
+end
 local s1 = stage({ 0, 3, -1180 }, { 0, 6, -1736 })
 check("Bamboo gate -> Colosseum altar starts up the ridge stairs", s1.Label == "Ridge stairs" and s1.Remaining and s1.Remaining > 556)
 local s2 = stage({ -36, 3, -1320 }, { 128, 21, -1428 })

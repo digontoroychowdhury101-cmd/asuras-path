@@ -68,7 +68,7 @@ local function facts(region: string?, overrides: any?): any
 end
 
 -- 1. Data joins between batches.
-local altarOrder = { "Altar_SanctuaryBonfire", "Altar_MonasteryGate", "Altar_DesecratedCloister", "Altar_BambooShrine",
+local altarOrder = { "Altar_SanctuaryBonfire", "Altar_MonasteryGate", "Altar_DesecratedCloister", "Altar_BellTerrace", "Altar_BambooShrine",
 	"Altar_ColosseumAntechamber", "Altar_SanctuaryDepths", "Altar_CelestialPagoda", "Altar_SkyCitadel" }
 local altarCount = 0
 for _ in World.Altars do altarCount += 1 end
@@ -153,17 +153,17 @@ for _, id in Narrative.LoreOrder do
 end
 local expected = qi
 for _, id in Narrative.LoreOrder do expected += Narrative.Lore[id].Qi end
-check("eight inscriptions recorded, each paying once", profile().qiEssence == expected)
+check("every inscription recorded, each paying once", profile().qiEssence == expected)
 local cacheCount = 0
 for id, c in Arsenal.Caches do
 	cacheCount += 1
 	check(id .. " claims once", engine:Transaction(ID, function(p) assert(Inventory.claim(p.souls.inventory, id)) end)
-		and not engine:Transaction(ID, function(p) assert(Inventory.claim(p.souls.inventory, id)) end) and profile().souls.inventory.weapons[c.Weapon])
+		and not engine:Transaction(ID, function(p) assert(Inventory.claim(p.souls.inventory, id)) end) and (c.Weapon == nil or profile().souls.inventory.weapons[c.Weapon]))
 end
-check("five caches", cacheCount == 5)
+check("six caches", cacheCount == 6)
 rejoin("after collectibles")
 local codex = Codex.summary({ inventory = profile().inventory, bosses = profile().defeatedBosses, story = profile().souls.world.story })
-check("Codex: 8/8 inscriptions and 6/6 sovereigns", codex.Found == 8 and codex.Rested == 6)
+check("Codex: 9/9 inscriptions and 6/6 sovereigns", codex.Found == 9 and codex.Rested == 6)
 
 -- 7. The ending: home to Lin, the choice, postgame; flags survive rejoin and grant nothing.
 local home = Objectives.resolve(facts("SkyCitadel"))

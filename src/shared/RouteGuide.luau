@@ -95,6 +95,7 @@ end
 local function campaignLeg(from: Vector3, target: Vector3, leg: Leg)
 	local a, b = Campaign.at(from.X, from.Y, from.Z), Campaign.at(target.X, target.Y, target.Z)
 	if not (a and b) then return end
+	-- Only the crypt's and bastion's homeward legs use this; neither region has gates.
 	for _, door in Campaign.path(a.Id, b.Id) do
 		table.insert(leg.Points, Vector3.new(door.X, door.Y + 3, door.Z)); table.insert(leg.Names, door.Name)
 	end
@@ -118,7 +119,8 @@ local function homeward(from: Vector3, here: string?): Stage?
 end
 
 -- The next step from `from` toward `goal`; Kind "Portal" means the Sanctuary's northern gate.
-function Guide.next(from: Vector3, goal: Vector3): Stage
+-- `open`: the RouteGates gates this player has opened (nil: all open), so a barred shortcut is never the marked way.
+function Guide.next(from: Vector3, goal: Vector3, open: { [string]: boolean }?): Stage
 	local here, there = Guide.regionOf(from), Guide.regionOf(goal)
 	if here == "Sanctuary" and there ~= nil and there ~= "Sanctuary" then
 		if there == "SanctuaryDepths" then
@@ -148,7 +150,7 @@ function Guide.next(from: Vector3, goal: Vector3): Stage
 	local inMonastery, goalInMonastery = here == Guide.Monastery, there == Guide.Monastery
 	local a = if inMonastery then Campaign.get("DM:Road") else Campaign.at(from.X, from.Y, from.Z)
 	local b = if goalInMonastery then Campaign.get("DM:Road") else Campaign.at(goal.X, goal.Y, goal.Z)
-	local campaignDoors = if a and b then Campaign.path(a.Id, b.Id) else {}
+	local campaignDoors = if a and b then Campaign.path(a.Id, b.Id, open) else {}
 	if #campaignDoors > 0 then
 		local legs: { Vector3 } = {}
 		local names: { string } = {}

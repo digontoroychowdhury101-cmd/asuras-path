@@ -98,7 +98,7 @@ local Codex = luau.load(src(C .. "CodexView.luau"), { debugName = "CodexView", e
 	require = function(m) return m end, string = string, table = table } })()
 local function state(lore, bosses) return { inventory = { LoreEntries = lore }, bosses = bosses } end
 local empty = Codex.summary(state({}, {}))
-check("empty: 0/8 inscriptions, 0/6 sovereigns", Codex.status(empty) == "0 / 8 Inscriptions  ·  0 / 6 Sovereigns at rest")
+check("empty: 0/9 inscriptions, 0/6 sovereigns", Codex.status(empty) == "0 / 9 Inscriptions  ·  0 / 6 Sovereigns at rest")
 check("empty: tagline kept and discovery instruction shown", string.find(Codex.body(empty, nil), Codex.Tagline, 1, true) and string.find(Codex.body(empty, nil), "jade memorial", 1, true))
 local function leaks(sum, known)
 	for _, e in sum.Inscriptions do
@@ -111,17 +111,17 @@ check("empty: no titles leak", not leaks(empty, {}))
 check("empty: every locked entry says where to look", empty.Inscriptions[5].Hint == "Bamboo Pass" and empty.Souls[1].Hint == "Ash Colosseum")
 local partialLore = { Pillars = true, Bamboo = true }
 local partial = Codex.summary(state(partialLore, { GrandmasterShen = true }))
-check("partial: counts", partial.Found == 2 and partial.Rested == 1 and string.find(Codex.status(partial), "2 / 8", 1, true))
+check("partial: counts", partial.Found == 2 and partial.Rested == 1 and string.find(Codex.status(partial), "2 / 9", 1, true))
 check("partial: discovered titles, locked hidden", partial.Inscriptions[1].Title == Narrative.Lore.Pillars.Title and not leaks(partial, partialLore))
 check("partial: selecting a discovered entry shows its text", Codex.body(partial, "Bamboo") == Narrative.Lore.Bamboo.Text)
 check("partial: selecting a locked entry never shows its text", Codex.body(partial, "Dawn") ~= Narrative.Lore.Dawn.Text and not string.find(Codex.body(partial, "Dawn"), Narrative.Lore.Dawn.Text, 1, true))
-check("partial: remaining count", string.find(Codex.body(partial, nil), "6 inscriptions remain", 1, true) ~= nil)
+check("partial: remaining count", string.find(Codex.body(partial, nil), "7 inscriptions remain", 1, true) ~= nil)
 check("partial: rested sovereign named, others unbound", partial.Souls[1].Title == "Grandmaster Shen" and partial.Souls[2].Title == "Unbound sovereign")
 local all, beaten = {}, {}
 for _, id in Narrative.LoreOrder do all[id] = true end
 for _, id in Narrative.Sovereigns do beaten[id] = true end
 local full = Codex.summary(state(all, beaten))
-check("full: 8/8 and 6/6", Codex.status(full) == "8 / 8 Inscriptions  ·  6 / 6 Sovereigns at rest")
+check("full: 9/9 and 6/6", Codex.status(full) == "9 / 9 Inscriptions  ·  6 / 6 Sovereigns at rest")
 check("full: completion message", string.find(Codex.body(full, nil), "Every inscription is recovered", 1, true) ~= nil)
 check("full: twins named as a pair", full.Souls[5].Title == "The Twin Sentinels")
 check("discovery flags must be exactly true", Codex.summary(state({ Pillars = "yes" }, {})).Found == 0)

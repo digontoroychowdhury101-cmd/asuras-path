@@ -32,9 +32,9 @@ function Loot.Sync(player: Player,open: boolean?)
 end
 -- Assert messages carry "Script:line: "; players see only the reason (F06: the toast showed the script path).
 local function reason(err: any): string return (string.gsub(tostring(err),"^.-:%d+: ","")) end
-local function transact(player: Player,mutate: (any)->())
+local function transact(player: Player,mutate: (any,any)->())
  local id=player.UserId;if busy[id] then return end;busy[id]=true
- local ok,err=Persistence.Transaction(id,function(p: any) mutate(p.souls.inventory) end)
+ local ok,err=Persistence.Transaction(id,function(p: any) mutate(p.souls.inventory,p) end)
  busy[id]=nil
  if ok then Characters.RefreshProgression(id);Loot.Sync(player) end
  if player.Parent then remote:FireClient(player,{action="Result",ok=ok,message=if ok then "Arsenal updated" else reason(err)}) end
@@ -42,10 +42,15 @@ end
 function Loot.Claim(player: Player,id: string)
  local c=Catalog.Caches[id];local e=available(player.UserId)
  if not c or not e or (e.Root.Position-Vector3.new(c.X,c.Y,c.Z)).Magnitude>10 then return end
- transact(player,function(i: any)
+ transact(player,function(i: any,profile: any)
   local live=available(player.UserId);assert(live and (live.Root.Position-Vector3.new(c.X,c.Y,c.Z)).Magnitude<=10,"Too far from cache")
-  local ok,reason=Inventory.claim(i,id);assert(ok,reason)
+  local ok,reason=Inventory.claim(i,id);assert(ok,reason) -- refuses a second claim, so the materials below are paid once
+  local m=profile.inventory.Materials
+  for material,count in c.Materials or {} do m[material]=math.min(9007199254740991,(m[material] or 0)+count) end
  end)
+ if player.Parent and c.Materials then
+  for material,count in c.Materials do Characters.Cue("MaterialFound",player.UserId,{material=material,count=count}) end
+ end
 end
 function Loot.Forge(player: Player,id: string)
  local e=available(player.UserId);if not e or not nearSmith(e) then remote:FireClient(player,{action="Result",ok=false,message="Visit Master Smith Gao in the Loggia"});return end

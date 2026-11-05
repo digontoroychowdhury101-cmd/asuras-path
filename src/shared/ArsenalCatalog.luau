@@ -1,7 +1,7 @@
 --!strict
 -- Discovery and transmutation rewards are authored here, never supplied by clients.
 export type Recipe={Boss: string,Kind: string,Reward: string,Name: string}
-export type Cache={Name: string,Region: string,X: number,Y: number,Z: number,Weapon: string,Spells: {string},Extras: {string}?}
+export type Cache={Name: string,Region: string,X: number,Y: number,Z: number,Weapon: string?,Spells: {string},Extras: {string}?,Materials: {[string]: number}?}
 local Catalog={}
 Catalog.Recipes={
  -- Every sovereign's remembrance offers one weapon or one sorcery (One soul, one choice). Shen's
@@ -27,6 +27,8 @@ Catalog.Caches={
  WaterfallAlcove={Name="Waterfall Alcove",Region="DesecratedMonastery",X=-140,Y=5,Z=-840,Weapon="ChainScythe",Spells={"HeavenlyLightningSpear"}},
  PagodaRafters={Name="High Pagoda Rafters",Region="DesecratedMonastery",X=92,Y=30,Z=-1000,Weapon="TwinDaggers",Spells={"DragonsMaw"},Extras={"Dao"}},
  SealedMausoleum={Name="Sealed Mausoleum",Region="DesecratedMonastery",X=-110,Y=3,Z=-1060,Weapon="Odachi",Spells={"GraveTendrils","BlackflameSurge"},Extras={"Guandao"}},
+ -- Route batch: pays in what armour costs (Iron Oath takes two shards) instead of another weapon. Materials land inside the claim's transaction.
+ FoundersKiln={Name="Founders' Kiln",Region="BambooPass",X=-170,Y=13.2,Z=-1336,Spells={},Materials={StarfallShard=2,SpiritIronOre=3}},
  SanctuaryEaves={Name="Loggia Eaves",Region="Sanctuary",X=-76,Y=617,Z=923,Weapon="WarFan",Spells={"JadeAegis","CelestialSupernova"}},
  SanctuaryReliquary={Name="Cloud Reliquary",Region="Sanctuary",X=46,Y=605,Z=988,Weapon="Catalyst",Spells={"EmberCataclysm","BlazingSunAwakening"}},
 } :: {[string]: Cache}

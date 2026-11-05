@@ -159,7 +159,16 @@ function Ecology.Grove(parent: Instance, layout: any, grove: { number }, rng: Ra
 		local x = x0 + (i % columns + rng:NextNumber(0.12, 0.88)) / columns * (x1 - x0)
 		local z = z0 + (math.floor(i / columns) + rng:NextNumber(0.12, 0.88)) / rows * (z1 - z0)
 		local field = math.noise(x / 37, z / 46, 3.1)
-		if field > -0.33 or i % 5 == 0 then clump(parent, layout, x, z, i % #styles + 1, rng) end
+		if field > -0.33 or i % 5 == 0 then
+			local clear = false
+			for _, c in layout.GroveClear or {} do
+				if x >= c[1] and x <= c[2] and z <= c[3] and z >= c[4] then clear = true end
+			end
+			-- A clump on built-over ground still draws its numbers, so every plant after it stays where it stood.
+			local holder: Instance = if clear then Instance.new("Folder") else parent
+			clump(holder, layout, x, z, i % #styles + 1, rng)
+			if clear then holder:Destroy() end
+		end
 	end
 end
 

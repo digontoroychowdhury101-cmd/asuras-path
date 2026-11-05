@@ -70,7 +70,7 @@ local function build(layout: any): Folder?
 	end
 	local dressing = Dressings[layout.Region]
 	if dressing then
-		local dressed, err = pcall(dressing.Build, map, layout, Random.new(#layout.Solids * 7919))
+		local dressed, err = pcall(dressing.Build, map, layout, Random.new((layout.DressSeed or #layout.Solids) * 7919))
 		if not dressed then
 			warn(string.format("[Asura's Path] %s dressing skipped: %s", layout.Region, tostring(err)))
 		end

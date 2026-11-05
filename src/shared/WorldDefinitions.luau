@@ -70,6 +70,7 @@ export type Altar = {
 	Id: string,
 	Name: string,
 	Region: RegionId,
+	Mark: string?, -- layout mark of its pocket when a region has more than one altar (default "Altar")
 	Placement: Placement,
 	Spawn: Placement,
 	Radius: number,
@@ -317,6 +318,18 @@ World.Altars = {
 		Starting = false,
 		Exit = at(-6, 3.2, -1352), -- toward Baize's mouth
 	},
+	-- The Foundry wing's safe pocket (route batch), between the Cloister and the shrine.
+	Altar_BellTerrace = {
+		Id = "Altar_BellTerrace",
+		Name = "Bell Terrace",
+		Region = "BambooPass",
+		Mark = "AltarBell",
+		Placement = at(-169, 20.2, -1228),
+		Spawn = at(-164, 23.2, -1235, 180),
+		Radius = 9,
+		Starting = false,
+		Exit = at(-150, 23.2, -1272), -- out to the landing and the Bell Walk
+	},
 	Altar_ColosseumAntechamber = {
 		Id = "Altar_ColosseumAntechamber",
 		Name = "Colosseum Antechamber",
@@ -488,6 +501,13 @@ World.Spawns = {
 	-- inside Baize's arena); each fights only inside its layout zone (CampaignZones).
 	spawn("BP_Swordsman_Trail_A", "CursedSwordsman", "BambooPass", 6, -1212, 180, 6),
 	spawn("BP_Monk_Trail", "CorruptWanderingMonk", "BambooPass", 0, -1272, 180, 8, 12),
+	-- Route batch: the Foundry wing. Yard pair apart so each can be drawn alone; the hall and the walk one apiece; the kiln guards its cache.
+	spawn("BP_Monk_Yard", "CorruptWanderingMonk", "BambooPass", -72, -1185, 90, 6),
+	spawn("BP_Swordsman_Yard", "CursedSwordsman", "BambooPass", -112, -1188, 90, 5),
+	spawn("BP_Swordsman_Hall", "CursedSwordsman", "BambooPass", -97, -1241, 0, 5, 6),
+	spawn("BP_Monk_Walk", "CorruptWanderingMonk", "BambooPass", -92, -1272, 90, 4, 20),
+	spawn("BP_Swordsman_Kiln", "CursedSwordsman", "BambooPass", -152, -1322, 90, 5, 10),
+	spawn("BP_Monk_Kiln", "CorruptWanderingMonk", "BambooPass", -182, -1326, 270, 5, 10),
 	spawn("BP_Swordsman_Grove_A", "CursedSwordsman", "BambooPass", 124, -1310, 180, 6, 18),
 	spawn("BP_Swordsman_Grove_B", "CursedSwordsman", "BambooPass", 124, -1372, 180, 6, 18),
 	spawn("BP_Monk_Ridge", "CorruptWanderingMonk", "BambooPass", 0, -1632, 180, 8),

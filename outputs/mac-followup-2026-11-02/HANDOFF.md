@@ -2,6 +2,33 @@
 
 Combat handoff stays historical: `outputs/combat-recovery-2026-11-02/` and `MAC_TO_WINDOWS.md` (W-01..W-13; A1 stays FAILED).
 
+## Mac writer paused (5 November 2026)
+All four batches are pushed. **The Mac writer is paused: pull, then run `outputs/post-combat-mac-prompts-2026-11-02/WINDOWS_ALL_FOUR_ACCEPTANCE.md`.** Run order: combat revalidation first (W-cases, `MAC_TO_WINDOWS.md`), then Batch 1, Bull and Zhao, armour, route, then the integrated earned loop.
+
+**Git will not carry** `assets/source/`, `assets/build/`, `*.blend` or `work/`. Batch 4 needs none of them. Batch 2 and 3 masters are only needed to rebuild art, not to play: uploaded ids are in the repo.
+
+**Tooling change.** Studio updated during Batch 3 and refuses `qa_inject.py`. Use `tools/qa/qa_place.py OUTPUT.rbxlx probe...` for a private QA copy, and expect `HUMAN_PLAYTEST.md`'s kit to need the same. If Windows Studio differs, report it.
+
+**Next after acceptance:** a fresh-profile opening, equipment and first-boss playthrough. Later bosses stay out of scope until commissioned individually.
+
+## Batch 4: Route (Mac, 5 November 2026)
+Implemented: the Foundry wing between the Bamboo Gate and the crest, Bell Terrace altar, Founders' Kiln cache, Founders' Ledger, barred ridge gate. Digest **409185567**. Details: `route/RESULTS.md`.
+
+**Route to walk, ordinary controls, earned save if possible:**
+Bridge north head → Bamboo Gate (z -1120) → **Foundry path** west at (-40, -1178) → yard → stairs (-97, -1207) → hall → west door (-124, -1222) → stair to landing (-132, -1262) → west to **Bell Terrace altar** (-169, -1228) → branch south down (-170, -1292) to **Founders' Kiln** (-170, -1336) → back up → east along **Bell Walk** (y 20) → stairs to crest (-40, -1272) → **Lift the Bar** at the ridge gate from the crest (-1, -1254) → old stairs down → Bamboo Gate → back to the bridge.
+
+**Windows must run, none yet done:**
+1. **Both directions, fought through.** Expected unfought: 29.0 s bridge to shrine shut, 18.6 s lifted, 25.4 s back through the wing. Record the fought time; only a human can say if it drags.
+2. **Rest at Bell Terrace, die, retry.** Expect respawn at about (-164, 24.5, -1235), flask refilled on rest, Travel lists it.
+3. **Kiln cache once.** Expect +2 Starfall Shard, +3 Spirit Iron. A second claim, a respawn, a rejoin and lifting the bar must not pay it again.
+4. **Shortcut.** Below, shut: "Barred from the far side", marker "Foundry path". Lift from the crest. Below, lifted: no prompt, marker "Ridge stairs", 3.2 s down.
+5. **Old saves, private save, only if authorized.** A save with the Bamboo Shrine or Colosseum Antechamber altar, or Baize at rest: gate already open, all checkpoints valid. A save before them: gate shut, route through the wing. Rejoin after lifting: stays lifted.
+6. **Two clients.** The gate stands open while any present player has lifted it, by design. B, who has not, walks through with A; after A leaves it closes for B. Confirm B is not trapped on the crest side (the prompt lifts it) and foes reset cleanly.
+7. **Traversal.** Falls off the Bell Walk both sides (expect return to the landing, no damage), both jumps past the gate wings and the hall wall (expect no reward or flag skipped), camera on the stair, under both roofs and against the tower base. Enemy pursuit and reset at the Kiln, hall and walk.
+8. **Performance, full world.** Standing at the clearing, hall, terrace and lookout: p50, p95, p99 frame and step, memory, graphics setting. Mac saw 60 fps in Studio only, which is not a result.
+9. **Human look and judgment.** Does the wing read as a place with a goal, can the tower be seen when it should, are the Kiln guards and the memorial's nearby swordsman fair, is the bar easy to find from the crest?
+10. **Input hardware.** Gamepad and touch on the altar menu, cache and gate prompts.
+
 ## Batch 3: Armour (Mac, 5 November 2026)
 Implemented: three suits at Gao, ownership, forge, reinforce, compare, wear, migration, real combat effect. Digest **52738962**. Details: `armour/RESULTS.md`.
 

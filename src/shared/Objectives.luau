@@ -66,7 +66,7 @@ function Objectives.parseAltars(value: any): { [string]: boolean }
 end
 
 function Objectives.regionOf(altarId: string): string?
-	local expanded: { [string]: string } = { Altar_SanctuaryDepths = "SanctuaryDepths", Altar_CelestialPagoda = "CelestialPagoda", Altar_SkyCitadel = "SkyCitadel" }
+	local expanded: { [string]: string } = { Altar_BellTerrace = "BambooPass", Altar_SanctuaryDepths = "SanctuaryDepths", Altar_CelestialPagoda = "CelestialPagoda", Altar_SkyCitadel = "SkyCitadel" }
 	if expanded[altarId] then return expanded[altarId] end
 	for _, altar in ROUTE do
 		if altar.Id == altarId then

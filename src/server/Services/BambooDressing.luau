@@ -11,6 +11,7 @@ local Fx = require(script.Parent:WaitForChild("MonasteryFx") :: ModuleScript)
 local Decor = require(script.Parent:WaitForChild("RegionDecor") :: ModuleScript)
 local Ground = require(script.Parent:WaitForChild("CampaignTerrain") :: ModuleScript)
 local Ecology = require(script.Parent:WaitForChild("BambooEcology") :: ModuleScript)
+local Foundry = require(script.Parent:WaitForChild("BambooFoundry") :: ModuleScript)
 local World = require(game:GetService("ReplicatedStorage"):WaitForChild("AsurasPath").Shared.WorldDefinitions)
 
 local Dressing = {}
@@ -127,6 +128,7 @@ function Dressing.Build(map: Instance, layout: any, rng: Random)
 			Ecology.Grove(groves, layout, grove, Random.new(291030 + i * 971))
 		end
 	end
+	Foundry.Build(map)
 	Ecology.Entry(map, layout, Random.new(291026))
 	Ecology.Shrine(map, layout, Random.new(291027))
 	local set = Kit.folder("PassDressing", map)
@@ -134,7 +136,8 @@ function Dressing.Build(map: Instance, layout: any, rng: Random)
 	-- Karst spires beyond the thicket: the pass's skyline on both sides.
 	for i = 0, 9 do
 		local z = -1160 - i * 54
-		spire(set, -186 + rng:NextNumber(-8, 8), z, rng:NextNumber(60, 110), rng)
+		-- The Foundry terrace stands where three of these spires rose: they step back onto the valley wall, the same stream drawn.
+		spire(set, -186 + rng:NextNumber(-8, 8) - (if z <= -1200 and z >= -1352 then 40 else 0), z, rng:NextNumber(60, 110), rng)
 		spire(set, 186 + rng:NextNumber(-8, 8), z - 20, rng:NextNumber(60, 110), rng)
 	end
 	-- High-detail pagodas on the valley walls (seated on CampaignTerrain's backdrop), above the bamboo.

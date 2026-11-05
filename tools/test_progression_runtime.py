@@ -477,7 +477,7 @@ check(root.LocalTransparencyModifier~=1,"closing restores the player's avatar")
 send({action="Codex"});check(latest().action=="Codex","codex request answered with server discovery flags");client:Receive(latest())
 local function texts() local all=client.View.Subtitle.Text.." "..client.View.Status.Text;for _,c in client.View.List.Children do if not c.Destroyed then all..=" "..tostring(c.Text) end end;return all end
 local shown=texts()
-check(string.find(shown,"1 / 8 Inscriptions",1,true) and string.find(shown,"Sovereigns at rest",1,true),"codex shows discovered totals")
+check(string.find(shown,"1 / 9 Inscriptions",1,true) and string.find(shown,"Sovereigns at rest",1,true),"codex shows discovered totals")
 check(string.find(shown,Catalog.Lore.Pillars.Title,1,true)~=nil,"discovered inscription listed")
 local leaked=false
 for _,id in Catalog.LoreOrder do if id~="Pillars" and (string.find(shown,Catalog.Lore[id].Title,1,true) or string.find(shown,string.sub(Catalog.Lore[id].Text,1,40),1,true)) then leaked=true end end

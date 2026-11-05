@@ -337,7 +337,7 @@ check("from the waterfall path the marker leads back through the postern", Guide
 local o = Objectives.resolve({ Region = "Sanctuary", Altars = {}, Bloodstain = stain, StainRegion = "DesecratedMonastery", InBoss = false, InColosseum = false, BossFelled = false, Rested = true })
 check("bloodstain objective says to take the gate first", o and string.find(o.Detail, "northern gate first", 1, true) ~= nil)
 check("marker shows the stage name and walked distance", string.find(src("src/client/Controllers/WaypointMarker.luau"), '"%s · %dm"', 1, true)
-	and string.find(src("src/client/Controllers/ObjectiveController.luau"), "RouteGuide.next(root.Position, goal)", 1, true))
+	and string.find(src("src/client/Controllers/ObjectiveController.luau"), "RouteGuide.next(root.Position, goal,", 1, true))
 for _, name in { "MonasteryPockets", "MonasterySecrets" } do
 	local text = src("src/server/Services/" .. name .. ".luau")
 	local _, lines = string.gsub(text, "\n", "")

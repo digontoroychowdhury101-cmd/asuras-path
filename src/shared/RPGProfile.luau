@@ -31,6 +31,7 @@ function RPG.apply(p: any,raw: any)
   p.equippedLoadout[key]=if type(id)=="string" and p.inventory.Spells[id] then id else (if n==1 then "ThunderclapPalm" else "GaleStep")
  end
  p.defeatedBosses=I.flags(raw.defeatedBosses or world.bosses);p.unlockedAltars=I.flags(raw.unlockedAltars or world.altars)
+ p.routeFlags=I.flags(raw.routeFlags) -- opened shortcut gates (additive); RouteGates also opens them for saves already past
  for id in I.flags(world.altars) do p.unlockedAltars[id]=true end
  for id in I.flags(world.bosses) do p.defeatedBosses[id]=true end
  p.unlockedAltars.Altar_SanctuaryBonfire=true
@@ -56,7 +57,7 @@ function RPG.validate(p: any): (boolean,string?)
  if not p.inventory.Weapons[l.MainWeapon] or (l.OffWeapon~=nil and not p.inventory.Weapons[l.OffWeapon]) then return false,"Unowned loadout" end
  for _,key in {"SpellSlot1","SpellSlot2"} do if l[key]~=nil and not p.inventory.Spells[l[key]] then return false,"Unowned spell" end end
  if not Armor.validWorn(p.inventory.Armor,l.ArmorSet) then return false,"Invalid armor" end
- for _,key in {"defeatedBosses","unlockedAltars"} do
+ for _,key in {"defeatedBosses","unlockedAltars","routeFlags"} do
   if type(p[key])~="table" then return false,"Missing flags" end
   local n=0;for id,v in p[key] do n+=1;if n>512 or not I.id(id) or v~=true then return false,"Invalid flags" end end
  end

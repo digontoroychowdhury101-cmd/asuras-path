@@ -354,6 +354,9 @@
           },
           "EnvironmentProfiles": {
             "$path": "src/shared/EnvironmentProfiles.luau"
+          },
+          "RouteGates": {
+            "$path": "src/shared/RouteGates.luau"
           }
         },
         "Simulation": {
@@ -720,6 +723,12 @@
           },
           "BambooEcology": {
             "$path": "src/server/Services/BambooEcology.luau"
+          },
+          "RouteGates": {
+            "$path": "src/server/Services/RouteGates.luau"
+          },
+          "BambooFoundry": {
+            "$path": "src/server/Services/BambooFoundry.luau"
           }
         }
       }

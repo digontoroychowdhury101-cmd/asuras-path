@@ -67,7 +67,7 @@ local BODY_FONT = Enum.Font.Garamond
 local NUMBER_FONT = Enum.Font.GothamMedium
 
 local WEAPON_GLYPH: { [string]: string } = { Unarmed = "FIST", Jian = "JIAN", Dao = "DAO", Guandao = "GLAIVE" }
-local MATERIAL_NAME: { [string]: string } = { SpiritIronOre = "Spirit Iron Ore" }
+local MATERIAL_NAME: { [string]: string } = { SpiritIronOre = "Spirit Iron Ore", StarfallShard = "Starfall Shard" }
 local WEAPON_NAME: { [string]: string } = { Unarmed = "Iron Fist", Jian = "Jian Sword", Dao = "Dao Sabre", Guandao = "Guandao Glaive", None = "—" }
 local REASONS: { [string]: string } = {
 	GourdEmpty = "The gourd is empty.",
@@ -1128,11 +1128,13 @@ function Controller.OnCue(self: Interface, cue: Cue)
 		self:ShowToast("The mist carries you back to " .. tostring(data.place or "safe ground") .. ".")
 	elseif cue.Kind == "SanctuaryCatch" and cue.Source == own then
 		self:ShowToast("The clouds return you to the bonfire.")
+	elseif cue.Kind == "RouteOpened" and cue.Source == own then
+		self:ShowToast("The bar lifts. The ridge stairs lie open back to the Bamboo Gate.")
 	elseif cue.Kind == "WeaponReinforced" and cue.Source == own then
 		local weapon = tostring(data.weapon or "")
 		self:ShowBanner("WEAPON REINFORCED", string.format("%s  +%d", WEAPON_NAME[weapon] or weapon, tonumber(data.level) or 0), 2.6)
 	elseif cue.Kind == "MaterialFound" and cue.Source == own then
-		self:ShowToast("+1 " .. tostring(MATERIAL_NAME[tostring(data.material)] or data.material) .. "  ·  Master Smith Gao forges with it")
+		self:ShowToast(string.format("+%d %s  ·  Master Smith Gao forges with it", tonumber(data.count) or 1, tostring(MATERIAL_NAME[tostring(data.material)] or data.material)))
 	elseif cue.Kind == "GourdRefilled" and cue.Source == own then
 		self:ShowToast(string.format("Gourd refilled  (x%d)", tonumber(data.charges) or 0))
 	elseif cue.Kind == "Telegraph" then
