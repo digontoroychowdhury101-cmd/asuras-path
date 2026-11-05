@@ -1,0 +1,12 @@
+{
+  "kind": "seeded static observer; avatar parked at disclosed stand; original scene, combat and HUD",
+  "stage": "after",
+  "views": [],
+  "restoration_errors": [],
+  "observer_stand": [
+    0.0,
+    3.2,
+    -1128.0
+  ],
+  "owned_play_stopped": true
+}

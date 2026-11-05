@@ -1,0 +1,246 @@
+{
+  "kind": "single-client seeded gate-art diagnostic; real Z hold; original combat/HUD",
+  "restoration_errors": [],
+  "closed": {
+    "players": 1,
+    "leaves": [
+      {
+        "touch": false,
+        "collide": true,
+        "visualPositionError": 0,
+        "transparency": 1,
+        "position": [
+          -3,
+          16.5,
+          -1250.5
+        ],
+        "visualAngleError": 0,
+        "frame": [
+          -3,
+          16.5,
+          -1250.5,
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1
+        ],
+        "query": true,
+        "size": [
+          6,
+          9,
+          1
+        ]
+      },
+      {
+        "touch": false,
+        "collide": true,
+        "visualPositionError": 0,
+        "transparency": 1,
+        "position": [
+          3,
+          16.5,
+          -1250.5
+        ],
+        "visualAngleError": 0,
+        "frame": [
+          3,
+          16.5,
+          -1250.5,
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1
+        ],
+        "query": true,
+        "size": [
+          6,
+          9,
+          1
+        ]
+      }
+    ],
+    "wings": [
+      {
+        "collide": true,
+        "transparency": 1,
+        "size": [
+          1,
+          9,
+          14
+        ]
+      },
+      {
+        "collide": true,
+        "transparency": 1,
+        "size": [
+          1,
+          9,
+          14
+        ]
+      }
+    ],
+    "openGates": "",
+    "invalidDecor": 0,
+    "health": 100,
+    "visualParts": 60
+  },
+  "conditions": {
+    "gate_closed_front": {
+      "fov": 70,
+      "camera": [
+        3,
+        18.5,
+        -1238,
+        0.9723873734474182,
+        -0.03587700426578522,
+        0.23059871792793274,
+        0,
+        0.9881125092506409,
+        0.15373247861862183,
+        -0.23337295651435852,
+        -0.14948752522468567,
+        0.9608280062675476
+      ],
+      "health": 100,
+      "region": "BambooPass",
+      "viewport": [
+        1271,
+        685
+      ],
+      "editorQuality": "Automatic",
+      "autoFRMLevel": 1,
+      "quality": "Automatic"
+    },
+    "gate_open_front": {
+      "fov": 70,
+      "camera": [
+        3,
+        18.5,
+        -1238,
+        0.9723873734474182,
+        -0.03587700426578522,
+        0.23059871792793274,
+        0,
+        0.9881125092506409,
+        0.15373247861862183,
+        -0.23337295651435852,
+        -0.14948752522468567,
+        0.9608280062675476
+      ],
+      "health": 100,
+      "region": "BambooPass",
+      "viewport": [
+        1271,
+        685
+      ],
+      "editorQuality": "Automatic",
+      "autoFRMLevel": 1,
+      "quality": "Automatic"
+    }
+  },
+  "opened": {
+    "players": 1,
+    "leaves": [
+      {
+        "touch": false,
+        "collide": false,
+        "visualPositionError": 0,
+        "transparency": 1,
+        "position": [
+          -6.520944595336914,
+          16.5,
+          -1253.4544677734375
+        ],
+        "visualAngleError": 0,
+        "frame": [
+          -6.520944595336914,
+          16.5,
+          -1253.4544677734375,
+          -0.1736481934785843,
+          0,
+          0.9848077297210693,
+          0,
+          1,
+          0,
+          -0.9848077297210693,
+          0,
+          -0.1736481934785843
+        ],
+        "query": true,
+        "size": [
+          6,
+          9,
+          1
+        ]
+      },
+      {
+        "touch": false,
+        "collide": false,
+        "visualPositionError": 0,
+        "transparency": 1,
+        "position": [
+          6.520944595336914,
+          16.5,
+          -1253.4544677734375
+        ],
+        "visualAngleError": 0,
+        "frame": [
+          6.520944595336914,
+          16.5,
+          -1253.4544677734375,
+          -0.1736481934785843,
+          0,
+          -0.9848077297210693,
+          0,
+          1,
+          0,
+          0.9848077297210693,
+          0,
+          -0.1736481934785843
+        ],
+        "query": true,
+        "size": [
+          6,
+          9,
+          1
+        ]
+      }
+    ],
+    "wings": [
+      {
+        "collide": true,
+        "transparency": 1,
+        "size": [
+          1,
+          9,
+          14
+        ]
+      },
+      {
+        "collide": true,
+        "transparency": 1,
+        "size": [
+          1,
+          9,
+          14
+        ]
+      }
+    ],
+    "openGates": "BambooRidge",
+    "invalidDecor": 0,
+    "health": 100,
+    "visualParts": 60
+  },
+  "passed": true,
+  "owned_play_stopped": true
+}

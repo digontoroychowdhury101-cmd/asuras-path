@@ -1,0 +1,119 @@
+{
+  "baseline": {
+    "revision": "ffb2f47",
+    "scripts": 280,
+    "bytes": 2236295,
+    "digest": 409185567
+  },
+  "deliveredBuild": {
+    "scripts": 281,
+    "bytes": 2240350,
+    "digest": 1070832415,
+    "matchesOpenStudio": true
+  },
+  "studioId": "10812086-31f1-4f19-b100-5378723e7ea2",
+  "studioVersion": "0.746.0.7461264",
+  "comparisonKind": "static observer at (0,3.2,-1128); original scene, lighting, health, combat and HUD; no earned traversal claim",
+  "comparisons": [
+    {
+      "view": "entry",
+      "poseMatches": true,
+      "viewportMatches": true,
+      "fovMatches": true,
+      "lightingMatches": true,
+      "beforeFRM": 1,
+      "afterFRM": 1,
+      "bothAliveInBamboo": true
+    },
+    {
+      "view": "close_path",
+      "poseMatches": true,
+      "viewportMatches": true,
+      "fovMatches": true,
+      "lightingMatches": true,
+      "beforeFRM": 1,
+      "afterFRM": 1,
+      "bothAliveInBamboo": true
+    },
+    {
+      "view": "ground_transition",
+      "poseMatches": true,
+      "viewportMatches": true,
+      "fovMatches": true,
+      "lightingMatches": true,
+      "beforeFRM": 1,
+      "afterFRM": 1,
+      "bothAliveInBamboo": true
+    },
+    {
+      "view": "crest_shrine",
+      "poseMatches": true,
+      "viewportMatches": true,
+      "fovMatches": true,
+      "lightingMatches": true,
+      "beforeFRM": 1,
+      "afterFRM": 1,
+      "bothAliveInBamboo": true
+    },
+    {
+      "view": "shrine",
+      "poseMatches": true,
+      "viewportMatches": true,
+      "fovMatches": true,
+      "lightingMatches": true,
+      "beforeFRM": 1,
+      "afterFRM": 1,
+      "bothAliveInBamboo": true
+    },
+    {
+      "view": "arena",
+      "poseMatches": true,
+      "viewportMatches": true,
+      "fovMatches": true,
+      "lightingMatches": true,
+      "beforeFRM": 1,
+      "afterFRM": 1,
+      "bothAliveInBamboo": true
+    },
+    {
+      "view": "frost_overlook",
+      "poseMatches": true,
+      "viewportMatches": true,
+      "fovMatches": true,
+      "lightingMatches": true,
+      "beforeFRM": 1,
+      "afterFRM": 1,
+      "bothAliveInBamboo": true
+    },
+    {
+      "view": "moon_gate",
+      "poseMatches": true,
+      "viewportMatches": true,
+      "fovMatches": true,
+      "lightingMatches": true,
+      "beforeFRM": 1,
+      "afterFRM": 1,
+      "bothAliveInBamboo": true
+    },
+    {
+      "view": "root_detail",
+      "poseMatches": true,
+      "viewportMatches": true,
+      "fovMatches": true,
+      "lightingMatches": true,
+      "beforeFRM": 1,
+      "afterFRM": 1,
+      "bothAliveInBamboo": true
+    }
+  ],
+  "allOwnedTestsStopped": true,
+  "fullLocalVerifier": "verification.log; all 14 stages pass",
+  "remaining": [
+    "final normal-quality and Balanced inspection",
+    "frost support UV/texel scale and normal jump/return test",
+    "grove/shrine ground coverage and canopy continuity",
+    "black primitive arena palisade",
+    "qualified 60-second desktop route/combat and physical mobile timing",
+    "Sanctuary and every other region final passes"
+  ]
+}

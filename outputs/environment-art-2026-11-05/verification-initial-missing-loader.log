@@ -1,0 +1,50 @@
+==========================================================
+ Running Full Verification Suite for Asura's Path
+==========================================================
+[1/14] Testing Asura Stage 1...
+Asura Stage 1: all checks passed
+[2/14] Testing Asura Stage 2...
+Asura Stage 2: all checks passed
+[3/14] Testing Asura Stage 3...
+Asura Stage 3: all checks passed
+[4/14] Testing Weapons & Spells Contracts and Omnidirectional Combat...
+Phase 2 weapons and spells: 377 checks passed
+PASS     test_omni_combat.luau: omni combat: 84 passed, 0 failed (local regression; Studio, hardware and human play separate)
+[5/14] Testing Weapons & Spells Server Runtime...
+Phase 2 server effects: 16 scenarios passed
+[6/14] Testing Profile Integrity & Migrations...
+PASS profile integrity: invalid numbers, nested corruption, locked styles, future versions, valid-data preservation and table isolation
+[7/14] Testing Movement Controller & Kinetics...
+PASS: 59 kinetic movement/input/effects assertions (engine fakes; Studio contact QA separate)
+[8/14] Testing Boss Encounters & Runtime...
+Boss encounters: 290 checks passed
+miniboss reward: 17 passed, 0 failed
+Boss runtime: 35 checks passed
+Boss HUD: 2 checks passed
+Boss phase coordinator: 8 checks passed
+Boss fog coordinator: 11 checks passed
+[9/14] Testing Objectives System...
+Objectives: all checks passed (including six encounter routes)
+[10/14] Testing Progression, Lore, Review & Campaign Region Regressions...
+PASS progression and lore: 161 checks
+PASS progression runtime: 149 checks
+PASS ending credits: 25 sourced rows and project lines match assets/CREDITS.md
+Review regressions: 21 checks passed
+chain built and walked in 14.9s
+campaign regions: 421 passed, 0 failed
+/Users/digonto/Documents/ChatGPT/Roblox game 2/work/test_campaign_build.generated.luau:30: attempt to call a nil value
+stacktrace:
+/Users/digonto/Documents/ChatGPT/Roblox game 2/work/test_campaign_build.generated.luau:30 function load
+/Users/digonto/Documents/ChatGPT/Roblox game 2/work/test_campaign_build.generated.luau:1336
+/Users/digonto/Documents/ChatGPT/Roblox game 2/work/test_campaign_build.generated.luau:30 function load
+/Users/digonto/Documents/ChatGPT/Roblox game 2/work/test_campaign_build.generated.luau:1542
+/Users/digonto/Documents/ChatGPT/Roblox game 2/work/test_campaign_build.generated.luau:30 function load
+/Users/digonto/Documents/ChatGPT/Roblox game 2/work/test_campaign_build.generated.luau:2181
+/Users/digonto/Documents/ChatGPT/Roblox game 2/work/test_campaign_build.generated.luau:30 function load
+/Users/digonto/Documents/ChatGPT/Roblox game 2/work/test_campaign_build.generated.luau:2951
+FAIL CampaignWorld.Start runs: /Users/digonto/Documents/ChatGPT/Roblox game 2/work/test_campaign_build.generated.luau:30: attempt to call a nil value
+FAIL BambooPass map is raised
+FAIL AshColosseum map is raised
+FAIL SanctuaryDepths map is raised
+FAIL CelestialPagoda map is raised
+FAIL SkyCitadel map is raised

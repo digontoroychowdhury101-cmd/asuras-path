@@ -729,6 +729,9 @@
           },
           "BambooFoundry": {
             "$path": "src/server/Services/BambooFoundry.luau"
+          },
+          "BambooGateArt": {
+            "$path": "src/server/Services/BambooGateArt.luau"
           }
         }
       }

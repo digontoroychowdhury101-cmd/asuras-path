@@ -10,6 +10,10 @@
 
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## Bamboo ridge gate art — 2026-11-05 (Mac)
+
+Replaced ridge gate boxes with framed, braced timber using existing PBR meshes. Normal Z opens aligned visuals; original colliders retained. Nine observer comparisons, full verifier and canonical digest match. Automatic FRM1 views remain diagnostics. Next: frost-support texel scale, grove floor and arena boundaries; foreground performance, multiplayer and whole-world acceptance remain open.
+
 ## Iron Bull and Zhao in game — 2026-11-04 (Mac)
 
 Bull runs on the creator's sculpt with 45 clips; Zhao v2 finally installed. Fixed frozen Death clips and a won-fight reset. Both kill orders pass seeded; real-input acceptance pending on Windows. Next: armour. See `outputs/mac-followup-2026-11-02/iron-bull/RESULTS.md`.

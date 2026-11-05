@@ -11,13 +11,14 @@ local InputMap = require(Shared.InputMap)
 local Characters = require(script.Parent:WaitForChild("CharacterService") :: ModuleScript)
 local Persistence = require(script.Parent:WaitForChild("PersistenceService") :: ModuleScript) :: any
 local Kit = require(script.Parent:WaitForChild("MonasteryKit") :: ModuleScript)
+local GateArt = require(script.Parent:WaitForChild("BambooGateArt") :: ModuleScript)
 
 local Service = {}
 local ID = "BambooRidge"
 local LIFT_RANGE = 10
 local connections: { RBXScriptConnection } = {}
 local running = false
-local leaves: { { Part: BasePart, Closed: CFrame, Open: CFrame } } = {}
+local leaves: { { Part: BasePart, Visual: Model?, Closed: CFrame, Open: CFrame } } = {}
 local bar: BasePart? = nil
 local lift: ProximityPrompt? = nil
 local barred: ProximityPrompt? = nil
@@ -34,6 +35,7 @@ local function setOpen(open: boolean)
 	for _, leaf in leaves do
 		leaf.Part.CFrame = if open then leaf.Open else leaf.Closed
 		leaf.Part.CanCollide = not open
+		if leaf.Visual then leaf.Visual:PivotTo(leaf.Part.CFrame) end
 	end
 	if bar then bar.Transparency = if open then 1 else 0 end
 	if lift then lift.Enabled = not open end
@@ -75,9 +77,12 @@ local function build(parent: Instance, box: any)
 		local open = hinge * CFrame.Angles(0, side * math.rad(-100), 0) * CFrame.new(-side * box.SX / 4, 0, 0)
 		local leaf = Kit.part(folder, "GateLeaf", Vector3.new(box.SX / 2, box.SY, box.SZ), closed, P.WoodDark, Enum.Material.Wood)
 		leaf.CanCollide = true
-		table.insert(leaves, { Part = leaf, Closed = closed, Open = open })
+		local visual = GateArt.Panel(folder, closed, leaf.Size, "GateLeaf_Cedar", true)
+		if visual then leaf.Transparency, leaf.CastShadow = 1, false end
+		table.insert(leaves, { Part = leaf, Visual = visual, Closed = closed, Open = open })
 	end
 	local beam = Kit.part(folder, "GateBar", Vector3.new(box.SX + 1, 0.9, 0.7), CFrame.new(box.X, box.Y + 0.4, box.Z - 1), P.Lacquer, Enum.Material.Wood, Kit.decor())
+	beam.MaterialVariant, beam.Color = "AsuraTimber", Color3.new(1, 1, 1)
 	bar = beam
 	local crest = Instance.new("ProximityPrompt")
 	crest.ActionText, crest.ObjectText, crest.HoldDuration, crest.MaxActivationDistance = "Lift the Bar", "Ridge Gate", 0.6, 8

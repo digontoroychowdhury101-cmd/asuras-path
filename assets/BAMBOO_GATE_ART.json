@@ -1,0 +1,38 @@
+{
+  "kind": "Bamboo ridge gate art; existing uploaded geometry and PBR reuse",
+  "builder": "src/server/Services/BambooGateArt.luau",
+  "originalBlenderAuthoring": "tools/blender/lobby_kit_pieces.py: plaque(), beam and material source masters preserved",
+  "mesh": "rbxassetid://134797493263468",
+  "woodMaps": {
+    "ColorMap": "rbxassetid://137089161025118",
+    "NormalMap": "rbxassetid://77502879945862",
+    "RoughnessMap": "rbxassetid://116196707878232",
+    "MetalnessMap": "rbxassetid://75777050451984",
+    "TexturePack": "rbxassetid://87573178148489"
+  },
+  "hingeMaps": {
+    "ColorMap": "rbxassetid://102773795312372",
+    "NormalMap": "rbxassetid://71590561736430",
+    "RoughnessMap": "rbxassetid://112284405141693",
+    "MetalnessMap": "rbxassetid://77828170829088",
+    "TexturePack": "rbxassetid://108604584402438"
+  },
+  "newUploads": 0,
+  "sourceMeshTriangles": 44,
+  "runtimeMeshParts": 60,
+  "runtimeTriangles": 2640,
+  "panels": {
+    "movingLeaves": 2,
+    "leafPartsEach": 14,
+    "staticWings": 2,
+    "wingPartsEach": 16
+  },
+  "physics": "original two 6x9x1 gate leaves and two 1x9x14 wings retained; all 60 new parts anchored, noncolliding, nonqueryable, nontouching",
+  "lifetime": "visual models owned by the existing gate/map containers; moved only when gate state changes; no new connections or frame callbacks",
+  "validation": "outputs/environment-art-2026-11-05/gate-interaction-clean/session.json",
+  "limits": [
+    "single-client seeded interaction, not earned route acceptance",
+    "low Automatic quality; foreground performance and final art acceptance pending",
+    "last-player-leave closure and shared multiplayer gate behavior remain Windows cases"
+  ]
+}

@@ -62,6 +62,8 @@ def main():
     parser.add_argument("--cameras", type=Path, help="optional JSON mapping of names to [eye, target, stand] vectors")
     parser.add_argument("--play-session", action="store_true", help="start from Edit, capture in one connection, then stop the owned test")
     parser.add_argument("--settle", type=float, default=3.0, help="seconds to let lighting and material maps settle")
+    parser.add_argument("--observer-stand", type=float, nargs=3, metavar=("X", "Y", "Z"),
+                        help="keep the mock avatar at one safe stand for static observer views; combat and progression remain unchanged")
     parser.add_argument("--cost-seconds", type=float, default=0, help="optional 1..10 second fixed-view cost diagnostic")
     args = parser.parse_args()
     if args.cost_seconds and not 1 <= args.cost_seconds <= 10:
@@ -82,6 +84,9 @@ def main():
     sid = args.studio
     manifest = {"kind": "seeded Studio running-client diagnostic; original scene and HUD",
                 "stage": args.stage, "views": [], "restoration_errors": []}
+    if args.observer_stand:
+        manifest["kind"] = "seeded static observer; avatar parked at disclosed stand; original scene, combat and HUD"
+        manifest["observer_stand"] = args.observer_stand
     saved_server = saved_client = started_play = False
     try:
         state = call(client, sid, "get_studio_state")[1]
@@ -125,6 +130,8 @@ return 'saved camera'""")
         saved_client = True
         for name in names:
             eye, target, stand = cameras[name]
+            authored_stand = stand
+            stand = args.observer_stand or stand
             lua(client, sid, "Server", f"""local s=_G.AsuraBambooCaptureOrigin
 local p=game:GetService('Players'):GetPlayerByUserId(s.UserId)
 assert(p and p.Character,'player character missing')
@@ -167,6 +174,11 @@ controlsVisible=(function() local g=p.PlayerGui:FindFirstChild('ControlsCard',tr
 lighting={clock=l.ClockTime,exposure=l.ExposureCompensation,ambient=tostring(l.Ambient),
 outdoor=tostring(l.OutdoorAmbient),density=a and a.Density,haze=a and a.Haze},
 wind=tostring(workspace.GlobalWind),terrainDecoration=safe(function() return workspace.Terrain.Decoration end)})""")
+            conditions = json.loads(metadata)
+            if conditions.get("health", 0) <= 0 or conditions.get("region") != "BambooPass":
+                manifest["rejected_view"] = {"name": name, "conditions": conditions,
+                                             "reason": "avatar dead or outside Bamboo Pass; comparison lighting/HUD invalid"}
+                raise RuntimeError(f"{name}: comparison rejected (health={conditions.get('health')}, region={conditions.get('region')})")
             result, _ = call(client, sid, "screen_capture", capture_id=f"{args.stage}_{name}")
             images = [c for c in result.get("content", []) if c.get("type") == "image"]
             if not images:
@@ -183,6 +195,7 @@ wind=tostring(workspace.GlobalWind),terrainDecoration=safe(function() return wor
                 code = f"_G.AsuraViewCostSeconds={args.cost_seconds}\n" + (Path(__file__).parent / "ViewCost.luau").read_text()
                 cost = json.loads(lua(client, sid, "Client", code))
             manifest["views"].append({"name": name, "eye": eye, "target": target, "stand": stand,
+                                      "authored_stand": authored_stand,
                                       "files": files, "settle": args.settle, "conditions": json.loads(metadata), "cost": cost})
             manifest_path.write_text(json.dumps(manifest, indent=2) + "\n")
             print(f"Captured {name}: {', '.join(files)}", flush=True)
@@ -206,6 +219,10 @@ _G.AsuraBambooCaptureOrigin=nil return 'player restored'""")
         if started_play:
             try:
                 call(client, sid, "start_stop_play", is_start=False)
+                state = call(client, sid, "get_studio_state")[1]
+                if "Client" in state or "Server" in state:
+                    raise RuntimeError("owned Play did not return to Edit")
+                manifest["owned_play_stopped"] = True
             except Exception as exc:
                 manifest["restoration_errors"].append(str(exc))
         manifest_path.write_text(json.dumps(manifest, indent=2) + "\n")

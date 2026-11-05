@@ -7,6 +7,7 @@ local CollectionService = game:GetService("CollectionService")
 local Kit = require(script.Parent:WaitForChild("MonasteryKit") :: ModuleScript)
 local Fx = require(script.Parent:WaitForChild("MonasteryFx") :: ModuleScript)
 local Decor = require(script.Parent:WaitForChild("RegionDecor") :: ModuleScript)
+local GateArt = require(script.Parent:WaitForChild("BambooGateArt") :: ModuleScript)
 
 local Foundry = {}
 local M = Enum.Material
@@ -169,8 +170,17 @@ local function walk(parent: Instance, map: Instance)
 	lobby(group, "Banner_Cloth", Vector3.new(-84.4, 30, -1272), 90, 1.1)
 end
 
-local function ridgeGate(parent: Instance)
+local function ridgeGate(parent: Instance, map: Instance)
 	local group = Kit.folder("RidgeGateFrame", parent)
+	local structure = map:FindFirstChild("Structure")
+	for _, box in if structure then structure:GetChildren() else {} do
+		if box:IsA("BasePart") and box.Name == "RidgeGateWing" then
+			-- Layout.wall runs its length along local Z; panels run their width along X.
+			local panel = GateArt.Panel(group, box.CFrame * CFrame.Angles(0, math.pi / 2, 0),
+				Vector3.new(box.Size.Z, box.Size.Y, box.Size.X), "RidgeGateWing_Cedar")
+			if panel then box.Transparency, box.CastShadow = 1, false end
+		end
+	end
 	lobby(group, "Beam_Architrave", Vector3.new(0, 23.2, -1250.5), 0, 1.9)
 	lobby(group, "Roof_Gallery", Vector3.new(-4.4, 25, -1250.5), 90, 0.9)
 	lobby(group, "Roof_Gallery", Vector3.new(4.4, 25, -1250.5), 90, 0.9)
@@ -183,7 +193,7 @@ function Foundry.Build(map: Instance)
 	terrace(set, map)
 	kiln(set)
 	walk(set, map)
-	ridgeGate(set)
+	ridgeGate(set, map)
 end
 
 return Foundry
