@@ -1,3 +1,5 @@
+**Armour (2026-11-05):** Three suits at Gao: ownership, forge, reinforce, compare, real combat effect (monk hits ×0.84, ×0.82). Digest 52738962, verifier green, single-client Studio. Windows cases, combat revalidation and human look pending: `outputs/mac-followup-2026-11-02/armour/RESULTS.md`. Next: route expansion.
+
 **Gao prompt fix (2026-11-03):** Seal prompt range 12→4.5 so approaching Gao always offers Speak; seal still usable beside it. Studio approaches, reinforce, reopen and seal verified; verifier green, digest 430611340. Next: human playtest per `outputs/mac-followup-2026-11-02/HUMAN_PLAYTEST.md`, then monk tuning decision.
 
 **Windows acceptance (2026-11-03):** Fixed monk reaction-floor openers, W-07 stairs rollback, terrain boot error, Cloister respawn camping; added altar rest/respawn shelter (creator approved). Cloister→Travel→Gao reinforce passes; OmniPvP two-client 12/12; verifier and mutations green. Next: human feel, latency W-cases, batch 2. See `outputs/mac-followup-2026-11-02/windows-acceptance/RESULTS.md`.

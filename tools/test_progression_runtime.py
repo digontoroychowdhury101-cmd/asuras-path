@@ -12,6 +12,7 @@ local Progress=require("../src/shared/ProgressionRules")
 local CombatSettings=require("../src/shared/CombatSettings")
 local Catalog=require("../src/shared/NarrativeCatalog")
 local ForgeQuote=require("../src/shared/ForgeQuote")
+local ArmorRules=require("../src/shared/ArmorRules")
 local DialogueRules=require("../src/shared/DialogueRules")
 local ArenaRules=require("../src/shared/ArenaRules")
 local Definitions=require("../src/shared/WorldDefinitions")
@@ -113,7 +114,8 @@ local engine=Store.new(database,Schema,{owner="Runtime",now=function() return 10
 assert(engine:Load(7))
 local Persistence={Get=function(id) return engine:Get(id) end,Transaction=function(id,fn) return engine:Transaction(id,fn) end}
 local refreshes=0;local cues={}
-local Characters={GetActor=function(id) return actors[id] end,Now=function() return clock end,RefreshProgression=function() refreshes+=1 end,GetFighter=function(id) return actors[id] and actors[id].Fighter end,IsInDuel=function() return false end,Cue=function(kind) table.insert(cues,kind) end}
+local armorApplied=0
+local Characters={GetActor=function(id) return actors[id] end,Now=function() return clock end,RefreshProgression=function() refreshes+=1 end,ApplyArmor=function() armorApplied+=1 end,GetFighter=function(id) return actors[id] and actors[id].Fighter end,IsInDuel=function() return false end,Cue=function(kind) table.insert(cues,kind) end}
 actors[7]={Root=root,Fighter={State="Idle"},Duel=nil}
 local kindled={Altar_SanctuaryBonfire=true,Altar_MonasteryGate=true}
 local World={Flush=function() end,Refresh=function() end,IsInBossFight=function() return false end,GetSession=function() return {Altars=kindled} end}
@@ -151,14 +153,14 @@ def module(name, path, imports):
 
 source = HEADER
 source += module("Forge", "src/server/ForgeService.luau", {
-    "Shared.Shared.ProgressionRules": "Progress", "Shared.Shared.NarrativeCatalog": "Catalog",
+    "Shared.Shared.ProgressionRules": "Progress", "Shared.Shared.NarrativeCatalog": "Catalog", "Shared.Shared.ArmorRules": "ArmorRules",
     "script.Parent.PersistenceService": "Persistence", "script.Parent.CharacterService": "Characters"})
-source += "local Shop={UpgradeWeapon=Forge.Upgrade,InfuseWeapon=Forge.Infuse,EquipForged=Forge.Equip,Trade=Forge.Trade}\n"
+source += "local Shop={UpgradeWeapon=Forge.Upgrade,InfuseWeapon=Forge.Infuse,EquipForged=Forge.Equip,Trade=Forge.Trade,Armor=Forge.Armor}\n"
 source += module("EndingRules", "src/shared/EndingRules.luau", {})
 source += module("EndingCredits", "src/shared/EndingCredits.luau", {})
 source += module("Effects", "src/shared/EffectsPreference.luau", {})
 source += module("Actions", "src/server/Services/DialogueActions.luau", {
-    "Shared.Shared.ProgressionRules": "Progress", "Shared.Shared.NarrativeCatalog": "Catalog",
+    "Shared.Shared.ProgressionRules": "Progress", "Shared.Shared.NarrativeCatalog": "Catalog", 
     "script.Parent.PersistenceService": "Persistence", "script.Parent.CharacterService": "Characters",
     "script.Parent.WorldService": "World", "script.Parent.ShopService": "Shop", "script.Parent.LootService": "Loot",
     "Shared.Shared.EndingRules": "EndingRules"})
@@ -188,10 +190,11 @@ source += module("LevelPreview", "src/shared/LevelPreview.luau", {
     "(script :: any).Parent.ProgressionRules": "Progress", "\"./ProgressionRules\"": "Progress",
     "(script :: any).Parent.CombatSettings": "CombatSettings", "\"./CombatSettings\"": "CombatSettings"})
 source += module("CodexView", "src/client/Controllers/CodexView.luau", {"Shared.NarrativeCatalog": "Catalog", "Shared.WorldDefinitions": "Definitions", "Shared.InputMap": "InputMap", "Shared.EndingRules": "EndingRules"})
+source += module("ArmorView", "src/client/Controllers/ArmorView.luau", {"script.Parent.UiKit": "UiKit", "Shared.NarrativeCatalog": "Catalog", "Shared.ArmorRules": "ArmorRules"})
 source += module("View", "src/client/Controllers/DialogueView.luau", {
     "script.Parent.CodexView": "CodexView",
     "script.Parent.HudKit": "Kit", "script.Parent.UiKit": "UiKit", "Shared.NarrativeCatalog": "Catalog",
-    "Shared.ProgressionRules": "Progress", "Shared.LevelPreview": "LevelPreview", "Shared.EffectsPreference": "Effects", "Shared.ForgeQuote": "ForgeQuote"})
+    "Shared.ProgressionRules": "Progress", "Shared.LevelPreview": "LevelPreview", "Shared.EffectsPreference": "Effects", "Shared.ForgeQuote": "ForgeQuote", "script.Parent.ArmorView": "ArmorView"})
 source += module("Portrait", "src/client/Controllers/PortraitCamera.luau", {})
 source += module("Visibility", "src/client/Controllers/HudVisibility.luau", {})
 source += module("DialogueClient", "src/client/Controllers/DialogueController.luau", {"script.Parent.DialogueView": "View", "script.Parent.HudKit": "Kit", "Shared.Shared.InputMap": "InputMap", "script.Parent.HudVisibility": "Visibility", "script.Parent.PortraitCamera": "Portrait"})
@@ -401,6 +404,72 @@ do
  client:Close(true);client:Close()
  check(client.View.ForgeWeapon==nil,"closing forgets the selection: reopening starts on the weapon in hand")
  assert(engine:Transaction(7,function(p) p.qiEssence=10000;p.inventory.Weapons.Dao=nil end))
+ DialogueService.Open(player,"Gao");client:Receive(latest())
+end
+-- Armour through Gao: ordinary panel, real record. Every refusal leaves the saved record alone.
+do
+ local function shown() local all="";for _,c in client.View.List.Children do if not c.Destroyed then all..="\n"..tostring(c.Text) end end;return all end
+ local function button(text) for _,b in client.View.Buttons do if string.find(b.Text,text,1,true) then return b end end end
+ local function answer() client:Receive(latest()) end
+ local function record() local p=engine:Get(7);return p.qiEssence.."/"..(p.inventory.Materials.SpiritIronOre or 0).."/"..(p.inventory.Materials.StarfallShard or 0).."/"..p.equippedLoadout.ArmorSet end
+ local function say(x) send(x);answer() end
+ local function act(verb,id,tier) say({action="Armor",verb=verb,id=id,tier=tier,revision=latest().revision}) end
+ assert(engine:Transaction(7,function(p) p.qiEssence=5000;p.inventory.Materials.SpiritIronOre=6;p.inventory.Materials.StarfallShard=0;p.unlockedAltars.Altar_DesecratedCloister=nil end))
+ local choice;for i,c in Catalog.NPCs.Gao.Nodes.Greeting.Choices do if c.Action=="Armor" then choice=i end end
+ say({action="Choose",index=choice,revision=latest().revision})
+ check(latest().panel=="Armor" and string.find(shown(),"Ashen Pilgrim",1,true) and string.find(shown(),"worn",1,true),"the panel opens on the worn starter and says so")
+ -- A forged request outside the panel does nothing.
+ local before=record()
+ act("Acquire","Forged",0);check(record()==before and string.find(latest().message or "","Unknown",1,true)~=nil,"an unknown suit is refused by name")
+ act("Wear","IronOath",0);check(record()==before,"an unowned suit cannot be put on")
+ act("Sell","AshenPilgrim",0);check(record()==before,"an unknown verb moves nothing")
+ say({action="Armor",verb="Acquire",id=7,tier=0,revision=latest().revision});check(record()==before,"a malformed id moves nothing")
+ -- Locked, then earned.
+ button("Cinnabar Guard").Activated:Fire()
+ local locked=button("Have Gao forge it")
+ check(locked and locked.Disabled and string.find(shown(),"first.",1,true)~=nil,"the locked suit is disabled and says what opens it")
+ check(string.find(shown(),"Against what you wear",1,true)~=nil and string.find(shown(),"10.0%",1,true)~=nil,"the panel compares it with what is worn")
+ act("Acquire","CinnabarGuard",0);check(record()==before and not engine:Get(7).inventory.Armor.CinnabarGuard,"the server refuses what the panel refused")
+ assert(engine:Transaction(7,function(p) p.unlockedAltars.Altar_DesecratedCloister=true end))
+ send({action="Choose",index=1,revision=latest().revision});send({action="Choose",index=choice,revision=latest().revision});answer()
+ button("Cinnabar Guard").Activated:Fire()
+ local forge=button("Have Gao forge it")
+ check(forge and not forge.Disabled and string.find(forge.Text,"1200 Essence",1,true) and string.find(forge.Text,"Spirit Iron Ore (6 owned)",1,true),"the price, material and count are on the button")
+ local applied=armorApplied
+ forge.Activated:Fire()
+ local out=remotes.DialogueIntent.Sent[#remotes.DialogueIntent.Sent]
+ check(out.action=="Armor" and out.verb=="Acquire" and out.id=="CinnabarGuard" and client.View.Locked,"the confirmation names the shown suit and locks the panel")
+ local sent=#remotes.DialogueIntent.Sent
+ forge.Activated:Fire();check(#remotes.DialogueIntent.Sent==sent,"a second click before the answer sends nothing")
+ send(out);answer()
+ local p=engine:Get(7)
+ check(p.qiEssence==3800 and p.inventory.Materials.SpiritIronOre==3 and p.inventory.Armor.CinnabarGuard.Level==0 and armorApplied==applied+1,"the suit is bought once and the body is told")
+ check(p.equippedLoadout.ArmorSet=="AshenPilgrim" and button("Wear Cinnabar Guard")~=nil,"buying does not put it on; the panel offers that")
+ send(out);check(engine:Get(7).qiEssence==3800,"the same packet delivered twice buys nothing")
+ -- Wear, reinforce, stale, far away.
+ local derived=Store.DeriveStats(engine:Get(7).souls)
+ act("Wear","CinnabarGuard",0)
+ check(engine:Get(7).equippedLoadout.ArmorSet=="CinnabarGuard","wearing saves to the loadout")
+ local worn=Store.DeriveStats(engine:Get(7).souls)
+ check(math.abs(worn.Protection-derived.Protection-0.10)<1e-6 and worn.PostureCapacity==derived.PostureCapacity+15 and math.abs(worn.ArmorSpeed-0.97)<1e-6,"the worn suit reaches the stats combat reads")
+ local cost=ArmorRules.upgradeCost("CinnabarGuard",0)
+ local up=button("Reinforce to +1")
+ check(up and string.find(up.Text,cost.." Essence",1,true)~=nil,"reinforcement shows the server's price")
+ act("Reinforce","CinnabarGuard",0);check(engine:Get(7).inventory.Armor.CinnabarGuard.Level==1,"reinforcing raises the suit")
+ local bank=engine:Get(7).qiEssence
+ act("Reinforce","CinnabarGuard",0);check(engine:Get(7).qiEssence==bank and engine:Get(7).inventory.Armor.CinnabarGuard.Level==1,"a stale reinforcement charges nothing")
+ move(1000,600,1000);before=record()
+ send({action="Armor",verb="Wear",id="None",tier=0,revision=latest().revision})
+ check(record()==before,"armour cannot be changed away from the smith")
+ move(Catalog.NPCs.Gao.X,Catalog.NPCs.Gao.Y,Catalog.NPCs.Gao.Z)
+ actors[7].Fighter.State="Attacking";before=record()
+ send({action="Armor",verb="Wear",id="None",tier=0,revision=latest().revision})
+ check(record()==before,"armour cannot be changed mid-attack")
+ actors[7].Fighter.State="Idle"
+ client:Close(true);client:Close()
+ check(client.View.ArmorSet==nil,"closing forgets the selection")
+ -- Leave the record as the rest of this suite expects it.
+ assert(engine:Transaction(7,function(p) p.qiEssence=10000;p.inventory.Armor.CinnabarGuard=nil;p.equippedLoadout.ArmorSet="AshenPilgrim";p.unlockedAltars.Altar_DesecratedCloister=nil end))
  DialogueService.Open(player,"Gao");client:Receive(latest())
 end
 client:Close();check(not ui.Input.MenuOpen and camera.DialogueFrame==nil,"dialogue close restores camera and input")

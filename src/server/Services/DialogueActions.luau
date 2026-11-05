@@ -22,6 +22,8 @@ function Actions.run(player: Player,s: any,packet: any,valid: ()->boolean): (boo
  if packet.action=="Upgrade" and s.Panel=="Forge" then return Shop.UpgradeWeapon(player.UserId,packet.id,packet.tier)
  elseif packet.action=="Infuse" and s.Panel=="Forge" then return Shop.InfuseWeapon(player.UserId,packet.weapon,packet.id)
  elseif packet.action=="Equip" and s.Panel=="Forge" then return Shop.EquipForged(player.UserId,packet.id)
+ elseif packet.action=="Armor" and s.Panel=="Armor" then
+  return Shop.Armor(player.UserId,packet.verb,packet.id,packet.tier)
  elseif packet.action=="Trade" and s.Panel=="Trade" then return Shop.Trade(player.UserId,packet.id)
  elseif packet.action=="Level" and s.Panel=="Level" then
   assert(table.find(Progress.Attributes,packet.id),"Unknown attribute")

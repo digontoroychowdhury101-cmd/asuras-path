@@ -244,6 +244,9 @@
           "BossRigs": {
             "$path": "src/shared/BossRigs.luau"
           },
+          "ArmorRules": {
+            "$path": "src/shared/ArmorRules.luau"
+          },
           "BossRoster": {
             "$path": "src/shared/BossRoster.luau"
           },
@@ -468,6 +471,9 @@
           },
           "FighterAppearance": {
             "$path": "src/server/FighterAppearance.luau"
+          },
+          "ArmorSkin": {
+            "$path": "src/server/ArmorSkin.luau"
           },
           "EnemyAppearance": {
             "$path": "src/server/EnemyAppearance.luau"
@@ -739,6 +745,15 @@
         },
         "AsuraBoss_GeneralZhao": {
           "$path": "assets/models/AsuraBoss_GeneralZhao.rbxmx"
+        },
+        "AsuraArmor_CinnabarGuard": {
+          "$path": "assets/models/AsuraArmor_CinnabarGuard.rbxmx"
+        },
+        "AsuraArmor_AshenPilgrim": {
+          "$path": "assets/models/AsuraArmor_AshenPilgrim.rbxmx"
+        },
+        "AsuraArmor_IronOath": {
+          "$path": "assets/models/AsuraArmor_IronOath.rbxmx"
         }
       },
       "AsuraLobbyKit": {
@@ -917,6 +932,9 @@
             },
             "CodexView": {
               "$path": "src/client/Controllers/CodexView.luau"
+            },
+            "ArmorView": {
+              "$path": "src/client/Controllers/ArmorView.luau"
             },
             "EnemyDissolve": {
               "$path": "src/client/Controllers/EnemyDissolve.luau"

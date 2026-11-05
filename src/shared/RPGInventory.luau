@@ -3,6 +3,7 @@ local hasScript=pcall(function() return script.Parent end)
 local Rules: any=if hasScript then require(script.Parent.ProgressionRules) else require("./ProgressionRules")
 local Weapons: any=if hasScript then require(script.Parent.Parent.Simulation.WeaponSchema) else require("../simulation/WeaponSchema")
 local Spells: any=if hasScript then require(script.Parent.Parent.Simulation.SpellSchema) else require("../simulation/SpellSchema")
+local Armor: any=if hasScript then require(script.Parent.ArmorRules) else require("./ArmorRules")
 local Inventory={}
 function Inventory.integer(v: any,lo: number,hi: number): boolean
  return type(v)=="number" and v==v and v>=lo and v<=hi and v%1==0
@@ -14,7 +15,7 @@ function Inventory.flags(raw: any): {[string]: boolean}
  local result={};if type(raw)=="table" then for k,v in raw do if Inventory.id(k) and v==true then result[k]=true end end end;return result
 end
 function Inventory.defaults(): any
- return {Weapons={Unarmed={Level=0},Jian={Level=0}},Spells={ThunderclapPalm=true,GaleStep=true},Materials={},LoreEntries={}}
+ return {Weapons={Unarmed={Level=0},Jian={Level=0}},Spells={ThunderclapPalm=true,GaleStep=true},Materials={},LoreEntries={},Armor=Armor.defaults()}
 end
 function Inventory.migrate(raw: any,legacy: any): any
  local i=Inventory.defaults();raw=if type(raw)=="table" then raw else {};legacy=if type(legacy)=="table" then legacy else {}
@@ -39,7 +40,7 @@ function Inventory.migrate(raw: any,legacy: any): any
  if type(raw.Materials)=="table" then
   for id,count in raw.Materials do if Inventory.id(id) and Inventory.integer(count,0,9007199254740991) then i.Materials[id]=count end end
  end
- i.LoreEntries=Inventory.flags(raw.LoreEntries);return i
+ i.LoreEntries=Inventory.flags(raw.LoreEntries);i.Armor=Armor.migrate(raw.Armor);return i
 end
 function Inventory.validate(i: any): boolean
  if type(i)~="table" then return false end
@@ -54,6 +55,7 @@ function Inventory.validate(i: any): boolean
  for id,v in i.Spells do if not Spells.ById[id] or v~=true then return false end end
  for id,v in i.Materials do if not Inventory.id(id) or not Inventory.integer(v,0,9007199254740991) then return false end end
  for id,v in i.LoreEntries do if not Inventory.id(id) or v~=true then return false end end
+ if not Armor.validOwned(i.Armor) then return false end
  return i.Weapons.Unarmed~=nil and i.Weapons.Jian~=nil
 end
 return table.freeze(Inventory)

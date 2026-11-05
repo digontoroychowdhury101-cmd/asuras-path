@@ -2,6 +2,20 @@
 
 Combat handoff stays historical: `outputs/combat-recovery-2026-11-02/` and `MAC_TO_WINDOWS.md` (W-01..W-13; A1 stays FAILED).
 
+## Batch 3: Armour (Mac, 5 November 2026)
+Implemented: three suits at Gao, ownership, forge, reinforce, compare, wear, migration, real combat effect. Digest **52738962**. Details: `armour/RESULTS.md`.
+
+**Windows must run, none yet done:**
+1. **Combat revalidation on this revision.** The earlier combat pass does NOT cover it. Armour touches `CombatRules`, `CharacterService` and contact snapshots. Rerun the W-cases in `MAC_TO_WINDOWS.md`.
+2. **Two clients: visible equip.** A wears, swaps, sets aside; B sees the change once, with no leftovers. Expect 14 pieces, limbs hidden.
+3. **Equipment during deferred contacts.** Change suit while a hit is in flight. Expect the value frozen at contact.
+4. **Normalized and open matches.** Same suits in a normalized duel: no armour effect. Open match: the rules allow what they allow, and report it.
+5. **Earned acquisition, no seed.** Cloister altar, 1200 Essence, 3 Spirit Iron, forge Cinnabar. Beat the Twins, forge Iron Oath.
+6. **Full input hardware.** Gamepad and touch on the panel, selector first.
+7. **Private save durability, only if authorized.** Forge, wear, reinforce, leave, rejoin. Expect the same level and worn suit.
+8. **Real slow avatar load** and a body-type spread. Expect one suit on live limbs.
+9. **Human look.** Dodge and torso twist in all suits; Iron Oath against intent; head attire next to the suits.
+
 ## Batch 2: Iron Bull and Zhao (Mac, 4 November 2026)
 Implemented: Bull on the creator's sculpt, 45 clips, boss gait layer, Zhao v2 installed, authored Death playback, won-fight reset fix. Digest **438762895**. Tested: both kill orders, retry, Bull alone (seeded, single client). Pending: every case in `iron-bull/RESULTS.md`, including real-input duels, guard, camera, performance and repeats of shared boss death.
 

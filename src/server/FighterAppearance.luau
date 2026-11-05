@@ -2,6 +2,9 @@
 -- Server-authored wanderer silhouette. Uses local geometry and materials only; combat rigs,
 -- joints and movement animations remain owned by the character system.
 local Appearance = {}
+-- Set by CharacterService: re-dresses worn armour after attire is rebuilt on a replaced limb.
+local redress: ((Model) -> ())? = nil
+function Appearance.OnRedress(fn: (Model) -> ()) redress = fn end
 
 local CLOTH = Color3.fromRGB(32, 39, 41)
 local HEM = Color3.fromRGB(45, 51, 49)
@@ -83,7 +86,10 @@ function Appearance.Apply(model: Model, connections: { RBXScriptConnection })
 				task.defer(function()
 					if imported(child) and child.Parent == model then child:Destroy() end
 					-- A replaced limb re-dresses the rig so attire always binds to the live body.
-					if model.Parent then Appearance.Apply(model, connections) end
+					if model.Parent then
+						Appearance.Apply(model, connections)
+						if redress then redress(model) end
+					end
 				end)
 			end
 		end))

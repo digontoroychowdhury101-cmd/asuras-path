@@ -24,7 +24,8 @@ from studio_mcp import Client  # noqa: E402
 
 TEMPLATES = {"monk": ("Monk", "AsuraBoss_CorruptWanderingMonk"), "swordsman": ("Swordsman", "AsuraBoss_CursedSwordsman"),
              "warden": ("Warden", "AsuraBoss_HollowBellWarden"), "bull": ("Bull", "AsuraBoss_IronBull"),
-             "zhao": ("Zhao", "AsuraBoss_GeneralZhao")}
+             "zhao": ("Zhao", "AsuraBoss_GeneralZhao"),
+             "cinnabar": ("Armor", "AsuraArmor_CinnabarGuard"), "ashen": ("Armor", "AsuraArmor_AshenPilgrim"), "ironoath": ("Armor", "AsuraArmor_IronOath")}
 
 LUAU = """local PIECES = game:GetService("HttpService"):JSONDecode([==[%s]==])
 local PREFIX, NAME = "%s_", "%s"

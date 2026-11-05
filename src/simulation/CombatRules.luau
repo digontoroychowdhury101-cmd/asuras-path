@@ -169,6 +169,8 @@ export type Fighter = {
 	MaxHP: number,
 	MaxStamina: number,
 	PostureCapacity: number,
+	Protection: number, -- worn armour: the share taken off strikes, chip, spells and boss attacks
+	ArmorSpeed: number, -- worn armour: one more factor in speedMultiplier
 	StrengthScale: number,
 	DexterityScale: number,
 	PoiseArmor: number,
@@ -186,6 +188,8 @@ export type Stats = {
 	MaxHP: number?,
 	MaxStamina: number?,
 	PostureCapacity: number?,
+	Protection: number?,
+	ArmorSpeed: number?,
 	StrengthScale: number?,
 	DexterityScale: number?,
 	PoiseArmor: number?,
@@ -222,6 +226,7 @@ export type ContactSnapshot = {
 	DefenderMove: MoveData?,
 	DefenderWeapon: WeaponType,
 	DefenderPoise: number,
+	DefenderProtection: number,
 	Invulnerable: boolean,
 	AttackerWeapon: WeaponType,
 	ArmTier: InjuryTier,
@@ -392,6 +397,8 @@ function Rules.new(id: number, weapon: WeaponType?, now: number): Fighter
 		MaxHP = Settings.Health.MaxHP,
 		MaxStamina = Settings.Stamina.Max,
 		PostureCapacity = Settings.Posture.StanceBreakThreshold,
+		Protection = 0,
+		ArmorSpeed = 1,
 		StrengthScale = 1,
 		DexterityScale = 1,
 		PoiseArmor = 0,
@@ -465,6 +472,9 @@ function Rules.applyStats(f: Fighter, stats: Stats, refill: boolean?)
 	f.MaxHP = math.clamp(stats.MaxHP or f.MaxHP, 1, 1600)
 	f.MaxStamina = math.clamp(stats.MaxStamina or f.MaxStamina, 1, 600)
 	f.PostureCapacity = math.clamp(stats.PostureCapacity or f.PostureCapacity, 1, 600)
+	-- Absent means bare, as with infusions: stats that do not name armour (ranked, foes) must not inherit a suit.
+	f.Protection = math.clamp(stats.Protection or 0, 0, 0.3)
+	f.ArmorSpeed = math.clamp(stats.ArmorSpeed or 1, 0.8, 1)
 	f.StrengthScale = math.clamp(stats.StrengthScale or f.StrengthScale, 0.1, 5)
 	f.DexterityScale = math.clamp(stats.DexterityScale or f.DexterityScale, 0.1, 5)
 	f.PoiseArmor = math.clamp(stats.PoiseArmor or f.PoiseArmor, 0, 1)
@@ -517,7 +527,7 @@ end
 function Rules.speedMultiplier(f: Fighter): number
 	local weapon = weaponOf(f)
 	local sprint = if f.Sprinting and f.State == "Idle" then Settings.Movement.SprintSpeed / Settings.Movement.WalkSpeed else 1
-	return STATE_SPEED[f.State] * f.Penalties.SpeedMultiplier * weapon.MoveSpeedMultiplier * sprint
+	return STATE_SPEED[f.State] * f.Penalties.SpeedMultiplier * weapon.MoveSpeedMultiplier * sprint * f.ArmorSpeed
 end
 
 function Rules.recoveryStart(f: Fighter): number
@@ -669,7 +679,9 @@ end
 
 -- Applies damage to ActiveHP and distributes it into the recoverable and permanent layers.
 -- Returns ActiveHP actually removed.
-function Rules.applyDamage(f: Fighter, amount: number, category: DamageCategory, now: number): number
+-- `protection` is the armour share the caller says applies; burn, bleed, deathblows and outside damage pass none.
+function Rules.applyDamage(f: Fighter, amount: number, category: DamageCategory, now: number, protection: number?): number
+	amount *= 1 - (protection or 0)
 	if amount <= 0 or f.State == "KO" then
 		return 0
 	end
@@ -1190,7 +1202,7 @@ function Rules.applyArea(source: Fighter, target: Fighter, now: number, damage: 
 	end
 	if not unblockable and facing and (target.State == "Blocking" or target.State == "Blockstun") then
 		local depleted = Rules.spendStamina(target, Settings.Stamina.Costs.Block, now)
-		Rules.applyDamage(target, damage * 0.2, "Chip", now)
+		Rules.applyDamage(target, damage * 0.2, "Chip", now, target.Protection)
 		if Rules.addPosture(target, posture, now, events, source.Id) then
 			return "Blocked"
 		end
@@ -1204,7 +1216,7 @@ function Rules.applyArea(source: Fighter, target: Fighter, now: number, damage: 
 		emit(target, events, "Block", source.Id, target.Id, damage * 0.2)
 		return "Blocked"
 	end
-	local dealt = Rules.applyDamage(target, damage, "WeaponArt", now)
+	local dealt = Rules.applyDamage(target, damage, "WeaponArt", now, target.Protection)
 	emit(target, events, "Hit", source.Id, target.Id, dealt, "Torso")
 	if target.ActiveHP <= 0 then
 		clearMove(target)
@@ -1307,6 +1319,7 @@ function Rules.contactSnapshot(attacker: Fighter, defender: Fighter, at: number,
 		DefenderMove = defender.Move,
 		DefenderWeapon = defender.Weapon,
 		DefenderPoise = defender.PoiseArmor,
+		DefenderProtection = defender.Protection,
 		Invulnerable = Rules.isInvulnerable(defender, at),
 		AttackerWeapon = attacker.Weapon,
 		ArmTier = Rules.armTier(attacker),
@@ -1390,7 +1403,7 @@ function Rules.resolveHit(attacker: Fighter, defender: Fighter, now: number, hit
 		local cost = if defenderState == "Deflecting" then Settings.Stamina.Costs.DeflectMiss else outcome.DefenderStamina
 		local depleted = Rules.spendStamina(defender, cost, now)
 		local pierce = move.BaseDamage * snap.DamageScale * snap.GuardPierce
-  local chip = Rules.applyDamage(defender, outcome.DefenderChip+pierce, "Chip", now)
+  local chip = Rules.applyDamage(defender, outcome.DefenderChip+pierce, "Chip", now, snap.DefenderProtection)
 		Rules.rally(attacker, chip, now, events, defender.Id)
 		attacker.Qi = math.min(attacker.MaxQi, attacker.Qi + Settings.Qi.GainOnHit * 0.5)
 		if defender.ActiveHP <= 0 then
@@ -1433,7 +1446,7 @@ function Rules.resolveHit(attacker: Fighter, defender: Fighter, now: number, hit
 	local critical = if hit.Facing then 1 else (attackerWeapon.CriticalMultiplier or 1.5)
 	local damage = critical * Schema.damage(move.BaseDamage, snap.ArmTier) * snap.DamageScale * (if counter then counterScale.HitMultiplier else 1)
 	local category: DamageCategory = move.Kind
-	local dealt = Rules.applyDamage(defender, damage, category, now)
+	local dealt = Rules.applyDamage(defender, damage, category, now, snap.DefenderProtection)
 	if dealt > 0 and snap.InfusionBurn > 0 then
 		defender.BurnRate, defender.BurnUntil, defender.BurnSource = snap.InfusionBurn, now + 4, attacker.Id
 	end

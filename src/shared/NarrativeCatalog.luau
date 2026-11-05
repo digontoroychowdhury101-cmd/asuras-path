@@ -9,7 +9,8 @@ Catalog.Premise="Grandmaster Shen devoured his disciples and shattered the celes
 Catalog.NPCs={
  Gao={Name="Master Smith Gao",X=-86,Y=603,Z=899,Color={74,57,49},Start="Greeting",Nodes={
   Greeting={Text="I lost my eyes to the <i>Jade Cataclysm</i>. Still, I can hear the blood upon your blade. What burden have you brought?",Choices={
-   {Label="Reinforce or infuse my weapon",Next="Forge",Action="Forge"},{Label="What can a sovereign's soul become?",Next="Remembrance"},{Label="Farewell",Close=true}}},
+   {Label="Reinforce or infuse my weapon",Next="Forge",Action="Forge"},{Label="See to my armour",Next="Armor",Action="Armor"},{Label="What can a sovereign's soul become?",Next="Remembrance"},{Label="Farewell",Close=true}}},
+  Armor={Text="A suit does not spare you the blow you could have stepped from. It spares you the one you could not. Weigh it.",Choices={{Label="Return",Next="Greeting"},{Label="Farewell",Close=true}}},
   Forge={Text="Iron remembers every wound. Bring ore, starfall, and dragonite; I will teach your steel to remember you.",Choices={{Label="Return",Next="Greeting"},{Label="Farewell",Close=true}}},
   Remembrance={Text="A fallen sovereign leaves a remembrance. Discover one and its weapon or sorcery becomes yours to forge. One soul, one choice.",Choices={{Label="Show discovered remembrances",Next="Greeting",Action="Arsenal"},{Label="Return",Next="Greeting"}}},
  }},

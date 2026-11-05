@@ -13,7 +13,7 @@ function Bridge.toSouls(p: any)
  for id,w in p.inventory.Weapons do i.weapons[id]=true;if w.Level>0 then i.reinforcement[id]=w.Level end end
  i.spells=table.clone(p.inventory.Spells);i.mainhand=p.equippedLoadout.MainWeapon;i.offhand=p.equippedLoadout.OffWeapon or "None"
  i.spellSlots={p.equippedLoadout.SpellSlot1 or "ThunderclapPalm",p.equippedLoadout.SpellSlot2 or "GaleStep"}
- s.rpg={Materials=p.inventory.Materials,Weapons=p.inventory.Weapons,Mastery=p.weaponMastery}
+ s.rpg={Materials=p.inventory.Materials,Weapons=p.inventory.Weapons,Mastery=p.weaponMastery,Armor=p.inventory.Armor,ArmorSet=p.equippedLoadout.ArmorSet}
  p.elo=p.colosseum.Elo;p.peakElo=math.max(p.peakElo,p.elo);p.wins=p.colosseum.Wins;p.losses=p.colosseum.Losses;p.winStreak=p.colosseum.WinStreak
 end
 function Bridge.snapshot(p: any): any

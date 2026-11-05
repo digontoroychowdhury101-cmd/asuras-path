@@ -1,6 +1,7 @@
 --!strict
 local Shared=game:GetService("ReplicatedStorage").AsurasPath
 local Rules=require(Shared.Shared.ProgressionRules)
+local Armor: any=require(Shared.Shared.ArmorRules)
 local Catalog=require(Shared.Shared.NarrativeCatalog)
 local Persistence=require(script.Parent.PersistenceService) :: any
 local Characters=require(script.Parent.CharacterService)
@@ -54,6 +55,25 @@ function Forge.Equip(id: number,weapon: string): (boolean,string?)
  local equipped,why=Characters.EquipWeapon(id,weapon)
  if not equipped then return false,why end
  return true,"Taken in hand"
+end
+-- Armour is bought, reinforced and changed only beside Gao, standing idle and outside a duel (Forge.smith), so a suit cannot change
+-- under a fight; a contact already in flight keeps the protection frozen in its snapshot. Each action checks again inside the transaction.
+function Forge.Armor(id: number,action: string,set: string,level: number?): (boolean,string?)
+ if not Forge.smith(id) then return false,"Visit Master Smith Gao" end
+ local profile=Persistence.Get(id);if not profile then return false,"Your record is unavailable" end
+ if type(set)~="string" or (set~=Armor.None and not Armor.Sets[set]) then return false,"Unknown armour" end
+ local refused=if action=="Acquire" then Armor.acquireRefusal(profile,set) elseif action=="Reinforce" then Armor.upgradeRefusal(profile,set,level)
+  elseif action=="Wear" then Armor.wearRefusal(profile,set) else "Unknown request"
+ if refused then return false,reason(refused) end
+ local reached=0
+ local ok,err=Persistence.Transaction(id,function(p: any)
+  assert(Forge.smith(id),"Visit Master Smith Gao")
+  if action=="Acquire" then Armor.acquire(p,set) elseif action=="Reinforce" then reached=Armor.upgrade(p,set,level) else Armor.wear(p,set) end
+ end)
+ if not ok then return false,reason(err) end
+ Characters.ApplyArmor(id)
+ local name=if set==Armor.None then "" else Armor.Sets[set].Name
+ return true,if action=="Acquire" then name.." is yours" elseif action=="Reinforce" then name.." reinforced to +"..reached elseif set==Armor.None then "Armour set aside" else name.." worn"
 end
 function Forge.Trade(id: number,item: string): (boolean,string?)
  local trade=Catalog.Trades[item];if not trade then return false,"Unknown trade" end

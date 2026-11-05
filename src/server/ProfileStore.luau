@@ -22,6 +22,7 @@ end
 
 local Bridge: any = if hasScript then require(script.Parent.ProfileBridge) else require("./ProfileBridge")
 local Progression: any = if hasScript then require(game:GetService("ReplicatedStorage").AsurasPath.Shared.ProgressionRules) else require("../shared/ProgressionRules")
+local ArmorRules: any = if hasScript then require(game:GetService("ReplicatedStorage").AsurasPath.Shared.ArmorRules) else require("../shared/ArmorRules")
 
 export type AttributeName = "Vigor" | "Endurance" | "Strength" | "Dexterity" | "ArcaneQi"
 export type Attributes = { [AttributeName]: number }
@@ -51,6 +52,8 @@ export type DerivedStats = {
 	MaxHP: number,
 	MaxStamina: number,
 	PostureCapacity: number,
+	Protection: number,
+	ArmorSpeed: number,
 	StrengthScale: number,
 	DexterityScale: number,
 }
@@ -210,9 +213,10 @@ function Store.DeriveStats(souls: Souls): DerivedStats
  local infusion=if rpg and rpg.Weapons[weapon] then rpg.Weapons[weapon].Infusion else nil
  local affinity=Progression.affinity(infusion,souls.attributes)
  local signature=rpg~=nil and Progression.masteryRank(rpg.Mastery[weapon] or 0)>=5
+ local armor=ArmorRules.worn(rpg and rpg.Armor,rpg and rpg.ArmorSet) -- a stripped view (ranked sets rpg=nil) wears nothing
  return {InfusionBurn=affinity.Burn,InfusionStun=affinity.Stun,GuardPierce=affinity.GuardPierce,VoidScale=affinity.VoidScale,SignatureFinisher=signature,
   MaxHP=Settings.Health.MaxHP+stats.HPBonus, MaxStamina=Settings.Stamina.Max+stats.StaminaBonus,
-  PostureCapacity=Settings.Posture.StanceBreakThreshold+stats.PostureBonus, StrengthScale=stats.StrengthScale,
+  PostureCapacity=Settings.Posture.StanceBreakThreshold+stats.PostureBonus+armor.Posture, Protection=armor.Protection, ArmorSpeed=armor.Speed, StrengthScale=stats.StrengthScale,
   DexterityScale=stats.DexterityScale, MaxQi=stats.MaxQi, RallyScale=stats.RallyScale, SpellScale=stats.SpellScale}
 end
 

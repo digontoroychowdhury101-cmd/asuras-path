@@ -11,6 +11,7 @@ local Catalog=require(Shared.NarrativeCatalog)
 local Progress=require(Shared.ProgressionRules)
 local Preview=require(Shared.LevelPreview)
 local Quote=require(Shared.ForgeQuote)
+local ArmorView=require(script.Parent.ArmorView)
 local Codex=require(script.Parent.CodexView)
 local Effects=require(Shared.EffectsPreference)
 local View={}
@@ -24,7 +25,7 @@ function View.faceY(screen: number,inset: number): number
  return (inset+(height*View.Letterbox+top)/2)/screen
 end
 local T=UiKit.Theme
-local PURCHASES={Level=true,Upgrade=true,Infuse=true,Equip=true,Trade=true}
+local PURCHASES={Level=true,Upgrade=true,Infuse=true,Equip=true,Trade=true,Armor=true}
 function View.new(parent: Instance): any
  local gui=Kit.make("ScreenGui",parent,{Name="JadeDialogue",ResetOnSpawn=false,DisplayOrder=85,IgnoreGuiInset=true,Enabled=false})
  Kit.make("Frame",gui,{Size=UDim2.fromScale(1,View.Letterbox),BackgroundColor3=T.Ink,BorderSizePixel=0})
@@ -73,7 +74,7 @@ function View.button(v: any,label: string,run: ()->(),variant: string?,enabled: 
 end
 function View.render(v: any,p: any,send: (any)->())
  readable(v)
- fit(v,p.panel=="Forge")
+ fit(v,p.panel=="Forge" or p.panel=="Armor")
  View.clear(v);local n=Catalog.NPCs[p.npc];local node=n.Nodes[p.node];local data=p.view
  local function buy(packet: any): ()->()
   return function()
@@ -132,6 +133,7 @@ function View.render(v: any,p: any,send: (any)->())
    local gem=Progress.Infusions[affinity];local have=data.inventory.Materials[gem] or 0;local same=q.Infusion==affinity
    View.button(v,"Infuse "..string.gsub(Catalog.Trades[gem].Name," Gem$","")..(if same then " · already infused" else " · "..Progress.InfusionCost.." Essence + 1 gem ("..have.." owned)"),buy({action="Infuse",id=affinity,weapon=q.Weapon}),nil,not same and data.qi>=Progress.InfusionCost and have>=1)
   end
+ elseif p.panel=="Armor" then ArmorView.render(View,v,p,send,buy)
  elseif p.panel=="Trade" then
   local ids={};for id in Catalog.Trades do table.insert(ids,id) end;table.sort(ids)
   for _,id in ids do local t=Catalog.Trades[id];View.button(v,t.Name.." · "..t.Price.." Essence",buy({action="Trade",id=id}),nil,data.qi>=t.Price) end

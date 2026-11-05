@@ -75,7 +75,7 @@ function Controller.Close(self: any,toAltar: boolean?)
  local altar=self.ReturnAltar;self.ReturnAltar=nil
  self.Generation+=1;local wasOpen=self.Open;self.Open=false;self.UI.DialogueOpen=false;self.View.Gui.Enabled=false;self.Camera.DialogueFrame=nil;hideAvatar(self,nil)
  if wasOpen then self.Input:SetMenu(false,"Dialogue");self.Remote:FireServer({action="Close"}) end
- View.clear(self.View);self.View.ForgeWeapon=nil
+ View.clear(self.View);self.View.ForgeWeapon=nil;self.View.ArmorSet=nil
  if wasOpen and toAltar and altar and not self.UI.DeathShown then self.UI:OpenAltar(altar) end
 end
 function Controller.Frame(self: any,p: any)

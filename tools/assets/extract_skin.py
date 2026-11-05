@@ -101,8 +101,9 @@ def extract(place: Path, model_name: str) -> tuple[ET.Element, dict]:
             raise ValueError(f"{label}: skin geometry must not collide, query or touch")
         bones.add(bone)
         parts[label] = {"bone": bone, **ids}
-    if R15 - bones:
-        raise ValueError("Missing R15 limbs: " + ", ".join(sorted(R15 - bones)))
+    required = R15 - {"Head"} if model_name.startswith("AsuraArmor_") else R15  # a suit dresses the body; the player's head stays
+    if required - bones:
+        raise ValueError("Missing R15 limbs: " + ", ".join(sorted(required - bones)))
     root = ET.Element("roblox", {"version": "4"})
     ET.SubElement(root, "External").text = "null"
     ET.SubElement(root, "External").text = "nil"
@@ -120,7 +121,7 @@ def extract(place: Path, model_name: str) -> tuple[ET.Element, dict]:
             raise ValueError("Missing imported SharedStrings: " + ", ".join(sorted(references - have)))
     record = {"model": model_name, "importer": "Roblox Studio 3D Importer, Creator: Me", "parts": parts,
               "sharedStringCount": len(have),
-              "validation": "15 uploaded MeshParts, complete uploaded PBR, AsuraBone + AsuraBind on each, non-colliding"}
+              "validation": f"{len(parts)} uploaded MeshParts, complete uploaded PBR, AsuraBone + AsuraBind on each, non-colliding"}
     return root, record
 
 

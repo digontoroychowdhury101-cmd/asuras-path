@@ -3,6 +3,7 @@ local hasScript=pcall(function() return script.Parent end)
 local I: any=if hasScript then require(script.Parent.RPGInventory) else require("./RPGInventory")
 local Rules: any=if hasScript then require(script.Parent.ProgressionRules) else require("./ProgressionRules")
 local Arena: any=if hasScript then require(script.Parent.ArenaRules) else require("./ArenaRules")
+local Armor: any=if hasScript then require(script.Parent.ArmorRules) else require("./ArmorRules")
 local RPG={}
 function RPG.apply(p: any,raw: any)
  raw=if type(raw)=="table" then raw else {}
@@ -24,7 +25,7 @@ function RPG.apply(p: any,raw: any)
  local loadout=if type(raw.equippedLoadout)=="table" then raw.equippedLoadout else {}
  local main=loadout.MainWeapon or old.mainhand;local off=loadout.OffWeapon or old.offhand
  p.equippedLoadout={MainWeapon=if type(main)=="string" and p.inventory.Weapons[main] then main else "Jian",
-  OffWeapon=if type(off)=="string" and p.inventory.Weapons[off] then off else nil,ArmorSet=if I.id(loadout.ArmorSet) then loadout.ArmorSet else nil}
+  OffWeapon=if type(off)=="string" and p.inventory.Weapons[off] then off else nil,ArmorSet=Armor.resolve(p.inventory.Armor,loadout.ArmorSet)}
  for n=1,2 do
   local key="SpellSlot"..n;local id=loadout[key] or (if type(old.spellSlots)=="table" then (old.spellSlots :: any)[n] else nil)
   p.equippedLoadout[key]=if type(id)=="string" and p.inventory.Spells[id] then id else (if n==1 then "ThunderclapPalm" else "GaleStep")
@@ -54,7 +55,7 @@ function RPG.validate(p: any): (boolean,string?)
  local l=p.equippedLoadout
  if not p.inventory.Weapons[l.MainWeapon] or (l.OffWeapon~=nil and not p.inventory.Weapons[l.OffWeapon]) then return false,"Unowned loadout" end
  for _,key in {"SpellSlot1","SpellSlot2"} do if l[key]~=nil and not p.inventory.Spells[l[key]] then return false,"Unowned spell" end end
- if l.ArmorSet~=nil and not I.id(l.ArmorSet) then return false,"Invalid armor" end
+ if not Armor.validWorn(p.inventory.Armor,l.ArmorSet) then return false,"Invalid armor" end
  for _,key in {"defeatedBosses","unlockedAltars"} do
   if type(p[key])~="table" then return false,"Missing flags" end
   local n=0;for id,v in p[key] do n+=1;if n>512 or not I.id(id) or v~=true then return false,"Invalid flags" end end

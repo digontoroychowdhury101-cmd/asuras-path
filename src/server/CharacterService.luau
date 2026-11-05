@@ -124,6 +124,7 @@ type EntityListener = (id: number, kind: EntityKind) -> ()
 local Service = {}
 local Appearance = require(script.Parent:WaitForChild("FighterAppearance") :: ModuleScript)
 local WeaponModels = require(script.Parent:WaitForChild("WeaponModels") :: ModuleScript)
+local ArmorSkin = require(script.Parent:WaitForChild("ArmorSkin") :: ModuleScript)
 local EnemyAppearance = require(script.Parent:WaitForChild("EnemyAppearance") :: ModuleScript)
 
 local TICK: number = Tempo.TickSeconds
@@ -477,6 +478,7 @@ local function mirrorHealth(e: Entity)
 	end
 end
 
+local dressArmor: (e: Entity, rebuilt: boolean?) -> ()
 local function bindModel(e: Entity)
 	local humanoid = e.Humanoid
 	humanoid.MaxHealth = e.Fighter.MaxHP
@@ -500,12 +502,14 @@ local function bindModel(e: Entity)
 	byModel[e.Model] = e
 	if e.Kind == "Player" then
 		Appearance.Apply(e.Model, e.Connections)
+		dressArmor(e)
 		local player = e.Player
 		local model = e.Model
 		if player then
 			table.insert(e.Connections, player.CharacterAppearanceLoaded:Connect(function(loaded: Model)
 				if loaded == model and e.Model == model then
 					Appearance.Apply(model, e.Connections)
+					dressArmor(e)
 					attachWeapon(e)
 				end
 			end))
@@ -703,6 +707,7 @@ local function applyPlayerProgression(e: Entity)
 			Combat.applyStats(e.Fighter, stats, true)
 		end
 	end
+	dressArmor(e) -- the record may not have been ready when the rig was first bound
 	local loadoutHook = hooks.Loadout
 	if loadoutHook then
 		local ok, mainhand = pcall(loadoutHook, e.Id)
@@ -777,6 +782,7 @@ local function requestCharacter(player: Player)
 			local current = entities[id]
 			if current and current.Model == player.Character then
 				Appearance.Apply(current.Model, current.Connections)
+				dressArmor(current)
 				attachWeapon(current)
 			end
 		end)
@@ -2114,6 +2120,41 @@ function Service.RefreshRoster()
 			ensurePlayer(player)
 		end
 	end
+end
+
+local function wornArmor(e: Entity): string?
+	local player = e.Player
+	if not player or not Persistence then return nil end
+	local ok, profile = pcall(Persistence.Get, player.UserId)
+	return if ok and profile and profile.equippedLoadout then profile.equippedLoadout.ArmorSet else nil
+end
+
+-- Puts the saved suit on the live rig. Called after the wanderer attire is (re)built, so a replaced limb, a respawn or a late avatar
+-- load all end with the same body; a change of suit rebuilds the attire so setting armour aside gives the wanderer back whole.
+dressArmor = function(e: Entity, rebuilt: boolean?)
+	local set = wornArmor(e)
+	if set == nil then return end
+	if rebuilt then
+		ArmorSkin.Remove(e.Model)
+		local attire = e.Model:FindFirstChild("AsuraAttire")
+		if attire then attire:Destroy() end
+		Appearance.Apply(e.Model, e.Connections)
+	end
+	ArmorSkin.Apply(e.Model, set)
+end
+
+Appearance.OnRedress(function(model: Model)
+	local e = byModel[model]
+	if e and e.Kind == "Player" then dressArmor(e) end
+end)
+
+-- A suit changed at the smith (ForgeService): dress the rig and carry the new values into the fighter at once.
+function Service.ApplyArmor(id: number)
+	local e = entities[id]
+	if not e or e.Kind ~= "Player" then return end
+	dressArmor(e, true)
+	attachWeapon(e)
+	Service.RefreshProgression(id)
 end
 
 function Service.RefreshProgression(id: number)

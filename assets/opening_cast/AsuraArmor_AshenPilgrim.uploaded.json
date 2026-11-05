@@ -1,0 +1,121 @@
+{
+  "model": "AsuraArmor_AshenPilgrim",
+  "importer": "Roblox Studio 3D Importer, Creator: Me",
+  "parts": {
+    "Armor_LeftFoot": {
+      "bone": "LeftFoot",
+      "MeshId": "rbxassetid://101922175479301",
+      "ColorMap": "rbxassetid://86389040414309",
+      "NormalMap": "rbxassetid://87775069601844",
+      "RoughnessMap": "rbxassetid://73913725751247",
+      "MetalnessMap": "rbxassetid://129946818344694"
+    },
+    "Armor_LowerTorso": {
+      "bone": "LowerTorso",
+      "MeshId": "rbxassetid://82872833081930",
+      "ColorMap": "rbxassetid://86842426653718",
+      "NormalMap": "rbxassetid://102318178031547",
+      "RoughnessMap": "rbxassetid://133805533163487",
+      "MetalnessMap": "rbxassetid://85007682905258"
+    },
+    "Armor_LeftHand": {
+      "bone": "LeftHand",
+      "MeshId": "rbxassetid://80860291104379",
+      "ColorMap": "rbxassetid://137609790227588",
+      "NormalMap": "rbxassetid://127337088415683",
+      "RoughnessMap": "rbxassetid://81664753139944",
+      "MetalnessMap": "rbxassetid://109483489927179"
+    },
+    "Armor_LeftLowerLeg": {
+      "bone": "LeftLowerLeg",
+      "MeshId": "rbxassetid://123231554827356",
+      "ColorMap": "rbxassetid://86389040414309",
+      "NormalMap": "rbxassetid://87775069601844",
+      "RoughnessMap": "rbxassetid://73913725751247",
+      "MetalnessMap": "rbxassetid://129946818344694"
+    },
+    "Armor_RightFoot": {
+      "bone": "RightFoot",
+      "MeshId": "rbxassetid://117253278696732",
+      "ColorMap": "rbxassetid://86389040414309",
+      "NormalMap": "rbxassetid://87775069601844",
+      "RoughnessMap": "rbxassetid://73913725751247",
+      "MetalnessMap": "rbxassetid://129946818344694"
+    },
+    "Armor_RightLowerLeg": {
+      "bone": "RightLowerLeg",
+      "MeshId": "rbxassetid://140480019799173",
+      "ColorMap": "rbxassetid://86389040414309",
+      "NormalMap": "rbxassetid://87775069601844",
+      "RoughnessMap": "rbxassetid://73913725751247",
+      "MetalnessMap": "rbxassetid://129946818344694"
+    },
+    "Armor_UpperTorso": {
+      "bone": "UpperTorso",
+      "MeshId": "rbxassetid://115010839395503",
+      "ColorMap": "rbxassetid://82879064078424",
+      "NormalMap": "rbxassetid://106044583632107",
+      "RoughnessMap": "rbxassetid://81114250709159",
+      "MetalnessMap": "rbxassetid://135797995539382"
+    },
+    "Armor_LeftLowerArm": {
+      "bone": "LeftLowerArm",
+      "MeshId": "rbxassetid://98055873389337",
+      "ColorMap": "rbxassetid://137609790227588",
+      "NormalMap": "rbxassetid://127337088415683",
+      "RoughnessMap": "rbxassetid://81664753139944",
+      "MetalnessMap": "rbxassetid://109483489927179"
+    },
+    "Armor_RightUpperArm": {
+      "bone": "RightUpperArm",
+      "MeshId": "rbxassetid://82582695509782",
+      "ColorMap": "rbxassetid://137609790227588",
+      "NormalMap": "rbxassetid://127337088415683",
+      "RoughnessMap": "rbxassetid://81664753139944",
+      "MetalnessMap": "rbxassetid://109483489927179"
+    },
+    "Armor_LeftUpperArm": {
+      "bone": "LeftUpperArm",
+      "MeshId": "rbxassetid://85198862807937",
+      "ColorMap": "rbxassetid://137609790227588",
+      "NormalMap": "rbxassetid://127337088415683",
+      "RoughnessMap": "rbxassetid://81664753139944",
+      "MetalnessMap": "rbxassetid://109483489927179"
+    },
+    "Armor_RightLowerArm": {
+      "bone": "RightLowerArm",
+      "MeshId": "rbxassetid://119958090096698",
+      "ColorMap": "rbxassetid://137609790227588",
+      "NormalMap": "rbxassetid://127337088415683",
+      "RoughnessMap": "rbxassetid://81664753139944",
+      "MetalnessMap": "rbxassetid://109483489927179"
+    },
+    "Armor_RightUpperLeg": {
+      "bone": "RightUpperLeg",
+      "MeshId": "rbxassetid://120436339936913",
+      "ColorMap": "rbxassetid://86842426653718",
+      "NormalMap": "rbxassetid://102318178031547",
+      "RoughnessMap": "rbxassetid://133805533163487",
+      "MetalnessMap": "rbxassetid://85007682905258"
+    },
+    "Armor_RightHand": {
+      "bone": "RightHand",
+      "MeshId": "rbxassetid://129879243492082",
+      "ColorMap": "rbxassetid://137609790227588",
+      "NormalMap": "rbxassetid://127337088415683",
+      "RoughnessMap": "rbxassetid://81664753139944",
+      "MetalnessMap": "rbxassetid://109483489927179"
+    },
+    "Armor_LeftUpperLeg": {
+      "bone": "LeftUpperLeg",
+      "MeshId": "rbxassetid://104387186133609",
+      "ColorMap": "rbxassetid://86842426653718",
+      "NormalMap": "rbxassetid://102318178031547",
+      "RoughnessMap": "rbxassetid://133805533163487",
+      "MetalnessMap": "rbxassetid://85007682905258"
+    }
+  },
+  "sharedStringCount": 2,
+  "validation": "14 uploaded MeshParts, complete uploaded PBR, AsuraBone + AsuraBind on each, non-colliding",
+  "savedPlace": "/var/folders/0h/ppzkjk7x4sd3qkr37t30hxmc0000gn/T/s3/BullTest.rbxlx"
+}

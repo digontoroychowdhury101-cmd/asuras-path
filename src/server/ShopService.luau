@@ -110,5 +110,6 @@ local Forge=require(script.Parent.ForgeService)
 Shop.UpgradeWeapon=Forge.Upgrade
 Shop.InfuseWeapon=Forge.Infuse
 Shop.EquipForged=Forge.Equip
+Shop.Armor=Forge.Armor
 Shop.Trade=Forge.Trade
 return Shop

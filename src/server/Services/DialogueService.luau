@@ -21,7 +21,7 @@ local links: {RBXScriptConnection}={}
 local root: Folder?=nil
 local serial=0
 local PRESENT=24 -- studs: an NPC this close to the summoning altar answers in person
-local PURCHASES={Upgrade=true,Infuse=true,Equip=true,Level=true,Trade=true}
+local PURCHASES={Upgrade=true,Infuse=true,Equip=true,Level=true,Trade=true,Armor=true}
 local function nearby(player: Player,point: Vector3): boolean
  local e=Characters.GetActor(player.UserId)
  return e~=nil and not e.Duel and (e.Fighter.State=="Idle" or e.Fighter.State=="RestingAtShrine")
