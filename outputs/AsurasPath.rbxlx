@@ -154797,7 +154797,11 @@ end
 
 local function run(s: Session, dt: number, rate: any, eye: Vector3)
 	local M, limbs, inverse = s.M, s.Limbs, s.RestInverse
-	local rootInverse = s.Bone.WorldCFrame:Inverse()
+	-- the importer's skeleton sits turned from the rig's authored space (180 degrees about Y); a bone's rest is in the skeleton's frame, the limbs and the cloth are in the rig's
+	local rootBone = s.Bone.WorldCFrame
+	local rootInverse = rootBone:Inverse()
+	local rootAt = s.Root.CFrame:ToObjectSpace(rootBone)
+	local turn = rootAt.Rotation
 	local position = s.Root.Position
 	local away = (position - eye).Magnitude
 	for i = 1, #limbs do
@@ -154805,7 +154809,7 @@ local function run(s: Session, dt: number, rate: any, eye: Vector3)
 		local o = (i - 1) * 12
 		M[o + 1], M[o + 2], M[o + 3], M[o + 4], M[o + 5], M[o + 6], M[o + 7], M[o + 8], M[o + 9], M[o + 10], M[o + 11], M[o + 12] = d:GetComponents()
 		local limbBone = s.LimbBones[i]
-		if limbBone then limbBone.Transform = s.LimbAtInverse[i] * rootInverse * d * s.LimbAt[i] end
+		if limbBone then limbBone.Transform = s.LimbAtInverse[i] * rootInverse * d * rootAt * s.LimbAt[i] end
 	end
 	-- a teleport is not motion: the cloth arrives with him rather than streaming across the map
 	if s.Last and (position - s.Last).Magnitude &gt; TELEPORT then Sim.reset(s.State, M) end
@@ -154833,7 +154837,7 @@ local function run(s: Session, dt: number, rate: any, eye: Vector3)
 	for k, f in State.bones do
 		local o = (k - 1) * 9
 		local i = f.i
-		s.ClothBones[k].Transform = s.ClothAtInverse[k] * rootInverse * CFrame.new(X[i], Y[i], Z[i], R[o + 1], R[o + 2], R[o + 3], R[o + 4], R[o + 5], R[o + 6], R[o + 7], R[o + 8], R[o + 9])
+		s.ClothBones[k].Transform = s.ClothAtInverse[k] * rootInverse * CFrame.new(X[i], Y[i], Z[i], R[o + 1], R[o + 2], R[o + 3], R[o + 4], R[o + 5], R[o + 6], R[o + 7], R[o + 8], R[o + 9]) * turn
 	end
 end
 
