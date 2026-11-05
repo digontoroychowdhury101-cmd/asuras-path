@@ -4,7 +4,8 @@
 
 Welds nothing: for each MeshPart of ServerStorage.AsuraAssets.<template> it places the part exactly as BossSkin.attach
 would on a default R15 enemy rig at rest (limb * AsuraBind:Inverse()) and reports the distance between the part's
-centre (in root space) and the Blender bounds centre. Also checks PBR completeness and that every R15 limb is covered.
+centre (in root space) and the Blender bounds centre. Also checks PBR completeness and that every R15 limb is covered:
+by a rigid chunk bound to it, or (skinned templates) by a Sk_<limb> Bone inside a chunk, with each chunk's bone count reported.
 """
 import sys
 from pathlib import Path
@@ -32,7 +33,14 @@ for _, p in t:GetDescendants() do
 		local pbr = sa and sa.ColorMap ~= "" and sa.NormalMap ~= "" and sa.RoughnessMap ~= "" and sa.MetalnessMap ~= ""
 		worst = math.max(worst, err)
 		seen[bone] = true
-		table.insert(out, string.format("%%s %%s err %%.4f pbr %%s collide %%s", p.Name, bone, err, tostring(pbr), tostring(p.CanCollide)))
+		local bones = 0
+		for _, b in p:GetDescendants() do
+			if b:IsA("Bone") then
+				bones += 1
+				if b.Name:sub(1, 3) == "Sk_" then seen[b.Name:sub(4)] = true end
+			end
+		end
+		table.insert(out, string.format("%%s %%s err %%.4f pbr %%s collide %%s bones %%d", p.Name, bone, err, tostring(pbr), tostring(p.CanCollide), bones))
 	end
 end
 local missing = {}

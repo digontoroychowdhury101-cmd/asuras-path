@@ -43,6 +43,7 @@ Rules.OathMoves = table.freeze({ GeneralZhao = "Bull", IronBull = "Zhao" } :: { 
 Rules.Melee = table.freeze({
 	IronBull = table.freeze({ "IronBullMaul_L1", "IronBullMaul_L2", "IronBullMaul_L3", "IronBullMaul_Heavy", "IronBullMaul_Running", "IronBullMaul_Art" }),
 	GeneralZhao = table.freeze({ "Guandao_L1", "Guandao_L2", "Guandao_L3", "Guandao_Heavy", "Guandao_Running", "Guandao_Art" }),
+	GrandmasterShen = table.freeze({ "Guandao_L1", "Guandao_L2", "Guandao_L3", "Guandao_Heavy", "Guandao_Running", "Guandao_Art" }),
 } :: { [string]: { string } })
 
 -- Contact times (seconds into the authored clip, at speed 1) per look and action, from the clip
@@ -59,6 +60,12 @@ Rules.Contacts = table.freeze({
 		Strike = { 0.5 }, LightningSpear = { 0.8, 1.5, 2.2 }, ThunderQuickstep = { 1.0 }, IronCharge = { 1.5 }, ColossalHammer = { 1.8 },
 		IronBullMaul_L1 = { 0.217 }, IronBullMaul_L2 = { 0.167 }, IronBullMaul_L3 = { 0.317 }, IronBullMaul_Heavy = { 0.517 }, IronBullMaul_Running = { 0.283 },
 		IronBullMaul_Art = { 0.433 },
+	}),
+	GrandmasterShen = table.freeze({ -- assets/animations/opening_cast/shen/manifest.json (both phases share the times)
+		Strike = { 0.5 }, FlowingJian = { 0.8, 1.45, 2.1, 2.75 }, PrayerBeads = { 1.1 }, AbbotSweep = { 1.0 },
+		BloodWave = { 1.1 }, GuandaoSkyfall = { 1.5 }, CrimsonEmbrace = { 1.2 },
+		Guandao_L1 = { 0.15 }, Guandao_L2 = { 0.15 }, Guandao_L3 = { 0.183 }, Guandao_Heavy = { 0.383 }, Guandao_Running = { 0.217 },
+		Guandao_Art = { 0.317 },
 	}),
 } :: { [string]: { [string]: { number } } })
 -- How far a track may be sped up or slowed to make its contact; beyond that it holds or skips ahead.
@@ -77,16 +84,22 @@ for _, action in Rules.Reactions do REACTION[action] = true end
 Rules.Locomotion = table.freeze({
 	IronBull = table.freeze({ WalkForward = 1.65, RunForward = 5.25, WalkBackward = 1.25, StrafeLeft = 1.33, StrafeRight = 1.33 }),
 	GeneralZhao = table.freeze({ WalkForward = 2.2, RunForward = 8.0, WalkBackward = 1.9, StrafeLeft = 2.0, StrafeRight = 2.0 }),
+	GrandmasterShen = table.freeze({ WalkForward = 1.98, RunForward = 6.11, WalkBackward = 1.48, StrafeLeft = 1.54, StrafeRight = 1.54 }),
+	-- a form whose stride differs from the look's first: Rules.gait reads this key for that phase
+	GrandmasterShen_P2 = table.freeze({ WalkForward = 2.40, RunForward = 7.48, WalkBackward = 1.80, StrafeLeft = 1.95, StrafeRight = 1.95 }),
 } :: { [string]: { [string]: number } })
+-- Looks whose Transform continues in the new form when the server reveals it mid-transition (Transition.Reveal): the swap resumes the
+-- new phase's Transform from its handoff pose, not its idle.
+Rules.RevealContinues = table.freeze({ GrandmasterShen = true } :: { [string]: boolean })
 Rules.GaitRate = table.freeze({ Min = 0.45, Max = 1.9, Stand = 0.7, StandGrace = 0.35 })
 local GAIT: { [string]: boolean } = { WalkForward = true, RunForward = true, WalkBackward = true, StrafeLeft = true, StrafeRight = true, GuardLoop = true, GuardHit = true }
 
 -- Which gait action a moving or guarding actor plays, and at what rate. speed: planted root speed in studs/s; forward, right: components of the travel
 -- direction along his facing (unit); current: the action now playing, for hysteresis. Pure.
-function Rules.gait(look: string, speed: number, scale: number, forward: number, right: number, state: string?, current: string?): (string?, number)
+function Rules.gait(look: string, speed: number, scale: number, forward: number, right: number, state: string?, current: string?, phase: number?): (string?, number)
 	if state == "Blockstun" or state == "Deflecting" then return "GuardHit", 1 end
 	if state == "Blocking" then return "GuardLoop", 1 end
-	local rates = Rules.Locomotion[look]
+	local rates = (phase and Rules.Locomotion[look .. "_P" .. phase]) or Rules.Locomotion[look]
 	if not rates then return nil, 1 end
 	local moving = current ~= nil and current ~= "GuardLoop" and current ~= "GuardHit"
 	if speed < (if moving then Rules.GaitRate.Stand - Rules.GaitRate.StandGrace else Rules.GaitRate.Stand) then return nil, 1 end

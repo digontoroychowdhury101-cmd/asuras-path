@@ -239,10 +239,15 @@ source.Fighter.ActiveHP=source.Fighter.MaxHP*0.5
 now=60
 check(PhaseCoordinator.Update(agent,World.Bosses.GrandmasterShen,source,now),"threshold begins phase sequence")
 check(agent.Mode=="Cinematic" and Combat.isInvulnerable(source.Fighter,now+1),"phase freezes AI and grants invulnerability")
-check(source.Fighter.Weapon=="Jian","weapon remains intact until transformation completes")
+check(source.Fighter.Weapon=="Guandao","his guandao stays in hand through the transformation")
+check(source.Model:GetAttribute("AsuraAnimationSet")=="DisciplinedMaster" and agent.RevealAt==60.9,"the old body holds until the transition's reveal")
+now=60.95
+PhaseCoordinator.Update(agent,World.Bosses.GrandmasterShen,source,now)
+check(source.Model:GetAttribute("AsuraAnimationSet")=="DemonicChimera" and agent.RevealAt==nil and agent.Mode=="Cinematic","the new body appears at the reveal, still under the cinematic")
+check(agent.Profile==World.Bosses.GrandmasterShen.Phases[1].AI,"the moveset waits for the end of the transition")
 now=62.4
 PhaseCoordinator.Update(agent,World.Bosses.GrandmasterShen,source,now)
-check(source.Fighter.Weapon=="Guandao" and agent.Phase==2,"completed transformation swaps weapon schema")
+check(source.Fighter.Weapon=="Guandao" and agent.Phase==2 and agent.Profile==World.Bosses.GrandmasterShen.Phases[2].AI,"completed transformation adopts the second phase's moveset")
 check(source.Model:GetAttribute("AsuraAnimationSet")=="DemonicChimera","completed transformation selects phase animation set")
 check(not source.Fighter.KOProtected and agent.Mode=="Combat","final phase reopens combat and allows defeat")
 source.Fighter=Combat.new(-1,"Jian",0)

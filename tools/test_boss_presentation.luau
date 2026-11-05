@@ -60,8 +60,8 @@ local function tip(look, phase: number): number
 	return far
 end
 local cases = {
-	{ "Shen jian", LOOKS.GrandmasterShen, 1, Weapons.Weapons.Jian.Reach, 1 },
-	{ "Shen chimera glaive", LOOKS.GrandmasterShen, 2, Weapons.Weapons.Guandao.Reach + 2.5, 1 },
+	{ "Shen master glaive", LOOKS.GrandmasterShen, 1, Weapons.Weapons.Guandao.Reach, 1.3 },
+	{ "Shen chimera glaive", LOOKS.GrandmasterShen, 2, Weapons.Weapons.Guandao.Reach, 1.3 },
 	{ "Zhao guandao", LOOKS.GeneralZhao, 1, Weapons.Weapons.Guandao.Reach, 1.2 },
 	{ "Iron Bull maul", LOOKS.IronBull, 1, Weapons.Weapons.IronBullMaul.Reach, 1.7 },
 	{ "Wu staff", LOOKS.SovereignWu, 1, Weapons.Weapons.Catalyst.Reach, 1.2 },
@@ -71,7 +71,7 @@ for _, case in cases do
 	check(string.format("%s tip %.1f vs reach %.1f", case[1], reach, case[4]), math.abs(reach - case[4]) <= 1.25)
 end
 check("roster scales match the authored weapon lengths", World.Bosses.TwinSentinels.Scale == 1.2 and World.Bosses.TwinSentinels.Partner.Scale == 1.7
-	and World.Bosses.SovereignWu.Scale == 1.2 and (World.Bosses.GrandmasterShen.Scale or 1) == 1)
+	and World.Bosses.SovereignWu.Scale == 1.2 and World.Bosses.GrandmasterShen.Scale == 1.3)
 
 -- 3. Creature bodies sit inside their hurt capsules; feet on the ground; hull within the body.
 local function segDistance(p, a, b): number
@@ -274,8 +274,9 @@ template("AsuraBoss_GeneralZhao", full)
 template("AsuraBoss_IronBull_P1", full)
 template("AsuraBoss_GrandmasterShen_P2", { "Head", "UpperTorso" })
 local storage = { FindFirstChild = function(_, n) return if n == "AsuraAssets" then library else nil end }
+local prewarmFolder = Instance.new("Folder"); prewarmFolder.Name = "AsuraSkinPrewarm"
 local Skin = Scene.load("src/server/Services/BossSkin.luau", {
-	game = { GetService = function(_, n) return if n == "ServerStorage" then storage else { WaitForChild = function() return { Shared = { CostumeSchema = Schema, BossRigs = { ByTemplate = {} } } } end } end },
+	game = { GetService = function(_, n) return if n == "ServerStorage" then storage else { FindFirstChild = function() return prewarmFolder end, WaitForChild = function() return { Shared = { CostumeSchema = Schema, BossRigs = { ByTemplate = {} } } } end } end },
 	script = { Parent = { PbrAssets = { validate = function() return true end } } } })
 local function actor(key, encounter, phase)
 	local rig = Scene.rig(key)
@@ -302,18 +303,19 @@ template("AsuraBoss_Handless", handless)
 local handActor = actor("Handless", "Handless", 1)
 check("a humanoid skin missing a hand is refused (hands would vanish)", not Skin.attach(handActor) and string.find(handActor:GetAttribute("AsuraSkinStatus"), "missing LeftHand", 1, true))
 local armed = template("AsuraBoss_GrandmasterShen_P1", full)
-local blade = mesh("JianBladeMesh", "RightHand"); blade:SetAttribute("AsuraRole", "Weapon"); blade.Parent = armed
+local blade = mesh("GlaiveBladeMesh", "RightHand"); blade:SetAttribute("AsuraRole", "Weapon"); blade.Parent = armed
 library.AsuraBoss_GrandmasterShen_P2:Destroy()
 template("AsuraBoss_GrandmasterShen_P2", full)
 local master = actor("GrandmasterShen", "GrandmasterShen", 1)
 Kit.build(master, LOOKS.GrandmasterShen, 1)
 check("a skin with its own weapon hides the costume weapon", Skin.attach(master) and master.AsuraBossSkin:GetAttribute("OwnsWeapon") == true
-	and master.AsuraAttire.JianBlade.Transparency == 1 and master.AsuraBossSkin.JianBladeMesh.Transparency == 0)
+	and master.AsuraAttire.MasterGlaiveBlade.Transparency == 1 and master.AsuraBossSkin.GlaiveBladeMesh.Transparency == 0)
+check("the next form's template is copied once for clients to preload", prewarmFolder:FindFirstChild("AsuraBoss_GrandmasterShen_P2") ~= nil)
 Kit.phase(master, 1)
-check("re-showing the phase keeps the costume weapon hidden under a weapon skin", master.AsuraAttire.JianBlade.Transparency == 1)
+check("re-showing the phase keeps the costume weapon hidden under a weapon skin", master.AsuraAttire.MasterGlaiveBlade.Transparency == 1)
 master:SetAttribute("AsuraBossPhase", 2); Kit.phase(master, 2)
 check("phase 2 skin without a weapon shows the costume glaive again", Skin.attach(master) and master.AsuraBossSkin:GetAttribute("OwnsWeapon") == false
-	and master.AsuraAttire.GlaiveHaft.Transparency == 0 and master.AsuraAttire.JianBlade.Transparency == 1
+	and master.AsuraAttire.GlaiveHaft.Transparency == 0 and master.AsuraAttire.MasterGlaiveBlade.Transparency == 1
 	and master:GetAttribute("AsuraSkinStatus") == "Template:AsuraBoss_GrandmasterShen_P2")
 check("creature skins only need the root bone", Schema.RequiredBones.Creature[1] == "HumanoidRootPart" and #Schema.RequiredBones.Creature == 1)
 check("template names: phase, look, then legacy", table.concat(Schema.templates("GeneralZhao", 2, "TwinSentinels", "Ancient Oath"), ",")
@@ -473,7 +475,7 @@ check("an attack without its own track uses the look's Strike override", AnimRul
 check("Shen's legacy override names still count", AnimRules.resolve("GrandmasterShen", 2, "Transform", nil, "R15",
 	attrs({ AsuraBossAnimation_Shen_Phase2_Transform = "rbxassetid://555" })).Source == "Override")
 check("malformed overrides are ignored", AnimRules.resolve("SovereignWu", 1, "Idle", nil, "R15", attrs({ AsuraBossAnimation_SovereignWu_Idle = "555" })).Source == "Stock")
-check("status names the stand-ins honestly", AnimRules.status("GrandmasterShen", 1, "R15", none) == "Fallback:Stock 0/5 authored (first missing GrandmasterShen_P1_Idle)"
+check("status names the stand-ins honestly", AnimRules.status("GrandmasterShen", 1, "R15", none) == "Fallback:Stock 0/11 authored (first missing GrandmasterShen_P1_Idle)"
 	and string.find(AnimRules.status("AzureWyrm", 2, "Creature", none), "Fallback:CreatureMotion 0/6", 1, true) ~= nil)
 local all = {}
 for _, action in AnimRules.slots("IronBull", 1) do all["AsuraBossAnimation_IronBull_" .. action] = "rbxassetid://9" end

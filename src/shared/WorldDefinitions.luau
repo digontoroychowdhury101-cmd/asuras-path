@@ -127,7 +127,7 @@ export type BossPhase = {
 	OnDeathblow: boolean,
 	Stats: Stats,
 	AI: AIProfile,
-	Transition: { Duration: number, Shockwave: Shockwave, BodyColor: { number } }?,
+	Transition: { Duration: number, Reveal: number?, Shockwave: Shockwave, BodyColor: { number } }?,
 	Special: { IntervalMin: number, IntervalMax: number, Shockwave: Shockwave }?,
 }
 
@@ -537,7 +537,7 @@ World.Bosses = {
 			{
 				Index = 1,
 				Name = "Disciplined Master",
-				Weapon = "Jian",
+				Weapon = "Guandao", -- the supplied sculpt carries the guandao in both forms (BossArmaments)
 				HPFraction = nil,
 				OnDeathblow = false,
 				Stats = {
@@ -583,7 +583,7 @@ World.Bosses = {
 					StrengthScale = 1.8,
 					DexterityScale = 1.7,
 					PoiseArmor = 0.65,
-					ReachBonus = 2.5,
+					ReachBonus = 0, -- the same visible glaive as phase 1; his scale (BossRoster) already meets the blade's reach
 				},
 				AI = profile({
 					SightRange = 200,
@@ -607,6 +607,7 @@ World.Bosses = {
 				}),
 				Transition = {
 					Duration = 2.4,
+					Reveal = 0.9, -- seconds in: the phase 2 body replaces phase 1 at the shared handoff pose (shen_clips.py)
 					Shockwave = { Windup = 1.6, Radius = 22, Damage = 28, Posture = 45, Unblockable = true },
 					BodyColor = { 120, 22, 24 },
 				},

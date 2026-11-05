@@ -241,6 +241,15 @@
           "BossAnimationRules": {
             "$path": "src/shared/BossAnimationRules.luau"
           },
+          "ClothSim": {
+            "$path": "src/shared/ClothSim.luau"
+          },
+          "ShenClothData": {
+            "$path": "src/shared/ShenClothData.luau"
+          },
+          "ShenPresentationData": {
+            "$path": "src/shared/ShenPresentationData.luau"
+          },
           "BossRigs": {
             "$path": "src/shared/BossRigs.luau"
           },
@@ -854,6 +863,12 @@
             },
             "SkinWeaponFx": {
               "$path": "src/client/Controllers/SkinWeaponFx.luau"
+            },
+            "BossCloth": {
+              "$path": "src/client/Controllers/BossCloth.luau"
+            },
+            "ShenPresentation": {
+              "$path": "src/client/Controllers/ShenPresentation.luau"
             },
             "InterfaceController": {
               "$path": "src/client/Controllers/InterfaceController.luau"

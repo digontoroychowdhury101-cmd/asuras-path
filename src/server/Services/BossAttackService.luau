@@ -98,7 +98,7 @@ function Service.step(id: number, now: number): boolean
 				local endpoint = current.Aim + (if direction.Magnitude > 0.1 then direction.Unit * 70 else Vector3.zAxis * 70)
 				Motion.begin(id, "Aerial", endpoint, now, now + (a.Duration or 3))
 			end
-			Characters.Cue("BossHazard", id, { kind = kind, radius = a.Radius, speed = a.Speed or 36, duration = a.Duration,
+			Characters.Cue("BossHazard", id, { move = a.Id, start = current.Impact, kind = kind, radius = a.Radius, speed = a.Speed or 36, duration = a.Duration,
 				repeats = a.Repeats or 1, interval = a.Interval or 1, element = a.Element, x = origin.X, y = 0.3, z = origin.Z,
 				ax = current.Aim.X, az = current.Aim.Z })
 		end

@@ -146,7 +146,7 @@ local function syncGait(model: Model, state: string?)
 		local travel = gait.Velocity / speed
 		forward, right = travel:Dot(look3), travel:Dot(root.CFrame.RightVector)
 	end
-	local action, rate = Rules.gait(look, speed, model:GetScale(), forward, right, state, gait.Action)
+	local action, rate = Rules.gait(look, speed, model:GetScale(), forward, right, state, gait.Action, phase)
 	if not action then
 		if gait.Track then stopGait(gait) end
 		return
@@ -219,6 +219,12 @@ syncFrame = function(model: Model, state: string?)
 		end
 	end
 	if previous and previous.Signature == sig and (track == nil or track.IsPlaying) then return end
+	-- the server revealed the new form mid-transition: its own Transform carries on from the shared handoff pose
+	local look = signature(model)
+	if previous and previous.Signature ~= sig and Rules.RevealContinues[look] and string.sub(previous.Key, -10) == "_Transform" then
+		play(model, "Transform")
+		return
+	end
 	play(model, "Idle")
 end
 

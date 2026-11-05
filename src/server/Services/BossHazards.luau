@@ -6,20 +6,31 @@ local Characters = require(script.Parent.CharacterService)
 type Entity = Characters.Entity
 type Projectile = { Position: Vector3, Target: number, Hit: boolean }
 export type Hazard = { Attack: Types.Attack, Origin: Vector3, Aim: Vector3, Start: number, Previous: number,
-	Allowed: { [number]: boolean }?, Hits: { [string]: boolean }, Projectiles: { Projectile }, LastTick: number }
+	Allowed: { [number]: boolean }?, Hits: { [string]: boolean }, Projectiles: { Projectile }, LastTick: number, Instance: number }
 local Hazards = {}
+local instances = 0
+-- Where a barrage's i-th of n projectiles starts. A Fan attack spreads them across the aim at the hand that releases them.
+function Hazards.projectileStart(attack: Types.Attack, origin: Vector3, aim: Vector3, i: number, n: number): Vector3
+	if not (attack :: any).Fan then return origin + Vector3.new((i - 3) * 2, 8, 0) end
+	local flat = Vector3.new(aim.X - origin.X, 0, aim.Z - origin.Z)
+	local forward = if flat.Magnitude > 0.01 then flat.Unit else Vector3.new(0, 0, -1)
+	local across = Vector3.new(-forward.Z, 0, forward.X)
+	return origin + across * ((i - (n + 1) / 2) * 1.4) + Vector3.yAxis * ((attack :: any).Rise or 8)
+end
 function Hazards.new(attack: Types.Attack, origin: Vector3, aim: Vector3, now: number, allowed: { [number]: boolean }?): Hazard
 	local projectiles: { Projectile } = {}
 	if attack.Kind == "Barrage" then
 		local targets = {}
 		for id in allowed or {} do table.insert(targets, id) end
 		table.sort(targets)
-		for i = 1, attack.Count or 5 do
-			table.insert(projectiles, { Position = origin + Vector3.new((i - 3) * 2, 8, 0), Target = targets[(i - 1) % math.max(#targets, 1) + 1] or 0, Hit = false })
+		local count = attack.Count or 5
+		for i = 1, count do
+			table.insert(projectiles, { Position = Hazards.projectileStart(attack, origin, aim, i, count), Target = targets[(i - 1) % math.max(#targets, 1) + 1] or 0, Hit = false })
 		end
 	end
+	instances += 1
 	return { Attack = attack, Origin = origin, Aim = aim, Start = now, Previous = 0, Allowed = allowed,
-		Hits = {}, Projectiles = projectiles, LastTick = -1 }
+		Hits = {}, Projectiles = projectiles, LastTick = -1, Instance = instances }
 end
 local function hit(id: number, hazard: Hazard, e: Entity, key: string)
 	if hazard.Hits[key] then return end
@@ -48,7 +59,10 @@ function Hazards.step(id: number, h: Hazard, now: number): boolean
 				local travel = math.min(direction.Magnitude, speed * dt)
 				projectile.Position += if direction.Magnitude > 0.01 then direction.Unit * travel else Vector3.zero
 				if (p - projectile.Position).Magnitude <= 3 then hit(id, h, e, tostring(i) .. ":" .. e.Id); projectile.Hit = true end
-				if sendProjectiles then Characters.Cue("BossProjectile", id, { index = i, x = projectile.Position.X, y = projectile.Position.Y, z = projectile.Position.Z }) end
+				if sendProjectiles or projectile.Hit then -- attack, move, target, state identify the projectile for a client that draws it (ShenPresentation)
+					Characters.Cue("BossProjectile", id, { index = i, x = projectile.Position.X, y = projectile.Position.Y, z = projectile.Position.Z,
+						attack = h.Instance, move = a.Id, target = e.Id, state = if projectile.Hit then "hit" else "fly" })
+				end
 			end
 		elseif kind == "Gravity" or kind == "Ritual" or kind == "Breath" or (kind == "Leap" and a.Element == "Frost") then
 			local center = if kind == "Gravity" then h.Aim else h.Origin

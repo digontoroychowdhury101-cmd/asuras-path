@@ -26,6 +26,8 @@ local Sakura = require(script.Parent:WaitForChild("SakuraKit") :: ModuleScript)
 local BossHud = require(script.Parent.BossHud)
 local BossMusic = require(script.Parent.BossMusic)
 local BossEffects = require(script.Parent.BossEffects)
+local ShenPresentation = require(script.Parent.ShenPresentation)
+require(script.Parent.BossCloth).start() -- skinned bosses: follows their tag for the life of the client
 local BossAnimations = require(script.Parent.BossAnimations)
 local DuoBars = require(script.Parent.DuoBars)
 local VitalsTags = require(script.Parent.VitalsTags)
@@ -1031,7 +1033,7 @@ function Controller.OnCue(self: Interface, cue: Cue)
 	end
 	local sourceEntity = self.State:Get(cue.Source)
 	if isBossCue or (sourceEntity and sourceEntity.Model:GetAttribute("AsuraEncounter") == self.BossId and self.BossId ~= nil) then
-		BossEffects.cue(cue, self.State)
+		if not ShenPresentation.cue(cue, sourceEntity) then BossEffects.cue(cue, self.State) end -- his authored effect replaces the generic one for that cue
 		if sourceEntity and (cue.Kind == "Telegraph" or cue.Kind == "BossSwing" or cue.Kind == "BossPhase" or cue.Kind == "BossEnrage") then
 			BossAnimations.action(sourceEntity.Model, cue.Kind == "BossPhase" or cue.Kind == "BossEnrage", data.move, data.kind, data.impact)
 		end
@@ -1109,8 +1111,10 @@ function Controller.OnCue(self: Interface, cue: Cue)
 		DuoBars.clear(self.Duo)
 		BossMusic.stop(self.BossScore)
 		task.delay(12, BossAnimations.prune) -- the corpse is removed after EnemyCorpseTime
+		ShenPresentation.clear()
 	elseif cue.Kind == "BossReset" or cue.Kind == "BossParticipantLeft" then
 		BossAnimations.prune()
+		ShenPresentation.clear()
 		self.BossEntity, self.BossId, self.BossMembers = nil, nil, {}
 		self.BossFrame.Visible = false
 		DuoBars.clear(self.Duo)
@@ -1208,12 +1212,18 @@ end
 function Controller.UpdateBoss(self: Interface)
 	for _, id in self.BossFallen or {} do
 		local entity = self.State:Get(id)
-		if entity then BossAnimations.sync(entity.Model, entity.Snapshot and entity.Snapshot.State) end
+		if entity then
+			BossAnimations.sync(entity.Model, entity.Snapshot and entity.Snapshot.State)
+			ShenPresentation.sync(entity.Model, entity.Snapshot and entity.Snapshot.State)
+		end
 	end
 	if self.BossEntity == nil then return end
 	for _, id in self.BossMembers do
 		local entity = self.State:Get(id)
-		if entity then BossAnimations.sync(entity.Model, entity.Snapshot and entity.Snapshot.State) end
+		if entity then
+			BossAnimations.sync(entity.Model, entity.Snapshot and entity.Snapshot.State)
+			ShenPresentation.sync(entity.Model, entity.Snapshot and entity.Snapshot.State)
+		end
 	end
 	if #self.Duo.Rows > 0 then
 		DuoBars.update(self.Duo, self.State, self.Camera:LockedEntity(), not Visibility.of(self).Boss)
@@ -1288,6 +1298,7 @@ end
 function Controller.Destroy(self: Interface)
 	BossMusic.stop(self.BossScore)
 	BossAnimations.clear()
+	ShenPresentation.clear()
 	for _, disconnect in self.Disconnects do
 		disconnect()
 	end

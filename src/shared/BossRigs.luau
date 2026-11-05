@@ -38,7 +38,68 @@ Rigs.ByTemplate = {
 			{ Bone = "ClothBack", Parent = "LowerTorso", At = V(0.15, -0.48, 0.62) },
 		},
 	} :: Def,
+	-- Grandmaster Shen: one rig per sculpt, from tools/blender/shen_import/rigdef.py. The limbs never move, so the two forms share every skin weld and the swap only re-points the pivots;
+	-- phase 2 builds its own helper bones rather than moving phase 1's under a live weld.
+	AsuraBoss_GrandmasterShen_P1 = {
+		Joints = { -- parents first
+			{ Bone = "LowerTorso", Parent = "HumanoidRootPart", Motor = "Root", At = V(-0.09, -0.25, -0.10) },
+			{ Bone = "UpperTorso", Parent = "LowerTorso", Motor = "Waist", At = V(-0.09, 0.25, -0.10) },
+			{ Bone = "Head", Parent = "UpperTorso", Motor = "Neck", At = V(-0.12, 1.65, -0.25) },
+			{ Bone = "RightUpperArm", Parent = "UpperTorso", Motor = "RightShoulder", At = V(0.64, 1.14, -0.03) },
+			{ Bone = "RightLowerArm", Parent = "RightUpperArm", Motor = "RightElbow", At = V(0.96, 0.38, -0.03) },
+			{ Bone = "RightHand", Parent = "RightLowerArm", Motor = "RightWrist", At = V(1.06, -0.20, -0.42) },
+			{ Bone = "LeftUpperArm", Parent = "UpperTorso", Motor = "LeftShoulder", At = V(-0.80, 1.14, 0.00) },
+			{ Bone = "LeftLowerArm", Parent = "LeftUpperArm", Motor = "LeftElbow", At = V(-1.12, 0.31, 0.00) },
+			{ Bone = "LeftHand", Parent = "LeftLowerArm", Motor = "LeftWrist", At = V(-1.15, -0.26, -0.28) },
+			{ Bone = "RightUpperLeg", Parent = "LowerTorso", Motor = "RightHip", At = V(0.25, -0.55, -0.10) },
+			{ Bone = "RightLowerLeg", Parent = "RightUpperLeg", Motor = "RightKnee", At = V(0.68, -1.85, 0.02) },
+			{ Bone = "RightFoot", Parent = "RightLowerLeg", Motor = "RightAnkle", At = V(0.95, -2.85, 0.12) },
+			{ Bone = "LeftUpperLeg", Parent = "LowerTorso", Motor = "LeftHip", At = V(-0.45, -0.55, -0.10) },
+			{ Bone = "LeftLowerLeg", Parent = "LeftUpperLeg", Motor = "LeftKnee", At = V(-0.66, -1.85, 0.02) },
+			{ Bone = "LeftFoot", Parent = "LeftLowerLeg", Motor = "LeftAnkle", At = V(-0.72, -2.85, 0.12) },
+		},
+		Helpers = {
+		},
+	} :: Def,
+	AsuraBoss_GrandmasterShen_P2 = {
+		Joints = { -- parents first
+			{ Bone = "LowerTorso", Parent = "HumanoidRootPart", Motor = "Root", At = V(-0.03, -0.25, -0.05) },
+			{ Bone = "UpperTorso", Parent = "LowerTorso", Motor = "Waist", At = V(-0.03, 0.30, -0.05) },
+			{ Bone = "Head", Parent = "UpperTorso", Motor = "Neck", At = V(0.00, 1.35, -0.20) },
+			{ Bone = "RightUpperArm", Parent = "UpperTorso", Motor = "RightShoulder", At = V(0.74, 1.08, 0.00) },
+			{ Bone = "RightLowerArm", Parent = "RightUpperArm", Motor = "RightElbow", At = V(1.09, 0.40, -0.10) },
+			{ Bone = "RightHand", Parent = "RightLowerArm", Motor = "RightWrist", At = V(1.09, -0.20, -0.28) },
+			{ Bone = "LeftUpperArm", Parent = "UpperTorso", Motor = "LeftShoulder", At = V(-0.80, 1.08, 0.00) },
+			{ Bone = "LeftLowerArm", Parent = "LeftUpperArm", Motor = "LeftElbow", At = V(-1.05, 0.18, -0.13) },
+			{ Bone = "LeftHand", Parent = "LeftLowerArm", Motor = "LeftWrist", At = V(-1.18, -0.39, -0.42) },
+			{ Bone = "RightUpperLeg", Parent = "LowerTorso", Motor = "RightHip", At = V(0.25, -0.55, -0.05) },
+			{ Bone = "RightLowerLeg", Parent = "RightUpperLeg", Motor = "RightKnee", At = V(0.72, -1.72, 0.10) },
+			{ Bone = "RightFoot", Parent = "RightLowerLeg", Motor = "RightAnkle", At = V(1.00, -2.79, 0.19) },
+			{ Bone = "LeftUpperLeg", Parent = "LowerTorso", Motor = "LeftHip", At = V(-0.38, -0.55, -0.05) },
+			{ Bone = "LeftLowerLeg", Parent = "LeftUpperLeg", Motor = "LeftKnee", At = V(-0.62, -1.72, 0.10) },
+			{ Bone = "LeftFoot", Parent = "LeftLowerLeg", Motor = "LeftAnkle", At = V(-0.80, -2.79, 0.19) },
+		},
+		Helpers = {
+			{ Bone = "Bead1", Parent = "LowerTorso", At = V(1.62, 0.30, 0.38) },
+			{ Bone = "Bead2", Parent = "LowerTorso", At = V(1.26, -0.05, 0.23) },
+			{ Bone = "Bead3", Parent = "LowerTorso", At = V(1.72, 0.02, 0.42) },
+		},
+	} :: Def,
 }
+
+-- The rest frame of each limb in root space, read from the rig's own joints, in studs at this actor's scale.
+function Rigs.rest(actor: Model, def: Def): { [string]: CFrame }
+	local rest: { [string]: CFrame } = { HumanoidRootPart = CFrame.identity }
+	for _, joint in def.Joints do
+		local limb = actor:FindFirstChild(joint.Bone)
+		local constraint = limb and limb:FindFirstChild(joint.Motor)
+		local parent = rest[joint.Parent]
+		if constraint and constraint:IsA("AnimationConstraint") and parent and constraint.Attachment0 and constraint.Attachment1 then
+			rest[joint.Bone] = parent * constraint.Attachment0.CFrame * constraint.Attachment1.CFrame:Inverse()
+		end
+	end
+	return rest
+end
 
 -- Moves the pivots on a live actor and builds its helper bones. Actors are AnimationConstraint rigs: Part1 = Part0 * Attachment0 *
 -- Transform * Attachment1:Inverse(), so a pivot is a pair of rig attachments and moving both by the same joint point leaves the limb

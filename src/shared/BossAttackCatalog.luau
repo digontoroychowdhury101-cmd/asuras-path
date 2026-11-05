@@ -4,7 +4,7 @@ type Motion = "Pillar" | "Aerial" | "Lunge" | "Teleport"
 type BossAttack = {
 	Id: string, Kind: AttackKind, Windup: number, Radius: number, Damage: number, Posture: number,
 	Height: number?, Speed: number?, Repeats: number?, Interval: number?, Duration: number?,
-	Count: number?, Motion: Motion?, Element: string?, Unblockable: boolean?,
+	Count: number?, Motion: Motion?, Element: string?, Unblockable: boolean?, DisplayName: string?, Fan: boolean?, Rise: number?,
 }
 type GapCloser = { Range: number, Delay: number, Cooldown: number, Motion: Motion }
 local function move(id: string, kind: AttackKind, radius: number, damage: number, windup: number, options: { [string]: any }?): BossAttack
@@ -14,14 +14,16 @@ local function move(id: string, kind: AttackKind, radius: number, damage: number
 end
 local Catalog = {
 	Shen = {
-		move("FlowingJian", "PerilousThrust", 18, 15, 0.8, { Repeats = 4, Interval = 0.65, Motion = "Lunge" }),
-		move("PrayerBeads", "Barrage", 90, 12, 1.1, { Count = 7, Speed = 34 }),
-		move("AbbotSweep", "PerilousSweep", 16, 24, 1),
+		-- The id FlowingJian stays stable for clips, tests and saves; he thrusts with the guandao his sculpts carry.
+		move("FlowingJian", "PerilousThrust", 18, 15, 0.8, { Repeats = 4, Interval = 0.65, Motion = "Lunge", DisplayName = "Flowing Glaive" }),
+		move("PrayerBeads", "Barrage", 90, 12, 1.1, { Count = 7, Speed = 34, Fan = true, Rise = 5, DisplayName = "Prayer Beads" }),
+		move("AbbotSweep", "PerilousSweep", 16, 24, 1, { DisplayName = "Abbot's Sweep" }),
 	},
 	Chimera = {
-		move("BloodWave", "Shockwave", 90, 30, 1.1, { Speed = 38, Height = 7, Element = "Blood" }),
-		move("GuandaoSkyfall", "Leap", 28, 35, 1.5, { Motion = "Aerial", Speed = 45 }),
-		move("CrimsonEmbrace", "PerilousGrab", 12, 40, 1.2),
+		move("BloodWave", "Shockwave", 90, 30, 1.1, { Speed = 38, Height = 7, Element = "Blood", DisplayName = "Blood Wave" }),
+		move("GuandaoSkyfall", "Leap", 28, 35, 1.5, { Motion = "Aerial", Speed = 45, DisplayName = "Guandao Skyfall" }),
+		-- The lunge brings the visible claw to the server's 12 stud reach; nothing ever attaches to a player.
+		move("CrimsonEmbrace", "PerilousGrab", 12, 40, 1.2, { Motion = "Lunge", DisplayName = "Crimson Embrace" }),
 	},
 	Baize = {
 		move("MeteorPounce", "Leap", 100, 32, 2.1, { Motion = "Pillar", Speed = 32, Height = 9, Duration = 2.6, Element = "Frost" }),

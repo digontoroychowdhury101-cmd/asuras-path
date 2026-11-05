@@ -34,7 +34,7 @@ for _, entry in World.Spawns do
 end
 assert(monks > 0 and swordsmen > 0, "both mob archetypes are placed")
 local shen = World.Bosses.GrandmasterShen
-assert(shen.Phases[1].Weapon == "Jian" and shen.Phases[2].Weapon == "Guandao")
+assert(shen.Phases[1].Weapon == "Guandao" and shen.Phases[2].Weapon == "Guandao", "his sculpts carry the guandao in both phases")
 assert(World.phaseFor(shen, 1, 0.8, 0) == 1, "healthy, no deathblow: phase 1")
 assert(World.phaseFor(shen, 1, 0.5, 0) == 2, "50% HP: phase 2")
 assert(World.phaseFor(shen, 1, 0.9, 1) == 2, "first deathblow: phase 2")

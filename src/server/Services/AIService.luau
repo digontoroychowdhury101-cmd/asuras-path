@@ -73,6 +73,7 @@ type Agent = {
 	Allowed: { [number]: boolean }?,
 	Shockwave: PendingShockwave?,
 	TransitionEnd: number,
+	RevealAt: number?, -- a transition with Transition.Reveal: the moment the new body replaces the old under the camera
 	NextSpecial: number,
 	HoldUntil: number, -- encounter handoff: the boss stands until readable control returns (#16)
 	Pillars: { Bodies.Pillar }?, -- arena columns a long body steers around
@@ -591,15 +592,21 @@ local function beginTransition(agent: Agent, boss: BossDef, index: number, self:
 	local allowed: { [number]: boolean } = agent.Allowed or {}
 	for id in allowed do table.insert(participants, id) end
 	local window = Handoff.begin(boss.Id, "Phase", participants)
-	Characters.Cue("BossPhase", agent.Id, { boss = boss.Id, phase = index, name = phase.Name, duration = transition.Duration,
+	Characters.Cue("BossPhase", agent.Id, { boss = boss.Id, phase = index, name = phase.Name, duration = transition.Duration, reveal = transition.Reveal,
 		shot = HandoffRules.shot("Phase"), participants = participants })
 	scheduleShockwave(agent, transition.Shockwave, now, false, HandoffRules.earliest(window))
-	BossAppearance.phase(self.Model, phase.AnimationSet, index) -- the body changes under the camera; the moveset at the end
+	-- the body changes under the camera, at the reveal if the look has one (checked in updateBoss, so a reset simply drops it); the moveset at the end
+	if transition.Reveal then
+		agent.RevealAt = now + transition.Reveal
+	else
+		BossAppearance.phase(self.Model, phase.AnimationSet, index)
+	end
 	agent.TransitionEnd = now + transition.Duration
 	agent.Phase = index
 end
 
 local function finishTransition(agent: Agent, boss: BossDef, self: Entity, now: number)
+	agent.RevealAt = nil
 	applyPhase(agent, boss, agent.Phase, self)
 	agent.TransitionEnd = math.huge
 	local special = boss.Phases[agent.Phase].Special
@@ -610,6 +617,10 @@ end
 local function updateBoss(agent: Agent, boss: BossDef, self: Entity, now: number): boolean
 	local f = self.Fighter
 	if agent.TransitionEnd < math.huge then
+		if agent.RevealAt and now >= agent.RevealAt then
+			agent.RevealAt = nil
+			BossAppearance.phase(self.Model, boss.Phases[agent.Phase].AnimationSet, agent.Phase)
+		end
 		if agent.Shockwave and now >= agent.Shockwave.At then
 			releaseShockwave(agent, self)
 		end

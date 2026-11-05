@@ -54,6 +54,8 @@ echo "[8/14] Testing Boss Encounters & Runtime..."
 "$LUAU" tools/test_boss_encounters.luau
 "$LUAU" tools/test_miniboss_reward.luau
 python3 tools/test_boss_runtime.py
+python3 tools/test_shen_integration.py
+python3 tools/test_cloth_sim.py
 
 echo "[9/14] Testing Objectives System..."
 python3 tools/test_objectives.py

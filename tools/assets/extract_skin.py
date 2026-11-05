@@ -22,7 +22,8 @@ ID = re.compile(r"rbxassetid://[1-9][0-9]{5,19}")
 MAPS = ("ColorMap", "NormalMap", "RoughnessMap", "MetalnessMap")
 R15 = {"Head", "UpperTorso", "LowerTorso", "LeftUpperArm", "LeftLowerArm", "LeftHand", "RightUpperArm", "RightLowerArm",
        "RightHand", "LeftUpperLeg", "LeftLowerLeg", "LeftFoot", "RightUpperLeg", "RightLowerLeg", "RightFoot"}
-HELPERS = {"RightPauldron", "LeftPauldron", "ClothFront", "ClothBack"}  # BossRigs builds these on the actor
+HELPERS = {"RightPauldron", "LeftPauldron", "ClothFront", "ClothBack",  # BossRigs builds these on the actor
+           "Bead1", "Bead2", "Bead3"}  # Grandmaster Shen, phase 2's floating beads; his cloth is skinned
 
 
 def name(item: ET.Element) -> str:
@@ -80,20 +81,27 @@ def extract(place: Path, model_name: str) -> tuple[ET.Element, dict]:
         raise ValueError(f"Expected one ServerStorage Model {model_name}, found {len(found)}")
     model = found[0]
     parts, bones = {}, set()
+    any_skinned = False
     for mesh in model.iter("Item"):
         if mesh.attrib.get("class") != "MeshPart":
             continue
         label = name(mesh)
         ids = {"MeshId": content(mesh, "MeshId")}
         surfaces = [i for i in mesh.findall("Item") if i.attrib.get("class") == "SurfaceAppearance"]
-        if len(surfaces) != 1:
-            raise ValueError(f"{label}: expected one SurfaceAppearance")
-        ids.update({key: content(surfaces[0], key) for key in MAPS})
+        glow = attributes(mesh).get("AsuraRole") == "Glow"  # an isolated Neon copy of emissive texels carries no PBR by design
+        if len(surfaces) != (0 if glow else 1):
+            raise ValueError(f"{label}: expected {'no' if glow else 'one'} SurfaceAppearance")
+        if not glow:
+            ids.update({key: content(surfaces[0], key) for key in MAPS})
         for key, value in ids.items():
             if not ID.fullmatch(value):
                 raise ValueError(f"{label}: missing real uploaded {key} ({value!r})")
         bone = attributes(mesh).get("AsuraBone")
-        if bone not in R15 | HELPERS:
+        skinned = attributes(mesh).get("AsuraSkinned") == "true"     # one skeleton carries every limb: the piece welds to the root and its bones do the rest
+        if skinned and bone != "HumanoidRootPart":
+            raise ValueError(f"{label}: a skinned piece binds to the root, not {bone!r}")
+        any_skinned = any_skinned or skinned
+        if not skinned and bone not in R15 | HELPERS:
             raise ValueError(f"{label}: AsuraBone {bone!r} is not an R15 limb or BossRigs helper")
         if not any(i.attrib.get("class") == "Attachment" and name(i) == "AsuraBind" for i in mesh.findall("Item")):
             raise ValueError(f"{label}: missing AsuraBind Attachment")
@@ -102,7 +110,12 @@ def extract(place: Path, model_name: str) -> tuple[ET.Element, dict]:
         bones.add(bone)
         parts[label] = {"bone": bone, **ids}
     required = R15 - {"Head"} if model_name.startswith("AsuraArmor_") else R15  # a suit dresses the body; the player's head stays
-    if required - bones:
+    if any_skinned:
+        skeleton = {name(i) for i in model.iter("Item") if i.attrib.get("class") == "Bone"}
+        missing = {"Root"} | {"Sk_" + limb for limb in R15}
+        if missing - skeleton:
+            raise ValueError("Skinned template lacks bones: " + ", ".join(sorted(missing - skeleton)))
+    elif required - bones:
         raise ValueError("Missing R15 limbs: " + ", ".join(sorted(required - bones)))
     root = ET.Element("roblox", {"version": "4"})
     ET.SubElement(root, "External").text = "null"

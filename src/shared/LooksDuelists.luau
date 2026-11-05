@@ -47,16 +47,15 @@ local function shen(): Schema.Look
 		P("BloodSigil", "UpperTorso", { 0.5, 0.5, 0.06 }, { 0, 0.15, -0.58 }, CRIMSON, "Neon", { Rot = { 0, 0, 45 }, Phase = 2, Glow = 6 }),
 		P("WildMane", "Head", { 1.55, 1.05, 1.15 }, { 0, 0.3, 0.45 }, { 236, 226, 222 }, "Fabric", { Rot = { 22, 0, 0 }, Phase = 2 }),
 		P("RobeShreds", "LowerTorso", { 2.1, 1.7, 0.12 }, { 0, -1.05, 0.56 }, { 90, 18, 22 }, "Fabric", { Rot = { -10, 0, 0 }, Phase = 2 }),
-		-- Phase 2 glaive: reach 11 + 2.5 bonus at scale 1.
-		P("GlaiveHaft", "RightHand", { 0.26, 0.26, 11 }, { 0, -0.1, -4 }, { 48, 18, 18 }, "Wood", { Phase = 2, Role = "Weapon" }),
-		P("GlaiveRing", "RightHand", { 0.5, 0.5, 0.5 }, { 0, -0.1, -9.4 }, GOLD, "Metal", { Shape = "Ball", Phase = 2, Role = "Weapon" }),
-		P("GlaiveBlade", "RightHand", { 0.2, 1.1, 3.4 }, { 0, 0.3, -11 }, { 150, 140, 140 }, "Metal", { Shape = "Wedge", Phase = 2, Role = "Weapon" }),
-		P("GlaiveEdge", "RightHand", { 0.12, 0.25, 3.2 }, { 0, 0.85, -11 }, CRIMSON, "Neon", { Phase = 2, Glow = 8, Role = "Weapon" }),
-		-- Phase 1 jian: reach 7.5 at scale 1.
-		P("JianGrip", "RightHand", { 0.16, 0.16, 1 }, { 0, -0.1, -0.55 }, { 40, 30, 26 }, "Wood", { Phase = 1, Role = "Weapon" }),
-		P("JianGuard", "RightHand", { 0.9, 0.18, 0.18 }, { 0, -0.1, -1.1 }, GOLD, "Metal", { Phase = 1, Role = "Weapon" }),
-		P("JianBlade", "RightHand", { 0.1, 0.28, 5.6 }, { 0, -0.1, -3.95 }, STEEL, "Metal", { Phase = 1, Role = "Weapon" }),
-		P("JianTassel", "RightHand", { 0.12, 0.8, 0.12 }, { 0, -0.5, 0.05 }, CRIMSON, "Fabric", { Phase = 1 }),
+		-- The costume fallback's glaive in phase 2: the production skin (AsuraRole=Weapon) replaces it.
+		P("GlaiveHaft", "RightHand", { 0.26, 0.26, 7 }, { 0, -0.1, -2.5 }, { 48, 18, 18 }, "Wood", { Phase = 2, Role = "Weapon" }),
+		P("GlaiveRing", "RightHand", { 0.5, 0.5, 0.5 }, { 0, -0.1, -6 }, GOLD, "Metal", { Shape = "Ball", Phase = 2, Role = "Weapon" }),
+		P("GlaiveBlade", "RightHand", { 0.2, 1.1, 2.2 }, { 0, 0.3, -7.1 }, { 150, 140, 140 }, "Metal", { Shape = "Wedge", Phase = 2, Role = "Weapon" }),
+		P("GlaiveEdge", "RightHand", { 0.12, 0.25, 2 }, { 0, 0.85, -7.1 }, CRIMSON, "Neon", { Phase = 2, Glow = 8, Role = "Weapon" }),
+		-- Phase 1 glaive: the same weapon before the corruption, so the fallback never shows a jian the sculpts do not carry.
+		P("MasterGlaiveHaft", "RightHand", { 0.26, 0.26, 7 }, { 0, -0.1, -2.5 }, { 40, 30, 26 }, "Wood", { Phase = 1, Role = "Weapon" }),
+		P("MasterGlaiveRing", "RightHand", { 0.5, 0.5, 0.5 }, { 0, -0.1, -6 }, GOLD, "Metal", { Shape = "Ball", Phase = 1, Role = "Weapon" }),
+		P("MasterGlaiveBlade", "RightHand", { 0.2, 1.1, 2.2 }, { 0, 0.3, -7.1 }, STEEL, "Metal", { Shape = "Wedge", Phase = 1, Role = "Weapon" }),
 	}
 	pair(list, "CrossCollar", "UpperTorso", "UpperTorso", { 0.22, 1.7, 0.08 }, { -0.3, 0.05, -0.56 }, INDIGO, "Fabric", { Rot = { 0, 0, 24 }, Phase = 1 })
 	pair(list, "WideSleeve", "LeftUpperArm", "RightUpperArm", { 0.18, 0.05, 0.18 }, { 0, 0, 0 }, IVORY, "Fabric", { Fit = true, Phase = 1 })

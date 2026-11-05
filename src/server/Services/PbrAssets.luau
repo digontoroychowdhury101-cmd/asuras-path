@@ -7,6 +7,7 @@ function Pbr.validate(model: Model): (boolean, string?)
 	for _, item in model:GetDescendants() do
 		if not item:IsA("MeshPart") then continue end
 		count += 1
+		if item:GetAttribute("AsuraRole") == "Glow" then continue end -- an isolated Neon copy of emissive texels (fissures) carries no PBR by design
 		local surface = item:FindFirstChildOfClass("SurfaceAppearance")
 		if not surface then return false, item.Name .. ": missing SurfaceAppearance" end
 		-- Legacy *Map strings require Plugin security; *MapContent is readable in live servers.

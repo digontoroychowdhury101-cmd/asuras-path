@@ -62,6 +62,7 @@ function Roster.apply(world: any, profile: ({ [string]: number }) -> any)
 	duo.Affinity = "Lightning"
 	local shen = world.Bosses.GrandmasterShen
 	shen.Archetype, shen.Victory = "Duelist", "GREAT FOE VANQUISHED"
+	shen.Scale = 1.3 -- the sculpt's blade tip (6.8 rig studs) then reaches the guandao's standoff (0.75 x 10.5) instead of stopping short of the body
 	for i, p in shen.Phases do
 		p.Attacks, p.AttackInterval, p.AnimationSet = if i == 1 then Attacks.Shen else Attacks.Chimera, 3, if i == 1 then "DisciplinedMaster" else "DemonicChimera"
 		p.GapCloser = { Range = 36, Delay = 2.5, Cooldown = 7, Motion = "Lunge" }

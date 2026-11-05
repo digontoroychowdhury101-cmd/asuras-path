@@ -3,7 +3,7 @@
 local Armaments={}
 function Armaments.apply(world: any)
  local shen=world.Bosses.GrandmasterShen
- -- The campaign duel retains its Jian -> Guandao transformation; remembrance rewards remain available.
+ -- The campaign duel fights with the guandao his supplied sculpts carry in both phases; remembrance rewards remain available.
  if shen.Archetype~="Duelist" then
   shen.Phases[1].Weapon="PrayerOfTheDefiled"
   shen.Phases[2].Weapon="CalamityBoneCleaver"
