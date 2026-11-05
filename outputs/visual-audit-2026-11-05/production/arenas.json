@@ -1,0 +1,275 @@
+[
+  {
+    "id": "AR01",
+    "boss": "GrandmasterShen",
+    "name": "The Ashen Covenant",
+    "region": "AshColosseum",
+    "old": [
+      120,
+      130
+    ],
+    "target": [
+      220,
+      240
+    ],
+    "envelope": "roughly 600\u2013900 studs across in selective low-detail sightlines, subject to the shared-world site plan",
+    "refs": [
+      "R01",
+      "R03",
+      "R07",
+      "R09"
+    ],
+    "assets": [
+      "B01",
+      "B07",
+      "B09",
+      "B10",
+      "H01 optional"
+    ],
+    "evidence": [
+      "a06_arena",
+      "a11_facade_diagnostic",
+      "qh_a03_champions_n"
+    ],
+    "design": "An immense roofless funerary amphitheatre, not a bright miniature training court. A broad ash-pale fighting floor sits within worn radial seating fronts and shattered arcades. One split black cenotaph with an austere empty vertical cleft dominates the far horizon, backed by pale dust-lit cloud and distant ruined bridges; it is original architecture, not a copy of a recognizable tree/gate from the references. Sparse silver reeds, buried weapon fragments and worn votive figures occupy the outer ash banks. Charcoal/basalt/old bronze against muted cold-grey ash, with tiny ember warmth and no blanket orange grading.",
+    "reveal": "Approach through a low, dark champion arcade, then step out into the full sky and long view of the split monument; the boss is the first moving silhouette against a calmer floor. The Victor exit remains legible in the far-side composition after victory.",
+    "spatial": "A wider/longer in-place bowl is the preferred pilot if it fits the Ash region; moving the facade/gate north or the tiers out requires preserving both hall encounter pockets and the Cloud Stair join near z=-2120. Survey and remap the Proving Court access too. Do not let an enlarged floor silently swallow hall mobs, fog triggers or Victor gate. Keep the arena center at floor Y=0 unless the common floor assumptions are explicitly generalized.",
+    "fight": "Shen needs an intimate exchange inside a monumental setting. Initial spawn spacing must not be half the full floor length. Test FlowingJian travel, PrayerBeads at radius 90, phase-2 BloodWave radius 90 and Skyfall/edge clamping. Do not enlarge those radii or increase movement/parry tempo merely because the floor grew. Keep central ground mostly flat, with shallow noncollision wear and perimeter detail. Validate both humanoid and Chimera camera poses.",
+    "sources": [
+      "src/shared/WorldDefinitions.luau",
+      "src/shared/AshColosseumLayout.luau",
+      "src/server/Services/ColosseumDressing.luau"
+    ],
+    "agent_prompt": "prompts/AR01_GRANDMASTERSHEN_ARENA.md",
+    "concept_prompt": "prompts/AR01_ARENA_CONCEPT.md"
+  },
+  {
+    "id": "AR02",
+    "boss": "TwinSentinels",
+    "name": "The Broken Processional Court",
+    "region": "DesecratedMonastery",
+    "old": [
+      180,
+      180
+    ],
+    "target": [
+      260,
+      300
+    ],
+    "envelope": "roughly 650\u2013950 studs of layered ruined-city views, with a clear playable court inside",
+    "refs": [
+      "R08",
+      "R09",
+      "R03"
+    ],
+    "assets": [
+      "B01",
+      "B07",
+      "B09",
+      "B10",
+      "H01 optional",
+      "H04 optional"
+    ],
+    "evidence": [
+      "d12_twins_arena",
+      "d22_twins_both",
+      "d11_east_pass"
+    ],
+    "design": "A fallen fortified ceremonial precinct of an older stone civilization: vast broken limestone domes, tiered processional stairs, deep arcades and a partially collapsed aqueduct on cliffs. The main court is broad, level, worn pale stone with subtle wheel/foot traffic patterns and a few inlaid processional lines. Monumental empty guard plinths and reused worn statues frame the entrance and far stair. The actual fight floor remains open enough for Bull and Zhao together. Weathered ochre-grey masonry, soot and dark leafless trees; restrained ceremonial bronze. The neighboring monastery can retain its East Asian layers while this older foundation uses Romanesque/sepulchral architecture.",
+    "reveal": "The narrow ridge pass turns before opening onto the full facade and two defended silhouettes. Large foreground masonry frames a distant dome, with another city tier far behind it. Show a plausible traversable connection to the existing monastery, not a freestanding square grey pad.",
+    "spatial": "The existing arena is centered near x300,z=-930 and the side approach road passes around z=-810. A 300-deep expansion intersects that approach unless it is remapped. Fit the route, gate/trigger and outside/inside destinations together; check the monastery region width extension and actual ridge/terrain. Preserve Cloister shelter and ordinary monastery foe posts. Do not delete the entire monastery to make room.",
+    "fight": "Measure both supplied models with maul/shield/glaive extents and the duo separation rules. Test simultaneous movement, IronCharge, ThunderQuickstep, outer-corner pinning and both kill orders/enrage. Add no central pillars that split visibility or create infinite-kite refuge. Keep both bosses close enough to participate; the enlarged court must not create sequential isolated duels by accident.",
+    "sources": [
+      "src/shared/BossRoster.luau",
+      "src/shared/MonasteryZones.luau",
+      "src/server/Services/BossDuo.luau",
+      "src/server/Services/BossArenas.luau"
+    ],
+    "agent_prompt": "prompts/AR02_TWINSENTINELS_ARENA.md",
+    "concept_prompt": "prompts/AR02_ARENA_CONCEPT.md"
+  },
+  {
+    "id": "AR03",
+    "boss": "VenerableBaize",
+    "name": "The Frost-Hollow Hunting Ground",
+    "region": "BambooPass",
+    "old": [
+      180,
+      180
+    ],
+    "target": [
+      280,
+      300
+    ],
+    "envelope": "roughly 700\u20131100 studs of ridge, bamboo and pale-grass depth; use a few large readable rock silhouettes",
+    "refs": [
+      "R07",
+      "R02",
+      "R05"
+    ],
+    "assets": [
+      "B01",
+      "B06",
+      "B07",
+      "B09",
+      "H03 optional"
+    ],
+    "evidence": [
+      "b12_arena",
+      "b14_boundary",
+      "b11_frost",
+      "b15_moon_gate"
+    ],
+    "design": "An ancient hunting hollow beyond the cultivated bamboo shrine: low charcoal wet slate in the central fight clearing, pale frost-grass and snow caught at its edges, a few colossal wind-bent petrified roots, limestone ribs and deep distant bamboo. Four distinct ruined frost-perch pillars grow out of the terrain/court with meaningful silhouettes; their tops and approach paths remain mechanically readable. The white beast must contrast against darker central stone, while white reed fields and silver mist expand the horizon. Sparse red ritual cloth and dark bronze bells carry the sanctuary culture into a wilder older place. No uniform lawn border around a giant tiled rectangle.",
+    "reveal": "The visitor leaves a sheltered shrine path and passes under a ruined root/stone arch; near vegetation falls away to reveal an unexpectedly wide basin and distant frost ridges. Keep the moon-gate/ash descent exit recognizable without filling the combat clearing with stairs.",
+    "spatial": "Enlarging 180 to 300 depth around current center z=-1470 would cover the shrine near z=-1328 and run into the moon-gate/descent near -1577. Do not perform that scale-in-place change. AR00 must choose either a coherent side-basin extension/relocation with a short walkable connection, or remap the surrounding shrine/exit pockets as one authored local layout. Preserve the new Foundry wing, frost steps/supports, ridge gate and the improved wall bays where they remain on the route.",
+    "fight": "Use the supplied Baize model, not a new creature. Keep BossBodies.pillars, BossArenas visible/collision geometry, AI avoidance and BossMotion pillarPerch/arc aligned to one authored layout. Current fixed \u00b160/\u00b150 pillar offsets must be reviewed against the larger court and actual pounce duration; do not spread pillars to the far corners if the existing launch/landing timing becomes unreadable. Test all four pounces, chase across the expanded clearing, landing clearance and camera behind the beast. MeteorPounce currently has radius 100: evaluate telegraph/escape consequences without inflating it with arena scale.",
+    "sources": [
+      "src/shared/BambooPassLayout.luau",
+      "src/server/Services/BambooDressing.luau",
+      "src/shared/BossBodies.luau",
+      "src/server/Services/BossMotion.luau"
+    ],
+    "agent_prompt": "prompts/AR03_VENERABLEBAIZE_ARENA.md",
+    "concept_prompt": "prompts/AR03_ARENA_CONCEPT.md"
+  },
+  {
+    "id": "AR04",
+    "boss": "SlumberingTitan",
+    "name": "The Cathedral Beneath the Roots",
+    "region": "SanctuaryDepths",
+    "old": [
+      180,
+      180
+    ],
+    "target": [
+      300,
+      340
+    ],
+    "envelope": "a selective 600\u2013900-stud cavern impression and 120\u2013220-stud overhead root/ruin silhouettes; final occlusion/clearance measured",
+    "refs": [
+      "R02",
+      "R03",
+      "R09"
+    ],
+    "assets": [
+      "H03",
+      "H04 optional",
+      "B01",
+      "B02",
+      "B05",
+      "B09"
+    ],
+    "evidence": [
+      "k09_balcony",
+      "k10_arena",
+      "k11_titan",
+      "k16_vault_diagnostic"
+    ],
+    "design": "A huge burial cathedral engulfed by a dead subterranean root system. The approach stays an intimate built crypt; the boss chamber opens into a cavern where pale petrified roots act as vast buttresses above fractured sepulchral architecture. A great split stone apse and a cold high fissure create layered depth behind the Titan. Graves/coffins and broken restraints gather at the margins; a shallow dark flooded ambulatory catches faint light outside the level central floor. Ancient limestone, mineral-white roots and umber crevices with sparse ember-bronze binding. The Titan remains the only active giant in the space, with its ankle weak points readable against calm stone.",
+    "reveal": "Descend through the existing gallery/ossuary scale, glimpse a root silhouette from the balcony, then pass under a heavy entrance arch into a chamber much larger than the approach suggested. Use a strong single overhead shaft and peripheral warm burial lights, not a low grid of straight ceiling beams.",
+    "spatial": "A 300-wide chamber exceeds the present x430..610 fight floor and intrudes into the ossuary/balcony/crossing if centered unchanged. Expand the chamber into a surveyed free cavern direction, preferably away from the small crypt route, and remap the gate/arena center/return/catch volumes together. Preserve or deliberately reconnect all descent, altar, ossuary, stepping-lid, reliquary and balcony routes. The root ceiling is mostly set dressing, never an accidental collider above the boss or camera.",
+    "fight": "Measure the completed Titan model and kneeling/head target height. Preserve safe ankle access, around-body camera paths and deathblow reach. WorldTremor radius 240 and MagmaWake radius 135 currently relate to a much smaller floor; verify that the new layout does not create a permanent safe shelf, force impossible traversal or hide shockwave heights. Keep central vertical steps out of the fight; puddle art may not change movement/grounding. Do not add damaging magma to the floor merely for atmosphere.",
+    "sources": [
+      "src/shared/SunkenCryptLayout.luau",
+      "src/server/Services/CryptDressing.luau",
+      "src/server/Services/BossTactics.luau",
+      "src/server/Services/BossHazards.luau"
+    ],
+    "agent_prompt": "prompts/AR04_SLUMBERINGTITAN_ARENA.md",
+    "concept_prompt": "prompts/AR04_ARENA_CONCEPT.md"
+  },
+  {
+    "id": "AR05",
+    "boss": "SovereignWu",
+    "name": "The Starless Mirror Court",
+    "region": "CelestialPagoda",
+    "old": [
+      180,
+      180
+    ],
+    "target": [
+      300,
+      320
+    ],
+    "envelope": "a 900\u20131400-stud apparent horizon from sparse distant silhouettes, sky and mist; not a physically endless water mesh",
+    "refs": [
+      "R04",
+      "R06",
+      "R03",
+      "R02"
+    ],
+    "assets": [
+      "H02",
+      "B01",
+      "B06",
+      "B07",
+      "B08",
+      "H04 optional"
+    ],
+    "evidence": [
+      "p09_arena",
+      "p10_wu",
+      "p11_towers",
+      "p18_dawn_terrace"
+    ],
+    "design": "A drowned observatory court beneath a starless indigo sky. The playable surface is a level dark stone platform under a very shallow reflective-looking water layer; submerged radial inlays and broken stone seams establish footing. Far out, thin ruined arcades and a few impossibly tall dim vertical light/rain bands make the horizon feel immense. The Oracle throne remains an elevated lore focal point on the approach, and existing distant pagodas survive as remnants rather than every structure repeating the same roof. A broken astrolabe aperture frames the Oracle from entry. Blue-black water, desaturated violet stone, tarnished gold and restrained cold reflected light; phase-two bloodflame is a readable accent, not a permanent red room.",
+    "reveal": "The narrow eave-gallery/rafter traversal builds height and enclosure, then releases into a calm, vast-looking mirror court. Use the horizon and one celestial focal aperture to make the Oracle silhouette readable from the gate. Keep a visible return/dawn exit and a spatially believable link to the existing loft and bell.",
+    "spatial": "A 320-deep floor at the current center z=-2380 overlaps the rafter/forecourt to the north and dawn terrace to the south. AR00 must enlarge/reconfigure the zone or place a connected side expanse, not simply stretch Forecourt and cover the routes. Update region/arena membership and relocation of lore/altar/portals only where planned, retaining IDs. Do not turn off authoritative boundaries to imitate an endless lake.",
+    "fight": "Use decorative shallow water over an intentional reliable floor; do not accidentally enable swimming, buoyancy, collision ripples or changed foot height. Validate Wu teleport clamp, safe destinations and retreat distance, long-range barrage resolution, gravity/ritual visibility and player separation at far edges. Current SoulSpears radius 140, ritual radius 130 and fixed 35-stud retreat must be evaluated without globally scaling damage ranges. Keep inlay and reflections low contrast enough to distinguish telegraphs and the actual crimson attacks.",
+    "sources": [
+      "src/shared/CelestialPagodaLayout.luau",
+      "src/server/Services/PagodaDressing.luau",
+      "src/server/Services/BossTactics.luau",
+      "src/client/Controllers/EnvironmentController.luau"
+    ],
+    "agent_prompt": "prompts/AR05_SOVEREIGNWU_ARENA.md",
+    "concept_prompt": "prompts/AR05_ARENA_CONCEPT.md"
+  },
+  {
+    "id": "AR06",
+    "boss": "AzureWyrm",
+    "name": "The Storm-Crowned Expanse",
+    "region": "SkyCitadel",
+    "old": [
+      180,
+      180
+    ],
+    "target": [
+      400,
+      460
+    ],
+    "envelope": "roughly 1000\u20131600 studs of selective storm-cliff/aqueduct skyline, with open flight air above the measured rig",
+    "refs": [
+      "R05",
+      "R08",
+      "R01",
+      "R03"
+    ],
+    "assets": [
+      "B01",
+      "B05",
+      "B07",
+      "B09",
+      "H05 optional"
+    ],
+    "evidence": [
+      "c06_arena",
+      "c07_wyrm",
+      "c09_perch",
+      "c10_summit"
+    ],
+    "design": "A wind-scoured summit of an ancient ruined city, with a vast dark slate landing shelf and storm-pale ash/frost at the outer margins. Broken domed rotundas and aqueduct ribs ride distant isolated cliffs. A tall storm-split beacon/perch anchors the far silhouette and holds a few believable broken chain runs. The supplied charcoal wyrm should be legible against cold low cloud and subdued pale ground, not blue-on-blue flatness. Huge sky, sparse surviving architecture and deep ravines create scale; central air and landing corridors stay open. Weathered neutral stone, black basalt, mineral-white damage and restrained cold storm light, with no default saturated azure castle.",
+    "reveal": "The repaired narrow saddle bridge and Heaven Stair hold the view to a tall distant silhouette. Emerging through the bastion reveals the enormous landing expanse and an unbroken sky line above the Wyrm. Keep the return-to-Shrine destination readable and sheltered at the bastion, not inside the active flight floor.",
+    "spatial": "A 460-deep floor around current center z=-2830 would swallow much of the bastion/approach. Prefer a surveyed southern extension with the fight center moved farther south and the outer region/catch volume extended, if it avoids all neighboring regions and terrain. Update the perimeter, floor, entry, encounter trigger, spawns, camera sites, perch and return/catch paths consistently. Current CampaignTerrain has absolute support/perch coordinates; they must follow the final plan, not remain at old z values.",
+    "fight": "Measure the supplied wingspan, tail, takeoff/landing poses and view occlusion. Provide actual flight/landing clearance, not only a larger plane. Audit the existing BossMotion aerial interpolation height (28), clamp inset (12) and target approach logic against real body dimensions; preserve windup/hit synchronization. Test HeavenlyBreathRun, DescendingThunder, landing at each edge/corner and death/corpse settling in flight. Keep the boss engaged rather than repeatedly escaping to remote ends; no blanket increase to player run speed, homing or AoE radii. A longer arena increases pursuit, targeting and replication distances: verify each against code and runtime before claiming completion.",
+    "sources": [
+      "src/shared/SkyCitadelLayout.luau",
+      "src/server/Services/CitadelDressing.luau",
+      "src/server/Services/CampaignTerrain.luau",
+      "src/server/Services/BossMotion.luau"
+    ],
+    "agent_prompt": "prompts/AR06_AZUREWYRM_ARENA.md",
+    "concept_prompt": "prompts/AR06_ARENA_CONCEPT.md"
+  }
+]

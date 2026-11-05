@@ -1,0 +1,409 @@
+{
+  "AP-01": {
+    "method": "Existing models; verify integration only",
+    "human_input": "None for model creation: creator says all boss models are constructed. Locate them; in-game status remains to be rechecked.",
+    "assets": [],
+    "agent_prompts": [
+      "prompts/C00_SURVEY_AND_ASSET_INTAKE.md"
+    ]
+  },
+  "AP-02": {
+    "method": "Human/Rodin character design, then agent rig/integration",
+    "human_input": "Approve Lin/Gao/Hermit concepts using C00-exported actual-rig references; supply chosen models/maps.",
+    "assets": [
+      "H06",
+      "H07",
+      "H08"
+    ],
+    "agent_prompts": [
+      "prompts/C06_CAST_AND_HERO_ASSET_INTEGRATION.md"
+    ]
+  },
+  "AP-03": {
+    "method": "Agent builds/reuses geometry and implements",
+    "human_input": "No new Rodin model required. Review one close/gameplay sample per family.",
+    "assets": [
+      "B03",
+      "B04"
+    ],
+    "agent_prompts": [
+      "prompts/C02_INTERACTIVE_PROP_KIT.md"
+    ]
+  },
+  "AP-04": {
+    "method": "Agent builds/reuses geometry and implements",
+    "human_input": "No new Rodin model required. Review one close/gameplay sample per family.",
+    "assets": [
+      "B03",
+      "B04"
+    ],
+    "agent_prompts": [
+      "prompts/C02_INTERACTIVE_PROP_KIT.md"
+    ]
+  },
+  "AP-05": {
+    "method": "Agent builds/reuses geometry and implements",
+    "human_input": "No new Rodin model required. Review one close/gameplay sample per family.",
+    "assets": [
+      "B03",
+      "B04"
+    ],
+    "agent_prompts": [
+      "prompts/C02_INTERACTIVE_PROP_KIT.md"
+    ]
+  },
+  "SN-01": {
+    "method": "Agent builds/reuses geometry and implements",
+    "human_input": "No new Rodin model required. Review one close/gameplay sample per family.",
+    "assets": [
+      "B03",
+      "B04"
+    ],
+    "agent_prompts": [
+      "prompts/C02_INTERACTIVE_PROP_KIT.md"
+    ]
+  },
+  "AP-06": {
+    "method": "Agent kit + code; preserve PvP footprints",
+    "human_input": "No new Rodin model required; human normal-input/two-client acceptance follows.",
+    "assets": [
+      "B01",
+      "B07"
+    ],
+    "agent_prompts": [
+      "prompts/C03_MONASTERY_RUIN_KIT.md",
+      "prompts/C07_INTEGRATED_WINDOWS_ACCEPTANCE.md"
+    ]
+  },
+  "DM-01": {
+    "method": "Agent Blender modular construction + code",
+    "human_input": "No new Rodin model required.",
+    "assets": [
+      "B01"
+    ],
+    "agent_prompts": [
+      "prompts/C03_MONASTERY_RUIN_KIT.md"
+    ]
+  },
+  "DM-02": {
+    "method": "Agent Blender damage/grounding kit + code",
+    "human_input": "No new Rodin model required.",
+    "assets": [
+      "B01",
+      "B09"
+    ],
+    "agent_prompts": [
+      "prompts/C03_MONASTERY_RUIN_KIT.md"
+    ]
+  },
+  "DM-03": {
+    "method": "Human/Rodin hero sculpture + agent kit/integration",
+    "human_input": "Approve and supply H01; agent can finish the daises/ruins while waiting.",
+    "assets": [
+      "H01",
+      "B01"
+    ],
+    "agent_prompts": [
+      "prompts/C03_MONASTERY_RUIN_KIT.md",
+      "prompts/C06_CAST_AND_HERO_ASSET_INTEGRATION.md"
+    ]
+  },
+  "DM-04": {
+    "method": "Reuse supplied Foundry_Bell/HanCauldron; agent derives variants",
+    "human_input": "No new Rodin model required.",
+    "assets": [
+      "B04"
+    ],
+    "agent_prompts": [
+      "prompts/C03_MONASTERY_RUIN_KIT.md"
+    ]
+  },
+  "DM-05": {
+    "method": "Reuse supplied Foundry_Bell/HanCauldron; agent derives variants",
+    "human_input": "No new Rodin model required.",
+    "assets": [
+      "B04"
+    ],
+    "agent_prompts": [
+      "prompts/C03_MONASTERY_RUIN_KIT.md"
+    ]
+  },
+  "DM-06": {
+    "method": "Agent modular architecture + code",
+    "human_input": "No new Rodin model required.",
+    "assets": [
+      "B01",
+      "B09"
+    ],
+    "agent_prompts": [
+      "prompts/C03_MONASTERY_RUIN_KIT.md"
+    ]
+  },
+  "DM-07": {
+    "method": "Agent small prop kit + code",
+    "human_input": "No new Rodin model required.",
+    "assets": [
+      "B10"
+    ],
+    "agent_prompts": [
+      "prompts/C03_MONASTERY_RUIN_KIT.md"
+    ]
+  },
+  "DM-08": {
+    "method": "Human/Rodin relief, agent exact facade/door frame",
+    "human_input": "Supply H04 carving; agent handles the entire precise structure and route.",
+    "assets": [
+      "H04",
+      "B01"
+    ],
+    "agent_prompts": [
+      "prompts/C03_MONASTERY_RUIN_KIT.md",
+      "prompts/C06_CAST_AND_HERO_ASSET_INTEGRATION.md"
+    ]
+  },
+  "DM-09": {
+    "method": "Agent terrain/water/VFX and fitting",
+    "human_input": "No Rodin waterfall or whole alcove model required.",
+    "assets": [
+      "B06",
+      "B09"
+    ],
+    "agent_prompts": [
+      "prompts/C03_MONASTERY_RUIN_KIT.md",
+      "prompts/C05_PAGODA_CITADEL_AND_GROUND_DETAIL.md"
+    ]
+  },
+  "DM-10": {
+    "method": "Arena redesign: agent layout/architecture; human taste review",
+    "human_input": "No new boss model. Hero sculpture optional, existing statue assets can be reused.",
+    "assets": [
+      "B01",
+      "B07",
+      "B09"
+    ],
+    "agent_prompts": [
+      "prompts/AR00_SPATIAL_PLAN_AND_SCALE_PROTOTYPES.md",
+      "prompts/AR02_TWINSENTINELS_ARENA.md"
+    ]
+  },
+  "BP-01": {
+    "method": "Arena redesign: agent layout/terrain/foliage",
+    "human_input": "No new boss model. H03 root module is optional and reusable from Titan.",
+    "assets": [
+      "B06",
+      "B09",
+      "H03 optional"
+    ],
+    "agent_prompts": [
+      "prompts/AR00_SPATIAL_PLAN_AND_SCALE_PROTOTYPES.md",
+      "prompts/AR03_VENERABLEBAIZE_ARENA.md"
+    ]
+  },
+  "LT-01": {
+    "method": "Direct code/fixture placement and real-view calibration",
+    "human_input": "Compare normal-profile captures; no new 3D model needed. No need to approve routine numeric fixes before they are made reviewable.",
+    "assets": [],
+    "agent_prompts": [
+      "prompts/C01_CHAIN_PLACEMENT_AND_READABILITY.md",
+      "prompts/C07_INTEGRATED_WINDOWS_ACCEPTANCE.md"
+    ]
+  },
+  "AC-01": {
+    "method": "Agent architecture kit; coordinate with larger Shen arena",
+    "human_input": "No new Rodin model required.",
+    "assets": [
+      "B01",
+      "B07"
+    ],
+    "agent_prompts": [
+      "prompts/C03_MONASTERY_RUIN_KIT.md",
+      "prompts/AR00_SPATIAL_PLAN_AND_SCALE_PROTOTYPES.md",
+      "prompts/AR01_GRANDMASTERSHEN_ARENA.md"
+    ]
+  },
+  "AC-02": {
+    "method": "Reuse matching existing statue source; agent small prop variants",
+    "human_input": "No new statue commission required if standing statue source is available.",
+    "assets": [
+      "B09",
+      "B10"
+    ],
+    "agent_prompts": [
+      "prompts/C03_MONASTERY_RUIN_KIT.md"
+    ]
+  },
+  "AC-03": {
+    "method": "Arena redesign: agent terrain/arcades/seating/landmark",
+    "human_input": "Approve the rendered scene composition; no whole-scene Rodin asset.",
+    "assets": [
+      "B01",
+      "B07",
+      "B09"
+    ],
+    "agent_prompts": [
+      "prompts/AR00_SPATIAL_PLAN_AND_SCALE_PROTOTYPES.md",
+      "prompts/AR01_GRANDMASTERSHEN_ARENA.md"
+    ]
+  },
+  "SD-01": {
+    "method": "Agent crypt kit + human hero root module; enlarged Titan chamber",
+    "human_input": "Supply H03 after the measured room prototype. Optional H04 is reusable.",
+    "assets": [
+      "H03",
+      "B01",
+      "B02"
+    ],
+    "agent_prompts": [
+      "prompts/C04_CRYPT_ARCHITECTURE_AND_FUNERARY_KIT.md",
+      "prompts/C06_CAST_AND_HERO_ASSET_INTEGRATION.md",
+      "prompts/AR00_SPATIAL_PLAN_AND_SCALE_PROTOTYPES.md",
+      "prompts/AR04_SLUMBERINGTITAN_ARENA.md"
+    ]
+  },
+  "SD-02": {
+    "method": "Agent skull/niche kit first; optional Rodin fallback",
+    "human_input": "No human model required if the agent sample reads well. H09 is a complete optional image/Rodin prompt if it does not.",
+    "assets": [
+      "B02",
+      "H09 optional"
+    ],
+    "agent_prompts": [
+      "prompts/C04_CRYPT_ARCHITECTURE_AND_FUNERARY_KIT.md"
+    ]
+  },
+  "SD-03": {
+    "method": "Agent coffin/lid modules; preserve or explicitly migrate crossing",
+    "human_input": "No new Rodin model required.",
+    "assets": [
+      "B02"
+    ],
+    "agent_prompts": [
+      "prompts/C04_CRYPT_ARCHITECTURE_AND_FUNERARY_KIT.md"
+    ]
+  },
+  "SD-04": {
+    "method": "Agent open-link restraints + code placement",
+    "human_input": "No new Rodin model required; fit to supplied Titan scale.",
+    "assets": [
+      "B05"
+    ],
+    "agent_prompts": [
+      "prompts/C04_CRYPT_ARCHITECTURE_AND_FUNERARY_KIT.md"
+    ]
+  },
+  "SD-05": {
+    "method": "Agent water/terrain/grounding",
+    "human_input": "No new Rodin model required.",
+    "assets": [
+      "B06",
+      "B09"
+    ],
+    "agent_prompts": [
+      "prompts/C04_CRYPT_ARCHITECTURE_AND_FUNERARY_KIT.md",
+      "prompts/AR04_SLUMBERINGTITAN_ARENA.md"
+    ]
+  },
+  "SD-06": {
+    "method": "Agent small candle/FX kit",
+    "human_input": "No new Rodin model required.",
+    "assets": [
+      "B10"
+    ],
+    "agent_prompts": [
+      "prompts/C04_CRYPT_ARCHITECTURE_AND_FUNERARY_KIT.md"
+    ]
+  },
+  "CP-01": {
+    "method": "Human/Rodin throne + agent loft/frame integration",
+    "human_input": "Approve H02 and supply its chosen export/maps.",
+    "assets": [
+      "H02",
+      "B01"
+    ],
+    "agent_prompts": [
+      "prompts/C05_PAGODA_CITADEL_AND_GROUND_DETAIL.md",
+      "prompts/C06_CAST_AND_HERO_ASSET_INTEGRATION.md"
+    ]
+  },
+  "CP-02": {
+    "method": "Reuse Foundry_Bell; agent suspension/frame",
+    "human_input": "No new Rodin model required.",
+    "assets": [
+      "B04"
+    ],
+    "agent_prompts": [
+      "prompts/C05_PAGODA_CITADEL_AND_GROUND_DETAIL.md"
+    ]
+  },
+  "CP-03": {
+    "method": "Agent small foliage mesh + water/terrain",
+    "human_input": "No new Rodin model required.",
+    "assets": [
+      "B06",
+      "B09"
+    ],
+    "agent_prompts": [
+      "prompts/C05_PAGODA_CITADEL_AND_GROUND_DETAIL.md"
+    ]
+  },
+  "CP-04": {
+    "method": "Agent precise timber/stone construction",
+    "human_input": "No new Rodin model required.",
+    "assets": [
+      "B01"
+    ],
+    "agent_prompts": [
+      "prompts/C05_PAGODA_CITADEL_AND_GROUND_DETAIL.md"
+    ]
+  },
+  "CP-05": {
+    "method": "Arena redesign: agent mirror court/lighting/bounds; supplied throne",
+    "human_input": "H02 is the only recommended human focal prop here; whole lake/sky built in engine.",
+    "assets": [
+      "H02",
+      "B06",
+      "B07",
+      "B08"
+    ],
+    "agent_prompts": [
+      "prompts/AR00_SPATIAL_PLAN_AND_SCALE_PROTOTYPES.md",
+      "prompts/AR05_SOVEREIGNWU_ARENA.md"
+    ]
+  },
+  "SC-01": {
+    "method": "Direct code placement; agent simple chain geometry",
+    "human_input": "No human/Rodin work required.",
+    "assets": [
+      "B05"
+    ],
+    "agent_prompts": [
+      "prompts/C01_CHAIN_PLACEMENT_AND_READABILITY.md"
+    ]
+  },
+  "SC-02": {
+    "method": "Agent chain/scale reuse; optional human organic crown",
+    "human_input": "Reuse the supplied Wyrm model/materials; H05 is optional only if the chosen landmark needs it.",
+    "assets": [
+      "B05",
+      "B07",
+      "H05 optional"
+    ],
+    "agent_prompts": [
+      "prompts/C05_PAGODA_CITADEL_AND_GROUND_DETAIL.md",
+      "prompts/AR06_AZUREWYRM_ARENA.md"
+    ]
+  },
+  "SC-03": {
+    "method": "Agent masonry kit; enlarged Wyrm scene",
+    "human_input": "No new Rodin model required; H05 optional.",
+    "assets": [
+      "B01",
+      "B07"
+    ],
+    "agent_prompts": [
+      "prompts/C05_PAGODA_CITADEL_AND_GROUND_DETAIL.md",
+      "prompts/AR00_SPATIAL_PLAN_AND_SCALE_PROTOTYPES.md",
+      "prompts/AR06_AZUREWYRM_ARENA.md"
+    ]
+  }
+}

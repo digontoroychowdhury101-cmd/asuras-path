@@ -1,0 +1,11 @@
+{
+  "qualityCameraRestore": "{\"q\":\"Enum.QualityLevel.Automatic\",\"camera\":\"Enum.CameraType.Scriptable\",\"fov\":70,\"edit\":\"Enum.QualityLevel.Automatic\"}",
+  "helperRestore": "{\"ok\":true,\"result\":{\"restored\":true}}",
+  "preStopFlags": "{\"restored\":true,\"seeded\":false}",
+  "stop": "Game Stopped",
+  "state": "- Current Studio Mode: Edit\n- Available DataModels: Edit\n- Focused DataModel in the viewport: Edit",
+  "editDigest": "scripts 281 bytes 2248845 digest 146955571 | AsuraAssets children 22 | place AsurasPath_VisualAudit.rbxlx",
+  "editAuditObjects": "[]",
+  "canonicalSHA256": "077d992351103c108f5f884c32d914524180f053f6f81242e975ae9f7d88f917",
+  "canonicalUnchanged": true
+}

@@ -1,0 +1,26 @@
+{
+  "rejected_primary": {
+    "s04_forge_tools": "scripted camera inside forge geometry",
+    "d02_hermit": "camera/roof obstruction and training card",
+    "d06_waterfall": "foreground obstruction plus modal",
+    "d08_cloister": "foreground roof and modal",
+    "c02_chain": "local avatar/foreground blocks view; replaced by c11",
+    "c03_gorge": "local avatar blocks most of frame; use normal-key walk",
+    "s14_ascetic": "scripted camera inside the large fused asset, not a normal-camera defect",
+    "d01_landing": "avatar and onboarding obstruction; replacement available",
+    "d03_courtyard": "central onboarding modal",
+    "d04_east_hall": "central onboarding modal",
+    "d05_west_idol": "central onboarding modal",
+    "d07_bridge": "central onboarding modal",
+    "a04_champions_s": "local avatar obstructs; replaced by qh camera",
+    "a05_facade": "local avatar obstructs; replaced by qh/a11 camera",
+    "a10_proving_ring": "avatar silhouette; qh retake available",
+    "p04_rafters": "foreground/own avatar obstruction; replaced by p13",
+    "k08_reliquary": "scripted angle blocks route; diagnostic replacement available"
+  },
+  "failed_capture_starts": [
+    "d15_waterfall: seeded off-route position fell/reset; no screenshot accepted",
+    "d21_gatehouse_ring: seeded unsupported start reset; replaced by d21b"
+  ],
+  "note": "These failed seeded positions do not establish an ordinary-route traversal bug."
+}

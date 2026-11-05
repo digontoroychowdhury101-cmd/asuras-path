@@ -1,0 +1,1179 @@
+[
+  {
+    "id": "AP-01",
+    "priority": "P1",
+    "region": "Multiple",
+    "title": "Historical fallback skins; existing boss models need intake verification",
+    "where": "Baize (0,5,-1495); Shen (0,4,-1995); Titan (520,10,855); Wu (0,4,-2405); Wyrm (0,8,-2855).",
+    "problem": "Historical snapshot, 5 November 2026: All five render as simple primitive bodies rather than the supplied creature/character concepts. actors-final.json explicitly reports Fallback:Costume and missing AsuraBoss_<key> templates for all five. This is the largest asset-quality gap. Titan has a box torso/head and neon diamond; Baize is a small white block quadruped; Wyrm has flat slab wings. Only base/phase-1 held appearances were inspected. On 6 November the creator confirmed all boss 3D models are constructed. These captures are not a request to regenerate them and do not prove their current integration status.",
+    "fix": "Use C00 to locate and inventory the existing creator-supplied boss assets. Record model creation as complete per the creator; check rig/import/runtime integration separately against current source and Studio. No boss model generation is assigned in this production plan. Preserve existing identities and combat behavior.",
+    "acceptance": "No fallback skin status; correct feet, pivots, scale and silhouette at normal fight distance; authored idle, locomotion and attacks without skating or intersections; separately verify both implemented phases and repeated encounter cleanup.",
+    "sources": [
+      "src/server/Services/BossSkin.luau:21",
+      "src/shared/CostumeSchema.luau:67"
+    ],
+    "images": [
+      "b13_baize",
+      "a07_shen",
+      "k11_titan",
+      "p10_wu",
+      "c07_wyrm"
+    ],
+    "evidence": "5 November held base-form capture/runtime statuses; separate 6 November creator update says boss models are constructed. Current integration not reverified",
+    "family_members": 0,
+    "area_actor_anchors": 5,
+    "production": {
+      "method": "Existing models; verify integration only",
+      "human_input": "None for model creation: creator says all boss models are constructed. Locate them; in-game status remains to be rechecked.",
+      "assets": [],
+      "agent_prompts": [
+        "prompts/C00_SURVEY_AND_ASSET_INTAKE.md"
+      ]
+    }
+  },
+  {
+    "id": "AP-02",
+    "priority": "P1",
+    "region": "Sanctuary / Monastery",
+    "title": "Speaking NPCs lag behind their surroundings",
+    "where": "Lin (8,603,918); Gao (-86,603,899); Hermit (-14,3,-738).",
+    "problem": "Box garments, mitten-like hands, cylindrical/ball heads and solid cuboid hair look like stand-ins beside the carved architecture and imported enemies. Lin and Hermit are anchored R15-proportioned figures; Gao is a live dressed rig. This is not a claim that every NPC or the updated monks is a placeholder.",
+    "fix": "Author three readable R15-compatible cast characters: shaped robe folds and silhouettes, authored faces/hair, hand shapes and a restrained idle for live rigs. Keep dialogue head height, feet, Speak anchors, line of sight and collision/query rules. Prioritize Lin, then Gao, then Hermit.",
+    "acceptance": "Compare front/profile/back at talk distance and in the ordinary camera; dialogue and Gao forge prompts still resolve from the same approach.",
+    "sources": [
+      "src/server/Services/CastFigures.luau:25",
+      "src/shared/LooksCast.luau:1"
+    ],
+    "images": [
+      "s18_lin_close",
+      "s10_anvil",
+      "d23_hermit_close"
+    ],
+    "evidence": "Observed Studio appearance + source/runtime inventory; art judgement",
+    "family_members": 3,
+    "area_actor_anchors": 0,
+    "production": {
+      "method": "Human/Rodin character design, then agent rig/integration",
+      "human_input": "Approve Lin/Gao/Hermit concepts using C00-exported actual-rig references; supply chosen models/maps.",
+      "assets": [
+        "H06",
+        "H07",
+        "H08"
+      ],
+      "agent_prompts": [
+        "prompts/C06_CAST_AND_HERO_ASSET_INTEGRATION.md"
+      ]
+    }
+  },
+  {
+    "id": "AP-03",
+    "priority": "P2",
+    "region": "Multiple",
+    "title": "Six rest altars remain generic pedestal-and-stick assemblies",
+    "where": "Bell Terrace, Bamboo Shrine, Colosseum Antechamber, Crypt gallery, Pagoda forecourt and Citadel bastion; all exact components/coordinates in instances.csv.",
+    "problem": "The repeated small square base, cylinder censer and bright upright incense stick carry little regional identity. These important rest destinations are weaker than the existing Primal Bonfire and newly dressed environments.",
+    "fix": "Use a shared carved censer/altar kit with six regional treatments: foundry bronze, bamboo stone/wood, ash-scarred basalt, crypt funerary stone, oracle lacquer and storm-worn summit stone. Reuse HanCauldron/Foundry material work where appropriate. Preserve altar IDs, prompt anchor, rest/spawn clearance and shelter behavior.",
+    "acceptance": "All six readable as rest points before prompt range, no prompt occlusion, no new snagging, matching rest/respawn camera shots.",
+    "sources": [
+      "src/server/Services/WorldService.luau:404"
+    ],
+    "images": [
+      "b06_bell_terrace",
+      "b10_shrine",
+      "qh_a02_antechamber",
+      "k03_gallery",
+      "p06_forecourt",
+      "c12_bastion_fill"
+    ],
+    "evidence": "Observed Studio appearance + source/runtime inventory; art judgement",
+    "family_members": 18,
+    "area_actor_anchors": 0,
+    "production": {
+      "method": "Agent builds/reuses geometry and implements",
+      "human_input": "No new Rodin model required. Review one close/gameplay sample per family.",
+      "assets": [
+        "B03",
+        "B04"
+      ],
+      "agent_prompts": [
+        "prompts/C02_INTERACTIVE_PROP_KIT.md"
+      ]
+    }
+  },
+  {
+    "id": "AP-04",
+    "priority": "P2",
+    "region": "Multiple",
+    "title": "Five hidden caches are plain metal cuboids",
+    "where": "Founders Kiln (-170,13.2,-1336); Waterfall (-140,5,-840); Cloister rafters (92,30,-1000); Mausoleum (-110,3,-1060); Loggia Eaves (-76,617,923). PagodaRafters is in the Monastery, despite its ID.",
+    "problem": "The reward objects are undetailed gold/brown blocks; their square ledges can look like debug pads. SanctuaryReliquary already uses a HanCauldron vessel and is excluded.",
+    "fix": "Create one hinged or sealed coffer with lid, fittings and a restrained reward cue; apply region materials. Embed each ledge in its shelf/rafter/stone support. Keep original hidden CacheId/prompt/collision anchors and claim logic; art should not reveal a secret from every angle.",
+    "acceptance": "Each cache is recognizable when found, opens/claims once as before, and remains reachable on its current route. Compare close and discovery-distance shots.",
+    "sources": [
+      "src/server/Services/LootWorld.luau:22",
+      "src/shared/ArsenalCatalog.luau:26"
+    ],
+    "images": [
+      "b07_kiln",
+      "s12_eaves",
+      "q_d10_mausoleum",
+      "d16_cloister_garth"
+    ],
+    "evidence": "Runtime inventory/source confirms all five; Kiln/Eaves photographed, some secret-object close faces not reached",
+    "family_members": 10,
+    "area_actor_anchors": 0,
+    "production": {
+      "method": "Agent builds/reuses geometry and implements",
+      "human_input": "No new Rodin model required. Review one close/gameplay sample per family.",
+      "assets": [
+        "B03",
+        "B04"
+      ],
+      "agent_prompts": [
+        "prompts/C02_INTERACTIVE_PROP_KIT.md"
+      ]
+    }
+  },
+  {
+    "id": "AP-05",
+    "priority": "P2",
+    "region": "Sanctuary / Monastery",
+    "title": "Two industrial truss ladders break the setting",
+    "where": "Loggia Eaves (-76,608,918); Cloister rafters (92,14.6,-1005).",
+    "problem": "The visible default TrussPart is a conspicuous industrial scaffold against historical timber architecture, especially in the Cloister garth.",
+    "fix": "Dress the existing ladder with a weathered timber or forged rung mesh and top/bottom attachment brackets. Retain the climb volume and the corrected outboard ledge alignment; hide the original truss visually only when its climb behavior is preserved.",
+    "acceptance": "Ordinary input climbs up/down without hitting the ledge underside; no interruption to cache access; silhouette fits the structure.",
+    "sources": [
+      "src/server/Services/LootWorld.luau:40"
+    ],
+    "images": [
+      "d16_cloister_garth",
+      "s12_eaves"
+    ],
+    "evidence": "Observed Studio appearance + source/runtime inventory; art judgement",
+    "family_members": 2,
+    "area_actor_anchors": 0,
+    "production": {
+      "method": "Agent builds/reuses geometry and implements",
+      "human_input": "No new Rodin model required. Review one close/gameplay sample per family.",
+      "assets": [
+        "B03",
+        "B04"
+      ],
+      "agent_prompts": [
+        "prompts/C02_INTERACTIVE_PROP_KIT.md"
+      ]
+    }
+  },
+  {
+    "id": "AP-06",
+    "priority": "P2",
+    "region": "Monastery / Ash Colosseum",
+    "title": "Two PvP rings still use the undressed primitive kit",
+    "where": "Gatehouse ring (-130,0,-745); Octagonal Ring of Ash (118,0,-1770).",
+    "problem": "Plain slab floors, low cuboid walls/pillars and neon marker braziers contrast with the dressed Sanctuary Promenade ring. The Ash court is particularly difficult to read at night.",
+    "fix": "Apply regional ring finishes while preserving the exact octagon, threshold band and barrier logic: ruined monastery paving at Gatehouse, scorched inlaid basalt in Ash. Give outer corners real small braziers and coherent seating/edge treatment. The Sanctuary ring provides an existing integration pattern.",
+    "acceptance": "Threshold queue/sign remain visible, exact combat footprint and camera clearance retained; verify ordinary traversal and two-player ring behavior separately.",
+    "sources": [
+      "src/server/Services/ColosseumService.luau:1112",
+      "src/server/Services/SanctuaryRingFinish.luau:1"
+    ],
+    "images": [
+      "d21b_gatehouse_ring",
+      "qh_a10_proving_ring"
+    ],
+    "evidence": "Observed Studio appearance + source/runtime inventory; art judgement",
+    "family_members": 76,
+    "area_actor_anchors": 0,
+    "production": {
+      "method": "Agent kit + code; preserve PvP footprints",
+      "human_input": "No new Rodin model required; human normal-input/two-client acceptance follows.",
+      "assets": [
+        "B01",
+        "B07"
+      ],
+      "agent_prompts": [
+        "prompts/C03_MONASTERY_RUIN_KIT.md",
+        "prompts/C07_INTEGRATED_WINDOWS_ACCEPTANCE.md"
+      ]
+    }
+  },
+  {
+    "id": "SN-01",
+    "priority": "P2",
+    "region": "Sanctuary",
+    "title": "Forge tools need a small authored prop pass",
+    "where": "Blacksmith Loggia: anvil (-88,603,903), rack (-98,603,891), bellows (-94,602,896), workbench and barrels.",
+    "problem": "The loggia shell and hearth are strong. Close interaction instead exposes an angular stacked anvil, unshaped rectangular rack blades, rod tools and box bellows. These high-attention props need more believable construction.",
+    "fix": "Build a compact smith prop kit: shaped anvil/horn, tongs and hammer, blade blanks with tangs, leather pleated bellows and restrained barrel details. Reuse the current PBR surfaces and keep all forge/standing clearances. Keep the existing loggia architecture.",
+    "acceptance": "Recognizable at Gao conversation distance with correct hand/tool scale, no path obstruction or prompt competition.",
+    "sources": [
+      "src/server/Services/SanctuaryForge.luau:68"
+    ],
+    "images": [
+      "s10_anvil",
+      "s11_forge_rack"
+    ],
+    "evidence": "Observed Studio appearance + source/runtime inventory; art judgement",
+    "family_members": 18,
+    "area_actor_anchors": 0,
+    "production": {
+      "method": "Agent builds/reuses geometry and implements",
+      "human_input": "No new Rodin model required. Review one close/gameplay sample per family.",
+      "assets": [
+        "B03",
+        "B04"
+      ],
+      "agent_prompts": [
+        "prompts/C02_INTERACTIVE_PROP_KIT.md"
+      ]
+    }
+  },
+  {
+    "id": "DM-01",
+    "priority": "P2",
+    "region": "DesecratedMonastery",
+    "title": "Ruined roof and column kit has blunt repeated profiles",
+    "where": "Gatehouse, both prayer halls, Cloister and associated roof wreckage; representative East hall (63,6,-899), West hall (-95,5,-900), Cloister (74,6,-1050).",
+    "problem": "T-shaped column capitals, rectangular roof strips and identical straight eaves remain easy to read as constructed Parts. Broken roofs often end in broad flat plates rather than fractured tile, snapped rafters and supported eaves.",
+    "fix": "Author a small ruined-temple mesh kit with base/shaft/capital, bracket junctions, intact and broken tile/eave sections and two or three snapped rafters. Reuse material scale and architecture language from the Han/lobby kit, but keep the monastery ruin identity. Replace visual families rather than individually ornamenting hundreds of Parts.",
+    "acceptance": "Normal-camera approaches to both halls and Cloister show varied supported roof breaks and legible capitals; silhouette improves without changing paths, sightlines, shelter or foe posts.",
+    "sources": [
+      "src/server/Services/MonasteryRuins.luau:54",
+      "src/server/Services/MonasteryHalls.luau:1"
+    ],
+    "images": [
+      "q_d04_east_hall",
+      "q_d05_west_idol",
+      "d16_cloister_garth",
+      "d24_idol_close"
+    ],
+    "evidence": "Observed Studio appearance + source/runtime inventory; art judgement",
+    "family_members": 490,
+    "area_actor_anchors": 0,
+    "production": {
+      "method": "Agent Blender modular construction + code",
+      "human_input": "No new Rodin model required.",
+      "assets": [
+        "B01"
+      ],
+      "agent_prompts": [
+        "prompts/C03_MONASTERY_RUIN_KIT.md"
+      ]
+    }
+  },
+  {
+    "id": "DM-02",
+    "priority": "P2",
+    "region": "DesecratedMonastery",
+    "title": "Ruin walls and rubble repeat square construction breaks",
+    "where": "Courtyard perimeter, prayer halls, Cloister galleries and south road.",
+    "problem": "The masonry has material detail, but many damaged walls end at square courses/coping blocks; small rubble is mostly rectangular scatter. Repetition weakens the feeling of a naturally collapsed monastery.",
+    "fix": "Add a few authored broken wall crowns, exposed brick cores, wedge/fractured rubble piles and root-to-wall transitions. Keep selected intact courses and open negative space. Match the current walkable boundaries and approved Cloister shelter; do not erase all modular construction.",
+    "acceptance": "Compare the same route cameras; varied fracture silhouettes and convincing supports, no new collision lips or cover affecting encounters.",
+    "sources": [
+      "src/server/Services/MonasteryRuins.luau:24"
+    ],
+    "images": [
+      "q_d03_courtyard",
+      "q_d04_east_hall",
+      "d16_cloister_garth",
+      "d13_south_road"
+    ],
+    "evidence": "Observed Studio appearance + source/runtime inventory; art judgement",
+    "family_members": 631,
+    "area_actor_anchors": 0,
+    "production": {
+      "method": "Agent Blender damage/grounding kit + code",
+      "human_input": "No new Rodin model required.",
+      "assets": [
+        "B01",
+        "B09"
+      ],
+      "agent_prompts": [
+        "prompts/C03_MONASTERY_RUIN_KIT.md"
+      ]
+    }
+  },
+  {
+    "id": "DM-03",
+    "priority": "P1",
+    "region": "DesecratedMonastery",
+    "title": "Both prayer-hall idols are unrecognizable boxes",
+    "where": "West IdolBody (-95,5.2,-900); East IdolBody (111,5.2,-902), plus displaced heads.",
+    "problem": "The shrine focal points consist of a torso block and a detached cuboid head. They do not communicate a carved destroyed idol or a recognizable sacred figure.",
+    "fix": "Create one original shattered devotional statue with a clear head/hand/robe fragment and two placement variants. Use sculpted fracture surfaces, a fitted dais and a few matching chips. Preserve the existing cover volumes and traversable side aisles.",
+    "acceptance": "At hall entry a player can recognize a desecrated idol without a label; broken pieces share believable anatomy and material scale.",
+    "sources": [
+      "src/server/Services/MonasteryHalls.luau:76"
+    ],
+    "images": [
+      "q_d05_west_idol",
+      "d19_idol_east",
+      "d24_idol_close"
+    ],
+    "evidence": "Observed Studio appearance + source/runtime inventory; art judgement",
+    "family_members": 6,
+    "area_actor_anchors": 0,
+    "production": {
+      "method": "Human/Rodin hero sculpture + agent kit/integration",
+      "human_input": "Approve and supply H01; agent can finish the daises/ruins while waiting.",
+      "assets": [
+        "H01",
+        "B01"
+      ],
+      "agent_prompts": [
+        "prompts/C03_MONASTERY_RUIN_KIT.md",
+        "prompts/C06_CAST_AND_HERO_ASSET_INTEGRATION.md"
+      ]
+    }
+  },
+  {
+    "id": "DM-04",
+    "priority": "P2",
+    "region": "DesecratedMonastery",
+    "title": "Bell tower and fallen bell read as a frame and capped drum",
+    "where": "Tower (64,0,-772); fallen bell (58,4,-843).",
+    "problem": "The tower is four square posts, a diagonal beam and a plate roof shard. The fallen bronze bell is assembled from solid cylinders with no believable hollow mouth, split lip, hanging crown or relief.",
+    "fix": "Reuse/derive a damaged version of AsuraFoundryKit.Foundry_Bell and its bronze treatment; add a fractured mouth, crown and impact rubble. Build a small ruined belfry frame with credible joints and broken eaves. Keep these distinct from the new Foundry wing, which already has an authored bell.",
+    "acceptance": "Bell recognized on its side from the courtyard; hollow mouth and impact damage read up close; tower silhouette has credible failure points.",
+    "sources": [
+      "src/server/Services/MonasteryLandmarks.luau:40",
+      "src/server/Services/MonasteryLandmarks.luau:54"
+    ],
+    "images": [
+      "d17_bell_tower",
+      "d18_fallen_bell"
+    ],
+    "evidence": "Observed Studio appearance + source/runtime inventory; art judgement",
+    "family_members": 21,
+    "area_actor_anchors": 0,
+    "production": {
+      "method": "Reuse supplied Foundry_Bell/HanCauldron; agent derives variants",
+      "human_input": "No new Rodin model required.",
+      "assets": [
+        "B04"
+      ],
+      "agent_prompts": [
+        "prompts/C03_MONASTERY_RUIN_KIT.md"
+      ]
+    }
+  },
+  {
+    "id": "DM-05",
+    "priority": "P2",
+    "region": "DesecratedMonastery",
+    "title": "Courtyard cauldron is a solid disc stack",
+    "where": "IronCauldron at (0,4,-836).",
+    "problem": "The ritual vessel is built from cylinder discs and cuboid legs; the rim/body do not have the silhouette of a cast vessel.",
+    "fix": "Reuse a suitably scaled HanCauldron or an original damaged bronze variant, retaining the glow and safe perimeter. Keep ember intensity below telegraph importance.",
+    "acceptance": "Reads as an open vessel from normal camera, fits the same footprint and does not hide nearby enemies.",
+    "sources": [
+      "src/server/Services/MonasteryLandmarks.luau:65"
+    ],
+    "images": [
+      "q_d03_courtyard",
+      "q_d07_bridge"
+    ],
+    "evidence": "Observed Studio appearance + source/runtime inventory; art judgement",
+    "family_members": 7,
+    "area_actor_anchors": 0,
+    "production": {
+      "method": "Reuse supplied Foundry_Bell/HanCauldron; agent derives variants",
+      "human_input": "No new Rodin model required.",
+      "assets": [
+        "B04"
+      ],
+      "agent_prompts": [
+        "prompts/C03_MONASTERY_RUIN_KIT.md"
+      ]
+    }
+  },
+  {
+    "id": "DM-06",
+    "priority": "P2",
+    "region": "DesecratedMonastery",
+    "title": "Toppled pagoda remains a stack of cubes and plates",
+    "where": "Grave field, base (-62,6,-1052), broken tiers extending west to about x=-105.",
+    "problem": "The grave-field landmark lacks convincing storey construction and crushed connections; the standing tier is a large plain box beneath a simple roof.",
+    "fix": "Author a damaged stupa/pagoda module with carved storey openings and interlocking broken eaves, then lay matching tiers through an impact scar. Keep the grave path and existing cover clearance.",
+    "acceptance": "Recognizable as one collapsed building, with shared construction and supported debris rather than unrelated boxes.",
+    "sources": [
+      "src/server/Services/MonasteryLandmarks.luau:82"
+    ],
+    "images": [
+      "q_d09_graves"
+    ],
+    "evidence": "Observed Studio appearance + source/runtime inventory; art judgement",
+    "family_members": 26,
+    "area_actor_anchors": 0,
+    "production": {
+      "method": "Agent modular architecture + code",
+      "human_input": "No new Rodin model required.",
+      "assets": [
+        "B01",
+        "B09"
+      ],
+      "agent_prompts": [
+        "prompts/C03_MONASTERY_RUIN_KIT.md"
+      ]
+    }
+  },
+  {
+    "id": "DM-07",
+    "priority": "P3",
+    "region": "DesecratedMonastery",
+    "title": "Six grave stupas have a ball-on-box silhouette",
+    "where": "Grave field around x=-130..-26, z=-998..-1108; exact six assemblies in ledger.",
+    "problem": "The bases, spherical domes and thin pole spires read as primitive markers at close range. This is secondary to idols and bosses.",
+    "fix": "Create two weathered funerary marker variants with tiered profiles, cracked inscription faces and occasional broken finials; scatter sparingly with settled bases.",
+    "acceptance": "Grave markers read at walking distance and do not obscure the grave path or cache clues.",
+    "sources": [
+      "src/server/Services/MonasteryLandmarks.luau:97"
+    ],
+    "images": [
+      "q_d09_graves"
+    ],
+    "evidence": "Observed Studio appearance + source/runtime inventory; art judgement",
+    "family_members": 18,
+    "area_actor_anchors": 0,
+    "production": {
+      "method": "Agent small prop kit + code",
+      "human_input": "No new Rodin model required.",
+      "assets": [
+        "B10"
+      ],
+      "agent_prompts": [
+        "prompts/C03_MONASTERY_RUIN_KIT.md"
+      ]
+    }
+  },
+  {
+    "id": "DM-08",
+    "priority": "P2",
+    "region": "DesecratedMonastery",
+    "title": "Secret mausoleum shell is unfinished",
+    "where": "Mausoleum walls x=-115/-105, y=5,z=-1060; flat roof at (-110,9,-1060).",
+    "problem": "Two thin side wall boxes and a flat lid surround a plain cache; the reward destination has no convincing tomb facade, entrance or roof construction. Nearby seal dressing exists and should be kept.",
+    "fix": "Integrate a compact ruined tomb entrance with carved lintel, sealed-door remnants and a damaged roof supported by the existing walls. Tie in existing talismans and broken seal instead of replacing the entire secret.",
+    "acceptance": "The clue, entrance and reward form one believable small structure; prompt visibility and original route remain intact.",
+    "sources": [
+      "src/server/Services/LootWorld.luau:43"
+    ],
+    "images": [
+      "q_d10_mausoleum"
+    ],
+    "evidence": "Observed Studio appearance + source/runtime inventory; art judgement",
+    "family_members": 3,
+    "area_actor_anchors": 0,
+    "production": {
+      "method": "Human/Rodin relief, agent exact facade/door frame",
+      "human_input": "Supply H04 carving; agent handles the entire precise structure and route.",
+      "assets": [
+        "H04",
+        "B01"
+      ],
+      "agent_prompts": [
+        "prompts/C03_MONASTERY_RUIN_KIT.md",
+        "prompts/C06_CAST_AND_HERO_ASSET_INTEGRATION.md"
+      ]
+    }
+  },
+  {
+    "id": "DM-09",
+    "priority": "P2",
+    "region": "DesecratedMonastery",
+    "title": "Waterfall secret is a glass screen between rock boxes",
+    "where": "SecretWaterfall (-140,14,-835); AlcoveRock x=-146/-134,y=8,z=-840.",
+    "problem": "A single 12\u00d725\u00d70.5 Glass plate and two cuboid rocks serve as the waterfall/alcove facade. The side view exposes the thin plane and weak connection to a water source and catch basin.",
+    "fix": "Author a restrained ribbon/water-sheet effect with an upstream rock notch, mist at impact, wet stone and a basin/drainage route. Build fitted alcove rock around the cache. Keep query/collision and the concealed route intact.",
+    "acceptance": "Front and side walking views show a grounded cascade and continuous water flow; cache remains discoverable and reachable. Hidden-route traversal still needs a normal-input check.",
+    "sources": [
+      "src/server/Services/LootWorld.luau:33"
+    ],
+    "images": [
+      "d15b_waterfall"
+    ],
+    "evidence": "Observed Studio appearance + source/runtime inventory; art judgement",
+    "family_members": 3,
+    "area_actor_anchors": 0,
+    "production": {
+      "method": "Agent terrain/water/VFX and fitting",
+      "human_input": "No Rodin waterfall or whole alcove model required.",
+      "assets": [
+        "B06",
+        "B09"
+      ],
+      "agent_prompts": [
+        "prompts/C03_MONASTERY_RUIN_KIT.md",
+        "prompts/C05_PAGODA_CITADEL_AND_GROUND_DETAIL.md"
+      ]
+    }
+  },
+  {
+    "id": "DM-10",
+    "priority": "P2",
+    "region": "DesecratedMonastery",
+    "title": "Twin Sentinels arena lacks a finished setting",
+    "where": "Large battle floor around (300,0,-955).",
+    "problem": "The current Bull and Zhao are imported templates and look substantially stronger than the mostly empty grey battle platform around them. The floor and distant cliff do not yet establish a distinct sentinels courtyard.",
+    "fix": "Add a perimeter composition of ruined fortified temple architecture, broken ceremonial standards and a deliberate entry/reveal. Use the Bull/Zhao scale as reference. Keep the central duo footprint clear and retain camera retreat space, encounter bounds and the ridge approach.",
+    "acceptance": "Entry and 360-degree normal-camera views feel like a defended courtyard rather than a test pad; both bosses remain fully readable together.",
+    "sources": [
+      "src/server/Services/BossArenas.luau:1",
+      "src/shared/WorldDefinitions.luau:1"
+    ],
+    "images": [
+      "d12_twins_arena",
+      "d22_twins_both"
+    ],
+    "evidence": "Observed Studio appearance + source/runtime inventory; art judgement",
+    "family_members": 0,
+    "area_actor_anchors": 1,
+    "production": {
+      "method": "Arena redesign: agent layout/architecture; human taste review",
+      "human_input": "No new boss model. Hero sculpture optional, existing statue assets can be reused.",
+      "assets": [
+        "B01",
+        "B07",
+        "B09"
+      ],
+      "agent_prompts": [
+        "prompts/AR00_SPATIAL_PLAN_AND_SCALE_PROTOTYPES.md",
+        "prompts/AR02_TWINSENTINELS_ARENA.md"
+      ]
+    }
+  },
+  {
+    "id": "BP-01",
+    "priority": "P2",
+    "region": "BambooPass",
+    "title": "Baize arena needs a deliberate edge and encounter identity",
+    "where": "Arena approach (0,0,-1380), main court around (0,0,-1470), moon gate south.",
+    "problem": "The new stone/timber perimeter bays are present, but the broad tiled court and thin grass border still feel uniform and disconnected from a mythic frost beast. The open floor itself is necessary for the fight.",
+    "fix": "Keep the recent perimeter upgrade. Add a restrained frost boundary, damaged shrine/court details, scuffed or broken paving at the margins and layered bamboo/rock transitions outside the fight lane. Use a few strong focal props instead of filling the arena with obstacles.",
+    "acceptance": "Normal camera reads court boundaries and a frost-beast setting at entrance; pounce landings, sidesteps and camera remain clear.",
+    "sources": [
+      "src/server/Services/BambooDressing.luau:1",
+      "src/server/Services/BossArenas.luau:1"
+    ],
+    "images": [
+      "b12_arena",
+      "b14_boundary",
+      "b15_moon_gate"
+    ],
+    "evidence": "Observed Studio appearance + source/runtime inventory; art judgement",
+    "family_members": 0,
+    "area_actor_anchors": 1,
+    "production": {
+      "method": "Arena redesign: agent layout/terrain/foliage",
+      "human_input": "No new boss model. H03 root module is optional and reusable from Titan.",
+      "assets": [
+        "B06",
+        "B09",
+        "H03 optional"
+      ],
+      "agent_prompts": [
+        "prompts/AR00_SPATIAL_PLAN_AND_SCALE_PROTOTYPES.md",
+        "prompts/AR03_VENERABLEBAIZE_ARENA.md"
+      ]
+    }
+  },
+  {
+    "id": "LT-01",
+    "priority": "P1",
+    "region": "Ash / Crypt / Citadel",
+    "title": "Exploration lighting hides route and prop form",
+    "where": "Ash Antechamber/Hall/Proving Court; Crypt ossuary/pit route; Citadel descending saddle stair.",
+    "problem": "These routes fall into large near-black shapes in normal profile captures. Matched Ash/Crypt camera retakes at QualityLevel.Level21 still have the problem, and ordinary-key walks reproduce dark Ash/Citadel approaches. Bright arena pools do not light the approaches. This is a finding on this Mac/Studio setup, not a universal device conclusion or a test of active combat profiles.",
+    "fix": "Add controlled local fill/rim lights and visible light fixtures at turns, stair edges, niche faces and court thresholds; retune local exposure/contrast only after matched captures. Keep night/dusk palettes and bright telegraphs. Test exploration, active encounter and unbound profiles independently on Windows and low/high device settings.",
+    "acceptance": "Player feet, next traversable edge, prop silhouette and enemy silhouette remain legible without attack effects; no blown-out lanterns or flattened atmosphere. Use identical camera/display conditions for comparisons.",
+    "sources": [
+      "src/shared/EnvironmentProfiles.luau:35",
+      "src/server/Services/CryptDressing.luau:78",
+      "src/server/Services/CitadelDressing.luau:1"
+    ],
+    "images": [
+      "qh_a02_antechamber",
+      "qh_a09_proving_court",
+      "qh_k06_ossuary",
+      "qh_k07_pit",
+      "w04_ash_after",
+      "w07_citadel_before",
+      "k19_gallery_stair"
+    ],
+    "evidence": "Normal-profile assisted captures at Automatic and Level21, plus ordinary-key samples; not device profiling",
+    "family_members": 0,
+    "area_actor_anchors": 3,
+    "production": {
+      "method": "Direct code/fixture placement and real-view calibration",
+      "human_input": "Compare normal-profile captures; no new 3D model needed. No need to approve routine numeric fixes before they are made reviewable.",
+      "assets": [],
+      "agent_prompts": [
+        "prompts/C01_CHAIN_PLACEMENT_AND_READABILITY.md",
+        "prompts/C07_INTEGRATED_WINDOWS_ACCEPTANCE.md"
+      ]
+    }
+  },
+  {
+    "id": "AC-01",
+    "priority": "P2",
+    "region": "AshColosseum",
+    "title": "Champions hall and facade still read as block architecture",
+    "where": "Antechamber -1712..-1768, Champions hall -1776..-1877, facade z=-1877.",
+    "problem": "Long straight walls, rectangular piers and slab jambs have little ruin construction detail. Imported arches/statues already exist elsewhere, making these approach elements look unfinished. Some ground/tier mass is already Terrain; this finding does not treat hidden layout boxes as visible art.",
+    "fix": "Use a restrained ruined arcade kit: shaped piers/capitals, fractured wall crowns, soot and ash grounding, a stronger facade with readable central passage. Reuse existing AsuraRuinArch and stone language, then author only missing transitions. Keep doorway width and camera setback.",
+    "acceptance": "Approach reads as a ruined martial arena with coherent construction under normal lighting; original hall encounters and fog-gate clearance unchanged.",
+    "sources": [
+      "src/shared/AshColosseumLayout.luau:25",
+      "src/server/Services/ColosseumDressing.luau:28"
+    ],
+    "images": [
+      "qh_a03_champions_n",
+      "qh_a04_champions_s",
+      "a11_facade_diagnostic"
+    ],
+    "evidence": "Observed Studio appearance + source/runtime inventory; art judgement",
+    "family_members": 20,
+    "area_actor_anchors": 0,
+    "production": {
+      "method": "Agent architecture kit; coordinate with larger Shen arena",
+      "human_input": "No new Rodin model required.",
+      "assets": [
+        "B01",
+        "B07"
+      ],
+      "agent_prompts": [
+        "prompts/C03_MONASTERY_RUIN_KIT.md",
+        "prompts/AR00_SPATIAL_PLAN_AND_SCALE_PROTOTYPES.md",
+        "prompts/AR01_GRANDMASTERSHEN_ARENA.md"
+      ]
+    }
+  },
+  {
+    "id": "AC-02",
+    "priority": "P2",
+    "region": "AshColosseum",
+    "title": "Last-stand props need recognizable sculpted forms",
+    "where": "Fallen champion (24,1.4,-1702); spears and shields in hall margins z=-1782..-1878.",
+    "problem": "The fallen champion is one 8\u00d73\u00d73 block while its standing counterpart uses an imported statue. Spears are unheaded narrow beams and shields are undetailed cylinders.",
+    "fix": "Use a broken variant of the standing statue and a small shared weathered weapon/shield kit. Partially bury props in ash with impact orientation; retain clean playable center lanes.",
+    "acceptance": "Player can identify the collapsed champion and last stand from normal walking distance; source statues and fragments visibly match.",
+    "sources": [
+      "src/server/Services/ColosseumDressing.luau:32"
+    ],
+    "images": [
+      "a01_ash_entry",
+      "qh_a03_champions_n",
+      "qh_a04_champions_s"
+    ],
+    "evidence": "Static constructor + live instance inventory; dark/partial views limit close-face assessment",
+    "family_members": 21,
+    "area_actor_anchors": 0,
+    "production": {
+      "method": "Reuse matching existing statue source; agent small prop variants",
+      "human_input": "No new statue commission required if standing statue source is available.",
+      "assets": [
+        "B09",
+        "B10"
+      ],
+      "agent_prompts": [
+        "prompts/C03_MONASTERY_RUIN_KIT.md"
+      ]
+    }
+  },
+  {
+    "id": "AC-03",
+    "priority": "P2",
+    "region": "AshColosseum",
+    "title": "Shen arena perimeter has weak colosseum hierarchy",
+    "where": "Battle area x=-60..60,z=-1895..-2025; tiers and south Victor gate around it.",
+    "problem": "The bright open battle floor is surrounded by low dark/rocky mass and isolated arches. The overall bowl, spectator tiers and Victor gate are less legible than the name and boss importance suggest.",
+    "fix": "Dress the existing perimeter with readable stepped stone seating/retaining fronts, broken arcade clusters, ash deposits and a strong south exit focal point. Preserve open sky, low podium, all combat clearances and the existing Terrain mass.",
+    "acceptance": "At entry and from the center the arena reads as one ruined colosseum; walls never crowd the camera in either Shen form.",
+    "sources": [
+      "src/shared/AshColosseumLayout.luau:55",
+      "src/server/Services/ColosseumDressing.luau:34"
+    ],
+    "images": [
+      "a06_arena",
+      "a08_victor",
+      "a11_facade_diagnostic"
+    ],
+    "evidence": "Observed Studio appearance + source/runtime inventory; art judgement",
+    "family_members": 0,
+    "area_actor_anchors": 1,
+    "production": {
+      "method": "Arena redesign: agent terrain/arcades/seating/landmark",
+      "human_input": "Approve the rendered scene composition; no whole-scene Rodin asset.",
+      "assets": [
+        "B01",
+        "B07",
+        "B09"
+      ],
+      "agent_prompts": [
+        "prompts/AR00_SPATIAL_PLAN_AND_SCALE_PROTOTYPES.md",
+        "prompts/AR01_GRANDMASTERSHEN_ARENA.md"
+      ]
+    }
+  },
+  {
+    "id": "SD-01",
+    "priority": "P1",
+    "region": "SanctuaryDepths",
+    "title": "Crypt ceiling and enclosing walls need real architectural form",
+    "where": "Nave roof (492,47,1010), ossuary roof (380,47,874), ribs x=364..620 at y44; high flat enclosure walls.",
+    "problem": "The promised ribbed vault is actually two flat ceiling slabs with 17 straight beams. The exposed slab ends and flat enclosing walls leave a box-room impression, particularly at the nave/arena transition. The Titan hall is intentionally open to sky and should remain so.",
+    "fix": "Build an original modular crypt kit: real arch-shaped ribs, a few broken vault bays, heavy imposts, fitted wall recesses and settled cracks/root intrusion. Dress the current envelopes without lowering camera clearance or roofing over the Titan arena. Use diagnostic views only to judge geometry; validate final art under real lighting.",
+    "acceptance": "Nave/ossuary read as a constructed ancient burial space from player height; no disconnected overhead strips or visible slab cut edges on the intended route.",
+    "sources": [
+      "src/server/Services/CryptDressing.luau:35",
+      "src/shared/SunkenCryptLayout.luau:1"
+    ],
+    "images": [
+      "k04_nave",
+      "k12_vault",
+      "k16_vault_diagnostic",
+      "w05_crypt_after"
+    ],
+    "evidence": "Observed Studio appearance + source/runtime inventory; art judgement",
+    "family_members": 24,
+    "area_actor_anchors": 0,
+    "production": {
+      "method": "Agent crypt kit + human hero root module; enlarged Titan chamber",
+      "human_input": "Supply H03 after the measured room prototype. Optional H04 is reusable.",
+      "assets": [
+        "H03",
+        "B01",
+        "B02"
+      ],
+      "agent_prompts": [
+        "prompts/C04_CRYPT_ARCHITECTURE_AND_FUNERARY_KIT.md",
+        "prompts/C06_CAST_AND_HERO_ASSET_INTEGRATION.md",
+        "prompts/AR00_SPATIAL_PLAN_AND_SCALE_PROTOTYPES.md",
+        "prompts/AR04_SLUMBERINGTITAN_ARENA.md"
+      ]
+    }
+  },
+  {
+    "id": "SD-02",
+    "priority": "P1",
+    "region": "SanctuaryDepths",
+    "title": "Ossuary skulls are 60 featureless spheres on 20 flat plaques",
+    "where": "West wall x\u2248359, z790..1040 excluding pit span; all 80 pieces listed.",
+    "problem": "Close inspection confirms pale balls in rows against rectangular black panels. They read as dots, not skulls, bone shelves or carved niches.",
+    "fix": "Create a small skull/bone kit with actual cavities and a stone niche frame, varied orientations and a few missing/chipped examples. Bake dense clusters into low-cost shelf assets. Keep respectful stylization consistent with the game and avoid unnecessary gore.",
+    "acceptance": "Ossuary reads at walking distance as burial storage; repeated shelf modules have controlled variation and correct scale.",
+    "sources": [
+      "src/server/Services/CryptDressing.luau:42"
+    ],
+    "images": [
+      "k06_ossuary",
+      "k14_skulls_diagnostic",
+      "k18_reliquary_diagnostic"
+    ],
+    "evidence": "Observed Studio appearance + source/runtime inventory; art judgement",
+    "family_members": 80,
+    "area_actor_anchors": 0,
+    "production": {
+      "method": "Agent skull/niche kit first; optional Rodin fallback",
+      "human_input": "No human model required if the agent sample reads well. H09 is a complete optional image/Rodin prompt if it does not.",
+      "assets": [
+        "B02",
+        "H09 optional"
+      ],
+      "agent_prompts": [
+        "prompts/C04_CRYPT_ARCHITECTURE_AND_FUNERARY_KIT.md"
+      ]
+    }
+  },
+  {
+    "id": "SD-03",
+    "priority": "P2",
+    "region": "SanctuaryDepths",
+    "title": "Sarcophagi and crossing lids are plain rectangular masses",
+    "where": "Six nave coffins, e.g. (384,1.5,1012); seven pit stepping lids at x366,z\u2248855..895.",
+    "problem": "The tombs have no separate lid profile, carved end, handles, fracture detail or burial identity. The pit crossing uses tall cuboids whose visible tops also lack lid construction.",
+    "fix": "Author a matching sarcophagus/lid set with two damaged variants, funerary relief and fitted bases. Keep the seven crossing top heights, widths and distances exactly; render only the exposed portions around existing collision.",
+    "acceptance": "Coffins recognizable in normal lighting and crossing remains equally traversable with no collision seam or misleading lip.",
+    "sources": [
+      "src/shared/SunkenCryptLayout.luau:25",
+      "src/shared/SunkenCryptLayout.luau:60"
+    ],
+    "images": [
+      "k05_sarcophagi",
+      "k07_pit",
+      "k15_sarcophagus_diagnostic"
+    ],
+    "evidence": "Observed Studio appearance + source/runtime inventory; art judgement",
+    "family_members": 13,
+    "area_actor_anchors": 0,
+    "production": {
+      "method": "Agent coffin/lid modules; preserve or explicitly migrate crossing",
+      "human_input": "No new Rodin model required.",
+      "assets": [
+        "B02"
+      ],
+      "agent_prompts": [
+        "prompts/C04_CRYPT_ARCHITECTURE_AND_FUNERARY_KIT.md"
+      ]
+    }
+  },
+  {
+    "id": "SD-04",
+    "priority": "P2",
+    "region": "SanctuaryDepths",
+    "title": "Titan chains are loose solid blocks rather than linked restraints",
+    "where": "Four arena corners around x434/606,z794/966; 24 links and four anchors.",
+    "problem": "Each chain link is a solid cuboid scattered on the floor, with no hole or connected sequence. Large anchor blocks do not visually explain a restrained giant.",
+    "fix": "Use open forged links in connected slack runs, broken end links and fitted anchor rings/stone sockets. Bake/static-place these decorative chains; a physics chain is unnecessary. Relate thickness to the Titan model after its scale is settled.",
+    "acceptance": "Each run reads as one broken restraint from fight distance; no snagging/query changes and no simulated prop instability.",
+    "sources": [
+      "src/server/Services/CryptDressing.luau:61"
+    ],
+    "images": [
+      "k13_chains",
+      "k17_chains_diagnostic"
+    ],
+    "evidence": "Observed Studio appearance + source/runtime inventory; art judgement",
+    "family_members": 28,
+    "area_actor_anchors": 0,
+    "production": {
+      "method": "Agent open-link restraints + code placement",
+      "human_input": "No new Rodin model required; fit to supplied Titan scale.",
+      "assets": [
+        "B05"
+      ],
+      "agent_prompts": [
+        "prompts/C04_CRYPT_ARCHITECTURE_AND_FUNERARY_KIT.md"
+      ]
+    }
+  },
+  {
+    "id": "SD-05",
+    "priority": "P2",
+    "region": "SanctuaryDepths",
+    "title": "Flooded pit needs believable water and shore treatment",
+    "where": "Pit x356..404,z850..900; PitWater near y=-12.",
+    "problem": "The water is a flat Glass sheet in a sharp rectangular cut with a weak shoreline/wetness transition. It does not yet sell a sunken flooded crypt.",
+    "fix": "Keep the pit envelope and crossing geometry, but add a continuous wet rock/stone waterline, restrained ripple surface, submerged rubble silhouettes and localized mist. Keep fall/readability cues distinct from walkable tops.",
+    "acceptance": "Ordinary camera clearly distinguishes water, pit edge and all seven stepping lids in low and high rendering settings.",
+    "sources": [
+      "src/shared/SunkenCryptLayout.luau:18",
+      "src/server/Services/CryptDressing.luau:76"
+    ],
+    "images": [
+      "qh_k07_pit"
+    ],
+    "evidence": "Observed Studio appearance + source/runtime inventory; art judgement",
+    "family_members": 1,
+    "area_actor_anchors": 0,
+    "production": {
+      "method": "Agent water/terrain/grounding",
+      "human_input": "No new Rodin model required.",
+      "assets": [
+        "B06",
+        "B09"
+      ],
+      "agent_prompts": [
+        "prompts/C04_CRYPT_ARCHITECTURE_AND_FUNERARY_KIT.md",
+        "prompts/AR04_SLUMBERINGTITAN_ARENA.md"
+      ]
+    }
+  },
+  {
+    "id": "SD-06",
+    "priority": "P3",
+    "region": "SanctuaryDepths",
+    "title": "Thirty candles remain unshaped rods",
+    "where": "Six candle clusters: four nave/gallery sites and the reliquary at (366,0.4,812).",
+    "problem": "Close views show straight square candle rods lit by one cluster glow, with little wick, flame or pooled wax detail.",
+    "fix": "Create two or three simple wax silhouettes with dark wicks, tiny flame treatment and a shared wax-drip base. Keep cluster lighting restrained and avoid many independent dynamic lights.",
+    "acceptance": "Read as candles up close without competing with combat indicators; no new effect lifetime or streaming cleanup problems.",
+    "sources": [
+      "src/server/Services/CryptDressing.luau:53"
+    ],
+    "images": [
+      "k15_sarcophagus_diagnostic",
+      "k18_reliquary_diagnostic"
+    ],
+    "evidence": "Observed Studio appearance + source/runtime inventory; art judgement",
+    "family_members": 30,
+    "area_actor_anchors": 0,
+    "production": {
+      "method": "Agent small candle/FX kit",
+      "human_input": "No new Rodin model required.",
+      "assets": [
+        "B10"
+      ],
+      "agent_prompts": [
+        "prompts/C04_CRYPT_ARCHITECTURE_AND_FUNERARY_KIT.md"
+      ]
+    }
+  },
+  {
+    "id": "CP-01",
+    "priority": "P1",
+    "region": "CelestialPagoda",
+    "title": "Oracle throne is a box chair beneath a small canopy",
+    "where": "EmptyThrone (-140,17,-2280), back at y23, on throne loft.",
+    "problem": "The encounter-story focal prop is a six-stud cube seat, flat rectangular back and simple cushion. Its silhouette is dramatically weaker than the pagodas behind it.",
+    "fix": "Author a distinct imperial oracle throne with a carved seat/back, worn lacquer/gold, a coherent canopy and a recognizable void/star motif. Fit it to the existing loft and preserve the lore point/access route.",
+    "acceptance": "Seat reads as a throne from the loft entrance and supports the Oracle identity without floating details or obstructed walking space.",
+    "sources": [
+      "src/shared/CelestialPagodaLayout.luau:51",
+      "src/server/Services/PagodaDressing.luau:84"
+    ],
+    "images": [
+      "p07_throne",
+      "p14_throne_front"
+    ],
+    "evidence": "Observed Studio appearance + source/runtime inventory; art judgement",
+    "family_members": 3,
+    "area_actor_anchors": 0,
+    "production": {
+      "method": "Human/Rodin throne + agent loft/frame integration",
+      "human_input": "Approve H02 and supply its chosen export/maps.",
+      "assets": [
+        "H02",
+        "B01"
+      ],
+      "agent_prompts": [
+        "prompts/C05_PAGODA_CITADEL_AND_GROUND_DETAIL.md",
+        "prompts/C06_CAST_AND_HERO_ASSET_INTEGRATION.md"
+      ]
+    }
+  },
+  {
+    "id": "CP-02",
+    "priority": "P2",
+    "region": "CelestialPagoda",
+    "title": "Great bell is an unadorned solid cylinder",
+    "where": "GreatBell (60,11,-2276) and frame posts x54.5/65.5.",
+    "problem": "It reads as a hanging drum with flat closed ends. There is no hollow flared lip, hanging loop or carved bronze relief.",
+    "fix": "Reuse the existing Foundry_Bell mesh at a fitting scale, with an imperial patina/inscription variant and credible suspension. Dress its frame with bracket joints and a clapper if visible.",
+    "acceptance": "Bell silhouette reads from forecourt and close side views; frame connects to the crown and stays outside fight clearance.",
+    "sources": [
+      "src/server/Services/PagodaDressing.luau:88"
+    ],
+    "images": [
+      "p08_bell"
+    ],
+    "evidence": "Observed Studio appearance + source/runtime inventory; art judgement",
+    "family_members": 4,
+    "area_actor_anchors": 0,
+    "production": {
+      "method": "Reuse Foundry_Bell; agent suspension/frame",
+      "human_input": "No new Rodin model required.",
+      "assets": [
+        "B04"
+      ],
+      "agent_prompts": [
+        "prompts/C05_PAGODA_CITADEL_AND_GROUND_DETAIL.md"
+      ]
+    }
+  },
+  {
+    "id": "CP-03",
+    "priority": "P2",
+    "region": "CelestialPagoda",
+    "title": "Lotus pool looks like a rectangle of water and discs",
+    "where": "Pool (70,-25.94,-2214), 22 pads on the gorge floor.",
+    "problem": "The water boundary is perfectly rectangular and the lotus pads are flat cylinders with no leaf notch, stems or flowers. The pool has little believable bank construction.",
+    "fix": "Create a few notched leaf/flower variants, add a coherent stone or broken garden rim, wetness and a drain/source cue. Keep the entire feature off the narrow rafter route and preserve the gorge floor.",
+    "acceptance": "Reads as an abandoned lotus garden from above and bank height with no false walkable surfaces.",
+    "sources": [
+      "src/server/Services/PagodaDressing.luau:70"
+    ],
+    "images": [
+      "p05_pool"
+    ],
+    "evidence": "Observed Studio appearance + source/runtime inventory; art judgement",
+    "family_members": 23,
+    "area_actor_anchors": 0,
+    "production": {
+      "method": "Agent small foliage mesh + water/terrain",
+      "human_input": "No new Rodin model required.",
+      "assets": [
+        "B06",
+        "B09"
+      ],
+      "agent_prompts": [
+        "prompts/C05_PAGODA_CITADEL_AND_GROUND_DETAIL.md"
+      ]
+    }
+  },
+  {
+    "id": "CP-04",
+    "priority": "P2",
+    "region": "CelestialPagoda",
+    "title": "Gallery, rafters and loft need crafted timber junctions",
+    "where": "West gallery (-88,-11,-2210), beam (-37,-6,-2228), central rafter, throne loft (-130,17,-2265).",
+    "problem": "The traversal idea is distinctive, but wide flat decks, square rails/posts and straight beams have little joinery, bracket logic or broken architectural context. Large horizontal areas can feel like floating platforms.",
+    "fix": "Dress the existing volumes with fitted beam ends, timber braces, authored rail bays and a few hanging prayer cloths/lantern clusters; establish how the gallery was part of a ruined building. Reuse lobby timber pieces scaled coherently. Preserve narrow-beam width, all landing heights and climb/jump distances.",
+    "acceptance": "Player can read support and destination while traversing; no new railing or ornament blocks the existing movement route/camera.",
+    "sources": [
+      "src/shared/CelestialPagodaLayout.luau:1",
+      "src/server/Services/PagodaDressing.luau:77"
+    ],
+    "images": [
+      "p03_gallery",
+      "p13_rafters_clear",
+      "p14_throne_front",
+      "p15_lantern_rafter",
+      "p16_rafter_stair",
+      "p17_west_stair"
+    ],
+    "evidence": "Observed Studio appearance + source/runtime inventory; art judgement",
+    "family_members": 27,
+    "area_actor_anchors": 0,
+    "production": {
+      "method": "Agent precise timber/stone construction",
+      "human_input": "No new Rodin model required.",
+      "assets": [
+        "B01"
+      ],
+      "agent_prompts": [
+        "prompts/C05_PAGODA_CITADEL_AND_GROUND_DETAIL.md"
+      ]
+    }
+  },
+  {
+    "id": "CP-05",
+    "priority": "P2",
+    "region": "CelestialPagoda",
+    "title": "Wu arena has little ritual identity at floor level",
+    "where": "Open hall centered (0,0,-2380), between the four imported pagodas.",
+    "problem": "The skyline and guardians are good, but the very broad uniform floor and widely spaced columns leave a weak focal composition around the small fallback Wu. Boss replacement will help; floor-level ritual context is still missing.",
+    "fix": "After Wu scale is settled, add a restrained inlaid celestial diagram, damaged ritual stations and hanging cloth/altar clusters at the margins. Retain open telegraph ground, camera room, teleport destinations and the good imported pagodas.",
+    "acceptance": "Entry shot clearly frames the Oracle and ritual space; dark effects remain distinct from ground markings and no prop occupies intended teleport/attack lanes.",
+    "sources": [
+      "src/shared/CelestialPagodaLayout.luau:1",
+      "src/server/Services/PagodaDressing.luau:28"
+    ],
+    "images": [
+      "p09_arena",
+      "p10_wu",
+      "w06_pagoda_after"
+    ],
+    "evidence": "Observed Studio appearance + source/runtime inventory; art judgement",
+    "family_members": 0,
+    "area_actor_anchors": 1,
+    "production": {
+      "method": "Arena redesign: agent mirror court/lighting/bounds; supplied throne",
+      "human_input": "H02 is the only recommended human focal prop here; whole lake/sky built in engine.",
+      "assets": [
+        "H02",
+        "B06",
+        "B07",
+        "B08"
+      ],
+      "agent_prompts": [
+        "prompts/AR00_SPATIAL_PLAN_AND_SCALE_PROTOTYPES.md",
+        "prompts/AR05_SOVEREIGNWU_ARENA.md"
+      ]
+    }
+  },
+  {
+    "id": "SC-01",
+    "priority": "P1",
+    "region": "SkyCitadel",
+    "title": "Ten chain posts float above the descending stair",
+    "where": "x=\u00b15.6,z=-2552,-2560,-2568,-2576,-2584, plus ten connector beams.",
+    "problem": "Observed in normal-key traversal and close-up. At z=-2568, post center y=11.5 has bottom y=10 while neighboring stair top is about y=-10: roughly a 20-stud vertical mismatch. The decor formula y=-(z+2548)/2 rises while the authored stair descends. This is a placement defect, not an art-style preference.",
+    "fix": "Derive post feet and chain end positions from the same descending stair rise/run or sampled authored tread tops. Re-anchor all ten posts to the stair shoulders; ensure adjacent chain endpoints actually meet. Then replace straight rods with a restrained sagging chain/rope visual.",
+    "acceptance": "All post bottoms meet a supported surface at both sides and every step of the descent; no floating beams remain in normal approach/return views; collision layout remains unchanged.",
+    "sources": [
+      "src/server/Services/CitadelDressing.luau:79",
+      "src/shared/SkyCitadelLayout.luau:17"
+    ],
+    "images": [
+      "c01_bridge",
+      "c11_chain_clear",
+      "w07_citadel_before",
+      "w07_citadel_after"
+    ],
+    "evidence": "Visible placement defect + exact runtime coordinates + traced sign mismatch in source",
+    "family_members": 20,
+    "area_actor_anchors": 0,
+    "production": {
+      "method": "Direct code placement; agent simple chain geometry",
+      "human_input": "No human/Rodin work required.",
+      "assets": [
+        "B05"
+      ],
+      "agent_prompts": [
+        "prompts/C01_CHAIN_PLACEMENT_AND_READABILITY.md"
+      ]
+    }
+  },
+  {
+    "id": "SC-02",
+    "priority": "P2",
+    "region": "SkyCitadel",
+    "title": "Dragon perch chains and shed scales are primitive",
+    "where": "Perch near (0,70,-2952); scale scatter x\u2248-60..60,z=-2900..-2930.",
+    "problem": "Eight perfectly straight beams radiate from one point on the rock pillar like spokes rather than broken chain runs. Twelve Glass cuboids stand in for shed scales; they are poorly tied to the new charcoal wyrm concept.",
+    "fix": "Author two or three static broken chain runs anchored in believable sockets and a small curved/scarred scale shard kit matching the final Wyrm material. Keep the natural rock perch and open flight space; no live chain physics required.",
+    "acceptance": "Perch reads as a former storm-dragon restraint/roost from the arena; close scale props resemble the production creature and never become bright misleading ground cues.",
+    "sources": [
+      "src/server/Services/CitadelDressing.luau:87"
+    ],
+    "images": [
+      "c08_scale",
+      "c09_perch"
+    ],
+    "evidence": "Perch beams observed; all 12 scale placeholders confirmed in source/runtime inventory, individual shard close-ups limited",
+    "family_members": 20,
+    "area_actor_anchors": 0,
+    "production": {
+      "method": "Agent chain/scale reuse; optional human organic crown",
+      "human_input": "Reuse the supplied Wyrm model/materials; H05 is optional only if the chosen landmark needs it.",
+      "assets": [
+        "B05",
+        "B07",
+        "H05 optional"
+      ],
+      "agent_prompts": [
+        "prompts/C05_PAGODA_CITADEL_AND_GROUND_DETAIL.md",
+        "prompts/AR06_AZUREWYRM_ARENA.md"
+      ]
+    }
+  },
+  {
+    "id": "SC-03",
+    "priority": "P2",
+    "region": "SkyCitadel",
+    "title": "Bridge and bastion edges need a weathered masonry finish",
+    "where": "Cloud bridge (0,-20,-2604), stair gates and Last Bastion (0,0,-2704).",
+    "problem": "Good imported towers sit beside long plain cuboid bridge rails and battlement/rim strips. Low lighting amplifies the loss of profile and surface hierarchy.",
+    "fix": "Add fitted coping, damaged parapet modules, buttress/rail terminations and storm-worn joints, reusing the existing stone language. Keep bridge width, rim height, fall protections and summit flight space. Leave intentional open summit ground open.",
+    "acceptance": "Approach and return cameras show supported finished edges with readable drops; no new obstacle or camera collision along the narrow bridge.",
+    "sources": [
+      "src/shared/SkyCitadelLayout.luau:20"
+    ],
+    "images": [
+      "c03_gorge",
+      "c04_bastion",
+      "c10_summit",
+      "w07_citadel_after",
+      "c13_heaven_stair"
+    ],
+    "evidence": "Observed Studio appearance + source/runtime inventory; art judgement",
+    "family_members": 11,
+    "area_actor_anchors": 0,
+    "production": {
+      "method": "Agent masonry kit; enlarged Wyrm scene",
+      "human_input": "No new Rodin model required; H05 optional.",
+      "assets": [
+        "B01",
+        "B07"
+      ],
+      "agent_prompts": [
+        "prompts/C05_PAGODA_CITADEL_AND_GROUND_DETAIL.md",
+        "prompts/AR00_SPATIAL_PLAN_AND_SCALE_PROTOTYPES.md",
+        "prompts/AR06_AZUREWYRM_ARENA.md"
+      ]
+    }
+  }
+]

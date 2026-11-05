@@ -1,0 +1,124 @@
+[
+  {
+    "id": "H01",
+    "name": "Shattered Votive Idol",
+    "owner": "Human concept + Rodin; agent cleanup/placement",
+    "priority": "First hero asset",
+    "issues": [
+      "DM-03"
+    ],
+    "size": "about 11 studs tall intact; approve beside a measured 5\u20136-stud project rig",
+    "prompt": "An original ancient votive idol for a grim fantasy burial monastery: a stooped faceless pilgrim carved from weathered grey limestone, heavy layered stone robes, long hands enclosing an extinguished lantern at the sternum, an eroded empty hood, restrained bronze collar stains. One shoulder and the lower robe are broken away, with thick believable fracture surfaces; the remaining body is a coherent recognizable figure. Quietly disturbing and heavy, not a generic heroic knight. Subtle sediment, age-darkened recesses, large readable folds and few meaningful carved marks. No sword, no boss character, no wings. Design the statue itself, not its environment or pedestal.",
+    "separate": "One statue body per generation. Agent duplicates/poses matching stone fragments from the same asset; do not generate disconnected heads and body variants in a single image.",
+    "agent": "prompts/C06_CAST_AND_HERO_ASSET_INTEGRATION.md"
+  },
+  {
+    "id": "H02",
+    "name": "Throne of the Starless Oracle",
+    "owner": "Human concept + Rodin; agent cleanup/placement",
+    "priority": "First hero asset",
+    "issues": [
+      "CP-01",
+      "CP-05"
+    ],
+    "size": "seat top fitted to the measured loft; back roughly 10\u201314 studs high, not an avatar-sized dining chair",
+    "prompt": "One original monumental imperial oracle throne for a dark fantasy world. Blackened violet lacquer over aged dark timber, tarnished warm bronze structural ribs, a tall concave fan-shaped back with a restrained ring of hollow eclipsed-star carvings, heavy stepped feet and a worn dark cushion. The arms curve like patient skeletal hands but remain believable load-bearing carved timber. Asymmetric ancient damage at one upper corner, carefully limited gilding worn through at touch points. Ominous, austere and sculptural; the seat and underside are visible and physically plausible. No occupant, no floating halo, no orbiting effects, no glowing eye, no canopy or room.",
+    "separate": "Throne is one asset; its canopy, loft, collision and magical effects are built by the agent. Keep arm/seat negative spaces open.",
+    "agent": "prompts/C06_CAST_AND_HERO_ASSET_INTEGRATION.md"
+  },
+  {
+    "id": "H03",
+    "name": "Petrified Root Buttress",
+    "owner": "Human concept + Rodin; agent builds the cathedral from modules",
+    "priority": "Titan arena hero detail",
+    "issues": [
+      "SD-01",
+      "SD-05"
+    ],
+    "size": "one 25\u201340-stud hero segment, not a whole 300-stud room",
+    "prompt": "One enormous ancient petrified root buttress, an organic architectural sculpture for a subterranean dark fantasy crypt. A massive weight-bearing trunk rises obliquely from a broad ground-contact root flare, divides into three thick twisting structural roots, and bends overhead like the beginning of a cathedral rib. Ivory-grey mineralized bark, dark umber fissures, sparse burial-cloth fibers caught in crevices, dense age and pressure in the large forms. Deep open gaps between the three roots must remain visible; no tangled hair-like web. Broken branch tips are blunt and weathered, not tentacles or antlers. The scale is colossal and unsettling, with an asymmetrical grounded silhouette. No foliage canopy, face, creature, scenery, altar, lights or particles.",
+    "separate": "Generate one segment. The agent makes a few edited/rotated variants and procedural secondary roots; never scale a full-room Rodin lump into the playable crypt.",
+    "agent": "prompts/C06_CAST_AND_HERO_ASSET_INTEGRATION.md"
+  },
+  {
+    "id": "H04",
+    "name": "Mourning Gate Relief",
+    "owner": "Human concept + Rodin relief; agent constructs the doorway",
+    "priority": "After H01/H02",
+    "issues": [
+      "DM-08",
+      "SD-01"
+    ],
+    "size": "a 10\u201314-stud-wide relief panel/pediment; fit the frame to the existing secret entrance",
+    "prompt": "One original weathered limestone funerary relief panel from an ancient grim fantasy tomb, substantial and thick enough to be a real architectural fragment. Two hooded mourners kneel in profile around an unlit hanging bronze censer; their draped stone hands point downward into an empty central circular recess. Broad legible low relief, worn faces, broken upper left corner, chisel marks, soot-dark recesses, restrained pale mineral runoff and old root pressure cracks. The panel has a squared flat rear mounting face and a heavy chipped perimeter. Classical sepulchral construction with no modern symbols; not a flat illustration painted on stone. No complete doorway, no stairs, no room, no inscription text.",
+    "separate": "One sculpted panel; the agent builds exact modular jambs, doorway opening, supports, roof and collision. Reuse it sparingly, not on every wall.",
+    "agent": "prompts/C06_CAST_AND_HERO_ASSET_INTEGRATION.md"
+  },
+  {
+    "id": "H05",
+    "name": "Storm-Eroded Memorial Crown",
+    "owner": "Optional human/Rodin organic accent; agent can omit or approximate",
+    "priority": "Optional after arena pilot proves need",
+    "issues": [
+      "SC-02",
+      "SC-03"
+    ],
+    "size": "one 20\u201330-stud-high crown fragment fixed to a larger agent-built monolith",
+    "prompt": "One original storm-eroded architectural crown fragment for a grim fantasy mountaintop ruin. Charcoal-grey basalt and fossilized ivory stone have fused into a single skeletal arch crest: three thick swept ribs emerge from a broad cracked stone socket and converge around a large off-center empty aperture. Ancient weight and wind erosion, blunt broken ends, a few inset oxidized bronze binding plates, thin natural silver mineral seams. The outline feels like a dead civilization\u2019s weather-beaten beacon, never a living dragon, skull boss, throne, weapon or generic spiky demon. Strong chunky silhouette with a few deep negative spaces. No lightning, glow, hanging chains, floor, rock mountain or surrounding ruins.",
+    "separate": "Optional sculpted top only. Agent builds/reuses the supporting perch/spire and chain sockets; existing Wyrm model is untouched.",
+    "agent": "prompts/C06_CAST_AND_HERO_ASSET_INTEGRATION.md"
+  },
+  {
+    "id": "H06",
+    "name": "Lady Lin \u2014 Shrine Cast",
+    "owner": "Human approved character concept + Rodin; agent rig/adaptation",
+    "priority": "Cast after first environment hero assets",
+    "issues": [
+      "AP-02"
+    ],
+    "size": "actual CastFigures/CostumeSchema R15 dimensions, not generic realistic adult anatomy",
+    "prompt": "One original female shrine attendant for Asura\u2019s Path, a restrained grim fantasy character. Calm weathered face, dark hair tied into a simple practical knot with a dull bronze pin, layered ash-cream robes beneath a faded cinnabar outer garment, charcoal sash, small worn jade pendant and cloth shoes. A memorable clean silhouette, believable heavy cloth folds, human hands visible and separated from the torso, practical modest clothing, no jewelry clutter. Front three-quarter neutral A-pose with feet apart and elbows slightly bent so shoulders, wrists, hips, knees and ankles are all distinct. Adapt proportions to the attached actual Roblox project rig: preserve its head/torso/limb lengths and joint centers. No photoreal tall fashion-model proportions, no weapon, floor, props or scenery.",
+    "separate": "Attach the actual project rig mannequin as the proportion reference. Make the approved front/side/rear consistent; rigging is a separate agent step. No automatic Roblox fit is implied by a concept image.",
+    "agent": "prompts/C06_CAST_AND_HERO_ASSET_INTEGRATION.md"
+  },
+  {
+    "id": "H07",
+    "name": "Master Smith Gao \u2014 Shrine Cast",
+    "owner": "Human approved character concept + Rodin; agent rig/adaptation",
+    "priority": "Cast",
+    "issues": [
+      "AP-02",
+      "SN-01"
+    ],
+    "size": "match Gao live rig and dialogue head/feet anchors",
+    "prompt": "One original veteran blacksmith for a dark fantasy sanctuary, Master Smith Gao. Compact strong build within the attached Roblox project rig proportions, lined stern face, greying tied-back hair, soot-dark brows, rolled charcoal sleeves, weathered dark leather apron with shaped seams over a faded ochre work tunic, reinforced cloth trousers and practical heavy shoes. Broad readable forms, few well-used metal fasteners, realistic wear at knees and apron edge, restrained bronze and ash palette. Empty open hands, neutral A-pose with arms away from clothing, ankles/elbows clearly visible. Believable working craftsman, not an armored boss or exaggerated muscle giant. No hammer held in the hand, no anvil, scenery, forge light or floor.",
+    "separate": "Body/clothing only. Tools remain separate so existing live rig and animations can use them. Preserve actual project proportions instead of baking a pose or held tool into the mesh.",
+    "agent": "prompts/C06_CAST_AND_HERO_ASSET_INTEGRATION.md"
+  },
+  {
+    "id": "H08",
+    "name": "The Hermit \u2014 Monastery Cast",
+    "owner": "Human approved character concept + Rodin; agent rig/adaptation",
+    "priority": "Cast",
+    "issues": [
+      "AP-02"
+    ],
+    "size": "match the actual Hermit rig and feet-to-head portrait height",
+    "prompt": "One original elderly hermit guide for a ruined grim fantasy monastery. Thin slightly stooped silhouette expressed in the garment cut rather than a permanently bent skeleton, lined face, short untidy grey beard, rough ash-brown hooded robe with layered frayed hems, charcoal wraps and worn cloth sandals. A single plain wooden prayer-bead loop and a small faded cloth talisman, no ornate staff or heavy armor. Quiet, wary and human, tactile woven fabric with large readable folds instead of noisy micro-detail. Neutral A-pose, hands empty and separated from the body, feet apart, knees and elbows visible. Match the attached actual Roblox project mannequin\u2019s proportions and joint centers. No scenery, stool, floor, props or magical effects.",
+    "separate": "One cast body, no permanent dramatic pose; subtle stoop/idle is authored after rigging. Keep face and hands visible for dialogue.",
+    "agent": "prompts/C06_CAST_AND_HERO_ASSET_INTEGRATION.md"
+  },
+  {
+    "id": "H09",
+    "name": "Ossuary Skull \u2014 optional fallback",
+    "owner": "Agent Blender first; human/Rodin only if the sample is inadequate",
+    "priority": "Optional small-asset fallback, not required up front",
+    "issues": [
+      "SD-02"
+    ],
+    "size": "about one stud at the existing niche scale; verify at actual walking distance",
+    "prompt": "One original weathered human skull for a non-gory dark fantasy ossuary prop. A coherent anatomically recognizable cranium, deep paired eye cavities, triangular nasal cavity, readable cheekbones, upper teeth and a partly damaged separate-looking lower jaw. Dry aged ivory bone with pale mineral deposits, fine restrained cracks and dark cavities, no flesh or blood. Large shapes must read at small game-prop scale. Full skull, slight front three-quarter angle with rear cranium visible, empty negative spaces, no stand, plaque, bones, candle, scenery or dramatic lighting. Not a sphere with features painted onto it.",
+    "separate": "Only use if the one-sample procedural Blender skull fails the gameplay-distance comparison. Generate one skull, then let the agent bake and vary shelf clusters with it.",
+    "agent": "prompts/C04_CRYPT_ARCHITECTURE_AND_FUNERARY_KIT.md"
+  }
+]

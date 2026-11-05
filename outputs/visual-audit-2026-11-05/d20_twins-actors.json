@@ -1,0 +1,480 @@
+{
+  "ok": true,
+  "result": [
+    {
+      "path": "Workspace.AsurasPath.Entities.Cursed Swordsman",
+      "name": "Cursed Swordsman",
+      "position": [
+        18.37225341796875,
+        4.237155437469482,
+        -1849.0897216796875
+      ],
+      "id": -1000022,
+      "kind": "Enemy",
+      "look": "CursedSwordsman",
+      "skin": "Template:AsuraBoss_CursedSwordsman"
+    },
+    {
+      "path": "Workspace.AsurasPath.Entities.Corrupt Wandering Monk",
+      "name": "Corrupt Wandering Monk",
+      "position": [
+        -14.0506010055542,
+        3.392422914505005,
+        -854.4739990234375
+      ],
+      "id": -1000002,
+      "kind": "Enemy",
+      "look": "CorruptWanderingMonk",
+      "skin": "Template:AsuraBoss_CorruptWanderingMonk"
+    },
+    {
+      "path": "Workspace.AsurasPath.Entities.Hollow-Bell Warden",
+      "name": "Hollow-Bell Warden",
+      "position": [
+        -87.67412567138672,
+        4.125062942504883,
+        -1023.67041015625
+      ],
+      "id": -1000009,
+      "kind": "Enemy",
+      "look": "HollowBellWarden",
+      "skin": "Template:AsuraBoss_HollowBellWarden"
+    },
+    {
+      "path": "Workspace.AsurasPath.Entities.Cursed Swordsman",
+      "name": "Cursed Swordsman",
+      "position": [
+        119.4157943725586,
+        21.8669490814209,
+        -1308.9462890625
+      ],
+      "id": -1000018,
+      "kind": "Enemy",
+      "look": "CursedSwordsman",
+      "skin": "Template:AsuraBoss_CursedSwordsman"
+    },
+    {
+      "path": "Workspace.AsurasPath.Entities.Cursed Swordsman",
+      "name": "Cursed Swordsman",
+      "position": [
+        -4.811399936676025,
+        4.031311511993408,
+        -959.7661743164062
+      ],
+      "id": -1000006,
+      "kind": "Enemy",
+      "look": "CursedSwordsman",
+      "skin": "Template:AsuraBoss_CursedSwordsman"
+    },
+    {
+      "path": "Workspace.AsurasPath.Entities.Grandmaster Shen",
+      "name": "Grandmaster Shen",
+      "position": [
+        0,
+        3.598672866821289,
+        -1995
+      ],
+      "id": -1000030,
+      "kind": "Enemy",
+      "look": "GrandmasterShen",
+      "skin": "Fallback:Costume (no AsuraBoss_GrandmasterShen_P1 or AsuraBoss_GrandmasterShen)"
+    },
+    {
+      "path": "Workspace.AsurasPath.Entities.Azure Wyrm",
+      "name": "Azure Wyrm",
+      "position": [
+        -0.17187508940696716,
+        8.207418441772461,
+        -2854.93310546875
+      ],
+      "id": -1000033,
+      "kind": "Enemy",
+      "look": "AzureWyrm",
+      "skin": "Fallback:Costume (no AsuraBoss_AzureWyrm_P1 or AsuraBoss_AzureWyrm)"
+    },
+    {
+      "path": "Workspace.AsurasPath.Entities.Corrupt Wandering Monk",
+      "name": "Corrupt Wandering Monk",
+      "position": [
+        -0.2980506718158722,
+        16.105499267578125,
+        -1277.5418701171875
+      ],
+      "id": -1000011,
+      "kind": "Enemy",
+      "look": "CorruptWanderingMonk",
+      "skin": "Template:AsuraBoss_CorruptWanderingMonk"
+    },
+    {
+      "path": "Workspace.AsurasPath.Entities.General Zhao",
+      "name": "General Zhao",
+      "position": [
+        300,
+        3,
+        -955
+      ],
+      "id": -1000034,
+      "kind": "Enemy",
+      "look": "GeneralZhao"
+    },
+    {
+      "path": "Workspace.AsurasPath.Entities.Cursed Swordsman",
+      "name": "Cursed Swordsman",
+      "position": [
+        -19.105674743652344,
+        4.237155437469482,
+        -1793.9930419921875
+      ],
+      "id": -1000021,
+      "kind": "Enemy",
+      "look": "CursedSwordsman",
+      "skin": "Template:AsuraBoss_CursedSwordsman"
+    },
+    {
+      "path": "Workspace.AsurasPath.Entities.Corrupt Wandering Monk",
+      "name": "Corrupt Wandering Monk",
+      "position": [
+        -75.41525268554688,
+        3.598672866821289,
+        -1183.4112548828125
+      ],
+      "id": -1000012,
+      "kind": "Enemy",
+      "look": "CorruptWanderingMonk",
+      "skin": "Template:AsuraBoss_CorruptWanderingMonk"
+    },
+    {
+      "path": "Workspace.AsurasPath.Entities.Corrupt Wandering Monk",
+      "name": "Corrupt Wandering Monk",
+      "position": [
+        -71.40702056884766,
+        3.392422914505005,
+        -895.532958984375
+      ],
+      "id": -1000004,
+      "kind": "Enemy",
+      "look": "CorruptWanderingMonk",
+      "skin": "Template:AsuraBoss_CorruptWanderingMonk"
+    },
+    {
+      "path": "Workspace.AsurasPath.Entities.Corrupt Wandering Monk",
+      "name": "Corrupt Wandering Monk",
+      "position": [
+        -91.85002899169922,
+        23.192420959472656,
+        -1273.9483642578125
+      ],
+      "id": -1000015,
+      "kind": "Enemy",
+      "look": "CorruptWanderingMonk",
+      "skin": "Template:AsuraBoss_CorruptWanderingMonk"
+    },
+    {
+      "path": "Workspace.AsurasPath.Entities.Corrupt Wandering Monk",
+      "name": "Corrupt Wandering Monk",
+      "position": [
+        -182.711669921875,
+        13.553503036499023,
+        -1322.515380859375
+      ],
+      "id": -1000017,
+      "kind": "Enemy",
+      "look": "CorruptWanderingMonk",
+      "skin": "Template:AsuraBoss_CorruptWanderingMonk"
+    },
+    {
+      "path": "Workspace.AsurasPath.Entities.Cursed Swordsman",
+      "name": "Cursed Swordsman",
+      "position": [
+        -96.73602294921875,
+        9.831060409545898,
+        -1237.3045654296875
+      ],
+      "id": -1000014,
+      "kind": "Enemy",
+      "look": "CursedSwordsman",
+      "skin": "Template:AsuraBoss_CursedSwordsman"
+    },
+    {
+      "path": "Workspace.AsurasPath.Entities.Corrupt Wandering Monk",
+      "name": "Corrupt Wandering Monk",
+      "position": [
+        46.44321823120117,
+        3.349027156829834,
+        -1062.54443359375
+      ],
+      "id": -1000007,
+      "kind": "Enemy",
+      "look": "CorruptWanderingMonk",
+      "skin": "Template:AsuraBoss_CorruptWanderingMonk"
+    },
+    {
+      "path": "Workspace.AsurasPath.Entities.Cursed Swordsman",
+      "name": "Cursed Swordsman",
+      "position": [
+        -1.8759522438049316,
+        -2.1690945625305176,
+        -2228.12646484375
+      ],
+      "id": -1000026,
+      "kind": "Enemy",
+      "look": "CursedSwordsman",
+      "skin": "Template:AsuraBoss_CursedSwordsman"
+    },
+    {
+      "path": "Workspace.AsurasPath.Entities.Cursed Swordsman",
+      "name": "Cursed Swordsman",
+      "position": [
+        6.4864630699157715,
+        4.237306594848633,
+        -1206.78173828125
+      ],
+      "id": -1000010,
+      "kind": "Enemy",
+      "look": "CursedSwordsman",
+      "skin": "Template:AsuraBoss_CursedSwordsman"
+    },
+    {
+      "path": "Workspace.AsurasPath.Entities.Sparring Phantom",
+      "name": "Sparring Phantom",
+      "position": [
+        14.161951065063477,
+        3.355839729309082,
+        -705.286865234375
+      ],
+      "id": -1000000,
+      "kind": "Enemy"
+    },
+    {
+      "path": "Workspace.AsurasPath.Entities.Cursed Swordsman",
+      "name": "Cursed Swordsman",
+      "position": [
+        0.07674999535083771,
+        -6.169093608856201,
+        -2646.8798828125
+      ],
+      "id": -1000028,
+      "kind": "Enemy",
+      "look": "CursedSwordsman",
+      "skin": "Template:AsuraBoss_CursedSwordsman"
+    },
+    {
+      "path": "Workspace.AsurasPath.Entities.Corrupt Wandering Monk",
+      "name": "Corrupt Wandering Monk",
+      "position": [
+        4.809240341186523,
+        3.392422914505005,
+        -790.7103881835938
+      ],
+      "id": -1000001,
+      "kind": "Enemy",
+      "look": "CorruptWanderingMonk",
+      "skin": "Template:AsuraBoss_CorruptWanderingMonk"
+    },
+    {
+      "path": "Workspace.AsurasPath.Entities.Sovereign Wu",
+      "name": "Sovereign Wu",
+      "position": [
+        0,
+        3.8309054374694824,
+        -2404.999267578125
+      ],
+      "id": -1000032,
+      "kind": "Enemy",
+      "look": "SovereignWu",
+      "skin": "Fallback:Costume (no AsuraBoss_SovereignWu_P1 or AsuraBoss_SovereignWu)"
+    },
+    {
+      "path": "Workspace.AsurasPath.Entities.The Slumbering Titan",
+      "name": "The Slumbering Titan",
+      "position": [
+        519.9923095703125,
+        9.577265739440918,
+        854.9974365234375
+      ],
+      "id": -1000031,
+      "kind": "Enemy",
+      "look": "SlumberingTitan",
+      "skin": "Fallback:Costume (no AsuraBoss_SlumberingTitan_P1 or AsuraBoss_SlumberingTitan)"
+    },
+    {
+      "path": "Workspace.AsurasPath.Entities.Corrupt Wandering Monk",
+      "name": "Corrupt Wandering Monk",
+      "position": [
+        14.028504371643066,
+        3.392422914505005,
+        -849.027587890625
+      ],
+      "id": -1000003,
+      "kind": "Enemy",
+      "look": "CorruptWanderingMonk",
+      "skin": "Template:AsuraBoss_CorruptWanderingMonk"
+    },
+    {
+      "path": "Workspace.AsurasPath.Entities.Cursed Swordsman",
+      "name": "Cursed Swordsman",
+      "position": [
+        -112.41737365722656,
+        4.237306594848633,
+        -1191.5377197265625
+      ],
+      "id": -1000013,
+      "kind": "Enemy",
+      "look": "CursedSwordsman",
+      "skin": "Template:AsuraBoss_CursedSwordsman"
+    },
+    {
+      "path": "Workspace.AsurasPath.Entities.Corrupt Wandering Monk",
+      "name": "Corrupt Wandering Monk",
+      "position": [
+        92.10187530517578,
+        3.392422914505005,
+        -894.0413208007812
+      ],
+      "id": -1000005,
+      "kind": "Enemy",
+      "look": "CorruptWanderingMonk",
+      "skin": "Template:AsuraBoss_CorruptWanderingMonk"
+    },
+    {
+      "path": "Workspace.AsurasPath.Entities.Corrupt Wandering Monk",
+      "name": "Corrupt Wandering Monk",
+      "position": [
+        0.43531185388565063,
+        -16.807579040527344,
+        -2604.822998046875
+      ],
+      "id": -1000027,
+      "kind": "Enemy",
+      "look": "CorruptWanderingMonk",
+      "skin": "Template:AsuraBoss_CorruptWanderingMonk"
+    },
+    {
+      "path": "Workspace.AsurasPath.Entities.Cursed Swordsman",
+      "name": "Cursed Swordsman",
+      "position": [
+        86.17327880859375,
+        3.9483914375305176,
+        -1076.663818359375
+      ],
+      "id": -1000008,
+      "kind": "Enemy",
+      "look": "CursedSwordsman",
+      "skin": "Template:AsuraBoss_CursedSwordsman"
+    },
+    {
+      "path": "Workspace.Sheashing123",
+      "name": "Sheashing123",
+      "position": [
+        93.00141906738281,
+        3.203173875808716,
+        -890.9979858398438
+      ],
+      "id": 3148600636,
+      "kind": "Player"
+    },
+    {
+      "path": "Workspace.AsurasPath.Entities.Corrupt Wandering Monk",
+      "name": "Corrupt Wandering Monk",
+      "position": [
+        -91.740478515625,
+        -2.807577133178711,
+        -2199.896728515625
+      ],
+      "id": -1000025,
+      "kind": "Enemy",
+      "look": "CorruptWanderingMonk",
+      "skin": "Template:AsuraBoss_CorruptWanderingMonk"
+    },
+    {
+      "path": "Workspace.AsurasPath.Entities.Venerable Baize",
+      "name": "Venerable Baize",
+      "position": [
+        0,
+        4.788632869720459,
+        -1494.999755859375
+      ],
+      "id": -1000029,
+      "kind": "Enemy",
+      "look": "VenerableBaize",
+      "skin": "Fallback:Costume (no AsuraBoss_VenerableBaize_P1 or AsuraBoss_VenerableBaize)"
+    },
+    {
+      "path": "Workspace.AsurasPath.Entities.Cursed Swordsman",
+      "name": "Cursed Swordsman",
+      "position": [
+        493.26824951171875,
+        3.730905532836914,
+        1007.6756591796875
+      ],
+      "id": -1000023,
+      "kind": "Enemy",
+      "look": "CursedSwordsman",
+      "skin": "Template:AsuraBoss_CursedSwordsman"
+    },
+    {
+      "path": "Workspace.AsurasPath.Entities.Corrupt Wandering Monk",
+      "name": "Corrupt Wandering Monk",
+      "position": [
+        0.6935210227966309,
+        3.598672866821289,
+        -1636.8514404296875
+      ],
+      "id": -1000020,
+      "kind": "Enemy",
+      "look": "CorruptWanderingMonk",
+      "skin": "Template:AsuraBoss_CorruptWanderingMonk"
+    },
+    {
+      "path": "Workspace.AsurasPath.Entities.Cursed Swordsman",
+      "name": "Cursed Swordsman",
+      "position": [
+        -150.381591796875,
+        14.372208595275879,
+        -1323.308837890625
+      ],
+      "id": -1000016,
+      "kind": "Enemy",
+      "look": "CursedSwordsman",
+      "skin": "Template:AsuraBoss_CursedSwordsman"
+    },
+    {
+      "path": "Workspace.AsurasPath.Entities.Corrupt Wandering Monk",
+      "name": "Corrupt Wandering Monk",
+      "position": [
+        383.1458435058594,
+        3.0924229621887207,
+        936.1644897460938
+      ],
+      "id": -1000024,
+      "kind": "Enemy",
+      "look": "CorruptWanderingMonk",
+      "skin": "Template:AsuraBoss_CorruptWanderingMonk"
+    },
+    {
+      "path": "Workspace.AsurasPath.Entities.The Iron Bull",
+      "name": "The Iron Bull",
+      "position": [
+        284,
+        3,
+        -955
+      ],
+      "id": -1000035,
+      "kind": "Enemy",
+      "look": "IronBull"
+    },
+    {
+      "path": "Workspace.AsurasPath.Entities.Cursed Swordsman",
+      "name": "Cursed Swordsman",
+      "position": [
+        123.20025634765625,
+        22.06666374206543,
+        -1376.7603759765625
+      ],
+      "id": -1000019,
+      "kind": "Enemy",
+      "look": "CursedSwordsman",
+      "skin": "Template:AsuraBoss_CursedSwordsman"
+    }
+  ]
+}

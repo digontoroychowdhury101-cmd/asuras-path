@@ -1,3 +1,5 @@
+**Visual audit and production plan (2026-11-06):** Documented 36 issue families across seven regions with screenshots and exact locations. Added Rodin/image prompts, code/Blender ownership and six larger-arena redesign prompts. Boss models are creator-reported constructed; integration unverified. Temporary Studio overrides restored, place unchanged. Next: C00 intake, AR00 spatial prototypes, Shen pilot, then Windows acceptance.
+
 **Grandmaster Shen (2026-11-06):** Skinned body, live cloth simulation and re-authored clips built locally; verifier green, Studio skinning unproved. Creator's review rejected gait, grip and attacks. Next: human gait, two-handed grip, cut arcs, parryable mix-ups, robe separation, phase 2 levitation.
 
 **Git line endings (2026-11-05):** `.rbxlx` files are now exempt from line-ending conversion, so place files stay byte-identical on Windows and Mac. Next: pull on computers A and C.

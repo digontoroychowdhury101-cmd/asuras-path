@@ -1,0 +1,205 @@
+[
+  {
+    "id": "w01_shrine",
+    "expected": "Sanctuary",
+    "before": {
+      "camera": "Enum.CameraType.Scriptable",
+      "region": "Sanctuary",
+      "clock": 17.399999618530273,
+      "fov": 70,
+      "position": [
+        0,
+        603.0999755859375,
+        940
+      ],
+      "quality": "Enum.QualityLevel.Level21"
+    },
+    "after": {
+      "camera": "Enum.CameraType.Scriptable",
+      "region": "Sanctuary",
+      "clock": 17.399999618530273,
+      "fov": 70,
+      "position": [
+        -3.6250639823265374e-08,
+        603.0999755859375,
+        900.45556640625
+      ],
+      "quality": "Enum.QualityLevel.Level21"
+    },
+    "evidence": "ordinary W key and normal camera from seeded start; boss bypass active; invulnerability seeded, not earned progression"
+  },
+  {
+    "id": "w02_monastery",
+    "expected": "DesecratedMonastery",
+    "before": {
+      "camera": "Enum.CameraType.Scriptable",
+      "region": "DesecratedMonastery",
+      "clock": 15,
+      "fov": 70,
+      "position": [
+        0,
+        3.1999998092651367,
+        -762
+      ],
+      "quality": "Enum.QualityLevel.Level21"
+    },
+    "after": {
+      "camera": "Enum.CameraType.Scriptable",
+      "region": "DesecratedMonastery",
+      "clock": 15,
+      "fov": 70,
+      "position": [
+        -3.7848963074793573e-08,
+        3.1999998092651367,
+        -803.2879638671875
+      ],
+      "quality": "Enum.QualityLevel.Level21"
+    },
+    "evidence": "ordinary W key and normal camera from seeded start; boss bypass active; invulnerability seeded, not earned progression"
+  },
+  {
+    "id": "w03_bamboo",
+    "expected": "BambooPass",
+    "before": {
+      "camera": "Enum.CameraType.Scriptable",
+      "region": "BambooPass",
+      "clock": 15.300000190734863,
+      "fov": 70,
+      "position": [
+        0,
+        3.406249761581421,
+        -1141
+      ],
+      "quality": "Enum.QualityLevel.Level21"
+    },
+    "after": {
+      "camera": "Enum.CameraType.Scriptable",
+      "region": "BambooPass",
+      "clock": 15.300000190734863,
+      "fov": 70,
+      "position": [
+        -3.7277857245499035e-08,
+        3.406249761581421,
+        -1181.69091796875
+      ],
+      "quality": "Enum.QualityLevel.Level21"
+    },
+    "evidence": "ordinary W key and normal camera from seeded start; boss bypass active; invulnerability seeded, not earned progression"
+  },
+  {
+    "id": "w04_ash",
+    "expected": "AshColosseum",
+    "before": {
+      "camera": "Enum.CameraType.Scriptable",
+      "region": "AshColosseum",
+      "clock": 0.14972221851348877,
+      "fov": 70,
+      "position": [
+        0,
+        3.9539639949798584,
+        -1784
+      ],
+      "quality": "Enum.QualityLevel.Level21"
+    },
+    "after": {
+      "camera": "Enum.CameraType.Scriptable",
+      "region": "AshColosseum",
+      "clock": 0.14972221851348877,
+      "fov": 70,
+      "position": [
+        -1.3778446827927837e-08,
+        4.008830547332764,
+        -1799.029296875
+      ],
+      "quality": "Enum.QualityLevel.Level21"
+    },
+    "evidence": "ordinary W key and normal camera from seeded start; boss bypass active; invulnerability seeded, not earned progression"
+  },
+  {
+    "id": "w05_crypt",
+    "expected": "SanctuaryDepths",
+    "before": {
+      "camera": "Enum.CameraType.Scriptable",
+      "region": "SanctuaryDepths",
+      "clock": 0,
+      "fov": 70,
+      "position": [
+        455,
+        17.999998092651367,
+        1055
+      ],
+      "quality": "Enum.QualityLevel.Level21"
+    },
+    "after": {
+      "camera": "Enum.CameraType.Scriptable",
+      "region": "SanctuaryDepths",
+      "clock": 0,
+      "fov": 70,
+      "position": [
+        455,
+        14.842665672302246,
+        1014.7030639648438
+      ],
+      "quality": "Enum.QualityLevel.Level21"
+    },
+    "evidence": "ordinary W key and normal camera from seeded start; boss bypass active; invulnerability seeded, not earned progression"
+  },
+  {
+    "id": "w06_pagoda",
+    "expected": "CelestialPagoda",
+    "before": {
+      "camera": "Enum.CameraType.Scriptable",
+      "region": "CelestialPagoda",
+      "clock": 17.5,
+      "fov": 70,
+      "position": [
+        0,
+        2.999999761581421,
+        -2292
+      ],
+      "quality": "Enum.QualityLevel.Level21"
+    },
+    "after": {
+      "camera": "Enum.CameraType.Scriptable",
+      "region": "CelestialPagoda",
+      "clock": 17.5,
+      "fov": 70,
+      "position": [
+        -3.6924689084116835e-08,
+        2.999999761581421,
+        -2332.25390625
+      ],
+      "quality": "Enum.QualityLevel.Level21"
+    },
+    "evidence": "ordinary W key and normal camera from seeded start; boss bypass active; invulnerability seeded, not earned progression"
+  },
+  {
+    "id": "w07_citadel",
+    "expected": "SkyCitadel",
+    "before": {
+      "camera": "Enum.CameraType.Scriptable",
+      "region": "SkyCitadel",
+      "clock": 18.399999618530273,
+      "fov": 70,
+      "position": [
+        0,
+        2.999999761581421,
+        -2545
+      ],
+      "quality": "Enum.QualityLevel.Level21"
+    },
+    "after": {
+      "camera": "Enum.CameraType.Scriptable",
+      "region": "SkyCitadel",
+      "clock": 18.399999618530273,
+      "fov": 70,
+      "position": [
+        -3.701848072523717e-08,
+        -16.200002670288086,
+        -2585.3564453125
+      ],
+      "quality": "Enum.QualityLevel.Level21"
+    },
+    "evidence": "ordinary W key and normal camera from seeded start; boss bypass active; invulnerability seeded, not earned progression"
+  }
+]

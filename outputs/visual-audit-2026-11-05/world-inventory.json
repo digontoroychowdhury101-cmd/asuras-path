@@ -1,0 +1,1936 @@
+{
+  "regions": {
+    "Sanctuary": {
+      "Bounds": {
+        "Center": {
+          "Y": 800,
+          "X": 0,
+          "Z": 650
+        },
+        "Size": {
+          "Y": 800,
+          "X": 600,
+          "Z": 920
+        }
+      },
+      "Name": "The Shrine of the Ascendant",
+      "Altars": {
+        "SanctuaryBonfire": {
+          "Radius": 9,
+          "Name": "Primal Bonfire",
+          "Region": "Sanctuary",
+          "Id": "Altar_SanctuaryBonfire",
+          "Placement": {
+            "Y": 601.2,
+            "X": 0,
+            "Yaw": 0,
+            "Z": 900
+          },
+          "Starting": true,
+          "Spawn": {
+            "Y": 603,
+            "X": 0,
+            "Yaw": 0,
+            "Z": 920
+          }
+        }
+      },
+      "Id": "Sanctuary",
+      "Greybox": {
+        "Color": [
+          120,
+          112,
+          104
+        ],
+        "Material": "Slate"
+      },
+      "Ambience": "SkyShrine",
+      "MapFolder": "Sanctuary"
+    },
+    "AshColosseum": {
+      "Bounds": {
+        "Center": {
+          "Y": 40,
+          "X": 0,
+          "Z": -1900
+        },
+        "Size": {
+          "Y": 200,
+          "X": 360,
+          "Z": 440
+        }
+      },
+      "Name": "Ash Colosseum",
+      "Altars": {
+        "ColosseumAntechamber": {
+          "Exit": {
+            "Y": 6,
+            "X": 0,
+            "Yaw": 0,
+            "Z": -1766
+          },
+          "Radius": 9,
+          "Name": "Colosseum Antechamber",
+          "Region": "AshColosseum",
+          "Id": "Altar_ColosseumAntechamber",
+          "Placement": {
+            "Y": 3,
+            "X": 0,
+            "Yaw": 0,
+            "Z": -1736
+          },
+          "Starting": false,
+          "Spawn": {
+            "Y": 6,
+            "X": 0,
+            "Yaw": 0,
+            "Z": -1744
+          }
+        }
+      },
+      "Id": "AshColosseum",
+      "Greybox": {
+        "Color": [
+          58,
+          54,
+          52
+        ],
+        "Material": "Basalt"
+      },
+      "Ambience": "EmberCrowd",
+      "MapFolder": "Map_AshColosseum"
+    },
+    "SkyCitadel": {
+      "Bounds": {
+        "Center": {
+          "Y": 40,
+          "X": 0,
+          "Z": -2760
+        },
+        "Size": {
+          "Y": 200,
+          "X": 360,
+          "Z": 440
+        }
+      },
+      "Name": "Sky Citadel",
+      "Altars": {
+        "SkyCitadel": {
+          "Exit": {
+            "Y": 3,
+            "X": -10,
+            "Yaw": 0,
+            "Z": -2712
+          },
+          "Radius": 12,
+          "Name": "Sky Citadel Incense",
+          "Region": "SkyCitadel",
+          "Id": "Altar_SkyCitadel",
+          "Placement": {
+            "Y": 0,
+            "X": -40,
+            "Yaw": 0,
+            "Z": -2690
+          },
+          "Starting": false,
+          "Spawn": {
+            "Y": 3,
+            "X": -32,
+            "Yaw": 270,
+            "Z": -2690
+          }
+        }
+      },
+      "Id": "SkyCitadel",
+      "Greybox": {
+        "Color": [
+          47,
+          48,
+          62
+        ],
+        "Material": "Slate"
+      },
+      "Ambience": "StarlessWind",
+      "MapFolder": "Map_SkyCitadel"
+    },
+    "SanctuaryDepths": {
+      "Bounds": {
+        "Center": {
+          "Y": 40,
+          "X": 520,
+          "Z": 900
+        },
+        "Size": {
+          "Y": 200,
+          "X": 360,
+          "Z": 360
+        }
+      },
+      "Name": "Sanctuary Depths",
+      "Altars": {
+        "SanctuaryDepths": {
+          "Exit": {
+            "Y": 18,
+            "X": 455,
+            "Yaw": 0,
+            "Z": 1022
+          },
+          "Radius": 12,
+          "Name": "Sanctuary Depths Incense",
+          "Region": "SanctuaryDepths",
+          "Id": "Altar_SanctuaryDepths",
+          "Placement": {
+            "Y": 15,
+            "X": 455,
+            "Yaw": 0,
+            "Z": 1046
+          },
+          "Starting": false,
+          "Spawn": {
+            "Y": 18,
+            "X": 455,
+            "Yaw": 0,
+            "Z": 1038
+          }
+        }
+      },
+      "Id": "SanctuaryDepths",
+      "Greybox": {
+        "Color": [
+          47,
+          48,
+          62
+        ],
+        "Material": "Slate"
+      },
+      "Ambience": "StarlessWind",
+      "MapFolder": "Map_SanctuaryDepths"
+    },
+    "DesecratedMonastery": {
+      "Bounds": {
+        "Center": {
+          "Y": 40,
+          "X": 0,
+          "Z": -900
+        },
+        "Size": {
+          "Y": 200,
+          "X": 900,
+          "Z": 440
+        }
+      },
+      "Name": "Desecrated Monastery",
+      "Altars": {
+        "MonasteryGate": {
+          "Exit": {
+            "Y": 3,
+            "X": 0,
+            "Yaw": 0,
+            "Z": -764
+          },
+          "Radius": 9,
+          "Name": "Monastery Gate",
+          "Region": "DesecratedMonastery",
+          "Id": "Altar_MonasteryGate",
+          "Placement": {
+            "Y": 0,
+            "X": 0,
+            "Yaw": 0,
+            "Z": -720
+          },
+          "Starting": false,
+          "Spawn": {
+            "Y": 3,
+            "X": 0,
+            "Yaw": 0,
+            "Z": -728
+          }
+        },
+        "DesecratedCloister": {
+          "Exit": {
+            "Y": 3,
+            "X": 6,
+            "Yaw": 0,
+            "Z": -1012
+          },
+          "Radius": 9,
+          "Name": "Desecrated Cloister",
+          "Region": "DesecratedMonastery",
+          "Id": "Altar_DesecratedCloister",
+          "Placement": {
+            "Y": 0,
+            "X": 60,
+            "Yaw": 0,
+            "Z": -1010
+          },
+          "Starting": false,
+          "Spawn": {
+            "Y": 3,
+            "X": 60,
+            "Yaw": 0,
+            "Z": -1018
+          }
+        }
+      },
+      "Id": "DesecratedMonastery",
+      "Greybox": {
+        "Color": [
+          74,
+          66,
+          60
+        ],
+        "Material": "Slate"
+      },
+      "Ambience": "TempleBells",
+      "MapFolder": "Map_DesecratedMonastery"
+    },
+    "CelestialPagoda": {
+      "Bounds": {
+        "Center": {
+          "Y": 40,
+          "X": 0,
+          "Z": -2330
+        },
+        "Size": {
+          "Y": 200,
+          "X": 360,
+          "Z": 420
+        }
+      },
+      "Name": "Celestial Pagoda Rafters",
+      "Altars": {
+        "CelestialPagoda": {
+          "Exit": {
+            "Y": 3,
+            "X": -10,
+            "Yaw": 0,
+            "Z": -2272
+          },
+          "Radius": 12,
+          "Name": "Celestial Pagoda Rafters Incense",
+          "Region": "CelestialPagoda",
+          "Id": "Altar_CelestialPagoda",
+          "Placement": {
+            "Y": 0,
+            "X": -46,
+            "Yaw": 0,
+            "Z": -2268
+          },
+          "Starting": false,
+          "Spawn": {
+            "Y": 3,
+            "X": -38,
+            "Yaw": 270,
+            "Z": -2268
+          }
+        }
+      },
+      "Id": "CelestialPagoda",
+      "Greybox": {
+        "Color": [
+          47,
+          48,
+          62
+        ],
+        "Material": "Slate"
+      },
+      "Ambience": "StarlessWind",
+      "MapFolder": "Map_CelestialPagoda"
+    },
+    "BambooPass": {
+      "Bounds": {
+        "Center": {
+          "Y": 40,
+          "X": 0,
+          "Z": -1400
+        },
+        "Size": {
+          "Y": 200,
+          "X": 400,
+          "Z": 560
+        }
+      },
+      "Name": "Bamboo Pass",
+      "Altars": {
+        "BellTerrace": {
+          "Exit": {
+            "Y": 23.2,
+            "X": -150,
+            "Yaw": 0,
+            "Z": -1272
+          },
+          "Radius": 9,
+          "Region": "BambooPass",
+          "Id": "Altar_BellTerrace",
+          "Placement": {
+            "Y": 20.2,
+            "X": -169,
+            "Yaw": 0,
+            "Z": -1228
+          },
+          "Name": "Bell Terrace",
+          "Mark": "AltarBell",
+          "Starting": false,
+          "Spawn": {
+            "Y": 23.2,
+            "X": -164,
+            "Yaw": 180,
+            "Z": -1235
+          }
+        },
+        "BambooShrine": {
+          "Exit": {
+            "Y": 3.2,
+            "X": -6,
+            "Yaw": 0,
+            "Z": -1352
+          },
+          "Radius": 9,
+          "Name": "Whispering Bamboo Shrine",
+          "Region": "BambooPass",
+          "Id": "Altar_BambooShrine",
+          "Placement": {
+            "Y": 0.2,
+            "X": -36,
+            "Yaw": 0,
+            "Z": -1328
+          },
+          "Starting": false,
+          "Spawn": {
+            "Y": 3.2,
+            "X": -29,
+            "Yaw": 306,
+            "Z": -1333
+          }
+        }
+      },
+      "Id": "BambooPass",
+      "Greybox": {
+        "Color": [
+          68,
+          92,
+          58
+        ],
+        "Material": "Grass"
+      },
+      "Ambience": "WindReeds",
+      "MapFolder": "Map_BambooPass"
+    }
+  },
+  "mock": true,
+  "altars": {
+    "Altar_BellTerrace": {
+      "Exit": {
+        "Y": 23.2,
+        "X": -150,
+        "Yaw": 0,
+        "Z": -1272
+      },
+      "Radius": 9,
+      "Region": "BambooPass",
+      "Id": "Altar_BellTerrace",
+      "Placement": {
+        "Y": 20.2,
+        "X": -169,
+        "Yaw": 0,
+        "Z": -1228
+      },
+      "Name": "Bell Terrace",
+      "Mark": "AltarBell",
+      "Starting": false,
+      "Spawn": {
+        "Y": 23.2,
+        "X": -164,
+        "Yaw": 180,
+        "Z": -1235
+      }
+    },
+    "Altar_MonasteryGate": {
+      "Exit": {
+        "Y": 3,
+        "X": 0,
+        "Yaw": 0,
+        "Z": -764
+      },
+      "Radius": 9,
+      "Name": "Monastery Gate",
+      "Region": "DesecratedMonastery",
+      "Id": "Altar_MonasteryGate",
+      "Placement": {
+        "Y": 0,
+        "X": 0,
+        "Yaw": 0,
+        "Z": -720
+      },
+      "Starting": false,
+      "Spawn": {
+        "Y": 3,
+        "X": 0,
+        "Yaw": 0,
+        "Z": -728
+      }
+    },
+    "Altar_SanctuaryBonfire": {
+      "Radius": 9,
+      "Name": "Primal Bonfire",
+      "Region": "Sanctuary",
+      "Id": "Altar_SanctuaryBonfire",
+      "Placement": {
+        "Y": 601.2,
+        "X": 0,
+        "Yaw": 0,
+        "Z": 900
+      },
+      "Starting": true,
+      "Spawn": {
+        "Y": 603,
+        "X": 0,
+        "Yaw": 0,
+        "Z": 920
+      }
+    },
+    "Altar_SanctuaryDepths": {
+      "Exit": {
+        "Y": 18,
+        "X": 455,
+        "Yaw": 0,
+        "Z": 1022
+      },
+      "Radius": 12,
+      "Name": "Sanctuary Depths Incense",
+      "Region": "SanctuaryDepths",
+      "Id": "Altar_SanctuaryDepths",
+      "Placement": {
+        "Y": 15,
+        "X": 455,
+        "Yaw": 0,
+        "Z": 1046
+      },
+      "Starting": false,
+      "Spawn": {
+        "Y": 18,
+        "X": 455,
+        "Yaw": 0,
+        "Z": 1038
+      }
+    },
+    "Altar_CelestialPagoda": {
+      "Exit": {
+        "Y": 3,
+        "X": -10,
+        "Yaw": 0,
+        "Z": -2272
+      },
+      "Radius": 12,
+      "Name": "Celestial Pagoda Rafters Incense",
+      "Region": "CelestialPagoda",
+      "Id": "Altar_CelestialPagoda",
+      "Placement": {
+        "Y": 0,
+        "X": -46,
+        "Yaw": 0,
+        "Z": -2268
+      },
+      "Starting": false,
+      "Spawn": {
+        "Y": 3,
+        "X": -38,
+        "Yaw": 270,
+        "Z": -2268
+      }
+    },
+    "Altar_SkyCitadel": {
+      "Exit": {
+        "Y": 3,
+        "X": -10,
+        "Yaw": 0,
+        "Z": -2712
+      },
+      "Radius": 12,
+      "Name": "Sky Citadel Incense",
+      "Region": "SkyCitadel",
+      "Id": "Altar_SkyCitadel",
+      "Placement": {
+        "Y": 0,
+        "X": -40,
+        "Yaw": 0,
+        "Z": -2690
+      },
+      "Starting": false,
+      "Spawn": {
+        "Y": 3,
+        "X": -32,
+        "Yaw": 270,
+        "Z": -2690
+      }
+    },
+    "Altar_BambooShrine": {
+      "Exit": {
+        "Y": 3.2,
+        "X": -6,
+        "Yaw": 0,
+        "Z": -1352
+      },
+      "Radius": 9,
+      "Name": "Whispering Bamboo Shrine",
+      "Region": "BambooPass",
+      "Id": "Altar_BambooShrine",
+      "Placement": {
+        "Y": 0.2,
+        "X": -36,
+        "Yaw": 0,
+        "Z": -1328
+      },
+      "Starting": false,
+      "Spawn": {
+        "Y": 3.2,
+        "X": -29,
+        "Yaw": 306,
+        "Z": -1333
+      }
+    },
+    "Altar_DesecratedCloister": {
+      "Exit": {
+        "Y": 3,
+        "X": 6,
+        "Yaw": 0,
+        "Z": -1012
+      },
+      "Radius": 9,
+      "Name": "Desecrated Cloister",
+      "Region": "DesecratedMonastery",
+      "Id": "Altar_DesecratedCloister",
+      "Placement": {
+        "Y": 0,
+        "X": 60,
+        "Yaw": 0,
+        "Z": -1010
+      },
+      "Starting": false,
+      "Spawn": {
+        "Y": 3,
+        "X": 60,
+        "Yaw": 0,
+        "Z": -1018
+      }
+    },
+    "Altar_ColosseumAntechamber": {
+      "Exit": {
+        "Y": 6,
+        "X": 0,
+        "Yaw": 0,
+        "Z": -1766
+      },
+      "Radius": 9,
+      "Name": "Colosseum Antechamber",
+      "Region": "AshColosseum",
+      "Id": "Altar_ColosseumAntechamber",
+      "Placement": {
+        "Y": 3,
+        "X": 0,
+        "Yaw": 0,
+        "Z": -1736
+      },
+      "Starting": false,
+      "Spawn": {
+        "Y": 6,
+        "X": 0,
+        "Yaw": 0,
+        "Z": -1744
+      }
+    }
+  },
+  "bosses": {
+    "GrandmasterShen": {
+      "spawn": {
+        "Y": 3,
+        "X": 0,
+        "Yaw": 180,
+        "Z": -1995
+      },
+      "arena": {
+        "Center": {
+          "Y": 20,
+          "X": 0,
+          "Z": -1960
+        },
+        "Size": {
+          "Y": 60,
+          "X": 120,
+          "Z": 130
+        }
+      },
+      "name": "Grandmaster Shen",
+      "region": "AshColosseum"
+    },
+    "VenerableBaize": {
+      "spawn": {
+        "Y": 3,
+        "X": 0,
+        "Yaw": 180,
+        "Z": -1495
+      },
+      "arena": {
+        "Center": {
+          "Y": 36,
+          "X": 0,
+          "Z": -1470
+        },
+        "Size": {
+          "Y": 100,
+          "X": 180,
+          "Z": 180
+        }
+      },
+      "name": "Venerable Baize",
+      "region": "BambooPass"
+    },
+    "SovereignWu": {
+      "spawn": {
+        "Y": 3,
+        "X": 0,
+        "Yaw": 180,
+        "Z": -2405
+      },
+      "arena": {
+        "Center": {
+          "Y": 36,
+          "X": 0,
+          "Z": -2380
+        },
+        "Size": {
+          "Y": 100,
+          "X": 180,
+          "Z": 180
+        }
+      },
+      "name": "Sovereign Wu",
+      "region": "CelestialPagoda"
+    },
+    "TwinSentinels": {
+      "spawn": {
+        "Y": 3,
+        "X": 300,
+        "Yaw": 180,
+        "Z": -955
+      },
+      "arena": {
+        "Center": {
+          "Y": 36,
+          "X": 300,
+          "Z": -930
+        },
+        "Size": {
+          "Y": 100,
+          "X": 180,
+          "Z": 180
+        }
+      },
+      "name": "General Zhao",
+      "region": "DesecratedMonastery"
+    },
+    "AzureWyrm": {
+      "spawn": {
+        "Y": 3,
+        "X": 0,
+        "Yaw": 180,
+        "Z": -2855
+      },
+      "arena": {
+        "Center": {
+          "Y": 36,
+          "X": 0,
+          "Z": -2830
+        },
+        "Size": {
+          "Y": 100,
+          "X": 180,
+          "Z": 180
+        }
+      },
+      "name": "Azure Wyrm",
+      "region": "SkyCitadel"
+    },
+    "SlumberingTitan": {
+      "spawn": {
+        "Y": 3,
+        "X": 520,
+        "Yaw": 180,
+        "Z": 855
+      },
+      "arena": {
+        "Center": {
+          "Y": 36,
+          "X": 520,
+          "Z": 880
+        },
+        "Size": {
+          "Y": 100,
+          "X": 180,
+          "Z": 180
+        }
+      },
+      "name": "The Slumbering Titan",
+      "region": "SanctuaryDepths"
+    }
+  },
+  "layouts": [
+    {
+      "zones": [
+        {
+          "Name": "the bamboo gate",
+          "Z0": -1120,
+          "Id": "BP_Gate",
+          "Z1": -1226,
+          "X0": -40,
+          "X1": 40
+        },
+        {
+          "Name": "the frosted crest",
+          "Z0": -1226,
+          "Id": "BP_Crest",
+          "Z1": -1292,
+          "X0": -40,
+          "X1": 34
+        },
+        {
+          "Name": "the whispering shrine",
+          "Z0": -1292,
+          "Id": "BP_Shrine",
+          "Z1": -1366,
+          "X0": -66,
+          "X1": 106
+        },
+        {
+          "Name": "Baize's arena",
+          "Z0": -1366,
+          "Id": "BP_Arena",
+          "Z1": -1582,
+          "X0": -108,
+          "X1": 106
+        },
+        {
+          "Name": "the ash descent",
+          "Z0": -1582,
+          "Id": "BP_South",
+          "Z1": -1680,
+          "X0": -30,
+          "X1": 30
+        },
+        {
+          "Name": "the frost ridge",
+          "Z0": -1246,
+          "Id": "BP_Ridge",
+          "Z1": -1440,
+          "X0": 34,
+          "X1": 160
+        },
+        {
+          "Name": "the foundry yard",
+          "Z0": -1162,
+          "Id": "BP_Yard",
+          "Z1": -1207,
+          "X0": -124,
+          "X1": -40
+        },
+        {
+          "Y0": 0,
+          "Name": "the casting hall",
+          "Z0": -1207,
+          "Id": "BP_Hall",
+          "Z1": -1250,
+          "X0": -124,
+          "X1": -70
+        },
+        {
+          "Name": "the terrace stair",
+          "Z0": -1205,
+          "Id": "BP_BellStair",
+          "Z1": -1262,
+          "X0": -140,
+          "X1": -124
+        },
+        {
+          "Y0": 9,
+          "Name": "the bell walk",
+          "Z0": -1257,
+          "Id": "BP_Walk",
+          "Z1": -1287,
+          "X0": -140,
+          "X1": -40
+        },
+        {
+          "Name": "the bell terrace",
+          "Z0": -1205,
+          "Id": "BP_Terrace",
+          "Z1": -1292,
+          "X0": -192,
+          "X1": -140
+        },
+        {
+          "Name": "the founders' kiln",
+          "Z0": -1292,
+          "Id": "BP_Kiln",
+          "Z1": -1345,
+          "X0": -192,
+          "X1": -140
+        }
+      ],
+      "doors": [
+        {
+          "A": "DM:Road",
+          "B": "BP_Gate",
+          "Y": 0.2,
+          "X": 0,
+          "Name": "Bamboo Gate",
+          "Z": -1120
+        },
+        {
+          "A": "BP_Gate",
+          "B": "BP_Crest",
+          "Y": 0.2,
+          "X": 0,
+          "Name": "Ridge stairs",
+          "Z": -1226,
+          "Gate": "BambooRidge"
+        },
+        {
+          "A": "BP_Gate",
+          "B": "BP_Yard",
+          "Y": 0.2,
+          "X": -40,
+          "Name": "Foundry path",
+          "Z": -1178
+        },
+        {
+          "A": "BP_Yard",
+          "B": "BP_Hall",
+          "Y": 6,
+          "X": -97,
+          "Name": "Casting hall",
+          "Z": -1207
+        },
+        {
+          "A": "BP_Hall",
+          "B": "BP_BellStair",
+          "Y": 6,
+          "X": -124,
+          "Name": "Hall's west door",
+          "Z": -1222
+        },
+        {
+          "A": "BP_BellStair",
+          "B": "BP_Walk",
+          "Y": 20,
+          "X": -132,
+          "Name": "Bell landing",
+          "Z": -1262
+        },
+        {
+          "A": "BP_Walk",
+          "B": "BP_Terrace",
+          "Y": 20.2,
+          "X": -140,
+          "Name": "Bell Terrace",
+          "Z": -1272
+        },
+        {
+          "A": "BP_Terrace",
+          "B": "BP_Kiln",
+          "Y": 20,
+          "X": -170,
+          "Name": "Kiln stair",
+          "Z": -1292
+        },
+        {
+          "A": "BP_Walk",
+          "B": "BP_Crest",
+          "Y": 12,
+          "X": -40,
+          "Name": "Bell Walk stairs",
+          "Z": -1272
+        },
+        {
+          "A": "BP_Crest",
+          "B": "BP_Shrine",
+          "Y": 0.2,
+          "X": 0,
+          "Name": "Shrine stairs",
+          "Z": -1316
+        },
+        {
+          "A": "BP_Shrine",
+          "B": "BP_Arena",
+          "Y": 0.2,
+          "X": 0,
+          "Name": "Baize's mouth",
+          "Z": -1366
+        },
+        {
+          "A": "BP_Arena",
+          "B": "BP_South",
+          "Y": 0.2,
+          "X": 0,
+          "Name": "Moon gate",
+          "Z": -1580
+        },
+        {
+          "A": "BP_South",
+          "B": "AC_Road",
+          "Y": 0.2,
+          "X": 0,
+          "Name": "Ash road",
+          "Z": -1680
+        },
+        {
+          "A": "BP_Crest",
+          "Optional": true,
+          "B": "BP_Ridge",
+          "Y": 12,
+          "X": 36,
+          "Name": "Frost stones",
+          "Z": -1268
+        },
+        {
+          "A": "BP_Ridge",
+          "B": "BP_Shrine",
+          "Y": 0.2,
+          "X": 70,
+          "Name": "Ridge drop",
+          "Z": -1292,
+          "OneWay": true
+        }
+      ],
+      "marks": {
+        "Foundry": {
+          "Y": 0.2,
+          "X": -80,
+          "Name": "Foundry yard",
+          "Z": -1178,
+          "Yaw": 0
+        },
+        "Overlook": {
+          "Y": 18.2,
+          "X": 112,
+          "Name": "Frost Ridge overlook",
+          "Z": -1410,
+          "Yaw": 270
+        },
+        "Lore_Founder": {
+          "Y": 9,
+          "X": -76,
+          "Name": "The Founders' Ledger",
+          "Z": -1244,
+          "Yaw": 0
+        },
+        "ArenaMouth": {
+          "Y": 0.2,
+          "X": 0,
+          "Name": "Baize's mouth",
+          "Z": -1362,
+          "Yaw": 0
+        },
+        "NorthJoin": {
+          "Y": 0.2,
+          "X": 0,
+          "Name": "Monastery road",
+          "Z": -1122,
+          "Yaw": 0
+        },
+        "AltarBell": {
+          "Y": 20.2,
+          "X": -169,
+          "Name": "Bell Terrace",
+          "Z": -1228,
+          "Yaw": 0
+        },
+        "Lore_Wraith": {
+          "Y": 21.2,
+          "X": 128,
+          "Name": "VI \u00b7 What Death Cannot Keep",
+          "Z": -1428,
+          "Yaw": 0
+        },
+        "Kiln": {
+          "Y": 10.2,
+          "X": -170,
+          "Name": "Founders' Kiln",
+          "Z": -1336,
+          "Yaw": 0
+        },
+        "SouthJoin": {
+          "Y": 0.2,
+          "X": 0,
+          "Name": "Ash road",
+          "Z": -1678,
+          "Yaw": 0
+        },
+        "Lore_Bamboo": {
+          "Y": 3,
+          "X": -18,
+          "Name": "V \u00b7 Jade in the Roots",
+          "Z": -1140,
+          "Yaw": 0
+        },
+        "Altar": {
+          "Y": 0.2,
+          "X": -36,
+          "Name": "Whispering Bamboo Shrine",
+          "Z": -1328,
+          "Yaw": 0
+        }
+      },
+      "region": "BambooPass"
+    },
+    {
+      "zones": [
+        {
+          "Name": "the ash road",
+          "Z0": -1680,
+          "Id": "AC_Road",
+          "Z1": -1708,
+          "X0": -30,
+          "X1": 30
+        },
+        {
+          "Name": "the antechamber",
+          "Z0": -1708,
+          "Id": "AC_Ante",
+          "Z1": -1774,
+          "X0": -40,
+          "X1": 40
+        },
+        {
+          "Name": "the hall of champions",
+          "Z0": -1774,
+          "Id": "AC_HallN",
+          "Z1": -1814,
+          "X0": -52,
+          "X1": 52
+        },
+        {
+          "Name": "the hall of champions",
+          "Z0": -1814,
+          "Id": "AC_HallS",
+          "Z1": -1877,
+          "X0": -52,
+          "X1": 52
+        },
+        {
+          "Name": "Shen's arena",
+          "Z0": -1877,
+          "Id": "AC_Arena",
+          "Z1": -2028,
+          "X0": -116,
+          "X1": 116
+        },
+        {
+          "Name": "the ashen causeway",
+          "Z0": -2028,
+          "Id": "AC_South",
+          "Z1": -2120,
+          "X0": -16,
+          "X1": 16
+        },
+        {
+          "Name": "the proving court",
+          "Z0": -1680,
+          "Id": "AC_CourtWalk",
+          "Z1": -1708,
+          "X0": 30,
+          "X1": 156
+        },
+        {
+          "Name": "the proving court",
+          "Z0": -1708,
+          "Id": "AC_Court",
+          "Z1": -1808,
+          "X0": 80,
+          "X1": 156
+        }
+      ],
+      "doors": [
+        {
+          "A": "AC_Road",
+          "B": "AC_Ante",
+          "Y": 0.2,
+          "X": 0,
+          "Name": "Antechamber steps",
+          "Z": -1708
+        },
+        {
+          "A": "AC_Ante",
+          "B": "AC_HallN",
+          "Y": 0.2,
+          "X": 0,
+          "Name": "Hall of Champions",
+          "Z": -1774
+        },
+        {
+          "A": "AC_HallN",
+          "B": "AC_HallS",
+          "Y": 0.2,
+          "X": 0,
+          "Name": "Broken wall",
+          "Z": -1814
+        },
+        {
+          "A": "AC_HallS",
+          "B": "AC_Arena",
+          "Y": 0.2,
+          "X": 0,
+          "Name": "Shen's fog gate",
+          "Z": -1877
+        },
+        {
+          "A": "AC_Arena",
+          "B": "AC_South",
+          "Y": 0.2,
+          "X": 0,
+          "Name": "Victor's gate",
+          "Z": -2028
+        },
+        {
+          "A": "AC_South",
+          "B": "CP_Stair",
+          "Y": 0.2,
+          "X": 0,
+          "Name": "Cloud stair",
+          "Z": -2120
+        },
+        {
+          "A": "AC_Road",
+          "B": "AC_CourtWalk",
+          "Y": 0.2,
+          "X": 30,
+          "Name": "Proving court",
+          "Z": -1694
+        },
+        {
+          "A": "AC_CourtWalk",
+          "B": "AC_Court",
+          "Y": 0.2,
+          "X": 118,
+          "Name": "Ring yard",
+          "Z": -1708
+        }
+      ],
+      "marks": {
+        "ArenaMouth": {
+          "Y": 0.2,
+          "X": 0,
+          "Name": "Shen's fog gate",
+          "Z": -1880,
+          "Yaw": 0
+        },
+        "NorthJoin": {
+          "Y": 0.2,
+          "X": 0,
+          "Name": "Ash road",
+          "Z": -1682,
+          "Yaw": 0
+        },
+        "SouthJoin": {
+          "Y": 0.2,
+          "X": 0,
+          "Name": "Cloud stair",
+          "Z": -2118,
+          "Yaw": 0
+        },
+        "ProvingRing": {
+          "Y": 0,
+          "X": 118,
+          "Name": "The Octagonal Ring of Ash",
+          "Z": -1770,
+          "Yaw": 0
+        },
+        "VictorGate": {
+          "Y": 0.2,
+          "X": 0,
+          "Name": "Victor's gate",
+          "Z": -2040,
+          "Yaw": 0
+        },
+        "Altar": {
+          "Y": 3,
+          "X": 0,
+          "Name": "Colosseum Antechamber",
+          "Z": -1736,
+          "Yaw": 0
+        }
+      },
+      "region": "AshColosseum"
+    },
+    {
+      "zones": [
+        {
+          "Y1": 40,
+          "Y0": 25,
+          "Name": "the descent",
+          "Z0": 1080,
+          "Id": "SD_Descent",
+          "Z1": 1046,
+          "X0": 500,
+          "X1": 544
+        },
+        {
+          "Y1": 34,
+          "Y0": 12,
+          "Name": "the descent stair",
+          "Z0": 1062,
+          "Id": "SD_DescentStair",
+          "Z1": 1050,
+          "X0": 470,
+          "X1": 500
+        },
+        {
+          "Y1": 30,
+          "Y0": 8,
+          "Name": "the incense gallery",
+          "Z0": 1078,
+          "Id": "SD_Gallery",
+          "Z1": 1020,
+          "X0": 440,
+          "X1": 470
+        },
+        {
+          "Y1": 20,
+          "Y0": -4,
+          "Name": "the gallery stair",
+          "Z0": 1020,
+          "Id": "SD_GalleryStair",
+          "Z1": 990,
+          "X0": 449,
+          "X1": 461
+        },
+        {
+          "Y1": 14,
+          "Y0": -4,
+          "Name": "the crypt nave",
+          "Z0": 1046,
+          "Id": "SD_Nave",
+          "Z1": 968,
+          "X0": 356,
+          "X1": 628
+        },
+        {
+          "Y1": 14,
+          "Y0": -14,
+          "Name": "the ossuary",
+          "Z0": 968,
+          "Id": "SD_Ossuary",
+          "Z1": 900,
+          "X0": 356,
+          "X1": 404
+        },
+        {
+          "Y1": 14,
+          "Y0": -4,
+          "Name": "the reliquary",
+          "Z0": 900,
+          "Id": "SD_Reliquary",
+          "Z1": 774,
+          "X0": 356,
+          "X1": 404
+        },
+        {
+          "Y1": 30,
+          "Y0": 14,
+          "Name": "the ossuary balcony",
+          "Z0": 968,
+          "Id": "SD_Loft",
+          "Z1": 774,
+          "X0": 376,
+          "X1": 414
+        },
+        {
+          "Y1": 14,
+          "Y0": -4,
+          "Name": "the Titan's hall",
+          "Z0": 968,
+          "Id": "SD_Arena",
+          "Z1": 774,
+          "X0": 414,
+          "X1": 626
+        }
+      ],
+      "doors": [
+        {
+          "A": "SD_Descent",
+          "B": "SD_DescentStair",
+          "Y": 30,
+          "X": 502,
+          "Name": "Descent stair",
+          "Z": 1056
+        },
+        {
+          "A": "SD_DescentStair",
+          "B": "SD_Gallery",
+          "Y": 15,
+          "X": 468,
+          "Name": "Incense gallery",
+          "Z": 1056
+        },
+        {
+          "A": "SD_Gallery",
+          "B": "SD_GalleryStair",
+          "Y": 15,
+          "X": 455,
+          "Name": "Gallery stair",
+          "Z": 1022
+        },
+        {
+          "A": "SD_GalleryStair",
+          "B": "SD_Nave",
+          "Y": 0.2,
+          "X": 455,
+          "Name": "Gallery foot",
+          "Z": 988
+        },
+        {
+          "A": "SD_Nave",
+          "B": "SD_Arena",
+          "Y": 0.2,
+          "X": 520,
+          "Name": "Titan's fog gate",
+          "Z": 970
+        },
+        {
+          "A": "SD_Nave",
+          "B": "SD_Ossuary",
+          "Y": 0.2,
+          "X": 380,
+          "Name": "Ossuary",
+          "Z": 968
+        },
+        {
+          "A": "SD_Ossuary",
+          "B": "SD_Reliquary",
+          "Y": 0.2,
+          "X": 366,
+          "Name": "Sarcophagus lids",
+          "Z": 901
+        },
+        {
+          "A": "SD_Reliquary",
+          "B": "SD_Loft",
+          "Y": 16,
+          "X": 380,
+          "Name": "Bone stair",
+          "Z": 832
+        },
+        {
+          "A": "SD_Loft",
+          "B": "SD_Arena",
+          "Y": 0.2,
+          "X": 414,
+          "Name": "Balcony drop",
+          "Z": 900,
+          "OneWay": true
+        }
+      ],
+      "marks": {
+        "ArenaMouth": {
+          "Y": 0,
+          "X": 520,
+          "Name": "Titan's fog gate",
+          "Z": 988,
+          "Yaw": 0
+        },
+        "Arrival": {
+          "Y": 30,
+          "X": 520,
+          "Name": "Descent Landing",
+          "Z": 1062,
+          "Yaw": 0
+        },
+        "PitLip": {
+          "Y": 0.2,
+          "X": 366,
+          "Name": "Flooded pit",
+          "Z": 904,
+          "Yaw": 0
+        },
+        "ReturnPortal": {
+          "Y": 30,
+          "X": 520,
+          "Name": "Return to the Shrine",
+          "Z": 1074,
+          "Yaw": 0
+        },
+        "Overlook": {
+          "Y": 16,
+          "X": 409,
+          "Name": "Ossuary balcony",
+          "Z": 900,
+          "Yaw": 270
+        },
+        "Altar": {
+          "Y": 15,
+          "X": 455,
+          "Name": "Sanctuary Depths Incense",
+          "Z": 1046,
+          "Yaw": 0
+        },
+        "Reliquary": {
+          "Y": 0.2,
+          "X": 366,
+          "Name": "Bone reliquary",
+          "Z": 812,
+          "Yaw": 0
+        }
+      },
+      "region": "SanctuaryDepths"
+    },
+    {
+      "zones": [
+        {
+          "Name": "the cloud stair",
+          "Z0": -2120,
+          "Id": "CP_Stair",
+          "Z1": -2172,
+          "X0": -8,
+          "X1": 8
+        },
+        {
+          "Y1": -16,
+          "Y0": -40,
+          "Name": "the lotus gorge",
+          "Z0": -2172,
+          "Id": "CP_Well",
+          "Z1": -2252,
+          "X0": -156,
+          "X1": 156
+        },
+        {
+          "Y1": -1,
+          "Y0": -16,
+          "Name": "the eave gallery",
+          "Z0": -2176,
+          "Id": "CP_GalleryW",
+          "Z1": -2244,
+          "X0": -116,
+          "X1": -60
+        },
+        {
+          "Y1": -1,
+          "Y0": -16,
+          "Name": "the rafter beam",
+          "Z0": -2225,
+          "Id": "CP_Beam",
+          "Z1": -2231,
+          "X0": -60,
+          "X1": -14
+        },
+        {
+          "Y1": -1,
+          "Y0": -16,
+          "Name": "the lantern rafter",
+          "Z0": -2216,
+          "Id": "CP_Rafter",
+          "Z1": -2240,
+          "X0": -14,
+          "X1": 14
+        },
+        {
+          "Y1": 4,
+          "Y0": -8,
+          "Name": "the rafter stair",
+          "Z0": -2240,
+          "Id": "CP_RafterStair",
+          "Z1": -2252,
+          "X0": -5,
+          "X1": 5
+        },
+        {
+          "Y1": -4,
+          "Y0": -27,
+          "Name": "the west stair",
+          "Z0": -2179,
+          "Id": "CP_WestStair",
+          "Z1": -2189,
+          "X0": -60,
+          "X1": -14
+        },
+        {
+          "Y1": 10,
+          "Y0": -4,
+          "Name": "the pagoda forecourt",
+          "Z0": -2252,
+          "Id": "CP_Forecourt",
+          "Z1": -2292,
+          "X0": -156,
+          "X1": 92
+        },
+        {
+          "Y1": 30,
+          "Y0": 10,
+          "Name": "the throne loft",
+          "Z0": -2238,
+          "Id": "CP_Loft",
+          "Z1": -2292,
+          "X0": -152,
+          "X1": -108
+        },
+        {
+          "Name": "Wu's hall",
+          "Z0": -2292,
+          "Id": "CP_Arena",
+          "Z1": -2470,
+          "X0": -92,
+          "X1": 92
+        },
+        {
+          "Name": "the dawn terrace",
+          "Z0": -2470,
+          "Id": "CP_Dawn",
+          "Z1": -2540,
+          "X0": -30,
+          "X1": 30
+        }
+      ],
+      "doors": [
+        {
+          "A": "CP_Stair",
+          "B": "CP_Well",
+          "Y": -26,
+          "X": 0,
+          "Name": "Lotus gorge",
+          "Z": -2172
+        },
+        {
+          "A": "CP_Well",
+          "B": "CP_WestStair",
+          "Y": -26,
+          "X": -12,
+          "Name": "West stair",
+          "Z": -2184
+        },
+        {
+          "A": "CP_WestStair",
+          "B": "CP_GalleryW",
+          "Y": -6,
+          "X": -62,
+          "Name": "Stair head",
+          "Z": -2184
+        },
+        {
+          "A": "CP_GalleryW",
+          "B": "CP_Beam",
+          "Y": -6,
+          "X": -61,
+          "Name": "Rafter beam",
+          "Z": -2228
+        },
+        {
+          "A": "CP_Beam",
+          "B": "CP_Rafter",
+          "Y": -6,
+          "X": -14,
+          "Name": "Lantern rafter",
+          "Z": -2228
+        },
+        {
+          "A": "CP_Rafter",
+          "B": "CP_RafterStair",
+          "Y": -6,
+          "X": 0,
+          "Name": "Rafter stair",
+          "Z": -2239
+        },
+        {
+          "A": "CP_RafterStair",
+          "B": "CP_Forecourt",
+          "Y": 0,
+          "X": 0,
+          "Name": "Forecourt",
+          "Z": -2253
+        },
+        {
+          "A": "CP_Forecourt",
+          "B": "CP_Arena",
+          "Y": 0,
+          "X": 0,
+          "Name": "Wu's fog gate",
+          "Z": -2292
+        },
+        {
+          "A": "CP_Arena",
+          "B": "CP_Dawn",
+          "Y": 0,
+          "X": 0,
+          "Name": "Dawn gate",
+          "Z": -2470
+        },
+        {
+          "A": "CP_Dawn",
+          "B": "SC_Bridge",
+          "Y": 0,
+          "X": 0,
+          "Name": "Summit bridge",
+          "Z": -2540
+        },
+        {
+          "A": "CP_GalleryW",
+          "Optional": true,
+          "B": "CP_Loft",
+          "Y": 3,
+          "X": -112,
+          "Name": "Rafter ends",
+          "Z": -2246
+        },
+        {
+          "A": "CP_Loft",
+          "B": "CP_Forecourt",
+          "Y": 0,
+          "X": -130,
+          "Name": "Loft drop",
+          "Z": -2270,
+          "OneWay": true
+        },
+        {
+          "A": "CP_GalleryW",
+          "B": "CP_Well",
+          "Y": -26,
+          "X": -88,
+          "Name": "Gallery drop",
+          "Z": -2210,
+          "OneWay": true
+        }
+      ],
+      "marks": {
+        "ArenaMouth": {
+          "Y": 0,
+          "X": 0,
+          "Name": "Wu's fog gate",
+          "Z": -2272,
+          "Yaw": 0
+        },
+        "SouthJoin": {
+          "Y": 0,
+          "X": 0,
+          "Name": "Summit bridge",
+          "Z": -2538,
+          "Yaw": 0
+        },
+        "NorthJoin": {
+          "Y": 0.2,
+          "X": 0,
+          "Name": "Cloud stair",
+          "Z": -2122,
+          "Yaw": 0
+        },
+        "Gorge": {
+          "Y": -26,
+          "X": 0,
+          "Name": "Lotus gorge",
+          "Z": -2180,
+          "Yaw": 0
+        },
+        "Lore_Pagoda": {
+          "Y": 17,
+          "X": -132,
+          "Name": "VII \u00b7 The Empty Throne",
+          "Z": -2262,
+          "Yaw": 0
+        },
+        "Hub": {
+          "Y": -6,
+          "X": 0,
+          "Name": "Lantern rafter",
+          "Z": -2228,
+          "Yaw": 0
+        },
+        "Lore_Dawn": {
+          "Y": 3,
+          "X": -20,
+          "Name": "VIII \u00b7 The Unwritten Dawn",
+          "Z": -2500,
+          "Yaw": 0
+        },
+        "Altar": {
+          "Y": 0,
+          "X": -46,
+          "Name": "Celestial Pagoda Rafters Incense",
+          "Z": -2268,
+          "Yaw": 0
+        }
+      },
+      "region": "CelestialPagoda"
+    },
+    {
+      "zones": [
+        {
+          "Name": "the cloud bridge",
+          "Z0": -2540,
+          "Id": "SC_Bridge",
+          "Z1": -2620,
+          "X0": -30,
+          "X1": 30
+        },
+        {
+          "Name": "heaven's stair",
+          "Z0": -2620,
+          "Id": "SC_Stair",
+          "Z1": -2670,
+          "X0": -22,
+          "X1": 22
+        },
+        {
+          "Name": "the last bastion",
+          "Z0": -2670,
+          "Id": "SC_Bastion",
+          "Z1": -2738,
+          "X0": -74,
+          "X1": 74
+        },
+        {
+          "Name": "the summit",
+          "Z0": -2738,
+          "Id": "SC_Arena",
+          "Z1": -2928,
+          "X0": -98,
+          "X1": 98
+        }
+      ],
+      "doors": [
+        {
+          "A": "SC_Bridge",
+          "B": "SC_Stair",
+          "Y": -20,
+          "X": 0,
+          "Name": "Heaven's stair",
+          "Z": -2620
+        },
+        {
+          "A": "SC_Stair",
+          "B": "SC_Bastion",
+          "Y": 0,
+          "X": 0,
+          "Name": "Last bastion",
+          "Z": -2670
+        },
+        {
+          "A": "SC_Bastion",
+          "B": "SC_Arena",
+          "Y": 0,
+          "X": 0,
+          "Name": "Wyrm's fog gate",
+          "Z": -2738
+        }
+      ],
+      "marks": {
+        "ArenaMouth": {
+          "Y": 0,
+          "X": 0,
+          "Name": "Wyrm's fog gate",
+          "Z": -2722,
+          "Yaw": 0
+        },
+        "ReturnPortal": {
+          "Y": 0,
+          "X": 44,
+          "Name": "Return to the Shrine",
+          "Z": -2690,
+          "Yaw": 90
+        },
+        "Bridge": {
+          "Y": -20,
+          "X": 0,
+          "Name": "Cloud bridge",
+          "Z": -2604,
+          "Yaw": 0
+        },
+        "Altar": {
+          "Y": 0,
+          "X": -40,
+          "Name": "Sky Citadel Incense",
+          "Z": -2690,
+          "Yaw": 0
+        },
+        "NorthJoin": {
+          "Y": 0,
+          "X": 0,
+          "Name": "Summit bridge",
+          "Z": -2542,
+          "Yaw": 0
+        }
+      },
+      "region": "SkyCitadel"
+    }
+  ],
+  "monastery": [
+    {
+      "Name": "the gate landing",
+      "Z0": -690,
+      "Id": "Landing",
+      "Z1": -752,
+      "X0": -26,
+      "X1": 26
+    },
+    {
+      "Name": "the courtyard",
+      "Z0": -752,
+      "Id": "Courtyard",
+      "Z1": -858,
+      "X0": -82,
+      "X1": 82
+    },
+    {
+      "Name": "the prayer halls",
+      "Z0": -858,
+      "Id": "Halls",
+      "Z1": -936,
+      "X0": -102,
+      "X1": 118
+    },
+    {
+      "Name": "the ravine bridge",
+      "Z0": -930,
+      "Id": "Bridge",
+      "Z1": -990,
+      "X0": -12,
+      "X1": 12
+    },
+    {
+      "Name": "the south road",
+      "Z0": -988,
+      "Id": "Road",
+      "Z1": -1124,
+      "X0": -14,
+      "X1": 14
+    },
+    {
+      "Name": "the cloister",
+      "Z0": -990,
+      "Id": "Cloister",
+      "Z1": -1114,
+      "X0": 14,
+      "X1": 128
+    },
+    {
+      "Name": "the grave field",
+      "Z0": -990,
+      "Id": "Graves",
+      "Z1": -1112,
+      "X0": -132,
+      "X1": -14
+    },
+    {
+      "Name": "the waterfall path",
+      "Z0": -752,
+      "Id": "WestReach",
+      "Z1": -936,
+      "X0": -180,
+      "X1": -82
+    },
+    {
+      "Name": "the ridge pass",
+      "Z0": -786,
+      "Id": "EastPass",
+      "Z1": -1034,
+      "X0": 82,
+      "X1": 404
+    }
+  ]
+}
