@@ -1,3 +1,5 @@
+**Git line endings (2026-11-05):** `.rbxlx` files are now exempt from line-ending conversion, so place files stay byte-identical on Windows and Mac. Next: pull on computers A and C.
+
 **Foundry kit (2026-11-05):** Six original meshes in the wing; cache, dialogue, foe plate and death screen fixes verified single-client. Details: `outputs/foundry-kit-2026-11-05/RESULTS.md`. Next: human fight at the Kiln, Windows and multiplayer gates.
 
 **Coding workflow (2026-11-05):** Added AGENTS.md, ro-engineer skill and pinned toolchain. CI change saved as `docs/ci-full-verifier.patch`: pushing workflow files needs a token with `workflow` scope. Full local verifier green on 2eb5d6e.
