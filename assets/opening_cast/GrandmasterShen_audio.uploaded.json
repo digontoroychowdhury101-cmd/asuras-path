@@ -1,0 +1,71 @@
+{
+  "importer": "Roblox Studio Import Queue, Creator: Me",
+  "fee": 0,
+  "source": "tools/assets/build_shen_audio.py",
+  "audio": {
+    "ShenAirTear": {
+      "id": "rbxassetid://99024352933650",
+      "seconds": 1.15
+    },
+    "ShenBeadClick": {
+      "id": "rbxassetid://79740303875604",
+      "seconds": 0.12
+    },
+    "ShenBeadLaunch": {
+      "id": "rbxassetid://137249132163870",
+      "seconds": 0.45
+    },
+    "ShenBowedMetal": {
+      "id": "rbxassetid://85328741462094",
+      "seconds": 2.3
+    },
+    "ShenBreathIntake": {
+      "id": "rbxassetid://127062991110015",
+      "seconds": 0.8
+    },
+    "ShenBronzeContact": {
+      "id": "rbxassetid://86716304278496",
+      "seconds": 0.85
+    },
+    "ShenClothRustle": {
+      "id": "rbxassetid://72713305812421",
+      "seconds": 0.5
+    },
+    "ShenFalter": {
+      "id": "rbxassetid://138781759573903",
+      "seconds": 0.6
+    },
+    "ShenGrowlExhale": {
+      "id": "rbxassetid://84565434576697",
+      "seconds": 0.75
+    },
+    "ShenJadeChime": {
+      "id": "rbxassetid://131113586075603",
+      "seconds": 1.4
+    },
+    "ShenLandImpact": {
+      "id": "rbxassetid://88151905530507",
+      "seconds": 1.8
+    },
+    "ShenLowSweep": {
+      "id": "rbxassetid://95100296507983",
+      "seconds": 0.55
+    },
+    "ShenRoar": {
+      "id": "rbxassetid://117956831176106",
+      "seconds": 2.3
+    },
+    "ShenScrape": {
+      "id": "rbxassetid://72889003724215",
+      "seconds": 0.85
+    },
+    "ShenSteelAir": {
+      "id": "rbxassetid://112456288497359",
+      "seconds": 0.34
+    },
+    "ShenTensionRise": {
+      "id": "rbxassetid://101196247814014",
+      "seconds": 1.05
+    }
+  }
+}

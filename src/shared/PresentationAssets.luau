@@ -14,6 +14,11 @@ Assets.Audio = {
 	-- Signature-spell score (tools/assets/build_skill_audio.py, uploaded 2026-10-24); SkillAudio pitches owned stand-ins if a slot is blank.
 	NovaVoid = "rbxassetid://129359188549606", NovaRing = "rbxassetid://134564910653256", NovaSwoop = "rbxassetid://110060527562569", NovaPlanet = "rbxassetid://70380265927325", NovaCharge = "rbxassetid://112033209229095", NovaBlast = "rbxassetid://133807813064998", NovaInk = "rbxassetid://131991190965773", NovaColumn = "rbxassetid://107313082560233", NovaWhite = "rbxassetid://96092388966263",
 	SunTension = "rbxassetid://100202591727169", SunBoom = "rbxassetid://75096821018311", SunEmber = "rbxassetid://86447083540632", SunThorn = "rbxassetid://81636168021067", SunCharge = "rbxassetid://105215829186624", SunBlast = "rbxassetid://136996507247009", SunEyes = "rbxassetid://116302876643156", SunGauntlet = "rbxassetid://109867440300434", SunPulse = "rbxassetid://103546737552644",
+	-- Grandmaster Shen's original layers (tools/assets/build_shen_audio.py, uploaded 2026-11-06; assets/opening_cast/GrandmasterShen_audio.uploaded.json).
+	ShenAirTear = "rbxassetid://99024352933650", ShenBeadClick = "rbxassetid://79740303875604", ShenBeadLaunch = "rbxassetid://137249132163870", ShenBowedMetal = "rbxassetid://85328741462094",
+	ShenBreathIntake = "rbxassetid://127062991110015", ShenBronzeContact = "rbxassetid://86716304278496", ShenClothRustle = "rbxassetid://72713305812421", ShenFalter = "rbxassetid://138781759573903",
+	ShenGrowlExhale = "rbxassetid://84565434576697", ShenJadeChime = "rbxassetid://131113586075603", ShenLandImpact = "rbxassetid://88151905530507", ShenLowSweep = "rbxassetid://95100296507983",
+	ShenRoar = "rbxassetid://117956831176106", ShenScrape = "rbxassetid://72889003724215", ShenSteelAir = "rbxassetid://112456288497359", ShenTensionRise = "rbxassetid://101196247814014",
 }
 Assets.Textures = {
 	-- CC0 Effekseer samples; uploaded and typed-preloaded 6/6 on 2026-10-26 (assets/GITHUB_UPLOADED.json).
