@@ -66,4 +66,58 @@ function Art.Panel(parent: Instance, frame: CFrame, size: Vector3, name: string,
 	return model
 end
 
+-- Stone sills and piers divide the arena boundary into bays. The existing wall owns
+-- collision and camera queries. The plank material tiles along the reused bevelled mesh.
+function Art.Palisade(parent: Instance, wall: BasePart): Model?
+	local kit = Storage:FindFirstChild("AsuraLobbyKit")
+	local plaque = kit and kit:FindFirstChild("Gate_Plaque")
+	local rim = kit and kit:FindFirstChild("Pool_Rim")
+	local post = kit and kit:FindFirstChild("Rail_Post")
+	local timber = plaque and plaque:FindFirstChild("Gate_Plaque__Timber")
+	local sill = rim and rim:FindFirstChild("Pool_Rim__Stone")
+	local pier = post and post:FindFirstChild("Rail_Post__Stone")
+	if not timber or not timber:IsA("MeshPart") or not sill or not sill:IsA("MeshPart")
+		or not pier or not pier:IsA("MeshPart") then return nil end
+
+	local model = Instance.new("Model")
+	model.Name = "StoneAndCedarPalisade"
+	local frame = wall.CFrame * CFrame.Angles(0, math.pi / 2, 0)
+	model.WorldPivot = frame
+	local function piece(source: MeshPart, name: string, size: Vector3, offset: Vector3, tone: Color3?)
+		local p = source:Clone()
+		p.Name, p.Size, p.CFrame = name, size, frame * CFrame.new(offset)
+		p.Anchored, p.CanCollide, p.CanQuery, p.CanTouch = true, false, false, false
+		if tone then
+			local surface = p:FindFirstChildOfClass("SurfaceAppearance")
+			if surface then surface:Destroy() end
+			p.TextureID = ""
+			p.Material, p.MaterialVariant, p.Color = Enum.Material.WoodPlanks, "", tone
+		end
+		p:SetAttribute("AsuraDecorative", true)
+		p.Parent = model
+	end
+
+	local bays = math.ceil(wall.Size.Z / 12)
+	local width = wall.Size.Z / bays
+	local halfHeight, depth = wall.Size.Y / 2, wall.Size.X
+	for i = 1, bays do
+		local x = -wall.Size.Z / 2 + width * (i - 0.5)
+		local upper = if i % 3 == 0 then Color3.fromRGB(124, 102, 75) else Color3.fromRGB(113, 93, 68)
+		piece(sill, "StoneSill", Vector3.new(width, 1.35, depth), Vector3.new(x, 0.63 - halfHeight, 0))
+		piece(timber, "LowerCedar", Vector3.new(width - 0.03, 2.64, depth * 0.52),
+			Vector3.new(x, 2.57 - halfHeight, 0), Color3.fromRGB(101, 84, 63))
+		piece(timber, "UpperCedar", Vector3.new(width - 0.03, 2.74, depth * 0.48),
+			Vector3.new(x, 5.22 - halfHeight, 0), upper)
+		piece(timber, "CopingRail", Vector3.new(width, 0.48, depth * 0.88),
+			Vector3.new(x, 6.73 - halfHeight, 0), Color3.fromRGB(87, 71, 52))
+	end
+	local endInset = depth * 0.45
+	for i = 0, bays do
+		local x = math.clamp(-wall.Size.Z / 2 + width * i, -wall.Size.Z / 2 + endInset, wall.Size.Z / 2 - endInset)
+		piece(pier, "StonePier", Vector3.new(depth * 0.9, wall.Size.Y, depth), Vector3.new(x, 0, 0))
+	end
+	model.Parent = parent
+	return model
+end
+
 return table.freeze(Art)

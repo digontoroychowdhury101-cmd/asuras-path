@@ -1,0 +1,36 @@
+{
+  "kind": "Canonical local single-client arena and shrine scene audit",
+  "digest": "scripts 281 bytes 2243876 digest 1802037792 | AsuraAssets children 22 | place AsurasPath.rbxlx",
+  "meshes": {
+    "rbxassetid://95493185106639": {
+      "name": "Rail_Post__Stone",
+      "triangles": 240
+    },
+    "rbxassetid://134797493263468": {
+      "name": "Gate_Plaque__Timber",
+      "triangles": 44
+    },
+    "rbxassetid://92067625257954": {
+      "name": "Pool_Rim__Stone",
+      "triangles": 36
+    }
+  },
+  "ownedPlayStopped": true,
+  "runtime": {
+    "studioVersion": "0.746.0.7461264",
+    "wallModels": 5,
+    "northMouthClear": true,
+    "westRayX": -103.19999694824219,
+    "shrineLitterPatches": 20,
+    "shrineFerns": 14,
+    "southGateClear": true,
+    "wallColliders": 5,
+    "countsByMesh": {
+      "rbxassetid://95493185106639": 55,
+      "rbxassetid://134797493263468": 150,
+      "rbxassetid://92067625257954": 50
+    }
+  },
+  "wallMeshParts": 255,
+  "wallTriangles": 21600
+}

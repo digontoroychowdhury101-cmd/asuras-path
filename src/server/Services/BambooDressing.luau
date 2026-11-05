@@ -12,6 +12,7 @@ local Decor = require(script.Parent:WaitForChild("RegionDecor") :: ModuleScript)
 local Ground = require(script.Parent:WaitForChild("CampaignTerrain") :: ModuleScript)
 local Ecology = require(script.Parent:WaitForChild("BambooEcology") :: ModuleScript)
 local Foundry = require(script.Parent:WaitForChild("BambooFoundry") :: ModuleScript)
+local GateArt = require(script.Parent:WaitForChild("BambooGateArt") :: ModuleScript)
 local World = require(game:GetService("ReplicatedStorage"):WaitForChild("AsurasPath").Shared.WorldDefinitions)
 
 local Dressing = {}
@@ -233,6 +234,9 @@ function Dressing.Build(map: Instance, layout: any, rng: Random)
 	end
 	Ecology.South(map, layout, Random.new(291034))
 	-- Baize's palisade: frost-rimed caps and torn prayer flags along its top.
+	Decor.dressBoxes(map, { Palisade = function(_foot: CFrame, box: BasePart): boolean
+		return GateArt.Palisade(set, box) ~= nil
+	end })
 	for z = -1386, -1556, -34 do
 		Decor.banner(set, CFrame.new(-104, 9.5, z) * CFrame.Angles(0, math.rad(90), 0), 5, rgb(214, 204, 176))
 	end

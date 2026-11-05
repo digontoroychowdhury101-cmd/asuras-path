@@ -1,0 +1,487 @@
+{
+  "kind": "seeded static observer; avatar parked at disclosed stand; original scene, combat and HUD",
+  "stage": "after",
+  "views": [
+    {
+      "name": "arena_entry",
+      "eye": [
+        1.8,
+        6.5,
+        -1374
+      ],
+      "target": [
+        0,
+        6,
+        -1460
+      ],
+      "stand": [
+        0.0,
+        3.2,
+        -1128.0
+      ],
+      "authored_stand": [
+        0,
+        3.2,
+        -1385
+      ],
+      "files": [
+        "after_arena_entry.jpg"
+      ],
+      "settle": 5.0,
+      "conditions": {
+        "maxFramerate": "unavailable",
+        "wind": "6, 0, 2",
+        "place": "AsurasPath.rbxlx",
+        "foliageRegistered": 699,
+        "foliageActive": 30,
+        "tier": "Detailed",
+        "terrainDecoration": "true",
+        "lighting": {
+          "density": 0.3100000023841858,
+          "ambient": "0.317647, 0.341176, 0.313726",
+          "outdoor": "0.47451, 0.501961, 0.454902",
+          "clock": 15.300000190734863,
+          "haze": 1.5499999523162842,
+          "exposure": 0.020000003278255463
+        },
+        "quality": "Automatic",
+        "controlsVisible": false,
+        "studioVersion": "0.746.0.7461264",
+        "touch": false,
+        "editorQuality": "Automatic",
+        "foliageShadows": 8,
+        "autoFRMLevel": 1,
+        "region": "BambooPass",
+        "hud": {
+          "JadeDialogue": false,
+          "AsuraColosseum": true,
+          "BubbleChat": true,
+          "AsuraTouchControls": false,
+          "ProximityPrompts": true,
+          "Chat": true,
+          "Freecam": true,
+          "AsuraVignette": true,
+          "SpectatorWagers": false,
+          "AsuraHUD": true
+        },
+        "camera": "1.79999995, 6.5, -1374, 0.999781132, -0.000121632067, 0.0209252965, 0, 0.999983251, 0.00581258256, -0.0209256504, -0.00581131037, 0.999764204",
+        "health": 100,
+        "fov": 70,
+        "viewport": [
+          1271,
+          685
+        ],
+        "characterPosition": [
+          0,
+          3.406249761581421,
+          -1128
+        ],
+        "frmEnabled": true,
+        "editQuality": "Automatic"
+      },
+      "cost": null
+    },
+    {
+      "name": "arena_west",
+      "eye": [
+        -88,
+        6.5,
+        -1444
+      ],
+      "target": [
+        -104,
+        4.8,
+        -1462
+      ],
+      "stand": [
+        0.0,
+        3.2,
+        -1128.0
+      ],
+      "authored_stand": [
+        -86,
+        3.2,
+        -1442
+      ],
+      "files": [
+        "after_arena_west.jpg"
+      ],
+      "settle": 5.0,
+      "conditions": {
+        "maxFramerate": "unavailable",
+        "wind": "6, 0, 2",
+        "place": "AsurasPath.rbxlx",
+        "foliageRegistered": 699,
+        "foliageActive": 88,
+        "tier": "Detailed",
+        "terrainDecoration": "true",
+        "lighting": {
+          "density": 0.3100000023841858,
+          "ambient": "0.317647, 0.341176, 0.313726",
+          "outdoor": "0.47451, 0.501961, 0.454902",
+          "clock": 15.300000190734863,
+          "haze": 1.5499999523162842,
+          "exposure": 0.020000003278255463
+        },
+        "quality": "Automatic",
+        "controlsVisible": false,
+        "studioVersion": "0.746.0.7461264",
+        "touch": false,
+        "editorQuality": "Automatic",
+        "foliageShadows": 20,
+        "autoFRMLevel": 1,
+        "region": "BambooPass",
+        "hud": {
+          "JadeDialogue": false,
+          "AsuraColosseum": true,
+          "BubbleChat": true,
+          "AsuraTouchControls": false,
+          "ProximityPrompts": true,
+          "Chat": true,
+          "Freecam": true,
+          "AsuraVignette": true,
+          "SpectatorWagers": false,
+          "AsuraHUD": true
+        },
+        "camera": "-88, 6.5, -1444, 0.747409344, -0.0467801467, 0.662714779, 0, 0.997517824, 0.0704134405, -0.664363861, -0.0526276641, 0.745554149",
+        "health": 100,
+        "fov": 70,
+        "viewport": [
+          1271,
+          685
+        ],
+        "characterPosition": [
+          0,
+          3.406249761581421,
+          -1128
+        ],
+        "frmEnabled": true,
+        "editQuality": "Automatic"
+      },
+      "cost": null
+    },
+    {
+      "name": "arena_reverse",
+      "eye": [
+        1.8,
+        6.5,
+        -1400
+      ],
+      "target": [
+        0,
+        6,
+        -1366
+      ],
+      "stand": [
+        0.0,
+        3.2,
+        -1128.0
+      ],
+      "authored_stand": [
+        0,
+        3.2,
+        -1400
+      ],
+      "files": [
+        "after_arena_reverse.jpg"
+      ],
+      "settle": 5.0,
+      "conditions": {
+        "maxFramerate": "unavailable",
+        "wind": "6, 0, 2",
+        "place": "AsurasPath.rbxlx",
+        "foliageRegistered": 699,
+        "foliageActive": 30,
+        "tier": "Detailed",
+        "terrainDecoration": "true",
+        "lighting": {
+          "density": 0.3100000023841858,
+          "ambient": "0.317647, 0.341176, 0.313726",
+          "outdoor": "0.47451, 0.501961, 0.454902",
+          "clock": 15.300000190734863,
+          "haze": 1.5499999523162842,
+          "exposure": 0.020000003278255463
+        },
+        "quality": "Automatic",
+        "controlsVisible": false,
+        "studioVersion": "0.746.0.7461264",
+        "touch": false,
+        "editorQuality": "Automatic",
+        "foliageShadows": 4,
+        "autoFRMLevel": 1,
+        "region": "BambooPass",
+        "hud": {
+          "JadeDialogue": false,
+          "AsuraColosseum": true,
+          "BubbleChat": true,
+          "AsuraTouchControls": false,
+          "ProximityPrompts": true,
+          "Chat": true,
+          "Freecam": true,
+          "AsuraVignette": true,
+          "SpectatorWagers": false,
+          "AsuraHUD": true
+        },
+        "camera": "1.79999995, 6.5, -1400, -0.998601615, -0.000776287052, 0.0528614409, 0, 0.999892235, 0.0146837337, -0.0528671443, 0.0146631999, -0.99849391",
+        "health": 100,
+        "fov": 70,
+        "viewport": [
+          1271,
+          685
+        ],
+        "characterPosition": [
+          0,
+          3.406249761581421,
+          -1128
+        ],
+        "frmEnabled": true,
+        "editQuality": "Automatic"
+      },
+      "cost": null
+    },
+    {
+      "name": "arena_south",
+      "eye": [
+        1.8,
+        6.5,
+        -1550
+      ],
+      "target": [
+        0,
+        12,
+        -1597
+      ],
+      "stand": [
+        0.0,
+        3.2,
+        -1128.0
+      ],
+      "authored_stand": [
+        0,
+        3.2,
+        -1561
+      ],
+      "files": [
+        "after_arena_south.jpg"
+      ],
+      "settle": 5.0,
+      "conditions": {
+        "maxFramerate": "unavailable",
+        "wind": "6, 0, 2",
+        "place": "AsurasPath.rbxlx",
+        "foliageRegistered": 699,
+        "foliageActive": 99,
+        "tier": "Detailed",
+        "terrainDecoration": "true",
+        "lighting": {
+          "density": 0.3100000023841858,
+          "ambient": "0.317647, 0.341176, 0.313726",
+          "outdoor": "0.47451, 0.501961, 0.454902",
+          "clock": 15.300000190734863,
+          "haze": 1.5499999523162842,
+          "exposure": 0.020000003278255463
+        },
+        "quality": "Automatic",
+        "controlsVisible": false,
+        "studioVersion": "0.746.0.7461264",
+        "touch": false,
+        "editorQuality": "Automatic",
+        "foliageShadows": 16,
+        "autoFRMLevel": 1,
+        "region": "BambooPass",
+        "hud": {
+          "JadeDialogue": false,
+          "AsuraColosseum": true,
+          "BubbleChat": true,
+          "AsuraTouchControls": false,
+          "ProximityPrompts": true,
+          "Chat": true,
+          "Freecam": true,
+          "AsuraVignette": true,
+          "SpectatorWagers": false,
+          "AsuraHUD": true
+        },
+        "camera": "1.79999995, 6.5, -1550, 0.999267459, 0.00444481615, 0.0380108207, 0, 0.993232369, -0.116144173, -0.0382698178, 0.116059095, 0.992504776",
+        "health": 100,
+        "fov": 70,
+        "viewport": [
+          1271,
+          685
+        ],
+        "characterPosition": [
+          0,
+          3.406249761581421,
+          -1128
+        ],
+        "frmEnabled": true,
+        "editQuality": "Automatic"
+      },
+      "cost": null
+    },
+    {
+      "name": "shrine",
+      "eye": [
+        -25,
+        6.5,
+        -1307
+      ],
+      "target": [
+        -36,
+        4,
+        -1345
+      ],
+      "stand": [
+        0.0,
+        3.2,
+        -1128.0
+      ],
+      "authored_stand": [
+        -29,
+        3.4,
+        -1318
+      ],
+      "files": [
+        "after_shrine.jpg"
+      ],
+      "settle": 5.0,
+      "conditions": {
+        "maxFramerate": "unavailable",
+        "wind": "6, 0, 2",
+        "place": "AsurasPath.rbxlx",
+        "foliageRegistered": 699,
+        "foliageActive": 97,
+        "tier": "Detailed",
+        "terrainDecoration": "true",
+        "lighting": {
+          "density": 0.3100000023841858,
+          "ambient": "0.317647, 0.341176, 0.313726",
+          "outdoor": "0.47451, 0.501961, 0.454902",
+          "clock": 15.300000190734863,
+          "haze": 1.5499999523162842,
+          "exposure": 0.020000003278255463
+        },
+        "quality": "Automatic",
+        "controlsVisible": false,
+        "studioVersion": "0.746.0.7461264",
+        "touch": false,
+        "editorQuality": "Automatic",
+        "foliageShadows": 19,
+        "autoFRMLevel": 1,
+        "region": "BambooPass",
+        "hud": {
+          "JadeDialogue": false,
+          "AsuraColosseum": true,
+          "BubbleChat": true,
+          "AsuraTouchControls": false,
+          "ProximityPrompts": true,
+          "Chat": true,
+          "Freecam": true,
+          "AsuraVignette": true,
+          "SpectatorWagers": false,
+          "AsuraHUD": true
+        },
+        "camera": "-25, 6.5, -1307, 0.960564315, -0.0175369028, 0.277504504, 0, 0.998009264, 0.0630692095, -0.278058082, -0.0605820306, 0.95865196",
+        "health": 100,
+        "fov": 70,
+        "viewport": [
+          1271,
+          685
+        ],
+        "characterPosition": [
+          0,
+          3.406249761581421,
+          -1128
+        ],
+        "frmEnabled": true,
+        "editQuality": "Automatic"
+      },
+      "cost": null
+    },
+    {
+      "name": "shrine_floor",
+      "eye": [
+        -51,
+        6.5,
+        -1311
+      ],
+      "target": [
+        -58,
+        2.1,
+        -1337
+      ],
+      "stand": [
+        0.0,
+        3.2,
+        -1128.0
+      ],
+      "authored_stand": [
+        -51,
+        3.2,
+        -1310
+      ],
+      "files": [
+        "after_shrine_floor.jpg"
+      ],
+      "settle": 5.0,
+      "conditions": {
+        "maxFramerate": "unavailable",
+        "wind": "6, 0, 2",
+        "place": "AsurasPath.rbxlx",
+        "foliageRegistered": 699,
+        "foliageActive": 79,
+        "tier": "Detailed",
+        "terrainDecoration": "true",
+        "lighting": {
+          "density": 0.3100000023841858,
+          "ambient": "0.317647, 0.341176, 0.313726",
+          "outdoor": "0.47451, 0.501961, 0.454902",
+          "clock": 15.300000190734863,
+          "haze": 1.5499999523162842,
+          "exposure": 0.020000003278255463
+        },
+        "quality": "Automatic",
+        "controlsVisible": false,
+        "studioVersion": "0.746.0.7461264",
+        "touch": false,
+        "editorQuality": "Automatic",
+        "foliageShadows": 21,
+        "autoFRMLevel": 1,
+        "region": "BambooPass",
+        "hud": {
+          "JadeDialogue": false,
+          "AsuraColosseum": true,
+          "BubbleChat": true,
+          "AsuraTouchControls": false,
+          "ProximityPrompts": true,
+          "Chat": true,
+          "Freecam": true,
+          "AsuraVignette": true,
+          "SpectatorWagers": false,
+          "AsuraHUD": true
+        },
+        "camera": "-51, 6.5, -1311, 0.96561569, -0.0419266447, 0.256570369, 0, 0.986909747, 0.161272809, -0.259973437, -0.15572755, 0.95297569",
+        "health": 100,
+        "fov": 70,
+        "viewport": [
+          1271,
+          685
+        ],
+        "characterPosition": [
+          0,
+          3.406249761581421,
+          -1128
+        ],
+        "frmEnabled": true,
+        "editQuality": "Automatic"
+      },
+      "cost": null
+    }
+  ],
+  "restoration_errors": [],
+  "observer_stand": [
+    0.0,
+    3.2,
+    -1128.0
+  ],
+  "owned_play_stopped": true
+}

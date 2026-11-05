@@ -252,7 +252,28 @@ function Ecology.Shrine(map: Instance, layout: any, rng: Random)
 		* CFrame.Angles(0, 0.8, 0), 12)
 	detail(habitat, "Bamboo_BrokenClump", CFrame.new(-53, Ground.surfaceHeight(-53, -1334, -0.1), -1334)
 		* CFrame.Angles(0, 2.1, 0), 0.8, rgb(255, 255, 255))
-	map:SetAttribute("BambooArtPass", "Living groves, breakage and shrine v8; arena/ridge/exit in review")
+	-- Dark soil and clustered litter sit beneath the culms. The brighter outer edge
+	-- sits away from the flags and the shrine's interaction approach.
+	local pockets = {
+		{ -59, -1308, 6, 7 }, { -58, -1321, 8, 7 }, { -60, -1340, 7, 9 },
+		{ -48, -1353, 8, 6 }, { -18, -1324, 4, 7 }, { -18, -1340, 4, 6 },
+	}
+	for i, c in pockets do
+		local x, z = c[1], c[2]
+		Ground.forestFloor(x, z, c[3], c[4])
+		if i <= 4 then Ground.grassPatch(x - 4, z + 4, 3.5, 5) end
+		for k = 1, 3 do
+			local px, pz = x + rng:NextNumber(-1.5, 1.5), z + rng:NextNumber(-4, 4)
+			local floor = Ground.surfaceHeight(px, pz, -0.1)
+			local frame = CFrame.new(px, floor, pz) * CFrame.Angles(0, rng:NextNumber(0, math.pi * 2), 0)
+			if k == 1 then
+				local fern = detail(habitat, "Ground_Fern", frame, rng:NextNumber(0.8, 1.25), rgb(255, 255, 255))
+				if fern then wind(fern, frame, 2, "Fern") end
+			else
+				detail(habitat, "Ground_LeafLitter", frame * CFrame.new(0, -0.02, 0), rng:NextNumber(0.85, 1.35), rgb(255, 255, 255))
+			end
+		end
+	end
 end
 
 -- Moon-gate shoulders and the ash descent beyond it: the road keeps its flags clear (|x| < 14),
@@ -290,7 +311,7 @@ function Ecology.South(map: Instance, layout: any, rng: Random)
 		end
 	end
 	detail(habitat, "Bamboo_FallenPole", CFrame.new(-19, Ground.surfaceHeight(-19, -1640, -0.1), -1640) * CFrame.Angles(0, 0.4, 0), 1, rgb(255, 255, 255))
-	map:SetAttribute("BambooArtPass", "Living groves, breakage, shrine, moon gate and ridge margins v9")
+	map:SetAttribute("BambooArtPass", "Living groves, shrine floor colonies, moon gate and ridge margins v10")
 end
 
 return Ecology

@@ -15799,6 +15799,7 @@ local Decor = require(script.Parent:WaitForChild("RegionDecor") :: ModuleScript)
 local Ground = require(script.Parent:WaitForChild("CampaignTerrain") :: ModuleScript)
 local Ecology = require(script.Parent:WaitForChild("BambooEcology") :: ModuleScript)
 local Foundry = require(script.Parent:WaitForChild("BambooFoundry") :: ModuleScript)
+local GateArt = require(script.Parent:WaitForChild("BambooGateArt") :: ModuleScript)
 local World = require(game:GetService("ReplicatedStorage"):WaitForChild("AsurasPath").Shared.WorldDefinitions)
 
 local Dressing = {}
@@ -16020,6 +16021,9 @@ function Dressing.Build(map: Instance, layout: any, rng: Random)
 	end
 	Ecology.South(map, layout, Random.new(291034))
 	-- Baize's palisade: frost-rimed caps and torn prayer flags along its top.
+	Decor.dressBoxes(map, { Palisade = function(_foot: CFrame, box: BasePart): boolean
+		return GateArt.Palisade(set, box) ~= nil
+	end })
 	for z = -1386, -1556, -34 do
 		Decor.banner(set, CFrame.new(-104, 9.5, z) * CFrame.Angles(0, math.rad(90), 0), 5, rgb(214, 204, 176))
 	end
@@ -16286,7 +16290,28 @@ function Ecology.Shrine(map: Instance, layout: any, rng: Random)
 		* CFrame.Angles(0, 0.8, 0), 12)
 	detail(habitat, "Bamboo_BrokenClump", CFrame.new(-53, Ground.surfaceHeight(-53, -1334, -0.1), -1334)
 		* CFrame.Angles(0, 2.1, 0), 0.8, rgb(255, 255, 255))
-	map:SetAttribute("BambooArtPass", "Living groves, breakage and shrine v8; arena/ridge/exit in review")
+	-- Dark soil and clustered litter sit beneath the culms. The brighter outer edge
+	-- sits away from the flags and the shrine's interaction approach.
+	local pockets = {
+		{ -59, -1308, 6, 7 }, { -58, -1321, 8, 7 }, { -60, -1340, 7, 9 },
+		{ -48, -1353, 8, 6 }, { -18, -1324, 4, 7 }, { -18, -1340, 4, 6 },
+	}
+	for i, c in pockets do
+		local x, z = c[1], c[2]
+		Ground.forestFloor(x, z, c[3], c[4])
+		if i &lt;= 4 then Ground.grassPatch(x - 4, z + 4, 3.5, 5) end
+		for k = 1, 3 do
+			local px, pz = x + rng:NextNumber(-1.5, 1.5), z + rng:NextNumber(-4, 4)
+			local floor = Ground.surfaceHeight(px, pz, -0.1)
+			local frame = CFrame.new(px, floor, pz) * CFrame.Angles(0, rng:NextNumber(0, math.pi * 2), 0)
+			if k == 1 then
+				local fern = detail(habitat, "Ground_Fern", frame, rng:NextNumber(0.8, 1.25), rgb(255, 255, 255))
+				if fern then wind(fern, frame, 2, "Fern") end
+			else
+				detail(habitat, "Ground_LeafLitter", frame * CFrame.new(0, -0.02, 0), rng:NextNumber(0.85, 1.35), rgb(255, 255, 255))
+			end
+		end
+	end
 end
 
 -- Moon-gate shoulders and the ash descent beyond it: the road keeps its flags clear (|x| &lt; 14),
@@ -16324,7 +16349,7 @@ function Ecology.South(map: Instance, layout: any, rng: Random)
 		end
 	end
 	detail(habitat, "Bamboo_FallenPole", CFrame.new(-19, Ground.surfaceHeight(-19, -1640, -0.1), -1640) * CFrame.Angles(0, 0.4, 0), 1, rgb(255, 255, 255))
-	map:SetAttribute("BambooArtPass", "Living groves, breakage, shrine, moon gate and ridge margins v9")
+	map:SetAttribute("BambooArtPass", "Living groves, shrine floor colonies, moon gate and ridge margins v10")
 end
 
 return Ecology
@@ -16602,6 +16627,60 @@ function Art.Panel(parent: Instance, frame: CFrame, size: Vector3, name: string,
 				p.Material = Enum.Material.Metal
 			end end
 		end
+	end
+	model.Parent = parent
+	return model
+end
+
+-- Stone sills and piers divide the arena boundary into bays. The existing wall owns
+-- collision and camera queries. The plank material tiles along the reused bevelled mesh.
+function Art.Palisade(parent: Instance, wall: BasePart): Model?
+	local kit = Storage:FindFirstChild("AsuraLobbyKit")
+	local plaque = kit and kit:FindFirstChild("Gate_Plaque")
+	local rim = kit and kit:FindFirstChild("Pool_Rim")
+	local post = kit and kit:FindFirstChild("Rail_Post")
+	local timber = plaque and plaque:FindFirstChild("Gate_Plaque__Timber")
+	local sill = rim and rim:FindFirstChild("Pool_Rim__Stone")
+	local pier = post and post:FindFirstChild("Rail_Post__Stone")
+	if not timber or not timber:IsA("MeshPart") or not sill or not sill:IsA("MeshPart")
+		or not pier or not pier:IsA("MeshPart") then return nil end
+
+	local model = Instance.new("Model")
+	model.Name = "StoneAndCedarPalisade"
+	local frame = wall.CFrame * CFrame.Angles(0, math.pi / 2, 0)
+	model.WorldPivot = frame
+	local function piece(source: MeshPart, name: string, size: Vector3, offset: Vector3, tone: Color3?)
+		local p = source:Clone()
+		p.Name, p.Size, p.CFrame = name, size, frame * CFrame.new(offset)
+		p.Anchored, p.CanCollide, p.CanQuery, p.CanTouch = true, false, false, false
+		if tone then
+			local surface = p:FindFirstChildOfClass("SurfaceAppearance")
+			if surface then surface:Destroy() end
+			p.TextureID = ""
+			p.Material, p.MaterialVariant, p.Color = Enum.Material.WoodPlanks, "", tone
+		end
+		p:SetAttribute("AsuraDecorative", true)
+		p.Parent = model
+	end
+
+	local bays = math.ceil(wall.Size.Z / 12)
+	local width = wall.Size.Z / bays
+	local halfHeight, depth = wall.Size.Y / 2, wall.Size.X
+	for i = 1, bays do
+		local x = -wall.Size.Z / 2 + width * (i - 0.5)
+		local upper = if i % 3 == 0 then Color3.fromRGB(124, 102, 75) else Color3.fromRGB(113, 93, 68)
+		piece(sill, "StoneSill", Vector3.new(width, 1.35, depth), Vector3.new(x, 0.63 - halfHeight, 0))
+		piece(timber, "LowerCedar", Vector3.new(width - 0.03, 2.64, depth * 0.52),
+			Vector3.new(x, 2.57 - halfHeight, 0), Color3.fromRGB(101, 84, 63))
+		piece(timber, "UpperCedar", Vector3.new(width - 0.03, 2.74, depth * 0.48),
+			Vector3.new(x, 5.22 - halfHeight, 0), upper)
+		piece(timber, "CopingRail", Vector3.new(width, 0.48, depth * 0.88),
+			Vector3.new(x, 6.73 - halfHeight, 0), Color3.fromRGB(87, 71, 52))
+	end
+	local endInset = depth * 0.45
+	for i = 0, bays do
+		local x = math.clamp(-wall.Size.Z / 2 + width * i, -wall.Size.Z / 2 + endInset, wall.Size.Z / 2 - endInset)
+		piece(pier, "StonePier", Vector3.new(depth * 0.9, wall.Size.Y, depth), Vector3.new(x, 0, 0))
 	end
 	model.Parent = parent
 	return model

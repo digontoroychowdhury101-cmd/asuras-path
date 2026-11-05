@@ -10,6 +10,10 @@
 
 # ASURA'S PATH (修羅之道) — LIVING PROJECT STATE & HANDOVER JOURNAL
 
+## Bamboo arena and shrine — 2026-11-05 (Mac)
+
+Replaced dark arena strips with stone and timber bays and planted six shrine floor pockets. Five original colliders and both openings verified. Five matched views, 14 local checks, and Studio digest 1802037792. Both place formats rebuilt. Next: normal traversal and foreground timing.
+
 ## Frost Ridge support and shared build — 2026-11-05 (Mac)
 
 Replaced stretched frost supports with a baked 384-triangle limestone mesh. Studio verified three landing heights and six colliders. Refreshed both place formats and matched Studio digest 30630584. All 14 checks pass. Rejected the dark palisade prototype. Jump, foreground performance and broader art acceptance remain open.
