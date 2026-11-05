@@ -46,6 +46,13 @@ function Controller.new(state: any,ui: any,net: Instance,camera: any?): SpellCon
   if type(packet)~="table" then return end
   if packet.action=="State" then
    self.Slots=packet.inventory.spellSlots;self.Cooldowns=packet.cooldowns or {};Panel.update(self.Panel,packet.inventory)
+   -- A claimed cache stops offering itself, on this client only; the server still refuses a second claim.
+   local caches=workspace:FindFirstChild("WorldDiscoveryCaches")
+   for id,claimed in packet.inventory.caches or {} do
+    local chest=caches and caches:FindFirstChild(id)
+    local prompt=chest and chest:FindFirstChildOfClass("ProximityPrompt")
+    if prompt and claimed then prompt.Enabled=false end
+   end
    if packet.open and not Panel.isOpen(self.Panel) then Panel.open(self.Panel) end
   elseif packet.action=="Cooldown" then self.Cooldowns[packet.id]=packet.untilTime
   elseif packet.action=="Result" and not packet.ok then ui:ShowToast(packet.message) end

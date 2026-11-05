@@ -7,7 +7,9 @@ All four batches are pushed. **The Mac writer is paused: pull, then run `outputs
 
 **Git will not carry** `assets/source/`, `assets/build/`, `*.blend` or `work/`. Batch 4 needs none of them. Batch 2 and 3 masters are only needed to rebuild art, not to play: uploaded ids are in the repo.
 
-**Tooling change.** Studio updated during Batch 3 and refuses `qa_inject.py`. Use `tools/qa/qa_place.py OUTPUT.rbxlx probe...` for a private QA copy, and expect `HUMAN_PLAYTEST.md`'s kit to need the same. If Windows Studio differs, report it.
+**Tooling change.** Studio updated during Batch 3 and refuses `qa_inject.py`. Use `tools/qa/qa_place.py OUTPUT.rbxlx probe...` for a private QA copy. `HUMAN_PLAYTEST.md` does not use `qa_inject.py`, so it is not affected.
+
+**Foundry meshes and playtest fixes (5 Nov):** see `outputs/foundry-kit-2026-11-05/RESULTS.md`.
 
 **Next after acceptance:** a fresh-profile opening, equipment and first-boss playthrough. Later bosses stay out of scope until commissioned individually.
 

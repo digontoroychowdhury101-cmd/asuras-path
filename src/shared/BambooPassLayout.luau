@@ -77,8 +77,12 @@ end
 L.slab(r, "FoundryPath", "Path", -44, -6, -1172, -1184, 0.2, 1)
 L.slab(r, "YardFlags", "Path", -105, -44, -1174, -1182, 0.2, 1)
 L.slab(r, "YardFlagsToHall", "Path", -105, -89, -1182, -1193, 0.2, 1)
-L.box(r, "SlagHeap", "Basalt", -66, 1.4, -1197, 12, 3.2, 7, 18)
-L.box(r, "SlagHeap", "Basalt", -112, 1.2, -1168, 9, 2.8, 6, -24)
+L.box(r, "SlagHeap", "Timber", -66, 1.4, -1197, 12, 3.2, 7, 18)
+L.box(r, "SlagHeap", "Timber", -112, 1.2, -1168, 9, 2.8, 6, -24)
+-- The working yard's solid things: the great crucible and two split bell moulds (art in BambooFoundry).
+L.box(r, "CrucibleBody", "Timber", -58, 3, -1167, 8, 6, 8)
+L.box(r, "MouldBody", "Timber", -91.5, 3.7, -1164, 8, 7.4, 10)
+L.box(r, "MouldBody", "Timber", -116.5, 3.7, -1199, 8, 7.4, 10)
 L.lantern(r, -46, 0.2, -1170)
 L.lantern(r, -46, 0.2, -1186)
 -- Casting hall: floor raised on stone, walled and roofed, so the terrace beyond stays hidden until its west door.
@@ -92,7 +96,8 @@ end
 for _, x in { -110, -84 } do
 	for _, z in { -1219, -1238 } do L.box(r, "HallColumn", "Lacquer", x, 6 + HALL_TOP / 2, z, 1.6, HALL_TOP, 1.6) end
 end
-L.box(r, "CastingPit", "Basalt", -97, 6.6, -1228, 9, 1.2, 9)
+L.box(r, "CastingPit", "Stone", -97, 6.6, -1228, 9, 1.2, 9)
+L.box(r, "CrucibleBody", "Timber", -97, 10.2, -1228, 8, 6, 8)
 -- West door, stoop, and the stair up the terrace's cliff; a parapet closes the open side.
 L.slab(r, "HallStoop", "Stone", -140, -124, -1205, -1230, 6, 8)
 L.stairs(r, "TerraceStair", "Path", -132, -1230, -132, -1262, 6, 20, 14)
@@ -117,7 +122,8 @@ L.lantern(r, -146, 20, -1286)
 L.stairs(r, "KilnStair", "Path", -170, -1292, -170, -1312, 20, 10, 14)
 L.slab(r, "KilnLedge", "Rock", -192, -140, -1292, -1345, 10, 14)
 L.slab(r, "KilnFlags", "Path", -177, -163, -1312, -1332, 10.2, 1)
-L.box(r, "KilnStack", "Stone", -148, 17, -1338, 10, 14, 10)
+L.box(r, "KilnStack", "Timber", -148, 17, -1338, 10, 14, 10)
+L.box(r, "KilnPlinth", "Timber", -148, 10.65, -1338, 13.4, 1.3, 13.4)
 L.lantern(r, -160, 10.2, -1316)
 L.lantern(r, -180, 10.2, -1316)
 -- Bell Walk: a timber deck on stone piers, widening at the Ringers' Lookout, then down to the crest.

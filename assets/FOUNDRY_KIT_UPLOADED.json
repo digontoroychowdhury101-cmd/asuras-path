@@ -1,0 +1,125 @@
+{
+  "library": "AsuraFoundryKit",
+  "source": "tools/blender/foundry_kit.py",
+  "export": "assets/build/foundry_kit_v1 (not in git; rebuild with tools/blender/foundry_kit.py)",
+  "importPlace": "77104076321648 (private, via Open Cloud)",
+  "axes": "Roblox import maps Blender (x, y, z) to (-x, z, y): Blender -Y faces Roblox -Z at yaw 0",
+  "credit": "Original project geometry and procedural materials",
+  "physics": "Decorative. Anchored with collision, query and touch off; colliders live in BambooPassLayout.",
+  "pieces": {
+    "Foundry_Bell": {
+      "asset": 108714581351373,
+      "mesh": 91122780225828,
+      "size": [
+        6.952656269073486,
+        9.670000076293945,
+        6.952656269073486
+      ],
+      "centre": [
+        0,
+        4.864999771118164,
+        0
+      ],
+      "color": 97601123466926,
+      "normal": 124910860101976,
+      "roughness": 78408791783988,
+      "metalness": 135212567405547,
+      "triangles": 16648
+    },
+    "Foundry_KilnStack": {
+      "asset": 105111966212301,
+      "mesh": 131572704077279,
+      "size": [
+        13.40000057220459,
+        26.920000076293945,
+        14.992122650146484
+      ],
+      "centre": [
+        0,
+        13.460000038146973,
+        -0.7960612773895264
+      ],
+      "color": 94787816575180,
+      "normal": 114299688160517,
+      "roughness": 118765228438202,
+      "metalness": 72283153136193,
+      "triangles": 4729
+    },
+    "Foundry_Crucible": {
+      "asset": 130533403909565,
+      "mesh": 130453526585169,
+      "size": [
+        10.100000381469727,
+        6.114437103271484,
+        9.451709747314453
+      ],
+      "centre": [
+        0,
+        3.057218551635742,
+        -0.06585502624511719
+      ],
+      "color": 120664203493541,
+      "normal": 109125716573875,
+      "roughness": 135608991020801,
+      "metalness": 91472675891577,
+      "triangles": 8640
+    },
+    "Foundry_SlagHeap": {
+      "asset": 131458606493204,
+      "mesh": 114640139734994,
+      "size": [
+        15.272268295288086,
+        3.8160054683685303,
+        8.603071212768555
+      ],
+      "centre": [
+        0.6802139282226562,
+        1.9080027341842651,
+        -0.0749368667602539
+      ],
+      "color": 124395883716835,
+      "normal": 71219882344753,
+      "roughness": 103786826625059,
+      "metalness": 117572924849957,
+      "triangles": 2756
+    },
+    "Foundry_BellMould": {
+      "asset": 107349796085159,
+      "mesh": 91535578276229,
+      "size": [
+        7.700000762939453,
+        7.415999889373779,
+        11.40000057220459
+      ],
+      "centre": [
+        0.44999945163726807,
+        3.7079999446868896,
+        -1.1999998092651367
+      ],
+      "color": 121278977345799,
+      "normal": 82975150650824,
+      "roughness": 96091163972078,
+      "metalness": 122552387788826,
+      "triangles": 4678
+    },
+    "Foundry_HallWall": {
+      "asset": 97947037867319,
+      "mesh": 101318023473892,
+      "size": [
+        10.600000381469727,
+        14,
+        3.1790904998779297
+      ],
+      "centre": [
+        0,
+        7,
+        0
+      ],
+      "color": 136312458891353,
+      "normal": 88944669976045,
+      "roughness": 82430122975230,
+      "metalness": 117535743953834,
+      "triangles": 1844
+    }
+  }
+}

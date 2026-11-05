@@ -506,8 +506,9 @@ World.Spawns = {
 	spawn("BP_Swordsman_Yard", "CursedSwordsman", "BambooPass", -112, -1188, 90, 5),
 	spawn("BP_Swordsman_Hall", "CursedSwordsman", "BambooPass", -97, -1241, 0, 5, 6),
 	spawn("BP_Monk_Walk", "CorruptWanderingMonk", "BambooPass", -92, -1272, 90, 4, 20),
-	spawn("BP_Swordsman_Kiln", "CursedSwordsman", "BambooPass", -152, -1322, 90, 5, 10),
-	spawn("BP_Monk_Kiln", "CorruptWanderingMonk", "BambooPass", -182, -1326, 270, 5, 10),
+	-- Backs to the stair: one tends the kiln's mouth, one watches the cliff, so a careful player can draw them one at a time (they used to look straight at the stair foot together).
+	spawn("BP_Swordsman_Kiln", "CursedSwordsman", "BambooPass", -150, -1325, 0, 3, 10),
+	spawn("BP_Monk_Kiln", "CorruptWanderingMonk", "BambooPass", -184, -1322, 90, 3, 10),
 	spawn("BP_Swordsman_Grove_A", "CursedSwordsman", "BambooPass", 124, -1310, 180, 6, 18),
 	spawn("BP_Swordsman_Grove_B", "CursedSwordsman", "BambooPass", 124, -1372, 180, 6, 18),
 	spawn("BP_Monk_Ridge", "CorruptWanderingMonk", "BambooPass", 0, -1632, 180, 8),

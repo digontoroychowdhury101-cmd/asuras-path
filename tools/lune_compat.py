@@ -56,7 +56,7 @@ def snapshot():
                 files[rel] = path.read_text()
     for path in sorted((ROOT / "assets").glob("*.md")):
         files[path.relative_to(ROOT).as_posix()] = path.read_text()
-    for rel in ("default.project.json",):
+    for rel in ("default.project.json", "assets/FOUNDRY_KIT_UPLOADED.json", "assets/models/AsuraFoundryKit.rbxmx"):
         files[rel] = (ROOT / rel).read_text()
     lines = ["local __files = {"]
     for rel, text in files.items():

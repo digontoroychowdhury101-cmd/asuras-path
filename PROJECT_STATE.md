@@ -1,3 +1,5 @@
+**Foundry kit (2026-11-05):** Six original meshes in the wing; cache, dialogue, foe plate and death screen fixes verified single-client. Details: `outputs/foundry-kit-2026-11-05/RESULTS.md`. Next: human fight at the Kiln, Windows and multiplayer gates.
+
 **Coding workflow (2026-11-05):** Added AGENTS.md, ro-engineer skill and pinned toolchain. CI change saved as `docs/ci-full-verifier.patch`: pushing workflow files needs a token with `workflow` scope. Full local verifier green on 2eb5d6e.
 
 **Route (2026-11-05):** Foundry wing between Bamboo Gate and crest: yard, hall, Bell Terrace altar, Kiln cache, Bell Walk, barred ridge shortcut. Bridge to shrine 18.5 s becomes 29.0 s first visit, 18.6 s lifted. Digest 409185567, verifier green, single-client Studio. Mac writer paused; next Windows acceptance, then fresh-profile playthrough.

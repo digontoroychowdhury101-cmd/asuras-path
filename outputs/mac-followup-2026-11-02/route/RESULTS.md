@@ -77,7 +77,7 @@ A first visit gains 57% more road. With the bar lifted the original route is bac
 | Fall recovery | Jumped the deck's far rail, landed y 3.4, returned to the landing (-132, 23, -1272), no damage | INPUT |
 | Rails | Walking into the deck rail and terrace parapet stops the body | INPUT |
 | Enemy pursuit, reset | Kiln monk closed about 10 studs, then both guards returned to their posts once the player left | INPUT, Studio read |
-| Camera | Game camera in the hall reads clearly under the fading roof (`hall_game_camera.jpg`). The timed walks used a script-set chase camera, so the stair, Lookout roof and tower base are not proven under the game camera | INPUT |
+| Camera | Game camera in the hall reads clearly under the fading roof (`hall_game_camera.jpg`). The timed walks used a script-set chase camera, so the Lookout roof and tower base are not proven under the game camera; the terrace stair was later checked standing still (`outputs/foundry-kit-2026-11-05`) | INPUT |
 | Console | No error lines in the output read at the end of the session. The "Respawn displaced to 0, 102.x, 0; restored" line is the existing recovery rule firing at every respawn, in `src/server/CharacterService.luau:682`; it restores correctly | Studio read |
 
 **Bug found and fixed by this test:** the bar silently refused to lift while a monk had the player in hit-stun, because the check required Idle. It now refuses only the KO, respawning and duelling.
@@ -92,10 +92,10 @@ Captures in this folder are game views with the HUD on. Most use a fixed QA came
 - **The Kiln and hall need human judgment.** A level-1 fresh profile standing still died to the Kiln pair in 3-9 s through hit-stun, and the Hall's swordsman killed it reading the memorial. Level 1 is not who arrives here on an earned save, and monk difficulty was already pending. If it feels unfair, move the guards, do not weaken them.
 - **The tower as a far goal is only partly proven.** It reads in the overview and clearly from the landing, but at ground level by the Bamboo Gate the bamboo hides most of it. There the hall roof and the marker do the work. Needs a human eye.
 - **Sequence breaks exist and are harmless.** A double jump can clear the gate wings and rails, and a jump from the deck reaches the hall's wall and drops through the decorative roof into the hall. No reward or flag is skipped by either.
-- **New meshes were not added.** Studio's import panel needs the user's click and they were asleep, so the wing uses existing kit pieces only.
+- **New meshes were added later.** The six-piece Foundry kit is now in the wing: see `outputs/foundry-kit-2026-11-05/RESULTS.md`.
 - **Bloodstain recovery in the wing** was seen (prompt at the Kiln) but not used. Existing systems, existing tests.
 - **Older behaviours noticed, not changed:** a claimed cache keeps its prompt, and any cache refuses silently outside Idle (all caches share this); a dialogue open at death stays open after respawn; a foe's health bar stayed on screen at the Sanctuary after a death.
-- **`HUMAN_PLAYTEST.md`'s kit may not run as written:** the updated Studio refuses `qa_inject.py`. `tools/qa/qa_place.py` builds a private QA copy instead.
+- **Injecting a probe:** the updated Studio refuses `qa_inject.py`, so use `tools/qa/qa_place.py` to build a private QA copy. `HUMAN_PLAYTEST.md` does not use `qa_inject.py`, so it is not affected.
 - Two clients, gamepad, touch, phone and real full-world performance were not attempted on this MacBook.
 
 ## Continuation for other regions

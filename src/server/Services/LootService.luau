@@ -39,11 +39,16 @@ local function transact(player: Player,mutate: (any,any)->())
  if ok then Characters.RefreshProgression(id);Loot.Sync(player) end
  if player.Parent then remote:FireClient(player,{action="Result",ok=ok,message=if ok then "Arsenal updated" else reason(err)}) end
 end
+-- Opening a cache only needs a living, unduelled body in reach, the same rule as lifting a gate bar: hit-stun used to refuse it silently.
+local function canClaim(id: number): any
+ local e=Characters.GetActor(id)
+ return if e and e.Fighter.State~="KO" and not e.Respawning and not e.Duel then e else nil
+end
 function Loot.Claim(player: Player,id: string)
- local c=Catalog.Caches[id];local e=available(player.UserId)
+ local c=Catalog.Caches[id];local e=canClaim(player.UserId)
  if not c or not e or (e.Root.Position-Vector3.new(c.X,c.Y,c.Z)).Magnitude>10 then return end
  transact(player,function(i: any,profile: any)
-  local live=available(player.UserId);assert(live and (live.Root.Position-Vector3.new(c.X,c.Y,c.Z)).Magnitude<=10,"Too far from cache")
+  local live=canClaim(player.UserId);assert(live and (live.Root.Position-Vector3.new(c.X,c.Y,c.Z)).Magnitude<=10,"Too far from cache")
   local ok,reason=Inventory.claim(i,id);assert(ok,reason) -- refuses a second claim, so the materials below are paid once
   local m=profile.inventory.Materials
   for material,count in c.Materials or {} do m[material]=math.min(9007199254740991,(m[material] or 0)+count) end

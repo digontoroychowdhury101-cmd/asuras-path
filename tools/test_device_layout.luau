@@ -161,8 +161,11 @@ local ui = { Gui = gui }
 local device = { Device = "Touch" }
 local kit = { factor = function() return 0.7 end, make = function(class, parent, props) local i = Shim.Instance.new(class); for k, v in props do i[k] = v end; i.Parent = parent; return i end }
 local DeviceLayout = load(C .. "DeviceLayout.luau", { script = { Parent = { WaitForChild = function(_, n) return ({ HudKit = kit, UiKit = {}, HudLayout = Layout, UiWindow = {} })[n] end } },
+	game = { GetService = function() return { GetGuiInset = function() return { X = 0, Y = 36 }, { X = 0, Y = 0 } end } end },
 	require = function(m) return m end, pcall = pcall, math = math, table = table, type = type, setmetatable = setmetatable, task = task })
+local deathFrame = Shim.Instance.new("Frame"); deathFrame.Name = "Death"; deathFrame.Parent = gui
 local placed = DeviceLayout.new(ui, device, {})
+check("the death screen reaches under the top bar", deathFrame.Position.Y.Offset == -36 and deathFrame.Size.Y.Scale == 1 and deathFrame.Size.Y.Offset == 36)
 local want = Layout.touch(750, 369)
 check("touch places the vitals in the freed bottom centre", vitals.Position.X.Offset == math.floor(want.Vitals.X) and vitals.Position.Y.Offset == math.floor(want.Vitals.Y) and vitals.AnchorPoint.X == 0)
 check("touch vitals scale follows the profile", math.abs(vitals:FindFirstChildOfClass("UIScale").Scale - Layout.Touch.VitalsBase * 0.7) < 1e-9 and vitals:GetAttribute("AsuraScaleBase") == Layout.Touch.VitalsBase)

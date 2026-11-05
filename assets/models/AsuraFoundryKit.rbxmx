@@ -1,0 +1,68 @@
+<roblox version="4"><Item class="Folder" referent="19"><Properties><string name="Name">AsuraFoundryKit</string></Properties>
+<Item class="Model" referent="1"><Properties><string name="Name">Foundry_Bell</string><OptionalCoordinateFrame name="WorldPivotData"><CFrame><X>0</X><Y>0</Y><Z>0</Z><R00>1</R00><R01>0</R01><R02>0</R02><R10>0</R10><R11>1</R11><R12>0</R12><R20>0</R20><R21>0</R21><R22>1</R22></CFrame></OptionalCoordinateFrame></Properties>
+<Item class="MeshPart" referent="2"><Properties><string name="Name">Foundry_Bell__Foundry</string>
+<bool name="Anchored">true</bool><bool name="CanCollide">false</bool><bool name="CanQuery">false</bool><bool name="CanTouch">false</bool>
+<CoordinateFrame name="CFrame"><X>0</X><Y>4.864999771118164</Y><Z>0</Z><R00>1</R00><R01>0</R01><R02>0</R02><R10>0</R10><R11>1</R11><R12>0</R12><R20>0</R20><R21>0</R21><R22>1</R22></CoordinateFrame>
+<Vector3 name="InitialSize"><X>6.952656269073486</X><Y>9.670000076293945</Y><Z>6.952656269073486</Z></Vector3><Vector3 name="size"><X>6.952656269073486</X><Y>9.670000076293945</Y><Z>6.952656269073486</Z></Vector3>
+<Content name="MeshContent"><uri>rbxassetid://91122780225828</uri></Content>
+<token name="CollisionFidelity">2</token><token name="RenderFidelity">1</token>
+</Properties>
+<Item class="SurfaceAppearance" referent="3"><Properties><string name="Name">SurfaceAppearance</string><token name="AlphaMode">0</token>
+<Content name="ColorMapContent"><uri>rbxassetid://97601123466926</uri></Content><Content name="NormalMapContent"><uri>rbxassetid://124910860101976</uri></Content><Content name="RoughnessMapContent"><uri>rbxassetid://78408791783988</uri></Content><Content name="MetalnessMapContent"><uri>rbxassetid://135212567405547</uri></Content>
+</Properties></Item></Item></Item>
+<Item class="Model" referent="4"><Properties><string name="Name">Foundry_KilnStack</string><OptionalCoordinateFrame name="WorldPivotData"><CFrame><X>0</X><Y>0</Y><Z>0</Z><R00>1</R00><R01>0</R01><R02>0</R02><R10>0</R10><R11>1</R11><R12>0</R12><R20>0</R20><R21>0</R21><R22>1</R22></CFrame></OptionalCoordinateFrame></Properties>
+<Item class="MeshPart" referent="5"><Properties><string name="Name">Foundry_KilnStack__Foundry</string>
+<bool name="Anchored">true</bool><bool name="CanCollide">false</bool><bool name="CanQuery">false</bool><bool name="CanTouch">false</bool>
+<CoordinateFrame name="CFrame"><X>0</X><Y>13.460000038146973</Y><Z>-0.7960612773895264</Z><R00>1</R00><R01>0</R01><R02>0</R02><R10>0</R10><R11>1</R11><R12>0</R12><R20>0</R20><R21>0</R21><R22>1</R22></CoordinateFrame>
+<Vector3 name="InitialSize"><X>13.40000057220459</X><Y>26.920000076293945</Y><Z>14.992122650146484</Z></Vector3><Vector3 name="size"><X>13.40000057220459</X><Y>26.920000076293945</Y><Z>14.992122650146484</Z></Vector3>
+<Content name="MeshContent"><uri>rbxassetid://131572704077279</uri></Content>
+<token name="CollisionFidelity">2</token><token name="RenderFidelity">1</token>
+</Properties>
+<Item class="SurfaceAppearance" referent="6"><Properties><string name="Name">SurfaceAppearance</string><token name="AlphaMode">0</token>
+<Content name="ColorMapContent"><uri>rbxassetid://94787816575180</uri></Content><Content name="NormalMapContent"><uri>rbxassetid://114299688160517</uri></Content><Content name="RoughnessMapContent"><uri>rbxassetid://118765228438202</uri></Content><Content name="MetalnessMapContent"><uri>rbxassetid://72283153136193</uri></Content>
+</Properties></Item></Item></Item>
+<Item class="Model" referent="7"><Properties><string name="Name">Foundry_Crucible</string><OptionalCoordinateFrame name="WorldPivotData"><CFrame><X>0</X><Y>0</Y><Z>0</Z><R00>1</R00><R01>0</R01><R02>0</R02><R10>0</R10><R11>1</R11><R12>0</R12><R20>0</R20><R21>0</R21><R22>1</R22></CFrame></OptionalCoordinateFrame></Properties>
+<Item class="MeshPart" referent="8"><Properties><string name="Name">Foundry_Crucible__Foundry</string>
+<bool name="Anchored">true</bool><bool name="CanCollide">false</bool><bool name="CanQuery">false</bool><bool name="CanTouch">false</bool>
+<CoordinateFrame name="CFrame"><X>0</X><Y>3.057218551635742</Y><Z>-0.06585502624511719</Z><R00>1</R00><R01>0</R01><R02>0</R02><R10>0</R10><R11>1</R11><R12>0</R12><R20>0</R20><R21>0</R21><R22>1</R22></CoordinateFrame>
+<Vector3 name="InitialSize"><X>10.100000381469727</X><Y>6.114437103271484</Y><Z>9.451709747314453</Z></Vector3><Vector3 name="size"><X>10.100000381469727</X><Y>6.114437103271484</Y><Z>9.451709747314453</Z></Vector3>
+<Content name="MeshContent"><uri>rbxassetid://130453526585169</uri></Content>
+<token name="CollisionFidelity">2</token><token name="RenderFidelity">1</token>
+</Properties>
+<Item class="SurfaceAppearance" referent="9"><Properties><string name="Name">SurfaceAppearance</string><token name="AlphaMode">0</token>
+<Content name="ColorMapContent"><uri>rbxassetid://120664203493541</uri></Content><Content name="NormalMapContent"><uri>rbxassetid://109125716573875</uri></Content><Content name="RoughnessMapContent"><uri>rbxassetid://135608991020801</uri></Content><Content name="MetalnessMapContent"><uri>rbxassetid://91472675891577</uri></Content>
+</Properties></Item></Item></Item>
+<Item class="Model" referent="10"><Properties><string name="Name">Foundry_SlagHeap</string><OptionalCoordinateFrame name="WorldPivotData"><CFrame><X>0</X><Y>0</Y><Z>0</Z><R00>1</R00><R01>0</R01><R02>0</R02><R10>0</R10><R11>1</R11><R12>0</R12><R20>0</R20><R21>0</R21><R22>1</R22></CFrame></OptionalCoordinateFrame></Properties>
+<Item class="MeshPart" referent="11"><Properties><string name="Name">Foundry_SlagHeap__Foundry</string>
+<bool name="Anchored">true</bool><bool name="CanCollide">false</bool><bool name="CanQuery">false</bool><bool name="CanTouch">false</bool>
+<CoordinateFrame name="CFrame"><X>0.6802139282226562</X><Y>1.9080027341842651</Y><Z>-0.0749368667602539</Z><R00>1</R00><R01>0</R01><R02>0</R02><R10>0</R10><R11>1</R11><R12>0</R12><R20>0</R20><R21>0</R21><R22>1</R22></CoordinateFrame>
+<Vector3 name="InitialSize"><X>15.272268295288086</X><Y>3.8160054683685303</Y><Z>8.603071212768555</Z></Vector3><Vector3 name="size"><X>15.272268295288086</X><Y>3.8160054683685303</Y><Z>8.603071212768555</Z></Vector3>
+<Content name="MeshContent"><uri>rbxassetid://114640139734994</uri></Content>
+<token name="CollisionFidelity">2</token><token name="RenderFidelity">1</token>
+</Properties>
+<Item class="SurfaceAppearance" referent="12"><Properties><string name="Name">SurfaceAppearance</string><token name="AlphaMode">0</token>
+<Content name="ColorMapContent"><uri>rbxassetid://124395883716835</uri></Content><Content name="NormalMapContent"><uri>rbxassetid://71219882344753</uri></Content><Content name="RoughnessMapContent"><uri>rbxassetid://103786826625059</uri></Content><Content name="MetalnessMapContent"><uri>rbxassetid://117572924849957</uri></Content>
+</Properties></Item></Item></Item>
+<Item class="Model" referent="13"><Properties><string name="Name">Foundry_BellMould</string><OptionalCoordinateFrame name="WorldPivotData"><CFrame><X>0</X><Y>0</Y><Z>0</Z><R00>1</R00><R01>0</R01><R02>0</R02><R10>0</R10><R11>1</R11><R12>0</R12><R20>0</R20><R21>0</R21><R22>1</R22></CFrame></OptionalCoordinateFrame></Properties>
+<Item class="MeshPart" referent="14"><Properties><string name="Name">Foundry_BellMould__Foundry</string>
+<bool name="Anchored">true</bool><bool name="CanCollide">false</bool><bool name="CanQuery">false</bool><bool name="CanTouch">false</bool>
+<CoordinateFrame name="CFrame"><X>0.44999945163726807</X><Y>3.7079999446868896</Y><Z>-1.1999998092651367</Z><R00>1</R00><R01>0</R01><R02>0</R02><R10>0</R10><R11>1</R11><R12>0</R12><R20>0</R20><R21>0</R21><R22>1</R22></CoordinateFrame>
+<Vector3 name="InitialSize"><X>7.700000762939453</X><Y>7.415999889373779</Y><Z>11.40000057220459</Z></Vector3><Vector3 name="size"><X>7.700000762939453</X><Y>7.415999889373779</Y><Z>11.40000057220459</Z></Vector3>
+<Content name="MeshContent"><uri>rbxassetid://91535578276229</uri></Content>
+<token name="CollisionFidelity">2</token><token name="RenderFidelity">1</token>
+</Properties>
+<Item class="SurfaceAppearance" referent="15"><Properties><string name="Name">SurfaceAppearance</string><token name="AlphaMode">0</token>
+<Content name="ColorMapContent"><uri>rbxassetid://121278977345799</uri></Content><Content name="NormalMapContent"><uri>rbxassetid://82975150650824</uri></Content><Content name="RoughnessMapContent"><uri>rbxassetid://96091163972078</uri></Content><Content name="MetalnessMapContent"><uri>rbxassetid://122552387788826</uri></Content>
+</Properties></Item></Item></Item>
+<Item class="Model" referent="16"><Properties><string name="Name">Foundry_HallWall</string><OptionalCoordinateFrame name="WorldPivotData"><CFrame><X>0</X><Y>0</Y><Z>0</Z><R00>1</R00><R01>0</R01><R02>0</R02><R10>0</R10><R11>1</R11><R12>0</R12><R20>0</R20><R21>0</R21><R22>1</R22></CFrame></OptionalCoordinateFrame></Properties>
+<Item class="MeshPart" referent="17"><Properties><string name="Name">Foundry_HallWall__Foundry</string>
+<bool name="Anchored">true</bool><bool name="CanCollide">false</bool><bool name="CanQuery">false</bool><bool name="CanTouch">false</bool>
+<CoordinateFrame name="CFrame"><X>0</X><Y>7</Y><Z>0</Z><R00>1</R00><R01>0</R01><R02>0</R02><R10>0</R10><R11>1</R11><R12>0</R12><R20>0</R20><R21>0</R21><R22>1</R22></CoordinateFrame>
+<Vector3 name="InitialSize"><X>10.600000381469727</X><Y>14</Y><Z>3.1790904998779297</Z></Vector3><Vector3 name="size"><X>10.600000381469727</X><Y>14</Y><Z>3.1790904998779297</Z></Vector3>
+<Content name="MeshContent"><uri>rbxassetid://101318023473892</uri></Content>
+<token name="CollisionFidelity">2</token><token name="RenderFidelity">1</token>
+</Properties>
+<Item class="SurfaceAppearance" referent="18"><Properties><string name="Name">SurfaceAppearance</string><token name="AlphaMode">0</token>
+<Content name="ColorMapContent"><uri>rbxassetid://136312458891353</uri></Content><Content name="NormalMapContent"><uri>rbxassetid://88944669976045</uri></Content><Content name="RoughnessMapContent"><uri>rbxassetid://82430122975230</uri></Content><Content name="MetalnessMapContent"><uri>rbxassetid://117535743953834</uri></Content>
+</Properties></Item></Item></Item>
+</Item></roblox>

@@ -9,6 +9,7 @@
 -- blossom grows to a 44-point target and the small controls blossom gives way (Controls and the
 -- Codex are Respite entries); a controller reaches Respite from the Arsenal window (Select).
 -- Presentation only.
+local GuiService = game:GetService("GuiService")
 local HudKit = require(script.Parent:WaitForChild("HudKit") :: ModuleScript)
 local UiKit = require(script.Parent:WaitForChild("UiKit") :: ModuleScript)
 local Layout = require(script.Parent:WaitForChild("HudLayout") :: ModuleScript)
@@ -52,7 +53,19 @@ local function constraint(frame: GuiObject): UISizeConstraint?
 	return frame:FindFirstChildOfClass("UISizeConstraint")
 end
 
+-- The HUD stays inside the core-UI safe area so nothing hides under the top bar, but its blackouts must still reach every screen edge.
+local function fullBleed(frame: Instance?)
+	if not frame or not frame:IsA("GuiObject") then return end
+	local topLeft, bottomRight = GuiService:GetGuiInset()
+	frame.Position = UDim2.fromOffset(-topLeft.X, -topLeft.Y)
+	frame.Size = UDim2.new(1, topLeft.X + bottomRight.X, 1, topLeft.Y + bottomRight.Y)
+end
+
 function Device.Apply(self: any)
+	local gui = self.Ui.Gui :: ScreenGui
+	fullBleed(gui:FindFirstChild("Death"))
+	fullBleed(gui:FindFirstChild("PortalVeil"))
+	for _, child in gui:GetChildren() do fullBleed(child:FindFirstChild("Backdrop")) end
 	self:Place(self.Input.Device == "Touch")
 end
 

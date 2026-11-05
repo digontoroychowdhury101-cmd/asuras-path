@@ -20,6 +20,7 @@ Controller.__index = Controller
 
 -- Customization ------------------------------------------------------------------------------
 local FOCUS_SECONDS = 8 -- how long the target plate follows the last foe you traded blows with
+local FOCUS_RANGE = 80 -- same reach as the lock itself; beyond it the plate is about a foe no longer in the fight
 local taught: { [string]: number } = {} -- boss counters warned this session (hint on the first few)
 
 export type CombatHud = typeof(setmetatable({} :: {
@@ -71,6 +72,13 @@ function Controller.Update(self: CombatHud, dt: number)
 	local focus = locked
 	if not focus and os.clock() < self.FocusUntil then focus = self.State:Get(self.FocusId) end
 	if focus and not self.State:IsAlive(focus) then focus = nil end
+	-- The last foe's plate ends with the fight: not across the player's own death, and not across a respawn or Travel to somewhere else.
+	local own = self.State:Own()
+	local ownDown = snapshot ~= nil and snapshot.State == "KO"
+	if ownDown or (focus and focus ~= locked and own and own.Root and focus.Root and (focus.Root.Position - own.Root.Position).Magnitude > FOCUS_RANGE) then
+		self.FocusUntil = 0
+		if focus ~= locked then focus = nil end
+	end
 	local bossShown = ui.BossFrame ~= nil and ui.BossFrame.Visible
 	local plated = not hidden and not bossShown and focus ~= nil and not focus.Boss
 	if hidden then EnemyBars.destroy(self.Bars) else EnemyBars.step(self.Bars, dt, locked, if plated then focus else nil) end

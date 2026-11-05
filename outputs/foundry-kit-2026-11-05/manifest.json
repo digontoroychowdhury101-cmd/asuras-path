@@ -1,0 +1,80 @@
+{
+  "Foundry_Bell": {
+    "file": "Foundry_Bell.glb",
+    "sha256": "3fc7385427cf90f1ca4ad76b6557505300805d5adef4305a38bf4e47ea628dc9",
+    "bytes": 8942828,
+    "triangles": 16648,
+    "dimensions": [
+      6.953,
+      6.953,
+      9.67
+    ],
+    "maps": 2048,
+    "uvSets": 1
+  },
+  "Foundry_KilnStack": {
+    "file": "Foundry_KilnStack.glb",
+    "sha256": "f4b0d9f5fa431d397fe18e30e4a342c21286f6d78caaa383f391517affcdeb8c",
+    "bytes": 10095892,
+    "triangles": 4729,
+    "dimensions": [
+      13.4,
+      14.992,
+      26.92
+    ],
+    "maps": 2048,
+    "uvSets": 1
+  },
+  "Foundry_Crucible": {
+    "file": "Foundry_Crucible.glb",
+    "sha256": "7ef076e0df9425b7dd502fd1cbbca1544b7395b8b56151ae98971e7c29cccfb4",
+    "bytes": 10396544,
+    "triangles": 8640,
+    "dimensions": [
+      10.1,
+      9.452,
+      6.114
+    ],
+    "maps": 2048,
+    "uvSets": 1
+  },
+  "Foundry_SlagHeap": {
+    "file": "Foundry_SlagHeap.glb",
+    "sha256": "e97901b04132a3b1484812c6f396b0c4ea9d3f97f185dfabf8b13894938dc0fd",
+    "bytes": 12410848,
+    "triangles": 2756,
+    "dimensions": [
+      15.272,
+      8.603,
+      3.816
+    ],
+    "maps": 2048,
+    "uvSets": 1
+  },
+  "Foundry_BellMould": {
+    "file": "Foundry_BellMould.glb",
+    "sha256": "991e15748eeeed4a8a1e7045c1f95435ff9dbdbb221a8debc736f7a4b51e8666",
+    "bytes": 8382868,
+    "triangles": 4678,
+    "dimensions": [
+      7.7,
+      11.4,
+      7.416
+    ],
+    "maps": 2048,
+    "uvSets": 1
+  },
+  "Foundry_HallWall": {
+    "file": "Foundry_HallWall.glb",
+    "sha256": "0acbe391515c4a86c2c59af9297a55092c62c9edaa68b158075953819a0301ac",
+    "bytes": 11010368,
+    "triangles": 1844,
+    "dimensions": [
+      10.6,
+      3.179,
+      14.0
+    ],
+    "maps": 2048,
+    "uvSets": 1
+  }
+}

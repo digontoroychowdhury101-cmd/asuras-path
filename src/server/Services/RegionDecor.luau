@@ -63,9 +63,11 @@ end
 -- Paper lantern head on a post (or hung from a beam): warm light, glow, never collides.
 function Decor.lantern(parent: Instance, x: number, y: number, z: number, range: number?)
 	local base = CFrame.new(x, y, z)
-	local paper = Kit.part(parent, "LanternPaper", Vector3.new(1.4, 1.6, 1.4), base, P.Lantern, M.Glass,
-		{ Collide = false, Query = false, Transparency = 0.25, Shadow = false })
-	Kit.part(parent, "LanternCap", Vector3.new(2.2, 0.35, 2.2), base * CFrame.new(0, 1, 0), P.Iron, M.Metal, Kit.decor())
+	-- The stone lantern from the lobby kit; the light sits in its chamber. A missing kit falls back to the plain paper box.
+	local stone = Decor.han(parent, "AsuraLobbyKit", "Lantern_Stone", base, 0.9)
+	local paper = Kit.part(parent, "LanternPaper", Vector3.new(1.4, 1.6, 1.4), if stone then base * CFrame.new(0, 3.2, 0) else base, P.Lantern, M.Glass,
+		{ Collide = false, Query = false, Transparency = if stone then 1 else 0.25, Shadow = false })
+	if not stone then Kit.part(parent, "LanternCap", Vector3.new(2.2, 0.35, 2.2), base * CFrame.new(0, 1, 0), P.Iron, M.Metal, Kit.decor()) end
 	Fx.glow(paper, 1.1)
 	Kit.light(paper, P.Lantern, range or 20, 1.3, false)
 end

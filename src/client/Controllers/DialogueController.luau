@@ -28,7 +28,7 @@ local function hideAvatar(self: any,character: Model?)
  for _,d in character:GetDescendants() do if d:IsA("BasePart") then hidden[d]=d.LocalTransparencyModifier;d.LocalTransparencyModifier=1 end end
  self.Hidden=hidden
 end
-function Controller.new(camera: any,input: any,ui: any): any
+function Controller.new(camera: any,input: any,ui: any,state: any?): any
  local self=setmetatable({Camera=camera,Input=input,UI=ui,Revision=0,Generation=0,Open=false,Links={},ReturnAltar=nil},Controller) :: any
  self.Remote=Shared.Net:WaitForChild("DialogueIntent")
  self.View=View.new(Players.LocalPlayer:WaitForChild("PlayerGui"))
@@ -56,7 +56,15 @@ function Controller.new(camera: any,input: any,ui: any): any
   -- Roblox reserves Escape for its own menu (the event arrives processed), so Backspace is the desktop back key, as in Respite.
   elseif self.Open and (key.KeyCode==Enum.KeyCode.Backspace or key.KeyCode==Enum.KeyCode.Escape or key.KeyCode==Enum.KeyCode.ButtonB) then self:Close(true) end
  end))
- -- Death and respawn always end the conversation without returning to any menu.
+ -- Death, respawn and a blow all end the conversation with no menu: the game's KO keeps the same body, so the death screen is the signal that always fires.
+ ui.OnDeathShown=function() self:Close(false) end
+ local lastHp: number?=nil
+ table.insert(self.Links,game:GetService("RunService").Heartbeat:Connect(function()
+  if not self.Open or not state then lastHp=nil;return end
+  local own=state:OwnSnapshot();local hp=own and own.ActiveHP
+  if type(hp)=="number" and lastHp and hp<lastHp then lastHp=nil;self:Close(false);return end
+  lastHp=if type(hp)=="number" then hp else nil
+ end))
  local function watch(character: Model) -- one Died link at a time (batch 26: none kept per respawn)
   if self.DiedLink then self.DiedLink:Disconnect();self.DiedLink=nil end
   local humanoid=character:FindFirstChildOfClass("Humanoid")

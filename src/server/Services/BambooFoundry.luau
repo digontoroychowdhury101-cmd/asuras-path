@@ -1,7 +1,7 @@
 --!strict
 -- ModuleScript: ServerScriptService/AsurasPath/Services/BambooFoundry
--- Art for the Foundry wing (route batch): the yard, casting hall, bell terrace, Bell Walk and Founders' Kiln. Existing uploaded kit pieces and the
--- layout's boxes only, no new textures. Everything here is decor: collision lives in BambooPassLayout, so the walk suite sees every surface that
+-- Art for the Foundry wing (route batch): the yard, casting hall, bell terrace, Bell Walk and Founders' Kiln. The Foundry kit plus existing
+-- uploaded kit pieces. Everything here is decor: collision lives in BambooPassLayout, so the walk suite sees every surface that
 -- can stop a body or a camera. The tower on the terrace is the wing's far goal, placed to read from the Bamboo Gate over the thicket.
 local CollectionService = game:GetService("CollectionService")
 local Kit = require(script.Parent:WaitForChild("MonasteryKit") :: ModuleScript)
@@ -12,9 +12,8 @@ local GateArt = require(script.Parent:WaitForChild("BambooGateArt") :: ModuleScr
 local Foundry = {}
 local M = Enum.Material
 local rgb = Color3.fromRGB
-local BRONZE = rgb(112, 91, 57)
 local EMBER = rgb(255, 150, 80)
-local LOBBY, HAN = "AsuraLobbyKit", "AsuraHanKit"
+local LOBBY, HAN, FOUNDRY = "AsuraLobbyKit", "AsuraHanKit", "AsuraFoundryKit"
 
 local function lobby(parent: Instance, piece: string, at: Vector3, yaw: number?, scale: number?): Model?
 	return Decor.han(parent, LOBBY, piece, CFrame.new(at) * CFrame.Angles(0, math.rad(yaw or 0), 0), scale)
@@ -56,21 +55,50 @@ local function fire(parent: Instance, at: Vector3, range: number)
 	Kit.light(anchor, EMBER, range, 2, false)
 end
 
--- A whole bronze bell, hung from y `top`: crown, shoulder, waist, flared lip.
-local function bell(parent: Instance, x: number, top: number, z: number)
-	local function ring(name: string, radius: number, height: number, y: number, tone: Color3)
-		Kit.disc(parent, name, radius, height, CFrame.new(x, y, z), tone, M.Metal, Kit.decor())
-	end
-	Kit.part(parent, "BellHanger", Vector3.new(0.7, 1.6, 0.7), CFrame.new(x, top - 0.8, z), rgb(52, 48, 44), M.Metal, Kit.decor())
-	ring("BellCrown", 0.9, 0.9, top - 2, BRONZE)
-	ring("BellShoulder", 1.9, 1, top - 2.9, BRONZE)
-	ring("BellBody", 2.5, 3.2, top - 4.9, BRONZE:Lerp(rgb(70, 92, 76), 0.25))
-	ring("BellBand", 2.7, 0.5, top - 5.6, BRONZE)
-	ring("BellWaist", 2.8, 1.6, top - 7, BRONZE:Lerp(rgb(70, 92, 76), 0.15))
-	ring("BellLip", 3.3, 0.8, top - 8.1, BRONZE)
+-- A piece of the Foundry kit (tools/blender/foundry_kit.py). Its box stays the collider; once the mesh stands, the box is hidden.
+local function foundry(parent: Instance, piece: string, at: Vector3, yaw: number?, scale: number?): Model?
+	return Decor.han(parent, FOUNDRY, piece, CFrame.new(at) * CFrame.Angles(0, math.rad(yaw or 0), 0), scale)
 end
 
-local function yard(parent: Instance)
+-- The hall's walls: one timber-framed brick bay every 10.5 studs or so, stretched a little to fit each run exactly. Doors stay where the layout cut them.
+local function hallWalls(parent: Instance, map: Instance)
+	local structure = map:FindFirstChild("Structure")
+	for _, box in if structure then structure:GetChildren() else {} do
+		if box:IsA("BasePart") and box.Name == "HallWall" then
+			local length = box.Size.Z
+			local bays = math.max(1, math.round(length / 10.5))
+			local bay = length / bays
+			local placed = false
+			for i = 1, bays do
+				local cf = box.CFrame * CFrame.Angles(0, math.pi / 2, 0) * CFrame.new((i - 0.5) * bay - length / 2, 0, 0)
+				local model = foundry(parent, "Foundry_HallWall", cf.Position, 0, 1)
+				local mesh = model and model:FindFirstChildWhichIsA("MeshPart")
+				if mesh then
+					mesh.Size = Vector3.new(bay * 10.6 / 10.5, box.Size.Y, mesh.Size.Z)
+					mesh.CFrame = cf
+					placed = true
+				end
+			end
+			if placed then box.Transparency, box.CastShadow = 1, false end
+		end
+	end
+end
+
+-- Slag heaps stand on their boxes' footprints, sized to cover them.
+local function slagHeaps(parent: Instance, map: Instance)
+	local structure = map:FindFirstChild("Structure")
+	for _, box in if structure then structure:GetChildren() else {} do
+		if box:IsA("BasePart") and box.Name == "SlagHeap" then
+			local _, yaw = box.CFrame:ToOrientation()
+			local at = box.Position - Vector3.new(0, box.Position.Y, 0)
+			if foundry(parent, "Foundry_SlagHeap", at, math.deg(yaw), math.max(box.Size.X / 13, box.Size.Z / 7.5)) then
+				box.Transparency, box.CastShadow = 1, false
+			end
+		end
+	end
+end
+
+local function yard(parent: Instance, map: Instance)
 	local group = Kit.folder("FoundryYard", parent)
 	-- A broken gate at the clearing's edge announces the turn off the straight road.
 	lobby(group, "Ruin_Gate", Vector3.new(-41, 0, -1178), 90, 1.25)
@@ -80,11 +108,14 @@ local function yard(parent: Instance)
 	han(group, "HanWallLong", Vector3.new(-99, -0.4, -1158), 0, 1)
 	han(group, "HanWallLong", Vector3.new(-128, -0.4, -1181), 90, 1.1)
 	-- The working yard: a great crucible, its fire, cold moulds and slag.
-	han(group, "HanCauldron", Vector3.new(-58, 0, -1167), 25, 5.2)
-	fire(group, Vector3.new(-58, 3.2, -1167), 26)
-	for _, c in { { -92, -1166, 30, 1.1 }, { -60, -1201, 200, 1.3 }, { -116, -1200, 80, 1 } } do
-		lobby(group, "Rock_Outcrop", Vector3.new(c[1], -0.2, c[2]), c[3], c[4])
-	end
+	foundry(group, "Foundry_Crucible", Vector3.new(-58, 0, -1167), 205)
+	fire(group, Vector3.new(-58, 1.5, -1167), 26)
+	fire(group, Vector3.new(-58, 5.8, -1167), 14)
+	-- Two split bell moulds, each with its clay core lifted out in front.
+	foundry(group, "Foundry_BellMould", Vector3.new(-92, 0, -1163), 8)
+	foundry(group, "Foundry_BellMould", Vector3.new(-116, 0, -1200), 172)
+	slagHeaps(group, map)
+	hideBoxes(map, { CrucibleBody = true, MouldBody = true })
 	lobby(group, "Stele_Broken", Vector3.new(-82, 0, -1200), 12, 1)
 	Decor.brazier(group, CFrame.new(-118, 0, -1176), 24)
 end
@@ -100,22 +131,24 @@ local function hall(parent: Instance, map: Instance)
 	end
 	fades(lobby(group, "Roof_Hall", Vector3.new(-97, 19.6, -1228.5), 0, 2))
 	-- The casting pit under the great cauldron: the room's one bright thing.
-	han(group, "HanCauldron", Vector3.new(-97, 7.2, -1228), 40, 5)
-	fire(group, Vector3.new(-97, 10, -1228), 34)
+	foundry(group, "Foundry_Crucible", Vector3.new(-97, 7.2, -1228), 40)
+	fire(group, Vector3.new(-97, 8.7, -1228), 18)
+	fire(group, Vector3.new(-97, 13, -1228), 34)
+	hallWalls(group, map)
 	hanging(group, -110, 18, -1228.5, 20)
 	hanging(group, -84, 18, -1228.5, 20)
 	-- Door frames, so each opening reads from across the room.
 	lobby(group, "Beam_Architrave", Vector3.new(-97, 18.4, -1207), 0, 2)
 	lobby(group, "Beam_Architrave", Vector3.new(-124, 15, -1222), 90, 1.5)
-	lobby(group, "Banner_Cloth", Vector3.new(-71.4, 18, -1219), 90, 1.1)
-	lobby(group, "Banner_Cloth", Vector3.new(-71.4, 18, -1238), 90, 1.1)
+	lobby(group, "Banner_Cloth", Vector3.new(-71.9, 18, -1219), 90, 1.1)
+	lobby(group, "Banner_Cloth", Vector3.new(-71.9, 18, -1238), 90, 1.1)
 	lobby(group, "Stele_Dragon", Vector3.new(-76, 6, -1248.6), 180, 0.9)
 	-- The yard face: a colonnade and hangings, so the long stone wall reads as a working hall and the door as its centre.
 	for _, x in { -122, -106.5, -87.5, -72 } do column(group, x, 0, -1206, 19.4) end
 	for _, z in { -1215, -1228, -1241 } do column(group, -69, 0, z, 19.4) end
-	lobby(group, "Banner_Cloth", Vector3.new(-114, 16, -1206.6), 0, 1.3)
-	lobby(group, "Banner_Cloth", Vector3.new(-80, 16, -1206.6), 0, 1.3)
-	lobby(group, "Banner_Cloth", Vector3.new(-69.4, 16, -1221.5), 90, 1.3)
+	lobby(group, "Banner_Cloth", Vector3.new(-114, 16, -1205.2), 0, 1.3)
+	lobby(group, "Banner_Cloth", Vector3.new(-80, 16, -1205.2), 0, 1.3)
+	lobby(group, "Banner_Cloth", Vector3.new(-68.2, 16, -1221.5), 90, 1.3)
 	hanging(group, -97, 18, -1205, 22)
 end
 
@@ -130,7 +163,7 @@ local function terrace(parent: Instance, map: Instance)
 	for _, z in { -1250, -1241 } do lobby(group, "Beam_Architrave", Vector3.new(-155, 33, z), 0, 1.3) end
 	lobby(group, "Beam_Architrave", Vector3.new(-155, 33.5, -1245.5), 0, 1.3)
 	lobby(group, "Roof_Square", Vector3.new(-155, 35, -1245.5), 0, 1)
-	bell(group, -155, 33.4, -1245.5)
+	foundry(group, "Foundry_Bell", Vector3.new(-155, 23.73, -1245.5), 15)
 	-- Colour and scale against the cliff edge.
 	lobby(group, "Tree_Maple", Vector3.new(-186, 19.8, -1212), 40, 1.1)
 	lobby(group, "Tree_MapleSmall", Vector3.new(-148, 19.8, -1212), 200, 0.9)
@@ -140,14 +173,14 @@ local function terrace(parent: Instance, map: Instance)
 	lobby(group, "Rock_Outcrop", Vector3.new(-152, 19.6, -1288), 120, 0.8)
 end
 
-local function kiln(parent: Instance)
+local function kiln(parent: Instance, map: Instance)
 	local group = Kit.folder("FoundersKiln", parent)
 	han(group, "HanHouse", Vector3.new(-172, 10, -1348), 180, 1.1)
-	-- The stack: its box is the collider, its mouth still burns.
-	fire(group, Vector3.new(-148, 11.4, -1332.4), 30)
-	Kit.part(group, "KilnMouth", Vector3.new(4.5, 4, 0.4), CFrame.new(-148, 12, -1332.9), rgb(38, 30, 26), M.Basalt, Kit.decor())
-	Kit.part(group, "StackCap", Vector3.new(11, 1, 11), CFrame.new(-148, 24.5, -1338), rgb(58, 54, 52), M.Slate, Kit.decor())
-	local smoke = Kit.part(group, "StackTop", Vector3.new(4, 0.4, 4), CFrame.new(-148, 25.2, -1338), rgb(40, 38, 36), M.Basalt, Kit.decor())
+	-- The kiln: its boxes are the colliders, its mouth still burns, its flue still breathes.
+	if foundry(group, "Foundry_KilnStack", Vector3.new(-148, 10, -1338), 180) then hideBoxes(map, { KilnStack = true, KilnPlinth = true }) end
+	fire(group, Vector3.new(-148, 11.9, -1334), 30)
+	local smoke = Kit.part(group, "FlueTop", Vector3.new(4, 0.4, 4), CFrame.new(-148, 36.2, -1338), rgb(40, 38, 36), M.Basalt, Kit.decor())
+	smoke.Transparency = 1
 	Fx.embers(smoke, 3)
 	lobby(group, "Rock_Outcrop", Vector3.new(-186, 9.6, -1342), 40, 1)
 	lobby(group, "Stele_Broken", Vector3.new(-186, 10, -1305), 75, 1)
@@ -188,10 +221,10 @@ end
 
 function Foundry.Build(map: Instance)
 	local set = Kit.folder("FoundryWing", map)
-	yard(set)
+	yard(set, map)
 	hall(set, map)
 	terrace(set, map)
-	kiln(set)
+	kiln(set, map)
 	walk(set, map)
 	ridgeGate(set, map)
 end

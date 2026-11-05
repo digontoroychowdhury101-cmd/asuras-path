@@ -82,5 +82,46 @@ junk.routeFlags = { [3] = "x" }
 local cleaned = Schema.Migrate(junk, 1)
 check("garbage route flags are dropped and the save still validates", next(cleaned.routeFlags) == nil and (Schema.Validate(cleaned)))
 
+-- Foundry kit: every piece the wing places has a registered upload and a library entry with all four maps.
+local registry = src("assets/FOUNDRY_KIT_UPLOADED.json")
+local library = src("assets/models/AsuraFoundryKit.rbxmx")
+local foundrySource = src("src/server/Services/BambooFoundry.luau")
+for _, piece in { "Foundry_Bell", "Foundry_KilnStack", "Foundry_Crucible", "Foundry_SlagHeap", "Foundry_BellMould", "Foundry_HallWall" } do
+	check(piece .. " is registered", string.find(registry, '"' .. piece .. '"', 1, true) ~= nil)
+	check(piece .. " is in the library", string.find(library, piece, 1, true) ~= nil)
+end
+local _, maps = string.gsub(library, 'class="SurfaceAppearance"', "")
+check("every library piece has a SurfaceAppearance", maps == 6)
+for _, map in { "ColorMapContent", "NormalMapContent", "RoughnessMapContent", "MetalnessMapContent" } do
+	local _, count = string.gsub(library, map, "")
+	check("every library piece carries " .. map, count >= 6)
+end
+check("the kit is mapped into ServerStorage", string.find(src("default.project.json"), "AsuraFoundryKit", 1, true) ~= nil)
+check("the wing no longer builds a primitive bell", string.find(foundrySource, "BRONZE", 1, true) == nil)
+
+-- The kiln's guards can be drawn one at a time and the kit's solid bodies stay collidable through the layout.
+local function spawnOf(id)
+	local line = string.match(src("src/shared/WorldDefinitions.luau"), 'spawn%("' .. id .. '"[^\n]*')
+	return line
+end
+check("the kiln swordsman has a short notice", string.find(spawnOf("BP_Swordsman_Kiln") or "", ", 3, 10)", 1, true) ~= nil)
+check("the kiln monk has a short notice", string.find(spawnOf("BP_Monk_Kiln") or "", ", 3, 10)", 1, true) ~= nil)
+local layout = src("src/shared/BambooPassLayout.luau")
+for _, body in { "CrucibleBody", "MouldBody", "KilnStack", "KilnPlinth", "SlagHeap" } do
+	check(body .. " keeps a part collider", string.find(layout, '"' .. body .. '", "Timber"', 1, true) ~= nil)
+end
+
+-- Client and service fixes from the Mac playtest. Source guards: the live behaviour is recorded in the evidence folder.
+local loot = src("src/server/Services/LootService.luau")
+check("a cache claim no longer needs Idle", string.find(loot, "local c=Catalog.Caches[id];local e=canClaim(player.UserId)", 1, true) ~= nil)
+check("KO, respawn and duel still refuse a claim", string.find(loot, 'e.Fighter.State~="KO" and not e.Respawning and not e.Duel', 1, true) ~= nil)
+check("a claimed cache hides its prompt", string.find(src("src/client/Controllers/SpellController.luau"), "packet.inventory.caches", 1, true) ~= nil)
+local dialogue = src("src/client/Controllers/DialogueController.luau")
+check("the death screen closes a dialogue", string.find(dialogue, "ui.OnDeathShown=function() self:Close(false) end", 1, true) ~= nil)
+check("a blow closes a dialogue", string.find(dialogue, "hp<lastHp", 1, true) ~= nil)
+check("the death screen tells the dialogue", string.find(src("src/client/Controllers/InterfaceController.luau"), "self.OnDeathShown()", 1, true) ~= nil)
+check("the foe plate ends with the fight", string.find(src("src/client/Controllers/CombatHud.luau"), "FOCUS_RANGE", 1, true) ~= nil)
+check("blackouts reach the screen edges", string.find(src("src/client/Controllers/DeviceLayout.luau"), 'fullBleed(gui:FindFirstChild("Death"))', 1, true) ~= nil)
+
 print(string.format("route foundry: %d passed, %d failed (local rules only; Studio geometry, input and live saves are separate)", passed, failed))
 if failed > 0 then error("route foundry regression failed") end

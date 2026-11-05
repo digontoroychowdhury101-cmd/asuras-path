@@ -306,6 +306,7 @@ type Fields = {
 	Disconnects: { () -> () },
 	OnIntent: ((action: string, variant: string?) -> ())?,
 	OnSummon: ((altarId: string) -> ())?, -- set by DialogueController: summon Lin's projection here
+	OnDeathShown: (() -> ())?, -- set by DialogueController: the death screen ends any conversation
 	Clock: number,
 }
 
@@ -624,6 +625,7 @@ function Controller.new(state: WorldState, camera: CameraController, input: Inpu
 		Disconnects = {},
 		OnIntent = nil,
 		OnSummon = nil,
+		OnDeathShown = nil,
 		Clock = 0,
 	}
 	local self = setmetatable(fields, Controller)
@@ -939,6 +941,7 @@ function Controller.ShowDeath(self: Interface)
 	end
 	self.DeathShown = true
 	self:CloseAltar()
+	if self.OnDeathShown then self.OnDeathShown() end
 	-- Clear anything mid-flight so the death screen stands alone.
 	self.Toast.TextTransparency, self.Toast.TextStrokeTransparency, self.ToastUntil = 1, 1, 0
 	self.Banner.TextTransparency, self.BannerSub.TextTransparency, self.BannerUntil = 1, 1, 0
