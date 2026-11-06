@@ -65,6 +65,10 @@ def sequence(phase, plan, fade=0.2):
             yaw += math.radians(tn) / FPS
             x += -math.sin(yaw) * sp / FPS
             z += -math.cos(yaw) * sp / FPS
+            side = opts.get("side")   # strafe: studs/s to his right
+            if side:
+                x += math.cos(yaw) * side / FPS
+                z += -math.sin(yaw) * side / FPS
             h = opts.get("lift", None)
             y = h(t) if h else 0.0
             frames.append(pose)

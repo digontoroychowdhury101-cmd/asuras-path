@@ -140,3 +140,14 @@ What the reel shows (times are within each part):
 - **Working as asked:** the cloth follows the body in the clips and in the live fights, the orbs float around his head, and the P2 idle hovers.
 
 Remake: build the probe place (`tools/qa/ShenProbe.server.luau`); in play mode spawn and hold him; paste `tools/qa/shen_reel.luau` into the MCP Client datamodel; drive `live` / `catalogue` from there and the hold/damage ops from the Server datamodel. The MCP thread cannot fire remotes, so the server steps are sent separately. To record, give Terminal Screen Recording permission and launch the capture tool through Terminal. On this Mac, binaries started by Claude's shell are refused.
+
+## Full motion reel (all 64 clips)
+
+This complements the Studio reel above. That one shows how he really looks in the game; this one shows only motion, on a scrolling checker floor (so foot slide shows), from a fixed front and side.
+
+`shen_motion_reel_all_clips.mp4` plays every clip in turn: front (combat camera) on the left, side view on the right. Each clip is captioned with its number, phase, name and length, any open validator FIX, and whether you're watching the clip itself or the idle blending in and out. Timestamps are in `shen_motion_reel_index.md`.
+
+- **What it is:** the real baked clips, travelling at the game's locomotion rates, with cloth from the game's own `ClothSim`. His body is drawn as dots from the committed surface samples. It doesn't need the skinned GLBs, so any computer can render it.
+- **Colour key:** orange = right hand, blue = left hand, red = right foot, green = left foot, gold = glaive, dark = hair, white = beard.
+- **Limits:** limbs and glaive are exact. Robe, hair, beard, beads and mantle dots are blended over the nearest cloth bones, not the real skin weights. So use it to judge cloth *motion*, and confirm cloth *shape* (and hands through cloth) in Studio. No textures, so the P2 beard colour bug can't show here.
+- **Rebuild:** `python tools/animation/opening_cast/export.py shen`, then `python tools/animation/opening_cast/shen_reel.py`, then in Blender `-b --factory-startup --python tools/blender/shen_import/reel_proxy.py -- FRAMEDIR` and `reel_encode.py -- FRAMEDIR OUT.mp4`. On the Mac, `review.py reel_<clip> ...` renders the same shots on the real skinned mesh.

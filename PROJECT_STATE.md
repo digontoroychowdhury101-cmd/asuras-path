@@ -1,5 +1,7 @@
 **Shen movement reel (2026-11-06):** Recorded every clip plus live fights and the phase change in Studio (two 720p parts in his outputs/reel). Found: white see-through phase swap, P1 death never falls, one-handed carry, upright run, Flourish blade through head, dark phase 2 lighting. Next: fix these in shen_clips.py.
 
+**Shen full motion reel (2026-11-06, Windows):** All 64 clips in one captioned two-angle reel, cloth from the game's ClothSim, dot-body from the committed samples: `outputs/grandmaster-shen-2026-11-05/shen_motion_reel_all_clips.mp4`, timestamps in `shen_motion_reel_index.md`. Tools: `shen_reel.py`, `reel_proxy.py`, `reel_encode.py`. Next: creator reviews the reel and lists errors to fix.
+
 **Shen motion editable anywhere (2026-11-06):** Force-tracked his clip pipeline inputs (pose samples, cloth rigs, piece maps) and wrote the pull, export, publish and register steps in his RESULTS.md. A fresh clone re-baked clips. Next: fix his remaining movement and fluidity errors.
 
 **Grandmaster Shen in game (2026-11-06):** Both skinned forms imported and bound, 64 clips and 16 sound layers published, BossCloth fixed for the importer's turned skeleton. Single-client Studio fight passed: phases, transition, defeat, reset, retry. Next: two-client test on the other computer, device profiling.
