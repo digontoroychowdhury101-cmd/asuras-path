@@ -124,3 +124,19 @@ The inputs the clip tools need are committed (`work/shen_import/samples_p1/p2.np
 2. `python3 tools/animation/opening_cast/export.py shen GrandmasterShen_P1_Idle ...` re-bakes only the named clips; it prints OK or FIX per clip. Omit names to rebuild all 64.
 3. With Studio open in Edit mode and signed in as Sheashing123: `python3 tools/animation/opening_cast/publish.py shen <STUDIO_ID> <clips>`, then `python3 tools/animation/opening_cast/register_shen.py`.
 4. `python3 tools/build.py`, commit and push. Only one computer should publish Shen clips at a time, since `published.json` and the registry are shared.
+
+## Movement reel (2026-11-06)
+
+Recorded in Studio play (single client) with the real skin, `BossCloth` and lighting. `reel/shen_reel_part1_phase1.mp4` (3:50) covers a 25 s live fight, then every phase 1 clip. `reel/shen_reel_part2_phase2.mp4` (4:03) covers the phase change, a live phase 2 fight, then every phase 2 clip. Loops orbit at 1x; one-shots play at 1x from the front, then at 0.5x from the side. A caption names each clip and shows open validator flags. 1080p master (not in git): `work/reels/shen_reel_full_1080p.mp4`.
+
+What the reel shows (times are within each part):
+- **Phase change (part 2, 0:00-0:05):** the swap is instant (Strike to phase 2 idle in about 1 s). He then renders white and see-through for about 3 s. During the session Studio kept logging "Asset content representation is being generated" for three mesh ids, so his new meshes may still be processing. Caveat: the AI was held and the damage was seeded, so the transform performance may have been skipped by the setup.
+- **P1 Death (part 1, 3:38-3:49):** he sinks to one knee and stays up; he never falls. P2 Death (part 2, 3:49-4:00) collapses fully.
+- **Grip:** walk and run carry the glaive one-handed, trailing at his side (part 1, 0:50-1:00 and 1:28-1:35). Several 0.5x hit reactions are one-handed too.
+- **Run (part 1, 1:28-1:35):** reads as a quick walk: upright, no forward lean, legs hidden by the robe.
+- **Flourish (part 1, 2:11-2:19):** the blade passes through his head, as the validator says. FlowingJian (2:25-2:37) swings the glaive vertically across his face.
+- **Light attacks:** L1 and L2 are 0.40 and 0.42 s with little windup, which may be hard to read and parry.
+- **Phase 2 readability:** the arena's red phase 2 lighting leaves him very dark, so hair-only black and the face cannot be judged from this footage.
+- **Working as asked:** the cloth follows the body in the clips and in the live fights, the orbs float around his head, and the P2 idle hovers.
+
+Remake: build the probe place (`tools/qa/ShenProbe.server.luau`); in play mode spawn and hold him; paste `tools/qa/shen_reel.luau` into the MCP Client datamodel; drive `live` / `catalogue` from there and the hold/damage ops from the Server datamodel. The MCP thread cannot fire remotes, so the server steps are sent separately. To record, give Terminal Screen Recording permission and launch the capture tool through Terminal. On this Mac, binaries started by Claude's shell are refused.
