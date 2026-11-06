@@ -223,16 +223,20 @@ local function burst(s: Session)
 end
 
 -- ------------------------------------------------------------------ the blood wave: a sheet whose leading edge is the server's own
+local WAVE_HEIGHT = { 0.55, 0.3 } -- studs: the leading edge, then the trailing band
+
 local function startWave(s: Session, d: any)
 	local density = tier()
 	local start = tonumber(d.start) or now()
 	local origin = Vector3.new(tonumber(d.x) or 0, tonumber(d.y) or 0.3, tonumber(d.z) or 0)
 	local wave: Wave = { Start = start, Speed = tonumber(d.speed) or 38, Radius = tonumber(d.radius) or 90, Origin = origin, Parts = {}, Cframes = {}, Layers = density.WaveLayers, Segments = density.WaveSegments }
 	local folder = holder()
+	-- (2026-11-06) a low band on the floor at the true danger edge, not a wall: it must not hide his feet or the player's footing. The leading edge is pale so it
+	-- stays apart from his red blade and the red-lit floor; the trailing band is dark. The same on every tier and with reduced effects (only the layer count changes)
 	for layer = 1, wave.Layers do
 		for _ = 1, wave.Segments do
-			local color = if layer == 1 then Color3.fromRGB(232, 40, 38) else Color3.fromRGB(70, 6, 12)
-			local p = bit(folder, origin, Vector3.new(1, if layer == 1 then 3.4 else 2, 0.7), color, Enum.Material.Neon, if layer == 1 then 0.08 else 0.35)
+			local color = if layer == 1 then Color3.fromRGB(255, 186, 170) else Color3.fromRGB(96, 8, 16)
+			local p = bit(folder, origin, Vector3.new(1, WAVE_HEIGHT[math.min(layer, 2)], 0.7), color, Enum.Material.Neon, if layer == 1 then 0.15 else 0.45)
 			table.insert(wave.Parts, p)
 		end
 	end
@@ -251,7 +255,7 @@ local function stepWaves(s: Session, clock: number)
 		table.clear(wave.Cframes)
 		for layer = 1, wave.Layers do
 			local r = math.max(radius - (layer - 1) * 2.6, 0.5)
-			local y = if layer == 1 then 1.7 else 1
+			local y = WAVE_HEIGHT[math.min(layer, 2)] * 0.5
 			for k = 1, wave.Segments do
 				local a = (k - 0.5) / wave.Segments * math.pi * 2
 				table.insert(wave.Cframes, CFrame.new(wave.Origin + Vector3.new(math.cos(a) * r, y, math.sin(a) * r)) * CFrame.Angles(0, -a, 0))
@@ -261,7 +265,7 @@ local function stepWaves(s: Session, clock: number)
 		local arc = radius * 2 * math.pi / wave.Segments * 1.04
 		if #wave.Parts > 0 and math.abs(wave.Parts[1].Size.Z - arc) > 0.8 then
 			for j, p in wave.Parts do
-				p.Size = Vector3.new(0.9, if j <= wave.Segments then 3.4 else 2, math.max(arc, 0.7))
+				p.Size = Vector3.new(0.9, WAVE_HEIGHT[if j <= wave.Segments then 1 else 2], math.max(arc, 0.7))
 			end
 		end
 	end

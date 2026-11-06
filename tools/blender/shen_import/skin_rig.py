@@ -675,11 +675,18 @@ def build(phase):
                  cap("LowerTorso", a(J.PELVIS) + (0, -0.25, 0), J.WAIST, 0.58, False), cap("UpperTorso", J.WAIST, a(J.NECK) + (0, -0.2, 0), 0.62, False), cap("Head", a(J.NECK) + (0, 0.3, 0), a(J.NECK) + (0, 0.6, -0.05), 0.42, False),
                  cap("RightLowerLeg", a(J.RKN) + (0, -0.2, 0), a(J.RKN) + (0, -0.5, 0), 0.76), cap("LeftLowerLeg", a(J.LKN) + (0, -0.2, 0), a(J.LKN) + (0, -0.5, 0), 0.76),   # the baggy trouser blousing below the knee
                  # what the arms and the glaive sweep through: the cloth lattice is coarse, so these stand a little proud of the arm itself
-                 cap("RightUpperArm", J.RSH, J.REL, 0.34), cap("RightLowerArm", J.REL, J.RWR, 0.34), cap("RightHand", J.RWR, a(J.RWR) + unit(a(J.RGRIP) - a(J.RWR)) * 0.3, 0.42),
-                 cap("LeftUpperArm", J.LSH, J.LEL, 0.34), cap("LeftLowerArm", J.LEL, J.LWR, 0.34), cap("LeftHand", J.LWR, J.LHAND, 0.42),
-                 cap("Glaive", J.BUTT, J.SOCKET, 0.3)]
-    arms = [9, 10, 11, 12, 13, 14, 15]
-    hits = {"Coat": [0, 1, 2, 3, 4, 7, 8] + arms, "Under": [0, 1, 2, 3, 4, 7, 8] + arms, "Hair": [5, 6, 15], "Beard": [5], "Beads": [5, 9, 12], "Mantle": [5, 15], "Sleeve": [], "Rag": [15], "Orbs": [], "Fingers": []}
+                 # (2026-11-06) not firm: a sleeve, rag or mantle that rests on an arm in the sculpt keeps that clearance instead of being lifted off it
+                 cap("RightUpperArm", J.RSH, J.REL, 0.34, False), cap("RightLowerArm", J.REL, J.RWR, 0.34, False), cap("RightHand", J.RWR, a(J.RWR) + unit(a(J.RGRIP) - a(J.RWR)) * 0.3, 0.42, False),
+                 cap("LeftUpperArm", J.LSH, J.LEL, 0.34, False), cap("LeftLowerArm", J.LEL, J.LWR, 0.34, False), cap("LeftHand", J.LWR, J.LHAND, 0.42, False),
+                 cap("Glaive", J.BUTT, J.SOCKET, 0.3),
+                 # (2026-11-06) the blade is solid to the cloth as well as the haft
+                 cap("Glaive", a(J.SOCKET) + unit(a(J.SOCKET) - a(J.BUTT)) * 0.2, a(J.SOCKET) + unit(a(J.SOCKET) - a(J.BUTT)) * 2.2, 0.22, False)]
+    arms = [9, 10, 11, 12, 13, 14, 15, 16]
+    # (2026-11-06) every garment avoids every volume it can reach: hair and beads the arms and weapon, sleeves the torso and weapon; the mantle lies on the upper arm, whose firm volume would lift it off (a garment resting inside a volume at rest keeps that clearance, ClothSim)
+    # (2026-11-06, later) the arm volumes are no longer firm, so every garment avoids both arms too: the torn phase 2 sleeves (Rag) also the legs and hips
+    legs = [0, 1, 2, 3, 4, 7, 8]
+    hits = {"Coat": legs + arms, "Under": legs + arms, "Hair": [5, 6, 15, 16] + arms, "Beard": [5, 15, 16] + arms, "Beads": [5, 15, 16] + arms,
+            "Mantle": [5, 15, 16] + arms, "Sleeve": [4, 5, 15, 16] + arms, "Rag": [5, 15, 16] + legs + arms, "Orbs": [], "Fingers": []}
     cloth = {"phase": phase, "bones": bones, "sheets": cloth_sheets, "particles": particles, "links": [[i, j, round(k, 3)] for i, j, k in links], "colliders": colliders, "hits": hits, "limbs": LIMBS + ["Glaive"], "grip": grip}
     # rest length of every link
     for L in cloth["links"]:

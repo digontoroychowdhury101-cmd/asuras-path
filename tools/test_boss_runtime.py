@@ -223,7 +223,7 @@ end
 local PhaseCoordinator=(function()
  local BossTactics=registry.BossTactics
  local Handoff=registry.EncounterHandoff
- local BossAppearance={phase=function(model:any,set:any) model:SetAttribute("AsuraAnimationSet",set) end}
+ local BossAppearance={phase=function(model:any,set:any) model:SetAttribute("AsuraAnimationSet",set) end,stage=function(model:any,index:number) model:SetAttribute("AsuraStagedPhase",index) end}
  local Schema={isStunned=function(state:string) return state=="StanceBroken" or state=="Hitstun" end}
  local Telegraph={shockwave=function(wave:any,t:number) return t,t+math.max(0.45,wave.Windup) end}
  local function setMode(agent:any,mode:string,_time:number) agent.Mode=mode end

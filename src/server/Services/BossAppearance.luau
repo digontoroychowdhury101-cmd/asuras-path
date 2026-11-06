@@ -9,6 +9,7 @@ local ServerStorage = game:GetService("ServerStorage")
 local Shared = game:GetService("ReplicatedStorage"):WaitForChild("AsurasPath").Shared
 local Characters = require(script.Parent.CharacterService)
 local Kit = require(script.Parent.CostumeKit)
+local Skin = require(script.Parent.BossSkin)
 local Bodies = require(Shared.BossBodies)
 local Schema = require(Shared.CostumeSchema)
 local AnimationRules = require(Shared.BossAnimationRules)
@@ -109,6 +110,12 @@ function Appearance.phase(model: Model, animationSet: string?, index: number?)
 	model:SetAttribute("AsuraAnimationSet", animationSet or "Boss")
 	Kit.phase(model, index or 1)
 	animationStatus(model)
+end
+
+-- (2026-11-06) The next form, bound hidden on every client ahead of its reveal (BossSkin.stage); Appearance.phase at the reveal shows it.
+function Appearance.stage(model: Model, index: number)
+	local ok, err = pcall(Skin.stage, model, index)
+	if not ok then warn("[Asura AV] " .. model.Name .. " could not stage phase " .. index .. ": " .. tostring(err)) end
 end
 
 return Appearance

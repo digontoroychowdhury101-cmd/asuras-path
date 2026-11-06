@@ -2,7 +2,7 @@
 
     python3 tools/qa/shen_cloth_report.py SHOT [SHOT ...]      (shots from tools/animation/opening_cast/cloth_bake.py)
 
-The game's cloth (ClothSim) is a lattice of particles joined by links. Every sampled point - each free particle and the middle of each link - is tested against
+The game's cloth (ClothSim) is a lattice of particles joined by links. Every sampled point - each free particle and the middle of each surface link (edges and diagonals, not bend links) - is tested against
 solid volumes: the body capsules the simulation uses (at 85 percent radius, so a robe resting on him is not counted) and the real weapon (haft r 0.06, blade r 0.14 rig units).
 A point that was outside a volume at rest and is inside it now is phasing through. Prints, per sheet kind and volume group, the share of frames with any
 phasing point and the deepest one (rig units; 1 rig unit = 1.3 studs). Points that start inside a volume at rest are skipped, as the simulation itself does.
@@ -50,7 +50,9 @@ def report(shot):
     kind = {s["name"]: s["kind"] for s in cloth["sheets"]}
     free = [i for i, p in enumerate(P) if "bone" in p and not p.get("finger") and not p.get("orb")]
     bone_name = {i: cloth["bones"][P[i]["bone"]]["name"] for i in free}
-    links = [(a, b) for a, b, *_ in cloth["links"] if (a in bone_name or b in bone_name)]
+    # the cloth surface between particles: edges and quad diagonals of one sheet. A bend link (two rows apart) spans a fold, so its middle is not on the cloth
+    surface = lambda a, b: P[a]["sheet"] == P[b]["sheet"] and abs(P[a]["r"] - P[b]["r"]) <= 1
+    links = [(a, b) for a, b, *_ in cloth["links"] if (a in bone_name or b in bone_name) and surface(a, b)]
     rest = np.array([p["at"] for p in P], float)
     vols = volumes(cloth)
     # sample points: free particles, then link midpoints; each tagged with its sheet kind

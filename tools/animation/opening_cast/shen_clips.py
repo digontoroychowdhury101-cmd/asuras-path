@@ -580,6 +580,32 @@ def build(phase):
         down = dict(hov=0.0) if floating else {}
         bowed_h = H(14, -32)    # bowing, his hands slide back to the butt of the haft, so none of it comes back through his chest
         bowed = dict(rp=(0.9, -0.6, -0.95), haft=bowed_h, face=E(bowed_h, (0.2, -0.3, 0.9)), rsl=RSL, lsl=LSL)
+        def death():
+            """(2026-11-06) A completed death: struck, the knees go, he kneels for a breath on the haft, then the support goes out of him: the hands open, the glaive
+            drops and clatters flat beside him, his left hand goes out to the floor, and he falls forward onto his chest, head turned. Impact, a small rebound, and
+            a lifeless rest that holds until the fade (BossAnimationRules.DeathFadeAt 2.6 s): the fall is complete by 2.0 s so it is seen. Body, hands and weapon
+            rest on the floor, none of them through it. Phase 2 drops out of its hover first and lets go of its corruption as it falls; its orbs fall with him
+            (ClothSim.drop)."""
+            lie_w = dict(wfree=1.0, wrp=(2.24, -2.92, -1.57), whaft=(0.61, 0.0, -0.79), wface=(0.79, 0.0, 0.61))
+            fallen = dict(pel=(-0.2, -2.15, -0.75), pelR=(86, 16, -35), chest=(12, 10, -14), neck=(-25, 50, 0),
+                          rf=(0.3, 1.78, 0.43, 12, -80), lf=(-0.4, 1.66, 0.42, -14, -76), rknee=(0.0, -1.0, 0.15), lknee=(0.0, -1.0, 0.15),
+                          relb=(0.3, 1.0, 0.2), rt=(0.9, -0.3, -0.5), rha=(40, 0, 0), lhw=0.0, ltw=1.0, lt=(-0.5, -0.5, -0.9), lelb=(-0.6, 0.6, 0.3), lha=(-40, 0, 0), **lie_w)
+            toppling_h = H(-45, -14)
+            toppling = dict(pel=(-0.08, -1.45, -0.32), pelR=(46, 10, -14), chest=(16, 8, -8), neck=(-8, 26, 0), rf=(0.14, 1.3, 0.3, 4, -66), lf=(-0.15, 0.7, 0.2, -6, -42),
+                            rknee=(0.0, -0.7, -0.6), lknee=(0.0, -0.5, -0.8), rp=(0.8, -1.9, -1.55), haft=toppling_h, face=E(toppling_h, (0.2, -0.4, -0.9)),
+                            wfree=0.35, relb=(0.4, 0.6, 0.4), rt=(0.6, -0.95, -0.8), rha=(20, 0, 0), lhw=0.35, ltw=0.65, lt=(-0.35, -1.15, -0.75), lelb=(-0.7, 0.3, 0.4), lha=(-25, 0, 0))
+            impact = {**fallen, "pel": (-0.2, -2.19, -0.77), "chest": (9, 10, -14), "neck": (-21, 50, 0)}
+            rebound = {**fallen, "pel": (-0.2, -2.1, -0.74), "chest": (14, 10, -14)}
+            bounce = dict(wrp=(2.24, -2.85, -1.57), whaft=(0.6, 0.08, -0.79))
+            return Clip(rg, P + "Death", 3.0, [K(0, **READY, **({"hov": H0 * 0.5} if floating else {})), K(0.24, "snap", pel=(0, -0.16, 0.4), pelR=(-12, 6, 0), chest=(-18, 6, 0), neck=(16, 0, 0), **down),
+                                                K(0.75, "io", pel=(0.03, -0.55, 0.3), pelR=(6, 6, 0), chest=(10, 6, 0), neck=(4, 0, 0), rf=(0.1, 0.7, 0.32, 0, -30), lf=(0.05, -0.4, 0, 0, 0)),
+                                                K(1.15, "in", **{k: v for k, v in knee.items() if k not in ("neck",)}, neck=(-8, 0, 0)),
+                                                K(1.35, "io", lhw=1.0, ltw=0.0, **{**lie_w, "wfree": 0.0}),
+                                                K(1.55, "in", **toppling), K(1.84, "in", **impact), K(1.96, "out", **{**rebound, **bounce}), K(2.1, "in", **{**fallen, **lie_w}),
+                                                K(2.4, "io", **fallen), K(3.0, "io", **fallen)],
+                        priority="Action4", feet_free=[(0, 3)], airborne=floating, authored_feet=True, raw_after=2.4, still_after=2.2, uncorrupt=(1.15, 1.84), floor_body=True,
+                        notes="Killed: staggers, sinks to the right knee on the haft, lets go: the glaive clatters flat beside him and he falls forward onto his chest, left hand out; a small rebound and he lies still before the fade.")
+
         return [
             hit("HitLightFront", (0.0, 0.2), 0, -5, 0), hit("HitLightBack", (0.0, -0.2), 0, 8, 0), hit("HitLightLeft", (0.2, 0.0), -9, -1, 4), hit("HitLightRight", (-0.2, 0.0), 9, -1, -4),
             Clip(rg, P + "PostureBreak", 1.0, [K(0, **READY, **({"hov": H0} if floating else {})), K(0.14, "snap", pel=(0.02, -0.15, 0.42), pelR=(-14, 7, 0), chest=(-20, 8, 0), neck=(13, 0, 0), rf=(0.2, 0.7, 0, -24, 0), **({"hov": H0 * 0.6} if floating else {})),
@@ -588,10 +614,7 @@ def build(phase):
             Clip(rg, P + "DeathblowVictim", 2.2, [K(0, **knee), K(0.22, "snap", pel=(0.05, -0.8, 0.32), pelR=(-9, 4, 0), chest=(-14, 6, 0), neck=(15, 0, 0)), K(0.9, "io", pel=(0.05, -0.92, 0.28), pelR=(9, 4, 0), chest=(14, 6, 0), neck=(0, 0, 0)),
                                                   K(1.5, "in", pel=(0.05, -1.02, 0.16), pelR=(20, 4, 0), chest=(29, 6, 0), neck=(-14, 0, 0), **bowed), K(2.2, "io", pel=(0.05, -1.06, 0.12), pelR=(24, 4, 0), chest=(34, 6, 0), neck=(-20, 0, 0), **bowed)],
                  priority="Action4", feet_free=[(0, 2.2)], authored_feet=True, notes="Takes the deathblow on the knee: head snaps back, then the old body bows over the haft."),
-            Clip(rg, P + "Death", 3.0, [K(0, **READY, **({"hov": H0 * 0.5} if floating else {})), K(0.24, "snap", pel=(0, -0.16, 0.4), pelR=(-12, 6, 0), chest=(-18, 6, 0), neck=(16, 0, 0), **down),
-                                        K(0.85, "io", pel=(0.03, -0.55, 0.3), pelR=(6, 6, 0), chest=(10, 6, 0), neck=(4, 0, 0), rf=(0.1, 0.7, 0.32, 0, -30), lf=(0.05, -0.4, 0, 0, 0)),
-                                        K(1.35, "in", **{k: v for k, v in knee.items() if k not in ("neck",)}, neck=(-8, 0, 0)), K(2.2, "io", pel=(0.05, -1.04, 0.1), pelR=(25, 6, 0), chest=(36, 6, 0), neck=(-24, 0, 0), **bowed), K(3.0, "io", pel=(0.05, -1.06, 0.08), pelR=(29, 6, 0), chest=(40, 6, 0), neck=(-28, 0, 0), **bowed)],
-                 priority="Action4", feet_free=[(0, 3)], airborne=floating, authored_feet=True, notes="Killed: staggers, sinks to the right knee and dies kneeling on the haft; the body fades there."),
+            death(),
         ]
 
     # ---------------------------------------------------------------- the transformation: both forms meet at one pose at Transition.Reveal, on the ground; phase 2 then rises

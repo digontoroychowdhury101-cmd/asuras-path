@@ -69,6 +69,11 @@ Rules.Contacts = table.freeze({
 		Guandao_Art = { 0.317 },
 	}),
 } :: { [string]: { [string]: { number } } })
+-- (2026-11-06) Seconds from a boss light swing's cue (BossSwing: the clip's first frame) to its impact, for looks whose lights must be readable.
+-- Measured: Shen's lights land 0.15 s after the cue (Guandao startup 12 frames / tempo 1.4), under a player's ~0.25 s reaction, so the cut
+-- landed before it could be read. The AI delays the swing's start (Telegraph.plan) so impact is at least this long after the cue; the client
+-- plays the windup at its slowest sync rate to meet it. Move ids, frame data, contacts and parry windows are unchanged.
+Rules.LightLead = table.freeze({ GrandmasterShen = 0.25 } :: { [string]: number })
 -- How far a track may be sped up or slowed to make its contact; beyond that it holds or skips ahead.
 Rules.SyncSpeed = table.freeze({ Min = 0.6, Max = 1.6 })
 

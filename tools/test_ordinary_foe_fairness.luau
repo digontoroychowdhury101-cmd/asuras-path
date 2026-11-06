@@ -70,6 +70,21 @@ for _, move in { monkLight, monkHeavy } do
 	check("F-03 idle target unchanged for " .. move.Id, a1 == a2 and i1 == i2)
 end
 
+-- F-06 a boss look's light lead (BossAnimationRules.LightLead, Grandmaster Shen 0.25 s): impact comes no sooner than the lead after the warning;
+-- without one the schedule is unchanged, and a lead never shortens a Heavy.
+do
+	local t0 = 20
+	local a0, w0, i0 = Telegraph.plan(monkLight, t0, PLAYER_REACTION)
+	local a1, w1, i1 = Telegraph.plan(monkLight, t0, PLAYER_REACTION, nil, 0.25)
+	check("F-06 light lead holds the impact >= 0.25 s after the warning", i1 - w1 >= 0.25 - 1e-6, i1 - w1)
+	check("F-06 light lead only delays the attack", a1 >= a0 and i1 >= i0)
+	local a2, _, i2 = Telegraph.plan(monkLight, t0, PLAYER_REACTION, nil, nil)
+	check("F-06 no lead leaves the schedule unchanged", a2 == a0 and i2 == i0)
+	local _, _, h0 = Telegraph.plan(monkHeavy, t0, PLAYER_REACTION)
+	local _, _, h1 = Telegraph.plan(monkHeavy, t0, PLAYER_REACTION, nil, 0.25)
+	check("F-06 a light lead does not touch a Heavy", h0 == h1)
+end
+
 -- F-04 wiring: openers pass the target's readiness, follow-ups and bosses do not.
 check("F-04 ordinary openers count the lead from the target's readiness",
 	string.find(source, "local ready = if agent.Boss then nil else Combat.defendableAt(target.Fighter, now)", 1, true) ~= nil

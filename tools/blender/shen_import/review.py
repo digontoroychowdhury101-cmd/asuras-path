@@ -85,9 +85,11 @@ co = bpy.data.objects.new("c", cam)
 sc.collection.objects.link(co)
 sc.camera = co
 SPOTS = {"head": (3.2, 7.5, 3.2), "face": (1.1, 3.2, 0.75), "combat": (9.0, 11.5, 1.6), "side": (10.5, 0, -0.2), "lside": (-10.5, 0, -0.2), "front": (0, 10.5, 0.0), "back": (0, -10.5, 0.0), "quarter": (7.5, 7.5, 0.4), "backq": (-7.0, -8.0, 0.8), "low": (7, 8, -2.0), "lhand": (-1.6, 2.6, 0.9), "lhandside": (-3.0, 0.4, 0.3), "lhandlow": (-1.2, 2.0, -1.6), "lhandtop": (-0.5, 0.7, 2.4), "lhandfront": (0.2, 3.0, 0.1), "rhand": (2.2, 2.2, 0.9)}
-BASE = Vector(SPOTS[camera]) + Vector((0, 0, 1.55 if phase == 2 else 0))   # phase 2 floats
+# phase 2 floats, so the camera rises with him; SHEN_REVIEW_GROUNDED=1 frames him on the floor instead (his deaths)
+floats = phase == 2 and os.environ.get("SHEN_REVIEW_GROUNDED") != "1"
+BASE = Vector(SPOTS[camera]) + Vector((0, 0, 1.55 if floats else 0))
 co.location = BASE
-co.rotation_euler = (Vector((0.75 if camera == "face" else 0, 0, (2.45 if camera == "face" else 3.4) if phase == 2 and camera in ("head", "face") else 1.9 if camera in ("head", "face") else (0.9 if phase == 2 else -0.45))) - BASE).to_track_quat("-Z", "Y").to_euler()
+co.rotation_euler = (Vector((0.75 if camera == "face" else 0, 0, (2.45 if camera == "face" else 3.4) if phase == 2 and camera in ("head", "face") else 1.9 if camera in ("head", "face") else (0.9 if floats else -0.45))) - BASE).to_track_quat("-Z", "Y").to_euler()
 frames = data["frames"]
 first, last, step = span[0] or 0, span[1] if span[1] is not None else len(frames) - 1, span[2] or 1
 pose_bones = arm.pose.bones

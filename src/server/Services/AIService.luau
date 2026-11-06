@@ -118,13 +118,13 @@ function Telegraph.classify(move: Combat.MoveData): TelegraphClass
 	return "Light"
 end
 
-function Telegraph.lead(class: TelegraphClass, reactionFloor: number): number
+function Telegraph.lead(class: TelegraphClass, reactionFloor: number, lightLead: number?): number
 	if class == "Perilous" then
 		return math.max(PERILOUS_LEAD, reactionFloor)
 	elseif class == "Heavy" then
 		return math.max(Tempo.HeavyMinSeconds, reactionFloor)
 	end
-	return Tempo.LightMinSeconds
+	return math.max(Tempo.LightMinSeconds, lightLead or 0) -- a boss look may need its lights read (BossAnimationRules.LightLead)
 end
 
 -- Returns (attackAt, warnAt, impactAt). The warning is published at `now`; if the move's own startup
@@ -132,9 +132,9 @@ end
 -- the target can first answer (Combat.defendableAt); the lead is counted from it, so a target still in
 -- hitstun gets its full reaction floor once it can act (Windows acceptance 2026-11-03: a monk's Heavy
 -- chosen during the player's heavy hitstun landed 0.14-0.24 s after the player could act).
-function Telegraph.plan(move: Combat.MoveData, now: number, reactionFloor: number, ready: number?): (number, number, number)
+function Telegraph.plan(move: Combat.MoveData, now: number, reactionFloor: number, ready: number?, lightLead: number?): (number, number, number)
 	local class = Telegraph.classify(move)
-	local lead = Telegraph.lead(class, reactionFloor)
+	local lead = Telegraph.lead(class, reactionFloor, lightLead)
 	local startup = move.Timing.StartupSeconds
 	local from = math.max(now, ready or now)
 	local attackAt = Tempo.quantizeUp(now + math.max(0, from - now + lead - startup))
@@ -300,7 +300,9 @@ end
 
 local function queueAttack(agent: Agent, f: Combat.Fighter, action: "Light" | "Heavy" | "WeaponArt", now: number, ready: number?)
 	local move = Combat.selectMove(f, action, now)
-	local attackAt, _, impactAt = Telegraph.plan(move, now, PLAYER_REACTION, ready)
+	local e = if agent.Boss then Characters.GetEntity(agent.Id) else nil
+	local look = e and e.Model:GetAttribute("AsuraLookKey")
+	local attackAt, _, impactAt = Telegraph.plan(move, now, PLAYER_REACTION, ready, if type(look) == "string" then AnimationRules.LightLead[look] else nil)
 	publishTelegraph(agent, move, Telegraph.classify(move), impactAt)
 	if attackAt <= now + 1e-6 then
 		Characters.PushIntent(agent.Id, action)
@@ -598,6 +600,7 @@ local function beginTransition(agent: Agent, boss: BossDef, index: number, self:
 	-- the body changes under the camera, at the reveal if the look has one (checked in updateBoss, so a reset simply drops it); the moveset at the end
 	if transition.Reveal then
 		agent.RevealAt = now + transition.Reveal
+		BossAppearance.stage(self.Model, index) -- the new body reaches every client hidden now, and shows whole at the reveal
 	else
 		BossAppearance.phase(self.Model, phase.AnimationSet, index)
 	end

@@ -12,24 +12,25 @@
    "keyframes": 59,
    "notes": "Abbot's Sweep: the weight sinks into the hip, then a wide low wheel at shin height with a committed follow-through; jump it.",
    "validation": {
-    "arm_reach": 0.020858167856200094,
-    "left_grip": 0.09384071990029264,
+    "arm_reach": 0.0,
+    "left_grip": 0.11070900588122257,
     "left_reach": 0.0,
     "leg_reach": 0.0,
-    "lowest": -3.1918287277221684,
-    "weapon_low": -2.3074058036503438,
+    "lowest": -3.191828727722168,
+    "weapon_low": -2.3003194079090274,
     "planted_slide": 0.0,
     "weapon_through_head": 0.0,
     "weapon_through_chest": 0.0,
-    "left_off_haft": 0.032566040966760315,
+    "left_off_haft": 0.04991640758212649,
     "loop_seam_deg": 0.0,
-    "wrist_right": 78.51360649293797,
-    "wrist_left": 82.83154810330576,
-    "right_off_haft": 0.02085816785620016
+    "wrist_right": 72.73400324453415,
+    "hand_spacing": 0.752,
+    "wrist_left": 83.65429045310685,
+    "right_off_haft": 8.08254562088053e-16
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://122912129415413"
   },
   "GrandmasterShen_P1_Death": {
    "slot": "GrandmasterShen_P1_Death",
@@ -38,27 +39,28 @@
    "priority": "Action4",
    "move": null,
    "contacts": [],
-   "keyframes": 59,
-   "notes": "Killed: staggers, sinks to the right knee and dies kneeling on the haft; the body fades there.",
+   "keyframes": 65,
+   "notes": "Killed: staggers, sinks to the right knee on the haft, lets go: the glaive clatters flat beside him and he falls forward onto his chest, left hand out; a small rebound and he lies still before the fade.",
    "validation": {
-    "arm_reach": 0.0,
-    "left_grip": 0.10192796009020277,
+    "arm_reach": 0.15938444873556754,
+    "left_grip": 0.03723500577731009,
     "left_reach": 0.0,
-    "leg_reach": 0.0,
-    "lowest": -3.191828727722169,
-    "weapon_low": -3.159718109784164,
+    "leg_reach": 0.03575909405871114,
+    "lowest": -3.185583703511934,
+    "weapon_low": -3.181458257576315,
     "planted_slide": 0.0,
     "weapon_through_head": 0.0,
-    "weapon_through_chest": 0.14897934609188618,
-    "left_off_haft": 0.06878277654946079,
+    "weapon_through_chest": 0.0,
+    "left_off_haft": 0.0267656135893693,
     "loop_seam_deg": 0.0,
-    "wrist_right": 59.42624882931777,
-    "wrist_left": 74.72038679033749,
-    "right_off_haft": 8.527784864785346e-16
+    "wrist_right": 82.2232088634323,
+    "hand_spacing": 0.845,
+    "wrist_left": 54.07816074731862,
+    "right_off_haft": 0.0032543524484917354
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://101931218124886"
   },
   "GrandmasterShen_P1_DeathblowVictim": {
    "slot": "GrandmasterShen_P1_DeathblowVictim",
@@ -67,29 +69,28 @@
    "priority": "Action4",
    "move": null,
    "contacts": [],
-   "keyframes": 46,
+   "keyframes": 62,
    "notes": "Takes the deathblow on the knee: head snaps back, then the old body bows over the haft.",
    "validation": {
     "arm_reach": 0.0,
-    "left_grip": 0.10696064399143346,
+    "left_grip": 0.07218880154592466,
     "left_reach": 0.0,
     "leg_reach": 0.0,
     "lowest": -3.191828727722169,
-    "weapon_low": -3.1619274372322876,
+    "weapon_low": -3.1814183539193115,
     "planted_slide": 0.0,
     "weapon_through_head": 0.0,
-    "weapon_through_chest": 0.2590421190898766,
-    "left_off_haft": 0.07333613453349105,
+    "weapon_through_chest": 0.0,
+    "left_off_haft": 0.06658306974791467,
     "loop_seam_deg": 0.0,
-    "wrist_right": 48.33507192301215,
-    "wrist_left": 90.35903937663481,
-    "right_off_haft": 7.771561172376096e-16
+    "wrist_right": 81.73677707300524,
+    "hand_spacing": 0.82,
+    "wrist_left": 52.1632306641691,
+    "right_off_haft": 9.155133597044475e-16
    },
-   "problems": [
-    "weapon 0.26 through his chest"
-   ],
+   "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://91202694327075"
   },
   "GrandmasterShen_P1_Feint": {
    "slot": "GrandmasterShen_P1_Feint",
@@ -100,27 +101,28 @@
    "contacts": [
     0.52
    ],
-   "keyframes": 32,
+   "keyframes": 33,
    "notes": "A cut that never comes: the whole body commits, the blade stops short at the top and he settles back. No warning is shown, because nothing is thrown.",
    "validation": {
-    "arm_reach": 0.08204041239615845,
-    "left_grip": 0.031505967132007484,
+    "arm_reach": 0.0,
+    "left_grip": 0.05426168647043683,
     "left_reach": 0.0,
     "leg_reach": 0.0,
-    "lowest": -3.191828727722169,
-    "weapon_low": -1.1475546682462223,
-    "planted_slide": 4.851458838986442e-05,
+    "lowest": -3.1918287277221693,
+    "weapon_low": -0.5874816617943583,
+    "planted_slide": 4.851458837737903e-05,
     "weapon_through_head": 0.0,
     "weapon_through_chest": 0.0,
-    "left_off_haft": 0.0310091876414838,
+    "left_off_haft": 0.044607570780239046,
     "loop_seam_deg": 0.0,
-    "wrist_right": 91.55425499310988,
-    "wrist_left": 42.09687603752762,
-    "right_off_haft": 0.08204041239615878
+    "wrist_right": 64.83963609042259,
+    "hand_spacing": 1.077,
+    "wrist_left": 68.24191950657043,
+    "right_off_haft": 7.468261590855957e-16
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://80237533072755"
   },
   "GrandmasterShen_P1_Flourish": {
    "slot": "GrandmasterShen_P1_Flourish",
@@ -134,26 +136,25 @@
    "keyframes": 49,
    "notes": "Three unhurried pinwheels of the glaive, caught back into both hands; plays between exchanges so the pause is never the same twice.",
    "validation": {
-    "arm_reach": 0.0,
-    "left_grip": 0.03613622136409833,
+    "arm_reach": 0.024570051057584807,
+    "left_grip": 0.00014028851756216624,
     "left_reach": 0.0,
     "leg_reach": 0.0,
     "lowest": -3.1918287277221684,
-    "weapon_low": -3.1793475341720407,
+    "weapon_low": -3.1611339410377517,
     "planted_slide": 0.0,
-    "weapon_through_head": 0.11100611744458394,
+    "weapon_through_head": 0.0,
     "weapon_through_chest": 0.0,
-    "left_off_haft": 0.019885223750674825,
+    "left_off_haft": 9.006673595595123e-16,
     "loop_seam_deg": 0.0,
-    "wrist_right": 63.68409040534069,
-    "wrist_left": 76.19680905180209,
-    "right_off_haft": 7.488863730937846e-16
+    "wrist_right": 94.07139571668317,
+    "hand_spacing": 0.851,
+    "wrist_left": 34.540560195549794,
+    "right_off_haft": 0.024570051057584752
    },
-   "problems": [
-    "weapon 0.11 through his head"
-   ],
+   "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://95086247485398"
   },
   "GrandmasterShen_P1_FlowingJian": {
    "slot": "GrandmasterShen_P1_FlowingJian",
@@ -171,20 +172,20 @@
    "notes": "Flowing Glaive: four linked curved cuts on the server's deflect pulses: a falling diagonal, its mirror on the way back, a rising cut, and an overhead finish, each flowing out of the last in a figure eight. Stable id FlowingJian.",
    "validation": {
     "arm_reach": 0.0,
-    "left_grip": 0.061679656622317225,
+    "left_grip": 0.13184752219011564,
     "left_reach": 0.0,
     "leg_reach": 0.11477316935445359,
     "lowest": -3.2276834365347167,
-    "weapon_low": -3.1976496579516986,
+    "weapon_low": -3.1636759041183424,
     "planted_slide": 0.0,
     "weapon_through_head": 0.0,
     "weapon_through_chest": 0.0,
-    "left_off_haft": 0.027309278163730723,
+    "left_off_haft": 0.060798467275274035,
     "loop_seam_deg": 0.0,
-    "wrist_right": 89.47190671012852,
-    "hand_spacing": 0.801,
-    "wrist_left": 73.49259389219328,
-    "right_off_haft": 9.757969893912614e-16
+    "wrist_right": 87.95472541498698,
+    "hand_spacing": 0.769,
+    "wrist_left": 95.64781122446423,
+    "right_off_haft": 1.0778315928076987e-15
    },
    "problems": [],
    "uploaded": false,
@@ -203,36 +204,37 @@
    "notes": "Crescent Moon Cyclone: he winds left, then the whole body pivots right on the balls of the feet with the blade at the end of both arms; the server's 360 degree blow.",
    "validation": {
     "arm_reach": 0.0,
-    "left_grip": 0.08291738832836537,
+    "left_grip": 0.03236780193851119,
     "left_reach": 0.0,
     "leg_reach": 0.0,
     "lowest": -3.1918287277221684,
-    "weapon_low": -0.8442658367094834,
+    "weapon_low": -0.5819834980575852,
     "planted_slide": 0.0,
     "weapon_through_head": 0.0,
     "weapon_through_chest": 0.0,
-    "left_off_haft": 0.03902310890672318,
+    "left_off_haft": 0.024632589513362068,
     "loop_seam_deg": 0.0,
-    "wrist_right": 63.69654346446527,
-    "wrist_left": 100.04829107456533,
-    "right_off_haft": 9.04082224356802e-16,
+    "wrist_right": 15.148375473421034,
+    "hand_spacing": 0.833,
+    "wrist_left": 45.94193168931378,
+    "right_off_haft": 5.715222817774257e-16,
     "strike": {
      "contact": [
-      1.34,
-      -0.39,
-      -5.66
+      1.37,
+      -0.42,
+      -5.6
      ],
-     "game_radius_at_contact": 7.56,
-     "game_radius_during_active": 7.93,
+     "game_radius_at_contact": 7.5,
+     "game_radius_during_active": 7.56,
      "server_reach": 11.5,
-     "reach_gap": 3.57,
-     "yaw_first": 13.4,
-     "yaw_last": 166.3
+     "reach_gap": 3.94,
+     "yaw_first": 13.7,
+     "yaw_last": -179.6
     }
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://113016961344542"
   },
   "GrandmasterShen_P1_Guandao_Heavy": {
    "slot": "GrandmasterShen_P1_Guandao_Heavy",
@@ -247,33 +249,33 @@
    "notes": "Green Dragon Reaping: winds until his back shows, then hips, chest and arms unwind in that order, and the blade carries his weight past the target.",
    "validation": {
     "arm_reach": 0.0,
-    "left_grip": 0.08970875004657675,
+    "left_grip": 0.15545495019140532,
     "left_reach": 0.0,
     "leg_reach": 0.0,
     "lowest": -3.191828727722168,
-    "weapon_low": -2.0099418103526228,
+    "weapon_low": -1.9618632844642225,
     "planted_slide": 0.0,
     "weapon_through_head": 0.0,
     "weapon_through_chest": 0.0,
-    "left_off_haft": 0.04064234801534468,
+    "left_off_haft": 0.06875643676831476,
     "loop_seam_deg": 0.0,
-    "wrist_right": 62.58658926518338,
-    "hand_spacing": 0.781,
-    "wrist_left": 91.9280709129721,
-    "right_off_haft": 1.1644117316690922e-15,
+    "wrist_right": 89.33701385363017,
+    "hand_spacing": 0.702,
+    "wrist_left": 106.75076281965603,
+    "right_off_haft": 9.155133597044475e-16,
     "strike": {
      "contact": [
-      -2.44,
-      0.5,
-      -5.34
+      -2.4,
+      0.6,
+      -5.2
      ],
-     "game_radius_at_contact": 7.64,
-     "game_radius_during_active": 7.83,
+     "game_radius_at_contact": 7.45,
+     "game_radius_during_active": 7.71,
      "server_reach": 12.0,
-     "reach_gap": 4.17,
-     "yaw_first": -24.6,
-     "yaw_last": 62.9,
-     "sweep_deg": 87.4
+     "reach_gap": 4.29,
+     "yaw_first": -24.7,
+     "yaw_last": 63.9,
+     "sweep_deg": 88.7
     }
    },
    "problems": [],
@@ -292,34 +294,34 @@
    "keyframes": 13,
    "notes": "Crescent Reap: left shoulder to right hip, hips driving first, the rear foot pivoting behind them.",
    "validation": {
-    "arm_reach": 0.09043414631237745,
-    "left_grip": 0.12688892315716171,
+    "arm_reach": 0.15930852582873656,
+    "left_grip": 0.061001861827040704,
     "left_reach": 0.0,
     "leg_reach": 0.0,
     "lowest": -3.1918287277221666,
-    "weapon_low": -3.1097364688279927,
+    "weapon_low": -3.0818197343286595,
     "planted_slide": 0.0,
     "weapon_through_head": 0.0,
     "weapon_through_chest": 0.0,
-    "left_off_haft": 0.09557903533901833,
+    "left_off_haft": 0.0566513105957844,
     "loop_seam_deg": 0.0,
-    "wrist_right": 56.302381445782736,
-    "hand_spacing": 0.785,
-    "wrist_left": 83.4211675542296,
-    "right_off_haft": 0.09043414631237703,
+    "wrist_right": 71.1037199936007,
+    "hand_spacing": 0.824,
+    "wrist_left": 68.17154969275488,
+    "right_off_haft": 0.15930852582873614,
     "strike": {
      "contact": [
-      -1.34,
-      0.89,
-      -5.72
+      -1.31,
+      0.83,
+      -5.53
      ],
-     "game_radius_at_contact": 7.64,
-     "game_radius_during_active": 7.64,
+     "game_radius_at_contact": 7.4,
+     "game_radius_during_active": 7.4,
      "server_reach": 10.5,
-     "reach_gap": 2.86,
-     "yaw_first": -13.2,
-     "yaw_last": 64.8,
-     "sweep_deg": 78.0
+     "reach_gap": 3.1,
+     "yaw_first": -13.4,
+     "yaw_last": 64.6,
+     "sweep_deg": 77.9
     }
    },
    "problems": [],
@@ -338,38 +340,39 @@
    "keyframes": 14,
    "notes": "Returning Tide: the blade drops to his left hip and climbs through to the right shoulder off the rear foot's step.",
    "validation": {
-    "arm_reach": 0.06948119047637125,
-    "left_grip": 0.08851997353527441,
+    "arm_reach": 0.0,
+    "left_grip": 0.08069973302020705,
     "left_reach": 0.0,
     "leg_reach": 0.0,
-    "lowest": -3.191828727722166,
-    "weapon_low": -1.71665903694226,
+    "lowest": -3.191828727722167,
+    "weapon_low": -1.8209855212353139,
     "planted_slide": 0.0,
     "weapon_through_head": 0.0,
     "weapon_through_chest": 0.0,
-    "left_off_haft": 0.04430625829121095,
+    "left_off_haft": 0.05890177209366343,
     "loop_seam_deg": 0.0,
-    "wrist_right": 87.33881689950711,
-    "wrist_left": 87.41795139544043,
-    "right_off_haft": 0.0694811904763708,
+    "wrist_right": 75.11105576137595,
+    "hand_spacing": 0.83,
+    "wrist_left": 63.65533420781229,
+    "right_off_haft": 7.28021923224409e-16,
     "strike": {
      "contact": [
-      -1.05,
-      -1.24,
-      -5.6
+      -0.79,
+      -1.35,
+      -5.42
      ],
-     "game_radius_at_contact": 7.41,
-     "game_radius_during_active": 7.95,
+     "game_radius_at_contact": 7.13,
+     "game_radius_during_active": 7.9,
      "server_reach": 10.5,
-     "reach_gap": 2.55,
-     "yaw_first": -10.6,
-     "yaw_last": 57.1,
-     "sweep_deg": 67.7
+     "reach_gap": 2.6,
+     "yaw_first": -8.3,
+     "yaw_last": 58.9,
+     "sweep_deg": 67.2
     }
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://126579601061367"
   },
   "GrandmasterShen_P1_Guandao_L3": {
    "slot": "GrandmasterShen_P1_Guandao_L3",
@@ -384,36 +387,37 @@
    "notes": "Heaven-Splitting Cleave: up over the head and straight down the server's line, a long step under it.",
    "validation": {
     "arm_reach": 0.0,
-    "left_grip": 0.11252045996539772,
+    "left_grip": 0.0,
     "left_reach": 0.0,
     "leg_reach": 0.0,
-    "lowest": -3.1918287277221666,
-    "weapon_low": -3.1457987090799264,
+    "lowest": -3.1918287277221675,
+    "weapon_low": -3.1351379273726474,
     "planted_slide": 0.0,
     "weapon_through_head": 0.0,
     "weapon_through_chest": 0.0,
-    "left_off_haft": 0.08607868423552349,
+    "left_off_haft": 7.447602459741819e-16,
     "loop_seam_deg": 0.0,
-    "wrist_right": 55.966239623676586,
-    "wrist_left": 59.25239836977254,
-    "right_off_haft": 7.021666937153402e-16,
+    "wrist_right": 72.91621850668312,
+    "hand_spacing": 0.868,
+    "wrist_left": 37.99750585151782,
+    "right_off_haft": 7.28550816809042e-16,
     "strike": {
      "contact": [
-      0.54,
-      2.23,
-      -5.75
+      0.7,
+      1.98,
+      -5.77
      ],
-     "game_radius_at_contact": 7.51,
-     "game_radius_during_active": 8.09,
+     "game_radius_at_contact": 7.55,
+     "game_radius_during_active": 7.67,
      "server_reach": 11.0,
-     "reach_gap": 2.91,
-     "yaw_first": 5.4,
-     "yaw_last": 5.2
+     "reach_gap": 3.33,
+     "yaw_first": 6.9,
+     "yaw_last": 6.0
     }
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://71428835921087"
   },
   "GrandmasterShen_P1_Guandao_Running": {
    "slot": "GrandmasterShen_P1_Guandao_Running",
@@ -428,36 +432,37 @@
    "notes": "Charging Crescent: out of the run the blade rises from his left hip across the server's lunge, and the run carries into the step.",
    "validation": {
     "arm_reach": 0.0,
-    "left_grip": 0.0036435527503377863,
+    "left_grip": 0.0,
     "left_reach": 0.0,
     "leg_reach": 0.0,
     "lowest": -3.191828727722168,
-    "weapon_low": -3.1414269632457987,
+    "weapon_low": -3.1272972674815103,
     "planted_slide": 0.0,
     "weapon_through_head": 0.0,
     "weapon_through_chest": 0.0,
-    "left_off_haft": 0.003631575411515384,
+    "left_off_haft": 7.947987303456224e-16,
     "loop_seam_deg": 0.0,
-    "wrist_right": 46.923414795677225,
-    "wrist_left": 54.70313971024144,
-    "right_off_haft": 7.385278330912554e-16,
+    "wrist_right": 37.04022645456633,
+    "hand_spacing": 0.851,
+    "wrist_left": 33.64024491404995,
+    "right_off_haft": 5.900916318210353e-16,
     "strike": {
      "contact": [
-      0.76,
-      0.12,
-      -6.16
+      0.81,
+      -0.04,
+      -6.07
      ],
-     "game_radius_at_contact": 8.07,
-     "game_radius_during_active": 8.07,
+     "game_radius_at_contact": 7.96,
+     "game_radius_during_active": 7.96,
      "server_reach": 12.5,
-     "reach_gap": 4.43,
-     "yaw_first": 7.0,
-     "yaw_last": 40.8
+     "reach_gap": 4.54,
+     "yaw_first": 7.6,
+     "yaw_last": 41.8
     }
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://128283161159933"
   },
   "GrandmasterShen_P1_GuardHit": {
    "slot": "GrandmasterShen_P1_GuardHit",
@@ -466,7 +471,7 @@
    "priority": "Movement",
    "move": null,
    "contacts": [],
-   "keyframes": 13,
+   "keyframes": 14,
    "notes": "A blow on the haft: he gives a little ground and resets.",
    "validation": {
     "arm_reach": 0.0,
@@ -474,19 +479,20 @@
     "left_reach": 0.0,
     "leg_reach": 0.0,
     "lowest": -3.1918287277221684,
-    "weapon_low": -0.5975371531038262,
+    "weapon_low": -0.6128413744847837,
     "planted_slide": 2.3843961910368673e-14,
     "weapon_through_head": 0.0,
     "weapon_through_chest": 0.0,
-    "left_off_haft": 8.15843973306311e-16,
+    "left_off_haft": 9.742167503148516e-16,
     "loop_seam_deg": 0.0,
-    "wrist_right": 43.201713577671306,
-    "wrist_left": 15.724376958592018,
-    "right_off_haft": 6.713178136967714e-16
+    "wrist_right": 21.22001486155782,
+    "hand_spacing": 1.25,
+    "wrist_left": 13.528535581639852,
+    "right_off_haft": 6.521083742145178e-16
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://87799715814857"
   },
   "GrandmasterShen_P1_GuardLoop": {
    "slot": "GrandmasterShen_P1_GuardLoop",
@@ -503,19 +509,20 @@
     "left_reach": 0.0,
     "leg_reach": 0.0,
     "lowest": -3.191828727722168,
-    "weapon_low": -0.5993590415740865,
+    "weapon_low": -0.5992383835741629,
     "planted_slide": 3.2803286093439424e-14,
     "weapon_through_head": 0.0,
     "weapon_through_chest": 0.0,
-    "left_off_haft": 1.0295784775289034e-15,
-    "loop_seam_deg": 0.0,
-    "wrist_right": 40.27883794126328,
-    "wrist_left": 8.238776524093648,
-    "right_off_haft": 7.771561172376096e-16
+    "left_off_haft": 1.5263043145882805e-15,
+    "loop_seam_deg": 0.02,
+    "wrist_right": 19.61270935612874,
+    "hand_spacing": 1.25,
+    "wrist_left": 12.641605044180748,
+    "right_off_haft": 7.447602459741819e-16
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://72000709612577"
   },
   "GrandmasterShen_P1_HesitantMoon": {
    "slot": "GrandmasterShen_P1_HesitantMoon",
@@ -526,27 +533,28 @@
    "contacts": [
     1.3
    ],
-   "keyframes": 64,
+   "keyframes": 65,
    "notes": "Hesitant Moon: the blade rises and hangs at the top of the cut longer than it should, so a deflect pressed at the expected moment is too early; then it falls from his right shoulder across his body.",
    "validation": {
-    "arm_reach": 0.11392526037394934,
-    "left_grip": 0.06549531915403417,
+    "arm_reach": 0.0025318233796922662,
+    "left_grip": 0.1141335895107003,
     "left_reach": 0.0,
     "leg_reach": 0.0,
-    "lowest": -3.191828727722169,
-    "weapon_low": -3.167675402313046,
+    "lowest": -3.1918287277221684,
+    "weapon_low": -3.128753111172784,
     "planted_slide": 0.0,
     "weapon_through_head": 0.0,
     "weapon_through_chest": 0.0,
-    "left_off_haft": 0.04737913206887156,
+    "left_off_haft": 0.054066924958693814,
     "loop_seam_deg": 0.0,
-    "wrist_right": 101.06625387697758,
-    "wrist_left": 74.7106676102356,
-    "right_off_haft": 0.11392526037394958
+    "wrist_right": 76.31031078959856,
+    "hand_spacing": 0.75,
+    "wrist_left": 76.70575855575468,
+    "right_off_haft": 0.0025318233796922836
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://73331719679209"
   },
   "GrandmasterShen_P1_HitLightBack": {
    "slot": "GrandmasterShen_P1_HitLightBack",
@@ -559,23 +567,24 @@
    "notes": "Flinch from the blow's direction: chest first, then the hips and the rear foot give; the cloth takes the same push at run time.",
    "validation": {
     "arm_reach": 0.0,
-    "left_grip": 0.0,
+    "left_grip": 0.013272938182003369,
     "left_reach": 0.0,
     "leg_reach": 0.0,
-    "lowest": -3.191828727722169,
-    "weapon_low": -1.1704269442951296,
+    "lowest": -3.191828727722168,
+    "weapon_low": -0.4397518315974095,
     "planted_slide": 0.0,
     "weapon_through_head": 0.0,
     "weapon_through_chest": 0.0,
-    "left_off_haft": 1.1226435567921847e-15,
+    "left_off_haft": 0.01130191190530256,
     "loop_seam_deg": 0.0,
-    "wrist_right": 23.236692873616644,
-    "wrist_left": 36.41124030466314,
-    "right_off_haft": 6.4018582627671775e-16
+    "wrist_right": 7.322753779399976,
+    "hand_spacing": 1.243,
+    "wrist_left": 39.180260777374556,
+    "right_off_haft": 7.390492082589766e-16
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://94589086172558"
   },
   "GrandmasterShen_P1_HitLightFront": {
    "slot": "GrandmasterShen_P1_HitLightFront",
@@ -584,27 +593,28 @@
    "priority": "Action3",
    "move": null,
    "contacts": [],
-   "keyframes": 13,
+   "keyframes": 15,
    "notes": "Flinch from the blow's direction: chest first, then the hips and the rear foot give; the cloth takes the same push at run time.",
    "validation": {
     "arm_reach": 0.0,
-    "left_grip": 0.0,
+    "left_grip": 0.026737790821439456,
     "left_reach": 0.0,
     "leg_reach": 0.0,
     "lowest": -3.191828727722168,
-    "weapon_low": -1.1505416596391123,
+    "weapon_low": -0.2789892596875717,
     "planted_slide": 0.0,
     "weapon_through_head": 0.0,
     "weapon_through_chest": 0.0,
-    "left_off_haft": 1.0429598422709816e-15,
+    "left_off_haft": 0.020100514312614517,
     "loop_seam_deg": 0.0,
-    "wrist_right": 17.323131133157915,
-    "wrist_left": 35.68761221321197,
-    "right_off_haft": 8.899114524108741e-16
+    "wrist_right": 12.419716298932675,
+    "hand_spacing": 1.11,
+    "wrist_left": 44.9760773955173,
+    "right_off_haft": 8.144263458698792e-16
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://90652741413173"
   },
   "GrandmasterShen_P1_HitLightLeft": {
    "slot": "GrandmasterShen_P1_HitLightLeft",
@@ -620,20 +630,21 @@
     "left_grip": 0.0,
     "left_reach": 0.0,
     "leg_reach": 0.0,
-    "lowest": -3.191828727722168,
-    "weapon_low": -1.156008233595173,
+    "lowest": -3.1918287277221675,
+    "weapon_low": -0.28302438105513006,
     "planted_slide": 0.0,
     "weapon_through_head": 0.0,
     "weapon_through_chest": 0.0,
-    "left_off_haft": 9.053594779595603e-16,
+    "left_off_haft": 8.349770295452321e-16,
     "loop_seam_deg": 0.0,
-    "wrist_right": 9.443095228007468,
-    "wrist_left": 38.41840129277981,
-    "right_off_haft": 7.870063977598499e-16
+    "wrist_right": 10.690405318185945,
+    "hand_spacing": 1.25,
+    "wrist_left": 37.06430278696788,
+    "right_off_haft": 6.888752704931532e-16
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://121007074678154"
   },
   "GrandmasterShen_P1_HitLightRight": {
    "slot": "GrandmasterShen_P1_HitLightRight",
@@ -646,23 +657,24 @@
    "notes": "Flinch from the blow's direction: chest first, then the hips and the rear foot give; the cloth takes the same push at run time.",
    "validation": {
     "arm_reach": 0.0,
-    "left_grip": 0.0,
+    "left_grip": 0.03692210222657888,
     "left_reach": 0.0,
     "leg_reach": 0.0,
     "lowest": -3.1918287277221684,
-    "weapon_low": -1.1425106350083962,
+    "weapon_low": -0.2840477462919465,
     "planted_slide": 0.0,
     "weapon_through_head": 0.0,
     "weapon_through_chest": 0.0,
-    "left_off_haft": 9.189778455511335e-16,
+    "left_off_haft": 0.030016878058629324,
     "loop_seam_deg": 0.0,
-    "wrist_right": 7.620063300015077,
-    "wrist_left": 33.887970507067394,
-    "right_off_haft": 6.810021516914953e-16
+    "wrist_right": 18.599824434262178,
+    "hand_spacing": 1.11,
+    "wrist_left": 42.57696738742633,
+    "right_off_haft": 5.985173094038516e-16
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://129690996808616"
   },
   "GrandmasterShen_P1_Idle": {
    "slot": "GrandmasterShen_P1_Idle",
@@ -671,7 +683,7 @@
    "priority": "Idle",
    "move": null,
    "contacts": [],
-   "keyframes": 24,
+   "keyframes": 26,
    "notes": "The guard alive: both hands on the glaive, slow breath, weight drifting between the feet.",
    "validation": {
     "arm_reach": 0.0,
@@ -683,12 +695,12 @@
     "planted_slide": 3.3966293202022057e-14,
     "weapon_through_head": 0.0,
     "weapon_through_chest": 0.0,
-    "left_off_haft": 1.187990514796716e-15,
-    "loop_seam_deg": 0.11,
-    "wrist_right": 8.656132525999945,
+    "left_off_haft": 1.22156069063769e-15,
+    "loop_seam_deg": 0.15,
+    "wrist_right": 7.935796202945744,
     "hand_spacing": 1.25,
-    "wrist_left": 19.365212012636558,
-    "right_off_haft": 1.1322097734007351e-15
+    "wrist_left": 36.867046652777944,
+    "right_off_haft": 1.0706603116298291e-15
    },
    "problems": [],
    "uploaded": false,
@@ -701,27 +713,28 @@
    "priority": "Action3",
    "move": null,
    "contacts": [],
-   "keyframes": 28,
+   "keyframes": 31,
    "notes": "Stance broken: thrown back, the levitation fails if he had it, and he sinks to his right knee on the haft, still holding it in both hands.",
    "validation": {
     "arm_reach": 0.0,
-    "left_grip": 0.08383567798288238,
+    "left_grip": 0.039107285193754615,
     "left_reach": 0.0,
     "leg_reach": 0.0,
-    "lowest": -3.191828727722168,
-    "weapon_low": -3.0795667520164445,
+    "lowest": -3.1918287277221684,
+    "weapon_low": -3.1715134912362024,
     "planted_slide": 0.0,
     "weapon_through_head": 0.0,
-    "weapon_through_chest": 0.13658806400544993,
-    "left_off_haft": 0.0432678359004513,
+    "weapon_through_chest": 0.0,
+    "left_off_haft": 0.028409552234326597,
     "loop_seam_deg": 0.0,
-    "wrist_right": 41.051424706915505,
-    "wrist_left": 73.4650213751017,
-    "right_off_haft": 9.08756711201214e-16
+    "wrist_right": 48.85035332940411,
+    "hand_spacing": 0.843,
+    "wrist_left": 53.85587479189267,
+    "right_off_haft": 7.108895957933346e-16
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://79907651380238"
   },
   "GrandmasterShen_P1_PrayerBeads": {
    "slot": "GrandmasterShen_P1_PrayerBeads",
@@ -732,27 +745,28 @@
    "contacts": [
     1.1
    ],
-   "keyframes": 63,
+   "keyframes": 64,
    "notes": "The glaive pinwheels and gathers seven beads off his breath, the left hand catches it and the falling cut flings them on the server's release.",
    "validation": {
-    "arm_reach": 0.03134860992425059,
-    "left_grip": 0.09877205608366024,
+    "arm_reach": 0.0,
+    "left_grip": 0.038676115914783926,
     "left_reach": 0.0,
     "leg_reach": 0.0,
-    "lowest": -3.1918287277221675,
-    "weapon_low": -3.1601933369891224,
+    "lowest": -3.191828727722168,
+    "weapon_low": -3.1860242390641798,
     "planted_slide": 0.0,
     "weapon_through_head": 0.0,
-    "weapon_through_chest": 0.0007932453525396066,
-    "left_off_haft": 0.029088994383711413,
+    "weapon_through_chest": 0.0,
+    "left_off_haft": 0.03801668677023128,
     "loop_seam_deg": 0.0,
-    "wrist_right": 65.89106232054424,
-    "wrist_left": 96.24894595485922,
-    "right_off_haft": 0.031348609924250447
+    "wrist_right": 65.96020406281642,
+    "hand_spacing": 0.844,
+    "wrist_left": 51.805684632872435,
+    "right_off_haft": 9.485749680535094e-16
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://85246830462267"
   },
   "GrandmasterShen_P1_RunForward": {
    "slot": "GrandmasterShen_P1_RunForward",
@@ -773,12 +787,12 @@
     "planted_slide": 0.0,
     "weapon_through_head": 0.0,
     "weapon_through_chest": 0.0,
-    "left_off_haft": 8.886119947416683e-16,
-    "loop_seam_deg": 0.19,
-    "wrist_right": 12.110213808172366,
+    "left_off_haft": 9.305364597889227e-16,
+    "loop_seam_deg": 0.18,
+    "wrist_right": 6.385984997848531,
     "hand_spacing": 1.25,
-    "wrist_left": 17.819209792505564,
-    "right_off_haft": 7.195067539997724e-16
+    "wrist_left": 31.276840068053577,
+    "right_off_haft": 5.978733960281817e-16
    },
    "problems": [],
    "uploaded": false,
@@ -803,12 +817,12 @@
     "planted_slide": 0.0,
     "weapon_through_head": 0.0,
     "weapon_through_chest": 0.0,
-    "left_off_haft": 8.95090418262362e-16,
-    "loop_seam_deg": 0.1,
-    "wrist_right": 5.286797299357794,
+    "left_off_haft": 8.741904837807691e-16,
+    "loop_seam_deg": 0.08,
+    "wrist_right": 5.062829733926209,
     "hand_spacing": 1.145,
-    "wrist_left": 18.352609476396,
-    "right_off_haft": 9.836601059614785e-16
+    "wrist_left": 33.04246843984128,
+    "right_off_haft": 7.791361360319881e-16
    },
    "problems": [],
    "uploaded": false,
@@ -833,12 +847,12 @@
     "planted_slide": 0.0,
     "weapon_through_head": 0.0,
     "weapon_through_chest": 0.0,
-    "left_off_haft": 1.0835344452754878e-15,
-    "loop_seam_deg": 0.08,
-    "wrist_right": 5.0702541715142955,
+    "left_off_haft": 8.178480724961617e-16,
+    "loop_seam_deg": 0.09,
+    "wrist_right": 5.515564230706374,
     "hand_spacing": 1.145,
-    "wrist_left": 19.56763569200859,
-    "right_off_haft": 9.836601059614785e-16
+    "wrist_left": 33.255045270680824,
+    "right_off_haft": 8.473409486550036e-16
    },
    "problems": [],
    "uploaded": false,
@@ -853,27 +867,28 @@
    "contacts": [
     0.5
    ],
-   "keyframes": 33,
+   "keyframes": 34,
    "notes": "Fallback diagonal cut for any move without its own slot.",
    "validation": {
     "arm_reach": 0.0,
-    "left_grip": 0.038888899826863055,
+    "left_grip": 0.06152820418648641,
     "left_reach": 0.0,
     "leg_reach": 0.0,
-    "lowest": -3.1918287277221684,
-    "weapon_low": -3.14551018645326,
+    "lowest": -3.191828727722169,
+    "weapon_low": -3.1542105830475484,
     "planted_slide": 0.0,
     "weapon_through_head": 0.0,
     "weapon_through_chest": 0.0,
-    "left_off_haft": 0.03394757390564194,
+    "left_off_haft": 0.060434624848550854,
     "loop_seam_deg": 0.0,
-    "wrist_right": 69.83955030727904,
-    "wrist_left": 56.92853329404081,
-    "right_off_haft": 9.742167503148516e-16
+    "wrist_right": 69.26223330179236,
+    "hand_spacing": 0.839,
+    "wrist_left": 41.92473056634471,
+    "right_off_haft": 1.025079205553247e-15
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://94873022197045"
   },
   "GrandmasterShen_P1_Transform": {
    "slot": "GrandmasterShen_P1_Transform",
@@ -882,27 +897,28 @@
    "priority": "Action4",
    "move": null,
    "contacts": [],
-   "keyframes": 28,
+   "keyframes": 32,
    "notes": "He falters and bows over the glaive, both hands tight on it; reaches the shared handoff pose at the Reveal and holds it for the swap.",
    "validation": {
     "arm_reach": 0.0,
-    "left_grip": 0.04052035010061683,
+    "left_grip": 0.03751315159976132,
     "left_reach": 0.0,
     "leg_reach": 0.0,
-    "lowest": -3.1918287277221684,
-    "weapon_low": -2.8852317519634374,
+    "lowest": -3.191828727722169,
+    "weapon_low": -3.150042277215069,
     "planted_slide": 0.0,
     "weapon_through_head": 0.0,
-    "weapon_through_chest": 0.07104588511034565,
-    "left_off_haft": 0.022541225172655423,
+    "weapon_through_chest": 0.0,
+    "left_off_haft": 0.028601022751103912,
     "loop_seam_deg": 0.0,
-    "wrist_right": 16.9155614097638,
-    "wrist_left": 72.02370199209622,
-    "right_off_haft": 7.520941594418423e-16
+    "wrist_right": 16.662137122054826,
+    "hand_spacing": 0.838,
+    "wrist_left": 51.01389219870135,
+    "right_off_haft": 1.0163999321966297e-15
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://81061665400598"
   },
   "GrandmasterShen_P1_TurnLeft": {
    "slot": "GrandmasterShen_P1_TurnLeft",
@@ -923,12 +939,12 @@
     "planted_slide": 0.0,
     "weapon_through_head": 0.0,
     "weapon_through_chest": 0.0,
-    "left_off_haft": 1.0161156642754786e-15,
-    "loop_seam_deg": 0.43,
-    "wrist_right": 9.286756983738671,
+    "left_off_haft": 8.688869536365456e-16,
+    "loop_seam_deg": 0.46,
+    "wrist_right": 9.59289771489456,
     "hand_spacing": 1.145,
-    "wrist_left": 14.443309836899198,
-    "right_off_haft": 8.331297329690976e-16
+    "wrist_left": 35.60143089356543,
+    "right_off_haft": 7.468261590855957e-16
    },
    "problems": [],
    "uploaded": false,
@@ -953,12 +969,12 @@
     "planted_slide": 0.0,
     "weapon_through_head": 0.0,
     "weapon_through_chest": 0.0,
-    "left_off_haft": 1.149513172975448e-15,
-    "loop_seam_deg": 0.38,
-    "wrist_right": 6.426257380535106,
+    "left_off_haft": 9.159339953157541e-16,
+    "loop_seam_deg": 0.4,
+    "wrist_right": 8.271294029544023,
     "hand_spacing": 1.25,
-    "wrist_left": 17.273085314739543,
-    "right_off_haft": 6.866350197783356e-16
+    "wrist_left": 31.44908900144583,
+    "right_off_haft": 7.216449660063518e-16
    },
    "problems": [],
    "uploaded": false,
@@ -971,7 +987,7 @@
    "priority": "Movement",
    "move": null,
    "contacts": [],
-   "keyframes": 46,
+   "keyframes": 45,
    "notes": "WalkBackward: 1.48 rig studs per second at speed 1.",
    "validation": {
     "arm_reach": 0.0,
@@ -983,12 +999,12 @@
     "planted_slide": 0.0,
     "weapon_through_head": 0.0,
     "weapon_through_chest": 0.0,
-    "left_off_haft": 1.5141423334015086e-15,
-    "loop_seam_deg": 0.67,
-    "wrist_right": 3.846170538134006,
+    "left_off_haft": 9.777686967753793e-16,
+    "loop_seam_deg": 0.5,
+    "wrist_right": 9.324437590517896,
     "hand_spacing": 1.145,
-    "wrist_left": 19.187561862676926,
-    "right_off_haft": 7.348678496207199e-16
+    "wrist_left": 32.871732133291985,
+    "right_off_haft": 8.514223576271388e-16
    },
    "problems": [],
    "uploaded": false,
@@ -1001,7 +1017,7 @@
    "priority": "Movement",
    "move": null,
    "contacts": [],
-   "keyframes": 43,
+   "keyframes": 42,
    "notes": "WalkForward: 1.98 rig studs per second at speed 1.",
    "validation": {
     "arm_reach": 0.0,
@@ -1013,12 +1029,12 @@
     "planted_slide": 0.0,
     "weapon_through_head": 0.0,
     "weapon_through_chest": 0.0,
-    "left_off_haft": 1.3569751728858698e-15,
-    "loop_seam_deg": 0.55,
-    "wrist_right": 5.525924326161865,
+    "left_off_haft": 1.2994827337208943e-15,
+    "loop_seam_deg": 0.45,
+    "wrist_right": 5.590328686575121,
     "hand_spacing": 1.145,
-    "wrist_left": 18.742568742223217,
-    "right_off_haft": 9.371360918460988e-16
+    "wrist_left": 33.904141815268915,
+    "right_off_haft": 8.759511914735174e-16
    },
    "problems": [],
    "uploaded": false,
@@ -1038,23 +1054,24 @@
    "notes": "Wheel of Heaven: two full pinwheels of the glaive beside him, then the left hand catches it and two cuts come close together, a falling diagonal and a rising return.",
    "validation": {
     "arm_reach": 0.0,
-    "left_grip": 0.07650668246988457,
+    "left_grip": 0.06176762189726781,
     "left_reach": 0.0,
     "leg_reach": 0.0,
-    "lowest": -3.1918287277221684,
-    "weapon_low": -3.165936464448776,
+    "lowest": -3.191828727722168,
+    "weapon_low": -3.1601933198777417,
     "planted_slide": 0.0,
     "weapon_through_head": 0.0,
-    "weapon_through_chest": 0.038170953805641616,
-    "left_off_haft": 0.0395563249114896,
+    "weapon_through_chest": 0.0,
+    "left_off_haft": 0.059866247191994355,
     "loop_seam_deg": 0.0,
-    "wrist_right": 112.43225357798056,
-    "wrist_left": 73.95155802562552,
-    "right_off_haft": 1.0023760032975755e-15
+    "wrist_right": 99.96442334392081,
+    "hand_spacing": 0.836,
+    "wrist_left": 42.02003270415859,
+    "right_off_haft": 9.036560719766055e-16
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://79301054825657"
   },
   "GrandmasterShen_P2_BloodWave": {
    "slot": "GrandmasterShen_P2_BloodWave",
@@ -1069,7 +1086,7 @@
    "notes": "The glaive's edge drags from his left, the whole body hauling it, then whips up and casts the low wave on the server's start.",
    "validation": {
     "arm_reach": 0.0,
-    "left_grip": 0.0457413603219754,
+    "left_grip": 0.0,
     "left_reach": 0.0,
     "leg_reach": 0.0,
     "lowest": 9.0,
@@ -1077,15 +1094,16 @@
     "planted_slide": 0.0,
     "weapon_through_head": 0.0,
     "weapon_through_chest": 0.0,
-    "left_off_haft": 0.02633057960409765,
+    "left_off_haft": 1.7271017045521525e-15,
     "loop_seam_deg": 0.0,
-    "wrist_right": 95.67763635746464,
-    "wrist_left": 59.90939731411686,
-    "right_off_haft": 1.149764460151469e-15
+    "wrist_right": 39.79414186354608,
+    "hand_spacing": 1.012,
+    "wrist_left": 32.37472672456574,
+    "right_off_haft": 8.308148362110449e-16
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://130644447357665"
   },
   "GrandmasterShen_P2_CrimsonEmbrace": {
    "slot": "GrandmasterShen_P2_CrimsonEmbrace",
@@ -1096,29 +1114,28 @@
    "contacts": [
     1.2
    ],
-   "keyframes": 71,
+   "keyframes": 70,
    "notes": "The one move where a hand leaves the haft: the clawed left arm reaches with the whole torso behind it while the glaive swings back in the right. Cosmetic only: nothing attaches to a player.",
    "validation": {
-    "arm_reach": 0.1479086984488922,
-    "left_grip": 0.13879879462368852,
+    "arm_reach": 0.0,
+    "left_grip": 0.11800258823520238,
     "left_reach": 0.10082922338111217,
-    "leg_reach": 0.033090593038812344,
+    "leg_reach": 0.03309044463618793,
     "lowest": 9.0,
     "weapon_low": 9.0,
     "planted_slide": 0.0,
     "weapon_through_head": 0.0,
-    "weapon_through_chest": 0.02214762527899139,
-    "left_off_haft": 0.016424752729266603,
+    "weapon_through_chest": 0.0,
+    "left_off_haft": 0.009313907582528418,
     "loop_seam_deg": 0.0,
-    "wrist_right": 115.03362129894974,
-    "wrist_left": 30.637675193706137,
-    "right_off_haft": 0.1479086984488925
+    "wrist_right": 92.13556296875485,
+    "hand_spacing": 1.079,
+    "wrist_left": 54.8536861616341,
+    "right_off_haft": 1.4217791915866692e-15
    },
-   "problems": [
-    "right wrist turned 115 deg on the arm"
-   ],
+   "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://96183546097046"
   },
   "GrandmasterShen_P2_Death": {
    "slot": "GrandmasterShen_P2_Death",
@@ -1128,26 +1145,27 @@
    "move": null,
    "contacts": [],
    "keyframes": 68,
-   "notes": "Killed: staggers, sinks to the right knee and dies kneeling on the haft; the body fades there.",
+   "notes": "Killed: staggers, sinks to the right knee on the haft, lets go: the glaive clatters flat beside him and he falls forward onto his chest, left hand out; a small rebound and he lies still before the fade.",
    "validation": {
-    "arm_reach": 0.0,
-    "left_grip": 0.1356683410678572,
+    "arm_reach": 0.10208384163307631,
+    "left_grip": 0.008901295741599508,
     "left_reach": 0.0,
-    "leg_reach": 0.0,
+    "leg_reach": 0.0814938121748856,
     "lowest": 9.0,
     "weapon_low": 9.0,
     "planted_slide": 0.0,
     "weapon_through_head": 0.0,
     "weapon_through_chest": 0.0,
-    "left_off_haft": 0.07743070715676081,
+    "left_off_haft": 0.013239506987893557,
     "loop_seam_deg": 0.0,
-    "wrist_right": 83.63185372400635,
-    "wrist_left": 68.63750698897923,
-    "right_off_haft": 8.308148362110449e-16
+    "wrist_right": 82.90968890882162,
+    "hand_spacing": 0.851,
+    "wrist_left": 27.918179571481254,
+    "right_off_haft": 0.0029441708389252273
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://107623325499134"
   },
   "GrandmasterShen_P2_DeathblowVictim": {
    "slot": "GrandmasterShen_P2_DeathblowVictim",
@@ -1156,27 +1174,28 @@
    "priority": "Action4",
    "move": null,
    "contacts": [],
-   "keyframes": 42,
+   "keyframes": 58,
    "notes": "Takes the deathblow on the knee: head snaps back, then the old body bows over the haft.",
    "validation": {
     "arm_reach": 0.0,
-    "left_grip": 0.16916049677900857,
+    "left_grip": 0.0528342423361976,
     "left_reach": 0.0,
     "leg_reach": 0.0,
     "lowest": -3.221760598755777,
-    "weapon_low": -3.1717696498312162,
+    "weapon_low": -2.9987429650298356,
     "planted_slide": 0.0,
     "weapon_through_head": 0.0,
-    "weapon_through_chest": 0.03471786009281563,
-    "left_off_haft": 0.09911761253427886,
+    "weapon_through_chest": 0.0,
+    "left_off_haft": 0.03481403202404987,
     "loop_seam_deg": 0.0,
-    "wrist_right": 80.30957932836267,
-    "wrist_left": 82.36777803477678,
-    "right_off_haft": 9.742167503148516e-16
+    "wrist_right": 72.49301570127004,
+    "hand_spacing": 0.811,
+    "wrist_left": 43.44240823313021,
+    "right_off_haft": 8.005932084973442e-16
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://139754735053877"
   },
   "GrandmasterShen_P2_Feint": {
    "slot": "GrandmasterShen_P2_Feint",
@@ -1199,15 +1218,16 @@
     "planted_slide": 0.0,
     "weapon_through_head": 0.0,
     "weapon_through_chest": 0.0,
-    "left_off_haft": 1.2779626727101132e-15,
+    "left_off_haft": 1.1430445635548515e-15,
     "loop_seam_deg": 0.0,
-    "wrist_right": 98.7797361435399,
-    "wrist_left": 52.55268724675478,
-    "right_off_haft": 1.0175362097255202e-15
+    "wrist_right": 104.05367708801231,
+    "hand_spacing": 1.078,
+    "wrist_left": 33.181675110962466,
+    "right_off_haft": 1.2008898127460164e-15
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://117936671296928"
   },
   "GrandmasterShen_P2_Flourish": {
    "slot": "GrandmasterShen_P2_Flourish",
@@ -1222,7 +1242,7 @@
    "notes": "Three unhurried pinwheels of the glaive, caught back into both hands; plays between exchanges so the pause is never the same twice.",
    "validation": {
     "arm_reach": 0.0,
-    "left_grip": 0.010390616687175211,
+    "left_grip": 0.007096405644007264,
     "left_reach": 0.0,
     "leg_reach": 0.0,
     "lowest": 9.0,
@@ -1230,15 +1250,16 @@
     "planted_slide": 0.0,
     "weapon_through_head": 0.0,
     "weapon_through_chest": 0.0,
-    "left_off_haft": 0.00013541538994443176,
+    "left_off_haft": 0.006947664439143424,
     "loop_seam_deg": 0.0,
-    "wrist_right": 51.07173605279933,
-    "wrist_left": 53.58340109153473,
-    "right_off_haft": 7.771561172376096e-16
+    "wrist_right": 67.69600920572285,
+    "hand_spacing": 1.109,
+    "wrist_left": 34.94049726763042,
+    "right_off_haft": 9.155133597044475e-16
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://76935383013589"
   },
   "GrandmasterShen_P2_GuandaoSkyfall": {
    "slot": "GrandmasterShen_P2_GuandaoSkyfall",
@@ -1249,11 +1270,11 @@
    "contacts": [
     1.5
    ],
-   "keyframes": 75,
+   "keyframes": 74,
    "notes": "Coils, the server's aerial path carries the root, glaive high at the apex, and the blade falls with him; his feet touch down and his knees absorb the landing at the impact, then he lifts again.",
    "validation": {
-    "arm_reach": 0.045536407152870995,
-    "left_grip": 0.013629862004754356,
+    "arm_reach": 0.0,
+    "left_grip": 0.0015597237326878677,
     "left_reach": 0.0,
     "leg_reach": 0.0,
     "lowest": 9.0,
@@ -1261,15 +1282,16 @@
     "planted_slide": 0.0,
     "weapon_through_head": 0.0,
     "weapon_through_chest": 0.0,
-    "left_off_haft": 0.012655646487877498,
+    "left_off_haft": 0.0015151722219049221,
     "loop_seam_deg": 0.0,
-    "wrist_right": 114.04680528753754,
-    "wrist_left": 60.753269936230126,
-    "right_off_haft": 0.04553640715287092
+    "wrist_right": 82.9965576149389,
+    "hand_spacing": 0.85,
+    "wrist_left": 22.944434484225972,
+    "right_off_haft": 1.572298850923531e-15
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://107083410675703"
   },
   "GrandmasterShen_P2_Guandao_Art": {
    "slot": "GrandmasterShen_P2_Guandao_Art",
@@ -1284,7 +1306,7 @@
    "notes": "Crescent Moon Cyclone: he winds left, then the whole body pivots right on the balls of the feet with the blade at the end of both arms; the server's 360 degree blow.",
    "validation": {
     "arm_reach": 0.0,
-    "left_grip": 0.10123961218714106,
+    "left_grip": 0.0,
     "left_reach": 0.0,
     "leg_reach": 0.0,
     "lowest": 9.0,
@@ -1292,30 +1314,29 @@
     "planted_slide": 0.0,
     "weapon_through_head": 0.0,
     "weapon_through_chest": 0.0,
-    "left_off_haft": 0.07959984983913151,
+    "left_off_haft": 1.1657341758564144e-15,
     "loop_seam_deg": 0.0,
-    "wrist_right": 133.05110317295532,
-    "wrist_left": 54.03386112460233,
-    "right_off_haft": 1.0990647210786425e-15,
+    "wrist_right": 22.57680216965375,
+    "hand_spacing": 1.25,
+    "wrist_left": 42.18850340643829,
+    "right_off_haft": 1.191874962812805e-15,
     "strike": {
      "contact": [
-      1.82,
-      1.74,
-      -5.83
+      -0.01,
+      0.95,
+      -6.26
      ],
-     "game_radius_at_contact": 7.94,
-     "game_radius_during_active": 7.94,
+     "game_radius_at_contact": 8.14,
+     "game_radius_during_active": 8.14,
      "server_reach": 11.5,
-     "reach_gap": 3.56,
-     "yaw_first": 17.4,
+     "reach_gap": 3.36,
+     "yaw_first": -0.1,
      "yaw_last": 166.7
     }
    },
-   "problems": [
-    "right wrist turned 133 deg on the arm"
-   ],
+   "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://80836423877849"
   },
   "GrandmasterShen_P2_Guandao_Heavy": {
    "slot": "GrandmasterShen_P2_Guandao_Heavy",
@@ -1330,7 +1351,7 @@
    "notes": "Green Dragon Reaping: winds until his back shows, then hips, chest and arms unwind in that order, and the blade carries his weight past the target.",
    "validation": {
     "arm_reach": 0.0,
-    "left_grip": 0.03669513790795409,
+    "left_grip": 0.17250521037559952,
     "left_reach": 0.0,
     "leg_reach": 0.0,
     "lowest": 9.0,
@@ -1338,29 +1359,30 @@
     "planted_slide": 0.0,
     "weapon_through_head": 0.0,
     "weapon_through_chest": 0.0,
-    "left_off_haft": 0.0204761088885174,
+    "left_off_haft": 0.10221675553500813,
     "loop_seam_deg": 0.0,
-    "wrist_right": 107.51201378603271,
-    "wrist_left": 64.59629237939671,
-    "right_off_haft": 7.364386412590295e-16,
+    "wrist_right": 95.054156988665,
+    "hand_spacing": 0.789,
+    "wrist_left": 96.32073041075809,
+    "right_off_haft": 1.1116099371267112e-15,
     "strike": {
      "contact": [
-      -4.48,
-      2.73,
-      -3.39
+      -2.47,
+      1.84,
+      -5.21
      ],
-     "game_radius_at_contact": 7.31,
-     "game_radius_during_active": 7.73,
+     "game_radius_at_contact": 7.5,
+     "game_radius_during_active": 7.5,
      "server_reach": 12.0,
-     "reach_gap": 4.27,
-     "yaw_first": -52.9,
-     "yaw_last": 24.1,
-     "sweep_deg": 76.9
+     "reach_gap": 4.5,
+     "yaw_first": -25.3,
+     "yaw_last": 61.4,
+     "sweep_deg": 86.7
     }
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://139891517534747"
   },
   "GrandmasterShen_P2_Guandao_L1": {
    "slot": "GrandmasterShen_P2_Guandao_L1",
@@ -1375,7 +1397,7 @@
    "notes": "Crescent Reap: left shoulder to right hip, hips driving first, the rear foot pivoting behind them.",
    "validation": {
     "arm_reach": 0.0,
-    "left_grip": 0.05990881767731038,
+    "left_grip": 0.12095130529002418,
     "left_reach": 0.0,
     "leg_reach": 0.0,
     "lowest": 9.0,
@@ -1383,29 +1405,30 @@
     "planted_slide": 0.0,
     "weapon_through_head": 0.0,
     "weapon_through_chest": 0.0,
-    "left_off_haft": 0.040735217336977526,
+    "left_off_haft": 0.027401308951383926,
     "loop_seam_deg": 0.0,
-    "wrist_right": 50.29402924933399,
-    "wrist_left": 95.64846197548931,
-    "right_off_haft": 9.155133597044475e-16,
+    "wrist_right": 62.83593637530777,
+    "hand_spacing": 0.867,
+    "wrist_left": 90.1348591481636,
+    "right_off_haft": 1.4895204919483639e-15,
     "strike": {
      "contact": [
-      -1.59,
-      2.07,
-      -5.66
+      -1.51,
+      2.03,
+      -5.48
      ],
-     "game_radius_at_contact": 7.64,
-     "game_radius_during_active": 7.64,
+     "game_radius_at_contact": 7.39,
+     "game_radius_during_active": 7.39,
      "server_reach": 10.5,
-     "reach_gap": 2.86,
-     "yaw_first": -15.7,
-     "yaw_last": 46.3,
-     "sweep_deg": 61.9
+     "reach_gap": 3.11,
+     "yaw_first": -15.4,
+     "yaw_last": 66.2,
+     "sweep_deg": 81.7
     }
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://95787094565190"
   },
   "GrandmasterShen_P2_Guandao_L2": {
    "slot": "GrandmasterShen_P2_Guandao_L2",
@@ -1419,8 +1442,8 @@
    "keyframes": 14,
    "notes": "Returning Tide: the blade drops to his left hip and climbs through to the right shoulder off the rear foot's step.",
    "validation": {
-    "arm_reach": 0.008596876725428304,
-    "left_grip": 0.017624127645762933,
+    "arm_reach": 0.0,
+    "left_grip": 0.025848533585659528,
     "left_reach": 0.0,
     "leg_reach": 0.0,
     "lowest": 9.0,
@@ -1428,29 +1451,30 @@
     "planted_slide": 0.0,
     "weapon_through_head": 0.0,
     "weapon_through_chest": 0.0,
-    "left_off_haft": 0.013043457690734405,
+    "left_off_haft": 0.022063804034490524,
     "loop_seam_deg": 0.0,
-    "wrist_right": 88.49778789874244,
-    "wrist_left": 86.291929420972,
-    "right_off_haft": 0.008596876725428644,
+    "wrist_right": 40.60055693298028,
+    "hand_spacing": 0.837,
+    "wrist_left": 25.571637225757723,
+    "right_off_haft": 1.1157603309187458e-15,
     "strike": {
      "contact": [
-      -1.0,
-      -0.32,
-      -5.56
+      -0.81,
+      -0.46,
+      -5.42
      ],
-     "game_radius_at_contact": 7.34,
-     "game_radius_during_active": 7.94,
+     "game_radius_at_contact": 7.13,
+     "game_radius_during_active": 8.0,
      "server_reach": 10.5,
-     "reach_gap": 2.56,
-     "yaw_first": -10.2,
-     "yaw_last": 55.8,
-     "sweep_deg": 66.1
+     "reach_gap": 2.5,
+     "yaw_first": -8.5,
+     "yaw_last": 60.3,
+     "sweep_deg": 68.8
     }
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://72047599990376"
   },
   "GrandmasterShen_P2_Guandao_L3": {
    "slot": "GrandmasterShen_P2_Guandao_L3",
@@ -1465,7 +1489,7 @@
    "notes": "Heaven-Splitting Cleave: up over the head and straight down the server's line, a long step under it.",
    "validation": {
     "arm_reach": 0.0,
-    "left_grip": 0.013665355629060016,
+    "left_grip": 0.015304116001287893,
     "left_reach": 0.0,
     "leg_reach": 0.0,
     "lowest": 9.0,
@@ -1473,28 +1497,29 @@
     "planted_slide": 0.0,
     "weapon_through_head": 0.0,
     "weapon_through_chest": 0.0,
-    "left_off_haft": 0.010516614652432527,
+    "left_off_haft": 0.012340593292660115,
     "loop_seam_deg": 0.0,
-    "wrist_right": 41.72158980595804,
-    "wrist_left": 49.14777092426002,
-    "right_off_haft": 1.383330760426861e-15,
+    "wrist_right": 31.355909684088754,
+    "hand_spacing": 0.998,
+    "wrist_left": 28.196208137736235,
+    "right_off_haft": 8.473409486550036e-16,
     "strike": {
      "contact": [
-      0.6,
-      3.59,
-      -5.83
+      0.65,
+      3.42,
+      -5.77
      ],
-     "game_radius_at_contact": 7.62,
-     "game_radius_during_active": 8.0,
+     "game_radius_at_contact": 7.55,
+     "game_radius_during_active": 7.86,
      "server_reach": 11.0,
-     "reach_gap": 3.0,
-     "yaw_first": 5.9,
+     "reach_gap": 3.14,
+     "yaw_first": 6.4,
      "yaw_last": 5.6
     }
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://113003401811000"
   },
   "GrandmasterShen_P2_Guandao_Running": {
    "slot": "GrandmasterShen_P2_Guandao_Running",
@@ -1517,28 +1542,29 @@
     "planted_slide": 0.0,
     "weapon_through_head": 0.0,
     "weapon_through_chest": 0.0,
-    "left_off_haft": 1.5582722720639762e-15,
+    "left_off_haft": 1.1644117316690922e-15,
     "loop_seam_deg": 0.0,
-    "wrist_right": 69.19769975831318,
-    "wrist_left": 44.988555599508,
-    "right_off_haft": 9.930136612989092e-16,
+    "wrist_right": 71.1998589433143,
+    "hand_spacing": 1.077,
+    "wrist_left": 28.68485613511255,
+    "right_off_haft": 7.631521572941402e-16,
     "strike": {
      "contact": [
-      0.77,
-      1.34,
-      -6.1
+      0.8,
+      1.25,
+      -6.05
      ],
-     "game_radius_at_contact": 7.99,
-     "game_radius_during_active": 7.99,
+     "game_radius_at_contact": 7.93,
+     "game_radius_during_active": 7.93,
      "server_reach": 12.5,
-     "reach_gap": 4.51,
-     "yaw_first": 7.2,
-     "yaw_last": 41.4
+     "reach_gap": 4.57,
+     "yaw_first": 7.5,
+     "yaw_last": 41.7
     }
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://138971034810541"
   },
   "GrandmasterShen_P2_GuardHit": {
    "slot": "GrandmasterShen_P2_GuardHit",
@@ -1547,7 +1573,7 @@
    "priority": "Movement",
    "move": null,
    "contacts": [],
-   "keyframes": 15,
+   "keyframes": 14,
    "notes": "A blow on the haft: he gives a little ground and resets.",
    "validation": {
     "arm_reach": 0.0,
@@ -1559,15 +1585,16 @@
     "planted_slide": 0.0,
     "weapon_through_head": 0.0,
     "weapon_through_chest": 0.0,
-    "left_off_haft": 1.3042167484290357e-15,
+    "left_off_haft": 1.1157603309187458e-15,
     "loop_seam_deg": 0.0,
-    "wrist_right": 36.49802715941172,
-    "wrist_left": 19.489723934319944,
-    "right_off_haft": 7.447602459741819e-16
+    "wrist_right": 14.64629822424054,
+    "hand_spacing": 1.25,
+    "wrist_left": 16.683010887047033,
+    "right_off_haft": 7.364386412590295e-16
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://137512673001290"
   },
   "GrandmasterShen_P2_GuardLoop": {
    "slot": "GrandmasterShen_P2_GuardLoop",
@@ -1576,7 +1603,7 @@
    "priority": "Movement",
    "move": null,
    "contacts": [],
-   "keyframes": 12,
+   "keyframes": 9,
    "notes": "Haft raised across the body in both hands, weight low and quiet.",
    "validation": {
     "arm_reach": 0.0,
@@ -1588,15 +1615,16 @@
     "planted_slide": 0.0,
     "weapon_through_head": 0.0,
     "weapon_through_chest": 0.0,
-    "left_off_haft": 1.1853938111129682e-15,
-    "loop_seam_deg": 0.0,
-    "wrist_right": 28.04254455214161,
-    "wrist_left": 13.017504524958891,
-    "right_off_haft": 9.43689570931383e-16
+    "left_off_haft": 1.3322676295501878e-15,
+    "loop_seam_deg": 0.03,
+    "wrist_right": 9.215596989444435,
+    "hand_spacing": 1.25,
+    "wrist_left": 11.841783647528441,
+    "right_off_haft": 8.08254562088053e-16
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://89628887933024"
   },
   "GrandmasterShen_P2_HitLightBack": {
    "slot": "GrandmasterShen_P2_HitLightBack",
@@ -1617,15 +1645,16 @@
     "planted_slide": 0.0,
     "weapon_through_head": 0.0,
     "weapon_through_chest": 0.0,
-    "left_off_haft": 7.301351988545593e-16,
+    "left_off_haft": 1.4432899320127035e-15,
     "loop_seam_deg": 0.0,
-    "wrist_right": 28.925719694449683,
-    "wrist_left": 15.55038633351178,
-    "right_off_haft": 9.50197851991224e-16
+    "wrist_right": 9.676324143850978,
+    "hand_spacing": 1.25,
+    "wrist_left": 9.910854574544233,
+    "right_off_haft": 8.741904837807691e-16
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://108791590457170"
   },
   "GrandmasterShen_P2_HitLightFront": {
    "slot": "GrandmasterShen_P2_HitLightFront",
@@ -1646,15 +1675,16 @@
     "planted_slide": 0.0,
     "weapon_through_head": 0.0,
     "weapon_through_chest": 0.0,
-    "left_off_haft": 1.1157603309187458e-15,
+    "left_off_haft": 1.3348671786163112e-15,
     "loop_seam_deg": 0.0,
-    "wrist_right": 14.65197105178971,
-    "wrist_left": 32.040957685148754,
-    "right_off_haft": 1.4087150935148696e-15
+    "wrist_right": 8.830679430482643,
+    "hand_spacing": 1.25,
+    "wrist_left": 12.183796476233551,
+    "right_off_haft": 8.95090418262362e-16
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://126263405590864"
   },
   "GrandmasterShen_P2_HitLightLeft": {
    "slot": "GrandmasterShen_P2_HitLightLeft",
@@ -1675,15 +1705,16 @@
     "planted_slide": 0.0,
     "weapon_through_head": 0.0,
     "weapon_through_chest": 0.0,
-    "left_off_haft": 9.883479487474066e-16,
+    "left_off_haft": 1.1801832636420706e-15,
     "loop_seam_deg": 0.0,
-    "wrist_right": 19.874452103946957,
-    "wrist_left": 14.097517732870628,
-    "right_off_haft": 1.0532500405730103e-15
+    "wrist_right": 6.680379708224831,
+    "hand_spacing": 1.25,
+    "wrist_left": 8.622073868460156,
+    "right_off_haft": 9.50197851991224e-16
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://136454566511055"
   },
   "GrandmasterShen_P2_HitLightRight": {
    "slot": "GrandmasterShen_P2_HitLightRight",
@@ -1704,15 +1735,16 @@
     "planted_slide": 0.0,
     "weapon_through_head": 0.0,
     "weapon_through_chest": 0.0,
-    "left_off_haft": 1.3699000466497265e-15,
+    "left_off_haft": 1.117140368961273e-15,
     "loop_seam_deg": 0.0,
-    "wrist_right": 13.53435278928852,
-    "wrist_left": 37.491135029676016,
-    "right_off_haft": 6.497413668604471e-16
+    "wrist_right": 17.017413711820673,
+    "hand_spacing": 1.25,
+    "wrist_left": 10.497906875553527,
+    "right_off_haft": 7.364386412590295e-16
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://82316826160909"
   },
   "GrandmasterShen_P2_Idle": {
    "slot": "GrandmasterShen_P2_Idle",
@@ -1721,7 +1753,7 @@
    "priority": "Idle",
    "move": null,
    "contacts": [],
-   "keyframes": 68,
+   "keyframes": 50,
    "notes": "He hangs in the air and cannot hold still: panting, head hunting in short snaps, the glaive drifting.",
    "validation": {
     "arm_reach": 0.0,
@@ -1733,15 +1765,16 @@
     "planted_slide": 0.0,
     "weapon_through_head": 0.0,
     "weapon_through_chest": 0.0,
-    "left_off_haft": 1.2815744444133687e-15,
-    "loop_seam_deg": 0.0,
-    "wrist_right": 8.65287283123573,
-    "wrist_left": 20.29849221056644,
-    "right_off_haft": 1.227537204523176e-15
+    "left_off_haft": 1.6062302927977487e-15,
+    "loop_seam_deg": 0.12,
+    "wrist_right": 7.82046026536634,
+    "hand_spacing": 1.25,
+    "wrist_left": 8.180500896128603,
+    "right_off_haft": 1.5582722720639762e-15
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://88576624798646"
   },
   "GrandmasterShen_P2_PhantomDrift": {
    "slot": "GrandmasterShen_P2_PhantomDrift",
@@ -1752,27 +1785,28 @@
    "contacts": [
     1.0
    ],
-   "keyframes": 61,
+   "keyframes": 60,
    "notes": "Phantom Drift: he leans back and hangs in the air, then glides through the server's lunge with his legs trailing and the blade falling across him.",
    "validation": {
     "arm_reach": 0.0,
-    "left_grip": 0.011244615614478981,
+    "left_grip": 0.0,
     "left_reach": 0.0,
-    "leg_reach": 0.007791633949386867,
+    "leg_reach": 0.005408938959976961,
     "lowest": 9.0,
     "weapon_low": 9.0,
     "planted_slide": 0.0,
     "weapon_through_head": 0.0,
     "weapon_through_chest": 0.0,
-    "left_off_haft": 0.011109031738193931,
+    "left_off_haft": 1.6476622377199301e-15,
     "loop_seam_deg": 0.0,
-    "wrist_right": 62.648501521454136,
-    "wrist_left": 45.1502803985511,
-    "right_off_haft": 8.95090418262362e-16
+    "wrist_right": 56.2470908235581,
+    "hand_spacing": 1.008,
+    "wrist_left": 26.83961976518464,
+    "right_off_haft": 1.0706603116298291e-15
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://96015799755804"
   },
   "GrandmasterShen_P2_PostureBreak": {
    "slot": "GrandmasterShen_P2_PostureBreak",
@@ -1781,11 +1815,11 @@
    "priority": "Action3",
    "move": null,
    "contacts": [],
-   "keyframes": 30,
+   "keyframes": 31,
    "notes": "Stance broken: thrown back, the levitation fails if he had it, and he sinks to his right knee on the haft, still holding it in both hands.",
    "validation": {
     "arm_reach": 0.0,
-    "left_grip": 0.1367920175427395,
+    "left_grip": 0.0,
     "left_reach": 0.0,
     "leg_reach": 0.0,
     "lowest": 9.0,
@@ -1793,15 +1827,16 @@
     "planted_slide": 0.0,
     "weapon_through_head": 0.0,
     "weapon_through_chest": 0.0,
-    "left_off_haft": 0.07733092878655981,
+    "left_off_haft": 1.1447282359412103e-15,
     "loop_seam_deg": 0.0,
-    "wrist_right": 18.476280528329106,
-    "wrist_left": 66.56108809697177,
-    "right_off_haft": 9.08756711201214e-16
+    "wrist_right": 88.18206948979096,
+    "hand_spacing": 1.019,
+    "wrist_left": 30.064443585709462,
+    "right_off_haft": 8.688869536365456e-16
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://119321164498892"
   },
   "GrandmasterShen_P2_RendingArc": {
    "slot": "GrandmasterShen_P2_RendingArc",
@@ -1814,29 +1849,28 @@
     1.32,
     1.95
    ],
-   "keyframes": 77,
+   "keyframes": 78,
    "notes": "Rending Arc: three cuts in a broken rhythm, the third held back so the third deflect has to wait for it.",
    "validation": {
-    "arm_reach": 0.002229551733153201,
-    "left_grip": 0.023573611407130768,
+    "arm_reach": 0.15970657521773823,
+    "left_grip": 0.01961615664993621,
     "left_reach": 0.0,
     "leg_reach": 0.0,
     "lowest": 9.0,
     "weapon_low": 9.0,
     "planted_slide": 0.0,
-    "weapon_through_head": 0.07575058846806465,
+    "weapon_through_head": 0.08369861245821641,
     "weapon_through_chest": 0.0,
-    "left_off_haft": 0.023231967056166175,
+    "left_off_haft": 0.07309334681356255,
     "loop_seam_deg": 0.0,
-    "wrist_right": 127.80245443515301,
-    "wrist_left": 110.63701067324241,
-    "right_off_haft": 0.0022295517331542432
+    "wrist_right": 104.8953453154546,
+    "hand_spacing": 0.998,
+    "wrist_left": 96.92615983879588,
+    "right_off_haft": 0.1597065752177384
    },
-   "problems": [
-    "right wrist turned 128 deg on the arm"
-   ],
+   "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://139401114764660"
   },
   "GrandmasterShen_P2_RunForward": {
    "slot": "GrandmasterShen_P2_RunForward",
@@ -1845,7 +1879,7 @@
    "priority": "Movement",
    "move": null,
    "contacts": [],
-   "keyframes": 20,
+   "keyframes": 30,
    "notes": "RunForward: floating; 7.48 rig studs per second at speed 1.",
    "validation": {
     "arm_reach": 0.0,
@@ -1857,15 +1891,16 @@
     "planted_slide": 0.0,
     "weapon_through_head": 0.0,
     "weapon_through_chest": 0.0,
-    "left_off_haft": 9.566618574882216e-16,
-    "loop_seam_deg": 0.0,
-    "wrist_right": 77.1103240963349,
-    "wrist_left": 16.62876288663189,
-    "right_off_haft": 1.149764460151469e-15
+    "left_off_haft": 1.5070025183858945e-15,
+    "loop_seam_deg": 0.49,
+    "wrist_right": 7.584529695648668,
+    "hand_spacing": 1.25,
+    "wrist_left": 8.023568638746507,
+    "right_off_haft": 1.6476622377199301e-15
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://75764611446385"
   },
   "GrandmasterShen_P2_StrafeLeft": {
    "slot": "GrandmasterShen_P2_StrafeLeft",
@@ -1874,7 +1909,7 @@
    "priority": "Movement",
    "move": null,
    "contacts": [],
-   "keyframes": 20,
+   "keyframes": 19,
    "notes": "StrafeLeft: floating; 1.95 rig studs per second at speed 1.",
    "validation": {
     "arm_reach": 0.0,
@@ -1886,15 +1921,16 @@
     "planted_slide": 0.0,
     "weapon_through_head": 0.0,
     "weapon_through_chest": 0.0,
-    "left_off_haft": 1.5515838457795456e-15,
-    "loop_seam_deg": 0.0,
-    "wrist_right": 14.116086878935356,
-    "wrist_left": 22.17616317333262,
-    "right_off_haft": 9.566618574882216e-16
+    "left_off_haft": 1.2021721300496787e-15,
+    "loop_seam_deg": 0.03,
+    "wrist_right": 6.299419363833569,
+    "hand_spacing": 1.25,
+    "wrist_left": 8.844615074687383,
+    "right_off_haft": 1.117140368961273e-15
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://122059756851988"
   },
   "GrandmasterShen_P2_StrafeRight": {
    "slot": "GrandmasterShen_P2_StrafeRight",
@@ -1903,7 +1939,7 @@
    "priority": "Movement",
    "move": null,
    "contacts": [],
-   "keyframes": 23,
+   "keyframes": 20,
    "notes": "StrafeRight: floating; 1.95 rig studs per second at speed 1.",
    "validation": {
     "arm_reach": 0.0,
@@ -1915,15 +1951,16 @@
     "planted_slide": 0.0,
     "weapon_through_head": 0.0,
     "weapon_through_chest": 0.0,
-    "left_off_haft": 1.6288526917397583e-15,
-    "loop_seam_deg": 0.0,
-    "wrist_right": 11.280375840001428,
-    "wrist_left": 15.206830196213796,
-    "right_off_haft": 1.149764460151469e-15
+    "left_off_haft": 1.0909742002592507e-15,
+    "loop_seam_deg": 0.02,
+    "wrist_right": 4.6180026425662355,
+    "hand_spacing": 1.25,
+    "wrist_left": 10.834664571245737,
+    "right_off_haft": 1.355199909595506e-15
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://102093636426715"
   },
   "GrandmasterShen_P2_Strike": {
    "slot": "GrandmasterShen_P2_Strike",
@@ -1934,11 +1971,11 @@
    "contacts": [
     0.5
    ],
-   "keyframes": 33,
+   "keyframes": 34,
    "notes": "Fallback diagonal cut for any move without its own slot.",
    "validation": {
     "arm_reach": 0.0,
-    "left_grip": 0.02148432750830498,
+    "left_grip": 0.0,
     "left_reach": 0.0,
     "leg_reach": 0.0,
     "lowest": 9.0,
@@ -1946,15 +1983,16 @@
     "planted_slide": 0.0,
     "weapon_through_head": 0.0,
     "weapon_through_chest": 0.0,
-    "left_off_haft": 0.019448175147726208,
+    "left_off_haft": 1.631687946612622e-15,
     "loop_seam_deg": 0.0,
-    "wrist_right": 39.610936392426915,
-    "wrist_left": 47.60503266273798,
-    "right_off_haft": 1.1157603309187458e-15
+    "wrist_right": 38.67393925885743,
+    "hand_spacing": 1.077,
+    "wrist_left": 32.60521454584136,
+    "right_off_haft": 7.216449660063518e-16
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://94204061315322"
   },
   "GrandmasterShen_P2_Transform": {
    "slot": "GrandmasterShen_P2_Transform",
@@ -1963,27 +2001,28 @@
    "priority": "Action4",
    "move": null,
    "contacts": [],
-   "keyframes": 44,
+   "keyframes": 45,
    "notes": "Revealed from the shared handoff pose in the burst: he straightens, the glaive thrown wide in both hands, and on the roar his feet leave the floor. Ends exactly on the phase 2 idle.",
    "validation": {
     "arm_reach": 0.0,
-    "left_grip": 0.08466302032541839,
+    "left_grip": 0.13145042479876512,
     "left_reach": 0.0,
     "leg_reach": 0.0,
     "lowest": 9.0,
     "weapon_low": 9.0,
     "planted_slide": 0.0,
     "weapon_through_head": 0.0,
-    "weapon_through_chest": 0.07926266134088344,
-    "left_off_haft": 0.0476493966462352,
+    "weapon_through_chest": 0.0,
+    "left_off_haft": 0.08266654241510275,
     "loop_seam_deg": 0.0,
-    "wrist_right": 75.92132569967826,
-    "wrist_left": 70.94457640125798,
-    "right_off_haft": 9.50197851991224e-16
+    "wrist_right": 72.64084823902341,
+    "hand_spacing": 0.766,
+    "wrist_left": 63.394109366313884,
+    "right_off_haft": 1.0448048107080504e-15
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://73377155327994"
   },
   "GrandmasterShen_P2_TurnLeft": {
    "slot": "GrandmasterShen_P2_TurnLeft",
@@ -1992,7 +2031,7 @@
    "priority": "Movement",
    "move": null,
    "contacts": [],
-   "keyframes": 12,
+   "keyframes": 17,
    "notes": "Floating, he simply rotates; the upper body leads the turn.",
    "validation": {
     "arm_reach": 0.0,
@@ -2004,15 +2043,16 @@
     "planted_slide": 0.0,
     "weapon_through_head": 0.0,
     "weapon_through_chest": 0.0,
-    "left_off_haft": 2.0034065997952087e-15,
-    "loop_seam_deg": 0.0,
-    "wrist_right": 21.738529135272945,
-    "wrist_left": 28.124437193420494,
-    "right_off_haft": 1.3506446028928519e-15
+    "left_off_haft": 1.1157603309187458e-15,
+    "loop_seam_deg": 0.05,
+    "wrist_right": 6.213440716348154,
+    "hand_spacing": 1.25,
+    "wrist_left": 11.237052146744738,
+    "right_off_haft": 9.930136612989092e-16
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://136196974104889"
   },
   "GrandmasterShen_P2_TurnRight": {
    "slot": "GrandmasterShen_P2_TurnRight",
@@ -2021,7 +2061,7 @@
    "priority": "Movement",
    "move": null,
    "contacts": [],
-   "keyframes": 10,
+   "keyframes": 8,
    "notes": "Floating, he simply rotates; the upper body leads the turn.",
    "validation": {
     "arm_reach": 0.0,
@@ -2033,15 +2073,16 @@
     "planted_slide": 0.0,
     "weapon_through_head": 0.0,
     "weapon_through_chest": 0.0,
-    "left_off_haft": 1.1116099371267112e-15,
-    "loop_seam_deg": 0.0,
-    "wrist_right": 13.444554615745606,
-    "wrist_left": 9.345175082417994,
-    "right_off_haft": 1.0007415106216803e-15
+    "left_off_haft": 1.1551122306821434e-15,
+    "loop_seam_deg": 0.04,
+    "wrist_right": 5.959085031854582,
+    "hand_spacing": 1.25,
+    "wrist_left": 2.9905372987653696,
+    "right_off_haft": 1.5632082117998628e-15
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://87434024964181"
   },
   "GrandmasterShen_P2_WalkBackward": {
    "slot": "GrandmasterShen_P2_WalkBackward",
@@ -2050,7 +2091,7 @@
    "priority": "Movement",
    "move": null,
    "contacts": [],
-   "keyframes": 23,
+   "keyframes": 21,
    "notes": "WalkBackward: floating; 1.80 rig studs per second at speed 1.",
    "validation": {
     "arm_reach": 0.0,
@@ -2062,15 +2103,16 @@
     "planted_slide": 0.0,
     "weapon_through_head": 0.0,
     "weapon_through_chest": 0.0,
-    "left_off_haft": 1.2779626727101132e-15,
-    "loop_seam_deg": 0.0,
-    "wrist_right": 9.541260857027503,
-    "wrist_left": 29.18261398696723,
-    "right_off_haft": 1.047382306668854e-15
+    "left_off_haft": 1.3287936532864002e-15,
+    "loop_seam_deg": 0.02,
+    "wrist_right": 11.623816812982847,
+    "hand_spacing": 1.25,
+    "wrist_left": 18.859027695761597,
+    "right_off_haft": 1.159106867033638e-15
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://82418627089813"
   },
   "GrandmasterShen_P2_WalkForward": {
    "slot": "GrandmasterShen_P2_WalkForward",
@@ -2079,7 +2121,7 @@
    "priority": "Movement",
    "move": null,
    "contacts": [],
-   "keyframes": 11,
+   "keyframes": 25,
    "notes": "WalkForward: floating; 2.40 rig studs per second at speed 1.",
    "validation": {
     "arm_reach": 0.0,
@@ -2091,15 +2133,16 @@
     "planted_slide": 0.0,
     "weapon_through_head": 0.0,
     "weapon_through_chest": 0.0,
-    "left_off_haft": 1.2202987474385978e-15,
-    "loop_seam_deg": 0.0,
-    "wrist_right": 24.10903667479899,
-    "wrist_left": 12.03681373748064,
-    "right_off_haft": 1.1801832636420706e-15
+    "left_off_haft": 1.0835344452754878e-15,
+    "loop_seam_deg": 0.06,
+    "wrist_right": 8.777755189046703,
+    "hand_spacing": 1.25,
+    "wrist_left": 10.604050730693508,
+    "right_off_haft": 1.0175362097255202e-15
    },
    "problems": [],
    "uploaded": false,
-   "asset_id": null
+   "asset_id": "rbxassetid://93136820789118"
   }
  }
 }

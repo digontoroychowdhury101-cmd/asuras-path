@@ -16,7 +16,7 @@ local FAR, VERY_FAR, TELEPORT = 160, 320, 60
 Cloth.Rates = table.freeze({ Low = { Step = 1 / 30, Passes = 1 }, Mid = { Step = 1 / 60, Passes = 2 }, High = { Step = 1 / 60, Passes = 3 } })
 
 type Session = { Skin: Model, Actor: Model, Root: BasePart, Bone: Bone, State: any, Limbs: { BasePart }, RestInverse: { CFrame }, LimbBones: { Bone }, LimbAt: { CFrame }, LimbAtInverse: { CFrame },
-	ClothBones: { Bone }, ClothAtInverse: { CFrame }, M: { number }, Clock: number, Last: Vector3?, HitMark: any }
+	ClothBones: { Bone }, ClothAtInverse: { CFrame }, M: { number }, Clock: number, Last: Vector3?, HitMark: any, Dropped: boolean? }
 local sessions: { [Model]: Session } = {}
 local waiting: { [Model]: boolean } = {}
 local beat: RBXScriptConnection? = nil
@@ -103,6 +103,12 @@ local function run(s: Session, dt: number, rate: any, eye: Vector3)
 		if s.HitMark ~= nil and typeof(from) == "Vector3" then Sim.impulse(s.State, -from.X, 0.15, -from.Z, 11, step) end
 		s.HitMark = mark
 	end
+	-- (2026-11-06) defeated (EnemyDissolve's AsuraDissolve): what his power held up falls to the floor under him
+	if not s.Dropped and s.Actor:GetAttribute("AsuraDissolve") ~= nil then
+		s.Dropped = true
+		local humanoid = s.Actor:FindFirstChildOfClass("Humanoid")
+		Sim.drop(s.State, position.Y - (if humanoid then humanoid.HipHeight + s.Root.Size.Y * 0.5 else 3))
+	end
 	if away > VERY_FAR then return end -- too far to read: the body still follows, the cloth rests on its last pose
 	if away > FAR then step = math.max(step, 1 / 20) end
 	s.Clock = math.min(s.Clock + dt, step * 3)
@@ -145,8 +151,23 @@ local function step(dt: number)
 	end
 end
 
+-- (2026-11-06) A next form staged ahead of its reveal (BossSkin.stage) is drawn all but invisibly on this client until the server shows it, so its meshes
+-- and maps are already on the GPU at the reveal (a first draw used to stall the frame on a bare, untextured body). Local only: the server's reveal sets
+-- each piece's real transparency, which replaces this one. Pieces the template keeps hidden are left alone.
+local WARM = 0.985
+local function warm(skin: Model)
+	local function one(d: Instance)
+		local t = d:GetAttribute("AsuraStagedT")
+		if d:IsA("BasePart") and type(t) == "number" and t < 1 and d.Transparency >= 1 then d.Transparency = WARM end
+	end
+	for _, d in skin:GetDescendants() do one(d) end
+	local added = skin.DescendantAdded:Connect(one)
+	skin:GetPropertyChangedSignal("Name"):Once(function() added:Disconnect() end) -- revealed: the server owns every value from here
+end
+
 local function add(item: Instance)
 	if not item:IsA("Model") then return end
+	if item.Name == "AsuraBossSkinStaged" then warm(item) end
 	waiting[item] = true
 	if not beat then beat = RunService.Heartbeat:Connect(step) end
 end
