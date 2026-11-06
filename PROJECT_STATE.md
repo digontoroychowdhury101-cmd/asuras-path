@@ -1,3 +1,5 @@
+**Combat master audit (2026-11-06):** At 29d18af, six focused suites pass 626 local checks. Stage 3 remains unaccepted, Stage 4 smoke-only, Stage 5 pending; four follow-up batches are implemented with acceptance open. Report/resume prompt: `outputs/master-completion-audit-2026-11-06/`. Next: Windows 03B; Mac may start C00 and measured AR00 prototypes. No game code changed.
+
 - 2026-11-06 (Computer A) Shen grip pilot staged, unpublished: two-handed guard, run fix, Heavy at 0.383, shoulder/spine reach, anatomical left wrist with diagonal grip. Before/after videos in outputs/grandmaster-shen-2026-11-05/pilot. Next: re-export the 11 pilot clips (interrupted), fix solid-cloth patch rest drift, review, then propagate.
 
 **Shen movement reel (2026-11-06):** Recorded every clip plus live fights and the phase change in Studio (two 720p parts in his outputs/reel). Found: white see-through phase swap, P1 death never falls, one-handed carry, upright run, Flourish blade through head, dark phase 2 lighting. Next: fix these in shen_clips.py.

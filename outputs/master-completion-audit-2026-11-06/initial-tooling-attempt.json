@@ -1,0 +1,18 @@
+{
+  "evidence_class": "local regression / engine emulation; not Studio, multiplayer, human feel or profiling",
+  "started_utc": "2026-11-06T12:05:15.164502+00:00",
+  "head_at_start": "29d18af4b4f488e8348a49e0f96d649214fddd4d",
+  "head_at_end": "29d18af4b4f488e8348a49e0f96d649214fddd4d",
+  "command": [
+    "python3",
+    "tools/lune_compat.py",
+    "tools/test_stage2_timing.luau",
+    "tools/test_stage2_closure.luau",
+    "tools/test_stage3_motion.luau",
+    "tools/test_combat_contact.luau",
+    "tools/test_omni_combat.luau",
+    "tools/test_ordinary_foe_fairness.luau"
+  ],
+  "exit_code": 1,
+  "log": "focused-regressions.log"
+}

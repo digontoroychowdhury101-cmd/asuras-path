@@ -1,0 +1,6 @@
+PASS     test_stage2_timing.luau: stage 2 timing: 111 passed, 0 failed (offline behaviour; Studio, latency and feel separate)
+PASS     test_stage2_closure.luau: stage 2 closure: 57 passed, 0 failed (offline behaviour; Studio and two-client fairness separate)
+PASS     test_stage3_motion.luau: stage 3 motion: 284 passed, 0 failed (offline behaviour; Studio, frame order and feel separate)
+PASS     test_combat_contact.luau: combat contact: 68 passed, 0 failed
+PASS     test_omni_combat.luau: omni combat: 84 passed, 0 failed (local regression; Studio, hardware and human play separate)
+PASS     test_ordinary_foe_fairness.luau: ordinary foe fairness: 22 passed, 0 failed (offline behaviour; feel needs human play)

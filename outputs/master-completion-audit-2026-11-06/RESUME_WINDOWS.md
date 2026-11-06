@@ -1,0 +1,21 @@
+# Resume the outstanding combat stages — Windows
+
+Paste this into the Windows implementation session. It resumes existing work; it does not commission another rewrite.
+
+```text
+Resume Asura's Path combat recovery from the current relay checkpoint. Read AGENTS.md, CLAUDE.md, PROJECT_STATE.md, the project ro-engineer skill, docs/BUILD.md and tools/toolchain.env. Preserve unrelated work and coordinate one writer for shared source and the tested Studio place.
+
+Read outputs/master-completion-audit-2026-11-06/README.md, then outputs/combat-recovery-prompts-2026-11-02/03B_WINDOWS_VERIFY_AND_COMPLETE.md and its linked master/stage documents. Read current MAC_TO_WINDOWS.md, coverage, timing contract, shared mac-followup HANDOFF, each installed batch's results, Foundry-kit results and Shen's latest RESULTS/pilot handoff. Re-inspect current source: the audit checkpoint was 29d18af, not a frozen future baseline.
+
+Do not restart Stages 1–2, regenerate existing boss models, repeat Batches 1–4 as new features, or treat the old 12/12 OmniPvP smoke as Stage 4 completion. Preserve the implemented multi-contact parry policy and all authority/clock/intent safeguards. Borrowed Force remains unapproved. Keep timing windows and balance unless a traced problem justifies an explicitly documented change.
+
+Execute in order:
+1. Establish current tested-source/build identity, tools, Studio version and measured frame/network conditions. Use a private test copy; preserve saved Studio work. Old qa_inject.py was refused after a Studio update; inspect tools/qa/qa_place.py and actual supported capabilities before choosing an injection method.
+2. Close outstanding Stage 3 engineering and W-cases. Prioritize A1 first motion, W-02 dash pose/body, W-03 production-input combos/duplicate occurrences, W-04 latency convergence, W-05 feet/slopes, W-06 visible blade/contact, W-07 remaining real collision/knockback/KO cases, W-08 movement owners, W-10 family/grip/reach gaps, W-11 performance and W-13 budget/scale transitions. Historical flat/stairs fixes are already implemented; revalidate them. Use current integrated bosses and coordinate Shen's unpublished pilot with its owner; do not overwrite it. Complete reference-game inspection evidence still missing from the research packet without inventing private timings or claiming unviewed footage.
+3. Before trusting OmniPvP, repair aggregate pass logic, deterministic per-attempt assertions, all damage/resource paths, complete resets, sequence ownership, both-client action/contact/presentation traces and failure-safe cleanup. Keep seeded remotes separate from normal production input.
+4. Execute the full Stage 4 matrix on one server/two genuine clients, reverse roles, and measure supported latency/frame scenarios. Preserve failed attempts. Record unsupported cases honestly; partial transport delay is not full network emulation. Verify player-melee grace versus no-grace boss/area behavior.
+5. Execute available Stage 5 ordinary-input and PvE checks. Prepare the exact two-person protocol if a second operator is unavailable; actual human judgment remains pending until performed. Complete independent engineering work while waiting. Run installed-batch acceptance from outputs/post-combat-mac-prompts-2026-11-02/WINDOWS_ALL_FOUR_ACCEPTANCE.md, including armour/deferred contacts and the earned loop; no new undispatched features.
+6. Run appropriate regressions and full project verification, verify final tested build identity, remove owned QA overrides/settings and stop owned sessions. Reconcile historical/active contract tables and deliver current STATUS, TEST_MATRIX, coverage, integration map, defect ledger and ACCEPTANCE.md with separate static/local/Studio/multiplayer/human/device/live results. Commit/push only owned work and add the required short PROJECT_STATE handoff.
+
+Fix reproducible engineering failures within scope. Never change test thresholds, delete unfavorable samples, silently loosen defense windows, or mark human/physical-device/live checks passed from automation. Do not start environment implementation in this session unless separately assigned. C00 and reversible AR00 work may proceed elsewhere with separate ownership; final C07 must revalidate the integrated world afterward.
+```
