@@ -822,7 +822,8 @@ def wrist_cost(parts):
     """What a wrist pose costs beyond its plain bend: deviation past what a wrist gives, flexion past its stop, twist the forearm should have carried. The hand leaves its cuff past these."""
     tw, fl, dv = (abs(x) for x in parts)
     lt, lf, ld = WRIST_LIMITS
-    return 3.0 * max(0.0, dv - ld + 8.0) + 1.5 * max(0.0, fl - lf) + 2.0 * max(0.0, tw - lt) + 12.0 * max(0.0, dv - ld) + 6.0 * max(0.0, fl - lf - 10.0)
+    # (2026-11-07) twist too is costed from a little inside its limit: free up to the limit, the choice sat on it and smoothing tipped it 1-6 deg past
+    return 3.0 * max(0.0, dv - ld + 8.0) + 1.5 * max(0.0, fl - lf) + 1.0 * max(0.0, tw - lt + 8.0) + 2.0 * max(0.0, tw - lt) + 12.0 * max(0.0, dv - ld) + 6.0 * max(0.0, fl - lf - 10.0)
 
 
 def wrist_excess(rig, R, side):

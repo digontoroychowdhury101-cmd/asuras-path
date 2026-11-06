@@ -88,6 +88,18 @@ All 64 clips (both phases) were re-exported with the final solver on 2026-11-06 
 - `rest_on_floor` (opt-in `floor_body`): pelvis, feet and free hands are lifted by the smoothed amount anything sinks below the floor. `uncorrupt` fades phase 2's corruption pose out over a window.
 - Fixed by the above: Heavy (P2), Skyfall, Crimson Embrace, Rending Arc, Wheel of Heaven, Flourish, and a one-frame spike in P2 Heavy.
 
+**Wrist anatomy (left-hand/sleeve cohesion; `tools/qa/shen_wrist_report.py`, all 64 clips)**: this check is stricter than the validator. It counts the share of frames in which a wrist goes more than 1 deg past its anatomical range (twist 20, flexion 75, deviation 30 deg).
+- The whole-clip search left exactly 20 deg of twist at the left wrist whenever the forearm was at its 85 deg roll limit, because twist cost nothing up to the limit. Smoothing then tipped it 1-6 deg past.
+- `wrist_cost` now charges twist from 8 deg inside the limit, as it already did for deviation. All 64 re-exported clean.
+- Results, before -> after:
+  - Turn 79% -> 0%, walk 51% -> 0%, strafe 52% -> 0-2%, run 22% -> 0%, posture break 68% -> 32%.
+  - Clips fully inside range: 23 -> 27. Mean left-wrist share 17% -> 12%.
+- Still past range, left hand unless stated:
+  - Heavy follow-through: 58% (P1), 38% (P2). Twist 40-70 deg after contact with the forearm at its roll limit; the lead hand would have to let the haft turn in it.
+  - Light hit reactions: 40% and 80% of 0.48 s.
+  - P2 Art 64%, L2 50%.
+  - Right wrist: P1 L3 35% and P2 Rending Arc 35%.
+
 **Deaths (P1, P2)**: snap at 0.24 s, knee at 1.15 s, the glaive leaves the hands at 1.35 s, topple at 1.55 s, ground impact at 1.84 s, a small rebound, then rest by 2.1-2.2 s. The dissolve completes at `DeathFadeAt` 2.6 s, so he lies still for about 0.4 s before fading. Validator: no problems in either phase. Lowest body point +0.01 rig units above the floor from 1.8 s on, glaive resting on the floor (+0.01 to +0.02). In game the phase 2 orbs drop to the floor and roll to rest when the death dissolve starts (`ClothSim.drop` from `BossCloth`; covered by `test_cloth_sim.py`). The Blender renders do not run that event, so the orbs stay up there.
 
 **Phase reveal**: `BossSkin.stage` clones the next phase's skin as soon as the transition begins, hidden and without shadows, so it reaches every client early. At the reveal, `Skin.attach` swaps to it in one step. On the client, `BossCloth` keeps the staged pieces at 0.985 transparency so their meshes and textures load before they are shown.
@@ -136,5 +148,6 @@ Measured in Studio, single client, with ShenProbe forcing the transition:
   - record Skyfall, the deaths, a phase transition driven by the AI, and light-attack timing in Studio;
   - run the two-client check of the phase reveal and the lights on the other computer.
 - **Device profiling** of the cloth (more collision volumes per particle) and of the staged second skin, which spends memory during the transition.
-- **Heavy**: contact spacing 0.70 and L1 0.82 still read narrower than the guard. Next iteration: a deliberate grip slide and a braking step.
+- **Heavy**: contact spacing 0.70 and L1 0.82 still read narrower than the guard. Next iteration: a deliberate grip slide, a braking step, and a lead hand that lets the haft turn in it through the follow-through (its wrist is past range for 58% of the clip).
+- **Wrist anatomy still past range** in hit reactions, P2 Art, L2, P1 L3 and Rending Arc (shares above). This needs a regrip in the solver, the hand turning on the haft within a cut, which `smooth_hold` currently forbids.
 - **Cloth at pinned seams**: needs a mesh-level check of the hip and shoulder blend (see above).
