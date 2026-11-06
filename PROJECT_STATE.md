@@ -1,3 +1,5 @@
+**Shen motion editable anywhere (2026-11-06):** Force-tracked his clip pipeline inputs (pose samples, cloth rigs, piece maps) and wrote the pull, export, publish and register steps in his RESULTS.md. A fresh clone re-baked clips. Next: fix his remaining movement and fluidity errors.
+
 **Grandmaster Shen in game (2026-11-06):** Both skinned forms imported and bound, 64 clips and 16 sound layers published, BossCloth fixed for the importer's turned skeleton. Single-client Studio fight passed: phases, transition, defeat, reset, retry. Next: two-client test on the other computer, device profiling.
 
 **Grandmaster Shen rework (2026-11-06):** Gait, curved parryable cuts, mix-ups, sphere orbs, hair-only black, levitation, freer parted cloth, stable two-handed grip. Local verifier passes. Next: Studio import, bind, publish 64 clips, register, play-test.

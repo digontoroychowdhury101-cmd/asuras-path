@@ -115,3 +115,12 @@ Sourcing briefs, if the synthesized layers do not hold up by ear:
 - **Bind:** 85 parts, worst centre error 0.0000 studs. Capture place: `import/shen_import_capture.rbxlx`.
 - **Fresh-upload note:** for a while after upload, Studio logs "Asset content representation is being generated" for some new mesh ids. That is Roblox processing; it clears on its own.
 - **Not done:** two-client test (other computer, per house rule); device profiling (Studio client here: 60 Hz physics, 0.7 ms heartbeat, 5.4 GB Studio memory, not a device figure).
+
+## Editing Shen's motion on any computer
+
+The inputs the clip tools need are committed (`work/shen_import/samples_p1/p2.npz`, `cloth_p1/p2.json`, `work/opening_cast_bake/shen1/shen2/pieces.json`). The cloth bake also uses that computer's own `work/bin/luau/luau`, which the test suite already needs.
+
+1. `git pull`, then edit `tools/animation/opening_cast/shen_clips.py` (moves) or `shen_lib.py` (shared pose, grip, gait helpers).
+2. `python3 tools/animation/opening_cast/export.py shen GrandmasterShen_P1_Idle ...` re-bakes only the named clips; it prints OK or FIX per clip. Omit names to rebuild all 64.
+3. With Studio open in Edit mode and signed in as Sheashing123: `python3 tools/animation/opening_cast/publish.py shen <STUDIO_ID> <clips>`, then `python3 tools/animation/opening_cast/register_shen.py`.
+4. `python3 tools/build.py`, commit and push. Only one computer should publish Shen clips at a time, since `published.json` and the registry are shared.

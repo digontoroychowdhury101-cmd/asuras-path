@@ -1,4 +1,6 @@
 work/
+# Force-tracked exceptions (git add -f): Shen clip pipeline inputs so any computer can re-export his motion.
+#   work/shen_import/{samples,cloth}_p{1,2}.*, work/opening_cast_bake/shen{1,2}/pieces.json
 node_modules/
 .DS_Store
 *.rbxl.lock

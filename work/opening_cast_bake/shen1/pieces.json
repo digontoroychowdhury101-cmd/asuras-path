@@ -1,0 +1,849 @@
+{
+ "Shen1_Head": {
+  "bone": "HumanoidRootPart",
+  "role": null,
+  "centre": [
+   -0.12122240424156189,
+   2.132780829917908,
+   -0.13971360719203946
+  ],
+  "size": [
+   0.8444688916206361,
+   1.1184386968612667,
+   0.8428752124309541
+  ],
+  "tris": 16696,
+  "source_tris": 16696,
+  "group": "Head",
+  "material": "shared 2048 colour/normal/metal-rough",
+  "skinned": true
+ },
+ "Shen1_UpperTorso": {
+  "bone": "HumanoidRootPart",
+  "role": null,
+  "centre": [
+   -0.0811202621459961,
+   1.014319775354386,
+   -0.21425002908706664
+  ],
+  "size": [
+   1.3158405780792237,
+   1.1363518357276918,
+   1.2558387875556947
+  ],
+  "tris": 14069,
+  "source_tris": 14069,
+  "group": "UpperTorso",
+  "material": "shared 2048 colour/normal/metal-rough",
+  "skinned": true
+ },
+ "Shen1_LowerTorso_1": {
+  "bone": "HumanoidRootPart",
+  "role": null,
+  "centre": [
+   -0.3161318320236541,
+   -0.06896307543328983,
+   -0.23662990427017205
+  ],
+  "size": [
+   1.0503128087119387,
+   1.0795981498671299,
+   1.1669922351837159
+  ],
+  "tris": 10146,
+  "source_tris": 9506,
+  "group": "LowerTorso",
+  "material": "shared 2048 colour/normal/metal-rough",
+  "skinned": true
+ },
+ "Shen1_LowerTorso_2": {
+  "bone": "HumanoidRootPart",
+  "role": null,
+  "centre": [
+   0.2715835773944855,
+   0.14843617762279537,
+   -0.2746445575952529
+  ],
+  "size": [
+   0.7610994219779968,
+   0.6553051769733429,
+   1.203065186738968
+  ],
+  "tris": 9507,
+  "source_tris": 9507,
+  "group": "LowerTorso",
+  "material": "shared 2048 colour/normal/metal-rough",
+  "skinned": true
+ },
+ "Shen1_RightUpperArm": {
+  "bone": "HumanoidRootPart",
+  "role": null,
+  "centre": [
+   0.6877796420454979,
+   0.6623007097358709,
+   -0.03412132060527798
+  ],
+  "size": [
+   0.953877231478691,
+   0.9457736730575559,
+   0.7049137771129608
+  ],
+  "tris": 9098,
+  "source_tris": 9098,
+  "group": "RightUpperArm",
+  "material": "shared 2048 colour/normal/metal-rough",
+  "skinned": true
+ },
+ "Shen1_RightLowerArm": {
+  "bone": "HumanoidRootPart",
+  "role": null,
+  "centre": [
+   0.9062820205092431,
+   0.07153159464550063,
+   -0.10396622812747952
+  ],
+  "size": [
+   0.6113308101892472,
+   0.8500581324100498,
+   0.8446035921573639
+  ],
+  "tris": 8312,
+  "source_tris": 8312,
+  "group": "RightLowerArm",
+  "material": "shared 2048 colour/normal/metal-rough",
+  "skinned": true
+ },
+ "Shen1_RightHand": {
+  "bone": "HumanoidRootPart",
+  "role": null,
+  "centre": [
+   1.0043881261348724,
+   -0.3620275816802978,
+   -0.4176565239429473
+  ],
+  "size": [
+   0.38382705450057997,
+   0.4357028365135194,
+   0.377272367477417
+  ],
+  "tris": 3821,
+  "source_tris": 3821,
+  "group": "RightHand",
+  "material": "shared 2048 colour/normal/metal-rough",
+  "skinned": true
+ },
+ "Shen1_LeftUpperArm": {
+  "bone": "HumanoidRootPart",
+  "role": null,
+  "centre": [
+   -0.8560472762584685,
+   0.614431575786591,
+   -0.05265160596370694
+  ],
+  "size": [
+   0.8845823049545287,
+   0.939959931373596,
+   0.8169934928417205
+  ],
+  "tris": 7621,
+  "source_tris": 7621,
+  "group": "LeftUpperArm",
+  "material": "shared 2048 colour/normal/metal-rough",
+  "skinned": true
+ },
+ "Shen1_LeftLowerArm": {
+  "bone": "HumanoidRootPart",
+  "role": null,
+  "centre": [
+   -1.0248737967014314,
+   -0.07292835627841932,
+   -0.08526752090454098
+  ],
+  "size": [
+   0.6505463123321534,
+   0.9549545586109165,
+   0.840967047214508
+  ],
+  "tris": 10103,
+  "source_tris": 10103,
+  "group": "LeftLowerArm",
+  "material": "shared 2048 colour/normal/metal-rough",
+  "skinned": true
+ },
+ "Shen1_LeftHand": {
+  "bone": "HumanoidRootPart",
+  "role": null,
+  "centre": [
+   -1.0893425083160402,
+   -0.5272848150615692,
+   -0.439003972172737
+  ],
+  "size": [
+   0.3779009699821475,
+   0.5527880907058718,
+   0.34364619851112366
+  ],
+  "tris": 4752,
+  "source_tris": 4752,
+  "group": "LeftHand",
+  "material": "shared 2048 colour/normal/metal-rough",
+  "skinned": true
+ },
+ "Shen1_RightUpperLeg": {
+  "bone": "HumanoidRootPart",
+  "role": null,
+  "centre": [
+   0.5229263716936112,
+   -1.0858307531957627,
+   0.03030249083042147
+  ],
+  "size": [
+   1.2524716436862948,
+   1.8843416988849642,
+   0.948108297586441
+  ],
+  "tris": 4901,
+  "source_tris": 4705,
+  "group": "RightUpperLeg",
+  "material": "shared 2048 colour/normal/metal-rough",
+  "skinned": true
+ },
+ "Shen1_RightLowerLeg": {
+  "bone": "HumanoidRootPart",
+  "role": null,
+  "centre": [
+   0.7114503973722458,
+   -2.208399712193489,
+   0.08673513287305837
+  ],
+  "size": [
+   1.0497497379779814,
+   1.464217561483383,
+   0.9324400752782822
+  ],
+  "tris": 14098,
+  "source_tris": 14098,
+  "group": "RightLowerLeg",
+  "material": "shared 2048 colour/normal/metal-rough",
+  "skinned": true
+ },
+ "Shen1_RightFoot": {
+  "bone": "HumanoidRootPart",
+  "role": null,
+  "centre": [
+   1.1305421540141105,
+   -3.04695379053402,
+   -0.06819639897346491
+  ],
+  "size": [
+   0.6630269914865492,
+   0.29019909501075736,
+   0.9122822046279907
+  ],
+  "tris": 5244,
+  "source_tris": 5244,
+  "group": "RightFoot",
+  "material": "shared 2048 colour/normal/metal-rough",
+  "skinned": true
+ },
+ "Shen1_LeftUpperLeg": {
+  "bone": "HumanoidRootPart",
+  "role": null,
+  "centre": [
+   -0.6307098156213762,
+   -1.1207588425760269,
+   0.04994400942325594
+  ],
+  "size": [
+   1.099560481309891,
+   1.8921085059642793,
+   1.2345363318920135
+  ],
+  "tris": 6402,
+  "source_tris": 6206,
+  "group": "LeftUpperLeg",
+  "material": "shared 2048 colour/normal/metal-rough",
+  "skinned": true
+ },
+ "Shen1_LeftLowerLeg": {
+  "bone": "HumanoidRootPart",
+  "role": null,
+  "centre": [
+   -0.6940224862098694,
+   -2.4512574813251495,
+   0.10653370970487605
+  ],
+  "size": [
+   0.8862885117530824,
+   0.9825426697731017,
+   0.9940804451704026
+  ],
+  "tris": 13797,
+  "source_tris": 13797,
+  "group": "LeftLowerLeg",
+  "material": "shared 2048 colour/normal/metal-rough",
+  "skinned": true
+ },
+ "Shen1_LeftFoot": {
+  "bone": "HumanoidRootPart",
+  "role": null,
+  "centre": [
+   -0.9024796044826506,
+   -3.0473915210847853,
+   -0.04013720548152916
+  ],
+  "size": [
+   0.6577968597412108,
+   0.2900420367717742,
+   0.8846719205379486
+  ],
+  "tris": 5269,
+  "source_tris": 5269,
+  "group": "LeftFoot",
+  "material": "shared 2048 colour/normal/metal-rough",
+  "skinned": true
+ },
+ "Shen1_HairBack_1": {
+  "bone": "HumanoidRootPart",
+  "role": null,
+  "centre": [
+   -0.5629412180185318,
+   0.7196199455375676,
+   0.8577899684906007
+  ],
+  "size": [
+   0.9474571526050569,
+   0.9638438701629637,
+   0.8593739032745363
+  ],
+  "tris": 16776,
+  "source_tris": 16776,
+  "group": "HairBack",
+  "material": "shared 2048 colour/normal/metal-rough",
+  "skinned": true
+ },
+ "Shen1_HairBack_2": {
+  "bone": "HumanoidRootPart",
+  "role": null,
+  "centre": [
+   -0.6344809687137603,
+   1.6177042701358801,
+   0.45598260962963116
+  ],
+  "size": [
+   1.1066988706588745,
+   0.9595116496086122,
+   1.6629886209964755
+  ],
+  "tris": 16777,
+  "source_tris": 16777,
+  "group": "HairBack",
+  "material": "shared 2048 colour/normal/metal-rough",
+  "skinned": true
+ },
+ "Shen1_HairBack_3": {
+  "bone": "HumanoidRootPart",
+  "role": null,
+  "centre": [
+   0.358959741294384,
+   0.6954778769130712,
+   0.8280585666894913
+  ],
+  "size": [
+   1.027571913599968,
+   0.9214858174324037,
+   0.8429199278354645
+  ],
+  "tris": 16776,
+  "source_tris": 16776,
+  "group": "HairBack",
+  "material": "shared 2048 colour/normal/metal-rough",
+  "skinned": true
+ },
+ "Shen1_HairBack_4": {
+  "bone": "HumanoidRootPart",
+  "role": null,
+  "centre": [
+   0.42614463657140733,
+   1.5971089460964207,
+   0.5576242347955703
+  ],
+  "size": [
+   1.1630640238523482,
+   1.011926233768464,
+   1.4488410055637357
+  ],
+  "tris": 16777,
+  "source_tris": 16777,
+  "group": "HairBack",
+  "material": "shared 2048 colour/normal/metal-rough",
+  "skinned": true
+ },
+ "Shen1_Beard": {
+  "bone": "HumanoidRootPart",
+  "role": null,
+  "centre": [
+   -0.1301340734958649,
+   1.4743668236846927,
+   -0.46487451291084286
+  ],
+  "size": [
+   0.6779095530509949,
+   0.884874248504639,
+   0.48585023880004885
+  ],
+  "tris": 3386,
+  "source_tris": 3386,
+  "group": "Beard",
+  "material": "shared 2048 colour/normal/metal-rough",
+  "skinned": true
+ },
+ "Shen1_Beads": {
+  "bone": "HumanoidRootPart",
+  "role": null,
+  "centre": [
+   -0.012027386426925663,
+   1.217782441627503,
+   -0.4704975674152374
+  ],
+  "size": [
+   0.8860638260841369,
+   1.1825480222702027,
+   0.8706200122833252
+  ],
+  "tris": 8083,
+  "source_tris": 8083,
+  "group": "Beads",
+  "material": "shared 2048 colour/normal/metal-rough",
+  "skinned": true
+ },
+ "Shen1_RightMantle": {
+  "bone": "HumanoidRootPart",
+  "role": null,
+  "centre": [
+   0.543263658285141,
+   1.1530556001777656,
+   -0.07145120000839222
+  ],
+  "size": [
+   0.8751769185066223,
+   0.91005973815918,
+   0.7984293937683107
+  ],
+  "tris": 8323,
+  "source_tris": 8323,
+  "group": "RightMantle",
+  "material": "shared 2048 colour/normal/metal-rough",
+  "skinned": true
+ },
+ "Shen1_LeftMantle": {
+  "bone": "HumanoidRootPart",
+  "role": null,
+  "centre": [
+   -0.7049991941452025,
+   1.1381954887027743,
+   -0.05191084539890281
+  ],
+  "size": [
+   0.8254112601280211,
+   0.9800060868263243,
+   0.8345921456813812
+  ],
+  "tris": 8108,
+  "source_tris": 8108,
+  "group": "LeftMantle",
+  "material": "shared 2048 colour/normal/metal-rough",
+  "skinned": true
+ },
+ "Shen1_RobeBack_1": {
+  "bone": "HumanoidRootPart",
+  "role": null,
+  "centre": [
+   -0.9304040974378587,
+   -2.0195278487091066,
+   0.549891149044037
+  ],
+  "size": [
+   1.5486868083477021,
+   1.2218310594558717,
+   0.8312475442886352
+  ],
+  "tris": 17431,
+  "source_tris": 17431,
+  "group": "RobeBack",
+  "material": "shared 2048 colour/normal/metal-rough",
+  "skinned": true
+ },
+ "Shen1_RobeBack_2": {
+  "bone": "HumanoidRootPart",
+  "role": null,
+  "centre": [
+   -0.9155327147245407,
+   -2.0460943422203064,
+   1.4120597651004791
+  ],
+  "size": [
+   1.5428279817104338,
+   1.2684991598129274,
+   1.0455071330070496
+  ],
+  "tris": 17431,
+  "source_tris": 17431,
+  "group": "RobeBack",
+  "material": "shared 2048 colour/normal/metal-rough",
+  "skinned": true
+ },
+ "Shen1_RobeBack_3": {
+  "bone": "HumanoidRootPart",
+  "role": null,
+  "centre": [
+   -0.9137707060575485,
+   -0.7964060476903914,
+   0.308795480966568
+  ],
+  "size": [
+   1.5382263600826265,
+   1.3805561482906343,
+   0.7934685707092285
+  ],
+  "tris": 17431,
+  "source_tris": 17431,
+  "group": "RobeBack",
+  "material": "shared 2048 colour/normal/metal-rough",
+  "skinned": true
+ },
+ "Shen1_RobeBack_4": {
+  "bone": "HumanoidRootPart",
+  "role": null,
+  "centre": [
+   -0.9115034317970276,
+   -1.016726606238365,
+   1.3313279038071633
+  ],
+  "size": [
+   1.5454992651939392,
+   0.9343030631542206,
+   1.4231838792562481
+  ],
+  "tris": 17431,
+  "source_tris": 17431,
+  "group": "RobeBack",
+  "material": "shared 2048 colour/normal/metal-rough",
+  "skinned": true
+ },
+ "Shen1_RobeBack_5": {
+  "bone": "HumanoidRootPart",
+  "role": null,
+  "centre": [
+   0.40139650791883474,
+   -2.001457743990898,
+   0.8584747424125672
+  ],
+  "size": [
+   1.1695961683988572,
+   1.2161745607852934,
+   1.4164494991302492
+  ],
+  "tris": 17431,
+  "source_tris": 17431,
+  "group": "RobeBack",
+  "material": "shared 2048 colour/normal/metal-rough",
+  "skinned": true
+ },
+ "Shen1_RobeBack_6": {
+  "bone": "HumanoidRootPart",
+  "role": null,
+  "centre": [
+   1.4182609298825264,
+   -2.0426036766653057,
+   0.7947354277372362
+  ],
+  "size": [
+   0.9414862602949142,
+   1.2638973534107207,
+   1.3375022351741792
+  ],
+  "tris": 17431,
+  "source_tris": 17431,
+  "group": "RobeBack",
+  "material": "shared 2048 colour/normal/metal-rough",
+  "skinned": true
+ },
+ "Shen1_RobeBack_7": {
+  "bone": "HumanoidRootPart",
+  "role": null,
+  "centre": [
+   0.7792189025878906,
+   -0.7924103937034607,
+   0.39559930616617206
+  ],
+  "size": [
+   1.9435580134391786,
+   1.3714425206184389,
+   0.625921705365181
+  ],
+  "tris": 17431,
+  "source_tris": 17431,
+  "group": "RobeBack",
+  "material": "shared 2048 colour/normal/metal-rough",
+  "skinned": true
+ },
+ "Shen1_RobeBack_8": {
+  "bone": "HumanoidRootPart",
+  "role": null,
+  "centre": [
+   0.7821034157276153,
+   -0.9924162081365586,
+   1.3425740128159525
+  ],
+  "size": [
+   1.9586200833320617,
+   0.9825199425220488,
+   1.4309056013822556
+  ],
+  "tris": 17431,
+  "source_tris": 17431,
+  "group": "RobeBack",
+  "material": "shared 2048 colour/normal/metal-rough",
+  "skinned": true
+ },
+ "Shen1_RobeRight_1": {
+  "bone": "HumanoidRootPart",
+  "role": null,
+  "centre": [
+   0.7981082969903945,
+   -1.987372114408493,
+   -0.15975904262065888
+  ],
+  "size": [
+   1.5092692553997038,
+   1.5714933276176453,
+   1.206252545118332
+  ],
+  "tris": 9888,
+  "source_tris": 9888,
+  "group": "RobeRight",
+  "material": "shared 2048 colour/normal/metal-rough",
+  "skinned": true
+ },
+ "Shen1_RobeRight_2": {
+  "bone": "HumanoidRootPart",
+  "role": null,
+  "centre": [
+   0.6287879669666291,
+   -0.7006568781023024,
+   -0.2597843537330627
+  ],
+  "size": [
+   1.4613666772842409,
+   1.164545637369156,
+   1.0046306014060975
+  ],
+  "tris": 9888,
+  "source_tris": 9888,
+  "group": "RobeRight",
+  "material": "shared 2048 colour/normal/metal-rough",
+  "skinned": true
+ },
+ "Shen1_RobeLeft_1": {
+  "bone": "HumanoidRootPart",
+  "role": null,
+  "centre": [
+   -0.8921314066648484,
+   -1.682615753162384,
+   -0.3474300572872161
+  ],
+  "size": [
+   1.410725373029709,
+   1.0943751573562621,
+   1.0923773765563967
+  ],
+  "tris": 10179,
+  "source_tris": 10179,
+  "group": "RobeLeft",
+  "material": "shared 2048 colour/normal/metal-rough",
+  "skinned": true
+ },
+ "Shen1_RobeLeft_2": {
+  "bone": "HumanoidRootPart",
+  "role": null,
+  "centre": [
+   -0.7197357839345931,
+   -0.6634728780870436,
+   -0.33667775785922993
+  ],
+  "size": [
+   1.283763188123703,
+   1.1155878126621248,
+   1.046001034975052
+  ],
+  "tris": 10179,
+  "source_tris": 10179,
+  "group": "RobeLeft",
+  "material": "shared 2048 colour/normal/metal-rough",
+  "skinned": true
+ },
+ "Shen1_RobeInner_1": {
+  "bone": "HumanoidRootPart",
+  "role": null,
+  "centre": [
+   -0.09384789228439328,
+   -2.1157147488479615,
+   -0.3604158172607421
+  ],
+  "size": [
+   2.420833241939545,
+   1.2296876668930052,
+   0.8159833312034608
+  ],
+  "tris": 15732,
+  "source_tris": 15732,
+  "group": "RobeInner",
+  "material": "shared 2048 colour/normal/metal-rough",
+  "skinned": true
+ },
+ "Shen1_RobeInner_2": {
+  "bone": "HumanoidRootPart",
+  "role": null,
+  "centre": [
+   -0.05274695217609415,
+   -0.8449595860128402,
+   -0.43653473949432364
+  ],
+  "size": [
+   2.232320672273636,
+   1.4656765401363374,
+   0.7897645831108093
+  ],
+  "tris": 15733,
+  "source_tris": 15733,
+  "group": "RobeInner",
+  "material": "shared 2048 colour/normal/metal-rough",
+  "skinned": true
+ },
+ "Shen1_RobeFront": {
+  "bone": "HumanoidRootPart",
+  "role": null,
+  "centre": [
+   -0.14872053027153018,
+   -1.2406725308780668,
+   -0.7145450989007949
+  ],
+  "size": [
+   0.6277174353599548,
+   2.2666648745536806,
+   0.565426105260849
+  ],
+  "tris": 11869,
+  "source_tris": 11869,
+  "group": "RobeFront",
+  "material": "shared 2048 colour/normal/metal-rough",
+  "skinned": true
+ },
+ "Shen1_Weapon_1": {
+  "bone": "Glaive",
+  "role": "Weapon",
+  "centre": [
+   0.08497880339622499,
+   -1.8483781597499847,
+   -2.7277795979976656
+  ],
+  "size": [
+   1.0763049602508545,
+   1.3590068340301515,
+   1.947419059276581
+  ],
+  "tris": 13091,
+  "source_tris": 13091,
+  "group": "Weapon",
+  "material": "shared 2048 colour/normal/metal-rough",
+  "skinned": false,
+  "joint": [
+   0.96,
+   -0.42,
+   -0.45
+  ]
+ },
+ "Shen1_Weapon_2": {
+  "bone": "Glaive",
+  "role": "Weapon",
+  "centre": [
+   0.3163659164309502,
+   -1.4998383036737442,
+   -1.4046548435688018
+  ],
+  "size": [
+   0.6935330599546433,
+   0.8164994060993194,
+   0.8043780207633973
+  ],
+  "tris": 13091,
+  "source_tris": 13091,
+  "group": "Weapon",
+  "material": "shared 2048 colour/normal/metal-rough",
+  "skinned": false,
+  "joint": [
+   0.96,
+   -0.42,
+   -0.45
+  ]
+ },
+ "Shen1_Weapon_3": {
+  "bone": "Glaive",
+  "role": "Weapon",
+  "centre": [
+   1.208535427749157,
+   0.23556543673229235,
+   0.002411811590194768
+  ],
+  "size": [
+   1.5468461781740188,
+   2.7242987692356113,
+   2.58274587392807
+  ],
+  "tris": 13092,
+  "source_tris": 13092,
+  "group": "Weapon",
+  "material": "shared 2048 colour/normal/metal-rough",
+  "skinned": false,
+  "joint": [
+   0.96,
+   -0.42,
+   -0.45
+  ]
+ },
+ "__fx": {
+  "BladeTip": {
+   "piece": "Shen1_Weapon_1",
+   "at": [
+    -0.3899,
+    -2.1366,
+    -3.6197
+   ]
+  },
+  "BladeBase": {
+   "piece": "Shen1_Weapon_1",
+   "at": [
+    0.3539,
+    -1.5633,
+    -1.4945
+   ]
+  },
+  "BeadHand": {
+   "limb": "LeftHand",
+   "at": [
+    -1.0414,
+    -0.4974,
+    -0.3207
+   ]
+  },
+  "ChestCore": {
+   "limb": "UpperTorso",
+   "at": [
+    -0.09,
+    0.75,
+    -0.2
+   ]
+  }
+ }
+}
