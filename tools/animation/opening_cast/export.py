@@ -56,8 +56,14 @@ def main(key, names):
         failed += 1 if problems else 0
         print("%s %-20s %5.3fs keys %3d %s" % ("FIX" if problems else "OK ", clip.name, clip.length, keys,
                                               "; ".join(problems) or json.dumps(stats.get("strike", {}))))
-    manifest["clips"] = dict(sorted(manifest["clips"].items()))
-    manifest_path.write_text(json.dumps(manifest, indent=1))
+    import fcntl
+    with open(str(manifest_path) + ".lock", "w") as lock:   # several exports may run at once: merge this run's clips into the manifest as it is now
+        fcntl.flock(lock, fcntl.LOCK_EX)
+        mine = {k: v for k, v in manifest["clips"].items() if not names or k in names}
+        manifest = json.loads(manifest_path.read_text()) if manifest_path.exists() else {"clips": {}}
+        manifest["clips"].update(mine)
+        manifest["clips"] = dict(sorted(manifest["clips"].items()))
+        manifest_path.write_text(json.dumps(manifest, indent=1))
     return failed
 
 

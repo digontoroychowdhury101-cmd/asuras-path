@@ -25,6 +25,10 @@ import rig as ZR  # noqa: E402  # quat, mat, slerp, angle_of
 import export as ZX  # noqa: E402  # cframe, ref, PRIORITY
 
 FPS = 30
+SLIDE_FLOOR = 0.95       # carrying and guarding: nearest the solver slides a keyed lead hand to the fist when its spot is out of reach (was 0.5: the grip collapsed to one hand)
+PROTRACT = 0.25         # rig units a shoulder joint may glide toward its hand (scapular protraction, about 8 cm at his scale); the skinned shoulder stretches with it
+SLIDE_FLOOR_CUT = 0.85   # in an attack the lead hand may slide further down the haft on a follow-through it cannot follow, a real grip slide
+HAND_SPACING_MIN = 0.8   # rig units between the right fist and the left palm along the haft; shoulder width is 1.44
 TOE_OUT = 9.0      # degrees a relaxed human foot turns out from the line of travel
 GROUND = -3.1924
 SCALE = 1.3        # WorldDefinitions: Shen's game scale, chosen so the sculpted guandao reaches the server's blow
@@ -276,6 +280,7 @@ class Clip:
 
     def __init__(self, rig, name, length, keys, loop=False, priority="Action", contacts=(), move=None, notes="", active=None, slot="", feet_free=(), corrupt=True, scrape=False, airborne=False, authored_feet=False, raw_after=None, hover=0.0):
         self.rig = rig
+        self._side = None   # solve(): which side of each torso part the haft was on last frame, during a sweep through the clip in order
         self.hover = float(hover)   # phase 2 floats: the height this clip holds when it does not key `hov` itself
         self.name, self.length, self.loop, self.priority = name, float(length), loop, priority
         self.keys = sorted(((float(t), c, e) for t, c, e in keys), key=lambda k: k[0])
@@ -375,13 +380,14 @@ class Clip:
         rg = self.rig
         J = rg.JOINT
         Wc, Wp, Wh = world["UpperTorso"], world["LowerTorso"], world["Head"]
-        caps = [(Wc @ np.append(J["UpperTorso"] + (0, 0.1, 0), 1), Wc @ np.append(J["Head"] + (0, -0.25, 0), 1), 0.66), (Wp @ np.append(J["LowerTorso"] + (0, -0.5, 0), 1), Wp @ np.append(J["UpperTorso"], 1), 0.62),
-                (Wh @ np.append(J["Head"] + (0, 0.3, 0), 1), Wh @ np.append(J["Head"] + (0, 0.65, 0), 1), 0.5)]
+        caps = [(Wc @ np.append(J["UpperTorso"] + (0, 0.1, 0), 1), Wc @ np.append(J["Head"] + (0, -0.25, 0), 1), 0.66, None), (Wp @ np.append(J["LowerTorso"] + (0, -0.5, 0), 1), Wp @ np.append(J["UpperTorso"], 1), 0.62, None),
+                (Wh @ np.append(J["Head"] + (0, 0.3, 0), 1), Wh @ np.append(J["Head"] + (0, 0.65, 0), 1), 0.5, None)]
         ss = np.linspace(rg.SMIN - rsl, rg.SMAX - rsl, 26)
         for _ in range(3):
             pts = rp + np.outer(ss, haft)
             worst, push = 0.0, None
-            for A, B, r in caps:
+            side_now = None
+            for ci, (A, B, r, out) in enumerate(caps):
                 A, B = A[:3], B[:3]
                 d = B - A
                 u = np.clip((pts - A) @ d / max(float(d @ d), 1e-6), 0, 1)
@@ -394,14 +400,39 @@ class Clip:
                     g = gap[i] - haft * float(gap[i] @ haft)
                     n = float(np.linalg.norm(g))
                     push = g / n if n > 1e-4 else np.array([1.0, 0, 0])
+                    prev = self._side.get(ci) if self._side is not None else None
+                    # (2026-11-06) the haft cannot pass through him: the same stretch of it stays on the side it was on last frame, or the hands jump across
+                    if r + float(dist[i]) < 0.9 and prev is not None and abs(float(ss[i]) - prev[1]) < 0.8 and float(push @ prev[0]) < 0 and dist[i] < 0.5 * r:
+                        alt = prev[0] - haft * float(prev[0] @ haft)
+                        push = alt / max(float(np.linalg.norm(alt)), 1e-6)
+                        worst = r + float(dist[i])
+                    side_now = (ci, (push, float(ss[i])))
             if push is None:
                 break
+            if self._side is not None and side_now is not None:
+                self._side[side_now[0]] = side_now[1]
             rp = rp + push * (worst + 0.02)
+        if self._side is not None:     # remember which side of each body part the haft is on, penetrating or not
+            pts = rp + np.outer(ss, haft)
+            for ci, (A, B, r, out) in enumerate(caps):
+                A, B = A[:3], B[:3]
+                d = B - A
+                u = np.clip((pts - A) @ d / max(float(d @ d), 1e-6), 0, 1)
+                gap = pts - (A + np.outer(u, d))
+                dist = np.linalg.norm(gap, axis=1)
+                i = int(np.argmin(dist))
+                if dist[i] < r + 0.35:
+                    g = gap[i] - haft * float(gap[i] @ haft)
+                    if float(np.linalg.norm(g)) > 1e-4:
+                        self._side[ci] = (g / float(np.linalg.norm(g)), float(ss[i]))
+                else:
+                    self._side.pop(ci, None)
         return rp
 
-    def arm(self, S, grip, axis, axis0, v0_len, pole_key, hand, u0, l0, pole0, label, diag, roll=None):
+    def arm(self, S, grip, axis, axis0, v0_len, pole_key, hand, u0, l0, pole0, label, diag, roll=None, slant=0.0, side="Right"):
         """How an arm really holds a haft. The elbow is a hinge, the forearm rolls about itself (pronation, carried by the lower arm bone), and the wrist only makes up what remains: the fist never turns backwards on the arm.
         `hand` is the fist's turn, chosen across the whole clip by swivel(); its axis is laid on the haft, the arm goes exactly to it, and the forearm takes all the twist it can."""
+        axis0 = slanted(self.rig, axis0, side, slant)     # (2026-11-06) the haft may lie diagonally across the palm, as it does in a real grip
         Rh = short_arc(axis0, axis) if hand is None else short_arc(hand @ axis0, axis) @ hand
         wrist = grip - Rh @ v0_len
         ru, rl, reached = two_bone(S, wrist, u0, l0, pole0, unit(pole_key), label, diag)
@@ -430,6 +461,12 @@ class Clip:
         arm_len = float(np.linalg.norm(rg.ARM_U) + np.linalg.norm(rg.ARM_L)) + 0.06
         away = rp - S
         far = float(np.linalg.norm(away))
+        rpro = np.zeros(3)
+        if far > arm_len:   # (2026-11-06) the right shoulder blade glides toward a fist out of reach first, up to PROTRACT
+            rpro = unit(away * np.array([1.0, 0.5, 1.0])) * min(far - arm_len, PROTRACT)
+            S = S + rpro
+            away = rp - S
+            far = float(np.linalg.norm(away))
         if far > arm_len:   # past the reach of the arm the whole weapon comes in; it never leaves the hand
             rp = S + away * (arm_len / far)
         origin = rp - haft * rsl      # the haft point the sculpt's fist held
@@ -437,13 +474,23 @@ class Clip:
         rp = origin + haft * rsl
         # the lead hand slides on the haft: a keyed spot out of reach slips toward the shoulder, and what is still out of reach brings the whole weapon across to it
         SL = (world["UpperTorso"] @ np.append(rg.JOINT["LeftUpperArm"], 1))[:3]
+        lpro = np.zeros(3)
+        c["_lgap"] = 0.0
         hold, reach = c["lhw"], c["ltw"]
         v_l = rg.PALM0 - rg.JOINT["LeftHand"]
         sl = float(c["lsl"])
         maxr = 9.0
         if hold > 0 and hold >= reach:
             maxr = float(np.linalg.norm(rg.LARM_U) + np.linalg.norm(rg.LARM_L)) * 0.98 + float(np.linalg.norm(v_l)) * 0.8
-            near = float(np.clip(np.dot(SL - rp, haft), 0.5, sl))
+            # (2026-11-06) the shoulder blade glides: before the hand gives up its spot, the shoulder itself comes forward toward it (protraction), up to PROTRACT
+            want = rp + haft * sl - SL
+            gap = float(np.linalg.norm(want)) - maxr
+            if gap > 0:
+                lpro = unit(want * np.array([1.0, 0.5, 1.0])) * min(gap, PROTRACT)
+                SL = SL + lpro
+            c["_lgap"] = max(float(np.linalg.norm(rp + haft * sl - SL)) - maxr, 0.0)
+            floor = SLIDE_FLOOR if self.priority in ("Idle", "Movement") else SLIDE_FLOOR_CUT
+            near = float(np.clip(np.dot(SL - rp, haft), min(floor, sl), sl))     # (2026-11-06) the lead hand may slide in only to the floor; past that the weapon comes to it
             for _ in range(14):
                 if np.linalg.norm(rp + haft * sl - SL) <= maxr:
                     break
@@ -464,6 +511,7 @@ class Clip:
             rp = S + away * (arm_len / far)
         if far < 0.6:     # an elbow only folds so far: a hand never comes in to the shoulder, the weapon stays out with it
             rp = S + unit(away if far > 1e-3 else np.array([0.0, -0.5, -1.0])) * 0.6
+        rp = self.clear_body(rp, haft, rsl, world)     # (2026-11-06) bringing the weapon to the lead hand may carry the haft into him: clear it again
         origin = rp - haft * rsl
         haft, face = self.clear_floor(origin, haft, face)      # the reach may have carried the weapon down: the blade still never goes through the ground
         rp = origin + haft * rsl
@@ -479,8 +527,8 @@ class Clip:
         v_r = rg.GRIP0 - rg.JOINT["RightHand"]
         core = (world["UpperTorso"] @ np.append(rg.JOINT["UpperTorso"] + (0, 0.4, 0), 1))[:3]
         c["_rgrip"] = (S, rp, axis, core)
-        Rh, ru, rl, _, elbow, c["_rroll"] = self.arm(S, rp, axis, rg.HAFT0, v_r, c.get("rpole", c["relb"]), c.get("rhand"), rg.ARM_U, rg.ARM_L, rg.ELBOW0, "arm_reach", diag, c.get("rpole_roll"))
-        local["RightUpperArm"] = homog(Rch.T @ ru)
+        Rh, ru, rl, _, elbow, c["_rroll"] = self.arm(S, rp, axis, rg.HAFT0, v_r, c.get("rpole", c["relb"]), c.get("rhand"), rg.ARM_U, rg.ARM_L, rg.ELBOW0, "arm_reach", diag, c.get("rpole_roll"), c.get("rhand_slant", 0.0), "Right")
+        local["RightUpperArm"] = homog(Rch.T @ ru, Rch.T @ rpro)
         world["RightUpperArm"] = rg.pivoted(world["UpperTorso"], "RightUpperArm", local["RightUpperArm"])
         local["RightLowerArm"] = homog(ru.T @ rl)
         world["RightLowerArm"] = rg.pivoted(world["RightUpperArm"], "RightLowerArm", local["RightLowerArm"])
@@ -494,7 +542,7 @@ class Clip:
                 on = rp + haft * sl
                 if hold > 0.5:
                     c["_lgrip"] = (SL, on, haft, core)
-                Rp, u_ik, f_ik, _, _, c["_lroll"] = self.arm(SL, on, haft, rg.LAX0, v_l, c.get("lpole", c["lelb"]), c.get("lhand"), rg.LARM_U, rg.LARM_L, rg.LELBOW0, "left_grip", scratch := {}, c.get("lpole_roll"))
+                Rp, u_ik, f_ik, _, _, c["_lroll"] = self.arm(SL, on, haft, rg.LAX0, v_l, c.get("lpole", c["lelb"]), c.get("lhand"), rg.LARM_U, rg.LARM_L, rg.LELBOW0, "left_grip", scratch := {}, c.get("lpole_roll"), c.get("lhand_slant", 0.0), "Left")
                 c["_lsl"] = sl
                 w = hold
                 self_label = "left_grip"
@@ -509,7 +557,7 @@ class Clip:
             Su = ZR.mat(ZR.slerp(ZR.quat(Su), ZR.quat(u_ik), w))
             Sf = ZR.mat(ZR.slerp(ZR.quat(Sf), ZR.quat(f_ik), w))
             Sh = ZR.mat(ZR.slerp(ZR.quat(Sh), ZR.quat(Rp), w))
-        local["LeftUpperArm"] = homog(Rch.T @ Su)
+        local["LeftUpperArm"] = homog(Rch.T @ Su, Rch.T @ lpro)
         world["LeftUpperArm"] = rg.pivoted(world["UpperTorso"], "LeftUpperArm", local["LeftUpperArm"])
         local["LeftLowerArm"] = homog(Su.T @ Sf)
         world["LeftLowerArm"] = rg.pivoted(world["LeftUpperArm"], "LeftLowerArm", local["LeftLowerArm"])
@@ -548,11 +596,15 @@ class Clip:
         times = self.frames()
         ctrl = [self.controls(t) for t in times]
         organic(self, times, ctrl)
+        spine_reach(self, ctrl)
+        settle(self, ctrl)
         swivel(self, ctrl)
         out = []
+        self._side = {}
         for t, c in zip(times, ctrl):
             local, world, diag = self.solve(c)
             out.append([t, local, world, diag, c])
+        self._side = None
         derive_helpers(self, out)
         return out
 
@@ -689,7 +741,61 @@ def twist_about(A, f):
     return math.degrees(math.atan2(float(f @ v), float(np.trace(A) - f @ A @ f)))
 
 
+WRIST_LIMITS = (20.0, 75.0, 30.0)     # (2026-11-06) residual twist, flexion/extension, radial/ulnar deviation (deg) a wrist can show before the hand leaves its sleeve cuff
+
+
+def rotvec(R):
+    """Axis times angle (radians) of a rotation matrix."""
+    ang = math.acos(float(np.clip((np.trace(R) - 1.0) / 2.0, -1.0, 1.0)))
+    v = np.array([R[2, 1] - R[1, 2], R[0, 2] - R[2, 0], R[1, 0] - R[0, 1]])
+    n = float(np.linalg.norm(v))
+    if n < 1e-9:
+        if ang < 1e-6:
+            return np.zeros(3)
+        w, V = np.linalg.eigh((R + R.T) / 2.0)   # a half turn: the axis is the eigenvector of +1
+        return V[:, int(np.argmax(w))] * ang
+    return v / n * ang
+
+
+def wrist_frame(rig, side):
+    """The wrist's anatomical axes in rest rig space: forearm, across the palm (flexion axis), palm normal (deviation axis)."""
+    f = unit(rig.JOINT[side + "Hand"] - rig.JOINT[side + "LowerArm"])
+    across = rig.LAX0 if side == "Left" else rig.HAFT0
+    a = unit(across - f * float(across @ f))
+    return f, a, np.cross(f, a)
+
+
+def wrist_parts(rig, R, side):
+    """(twist, flex, dev) in degrees of a hand's rotation R on its forearm (both rest-relative)."""
+    f, a, nrm = wrist_frame(rig, side)
+    tw = twist_about(R, f)
+    sw = R @ rodrigues(f * -math.radians(tw))
+    v = np.degrees(rotvec(sw))
+    return float(tw), float(v @ a), float(v @ nrm)
+
+
+def slanted(rig, axis0, side, slant):
+    """The hand's line laid on the haft, turned `slant` degrees about the palm normal: the haft running diagonally across the palm."""
+    if not slant:
+        return axis0
+    return rodrigues(wrist_frame(rig, side)[2] * math.radians(slant)) @ axis0
+
+
+def wrist_cost(parts):
+    """What a wrist pose costs beyond its plain bend: deviation past what a wrist gives, flexion past its stop, twist the forearm should have carried. The hand leaves its cuff past these."""
+    tw, fl, dv = (abs(x) for x in parts)
+    lt, lf, ld = WRIST_LIMITS
+    return 3.0 * max(0.0, dv - ld + 8.0) + 1.5 * max(0.0, fl - lf) + 2.0 * max(0.0, tw - lt) + 12.0 * max(0.0, dv - ld) + 6.0 * max(0.0, fl - lf - 10.0)
+
+
+def wrist_excess(rig, R, side):
+    """Degrees past WRIST_LIMITS on the worst axis (0 inside the range)."""
+    p = wrist_parts(rig, R, side)
+    return max(0.0, *(abs(x) - lim for x, lim in zip(p, WRIST_LIMITS)))
+
+
 GRIP_TURNS = np.radians(np.arange(16) * 22.5)
+GRIP_SLANTS = (-20.0, -10.0, 0.0, 10.0, 20.0)    # (2026-11-06) degrees the haft may run diagonally across the palm (index knuckle to heel of the hand)
 ELBOW_TURNS = np.arange(14) * 360.0 / 14
 
 
@@ -710,6 +816,86 @@ def smooth_hold(Q, loop):
     return out
 
 
+SPINE_YAW, SPINE_PITCH = 25.0, 14.0    # degrees the chest may turn and bow beyond its keys to carry the lead hand to its spot
+
+
+def spine_reach(clip, ctrl, sigma=2.0, passes=2):
+    """(2026-11-06) The whole body reaches, not just the arm. Where the lead hand's keyed spot on the haft is still out of reach after the shoulder blade
+    glides (solve: PROTRACT), the chest turns and bows into it by as much as closes the gap (a finite-difference step on the remaining gap), smoothed
+    across neighbouring frames so the trunk flows into the reach; the head turns back by most of it to keep his eyes on the target."""
+    n = len(ctrl)
+    if n < 2:
+        return
+    k = np.arange(-int(3 * sigma), int(3 * sigma) + 1)
+    w = np.exp(-0.5 * (k / sigma) ** 2)
+    w /= w.sum()
+
+    def gap(c, dyaw=0.0, dpitch=0.0):
+        t2 = dict(c)
+        ch = tuple(c["chest"])
+        t2["chest"] = (ch[0] + dpitch, ch[1] + dyaw, ch[2])
+        clip.solve(t2)
+        return float(t2.get("_lgap", 0.0))
+
+    for _ in range(passes):
+        add = np.zeros((n, 2))
+        for i, c in enumerate(ctrl):
+            g0 = gap(c)
+            if g0 < 1e-3:
+                continue
+            gy = (gap(c, dyaw=3.0) - gap(c, dyaw=-3.0)) / 6.0
+            gp = (gap(c, dpitch=3.0) - gap(c, dpitch=-3.0)) / 6.0
+            norm = gy * gy + gp * gp
+            if norm < 1e-8:
+                continue
+            add[i] = (-g0 * gy / norm, -g0 * gp / norm)
+        if not add.any():
+            return
+        smooth = np.zeros_like(add)
+        for j, kk in enumerate(k):
+            idx = np.arange(n) + kk
+            idx = idx % n if clip.loop else np.clip(idx, 0, n - 1)
+            smooth += w[j] * add[idx]
+        for i, c in enumerate(ctrl):
+            dy = float(np.clip(smooth[i, 0], -SPINE_YAW, SPINE_YAW))
+            dp = float(np.clip(smooth[i, 1], -SPINE_PITCH, SPINE_PITCH))
+            if abs(dy) + abs(dp) < 1e-3:
+                continue
+            ch, nk = tuple(c["chest"]), tuple(c["neck"])
+            c["chest"] = (ch[0] + dp, ch[1] + dy, ch[2])
+            c["neck"] = (nk[0] - dp * 0.8, nk[1] - dy * 0.9, nk[2])
+
+
+def settle(clip, ctrl, sigma=2.0, passes=2):
+    """(2026-11-06) The solver's own corrections, spread over time. Where an authored pose cannot be held (the lead hand out of reach, the haft into his
+    body), solve() moves the weapon on that frame alone, so a correction that switches on between two frames made the hands jump up to 1.4 rig units in
+    one frame. Here each frame's correction is measured, smoothed across neighbouring frames and written back into the keyed grip, so the solver meets a
+    path it can already hold and the hands ease into and out of the fix. Contacts keep their times; the blade at a contact moves only by the smoothed fix."""
+    n = len(ctrl)
+    if n < 3:
+        return
+    k = np.arange(-int(3 * sigma), int(3 * sigma) + 1)
+    w = np.exp(-0.5 * (k / sigma) ** 2)
+    w /= w.sum()
+    for _ in range(passes):
+        delta = np.zeros((n, 3))
+        clip._side = {}
+        for i, c in enumerate(ctrl):
+            t2 = dict(c)
+            clip.solve(t2)
+            delta[i] = np.asarray(t2["rp"], float) - np.asarray(c["rp"], float)
+        clip._side = None
+        if float(np.abs(delta).max()) < 1e-3:
+            return
+        smooth = np.zeros_like(delta)
+        for j, kk in enumerate(k):
+            idx = np.arange(n) + kk
+            idx = idx % n if clip.loop else np.clip(idx, 0, n - 1)
+            smooth += w[j] * delta[idx]
+        for i, c in enumerate(ctrl):
+            c["rp"] = tuple(np.asarray(c["rp"], float) + smooth[i])
+
+
 def swivel(clip, ctrl):
     """How both arms hold the weapon across the whole clip. A hand on a haft has two free things: how far the fist has turned round the haft, and where the elbow sits about the shoulder-wrist line. Every combination is tried on every frame, and the one path through the clip that keeps the wrists least bent while moving the least is chosen at once, then smoothed. There is no iteration to fall on a wrong answer, so the arm cannot flick."""
     rg = clip.rig
@@ -717,14 +903,16 @@ def swivel(clip, ctrl):
     if n == 0:
         return
     needs = []
+    clip._side = {}
     for c in ctrl:
         t2 = dict(c)
         clip.solve(t2)
         needs.append(t2)
-    arms = (("rpole", "rhand", "_rgrip", rg.HAFT0, rg.GRIP0 - rg.JOINT["RightHand"], "relb", rg.ARM_U, rg.ARM_L, rg.ELBOW0),
-            ("lpole", "lhand", "_lgrip", rg.LAX0, rg.PALM0 - rg.JOINT["LeftHand"], "lelb", rg.LARM_U, rg.LARM_L, rg.LELBOW0))
-    G, E = len(GRIP_TURNS), len(ELBOW_TURNS)
-    for key, hkey, gkey, axis0, v0, pole_key, u0, l0, pole0 in arms:
+    clip._side = None
+    arms = (("rpole", "rhand", "_rgrip", rg.HAFT0, rg.GRIP0 - rg.JOINT["RightHand"], "relb", rg.ARM_U, rg.ARM_L, rg.ELBOW0, "Right"),
+            ("lpole", "lhand", "_lgrip", rg.LAX0, rg.PALM0 - rg.JOINT["LeftHand"], "lelb", rg.LARM_U, rg.LARM_L, rg.LELBOW0, "Left"))
+    G, E = len(GRIP_TURNS) * len(GRIP_SLANTS), len(ELBOW_TURNS)
+    for key, hkey, gkey, axis0, v0, pole_key, u0, l0, pole0, hand_side in arms:
         live = [i for i in range(n) if gkey in needs[i]]
         if not live:
             continue
@@ -736,15 +924,15 @@ def swivel(clip, ctrl):
         scratch = {}
         for i in live:
             S, grip, axis, core = needs[i][gkey]
-            base = short_arc(axis0, axis)
             C = np.zeros((G, E))
             Qi = np.zeros((G, 4))
             Hi = []
             pole_base = unit(needs[i][pole_key])
             Pi = np.zeros((G, E, 3))
             Ti = np.zeros((G, E))
-            for g, turn in enumerate(GRIP_TURNS):
-                Rh = rodrigues(axis * turn) @ base
+            for g in range(G):
+                slant = GRIP_SLANTS[g // len(GRIP_TURNS)]
+                Rh = rodrigues(axis * GRIP_TURNS[g % len(GRIP_TURNS)]) @ short_arc(slanted(rg, axis0, hand_side, slant), axis)
                 Hi.append(Rh)
                 Qi[g] = ZR.quat(Rh)
                 wrist = grip - Rh @ v0
@@ -765,7 +953,8 @@ def swivel(clip, ctrl):
                     Ti[g, e] = phi
                     bend = ZR.angle_of(rodrigues(f * math.radians(phi)).T @ A)
                     inside = max(0.0, 0.85 - float(np.hypot(*(elbow - core)[[0, 2]])))      # an elbow never buries itself in his ribs
-                    C[g, e] = bend + 0.3 * max(0.0, bend - 55.0) + 1.6 * max(0.0, bend - 85.0) + 0.1 * abs(a) + 0.08 * abs(phi) + 90.0 * inside + 200.0 * scratch["x"]
+                    wp = wrist_parts(rg, (rodrigues(f * math.radians(phi)) @ rl).T @ Rh, hand_side)
+                    C[g, e] = bend + 0.3 * max(0.0, bend - 55.0) + 1.6 * max(0.0, bend - 85.0) + 0.1 * abs(a) + 0.08 * abs(phi) + 90.0 * inside + 200.0 * scratch["x"] + wrist_cost(wp) + 0.4 * abs(slant)
             costs[i], quats[i], hands[i], poles[i], twists[i] = C, Qi, Hi, Pi, Ti
 
         def walk(fixed=None):
@@ -802,10 +991,12 @@ def swivel(clip, ctrl):
         Q = np.zeros((n, 4))
         el = np.zeros((n, 3))
         ro = np.zeros(n)
+        sl = np.zeros(n)
         for i in range(n):
             k = i if i in path else min(live, key=lambda q: abs(q - i))
             g, e = path[k]
             Q[i] = quats[k][g]
+            sl[i] = GRIP_SLANTS[g // len(GRIP_TURNS)]
             el[i] = poles[k][g, e]
             ro[i] = twists[k][g, e]
         Q = smooth_hold(Q, clip.loop)
@@ -818,6 +1009,7 @@ def swivel(clip, ctrl):
                 v = v + w * el[k]
             c[key] = unit(v) if np.linalg.norm(v) > 1e-3 else el[i]
             c[hkey] = ZR.mat(Q[i])
+            c[hkey + "_slant"] = float(sum(w * sl[(i + off) % (n - 1) if clip.loop else min(max(i + off, 0), n - 1)] for off, w in zip(range(-2, 3), kernel)))
             c[key + "_roll"] = float(sum(w * ro[(i + off) % (n - 1) if clip.loop else min(max(i + off, 0), n - 1)] for off, w in zip(range(-2, 3), kernel)))
 
 
@@ -941,6 +1133,8 @@ def validate(clip, baked):
             ax = unit(c["haft"])
             d = palm - np.asarray(c["rp"], float)
             w["left_off_haft"] = max(w["left_off_haft"], float(np.linalg.norm(d - ax * np.dot(d, ax))))
+            fist_ = (world["RightHand"] @ np.append(rg.GRIP0, 1))[:3]
+            w["hand_spacing"] = round(min(w.get("hand_spacing", 9.0), float(np.dot(palm - fist_, ax))), 3)   # the solver slides an out-of-reach lead hand back toward the fist
             w["wrist_left"] = max(w.get("wrist_left", 0.0), float(ZR.angle_of(local["LeftHand"][:3, :3])))
         fist = (world["RightHand"] @ np.append(rg.GRIP0, 1))[:3]
         d = fist - np.asarray(c["rp"], float)
@@ -963,6 +1157,8 @@ def validate(clip, baked):
         problems.append("weapon %.2f through his head" % w["weapon_through_head"])
     if w["weapon_through_chest"] > 0.18:
         problems.append("weapon %.2f through his chest" % w["weapon_through_chest"])
+    if clip.priority in ("Idle", "Movement") and w.get("hand_spacing", 9.0) < HAND_SPACING_MIN:   # carrying, guarding and moving are two-handed: bunched hands read as a one-handed carry
+        problems.append("hands bunched %.2f apart on the haft" % w["hand_spacing"])
     if w["left_off_haft"] > 0.2:
         problems.append("left hand %.2f off the haft" % w["left_off_haft"])
     if w.get("right_off_haft", 0) > 0.25:

@@ -13,8 +13,11 @@ from pathlib import Path
 import numpy as np
 
 ROOT = Path(__file__).resolve().parents[3]
-BAKE = ROOT / "work/opening_cast_bake/shen"
+import os  # noqa: E402
+# SHEN_BAKE_DIR / SHEN_SHOT_SUFFIX: bake a shot from another set of clip frames (a saved earlier bake, for before/after footage) under another name
+BAKE = Path(os.environ.get("SHEN_BAKE_DIR", ROOT / "work/opening_cast_bake/shen"))
 OUT = ROOT / "work/opening_cast_bake/shen_shots"
+SUFFIX = os.environ.get("SHEN_SHOT_SUFFIX", "")
 SCALE, FPS = 1.3, 30
 
 
@@ -173,7 +176,7 @@ def bake_shot(name, phase, plan, fade=0.2):
         props = {k: pose[k].ravel().tolist() for k in ("Glaive",) if k in pose}
         out.append({"root": [x / SCALE, y / SCALE, z / SCALE, yaw], "bones": {k: [round(v, 5) for v in vs] for k, vs in D.items()}, "props": {k: [round(v, 5) for v in vs] for k, vs in props.items()}})
     OUT.mkdir(parents=True, exist_ok=True)
-    (OUT / (name + ".json")).write_text(json.dumps({"phase": phase, "frames": out}))
+    (OUT / (name + SUFFIX + ".json")).write_text(json.dumps({"phase": phase, "frames": out}))
     # how hard the cloth works: mean and peak hem travel from the sculpted pose
     print("%s: %d frames" % (name, len(out)))
 
@@ -191,6 +194,9 @@ SHOTS = {
     "arts1": (1, [("Idle", 0.8, 0.0, 0.0), ("FlowingJian", None, 0.0, 0.0), ("AbbotSweep", None, 0.0, 0.0), ("Guandao_Art", None, 0.0, 0.0), ("Idle", 1.0, 0.0, 0.0)]),
     "tricks1": (1, [("Idle", 0.6, 0.0, 0.0), ("Flourish", None, 0.0, 0.0), ("Feint", None, 0.0, 0.0), ("HesitantMoon", None, 0.0, 0.0), ("WheelOfHeaven", None, 0.0, 0.0), ("Idle", 0.8, 0.0, 0.0)]),
     "turn1": (1, [("Idle", 0.8, 0.0, 0.0), ("TurnLeft", 1.8, 0.0, 220.0), ("HitLightLeft", None, 0.0, 0.0), ("Idle", 0.8, 0.0, 0.0), ("TurnRight", 1.8, 0.0, -220.0), ("Idle", 1.0, 0.0, 0.0)]),
+    # 2026-11-06 grip pilot: a grounded turn, a diagonal cut, the heavy, and the linked four-cut combo, on the new middle guard
+    "pilot1": (1, [("Idle", 1.0, 0.0, 0.0), ("TurnLeft", 0.9, 0.0, 220.0), ("Idle", 0.4, 0.0, 0.0), ("TurnRight", 0.9, 0.0, -220.0), ("Idle", 0.6, 0.0, 0.0), ("Guandao_L1", None, 0.0, 0.0), ("Idle", 0.5, 0.0, 0.0), ("Guandao_Heavy", None, 0.0, 0.0),
+                   ("Idle", 0.5, 0.0, 0.0), ("FlowingJian", None, 0.0, 0.0), ("Idle", 1.0, 0.0, 0.0)]),
     "back1": (1, [("Idle", 0.5, 0.0, 0.0), ("WalkBackward", 3.0, lambda t: -1.48 * SCALE * ramp(0.4, t), 0.0), ("StrafeLeft", 2.6, 0.0, 0.0), ("Idle", 0.8, 0.0, 0.0)]),
     "transform1": (1, [("Idle", 0.8, 0.0, 0.0), ("Transform", 0.9, 0.0, 0.0)]),
     "walk2": (2, [("Idle", 2.0, 0.0, 0.0), ("WalkForward", 4.4, lambda t: 2.40 * SCALE * ramp(0.5, t), 0.0), ("Idle", 1.5, lambda t: 2.40 * SCALE * max(1 - t / 0.4, 0), 0.0)]),

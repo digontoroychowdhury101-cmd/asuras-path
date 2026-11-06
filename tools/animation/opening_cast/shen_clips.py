@@ -56,10 +56,11 @@ FROM_LEFT = (-1.0, 0.0, 0.2)            # a flat wheel
 FROM_RIGHT = (1.0, 0.0, 0.2)
 
 
+RSL, LSL = -1.8, 1.25    # the guard's grip: right hand 1.0 from the butt, left hand 1.25 nearer the blade (shoulder width is 1.44)
 GUARD = {}     # the guard this phase stands in; a first cut grows out of it
 
 
-def arc(t0, tc, t1, th0, th1, source, aim=(0.0, -6.0), centre=(0.32, 0.22, -1.2), span=1.2, rsl=-1.8, whip=2.2, settle=2.4, hover=0.0):
+def arc(t0, tc, t1, th0, th1, source, aim=(0.0, -6.0), centre=(0.32, 0.22, -1.2), span=1.2, rsl=RSL, whip=2.2, settle=2.4, hover=0.0, link=False):
     """One curved cut on a tilted plane. The blade rotates from th0 degrees upstream through the aim at tc (the contact) to th1 downstream; the hands travel on a matching small arc, right hand behind and left hand leading, so the two arms lever the haft.
     Returns a key per frame: the blade's path is the point of the move, so nothing is left to spline between poses."""
     F = np.array(H(*aim))
@@ -93,7 +94,7 @@ def arc(t0, tc, t1, th0, th1, source, aim=(0.0, -6.0), centre=(0.32, 0.22, -1.2)
         rp = C - d * span / 2
         if t0 < 0.3:    # the first cut of a move grows out of the guard: the hands leave it and pick the blade's path up, they do not jump to it
             enter = max(0.1, 0.3 * (tc - t0))
-            s = L.smooth01((t - t0) / enter)
+            s = 1.0 if link else L.smooth01((t - t0) / enter)     # a linked cut grows out of the last one's ending, not out of the guard
             if s < 1.0:
                 # the blade rises along its own plane as the hands pick it up, so the wrist never has to catch it up
                 th = th * s
@@ -108,7 +109,7 @@ def arc(t0, tc, t1, th0, th1, source, aim=(0.0, -6.0), centre=(0.32, 0.22, -1.2)
                 motion = np.array(GUARD["face"], float) + (motion - np.array(GUARD["face"], float)) * s
                 if abs(float(np.dot(d, motion))) > 0.98 * np.linalg.norm(motion):
                     motion = np.array(GUARD["face"], float)
-                rsl_k, lsl_k = -1.8, 1.15 + (span - 1.15) * s
+                rsl_k, lsl_k = RSL, LSL + (span - LSL) * s
                 out.append(K(t, "lin", rp=tuple(rp), haft=tuple(d), face=tuple(motion), rsl=rsl_k + (rsl - rsl_k) * s, lsl=lsl_k, lhw=1.0))
                 continue
         out.append(K(t, "lin", rp=tuple(rp), haft=tuple(d), face=tuple(motion), rsl=rsl, lsl=span, lhw=1.0))
@@ -129,11 +130,15 @@ def build(phase):
         return Clip(rg, P + name, length, keys, **kw)
 
     # ---------------------------------------------------------------- the guard every move leaves from and returns to: left foot and left hand leading, rear foot turned out, blade low and forward
-    RHAFT = H(-14, -15)
+    # Middle guard (2026-11-06 grip pass): the old guard parked the right fist beside the hip with the blade trailing low, and the left hand could not
+    # reach its keyed spot, so the solver slid it back to 0.50 from the fist and the grip read one-handed. Here the right fist is rear and in front
+    # of the hip, the left hand leads by LSL (about shoulder width, 1.44), the hips stand half-turned and the blade points at the opponent's waist.
+    RHAFT = H(-14, -6)
+    YAW = dict(pel=-30.0, chest=-14.0, neck=38.0)
     FEET_R = (0.2, 0.44, 0, -24, 0)
     FEET_L = (0.0, -0.4, 0, 2, 0)
-    READY = dict(pel=(0.02, -0.07, 0.02), pelR=(3, -16, 0), chest=(2, -9, 0), neck=(-1, 24, 0), rf=FEET_R, lf=FEET_L, lua=(0, 0, 0), lfa=(0, 0, 0), lha=(0, 0, 0), lhw=1.0, ltw=0.0, rsl=-1.8, lsl=1.15,
-                 rp=(0.52, -0.02, 0.0), haft=RHAFT, face=E(RHAFT), relb=(0.75, -0.55, 0.35), lelb=(-0.6, -0.75, 0.25), rknee=(0.12, 0, -1.0), lknee=(-0.05, 0, -1.0), rlk=0.0)
+    READY = dict(pel=(0.02, -0.07, 0.02), pelR=(3, YAW["pel"], 0), chest=(2, YAW["chest"], 0), neck=(-1, YAW["neck"], 0), rf=FEET_R, lf=FEET_L, lua=(0, 0, 0), lfa=(0, 0, 0), lha=(0, 0, 0), lhw=1.0, ltw=0.0, rsl=RSL, lsl=LSL,
+                 rp=(0.4, 0.25, -0.35), haft=RHAFT, face=E(RHAFT), relb=(0.75, -0.55, 0.35), lelb=(-0.6, -0.75, 0.25), rknee=(0.12, 0, -1.0), lknee=(-0.05, 0, -1.0), rlk=0.0)
     GUARD.update(READY)
 
     def melee(name, keys, notes, feet_free=(), **kw):
@@ -148,26 +153,26 @@ def build(phase):
     def crescent_reap():
         return melee("Guandao_L1", [K(0, **READY), body(0.07, "out", yaw=12, chest=20, sink=-0.14, fwd=0.04), body(0.15, "whip", yaw=-8, chest=-16, sink=-0.22, fwd=-0.38, lf=(0.0, -0.95, 0, 0, 0), rf=(0.16, 0.34, 0, -30, 0)),
                                     body(0.27, "out", yaw=-34, chest=-52, sink=-0.26, fwd=-0.46, roll=-3, lf=(0.0, -0.95, 0, 0, 0), rf=(0.14, 0.3, 0, -46, 0)), K(0.4, "io", **READY)]
-                     + arc(0, 0.15, 0.3, 74, 84, FROM_HIGH_LEFT, aim=(2, -12)) + [K(0.4, "io", rp=READY["rp"], haft=READY["haft"], face=READY["face"], rsl=-1.8, lsl=1.15)],
+                     + arc(0, 0.15, 0.3, 74, 84, FROM_HIGH_LEFT, aim=(2, -12)) + [K(0.4, "io", rp=READY["rp"], haft=READY["haft"], face=READY["face"], rsl=RSL, lsl=LSL)],
                      "Crescent Reap: left shoulder to right hip, hips driving first, the rear foot pivoting behind them.", feet_free=[(0, 0.4)])
 
     def returning_tide():
         return melee("Guandao_L2", [K(0, **READY), body(0.07, "out", yaw=16, chest=24, sink=-0.26, fwd=0.02), body(0.15, "whip", yaw=-6, chest=-12, sink=-0.16, fwd=-0.3, rf=(0.1, -0.2, 0, -14, 0), lf=(0.02, -0.2, 0, 8, 0)),
                                     body(0.29, "out", yaw=-30, chest=-48, sink=-0.05, fwd=-0.38, pitch=-2, rf=(0.1, -0.2, 0, -30, 0), lf=(0.02, -0.2, 0, 8, 0)), K(0.4167, "io", **READY)]
-                     + arc(0, 0.15, 0.3, 66, 98, FROM_LOW_LEFT, aim=(2, 0)) + [K(0.4167, "io", rp=READY["rp"], haft=READY["haft"], face=READY["face"], rsl=-1.8, lsl=1.15)],
+                     + arc(0, 0.15, 0.3, 66, 98, FROM_LOW_LEFT, aim=(2, 0)) + [K(0.4167, "io", rp=READY["rp"], haft=READY["haft"], face=READY["face"], rsl=RSL, lsl=LSL)],
                      "Returning Tide: the blade drops to his left hip and climbs through to the right shoulder off the rear foot's step.", feet_free=[(0, 0.4167)])
 
     def heaven_cleave():
         return melee("Guandao_L3", [K(0, **READY), body(0.09, "out", yaw=4, chest=6, pitch=-6, sink=-0.03, fwd=0.1), body(0.183, "whip", yaw=-10, chest=-14, pitch=12, sink=-0.32, fwd=-0.5, lf=(0.0, -1.05, 0, 0, 0), rf=(0.16, 0.3, 0, -28, 0)),
                                     body(0.33, "out", yaw=-12, chest=-16, pitch=18, sink=-0.42, fwd=-0.58, lf=(0.0, -1.05, 0, 0, 0), rf=(0.16, 0.3, 0, -28, 0)), K(0.5167, "io", **READY)]
-                     + arc(0, 0.183, 0.33, 118, 46, FROM_OVERHEAD, aim=(0, -10), centre=(0.2, 0.34, -1.25)) + [K(0.5167, "io", rp=READY["rp"], haft=READY["haft"], face=READY["face"], rsl=-1.8, lsl=1.15)],
+                     + arc(0, 0.183, 0.33, 118, 46, FROM_OVERHEAD, aim=(0, -10), centre=(0.2, 0.34, -1.25)) + [K(0.5167, "io", rp=READY["rp"], haft=READY["haft"], face=READY["face"], rsl=RSL, lsl=LSL)],
                      "Heaven-Splitting Cleave: up over the head and straight down the server's line, a long step under it.", feet_free=[(0, 0.5167)])
 
     def green_dragon():
         return melee("Guandao_Heavy", [K(0, **READY), body(0.14, "io", yaw=26, chest=38, sink=-0.16, fwd=0.1), body(0.31, "io", yaw=42, chest=58, sink=-0.2, fwd=0.16, pitch=-2, rf=(0.2, 0.5, 0, -6, 0)),
                                        body(0.383, "whip", yaw=4, chest=-4, sink=-0.3, fwd=-0.5, pitch=9, lf=(0.0, -1.15, 0, -2, 0), rf=(0.16, 0.34, 0, -32, 0)),
                                        body(0.56, "out", yaw=-46, chest=-70, sink=-0.36, fwd=-0.62, pitch=11, roll=-4, lf=(0.0, -1.15, 0, -2, 0), rf=(0.12, 0.26, 0, -62, 0)), K(0.8333, "io", **READY)]
-                     + arc(0.06, 0.416, 0.6, 130, 110, (-0.92, 0.38, 0.0), aim=(0, -14), whip=3.4, settle=4.4) + [K(0.8333, "io", rp=READY["rp"], haft=READY["haft"], face=READY["face"], rsl=-1.8, lsl=1.15)],
+                     + arc(0.06, 0.383, 0.6, 130, 110, (-0.92, 0.38, 0.0), aim=(0, -14), whip=3.4, settle=4.4, centre=(0.32, 0.22, -1.4)) + [K(0.8333, "io", rp=READY["rp"], haft=READY["haft"], face=READY["face"], rsl=RSL, lsl=LSL)],
                      "Green Dragon Reaping: winds until his back shows, then hips, chest and arms unwind in that order, and the blade carries his weight past the target.", feet_free=[(0, 0.8333)])
 
     def charging_cut():
@@ -175,7 +180,7 @@ def build(phase):
         return melee("Guandao_Running", [K(0, "lin", **start), body(0.1, "out", yaw=14, chest=22, pitch=8, sink=-0.2, fwd=-0.2, rf=(0.14, 0.15, 0.12, -14, 0), lf=(0, -0.55, 0, 2, 0)),
                                          body(0.217, "whip", yaw=-8, chest=-18, pitch=10, sink=-0.26, fwd=-0.6, lf=(0, -1.2, 0, 0, 0), rf=(0.14, 0.42, 0, -28, 0)),
                                          body(0.36, "out", yaw=-30, chest=-46, pitch=7, sink=-0.26, fwd=-0.66, lf=(0, -1.2, 0, 0, 0), rf=(0.14, 0.05, 0.15, -18, 0)), K(0.6, "io", **READY)]
-                     + arc(0, 0.217, 0.4, 92, 80, FROM_LOW_LEFT, aim=(0, -2)) + [K(0.6, "io", rp=READY["rp"], haft=READY["haft"], face=READY["face"], rsl=-1.8, lsl=1.15)],
+                     + arc(0, 0.217, 0.4, 92, 80, FROM_LOW_LEFT, aim=(0, -2)) + [K(0.6, "io", rp=READY["rp"], haft=READY["haft"], face=READY["face"], rsl=RSL, lsl=LSL)],
                      "Charging Crescent: out of the run the blade rises from his left hip across the server's lunge, and the run carries into the step.", feet_free=[(0, 0.6)])
 
     def cyclone():
@@ -196,19 +201,19 @@ def build(phase):
             r = np.array(H(y)) * 0.95
             settle = L.smooth01((t - 0.74) / 0.16)
             k = dict(pel=(0, -0.3 * (1 - settle) - 0.07 * settle, -0.1 * (1 - settle)), pelR=(6 - 3 * settle, -a - 16, 0), chest=(5 - 3 * settle, -14 + 5 * settle, 0), neck=(-4 + 3 * settle, 18 + 6 * settle, 0),
-                     rp=(r[0] - haft[0] * 0.6, 0.2 - haft[1] * 0.6, r[2] - haft[2] * 0.6), haft=haft, face=E(haft, H(y + 90)), lhw=1.0, lsl=1.15, rsl=-1.8, relb=READY["relb"], lelb=READY["lelb"], rknee=READY["rknee"], lknee=READY["lknee"], **spin(-a))
+                     rp=(r[0] - haft[0] * 0.6, 0.2 - haft[1] * 0.6, r[2] - haft[2] * 0.6), haft=haft, face=E(haft, H(y + 90)), lhw=1.0, lsl=LSL, rsl=RSL, relb=READY["relb"], lelb=READY["lelb"], rknee=READY["rknee"], lknee=READY["lknee"], **spin(-a))
             keys.append(K(t, "lin", **k))
         return melee("Guandao_Art", keys, "Crescent Moon Cyclone: he winds left, then the whole body pivots right on the balls of the feet with the blade at the end of both arms; the server's 360 degree blow.", feet_free=[(0, 0.9)], authored_feet=True)
 
     def strike():
         return clip("Strike", 1.1, [K(0, **READY), body(0.3, "io", yaw=10, chest=16, pitch=-6, sink=-0.05, fwd=0.1), body(0.5, "whip", yaw=-12, chest=-20, pitch=12, sink=-0.3, fwd=-0.45, lf=(0, -0.95, 0, 0, 0), rf=(0.16, 0.34, 0, -28, 0)),
                                     body(0.72, "out", yaw=-24, chest=-34, pitch=14, sink=-0.32, fwd=-0.5, lf=(0, -0.95, 0, 0, 0), rf=(0.16, 0.34, 0, -32, 0)), K(1.1, "io", **READY)]
-                    + arc(0.1, 0.5, 0.74, 118, 66, FROM_HIGH_LEFT, aim=(0, -8)) + [K(1.1, "io", rp=READY["rp"], haft=READY["haft"], face=READY["face"], rsl=-1.8, lsl=1.15)],
+                    + arc(0.1, 0.5, 0.74, 118, 66, FROM_HIGH_LEFT, aim=(0, -8)) + [K(1.1, "io", rp=READY["rp"], haft=READY["haft"], face=READY["face"], rsl=RSL, lsl=LSL)],
                     contacts=[0.5], move="Strike", notes="Fallback diagonal cut for any move without its own slot.", feet_free=[(0, 1.1)])
 
     # ---------------------------------------------------------------- signature attacks
     def flowing_glaive():
-        back = dict(rp=READY["rp"], haft=READY["haft"], face=READY["face"], rsl=-1.8, lsl=1.15)
+        back = dict(rp=READY["rp"], haft=READY["haft"], face=READY["face"], rsl=RSL, lsl=LSL)
         return clip("FlowingJian", 3.5, [
             K(0, **READY),
             body(0.55, "io", yaw=30, chest=46, sink=-0.12, fwd=0.08, rf=(0.2, 0.5, 0, -14, 0)),
@@ -221,12 +226,12 @@ def build(phase):
             body(2.75, "whip", yaw=-8, chest=-14, pitch=16, sink=-0.42, fwd=-1.1, lf=(0, -1.05, 0, 0, 0), rf=(0.16, 0.2, 0, -28, 0)),
             body(3.0, "out", yaw=-10, chest=-16, pitch=18, sink=-0.44, fwd=-1.12, lf=(0, -1.05, 0, 0, 0), rf=(0.16, 0.2, 0, -28, 0)),
             K(3.5, "io", **READY),
-        ] + arc(0.24, 0.8, 1.02, 135, 72, FROM_HIGH_LEFT, aim=(2, -8), whip=2.6) + arc(1.2, 1.45, 1.66, 90, 74, FROM_HIGH_RIGHT, aim=(-4, -6), whip=1.8) + arc(1.84, 2.1, 2.3, 96, 80, FROM_LOW_LEFT, aim=(0, 2), whip=1.8, centre=(0.32, 0.5, -1.2))
-          + arc(2.48, 2.75, 3.0, 126, 40, FROM_OVERHEAD, aim=(0, -10), whip=2.0, centre=(0.2, 0.34, -1.25)) + [K(3.5, "io", **back)],
+        ] + arc(0.24, 0.8, 1.02, 135, 50, FROM_HIGH_LEFT, aim=(2, -8), whip=2.6) + arc(1.2, 1.45, 1.66, 70, 55, FROM_HIGH_RIGHT, aim=(-4, -6), whip=1.8, link=True) + arc(1.84, 2.1, 2.3, 75, 60, FROM_LOW_LEFT, aim=(0, 2), whip=1.8, centre=(0.32, 0.5, -1.2), link=True)
+          + arc(2.48, 2.75, 3.0, 110, 40, FROM_OVERHEAD, aim=(0, -10), whip=2.0, centre=(0.2, 0.34, -1.25), link=True) + [K(3.5, "io", **back)],
             contacts=[0.8, 1.45, 2.1, 2.75], move="FlowingJian", feet_free=[(0, 3.5)], notes="Flowing Glaive: four linked curved cuts on the server's deflect pulses: a falling diagonal, its mirror on the way back, a rising cut, and an overhead finish, each flowing out of the last in a figure eight. Stable id FlowingJian.")
 
     def hesitant_moon():
-        back = dict(rp=READY["rp"], haft=READY["haft"], face=READY["face"], rsl=-1.8, lsl=1.15)
+        back = dict(rp=READY["rp"], haft=READY["haft"], face=READY["face"], rsl=RSL, lsl=LSL)
         high = arc(0.1, 0.6, 0.6001, 150, 0, FROM_HIGH_RIGHT, aim=(-10, 18), whip=1.0)
         return clip("HesitantMoon", 2.15, [
             K(0, **READY),
@@ -236,12 +241,12 @@ def build(phase):
             body(1.55, "out", yaw=28, chest=44, pitch=11, sink=-0.34, fwd=-0.54, lf=(0, -1.0, 0, 8, 0), rf=(0.16, 0.2, 0, -14, 0)),
             K(2.15, "io", **READY),
         ] + arc(0.1, 0.6, 0.62, 130, 0, FROM_HIGH_RIGHT, aim=(-14, 44), whip=1.2, settle=1.0)[:-1]
-          + [K(0.95, "lin", rp=(0.62, 1.0, -0.95), haft=H(-30, 62), face=E(H(-30, 62), (-1, -0.2, -0.5)), rsl=-1.8, lsl=1.15, lhw=1.0)]
+          + [K(0.95, "lin", rp=(0.62, 1.0, -0.95), haft=H(-30, 62), face=E(H(-30, 62), (-1, -0.2, -0.5)), rsl=RSL, lsl=LSL, lhw=1.0)]
           + arc(1.0, 1.3, 1.55, 78, 80, FROM_HIGH_RIGHT, aim=(-2, -8), whip=3.0) + [K(2.15, "io", **back)],
             contacts=[1.3], move="HesitantMoon", feet_free=[(0, 2.15)], notes="Hesitant Moon: the blade rises and hangs at the top of the cut longer than it should, so a deflect pressed at the expected moment is too early; then it falls from his right shoulder across his body.")
 
     def wheel_of_heaven():
-        back = dict(rp=READY["rp"], haft=READY["haft"], face=READY["face"], rsl=-1.8, lsl=1.15)
+        back = dict(rp=READY["rp"], haft=READY["haft"], face=READY["face"], rsl=RSL, lsl=LSL)
         keys = [K(0, **READY), body(0.3, "io", yaw=-6, chest=-10, pitch=-2, sink=-0.08, fwd=0.0, lf=(0, -0.4, 0, 0, 0))]
         # the pinwheel: the haft turns on the fingers of the right hand in the plane beside him; the left hand lets go and is back before the cut
         for i in range(25):
@@ -249,7 +254,7 @@ def build(phase):
             a = 270 + i / 24 * 870     # it starts from the guard's line and ends where the catch and the cut begin
             d = L.unit(np.array([0.32, math.cos(math.radians(a)), math.sin(math.radians(a))]))
             keys.append(K(t, "lin", rp=(0.95, 0.5, -0.55), rsl=-0.1, haft=tuple(d), face=E(d, (0.2, -math.sin(math.radians(a)), math.cos(math.radians(a)))), rlk=1.0, rhx=H(-20, 30)))
-        keys += [K(0.08, "io", lhw=1.0), K(0.18, "out", lhw=0.0, lua=(-20, 0, -6), lfa=(-50, 0, 0), lha=(0, 0, 0)), K(0.84, "io", lhw=0.0), K(1.02, "in", lhw=1.0), K(0.92, "lin", rlk=1.0), K(1.0, "lin", rlk=0.0, rsl=-1.8)]
+        keys += [K(0.08, "io", lhw=1.0), K(0.18, "out", lhw=0.0, lua=(-20, 0, -6), lfa=(-50, 0, 0), lha=(0, 0, 0)), K(0.84, "io", lhw=0.0), K(1.02, "in", lhw=1.0), K(0.92, "lin", rlk=1.0), K(1.0, "lin", rlk=0.0, rsl=RSL)]
         keys += [body(1.0, "io", yaw=30, chest=48, pitch=-2, sink=-0.12, fwd=0.05), body(1.35, "whip", yaw=-10, chest=-20, pitch=9, sink=-0.3, fwd=-0.46, lf=(0, -1.0, 0, 0, 0), rf=(0.16, 0.34, 0, -30, 0)),
                  body(1.73, "whip", yaw=26, chest=40, pitch=6, sink=-0.3, fwd=-0.7, rf=(0.2, -0.3, 0, -8, 0), lf=(0, -0.1, 0, 10, 0)), body(2.0, "out", yaw=34, chest=52, pitch=5, sink=-0.3, fwd=-0.72, rf=(0.2, -0.3, 0, -8, 0), lf=(0, -0.1, 0, 10, 0)), K(2.6, "io", **READY)]
         keys += arc(1.0, 1.35, 1.5, 120, 62, FROM_HIGH_LEFT, aim=(2, -6), whip=2.4) + arc(1.53, 1.73, 2.0, 60, 80, FROM_LOW_RIGHT, aim=(-4, 2), whip=1.6) + [K(2.6, "io", **back)]
@@ -262,12 +267,12 @@ def build(phase):
             a = 200 + i / 32 * 1080
             d = L.unit(np.array([0.3, math.cos(math.radians(a)), math.sin(math.radians(a))]))
             keys.append(K(t, "lin", rp=(0.95, 0.45, -0.5), rsl=-0.1, haft=tuple(d), face=E(d, (0.2, -math.sin(math.radians(a)), math.cos(math.radians(a)))), rlk=1.0, rhx=H(-20, 30)))
-        keys += [K(0.1, "io", lhw=1.0), K(0.22, "out", lhw=0.0, lua=(-16, 0, -6), lfa=(-44, 0, 0), lha=(0, 0, 0)), K(1.14, "io", lhw=0.0), K(1.32, "in", lhw=1.0), K(1.22, "lin", rlk=1.0, rsl=-0.1), K(1.34, "lin", rlk=0.0, rsl=-1.8),
-                 K(1.6, "io", rp=READY["rp"], haft=READY["haft"], face=READY["face"], lsl=1.15)]
+        keys += [K(0.1, "io", lhw=1.0), K(0.22, "out", lhw=0.0, lua=(-16, 0, -6), lfa=(-44, 0, 0), lha=(0, 0, 0)), K(1.14, "io", lhw=0.0), K(1.32, "in", lhw=1.0), K(1.22, "lin", rlk=1.0, rsl=-0.1), K(1.34, "lin", rlk=0.0, rsl=RSL),
+                 K(1.6, "io", rp=READY["rp"], haft=READY["haft"], face=READY["face"], lsl=LSL)]
         return clip("Flourish", 1.6, keys, contacts=[0.6], feet_free=[(0, 1.6)], notes="Three unhurried pinwheels of the glaive, caught back into both hands; plays between exchanges so the pause is never the same twice.")
 
     def feint():
-        back = dict(rp=READY["rp"], haft=READY["haft"], face=READY["face"], rsl=-1.8, lsl=1.15)
+        back = dict(rp=READY["rp"], haft=READY["haft"], face=READY["face"], rsl=RSL, lsl=LSL)
         return clip("Feint", 1.05, [K(0, **READY),
                                     body(0.32, "io", yaw=28, chest=44, sink=-0.14, fwd=0.04, rf=(0.2, 0.5, 0, -12, 0)),
                                     body(0.52, "out", yaw=10, chest=8, pitch=9, sink=-0.26, fwd=-0.28, lf=(0, -0.72, 0, 0, 0), rf=(0.16, 0.4, 0, -26, 0)),
@@ -276,7 +281,7 @@ def build(phase):
                     contacts=[0.52], feet_free=[(0, 1.05)], notes="A cut that never comes: the whole body commits, the blade stops short at the top and he settles back. No warning is shown, because nothing is thrown.")
 
     def prayer_beads():
-        back = dict(rp=READY["rp"], haft=READY["haft"], face=READY["face"], rsl=-1.8, lsl=1.15)
+        back = dict(rp=READY["rp"], haft=READY["haft"], face=READY["face"], rsl=RSL, lsl=LSL)
         keys = [K(0, **READY), body(0.4, "io", yaw=-8, chest=-12, pitch=-2, sink=-0.06), body(0.9, "io", yaw=22, chest=34, pitch=-4, sink=-0.08, fwd=0.08), body(1.1, "whip", yaw=-10, chest=-18, pitch=8, sink=-0.26, fwd=-0.36, lf=(0, -0.85, 0, 0, 0), rf=(0.16, 0.36, 0, -28, 0)),
                 body(1.4, "out", yaw=-24, chest=-40, pitch=8, sink=-0.28, fwd=-0.42, lf=(0, -0.85, 0, 0, 0), rf=(0.16, 0.36, 0, -36, 0)), K(2.1, "io", **READY)]
         for i in range(15):
@@ -284,12 +289,12 @@ def build(phase):
             a = 200 + i / 14 * 540
             d = L.unit(np.array([0.3, math.cos(math.radians(a)), math.sin(math.radians(a))]))
             keys.append(K(t, "lin", rp=(0.95, 0.5, -0.5), rsl=-0.1, haft=tuple(d), face=E(d, (0.2, -math.sin(math.radians(a)), math.cos(math.radians(a)))), rlk=1.0, rhx=H(-20, 30)))
-        keys += [K(0.08, "io", lhw=1.0), K(0.18, "out", lhw=0.0, lua=(-20, 0, -6), lfa=(-50, 0, 0), lha=(0, 0, 0)), K(0.56, "io", lhw=0.0), K(0.72, "in", lhw=1.0), K(0.62, "lin", rlk=1.0), K(0.74, "lin", rlk=0.0, rsl=-1.8)]
+        keys += [K(0.08, "io", lhw=1.0), K(0.18, "out", lhw=0.0, lua=(-20, 0, -6), lfa=(-50, 0, 0), lha=(0, 0, 0)), K(0.56, "io", lhw=0.0), K(0.72, "in", lhw=1.0), K(0.62, "lin", rlk=1.0), K(0.74, "lin", rlk=0.0, rsl=RSL)]
         keys += arc(0.74, 1.1, 1.42, 118, 80, FROM_HIGH_LEFT, aim=(0, 2), whip=2.4) + [K(2.1, "io", **back)]
         return clip("PrayerBeads", 2.1, keys, contacts=[1.1], move="PrayerBeads", feet_free=[(0, 2.1)], notes="The glaive pinwheels and gathers seven beads off his breath, the left hand catches it and the falling cut flings them on the server's release.")
 
     def abbot_sweep():
-        back = dict(rp=READY["rp"], haft=READY["haft"], face=READY["face"], rsl=-1.8, lsl=1.15)
+        back = dict(rp=READY["rp"], haft=READY["haft"], face=READY["face"], rsl=RSL, lsl=LSL)
         return clip("AbbotSweep", 1.95, [
             K(0, **READY),
             body(0.6, "io", yaw=36, chest=58, pitch=8, sink=-0.4, fwd=0.12, rf=(0.26, 0.5, 0, -10, 0)),
@@ -301,7 +306,7 @@ def build(phase):
             contacts=[1.0], move="AbbotSweep", feet_free=[(0, 1.95)], notes="Abbot's Sweep: the weight sinks into the hip, then a wide low wheel at shin height with a committed follow-through; jump it.")
 
     def blood_wave():
-        back = dict(rp=READY["rp"], haft=READY["haft"], face=READY["face"], rsl=-1.8, lsl=1.15)
+        back = dict(rp=READY["rp"], haft=READY["haft"], face=READY["face"], rsl=RSL, lsl=LSL)
         return clip("BloodWave", 2.15, [
             K(0, **READY),
             body(0.35, "io", yaw=30, chest=46, pitch=10, sink=-0.36, fwd=0.04),
@@ -313,7 +318,7 @@ def build(phase):
             contacts=[1.1], move="BloodWave", feet_free=[(0, 2.15)], scrape=True, notes="The glaive's edge drags from his left, the whole body hauling it, then whips up and casts the low wave on the server's start.")
 
     def rending_arc():
-        back = dict(rp=READY["rp"], haft=READY["haft"], face=READY["face"], rsl=-1.8, lsl=1.15)
+        back = dict(rp=READY["rp"], haft=READY["haft"], face=READY["face"], rsl=RSL, lsl=LSL)
         return clip("RendingArc", 2.6, [
             K(0, **READY),
             body(0.6, "io", yaw=30, chest=48, sink=-0.12, fwd=0.1),
@@ -326,7 +331,7 @@ def build(phase):
             contacts=[0.9, 1.32, 1.95], move="RendingArc", feet_free=[(0, 2.6)], notes="Rending Arc: three cuts in a broken rhythm, the third held back so the third deflect has to wait for it.")
 
     def phantom_drift():
-        back = dict(rp=READY["rp"], haft=READY["haft"], face=READY["face"], rsl=-1.8, lsl=1.15)
+        back = dict(rp=READY["rp"], haft=READY["haft"], face=READY["face"], rsl=RSL, lsl=LSL)
         return clip("PhantomDrift", 2.0, [
             K(0, **READY),
             K(0.55, "io", pel=(0.02, -0.02, 0.2), pelR=(-8, 26, -8), chest=(-6, 40, 6), neck=(8, -40, 0), rf=(0.2, 0.7, 0, 0, 0), lf=(0, 0.2, 0, 0, 0)),
@@ -337,7 +342,7 @@ def build(phase):
             contacts=[1.0], move="PhantomDrift", feet_free=[(0, 2.0)], notes="Phantom Drift: he leans back and hangs in the air, then glides through the server's lunge with his legs trailing and the blade falling across him.")
 
     def skyfall():
-        back = dict(rp=READY["rp"], haft=READY["haft"], face=READY["face"], rsl=-1.8, lsl=1.15)
+        back = dict(rp=READY["rp"], haft=READY["haft"], face=READY["face"], rsl=RSL, lsl=LSL)
         low = dict(rf=FEET_R, lf=FEET_L)
         return Clip(rg, P + "GuandaoSkyfall", 2.6, [
             K(0, hov=H0, **READY),
@@ -360,7 +365,7 @@ def build(phase):
             K(0.98, "io", pel=(0.02, -0.1, 0.3), pelR=(-8, -20, 0), chest=(-13, -30, 0), neck=(6, 34, 0), lt=(-0.8, 0.0, 0.25)),
             K(1.2, "whip", pel=(0, -0.3, -1.1), pelR=(22, 12, 0), chest=(18, 26, 0), neck=(-18, -30, 0), ltw=1.0, lt=(0.5, 0.1, -1.46), lelb=(-0.5, -0.8, 0.1), rf=(0.2, 0.8, 0, 0, 0), lf=(0, 0.3, 0, 0, 0), rp=(1.0, -0.15, -0.55), haft=H(70, -26), face=E(H(70, -26))),
             K(1.4, "out", pel=(0, -0.32, -1.2), pelR=(24, 16, 0), chest=(20, 32, 0), neck=(-18, -36, 0), lt=(0.55, -0.15, -1.25), rp=(1.0, -0.2, -0.65), haft=H(70, -26), face=E(H(70, -26))),
-            K(1.85, "io", pel=(0, -0.2, -0.65), pelR=(9, 0, 0), chest=(9, 0, 0), neck=(-8, 8, 0), ltw=0.0, lhw=1.0, rp=READY["rp"], haft=READY["haft"], face=READY["face"], rsl=-1.8, lsl=1.15),
+            K(1.85, "io", pel=(0, -0.2, -0.65), pelR=(9, 0, 0), chest=(9, 0, 0), neck=(-8, 8, 0), ltw=0.0, lhw=1.0, rp=READY["rp"], haft=READY["haft"], face=READY["face"], rsl=RSL, lsl=LSL),
             K(2.4, "io", **READY),
         ], contacts=[1.2], move="CrimsonEmbrace", feet_free=[(0, 2.4)], notes="The one move where a hand leaves the haft: the clawed left arm reaches with the whole torso behind it while the glaive swings back in the right. Cosmetic only: nothing attaches to a player.")
 
@@ -381,17 +386,19 @@ def build(phase):
             hf = nod @ h0
             if p1:
                 look = 4.0 * math.sin(a + 0.4) + 1.2 * math.sin(3 * a)
-                k = dict(pel=(0.02 + 0.05 * sway, -0.07 - 0.016 * breath - 0.008 * sway2, 0.02 + 0.012 * sway2), pelR=(3 + 0.3 * sway2, -16 + 1.4 * sway, 1.1 * sway), chest=(2 - 1.2 * breath + 0.3 * sway2, -9 - 1.6 * sway, -1.4 * sway),
-                         neck=(-1 + 0.8 * breath + 0.6 * math.sin(2 * a), 24 + look, 0.8 * sway), rp=tuple(r0 + np.array([0.015 * sway, 0.018 * breath, 0.01 * sway2])), haft=tuple(hf), face=E(hf))
+                k = dict(pel=(0.02 + 0.05 * sway, -0.07 - 0.016 * breath - 0.008 * sway2, 0.02 + 0.012 * sway2), pelR=(3 + 0.3 * sway2, YAW["pel"] + 1.4 * sway, 1.1 * sway), chest=(2 - 1.2 * breath + 0.3 * sway2, YAW["chest"] - 1.6 * sway, -1.4 * sway),
+                         neck=(-1 + 0.8 * breath + 0.6 * math.sin(2 * a), YAW["neck"] + look, 0.8 * sway), rp=tuple(r0 + np.array([0.015 * sway, 0.018 * breath, 0.01 * sway2])), haft=tuple(hf), face=E(hf))
             else:
                 snap = sum(w * L.smooth01((t - at) / 0.11) for at, w in ((0.7, 12.0), (1.6, -18.0), (2.6, 10.0), (3.7, -4.0)))
-                k = dict(pel=(0.02 + 0.08 * sway, -0.05 * breath, 0.04 * sway2), pelR=(4 + 1.2 * breath, -16 + 2.4 * sway, 2.2 * sway), chest=(4 - 3.0 * breath + 0.8 * sway2, -9 - 3.0 * sway, -2.4 * sway),
-                         neck=(-4 + 2.4 * breath, 24 + snap + 1.5 * sway, 1.5 * math.sin(a + 0.6)), rp=tuple(r0 + np.array([0.03 * sway, 0.05 * breath, 0.02 * sway2])), haft=tuple(hf), face=E(hf))
-            k.update(rf=FEET_R, lf=FEET_L, lhw=1.0, rsl=-1.8, lsl=1.15, relb=READY["relb"], lelb=READY["lelb"], rknee=READY["rknee"], lknee=READY["lknee"])
+                k = dict(pel=(0.02 + 0.08 * sway, -0.05 * breath, 0.04 * sway2), pelR=(4 + 1.2 * breath, YAW["pel"] + 2.4 * sway, 2.2 * sway), chest=(4 - 3.0 * breath + 0.8 * sway2, YAW["chest"] - 3.0 * sway, -2.4 * sway),
+                         neck=(-4 + 2.4 * breath, YAW["neck"] + snap + 1.5 * sway, 1.5 * math.sin(a + 0.6)), rp=tuple(r0 + np.array([0.03 * sway, 0.05 * breath, 0.02 * sway2])), haft=tuple(hf), face=E(hf))
+            k.update(rf=FEET_R, lf=FEET_L, lhw=1.0, rsl=RSL, lsl=LSL, relb=READY["relb"], lelb=READY["lelb"], rknee=READY["rknee"], lknee=READY["lknee"])
             keys.append((t, k, "lin"))
         return clip("Idle", length, keys, loop=True, priority="Idle", authored_feet=True, notes="The guard alive: both hands on the glaive, slow breath, weight drifting between the feet." if p1 else "He hangs in the air and cannot hold still: panting, head hunting in short snaps, the glaive drifting.")
 
     # ---------------------------------------------------------------- a human gait
+    CARRY = (-10.0, -20.0)    # pelvis and chest yaw on the move: less turned than the guard, still enough for the lead hand to keep its spot
+
     def gait(name, period, rate, beta, along=(0.0, -1.0), carry="low", reverse=False, run=False, lean=2.5, twist=5.0, drop=3.5, sway=0.07, centre=0.0, shuffle=0.0):
         """The feet first, on the measured phases; then the pelvis height that keeps the stance knee where a human's is; then the trunk, counter-rotating, with the head level. A stance foot moves at exactly the body's speed, so it never skates: rate = 2 * half stride / (beta * period)."""
         n = max(int(round(period * 30)), 16)
@@ -428,13 +435,13 @@ def build(phase):
                 pitch *= 0.35
             return coord + p0[1] * (1 - L.smooth01(u / 0.2)), lift, pitch, False
 
-        stance_flex = ([(0, 22), (0.25, 40), (0.6, 30), (1, 20)] if run else [(0, 6), (0.22, 15), (0.55, 7), (0.85, 6), (1, 22)])
+        stance_flex = ([(0, 28), (0.25, 40), (0.6, 30), (1, 20)] if run else [(0, 6), (0.22, 15), (0.55, 7), (0.85, 6), (1, 22)])
         rows = []
         for i in range(n):
             p = i / n
             a = 2 * math.pi * p
             wave, over = math.cos(a), math.sin(a)     # wave +: right leg forward; over +: weight on the right foot
-            pelR = (lean * 0.6 + 2.0, twist * wave + (-6.0 if carry else 0), drop * over)
+            pelR = (lean * 0.6 + 2.0, twist * wave + (CARRY[0] if carry else 0), drop * over)
             pel = (sway * over, 0.0, -lean * 0.012)
             rows.append((p, a, wave, over, pelR, pel, foot(p, 0), foot(p + 0.5, 0)))
         ys = np.full(n, np.nan)
@@ -458,8 +465,7 @@ def build(phase):
         idx = np.arange(n)
         good = ~np.isnan(ys)
         ys = np.interp(idx, idx[good], ys[good], period=n)
-        if run:
-            ys += 0.08 * np.where(good, 0.0, 1.0)
+        # (2026-11-06) no extra lift through the flight phase: it left the landing leg 0.17 short of its foot
         F = np.fft.rfft(ys)
         F[5:] = 0
         ys = np.fft.irfft(F, n)
@@ -467,19 +473,17 @@ def build(phase):
         for i, (p, a, wave, over, pelR, pel, fr, fl) in enumerate(rows):
             y = float(ys[i])
             base_twist = -6.0 if carry else 0.0
-            chest_yaw = -twist * 0.95 * math.cos(a - 0.15) - (7.0 if carry else 0)
+            chest_yaw = -twist * 0.95 * math.cos(a - 0.15) + (CARRY[1] if carry else 0)
             chest_world = pelR[1] + chest_yaw
             nod = L.rodrigues(np.array([1.0, 0, 0]) * math.radians(1.1 * math.cos(2 * a - 0.4)) + np.array([0, 1.0, 0]) * math.radians(1.6 * wave))
-            if carry == "charge":
-                r0 = np.array((0.5, -0.02 + y * 0.8, -0.05 - lean * 0.012))
-                h0 = np.array(H(-14, -6))
-            else:
-                r0 = np.array((0.5, -0.02 + y * 0.85, 0.0))
-                h0 = np.array(RHAFT)
+            # the guard carried with the shoulders: they face CARRY's total yaw instead of the guard's, so the weapon turns by the difference and both hands stay where they hold it
+            held = carried(CARRY[0] + CARRY[1] - YAW["pel"] - YAW["chest"])
+            r0 = np.array(held["rp"]) + np.array((0.0, y * (0.8 if carry == "charge" else 0.85), -lean * 0.012 if carry == "charge" else 0.0))
+            h0 = np.array(held["haft"]) if carry != "charge" else L.unit(np.array(held["haft"]) + np.array((0.0, -0.06, 0.0)))
             hf = nod @ h0
             k = dict(pel=(pel[0], y, pel[2]), pelR=pelR, chest=(lean * 0.45 - 0.5 * math.cos(2 * a), chest_yaw, -pelR[2] * 1.2), neck=(-lean * 1.0 - 2.0 + 0.4 * math.cos(2 * a), -chest_world * 0.95, pelR[2] * 0.3),
                      rf=(ax * fr[0] - shuffle, az * fr[0], fr[1], 0, fr[2]), lf=(ax * fl[0] + shuffle, az * fl[0], fl[1], 0, fl[2]), rknee=(0.06, 0, -1.0), lknee=(-0.06, 0, -1.0),
-                     rp=tuple(r0 + np.array([0.02 * over, 0.0, 0.05 * math.cos(a - 0.3)])), haft=tuple(hf), face=E(hf), rsl=-1.8, lsl=1.15, lhw=1.0, relb=READY["relb"], lelb=READY["lelb"])
+                     rp=tuple(r0 + np.array([0.02 * over, 0.0, 0.05 * math.cos(a - 0.3)])), haft=tuple(hf), face=E(hf), rsl=RSL, lsl=LSL, lhw=1.0, relb=READY["relb"], lelb=READY["lelb"])
             keys.append((p * period, k, "lin"))
         if reverse:   # a backward walk is a forward walk run backwards: toes land first, the heel lets down, the heel pushes off
             keys = [((period - t) % period, k, e) for t, k, e in keys]
@@ -494,13 +498,20 @@ def build(phase):
             a = 2 * math.pi * i / n
             s, c2 = math.sin(a), math.cos(2 * a)
             nod = L.rodrigues(np.array([1.0, 0, 0]) * math.radians(1.4 * s))
-            hf = nod @ np.array(H(-14, -12))
-            r0 = np.array(READY["rp"])
+            held = carried(-8.0 - 10.0 - YAW["pel"] - YAW["chest"])      # his hips and chest face -8 and -10 here: the guard turns with them
+            hf = nod @ L.unit(np.array(held["haft"]) + np.array((0.0, -0.1, 0.0)))
+            r0 = np.array(held["rp"])
             k = dict(pel=(0.03 * s, 0.02 * c2 - 0.05 * abs(lean) / 20, -lean * 0.012), pelR=(lean * 0.9 + 1.5 * s, -8 + 2 * math.cos(a), roll + 2.2 * s), chest=(lean * 0.3 - 1.2 * c2, -10 - 2.5 * math.cos(a), -roll * 0.5), neck=(-lean * 1.15, 18 + 2 * math.sin(a * 2), 0),
                      rf=(0.05, 0.24 + trail + 0.1 * math.sin(a + 0.6), tuck, 0, 0), lf=(-0.03, -0.1 + trail - 0.12 * math.sin(a + 0.6), tuck * 0.4, 0, 0), rknee=(0.1, 0, -1.0), lknee=(-0.1, 0, -1.0),
-                     rp=tuple(r0 + np.array([0.02 * s, 0.03 * c2, -0.02 * math.cos(a) - lean * 0.008])), haft=tuple(hf), face=E(hf), rsl=-1.8, lsl=1.15, lhw=1.0, relb=READY["relb"], lelb=READY["lelb"])
+                     rp=tuple(r0 + np.array([0.02 * s, 0.03 * c2, -0.02 * math.cos(a) - lean * 0.008])), haft=tuple(hf), face=E(hf), rsl=RSL, lsl=LSL, lhw=1.0, relb=READY["relb"], lelb=READY["lelb"])
             keys.append((i / n * period, k, "lin"))
         return clip(name, period, keys, loop=True, priority="Movement", feet_free=[(0, period)], notes="%s: floating; %.2f rig studs per second at speed 1." % (name, rate))
+
+    def carried(yaw):
+        """The guard turned with the shoulders by `yaw` degrees (+ toward his left), so a turn never pulls the lead hand off its spot on the haft."""
+        R = L.ry(math.radians(yaw))
+        hf = R @ np.array(READY["haft"], float)
+        return dict(rp=tuple(R @ np.array(READY["rp"], float)), haft=tuple(hf), face=E(hf))
 
     def turn(name, direction):
         """Turning on the spot, as the server turns his root at TURN_RATE at speed 1: the planted foot counter-rotates exactly, the other steps ahead of it, and the hips lead the chest and the chest leads the head."""
@@ -512,7 +523,8 @@ def build(phase):
             for i in range(n):
                 a = 2 * math.pi * i / n
                 k = {kk: READY[kk] for kk in READY}
-                k.update(pelR=(4, -16 + direction * 14, direction * 4), chest=(3, -9 + direction * 10, 0), neck=(-3, 24 + direction * 14, 0))
+                k.update(pelR=(4, YAW["pel"] + direction * 14, direction * 4), chest=(3, YAW["chest"] + direction * 10, 0), neck=(-3, YAW["neck"] + direction * 14, 0))
+                k.update(carried(direction * 14.0))
                 keys.append((i / n * period, k, "lin"))
             return clip(name, period, keys, loop=True, priority="Movement", feet_free=[(0, period)], notes="Floating, he simply rotates; the upper body leads the turn.")
         for i in range(n):
@@ -532,7 +544,8 @@ def build(phase):
                 q = L.ry(math.radians(ang)) @ at - rg.LEGS[side]["ankle"]
                 k[key] = (float(q[0]), float(q[2]), lift, base[3] + ang, pitch)
             over = math.sin(2 * math.pi * p)
-            k.update(pel=(0.04 * over, -0.07 - 0.015 * math.cos(4 * math.pi * p), 0.02), pelR=(3, -16 + direction * 10, 2 * over), chest=(2, -9 + direction * 10, -1.6 * over), neck=(-1, 24 + direction * 12, 0))
+            k.update(pel=(0.04 * over, -0.07 - 0.015 * math.cos(4 * math.pi * p), 0.02), pelR=(3, YAW["pel"] + direction * 10, 2 * over), chest=(2, YAW["chest"] + direction * 10, -1.6 * over), neck=(-1, YAW["neck"] + direction * 12, 0))
+            k.update(carried(direction * 10.0))
             keys.append((p * period, k, "lin"))
         return Clip(rg, P + name, period, keys, loop=True, priority="Movement", authored_feet=True, feet_free=[(0, period)], notes="%s at %d degrees per second, speed 1." % (name, TURN_RATE))
 
@@ -541,7 +554,7 @@ def build(phase):
         if floating:   # rates the server already holds; a glide has no feet to keep planted, so these only set how fast his body drifts through its loop
             return turns + [glide("WalkForward", 2.4, 2.40, 12, trail=0.3), glide("RunForward", 1.6, 7.48, 38, trail=1.25, tuck=0.45), glide("WalkBackward", 2.4, 1.80, -10, trail=-0.2), glide("StrafeLeft", 2.4, 1.95, 4, roll=10), glide("StrafeRight", 2.4, 1.95, 4, roll=-10)]
         return turns + [gait("WalkForward", 1.4, 1.98, 0.63, lean=2.0, twist=5.0, drop=3.4, sway=0.07),
-                        gait("RunForward", 0.75, 6.11, 0.36, carry="charge", run=True, lean=13, twist=9.0, drop=3.0, sway=0.04, centre=0.42),
+                        gait("RunForward", 0.75, 6.11, 0.36, carry="charge", run=True, lean=20, twist=9.0, drop=3.0, sway=0.04, centre=0.15),
                         gait("WalkBackward", 1.5, 1.48, 0.65, reverse=True, lean=0.5, twist=3.0, drop=2.4, sway=0.06),
                         gait("StrafeLeft", 1.3, 1.54, 0.62, along=(-1.0, 0.0), lean=2.0, twist=1.5, drop=2.0, sway=0.03, shuffle=0.12),
                         gait("StrafeRight", 1.3, 1.54, 0.62, along=(1.0, 0.0), lean=2.0, twist=1.5, drop=2.0, sway=0.03, shuffle=0.12)]
@@ -557,7 +570,7 @@ def build(phase):
     # ---------------------------------------------------------------- reactions
     def reactions():
         kneel_h = H(14, -36)
-        knee = {**READY, "pel": (0.05, -0.95, 0.18), "pelR": (13, 4, 0), "chest": (18, 6, 0), "neck": (-3, -6, 0), "rf": (0.05, 0.95, 0.5, 0, -55), "lf": (0.05, -0.62, 0, 0, 0), "rp": (0.85, -0.5, -0.85), "haft": kneel_h, "face": E(kneel_h, (0.2, -0.3, 0.9)), "rsl": -1.8, "lsl": 1.15}
+        knee = {**READY, "pel": (0.05, -0.95, 0.18), "pelR": (13, 4, 0), "chest": (18, 6, 0), "neck": (-3, -6, 0), "rf": (0.05, 0.95, 0.5, 0, -55), "lf": (0.05, -0.62, 0, 0, 0), "rp": (0.85, -0.5, -0.85), "haft": kneel_h, "face": E(kneel_h, (0.2, -0.3, 0.9)), "rsl": RSL, "lsl": LSL}
 
         def hit(name, push, turn_, lean_p, lean_r):
             flinch = {**READY, "pel": (READY["pel"][0] + push[0], -0.14, READY["pel"][2] + push[1]), "pelR": (READY["pelR"][0] + lean_p, READY["pelR"][1] + turn_, lean_r), "chest": (READY["chest"][0] + lean_p * 1.8, READY["chest"][1] + turn_ * 1.5, lean_r * 1.3), "neck": (READY["neck"][0] + lean_p, READY["neck"][1] + turn_, 0),
@@ -566,7 +579,7 @@ def build(phase):
 
         down = dict(hov=0.0) if floating else {}
         bowed_h = H(14, -32)    # bowing, his hands slide back to the butt of the haft, so none of it comes back through his chest
-        bowed = dict(rp=(0.9, -0.6, -0.95), haft=bowed_h, face=E(bowed_h, (0.2, -0.3, 0.9)), rsl=-1.8, lsl=1.15)
+        bowed = dict(rp=(0.9, -0.6, -0.95), haft=bowed_h, face=E(bowed_h, (0.2, -0.3, 0.9)), rsl=RSL, lsl=LSL)
         return [
             hit("HitLightFront", (0.0, 0.2), 0, -5, 0), hit("HitLightBack", (0.0, -0.2), 0, 8, 0), hit("HitLightLeft", (0.2, 0.0), -9, -1, 4), hit("HitLightRight", (-0.2, 0.0), 9, -1, -4),
             Clip(rg, P + "PostureBreak", 1.0, [K(0, **READY, **({"hov": H0} if floating else {})), K(0.14, "snap", pel=(0.02, -0.15, 0.42), pelR=(-14, 7, 0), chest=(-20, 8, 0), neck=(13, 0, 0), rf=(0.2, 0.7, 0, -24, 0), **({"hov": H0 * 0.6} if floating else {})),
@@ -598,7 +611,7 @@ def build(phase):
                 K(1.7, "lin", **R),
             ], priority="Action4", feet_free=[(0, 1.7)], raw_after=REVEAL, notes="He falters and bows over the glaive, both hands tight on it; reaches the shared handoff pose at the Reveal and holds it for the swap.")]
         rh = H(70, 38)
-        rise = dict(pel=(0.0, 0.0, 0.14), pelR=(-13, 0, 0), chest=(-22, 0, 0), neck=(18, 0, 0), rp=(0.95, 0.45, -0.1), haft=rh, face=E(rh, (0.3, 0.8, 0.5)), rsl=-1.8, lsl=1.15, relb=(0.9, -0.2, 0.3), lhw=1.0, hov=0.0)
+        rise = dict(pel=(0.0, 0.0, 0.14), pelR=(-13, 0, 0), chest=(-22, 0, 0), neck=(18, 0, 0), rp=(0.95, 0.45, -0.1), haft=rh, face=E(rh, (0.3, 0.8, 0.5)), rsl=RSL, lsl=LSL, relb=(0.9, -0.2, 0.3), lhw=1.0, hov=0.0)
         return [Clip(rg, P + "Transform", 1.5, [
             K(0, hov=0.0, **R),
             K(0.32, "snap", **rise),

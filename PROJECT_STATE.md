@@ -1,3 +1,5 @@
+- 2026-11-06 (Computer A) Shen grip pilot staged, unpublished: two-handed guard, run fix, Heavy at 0.383, shoulder/spine reach, anatomical left wrist with diagonal grip. Before/after videos in outputs/grandmaster-shen-2026-11-05/pilot. Next: re-export the 11 pilot clips (interrupted), fix solid-cloth patch rest drift, review, then propagate.
+
 **Shen movement reel (2026-11-06):** Recorded every clip plus live fights and the phase change in Studio (two 720p parts in his outputs/reel). Found: white see-through phase swap, P1 death never falls, one-handed carry, upright run, Flourish blade through head, dark phase 2 lighting. Next: fix these in shen_clips.py.
 
 **Shen full motion reel (2026-11-06, Windows):** All 64 clips in one captioned two-angle reel, cloth from the game's ClothSim, dot-body from the committed samples: `outputs/grandmaster-shen-2026-11-05/shen_motion_reel_all_clips.mp4`, timestamps in `shen_motion_reel_index.md`. Tools: `shen_reel.py`, `reel_proxy.py`, `reel_encode.py`. Next: creator reviews the reel and lists errors to fix.

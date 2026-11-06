@@ -84,7 +84,7 @@ cam.sensor_fit, cam.sensor_height = "VERTICAL", 36   # the same framing of him a
 co = bpy.data.objects.new("c", cam)
 sc.collection.objects.link(co)
 sc.camera = co
-SPOTS = {"head": (3.2, 7.5, 3.2), "face": (1.1, 3.2, 0.75), "combat": (9.0, 11.5, 1.6), "side": (10.5, 0, -0.2), "lside": (-10.5, 0, -0.2), "front": (0, 10.5, 0.0), "back": (0, -10.5, 0.0), "quarter": (7.5, 7.5, 0.4), "backq": (-7.0, -8.0, 0.8), "low": (7, 8, -2.0)}
+SPOTS = {"head": (3.2, 7.5, 3.2), "face": (1.1, 3.2, 0.75), "combat": (9.0, 11.5, 1.6), "side": (10.5, 0, -0.2), "lside": (-10.5, 0, -0.2), "front": (0, 10.5, 0.0), "back": (0, -10.5, 0.0), "quarter": (7.5, 7.5, 0.4), "backq": (-7.0, -8.0, 0.8), "low": (7, 8, -2.0), "lhand": (-1.6, 2.6, 0.9), "lhandside": (-3.0, 0.4, 0.3), "lhandlow": (-1.2, 2.0, -1.6), "lhandtop": (-0.5, 0.7, 2.4), "lhandfront": (0.2, 3.0, 0.1), "rhand": (2.2, 2.2, 0.9)}
 BASE = Vector(SPOTS[camera]) + Vector((0, 0, 1.55 if phase == 2 else 0))   # phase 2 floats
 co.location = BASE
 co.rotation_euler = (Vector((0.75 if camera == "face" else 0, 0, (2.45 if camera == "face" else 3.4) if phase == 2 and camera in ("head", "face") else 1.9 if camera in ("head", "face") else (0.9 if phase == 2 else -0.45))) - BASE).to_track_quat("-Z", "Y").to_euler()
@@ -116,6 +116,11 @@ for f in range(first, last + 1, step):
         if M:
             ob.matrix_world = Matrix.Translation((0, 0, y)) @ Ry @ (C @ Matrix([M[0:4], M[4:8], M[8:12], M[12:16]]) @ CI) @ base
     bpy.context.view_layer.update()
+    if camera.startswith(("lhand", "rhand")):   # a close look at the wrist seam: the camera rides beside the hand
+        hb = pose_bones.get("Sk_LeftHand" if camera.startswith("lhand") else "Sk_RightHand")
+        at = arm.matrix_world @ hb.head
+        co.location = at + Vector(SPOTS[camera])
+        co.rotation_euler = (at - co.location).to_track_quat("-Z", "Y").to_euler()
     sc.render.filepath = os.path.join(out, "f_%05d.png" % f)
     bpy.ops.render.render(write_still=True)
 print("REVIEW", first, last, step)

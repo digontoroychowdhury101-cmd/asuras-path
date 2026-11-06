@@ -19,3 +19,4 @@ tools/trellis/.env
 # Blender working files (raw sculpts; >100 MB, kept local like assets/source/)
 *.blend
 *.blend1
+*.json.lock
