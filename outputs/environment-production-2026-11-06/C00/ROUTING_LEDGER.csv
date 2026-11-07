@@ -1,0 +1,37 @@
+id,priority,region,title,status,source_since_audit,route,note,owning_sources
+AP-01,P1,Multiple,Historical fallback skins; existing boss models need intake verification,partly fixed; awaiting supplied asset,src/server/Services/BossSkin.luau,C06 (integration once files arrive),"Shen P1/P2 templates imported, skinned and single-client verified (Shen RESULTS); Zhao and Iron Bull templates present. Baize, Titan, Wu and Wyrm have no AsuraBoss_* template in assets/models or the built place and no source file on this machine.",src/server/Services/BossSkin.luau src/shared/CostumeSchema.luau
+AP-02,P1,Sanctuary / Monastery,Speaking NPCs lag behind their surroundings,awaiting supplied asset,unchanged,C06,"H06/H07/H08 exports not found in the repository, assets/, Downloads or Desktop. Mannequin references exported (C00/references).",src/server/Services/CastFigures.luau src/shared/LooksCast.luau
+AP-03,P2,Multiple,Six rest altars remain generic pedestal-and-stick assemblies,open,unchanged,C02,,src/server/Services/WorldService.luau
+AP-04,P2,Multiple,Five hidden caches are plain metal cuboids,open,unchanged,C02,,src/server/Services/LootWorld.luau src/shared/ArsenalCatalog.luau
+AP-05,P2,Sanctuary / Monastery,Two industrial truss ladders break the setting,open,unchanged,C02,,src/server/Services/LootWorld.luau
+AP-06,P2,Monastery / Ash Colosseum,Two PvP rings still use the undressed primitive kit,open,unchanged,"C03, C07",Octagon of Ash ring sits in the Proving Court; AR01 keeps its footprint.,src/server/Services/ColosseumService.luau src/server/Services/SanctuaryRingFinish.luau
+SN-01,P2,Sanctuary,Forge tools need a small authored prop pass,open,unchanged,C02,,src/server/Services/SanctuaryForge.luau
+DM-01,P2,DesecratedMonastery,Ruined roof and column kit has blunt repeated profiles,open,unchanged,C03,,src/server/Services/MonasteryHalls.luau src/server/Services/MonasteryRuins.luau
+DM-02,P2,DesecratedMonastery,Ruin walls and rubble repeat square construction breaks,open,unchanged,C03,,src/server/Services/MonasteryRuins.luau
+DM-03,P1,DesecratedMonastery,Both prayer-hall idols are unrecognizable boxes,open; awaiting supplied asset,unchanged,"C03, C06",Dais/ruin work is agent work now; idol waits on H01 (not found).,src/server/Services/MonasteryHalls.luau
+DM-04,P2,DesecratedMonastery,Bell tower and fallen bell read as a frame and capped drum,open,unchanged,C03,Reuse AsuraFoundryKit.Foundry_Bell (6.95x9.67x6.95).,src/server/Services/MonasteryLandmarks.luau
+DM-05,P2,DesecratedMonastery,Courtyard cauldron is a solid disc stack,open,unchanged,C03,Reuse AsuraHanKit.HanCauldron (scale up) before any new cauldron.,src/server/Services/MonasteryLandmarks.luau
+DM-06,P2,DesecratedMonastery,Toppled pagoda remains a stack of cubes and plates,open,unchanged,C03,,src/server/Services/MonasteryLandmarks.luau
+DM-07,P3,DesecratedMonastery,Six grave stupas have a ball-on-box silhouette,open,unchanged,C03,,src/server/Services/MonasteryLandmarks.luau
+DM-08,P2,DesecratedMonastery,Secret mausoleum shell is unfinished,open; awaiting supplied asset,unchanged,"C03, C06",Facade/door frame agent work; relief waits on H04 (not found).,src/server/Services/LootWorld.luau
+DM-09,P2,DesecratedMonastery,Waterfall secret is a glass screen between rock boxes,open,unchanged,"C03, C05",,src/server/Services/LootWorld.luau
+DM-10,P2,DesecratedMonastery,Twin Sentinels arena lacks a finished setting,superseded by arena redesign,src/shared/WorldDefinitions.luau,"AR00, AR02",AR02 (Twin Sentinels) owns the arena setting.,src/server/Services/BossArenas.luau src/shared/WorldDefinitions.luau
+BP-01,P2,BambooPass,Baize arena needs a deliberate edge and encounter identity,superseded by arena redesign,unchanged,"AR00, AR03",AR03 (Baize) owns the arena edge and identity.,src/server/Services/BambooDressing.luau src/server/Services/BossArenas.luau
+LT-01,P1,Ash / Crypt / Citadel,Exploration lighting hides route and prop form,open,unchanged,"C01, C07",Ash lighting is touched by AR01 only inside the colosseum; Crypt/Citadel remain C01.,src/server/Services/CitadelDressing.luau src/server/Services/CryptDressing.luau src/shared/EnvironmentProfiles.luau
+AC-01,P2,AshColosseum,Champions hall and facade still read as block architecture,open; partly superseded by arena redesign,unchanged,"C03, AR01",Facade/arena mouth rebuilt by AR01; antechamber and hall kit remain C03.,src/server/Services/ColosseumDressing.luau src/shared/AshColosseumLayout.luau
+AC-02,P2,AshColosseum,Last-stand props need recognizable sculpted forms,open,unchanged,C03,,src/server/Services/ColosseumDressing.luau
+AC-03,P2,AshColosseum,Shen arena perimeter has weak colosseum hierarchy,superseded by arena redesign,unchanged,"AR00, AR01",AR01 (The Ashen Covenant) replaces the perimeter.,src/server/Services/ColosseumDressing.luau src/shared/AshColosseumLayout.luau
+SD-01,P1,SanctuaryDepths,Crypt ceiling and enclosing walls need real architectural form,superseded by arena redesign; awaiting supplied asset,unchanged,"C04, AR04, C06",Titan chamber by AR04; root buttress waits on H03 (not found).,src/server/Services/CryptDressing.luau src/shared/SunkenCryptLayout.luau
+SD-02,P1,SanctuaryDepths,Ossuary skulls are 60 featureless spheres on 20 flat plaques,open,unchanged,C04,,src/server/Services/CryptDressing.luau
+SD-03,P2,SanctuaryDepths,Sarcophagi and crossing lids are plain rectangular masses,open,unchanged,C04,,src/shared/SunkenCryptLayout.luau
+SD-04,P2,SanctuaryDepths,Titan chains are loose solid blocks rather than linked restraints,open,unchanged,C04,Fit to Titan once its model file is supplied.,src/server/Services/CryptDressing.luau
+SD-05,P2,SanctuaryDepths,Flooded pit needs believable water and shore treatment,open,unchanged,"C04, AR04",,src/server/Services/CryptDressing.luau src/shared/SunkenCryptLayout.luau
+SD-06,P3,SanctuaryDepths,Thirty candles remain unshaped rods,open,unchanged,C04,,src/server/Services/CryptDressing.luau
+CP-01,P1,CelestialPagoda,Oracle throne is a box chair beneath a small canopy,awaiting supplied asset,unchanged,"C05, C06",Throne waits on H02 (not found); loft framing is agent work.,src/server/Services/PagodaDressing.luau src/shared/CelestialPagodaLayout.luau
+CP-02,P2,CelestialPagoda,Great bell is an unadorned solid cylinder,open,unchanged,C05,Reuse AsuraFoundryKit.Foundry_Bell.,src/server/Services/PagodaDressing.luau
+CP-03,P2,CelestialPagoda,Lotus pool looks like a rectangle of water and discs,open,unchanged,C05,,src/server/Services/PagodaDressing.luau
+CP-04,P2,CelestialPagoda,"Gallery, rafters and loft need crafted timber junctions",open,unchanged,C05,,src/server/Services/PagodaDressing.luau src/shared/CelestialPagodaLayout.luau
+CP-05,P2,CelestialPagoda,Wu arena has little ritual identity at floor level,superseded by arena redesign,unchanged,"AR00, AR05",AR05 (Wu) owns the mirror court.,src/server/Services/PagodaDressing.luau src/shared/CelestialPagodaLayout.luau
+SC-01,P1,SkyCitadel,Ten chain posts float above the descending stair,open,unchanged,C01,Small code defect; C01 is a separate instruction.,src/server/Services/CitadelDressing.luau src/shared/SkyCitadelLayout.luau
+SC-02,P2,SkyCitadel,Dragon perch chains and shed scales are primitive,open,unchanged,"C05, AR06",Perch chains/scales; landmark revisited by AR06.,src/server/Services/CitadelDressing.luau
+SC-03,P2,SkyCitadel,Bridge and bastion edges need a weathered masonry finish,open; partly superseded by arena redesign,unchanged,"C05, AR06",Bridge masonry C05; bastion reveal AR06.,src/shared/SkyCitadelLayout.luau
