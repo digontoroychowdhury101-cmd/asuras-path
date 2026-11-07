@@ -37,6 +37,16 @@ row('CP-05','Arena redesign: agent mirror court/lighting/bounds; supplied throne
 row('SC-01','Direct code placement; agent simple chain geometry','No human/Rodin work required.',['B05'],'C01')
 row('SC-02','Agent chain/scale reuse; optional human organic crown','Reuse the supplied Wyrm model/materials; H05 is optional only if the chosen landmark needs it.',['B05','B07','H05 optional'],'C05 AR06')
 row('SC-03','Agent masonry kit; enlarged Wyrm scene','No new Rodin model required; H05 optional.',['B01','B07'],'C05 AR00 AR06')
+# The creator has supplied every H source; retain actual integration/visual gates.
+completed_h={'AP-02':'H06/H07/H08','DM-03':'H01','DM-08':'H04','SD-01':'H03/H04','SD-02':'H09','CP-01':'H02'}
+for finding, entry in r.items():
+ entry['asset_workflow']='ASSET_WORKFLOW.md'
+ if finding in completed_h:
+  entry['method']='Supplied approved '+completed_h[finding]+'; ForgeGUI/project lookup and Blender preparation/integration'
+  entry['human_input']='Sources already created. Locate approved exports; creator judges actual in-game appearance/rig fit after a concrete comparison. No automatic regeneration.'
+ elif entry['method'].startswith('Agent '):
+  entry['method']='ForgeGUI/project reuse where suitable; '+entry['method']
+ entry['human_input']=entry['human_input'].replace('H05 optional.','H05 already created; place only if useful.').replace('H05 is optional only if','H05 is already created; place only if')
 F=json.loads((P.parent/'findings.json').read_text())
 assert set(r)=={x['id'] for x in F},(set(r)^{x['id'] for x in F})
 (P/'routing.json').write_text(json.dumps(r,indent=2)+'\n')
@@ -44,7 +54,76 @@ with (P/'OWNERSHIP_MATRIX.csv').open('w',newline='') as f:
  w=csv.DictWriter(f,fieldnames=['finding','title','method','human_input','assets','agent_prompts'],lineterminator='\n');w.writeheader()
  for a in F:
   b=r[a['id']];w.writerow(dict(finding=a['id'],title=a['title'],method=b['method'],human_input=b['human_input'],assets='; '.join(b['assets']),agent_prompts='; '.join(b['agent_prompts'])))
-md=['# Start here — production plan and complete prompts','', '6 November 2026 · extends the [5 November visual audit](../README.md). This is an execution-ready prompt/asset plan; it does not mean those fixes or arena enlargements have already been implemented. All six encounters keep the already constructed boss models.','', '## The practical split','', '**Let the agents build the world and precision geometry. Use human-led image/Rodin generation for a few hero sculptures and speaking characters.** A convincing arch, dome, chain, coffer, bell frame or arena layout is feasible with Blender scripts/MCP plus visual iteration. Reliable faces, hands, layered clothing and distinctive large organic sculpture benefit more from an approved image and a chosen generated model. Nobody should promise unattended AAA results from a prompt or perfect Roblox rig fit from a painting.','', '| You handle | Claude/ChatGPT handles |','|---|---|','| Select the visual direction from concrete comparisons; approve the few H-assets you want. | Inventory existing assets, measure rigs/routes/camera, export cast proportion references, prepare layout prototypes and all independent code. |','| Generate the approved H01/H02/H03/H04 images and Rodin objects when needed; H05 is optional. | Reusable B01–B10 modules, terrain, arches/domes, prop variants, material setup, lighting, water/foliage, larger arena coordinates and route integration. |','| Approve the three cast designs H06/H07/H08 and supply their chosen exports; H09 is only a fallback for a poor small skull sample. | Retopology/baking/cleanup, import/mapping, actual-rig adaptation, prompt/collision preservation, placement and engine checks. |','| Judge the final visual direction and normal fight feel. | Provide recorded before/after, meaningful regressions, target-device and genuine multiplayer checks; mark any missing evidence honestly. |','', '**Do not generate the whole arena as a single Rodin model.** Generate sculptural modules; let the agent assemble precise rooms, paths, support, collision, lighting and scenery. No new boss-model generation is in this queue. The old AP-01 captures remain historical evidence; first reconcile runtime integration of the existing assets.','', '## Open these files','', '- [RELAY_UPDATE.md](RELAY_UPDATE.md): reconcile the newer Shen source/cloth/animation commit; its Studio integration remains unverified.', '- [ART_DIRECTION.md](ART_DIRECTION.md): how all nine supplied references translate into a coherent, broader dark-fantasy world. Includes the images.','- [ASSET_PROMPTS.md](ASSET_PROMPTS.md): H-assets with complete copy-paste image → Rodin → integration prompts; B-kits the agents can make themselves.','- [ARENAS.md](ARENAS.md): six larger playable arenas, current/proposed dimensions, overlap risks, distinct compositions, optional scene concept prompts and complete implementation prompts.','- [OWNERSHIP_MATRIX.csv](OWNERSHIP_MATRIX.csv): every original finding mapped to human/code/Blender work. The same routing appears beside each finding in the main audit.','', '## Run order','', f'1. **Reconcile first:** give the agent [{C["C00"]}]({C["C00"]}). It measures current assets and exports actual-rig mannequin references for the cast concepts. No new boss designs. Then [{A["AR00"]}]({A["AR00"]}) produces the coherent six-arena coordinate plan and reversible larger prototypes.','2. **Quick concrete repair:** run C01 for the floating chains and route readability. It can proceed before any Rodin asset.','3. **Pilot the new scale:** run AR01 for Shen, then check the normal-camera scene and fight. Use that result to settle shared architectural/material quality before producing all six. A larger floor alone does not pass.','4. **Reusable asset batches:** C02 interactive props; C03 monastery/ruin kit and PvP rings; C04 crypt funerary kit; C05 galleries/citadel/water/ground detail. These have work available without H-assets. If a batch depends on an arena relocation, use AR00’s chosen manifest first.','5. **Hero assets in parallel with that work:** H01 idol and H02 throne first; H03 root module after Titan room dimensions; H04 relief as needed. H05 optional. H06/H07/H08 cast concepts only after proportion references exist. Use C06 to integrate supplied H-assets. H09 only if the agent-made skull looks inadequate.','6. **Finish the larger scenes sequentially:** AR02 Twins, AR03 Baize, AR04 Titan, AR05 Wu, AR06 Wyrm; reuse the validated kits and preserve completed work. Each prompt includes its own route/bounds/combat checks.','7. **Integrated acceptance:** C07 on the gaming Windows machine for foreground play, relevant real two-client checks and profiling; compare Mac appearance at declared settings. Stop passing batches based only on seeded screenshots.','', 'One repository writer at a time. The creator can generate art independently while an agent edits source. For relay work, complete a coherent batch, build/verify as required, commit/push only its files and have the next machine pull the same branch before editing. Mac can author code/kits and do bounded Studio checks; it cannot stand in for unperformed Windows/multiplayer/profile evidence.','', '## Direct agent prompts','', '| ID | Task | Full copy-paste file |','|---|---|---|']
+md=['# Start here — production plan and complete prompts',
+ '',
+ 'Updated 7 November 2026. Extends the [5 November visual audit](../README.md). This packet specifies work; it does '
+ 'not claim the environments or larger arenas are already implemented. All nine H-assets and all boss designs are '
+ 'already created. Reconcile current integration against the latest journal.',
+ '',
+ '## ForgeGUI and Blender',
+ '',
+ 'Read [ASSET_WORKFLOW.md](ASSET_WORKFLOW.md) before executing any batch. Inspect project/imported/supplied assets and '
+ 'search the connected ForgeGUI account library, public catalog and past MCP jobs before creating an asset. Reuse a suitable existing '
+ 'model rather than generating a duplicate. ForgeGUI supplies genuinely missing decorative/sculptural components; '
+ 'Blender handles exact architecture, modular joins, optimization, UVs, baking, collision proxies and rig adaptation. '
+ 'Roblox code assembles the playable world, terrain, lighting, VFX and encounter systems.',
+ '',
+ 'Preserve the approved H01-H09 and boss designs. Missing local files require a handoff, not regeneration. The '
+ 'raw-model transfer is AsurasPath_Asset_Handoff_2026-11-07.zip; it does not replace current rigged Shen templates. '
+ 'Most inspected source exports contain one million triangles. Prepare measured game copies and profile actual scenes.',
+ '',
+ '## Open these files',
+ '',
+ '- [ASSET_WORKFLOW.md](ASSET_WORKFLOW.md): ForgeGUI search/reuse, actual capabilities, Blender responsibilities, '
+ 'credits, source preservation, game preparation and parallel work.',
+ '- [WINDOWS_START_HERE.md](WINDOWS_START_HERE.md): current Windows C00 → AR00 → AR01 assignment while Mac debugs '
+ 'Shen.',
+ '- [RELAY_UPDATE.md](RELAY_UPDATE.md): historical relay note; newer PROJECT_STATE and Shen handoffs supersede its old '
+ 'integration status.',
+ '- [ART_DIRECTION.md](ART_DIRECTION.md): all nine scene references and their composition/material lessons.',
+ '- [ASSET_PROMPTS.md](ASSET_PROMPTS.md): the nine already-created H-assets and B-kit reuse/construction briefs. '
+ 'Legacy IMAGE_TO_RODIN filenames remain stable; their workflow is updated.',
+ '- [ARENAS.md](ARENAS.md): six larger scenes, measured-plan requirements, dependencies and full prompts.',
+ '- [OWNERSHIP_MATRIX.csv](OWNERSHIP_MATRIX.csv): all 36 original finding families, asset routes and prompt files.',
+ '',
+ '## Run order and current parallel work',
+ '',
+ '1. C00 reconciles the latest source, existing project and ForgeGUI assets, supplied model intake and '
+ 'rig/scale/camera measurements. Skip completed work and refresh only stale measurements.',
+ '2. AR00 creates a coherent six-arena coordinate manifest and two reversible larger prototypes per arena. Record '
+ 'provisional clearances where the final boss implementation is unavailable.',
+ '3. C01 fixes the traced chain placement and route readability. AR01 is the first finished arena pilot; inspect its '
+ 'normal-camera composition before extending shared architectural/material treatment across all scenes.',
+ '4. C02 → C03 → C04 → C05 builds/reuses the required kits. C06 prepares the nine supplied H-assets, including '
+ 'H05/H09, and stages arena-specific models until their final anchors exist. Reuse existing ForgeGUI/project results '
+ 'throughout.',
+ '5. AR02 → AR03 → AR04 → AR05 → AR06 finishes the remaining scenes sequentially using AR00 and the validated kits.',
+ '6. C07 provides final integrated Windows, normal-input, genuine multiplayer and profiling evidence, plus declared '
+ 'Mac/device comparison. It cannot replace outstanding combat verification stages.',
+ '',
+ 'Currently Mac owns Shen integration; Windows may complete C00 → AR00 → AR01 on codex/windows-arenas in an isolated '
+ 'checkout/Studio build. Boss debugging need not finish before independent environment construction. Combine completed '
+ 'boss/arena pairs at deliberate checkpoints and refresh affected measurements; keep combined fight acceptance pending '
+ 'until checked. This overrides older blanket instructions to push every task directly to ux/onboarding-overhaul.',
+ '',
+ 'Commit/push only owned files, with task-specific handoffs and required checks. One integration owner combines shared '
+ 'mappings, bounds, spawns and camera changes. Avoid automatic rebase/autostash, broad staging and force-push during '
+ 'parallel editing. Git does not transfer ignored raw models or .blend files.',
+ '',
+ '## Reading an ID such as AR03',
+ '',
+ 'Claude needs the repository on its current computer and filesystem permission. Prompt IDs are labels, not remote '
+ 'file access. Start Claude Code in the correct clone/worktree, read the repository-root ENVIRONMENT_PROMPTS.md index, '
+ 'then open the full mapped file. Regular chat without file access needs the prompt attached or pasted; implementation '
+ 'also needs repository and Studio/tool access. ForgeGUI must be connected on that computer separately.',
+ '',
+ 'For AR03, read outputs/visual-audit-2026-11-05/production/prompts/AR03_VENERABLEBAIZE_ARENA.md in full, plus '
+ 'ASSET_WORKFLOW.md and the current C00/AR00 results. Do not infer the detailed task from its ID.',
+ '',
+ '## Direct agent prompts',
+ '',
+ '| ID | Task | Full copy-paste file |',
+ '|---|---|---|']
 titles={'C00':'Current-state/asset/scale intake','C01':'Floating chains + route readability','C02':'Altars, coffers, ladders, smith kit','C03':'Monastery ruins + two PvP ring finishes','C04':'Crypt architecture/funerary/water/chain kit','C05':'Pagoda/Citadel joinery, bell, garden/foliage','C06':'Supplied hero/cast mesh cleanup, rigging and integration','C07':'Integrated Windows/normal-input/multiplayer/profile acceptance'}
 for id,path in C.items():md.append(f'| {id} | {titles[id]} | [{path.split("/")[-1]}]({path}) |')
 for id,path in A.items():md.append(f'| {id} | '+('Spatial plan + larger prototypes' if id=='AR00' else next(x['name'] for x in json.loads((P/'arenas.json').read_text()) if x['id']==id))+f' | [{path.split("/")[-1]}]({path}) |')
@@ -54,3 +133,33 @@ for a in F:
 md+=['', '## Current evidence status','', 'The existing tour covers seven regions and 53 named campaign layout zones with settled actor and/or scripted-camera samples, 135 scripted captures and seven short normal-camera keyboard samples. This remains an assisted visual audit, not an earned all-secrets playthrough. The temporary helper/cheats were restored and both owned Play sessions stopped; the post-tour script digest and canonical place bytes match the pre-tour state. See [restoration.json](../restoration.json).','', 'This production extension adds prompts and references only. Boss assets are creator-reported constructed; their new in-game integration has not been reverified by this document. Proposed arena dimensions are not tested facts. No paid model/image generation or production game change was performed to prepare the packet.','']
 (P/'README.md').write_text('\n'.join(md))
 print('Mapped all',len(r),'findings to explicit ownership/assets/complete agent prompts')
+
+# Discoverable root index and standalone current Windows assignment.
+index=["# Asura's Path environment prompt index", '',
+       'Updated 7 November 2026. Read this file from the current repository checkout. Prompt IDs do not grant access to another computer or transfer model files.', '',
+       'Read [asset workflow](outputs/visual-audit-2026-11-05/production/ASSET_WORKFLOW.md) and [production run order](outputs/visual-audit-2026-11-05/production/README.md). Current Windows assignment: [C00 → AR00 → AR01](outputs/visual-audit-2026-11-05/production/WINDOWS_START_HERE.md), while Mac owns Shen integration.', '',
+       '| ID | Full prompt |', '|---|---|']
+for key,path in {**C,**A}.items():
+ index.append(f'| {key} | [{Path(path).name}](outputs/visual-audit-2026-11-05/production/{path}) |')
+index += ['', 'H01-H09 already exist. Their historical IMAGE_TO_RODIN files now contain reuse-first ForgeGUI/Blender instructions; see [asset briefs](outputs/visual-audit-2026-11-05/production/ASSET_PROMPTS.md).', '',
+          'Example: "Read ENVIRONMENT_PROMPTS.md, open the full AR03 file and ASSET_WORKFLOW.md, inspect the latest C00/AR00 results, and execute only AR03 on the assigned task branch. Preserve the active Mac Shen work."', '',
+          'The current 7 November update is documentation only. Read the latest PROJECT_STATE and task results for actual implementation status. No generation, upload or gameplay acceptance is implied by these prompts.', '']
+(P.parents[2]/'ENVIRONMENT_PROMPTS.md').write_text('\n'.join(index),encoding='utf-8')
+c00=(P/C['C00']).read_text()
+c00_body=c00.split('```text\n',1)[1].rsplit('```',1)[0].strip()
+windows_prefix="""Mac is currently debugging Grandmaster Shen. Windows owns the environment C00 → AR00 → AR01 run on codex/windows-arenas in an isolated checkout/Studio build.
+Read ENVIRONMENT_PROMPTS.md and the full ASSET_WORKFLOW.md. Complete missing/stale C00 work below, then read and execute the complete AR00 and AR01 files mapped by the index, one coherent batch at a time. Do not redo completed work or infer a task from its short ID.
+Use ForgeGUI/project asset reuse first, ForgeGUI for missing in-scope decorative/sculptural components, and Blender for precision construction and game preparation. All nine H-assets and boss source designs already exist. The approved raw export handoff is AsurasPath_Asset_Handoff_2026-11-07.zip; locate registered copies or record missing files, never regenerate the queue.
+A ForgeGUI connection on Mac does not establish one on Windows. Discover actual tools; continue independent work if a connection/source is missing. C00/AR00 do not launch paid generation.
+
+C00 DETAILED TASK
+"""
+windows_end="""
+FINAL OVERRIDES FOR THIS WINDOWS RUN
+1. Work only on the assigned isolated arena branch/build. Commit/push only owned changes; do not overwrite Mac's active place or merge into the shared relay branch during its debugging session.
+2. After completing/checkpointing C00, execute the complete AR00 prompt, then AR01. C01 and AR02-AR06 are outside this run.
+3. Use actual approved models at intended scale where available. Label estimated movement/phase clearance and proxies provisional. Mac's uncommitted rig work may be absent; do not interpret that as deleted implementation.
+4. Finish independent environment construction and available checks. Keep boss-dependent fight/phase/flight/telegraph/camera acceptance pending where the stable implementation is unavailable.
+5. Provide owned changed files, asset source/artifact/version manifest, before/after evidence, checks and exact integration steps. Combine stable Shen/AR01 work at a deliberate integration checkpoint. Do not publish the game.
+"""
+(P/'WINDOWS_START_HERE.md').write_text('# Windows — C00, AR00 and AR01 while Mac integrates Shen\n\n```text\n'+windows_prefix+'\n'+c00_body+'\n'+windows_end+'```\n',encoding='utf-8')

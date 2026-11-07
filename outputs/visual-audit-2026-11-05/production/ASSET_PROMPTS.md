@@ -1,91 +1,91 @@
 # Asset prompts and division of labour
 
-Updated 6 November 2026. All boss models are creator-supplied: no boss generation jobs are included. H-IDs are proposed non-boss assets; B-IDs are agent-built/reused kits. Asset dimensions are authoring targets, to be adjusted to C00’s measured rig and final AR00 layout.
+Updated 7 November 2026. Read ASSET_WORKFLOW.md: reuse project/supplied and existing ForgeGUI assets first, use ForgeGUI for genuinely missing in-scope assets, and Blender for precision geometry and preparation. All H01-H09 sources already exist. All boss models are creator-supplied: no boss generation jobs are included. H-IDs identify the completed supplied non-boss sources; B-IDs are agent-built/reused kits. Asset dimensions are authoring targets, to be adjusted to C00’s measured rig and final AR00 layout.
 
-## Human/Rodin queue
+## Completed H-assets — reuse and integration
 
-Human input means choosing the design and supplying the approved generated asset, not hand-writing mesh code. Run one H-asset at a time. H01/H02 are the first useful pair; H03 becomes useful after the Titan blockout. H05 is optional. The three cast models can follow independently. Agents should continue code/modular work while an H-asset is pending.
+All nine source assets are already created. Resolve the transfer and reuse approved files or registered ForgeGUI/project versions. These briefs retain the approved designs; they are not instructions to regenerate nine models. The creator judges appearance after concrete comparisons. Agents complete optimization, rig fitting, placement and checks, continuing independent work while a file is unavailable.
 
 ## H01 — Shattered Votive Idol
 
-**Who:** Human concept + Rodin; agent cleanup/placement. **When:** First hero asset. **Fixes:** DM-03.
+**Who:** Approved source already created; ForgeGUI lookup/reuse; Blender game preparation. **When:** First hero asset. **Fixes:** DM-03.
 
-**Image → Rodin → integration prompt:** [H01_IMAGE_TO_RODIN.md](prompts/H01_IMAGE_TO_RODIN.md).
+**Existing export → ForgeGUI lookup → Blender integration brief:** [H01_IMAGE_TO_RODIN.md](prompts/H01_IMAGE_TO_RODIN.md).
 
-**Size/construction:** about 11 studs tall intact; approve beside a measured 5–6-stud project rig. One statue body per generation. Agent duplicates/poses matching stone fragments from the same asset; do not generate disconnected heads and body variants in a single image.
+**Size/construction:** about 11 studs tall intact; approve beside a measured 5–6-stud project rig. Reuse the supplied statue body. Derive matching broken fragments in Blender from that same source instead of generating unrelated heads or body variants.
 
 ## H02 — Throne of the Starless Oracle
 
-**Who:** Human concept + Rodin; agent cleanup/placement. **When:** First hero asset. **Fixes:** CP-01, CP-05.
+**Who:** Approved source already created; ForgeGUI lookup/reuse; Blender game preparation. **When:** First hero asset. **Fixes:** CP-01, CP-05.
 
-**Image → Rodin → integration prompt:** [H02_IMAGE_TO_RODIN.md](prompts/H02_IMAGE_TO_RODIN.md).
+**Existing export → ForgeGUI lookup → Blender integration brief:** [H02_IMAGE_TO_RODIN.md](prompts/H02_IMAGE_TO_RODIN.md).
 
 **Size/construction:** seat top fitted to the measured loft; back roughly 10–14 studs high, not an avatar-sized dining chair. Throne is one asset; its canopy, loft, collision and magical effects are built by the agent. Keep arm/seat negative spaces open.
 
 ## H03 — Petrified Root Buttress
 
-**Who:** Human concept + Rodin; agent builds the cathedral from modules. **When:** Titan arena hero detail. **Fixes:** SD-01, SD-05.
+**Who:** Approved source already created; ForgeGUI lookup/reuse; Blender game preparation. **When:** Titan arena hero detail. **Fixes:** SD-01, SD-05.
 
-**Image → Rodin → integration prompt:** [H03_IMAGE_TO_RODIN.md](prompts/H03_IMAGE_TO_RODIN.md).
+**Existing export → ForgeGUI lookup → Blender integration brief:** [H03_IMAGE_TO_RODIN.md](prompts/H03_IMAGE_TO_RODIN.md).
 
-**Size/construction:** one 25–40-stud hero segment, not a whole 300-stud room. Generate one segment. The agent makes a few edited/rotated variants and procedural secondary roots; never scale a full-room Rodin lump into the playable crypt.
+**Size/construction:** one 25–40-stud hero segment, not a whole 300-stud room. Reuse the supplied segment, deriving a few edited/rotated game variants and procedural secondary roots in Blender. Assemble the measured chamber from modules.
 
 ## H04 — Mourning Gate Relief
 
-**Who:** Human concept + Rodin relief; agent constructs the doorway. **When:** After H01/H02. **Fixes:** DM-08, SD-01.
+**Who:** Approved source already created; ForgeGUI lookup/reuse; Blender game preparation. **When:** After H01/H02. **Fixes:** DM-08, SD-01.
 
-**Image → Rodin → integration prompt:** [H04_IMAGE_TO_RODIN.md](prompts/H04_IMAGE_TO_RODIN.md).
+**Existing export → ForgeGUI lookup → Blender integration brief:** [H04_IMAGE_TO_RODIN.md](prompts/H04_IMAGE_TO_RODIN.md).
 
 **Size/construction:** a 10–14-stud-wide relief panel/pediment; fit the frame to the existing secret entrance. One sculpted panel; the agent builds exact modular jambs, doorway opening, supports, roof and collision. Reuse it sparingly, not on every wall.
 
 ## H05 — Storm-Eroded Memorial Crown
 
-**Who:** Optional human/Rodin organic accent; agent can omit or approximate. **When:** Optional after arena pilot proves need. **Fixes:** SC-02, SC-03.
+**Who:** Approved source already created; ForgeGUI lookup/reuse; Blender game preparation. **When:** Optional after arena pilot proves need. **Fixes:** SC-02, SC-03.
 
-**Image → Rodin → integration prompt:** [H05_IMAGE_TO_RODIN.md](prompts/H05_IMAGE_TO_RODIN.md).
+**Existing export → ForgeGUI lookup → Blender integration brief:** [H05_IMAGE_TO_RODIN.md](prompts/H05_IMAGE_TO_RODIN.md).
 
 **Size/construction:** one 20–30-stud-high crown fragment fixed to a larger agent-built monolith. Optional sculpted top only. Agent builds/reuses the supporting perch/spire and chain sockets; existing Wyrm model is untouched.
 
 ## H06 — Lady Lin — Shrine Cast
 
-**Who:** Human approved character concept + Rodin; agent rig/adaptation. **When:** Cast after first environment hero assets. **Fixes:** AP-02.
+**Who:** Approved source already created; ForgeGUI lookup/reuse; Blender game preparation. **When:** Cast after first environment hero assets. **Fixes:** AP-02.
 
-**Image → Rodin → integration prompt:** [H06_IMAGE_TO_RODIN.md](prompts/H06_IMAGE_TO_RODIN.md).
+**Existing export → ForgeGUI lookup → Blender integration brief:** [H06_IMAGE_TO_RODIN.md](prompts/H06_IMAGE_TO_RODIN.md).
 
-**Size/construction:** actual CastFigures/CostumeSchema R15 dimensions, not generic realistic adult anatomy. Attach the actual project rig mannequin as the proportion reference. Make the approved front/side/rear consistent; rigging is a separate agent step. No automatic Roblox fit is implied by a concept image.
+**Size/construction:** actual CastFigures/CostumeSchema R15 dimensions, not generic realistic adult anatomy. Compare the approved supplied model against the actual project rig mannequin and joint centers. Adapt the game copy and validate poses; a concept image does not prove Roblox rig fit.
 
 ## H07 — Master Smith Gao — Shrine Cast
 
-**Who:** Human approved character concept + Rodin; agent rig/adaptation. **When:** Cast. **Fixes:** AP-02, SN-01.
+**Who:** Approved source already created; ForgeGUI lookup/reuse; Blender game preparation. **When:** Cast. **Fixes:** AP-02, SN-01.
 
-**Image → Rodin → integration prompt:** [H07_IMAGE_TO_RODIN.md](prompts/H07_IMAGE_TO_RODIN.md).
+**Existing export → ForgeGUI lookup → Blender integration brief:** [H07_IMAGE_TO_RODIN.md](prompts/H07_IMAGE_TO_RODIN.md).
 
 **Size/construction:** match Gao live rig and dialogue head/feet anchors. Body/clothing only. Tools remain separate so existing live rig and animations can use them. Preserve actual project proportions instead of baking a pose or held tool into the mesh.
 
 ## H08 — The Hermit — Monastery Cast
 
-**Who:** Human approved character concept + Rodin; agent rig/adaptation. **When:** Cast. **Fixes:** AP-02.
+**Who:** Approved source already created; ForgeGUI lookup/reuse; Blender game preparation. **When:** Cast. **Fixes:** AP-02.
 
-**Image → Rodin → integration prompt:** [H08_IMAGE_TO_RODIN.md](prompts/H08_IMAGE_TO_RODIN.md).
+**Existing export → ForgeGUI lookup → Blender integration brief:** [H08_IMAGE_TO_RODIN.md](prompts/H08_IMAGE_TO_RODIN.md).
 
 **Size/construction:** match the actual Hermit rig and feet-to-head portrait height. One cast body, no permanent dramatic pose; subtle stoop/idle is authored after rigging. Keep face and hands visible for dialogue.
 
-## H09 — Ossuary Skull — optional fallback
+## H09 — Ossuary Skull — supplied source
 
-**Who:** Agent Blender first; human/Rodin only if the sample is inadequate. **When:** Optional small-asset fallback, not required up front. **Fixes:** SD-02.
+**Who:** Approved source already created; ForgeGUI lookup/reuse; Blender game preparation. **When:** Existing source for C04 ossuary preparation. **Fixes:** SD-02.
 
-**Image → Rodin → integration prompt:** [H09_IMAGE_TO_RODIN.md](prompts/H09_IMAGE_TO_RODIN.md).
+**Existing export → ForgeGUI lookup → Blender integration brief:** [H09_IMAGE_TO_RODIN.md](prompts/H09_IMAGE_TO_RODIN.md).
 
-**Size/construction:** about one stud at the existing niche scale; verify at actual walking distance. Only use if the one-sample procedural Blender skull fails the gameplay-distance comparison. Generate one skull, then let the agent bake and vary shelf clusters with it.
+**Size/construction:** about one stud at the existing niche scale; verify at actual walking distance. The supplied H09 already exists. Optimize one game skull and bake varied shelf clusters in Blender; compare at walking distance before multiplying it.
 
-## What Claude/ChatGPT can model directly with Blender
+## ForgeGUI reuse and Blender construction kits
 
 These are production construction briefs. Use their linked full agent prompts; no preliminary human image generation is required. Ask the agent for one rendered sample before it replicates a family across the world. Procedural geometry is useful for exact profiles and repetition; faces, hands, cloth and hero organic sculpture are the less reliable unattended work.
 
 | ID | Kit | Exact agent construction brief | Prompt |
 |---|---|---|---|
 | B01 | Ruined architecture kit | Pilaster/base/capital, round/pointed arch segment, broken wall crown, curved eave, snapped timber and half/quarter dome modules. Build exact dimensions and openings procedurally in Blender, with large believable fractures, bevels, solid rear/interior faces, trim/material reuse. Reuse existing Han/lobby/ruin meshes where they already meet the brief. | [C03](prompts/C03_MONASTERY_RUIN_KIT.md) |
-| B02 | Funerary kit | One body/lid sarcophagus pair and damaged variant; skull with real cavities and a jaw silhouette; bake 3 bone-shelf cluster variants into niche modules. Produce a one-module walking-distance proof before multiplying it. Human/Rodin skull is optional only if that proof fails, using the single-subject H prompt pattern. | [C04](prompts/C04_CRYPT_ARCHITECTURE_AND_FUNERARY_KIT.md) |
+| B02 | Funerary kit | One body/lid sarcophagus pair and damaged variant; skull with real cavities and a jaw silhouette; bake 3 bone-shelf cluster variants into niche modules. Produce a one-module walking-distance proof before multiplying it. Reuse the already-created H09 source and prepare its game version in Blender; no new skull generation is required. | [C04](prompts/C04_CRYPT_ARCHITECTURE_AND_FUNERARY_KIT.md) |
 | B03 | Interaction and smith kit | Coffer with shaped lid/hinges/feet; regional censer shell; timber ladder overlay; shaped anvil/horn, tongs/hammer, tang-bearing blade blanks, pleated bellows and barrel. Separate operational pieces from anchored decoration; exact proxy/interaction dimensions remain controlled in code. | [C02](prompts/C02_INTERACTIVE_PROP_KIT.md) |
 | B04 | Bells and vessels | Reuse Foundry_Bell and HanCauldron. Derive a cracked horizontal bell from the same construction, add a crown/clapper/suspension frame. Do not commission duplicate simple bells/censers before examining the asset library. | [C03](prompts/C03_MONASTERY_RUIN_KIT.md) |
 | B05 | Forged chain and restraint kit | One open link, alternating-orientation linked static curves, broken link, socket/anchor plate and post joint. Blender curve-instanced/baked geometry is suitable; no physics chain or per-link update loop. Anchor positions come from authored geometry. | [C01](prompts/C01_CHAIN_PLACEMENT_AND_READABILITY.md) |
@@ -95,6 +95,10 @@ These are production construction briefs. Use their linked full agent prompts; n
 | B09 | Grounding and damage kit | A few fractured rubble meshes, fractured tile clusters, coarse ash/snow bank profiles, wet edges, sediment/root seams and material blends. Seeded placement must be surface-aware, varied by scale/rotation within believable constraints, and clear of navigation/interaction volumes. | [C03](prompts/C03_MONASTERY_RUIN_KIT.md) |
 | B10 | Small narrative props | Reuse existing weapons/shields where possible; add spearheads, shield rims/grips, broken statue fragments, carved grave-marker profiles, candles with wick/wax. Low-cost static props; prioritize silhouettes visible at walking distance over dense microscopic ornament. | [C03](prompts/C03_MONASTERY_RUIN_KIT.md) |
 
+## ForgeGUI-first kit intake
+
+For every B-kit above, inspect project/supplied assets and search the connected ForgeGUI account/public catalog and past jobs before authoring. Reuse suitable results and fit them in Blender. Use ForgeGUI for missing decorative/sculptural components; keep exact construction, collision and assembly in Blender/Roblox. See ASSET_WORKFLOW.md. Do not generate duplicates of existing bells, cauldrons, H-assets or bosses.
+
 ## Import and color contract
 
 The handoff is an approved appearance plus a game asset, not “1:1 guaranteed.” Neutral source lighting, PBR base-color/normal/roughness/metal maps and consistent material scale help reproduce the reference. Compare in neutral inspection light and the actual authored scene light; shaded/baked highlights can look wrong when the game light changes. Rodin output may need topology, back-face, silhouette, UV and color cleanup.
@@ -103,4 +107,4 @@ For export/intake, preserve the high-detail source; make a separate game version
 
 Roblox’s [Importer](https://create.roblox.com/docs/studio/importer) supports rigged/PBR 3D intake; check its actual result and hierarchy. [SurfaceAppearance](https://create.roblox.com/docs/art/modeling/surface-appearance) supplies PBR maps; most map setup belongs in the authored asset/import pipeline. Collision shape is a separate choice from visual mesh detail; [mesh collision guidance](https://create.roblox.com/docs/parts/meshes) describes the tradeoff.
 
-Rodin [Gen-2.5 documentation](https://docs.hyper3d.ai/en/api-specification/rodin-gen2-5) permits up to five reference images and recommends little or no additional image-to-3D prompt. Use consistent isolated views of one asset. The connected Agentic tool describes procedural geometry support but is beta; for exact modular dimensions, the repeatable local Blender construction path is preferable here. No claim is made that either route will automatically match Roblox proportions, import correctly or meet the performance budget.
+Read [ASSET_WORKFLOW.md](ASSET_WORKFLOW.md) for ForgeGUI account searches, supported routes, job reuse and credit handling. Preserve approved Rodin sources; use existing ForgeGUI assets where suitable and ForgeGUI generation for missing in-scope components. Blender handles exact construction, optimization and fitting. No provider result automatically establishes Roblox rig fit, correct materials or performance.

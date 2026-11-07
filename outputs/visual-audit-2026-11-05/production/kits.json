@@ -3,60 +3,80 @@
     "id": "B01",
     "name": "Ruined architecture kit",
     "agent": "C03",
-    "brief": "Pilaster/base/capital, round/pointed arch segment, broken wall crown, curved eave, snapped timber and half/quarter dome modules. Build exact dimensions and openings procedurally in Blender, with large believable fractures, bevels, solid rear/interior faces, trim/material reuse. Reuse existing Han/lobby/ruin meshes where they already meet the brief."
+    "brief": "Pilaster/base/capital, round/pointed arch segment, broken wall crown, curved eave, snapped timber and half/quarter dome modules. Build exact dimensions and openings procedurally in Blender, with large believable fractures, bevels, solid rear/interior faces, trim/material reuse. Reuse existing Han/lobby/ruin meshes where they already meet the brief.",
+    "asset_workflow": "ASSET_WORKFLOW.md",
+    "reuse": "Search suitable project and owned ForgeGUI assets first; adapt precise modules with Blender; generate only missing sculptural components."
   },
   {
     "id": "B02",
     "name": "Funerary kit",
     "agent": "C04",
-    "brief": "One body/lid sarcophagus pair and damaged variant; skull with real cavities and a jaw silhouette; bake 3 bone-shelf cluster variants into niche modules. Produce a one-module walking-distance proof before multiplying it. Human/Rodin skull is optional only if that proof fails, using the single-subject H prompt pattern."
+    "brief": "One body/lid sarcophagus pair and damaged variant; skull with real cavities and a jaw silhouette; bake 3 bone-shelf cluster variants into niche modules. Produce a one-module walking-distance proof before multiplying it. Reuse the already-created H09 source and prepare its game version in Blender; no new skull generation is required.",
+    "asset_workflow": "ASSET_WORKFLOW.md",
+    "reuse": "Search suitable project and owned ForgeGUI assets first; adapt precise modules with Blender; generate only missing sculptural components."
   },
   {
     "id": "B03",
     "name": "Interaction and smith kit",
     "agent": "C02",
-    "brief": "Coffer with shaped lid/hinges/feet; regional censer shell; timber ladder overlay; shaped anvil/horn, tongs/hammer, tang-bearing blade blanks, pleated bellows and barrel. Separate operational pieces from anchored decoration; exact proxy/interaction dimensions remain controlled in code."
+    "brief": "Coffer with shaped lid/hinges/feet; regional censer shell; timber ladder overlay; shaped anvil/horn, tongs/hammer, tang-bearing blade blanks, pleated bellows and barrel. Separate operational pieces from anchored decoration; exact proxy/interaction dimensions remain controlled in code.",
+    "asset_workflow": "ASSET_WORKFLOW.md",
+    "reuse": "Search suitable project and owned ForgeGUI assets first; adapt precise modules with Blender; generate only missing sculptural components."
   },
   {
     "id": "B04",
     "name": "Bells and vessels",
     "agent": "C03",
-    "brief": "Reuse Foundry_Bell and HanCauldron. Derive a cracked horizontal bell from the same construction, add a crown/clapper/suspension frame. Do not commission duplicate simple bells/censers before examining the asset library."
+    "brief": "Reuse Foundry_Bell and HanCauldron. Derive a cracked horizontal bell from the same construction, add a crown/clapper/suspension frame. Do not commission duplicate simple bells/censers before examining the asset library.",
+    "asset_workflow": "ASSET_WORKFLOW.md",
+    "reuse": "Search suitable project and owned ForgeGUI assets first; adapt precise modules with Blender; generate only missing sculptural components."
   },
   {
     "id": "B05",
     "name": "Forged chain and restraint kit",
     "agent": "C01",
-    "brief": "One open link, alternating-orientation linked static curves, broken link, socket/anchor plate and post joint. Blender curve-instanced/baked geometry is suitable; no physics chain or per-link update loop. Anchor positions come from authored geometry."
+    "brief": "One open link, alternating-orientation linked static curves, broken link, socket/anchor plate and post joint. Blender curve-instanced/baked geometry is suitable; no physics chain or per-link update loop. Anchor positions come from authored geometry.",
+    "asset_workflow": "ASSET_WORKFLOW.md",
+    "reuse": "Search suitable project and owned ForgeGUI assets first; adapt precise modules with Blender; generate only missing sculptural components."
   },
   {
     "id": "B06",
     "name": "Foliage, garden and water kit",
     "agent": "C05",
-    "brief": "Two notched lotus leaves, one closed/open flower, sparse stems, silver-reed/grass clumps and wet-bank transitions. Agents make meshes/cards and code restrained water/ripple/mist/lighting. Do not send entire water surfaces, fog, skies or particle fields to Rodin."
+    "brief": "Two notched lotus leaves, one closed/open flower, sparse stems, silver-reed/grass clumps and wet-bank transitions. Agents make meshes/cards and code restrained water/ripple/mist/lighting. Do not send entire water surfaces, fog, skies or particle fields to Rodin.",
+    "asset_workflow": "ASSET_WORKFLOW.md",
+    "reuse": "Search suitable project and owned ForgeGUI assets first; adapt precise modules with Blender; generate only missing sculptural components."
   },
   {
     "id": "B07",
     "name": "Monument and citadel construction",
     "agent": "C05",
-    "brief": "Split cenotaph shaft, basalt terraces, broken aqueduct/arcade, giant modular pier, coped parapet, radial seating fronts, bridge/roof terminations. These are exact geometric construction: an agent with Blender can create them. Hero organic H05 is optional on top, not required for a compelling silhouette."
+    "brief": "Split cenotaph shaft, basalt terraces, broken aqueduct/arcade, giant modular pier, coped parapet, radial seating fronts, bridge/roof terminations. These are exact geometric construction: an agent with Blender can create them. Hero organic H05 is optional on top, not required for a compelling silhouette.",
+    "asset_workflow": "ASSET_WORKFLOW.md",
+    "reuse": "Search suitable project and owned ForgeGUI assets first; adapt precise modules with Blender; generate only missing sculptural components."
   },
   {
     "id": "B08",
     "name": "Ritual floor and survey materials",
     "agent": "C05",
-    "brief": "Non-glowing readable inlaid stone rings, damaged star chart panels and low ritual stations outside movement lanes. Use UV/material/normal detail and separate authored emissive effects when required. Avoid bright decals that resemble danger telegraphs."
+    "brief": "Non-glowing readable inlaid stone rings, damaged star chart panels and low ritual stations outside movement lanes. Use UV/material/normal detail and separate authored emissive effects when required. Avoid bright decals that resemble danger telegraphs.",
+    "asset_workflow": "ASSET_WORKFLOW.md",
+    "reuse": "Search suitable project and owned ForgeGUI assets first; adapt precise modules with Blender; generate only missing sculptural components."
   },
   {
     "id": "B09",
     "name": "Grounding and damage kit",
     "agent": "C03",
-    "brief": "A few fractured rubble meshes, fractured tile clusters, coarse ash/snow bank profiles, wet edges, sediment/root seams and material blends. Seeded placement must be surface-aware, varied by scale/rotation within believable constraints, and clear of navigation/interaction volumes."
+    "brief": "A few fractured rubble meshes, fractured tile clusters, coarse ash/snow bank profiles, wet edges, sediment/root seams and material blends. Seeded placement must be surface-aware, varied by scale/rotation within believable constraints, and clear of navigation/interaction volumes.",
+    "asset_workflow": "ASSET_WORKFLOW.md",
+    "reuse": "Search suitable project and owned ForgeGUI assets first; adapt precise modules with Blender; generate only missing sculptural components."
   },
   {
     "id": "B10",
     "name": "Small narrative props",
     "agent": "C03",
-    "brief": "Reuse existing weapons/shields where possible; add spearheads, shield rims/grips, broken statue fragments, carved grave-marker profiles, candles with wick/wax. Low-cost static props; prioritize silhouettes visible at walking distance over dense microscopic ornament."
+    "brief": "Reuse existing weapons/shields where possible; add spearheads, shield rims/grips, broken statue fragments, carved grave-marker profiles, candles with wick/wax. Low-cost static props; prioritize silhouettes visible at walking distance over dense microscopic ornament.",
+    "asset_workflow": "ASSET_WORKFLOW.md",
+    "reuse": "Search suitable project and owned ForgeGUI assets first; adapt precise modules with Blender; generate only missing sculptural components."
   }
 ]

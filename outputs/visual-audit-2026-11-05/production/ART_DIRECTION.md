@@ -1,6 +1,6 @@
 # Art direction from the creator’s references
 
-Updated 6 November 2026. The nine supplied images are the creative brief. They are reference screenshots, not precise dimension surveys or reusable game geometry. Build original spaces with comparable depth, gravity and staging; the plan is not a reconstruction of a particular existing game location.
+Updated 7 November 2026. Read [ASSET_WORKFLOW.md](ASSET_WORKFLOW.md) for ForgeGUI reuse/generation and Blender production. The nine supplied images are the creative brief. They are reference screenshots, not precise dimension surveys or reusable game geometry. Build original spaces with comparable depth, gravity and staging; the plan is not a reconstruction of a particular existing game location.
 
 The strongest shared qualities are a long readable approach, an enormous landmark, a small player silhouette against it, restrained materials, a clear combat floor, and several layers of distance. A larger flat rectangle surrounded by evenly spaced props will still feel like a test arena. So will a highly detailed miniature courtyard with no view beyond its walls.
 
@@ -54,7 +54,7 @@ Foliage motion should communicate wind in a few clear layers. Do not attach an u
 
 ## Tool choice and budgets
 
-Agents can make accurate repetitive geometry—arches, domes, seats, coffers, open-link chains, frames, trim and floor patterns—with Blender construction scripts. Human-led image selection and Rodin are more useful for hero organic sculpture, convincing faces/hands/cloth, throne carving and tomb reliefs. The human then provides a chosen design and export; the agent still handles production cleanup, rig fitting, import, mapping, placement and verification.
+Inspect project/supplied assets and search the connected ForgeGUI account library, public catalog and past jobs before creating any component. Reuse suitable existing models and match their scale, materials and damage to the scene. Use ForgeGUI for genuinely missing decorative/sculptural assets. Blender handles precise repetitive construction—arches, domes, seats, frames, chains and openings—and production cleanup, retopology, baking, UVs and rig fitting. All nine approved H-sources already exist; preserve their designs and derive game versions instead of regenerating them. The creator judges concrete in-game visual comparisons. This division preserves coherent architecture while benefiting from stronger sculptural assets.
 
 Build reusable modules, share mesh/material asset IDs and keep distant geometry coarse. Roblox documents instancing of matching meshes/material characteristics in its [performance guidance](https://create.roblox.com/docs/performance-optimization/improve). This makes modular reuse a sound strategy; it does not certify this project’s actual frame time. Measure foreground traversal and fighting on comparable workloads.
 

@@ -1,6 +1,6 @@
 # Six larger arenas — design and implementation prompts
 
-Updated 6 November 2026. Existing boss model creation is complete per the creator. This plan changes environments and, after measurement, spatial encounter data. No arena change has been implemented by this document.
+Updated 7 November 2026. Follow [ASSET_WORKFLOW.md](ASSET_WORKFLOW.md) for ForgeGUI reuse/generation and Blender construction. Existing boss model creation is complete per the creator. This plan changes environments and, after measurement, spatial encounter data. No arena change has been implemented by this document.
 
 ## Scope and scale
 
@@ -128,9 +128,9 @@ A wind-scoured summit of an ancient ruined city, with a vast dark slate landing 
 |---|---|
 | Final taste / choose between rendered concepts | Creator, after the agent supplies a concrete visual comparison. |
 | Larger precise playable floor, gates, routes, bounds, terrain, navigation, scripted fog/lighting, distant skyline, water illusion | Claude/ChatGPT using source + Studio and Blender where available. |
-| Repeated architectural modules, seating, domes, arcades, pillars, coping, split geometric monument | Agent via Blender and existing kits; these do not need Rodin. |
-| Detailed organic root buttress / carved idol / throne / tomb relief | Creator-led approved image → Rodin; agent cleans/imports/assembles. |
-| Whole arena as one Rodin object | Do not use this workflow: it sacrifices editable layout, sensible collision, reuse and asset-level control. |
+| Repeated architectural modules, seating, domes, arcades, pillars, coping, split geometric monument | Reuse suitable project/ForgeGUI components; Blender builds/adapts exact modular construction. |
+| Detailed organic root buttress / carved idol / throne / tomb relief | Approved H-assets already exist: locate/reuse, then optimize/fit in Blender. ForgeGUI supplies genuinely missing in-scope components after library search. |
+| Whole arena as one generated object | Do not use this workflow: it sacrifices editable layout, sensible collision, reuse and asset-level control. |
 | Final normal-input fight feel, silhouette/taste and machine performance acceptance | Recorded checks on the actual target devices, with creator play judgment for feel. |
 
 ## Integration/performance boundary
