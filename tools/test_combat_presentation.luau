@@ -81,7 +81,9 @@ for id, boss in World.Bosses do
 	check(id .. " braziers alone leave dark floor (worst " .. string.format("%.2f", legacy) .. ")", legacy > 1 and dark ~= nil)
 	local worst = Plan.worstReach(boss.Arena, fills, Plan.Fill.Range, 2)
 	check(id .. " fill lights cover the whole floor (worst " .. string.format("%.2f", worst) .. ")", worst <= Plan.Reach)
-	check(id .. " fill light budget", #fills <= 9 and Plan.Fill.Range <= 60)
+	-- Nine fills per 180x180 floor; enlarged arenas (AR01+) scale the budget with floor area.
+	local budget = math.max(9, math.ceil(9 * boss.Arena.Size.X * boss.Arena.Size.Z / (180 * 180)))
+	check(id .. " fill light budget (" .. #fills .. " of " .. budget .. ")", #fills <= budget and Plan.Fill.Range <= 60)
 end
 
 -- 3. Audio lifetime under Roblox-like locking: re-entering a destruction in progress throws.

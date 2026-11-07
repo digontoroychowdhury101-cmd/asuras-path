@@ -1,0 +1,134 @@
+<roblox version="4"><Item class="Folder" referent="37"><Properties><string name="Name">AsuraCovenantKit</string></Properties>
+<Item class="Model" referent="1"><Properties><string name="Name">Covenant_ArcadeBay</string><OptionalCoordinateFrame name="WorldPivotData"><CFrame><X>0</X><Y>0</Y><Z>0</Z><R00>1</R00><R01>0</R01><R02>0</R02><R10>0</R10><R11>1</R11><R12>0</R12><R20>0</R20><R21>0</R21><R22>1</R22></CFrame></OptionalCoordinateFrame></Properties>
+<Item class="MeshPart" referent="2"><Properties><string name="Name">Covenant_ArcadeBay__Covenant</string>
+<bool name="Anchored">true</bool><bool name="CanCollide">false</bool><bool name="CanQuery">false</bool><bool name="CanTouch">false</bool>
+<CoordinateFrame name="CFrame"><X>-0.0</X><Y>11.0</Y><Z>0.0</Z><R00>1</R00><R01>0</R01><R02>0</R02><R10>0</R10><R11>1</R11><R12>0</R12><R20>0</R20><R21>0</R21><R22>1</R22></CoordinateFrame>
+<Vector3 name="InitialSize"><X>20.3</X><Y>22</Y><Z>5.5</Z></Vector3><Vector3 name="size"><X>20.3</X><Y>22</Y><Z>5.5</Z></Vector3>
+<Content name="MeshContent"><uri>rbxassetid://105267473000975</uri></Content>
+<token name="CollisionFidelity">2</token><token name="RenderFidelity">1</token>
+</Properties>
+<Item class="SurfaceAppearance" referent="3"><Properties><string name="Name">SurfaceAppearance</string><token name="AlphaMode">0</token>
+<Content name="ColorMapContent"><uri>rbxassetid://87576876066364</uri></Content><Content name="NormalMapContent"><uri>rbxassetid://71330867614168</uri></Content><Content name="RoughnessMapContent"><uri>rbxassetid://98036895052151</uri></Content><Content name="MetalnessMapContent"><uri>rbxassetid://129739110848538</uri></Content>
+</Properties></Item></Item></Item>
+<Item class="Model" referent="4"><Properties><string name="Name">Covenant_ArcadeBay_Broken</string><OptionalCoordinateFrame name="WorldPivotData"><CFrame><X>0</X><Y>0</Y><Z>0</Z><R00>1</R00><R01>0</R01><R02>0</R02><R10>0</R10><R11>1</R11><R12>0</R12><R20>0</R20><R21>0</R21><R22>1</R22></CFrame></OptionalCoordinateFrame></Properties>
+<Item class="MeshPart" referent="5"><Properties><string name="Name">Covenant_ArcadeBay_Broken__Covenant</string>
+<bool name="Anchored">true</bool><bool name="CanCollide">false</bool><bool name="CanQuery">false</bool><bool name="CanTouch">false</bool>
+<CoordinateFrame name="CFrame"><X>-0.0</X><Y>10.655</Y><Z>-2.4005</Z><R00>1</R00><R01>0</R01><R02>0</R02><R10>0</R10><R11>1</R11><R12>0</R12><R20>0</R20><R21>0</R21><R22>1</R22></CoordinateFrame>
+<Vector3 name="InitialSize"><X>20.3</X><Y>21.7305</Y><Z>10.1012</Z></Vector3><Vector3 name="size"><X>20.3</X><Y>21.7305</Y><Z>10.1012</Z></Vector3>
+<Content name="MeshContent"><uri>rbxassetid://115162900136657</uri></Content>
+<token name="CollisionFidelity">2</token><token name="RenderFidelity">1</token>
+</Properties>
+<Item class="SurfaceAppearance" referent="6"><Properties><string name="Name">SurfaceAppearance</string><token name="AlphaMode">0</token>
+<Content name="ColorMapContent"><uri>rbxassetid://89146143251133</uri></Content><Content name="NormalMapContent"><uri>rbxassetid://120638890272754</uri></Content><Content name="RoughnessMapContent"><uri>rbxassetid://96249904961157</uri></Content><Content name="MetalnessMapContent"><uri>rbxassetid://129919717203171</uri></Content>
+</Properties></Item></Item></Item>
+<Item class="Model" referent="7"><Properties><string name="Name">Covenant_AshBank</string><OptionalCoordinateFrame name="WorldPivotData"><CFrame><X>0</X><Y>0</Y><Z>0</Z><R00>1</R00><R01>0</R01><R02>0</R02><R10>0</R10><R11>1</R11><R12>0</R12><R20>0</R20><R21>0</R21><R22>1</R22></CFrame></OptionalCoordinateFrame></Properties>
+<Item class="MeshPart" referent="8"><Properties><string name="Name">Covenant_AshBank__Covenant</string>
+<bool name="Anchored">true</bool><bool name="CanCollide">false</bool><bool name="CanQuery">false</bool><bool name="CanTouch">false</bool>
+<CoordinateFrame name="CFrame"><X>0.118</X><Y>1.2455</Y><Z>-0.029</Z><R00>1</R00><R01>0</R01><R02>0</R02><R10>0</R10><R11>1</R11><R12>0</R12><R20>0</R20><R21>0</R21><R22>1</R22></CoordinateFrame>
+<Vector3 name="InitialSize"><X>27.9595</X><Y>3.3828</Y><Z>10.2985</Z></Vector3><Vector3 name="size"><X>27.9595</X><Y>3.3828</Y><Z>10.2985</Z></Vector3>
+<Content name="MeshContent"><uri>rbxassetid://91721185152754</uri></Content>
+<token name="CollisionFidelity">2</token><token name="RenderFidelity">1</token>
+</Properties>
+<Item class="SurfaceAppearance" referent="9"><Properties><string name="Name">SurfaceAppearance</string><token name="AlphaMode">0</token>
+<Content name="ColorMapContent"><uri>rbxassetid://83364309943754</uri></Content><Content name="NormalMapContent"><uri>rbxassetid://82606238993560</uri></Content><Content name="RoughnessMapContent"><uri>rbxassetid://85611352123902</uri></Content><Content name="MetalnessMapContent"><uri>rbxassetid://88609349563614</uri></Content>
+</Properties></Item></Item></Item>
+<Item class="Model" referent="10"><Properties><string name="Name">Covenant_Cenotaph</string><OptionalCoordinateFrame name="WorldPivotData"><CFrame><X>0</X><Y>0</Y><Z>0</Z><R00>1</R00><R01>0</R01><R02>0</R02><R10>0</R10><R11>1</R11><R12>0</R12><R20>0</R20><R21>0</R21><R22>1</R22></CFrame></OptionalCoordinateFrame></Properties>
+<Item class="MeshPart" referent="11"><Properties><string name="Name">Covenant_Cenotaph__Covenant</string>
+<bool name="Anchored">true</bool><bool name="CanCollide">false</bool><bool name="CanQuery">false</bool><bool name="CanTouch">false</bool>
+<CoordinateFrame name="CFrame"><X>-0.0</X><Y>81.537</Y><Z>0.0</Z><R00>1</R00><R01>0</R01><R02>0</R02><R10>0</R10><R11>1</R11><R12>0</R12><R20>0</R20><R21>0</R21><R22>1</R22></CoordinateFrame>
+<Vector3 name="InitialSize"><X>70.0</X><Y>163.0739</Y><Z>46.0</Z></Vector3><Vector3 name="size"><X>70.0</X><Y>163.0739</Y><Z>46.0</Z></Vector3>
+<Content name="MeshContent"><uri>rbxassetid://115559044377357</uri></Content>
+<token name="CollisionFidelity">2</token><token name="RenderFidelity">1</token>
+</Properties>
+<Item class="SurfaceAppearance" referent="12"><Properties><string name="Name">SurfaceAppearance</string><token name="AlphaMode">0</token>
+<Content name="ColorMapContent"><uri>rbxassetid://132241818333612</uri></Content><Content name="NormalMapContent"><uri>rbxassetid://122246500597862</uri></Content><Content name="RoughnessMapContent"><uri>rbxassetid://130159519943749</uri></Content><Content name="MetalnessMapContent"><uri>rbxassetid://75422677340392</uri></Content>
+</Properties></Item></Item></Item>
+<Item class="Model" referent="13"><Properties><string name="Name">Covenant_ChampionGate</string><OptionalCoordinateFrame name="WorldPivotData"><CFrame><X>0</X><Y>0</Y><Z>0</Z><R00>1</R00><R01>0</R01><R02>0</R02><R10>0</R10><R11>1</R11><R12>0</R12><R20>0</R20><R21>0</R21><R22>1</R22></CFrame></OptionalCoordinateFrame></Properties>
+<Item class="MeshPart" referent="14"><Properties><string name="Name">Covenant_ChampionGate__Covenant</string>
+<bool name="Anchored">true</bool><bool name="CanCollide">false</bool><bool name="CanQuery">false</bool><bool name="CanTouch">false</bool>
+<CoordinateFrame name="CFrame"><X>-0.0</X><Y>14.0</Y><Z>-2.375</Z><R00>1</R00><R01>0</R01><R02>0</R02><R10>0</R10><R11>1</R11><R12>0</R12><R20>0</R20><R21>0</R21><R22>1</R22></CoordinateFrame>
+<Vector3 name="InitialSize"><X>45.3</X><Y>28</Y><Z>13.25</Z></Vector3><Vector3 name="size"><X>45.3</X><Y>28</Y><Z>13.25</Z></Vector3>
+<Content name="MeshContent"><uri>rbxassetid://113684397734108</uri></Content>
+<token name="CollisionFidelity">2</token><token name="RenderFidelity">1</token>
+</Properties>
+<Item class="SurfaceAppearance" referent="15"><Properties><string name="Name">SurfaceAppearance</string><token name="AlphaMode">0</token>
+<Content name="ColorMapContent"><uri>rbxassetid://110168512620121</uri></Content><Content name="NormalMapContent"><uri>rbxassetid://131895235036532</uri></Content><Content name="RoughnessMapContent"><uri>rbxassetid://125989500900507</uri></Content><Content name="MetalnessMapContent"><uri>rbxassetid://108621740180765</uri></Content>
+</Properties></Item></Item></Item>
+<Item class="Model" referent="16"><Properties><string name="Name">Covenant_FacadeBay</string><OptionalCoordinateFrame name="WorldPivotData"><CFrame><X>0</X><Y>0</Y><Z>0</Z><R00>1</R00><R01>0</R01><R02>0</R02><R10>0</R10><R11>1</R11><R12>0</R12><R20>0</R20><R21>0</R21><R22>1</R22></CFrame></OptionalCoordinateFrame></Properties>
+<Item class="MeshPart" referent="17"><Properties><string name="Name">Covenant_FacadeBay__Covenant</string>
+<bool name="Anchored">true</bool><bool name="CanCollide">false</bool><bool name="CanQuery">false</bool><bool name="CanTouch">false</bool>
+<CoordinateFrame name="CFrame"><X>-0.0</X><Y>11.3605</Y><Z>0.0</Z><R00>1</R00><R01>0</R01><R02>0</R02><R10>0</R10><R11>1</R11><R12>0</R12><R20>0</R20><R21>0</R21><R22>1</R22></CoordinateFrame>
+<Vector3 name="InitialSize"><X>21.135</X><Y>22.7214</Y><Z>3.6</Z></Vector3><Vector3 name="size"><X>21.135</X><Y>22.7214</Y><Z>3.6</Z></Vector3>
+<Content name="MeshContent"><uri>rbxassetid://103138867397848</uri></Content>
+<token name="CollisionFidelity">2</token><token name="RenderFidelity">1</token>
+</Properties>
+<Item class="SurfaceAppearance" referent="18"><Properties><string name="Name">SurfaceAppearance</string><token name="AlphaMode">0</token>
+<Content name="ColorMapContent"><uri>rbxassetid://137957229303848</uri></Content><Content name="NormalMapContent"><uri>rbxassetid://89808839184592</uri></Content><Content name="RoughnessMapContent"><uri>rbxassetid://119803534927861</uri></Content><Content name="MetalnessMapContent"><uri>rbxassetid://88598145806619</uri></Content>
+</Properties></Item></Item></Item>
+<Item class="Model" referent="19"><Properties><string name="Name">Covenant_ReedClump</string><OptionalCoordinateFrame name="WorldPivotData"><CFrame><X>0</X><Y>0</Y><Z>0</Z><R00>1</R00><R01>0</R01><R02>0</R02><R10>0</R10><R11>1</R11><R12>0</R12><R20>0</R20><R21>0</R21><R22>1</R22></CFrame></OptionalCoordinateFrame></Properties>
+<Item class="MeshPart" referent="20"><Properties><string name="Name">Covenant_ReedClump__Covenant</string>
+<bool name="Anchored">true</bool><bool name="CanCollide">false</bool><bool name="CanQuery">false</bool><bool name="CanTouch">false</bool>
+<CoordinateFrame name="CFrame"><X>-0.1685</X><Y>2.526</Y><Z>0.381</Z><R00>1</R00><R01>0</R01><R02>0</R02><R10>0</R10><R11>1</R11><R12>0</R12><R20>0</R20><R21>0</R21><R22>1</R22></CoordinateFrame>
+<Vector3 name="InitialSize"><X>6.2592</X><Y>5.4522</Y><Z>6.2025</Z></Vector3><Vector3 name="size"><X>6.2592</X><Y>5.4522</Y><Z>6.2025</Z></Vector3>
+<Content name="MeshContent"><uri>rbxassetid://78667898458355</uri></Content>
+<token name="CollisionFidelity">2</token><token name="RenderFidelity">1</token>
+</Properties>
+<Item class="SurfaceAppearance" referent="21"><Properties><string name="Name">SurfaceAppearance</string><token name="AlphaMode">0</token>
+<Content name="ColorMapContent"><uri>rbxassetid://101659176597408</uri></Content><Content name="NormalMapContent"><uri>rbxassetid://89103142625827</uri></Content><Content name="RoughnessMapContent"><uri>rbxassetid://93857980243837</uri></Content><Content name="MetalnessMapContent"><uri>rbxassetid://79178861898007</uri></Content>
+</Properties></Item></Item></Item>
+<Item class="Model" referent="22"><Properties><string name="Name">Covenant_SeatFront_A</string><OptionalCoordinateFrame name="WorldPivotData"><CFrame><X>0</X><Y>0</Y><Z>0</Z><R00>1</R00><R01>0</R01><R02>0</R02><R10>0</R10><R11>1</R11><R12>0</R12><R20>0</R20><R21>0</R21><R22>1</R22></CFrame></OptionalCoordinateFrame></Properties>
+<Item class="MeshPart" referent="23"><Properties><string name="Name">Covenant_SeatFront_A__Covenant</string>
+<bool name="Anchored">true</bool><bool name="CanCollide">false</bool><bool name="CanQuery">false</bool><bool name="CanTouch">false</bool>
+<CoordinateFrame name="CFrame"><X>0.3185</X><Y>10.459</Y><Z>-0.107</Z><R00>1</R00><R01>0</R01><R02>0</R02><R10>0</R10><R11>1</R11><R12>0</R12><R20>0</R20><R21>0</R21><R22>1</R22></CoordinateFrame>
+<Vector3 name="InitialSize"><X>20.6575</X><Y>20.9184</Y><Z>40.5259</Z></Vector3><Vector3 name="size"><X>20.6575</X><Y>20.9184</Y><Z>40.5259</Z></Vector3>
+<Content name="MeshContent"><uri>rbxassetid://116707838952098</uri></Content>
+<token name="CollisionFidelity">2</token><token name="RenderFidelity">1</token>
+</Properties>
+<Item class="SurfaceAppearance" referent="24"><Properties><string name="Name">SurfaceAppearance</string><token name="AlphaMode">0</token>
+<Content name="ColorMapContent"><uri>rbxassetid://97425617841577</uri></Content><Content name="NormalMapContent"><uri>rbxassetid://131547375569769</uri></Content><Content name="RoughnessMapContent"><uri>rbxassetid://75697665889496</uri></Content><Content name="MetalnessMapContent"><uri>rbxassetid://131446377442000</uri></Content>
+</Properties></Item></Item></Item>
+<Item class="Model" referent="25"><Properties><string name="Name">Covenant_SeatFront_B</string><OptionalCoordinateFrame name="WorldPivotData"><CFrame><X>0</X><Y>0</Y><Z>0</Z><R00>1</R00><R01>0</R01><R02>0</R02><R10>0</R10><R11>1</R11><R12>0</R12><R20>0</R20><R21>0</R21><R22>1</R22></CFrame></OptionalCoordinateFrame></Properties>
+<Item class="MeshPart" referent="26"><Properties><string name="Name">Covenant_SeatFront_B__Covenant</string>
+<bool name="Anchored">true</bool><bool name="CanCollide">false</bool><bool name="CanQuery">false</bool><bool name="CanTouch">false</bool>
+<CoordinateFrame name="CFrame"><X>-0.0</X><Y>11.115</Y><Z>-0.1115</Z><R00>1</R00><R01>0</R01><R02>0</R02><R10>0</R10><R11>1</R11><R12>0</R12><R20>0</R20><R21>0</R21><R22>1</R22></CoordinateFrame>
+<Vector3 name="InitialSize"><X>20.02</X><Y>22.2303</Y><Z>40.517</Z></Vector3><Vector3 name="size"><X>20.02</X><Y>22.2303</Y><Z>40.517</Z></Vector3>
+<Content name="MeshContent"><uri>rbxassetid://131931041314278</uri></Content>
+<token name="CollisionFidelity">2</token><token name="RenderFidelity">1</token>
+</Properties>
+<Item class="SurfaceAppearance" referent="27"><Properties><string name="Name">SurfaceAppearance</string><token name="AlphaMode">0</token>
+<Content name="ColorMapContent"><uri>rbxassetid://82199623405214</uri></Content><Content name="NormalMapContent"><uri>rbxassetid://124786674409278</uri></Content><Content name="RoughnessMapContent"><uri>rbxassetid://95685184158642</uri></Content><Content name="MetalnessMapContent"><uri>rbxassetid://100443835664895</uri></Content>
+</Properties></Item></Item></Item>
+<Item class="Model" referent="28"><Properties><string name="Name">Covenant_VictorGate</string><OptionalCoordinateFrame name="WorldPivotData"><CFrame><X>0</X><Y>0</Y><Z>0</Z><R00>1</R00><R01>0</R01><R02>0</R02><R10>0</R10><R11>1</R11><R12>0</R12><R20>0</R20><R21>0</R21><R22>1</R22></CFrame></OptionalCoordinateFrame></Properties>
+<Item class="MeshPart" referent="29"><Properties><string name="Name">Covenant_VictorGate__Covenant</string>
+<bool name="Anchored">true</bool><bool name="CanCollide">false</bool><bool name="CanQuery">false</bool><bool name="CanTouch">false</bool>
+<CoordinateFrame name="CFrame"><X>-0.0</X><Y>11.475</Y><Z>0.0</Z><R00>1</R00><R01>0</R01><R02>0</R02><R10>0</R10><R11>1</R11><R12>0</R12><R20>0</R20><R21>0</R21><R22>1</R22></CoordinateFrame>
+<Vector3 name="InitialSize"><X>39.3</X><Y>22.95</Y><Z>6.5</Z></Vector3><Vector3 name="size"><X>39.3</X><Y>22.95</Y><Z>6.5</Z></Vector3>
+<Content name="MeshContent"><uri>rbxassetid://104471404361158</uri></Content>
+<token name="CollisionFidelity">2</token><token name="RenderFidelity">1</token>
+</Properties>
+<Item class="SurfaceAppearance" referent="30"><Properties><string name="Name">SurfaceAppearance</string><token name="AlphaMode">0</token>
+<Content name="ColorMapContent"><uri>rbxassetid://97753609614072</uri></Content><Content name="NormalMapContent"><uri>rbxassetid://114200944637728</uri></Content><Content name="RoughnessMapContent"><uri>rbxassetid://105216383690618</uri></Content><Content name="MetalnessMapContent"><uri>rbxassetid://79498193525750</uri></Content>
+</Properties></Item></Item></Item>
+<Item class="Model" referent="31"><Properties><string name="Name">Covenant_VotiveFigure</string><OptionalCoordinateFrame name="WorldPivotData"><CFrame><X>0</X><Y>0</Y><Z>0</Z><R00>1</R00><R01>0</R01><R02>0</R02><R10>0</R10><R11>1</R11><R12>0</R12><R20>0</R20><R21>0</R21><R22>1</R22></CFrame></OptionalCoordinateFrame></Properties>
+<Item class="MeshPart" referent="32"><Properties><string name="Name">Covenant_VotiveFigure__Covenant</string>
+<bool name="Anchored">true</bool><bool name="CanCollide">false</bool><bool name="CanQuery">false</bool><bool name="CanTouch">false</bool>
+<CoordinateFrame name="CFrame"><X>-0.0</X><Y>2.083</Y><Z>-0.3715</Z><R00>1</R00><R01>0</R01><R02>0</R02><R10>0</R10><R11>1</R11><R12>0</R12><R20>0</R20><R21>0</R21><R22>1</R22></CoordinateFrame>
+<Vector3 name="InitialSize"><X>2.8</X><Y>4.4658</Y><Z>3.4568</Z></Vector3><Vector3 name="size"><X>2.8</X><Y>4.4658</Y><Z>3.4568</Z></Vector3>
+<Content name="MeshContent"><uri>rbxassetid://136321852225249</uri></Content>
+<token name="CollisionFidelity">2</token><token name="RenderFidelity">1</token>
+</Properties>
+<Item class="SurfaceAppearance" referent="33"><Properties><string name="Name">SurfaceAppearance</string><token name="AlphaMode">0</token>
+<Content name="ColorMapContent"><uri>rbxassetid://86582033697685</uri></Content><Content name="NormalMapContent"><uri>rbxassetid://122893200469444</uri></Content><Content name="RoughnessMapContent"><uri>rbxassetid://132727770258564</uri></Content><Content name="MetalnessMapContent"><uri>rbxassetid://73932161062208</uri></Content>
+</Properties></Item></Item></Item>
+<Item class="Model" referent="34"><Properties><string name="Name">Covenant_WeaponFragments</string><OptionalCoordinateFrame name="WorldPivotData"><CFrame><X>0</X><Y>0</Y><Z>0</Z><R00>1</R00><R01>0</R01><R02>0</R02><R10>0</R10><R11>1</R11><R12>0</R12><R20>0</R20><R21>0</R21><R22>1</R22></CFrame></OptionalCoordinateFrame></Properties>
+<Item class="MeshPart" referent="35"><Properties><string name="Name">Covenant_WeaponFragments__Covenant</string>
+<bool name="Anchored">true</bool><bool name="CanCollide">false</bool><bool name="CanQuery">false</bool><bool name="CanTouch">false</bool>
+<CoordinateFrame name="CFrame"><X>1.0355</X><Y>2.6245</Y><Z>0.028</Z><R00>1</R00><R01>0</R01><R02>0</R02><R10>0</R10><R11>1</R11><R12>0</R12><R20>0</R20><R21>0</R21><R22>1</R22></CoordinateFrame>
+<Vector3 name="InitialSize"><X>7.0099</X><Y>6.5329</Y><Z>6.1763</Z></Vector3><Vector3 name="size"><X>7.0099</X><Y>6.5329</Y><Z>6.1763</Z></Vector3>
+<Content name="MeshContent"><uri>rbxassetid://89259255510718</uri></Content>
+<token name="CollisionFidelity">2</token><token name="RenderFidelity">1</token>
+</Properties>
+<Item class="SurfaceAppearance" referent="36"><Properties><string name="Name">SurfaceAppearance</string><token name="AlphaMode">0</token>
+<Content name="ColorMapContent"><uri>rbxassetid://136130421522127</uri></Content><Content name="NormalMapContent"><uri>rbxassetid://110727693458186</uri></Content><Content name="RoughnessMapContent"><uri>rbxassetid://119416329498006</uri></Content><Content name="MetalnessMapContent"><uri>rbxassetid://107394429583532</uri></Content>
+</Properties></Item></Item></Item>
+</Item></roblox>

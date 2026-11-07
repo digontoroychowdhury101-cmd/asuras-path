@@ -634,5 +634,64 @@ for _, door in Campaign.Doors do
 	check("door " .. door.Name .. " stands on reached ground", reached)
 end
 
+-------------------------------------------------------------------------------------------------
+-- AR01 The Ashen Covenant: the enlarged Shen bowl keeps every dependent coordinate in agreement.
+-------------------------------------------------------------------------------------------------
+do
+	local shen = World.Bosses.GrandmasterShen
+	local gate = World.FogGates[shen.FogGate]
+	local c, s = shen.Arena.Center, shen.Arena.Size
+	local north, south = c.Z + s.Z / 2, c.Z - s.Z / 2
+	local function inBox(x, z, inset) return math.abs(x - c.X) <= s.X / 2 - (inset or 0) and math.abs(z - c.Z) <= s.Z / 2 - (inset or 0) end
+	local ash = byRegion.AshColosseum
+	check("AR01 core is materially larger than the 120x130 baseline (>= x2.5 area)", s.X * s.Z >= 2.5 * 120 * 130)
+	check("AR01 fog gate sits on the arena's north face", math.abs(gate.Placement.Z - (north + 2)) < 0.01 and gate.Placement.X == c.X)
+	check("AR01 gate inside point is in the arena and outside point is not", inBox(gate.Inside.X, gate.Inside.Z) and not inBox(gate.Outside.X, gate.Outside.Z))
+	check("AR01 gate outside point is north of the gate and walked from the road", gate.Outside.Z > gate.Placement.Z and walk.has(gate.Outside.X, 0, gate.Outside.Z))
+	local tc, ts = gate.Trigger.Center, gate.Trigger.Size
+	check("AR01 gate trigger lies inside the arena box", inBox(tc.X - ts.X / 2, tc.Z + ts.Z / 2) and inBox(tc.X + ts.X / 2, tc.Z - ts.Z / 2))
+	local gap = math.sqrt((shen.Spawn.X - gate.Inside.X) ^ 2 + (shen.Spawn.Z - gate.Inside.Z) ^ 2)
+	check(string.format("AR01 Shen starts an exchange from the gate (%.0f studs, 30..60, under half the floor)", gap), gap >= 30 and gap <= 60 and gap < s.Z / 2)
+	check("AR01 Shen spawn is inside BossMotion's 12-stud clamp", inBox(shen.Spawn.X, shen.Spawn.Z, 12))
+	for _, id in { "AC_Swordsman_Gate_A", "AC_Swordsman_Gate_B" } do
+		local p = World.spawnById(id).Placement
+		check("AR01 hall foe " .. id .. " stays 30+ studs north of the arena", p.Z - north >= 30)
+	end
+	for _, id in { "AC_HallN", "AC_HallS", "AC_Court", "AC_CourtWalk", "AC_Ante" } do
+		local z = Campaign.get(id)
+		check("AR01 arena box stays out of zone " .. id, z.Z1 >= north or z.X1 < c.X - s.X / 2 or z.X0 > c.X + s.X / 2)
+	end
+	local arenaZone = Campaign.get("AC_Arena")
+	check("AR01 arena box lies inside its AC_Arena zone", arenaZone.X0 <= c.X - s.X / 2 and arenaZone.X1 >= c.X + s.X / 2 and arenaZone.Z0 >= north and arenaZone.Z1 <= south)
+	local bounds = World.Regions.AshColosseum.Bounds
+	check("AR01 arena box lies inside the Ash region", World.contains(bounds, c.X - s.X / 2, 3, north) and World.contains(bounds, c.X + s.X / 2, 3, south))
+	check("AR01 arena box never reaches the Pagoda's cloud stair", south > ash.Marks.SouthJoin.Z)
+	local victor = ash.Marks.VictorGate
+	check("AR01 Victor's gate stands beyond the south edge, outside the box", victor.Z < south and not inBox(victor.X, victor.Z))
+	check("AR01 Victor's gate is walked from the fog gate and on to the cloud stair",
+		walk.has(victor.X, victor.Y, victor.Z) and cw:reach(victor.X, victor.Y, victor.Z, "Walk").has(ash.Marks.SouthJoin.X, ash.Marks.SouthJoin.Y, ash.Marks.SouthJoin.Z))
+	-- The side cavea keeps the full 16-stud follow boom clear (the generic test above checks 12).
+	local blocked = 0
+	for _, side in { -1, 1 } do
+		for z = south + 4, north - 4, 6 do
+			for _, d in { 0, 2, 4, 6, 8, 10, 12, 14, 15.5 } do
+				for _, h in { 1.5, 4.4, 8.4, 12 } do
+					local hit = cw:solidAt(c.X + side * (s.X / 2 + d), h, z)
+					if hit and hit.Kind ~= "Veil" and hit.Name ~= "Podium" then blocked += 1 end
+				end
+			end
+		end
+	end
+	check(string.format("AR01 side cavea leaves a 16-stud camera retreat band (%d blocked samples)", blocked), blocked == 0)
+	local reachable = 0
+	for x = c.X - s.X / 2 + 2, c.X + s.X / 2 - 2, 8 do
+		for z = south + 2, north - 2, 8 do
+			if walk.has(x, 0, z) then reachable += 1 end
+		end
+	end
+	local samples = math.floor((s.X - 4) / 8 + 1) * math.floor((s.Z - 4) / 8 + 1)
+	check(string.format("AR01 the whole floor is walked from the gate (%d of %d samples)", reachable, samples), reachable == samples)
+end
+
 print(string.format("campaign regions: %d passed, %d failed", passed, failed))
 if failed > 0 then error("campaign region regression failed") end

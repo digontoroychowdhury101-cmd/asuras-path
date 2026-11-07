@@ -1,0 +1,1070 @@
+{
+ "playerKO": false,
+ "notes": [
+  "gate +1.5s: fight=true boss=true pstate=Recovery respawning=false p=(0.0,3.4,-1910.0)",
+  "centre +1.5s: fight=true boss=true pstate=Idle respawning=false p=(0.0,3.4,-1990.0)",
+  "SW +1.5s: fight=true boss=true pstate=Idle respawning=false p=(-114.0,3.4,-2079.0)",
+  "SE +1.5s: fight=true boss=true pstate=Idle respawning=false p=(114.0,3.4,-2079.0)",
+  "NE +1.5s: fight=true boss=true pstate=Idle respawning=false p=(114.0,3.4,-1901.0)",
+  "NW +1.5s: fight=true boss=true pstate=Idle respawning=false p=(-114.0,3.4,-1901.0)"
+ ],
+ "bossAfterExit": true,
+ "stops": [
+  {
+   "stop": "gate",
+   "closestApproach": 3.2
+  },
+  {
+   "stop": "centre",
+   "closestApproach": 3.3
+  },
+  {
+   "stop": "SW",
+   "closestApproach": 8.7
+  },
+  {
+   "stop": "SE",
+   "closestApproach": 8.7
+  },
+  {
+   "stop": "NE",
+   "closestApproach": 8.1
+  },
+  {
+   "stop": "NW",
+   "closestApproach": 8.6
+  }
+ ],
+ "outsideClamp": 228,
+ "samples": 662,
+ "fightAfterExit": true,
+ "currentStop": "exit",
+ "phaseAfter": 2,
+ "worstClamp": 1.7880859375,
+ "landings": [
+  {
+   "at": "phase2",
+   "x": -3,
+   "inside": true,
+   "z": -1988
+  }
+ ],
+ "telegraphs": [
+  {
+   "at": "gate",
+   "phase": 1,
+   "move": "PrayerBeads",
+   "dist": 46.2
+  },
+  {
+   "at": "gate",
+   "phase": 1,
+   "move": "Pursuit",
+   "dist": 44.1
+  },
+  {
+   "at": "gate",
+   "phase": 1,
+   "move": "Guandao_L1",
+   "dist": 4.3
+  },
+  {
+   "at": "gate",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 4.3
+  },
+  {
+   "at": "gate",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 4.3
+  },
+  {
+   "at": "gate",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 4.3
+  },
+  {
+   "at": "gate",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 4.3
+  },
+  {
+   "at": "gate",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 4.3
+  },
+  {
+   "at": "gate",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 4.3
+  },
+  {
+   "at": "gate",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 4.3
+  },
+  {
+   "at": "gate",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 4.3
+  },
+  {
+   "at": "gate",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 4.3
+  },
+  {
+   "at": "gate",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 4.3
+  },
+  {
+   "at": "gate",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 4.3
+  },
+  {
+   "at": "gate",
+   "phase": 1,
+   "move": "HesitantMoon",
+   "dist": 4.2
+  },
+  {
+   "at": "gate",
+   "phase": 1,
+   "move": "Guandao_L1",
+   "dist": 3.3
+  },
+  {
+   "at": "gate",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 3.3
+  },
+  {
+   "at": "gate",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 3.3
+  },
+  {
+   "at": "gate",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 3.3
+  },
+  {
+   "at": "gate",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 3.3
+  },
+  {
+   "at": "gate",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 3.3
+  },
+  {
+   "at": "gate",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 3.3
+  },
+  {
+   "at": "gate",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 3.3
+  },
+  {
+   "at": "centre",
+   "phase": 1,
+   "move": "Pursuit",
+   "dist": 59.4
+  },
+  {
+   "at": "centre",
+   "phase": 1,
+   "move": "Guandao_Art",
+   "dist": 3.3
+  },
+  {
+   "at": "centre",
+   "phase": 1,
+   "move": "AbbotSweep",
+   "dist": 3.3
+  },
+  {
+   "at": "centre",
+   "phase": 1,
+   "move": "Guandao_Heavy",
+   "dist": 4.1
+  },
+  {
+   "at": "centre",
+   "phase": 1,
+   "move": "Guandao_L1",
+   "dist": 4.1
+  },
+  {
+   "at": "centre",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 4.1
+  },
+  {
+   "at": "centre",
+   "phase": 1,
+   "move": "HesitantMoon",
+   "dist": 4
+  },
+  {
+   "at": "centre",
+   "phase": 1,
+   "move": "Guandao_L1",
+   "dist": 3.3
+  },
+  {
+   "at": "centre",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 3.3
+  },
+  {
+   "at": "centre",
+   "phase": 1,
+   "move": "Guandao_L1",
+   "dist": 3.3
+  },
+  {
+   "at": "centre",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 3.3
+  },
+  {
+   "at": "centre",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 3.3
+  },
+  {
+   "at": "centre",
+   "phase": 1,
+   "move": "FlowingJian",
+   "dist": 3.3
+  },
+  {
+   "at": "centre",
+   "phase": 1,
+   "move": "AbbotSweep",
+   "dist": 3.7
+  },
+  {
+   "at": "centre",
+   "phase": 1,
+   "move": "Guandao_L1",
+   "dist": 3.7
+  },
+  {
+   "at": "centre",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 3.7
+  },
+  {
+   "at": "centre",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 3.7
+  },
+  {
+   "at": "centre",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 3.7
+  },
+  {
+   "at": "centre",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 3.7
+  },
+  {
+   "at": "centre",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 3.7
+  },
+  {
+   "at": "centre",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 3.7
+  },
+  {
+   "at": "centre",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 3.7
+  },
+  {
+   "at": "centre",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 3.7
+  },
+  {
+   "at": "centre",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 3.7
+  },
+  {
+   "at": "centre",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 3.7
+  },
+  {
+   "at": "SW",
+   "phase": 1,
+   "move": "PrayerBeads",
+   "dist": 146.3
+  },
+  {
+   "at": "SW",
+   "phase": 1,
+   "move": "Pursuit",
+   "dist": 132.9
+  },
+  {
+   "at": "SW",
+   "phase": 1,
+   "move": "Guandao_L1",
+   "dist": 9
+  },
+  {
+   "at": "SW",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 9
+  },
+  {
+   "at": "SW",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 9
+  },
+  {
+   "at": "SW",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 9
+  },
+  {
+   "at": "SW",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 9
+  },
+  {
+   "at": "SW",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 9
+  },
+  {
+   "at": "SW",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 9
+  },
+  {
+   "at": "SW",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 9
+  },
+  {
+   "at": "SW",
+   "phase": 1,
+   "move": "FlowingJian",
+   "dist": 9.6
+  },
+  {
+   "at": "SW",
+   "phase": 1,
+   "move": "AbbotSweep",
+   "dist": 11.5
+  },
+  {
+   "at": "SW",
+   "phase": 1,
+   "move": "Guandao_L1",
+   "dist": 8.8
+  },
+  {
+   "at": "SW",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 8.8
+  },
+  {
+   "at": "SW",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 8.8
+  },
+  {
+   "at": "SW",
+   "phase": 1,
+   "move": "WheelOfHeaven",
+   "dist": 8.8
+  },
+  {
+   "at": "SW",
+   "phase": 1,
+   "move": "Guandao_L1",
+   "dist": 8.8
+  },
+  {
+   "at": "SW",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 8.8
+  },
+  {
+   "at": "SW",
+   "phase": 1,
+   "move": "Guandao_Art",
+   "dist": 8.7
+  },
+  {
+   "at": "SW",
+   "phase": 1,
+   "move": "AbbotSweep",
+   "dist": 8.7
+  },
+  {
+   "at": "SE",
+   "phase": 1,
+   "move": "Pursuit",
+   "dist": 150.8
+  },
+  {
+   "at": "SE",
+   "phase": 1,
+   "move": "Guandao_L1",
+   "dist": 8.9
+  },
+  {
+   "at": "SE",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 8.9
+  },
+  {
+   "at": "SE",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 8.9
+  },
+  {
+   "at": "SE",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 8.9
+  },
+  {
+   "at": "SE",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 8.9
+  },
+  {
+   "at": "SE",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 8.9
+  },
+  {
+   "at": "SE",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 8.9
+  },
+  {
+   "at": "SE",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 8.9
+  },
+  {
+   "at": "SE",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 8.9
+  },
+  {
+   "at": "SE",
+   "phase": 1,
+   "move": "HesitantMoon",
+   "dist": 9.1
+  },
+  {
+   "at": "SE",
+   "phase": 1,
+   "move": "Guandao_L1",
+   "dist": 8.7
+  },
+  {
+   "at": "SE",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 8.7
+  },
+  {
+   "at": "SE",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 8.7
+  },
+  {
+   "at": "SE",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 8.7
+  },
+  {
+   "at": "SE",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 8.7
+  },
+  {
+   "at": "SE",
+   "phase": 1,
+   "move": "FlowingJian",
+   "dist": 8.7
+  },
+  {
+   "at": "SE",
+   "phase": 1,
+   "move": "Guandao_L1",
+   "dist": 9
+  },
+  {
+   "at": "SE",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 9
+  },
+  {
+   "at": "SE",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 9
+  },
+  {
+   "at": "SE",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 9
+  },
+  {
+   "at": "SE",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 9
+  },
+  {
+   "at": "SE",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 9
+  },
+  {
+   "at": "SE",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 9
+  },
+  {
+   "at": "NE",
+   "phase": 1,
+   "move": "Pursuit",
+   "dist": 149.2
+  },
+  {
+   "at": "NE",
+   "phase": 1,
+   "move": "Guandao_L1",
+   "dist": 9.7
+  },
+  {
+   "at": "NE",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 9.7
+  },
+  {
+   "at": "NE",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 9.7
+  },
+  {
+   "at": "NE",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 9.7
+  },
+  {
+   "at": "NE",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 9.7
+  },
+  {
+   "at": "NE",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 9.7
+  },
+  {
+   "at": "NE",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 9.7
+  },
+  {
+   "at": "NE",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 9.7
+  },
+  {
+   "at": "NE",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 9.7
+  },
+  {
+   "at": "NE",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 9.7
+  },
+  {
+   "at": "NE",
+   "phase": 1,
+   "move": "PrayerBeads",
+   "dist": 9.7
+  },
+  {
+   "at": "NE",
+   "phase": 1,
+   "move": "Guandao_Heavy",
+   "dist": 9.7
+  },
+  {
+   "at": "NE",
+   "phase": 1,
+   "move": "HesitantMoon",
+   "dist": 9.8
+  },
+  {
+   "at": "NE",
+   "phase": 1,
+   "move": "Guandao_L1",
+   "dist": 8.1
+  },
+  {
+   "at": "NE",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 8.1
+  },
+  {
+   "at": "NE",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 8.1
+  },
+  {
+   "at": "NE",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 8.1
+  },
+  {
+   "at": "NE",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 8.1
+  },
+  {
+   "at": "NE",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 8.1
+  },
+  {
+   "at": "NE",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 8.1
+  },
+  {
+   "at": "NE",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 8.1
+  },
+  {
+   "at": "NE",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 8.1
+  },
+  {
+   "at": "NE",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 8.1
+  },
+  {
+   "at": "NW",
+   "phase": 1,
+   "move": "Pursuit",
+   "dist": 172.3
+  },
+  {
+   "at": "NW",
+   "phase": 1,
+   "move": "Guandao_L1",
+   "dist": 8.6
+  },
+  {
+   "at": "NW",
+   "phase": 1,
+   "move": "AbbotSweep",
+   "dist": 8.6
+  },
+  {
+   "at": "NW",
+   "phase": 1,
+   "move": "Guandao_L1",
+   "dist": 8.6
+  },
+  {
+   "at": "NW",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 8.6
+  },
+  {
+   "at": "NW",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 8.6
+  },
+  {
+   "at": "NW",
+   "phase": 1,
+   "move": "PrayerBeads",
+   "dist": 8.6
+  },
+  {
+   "at": "NW",
+   "phase": 1,
+   "move": "WheelOfHeaven",
+   "dist": 8.6
+  },
+  {
+   "at": "NW",
+   "phase": 1,
+   "move": "Guandao_Art",
+   "dist": 8.6
+  },
+  {
+   "at": "NW",
+   "phase": 1,
+   "move": "Guandao_L1",
+   "dist": 8.6
+  },
+  {
+   "at": "NW",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 8.6
+  },
+  {
+   "at": "NW",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 8.6
+  },
+  {
+   "at": "NW",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 8.6
+  },
+  {
+   "at": "NW",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 8.6
+  },
+  {
+   "at": "NW",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 8.6
+  },
+  {
+   "at": "NW",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 8.6
+  },
+  {
+   "at": "NW",
+   "phase": 1,
+   "move": "Guandao_L2",
+   "dist": 8.6
+  },
+  {
+   "at": "NW",
+   "phase": 1,
+   "move": "PrayerBeads",
+   "dist": 8.6
+  },
+  {
+   "at": "phase2",
+   "phase": 1,
+   "move": "Shockwave",
+   "dist": 136
+  },
+  {
+   "at": "phase2",
+   "phase": 2,
+   "move": "RendingArc",
+   "dist": 136
+  },
+  {
+   "at": "phase2",
+   "phase": 2,
+   "move": "Pursuit",
+   "dist": 120.5
+  },
+  {
+   "at": "phase2",
+   "phase": 2,
+   "move": "Guandao_Art",
+   "dist": 3.3
+  },
+  {
+   "at": "phase2",
+   "phase": 2,
+   "move": "PhantomDrift",
+   "dist": 3.3
+  },
+  {
+   "at": "phase2",
+   "phase": 2,
+   "move": "Guandao_Heavy",
+   "dist": 3.3
+  },
+  {
+   "at": "phase2",
+   "phase": 2,
+   "move": "Guandao_Heavy",
+   "dist": 3.3
+  },
+  {
+   "at": "phase2",
+   "phase": 2,
+   "move": "BloodWave",
+   "dist": 3.3
+  },
+  {
+   "at": "phase2",
+   "phase": 2,
+   "move": "GuandaoSkyfall",
+   "dist": 3.3
+  },
+  {
+   "at": "phase2",
+   "phase": 2,
+   "move": "Guandao_L1",
+   "dist": 3.3
+  },
+  {
+   "at": "phase2",
+   "phase": 2,
+   "move": "Guandao_L2",
+   "dist": 3.3
+  },
+  {
+   "at": "phase2",
+   "phase": 2,
+   "move": "Guandao_L2",
+   "dist": 3.3
+  },
+  {
+   "at": "phase2",
+   "phase": 2,
+   "move": "Guandao_L2",
+   "dist": 3.3
+  },
+  {
+   "at": "phase2",
+   "phase": 2,
+   "move": "Guandao_L1",
+   "dist": 3.3
+  },
+  {
+   "at": "phase2",
+   "phase": 2,
+   "move": "Guandao_L2",
+   "dist": 3.3
+  },
+  {
+   "at": "phase2",
+   "phase": 2,
+   "move": "Guandao_L2",
+   "dist": 3.3
+  },
+  {
+   "at": "phase2",
+   "phase": 2,
+   "move": "CrimsonEmbrace",
+   "dist": 3.3
+  },
+  {
+   "at": "phase2",
+   "phase": 2,
+   "move": "Guandao_L1",
+   "dist": 3.2
+  },
+  {
+   "at": "phase2",
+   "phase": 2,
+   "move": "Guandao_Art",
+   "dist": 3.3
+  },
+  {
+   "at": "phase2",
+   "phase": 2,
+   "move": "Guandao_L1",
+   "dist": 3.3
+  },
+  {
+   "at": "phase2",
+   "phase": 2,
+   "move": "Guandao_L2",
+   "dist": 3.3
+  },
+  {
+   "at": "phase2",
+   "phase": 2,
+   "move": "Guandao_L2",
+   "dist": 3.3
+  },
+  {
+   "at": "phase2",
+   "phase": 2,
+   "move": "Guandao_L2",
+   "dist": 3.3
+  },
+  {
+   "at": "phase2",
+   "phase": 2,
+   "move": "Guandao_L2",
+   "dist": 3.3
+  },
+  {
+   "at": "phase2",
+   "phase": 2,
+   "move": "Guandao_L2",
+   "dist": 3.3
+  },
+  {
+   "at": "phase2",
+   "phase": 2,
+   "move": "Guandao_L2",
+   "dist": 3.3
+  },
+  {
+   "at": "phase2",
+   "phase": 2,
+   "move": "Guandao_L2",
+   "dist": 3.3
+  },
+  {
+   "at": "phase2",
+   "phase": 2,
+   "move": "Guandao_L2",
+   "dist": 3.3
+  },
+  {
+   "at": "phase2",
+   "phase": 2,
+   "move": "Guandao_L2",
+   "dist": 3.3
+  },
+  {
+   "at": "phase2",
+   "phase": 2,
+   "move": "RendingArc",
+   "dist": 3.3
+  },
+  {
+   "at": "phase2",
+   "phase": 2,
+   "move": "Guandao_L1",
+   "dist": 3.3
+  },
+  {
+   "at": "phase2",
+   "phase": 2,
+   "move": "Guandao_L2",
+   "dist": 3.3
+  },
+  {
+   "at": "phase2",
+   "phase": 2,
+   "move": "Guandao_L2",
+   "dist": 3.3
+  },
+  {
+   "at": "phase2",
+   "phase": 2,
+   "move": "Guandao_L2",
+   "dist": 3.3
+  }
+ ],
+ "fightStarted": true,
+ "spawnGap": 45,
+ "bossPresent": true,
+ "spawn": [
+  -1.0216956525255227e-07,
+  4.661744117736816,
+  -1955
+ ]
+}

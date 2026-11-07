@@ -266,7 +266,9 @@ World.Regions = {
 	AshColosseum = {
 		Id = "AshColosseum",
 		Name = "Ash Colosseum",
-		Bounds = { Center = v(0, 40, -1900), Size = v(360, 200, 440) },
+		-- AR01 (2026-11-07): 480 wide so the enlarged bowl's cavea and outer ash banks stay inside it; the
+		-- valley-wall terrain (CampaignTerrain.backdrop) starts 8 beyond these bounds.
+		Bounds = { Center = v(0, 40, -1900), Size = v(480, 200, 440) },
 		MapFolder = "Map_AshColosseum",
 		Greybox = { Color = { 58, 54, 52 }, Material = "Basalt" },
 		Ambience = "EmberCrowd",
@@ -529,8 +531,11 @@ World.Bosses = {
 		Name = "Grandmaster Shen",
 		Title = "Grandmaster Shen, the Fallen Abbot",
 		Region = "AshColosseum",
-		Arena = { Center = v(0, 20, -1960), Size = v(120, 60, 130) },
-		Spawn = at(0, 3, -1995, 180),
+		-- AR01 The Ashen Covenant (2026-11-07): 240x190 (was 120x130), north face unchanged at z -1895 so the
+		-- fog gate, hall pockets and facade stay put; south face -2085 (Victor's gate, cloud stair at -2120).
+		-- Shen starts 45 studs from the gate's inside point, an exchange rather than half the floor away.
+		Arena = { Center = v(0, 20, -1990), Size = v(240, 60, 190) },
+		Spawn = at(0, 3, -1955, 180),
 		FogGate = "Gate_AshColosseum",
 		Essence = 4000,
 		BodyColor = { 210, 196, 168 },

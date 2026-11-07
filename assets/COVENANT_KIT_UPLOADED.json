@@ -1,0 +1,264 @@
+{
+  "library": "AsuraCovenantKit",
+  "source": "tools/blender/covenant_kit.py",
+  "batch": "AR01 The Ashen Covenant (2026-11-07)",
+  "export": "assets/build/covenant_kit_v1 (not in git; rebuild with tools/blender/covenant_kit.py -- bake)",
+  "importPlace": "77104076321648 (private, via Open Cloud from Studio; uploaded 2026-11-07)",
+  "axes": "Roblox import maps Blender (x, y, z) to (-x, z, y): Blender -Y faces Roblox -Z (LookVector) at yaw 0",
+  "credit": "Original project geometry and procedural materials",
+  "physics": "Decorative. Anchored with collision, query and touch off; colliders live in AshColosseumLayout.",
+  "pieces": {
+    "Covenant_ArcadeBay": {
+      "asset": 88106428456884,
+      "mesh": 105267473000975,
+      "size": [
+        20.3,
+        22,
+        5.5
+      ],
+      "centre": [
+        -0.0,
+        11.0,
+        0.0
+      ],
+      "color": 87576876066364,
+      "normal": 71330867614168,
+      "roughness": 98036895052151,
+      "metalness": 129739110848538,
+      "triangles": 2684,
+      "maps": 2048,
+      "glbSha256": "cb52c59809b2c838a48dec4fdf3c0b4924e04dde0b49c6a936177fc568c3f2d3"
+    },
+    "Covenant_ArcadeBay_Broken": {
+      "asset": 85829465066257,
+      "mesh": 115162900136657,
+      "size": [
+        20.3,
+        21.7305,
+        10.1012
+      ],
+      "centre": [
+        -0.0,
+        10.655,
+        -2.4005
+      ],
+      "color": 89146143251133,
+      "normal": 120638890272754,
+      "roughness": 96249904961157,
+      "metalness": 129919717203171,
+      "triangles": 1752,
+      "maps": 2048,
+      "glbSha256": "b80d2d9f7cbc665a447d08e921cee5f3eeb1a0ecbac3ac8cb4226e3d6a372d4e"
+    },
+    "Covenant_AshBank": {
+      "asset": 138876785177671,
+      "mesh": 91721185152754,
+      "size": [
+        27.9595,
+        3.3828,
+        10.2985
+      ],
+      "centre": [
+        0.118,
+        1.2455,
+        -0.029
+      ],
+      "color": 83364309943754,
+      "normal": 82606238993560,
+      "roughness": 85611352123902,
+      "metalness": 88609349563614,
+      "triangles": 1560,
+      "maps": 2048,
+      "glbSha256": "7110b1b4fd6f3ee21b36db36838873f67e2abe4ed4a5c455d0aa78a35dfab7b3"
+    },
+    "Covenant_Cenotaph": {
+      "asset": 95508061474257,
+      "mesh": 115559044377357,
+      "size": [
+        70.0,
+        163.0739,
+        46.0
+      ],
+      "centre": [
+        -0.0,
+        81.537,
+        0.0
+      ],
+      "color": 132241818333612,
+      "normal": 122246500597862,
+      "roughness": 130159519943749,
+      "metalness": 75422677340392,
+      "triangles": 1232,
+      "maps": 2048,
+      "glbSha256": "b13b2760b5001fd660ecd5d8cde9ebb7b772709b8c195c9245dab7d128798d1c"
+    },
+    "Covenant_ChampionGate": {
+      "asset": 130356713913686,
+      "mesh": 113684397734108,
+      "size": [
+        45.3,
+        28,
+        13.25
+      ],
+      "centre": [
+        -0.0,
+        14.0,
+        -2.375
+      ],
+      "color": 110168512620121,
+      "normal": 131895235036532,
+      "roughness": 125989500900507,
+      "metalness": 108621740180765,
+      "triangles": 1672,
+      "maps": 2048,
+      "glbSha256": "04cbd3b5fff155eff31b17dbeeedaf6448d9cedf86fe747412d5b7646f03e4ec"
+    },
+    "Covenant_FacadeBay": {
+      "asset": 103356960112132,
+      "mesh": 103138867397848,
+      "size": [
+        21.135,
+        22.7214,
+        3.6
+      ],
+      "centre": [
+        -0.0,
+        11.3605,
+        0.0
+      ],
+      "color": 137957229303848,
+      "normal": 89808839184592,
+      "roughness": 119803534927861,
+      "metalness": 88598145806619,
+      "triangles": 3180,
+      "maps": 2048,
+      "glbSha256": "5f1b9a4b83bc086522a9b23b5e1394a3e2cd6d742d3466c42d6a2a13b95b7005"
+    },
+    "Covenant_ReedClump": {
+      "asset": 86541043254423,
+      "mesh": 78667898458355,
+      "size": [
+        6.2592,
+        5.4522,
+        6.2025
+      ],
+      "centre": [
+        -0.1685,
+        2.526,
+        0.381
+      ],
+      "color": 101659176597408,
+      "normal": 89103142625827,
+      "roughness": 93857980243837,
+      "metalness": 79178861898007,
+      "triangles": 1718,
+      "maps": 1024,
+      "glbSha256": "d1369dafa28b68ca9ff94370d98e4dcf3d9b243f44267ef42b0659c4eccc5175"
+    },
+    "Covenant_SeatFront_A": {
+      "asset": 101403914785044,
+      "mesh": 116707838952098,
+      "size": [
+        20.6575,
+        20.9184,
+        40.5259
+      ],
+      "centre": [
+        0.3185,
+        10.459,
+        -0.107
+      ],
+      "color": 97425617841577,
+      "normal": 131547375569769,
+      "roughness": 75697665889496,
+      "metalness": 131446377442000,
+      "triangles": 5840,
+      "maps": 2048,
+      "glbSha256": "b701b1b7901029aa047d3635317320b1de275ec8dd0406ecd2dd875c0ed7188c"
+    },
+    "Covenant_SeatFront_B": {
+      "asset": 89742566011953,
+      "mesh": 131931041314278,
+      "size": [
+        20.02,
+        22.2303,
+        40.517
+      ],
+      "centre": [
+        -0.0,
+        11.115,
+        -0.1115
+      ],
+      "color": 82199623405214,
+      "normal": 124786674409278,
+      "roughness": 95685184158642,
+      "metalness": 100443835664895,
+      "triangles": 7448,
+      "maps": 2048,
+      "glbSha256": "3386f2042b9b436901576cff7fdb3ca4ce3eed06d95f86c2c810eb12d286b551"
+    },
+    "Covenant_VictorGate": {
+      "asset": 110572597384950,
+      "mesh": 104471404361158,
+      "size": [
+        39.3,
+        22.95,
+        6.5
+      ],
+      "centre": [
+        -0.0,
+        11.475,
+        0.0
+      ],
+      "color": 97753609614072,
+      "normal": 114200944637728,
+      "roughness": 105216383690618,
+      "metalness": 79498193525750,
+      "triangles": 1276,
+      "maps": 2048,
+      "glbSha256": "f3206376857ad485b857f2319452f8ed4722ec20dc582c8e2e808b220da53bf7"
+    },
+    "Covenant_VotiveFigure": {
+      "asset": 107903016551630,
+      "mesh": 136321852225249,
+      "size": [
+        2.8,
+        4.4658,
+        3.4568
+      ],
+      "centre": [
+        -0.0,
+        2.083,
+        -0.3715
+      ],
+      "color": 86582033697685,
+      "normal": 122893200469444,
+      "roughness": 132727770258564,
+      "metalness": 73932161062208,
+      "triangles": 1380,
+      "maps": 1024,
+      "glbSha256": "d4af5c2bacc10530dd061a1ec709bb958fa70bf7286dc326b7c0e9f9caaa296c"
+    },
+    "Covenant_WeaponFragments": {
+      "asset": 75702717220326,
+      "mesh": 89259255510718,
+      "size": [
+        7.0099,
+        6.5329,
+        6.1763
+      ],
+      "centre": [
+        1.0355,
+        2.6245,
+        0.028
+      ],
+      "color": 136130421522127,
+      "normal": 110727693458186,
+      "roughness": 119416329498006,
+      "metalness": 107394429583532,
+      "triangles": 1834,
+      "maps": 1024,
+      "glbSha256": "2f5acc696b8666003785adbbaf5bdd9c1fe011531ec3f1b91b3882e41f475f39"
+    }
+  }
+}

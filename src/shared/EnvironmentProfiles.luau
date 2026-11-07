@@ -35,7 +35,9 @@ Profiles.BambooPass.CB_ColorCorrection.TintColor = rgb(255, 246, 231)
 Profiles.BambooPass.CB_ColorCorrection.Contrast = 0.08
 -- Night stays night (ashen sky), but walking it needs crypt-level fill: at 27/47 fill, -0.3 exposure and
 -- 3.8 haze the road, court and arena walls read near-black at character height (Studio F17).
-Profiles.AshColosseum = profile(0.15, rgb(52, 45, 50), rgb(88, 76, 80), rgb(217, 191, 184), rgb(84, 74, 80), 0.42, 2.8, -0.12, 0, -0.4)
+-- AR01 The Ashen Covenant (2026-11-07): the same night and fill levels, graded cold grey (no mauve/orange
+-- cast): ember warmth is left to the braziers.
+Profiles.AshColosseum = profile(0.15, rgb(49, 50, 56), rgb(84, 86, 94), rgb(202, 206, 216), rgb(78, 80, 88), 0.42, 2.8, -0.12, 0, -0.4)
 -- The Sunken Crypt (batch 19) reads by pale, cool fill and its lanterns instead of near-black mist.
 Profiles.SanctuaryDepths = profile(0, rgb(48, 56, 64), rgb(74, 86, 94), rgb(186, 214, 224), rgb(72, 94, 102), 0.4, 2.6, -0.12, 0, -0.28)
 Profiles.CelestialPagoda = profile(17.5, rgb(46, 34, 39), rgb(81, 61, 65), rgb(245, 208, 190), rgb(153, 111, 108), 0.4, 2.4, -0.08, 0.08, -0.22)
@@ -68,7 +70,7 @@ local combat: { [string]: any } = {
 	Sanctuary = profile(17.4, rgb(100, 104, 119), rgb(143, 150, 166), rgb(255, 225, 190), rgb(250, 215, 185), 0.32, 2, 0.02, 0.12, 0.05),
 	DesecratedMonastery = profile(14.5, rgb(66, 72, 82), rgb(112, 118, 128), rgb(218, 226, 238), rgb(150, 160, 172), 0.3, 1.8, -0.05, 0.02, -0.3),
 	BambooPass = profile(15.5, rgb(62, 76, 70), rgb(110, 126, 114), rgb(226, 238, 226), rgb(166, 186, 170), 0.28, 1.6, -0.02, 0.05, -0.15),
-	AshColosseum = profile(0.15, rgb(80, 70, 72), rgb(122, 108, 108), rgb(232, 206, 198), rgb(92, 80, 84), 0.3, 1.8, 0, 0, -0.3),
+	AshColosseum = profile(0.15, rgb(74, 75, 81), rgb(114, 117, 125), rgb(216, 220, 230), rgb(88, 90, 98), 0.3, 1.8, 0, 0, -0.3), -- AR01 cold grade
 	SanctuaryDepths = profile(0, rgb(66, 80, 90), rgb(100, 118, 128), rgb(196, 222, 230), rgb(64, 88, 96), 0.32, 2, -0.02, 0, -0.22),
 	CelestialPagoda = profile(17.3, rgb(76, 62, 66), rgb(124, 104, 106), rgb(248, 220, 204), rgb(166, 128, 124), 0.3, 1.8, 0, 0.06, -0.12),
 	SkyCitadel = profile(17.8, rgb(62, 70, 92), rgb(110, 120, 150), rgb(222, 228, 252), rgb(136, 150, 190), 0.28, 1.8, -0.02, 0.05, -0.15),
@@ -79,7 +81,7 @@ local arenas: { [string]: { Fill: Color3, Brazier: Color3 } } = {
 	Sanctuary = { Fill = rgb(255, 236, 214), Brazier = rgb(255, 170, 96) },
 	DesecratedMonastery = { Fill = rgb(214, 224, 240), Brazier = rgb(255, 161, 84) },
 	BambooPass = { Fill = rgb(226, 240, 222), Brazier = rgb(255, 176, 104) },
-	AshColosseum = { Fill = rgb(246, 226, 210), Brazier = rgb(255, 150, 76) },
+	AshColosseum = { Fill = rgb(216, 224, 234), Brazier = rgb(255, 150, 76) }, -- AR01: cold fill, ember braziers
 	SanctuaryDepths = { Fill = rgb(206, 230, 240), Brazier = rgb(255, 168, 110) },
 	CelestialPagoda = { Fill = rgb(255, 232, 214), Brazier = rgb(255, 160, 96) },
 	SkyCitadel = { Fill = rgb(220, 228, 255), Brazier = rgb(255, 172, 112) },

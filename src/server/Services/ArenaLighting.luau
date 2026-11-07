@@ -22,8 +22,9 @@ function Lighting.Build(): Folder
 	for _, boss in World.Bosses do
 		for i, at in Plan.braziers(boss.Arena) do
 			Pbr.place(folder,"AsuraFirePit",CFrame.new(at),5,"Longest")
+			-- AR01: Ash braziers are small ember accents on a cold floor, not orange pools.
 			local light=Instance.new("PointLight")
-			light.Color,light.Range,light.Brightness,light.Shadows=Profiles.arena(boss.Region).Brazier,Plan.Brazier.Range,Plan.Brazier.Brightness*(if boss.Region=="BambooPass" then 0.65 else 1),i<=2
+			light.Color,light.Range,light.Brightness,light.Shadows=Profiles.arena(boss.Region).Brazier,Plan.Brazier.Range,Plan.Brazier.Brightness*(if boss.Region=="BambooPass" then 0.65 elseif boss.Region=="AshColosseum" then 0.4 else 1),i<=2
 			light.Parent=anchor(folder,"ArenaBrazierLight",at+Vector3.yAxis*Plan.Brazier.Height);CollectionService:AddTag(light,"AsuraArenaLight")
 		end
 		for _, at in Plan.fills(boss.Arena) do

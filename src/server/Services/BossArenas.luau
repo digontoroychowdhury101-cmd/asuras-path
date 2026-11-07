@@ -57,6 +57,9 @@ function Arenas.build(root: Instance)
 		if boss.Region == "BambooPass" then
 			floor.MaterialVariant, floor.Color = "AsuraPaving", Color3.fromRGB(177, 179, 169)
 			Ground.exposeFloor(floor)
+		elseif boss.Region == "AshColosseum" then
+			-- AR01 The Ashen Covenant: an ash-pale, calm duel floor, paler than the grey ash banks around it.
+			floor.Material, floor.MaterialVariant, floor.Color = Enum.Material.Ground, "AsuraGravel", Color3.fromRGB(160, 158, 155)
 		end
 		part(folder, boss.Id .. "Approach", Vector3.new(30, 4, 40), center + Vector3.new(0, -2, s.Z / 2 + 20), Color3.fromRGB(61, 56, 48))
 		local boundary: { Part } = {}

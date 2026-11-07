@@ -1,0 +1,278 @@
+{
+  "Covenant_SeatFront_A": {
+    "file": "Covenant_SeatFront_A.glb",
+    "sha256": "b701b1b7901029aa047d3635317320b1de275ec8dd0406ecd2dd875c0ed7188c",
+    "bytes": 9253612,
+    "triangles": 5840,
+    "dimensions": [
+      20.657,
+      40.526,
+      20.918
+    ],
+    "maps": 2048,
+    "uvSets": 1,
+    "boundsMin": [
+      -10.647,
+      -20.37,
+      0.0
+    ],
+    "boundsMax": [
+      10.01,
+      20.156,
+      20.918
+    ]
+  },
+  "Covenant_SeatFront_B": {
+    "file": "Covenant_SeatFront_B.glb",
+    "sha256": "3386f2042b9b436901576cff7fdb3ca4ce3eed06d95f86c2c810eb12d286b551",
+    "bytes": 9495896,
+    "triangles": 7448,
+    "dimensions": [
+      20.02,
+      40.517,
+      22.23
+    ],
+    "maps": 2048,
+    "uvSets": 1,
+    "boundsMin": [
+      -10.01,
+      -20.37,
+      0.0
+    ],
+    "boundsMax": [
+      10.01,
+      20.147,
+      22.23
+    ]
+  },
+  "Covenant_ArcadeBay": {
+    "file": "Covenant_ArcadeBay.glb",
+    "sha256": "cb52c59809b2c838a48dec4fdf3c0b4924e04dde0b49c6a936177fc568c3f2d3",
+    "bytes": 12717548,
+    "triangles": 2684,
+    "dimensions": [
+      20.3,
+      5.5,
+      22.0
+    ],
+    "maps": 2048,
+    "uvSets": 1,
+    "boundsMin": [
+      -10.15,
+      -2.75,
+      0.0
+    ],
+    "boundsMax": [
+      10.15,
+      2.75,
+      22.0
+    ]
+  },
+  "Covenant_ArcadeBay_Broken": {
+    "file": "Covenant_ArcadeBay_Broken.glb",
+    "sha256": "b80d2d9f7cbc665a447d08e921cee5f3eeb1a0ecbac3ac8cb4226e3d6a372d4e",
+    "bytes": 11295364,
+    "triangles": 1752,
+    "dimensions": [
+      20.3,
+      10.101,
+      21.731
+    ],
+    "maps": 2048,
+    "uvSets": 1,
+    "boundsMin": [
+      -10.15,
+      -7.451,
+      -0.21
+    ],
+    "boundsMax": [
+      10.15,
+      2.65,
+      21.52
+    ]
+  },
+  "Covenant_FacadeBay": {
+    "file": "Covenant_FacadeBay.glb",
+    "sha256": "5f1b9a4b83bc086522a9b23b5e1394a3e2cd6d742d3466c42d6a2a13b95b7005",
+    "bytes": 12653704,
+    "triangles": 3180,
+    "dimensions": [
+      21.135,
+      3.6,
+      22.721
+    ],
+    "maps": 2048,
+    "uvSets": 1,
+    "boundsMin": [
+      -10.568,
+      -1.8,
+      0.0
+    ],
+    "boundsMax": [
+      10.568,
+      1.8,
+      22.721
+    ]
+  },
+  "Covenant_VictorGate": {
+    "file": "Covenant_VictorGate.glb",
+    "sha256": "f3206376857ad485b857f2319452f8ed4722ec20dc582c8e2e808b220da53bf7",
+    "bytes": 11253932,
+    "triangles": 1276,
+    "dimensions": [
+      39.3,
+      6.5,
+      22.95
+    ],
+    "maps": 2048,
+    "uvSets": 1,
+    "boundsMin": [
+      -19.65,
+      -3.25,
+      0.0
+    ],
+    "boundsMax": [
+      19.65,
+      3.25,
+      22.95
+    ]
+  },
+  "Covenant_ChampionGate": {
+    "file": "Covenant_ChampionGate.glb",
+    "sha256": "04cbd3b5fff155eff31b17dbeeedaf6448d9cedf86fe747412d5b7646f03e4ec",
+    "bytes": 11428076,
+    "triangles": 1672,
+    "dimensions": [
+      45.3,
+      13.25,
+      28.0
+    ],
+    "maps": 2048,
+    "uvSets": 1,
+    "boundsMin": [
+      -22.65,
+      -9.0,
+      0.0
+    ],
+    "boundsMax": [
+      22.65,
+      4.25,
+      28.0
+    ]
+  },
+  "Covenant_Cenotaph": {
+    "file": "Covenant_Cenotaph.glb",
+    "sha256": "b13b2760b5001fd660ecd5d8cde9ebb7b772709b8c195c9245dab7d128798d1c",
+    "bytes": 9751744,
+    "triangles": 1232,
+    "dimensions": [
+      70.0,
+      46.0,
+      163.074
+    ],
+    "maps": 2048,
+    "uvSets": 1,
+    "boundsMin": [
+      -35.0,
+      -23.0,
+      0.0
+    ],
+    "boundsMax": [
+      35.0,
+      23.0,
+      163.074
+    ]
+  },
+  "Covenant_WeaponFragments": {
+    "file": "Covenant_WeaponFragments.glb",
+    "sha256": "2f5acc696b8666003785adbbaf5bdd9c1fe011531ec3f1b91b3882e41f475f39",
+    "bytes": 3165296,
+    "triangles": 1834,
+    "dimensions": [
+      7.01,
+      6.176,
+      6.533
+    ],
+    "maps": 1024,
+    "uvSets": 1,
+    "boundsMin": [
+      -4.54,
+      -3.06,
+      -0.642
+    ],
+    "boundsMax": [
+      2.469,
+      3.116,
+      5.891
+    ]
+  },
+  "Covenant_ReedClump": {
+    "file": "Covenant_ReedClump.glb",
+    "sha256": "d1369dafa28b68ca9ff94370d98e4dcf3d9b243f44267ef42b0659c4eccc5175",
+    "bytes": 1684608,
+    "triangles": 1718,
+    "dimensions": [
+      6.259,
+      6.203,
+      5.452
+    ],
+    "maps": 1024,
+    "uvSets": 1,
+    "boundsMin": [
+      -2.961,
+      -2.72,
+      -0.2
+    ],
+    "boundsMax": [
+      3.298,
+      3.482,
+      5.252
+    ]
+  },
+  "Covenant_VotiveFigure": {
+    "file": "Covenant_VotiveFigure.glb",
+    "sha256": "d4af5c2bacc10530dd061a1ec709bb958fa70bf7286dc326b7c0e9f9caaa296c",
+    "bytes": 3242140,
+    "triangles": 1380,
+    "dimensions": [
+      2.8,
+      3.457,
+      4.466
+    ],
+    "maps": 1024,
+    "uvSets": 1,
+    "boundsMin": [
+      -1.4,
+      -2.1,
+      -0.15
+    ],
+    "boundsMax": [
+      1.4,
+      1.357,
+      4.316
+    ]
+  },
+  "Covenant_AshBank": {
+    "file": "Covenant_AshBank.glb",
+    "sha256": "7110b1b4fd6f3ee21b36db36838873f67e2abe4ed4a5c455d0aa78a35dfab7b3",
+    "bytes": 11900516,
+    "triangles": 1560,
+    "dimensions": [
+      27.96,
+      10.299,
+      3.383
+    ],
+    "maps": 2048,
+    "uvSets": 1,
+    "boundsMin": [
+      -14.098,
+      -5.178,
+      -0.446
+    ],
+    "boundsMax": [
+      13.862,
+      5.12,
+      2.937
+    ]
+  }
+}

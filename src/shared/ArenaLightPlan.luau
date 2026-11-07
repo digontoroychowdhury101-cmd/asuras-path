@@ -8,7 +8,9 @@ local Plan = {}
 
 Plan.FloorY = 0 -- arena floors sit at Y 0 (spawns at Y 3)
 Plan.Brazier = table.freeze({ Inset = 0.34, Height = 3, Range = 55, Brightness = 3 })
-Plan.Fill = table.freeze({ Height = 18, Range = 60, Brightness = 0.9, MaxSpacing = 80 })
+-- MaxSpacing 66 (AR01, 2026-11-07; was 80): a fill cell's half-diagonal plus the lantern height must stay
+-- inside Reach x Range. 180-stud arenas keep their 3x3 grid; Shen's 240x190 bowl takes 4x3.
+Plan.Fill = table.freeze({ Height = 18, Range = 60, Brightness = 0.9, MaxSpacing = 66 })
 -- A floor point counts as lit when it lies inside this share of a light's range; Roblox point
 -- light falloff makes the last stretch of the range too dim to separate actors from the floor.
 Plan.Reach = 0.85
