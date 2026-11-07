@@ -70,7 +70,7 @@ The full file list is in [CHANGED_FILES.md](CHANGED_FILES.md). Asset IDs and sou
 - The brazier pools now sit as small warm accents at the corners.
 
 **Not there yet:**
-1. **The far horizon is invisible at night.** The cenotaph, bridge and clouds load (confirmed in Studio: 12 objects in `CovenantHorizon`), but they lie 450–700 studs out. At clock 0.15, Atmosphere renders them into a black sky. Paler haze, density and glare tests (`work/atmo`) and a self-lit glow card made no visible difference. Only a twilight clock gives a pale sky (`options/far_dawn_6_4_experiment.jpg`, a live experiment and not shipped). That would change the established "night stays night" Ash look and the Shen fight's lighting, so it is left as a **creator decision**.
+1. **The far horizon is invisible at night.** The cenotaph, bridge and clouds load (confirmed in Studio: 12 objects in `CovenantHorizon`), but they lie 450–700 studs out. At clock 0.15, Atmosphere renders them into a black sky. Paler haze, density and glare tests (`work/atmo`) and a self-lit glow card made no visible difference. Only a twilight clock gives a pale sky (`options/far_dawn_6_4_experiment.jpg`, a live experiment and not shipped). That would change the established "night stays night" Ash look and the Shen fight's lighting. **The creator chose to keep night** (see below).
 2. The seat fronts and ash banks show cool blue-white specks under the cold fill, which look busy at the floor edge. This needs a material pass after the creator sees it.
 3. The cavea reads as a low ring at play height. "Immense" may need taller crown pieces once the horizon question is settled.
 
@@ -99,8 +99,12 @@ The three audit views keep their 5 November eye and look. The `before/` corner, 
   - Baize, Titan, Wu and Wyrm models were not supplied (C00); they do not affect AR01.
 - `StreamingEnabled` was not changed. Nothing was published. No paid generation was used.
 
+## Creator decision (2026-11-07)
+**Keep night.** The Ash region stays at clock 0.15 under the ashen night sky, so the Shen fight's lighting is unchanged. The far horizon is therefore not part of the night read.
+
+The `CovenantHorizon` group (cenotaph, bridge and clouds) stays placed. It is cheap (about 13 objects, all non-colliding) and ready if the sky ever changes. It is recorded as invisible at night rather than presented as a delivered horizon. The twilight frame in `options/` is kept for reference only.
+
 ## Next action
-1. The creator looks at `after/contact.jpg` and the two `options/` frames, then chooses:
-   - keep the night with no readable horizon (and later drop or simplify `CovenantHorizon`), or
-   - move Ash to a pale twilight, which needs a Shen-fight lighting re-check on the Mac.
-2. After that choice, do the material pass on the edge specks, then run the combined encounter steps in the handoff.
+1. Do the material pass on the blue-white specks at the floor edge.
+2. Consider taller crown pieces so the bowl reads as immense at play height.
+3. Run the combined encounter steps in the handoff once Mac has a stable Shen checkpoint.

@@ -63,6 +63,6 @@ Environment completion (this branch) and combined encounter acceptance are **sep
 7. Only after step 6, merge `integrate/ar01-shen` into `ux/onboarding-overhaul` through the normal relay handoff.
 
 ## Known open items carried into the merge
-- The far-horizon night visibility is a creator decision (RESULTS.md §Visual state 1). A twilight clock would change the Shen fight's lighting, so decide it before Shen VFX acceptance.
+- The creator chose to keep the Ash night (2026-11-07). The Shen fight's lighting is unchanged, and the far horizon is not visible at night.
 - Mid-fight exit keeps the fight sealed by existing design. A Victor exit is only possible after a win.
 - H01 has a labelled pending slot.
