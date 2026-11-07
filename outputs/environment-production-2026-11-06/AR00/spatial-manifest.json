@@ -1,0 +1,726 @@
+{
+ "source": "tools/arenas/spatial_extract.luau + site_plan.py",
+ "walkSpeed": 22.4,
+ "arenas": {
+  "GrandmasterShen": {
+   "title": "AR01 The Ashen Covenant",
+   "region": "AshColosseum",
+   "old": {
+    "centre": [
+     0,
+     0,
+     -1960
+    ],
+    "size": [
+     120,
+     130
+    ]
+   },
+   "why": "Z is pinned between the Champions Hall facade (z -1877, both hall foe pockets) and the Pagoda cloud stair (z -2120, CelestialPagoda region). The bowl grows mainly east-west; the region widens to 480 so the cavea and outer ash banks stay inside it, and the valley-wall terrain moves out with the bounds.",
+   "migrate": [
+    "Boss.Arena centre/size",
+    "FogGate placement/trigger/inside/outside (north face unchanged)",
+    "boss Spawn (engagement 45 studs, not half the floor)",
+    "AC_Arena / AC_South zones and doors",
+    "Victor gate mark, causeway, Veil fences",
+    "Region bounds X 360->480",
+    "ColosseumDressing positions",
+    "Objectives BOSS_APPROACH unchanged (gate outside)"
+   ],
+   "regionBefore": {
+    "centre": [
+     0,
+     40,
+     -1900
+    ],
+    "size": [
+     360,
+     200,
+     440
+    ]
+   },
+   "regionAfter": {
+    "centre": [
+     0,
+     40,
+     -1900
+    ],
+    "size": [
+     480,
+     200,
+     440
+    ]
+   },
+   "variants": {
+    "A": {
+     "centre": [
+      0,
+      0,
+      -1971
+     ],
+     "size": [
+      192,
+      152
+     ],
+     "rect": {
+      "x0": -96.0,
+      "x1": 96.0,
+      "zN": -1895.0,
+      "zS": -2047.0
+     },
+     "areaFactor": 1.87,
+     "insideRegionAfter": true,
+     "conflicts": [],
+     "walkSeconds": {
+      "centreToSide": 3.39,
+      "centreToCorner": 5.47,
+      "fullLength": 8.57,
+      "cornerToCorner": 10.93,
+      "cornerToCornerSprint": 7.29
+     },
+     "lockBreakExceededByDiagonal": true
+    },
+    "B": {
+     "centre": [
+      0,
+      0,
+      -1990
+     ],
+     "size": [
+      240,
+      190
+     ],
+     "rect": {
+      "x0": -120.0,
+      "x1": 120.0,
+      "zN": -1895.0,
+      "zS": -2085.0
+     },
+     "areaFactor": 2.92,
+     "insideRegionAfter": true,
+     "conflicts": [],
+     "walkSeconds": {
+      "centreToSide": 4.24,
+      "centreToCorner": 6.83,
+      "fullLength": 10.71,
+      "cornerToCorner": 13.67,
+      "cornerToCornerSprint": 9.11
+     },
+     "lockBreakExceededByDiagonal": true
+    }
+   },
+   "gateX": 0,
+   "service": {
+    "x0": -150,
+    "x1": 150,
+    "zN": -1877,
+    "zS": -2120
+   },
+   "scenic": {
+    "x0": -420,
+    "x1": 420,
+    "zN": -1700,
+    "zS": -2300
+   }
+  },
+  "TwinSentinels": {
+   "title": "AR02 Broken Processional Court",
+   "region": "DesecratedMonastery",
+   "old": {
+    "centre": [
+     300,
+     0,
+     -930
+    ],
+    "size": [
+     180,
+     180
+    ]
+   },
+   "why": "Keep the north gate on the courtyard road (z -840) and grow south-east, clear of the Cloister (x<=128) and of Bamboo Pass (x<=200 below z -1120). EastPass zone and the monastery bounds widen east.",
+   "migrate": [
+    "Boss.Arena/Spawn/FogGate (gate X stays 300: needs an entrance offset or a gate move to x340)",
+    "MonasteryZones.EastPass x1 404->490",
+    "Region bounds X 900->1000",
+    "CourtyardRoad end",
+    "Twins duo separation checks"
+   ],
+   "regionBefore": {
+    "centre": [
+     0,
+     40,
+     -900
+    ],
+    "size": [
+     900,
+     200,
+     440
+    ]
+   },
+   "regionAfter": {
+    "centre": [
+     0,
+     40,
+     -900
+    ],
+    "size": [
+     1000,
+     200,
+     440
+    ]
+   },
+   "variants": {
+    "A": {
+     "centre": [
+      330,
+      0,
+      -948
+     ],
+     "size": [
+      208,
+      216
+     ],
+     "rect": {
+      "x0": 226.0,
+      "x1": 434.0,
+      "zN": -840.0,
+      "zS": -1056.0
+     },
+     "areaFactor": 1.39,
+     "insideRegionAfter": true,
+     "conflicts": [
+      "zone EastPass (DesecratedMonastery)"
+     ],
+     "walkSeconds": {
+      "centreToSide": 4.64,
+      "centreToCorner": 6.69,
+      "fullLength": 9.64,
+      "cornerToCorner": 13.39,
+      "cornerToCornerSprint": 8.92
+     },
+     "lockBreakExceededByDiagonal": true
+    },
+    "B": {
+     "centre": [
+      340,
+      0,
+      -975
+     ],
+     "size": [
+      260,
+      270
+     ],
+     "rect": {
+      "x0": 210.0,
+      "x1": 470.0,
+      "zN": -840.0,
+      "zS": -1110.0
+     },
+     "areaFactor": 2.17,
+     "insideRegionAfter": true,
+     "conflicts": [
+      "zone EastPass (DesecratedMonastery)"
+     ],
+     "walkSeconds": {
+      "centreToSide": 5.8,
+      "centreToCorner": 8.37,
+      "fullLength": 12.05,
+      "cornerToCorner": 16.73,
+      "cornerToCornerSprint": 11.16
+     },
+     "lockBreakExceededByDiagonal": true
+    }
+   },
+   "gateX": 300,
+   "service": {
+    "x0": 190,
+    "x1": 490,
+    "zN": -800,
+    "zS": -1118
+   },
+   "scenic": {
+    "x0": 120,
+    "x1": 760,
+    "zN": -640,
+    "zS": -1300
+   }
+  },
+  "VenerableBaize": {
+   "title": "AR03 Frost-Hollow Hunting Ground",
+   "region": "BambooPass",
+   "old": {
+    "centre": [
+     0,
+     0,
+     -1470
+    ],
+    "size": [
+     180,
+     180
+    ]
+   },
+   "why": "Depth is pinned by the shrine (z -1366) and the moon-gate descent (z -1577): a west side-basin instead of scale-in-place. The Foundry wing (x -192..-140) ends at z -1345, north of the basin.",
+   "migrate": [
+    "Boss.Arena/Spawn/FogGate (entrance offset or shrine path bend)",
+    "BP_Arena zone",
+    "BossBodies.pillars offsets",
+    "Region bounds X 400->520 (centre x -20)",
+    "Bamboo backdrop terrain",
+    "BP_Ridge overlap review"
+   ],
+   "regionBefore": {
+    "centre": [
+     0,
+     40,
+     -1400
+    ],
+    "size": [
+     400,
+     200,
+     560
+    ]
+   },
+   "regionAfter": {
+    "centre": [
+     -20,
+     40,
+     -1400
+    ],
+    "size": [
+     520,
+     200,
+     560
+    ]
+   },
+   "variants": {
+    "A": {
+     "centre": [
+      -48,
+      0,
+      -1454
+     ],
+     "size": [
+      240,
+      160
+     ],
+     "rect": {
+      "x0": -168.0,
+      "x1": 72.0,
+      "zN": -1374.0,
+      "zS": -1534.0
+     },
+     "areaFactor": 1.19,
+     "insideRegionAfter": true,
+     "conflicts": [
+      "zone BP_Ridge (BambooPass)"
+     ],
+     "walkSeconds": {
+      "centreToSide": 3.57,
+      "centreToCorner": 6.44,
+      "fullLength": 10.71,
+      "cornerToCorner": 12.88,
+      "cornerToCornerSprint": 8.58
+     },
+     "lockBreakExceededByDiagonal": true
+    },
+    "B": {
+     "centre": [
+      -60,
+      0,
+      -1474
+     ],
+     "size": [
+      300,
+      200
+     ],
+     "rect": {
+      "x0": -210.0,
+      "x1": 90.0,
+      "zN": -1374.0,
+      "zS": -1574.0
+     },
+     "areaFactor": 1.85,
+     "insideRegionAfter": true,
+     "conflicts": [
+      "zone BP_Ridge (BambooPass)"
+     ],
+     "walkSeconds": {
+      "centreToSide": 4.46,
+      "centreToCorner": 8.05,
+      "fullLength": 13.39,
+      "cornerToCorner": 16.1,
+      "cornerToCornerSprint": 10.73
+     },
+     "lockBreakExceededByDiagonal": true
+    }
+   },
+   "gateX": 0,
+   "service": {
+    "x0": -230,
+    "x1": 110,
+    "zN": -1366,
+    "zS": -1590
+   },
+   "scenic": {
+    "x0": -520,
+    "x1": 380,
+    "zN": -1250,
+    "zS": -1700
+   }
+  },
+  "SlumberingTitan": {
+   "title": "AR04 Cathedral Beneath the Roots",
+   "region": "SanctuaryDepths",
+   "old": {
+    "centre": [
+     520,
+     0,
+     880
+    ],
+    "size": [
+     180,
+     180
+    ]
+   },
+   "why": "Hold the west edge at x 414 (ossuary, loft, reliquary) and the north edge at z 968 (nave); grow east and south into the uncut cavern. The arena mouth moves east along the nave.",
+   "migrate": [
+    "Boss.Arena/Spawn/FogGate (mouth x520->554 in the nave)",
+    "SD_Arena zone",
+    "Region bounds",
+    "Titan chains (SD-04) and pit catch review",
+    "Ceiling roots non-colliding"
+   ],
+   "regionBefore": {
+    "centre": [
+     520,
+     40,
+     900
+    ],
+    "size": [
+     360,
+     200,
+     360
+    ]
+   },
+   "regionAfter": {
+    "centre": [
+     560,
+     40,
+     860
+    ],
+    "size": [
+     440,
+     200,
+     480
+    ]
+   },
+   "variants": {
+    "A": {
+     "centre": [
+      526,
+      0,
+      840
+     ],
+     "size": [
+      224,
+      256
+     ],
+     "rect": {
+      "x0": 414.0,
+      "x1": 638.0,
+      "zN": 968.0,
+      "zS": 712.0
+     },
+     "areaFactor": 1.77,
+     "insideRegionAfter": true,
+     "conflicts": [],
+     "walkSeconds": {
+      "centreToSide": 5.0,
+      "centreToCorner": 7.59,
+      "fullLength": 11.43,
+      "cornerToCorner": 15.19,
+      "cornerToCornerSprint": 10.12
+     },
+     "lockBreakExceededByDiagonal": true
+    },
+    "B": {
+     "centre": [
+      554,
+      0,
+      808
+     ],
+     "size": [
+      280,
+      320
+     ],
+     "rect": {
+      "x0": 414.0,
+      "x1": 694.0,
+      "zN": 968.0,
+      "zS": 648.0
+     },
+     "areaFactor": 2.77,
+     "insideRegionAfter": true,
+     "conflicts": [],
+     "walkSeconds": {
+      "centreToSide": 6.25,
+      "centreToCorner": 9.49,
+      "fullLength": 14.29,
+      "cornerToCorner": 18.98,
+      "cornerToCornerSprint": 12.65
+     },
+     "lockBreakExceededByDiagonal": true
+    }
+   },
+   "gateX": 520,
+   "service": {
+    "x0": 400,
+    "x1": 720,
+    "zN": 1046,
+    "zS": 630
+   },
+   "scenic": {
+    "x0": 300,
+    "x1": 900,
+    "zN": 1200,
+    "zS": 450
+   }
+  },
+  "SovereignWu": {
+   "title": "AR05 Starless Mirror Court",
+   "region": "CelestialPagoda",
+   "old": {
+    "centre": [
+     0,
+     0,
+     -2380
+    ],
+    "size": [
+     180,
+     180
+    ]
+   },
+   "why": "The forecourt/loft (z -2292) and the dawn terrace/summit bridge (z -2470..-2540) pin depth; the court opens sideways into a connected mirror expanse and noncolliding lake beyond.",
+   "migrate": [
+    "Boss.Arena size",
+    "CP_Arena zone",
+    "four corner HanPagodaHD placements and their rock pillars",
+    "Region bounds X 360->440",
+    "Wu teleport clamp/retreat review"
+   ],
+   "regionBefore": {
+    "centre": [
+     0,
+     40,
+     -2330
+    ],
+    "size": [
+     360,
+     200,
+     420
+    ]
+   },
+   "regionAfter": {
+    "centre": [
+     0,
+     40,
+     -2330
+    ],
+    "size": [
+     440,
+     200,
+     420
+    ]
+   },
+   "variants": {
+    "A": {
+     "centre": [
+      0,
+      0,
+      -2380
+     ],
+     "size": [
+      272,
+      176
+     ],
+     "rect": {
+      "x0": -136.0,
+      "x1": 136.0,
+      "zN": -2292.0,
+      "zS": -2468.0
+     },
+     "areaFactor": 1.48,
+     "insideRegionAfter": true,
+     "conflicts": [],
+     "walkSeconds": {
+      "centreToSide": 3.93,
+      "centreToCorner": 7.23,
+      "fullLength": 12.14,
+      "cornerToCorner": 14.46,
+      "cornerToCornerSprint": 9.64
+     },
+     "lockBreakExceededByDiagonal": true
+    },
+    "B": {
+     "centre": [
+      0,
+      0,
+      -2380
+     ],
+     "size": [
+      340,
+      176
+     ],
+     "rect": {
+      "x0": -170.0,
+      "x1": 170.0,
+      "zN": -2292.0,
+      "zS": -2468.0
+     },
+     "areaFactor": 1.85,
+     "insideRegionAfter": true,
+     "conflicts": [],
+     "walkSeconds": {
+      "centreToSide": 3.93,
+      "centreToCorner": 8.55,
+      "fullLength": 15.18,
+      "cornerToCorner": 17.09,
+      "cornerToCornerSprint": 11.39
+     },
+     "lockBreakExceededByDiagonal": true
+    }
+   },
+   "gateX": 0,
+   "service": {
+    "x0": -180,
+    "x1": 180,
+    "zN": -2252,
+    "zS": -2540
+   },
+   "scenic": {
+    "x0": -600,
+    "x1": 600,
+    "zN": -2200,
+    "zS": -2700
+   }
+  },
+  "AzureWyrm": {
+   "title": "AR06 Storm-Crowned Expanse",
+   "region": "SkyCitadel",
+   "old": {
+    "centre": [
+     0,
+     0,
+     -2830
+    ],
+    "size": [
+     180,
+     180
+    ]
+   },
+   "why": "Nothing lies south of the summit, so the landing shelf extends south from the bastion gate (z -2740); the bastion and return portal stay outside the flight floor.",
+   "migrate": [
+    "Boss.Arena/Spawn",
+    "SC_Arena zone, summit catch",
+    "CampaignTerrain perch/support absolute coords",
+    "Region bounds Z 440->680",
+    "BossMotion aerial review"
+   ],
+   "regionBefore": {
+    "centre": [
+     0,
+     40,
+     -2760
+    ],
+    "size": [
+     360,
+     200,
+     440
+    ]
+   },
+   "regionAfter": {
+    "centre": [
+     0,
+     40,
+     -2880
+    ],
+    "size": [
+     520,
+     200,
+     680
+    ]
+   },
+   "variants": {
+    "A": {
+     "centre": [
+      0,
+      0,
+      -2916
+     ],
+     "size": [
+      320,
+      352
+     ],
+     "rect": {
+      "x0": -160.0,
+      "x1": 160.0,
+      "zN": -2740.0,
+      "zS": -3092.0
+     },
+     "areaFactor": 3.48,
+     "insideRegionAfter": true,
+     "conflicts": [],
+     "walkSeconds": {
+      "centreToSide": 7.14,
+      "centreToCorner": 10.62,
+      "fullLength": 15.71,
+      "cornerToCorner": 21.24,
+      "cornerToCornerSprint": 14.16
+     },
+     "lockBreakExceededByDiagonal": true
+    },
+    "B": {
+     "centre": [
+      0,
+      0,
+      -2960
+     ],
+     "size": [
+      400,
+      440
+     ],
+     "rect": {
+      "x0": -200.0,
+      "x1": 200.0,
+      "zN": -2740.0,
+      "zS": -3180.0
+     },
+     "areaFactor": 5.43,
+     "insideRegionAfter": true,
+     "conflicts": [],
+     "walkSeconds": {
+      "centreToSide": 8.93,
+      "centreToCorner": 13.27,
+      "fullLength": 19.64,
+      "cornerToCorner": 26.55,
+      "cornerToCornerSprint": 17.7
+     },
+     "lockBreakExceededByDiagonal": true
+    }
+   },
+   "gateX": 0,
+   "service": {
+    "x0": -210,
+    "x1": 210,
+    "zN": -2670,
+    "zS": -3190
+   },
+   "scenic": {
+    "x0": -800,
+    "x1": 800,
+    "zN": -2600,
+    "zS": -3600
+   }
+  }
+ }
+}

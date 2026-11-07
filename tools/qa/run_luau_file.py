@@ -27,7 +27,7 @@ def main() -> int:
     try:
         ok, listing = client.call('list_roblox_studios', {})
         studios = json.loads(listing).get('studios', [])
-        pick = [s for s in studios if a.studio in s.get('name', '')] or studios
+        pick = [s for s in studios if a.studio and a.studio in (s.get('id', ''), s.get('name', ''))] or studios
         if not pick:
             print('no studio connected')
             return 2
