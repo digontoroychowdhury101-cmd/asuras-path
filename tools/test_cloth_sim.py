@@ -36,11 +36,14 @@ for phase = 1, 2 do
     Sim.reset(s, rest)
     for _ = 1, 240 do Sim.step(s, rest, 1 / 60, still, 3) end
     -- no wind, no motion: the sculpt's own shape, sagging under its weight now the cloth is free; it never collapses
-    local worst = 0
+    local worst, worstAt = 0, nil
     for i = 1, s.n do
-        if not s.isOrb[i] then worst = math.max(worst, math.sqrt((s.x[i] - s.rx[i]) ^ 2 + (s.y[i] - s.ry[i]) ^ 2 + (s.z[i] - s.rz[i]) ^ 2)) end -- orbs circle his head
+        if not s.isOrb[i] then
+            local d = math.sqrt((s.x[i] - s.rx[i]) ^ 2 + (s.y[i] - s.ry[i]) ^ 2 + (s.z[i] - s.rz[i]) ^ 2) -- orbs circle his head
+            if d > worst then worst, worstAt = d, i end
+        end
     end
-    assert(worst < 1.2, "rest shape holds, drift " .. worst)
+    assert(worst < 1.2, "rest shape holds, drift " .. worst .. " at particle " .. tostring(worstAt))
     -- each bone rests near the sculpt's turn: a trace above 0 is under 120 degrees
     for k = 1, #s.bones do
         local o = (k - 1) * 9
@@ -73,6 +76,7 @@ for phase = 1, 2 do
                         local px, py, pz = s.x[i] - cap.wax, s.y[i] - cap.way, s.z[i] - cap.waz
                         local u = math.clamp((px * cap.wdx + py * cap.wdy + pz * cap.wdz) / cap.len2, 0, 1)
                         local dd = math.sqrt((px - cap.wdx * u) ^ 2 + (py - cap.wdy * u) ^ 2 + (pz - cap.wdz * u) ^ 2)
+                        if s.hitFirm[i][q] then r += cap.r + (cap.rb - cap.r) * u end -- (2026-11-07) a firm clearance is added to the volume's tapered radius
                         assert(dd > r * 0.9, "cloth stays out of the body and weapon, particle " .. i .. " in P" .. phase)
                     end
                 end
@@ -88,7 +92,8 @@ for phase = 1, 2 do
             local px, py, pz = (s.x[i] + s.x[j]) / 2 - cap.wax, (s.y[i] + s.y[j]) / 2 - cap.way, (s.z[i] + s.z[j]) / 2 - cap.waz
             local u = math.clamp((px * cap.wdx + py * cap.wdy + pz * cap.wdz) / cap.len2, 0, 1)
             local dd = math.sqrt((px - cap.wdx * u) ^ 2 + (py - cap.wdy * u) ^ 2 + (pz - cap.wdz * u) ^ 2)
-            assert(dd > r * 0.85, "cloth between particles stays out of the body and weapon, link " .. l .. " in P" .. phase)
+            if s.linkFirm[l][q] then r += cap.r + (cap.rb - cap.r) * u end
+            assert(dd > r * 0.85, "cloth between particles stays out of the body and weapon, link " .. l .. " in P" .. phase .. string.format(" cap %d r %.3f dd %.3f firm %s u %.2f", c, r, dd, tostring(s.linkFirm[l][q]), u))
         end
     end
     assert(maxReach < 4, "roaming is bounded, " .. maxReach)

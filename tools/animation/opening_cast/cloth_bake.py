@@ -18,6 +18,9 @@ import os  # noqa: E402
 BAKE = Path(os.environ.get("SHEN_BAKE_DIR", ROOT / "work/opening_cast_bake/shen"))
 OUT = ROOT / "work/opening_cast_bake/shen_shots"
 SUFFIX = os.environ.get("SHEN_SHOT_SUFFIX", "")
+# (2026-11-07) SHEN_CLOTH_SIM / SHEN_CLOTH_DIR: another ClothSim.luau and another folder of cloth_pN.json (an earlier version, to compare cloth on the same motion)
+CLOTH_SIM = Path(os.environ.get("SHEN_CLOTH_SIM", ROOT / "src/shared/ClothSim.luau"))
+CLOTH_DIR = Path(os.environ.get("SHEN_CLOTH_DIR", ROOT / "work/shen_import"))
 SCALE, FPS = 1.3, 30
 
 
@@ -94,7 +97,7 @@ def lua(v):
 
 
 def run_sim(phase, frames, roots, warm=1.5):
-    cloth = json.loads((ROOT / f"work/shen_import/cloth_p{phase}.json").read_text())
+    cloth = json.loads((CLOTH_DIR / f"cloth_p{phase}.json").read_text())
     limbs = cloth["limbs"]
     rows = []
     for pose, (x, y, z, yaw) in zip(frames, roots):
@@ -107,8 +110,8 @@ def run_sim(phase, frames, roots, warm=1.5):
             t = Ry @ (M[:3, 3] * SCALE) + np.array([x, y, z])
             vals += [t[0], t[1], t[2]] + R.ravel().tolist()
         rows.append(" ".join("%.5f" % v for v in vals))
-    src = (ROOT / "src/shared/ClothSim.luau").read_text()
-    code = ['local Sim = (function()\n', src, '\nend)()\n', 'local def = ', lua({k: cloth[k] for k in ("particles", "links", "colliders", "hits", "limbs", "sheets", "grip")}), '\n',
+    src = CLOTH_SIM.read_text()
+    code = ['local Sim = (function()\n', src, '\nend)()\n', 'local def = ', lua({k: cloth[k] for k in ("particles", "links", "colliders", "hits", "limbs", "sheets", "grip", "skin") if k in cloth}), '\n',
             'local s = Sim.new(def, %r)\n' % SCALE, 'local text = [==[\n', "\n".join(rows), '\n]==]\n', '''
 local rows = {}
 for line in string.gmatch(text, "[^\\n]+") do
@@ -136,7 +139,7 @@ for f = 1, #rows do
     print(table.concat(parts, " "))
 end
 ''']
-    path = ROOT / "work/opening_cast_bake/_cloth_run.luau"
+    path = ROOT / ("work/opening_cast_bake/_cloth_run_%d.luau" % os.getpid())     # one per process: bakes run side by side
     path.write_text("".join(code))
     res = subprocess.run([str(ROOT / "work/bin/luau/luau"), str(path)], capture_output=True, text=True)
     if res.returncode:
@@ -144,7 +147,10 @@ end
     path.unlink()
     lines = res.stdout.strip().split("\n")
     assert len(lines) == len(frames), (len(lines), len(frames))
-    return cloth, np.array([[float(v) for v in ln.split()] for ln in lines])
+    out = np.array([[float(v) for v in ln.split()] for ln in lines])
+    if not np.all(np.isfinite(out)):     # (2026-11-07) a NaN bone draws nothing, which a clash check reads as clean
+        raise SystemExit("cloth_bake: the simulation gave a non-finite bone (first at frame %d)" % int(np.argwhere(~np.isfinite(out))[0][0]))
+    return cloth, out
 
 
 def bake_shot(name, phase, plan, fade=0.2):
@@ -211,5 +217,8 @@ SHOTS = {
 
 if __name__ == "__main__":
     for name in sys.argv[1:] or SHOTS:
+        if name.startswith(("c1_", "c2_")):   # (2026-11-07) one clip on its own after a short idle, for the mesh clash check (tools/blender/shen_import/mesh_clash.py)
+            bake_shot(name, int(name[1]), [("Idle", 0.6, 0.0, 0.0), (name[3:], None, 0.0, 0.0)])
+            continue
         phase, plan = SHOTS[name]
         bake_shot(name, phase, plan)

@@ -28,7 +28,7 @@ def bone_of(phase, name):
     return name
 
 
-def left_hand(J, points):
+def left_hand(J, points, clear=None):
     """The sculpt's open left hand, measured: (wrist, along the fingers, across the knuckles (the haft's way, thumb side +), toward the palm, knuckle distance, middle-joint distance, grip point). Both hands' grips and the finger bones work from this."""
     pts = np.asarray(points, float)
     wrist = np.array(J.LWR, float)
@@ -50,4 +50,13 @@ def left_hand(J, points):
     far = float(np.percentile(d, 99.5))
     knuckle, middle = far * 0.5, far * 0.74
     grip = wrist + along * (far * 0.42) + palm * 0.13 + centre
+    if clear:   # (2026-11-07) `clear` is the haft's measured radius: the wood's centre sits far enough off the palm that the palm and thumb do not sink into it
+        n = palm - across * (palm @ across)
+        n /= np.linalg.norm(n)
+        heel = pts[d < knuckle - 0.02]
+        for _ in range(40):
+            q = heel - grip
+            if np.percentile(np.linalg.norm(q - np.outer(q @ across, across), axis=1), 1) >= clear - 0.005:
+                break
+            grip = grip + n * 0.005
     return wrist, along, across, palm, knuckle, middle, grip

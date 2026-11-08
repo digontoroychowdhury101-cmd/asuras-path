@@ -47,6 +47,128 @@ for ob in set(bpy.data.objects) - before:
     base = ob.name.split(".")[0]
     if ob.type == "MESH" and base in info:
         props.append((ob, info[base]["bone"], ob.matrix_world.copy()))
+# (2026-11-07) SHEN_REVIEW_CLASH=<part> (e.g. RightLowerArm): that part is drawn see-through and every weapon vertex inside it is lit magenta, by the same
+# test as mesh_clash.py (its distance field, past MARGIN 0.03, where the part's surface is rigid on its own bone), so a before/after shows what the numbers count
+CLASH = os.environ.get("SHEN_REVIEW_CLASH")
+if CLASH:
+    import numpy as np
+    from mathutils.kdtree import KDTree
+    CIn = np.array(Matrix(((1, 0, 0), (0, 0, 1), (0, -1, 0)))) # Blender (z up) to rig space (y up)
+    sdf = np.load(os.path.join(ROOT, "work/shen_import/sdf_p%d.npz" % phase))
+    s_grid, s_lo, s_st = sdf[CLASH + "_grid"], sdf[CLASH + "_origin"], float(sdf[CLASH + "_step"])
+    part_obs = [o for o in before if o.type == "MESH" and info.get(o.name.split(".")[0], {}).get("group") == CLASH]
+    pts, wts = [], []
+    for ob in part_obs:
+        vg = ob.vertex_groups.get("Sk_" + CLASH)
+        M = np.array(ob.matrix_world)
+        for v in ob.data.vertices:
+            pts.append(CIn @ (M[:3, :3] @ np.array(v.co) + M[:3, 3]))
+            wts.append(next((e.weight for e in v.groups if vg is not None and e.group == vg.index), 0.0))
+    kd = KDTree(len(pts))
+    for i, q in enumerate(pts):
+        kd.insert(q, i)
+    kd.balance()
+    wts = np.array(wts)
+    xm = bpy.data.materials.new("xray")
+    xm.use_nodes = True
+    bs = next(n for n in xm.node_tree.nodes if n.type == "BSDF_PRINCIPLED")
+    bs.inputs["Base Color"].default_value = (0.5, 0.12, 0.1, 1)
+    bs.inputs["Alpha"].default_value = 0.3
+    try:
+        xm.surface_render_method = "BLENDED"
+    except (AttributeError, TypeError):
+        xm.blend_method = "BLEND"
+    xm.use_backface_culling = False
+    for ob in part_obs:
+        for slot in ob.material_slots:
+            slot.material = xm
+    wobs = [ob for ob, bone, base in props if info.get(ob.name.split(".")[0], {}).get("group") == "Weapon"]
+    # (2026-11-08) SHEN_REVIEW_CLASH_FROM=<garment group>[,<group>...] (e.g. RobeFront,RobeLeft): light those garments' skinned vertices inside the part
+    # instead of the weapon's
+    CLASH_FROM = os.environ.get("SHEN_REVIEW_CLASH_FROM")
+    gobs = [o for o in before if o.type == "MESH" and info.get(o.name.split(".")[0], {}).get("group") in CLASH_FROM.split(",")] if CLASH_FROM else []
+    gbase = {}     # per garment object: its vertices already inside the part in the bind pose (filled on the first frame)
+    wrest = {}
+    for ob in (gobs or wobs):     # only what is lit gets the colour (a fresh attribute is not black)
+        M = np.array(ob.matrix_world)
+        co = np.empty(len(ob.data.vertices) * 3)
+        ob.data.vertices.foreach_get("co", co)
+        wrest[ob.name] = (co.reshape(-1, 3) @ M[:3, :3].T + M[:3, 3]) @ CIn.T     # rig-space rest positions (the props file stands at rest)
+        attr = ob.data.color_attributes.new("clash", "FLOAT_COLOR", "POINT")
+        for m in {s.material for s in ob.material_slots if s.material}:
+            if m.get("_clash"):
+                continue
+            m["_clash"] = 1
+            nt = m.node_tree
+            outn = next(n for n in nt.nodes if n.type == "OUTPUT_MATERIAL")
+            src = outn.inputs["Surface"].links[0].from_socket
+            at = nt.nodes.new("ShaderNodeAttribute")
+            at.attribute_name = "clash"
+            em = nt.nodes.new("ShaderNodeEmission")
+            em.inputs["Color"].default_value = (1.0, 0.0, 0.85, 1)
+            em.inputs["Strength"].default_value = 4.0
+            mx = nt.nodes.new("ShaderNodeMixShader")
+            nt.links.new(at.outputs["Fac"], mx.inputs["Fac"])
+            nt.links.new(src, mx.inputs[1])
+            nt.links.new(em.outputs["Emission"], mx.inputs[2])
+            nt.links.new(mx.outputs["Shader"], outn.inputs["Surface"])
+
+
+def part_depth(Q):
+    """How deep each point (in the CLASH part's rest space) lies inside it, and whether it counts: mesh_clash.py's test (past 0.03, where the
+    part's own surface is rigid on its bone)."""
+    q = (Q - s_lo) / s_st
+    hi = np.array(s_grid.shape) - 1
+    i0 = np.clip(np.floor(q).astype(int), 0, hi - 1)
+    f = np.clip(q - i0, 0.0, 1.0)
+    d = np.zeros(len(Q))
+    for dx in (0, 1):
+        for dy in (0, 1):
+            for dz in (0, 1):
+                wgt = (f[:, 0] if dx else 1 - f[:, 0]) * (f[:, 1] if dy else 1 - f[:, 1]) * (f[:, 2] if dz else 1 - f[:, 2])
+                d += wgt * s_grid[i0[:, 0] + dx, i0[:, 1] + dy, i0[:, 2] + dz]
+    d[np.any((q < 0) | (q > hi), axis=1)] = 1.0
+    d = -d
+    hit = d > 0.03
+    for i in np.nonzero(hit)[0]:
+        if wts[kd.find(Q[i])[1]] <= 0.8:
+            hit[i] = False
+    return d, hit
+
+
+def light_clash(fr):
+    """Mark this frame's weapon (or CLASH_FROM garment) vertices inside the CLASH part; returns how many and the deepest."""
+    v = fr["bones"]["Sk_" + CLASH]
+    R, t = np.array(v[:9]).reshape(3, 3), np.array(v[9:12])
+    G = np.array(fr["props"]["Glaive"]).reshape(4, 4)
+    n, deepest = 0, 0.0
+    if CLASH_FROM:
+        dg = bpy.context.evaluated_depsgraph_get()
+    for ob in (gobs if CLASH_FROM else wobs):
+        if CLASH_FROM:
+            ev = ob.evaluated_get(dg)
+            me = ev.to_mesh()
+            co = np.empty(len(me.vertices) * 3)
+            me.vertices.foreach_get("co", co)
+            ev.to_mesh_clear()
+            M = np.array(arm.matrix_world.inverted() @ ob.matrix_world)     # root space, as the frame's bones are (he travels and turns in the render)
+            P = (co.reshape(-1, 3) @ M[:3, :3].T + M[:3, 3]) @ CIn.T
+        else:
+            P = wrest[ob.name] @ G[:3, :3].T + G[:3, 3]
+        d, hit = part_depth((P - t) @ R)
+        if CLASH_FROM:
+            if ob.name not in gbase:
+                gbase[ob.name] = part_depth(wrest[ob.name])[1]   # the bind pose: every bone at rest, so rig space is the part's rest space
+            hit &= ~gbase[ob.name]     # inside already in the bind pose (the sculpt's own overlap): mesh_clash.py does not count it either
+        col = np.zeros((len(P), 4))
+        col[hit] = 1.0
+        ob.data.color_attributes["clash"].data.foreach_set("color", col.ravel())
+        ob.data.update()
+        n += int(hit.sum())
+        deepest = max(deepest, float(d[hit].max()) if hit.any() else 0.0)
+    return n, deepest
+
+
 w = bpy.data.worlds.new("w")
 w.use_nodes = True
 w.node_tree.nodes["Background"].inputs[0].default_value = (0.42, 0.43, 0.46, 1)
@@ -81,10 +203,20 @@ sc.render.image_settings.file_format = "PNG"
 cam = bpy.data.cameras.new("c")
 cam.lens = 62
 cam.sensor_fit, cam.sensor_height = "VERTICAL", 36   # the same framing of him at any aspect ratio
+cam.clip_start = 0.02   # (2026-11-07) close-ups of the hands: the default near plane cut the haft off in front of the lens
 co = bpy.data.objects.new("c", cam)
 sc.collection.objects.link(co)
 sc.camera = co
-SPOTS = {"head": (3.2, 7.5, 3.2), "face": (1.1, 3.2, 0.75), "combat": (9.0, 11.5, 1.6), "side": (10.5, 0, -0.2), "lside": (-10.5, 0, -0.2), "front": (0, 10.5, 0.0), "back": (0, -10.5, 0.0), "quarter": (7.5, 7.5, 0.4), "backq": (-7.0, -8.0, 0.8), "low": (7, 8, -2.0), "lhand": (-1.6, 2.6, 0.9), "lhandside": (-3.0, 0.4, 0.3), "lhandlow": (-1.2, 2.0, -1.6), "lhandtop": (-0.5, 0.7, 2.4), "lhandfront": (0.2, 3.0, 0.1), "rhand": (2.2, 2.2, 0.9)}
+SPOTS = {"head": (3.2, 7.5, 3.2), "face": (1.1, 3.2, 0.75), "combat": (9.0, 11.5, 1.6), "side": (10.5, 0, -0.2), "lside": (-10.5, 0, -0.2), "front": (0, 10.5, 0.0), "back": (0, -10.5, 0.0), "quarter": (7.5, 7.5, 0.4), "backq": (-7.0, -8.0, 0.8), "low": (7, 8, -2.0), "lhand": (-1.6, 2.6, 0.9), "lhandside": (-3.0, 0.4, 0.3), "lhandlow": (-1.2, 2.0, -1.6), "lhandtop": (-0.5, 0.7, 2.4), "lhandfront": (0.2, 3.0, 0.1), "rhand": (2.2, 2.2, 0.9),
+         # (2026-11-07) close-ups that ride a joint and turn with him (the offset is in his own frame): the knees for the robe, the forearm for the haft
+         "rknee": (2.2, 2.6, 0.4), "rkneeside": (3.4, 0.2, 0.3), "rkneeback": (1.6, -3.0, 0.4), "lknee": (-2.2, 2.6, 0.4), "lkneeside": (-3.4, 0.2, 0.3),
+         "rarm": (2.0, 2.4, 0.6), "rarmside": (3.2, 0.0, 0.4), "rarmtop": (0.8, 0.8, 3.0),
+         "rthigh": (2.4, 3.0, 0.2), "rthighside": (3.8, 0.0, 0.1), "lthigh": (-2.4, 3.0, 0.2),
+         # (2026-11-07) the inside of the right forearm, two-thirds of the way to the wrist, where the haft behind the fist runs along it
+         "rforelow": (1.0, 1.8, -1.3), "rforeclose": (0.55, 1.05, -0.75), "rforeback": (1.3, -0.3, -0.9), "rforeout": (1.6, 0.7, -0.15),
+         # (2026-11-09) the beard on his chest, riding the neck so a kneel or a bow keeps it in frame
+         "chestside": (2.6, 0.5, -0.5), "chestfront": (0.7, 2.7, -0.4)}
+RIDE = {"chest": "Sk_Head", "rknee": "Sk_RightLowerLeg", "lknee": "Sk_LeftLowerLeg", "rarm": "Sk_RightLowerArm", "rthigh": "Sk_RightUpperLeg", "lthigh": "Sk_LeftUpperLeg"}
 # phase 2 floats, so the camera rises with him; SHEN_REVIEW_GROUNDED=1 frames him on the floor instead (his deaths)
 floats = phase == 2 and os.environ.get("SHEN_REVIEW_GROUNDED") != "1"
 BASE = Vector(SPOTS[camera]) + Vector((0, 0, 1.55 if floats else 0))
@@ -123,6 +255,19 @@ for f in range(first, last + 1, step):
         at = arm.matrix_world @ hb.head
         co.location = at + Vector(SPOTS[camera])
         co.rotation_euler = (at - co.location).to_track_quat("-Z", "Y").to_euler()
+    ride = next((b for k, b in RIDE.items() if camera.startswith(k)), None)
+    if camera.startswith("rfore"):
+        a, b = arm.matrix_world @ pose_bones["Sk_RightLowerArm"].head, arm.matrix_world @ pose_bones["Sk_RightHand"].head
+        at = a.lerp(b, 0.65)
+        co.location = at + Ry.to_3x3() @ Vector(SPOTS[camera])
+        co.rotation_euler = (at - co.location).to_track_quat("-Z", "Y").to_euler()
+    elif ride:
+        at = arm.matrix_world @ pose_bones[ride].head
+        co.location = at + Ry.to_3x3() @ Vector(SPOTS[camera])
+        co.rotation_euler = (at - co.location).to_track_quat("-Z", "Y").to_euler()
+    if CLASH:
+        n, deepest = light_clash(fr)
+        print("CLASH frame %d: %d %s vertices in %s, deepest %.3f" % (f, n, CLASH_FROM or "weapon", CLASH, deepest), flush=True)
     sc.render.filepath = os.path.join(out, "f_%05d.png" % f)
     bpy.ops.render.render(write_still=True)
 print("REVIEW", first, last, step)
