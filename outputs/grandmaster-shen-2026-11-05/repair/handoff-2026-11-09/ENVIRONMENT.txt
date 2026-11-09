@@ -4,7 +4,8 @@ Git
   repository  https://github.com/digontoroychowdhury101-cmd/asuras-path.git
   branch      ux/onboarding-overhaul
   code commit bffea2d7cb2440464d4726ed1f97467d0a08a63c (2026-11-09 18:16 +1100). The archive was packed from the working tree at this commit.
-              The commit after it adds only the handoff docs, the manifest and the pack/restore/repro scripts.
+              The commits after it add only the handoff docs, the manifest, the pack/restore/repro/runall scripts and a Windows file
+              lock (msvcrt) for export.py's manifest merge; none of them changes what a bake computes.
 
 Machine
   macOS 26.7.2 (25G332), arm64 (Apple silicon), 10 cores, 16 GB
@@ -26,8 +27,10 @@ Reproduction check run on Computer A (scripts/repro_check.py)
   P1_GuardHit: 98 inputs match the manifest; rebake identical to bakes/dp11 (largest difference 0.00e+00); validator clean; REPRODUCED
   P1_Guandao_L1: 98 inputs match; rebake identical to bakes/dp11 (0.00e+00); validator clean; REPRODUCED
 
-Archive (outside Git)
-  /Users/digonto/Documents/ShenHandoff-2026-11-09/shen-untracked-2026-11-09.zip
+Archive (not on the code branch)
+  Git branch shen-assets-2026-11-09 (commit 7f8cbfa9ff963ede374e5edfba6dc7caa4fecbe4): the zip in six parts, joined and checked by
+  scripts/restore_untracked.py --from-branch origin/shen-assets-2026-11-09
+  Also on Computer A: /Users/digonto/Documents/ShenHandoff-2026-11-09/shen-untracked-2026-11-09.zip
   167 files, 689.0 MB uncompressed, 525.6 MB zip
   zip SHA-256 7d7a045ce8c5bbf75b41f9b179e02ec8853693af8bf86dc2a6616b5c531355c2
   per-file SHA-256: ARCHIVE_MANIFEST.sha256 (in this folder and inside the zip)

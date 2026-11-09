@@ -1,8 +1,25 @@
 # export_baked.py DIR CLIP...: write rbxmx, frame JSON and manifest entries from bakes torsotest saved (SHEN_SAVE_BAKED=DIR): the same calls export.py makes after clip.bake()
-import sys, os, json, pickle, fcntl
+import sys, os, json, pickle
 import os as _os; ROOT = _os.environ.get("SHEN_ROOT") or _os.path.abspath(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "../../../../.."))
 sys.path.insert(0, ROOT + "/tools/animation/opening_cast"); sys.path.insert(0, ROOT + "/tools/animation/general_zhao")
 os.chdir(ROOT)
+import contextlib
+@contextlib.contextmanager
+def manifest_lock(path):     # (2026-11-09) as tools/animation/opening_cast/export.py: fcntl on macOS/Linux, msvcrt on Windows
+    with open(path, "w") as f:
+        try:
+            import fcntl
+        except ImportError:
+            import msvcrt
+            f.write(" "); f.flush(); f.seek(0)
+            msvcrt.locking(f.fileno(), msvcrt.LK_LOCK, 1)
+            try:
+                yield
+            finally:
+                f.seek(0); msvcrt.locking(f.fileno(), msvcrt.LK_UNLCK, 1)
+            return
+        fcntl.flock(f, fcntl.LOCK_EX)
+        yield
 from pathlib import Path
 import castlib as C, jianlib as J, shen_clips as lib
 import export as zx
@@ -33,8 +50,7 @@ for clip in lib.library():
             entry["stale_asset_id"] = record["asset_id"]
     mine[clip.name] = entry
     print("%s %-20s %5.3fs keys %3d %s" % ("FIX" if problems else "OK ", clip.name, clip.length, keys, "; ".join(problems) or json.dumps(stats.get("strike", {}))), flush=True)
-with open(str(manifest_path) + ".lock", "w") as lock:
-    fcntl.flock(lock, fcntl.LOCK_EX)
+with manifest_lock(str(manifest_path) + ".lock"):     # fcntl on macOS, msvcrt on Windows
     manifest = json.loads(manifest_path.read_text()) if manifest_path.exists() else {"clips": {}}
     manifest["clips"].update(mine)
     manifest["clips"] = dict(sorted(manifest["clips"].items()))

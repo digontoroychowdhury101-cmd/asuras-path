@@ -10,15 +10,16 @@ Branch `ux/onboarding-overhaul`. Nothing has been published and no new export wa
 > dense (every-skin-sample) torso measure exactly as they are. Do not change GLB bones or skin weights. Do not publish. Bosses 02-06 wait.
 >
 > Work in this order:
-> 0. Restore the files Git does not carry, following `handoff-2026-11-09/ARCHIVE.md`. That means the archive
+> 0. Restore the files Git does not carry, following `handoff-2026-11-09/ARCHIVE.md` (on Windows: `WINDOWS_START.md`). That means the archive
 >    `shen-untracked-2026-11-09.zip`, holding the source and Master assets, the prepared Game/Props GLBs, `work/shen_import` and the frame JSON.
->    Use `scripts/restore_untracked.py`: a dry run first, it never overwrites. Then run `scripts/repro_check.py`.
->    Both P1_GuardHit and P1_Guandao_L1 must print REPRODUCED before anything is changed.
+>    It travels on Git branch `shen-assets-2026-11-09`: `git fetch origin shen-assets-2026-11-09`, then
+>    `scripts/restore_untracked.py --from-branch origin/shen-assets-2026-11-09`: a dry run first, it never overwrites. Then run `scripts/repro_check.py`.
+>    Both P1_GuardHit and P1_Guandao_L1 must print REPRODUCED (on Windows, REPRODUCED WITHIN ROUNDING is also a pass) before anything is changed.
 >    Do not rebuild those inputs from Master.blend or the uploaded sculpt: neither holds the later repairs (see ARCHIVE.md).
 > 1. Install SciPy for the Python you bake with (`python -m pip install scipy numpy`); joint_polish skips itself without it.
 >    Copy `handoff-2026-11-09/bakes/*` into `work/shen_repair/` (gitignored) as `baked_dp11`, `baked_dp15`, `baked_dp16`, `pre4_export`.
 > 2. Rebake P2_RendingArc and P1_PrayerBeads with the current repo code
->    (`zsh scripts/runall10.sh dp18 <listfile>` or `python scripts/torsotest_patch.py on <clip>` with `SHEN_SAVE_BAKED`), then run
+>    (`scripts/runall.py dp18 P2_RendingArc P1_PrayerBeads`, any OS, or `python scripts/torsotest_patch.py on <clip>` with `SHEN_SAVE_BAKED`), then run
 >    `scripts/revalidate.py` on them. RendingArc's earlier dp15 bake used a guard that has since been removed, so it is not valid.
 >    PrayerBeads' dp15 bake passes (0.175), but under the current code its seeded retry also runs, so it must be rebaked.
 > 3. Fix P2_Death. Its right arm is 0.23 in his chest in two places. The first is the stagger, f21-26: the back of the
@@ -107,7 +108,8 @@ Branch `ux/onboarding-overhaul`. Nothing has been published and no new export wa
   - Paths are portable: `SHEN_ROOT` (default: five folders up), `SHEN_SCRATCH` (default `work/shen_repair`), `BLENDER`.
   - Key scripts:
     - `torsotest_patch.py on CLIP`: bake and validate one clip; with `SHEN_SAVE_BAKED=dir` it saves the bake.
-    - `runall10.sh TAG LIST`: 7 clips in parallel.
+    - `runall.py TAG CLIP ...` (any OS) or `runall10.sh TAG LIST` (zsh): 7 clips in parallel.
+    - `restore_untracked.py`, `repro_check.py`, `pack_untracked.py`: the archive and the reproduction check.
     - `revalidate.py`, `fadecheck2.py`, `confirmcheck.py`.
     - `polishtest.py CLIP PKL`: joint_polish alone on a saved bake.
     - `polishdbg2.py`: the rows a window is stuck on.

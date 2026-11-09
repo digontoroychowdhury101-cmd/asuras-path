@@ -1,4 +1,4 @@
-# restore_untracked.py ZIP [--apply] [--replace-different] : (handoff 2026-11-09) put the Shen files Git does not carry back at their
+# restore_untracked.py ZIP | --from-branch origin/shen-assets-2026-11-09  [--apply] [--replace-different] : (handoff 2026-11-09) put the Shen files Git does not carry back at their
 # project-relative paths. Every entry is checked against the SHA-256 manifest inside the zip first; a zip that does not match stops here.
 # Default is a dry run: it lists, per file, "add" (missing here), "same" (already identical) or "DIFFERENT" (a file is already there and
 # differs). --apply writes only the "add" files. A DIFFERENT file is never touched unless --replace-different is also given, and then the
@@ -8,9 +8,11 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.environ.get("SHEN_ROOT") or os.path.abspath(os.path.join(HERE, "../../../../.."))
 args = [a for a in sys.argv[1:] if not a.startswith("--")]
 APPLY, REPLACE = "--apply" in sys.argv, "--replace-different" in sys.argv
-if not args:
-    sys.exit(__doc__ or "usage: restore_untracked.py ZIP [--apply] [--replace-different]")
-zpath = args[0]
+BRANCH = next((sys.argv[i + 1] for i, a in enumerate(sys.argv) if a == "--from-branch" and i + 1 < len(sys.argv)), None)
+if BRANCH:
+    args = [a for a in args if a != BRANCH]
+if not args and not BRANCH:
+    sys.exit("usage: restore_untracked.py ZIP | --from-branch origin/shen-assets-2026-11-09  [--apply] [--replace-different]")
 
 
 def sha(read):
@@ -18,6 +20,29 @@ def sha(read):
     for b in iter(lambda: read(1 << 20), b""):
         h.update(b)
     return h.hexdigest()
+
+
+if BRANCH:
+    # (2026-11-09) the zip pushed in parts (GitHub refuses files over 100 MB) on its own branch: read each part straight out of Git (binary
+    # safe, no checkout, nothing on this branch changes), join them under work/shen_repair and check the whole zip's SHA-256
+    import subprocess
+    def git(*a):
+        return subprocess.run(["git"] + list(a), cwd=ROOT, capture_output=True, check=True).stdout
+    names = sorted(n for n in git("ls-tree", "--name-only", BRANCH).decode().split() if ".zip.part" in n)
+    want = git("show", "%s:shen-untracked-2026-11-09.zip.sha256" % BRANCH).decode().split()[0]
+    os.makedirs(os.path.join(ROOT, "work", "shen_repair"), exist_ok=True)
+    zpath = os.path.join(ROOT, "work", "shen_repair", "shen-untracked-2026-11-09.zip")
+    if not (os.path.isfile(zpath) and sha(open(zpath, "rb").read) == want):
+        with open(zpath, "wb") as out:
+            for n in names:
+                out.write(git("cat-file", "blob", "%s:%s" % (BRANCH, n)))
+        print("joined %d parts from %s into %s" % (len(names), BRANCH, zpath))
+    got = sha(open(zpath, "rb").read)
+    if got != want:
+        sys.exit("STOP: the joined zip's SHA-256 %s is not the recorded %s" % (got, want))
+    print("zip SHA-256 matches", want)
+else:
+    zpath = args[0]
 
 
 with zipfile.ZipFile(zpath) as z:

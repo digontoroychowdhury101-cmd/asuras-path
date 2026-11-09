@@ -6,6 +6,7 @@ Writes assets/animations/opening_cast/<key>/<Clip>.rbxmx (KeyframeSequence, the 
 manifest.json (timing, contacts, strike checks, validation, upload status from published.json) and one root-space
 frame JSON per clip in work/opening_cast_bake/<key>/ for the Blender preview of the production mesh.
 """
+import contextlib
 import importlib
 import json
 import sys
@@ -17,6 +18,30 @@ import castlib as C  # noqa: E402
 import jianlib as J  # noqa: E402
 
 SETS = {"monk": "monk_clips", "swordsman": "swordsman_clips", "warden": "warden_clips", "bull": "bull_clips", "shen": "shen_clips"}
+
+
+
+@contextlib.contextmanager
+def manifest_lock(path):
+    """(2026-11-09) An exclusive lock while several exports merge into one manifest: fcntl on macOS/Linux, msvcrt on Windows (the other
+    computer has no fcntl)."""
+    with open(path, "w") as f:
+        try:
+            import fcntl
+        except ImportError:
+            import msvcrt
+            f.write(" ")
+            f.flush()
+            f.seek(0)
+            msvcrt.locking(f.fileno(), msvcrt.LK_LOCK, 1)
+            try:
+                yield
+            finally:
+                f.seek(0)
+                msvcrt.locking(f.fileno(), msvcrt.LK_UNLCK, 1)
+            return
+        fcntl.flock(f, fcntl.LOCK_EX)
+        yield
 
 
 def main(key, names):
@@ -56,9 +81,7 @@ def main(key, names):
         failed += 1 if problems else 0
         print("%s %-20s %5.3fs keys %3d %s" % ("FIX" if problems else "OK ", clip.name, clip.length, keys,
                                               "; ".join(problems) or json.dumps(stats.get("strike", {}))))
-    import fcntl
-    with open(str(manifest_path) + ".lock", "w") as lock:   # several exports may run at once: merge this run's clips into the manifest as it is now
-        fcntl.flock(lock, fcntl.LOCK_EX)
+    with manifest_lock(str(manifest_path) + ".lock"):   # several exports may run at once: merge this run's clips into the manifest as it is now
         mine = {k: v for k, v in manifest["clips"].items() if not names or k in names}
         manifest = json.loads(manifest_path.read_text()) if manifest_path.exists() else {"clips": {}}
         manifest["clips"].update(mine)

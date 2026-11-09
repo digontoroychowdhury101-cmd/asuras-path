@@ -30,45 +30,39 @@ So restore these derived files from the archive, not by re-running the import fr
 
 ## Where the archive is and how to move it
 
-**On Computer A:** `/Users/digonto/Documents/ShenHandoff-2026-11-09/`. The folder holds:
+**Transfer: Git, on its own branch `shen-assets-2026-11-09`** (no USB needed). GitHub refuses files over 100 MB, so the zip is pushed as six
+parts (`shen-untracked-2026-11-09.zip.part000`-`part005`). The branch also holds the zip's `.sha256`, `ARCHIVE_MANIFEST.sha256` and a
+README. It has no history shared with `ux/onboarding-overhaul` and is never merged into it. The repo is public, so these files are public
+too (the owner chose that on 2026-11-09).
 
-- `shen-untracked-2026-11-09.zip` and its `.sha256`
-- `ARCHIVE_MANIFEST.sha256`
-- `ENVIRONMENT.txt`
-- this guide
+**Also on Computer A:** `/Users/digonto/Documents/ShenHandoff-2026-11-09/` holds the whole zip, its `.sha256`, the manifest,
+`ENVIRONMENT.txt` and this guide.
 
-The restore and check scripts come with Git, in this handoff folder's `scripts/`. Run them from the repo, not from the archive folder.
-
-**To move it**, use any one of these:
-
-- **USB or external drive:** copy the whole folder.
-- **iCloud Drive:** on Computer A, iCloud Drive's `Documents` entry links to `~/Documents`, so this folder should sync if Desktop & Documents syncing is on. The upload was not confirmed. If it synced, download `Documents/ShenHandoff-2026-11-09` from icloud.com or iCloud for Windows, then check the zip's SHA-256.
-- **Your own cloud drive** (Google Drive or OneDrive): upload the folder manually.
-
-Git cannot carry the archive: the files are gitignored and the Master.blend alone is 213 MB.
+The restore and check scripts come with the code branch, in this handoff folder's `scripts/`. Run them from the repo root.
 
 ## Restore on the other computer (nothing is overwritten automatically)
 
-1. Pull the branch: `git pull --rebase origin ux/onboarding-overhaul`. Confirm the commit is at or after `bffea2d`.
-2. Check the zip:
-   - Windows: `certutil -hashfile shen-untracked-2026-11-09.zip SHA256`
-   - Mac: `shasum -a 256 shen-untracked-2026-11-09.zip`
+Windows PowerShell commands are in `WINDOWS_START.md`. On a Mac use `python3` in place of `py`, with the same arguments.
 
-   It must equal `7d7a045c…355c2`.
-3. Dry run, from the repo root: `python outputs/grandmaster-shen-2026-11-05/repair/handoff-2026-11-09/scripts/restore_untracked.py <path-to-zip>`.
+1. Pull the code: `git pull --rebase origin ux/onboarding-overhaul`. Then fetch the assets (about 526 MB): `git fetch origin shen-assets-2026-11-09`.
+   Do not check that branch out.
+2. Dry run, from the repo root: `py outputs/grandmaster-shen-2026-11-05/repair/handoff-2026-11-09/scripts/restore_untracked.py --from-branch origin/shen-assets-2026-11-09`.
+   - It reads the six parts straight from Git, joins them into `work/shen_repair/shen-untracked-2026-11-09.zip` and checks its SHA-256
+     (`7d7a045c…355c2`).
    - It checks every entry against the manifest. It also stops if the zip's manifest differs from the one in Git.
    - It lists each file as `add` (missing), `same` (identical) or `DIFFERENT` (a file already there differs).
-4. Apply: re-run with `--apply`. Only the missing files are written.
+   - A zip copied by hand works too: pass its path in place of `--from-branch …`.
+3. Apply: re-run with `--apply`. Only the missing files are written.
    - `DIFFERENT` files are left alone. Look at them first; they may be newer work from that computer.
    - Replace them only if you are sure, by adding `--replace-different`. That keeps each old file as `<name>.before-handoff-2026-11-09`.
-5. Install the Python packages: `python -m pip install numpy scipy`. Computer A used numpy 2.5.3 and SciPy 1.18.1; see `ENVIRONMENT.txt`.
+4. Install the Python packages: `py -m pip install numpy==2.5.3 scipy==1.18.1`. Computer A used these; see `ENVIRONMENT.txt`.
 
 ## Reproduce one known clip before changing anything
 
 From the repo root:
 
 ```
-python outputs/grandmaster-shen-2026-11-05/repair/handoff-2026-11-09/scripts/repro_check.py
+py outputs/grandmaster-shen-2026-11-05/repair/handoff-2026-11-09/scripts/repro_check.py
 ```
 
 This does three things:
@@ -77,7 +71,8 @@ This does three things:
 2. It rebakes P1_GuardHit with the repo code and compares every part's transform, frame by frame, with Computer A's saved bake (`bakes/dp11/P1_GuardHit.pkl`).
 3. It runs the validator.
 
-On Computer A it printed `REPRODUCED`: largest difference 0.00e+00, validator clean.
+On Computer A it printed `REPRODUCED`: largest difference 0.00e+00, validator clean. On Windows, `REPRODUCED WITHIN ROUNDING`
+(1e-3 or less, from a different maths library) is also a pass.
 
 Then run `repro_check.py P1_Guandao_L1`, a full attack clip with contacts, as a second check.
 
