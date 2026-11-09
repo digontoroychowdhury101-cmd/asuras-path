@@ -46,6 +46,19 @@ def curve(points, u):
     return pts[-1][1]
 
 
+def carry(keys, t0, t1, t2, t3, off):
+    """(2026-11-09) Carries the fist of a cut's per-frame keys by `off` (rig units, his frame): eased in from t0 to t1, held to t2, eased out by t3.
+    A cut's arc keeps its hands on one small arc in front of him; where the haft then turns across his trunk in a frame or two, the butt has to
+    go round him, and the solver can only shift each frame to the nearer side, so the fist hopped from one side to the other in a frame."""
+    out = []
+    for t, kw, ease in keys:
+        if "rp" in kw and t0 < t < t3:
+            w = L.smooth01((t - t0) / max(t1 - t0, 1e-6)) if t < t1 else (1.0 if t <= t2 else L.smooth01((t3 - t) / max(t3 - t2, 1e-6)))
+            kw = {**kw, "rp": tuple(np.asarray(kw["rp"], float) + w * np.asarray(off, float))}
+        out.append((t, kw, ease))
+    return out
+
+
 # ---------------------------------------------------------------- planes a blade can cut in, seen by him: where it comes from
 FROM_HIGH_LEFT = (-0.72, 0.7, 0.0)      # kesa: his left shoulder down through to his right hip
 FROM_HIGH_RIGHT = (0.72, 0.7, 0.0)      # the return: right shoulder to left hip
@@ -61,7 +74,7 @@ PINWHEEL_OUT = (0.25, 0.05, -0.1)     # (2026-11-07) the pinwheels' fist, out to
 GUARD = {}     # the guard this phase stands in; a first cut grows out of it
 
 
-def arc(t0, tc, t1, th0, th1, source, aim=(0.0, -6.0), centre=(0.32, 0.22, -1.2), span=1.2, rsl=RSL, whip=2.2, settle=2.4, hover=0.0, link=False):
+def arc(t0, tc, t1, th0, th1, source, aim=(0.0, -6.0), centre=(0.32, 0.22, -1.2), span=1.2, rsl=RSL, whip=2.2, settle=2.4, hover=0.0, link=False, enter=None):
     """One curved cut on a tilted plane. The blade rotates from th0 degrees upstream through the aim at tc (the contact) to th1 downstream; the hands travel on a matching small arc, right hand behind and left hand leading, so the two arms lever the haft.
     Returns a key per frame: the blade's path is the point of the move, so nothing is left to spline between poses."""
     F = np.array(H(*aim))
@@ -94,7 +107,7 @@ def arc(t0, tc, t1, th0, th1, source, aim=(0.0, -6.0), centre=(0.32, 0.22, -1.2)
         C = Cn + A * (0.7 * sweep) + np.array([0, 0.5 * over, 0.3 * (1 - math.cos(a)) * (1 - over) + 0.5 * over])
         rp = C - d * span / 2
         if t0 < 0.3:    # the first cut of a move grows out of the guard: the hands leave it and pick the blade's path up, they do not jump to it
-            enter = max(0.1, 0.3 * (tc - t0))
+            enter = max(0.1, 0.3 * (tc - t0)) if enter is None else enter     # (2026-11-09) enter: seconds to pick the blade up, where a cut asks for its own
             s = 1.0 if link else L.smooth01((t - t0) / enter)     # a linked cut grows out of the last one's ending, not out of the guard
             if s < 1.0:
                 # the blade rises along its own plane as the hands pick it up, so the wrist never has to catch it up
@@ -178,20 +191,35 @@ def build(phase):
     def returning_tide():
         return melee("Guandao_L2", [K(0, **READY), body(0.07, "out", yaw=16, chest=24, sink=-0.26, fwd=0.02), body(0.15, "whip", yaw=-6, chest=-12, sink=-0.16, fwd=-0.3, rf=(0.1, -0.2, 0, -14, 0), lf=(0.02, -0.2, 0, 8, 0)),
                                     body(0.29, "out", yaw=-30, chest=-48, sink=-0.05, fwd=-0.38, pitch=-2, rf=(0.1, -0.2, 0, -30, 0), lf=(0.02, -0.2, 0, 8, 0)), K(0.4167, "io", **READY)]
-                     + arc(0, 0.15, 0.3, 66, 98, FROM_LOW_LEFT, aim=(2, 0)) + [K(0.4167, "io", rp=READY["rp"], haft=READY["haft"], face=READY["face"], rsl=RSL, lsl=LSL)],
+                     # (2026-11-09) the follow-through carries the fist out to his right and forward (carry): as the blade climbs past his right shoulder the
+                     # butt comes down across his front, and with the fist left on the arc in front of his middle it went through his belly, cleared behind
+                     # his right hip on f6 and in front on f7 (phase 1 fist pop 0.29). Phase 2's broader, hunched trunk takes it further out and back to his
+                     # side: by f8 his chest faces his right (78 deg round), so a fist carried forward was across its front and the straight arm lay 0.30
+                     # in it; carried to where the chest faces, 0.17 (the blow 0.08 from where it was)
+                     + carry(arc(0, 0.15, 0.3, 66, 98, FROM_LOW_LEFT, aim=(2, 0)), 0.12, 0.2, 0.3, 0.4167, (0.65, 0.0, -0.4) if phase == 1 else (1.5, 0.1, 0.2))
+                     + [K(0.4167, "io", rp=READY["rp"], haft=READY["haft"], face=READY["face"], rsl=RSL, lsl=LSL)],
                      "Returning Tide: the blade drops to his left hip and climbs through to the right shoulder off the rear foot's step.", feet_free=[(0, 0.4167)])
 
     def heaven_cleave():
-        return melee("Guandao_L3", [K(0, **READY), body(0.09, "out", yaw=4, chest=6, pitch=-6, sink=-0.03, fwd=0.1), body(0.183, "whip", yaw=-10, chest=-14, pitch=12, sink=-0.32, fwd=-0.5, lf=(0.0, -1.05, 0, 0, 0), rf=(0.16, 0.3, 0, -28, 0)),
-                                    body(0.33, "out", yaw=-12, chest=-16, pitch=18, sink=-0.42, fwd=-0.58, lf=(0.0, -1.05, 0, 0, 0), rf=(0.16, 0.3, 0, -28, 0)), K(0.5167, "io", **READY)]
+        # (2026-11-09) phase 2 bows 6 deg less into the cleave: its corruption already pitches the chest 8 deg and the hips 6 further, so at the blow
+        # his chest leaned 40 deg down over hands at his belly and folded onto the right arm (0.19, f6, whatever the elbow); now 0.12, the blow as it was
+        return melee("Guandao_L3", [K(0, **READY), body(0.09, "out", yaw=4, chest=6, pitch=-6, sink=-0.03, fwd=0.1), body(0.183, "whip", yaw=-10, chest=-14, pitch=12 if phase == 1 else 6, sink=-0.32, fwd=-0.5, lf=(0.0, -1.05, 0, 0, 0), rf=(0.16, 0.3, 0, -28, 0)),
+                                    body(0.33, "out", yaw=-12, chest=-16, pitch=18 if phase == 1 else 12, sink=-0.42, fwd=-0.58, lf=(0.0, -1.05, 0, 0, 0), rf=(0.16, 0.3, 0, -28, 0)), K(0.5167, "io", **READY)]
                      + arc(0, 0.183, 0.33, 118, 46, FROM_OVERHEAD, aim=(0, -10), centre=(0.2, 0.34, -1.25)) + [K(0.5167, "io", rp=READY["rp"], haft=READY["haft"], face=READY["face"], rsl=RSL, lsl=LSL)],
                      "Heaven-Splitting Cleave: up over the head and straight down the server's line, a long step under it.", feet_free=[(0, 0.5167)])
 
     def green_dragon():
-        c = melee("Guandao_Heavy", [K(0, **READY), body(0.14, "io", yaw=26, chest=38, sink=-0.16, fwd=0.1), body(0.31, "io", yaw=42, chest=58, sink=-0.2, fwd=0.16, pitch=-2, rf=(0.2, 0.5, 0, -6, 0)),
-                                       body(0.383, "whip", yaw=4, chest=-4, sink=-0.3, fwd=-0.5, pitch=9, lf=(0.0, -1.15, 0, -2, 0), rf=(0.16, 0.34, 0, -32, 0)),
+        # (2026-11-09) phase 2 winds 82 deg, not 100, and bows less at the top of it: its corruption already pitches the chest 8 deg and the hips 6, and
+        # wound with both hands still out in front the lead arm crossed his chest (0.23-0.30, f7-9). Its blow eases in ("io"): whipped, the chest's
+        # unwind folded onto the right arm at the contact. The follow-through is carried 0.6 out to his right and 1.0 back, round with his chest:
+        # unwound 116 deg past the hands, the right arm held the glaive across his chest (0.37 keyed, f15-21, cleared or not by the bake by chance)
+        c = melee("Guandao_Heavy", [K(0, **READY), body(0.14, "io", yaw=26, chest=38, sink=-0.16, fwd=0.1), body(0.31, "io", yaw=42 if phase == 1 else 36, chest=58 if phase == 1 else 46, sink=-0.2, fwd=0.16, pitch=-2 if phase == 1 else -9, rf=(0.2, 0.5, 0, -6, 0)),
+                                       body(0.383, "whip" if phase == 1 else "io", yaw=4, chest=-4, sink=-0.3, fwd=-0.5, pitch=9, lf=(0.0, -1.15, 0, -2, 0), rf=(0.16, 0.34, 0, -32, 0)),
                                        body(0.56, "out", yaw=-46, chest=-70, sink=-0.36, fwd=-0.62, pitch=11, roll=-4, lf=(0.0, -1.15, 0, -2, 0), rf=(0.12, 0.26, 0, -62, 0)), K(0.8333, "io", **READY)]
-                     + arc(0.06, 0.383, 0.6, 130, 110, (-0.92, 0.38, 0.0), aim=(0, -14), whip=3.4, settle=4.4, centre=(0.32, 0.22, -1.4)) + [K(0.8333, "io", rp=READY["rp"], haft=READY["haft"], face=READY["face"], rsl=RSL, lsl=LSL)],
+                     # (2026-11-09) phase 2: 0.3 further forward and 0.18 out to his right with the lunge (hips 0.5-0.62 forward through the sweep):
+                     # his broader body's right arm 0.27 -> 0.18 in his chest at the contact and the lead hand's regrip no longer jumps (0.26 at f20); the blow lands
+                     # where it did (0.07). Further (0.6, -1.9) turned the wrist 118 deg and put the arm 0.32 in
+                     + carry(arc(0.06, 0.383, 0.6, 130, 110, (-0.92, 0.38, 0.0), aim=(0, -14), whip=3.4, settle=4.4, centre=(0.5, 0.22, -1.7) if phase == 2 else (0.32, 0.22, -1.4)), 0.42, 0.56, 0.6, 0.65, (0.6, 0.0, 1.0) if phase == 2 else (0.0, 0.0, 0.0)) + [K(0.8333, "io", rp=READY["rp"], haft=READY["haft"], face=READY["face"], rsl=RSL, lsl=LSL)],
                      "Green Dragon Reaping: winds until his back shows, then hips, chest and arms unwind in that order, and the blade carries his weight past the target.", feet_free=[(0, 0.8333)])
         # (2026-11-07) the lead hand runs down the haft into the blow (a sliding grip), then lets go as the blade carries on past him: no wrist can stay
         # on the wood through that follow-through (15-50 deg past its range). It swings free for balance and catches the haft again as he settles
@@ -213,7 +241,10 @@ def build(phase):
         return melee("Guandao_Running", [K(0, "lin", **start), body(0.1, "out", yaw=14, chest=22, pitch=8, sink=-0.2, fwd=-0.2, rf=(0.14, 0.15, 0.12, -14, 0), lf=(0, -0.55, 0, 2, 0)),
                                          body(0.217, "whip", yaw=-8, chest=-18, pitch=10, sink=-0.26, fwd=-0.6, lf=(0, -1.2, 0, 0, 0), rf=(0.14, 0.42, 0, -28, 0)),
                                          body(0.36, "out", yaw=-30, chest=-46, pitch=7, sink=-0.26, fwd=-0.66, lf=(0, -1.2, 0, 0, 0), rf=(0.14, 0.05, 0.15, -18, 0)), K(0.6, "io", **READY)]
-                     + arc(0, 0.217, 0.4, 92, 80, FROM_LOW_LEFT, aim=(0, -2)) + [K(0.6, "io", rp=READY["rp"], haft=READY["haft"], face=READY["face"], rsl=RSL, lsl=LSL)],
+                     # (2026-11-09) phase 2's cut goes forward with the run's lunge (hips 0.6 forward at the contact): his broader chest came onto his
+                     # arms holding it in front of his feet (right 0.18, left 0.23, f5-8); the blade lands 0.27 further along the lunge
+                     + arc(0, 0.217, 0.4, 92, 80, FROM_LOW_LEFT, aim=(0, -2), centre=(0.32, 0.22, -1.7) if phase == 2 else (0.32, 0.22, -1.2))
+                     + [K(0.6, "io", rp=READY["rp"], haft=READY["haft"], face=READY["face"], rsl=RSL, lsl=LSL)],
                      "Charging Crescent: out of the run the blade rises from his left hip across the server's lunge, and the run carries into the step.", feet_free=[(0, 0.6)])
 
     def cyclone():
@@ -273,16 +304,26 @@ def build(phase):
             body(1.85, "io", yaw=18, chest=28, pitch=5, sink=-0.32, fwd=-0.78, rf=(0.2, -0.3, 0, -8, 0), lf=(0, 0.1, 0, 10, 0)),
             body(2.1, "whip", yaw=-16, chest=-30, pitch=-1, sink=-0.12, fwd=-0.92, lf=(0, -0.9, 0, 0, 0), rf=(0.16, 0.36, 0, -26, 0)),
             body(2.5, "io", yaw=-2, chest=2, pitch=-8, sink=-0.05, fwd=-0.9, lf=(0, -0.9, 0, 0, 0), rf=(0.16, 0.36, 0, -26, 0)),
+            # (2026-11-09) the overhead finish lands 0.35 further forward, with his 1.1 lunge: left at -1.25 the hands came down at his belt and the lead
+            # forearm into his belly (0.18-0.20, f83-90; keyed 0.18 -> 0.11)
             body(2.75, "whip", yaw=-8, chest=-14, pitch=16, sink=-0.42, fwd=-1.1, lf=(0, -1.05, 0, 0, 0), rf=(0.16, 0.2, 0, -28, 0)),
             body(3.0, "out", yaw=-10, chest=-16, pitch=18, sink=-0.44, fwd=-1.12, lf=(0, -1.05, 0, 0, 0), rf=(0.16, 0.2, 0, -28, 0)),
             K(3.5, "io", **READY),
         ] + arc(0.24, 0.8, 1.02, 135, 50, FROM_HIGH_LEFT, aim=(2, -8), whip=2.6) + arc(1.2, 1.45, 1.66, 70, 55, FROM_HIGH_RIGHT, aim=(-4, -6), whip=1.8, link=True) + arc(1.84, 2.1, 2.3, 75, 60, FROM_LOW_LEFT, aim=(0, 2), whip=1.8, centre=(0.32, 0.5, -1.2), link=True)
-          + arc(2.48, 2.75, 3.0, 110, 40, FROM_OVERHEAD, aim=(0, -10), whip=2.0, centre=(0.2, 0.34, -1.25), link=True) + [K(3.5, "io", **back)],
+          + arc(2.48, 2.75, 3.0, 110, 40, FROM_OVERHEAD, aim=(0, -10), whip=2.0, centre=(0.2, 0.34, -1.6), link=True) + [K(3.5, "io", **back)],
             contacts=[0.8, 1.45, 2.1, 2.75], move="FlowingJian", feet_free=[(0, 3.5)], notes="Flowing Glaive: four linked curved cuts on the server's deflect pulses: a falling diagonal, its mirror on the way back, a rising cut, and an overhead finish, each flowing out of the last in a figure eight. Stable id FlowingJian.")
 
     def hesitant_moon():
         back = dict(rp=READY["rp"], haft=READY["haft"], face=READY["face"], rsl=RSL, lsl=LSL)
         high = arc(0.1, 0.6, 0.6001, 150, 0, FROM_HIGH_RIGHT, aim=(-10, 18), whip=1.0)
+        # (2026-11-09) the hang is the top of the falling cut itself: held at a pose of its own (haft up and to his left), the cut's first key 0.05 s
+        # later was 0.58 lower with the haft 45 deg round, one frame that carried the haft through his trunk and flipped the side it is cleared to
+        # (fist 0.61 out of line, f30-33, and the lead hand 0.33 short of the haft). And it falls from his right side: centred on his middle, the
+        # haft's line ran through his trunk all through the hang, so the fist was cleared to his left for six frames and then flipped to his right
+        # (0.62 in a frame, f36-37), where the blow then landed anyway. Centred 0.8 out the hang's fist was still past his reach: the solver drew it
+        # in and the butt into his belly, cleared behind his right hip on f26 and in front on f27 (0.56). Centred 1.0 out and 0.1 forward the butt
+        # hangs outside his hip through the hang and the fall (phase 1: fist pops 0.61 -> 0.14, arms 0.18/0.16 -> 0.17/0.15, grip held)
+        fall = arc(1.0, 1.3, 1.55, 78, 80, FROM_HIGH_RIGHT, aim=(-2, -8), whip=3.0, centre=(1.0, 0.22, -1.3))
         return clip("HesitantMoon", 2.15, [
             K(0, **READY),
             body(0.55, "io", yaw=-22, chest=-34, pitch=-4, sink=-0.1, fwd=0.1, rf=(0.2, 0.52, 0, -28, 0)),
@@ -290,9 +331,9 @@ def build(phase):
             body(1.3, "whip", yaw=-2, chest=-6, pitch=10, sink=-0.32, fwd=-0.48, lf=(0, -1.0, 0, 0, 0), rf=(0.16, 0.34, 0, -26, 0)),
             body(1.55, "out", yaw=28, chest=44, pitch=11, sink=-0.34, fwd=-0.54, lf=(0, -1.0, 0, 8, 0), rf=(0.16, 0.2, 0, -14, 0)),
             K(2.15, "io", **READY),
-        ] + arc(0.1, 0.6, 0.62, 130, 0, FROM_HIGH_RIGHT, aim=(-14, 44), whip=1.2, settle=1.0)[:-1]
-          + [K(0.95, "lin", rp=(0.62, 1.0, -0.95), haft=H(-30, 62), face=E(H(-30, 62), (-1, -0.2, -0.5)), rsl=RSL, lsl=LSL, lhw=1.0)]
-          + arc(1.0, 1.3, 1.55, 78, 80, FROM_HIGH_RIGHT, aim=(-2, -8), whip=3.0) + [K(2.15, "io", **back)],
+        ] + arc(0.1, 0.6, 0.62, 130, 0, FROM_HIGH_RIGHT, aim=(-14, 44), whip=1.2, settle=1.0, enter=0.3)[:-1]     # (2026-11-09) picked up over 0.3 s as he turns: in 0.15 the fist swung back past his right hip (forearm 0.18 in, f6)
+          + [K(0.95, "lin", **fall[0][1])]
+          + fall + [K(2.15, "io", **back)],
             contacts=[1.3], move="HesitantMoon", feet_free=[(0, 2.15)], notes="Hesitant Moon: the blade rises and hangs at the top of the cut longer than it should, so a deflect pressed at the expected moment is too early; then it falls from his right shoulder across his body.")
 
     def wheel_of_heaven():
@@ -307,7 +348,9 @@ def build(phase):
         keys += [K(0.08, "io", lhw=1.0), K(0.18, "out", lhw=0.0, lua=(-20, 0, -6), lfa=(-50, 0, 0), lha=(0, 0, 0)), K(0.84, "io", lhw=0.0), K(1.02, "in", lhw=1.0), K(0.92, "lin", rlk=1.0), K(1.0, "lin", rlk=0.0, rsl=RSL)]
         keys += [body(1.0, "io", yaw=30, chest=48, pitch=-2, sink=-0.12, fwd=0.05), body(1.35, "whip", yaw=-10, chest=-20, pitch=9, sink=-0.3, fwd=-0.46, lf=(0, -1.0, 0, 0, 0), rf=(0.16, 0.34, 0, -30, 0)),
                  body(1.73, "whip", yaw=26, chest=40, pitch=6, sink=-0.3, fwd=-0.7, rf=(0.2, -0.3, 0, -8, 0), lf=(0, -0.1, 0, 10, 0)), body(2.0, "out", yaw=34, chest=52, pitch=5, sink=-0.3, fwd=-0.72, rf=(0.2, -0.3, 0, -8, 0), lf=(0, -0.1, 0, 10, 0)), K(2.6, "io", **READY)]
-        keys += arc(1.0, 1.35, 1.5, 120, 62, FROM_HIGH_LEFT, aim=(2, -6), whip=2.4) + arc(1.53, 1.73, 2.0, 60, 80, FROM_LOW_RIGHT, aim=(-4, 2), whip=1.6) + [K(2.6, "io", **back)]
+        # (2026-11-09) both cuts go forward with his lunge (0.46, then 0.7 forward of his feet): left in front of his feet, the lead arm folded into
+        # his chest to hold the haft between them (0.19, f44-49) and the right 0.17; 0.25 and 0.4 further forward both stand clear (0.14 / 0.14)
+        keys += arc(1.0, 1.35, 1.5, 120, 62, FROM_HIGH_LEFT, aim=(2, -6), whip=2.4, centre=(0.32, 0.22, -1.45)) + arc(1.53, 1.73, 2.0, 60, 80, FROM_LOW_RIGHT, aim=(-4, 2), whip=1.6, centre=(0.32, 0.22, -1.6)) + [K(2.6, "io", **back)]
         return clip("WheelOfHeaven", 2.6, keys, contacts=[1.35, 1.73], move="WheelOfHeaven", feet_free=[(0, 2.6)], notes="Wheel of Heaven: two full pinwheels of the glaive beside him, then the left hand catches it and two cuts come close together, a falling diagonal and a rising return.")
 
     def pinwheel_fist(x, y, z):
@@ -320,20 +363,25 @@ def build(phase):
         keys = [K(0, **READY), body(0.3, "io", yaw=-8, chest=-12, pitch=0, sink=-0.05, lf=(0, -0.42, 0, 0, 0)), body(1.0, "io", yaw=-4, chest=-6, pitch=0, sink=-0.05, lf=(0, -0.42, 0, 0, 0)), K(1.6, "io", **READY)]
         for i in range(33):
             t = 0.12 + i * (1.2 - 0.12) / 32
-            a = 200 + i / 32 * 1080
-            d = L.unit(np.array([0.3, math.cos(math.radians(a)), math.sin(math.radians(a))]))
+            a = 270 + i / 32 * 1080     # (2026-11-09) from and back to the guard's line, haft forward: ended pointing at the ground (200), the catch slid the weapon 1.7 down through the fist into the floor, so the fist went 1.5 behind his back instead (f34-41, a 0.33 pop)
+            # (2026-11-09) the wheel leans further out as the blade goes behind him (0.3 -> 0.75 at its back): leaning 0.3 the whole way, the
+            # solver swung the haft 30-50 deg out for the two frames the blade passed behind his shoulder and back (phase 2 blade line 0.69 and edge
+            # 0.70 out of line f19-20); keyed where it has to go, nothing jumps (both phases pass)
+            d = L.unit(np.array([0.3 + 0.45 * max(0.0, math.sin(math.radians(a))), math.cos(math.radians(a)), math.sin(math.radians(a))]))
             keys.append(K(t, "lin", rp=pinwheel_fist(0.95, 0.45, -0.5), rsl=-0.1, haft=tuple(d), face=E(d, (0.2, -math.sin(math.radians(a)), math.cos(math.radians(a)))), rlk=1.0, rhx=H(-20, 30)))
         keys += [K(0.1, "io", lhw=1.0), K(0.22, "out", lhw=0.0, lua=(-16, 0, -6), lfa=(-44, 0, 0), lha=(0, 0, 0)), K(1.14, "io", lhw=0.0), K(1.32, "in", lhw=1.0), K(1.22, "lin", rlk=1.0, rsl=-0.1), K(1.34, "lin", rlk=0.0, rsl=RSL),
                  K(1.6, "io", rp=READY["rp"], haft=READY["haft"], face=READY["face"], lsl=LSL)]
         return clip("Flourish", 1.6, keys, contacts=[0.6], feet_free=[(0, 1.6)], notes="Three unhurried pinwheels of the glaive, caught back into both hands; plays between exchanges so the pause is never the same twice.")
 
     def feint():
+        # (2026-11-09) the blade is picked up out of the guard over 0.3 s (enter), not the default 0.144: the whole body commits over half a second,
+        # and lifted 150 deg in four frames the haft flipped 110 deg between f3 and f4 and drew the right arm across his chest (phase 2 0.26-0.29)
         back = dict(rp=READY["rp"], haft=READY["haft"], face=READY["face"], rsl=RSL, lsl=LSL)
         return clip("Feint", 1.05, [K(0, **READY),
                                     body(0.32, "io", yaw=28, chest=44, sink=-0.14, fwd=0.04, rf=(0.2, 0.5, 0, -12, 0)),
                                     body(0.52, "out", yaw=10, chest=8, pitch=9, sink=-0.26, fwd=-0.28, lf=(0, -0.72, 0, 0, 0), rf=(0.16, 0.4, 0, -26, 0)),
                                     body(0.72, "io", yaw=-10, chest=-6, pitch=3, sink=-0.1, fwd=0.05, lf=(0, -0.4, 0, 2, 0)), K(1.05, "io", **READY)]
-                    + arc(0.04, 0.52, 0.52001, 150, 0, FROM_HIGH_LEFT, aim=(-10, 26), whip=1.6, settle=1.0, centre=(0.4, 0.3, -1.45))[:-1] + [K(1.05, "io", **back)],
+                    + arc(0.04, 0.52, 0.52001, 150, 0, FROM_HIGH_LEFT, aim=(-10, 26), whip=1.6, settle=1.0, centre=(0.4, 0.3, -1.45), enter=0.3)[:-1] + [K(1.05, "io", **back)],
                     contacts=[0.52], feet_free=[(0, 1.05)], notes="A cut that never comes: the whole body commits, the blade stops short at the top and he settles back. No warning is shown, because nothing is thrown.")
 
     def prayer_beads():
@@ -365,12 +413,16 @@ def build(phase):
         back = dict(rp=READY["rp"], haft=READY["haft"], face=READY["face"], rsl=RSL, lsl=LSL)
         return clip("BloodWave", 2.15, [
             K(0, **READY),
-            body(0.35, "io", yaw=30, chest=46, pitch=10, sink=-0.36, fwd=0.04),
-            body(1.0, "in", yaw=4, chest=-4, pitch=14, sink=-0.44, fwd=-0.3, lf=(0, -0.7, 0, 0, 0)),
+            # (2026-11-09) the trunk winds as the hands take the blade back, not ahead of them: keyed at 0.35 s it had turned 52 deg by f9 with the
+            # glaive still at the guard, the fist beside his ribs and the right arm 0.31 into his chest (f8-10); at 0.5 s it is 0.18
+            body(0.5, "io", yaw=30, chest=46, pitch=10, sink=-0.36, fwd=0.04),
+            # (2026-11-09) the haul bows 8 deg, not 14, and the lead hand chokes up (span 1.6): with phase 2's chest already pitched 8 deg the lead
+            # arm folded into it as the edge dragged past his left knee (0.20, f17-29); now 0.17 / 0.16 with the grip on the haft (0.048 -> 0.005)
+            body(1.0, "in", yaw=4, chest=-4, pitch=8, sink=-0.44, fwd=-0.3, lf=(0, -0.7, 0, 0, 0)),
             body(1.1, "whip", yaw=-22, chest=-36, pitch=-2, sink=-0.1, fwd=-0.46, lf=(0, -0.7, 0, 0, 0), rf=(0.16, 0.38, 0, -36, 0)),
             body(1.45, "out", yaw=-26, chest=-44, pitch=-6, sink=-0.05, fwd=-0.48, lf=(0, -0.7, 0, 0, 0), rf=(0.16, 0.38, 0, -36, 0)),
             K(2.15, "io", **READY),
-        ] + arc(0.2, 1.1, 1.45, 104, 84, FROM_LOW_LEFT, aim=(4, -10), centre=(0.3, -0.05, -1.05), whip=2.6) + [K(2.15, "io", **back)],
+        ] + arc(0.2, 1.1, 1.45, 104, 84, FROM_LOW_LEFT, aim=(4, -10), centre=(0.3, -0.05, -1.05), whip=2.6, span=1.6) + [K(2.15, "io", **back)],
             contacts=[1.1], move="BloodWave", feet_free=[(0, 2.15)], scrape=True, notes="The glaive's edge drags from his left, the whole body hauling it, then whips up and casts the low wave on the server's start.")
 
     def rending_arc():
@@ -379,11 +431,21 @@ def build(phase):
             K(0, **READY),
             body(0.6, "io", yaw=30, chest=48, sink=-0.12, fwd=0.1),
             body(0.9, "whip", yaw=-14, chest=-26, pitch=12, sink=-0.3, fwd=-0.6, lf=(0, -0.8, 0, 0, 0)),
-            body(1.32, "whip", yaw=16, chest=24, pitch=10, sink=-0.3, fwd=-0.9, rf=(0.1, -0.2, 0, 0, 0)),
+            body(1.32, "whip", yaw=16, chest=24, pitch=10 if phase == 1 else 4, sink=-0.3, fwd=-0.9, rf=(0.1, -0.2, 0, 0, 0)),
             body(1.7, "io", yaw=-6, chest=-4, pitch=-6, sink=-0.05, fwd=-0.9, rf=(0.1, -0.2, 0, 0, 0)),
-            body(1.95, "whip", yaw=-12, chest=-20, pitch=16, sink=-0.44, fwd=-1.2, lf=(0, -1.0, 0, 0, 0)),
+            body(1.95, "whip", yaw=-12, chest=-20, pitch=16 if phase == 1 else 8, sink=-0.44, fwd=-1.2, lf=(0, -1.0, 0, 0, 0)),
             K(2.6, "io", **READY),
-        ] + arc(0.24, 0.9, 1.04, 135, 74, FROM_HIGH_LEFT, aim=(2, -8), whip=2.4) + arc(1.16, 1.32, 1.46, 70, 70, FROM_HIGH_RIGHT, aim=(-4, -6), whip=1.5) + arc(1.7, 1.95, 2.15, 100, 40, FROM_OVERHEAD, aim=(0, -10), whip=3.0, centre=(0.2, 0.34, -1.25)) + [K(2.6, "io", **back)],
+        # (2026-11-09) the second and third cuts go forward with his lunge (0.9 and 1.2 forward of his feet there): left in front of his feet, his
+        # arms folded against his chest to hold them and the solver drew both fists up and back to his shoulders (phase 2: right 0.35 and left
+        # 0.38 inside his chest, f34-39). The second also comes from out to his right, where it starts. Moving the first cut forward too put the
+        # right arm 0.36 in (f20-25); left where it was. Instead (phase 2) its approach is carried 0.3 left and forward, where his chest faces
+        # (still turned 42-48 deg from the wind-up, f21-24: right 0.20, left 0.20), and back onto the cut by the blow; the lead hand chokes up the
+        # haft for the second (1.8 from the fist: the left arm 0.22 -> 0.09 at its blow, f40); the overhead's wind-up rises 0.4 (right 0.23, f54).
+        # Phase 2 bows 6 deg less into the second blow and 8 less into the third: with the corruption's 8 his chest folded onto the right arm
+        # (keyed 0.18 at f40, 0.25-0.32 at f58-64), and the bake cleared the third or not depending on the rest of the clip (0.37 when the second moved)
+        ] + carry(arc(0.24, 0.9, 1.04, 135, 74, FROM_HIGH_LEFT, aim=(2, -8), whip=2.4), 0.45, 0.65, 0.78, 0.9, (-0.3, 0.0, -0.3) if phase == 2 else (0.0, 0.0, 0.0))
+          + arc(1.16, 1.32, 1.46, 70, 70, FROM_HIGH_RIGHT, aim=(-4, -6), whip=1.5, centre=(0.6, 0.22, -1.7), span=1.8 if phase == 2 else 1.2)
+          + carry(arc(1.7, 1.95, 2.15, 100, 40, FROM_OVERHEAD, aim=(0, -10), whip=3.0, centre=(0.2, 0.34, -2.0)), 1.62, 1.75, 1.82, 1.93, (0.2, 0.4, 0.0) if phase == 2 else (0.0, 0.0, 0.0)) + [K(2.6, "io", **back)],
             contacts=[0.9, 1.32, 1.95], move="RendingArc", feet_free=[(0, 2.6)], notes="Rending Arc: three cuts in a broken rhythm, the third held back so the third deflect has to wait for it.")
 
     def phantom_drift():
@@ -394,7 +456,9 @@ def build(phase):
             K(1.0, "whip", pel=(0, -0.2, -0.62), pelR=(26, -10, 0), chest=(14, -20, 0), neck=(-30, 26, 0), rf=(0.2, 1.0, 0, 0, 0), lf=(0, 0.65, 0, 0, 0)),
             K(1.3, "out", pel=(0, -0.2, -0.7), pelR=(22, -30, -4), chest=(12, -50, 4), neck=(-26, 44, 0), rf=(0.2, 1.0, 0, 0, 0), lf=(0, 0.65, 0, 0, 0)),
             K(2.0, "io", **READY),
-        ] + arc(0.25, 1.0, 1.32, 125, 80, FROM_HIGH_LEFT, aim=(0, -14), whip=2.8) + [K(2.0, "io", **back)],
+        # (2026-11-09) the cut goes forward with his glide (his hips 0.62 forward of his feet at the contact): left in front of his feet his arms
+        # folded against his chest to reach it (phase 2: right 0.20, f27-28)
+        ] + arc(0.25, 1.0, 1.32, 125, 80, FROM_HIGH_LEFT, aim=(0, -14), whip=2.8, centre=(0.32, 0.22, -1.7)) + [K(2.0, "io", **back)],
             contacts=[1.0], move="PhantomDrift", feet_free=[(0, 2.0)], notes="Phantom Drift: he leans back and hangs in the air, then glides through the server's lunge with his legs trailing and the blade falling across him.")
 
     def skyfall():
@@ -416,14 +480,22 @@ def build(phase):
         back_w = dict(rp=(0.75, -0.2, 0.55), haft=H(75, -28), face=E(H(75, -28)), rsl=-0.2)
         return clip("CrimsonEmbrace", 2.4, [
             K(0, **READY),
-            K(0.25, "io", lhw=1.0),
+            # (2026-11-09) the grip and the reach hand over from 0.12 s together: with the grip held to 0.25 s the glaive had swung half way back with the
+            # hand still on it (1.17 off the haft); with the reach rising from 0 s under a full grip the hand drifted 0.29 off the wood before letting go
+            K(0.12, "io", lhw=1.0, ltw=0.0),
             K(0.5, "io", lhw=0.0, ltw=0.85, pel=(0, -0.05, 0.22), pelR=(-6, -18, 0), chest=(-10, -26, 0), neck=(4, 30, 0), lt=(-0.75, -0.2, 0.15), lelb=(-0.8, -0.1, 0.5), **back_w),
             K(0.98, "io", pel=(0.02, -0.1, 0.3), pelR=(-8, -20, 0), chest=(-13, -30, 0), neck=(6, 34, 0), lt=(-0.8, 0.0, 0.25)),
             K(1.2, "whip", pel=(0, -0.3, -1.1), pelR=(22, 12, 0), chest=(18, 26, 0), neck=(-18, -30, 0), ltw=1.0, lt=(0.5, 0.1, -1.46), lelb=(-0.5, -0.8, 0.1), rf=(0.2, 0.8, 0, 0, 0), lf=(0, 0.3, 0, 0, 0), rp=(1.0, -0.15, -0.55), haft=H(70, -26), face=E(H(70, -26))),
             # (2026-11-09) the grip comes back only once the reach is spent: ramping in from 0.5 s, it was already 0.75 at 1.33 s, with the haft still held
             # back in the right hand behind him, and the trunk wound round to bring the lead hand to it (both arms 0.38 in his chest, the hand 1.2 off the haft)
-            K(1.4, "out", lhw=0.0, pel=(0, -0.32, -1.2), pelR=(24, 16, 0), chest=(20, 32, 0), neck=(-18, -36, 0), lt=(0.55, -0.15, -1.25), rp=(1.0, -0.2, -0.65), haft=H(70, -26), face=E(H(70, -26))),
-            K(1.85, "io", pel=(0, -0.2, -0.65), pelR=(9, 0, 0), chest=(9, 0, 0), neck=(-8, 8, 0), ltw=0.0, lhw=1.0, rp=READY["rp"], haft=READY["haft"], face=READY["face"], rsl=RSL, lsl=LSL),
+            # (2026-11-09) the trailing glaive goes with the lunge: keyed 0.65 out while his hips went 1.2 out and his chest turned 50 deg, the fist sat
+            # behind the middle of his back (chest frame x 0.24, 0.55 behind) and the straight right arm ran through it (0.32 deep, f37-39); here it
+            # trails beside his right hip. The guard he comes back to is the guard of his own lunging body (READY's fist 0.65 further out with his hips)
+            K(1.4, "out", lhw=0.0, ltw=1.0, pel=(0, -0.32, -1.2), pelR=(24, 16, 0), chest=(20, 32, 0), neck=(-18, -36, 0), lt=(0.55, -0.15, -1.25), rp=(1.0, -0.4, -1.75), haft=H(70, -26), face=E(H(70, -26))),
+            # (2026-11-09) and the lead hand takes the haft once the glaive is back in front of him: gripping from 1.4 s, its pull drew the weapon in
+            # toward his left shoulder while it was still out to his right, the fist went in behind his hip and the right arm 0.28 into him (f48-50)
+            K(1.62, "io", lhw=0.1, ltw=0.9),
+            K(1.85, "io", pel=(0, -0.2, -0.65), pelR=(9, 0, 0), chest=(9, 0, 0), neck=(-8, 8, 0), ltw=0.0, lhw=1.0, rp=(READY["rp"][0], READY["rp"][1], READY["rp"][2] - 0.65), haft=READY["haft"], face=READY["face"], rsl=RSL, lsl=LSL),
             K(2.4, "io", **READY),
         ], contacts=[1.2], move="CrimsonEmbrace", feet_free=[(0, 2.4)], notes="The one move where a hand leaves the haft: the clawed left arm reaches with the whole torso behind it while the glaive swings back in the right. Cosmetic only: nothing attaches to a player.")
 
@@ -559,6 +631,10 @@ def build(phase):
             held = carried(-8.0 - 10.0 - YAW["pel"] - YAW["chest"])      # his hips and chest face -8 and -10 here: the guard turns with them
             hf = nod @ L.unit(np.array(held["haft"]) + np.array((0.0, -0.1, 0.0)))
             r0 = np.array(held["rp"])
+            # (2026-11-09) past a 20 deg lean the hands go forward and down with his chest (0.45 and 0.1 at the run's 38): held where the walk holds
+            # them, his chest came down onto his arms (phase 2 run: right 0.20 and left 0.22 inside it for most of the loop; 0.3 forward alone, 0.33)
+            dive = max(0.0, lean - 20.0) / 18.0
+            r0 = r0 + np.array([0.0, -0.1 * dive, -0.45 * dive])
             k = dict(pel=(0.03 * s, 0.02 * c2 - 0.05 * abs(lean) / 20, -lean * 0.012), pelR=(lean * 0.9 + 1.5 * s, -8 + 2 * math.cos(a), roll + 2.2 * s), chest=(lean * 0.3 - 1.2 * c2, -10 - 2.5 * math.cos(a), -roll * 0.5), neck=(-lean * 1.15, 18 + 2 * math.sin(a * 2), 0),
                      rf=(0.05, 0.24 + trail + 0.1 * math.sin(a + 0.6), tuck, 0, 0), lf=(-0.03, -0.1 + trail - 0.12 * math.sin(a + 0.6), tuck * 0.4, 0, 0), rknee=(0.1, 0, -1.0), lknee=(-0.1, 0, -1.0),
                      rp=tuple(r0 + np.array([0.02 * s, 0.03 * c2, -0.02 * math.cos(a) - lean * 0.008])), haft=tuple(hf), face=E(hf), rsl=RSL, lsl=LSL, lhw=1.0, relb=READY["relb"], lelb=READY["lelb"])
@@ -675,7 +751,10 @@ def build(phase):
                  priority="Action3", feet_free=[(0, 1)], airborne=floating, authored_feet=True, notes="Stance broken: thrown back, the levitation fails if he had it, and he sinks to his right knee on the haft, still holding it in both hands."),
             Clip(rg, P + "DeathblowVictim", 2.2, [K(0, **knee), K(0.22, "snap", pel=(0.05, -0.8, 0.32), pelR=(-9, 4, 0), chest=(-14, 6, 0), neck=(15, 0, 0)), K(0.9, "io", pel=(0.05, -0.92, 0.28), pelR=(3, 4, 0), chest=(20, 6, 0), neck=(0, 0, 0)),     # (2026-11-08) bowed from the spine (see knee)
                                                   K(1.5, "in", pel=(0.05, -1.02, 0.16), pelR=(9, 4, 0), chest=(40, 6, 0), neck=(-14, 0, 0), **bowed), K(2.2, "io", pel=(0.05, -1.06, 0.12), pelR=(12, 4, 0), chest=(46, 6, 0), neck=(-20, 0, 0), **bowed)],
-                 priority="Action4", feet_free=[(0, 2.2)], authored_feet=True, notes="Takes the deathblow on the knee: head snaps back, then the old body bows over the haft."),
+                 priority="Action4", feet_free=[(0, 2.2)], authored_feet=True, notes="Takes the deathblow on the knee: head snaps back, then the old body bows over the haft.",
+                 # (2026-11-09) the blow drives the corruption out of him (as Death lets it go when he falls): phase 2's layer pitched his chest 8 deg
+                 # and hips 6 further into the bow, onto his right arm (0.27 in his chest f21-25, every fist placement tried 0.27-0.34); phase 1's bow is clear
+                 uncorrupt=(0.05, 0.6)),
             death(),
         ]
 

@@ -42,6 +42,29 @@ def lerp_pose(a, b, u):
     return out
 
 
+def fade_pose(a, b, u, phase):
+    """(2026-11-09) The Animator's fade from one clip to the next: each joint's own transform (relative to its parent part) mixed, then the parts
+    placed down the chain from the root, as Motor6D.Transform blends in the game. lerp_pose on the parts' places moved a hand along the straight
+    line between its two spots, through his chest where the arm swings round him; the clip boundary checks judged that line, not the game's arc."""
+    sys.path.insert(0, str(ROOT / "tools/blender/shen_import"))
+    import rigdef as RD
+    parent = {k: v[0] for k, v in RD.JOINT[phase].items()}
+    parent.update({k: v[0] for k, v in RD.HELPER[phase].items()})
+    out = {}
+    for k in ["HumanoidRootPart"] + [j for j in parent if j != "HumanoidRootPart"] + [j for j in a if j not in parent and j != "HumanoidRootPart"]:
+        if k not in a or k not in b:
+            if k in a or k in b:
+                out[k] = a[k] if k in a else b[k]
+            continue
+        p = parent.get(k)
+        if p in out and p in a and p in b:
+            rel = lerp_pose({k: np.linalg.inv(a[p]) @ a[k]}, {k: np.linalg.inv(b[p]) @ b[k]}, u)[k]
+            out[k] = out[p] @ rel
+        else:
+            out[k] = lerp_pose({k: a[k]}, {k: b[k]}, u)[k]
+    return out
+
+
 def sequence(phase, plan, fade=0.2):
     """plan: (clip, seconds or None, speed studs/s along his facing, turn deg/s, options). Returns poses and root path at 30 fps."""
     frames, roots = [], []
@@ -65,7 +88,7 @@ def sequence(phase, plan, fade=0.2):
             i1 = min(i0 + 1, len(src) - 1)
             pose = lerp_pose(src[i0], src[i1], f - int(f))
             if last is not None and t < fade:
-                pose = lerp_pose(last, pose, (t / fade) ** 2 * (3 - 2 * t / fade))
+                pose = fade_pose(last, pose, (t / fade) ** 2 * (3 - 2 * t / fade), phase)
             sp = speed(t) if callable(speed) else speed
             tn = turn(t) if callable(turn) else turn
             yaw += math.radians(tn) / FPS

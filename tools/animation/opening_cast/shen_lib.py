@@ -33,8 +33,24 @@ PROTRACT = 0.25         # rig units a shoulder joint may glide toward its hand (
 # were in his chest, 0.35 on the lead arm took its worst from 0.295 avg to 0.208 (Strike 0.29 -> 0.16, Heavy 0.38 -> 0.21, Flourish 0.31 -> 0.14;
 # Crimson Embrace and Rending Arc unmoved at 0.37-0.38); the fist's shoulder gliding as well moved its right arm both ways (L2 0.25 -> 0.20, Skyfall 0.21 -> 0.29, PostureBreak 0.10 -> 0.23)
 XPRO = float(os.environ.get("SHEN_XPRO", "0.35"))
+PRO_MEDIAL = float(os.environ.get("SHEN_PRO_MEDIAL", "0.0"))
+PRO_SIDES = os.environ.get("SHEN_PRO_SIDES", "LR")
+PRO_FLOOR = float(os.environ.get("SHEN_PRO_FLOOR", "0.1"))
+PRO_YW = float(os.environ.get("SHEN_PRO_YW", "0.3"))
 XPRO_DIR = [float(v) for v in os.environ.get("SHEN_XPRO_DIR", "0.3,0.15").split(",")]     # its share toward his middle and up, per unit forward
 XPRO_SIDES = os.environ.get("SHEN_XPRO_SIDES", "L")     # which shoulders glide: L the lead (left) arm's, R the fist's
+
+
+def protract_dir(Rch, want, side):
+    """(2026-11-09) Which way a shoulder glides toward a hand out of reach: forward round the ribs, or out, a little up, but not in toward his middle.
+    Straight at a hand across his front, the joint went 0.3 in toward his breastbone and took the upper arm into his chest with it (phase 2's Blood
+    Wave f21-27 lead arm 0.37 deep, where moving the whole weapon 0.8 still left 0.22). side: +1 right arm, -1 left."""
+    d = Rch.T @ unit(want)
+    if ("R" if side > 0 else "L") in PRO_SIDES and -d[0] * side > 0.0:
+        d[0] *= PRO_MEDIAL
+    d = d * np.array([1.0, PRO_YW, 1.0])
+    n = float(np.linalg.norm(d))
+    return Rch @ (d / n) * min(1.0, n / PRO_FLOOR) if n > 1e-6 else np.zeros(3)
 
 
 def cross_glide(Rch, shoulder, target, side):
@@ -306,6 +322,13 @@ class Rig:
             P, W, B = sk[part + "_P"][::k].astype(float), sk[part + "_W"][::k].astype(float), sk[part + "_B"][::k]
             self.BODY_PTS[part] = P
             self.SKIN[part] = (P, [(bones[b], (W * (B == b)).sum(1)) for b in np.unique(B) if float((W * (B == b)).sum()) > 1e-6])
+        # (2026-11-09) and every sample of the arms, for judging an arm in his torso (validate, joint_polish): on the thinned upper arm (every other
+        # sample) a solve could leave the skin between the samples deep: phase 2's Crimson Embrace f48 measured 0.171 thinned, 0.199 on every
+        # sample and 0.219 on the mesh itself (review.py's x-ray)
+        self.SKIN_FULL = {}
+        for part in ("RightUpperArm", "RightLowerArm", "RightHand", "LeftUpperArm", "LeftLowerArm", "LeftHand"):
+            P, W, B = sk[part + "_P"].astype(float), sk[part + "_W"].astype(float), sk[part + "_B"]
+            self.SKIN_FULL[part] = (P, [(bones[b], (W * (B == b)).sum(1)) for b in np.unique(B) if float((W * (B == b)).sum()) > 1e-6])
         # where each part's solid counts: its nearest own surface follows its own bone (as the mesh check judges it); see sdf_depth()
         # only the arms: the solid there wrongly includes the heel of the palm and the wrist crease; the torso's and legs' solids stay whole (erring
         # toward more clearance), since a haft through the belly could slip between skin samples
@@ -396,7 +419,10 @@ def _across(forearm, axis, fallback):
     return out / max(float(np.linalg.norm(out)), 1e-6)
 
 
-DIRECTION = {"haft", "face", "relb", "rknee", "lknee", "lelb", "rhx"}
+# (2026-11-09) channels interpolated as unit vectors. Only the blade's edge: cuts key it as a 2-degree difference of the haft (length 0.035), and
+# splined against the guard's unit edge its direction swung ~90 deg for a frame at the end of most cuts. The haft and the elbow and knee poles were
+# tried too: their keys' lengths shape the in-betweens, and unit keys put phase 2 Death's right arm back in his chest (0.14 -> 0.19, f40-44)
+DIRECTION = {"face"}
 FEET = {"rf", "lf"}
 EASE = {
     "lin": lambda u: u, "in": lambda u: u * u, "out": lambda u: 1 - (1 - u) * (1 - u), "io": lambda u: u * u * (3 - 2 * u),
@@ -446,11 +472,14 @@ class Clip:
             return np.asarray(self.rig.REST[name], float)
         if self.loop and keyed[-1][0] < self.length - 1e-6:
             keyed = keyed + [(self.length, keyed[0][1], keyed[0][2])]
+        # (2026-11-09) a direction is interpolated as a unit vector: the cuts key the blade's edge as a 2-degree difference of the haft (length
+        # 0.035), and splined against the guard's unit edge its direction swung, an edge turned 90 deg for one frame and back at the end of
+        # nearly every cut (Strike f22, Feint f15, Rending Arc f64)
+        vals = [unit(np.asarray(k[1], float)) if name in DIRECTION else np.asarray(k[1], float) for k in keyed]
         if t <= keyed[0][0]:
-            return np.asarray(keyed[0][1], float)
+            return vals[0]
         if t >= keyed[-1][0]:
-            return np.asarray(keyed[-1][1], float)
-        vals = [np.asarray(k[1], float) for k in keyed]
+            return vals[-1]
         for i in range(len(keyed) - 1):
             t0, t1 = keyed[i][0], keyed[i + 1][0]
             if t <= t1:
@@ -459,6 +488,8 @@ class Clip:
                 if np.allclose(p1, p2, atol=1e-6):
                     out = p1
                 else:
+                    # (tangents scaled by the keys' spacing in time were tried: no edge flip they fixed that unit keys had not, and they changed
+                    # every cut's return to the guard enough to put arms back in the chest in five clips that passed)
                     p0 = vals[i - 1] if i > 0 else (vals[-2] if self.loop else p1)
                     p3 = vals[i + 2] if i + 2 < len(vals) else (vals[1] if self.loop else p2)
                     m1 = np.zeros_like(p1) if np.allclose(p0, p1, atol=1e-6) else (p2 - p0) * 0.5
@@ -711,7 +742,7 @@ class Clip:
         away = rp - S
         far = float(np.linalg.norm(away))
         if far > arm_len:   # (2026-11-06) the right shoulder blade glides toward a fist out of reach first, up to PROTRACT
-            extra = unit(away * np.array([1.0, 0.5, 1.0])) * min(far - arm_len, PROTRACT)
+            extra = protract_dir(Rch, away, 1) * min(far - arm_len, PROTRACT)
             rpro = rpro + extra
             S = S + extra
             away = rp - S
@@ -739,7 +770,7 @@ class Clip:
             want = rg.lead_point(rp, haft, face, sl, rsl) - SL
             gap = float(np.linalg.norm(want)) - maxr
             if gap > 0:
-                extra = unit(want * np.array([1.0, 0.5, 1.0])) * min(gap, PROTRACT)
+                extra = protract_dir(Rch, want, -1) * min(gap, PROTRACT)
                 lpro = lpro + extra
                 SL = SL + extra
             c["_lgap"] = max(float(np.linalg.norm(rg.lead_point(rp, haft, face, sl, rsl) - SL)) - maxr, 0.0)
@@ -883,11 +914,13 @@ class Clip:
         clear_torso(self, ctrl, times)
         slide_fist(self, ctrl)
         tilt_haft(self, ctrl, times)
-        # (2026-11-09) the passes after the first settle move the weapon (clear_torso, slide_fist, tilt_haft) and the solver corrects what that carries
-        # into him on each frame alone: settle those corrections too, or the final solve puts them in one frame at a time
-        settle(self, ctrl)
+        # (2026-11-09) no settle here: smoothing the solver's corrections once more spread its neighbours' weapon over the frames clear_torso had
+        # placed (phase 1's Death: right arm 0.02 -> 0.22 in his chest at f33) and changed no pop that depop does not take out
+        if os.environ.get("SHEN_FINAL_SETTLE") == "1":
+            settle(self, ctrl)
         depop(self, ctrl, times)
         close_loop(self, ctrl)
+        joint_polish(self, ctrl, times)     # (2026-11-09) the runs of frames the passes above still leave past the wall, solved together (SLSQP)
         out = []
         self._side = {}
         for t, c in zip(times, ctrl):
@@ -1292,7 +1325,12 @@ def spine_reach(clip, ctrl, sigma=2.0, passes=2):
             norm = gy * gy + gp * gp
             if norm < 1e-8:
                 continue
-            add[i] = (-g0 * gy / norm, -g0 * gp / norm)
+            # (2026-11-09) by as much as the hand is on the haft (its share of the arm, as left_grip weighs it): the whole step from the first
+            # hundredth of a regrip turned the trunk its full limit while the hand was still mostly on its reach, and in phase 2's Crimson Embrace
+            # (1.4-1.85 s) the chest, 50 deg round on his hips, carried the right shoulder past a fist out front: the right arm 0.37 into his back
+            hold, reach = float(np.clip(c.get("lhw", 0.0), 0, 1)), float(np.clip(c.get("ltw", 0.0), 0, 1))
+            share = hold * hold * (1.0 - (reach / (hold + reach) if reach > 0 else 0.0))
+            add[i] = (-g0 * gy / norm * share, -g0 * gp / norm * share)
         if not add.any():
             return
         smooth = np.zeros_like(add)
@@ -1523,15 +1561,20 @@ def swivel(clip, ctrl):
                     ar = math.radians(a)
                     ru0_, rl0_, reached0 = two_bone(S, w0, u0, l0, pole0, k0 * math.cos(ar) + s0 * math.sin(ar), "x", {"x": 0.0})
                     el0 = S + ru0_ @ u0
-                    tor[e] = arm_torso_pose(rg, hand_side, {hand_side + "UpperArm": (ru0_, S), hand_side + "LowerArm": (rl0_, el0), hand_side + "Hand": (Rh0, w0),
+                    tor[e] = arm_torso_pose(rg, hand_side, {hand_side + "UpperArm": (ru0_, S), hand_side + "LowerArm": (rl0_, el0),
                                                             "UpperTorso": needs[i]["_chest"], "LowerTorso": needs[i]["_pelvis"]})
-            torc = TORSO_COST * np.maximum(0.0, tor - ARM_TORSO_REST)
+            # (2026-11-09) the hand is weighed for each turn of the fist, not with the untilted grip: the turns move the wrist a few hundredths but
+            # roll the knuckles a hand's width, and phase 2 Heavy's swivel turned the fist so the right hand lay 0.25 inside his chest just before
+            # the blow (f11, 0.10 before it), every elbow turn costed with a hand that was not there
+            htor = np.zeros(G)
             for g in range(G):
                 slant = GRIP_SLANTS[g // len(GRIP_TURNS)]
                 Rh = rodrigues(axis * GRIP_TURNS[g % len(GRIP_TURNS)]) @ short_arc(slanted(rg, axis0, hand_side, slant), axis)
                 Hi.append(Rh)
                 Qi[g] = ZR.quat(Rh)
                 wrist = grip - Rh @ v0
+                if "_chest" in needs[i] and "_pelvis" in needs[i]:
+                    htor[g] = arm_torso_pose(rg, hand_side, {hand_side + "Hand": (Rh, wrist), "UpperTorso": needs[i]["_chest"], "LowerTorso": needs[i]["_pelvis"]})
                 hclash = hand_clash(rg, hand_side, Rh, wrist, place)     # the hand rides the haft: one look per grip turn
                 d = unit(wrist - S)
                 keyed = orth(pole_base, d)
@@ -1552,7 +1595,7 @@ def swivel(clip, ctrl):
                     inside = max(0.0, 0.85 - float(np.hypot(*(elbow - core)[[0, 2]])))      # an elbow never buries itself in his ribs
                     wp = wrist_parts(rg, (rodrigues(f * math.radians(phi)) @ rl).T @ Rh, hand_side)
                     clash = max(hclash, arm_clash(rg, hand_side, S, elbow, reached, P, ru, rodrigues(f * math.radians(phi)) @ rl, place, chest=needs[i].get("_chest"), hand_pose=(Rh, wrist)))     # (2026-11-07) an arm never passes through the weapon it holds, nor the weapon through it
-                    C[g, e] = CLASH_COST * clash + CLASH_HARD * max(0.0, clash - CLASH_GRAZE) + bend + 0.3 * max(0.0, bend - 55.0) + 1.6 * max(0.0, bend - 85.0) + 0.1 * abs(a) + 0.08 * abs(phi) + 90.0 * inside + 200.0 * scratch["x"] + wrist_cost(wp) + 0.4 * abs(slant) + torc[e]
+                    C[g, e] = CLASH_COST * clash + CLASH_HARD * max(0.0, clash - CLASH_GRAZE) + bend + 0.3 * max(0.0, bend - 55.0) + 1.6 * max(0.0, bend - 85.0) + 0.1 * abs(a) + 0.08 * abs(phi) + 90.0 * inside + 200.0 * scratch["x"] + wrist_cost(wp) + 0.4 * abs(slant) + torso_cost(max(tor[e], htor[g]))
             costs[i], quats[i], hands[i], poles[i], twists[i] = C, Qi, Hi, Pi, Ti
             rels[i] = np.array([ZR.quat(place[0].T @ Rh) for Rh in Hi])     # the same grips in the weapon's own frame
 
@@ -1640,9 +1683,19 @@ def swivel(clip, ctrl):
         # surfaces, and where the arm is in the wood past a graze that frame takes the path's own choice, its neighbours half of it, so nothing pops
         Q_raw = np.array([quats[i if i in path else min(live, key=lambda q: abs(q - i))][path[i if i in path else min(live, key=lambda q: abs(q - i))][0]] for i in range(n)])
         fixed = 0
+
+        def raw_of(j, c):
+            t2 = dict(c)
+            t2[hkey], t2[key], t2[hkey + "_slant"], t2[key + "_roll"] = ZR.mat(Q_raw[j]), el[j], sl[j], ro[j]
+            return t2
         for i in live:
             if smoothed_arm_clash(clip, ctrl[i], hand_side) <= CLASH_GRAZE:
-                continue
+                # (2026-11-09) nor into his chest: the smoothed elbow is measured in his torso too, and where the frame's own choice sits shallower
+                # (past ARM_TORSO_REST) it is restored the same way. The smoothing took phase 2's Deathblow Victim right arm 0.00 -> 0.17 at f39 and
+                # Heaven Cleave's 0.09 -> 0.19 at its contact, which nothing after it could move
+                d_s = arm_torso(clip, ctrl[i])[hand_side]
+                if d_s <= ARM_TORSO_REST + 0.005 or arm_torso(clip, raw_of(i, ctrl[i]))[hand_side] >= d_s - 0.01:
+                    continue
             for j, wgt in ((i, 1.0), (i - 1, 0.5), (i + 1, 0.5)):
                 if not 0 <= j < n:
                     continue
@@ -1656,6 +1709,46 @@ def swivel(clip, ctrl):
             fixed += 1
         if fixed:
             clip._swivel_unsmoothed = getattr(clip, "_swivel_unsmoothed", 0) + fixed
+        # (2026-11-09) swivel weighs each elbow turn's torso depth from the arm's bones on a third of its skin and with one wrist; where the arm it
+        # leaves is past the wall on the real surfaces (phase 2 Rending Arc's right arm 0.12 -> 0.31 at f51, 0.00 -> 0.20 at f40), its cheapest
+        # choices for that frame are solved and measured as the export will, and the cheapest that is out of the wall (or the shallowest, if none
+        # is and it is 0.03 better) replaces it, its neighbours half way, unless it puts the arm in the weapon deeper than the frame had it
+        wall = ARM_TORSO_REST + TORSO_WALL
+        redo = 0
+        for i in live:
+            d = arm_torso(clip, ctrl[i])[hand_side]
+            if d <= wall:
+                continue
+            clash0 = max(CLASH_GRAZE, smoothed_arm_clash(clip, ctrl[i], hand_side)) + 1e-3
+            pick = None
+            for flat in np.argsort(costs[i], axis=None)[:SWIVEL_RECHECK]:
+                g, e = divmod(int(flat), E)
+                t2 = dict(ctrl[i])
+                t2[hkey], t2[key], t2[hkey + "_slant"], t2[key + "_roll"] = hands[i][g], poles[i][g, e], GRIP_SLANTS[g // len(GRIP_TURNS)], float(twists[i][g, e])
+                d2 = arm_torso(clip, t2)[hand_side]
+                if d2 >= d - 0.03 or smoothed_arm_clash(clip, t2, hand_side) > clash0:
+                    continue
+                if pick is None or d2 < pick[0]:
+                    pick = (d2, g, e)
+                if d2 <= wall:
+                    break
+            if pick is None:
+                continue
+            _, g, e = pick
+            qn, pn, sn, rn = ZR.quat(hands[i][g]), poles[i][g, e], GRIP_SLANTS[g // len(GRIP_TURNS)], float(twists[i][g, e])
+            for j, wgt in ((i, 1.0), (i - 1, 0.5), (i + 1, 0.5)):
+                if not 0 <= j < n:
+                    continue
+                c = ctrl[j]
+                q0 = ZR.quat(c[hkey])
+                q1 = qn if float(q0 @ qn) >= 0 else -qn
+                c[hkey] = ZR.mat(unit(q0 * (1 - wgt) + q1 * wgt))
+                c[key] = unit(np.asarray(c[key]) * (1 - wgt) + pn * wgt)
+                c[hkey + "_slant"] = float(c[hkey + "_slant"] * (1 - wgt) + sn * wgt)
+                c[key + "_roll"] = float(c[key + "_roll"] * (1 - wgt) + rn * wgt)
+            redo += 1
+        if redo:
+            clip._swivel_rechecked = getattr(clip, "_swivel_rechecked", 0) + redo
 
 
 FREE_ARM_SWINGS = np.arange(5.0, 125.0, 5.0)     # degrees a reaching arm may swing about the shoulder, away from the haft, to keep out of the wood
@@ -1839,8 +1932,8 @@ def tilt_haft(clip, ctrl, times):
     frames 0-5, the haft flicking 40 deg a frame, to take 0.06 down to 0.04). Frames near a contact are left alone."""
     n = len(ctrl)
 
-    def worst(c):
-        return held_clash(clip, c)
+    def worst(c, torso=None):
+        return held_clash(clip, c, torso)
 
     def tipped(c, rv):
         ang = float(np.linalg.norm(rv))
@@ -1857,7 +1950,9 @@ def tilt_haft(clip, ctrl, times):
         return (e1 * p[0] + e2 * p[1]) * (math.pi / 180.0)
     near = [any(abs(t - k) < TILT_NEAR_CONTACT for k in clip.contacts) for t in times]
     free = [near[i] or float(c.get("wfree", 0.0)) > 0.01 for i, c in enumerate(ctrl)]
-    base = [0.0 if free[i] else worst(c) for i, c in enumerate(ctrl)]
+    deep0 = [[] for _ in ctrl]
+    base = [0.0 if free[i] else worst(c, deep0[i]) for i, c in enumerate(ctrl)]
+    deep0 = [d[0] if d else 0.0 for d in deep0]
     need = [i for i in range(n) if not free[i] and base[i] > CLASH_GRAZE]
     if not need:
         return
@@ -1867,12 +1962,16 @@ def tilt_haft(clip, ctrl, times):
     for i, c in enumerate(ctrl):
         if i in may:
             o = cands
-            v = [base[i]] + [worst(tipped(c, rvec(c, p))) for p in cands[1:]]
+            dd = [deep0[i]]
+            v = [base[i]] + [worst(tipped(c, rvec(c, p)), dd) for p in cands[1:]]
         else:
-            o, v = [np.zeros(2)], [base[i]]
+            o, v, dd = [np.zeros(2)], [base[i]], [deep0[i]]
         opts.append(o)
         vals.append(v)
-        costs.append(np.array([(CLASH_HARD if x >= GRIP_FAIL else 0.0) + CLASH_COST * max(0.0, x - CLASH_GRAZE) + TILT_DEG_COST * float(np.linalg.norm(p)) for x, p in zip(v, o)]))
+        # (2026-11-09) and a tilt that takes an arm into his body costs as one into the weapon: the arm in the wood was all it weighed, and phase 2's
+        # Blood Wave tipped the haft on f22-25 so the lead hand's spot came round and folded the left arm 0.36 into his chest (clear_torso had it at 0.11)
+        costs.append(np.array([(CLASH_HARD if x >= GRIP_FAIL else 0.0) + CLASH_COST * max(0.0, x - CLASH_GRAZE) + TILT_DEG_COST * float(np.linalg.norm(p))
+                               + CLASH_COST * max(0.0, d - max(deep0[i], ARM_TORSO_REST) - 0.005) for x, p, d in zip(v, o, dd)]))
     acc, back = [costs[0]], []
     for i in range(1, n):
         P, Q = np.array(opts[i - 1]), np.array(opts[i])
@@ -1893,8 +1992,10 @@ def tilt_haft(clip, ctrl, times):
         if free[i] or not chosen[i].any() and not sm[i].any():
             continue
         p = sm[i]
-        if p is not chosen[i] and worst(tipped(c, rvec(c, p))) > max(CLASH_GRAZE, vals[i][path[i]]) + 0.005:
-            p = chosen[i]     # the smoothing put an arm back in: this frame keeps its own
+        if p is not chosen[i]:
+            dd = []
+            if worst(tipped(c, rvec(c, p)), dd) > max(CLASH_GRAZE, vals[i][path[i]]) + 0.005 or dd[0] > max(deep0[i], ARM_TORSO_REST) + 0.01:
+                p = chosen[i]     # the smoothing put an arm back in (the weapon or his body): this frame keeps its own
         t2 = tipped(c, rvec(c, p))
         c["haft"], c["face"] = t2["haft"], t2["face"]
         done += 1
@@ -1910,26 +2011,34 @@ ARM_TORSO_DIRS = [unit(np.array(v, float)) for v in ((0, 0, -1), (0, 0.5, -1), (
                                                      (0.6, 0.5, -1), (-0.6, 0.5, -1), (0.6, -0.5, -1), (-0.6, -0.5, -1))]     # in the chest's own frame: his front is -z
 
 
-def _torso_free(rg, part, torso):
+def _torso_free(rg, part, torso, dense=False):
     """The skin of an arm part at least 0.05 clear of a torso solid in the bind pose (what lies at or in it there is the sculpt's own join)."""
     cache = rg.__dict__.setdefault("_torso_free", {})
-    if (part, torso) not in cache:
-        cache[(part, torso)] = sdf_depth(rg, torso, rg.SKIN[part][0]) < -0.05
-    return cache[(part, torso)]
+    if (part, torso, dense) not in cache:
+        cache[(part, torso, dense)] = sdf_depth(rg, torso, (rg.SKIN_FULL if dense else rg.SKIN)[part][0]) < -0.05
+    return cache[(part, torso, dense)]
 
 
-def arm_torso_world(rg, world, pose=None):
+def arm_torso_world(rg, world, pose=None, dense=False):
     """(2026-11-08) How deep each arm's skin (hand, forearm, upper arm, blended as the game skins them) sits inside his torso's real surface
-    (UpperTorso and LowerTorso distance fields), counting only skin clear of that solid in the bind pose. {"Right": depth, "Left": depth}, 0 when clear."""
+    (UpperTorso and LowerTorso distance fields), counting only skin clear of that solid in the bind pose. {"Right": depth, "Left": depth}, 0 when clear.
+    dense: every skin sample (rg.SKIN_FULL), not the thinned set the passes weigh their choices by."""
     pose = pose or pose_of(rg, world)
     out = {}
     for side in ("Right", "Left"):
         m = 0.0
         for part in (side + "UpperArm", side + "LowerArm", side + "Hand"):
             W = world[part]
-            B = body_points(rg, part, W[:3, :3], (W @ np.append(rg.JOINT[part], 1))[:3], pose)
+            if dense:
+                P, mix = rg.SKIN_FULL[part]
+                B = np.zeros_like(P)
+                for bone, wt in mix:
+                    (Rb, ab), jb = (pose[bone], rg.JOINT[bone]) if bone in pose else ((W[:3, :3], (W @ np.append(rg.JOINT[part], 1))[:3]), rg.JOINT[part])
+                    B += wt[:, None] * ((P - jb) @ Rb.T + ab)
+            else:
+                B = body_points(rg, part, W[:3, :3], (W @ np.append(rg.JOINT[part], 1))[:3], pose)
             for t in ("UpperTorso", "LowerTorso"):
-                keep = _torso_free(rg, part, t)
+                keep = _torso_free(rg, part, t, dense)
                 if keep.any():
                     Wt = world[t]
                     m = max(m, float(part_depth(rg, t, Wt[:3, :3], (Wt @ np.append(rg.JOINT[t], 1))[:3], B[keep]).max()))
@@ -1964,6 +2073,15 @@ def arm_torso_pose(rg, side, pose, stride=3):
 
 
 TORSO_COST = 600.0    # (2026-11-08) swivel cost per rig unit an arm sits in his torso past ARM_TORSO_REST, as an arm in the weapon (CLASH_COST)
+SWIVEL_RECHECK = 24     # (2026-11-09) how many of a frame's cheapest grip and elbow choices are solved and measured where swivel left an arm past the wall
+TORSO_HARD, TORSO_WALL = 6000.0, 0.03     # (2026-11-09) and past REST + WALL (the validator flags REST + 0.04) all but forbidden, as an arm past a graze in the weapon
+
+
+def torso_cost(d):
+    """(2026-11-09) swivel's cost of an arm d deep in his torso. Linear alone (600 a unit past rest), an elbow turn that saved a wrist 70 deg of bend
+    paid for an arm 0.12 further into his chest: phase 2 Rending Arc's swivel took the right arm from 0.00 to 0.26 at f62 and 0.02 to 0.33 at f69
+    with clear choices on the table"""
+    return TORSO_COST * max(0.0, d - ARM_TORSO_REST) + TORSO_HARD * max(0.0, d - ARM_TORSO_REST - TORSO_WALL)
 
 
 def arm_torso(clip, c):
@@ -2135,9 +2253,10 @@ BODY_IN_WEAPON = 0.03     # his body's skin may touch the wood this deep (the me
 GRIP_FAIL = 1.0     # what a candidate that loses a hand's grip (an arm short of the haft) counts as
 
 
-def held_clash(clip, c):
+def held_clash(clip, c, torso=None):
     """(2026-11-07) Once control set c is solved: the deepest either arm sits in the weapon or the weapon in it, his skinned body and legs in the
-    weapon past BODY_IN_WEAPON, and GRIP_FAIL when a hand no longer reaches the haft or a wrist turns past WRIST_LIMIT. One solve for all of it."""
+    weapon past BODY_IN_WEAPON, and GRIP_FAIL when a hand no longer reaches the haft or a wrist turns past WRIST_LIMIT. One solve for all of it.
+    torso: a list, given the deeper arm's depth in his torso (arm_torso_world) from the same solve."""
     rg = clip.rig
     keep = clip._side
     clip._side = {}
@@ -2145,6 +2264,8 @@ def held_clash(clip, c):
         _local, world, diag = clip.solve(dict(c))
     finally:
         clip._side = keep
+    if torso is not None:
+        torso.append(max(arm_torso_world(rg, world).values()))
     if diag.get("arm_reach", 0.0) > 0.1 or diag.get("left_grip", 0.0) > 0.1:
         return GRIP_FAIL
     # nor one that turns a wrist past what validate() allows (a 30 deg tip of the haft once turned the fist 154 deg on the arm, Heavy)
@@ -2308,15 +2429,17 @@ def depop(clip, ctrl, times):
     def track(c, k):
         return np.concatenate([np.asarray(c["rp"], float) - np.asarray(k["rp"], float),
                                (unit(np.asarray(c["haft"], float)) - unit(np.asarray(k["haft"], float))) * 2.5,
-                               [float(c["rsl"]) - float(k["rsl"])], np.asarray(c["face"], float)])
-    lim = np.array([POP_LIMIT["fist"], POP_LIMIT["blade"], POP_LIMIT["slide"]]) * DEPOP_SHARE
+                               [float(c["rsl"]) - float(k["rsl"])]])
+    lim = np.array([POP_LIMIT["fist"], POP_LIMIT["blade"], POP_LIMIT["slide"], POP_LIMIT["edge"]]) * DEPOP_SHARE
 
     def nb(i):
         if clip.loop:
             return (i - 1) % n, (i + 1) % n
         return (i - 1, i + 1) if 0 < i < n - 1 else (None, None)
     treated = set()
-    for _ in range(DEPOP_PASSES):
+    full = np.array([POP_LIMIT["fist"], POP_LIMIT["blade"], POP_LIMIT["slide"], POP_LIMIT["edge"]])
+    best = None
+    for p in range(DEPOP_PASSES + 1):
         keep = clip._side
         clip._side = {}
         solved = []
@@ -2330,14 +2453,20 @@ def depop(clip, ctrl, times):
         D = np.array([track(s_, k) for s_, k in zip(solved, keyed)])
         F, K = np.array([pop_tracks(s_) for s_ in solved]), np.array([pop_tracks(k) for k in keyed])
         held = [float(c.get("wfree", 0.0)) < 0.01 for c in ctrl]
-        bad = []
+        bad, worst = [], 0.0
         for i in range(n):
             a, b = nb(i)
             if a is None or not (held[a] and held[i] and held[b]):
                 continue
-            if (pop_excess(F, K, i, a, b) > lim).any():
+            e = pop_excess(F, K, i, a, b)
+            worst = max(worst, float(np.max(e / full)))
+            if (e > lim).any():
                 bad.append(i)
-        if not bad:
+        # (2026-11-09) each pass's frames are solved before the next pass writes, and the clip leaves with the best of them: the last pass's write was
+        # never solved, and phase 2's Flourish left depop at 0.23 for the export's solve to put its fist 0.44 out on f17
+        if best is None or worst < best[0] - 1e-6:
+            best = (worst, [{k: ctrl[j][k] for k in ("rp", "haft", "face", "rsl")} for j in range(n)], set(treated))
+        if not bad or p == DEPOP_PASSES:
             break
         region = set()
         for i in bad:
@@ -2355,25 +2484,45 @@ def depop(clip, ctrl, times):
                 a, b = nb(j)
                 Dn[j] = 0.25 * D2[a] + 0.5 * D2[j] + 0.25 * D2[b]
             D2 = Dn
+        # (2026-11-09) the edge is smoothed as an edge: each neighbour's laid into this frame's new haft plane before the 1-2-1 average. Averaging the
+        # bare unit vectors and squaring the result to the haft afterwards rolled phase 2 Skyfall's blade at random where they nearly cancelled or lay
+        # along the haft, and the wrist followed it (right arm 0.16 -> 0.31 in his chest, f51 alone)
+        Hn = {j: unit(unit(np.asarray(keyed[j]["haft"], float)) + D2[j, 3:6] / 2.5) for j in region}
+        Fc = [unit(np.asarray(s_["face"], float)) for s_ in solved]
+        for _s in range(2):
+            Fn = list(Fc)
+            for j in region:
+                a, b = nb(j)
+                h = Hn[j]
+                m = sum(w * (Fc[x] - h * float(np.dot(Fc[x], h))) for w, x in ((0.25, a), (0.5, j), (0.25, b)))
+                own = Fc[j] - h * float(np.dot(Fc[j], h))
+                if float(np.linalg.norm(m)) > 0.3 and float(np.linalg.norm(own)) > 0.3:
+                    Fn[j] = unit(m)
+            Fc = Fn
         for j in region:
             k = keyed[j]
-            h = unit(unit(np.asarray(k["haft"], float)) + D2[j, 3:6] / 2.5)
+            h = Hn[j]
             ctrl[j]["rp"] = tuple(np.asarray(k["rp"], float) + D2[j, :3])
             ctrl[j]["haft"] = tuple(h)
-            ctrl[j]["face"] = tuple(orth(unit(D2[j, 7:10]), h))
+            ctrl[j]["face"] = tuple(orth(Fc[j], h))
             ctrl[j]["rsl"] = float(k["rsl"]) + float(D2[j, 6])
             treated.add(j)
+    if best is not None:
+        for j in range(n):
+            ctrl[j].update(best[1][j])
+        treated = best[2]
     clip._depopped = sorted(treated)
     if os.environ.get("SHEN_DEBUG_FREE") and treated:
         print("depop: %d frames %s" % (len(treated), sorted(treated)))
 
 
-POP_LIMIT = {"fist": 0.2, "blade": 0.45, "slide": 0.2, "lead_reach": 0.2}     # (2026-11-09) rig units a frame may leave its neighbours' midpoint by, beyond the keys
+POP_LIMIT = {"fist": 0.2, "blade": 0.45, "slide": 0.2, "edge": 0.45, "lead_reach": 0.2}     # (2026-11-09) rig units a frame may leave its neighbours' midpoint by, beyond the keys
 
 
 def pop_tracks(c):
-    """(2026-11-09) What bake_pops and depop follow of a frame's weapon: the fist (rp), a point 2.5 up the haft from it, the fist's slide (rsl)."""
-    return np.concatenate([np.asarray(c["rp"], float), unit(np.asarray(c["haft"], float)) * 2.5, [float(c["rsl"])]])
+    """(2026-11-09) What bake_pops and depop follow of a frame's weapon: the fist (rp), a point 2.5 up the haft from it, the fist's slide (rsl),
+    and a point 2.5 out along the blade's edge (its roll about the haft, which the first three cannot see)."""
+    return np.concatenate([np.asarray(c["rp"], float), unit(np.asarray(c["haft"], float)) * 2.5, [float(c["rsl"])], unit(np.asarray(c["face"], float)) * 2.5])
 
 
 def pop_excess(F, K, i, a, b):
@@ -2381,8 +2530,266 @@ def pop_excess(F, K, i, a, b):
     bake added. A keyed swing that peaks there (the fist out at full stretch at a contact) and that the solver only flattens does not count."""
     def dev(X):
         d = X[i] - 0.5 * (X[a] + X[b])
-        return np.array([np.linalg.norm(d[:3]), np.linalg.norm(d[3:6]), abs(d[6])])
+        return np.array([np.linalg.norm(d[:3]), np.linalg.norm(d[3:6]), abs(d[6]), np.linalg.norm(d[7:10])])
     return dev(F) - dev(K)
+
+
+# ---------------------------------------------------------------------------------------------------- the joint polish
+POLISH_PAD = 4          # (2026-11-09) frames held either side of a run of frames with an arm past the wall; the run's frames move together
+POLISH_ITERS = 150      # SLSQP iterations at most per window
+POLISH_SCALE = np.array([0.1, 0.1, 0.1, 6.0, 6.0, 30.0, 30.0, 15.0])    # equal cost: 0.1 of fist, 6 deg of haft tilt, 30 deg of either elbow's swing, 15 deg of a free left arm's roll
+POLISH_STEP = np.array([0.01, 0.01, 0.01, 1.0, 1.0, 3.0, 3.0, 2.0])     # forward-difference steps of the same controls
+POLISH_SMOOTH = 4.0     # weight of the change's second difference over the window (its held ends count as no change), so it eases in and out
+POLISH_MARGIN = 0.01    # the polish aims this far under the wall on every skin sample: the mesh itself has skin between the samples (0.02 deeper at most seen)
+
+
+ENTRY_FADE = 0.15     # (2026-11-09) BossAnimations' fade into a reaction (0.1 into a planned attack, 0.2 into a gait)
+
+
+def entry_specs(n):
+    """(2026-11-09) The poses the game draws (at 60) while a clip fades in from the pose before it, taken as its own first frame (the states that lead
+    into a clip end where it begins: Posture Break ends on the knee Deathblow Victim starts from): (a, b, s, u) = the clip at frames a..b mixed s,
+    then mixed u of the way from frame 0 (joint_mix both times)."""
+    out = []
+    for k in range(1, int(round(ENTRY_FADE * 60))):
+        f = k / 2.0
+        a = min(int(f), n - 1)
+        out.append((a, min(a + 1, n - 1), f - int(f), k / (ENTRY_FADE * 60)))
+    return out
+
+
+def blend_pose(rg, w0, wa, wb, s, u):
+    """A pose entry_specs() or a halfway pose names: frames a..b mixed s, then u of the way from w0 (u = 1: the clip's own pose)."""
+    x = joint_mix(rg, wa, wb, s) if s > 1e-9 else wa
+    return x if u >= 1.0 - 1e-9 else joint_mix(rg, w0, x, u)
+
+
+def _polish_sweep(clip, ctrl):
+    """The export's own solve, every frame in order: the haft-side memory each frame starts from (clip._side before it), each frame's world, and how
+    deep the deeper arm is in his torso on every skin sample, on each frame and halfway to the next (joint_mix: what the game draws between them)."""
+    rg = clip.rig
+    clip._side = {}
+    sides, worlds, depth = [], [], []
+    try:
+        for c in ctrl:
+            sides.append(dict(clip._side))
+            _local, world, _diag = clip.solve(dict(c))
+            worlds.append(world)
+            depth.append(max(arm_torso_world(rg, world, dense=True).values()))
+    finally:
+        clip._side = None
+    mids = [max(arm_torso_world(rg, joint_mix(rg, worlds[i], worlds[i + 1], 0.5), dense=True).values()) for i in range(len(ctrl) - 1)]
+    entry = [max(arm_torso_world(rg, blend_pose(rg, worlds[0], worlds[a], worlds[b], s, u), dense=True).values()) for a, b, s, u in entry_specs(len(ctrl))]
+    return sides, worlds, depth, mids, entry
+
+
+def joint_polish(clip, ctrl, times):
+    """(2026-11-09) Every pass before this one optimizes its own measure, one after another, and a later one can undo an earlier one: phase 2's
+    Crimson Embrace kept its right arm 0.07 in his chest after the keys, the swivel put it 0.34 in, clear_torso took it to 0.27 and slide_fist put
+    it back to 0.34; Deathblow Victim's went 0.17 -> 0.14 -> 0.15 -> 0.20 (swivel, clear_torso, slide_fist, depop). Here the frames of each run
+    where an arm is still past the wall, on a frame or halfway between two (validate judges both), with POLISH_PAD held frames either side, are
+    solved together with SciPy's SLSQP: per frame the fist point (3), a tilt of the haft about the fist with both grips riding it (2), a swing
+    of each elbow about its shoulder-wrist line (2) and a roll of the left upper arm while it hangs free of the haft (1): phase 1's Running swung
+    its free left arm 0.19 into his side between f4 and f5, out of reach of the weapon's controls. Every measure is the pipeline's own, from the same solve the export does: both arms
+    POLISH_MARGIN under the wall in his torso on every skin sample (arm_torso_world dense, as validate), on each frame and halfway to the next;
+    the arms and weapon no deeper in each other (held_clash); the solver's reach and grip misses, both wrists and the weapon's lowest point no
+    worse than the bake left them. Frames at a contact keep the weapon exactly as keyed and may only swing the elbow. The objective is the least
+    change and its second difference, so it eases in and out. A window is kept only when it ends shallower with no other constraint worse.
+    Without SciPy the stage is skipped and validate still flags the arm. The offline prototypes on the dp11 bakes (thinned measure, frames only):
+    Crimson Embrace f44-52 0.351 -> 0.171, Deathblow Victim f35-43 0.202 -> 0.170, no pop, grip or wrist worse; the mesh still had 0.219 at
+    Crimson Embrace f48, between the thinned samples, hence every sample and the margin here."""
+    n = len(ctrl)
+    if n < 4 or os.environ.get("SHEN_JOINT_POLISH") == "0":
+        return []
+    wall = ARM_TORSO_REST + TORSO_WALL
+    sides, worlds, depth, mids, entry = _polish_sweep(clip, ctrl)
+    bad = sorted({i for i in range(1, n - 1) if depth[i] > wall} | {j for i in range(n - 1) if mids[i] > wall for j in (i, i + 1) if 0 < j < n - 1}
+                 | {j for (a, b, _s, _u), d in zip(entry_specs(n), entry) if d > wall for j in range(1, b + 1) if j < n - 1})
+    if not bad:
+        return []
+    try:
+        from scipy.optimize import minimize
+    except ImportError:
+        print("joint_polish: SciPy is not installed (python3 -m pip install scipy); %d frames past the wall left for validate" % len(bad))
+        return []
+    runs = []
+    for i in bad:
+        if runs and i - runs[-1][1] <= 2 * POLISH_PAD:
+            runs[-1][1] = i
+        else:
+            runs.append([i, i])
+    report = []
+    for a, b in runs:
+        if report:
+            sides, worlds, depth, mids, entry = _polish_sweep(clip, ctrl)     # after the window before it
+        A, B = max(0, a - POLISH_PAD), min(n - 1, b + POLISH_PAD)
+        report.append(_polish_window(clip, ctrl, times, A, B, sides, worlds, depth, mids, entry, wall - POLISH_MARGIN, minimize))
+        print("joint_polish %s" % report[-1], flush=True)
+        if not report[-1]["kept"]:     # once more with the weapon left exactly as baked, only the elbows and the free arm turning: a smaller, smoother problem
+            report.append(_polish_window(clip, ctrl, times, A, B, sides, worlds, depth, mids, entry, wall - POLISH_MARGIN, minimize, elbows_only=True))
+            print("joint_polish %s" % report[-1], flush=True)
+    clip._polish = report
+    return report
+
+
+def _polish_window(clip, ctrl, times, A, B, sides, worlds, depth, mids, entry, target, minimize, elbows_only=False):
+    import time as _time
+    rg = clip.rig
+    frames = list(range(A + 1, B))
+    nf, NV, NC = len(frames), 8, 9
+    pos = {i: k for k, i in enumerate(frames)}
+    # the poses between frames the game draws: every halfway step from A to B (the held ends' included) and, from the clip's start, its fade in
+    pairs = [(i, i + 1, 0.5, 1.0) for i in range(A, B)] + ([sp for sp in entry_specs(len(ctrl)) if sp[1] <= B] if A == 0 else [])
+    pair_base = [mids[a] for a, _b, _s, u in pairs if u >= 1.0] + [d for sp, d in zip(entry_specs(len(ctrl)), entry) if A == 0 and sp[1] <= B]
+    NP = len(pairs)
+    contact = [k for k, i in enumerate(frames) if any(abs(times[i] - t) < TILT_NEAR_CONTACT for t in clip.contacts)]
+    ctrl0 = {i: dict(ctrl[i]) for i in frames}
+    axes = {}
+    for i in frames:
+        w = worlds[i]
+        sh = (w["RightUpperArm"] @ np.append(rg.JOINT["RightUpperArm"], 1))[:3]
+        wr = (w["RightHand"] @ np.append(rg.JOINT["RightHand"], 1))[:3]
+        lsh = (w["LeftUpperArm"] @ np.append(rg.JOINT["LeftUpperArm"], 1))[:3]
+        lwr = (w["LeftHand"] @ np.append(rg.JOINT["LeftHand"], 1))[:3]
+        h = unit(ctrl0[i]["haft"])
+        e1 = unit(np.cross(h, (0.0, 1.0, 0.0)) if abs(h[1]) < 0.95 else np.cross(h, (1.0, 0.0, 0.0)))
+        axes[i] = (unit(wr - sh), e1, np.cross(h, e1), unit(lwr - lsh))
+
+    def apply(i, x):
+        c = dict(ctrl0[i])
+        sw, e1, e2, lsw = axes[i]
+        c["rp"] = tuple(np.asarray(c["rp"], float) + x[0:3])
+        rv = (e1 * x[3] + e2 * x[4]) * (math.pi / 180.0)
+        if np.linalg.norm(rv) > 1e-9:
+            Rt = rodrigues(rv)
+            c["haft"], c["face"] = tuple(Rt @ unit(c["haft"])), tuple(Rt @ unit(c["face"]))
+            for hk in ("rhand", "lhand"):     # the grips ride the haft
+                if hk in c and np.shape(c[hk]) == (3, 3):
+                    c[hk] = Rt @ np.asarray(c[hk], float)
+        if abs(x[5]) > 1e-9 and "rpole" in c:
+            c["rpole"] = tuple(rodrigues(sw * math.radians(x[5])) @ np.asarray(c["rpole"], float))
+        lk = "lpole" if "lpole" in c else "lelb"     # the left elbow's pole, on the haft or reaching
+        if abs(x[6]) > 1e-9 and lk in c:
+            c[lk] = tuple(rodrigues(lsw * math.radians(x[6])) @ np.asarray(c[lk], float))
+        if abs(x[7]) > 1e-9 and "lua" in c:     # the free arm's roll from his chest
+            c["lua"] = (float(c["lua"][0]), float(c["lua"][1]), float(c["lua"][2]) + float(x[7]))
+        return c
+
+    def measure(i, c):
+        clip._side = dict(sides[i])
+        local, world, diag = clip.solve(dict(c))
+        tor = arm_torso_world(rg, world, dense=True)
+        return dict(R=tor["Right"], L=tor["Left"], clash=float(held_clash(clip, c)), arm_reach=float(diag.get("arm_reach", 0.0)),
+                    left_grip=float(diag.get("left_grip", 0.0)), left_reach=float(diag.get("left_reach", 0.0)),
+                    wrist=float(ZR.angle_of(local["RightHand"][:3, :3])), lwrist=float(ZR.angle_of(local["LeftHand"][:3, :3])),
+                    lowest=float(place(rg, world, "Weapon")[:, 1].min())), world
+
+    base = {i: measure(i, ctrl0[i])[0] for i in frames}
+    lim = {i: dict(clash=max(CLASH_GRAZE, b["clash"]) + 0.005, arm_reach=max(0.02, b["arm_reach"]) + 0.02, left_grip=max(0.05, b["left_grip"]) + 0.02,
+                   left_reach=max(0.05, b["left_reach"]) + 0.02, wrist=max(95.0, b["wrist"]), lwrist=max(95.0, b["lwrist"]),
+                   lowest=min(GROUND - 0.05, b["lowest"])) for i, b in base.items()}
+
+    def cons_frame(i, m):
+        l = lim[i]
+        return np.array([target - m["R"], target - m["L"], (l["clash"] - m["clash"]) * 4, l["arm_reach"] - m["arm_reach"], l["left_grip"] - m["left_grip"],
+                         l["left_reach"] - m["left_reach"], (l["wrist"] - m["wrist"]) / 100.0, (l["lwrist"] - m["lwrist"]) / 100.0, m["lowest"] - l["lowest"]])
+    cache, mcache = {}, {}
+
+    def frame_eval(i, xi):
+        key = (i, tuple(np.round(xi, 9)))
+        if key not in cache:
+            m, world = measure(i, apply(i, xi))
+            cache[key] = (cons_frame(i, m), world)
+        return cache[key]
+
+    def xs(x, i):
+        return x[pos[i] * NV:(pos[i] + 1) * NV] if i in pos else None
+
+    def mid_eval(p, xa, xb):     # a pose between the pair's frames, as the game draws it; a held frame keeps its baked pose (frame 0 is held when A is 0)
+        a, b, s_, u_ = pairs[p]
+        key = (p, None if xa is None else tuple(np.round(xa, 9)), None if xb is None else tuple(np.round(xb, 9)))
+        if key not in mcache:
+            wa = worlds[a] if xa is None else frame_eval(a, xa)[1]
+            wb = worlds[b] if xb is None else frame_eval(b, xb)[1]
+            t = arm_torso_world(rg, blend_pose(rg, worlds[0], wa, wb, s_, u_), dense=True)
+            mcache[key] = np.array([target - t["Right"], target - t["Left"]])
+        return mcache[key]
+    slack = np.zeros(nf * NC + NP * 2)
+
+    def raw(x):
+        return np.concatenate([frame_eval(i, xs(x, i))[0] for i in frames] + [mid_eval(p, xs(x, a), xs(x, b)) for p, (a, b, _s, _u) in enumerate(pairs)])
+
+    def cons(x):
+        return raw(x) + slack
+
+    def cons_jac(x):     # a frame's measures depend on its own controls, a halfway pose on its two frames': forward differences per frame
+        J = np.zeros((nf * NC + NP * 2, nf * NV))
+        for k, i in enumerate(frames):
+            xi = xs(x, i)
+            g0 = frame_eval(i, xi)[0]
+            near = [p for p, (a, b, _s, _u) in enumerate(pairs) if i in (a, b)]
+            m0 = {p: mid_eval(p, xs(x, pairs[p][0]), xs(x, pairs[p][1])) for p in near}
+            for j in range(NV):
+                xp = xi.copy()
+                xp[j] += POLISH_STEP[j]
+                J[k * NC:(k + 1) * NC, k * NV + j] = (frame_eval(i, xp)[0] - g0) / POLISH_STEP[j]
+                for p in near:
+                    a, b = pairs[p][:2]
+                    m1 = mid_eval(p, xp if a == i else xs(x, a), xp if b == i else xs(x, b))
+                    J[nf * NC + 2 * p:nf * NC + 2 * p + 2, k * NV + j] = (m1 - m0[p]) / POLISH_STEP[j]
+        return J
+    D2 = np.zeros(((nf + 2) * NV, nf * NV))
+    for k in range(nf + 2):
+        for j, wgt in ((k - 2, 1.0), (k - 1, -2.0), (k, 1.0)):
+            if 0 <= j < nf:
+                D2[k * NV:(k + 1) * NV, j * NV:(j + 1) * NV] += wgt * np.eye(NV)
+    Wsc = np.diag(np.tile(1.0 / POLISH_SCALE, nf))
+    Q = Wsc @ (np.eye(nf * NV) + POLISH_SMOOTH * D2.T @ D2) @ Wsc
+    bounds = []
+    for k in range(nf):
+        held = k in contact or elbows_only     # attack timing: the weapon stays as keyed at a contact
+        bounds += [(0.0, 0.0) if held else (-0.6, 0.6)] * 3 + [(0.0, 0.0) if held else (-25.0, 25.0)] * 2 + [(-120.0, 120.0)] * 2 + [(-40.0, 40.0)]
+    x0 = np.zeros(nf * NV)
+    c0 = raw(x0)
+    J0 = cons_jac(x0)
+    for r in range(len(c0)):     # a measure no control here moves (a free left arm, an end held) is not asked to change: it is left as it is
+        if c0[r] < 0 and np.abs(J0[r]).max() < 1e-6:
+            slack[r] = 1e-3 - c0[r]
+    track = {"best": None, "hist": []}
+
+    def feasible(x):
+        return float(cons(x).min()) >= -1e-4
+
+    def callback(intermediate_result):     # stop once feasible and settled
+        x, f = intermediate_result.x, float(intermediate_result.fun)
+        if feasible(x) and (track["best"] is None or f < track["best"][0]):
+            track["best"] = (f, x.copy())
+        track["hist"].append(f)
+        h = track["hist"]
+        if track["best"] is not None and len(h) > 6 and abs(h[-6] - h[-1]) <= 1e-3 * max(abs(h[-1]), 1e-6):
+            raise StopIteration
+    t0 = _time.time()
+    res = minimize(lambda x: float(x @ Q @ x), x0, jac=lambda x: 2.0 * Q @ x, method="SLSQP", bounds=bounds,
+                   constraints=[{"type": "ineq", "fun": cons, "jac": cons_jac}], callback=callback, options={"maxiter": POLISH_ITERS, "ftol": 1e-6})
+    if feasible(res.x) and (track["best"] is None or float(res.fun) <= track["best"][0]):
+        track["best"] = (float(res.fun), res.x.copy())
+    x = track["best"][1] if track["best"] is not None else res.x
+    c1 = raw(x)
+    tor_rows = [k * NC + s for k in range(nf) for s in (0, 1)] + list(range(nf * NC, nf * NC + NP * 2))
+    deep0 = max([depth[i] for i in frames] + pair_base)
+    deep1 = max(target - float(c1[r]) for r in tor_rows)
+    worse = [j for j in range(2, NC) if min(0.0, float(c0[:nf * NC][j::NC].min())) - float(c1[:nf * NC][j::NC].min()) > 1e-3]
+    keep = deep1 < deep0 - 0.005 and not worse
+    if keep:
+        for k, i in enumerate(frames):
+            ctrl[i].clear()
+            ctrl[i].update(apply(i, x[k * NV:(k + 1) * NV]))
+    clip._side = None
+    X = x.reshape(nf, NV)
+    return dict(window=(A, B), elbows_only=elbows_only, status=int(res.status), message=str(res.message), nit=int(res.nit), runtime_s=round(_time.time() - t0, 1),
+                frame_evals=len(cache), feasible=track["best"] is not None, depth=(round(deep0, 3), round(float(deep1), 3)), kept=keep, worse=worse,
+                change=(round(float(np.abs(X[:, :3]).max()), 3), round(float(np.abs(X[:, 3:5]).max()), 1), round(float(np.abs(X[:, 5]).max()), 1),
+                        round(float(np.abs(X[:, 6]).max()), 1), round(float(np.abs(X[:, 7]).max()), 1)))
 
 
 def bake_pops(clip, baked):
@@ -2411,13 +2818,33 @@ def bake_pops(clip, baked):
         else:
             continue
         if held[a] and held[i] and held[b]:
-            for v, k in zip(pop_excess(F, K, i, a, b), ("fist", "blade", "slide")):
+            for v, k in zip(pop_excess(F, K, i, a, b), ("fist", "blade", "slide", "edge")):
                 if v > out[k][0]:
                     out[k] = (float(v), i)
         if reach[a] and reach[i] and reach[b]:
             v = float(np.linalg.norm(LF[i] - 0.5 * (LF[a] + LF[b])) - np.linalg.norm(LK[i] - 0.5 * (LK[a] + LK[b])))
             if v > out["lead_reach"][0]:
                 out["lead_reach"] = (v, i)
+    return out
+
+
+def joint_mix(rg, wa, wb, u):
+    """(2026-11-09) The pose the game shows between two of these poses: each joint's own transform (relative to its parent part, as Motor6D.Transform)
+    slerped and its offset mixed, then the parts placed down the chain from the root, as the Animator interpolates keyframes and fades one track
+    into the next. Mixing the parts' places instead moves a hand along the straight line between its two spots, through his chest where it swings
+    round him."""
+    out = {}
+    for k in ["HumanoidRootPart"] + list(rg.ORDER) + list(rg.HELPERS):
+        if k in out or k not in wa or k not in wb:
+            continue
+        p = rg.PARENT.get(k)
+        A, B = (np.linalg.inv(wa[p]) @ wa[k], np.linalg.inv(wb[p]) @ wb[k]) if p in out else (wa[k], wb[k])
+        M = np.eye(4)
+        M[:3, :3] = ZR.mat(ZR.slerp(ZR.quat(A[:3, :3]), ZR.quat(B[:3, :3]), u))
+        M[:3, 3] = A[:3, 3] * (1 - u) + B[:3, 3] * u
+        out[k] = out[p] @ M if p in out else M
+    for k in wa:
+        out.setdefault(k, wa[k])
     return out
 
 
@@ -2474,13 +2901,28 @@ def validate(clip, baked):
             dep = float(weapon_depth_rest(rg, (B - G[:3, 3]) @ G[:3, :3]).max()) - (HAND_GRIP if "Hand" in part else 0.0)
             k = "in_weapon_" + ("torso" if part in BODY_SOLIDS else "legs" if part in LEG_SOLIDS else "hands" if "Hand" in part else "arm_" + ("right" if "Right" in part else "left"))
             w[k] = max(w.get(k, 0.0), round(max(0.0, dep), 3))
-        for side, v in arm_torso_world(rg, world, pose).items():     # (2026-11-08) his arms in his own torso (clear_torso)
+        for side, v in arm_torso_world(rg, world, pose, dense=True).items():     # (2026-11-08) his arms in his own torso (clear_torso); (2026-11-09) every skin sample
             k = "arm_in_torso_" + side.lower()
             w[k] = max(w.get(k, 0.0), round(v, 3))
         fist = (world["RightHand"] @ np.append(rg.GRIP0, 1))[:3]
         d = fist - np.asarray(c["rp"], float)
         if float(c.get("wfree", 0.0)) < 0.01:     # a hand that has let go of the weapon is not off it
             w["right_off_haft"] = max(w.get("right_off_haft", 0.0), float(np.linalg.norm(d)))
+    # (2026-11-09) and between the frames: the game shows the pose halfway between two keyframes (it draws faster than the 30 the clip is keyed at)
+    # and interpolates each joint, so an arm swinging fast past him goes through his chest between two frames that are each clear (phase 2's
+    # Deathblow Victim, 0.127 and 0.108 at f2 and f3, 0.183 between them)
+    for i in range(len(baked) - 1):
+        mid = joint_mix(rg, baked[i][2], baked[i + 1][2], 0.5)
+        for side, v in arm_torso_world(rg, mid, dense=True).items():
+            k = "arm_in_torso_between_" + side.lower()
+            if v > w.get(k, (0.0, 0))[0]:
+                w[k] = (round(v, 3), i)
+    # (2026-11-09) and while it fades in (ENTRY_FADE, from a pose like its first frame: what leads into a clip ends where it begins): a bake that
+    # turns an arm over in the first frames swings it through his chest in the fade (phase 2's Deathblow Victim from Posture Break, 0.34)
+    for a, b, s_, u_ in entry_specs(len(baked)):
+        for side, v in arm_torso_world(rg, blend_pose(rg, baked[0][2], baked[a][2], baked[b][2], s_, u_), dense=True).items():
+            k = "arm_in_torso_entry_" + side.lower()
+            w[k] = max(w.get(k, 0.0), round(v, 3))
     pops = bake_pops(clip, baked)     # (2026-11-09) one-frame jumps the bake put in that the keys do not have
     for k, v in pops.items():
         w["pop_" + k] = round(v[0], 3)
@@ -2515,6 +2957,11 @@ def validate(clip, baked):
             problems.append("%s wrist turned %.0f deg on the arm" % (side, w["wrist_" + side]))
         if w.get("arm_in_torso_" + side, 0) > ARM_TORSO_REST + 0.04:
             problems.append("%s arm %.2f inside his torso" % (side, w["arm_in_torso_" + side]))
+        b = w.get("arm_in_torso_between_" + side, (0.0, 0))
+        if b[0] > ARM_TORSO_REST + 0.04:
+            problems.append("%s arm %.2f inside his torso between f%d and f%d" % (side, b[0], b[1], b[1] + 1))
+        if w.get("arm_in_torso_entry_" + side, 0) > ARM_TORSO_REST + 0.04:
+            problems.append("%s arm %.2f inside his torso fading in" % (side, w["arm_in_torso_entry_" + side]))
     if clip.loop:
         a, b = baked[0][1], baked[-1][1]
         w["loop_seam_deg"] = round(max(ZR.angle_of(a[p][:3, :3].T @ b[p][:3, :3]) for p in rg.ALL), 2)
