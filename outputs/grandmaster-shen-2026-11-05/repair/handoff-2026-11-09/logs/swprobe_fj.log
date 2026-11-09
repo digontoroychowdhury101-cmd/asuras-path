@@ -1,0 +1,18 @@
+f80 chosen g13 e1 cost 54 twist -85 | cheapest g13 e1 cost 54 twist -85
+    step from f79: grip turn 19 (wall 60) elbow 27 (wall 75) roll 0 (wall 45)
+f81 chosen g12 e1 cost 53 twist -85 | cheapest g12 e1 cost 53 twist -85
+    step from f80: grip turn 25 (wall 60) elbow 11 (wall 75) roll 0 (wall 45)
+f82 chosen g11 e0 cost 58 twist -85 | cheapest g11 e0 cost 58 twist -85
+    step from f81: grip turn 28 (wall 60) elbow 33 (wall 75) roll 0 (wall 45)
+f83 chosen g11 e0 cost 72 twist -85 | cheapest g14 e7 cost 52 twist 85
+    step from f82: grip turn 20 (wall 60) elbow 13 (wall 75) roll 0 (wall 45)
+f84 chosen g28 e0 cost 95 twist -85 | cheapest g31 e7 cost 50 twist 85
+    step from f83: grip turn 28 (wall 60) elbow 7 (wall 75) roll 0 (wall 45)
+f85 chosen g13 e12 cost 117 twist -55 | cheapest g47 e6 cost 52 twist 85
+    step from f84: grip turn 30 (wall 60) elbow 50 (wall 75) roll 30 (wall 45)
+f86 chosen g30 e10 cost 107 twist -10 | cheapest g30 e13 cost 101 twist -85
+    step from f85: grip turn 25 (wall 60) elbow 49 (wall 75) roll 45 (wall 45)
+f87 chosen g14 e9 cost 160 twist 19 | cheapest g31 e7 cost 87 twist 70
+    step from f86: grip turn 15 (wall 60) elbow 26 (wall 75) roll 30 (wall 45)
+f88 chosen g14 e8 cost 86 twist 46 | cheapest g47 e6 cost 72 twist 85
+    step from f87: grip turn 4 (wall 60) elbow 27 (wall 75) roll 27 (wall 45)

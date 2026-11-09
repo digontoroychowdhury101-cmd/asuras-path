@@ -1,0 +1,19 @@
+OK  GrandmasterShen_P1_Guandao_Heavy 0.833s keys  26 {"contact": [-2.56, 0.62, -5.25], "game_radius_at_contact": 7.59, "game_radius_during_active": 7.59, "server_reach": 12.0, "reach_gap": 4.41, "yaw_first": -26.0, "yaw_last": 66.8, "sweep_deg": 92.7}
+OK  GrandmasterShen_P2_HitLightRight 0.480s keys  15 {}
+OK  GrandmasterShen_P2_Guandao_L1 0.400s keys  13 {"contact": [-1.47, 1.96, -5.82], "game_radius_at_contact": 7.8, "game_radius_during_active": 7.8, "server_reach": 10.5, "reach_gap": 2.7, "yaw_first": -14.2, "yaw_last": 69.2, "sweep_deg": 83.4}
+OK  GrandmasterShen_P1_Death 3.000s keys  65 {}
+OK  GrandmasterShen_P2_TurnLeft 0.900s keys   9 {}
+OK  GrandmasterShen_P2_RendingArc 2.600s keys  79 {}
+OK  GrandmasterShen_P1_Flourish 1.600s keys  49 {}
+OK  GrandmasterShen_P2_PostureBreak 1.000s keys  31 {}
+OK  GrandmasterShen_P2_Guandao_Heavy 0.833s keys  26 {"contact": [-2.41, 1.88, -5.73], "game_radius_at_contact": 8.08, "game_radius_during_active": 8.08, "server_reach": 12.0, "reach_gap": 3.92, "yaw_first": -22.8, "yaw_last": 67.4, "sweep_deg": 90.2}
+OK  GrandmasterShen_P2_Flourish 1.600s keys  49 {}
+OK  GrandmasterShen_P2_Death 3.000s keys  68 {}
+OK  GrandmasterShen_P2_CrimsonEmbrace 2.400s keys  72 {}
+OK  GrandmasterShen_P2_WalkBackward 2.400s keys  39 {}
+OK  GrandmasterShen_P2_Guandao_L3 0.517s keys  17 {"contact": [0.61, 3.36, -6.09], "game_radius_at_contact": 7.95, "game_radius_during_active": 8.2, "server_reach": 11.0, "reach_gap": 2.8, "yaw_first": 5.7, "yaw_last": 5.9}
+OK  GrandmasterShen_P2_GuandaoSkyfall 2.600s keys  75 {}
+OK  GrandmasterShen_P2_Strike 1.100s keys  34 {}
+OK  GrandmasterShen_P2_Feint 1.050s keys  33 {}
+OK  GrandmasterShen_P2_TurnRight 0.900s keys  14 {}
+zsh $S/export_some.sh 6 P2_Guandao_L1 P2_RendingArc P2_Guandao_Heavy           6677.61s user 46.79s system 352% cpu 31:46.22 total

@@ -1,0 +1,27 @@
+   stage organic        
+   stage spine_reach    
+   stage settle         
+   stage swivel         
+   stage wrist_yield    
+   stage settle         
+   stage swivel         
+   stage wrist_yield    
+   stage settle         
+   stage swivel         
+   stage wrist_yield    blade 0.29@f9
+   stage settle         blade 0.29@f9
+   stage swivel         blade 0.29@f9
+   stage clear_free_arm blade 0.29@f9
+torso: rp 10 frames need it, 20 moved; worst 0.215 -> 0.143, moves up to 0.51
+   stage clear_torso    fist 0.26@f43 blade 0.29@f9
+fist slide: 4 frames, up to 0.36
+   stage slide_fist     fist 0.26@f43 blade 0.29@f9
+haft tilt: 2 frames need it, up to 0 deg; 0 frames changed
+   stage tilt_haft      fist 0.26@f43 blade 0.29@f9
+depop: 5 frames [1, 2, 3, 4, 5]
+   stage depop          fist 0.26@f43 blade 0.29@f9 edge 0.40@f2
+   stage close_loop     fist 0.26@f43 blade 0.29@f9 edge 0.40@f2
+joint_polish {'window': (44, 54), 'elbows_only': False, 'status': 9, 'message': 'Iteration limit reached', 'nit': 150, 'runtime_s': 1231.4, 'frame_evals': 23116, 'feasible': False, 'depth': (0.184, 0.175), 'kept': True, 'worse': [], 'change': (0.004, 0.3, 0.0, 1.8, 0.0)}
+   stage final-solve    blade 0.39@f12 edge 0.34@f2
+P1_PrayerBeads on 2218s torso_right=0.124 torso_left=0.153 Win_arm_right=0.028 Win_arm_left=0.000 inW_arm_right=0.056 inW_arm_left=0.007 inW_torso=0.015 Win_torso=0.000 wrist_right=74.877 wrist_left=41.643 left_grip=0.038 left_off_haft=0.033 right_off_haft=0.000 pop_fist=0.120 pop_blade=0.386 pop_slide=0.039 pop_lead_reach=0.000 | strike None | problems: []
+   per-frame R/L: 41:0.00/0.14 43:0.00/0.14 46:0.00/0.15

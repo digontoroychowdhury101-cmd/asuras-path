@@ -1,0 +1,52 @@
+{
+ "c1_Idle_last2": {
+  "frames": 69,
+  "pairs": {
+   "LowerTorso in weapon": {
+    "share": 1.0,
+    "deepest": 0.043,
+    "frame": 153
+   },
+   "RobeRight in RightLowerLeg": {
+    "share": 0.203,
+    "deepest": 0.159,
+    "frame": 48
+   },
+   "LeftHand in weapon": {
+    "share": 0.435,
+    "deepest": 0.051,
+    "frame": 39
+   },
+   "RightLowerArm in weapon": {
+    "share": 0.899,
+    "deepest": 0.052,
+    "frame": 72
+   },
+   "LeftLowerArm in weapon": {
+    "share": 0.362,
+    "deepest": 0.03,
+    "frame": 39
+   },
+   "HairBack in Head": {
+    "share": 0.362,
+    "deepest": 0.049,
+    "frame": 42
+   },
+   "RobeBack in RightLowerLeg": {
+    "share": 0.652,
+    "deepest": 0.044,
+    "frame": 138
+   },
+   "weapon in RightLowerArm": {
+    "share": 0.493,
+    "deepest": 0.043,
+    "frame": 75
+   },
+   "RightHand in weapon": {
+    "share": 0.261,
+    "deepest": 0.058,
+    "frame": 48
+   }
+  }
+ }
+}

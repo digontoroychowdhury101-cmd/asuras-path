@@ -1,0 +1,11 @@
+15:29:18 c2_DeathblowVictim opt 67 frames
+15:29:18 c2_DeathblowVictim cur 67 frames
+15:29:23 c2_CrimsonEmbrace opt 73 frames
+15:29:24 c2_CrimsonEmbrace cur 73 frames
+c2_CrimsonEmbrace_cur_UpperTorso_front lit 43/73  max  2166 verts  deepest 0.358
+c2_CrimsonEmbrace_opt_UpperTorso_front lit 43/73  max  1157 verts  deepest 0.219
+video c2_CrimsonEmbrace 1038830
+c2_DeathblowVictim_cur_UpperTorso_front lit 55/67  max  2321 verts  deepest 0.364
+c2_DeathblowVictim_opt_UpperTorso_front lit 55/67  max  2321 verts  deepest 0.364
+video c2_DeathblowVictim 688886
+RENDER_CMP_DONE

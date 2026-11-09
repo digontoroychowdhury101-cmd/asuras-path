@@ -1,0 +1,8 @@
+GrandmasterShen_P1_Flourish            L tw   16 fl   11 dv   24 over   0%   R tw   26 fl   88 dv   57 over  14%
+GrandmasterShen_P1_StrafeRight         L tw   21 fl   28 dv   26 over   0%   R tw    0 fl    5 dv    4 over   0%
+GrandmasterShen_P1_DeathblowVictim     L tw   32 fl   36 dv   31 over  43%   R tw   24 fl   79 dv   22 over  10%
+GrandmasterShen_P1_Guandao_Art         L tw   28 fl   37 dv   29 over   7%   R tw    3 fl   14 dv   14 over   0%
+GrandmasterShen_P2_Flourish            L tw   10 fl   23 dv   33 over   2%   R tw   13 fl   56 dv   46 over   8%
+GrandmasterShen_P2_StrafeRight         L tw    2 fl   10 dv    9 over   0%   R tw    4 fl    3 dv    3 over   0%
+GrandmasterShen_P2_DeathblowVictim     L tw   18 fl   22 dv   33 over   3%   R tw   19 fl   70 dv   15 over   0%
+GrandmasterShen_P2_Guandao_Art         L tw   30 fl   19 dv   26 over  64%   R tw    2 fl   11 dv   22 over   0%

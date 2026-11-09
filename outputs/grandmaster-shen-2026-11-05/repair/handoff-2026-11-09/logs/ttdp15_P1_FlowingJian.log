@@ -1,0 +1,21 @@
+   stage organic        
+   stage spine_reach    
+   stage settle         
+   stage swivel         
+   stage wrist_yield    blade 0.36@f42
+   stage settle         blade 0.36@f42
+   stage swivel         blade 0.36@f42
+   stage wrist_yield    blade 0.64@f43 edge 0.29@f43
+   stage settle         blade 0.64@f43 edge 0.29@f43
+   stage swivel         blade 0.64@f43 edge 0.29@f43
+   stage wrist_yield    blade 0.64@f43 edge 0.29@f43
+   stage clear_free_arm blade 0.64@f43 edge 0.29@f43
+torso: rp 18 frames need it, 40 moved; worst 0.195 -> 0.196, moves up to 0.70
+   stage clear_torso    fist 0.42@f50 blade 0.64@f43 edge 0.29@f43
+fist slide: 6 frames, up to 0.32
+   stage slide_fist     fist 0.42@f50 blade 0.64@f43 edge 0.29@f43
+haft tilt: 2 frames need it, up to 2 deg; 2 frames changed
+   stage tilt_haft      fist 0.42@f50 blade 0.64@f43 edge 0.29@f43
+depop: 18 frames [34, 35, 36, 37, 38, 41, 42, 45, 48, 49, 50, 51, 52, 57, 58, 59, 60, 61]
+   stage depop          fist 0.22@f33 blade 0.58@f43
+   stage close_loop     fist 0.22@f33 blade 0.58@f43

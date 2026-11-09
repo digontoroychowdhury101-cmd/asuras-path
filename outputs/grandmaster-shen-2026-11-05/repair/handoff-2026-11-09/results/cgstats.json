@@ -1,0 +1,157 @@
+{
+    "/private/tmp/claude-501/-Users-digonto-Documents/55e7af69-a636-414f-b9b3-9e34929af331/scratchpad/pre/ClothSim.luau": {
+        "lines": 645,
+        "bytecode": 25899,
+        "bytecodeInstructionCount": 4387,
+        "codegen": 381500,
+        "readTime": 0.000688,
+        "miscTime": 0.000006,
+        "parseTime": 0.001025,
+        "compileTime": 0.004074,
+        "codegenTime": 0.029929,
+        "lowerStats": {
+            "totalFunctions": 14,
+            "skippedFunctions": 0,
+            "spillsToSlot": 81,
+            "spillsToRestore": 321,
+            "maxSpillSlotsUsed": 13,
+            "blocksPreOpt": 5384,
+            "blocksPostOpt": 5510,
+            "maxBlockInstructions": 26,
+            "regAllocErrors": 0,
+            "loweringErrors": 0,
+            "blockLinearizationStats": {
+                "constPropInstructionCount": 0,
+                "timeSeconds": 0.007014
+            },
+            "functions": [
+                {
+                    "name": "restDistance",
+                    "line": 36,
+                    "bcodeCount": 56,
+                    "irCount": 962,
+                    "asmCount": 1276,
+                    "asmSize": 5104,
+                    "bytecodeSummary": []
+                },
+                {
+                    "name": "new",
+                    "line": 20,
+                    "bcodeCount": 683,
+                    "irCount": 8372,
+                    "asmCount": 19158,
+                    "asmSize": 76632,
+                    "bytecodeSummary": []
+                },
+                {
+                    "name": "_frame",
+                    "line": 185,
+                    "bcodeCount": 116,
+                    "irCount": 1945,
+                    "asmCount": 2718,
+                    "asmSize": 10872,
+                    "bytecodeSummary": []
+                },
+                {
+                    "name": "turnBy",
+                    "line": 207,
+                    "bcodeCount": 154,
+                    "irCount": 2467,
+                    "asmCount": 2490,
+                    "asmSize": 9960,
+                    "bytecodeSummary": []
+                },
+                {
+                    "name": "followFrame",
+                    "line": 233,
+                    "bcodeCount": 266,
+                    "irCount": 4295,
+                    "asmCount": 5180,
+                    "asmSize": 20720,
+                    "bytecodeSummary": []
+                },
+                {
+                    "name": "target",
+                    "line": 265,
+                    "bcodeCount": 112,
+                    "irCount": 2493,
+                    "asmCount": 3381,
+                    "asmSize": 13524,
+                    "bytecodeSummary": []
+                },
+                {
+                    "name": "drop",
+                    "line": 283,
+                    "bcodeCount": 2,
+                    "irCount": 18,
+                    "asmCount": 43,
+                    "asmSize": 172,
+                    "bytecodeSummary": []
+                },
+                {
+                    "name": "reset",
+                    "line": 287,
+                    "bcodeCount": 28,
+                    "irCount": 391,
+                    "asmCount": 954,
+                    "asmSize": 3816,
+                    "bytecodeSummary": []
+                },
+                {
+                    "name": "impulse",
+                    "line": 297,
+                    "bcodeCount": 47,
+                    "irCount": 769,
+                    "asmCount": 1357,
+                    "asmSize": 5428,
+                    "bytecodeSummary": []
+                },
+                {
+                    "name": "skinPass",
+                    "line": 313,
+                    "bcodeCount": 277,
+                    "irCount": 5465,
+                    "asmCount": 8224,
+                    "asmSize": 32896,
+                    "bytecodeSummary": []
+                },
+                {
+                    "name": "keepOut",
+                    "line": 436,
+                    "bcodeCount": 123,
+                    "irCount": 2025,
+                    "asmCount": 3270,
+                    "asmSize": 13080,
+                    "bytecodeSummary": []
+                },
+                {
+                    "name": "on",
+                    "line": 512,
+                    "bcodeCount": 64,
+                    "irCount": 1082,
+                    "asmCount": 1405,
+                    "asmSize": 5620,
+                    "bytecodeSummary": []
+                },
+                {
+                    "name": "step",
+                    "line": 366,
+                    "bcodeCount": 1613,
+                    "irCount": 29317,
+                    "asmCount": 44135,
+                    "asmSize": 176540,
+                    "bytecodeSummary": []
+                },
+                {
+                    "name": "[top level]",
+                    "line": 1,
+                    "bcodeCount": 29,
+                    "irCount": 185,
+                    "asmCount": 713,
+                    "asmSize": 2852,
+                    "bytecodeSummary": []
+                }
+            ]
+        }
+    }
+}

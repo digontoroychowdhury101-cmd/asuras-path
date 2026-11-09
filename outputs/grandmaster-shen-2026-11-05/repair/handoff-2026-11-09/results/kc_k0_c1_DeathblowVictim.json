@@ -1,0 +1,92 @@
+{
+ "c1_DeathblowVictim_k0": {
+  "frames": 42,
+  "pairs": {
+   "weapon in RightLowerArm": {
+    "share": 0.024,
+    "deepest": 0.075,
+    "frame": 22
+   },
+   "RightUpperArm in weapon": {
+    "share": 0.024,
+    "deepest": 0.032,
+    "frame": 22
+   },
+   "RightLowerArm in weapon": {
+    "share": 0.024,
+    "deepest": 0.058,
+    "frame": 22
+   },
+   "RightMantle in weapon": {
+    "share": 0.143,
+    "deepest": 0.064,
+    "frame": 22
+   },
+   "RobeLeft in LeftUpperLeg": {
+    "share": 0.429,
+    "deepest": 0.185,
+    "frame": 56
+   },
+   "RightHand in weapon": {
+    "share": 0.714,
+    "deepest": 0.081,
+    "frame": 62
+   },
+   "LeftHand in weapon": {
+    "share": 0.143,
+    "deepest": 0.059,
+    "frame": 34
+   },
+   "RobeRight in LeftUpperLeg": {
+    "share": 0.262,
+    "deepest": 0.067,
+    "frame": 48
+   },
+   "RobeInner in RightLowerLeg": {
+    "share": 0.31,
+    "deepest": 0.073,
+    "frame": 50
+   },
+   "RobeLeft in LowerTorso": {
+    "share": 0.119,
+    "deepest": 0.057,
+    "frame": 52
+   },
+   "RobeFront in LowerTorso": {
+    "share": 0.048,
+    "deepest": 0.032,
+    "frame": 56
+   },
+   "Beads in RightLowerArm": {
+    "share": 0.024,
+    "deepest": 0.045,
+    "frame": 54
+   },
+   "RobeLeft in UpperTorso": {
+    "share": 0.143,
+    "deepest": 0.125,
+    "frame": 62
+   },
+   "Beard in Head": {
+    "share": 0.024,
+    "deepest": 0.035,
+    "frame": 62
+   },
+   "RobeInner in UpperTorso": {
+    "share": 0.024,
+    "deepest": 0.046,
+    "frame": 66
+   },
+   "RobeLeft in LeftLowerLeg": {
+    "share": 0.024,
+    "deepest": 0.152,
+    "frame": 70
+   },
+   "RobeFront in LeftUpperLeg": {
+    "share": 0.143,
+    "deepest": 0.179,
+    "frame": 78
+   }
+  }
+ }
+}

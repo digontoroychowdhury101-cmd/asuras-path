@@ -2583,6 +2583,20 @@ def _polish_sweep(clip, ctrl):
     return sides, worlds, depth, mids, entry
 
 
+def _solved(clip, ctrl, times):
+    """(2026-11-09) The bake's last solve of these controls, every frame in order from no haft-side memory: [t, local, world, diag, ctrl] per frame."""
+    clip._side = {}
+    out = []
+    try:
+        for t, c in zip(times, ctrl):
+            c2 = dict(c)
+            local, world, diag = clip.solve(c2)[:3]
+            out.append([t, local, world, diag, c2])
+    finally:
+        clip._side = None
+    return out
+
+
 def joint_polish(clip, ctrl, times):
     """(2026-11-09) Every pass before this one optimizes its own measure, one after another, and a later one can undo an earlier one: phase 2's
     Crimson Embrace kept its right arm 0.07 in his chest after the keys, the swivel put it 0.34 in, clear_torso took it to 0.27 and slide_fist put
@@ -2625,14 +2639,22 @@ def joint_polish(clip, ctrl, times):
         A, B = max(0, a - POLISH_PAD), min(n - 1, b + POLISH_PAD)
         report.append(_polish_window(clip, ctrl, times, A, B, sides, worlds, depth, mids, entry, wall - POLISH_MARGIN, minimize))
         print("joint_polish %s" % report[-1], flush=True)
+        first = len(report) - 1
         if not report[-1]["kept"]:     # once more with the weapon left exactly as baked, only the elbows and the free arm turning: a smaller, smoother problem
             report.append(_polish_window(clip, ctrl, times, A, B, sides, worlds, depth, mids, entry, wall - POLISH_MARGIN, minimize, elbows_only=True))
+            print("joint_polish %s" % report[-1], flush=True)
+        if not any(r["feasible"] for r in report[first:]):
+            # (2026-11-09) and once more from clear_torso's least fist move on each frame still past the wall (see _polish_window's seed): phase 2's
+            # Death kneels at f36 with the right arm at full stretch, its front armpit 0.26 in his chest. Every small fist move made it deeper
+            # (0.257 -> 0.266 over 0.08 toward his front) until the elbow could bend (0.046 at 0.2), so 150 SLSQP iterations moved the fist 0.03
+            sides, worlds, depth, mids, entry = _polish_sweep(clip, ctrl)
+            report.append(_polish_window(clip, ctrl, times, A, B, sides, worlds, depth, mids, entry, wall - POLISH_MARGIN, minimize, seed=True))
             print("joint_polish %s" % report[-1], flush=True)
     clip._polish = report
     return report
 
 
-def _polish_window(clip, ctrl, times, A, B, sides, worlds, depth, mids, entry, target, minimize, elbows_only=False):
+def _polish_window(clip, ctrl, times, A, B, sides, worlds, depth, mids, entry, target, minimize, elbows_only=False, seed=False):
     import time as _time
     rg = clip.rig
     frames = list(range(A + 1, B))
@@ -2755,6 +2777,38 @@ def _polish_window(clip, ctrl, times, A, B, sides, worlds, depth, mids, entry, t
     for r in range(len(c0)):     # a measure no control here moves (a free left arm, an end held) is not asked to change: it is left as it is
         if c0[r] < 0 and np.abs(J0[r]).max() < 1e-6:
             slack[r] = 1e-3 - c0[r]
+    start = np.zeros(nf * NV)
+    if seed and not elbows_only:
+        # (2026-11-09) A start past the place the gradients stall: on each frame still past the target, clear_torso's search (ARM_TORSO_PUSH along
+        # ARM_TORSO_DIRS in his chest's frame, within the fist's bound) for the least fist move that meets every one of this frame's constraints,
+        # the clearest of that size; blended over the frames round it (a gaussian of 2 frames, full on its own) as clear_torso blends. SLSQP
+        # still decides the window from there, its objective still counted from the bake, and the result is kept on the same terms as any other.
+        moves = {}
+        for k, i in enumerate(frames):
+            if k in contact:
+                continue
+            sl = slack[k * NC:(k + 1) * NC]
+            if float((frame_eval(i, np.zeros(NV))[0] + sl)[:2].min()) >= 0.0:
+                continue
+            Rc = worlds[i]["UpperTorso"][:3, :3]
+            for m in ARM_TORSO_PUSH:
+                best = None
+                for dvec in ARM_TORSO_DIRS:
+                    xi = np.zeros(NV)
+                    xi[:3] = Rc @ dvec * m
+                    if np.abs(xi[:3]).max() > 0.6:
+                        continue
+                    v = frame_eval(i, xi)[0] + sl
+                    if float(v.min()) >= -1e-4 and (best is None or float(v[:2].min()) > best[0]):
+                        best = (float(v[:2].min()), xi[:3].copy())
+                if best is not None:
+                    moves[k] = best[1]
+                    break
+        for k in range(nf):
+            if k in contact or not moves:
+                continue
+            j = max(moves, key=lambda j: (math.exp(-0.5 * ((k - j) / 2.0) ** 2), float(np.linalg.norm(moves[j]))))
+            start[k * NV:k * NV + 3] = np.clip(moves[j] * math.exp(-0.5 * ((k - j) / 2.0) ** 2), -0.6, 0.6)
     track = {"best": None, "hist": []}
 
     def feasible(x):
@@ -2769,7 +2823,7 @@ def _polish_window(clip, ctrl, times, A, B, sides, worlds, depth, mids, entry, t
         if track["best"] is not None and len(h) > 6 and abs(h[-6] - h[-1]) <= 1e-3 * max(abs(h[-1]), 1e-6):
             raise StopIteration
     t0 = _time.time()
-    res = minimize(lambda x: float(x @ Q @ x), x0, jac=lambda x: 2.0 * Q @ x, method="SLSQP", bounds=bounds,
+    res = minimize(lambda x: float(x @ Q @ x), start, jac=lambda x: 2.0 * Q @ x, method="SLSQP", bounds=bounds,
                    constraints=[{"type": "ineq", "fun": cons, "jac": cons_jac}], callback=callback, options={"maxiter": POLISH_ITERS, "ftol": 1e-6})
     if feasible(res.x) and (track["best"] is None or float(res.fun) <= track["best"][0]):
         track["best"] = (float(res.fun), res.x.copy())
@@ -2780,14 +2834,32 @@ def _polish_window(clip, ctrl, times, A, B, sides, worlds, depth, mids, entry, t
     deep1 = max(target - float(c1[r]) for r in tor_rows)
     worse = [j for j in range(2, NC) if min(0.0, float(c0[:nf * NC][j::NC].min())) - float(c1[:nf * NC][j::NC].min()) > 1e-3]
     keep = deep1 < deep0 - 0.005 and not worse
+    real, popped = None, []
+    if keep:
+        # (2026-11-09) and as the export will solve it: every frame in order, each starting from the haft side the frame before left (the measures
+        # above hold each frame's side as the bake left it). Phase 1's Running took a second window 0.017 of fist away from the first's; on f3 that
+        # turned the in-order solve to the haft's other side and the fist jumped 0.24 there (a 0.27 pop, the limit 0.2). The window stays only if
+        # the arms end shallower there too and no pop the clip kept under its limit goes past it.
+        trial = [dict(c) for c in ctrl]
+        for k, i in enumerate(frames):
+            trial[i] = apply(i, x[k * NV:(k + 1) * NV])
+        p0, p1 = bake_pops(clip, _solved(clip, ctrl, times)), None
+        tw = _solved(clip, trial, times)
+        p1 = bake_pops(clip, tw)
+        W = [o[2] for o in tw]
+        real = max([max(arm_torso_world(rg, W[i], dense=True).values()) for i in frames]
+                   + [max(arm_torso_world(rg, blend_pose(rg, W[0], W[a], W[b], s_, u_), dense=True).values()) for a, b, s_, u_ in pairs])
+        popped = [k for k in POP_LIMIT if p1[k][0] > max(p0[k][0], POP_LIMIT[k]) + 1e-6]
+        keep = real < deep0 and not popped
     if keep:
         for k, i in enumerate(frames):
             ctrl[i].clear()
-            ctrl[i].update(apply(i, x[k * NV:(k + 1) * NV]))
+            ctrl[i].update(trial[i])
     clip._side = None
     X = x.reshape(nf, NV)
-    return dict(window=(A, B), elbows_only=elbows_only, status=int(res.status), message=str(res.message), nit=int(res.nit), runtime_s=round(_time.time() - t0, 1),
-                frame_evals=len(cache), feasible=track["best"] is not None, depth=(round(deep0, 3), round(float(deep1), 3)), kept=keep, worse=worse,
+    return dict(window=(A, B), elbows_only=elbows_only, seeded=bool(seed and start.any()), status=int(res.status), message=str(res.message), nit=int(res.nit), runtime_s=round(_time.time() - t0, 1),
+                frame_evals=len(cache), feasible=track["best"] is not None, depth=(round(deep0, 3), round(float(deep1), 3)),
+                solved_depth=None if real is None else round(float(real), 3), popped=popped, kept=keep, worse=worse,
                 change=(round(float(np.abs(X[:, :3]).max()), 3), round(float(np.abs(X[:, 3:5]).max()), 1), round(float(np.abs(X[:, 5]).max()), 1),
                         round(float(np.abs(X[:, 6]).max()), 1), round(float(np.abs(X[:, 7]).max()), 1)))
 

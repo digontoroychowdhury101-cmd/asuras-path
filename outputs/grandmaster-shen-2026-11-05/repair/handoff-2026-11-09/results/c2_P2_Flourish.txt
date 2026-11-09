@@ -1,0 +1,1 @@
+GrandmasterShen_P2_Flourish    w_in_right 0.181 w_in_left 0.022 in_w_right 0.095 in_w_left 0.028 in_w_hands 0.027 w_in_torso 0.000 in_w_torso 0.043 w_in_legs 0.038 in_w_legs 0.030 | wrist L/R 2/6% | [] 301s

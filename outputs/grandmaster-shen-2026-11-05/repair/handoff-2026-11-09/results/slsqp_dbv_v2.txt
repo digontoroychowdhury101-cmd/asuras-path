@@ -1,0 +1,155 @@
+{
+ "clip": "P2_DeathblowVictim",
+ "window": [
+  34,
+  44
+ ],
+ "frames": [
+  35,
+  36,
+  37,
+  38,
+  39,
+  40,
+  41,
+  42,
+  43
+ ],
+ "held_at_contact": [],
+ "vars": 54,
+ "success": false,
+ "status": 9,
+ "message": "Iteration limit reached",
+ "iterations": 150,
+ "fun_evals": 838,
+ "jac_evals": 151,
+ "runtime_s": 635.4,
+ "frame_evals": 15635,
+ "objective": 0.1824,
+ "violations_before": {
+  "torso_R": [
+   [
+    37,
+    0.005
+   ],
+   [
+    38,
+    0.03
+   ],
+   [
+    39,
+    0.032
+   ],
+   [
+    40,
+    0.004
+   ]
+  ]
+ },
+ "violations_after": {},
+ "max_change": {
+  "rp": 0.006,
+  "tilt_deg": 0.0,
+  "elbow_deg": 5.9
+ },
+ "per_frame_R_L": {
+  "35": [
+   0.042,
+   0.038,
+   0.0,
+   0.0
+  ],
+  "36": [
+   0.132,
+   0.13,
+   0.0,
+   0.0
+  ],
+  "37": [
+   0.175,
+   0.162,
+   0.0,
+   0.0
+  ],
+  "38": [
+   0.2,
+   0.17,
+   0.0,
+   0.0
+  ],
+  "39": [
+   0.202,
+   0.17,
+   0.0,
+   0.0
+  ],
+  "40": [
+   0.174,
+   0.166,
+   0.0,
+   0.0
+  ],
+  "41": [
+   0.1,
+   0.097,
+   0.0,
+   0.0
+  ],
+  "42": [
+   0.092,
+   0.092,
+   0.0,
+   0.0
+  ],
+  "43": [
+   0.068,
+   0.069,
+   0.0,
+   0.0
+  ]
+ },
+ "validator_before": {
+  "arm_in_torso_right": 0.202,
+  "arm_in_torso_left": 0.013,
+  "in_weapon_arm_right": 0.051,
+  "in_weapon_arm_left": 0.027,
+  "weapon_in_arm_right": 0.065,
+  "weapon_in_arm_left": 0.0,
+  "wrist_right": 89.76480551485658,
+  "wrist_left": 81.99658895947216,
+  "left_grip": 0.21357200744460614,
+  "left_off_haft": 0.1380186431866621,
+  "right_off_haft": 8.964073410269265e-16,
+  "pop_fist": 0.115,
+  "pop_blade": 0.174,
+  "pop_slide": 0.071,
+  "pop_edge": 0.096,
+  "pop_lead_reach": 0.0,
+  "weapon_low": -3.185261342526977
+ },
+ "validator_after": {
+  "arm_in_torso_right": 0.17,
+  "arm_in_torso_left": 0.013,
+  "in_weapon_arm_right": 0.051,
+  "in_weapon_arm_left": 0.027,
+  "weapon_in_arm_right": 0.064,
+  "weapon_in_arm_left": 0.0,
+  "wrist_right": 89.76480551485658,
+  "wrist_left": 81.99658895947216,
+  "left_grip": 0.21357200744460614,
+  "left_off_haft": 0.1380186431866621,
+  "right_off_haft": 9.155133597044475e-16,
+  "pop_fist": 0.115,
+  "pop_blade": 0.174,
+  "pop_slide": 0.071,
+  "pop_edge": 0.096,
+  "pop_lead_reach": 0.0,
+  "weapon_low": -3.185261342526977
+ },
+ "problems_before": [
+  "right arm 0.20 inside his torso"
+ ],
+ "problems_after": [],
+ "strike_before": null,
+ "strike_after": null
+}

@@ -1,0 +1,8 @@
+OK  GrandmasterShen_P1_Feint 1.050s keys  33 {}
+OK  GrandmasterShen_P1_GuardLoop 1.800s keys  15 {}
+OK  GrandmasterShen_P1_Death 3.000s keys  65 {}
+OK  GrandmasterShen_P1_FlowingJian 3.500s keys 105 {}
+OK  GrandmasterShen_P2_Feint 1.050s keys  33 {}
+OK  GrandmasterShen_P2_GuardLoop 1.800s keys   9 {}
+OK  GrandmasterShen_P2_Death 3.000s keys  68 {}
+OK  GrandmasterShen_P2_BloodWave 2.150s keys  64 {}

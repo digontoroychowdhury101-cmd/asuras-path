@@ -1,0 +1,8 @@
+OK  GrandmasterShen_P1_Idle 6.400s keys  23 {}
+OK  GrandmasterShen_P1_WalkBackward 1.500s keys  46 {}
+OK  GrandmasterShen_P1_HitLightRight 0.480s keys  13 {}
+OK  GrandmasterShen_P1_Guandao_Heavy 0.833s keys  26 {"contact": [-2.6, 0.68, -5.19], "game_radius_at_contact": 7.55, "game_radius_during_active": 7.55, "server_reach": 12.0, "reach_gap": 4.45, "yaw_first": -26.6, "yaw_last": 63.9, "sweep_deg": 90.6}
+OK  GrandmasterShen_P2_Idle 4.800s keys  35 {}
+OK  GrandmasterShen_P2_WalkBackward 2.400s keys  39 {}
+OK  GrandmasterShen_P2_HitLightRight 0.480s keys  15 {}
+OK  GrandmasterShen_P2_Guandao_Heavy 0.833s keys  26 {"contact": [-2.39, 1.93, -5.62], "game_radius_at_contact": 7.95, "game_radius_during_active": 7.95, "server_reach": 12.0, "reach_gap": 4.05, "yaw_first": -23.0, "yaw_last": 67.3, "sweep_deg": 90.4}

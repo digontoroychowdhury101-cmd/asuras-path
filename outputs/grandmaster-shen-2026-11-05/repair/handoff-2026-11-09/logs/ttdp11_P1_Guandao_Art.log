@@ -1,0 +1,15 @@
+   stage organic        
+   stage spine_reach    
+   stage settle         
+   stage swivel         
+   stage wrist_yield    
+   stage clear_free_arm 
+   stage clear_torso    
+fist slide: 3 frames, up to 0.16
+   stage slide_fist     
+   stage tilt_haft      
+   stage depop          
+   stage close_loop     
+   stage final-solve    
+P1_Guandao_Art on 105s torso_right=0.018 torso_left=0.142 Win_arm_right=0.015 Win_arm_left=0.000 inW_arm_right=0.015 inW_arm_left=0.000 inW_torso=0.000 Win_torso=0.000 wrist_right=40.739 wrist_left=38.986 left_grip=0.016 left_off_haft=0.015 right_off_haft=0.000 pop_fist=0.001 pop_blade=0.000 pop_slide=0.014 pop_lead_reach=0.000 | strike [-1.46, 0.55, -5.84] | problems: []
+   per-frame R/L: 7:0.00/0.14

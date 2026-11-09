@@ -1,0 +1,2 @@
+DONE sh4
+zsh $S/probe.sh sh4 $S/SH4 $S/dbg/sim_A.luau  107.16s user 23.58s system 176% cpu 1:14.26 total

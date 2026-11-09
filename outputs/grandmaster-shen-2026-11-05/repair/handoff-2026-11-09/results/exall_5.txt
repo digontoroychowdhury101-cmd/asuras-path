@@ -1,0 +1,8 @@
+OK  GrandmasterShen_P1_TurnLeft 0.900s keys  27 {}
+OK  GrandmasterShen_P1_GuardHit 0.450s keys  14 {}
+OK  GrandmasterShen_P1_Transform 1.700s keys  51 {}
+OK  GrandmasterShen_P1_PrayerBeads 2.100s keys  63 {}
+OK  GrandmasterShen_P2_TurnLeft 0.900s keys   9 {}
+OK  GrandmasterShen_P2_GuardHit 0.450s keys  15 {}
+OK  GrandmasterShen_P2_Transform 1.500s keys  45 {}
+OK  GrandmasterShen_P2_GuandaoSkyfall 2.600s keys  75 {}

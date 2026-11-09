@@ -1,0 +1,21 @@
+   stage organic        
+   stage spine_reach    
+   stage settle         
+   stage swivel         
+   stage wrist_yield    
+   stage settle         
+   stage swivel         
+   stage wrist_yield    
+   stage clear_free_arm 
+torso: rp 2 frames need it, 11 moved; worst 0.155 -> 0.096, moves up to 0.97
+   stage clear_torso    fist 0.17@f2
+fist slide: 11 frames, up to 0.36
+   stage slide_fist     fist 0.17@f2
+haft tilt: 15 frames need it, up to 7 deg; 10 frames changed
+   stage tilt_haft      fist 0.17@f2
+   stage depop          fist 0.17@f2
+   stage close_loop     fist 0.17@f2
+joint_polish {'window': (0, 7), 'elbows_only': False, 'status': 99, 'message': '`callback` raised `StopIteration`.', 'nit': 117, 'runtime_s': 557.3, 'frame_evals': 9458, 'feasible': True, 'depth': (0.175, 0.16), 'kept': True, 'worse': [], 'change': (0.003, 0.0, 3.1, 0.1, 0.0)}
+   stage final-solve    fist 0.17@f2
+P2_HitLightRight on 712s torso_right=0.131 torso_left=0.112 Win_arm_right=0.019 Win_arm_left=0.000 inW_arm_right=0.068 inW_arm_left=0.023 inW_torso=0.002 Win_torso=0.000 wrist_right=53.050 wrist_left=21.899 left_grip=0.000 left_off_haft=0.000 right_off_haft=0.000 pop_fist=0.167 pop_blade=0.142 pop_slide=0.052 pop_lead_reach=0.000 | strike None | problems: []
+   per-frame R/L: 

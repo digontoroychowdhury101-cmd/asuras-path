@@ -1,0 +1,8 @@
+GrandmasterShen_P1_TurnLeft            L tw   18 fl   16 dv   28 over   0%   R tw    0 fl    3 dv    9 over   0%
+GrandmasterShen_P1_GuardHit            L tw    9 fl   13 dv    9 over   0%   R tw    1 fl   15 dv   17 over   0%
+GrandmasterShen_P1_Transform           L tw   25 fl   38 dv   27 over  23%   R tw    6 fl   10 dv   14 over   0%
+GrandmasterShen_P1_PrayerBeads         L tw   27 fl   36 dv   28 over   8%   R tw   18 fl   58 dv   36 over   2%
+GrandmasterShen_P2_TurnLeft            L tw    0 fl    8 dv    9 over   0%   R tw    0 fl    3 dv    6 over   0%
+GrandmasterShen_P2_GuardHit            L tw    2 fl   17 dv    2 over   0%   R tw    2 fl   13 dv   10 over   0%
+GrandmasterShen_P2_Transform           L tw   28 fl   50 dv   33 over  24%   R tw   13 fl   64 dv   35 over   4%
+GrandmasterShen_P2_GuandaoSkyfall      L tw   10 fl   18 dv   17 over   0%   R tw   30 fl   77 dv   33 over  20%

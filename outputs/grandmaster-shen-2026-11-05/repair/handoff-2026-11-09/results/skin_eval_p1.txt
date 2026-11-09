@@ -1,0 +1,8 @@
+P1 shots 75 samples 4456
+real-inside sample-frames: caught by capsule rule 84125, missed 3085; capsule-rule pushes where real clear >0.05: 0
+  samples ever within 0.00 of their capsule clearance: 3116
+  samples ever within 0.05 of their capsule clearance: 3381
+  samples ever within 0.10 of their capsule clearance: 3595
+  samples ever within 0.20 of their capsule clearance: 3920
+  samples ever really inside: 964
+worst real depth per shot: [('c1_WalkForward_best', 0.331), ('c1_Idle_m10p1', 0.323), ('c1_RunForward_m10p1', 0.323), ('c1_WalkForward_m10p1', 0.323), ('c1_Death', 0.321), ('c1_Idle_best', 0.321), ('c1_RunForward_best', 0.319), ('c1_TurnRight', 0.315), ('c1_FlowingJian', 0.313), ('c1_WalkForward_final', 0.312), ('c1_Feint_before', 0.311), ('c1_RunForward_blz', 0.309)]

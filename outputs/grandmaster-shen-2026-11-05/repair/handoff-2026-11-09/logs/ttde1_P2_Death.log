@@ -1,0 +1,26 @@
+   stage organic        
+   stage spine_reach    
+   stage settle         
+   stage swivel         
+   stage wrist_yield    
+   stage settle         
+   stage swivel         
+   stage wrist_yield    
+   stage settle         
+   stage swivel         
+   stage wrist_yield    
+   stage settle         
+   stage swivel         
+   stage clear_free_arm 
+torso: rp 15 frames need it, 39 moved; worst 0.205 -> 0.150, moves up to 0.31
+   stage clear_torso    fist 0.15@f40
+fist slide: 34 frames, up to 0.36
+   stage slide_fist     fist 0.15@f40
+haft tilt: 24 frames need it, up to 8 deg; 30 frames changed
+   stage tilt_haft      fist 0.15@f40
+   stage depop          fist 0.15@f40
+   stage close_loop     fist 0.15@f40
+joint_polish {'window': (25, 40), 'status': 9, 'message': 'Iteration limit reached', 'nit': 150, 'runtime_s': 1729.4, 'frame_evals': 27845, 'feasible': False, 'depth': (0.269, 0.254), 'kept': True, 'worse': [], 'change': (0.03, 0.4, 1.1, 0.3, 0.0)}
+   stage final-solve    fist 0.16@f40
+P2_Death on 2564s torso_right=0.254 torso_left=0.078 Win_arm_right=0.061 Win_arm_left=0.011 inW_arm_right=0.055 inW_arm_left=0.041 inW_torso=0.000 Win_torso=0.000 wrist_right=99.355 wrist_left=62.707 left_grip=0.042 left_off_haft=0.015 right_off_haft=0.080 pop_fist=0.155 pop_blade=0.200 pop_slide=0.063 pop_lead_reach=0.065 | strike None | problems: ['right arm 0.25 inside his torso']
+   per-frame R/L: 28:0.14/0.00

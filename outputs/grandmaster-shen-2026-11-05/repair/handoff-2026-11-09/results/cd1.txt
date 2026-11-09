@@ -1,0 +1,15 @@
+FRAME 50 count 1249 of 25651
+  top bone of clashing verts: [('Sk_LowerTorso', 1114), ('Cl_Under_9_1', 135)]
+  0.148 Shen2_RobeLeft_2 v418 rest [-0.34 -0.39 -0.49] solid-rest [-0.37 -0.94 -0.32] bones [('Sk_LowerTorso', 0.69), ('Cl_Under_9_1', 0.26), ('Cl_Coat_8_1', 0.03)]
+  0.148 Shen2_RobeLeft_2 v122 rest [-0.29 -0.39 -0.49] solid-rest [-0.31 -0.94 -0.32] bones [('Sk_LowerTorso', 0.7), ('Cl_Under_9_1', 0.25), ('Cl_Under_0_1', 0.05)]
+  0.147 Shen2_RobeLeft_2 v419 rest [-0.34 -0.39 -0.49] solid-rest [-0.38 -0.92 -0.32] bones [('Sk_LowerTorso', 0.65), ('Cl_Under_9_1', 0.3), ('Cl_Coat_8_1', 0.03)]
+  0.147 Shen2_RobeLeft_2 v420 rest [-0.34 -0.39 -0.49] solid-rest [-0.38 -0.92 -0.32] bones [('Sk_LowerTorso', 0.65), ('Cl_Under_9_1', 0.3), ('Cl_Coat_8_1', 0.03)]
+  0.147 Shen2_RobeLeft_2 v121 rest [-0.28 -0.37 -0.49] solid-rest [-0.3  -0.95 -0.31] bones [('Sk_LowerTorso', 0.73), ('Cl_Under_9_1', 0.21), ('Cl_Under_0_1', 0.05)]
+--
+FRAME 82 count 1500 of 25651
+  top bone of clashing verts: [('Sk_LowerTorso', 1422), ('Cl_Under_9_1', 67), ('Cl_Under_9_2', 11)]
+  0.177 Shen2_RobeLeft_2 v66 rest [-0.29 -0.43 -0.51] solid-rest [-0.31 -1.04 -0.28] bones [('Sk_LowerTorso', 0.65), ('Cl_Under_9_1', 0.26), ('Cl_Under_0_1', 0.07)]
+  0.176 Shen2_RobeLeft_2 v64 rest [-0.27 -0.42 -0.52] solid-rest [-0.29 -1.05 -0.28] bones [('Sk_LowerTorso', 0.65), ('Cl_Under_9_1', 0.24), ('Cl_Under_0_1', 0.08)]
+  0.176 Shen2_RobeLeft_2 v63 rest [-0.27 -0.42 -0.52] solid-rest [-0.29 -1.05 -0.28] bones [('Sk_LowerTorso', 0.65), ('Cl_Under_9_1', 0.24), ('Cl_Under_0_1', 0.08)]
+  0.176 Shen2_RobeLeft_2 v65 rest [-0.27 -0.42 -0.52] solid-rest [-0.29 -1.05 -0.28] bones [('Sk_LowerTorso', 0.65), ('Cl_Under_9_1', 0.24), ('Cl_Under_0_1', 0.08)]
+  0.175 Shen2_RobeLeft_2 v84 rest [-0.28 -0.4  -0.5 ] solid-rest [-0.29 -1.03 -0.28] bones [('Sk_LowerTorso', 0.68), ('Cl_Under_9_1', 0.23), ('Cl_Under_0_1', 0.07)]

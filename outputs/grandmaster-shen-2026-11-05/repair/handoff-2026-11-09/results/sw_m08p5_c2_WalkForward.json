@@ -1,0 +1,57 @@
+{
+ "c2_WalkForward_m08p5": {
+  "frames": 29,
+  "pairs": {
+   "RightLowerArm in weapon": {
+    "share": 1.0,
+    "deepest": 0.076,
+    "frame": 81
+   },
+   "LeftHand in weapon": {
+    "share": 0.828,
+    "deepest": 0.066,
+    "frame": 81
+   },
+   "RobeRight in RightUpperLeg": {
+    "share": 0.586,
+    "deepest": 0.227,
+    "frame": 9
+   },
+   "RobeRight in RightLowerLeg": {
+    "share": 0.31,
+    "deepest": 0.195,
+    "frame": 6
+   },
+   "LeftLowerArm in weapon": {
+    "share": 0.931,
+    "deepest": 0.06,
+    "frame": 48
+   },
+   "LeftSleeve in LeftLowerArm": {
+    "share": 0.069,
+    "deepest": 0.053,
+    "frame": 24
+   },
+   "LowerTorso in weapon": {
+    "share": 0.31,
+    "deepest": 0.037,
+    "frame": 36
+   },
+   "RightHand in weapon": {
+    "share": 0.379,
+    "deepest": 0.055,
+    "frame": 30
+   },
+   "HairBack in Head": {
+    "share": 0.103,
+    "deepest": 0.058,
+    "frame": 51
+   },
+   "weapon in RightLowerArm": {
+    "share": 0.345,
+    "deepest": 0.091,
+    "frame": 84
+   }
+  }
+ }
+}

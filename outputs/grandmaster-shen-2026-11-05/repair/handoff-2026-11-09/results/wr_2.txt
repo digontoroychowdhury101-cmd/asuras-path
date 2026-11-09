@@ -1,0 +1,8 @@
+GrandmasterShen_P1_Strike              L tw   22 fl   31 dv   27 over   3%   R tw    9 fl   60 dv   44 over   9%
+GrandmasterShen_P1_StrafeLeft          L tw   21 fl   22 dv   26 over   2%   R tw    0 fl    4 dv    5 over   0%
+GrandmasterShen_P1_PostureBreak        L tw   32 fl   52 dv   28 over  32%   R tw   20 fl   45 dv   30 over   0%
+GrandmasterShen_P1_Guandao_Running     L tw   27 fl   21 dv   26 over   5%   R tw   12 fl   16 dv   34 over   5%
+GrandmasterShen_P2_Strike              L tw   12 fl   29 dv   19 over   0%   R tw   13 fl   32 dv   19 over   0%
+GrandmasterShen_P2_StrafeLeft          L tw    4 fl    5 dv    9 over   0%   R tw    0 fl    6 dv    3 over   0%
+GrandmasterShen_P2_PostureBreak        L tw   14 fl   14 dv   29 over   0%   R tw   37 fl   80 dv   18 over  16%
+GrandmasterShen_P2_Guandao_Running     L tw   24 fl   16 dv   17 over   5%   R tw   15 fl   64 dv   35 over   5%

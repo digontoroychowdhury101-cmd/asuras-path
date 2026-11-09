@@ -1,0 +1,13 @@
+00:02:22 run1 front      211
+00:02:31 run1 side      211
+00:03:56 pilot1 side      317
+00:03:59 pilot1 combat      317
+00:03:59 pilot1 front      317
+00:04:03 pilot1 lhand      317
+00:06:50 sky2 side      118
+00:07:58 deaths2 side      187
+00:07:58 deaths2 front      187
+00:08:00 deaths1 side      187
+00:08:01 deaths1 front      187
+00:08:12 cuts2 combat      235
+ALLDONE

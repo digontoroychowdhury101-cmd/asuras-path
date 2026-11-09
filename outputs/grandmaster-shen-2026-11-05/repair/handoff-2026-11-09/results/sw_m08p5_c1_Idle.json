@@ -1,0 +1,67 @@
+{
+ "c1_Idle_m08p5": {
+  "frames": 69,
+  "pairs": {
+   "LowerTorso in weapon": {
+    "share": 1.0,
+    "deepest": 0.043,
+    "frame": 153
+   },
+   "RobeBack in RightLowerLeg": {
+    "share": 0.319,
+    "deepest": 0.134,
+    "frame": 39
+   },
+   "LeftHand in weapon": {
+    "share": 0.435,
+    "deepest": 0.051,
+    "frame": 39
+   },
+   "RightLowerArm in weapon": {
+    "share": 0.899,
+    "deepest": 0.052,
+    "frame": 72
+   },
+   "LeftLowerArm in weapon": {
+    "share": 0.362,
+    "deepest": 0.03,
+    "frame": 39
+   },
+   "RobeRight in RightUpperLeg": {
+    "share": 0.464,
+    "deepest": 0.043,
+    "frame": 72
+   },
+   "HairBack in UpperTorso": {
+    "share": 0.058,
+    "deepest": 0.031,
+    "frame": 54
+   },
+   "RobeInner in LowerTorso": {
+    "share": 0.174,
+    "deepest": 0.034,
+    "frame": 201
+   },
+   "weapon in RightLowerArm": {
+    "share": 0.493,
+    "deepest": 0.043,
+    "frame": 75
+   },
+   "RightHand in weapon": {
+    "share": 0.261,
+    "deepest": 0.058,
+    "frame": 48
+   },
+   "RobeLeft in LeftUpperLeg": {
+    "share": 0.319,
+    "deepest": 0.037,
+    "frame": 144
+   },
+   "RobeBack in LeftLowerLeg": {
+    "share": 0.014,
+    "deepest": 0.045,
+    "frame": 189
+   }
+  }
+ }
+}

@@ -1,0 +1,42 @@
+{
+ "c2_WalkForward": {
+  "frames": 29,
+  "pairs": {
+   "RobeRight in RightUpperLeg": {
+    "share": 0.276,
+    "deepest": 0.223,
+    "frame": 21
+   },
+   "RobeRight in RightLowerLeg": {
+    "share": 0.31,
+    "deepest": 0.211,
+    "frame": 3
+   },
+   "RobeLeft in LeftUpperLeg": {
+    "share": 0.069,
+    "deepest": 0.032,
+    "frame": 18
+   },
+   "LeftSleeve in LeftLowerArm": {
+    "share": 0.069,
+    "deepest": 0.048,
+    "frame": 24
+   },
+   "HairBack in Head": {
+    "share": 0.103,
+    "deepest": 0.064,
+    "frame": 54
+   },
+   "weapon in RightLowerArm": {
+    "share": 0.345,
+    "deepest": 0.091,
+    "frame": 84
+   },
+   "RibbonRight in LowerTorso": {
+    "share": 0.034,
+    "deepest": 0.04,
+    "frame": 78
+   }
+  }
+ }
+}

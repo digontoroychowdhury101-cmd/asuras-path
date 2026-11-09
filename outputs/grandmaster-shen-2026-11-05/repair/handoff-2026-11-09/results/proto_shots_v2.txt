@@ -1,0 +1,5 @@
+cur -> c2_CrimsonEmbrace_cur ok
+opt -> c2_CrimsonEmbrace_opt ok
+cur -> c2_DeathblowVictim_cur ok
+opt -> c2_DeathblowVictim_opt ok
+PROTO_DONE

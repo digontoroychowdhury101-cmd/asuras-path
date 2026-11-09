@@ -1,0 +1,57 @@
+{
+ "c1_PostureBreak_k2": {
+  "frames": 24,
+  "pairs": {
+   "weapon in RightLowerArm": {
+    "share": 0.042,
+    "deepest": 0.143,
+    "frame": 20
+   },
+   "RightLowerArm in weapon": {
+    "share": 0.042,
+    "deepest": 0.066,
+    "frame": 20
+   },
+   "HairBack in Head": {
+    "share": 0.125,
+    "deepest": 0.093,
+    "frame": 20
+   },
+   "RobeLeft in LowerTorso": {
+    "share": 0.042,
+    "deepest": 0.039,
+    "frame": 26
+   },
+   "RobeLeft in LeftUpperLeg": {
+    "share": 0.417,
+    "deepest": 0.057,
+    "frame": 34
+   },
+   "UpperTorso in weapon": {
+    "share": 0.25,
+    "deepest": 0.062,
+    "frame": 38
+   },
+   "RightUpperArm in weapon": {
+    "share": 0.25,
+    "deepest": 0.059,
+    "frame": 40
+   },
+   "RightHand in weapon": {
+    "share": 0.375,
+    "deepest": 0.061,
+    "frame": 36
+   },
+   "Beads in LowerTorso": {
+    "share": 0.125,
+    "deepest": 0.065,
+    "frame": 46
+   },
+   "Beads in UpperTorso": {
+    "share": 0.042,
+    "deepest": 0.098,
+    "frame": 46
+   }
+  }
+ }
+}

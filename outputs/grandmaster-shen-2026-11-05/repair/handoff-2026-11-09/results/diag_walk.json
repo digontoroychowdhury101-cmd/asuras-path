@@ -1,0 +1,52 @@
+{
+ "c1_WalkForward": {
+  "frames": 19,
+  "pairs": {
+   "Beard in UpperTorso": {
+    "share": 0.947,
+    "deepest": 0.061,
+    "frame": 6
+   },
+   "RobeInner in RightUpperLeg": {
+    "share": 0.789,
+    "deepest": 0.103,
+    "frame": 54
+   },
+   "RobeRight in RightUpperLeg": {
+    "share": 0.684,
+    "deepest": 0.158,
+    "frame": 57
+   },
+   "RobeRight in LeftUpperLeg": {
+    "share": 0.105,
+    "deepest": 0.106,
+    "frame": 24
+   },
+   "RobeInner in LeftUpperLeg": {
+    "share": 0.053,
+    "deepest": 0.098,
+    "frame": 24
+   },
+   "weapon in LowerTorso": {
+    "share": 0.158,
+    "deepest": 0.041,
+    "frame": 42
+   },
+   "RobeLeft in LeftUpperLeg": {
+    "share": 0.316,
+    "deepest": 0.068,
+    "frame": 48
+   },
+   "RobeBack in RightLowerLeg": {
+    "share": 0.158,
+    "deepest": 0.061,
+    "frame": 48
+   },
+   "RobeRight in RightLowerLeg": {
+    "share": 0.053,
+    "deepest": 0.032,
+    "frame": 51
+   }
+  }
+ }
+}

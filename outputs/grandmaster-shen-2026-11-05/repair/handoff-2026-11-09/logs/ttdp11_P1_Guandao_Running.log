@@ -1,0 +1,15 @@
+   stage organic        
+   stage spine_reach    
+   stage settle         
+   stage swivel         
+   stage wrist_yield    
+   stage clear_free_arm 
+   stage clear_torso    
+   stage slide_fist     
+haft tilt: 1 frames need it, up to 0 deg; 0 frames changed
+   stage tilt_haft      
+   stage depop          
+   stage close_loop     
+   stage final-solve    fist 0.15@f4
+P1_Guandao_Running on 83s torso_right=0.052 torso_left=0.170 Win_arm_right=0.015 Win_arm_left=0.000 inW_arm_right=0.015 inW_arm_left=0.000 inW_torso=0.000 Win_torso=0.000 wrist_right=48.422 wrist_left=38.050 left_grip=0.024 left_off_haft=0.022 right_off_haft=0.000 pop_fist=0.150 pop_blade=0.140 pop_slide=0.000 pop_lead_reach=0.000 | strike [0.71, 0.05, -6.13] | problems: []
+   per-frame R/L: 3:0.00/0.15 5:0.02/0.17

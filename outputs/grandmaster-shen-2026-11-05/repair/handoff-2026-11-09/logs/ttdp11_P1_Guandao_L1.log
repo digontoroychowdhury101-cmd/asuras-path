@@ -1,0 +1,17 @@
+   stage organic        
+   stage spine_reach    
+   stage settle         
+   stage swivel         
+   stage wrist_yield    
+   stage clear_free_arm 
+torso: rp 3 frames need it, 8 moved; worst 0.177 -> 0.155, moves up to 0.19
+   stage clear_torso    fist 0.14@f9
+   stage slide_fist     fist 0.14@f9
+haft tilt: 1 frames need it, up to 0 deg; 0 frames changed
+   stage tilt_haft      fist 0.14@f9
+depop: 6 frames [6, 7, 8, 9, 10, 11]
+   stage depop          
+   stage close_loop     
+   stage final-solve    fist 0.17@f11
+P1_Guandao_L1 on 120s torso_right=0.026 torso_left=0.149 Win_arm_right=0.017 Win_arm_left=0.000 inW_arm_right=0.019 inW_arm_left=0.000 inW_torso=0.000 Win_torso=0.000 wrist_right=63.762 wrist_left=76.583 left_grip=0.027 left_off_haft=0.024 right_off_haft=0.000 pop_fist=0.165 pop_blade=0.049 pop_slide=0.000 pop_lead_reach=0.000 | strike [-1.19, 1.17, -5.7] | problems: []
+   per-frame R/L: 2:0.00/0.14 6:0.00/0.15

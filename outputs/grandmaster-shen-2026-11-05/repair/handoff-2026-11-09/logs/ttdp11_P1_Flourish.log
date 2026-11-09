@@ -1,0 +1,20 @@
+   stage organic        
+   stage spine_reach    
+   stage settle         
+   stage swivel         
+   stage wrist_yield    
+   stage settle         
+   stage swivel         
+   stage wrist_yield    
+   stage clear_free_arm 
+torso: rp 2 frames need it, 26 moved; worst 0.150 -> 0.117, moves up to 0.10
+   stage clear_torso    
+fist slide: 10 frames, up to 0.28
+   stage slide_fist     
+haft tilt: 13 frames need it, up to 4 deg; 6 frames changed
+   stage tilt_haft      
+   stage depop          
+   stage close_loop     
+   stage final-solve    blade 0.40@f22 edge 0.33@f34
+P1_Flourish on 305s torso_right=0.063 torso_left=0.143 Win_arm_right=0.039 Win_arm_left=0.000 inW_arm_right=0.042 inW_arm_left=0.010 inW_torso=0.000 Win_torso=0.000 wrist_right=80.165 wrist_left=40.284 left_grip=0.020 left_off_haft=0.016 right_off_haft=0.000 pop_fist=0.074 pop_blade=0.400 pop_slide=0.024 pop_lead_reach=0.000 | strike None | problems: []
+   per-frame R/L: 4:0.00/0.14

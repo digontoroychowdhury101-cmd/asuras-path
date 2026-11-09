@@ -1,0 +1,2 @@
+OK  GrandmasterShen_P1_Guandao_Heavy 0.833s keys  26 {"contact": [-2.28, 0.67, -5.31], "game_radius_at_contact": 7.52, "game_radius_during_active": 7.77, "server_reach": 12.0, "reach_gap": 4.23, "yaw_first": -23.2, "yaw_last": 64.1, "sweep_deg": 87.3}
+OK  GrandmasterShen_P2_Guandao_L1 0.400s keys  13 {"contact": [-1.41, 2.06, -5.5], "game_radius_at_contact": 7.38, "game_radius_during_active": 7.38, "server_reach": 10.5, "reach_gap": 3.12, "yaw_first": -14.4, "yaw_last": 69.2, "sweep_deg": 83.6}

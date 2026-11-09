@@ -1,0 +1,64 @@
+OK  GrandmasterShen_P1_Idle 6.400s keys  33 {}
+OK  GrandmasterShen_P1_WalkBackward 1.500s keys  46 {}
+OK  GrandmasterShen_P1_HitLightRight 0.480s keys  14 {}
+OK  GrandmasterShen_P1_Guandao_Heavy 0.833s keys  26 {"contact": [-2.55, 0.66, -5.27], "game_radius_at_contact": 7.61, "game_radius_during_active": 7.61, "server_reach": 12.0, "reach_gap": 4.39, "yaw_first": -25.8, "yaw_last": 62.2, "sweep_deg": 88.0}
+OK  GrandmasterShen_P2_Idle 4.800s keys  63 {}
+OK  GrandmasterShen_P2_WalkBackward 2.400s keys  31 {}
+OK  GrandmasterShen_P2_HitLightRight 0.480s keys  15 {}
+OK  GrandmasterShen_P2_Guandao_Heavy 0.833s keys  26 {"contact": [-2.38, 1.87, -5.54], "game_radius_at_contact": 7.84, "game_radius_during_active": 7.94, "server_reach": 12.0, "reach_gap": 4.06, "yaw_first": -23.2, "yaw_last": 64.3, "sweep_deg": 87.5}
+OK  GrandmasterShen_P1_Strike 1.100s keys  34 {}
+OK  GrandmasterShen_P1_StrafeLeft 1.300s keys  40 {}
+OK  GrandmasterShen_P1_PostureBreak 1.000s keys  31 {}
+OK  GrandmasterShen_P1_Guandao_Running 0.600s keys  19 {"contact": [0.69, 0.05, -6.1], "game_radius_at_contact": 7.98, "game_radius_during_active": 7.98, "server_reach": 12.5, "reach_gap": 4.52, "yaw_first": 6.5, "yaw_last": 40.8}
+OK  GrandmasterShen_P2_Strike 1.100s keys  34 {}
+OK  GrandmasterShen_P2_StrafeLeft 2.400s keys  28 {}
+OK  GrandmasterShen_P2_PostureBreak 1.000s keys  31 {}
+OK  GrandmasterShen_P2_Guandao_Running 0.600s keys  19 {"contact": [0.94, 1.35, -6.23], "game_radius_at_contact": 8.19, "game_radius_during_active": 8.19, "server_reach": 12.5, "reach_gap": 4.31, "yaw_first": 8.5, "yaw_last": 43.6}
+OK  GrandmasterShen_P1_Flourish 1.600s keys  49 {}
+OK  GrandmasterShen_P1_StrafeRight 1.300s keys  40 {}
+OK  GrandmasterShen_P1_DeathblowVictim 2.200s keys  56 {}
+OK  GrandmasterShen_P1_Guandao_Art 0.900s keys  28 {"contact": [1.35, -0.3, -5.65], "game_radius_at_contact": 7.55, "game_radius_during_active": 7.68, "server_reach": 11.5, "reach_gap": 3.82, "yaw_first": 13.4, "yaw_last": -179.9}
+OK  GrandmasterShen_P2_Flourish 1.600s keys  49 {}
+OK  GrandmasterShen_P2_StrafeRight 2.400s keys  45 {}
+OK  GrandmasterShen_P2_DeathblowVictim 2.200s keys  63 {}
+OK  GrandmasterShen_P2_Guandao_Art 0.900s keys  28 {"contact": [0.08, 0.98, -6.23], "game_radius_at_contact": 8.1, "game_radius_during_active": 8.1, "server_reach": 11.5, "reach_gap": 3.4, "yaw_first": 0.7, "yaw_last": 167.1}
+OK  GrandmasterShen_P1_Feint 1.050s keys  33 {}
+OK  GrandmasterShen_P1_GuardLoop 1.800s keys   5 {}
+OK  GrandmasterShen_P1_Death 3.000s keys  66 {}
+OK  GrandmasterShen_P1_FlowingJian 3.500s keys 105 {}
+OK  GrandmasterShen_P2_Feint 1.050s keys  32 {}
+OK  GrandmasterShen_P2_GuardLoop 1.800s keys  14 {}
+OK  GrandmasterShen_P2_Death 3.000s keys  68 {}
+OK  GrandmasterShen_P2_BloodWave 2.150s keys  64 {}
+OK  GrandmasterShen_P1_TurnLeft 0.900s keys  27 {}
+OK  GrandmasterShen_P1_GuardHit 0.450s keys  13 {}
+OK  GrandmasterShen_P1_Transform 1.700s keys  37 {}
+OK  GrandmasterShen_P1_PrayerBeads 2.100s keys  63 {}
+OK  GrandmasterShen_P2_TurnLeft 0.900s keys  16 {}
+OK  GrandmasterShen_P2_GuardHit 0.450s keys  14 {}
+OK  GrandmasterShen_P2_Transform 1.500s keys  45 {}
+OK  GrandmasterShen_P2_GuandaoSkyfall 2.600s keys  74 {}
+OK  GrandmasterShen_P1_TurnRight 0.900s keys  26 {}
+OK  GrandmasterShen_P1_HitLightFront 0.480s keys  15 {}
+OK  GrandmasterShen_P1_Guandao_L1 0.400s keys  13 {"contact": [-1.32, 0.99, -5.84], "game_radius_at_contact": 7.79, "game_radius_during_active": 7.81, "server_reach": 10.5, "reach_gap": 2.69, "yaw_first": -12.7, "yaw_last": 65.5, "sweep_deg": 78.2}
+OK  GrandmasterShen_P1_AbbotSweep 1.950s keys  59 {}
+OK  GrandmasterShen_P2_TurnRight 0.900s keys  16 {}
+OK  GrandmasterShen_P2_HitLightFront 0.480s keys  15 {}
+OK  GrandmasterShen_P2_Guandao_L1 0.400s keys  13 {"contact": [-1.46, 1.97, -5.75], "game_radius_at_contact": 7.71, "game_radius_during_active": 7.71, "server_reach": 10.5, "reach_gap": 2.79, "yaw_first": -14.2, "yaw_last": 69.2, "sweep_deg": 83.4}
+OK  GrandmasterShen_P2_CrimsonEmbrace 2.400s keys  70 {}
+OK  GrandmasterShen_P1_WalkForward 1.400s keys  43 {}
+OK  GrandmasterShen_P1_HitLightBack 0.480s keys  15 {}
+OK  GrandmasterShen_P1_Guandao_L2 0.417s keys  14 {"contact": [-0.92, -1.28, -5.41], "game_radius_at_contact": 7.14, "game_radius_during_active": 7.89, "server_reach": 10.5, "reach_gap": 2.61, "yaw_first": -9.6, "yaw_last": 57.4, "sweep_deg": 67.0}
+OK  GrandmasterShen_P1_HesitantMoon 2.150s keys  65 {}
+OK  GrandmasterShen_P2_WalkForward 2.400s keys  29 {}
+OK  GrandmasterShen_P2_HitLightBack 0.480s keys  15 {}
+OK  GrandmasterShen_P2_Guandao_L2 0.417s keys  14 {"contact": [-0.74, -0.24, -5.58], "game_radius_at_contact": 7.32, "game_radius_during_active": 7.98, "server_reach": 10.5, "reach_gap": 2.52, "yaw_first": -7.6, "yaw_last": 63.7, "sweep_deg": 71.3}
+OK  GrandmasterShen_P2_RendingArc 2.600s keys  78 {}
+OK  GrandmasterShen_P1_RunForward 0.750s keys  23 {}
+OK  GrandmasterShen_P1_HitLightLeft 0.480s keys  14 {}
+OK  GrandmasterShen_P1_Guandao_L3 0.517s keys  17 {"contact": [0.84, 2.01, -5.8], "game_radius_at_contact": 7.62, "game_radius_during_active": 7.78, "server_reach": 11.0, "reach_gap": 3.22, "yaw_first": 8.3, "yaw_last": 7.9}
+OK  GrandmasterShen_P1_WheelOfHeaven 2.600s keys  79 {}
+OK  GrandmasterShen_P2_RunForward 1.600s keys  22 {}
+OK  GrandmasterShen_P2_HitLightLeft 0.480s keys  15 {}
+OK  GrandmasterShen_P2_Guandao_L3 0.517s keys  17 {"contact": [0.65, 3.33, -5.8], "game_radius_at_contact": 7.59, "game_radius_during_active": 7.85, "server_reach": 11.0, "reach_gap": 3.15, "yaw_first": 6.4, "yaw_last": 6.6}
+OK  GrandmasterShen_P2_PhantomDrift 2.000s keys  60 {}

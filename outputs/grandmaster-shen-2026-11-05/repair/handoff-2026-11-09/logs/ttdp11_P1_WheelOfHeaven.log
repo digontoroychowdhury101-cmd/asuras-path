@@ -1,0 +1,26 @@
+   stage organic        
+   stage spine_reach    
+   stage settle         
+   stage swivel         
+   stage wrist_yield    blade 0.37@f28
+   stage settle         blade 0.37@f28
+   stage swivel         blade 0.37@f28
+   stage wrist_yield    blade 0.52@f28 edge 0.49@f28
+   stage settle         blade 0.52@f28 edge 0.49@f28
+   stage swivel         blade 0.52@f28 edge 0.49@f28
+   stage wrist_yield    blade 0.65@f28 edge 0.61@f28
+   stage settle         blade 0.65@f28 edge 0.61@f28
+   stage swivel         blade 0.65@f28 edge 0.61@f28
+   stage clear_free_arm blade 0.65@f28 edge 0.61@f28
+torso: rp 1 frames need it, 18 moved; worst 0.141 -> 0.103, moves up to 0.10
+   stage clear_torso    blade 0.65@f28 edge 0.61@f28
+fist slide: 7 frames, up to 0.52
+   stage slide_fist     blade 0.65@f28 edge 0.61@f28
+haft tilt: 6 frames need it, up to 4 deg; 3 frames changed
+   stage tilt_haft      blade 0.65@f28 edge 0.61@f28
+depop: 11 frames [26, 27, 28, 29, 30, 31, 46, 47, 48, 49, 50]
+   stage depop          edge 0.37@f31
+   stage close_loop     edge 0.37@f31
+   stage final-solve    fist 0.15@f43 blade 0.40@f10 edge 0.37@f31
+P1_WheelOfHeaven on 984s torso_right=0.132 torso_left=0.138 Win_arm_right=0.018 Win_arm_left=0.000 inW_arm_right=0.041 inW_arm_left=0.017 inW_torso=0.066 Win_torso=0.000 wrist_right=96.945 wrist_left=42.480 left_grip=0.076 left_off_haft=0.071 right_off_haft=0.000 pop_fist=0.151 pop_blade=0.402 pop_slide=0.040 pop_lead_reach=0.000 | strike None | problems: []
+   per-frame R/L: 

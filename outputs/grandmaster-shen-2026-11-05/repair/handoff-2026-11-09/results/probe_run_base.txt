@@ -1,0 +1,2 @@
+DONE base
+zsh $S/probe.sh base work/shen_import  105.77s user 23.52s system 175% cpu 1:13.66 total

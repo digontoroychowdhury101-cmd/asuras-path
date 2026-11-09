@@ -1,0 +1,11 @@
+OK  GrandmasterShen_P1_Idle 6.400s keys  15 {}
+OK  GrandmasterShen_P1_TurnLeft 0.900s keys  27 {}
+OK  GrandmasterShen_P1_TurnRight 0.900s keys  26 {}
+OK  GrandmasterShen_P1_WalkForward 1.400s keys  43 {}
+OK  GrandmasterShen_P1_RunForward 0.750s keys  23 {}
+OK  GrandmasterShen_P1_WalkBackward 1.500s keys  45 {}
+OK  GrandmasterShen_P1_StrafeLeft 1.300s keys  40 {}
+OK  GrandmasterShen_P1_StrafeRight 1.300s keys  39 {}
+OK  GrandmasterShen_P1_Guandao_L1 0.400s keys  13 {"contact": [-1.36, 0.95, -5.6], "game_radius_at_contact": 7.5, "game_radius_during_active": 7.5, "server_reach": 10.5, "reach_gap": 3.0, "yaw_first": -13.6, "yaw_last": 63.2, "sweep_deg": 76.8}
+OK  GrandmasterShen_P1_Guandao_Heavy 0.833s keys  26 {"contact": [-2.43, 0.58, -5.11], "game_radius_at_contact": 7.36, "game_radius_during_active": 7.38, "server_reach": 12.0, "reach_gap": 4.62, "yaw_first": -25.4, "yaw_last": 63.7, "sweep_deg": 89.1}
+OK  GrandmasterShen_P1_FlowingJian 3.500s keys 105 {}

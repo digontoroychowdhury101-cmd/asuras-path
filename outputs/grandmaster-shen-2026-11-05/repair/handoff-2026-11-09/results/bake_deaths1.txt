@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "/Users/digonto/Documents/ChatGPT/Roblox game 2/tools/animation/opening_cast/cloth_bake.py", line 215, in <module>
+    bake_shot(name, phase, plan)
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "/Users/digonto/Documents/ChatGPT/Roblox game 2/tools/animation/opening_cast/cloth_bake.py", line 152, in bake_shot
+    cloth, sim = run_sim(phase, frames, roots)
+                 ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/digonto/Documents/ChatGPT/Roblox game 2/tools/animation/opening_cast/cloth_bake.py", line 144, in run_sim
+    path.unlink()
+    ~~~~~~~~~~~^^
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/pathlib/__init__.py", line 1042, in unlink
+    os.unlink(self)
+    ~~~~~~~~~^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/digonto/Documents/ChatGPT/Roblox game 2/work/opening_cast_bake/_cloth_run.luau'

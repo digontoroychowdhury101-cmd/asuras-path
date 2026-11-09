@@ -1,0 +1,8 @@
+  P1: 7894 trouser triangles parted from the robe, 1831 vertices doubled along the seam
+    healed 122949 jumps in a band of 223590 vertices over 120 bones
+P1: 123 bones (107 cloth), 147 particles, 384 links; welded verts 251336, influences max 4 mean 3.46; coat 60398 under 51605
+  P2: 9565 trouser triangles parted from the robe, 1551 vertices doubled along the seam
+  orb patch 104 texels square
+  orbs remade: 7686 lumpy source triangles out of the game mesh, 3456 sphere triangles in; patch at 0.492,0.338
+    healed 111711 jumps in a band of 215689 vertices over 119 bones
+P2: 125 bones (109 cloth), 143 particles, 378 links; welded verts 253220, influences max 4 mean 3.15; coat 49281 under 30709

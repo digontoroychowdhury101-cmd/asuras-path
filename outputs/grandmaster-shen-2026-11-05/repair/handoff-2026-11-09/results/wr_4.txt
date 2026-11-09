@@ -1,0 +1,10 @@
+GrandmasterShen_P1_Feint               L tw   65 fl   38 dv   29 over  12%   R tw    4 fl   59 dv   41 over   6%
+GrandmasterShen_P1_GuardLoop           L tw    9 fl    6 dv    6 over   0%   R tw    0 fl   10 dv   17 over   0%
+GrandmasterShen_P1_DeathblowVictim     L tw   32 fl   36 dv   31 over  43%   R tw   24 fl   79 dv   22 over  10%
+GrandmasterShen_P1_Death               L tw   32 fl   51 dv   30 over  12%   R tw   52 fl   76 dv   59 over   3%
+GrandmasterShen_P1_FlowingJian         L tw   58 fl   78 dv   29 over  15%   R tw    8 fl   81 dv   38 over   8%
+GrandmasterShen_P2_Feint               L tw   28 fl   20 dv   19 over   3%   R tw   12 fl  101 dv   43 over  18%
+GrandmasterShen_P2_GuardLoop           L tw    0 fl   12 dv    2 over   0%   R tw    0 fl    9 dv    1 over   0%
+GrandmasterShen_P2_DeathblowVictim     L tw   18 fl   22 dv   33 over   3%   R tw   19 fl   70 dv   15 over   0%
+GrandmasterShen_P2_Death               L tw   11 fl   20 dv   38 over  41%   R tw   25 fl   80 dv   46 over   7%
+GrandmasterShen_P2_BloodWave           L tw   15 fl   15 dv   31 over   2%   R tw    8 fl   22 dv   33 over   2%

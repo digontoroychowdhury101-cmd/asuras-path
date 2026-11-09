@@ -1,0 +1,1 @@
+1.05,0.4,-0.85,0.3 w_in_arm_right 0.000 w_in_arm_left 0.000 in_w_arm_right 0.059 in_w_arm_left 0.042 in_w_hands 0.015 w_in_legs 0.000 in_w_legs 0.000 in_w_torso 0.006 wristR max 52 [] (13, 30.0) 443s

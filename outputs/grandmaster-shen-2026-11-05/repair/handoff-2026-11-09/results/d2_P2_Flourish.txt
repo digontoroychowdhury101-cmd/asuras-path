@@ -1,0 +1,6 @@
+fist slide: 15 frames, up to 0.56
+haft tilt: 21 frames need it, up to 27 deg; 33 frames changed
+P2_Flourish {'weapon_low': 9.0, 'weapon_through_head': 0.0, 'weapon_through_chest': 0.0, 'weapon_in_arm_right': 0.169, 'weapon_in_arm_left': 0.0, 'weapon_in_torso': 0.0, 'weapon_in_legs': 0.086, 'in_weapon_torso': 0.05, 'in_weapon_legs': 0.06, 'in_weapon_arm_right': 0.086, 'in_weapon_arm_left': 0.035, 'in_weapon_hands': 0.02} ['right hand short by 0.74', 'right hand 0.74 off the haft'] 283s
+Right wrist past range: share 16% max 53.3 deg
+Left wrist past range: share 4% max 6.8 deg
+deepest torso skin in weapon 0.05 (0.93, 'LowerTorso', [('LowerTorso', 0.84), ('RightLowerArm', 0.16)], -1.3)

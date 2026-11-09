@@ -1,0 +1,18 @@
+   stage organic        
+   stage spine_reach    
+   stage settle         
+   stage swivel         
+   stage wrist_yield    
+   stage clear_free_arm 
+torso: rp 4 frames need it, 22 moved; worst 0.184 -> 0.165, moves up to 0.51
+   stage clear_torso    fist 0.44@f39
+fist slide: 41 frames, up to 0.36
+   stage slide_fist     fist 0.44@f39
+haft tilt: 53 frames need it, up to 16 deg; 52 frames changed
+   stage tilt_haft      fist 0.44@f39
+depop: 7 frames [35, 36, 37, 38, 39, 40, 41]
+   stage depop          
+   stage close_loop     
+   stage final-solve    
+P2_DeathblowVictim on 250s torso_right=0.202 torso_left=0.013 Win_arm_right=0.065 Win_arm_left=0.000 inW_arm_right=0.051 inW_arm_left=0.027 inW_torso=0.041 Win_torso=0.000 wrist_right=89.765 wrist_left=81.997 left_grip=0.214 left_off_haft=0.138 right_off_haft=0.000 pop_fist=0.115 pop_blade=0.174 pop_slide=0.071 pop_lead_reach=0.000 | strike None | problems: ['right arm 0.20 inside his torso']
+   per-frame R/L: 37:0.17/0.00 38:0.20/0.00 39:0.20/0.00 40:0.17/0.00

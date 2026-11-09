@@ -1,0 +1,87 @@
+{
+ "c2_DeathblowVictim_k2": {
+  "frames": 42,
+  "pairs": {
+   "LeftHand in weapon": {
+    "share": 0.595,
+    "deepest": 0.072,
+    "frame": 40
+   },
+   "LeftSleeve in LeftUpperArm": {
+    "share": 0.524,
+    "deepest": 0.08,
+    "frame": 64
+   },
+   "Beard in RightUpperArm": {
+    "share": 0.024,
+    "deepest": 0.075,
+    "frame": 20
+   },
+   "RightLowerArm in weapon": {
+    "share": 0.024,
+    "deepest": 0.044,
+    "frame": 22
+   },
+   "RobeLeft in LeftUpperLeg": {
+    "share": 0.714,
+    "deepest": 0.064,
+    "frame": 58
+   },
+   "RibbonLeft in LeftLowerArm": {
+    "share": 0.024,
+    "deepest": 0.098,
+    "frame": 22
+   },
+   "Beard in UpperTorso": {
+    "share": 0.31,
+    "deepest": 0.35,
+    "frame": 50
+   },
+   "Beard in Head": {
+    "share": 0.167,
+    "deepest": 0.139,
+    "frame": 62
+   },
+   "UpperTorso in weapon": {
+    "share": 0.119,
+    "deepest": 0.067,
+    "frame": 40
+   },
+   "Beard in weapon": {
+    "share": 0.095,
+    "deepest": 0.068,
+    "frame": 40
+   },
+   "Beard in RightLowerArm": {
+    "share": 0.214,
+    "deepest": 0.104,
+    "frame": 52
+   },
+   "Beard in LeftUpperArm": {
+    "share": 0.381,
+    "deepest": 0.181,
+    "frame": 56
+   },
+   "RightHand in weapon": {
+    "share": 0.357,
+    "deepest": 0.075,
+    "frame": 74
+   },
+   "Beard in LeftUpperLeg": {
+    "share": 0.024,
+    "deepest": 0.093,
+    "frame": 68
+   },
+   "RibbonLeft in weapon": {
+    "share": 0.024,
+    "deepest": 0.062,
+    "frame": 76
+   },
+   "LeftSleeve in Head": {
+    "share": 0.024,
+    "deepest": 0.093,
+    "frame": 82
+   }
+  }
+ }
+}

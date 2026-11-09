@@ -1,0 +1,3 @@
+before ['right arm 0.18 inside his torso between f1 and f2', 'right arm 0.19 inside his torso fading in']
+joint_polish {'window': (0, 7), 'elbows_only': False, 'seeded': False, 'status': 9, 'message': 'Iteration limit reached', 'nit': 150, 'runtime_s': 467.9, 'frame_evals': 14182, 'feasible': True, 'depth': (0.187, 0.16), 'solved_depth': 0.16, 'popped': [], 'kept': True, 'worse': [], 'change': (0.08, 1.8, 9.4, 0.1, 0.0)}
+after []

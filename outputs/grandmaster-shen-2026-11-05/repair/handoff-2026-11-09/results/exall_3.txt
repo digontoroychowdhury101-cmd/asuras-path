@@ -1,0 +1,8 @@
+OK  GrandmasterShen_P1_Flourish 1.600s keys  49 {}
+OK  GrandmasterShen_P1_StrafeRight 1.300s keys  39 {}
+OK  GrandmasterShen_P1_DeathblowVictim 2.200s keys  59 {}
+OK  GrandmasterShen_P1_Guandao_Art 0.900s keys  28 {"contact": [1.46, -0.35, -5.92], "game_radius_at_contact": 7.92, "game_radius_during_active": 8.14, "server_reach": 11.5, "reach_gap": 3.36, "yaw_first": 13.9, "yaw_last": -171.0}
+OK  GrandmasterShen_P2_Flourish 1.600s keys  49 {}
+OK  GrandmasterShen_P2_StrafeRight 2.400s keys  35 {}
+OK  GrandmasterShen_P2_DeathblowVictim 2.200s keys  66 {}
+OK  GrandmasterShen_P2_Guandao_Art 0.900s keys  28 {"contact": [0.18, 0.91, -6.47], "game_radius_at_contact": 8.41, "game_radius_during_active": 8.42, "server_reach": 11.5, "reach_gap": 3.08, "yaw_first": 1.6, "yaw_last": -176.7}

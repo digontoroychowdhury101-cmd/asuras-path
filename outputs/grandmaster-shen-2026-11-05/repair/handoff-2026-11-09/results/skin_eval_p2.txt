@@ -1,0 +1,8 @@
+P2 shots 52 samples 3309
+real-inside sample-frames: caught by capsule rule 34150, missed 520; capsule-rule pushes where real clear >0.05: 0
+  samples ever within 0.00 of their capsule clearance: 1815
+  samples ever within 0.05 of their capsule clearance: 2056
+  samples ever within 0.10 of their capsule clearance: 2326
+  samples ever within 0.20 of their capsule clearance: 2723
+  samples ever really inside: 733
+worst real depth per shot: [('c2_Guandao_Heavy', 0.381), ('c2_CrimsonEmbrace', 0.363), ('c2_Transform', 0.331), ('c2_RendingArc', 0.323), ('c2_GuandaoSkyfall', 0.322), ('c2_Guandao_Art', 0.319), ('c2_Guandao_L1_oldc', 0.306), ('c2_DeathblowVictim', 0.303), ('c2_Guandao_L1_before', 0.301), ('c2_Feint', 0.293), ('c2_WalkForward_m10p1', 0.282), ('c2_PhantomDrift', 0.279)]

@@ -1,0 +1,112 @@
+{
+ "c1_GuardLoop_pB": {
+  "frames": 36,
+  "pairs": {
+   "weapon in RightLowerArm": {
+    "share": 0.028,
+    "deepest": 0.118,
+    "frame": 20
+   },
+   "RightLowerArm in weapon": {
+    "share": 0.028,
+    "deepest": 0.059,
+    "frame": 20
+   },
+   "RobeLeft in LeftUpperLeg": {
+    "share": 0.694,
+    "deepest": 0.053,
+    "frame": 28
+   },
+   "RightHand in weapon": {
+    "share": 0.667,
+    "deepest": 0.06,
+    "frame": 70
+   }
+  }
+ },
+ "c1_WalkForward_pB": {
+  "frames": 30,
+  "pairs": {
+   "RightHand in weapon": {
+    "share": 0.033,
+    "deepest": 0.051,
+    "frame": 20
+   },
+   "RobeRight in RightUpperLeg": {
+    "share": 0.1,
+    "deepest": 0.069,
+    "frame": 32
+   },
+   "RobeLeft in LeftUpperLeg": {
+    "share": 0.233,
+    "deepest": 0.048,
+    "frame": 36
+   }
+  }
+ },
+ "c1_RunForward_pB": {
+  "frames": 20,
+  "pairs": {
+   "RobeLeft in LeftUpperLeg": {
+    "share": 0.45,
+    "deepest": 0.066,
+    "frame": 28
+   },
+   "RobeInner in RightLowerLeg": {
+    "share": 0.25,
+    "deepest": 0.072,
+    "frame": 22
+   },
+   "RobeInner in LowerTorso": {
+    "share": 0.05,
+    "deepest": 0.04,
+    "frame": 32
+   }
+  }
+ },
+ "c1_Strike_pB": {
+  "frames": 26,
+  "pairs": {
+   "RightHand in weapon": {
+    "share": 0.192,
+    "deepest": 0.061,
+    "frame": 40
+   },
+   "RobeLeft in LeftUpperLeg": {
+    "share": 0.423,
+    "deepest": 0.054,
+    "frame": 38
+   },
+   "LowerTorso in weapon": {
+    "share": 0.038,
+    "deepest": 0.033,
+    "frame": 36
+   },
+   "RobeRight in RightUpperLeg": {
+    "share": 0.077,
+    "deepest": 0.064,
+    "frame": 40
+   },
+   "RobeBack in weapon": {
+    "share": 0.038,
+    "deepest": 0.03,
+    "frame": 38
+   },
+   "RobeRight in weapon": {
+    "share": 0.115,
+    "deepest": 0.05,
+    "frame": 38
+   },
+   "RobeInner in weapon": {
+    "share": 0.115,
+    "deepest": 0.054,
+    "frame": 42
+   },
+   "RobeInner in LowerTorso": {
+    "share": 0.038,
+    "deepest": 0.044,
+    "frame": 46
+   }
+  }
+ }
+}

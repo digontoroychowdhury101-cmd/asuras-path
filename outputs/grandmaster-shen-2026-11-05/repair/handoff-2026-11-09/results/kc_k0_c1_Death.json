@@ -1,0 +1,127 @@
+{
+ "c1_Death_k0": {
+  "frames": 54,
+  "pairs": {
+   "weapon in RightLowerArm": {
+    "share": 0.019,
+    "deepest": 0.112,
+    "frame": 20
+   },
+   "RightLowerArm in weapon": {
+    "share": 0.019,
+    "deepest": 0.048,
+    "frame": 20
+   },
+   "HairBack in Head": {
+    "share": 0.352,
+    "deepest": 0.135,
+    "frame": 72
+   },
+   "RobeInner in RightLowerLeg": {
+    "share": 0.037,
+    "deepest": 0.07,
+    "frame": 48
+   },
+   "RobeLeft in LowerTorso": {
+    "share": 0.37,
+    "deepest": 0.071,
+    "frame": 54
+   },
+   "RightHand in weapon": {
+    "share": 0.278,
+    "deepest": 0.063,
+    "frame": 44
+   },
+   "RobeLeft in LeftUpperLeg": {
+    "share": 0.278,
+    "deepest": 0.162,
+    "frame": 52
+   },
+   "UpperTorso in weapon": {
+    "share": 0.093,
+    "deepest": 0.06,
+    "frame": 40
+   },
+   "RightUpperArm in weapon": {
+    "share": 0.093,
+    "deepest": 0.062,
+    "frame": 46
+   },
+   "RobeInner in LowerTorso": {
+    "share": 0.37,
+    "deepest": 0.061,
+    "frame": 80
+   },
+   "RobeRight in LeftUpperLeg": {
+    "share": 0.111,
+    "deepest": 0.091,
+    "frame": 62
+   },
+   "RobeRight in RightUpperLeg": {
+    "share": 0.056,
+    "deepest": 0.058,
+    "frame": 58
+   },
+   "Beads in UpperTorso": {
+    "share": 0.037,
+    "deepest": 0.068,
+    "frame": 52
+   },
+   "Beads in LowerTorso": {
+    "share": 0.074,
+    "deepest": 0.061,
+    "frame": 52
+   },
+   "RobeFront in LowerTorso": {
+    "share": 0.037,
+    "deepest": 0.058,
+    "frame": 54
+   },
+   "RobeFront in LeftUpperLeg": {
+    "share": 0.111,
+    "deepest": 0.186,
+    "frame": 58
+   },
+   "RobeRight in weapon": {
+    "share": 0.074,
+    "deepest": 0.061,
+    "frame": 54
+   },
+   "RobeInner in weapon": {
+    "share": 0.056,
+    "deepest": 0.058,
+    "frame": 60
+   },
+   "RobeRight in RightLowerArm": {
+    "share": 0.056,
+    "deepest": 0.08,
+    "frame": 56
+   },
+   "RobeBack in weapon": {
+    "share": 0.019,
+    "deepest": 0.044,
+    "frame": 56
+   },
+   "RobeLeft in RightUpperLeg": {
+    "share": 0.037,
+    "deepest": 0.117,
+    "frame": 64
+   },
+   "RobeLeft in RightLowerLeg": {
+    "share": 0.019,
+    "deepest": 0.093,
+    "frame": 64
+   },
+   "RobeFront in RightLowerLeg": {
+    "share": 0.019,
+    "deepest": 0.052,
+    "frame": 64
+   },
+   "Beads in Head": {
+    "share": 0.019,
+    "deepest": 0.092,
+    "frame": 74
+   }
+  }
+ }
+}

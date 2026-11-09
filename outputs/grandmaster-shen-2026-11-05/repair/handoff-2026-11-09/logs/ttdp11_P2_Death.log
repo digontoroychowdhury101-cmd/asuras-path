@@ -1,0 +1,26 @@
+   stage organic        
+   stage spine_reach    
+   stage settle         
+   stage swivel         
+   stage wrist_yield    
+   stage settle         
+   stage swivel         
+   stage wrist_yield    blade 0.36@f18 edge 0.35@f18
+   stage settle         blade 0.36@f18 edge 0.35@f18
+   stage swivel         blade 0.36@f18 edge 0.35@f18
+   stage wrist_yield    blade 0.36@f18 edge 0.35@f18
+   stage settle         blade 0.36@f18 edge 0.35@f18
+   stage swivel         blade 0.36@f18 edge 0.35@f18
+   stage clear_free_arm blade 0.36@f18 edge 0.35@f18
+torso: rp 8 frames need it, 39 moved; worst 0.186 -> 0.166, moves up to 0.61
+   stage clear_torso    fist 0.22@f25 blade 0.36@f18 edge 0.35@f18
+fist slide: 22 frames, up to 0.36
+   stage slide_fist     fist 0.22@f25 blade 0.36@f18 edge 0.35@f18
+haft tilt: 28 frames need it, up to 13 deg; 27 frames changed
+   stage tilt_haft      fist 0.22@f25 blade 0.36@f18 edge 0.35@f18
+depop: 12 frames [20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
+   stage depop          fist 0.18@f32 blade 0.38@f31 edge 0.36@f31
+   stage close_loop     fist 0.18@f32 blade 0.38@f31 edge 0.36@f31
+   stage final-solve    fist 0.14@f26 blade 0.34@f33 edge 0.28@f33
+P2_Death on 769s torso_right=0.206 torso_left=0.147 Win_arm_right=0.058 Win_arm_left=0.000 inW_arm_right=0.057 inW_arm_left=0.052 inW_torso=0.012 Win_torso=0.000 wrist_right=92.484 wrist_left=50.222 left_grip=0.166 left_off_haft=0.162 right_off_haft=0.160 pop_fist=0.143 pop_blade=0.343 pop_slide=0.025 pop_lead_reach=0.065 | strike None | problems: ['right arm 0.21 inside his torso']
+   per-frame R/L: 21:0.18/0.10 22:0.18/0.10 23:0.20/0.15 24:0.15/0.13 25:0.21/0.10 26:0.20/0.02 31:0.15/0.00

@@ -1,0 +1,24 @@
+   stage organic        
+   stage spine_reach    
+   stage settle         
+   stage swivel         
+   stage wrist_yield    blade 0.36@f42
+   stage settle         blade 0.36@f42
+   stage swivel         blade 0.36@f42
+   stage wrist_yield    blade 0.46@f42
+   stage settle         blade 0.46@f42
+   stage swivel         blade 0.46@f42
+   stage wrist_yield    blade 0.46@f42
+   stage clear_free_arm blade 0.46@f42
+torso: rp 18 frames need it, 40 moved; worst 0.196 -> 0.196, moves up to 0.69
+   stage clear_torso    fist 0.27@f37 blade 0.46@f42
+fist slide: 7 frames, up to 0.32
+   stage slide_fist     fist 0.27@f37 blade 0.46@f42
+haft tilt: 2 frames need it, up to 2 deg; 2 frames changed
+   stage tilt_haft      fist 0.27@f37 blade 0.46@f42
+depop: 20 frames [34, 35, 36, 37, 38, 39, 40, 41, 42, 46, 47, 48, 49, 50, 51, 57, 58, 59, 60, 61]
+   stage depop          fist 0.27@f56 blade 0.48@f57
+   stage close_loop     fist 0.27@f56 blade 0.48@f57
+joint_polish {'window': (32, 65), 'elbows_only': False, 'seeded': False, 'status': 4, 'message': 'Inequality constraints incompatible', 'nit': 2, 'runtime_s': 10.1, 'frame_evals': 468, 'feasible': False, 'depth': (0.211, 0.227), 'kept': False, 'worse': [2], 'change': (0.051, 0.0, 91.4, 5.0, 0.0)}
+joint_polish {'window': (32, 65), 'elbows_only': True, 'seeded': False, 'status': 8, 'message': 'Positive directional derivative for linesearch', 'nit': 40, 'runtime_s': 370.1, 'frame_evals': 8383, 'feasible': False, 'depth': (0.211, 0.21), 'kept': False, 'worse': [], 'change': (0.0, 0.0, 0.5, 0.3, 0.0)}
+joint_polish {'window': (32, 65), 'elbows_only': False, 'seeded': True, 'status': 4, 'message': 'Inequality constraints incompatible', 'nit': 10, 'runtime_s': 147.7, 'frame_evals': 3288, 'feasible': False, 'depth': (0.211, 0.218), 'kept': False, 'worse': [2, 3, 4, 6, 7], 'change': (0.576, 24.0, 115.2, 115.2, 4.7)}

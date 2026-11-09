@@ -1,0 +1,1311 @@
+{
+ "name": "AsurasPath",
+ "tree": {
+  "$className": "DataModel",
+  "Workspace": {
+   "$className": "Workspace",
+   "$properties": {
+    "FallenPartsDestroyHeight": -400,
+    "GlobalWind": [
+     6,
+     0,
+     2
+    ],
+    "Gravity": 196.2,
+    "StreamingEnabled": false
+   },
+   "Camera": {
+    "$className": "Camera",
+    "$properties": {
+     "CFrame": [
+      0,
+      626,
+      966,
+      1,
+      0,
+      0,
+      0,
+      0.99935,
+      0.03612,
+      0,
+      -0.03612,
+      0.99935
+     ],
+     "Focus": [
+      0,
+      603.6,
+      900,
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      1
+     ],
+     "FieldOfView": 70
+    }
+   },
+   "AsurasPath": {
+    "$className": "Folder"
+   },
+   "Terrain": {
+    "$className": "Terrain",
+    "$properties": {
+     "Decoration": true,
+     "GrassLength": 0.4
+    }
+   }
+  },
+  "Lighting": {
+   "$className": "Lighting",
+   "$properties": {
+    "LightingStyle": "Realistic",
+    "PrioritizeLightingQuality": true,
+    "Brightness": 2.2,
+    "GeographicLatitude": 18,
+    "EnvironmentDiffuseScale": 0.65,
+    "EnvironmentSpecularScale": 1,
+    "GlobalShadows": true,
+    "ShadowSoftness": 0.35,
+    "ExposureCompensation": -0.12,
+    "FogStart": 120,
+    "FogEnd": 1600,
+    "Ambient": [
+     0.23529411764705882,
+     0.27450980392156865,
+     0.3607843137254902
+    ],
+    "OutdoorAmbient": [
+     0.4117647058823529,
+     0.4588235294117647,
+     0.5450980392156862
+    ],
+    "FogColor": [
+     0.423529,
+     0.509804,
+     0.572549
+    ],
+    "ColorShift_Top": [
+     1,
+     0.9607843137254902,
+     0.8862745098039215
+    ],
+    "ColorShift_Bottom": [
+     0.031373,
+     0.039216,
+     0.054902
+    ],
+    "TimeOfDay": "17:24:00",
+    "Technology": "Future",
+    "ClockTime": 17.4
+   },
+   "CB_Atmosphere": {
+    "$className": "Atmosphere",
+    "$properties": {
+     "Density": 0.38,
+     "Offset": 0.2,
+     "Haze": 2.2,
+     "Glare": 0.35,
+     "Color": [
+      0.9803921568627451,
+      0.8431372549019608,
+      0.7254901960784313
+     ],
+     "Decay": [
+      0.47058823529411764,
+      0.5098039215686274,
+      0.6470588235294118
+     ]
+    }
+   },
+   "CB_SunRays": {
+    "$className": "SunRaysEffect",
+    "$properties": {
+     "Enabled": true,
+     "Intensity": 0.12,
+     "Spread": 0.45
+    }
+   },
+   "CB_ColorCorrection": {
+    "$className": "ColorCorrectionEffect",
+    "$properties": {
+     "Brightness": 0,
+     "Contrast": 0.15,
+     "Enabled": true,
+     "Saturation": 0.05,
+     "TintColor": [
+      1,
+      0.9647058823529412,
+      0.9254901960784314
+     ]
+    }
+   },
+   "CB_Bloom": {
+    "$className": "BloomEffect",
+    "$properties": {
+     "Enabled": true,
+     "Intensity": 0.25,
+     "Size": 24,
+     "Threshold": 2
+    }
+   },
+   "CB_DepthOfField": {
+    "$className": "DepthOfFieldEffect",
+    "$properties": {
+     "Enabled": false,
+     "FarIntensity": 0,
+     "FocusDistance": 20,
+     "InFocusRadius": 50,
+     "NearIntensity": 0
+    }
+   }
+  },
+  "Players": {
+   "$className": "Players",
+   "$properties": {
+    "CharacterAutoLoads": false
+   }
+  },
+  "ReplicatedStorage": {
+   "$className": "ReplicatedStorage",
+   "AsurasPath": {
+    "$className": "Folder",
+    "Config": {
+     "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/shared/Config.luau"
+    },
+    "ProfileSchema": {
+     "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/shared/ProfileSchema.luau"
+    },
+    "ShopCatalog": {
+     "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/shared/ShopCatalog.luau"
+    },
+    "Shared": {
+     "$className": "Folder",
+     "ConfigValidator": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/shared/ConfigValidator.luau"
+     },
+     "CombatSettings": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/shared/CombatSettings.luau"
+     },
+     "MobSpacing": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/shared/MobSpacing.luau"
+     },
+     "InputMap": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/shared/InputMap.luau"
+     },
+     "EffectsPreference": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/shared/EffectsPreference.luau"
+     },
+     "ArenaLightPlan": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/shared/ArenaLightPlan.luau"
+     },
+     "WorldDefinitions": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/shared/WorldDefinitions.luau"
+     },
+     "AnimationCatalog": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/shared/AnimationCatalog.luau"
+     },
+     "StrikeTrajectories": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/shared/StrikeTrajectories.luau"
+     },
+     "StrikeTrajectoryData": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/shared/StrikeTrajectoryData.luau"
+     },
+     "AnimationFamilyIds": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/shared/AnimationFamilyIds.luau"
+     },
+     "IntentProtocol": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/infrastructure/IntentProtocol.luau"
+     },
+     "Objectives": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/shared/Objectives.luau"
+     },
+     "ArsenalCatalog": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/shared/ArsenalCatalog.luau"
+     },
+     "ArsenalProtocol": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/shared/ArsenalProtocol.luau"
+     },
+     "BossTypes": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/shared/BossTypes.luau"
+     },
+     "BossEncounterRules": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/shared/BossEncounterRules.luau"
+     },
+     "BossAttackCatalog": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/shared/BossAttackCatalog.luau"
+     },
+     "BossAnimationRules": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/shared/BossAnimationRules.luau"
+     },
+     "ClothSim": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/shared/ClothSim.luau"
+     },
+     "ShenClothData": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/shared/ShenClothData.luau"
+     },
+     "ShenPresentationData": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/shared/ShenPresentationData.luau"
+     },
+     "BossRigs": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/shared/BossRigs.luau"
+     },
+     "ArmorRules": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/shared/ArmorRules.luau"
+     },
+     "BossRoster": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/shared/BossRoster.luau"
+     },
+     "BossArmaments": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/shared/BossArmaments.luau"
+     },
+     "ProgressionRules": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/shared/ProgressionRules.luau"
+     },
+     "RPGInventory": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/shared/RPGInventory.luau"
+     },
+     "RPGProfile": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/shared/RPGProfile.luau"
+     },
+     "ArenaRules": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/shared/ArenaRules.luau"
+     },
+     "NarrativeCatalog": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/shared/NarrativeCatalog.luau"
+     },
+     "DialogueRules": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/shared/DialogueRules.luau"
+     },
+     "LevelPreview": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/shared/LevelPreview.luau"
+     },
+     "ArsenalFacts": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/shared/ArsenalFacts.luau"
+     },
+     "ForgeQuote": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/shared/ForgeQuote.luau"
+     },
+     "ContactCues": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/shared/ContactCues.luau"
+     },
+     "TutorialRules": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/shared/TutorialRules.luau"
+     },
+     "BossHandoff": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/shared/BossHandoff.luau"
+     },
+     "CostumeSchema": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/shared/CostumeSchema.luau"
+     },
+     "BossBodies": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/shared/BossBodies.luau"
+     },
+     "LooksDuelists": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/shared/LooksDuelists.luau"
+     },
+     "LooksBeasts": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/shared/LooksBeasts.luau"
+     },
+     "LooksSovereigns": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/shared/LooksSovereigns.luau"
+     },
+     "LooksCast": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/shared/LooksCast.luau"
+     },
+     "MonasteryZones": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/shared/MonasteryZones.luau"
+     },
+     "MonasteryRidgeProfile": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/shared/MonasteryRidgeProfile.luau"
+     },
+     "EffectEasing": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/shared/EffectEasing.luau"
+     },
+     "RouteGuide": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/shared/RouteGuide.luau"
+     },
+     "RegionLayout": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/shared/RegionLayout.luau"
+     },
+     "BambooPassLayout": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/shared/BambooPassLayout.luau"
+     },
+     "AshColosseumLayout": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/shared/AshColosseumLayout.luau"
+     },
+     "SunkenCryptLayout": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/shared/SunkenCryptLayout.luau"
+     },
+     "CelestialPagodaLayout": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/shared/CelestialPagodaLayout.luau"
+     },
+     "SkyCitadelLayout": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/shared/SkyCitadelLayout.luau"
+     },
+     "SanctuaryRoutes": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/shared/SanctuaryRoutes.luau"
+     },
+     "CampaignZones": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/shared/CampaignZones.luau"
+     },
+     "EndingRules": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/shared/EndingRules.luau"
+     },
+     "EndingCredits": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/shared/EndingCredits.luau"
+     },
+     "PresentationAssets": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/shared/PresentationAssets.luau"
+     },
+     "EnvironmentProfiles": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/shared/EnvironmentProfiles.luau"
+     },
+     "RouteGates": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/shared/RouteGates.luau"
+     }
+    },
+    "Simulation": {
+     "$className": "Folder",
+     "Tempo": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/simulation/Tempo.luau"
+     },
+     "AnimationTiming": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/simulation/AnimationTiming.luau"
+     },
+     "FootStep": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/simulation/FootStep.luau"
+     },
+     "MoveSchema": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/simulation/MoveSchema.luau"
+     },
+     "WeaponSchema": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/simulation/WeaponSchema.luau"
+     },
+     "InputBuffer": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/simulation/InputBuffer.luau"
+     },
+     "CombatRules": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/simulation/CombatRules.luau"
+     },
+     "StrikeGeometry": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/simulation/StrikeGeometry.luau"
+     },
+     "LocalPrediction": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/simulation/LocalPrediction.luau"
+     },
+     "MatchmakingRules": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/simulation/MatchmakingRules.luau"
+     },
+     "WeaponExpansion": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/simulation/WeaponExpansion.luau"
+     },
+     "SpellSchema": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/simulation/SpellSchema.luau"
+     },
+     "SpellRules": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/simulation/SpellRules.luau"
+     },
+     "ArsenalInventory": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/simulation/ArsenalInventory.luau"
+     }
+    },
+    "Net": {
+     "$className": "Folder",
+     "ActionIntent": {
+      "$className": "RemoteEvent"
+     },
+     "StateSnapshots": {
+      "$className": "RemoteEvent"
+     },
+     "ShopIntent": {
+      "$className": "RemoteEvent"
+     },
+     "ColosseumIntent": {
+      "$className": "RemoteEvent"
+     },
+     "ArsenalIntent": {
+      "$className": "RemoteEvent"
+     },
+     "DialogueIntent": {
+      "$className": "RemoteEvent"
+     },
+     "TutorialIntent": {
+      "$className": "RemoteEvent"
+     },
+     "WagerIntent": {
+      "$className": "RemoteEvent"
+     }
+    },
+    "GithubAssets": {
+     "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/assets/models/AsuraGithubMedia.rbxmx"
+    }
+   }
+  },
+  "ReplicatedFirst": {
+   "$className": "ReplicatedFirst",
+   "AsurasPathLoading": {
+    "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/loading/Loading.client.luau"
+   }
+  },
+  "ServerScriptService": {
+   "$className": "ServerScriptService",
+   "AsurasPath": {
+    "$className": "Folder",
+    "Bootstrap": {
+     "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Bootstrap.server.luau"
+    },
+    "Services": {
+     "$className": "Folder",
+     "LagCompensation": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/LagCompensation.luau"
+     },
+     "ProfileStore": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/ProfileStore.luau"
+     },
+     "PersistenceService": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/PersistenceService.luau"
+     },
+     "MatchJournal": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/MatchJournal.luau"
+     },
+     "EnvironmentService": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/EnvironmentService.luau"
+     },
+     "CharacterService": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/CharacterService.luau"
+     },
+     "RecoveryRules": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/RecoveryRules.luau"
+     },
+     "FighterAppearance": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/FighterAppearance.luau"
+     },
+     "ArmorSkin": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/ArmorSkin.luau"
+     },
+     "EnemyAppearance": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/EnemyAppearance.luau"
+     },
+     "AIService": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/AIService.luau"
+     },
+     "SanctuaryService": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/SanctuaryService.luau"
+     },
+     "MonasteryService": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/MonasteryService.luau"
+     },
+     "RegionDecor": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/RegionDecor.luau"
+     },
+     "CampaignWorld": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/CampaignWorld.luau"
+     },
+     "CampaignTerrain": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/CampaignTerrain.luau"
+     },
+     "CampaignBounds": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/CampaignBounds.luau"
+     },
+     "BambooDressing": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/BambooDressing.luau"
+     },
+     "ColosseumDressing": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/ColosseumDressing.luau"
+     },
+     "CryptDressing": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/CryptDressing.luau"
+     },
+     "PagodaDressing": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/PagodaDressing.luau"
+     },
+     "CitadelDressing": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/CitadelDressing.luau"
+     },
+     "SanctuaryApproach": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/SanctuaryApproach.luau"
+     },
+     "MonasteryKit": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/MonasteryKit.luau"
+     },
+     "MonasteryFx": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/MonasteryFx.luau"
+     },
+     "MonasteryGrounds": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/MonasteryGrounds.luau"
+     },
+     "MonasteryTerrain": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/MonasteryTerrain.luau"
+     },
+     "MonasteryRuins": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/MonasteryRuins.luau"
+     },
+     "MonasteryHalls": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/MonasteryHalls.luau"
+     },
+     "MonasteryLandmarks": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/MonasteryLandmarks.luau"
+     },
+     "MonasteryAtmosphere": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/MonasteryAtmosphere.luau"
+     },
+     "MonasteryDressing": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/MonasteryDressing.luau"
+     },
+     "MonasterySurvey": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/MonasterySurvey.luau"
+     },
+     "MonasteryBounds": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/MonasteryBounds.luau"
+     },
+     "MonasteryPockets": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/MonasteryPockets.luau"
+     },
+     "MonasterySecrets": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/MonasterySecrets.luau"
+     },
+     "TutorialService": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/TutorialService.luau"
+     },
+     "CostumeKit": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/CostumeKit.luau"
+     },
+     "EncounterHandoff": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/EncounterHandoff.luau"
+     },
+     "CastFigures": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/CastFigures.luau"
+     },
+     "WorldService": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/WorldService.luau"
+     },
+     "ColosseumService": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/ColosseumService.luau"
+     },
+     "ShopService": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/ShopService.luau"
+     },
+     "SanctuaryDressing": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/SanctuaryDressing.luau"
+     },
+     "SanctuaryLeaves": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/SanctuaryLeaves.luau"
+     },
+     "SanctuaryTitan": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/SanctuaryTitan.luau"
+     },
+     "SanctuaryColossus": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/SanctuaryColossus.luau"
+     },
+     "SanctuaryBonfire": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/SanctuaryBonfire.luau"
+     },
+     "LootWorld": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/LootWorld.luau"
+     },
+     "LootService": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/LootService.luau"
+     },
+     "MagicService": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/MagicService.luau"
+     },
+     "SpellGeometry": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/SpellGeometry.luau"
+     },
+     "SpellEffects": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/SpellEffects.luau"
+     },
+     "WeaponEffects": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/WeaponEffects.luau"
+     },
+     "WeaponModels": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/WeaponModels.luau"
+     },
+     "BossMotion": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/BossMotion.luau"
+     },
+     "BossHazards": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/BossHazards.luau"
+     },
+     "BossAttackService": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/BossAttackService.luau"
+     },
+     "BossTactics": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/BossTactics.luau"
+     },
+     "BossDuo": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/BossDuo.luau"
+     },
+     "BossAppearance": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/BossAppearance.luau"
+     },
+     "BossArenas": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/BossArenas.luau"
+     },
+     "ProfileBridge": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/ProfileBridge.luau"
+     },
+     "ForgeService": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/ForgeService.luau"
+     },
+     "NarrativeWorld": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/NarrativeWorld.luau"
+     },
+     "DialogueActions": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/DialogueActions.luau"
+     },
+     "DialogueService": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/DialogueService.luau"
+     },
+     "WagerLedger": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/WagerLedger.luau"
+     },
+     "WagerWorld": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/WagerWorld.luau"
+     },
+     "WagerService": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/WagerService.luau"
+     },
+     "PbrAssets": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/PbrAssets.luau"
+     },
+     "PresentationDressing": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/PresentationDressing.luau"
+     },
+     "PresentationAudit": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/PresentationAudit.luau"
+     },
+     "BossSkin": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/BossSkin.luau"
+     },
+     "PresentationService": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/PresentationService.luau"
+     },
+     "ArenaLighting": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/ArenaLighting.luau"
+     },
+     "SanctuaryKit": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/SanctuaryKit.luau"
+     },
+     "SanctuaryFrame": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/SanctuaryFrame.luau"
+     },
+     "SanctuaryRails": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/SanctuaryRails.luau"
+     },
+     "SanctuaryProps": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/SanctuaryProps.luau"
+     },
+     "SanctuaryCourtyard": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/SanctuaryCourtyard.luau"
+     },
+     "SanctuaryCloisters": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/SanctuaryCloisters.luau"
+     },
+     "SanctuaryForge": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/SanctuaryForge.luau"
+     },
+     "SanctuaryDuelCourt": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/SanctuaryDuelCourt.luau"
+     },
+     "SanctuaryAscent": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/SanctuaryAscent.luau"
+     },
+     "SanctuaryTerrace": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/SanctuaryTerrace.luau"
+     },
+     "SanctuaryHorizon": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/SanctuaryHorizon.luau"
+     },
+     "SanctuaryVista": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/SanctuaryVista.luau"
+     },
+     "SanctuaryRingFinish": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/SanctuaryRingFinish.luau"
+     },
+     "SanctuaryEcology": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/SanctuaryEcology.luau"
+     },
+     "BambooEcology": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/BambooEcology.luau"
+     },
+     "RouteGates": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/RouteGates.luau"
+     },
+     "BambooFoundry": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/BambooFoundry.luau"
+     },
+     "BambooGateArt": {
+      "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/server/Services/BambooGateArt.luau"
+     }
+    }
+   },
+   "ShenProbe": {
+    "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/tools/qa/ShenProbe.server.luau"
+   }
+  },
+  "ServerStorage": {
+   "$className": "ServerStorage",
+   "AsuraAssets": {
+    "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/assets/models/AsuraAssets_Phase5.rbxmx",
+    "AsuraBossAnimations": {
+     "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/assets/animations/general_zhao/AsuraBossAnimations.model.json"
+    },
+    "AsuraBoss_CorruptWanderingMonk": {
+     "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/assets/models/AsuraBoss_CorruptWanderingMonk.rbxmx"
+    },
+    "AsuraBoss_CursedSwordsman": {
+     "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/assets/models/AsuraBoss_CursedSwordsman.rbxmx"
+    },
+    "AsuraBoss_HollowBellWarden": {
+     "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/assets/models/AsuraBoss_HollowBellWarden.rbxmx"
+    },
+    "AsuraBoss_IronBull": {
+     "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/assets/models/AsuraBoss_IronBull.rbxmx"
+    },
+    "AsuraBoss_GeneralZhao": {
+     "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/assets/models/AsuraBoss_GeneralZhao.rbxmx"
+    },
+    "AsuraBoss_GrandmasterShen_P1": {
+     "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/assets/models/AsuraBoss_GrandmasterShen_P1.rbxmx"
+    },
+    "AsuraBoss_GrandmasterShen_P2": {
+     "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/assets/models/AsuraBoss_GrandmasterShen_P2.rbxmx"
+    },
+    "AsuraArmor_CinnabarGuard": {
+     "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/assets/models/AsuraArmor_CinnabarGuard.rbxmx"
+    },
+    "AsuraArmor_AshenPilgrim": {
+     "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/assets/models/AsuraArmor_AshenPilgrim.rbxmx"
+    },
+    "AsuraArmor_IronOath": {
+     "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/assets/models/AsuraArmor_IronOath.rbxmx"
+    }
+   },
+   "AsuraLobbyKit": {
+    "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/assets/models/AsuraLobbyKit.rbxmx"
+   },
+   "AsuraSanctuaryVista": {
+    "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/assets/models/AsuraSanctuaryVista.rbxmx"
+   },
+   "AsuraGuardianLion": {
+    "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/assets/models/AsuraGuardianLion.rbxmx"
+   },
+   "AsuraGuardianLionMirror": {
+    "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/assets/models/AsuraGuardianLionMirror.rbxmx"
+   },
+   "AsuraReliquaryKit": {
+    "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/assets/models/AsuraReliquaryKit.rbxmx"
+   },
+   "AsuraBambooKit": {
+    "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/assets/models/AsuraBambooKit.rbxmx"
+   },
+   "AsuraHanHD": {
+    "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/assets/models/AsuraHanHD.rbxmx"
+   },
+   "AsuraHanKit": {
+    "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/assets/models/AsuraHanKit.rbxmx"
+   },
+   "AsuraSanctuaryDetail": {
+    "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/assets/models/AsuraSanctuaryDetail.rbxmx"
+   },
+   "AsuraLivingBamboo": {
+    "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/assets/models/AsuraLivingBamboo.rbxmx"
+   },
+   "AsuraBambooBreakage": {
+    "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/assets/models/AsuraBambooBreakage.rbxmx"
+   },
+   "AsuraBambooFrostSteps": {
+    "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/assets/models/AsuraBambooFrostSteps.rbxmx"
+   },
+   "AsuraBambooFrostSupport": {
+    "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/assets/models/AsuraBambooFrostSupport.rbxmx"
+   },
+   "AsuraFoundryKit": {
+    "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/assets/models/AsuraFoundryKit.rbxmx"
+   }
+  },
+  "StarterPlayer": {
+   "$className": "StarterPlayer",
+   "StarterPlayerScripts": {
+    "$className": "StarterPlayerScripts",
+    "AsurasPathClient": {
+     "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Bootstrap.client.luau"
+    },
+    "AsurasPath": {
+     "$className": "Folder",
+     "Controllers": {
+      "$className": "Folder",
+      "WorldStateController": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/WorldStateController.luau"
+      },
+      "CameraController": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/CameraController.luau"
+      },
+      "CameraClearance": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/CameraClearance.luau"
+      },
+      "InputController": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/InputController.luau"
+      },
+      "MovementController": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/MovementController.luau"
+      },
+      "MovementMath": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/MovementMath.luau"
+      },
+      "MovementEffects": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/MovementEffects.luau"
+      },
+      "GameFeelController": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/GameFeelController.luau"
+      },
+      "PlaybackScale": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/PlaybackScale.luau"
+      },
+      "ActorPose": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/ActorPose.luau"
+      },
+      "SkinWeaponFx": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/SkinWeaponFx.luau"
+      },
+      "BossCloth": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/BossCloth.luau"
+      },
+      "ShenPresentation": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/ShenPresentation.luau"
+      },
+      "InterfaceController": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/InterfaceController.luau"
+      },
+      "ColosseumController": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/ColosseumController.luau"
+      },
+      "HudKit": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/HudKit.luau"
+      },
+      "ObjectiveController": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/ObjectiveController.luau"
+      },
+      "ControlsCard": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/ControlsCard.luau"
+      },
+      "WaypointMarker": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/WaypointMarker.luau"
+      },
+      "PrologueController": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/PrologueController.luau"
+      },
+      "EndingController": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/EndingController.luau"
+      },
+      "DeviceLayout": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/DeviceLayout.luau"
+      },
+      "ComfortSettings": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/ComfortSettings.luau"
+      },
+      "SpellController": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/SpellController.luau"
+      },
+      "SpellHud": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/SpellHud.luau"
+      },
+      "SpellVfx": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/SpellVfx.luau"
+      },
+      "ArsenalPanel": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/ArsenalPanel.luau"
+      },
+      "ArsenalTabs": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/ArsenalTabs.luau"
+      },
+      "UiKit": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/UiKit.luau"
+      },
+      "UiWindow": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/UiWindow.luau"
+      },
+      "PauseMenu": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/PauseMenu.luau"
+      },
+      "SakuraKit": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/SakuraKit.luau"
+      },
+      "SakuraCompass": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/SakuraCompass.luau"
+      },
+      "SakuraMinimap": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/SakuraMinimap.luau"
+      },
+      "MinimapRoute": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/MinimapRoute.luau"
+      },
+      "SakuraHud": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/SakuraHud.luau"
+      },
+      "HudVisibility": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/HudVisibility.luau"
+      },
+      "HudLayout": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/HudLayout.luau"
+      },
+      "PlateLayout": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/PlateLayout.luau"
+      },
+      "DuoBars": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/DuoBars.luau"
+      },
+      "VitalsTags": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/VitalsTags.luau"
+      },
+      "CoreGuiPolicy": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/CoreGuiPolicy.luau"
+      },
+      "PortraitCamera": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/PortraitCamera.luau"
+      },
+      "AltarAscension": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/AltarAscension.luau"
+      },
+      "CodexView": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/CodexView.luau"
+      },
+      "ArmorView": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/ArmorView.luau"
+      },
+      "EnemyDissolve": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/EnemyDissolve.luau"
+      },
+      "TutorialController": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/TutorialController.luau"
+      },
+      "EncounterHandoffController": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/EncounterHandoffController.luau"
+      },
+      "CreatureMotion": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/CreatureMotion.luau"
+      },
+      "IconShapes": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/IconShapes.luau"
+      },
+      "MoveIcons": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/MoveIcons.luau"
+      },
+      "ActionBar": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/ActionBar.luau"
+      },
+      "EnemyPlate": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/EnemyPlate.luau"
+      },
+      "EnemyBars": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/EnemyBars.luau"
+      },
+      "CombatCallouts": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/CombatCallouts.luau"
+      },
+      "TargetPlate": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/TargetPlate.luau"
+      },
+      "CombatHud": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/CombatHud.luau"
+      },
+      "BossHud": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/BossHud.luau"
+      },
+      "BossMusic": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/BossMusic.luau"
+      },
+      "BossCinematics": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/BossCinematics.luau"
+      },
+      "BossEffects": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/BossEffects.luau"
+      },
+      "BossAnimations": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/BossAnimations.luau"
+      },
+      "DialogueView": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/DialogueView.luau"
+      },
+      "DialogueController": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/DialogueController.luau"
+      },
+      "WagerController": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/WagerController.luau"
+      },
+      "MasteryEffects": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/MasteryEffects.luau"
+      },
+      "EnvironmentController": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/EnvironmentController.luau"
+      },
+      "SpatialAudio": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/SpatialAudio.luau"
+      },
+      "SoundscapeController": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/SoundscapeController.luau"
+      },
+      "CombatFeedback": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/CombatFeedback.luau"
+      },
+      "CombatVfx": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/CombatVfx.luau"
+      },
+      "CombatSurfaces": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/CombatSurfaces.luau"
+      },
+      "WeaponTrails": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/WeaponTrails.luau"
+      },
+      "FighterAnimations": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/FighterAnimations.luau"
+      },
+      "QiVfx": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/QiVfx.luau"
+      },
+      "ArenaAsh": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/ArenaAsh.luau"
+      },
+      "SanguineRuntime": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/SanguineRuntime.luau"
+      },
+      "SanguineGeometry": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/SanguineGeometry.luau"
+      },
+      "SanguineCombat": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/SanguineCombat.luau"
+      },
+      "SanguineGhost": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/SanguineGhost.luau"
+      },
+      "SanguineMagic": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/SanguineMagic.luau"
+      },
+      "SanguineDispatch": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/SanguineDispatch.luau"
+      },
+      "SanguineController": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/SanguineController.luau"
+      },
+      "SkillKit": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/SkillKit.luau"
+      },
+      "SkillFx": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/SkillFx.luau"
+      },
+      "CelestialPillar": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/CelestialPillar.luau"
+      },
+      "SupernovaShots": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/SupernovaShots.luau"
+      },
+      "SolarForms": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/SolarForms.luau"
+      },
+      "SkillCinema": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/SkillCinema.luau"
+      },
+      "ImpactFrame": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/ImpactFrame.luau"
+      },
+      "CelestialForms": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/CelestialForms.luau"
+      },
+      "SupernovaShow": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/SupernovaShow.luau"
+      },
+      "FlameForms": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/FlameForms.luau"
+      },
+      "BlazingSunShow": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/BlazingSunShow.luau"
+      },
+      "SkillShowcase": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/SkillShowcase.luau"
+      },
+      "BillboardFx": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/BillboardFx.luau"
+      },
+      "VoidStage": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/VoidStage.luau"
+      },
+      "MangaFx": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/MangaFx.luau"
+      },
+      "FireCanvas": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/FireCanvas.luau"
+      },
+      "PlanetForms": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/PlanetForms.luau"
+      },
+      "SunForms": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/SunForms.luau"
+      },
+      "SunShots": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/SunShots.luau"
+      },
+      "InkFrames": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/InkFrames.luau"
+      },
+      "FireStorm": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/FireStorm.luau"
+      },
+      "BillboardShapes": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/BillboardShapes.luau"
+      },
+      "NovaInk": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/NovaInk.luau"
+      },
+      "NovaScenery": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/NovaScenery.luau"
+      },
+      "SkillAudio": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/SkillAudio.luau"
+      },
+      "LandscapeBudget": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/LandscapeBudget.luau"
+      },
+      "FoliageWind": {
+       "$path": "/Users/digonto/Documents/ChatGPT/Roblox game 2/src/client/Controllers/FoliageWind.luau"
+      }
+     }
+    }
+   }
+  },
+  "MaterialService": {
+   "$className": "MaterialService",
+   "AsuraPaving": {
+    "$className": "MaterialVariant",
+    "$properties": {
+     "BaseMaterial": "Slate",
+     "StudsPerTile": 11.5,
+     "ColorMapContent": "rbxassetid://97098803114986",
+     "NormalMapContent": "rbxassetid://135418954147476",
+     "RoughnessMapContent": "rbxassetid://86840331999508",
+     "MetalnessMapContent": "rbxassetid://94935615941315"
+    }
+   },
+   "AsuraStone": {
+    "$className": "MaterialVariant",
+    "$properties": {
+     "BaseMaterial": "Slate",
+     "StudsPerTile": 8,
+     "ColorMapContent": "rbxassetid://136097211790572",
+     "NormalMapContent": "rbxassetid://109459161356712",
+     "RoughnessMapContent": "rbxassetid://119714822642733",
+     "MetalnessMapContent": "rbxassetid://124364850877053"
+    }
+   },
+   "AsuraRock": {
+    "$className": "MaterialVariant",
+    "$properties": {
+     "BaseMaterial": "Rock",
+     "StudsPerTile": 32,
+     "ColorMapContent": "rbxassetid://110041854624516",
+     "NormalMapContent": "rbxassetid://70592265451033",
+     "RoughnessMapContent": "rbxassetid://135695099560736",
+     "MetalnessMapContent": "rbxassetid://71226144468886"
+    }
+   },
+   "AsuraLacquer": {
+    "$className": "MaterialVariant",
+    "$properties": {
+     "BaseMaterial": "Wood",
+     "StudsPerTile": 8,
+     "ColorMapContent": "rbxassetid://82143966653046",
+     "NormalMapContent": "rbxassetid://135808171380272",
+     "RoughnessMapContent": "rbxassetid://101209818894447",
+     "MetalnessMapContent": "rbxassetid://122620400490301"
+    }
+   },
+   "AsuraTimber": {
+    "$className": "MaterialVariant",
+    "$properties": {
+     "BaseMaterial": "Wood",
+     "StudsPerTile": 8,
+     "ColorMapContent": "rbxassetid://137089161025118",
+     "NormalMapContent": "rbxassetid://77502879945862",
+     "RoughnessMapContent": "rbxassetid://116196707878232",
+     "MetalnessMapContent": "rbxassetid://75777050451984"
+    }
+   },
+   "AsuraBronze": {
+    "$className": "MaterialVariant",
+    "$properties": {
+     "BaseMaterial": "Metal",
+     "StudsPerTile": 4,
+     "ColorMapContent": "rbxassetid://102773795312372",
+     "NormalMapContent": "rbxassetid://71590561736430",
+     "RoughnessMapContent": "rbxassetid://112284405141693",
+     "MetalnessMapContent": "rbxassetid://77828170829088"
+    }
+   },
+   "AsuraRoofTile": {
+    "$className": "MaterialVariant",
+    "$properties": {
+     "BaseMaterial": "Slate",
+     "StudsPerTile": 17.6,
+     "ColorMapContent": "rbxassetid://117971224870335",
+     "NormalMapContent": "rbxassetid://94752161531324",
+     "RoughnessMapContent": "rbxassetid://73989184937039",
+     "MetalnessMapContent": "rbxassetid://99148132922819"
+    }
+   },
+   "AsuraGrass": {
+    "$className": "MaterialVariant",
+    "$properties": {
+     "BaseMaterial": "LeafyGrass",
+     "StudsPerTile": 14,
+     "ColorMapContent": "rbxassetid://128338658336777",
+     "NormalMapContent": "rbxassetid://76500188535913",
+     "RoughnessMapContent": "rbxassetid://129085797627128"
+    }
+   },
+   "AsuraCliff": {
+    "$className": "MaterialVariant",
+    "$properties": {
+     "BaseMaterial": "Rock",
+     "StudsPerTile": 28,
+     "ColorMapContent": "rbxassetid://109301918063840",
+     "NormalMapContent": "rbxassetid://138671984924984",
+     "RoughnessMapContent": "rbxassetid://108295420863717"
+    }
+   },
+   "AsuraBasalt": {
+    "$className": "MaterialVariant",
+    "$properties": {
+     "BaseMaterial": "Basalt",
+     "StudsPerTile": 18,
+     "ColorMapContent": "rbxassetid://76383713659031",
+     "NormalMapContent": "rbxassetid://92400830591080",
+     "RoughnessMapContent": "rbxassetid://92426428241266"
+    }
+   },
+   "AsuraGravel": {
+    "$className": "MaterialVariant",
+    "$properties": {
+     "BaseMaterial": "Ground",
+     "StudsPerTile": 12,
+     "ColorMapContent": "rbxassetid://129792741117215",
+     "NormalMapContent": "rbxassetid://105491792597410",
+     "RoughnessMapContent": "rbxassetid://119305204978209"
+    }
+   },
+   "AsuraMeadow": {
+    "$className": "MaterialVariant",
+    "$properties": {
+     "BaseMaterial": "Grass",
+     "StudsPerTile": 14,
+     "ColorMapContent": "rbxassetid://128338658336777",
+     "NormalMapContent": "rbxassetid://76500188535913",
+     "RoughnessMapContent": "rbxassetid://129085797627128"
+    }
+   }
+  }
+ }
+}

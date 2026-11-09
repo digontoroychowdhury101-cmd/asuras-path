@@ -1,0 +1,8 @@
+GrandmasterShen_P1_WalkForward         L tw   20 fl   27 dv   25 over   0%   R tw    0 fl    5 dv    5 over   0%
+GrandmasterShen_P1_HitLightBack        L tw   20 fl   31 dv   19 over   0%   R tw    1 fl    6 dv    7 over   0%
+GrandmasterShen_P1_Guandao_L2          L tw   36 fl   52 dv   37 over  50%   R tw   34 fl   67 dv   30 over  21%
+GrandmasterShen_P1_HesitantMoon        L tw   44 fl   65 dv   38 over  32%   R tw   23 fl   72 dv   34 over   8%
+GrandmasterShen_P2_WalkForward         L tw    3 fl    9 dv    7 over   0%   R tw    1 fl    8 dv    6 over   0%
+GrandmasterShen_P2_HitLightBack        L tw    2 fl    9 dv    5 over   0%   R tw    3 fl    9 dv    9 over   0%
+GrandmasterShen_P2_Guandao_L2          L tw   19 fl   15 dv   25 over   0%   R tw    9 fl   31 dv   39 over  21%
+GrandmasterShen_P2_RendingArc          L tw   66 fl   75 dv   31 over   4%   R tw   31 fl   99 dv   45 over  35%

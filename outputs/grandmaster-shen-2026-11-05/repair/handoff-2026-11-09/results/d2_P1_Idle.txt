@@ -1,0 +1,6 @@
+fist slide: 36 frames, up to 0.04
+haft tilt: 14 frames need it, up to 3 deg; 22 frames changed
+P1_Idle {'weapon_low': -0.295, 'weapon_through_head': 0.0, 'weapon_through_chest': 0.0, 'weapon_in_arm_right': 0.007, 'weapon_in_arm_left': 0.0, 'weapon_in_torso': 0.0, 'weapon_in_legs': 0.0, 'in_weapon_torso': 0.0, 'in_weapon_legs': 0.0, 'in_weapon_arm_right': 0.015, 'in_weapon_arm_left': 0.0, 'in_weapon_hands': 0.0} [] 370s
+Right wrist past range: share 44% max 2.1 deg
+Left wrist past range: share 0% max 0.0 deg
+deepest torso skin in weapon 0 None

@@ -1,0 +1,15 @@
+P2_Feint
+P2_Guandao_Running
+P2_Strike
+P2_Guandao_L2
+P2_Guandao_Heavy
+P2_Guandao_L3
+P2_PostureBreak
+P2_DeathblowVictim
+P2_BloodWave
+P2_PhantomDrift
+P2_Death
+P2_GuandaoSkyfall
+P2_Flourish
+P2_CrimsonEmbrace
+P2_RendingArc

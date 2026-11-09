@@ -1,0 +1,13 @@
+t 0.00  Upper in -0.300 out -0.435 s-1.09 | Lower in 0.005 out 0.007 s-0.54 | Hand in 0.063 out 0.000 s-0.61 lhw 1.00 ltw 0.00 rsl -1.81 lsl 1.25
+t 0.03  Upper in -0.500 out -0.495 s-1.22 | Lower in 0.018 out 0.020 s-0.57 | Hand in 0.062 out 0.000 s-0.64 lhw 1.00 ltw 0.00 rsl -1.83 lsl 1.24
+t 0.07  Upper in -0.500 out -0.500 s-1.19 | Lower in -0.001 out -0.018 s-0.52 | Hand in 0.051 out 0.000 s-0.60 lhw 1.00 ltw 0.00 rsl -1.87 lsl 1.21
+t 0.10  Upper in -0.500 out -0.500 s-1.45 | Lower in -0.002 out 0.010 s-0.68 | Hand in 0.062 out 0.000 s-0.50 lhw 1.00 ltw 0.00 rsl -1.92 lsl 1.20
+t 0.13  Upper in -0.300 out -0.500 s-1.47 | Lower in -0.075 out -0.086 s-0.76 | Hand in 0.065 out 0.000 s-0.66 lhw 1.00 ltw 0.00 rsl -1.97 lsl 1.08
+t 0.17  Upper in -0.300 out -0.500 s-1.67 | Lower in -0.125 out -0.110 s-0.91 | Hand in 0.019 out 0.000 s-0.78 lhw 1.00 ltw 0.00 rsl -2.02 lsl 1.00
+t 0.20  Upper in -0.300 out -0.465 s-1.93 | Lower in -0.037 out -0.076 s-1.20 | Hand in 0.019 out 0.000 s-0.94 lhw 1.00 ltw 0.00 rsl -2.04 lsl 0.89
+t 0.23  Upper in -0.300 out -0.362 s-1.95 | Lower in -0.061 out -0.059 s-1.10 | Hand in 0.007 out 0.000 s-0.91 lhw 1.00 ltw 0.00 rsl -2.04 lsl 0.91
+t 0.27  Upper in 0.046 out 0.081 s-2.08 | Lower in 0.058 out 0.016 s-1.30 | Hand in -0.012 out 0.000 s-0.83 lhw 1.00 ltw 0.00 rsl -2.02 lsl 1.20
+t 0.30  Upper in -0.067 out -0.074 s-2.28 | Lower in -0.048 out -0.109 s-1.37 | Hand in -0.086 out 0.000 s-0.93 lhw 1.00 ltw 0.00 rsl -1.97 lsl 1.20
+t 0.33  Upper in 0.034 out 0.018 s-2.14 | Lower in -0.055 out -0.079 s-1.30 | Hand in -0.015 out 0.000 s-0.67 lhw 1.00 ltw 0.00 rsl -1.92 lsl 1.21
+t 0.37  Upper in -0.300 out -0.339 s-1.67 | Lower in -0.021 out -0.083 s-0.78 | Hand in 0.057 out 0.000 s-0.76 lhw 1.00 ltw 0.00 rsl -1.87 lsl 1.24
+t 0.40  Upper in -0.300 out -0.405 s-1.47 | Lower in -0.014 out -0.077 s-0.68 | Hand in 0.053 out 0.000 s-0.56 lhw 1.00 ltw 0.00 rsl -1.83 lsl 1.25

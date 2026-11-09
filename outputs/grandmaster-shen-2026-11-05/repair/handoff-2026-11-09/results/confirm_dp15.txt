@@ -1,0 +1,15 @@
+P2_PostureBreak (0, 7) start 0.187 planned 0.16 final bake 0.16 OK pops {'fist': 0.06, 'blade': 0.12, 'slide': 0.03, 'edge': 0.13, 'lead_reach': 0.0}
+P2_Feint (0, 7) start 0.181 planned 0.16 final bake 0.16 OK pops {'fist': 0.06, 'blade': 0.14, 'slide': 0.04, 'edge': 0.12, 'lead_reach': 0.0}
+P2_HitLightRight (0, 7) start 0.175 planned 0.16 final bake 0.16 OK pops {'fist': 0.17, 'blade': 0.14, 'slide': 0.05, 'edge': 0.06, 'lead_reach': 0.0}
+P2_CrimsonEmbrace (5, 14) start 0.204 planned 0.16 final bake 0.16 OK pops {'fist': 0.11, 'blade': 0.31, 'slide': 0.06, 'edge': 0.16, 'lead_reach': 0.15}
+P2_CrimsonEmbrace (18, 27) start 0.178 planned 0.16 final bake 0.16 OK pops {'fist': 0.11, 'blade': 0.31, 'slide': 0.06, 'edge': 0.16, 'lead_reach': 0.15}
+P2_CrimsonEmbrace (33, 53) start 0.351 planned 0.136 final bake 0.136 OK pops {'fist': 0.11, 'blade': 0.31, 'slide': 0.06, 'edge': 0.16, 'lead_reach': 0.15}
+P2_Guandao_Heavy (10, 25) start 0.179 planned 0.16 final bake 0.16 OK pops {'fist': 0.1, 'blade': 0.07, 'slide': 0.04, 'edge': 0.11, 'lead_reach': 0.0}
+P2_Guandao_L3 (0, 6) start 0.179 planned 0.16 final bake 0.16 OK pops {'fist': 0.11, 'blade': 0.1, 'slide': 0.05, 'edge': 0.1, 'lead_reach': 0.0}
+P2_Guandao_Running (0, 8) start 0.188 planned 0.16 final bake 0.16 OK pops {'fist': 0.17, 'blade': 0.26, 'slide': 0.05, 'edge': 0.25, 'lead_reach': 0.0}
+P2_Strike (19, 27) start 0.174 planned 0.16 final bake 0.16 OK pops {'fist': 0.1, 'blade': 0.06, 'slide': 0.05, 'edge': 0.04, 'lead_reach': 0.0}
+P2_GuandaoSkyfall (0, 6) start 0.175 planned 0.16 final bake 0.16 OK pops {'fist': 0.16, 'blade': 0.39, 'slide': 0.12, 'edge': 0.39, 'lead_reach': 0.0}
+P2_DeathblowVictim (0, 9) start 0.257 planned 0.16 final bake 0.16 OK pops {'fist': 0.12, 'blade': 0.17, 'slide': 0.07, 'edge': 0.1, 'lead_reach': 0.0}
+P2_DeathblowVictim (31, 44) start 0.205 planned 0.16 final bake 0.16 OK pops {'fist': 0.12, 'blade': 0.17, 'slide': 0.07, 'edge': 0.1, 'lead_reach': 0.0}
+P1_Guandao_Running (0, 9) start 0.214 planned 0.179 final bake 0.179 OK pops {'fist': 0.14, 'blade': 0.18, 'slide': 0.0, 'edge': 0.11, 'lead_reach': 0.0}
+P1_PrayerBeads (44, 54) start 0.184 planned 0.175 final bake 0.175 OK pops {'fist': 0.12, 'blade': 0.39, 'slide': 0.04, 'edge': 0.34, 'lead_reach': 0.0}

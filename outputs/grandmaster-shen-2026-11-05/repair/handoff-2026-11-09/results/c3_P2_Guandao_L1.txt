@@ -1,0 +1,1 @@
+GrandmasterShen_P2_Guandao_L1  w_in_right 0.018 w_in_left 0.000 in_w_right 0.075 in_w_left 0.036 in_w_hands 0.022 w_in_torso 0.000 in_w_torso 0.057 w_in_legs 0.000 in_w_legs 0.000 | wrist L/R 38/8% | [] 35s

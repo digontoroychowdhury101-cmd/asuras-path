@@ -1,0 +1,8 @@
+OK  GrandmasterShen_P1_Strike 1.100s keys  34 {}
+OK  GrandmasterShen_P1_StrafeLeft 1.300s keys  40 {}
+OK  GrandmasterShen_P1_PostureBreak 1.000s keys  31 {}
+OK  GrandmasterShen_P1_Guandao_Running 0.600s keys  19 {"contact": [0.7, 0.04, -6.1], "game_radius_at_contact": 7.98, "game_radius_during_active": 7.98, "server_reach": 12.5, "reach_gap": 4.52, "yaw_first": 6.5, "yaw_last": 40.9}
+OK  GrandmasterShen_P2_Strike 1.100s keys  34 {}
+OK  GrandmasterShen_P2_StrafeLeft 2.400s keys  29 {}
+OK  GrandmasterShen_P2_PostureBreak 1.000s keys  31 {}
+OK  GrandmasterShen_P2_Guandao_Running 0.600s keys  19 {"contact": [0.96, 1.35, -6.26], "game_radius_at_contact": 8.23, "game_radius_during_active": 8.23, "server_reach": 12.5, "reach_gap": 4.27, "yaw_first": 8.7, "yaw_last": 43.7}

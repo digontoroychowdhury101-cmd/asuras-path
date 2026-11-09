@@ -1,0 +1,16 @@
+   stage organic        
+   stage spine_reach    
+   stage settle         
+   stage swivel         
+   stage wrist_yield    
+   stage clear_free_arm 
+   stage clear_torso    
+fist slide: 112 frames, up to 0.36
+   stage slide_fist     
+haft tilt: 101 frames need it, up to 8 deg; 102 frames changed
+   stage tilt_haft      
+   stage depop          
+   stage close_loop     
+   stage final-solve    
+P2_Idle on 667s torso_right=0.138 torso_left=0.017 Win_arm_right=0.046 Win_arm_left=0.002 inW_arm_right=0.043 inW_arm_left=0.026 inW_torso=0.035 Win_torso=0.000 wrist_right=52.190 wrist_left=15.458 left_grip=0.000 left_off_haft=0.000 right_off_haft=0.000 pop_fist=0.001 pop_blade=0.185 pop_slide=0.055 pop_lead_reach=0.000 | strike None | problems: []
+   per-frame R/L: 

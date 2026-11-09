@@ -1,0 +1,1 @@
+OK  GrandmasterShen_P1_Guandao_L1 0.400s keys  13 {"contact": [-1.34, 0.89, -5.72], "game_radius_at_contact": 7.64, "game_radius_during_active": 7.64, "server_reach": 10.5, "reach_gap": 2.86, "yaw_first": -13.2, "yaw_last": 64.8, "sweep_deg": 78.0}

@@ -1,0 +1,64 @@
+P1_AbbotSweep          0.123/0.135 w 86 OK |    (run)   
+P1_Death               0.216/0.165 w 93 F | 0.030/0.136 w 77 OK
+P1_DeathblowVictim     0.197/0.144 w110 F | 0.205/0.140 w113 F
+P1_Feint               0.146/0.143 w 83 OK | 0.114/0.144 w 84 OK
+P1_Flourish            0.118/0.209 w 98 F | 0.087/0.190 w100 F
+P1_FlowingJian         0.181/0.222 w 94 F | 0.178/0.222 w 91 F
+P1_Guandao_Art         0.018/0.145 w 41 OK | 0.016/0.138 w 41 OK
+P1_Guandao_Heavy       0.105/0.139 w 89 OK | 0.100/0.140 w 93 OK
+P1_Guandao_L1          0.071/0.216 w 63 F | 0.037/0.218 w 62 F
+P1_Guandao_L2          0.182/0.134 w 79 F | 0.158/0.131 w 83 OK
+P1_Guandao_L3          0.053/0.152 w 78 OK | 0.035/0.159 w 80 OK
+P1_Guandao_Running     0.027/0.171 w 54 OK | 0.031/0.169 w 48 OK
+P1_GuardHit            0.000/0.146 w 50 OK | 0.000/0.147 w 50 OK
+P1_GuardLoop           0.000/0.138 w 37 OK |    (run)   
+P1_HesitantMoon        0.200/0.218 w110 F | 0.170/0.208 w 83 F
+P1_HitLightBack        0.048/0.119 w 25 OK | 0.048/0.119 w 25 OK
+P1_HitLightFront       0.112/0.109 w 27 OK | 0.112/0.109 w 27 OK
+P1_HitLightLeft        0.053/0.112 w 26 OK | 0.053/0.112 w 26 OK
+P1_HitLightRight       0.127/0.139 w 52 OK | 0.092/0.140 w 49 OK
+P1_Idle                0.055/0.118 w 27 OK | 0.055/0.118 w 27 OK
+P1_PostureBreak        0.021/0.124 w 72 OK | 0.053/0.136 w 67 OK
+P1_PrayerBeads         0.122/0.206 w 99 F | 0.124/0.204 w 76 F
+P1_RunForward          0.041/0.124 w 21 OK | 0.040/0.124 w 22 OK
+P1_StrafeLeft          0.067/0.121 w 29 OK | 0.067/0.121 w 29 OK
+P1_StrafeRight         0.068/0.117 w 29 OK | 0.068/0.115 w 29 OK
+P1_Strike              0.147/0.202 w 91 F | 0.129/0.219 w 93 F
+P1_Transform           0.071/0.155 w 93 OK |    (run)   
+P1_TurnLeft            0.065/0.144 w 29 OK | 0.075/0.141 w 29 OK
+P1_TurnRight           0.061/0.087 w 18 OK | 0.061/0.082 w 18 OK
+P1_WalkBackward        0.078/0.120 w 29 OK | 0.078/0.120 w 29 OK
+P1_WalkForward         0.075/0.121 w 29 OK | 0.075/0.120 w 29 OK
+P1_WheelOfHeaven       0.154/0.221 w 98 F | 0.122/0.204 w 95 F
+P2_BloodWave           0.286/0.366 w 83 F | 0.312/0.385 w 78 F
+P2_CrimsonEmbrace      0.370/0.371 w 91 F | 0.372/0.385 w 71 F
+P2_Death               0.207/0.171 w110 F | 0.172/0.218 w 98 F
+P2_DeathblowVictim     0.223/0.247 w137 F | 0.299/0.194 w103 F
+P2_Feint               0.275/0.131 w 91 F | 0.176/0.211 w 87 F
+P2_Flourish            0.094/0.210 w 73 F | 0.132/0.306 w 76 F
+P2_GuandaoSkyfall      0.201/0.238 w102 F | 0.236/0.324 w104 F
+P2_Guandao_Art         0.116/0.082 w 26 OK | 0.102/0.167 w 19 OK
+P2_Guandao_Heavy       0.255/0.267 w 86 F | 0.208/0.378 w 82 F
+P2_Guandao_L1          0.150/0.144 w 60 OK | 0.122/0.174 w 61 OK
+P2_Guandao_L2          0.287/0.289 w 79 F | 0.236/0.334 w 80 F
+P2_Guandao_L3          0.178/0.139 w 70 OK | 0.173/0.223 w 69 F
+P2_Guandao_Running     0.164/0.225 w 55 F | 0.173/0.310 w 53 F
+P2_GuardHit            0.075/0.013 w 22 OK | 0.075/0.012 w 21 OK
+P2_GuardLoop           0.086/0.000 w 17 OK |    (run)   
+P2_HitLightBack        0.126/0.060 w 42 OK | 0.127/0.081 w 45 OK
+P2_HitLightFront       0.145/0.005 w 53 OK | 0.175/0.005 w 53 OK
+P2_HitLightLeft        0.131/0.004 w 64 OK | 0.131/0.004 w 64 OK
+P2_HitLightRight       0.115/0.062 w 64 OK | 0.130/0.024 w 63 OK
+P2_Idle                0.138/0.017 w 52 OK | 0.138/0.017 w 52 OK
+P2_PhantomDrift        0.185/0.227 w 73 F | 0.198/0.321 w 72 F
+P2_PostureBreak        0.164/0.195 w 98 F | 0.256/0.181 w 77 F
+P2_RendingArc          0.231/0.351 w117 F | 0.364/0.362 w127 F
+P2_RunForward          0.195/0.218 w 23 F |    (run)   
+P2_StrafeLeft          0.147/0.028 w 57 OK | 0.152/0.028 w 57 OK
+P2_StrafeRight         0.107/0.025 w 26 OK | 0.112/0.026 w 26 OK
+P2_Strike              0.203/0.200 w 83 F | 0.191/0.289 w 78 F
+P2_Transform           0.146/0.176 w 63 OK | 0.146/0.170 w 63 OK
+P2_TurnLeft            0.110/0.011 w 46 OK | 0.112/0.017 w 46 F
+P2_TurnRight           0.136/0.025 w 47 OK | 0.149/0.027 w 47 F
+P2_WalkBackward        0.140/0.047 w 55 OK | 0.165/0.047 w 55 OK
+P2_WalkForward         0.106/0.002 w 37 OK | 0.106/0.002 w 37 OK

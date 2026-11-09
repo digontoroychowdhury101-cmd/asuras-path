@@ -1,0 +1,44 @@
+  P1: 7894 trouser triangles parted from the robe, 1831 vertices doubled along the seam
+    healed 122949 jumps in a band of 223590 vertices over 120 bones
+  collider RightUpperLeg  r 0.69 -> 0.41  firm
+  collider LeftUpperLeg   r 0.36 -> 0.59  firm
+  collider RightLowerLeg  r 0.54 -> 0.36  firm
+  collider LeftLowerLeg   r 0.64 -> 0.37  firm
+  collider LowerTorso     r 0.73 -> 0.80
+  collider UpperTorso     r 0.64 -> 0.72
+  collider Head           r 0.50 -> 0.44
+  collider RightLowerLeg  r 0.76 -> 0.76  firm
+  collider LeftLowerLeg   r 0.76 -> 0.76  firm
+  collider RightUpperArm  r 0.41 -> 0.72
+  collider RightLowerArm  r 0.54 -> 0.14
+  collider RightHand      r 0.42 -> 0.42
+  collider LeftUpperArm   r 0.47 -> 0.58
+  collider LeftLowerArm   r 0.47 -> 0.38
+  collider LeftHand       r 0.42 -> 0.42
+  collider Glaive         r 0.30 -> 0.30  firm
+  collider Glaive         r 0.22 -> 0.22
+  collider UpperTorso     r 0.78 -> 0.78
+P1: 123 bones (107 cloth), 147 particles, 384 links; welded verts 251336, influences max 4 mean 3.46; coat 60398 under 51605
+  P2: 9565 trouser triangles parted from the robe, 1551 vertices doubled along the seam
+  orb patch 104 texels square
+  orbs remade: 7686 lumpy source triangles out of the game mesh, 3456 sphere triangles in; patch at 0.492,0.338
+    healed 111711 jumps in a band of 215689 vertices over 119 bones
+  collider RightUpperLeg  r 0.43 -> 0.70  firm
+  collider LeftUpperLeg   r 0.47 -> 0.78  firm
+  collider RightLowerLeg  r 0.63 -> 0.17  firm
+  collider LeftLowerLeg   r 0.63 -> 0.17  firm
+  collider LowerTorso     r 0.75 -> 0.86
+  collider UpperTorso     r 0.69 -> 0.71
+  collider Head           r 0.46 -> 0.46
+  collider RightLowerLeg  r 0.59 -> 0.38  firm
+  collider LeftLowerLeg   r 0.61 -> 0.25  firm
+  collider RightUpperArm  r 0.43 -> 0.44
+  collider RightLowerArm  r 0.33 -> 0.40
+  collider RightHand      r 0.42 -> 0.42
+  collider LeftUpperArm   r 0.46 -> 0.41
+  collider LeftLowerArm   r 0.45 -> 0.31
+  collider LeftHand       r 0.42 -> 0.42
+  collider Glaive         r 0.30 -> 0.30  firm
+  collider Glaive         r 0.22 -> 0.22
+  collider UpperTorso     r 0.70 -> 0.70
+P2: 125 bones (109 cloth), 143 particles, 378 links; welded verts 253220, influences max 4 mean 3.15; coat 49281 under 30709

@@ -1,0 +1,1 @@
+GrandmasterShen_P1_PostureBreak w_in_right 0.000 w_in_left 0.000 in_w_right 0.034 in_w_left 0.019 in_w_hands 0.011 w_in_torso 0.000 in_w_torso 0.000 w_in_legs 0.000 in_w_legs 0.000 | wrist L/R 61/19% | [] 82s

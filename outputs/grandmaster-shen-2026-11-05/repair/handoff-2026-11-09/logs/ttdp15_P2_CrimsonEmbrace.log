@@ -1,0 +1,22 @@
+   stage organic        
+   stage spine_reach    
+   stage settle         
+   stage swivel         
+   stage wrist_yield    
+   stage clear_free_arm 
+torso: rp 7 frames need it, 33 moved; worst 0.352 -> 0.323, moves up to 0.41
+torso: lt 6 frames need it, 24 moved; worst 0.279 -> 0.136, moves up to 0.42
+   stage clear_torso    fist 0.32@f48 lead_reach 0.15@f38
+fist slide: 22 frames, up to 0.56
+   stage slide_fist     fist 0.32@f48 lead_reach 0.15@f38
+haft tilt: 32 frames need it, up to 25 deg; 36 frames changed
+   stage tilt_haft      fist 0.32@f48 blade 0.31@f60 lead_reach 0.15@f38
+depop: 6 frames [46, 47, 48, 49, 50, 51]
+   stage depop          blade 0.31@f60 lead_reach 0.15@f38
+   stage close_loop     blade 0.31@f60 lead_reach 0.15@f38
+joint_polish {'window': (5, 14), 'elbows_only': False, 'status': 9, 'message': 'Iteration limit reached', 'nit': 150, 'runtime_s': 771.2, 'frame_evals': 14603, 'feasible': True, 'depth': (0.204, 0.16), 'kept': True, 'worse': [], 'change': (0.066, 3.1, 3.4, 11.5, 2.4)}
+joint_polish {'window': (18, 27), 'elbows_only': False, 'status': 99, 'message': '`callback` raised `StopIteration`.', 'nit': 17, 'runtime_s': 46.0, 'frame_evals': 1160, 'feasible': True, 'depth': (0.178, 0.16), 'kept': True, 'worse': [], 'change': (0.0, 0.0, 0.0, 0.0, 20.6)}
+joint_polish {'window': (33, 53), 'elbows_only': False, 'status': 4, 'message': 'Inequality constraints incompatible', 'nit': 16, 'runtime_s': 128.6, 'frame_evals': 3140, 'feasible': True, 'depth': (0.351, 0.136), 'kept': True, 'worse': [], 'change': (0.355, 2.2, 19.2, 0.0, 0.0)}
+   stage final-solve    blade 0.31@f60 lead_reach 0.15@f38
+P2_CrimsonEmbrace on 1281s torso_right=0.155 torso_left=0.157 Win_arm_right=0.058 Win_arm_left=0.010 inW_arm_right=0.060 inW_arm_left=0.061 inW_torso=0.064 Win_torso=0.000 wrist_right=78.989 wrist_left=49.691 left_grip=0.052 left_off_haft=0.011 right_off_haft=0.006 pop_fist=0.106 pop_blade=0.308 pop_slide=0.060 pop_lead_reach=0.151 | strike None | problems: []
+   per-frame R/L: 

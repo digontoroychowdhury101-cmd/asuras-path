@@ -1,0 +1,64 @@
+GrandmasterShen_P1_Idle                held 100%  sep   1.25.. 1.25  lz  -1.61..-1.59  rz  -0.41..-0.38  pitch  -6.87..-5.13  tip_y   0.75.. 0.92  off   0.00.. 0.00  clr   0.22.. 0.24  ok
+GrandmasterShen_P1_Strike              held 100%  sep   0.84.. 1.25  lz  -1.67..-0.29  rz  -0.99.. 0.04  pitch -40.94..48.11  tip_y  -3.12.. 5.00  off   0.00.. 0.05  clr   0.15.. 0.94  ok
+GrandmasterShen_P1_Flourish            held  27%  sep   0.88.. 1.25  lz  -1.59..-0.22  rz  -0.56.. 0.80  pitch -68.73..73.30  tip_y  -3.13.. 4.28  off   0.00.. 0.01  clr   0.09.. 0.92  ok
+GrandmasterShen_P1_Feint               held 100%  sep   1.08.. 1.25  lz  -1.87..-0.43  rz  -1.36..-0.39  pitch  -6.00..45.61  tip_y   0.82.. 4.32  off   0.00.. 0.09  clr   0.21.. 0.49  ok
+GrandmasterShen_P1_TurnLeft            held 100%  sep   1.14.. 1.25  lz  -1.62..-1.51  rz  -0.49..-0.47  pitch  -6.00..-6.00  tip_y   0.82.. 0.83  off   0.00.. 0.00  clr   0.23.. 0.24  ok
+GrandmasterShen_P1_TurnRight           held 100%  sep   1.25.. 1.25  lz  -1.52..-1.52  rz  -0.28..-0.28  pitch  -6.00..-6.00  tip_y   0.83.. 0.83  off   0.00.. 0.00  clr   0.23.. 0.25  ok
+GrandmasterShen_P1_WalkForward         held 100%  sep   1.14.. 1.25  lz  -1.66..-1.57  rz  -0.56..-0.48  pitch  -6.97..-5.03  tip_y   0.72.. 0.98  off   0.00.. 0.00  clr   0.28.. 0.33  ok
+GrandmasterShen_P1_RunForward          held 100%  sep   1.25.. 1.25  lz  -1.93..-1.81  rz  -0.82..-0.74  pitch -10.36..-8.43  tip_y   0.35.. 0.59  off   0.00.. 0.00  clr   0.22.. 0.33  ok
+GrandmasterShen_P1_WalkBackward        held 100%  sep   1.14.. 1.25  lz  -1.67..-1.50  rz  -0.55..-0.48  pitch  -6.97..-5.02  tip_y   0.74.. 1.01  off   0.00.. 0.01  clr   0.28.. 0.33  ok
+GrandmasterShen_P1_StrafeLeft          held 100%  sep   1.14.. 1.25  lz  -1.67..-1.57  rz  -0.56..-0.48  pitch  -6.97..-5.03  tip_y   0.72.. 0.96  off   0.00.. 0.00  clr   0.28.. 0.32  ok
+GrandmasterShen_P1_StrafeRight         held 100%  sep   1.14.. 1.25  lz  -1.67..-1.57  rz  -0.56..-0.48  pitch  -6.97..-5.03  tip_y   0.72.. 0.95  off   0.00.. 0.00  clr   0.27.. 0.32  ok
+GrandmasterShen_P1_GuardLoop           held 100%  sep   1.25.. 1.25  lz  -1.08..-1.08  rz  -0.22..-0.22  pitch  34.00..34.00  tip_y   2.84.. 2.85  off   0.00.. 0.00  clr   0.34.. 0.34  ok
+GrandmasterShen_P1_GuardHit            held 100%  sep   1.25.. 1.25  lz  -1.10..-0.85  rz  -0.24.. 0.01  pitch  34.00..34.00  tip_y   2.83.. 2.96  off   0.00.. 0.00  clr   0.33.. 0.37  ok
+GrandmasterShen_P1_HitLightFront       held 100%  sep   1.11.. 1.25  lz  -1.59..-1.44  rz  -0.39..-0.37  pitch  -6.00..-6.00  tip_y   0.83.. 0.85  off   0.00.. 0.03  clr   0.21.. 0.24  ok
+GrandmasterShen_P1_HitLightBack        held 100%  sep   1.24.. 1.25  lz  -1.61..-1.59  rz  -0.41..-0.39  pitch  -6.00..-6.00  tip_y   0.67.. 0.81  off   0.00.. 0.02  clr   0.20.. 0.29  ok
+GrandmasterShen_P1_HitLightLeft        held 100%  sep   1.25.. 1.25  lz  -1.64..-1.60  rz  -0.43..-0.39  pitch  -6.00..-6.00  tip_y   0.82.. 0.83  off   0.00.. 0.00  clr   0.21.. 0.28  ok
+GrandmasterShen_P1_HitLightRight       held 100%  sep   1.11.. 1.25  lz  -1.59..-1.44  rz  -0.39..-0.37  pitch  -6.00..-6.00  tip_y   0.82.. 0.83  off   0.00.. 0.03  clr   0.16.. 0.23  ok
+GrandmasterShen_P1_PostureBreak        held 100%  sep   0.87.. 1.25  lz  -1.64..-1.21  rz  -0.73..-0.37  pitch -33.65..-6.00  tip_y  -2.77.. 0.82  off   0.00.. 0.02  clr   0.11.. 0.22  ok
+GrandmasterShen_P1_DeathblowVictim     held 100%  sep   0.77.. 1.08  lz  -1.89..-0.72  rz  -1.05..-0.09  pitch -36.00..-27.46  tip_y  -2.79..-2.50  off   0.00.. 0.06  clr   0.14.. 0.25  ok
+GrandmasterShen_P1_Death               held 100%  sep   0.84.. 1.25  lz  -1.74..-1.23  rz  -0.97..-0.37  pitch -33.99..-6.00  tip_y  -2.77.. 0.83  off   0.00.. 0.02  clr   0.11.. 0.51  ok
+GrandmasterShen_P1_Transform           held 100%  sep   0.88.. 1.25  lz  -1.59..-0.98  rz  -0.53..-0.37  pitch -42.61..-6.00  tip_y  -2.90.. 0.83  off   0.00.. 0.02  clr   0.11.. 0.32  ok
+GrandmasterShen_P1_Guandao_L1          held 100%  sep   0.78.. 1.25  lz  -1.71..-0.16  rz  -1.10.. 0.05  pitch -39.90..16.13  tip_y  -3.08.. 2.83  off   0.00.. 0.12  clr   0.20.. 0.62  ok
+GrandmasterShen_P1_Guandao_L2          held 100%  sep   0.83.. 1.25  lz  -1.69..-0.64  rz  -1.15..-0.24  pitch -22.94..42.55  tip_y  -1.80.. 4.76  off   0.00.. 0.06  clr   0.17.. 0.62  ok
+GrandmasterShen_P1_Guandao_L3          held 100%  sep   0.88.. 1.25  lz  -1.69..-0.71  rz  -0.95.. 0.15  pitch -39.72..71.58  tip_y  -2.70.. 5.94  off   0.00.. 0.01  clr   0.17.. 0.79  ok
+GrandmasterShen_P1_Guandao_Heavy       held 100%  sep   0.70.. 1.25  lz  -1.75..-0.66  rz  -1.62..-0.39  pitch -24.31..42.20  tip_y  -1.92.. 4.15  off   0.00.. 0.06  clr   0.13.. 0.59  ok
+GrandmasterShen_P1_Guandao_Running     held 100%  sep   0.85.. 1.25  lz  -1.62..-0.50  rz  -0.74..-0.29  pitch -29.84..40.08  tip_y  -3.08.. 4.32  off   0.00.. 0.02  clr   0.24.. 0.94  ok
+GrandmasterShen_P1_Guandao_Art         held 100%  sep   0.85.. 1.25  lz  -1.74.. 1.42  rz  -0.89.. 0.63  pitch  -6.00..-6.00  tip_y  -0.51..-0.34  off   0.00.. 0.03  clr   0.25.. 0.37  ok
+GrandmasterShen_P1_FlowingJian         held 100%  sep   0.69.. 1.25  lz  -1.89..-0.76  rz  -1.28..-0.15  pitch -44.16..88.64  tip_y  -3.12.. 6.01  off   0.00.. 0.05  clr   0.07.. 0.84  ok
+GrandmasterShen_P1_PrayerBeads         held  70%  sep   0.81.. 1.25  lz  -1.61..-0.07  rz  -1.12.. 0.14  pitch -66.89..67.18  tip_y  -3.13.. 5.26  off   0.00.. 0.07  clr   0.11.. 0.84  ok
+GrandmasterShen_P1_AbbotSweep          held 100%  sep   0.74.. 1.25  lz  -1.62..-0.09  rz  -0.87.. 0.04  pitch -24.24..20.61  tip_y  -2.24.. 2.72  off   0.00.. 0.04  clr   0.24.. 0.46  ok
+GrandmasterShen_P1_HesitantMoon        held 100%  sep   0.85.. 1.25  lz  -2.10..-0.52  rz  -1.44..-0.39  pitch -38.84..66.29  tip_y  -2.82.. 6.26  off   0.00.. 0.14  clr   0.11.. 0.87  ok
+GrandmasterShen_P1_WheelOfHeaven       held  66%  sep   0.90.. 1.25  lz  -1.85.. 1.45  rz  -1.52..-0.33  pitch -67.69..68.41  tip_y  -3.13.. 5.14  off   0.00.. 0.02  clr  -0.01.. 0.84  ok
+GrandmasterShen_P2_Idle                held 100%  sep   1.25.. 1.25  lz  -1.63..-1.59  rz  -0.43..-0.39  pitch  -6.87..-5.12  tip_y   1.71.. 2.03  off   0.00.. 0.00  clr   0.21.. 0.26  ok
+GrandmasterShen_P2_Strike              held 100%  sep   1.08.. 1.25  lz  -1.67..-0.49  rz  -1.00..-0.17  pitch -43.13..48.11  tip_y  -2.88.. 6.17  off   0.00.. 0.00  clr   0.07.. 0.43  ok
+GrandmasterShen_P2_Flourish            held  27%  sep   0.92.. 1.25  lz  -1.73..-0.47  rz  -0.61.. 0.28  pitch -72.09..73.30  tip_y  -2.97.. 5.50  off   0.00.. 0.03  clr   0.07.. 0.86  ok
+GrandmasterShen_P2_Feint               held 100%  sep   1.08.. 1.25  lz  -1.92..-0.54  rz  -1.53..-0.41  pitch  -6.00..45.61  tip_y   1.84.. 5.49  off   0.00.. 0.04  clr   0.01.. 0.29  ok
+GrandmasterShen_P2_TurnLeft            held 100%  sep   1.25.. 1.25  lz  -1.66..-1.66  rz  -0.57..-0.56  pitch  -6.00..-6.00  tip_y   1.77.. 1.95  off   0.00.. 0.00  clr   0.23.. 0.24  ok
+GrandmasterShen_P2_TurnRight           held 100%  sep   1.25.. 1.25  lz  -1.46..-1.46  rz  -0.22..-0.22  pitch  -6.00..-6.00  tip_y   1.69.. 1.88  off   0.00.. 0.00  clr   0.24.. 0.24  ok
+GrandmasterShen_P2_WalkForward         held 100%  sep   1.25.. 1.25  lz  -1.75..-1.70  rz  -0.81..-0.77  pitch -12.69..-10.55  tip_y   0.98.. 1.36  off   0.00.. 0.00  clr   0.25.. 0.26  ok
+GrandmasterShen_P2_RunForward          held 100%  sep   1.25.. 1.25  lz  -1.68..-1.61  rz  -0.74..-0.68  pitch -12.69..-10.55  tip_y   1.71.. 2.12  off   0.00.. 0.00  clr   0.23.. 0.28  ok
+GrandmasterShen_P2_WalkBackward        held 100%  sep   1.25.. 1.25  lz  -1.49..-1.45  rz  -0.55..-0.52  pitch -12.69..-10.55  tip_y   1.21.. 1.59  off   0.00.. 0.00  clr   0.25.. 0.28  ok
+GrandmasterShen_P2_StrafeLeft          held 100%  sep   1.25.. 1.25  lz  -1.63..-1.59  rz  -0.69..-0.66  pitch -12.69..-10.55  tip_y   1.14.. 1.52  off   0.00.. 0.00  clr   0.25.. 0.26  ok
+GrandmasterShen_P2_StrafeRight         held 100%  sep   1.25.. 1.25  lz  -1.69..-1.65  rz  -0.76..-0.72  pitch -12.69..-10.55  tip_y   1.02.. 1.42  off   0.00.. 0.00  clr   0.24.. 0.26  ok
+GrandmasterShen_P2_GuardLoop           held 100%  sep   1.25.. 1.25  lz  -1.30..-1.28  rz  -0.44..-0.42  pitch  34.00..34.00  tip_y   3.80.. 3.98  off   0.00.. 0.00  clr   0.28.. 0.31  ok
+GrandmasterShen_P2_GuardHit            held 100%  sep   1.25.. 1.25  lz  -1.32..-1.06  rz  -0.46..-0.21  pitch  34.00..34.00  tip_y   3.85.. 4.08  off   0.00.. 0.00  clr   0.28.. 0.34  ok
+GrandmasterShen_P2_HitLightFront       held 100%  sep   1.25.. 1.25  lz  -1.62..-1.61  rz  -0.41..-0.40  pitch  -6.00..-6.00  tip_y   1.85.. 2.02  off   0.00.. 0.00  clr   0.22.. 0.28  ok
+GrandmasterShen_P2_HitLightBack        held 100%  sep   1.25.. 1.25  lz  -1.62..-1.57  rz  -0.41..-0.37  pitch  -6.00..-6.00  tip_y   1.49.. 1.83  off   0.00.. 0.00  clr   0.22.. 0.30  ok
+GrandmasterShen_P2_HitLightLeft        held 100%  sep   1.25.. 1.25  lz  -1.65..-1.62  rz  -0.45..-0.41  pitch  -6.00..-6.00  tip_y   1.75.. 1.86  off   0.00.. 0.00  clr   0.22.. 0.28  ok
+GrandmasterShen_P2_HitLightRight       held 100%  sep   1.25.. 1.25  lz  -1.62..-1.59  rz  -0.41..-0.39  pitch  -6.00..-6.00  tip_y   1.83.. 1.98  off   0.00.. 0.00  clr   0.21.. 0.24  ok
+GrandmasterShen_P2_PostureBreak        held 100%  sep   1.01.. 1.25  lz  -1.82..-1.37  rz  -1.03..-0.39  pitch -36.00..-6.00  tip_y  -3.02.. 1.82  off   0.00.. 0.03  clr   0.20.. 0.30  ok
+GrandmasterShen_P2_DeathblowVictim     held 100%  sep   0.77.. 1.11  lz  -2.10..-1.21  rz  -1.41..-0.58  pitch -36.00..-32.00  tip_y  -2.92..-2.52  off   0.00.. 0.05  clr   0.03.. 0.25  ok
+GrandmasterShen_P2_Death               held 100%  sep   0.82.. 1.25  lz  -2.09..-1.46  rz  -1.42..-0.38  pitch -36.44..-6.00  tip_y  -3.09.. 1.21  off   0.00.. 0.04  clr   0.18.. 0.40  ok
+GrandmasterShen_P2_Transform           held 100%  sep   0.78.. 1.25  lz  -1.60.. 0.35  rz  -0.40.. 0.57  pitch -43.06..39.64  tip_y  -3.11.. 4.18  off   0.00.. 0.05  clr   0.20.. 0.54  ok
+GrandmasterShen_P2_Guandao_L1          held 100%  sep   0.87.. 1.25  lz  -1.85..-0.24  rz  -1.21..-0.09  pitch -46.43..16.13  tip_y  -2.63.. 3.83  off   0.00.. 0.03  clr   0.09.. 0.24  ok
+GrandmasterShen_P2_Guandao_L2          held 100%  sep   0.85.. 1.25  lz  -1.85..-0.80  rz  -1.10..-0.39  pitch -22.94..42.55  tip_y  -0.61.. 5.78  off   0.00.. 0.01  clr   0.21.. 0.49  ok
+GrandmasterShen_P2_Guandao_L3          held 100%  sep   1.00.. 1.25  lz  -1.73..-1.14  rz  -0.96..-0.33  pitch -55.98..71.58  tip_y  -2.60.. 7.07  off   0.00.. 0.01  clr   0.20.. 0.39  ok
+GrandmasterShen_P2_Guandao_Heavy       held 100%  sep   0.66.. 1.25  lz  -2.21..-0.36  rz  -1.42..-0.42  pitch -24.31..42.20  tip_y  -0.56.. 5.35  off   0.00.. 0.03  clr   0.03.. 0.49  right wrist turned 124 deg on the arm
+GrandmasterShen_P2_Guandao_Running     held 100%  sep   1.08.. 1.25  lz  -1.70..-0.57  rz  -0.94..-0.33  pitch -40.58..40.08  tip_y  -2.49.. 5.26  off   0.00.. 0.00  clr   0.19.. 0.35  ok
+GrandmasterShen_P2_Guandao_Art         held 100%  sep   1.25.. 1.25  lz  -1.89.. 1.52  rz  -0.87.. 0.39  pitch  -6.00..-6.00  tip_y   0.99.. 1.23  off   0.00.. 0.00  clr   0.17.. 0.29  ok
+GrandmasterShen_P2_BloodWave           held 100%  sep   1.01.. 1.25  lz  -1.66..-0.10  rz  -0.86.. 0.02  pitch -42.31..39.11  tip_y  -2.55.. 5.32  off   0.00.. 0.02  clr   0.20.. 0.66  ok
+GrandmasterShen_P2_GuandaoSkyfall      held 100%  sep   1.00.. 1.25  lz  -1.62..-0.56  rz  -0.98.. 0.18  pitch -47.62..88.67  tip_y  -3.05.. 7.36  off   0.00.. 0.07  clr   0.02.. 0.56  ok
+GrandmasterShen_P2_CrimsonEmbrace      held  44%  sep   0.97.. 1.25  lz  -3.04..-0.16  rz  -1.29.. 0.83  pitch -28.54..-6.00  tip_y  -0.23.. 1.87  off   0.00.. 0.06  clr  -0.02.. 0.70  right wrist turned 127 deg on the arm
+GrandmasterShen_P2_RendingArc          held 100%  sep   1.06.. 1.25  lz  -2.07..-0.53  rz  -1.94..-0.35  pitch -49.92..90.00  tip_y  -2.95.. 7.09  off   0.00.. 0.05  clr  -0.16.. 0.50  ok
+GrandmasterShen_P2_PhantomDrift        held 100%  sep   1.01.. 1.25  lz  -1.80..-0.33  rz  -1.02..-0.23  pitch -45.92..53.76  tip_y  -2.92.. 6.40  off   0.00.. 0.01  clr   0.15.. 0.55  ok

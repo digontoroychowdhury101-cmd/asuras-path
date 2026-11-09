@@ -1,0 +1,122 @@
+{
+ "c2_DeathblowVictim_k1": {
+  "frames": 42,
+  "pairs": {
+   "LeftHand in weapon": {
+    "share": 0.595,
+    "deepest": 0.072,
+    "frame": 40
+   },
+   "RobeLeft in LeftUpperLeg": {
+    "share": 0.762,
+    "deepest": 0.177,
+    "frame": 82
+   },
+   "LeftSleeve in LeftUpperArm": {
+    "share": 0.476,
+    "deepest": 0.079,
+    "frame": 66
+   },
+   "Beard in RightUpperArm": {
+    "share": 0.024,
+    "deepest": 0.075,
+    "frame": 20
+   },
+   "RightLowerArm in weapon": {
+    "share": 0.024,
+    "deepest": 0.043,
+    "frame": 22
+   },
+   "RibbonLeft in LeftLowerArm": {
+    "share": 0.024,
+    "deepest": 0.098,
+    "frame": 22
+   },
+   "Beard in UpperTorso": {
+    "share": 0.31,
+    "deepest": 0.35,
+    "frame": 50
+   },
+   "RobeFront in LeftUpperLeg": {
+    "share": 0.714,
+    "deepest": 0.163,
+    "frame": 82
+   },
+   "Beard in Head": {
+    "share": 0.167,
+    "deepest": 0.138,
+    "frame": 62
+   },
+   "UpperTorso in weapon": {
+    "share": 0.095,
+    "deepest": 0.067,
+    "frame": 40
+   },
+   "Beard in weapon": {
+    "share": 0.071,
+    "deepest": 0.068,
+    "frame": 40
+   },
+   "RobeRight in LeftUpperLeg": {
+    "share": 0.524,
+    "deepest": 0.115,
+    "frame": 66
+   },
+   "Beard in RightLowerArm": {
+    "share": 0.238,
+    "deepest": 0.104,
+    "frame": 52
+   },
+   "Beard in LeftUpperArm": {
+    "share": 0.381,
+    "deepest": 0.185,
+    "frame": 56
+   },
+   "RightHand in weapon": {
+    "share": 0.357,
+    "deepest": 0.075,
+    "frame": 74
+   },
+   "RobeFront in LeftUpperArm": {
+    "share": 0.262,
+    "deepest": 0.089,
+    "frame": 80
+   },
+   "RobeLeft in LowerTorso": {
+    "share": 0.19,
+    "deepest": 0.043,
+    "frame": 66
+   },
+   "Beard in LeftUpperLeg": {
+    "share": 0.095,
+    "deepest": 0.184,
+    "frame": 58
+   },
+   "RobeFront in LowerTorso": {
+    "share": 0.048,
+    "deepest": 0.035,
+    "frame": 70
+   },
+   "Beard in LowerTorso": {
+    "share": 0.024,
+    "deepest": 0.036,
+    "frame": 68
+   },
+   "RobeFront in UpperTorso": {
+    "share": 0.143,
+    "deepest": 0.096,
+    "frame": 80
+   },
+   "RibbonLeft in weapon": {
+    "share": 0.024,
+    "deepest": 0.062,
+    "frame": 76
+   },
+   "LeftSleeve in Head": {
+    "share": 0.048,
+    "deepest": 0.066,
+    "frame": 80
+   }
+  }
+ }
+}

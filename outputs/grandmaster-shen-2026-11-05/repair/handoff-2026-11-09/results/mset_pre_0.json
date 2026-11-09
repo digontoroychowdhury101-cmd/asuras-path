@@ -1,0 +1,922 @@
+{
+ "c1_AbbotSweep_pre": {
+  "frames": 38,
+  "pairs": {
+   "RobeRight in RightUpperLeg": {
+    "share": 1.0,
+    "deepest": 0.169,
+    "frame": 46
+   },
+   "RobeLeft in LeftUpperLeg": {
+    "share": 0.974,
+    "deepest": 0.177,
+    "frame": 50
+   },
+   "Beads in UpperTorso": {
+    "share": 0.211,
+    "deepest": 0.053,
+    "frame": 48
+   },
+   "weapon in RightLowerArm": {
+    "share": 0.053,
+    "deepest": 0.039,
+    "frame": 12
+   },
+   "HairBack in Head": {
+    "share": 0.211,
+    "deepest": 0.036,
+    "frame": 28
+   },
+   "Beard in UpperTorso": {
+    "share": 0.211,
+    "deepest": 0.064,
+    "frame": 40
+   },
+   "RightHand in weapon": {
+    "share": 0.263,
+    "deepest": 0.063,
+    "frame": 24
+   },
+   "RobeBack in RightUpperLeg": {
+    "share": 0.105,
+    "deepest": 0.071,
+    "frame": 34
+   },
+   "RobeRight in LeftUpperLeg": {
+    "share": 0.079,
+    "deepest": 0.07,
+    "frame": 36
+   },
+   "RobeInner in LowerTorso": {
+    "share": 0.289,
+    "deepest": 0.192,
+    "frame": 42
+   },
+   "RobeFront in LowerTorso": {
+    "share": 0.158,
+    "deepest": 0.175,
+    "frame": 40
+   },
+   "RobeBack in RightLowerLeg": {
+    "share": 0.289,
+    "deepest": 0.122,
+    "frame": 48
+   },
+   "RobeInner in RightUpperLeg": {
+    "share": 0.368,
+    "deepest": 0.168,
+    "frame": 60
+   },
+   "RobeRight in LowerTorso": {
+    "share": 0.053,
+    "deepest": 0.042,
+    "frame": 40
+   },
+   "Beads in LeftLowerArm": {
+    "share": 0.079,
+    "deepest": 0.143,
+    "frame": 52
+   },
+   "LeftMantle in UpperTorso": {
+    "share": 0.053,
+    "deepest": 0.113,
+    "frame": 46
+   },
+   "UpperTorso in weapon": {
+    "share": 0.026,
+    "deepest": 0.058,
+    "frame": 48
+   },
+   "LowerTorso in weapon": {
+    "share": 0.026,
+    "deepest": 0.055,
+    "frame": 48
+   },
+   "LeftUpperArm in weapon": {
+    "share": 0.026,
+    "deepest": 0.054,
+    "frame": 48
+   },
+   "LeftLowerArm in weapon": {
+    "share": 0.026,
+    "deepest": 0.051,
+    "frame": 48
+   },
+   "LeftHand in weapon": {
+    "share": 0.026,
+    "deepest": 0.056,
+    "frame": 48
+   },
+   "RobeRight in RightLowerLeg": {
+    "share": 0.316,
+    "deepest": 0.266,
+    "frame": 52
+   },
+   "RobeInner in RightLowerLeg": {
+    "share": 0.237,
+    "deepest": 0.191,
+    "frame": 58
+   },
+   "RobeLeft in LowerTorso": {
+    "share": 0.158,
+    "deepest": 0.097,
+    "frame": 60
+   },
+   "Beard in Head": {
+    "share": 0.184,
+    "deepest": 0.052,
+    "frame": 62
+   },
+   "HairBack in UpperTorso": {
+    "share": 0.026,
+    "deepest": 0.035,
+    "frame": 64
+   }
+  }
+ },
+ "c1_Guandao_Art_pre": {
+  "frames": 23,
+  "pairs": {
+   "RobeRight in RightUpperLeg": {
+    "share": 1.0,
+    "deepest": 0.169,
+    "frame": 24
+   },
+   "RobeLeft in LeftUpperLeg": {
+    "share": 1.0,
+    "deepest": 0.159,
+    "frame": 30
+   },
+   "Beads in UpperTorso": {
+    "share": 0.261,
+    "deepest": 0.112,
+    "frame": 32
+   },
+   "weapon in RightLowerArm": {
+    "share": 0.13,
+    "deepest": 0.115,
+    "frame": 20
+   },
+   "HairBack in Head": {
+    "share": 0.174,
+    "deepest": 0.039,
+    "frame": 22
+   },
+   "RightLowerArm in weapon": {
+    "share": 0.043,
+    "deepest": 0.074,
+    "frame": 20
+   },
+   "RobeRight in RightLowerLeg": {
+    "share": 0.13,
+    "deepest": 0.114,
+    "frame": 26
+   },
+   "RobeInner in LowerTorso": {
+    "share": 0.261,
+    "deepest": 0.201,
+    "frame": 24
+   },
+   "RobeFront in LowerTorso": {
+    "share": 0.043,
+    "deepest": 0.117,
+    "frame": 22
+   },
+   "RobeLeft in LowerTorso": {
+    "share": 0.217,
+    "deepest": 0.141,
+    "frame": 36
+   },
+   "Beads in LeftLowerArm": {
+    "share": 0.174,
+    "deepest": 0.165,
+    "frame": 24
+   },
+   "RobeBack in RightLowerLeg": {
+    "share": 0.304,
+    "deepest": 0.135,
+    "frame": 34
+   },
+   "RobeRight in LowerTorso": {
+    "share": 0.043,
+    "deepest": 0.034,
+    "frame": 26
+   },
+   "RobeRight in LeftUpperLeg": {
+    "share": 0.261,
+    "deepest": 0.089,
+    "frame": 34
+   },
+   "RobeInner in RightUpperLeg": {
+    "share": 0.348,
+    "deepest": 0.088,
+    "frame": 34
+   },
+   "RobeBack in RightUpperLeg": {
+    "share": 0.348,
+    "deepest": 0.172,
+    "frame": 40
+   },
+   "Beads in weapon": {
+    "share": 0.13,
+    "deepest": 0.059,
+    "frame": 30
+   },
+   "UpperTorso in weapon": {
+    "share": 0.13,
+    "deepest": 0.068,
+    "frame": 32
+   },
+   "Beads in LowerTorso": {
+    "share": 0.13,
+    "deepest": 0.177,
+    "frame": 34
+   },
+   "LeftMantle in UpperTorso": {
+    "share": 0.087,
+    "deepest": 0.096,
+    "frame": 44
+   },
+   "Beard in LeftLowerArm": {
+    "share": 0.043,
+    "deepest": 0.06,
+    "frame": 38
+   }
+  }
+ },
+ "c1_GuardHit_pre": {
+  "frames": 16,
+  "pairs": {
+   "RobeRight in RightUpperLeg": {
+    "share": 1.0,
+    "deepest": 0.152,
+    "frame": 20
+   },
+   "RobeLeft in LeftUpperLeg": {
+    "share": 1.0,
+    "deepest": 0.101,
+    "frame": 22
+   },
+   "Beads in UpperTorso": {
+    "share": 0.25,
+    "deepest": 0.032,
+    "frame": 12
+   },
+   "weapon in RightLowerArm": {
+    "share": 0.188,
+    "deepest": 0.138,
+    "frame": 20
+   },
+   "HairBack in Head": {
+    "share": 0.125,
+    "deepest": 0.032,
+    "frame": 12
+   },
+   "RightLowerArm in weapon": {
+    "share": 0.062,
+    "deepest": 0.064,
+    "frame": 20
+   },
+   "RobeRight in RightLowerLeg": {
+    "share": 0.125,
+    "deepest": 0.075,
+    "frame": 22
+   },
+   "RobeLeft in LeftLowerArm": {
+    "share": 0.062,
+    "deepest": 0.097,
+    "frame": 22
+   },
+   "Beads in weapon": {
+    "share": 0.062,
+    "deepest": 0.036,
+    "frame": 24
+   },
+   "RobeInner in LowerTorso": {
+    "share": 0.062,
+    "deepest": 0.037,
+    "frame": 24
+   },
+   "RightHand in weapon": {
+    "share": 0.125,
+    "deepest": 0.06,
+    "frame": 30
+   }
+  }
+ },
+ "c1_HitLightRight_pre": {
+  "frames": 16,
+  "pairs": {
+   "RobeRight in RightUpperLeg": {
+    "share": 1.0,
+    "deepest": 0.152,
+    "frame": 18
+   },
+   "RobeLeft in LeftUpperLeg": {
+    "share": 1.0,
+    "deepest": 0.096,
+    "frame": 22
+   },
+   "Beads in UpperTorso": {
+    "share": 0.25,
+    "deepest": 0.032,
+    "frame": 12
+   },
+   "weapon in RightLowerArm": {
+    "share": 0.125,
+    "deepest": 0.039,
+    "frame": 12
+   },
+   "HairBack in Head": {
+    "share": 0.312,
+    "deepest": 0.058,
+    "frame": 24
+   },
+   "RightLowerArm in weapon": {
+    "share": 0.062,
+    "deepest": 0.058,
+    "frame": 22
+   },
+   "RightHand in weapon": {
+    "share": 0.25,
+    "deepest": 0.06,
+    "frame": 26
+   }
+  }
+ },
+ "c1_StrafeRight_pre": {
+  "frames": 29,
+  "pairs": {
+   "RobeRight in RightUpperLeg": {
+    "share": 1.0,
+    "deepest": 0.168,
+    "frame": 32
+   },
+   "RobeLeft in LeftUpperLeg": {
+    "share": 1.0,
+    "deepest": 0.141,
+    "frame": 36
+   },
+   "Beads in UpperTorso": {
+    "share": 0.172,
+    "deepest": 0.034,
+    "frame": 20
+   },
+   "weapon in RightLowerArm": {
+    "share": 0.103,
+    "deepest": 0.039,
+    "frame": 12
+   },
+   "HairBack in Head": {
+    "share": 0.034,
+    "deepest": 0.032,
+    "frame": 12
+   },
+   "Beard in UpperTorso": {
+    "share": 0.103,
+    "deepest": 0.046,
+    "frame": 22
+   },
+   "RobeBack in RightUpperLeg": {
+    "share": 0.069,
+    "deepest": 0.156,
+    "frame": 28
+   },
+   "RobeInner in RightLowerLeg": {
+    "share": 0.345,
+    "deepest": 0.206,
+    "frame": 32
+   },
+   "RobeInner in LeftLowerLeg": {
+    "share": 0.103,
+    "deepest": 0.09,
+    "frame": 38
+   }
+  }
+ },
+ "c1_WalkForward_pre": {
+  "frames": 30,
+  "pairs": {
+   "RobeRight in RightUpperLeg": {
+    "share": 1.0,
+    "deepest": 0.152,
+    "frame": 18
+   },
+   "RobeLeft in LeftUpperLeg": {
+    "share": 1.0,
+    "deepest": 0.123,
+    "frame": 38
+   },
+   "Beads in UpperTorso": {
+    "share": 0.133,
+    "deepest": 0.032,
+    "frame": 12
+   },
+   "weapon in RightLowerArm": {
+    "share": 0.067,
+    "deepest": 0.039,
+    "frame": 12
+   },
+   "HairBack in Head": {
+    "share": 0.033,
+    "deepest": 0.032,
+    "frame": 12
+   },
+   "Beard in UpperTorso": {
+    "share": 0.067,
+    "deepest": 0.038,
+    "frame": 22
+   },
+   "RobeInner in RightLowerLeg": {
+    "share": 0.333,
+    "deepest": 0.141,
+    "frame": 38
+   },
+   "RobeInner in LowerTorso": {
+    "share": 0.1,
+    "deepest": 0.038,
+    "frame": 32
+   }
+  }
+ },
+ "c2_Feint_pre": {
+  "frames": 25,
+  "pairs": {
+   "LeftHand in weapon": {
+    "share": 0.72,
+    "deepest": 0.074,
+    "frame": 46
+   },
+   "RobeRight in RightLowerLeg": {
+    "share": 0.68,
+    "deepest": 0.274,
+    "frame": 6
+   },
+   "RobeRight in RightUpperLeg": {
+    "share": 0.56,
+    "deepest": 0.217,
+    "frame": 18
+   },
+   "RightHand in weapon": {
+    "share": 0.12,
+    "deepest": 0.062,
+    "frame": 42
+   },
+   "RobeRight in LowerTorso": {
+    "share": 0.24,
+    "deepest": 0.101,
+    "frame": 44
+   },
+   "LeftSleeve in LeftUpperArm": {
+    "share": 0.44,
+    "deepest": 0.156,
+    "frame": 32
+   },
+   "LeftSleeve in LeftLowerArm": {
+    "share": 0.12,
+    "deepest": 0.136,
+    "frame": 24
+   },
+   "weapon in RightLowerArm": {
+    "share": 0.24,
+    "deepest": 0.065,
+    "frame": 30
+   },
+   "Beard in UpperTorso": {
+    "share": 0.36,
+    "deepest": 0.322,
+    "frame": 36
+   },
+   "RobeFront in LeftUpperLeg": {
+    "share": 0.04,
+    "deepest": 0.036,
+    "frame": 26
+   },
+   "Beard in Head": {
+    "share": 0.12,
+    "deepest": 0.093,
+    "frame": 28
+   },
+   "LeftSleeve in UpperTorso": {
+    "share": 0.04,
+    "deepest": 0.052,
+    "frame": 28
+   },
+   "RightLowerArm in weapon": {
+    "share": 0.28,
+    "deepest": 0.073,
+    "frame": 42
+   },
+   "RibbonLeft in weapon": {
+    "share": 0.12,
+    "deepest": 0.068,
+    "frame": 34
+   },
+   "Beard in LeftUpperArm": {
+    "share": 0.2,
+    "deepest": 0.085,
+    "frame": 44
+   },
+   "LowerTorso in weapon": {
+    "share": 0.12,
+    "deepest": 0.054,
+    "frame": 46
+   },
+   "HairBack in Head": {
+    "share": 0.08,
+    "deepest": 0.065,
+    "frame": 38
+   },
+   "RobeRight in weapon": {
+    "share": 0.04,
+    "deepest": 0.047,
+    "frame": 40
+   },
+   "RibbonLeft in LeftLowerArm": {
+    "share": 0.04,
+    "deepest": 0.067,
+    "frame": 46
+   }
+  }
+ },
+ "c2_Guandao_L2_pre": {
+  "frames": 16,
+  "pairs": {
+   "LeftHand in weapon": {
+    "share": 0.75,
+    "deepest": 0.064,
+    "frame": 20
+   },
+   "RobeRight in RightLowerLeg": {
+    "share": 0.75,
+    "deepest": 0.274,
+    "frame": 6
+   },
+   "RobeRight in RightUpperLeg": {
+    "share": 0.625,
+    "deepest": 0.222,
+    "frame": 20
+   },
+   "LowerTorso in weapon": {
+    "share": 0.125,
+    "deepest": 0.062,
+    "frame": 20
+   },
+   "RightLowerArm in weapon": {
+    "share": 0.188,
+    "deepest": 0.057,
+    "frame": 20
+   },
+   "RobeLeft in LeftUpperLeg": {
+    "share": 0.062,
+    "deepest": 0.033,
+    "frame": 20
+   },
+   "Beard in UpperTorso": {
+    "share": 0.25,
+    "deepest": 0.125,
+    "frame": 28
+   },
+   "weapon in RightUpperArm": {
+    "share": 0.062,
+    "deepest": 0.067,
+    "frame": 22
+   },
+   "RightUpperArm in weapon": {
+    "share": 0.062,
+    "deepest": 0.064,
+    "frame": 22
+   },
+   "LeftSleeve in UpperTorso": {
+    "share": 0.125,
+    "deepest": 0.141,
+    "frame": 22
+   },
+   "weapon in LowerTorso": {
+    "share": 0.062,
+    "deepest": 0.145,
+    "frame": 24
+   },
+   "RightHand in weapon": {
+    "share": 0.188,
+    "deepest": 0.053,
+    "frame": 28
+   },
+   "Beard in Head": {
+    "share": 0.062,
+    "deepest": 0.091,
+    "frame": 24
+   },
+   "Beard in LeftUpperArm": {
+    "share": 0.062,
+    "deepest": 0.033,
+    "frame": 24
+   },
+   "RobeRight in LowerTorso": {
+    "share": 0.125,
+    "deepest": 0.079,
+    "frame": 26
+   },
+   "LeftSleeve in LeftLowerArm": {
+    "share": 0.125,
+    "deepest": 0.101,
+    "frame": 26
+   },
+   "HairBack in Head": {
+    "share": 0.125,
+    "deepest": 0.058,
+    "frame": 26
+   },
+   "LeftSleeve in LeftUpperArm": {
+    "share": 0.062,
+    "deepest": 0.167,
+    "frame": 28
+   },
+   "RibbonLeft in LeftLowerArm": {
+    "share": 0.062,
+    "deepest": 0.068,
+    "frame": 28
+   }
+  }
+ },
+ "c2_HitLightFront_pre": {
+  "frames": 16,
+  "pairs": {
+   "LeftHand in weapon": {
+    "share": 1.0,
+    "deepest": 0.059,
+    "frame": 0
+   },
+   "RobeRight in RightLowerLeg": {
+    "share": 1.0,
+    "deepest": 0.274,
+    "frame": 6
+   },
+   "RobeRight in RightUpperLeg": {
+    "share": 0.688,
+    "deepest": 0.217,
+    "frame": 18
+   },
+   "RightHand in weapon": {
+    "share": 0.062,
+    "deepest": 0.054,
+    "frame": 20
+   },
+   "Beard in UpperTorso": {
+    "share": 0.125,
+    "deepest": 0.091,
+    "frame": 20
+   },
+   "RightLowerArm in weapon": {
+    "share": 0.062,
+    "deepest": 0.045,
+    "frame": 22
+   },
+   "weapon in RightLowerArm": {
+    "share": 0.125,
+    "deepest": 0.035,
+    "frame": 28
+   }
+  }
+ },
+ "c2_RendingArc_pre": {
+  "frames": 48,
+  "pairs": {
+   "LeftHand in weapon": {
+    "share": 0.458,
+    "deepest": 0.07,
+    "frame": 22
+   },
+   "RobeRight in RightLowerLeg": {
+    "share": 0.375,
+    "deepest": 0.274,
+    "frame": 6
+   },
+   "RobeRight in RightUpperLeg": {
+    "share": 0.771,
+    "deepest": 0.219,
+    "frame": 58
+   },
+   "weapon in RightLowerArm": {
+    "share": 0.188,
+    "deepest": 0.063,
+    "frame": 66
+   },
+   "LowerTorso in weapon": {
+    "share": 0.208,
+    "deepest": 0.066,
+    "frame": 78
+   },
+   "RightLowerArm in weapon": {
+    "share": 0.104,
+    "deepest": 0.067,
+    "frame": 26
+   },
+   "RightHand in weapon": {
+    "share": 0.375,
+    "deepest": 0.078,
+    "frame": 32
+   },
+   "LeftSleeve in LeftUpperArm": {
+    "share": 0.5,
+    "deepest": 0.192,
+    "frame": 74
+   },
+   "Beard in UpperTorso": {
+    "share": 0.5,
+    "deepest": 0.321,
+    "frame": 74
+   },
+   "RobeFront in LeftUpperLeg": {
+    "share": 0.042,
+    "deepest": 0.031,
+    "frame": 34
+   },
+   "Beard in Head": {
+    "share": 0.208,
+    "deepest": 0.171,
+    "frame": 52
+   },
+   "LeftSleeve in UpperTorso": {
+    "share": 0.25,
+    "deepest": 0.252,
+    "frame": 36
+   },
+   "RibbonLeft in Head": {
+    "share": 0.083,
+    "deepest": 0.151,
+    "frame": 38
+   },
+   "Beard in LeftUpperArm": {
+    "share": 0.146,
+    "deepest": 0.056,
+    "frame": 76
+   },
+   "RibbonLeft in LeftLowerArm": {
+    "share": 0.083,
+    "deepest": 0.061,
+    "frame": 80
+   },
+   "LeftSleeve in Head": {
+    "share": 0.083,
+    "deepest": 0.191,
+    "frame": 42
+   },
+   "weapon in RightUpperArm": {
+    "share": 0.021,
+    "deepest": 0.065,
+    "frame": 46
+   },
+   "RightUpperArm in weapon": {
+    "share": 0.062,
+    "deepest": 0.075,
+    "frame": 48
+   },
+   "UpperTorso in weapon": {
+    "share": 0.062,
+    "deepest": 0.05,
+    "frame": 82
+   },
+   "RibbonLeft in weapon": {
+    "share": 0.062,
+    "deepest": 0.07,
+    "frame": 62
+   },
+   "LeftSleeve in LowerTorso": {
+    "share": 0.042,
+    "deepest": 0.095,
+    "frame": 50
+   },
+   "RibbonLeft in RightUpperLeg": {
+    "share": 0.021,
+    "deepest": 0.092,
+    "frame": 48
+   },
+   "HairBack in Head": {
+    "share": 0.104,
+    "deepest": 0.139,
+    "frame": 78
+   },
+   "RobeRight in LeftLowerArm": {
+    "share": 0.021,
+    "deepest": 0.046,
+    "frame": 50
+   },
+   "RobeRight in LowerTorso": {
+    "share": 0.292,
+    "deepest": 0.199,
+    "frame": 82
+   },
+   "RobeFront in weapon": {
+    "share": 0.062,
+    "deepest": 0.078,
+    "frame": 62
+   },
+   "RobeBack in RightLowerLeg": {
+    "share": 0.104,
+    "deepest": 0.107,
+    "frame": 80
+   },
+   "RobeFront in LowerTorso": {
+    "share": 0.021,
+    "deepest": 0.091,
+    "frame": 62
+   },
+   "RibbonLeft in LowerTorso": {
+    "share": 0.021,
+    "deepest": 0.037,
+    "frame": 62
+   },
+   "LeftSleeve in LeftLowerArm": {
+    "share": 0.208,
+    "deepest": 0.136,
+    "frame": 74
+   },
+   "HairBack in weapon": {
+    "share": 0.021,
+    "deepest": 0.05,
+    "frame": 74
+   },
+   "LeftLowerArm in weapon": {
+    "share": 0.062,
+    "deepest": 0.061,
+    "frame": 76
+   },
+   "LeftSleeve in weapon": {
+    "share": 0.062,
+    "deepest": 0.08,
+    "frame": 78
+   },
+   "LeftUpperArm in weapon": {
+    "share": 0.021,
+    "deepest": 0.06,
+    "frame": 78
+   },
+   "RobeRight in UpperTorso": {
+    "share": 0.146,
+    "deepest": 0.302,
+    "frame": 78
+   },
+   "RibbonLeft in LeftUpperArm": {
+    "share": 0.021,
+    "deepest": 0.059,
+    "frame": 78
+   }
+  }
+ },
+ "c2_TurnLeft_pre": {
+  "frames": 23,
+  "pairs": {
+   "LeftHand in weapon": {
+    "share": 1.0,
+    "deepest": 0.061,
+    "frame": 24
+   },
+   "RobeRight in RightLowerLeg": {
+    "share": 1.0,
+    "deepest": 0.274,
+    "frame": 6
+   },
+   "RobeRight in RightUpperLeg": {
+    "share": 0.478,
+    "deepest": 0.219,
+    "frame": 20
+   },
+   "weapon in RightLowerArm": {
+    "share": 0.522,
+    "deepest": 0.044,
+    "frame": 26
+   },
+   "LowerTorso in weapon": {
+    "share": 0.522,
+    "deepest": 0.064,
+    "frame": 42
+   },
+   "RightLowerArm in weapon": {
+    "share": 0.522,
+    "deepest": 0.06,
+    "frame": 44
+   },
+   "RobeLeft in LeftUpperLeg": {
+    "share": 0.13,
+    "deepest": 0.031,
+    "frame": 22
+   },
+   "Beard in UpperTorso": {
+    "share": 0.478,
+    "deepest": 0.096,
+    "frame": 22
+   },
+   "LeftSleeve in LeftUpperArm": {
+    "share": 0.043,
+    "deepest": 0.031,
+    "frame": 24
+   },
+   "HairBack in UpperTorso": {
+    "share": 0.043,
+    "deepest": 0.034,
+    "frame": 42
+   }
+  }
+ }
+}

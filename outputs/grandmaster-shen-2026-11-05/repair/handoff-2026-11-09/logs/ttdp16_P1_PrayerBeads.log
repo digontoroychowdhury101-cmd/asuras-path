@@ -1,0 +1,24 @@
+   stage organic        
+   stage spine_reach    
+   stage settle         
+   stage swivel         
+   stage wrist_yield    
+   stage settle         
+   stage swivel         
+   stage wrist_yield    
+   stage settle         
+   stage swivel         
+   stage wrist_yield    blade 0.29@f9
+   stage settle         blade 0.29@f9
+   stage swivel         blade 0.29@f9
+   stage clear_free_arm blade 0.29@f9
+torso: rp 10 frames need it, 20 moved; worst 0.215 -> 0.143, moves up to 0.51
+   stage clear_torso    fist 0.26@f43 blade 0.29@f9
+fist slide: 4 frames, up to 0.36
+   stage slide_fist     fist 0.26@f43 blade 0.29@f9
+haft tilt: 2 frames need it, up to 0 deg; 0 frames changed
+   stage tilt_haft      fist 0.26@f43 blade 0.29@f9
+depop: 5 frames [1, 2, 3, 4, 5]
+   stage depop          fist 0.26@f43 blade 0.29@f9 edge 0.40@f2
+   stage close_loop     fist 0.26@f43 blade 0.29@f9 edge 0.40@f2
+joint_polish {'window': (44, 54), 'elbows_only': False, 'seeded': False, 'status': 9, 'message': 'Iteration limit reached', 'nit': 150, 'runtime_s': 1046.0, 'frame_evals': 23116, 'feasible': False, 'depth': (0.184, 0.175), 'kept': True, 'worse': [], 'change': (0.004, 0.3, 0.0, 1.8, 0.0)}

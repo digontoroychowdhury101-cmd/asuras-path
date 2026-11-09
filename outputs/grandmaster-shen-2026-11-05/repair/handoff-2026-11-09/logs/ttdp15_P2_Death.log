@@ -1,0 +1,9 @@
+   stage organic        
+   stage spine_reach    
+   stage settle         
+   stage swivel         
+   stage wrist_yield    
+   stage settle         
+   stage swivel         
+   stage wrist_yield    blade 0.36@f18 edge 0.35@f18
+   stage settle         blade 0.36@f18 edge 0.35@f18

@@ -1,0 +1,25 @@
+21:45:57 run1_after front      211
+21:46:10 run1_after side      211
+21:48:46 pilot1_after side      317
+21:48:51 pilot1_after front      317
+21:48:52 pilot1_after combat      317
+21:48:56 pilot1_before lhand      317
+21:48:58 pilot1_after lhand      317
+ALLDONE
+pilot1_before WORST ('Sk_LeftLowerArm', 'Sk_LeftUpperArm') max 0.034  p95 0.034  at frame 200
+pilot1_before WORST ('Sk_LeftHand', 'Sk_LeftLowerArm') max 0.235  p95 0.051  at frame 220
+pilot1_before WORST ('Sk_LeftUpperArm', 'Sk_UpperTorso') max 0.141  p95 0.076  at frame 250
+pilot1_before WORST ('Sk_RightHand', 'Sk_RightLowerArm') max 0.157  p95 0.011  at frame 220
+pilot1_before WORST ('Sk_RightUpperArm', 'Sk_UpperTorso') max 0.132  p95 0.091  at frame 120
+pilot1 WORST ('Sk_LeftLowerArm', 'Sk_LeftUpperArm') max 0.026  p95 0.026  at frame 260
+pilot1 WORST ('Sk_LeftHand', 'Sk_LeftLowerArm') max 0.233  p95 0.037  at frame 220
+pilot1 WORST ('Sk_LeftUpperArm', 'Sk_UpperTorso') max 0.199  p95 0.065  at frame 220
+pilot1 WORST ('Sk_RightHand', 'Sk_RightLowerArm') max 0.160  p95 0.018  at frame 270
+pilot1 WORST ('Sk_RightUpperArm', 'Sk_UpperTorso') max 0.185  p95 0.075  at frame 120
+GrandmasterShen_P1_Idle                L tw   18 fl    3 dv   16 over   0%   R tw    0 fl    1 dv    9 over   0%
+GrandmasterShen_P1_TurnLeft            L tw    0 fl    9 dv   11 over   0%   R tw    0 fl    1 dv    9 over   0%
+GrandmasterShen_P1_WalkForward         L tw    0 fl   16 dv   11 over   0%   R tw    0 fl    5 dv    5 over   0%
+GrandmasterShen_P1_RunForward          L tw    2 fl   17 dv   11 over   0%   R tw    0 fl   12 dv    3 over   0%
+GrandmasterShen_P1_Guandao_L1          L tw   37 fl   52 dv   37 over  31%   R tw   25 fl   38 dv   34 over  23%
+GrandmasterShen_P1_Guandao_Heavy       L tw   63 fl   67 dv   37 over  50%   R tw   55 fl   45 dv   38 over   8%
+GrandmasterShen_P1_FlowingJian         L tw   45 fl   55 dv   36 over  12%   R tw   32 fl   80 dv   42 over   5%

@@ -1,0 +1,16 @@
+   stage organic        
+   stage spine_reach    
+   stage settle         
+   stage swivel         
+   stage wrist_yield    
+   stage clear_free_arm 
+   stage clear_torso    
+   stage slide_fist     
+haft tilt: 1 frames need it, up to 0 deg; 0 frames changed
+   stage tilt_haft      
+   stage depop          
+   stage close_loop     
+joint_polish {'window': (0, 9), 'elbows_only': False, 'status': 8, 'message': 'Positive directional derivative for linesearch', 'nit': 32, 'runtime_s': 163.1, 'frame_evals': 2650, 'feasible': False, 'depth': (0.214, 0.179), 'kept': True, 'worse': [], 'change': (0.163, 5.3, 12.2, 42.9, 0.7)}
+   stage final-solve    fist 0.14@f4
+P1_Guandao_Running on 257s torso_right=0.059 torso_left=0.168 Win_arm_right=0.015 Win_arm_left=0.000 inW_arm_right=0.019 inW_arm_left=0.000 inW_torso=0.000 Win_torso=0.000 wrist_right=48.225 wrist_left=53.709 left_grip=0.028 left_off_haft=0.026 right_off_haft=0.000 pop_fist=0.145 pop_blade=0.181 pop_slide=0.000 pop_lead_reach=0.000 | strike [0.71, 0.05, -6.13] | problems: []
+   per-frame R/L: 3:0.00/0.17

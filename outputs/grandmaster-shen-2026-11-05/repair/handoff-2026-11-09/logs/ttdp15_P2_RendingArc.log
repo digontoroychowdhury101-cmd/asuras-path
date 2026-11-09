@@ -1,0 +1,24 @@
+   stage organic        
+   stage spine_reach    
+   stage settle         
+   stage swivel         
+   stage wrist_yield    blade 0.54@f60 edge 0.54@f60
+   stage settle         blade 0.54@f60 edge 0.54@f60
+   stage swivel         blade 0.54@f60 edge 0.54@f60
+   stage wrist_yield    blade 0.54@f60 edge 0.54@f60
+   stage clear_free_arm blade 0.54@f60 edge 0.54@f60
+torso: rp 8 frames need it, 49 moved; worst 0.309 -> 0.204, moves up to 0.53
+   stage clear_torso    fist 0.40@f70 blade 0.54@f60 edge 0.54@f60
+fist slide: 34 frames, up to 0.36
+   stage slide_fist     fist 0.40@f70 blade 0.54@f60 edge 0.54@f60
+haft tilt: 47 frames need it, up to 13 deg; 45 frames changed
+   stage tilt_haft      fist 0.40@f70 blade 0.54@f60 edge 0.54@f60
+depop: 10 frames [60, 61, 62, 67, 68, 69, 70, 71, 72, 73]
+   stage depop          fist 0.16@f7
+   stage close_loop     fist 0.16@f7
+joint_polish {'window': (35, 43), 'elbows_only': False, 'status': 99, 'message': '`callback` raised `StopIteration`.', 'nit': 24, 'runtime_s': 95.8, 'frame_evals': 1549, 'feasible': True, 'depth': (0.177, 0.16), 'kept': True, 'worse': [], 'change': (0.0, 0.0, 10.3, 0.0, 0.0)}
+joint_polish {'window': (55, 76), 'elbows_only': False, 'status': 8, 'message': 'Positive directional derivative for linesearch', 'nit': 5, 'runtime_s': 0.2, 'frame_evals': 180, 'feasible': False, 'depth': (0.216, 0.216), 'kept': False, 'worse': [], 'change': (0.0, 0.0, 0.0, 0.0, 0.0)}
+joint_polish {'window': (55, 76), 'elbows_only': True, 'status': 8, 'message': 'Positive directional derivative for linesearch', 'nit': 14, 'runtime_s': 0.7, 'frame_evals': 180, 'feasible': False, 'depth': (0.216, 0.216), 'kept': False, 'worse': [], 'change': (0.0, 0.0, 0.0, 0.0, 0.0)}
+   stage final-solve    fist 0.16@f7
+P2_RendingArc on 931s torso_right=0.181 torso_left=0.156 Win_arm_right=0.076 Win_arm_left=0.011 inW_arm_right=0.068 inW_arm_left=0.048 inW_torso=0.058 Win_torso=0.000 wrist_right=93.622 wrist_left=69.259 left_grip=0.000 left_off_haft=0.000 right_off_haft=0.000 pop_fist=0.155 pop_blade=0.177 pop_slide=0.057 pop_lead_reach=0.000 | strike None | problems: ['right arm 0.18 inside his torso', 'right arm 0.22 inside his torso between f59 and f60']
+   per-frame R/L: 30:0.16/0.10 38:0.16/0.06 39:0.16/0.09 41:0.16/0.15 42:0.08/0.15 43:0.02/0.14 60:0.17/0.06 61:0.16/0.07 70:0.17/0.08 71:0.18/0.09 72:0.18/0.06

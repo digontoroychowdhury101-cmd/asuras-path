@@ -1,0 +1,3 @@
+BAKED t2
+MEASURED t2
+zsh $S/measure_set.sh t2 $S/dbg/ClothSim_T2.luau work/shen_import 4  989.62s user 29.28s system 250% cpu 6:47.40 total

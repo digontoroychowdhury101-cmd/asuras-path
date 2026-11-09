@@ -1,0 +1,2 @@
+OK  GrandmasterShen_P1_WalkForward 1.400s keys  43 {}
+OK  GrandmasterShen_P1_Guandao_L1 0.400s keys  13 {"contact": [-1.27, 0.86, -5.53], "game_radius_at_contact": 7.38, "game_radius_during_active": 7.38, "server_reach": 10.5, "reach_gap": 3.12, "yaw_first": -13.0, "yaw_last": 64.6, "sweep_deg": 77.6}

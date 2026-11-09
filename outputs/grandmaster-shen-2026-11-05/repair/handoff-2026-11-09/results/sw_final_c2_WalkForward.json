@@ -1,0 +1,67 @@
+{
+ "c2_WalkForward_final": {
+  "frames": 29,
+  "pairs": {
+   "RightLowerArm in weapon": {
+    "share": 1.0,
+    "deepest": 0.076,
+    "frame": 81
+   },
+   "LeftHand in weapon": {
+    "share": 0.828,
+    "deepest": 0.066,
+    "frame": 81
+   },
+   "Beard in UpperTorso": {
+    "share": 0.241,
+    "deepest": 0.069,
+    "frame": 15
+   },
+   "LeftLowerArm in weapon": {
+    "share": 0.931,
+    "deepest": 0.06,
+    "frame": 48
+   },
+   "RobeRight in RightUpperLeg": {
+    "share": 0.828,
+    "deepest": 0.158,
+    "frame": 60
+   },
+   "LeftSleeve in LeftLowerArm": {
+    "share": 0.069,
+    "deepest": 0.05,
+    "frame": 24
+   },
+   "LowerTorso in weapon": {
+    "share": 0.31,
+    "deepest": 0.037,
+    "frame": 42
+   },
+   "RightHand in weapon": {
+    "share": 0.345,
+    "deepest": 0.058,
+    "frame": 27
+   },
+   "LeftSleeve in LeftUpperArm": {
+    "share": 0.034,
+    "deepest": 0.035,
+    "frame": 24
+   },
+   "RobeRight in LeftUpperLeg": {
+    "share": 0.034,
+    "deepest": 0.035,
+    "frame": 57
+   },
+   "weapon in RightLowerArm": {
+    "share": 0.345,
+    "deepest": 0.091,
+    "frame": 84
+   },
+   "RobeRight in RightLowerLeg": {
+    "share": 0.138,
+    "deepest": 0.106,
+    "frame": 87
+   }
+  }
+ }
+}

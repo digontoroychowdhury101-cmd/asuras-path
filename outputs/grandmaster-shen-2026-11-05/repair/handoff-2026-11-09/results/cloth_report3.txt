@@ -1,0 +1,46 @@
+pilot1 (316 frames, 390 points): cloth kind x volume -> frames with phasing, deepest
+  Coat     through arms         6.6% of frames  deepest 0.227
+  Sleeve   through arms         2.8% of frames  deepest 0.251
+  Sleeve   through torso/head  30.7% of frames  deepest 0.319
+  Under    through arms         2.5% of frames  deepest 0.123
+  Under    through legs        11.7% of frames  deepest 0.055
+run1 (210 frames, 390 points): cloth kind x volume -> frames with phasing, deepest
+  Under    through legs        47.1% of frames  deepest 0.077
+deaths1 (186 frames, 390 points): cloth kind x volume -> frames with phasing, deepest
+  Beads    through torso/head   2.7% of frames  deepest 0.047
+  Coat     through arms        11.3% of frames  deepest 0.236
+  Coat     through legs         9.1% of frames  deepest 0.089
+  Coat     through torso/head   2.2% of frames  deepest 0.150
+  Mantle   through arms         5.4% of frames  deepest 0.090
+  Sleeve   through torso/head  18.3% of frames  deepest 0.141
+  Under    through arms         4.3% of frames  deepest 0.206
+  Under    through legs        66.1% of frames  deepest 0.198
+deaths2 (186 frames, 384 points): cloth kind x volume -> frames with phasing, deepest
+  Beard    through arms         8.1% of frames  deepest 0.042
+  Coat     through arms         2.2% of frames  deepest 0.124
+  Coat     through legs        29.0% of frames  deepest 0.118
+  Hair     through arms         9.1% of frames  deepest 0.112
+  Rag      through arms         1.1% of frames  deepest 0.117
+  Rag      through torso/head  17.2% of frames  deepest 0.210
+  Under    through legs        66.7% of frames  deepest 0.298
+sky2 (117 frames, 384 points): cloth kind x volume -> frames with phasing, deepest
+  Beard    through arms         6.0% of frames  deepest 0.095
+  Beard    through torso/head   0.9% of frames  deepest 0.062
+  Coat     through arms        17.9% of frames  deepest 0.164
+  Coat     through legs        13.7% of frames  deepest 0.210
+  Coat     through torso/head   0.9% of frames  deepest 0.059
+  Rag      through legs         1.7% of frames  deepest 0.062
+  Rag      through torso/head  23.9% of frames  deepest 0.140
+  Under    through arms         7.7% of frames  deepest 0.144
+  Under    through legs        23.9% of frames  deepest 0.369
+cuts2 (234 frames, 384 points): cloth kind x volume -> frames with phasing, deepest
+  Beard    through arms         7.3% of frames  deepest 0.098
+  Beard    through torso/head   0.4% of frames  deepest 0.067
+  Coat     through arms         4.7% of frames  deepest 0.140
+  Coat     through legs         0.9% of frames  deepest 0.059
+  Hair     through arms         1.7% of frames  deepest 0.140
+  Hair     through torso/head   0.4% of frames  deepest 0.044
+  Rag      through arms         2.1% of frames  deepest 0.168
+  Rag      through legs         1.7% of frames  deepest 0.133
+  Rag      through torso/head  20.1% of frames  deepest 0.206
+  Under    through arms         3.8% of frames  deepest 0.132

@@ -1,0 +1,2 @@
+{'window': (25, 40), 'elbows_only': False, 'seeded': True, 'status': 9, 'nit': 150, 'runtime_s': 1391.5, 'frame_evals': 25346, 'feasible': False, 'depth': (0.257, 0.166), 'kept': False, 'worse': [2], 'change': (0.051, 3.4, 6.8, 2.1, 0.0)}
+after: depth>0.15 [(36, 0.257)] mids>0.15 [(29, 0.176)]

@@ -1,0 +1,22 @@
+P1_AbbotSweep 
+P1_Flourish problems: ['fist pops 0.33 at f35', 'left arm 0.20 inside his torso']
+P1_FlowingJian problems: ['right arm 0.18 inside his torso', 'left arm 0.21 inside his torso']
+P1_Guandao_L2 problems: ['fist pops 0.29 at f7']
+P1_GuardLoop 
+P1_HesitantMoon problems: ['fist pops 0.61 at f33', 'left hand short of the haft by 0.33', 'left hand 0.22 off the haft', 'right arm 0.18 inside his torso']
+P1_PrayerBeads problems: ['left arm 0.19 inside his torso']
+P1_Transform 
+P1_WheelOfHeaven problems: ['left arm 0.19 inside his torso']
+P2_BloodWave problems: ['right arm 0.31 inside his torso', 'left arm 0.19 inside his torso']
+P2_CrimsonEmbrace problems: ['left hand 0.28 off the haft', 'right arm 0.32 inside his torso', 'left arm 0.24 inside his torso']
+P2_DeathblowVictim problems: ['right arm 0.28 inside his torso']
+P2_Feint problems: ['right arm 0.27 inside his torso']
+P2_Flourish problems: ['right arm 0.22 inside his torso']
+P2_Guandao_Heavy problems: ['lead_reach pops 0.26 at f20', 'right arm 0.27 inside his torso', 'left arm 0.20 inside his torso']
+P2_Guandao_L2 problems: ['right arm 0.28 inside his torso']
+P2_Guandao_L3 problems: ['right arm 0.19 inside his torso']
+P2_Guandao_Running problems: ['right arm 0.18 inside his torso', 'left arm 0.23 inside his torso']
+P2_GuardLoop 
+P2_PhantomDrift problems: ['right arm 0.20 inside his torso']
+P2_RendingArc problems: ['right arm 0.35 inside his torso', 'left arm 0.38 inside his torso']
+P2_RunForward 

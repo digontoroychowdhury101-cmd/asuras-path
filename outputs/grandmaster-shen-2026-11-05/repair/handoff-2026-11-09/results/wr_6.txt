@@ -1,0 +1,8 @@
+GrandmasterShen_P1_TurnRight           L tw   16 fl   11 dv   26 over   0%   R tw    0 fl    7 dv    5 over   0%
+GrandmasterShen_P1_HitLightFront       L tw   22 fl   31 dv   27 over  40%   R tw    1 fl   12 dv    3 over   0%
+GrandmasterShen_P1_Guandao_L1          L tw   39 fl   54 dv   42 over  38%   R tw    9 fl   74 dv   29 over   0%
+GrandmasterShen_P1_AbbotSweep          L tw   45 fl   69 dv   27 over  10%   R tw   12 fl   67 dv   33 over   3%
+GrandmasterShen_P2_TurnRight           L tw    0 fl    3 dv    2 over   0%   R tw    0 fl    5 dv    5 over   0%
+GrandmasterShen_P2_HitLightFront       L tw    1 fl   12 dv    6 over   0%   R tw    2 fl    9 dv    8 over   0%
+GrandmasterShen_P2_Guandao_L1          L tw   39 fl   62 dv   51 over  31%   R tw   40 fl   46 dv   33 over  23%
+GrandmasterShen_P2_CrimsonEmbrace      L tw   45 fl   71 dv   33 over  12%   R tw   14 fl   86 dv   53 over  11%

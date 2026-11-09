@@ -1,0 +1,6 @@
+pilot1: 316 frames
+run1: 210 frames
+deaths1: 186 frames
+deaths2: 186 frames
+sky2: 117 frames
+cuts2: 234 frames

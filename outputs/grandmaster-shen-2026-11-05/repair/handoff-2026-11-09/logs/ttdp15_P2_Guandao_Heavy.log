@@ -1,0 +1,18 @@
+   stage organic        
+   stage spine_reach    
+   stage settle         
+   stage swivel         
+   stage wrist_yield    
+   stage clear_free_arm 
+torso: rp 1 frames need it, 9 moved; worst 0.143 -> 0.089, moves up to 0.30
+   stage clear_torso    
+fist slide: 15 frames, up to 0.36
+   stage slide_fist     
+haft tilt: 13 frames need it, up to 7 deg; 13 frames changed
+   stage tilt_haft      
+   stage depop          
+   stage close_loop     
+joint_polish {'window': (10, 25), 'elbows_only': False, 'status': 99, 'message': '`callback` raised `StopIteration`.', 'nit': 89, 'runtime_s': 607.8, 'frame_evals': 12551, 'feasible': True, 'depth': (0.179, 0.16), 'kept': True, 'worse': [], 'change': (0.008, 0.1, 3.5, 6.0, 0.0)}
+   stage final-solve    
+P2_Guandao_Heavy on 744s torso_right=0.160 torso_left=0.133 Win_arm_right=0.073 Win_arm_left=0.000 inW_arm_right=0.069 inW_arm_left=0.043 inW_torso=0.029 Win_torso=0.000 wrist_right=84.920 wrist_left=33.509 left_grip=0.030 left_off_haft=0.000 right_off_haft=0.000 pop_fist=0.104 pop_blade=0.070 pop_slide=0.045 pop_lead_reach=0.000 | strike [-2.4, 1.21, -5.54] | problems: []
+   per-frame R/L: 11:0.16/0.11

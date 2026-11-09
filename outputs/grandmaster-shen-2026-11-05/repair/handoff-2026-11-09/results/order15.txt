@@ -1,0 +1,15 @@
+P1_FlowingJian
+P2_DeathblowVictim
+P2_PostureBreak
+P1_Guandao_Running
+P2_Feint
+P2_GuandaoSkyfall
+P2_HitLightRight
+P1_PrayerBeads
+P2_CrimsonEmbrace
+P2_Guandao_Heavy
+P2_Guandao_L3
+P2_Guandao_Running
+P2_Strike
+P2_RendingArc
+P2_Death

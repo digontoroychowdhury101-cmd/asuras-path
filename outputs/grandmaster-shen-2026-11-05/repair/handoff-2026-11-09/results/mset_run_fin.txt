@@ -1,0 +1,3 @@
+BAKED fin
+MEASURED fin
+zsh $S/measure_set.sh fin $S/dbg/ClothSim_FIN.luau work/shen_import 5  991.09s user 41.28s system 297% cpu 5:47.01 total

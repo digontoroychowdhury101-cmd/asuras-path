@@ -1,0 +1,11 @@
+f18 hold 0.00 reach 1.00 mix 1.00 rot - | grip-vs-reach hand - forearm - | hand turn - forearm turn -
+f19 hold 0.00 reach 1.00 mix 1.00 rot - | grip-vs-reach hand - forearm - | hand turn 4 forearm turn 5
+f20 hold 0.00 reach 1.00 mix 1.00 rot - | grip-vs-reach hand - forearm - | hand turn 5 forearm turn 5
+f21 hold 0.00 reach 1.00 mix 1.00 rot - | grip-vs-reach hand 122 forearm 178 | hand turn 9 forearm turn 9
+      grip hand vs prev 126  reach hand vs prev 9
+f22 hold 0.10 reach 0.90 mix 1.00 rot - | grip-vs-reach hand 153 forearm 161 | hand turn 17 forearm turn 15
+      grip hand vs prev 149  reach hand vs prev 15
+f23 hold 0.53 reach 0.47 mix 0.27 rot - | grip-vs-reach hand 119 forearm 95 | hand turn 131 forearm turn 118
+      grip hand vs prev 171  reach hand vs prev 81
+f24 hold 1.00 reach 0.00 mix 0.00 rot - | grip-vs-reach hand - forearm - | hand turn 78 forearm turn 69
+f25 hold 1.00 reach 0.00 mix 0.00 rot - | grip-vs-reach hand - forearm - | hand turn 1 forearm turn 1

@@ -1,0 +1,24 @@
+   stage organic        
+   stage spine_reach    
+   stage settle         
+   stage swivel         
+   stage wrist_yield    blade 0.36@f42
+   stage settle         blade 0.36@f42
+   stage swivel         blade 0.36@f42
+   stage wrist_yield    blade 0.64@f43 edge 0.29@f43
+   stage settle         blade 0.64@f43 edge 0.29@f43
+   stage swivel         blade 0.64@f43 edge 0.29@f43
+   stage wrist_yield    blade 0.64@f43 edge 0.29@f43
+   stage clear_free_arm blade 0.64@f43 edge 0.29@f43
+torso: rp 18 frames need it, 40 moved; worst 0.195 -> 0.196, moves up to 0.70
+   stage clear_torso    fist 0.42@f50 blade 0.64@f43 edge 0.29@f43
+fist slide: 6 frames, up to 0.32
+   stage slide_fist     fist 0.42@f50 blade 0.64@f43 edge 0.29@f43
+haft tilt: 2 frames need it, up to 2 deg; 2 frames changed
+   stage tilt_haft      fist 0.42@f50 blade 0.64@f43 edge 0.29@f43
+depop: 18 frames [34, 35, 36, 37, 38, 41, 42, 45, 48, 49, 50, 51, 52, 57, 58, 59, 60, 61]
+   stage depop          fist 0.22@f33 blade 0.58@f43
+   stage close_loop     fist 0.22@f33 blade 0.58@f43
+   stage final-solve    fist 0.18@f85 blade 0.58@f43
+P1_FlowingJian on 1053s torso_right=0.196 torso_left=0.200 Win_arm_right=0.013 Win_arm_left=0.000 inW_arm_right=0.031 inW_arm_left=0.013 inW_torso=0.029 Win_torso=0.000 wrist_right=87.046 wrist_left=173.446 left_grip=0.092 left_off_haft=0.091 right_off_haft=0.000 pop_fist=0.176 pop_blade=0.576 pop_slide=0.083 pop_lead_reach=0.000 | strike None | problems: ['blade pops 0.58 at f43', 'right arm 0.20 inside his torso', 'left wrist turned 173 deg on the arm', 'left arm 0.20 inside his torso']
+   per-frame R/L: 13:0.00/0.14 32:0.13/0.15 35:0.17/0.06 36:0.19/0.01 37:0.18/0.00 38:0.16/0.03 39:0.18/0.02 40:0.16/0.11 41:0.15/0.15 42:0.15/0.17 44:0.14/0.15 47:0.04/0.14 48:0.03/0.17 50:0.02/0.17 51:0.01/0.17 52:0.01/0.15 53:0.00/0.14 54:0.00/0.15 56:0.00/0.15 57:0.01/0.17 58:0.02/0.15 59:0.05/0.17 60:0.05/0.17 61:0.06/0.14 77:0.20/0.07 78:0.15/0.10 86:0.00/0.20

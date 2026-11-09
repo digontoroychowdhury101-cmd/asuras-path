@@ -1,0 +1,14 @@
+   stage organic        
+   stage spine_reach    
+   stage settle         
+   stage swivel         
+   stage wrist_yield    
+   stage clear_free_arm 
+   stage clear_torso    
+   stage slide_fist     
+   stage tilt_haft      
+   stage depop          
+   stage close_loop     
+   stage final-solve    
+P1_TurnRight on 120s torso_right=0.061 torso_left=0.087 Win_arm_right=0.009 Win_arm_left=0.000 inW_arm_right=0.008 inW_arm_left=0.000 inW_torso=0.000 Win_torso=0.000 wrist_right=18.010 wrist_left=31.828 left_grip=0.000 left_off_haft=0.000 right_off_haft=0.000 pop_fist=0.002 pop_blade=0.000 pop_slide=0.000 pop_lead_reach=0.000 | strike None | problems: []
+   per-frame R/L: 

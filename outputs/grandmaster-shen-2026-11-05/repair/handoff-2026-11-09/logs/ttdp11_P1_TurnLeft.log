@@ -1,0 +1,15 @@
+   stage organic        
+   stage spine_reach    
+   stage settle         
+   stage swivel         
+   stage wrist_yield    
+   stage clear_free_arm 
+torso: rp 3 frames need it, 13 moved; worst 0.145 -> 0.108, moves up to 0.10
+   stage clear_torso    
+   stage slide_fist     
+   stage tilt_haft      
+   stage depop          
+   stage close_loop     
+   stage final-solve    
+P1_TurnLeft on 125s torso_right=0.035 torso_left=0.150 Win_arm_right=0.001 Win_arm_left=0.000 inW_arm_right=0.009 inW_arm_left=0.000 inW_torso=0.000 Win_torso=0.000 wrist_right=27.315 wrist_left=34.168 left_grip=0.006 left_off_haft=0.005 right_off_haft=0.000 pop_fist=0.009 pop_blade=0.000 pop_slide=0.000 pop_lead_reach=0.000 | strike None | problems: []
+   per-frame R/L: 25:0.01/0.15

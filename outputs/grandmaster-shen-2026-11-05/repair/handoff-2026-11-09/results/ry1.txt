@@ -1,0 +1,2 @@
+GrandmasterShen_P2_Guandao_Heavy
+  t 0.467 ang 122.9 tw -39.3 fl -105.5 dv  55.0 slant  18.9 rlk 0.00

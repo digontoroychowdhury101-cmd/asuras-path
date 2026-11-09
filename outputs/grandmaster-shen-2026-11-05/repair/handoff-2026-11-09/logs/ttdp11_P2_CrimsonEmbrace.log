@@ -1,0 +1,19 @@
+   stage organic        
+   stage spine_reach    
+   stage settle         
+   stage swivel         
+   stage wrist_yield    
+   stage clear_free_arm 
+torso: rp 7 frames need it, 33 moved; worst 0.352 -> 0.323, moves up to 0.41
+torso: lt 6 frames need it, 24 moved; worst 0.279 -> 0.136, moves up to 0.42
+   stage clear_torso    fist 0.32@f48 lead_reach 0.15@f38
+fist slide: 22 frames, up to 0.56
+   stage slide_fist     fist 0.32@f48 lead_reach 0.15@f38
+haft tilt: 32 frames need it, up to 25 deg; 36 frames changed
+   stage tilt_haft      fist 0.32@f48 blade 0.31@f60 lead_reach 0.15@f38
+depop: 6 frames [46, 47, 48, 49, 50, 51]
+   stage depop          blade 0.31@f60 lead_reach 0.15@f38
+   stage close_loop     blade 0.31@f60 lead_reach 0.15@f38
+   stage final-solve    blade 0.31@f60 lead_reach 0.15@f38
+P2_CrimsonEmbrace on 227s torso_right=0.351 torso_left=0.136 Win_arm_right=0.058 Win_arm_left=0.010 inW_arm_right=0.060 inW_arm_left=0.061 inW_torso=0.063 Win_torso=0.000 wrist_right=78.465 wrist_left=49.691 left_grip=0.051 left_off_haft=0.011 right_off_haft=0.000 pop_fist=0.095 pop_blade=0.308 pop_slide=0.060 pop_lead_reach=0.151 | strike None | problems: ['right arm 0.35 inside his torso']
+   per-frame R/L: 41:0.15/0.14 47:0.33/0.11 48:0.35/0.11
