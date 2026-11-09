@@ -8,7 +8,7 @@ Windows user name (`dishan`) does not matter.
 ```powershell
 git pull --rebase origin ux/onboarding-overhaul
 Test-Path outputs\grandmaster-shen-2026-11-05\repair\handoff-2026-11-09\WINDOWS_START.md
-git fetch origin shen-assets-2026-11-09
+git fetch origin shen-assets-2026-11-09:refs/remotes/origin/shen-assets-2026-11-09
 ```
 
 - `Test-Path` must print `True`; if it prints `False`, the pull did not bring the latest commit.

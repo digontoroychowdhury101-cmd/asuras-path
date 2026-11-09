@@ -44,7 +44,7 @@ The restore and check scripts come with the code branch, in this handoff folder'
 
 Windows PowerShell commands are in `WINDOWS_START.md`. On a Mac use `python3` in place of `py`, with the same arguments.
 
-1. Pull the code: `git pull --rebase origin ux/onboarding-overhaul`. Then fetch the assets (about 526 MB): `git fetch origin shen-assets-2026-11-09`.
+1. Pull the code: `git pull --rebase origin ux/onboarding-overhaul`. Then fetch the assets (about 526 MB): `git fetch origin shen-assets-2026-11-09:refs/remotes/origin/shen-assets-2026-11-09`.
    Do not check that branch out.
 2. Dry run, from the repo root: `py outputs/grandmaster-shen-2026-11-05/repair/handoff-2026-11-09/scripts/restore_untracked.py --from-branch origin/shen-assets-2026-11-09`.
    - It reads the six parts straight from Git, joins them into `work/shen_repair/shen-untracked-2026-11-09.zip` and checks its SHA-256

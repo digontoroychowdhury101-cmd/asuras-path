@@ -12,7 +12,7 @@ Branch `ux/onboarding-overhaul`. Nothing has been published and no new export wa
 > Work in this order:
 > 0. Restore the files Git does not carry, following `handoff-2026-11-09/ARCHIVE.md` (on Windows: `WINDOWS_START.md`). That means the archive
 >    `shen-untracked-2026-11-09.zip`, holding the source and Master assets, the prepared Game/Props GLBs, `work/shen_import` and the frame JSON.
->    It travels on Git branch `shen-assets-2026-11-09`: `git fetch origin shen-assets-2026-11-09`, then
+>    It travels on Git branch `shen-assets-2026-11-09`: `git fetch origin shen-assets-2026-11-09:refs/remotes/origin/shen-assets-2026-11-09`, then
 >    `scripts/restore_untracked.py --from-branch origin/shen-assets-2026-11-09`: a dry run first, it never overwrites. Then run `scripts/repro_check.py`.
 >    Both P1_GuardHit and P1_Guandao_L1 must print REPRODUCED (on Windows, REPRODUCED WITHIN ROUNDING is also a pass) before anything is changed.
 >    Do not rebuild those inputs from Master.blend or the uploaded sculpt: neither holds the later repairs (see ARCHIVE.md).
