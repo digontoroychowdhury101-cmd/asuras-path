@@ -10,6 +10,11 @@ Branch `ux/onboarding-overhaul`. Nothing has been published and no new export wa
 > dense (every-skin-sample) torso measure exactly as they are. Do not change GLB bones or skin weights. Do not publish. Bosses 02-06 wait.
 >
 > Work in this order:
+> 0. Restore the files Git does not carry, following `handoff-2026-11-09/ARCHIVE.md`. That means the archive
+>    `shen-untracked-2026-11-09.zip`, holding the source and Master assets, the prepared Game/Props GLBs, `work/shen_import` and the frame JSON.
+>    Use `scripts/restore_untracked.py`: a dry run first, it never overwrites. Then run `scripts/repro_check.py`.
+>    Both P1_GuardHit and P1_Guandao_L1 must print REPRODUCED before anything is changed.
+>    Do not rebuild those inputs from Master.blend or the uploaded sculpt: neither holds the later repairs (see ARCHIVE.md).
 > 1. Install SciPy for the Python you bake with (`python -m pip install scipy numpy`); joint_polish skips itself without it.
 >    Copy `handoff-2026-11-09/bakes/*` into `work/shen_repair/` (gitignored) as `baked_dp11`, `baked_dp15`, `baked_dp16`, `pre4_export`.
 > 2. Rebake P2_RendingArc and P1_PrayerBeads with the current repo code

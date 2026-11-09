@@ -1,0 +1,33 @@
+Shen repair handoff, 2026-11-09: what Computer A used.
+
+Git
+  repository  https://github.com/digontoroychowdhury101-cmd/asuras-path.git
+  branch      ux/onboarding-overhaul
+  code commit bffea2d7cb2440464d4726ed1f97467d0a08a63c (2026-11-09 18:16 +1100). The archive was packed from the working tree at this commit.
+              The commit after it adds only the handoff docs, the manifest and the pack/restore/repro scripts.
+
+Machine
+  macOS 26.7.2 (25G332), arm64 (Apple silicon), 10 cores, 16 GB
+
+Python (bakes, validation, export, probes)
+  python3     3.14.3 (python.org framework build)
+  numpy       2.5.3 (the saved bakes are numpy 2.x pickles)
+  scipy       1.18.1, needed by joint_polish. Computer A had it only in a venv (pip freeze below); system python3 had none.
+              Without SciPy the polish stage skips itself and the clips it repairs fail validation.
+  venv pip freeze: flatbuffers==25.12.19 networkx==3.7 numpy==2.5.3 onnxruntime==1.30.0 packaging==26.3 protobuf==7.36.2 psutil==7.2.2
+                   pymupdf==1.28.2 pymupdf-layout==1.28.2 pymupdf4llm==1.28.2 PyYAML==6.0.3 scipy==1.18.1 tabulate==0.10.0
+  Bake settings used: VECLIB_MAXIMUM_THREADS=1 OMP_NUM_THREADS=1, at most 7 bakes in parallel
+
+Other tools
+  Blender     5.2.2 LTS (review renders, x-ray videos, mesh clash; --factory-startup)
+  Rojo        7.7.1 (tools/build.py, tools/verify_all.sh)
+
+Reproduction check run on Computer A (scripts/repro_check.py)
+  P1_GuardHit: 98 inputs match the manifest; rebake identical to bakes/dp11 (largest difference 0.00e+00); validator clean; REPRODUCED
+  P1_Guandao_L1: 98 inputs match; rebake identical to bakes/dp11 (0.00e+00); validator clean; REPRODUCED
+
+Archive (outside Git)
+  /Users/digonto/Documents/ShenHandoff-2026-11-09/shen-untracked-2026-11-09.zip
+  167 files, 689.0 MB uncompressed, 525.6 MB zip
+  zip SHA-256 7d7a045ce8c5bbf75b41f9b179e02ec8853693af8bf86dc2a6616b5c531355c2
+  per-file SHA-256: ARCHIVE_MANIFEST.sha256 (in this folder and inside the zip)
