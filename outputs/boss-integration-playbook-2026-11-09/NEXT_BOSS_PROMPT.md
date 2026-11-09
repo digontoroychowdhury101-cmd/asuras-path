@@ -18,8 +18,8 @@ You are integrating **BOSS** (the line above) into Asura's Path (Roblox/Luau), e
 - VFX, SFX and music;
 - game integration, asset upload and Studio proof.
 
-**What to build** is in the boss's numbered brief in the prompt pack `Asuras-Path-Claude-Boss-Prompts/` (the brief, `CONCEPT-ART.md`,
-`references/`, `asset-audit.json`). **How to build it** is in this prompt, so that it takes days, not weeks:
+**What to build** is in the boss's numbered brief in the prompt pack: the brief itself, `CONCEPT-ART.md`, `references/` and `asset-audit.json`.
+Day 0 restores the pack to `work/boss_inputs/prompt-pack/`; the original is `Asuras-Path-Claude-Boss-Prompts/` in Downloads on the Mac. **How to build it** is in this prompt, so that it takes days, not weeks:
 
 - On look, moves and gameplay, the brief wins.
 - On process, order and tooling, this prompt wins.
@@ -99,10 +99,13 @@ What cost the time, and what you will do instead:
 ## Day 0: setup (one hour, before any asset work)
 
 1. Run `git pull --rebase origin ux/onboarding-overhaul`, then read the top of `PROJECT_STATE.md`.
-2. **Find the inputs.**
-   - The boss GLBs are usually in this user's Downloads. The brief's `/Users/dishanroy/...` paths belong to another machine.
-   - Also find the prompt pack.
-   - Check each GLB's SHA-256 against `asset-audit.json`.
+2. **Get the inputs from Git.** The prompt pack and all nine source GLBs are on the data-only branch `boss-inputs-2026-11-05`.
+   - Fetch it: `git fetch origin boss-inputs-2026-11-05:refs/remotes/origin/boss-inputs-2026-11-05`.
+   - Run `py tools/assets/fetch_boss_inputs.py` (a dry run), then again with `--apply`. On a Mac, use `python3`.
+   - The files land in `work/boss_inputs/prompt-pack/` and `work/boss_inputs/glb/`. Each is checked against the branch's SHA-256 manifest,
+     which has the same hashes as `asset-audit.json`.
+   - The brief's paths (`/Users/dishanroy/...`, `outputs/boss-integration-prompts-2026-11-05/...`) belong to another machine. Read them as
+     `work/boss_inputs/glb/` and `work/boss_inputs/prompt-pack/`.
    - If anything is missing, ask now and do the rest while you wait.
 3. **Make one Python environment** under `work/` with numpy, scipy and pillow. The system Python had no SciPy and no PIL last time.
    Record the versions.
