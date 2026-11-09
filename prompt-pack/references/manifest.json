@@ -1,0 +1,114 @@
+{
+  "reviewed_on": "2026-11-05",
+  "authority": "Latest instructions in the current chat take precedence over historical concepts. Source GLBs define modeled identity; concepts guide targeted restoration of reconstruction artifacts and intended independently moving features.",
+  "images": [
+    {
+      "boss": "GrandmasterShen",
+      "phase": 1,
+      "file": "references/grandmaster-shen-phase-1.png",
+      "sha256": "226bdfcf8d5ea8499448e7b21e659e1f9173455676035a9f77c9ed4fdb1915dc",
+      "source_path": "/Users/dishanroy/Documents/ChatGPT/Roblox game/output/imagegen/grandmaster-shen-phase-1-concept.png",
+      "source_thread_title": "Review Asura\u2019s Path combat system",
+      "source_thread_id": "01a19aa2-0fec-7003-85d6-519893aa0c3e",
+      "source_turn_id": "01a1a9c2-4a09-7a21-ba51-96e61e245b6e",
+      "status": "selected final concept for integration",
+      "note": "Human phase, indigo/ivory robes, prayer beads, dragon-headed guandao."
+    },
+    {
+      "boss": "GrandmasterShen",
+      "phase": 2,
+      "file": "references/grandmaster-shen-phase-2.png",
+      "sha256": "900f27a91a6046f7ab11197dac91fa6380c309bcb8ca0e2e72949fa808a3c0fd",
+      "source_path": "/var/folders/4n/8c_4gqh94jb4ph99hg4zqgfc0000gn/T/codex-clipboard-7c5b72b5-cf8f-48a8-9766-7b626ead0d49.png",
+      "source_thread_title": "Review Asura\u2019s Path combat system",
+      "source_thread_id": "01a19aa2-0fec-7003-85d6-519893aa0c3e",
+      "source_turn_id": "01a1a9c2-4a09-7a21-ba51-96e61e245b6e",
+      "status": "selected final concept for integration",
+      "note": "User-supplied original phase-2 reference recovered from the other chat; also submitted for Rodin in turn 01a1a9ce-f660-7913-b281-f2c2d40820ff."
+    },
+    {
+      "boss": "VenerableBaize",
+      "phase": 1,
+      "file": "references/venerable-baize-phase-1.png",
+      "sha256": "1d658c8f267f49f36d859dcb4a5e7742c9f9b7f00ce045b96079c388c6454f2a",
+      "source_path": "/Users/dishanroy/Documents/ChatGPT/Roblox game/output/imagegen/venerable-baize-phase-1-red-eye.png",
+      "source_thread_title": "Review Asura\u2019s Path combat system",
+      "source_thread_id": "01a19aa2-0fec-7003-85d6-519893aa0c3e",
+      "source_turn_id": "01a1a9dc-758f-7a41-9bd2-098ec7d6add5",
+      "status": "selected final concept for integration",
+      "note": "Selected original ornate tail, red forehead eye and cyan flank eyes."
+    },
+    {
+      "boss": "VenerableBaize",
+      "phase": 2,
+      "file": "references/venerable-baize-phase-2-crimson.png",
+      "sha256": "42bcecaa3cb4056e5713ba8b466f476afc10746acb27a7c4985ae5b685e6d2c3",
+      "source_path": "/Users/dishanroy/Documents/ChatGPT/Roblox game/output/imagegen/venerable-baize-phase-2-crimson-v2.png",
+      "source_thread_title": "Review Asura\u2019s Path combat system",
+      "source_thread_id": "01a19aa2-0fec-7003-85d6-519893aa0c3e",
+      "source_turn_id": "01a1a9e2-08af-79d3-9476-fbd415d4eb40",
+      "status": "selected final concept for integration",
+      "note": "Final crimson redesign superseding blue glacier phase 2."
+    },
+    {
+      "boss": "SovereignWu",
+      "phase": 1,
+      "file": "references/sovereign-wu-phase-1.png",
+      "sha256": "fc48b0349b11b5c8754c2c0e81aac5a0192a7eaa58d8a1a7cebaa80e40b8e078",
+      "source_path": "/Users/dishanroy/Documents/ChatGPT/Roblox game/output/imagegen/sovereign-wu-phase-1.png",
+      "source_thread_title": "Review Asura\u2019s Path combat system",
+      "source_thread_id": "01a19aa2-0fec-7003-85d6-519893aa0c3e",
+      "source_turn_id": "01a1aa13-699e-7de2-a3e3-ec906ac48698",
+      "status": "selected final concept for integration",
+      "note": "Five orbiting violet charms, five crown strings, staff and rigid fan collar."
+    },
+    {
+      "boss": "SovereignWu",
+      "phase": 2,
+      "file": "references/sovereign-wu-phase-2.png",
+      "sha256": "be5d2e2694f1d94faf64c600b98cfc2835eb19f32cb7d312422786cd3fc484f2",
+      "source_path": "/Users/dishanroy/Documents/ChatGPT/Roblox game/output/imagegen/sovereign-wu-phase-2-unbound.png",
+      "source_thread_title": "Review Asura\u2019s Path combat system",
+      "source_thread_id": "01a19aa2-0fec-7003-85d6-519893aa0c3e",
+      "source_turn_id": "01a1aa13-699e-7de2-a3e3-ec906ac48698",
+      "status": "selected final concept for integration",
+      "note": "Final corrected eight-fragment halo, five red spheres, one face eye; staff sphere remains violet."
+    },
+    {
+      "boss": "SlumberingTitan",
+      "phase": 1,
+      "file": "references/slumbering-titan-final.png",
+      "sha256": "f0dce2160e1951c43d681556ea727309bcdaa993ef4f5a0ff26f5d6015a9a86b",
+      "source_path": "/Users/dishanroy/Documents/ChatGPT/Roblox game/output/imagegen/slumbering-titan-organic-redesign-v3.png",
+      "source_thread_title": "Review Asura\u2019s Path combat system",
+      "source_thread_id": "01a19aa2-0fec-7003-85d6-519893aa0c3e",
+      "source_turn_id": "01a1aa02-158e-72a0-b118-625b135bc83f",
+      "status": "selected final concept for integration",
+      "note": "User requested one redesigned form, frightening organic root anatomy and asymmetrical stone masses."
+    },
+    {
+      "boss": "AzureWyrm",
+      "phase": 1,
+      "file": "references/azure-wyrm-grimdark-final.png",
+      "sha256": "1bece51b9a878826d3b93f7942080014b62fe1e16b15c09fd4d679e95e5248cf",
+      "source_path": "/Users/dishanroy/Documents/ChatGPT/Roblox game/output/imagegen/azure-wyrm-grimdark-redesign-v2.png",
+      "source_thread_title": "Review Asura\u2019s Path combat system",
+      "source_thread_id": "01a19aa2-0fec-7003-85d6-519893aa0c3e",
+      "source_turn_id": "01a1aa54-c703-78b2-be83-1585097e19db",
+      "status": "selected final concept for integration",
+      "note": "Final long charcoal grimdark dragon, replacing the earlier azure/gold direction."
+    },
+    {
+      "boss": "IronBull",
+      "phase": 1,
+      "file": "references/iron-bull-original.png",
+      "sha256": "52cfaca668f3a1c5280c81c47ce8ff012dba4bc5f4eeba6a0bac509b23e98efe",
+      "source_path": "/var/folders/4n/8c_4gqh94jb4ph99hg4zqgfc0000gn/T/codex-clipboard-02267112-0c13-4dcf-87ec-94efd6544c6a.png",
+      "source_thread_title": "Review Asura\u2019s Path combat system",
+      "source_thread_id": "01a19aa2-0fec-7003-85d6-519893aa0c3e",
+      "source_turn_id": "01a1a618-edcf-75b1-b575-10b0f8360ce8",
+      "status": "selected final concept for integration",
+      "note": "Original user-supplied Rodin reference: chained horned helm, amber eyes and teeth, triangular shield sigil, short chained maul."
+    }
+  ]
+}

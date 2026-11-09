@@ -1,0 +1,546 @@
+{
+  "inspected_on": "2026-11-05",
+  "evidence": "GLB header/JSON, buffer accessors, embedded PNG headers and SHA-256; no GLB visual render or Studio import performed. Mesh connectivity and recoverability of floating objects have not been established.",
+  "assets": [
+    {
+      "path": "/Users/dishanroy/Downloads/Azure-Wyrm-Grimdark-PBR.glb",
+      "bytes": 49804204,
+      "sha256": "33d810aab9248dbd5343d46e75d70c16a0cae194e653f2725cfc30ba20396587",
+      "gltf_version": 2,
+      "mesh_nodes": 1,
+      "meshes": 1,
+      "primitives": 1,
+      "triangles": 1000000,
+      "vertices": 805389,
+      "skins": 0,
+      "animations": 0,
+      "primitive_attributes": [
+        [
+          "POSITION",
+          "NORMAL",
+          "TEXCOORD_0"
+        ]
+      ],
+      "materials": [
+        {
+          "doubleSided": true,
+          "name": "model",
+          "normalTexture": {
+            "index": 0
+          },
+          "pbrMetallicRoughness": {
+            "baseColorTexture": {
+              "index": 1
+            },
+            "metallicRoughnessTexture": {
+              "index": 2
+            }
+          }
+        }
+      ],
+      "images": [
+        {
+          "name": "texture_normal",
+          "mime_type": "image/png",
+          "bytes": 4987638,
+          "width": 2048,
+          "height": 2048
+        },
+        {
+          "name": "texture_diffuse",
+          "mime_type": "image/png",
+          "bytes": 4914393,
+          "width": 2048,
+          "height": 2048
+        },
+        {
+          "name": "texture_metallic-texture_roughness",
+          "mime_type": "image/png",
+          "bytes": 2127953,
+          "width": 2048,
+          "height": 2048
+        }
+      ]
+    },
+    {
+      "path": "/Users/dishanroy/Downloads/Grandmaster-Shen-Phase-1-PBR.glb",
+      "bytes": 30791508,
+      "sha256": "c0675481396f7d63c26031f6f1c1fbf95c7fe2250eefab6ab7debc65f70edbe0",
+      "gltf_version": 2,
+      "mesh_nodes": 1,
+      "meshes": 1,
+      "primitives": 1,
+      "triangles": 500000,
+      "vertices": 443902,
+      "skins": 0,
+      "animations": 0,
+      "primitive_attributes": [
+        [
+          "POSITION",
+          "NORMAL",
+          "TEXCOORD_0"
+        ]
+      ],
+      "materials": [
+        {
+          "doubleSided": true,
+          "name": "model",
+          "normalTexture": {
+            "index": 0
+          },
+          "pbrMetallicRoughness": {
+            "baseColorTexture": {
+              "index": 1
+            },
+            "metallicRoughnessTexture": {
+              "index": 2
+            }
+          }
+        }
+      ],
+      "images": [
+        {
+          "name": "texture_normal",
+          "mime_type": "image/png",
+          "bytes": 3348262,
+          "width": 2048,
+          "height": 2048
+        },
+        {
+          "name": "texture_diffuse",
+          "mime_type": "image/png",
+          "bytes": 4183279,
+          "width": 2048,
+          "height": 2048
+        },
+        {
+          "name": "texture_metallic-texture_roughness",
+          "mime_type": "image/png",
+          "bytes": 3053338,
+          "width": 2048,
+          "height": 2048
+        }
+      ]
+    },
+    {
+      "path": "/Users/dishanroy/Downloads/Grandmaster-Shen-Phase-2-PBR.glb",
+      "bytes": 32519972,
+      "sha256": "67b3ed672676b66080a3573a1504f48f449b4f1b1360ce99841aed94245a6744",
+      "gltf_version": 2,
+      "mesh_nodes": 1,
+      "meshes": 1,
+      "primitives": 1,
+      "triangles": 500000,
+      "vertices": 501463,
+      "skins": 0,
+      "animations": 0,
+      "primitive_attributes": [
+        [
+          "POSITION",
+          "NORMAL",
+          "TEXCOORD_0"
+        ]
+      ],
+      "materials": [
+        {
+          "doubleSided": true,
+          "name": "model",
+          "normalTexture": {
+            "index": 0
+          },
+          "pbrMetallicRoughness": {
+            "baseColorTexture": {
+              "index": 1
+            },
+            "metallicRoughnessTexture": {
+              "index": 2
+            }
+          }
+        }
+      ],
+      "images": [
+        {
+          "name": "texture_normal",
+          "mime_type": "image/png",
+          "bytes": 3466001,
+          "width": 2048,
+          "height": 2048
+        },
+        {
+          "name": "texture_diffuse",
+          "mime_type": "image/png",
+          "bytes": 4144547,
+          "width": 2048,
+          "height": 2048
+        },
+        {
+          "name": "texture_metallic-texture_roughness",
+          "mime_type": "image/png",
+          "bytes": 2860843,
+          "width": 2048,
+          "height": 2048
+        }
+      ]
+    },
+    {
+      "path": "/Users/dishanroy/Downloads/Iron-Bull-PBR.glb",
+      "bytes": 34258952,
+      "sha256": "012ccdfea6e88c3cd02a3009802299777c77a5f92338c23732e947f155751f7e",
+      "gltf_version": 2,
+      "mesh_nodes": 1,
+      "meshes": 1,
+      "primitives": 1,
+      "triangles": 500000,
+      "vertices": 590709,
+      "skins": 0,
+      "animations": 0,
+      "primitive_attributes": [
+        [
+          "POSITION",
+          "NORMAL",
+          "TEXCOORD_0"
+        ]
+      ],
+      "materials": [
+        {
+          "doubleSided": true,
+          "name": "model",
+          "normalTexture": {
+            "index": 0
+          },
+          "pbrMetallicRoughness": {
+            "baseColorTexture": {
+              "index": 1
+            },
+            "metallicRoughnessTexture": {
+              "index": 2
+            }
+          }
+        }
+      ],
+      "images": [
+        {
+          "name": "texture_normal",
+          "mime_type": "image/png",
+          "bytes": 2497134,
+          "width": 2048,
+          "height": 2048
+        },
+        {
+          "name": "texture_diffuse",
+          "mime_type": "image/png",
+          "bytes": 4003114,
+          "width": 2048,
+          "height": 2048
+        },
+        {
+          "name": "texture_metallic-texture_roughness",
+          "mime_type": "image/png",
+          "bytes": 2854248,
+          "width": 2048,
+          "height": 2048
+        }
+      ]
+    },
+    {
+      "path": "/Users/dishanroy/Downloads/Slumbering-Titan-PBR.glb",
+      "bytes": 51700580,
+      "sha256": "4cfcad76f926ef08b1d6ecc394d208b324af2ed600f6033a27bb011fbf90d90d",
+      "gltf_version": 2,
+      "mesh_nodes": 1,
+      "meshes": 1,
+      "primitives": 1,
+      "triangles": 1000000,
+      "vertices": 769083,
+      "skins": 0,
+      "animations": 0,
+      "primitive_attributes": [
+        [
+          "POSITION",
+          "NORMAL",
+          "TEXCOORD_0"
+        ]
+      ],
+      "materials": [
+        {
+          "doubleSided": true,
+          "name": "model",
+          "normalTexture": {
+            "index": 0
+          },
+          "pbrMetallicRoughness": {
+            "baseColorTexture": {
+              "index": 1
+            },
+            "metallicRoughnessTexture": {
+              "index": 2
+            }
+          }
+        }
+      ],
+      "images": [
+        {
+          "name": "texture_normal",
+          "mime_type": "image/png",
+          "bytes": 5378913,
+          "width": 2048,
+          "height": 2048
+        },
+        {
+          "name": "texture_diffuse",
+          "mime_type": "image/png",
+          "bytes": 6322235,
+          "width": 2048,
+          "height": 2048
+        },
+        {
+          "name": "texture_metallic-texture_roughness",
+          "mime_type": "image/png",
+          "bytes": 3387008,
+          "width": 2048,
+          "height": 2048
+        }
+      ]
+    },
+    {
+      "path": "/Users/dishanroy/Downloads/Sovereign-Wu-Phase-1-PBR.glb",
+      "bytes": 43154928,
+      "sha256": "9855acdc332e942143925b6fc45e572474f01f8b0bc5c216a3ad9d4288d23ee0",
+      "gltf_version": 2,
+      "mesh_nodes": 1,
+      "meshes": 1,
+      "primitives": 1,
+      "triangles": 1000000,
+      "vertices": 727183,
+      "skins": 0,
+      "animations": 0,
+      "primitive_attributes": [
+        [
+          "POSITION",
+          "NORMAL",
+          "TEXCOORD_0"
+        ]
+      ],
+      "materials": [
+        {
+          "doubleSided": true,
+          "name": "model",
+          "normalTexture": {
+            "index": 0
+          },
+          "pbrMetallicRoughness": {
+            "baseColorTexture": {
+              "index": 1
+            },
+            "metallicRoughnessTexture": {
+              "index": 2
+            }
+          }
+        }
+      ],
+      "images": [
+        {
+          "name": "texture_normal",
+          "mime_type": "image/png",
+          "bytes": 1619171,
+          "width": 2048,
+          "height": 2048
+        },
+        {
+          "name": "texture_diffuse",
+          "mime_type": "image/png",
+          "bytes": 3181410,
+          "width": 2048,
+          "height": 2048
+        },
+        {
+          "name": "texture_metallic-texture_roughness",
+          "mime_type": "image/png",
+          "bytes": 3082723,
+          "width": 2048,
+          "height": 2048
+        }
+      ]
+    },
+    {
+      "path": "/Users/dishanroy/Downloads/Sovereign-Wu-Phase-2-PBR.glb",
+      "bytes": 46344740,
+      "sha256": "75d5a95283a2ceceb36fd82141786b79e339896d82ceec939d84adcc79611849",
+      "gltf_version": 2,
+      "mesh_nodes": 1,
+      "meshes": 1,
+      "primitives": 1,
+      "triangles": 1000000,
+      "vertices": 778924,
+      "skins": 0,
+      "animations": 0,
+      "primitive_attributes": [
+        [
+          "POSITION",
+          "NORMAL",
+          "TEXCOORD_0"
+        ]
+      ],
+      "materials": [
+        {
+          "doubleSided": true,
+          "name": "model",
+          "normalTexture": {
+            "index": 0
+          },
+          "pbrMetallicRoughness": {
+            "baseColorTexture": {
+              "index": 1
+            },
+            "metallicRoughnessTexture": {
+              "index": 2
+            }
+          }
+        }
+      ],
+      "images": [
+        {
+          "name": "texture_normal",
+          "mime_type": "image/png",
+          "bytes": 2382768,
+          "width": 2048,
+          "height": 2048
+        },
+        {
+          "name": "texture_diffuse",
+          "mime_type": "image/png",
+          "bytes": 3873206,
+          "width": 2048,
+          "height": 2048
+        },
+        {
+          "name": "texture_metallic-texture_roughness",
+          "mime_type": "image/png",
+          "bytes": 3161434,
+          "width": 2048,
+          "height": 2048
+        }
+      ]
+    },
+    {
+      "path": "/Users/dishanroy/Downloads/Venerable-Baize-Phase-1-PBR.glb",
+      "bytes": 49853348,
+      "sha256": "4913d5424ae984970ef1f616dcb19c252ba8b393ba29a0597d47821ace2ca2a7",
+      "gltf_version": 2,
+      "mesh_nodes": 1,
+      "meshes": 1,
+      "primitives": 1,
+      "triangles": 1000000,
+      "vertices": 712420,
+      "skins": 0,
+      "animations": 0,
+      "primitive_attributes": [
+        [
+          "POSITION",
+          "NORMAL",
+          "TEXCOORD_0"
+        ]
+      ],
+      "materials": [
+        {
+          "doubleSided": true,
+          "name": "model",
+          "normalTexture": {
+            "index": 0
+          },
+          "pbrMetallicRoughness": {
+            "baseColorTexture": {
+              "index": 1
+            },
+            "metallicRoughnessTexture": {
+              "index": 2
+            }
+          }
+        }
+      ],
+      "images": [
+        {
+          "name": "texture_normal",
+          "mime_type": "image/png",
+          "bytes": 6777528,
+          "width": 2048,
+          "height": 2048
+        },
+        {
+          "name": "texture_diffuse",
+          "mime_type": "image/png",
+          "bytes": 5712815,
+          "width": 2048,
+          "height": 2048
+        },
+        {
+          "name": "texture_metallic-texture_roughness",
+          "mime_type": "image/png",
+          "bytes": 2563797,
+          "width": 2048,
+          "height": 2048
+        }
+      ]
+    },
+    {
+      "path": "/Users/dishanroy/Downloads/Venerable-Baize-Phase-2-Crimson-PBR.glb",
+      "bytes": 45570672,
+      "sha256": "45ff1ec35820b02069f91e4982ff0c8d309aef6e04cc5bce69fa8fc42eab1703",
+      "gltf_version": 2,
+      "mesh_nodes": 1,
+      "meshes": 1,
+      "primitives": 1,
+      "triangles": 1000000,
+      "vertices": 718053,
+      "skins": 0,
+      "animations": 0,
+      "primitive_attributes": [
+        [
+          "POSITION",
+          "NORMAL",
+          "TEXCOORD_0"
+        ]
+      ],
+      "materials": [
+        {
+          "doubleSided": true,
+          "name": "model",
+          "normalTexture": {
+            "index": 0
+          },
+          "pbrMetallicRoughness": {
+            "baseColorTexture": {
+              "index": 1
+            },
+            "metallicRoughnessTexture": {
+              "index": 2
+            }
+          }
+        }
+      ],
+      "images": [
+        {
+          "name": "texture_normal",
+          "mime_type": "image/png",
+          "bytes": 4124314,
+          "width": 2048,
+          "height": 2048
+        },
+        {
+          "name": "texture_diffuse",
+          "mime_type": "image/png",
+          "bytes": 3901726,
+          "width": 2048,
+          "height": 2048
+        },
+        {
+          "name": "texture_metallic-texture_roughness",
+          "mime_type": "image/png",
+          "bytes": 2565172,
+          "width": 2048,
+          "height": 2048
+        }
+      ]
+    }
+  ]
+}
