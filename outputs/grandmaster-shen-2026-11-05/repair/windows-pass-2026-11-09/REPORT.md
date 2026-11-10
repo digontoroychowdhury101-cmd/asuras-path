@@ -71,13 +71,28 @@ place diff is the 15 lines of BossRigs.
   left arm 0.196 in at the start of its video; the game fades that attack in over 0.1 or 0.15 s (0.145 / 0.169).
 - **Pops** (`popjson.py` vs `bakes/pre4_export`, `results/popjson_final2.txt`): frames with a >= 0.5 out-and-back 81 -> 51.
   **Face pops** (`facepop.py`): 0 clips with a roll pop > 0.3 (`results/facepop_final2.txt`).
-- **Cloth** (rendered mesh, `measure_set2` before/after, `results/msetcmp_pre4L_finL.txt`): cloth pairs >= 0.05 deep 135 -> 117,
-  sum(share x depth) 1.462 -> 1.333, deepest 0.200 -> 0.166. Per pair (`results/cloth_changes.txt`): 61 shallower or rarer, 34 deeper
-  or more frequent; the largest new ones are P1 Guandao_Running RobeLeft in LowerTorso 0.125 (6% of frames), P2 Guandao_Heavy
-  RobeBack in LeftLowerLeg 0.119 (4%), P2 Guandao_L2 RibbonLeft in LeftLowerArm 0.118 (6%), P2 Skyfall RobeFront in LeftLowerArm
-  0.046 -> 0.110. These are listed as open in section 8. Arm-in-weapon 137 -> 129 pairs, weapon-in-arm 27 -> 26.
-  "Other" pairs 148 -> 127, but their deepest rose 0.308 -> 0.341 (P2 Flourish, the glaive in his upper torso for one shot frame
-  as the review fades in; none at the game's 0.1 s fade, section 8 item 4).
+- **Cloth and the glaive on the rendered mesh** (`mesh_clash.py` on all 64 review shots; before = the export this pass started
+  from, after = the final bakes). First measured every other frame (`results/msetcmp_pre4L_finL.txt`, `results/cloth_changes.txt`);
+  on 11-11 again at every frame, because that pass missed peaks on odd frames. The numbers below are the every-frame ones
+  (`results/msetcmp_pre4L1_finL1.txt`, `results/cloth_changes_every.txt`, `results/rest_changes_every.txt`, `scripts/clothchanges.py`).
+  The cloth bake is deterministic: the P1 clips this pass did not touch measure identically before and after.
+  - Robes and ribbons: pairs >= 0.05 deep 168 -> 145, sum(share x depth) 1.488 -> 1.387, deepest 0.200 -> 0.166. Per pair, 61
+    shallower or rarer and 34 deeper or more frequent. The largest rises: P1 Guandao_Running RobeLeft in LowerTorso 0.071 -> 0.125,
+    P2 Guandao_Heavy RobeRight in his right thigh 0.035 -> 0.124 and RobeBack in his left shin 0 -> 0.119 (2% of frames each),
+    P2 Guandao_L2 RibbonLeft in the left forearm 0.053 -> 0.118, P1 HesitantMoon RobeFront in LowerTorso 0.040 -> 0.105. P2 Skyfall's
+    RobeFront in the left forearm, which the every-other-frame pass read as 0.046 -> 0.110, is 0.113 -> 0.110 at every frame, so it
+    is not new.
+  - Sleeve, beard, beads and hair (simulated like the robes, but `msetcmp.py` files them under "other"): 119 -> 108 pairs, sum
+    1.949 -> 1.930, deepest 0.201 both. Per pair 41 shallower, 43 deeper; 28 of the deeper are 0.10 or more after, led by P2
+    Guandao_L2 LeftSleeve in the left upper arm 0.151 -> 0.196, P1 FlowingJian Beads in LowerTorso 0.094 -> 0.188, P2 Death Beard
+    in his head 0.066 -> 0.182, P2 Guandao_Running LeftSleeve in the left upper arm 0.118 -> 0.180 and P2 HitLightFront LeftSleeve in
+    the left forearm 0.034 -> 0.118. All five peak inside the clip, not in the review's fades.
+  - The glaive in him: 53 -> 49 pairs, sum 0.286 -> 0.255, deepest 0.352 -> 0.341 (before: P2 RunForward in his upper torso at
+    shot f21, an odd frame; after: P2 Flourish, section 8 item 4). In his arms alone 35 -> 38 pairs, sum 0.218 -> 0.223, deepest
+    0.162 -> 0.145. 15 pairs deeper, led by P2 Skyfall in his right thigh 0 -> 0.162 (section 9), then P1 Guandao_L3 and
+    Guandao_Running in the right forearm 0.127 -> 0.142 and 0.113 -> 0.140 (as the review fades in).
+  - His arms, hands and torso in the glaive: 204 -> 188 pairs, sum 3.345 -> 3.211, deepest 0.083 both (fingers round the haft).
+  The rises are open (section 8 item 3).
 - `py tools/test_cloth_sim.py`: P1 ok (rest drift 1.143, sprint trail 0.17), P2 ok (1.187, 0.39).
 - `bash tools/verify_all.sh` (Git Bash, `python3` shimmed to `py`): all 14 stages pass, exit 0, "Shen integration: ok"
   (`results/verify_all_final2.log`; the Shen audio manifest it needs was generated with `py tools/assets/build_shen_audio.py`, which
@@ -149,10 +164,14 @@ at every exported frame and compared with the solver's frames:
    The seam depth is still there in all nine, so this item stays open.
 2. P2 Guandao_L3 rose 0.147 -> 0.180 in the rendered mesh (f25-29): left upper arm at the shoulder seam (0.180), and 0.173 for skin
    the validator counts, which is past the 0.17 wall but under its 0.18 flag (`results/xray_why.md`).
-3. Cloth: the 34 deeper or more frequent cloth pairs in `results/cloth_changes.txt`, led by P1 Guandao_Running's RobeLeft in his
-   LowerTorso (0.125) and P2 Skyfall's RobeFront in the left forearm (0.110).
+3. Cloth, rendered mesh at every frame (section 4): the 34 robe and ribbon pairs that went deeper or more frequent
+   (`results/cloth_changes_every.txt`), led by P1 Guandao_Running RobeLeft in LowerTorso 0.125, P2 Guandao_Heavy RobeRight in the
+   right thigh 0.124 and RobeBack in the left shin 0.119, P2 Guandao_L2 RibbonLeft in the left forearm 0.118; and the 43 sleeve,
+   beard, beads and hair pairs that did (`results/rest_changes_every.txt`), led by P2 Guandao_L2 LeftSleeve in the left upper arm
+   0.196, P1 FlowingJian Beads in LowerTorso 0.188, P2 Death Beard in his head 0.182, P2 Guandao_Running LeftSleeve 0.180. The
+   every-other-frame list's P2 Skyfall RobeFront in the left forearm was a sampling miss (0.113 before, at every frame).
 4. The glaive through his upper torso for a frame as the review shot fades in from Idle (shot f22): P2 Flourish 0.308 -> 0.341,
-   P2 Guandao_L2 0.298 -> 0.281 (P2 RunForward's 0.274 is gone). At the game's own fades (11-11, `results/fadeweapon_final.txt`: every
+   P2 Guandao_L2 0.298 -> 0.281 (P2 RunForward's, 0.352 at shot f21 at every frame, is gone). At the game's own fades (11-11, `results/fadeweapon_final.txt`: every
    weapon sample against the solver's torso solids, fading in from the clip's first frame) both are 0.000 at 0.1 s. That is the fade the
    game gives them, since both have contact times (`BossAnimations.luau:72`). At 0.15 s: Flourish 0.065, L2 0.012; at 0.2 s: Flourish 0.187.
    No other clip passes 0.05 at any game fade time; P2 Death's 0.079 is its fade-out, which never plays. On the rendered mesh
@@ -230,10 +249,12 @@ and 0.45, guard on and off, two with a gentler ease (in over 1.50-1.60 s, out ov
 - `scripts/`: every probe and tool written in this pass (each starts with a usage line). New ones for the checks above:
   `studio_expected.py` (the solver frames as a model file Studio can load), `studio_preview.luau` (the Studio harness),
   `revaltable.py`, `jsondiff.py`, `legsall.py`, `fadecheck3.py`, `measure_set2.py`, `render_cmp.py`, `sheet.py`, `xray_why.py`,
-  `fadeweapon.py`, `shots_gamefade.py`, `thighdir.py`, `liftsum.py`. `render_cmp.py` can now light the glaive inside a part
+  `fadeweapon.py`, `shots_gamefade.py`, `thighdir.py`, `liftsum.py`, `clothchanges.py` (per-pair rendered-mesh changes between two
+  `mesh_clash.py` measurements; `rest` lists the pairs that are not robe or ribbon). `render_cmp.py` can now light the glaive inside a part
   (`FROM=Weapon`), pick frames (`FRAMES`) and leave garments out (`SHEN_REVIEW_HIDE`, a new opt-in in `tools/blender/shen_import/review.py`
   for views the robe would cover; default renders are unchanged).
-- `results/`: the outputs cited above.
+- `results/`: the outputs cited above, with the `mesh_clash.py` measurements they come from (`mset_<tag>_<n>.json`; `pre4L`/`finL`
+  every other frame, `pre4L1`/`finL1` every frame; `SHEN_SCRATCH` pointed at `results/` reproduces the comparisons).
 - Bakes: `work/shen_repair/baked_set2` (local, gitignored) is the final set the exports came from.
 
 ## 11. Housekeeping
