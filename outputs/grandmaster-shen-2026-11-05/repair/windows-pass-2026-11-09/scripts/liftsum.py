@@ -7,12 +7,14 @@ ROOT = os.environ.get("SHEN_ROOT") or os.path.abspath(os.path.join(H, "../../../
 W = os.environ.get("SHEN_SCRATCH") or os.path.join(ROOT, "work", "shen_repair")
 P = os.path.join(H, "thighdir.py")
 DEV = {"lfB": "liftB", "lfD": "liftD", "lfE": "liftE", "lfG": "liftG", "lfH": "liftH", "lfI": "liftI", "lfJ": "liftJ", "lfK": "liftK", "lfL": "liftL",
-       "lfM": "liftM"}
+       "lfM": "liftM", "knA": "kneeA", "knB": "kneeB", "knC": "kneeC"}     # (11-11) kn*: the right knee turned in over the landing instead
 for tag in sys.argv[1:]:
     src = open(os.path.join(W, DEV[tag], "shen_clips.py"), encoding="utf-8").read()
     m = re.search(r"1\.5, 1\.62, 1\.92, 2\.0, \(0\.4, 0\.0, -0\.1\)\), ([0-9., ]+), (\([-0-9., ]+\))\)", src)
+    k = re.search(r'K\(1\.42, "io", rknee=(\([-0-9., ]+\))\)', src)
     guard = 'c.legs_guard = phase == 2 and short == "GuandaoSkyfall"' in src
-    print("## %s (%s): second carry %s, offset %s, legs_guard %s" % (tag, DEV[tag], m.group(1), m.group(2), "on" if guard else "off"))
+    what = "second carry %s, offset %s" % (m.group(1), m.group(2)) if m else "right knee pole %s from 1.42 s to 1.92 s (READY's at 1.2 and 2.15)" % k.group(1)
+    print("## %s (%s): %s, legs_guard %s" % (tag, DEV[tag], what, "on" if guard else "off"))
     log = os.path.join(W, "tt%s_P2_GuandaoSkyfall.log" % tag)
     verdict = None
     for line in open(log, encoding="utf-8", errors="replace"):

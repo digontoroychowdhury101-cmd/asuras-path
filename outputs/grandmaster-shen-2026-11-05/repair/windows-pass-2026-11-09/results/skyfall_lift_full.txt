@@ -1,20 +1,28 @@
-# Phase 2 Skyfall: full bakes of the fist lift after the landing (2026-11-11), scripts/liftsum.py
-# runall.py TAG P2_GuandaoSkyfall with DEV=<overlay> (a copy of shen_clips.py whose skyfall() wraps the carried follow-through in a
-# second carry(..., t0, t1, t2, t3, offset), offset in his frame: x right, y up, z forward negative). Polish depths are the right arm in his
-# chest (the polish's measure); verdict = validate. Bakes still running are marked.
+# Phase 2 Skyfall: full bakes of the fist lift after the landing, and of the right knee turned in (2026-11-11), scripts/liftsum.py
+# runall.py TAG P2_GuandaoSkyfall with DEV=<overlay> (a copy of shen_clips.py). lf*: skyfall() wraps the carried follow-through in a second
+# carry(..., t0, t1, t2, t3, offset), offset in his frame (x right, y up, z forward negative). kn*: the right knee's pole keyed turned in
+# (about his vertical, from READY's (0.12, 0, -1)) over the landing, the feet and every other key as they were. Polish depths are the right
+# arm in his chest (the polish's measure); verdict = validate. Bakes still running are marked.
 
 ## lfB (liftB): second carry 1.52, 1.58, 1.68, 1.76, offset (0.0, 0.25, 0.0), legs_guard off
   polish f0-6 first try   0.175 -> 0.160  feasible, kept (544 s)
   polish f48-67 first try   0.200 -> 0.295  infeasible, not kept, worse [2, 3, 4, 6] (3433 s)
   polish f48-67 elbows only 0.200 -> 0.201  infeasible, not kept (2569 s)
-  (still running)
+  polish f48-67 seeded      0.200 -> 0.204  infeasible, not kept, worse [2, 3] (1040 s)
+  verdict: torso R 0.200 L 0.145, pops fist 0.160 blade 0.403 slide 0.099 | problems: ['right arm 0.20 inside his torso']
+  legs f40-70: 5 frames, deepest 0.079 RightUpperLeg at f62
 ## lfD (liftD): second carry 1.52, 1.58, 1.68, 1.76, offset (0.0, 0.25, 0.0), legs_guard on
   polish f0-6 first try   0.175 -> 0.160  feasible, kept (553 s)
   polish f48-60 first try   0.184 -> 0.179  infeasible, not kept, worse [2, 3] (2671 s)
+  polish f48-60 elbows only 0.184 -> 0.182  infeasible, not kept (9618 s)
   (still running)
 ## lfE (liftE): second carry 1.52, 1.58, 1.68, 1.76, offset (0.0, 0.35, 0.0), legs_guard on
   polish f0-6 first try   0.175 -> 0.160  feasible, kept (562 s)
-  (still running)
+  polish f47-67 first try   0.192 -> 0.192  infeasible, not kept (9554 s)
+  polish f47-67 elbows only 0.192 -> 0.192  infeasible, not kept (0 s)
+  polish f47-67 seeded      0.192 -> 0.197  infeasible, not kept, worse [2, 3, 4, 6] (1541 s)
+  verdict: torso R 0.192 L 0.165, pops fist 0.165 blade 0.503 slide 0.057 | problems: ['blade pops 0.50 at f46', 'edge pops 0.46 at f46', 'right arm 0.19 inside his torso']
+  legs f40-70: 4 frames, deepest 0.183 RightUpperLeg at f53
 ## lfG (liftG): second carry 1.52, 1.58, 1.68, 1.76, offset (0.0, 0.35, 0.0), legs_guard off
   polish f0-6 first try   0.175 -> 0.160  feasible, kept (545 s)
   polish f46-69 first try   0.216 -> 0.232  infeasible, not kept, worse [2, 3, 4, 6] (1948 s)
@@ -26,7 +34,9 @@
   polish f0-6 first try   0.175 -> 0.160  feasible, kept (568 s)
   polish f42-67 first try   0.385 -> 0.383  infeasible, not kept, worse [2, 3, 4, 6] (1957 s)
   polish f42-67 elbows only 0.385 -> 0.385  infeasible, not kept (1650 s)
-  (still running)
+  polish f42-67 seeded      0.385 -> 0.386  infeasible, not kept, worse [2, 3, 4, 6] (2363 s)
+  verdict: torso R 0.260 L 0.385, pops fist 0.139 blade 0.368 slide 0.062 | problems: ['right wrist turned 127 deg on the arm', 'right arm 0.26 inside his torso', 'right arm 0.35 inside his torso between f49 and f50', 'left arm 0.39 inside his torso', 'left arm 0.38 inside his torso between f48 and f49']
+  legs f40-70: clear on every frame
 ## lfI (liftI): second carry 1.5, 1.6, 1.68, 1.8, offset (0.0, 0.35, 0.0), legs_guard on
   polish f0-6 first try   0.175 -> 0.160  feasible, kept (568 s)
   polish f52-62 first try   0.212 -> 0.175  infeasible, not kept, worse [2, 6] (2506 s)
@@ -41,3 +51,19 @@
   polish f44-56 seeded      0.194 -> 0.177  infeasible, not kept, worse [2] (2030 s)
   verdict: torso R 0.194 L 0.155, pops fist 0.170 blade 0.386 slide 0.071 | problems: ['right arm 0.19 inside his torso']
   legs f40-70: 3 frames, deepest 0.019 RightUpperLeg at f63
+## lfK (liftK): second carry 1.52, 1.58, 1.68, 1.76, offset (0.15, 0.25, -0.1), legs_guard on
+  polish f0-6 first try   0.175 -> 0.160  feasible, kept (471 s)
+  (still running)
+## lfL (liftL): second carry 1.52, 1.58, 1.68, 1.76, offset (0.25, 0.25, 0.0), legs_guard on
+  polish f0-6 first try   0.175 -> 0.160  feasible, kept (477 s)
+  polish f41-49 first try   0.171 -> 0.160  feasible, kept (319 s)
+  (still running)
+## lfM (liftM): second carry 1.52, 1.58, 1.68, 1.76, offset (0.0, 0.25, -0.2), legs_guard on
+  polish f0-6 first try   0.175 -> 0.160  feasible, kept (466 s)
+  (still running)
+## knA (kneeA): right knee pole (-0.1429, 0.0, -0.997) from 1.42 s to 1.92 s (READY's at 1.2 and 2.15), legs_guard off
+  (still running)
+## knB (kneeB): right knee pole (-0.1429, 0.0, -0.997) from 1.42 s to 1.92 s (READY's at 1.2 and 2.15), legs_guard on
+  (still running)
+## knC (kneeC): right knee pole (-0.2293, 0.0, -0.9807) from 1.42 s to 1.92 s (READY's at 1.2 and 2.15), legs_guard off
+  (still running)

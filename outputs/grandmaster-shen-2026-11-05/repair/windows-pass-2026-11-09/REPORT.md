@@ -233,23 +233,35 @@ start of the bake to clear_free_arm, then the later stages without the polish:
 More lift left his arm shallower in both modes.
 
 Full bakes, 11-11 (runall.py with the polish, DEV overlays; `results/skyfall_lift_full.txt`, `scripts/liftsum.py`). Lifts 0.25, 0.35
-and 0.45, guard on and off, two with a gentler ease (in over 1.50-1.60 s, out over 1.68-1.80 s):
-- With the guard on, the lift keeps his legs clear in the full bake too (0.35 gentle: clear on every frame f40-70; 0.25 gentle:
-  0.019 at most). Without the guard, lift 0.35 still left 0.085 in his thigh at f57.
-- But the lift folds his right arm into his chest while the fist is up. The bakes' per-frame readings have it at 0.17-0.19 around
-  f47-52 (lift 0.25 gentle: 0.17, 0.17, 0.19, 0.17, 0.17, 0.18 over f47-52), where the exported bake reads at most 0.14, and no joint
-  polish try was feasible. Finished so far, all failing the validator: lift 0.35 without the guard (right arm 0.214,
-  blade pop 0.52 at f46), 0.35 gentle with the guard (0.212), 0.25 gentle with the guard (0.194; its seeded retry reached 0.177 but
-  made the weapon clash worse, so it was not kept). Lift 0.45 entered its polish window at 0.385.
-- Still baking at the time of writing: 0.25 with and without the guard, 0.35 with the guard, and three that also carry the fist
-  outward or forward during the lift (0.15 right and 0.1 forward; 0.25 right; 0.2 forward) to keep the arm off his chest.
+and 0.45, guard on and off, two with a gentler ease (in over 1.50-1.60 s, out over 1.68-1.80 s), and three that also carry the fist
+outward or forward during the lift (0.15 right and 0.1 forward; 0.25 right; 0.2 forward) to keep the arm off his chest:
+- Legs: with the guard on and the gentler ease the lift keeps them clear (0.35: clear on every frame f40-70; 0.25: 0.019 at most).
+  With the standard ease the fist comes back down into the thigh as the lift eases out and he sinks: 0.35 with the guard has the
+  wood 0.183 in his right thigh at f53. Without the guard: 0.25 left 0.079 at f62, 0.35 left 0.085 at f57.
+- Arms: the lift folds his right arm into his chest while the fist is up. The bakes' per-frame readings have it at 0.17-0.19 around
+  f47-52 (lift 0.25 gentle: 0.17, 0.17, 0.19, 0.17, 0.17, 0.18 over f47-52), where the exported bake reads at most 0.14. In the six
+  finished bakes no try at the main polish window was feasible, and all six fail the validator: right arm 0.200 (0.25, no guard),
+  0.192 with blade and edge pops 0.50 and 0.46 at f46 (0.35, guard), 0.214 with a 0.52 blade pop (0.35, no guard), 0.260 with the
+  left 0.385 (0.45, guard), 0.212 (0.35 gentle, guard), 0.194 (0.25 gentle, guard; its seeded retry reached 0.177 but made the
+  weapon clash worse, so it was not kept).
+- Still baking at the time of writing: 0.25 with the guard (in its last retry) and the three outward/forward ones. Of these, the
+  lift with 0.25 to his right is the first whose main polish window was feasible and kept (f41-49, 0.171 -> 0.160).
+
+The knee instead, 11-11 (`scripts/kneeprobe.py`). The lift moves the fist, and with it the arm, to clear a thigh that rises into
+the haft as he sinks. The other way is to move the thigh. On the exported bake, re-solving only the legs with the right knee's pole
+turned about his vertical (the feet, arms and glaive as they are): turned out 10-30 deg the wood stays in the thigh (0.08-0.12 at
+f49-50); turned in 10-24 deg it is 0.010-0.033 at most (15 deg: 0.006 at f49, 0.027 at f50; 6 deg is worse, 0.139), and the knee
+moves up to 0.49 (15 deg). The validator then reports a 0.20-0.24 fist pop at f50 for most angles, from the poses it solves
+between frames, where the solver re-places the glaive against the moved leg (`Clip.clear_surface`); only a full bake shows
+what that becomes. Three full bakes are running: the right knee turned in 15 deg, with and without the guard, and 20 deg without,
+turning in while he is in the air (1.2-1.42 s), held through the landing to 1.92 s and back by 2.15 s; every other key unchanged.
 
 ## 10. Files
 
 - `scripts/`: every probe and tool written in this pass (each starts with a usage line). New ones for the checks above:
   `studio_expected.py` (the solver frames as a model file Studio can load), `studio_preview.luau` (the Studio harness),
   `revaltable.py`, `jsondiff.py`, `legsall.py`, `fadecheck3.py`, `measure_set2.py`, `render_cmp.py`, `sheet.py`, `xray_why.py`,
-  `fadeweapon.py`, `shots_gamefade.py`, `thighdir.py`, `liftsum.py`, `clothchanges.py` (per-pair rendered-mesh changes between two
+  `fadeweapon.py`, `shots_gamefade.py`, `thighdir.py`, `liftsum.py`, `kneeprobe.py`, `clothchanges.py` (per-pair rendered-mesh changes between two
   `mesh_clash.py` measurements; `rest` lists the pairs that are not robe or ribbon). `render_cmp.py` can now light the glaive inside a part
   (`FROM=Weapon`), pick frames (`FRAMES`) and leave garments out (`SHEN_REVIEW_HIDE`, a new opt-in in `tools/blender/shen_import/review.py`
   for views the robe would cover; default renders are unchanged).
