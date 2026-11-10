@@ -14,7 +14,7 @@ from mathutils import Matrix, Vector
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, "../../.."))
 args = sys.argv[sys.argv.index("--") + 1:]
-shot, out = args[0], args[1]
+shot, out = args[0], os.path.abspath(args[1])   # (2026-11-11) absolute: Blender resolved a relative render path against the drive root (C:\work\...)
 camera = args[2] if len(args) > 2 else "combat"
 span = [int(x) if x else None for x in args[3].split(":")] if len(args) > 3 else [None, None, 1]
 size = [int(x) for x in args[4].split("x")] if len(args) > 4 else (854, 480)

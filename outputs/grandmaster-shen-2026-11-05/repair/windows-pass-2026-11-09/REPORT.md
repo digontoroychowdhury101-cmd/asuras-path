@@ -77,11 +77,13 @@ place diff is the 15 lines of BossRigs.
   RobeBack in LeftLowerLeg 0.119 (4%), P2 Guandao_L2 RibbonLeft in LeftLowerArm 0.118 (6%), P2 Skyfall RobeFront in LeftLowerArm
   0.046 -> 0.110. These are listed as open in section 8. Arm-in-weapon 137 -> 129 pairs, weapon-in-arm 27 -> 26.
   "Other" pairs 148 -> 127, but their deepest rose 0.308 -> 0.341 (P2 Flourish, the glaive in his upper torso for one shot frame
-  as the review fades in; open).
+  as the review fades in; none at the game's 0.1 s fade, section 8 item 4).
 - `py tools/test_cloth_sim.py`: P1 ok (rest drift 1.143, sprint trail 0.17), P2 ok (1.187, 0.39).
 - `bash tools/verify_all.sh` (Git Bash, `python3` shimmed to `py`): all 14 stages pass, exit 0, "Shen integration: ok"
   (`results/verify_all_final2.log`; the Shen audio manifest it needs was generated with `py tools/assets/build_shen_audio.py`, which
   writes only the gitignored `assets/build/shen_audio/`).
+- After the 11-11 follow-up (review.py's output path, the new probes): `verify_all.sh` again all 14 stages pass, exit 0, now with
+  `test_boss_rigs.luau` 68 passed (`results/verify_all_followup.log`); `test_cloth_sim.py` ok with the same numbers.
 
 ## 5. Visual review (renders watched)
 
@@ -94,7 +96,8 @@ What the renders show, beside the numbers (`results/xray_mesh_table.md`, the ren
 - Clearly better on screen: P2 RendingArc 0.385 -> 0.200, P2 Feint 0.277 -> 0.183, P2 Guandao_L2 0.251 -> 0.182, P2 Guandao_Heavy
   0.237 -> 0.173, P2 Guandao_Running 0.242 -> 0.169, P2 RunForward 0.270 -> 0.174, P2 Skyfall 0.219 -> 0.176, P2 BloodWave
   0.204 -> 0.172, P2 CrimsonEmbrace 0.186 -> 0.166, P1 FlowingJian 0.188 -> 0.144 (blade pop and wrist flip gone).
-- Rendered mesh still past 0.18 (the validator's skin samples pass on all of them; open, section 8): P2 Death 0.252 (unchanged),
+- Rendered mesh still past 0.18 (the validator's skin samples pass on all of them; open, section 8; what each measure counts:
+  `results/xray_why.md`): P2 Death 0.252 (unchanged),
   P2 DeathblowVictim 0.275 (0.285), P2 RendingArc 0.200, P2 PhantomDrift 0.186, P2 Transform 0.183 (unchanged), P2 Feint 0.183,
   P2 Guandao_L1 0.182 (0.180), P2 Guandao_L2 0.182, P2 HitLightFront 0.182 (0.184).
 - Rose: P2 Guandao_L3 0.147 -> 0.180 (f25-29), and by 0.006-0.009 P1 Feint, P1 Flourish, P1 Guandao_L3, P1 PrayerBeads,
@@ -121,19 +124,39 @@ at every exported frame and compared with the solver's frames:
 ## 7. Multiplayer and device profiling
 
 - Multiplayer: not run. No two-client session was started in this pass, so nothing here shows two clients seeing the same
-  phase 2 glaive. The fix is server-side state (the joint attachment replicates); a two-client check is still owed.
+  phase 2 glaive. The fix is server-side state (the joint attachment replicates); a two-client check is still owed. Starting one
+  needs Studio's Test tab (a local server with clients), which the Studio connection used here cannot start (it has single-player
+  Play only). Desktop control of Studio was requested on 11-11 for this and declined, so it was not retried.
 - Device profiling: not run; no phone, tablet or console hardware here. Nothing in this pass measures frame time or memory.
 
 ## 8. Open defects (not accepted, still to fix)
 
 1. Rendered-mesh arm depth past 0.18 in nine phase 2 clips (section 5), worst P2 DeathblowVictim 0.275 and P2 Death 0.252,
-   although the validator's dense skin samples are under its limit on all of them. The two measures disagree there; the renders
-   show the arm in the chest.
-2. P2 Guandao_L3 rose 0.147 -> 0.180 in the rendered mesh (f25-29).
+   although the validator's dense skin samples are under its limit on all of them. Traced on 11-11 (`results/xray_why.md`,
+   `scripts/xray_why.py`), the two measures count different skin:
+   - Seven clips (RendingArc, PhantomDrift, Transform, Feint, L1, L2, HitLightFront): the depth past 0.18 is upper-arm skin at the
+     shoulder seam that sat within 0.05 of his chest at rest. The validator leaves that skin out (`_torso_free`); the x-ray counts it.
+   - P2 Death 0.252: only in the review shot's fade from his last pose back to Idle. The game holds Death's last frame after KO
+     (`BossAnimations.luau:226`), so that fade never plays. Inside the clip: 0.181, the same shoulder-seam skin.
+   - P2 DeathblowVictim 0.275: the review's 0.2 s fade in (0.114 at the game's 0.15 s). Inside the clip, at clip f18 (shot f36), the
+     top of his left shoulder is 0.219 in; 0.188 of that is skin the validator would count, but it falls between its ~510
+     left-upper-arm samples.
+   In normal renders of the two worst in-clip frames (RendingArc f58, DeathblowVictim f36), nothing comes through the front of his chest.
+   The seam depth is still there in all nine, so this item stays open.
+2. P2 Guandao_L3 rose 0.147 -> 0.180 in the rendered mesh (f25-29): left upper arm at the shoulder seam (0.180), and 0.173 for skin
+   the validator counts, which is past the 0.17 wall but under its 0.18 flag (`results/xray_why.md`).
 3. Cloth: the 34 deeper or more frequent cloth pairs in `results/cloth_changes.txt`, led by P1 Guandao_Running's RobeLeft in his
    LowerTorso (0.125) and P2 Skyfall's RobeFront in the left forearm (0.110).
 4. The glaive through his upper torso for a frame as the review shot fades in from Idle (shot f22): P2 Flourish 0.308 -> 0.341,
-   P2 Guandao_L2 0.298 -> 0.281 (P2 RunForward's 0.274 is gone).
+   P2 Guandao_L2 0.298 -> 0.281 (P2 RunForward's 0.274 is gone). At the game's own fades (11-11, `results/fadeweapon_final.txt`: every
+   weapon sample against the solver's torso solids, fading in from the clip's first frame) both are 0.000 at 0.1 s. That is the fade the
+   game gives them, since both have contact times (`BossAnimations.luau:72`). At 0.15 s: Flourish 0.065, L2 0.012; at 0.2 s: Flourish 0.187.
+   No other clip passes 0.05 at any game fade time; P2 Death's 0.079 is its fade-out, which never plays. On the rendered mesh
+   (`scripts/shots_gamefade.py` + mesh_clash.py, every frame, `results/mset_gamefade.json`): the 0.2 s shots reproduce 0.341 and
+   0.281 exactly, and with the fade at 0.1 s neither clip has any glaive in his torso. At 0.15 s Flourish is 0.361 and L2 0.079, but the
+   game never gives these clips 0.15 s: Flourish is cued as a BossSwing with an impact time (`BossAttackService.luau:49`), so it gets the
+   0.1 s fade. Left: in L2 at 0.1 s, his chest surface is 0.071 inside the glaive at clip f4 (0.064 before this pass). Not checked: fades
+   from poses other than Idle, and a late start when latency eats into the impact time.
 5. The review renders' 0.2 s fade puts P1 Guandao_Running's left arm 0.196 in at the start of its video (the game's own fades: 0.145
    and 0.169).
 6. P2 Skyfall's haft in his right thigh after the landing (section 9).
@@ -164,7 +187,7 @@ Next step for it: the guard has to be weighed together with the torso in the pol
 
 - `scripts/`: every probe and tool written in this pass (each starts with a usage line). New ones for the checks above:
   `studio_expected.py` (the solver frames as a model file Studio can load), `studio_preview.luau` (the Studio harness),
-  `revaltable.py`, `jsondiff.py`, `legsall.py`, `fadecheck3.py`, `measure_set2.py`, `render_cmp.py`, `sheet.py`.
+  `revaltable.py`, `jsondiff.py`, `legsall.py`, `fadecheck3.py`, `measure_set2.py`, `render_cmp.py`, `sheet.py`, `xray_why.py`, `fadeweapon.py`, `shots_gamefade.py`.
 - `results/`: the outputs cited above.
 - Bakes: `work/shen_repair/baked_set2` (local, gitignored) is the final set the exports came from.
 
@@ -174,6 +197,7 @@ Next step for it: the guard has to be weighed together with the torso in the pol
   set back to false in Edit mode. The temporary folder `content\shenpreview` in Studio's install folder (clip copies and the
   harness) is deleted at the end of the pass.
 - Stray render folders `C:\work\shen_repair\rv5` were removed; the empty `C:\work` above them is left for you to delete (a safety
-  check stops me removing a top-level folder).
+  check stops me removing a top-level folder). Cause: review.py passed its relative output folder to Blender, which resolved it
+  against the drive root. review.py now makes the folder absolute (11-11).
 - Untracked `outputs/hero-grand-soul-review-2026-11-09/` and `outputs/mugen-combat-review-2026-11-09/` belong to another task and
   were left uncommitted on purpose, so `git status` is not fully clean.
