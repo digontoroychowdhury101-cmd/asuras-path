@@ -176,18 +176,42 @@ The attempt to fix it is in the code but switched off: `Clip.legs_guard` makes h
 weapon sample. With it, replayed from the same controls, every stage keeps the legs clear (`LEGS ... none`), but the right arm ends
 0.18-0.20 in his chest over f45-55 and the joint polish could not take it back under the wall in two runs (`legpol_1/2.log`: the
 window f45-55 not kept three ways; the validator would flag "right arm 0.18 inside his torso"), and the full bake with it showed a
-0.57 blade pop at f46 after its pre-polish stages. A third polish run (`ctp_lg.log`) was still solving when this was committed.
+0.57 blade pop at f46 after its pre-polish stages. A third polish run (`ctp_lg.log`: the stages after clear_torso replayed with the
+guard on, then the joint polish; `scripts/ctmoves.py` restores the clip state cached in `ctcache_sky_lg.pkl`, which has
+`legs_guard: True`) failed the same way on 11-11. Its first window (f0-6) was kept. In the main window (f43-71) the
+right arm entered 0.195 deep; after 95 SLSQP iterations (87 min) it was still 0.191, its right-hand reach worse, the solve
+infeasible ("Positive directional derivative for linesearch"), and the window was not kept. The elbows-only retry stopped after
+13 iterations ("Inequality constraints incompatible") with the arm deeper, 0.208, and was not kept either. The seeded retry
+(from clear_torso's moves) reached 0.182 in 20 iterations but was infeasible, with the weapon clash and both grips worse, and was
+not kept. Its final reading, run to the end (REST): weapon in his legs none, but right arm 0.195 and left arm 0.184 inside his
+torso, right 0.193 between f58 and f59, so the validator would flag three problems (right arm 0.20, right arm 0.19 between
+f58 and f59, left arm 0.18).
 No clip opts in, so the code reproduces the exported Skyfall exactly (a full bake from code, `baked_rpS`, matches the export with
 a largest difference of 0.0).
 
-Next step for it: the guard has to be weighed together with the torso in the polish window, not only in the stages before it
-(the polish brings the arm back out of the chest by moving the fist, and the haft follows the fist into the thigh).
+Next step for it: the polish already weighs the guard together with the torso. With `legs_guard` on, its held_clash constraint
+counts the weapon in his legs (`shen_lib.py`, `_polish_window` measure), and with that it still finds no pose that clears both.
+Within the polish's controls (fist point, haft tilt about the fist, elbow swings), the fist positions that take the right arm out of
+his chest put the haft in his thigh. The way out has to be in Skyfall's own keys after the landing (where the fist and the haft are
+carried), then a full bake.
+
+Keys, 11-11 (`results/skyfall_lift_screen.txt`, `scripts/thighdir.py`). On the exported bake the wood is in his right thigh on two
+frames only, f49 0.121 and f50 0.041. The deepest point is 0.21 ahead of the fist along the haft, and the way out of the thigh is
+almost straight up (+0.94 of the outward direction). So the screen lifts the fist for a moment after the contact (a second carry,
+eased in from 1.52 s, full over f47-50, gone by f53; the contact keeps its key). It ran four DEV overlays of shen_clips.py from the
+start of the bake to clear_free_arm, then the later stages without the polish:
+- lift 0.15: guard off, wood 0.142 in his thigh, right arm 0.216; guard on, legs clear, right arm 0.235.
+- lift 0.25: guard off, legs clear, right arm 0.200; guard on, legs clear, right arm 0.184. The exported bake's own polish window
+  (f45-55) also started at 0.184, and its seeded retry took it to 0.160 (`ttrpS_P2_GuandaoSkyfall.log`).
+More lift left his arm shallower in both modes. Full bakes with the polish (runall.py, DEV overlays: lift 0.25 and 0.35, guard
+on and off) were started at 02:20.
 
 ## 10. Files
 
 - `scripts/`: every probe and tool written in this pass (each starts with a usage line). New ones for the checks above:
   `studio_expected.py` (the solver frames as a model file Studio can load), `studio_preview.luau` (the Studio harness),
-  `revaltable.py`, `jsondiff.py`, `legsall.py`, `fadecheck3.py`, `measure_set2.py`, `render_cmp.py`, `sheet.py`, `xray_why.py`, `fadeweapon.py`, `shots_gamefade.py`.
+  `revaltable.py`, `jsondiff.py`, `legsall.py`, `fadecheck3.py`, `measure_set2.py`, `render_cmp.py`, `sheet.py`, `xray_why.py`,
+  `fadeweapon.py`, `shots_gamefade.py`.
 - `results/`: the outputs cited above.
 - Bakes: `work/shen_repair/baked_set2` (local, gitignored) is the final set the exports came from.
 
@@ -195,7 +219,8 @@ Next step for it: the guard has to be weighed together with the torso in the pol
 
 - Studio: the place was never saved from Studio. `HttpService.HttpEnabled`, switched on for an early version of the harness, was
   set back to false in Edit mode. The temporary folder `content\shenpreview` in Studio's install folder (clip copies and the
-  harness) is deleted at the end of the pass.
+  harness, 46 files) was deleted on 11-11. Studio's Edit session was checked afterwards: no harness objects left in it,
+  HttpEnabled false.
 - Stray render folders `C:\work\shen_repair\rv5` were removed; the empty `C:\work` above them is left for you to delete (a safety
   check stops me removing a top-level folder). Cause: review.py passed its relative output folder to Blender, which resolved it
   against the drive root. review.py now makes the folder absolute (11-11).

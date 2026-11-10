@@ -1,0 +1,54 @@
+# Phase 2 Skyfall: where the haft sits in his legs, and a lift of the fist after the landing (2026-11-11)
+
+## The exported bake (baked_set2), scripts/thighdir.py baked_set2 P2_GuandaoSkyfall 44 62
+frame  leg             depth  along  out(his frame)        fist(his frame)        haft(his frame)
+f49    RightUpperLeg   0.121  +0.21  (-0.32 +0.94 +0.07)    (+0.68 -1.42 -0.52)    (+0.01 -0.37 -0.93)
+f50    RightUpperLeg   0.041  +0.15  (-0.13 +0.97 +0.20)    (+0.68 -1.43 -0.56)    (-0.01 -0.36 -0.93)
+(every other frame 44-62: clear)
+
+## Screening (scripts/ctcache.py to clear_free_arm with a DEV overlay of shen_clips.py, then ctmoves.py LEGS=1 REST=1 44 58, no polish)
+Overlay: skyfall()'s carried follow-through wrapped in a second carry(..., 1.52, 1.58, 1.68, 1.76, (0, LIFT, 0)): the fist lifted LIFT (rig units, his frame) eased in after the contact, held over f47-50, out by f53.
+
+### liftA: lift 0.15, legs_guard off
+LEGS cache          f48 0.014, f49 0.034, f50 0.084, f53 0.072, f55 0.016, f56 0.084, f57 0.035
+torso: rp 22 frames need it, 54 moved; worst 0.261 -> 0.188, moves up to 0.64
+LEGS clear_torso    f48 0.014, f49 0.109, f51 0.038, f52 0.115, f53 0.072, f55 0.016, f56 0.125, f58 0.100
+LEGS slide_fist     f50 0.083, f53 0.091, f54 0.125, f56 0.059, f57 0.106, f58 0.016
+LEGS tilt_haft      f50 0.083, f51 0.052, f52 0.142, f53 0.030, f54 0.067, f55 0.109, f56 0.063, f57 0.057, f58 0.020
+LEGS depop          f50 0.024, f51 0.040, f52 0.142, f53 0.030, f54 0.067, f55 0.109, f56 0.063, f57 0.026
+LEGS close_loop     f50 0.024, f51 0.040, f52 0.142, f53 0.030, f54 0.067, f55 0.109, f56 0.063, f57 0.026
+LEGS joint_polish   f50 0.024, f51 0.040, f52 0.142, f53 0.030, f54 0.067, f55 0.109, f56 0.063, f57 0.026
+REST torso R 0.216 L 0.150 between R (0.192, 59) L (0.122, 68) pops fist 0.120 blade 0.350 slide 0.091 | ['right arm 0.22 inside his torso', 'right arm 0.19 inside his torso between f59 and f60']
+
+### liftB: lift 0.25, legs_guard off
+LEGS cache          f51 0.151, f55 0.011, f58 0.045
+torso: rp 21 frames need it, 53 moved; worst 0.213 -> 0.190, moves up to 0.58
+LEGS clear_torso    f49 0.056, f50 0.143, f51 0.018, f52 0.115
+LEGS slide_fist     f49 0.014, f50 0.099, f57 0.017
+LEGS tilt_haft      f56 0.085
+LEGS depop          none
+LEGS close_loop     none
+LEGS joint_polish   none
+REST torso R 0.200 L 0.145 between R (0.179, 61) L (0.137, 59) pops fist 0.160 blade 0.403 slide 0.099 | ['right arm 0.20 inside his torso']
+
+### liftC: lift 0.15, legs_guard on
+LEGS cache          f48 0.014, f49 0.034, f50 0.084, f53 0.072, f55 0.016, f56 0.084, f57 0.035
+torso: rp 22 frames need it, 54 moved; worst 0.261 -> 0.168, moves up to 0.65
+LEGS clear_torso    f48 0.014, f50 0.014, f55 0.016, f57 0.085, f58 0.100
+LEGS slide_fist     f51 0.049, f54 0.014, f56 0.010, f57 0.077, f58 0.016
+LEGS tilt_haft      f51 0.049, f58 0.020
+LEGS depop          none
+LEGS close_loop     none
+LEGS joint_polish   none
+REST torso R 0.235 L 0.152 between R (0.182, 47) L (0.136, 62) pops fist 0.128 blade 0.350 slide 0.088 | ['right arm 0.23 inside his torso', 'right arm 0.18 inside his torso between f47 and f48']
+
+### liftD: lift 0.25, legs_guard on
+LEGS cache          f51 0.151, f55 0.011, f58 0.045
+torso: rp 21 frames need it, 52 moved; worst 0.213 -> 0.256, moves up to 0.55
+LEGS clear_torso    f50 0.143, f53 0.050, f55 0.011
+LEGS slide_fist     f51 0.074
+LEGS tilt_haft      f49 0.031
+LEGS depop          none
+LEGS close_loop     none
+LEGS joint_polish   none
+REST torso R 0.184 L 0.151 between R (0.182, 52) L (0.152, 66) pops fist 0.165 blade 0.393 slide 0.103 | ['right arm 0.18 inside his torso', 'right arm 0.18 inside his torso between f52 and f53']
