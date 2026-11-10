@@ -1,0 +1,50 @@
+clips in common: 64
+cloth          pre4L: n>=.05 135  sum(share*deep) 1.462  max 0.200 | finL: n>=.05 117  sum(share*deep) 1.333  max 0.166
+arm-in-weapon  pre4L: n>=.05 137  sum(share*deep) 2.890  max 0.082 | finL: n>=.05 129  sum(share*deep) 2.755  max 0.082
+weapon-in-arm  pre4L: n>=.05  27  sum(share*deep) 0.182  max 0.162 | finL: n>=.05  26  sum(share*deep) 0.156  max 0.145
+other          pre4L: n>=.05 148  sum(share*deep) 2.129  max 0.308 | finL: n>=.05 127  sum(share*deep) 2.135  max 0.341
+c2_HitLightFront         LeftHand in weapon               100% 0.075 f22  pre4L 100% 0.067
+c2_RunForward            LeftHand in weapon               100% 0.074 f20  pre4L  33% 0.067
+c2_StrafeLeft            LeftHand in weapon                96% 0.076 f64  pre4L  84% 0.076
+c1_Transform             RobeLeft in LeftUpperLeg          69% 0.105 f46  pre4L  69% 0.105
+c2_WalkBackward          LeftHand in weapon               100% 0.070 f20  pre4L  98% 0.067
+c2_HitLightBack          LeftHand in weapon                94% 0.074 f26  pre4L  94% 0.074
+c2_Guandao_L3            LeftHand in weapon                88% 0.074 f20  pre4L  82% 0.074
+c2_GuardLoop             LeftHand in weapon                94% 0.067 f6  pre4L  94% 0.067
+c2_HitLightLeft          LeftHand in weapon                81% 0.075 f26  pre4L  94% 0.067
+c2_GuardHit              LeftHand in weapon                88% 0.067 f6  pre4L  88% 0.067
+c2_GuandaoSkyfall        LeftHand in weapon                73% 0.077 f22  pre4L  71% 0.077
+c2_HitLightRight         LeftHand in weapon                75% 0.072 f22  pre4L  75% 0.072
+c2_Strike                LeftHand in weapon                69% 0.072 f26  pre4L  65% 0.072
+c2_Guandao_L1            LeftHand in weapon                73% 0.067 f6  pre4L  73% 0.067
+c2_Guandao_Running       LeftHand in weapon                72% 0.067 f6  pre4L  78% 0.072
+c2_Guandao_L2            LeftHand in weapon                69% 0.068 f20  pre4L  69% 0.070
+c2_Guandao_Art           LeftHand in weapon                70% 0.067 f6  pre4L  70% 0.067
+c2_Guandao_Heavy         LeftHand in weapon                64% 0.073 f42  pre4L  68% 0.076
+c2_Idle                  LeftHand in weapon                60% 0.074 f76  pre4L  60% 0.074
+c2_TurnRight             LeftHand in weapon                61% 0.073 f38  pre4L 100% 0.074
+c1_GuardLoop             RobeLeft in LeftUpperLeg          69% 0.063 f28  pre4L  69% 0.063
+c2_TurnLeft              LeftHand in weapon                65% 0.067 f6  pre4L  65% 0.067
+c2_Flourish              RightHand in weapon               58% 0.070 f36  pre4L  52% 0.073
+c1_GuardLoop             RightHand in weapon               67% 0.060 f68  pre4L  67% 0.060
+c2_PostureBreak          LeftHand in weapon                54% 0.071 f20  pre4L  50% 0.073
+c1_DeathblowVictim       RightHand in weapon               62% 0.062 f38  pre4L  62% 0.062
+c2_PhantomDrift          LeftHand in weapon                51% 0.074 f32  pre4L  44% 0.074
+c2_Feint                 LeftHand in weapon                56% 0.067 f6  pre4L  68% 0.076
+c2_PostureBreak          RightHand in weapon               50% 0.074 f40  pre4L  50% 0.074
+c1_Flourish              RightHand in weapon               55% 0.066 f28  pre4L  52% 0.067
+c1_WheelOfHeaven         RightHand in weapon               52% 0.067 f38  pre4L  58% 0.067
+c2_RendingArc            LeftHand in weapon                46% 0.074 f92  pre4L  52% 0.071
+c1_Death                 RobeLeft in LeftUpperLeg          32% 0.106 f62  pre4L  35% 0.106
+c1_RunForward            RobeLeft in LeftUpperLeg          50% 0.064 f26  pre4L  50% 0.064
+c1_Guandao_Art           RobeLeft in LeftUpperLeg          44% 0.072 f36  pre4L  44% 0.072
+c1_PrayerBeads           RightHand in weapon               44% 0.070 f38  pre4L  42% 0.068
+c1_HesitantMoon          RightHand in weapon               46% 0.064 f52  pre4L  46% 0.062
+c2_Guandao_Art           RobeRight in RightLowerLeg        17% 0.166 f38  pre4L  17% 0.166
+c2_Death                 LeftHand in weapon                39% 0.074 f46  pre4L  30% 0.074
+c2_GuandaoSkyfall        RightHand in weapon               42% 0.067 f92  pre4L  50% 0.069
+c2_BloodWave             LeftHand in weapon                37% 0.075 f72  pre4L  34% 0.073
+c1_PostureBreak          RobeLeft in LeftUpperLeg          42% 0.064 f38  pre4L  42% 0.064
+c1_FlowingJian           RightHand in weapon               40% 0.065 f66  pre4L  53% 0.065
+c2_StrafeRight           LeftHand in weapon                38% 0.067 f6  pre4L  38% 0.067
+c2_CrimsonEmbrace        LeftHand in weapon                33% 0.074 f80  pre4L  36% 0.074

@@ -1,0 +1,98 @@
+Studio integration: local KeyframeSequence playback against the solver (Windows pass, 2026-11-10/11). Nothing was published or uploaded.
+
+Method (scripts/studio_expected.py, scripts/studio_preview.luau): 41 exported clips (assets/animations/opening_cast/shen/*.rbxmx: all
+39 re-exported in this pass plus both Idles) and a Folder of the solver's frames (work/opening_cast_bake/shen/<clip>.json, as StringValues) were copied
+into Studio's own content folder and loaded with game:GetObjects("rbxasset://shenpreview/...") and AnimationClipProvider:RegisterAnimationClip,
+in a Play session of places/AsurasPath.rbxlx with the real boss spawned by the game (ShenProbe), phase 2 reached through the game's own
+transition. The live boss rig was cloned (Humanoid.AutomaticScalingEnabled off before parenting, live attachments copied: 0 pivot diffs),
+each clip played on the clone, paused at every exported frame time, and each part's CFrame relative to HumanoidRootPart compared with the
+solver's frame (expected = skinning matrix * rest, rest read with every joint Transform at identity). Units: rig units (about 0.27 m at his
+scale). "Glaive" also compares points 2.5 along each axis of the weapon (tip and butt). Angle = the part's rotation error.
+kfs = keyframes kept by the exporter's reduction (Idle 22 of 193); the worst errors sit on reduced clips.
+
+Phase 1 (16 clips: 15 repaired + Idle)
+GrandmasterShen_P1_AbbotSweep len 1.933/1.933 frames 59 kfs 59 max 0.0016 | RightHand 0.0006 f37 0.17deg; LeftHand 0.0006 f17 0.21deg
+GrandmasterShen_P1_Death len 3.000/3.000 frames 91 kfs 67 max 0.0073 | RightHand 0.0042 f75 0.23deg; LeftHand 0.0042 f76 0.19deg
+GrandmasterShen_P1_Feint len 1.067/1.067 frames 33 kfs 33 max 0.0025 | RightHand 0.0008 f7 0.15deg; LeftHand 0.0006 f14 0.17deg
+GrandmasterShen_P1_Flourish len 1.600/1.600 frames 49 kfs 49 max 0.0037 | RightHand 0.0011 f2 0.21deg; LeftHand 0.0012 f4 0.18deg
+GrandmasterShen_P1_FlowingJian len 3.500/3.500 frames 106 kfs 105 max 0.0058 | RightHand 0.0008 f86 0.19deg; LeftHand 0.0006 f10 0.21deg
+GrandmasterShen_P1_Guandao_Heavy len 0.833/0.833 frames 26 kfs 26 max 0.0043 | RightHand 0.0016 f25 0.15deg; LeftHand 0.0015 f25 0.19deg
+GrandmasterShen_P1_Guandao_L1 len 0.400/0.400 frames 13 kfs 13 max 0.0115 | RightHand 0.0055 f12 0.28deg; LeftHand 0.0060 f12 0.74deg
+GrandmasterShen_P1_Guandao_L2 len 0.433/0.433 frames 14 kfs 14 max 0.0035 | RightHand 0.0010 f11 0.17deg; LeftHand 0.0005 f13 0.14deg
+GrandmasterShen_P1_Guandao_L3 len 0.533/0.533 frames 17 kfs 17 max 0.0032 | RightHand 0.0032 f16 0.19deg; LeftHand 0.0032 f16 0.16deg
+GrandmasterShen_P1_Guandao_Running len 0.600/0.600 frames 19 kfs 19 max 0.0047 | RightHand 0.0012 f18 0.19deg; LeftHand 0.0008 f18 0.21deg
+GrandmasterShen_P1_HesitantMoon len 2.133/2.133 frames 65 kfs 65 max 0.0021 | RightHand 0.0010 f43 0.21deg; LeftHand 0.0007 f22 0.18deg
+GrandmasterShen_P1_Idle len 6.400/6.400 frames 193 kfs 22 max 0.0127 | RightHand 0.0043 f40 0.26deg; LeftHand 0.0071 f153 0.27deg
+GrandmasterShen_P1_PrayerBeads len 2.100/2.100 frames 64 kfs 63 max 0.0117 | RightHand 0.0038 f61 0.20deg; LeftHand 0.0058 f61 0.16deg
+GrandmasterShen_P1_Strike len 1.100/1.100 frames 34 kfs 34 max 0.0038 | RightHand 0.0011 f5 0.15deg; LeftHand 0.0008 f33 0.18deg
+GrandmasterShen_P1_Transform len 1.700/1.700 frames 52 kfs 34 max 0.0077 | RightHand 0.0013 f31 0.18deg; LeftHand 0.0007 f39 0.18deg
+GrandmasterShen_P1_WheelOfHeaven len 2.600/2.600 frames 79 kfs 79 max 0.0051 | RightHand 0.0010 f43 0.22deg; LeftHand 0.0016 f4 0.19deg
+Phase 1 worst: 0.0127 (Idle, keyframe-reduced), glaive and every part within it.
+
+Phase 2, BEFORE the BossRigs fix (24 clips: 23 repaired + Idle; the live rig after the game's own phase transition)
+P2_Idle                    glaive 0.1227 body/hands 0.0081
+P2_BloodWave               glaive 0.2536 body/hands 0.0007
+P2_CrimsonEmbrace          glaive 0.2845 body/hands 0.0076
+P2_Death                   glaive 0.2524 body/hands 0.0074
+P2_DeathblowVictim         glaive 0.1141 body/hands 0.0012
+P2_Feint                   glaive 0.2470 body/hands 0.0022
+P2_Flourish                glaive 0.3326 body/hands 0.0011
+P2_Guandao_Heavy           glaive 0.2397 body/hands 0.0018
+P2_Guandao_L1              glaive 0.1827 body/hands 0.0050
+P2_Guandao_L2              glaive 0.2614 body/hands 0.0011
+P2_Guandao_L3              glaive 0.2150 body/hands 0.0010
+P2_Guandao_Running         glaive 0.2116 body/hands 0.0021
+P2_HitLightFront           glaive 0.1021 body/hands 0.0025
+P2_HitLightLeft            glaive 0.1322 body/hands 0.0025
+P2_HitLightRight           glaive 0.1235 body/hands 0.0009
+P2_PhantomDrift            glaive 0.2271 body/hands 0.0023
+P2_PostureBreak            glaive 0.1478 body/hands 0.0029
+P2_RendingArc              glaive 0.2916 body/hands 0.0023
+P2_RunForward              glaive 0.1342 body/hands 0.0075
+P2_StrafeLeft              glaive 0.1246 body/hands 0.0101
+P2_Strike                  glaive 0.2698 body/hands 0.0011
+P2_Transform               glaive 0.1856 body/hands 0.0041
+P2_TurnRight               glaive 0.1248 body/hands 0.0082
+P2_WalkBackward            glaive 0.1219 body/hands 0.0103
+P2 worst: glaive 0.3326, every other part 0.0103.
+Cause: the live glaive joint stayed on phase 1's pivot (0.96, -0.42, -0.45) instead of phase 2's (1.09, -0.39, -0.35): BossRigs.apply skipped
+a helper an earlier form had built. The weapon sat a constant 0.167 rig units (about 0.22 studs) off where every phase 2 clip and weapon
+mesh is made, turning with his hips, in every phase 2 clip; the published clips have the same offset in game. Fixed in
+src/shared/BossRigs.luau (the existing helper's joint is re-pointed to the current form's point); regression test tools/test_boss_rigs.luau.
+
+Phase 2, AFTER the fix (a fresh Play session with the fixed module; live glaive pivot read back as 1.090, -0.390, -0.350)
+GrandmasterShen_P2_BloodWave len 2.133/2.133 frames 65 kfs 65 max 0.0028 | RightHand 0.0008 f32 0.22deg; LeftHand 0.0006 f53 0.19deg; Glaive 0.0028 f53 0.20deg; RightLowerArm 0.0006 f29 0.21deg; LeftLowerArm 0.0008 f53 0.19deg; UpperTorso 0.0001 f32 0.18deg; LowerTorso 0.0002 f32 0.18deg; Head 0.0005 f29 0.20deg; RightFoot 0.0004 f2 0.19deg; LeftFoot 0.0004 f42 0.15deg
+GrandmasterShen_P2_CrimsonEmbrace len 2.400/2.400 frames 73 kfs 72 max 0.0074 | RightHand 0.0010 f17 0.20deg; LeftHand 0.0063 f17 0.51deg; Glaive 0.0023 f17 0.21deg; RightLowerArm 0.0023 f17 0.43deg; LeftLowerArm 0.0074 f17 0.52deg; UpperTorso 0.0029 f17 0.19deg; LowerTorso 0.0019 f17 0.21deg; Head 0.0059 f17 0.16deg; RightFoot 0.0002 f17 0.18deg; LeftFoot 0.0004 f17 0.15deg
+GrandmasterShen_P2_Death len 3.000/3.000 frames 91 kfs 67 max 0.0076 | RightHand 0.0058 f67 0.20deg; LeftHand 0.0068 f73 0.54deg; Glaive 0.0076 f23 0.19deg; RightLowerArm 0.0056 f67 0.40deg; LeftLowerArm 0.0049 f74 0.30deg; UpperTorso 0.0070 f67 0.39deg; LowerTorso 0.0067 f67 0.18deg; Head 0.0073 f23 0.39deg; RightFoot 0.0030 f23 0.18deg; LeftFoot 0.0020 f23 0.20deg
+GrandmasterShen_P2_DeathblowVictim len 2.200/2.200 frames 67 kfs 67 max 0.0012 | RightHand 0.0012 f5 0.19deg; LeftHand 0.0005 f2 0.20deg; Glaive 0.0009 f66 0.19deg; RightLowerArm 0.0006 f5 0.19deg; LeftLowerArm 0.0004 f4 0.20deg; UpperTorso 0.0001 f12 0.20deg; LowerTorso 0.0001 f25 0.20deg; Head 0.0005 f2 0.19deg; RightFoot 0.0004 f15 0.06deg; LeftFoot 0.0005 f0 0.14deg
+GrandmasterShen_P2_Feint len 1.067/1.067 frames 33 kfs 33 max 0.0024 | RightHand 0.0020 f32 0.15deg; LeftHand 0.0008 f32 0.20deg; Glaive 0.0024 f7 0.20deg; RightLowerArm 0.0022 f32 0.34deg; LeftLowerArm 0.0006 f14 0.17deg; UpperTorso 0.0001 f22 0.15deg; LowerTorso 0.0002 f11 0.16deg; Head 0.0004 f5 0.17deg; RightFoot 0.0004 f2 0.18deg; LeftFoot 0.0005 f12 0.07deg
+GrandmasterShen_P2_Flourish len 1.600/1.600 frames 49 kfs 49 max 0.0039 | RightHand 0.0010 f35 0.19deg; LeftHand 0.0010 f38 0.14deg; Glaive 0.0039 f41 0.18deg; RightLowerArm 0.0006 f43 0.21deg; LeftLowerArm 0.0008 f38 0.19deg; UpperTorso 0.0001 f6 0.20deg; LowerTorso 0.0001 f48 0.19deg; Head 0.0004 f28 0.20deg; RightFoot 0.0004 f3 0.19deg; LeftFoot 0.0004 f22 0.15deg
+GrandmasterShen_P2_Guandao_Heavy len 0.833/0.833 frames 26 kfs 26 max 0.0049 | RightHand 0.0018 f4 0.19deg; LeftHand 0.0014 f14 0.17deg; Glaive 0.0049 f22 0.19deg; RightLowerArm 0.0017 f4 0.17deg; LeftLowerArm 0.0011 f11 0.21deg; UpperTorso 0.0004 f11 0.17deg; LowerTorso 0.0002 f11 0.20deg; Head 0.0007 f13 0.19deg; RightFoot 0.0004 f3 0.19deg; LeftFoot 0.0004 f25 0.11deg
+GrandmasterShen_P2_Guandao_L1 len 0.400/0.400 frames 13 kfs 13 max 0.0089 | RightHand 0.0049 f12 0.24deg; LeftHand 0.0045 f12 0.19deg; Glaive 0.0089 f12 0.15deg; RightLowerArm 0.0049 f12 0.25deg; LeftLowerArm 0.0025 f12 0.35deg; UpperTorso 0.0008 f12 0.13deg; LowerTorso 0.0009 f12 0.16deg; Head 0.0011 f12 0.17deg; RightFoot 0.0004 f1 0.18deg; LeftFoot 0.0011 f12 0.09deg
+GrandmasterShen_P2_Guandao_L2 len 0.433/0.433 frames 14 kfs 14 max 0.0036 | RightHand 0.0007 f13 0.20deg; LeftHand 0.0011 f13 0.14deg; Glaive 0.0036 f2 0.18deg; RightLowerArm 0.0004 f2 0.14deg; LeftLowerArm 0.0012 f11 0.14deg; UpperTorso 0.0001 f13 0.15deg; LowerTorso 0.0002 f5 0.14deg; Head 0.0004 f7 0.16deg; RightFoot 0.0005 f11 0.18deg; LeftFoot 0.0003 f1 0.12deg
+GrandmasterShen_P2_Guandao_L3 len 0.533/0.533 frames 17 kfs 17 max 0.0022 | RightHand 0.0007 f16 0.13deg; LeftHand 0.0009 f16 0.14deg; Glaive 0.0022 f5 0.21deg; RightLowerArm 0.0009 f16 0.18deg; LeftLowerArm 0.0008 f2 0.17deg; UpperTorso 0.0004 f7 0.17deg; LowerTorso 0.0003 f5 0.16deg; Head 0.0007 f7 0.15deg; RightFoot 0.0004 f14 0.18deg; LeftFoot 0.0005 f5 0.13deg
+GrandmasterShen_P2_Guandao_Running len 0.600/0.600 frames 19 kfs 19 max 0.0076 | RightHand 0.0015 f18 0.18deg; LeftHand 0.0015 f18 0.19deg; Glaive 0.0076 f18 0.19deg; RightLowerArm 0.0017 f18 0.15deg; LeftLowerArm 0.0022 f18 0.17deg; UpperTorso 0.0003 f14 0.18deg; LowerTorso 0.0003 f18 0.17deg; Head 0.0008 f7 0.15deg; RightFoot 0.0005 f17 0.18deg; LeftFoot 0.0007 f18 0.10deg
+GrandmasterShen_P2_HitLightFront len 0.467/0.467 frames 15 kfs 15 max 0.0025 | RightHand 0.0018 f14 0.19deg; LeftHand 0.0008 f14 0.14deg; Glaive 0.0019 f14 0.15deg; RightLowerArm 0.0025 f14 0.36deg; LeftLowerArm 0.0008 f14 0.15deg; UpperTorso 0.0003 f14 0.16deg; LowerTorso 0.0003 f14 0.17deg; Head 0.0005 f14 0.16deg; RightFoot 0.0004 f10 0.18deg; LeftFoot 0.0003 f14 0.00deg
+GrandmasterShen_P2_HitLightLeft len 0.467/0.467 frames 15 kfs 15 max 0.0025 | RightHand 0.0021 f14 0.20deg; LeftHand 0.0006 f14 0.11deg; Glaive 0.0007 f14 0.14deg; RightLowerArm 0.0025 f14 0.27deg; LeftLowerArm 0.0006 f14 0.11deg; UpperTorso 0.0003 f14 0.15deg; LowerTorso 0.0002 f14 0.18deg; Head 0.0004 f1 0.17deg; RightFoot 0.0003 f1 0.18deg; LeftFoot 0.0003 f5 0.00deg
+GrandmasterShen_P2_HitLightRight len 0.467/0.467 frames 15 kfs 15 max 0.0037 | RightHand 0.0009 f14 0.16deg; LeftHand 0.0010 f14 0.17deg; Glaive 0.0037 f14 0.20deg; RightLowerArm 0.0007 f14 0.15deg; LeftLowerArm 0.0006 f14 0.19deg; UpperTorso 0.0002 f14 0.17deg; LowerTorso 0.0002 f14 0.18deg; Head 0.0004 f14 0.12deg; RightFoot 0.0003 f11 0.18deg; LeftFoot 0.0004 f9 0.00deg
+GrandmasterShen_P2_Idle len 4.800/4.800 frames 145 kfs 65 max 0.0091 | RightHand 0.0080 f51 0.57deg; LeftHand 0.0063 f2 0.20deg; Glaive 0.0091 f40 0.20deg; RightLowerArm 0.0048 f40 0.32deg; LeftLowerArm 0.0060 f40 0.44deg; UpperTorso 0.0063 f122 0.28deg; LowerTorso 0.0063 f122 0.19deg; Head 0.0062 f122 0.60deg; RightFoot 0.0038 f122 0.19deg; LeftFoot 0.0038 f122 0.00deg
+GrandmasterShen_P2_PhantomDrift len 2.000/2.000 frames 61 kfs 61 max 0.0030 | RightHand 0.0022 f60 0.19deg; LeftHand 0.0007 f13 0.19deg; Glaive 0.0030 f13 0.20deg; RightLowerArm 0.0023 f60 0.38deg; LeftLowerArm 0.0005 f13 0.20deg; UpperTorso 0.0002 f29 0.19deg; LowerTorso 0.0001 f26 0.20deg; Head 0.0005 f28 0.21deg; RightFoot 0.0004 f45 0.18deg; LeftFoot 0.0005 f28 0.11deg
+GrandmasterShen_P2_PostureBreak len 1.000/1.000 frames 31 kfs 31 max 0.0029 | RightHand 0.0029 f30 0.20deg; LeftHand 0.0008 f30 0.19deg; Glaive 0.0011 f30 0.17deg; RightLowerArm 0.0008 f30 0.20deg; LeftLowerArm 0.0004 f17 0.17deg; UpperTorso 0.0002 f2 0.21deg; LowerTorso 0.0002 f30 0.16deg; Head 0.0005 f10 0.19deg; RightFoot 0.0004 f3 0.18deg; LeftFoot 0.0010 f30 0.18deg
+GrandmasterShen_P2_RendingArc len 2.600/2.600 frames 79 kfs 79 max 0.0061 | RightHand 0.0020 f78 0.20deg; LeftHand 0.0013 f47 0.20deg; Glaive 0.0061 f47 0.21deg; RightLowerArm 0.0023 f78 0.35deg; LeftLowerArm 0.0013 f47 0.20deg; UpperTorso 0.0003 f26 0.19deg; LowerTorso 0.0002 f26 0.21deg; Head 0.0005 f28 0.19deg; RightFoot 0.0004 f34 0.18deg; LeftFoot 0.0005 f52 0.16deg
+GrandmasterShen_P2_RunForward len 1.600/1.600 frames 49 kfs 44 max 0.0083 | RightHand 0.0066 f37 0.17deg; LeftHand 0.0070 f37 0.20deg; Glaive 0.0083 f37 0.20deg; RightLowerArm 0.0076 f37 0.36deg; LeftLowerArm 0.0067 f15 0.35deg; UpperTorso 0.0026 f37 0.17deg; LowerTorso 0.0032 f37 0.18deg; Head 0.0042 f35 0.21deg; RightFoot 0.0016 f34 0.10deg; LeftFoot 0.0017 f35 0.00deg
+GrandmasterShen_P2_StrafeLeft len 2.400/2.400 frames 73 kfs 50 max 0.0102 | RightHand 0.0081 f31 0.21deg; LeftHand 0.0080 f31 0.17deg; Glaive 0.0080 f31 0.20deg; RightLowerArm 0.0102 f31 0.49deg; LeftLowerArm 0.0079 f31 0.40deg; UpperTorso 0.0028 f59 0.22deg; LowerTorso 0.0034 f59 0.20deg; Head 0.0058 f23 0.36deg; RightFoot 0.0038 f23 0.10deg; LeftFoot 0.0039 f23 0.00deg
+GrandmasterShen_P2_Strike len 1.100/1.100 frames 34 kfs 34 max 0.0037 | RightHand 0.0011 f5 0.16deg; LeftHand 0.0009 f5 0.21deg; Glaive 0.0037 f5 0.14deg; RightLowerArm 0.0007 f5 0.21deg; LeftLowerArm 0.0007 f5 0.20deg; UpperTorso 0.0002 f14 0.18deg; LowerTorso 0.0002 f14 0.20deg; Head 0.0006 f16 0.19deg; RightFoot 0.0004 f8 0.21deg; LeftFoot 0.0004 f33 0.15deg
+GrandmasterShen_P2_Transform len 1.500/1.500 frames 46 kfs 45 max 0.0131 | RightHand 0.0011 f26 0.30deg; LeftHand 0.0037 f26 0.18deg; Glaive 0.0131 f26 0.19deg; RightLowerArm 0.0022 f26 0.41deg; LeftLowerArm 0.0038 f26 0.18deg; UpperTorso 0.0028 f26 0.17deg; LowerTorso 0.0026 f26 0.18deg; Head 0.0041 f26 0.20deg; RightFoot 0.0034 f26 0.18deg; LeftFoot 0.0035 f26 0.10deg
+GrandmasterShen_P2_TurnRight len 0.900/0.900 frames 28 kfs 17 max 0.0082 | RightHand 0.0074 f3 0.10deg; LeftHand 0.0074 f3 0.15deg; Glaive 0.0074 f3 0.13deg; RightLowerArm 0.0063 f3 0.37deg; LeftLowerArm 0.0066 f3 0.29deg; UpperTorso 0.0053 f3 0.20deg; LowerTorso 0.0051 f3 0.23deg; Head 0.0056 f9 0.28deg; RightFoot 0.0082 f3 0.18deg; LeftFoot 0.0082 f3 0.00deg
+GrandmasterShen_P2_WalkBackward len 2.400/2.400 frames 73 kfs 20 max 0.0173 | RightHand 0.0088 f61 0.26deg; LeftHand 0.0093 f3 0.22deg; Glaive 0.0173 f23 0.24deg; RightLowerArm 0.0104 f62 0.38deg; LeftLowerArm 0.0079 f3 0.50deg; UpperTorso 0.0079 f62 0.36deg; LowerTorso 0.0088 f62 0.30deg; Head 0.0096 f23 0.56deg; RightFoot 0.0066 f63 0.10deg; LeftFoot 0.0065 f63 0.00deg
+Phase 2 worst after the fix: glaive 0.0173 (WalkBackward, 20 of 73 frames kept as keyframes), every other part 0.0104.
+
+Phase 2 Guandao Skyfall, measured last in the same session (its bake was settled after the others; the export in this commit):
+GrandmasterShen_P2_GuandaoSkyfall len 2.600/2.600 frames 79 kfs 77 max 0.0109 | RightHand 0.0109 f78 0.70deg; LeftHand 0.0034 f23 0.20deg; Glaive 0.0078 f23 0.20deg; RightLowerArm 0.0062 f21 0.56deg; LeftLowerArm 0.0034 f23 0.21deg; UpperTorso 0.0028 f23 0.18deg; LowerTorso 0.0028 f23 0.21deg; Head 0.0030 f21 0.18deg; RightFoot 0.0038 f21 0.19deg; LeftFoot 0.0053 f21 0.19deg
+Glaive pivot read back at that point, live boss and clone alike: (1.090, -0.390, -0.350) rig units, phase 2's point.
+
+Stills (Studio screen captures, viewed in the session, not saved as files): P1 FlowingJian t=3.05 and HesitantMoon t=1.40 textured,
+weapon in both hands, no visible clipping at those poses; P2 Strike t=0.22 with the fix: pose and glaive placement as the solver, but the
+phase 2 skin rendered untextured. Texture fetch: ContentProvider:PreloadAsync on both phases' SurfaceAppearance maps returned
+AssetFetchStatus.Failure within 0.2 s in this Studio session (every map, phase 1 included; phase 1 looked textured only from Studio's cache),
+an environment limit of this machine's Studio session, not of the clips or the rig.

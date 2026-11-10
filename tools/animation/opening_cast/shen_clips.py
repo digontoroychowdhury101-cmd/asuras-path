@@ -299,9 +299,13 @@ def build(phase):
             K(0, **READY),
             body(0.55, "io", yaw=30, chest=46, sink=-0.12, fwd=0.08, rf=(0.2, 0.5, 0, -14, 0)),
             body(0.8, "whip", yaw=-12, chest=-20, pitch=8, sink=-0.28, fwd=-0.42, lf=(0, -0.9, 0, 0, 0), rf=(0.16, 0.36, 0, -30, 0)),
-            body(1.2, "io", yaw=28, chest=38, pitch=6, sink=-0.22, fwd=-0.44, lf=(0, -0.9, 0, 4, 0), rf=(0.16, 0.2, 0, -18, 0)),
+            # (2026-11-10) the second cut comes from his high right, and he wound it up turned 28 deg (chest 38) to his left, away from it: both
+            # arms reached across his chest to the high right (after the first swivel: right 0.20, left 0.21 over f28-66). Wound up facing it (yaw
+            # -4, chest -6) the right arm clears (0.12); turning less into the third cut's wind-up (1.85: 18/28 -> 10/16) keeps the left arm off
+            # his chest there (0.18 -> 0.17; the bake: right 0.104, left 0.171; keyprobe.py variants A-J)
+            body(1.2, "io", yaw=-4, chest=-6, pitch=6, sink=-0.22, fwd=-0.44, lf=(0, -0.9, 0, 4, 0), rf=(0.16, 0.2, 0, -18, 0)),
             body(1.45, "whip", yaw=26, chest=34, pitch=8, sink=-0.3, fwd=-0.7, rf=(0.2, -0.3, 0, -8, 0), lf=(0, 0.1, 0, 10, 0)),
-            body(1.85, "io", yaw=18, chest=28, pitch=5, sink=-0.32, fwd=-0.78, rf=(0.2, -0.3, 0, -8, 0), lf=(0, 0.1, 0, 10, 0)),
+            body(1.85, "io", yaw=10, chest=16, pitch=5, sink=-0.32, fwd=-0.78, rf=(0.2, -0.3, 0, -8, 0), lf=(0, 0.1, 0, 10, 0)),
             body(2.1, "whip", yaw=-16, chest=-30, pitch=-1, sink=-0.12, fwd=-0.92, lf=(0, -0.9, 0, 0, 0), rf=(0.16, 0.36, 0, -26, 0)),
             body(2.5, "io", yaw=-2, chest=2, pitch=-8, sink=-0.05, fwd=-0.9, lf=(0, -0.9, 0, 0, 0), rf=(0.16, 0.36, 0, -26, 0)),
             # (2026-11-09) the overhead finish lands 0.35 further forward, with his 1.1 lunge: left at -1.25 the hands came down at his belt and the lead
@@ -443,9 +447,13 @@ def build(phase):
         # haft for the second (1.8 from the fist: the left arm 0.22 -> 0.09 at its blow, f40); the overhead's wind-up rises 0.4 (right 0.23, f54).
         # Phase 2 bows 6 deg less into the second blow and 8 less into the third: with the corruption's 8 his chest folded onto the right arm
         # (keyed 0.18 at f40, 0.25-0.32 at f58-64), and the bake cleared the third or not depending on the rest of the clip (0.37 when the second moved)
+        # (2026-11-10) Phase 2's overhead finish slides the rear fist 0.5 down to the butt (rsl), as a chop does: with a hand's breadth of haft (1.0)
+        # behind the fist, the butt sat in the right forearm through the blow and the follow-through for every grip and elbow swivel weighs (arm in
+        # the weapon 0.04-0.15, f58-71, swparts.py; the clear choices put the arm 0.25-0.37 in his chest), so it took the chest: right 0.19 there
+        # after swivel (keyprobe.py: 0.15 with the slide; a shorter follow-through 0.20, the hands 0.22 to his right 0.18, 8 deg less bow 0.18)
         ] + carry(arc(0.24, 0.9, 1.04, 135, 74, FROM_HIGH_LEFT, aim=(2, -8), whip=2.4), 0.45, 0.65, 0.78, 0.9, (-0.3, 0.0, -0.3) if phase == 2 else (0.0, 0.0, 0.0))
           + arc(1.16, 1.32, 1.46, 70, 70, FROM_HIGH_RIGHT, aim=(-4, -6), whip=1.5, centre=(0.6, 0.22, -1.7), span=1.8 if phase == 2 else 1.2)
-          + carry(arc(1.7, 1.95, 2.15, 100, 40, FROM_OVERHEAD, aim=(0, -10), whip=3.0, centre=(0.2, 0.34, -2.0)), 1.62, 1.75, 1.82, 1.93, (0.2, 0.4, 0.0) if phase == 2 else (0.0, 0.0, 0.0)) + [K(2.6, "io", **back)],
+          + carry(arc(1.7, 1.95, 2.15, 100, 40, FROM_OVERHEAD, aim=(0, -10), whip=3.0, centre=(0.2, 0.34, -2.0), rsl=RSL if phase == 1 else RSL - 0.5), 1.62, 1.75, 1.82, 1.93, (0.2, 0.4, 0.0) if phase == 2 else (0.0, 0.0, 0.0)) + [K(2.6, "io", **back)],
             contacts=[0.9, 1.32, 1.95], move="RendingArc", feet_free=[(0, 2.6)], notes="Rending Arc: three cuts in a broken rhythm, the third held back so the third deflect has to wait for it.")
 
     def phantom_drift():
@@ -473,7 +481,12 @@ def build(phase):
             K(1.92, "out", pel=(0, -0.62, -0.38), pelR=(23, 0, 0), chest=(29, -6, 0), neck=(-16, 6, 0), hov=0.0),
             K(2.3, "io", pel=(0.02, -0.25, -0.1), pelR=(9, -6, 0), chest=(10, -6, 0), neck=(-6, 8, 0), **low, hov=H0 * 0.35),
             K(2.6, "io", **READY, hov=H0),
-        ] + arc(0.1, 1.5, 1.92, 135, 46, FROM_OVERHEAD, aim=(0, -18), whip=4.5, centre=(0.2, 0.3, -1.08)) + [K(2.6, "io", **back)],
+        # (2026-11-10) the follow-through's fist carried 0.4 to his right and 0.1 forward from just after the blow (the contact keeps its key). Phase
+        # 2's rear fist finished on his chest's right side, where every elbow turn swivel had near the up-and-back one put the arm in him: it
+        # flipped the elbow down and forward round f56-62 (72 deg in a frame) and left the right arm 0.21 in his chest at f58-59, which clear_torso
+        # could not move (no fist move clears it there, ctmoves.py). Carried, with swivel's run-wide recheck (below), the elbow stays up and back
+        # through the follow-through (steps <= 31 deg after the blow) and the bake passes (0.160, 0.169 left; ctcache.py / ctmoves.py variant c5)
+        ] + carry(arc(0.1, 1.5, 1.92, 135, 46, FROM_OVERHEAD, aim=(0, -18), whip=4.5, centre=(0.2, 0.3, -1.08)), 1.5, 1.62, 1.92, 2.0, (0.4, 0.0, -0.1)) + [K(2.6, "io", **back)],
             contacts=[1.5], move="GuandaoSkyfall", scrape=True, airborne=True, feet_free=[(0, 2.6)], authored_feet=True, notes="Coils, the server's aerial path carries the root, glaive high at the apex, and the blade falls with him; his feet touch down and his knees absorb the landing at the impact, then he lifts again.")
 
     def crimson_embrace():
@@ -620,7 +633,7 @@ def build(phase):
         actual = 2 * half / (beta * period)
         return Clip(rg, P + name, period, keys, loop=True, priority="Movement", authored_feet=True, feet_free=[(0, period)], notes="%s: %.2f rig studs per second at speed 1." % (name, actual))
 
-    def glide(name, period, rate, lean, roll=0.0, trail=0.0, tuck=0.0):
+    def glide(name, period, rate, lean, roll=0.0, trail=0.0, tuck=0.0, chest_carry=False, nudge=None):
         """Phase 2's travel: no steps at all. He leans into the direction, legs trailing, and the air does the rest."""
         n = int(round(period * 30))
         keys = []
@@ -628,18 +641,33 @@ def build(phase):
             a = 2 * math.pi * i / n
             s, c2 = math.sin(a), math.cos(2 * a)
             nod = L.rodrigues(np.array([1.0, 0, 0]) * math.radians(1.4 * s))
-            held = carried(-8.0 - 10.0 - YAW["pel"] - YAW["chest"])      # his hips and chest face -8 and -10 here: the guard turns with them
+            body = dict(pel=(0.03 * s, 0.02 * c2 - 0.05 * abs(lean) / 20, -lean * 0.012), pelR=(lean * 0.9 + 1.5 * s, -8 + 2 * math.cos(a), roll + 2.2 * s), chest=(lean * 0.3 - 1.2 * c2, -10 - 2.5 * math.cos(a), -roll * 0.5))
+            held = carried_chest(body) if chest_carry else carried(-8.0 - 10.0 - YAW["pel"] - YAW["chest"])      # his hips and chest face -8 and -10 here: the guard turns with them
             hf = nod @ L.unit(np.array(held["haft"]) + np.array((0.0, -0.1, 0.0)))
             r0 = np.array(held["rp"])
             # (2026-11-09) past a 20 deg lean the hands go forward and down with his chest (0.45 and 0.1 at the run's 38): held where the walk holds
             # them, his chest came down onto his arms (phase 2 run: right 0.20 and left 0.22 inside it for most of the loop; 0.3 forward alone, 0.33)
             dive = max(0.0, lean - 20.0) / 18.0
             r0 = r0 + np.array([0.0, -0.1 * dive, -0.45 * dive])
+            # (2026-11-10) nudge: the fist further out (rig units, his frame). Phase 2's run held the haft against the right forearm through the
+            # middle of its loop (in the weapon 0.04-0.06 for the arm's own elbow turns, f7-24, swparts.py), so swivel swung that elbow 80-120 deg
+            # off Idle's for those frames; stopped there, the game's 0.2 s fade to Idle (stopGait) took the arm 0.26 through his chest (loopout.py).
+            # 0.08 forward clears the haft: the elbow stays within 36 deg of Idle's, loop out 0.25 -> 0.15 (fadecheck3.py)
+            if nudge is not None:
+                r0 = r0 + np.array(nudge, float)
             k = dict(pel=(0.03 * s, 0.02 * c2 - 0.05 * abs(lean) / 20, -lean * 0.012), pelR=(lean * 0.9 + 1.5 * s, -8 + 2 * math.cos(a), roll + 2.2 * s), chest=(lean * 0.3 - 1.2 * c2, -10 - 2.5 * math.cos(a), -roll * 0.5), neck=(-lean * 1.15, 18 + 2 * math.sin(a * 2), 0),
                      rf=(0.05, 0.24 + trail + 0.1 * math.sin(a + 0.6), tuck, 0, 0), lf=(-0.03, -0.1 + trail - 0.12 * math.sin(a + 0.6), tuck * 0.4, 0, 0), rknee=(0.1, 0, -1.0), lknee=(-0.1, 0, -1.0),
                      rp=tuple(r0 + np.array([0.02 * s, 0.03 * c2, -0.02 * math.cos(a) - lean * 0.008])), haft=tuple(hf), face=E(hf), rsl=RSL, lsl=LSL, lhw=1.0, relb=READY["relb"], lelb=READY["lelb"])
             keys.append((i / n * period, k, "lin"))
         return clip(name, period, keys, loop=True, priority="Movement", feet_free=[(0, period)], notes="%s: floating; %.2f rig studs per second at speed 1." % (name, rate))
+
+    def carried_chest(k):
+        """(2026-11-09) READY's guard carried rigidly in his chest's frame under key k (chest_frame: his turn and pitch, phase 2's corruption
+        included), for a gait that turns or leans his chest away from the guard's own (chest_carry)."""
+        Rr, ar = chest_frame(READY)
+        Rk, ak = chest_frame(k)
+        M = Rk @ Rr.T
+        return dict(rp=tuple(ak + M @ (np.array(READY["rp"], float) - ar)), haft=tuple(M @ np.array(READY["haft"], float)), face=tuple(M @ np.array(READY["face"], float)))
 
     def carried(yaw):
         """The guard turned with the shoulders by `yaw` degrees (+ toward his left), so a turn never pulls the lead hand off its spot on the haft."""
@@ -647,7 +675,7 @@ def build(phase):
         hf = R @ np.array(READY["haft"], float)
         return dict(rp=tuple(R @ np.array(READY["rp"], float)), haft=tuple(hf), face=E(hf))
 
-    def turn(name, direction):
+    def turn(name, direction, chest_carry=False):
         """Turning on the spot, as the server turns his root at TURN_RATE at speed 1: the planted foot counter-rotates exactly, the other steps ahead of it, and the hips lead the chest and the chest leads the head."""
         period = 0.9
         n = int(round(period * 30))
@@ -658,7 +686,7 @@ def build(phase):
                 a = 2 * math.pi * i / n
                 k = {kk: READY[kk] for kk in READY}
                 k.update(pelR=(4, YAW["pel"] + direction * 14, direction * 4), chest=(3, YAW["chest"] + direction * 10, 0), neck=(-3, YAW["neck"] + direction * 14, 0))
-                k.update(carried(direction * 14.0))
+                k.update(carried_chest(k) if chest_carry else carried(direction * 14.0))
                 keys.append((i / n * period, k, "lin"))
             return clip(name, period, keys, loop=True, priority="Movement", feet_free=[(0, period)], notes="Floating, he simply rotates; the upper body leads the turn.")
         for i in range(n):
@@ -684,9 +712,12 @@ def build(phase):
         return Clip(rg, P + name, period, keys, loop=True, priority="Movement", authored_feet=True, feet_free=[(0, period)], notes="%s at %d degrees per second, speed 1." % (name, TURN_RATE))
 
     def locomotion():
-        turns = [turn("TurnLeft", 1.0), turn("TurnRight", -1.0)]
+        # (2026-11-09) phase 2's TurnRight and WalkBackward carry the guard in his chest's frame (carried_chest): the turn swung the guard 14 deg
+        # while his chest turned 24, and the backward glide leans him back 12-17 deg with the fist left where it was, so the right arm held the
+        # guard in another shape than Idle's and the game's fades to and from Idle put it 0.19 into his chest (fadecheck2.py; carried, TurnRight 0.15 and WalkBackward 0.14)
+        turns = [turn("TurnLeft", 1.0), turn("TurnRight", -1.0, chest_carry=floating)]
         if floating:   # rates the server already holds; a glide has no feet to keep planted, so these only set how fast his body drifts through its loop
-            return turns + [glide("WalkForward", 2.4, 2.40, 12, trail=0.3), glide("RunForward", 1.6, 7.48, 38, trail=1.25, tuck=0.45), glide("WalkBackward", 2.4, 1.80, -10, trail=-0.2), glide("StrafeLeft", 2.4, 1.95, 4, roll=10), glide("StrafeRight", 2.4, 1.95, 4, roll=-10)]
+            return turns + [glide("WalkForward", 2.4, 2.40, 12, trail=0.3), glide("RunForward", 1.6, 7.48, 38, trail=1.25, tuck=0.45, nudge=(0.0, 0.0, -0.08)), glide("WalkBackward", 2.4, 1.80, -10, trail=-0.2, chest_carry=True), glide("StrafeLeft", 2.4, 1.95, 4, roll=10), glide("StrafeRight", 2.4, 1.95, 4, roll=-10)]
         return turns + [gait("WalkForward", 1.4, 1.98, 0.63, lean=2.0, twist=5.0, drop=3.4, sway=0.07),
                         gait("RunForward", 0.75, 6.11, 0.36, carry="charge", run=True, lean=20, twist=9.0, drop=3.0, sway=0.04, centre=0.15),
                         gait("WalkBackward", 1.5, 1.48, 0.65, reverse=True, lean=0.5, twist=3.0, drop=2.4, sway=0.06),
@@ -735,9 +766,23 @@ def build(phase):
             impact = {**fallen, "pel": (-0.2, -2.19, -0.77), "chest": (9, 10, -14), "neck": (-21, 50, 0)}
             rebound = {**fallen, "pel": (-0.2, -2.1, -0.74), "chest": (14, 10, -14)}
             bounce = dict(wrp=(2.24, -2.85, -1.57), whaft=(0.6, 0.08, -0.79))
+            stagger = dict(pel=(0.03, -0.55, 0.3), pelR=(6, 6, 0), chest=(10, 6, 0), neck=(4, 0, 0), rf=(0.1, 0.7, 0.32, 0, -30), lf=(0.05, -0.4, 0, 0, 0))
+            kneel = dict(knee)
+            if phase == 2:
+                # (2026-11-09) phase 2: the guard rides his chest's frame into the stagger, and on the knee the fist sits 0.15 further to his right.
+                # Keyed only at the guard and the knee, the fist was splined between them in the world while he sank 0.55 and pitched forward, so at
+                # the stagger it sat high under his right armpit (0.62 above his waist, 0.18 in front); keyed that was clear (0.06), but the passes
+                # that turn the fist and slide it on the haft folded the arm into his chest there (0.31 at f21, settle spreading wrist_yield's
+                # corrections), and at the kneel the arm at full stretch had its front armpit 0.20 in (f36). Measured per stage (stagetrace.py)
+                Rr, ar = chest_frame(READY)
+                Rs, a_s = chest_frame(stagger)
+                M = Rs @ Rr.T
+                stagger.update(rp=tuple(a_s + M @ (np.asarray(READY["rp"], float) - ar)), haft=tuple(M @ np.asarray(READY["haft"], float)),
+                               face=tuple(M @ np.asarray(READY["face"], float)), rsl=RSL, lsl=LSL)
+                kneel["rp"] = tuple(np.asarray(knee["rp"], float) + chest_frame(knee)[0][:, 0] * 0.15)
             return Clip(rg, P + "Death", 3.0, [K(0, **READY, **({"hov": H0 * 0.5} if floating else {})), K(0.24, "snap", pel=(0, -0.16, 0.4), pelR=(-12, 6, 0), chest=(-18, 6, 0), neck=(16, 0, 0), **down),
-                                                K(0.75, "io", pel=(0.03, -0.55, 0.3), pelR=(6, 6, 0), chest=(10, 6, 0), neck=(4, 0, 0), rf=(0.1, 0.7, 0.32, 0, -30), lf=(0.05, -0.4, 0, 0, 0)),
-                                                K(1.15, "in", **{k: v for k, v in knee.items() if k not in ("neck",)}, neck=(-8, 0, 0)),
+                                                K(0.75, "io", **stagger),
+                                                K(1.15, "in", **{k: v for k, v in kneel.items() if k not in ("neck",)}, neck=(-8, 0, 0)),
                                                 K(1.35, "io", lhw=1.0, ltw=0.0, **{**lie_w, "wfree": 0.0}),
                                                 K(1.55, "in", **toppling), K(1.84, "in", **impact), K(1.96, "out", **{**rebound, **bounce}), K(2.1, "in", **{**fallen, **lie_w}),
                                                 K(2.4, "io", **fallen), K(3.0, "io", **fallen)],
@@ -809,6 +854,47 @@ def build(phase):
     out = [idle(), strike(), flourish(), feint()] + locomotion() + guard() + reactions() + transform()
     out += [crescent_reap(), returning_tide(), heaven_cleave(), green_dragon(), charging_cut(), cyclone()]
     out += [flowing_glaive(), prayer_beads(), abbot_sweep(), hesitant_moon(), wheel_of_heaven()] if not floating else [blood_wave(), skyfall(), crimson_embrace(), rending_arc(), phantom_drift()]
+    # (2026-11-09) per-clip bake opt-ins (shen_lib.Clip; the windows-pass scripts named are in outputs/grandmaster-shen-2026-11-05/repair/).
+    # IDLE_HOLD is how each phase's Idle bake holds the guard, as swivel's state per hand (grip slant, turn round the haft, elbow turn; read off the
+    # Idle bakes with swcost.py): the clips in `ends` start and end holding it. The game's 0.15 s joint fade between Idle and an end held one
+    # elbow step (or, the lead hand, a flipped elbow) away put an arm 0.18-0.19 in his chest though both ends were clear (fadecheck2.py).
+    # Phase 2 Hit Light Left holds it through its fade in as well (`entry`: in 0.185 -> 0.154, out 0.171 -> 0.127), and so does Phantom Drift,
+    # a contact attack the game fades in over 0.1 s (BossAnimations.play; fadecheck3.py: 0.1 s in 0.182 -> 0.138, 0.15 s in 0.165 -> 0.138).
+    # Deathblow Victim, entered from Idle while his stance is broken, holds its own first grip through its fade in: its swivel path swung the
+    # right elbow 130 deg over those frames, and the fade from Idle passed the arm 0.18 into his chest (0.10 held; entrypick.py).
+    # Phase 1 Guandao_L3's lead elbow sits in the other half turn from Idle's (about 180 deg off) all through the cut: Idle's grip pinned at its
+    # end flipped the whole path to Idle's half and put the left arm 0.21 in his chest at f10 (swpath.py), so its left hand ends on the grip of
+    # its own half whose fade to Idle is clearest instead (endpick.py: out 0.180 -> 0.039).
+    # Flowing Jian eases its blow-frame tilt as an envelope (wrist_yield), and swivel's torso recheck walks each run of its frames past the wall as
+    # one (recheck_runs): frame by frame, its left hand ended f84-85 a half-mix of unrelated grips (wrist 173 and 154 deg; walked as a run 27 and 35, swrecheck.py).
+    # (2026-11-10) Phase 2 Skyfall walks its runs past the wall as one too (with its carried follow-through, skyfall()), and its right hand ends
+    # on the grip whose 0.15 s fade to Idle is clearest from its own last pose (endpick.py: out 0.185 -> 0.122) rather than on Idle's own: with
+    # Idle's held at both ends its bake left the arm 0.21 in his chest at f58-59. Its fade in from Idle is clear without a pin (0.1 s: 0.110).
+    IDLE_HOLD = {"Right": (-20.0, 270.0, 51.43), "Left": (-20.0, 270.0, 0.0)} if phase == 1 else {"Right": (10.0, 22.5, 334.29), "Left": (-10.0, 292.5, 25.71)}
+    ends = set() if phase == 1 else {"BloodWave", "CrimsonEmbrace", "Feint", "HitLightFront", "HitLightLeft", "PhantomDrift", "RendingArc"}
+    entry = set() if phase == 1 else {"HitLightLeft", "PhantomDrift"}
+    for c in out:
+        short = c.name[len(P):]
+        if short in ends:
+            c.hold_start = c.hold_end = IDLE_HOLD
+            c.hold_entry = short in entry
+        if phase == 1 and short == "Guandao_L3":
+            c.hold_start, c.hold_end = {"Right": IDLE_HOLD["Right"]}, {"Right": IDLE_HOLD["Right"], "Left": (-20.0, 292.5, 154.29)}
+        if phase == 2 and short == "GuandaoSkyfall":
+            c.hold_end = {"Right": (0.0, 67.5, 334.29)}
+        if phase == 2 and short == "DeathblowVictim":
+            c.hold_start, c.hold_entry = {"Right": (10.0, 90.0, 0.0)}, True
+        c.blow_envelope = phase == 1 and short == "FlowingJian"
+        c.run_recheck = (phase == 1 and short == "FlowingJian") or (phase == 2 and short == "GuandaoSkyfall")
+        # (2026-11-10) and its recheck walk may not swing the lead hand round for a frame: f88 took a grip 45 deg from both neighbours and the
+        # prayer beads whipped up past his head at the overhead finish's follow-through (see RECHECK_SPIKE_COST)
+        c.recheck_spike = 15.0 if phase == 1 and short == "FlowingJian" else None
+        # (2026-11-11) legs_guard (held_clash also weighs the glaive inside his legs) was built for phase 2 Skyfall: its fist slide, depop and
+        # polish run the wood ahead of the right fist 0.12 into his right thigh after the landing (f49-50), unseen by every pass and by validate's
+        # thinned weapon_in_legs (legprobe.py). Not adopted: with it the legs stay clear but the right arm ends 0.18-0.20 in his chest over f45-55,
+        # which the polish could not clear (legpol_1/2.log: 0.184 left), and the full bake with it shows a 0.57 blade pop at f46 before its
+        # polish (ttlgS). No clip opts in, so the exported Skyfall is the bake above and the thigh is open (windows-pass-2026-11-09/REPORT.md).
+        c.legs_guard = False
     return out
 
 

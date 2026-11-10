@@ -63,7 +63,10 @@ def build(output: Path = OUTPUT) -> None:
         if old.attrib.get('name') == 'CurrentCamera':
             properties.remove(old)
     ET.SubElement(properties, 'Ref', name='CurrentCamera').text = camera.attrib['referent']
-    xml.write(output, encoding='utf-8', xml_declaration=True)
+    # A binary handle makes ElementTree write LF on every OS; given a file name it writes text mode, which is CRLF on Windows and
+    # turned every line of the committed (LF) place into a change.
+    with open(output, 'wb') as handle:
+        xml.write(handle, encoding='utf-8', xml_declaration=True)
     if output == OUTPUT:
         places_target = ROOT / 'places' / 'AsurasPath.rbxlx'
         places_target.parent.mkdir(parents=True, exist_ok=True)

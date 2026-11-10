@@ -3506,7 +3506,7 @@ Rigs.ByTemplate = {
 		},
 	} :: Def,
 	-- Grandmaster Shen: one rig per sculpt, from tools/blender/shen_import/rigdef.py. The limbs never move, so the two forms share every skin weld and the swap only re-points the pivots;
-	-- phase 2 builds its own helper bones rather than moving phase 1's under a live weld.
+	-- the glaive helper phase 1 built stays (its part, joint and welds) and apply() re-points it to this form's glaive point.
 	AsuraBoss_GrandmasterShen_P1 = {
 		Joints = { -- parents first
 			{ Bone = "LowerTorso", Parent = "HumanoidRootPart", Motor = "Root", At = V(-0.09, -0.25, -0.10) },
@@ -3597,8 +3597,19 @@ function Rigs.apply(actor: Model, def: Def): (boolean, string?)
 		local parent = actor:FindFirstChild(helper.Parent)
 		local parentRest = rest[helper.Parent]
 		if not parent or not parent:IsA("BasePart") or not parentRest then return false, helper.Bone .. " has no parent " .. helper.Parent end
-		if actor:FindFirstChild(helper.Bone) then continue end
 		local at = CFrame.new(helper.At * scale)
+		local existing = actor:FindFirstChild(helper.Bone)
+		if existing then
+			-- (2026-11-10) a helper an earlier form built keeps its part, joint and welds, but the pivot is this form's: phase 2 declares its own
+			-- glaive point and its clips and weapon meshes are made about it. Skipping the helper left phase 2's glaive on phase 1's point, the
+			-- whole weapon 0.17 off his grip in every phase 2 clip (Studio playback of the exported clips against the solver). Its part follows
+			-- its joint, so what is welded to it moves with it; attach() swaps the skins in the same step.
+			local joint = existing:FindFirstChild(helper.Bone)
+			if joint and joint:IsA("AnimationConstraint") and joint.Attachment0 and joint.Attachment0.Parent == parent then
+				joint.Attachment0.CFrame = parentRest:Inverse() * at
+			end
+			continue
+		end
 		local part = Instance.new("Part")
 		part.Name, part.Size, part.Transparency, part.CastShadow = helper.Bone, Vector3.one * 0.1, 1, false
 		part.Massless, part.CanCollide, part.CanQuery, part.CanTouch = true, false, false, false

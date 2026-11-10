@@ -441,6 +441,19 @@ CORRUPT_TWIST = [float(v) for v in os.environ.get("SHEN_CORRUPT_TWIST", "0,0").s
 class Clip:
     rise_guard = False
     """Timed partial control keys, Catmull-Rom between them; a channel a key omits holds through. Phase 2's corruption (lower, forward, more torque) is a layer over the shared technique."""
+    # (2026-11-09) per-clip opt-ins (shen_clips.build sets them; every other clip bakes exactly as before):
+    # hold_start / hold_end {"Right"/"Left": (slant, grip turn, elbow turn)}: swivel's state for that hand on the clip's first / last frame (see
+    # swivel), so the game's fades to and from Idle blend like with like; hold_entry: hold_start through the fade in (ENTRY_FADE) as well;
+    # blow_envelope: wrist_yield eases a tilt at a blow over its neighbours at full height (see there); run_recheck: swivel's torso recheck walks
+    # each run of frames past the wall as one (recheck_runs); (2026-11-10) recheck_spike: degrees a hand may turn between two frames in that walk
+    # before each further degree costs RECHECK_SPIKE_COST; legs_guard: held_clash also weighs the weapon inside his legs (see there)
+    hold_start = None
+    hold_end = None
+    hold_entry = False
+    blow_envelope = False
+    run_recheck = False
+    recheck_spike = None
+    legs_guard = False
 
     def __init__(self, rig, name, length, keys, loop=False, priority="Action", contacts=(), move=None, notes="", active=None, slot="", feet_free=(), corrupt=True, scrape=False, airborne=False, authored_feet=False, raw_after=None, hover=0.0, still_after=None, uncorrupt=None, floor_body=False):
         self.rig = rig
@@ -1494,7 +1507,21 @@ def wrist_yield(clip, ctrl, sigma=1.5, passes=3):
             break
         ss = np.maximum(spread(slide), slide)
         sr = spread(rot)
-        sr = np.maximum(np.linalg.norm(sr, axis=1), np.linalg.norm(rot, axis=1))[:, None] * np.array([unit(v) if np.linalg.norm(v) > 1e-9 else v for v in sr])
+        mag = np.maximum(np.linalg.norm(sr, axis=1), np.linalg.norm(rot, axis=1))
+        if clip.blow_envelope:
+            # (2026-11-09) a tilt at a blow (a frame depop leaves as keyed) eases over its neighbours as an envelope, a gaussian of sigma frames at
+            # its full height there, not the averaged spread: phase 1's Flowing Jian tilted 30 deg at f43, its neighbours about 3, a 0.58 blade
+            # pop at its second blow that nothing after could smooth. A tilt off a blow keeps the averaged spread (depop takes what it leaves)
+            times = clip.frames()
+            for i in range(n):
+                r = float(np.linalg.norm(rot[i]))
+                if r < 1e-9 or not any(abs(times[i] - t) < 0.04 for t in clip.contacts):
+                    continue
+                for kk in k:
+                    j = (i + kk) % n if clip.loop else i + kk
+                    if 0 <= j < n:
+                        mag[j] = max(mag[j], r * math.exp(-0.5 * (kk / sigma) ** 2))
+        sr = mag[:, None] * np.array([unit(v) if np.linalg.norm(v) > 1e-9 else v for v in sr])
         for i, c in enumerate(ctrl):
             h = unit(c["haft"])
             if ss[i] > 1e-4:
@@ -1623,9 +1650,27 @@ def swivel(clip, ctrl):
                             break
                         prev_q, nb = now_q, nb + way
 
+        # (2026-11-09) a clip that opts in (Clip.hold_start / hold_end) starts or ends with this hand in a given state: grip slant, turn round the
+        # haft and elbow turn (ELBOW_TURNS), pinned on its first or last frame (and through its fade in, hold_entry). Most clips that start and end
+        # at the guard hold Idle's state there: their own cheapest was one elbow step (26 deg) from Idle's and Idle's their second cheapest (phase 2
+        # Hit Light Front's end: 59.1 and 64.6), and the game's joint fade between the two swung the right upper arm 0.19 into his chest though
+        # both ends sat at 0.12-0.16 (fadecheck2.py)
+        def state_of(h):
+            return None if h is None else (GRIP_SLANTS.index(h[0]) * len(GRIP_TURNS) + int(round(h[1] / (360.0 / len(GRIP_TURNS)))) % len(GRIP_TURNS)) * E \
+                + int(round(h[2] / (360.0 / len(ELBOW_TURNS)))) % len(ELBOW_TURNS)
+        s0, s1 = state_of((clip.hold_start or {}).get(hand_side)), state_of((clip.hold_end or {}).get(hand_side))
+        tt = clip.frames()
+        pinned = {i: s0 for i in live if s0 is not None and (i == 0 or (clip.hold_entry and tt[i] < ENTRY_FADE - 1e-9))}
+        if s1 is not None and live[-1] == n - 1:
+            pinned[n - 1] = s1
+
         def walk(fixed=None):
             """Every state to every state: the fist's real turn, the elbow's real travel and the forearm's roll all cost what they move, so nothing whips round for one frame."""
             total = costs[live[0]].ravel().copy()
+            if live[0] in pinned:
+                pin = np.full_like(total, 1e7)
+                pin[pinned[live[0]]] = 0.0
+                total = total + pin
             if fixed is not None:
                 pin = np.full_like(total, 1e7)
                 pin[fixed[0] * E + fixed[1]] = 0.0
@@ -1641,6 +1686,10 @@ def swivel(clip, ctrl):
                 step = total[:, None] + turn_cost * np.repeat(np.repeat(Tg, E, axis=0), E, axis=1) + 0.35 * Te + 0.35 * Tr + 600.0 * (Tr > roll_step) + 600.0 * (Te > elbow_step) + flip    # a forearm or elbow can't whip round in a frame, whatever the wrist would save
                 back[i] = step.argmin(axis=0)
                 total = step.min(axis=0) + costs[i].ravel()
+                if i in pinned:
+                    pin = np.full_like(total, 1e7)
+                    pin[pinned[i]] = 0.0
+                    total = total + pin
                 if fixed is not None and i == live[-1]:
                     pin = np.full_like(total, 1e7)
                     pin[fixed[0] * E + fixed[1]] = 0.0
@@ -1715,7 +1764,9 @@ def swivel(clip, ctrl):
         # is and it is 0.03 better) replaces it, its neighbours half way, unless it puts the arm in the weapon deeper than the frame had it
         wall = ARM_TORSO_REST + TORSO_WALL
         redo = 0
-        for i in live:
+        if clip.run_recheck:     # (2026-11-09) per-clip opt-in: the recheck as one walk over each run of frames past the wall (recheck_runs)
+            redo = recheck_runs(clip, ctrl, hand_side, live, path, costs, quats, rels, hands, poles, twists, (turn_cost, roll_step, elbow_step, grip_step, step_cost), wall)
+        for i in ([] if clip.run_recheck else live):
             d = arm_torso(clip, ctrl[i])[hand_side]
             if d <= wall:
                 continue
@@ -1749,6 +1800,104 @@ def swivel(clip, ctrl):
             redo += 1
         if redo:
             clip._swivel_rechecked = getattr(clip, "_swivel_rechecked", 0) + redo
+
+
+RUN_PAD = 2     # (2026-11-09) frames either side of a run past the wall that recheck_runs may re-choose too, so the run is walked into and out of
+# (2026-11-10) per degree a hand turns between two frames past Clip.recheck_spike, in recheck_runs' walk. A lead hand turning on the haft is cheap
+# there (LEAD_TURN_COST), and phase 1 Flowing Jian's f88, 0.011 past the wall alone, took a grip 45 deg round from both its neighbours: the left
+# hand turned 41 and 46 deg out and back across f87-89 and flung the prayer beads up past his head. Priced, the walk ramps the grip over f86-88
+# instead (slant -20 -> -10 -> 0, the hand 5-10 deg a frame) and f88 still clears (0.181 -> 0.140; ctrest.py)
+RECHECK_SPIKE_COST = 10.0
+
+
+def recheck_runs(clip, ctrl, hand_side, live, path, costs, quats, rels, hands, poles, twists, limits, wall):
+    """(2026-11-09) swivel's torso recheck for a clip that opts in (Clip.run_recheck). The frame-by-frame recheck gives each frame past the wall
+    its own cheapest clear choice and half of it to both neighbours; along a run of such frames the choices disagree, and phase 1 Flowing Jian's
+    left hand ended f84-85 a half-mix of unrelated grips (the wrist turned 173 and 154 deg on the arm; swrecheck.py). Here each run, with RUN_PAD
+    frames either side, is walked as swivel walks the clip: every frame keeps what it has or takes one of its SWIVEL_RECHECK cheapest choices that
+    puts the arm no deeper in the weapon, each solved and measured as the export will and costed TORSO_HARD past the wall, and a step between two
+    frames costs what walk() charges, from and to the frames either side as they stand. The chosen states replace their frames whole; the frame
+    either side of the window takes half of its neighbour's change. Returns how many frames changed."""
+    turn_cost, roll_step, elbow_step, grip_step, step_cost = limits
+    E, G16 = len(ELBOW_TURNS), len(GRIP_TURNS)
+    key, hkey = ("rpole", "rhand") if hand_side == "Right" else ("lpole", "lhand")
+    n = len(ctrl)
+    lset = set(live)
+    deep = [i for i in live if arm_torso(clip, ctrl[i])[hand_side] > wall]
+    runs = []
+    for i in deep:
+        if runs and i - runs[-1][-1] <= 1 + 2 * RUN_PAD:     # runs whose windows would meet are walked as one
+            runs[-1].append(i)
+        else:
+            runs.append([i])
+    state = {i: path[i] for i in live if i in path}
+
+    def step(p, a, i, b):
+        """walk()'s price for the hand going from state a at frame p to state b at frame i."""
+        (ga, ea), (gb, eb) = a, b
+        Tg = math.degrees(2 * math.acos(min(1.0, abs(float(quats[p][ga] @ quats[i][gb])))))
+        Tw = math.degrees(2 * math.acos(min(1.0, abs(float(rels[p][ga] @ rels[i][gb])))))
+        Te = math.degrees(math.acos(float(np.clip(poles[p][ga, ea] @ poles[i][gb, eb], -1.0, 1.0))))
+        Tr = abs(float(twists[p][ga, ea]) - float(twists[i][gb, eb]))
+        return turn_cost * Tg + 0.35 * Te + 0.35 * Tr + 600.0 * (Tr > roll_step) + 600.0 * (Te > elbow_step) + step_cost * (min(Tg, Tw) > grip_step) \
+            + (RECHECK_SPIKE_COST * max(0.0, Tg - clip.recheck_spike) if clip.recheck_spike else 0.0)
+
+    changed = 0
+    for run in runs:
+        win = [i for i in range(run[0] - RUN_PAD, run[-1] + RUN_PAD + 1) if i in state]
+        opts = []     # per frame of the window: (state, or None to keep the frame as it stands; node cost; the state its steps are priced from)
+        for i in win:
+            d = arm_torso(clip, ctrl[i])[hand_side]
+            clash0 = max(CLASH_GRAZE, smoothed_arm_clash(clip, ctrl[i], hand_side)) + 1e-3
+            o = [(None, float(costs[i][state[i]]) + TORSO_HARD * max(0.0, d - wall), state[i])]
+            for flat in np.argsort(costs[i], axis=None)[:SWIVEL_RECHECK]:
+                g, e = divmod(int(flat), E)
+                t2 = dict(ctrl[i])
+                t2[hkey], t2[key], t2[hkey + "_slant"], t2[key + "_roll"] = hands[i][g], poles[i][g, e], GRIP_SLANTS[g // G16], float(twists[i][g, e])
+                if smoothed_arm_clash(clip, t2, hand_side) > clash0:
+                    continue
+                o.append(((g, e), float(costs[i][g, e]) + TORSO_HARD * max(0.0, arm_torso(clip, t2)[hand_side] - wall), (g, e)))
+            opts.append(o)
+        before = max((q for q in state if q < win[0]), default=None)
+        after = min((q for q in state if q > win[-1]), default=None)
+        total = [o[1] + (step(before, state[before], win[0], o[2]) if before is not None else 0.0) for o in opts[0]]
+        back = []
+        for j in range(1, len(win)):
+            p, i = win[j - 1], win[j]
+            row, arg = [], []
+            for o in opts[j]:
+                c = [total[k] + step(p, opts[j - 1][k][2], i, o[2]) for k in range(len(opts[j - 1]))]
+                k = int(np.argmin(c))
+                row.append(c[k] + o[1])
+                arg.append(k)
+            total, back = row, back + [arg]
+        if after is not None:
+            total = [t + step(win[-1], o[2], after, state[after]) for t, o in zip(total, opts[-1])]
+        k = int(np.argmin(total))
+        pick = [k]
+        for arg in reversed(back):
+            k = arg[k]
+            pick.append(k)
+        pick.reverse()
+        for j, (i, k) in enumerate(zip(win, pick)):
+            s = opts[j][k][0]
+            if s is None:
+                continue
+            g, e = s
+            state[i] = s
+            qn, pn, sn, rn = ZR.quat(hands[i][g]), poles[i][g, e], GRIP_SLANTS[g // G16], float(twists[i][g, e])
+            for nb, wgt in ((i, 1.0), (i - 1, 0.5 if i == win[0] else 0.0), (i + 1, 0.5 if i == win[-1] else 0.0)):
+                if wgt == 0.0 or not 0 <= nb < n:
+                    continue
+                c = ctrl[nb]
+                q0 = ZR.quat(c[hkey])
+                q1 = qn if float(q0 @ qn) >= 0 else -qn
+                c[hkey] = ZR.mat(unit(q0 * (1 - wgt) + q1 * wgt))
+                c[key] = unit(np.asarray(c[key]) * (1 - wgt) + pn * wgt)
+                c[hkey + "_slant"] = float(c[hkey + "_slant"] * (1 - wgt) + sn * wgt)
+                c[key + "_roll"] = float(c[key + "_roll"] * (1 - wgt) + rn * wgt)
+            changed += 1
+    return changed
 
 
 FREE_ARM_SWINGS = np.arange(5.0, 125.0, 5.0)     # degrees a reaching arm may swing about the shoulder, away from the haft, to keep out of the wood
@@ -2284,6 +2433,15 @@ def held_clash(clip, c, torso=None):
         W = world[part]
         B = body_points(rg, part, W[:3, :3], (W @ np.append(rg.JOINT[part], 1))[:3], pose)
         out = max(out, float(weapon_depth(rg, place[0], place[1], B).max()) - (BODY_IN_WEAPON - CLASH_GRAZE))     # over the graze once past BODY_IN_WEAPON
+    # (2026-11-10) and, where the clip opts in (Clip.legs_guard), the weapon inside his legs, on every weapon sample (validate's weapon_in_legs, which
+    # thins them). His legs' skin in the wood (above) can be no deeper than the haft is thick, so a haft through his thigh reads as a graze: phase 2
+    # Skyfall's fist slide, depop and polish took the wood ahead of the right fist 0.12 into his right thigh at f49 (0.16-0.18 on the rendered mesh)
+    # with nothing here to see it. Past the same graze, slide_fist, tilt_haft, clear_torso and joint_polish weigh it as the body in the wood
+    if clip.legs_guard:
+        Pw = rg.samples["Weapon"] @ G[:3, :3].T + G[:3, 3]     # as place(rg, world, "Weapon"): the samples ride the Glaive bone
+        for part in LEG_SOLIDS:
+            W = world[part]
+            out = max(out, float(part_depth(rg, part, W[:3, :3], (W @ np.append(rg.JOINT[part], 1))[:3], Pw).max()) - (BODY_IN_WEAPON - CLASH_GRAZE))
     # (2026-11-08) and the arms' own skin in the wood, as validate measures it (bare: no allowance): tilting the haft for the fist put it back through
     # the free forearm (phase 1 Guandao_Heavy f17, 0.053) where no haft point lay inside the forearm to show it
     for part in ("RightUpperArm", "RightLowerArm", "LeftUpperArm", "LeftLowerArm"):
