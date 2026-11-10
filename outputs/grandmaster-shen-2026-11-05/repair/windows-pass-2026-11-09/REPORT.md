@@ -127,6 +127,10 @@ at every exported frame and compared with the solver's frames:
   phase 2 glaive. The fix is server-side state (the joint attachment replicates); a two-client check is still owed. Starting one
   needs Studio's Test tab (a local server with clients), which the Studio connection used here cannot start (it has single-player
   Play only). Desktop control of Studio was requested on 11-11 for this and declined, so it was not retried.
+  What the single-player session does show: `BossRigs.apply` runs only on the server (`BossSkin.luau:160`; the client only reads
+  `Rigs.rest`), and the harness ran in the play session's client datamodel, where the live boss's glaive pivot read back as phase 2's
+  point after the server's own transition (section 6). So the re-pointed joint reached one client. Two clients at once, and a player
+  who joins after the transition, are untested.
 - Device profiling: not run; no phone, tablet or console hardware here. Nothing in this pass measures frame time or memory.
 
 ## 8. Open defects (not accepted, still to fix)
@@ -167,10 +171,13 @@ at every exported frame and compared with the solver's frames:
 Open. The exported Skyfall is the bake that passes the validator (R 0.160, L 0.169, no problems), and its arms are much better on
 screen (rendered mesh 0.219 -> 0.176). But after the landing the haft, ahead of his right fist, runs into his right thigh:
 
-- Dense measure over every weapon sample (`scripts/legsall.py`): 0.121 at f49 now, 0.122 at f52 in the handed-over bake, so the
-  depth is not new. The validator's own `weapon_in_legs` thins the weapon to every 6th sample and reads 0.000 for both.
+- Dense measure over every weapon sample (`scripts/legsall.py`): 0.121 at f49 now, 0.122 at f52 in the handed-over bake, so by
+  the solver's leg solids the depth is not new. The validator's own `weapon_in_legs` thins the weapon to every 6th sample and reads
+  0.000 for both.
 - Rendered mesh (`results/mset_finL_*.json`): weapon in RightUpperLeg 0.162 at one measured frame (shot f68); the before shots
-  showed only the thigh 0.052 inside the wood (shot f72), not the wood in the thigh.
+  showed only the thigh 0.052 inside the wood (shot f72), not the wood in the thigh. The x-ray of the review shots, every frame
+  (review.py, glaive vertices inside the right thigh, 11-11): exported 234 vertices 0.183 deep at shot f67 (clip f49) and 184 at
+  0.175 at f68; handed-over 1 vertex 0.034 at f78 and f80. So on the mesh the game draws, the wood in his thigh came with this pass.
 
 The attempt to fix it is in the code but switched off: `Clip.legs_guard` makes held_clash weigh the weapon inside his legs on every
 weapon sample. With it, replayed from the same controls, every stage keeps the legs clear (`LEGS ... none`), but the right arm ends
@@ -185,7 +192,8 @@ infeasible ("Positive directional derivative for linesearch"), and the window wa
 (from clear_torso's moves) reached 0.182 in 20 iterations but was infeasible, with the weapon clash and both grips worse, and was
 not kept. Its final reading, run to the end (REST): weapon in his legs none, but right arm 0.195 and left arm 0.184 inside his
 torso, right 0.193 between f58 and f59, so the validator would flag three problems (right arm 0.20, right arm 0.19 between
-f58 and f59, left arm 0.18).
+f58 and f59, left arm 0.18). A full bake from the start with the guard on (`ttlgS_P2_GuandaoSkyfall.log`, 11081 s) ended the
+same way: right 0.195, left 0.184, the same three problems.
 No clip opts in, so the code reproduces the exported Skyfall exactly (a full bake from code, `baked_rpS`, matches the export with
 a largest difference of 0.0).
 
@@ -198,20 +206,33 @@ carried), then a full bake.
 Keys, 11-11 (`results/skyfall_lift_screen.txt`, `scripts/thighdir.py`). On the exported bake the wood is in his right thigh on two
 frames only, f49 0.121 and f50 0.041. The deepest point is 0.21 ahead of the fist along the haft, and the way out of the thigh is
 almost straight up (+0.94 of the outward direction). So the screen lifts the fist for a moment after the contact (a second carry,
-eased in from 1.52 s, full over f47-50, gone by f53; the contact keeps its key). It ran four DEV overlays of shen_clips.py from the
+eased in from 1.52 s, full over f48-50, gone by f53; the contact keeps its key). It ran four DEV overlays of shen_clips.py from the
 start of the bake to clear_free_arm, then the later stages without the polish:
 - lift 0.15: guard off, wood 0.142 in his thigh, right arm 0.216; guard on, legs clear, right arm 0.235.
 - lift 0.25: guard off, legs clear, right arm 0.200; guard on, legs clear, right arm 0.184. The exported bake's own polish window
   (f45-55) also started at 0.184, and its seeded retry took it to 0.160 (`ttrpS_P2_GuandaoSkyfall.log`).
-More lift left his arm shallower in both modes. Full bakes with the polish (runall.py, DEV overlays: lift 0.25 and 0.35, guard
-on and off) were started at 02:20.
+More lift left his arm shallower in both modes.
+
+Full bakes, 11-11 (runall.py with the polish, DEV overlays; `results/skyfall_lift_full.txt`, `scripts/liftsum.py`). Lifts 0.25, 0.35
+and 0.45, guard on and off, two with a gentler ease (in over 1.50-1.60 s, out over 1.68-1.80 s):
+- With the guard on, the lift keeps his legs clear in the full bake too (0.35 gentle: clear on every frame f40-70; 0.25 gentle:
+  0.019 at most). Without the guard, lift 0.35 still left 0.085 in his thigh at f57.
+- But the lift folds his right arm into his chest while the fist is up. The bakes' per-frame readings have it at 0.17-0.19 around
+  f47-52 (lift 0.25 gentle: 0.17, 0.17, 0.19, 0.17, 0.17, 0.18 over f47-52), where the exported bake reads at most 0.14, and no joint
+  polish try was feasible. Finished so far, all failing the validator: lift 0.35 without the guard (right arm 0.214,
+  blade pop 0.52 at f46), 0.35 gentle with the guard (0.212), 0.25 gentle with the guard (0.194; its seeded retry reached 0.177 but
+  made the weapon clash worse, so it was not kept). Lift 0.45 entered its polish window at 0.385.
+- Still baking at the time of writing: 0.25 with and without the guard, 0.35 with the guard, and three that also carry the fist
+  outward or forward during the lift (0.15 right and 0.1 forward; 0.25 right; 0.2 forward) to keep the arm off his chest.
 
 ## 10. Files
 
 - `scripts/`: every probe and tool written in this pass (each starts with a usage line). New ones for the checks above:
   `studio_expected.py` (the solver frames as a model file Studio can load), `studio_preview.luau` (the Studio harness),
   `revaltable.py`, `jsondiff.py`, `legsall.py`, `fadecheck3.py`, `measure_set2.py`, `render_cmp.py`, `sheet.py`, `xray_why.py`,
-  `fadeweapon.py`, `shots_gamefade.py`.
+  `fadeweapon.py`, `shots_gamefade.py`, `thighdir.py`, `liftsum.py`. `render_cmp.py` can now light the glaive inside a part
+  (`FROM=Weapon`), pick frames (`FRAMES`) and leave garments out (`SHEN_REVIEW_HIDE`, a new opt-in in `tools/blender/shen_import/review.py`
+  for views the robe would cover; default renders are unchanged).
 - `results/`: the outputs cited above.
 - Bakes: `work/shen_repair/baked_set2` (local, gitignored) is the final set the exports came from.
 

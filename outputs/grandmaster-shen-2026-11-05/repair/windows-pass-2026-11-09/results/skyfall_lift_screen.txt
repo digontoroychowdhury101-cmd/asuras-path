@@ -7,7 +7,7 @@ f50    RightUpperLeg   0.041  +0.15  (-0.13 +0.97 +0.20)    (+0.68 -1.43 -0.56) 
 (every other frame 44-62: clear)
 
 ## Screening (scripts/ctcache.py to clear_free_arm with a DEV overlay of shen_clips.py, then ctmoves.py LEGS=1 REST=1 44 58, no polish)
-Overlay: skyfall()'s carried follow-through wrapped in a second carry(..., 1.52, 1.58, 1.68, 1.76, (0, LIFT, 0)): the fist lifted LIFT (rig units, his frame) eased in after the contact, held over f47-50, out by f53.
+Overlay: skyfall()'s carried follow-through wrapped in a second carry(..., 1.52, 1.58, 1.68, 1.76, (0, LIFT, 0)): the fist lifted LIFT (rig units, his frame) eased in after the contact, held over f48-50, out by f53 (carry() moves the arc's own keys, which fall about a frame apart between frame times).
 
 ### liftA: lift 0.15, legs_guard off
 LEGS cache          f48 0.014, f49 0.034, f50 0.084, f53 0.072, f55 0.016, f56 0.084, f57 0.035

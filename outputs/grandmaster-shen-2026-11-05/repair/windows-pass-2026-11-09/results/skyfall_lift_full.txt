@@ -1,0 +1,43 @@
+# Phase 2 Skyfall: full bakes of the fist lift after the landing (2026-11-11), scripts/liftsum.py
+# runall.py TAG P2_GuandaoSkyfall with DEV=<overlay> (a copy of shen_clips.py whose skyfall() wraps the carried follow-through in a
+# second carry(..., t0, t1, t2, t3, offset), offset in his frame: x right, y up, z forward negative). Polish depths are the right arm in his
+# chest (the polish's measure); verdict = validate. Bakes still running are marked.
+
+## lfB (liftB): second carry 1.52, 1.58, 1.68, 1.76, offset (0.0, 0.25, 0.0), legs_guard off
+  polish f0-6 first try   0.175 -> 0.160  feasible, kept (544 s)
+  polish f48-67 first try   0.200 -> 0.295  infeasible, not kept, worse [2, 3, 4, 6] (3433 s)
+  polish f48-67 elbows only 0.200 -> 0.201  infeasible, not kept (2569 s)
+  (still running)
+## lfD (liftD): second carry 1.52, 1.58, 1.68, 1.76, offset (0.0, 0.25, 0.0), legs_guard on
+  polish f0-6 first try   0.175 -> 0.160  feasible, kept (553 s)
+  polish f48-60 first try   0.184 -> 0.179  infeasible, not kept, worse [2, 3] (2671 s)
+  (still running)
+## lfE (liftE): second carry 1.52, 1.58, 1.68, 1.76, offset (0.0, 0.35, 0.0), legs_guard on
+  polish f0-6 first try   0.175 -> 0.160  feasible, kept (562 s)
+  (still running)
+## lfG (liftG): second carry 1.52, 1.58, 1.68, 1.76, offset (0.0, 0.35, 0.0), legs_guard off
+  polish f0-6 first try   0.175 -> 0.160  feasible, kept (545 s)
+  polish f46-69 first try   0.216 -> 0.232  infeasible, not kept, worse [2, 3, 4, 6] (1948 s)
+  polish f46-69 elbows only 0.216 -> 0.216  infeasible, not kept (0 s)
+  polish f46-69 seeded      0.216 -> 0.235  infeasible, not kept, worse [2, 3, 4] (1891 s)
+  verdict: torso R 0.214 L 0.178, pops fist 0.162 blade 0.518 slide 0.087 | problems: ['blade pops 0.52 at f46', 'edge pops 0.46 at f46', 'right arm 0.21 inside his torso', 'right arm 0.22 inside his torso between f50 and f51']
+  legs f40-70: 6 frames, deepest 0.085 RightUpperLeg at f57
+## lfH (liftH): second carry 1.52, 1.58, 1.68, 1.76, offset (0.0, 0.45, 0.0), legs_guard on
+  polish f0-6 first try   0.175 -> 0.160  feasible, kept (568 s)
+  polish f42-67 first try   0.385 -> 0.383  infeasible, not kept, worse [2, 3, 4, 6] (1957 s)
+  polish f42-67 elbows only 0.385 -> 0.385  infeasible, not kept (1650 s)
+  (still running)
+## lfI (liftI): second carry 1.5, 1.6, 1.68, 1.8, offset (0.0, 0.35, 0.0), legs_guard on
+  polish f0-6 first try   0.175 -> 0.160  feasible, kept (568 s)
+  polish f52-62 first try   0.212 -> 0.175  infeasible, not kept, worse [2, 6] (2506 s)
+  polish f52-62 elbows only 0.212 -> 0.212  infeasible, not kept (1538 s)
+  polish f52-62 seeded      0.212 -> 0.202  infeasible, not kept, worse [2, 3, 4, 6] (522 s)
+  verdict: torso R 0.212 L 0.163, pops fist 0.172 blade 0.389 slide 0.095 | problems: ['right arm 0.21 inside his torso']
+  legs f40-70: clear on every frame
+## lfJ (liftJ): second carry 1.5, 1.6, 1.68, 1.8, offset (0.0, 0.25, 0.0), legs_guard on
+  polish f0-6 first try   0.175 -> 0.160  feasible, kept (555 s)
+  polish f44-56 first try   0.194 -> 0.174  infeasible, not kept, worse [2, 6] (1487 s)
+  polish f44-56 elbows only 0.194 -> 0.194  infeasible, not kept (0 s)
+  polish f44-56 seeded      0.194 -> 0.177  infeasible, not kept, worse [2] (2030 s)
+  verdict: torso R 0.194 L 0.155, pops fist 0.170 blade 0.386 slide 0.071 | problems: ['right arm 0.19 inside his torso']
+  legs f40-70: 3 frames, deepest 0.019 RightUpperLeg at f63

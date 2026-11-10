@@ -47,6 +47,12 @@ for ob in set(bpy.data.objects) - before:
     base = ob.name.split(".")[0]
     if ob.type == "MESH" and base in info:
         props.append((ob, info[base]["bone"], ob.matrix_world.copy()))
+# (2026-11-11) SHEN_REVIEW_HIDE=<group>[,<group>...] (e.g. RobeFront,RobeRight): those garments are left out of the render, to show what they cover
+HIDE = os.environ.get("SHEN_REVIEW_HIDE")
+if HIDE:
+    for o in bpy.data.objects:
+        if o.type == "MESH" and info.get(o.name.split(".")[0], {}).get("group") in HIDE.split(","):
+            o.hide_render = True
 # (2026-11-07) SHEN_REVIEW_CLASH=<part> (e.g. RightLowerArm): that part is drawn see-through and every weapon vertex inside it is lit magenta, by the same
 # test as mesh_clash.py (its distance field, past MARGIN 0.03, where the part's surface is rigid on its own bone), so a before/after shows what the numbers count
 CLASH = os.environ.get("SHEN_REVIEW_CLASH")
