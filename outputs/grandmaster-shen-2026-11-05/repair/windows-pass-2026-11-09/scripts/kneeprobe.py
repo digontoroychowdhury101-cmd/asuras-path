@@ -59,7 +59,7 @@ def relegged(turn):
     return out
 
 
-def legs(out, fa=40, fb=70):
+def legs(out, fa=40, fb=78):
     rows = []
     for f in range(fa, min(fb, len(out) - 1) + 1):
         world = out[f][2]

@@ -253,8 +253,23 @@ turned about his vertical (the feet, arms and glaive as they are): turned out 10
 f49-50); turned in 10-24 deg it is 0.010-0.033 at most (15 deg: 0.006 at f49, 0.027 at f50; 6 deg is worse, 0.139), and the knee
 moves up to 0.49 (15 deg). The validator then reports a 0.20-0.24 fist pop at f50 for most angles, from the poses it solves
 between frames, where the solver re-places the glaive against the moved leg (`Clip.clear_surface`); only a full bake shows
-what that becomes. Three full bakes are running: the right knee turned in 15 deg, with and without the guard, and 20 deg without,
-turning in while he is in the air (1.2-1.42 s), held through the landing to 1.92 s and back by 2.15 s; every other key unchanged.
+what that becomes. Full bakes (`results/skyfall_lift_full.txt`, kn*), the knee turning in while he is in the air (1.2-1.42 s), held
+through the landing to 1.92 s and back by 2.15 s, every other key unchanged:
+- At clear_torso the knee bakes match or beat the exported bake (0.172 at 15 deg, 0.181 at 15 deg with the guard, 0.185 at 20 deg,
+  against 0.184), and the wood is out of his thigh at f49-50 in all of them.
+- But the polish's main window moved later, to the follow-through (f51-68), and was not kept in any of them. 15 deg without the
+  guard came closest: right arm 0.173, left 0.143, pops within the limits (fist 0.173, blade 0.266), the wood in his thigh 0.023
+  at most (f55-59, dense; the exported bake 0.121), the game's fades 0.169 in and 0.122 out, no glaive in his torso while fading,
+  no face pop (`work/shen_repair/skycheck_knA.txt`, local). It fails on one reading: the right arm 0.19 inside his torso between f62
+  and f63. 20 deg: 0.185 with a 0.27 fist pop at f64, and the wood back in his thigh at f63-64 (0.093); 15 deg with the guard:
+  0.182 and the left hand 0.20 off the haft. Those frames are where the knee turns back out (f58-64), and the solver re-places the
+  glaive against the moving thigh there.
+- Watched (normal renders of the review shot, quarter view grounded, f46-62, with and without the robe; local
+  `work/shen_repair/kneelook/`): the 15 deg landing reads as the same deep crouch, the right knee still outside the foot (0.28
+  outside the ankle instead of 0.43), the haft passing in front of the right shin instead of into the thigh. Nothing pops between
+  the stills; the robe settles differently but covers the knee as before.
+- Still baking at the time of writing: the knee held in until he rises (back over 2.3-2.6 s, after the follow-through) at 12, 15
+  and 18 deg (15 deg left clear_torso at 0.168, the lowest of any Skyfall bake), and 12 deg returning at 1.92-2.15 s.
 
 ## 10. Files
 
