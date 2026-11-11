@@ -132,6 +132,33 @@ function Sim.new(def: Def, scale: number): any
 			end
 		end
 	end
+	-- (2026-11-12, later) the same lists as flat arrays, read by the passes that run every step (keepOut, pushMiddles, skinPass's middles); the
+	-- nested ones above stay for the tests. Each volume's placed fields go to flat arrays too, once each time it is placed (fillCaps)
+	s.hs, s.hn, s.hc, s.hr, s.hf = table.create(s.n, 0), table.create(s.n, 0), {}, {}, {}
+	for i = 1, s.n do
+		s.hs[i], s.hn[i] = #s.hc + 1, #s.hitIds[i]
+		for q, c in s.hitIds[i] do
+			table.insert(s.hc, c)
+			table.insert(s.hr, s.hitRad[i][q])
+			table.insert(s.hf, s.hitFirm[i][q])
+		end
+	end
+	s.ks, s.kn, s.kc, s.kr, s.kf = table.create(L, 0), table.create(L, 0), {}, {}, {}
+	for l = 1, L do
+		s.ks[l], s.kn[l] = #s.kc + 1, #s.linkIds[l]
+		for q, c in s.linkIds[l] do
+			table.insert(s.kc, c)
+			table.insert(s.kr, s.linkRad[l][q])
+			table.insert(s.kf, s.linkFirm[l][q])
+		end
+	end
+	s.midC, s.midR = table.create(#s.midL, 0), table.create(#s.midL, 0)
+	for m, l in s.midL do
+		s.midC[m], s.midR[m] = s.linkIds[l][s.midQ[m]], s.linkRad[l][s.midQ[m]]
+	end
+	local nc = #caps
+	s.cwax, s.cway, s.cwaz, s.cwdx, s.cwdy, s.cwdz = table.create(nc, 0), table.create(nc, 0), table.create(nc, 0), table.create(nc, 0), table.create(nc, 0), table.create(nc, 0)
+	s.clen2, s.cr0, s.crb, s.ccx, s.ccy, s.ccz, s.creach2 = table.create(nc, 0), table.create(nc, 0), table.create(nc, 0), table.create(nc, 0), table.create(nc, 0), table.create(nc, 0), table.create(nc, 0)
 	-- the free particles that drive a bone, and each one's rest frame from its neighbours
 	for i, p in def.particles do
 		if p.bone then
@@ -163,7 +190,7 @@ function Sim.new(def: Def, scale: number): any
 		for k, f in s.bones do slot[f.i] = (k - 1) * 9 end
 		local sk = { n = #skin.n, start = {}, count = {}, i = {}, q = {}, w = {}, ox = {}, oy = {}, oz = {}, inv = {}, lstart = {}, lcount = {}, lo = {}, lw = {},
 			vx = {}, vy = {}, vz = {}, hstart = {}, hcount = {}, hc = {}, hr = {}, active = {}, nActive = 0,
-			wax = {}, way = {}, waz = {}, wdx = {}, wdy = {}, wdz = {}, len2 = {}, cr0 = {}, crb = {}, ccx = {}, ccy = {}, ccz = {}, reach2 = {} }
+			reach2 = {} }
 		local e0, c0 = 0, 0
 		for k = 1, sk.n do
 			local vx, vy, vz = skin.v[k * 3 - 2] * scale, skin.v[k * 3 - 1] * scale, skin.v[k * 3] * scale
@@ -524,16 +551,19 @@ local function skinPass(s: any, limbs: { number }, all: boolean)
 		local tick = sk.tick + 1
 		sk.tick = tick
 		local na = 0
+		local REACH2 = sk.reach2
 		for c = 1, #caps do
+			local cap = caps[c]
+			-- the bounding sphere, kept for the later passes: a sample's clearance is never more than the margin, so past it no volume can push
+			local reach = math.sqrt(cap.len2) * 0.5 + math.max(cap.r, cap.rb) + margin
+			local reach2 = reach * reach
+			REACH2[c] = reach2
 			local p0 = CS[c]
 			local p1 = p0 + CN[c] - 1
 			if p1 < p0 then continue end
-			local cap = caps[c]
 			local wa, wd, len2 = vector.create(cap.wax, cap.way, cap.waz), vector.create(cap.wdx, cap.wdy, cap.wdz), cap.len2
 			local r0, dr = cap.r, cap.rb - cap.r
 			local centre = vector.create(cap.cx, cap.cy, cap.cz)
-			local reach = math.sqrt(len2) * 0.5 + math.max(cap.r, cap.rb) + margin
-			local reach2 = reach * reach
 			for p = p0, p1 do
 				local k = CK[p]
 				local at = SV[k]
@@ -560,17 +590,10 @@ local function skinPass(s: any, limbs: { number }, all: boolean)
 		-- the later passes try every volume of the samples found in contact (pushing one side of a thigh out drives the far side's samples into
 		-- volumes they were not touching yet; trying only the pairs first in contact left the robe 0.27 in his thigh)
 		local HC, HR, HS, HN = sk.hc, sk.hr, sk.hstart, sk.hcount
-		-- (2026-11-12) each volume's fields copied to flat arrays once a pass, and the first pass's bounding sphere: the same arithmetic, read faster
+		-- (2026-11-12) each volume's fields read from flat arrays (fillCaps), with the first pass's bounding sphere: the same arithmetic, read faster
 		-- (Studio, native: these tests 1.99 -> 1.43 ms a step in phase 1)
-		local WAX, WAY, WAZ, WDX, WDY, WDZ, LEN2, CR, CRB = sk.wax, sk.way, sk.waz, sk.wdx, sk.wdy, sk.wdz, sk.len2, sk.cr0, sk.crb
-		local CCX, CCY, CCZ, REACH2 = sk.ccx, sk.ccy, sk.ccz, sk.reach2
-		for c = 1, #caps do
-			local cap = caps[c]
-			WAX[c], WAY[c], WAZ[c], WDX[c], WDY[c], WDZ[c], LEN2[c], CR[c], CRB[c] = cap.wax, cap.way, cap.waz, cap.wdx, cap.wdy, cap.wdz, cap.len2, cap.r, cap.rb
-			-- the first pass's bounding sphere: a sample's clearance is never more than the margin, so past it no volume can push
-			local reach = math.sqrt(cap.len2) * 0.5 + math.max(cap.r, cap.rb) + margin
-			CCX[c], CCY[c], CCZ[c], REACH2[c] = cap.cx, cap.cy, cap.cz, reach * reach
-		end
+		local WAX, WAY, WAZ, WDX, WDY, WDZ, LEN2, CR, CRB = s.cwax, s.cway, s.cwaz, s.cwdx, s.cwdy, s.cwdz, s.clen2, s.cr0, s.crb
+		local CCX, CCY, CCZ, REACH2 = s.ccx, s.ccy, s.ccz, sk.reach2
 		for idx = 1, sk.nActive do
 			local k = active[idx]
 			local x, y, z = PX[k], PY[k], PZ[k]
@@ -605,21 +628,23 @@ local function skinPass(s: any, limbs: { number }, all: boolean)
 		end
 		AX[e], AY[e], AZ[e], AN[e] = AX[e] + ox, AY[e] + oy, AZ[e] + oz, AN[e] + MIDDLE_WEIGHT
 	end
-	local la, lb, pin, linkIds, linkRad, midL, midQ = s.la, s.lb, s.pin, s.linkIds, s.linkRad, s.midL, s.midQ
+	local la, lb, pin, midL, midC, midR = s.la, s.lb, s.pin, s.midL, s.midC, s.midR
+	local WAX, WAY, WAZ, WDX, WDY, WDZ, LEN2, CR, CRB = s.cwax, s.cway, s.cwaz, s.cwdx, s.cwdy, s.cwdz, s.clen2, s.cr0, s.crb
+	local CCX, CCY, CCZ, CREACH2 = s.ccx, s.ccy, s.ccz, s.creach2
 	for m = 1, #midL do
-		local l, q = midL[m], midQ[m]
+		local l, c = midL[m], midC[m]
 		local i, j = la[l], lb[l]
 		local pi, pj = pin[i], pin[j]
 		if pi and pj then continue end
-		local cap = caps[linkIds[l][q]]
 		local mx, my, mz = (X[i] + X[j]) * 0.5, (Y[i] + Y[j]) * 0.5, (Z[i] + Z[j]) * 0.5
-		local ex, ey, ez = mx - cap.cx, my - cap.cy, mz - cap.cz
-		if ex * ex + ey * ey + ez * ez > cap.reach2 then continue end
-		local px, py, pz = mx - cap.wax, my - cap.way, mz - cap.waz
-		local u = math.clamp((px * cap.wdx + py * cap.wdy + pz * cap.wdz) / cap.len2, 0, 1)
-		local qx, qy, qz = px - cap.wdx * u, py - cap.wdy * u, pz - cap.wdz * u
+		local ex, ey, ez = mx - CCX[c], my - CCY[c], mz - CCZ[c]
+		if ex * ex + ey * ey + ez * ez > CREACH2[c] then continue end
+		local wdx, wdy, wdz, r0 = WDX[c], WDY[c], WDZ[c], CR[c]
+		local px, py, pz = mx - WAX[c], my - WAY[c], mz - WAZ[c]
+		local u = math.clamp((px * wdx + py * wdy + pz * wdz) / LEN2[c], 0, 1)
+		local qx, qy, qz = px - wdx * u, py - wdy * u, pz - wdz * u
 		local d = qx * qx + qy * qy + qz * qz
-		local r = (linkRad[l][q] + cap.r + (cap.rb - cap.r) * u) * MIDDLE_HOLD
+		local r = (midR[m] + r0 + (CRB[c] - r0) * u) * MIDDLE_HOLD
 		if d < r * r and d > 1e-8 then
 			local f = (r / math.sqrt(d) - 1) * (if pi or pj then 2 else 1) * MIDDLE_WEIGHT
 			if not pi then nudge(i, qx * f, qy * f, qz * f) end
@@ -708,6 +733,19 @@ local function placeCap(cap: any, f: number, scale: number)
 	cap.reach2 = reach * reach
 end
 
+-- (2026-11-12, later) every volume's placed fields to flat arrays, after each placing: the passes below read these, not the volume's table.
+-- Output bit for bit the same (clothdump, interpreted and native); Studio, native, a step 4.39 -> 3.85 ms phase 1, 3.79 -> 3.34 phase 2
+local function fillCaps(s: any)
+	local caps = s.caps
+	local WAX, WAY, WAZ, WDX, WDY, WDZ, LEN2 = s.cwax, s.cway, s.cwaz, s.cwdx, s.cwdy, s.cwdz, s.clen2
+	local CR, CRB, CCX, CCY, CCZ, CREACH2 = s.cr0, s.crb, s.ccx, s.ccy, s.ccz, s.creach2
+	for c = 1, #caps do
+		local cap = caps[c]
+		WAX[c], WAY[c], WAZ[c], WDX[c], WDY[c], WDZ[c], LEN2[c] = cap.wax, cap.way, cap.waz, cap.wdx, cap.wdy, cap.wdz, cap.len2
+		CR[c], CRB[c], CCX[c], CCY[c], CCZ[c], CREACH2[c] = cap.r, cap.rb, cap.cx, cap.cy, cap.cz, cap.reach2
+	end
+end
+
 -- a point (x, y, z) in limb frame o
 local function limbPoint(limbs: { number }, o: number, x: number, y: number, z: number): (number, number, number)
 	return limbs[o + 1] + limbs[o + 4] * x + limbs[o + 5] * y + limbs[o + 6] * z, limbs[o + 2] + limbs[o + 7] * x + limbs[o + 8] * y + limbs[o + 9] * z,
@@ -736,21 +774,26 @@ end
 
 -- every particle out of every volume it avoids
 local function keepOut(s: any)
-	local X, Y, Z, caps = s.x, s.y, s.z, s.caps
+	local X, Y, Z = s.x, s.y, s.z
+	local HS, HN, HC, HR, HF = s.hs, s.hn, s.hc, s.hr, s.hf
+	local WAX, WAY, WAZ, WDX, WDY, WDZ, LEN2 = s.cwax, s.cway, s.cwaz, s.cwdx, s.cwdy, s.cwdz, s.clen2
+	local CR, CRB, CCX, CCY, CCZ, CREACH2 = s.cr0, s.crb, s.ccx, s.ccy, s.ccz, s.creach2
 	for i = 1, s.n do
-		local ids, firm = s.hitIds[i], s.hitFirm[i]
-		for q = 1, #ids do
-			local cap, r = caps[ids[q]], s.hitRad[i][q]
-			local ex, ey, ez = X[i] - cap.cx, Y[i] - cap.cy, Z[i] - cap.cz
-			if ex * ex + ey * ey + ez * ez > cap.reach2 then continue end
-			local px, py, pz = X[i] - cap.wax, Y[i] - cap.way, Z[i] - cap.waz
-			local u = math.clamp((px * cap.wdx + py * cap.wdy + pz * cap.wdz) / cap.len2, 0, 1)
-			local qx, qy, qz = px - cap.wdx * u, py - cap.wdy * u, pz - cap.wdz * u
+		local h0 = HS[i]
+		for h = h0, h0 + HN[i] - 1 do
+			local c, r = HC[h], HR[h]
+			local x, y, z = X[i], Y[i], Z[i]
+			local ex, ey, ez = x - CCX[c], y - CCY[c], z - CCZ[c]
+			if ex * ex + ey * ey + ez * ez > CREACH2[c] then continue end
+			local wdx, wdy, wdz = WDX[c], WDY[c], WDZ[c]
+			local px, py, pz = x - WAX[c], y - WAY[c], z - WAZ[c]
+			local u = math.clamp((px * wdx + py * wdy + pz * wdz) / LEN2[c], 0, 1)
+			local qx, qy, qz = px - wdx * u, py - wdy * u, pz - wdz * u
 			local d = qx * qx + qy * qy + qz * qz
-			if firm[q] then r += cap.r + (cap.rb - cap.r) * u end
+			if HF[h] then r += CR[c] + (CRB[c] - CR[c]) * u end
 			if d < r * r and d > 1e-8 then
 				local f = (r / math.sqrt(d) - 1)
-				X[i], Y[i], Z[i] = X[i] + qx * f, Y[i] + qy * f, Z[i] + qz * f
+				X[i], Y[i], Z[i] = x + qx * f, y + qy * f, z + qz * f
 			end
 		end
 	end
@@ -783,25 +826,29 @@ end
 
 -- a link's middle inside a volume moves both its ends out together (a pinned end stays): the sheet cannot slice through a leg between two particles
 local function pushMiddles(s: any)
-	local X, Y, Z, caps = s.x, s.y, s.z, s.caps
+	local X, Y, Z = s.x, s.y, s.z
 	local la, lb, pin = s.la, s.lb, s.pin
-	local linkIds, linkRad, linkFirm = s.linkIds, s.linkRad, s.linkFirm
+	local KS, KN, KC, KR, KF = s.ks, s.kn, s.kc, s.kr, s.kf
+	local WAX, WAY, WAZ, WDX, WDY, WDZ, LEN2 = s.cwax, s.cway, s.cwaz, s.cwdx, s.cwdy, s.cwdz, s.clen2
+	local CR, CRB, CCX, CCY, CCZ, CREACH2 = s.cr0, s.crb, s.ccx, s.ccy, s.ccz, s.creach2
 	for l = 1, s.L do
-		local ids = linkIds[l]
-		if #ids == 0 then continue end
+		local n = KN[l]
+		if n == 0 then continue end
 		local i, j = la[l], lb[l]
 		local pi, pj = pin[i], pin[j]
 		if pi and pj then continue end
-		for q = 1, #ids do
-			local cap, r = caps[ids[q]], linkRad[l][q]
+		local k0 = KS[l]
+		for k = k0, k0 + n - 1 do
+			local c, r = KC[k], KR[k]
 			local mx, my, mz = (X[i] + X[j]) * 0.5, (Y[i] + Y[j]) * 0.5, (Z[i] + Z[j]) * 0.5
-			local ex, ey, ez = mx - cap.cx, my - cap.cy, mz - cap.cz
-			if ex * ex + ey * ey + ez * ez > cap.reach2 then continue end
-			local px, py, pz = mx - cap.wax, my - cap.way, mz - cap.waz
-			local u = math.clamp((px * cap.wdx + py * cap.wdy + pz * cap.wdz) / cap.len2, 0, 1)
-			local qx, qy, qz = px - cap.wdx * u, py - cap.wdy * u, pz - cap.wdz * u
+			local ex, ey, ez = mx - CCX[c], my - CCY[c], mz - CCZ[c]
+			if ex * ex + ey * ey + ez * ez > CREACH2[c] then continue end
+			local wdx, wdy, wdz = WDX[c], WDY[c], WDZ[c]
+			local px, py, pz = mx - WAX[c], my - WAY[c], mz - WAZ[c]
+			local u = math.clamp((px * wdx + py * wdy + pz * wdz) / LEN2[c], 0, 1)
+			local qx, qy, qz = px - wdx * u, py - wdy * u, pz - wdz * u
 			local d = qx * qx + qy * qy + qz * qz
-			if linkFirm[l][q] then r += cap.r + (cap.rb - cap.r) * u end
+			if KF[k] then r += CR[c] + (CRB[c] - CR[c]) * u end
 			if d < r * r and d > 1e-8 then
 				local f = (r * 1.02 / math.sqrt(d) - 1) * (if pi or pj then 2 else 1)
 				local ox, oy, oz = qx * f, qy * f, qz * f
@@ -970,9 +1017,13 @@ function Sim.step(s: any, limbs: { number }, h: number, wind: Wind, iterations: 
 	s.t += h
 	moveParticles(s, limbs, h, wind)
 	placeCaps(s, limbs, iterations)
+	fillCaps(s)
 	local caps, scale = s.caps, s.scale
 	for pass = 1, iterations do
-		if pass > 1 then for c = 1, #caps do placeCap(caps[c], pass / iterations, scale) end end
+		if pass > 1 then
+			for c = 1, #caps do placeCap(caps[c], pass / iterations, scale) end
+			fillCaps(s)
+		end
 		pullLinks(s)
 		keepOut(s)
 		-- Once a step, on the last pass, the middles, then the particles once more: the middles cost the most and the sheet between particles moves least.

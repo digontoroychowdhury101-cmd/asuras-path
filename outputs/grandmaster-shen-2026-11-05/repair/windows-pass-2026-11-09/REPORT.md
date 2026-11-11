@@ -224,7 +224,10 @@ at every exported frame and compared with the solver's frames:
   point after the server's own transition (section 6). So the re-pointed joint reached one client. Two clients at once, and a player
   who joins after the transition, are untested.
 - Device profiling: not run; no phone, tablet or console hardware here. The one frame-time number in this pass is the cloth step,
-  timed in Studio on this PC alone with bakes running (section 14): about 6-8 ms a step. Nothing measures memory.
+  timed in Studio on this PC alone with bakes running (section 14): about 6-8 ms a step then; 3.3-3.9 ms in later runs with the
+  section 15 change (also with bakes running, so loose). Nothing measures memory.
+- Two clients, tried again on 11-12 (later): desktop control of Studio was requested once more for Test > Clients and Servers and
+  declined; not retried.
 
 ## 8. Open defects (not accepted, still to fix)
 
@@ -323,7 +326,9 @@ at every exported frame and compared with the solver's frames:
     failed the validator (Running, roll from 0.467: an edge pop 0.64 at f16) or turned the glaive 49 deg and swung the right upper
     arm 41 deg in a frame (BloodWave not rolled, bwR); still open.
 12. The cloth costs about 6-8 ms a step in Studio on this PC (section 14), mostly the surface passes, which every graphics tier runs
-    4 + 2 times. Making it cheaper without changing the cloth's look needs a new approach to those passes; not started.
+    4 + 2 times. Section 15 takes about 12% off with the output unchanged (3.3-3.9 ms a step in its runs); the surface passes' sample
+    positions and first-pass volume tests (about 1.3 ms) are still most of it. Cheaper still without changing the cloth's look needs a
+    new approach to those passes; not started.
 
 ## 9. P2 Guandao Skyfall: the weapon in his thigh, the fist's flutter, the coil
 
@@ -782,3 +787,24 @@ export just before them):
 - Arm x-ray past 0.18 on the rendered mesh: nine clips -> seven (`results/xray_mesh_table.md`).
 - `tools/verify_all.sh`: exit 0, the same 44 PASS lines as on 11-12, "Shen integration: ok", `test_cloth_sim` P1 and P2 ok
   (`results/verify_all_1112b.log`). Multiplayer and device profiling: still not run (section 7).
+
+## 15. The cloth's collision passes on flat arrays; DeathblowVictim's seam trial (11-12, later still)
+
+The cloth step (`src/shared/ClothSim.luau`), output unchanged:
+- `keepOut`, `pushMiddles` and the surface passes' link middles read each volume's placed fields from flat arrays (`fillCaps`, run
+  after every placing) and their per-particle and per-link volume lists as flat arrays built once in `Sim.new` (the nested lists stay
+  for `tools/test_cloth_sim.py`). The surface passes' bounding sphere is worked out once a step, in the first pass, not again in each
+  later pass. Same arithmetic, same order.
+- Checked: the dump of every particle, bone turn and grip value over 200 moving steps (both phases, 1-3 passes, orbs dropped; 33,864
+  numbers) is byte-identical to commit b5e0aaf's, interpreted and native; `luau-compile --codegennull` regalloc failed 0 on x64,
+  x64_ms and a64; luau-analyze the same five warnings; `test_cloth_sim` unchanged (P1 1.143 / 0.17, P2 1.187 / 0.39);
+  `tools/verify_all.sh` exit 0, 44 PASS lines (`results/verify_all_1112c.log`).
+- Studio, native, 300 steps, bakes running alongside (`results/cloth_timing_1112c.txt`; two runs, the second in the other order):
+  keepOut 0.47 -> 0.30 ms a step, pushMiddles 0.33 -> 0.24, the middles 0.56 -> 0.39 (P1, run 2); the whole step 4.39 -> 3.85 ms
+  in phase 1 and 3.79 -> 3.34 in phase 2 (run 2). In run 1 the same sections fell by as much, but phase 2's whole step read 3.18 ->
+  3.36 as untouched sections rose with the load; the per-section numbers are the ones to trust.
+- In the game (edit copy replaced in memory, never saved; Play; Shen spawned by the QA probe): phase 1, 123 skin bones, 122 moved
+  within a second, none non-finite, nothing new on the console. The still showed only the intro card again: not a look at the cloth.
+
+DeathblowVictim with the seam counted at offset 0 (nrB's bake, checked as `nrBd`): validator clean, x-ray 0.275 -> 0.243, out-and-
+back pops 2 -> 0, but its left upper arm swings 104 deg in a frame at f20 (36 before), as at offset 0.015. Not taken.

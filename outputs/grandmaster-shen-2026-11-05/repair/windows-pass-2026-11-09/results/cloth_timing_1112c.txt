@@ -1,0 +1,15 @@
+# ClothSim step timing, Studio Play client, native code, this PC (2026-11-12, later). 300 steps of moving limbs, 3 link passes, ms a step.
+# head = commit b5e0aaf's ClothSim; flat = the flat-array keepOut/pushMiddles/middles. Bakes ran alongside both runs (loose); run 2 swaps the order.
+## run 1 (head first)
+head P1 step 3.635 ms, apply/all 0.003, apply/later 0.012, keepOut 0.385, mid/all 0.086, mid/later 0.378, moveParticles 0.048, placeCaps 0.012, pos/all 0.586, pos/later 0.366, pullLinks 0.072, pushMiddles 0.268, turnBones 0.066, vol/all 0.650, vol/later 0.674
+head P2 step 3.179 ms, apply/all 0.003, apply/later 0.011, keepOut 0.393, mid/all 0.089, mid/later 0.401, moveParticles 0.053, placeCaps 0.012, pos/all 0.466, pos/later 0.246, pullLinks 0.068, pushMiddles 0.287, turnBones 0.065, vol/all 0.554, vol/later 0.503
+flat P1 step 3.320 ms, apply/all 0.003, apply/later 0.012, keepOut 0.262, mid/all 0.060, mid/later 0.286, moveParticles 0.052, placeCaps 0.016, pos/all 0.587, pos/later 0.365, pullLinks 0.072, pushMiddles 0.207, turnBones 0.064, vol/all 0.642, vol/later 0.655
+flat P2 step 3.358 ms, apply/all 0.003, apply/later 0.010, keepOut 0.311, mid/all 0.074, mid/later 0.350, moveParticles 0.064, placeCaps 0.021, pos/all 0.582, pos/later 0.289, pullLinks 0.078, pushMiddles 0.255, turnBones 0.076, vol/all 0.620, vol/later 0.580
+## run 2 (flat first)
+flat P1 step 3.846 ms, apply/all 0.004, apply/later 0.014, keepOut 0.300, mid/all 0.068, mid/later 0.325, moveParticles 0.057, placeCaps 0.020, pos/all 0.714, pos/later 0.416, pullLinks 0.084, pushMiddles 0.235, turnBones 0.076, vol/all 0.726, vol/later 0.767
+flat P2 step 3.335 ms, apply/all 0.003, apply/later 0.011, keepOut 0.299, mid/all 0.075, mid/later 0.349, moveParticles 0.067, placeCaps 0.016, pos/all 0.570, pos/later 0.287, pullLinks 0.079, pushMiddles 0.243, turnBones 0.077, vol/all 0.631, vol/later 0.586
+head P1 step 4.394 ms, apply/all 0.004, apply/later 0.017, keepOut 0.470, mid/all 0.108, mid/later 0.456, moveParticles 0.060, placeCaps 0.015, pos/all 0.714, pos/later 0.447, pullLinks 0.086, pushMiddles 0.333, turnBones 0.078, vol/all 0.750, vol/later 0.817
+head P2 step 3.785 ms, apply/all 0.003, apply/later 0.013, keepOut 0.472, mid/all 0.110, mid/later 0.472, moveParticles 0.063, placeCaps 0.016, pos/all 0.571, pos/later 0.304, pullLinks 0.080, pushMiddles 0.331, turnBones 0.077, vol/all 0.624, vol/later 0.611
+## the game's own ClothSim replaced by flat in the edit copy (never saved), Play, Shen spawned by the QA probe
+template AsuraBoss_GrandmasterShen_P1 | bones 123 moved in 1 s 122 | non-finite 0 | max move 0.936
+P1 passes 3: 4.918 ms/step | P1 passes 2: 4.890 ms/step | P1 passes 1: 4.208 ms/step | P2 passes 3: 4.562 ms/step | P2 passes 2: 4.354 ms/step | P2 passes 1: 3.827 ms/step
