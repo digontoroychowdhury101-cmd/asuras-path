@@ -137,3 +137,16 @@ GrandmasterShen_P2_Strike len 1.100/1.100 frames 34 kfs 34 max 0.0039 | RightHan
 Phase 2 worst: 0.0103 (GuandaoSkyfall right hand f21, as in the rsC check); glaive worst 0.0090 (Guandao_L1 f12); the other ten 0.0024-0.0074.
 Still at P2 Flourish t=1.413 (clip f42, the catch), camera on the right hand, viewed, not saved: both hands on the haft, the blade out to
 his left, nothing through him.
+
+The four clips of 11-12 (REPORT section 13): P1 Guandao_L2, P2 BloodWave, P2 Guandao_L2, P2 Guandao_Running, the exported rbxmx. Same
+method, in a fresh Play session of places/AsurasPath.rbxlx (opened in Studio from the repo; never saved), Shen spawned and held by the probe,
+phase 2 reached by the game's own transition (live glaive pivot 1.090, -0.390, -0.350). The Studio MCP was driven over stdio with
+scripts/studio_mcp.py (Roblox's StudioMCP.exe, as tools/run_studiomcp.py launches it), because no Studio tools were attached to that session.
+GrandmasterShen_P1_Guandao_L2 len 0.433/0.433 frames 14 kfs 14 max 0.0056 | Glaive 0.0056 f13 0.16deg; RightHand 0.0006 f5; LeftHand 0.0006 f13
+GrandmasterShen_P2_BloodWave len 2.133/2.133 frames 65 kfs 65 max 0.0020 | Glaive 0.0020 f53 0.19deg; RightHand 0.0008 f32; LeftHand 0.0009 f53
+GrandmasterShen_P2_Guandao_L2 len 0.433/0.433 frames 14 kfs 14 max 0.0058 | Glaive 0.0058 f13 0.19deg; RightHand 0.0045 f13 0.25deg
+GrandmasterShen_P2_Guandao_Running len 0.600/0.600 frames 19 kfs 19 max 0.0091 | Glaive 0.0091 f18 0.25deg; RightHand 0.0034 f18 0.31deg
+Every other part (torso, head, forearms, legs, feet) within 0.0009 in all four. Stills (Studio screen captures, viewed, not committed):
+P2 Guandao_L2 at t=0.117, P2 Guandao_Running at 0.442 and 0.454, P2 BloodWave at 1.554 and 2.071, textured this time (SurfaceAppearance
+maps fetched): both hands on the haft, nothing through his body at those poses. Afterwards: play stopped, the Edit session has no harness
+objects, HttpEnabled false, content\shenpreview deleted.

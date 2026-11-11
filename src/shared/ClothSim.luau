@@ -162,7 +162,8 @@ function Sim.new(def: Def, scale: number): any
 		local slot = {}
 		for k, f in s.bones do slot[f.i] = (k - 1) * 9 end
 		local sk = { n = #skin.n, start = {}, count = {}, i = {}, q = {}, w = {}, ox = {}, oy = {}, oz = {}, inv = {}, lstart = {}, lcount = {}, lo = {}, lw = {},
-			vx = {}, vy = {}, vz = {}, hstart = {}, hcount = {}, hc = {}, hr = {}, active = {}, nActive = 0 }
+			vx = {}, vy = {}, vz = {}, hstart = {}, hcount = {}, hc = {}, hr = {}, active = {}, nActive = 0,
+			wax = {}, way = {}, waz = {}, wdx = {}, wdy = {}, wdz = {}, len2 = {}, cr0 = {}, crb = {}, ccx = {}, ccy = {}, ccz = {}, reach2 = {} }
 		local e0, c0 = 0, 0
 		for k = 1, sk.n do
 			local vx, vy, vz = skin.v[k * 3 - 2] * scale, skin.v[k * 3 - 1] * scale, skin.v[k * 3] * scale
@@ -559,17 +560,31 @@ local function skinPass(s: any, limbs: { number }, all: boolean)
 		-- the later passes try every volume of the samples found in contact (pushing one side of a thigh out drives the far side's samples into
 		-- volumes they were not touching yet; trying only the pairs first in contact left the robe 0.27 in his thigh)
 		local HC, HR, HS, HN = sk.hc, sk.hr, sk.hstart, sk.hcount
+		-- (2026-11-12) each volume's fields copied to flat arrays once a pass, and the first pass's bounding sphere: the same arithmetic, read faster
+		-- (Studio, native: these tests 1.99 -> 1.43 ms a step in phase 1)
+		local WAX, WAY, WAZ, WDX, WDY, WDZ, LEN2, CR, CRB = sk.wax, sk.way, sk.waz, sk.wdx, sk.wdy, sk.wdz, sk.len2, sk.cr0, sk.crb
+		local CCX, CCY, CCZ, REACH2 = sk.ccx, sk.ccy, sk.ccz, sk.reach2
+		for c = 1, #caps do
+			local cap = caps[c]
+			WAX[c], WAY[c], WAZ[c], WDX[c], WDY[c], WDZ[c], LEN2[c], CR[c], CRB[c] = cap.wax, cap.way, cap.waz, cap.wdx, cap.wdy, cap.wdz, cap.len2, cap.r, cap.rb
+			-- the first pass's bounding sphere: a sample's clearance is never more than the margin, so past it no volume can push
+			local reach = math.sqrt(cap.len2) * 0.5 + math.max(cap.r, cap.rb) + margin
+			CCX[c], CCY[c], CCZ[c], REACH2[c] = cap.cx, cap.cy, cap.cz, reach * reach
+		end
 		for idx = 1, sk.nActive do
 			local k = active[idx]
 			local x, y, z = PX[k], PY[k], PZ[k]
 			local h0 = HS[k]
 			for h = h0, h0 + HN[k] - 1 do
-				local cap = caps[HC[h]]
-				local px, py, pz = x - cap.wax, y - cap.way, z - cap.waz
-				local u = math.clamp((px * cap.wdx + py * cap.wdy + pz * cap.wdz) / cap.len2, 0, 1)
-				local qx, qy, qz = px - cap.wdx * u, py - cap.wdy * u, pz - cap.wdz * u
+				local c = HC[h]
+				local ex, ey, ez = x - CCX[c], y - CCY[c], z - CCZ[c]
+				if ex * ex + ey * ey + ez * ez > REACH2[c] then continue end
+				local wdx, wdy, wdz, r0 = WDX[c], WDY[c], WDZ[c], CR[c]
+				local px, py, pz = x - WAX[c], y - WAY[c], z - WAZ[c]
+				local u = math.clamp((px * wdx + py * wdy + pz * wdz) / LEN2[c], 0, 1)
+				local qx, qy, qz = px - wdx * u, py - wdy * u, pz - wdz * u
 				local d = qx * qx + qy * qy + qz * qz
-				local r = HR[h] + cap.r + (cap.rb - cap.r) * u
+				local r = HR[h] + r0 + (CRB[c] - r0) * u
 				if d < r * r and d > 1e-8 then
 					local f = r / math.sqrt(d) - 1
 					push(k, qx * f, qy * f, qz * f)
@@ -626,10 +641,13 @@ local function skinPass(s: any, limbs: { number }, all: boolean)
 	end
 end
 
--- One fixed step. iterations: link passes (a low graphics tier passes fewer).
-function Sim.step(s: any, limbs: { number }, h: number, wind: Wind, iterations: number)
-	if not s.ready then Sim.reset(s, limbs) end
-	s.t += h
+-- (2026-11-12) One step in the functions below, each block as it stood in Sim.step: as one function, x64 native code generation could not
+-- allocate its registers ("internal lowering failure"), so Studio interpreted the whole step on Windows PCs (arm64 compiled it). Split, every
+-- function compiles on x64, arm64 and x64_ms, and the cloth comes out bit for bit the same (luau-compile --codegennull; a dump of every particle,
+-- bone turn and grip value over 200 moving steps, both phases, 1-3 passes, interpreted and native)
+
+-- the particles: inertia, air, gravity as it differs from the sculpt, back toward the sculpt, never past their reach
+local function moveParticles(s: any, limbs: { number }, h: number, wind: Wind)
 	local t, scale = s.t, s.scale
 	local X, Y, Z, OX, OY, OZ = s.x, s.y, s.z, s.ox, s.oy, s.oz
 	local steps = h * 60
@@ -676,223 +694,254 @@ function Sim.step(s: any, limbs: { number }, h: number, wind: Wind, iterations: 
 		end
 		X[i], Y[i], Z[i] = x, y, z
 	end
-	-- the body: legs push the skirt, the back carries the hair. Volumes are placed once per step and the cloth is kept out of them on every pass, so links never pull it back in
-	local caps = s.caps
-	-- (2026-11-07) each volume is swept from where it stood last step to where it stands now across the link passes: a running leg moves half a
-	-- stud a step, past a robe particle's whole clearance, and kept out at the end alone the particle was thrown out the leg's far side for a frame
-	local function place(cap: any, f: number)
-		cap.wax, cap.way, cap.waz = cap.pax + (cap.nax - cap.pax) * f, cap.pay + (cap.nay - cap.pay) * f, cap.paz + (cap.naz - cap.paz) * f
-		cap.wdx, cap.wdy, cap.wdz = cap.pdx + (cap.ndx - cap.pdx) * f, cap.pdy + (cap.ndy - cap.pdy) * f, cap.pdz + (cap.ndz - cap.pdz) * f
-		cap.len2 = math.max(cap.wdx * cap.wdx + cap.wdy * cap.wdy + cap.wdz * cap.wdz, 1e-6)
-		-- a bounding sphere: most cloth is nowhere near most volumes, and one distance says so
-		cap.cx, cap.cy, cap.cz = cap.wax + cap.wdx * 0.5, cap.way + cap.wdy * 0.5, cap.waz + cap.wdz * 0.5
-		local reach = math.sqrt(cap.len2) * 0.5 + math.max(cap.r, cap.rb) + 0.5 * scale -- room for a particle's reach past its volume
-		cap.reach2 = reach * reach
-	end
+end
+
+-- (2026-11-07) each volume is swept from where it stood last step to where it stands now across the link passes: a running leg moves half a
+-- stud a step, past a robe particle's whole clearance, and kept out at the end alone the particle was thrown out the leg's far side for a frame
+local function placeCap(cap: any, f: number, scale: number)
+	cap.wax, cap.way, cap.waz = cap.pax + (cap.nax - cap.pax) * f, cap.pay + (cap.nay - cap.pay) * f, cap.paz + (cap.naz - cap.paz) * f
+	cap.wdx, cap.wdy, cap.wdz = cap.pdx + (cap.ndx - cap.pdx) * f, cap.pdy + (cap.ndy - cap.pdy) * f, cap.pdz + (cap.ndz - cap.pdz) * f
+	cap.len2 = math.max(cap.wdx * cap.wdx + cap.wdy * cap.wdy + cap.wdz * cap.wdz, 1e-6)
+	-- a bounding sphere: most cloth is nowhere near most volumes, and one distance says so
+	cap.cx, cap.cy, cap.cz = cap.wax + cap.wdx * 0.5, cap.way + cap.wdy * 0.5, cap.waz + cap.wdz * 0.5
+	local reach = math.sqrt(cap.len2) * 0.5 + math.max(cap.r, cap.rb) + 0.5 * scale -- room for a particle's reach past its volume
+	cap.reach2 = reach * reach
+end
+
+-- a point (x, y, z) in limb frame o
+local function limbPoint(limbs: { number }, o: number, x: number, y: number, z: number): (number, number, number)
+	return limbs[o + 1] + limbs[o + 4] * x + limbs[o + 5] * y + limbs[o + 6] * z, limbs[o + 2] + limbs[o + 7] * x + limbs[o + 8] * y + limbs[o + 9] * z,
+		limbs[o + 3] + limbs[o + 10] * x + limbs[o + 11] * y + limbs[o + 12] * z
+end
+
+-- the body: legs push the skirt, the back carries the hair. Volumes are placed once per step and the cloth is kept out of them on every pass, so links never pull it back in
+local function placeCaps(s: any, limbs: { number }, iterations: number)
+	local caps, scale = s.caps, s.scale
 	for c = 1, #caps do
 		local cap = caps[c]
 		local o = (cap.limb - 1) * 12
-		local ax = limbs[o + 1] + limbs[o + 4] * cap.ax + limbs[o + 5] * cap.ay + limbs[o + 6] * cap.az
-		local ay = limbs[o + 2] + limbs[o + 7] * cap.ax + limbs[o + 8] * cap.ay + limbs[o + 9] * cap.az
-		local az = limbs[o + 3] + limbs[o + 10] * cap.ax + limbs[o + 11] * cap.ay + limbs[o + 12] * cap.az
-		local dx = limbs[o + 1] + limbs[o + 4] * cap.bx + limbs[o + 5] * cap.by + limbs[o + 6] * cap.bz - ax
-		local dy = limbs[o + 2] + limbs[o + 7] * cap.bx + limbs[o + 8] * cap.by + limbs[o + 9] * cap.bz - ay
-		local dz = limbs[o + 3] + limbs[o + 10] * cap.bx + limbs[o + 11] * cap.by + limbs[o + 12] * cap.bz - az
+		local ax, ay, az = limbPoint(limbs, o, cap.ax, cap.ay, cap.az)
+		local bx, by, bz = limbPoint(limbs, o, cap.bx, cap.by, cap.bz)
+		local dx, dy, dz = bx - ax, by - ay, bz - az
 		if s.placed then
 			cap.pax, cap.pay, cap.paz, cap.pdx, cap.pdy, cap.pdz = cap.nax, cap.nay, cap.naz, cap.ndx, cap.ndy, cap.ndz
 		else
 			cap.pax, cap.pay, cap.paz, cap.pdx, cap.pdy, cap.pdz = ax, ay, az, dx, dy, dz
 		end
 		cap.nax, cap.nay, cap.naz, cap.ndx, cap.ndy, cap.ndz = ax, ay, az, dx, dy, dz
-		place(cap, if iterations > 1 then 1 / iterations else 1)
+		placeCap(cap, if iterations > 1 then 1 / iterations else 1, scale)
 	end
 	s.placed = true
-	-- links: the sheet holds together
+end
+
+-- every particle out of every volume it avoids
+local function keepOut(s: any)
+	local X, Y, Z, caps = s.x, s.y, s.z, s.caps
+	for i = 1, s.n do
+		local ids, firm = s.hitIds[i], s.hitFirm[i]
+		for q = 1, #ids do
+			local cap, r = caps[ids[q]], s.hitRad[i][q]
+			local ex, ey, ez = X[i] - cap.cx, Y[i] - cap.cy, Z[i] - cap.cz
+			if ex * ex + ey * ey + ez * ez > cap.reach2 then continue end
+			local px, py, pz = X[i] - cap.wax, Y[i] - cap.way, Z[i] - cap.waz
+			local u = math.clamp((px * cap.wdx + py * cap.wdy + pz * cap.wdz) / cap.len2, 0, 1)
+			local qx, qy, qz = px - cap.wdx * u, py - cap.wdy * u, pz - cap.wdz * u
+			local d = qx * qx + qy * qy + qz * qz
+			if firm[q] then r += cap.r + (cap.rb - cap.r) * u end
+			if d < r * r and d > 1e-8 then
+				local f = (r / math.sqrt(d) - 1)
+				X[i], Y[i], Z[i] = X[i] + qx * f, Y[i] + qy * f, Z[i] + qz * f
+			end
+		end
+	end
+end
+
+-- links: the sheet holds together
+local function pullLinks(s: any)
+	local X, Y, Z = s.x, s.y, s.z
 	local la, lb, lr, lk, pin = s.la, s.lb, s.lr, s.lk, s.pin
+	for l = 1, s.L do
+		local i, j = la[l], lb[l]
+		local dx, dy, dz = X[j] - X[i], Y[j] - Y[i], Z[j] - Z[i]
+		local d = math.sqrt(dx * dx + dy * dy + dz * dz)
+		if d < 1e-6 then continue end
+		local c = (d - lr[l]) / d * lk[l]
+		if d < lr[l] then c *= SLACK end -- cloth pulls tight but folds under compression: a stiff push here would hold the sheet still
+		local pi, pj = pin[i], pin[j]
+		if pi and pj then continue end
+		if pi then
+			X[j], Y[j], Z[j] = X[j] - dx * c, Y[j] - dy * c, Z[j] - dz * c
+		elseif pj then
+			X[i], Y[i], Z[i] = X[i] + dx * c, Y[i] + dy * c, Z[i] + dz * c
+		else
+			c *= 0.5
+			X[i], Y[i], Z[i] = X[i] + dx * c, Y[i] + dy * c, Z[i] + dz * c
+			X[j], Y[j], Z[j] = X[j] - dx * c, Y[j] - dy * c, Z[j] - dz * c
+		end
+	end
+end
+
+-- a link's middle inside a volume moves both its ends out together (a pinned end stays): the sheet cannot slice through a leg between two particles
+local function pushMiddles(s: any)
+	local X, Y, Z, caps = s.x, s.y, s.z, s.caps
+	local la, lb, pin = s.la, s.lb, s.pin
 	local linkIds, linkRad, linkFirm = s.linkIds, s.linkRad, s.linkFirm
-	-- every particle out of every volume it avoids
-	local function keepOut()
-		for i = 1, s.n do
-			local ids, firm = s.hitIds[i], s.hitFirm[i]
-			for q = 1, #ids do
-				local cap, r = caps[ids[q]], s.hitRad[i][q]
-				local ex, ey, ez = X[i] - cap.cx, Y[i] - cap.cy, Z[i] - cap.cz
-				if ex * ex + ey * ey + ez * ez > cap.reach2 then continue end
-				local px, py, pz = X[i] - cap.wax, Y[i] - cap.way, Z[i] - cap.waz
-				local u = math.clamp((px * cap.wdx + py * cap.wdy + pz * cap.wdz) / cap.len2, 0, 1)
-				local qx, qy, qz = px - cap.wdx * u, py - cap.wdy * u, pz - cap.wdz * u
-				local d = qx * qx + qy * qy + qz * qz
-				if firm[q] then r += cap.r + (cap.rb - cap.r) * u end
-				if d < r * r and d > 1e-8 then
-					local f = (r / math.sqrt(d) - 1)
-					X[i], Y[i], Z[i] = X[i] + qx * f, Y[i] + qy * f, Z[i] + qz * f
-				end
+	for l = 1, s.L do
+		local ids = linkIds[l]
+		if #ids == 0 then continue end
+		local i, j = la[l], lb[l]
+		local pi, pj = pin[i], pin[j]
+		if pi and pj then continue end
+		for q = 1, #ids do
+			local cap, r = caps[ids[q]], linkRad[l][q]
+			local mx, my, mz = (X[i] + X[j]) * 0.5, (Y[i] + Y[j]) * 0.5, (Z[i] + Z[j]) * 0.5
+			local ex, ey, ez = mx - cap.cx, my - cap.cy, mz - cap.cz
+			if ex * ex + ey * ey + ez * ez > cap.reach2 then continue end
+			local px, py, pz = mx - cap.wax, my - cap.way, mz - cap.waz
+			local u = math.clamp((px * cap.wdx + py * cap.wdy + pz * cap.wdz) / cap.len2, 0, 1)
+			local qx, qy, qz = px - cap.wdx * u, py - cap.wdy * u, pz - cap.wdz * u
+			local d = qx * qx + qy * qy + qz * qz
+			if linkFirm[l][q] then r += cap.r + (cap.rb - cap.r) * u end
+			if d < r * r and d > 1e-8 then
+				local f = (r * 1.02 / math.sqrt(d) - 1) * (if pi or pj then 2 else 1)
+				local ox, oy, oz = qx * f, qy * f, qz * f
+				if not pi then X[i], Y[i], Z[i] = X[i] + ox, Y[i] + oy, Z[i] + oz end
+				if not pj then X[j], Y[j], Z[j] = X[j] + ox, Y[j] + oy, Z[j] + oz end
 			end
 		end
 	end
-	for pass = 1, iterations do
-		if pass > 1 then for c = 1, #caps do place(caps[c], pass / iterations) end end
-		for l = 1, s.L do
-			local i, j = la[l], lb[l]
-			local dx, dy, dz = X[j] - X[i], Y[j] - Y[i], Z[j] - Z[i]
-			local d = math.sqrt(dx * dx + dy * dy + dz * dz)
-			if d < 1e-6 then continue end
-			local c = (d - lr[l]) / d * lk[l]
-			if d < lr[l] then c *= SLACK end -- cloth pulls tight but folds under compression: a stiff push here would hold the sheet still
-			local pi, pj = pin[i], pin[j]
-			if pi and pj then continue end
-			if pi then
-				X[j], Y[j], Z[j] = X[j] - dx * c, Y[j] - dy * c, Z[j] - dz * c
-			elseif pj then
-				X[i], Y[i], Z[i] = X[i] + dx * c, Y[i] + dy * c, Z[i] + dz * c
-			else
-				c *= 0.5
-				X[i], Y[i], Z[i] = X[i] + dx * c, Y[i] + dy * c, Z[i] + dz * c
-				X[j], Y[j], Z[j] = X[j] - dx * c, Y[j] - dy * c, Z[j] - dz * c
-			end
+end
+
+-- a point v in limb frame m
+local function onLimb(limbs: { number }, m: number, v: { number }): (number, number, number)
+	return limbs[m + 1] + limbs[m + 4] * v[1] + limbs[m + 5] * v[2] + limbs[m + 6] * v[3], limbs[m + 2] + limbs[m + 7] * v[1] + limbs[m + 8] * v[2] + limbs[m + 9] * v[3],
+		limbs[m + 3] + limbs[m + 10] * v[1] + limbs[m + 11] * v[2] + limbs[m + 12] * v[3]
+end
+
+-- the left hand: fingers close as the palm comes to the haft and open as it leaves
+local function gripHaft(s: any, limbs: { number }, steps: number)
+	local scale = s.scale
+	local o, q = (s.hand - 1) * 12, (s.glaive - 1) * 12
+	local px, py, pz = onLimb(limbs, o, s.palm)
+	local ax, ay, az = onLimb(limbs, q, s.butt)
+	local bx, by, bz = onLimb(limbs, q, s.haftTop)
+	local dx, dy, dz = bx - ax, by - ay, bz - az
+	local u = ((px - ax) * dx + (py - ay) * dy + (pz - az) * dz) / math.max(dx * dx + dy * dy + dz * dz, 1e-6)
+	local qx, qy, qz = px - ax - dx * u, py - ay - dy * u, pz - az - dz * u
+	local want = 1 - math.clamp((math.sqrt(qx * qx + qy * qy + qz * qz) / scale - 0.25) / 0.3, 0, 1)
+	s.hold += (want - s.hold) * (1 - 0.75 ^ steps)
+	-- the haft in the hand's own frame: the fingers close round the wood itself, even where it runs diagonally across the palm
+	local n = math.max(math.sqrt(dx * dx + dy * dy + dz * dz), 1e-6)
+	s.haftX = (limbs[o + 4] * dx + limbs[o + 7] * dy + limbs[o + 10] * dz) / n
+	s.haftY = (limbs[o + 5] * dx + limbs[o + 8] * dy + limbs[o + 11] * dz) / n
+	s.haftZ = (limbs[o + 6] * dx + limbs[o + 9] * dy + limbs[o + 12] * dz) / n
+end
+
+-- a rigid chain on the hand: the knuckle rides the hand, the middle joint rides the knuckle, each adds its curl about the line of the haft
+local function fingerBone(s: any, limbs: { number }, k: number, f: any, lastFinger: any): any
+	local X, Y, Z, R = s.x, s.y, s.z, s.R
+	local o = (s.a[f.i] - 1) * 12
+	local q = (k - 1) * 9
+	local ax, ay, az = f.finger.axis[1], f.finger.axis[2], f.finger.axis[3]
+	if s.haftX then
+		-- curl about the haft's own line (turned at most FINGER_TURN from the knuckles' line), so a diagonal grip still wraps the wood
+		local hx, hy, hz = s.haftX, s.haftY, s.haftZ
+		local d = hx * ax + hy * ay + hz * az
+		if d < 0 then hx, hy, hz, d = -hx, -hy, -hz, -d end
+		local cmax = math.cos(FINGER_TURN)
+		if d < cmax then
+			local px, py, pz = hx - ax * d, hy - ay * d, hz - az * d
+			local pn = math.max(math.sqrt(px * px + py * py + pz * pz), 1e-6)
+			local sn = math.sin(FINGER_TURN)
+			hx, hy, hz = ax * cmax + px / pn * sn, ay * cmax + py / pn * sn, az * cmax + pz / pn * sn
 		end
-		keepOut()
-		-- a link's middle inside a volume moves both its ends out together (a pinned end stays): the sheet cannot slice through a leg between two particles,
-		-- then the particles once more
-		-- Once a step, on the last pass, then the particles once more: the middles cost the most and the sheet between particles moves least.
-		-- (2026-11-07) twice, each push 2% past the surface: once let the particles' own last push sag a middle back into a volume (test_cloth_sim)
-		if pass < iterations then continue end
-		for _ = 1, 2 do
-			for l = 1, s.L do
-				local ids = linkIds[l]
-				if #ids == 0 then continue end
-				local i, j = la[l], lb[l]
-				local pi, pj = pin[i], pin[j]
-				if pi and pj then continue end
-				for q = 1, #ids do
-					local cap, r = caps[ids[q]], linkRad[l][q]
-					local mx, my, mz = (X[i] + X[j]) * 0.5, (Y[i] + Y[j]) * 0.5, (Z[i] + Z[j]) * 0.5
-					local ex, ey, ez = mx - cap.cx, my - cap.cy, mz - cap.cz
-					if ex * ex + ey * ey + ez * ez > cap.reach2 then continue end
-					local px, py, pz = mx - cap.wax, my - cap.way, mz - cap.waz
-					local u = math.clamp((px * cap.wdx + py * cap.wdy + pz * cap.wdz) / cap.len2, 0, 1)
-					local qx, qy, qz = px - cap.wdx * u, py - cap.wdy * u, pz - cap.wdz * u
-					local d = qx * qx + qy * qy + qz * qz
-					if linkFirm[l][q] then r += cap.r + (cap.rb - cap.r) * u end
-					if d < r * r and d > 1e-8 then
-						local f = (r * 1.02 / math.sqrt(d) - 1) * (if pi or pj then 2 else 1)
-						local ox, oy, oz = qx * f, qy * f, qz * f
-						if not pi then X[i], Y[i], Z[i] = X[i] + ox, Y[i] + oy, Z[i] + oz end
-						if not pj then X[j], Y[j], Z[j] = X[j] + ox, Y[j] + oy, Z[j] + oz end
-					end
-				end
-			end
-			keepOut()
-		end
+		ax, ay, az = hx, hy, hz
 	end
-	-- the left hand: fingers close as the palm comes to the haft and open as it leaves
-	if s.palm and s.glaive then
-		local o, q = (s.hand - 1) * 12, (s.glaive - 1) * 12
-		local function on(m: number, v: { number }): (number, number, number)
-			return limbs[m + 1] + limbs[m + 4] * v[1] + limbs[m + 5] * v[2] + limbs[m + 6] * v[3], limbs[m + 2] + limbs[m + 7] * v[1] + limbs[m + 8] * v[2] + limbs[m + 9] * v[3],
-				limbs[m + 3] + limbs[m + 10] * v[1] + limbs[m + 11] * v[2] + limbs[m + 12] * v[3]
-		end
-		local px, py, pz = on(o, s.palm)
-		local ax, ay, az = on(q, s.butt)
-		local bx, by, bz = on(q, s.haftTop)
-		local dx, dy, dz = bx - ax, by - ay, bz - az
-		local u = ((px - ax) * dx + (py - ay) * dy + (pz - az) * dz) / math.max(dx * dx + dy * dy + dz * dz, 1e-6)
-		local qx, qy, qz = px - ax - dx * u, py - ay - dy * u, pz - az - dz * u
-		local want = 1 - math.clamp((math.sqrt(qx * qx + qy * qy + qz * qz) / scale - 0.25) / 0.3, 0, 1)
-		s.hold += (want - s.hold) * (1 - 0.75 ^ steps)
-		-- the haft in the hand's own frame: the fingers close round the wood itself, even where it runs diagonally across the palm
-		local n = math.max(math.sqrt(dx * dx + dy * dy + dz * dz), 1e-6)
-		s.haftX = (limbs[o + 4] * dx + limbs[o + 7] * dy + limbs[o + 10] * dz) / n
-		s.haftY = (limbs[o + 5] * dx + limbs[o + 8] * dy + limbs[o + 11] * dz) / n
-		s.haftZ = (limbs[o + 6] * dx + limbs[o + 9] * dy + limbs[o + 12] * dz) / n
+	local base = if lastFinger then lastFinger.Base else { limbs[o + 4], limbs[o + 5], limbs[o + 6], limbs[o + 7], limbs[o + 8], limbs[o + 9], limbs[o + 10], limbs[o + 11], limbs[o + 12] }
+	local a = math.rad(f.finger.curl) * s.hold
+	local co, si, t1 = math.cos(a), math.sin(a), 1 - math.cos(a)
+	local c = { t1 * ax * ax + co, t1 * ax * ay - si * az, t1 * ax * az + si * ay, t1 * ay * ax + si * az, t1 * ay * ay + co, t1 * ay * az - si * ax, t1 * az * ax - si * ay, t1 * az * ay + si * ax, t1 * az * az + co }
+	local m = { base[1] * c[1] + base[2] * c[4] + base[3] * c[7], base[1] * c[2] + base[2] * c[5] + base[3] * c[8], base[1] * c[3] + base[2] * c[6] + base[3] * c[9],
+		base[4] * c[1] + base[5] * c[4] + base[6] * c[7], base[4] * c[2] + base[5] * c[5] + base[6] * c[8], base[4] * c[3] + base[5] * c[6] + base[6] * c[9],
+		base[7] * c[1] + base[8] * c[4] + base[9] * c[7], base[7] * c[2] + base[8] * c[5] + base[9] * c[8], base[7] * c[3] + base[8] * c[6] + base[9] * c[9] }
+	local x, y, z
+	if lastFinger then
+		local dx, dy, dz = f.ax - lastFinger.X, f.ay - lastFinger.Y, f.az - lastFinger.Z
+		x = lastFinger.WX + base[1] * dx + base[2] * dy + base[3] * dz
+		y = lastFinger.WY + base[4] * dx + base[5] * dy + base[6] * dz
+		z = lastFinger.WZ + base[7] * dx + base[8] * dy + base[9] * dz
+	else
+		x = limbs[o + 1] + limbs[o + 4] * f.ax + limbs[o + 5] * f.ay + limbs[o + 6] * f.az
+		y = limbs[o + 2] + limbs[o + 7] * f.ax + limbs[o + 8] * f.ay + limbs[o + 9] * f.az
+		z = limbs[o + 3] + limbs[o + 10] * f.ax + limbs[o + 11] * f.ay + limbs[o + 12] * f.az
 	end
-	-- each bone's rotation: its frame now against its frame at rest
+	X[f.i], Y[f.i], Z[f.i] = x, y, z
+	for w = 1, 9 do R[q + w] = m[w] end
+	return { Base = m, X = f.ax, Y = f.ay, Z = f.az, WX = x, WY = y, WZ = z }
+end
+
+-- (2026-11-06) he is dead: the power that held the orbs is gone. Each falls under its own weight from where it was, strikes the floor, bounces low and rolls to rest
+local function dropOrb(s: any, k: number, f: any, h: number)
+	local X, Y, Z, R, scale = s.x, s.y, s.z, s.R, s.scale
+	local i = f.i
+	local st = f.fall
+	if not st then
+		st = { vx = (X[i] - (f.lastX or X[i])) / math.max(h, 1e-3), vy = 0, vz = (Z[i] - (f.lastZ or Z[i])) / math.max(h, 1e-3), spin = s.t * 1.6 + f.turn }
+		f.fall = st
+	end
+	local r = 0.21 * scale -- an orb's radius
+	st.vy -= GRAVITY * scale * 0.55 * h
+	local x, y, z = X[i] + st.vx * h, Y[i] + st.vy * h, Z[i] + st.vz * h
+	if y < s.dropY + r then
+		y = s.dropY + r
+		st.vy = if math.abs(st.vy) > 2 * scale then -st.vy * 0.3 else 0
+		st.vx, st.vz = st.vx * 0.6, st.vz * 0.6 -- the stone floor takes most of the roll
+		st.spin += math.sqrt(st.vx * st.vx + st.vz * st.vz) * h / r
+	end
+	X[i], Y[i], Z[i] = x, y, z
+	local co, si = math.cos(st.spin), math.sin(st.spin)
+	local q = (k - 1) * 9
+	R[q + 1], R[q + 2], R[q + 3], R[q + 4], R[q + 5], R[q + 6], R[q + 7], R[q + 8], R[q + 9] = co, 0, si, 0, 1, 0, -si, 0, co
+end
+
+-- an orb circles the crown on its own uneven path, in the world's frame, and catches up a beat late when he moves: around his head, never strung out behind him
+local function circleOrb(s: any, limbs: { number }, k: number, f: any, steps: number)
+	local X, Y, Z, R, t, scale = s.x, s.y, s.z, s.R, s.t, s.scale
+	f.lastX, f.lastZ = X[f.i], Z[f.i]
+	local o = (s.a[f.i] - 1) * 12
+	local bx, by, bz = f.ax, f.ay, f.az
+	local cx = limbs[o + 1] + limbs[o + 4] * bx + limbs[o + 5] * by + limbs[o + 6] * bz
+	local cy = limbs[o + 2] + limbs[o + 7] * bx + limbs[o + 8] * by + limbs[o + 9] * bz
+	local cz = limbs[o + 3] + limbs[o + 10] * bx + limbs[o + 11] * by + limbs[o + 12] * bz
+	local ang = t * (0.85 + 0.12 * math.sin(t * 0.37)) + f.turn
+	local radius = f.radius * (1 + 0.08 * math.sin(t * 0.9 + f.turn * 2))
+	local tx, ty, tz = cx + math.cos(ang) * radius, cy + scale * (0.3 * math.sin(ang + f.turn) + 0.1 * math.sin(t * 2.1 + f.turn)), cz + math.sin(ang) * radius
+	local follow = 1 - 0.8 ^ steps
+	local i = f.i
+	X[i], Y[i], Z[i] = X[i] + (tx - X[i]) * follow, Y[i] + (ty - Y[i]) * follow, Z[i] + (tz - Z[i]) * follow
+	local spin = t * 1.6 + f.turn
+	local co, si = math.cos(spin), math.sin(spin)
+	local q = (k - 1) * 9
+	R[q + 1], R[q + 2], R[q + 3], R[q + 4], R[q + 5], R[q + 6], R[q + 7], R[q + 8], R[q + 9] = co, 0, si, 0, 1, 0, -si, 0, co
+end
+
+-- each bone's rotation: its frame now against its frame at rest
+local function turnBones(s: any, limbs: { number }, h: number)
+	local X, Y, Z = s.x, s.y, s.z
+	local steps = h * 60
 	local R, frames = s.R, s.frames
 	local lastFinger: any = nil
 	for k, f in s.bones do
 		if f.finger then
-			-- a rigid chain on the hand: the knuckle rides the hand, the middle joint rides the knuckle, each adds its curl about the line of the haft
-			local o = (s.a[f.i] - 1) * 12
-			local q = (k - 1) * 9
-			local ax, ay, az = f.finger.axis[1], f.finger.axis[2], f.finger.axis[3]
-			if s.haftX then
-				-- curl about the haft's own line (turned at most FINGER_TURN from the knuckles' line), so a diagonal grip still wraps the wood
-				local hx, hy, hz = s.haftX, s.haftY, s.haftZ
-				local d = hx * ax + hy * ay + hz * az
-				if d < 0 then hx, hy, hz, d = -hx, -hy, -hz, -d end
-				local cmax = math.cos(FINGER_TURN)
-				if d < cmax then
-					local px, py, pz = hx - ax * d, hy - ay * d, hz - az * d
-					local pn = math.max(math.sqrt(px * px + py * py + pz * pz), 1e-6)
-					local sn = math.sin(FINGER_TURN)
-					hx, hy, hz = ax * cmax + px / pn * sn, ay * cmax + py / pn * sn, az * cmax + pz / pn * sn
-				end
-				ax, ay, az = hx, hy, hz
-			end
-			local base = if lastFinger then lastFinger.Base else { limbs[o + 4], limbs[o + 5], limbs[o + 6], limbs[o + 7], limbs[o + 8], limbs[o + 9], limbs[o + 10], limbs[o + 11], limbs[o + 12] }
-			local a = math.rad(f.finger.curl) * s.hold
-			local co, si, t1 = math.cos(a), math.sin(a), 1 - math.cos(a)
-			local c = { t1 * ax * ax + co, t1 * ax * ay - si * az, t1 * ax * az + si * ay, t1 * ay * ax + si * az, t1 * ay * ay + co, t1 * ay * az - si * ax, t1 * az * ax - si * ay, t1 * az * ay + si * ax, t1 * az * az + co }
-			local m = { base[1] * c[1] + base[2] * c[4] + base[3] * c[7], base[1] * c[2] + base[2] * c[5] + base[3] * c[8], base[1] * c[3] + base[2] * c[6] + base[3] * c[9],
-				base[4] * c[1] + base[5] * c[4] + base[6] * c[7], base[4] * c[2] + base[5] * c[5] + base[6] * c[8], base[4] * c[3] + base[5] * c[6] + base[6] * c[9],
-				base[7] * c[1] + base[8] * c[4] + base[9] * c[7], base[7] * c[2] + base[8] * c[5] + base[9] * c[8], base[7] * c[3] + base[8] * c[6] + base[9] * c[9] }
-			local x, y, z
-			if lastFinger then
-				local dx, dy, dz = f.ax - lastFinger.X, f.ay - lastFinger.Y, f.az - lastFinger.Z
-				x = lastFinger.WX + base[1] * dx + base[2] * dy + base[3] * dz
-				y = lastFinger.WY + base[4] * dx + base[5] * dy + base[6] * dz
-				z = lastFinger.WZ + base[7] * dx + base[8] * dy + base[9] * dz
-			else
-				x = limbs[o + 1] + limbs[o + 4] * f.ax + limbs[o + 5] * f.ay + limbs[o + 6] * f.az
-				y = limbs[o + 2] + limbs[o + 7] * f.ax + limbs[o + 8] * f.ay + limbs[o + 9] * f.az
-				z = limbs[o + 3] + limbs[o + 10] * f.ax + limbs[o + 11] * f.ay + limbs[o + 12] * f.az
-			end
-			X[f.i], Y[f.i], Z[f.i] = x, y, z
-			for w = 1, 9 do R[q + w] = m[w] end
-			lastFinger = { Base = m, X = f.ax, Y = f.ay, Z = f.az, WX = x, WY = y, WZ = z }
+			lastFinger = fingerBone(s, limbs, k, f, lastFinger)
 			continue
 		end
 		if f.orb and s.dropY then
-			-- (2026-11-06) he is dead: the power that held the orbs is gone. Each falls under its own weight from where it was, strikes the floor, bounces low and rolls to rest
-			local i = f.i
-			local st = f.fall
-			if not st then
-				st = { vx = (X[i] - (f.lastX or X[i])) / math.max(h, 1e-3), vy = 0, vz = (Z[i] - (f.lastZ or Z[i])) / math.max(h, 1e-3), spin = s.t * 1.6 + f.turn }
-				f.fall = st
-			end
-			local r = 0.21 * scale -- an orb's radius
-			st.vy -= GRAVITY * scale * 0.55 * h
-			local x, y, z = X[i] + st.vx * h, Y[i] + st.vy * h, Z[i] + st.vz * h
-			if y < s.dropY + r then
-				y = s.dropY + r
-				st.vy = if math.abs(st.vy) > 2 * scale then -st.vy * 0.3 else 0
-				st.vx, st.vz = st.vx * 0.6, st.vz * 0.6 -- the stone floor takes most of the roll
-				st.spin += math.sqrt(st.vx * st.vx + st.vz * st.vz) * h / r
-			end
-			X[i], Y[i], Z[i] = x, y, z
-			local co, si = math.cos(st.spin), math.sin(st.spin)
-			local q = (k - 1) * 9
-			R[q + 1], R[q + 2], R[q + 3], R[q + 4], R[q + 5], R[q + 6], R[q + 7], R[q + 8], R[q + 9] = co, 0, si, 0, 1, 0, -si, 0, co
+			dropOrb(s, k, f, h)
 			continue
 		end
 		if f.orb then
-			f.lastX, f.lastZ = X[f.i], Z[f.i]
-			-- an orb circles the crown on its own uneven path, in the world's frame, and catches up a beat late when he moves: around his head, never strung out behind him
-			local o = (s.a[f.i] - 1) * 12
-			local bx, by, bz = f.ax, f.ay, f.az
-			local cx = limbs[o + 1] + limbs[o + 4] * bx + limbs[o + 5] * by + limbs[o + 6] * bz
-			local cy = limbs[o + 2] + limbs[o + 7] * bx + limbs[o + 8] * by + limbs[o + 9] * bz
-			local cz = limbs[o + 3] + limbs[o + 10] * bx + limbs[o + 11] * by + limbs[o + 12] * bz
-			local ang = t * (0.85 + 0.12 * math.sin(t * 0.37)) + f.turn
-			local radius = f.radius * (1 + 0.08 * math.sin(t * 0.9 + f.turn * 2))
-			local tx, ty, tz = cx + math.cos(ang) * radius, cy + scale * (0.3 * math.sin(ang + f.turn) + 0.1 * math.sin(t * 2.1 + f.turn)), cz + math.sin(ang) * radius
-			local follow = 1 - 0.8 ^ steps
-			local i = f.i
-			X[i], Y[i], Z[i] = X[i] + (tx - X[i]) * follow, Y[i] + (ty - Y[i]) * follow, Z[i] + (tz - Z[i]) * follow
-			local spin = t * 1.6 + f.turn
-			local co, si = math.cos(spin), math.sin(spin)
-			local q = (k - 1) * 9
-			R[q + 1], R[q + 2], R[q + 3], R[q + 4], R[q + 5], R[q + 6], R[q + 7], R[q + 8], R[q + 9] = co, 0, si, 0, 1, 0, -si, 0, co
+			circleOrb(s, limbs, k, f, steps)
 			continue
 		end
 		local a1, a2, a3, b1, b2, b3, c1, c2, c3 = Sim._frame(s, f, X, Y, Z, limbs)
@@ -913,11 +962,34 @@ function Sim.step(s: any, limbs: { number }, h: number, wind: Wind, iterations: 
 		R[o + 8] = a3 * r[2] + b3 * r[5] + c3 * r[8]
 		R[o + 9] = a3 * r[3] + b3 * r[6] + c3 * r[9]
 	end
+end
+
+-- One fixed step. iterations: link passes (a low graphics tier passes fewer).
+function Sim.step(s: any, limbs: { number }, h: number, wind: Wind, iterations: number)
+	if not s.ready then Sim.reset(s, limbs) end
+	s.t += h
+	moveParticles(s, limbs, h, wind)
+	placeCaps(s, limbs, iterations)
+	local caps, scale = s.caps, s.scale
+	for pass = 1, iterations do
+		if pass > 1 then for c = 1, #caps do placeCap(caps[c], pass / iterations, scale) end end
+		pullLinks(s)
+		keepOut(s)
+		-- Once a step, on the last pass, the middles, then the particles once more: the middles cost the most and the sheet between particles moves least.
+		-- (2026-11-07) twice, each push 2% past the surface: once let the particles' own last push sag a middle back into a volume (test_cloth_sim)
+		if pass < iterations then continue end
+		for _ = 1, 2 do
+			pushMiddles(s)
+			keepOut(s)
+		end
+	end
+	if s.palm and s.glaive then gripHaft(s, limbs, h * 60) end
+	turnBones(s, limbs, h)
 	-- (2026-11-07) the drawn surface out of the body, then the lattice once more (a particle pushed into the other leg), then the surface again
 	if s.skin then
 		skinPass(s, limbs, true)
 		for _ = 2, SKIN_PASSES do skinPass(s, limbs, false) end
-		keepOut()
+		keepOut(s)
 		for _ = 1, SKIN_FINAL do skinPass(s, limbs, false) end
 	end
 end

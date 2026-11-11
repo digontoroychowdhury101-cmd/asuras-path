@@ -206,8 +206,12 @@ at every exported frame and compared with the solver's frames:
   (Guandao_L1 f12), the other ten 0.0024-0.0074. Still, viewed, not saved: P2 Flourish at the catch (t=1.413, f42), both hands on
   the haft, the blade out to his left, nothing through him.
 
-- The four clips exported on 11-12 (section 13) were not played back in Studio: the Roblox Studio connection was not available to
-  that session. Their in-engine check is still owed.
+- The four clips exported on 11-12 (section 13), checked later that day the same way (a fresh Play session, phase 2 by the game's
+  own transition, live glaive pivot 1.090, -0.390, -0.350): P1 Guandao_L2 within 0.0056, P2 BloodWave 0.0020, P2 Guandao_L2 0.0058,
+  P2 Guandao_Running 0.0091 (the glaive at the last frame in each; every other part within 0.0009). Stills, viewed, not saved, textured
+  this time: P2 Guandao_L2 t=0.117, Guandao_Running t=0.442 and 0.454, BloodWave t=1.554 and 2.071; both hands on the haft, nothing
+  through his body. Studio was driven over stdio with `scripts/studio_mcp.py` (Roblox's StudioMCP.exe), since no Studio tools were
+  attached to that session.
 
 ## 7. Multiplayer and device profiling
 
@@ -219,7 +223,8 @@ at every exported frame and compared with the solver's frames:
   `Rigs.rest`), and the harness ran in the play session's client datamodel, where the live boss's glaive pivot read back as phase 2's
   point after the server's own transition (section 6). So the re-pointed joint reached one client. Two clients at once, and a player
   who joins after the transition, are untested.
-- Device profiling: not run; no phone, tablet or console hardware here. Nothing in this pass measures frame time or memory.
+- Device profiling: not run; no phone, tablet or console hardware here. The one frame-time number in this pass is the cloth step,
+  timed in Studio on this PC alone with bakes running (section 14): about 6-8 ms a step. Nothing measures memory.
 
 ## 8. Open defects (not accepted, still to fix)
 
@@ -312,6 +317,11 @@ at every exported frame and compared with the solver's frames:
     the glaive on 11% of frames (3%); P1 Guandao_L2 RobeLeft in the left thigh 0.049 -> 0.062 and his chest in the glaive 0.049 ->
     0.060; P1 Guandao_L2's right upper arm 72 deg in a frame at f11 (67) and 60 at f2; P2 Guandao_L2's right hand reversing on the
     haft once (16 deg; none before); P1 Guandao_L2's rendered arm 0.132 -> 0.137 (under the wall).
+    Traced on 11-12 (section 14): both sleeve rises come with the edge roll each fix moved. The trials that kept the sleeve down
+    failed the validator (Running, roll from 0.467: an edge pop 0.64 at f16) or turned the glaive 49 deg and swung the right upper
+    arm 41 deg in a frame (BloodWave not rolled, bwR); still open.
+12. The cloth costs about 6-8 ms a step in Studio on this PC (section 14), mostly the surface passes, which every graphics tier runs
+    4 + 2 times. Making it cheaper without changing the cloth's look needs a new approach to those passes; not started.
 
 ## 9. P2 Guandao Skyfall: the weapon in his thigh, the fist's flutter, the coil
 
@@ -676,5 +686,40 @@ pre5 = the export just before them):
   shallower (`rest_changes_finK2_finK3.txt`); all listed above.
 - Arm x-ray past 0.18 on the rendered mesh: eleven clips -> nine (section 8 item 1).
 - `tools/verify_all.sh`: all 14 stages pass, exit 0, "Shen integration: ok", `test_cloth_sim` P1 and P2 ok (`results/verify_all_1112.log`).
-- Studio: not checked. The Roblox Studio connection was not available to this session, so the four clips were not played back in
-  Studio (section 6). Multiplayer and device profiling: not run (section 7).
+- Studio: checked after this commit, all four within 0.0091 rig units of the solver (section 6, `results/studio_playback.txt`).
+  Multiplayer and device profiling: not run (section 7).
+
+## 14. The game run with the 11-12 clips, and the cloth's native code (11-12, later)
+
+Studio over stdio: no Roblox Studio tools were attached to this session, so `scripts/studio_mcp.py` drives Roblox's own StudioMCP.exe
+(as `tools/run_studiomcp.py` launches it) with a JSON list of tool calls. `places/AsurasPath.rbxlx` was opened in Studio from the repo
+and never saved; HttpEnabled stayed false.
+
+The game's own run (Play, 25 s, the console read back): server, campaign, Colosseum and client all start. Two messages:
+- "Native code generation of script ReplicatedStorage.AsurasPath.Shared.ClothSim failed ... Function 'step' at line 630 encountered an
+  internal lowering failure. Script will be interpreted." A real defect, fixed below.
+- "ContentId rbxassetid://203785492 failed due to: Asset type does not match requested type" (three times): the Rojo plugin preloading
+  its notification sound as an image (`tools/qa/rojo_preloader_fix/README.md`); editor-only, not the game's. Left alone.
+
+The cloth step (`src/shared/ClothSim.luau`):
+- Reproduced locally with luau-compile (`--codegennull -O2 -t1`): on x64 and x64_ms (Windows PCs) register allocation failed for
+  one function ("regalloc failed: 1", the spill slots ran out), so Studio and Windows clients ran the whole step interpreted; arm64
+  (phones, Macs) compiled it. The fault was the volume-placement loop: twelve limb-matrix terms and six end points live at once.
+- Fix, arithmetic unchanged: `Sim.step` split into module-level functions, each block as it stood (moveParticles, placeCap,
+  placeCaps, keepOut, pullLinks, pushMiddles, gripHaft, fingerBone, dropOrb, circleOrb, turnBones), and the placement's two end points
+  each through `limbPoint` (the same sums in the same order). x64, x64_ms and a64: "regalloc failed: 0".
+- Also bit-identical: in the later surface passes each volume's fields are copied to flat arrays once a pass, and a sample beyond the
+  first pass's bounding sphere is skipped (a sample's clearance is never more than the margin that sphere allows, so nothing past it
+  could be pushed).
+- Proof the cloth is the same: a dump of every particle position, bone rotation and grip value over 200 steps of moving limbs, both
+  phases, 1, 2 and 3 passes, the orbs dropped at step 150 (33,864 numbers at 17 digits), byte-identical before and after, interpreted
+  and native. `tools/test_cloth_sim.py` unchanged (P1 rest drift 1.143, trail 0.17; P2 1.187, 0.39). luau-analyze: the same five
+  warnings as before.
+- In Studio with the new source (a Play session; the edit copy replaced in memory, never saved): the codegen message is gone, nothing
+  new on the console. Shen spawned by the QA probe (phase 1, 123 skin bones): 120 bones moved within a second, none non-finite. Stills
+  taken then show only the game's intro card, so they prove nothing about the cloth and are not counted.
+- Cost, timed in that Studio session on this PC with bakes running alongside (so loose): about 6-8 ms a step, P1 and P2, at 3, 2
+  or 1 link passes alike; the surface passes are most of it (P1, ms a step: first pass, positions 1.2 and volumes 1.1; the five
+  later passes, volumes 2.0 -> 1.4 after the flat arrays, positions 0.7, middles 0.8; keepOut 0.8, pushMiddles 0.55). The surface
+  passes run 4 + 2 a step on every graphics tier (`BossCloth` Rates change only the link passes and the step rate), so the Low tier
+  saves only its halved rate. Fewer surface passes on Low would change how the cloth looks; not done, noted as open (section 8).
