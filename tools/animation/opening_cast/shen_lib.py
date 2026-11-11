@@ -471,6 +471,10 @@ class Clip:
     # edge is carried with the haft until roll_from and has finished rolling by roll_to (shen_clips.build: phase 2 Guandao_Running, BloodWave)
     roll_from = None
     roll_to = None
+    # (2026-11-12) torso_near: rig units. The solver's own torso measures (swivel, clear_torso, held_clash; not the dense measure validate and
+    # joint_polish use) also count the arm skin that lay within 0.05 of his torso in the bind pose (_torso_near), at its depth less this much:
+    # the shoulder seam and armpit, which _torso_free leaves out and the review x-ray counts (windows-pass results/xray_why.md, REPORT section 14)
+    torso_near = None
 
     def __init__(self, rig, name, length, keys, loop=False, priority="Action", contacts=(), move=None, notes="", active=None, slot="", feet_free=(), corrupt=True, scrape=False, airborne=False, authored_feet=False, raw_after=None, hover=0.0, still_after=None, uncorrupt=None, floor_body=False):
         self.rig = rig
@@ -960,27 +964,31 @@ class Clip:
     def bake(self):
         times = self.frames()
         ctrl = [self.controls(t) for t in times]
-        organic(self, times, ctrl)
-        spine_reach(self, ctrl)
-        if self.floor_body:
-            rest_on_floor(self, ctrl)
-        settle(self, ctrl)
-        swivel(self, ctrl)
-        for _ in range(3):      # a tilted haft moves the lead hand's spot: settle that correction too, choose the grips again, and look again
-            if not wrist_yield(self, ctrl, passes=1):
-                break
+        self.rig._near = self.torso_near     # (2026-11-12) read by arm_torso_world (not dense) and arm_torso_pose; off again before joint_polish
+        try:
+            organic(self, times, ctrl)
+            spine_reach(self, ctrl)
+            if self.floor_body:
+                rest_on_floor(self, ctrl)
             settle(self, ctrl)
             swivel(self, ctrl)
-        clear_free_arm(self, ctrl)
-        clear_torso(self, ctrl, times)
-        slide_fist(self, ctrl)
-        tilt_haft(self, ctrl, times)
-        # (2026-11-09) no settle here: smoothing the solver's corrections once more spread its neighbours' weapon over the frames clear_torso had
-        # placed (phase 1's Death: right arm 0.02 -> 0.22 in his chest at f33) and changed no pop that depop does not take out
-        if os.environ.get("SHEN_FINAL_SETTLE") == "1":
-            settle(self, ctrl)
-        depop(self, ctrl, times)
-        close_loop(self, ctrl)
+            for _ in range(3):      # a tilted haft moves the lead hand's spot: settle that correction too, choose the grips again, and look again
+                if not wrist_yield(self, ctrl, passes=1):
+                    break
+                settle(self, ctrl)
+                swivel(self, ctrl)
+            clear_free_arm(self, ctrl)
+            clear_torso(self, ctrl, times)
+            slide_fist(self, ctrl)
+            tilt_haft(self, ctrl, times)
+            # (2026-11-09) no settle here: smoothing the solver's corrections once more spread its neighbours' weapon over the frames clear_torso had
+            # placed (phase 1's Death: right arm 0.02 -> 0.22 in his chest at f33) and changed no pop that depop does not take out
+            if os.environ.get("SHEN_FINAL_SETTLE") == "1":
+                settle(self, ctrl)
+            depop(self, ctrl, times)
+            close_loop(self, ctrl)
+        finally:
+            self.rig._near = None     # (2026-11-12) torso_near: the passes above only (the rig is shared by the phase's clips)
         joint_polish(self, ctrl, times)     # (2026-11-09) the runs of frames the passes above still leave past the wall, solved together (SLSQP)
         out = []
         self._side = {}
@@ -2218,6 +2226,15 @@ def _torso_free(rg, part, torso, dense=False):
     return cache[(part, torso, dense)]
 
 
+def _torso_near(rg, part, torso):
+    """(2026-11-12) The thinned skin of an arm part that lay outside a torso solid in the bind pose but within 0.05 of it (Clip.torso_near)."""
+    cache = rg.__dict__.setdefault("_torso_near", {})
+    if (part, torso) not in cache:
+        d = sdf_depth(rg, torso, rg.SKIN[part][0])
+        cache[(part, torso)] = (d >= -0.05) & (d < 0.0)
+    return cache[(part, torso)]
+
+
 def arm_torso_world(rg, world, pose=None, dense=False):
     """(2026-11-08) How deep each arm's skin (hand, forearm, upper arm, blended as the game skins them) sits inside his torso's real surface
     (UpperTorso and LowerTorso distance fields), counting only skin clear of that solid in the bind pose. {"Right": depth, "Left": depth}, 0 when clear.
@@ -2236,11 +2253,17 @@ def arm_torso_world(rg, world, pose=None, dense=False):
                     B += wt[:, None] * ((P - jb) @ Rb.T + ab)
             else:
                 B = body_points(rg, part, W[:3, :3], (W @ np.append(rg.JOINT[part], 1))[:3], pose)
+            near = None if dense else getattr(rg, "_near", None)
             for t in ("UpperTorso", "LowerTorso"):
                 keep = _torso_free(rg, part, t, dense)
                 if keep.any():
                     Wt = world[t]
                     m = max(m, float(part_depth(rg, t, Wt[:3, :3], (Wt @ np.append(rg.JOINT[t], 1))[:3], B[keep]).max()))
+                if near is not None:     # (2026-11-12) Clip.torso_near
+                    nk = _torso_near(rg, part, t)
+                    if nk.any():
+                        Wt = world[t]
+                        m = max(m, float(part_depth(rg, t, Wt[:3, :3], (Wt @ np.append(rg.JOINT[t], 1))[:3], B[nk]).max()) - near)
         out[side] = max(0.0, m)
     return out
 
@@ -2263,11 +2286,17 @@ def arm_torso_pose(rg, side, pose, stride=3):
             else:
                 (Rb, ab), jb = pose[bone], rg.JOINT[bone]
             X += w[:, None] * ((P - jb) @ Rb.T + ab)
+        near = getattr(rg, "_near", None)
         for t in ("UpperTorso", "LowerTorso"):
             keep = _torso_free(rg, part, t)[::stride]
             if keep.any():
                 Rt, att = pose[t]
                 m = max(m, float(part_depth(rg, t, Rt, att, X[keep]).max()))
+            if near is not None:     # (2026-11-12) Clip.torso_near
+                nk = _torso_near(rg, part, t)[::stride]
+                if nk.any():
+                    Rt, att = pose[t]
+                    m = max(m, float(part_depth(rg, t, Rt, att, X[nk]).max()) - near)
     return max(0.0, m)
 
 

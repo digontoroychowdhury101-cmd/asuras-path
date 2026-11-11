@@ -228,9 +228,11 @@ at every exported frame and compared with the solver's frames:
 
 ## 8. Open defects (not accepted, still to fix)
 
-1. Rendered-mesh arm depth past 0.18 in nine phase 2 clips (section 5), worst P2 DeathblowVictim 0.275 and P2 Death 0.252,
+1. Rendered-mesh arm depth past 0.18 in seven phase 2 clips (section 5), worst P2 DeathblowVictim 0.275 and P2 Death 0.252,
    although the validator's dense skin samples are under its limit on all of them. Two more, P2 Guandao_Running and BloodWave,
-   came with the glaive-edge fix (item 8) and are under 0.18 since 11-12 (0.173 and 0.167, section 13). Traced on 11-11 (`results/xray_why.md`, `scripts/xray_why.py`), the two measures count
+   came with the glaive-edge fix (item 8) and are under 0.18 since 11-12 (0.173 and 0.167, section 13). P2 RendingArc and Feint
+   are under it since 11-12 later (0.169 and 0.139, section 14: the solver now counts their shoulder seam). The other shoulder-seam
+   clips were tried the same way and each trial broke something else (section 14). Traced on 11-11 (`results/xray_why.md`, `scripts/xray_why.py`), the two measures count
    different skin:
    - Seven clips (RendingArc, PhantomDrift, Transform, Feint, L1, L2, HitLightFront): the depth past 0.18 is upper-arm skin at the
      shoulder seam that sat within 0.05 of his chest at rest. The validator leaves that skin out (`_torso_free`); the x-ray counts it.
@@ -467,6 +469,9 @@ section 12 on 11-11 evening (section 6).
   (section 9, stage by stage) and `verify_all_edge.log` (section 4). On 11-12 (section 13): `_final5` after its four clips, and
   `_pre5_final5` with the export just before them (`pre5_export`) beside the final one; `mset_finK3_*.json` and the `finK3` comparisons;
   `keymatch_final5.txt`; `verify_all_1112.log`. `scripts/xraytable.py` takes `CLIP=TAG` to read a clip's row from a trial's render.
+  Later on 11-12 (section 14): `_final6` and `_pre6_final6` (`pre6_export`: the export before P2 Feint and RendingArc),
+  `mset_finK4_*.json` and the `finK4` comparisons, `verify_all_1112b.log`; `scripts/nearskin.py` (the shoulder-seam skin on a bake)
+  and `scripts/studio_mcp.py` (Roblox's StudioMCP.exe over stdio, a JSON list of tool calls).
 - Bakes: `work/shen_repair/baked_set2` (local, gitignored) is the final set the exports came from.
 
 ## 11. Housekeeping
@@ -723,3 +728,57 @@ The cloth step (`src/shared/ClothSim.luau`):
   later passes, volumes 2.0 -> 1.4 after the flat arrays, positions 0.7, middles 0.8; keepOut 0.8, pushMiddles 0.55). The surface
   passes run 4 + 2 a step on every graphics tier (`BossCloth` Rates change only the link passes and the step rate), so the Low tier
   saves only its halved rate. Fewer surface passes on Low would change how the cloth looks; not done, noted as open (section 8).
+
+The shoulder seam (section 8 item 1). In nine phase 2 clips the x-ray's depth past 0.18 is "near" skin: upper-arm skin within 0.05 of
+his chest at rest, which `_torso_free` leaves out of every torso measure the solver and validator use (`results/xray_why.md`).
+`scripts/nearskin.py BAKEDDIR CLIP...` measures it on a bake, per arm and frame, dense and on the solver's thinned samples. On the
+export: P2 Feint left 0.190 (f10), RendingArc left 0.199 (f40) and right 0.189, Transform right 0.192, Guandao_L1 right 0.210,
+Guandao_L3 left 0.183, PhantomDrift left 0.174, HitLightFront right 0.173, Death right 0.173, DeathblowVictim left 0.254. The
+thinned samples see the same depth on nearly every one, so the solver could act on it.
+
+The code, opt-in per clip and off by default (`shen_lib.py`): `Clip.torso_near` (rig units). While it is set, the solver's own torso
+measures (`arm_torso_world` when not dense, and `arm_torso_pose`: swivel, clear_torso, held_clash and the rest) also count the near
+skin, at its depth less `torso_near`. It is cleared before `joint_polish`, in a `finally` (the rig is shared by every clip of a phase).
+The validator, its dense measure, the 0.17 wall, the 0.18 limit and every other check are untouched. With it off, the repo code
+bakes P2 Guandao_Running and P1 Guandao_L2 value for value the same as their exports (`cmppkl.py`, work/shen_repair/baked_ck_near).
+
+Trials (overlay `work/shen_repair/nearA`, switches SHEN_NEAR, SHEN_NEAR_OFF; checks as in section 13):
+- nrA, offset 0.015, nine clips. Validator clean on all; out-and-back pops 13 -> 10 frames. X-ray: Feint 0.190 -> 0.186, Transform
+  0.183 -> 0.172, Guandao_L1 0.182 -> 0.167, RendingArc 0.199 -> 0.182, Guandao_L3 0.184 -> 0.159, HitLightFront 0.182 -> 0.179,
+  PhantomDrift 0.186 -> 0.187, Death 0.252 -> 0.252, DeathblowVictim 0.275 -> 0.243. Not taken, each for what it broke: Transform's
+  fade out 0.153 -> 0.188 and HitLightFront's fade in 0.183 -> 0.189 (both past 0.18); DeathblowVictim's left upper arm 105 deg in a
+  frame at f20 (36 before); Guandao_L1's blade took another way through the follow-through (clip f11-14, across his front instead of
+  out to his left: watched, review shots f27-32); Guandao_L3's robe, ribbon and beard went into his arms and legs (six pairs new or
+  deeper, up to 0.104); Death and PhantomDrift did not change.
+- nrB, offset 0, Feint and RendingArc (DeathblowVictim was in it too; its bake had not finished at the time of writing and is not used).
+  Taken (`shen_clips.build`: `torso_near = 0.0` for phase 2 Feint and RendingArc):
+  - P2 Feint: x-ray 0.190 -> 0.139 (under 0.18); fades worst 0.178 -> 0.138; left upper arm's largest step 45 -> 27 deg; no pops;
+    sleeves shallower (left sleeve in the forearm 0.104 -> 0.087).
+  - P2 RendingArc: x-ray 0.199 -> 0.169 (under 0.18); out-and-back pops 3 frames (0.80) -> 1 (0.52); fades worst 0.172 -> 0.141;
+    left sleeve in the upper arm 0.184 -> 0.164, the ribbon in the glaive 0.100 -> 0.071.
+  - Worse by a measure: RendingArc's right upper arm 52 deg in a frame at f72 (new over 40), and over clip f74-75 the blade rises across
+    his front a frame later than before (watched; no pop, no new weapon-in-body pair); its robe in his lower torso 0.040 -> 0.054 and
+    its left forearm in the glaive on 3% of frames (0.044, none before); the beard in his head 0.195 -> 0.196 (Feint 0.187 -> 0.188).
+  Watched: whole-clip strips of the review x-ray before and after (every 3rd and 5th frame), the deepest frames side by side, and the
+  new before/after videos `arms_w10_f2_Feint_uppertorso_before_after.mp4`, `arms_w10_f2_RendingArc_uppertorso_before_after.mp4`
+  (before = the handover, made from frame JSON byte for byte the export's).
+- Exported (`work/shen_repair/adopt_1112b.sh`, local): both rbxmx, frame JSON equal to the trial bakes'. The repo code alone (no
+  overlay) bakes both value for value the same as the trial (`cmppkl.py`, work/shen_repair/baked_ck_near2). Studio: P2 Feint within
+  0.0039, RendingArc 0.0035 (`results/studio_playback.txt`).
+
+The other two 11-12 trials (section 13's left sleeves): P2 Guandao_Running with a slower edge roll-in (eKd 7 frames, eKe 7.5) or the
+roll from 0.45 (rJc): validator clean, x-ray 0.168-0.172 against the export's 0.173, but the left sleeve 0.137 / 0.181 / 0.160 against
+0.137, and pops 0.91-0.94 against 0.88. P2 BloodWave rolling over 1.65-1.95 or 1.55-1.85 s (bwG, bwH): the sleeve 0.151 -> 0.143 and
+nothing else changed. None taken: no clear gain.
+
+The final set after them (`work/shen_repair/setcheck6.sh`, `finK4.sh`; `results/*_final6*`, `*_pre6_final6*`, `*finK4*`; pre6 = the
+export just before them):
+- Validator: 64 clips, 0 problems (`results/reval_final6.txt`). Only P2 Feint and RendingArc changed (`jsondiff_pre6_final6.txt`).
+- Out-and-back pops 38 -> 36 frames. The glaive over 60 deg in a frame: 10, unchanged. Upper-arm steps over 30 deg 247 -> 249 (RendingArc).
+  Hands reversing on the haft right 54 -> 55, left 8 -> 7. Face pops: none. Fades: worst 0.179, unchanged (0.278 at the review's
+  0.2 s, DeathblowVictim's, unchanged); the glaive while fading and the weapon in his legs line for line as before.
+- Rendered mesh, finK3 -> finK4 (`msetcmp_finK3_finK4.txt`): cloth 1.426 -> 1.422, arm-in-weapon 2.945 -> 2.936, weapon-in-arm 0.224 ->
+  0.221, other 2.260 -> 2.250; deepest unchanged in every group. One robe pair deeper, one shallower (`cloth_changes_finK3_finK4.txt`).
+- Arm x-ray past 0.18 on the rendered mesh: nine clips -> seven (`results/xray_mesh_table.md`).
+- `tools/verify_all.sh`: exit 0, the same 44 PASS lines as on 11-12, "Shen integration: ok", `test_cloth_sim` P1 and P2 ok
+  (`results/verify_all_1112b.log`). Multiplayer and device profiling: still not run (section 7).

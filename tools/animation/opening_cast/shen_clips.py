@@ -979,6 +979,12 @@ def build(phase):
         # which the polish could not clear (legpol_1/2.log: 0.184 left), and the full bake with it shows a 0.57 blade pop at f46 before its
         # polish (ttlgS). No clip opts in: Skyfall's thigh is cleared by its right knee instead (skyfall(), 2026-11-11).
         c.legs_guard = False
+        # (2026-11-12) the solver's own torso measures also count his shoulder seam and armpit (shen_lib Clip.torso_near, at their full depth):
+        # phase 2 Feint and RendingArc, whose arm sat 0.19-0.20 in his chest there on the review x-ray (0.139 and 0.169 with it; windows-pass
+        # REPORT section 14). Tried on seven more phase 2 clips and not taken: Guandao_L1's blade took another way through its follow-through,
+        # Guandao_L3's robe and beard went into his arms, Transform's and HitLightFront's fades rose past 0.18, DeathblowVictim's left upper
+        # arm swung 105 deg in a frame, Death and PhantomDrift did not change
+        c.torso_near = 0.0 if phase == 2 and short in ("Feint", "RendingArc") else None
     return out
 
 

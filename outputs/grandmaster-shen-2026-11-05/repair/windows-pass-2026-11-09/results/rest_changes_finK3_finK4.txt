@@ -1,0 +1,13 @@
+pairs msetcmp.py does not call cloth (an arm or hand in the glaive, the glaive in him, and LeftSleeve, Beard, Beads, HairBack and the mantles, which are simulated cloth (mesh_clash.py's CLOTH) but fall outside msetcmp.py's name prefixes, rendered mesh, deepest >= 0.05 either side), finK3 -> finK4, 64 clips
+
+DEEPER or more frames after (2):
+  c2_Feint               LeftSleeve in LeftUpperArm       before  40% 0.132 f32  after  52% 0.123 f35
+  c2_RendingArc          LeftSleeve in LeftUpperArm       before  43% 0.184 f74  after  53% 0.164 f70
+
+SHALLOWER or fewer frames after (6):
+  c2_RendingArc          Beard in Head                    before  27% 0.195 f37  after  21% 0.196 f38
+  c2_RendingArc          LeftSleeve in LeftLowerArm       before  12% 0.120 f71  after   3% 0.105 f32
+  c2_Feint               LeftSleeve in LeftLowerArm       before  14% 0.104 f26  after  10% 0.087 f48
+  c2_Feint               RightHand in weapon              before  38% 0.069 f43  after  34% 0.067 f36
+  c2_RendingArc          HairBack in Head                 before   2% 0.062 f69  after   1% 0.032 f66
+  c2_Feint               weapon in RightLowerArm          before   4% 0.064 f48  after   6% 0.052 f49

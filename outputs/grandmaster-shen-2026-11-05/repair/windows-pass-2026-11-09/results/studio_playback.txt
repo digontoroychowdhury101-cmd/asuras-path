@@ -150,3 +150,10 @@ Every other part (torso, head, forearms, legs, feet) within 0.0009 in all four. 
 P2 Guandao_L2 at t=0.117, P2 Guandao_Running at 0.442 and 0.454, P2 BloodWave at 1.554 and 2.071, textured this time (SurfaceAppearance
 maps fetched): both hands on the haft, nothing through his body at those poses. Afterwards: play stopped, the Edit session has no harness
 objects, HttpEnabled false, content\shenpreview deleted.
+
+P2 Feint and P2 RendingArc, exported on 11-12 later (REPORT section 14, torso_near). Same method, a fresh Play session (the place
+never saved), Shen spawned by the probe and taken to phase 2 by the game's transition; clone and live rig: 57 attachments, none differ;
+live glaive pivot 1.090, -0.390, -0.350.
+GrandmasterShen_P2_Feint len 1.067/1.067 frames 33 kfs 33 max 0.0039 | RightLowerArm 0.0039 f32 0.34deg; Glaive 0.0024 f5 0.16deg
+GrandmasterShen_P2_RendingArc len 2.600/2.600 frames 79 kfs 79 max 0.0035 | Glaive 0.0035 f47 0.21deg; RightLowerArm 0.0032 f78 0.37deg
+Torso, head and legs within 0.0005 in both. Afterwards: play stopped, no harness objects, HttpEnabled false, content\shenpreview deleted.

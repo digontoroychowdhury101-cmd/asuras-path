@@ -19,7 +19,7 @@
 | P2_CrimsonEmbrace | 0.186 / 68 of 97 | 0.166 / 69 of 97 | -0.020 (lower) | pre4w/finw, render_w10.log |
 | P2_Death | 0.252 / 84 of 115 | 0.252 / 85 of 115 **past 0.18** | +0.000 | pre4w/finw, render_w10.log |
 | P2_DeathblowVictim | 0.285 / 72 of 91 | 0.275 / 78 of 91 **past 0.18** | -0.010 (lower) | pre4w/finw, render_w10.log |
-| P2_Feint | 0.277 / 49 of 57 | 0.190 / 50 of 57 **past 0.18** | -0.087 (lower) | pre4L/fin5L, rv5/*_fin5L logs |
+| P2_Feint | 0.277 / 49 of 57 | 0.139 / 50 of 57 | -0.138 (lower) | pre4L/nrB, rv5/*_<trial> logs (11-12, later) |
 | P2_Flourish | 0.126 / 41 of 73 | 0.176 / 44 of 73 | +0.050 (rise) | pre4L/fin5L, rv5/*_fin5L logs |
 | P2_GuandaoSkyfall | 0.219 / 76 of 103 | 0.179 / 70 of 103 | -0.040 (lower) | pre4L/fin5L, rv5/*_fin5L logs |
 | P2_Guandao_Heavy | 0.237 / 42 of 50 | 0.174 / 49 of 50 | -0.063 (lower) | pre4L/fin5L, rv5/*_fin5L logs |
@@ -32,7 +32,7 @@
 | P2_HitLightRight | 0.141 / 34 of 39 | 0.139 / 34 of 39 | -0.002 | pre4L/finL, render_dp15.log |
 | P2_PhantomDrift | 0.189 / 80 of 85 | 0.186 / 76 of 85 **past 0.18** | -0.003 | pre4L/fin5L, rv5/*_fin5L logs |
 | P2_PostureBreak | 0.126 / 41 of 55 | 0.126 / 41 of 55 | +0.000 | pre4L/finL, render_dp15.log |
-| P2_RendingArc | 0.385 / 94 of 103 | 0.199 / 97 of 103 **past 0.18** | -0.186 (lower) | pre4L/fin5L, rv5/*_fin5L logs |
+| P2_RendingArc | 0.385 / 94 of 103 | 0.169 / 96 of 103 | -0.216 (lower) | pre4L/nrB, rv5/*_<trial> logs (11-12, later) |
 | P2_RunForward | 0.270 / 73 of 73 | 0.174 / 73 of 73 | -0.096 (lower) | pre4w/finw, render_w10.log |
 | P2_StrafeLeft | 0.166 / 97 of 97 | 0.166 / 97 of 97 | +0.000 | pre4L/finL, render_dp11.log |
 | P2_Strike | 0.157 / 56 of 58 | 0.164 / 55 of 58 | +0.007 (rise) | pre4L/fin5L, rv5/*_fin5L logs |

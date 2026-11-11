@@ -1,0 +1,7 @@
+cloth pairs (robe or ribbon inside a body part or the weapon, rendered mesh, deepest >= 0.05 either side), finK3 -> finK4, 64 clips
+
+DEEPER or more frames after (1):
+  c2_RendingArc          RobeFront in LowerTorso          before   2% 0.040 f86  after   2% 0.054 f84
+
+SHALLOWER or fewer frames after (1):
+  c2_RendingArc          RibbonLeft in weapon             before  12% 0.100 f64  after  10% 0.071 f60
