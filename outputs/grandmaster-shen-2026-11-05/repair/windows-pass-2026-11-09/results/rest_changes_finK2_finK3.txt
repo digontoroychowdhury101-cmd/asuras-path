@@ -1,0 +1,19 @@
+pairs msetcmp.py does not call cloth (an arm or hand in the glaive, the glaive in him, and LeftSleeve, Beard, Beads, HairBack and the mantles, which are simulated cloth (mesh_clash.py's CLOTH) but fall outside msetcmp.py's name prefixes, rendered mesh, deepest >= 0.05 either side), finK2 -> finK3, 64 clips
+
+DEEPER or more frames after (4):
+  c2_BloodWave           LeftSleeve in LeftUpperArm       before  38% 0.117 f61  after  35% 0.151 f64
+  c2_Guandao_Running     LeftSleeve in LeftUpperArm       before  14% 0.109 f31  after  25% 0.137 f29
+  c1_Guandao_L2          UpperTorso in weapon             before   6% 0.049 f23  after   6% 0.060 f22
+  c2_Guandao_Running     LeftLowerArm in weapon           before   3% 0.065 f23  after  11% 0.064 f23
+
+SHALLOWER or fewer frames after (10):
+  c1_Guandao_L2          Beads in UpperTorso              before  16% 0.121 f27  after   0% 0.000 f-1
+  c2_BloodWave           RightLowerArm in weapon          before  45% 0.077 f26  after  32% 0.077 f26
+  c2_BloodWave           RightHand in weapon              before  23% 0.076 f74  after  15% 0.070 f29
+  c1_Guandao_L2          HairBack in Head                 before   6% 0.102 f20  after   0% 0.000 f-1
+  c2_BloodWave           LowerTorso in weapon             before  24% 0.070 f70  after  20% 0.060 f27
+  c2_Guandao_Running     LowerTorso in weapon             before   8% 0.056 f26  after   6% 0.041 f24
+  c1_Guandao_L2          RightUpperArm in weapon          before   3% 0.067 f21  after   0% 0.000 f-1
+  c2_Guandao_Running     Beard in RightUpperArm           before   3% 0.117 f21  after   3% 0.045 f21
+  c2_Guandao_Running     Beard in UpperTorso              before   6% 0.053 f30  after   3% 0.036 f31
+  c2_Guandao_L2          weapon in RightLowerArm          before   6% 0.128 f20  after   6% 0.115 f20

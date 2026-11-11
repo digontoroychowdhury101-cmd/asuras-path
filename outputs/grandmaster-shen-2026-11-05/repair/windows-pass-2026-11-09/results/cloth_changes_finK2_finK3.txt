@@ -1,0 +1,6 @@
+cloth pairs (robe or ribbon inside a body part or the weapon, rendered mesh, deepest >= 0.05 either side), finK2 -> finK3, 64 clips
+
+DEEPER or more frames after (1):
+  c1_Guandao_L2          RobeLeft in LeftUpperLeg         before  13% 0.049 f23  after  13% 0.062 f23
+
+SHALLOWER or fewer frames after (0):

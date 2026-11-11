@@ -75,13 +75,15 @@ GUARD = {}     # the guard this phase stands in; a first cut grows out of it
 
 
 def arc(t0, tc, t1, th0, th1, source, aim=(0.0, -6.0), centre=(0.32, 0.22, -1.2), span=1.2, rsl=RSL, whip=2.2, settle=2.4, hover=0.0, link=False, enter=None,
-        carry_edge=True, turn=0.0):
+        carry_edge=True, turn=0.0, edge_enter=None):
     """One curved cut on a tilted plane. The blade rotates from th0 degrees upstream through the aim at tc (the contact) to th1 downstream; the hands travel on a matching small arc, right hand behind and left hand leading, so the two arms lever the haft.
     Returns a key per frame: the blade's path is the point of the move, so nothing is left to spline between poses.
     carry_edge (2026-11-11, on by default): the first cut's edge is carried up from the guard with the haft as the hands pick the blade up
     (see below); False keeps the old blend.
     turn (2026-11-11): seconds over which a cut that comes straight back along the last one's line turns its edge over: it starts edge last, as the
-    cut before left it, and rolls 180 deg about the haft to lead (wheel_of_heaven)."""
+    cut before left it, and rolls 180 deg about the haft to lead (wheel_of_heaven).
+    edge_enter (2026-11-12): seconds over which the carried edge rolls to the cut's own, where it is longer than the hands' pick-up (enter); None
+    rolls it with the hands."""
     F = np.array(H(*aim))
     A = L.orth(np.array(source, float), F)
     Cn = np.array(centre, float)
@@ -115,6 +117,7 @@ def arc(t0, tc, t1, th0, th1, source, aim=(0.0, -6.0), centre=(0.32, 0.22, -1.2)
         if t0 < 0.3:    # the first cut of a move grows out of the guard: the hands leave it and pick the blade's path up, they do not jump to it
             enter = max(0.1, 0.3 * (tc - t0)) if enter is None else enter     # (2026-11-09) enter: seconds to pick the blade up, where a cut asks for its own
             s = 1.0 if link else L.smooth01((t - t0) / enter)     # a linked cut grows out of the last one's ending, not out of the guard
+            se = s if (edge_enter is None or link) else L.smooth01((t - t0) / edge_enter)     # (2026-11-12) the carried edge's own weight
             if s < 1.0:
                 # the blade rises along its own plane as the hands pick it up, so the wrist never has to catch it up
                 th = th * s
@@ -137,7 +140,7 @@ def arc(t0, tc, t1, th0, th1, source, aim=(0.0, -6.0), centre=(0.32, 0.22, -1.2)
                     e = L.orth(np.array(GUARD["face"], float), d) if carried is None else L.orth(L.short_arc(carried[0], d) @ carried[1], d)
                     carried = (d, e)
                     f = L.orth(line(th - 1.0)[0] - line(th + 1.0)[0], d)
-                    motion = L.rodrigues(d * s * math.atan2(float(np.dot(np.cross(e, f), d)), float(np.dot(e, f)))) @ e
+                    motion = L.rodrigues(d * se * math.atan2(float(np.dot(np.cross(e, f), d)), float(np.dot(e, f)))) @ e
                 else:
                     motion = np.array(GUARD["face"], float) + (motion - np.array(GUARD["face"], float)) * s
                     if abs(float(np.dot(d, motion))) > 0.98 * np.linalg.norm(motion):
@@ -145,6 +148,15 @@ def arc(t0, tc, t1, th0, th1, source, aim=(0.0, -6.0), centre=(0.32, 0.22, -1.2)
                 rsl_k, lsl_k = RSL, LSL + (span - LSL) * s
                 out.append(K(t, "lin", rp=tuple(rp), haft=tuple(d), face=tuple(motion), rsl=rsl_k + (rsl - rsl_k) * s, lsl=lsl_k, lhw=1.0))
                 continue
+            if carry_edge and se < 1.0:
+                # (2026-11-12) edge_enter: the carried edge keeps rolling after the hands have picked the blade up. Over the hands' three frames
+                # (enter 0.1 s) Returning Tide's and Charging Crescent's keyed edge rolled 57-61 deg at f2 and the glaive turned 64-66 deg there
+                # (glaiveturn.py); over 3.5-5 frames the keyed edge rolls 52-38 deg at most in a frame, and the trial bakes' glaive turned 43-57 deg
+                # at f2 (windows-pass REPORT section 13)
+                e = L.orth(L.short_arc(carried[0], d) @ carried[1], d)
+                carried = (d, e)
+                f = L.orth(line(th - 1.0)[0] - line(th + 1.0)[0], d)
+                motion = L.rodrigues(d * se * math.atan2(float(np.dot(np.cross(e, f), d)), float(np.dot(e, f)))) @ e
         if turn and t < t0 + turn:
             motion = L.rodrigues(d * (-math.pi * (1.0 - L.smooth01((t - t0) / turn)))) @ L.orth(motion, d)
         out.append(K(t, "lin", rp=tuple(rp), haft=tuple(d), face=tuple(motion), rsl=rsl, lsl=span, lhw=1.0))
@@ -217,7 +229,11 @@ def build(phase):
                      # his right hip on f6 and in front on f7 (phase 1 fist pop 0.29). Phase 2's broader, hunched trunk takes it further out and back to his
                      # side: by f8 his chest faces his right (78 deg round), so a fist carried forward was across its front and the straight arm lay 0.30
                      # in it; carried to where the chest faces, 0.17 (the blow 0.08 from where it was)
-                     + carry(arc(0, 0.15, 0.3, 66, 98, FROM_LOW_LEFT, aim=(2, 0)), 0.12, 0.2, 0.3, 0.4167, (0.65, 0.0, -0.4) if phase == 1 else (1.5, 0.1, 0.2))
+                     # (2026-11-12) the edge rolls up from the guard over 4 frames (phase 1) or 3.5 (phase 2), not the hands' 3 (arc's edge_enter): the
+                     # glaive turned 64 deg at f2 in both (now 49 and 56). Phase 2 at 4 frames faded in from Idle 0.197 into his chest at 0.15 s and sank the left sleeve
+                     # into its arm 0.20 (bake eKl); phase 1 at 3.5 left the prayer beads 0.12 in his chest (eLc)
+                     + carry(arc(0, 0.15, 0.3, 66, 98, FROM_LOW_LEFT, aim=(2, 0), edge_enter=0.1333 if phase == 1 else 0.1167), 0.12, 0.2, 0.3, 0.4167,
+                             (0.65, 0.0, -0.4) if phase == 1 else (1.5, 0.1, 0.2))
                      + [K(0.4167, "io", rp=READY["rp"], haft=READY["haft"], face=READY["face"], rsl=RSL, lsl=LSL)],
                      "Returning Tide: the blade drops to his left hip and climbs through to the right shoulder off the rear foot's step.", feet_free=[(0, 0.4167)])
 
@@ -933,6 +949,16 @@ def build(phase):
         # polish could not clear (0.211 -> 0.205; started on Idle's grip as well, the same 0.21 at f41), and added three blade out-and-backs
         # (popjson.py: worst 1.20 at f18, the export's 0.69). Its export turns the glaive 69 deg at f2 and f21 (glaiveturn.py; rolled, 63 at f3).
         c.roll_edges = not (phase == 1 and short == "PrayerBeads")
+        # (2026-11-12) Phase 2 BloodWave's return to the guard rolls its edge over 1.45-1.95 s, not to the clip's end at 2.15: rolled to the end, the
+        # left arm lay 0.18 in his chest over the last frames (review x-ray, clip f62-65), and the left hand turned back on the haft once. Its glaive
+        # turns no more (largest 30 deg a frame); not rolled at all, 49 at f54 (bakes bwE, bwR; windows-pass REPORT section 13)
+        if phase == 2 and short == "BloodWave":
+            c.roll_to = 1.95
+        # (2026-11-12) Phase 2 Guandao_Running's return rolls its edge from 0.433 s, not from the cut's end at 0.4: rolled from 0.4 the left arm,
+        # still on the haft (phase 2 lets go over 0.47-0.55 s; phase 1, which shows no crossing, over 0.34-0.42), crossed his chest 0.205 deep
+        # (review x-ray, clip f11-13; 0.043-0.056 now); from 0.467 the edge popped 0.64 at f16 (validator; bakes rJa, rJb)
+        if phase == 2 and short == "Guandao_Running":
+            c.roll_from = 0.433
         if phase == 2 and short == "GuandaoSkyfall":
             c.hold_end = {"Right": (0.0, 67.5, 334.29)}
         if phase == 2 and short == "DeathblowVictim":

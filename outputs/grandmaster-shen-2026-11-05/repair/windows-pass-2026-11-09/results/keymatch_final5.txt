@@ -1,0 +1,9 @@
+# (2026-11-12) the four clips adopted on 11-12 (windows-pass REPORT section 13): the repo's keys and per-clip options against the overlay each bake was made with, under the same switches
+## P1_Guandao_L2 vs edgeK (bake eKl)
+P1_Guandao_L2              keys same on all 14 frames | options same
+## P2_Guandao_L2 vs edgeK, SHEN_EDGE_ENTER_L2_P2=0.1167 (bake eLa)
+P2_Guandao_L2              keys same on all 14 frames | options same
+## P2_BloodWave vs edgeL, SHEN_ROLL_WIN_BW=1.45,1.95 (bake bwE)
+P2_BloodWave               keys same on all 65 frames | options differ: roll_from: repo None, edgeL 1.45
+## P2_Guandao_Running vs edgeJ, SHEN_ROLL_FROM=0.433 (bake rJa)
+P2_Guandao_Running         keys same on all 19 frames | options same

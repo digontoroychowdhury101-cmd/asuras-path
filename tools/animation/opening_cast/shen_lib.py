@@ -467,6 +467,10 @@ class Clip:
     legs_guard = False
     # (2026-11-11) roll_edges: Clip.edge_roll (see EDGE_TURN) on this clip's face keys; False keeps the spline through every gap (shen_clips.build)
     roll_edges = True
+    # (2026-11-12) roll_from / roll_to: seconds. A rolled gap (Clip.edge_roll) that spans either rolls only between them, at the key's ease: the
+    # edge is carried with the haft until roll_from and has finished rolling by roll_to (shen_clips.build: phase 2 Guandao_Running, BloodWave)
+    roll_from = None
+    roll_to = None
 
     def __init__(self, rig, name, length, keys, loop=False, priority="Action", contacts=(), move=None, notes="", active=None, slot="", feet_free=(), corrupt=True, scrape=False, airborne=False, authored_feet=False, raw_after=None, hover=0.0, still_after=None, uncorrupt=None, floor_body=False):
         self.rig = rig
@@ -533,7 +537,13 @@ class Clip:
             if t <= t1:
                 u = EASE[keyed[i + 1][2]]((t - t0) / (t1 - t0) if t1 > t0 else 1.0)
                 p1, p2 = vals[i], vals[i + 1]
-                rolled = self.edge_roll(t0, t1, p1, p2, t, u) if name == "face" and self.roll_edges and t1 > t0 and not np.allclose(p1, p2, atol=1e-6) else None
+                ur = u
+                if name == "face" and (self.roll_from is not None or self.roll_to is not None):     # (2026-11-12) see roll_from
+                    lo = max(t0, self.roll_from if self.roll_from is not None else t0)
+                    hi = min(t1, self.roll_to if self.roll_to is not None else t1)
+                    if hi > lo and (lo > t0 or hi < t1):
+                        ur = 0.0 if t <= lo else 1.0 if t >= hi else EASE[keyed[i + 1][2]]((t - lo) / (hi - lo))
+                rolled = self.edge_roll(t0, t1, p1, p2, t, ur) if name == "face" and self.roll_edges and t1 > t0 and not np.allclose(p1, p2, atol=1e-6) else None
                 if rolled is not None:     # (2026-11-11) see EDGE_TURN
                     return rolled
                 if np.allclose(p1, p2, atol=1e-6):

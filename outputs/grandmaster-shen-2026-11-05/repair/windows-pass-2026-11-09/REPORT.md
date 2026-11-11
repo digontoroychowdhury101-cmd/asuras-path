@@ -1,4 +1,4 @@
-# Grandmaster Shen clipping repair: Windows pass (2026-11-09 to 11-11)
+# Grandmaster Shen clipping repair: Windows pass (2026-11-09 to 11-12)
 
 Boss 01 only. Nothing was published or uploaded, and no asset ID was created. Bosses 02-06 were not touched. The
 validator thresholds, the dense measure, the between-frame and fade-in checks, `POP_LIMIT`, the GLB bones and skin weights,
@@ -28,6 +28,8 @@ bake changes:
 - `legs_guard`: held_clash also weighs the weapon inside his legs on every weapon sample (built for P2 Skyfall; see section 9).
 - `walk_spike` (11-11): swivel's grip walk charges each degree a hand turns on the haft past 15 deg in one frame (P2 Skyfall's fist
   rolling back and forth on the haft, section 9; and P1 Guandao_Running, section 12).
+- `roll_from` / `roll_to` (11-12): a rolled edge gap (`Clip.edge_roll`, below) that spans either rolls only between them (P2
+  Guandao_Running and P2 BloodWave, section 13).
 
 One change applies to every clip (11-11, section 12): `EDGE_TURN` (120 deg) and `Clip.edge_roll`. Where two keys of the blade's
 edge (the `face` channel) turn it more than 120 deg about the haft, the edge now rolls about the haft at the key's ease. Before,
@@ -45,7 +47,8 @@ P2 Skyfall's right knee turns in 16 deg from 1.42 s to 2.3 s (`kin`, section 9).
 P2 Guandao_L3 keep the old blend, `carry_edge=False` for that phase); before, the edge blended linearly and snapped on the entry's
 last frame. `turn` rolls the edge 180 deg over 0.17 s on Wheel of Heaven's rising return. With the edge roll above, the keyed edge
 (`face`) of 21 clips changes, and nothing else in any clip's keys. P1 Feint now starts on Idle's right-hand grip, and
-P1 Guandao_Running on Idle's grip with both hands, with its grip walk priced as Skyfall's (section 12).
+P1 Guandao_Running on Idle's grip with both hands, with its grip walk priced as Skyfall's (section 12). On 11-12 `arc()` gains
+`edge_enter` (the carried edge's own roll-in, longer than the hands'), used by P1 and P2 Guandao_L2's first cut (section 13).
 
 **Game code** (`src/shared/BossRigs.luau`), found by the Studio check in section 5: `BossRigs.apply` skipped a helper bone that an
 earlier form had built, so after the phase transition Shen's glaive joint stayed on phase 1's pivot. Every phase 2 clip and weapon
@@ -57,7 +60,8 @@ point (its part, joint and welds stay). New regression test `tools/test_boss_rig
 **Exported clips**: 39 re-exported (`assets/animations/opening_cast/shen/`, 15 phase 1 + 24 phase 2) and the manifest; the other
 25 clip files are unchanged (`results/jsondiff_pre4_final4.txt`: 0.000 moved). 21 of the 39 were exported again on 11-11 evening
 for the glaive's edge (section 12); P1 PrayerBeads, P1 Guandao_Heavy and P2 Guandao_L3 keep their exports from earlier in this pass.
-The game plays published asset IDs, so the repaired clips reach the game only once they are published, which this pass did not
+On 11-12 four of the 21 were exported again (P1 and P2 Guandao_L2, P2 BloodWave, P2 Guandao_Running; section 13); the other 60
+clips' frame JSON is unchanged (`results/jsondiff_pre5_final5.txt`). The game plays published asset IDs, so the repaired clips reach the game only once they are published, which this pass did not
 do. The rig fix is in the built place now, and it also
 corrects the glaive for the phase 2 clips already published (they were made about phase 2's point too).
 
@@ -70,7 +74,8 @@ place diff is the 15 lines of BossRigs.
 - `revalidate.py` on all 64 final bakes (`work/shen_repair/baked_set2`, after the glaive-edge fix of section 12): **0 problems**
   (`results/reval_final4.txt`; just before that fix `results/reval_final3.txt`, 0 problems). Deepest arm in his torso: on frames
   0.172 (P1 FlowingJian left, 0.167 before the edge fix: past the 0.17 wall, under the 0.18 flag, section 8), between frames 0.175
-  (P1 PrayerBeads left, f48), fading in 0.162 (P2 Death). Before the edge fix: 0.168 and 0.179 (P1 Guandao_Running left, f3) and 0.162.
+  (P1 PrayerBeads left, f48), fading in 0.162 (P2 Death). Before the edge fix: 0.168 and 0.179 (P1 Guandao_Running left, f3) and 0.162. After the four clips of
+  section 13 (11-12): 0 problems, the same three worsts (`results/reval_final5.txt`, `revaltable_dp11_final5.md`).
 - Before/after for the 31 clips whose numbers changed (`results/revaltable_dp11_final4.md`, before = the dp11 bakes handed over):
   P1 FlowingJian 0.200/0.228 with a blade pop and a flipped wrist -> 0.172/0.173, clean; P2 CrimsonEmbrace 0.351 -> 0.157;
   P2 Death 0.231 -> 0.158; P2 DeathblowVictim 0.205 (0.257 fading in) -> 0.160 (0.039); P2 RendingArc between frames 0.189 -> 0.163;
@@ -79,7 +84,7 @@ place diff is the 15 lines of BossRigs.
 - Weapon inside his legs (validator records, does not limit; dense, every weapon sample; `results/legsall_final4.txt`): unchanged or
   lower than at the handover everywhere except P1 WheelOfHeaven 0 -> 0.056 (f25) and P2 BloodWave 0.049 -> 0.079 (f19), both from
   the edge fix (section 8), and P1 PrayerBeads 0 -> 0.002. P2 Skyfall's haft (0.122 in his right thigh at f52 at the handover) is out
-  of his legs on every frame. See 9.
+  of his legs on every frame. See 9. After section 13: line for line as `legsall_final4.txt` (`results/legsall_final5.txt`).
 
 ## 4. Local regression
 
@@ -128,6 +133,12 @@ place diff is the 15 lines of BossRigs.
     0.223, deepest 0.162 -> 0.145). Per pair: `results/cloth_changes_finK1_finK2.txt` (16 robe and ribbon pairs deeper or more
     frequent, 10 shallower) and `rest_changes_finK1_finK2.txt` (52 deeper, 36 shallower); against the start, `*_every_finK2.txt`.
   The rises are open (section 8 items 3 and 8).
+  - After the four clips of section 13 (11-12; `finK3`, those clips re-shot from their exported frame JSON, `work/shen_repair/finK3.sh`,
+    local): robes and ribbons 148 -> 149 pairs (sum 1.422 -> 1.426), arm-in-weapon 154 -> 152, weapon-in-arm 38 -> 39, other
+    157 -> 153 (2.271 -> 2.260), deepest unchanged in each (`results/msetcmp_finK2_finK3.txt`); per pair `cloth_changes_finK2_finK3.txt`
+    (1 deeper) and `rest_changes_finK2_finK3.txt` (4 deeper, 10 shallower), listed in section 13; against the start, `*_every_finK3.txt`.
+- After section 13 (11-12, `results/*_final5.txt`): fades worst 0.179, unchanged; pops 81 -> 38 frames (40 before it); the glaive over
+  60 deg in a frame 48 -> 10 (12); hands reversing on the haft right 66 -> 54, left 39 -> 8 (53, 9); upper-arm swings 295 -> 247 (248).
 - `py tools/test_cloth_sim.py`: P1 ok (rest drift 1.143, sprint trail 0.17), P2 ok (1.187, 0.39).
 - `bash tools/verify_all.sh` (Git Bash, `python3` shimmed to `py`): all 14 stages pass, exit 0, "Shen integration: ok"
   (`results/verify_all_final2.log`; the Shen audio manifest it needs was generated with `py tools/assets/build_shen_audio.py`, which
@@ -137,6 +148,8 @@ place diff is the 15 lines of BossRigs.
 - After the glaive-edge fix (11-11 evening): `verify_all.sh` all 14 stages pass, exit 0, "Shen integration: ok"
   (`results/verify_all_edge.log`); `test_cloth_sim.py` ok with the same numbers; `tools/build.py` left the place unchanged (the
   exported clips are not part of it).
+- After section 13 (11-12): `verify_all.sh` all 14 stages pass, exit 0, "Shen integration: ok", cloth sim ok with the same numbers
+  (`results/verify_all_1112.log`).
 
 ## 5. Visual review (renders watched)
 
@@ -150,22 +163,25 @@ The 21 clips exported again for the glaive's edge (section 12) have new videos, 
 re-measured from those renders (`scripts/xraytable.py`, logs `work/shen_repair/rv5/*_fin5L_UpperTorso_front.log`, local).
 
 What the renders show, beside the numbers (`results/xray_mesh_table.md`, the rendered mesh's deepest point inside the upper torso):
-- Clearly better on screen: P2 RendingArc 0.385 -> 0.199, P2 Feint 0.277 -> 0.190, P2 Guandao_L2 0.251 -> 0.182, P2 Guandao_Heavy
-  0.237 -> 0.174, P2 RunForward 0.270 -> 0.174, P2 Skyfall 0.219 -> 0.179, P2 BloodWave 0.204 -> 0.183, P2 CrimsonEmbrace
-  0.186 -> 0.166, P1 FlowingJian 0.188 -> 0.149 (blade pop and wrist flip gone), P2 Guandao_Running 0.242 -> 0.205 (0.169 before the
-  edge fix, below).
+- Clearly better on screen (with the four clips of section 13 as now exported): P2 RendingArc 0.385 -> 0.199, P2 Feint 0.277 -> 0.190, P2 Guandao_L2 0.251 -> 0.182, P2 Guandao_Heavy
+  0.237 -> 0.174, P2 RunForward 0.270 -> 0.174, P2 Skyfall 0.219 -> 0.179, P2 BloodWave 0.204 -> 0.167, P2 CrimsonEmbrace
+  0.186 -> 0.166, P1 FlowingJian 0.188 -> 0.149 (blade pop and wrist flip gone), P2 Guandao_Running 0.242 -> 0.173 (0.169 before the
+  edge fix, 0.205 after it; below and section 13).
 - Rendered mesh still past 0.18 (the validator's skin samples pass on all of them; open, section 8; what each measure counts:
-  `results/xray_why.md`): P2 Death 0.252 (unchanged), P2 DeathblowVictim 0.275 (0.285), P2 Guandao_Running 0.205, P2 RendingArc
-  0.199, P2 Feint 0.190, P2 PhantomDrift 0.186, P2 BloodWave 0.183, P2 Transform 0.183 (unchanged), P2 Guandao_L1 0.182 (0.180),
-  P2 Guandao_L2 0.182, P2 HitLightFront 0.182 (0.184). P2 Guandao_Running and BloodWave are past 0.18 since the edge fix (0.169 and
-  0.172 in the export just before it).
+  `results/xray_why.md`): P2 Death 0.252 (unchanged), P2 DeathblowVictim 0.275 (0.285), P2 RendingArc
+  0.199, P2 Feint 0.190, P2 PhantomDrift 0.186, P2 Transform 0.183 (unchanged), P2 Guandao_L1 0.182 (0.180),
+  P2 Guandao_L2 0.182, P2 HitLightFront 0.182 (0.184). P2 Guandao_Running and BloodWave were past 0.18 after the edge fix (0.205 and
+  0.183; 0.169 and 0.172 in the export just before it) and are under it since section 13 (0.173 and 0.167).
 - Rose: P2 Guandao_L3 0.147 -> 0.180 (f25-29); P2 Flourish 0.126 -> 0.176 (0.132 before the edge fix), P1 WheelOfHeaven 0.144 ->
   0.154 (0.145), P1 Flourish 0.116 -> 0.131 (0.123); and by 0.006-0.009 P1 Feint, P1 Guandao_L3, P1 PrayerBeads, P2 Strike.
 - Where the edge fix raised it, frame by frame (`work/shen_repair/sheets/edge_*.png`, local): P2 Guandao_Running's left arm now
   crosses his chest level over clip f11-13, where it rose across it before; with the edge's late roll switched off (bake edH,
   `work/shen_repair/xrayone.sh`) those frames read 0.041-0.062 as before, so the roll does it. P2 Flourish's blade lies flatter over
   shot f63-67 (viewed; the seam reads 0.160-0.176 over f63-67). In the front view nothing comes through his chest in either; the depth is in
-  skin the validator does not count (section 8).
+  skin the validator does not count (section 8). Fixed for P2 Guandao_Running on 11-12 (section 13).
+- 11-12: new videos for the four clips of section 13 (`arms_w10_f1_Guandao_L2`, `arms_w10_f2_Guandao_L2`, `arms_w10_f2_BloodWave`,
+  `arms_w10_f2_Guandao_Running`), made from their exported frame JSON against the same "before" and watched; their rows in
+  `results/xray_mesh_table.md` are measured from the trial renders of that JSON (`scripts/xraytable.py CLIP=TAG`).
 
 ## 6. Studio integration (local playback, no publishing)
 
@@ -190,6 +206,9 @@ at every exported frame and compared with the solver's frames:
   (Guandao_L1 f12), the other ten 0.0024-0.0074. Still, viewed, not saved: P2 Flourish at the catch (t=1.413, f42), both hands on
   the haft, the blade out to his left, nothing through him.
 
+- The four clips exported on 11-12 (section 13) were not played back in Studio: the Roblox Studio connection was not available to
+  that session. Their in-engine check is still owed.
+
 ## 7. Multiplayer and device profiling
 
 - Multiplayer: not run. No two-client session was started in this pass, so nothing here shows two clients seeing the same
@@ -204,9 +223,9 @@ at every exported frame and compared with the solver's frames:
 
 ## 8. Open defects (not accepted, still to fix)
 
-1. Rendered-mesh arm depth past 0.18 in eleven phase 2 clips (section 5), worst P2 DeathblowVictim 0.275 and P2 Death 0.252,
-   although the validator's dense skin samples are under its limit on all of them. Two of them, P2 Guandao_Running and BloodWave,
-   came with the glaive-edge fix (item 8). Traced on 11-11 (`results/xray_why.md`, `scripts/xray_why.py`), the two measures count
+1. Rendered-mesh arm depth past 0.18 in nine phase 2 clips (section 5), worst P2 DeathblowVictim 0.275 and P2 Death 0.252,
+   although the validator's dense skin samples are under its limit on all of them. Two more, P2 Guandao_Running and BloodWave,
+   came with the glaive-edge fix (item 8) and are under 0.18 since 11-12 (0.173 and 0.167, section 13). Traced on 11-11 (`results/xray_why.md`, `scripts/xray_why.py`), the two measures count
    different skin:
    - Seven clips (RendingArc, PhantomDrift, Transform, Feint, L1, L2, HitLightFront): the depth past 0.18 is upper-arm skin at the
      shoulder seam that sat within 0.05 of his chest at rest. The validator leaves that skin out (`_torso_free`); the x-ray counts it.
@@ -215,11 +234,11 @@ at every exported frame and compared with the solver's frames:
    - P2 DeathblowVictim 0.275: the review's 0.2 s fade in (0.114 at the game's 0.15 s). Inside the clip, at clip f18 (shot f36), the
      top of his left shoulder is 0.219 in; 0.188 of that is skin the validator would count, but it falls between its ~510
      left-upper-arm samples.
-   - P2 BloodWave 0.183 and P2 Feint 0.190 (since the edge fix): the same shoulder-seam skin (the counted skin 0.167 and 0.166).
-     P2 Guandao_Running 0.205 (clip f11-13): arm-mesh skin that follows his upper torso's bone most, which the validator files under
-     the torso, not the arm (the counted arm skin 0.166, at the entry).
+   - P2 Feint 0.190 (since the edge fix): the same shoulder-seam skin (the counted skin 0.166). P2 BloodWave 0.183 (the same skin)
+     and P2 Guandao_Running 0.205 (clip f11-13: arm-mesh skin that follows his upper torso's bone most, which the validator files
+     under the torso) were fixed on 11-12 by where the edge rolls (section 13).
    In normal renders of the two worst in-clip frames (RendingArc f58, DeathblowVictim f36), nothing comes through the front of his chest.
-   The depth is still there in all eleven, so this item stays open.
+   The depth is still there in all nine, so this item stays open.
 2. P2 Guandao_L3 rose 0.147 -> 0.180 in the rendered mesh (f25-29): left upper arm at the shoulder seam (0.180), and 0.173 for skin
    the validator counts, which is past the 0.17 wall but under its 0.18 flag (`results/xray_why.md`).
 3. Cloth, rendered mesh at every frame (section 4): the 34 robe and ribbon pairs that went deeper or more frequent
@@ -227,7 +246,9 @@ at every exported frame and compared with the solver's frames:
    right thigh 0.124 and RobeBack in the left shin 0.119, P2 Guandao_L2 RibbonLeft in the left forearm 0.118; and the 43 sleeve,
    beard, beads and hair pairs that did (`results/rest_changes_every.txt`), led by P2 Guandao_L2 LeftSleeve in the left upper arm
    0.196, P1 FlowingJian Beads in LowerTorso 0.188, P2 Death Beard in his head 0.182, P2 Guandao_Running LeftSleeve 0.180. The
-   every-other-frame list's P2 Skyfall RobeFront in the left forearm was a sampling miss (0.113 before, at every frame).
+   every-other-frame list's P2 Skyfall RobeFront in the left forearm was a sampling miss (0.113 before, at every frame). Added on
+   11-12 by section 13: P2 BloodWave LeftSleeve in the left upper arm 0.117 -> 0.151, P2 Guandao_Running LeftSleeve 0.109 -> 0.137,
+   P1 Guandao_L2 RobeLeft in the left thigh 0.049 -> 0.062 (`results/cloth_changes_finK2_finK3.txt`, `rest_changes_finK2_finK3.txt`).
 4. The glaive through his upper torso for a frame as the review shot fades in from Idle (shot f22): P2 Flourish 0.308 -> 0.341,
    P2 Guandao_L2 0.298 -> 0.281 (P2 RunForward's, 0.352 at shot f21 at every frame, is gone); after the edge fix 0.342 and 0.293
    (`mset_finK2_*.json`). At the game's own fades (11-11, `results/fadeweapon_final.txt`; after the edge fix `fadeweapon_final4.txt`: every
@@ -254,7 +275,8 @@ at every exported frame and compared with the solver's frames:
      In the player's camera these frames look the same as the export. P2 Guandao_Running's right forearm out and back 0.96 at f3
      (0.60), from its carried entry (0.90 with the roll off, bake edH).
    - Rendered-mesh arm depth in the upper torso (section 5, item 1): P2 Guandao_Running 0.169 -> 0.205 over clip f11-13, from the
-     edge's late roll (bake edH, the roll off: 0.041-0.062 there); P2 Flourish 0.132 -> 0.176, P2 BloodWave 0.172 -> 0.183, P2 Feint
+     edge's late roll (bake edH, the roll off: 0.041-0.062 there; fixed on 11-12, 0.043-0.056 there, section 13); P2 Flourish
+     0.132 -> 0.176, P2 BloodWave 0.172 -> 0.183 (fixed on 11-12: 0.167), P2 Feint
      0.183 -> 0.190; P1 WheelOfHeaven and P1 Flourish 0.008-0.009 deeper, P1 FlowingJian 0.005.
    - The validator's own arm depth: P1 FlowingJian's left arm 0.167 -> 0.172 on frames, past the 0.17 wall and under its 0.18 flag.
    - The game's fades, all under 0.18 (section 4): P2 Flourish's fade out 0.128 -> 0.163, P2 Guandao_L2's fade in 0.160 -> 0.169,
@@ -262,8 +284,10 @@ at every exported frame and compared with the solver's frames:
      (item 4).
    - Upper arms swinging further in one frame (`armjump.py`): P1 Feint 37 deg at f7 (27), P1 and P2 Guandao_L2 right 67 and 72 (56, 60),
      P2 RendingArc right 60 (52), P2 BloodWave left 52 (42), P2 Guandao_Running right 63 at f3 (36; its largest, 68 at f5, as before)
-     and left 47 at f15 (40).
-   - Hands reversing on the haft (`rollscan.py`): P1 WheelOfHeaven right 1 -> 3, P2 BloodWave 0 -> 1 on each hand.
+     and left 47 at f15 (40). After section 13: P1 Guandao_L2 right 72 at f11 and 60 at f2; P2 Guandao_Running right 61 at f3 and
+     left 35 at f15.
+   - Hands reversing on the haft (`rollscan.py`): P1 WheelOfHeaven right 1 -> 3, P2 BloodWave 0 -> 1 on each hand (the left back to 0
+     on 11-12, section 13).
    - The weapon inside his legs (`legsall.py`, dense): P2 BloodWave 0.049 -> 0.079, P1 WheelOfHeaven 0 -> 0.056.
    - P2 Guandao_Heavy's glaive now turns 63 deg at f4, over 60 (it did not before).
    - Cloth and the glaive on the rendered mesh (section 4; `cloth_changes_finK1_finK2.txt`, `rest_changes_finK1_finK2.txt`): 16 robe
@@ -271,10 +295,11 @@ at every exported frame and compared with the solver's frames:
      in the left thigh 0.091 -> 0.134 and P1 FlowingJian RobeFront in the left forearm 0 -> 0.089; 52 other pairs, led by P2 Flourish's
      glaive in LowerTorso 0.124 -> 0.173 (shot f23, as the review fades in), P2 Guandao_L2's glaive in the right forearm 0.049 ->
      0.128, P2 Strike LeftSleeve in the left upper arm 0.061 -> 0.123 and P1 Guandao_L2 Beads in UpperTorso 0 -> 0.121.
-9. The glaive still turns more than 60 deg in a frame on 12 frames in 8 clips (`results/glaiveturn_pre4_final4.txt`). Six are the
-   haft swinging with the hand, its roll under 15 deg: P1 and P2 Guandao_L1 f11 (77, 78), Guandao_L2 f11 (94, 95) and Guandao_Heavy
-   f22 (65, 68). Six roll 35-66 deg: P1 and P2 Guandao_L2 f2 (64 each), P2 Guandao_Heavy f4 (63), P2 Guandao_Running f2 (66) and
-   P1 PrayerBeads f2 and f21 (69 each, kept, section 12).
+9. The glaive still turns more than 60 deg in a frame on 10 frames in 8 clips (`results/glaiveturn_pre4_final5.txt`; 12 before
+   section 13). Six are the haft swinging with the hand, its roll under 15 deg: P1 and P2 Guandao_L1 f11 (77, 78), Guandao_L2 f11
+   (94, 95) and Guandao_Heavy f22 (65, 68). Four roll 35-66 deg: P2 Guandao_Heavy f4 (63), P2 Guandao_Running f2 (66) and
+   P1 PrayerBeads f2 and f21 (69 each, kept, section 12). P1 and P2 Guandao_L2's f2 (64 each) are 49 and 56 since 11-12; P2
+   Guandao_Running's f2 with a slower roll-in was not adopted (section 13).
 10. Nine phase 1 clips start with the right upper arm 86-114 deg from Idle's (`armjump.py`, first frame against Idle 0.6 s in,
     `results/armjump_pre4_final4.txt`), which a fade in from Idle turns through: the attacks Guandao_L1 102, Guandao_L2 104, Flourish
     101, WheelOfHeaven 103 and PrayerBeads 86, and DeathblowVictim 114, PostureBreak 110, Death 106 and Transform 101. Seven were the
@@ -282,6 +307,11 @@ at every exported frame and compared with the solver's frames:
     already read 106 and 86 (frame JSON made from `work/shen_repair/baked_dp11`), and which this pass exported. Starting the attacks
     on Idle's grip moved the swing into f0 -> f1 and added forearm pops (section 12), so it was not adopted. PrayerBeads was started
     on Idle's grip only with its edge rolled (section 12), Death not at all.
+11. What the four fixes of 11-12 (section 13) made worse by a measure, against the export just before them: P2 BloodWave LeftSleeve
+    in the left upper arm 0.117 -> 0.151 (f64) and P2 Guandao_Running's 0.109 -> 0.137 (f29); P2 Guandao_Running's left forearm in
+    the glaive on 11% of frames (3%); P1 Guandao_L2 RobeLeft in the left thigh 0.049 -> 0.062 and his chest in the glaive 0.049 ->
+    0.060; P1 Guandao_L2's right upper arm 72 deg in a frame at f11 (67) and 60 at f2; P2 Guandao_L2's right hand reversing on the
+    haft once (16 deg; none before); P1 Guandao_L2's rendered arm 0.132 -> 0.137 (under the wall).
 
 ## 9. P2 Guandao Skyfall: the weapon in his thigh, the fist's flutter, the coil
 
@@ -424,7 +454,9 @@ section 12 on 11-11 evening (section 6).
   first full export, `_final3` just before the glaive-edge fix (with P2 Skyfall's rsC), `_final4` after it; `_preedge_final4` sets
   the export just before the fix beside the final one. Also `keyroll_edgeB.txt` (the edB overlay's keys: the same 23 frames as the
   repo's now), `rollscan_pre4_final.txt` (the first export's hand reversals, section 9), `rolltrace_knI.log` and `rolltrace_rsC.log`
-  (section 9, stage by stage) and `verify_all_edge.log` (section 4).
+  (section 9, stage by stage) and `verify_all_edge.log` (section 4). On 11-12 (section 13): `_final5` after its four clips, and
+  `_pre5_final5` with the export just before them (`pre5_export`) beside the final one; `mset_finK3_*.json` and the `finK3` comparisons;
+  `keymatch_final5.txt`; `verify_all_1112.log`. `scripts/xraytable.py` takes `CLIP=TAG` to read a clip's row from a trial's render.
 - Bakes: `work/shen_repair/baked_set2` (local, gitignored) is the final set the exports came from.
 
 ## 11. Housekeeping
@@ -561,3 +593,88 @@ The final set (`work/shen_repair/setcheck4.sh`, `finK2.sh` and `finK2b.sh`, loca
 - Rendered mesh: the arm x-ray deeper by 0.005 or more in 7 of the 21 clips, cloth and the glaive's contacts a little up overall
   (sections 4, 5, 8).
 - Studio: the 21 clips play back within 0.0115 rig units of the solver (section 6). Videos: new x-ray before/after videos (section 5).
+
+## 13. Four clips the glaive-edge fix left worse (11-12)
+
+Targets from section 8 items 1, 8 and 9: P2 Guandao_Running's left arm across his chest (rendered mesh 0.205), P2 BloodWave's arm
+x-ray (0.183), and the glaive turning 64-66 deg in a frame at f2 in P1 and P2 Guandao_L2 and P2 Guandao_Running. Each trial was baked
+in full from the start (`runall.py`, DEV overlays of the repo files with environment switches, local `work/shen_repair/edgeJ`, `edgeK`,
+`edgeL`) and checked as in section 12 (`work/shen_repair/onecheck_<tag>.txt`; cloth and the glaive on the rendered mesh at every frame,
+`msetone_<tag>.txt`; the x-ray review render `rv5/<shot>_<tag>_UpperTorso_front.log`; all local). Against the export just before
+(the 11-11 evening one).
+
+What each one was:
+- P2 Guandao_Running, clip f11-13: the return to the guard rolls the edge 136 deg about the haft, and the roll started at the cut's end,
+  0.4 s, while the left hand is still on the haft (phase 2 lets go over 0.47-0.55 s; phase 1, which shows no crossing, over 0.34-0.42).
+  The arm followed the haft across his chest.
+- P2 BloodWave, clip f62-65: the return's roll ran to the clip's last frame (2.15 s), with the left arm 0.18 in his chest over the last
+  frames, and the left hand turned back on the haft once.
+- The f2 turns: the carried edge (section 12) rolled to the cut's own over the hands' pick-up, three frames (`enter` 0.1 s). Keyed,
+  the edge rolled 57-61 deg at f2 (`keyroll.py`), and the solver's glaive turned 64-66 deg there.
+
+The code (both opt-in per clip; no other clip's keys change, `results/keyroll_final5.txt` differs from `keyroll_final4.txt` only in the
+L2s' f2):
+- `Clip.roll_from` / `roll_to` (`shen_lib.py`, seconds): a rolled gap (`Clip.edge_roll`) that spans either rolls only between them,
+  at the key's ease. P2 Guandao_Running `roll_from = 0.433`; P2 BloodWave `roll_to = 1.95` (its return's gap starts at 1.45 s, so it
+  rolls over 1.45-1.95 s).
+- `arc(edge_enter=...)` (`shen_clips.py`): the carried edge rolls to the cut's own over its own time, where that is longer than the
+  hands' pick-up. Returning Tide (Guandao_L2's first cut): 0.1333 s (4 frames) in phase 1, 0.1167 s (3.5) in phase 2. Keyed, the edge's
+  largest roll in a frame is then 43 deg (phase 1) and 52 (phase 2); at 4.5 and 5 frames, 41 and 38.
+
+Adopted (bake): P1 Guandao_L2 (eKl), P2 Guandao_L2 (eLa), P2 BloodWave (bwE), P2 Guandao_Running (rJa). Each passes the validator, and
+for each the repo's keys and per-clip options equal, on every frame, those of the overlay and switches its bake was made with
+(`results/keymatch_final5.txt`; BloodWave's overlay also set `roll_from` 1.45, the gap's own start, which gives the same keys).
+- P2 Guandao_Running: rendered arm in his upper torso 0.205 -> 0.173 (`results/xray_mesh_table.md`); review shot f29-31 (clip f11-13)
+  0.043-0.056, and the 0.173 is shot f21, the entry, as before the edge fix (0.172 with the roll off, bake edH). Forearm out and back at
+  f3 0.96 -> 0.88, upper-arm steps over 30 deg 10 -> 9 (right f3 63 -> 61, left f15 47 -> 35), no hand reversal on the haft either way.
+  The glaive still turns 66 deg at f2 (open). Deeper: LeftSleeve in the left upper arm 0.109 -> 0.137 (f29, 14% -> 25% of frames) and
+  the left forearm in the glaive on 11% of frames (3%), 0.064 deep. Shallower: the beard in the right upper arm 0.117 -> 0.045.
+- P2 BloodWave: rendered arm 0.183 -> 0.167 (its worst now shot f36, inside the clip, 0.167 before as well); left hand's reversal on
+  the haft 1 -> 0; the glaive's largest turn in a frame 30 deg (unchanged). Deeper: LeftSleeve in the left upper arm 0.117 -> 0.151
+  (f64). The weapon in his legs stays 0.079 at f19 (open, section 8 item 8). Several glaive contacts shallower (`results/rest_changes_finK2_finK3.txt`).
+- P1 Guandao_L2: the glaive at f2 64 -> 49 deg (roll 47); the beads in his chest 0.121 -> 0 and the hair in his head 0.102 -> 0;
+  rendered arm 0.132 -> 0.137 (under the wall). Deeper: RobeLeft in the left thigh 0.049 -> 0.062, his chest in the glaive 0.049 -> 0.060.
+  The right upper arm swings 60 deg at f2 (where the edge now rolls) and 72 at f11 (67), its 64 at f4 gone.
+- P2 Guandao_L2: the glaive at f2 64 -> 56 deg (roll 52); out-and-back frames 5 -> 3 (worst 0.69 -> 0.54); the glaive in the right
+  forearm 0.128 -> 0.115. The right hand now reverses on the haft once (16 deg, `rollscan.py` 0 -> 1). Rendered arm 0.182 unchanged
+  (the shoulder-seam skin, section 8 item 1).
+
+Not adopted:
+- P2 Guandao_Running rolled from 0.467 s (rJb), and with a 5-frame edge entry as well (eKb): the validator failed both, edge pops 0.64
+  and 0.66 at f16. With a 4-frame edge entry (eKc, roll from 0.433): clean, the glaive's f2 turn 66 -> 52, but the right upper arm
+  turned 104 deg in one frame at f3 (89 of it twist about its own length; the export 61) and LeftSleeve went 0.180 into the left upper arm. With a 5-frame entry (eKa, roll from
+  0.433): both of its joint-polish rounds over f0-8 ended infeasible (0.185 deep at the start of the window; the bake was still running
+  when this was written).
+- P2 Guandao_L2 with a 4-frame edge entry (eKl): the game's 0.15 s fade in from Idle put his arm 0.197 into his chest
+  (`fadecheck2.py`, past 0.18) and LeftSleeve went 0.199 into the left upper arm (0.068); 4.5 frames (eLb): fade in 0.171, LeftSleeve
+  0.140. 3.5 frames (eLa) leaves the sleeve as it was.
+- P1 Guandao_L2 with 3.5 frames (eLc): the glaive 57 deg at f2, the beads left 0.121 in his chest, the glaive in his chest 0.060 -> 0.077.
+- P2 BloodWave without the carried edge (bwC): the weapon in his legs back to 0.049, but the validator failed it (edge pop 0.46 at
+  f14). Not rolled at all (bwR): the same x-ray as bwE, but the glaive turned 49 deg at f54 and the right upper arm swung 41 there.
+  Rolled over 1.6-2.15 s (bwF): the end frames 0.180-0.182 as before.
+
+Watched (renders, local `work/shen_repair/sheets/`, `look_*`): P2 Guandao_Running's x-ray sheets and a zoom of shot f28-31 (the left
+arm below his chest line, where the export crossed it), and the player's camera f9-16 and f0-6 beside the export and eKc; P1 and P2
+Guandao_L2 in the player's camera f0-6 beside the export, and their x-ray sheets
+(`l2_p1_eKl.png`, `l2_p2_eLa.png`: the same poses, P1's f26-27 0.121-0.122 -> 0.131-0.137, P2's unchanged); P2 BloodWave's end, shot f80-84,
+and the sleeve over f74-92 (the dark slit in the sleeve is in the export too). New before/after videos for the four
+(`arms_w10_f1_Guandao_L2`, `arms_w10_f2_Guandao_L2`, `arms_w10_f2_BloodWave`, `arms_w10_f2_Guandao_Running`, `_uppertorso_before_after.mp4`),
+before = the export this pass started from, made from the exported frame JSON.
+
+The final set after them (`work/shen_repair/setcheck5.sh`, `finK3.sh`, local; `results/*_final5*`, `*_pre5_final5*`, `*finK3*`;
+pre5 = the export just before them):
+- Validator: 64 clips, 0 problems (`results/reval_final5.txt`); its worsts as before (0.172, 0.175, 0.162; section 3).
+- The glaive turning more than 60 deg in a frame: 12 -> 10 frames (48 at the handover; `glaiveturn_pre5_final5.txt`,
+  `glaiveturn_pre4_final5.txt`). Out-and-back pops 40 -> 38 frames (81). Hands reversing on the haft right 53 -> 54, left 9 -> 8 (66, 39).
+  Upper-arm swings over 30 deg 248 -> 247 (295). Face pops: none. The other 60 clips' frame JSON unchanged (`jsondiff_pre5_final5.txt`).
+- The game's fades: worst 0.179, unchanged (`fade2_final5.txt`, `fade3_final5.txt`); the glaive in his torso as clips fade in
+  (`fadeweapon_final5.txt`) as `fadeweapon_final4.txt` but the four clips' lines, none past 0.05 at any fade (P1 Guandao_L2's
+  0.2 s fade in 0.047 -> 0.031). The weapon in his legs: as `legsall_final4.txt`, line for line.
+- Rendered mesh at every frame, finK2 -> finK3 (`msetcmp_finK2_finK3.txt`): robes and ribbons 148 -> 149 pairs, sum 1.422 -> 1.426;
+  arm-in-weapon 154 -> 152 (2.955 -> 2.945); weapon-in-arm 38 -> 39 (0.223 -> 0.224); other 157 -> 153 (2.271 -> 2.260); deepest
+  unchanged in every group. One robe pair deeper and none shallower (`cloth_changes_finK2_finK3.txt`), four other pairs deeper and ten
+  shallower (`rest_changes_finK2_finK3.txt`); all listed above.
+- Arm x-ray past 0.18 on the rendered mesh: eleven clips -> nine (section 8 item 1).
+- `tools/verify_all.sh`: all 14 stages pass, exit 0, "Shen integration: ok", `test_cloth_sim` P1 and P2 ok (`results/verify_all_1112.log`).
+- Studio: not checked. The Roblox Studio connection was not available to this session, so the four clips were not played back in
+  Studio (section 6). Multiplayer and device profiling: not run (section 7).
