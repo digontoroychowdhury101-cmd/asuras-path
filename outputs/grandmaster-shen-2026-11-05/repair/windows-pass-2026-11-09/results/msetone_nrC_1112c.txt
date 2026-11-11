@@ -1,0 +1,7 @@
+c2_PhantomDrift  (export | nrC)
+  Beard in Head                      0.096 f37 (15%)      | 0.064 f67 (23%)      shallower
+  RibbonLeft in LeftLowerArm         0.094 f39 (3%)       | 0.071 f45 (1%)       shallower
+  LeftSleeve in LeftLowerArm         0.040 f70 (1%)       | 0.079 f75 (3%)       deeper
+  weapon in RightLowerArm            0.069 f74 (8%)       | 0.049 f7 (8%)        shallower
+  RobeRight in LeftLowerArm          -                    | 0.042 f61 (1%)       deeper
+  worst export 0.102 | nrC 0.093

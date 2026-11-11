@@ -808,3 +808,17 @@ The cloth step (`src/shared/ClothSim.luau`), output unchanged:
 
 DeathblowVictim with the seam counted at offset 0 (nrB's bake, checked as `nrBd`): validator clean, x-ray 0.275 -> 0.243, out-and-
 back pops 2 -> 0, but its left upper arm swings 104 deg in a frame at f20 (36 before), as at offset 0.015. Not taken.
+
+The seam at offset 0 on the five other phase 2 clips past 0.18 (nrC, overlay nearA; `results/onecheck_nrC_1112c.txt`,
+`results/msetone_nrC_1112c.txt`). A first run passed the overlay by the wrong path and baked the repo code (identical to the export,
+`jsondiff.py`); it was thrown away and run again. Validator clean on all five. None taken:
+- PhantomDrift: x-ray 0.186 -> 0.147, pops 2 -> 1, fades and steps unchanged, rendered pairs worst 0.102 -> 0.093 (left sleeve in the
+  forearm 0.040 -> 0.079, a robe pair new at 0.042). Watched frame by frame: over review f74-77 (clip f57-60) the blade swings across
+  his face to his left and back, where the export's rises on his right (glaive moved up to 0.718 at clip f57;
+  `results/xray_PhantomDrift_f71-79_fin5L_vs_nrC.png`, top the export). A re-routed blade, as Guandao_L1's at offset 0.015.
+- Transform: x-ray 0.183 -> 0.182; its fade out 0.153 -> 0.182 (past 0.18).
+- Guandao_L1: x-ray 0.182 -> 0.185 (deeper).
+- Guandao_L2: x-ray 0.182 -> 0.180; worst pop 0.54 -> 0.59, left upper arm 68 -> 70 deg in a frame. No clear gain.
+- HitLightFront: x-ray 0.182 -> 0.161; the game's fade in 0.179 -> 0.184 (past 0.18) and a right upper arm step of 47 deg at f1 (25).
+So the seven clips past 0.18 stay open (section 8 item 1). Offset 0 helps the clip itself in two of five but each time breaks
+something else; what is left there is not the solver's torso measure alone.

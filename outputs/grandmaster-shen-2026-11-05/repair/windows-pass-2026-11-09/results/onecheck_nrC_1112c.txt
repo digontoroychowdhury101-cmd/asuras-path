@@ -1,0 +1,83 @@
+# onecheck nrC 05:39 work/shen_repair/baked_nrC P2_PhantomDrift P2_Transform P2_Guandao_L1 P2_Guandao_L2 P2_HitLightFront
+## revalidate (candidate)
+P2_PhantomDrift          R 0.140 L 0.136 entry 0.139/0.000 between R (0.164, 47) L (0.136, 37) | []  (1s)
+P2_Transform             R 0.135 L 0.101 entry 0.075/0.006 between R (0.134, 44) L (0.096, 42) | []  (1s)
+P2_Guandao_L1            R 0.163 L 0.102 entry 0.152/0.047 between R (0.16, 6) L (0.111, 5) | []  (0s)
+P2_Guandao_L2            R 0.145 L 0.139 entry 0.157/0.154 between R (0.141, 0) L (0.122, 3) | []  (0s)
+P2_HitLightFront         R 0.144 L 0.006 entry 0.160/0.000 between R (0.16, 0) L (0.003, 12) | []  (0s)
+## fadecheck2 / fadecheck3 (candidate)
+P2_PhantomDrift          game in 0.126 out 0.121 | shot in 0.120
+P2_Transform             game in 0.101 out 0.182 | shot in 0.106  <-- past 0.18
+P2_Guandao_L1            game in 0.123 out 0.138 | shot in 0.135
+P2_Guandao_L2            game in 0.168 out 0.134 | shot in 0.169
+P2_HitLightFront         game in 0.184 out 0.121 | shot in 0.181  <-- past 0.18
+P2_PhantomDrift          0.10s in 0.135 out 0.119  0.15s in 0.126 out 0.121  0.20s in 0.117 out 0.123
+P2_Transform             0.10s in 0.113 out 0.181  0.15s in 0.101 out 0.182  0.20s in 0.123 out 0.182  <-- past 0.18
+P2_Guandao_L1            0.10s in 0.114 out 0.137  0.15s in 0.123 out 0.138  0.20s in 0.167 out 0.137
+P2_Guandao_L2            0.10s in 0.129 out 0.132  0.15s in 0.168 out 0.134  0.20s in 0.170 out 0.132
+P2_HitLightFront         0.10s in 0.183 out 0.117  0.15s in 0.184 out 0.121  0.20s in 0.181 out 0.123  <-- past 0.18
+## fadeweapon (candidate)
+P2_PhantomDrift          clip 0.000  0.10s in 0.000 out 0.000  0.15s in 0.000 out 0.000  0.20s in 0.000 out 0.000
+P2_Transform             clip 0.000  0.10s in 0.000 out 0.000  0.15s in 0.000 out 0.000  0.20s in 0.000 out 0.000
+P2_Guandao_L1            clip 0.000  0.10s in 0.000 out 0.000  0.15s in 0.000 out 0.000  0.20s in 0.000 out 0.000
+P2_Guandao_L2            clip 0.009  0.10s in 0.000 out 0.000  0.15s in 0.014 out 0.000  0.20s in 0.016 out 0.000
+P2_HitLightFront         clip 0.000  0.10s in 0.000 out 0.000  0.15s in 0.000 out 0.000  0.20s in 0.000 out 0.000
+## legsall exported vs candidate
+P2_PhantomDrift          validate 0.000 in_weapon 0.000 dense 0.000 (f-1) | validate 0.000 in_weapon 0.000 dense 0.000 (f-1)
+P2_Transform             validate 0.000 in_weapon 0.000 dense 0.000 (f-1) | validate 0.000 in_weapon 0.000 dense 0.000 (f-1)
+P2_Guandao_L1            validate 0.000 in_weapon 0.000 dense 0.000 (f-1) | validate 0.000 in_weapon 0.000 dense 0.000 (f-1)
+P2_Guandao_L2            validate 0.000 in_weapon 0.000 dense 0.000 (f-1) | validate 0.000 in_weapon 0.000 dense 0.000 (f-1)
+P2_HitLightFront         validate 0.000 in_weapon 0.000 dense 0.000 (f-1) | validate 0.000 in_weapon 0.000 dense 0.000 (f-1)
+## face pops (candidate)
+clips with a roll pop > 0.3: 0
+## pops: candidate | exported
+P2_Guandao_L1                 1 fr, worst 0.83 f6 RightHand     |  1 fr, worst 0.85 f6 RightHand    
+P2_Guandao_L2                 3 fr, worst 0.59 f11 LeftLowerArm |  3 fr, worst 0.54 f11 LeftLowerArm
+P2_HitLightFront              0 fr, worst -                     |  0 fr, worst -                    
+P2_PhantomDrift               1 fr, worst 0.54 f51 RightHand    |  2 fr, worst 0.64 f51 RightHand   
+P2_Transform                  0 fr, worst -                     |  1 fr, worst 0.58 f1 LeftHand     
+frames with a >=0.5 out-and-back: [5, 7]
+## rollscan: exported | candidate
+clip                       shen                     | json_nrC                
+P1_AbbotSweep              R  4 (34) L  0 ( 0)     | -                       
+P1_Death                   R  3 (23) L  0 ( 0)     | -                       
+P1_DeathblowVictim         R  1 (22) L  0 ( 0)     | -                       
+P1_FlowingJian             R  3 (28) L  1 (17)     | -                       
+P1_Guandao_Art             R  1 (16) L  0 ( 0)     | -                       
+P1_Guandao_Heavy           R  0 ( 0) L  1 (20)     | -                       
+P1_Guandao_L3              R  1 (25) L  0 ( 0)     | -                       
+P1_HesitantMoon            R  2 (42) L  0 ( 0)     | -                       
+P1_PostureBreak            R  1 (45) L  0 ( 0)     | -                       
+P1_PrayerBeads             R  1 (25) L  0 ( 0)     | -                       
+P1_Strike                  R  2 (27) L  0 ( 0)     | -                       
+P1_WheelOfHeaven           R  3 (32) L  2 (23)     | -                       
+P2_BloodWave               R  1 (22) L  0 ( 0)     | -                       
+P2_Death                   R  2 (25) L  0 ( 0)     | -                       
+P2_DeathblowVictim         R  5 (35) L  0 ( 0)     | -                       
+P2_Feint                   R  1 (15) L  0 ( 0)     | -                       
+P2_Flourish                R  1 (24) L  0 ( 0)     | -                       
+P2_Guandao_Heavy           R  4 (21) L  0 ( 0)     | -                       
+P2_Guandao_L1              R  1 (36) L  0 ( 0)     | R  1 (36) L  0 ( 0)    
+P2_Guandao_L2              R  1 (16) L  1 (23)     | R  1 (16) L  1 (23)    
+P2_Guandao_L3              R  2 (35) L  0 ( 0)     | -                       
+P2_PhantomDrift            R  2 (27) L  0 ( 0)     | R  2 (27) L  0 ( 0)    
+P2_RendingArc              R  4 (21) L  2 (22)     | -                       
+P2_Strike                  R  6 (25) L  0 ( 0)     | -                       
+P2_Transform               R  3 (41) L  0 ( 0)     | R  3 (41) L  0 ( 0)    
+frames with a reversing hand turn (right, left): 55, 7 | 7, 1   (both steps >= 15 deg)
+## glaive turns over 60: exported | candidate
+P2_Guandao_L1
+  shen                         largest  78/frame; over 60: f11 78 (swing 77, roll +11; hand 72, on glaive 45)
+  json_nrC                     largest  73/frame; over 60: f11 73 (swing 72, roll -10; hand 72, on glaive 34)
+P2_Guandao_L2
+  shen                         largest  95/frame; over 60: f11 95 (swing 95, roll +6; hand 71, on glaive 48)
+  json_nrC                     largest  96/frame; over 60: f11 96 (swing 96, roll +7; hand 73, on glaive 48)
+frames over 60 deg: shen 2, json_nrC 2
+## armjump: exported | candidate
+P2_PhantomDrift        R max  58 f0   3 f9:37,f13:58,f20:54+ L max  26 f0   3  | R max  58 f0 nan f9:37,f13:58,f20:54+ L max  27 f0 nan 
+P2_Transform           R max  50 f0  27 f3:50 L max  83 f0  89 f1:83,f2:50,f38:31 | R max  52 f0 nan f3:52 L max  84 f0 nan f1:84,f2:46,f38:33
+P2_Guandao_L1          R max  40 f0  25 f1:33,f4:40,f5:32+ L max  36 f0   6 f11:36 | R max  40 f0 nan f1:33,f4:40,f5:31+ L max  35 f0 nan f11:35
+P2_Guandao_L2          R max  72 f0  28 f1:32,f3:34,f4:44+ L max  74 f0   2 f1:38,f7:74,f11:68+ | R max  72 f0 nan f1:32,f3:34,f4:44+ L max  74 f0 nan f1:38,f7:74,f11:70+
+P2_HitLightFront       R max  25 f0   4  L max  10 f0   4             | R max  47 f0 nan f1:47 L max  11 f0 nan       
+upper-arm steps over 30 deg in a frame: shen 25 | json_nrC 28
+# done 05:40
