@@ -3,7 +3,8 @@
 # carry(..., t0, t1, t2, t3, offset), offset in his frame (x right, y up, z forward negative). kn*: the right knee's pole keyed turned in
 # (about his vertical, from READY's (0.12, 0, -1)) over the landing, the feet and every other key as they were. Polish depths are the right
 # arm in his chest (the polish's measure); verdict = validate. Bakes still running are marked.
-
+# rs*: knI plus a per-degree price on a hand's turn on the haft (recheck_spike, walk_spike); rsD is rsC with the cut's edge carried up from the
+# guard (section 12) and is the export.
 ## lfB (liftB): second carry 1.52, 1.58, 1.68, 1.76, offset (0.0, 0.25, 0.0), legs_guard off
   polish f0-6 first try   0.175 -> 0.160  feasible, kept (544 s)
   polish f48-67 first try   0.200 -> 0.295  infeasible, not kept, worse [2, 3, 4, 6] (3433 s)
@@ -57,7 +58,9 @@
   polish f0-6 first try   0.175 -> 0.160  feasible, kept (471 s)
   polish f41-66 first try   0.381 -> 0.358  infeasible, not kept, worse [2, 3] (6943 s)
   polish f41-66 elbows only 0.381 -> 0.380  infeasible, not kept, worse [2] (4288 s)
-  (still running)
+  polish f41-66 seeded      0.381 -> 0.373  infeasible, not kept, worse [2, 3, 4, 6] (2034 s)
+  verdict: torso R 0.196 L 0.361, pops fist 0.161 blade 0.328 slide 0.044 | problems: ['right arm 0.20 inside his torso', 'right arm 0.28 inside his torso between f48 and f49', 'left arm 0.36 inside his torso', 'left arm 0.38 inside his torso between f47 and f48']
+  legs f40-78: 7 frames, deepest 0.112 RightUpperLeg at f59
 ## lfL (liftL): second carry 1.52, 1.58, 1.68, 1.76, offset (0.25, 0.25, 0.0), legs_guard on
   polish f0-6 first try   0.175 -> 0.160  feasible, kept (477 s)
   polish f41-49 first try   0.171 -> 0.160  feasible, kept (319 s)
@@ -99,10 +102,45 @@
   legs f40-78: 2 frames, deepest 0.093 RightUpperLeg at f64
 ## knD (kneeD): right knee pole (-0.1429, 0.0, -0.997) from 1.42 s to 2.3 s (READY's at 1.2 and 2.6), legs_guard off
   polish f0-6 first try   0.175 -> 0.160  feasible, kept (416 s)
-  (still running)
+  polish f54-71 first try   0.177 -> 0.168  infeasible, not kept, worse [2, 3] (4769 s)
+  polish f54-71 elbows only 0.177 -> 0.165  infeasible, not kept, worse [2, 6] (3676 s)
+  polish f54-71 seeded      0.177 -> 0.163  infeasible, not kept, worse [2, 3] (1086 s)
+  verdict: torso R 0.177 L 0.171, pops fist 0.155 blade 0.384 slide 0.076 | problems: []
+  legs f40-78: 2 frames, deepest 0.045 RightUpperLeg at f59
 ## knE (kneeE): right knee pole (-0.0905, 0.0, -1.0031) from 1.42 s to 1.92 s (READY's at 1.2 and 2.15), legs_guard off
-  (still running)
+  polish f0-6 first try   0.175 -> 0.160  feasible, kept (439 s)
+  polish f42-58 first try   0.194 -> 0.167  infeasible, not kept, worse [2, 3] (1709 s)
+  polish f42-58 elbows only 0.194 -> 0.194  infeasible, not kept (0 s)
+  polish f42-58 seeded      0.194 -> 0.183  infeasible, not kept, worse [2, 3, 4, 6] (416 s)
+  polish f63-71 first try   0.179 -> 0.178  infeasible, not kept (2305 s)
+  polish f63-71 elbows only 0.179 -> 0.160  feasible, kept (134 s)
+  verdict: torso R 0.188 L 0.171, pops fist 0.147 blade 0.382 slide 0.102 | problems: ['right arm 0.19 inside his torso', 'right arm 0.19 inside his torso between f53 and f54']
+  legs f40-78: 4 frames, deepest 0.081 RightUpperLeg at f63
 ## knF (kneeF): right knee pole (-0.0905, 0.0, -1.0031) from 1.42 s to 2.3 s (READY's at 1.2 and 2.6), legs_guard off
-  (still running)
+  polish f0-6 first try   0.175 -> 0.160  feasible, kept (486 s)
+  stopped by hand, no verdict; last readings: clear_torso worst 0.218 -> 0.242; pops after depop: fist 0.19@f61 blade 1.79@f61 edge 1.79@f61
 ## knG (kneeG): right knee pole (-0.1949, 0.0, -0.9881) from 1.42 s to 2.3 s (READY's at 1.2 and 2.6), legs_guard off
-  (still running)
+  polish f0-6 first try   0.175 -> 0.160  feasible, kept (470 s)
+  stopped by hand, no verdict; last readings: clear_torso worst 0.218 -> 0.189; pops after depop: blade 0.38@f46 edge 0.38@f46
+## knH (kneeH): right knee pole (-0.1255, 0.0, -0.9993) from 1.42 s to 2.3 s (READY's at 1.2 and 2.6), legs_guard off
+  stopped by hand, no verdict; last readings: clear_torso worst 0.217 -> 0.202; pops after depop: blade 1.02@f60 edge 1.02@f60
+## knI (kneeI): right knee pole (-0.1603, 0.0, -0.9943) from 1.42 s to 2.3 s (READY's at 1.2 and 2.6), legs_guard off
+  polish f0-6 first try   0.175 -> 0.160  feasible, kept (433 s)
+  verdict: torso R 0.160 L 0.152, pops fist 0.122 blade 0.380 slide 0.056 | problems: []
+  legs f40-78: clear on every frame
+## rsA (spikeA): right knee pole (-0.1603, 0.0, -0.9943) from 1.42 s to 2.3 s (READY's at 1.2 and 2.6), recheck_spike 15, legs_guard off
+  polish f0-6 first try   0.175 -> 0.160  feasible, kept (472 s)
+  verdict: torso R 0.160 L 0.152, pops fist 0.122 blade 0.380 slide 0.056 | problems: []
+  legs f40-78: clear on every frame
+## rsB (spikeB): right knee pole (-0.1603, 0.0, -0.9943) from 1.42 s to 2.3 s (READY's at 1.2 and 2.6), recheck_spike 10, legs_guard off
+  polish f0-6 first try   0.175 -> 0.160  feasible, kept (475 s)
+  verdict: torso R 0.160 L 0.152, pops fist 0.122 blade 0.380 slide 0.056 | problems: []
+  legs f40-78: clear on every frame
+## rsC (spikeC): right knee pole (-0.1603, 0.0, -0.9943) from 1.42 s to 2.3 s (READY's at 1.2 and 2.6), recheck_spike 15, walk_spike 15, legs_guard off
+  polish f0-6 first try   0.175 -> 0.173  infeasible, not kept (1136 s)
+  polish f0-6 elbows only 0.175 -> 0.160  feasible, kept (61 s)
+  verdict: torso R 0.160 L 0.149, pops fist 0.144 blade 0.396 slide 0.153 | problems: []
+  legs f40-78: clear on every frame
+## rsD (spikeD): right knee pole (-0.1603, 0.0, -0.9943) from 1.42 s to 2.3 s (READY's at 1.2 and 2.6), recheck_spike 15, walk_spike 15, the cut's edge carried up from the guard, legs_guard off
+  verdict: torso R 0.155 L 0.149, pops fist 0.156 blade 0.396 slide 0.087 | problems: []
+  legs f40-78: clear on every frame

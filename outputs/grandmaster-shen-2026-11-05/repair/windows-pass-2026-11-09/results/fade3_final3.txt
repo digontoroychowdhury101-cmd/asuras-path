@@ -1,0 +1,62 @@
+P1_AbbotSweep            0.10s in 0.109 out 0.114  0.15s in 0.110 out 0.116  0.20s in 0.111 out 0.118
+P1_Death                 0.10s in 0.150 out 0.011  0.15s in 0.147 out 0.074  0.20s in 0.136 out 0.072
+P1_DeathblowVictim       0.10s in 0.145 out 0.131  0.15s in 0.141 out 0.132  0.20s in 0.141 out 0.143
+P1_Feint                 0.10s in 0.117 out 0.111  0.15s in 0.127 out 0.111  0.20s in 0.148 out 0.111
+P1_Flourish              0.10s in 0.142 out 0.124  0.15s in 0.139 out 0.128  0.20s in 0.148 out 0.130
+P1_FlowingJian           0.10s in 0.111 out 0.155  0.15s in 0.121 out 0.177  0.20s in 0.136 out 0.164
+P1_Guandao_Art           0.10s in 0.127 out 0.142  0.15s in 0.134 out 0.138  0.20s in 0.126 out 0.142
+P1_Guandao_Heavy         0.10s in 0.137 out 0.145  0.15s in 0.147 out 0.148  0.20s in 0.145 out 0.145
+P1_Guandao_L1            0.10s in 0.145 out 0.128  0.15s in 0.144 out 0.140  0.20s in 0.144 out 0.132
+P1_Guandao_L2            0.10s in 0.133 out 0.117  0.15s in 0.142 out 0.118  0.20s in 0.139 out 0.118
+P1_Guandao_L3            0.10s in 0.118 out 0.041  0.15s in 0.129 out 0.039  0.20s in 0.173 out 0.041
+P1_Guandao_Running       0.10s in 0.145 out 0.122  0.15s in 0.169 out 0.123  0.20s in 0.190 out 0.123  <-- past 0.18
+P1_GuardHit              0.10s in 0.133 out 0.144  0.15s in 0.134 out 0.157  0.20s in 0.136 out 0.152
+P1_GuardLoop             0.10s in 0.148 out 0.145  0.15s in 0.147 out 0.146  0.20s in 0.148 out 0.146
+P1_HesitantMoon          0.10s in 0.113 out 0.155  0.15s in 0.114 out 0.172  0.20s in 0.138 out 0.164
+P1_HitLightBack          0.10s in 0.116 out 0.114  0.15s in 0.115 out 0.114  0.20s in 0.114 out 0.115
+P1_HitLightFront         0.10s in 0.135 out 0.110  0.15s in 0.131 out 0.110  0.20s in 0.132 out 0.110
+P1_HitLightLeft          0.10s in 0.110 out 0.130  0.15s in 0.110 out 0.134  0.20s in 0.111 out 0.135
+P1_HitLightRight         0.10s in 0.146 out 0.130  0.15s in 0.140 out 0.133  0.20s in 0.144 out 0.133
+P1_PostureBreak          0.10s in 0.128 out 0.149  0.15s in 0.149 out 0.144  0.20s in 0.145 out 0.153
+P1_PrayerBeads           0.10s in 0.135 out 0.131  0.15s in 0.129 out 0.131  0.20s in 0.145 out 0.131
+P1_RunForward            0.10s in 0.112 out 0.126  0.15s in 0.115 out 0.123  0.20s in 0.116 out 0.125  | loop out 0.145
+P1_StrafeLeft            0.10s in 0.105 out 0.116  0.15s in 0.113 out 0.119  0.20s in 0.111 out 0.116  | loop out 0.123
+P1_StrafeRight           0.10s in 0.104 out 0.115  0.15s in 0.113 out 0.119  0.20s in 0.111 out 0.116  | loop out 0.123
+P1_Strike                0.10s in 0.119 out 0.113  0.15s in 0.136 out 0.113  0.20s in 0.128 out 0.113
+P1_Transform             0.10s in 0.135 out 0.139  0.15s in 0.149 out 0.141  0.20s in 0.139 out 0.149
+P1_TurnLeft              0.10s in 0.129 out 0.143  0.15s in 0.135 out 0.147  0.20s in 0.144 out 0.143  | loop out 0.147
+P1_TurnRight             0.10s in 0.101 out 0.099  0.15s in 0.105 out 0.102  0.20s in 0.107 out 0.104  | loop out 0.109
+P1_WalkBackward          0.10s in 0.115 out 0.124  0.15s in 0.117 out 0.124  0.20s in 0.117 out 0.120  | loop out 0.124
+P1_WalkForward           0.10s in 0.106 out 0.115  0.15s in 0.113 out 0.120  0.20s in 0.111 out 0.116  | loop out 0.126
+P1_WheelOfHeaven         0.10s in 0.138 out 0.122  0.15s in 0.139 out 0.126  0.20s in 0.145 out 0.127
+P2_BloodWave             0.10s in 0.119 out 0.135  0.15s in 0.108 out 0.137  0.20s in 0.102 out 0.138
+P2_CrimsonEmbrace        0.10s in 0.102 out 0.133  0.15s in 0.104 out 0.135  0.20s in 0.106 out 0.135
+P2_Death                 0.10s in 0.133 out 0.093  0.15s in 0.125 out 0.090  0.20s in 0.121 out 0.092
+P2_DeathblowVictim       0.10s in 0.092 out 0.078  0.15s in 0.114 out 0.078  0.20s in 0.278 out 0.079  <-- past 0.18
+P2_Feint                 0.10s in 0.178 out 0.138  0.15s in 0.135 out 0.140  0.20s in 0.127 out 0.141
+P2_Flourish              0.10s in 0.131 out 0.126  0.15s in 0.135 out 0.128  0.20s in 0.138 out 0.129
+P2_GuandaoSkyfall        0.10s in 0.107 out 0.120  0.15s in 0.132 out 0.122  0.20s in 0.132 out 0.124
+P2_Guandao_Art           0.10s in 0.137 out 0.126  0.15s in 0.142 out 0.127  0.20s in 0.145 out 0.126
+P2_Guandao_Heavy         0.10s in 0.130 out 0.140  0.15s in 0.123 out 0.138  0.20s in 0.120 out 0.141
+P2_Guandao_L1            0.10s in 0.129 out 0.131  0.15s in 0.124 out 0.132  0.20s in 0.184 out 0.132  <-- past 0.18
+P2_Guandao_L2            0.10s in 0.134 out 0.138  0.15s in 0.160 out 0.140  0.20s in 0.151 out 0.142
+P2_Guandao_L3            0.10s in 0.141 out 0.150  0.15s in 0.141 out 0.151  0.20s in 0.181 out 0.157  <-- past 0.18
+P2_Guandao_Running       0.10s in 0.163 out 0.117  0.15s in 0.158 out 0.121  0.20s in 0.161 out 0.123
+P2_GuardHit              0.10s in 0.095 out 0.105  0.15s in 0.099 out 0.108  0.20s in 0.096 out 0.113
+P2_GuardLoop             0.10s in 0.097 out 0.105  0.15s in 0.100 out 0.107  0.20s in 0.097 out 0.112
+P2_HitLightBack          0.10s in 0.118 out 0.168  0.15s in 0.112 out 0.178  0.20s in 0.116 out 0.181  <-- past 0.18
+P2_HitLightFront         0.10s in 0.183 out 0.131  0.15s in 0.179 out 0.133  0.20s in 0.179 out 0.134  <-- past 0.18
+P2_HitLightLeft          0.10s in 0.145 out 0.125  0.15s in 0.154 out 0.127  0.20s in 0.189 out 0.128  <-- past 0.18
+P2_HitLightRight         0.10s in 0.144 out 0.138  0.15s in 0.149 out 0.140  0.20s in 0.146 out 0.139
+P2_PhantomDrift          0.10s in 0.138 out 0.123  0.15s in 0.138 out 0.124  0.20s in 0.135 out 0.125
+P2_PostureBreak          0.10s in 0.130 out 0.093  0.15s in 0.123 out 0.099  0.20s in 0.120 out 0.105
+P2_RendingArc            0.10s in 0.138 out 0.120  0.15s in 0.139 out 0.122  0.20s in 0.129 out 0.124
+P2_RunForward            0.10s in 0.134 out 0.143  0.15s in 0.137 out 0.144  0.20s in 0.135 out 0.145  | loop out 0.154
+P2_StrafeLeft            0.10s in 0.140 out 0.137  0.15s in 0.139 out 0.142  0.20s in 0.139 out 0.142  | loop out 0.148
+P2_StrafeRight           0.10s in 0.139 out 0.138  0.15s in 0.139 out 0.139  0.20s in 0.138 out 0.139  | loop out 0.153
+P2_Strike                0.10s in 0.143 out 0.120  0.15s in 0.132 out 0.122  0.20s in 0.131 out 0.124
+P2_Transform             0.10s in 0.138 out 0.140  0.15s in 0.117 out 0.153  0.20s in 0.106 out 0.150
+P2_TurnLeft              0.10s in 0.104 out 0.110  0.15s in 0.104 out 0.112  0.20s in 0.104 out 0.119  | loop out 0.122
+P2_TurnRight             0.10s in 0.143 out 0.152  0.15s in 0.148 out 0.154  0.20s in 0.145 out 0.152  | loop out 0.170
+P2_WalkBackward          0.10s in 0.135 out 0.138  0.15s in 0.138 out 0.139  0.20s in 0.140 out 0.140  | loop out 0.156
+P2_WalkForward           0.10s in 0.128 out 0.131  0.15s in 0.130 out 0.132  0.20s in 0.131 out 0.132  | loop out 0.151

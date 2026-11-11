@@ -1,0 +1,27 @@
+# keymatch.py: the repo's keys and per-clip options against the DEV overlay each adopted bake was made with (11-11 evening)
+## edgeA (bake edA: the carried edge)
+P2_Feint                   keys same on all 33 frames | options differ: roll_edges: repo True, edgeA None
+P2_Guandao_Heavy           keys same on all 26 frames | options differ: roll_edges: repo True, edgeA None
+P1_Guandao_L1              keys same on all 13 frames | options differ: roll_edges: repo True, edgeA None
+P2_Guandao_L1              keys same on all 13 frames | options differ: roll_edges: repo True, edgeA None
+P1_Guandao_L3              keys same on all 17 frames | options differ: roll_edges: repo True, edgeA None
+P1_Strike                  keys same on all 34 frames | options differ: roll_edges: repo True, edgeA None
+P2_Strike                  keys same on all 34 frames | options differ: roll_edges: repo True, edgeA None
+P2_PhantomDrift            keys same on all 61 frames | options differ: roll_edges: repo True, edgeA None
+P1_HesitantMoon            keys same on all 65 frames | options differ: roll_edges: repo True, edgeA None
+## edgeB (bake edB: and the edge roll, Wheel of Heaven's turn)
+P2_BloodWave               keys same on all 65 frames | options differ: roll_edges: repo True, edgeB None
+P2_RendingArc              keys same on all 79 frames | options differ: roll_edges: repo True, edgeB None
+P1_Flourish                keys same on all 49 frames | options differ: roll_edges: repo True, edgeB None
+P2_Flourish                keys same on all 49 frames | options differ: roll_edges: repo True, edgeB None
+P1_Guandao_L2              keys same on all 14 frames | options differ: roll_edges: repo True, edgeB None
+P2_Guandao_L2              keys same on all 14 frames | options differ: roll_edges: repo True, edgeB None
+P2_Guandao_Running         keys same on all 19 frames | options differ: roll_edges: repo True, edgeB None
+P1_WheelOfHeaven           keys same on all 79 frames | options differ: roll_edges: repo True, edgeB None
+P1_FlowingJian             keys same on all 106 frames | options differ: roll_edges: repo True, edgeB None
+## edgeC (bake edC: P1 Feint started on Idle's right-hand grip)
+P1_Feint                   keys same on all 33 frames | options differ: roll_edges: repo True, edgeC None
+## edgeD (bake edD: P1 Guandao_Running on Idle's grip, both hands, grip walk priced)
+P1_Guandao_Running         keys same on all 19 frames | options differ: recheck_spike: repo None, edgeD 15.0; roll_edges: repo True, edgeD None
+## spikeD (bake rsD: P2 Skyfall)
+P2_GuandaoSkyfall          keys same on all 79 frames | options differ: roll_edges: repo True, spikeD None

@@ -1,0 +1,58 @@
+P1_Feint
+  pre4_export                  largest  70/frame; over 60: f4 70 (swing 66, roll -23; hand 66, on glaive 11); f15 68 (swing 36, roll -59; hand 12, on glaive 68); f16 68 (swing 50, roll +48; hand 3, on glaive 66)
+  shen                         largest  54/frame; over 60: none
+P1_Flourish
+  pre4_export                  largest 113/frame; over 60: f2 103 (swing 68, roll -83; hand 24, on glaive 106); f3 61 (swing 34, roll -52; hand 60, on glaive 42); f42 113 (swing 67, roll +97; hand 10, on glaive 105)
+  shen                         largest 113/frame; over 60: f2 103 (swing 67, roll -84; hand 25, on glaive 106); f3 61 (swing 33, roll -52; hand 71, on glaive 49); f42 113 (swing 67, roll +97; hand 10, on glaive 105)
+P1_FlowingJian
+  pre4_export                  largest 169/frame; over 60: f34 64 (swing 41, roll +50; hand 23, on glaive 72); f53 169 (swing 81, roll +166; hand 5, on glaive 169); f72 90 (swing 43, roll +81; hand 11, on glaive 89); f73 69 (swing 44, roll +54; hand 10, on glaive 64)
+  shen                         largest 163/frame; over 60: f34 64 (swing 41, roll +50; hand 46, on glaive 99); f53 163 (swing 81, roll +157; hand 14, on glaive 163); f72 135 (swing 63, roll +126; hand 16, on glaive 129)
+P1_Guandao_Heavy
+  pre4_export                  largest  75/frame; over 60: f5 75 (swing 53, roll -55; hand 43, on glaive 62)
+  shen                         largest  65/frame; over 60: f22 65 (swing 65, roll -0; hand 44, on glaive 53)
+P1_Guandao_L1
+  pre4_export                  largest  74/frame; over 60: f11 74 (swing 65, roll -36; hand 85, on glaive 36)
+  shen                         largest  77/frame; over 60: f11 77 (swing 76, roll -12; hand 81, on glaive 45)
+P1_Guandao_L2
+  pre4_export                  largest  98/frame; over 60: f3 74 (swing 46, roll -59; hand 28, on glaive 101); f4 60 (swing 43, roll -43; hand 31, on glaive 81); f10 73 (swing 49, roll +55; hand 14, on glaive 77); f11 98 (swing 96, roll -18; hand 80, on glaive 56)
+  shen                         largest 141/frame; over 60: f3 99 (swing 60, roll -83; hand 1, on glaive 99); f11 141 (swing 135, roll +60; hand 94, on glaive 71)
+P1_Guandao_Running
+  pre4_export                  largest 125/frame; over 60: f3 125 (swing 74, roll -109; hand 29, on glaive 147)
+  shen                         largest 101/frame; over 60: f3 101 (swing 51, roll -90; hand 52, on glaive 55); f15 92 (swing 77, roll +54; hand 39, on glaive 102)
+P1_HesitantMoon
+  pre4_export                  largest  73/frame; over 60: f6 67 (swing 66, roll +15; hand 61, on glaive 52); f8 73 (swing 48, roll +57; hand 10, on glaive 65)
+  shen                         largest  68/frame; over 60: f11 68 (swing 40, roll +56; hand 6, on glaive 63)
+P1_PrayerBeads
+  pre4_export                  largest 167/frame; over 60: f2 167 (swing 65, roll -165; hand 33, on glaive 147); f22 62 (swing 46, roll -43; hand 17, on glaive 67); f23 86 (swing 53, roll -70; hand 2, on glaive 87)
+  shen                         largest  69/frame; over 60: f2 69 (swing 22, roll -66; hand 19, on glaive 69); f21 69 (swing 44, roll -54; hand 26, on glaive 79)
+P1_WheelOfHeaven
+  pre4_export                  largest 172/frame; over 60: f2 153 (swing 81, roll -144; hand 20, on glaive 144); f30 75 (swing 58, roll -50; hand 42, on glaive 116); f46 172 (swing 96, roll -168; hand 14, on glaive 161)
+  shen                         largest 173/frame; over 60: f2 153 (swing 81, roll -144; hand 20, on glaive 144); f46 173 (swing 97, roll -169; hand 7, on glaive 174)
+P2_Feint
+  pre4_export                  largest  78/frame; over 60: f4 73 (swing 71, roll -19; hand 43, on glaive 59); f6 78 (swing 49, roll -63; hand 14, on glaive 92); f15 68 (swing 37, roll -58; hand 18, on glaive 58); f16 68 (swing 50, roll +47; hand 11, on glaive 73)
+  shen                         largest  54/frame; over 60: none
+P2_Flourish
+  pre4_export                  largest 113/frame; over 60: f2 104 (swing 71, roll -81; hand 10, on glaive 110); f3 62 (swing 36, roll -51; hand 21, on glaive 49); f20 61 (swing 46, roll +42; hand 40, on glaive 29); f42 113 (swing 69, roll +96; hand 44, on glaive 157)
+  shen                         largest 113/frame; over 60: f2 104 (swing 71, roll -81; hand 17, on glaive 88); f3 62 (swing 34, roll -52; hand 14, on glaive 70); f42 113 (swing 71, roll +94; hand 45, on glaive 157)
+P2_GuandaoSkyfall
+  pre4_export                  largest 179/frame; over 60: f13 162 (swing 100, roll +152; hand 21, on glaive 142); f14 179 (swing 76, roll -178; hand 13, on glaive 170)  | out and back: f13-f14
+  shen                         largest 177/frame; over 60: f13 169 (swing 98, roll +163; hand 14, on glaive 178); f15 177 (swing 80, roll +176; hand 16, on glaive 168)  | out and back: f13-f15
+P2_Guandao_Heavy
+  pre4_export                  largest  74/frame; over 60: f5 74 (swing 51, roll -56; hand 48, on glaive 31)
+  shen                         largest  68/frame; over 60: f22 68 (swing 68, roll -2; hand 75, on glaive 23)
+P2_Guandao_L1
+  pre4_export                  largest  80/frame; over 60: f10 69 (swing 53, roll +46; hand 21, on glaive 58); f11 80 (swing 52, roll -63; hand 87, on glaive 19)
+  shen                         largest  78/frame; over 60: f11 78 (swing 77, roll +11; hand 72, on glaive 45)
+P2_Guandao_L2
+  pre4_export                  largest  98/frame; over 60: f3 74 (swing 47, roll -58; hand 1, on glaive 74); f4 60 (swing 44, roll -42; hand 32, on glaive 80); f10 73 (swing 51, roll +54; hand 17, on glaive 85); f11 98 (swing 96, roll -21; hand 69, on glaive 66)
+  shen                         largest 142/frame; over 60: f3 99 (swing 61, roll -82; hand 43, on glaive 142); f11 142 (swing 137, roll +54; hand 72, on glaive 136)
+P2_Guandao_Running
+  pre4_export                  largest 126/frame; over 60: f3 126 (swing 53, roll -119; hand 31, on glaive 110)
+  shen                         largest 100/frame; over 60: f3 100 (swing 43, roll -93; hand 52, on glaive 53); f15 93 (swing 76, roll +58; hand 40, on glaive 90)
+P2_RendingArc
+  pre4_export                  largest 120/frame; over 60: f33 76 (swing 38, roll +67; hand 51, on glaive 117); f34 75 (swing 66, roll +37; hand 43, on glaive 95); f48 120 (swing 84, roll -95; hand 86, on glaive 56)
+  shen                         largest 121/frame; over 60: f33 77 (swing 38, roll +68; hand 39, on glaive 77); f34 74 (swing 62, roll +43; hand 38, on glaive 85); f48 121 (swing 85, roll -96; hand 32, on glaive 118)
+P2_Strike
+  pre4_export                  largest  72/frame; over 60: f22 63 (swing 43, roll -47; hand 7, on glaive 66); f23 72 (swing 47, roll +56; hand 7, on glaive 75)
+  shen                         largest  55/frame; over 60: none
+frames over 60 deg: pre4_export 48, shen 31

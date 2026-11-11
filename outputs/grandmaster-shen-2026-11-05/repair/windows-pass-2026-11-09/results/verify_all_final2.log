@@ -85,7 +85,7 @@ PASS backend: leases, expiry/fencing, bounded retries, load failure protection, 
 PASS Commercial Systems: ProfileSchema integrity, ShopCatalog immutability, ELO rating math, expanding queue brackets, multi-arena cage allocation, and gacha pity guarantee.
 [12/14] Testing Audiovisual Modules & Imported Media (engine fakes)...
 PASS: 45 audiovisual runtime assertions (engine fakes; Studio QA separate)
-C:\Users\disha\Documents\asuras-path\tools\test_audiovisual.py:63: DeprecationWarning: Testing an element's truth value will always return True in future versions.  Use specific 'len(elem)' or 'elem is not None' test instead.
+tools\test_audiovisual.py:63: DeprecationWarning: Testing an element's truth value will always return True in future versions.  Use specific 'len(elem)' or 'elem is not None' test instead.
   if surface:
 PASS: 13 imported templates, 101 complete PBR MeshParts; saved Automatic fidelity
 PASS: 0 PBR exports validated; audio format/peak/DC checks passed (available media only)

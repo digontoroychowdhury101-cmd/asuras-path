@@ -1,0 +1,18 @@
+P1_Flourish                    f2 swing 11 roll -103; f3 swing 11 roll -60; f42 swing 5 roll +113
+P1_Feint                       f9 swing 8 roll -54; f10 swing 6 roll -50
+P1_Guandao_L1                  f11 swing 72 roll +26
+P1_Guandao_L2                  f3 swing 1 roll -99; f11 swing 78 roll +129
+P1_Guandao_Running             f3 swing 27 roll -99; f15 swing 37 roll +85
+P1_FlowingJian                 f12 swing 22 roll -52; f34 swing 20 roll +61; f53 swing 3 roll +172; f72 swing 15 roll +134
+P1_PrayerBeads                 f2 swing 36 roll -160; f20 swing 14 roll -47; f21 swing 15 roll -67
+P1_HesitantMoon                f11 swing 5 roll +68; f12 swing 5 roll +46
+P1_WheelOfHeaven               f2 swing 14 roll -152; f29 swing 28 roll -95; f46 swing 13 roll -180
+P2_Flourish                    f2 swing 11 roll -103; f3 swing 11 roll -60; f42 swing 5 roll +113
+P2_Feint                       f9 swing 8 roll -54; f10 swing 6 roll -50
+P2_Guandao_L1                  f11 swing 72 roll +26
+P2_Guandao_L2                  f3 swing 1 roll -99; f11 swing 78 roll +129
+P2_Guandao_Running             f3 swing 27 roll -99; f15 swing 37 roll +85
+P2_BloodWave                   f54 swing 12 roll +47
+P2_GuandaoSkyfall              f13 swing 16 roll +168; f15 swing 5 roll +177
+P2_RendingArc                  f13 swing 13 roll -55; f33 swing 31 roll +72; f34 swing 31 roll +69; f48 swing 43 roll -116
+frames: 39

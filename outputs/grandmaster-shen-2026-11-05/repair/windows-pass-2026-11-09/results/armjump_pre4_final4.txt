@@ -1,0 +1,37 @@
+P1_AbbotSweep          R max  57 f0   2 f14:40,f31:32,f32:49+ L max  27 f0   9  | R max  62 f0   2 f14:40,f31:32,f32:49+ L max  39 f0   9 f7:39
+P1_Death               R max  53 f0  20 f14:53,f15:52,f18:51+ L max  20 f0  14  | R max  55 f0 106 f5:55,f8:53,f13:53+ L max  20 f0   2 
+P1_DeathblowVictim     R max  75 f0 114 f41:75 L max  15 f0  63       | R max  75 f0 114 f41:75 L max  15 f0  63      
+P1_Feint               R max  56 f0   7 f5:32,f6:32,f7:38+ L max  44 f0   8 f4:44,f5:36,f6:31+ | R max  37 f0   1 f7:37 L max  16 f0   9       
+P1_Flourish            R max  76 f0 101 f2:34,f3:46,f4:55+ L max  34 f0   9 f4:32,f5:33,f39:34 | R max  76 f0 101 f14:46,f15:72,f25:74+ L max  34 f0   7 f4:31,f5:34,f39:34
+P1_FlowingJian         R max  52 f0   0 f24:52,f25:35,f28:32+ L max  42 f0   6 f24:36,f25:35,f26:34+ | R max  72 f0   0 f24:72,f25:62,f27:33+ L max  52 f0   6 f24:36,f79:41,f80:51+
+P1_Guandao_Heavy       R max  46 f0   2 f3:35,f4:37,f8:46+ L max  74 f0   5 f11:64,f12:74 | R max  50 f0   2 f3:35,f4:34,f8:46+ L max  74 f0   5 f11:64,f12:74
+P1_Guandao_L1          R max  49 f0 102 f1:46,f2:35,f4:38+ L max  34 f0   5 f1:31,f5:31,f11:34 | R max  55 f0 102 f1:47,f2:40,f4:39+ L max  44 f0   5 f1:31,f5:31,f11:44
+P1_Guandao_L2          R max  49 f0 104 f2:34,f3:41,f4:49+ L max  56 f0   9 f11:56 | R max  67 f0 104 f4:64,f5:40,f6:47+ L max  50 f0   9 f1:30,f11:50
+P1_Guandao_L3          R max  50 f0 103 f2:39,f5:47,f6:39+ L max  47 f0 175 f2:47,f13:36 | R max  49 f0   6 f5:39,f8:38,f9:49 L max  45 f0 175 f2:45,f13:40
+P1_Guandao_Running     R max  24 f0  49  L max  33 f0  30 f14:33      | R max  63 f0  37 f1:63,f2:31 L max  31 f0  29 f14:31
+P1_HesitantMoon        R max  58 f0   2 f11:30,f35:32,f37:32+ L max  42 f0   9 f5:33,f6:42 | R max  58 f0   0 f9:31,f13:40,f37:30+ L max  27 f0   8 
+P1_HitLightRight       R max  54 f0   2 f2:54,f12:54 L max  13 f0   1  | R max  54 f0   2 f2:54,f12:54 L max  13 f0   1 
+P1_PostureBreak        R max  59 f0 110 f3:59,f6:50,f26:49+ L max  19 f0   5  | R max  59 f0 110 f3:59,f6:50,f26:49+ L max  19 f0   5 
+P1_PrayerBeads         R max  71 f0  59 f1:31,f3:60,f5:65+ L max  42 f0   8 f4:42,f20:36 | R max  70 f0  86 f3:54,f4:60,f6:56+ L max  77 f0  13 f4:39,f20:37,f21:37+
+P1_Strike              R max  67 f0   0 f18:36,f26:67,f27:39+ L max  17 f0   9  | R max  40 f0   0 f26:40 L max  17 f0   9      
+P1_Transform           R max  43 f0 101 f17:43 L max  14 f0   3       | R max  43 f0 101 f17:43 L max  14 f0   3      
+P1_WheelOfHeaven       R max  58 f0 104 f4:55,f5:33,f13:47+ L max 126 f0   1 f4:42,f27:67,f28:58+ | R max  69 f0 103 f4:51,f13:45,f14:46+ L max  45 f0   1 f4:41,f27:38,f28:45
+P2_BloodWave           R max  32 f0  26 f7:32,f8:31,f33:32 L max  31 f0   5 f8:31,f33:31 | R max  38 f0   3 f7:32,f8:38 L max  52 f0   3 f9:30,f19:52,f21:33
+P2_CrimsonEmbrace      R max  44 f0   2 f35:32,f52:44 L max  90 f0   2 f8:63,f10:90,f11:39+ | R max  72 f0   2 f35:33,f38:32,f47:72+ L max  75 f0   3 f8:70,f9:35,f10:75+
+P2_Death               R max  73 f0  26 f4:34,f11:51,f12:50+ L max  30 f0   3  | R max  43 f0  26 f4:34,f31:43 L max  30 f0   3 f3:30
+P2_DeathblowVictim     R max  73 f0  54 f2:66,f3:46,f5:31+ L max  25 f0  77  | R max 118 f0  43 f2:42,f5:118,f6:52+ L max  36 f0 154 f17:36,f18:34,f19:30
+P2_Feint               R max  54 f0  25 f4:43,f7:54,f8:45+ L max  61 f0  13 f4:41,f5:61,f6:37 | R max  32 f0   4 f8:32 L max  45 f0   4 f11:45
+P2_Flourish            R max  75 f0   2 f15:75,f16:48,f21:40+ L max  40 f0   4 f2:39,f4:35,f5:32+ | R max  75 f0   2 f15:74,f16:45,f24:65+ L max  35 f0   5 f2:32,f4:35,f5:33+
+P2_GuandaoSkyfall      R max  52 f0  26 f3:41,f44:41,f45:52+ L max  29 f0   2  | R max  41 f0  26 f3:41,f58:38,f59:37+ L max  32 f0   2 f66:32
+P2_Guandao_Heavy       R max  58 f0  24 f2:36,f3:33,f4:33+ L max 127 f0  11 f10:31,f12:54,f15:127+ | R max  58 f0  24 f2:37,f3:34,f4:35+ L max 136 f0   1 f3:33,f15:136,f16:37+
+P2_Guandao_L1          R max  46 f0  26 f3:31,f4:40,f5:32+ L max  28 f0  14  | R max  40 f0  25 f1:33,f4:40,f5:32+ L max  36 f0   6 f11:36
+P2_Guandao_L2          R max  65 f0  24 f3:35,f4:43,f5:56+ L max  83 f0   4 f1:37,f4:37,f5:30+ | R max  72 f0  28 f1:32,f3:34,f4:43+ L max  74 f0   2 f1:39,f7:74,f11:68+
+P2_Guandao_L3          R max  53 f0  20 f1:31,f2:43,f3:36+ L max  54 f0  14 f1:31,f2:54,f6:32 | R max  46 f0  21 f1:46,f14:31 L max  53 f0   3 f2:53,f3:36,f5:36
+P2_Guandao_Running     R max  42 f0  38 f4:37,f8:39,f9:42+ L max  37 f0  26 f4:37,f15:36,f16:30 | R max  68 f0  46 f2:52,f3:63,f4:58+ L max  47 f0  37 f8:32,f15:47,f16:35
+P2_HitLightRight       R max  59 f0  24 f3:37,f7:59,f8:36 L max  21 f0   2  | R max  59 f0  24 f3:36,f7:59,f8:36 L max  21 f0   2 
+P2_PhantomDrift        R max  75 f0  24 f9:41,f13:31,f46:56+ L max  21 f0   3  | R max  58 f0   3 f9:37,f13:58,f20:54+ L max  26 f0   3 
+P2_PostureBreak        R max  77 f0  29 f10:51,f12:77 L max  31 f0  12 f17:31 | R max  77 f0  29 f10:51,f12:77 L max  31 f0  12 f17:31
+P2_RendingArc          R max 131 f0  25 f8:33,f19:55,f26:37+ L max  46 f0   5 f26:34,f34:31,f48:43+ | R max  60 f0   3 f8:35,f26:38,f32:58+ L max  67 f0   3 f26:32,f33:33,f40:43+
+P2_Strike              R max  59 f0  25 f6:59,f17:40,f26:41+ L max  26 f0   5  | R max  58 f0  25 f26:31,f27:40,f29:58 L max  25 f0   8 
+P2_Transform           R max  79 f0 119 f2:33,f3:37,f4:56+ L max  82 f0  89 f1:82,f2:52,f38:31 | R max  50 f0  27 f3:50 L max  83 f0  89 f1:83,f2:50,f38:31
+upper-arm steps over 30 deg in a frame: pre4_export 295 | shen 248

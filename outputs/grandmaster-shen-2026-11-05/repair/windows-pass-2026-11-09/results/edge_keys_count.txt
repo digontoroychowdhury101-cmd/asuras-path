@@ -1,0 +1,4 @@
+roll now (10): ['P1_Flourish', 'P1_FlowingJian', 'P1_Guandao_L2', 'P1_Guandao_Running', 'P1_WheelOfHeaven', 'P2_BloodWave', 'P2_Flourish', 'P2_Guandao_L2', 'P2_Guandao_Running', 'P2_RendingArc']
+roll_edges off: ['P1_PrayerBeads'] -> would roll: ['P1_PrayerBeads']
+carry_edge changes now (18): ['P1_Feint', 'P1_FlowingJian', 'P1_Guandao_L1', 'P1_Guandao_L2', 'P1_Guandao_L3', 'P1_Guandao_Running', 'P1_HesitantMoon', 'P1_Strike', 'P2_BloodWave', 'P2_Feint', 'P2_GuandaoSkyfall', 'P2_Guandao_Heavy', 'P2_Guandao_L1', 'P2_Guandao_L2', 'P2_Guandao_Running', 'P2_PhantomDrift', 'P2_RendingArc', 'P2_Strike']
+either (21): ['P1_Feint', 'P1_Flourish', 'P1_FlowingJian', 'P1_Guandao_L1', 'P1_Guandao_L2', 'P1_Guandao_L3', 'P1_Guandao_Running', 'P1_HesitantMoon', 'P1_Strike', 'P1_WheelOfHeaven', 'P2_BloodWave', 'P2_Feint', 'P2_Flourish', 'P2_GuandaoSkyfall', 'P2_Guandao_Heavy', 'P2_Guandao_L1', 'P2_Guandao_L2', 'P2_Guandao_Running', 'P2_PhantomDrift', 'P2_RendingArc', 'P2_Strike']

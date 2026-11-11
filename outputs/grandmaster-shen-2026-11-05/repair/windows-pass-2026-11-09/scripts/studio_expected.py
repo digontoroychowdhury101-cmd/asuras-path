@@ -10,6 +10,8 @@ from xml.sax.saxutils import escape
 ROOT = os.environ.get("SHEN_ROOT") or os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "../../../../.."))
 BAKE = os.path.join(ROOT, "work/opening_cast_bake/shen")
 PARTS = ("LowerTorso", "UpperTorso", "Head", "RightLowerArm", "RightHand", "LeftLowerArm", "LeftHand", "Glaive", "RightFoot", "LeftFoot")
+if os.environ.get("LEGS"):     # (2026-11-11) LEGS=1: the thighs and shins too (P2 Skyfall's right knee turns in; the default set has only the feet)
+    PARTS += ("RightUpperLeg", "RightLowerLeg", "LeftUpperLeg", "LeftLowerLeg")
 
 out, names = sys.argv[1], sys.argv[2:]
 items = []

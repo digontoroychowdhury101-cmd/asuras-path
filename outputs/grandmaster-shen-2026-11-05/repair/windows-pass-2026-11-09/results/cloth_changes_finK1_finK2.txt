@@ -1,0 +1,31 @@
+cloth pairs (robe or ribbon inside a body part or the weapon, rendered mesh, deepest >= 0.05 either side), finK1 -> finK2, 64 clips
+
+DEEPER or more frames after (16):
+  c1_FlowingJian         RobeFront in LeftLowerArm        before   0% 0.000 f-1  after   3% 0.089 f108
+  c2_Guandao_L2          RibbonLeft in weapon             before   0% 0.000 f-1  after   3% 0.064 f29
+  c1_Guandao_Running     RobeRight in RightUpperLeg       before   0% 0.000 f-1  after   3% 0.063 f22
+  c2_BloodWave           RobeLeft in LeftUpperLeg         before   8% 0.091 f45  after   8% 0.134 f30
+  c1_Guandao_Running     RobeLeft in LowerTorso           before   6% 0.125 f30  after   6% 0.161 f30
+  c2_BloodWave           RobeLeft in LeftLowerArm         before   5% 0.052 f41  after   7% 0.087 f35
+  c2_Feint               RibbonLeft in LeftLowerArm       before   6% 0.081 f29  after   4% 0.112 f29
+  c2_GuandaoSkyfall      RibbonLeft in LeftLowerArm       before   9% 0.073 f36  after   2% 0.100 f57
+  c1_Guandao_Running     RobeLeft in LeftUpperLeg         before  22% 0.050 f25  after  22% 0.076 f22
+  c2_BloodWave           RibbonLeft in weapon             before   2% 0.048 f29  after   6% 0.074 f29
+  c2_BloodWave           RibbonLeft in LeftUpperLeg       before   2% 0.047 f38  after   2% 0.062 f32
+  c2_RendingArc          RibbonLeft in weapon             before  12% 0.086 f54  after  12% 0.100 f64
+  c2_RendingArc          RobeRight in weapon              before   2% 0.042 f49  after   2% 0.055 f49
+  c2_BloodWave           RobeLeft in weapon               before  11% 0.070 f45  after  11% 0.081 f33
+  c2_Guandao_L2          RibbonLeft in LeftLowerArm       before   3% 0.118 f30  after   6% 0.124 f30
+  c2_Flourish            RobeRight in weapon              before   3% 0.099 f40  after   6% 0.098 f40
+
+SHALLOWER or fewer frames after (10):
+  c1_HesitantMoon        RobeLeft in LeftUpperLeg         before  24% 0.058 f74  after  16% 0.060 f74
+  c2_BloodWave           RibbonLeft in LeftLowerArm       before  17% 0.111 f38  after  15% 0.103 f34
+  c1_WheelOfHeaven       RobeRight in RightUpperLeg       before   4% 0.088 f65  after   1% 0.039 f62
+  c1_Flourish            RobeInner in weapon              before   3% 0.063 f35  after   2% 0.052 f24
+  c2_Guandao_Heavy       RobeRight in RightUpperLeg       before   2% 0.124 f33  after   2% 0.098 f33
+  c1_FlowingJian         RobeLeft in weapon               before   1% 0.053 f73  after   0% 0.000 f-1
+  c2_Guandao_Heavy       RobeBack in LeftLowerLeg         before   2% 0.119 f34  after   2% 0.104 f34
+  c1_FlowingJian         RobeRight in RightUpperLeg       before   1% 0.055 f75  after   1% 0.043 f68
+  c2_RendingArc          RobeFront in weapon              before   2% 0.065 f61  after   3% 0.052 f61
+  c2_Flourish            RibbonRight in weapon            before   3% 0.083 f28  after   6% 0.071 f28

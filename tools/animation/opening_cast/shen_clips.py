@@ -74,9 +74,14 @@ PINWHEEL_OUT = (0.25, 0.05, -0.1)     # (2026-11-07) the pinwheels' fist, out to
 GUARD = {}     # the guard this phase stands in; a first cut grows out of it
 
 
-def arc(t0, tc, t1, th0, th1, source, aim=(0.0, -6.0), centre=(0.32, 0.22, -1.2), span=1.2, rsl=RSL, whip=2.2, settle=2.4, hover=0.0, link=False, enter=None):
+def arc(t0, tc, t1, th0, th1, source, aim=(0.0, -6.0), centre=(0.32, 0.22, -1.2), span=1.2, rsl=RSL, whip=2.2, settle=2.4, hover=0.0, link=False, enter=None,
+        carry_edge=True, turn=0.0):
     """One curved cut on a tilted plane. The blade rotates from th0 degrees upstream through the aim at tc (the contact) to th1 downstream; the hands travel on a matching small arc, right hand behind and left hand leading, so the two arms lever the haft.
-    Returns a key per frame: the blade's path is the point of the move, so nothing is left to spline between poses."""
+    Returns a key per frame: the blade's path is the point of the move, so nothing is left to spline between poses.
+    carry_edge (2026-11-11, on by default): the first cut's edge is carried up from the guard with the haft as the hands pick the blade up
+    (see below); False keeps the old blend.
+    turn (2026-11-11): seconds over which a cut that comes straight back along the last one's line turns its edge over: it starts edge last, as the
+    cut before left it, and rolls 180 deg about the haft to lead (wheel_of_heaven)."""
     F = np.array(H(*aim))
     A = L.orth(np.array(source, float), F)
     Cn = np.array(centre, float)
@@ -93,6 +98,7 @@ def arc(t0, tc, t1, th0, th1, source, aim=(0.0, -6.0), centre=(0.32, 0.22, -1.2)
     n1 = max(int(round((t1 - tc) * 30)), 1)
     times = [t0 + (tc - t0) * i / n0 for i in range(n0)] + [tc + (t1 - tc) * i / n1 for i in range(n1 + 1)]
     out = []
+    carried = None      # (carry_edge) the last entry key's haft and edge
     for t in times:
         if t <= tc:
             u = (t - t0) / max(tc - t0, 1e-6)
@@ -120,12 +126,27 @@ def arc(t0, tc, t1, th0, th1, source, aim=(0.0, -6.0), centre=(0.32, 0.22, -1.2)
                 d0 = d0 / np.linalg.norm(d0)
                 d = (d0 + (d - d0) * s) / max(np.linalg.norm(d0 + (d - d0) * s), 1e-3)
                 rp = np.array(GUARD["rp"], float) + (rp - np.array(GUARD["rp"], float)) * s
-                motion = np.array(GUARD["face"], float) + (motion - np.array(GUARD["face"], float)) * s
-                if abs(float(np.dot(d, motion))) > 0.98 * np.linalg.norm(motion):
-                    motion = np.array(GUARD["face"], float)
+                if carry_edge:
+                    # (2026-11-11) blended as below, the guard's unit edge outweighs the cut's own (a 2-degree difference, length 0.035) until the
+                    # last frame or two of the entry, so the edge turned over there in one frame (keyroll.py: Returning Tide and Charging Crescent
+                    # 99 deg at f3, Rending Arc 55 at f13, Flowing Jian 52 at f12, Feint, Hesitant Moon), and where the haft rises to the vertical
+                    # the keyed edge ran along it: phase 2 Skyfall's glaive turned over at f13 and back at f15, 169 and 177 deg in a frame (face .
+                    # haft -0.99 at f13). Carried instead: the guard's edge turns with the haft by the least rotation from key to key, then about
+                    # the haft toward the way the blade travels on its plane by s (Skyfall's carried edge is within 10 deg of that way throughout),
+                    # so it is always square to the wood and meets the cut's own edge as the hands finish picking it up
+                    e = L.orth(np.array(GUARD["face"], float), d) if carried is None else L.orth(L.short_arc(carried[0], d) @ carried[1], d)
+                    carried = (d, e)
+                    f = L.orth(line(th - 1.0)[0] - line(th + 1.0)[0], d)
+                    motion = L.rodrigues(d * s * math.atan2(float(np.dot(np.cross(e, f), d)), float(np.dot(e, f)))) @ e
+                else:
+                    motion = np.array(GUARD["face"], float) + (motion - np.array(GUARD["face"], float)) * s
+                    if abs(float(np.dot(d, motion))) > 0.98 * np.linalg.norm(motion):
+                        motion = np.array(GUARD["face"], float)
                 rsl_k, lsl_k = RSL, LSL + (span - LSL) * s
                 out.append(K(t, "lin", rp=tuple(rp), haft=tuple(d), face=tuple(motion), rsl=rsl_k + (rsl - rsl_k) * s, lsl=lsl_k, lhw=1.0))
                 continue
+        if turn and t < t0 + turn:
+            motion = L.rodrigues(d * (-math.pi * (1.0 - L.smooth01((t - t0) / turn)))) @ L.orth(motion, d)
         out.append(K(t, "lin", rp=tuple(rp), haft=tuple(d), face=tuple(motion), rsl=rsl, lsl=span, lhw=1.0))
     return out
 
@@ -203,9 +224,12 @@ def build(phase):
     def heaven_cleave():
         # (2026-11-09) phase 2 bows 6 deg less into the cleave: its corruption already pitches the chest 8 deg and the hips 6 further, so at the blow
         # his chest leaned 40 deg down over hands at his belly and folded onto the right arm (0.19, f6, whatever the elbow); now 0.12, the blow as it was
+        # (2026-11-11) phase 2 keeps the guard's edge blended into the cut (arc's carry_edge off): carried, its glaive turned no less (largest 56 deg a
+        # frame at f2, the export 53), its right hand reversed on the haft 4 times (rollscan.py; 2), and swivel's path changed from f10 (keys equal
+        # from f5), so the game's fade out to Idle put the right upper arm 0.186 in his chest (fadecheck2.py; the export 0.151)
         return melee("Guandao_L3", [K(0, **READY), body(0.09, "out", yaw=4, chest=6, pitch=-6, sink=-0.03, fwd=0.1), body(0.183, "whip", yaw=-10, chest=-14, pitch=12 if phase == 1 else 6, sink=-0.32, fwd=-0.5, lf=(0.0, -1.05, 0, 0, 0), rf=(0.16, 0.3, 0, -28, 0)),
                                     body(0.33, "out", yaw=-12, chest=-16, pitch=18 if phase == 1 else 12, sink=-0.42, fwd=-0.58, lf=(0.0, -1.05, 0, 0, 0), rf=(0.16, 0.3, 0, -28, 0)), K(0.5167, "io", **READY)]
-                     + arc(0, 0.183, 0.33, 118, 46, FROM_OVERHEAD, aim=(0, -10), centre=(0.2, 0.34, -1.25)) + [K(0.5167, "io", rp=READY["rp"], haft=READY["haft"], face=READY["face"], rsl=RSL, lsl=LSL)],
+                     + arc(0, 0.183, 0.33, 118, 46, FROM_OVERHEAD, aim=(0, -10), centre=(0.2, 0.34, -1.25), carry_edge=phase == 1) + [K(0.5167, "io", rp=READY["rp"], haft=READY["haft"], face=READY["face"], rsl=RSL, lsl=LSL)],
                      "Heaven-Splitting Cleave: up over the head and straight down the server's line, a long step under it.", feet_free=[(0, 0.5167)])
 
     def green_dragon():
@@ -219,7 +243,11 @@ def build(phase):
                      # (2026-11-09) phase 2: 0.3 further forward and 0.18 out to his right with the lunge (hips 0.5-0.62 forward through the sweep):
                      # his broader body's right arm 0.27 -> 0.18 in his chest at the contact and the lead hand's regrip no longer jumps (0.26 at f20); the blow lands
                      # where it did (0.07). Further (0.6, -1.9) turned the wrist 118 deg and put the arm 0.32 in
-                     + carry(arc(0.06, 0.383, 0.6, 130, 110, (-0.92, 0.38, 0.0), aim=(0, -14), whip=3.4, settle=4.4, centre=(0.5, 0.22, -1.7) if phase == 2 else (0.32, 0.22, -1.4)), 0.42, 0.56, 0.6, 0.65, (0.6, 0.0, 1.0) if phase == 2 else (0.0, 0.0, 0.0)) + [K(0.8333, "io", rp=READY["rp"], haft=READY["haft"], face=READY["face"], rsl=RSL, lsl=LSL)],
+                     # (2026-11-11) phase 1 keeps the guard's edge blended into the cut (carry_edge off): carried, and started on Idle's right-hand
+                     # grip (bake edC), its glaive turned no less (largest 65 deg a frame at f22 either way, 57 at f4) and its right forearm went out
+                     # and back 0.57 at f4 (popjson.py; the export none), the upper arm swinging 42 deg there (34)
+                     + carry(arc(0.06, 0.383, 0.6, 130, 110, (-0.92, 0.38, 0.0), aim=(0, -14), whip=3.4, settle=4.4, centre=(0.5, 0.22, -1.7) if phase == 2 else (0.32, 0.22, -1.4),
+                                 carry_edge=phase == 2), 0.42, 0.56, 0.6, 0.65, (0.6, 0.0, 1.0) if phase == 2 else (0.0, 0.0, 0.0)) + [K(0.8333, "io", rp=READY["rp"], haft=READY["haft"], face=READY["face"], rsl=RSL, lsl=LSL)],
                      "Green Dragon Reaping: winds until his back shows, then hips, chest and arms unwind in that order, and the blade carries his weight past the target.", feet_free=[(0, 0.8333)])
         # (2026-11-07) the lead hand runs down the haft into the blow (a sliding grip), then lets go as the blade carries on past him: no wrist can stay
         # on the wood through that follow-through (15-50 deg past its range). It swings free for balance and catches the haft again as he settles
@@ -354,7 +382,7 @@ def build(phase):
                  body(1.73, "whip", yaw=26, chest=40, pitch=6, sink=-0.3, fwd=-0.7, rf=(0.2, -0.3, 0, -8, 0), lf=(0, -0.1, 0, 10, 0)), body(2.0, "out", yaw=34, chest=52, pitch=5, sink=-0.3, fwd=-0.72, rf=(0.2, -0.3, 0, -8, 0), lf=(0, -0.1, 0, 10, 0)), K(2.6, "io", **READY)]
         # (2026-11-09) both cuts go forward with his lunge (0.46, then 0.7 forward of his feet): left in front of his feet, the lead arm folded into
         # his chest to hold the haft between them (0.19, f44-49) and the right 0.17; 0.25 and 0.4 further forward both stand clear (0.14 / 0.14)
-        keys += arc(1.0, 1.35, 1.5, 120, 62, FROM_HIGH_LEFT, aim=(2, -6), whip=2.4, centre=(0.32, 0.22, -1.45)) + arc(1.53, 1.73, 2.0, 60, 80, FROM_LOW_RIGHT, aim=(-4, 2), whip=1.6, centre=(0.32, 0.22, -1.6)) + [K(2.6, "io", **back)]
+        keys += arc(1.0, 1.35, 1.5, 120, 62, FROM_HIGH_LEFT, aim=(2, -6), whip=2.4, centre=(0.32, 0.22, -1.45)) + arc(1.53, 1.73, 2.0, 60, 80, FROM_LOW_RIGHT, aim=(-4, 2), whip=1.6, centre=(0.32, 0.22, -1.6), turn=0.17) + [K(2.6, "io", **back)]
         return clip("WheelOfHeaven", 2.6, keys, contacts=[1.35, 1.73], move="WheelOfHeaven", feet_free=[(0, 2.6)], notes="Wheel of Heaven: two full pinwheels of the glaive beside him, then the left hand catches it and two cuts come close together, a falling diagonal and a rising return.")
 
     def pinwheel_fist(x, y, z):
@@ -472,20 +500,28 @@ def build(phase):
     def skyfall():
         back = dict(rp=READY["rp"], haft=READY["haft"], face=READY["face"], rsl=RSL, lsl=LSL)
         low = dict(rf=FEET_R, lf=FEET_L)
+        kin = (-0.1603, 0.0, -0.9943)     # (2026-11-11) READY's right knee pole turned in 16 deg about his vertical (see below)
         return Clip(rg, P + "GuandaoSkyfall", 2.6, [
             K(0, hov=H0, **READY),
             body(0.3, "snap", yaw=20, chest=28, pitch=-6, sink=-0.2),
             K(0.45, "io", pel=(0, 0.1, 0.1), pelR=(-14, 8, 0), chest=(-18, 10, 0), neck=(14, -14, 0), rf=(0.1, 0.4, 0.5, 0, -30), lf=(0, 0.4, 0.75, 0, -40), hov=H0),
-            K(1.2, "io", pel=(0, 0.06, 0.05), pelR=(-10, 2, 0), chest=(-14, 4, 0), neck=(6, -4, 0), rf=(0.1, 0.1, 0.4, 0, -20), lf=(0, 0.1, 0.5, 0, -20), hov=H0 * 0.7),
-            K(1.5, "whip", pel=(0, -0.55, -0.4), pelR=(20, 0, 0), chest=(26, -6, 0), neck=(-20, 6, 0), rf=(0.2, 0.42, 0, -24, 0), lf=(0, -0.42, 0, 2, 0), hov=0.0),
-            K(1.92, "out", pel=(0, -0.62, -0.38), pelR=(23, 0, 0), chest=(29, -6, 0), neck=(-16, 6, 0), hov=0.0),
-            K(2.3, "io", pel=(0.02, -0.25, -0.1), pelR=(9, -6, 0), chest=(10, -6, 0), neck=(-6, 8, 0), **low, hov=H0 * 0.35),
+            K(1.2, "io", pel=(0, 0.06, 0.05), pelR=(-10, 2, 0), chest=(-14, 4, 0), neck=(6, -4, 0), rf=(0.1, 0.1, 0.4, 0, -20), lf=(0, 0.1, 0.5, 0, -20), hov=H0 * 0.7, rknee=READY["rknee"]),
+            K(1.42, "io", rknee=kin),
+            K(1.5, "whip", pel=(0, -0.55, -0.4), pelR=(20, 0, 0), chest=(26, -6, 0), neck=(-20, 6, 0), rf=(0.2, 0.42, 0, -24, 0), lf=(0, -0.42, 0, 2, 0), hov=0.0, rknee=kin),
+            K(1.92, "out", pel=(0, -0.62, -0.38), pelR=(23, 0, 0), chest=(29, -6, 0), neck=(-16, 6, 0), hov=0.0, rknee=kin),
+            K(2.3, "io", pel=(0.02, -0.25, -0.1), pelR=(9, -6, 0), chest=(10, -6, 0), neck=(-6, 8, 0), **low, hov=H0 * 0.35, rknee=kin),
             K(2.6, "io", **READY, hov=H0),
         # (2026-11-10) the follow-through's fist carried 0.4 to his right and 0.1 forward from just after the blow (the contact keeps its key). Phase
         # 2's rear fist finished on his chest's right side, where every elbow turn swivel had near the up-and-back one put the arm in him: it
         # flipped the elbow down and forward round f56-62 (72 deg in a frame) and left the right arm 0.21 in his chest at f58-59, which clear_torso
         # could not move (no fist move clears it there, ctmoves.py). Carried, with swivel's run-wide recheck (below), the elbow stays up and back
         # through the follow-through (steps <= 31 deg after the blow) and the bake passes (0.160, 0.169 left; ctcache.py / ctmoves.py variant c5)
+        # (2026-11-11) the right knee turns in while he is in the air (1.2-1.42 s) and stays in until he rises (READY's again by 2.6 s): with READY's
+        # pole his right thigh rose into the haft ahead of the fist as he sank into the landing (the wood 0.12 in at f49 on the solver's leg solids,
+        # 0.18 on the rendered mesh; legsall.py, review x-ray). Turned in, the haft passes in front of the right shin: no wood in his legs over
+        # f40-78 (thighdir.py) and the arms pass (the knee alone: 0.160, 0.152 left). Lifting the fist instead folded the right arm into his chest (ten bakes,
+        # 0.184-0.260). Held in at other angles: 15 deg left the wood 0.045 in at f59; 12, 14 and 18 deg left clear_torso at 0.242, 0.202 and
+        # 0.189. Turned back out at 1.92-2.15 s: 15 deg put the right arm 0.19 in between f62 and f63, 20 deg popped the fist 0.27 (liftsum.py, kn*)
         ] + carry(arc(0.1, 1.5, 1.92, 135, 46, FROM_OVERHEAD, aim=(0, -18), whip=4.5, centre=(0.2, 0.3, -1.08)), 1.5, 1.62, 1.92, 2.0, (0.4, 0.0, -0.1)) + [K(2.6, "io", **back)],
             contacts=[1.5], move="GuandaoSkyfall", scrape=True, airborne=True, feet_free=[(0, 2.6)], authored_feet=True, notes="Coils, the server's aerial path carries the root, glaive high at the apex, and the blade falls with him; his feet touch down and his knees absorb the landing at the impact, then he lifts again.")
 
@@ -880,6 +916,23 @@ def build(phase):
             c.hold_entry = short in entry
         if phase == 1 and short == "Guandao_L3":
             c.hold_start, c.hold_end = {"Right": IDLE_HOLD["Right"]}, {"Right": IDLE_HOLD["Right"], "Left": (-20.0, 292.5, 154.29)}
+        # (2026-11-11) Phase 1 Feint starts on Idle's right-hand grip: with the blade's edge carried through its arc (arc()), swivel took the
+        # right hand round the haft to a grip 101 deg from Idle's at f0, which the game's fade in from Idle would turn through (armjump.py: f0
+        # against Idle 101 -> 1 deg, the export's 1; bake edC, windows-pass REPORT section 12). Phase 1 Guandao_Heavy, pinned the same way,
+        # keeps its export instead (its arc's carry_edge, in green_dragon() above).
+        if phase == 1 and short == "Feint":
+            c.hold_start = {"Right": IDLE_HOLD["Right"]}
+        # (2026-11-11) Phase 1 Guandao_Running starts on Idle's grip with both hands, and its grip walk is priced (walk_spike, below): with the
+        # blade's edge rolled (EDGE_TURN) its bake turned the left wrist 165 deg on the arm (validator). walk_spike alone passed (fist pop 0.167,
+        # blade 0.256, the glaive turning 67 deg at f2); with Idle's grip at the start as well: fist pop 0.050, blade 0.022, no glaive turn over
+        # 52 deg, the fist on the haft through the fade in (windows-pass REPORT section 12; bake edD).
+        if phase == 1 and short == "Guandao_Running":
+            c.hold_start = IDLE_HOLD
+        # (2026-11-11) Phase 1 PrayerBeads keeps the spline through its face keys (roll_edges): with the edge rolled at its pinwheel's start and
+        # catch (f0-3, f18-22) swivel took his arms another way from f34 and left the left arm 0.20 in his torso between f40 and f41, which the
+        # polish could not clear (0.211 -> 0.205; started on Idle's grip as well, the same 0.21 at f41), and added three blade out-and-backs
+        # (popjson.py: worst 1.20 at f18, the export's 0.69). Its export turns the glaive 69 deg at f2 and f21 (glaiveturn.py; rolled, 63 at f3).
+        c.roll_edges = not (phase == 1 and short == "PrayerBeads")
         if phase == 2 and short == "GuandaoSkyfall":
             c.hold_end = {"Right": (0.0, 67.5, 334.29)}
         if phase == 2 and short == "DeathblowVictim":
@@ -888,12 +941,17 @@ def build(phase):
         c.run_recheck = (phase == 1 and short == "FlowingJian") or (phase == 2 and short == "GuandaoSkyfall")
         # (2026-11-10) and its recheck walk may not swing the lead hand round for a frame: f88 took a grip 45 deg from both neighbours and the
         # prayer beads whipped up past his head at the overhead finish's follow-through (see RECHECK_SPIKE_COST)
-        c.recheck_spike = 15.0 if phase == 1 and short == "FlowingJian" else None
+        # (2026-11-11) Phase 2 Skyfall too, and its main walk as well (walk_spike): its fist flicked 15-43 deg round the haft and back on 14 frames
+        # (rollscan.py: f12-15 in the coil, f52-64 after the landing, f72-73), 13 with its knee turned in (and the lead hand on 5); recheck_spike
+        # alone left 12 and 5, both together none
+        c.recheck_spike = 15.0 if (phase == 1 and short == "FlowingJian") or (phase == 2 and short == "GuandaoSkyfall") else None
+        # (2026-11-11) and phase 1 Guandao_Running (see its start above)
+        c.walk_spike = 15.0 if (phase == 2 and short == "GuandaoSkyfall") or (phase == 1 and short == "Guandao_Running") else None
         # (2026-11-11) legs_guard (held_clash also weighs the glaive inside his legs) was built for phase 2 Skyfall: its fist slide, depop and
         # polish run the wood ahead of the right fist 0.12 into his right thigh after the landing (f49-50), unseen by every pass and by validate's
         # thinned weapon_in_legs (legprobe.py). Not adopted: with it the legs stay clear but the right arm ends 0.18-0.20 in his chest over f45-55,
         # which the polish could not clear (legpol_1/2.log: 0.184 left), and the full bake with it shows a 0.57 blade pop at f46 before its
-        # polish (ttlgS). No clip opts in, so the exported Skyfall is the bake above and the thigh is open (windows-pass-2026-11-09/REPORT.md).
+        # polish (ttlgS). No clip opts in: Skyfall's thigh is cleared by its right knee instead (skyfall(), 2026-11-11).
         c.legs_guard = False
     return out
 

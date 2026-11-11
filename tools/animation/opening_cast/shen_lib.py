@@ -423,6 +423,12 @@ def _across(forearm, axis, fallback):
 # splined against the guard's unit edge its direction swung ~90 deg for a frame at the end of most cuts. The haft and the elbow and knee poles were
 # tried too: their keys' lengths shape the in-betweens, and unit keys put phase 2 Death's right arm back in his chest (0.14 -> 0.19, f40-44)
 DIRECTION = {"face"}
+# (2026-11-11) EDGE_TURN: degrees. Where the blade's edge turns further than this about the haft between two face keys, it rolls about the haft
+# at the key's ease instead (Clip.edge_roll): splined as a unit vector, an edge turned 130-180 deg went through the haft's own line and over in
+# one frame (keyroll.py: Flowing Jian f34, f53, f72; the cuts' returns, Returning Tide f11 and Charging Crescent f15; the pinwheels' starts and
+# catches, Flourish f2 and f42, Prayer Beads f2 and f21, Wheel of Heaven f2 and f29; Rending Arc f33 and f48), and the solver turned the glaive
+# over with it (100-170 deg in a frame). Below it the spline stays: every edge turn of 110 deg or less in the library already eases through
+EDGE_TURN = 120.0
 FEET = {"rf", "lf"}
 EASE = {
     "lin": lambda u: u, "in": lambda u: u * u, "out": lambda u: 1 - (1 - u) * (1 - u), "io": lambda u: u * u * (3 - 2 * u),
@@ -453,7 +459,14 @@ class Clip:
     blow_envelope = False
     run_recheck = False
     recheck_spike = None
+    # (2026-11-11) walk_spike: the same price in swivel's own walk (degrees a hand may turn on the haft between two frames before each further
+    # degree costs RECHECK_SPIKE_COST); the walk otherwise charges the fist 0.4 a degree, and phase 2 Skyfall's fist flicked 15-43 deg out and
+    # back on 14 frames, 9 of them after the landing (rollscan.py), each swivel round adding more over f40-70 (rolltrace.py: 3, 6, 9). At 15 deg
+    # neither hand reverses on any frame and the bake stays clean (recheck_spike alone left 12; windows-pass-2026-11-09/REPORT.md, section 9)
+    walk_spike = None
     legs_guard = False
+    # (2026-11-11) roll_edges: Clip.edge_roll (see EDGE_TURN) on this clip's face keys; False keeps the spline through every gap (shen_clips.build)
+    roll_edges = True
 
     def __init__(self, rig, name, length, keys, loop=False, priority="Action", contacts=(), move=None, notes="", active=None, slot="", feet_free=(), corrupt=True, scrape=False, airborne=False, authored_feet=False, raw_after=None, hover=0.0, still_after=None, uncorrupt=None, floor_body=False):
         self.rig = rig
@@ -479,6 +492,28 @@ class Clip:
             return [i / n * self.length for i in range(n + 1)]
         return [i / FPS for i in range(n + 1)]
 
+    def carried_edge(self, e, ta, tb, steps=24):
+        """(2026-11-11) An edge square to the keyed haft at ta, carried along the haft to tb: turned by the least rotation from step to step."""
+        h = unit(self.channel("haft", ta))
+        for k in range(1, steps + 1):
+            h2 = unit(self.channel("haft", ta + (tb - ta) * k / steps))
+            e = orth(short_arc(h, h2) @ e, h2)
+            h = h2
+        return e, h
+
+    def edge_roll(self, t0, t1, p1, p2, t, u):
+        """(2026-11-11) The blade's edge at t between face keys p1 (t0) and p2 (t1) that turn it further than EDGE_TURN about the haft: the
+        first key's edge carried along the haft and rolled about it toward the second's by u, so it reaches it at t1 and never runs along the
+        haft. None where the keys turn the edge less (the spline then)."""
+        e1 = orth(p1, unit(self.channel("haft", t0)))
+        e, h = self.carried_edge(e1, t0, t1)
+        e2 = orth(p2, h)
+        phi = math.atan2(float(np.dot(np.cross(e, e2), h)), float(np.dot(e, e2)))
+        if abs(math.degrees(phi)) <= EDGE_TURN:
+            return None
+        e, h = self.carried_edge(e1, t0, t)
+        return rodrigues(h * (u * phi)) @ e
+
     def channel(self, name, t):
         keyed = [(kt, c[name], e) for kt, c, e in self.keys if name in c]
         if not keyed:
@@ -498,6 +533,9 @@ class Clip:
             if t <= t1:
                 u = EASE[keyed[i + 1][2]]((t - t0) / (t1 - t0) if t1 > t0 else 1.0)
                 p1, p2 = vals[i], vals[i + 1]
+                rolled = self.edge_roll(t0, t1, p1, p2, t, u) if name == "face" and self.roll_edges and t1 > t0 and not np.allclose(p1, p2, atol=1e-6) else None
+                if rolled is not None:     # (2026-11-11) see EDGE_TURN
+                    return rolled
                 if np.allclose(p1, p2, atol=1e-6):
                     out = p1
                 else:
@@ -1684,6 +1722,8 @@ def swivel(clip, ctrl):
                 Te = np.degrees(np.arccos(np.clip(pa @ pb.T, -1.0, 1.0)))
                 Tr = np.abs(twists[p].ravel()[:, None] - twists[i].ravel()[None, :])
                 step = total[:, None] + turn_cost * np.repeat(np.repeat(Tg, E, axis=0), E, axis=1) + 0.35 * Te + 0.35 * Tr + 600.0 * (Tr > roll_step) + 600.0 * (Te > elbow_step) + flip    # a forearm or elbow can't whip round in a frame, whatever the wrist would save
+                if clip.walk_spike:     # (2026-11-11) see Clip.walk_spike
+                    step = step + RECHECK_SPIKE_COST * np.repeat(np.repeat(np.maximum(0.0, Tg - clip.walk_spike), E, axis=0), E, axis=1)
                 back[i] = step.argmin(axis=0)
                 total = step.min(axis=0) + costs[i].ravel()
                 if i in pinned:

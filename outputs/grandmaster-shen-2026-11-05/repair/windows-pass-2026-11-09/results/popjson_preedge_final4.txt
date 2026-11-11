@@ -1,0 +1,65 @@
+P1_AbbotSweep                 2 fr, worst 0.85 f41 RightLowerArm |  2 fr, worst 0.85 f41 RightLowerArm
+P1_Death                      0 fr, worst -                     |  0 fr, worst -                    
+P1_DeathblowVictim            0 fr, worst -                     |  0 fr, worst -                    
+P1_Feint                      1 fr, worst 0.58 f8 Glaive        |  1 fr, worst 0.56 f6 RightHand    
+P1_Flourish                   3 fr, worst 0.88 f14 RightHand    |  2 fr, worst 1.14 f4 Glaive       
+P1_FlowingJian                1 fr, worst 1.05 f11 Glaive       |  0 fr, worst -                    
+P1_Guandao_Art                0 fr, worst -                     |  0 fr, worst -                    
+P1_Guandao_Heavy              0 fr, worst -                     |  0 fr, worst -                    
+P1_Guandao_L1                 1 fr, worst 0.53 f2 Glaive        |  0 fr, worst -                    
+P1_Guandao_L2                 1 fr, worst 0.53 f1 RightLowerArm |  0 fr, worst -                    
+P1_Guandao_L3                 1 fr, worst 0.62 f3 Glaive        |  1 fr, worst 0.57 f3 Glaive       
+P1_Guandao_Running            4 fr, worst 1.15 f5 LeftLowerArm  |  1 fr, worst 0.52 f1 RightLowerArm
+P1_GuardHit                   0 fr, worst -                     |  0 fr, worst -                    
+P1_GuardLoop                  0 fr, worst -                     |  0 fr, worst -                    
+P1_HesitantMoon               2 fr, worst 0.80 f59 RightHand    |  2 fr, worst 0.80 f59 RightHand   
+P1_HitLightBack               0 fr, worst -                     |  0 fr, worst -                    
+P1_HitLightFront              0 fr, worst -                     |  0 fr, worst -                    
+P1_HitLightLeft               0 fr, worst -                     |  0 fr, worst -                    
+P1_HitLightRight              0 fr, worst -                     |  0 fr, worst -                    
+P1_Idle                       0 fr, worst -                     |  0 fr, worst -                    
+P1_PostureBreak               1 fr, worst 0.69 f2 RightHand     |  1 fr, worst 0.69 f2 RightHand    
+P1_PrayerBeads                1 fr, worst 0.69 f10 RightHand    |  1 fr, worst 0.69 f10 RightHand   
+P1_RunForward                 0 fr, worst -                     |  0 fr, worst -                    
+P1_StrafeLeft                 0 fr, worst -                     |  0 fr, worst -                    
+P1_StrafeRight                0 fr, worst -                     |  0 fr, worst -                    
+P1_Strike                     2 fr, worst 0.65 f6 Glaive        |  1 fr, worst 0.53 f17 RightLowerArm
+P1_Transform                  0 fr, worst -                     |  0 fr, worst -                    
+P1_TurnLeft                   0 fr, worst -                     |  0 fr, worst -                    
+P1_TurnRight                  0 fr, worst -                     |  0 fr, worst -                    
+P1_WalkBackward               0 fr, worst -                     |  0 fr, worst -                    
+P1_WalkForward                0 fr, worst -                     |  0 fr, worst -                    
+P1_WheelOfHeaven              3 fr, worst 0.64 f3 Glaive        |  6 fr, worst 1.64 f3 Glaive       
+P2_BloodWave                  0 fr, worst -                     |  0 fr, worst -                    
+P2_CrimsonEmbrace             0 fr, worst -                     |  0 fr, worst -                    
+P2_Death                      3 fr, worst 0.97 f51 Glaive       |  3 fr, worst 0.97 f51 Glaive      
+P2_DeathblowVictim            2 fr, worst 0.62 f54 RightHand    |  2 fr, worst 0.62 f54 RightHand   
+P2_Feint                      2 fr, worst 0.73 f9 RightHand     |  0 fr, worst -                    
+P2_Flourish                   2 fr, worst 0.87 f42 RightLowerArm |  2 fr, worst 1.26 f4 Glaive       
+P2_GuandaoSkyfall             1 fr, worst 0.62 f58 RightLowerArm |  1 fr, worst 0.62 f58 RightLowerArm
+P2_Guandao_Art                0 fr, worst -                     |  0 fr, worst -                    
+P2_Guandao_Heavy              1 fr, worst 0.79 f4 Glaive        |  0 fr, worst -                    
+P2_Guandao_L1                 2 fr, worst 0.85 f6 RightHand     |  1 fr, worst 0.85 f6 RightHand    
+P2_Guandao_L2                 3 fr, worst 0.94 f10 LeftHand     |  5 fr, worst 0.69 f2 RightHand    
+P2_Guandao_L3                 1 fr, worst 0.65 f3 Glaive        |  1 fr, worst 0.65 f3 Glaive       
+P2_Guandao_Running            1 fr, worst 0.60 f3 RightLowerArm |  1 fr, worst 0.96 f3 RightLowerArm
+P2_GuardHit                   0 fr, worst -                     |  0 fr, worst -                    
+P2_GuardLoop                  0 fr, worst -                     |  0 fr, worst -                    
+P2_HitLightBack               0 fr, worst -                     |  0 fr, worst -                    
+P2_HitLightFront              0 fr, worst -                     |  0 fr, worst -                    
+P2_HitLightLeft               0 fr, worst -                     |  0 fr, worst -                    
+P2_HitLightRight              0 fr, worst -                     |  0 fr, worst -                    
+P2_Idle                       0 fr, worst -                     |  0 fr, worst -                    
+P2_PhantomDrift               2 fr, worst 0.64 f51 RightHand    |  2 fr, worst 0.64 f51 RightHand   
+P2_PostureBreak               0 fr, worst -                     |  0 fr, worst -                    
+P2_RendingArc                 4 fr, worst 0.71 f47 Glaive       |  3 fr, worst 0.80 f50 LeftHand    
+P2_RunForward                 0 fr, worst -                     |  0 fr, worst -                    
+P2_StrafeLeft                 0 fr, worst -                     |  0 fr, worst -                    
+P2_StrafeRight                0 fr, worst -                     |  0 fr, worst -                    
+P2_Strike                     1 fr, worst 1.22 f6 Glaive        |  0 fr, worst -                    
+P2_Transform                  1 fr, worst 0.58 f1 LeftHand      |  1 fr, worst 0.58 f1 LeftHand     
+P2_TurnLeft                   0 fr, worst -                     |  0 fr, worst -                    
+P2_TurnRight                  0 fr, worst -                     |  0 fr, worst -                    
+P2_WalkBackward               0 fr, worst -                     |  0 fr, worst -                    
+P2_WalkForward                0 fr, worst -                     |  0 fr, worst -                    
+frames with a >=0.5 out-and-back: [49, 40]

@@ -195,7 +195,14 @@ function SP.measure(n)
 	tr:Stop(0)
 	tr:Destroy()
 	local parts, big = {}, 0
-	for _, p in { "RightHand", "LeftHand", "Glaive", "RightLowerArm", "LeftLowerArm", "UpperTorso", "LowerTorso", "Head", "RightFoot", "LeftFoot" } do
+	local order = { "RightHand", "LeftHand", "Glaive", "RightLowerArm", "LeftLowerArm", "UpperTorso", "LowerTorso", "Head", "RightFoot", "LeftFoot" }
+	local extra = {}     -- (2026-11-11) and any other part the expected data carries (studio_expected.py LEGS=1: the thighs and shins), by name
+	for p in worst do
+		if not table.find(order, p) then table.insert(extra, p) end
+	end
+	table.sort(extra)
+	for _, p in extra do table.insert(order, p) end
+	for _, p in order do
 		if worst[p] then
 			big = math.max(big, worst[p][1])
 			table.insert(parts, string.format("%s %.4f f%d %.2fdeg", p, worst[p][1], worst[p][2], rot[p][1]))
