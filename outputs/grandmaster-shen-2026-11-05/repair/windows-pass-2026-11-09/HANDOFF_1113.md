@@ -28,9 +28,10 @@ What is final: the source on `ux/onboarding-overhaul`, the 64 exported clips and
 
 ### Local checks (no Studio)
 
-- `bash tools/verify_all.sh` (Luau 0.742 at `work/bin/luau/luau` or on PATH; Rojo 7.7.1). On a fresh clone it first needs the generated
-  Shen audio manifest, which Git does not carry: `python3 tools/assets/build_shen_audio.py` (writes `assets/build/shen_audio/`).
-  Expect "SUCCESS: All local checks passed" and 14 stages.
+- `bash tools/verify_all.sh`. Tools Git does not carry (`work/` is ignored): Luau 0.742 in `work/bin/luau/` (`luau`, `luau-compile`,
+  `luau-analyze`; `tools/test_asura_stage2.py` calls `work/bin/luau/luau` directly, so PATH alone is not enough) and Rojo 7.7.1 on PATH
+  or in `work/bin/rojo/`. On a fresh clone it also needs the generated Shen audio manifest: `python3 tools/assets/build_shen_audio.py`
+  (writes `assets/build/shen_audio/`). Expect "SUCCESS: All local checks passed" and 14 stages.
 - The bake tools need numpy and SciPy (`handoff-2026-11-09/ENVIRONMENT.txt`) and the restored `work/shen_import` data
   (`handoff-2026-11-09/ARCHIVE.md`, branch `shen-assets-2026-11-09`). This commit adds three new files there (`xray_p2.npz`,
   `xray2_p2.npz`, `review_idle_p2.npz`); they come with the pull.
@@ -51,6 +52,14 @@ What is final: the source on `ux/onboarding-overhaul`, the 64 exported clips and
   that account (or its group, if the experience is moved to a group) owns. If the experience is published under a group, the clips
   must be re-published to that group (`tools/animation/opening_cast/publish.py`) and re-registered (`register_shen.py`).
 - No other asset was uploaded or changed.
+
+## Checked on the Windows computer after the push
+
+- A fresh clone of the pushed branch (temp folder) held `places/AsurasPath.rbxlx` byte-identical to the place tested in Studio
+  (sha256 a353dd00...). `tools/build.py` there rebuilt it byte-identical, with no change in `git status`. Script digest
+  462022588. After `build_shen_audio.py` and with Luau/Rojo in `work/bin/`, `verify_all.sh` passed (exit 0).
+- `repro_check.py P2_Guandao_L2 bakes/final7/P2_Guandao_L2.pkl` in the main checkout printed REPRODUCED: 98 inputs equal, bake difference
+  0.00e+00, validator clean.
 
 ## Not verified, or not carried by Git
 
