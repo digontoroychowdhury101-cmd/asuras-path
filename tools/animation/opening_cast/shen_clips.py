@@ -808,9 +808,12 @@ def build(phase):
             rest on the floor, none of them through it. Phase 2 drops out of its hover first and lets go of its corruption as it falls; its orbs fall with him
             (ClothSim.drop)."""
             lie_w = dict(wfree=1.0, wrp=(2.24, -2.92, -1.57), whaft=(0.61, 0.0, -0.79), wface=(0.79, 0.0, 0.61))
+            # (2026-11-13) phase 2: his right elbow lies rolled 35 deg further about its shoulder-hand line (was (0.3, 1.0, 0.2), as phase 1's), so the
+            # review shot's fade from his last pose back to Idle no longer swings the upper arm through his chest (0.252 -> 0.126, REPORT section 16)
+            RELB_LIE = (0.5, 0.64, 0.69) if floating else (0.3, 1.0, 0.2)
             fallen = dict(pel=(-0.2, -2.15, -0.75), pelR=(86, 16, -35), chest=(12, 10, -14), neck=(-25, 50, 0),
                           rf=(0.3, 1.78, 0.43, 12, -80), lf=(-0.4, 1.66, 0.42, -14, -76), rknee=(0.0, -1.0, 0.15), lknee=(0.0, -1.0, 0.15),
-                          relb=(0.3, 1.0, 0.2), rt=(0.9, -0.3, -0.5), rha=(40, 0, 0), lhw=0.0, ltw=1.0, lt=(-0.5, -0.5, -0.9), lelb=(-0.6, 0.6, 0.3), lha=(-40, 0, 0), **lie_w)
+                          relb=RELB_LIE, rt=(0.9, -0.3, -0.5), rha=(40, 0, 0), lhw=0.0, ltw=1.0, lt=(-0.5, -0.5, -0.9), lelb=(-0.6, 0.6, 0.3), lha=(-40, 0, 0), **lie_w)
             toppling_h = H(-45, -14)
             toppling = dict(pel=(-0.08, -1.45, -0.32), pelR=(46, 10, -14), chest=(16, 8, -8), neck=(-8, 26, 0), rf=(0.14, 1.3, 0.3, 4, -66), lf=(-0.15, 0.7, 0.2, -6, -42),
                             rknee=(0.0, -0.7, -0.6), lknee=(0.0, -0.5, -0.8), rp=(0.8, -1.9, -1.55), haft=toppling_h, face=E(toppling_h, (0.2, -0.4, -0.9)),
@@ -985,7 +988,20 @@ def build(phase):
         # Guandao_L3's robe and beard went into his arms, Transform's and HitLightFront's fades rose past 0.18, DeathblowVictim's left upper
         # arm swung 105 deg in a frame, Death and PhantomDrift did not change
         c.torso_near = 0.0 if phase == 2 and short in ("Feint", "RendingArc") else None
+        # (2026-11-13) shen_seam after joint_polish: the review x-ray's own measure (every arm vertex, the shoulder seam and armpit included) and
+        # the review shot's fades from and to Idle, on the phase 2 clips past its 0.18 with the validator clean (windows-pass REPORT section 16)
+        c.seam = SEAM.get(short, ()) if phase == 2 else ()
     return out
+
+
+SEAM = {    # (2026-11-13) shen_seam stages per phase 2 clip; each trial baked, checked and watched before it went in (REPORT section 16)
+    "Transform": (("polish", {"slide": False}),),
+    "Guandao_L1": (("polish", {"slide": False}),),
+    "PhantomDrift": (("polish", {"slide": True}),),
+    "Guandao_L2": (("nudge", {"x_delta": 0.01, "target": 0.165, "mags": (0.01, 0.02, 0.03), "slides": (0.0,), "degs": (3, 6, 9, 12, 18, 24), "sigmas": (0.75, 1, 1.5, 2.5)}),),
+    "HitLightFront": (("polish", {"slide": True, "x_delta": 0.01}),),
+    "Death": (("nudge", {"x_delta": 0.01, "target": 0.165, "mags": (0.01,), "slides": (0.0,), "degs": (3, 6, 9, 12, 18, 24), "sigmas": (0.75, 1, 1.5, 2.5)}),),
+}
 
 
 TURN_RATE = 220   # degrees per second at playback 1: BossAnimationRules.TurnRate

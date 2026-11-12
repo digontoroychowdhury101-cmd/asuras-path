@@ -822,3 +822,25 @@ The seam at offset 0 on the five other phase 2 clips past 0.18 (nrC, overlay nea
 - HitLightFront: x-ray 0.182 -> 0.161; the game's fade in 0.179 -> 0.184 (past 0.18) and a right upper arm step of 47 deg at f1 (25).
 So the seven clips past 0.18 stay open (section 8 item 1). Offset 0 helps the clip itself in two of five but each time breaks
 something else; what is left there is not the solver's torso measure alone.
+
+## 16. The review x-ray's seam on the seven clips past 0.18 (11-13, in progress; paused)
+
+`tools/animation/opening_cast/shen_seam.py` (new): after `joint_polish`, a clip's `Clip.seam` stages (`shen_clips.SEAM`, phase 2) run
+with the review x-ray itself counted (every arm vertex, the shoulder seam and armpit; `tools/blender/shen_import/xray_dump.py` writes its
+data) and the review shot's fades from and to Idle: "polish" (`shen_lib._polish_window`, with `slide` and `turn_cap` options; defaults
+unchanged) and "nudge" (the elbow turned about the shoulder-wrist line, the fist moved a little). Nothing is exported or published yet:
+the game still plays the 11-12 clips.
+- Taken, each repo rebake equal to its trial value for value, watched before/after:
+  - Transform (polish, no slide): render x-ray 0.183 -> 0.172.
+  - Guandao_L1 (polish, no slide): 0.182 -> 0.172; a robe pair new at 0.030.
+  - PhantomDrift (polish with slide): 0.186 -> 0.160.
+  - HitLightFront (polish, slide, offset 0.01): 0.182 -> 0.170, the game's fade in 0.179 -> 0.166; a ribbon pair new at 0.035.
+  - Death (`RELB_LIE` for the fallen right elbow, then a gentle nudge): 0.174, review fade out 0.252 -> 0.126, no new cloth pair.
+- Open:
+  - Guandao_L2: its gentle nudge (in `SEAM`) clears clip f8 (0.182 -> 0.174), but the review's fade in still renders 0.18049 at shot
+    f22 (`review.py` at five decimals). Polishing f1-7 clears it (0.152 / 0.133), but the left sleeve then goes deeper in the arm
+    (0.068 -> 0.133 / 0.084). Variants were running when paused.
+  - DeathblowVictim: the review fade from Idle (0.275) is not a game path (the server enters it only from StanceBroken, whose clip is
+    PostureBreak; that fade measures 0.055 held, 0.175 at worst). Its clip f19 renders 0.18027 after polish (dbv); the fast x-ray reads
+    0.168 there. Not starting on frame 0 alone (`hold_entry` off) clears the 118 deg elbow roll at f5 but worsens the PostureBreak fade
+    (0.155 / 0.189): reverted.

@@ -475,6 +475,9 @@ class Clip:
     # joint_polish use) also count the arm skin that lay within 0.05 of his torso in the bind pose (_torso_near), at its depth less this much:
     # the shoulder seam and armpit, which _torso_free leaves out and the review x-ray counts (windows-pass results/xray_why.md, REPORT section 14)
     torso_near = None
+    # (2026-11-13) seam: stages of shen_seam.run after joint_polish (the review x-ray's shoulder seam and its fades from Idle), e.g.
+    # (("nudge", {}), ("polish", {"slide": True})). Empty: the bake is as before.
+    seam = ()
 
     def __init__(self, rig, name, length, keys, loop=False, priority="Action", contacts=(), move=None, notes="", active=None, slot="", feet_free=(), corrupt=True, scrape=False, airborne=False, authored_feet=False, raw_after=None, hover=0.0, still_after=None, uncorrupt=None, floor_body=False):
         self.rig = rig
@@ -990,6 +993,9 @@ class Clip:
         finally:
             self.rig._near = None     # (2026-11-12) torso_near: the passes above only (the rig is shared by the phase's clips)
         joint_polish(self, ctrl, times)     # (2026-11-09) the runs of frames the passes above still leave past the wall, solved together (SLSQP)
+        if self.seam:
+            import shen_seam
+            shen_seam.run(sys.modules[__name__], self, ctrl, times)
         out = []
         self._side = {}
         for t, c in zip(times, ctrl):
@@ -2891,16 +2897,30 @@ def joint_polish(clip, ctrl, times):
     return report
 
 
-def _polish_window(clip, ctrl, times, A, B, sides, worlds, depth, mids, entry, target, minimize, elbows_only=False, seed=False):
+def _polish_window(clip, ctrl, times, A, B, sides, worlds, depth, mids, entry, target, minimize, elbows_only=False, seed=False, extras=None, slide=False, turn_cap=False):
+    """(2026-11-13) extras {frame: [pose(world) -> world]}: more poses each frame draws (shen_seam: the review shot's fades from and to Idle),
+    judged with the frame's own torso measure. slide: a ninth control, the lead hand's place on the haft (lsl), +-0.3 (shen_seam).
+    turn_cap: no upper arm turns more (relative to UpperTorso) from one frame to the next, A to B, than max(30 deg, the bake's own there) + 1,
+    as a constraint and in the in-order re-solve (shen_seam: P2 DeathblowVictim's window turned its left upper arm 30 -> 50 deg in a frame)."""
     import time as _time
     rg = clip.rig
+    extras = extras or {}
     frames = list(range(A + 1, B))
-    nf, NV, NC = len(frames), 8, 9
+    nf, NV, NC = len(frames), 9 if slide else 8, 9
+    scale, step = (np.append(POLISH_SCALE, 0.3), np.append(POLISH_STEP, 0.05)) if slide else (POLISH_SCALE, POLISH_STEP)
     pos = {i: k for k, i in enumerate(frames)}
     # the poses between frames the game draws: every halfway step from A to B (the held ends' included) and, from the clip's start, its fade in
     pairs = [(i, i + 1, 0.5, 1.0) for i in range(A, B)] + ([sp for sp in entry_specs(len(ctrl)) if sp[1] <= B] if A == 0 else [])
     pair_base = [mids[a] for a, _b, _s, u in pairs if u >= 1.0] + [d for sp, d in zip(entry_specs(len(ctrl)), entry) if A == 0 and sp[1] <= B]
     NP = len(pairs)
+    tpairs = [(i, i + 1) for i in range(A, B)] if turn_cap else []     # (2026-11-13) turn_cap
+    NT = len(tpairs)
+
+    def _turn(wa, wb, s):
+        Ra = wa["UpperTorso"][:3, :3].T @ wa[s + "UpperArm"][:3, :3]
+        Rb = wb["UpperTorso"][:3, :3].T @ wb[s + "UpperArm"][:3, :3]
+        return math.degrees(math.acos(float(np.clip((np.trace(Ra.T @ Rb) - 1) / 2, -1, 1))))
+    tlim = [{s: max(30.0, _turn(worlds[a], worlds[b], s)) + 1.0 for s in ("Right", "Left")} for a, b in tpairs]
     contact = [k for k, i in enumerate(frames) if any(abs(times[i] - t) < TILT_NEAR_CONTACT for t in clip.contacts)]
     ctrl0 = {i: dict(ctrl[i]) for i in frames}
     axes = {}
@@ -2932,12 +2952,17 @@ def _polish_window(clip, ctrl, times, A, B, sides, worlds, depth, mids, entry, t
             c[lk] = tuple(rodrigues(lsw * math.radians(x[6])) @ np.asarray(c[lk], float))
         if abs(x[7]) > 1e-9 and "lua" in c:     # the free arm's roll from his chest
             c["lua"] = (float(c["lua"][0]), float(c["lua"][1]), float(c["lua"][2]) + float(x[7]))
+        if slide and abs(x[8]) > 1e-9:
+            c["lsl"] = float(c["lsl"]) + float(x[8])
         return c
 
     def measure(i, c):
         clip._side = dict(sides[i])
         local, world, diag = clip.solve(dict(c))
         tor = arm_torso_world(rg, world, dense=True)
+        for f_ in extras.get(i, ()):
+            t2_ = arm_torso_world(rg, f_(world), dense=True)
+            tor = {s_: max(tor[s_], t2_[s_]) for s_ in tor}
         return dict(R=tor["Right"], L=tor["Left"], clash=float(held_clash(clip, c)), arm_reach=float(diag.get("arm_reach", 0.0)),
                     left_grip=float(diag.get("left_grip", 0.0)), left_reach=float(diag.get("left_reach", 0.0)),
                     wrist=float(ZR.angle_of(local["RightHand"][:3, :3])), lwrist=float(ZR.angle_of(local["LeftHand"][:3, :3])),
@@ -2973,41 +2998,58 @@ def _polish_window(clip, ctrl, times, A, B, sides, worlds, depth, mids, entry, t
             t = arm_torso_world(rg, blend_pose(rg, worlds[0], wa, wb, s_, u_), dense=True)
             mcache[key] = np.array([target - t["Right"], target - t["Left"]])
         return mcache[key]
-    slack = np.zeros(nf * NC + NP * 2)
+    tcache = {}
+
+    def turn_eval(q, xa, xb):     # (2026-11-13) turn_cap: each upper arm's turn from frame a to b, under its limit (rows scaled by 30 deg)
+        a, b = tpairs[q]
+        key = (q, None if xa is None else tuple(np.round(xa, 9)), None if xb is None else tuple(np.round(xb, 9)))
+        if key not in tcache:
+            wa = worlds[a] if xa is None else frame_eval(a, xa)[1]
+            wb = worlds[b] if xb is None else frame_eval(b, xb)[1]
+            tcache[key] = np.array([(tlim[q][s] - _turn(wa, wb, s)) / 30.0 for s in ("Right", "Left")])
+        return tcache[key]
+    slack = np.zeros(nf * NC + NP * 2 + NT * 2)
 
     def raw(x):
-        return np.concatenate([frame_eval(i, xs(x, i))[0] for i in frames] + [mid_eval(p, xs(x, a), xs(x, b)) for p, (a, b, _s, _u) in enumerate(pairs)])
+        return np.concatenate([frame_eval(i, xs(x, i))[0] for i in frames] + [mid_eval(p, xs(x, a), xs(x, b)) for p, (a, b, _s, _u) in enumerate(pairs)]
+                              + [turn_eval(q, xs(x, a), xs(x, b)) for q, (a, b) in enumerate(tpairs)])
 
     def cons(x):
         return raw(x) + slack
 
     def cons_jac(x):     # a frame's measures depend on its own controls, a halfway pose on its two frames': forward differences per frame
-        J = np.zeros((nf * NC + NP * 2, nf * NV))
+        J = np.zeros((nf * NC + NP * 2 + NT * 2, nf * NV))
         for k, i in enumerate(frames):
             xi = xs(x, i)
             g0 = frame_eval(i, xi)[0]
             near = [p for p, (a, b, _s, _u) in enumerate(pairs) if i in (a, b)]
             m0 = {p: mid_eval(p, xs(x, pairs[p][0]), xs(x, pairs[p][1])) for p in near}
+            tnear = [q for q, (a, b) in enumerate(tpairs) if i in (a, b)]
+            t0_ = {q: turn_eval(q, xs(x, tpairs[q][0]), xs(x, tpairs[q][1])) for q in tnear}
             for j in range(NV):
                 xp = xi.copy()
-                xp[j] += POLISH_STEP[j]
-                J[k * NC:(k + 1) * NC, k * NV + j] = (frame_eval(i, xp)[0] - g0) / POLISH_STEP[j]
+                xp[j] += step[j]
+                J[k * NC:(k + 1) * NC, k * NV + j] = (frame_eval(i, xp)[0] - g0) / step[j]
                 for p in near:
                     a, b = pairs[p][:2]
                     m1 = mid_eval(p, xp if a == i else xs(x, a), xp if b == i else xs(x, b))
-                    J[nf * NC + 2 * p:nf * NC + 2 * p + 2, k * NV + j] = (m1 - m0[p]) / POLISH_STEP[j]
+                    J[nf * NC + 2 * p:nf * NC + 2 * p + 2, k * NV + j] = (m1 - m0[p]) / step[j]
+                for q in tnear:
+                    a, b = tpairs[q]
+                    t1_ = turn_eval(q, xp if a == i else xs(x, a), xp if b == i else xs(x, b))
+                    J[nf * NC + NP * 2 + 2 * q:nf * NC + NP * 2 + 2 * q + 2, k * NV + j] = (t1_ - t0_[q]) / step[j]
         return J
     D2 = np.zeros(((nf + 2) * NV, nf * NV))
     for k in range(nf + 2):
         for j, wgt in ((k - 2, 1.0), (k - 1, -2.0), (k, 1.0)):
             if 0 <= j < nf:
                 D2[k * NV:(k + 1) * NV, j * NV:(j + 1) * NV] += wgt * np.eye(NV)
-    Wsc = np.diag(np.tile(1.0 / POLISH_SCALE, nf))
+    Wsc = np.diag(np.tile(1.0 / scale, nf))
     Q = Wsc @ (np.eye(nf * NV) + POLISH_SMOOTH * D2.T @ D2) @ Wsc
     bounds = []
     for k in range(nf):
         held = k in contact or elbows_only     # attack timing: the weapon stays as keyed at a contact
-        bounds += [(0.0, 0.0) if held else (-0.6, 0.6)] * 3 + [(0.0, 0.0) if held else (-25.0, 25.0)] * 2 + [(-120.0, 120.0)] * 2 + [(-40.0, 40.0)]
+        bounds += [(0.0, 0.0) if held else (-0.6, 0.6)] * 3 + [(0.0, 0.0) if held else (-25.0, 25.0)] * 2 + [(-120.0, 120.0)] * 2 + [(-40.0, 40.0)] + ([(-0.3, 0.3)] if slide else [])
     x0 = np.zeros(nf * NV)
     c0 = raw(x0)
     J0 = cons_jac(x0)
@@ -3084,9 +3126,11 @@ def _polish_window(clip, ctrl, times, A, B, sides, worlds, depth, mids, entry, t
         tw = _solved(clip, trial, times)
         p1 = bake_pops(clip, tw)
         W = [o[2] for o in tw]
-        real = max([max(arm_torso_world(rg, W[i], dense=True).values()) for i in frames]
+        real = max([max(max(arm_torso_world(rg, W[i], dense=True).values()), max([max(arm_torso_world(rg, f_(W[i]), dense=True).values()) for f_ in extras.get(i, ())] or [0.0])) for i in frames]
                    + [max(arm_torso_world(rg, blend_pose(rg, W[0], W[a], W[b], s_, u_), dense=True).values()) for a, b, s_, u_ in pairs])
         popped = [k for k in POP_LIMIT if p1[k][0] > max(p0[k][0], POP_LIMIT[k]) + 1e-6]
+        if turn_cap:     # (2026-11-13) and the turns as the export solves them
+            popped += ["turn f%d %s" % (a, s) for q, (a, b) in enumerate(tpairs) for s in ("Right", "Left") if _turn(W[a], W[b], s) > tlim[q][s] + 1e-6]
         keep = real < deep0 and not popped
     if keep:
         for k, i in enumerate(frames):
