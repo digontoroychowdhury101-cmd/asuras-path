@@ -1,6 +1,7 @@
 # Grandmaster Shen clipping repair: Windows pass (2026-11-09 to 11-12)
 
-Boss 01 only. Nothing was published or uploaded, and no asset ID was created. Bosses 02-06 were not touched. The
+Boss 01 only. Sections 1-15: nothing was published or uploaded. On 11-13 (section 16) all 64 Shen clips were published from Studio
+(new ids, `assets/animations/opening_cast/shen/published.json`) and registered; no other asset. Bosses 02-06 were not touched. The
 validator thresholds, the dense measure, the between-frame and fade-in checks, `POP_LIMIT`, the GLB bones and skin weights,
 the exporter and the cloth system are unchanged.
 
@@ -61,8 +62,8 @@ point (its part, joint and welds stay). New regression test `tools/test_boss_rig
 25 clip files are unchanged (`results/jsondiff_pre4_final4.txt`: 0.000 moved). 21 of the 39 were exported again on 11-11 evening
 for the glaive's edge (section 12); P1 PrayerBeads, P1 Guandao_Heavy and P2 Guandao_L3 keep their exports from earlier in this pass.
 On 11-12 four of the 21 were exported again (P1 and P2 Guandao_L2, P2 BloodWave, P2 Guandao_Running; section 13); the other 60
-clips' frame JSON is unchanged (`results/jsondiff_pre5_final5.txt`). The game plays published asset IDs, so the repaired clips reach the game only once they are published, which this pass did not
-do. The rig fix is in the built place now, and it also
+clips' frame JSON is unchanged (`results/jsondiff_pre5_final5.txt`). The game plays published asset IDs, so the repaired clips reach the game only once they are published, which
+was done on 11-13 for all 64 (section 16). The rig fix is in the built place now, and it also
 corrects the glaive for the phase 2 clips already published (they were made about phase 2's point too).
 
 **Build** (`tools/build.py`): ElementTree wrote the place in text mode, which is CRLF on Windows, so a Windows build turned every
@@ -823,24 +824,58 @@ The seam at offset 0 on the five other phase 2 clips past 0.18 (nrC, overlay nea
 So the seven clips past 0.18 stay open (section 8 item 1). Offset 0 helps the clip itself in two of five but each time breaks
 something else; what is left there is not the solver's torso measure alone.
 
-## 16. The review x-ray's seam on the seven clips past 0.18 (11-13, in progress; paused)
+## 16. The review x-ray's seam on the seven clips past 0.18; publishing (11-13)
 
-`tools/animation/opening_cast/shen_seam.py` (new): after `joint_polish`, a clip's `Clip.seam` stages (`shen_clips.SEAM`, phase 2) run
-with the review x-ray itself counted (every arm vertex, the shoulder seam and armpit; `tools/blender/shen_import/xray_dump.py` writes its
-data) and the review shot's fades from and to Idle: "polish" (`shen_lib._polish_window`, with `slide` and `turn_cap` options; defaults
-unchanged) and "nudge" (the elbow turned about the shoulder-wrist line, the fist moved a little). Nothing is exported or published yet:
-the game still plays the 11-12 clips.
-- Taken, each repo rebake equal to its trial value for value, watched before/after:
-  - Transform (polish, no slide): render x-ray 0.183 -> 0.172.
-  - Guandao_L1 (polish, no slide): 0.182 -> 0.172; a robe pair new at 0.030.
-  - PhantomDrift (polish with slide): 0.186 -> 0.160.
-  - HitLightFront (polish, slide, offset 0.01): 0.182 -> 0.170, the game's fade in 0.179 -> 0.166; a ribbon pair new at 0.035.
-  - Death (`RELB_LIE` for the fallen right elbow, then a gentle nudge): 0.174, review fade out 0.252 -> 0.126, no new cloth pair.
-- Open:
-  - Guandao_L2: its gentle nudge (in `SEAM`) clears clip f8 (0.182 -> 0.174), but the review's fade in still renders 0.18049 at shot
-    f22 (`review.py` at five decimals). Polishing f1-7 clears it (0.152 / 0.133), but the left sleeve then goes deeper in the arm
-    (0.068 -> 0.133 / 0.084). Variants were running when paused.
-  - DeathblowVictim: the review fade from Idle (0.275) is not a game path (the server enters it only from StanceBroken, whose clip is
-    PostureBreak; that fade measures 0.055 held, 0.175 at worst). Its clip f19 renders 0.18027 after polish (dbv); the fast x-ray reads
-    0.168 there. Not starting on frame 0 alone (`hold_entry` off) clears the 118 deg elbow roll at f5 but worsens the PostureBreak fade
-    (0.155 / 0.189): reverted.
+`tools/animation/opening_cast/shen_seam.py`: after `joint_polish`, a clip's `Clip.seam` stages (`shen_clips.SEAM`, phase 2) run with the
+review x-ray itself counted (every arm vertex, the shoulder seam and armpit; data from `tools/blender/shen_import/xray_dump.py`, committed
+as `work/shen_import/xray_p2.npz`, `xray2_p2.npz` (`--cloth`) and `review_idle_p2.npz`) and the review shot's fades from and to Idle.
+Stages: "polish" (`shen_lib._polish_window`; options `slide`, `turn_cap`, `frames` (only frames a..b open a window), `cloth` (Cl_ cloth
+bones posed on their ShenClothData anchor limb, as review.py deforms them), `gate`); "nudge"; "swing" (the elbow turned about the
+shoulder-wrist line on given frames, a start the polish then refines). Every option is off unless a clip lists it; no other clip's bake
+changes. `gate` eps: a vertex counts if any of the 16 nearest torso vertices within its nearest's distance + eps is over 0.8 on
+Sk_UpperTorso (review.py takes the nearest alone); a DeathblowVictim trial (dbvY) had "cleared" f19 by moving a vertex 0.006 until a lighter
+torso vertex was nearest, and rendered 0.181. The gate narrows that escape (only 16 neighbours are looked at); the render stays the judge.
+
+The seven clips (repo rebake of each equal to its trial value for value, `work/shen_repair/rbF_*.log`, 0.00e+00; exported frame JSON equal
+to the trial's, 7 of 7):
+- Transform (polish), Guandao_L1 (polish), PhantomDrift (polish, slide), HitLightFront (polish, slide, offset 0.01), Death (`RELB_LIE`,
+  gentle nudge): as reported on 11-13 before the pause.
+- Guandao_L2: the nudge, then a polish on clip f1-7 only (no slide, offset -0.005, margin 0). The review's fade in had drawn clip f4 at
+  0.18049; now 0.13409 there.
+- DeathblowVictim: polish (slide), then swing the left elbow 8/16/8 deg on f18/19/20, then polish f15-22 with the cloth bones and gate
+  0.01, margin 0.005. f19 sat in a dip the polish could not leave (dbvG3-5 stalled; nudges N1-N8 dragged the haft).
+
+Review x-ray of the exported keyframes (review.py renders of shots of the exported frame JSON, `work/shen_repair/rv5/f2_*_final7*`; five
+decimals from `scripts/xray_exact.py`, `results/xray_exact_final7.txt`, equal to Blender at three): Transform 0.17198 (f60), Guandao_L1
+0.17249, Guandao_L2 0.17386, PhantomDrift 0.16000, HitLightFront 0.17001, Death 0.17408, DeathblowVictim 0.16900 (f23, unchanged; its
+repaired frame f36 0.16493). No render frame past 0.18 in any of the seven.
+
+Local regression after the export (`*_final7*`, `*_pre7_final7*` against the export before it, `pre_1113_export`; finK5 cloth):
+- Validator 64/64 clean. Game fades worst 0.178 (was 0.179). Out-and-back pops [81, 36] unchanged; face roll pops 0. Upper-arm steps over
+  30 deg 249 -> 248 (set). Reversing hand turns and glaive turns over 60 deg unchanged (10 frames set-wide). `verify_all.sh` 14/14, exit 0.
+- PostureBreak -> DeathblowVictim (the game's only way in) worst 0.175, as before. Watched before/after: L2 (l2look/), DeathblowVictim
+  f15-23 and f2-8, front and combat camera (dbvlook/): no visible jump or new contact.
+- Rises, listed, not accepted:
+  - Guandao_L2: LeftSleeve in the left upper arm 0.068 -> 0.086, in the left forearm 0.123 -> 0.136; RobeLeft in the left thigh
+    0.042 -> 0.069; one more upper-arm step over 30 deg (L f6 54).
+  - DeathblowVictim: left upper arm f19 step 30 -> 65 deg; right f5 elbow roll 118 -> 131 deg (both watched, nothing visible); the
+    review-only 0.20 s linear fade from Idle 0.278 -> 0.232 (better, still past 0.18; not a game path).
+  - Transform validator right 0.148 -> 0.160; Death Beard in his head 0.182 -> 0.184 (section 8); new shallow pairs on Guandao_L1 (robe
+    0.030) and HitLightFront (ribbon 0.035); Guandao_L1's 0.20 s fade from Idle 0.184 -> 0.183 (pre-existing).
+  - Shallower: DeathblowVictim LeftSleeve 0.201 -> 0.197 and Beard 0.076 -> 0.061; PhantomDrift LeftSleeve 0.102 -> 0.084 and ribbon pairs.
+- Code review (fresh context, read-only): nothing blocking; the Right-side swing key and a count check on the cloth anchor parser fixed
+  (no bake changes: 147/143 anchors as before, no clip swings right).
+
+Publishing and Studio (`results/studio_published_1113.txt`):
+- All 64 clips published (`publish.py shen`, from Studio signed in as the account that owns the earlier Shen ids; 64 OK, read-back
+  keyframes equal the manifest's), registered (`register_shen.py`: 168 animations, 64 Shen), manifest asset_id updated. All 64 because
+  every clip file had changed since the last publish (031dad9) and every check above was run on this set.
+- Single-client Studio Play of a fresh source build (script digest equal to the build; the canonical place is byte-identical to it):
+  every published clip played on the live rig against the solver, phase 1 within 0.0161, phase 2 within 0.0174 (rig units).
+  Transitions on the live boss: spawn, phase change by HP and by deathblow (P1_PostureBreak -> P1_DeathblowVictim -> P1_Transform),
+  phase 2 PostureBreak -> DeathblowVictim -> Death, KO -> Death; the AI's own phase 2 moves; only published ids seen. Console: only the
+  Rojo plugin's sound preload message.
+- Not covered: two clients (multiplayer), phones or other devices, a live published server.
+
+Place: `places/AsurasPath.rbxlx` is now the source build (it had uncommitted Studio edits with the pre-11-12 ClothSim; backed up outside
+the repo before rebuilding; no Studio-only edit worth keeping was found).

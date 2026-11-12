@@ -2,7 +2,9 @@
 tools/animation/opening_cast/shen_seam.py (XRay).    blender -b --factory-startup --python tools/blender/shen_import/xray_dump.py -- PHASE
 Writes work/shen_import/xray_p<phase>.npz. Per arm vertex: rig-space rest position (review.py's CIn), its arm group (0-5: LeftUpperArm,
 LeftLowerArm, LeftHand, RightUpperArm, RightLowerArm, RightHand), its weights over the Sk_ bones (raw; shen_seam normalises them, as the
-armature deforms). Per UpperTorso vertex: its rest position and its Sk_UpperTorso weight."""
+armature deforms). Per UpperTorso vertex: its rest position and its Sk_UpperTorso weight.
+With --cloth after PHASE (2026-11-13): xray2_p<phase>.npz, the weights over every armature bone (the Cl_ cloth bones too), for
+shen_seam's "cloth" x-ray."""
 import json, os, sys
 import bpy
 import numpy as np
@@ -10,13 +12,17 @@ from mathutils import Matrix
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../.."))
 args = sys.argv[sys.argv.index("--") + 1:]
 phase = int(args[0])
-out = os.path.join(ROOT, "work/shen_import/xray_p%d.npz" % phase)
+cloth = "--cloth" in args[1:]
+out = os.path.join(ROOT, "work/shen_import/xray%s_p%d.npz" % ("2" if cloth else "", phase))
 bpy.ops.wm.read_factory_settings(use_empty=True)
 bpy.ops.import_scene.gltf(filepath=os.path.join(ROOT, "assets/build/grandmaster_shen/Shen_P%d_Game.glb" % phase))
 info = json.load(open(os.path.join(ROOT, "work/opening_cast_bake/shen%d/pieces.json" % phase)))
 CIn = np.array(Matrix(((1, 0, 0), (0, 0, 1), (0, -1, 0))))
 ARMS = ("LeftUpperArm", "LeftLowerArm", "LeftHand", "RightUpperArm", "RightLowerArm", "RightHand")
-bones = sorted({g.name for o in bpy.data.objects if o.type == "MESH" for g in o.vertex_groups if g.name.startswith("Sk_")})
+if cloth:
+    bones = sorted(b.name for b in next(o for o in bpy.data.objects if o.type == "ARMATURE").data.bones)
+else:
+    bones = sorted({g.name for o in bpy.data.objects if o.type == "MESH" for g in o.vertex_groups if g.name.startswith("Sk_")})
 bi = {b: i for i, b in enumerate(bones)}
 P, G, Wt, TP, TW = [], [], [], [], []
 for ob in bpy.data.objects:

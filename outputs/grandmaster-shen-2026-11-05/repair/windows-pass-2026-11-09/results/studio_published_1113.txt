@@ -1,0 +1,100 @@
+Studio integration of the published clips (Windows pass, 2026-11-13). Single client, Studio Play, this PC. Not multiplayer, not a device.
+
+Place: a fresh source build (tools/build.py --output, temp path), never saved. Script digest (tools/qa/SourceDigest.luau in Studio vs
+tools/studio_mcp.py --digest) "scripts 286 bytes 2859366 digest 462022588"; the canonical places/AsurasPath.rbxlx built afterwards is
+byte-identical to it (sha256 a353dd00...). HttpEnabled false. Studio signed in as user 3148600636, the creator of the earlier Shen ids.
+
+Publishing: tools/animation/opening_cast/publish.py shen <studio> (CreateAssetAsync, KeyframeSequenceProvider read-back): 64 OK, 0 FAIL,
+64 new ids, every read-back keyframe count equal to the manifest's. All 64 because every clip file changed since the last publish
+(031dad9) and the checks were run on this set. register_shen.py: 168 animations, 64 GrandmasterShen. In Studio the folder
+ServerStorage.AsuraAssets.AsuraBossAnimations held the new ids (spot-checked P2_DeathblowVictim, P2_Guandao_L2, P1_AbbotSweep).
+
+Playback against the solver (scripts/studio_preview.luau as in studio_playback.txt, but each clip loaded by its PUBLISHED id, not the
+local file): the live boss spawned by the game (tools/qa/ShenProbe.server.luau), cloned (57 attachments, 0 differ), each clip paused at
+every exported frame time, each part vs the solver's frame. Rig units (about 0.27 m). kfs = keyframes kept by the exporter.
+
+Phase 1 (live P1 rig)
+P1_AbbotSweep len 1.933/1.933 frames 59 kfs 59 max 0.0016
+P1_Death len 3.000/3.000 frames 91 kfs 67 max 0.0073
+P1_DeathblowVictim len 2.200/2.200 frames 67 kfs 52 max 0.0120
+P1_Feint len 1.067/1.067 frames 33 kfs 33 max 0.0021
+P1_Flourish len 1.600/1.600 frames 49 kfs 49 max 0.0024
+P1_FlowingJian len 3.500/3.500 frames 106 kfs 105 max 0.0022
+P1_Guandao_Art len 0.900/0.900 frames 28 kfs 28 max 0.0033
+P1_Guandao_Heavy len 0.833/0.833 frames 26 kfs 26 max 0.0041
+P1_Guandao_L1 len 0.400/0.400 frames 13 kfs 13 max 0.0115
+P1_Guandao_L2 len 0.433/0.433 frames 14 kfs 14 max 0.0056
+P1_Guandao_L3 len 0.533/0.533 frames 17 kfs 17 max 0.0032
+P1_Guandao_Running len 0.600/0.600 frames 19 kfs 19 max 0.0067
+P1_GuardHit len 0.467/0.467 frames 15 kfs 14 max 0.0067
+P1_GuardLoop len 1.800/1.800 frames 55 kfs 5 max 0.0075
+P1_HesitantMoon len 2.133/2.133 frames 65 kfs 65 max 0.0023
+P1_HitLightBack len 0.467/0.467 frames 15 kfs 15 max 0.0007
+P1_HitLightFront len 0.467/0.467 frames 15 kfs 13 max 0.0047
+P1_HitLightLeft len 0.467/0.467 frames 15 kfs 14 max 0.0033
+P1_HitLightRight len 0.467/0.467 frames 15 kfs 15 max 0.0007
+P1_Idle len 6.400/6.400 frames 193 kfs 22 max 0.0127
+P1_PostureBreak len 1.000/1.000 frames 31 kfs 31 max 0.0041
+P1_PrayerBeads len 2.100/2.100 frames 64 kfs 63 max 0.0117
+P1_RunForward len 0.750/0.750 frames 23 kfs 23 max 0.0030
+P1_StrafeLeft len 1.300/1.300 frames 40 kfs 40 max 0.0013
+P1_StrafeRight len 1.300/1.300 frames 40 kfs 40 max 0.0013
+P1_Strike len 1.100/1.100 frames 34 kfs 34 max 0.0037
+P1_Transform len 1.700/1.700 frames 52 kfs 34 max 0.0078
+P1_TurnLeft len 0.900/0.900 frames 28 kfs 27 max 0.0084
+P1_TurnRight len 0.900/0.900 frames 28 kfs 26 max 0.0086
+P1_WalkBackward len 1.500/1.500 frames 46 kfs 46 max 0.0010
+P1_WalkForward len 1.400/1.400 frames 43 kfs 42 max 0.0161 (right foot, f28, last frame)
+Phase 1 worst 0.0161.
+
+Phase 2 (live P2 rig after the game's own transition; glaive pivot read back 1.090, -0.390, -0.350)
+P2_BloodWave len 2.133/2.133 frames 65 kfs 65 max 0.0021 (Glaive)
+P2_CrimsonEmbrace len 2.400/2.400 frames 73 kfs 72 max 0.0075 (LeftLowerArm)
+P2_Death len 3.000/3.000 frames 91 kfs 67 max 0.0174 (Glaive)
+P2_DeathblowVictim len 2.200/2.200 frames 67 kfs 67 max 0.0011 (RightHand)
+P2_Feint len 1.067/1.067 frames 33 kfs 33 max 0.0040 (RightLowerArm)
+P2_Flourish len 1.600/1.600 frames 49 kfs 49 max 0.0025 (Glaive)
+P2_GuandaoSkyfall len 2.600/2.600 frames 79 kfs 77 max 0.0104 (RightHand)
+P2_Guandao_Art len 0.900/0.900 frames 28 kfs 28 max 0.0050 (Glaive)
+P2_Guandao_Heavy len 0.833/0.833 frames 26 kfs 26 max 0.0047 (Glaive)
+P2_Guandao_L1 len 0.400/0.400 frames 13 kfs 13 max 0.0090 (Glaive)
+P2_Guandao_L2 len 0.433/0.433 frames 14 kfs 14 max 0.0058 (Glaive)
+P2_Guandao_L3 len 0.533/0.533 frames 17 kfs 17 max 0.0024 (Glaive)
+P2_Guandao_Running len 0.600/0.600 frames 19 kfs 19 max 0.0090 (Glaive)
+P2_GuardHit len 0.467/0.467 frames 15 kfs 14 max 0.0130 (RightLowerArm)
+P2_GuardLoop len 1.800/1.800 frames 55 kfs 8 max 0.0092 (RightFoot)
+P2_HitLightBack len 0.467/0.467 frames 15 kfs 15 max 0.0015 (Glaive)
+P2_HitLightFront len 0.467/0.467 frames 15 kfs 15 max 0.0024 (RightLowerArm)
+P2_HitLightLeft len 0.467/0.467 frames 15 kfs 15 max 0.0025 (RightLowerArm)
+P2_HitLightRight len 0.467/0.467 frames 15 kfs 15 max 0.0037 (Glaive)
+P2_Idle len 4.800/4.800 frames 145 kfs 65 max 0.0090 (Glaive)
+P2_PhantomDrift len 2.000/2.000 frames 61 kfs 61 max 0.0031 (RightLowerArm)
+P2_PostureBreak len 1.000/1.000 frames 31 kfs 31 max 0.0029 (RightHand)
+P2_RendingArc len 2.600/2.600 frames 79 kfs 79 max 0.0035 (Glaive)
+P2_RunForward len 1.600/1.600 frames 49 kfs 44 max 0.0081 (Glaive)
+P2_StrafeLeft len 2.400/2.400 frames 73 kfs 50 max 0.0102 (RightLowerArm)
+P2_StrafeRight len 2.400/2.400 frames 73 kfs 38 max 0.0110 (Glaive)
+P2_Strike len 1.100/1.100 frames 34 kfs 34 max 0.0038 (Glaive)
+P2_Transform len 1.500/1.500 frames 46 kfs 45 max 0.0131 (Glaive)
+P2_TurnLeft len 0.900/0.900 frames 28 kfs 19 max 0.0053 (Head)
+P2_TurnRight len 0.900/0.900 frames 28 kfs 17 max 0.0082 (RightFoot)
+P2_WalkBackward len 2.400/2.400 frames 73 kfs 20 max 0.0172 (Glaive)
+P2_WalkForward len 2.400/2.400 frames 73 kfs 38 max 0.0104 (Glaive)
+Phase 2 worst 0.0174.
+
+Gameplay transitions (the live boss's Animator read on the client every 0.03 s; clip names from the published ids; no unknown id seen):
+- Spawn: P1_Idle, P1_WalkBackward.
+- Seeded HP to 1 in phase 1 (ShenProbe "damage 0"): P1_Transform, P2_Idle; cue BossPhase; skin P2 template, 125 bones.
+- Phase 2 at 1 HP, posture blow (1 damage): KO -> P2_Death, cue BossDefeated.
+- Fresh spawn (900/900). Posture break -> P1_PostureBreak; the player's Heavy (ActionIntent packets sent from the client, the game's
+  own remote and validation) -> server DeathblowVictim, HP 898 -> 358 -> P1_DeathblowVictim -> P1_Transform -> phase 2 (the deathblow
+  route), cue BossPhase. Phase 2 AI then ran its own moves: P2_Guandao_Heavy, Feint, BloodWave, Guandao_Art, GuandaoSkyfall,
+  CrimsonEmbrace, TurnLeft/Right, Idle.
+- Phase 2: posture blow -> Hitstun (P2_HitLightFront); second -> StanceBroken -> P2_PostureBreak; Heavy -> DeathblowVictim (HP 0)
+  -> P2_DeathblowVictim -> KO -> P2_Death; cue BossFinish.
+The probe's entry placement, KO protection, hold and seeded posture/damage are a Studio diagnostic; the transitions are the live game's.
+
+Console (whole session): server/client ready lines; "ContentId rbxassetid://203785492 failed due to: Asset type does not match
+requested type" x3 (the Rojo plugin's sound preload, editor-only, REPORT section 14). No other warning or error.
+
+Not covered: two clients, a phone or other device, a published (live) server, texture/visual stills in Studio this session.

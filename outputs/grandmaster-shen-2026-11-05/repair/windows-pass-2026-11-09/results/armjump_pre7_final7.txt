@@ -1,0 +1,7 @@
+P2_Death               R max  43 f0  26 f4:34,f31:43 L max  30 f0   3 f3:30 | R max  43 f0  26 f4:34,f31:43 L max  30 f0   3 f3:30
+P2_DeathblowVictim     R max 118 f0  43 f2:42,f5:118,f6:52+ L max  36 f0 154 f17:36,f18:34,f19:30 | R max 131 f0  43 f2:43,f5:131,f6:41+ L max  65 f0 154 f18:37,f19:65
+P2_Guandao_L1          R max  40 f0  25 f1:33,f4:40,f5:32+ L max  36 f0   6 f11:36 | R max  40 f0  25 f1:33,f4:40,f5:31 L max  36 f0   6 f11:36
+P2_Guandao_L2          R max  72 f0  28 f1:32,f3:34,f4:44+ L max  74 f0   2 f1:38,f7:74,f11:68+ | R max  72 f0  28 f1:32,f3:34,f4:44+ L max  74 f0   2 f1:38,f6:54,f7:74+
+P2_PhantomDrift        R max  58 f0   3 f9:37,f13:58,f20:54+ L max  26 f0   3  | R max  58 f0   3 f9:37,f13:58,f20:54+ L max  26 f0   3 
+P2_Transform           R max  50 f0  27 f3:50 L max  83 f0  89 f1:83,f2:50,f38:31 | R max  50 f0  27 f3:50 L max  83 f0  89 f1:83,f2:50,f38:31
+upper-arm steps over 30 deg in a frame: pre_1113_export 37 | shen 36

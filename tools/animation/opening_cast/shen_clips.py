@@ -998,7 +998,15 @@ SEAM = {    # (2026-11-13) shen_seam stages per phase 2 clip; each trial baked, 
     "Transform": (("polish", {"slide": False}),),
     "Guandao_L1": (("polish", {"slide": False}),),
     "PhantomDrift": (("polish", {"slide": True}),),
-    "Guandao_L2": (("nudge", {"x_delta": 0.01, "target": 0.165, "mags": (0.01, 0.02, 0.03), "slides": (0.0,), "degs": (3, 6, 9, 12, 18, 24), "sigmas": (0.75, 1, 1.5, 2.5)}),),
+    "Guandao_L2": (("nudge", {"x_delta": 0.01, "target": 0.165, "mags": (0.01, 0.02, 0.03), "slides": (0.0,), "degs": (3, 6, 9, 12, 18, 24), "sigmas": (0.75, 1, 1.5, 2.5)}),
+                   # (2026-11-13) the review fade in from Idle draws clip f4 at 0.18049 (left armpit): a window on f1-7 only (trial l2m)
+                   ("polish", {"slide": False, "x_delta": -0.005, "margin": 0.0, "frames": (1, 7)})),
+    # (2026-11-13) clip f18-19's left armpit (0.219 in the export) and the review fade: polish (trial dbv); f19 then still rendered 0.18027
+    # where the left elbow sweeps 50 deg a frame past a ridge in the x-ray the polish cannot cross from either side, so the elbow is turned
+    # 16 deg at f19 (8 at f18, f20) and polished on f15-22 by the x-ray with the cloth weights and the gate tolerance (trial dbvS16b, 0.165)
+    "DeathblowVictim": (("polish", {"slide": True}),
+                        ("swing", {"side": "Left", "degs": {18: 8.0, 19: 16.0, 20: 8.0}}),
+                        ("polish", {"slide": False, "margin": 0.005, "frames": (15, 22), "cloth": True, "gate": 0.01})),
     "HitLightFront": (("polish", {"slide": True, "x_delta": 0.01}),),
     "Death": (("nudge", {"x_delta": 0.01, "target": 0.165, "mags": (0.01,), "slides": (0.0,), "degs": (3, 6, 9, 12, 18, 24), "sigmas": (0.75, 1, 1.5, 2.5)}),),
 }

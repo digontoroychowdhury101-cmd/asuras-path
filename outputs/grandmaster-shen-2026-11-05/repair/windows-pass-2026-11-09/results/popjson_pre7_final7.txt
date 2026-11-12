@@ -1,0 +1,10 @@
+P1_Idle                       0 fr, worst -                     |  0 fr, worst -                    
+P2_Death                      3 fr, worst 0.97 f51 Glaive       |  3 fr, worst 0.97 f51 Glaive      
+P2_DeathblowVictim            2 fr, worst 0.62 f54 RightHand    |  2 fr, worst 0.62 f54 RightHand   
+P2_Guandao_L1                 1 fr, worst 0.85 f6 RightHand     |  1 fr, worst 0.85 f6 RightHand    
+P2_Guandao_L2                 3 fr, worst 0.54 f11 LeftLowerArm |  3 fr, worst 0.54 f11 LeftLowerArm
+P2_HitLightFront              0 fr, worst -                     |  0 fr, worst -                    
+P2_Idle                       0 fr, worst -                     |  0 fr, worst -                    
+P2_PhantomDrift               2 fr, worst 0.64 f51 RightHand    |  2 fr, worst 0.64 f51 RightHand   
+P2_Transform                  1 fr, worst 0.58 f1 LeftHand      |  1 fr, worst 0.58 f1 LeftHand     
+frames with a >=0.5 out-and-back: [12, 12]

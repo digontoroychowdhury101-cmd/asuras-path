@@ -1,0 +1,8 @@
+clip                       pre_1113_export          | shen                    
+P2_Death                   R  2 (25) L  0 ( 0)     | R  2 (25) L  0 ( 0)    
+P2_DeathblowVictim         R  5 (35) L  0 ( 0)     | R  5 (35) L  0 ( 0)    
+P2_Guandao_L1              R  1 (36) L  0 ( 0)     | R  1 (36) L  0 ( 0)    
+P2_Guandao_L2              R  1 (16) L  1 (23)     | R  1 (16) L  1 (23)    
+P2_PhantomDrift            R  2 (27) L  0 ( 0)     | R  2 (27) L  0 ( 0)    
+P2_Transform               R  3 (41) L  0 ( 0)     | R  3 (41) L  0 ( 0)    
+frames with a reversing hand turn (right, left): 14, 1 | 14, 1   (both steps >= 15 deg)

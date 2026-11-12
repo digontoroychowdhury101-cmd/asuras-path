@@ -1,0 +1,9 @@
+P2_Guandao_L2                moved up to 0.863 (LeftLowerArm f4), joints up to 49.1 deg
+P2_DeathblowVictim           moved up to 0.544 (LeftLowerArm f17), joints up to 25.5 deg
+P2_Death                     moved up to 0.429 (RightLowerArm f59), joints up to 35.8 deg
+P2_Transform                 moved up to 0.224 (Glaive f42), joints up to 9.7 deg
+P2_Guandao_L1                moved up to 0.171 (LeftLowerArm f9), joints up to 6.3 deg
+P2_HitLightFront             moved up to 0.147 (Glaive f3), joints up to 8.4 deg
+P2_PhantomDrift              moved up to 0.111 (LeftHand f16), joints up to 6.3 deg
+P2_Idle                      moved up to 0.000 (), joints up to 0.3 deg
+P1_Idle                      moved up to 0.000 (), joints up to 0.3 deg

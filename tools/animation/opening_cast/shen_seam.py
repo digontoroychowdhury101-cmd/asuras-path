@@ -15,8 +15,19 @@ Stages, in Clip.seam's order:
                   on the haft (lsl). Kept only if both arms meet TARGET over the run and are no deeper elsewhere, the arm-in-weapon, reach,
                   grip and wrist limits are joint_polish's, no upper arm turns more in a frame than max(30 deg, the bake's) + 1, no pop the
                   clip kept under its limit passes it, and the frames outside the change solve exactly as before.
-  ("polish", {"slide": bool, "x_delta": float, "margin": float, "turn_cap": bool})   joint_polish's windows (SLSQP, POLISH_PAD 2 here), on the same measures, with the lead
-                  hand's place as a ninth control when slide.
+  ("polish", {"slide": bool, "x_delta": float, "margin": float, "turn_cap": bool, "frames": (a, b)})   joint_polish's windows (SLSQP, POLISH_PAD 2 here), on the same
+                  measures, with the lead hand's place as a ninth control when slide; with frames, only the frames from a to b past the wall open a window.
+Either stage takes "cloth": True (2026-11-13): the x-ray then also counts the arm skin's cloth-bone weights (the left sleeve and ribbon, the
+beard and coat edges: Cl_ bones, xray2_p<phase>.npz from xray_dump.py --cloth), each Cl_ bone riding its cloth point's anchor limb
+(ShenClothData) as no cloth is simulated here. review.py deforms those weights with the game's cloth, so the Sk_-only measure misread
+DeathblowVictim's left armpit at clip frame 19 (0.168 for the render's 0.180); this reads it 0.184, deeper than the render, on that shot.
+And "gate": eps (2026-11-13): a vertex counts when any UpperTorso vertex within its nearest one's distance + eps is over 0.8 on Sk_UpperTorso,
+not only the nearest. review.py counts by the nearest alone; with eps a window cannot clear a frame by moving a vertex a few thousandths
+until a lighter torso vertex is nearest (a DeathblowVictim trial did, and rendered 0.181 where the solve read 0.167). Only the 16
+nearest torso vertices are looked at (often more lie within eps), so this narrows that escape without closing it; the render's x-ray
+(review.py, nearest alone) stays the judge.
+  ("swing", {"side": "Left", "degs": {frame: deg}})   the arm's elbow turned deg about its shoulder-wrist line on each frame, from the
+                  frames as they solve before it: a start on the far side of a ridge the polish cannot cross (DeathblowVictim's f19).
 Nothing else in the bake changes, and a clip without Clip.seam bakes exactly as before.
 """
 import copy
@@ -43,13 +54,14 @@ class XRay:
     """review.py's arm x-ray: arm vertices inside UpperTorso's distance field past 0.03, only where the nearest UpperTorso vertex is over 0.8
     on Sk_UpperTorso, not counting vertices already inside in the bind pose; armature skinning with the weights normalised."""
 
-    def __init__(self, phase):
+    def __init__(self, phase, cloth=False, gate=0.0):
         from scipy.spatial import cKDTree
-        d = np.load(ROOT / ("work/shen_import/xray_p%d.npz" % phase))
+        d = np.load(ROOT / ("work/shen_import/xray%s_p%d.npz" % ("2" if cloth else "", phase)))
         self.P, self.G = d["P"], d["G"]
         W = d["W"]
         self.W = W / np.maximum(W.sum(1, keepdims=True), 1e-9)
         self.bones = [str(b) for b in d["bones"]]
+        self.anchor = cloth_anchors(phase) if cloth else {}
         used = self.W.sum(0) > 0
         self.used = [i for i in range(len(self.bones)) if used[i]]
         sdf = np.load(ROOT / ("work/shen_import/sdf_p%d.npz" % phase))
@@ -57,6 +69,9 @@ class XRay:
         self.kd = cKDTree(d["TP"])
         self.tw = d["TW"]
         self.base = self._hit(self.P)[1]
+        self.gate_eps = float(gate)     # after the bind pose's own count, which stays review.py's
+
+    gate_eps = 0.0
 
     def subset(self, keep):
         o = copy.copy(self)
@@ -91,7 +106,11 @@ class XRay:
         d = self._depth(Q)
         hit = d > 0.03
         idx = np.nonzero(hit)[0]
-        if len(idx):
+        if len(idx) and self.gate_eps > 0:
+            dist, nn = self.kd.query(Q[idx], k=16)
+            ok = ((dist <= dist[:, :1] + self.gate_eps) & (self.tw[nn] > 0.8)).any(1)
+            hit[idx[~ok]] = False
+        elif len(idx):
             _, nn = self.kd.query(Q[idx])
             hit[idx[self.tw[nn] <= 0.8]] = False
         return d, hit
@@ -100,7 +119,12 @@ class XRay:
         X = np.zeros_like(self.P)
         for i in self.used:
             b = self.bones[i]
-            R, t = bones[b] if b in bones else bones[fallback[b]]
+            if b in bones:
+                R, t = bones[b]
+            elif b in self.anchor:
+                R, t = bones[self.anchor[b]]
+            else:
+                R, t = bones[fallback[b]]
             w = self.W[:, i]
             m = w > 0
             X[m] += w[m, None] * (self.P[m] @ R.T + t)
@@ -119,10 +143,21 @@ class XRay:
 _XRAY = {}
 
 
-def xray(phase):
-    if phase not in _XRAY:
-        _XRAY[phase] = XRay(phase)
-    return _XRAY[phase]
+def xray(phase, cloth=False, gate=0.0):
+    if (phase, cloth, gate) not in _XRAY:
+        _XRAY[phase, cloth, gate] = XRay(phase, cloth, gate)
+    return _XRAY[phase, cloth, gate]
+
+
+def cloth_anchors(phase):
+    """{Cl_<sheet>_<c>_<r>: Sk_<anchor limb>} from src/shared/ShenClothData.luau (each cloth point's anchor)."""
+    import re
+    text = (ROOT / "src/shared/ShenClothData.luau").read_text(encoding="utf-8")
+    body = re.split(r"\nData\[(\d)\] = ", text)
+    body = dict(zip(body[1::2], body[2::2]))[str(phase)]
+    found = re.findall(r'sheet="(\w+)",c=(\d+),r=(\d+),at=\{[^}]*\},pin=\w+,anchor="(\w+)"', body)
+    assert len(found) == body.count('sheet="'), "ShenClothData.luau's cloth point format changed; cloth_anchors needs updating"
+    return {"Cl_%s_%s_%s" % (sh, c, r): "Sk_" + a for sh, c, r, a in found}
 
 
 def bones_of(world):
@@ -239,21 +274,42 @@ def run(L, clip, ctrl, times):
     for stage, opts in clip.seam:
         base = _final(L, clip, ctrl, times)
         extras = review_extras(phase, base[-1][0], len(base))
-        if stage == "nudge":
-            xr = _subset(xray(phase), base, extras, -0.1)
+        cloth, gate = bool(opts.get("cloth", False)), float(opts.get("gate", 0.0))
+        if stage == "swing":
+            report.append(("swing", swing_stage(L, clip, ctrl, opts)))
+        elif stage == "nudge":
+            xr = _subset(xray(phase, cloth, gate), base, extras, -0.1)
             with _Counting(L, xr, float(opts.get("x_delta", 0.0))):
                 report.append(("nudge", nudge_stage(L, clip, ctrl, times, extras, opts)))
         elif stage == "polish":
-            xr = _subset(xray(phase), base, extras, -0.05)
+            xr = _subset(xray(phase, cloth, gate), base, extras, -0.05)
             with _Counting(L, xr, float(opts.get("x_delta", 0.0))):
-                report.append(("polish", polish_stage(L, clip, ctrl, times, extras, bool(opts.get("slide", False)), float(opts.get("margin", L.POLISH_MARGIN)), bool(opts.get("turn_cap", False)))))
+                report.append(("polish", polish_stage(L, clip, ctrl, times, extras, bool(opts.get("slide", False)), float(opts.get("margin", L.POLISH_MARGIN)),
+                                                      bool(opts.get("turn_cap", False)), opts.get("frames"))))
         else:
             raise ValueError(stage)
     clip._seam = report
     return report
 
 
-def polish_stage(L, clip, ctrl, times, extras, slide, margin, turn_cap=False):
+def swing_stage(L, clip, ctrl, opts):
+    """The side's elbow pole (lpole/lelb, rpole) turned degs[frame] about that frame's shoulder-wrist line, as the frames solve before it."""
+    rg = clip.rig
+    side = opts["side"]
+    _sides, worlds, _d, _m, _e = L._polish_sweep(clip, ctrl)
+    out = {}
+    for i, deg in sorted(opts["degs"].items()):
+        w = worlds[i]
+        sh = (w[side + "UpperArm"] @ np.append(rg.JOINT[side + "UpperArm"], 1))[:3]
+        wr = (w[side + "Hand"] @ np.append(rg.JOINT[side + "Hand"], 1))[:3]
+        k = ("rpole" if "rpole" in ctrl[i] else "relb") if side == "Right" else ("lpole" if "lpole" in ctrl[i] else "lelb")
+        ctrl[i][k] = tuple(L.rodrigues(L.unit(wr - sh) * math.radians(deg)) @ np.asarray(ctrl[i][k], float))
+        out[i] = deg
+    print("shen_seam swing %s %s" % (side, out), flush=True)
+    return dict(side=side, degs=out)
+
+
+def polish_stage(L, clip, ctrl, times, extras, slide, margin, turn_cap=False, frames=None):
     from scipy.optimize import minimize
     n = len(ctrl)
     rg = clip.rig
@@ -270,6 +326,8 @@ def polish_stage(L, clip, ctrl, times, extras, slide, margin, turn_cap=False):
         return sides, worlds, [frame_depth(i, w) for i, w in enumerate(worlds)], mids, entry
     sides, worlds, depth, mids, entry = sweep()
     bad = sorted({i for i in range(1, n - 1) if depth[i] > wall} | {j for i in range(n - 1) if mids[i] > wall for j in (i, i + 1) if 0 < j < n - 1})
+    if frames is not None:
+        bad = [i for i in bad if frames[0] <= i <= frames[1]]
     runs = []
     for i in bad:
         if runs and i - runs[-1][1] <= 2 * SEAM_PAD:

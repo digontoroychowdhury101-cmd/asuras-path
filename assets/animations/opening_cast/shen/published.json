@@ -1,385 +1,385 @@
 {
   "GrandmasterShen_P1_AbbotSweep": {
-    "id": "rbxassetid://122912129415413",
+    "id": "rbxassetid://92596874836521",
     "keyframes": 59,
     "length": 1.9333300590515137,
     "slot": "GrandmasterShen_P1_AbbotSweep"
   },
   "GrandmasterShen_P1_Death": {
-    "id": "rbxassetid://101931218124886",
-    "keyframes": 59,
+    "id": "rbxassetid://83730032711777",
+    "keyframes": 67,
     "length": 3,
     "slot": "GrandmasterShen_P1_Death"
   },
   "GrandmasterShen_P1_DeathblowVictim": {
-    "id": "rbxassetid://91202694327075",
-    "keyframes": 46,
+    "id": "rbxassetid://91707916705453",
+    "keyframes": 52,
     "length": 2.200000047683716,
     "slot": "GrandmasterShen_P1_DeathblowVictim"
   },
   "GrandmasterShen_P1_Feint": {
-    "id": "rbxassetid://80237533072755",
-    "keyframes": 32,
+    "id": "rbxassetid://100399666723723",
+    "keyframes": 33,
     "length": 1.0666699409484863,
     "slot": "GrandmasterShen_P1_Feint"
   },
   "GrandmasterShen_P1_Flourish": {
-    "id": "rbxassetid://95086247485398",
+    "id": "rbxassetid://114739891320979",
     "keyframes": 49,
     "length": 1.600000023841858,
     "slot": "GrandmasterShen_P1_Flourish"
   },
   "GrandmasterShen_P1_FlowingJian": {
-    "id": "rbxassetid://130228806026081",
-    "keyframes": 104,
+    "id": "rbxassetid://72976402098829",
+    "keyframes": 105,
     "length": 3.5,
     "slot": "GrandmasterShen_P1_FlowingJian"
   },
   "GrandmasterShen_P1_Guandao_Art": {
-    "id": "rbxassetid://113016961344542",
+    "id": "rbxassetid://134931097839752",
     "keyframes": 28,
     "length": 0.8999999761581421,
     "slot": "GrandmasterShen_P1_Guandao_Art"
   },
   "GrandmasterShen_P1_Guandao_Heavy": {
-    "id": "rbxassetid://84483982609721",
+    "id": "rbxassetid://130823759176871",
     "keyframes": 26,
     "length": 0.833329975605011,
     "slot": "GrandmasterShen_P1_Guandao_Heavy"
   },
   "GrandmasterShen_P1_Guandao_L1": {
-    "id": "rbxassetid://90693278321537",
+    "id": "rbxassetid://105483092935380",
     "keyframes": 13,
     "length": 0.4000000059604645,
     "slot": "GrandmasterShen_P1_Guandao_L1"
   },
   "GrandmasterShen_P1_Guandao_L2": {
-    "id": "rbxassetid://126579601061367",
+    "id": "rbxassetid://111985109265437",
     "keyframes": 14,
     "length": 0.4333299994468689,
     "slot": "GrandmasterShen_P1_Guandao_L2"
   },
   "GrandmasterShen_P1_Guandao_L3": {
-    "id": "rbxassetid://71428835921087",
+    "id": "rbxassetid://102937924493621",
     "keyframes": 17,
     "length": 0.5333300232887268,
     "slot": "GrandmasterShen_P1_Guandao_L3"
   },
   "GrandmasterShen_P1_Guandao_Running": {
-    "id": "rbxassetid://128283161159933",
+    "id": "rbxassetid://139031427049472",
     "keyframes": 19,
     "length": 0.6000000238418579,
     "slot": "GrandmasterShen_P1_Guandao_Running"
   },
   "GrandmasterShen_P1_GuardHit": {
-    "id": "rbxassetid://87799715814857",
-    "keyframes": 13,
+    "id": "rbxassetid://76094066426540",
+    "keyframes": 14,
     "length": 0.4666700065135956,
     "slot": "GrandmasterShen_P1_GuardHit"
   },
   "GrandmasterShen_P1_GuardLoop": {
-    "id": "rbxassetid://72000709612577",
+    "id": "rbxassetid://110645618849890",
     "keyframes": 5,
     "length": 1.7999999523162842,
     "slot": "GrandmasterShen_P1_GuardLoop"
   },
   "GrandmasterShen_P1_HesitantMoon": {
-    "id": "rbxassetid://73331719679209",
-    "keyframes": 64,
+    "id": "rbxassetid://128170890087140",
+    "keyframes": 65,
     "length": 2.1333301067352295,
     "slot": "GrandmasterShen_P1_HesitantMoon"
   },
   "GrandmasterShen_P1_HitLightBack": {
-    "id": "rbxassetid://94589086172558",
-    "keyframes": 14,
+    "id": "rbxassetid://87334008559944",
+    "keyframes": 15,
     "length": 0.4666700065135956,
     "slot": "GrandmasterShen_P1_HitLightBack"
   },
   "GrandmasterShen_P1_HitLightFront": {
-    "id": "rbxassetid://90652741413173",
+    "id": "rbxassetid://139517599246690",
     "keyframes": 13,
     "length": 0.4666700065135956,
     "slot": "GrandmasterShen_P1_HitLightFront"
   },
   "GrandmasterShen_P1_HitLightLeft": {
-    "id": "rbxassetid://121007074678154",
+    "id": "rbxassetid://137047568570980",
     "keyframes": 14,
     "length": 0.4666700065135956,
     "slot": "GrandmasterShen_P1_HitLightLeft"
   },
   "GrandmasterShen_P1_HitLightRight": {
-    "id": "rbxassetid://129690996808616",
-    "keyframes": 14,
+    "id": "rbxassetid://103703740202612",
+    "keyframes": 15,
     "length": 0.4666700065135956,
     "slot": "GrandmasterShen_P1_HitLightRight"
   },
   "GrandmasterShen_P1_Idle": {
-    "id": "rbxassetid://95368630147871",
-    "keyframes": 25,
+    "id": "rbxassetid://101546280095069",
+    "keyframes": 22,
     "length": 6.400000095367432,
     "slot": "GrandmasterShen_P1_Idle"
   },
   "GrandmasterShen_P1_PostureBreak": {
-    "id": "rbxassetid://79907651380238",
-    "keyframes": 28,
+    "id": "rbxassetid://124019658372081",
+    "keyframes": 31,
     "length": 1,
     "slot": "GrandmasterShen_P1_PostureBreak"
   },
   "GrandmasterShen_P1_PrayerBeads": {
-    "id": "rbxassetid://85246830462267",
+    "id": "rbxassetid://138061832441389",
     "keyframes": 63,
     "length": 2.0999999046325684,
     "slot": "GrandmasterShen_P1_PrayerBeads"
   },
   "GrandmasterShen_P1_RunForward": {
-    "id": "rbxassetid://112184891375884",
+    "id": "rbxassetid://135337584735489",
     "keyframes": 23,
     "length": 0.75,
     "slot": "GrandmasterShen_P1_RunForward"
   },
   "GrandmasterShen_P1_StrafeLeft": {
-    "id": "rbxassetid://90568171943685",
+    "id": "rbxassetid://107945915622300",
     "keyframes": 40,
     "length": 1.2999999523162842,
     "slot": "GrandmasterShen_P1_StrafeLeft"
   },
   "GrandmasterShen_P1_StrafeRight": {
-    "id": "rbxassetid://96281271835374",
+    "id": "rbxassetid://138556775768819",
     "keyframes": 40,
     "length": 1.2999999523162842,
     "slot": "GrandmasterShen_P1_StrafeRight"
   },
   "GrandmasterShen_P1_Strike": {
-    "id": "rbxassetid://94873022197045",
-    "keyframes": 33,
+    "id": "rbxassetid://109665329571122",
+    "keyframes": 34,
     "length": 1.100000023841858,
     "slot": "GrandmasterShen_P1_Strike"
   },
   "GrandmasterShen_P1_Transform": {
-    "id": "rbxassetid://81061665400598",
-    "keyframes": 28,
+    "id": "rbxassetid://96688152220617",
+    "keyframes": 34,
     "length": 1.7000000476837158,
     "slot": "GrandmasterShen_P1_Transform"
   },
   "GrandmasterShen_P1_TurnLeft": {
-    "id": "rbxassetid://140732239975623",
-    "keyframes": 26,
+    "id": "rbxassetid://101911790945276",
+    "keyframes": 27,
     "length": 0.8999999761581421,
     "slot": "GrandmasterShen_P1_TurnLeft"
   },
   "GrandmasterShen_P1_TurnRight": {
-    "id": "rbxassetid://120744812557792",
+    "id": "rbxassetid://114094341188149",
     "keyframes": 26,
     "length": 0.8999999761581421,
     "slot": "GrandmasterShen_P1_TurnRight"
   },
   "GrandmasterShen_P1_WalkBackward": {
-    "id": "rbxassetid://100146219305818",
-    "keyframes": 45,
+    "id": "rbxassetid://97086048000909",
+    "keyframes": 46,
     "length": 1.5,
     "slot": "GrandmasterShen_P1_WalkBackward"
   },
   "GrandmasterShen_P1_WalkForward": {
-    "id": "rbxassetid://111139305130293",
-    "keyframes": 43,
+    "id": "rbxassetid://139488102975648",
+    "keyframes": 42,
     "length": 1.399999976158142,
     "slot": "GrandmasterShen_P1_WalkForward"
   },
   "GrandmasterShen_P1_WheelOfHeaven": {
-    "id": "rbxassetid://79301054825657",
+    "id": "rbxassetid://83715179991665",
     "keyframes": 79,
     "length": 2.5999999046325684,
     "slot": "GrandmasterShen_P1_WheelOfHeaven"
   },
   "GrandmasterShen_P2_BloodWave": {
-    "id": "rbxassetid://130644447357665",
-    "keyframes": 64,
+    "id": "rbxassetid://100183756423597",
+    "keyframes": 65,
     "length": 2.1333301067352295,
     "slot": "GrandmasterShen_P2_BloodWave"
   },
   "GrandmasterShen_P2_CrimsonEmbrace": {
-    "id": "rbxassetid://96183546097046",
-    "keyframes": 71,
+    "id": "rbxassetid://79355010587058",
+    "keyframes": 72,
     "length": 2.4000000953674316,
     "slot": "GrandmasterShen_P2_CrimsonEmbrace"
   },
   "GrandmasterShen_P2_Death": {
-    "id": "rbxassetid://107623325499134",
-    "keyframes": 68,
+    "id": "rbxassetid://93789511943941",
+    "keyframes": 67,
     "length": 3,
     "slot": "GrandmasterShen_P2_Death"
   },
   "GrandmasterShen_P2_DeathblowVictim": {
-    "id": "rbxassetid://139754735053877",
-    "keyframes": 42,
+    "id": "rbxassetid://75680935571554",
+    "keyframes": 67,
     "length": 2.200000047683716,
     "slot": "GrandmasterShen_P2_DeathblowVictim"
   },
   "GrandmasterShen_P2_Feint": {
-    "id": "rbxassetid://117936671296928",
-    "keyframes": 32,
+    "id": "rbxassetid://71942686585924",
+    "keyframes": 33,
     "length": 1.0666699409484863,
     "slot": "GrandmasterShen_P2_Feint"
   },
   "GrandmasterShen_P2_Flourish": {
-    "id": "rbxassetid://76935383013589",
+    "id": "rbxassetid://82619737327788",
     "keyframes": 49,
     "length": 1.600000023841858,
     "slot": "GrandmasterShen_P2_Flourish"
   },
   "GrandmasterShen_P2_GuandaoSkyfall": {
-    "id": "rbxassetid://107083410675703",
-    "keyframes": 75,
+    "id": "rbxassetid://119895449042023",
+    "keyframes": 77,
     "length": 2.5999999046325684,
     "slot": "GrandmasterShen_P2_GuandaoSkyfall"
   },
   "GrandmasterShen_P2_Guandao_Art": {
-    "id": "rbxassetid://80836423877849",
+    "id": "rbxassetid://83307328775080",
     "keyframes": 28,
     "length": 0.8999999761581421,
     "slot": "GrandmasterShen_P2_Guandao_Art"
   },
   "GrandmasterShen_P2_Guandao_Heavy": {
-    "id": "rbxassetid://139891517534747",
+    "id": "rbxassetid://80801804388775",
     "keyframes": 26,
     "length": 0.833329975605011,
     "slot": "GrandmasterShen_P2_Guandao_Heavy"
   },
   "GrandmasterShen_P2_Guandao_L1": {
-    "id": "rbxassetid://95787094565190",
+    "id": "rbxassetid://108934758896437",
     "keyframes": 13,
     "length": 0.4000000059604645,
     "slot": "GrandmasterShen_P2_Guandao_L1"
   },
   "GrandmasterShen_P2_Guandao_L2": {
-    "id": "rbxassetid://72047599990376",
+    "id": "rbxassetid://95279598974480",
     "keyframes": 14,
     "length": 0.4333299994468689,
     "slot": "GrandmasterShen_P2_Guandao_L2"
   },
   "GrandmasterShen_P2_Guandao_L3": {
-    "id": "rbxassetid://113003401811000",
+    "id": "rbxassetid://98655716187664",
     "keyframes": 17,
     "length": 0.5333300232887268,
     "slot": "GrandmasterShen_P2_Guandao_L3"
   },
   "GrandmasterShen_P2_Guandao_Running": {
-    "id": "rbxassetid://138971034810541",
+    "id": "rbxassetid://132411812943883",
     "keyframes": 19,
     "length": 0.6000000238418579,
     "slot": "GrandmasterShen_P2_Guandao_Running"
   },
   "GrandmasterShen_P2_GuardHit": {
-    "id": "rbxassetid://137512673001290",
-    "keyframes": 15,
+    "id": "rbxassetid://72057663993967",
+    "keyframes": 14,
     "length": 0.4666700065135956,
     "slot": "GrandmasterShen_P2_GuardHit"
   },
   "GrandmasterShen_P2_GuardLoop": {
-    "id": "rbxassetid://89628887933024",
-    "keyframes": 12,
+    "id": "rbxassetid://98021808514318",
+    "keyframes": 8,
     "length": 1.7999999523162842,
     "slot": "GrandmasterShen_P2_GuardLoop"
   },
   "GrandmasterShen_P2_HitLightBack": {
-    "id": "rbxassetid://108791590457170",
+    "id": "rbxassetid://106236987843281",
     "keyframes": 15,
     "length": 0.4666700065135956,
     "slot": "GrandmasterShen_P2_HitLightBack"
   },
   "GrandmasterShen_P2_HitLightFront": {
-    "id": "rbxassetid://126263405590864",
+    "id": "rbxassetid://89523689660299",
     "keyframes": 15,
     "length": 0.4666700065135956,
     "slot": "GrandmasterShen_P2_HitLightFront"
   },
   "GrandmasterShen_P2_HitLightLeft": {
-    "id": "rbxassetid://136454566511055",
+    "id": "rbxassetid://96457281660498",
     "keyframes": 15,
     "length": 0.4666700065135956,
     "slot": "GrandmasterShen_P2_HitLightLeft"
   },
   "GrandmasterShen_P2_HitLightRight": {
-    "id": "rbxassetid://82316826160909",
+    "id": "rbxassetid://88739368241695",
     "keyframes": 15,
     "length": 0.4666700065135956,
     "slot": "GrandmasterShen_P2_HitLightRight"
   },
   "GrandmasterShen_P2_Idle": {
-    "id": "rbxassetid://88576624798646",
-    "keyframes": 68,
+    "id": "rbxassetid://75909021775452",
+    "keyframes": 65,
     "length": 4.800000190734863,
     "slot": "GrandmasterShen_P2_Idle"
   },
   "GrandmasterShen_P2_PhantomDrift": {
-    "id": "rbxassetid://96015799755804",
+    "id": "rbxassetid://137557077088948",
     "keyframes": 61,
     "length": 2,
     "slot": "GrandmasterShen_P2_PhantomDrift"
   },
   "GrandmasterShen_P2_PostureBreak": {
-    "id": "rbxassetid://119321164498892",
-    "keyframes": 30,
+    "id": "rbxassetid://102916289095542",
+    "keyframes": 31,
     "length": 1,
     "slot": "GrandmasterShen_P2_PostureBreak"
   },
   "GrandmasterShen_P2_RendingArc": {
-    "id": "rbxassetid://139401114764660",
-    "keyframes": 77,
+    "id": "rbxassetid://91031994161391",
+    "keyframes": 79,
     "length": 2.5999999046325684,
     "slot": "GrandmasterShen_P2_RendingArc"
   },
   "GrandmasterShen_P2_RunForward": {
-    "id": "rbxassetid://75764611446385",
-    "keyframes": 20,
+    "id": "rbxassetid://96322915788903",
+    "keyframes": 44,
     "length": 1.600000023841858,
     "slot": "GrandmasterShen_P2_RunForward"
   },
   "GrandmasterShen_P2_StrafeLeft": {
-    "id": "rbxassetid://122059756851988",
-    "keyframes": 20,
+    "id": "rbxassetid://90866663183586",
+    "keyframes": 50,
     "length": 2.4000000953674316,
     "slot": "GrandmasterShen_P2_StrafeLeft"
   },
   "GrandmasterShen_P2_StrafeRight": {
-    "id": "rbxassetid://102093636426715",
-    "keyframes": 23,
+    "id": "rbxassetid://114060665498417",
+    "keyframes": 38,
     "length": 2.4000000953674316,
     "slot": "GrandmasterShen_P2_StrafeRight"
   },
   "GrandmasterShen_P2_Strike": {
-    "id": "rbxassetid://94204061315322",
-    "keyframes": 33,
+    "id": "rbxassetid://91591764655271",
+    "keyframes": 34,
     "length": 1.100000023841858,
     "slot": "GrandmasterShen_P2_Strike"
   },
   "GrandmasterShen_P2_Transform": {
-    "id": "rbxassetid://73377155327994",
-    "keyframes": 44,
+    "id": "rbxassetid://124009345917339",
+    "keyframes": 45,
     "length": 1.5,
     "slot": "GrandmasterShen_P2_Transform"
   },
   "GrandmasterShen_P2_TurnLeft": {
-    "id": "rbxassetid://136196974104889",
-    "keyframes": 12,
+    "id": "rbxassetid://99835535296085",
+    "keyframes": 19,
     "length": 0.8999999761581421,
     "slot": "GrandmasterShen_P2_TurnLeft"
   },
   "GrandmasterShen_P2_TurnRight": {
-    "id": "rbxassetid://87434024964181",
-    "keyframes": 10,
+    "id": "rbxassetid://112998287323714",
+    "keyframes": 17,
     "length": 0.8999999761581421,
     "slot": "GrandmasterShen_P2_TurnRight"
   },
   "GrandmasterShen_P2_WalkBackward": {
-    "id": "rbxassetid://82418627089813",
-    "keyframes": 23,
+    "id": "rbxassetid://123245885562097",
+    "keyframes": 20,
     "length": 2.4000000953674316,
     "slot": "GrandmasterShen_P2_WalkBackward"
   },
   "GrandmasterShen_P2_WalkForward": {
-    "id": "rbxassetid://93136820789118",
-    "keyframes": 11,
+    "id": "rbxassetid://99711211064378",
+    "keyframes": 38,
     "length": 2.4000000953674316,
     "slot": "GrandmasterShen_P2_WalkForward"
   }

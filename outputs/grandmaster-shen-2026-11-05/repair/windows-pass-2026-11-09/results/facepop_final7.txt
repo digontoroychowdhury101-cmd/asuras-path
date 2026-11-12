@@ -1,0 +1,1 @@
+clips with a roll pop > 0.3: 0

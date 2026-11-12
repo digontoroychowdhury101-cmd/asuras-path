@@ -65976,7 +65976,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P1_AbbotSweep</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://122912129415413</uri>
+              <uri>rbxassetid://92596874836521</uri>
             </Content>
           </Properties>
         </Item>
@@ -65984,7 +65984,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P1_Death</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://101931218124886</uri>
+              <uri>rbxassetid://83730032711777</uri>
             </Content>
           </Properties>
         </Item>
@@ -65992,7 +65992,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P1_DeathblowVictim</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://91202694327075</uri>
+              <uri>rbxassetid://91707916705453</uri>
             </Content>
           </Properties>
         </Item>
@@ -66000,7 +66000,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P1_Feint</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://80237533072755</uri>
+              <uri>rbxassetid://100399666723723</uri>
             </Content>
           </Properties>
         </Item>
@@ -66008,7 +66008,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P1_Flourish</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://95086247485398</uri>
+              <uri>rbxassetid://114739891320979</uri>
             </Content>
           </Properties>
         </Item>
@@ -66016,7 +66016,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P1_FlowingJian</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://130228806026081</uri>
+              <uri>rbxassetid://72976402098829</uri>
             </Content>
           </Properties>
         </Item>
@@ -66024,7 +66024,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P1_Guandao_Art</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://113016961344542</uri>
+              <uri>rbxassetid://134931097839752</uri>
             </Content>
           </Properties>
         </Item>
@@ -66032,7 +66032,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P1_Guandao_Heavy</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://84483982609721</uri>
+              <uri>rbxassetid://130823759176871</uri>
             </Content>
           </Properties>
         </Item>
@@ -66040,7 +66040,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P1_Guandao_L1</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://90693278321537</uri>
+              <uri>rbxassetid://105483092935380</uri>
             </Content>
           </Properties>
         </Item>
@@ -66048,7 +66048,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P1_Guandao_L2</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://126579601061367</uri>
+              <uri>rbxassetid://111985109265437</uri>
             </Content>
           </Properties>
         </Item>
@@ -66056,7 +66056,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P1_Guandao_L3</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://71428835921087</uri>
+              <uri>rbxassetid://102937924493621</uri>
             </Content>
           </Properties>
         </Item>
@@ -66064,7 +66064,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P1_Guandao_Running</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://128283161159933</uri>
+              <uri>rbxassetid://139031427049472</uri>
             </Content>
           </Properties>
         </Item>
@@ -66072,7 +66072,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P1_GuardHit</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://87799715814857</uri>
+              <uri>rbxassetid://76094066426540</uri>
             </Content>
           </Properties>
         </Item>
@@ -66080,7 +66080,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P1_GuardLoop</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://72000709612577</uri>
+              <uri>rbxassetid://110645618849890</uri>
             </Content>
           </Properties>
         </Item>
@@ -66088,7 +66088,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P1_HesitantMoon</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://73331719679209</uri>
+              <uri>rbxassetid://128170890087140</uri>
             </Content>
           </Properties>
         </Item>
@@ -66096,7 +66096,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P1_HitLightBack</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://94589086172558</uri>
+              <uri>rbxassetid://87334008559944</uri>
             </Content>
           </Properties>
         </Item>
@@ -66104,7 +66104,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P1_HitLightFront</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://90652741413173</uri>
+              <uri>rbxassetid://139517599246690</uri>
             </Content>
           </Properties>
         </Item>
@@ -66112,7 +66112,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P1_HitLightLeft</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://121007074678154</uri>
+              <uri>rbxassetid://137047568570980</uri>
             </Content>
           </Properties>
         </Item>
@@ -66120,7 +66120,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P1_HitLightRight</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://129690996808616</uri>
+              <uri>rbxassetid://103703740202612</uri>
             </Content>
           </Properties>
         </Item>
@@ -66128,7 +66128,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P1_Idle</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://95368630147871</uri>
+              <uri>rbxassetid://101546280095069</uri>
             </Content>
           </Properties>
         </Item>
@@ -66136,7 +66136,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P1_PostureBreak</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://79907651380238</uri>
+              <uri>rbxassetid://124019658372081</uri>
             </Content>
           </Properties>
         </Item>
@@ -66144,7 +66144,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P1_PrayerBeads</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://85246830462267</uri>
+              <uri>rbxassetid://138061832441389</uri>
             </Content>
           </Properties>
         </Item>
@@ -66152,7 +66152,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P1_RunForward</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://112184891375884</uri>
+              <uri>rbxassetid://135337584735489</uri>
             </Content>
           </Properties>
         </Item>
@@ -66160,7 +66160,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P1_StrafeLeft</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://90568171943685</uri>
+              <uri>rbxassetid://107945915622300</uri>
             </Content>
           </Properties>
         </Item>
@@ -66168,7 +66168,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P1_StrafeRight</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://96281271835374</uri>
+              <uri>rbxassetid://138556775768819</uri>
             </Content>
           </Properties>
         </Item>
@@ -66176,7 +66176,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P1_Strike</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://94873022197045</uri>
+              <uri>rbxassetid://109665329571122</uri>
             </Content>
           </Properties>
         </Item>
@@ -66184,7 +66184,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P1_Transform</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://81061665400598</uri>
+              <uri>rbxassetid://96688152220617</uri>
             </Content>
           </Properties>
         </Item>
@@ -66192,7 +66192,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P1_TurnLeft</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://140732239975623</uri>
+              <uri>rbxassetid://101911790945276</uri>
             </Content>
           </Properties>
         </Item>
@@ -66200,7 +66200,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P1_TurnRight</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://120744812557792</uri>
+              <uri>rbxassetid://114094341188149</uri>
             </Content>
           </Properties>
         </Item>
@@ -66208,7 +66208,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P1_WalkBackward</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://100146219305818</uri>
+              <uri>rbxassetid://97086048000909</uri>
             </Content>
           </Properties>
         </Item>
@@ -66216,7 +66216,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P1_WalkForward</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://111139305130293</uri>
+              <uri>rbxassetid://139488102975648</uri>
             </Content>
           </Properties>
         </Item>
@@ -66224,7 +66224,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P1_WheelOfHeaven</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://79301054825657</uri>
+              <uri>rbxassetid://83715179991665</uri>
             </Content>
           </Properties>
         </Item>
@@ -66232,7 +66232,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P2_BloodWave</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://130644447357665</uri>
+              <uri>rbxassetid://100183756423597</uri>
             </Content>
           </Properties>
         </Item>
@@ -66240,7 +66240,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P2_CrimsonEmbrace</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://96183546097046</uri>
+              <uri>rbxassetid://79355010587058</uri>
             </Content>
           </Properties>
         </Item>
@@ -66248,7 +66248,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P2_Death</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://107623325499134</uri>
+              <uri>rbxassetid://93789511943941</uri>
             </Content>
           </Properties>
         </Item>
@@ -66256,7 +66256,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P2_DeathblowVictim</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://139754735053877</uri>
+              <uri>rbxassetid://75680935571554</uri>
             </Content>
           </Properties>
         </Item>
@@ -66264,7 +66264,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P2_Feint</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://117936671296928</uri>
+              <uri>rbxassetid://71942686585924</uri>
             </Content>
           </Properties>
         </Item>
@@ -66272,7 +66272,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P2_Flourish</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://76935383013589</uri>
+              <uri>rbxassetid://82619737327788</uri>
             </Content>
           </Properties>
         </Item>
@@ -66280,7 +66280,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P2_GuandaoSkyfall</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://107083410675703</uri>
+              <uri>rbxassetid://119895449042023</uri>
             </Content>
           </Properties>
         </Item>
@@ -66288,7 +66288,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P2_Guandao_Art</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://80836423877849</uri>
+              <uri>rbxassetid://83307328775080</uri>
             </Content>
           </Properties>
         </Item>
@@ -66296,7 +66296,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P2_Guandao_Heavy</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://139891517534747</uri>
+              <uri>rbxassetid://80801804388775</uri>
             </Content>
           </Properties>
         </Item>
@@ -66304,7 +66304,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P2_Guandao_L1</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://95787094565190</uri>
+              <uri>rbxassetid://108934758896437</uri>
             </Content>
           </Properties>
         </Item>
@@ -66312,7 +66312,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P2_Guandao_L2</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://72047599990376</uri>
+              <uri>rbxassetid://95279598974480</uri>
             </Content>
           </Properties>
         </Item>
@@ -66320,7 +66320,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P2_Guandao_L3</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://113003401811000</uri>
+              <uri>rbxassetid://98655716187664</uri>
             </Content>
           </Properties>
         </Item>
@@ -66328,7 +66328,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P2_Guandao_Running</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://138971034810541</uri>
+              <uri>rbxassetid://132411812943883</uri>
             </Content>
           </Properties>
         </Item>
@@ -66336,7 +66336,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P2_GuardHit</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://137512673001290</uri>
+              <uri>rbxassetid://72057663993967</uri>
             </Content>
           </Properties>
         </Item>
@@ -66344,7 +66344,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P2_GuardLoop</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://89628887933024</uri>
+              <uri>rbxassetid://98021808514318</uri>
             </Content>
           </Properties>
         </Item>
@@ -66352,7 +66352,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P2_HitLightBack</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://108791590457170</uri>
+              <uri>rbxassetid://106236987843281</uri>
             </Content>
           </Properties>
         </Item>
@@ -66360,7 +66360,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P2_HitLightFront</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://126263405590864</uri>
+              <uri>rbxassetid://89523689660299</uri>
             </Content>
           </Properties>
         </Item>
@@ -66368,7 +66368,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P2_HitLightLeft</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://136454566511055</uri>
+              <uri>rbxassetid://96457281660498</uri>
             </Content>
           </Properties>
         </Item>
@@ -66376,7 +66376,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P2_HitLightRight</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://82316826160909</uri>
+              <uri>rbxassetid://88739368241695</uri>
             </Content>
           </Properties>
         </Item>
@@ -66384,7 +66384,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P2_Idle</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://88576624798646</uri>
+              <uri>rbxassetid://75909021775452</uri>
             </Content>
           </Properties>
         </Item>
@@ -66392,7 +66392,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P2_PhantomDrift</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://96015799755804</uri>
+              <uri>rbxassetid://137557077088948</uri>
             </Content>
           </Properties>
         </Item>
@@ -66400,7 +66400,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P2_PostureBreak</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://119321164498892</uri>
+              <uri>rbxassetid://102916289095542</uri>
             </Content>
           </Properties>
         </Item>
@@ -66408,7 +66408,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P2_RendingArc</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://139401114764660</uri>
+              <uri>rbxassetid://91031994161391</uri>
             </Content>
           </Properties>
         </Item>
@@ -66416,7 +66416,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P2_RunForward</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://75764611446385</uri>
+              <uri>rbxassetid://96322915788903</uri>
             </Content>
           </Properties>
         </Item>
@@ -66424,7 +66424,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P2_StrafeLeft</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://122059756851988</uri>
+              <uri>rbxassetid://90866663183586</uri>
             </Content>
           </Properties>
         </Item>
@@ -66432,7 +66432,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P2_StrafeRight</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://102093636426715</uri>
+              <uri>rbxassetid://114060665498417</uri>
             </Content>
           </Properties>
         </Item>
@@ -66440,7 +66440,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P2_Strike</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://94204061315322</uri>
+              <uri>rbxassetid://91591764655271</uri>
             </Content>
           </Properties>
         </Item>
@@ -66448,7 +66448,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P2_Transform</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://73377155327994</uri>
+              <uri>rbxassetid://124009345917339</uri>
             </Content>
           </Properties>
         </Item>
@@ -66456,7 +66456,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P2_TurnLeft</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://136196974104889</uri>
+              <uri>rbxassetid://99835535296085</uri>
             </Content>
           </Properties>
         </Item>
@@ -66464,7 +66464,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P2_TurnRight</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://87434024964181</uri>
+              <uri>rbxassetid://112998287323714</uri>
             </Content>
           </Properties>
         </Item>
@@ -66472,7 +66472,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P2_WalkBackward</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://82418627089813</uri>
+              <uri>rbxassetid://123245885562097</uri>
             </Content>
           </Properties>
         </Item>
@@ -66480,7 +66480,7 @@ return WorldService
           <Properties>
             <string name="Name">GrandmasterShen_P2_WalkForward</string>
             <Content name="AnimationContent">
-              <uri>rbxassetid://93136820789118</uri>
+              <uri>rbxassetid://99711211064378</uri>
             </Content>
           </Properties>
         </Item>
