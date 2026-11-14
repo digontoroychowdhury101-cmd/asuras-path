@@ -879,3 +879,22 @@ Publishing and Studio (`results/studio_published_1113.txt`):
 
 Place: `places/AsurasPath.rbxlx` is now the source build (it had uncommitted Studio edits with the pre-11-12 ClothSim; backed up outside
 the repo before rebuilding; no Studio-only edit worth keeping was found).
+
+## 17. Re-check of the published set, and the same Shen on every computer (11-14)
+
+- Implemented and consistent: branch tip 9c177db on origin before this section; 64/64 clips in manifest, `published.json` and
+  `AsuraBossAnimations.model.json` agree; the place in the checkout is the tested build (sha256 a353dd00..., script digest 462022588).
+- Review x-ray on fresh shots of all 64 exports (`results/xray_v1114_all64.txt`): none past 0.18 at three decimals; at five decimals
+  P2 Guandao_L3 is 0.18014 at clip f8 (section 8 item 2, unchanged since 11-11). Watched in normal renders (front and the player's camera):
+  the arm is in front of his chest and nothing shows through, but it is still past the limit and stays open. Next: P2 HitLightLeft 0.17934,
+  Skyfall 0.17903. Locomotion: worst P2 WalkBackward and TurnRight 0.175.
+- Cloth and weapon contacts (rendered mesh, `results/mset_finK5_*.json`): the deepest pairs are the glaive in his chest in P2 Flourish
+  0.342 and L2 0.293, which happen only in the review shot's 0.2 s blend from Idle; the game starts these clips with a 0.1 s blend
+  (`BossAnimations.luau:72`), where section 8 item 4 measured none (L2 keeps a 0.071 graze at clip f4). Next: LeftSleeve inside the
+  left upper arm (P2 DeathblowVictim 0.197, Skyfall 0.196, CrimsonEmbrace 0.181) and the beard's root in his head (RendingArc and
+  DeathblowVictim 0.196, Feint 0.188, Death 0.184). Fresh cloth bakes of those clips (tag v1114c) watched from the player's camera and
+  the front (`renders_1114/`): the sleeve sits under the arm's surface and the beard's root under the chin, nothing shows through.
+  640x360 renders; a closer camera was not checked. Section 8 items 1-3 remain the list of measured, unaccepted contacts.
+- Same Shen everywhere: `tools/qa/ShenFingerprint.luau` (read-only) digests both of his models, his 64 animation ids and 10 modules, and
+  preloads all 173 assets he uses. This PC (Studio 0.747.0.7471481): `results/shen_fingerprint_1114.txt`. The other computers'
+  steps are in `HANDOFF_1113.md` step 4; not run there yet.

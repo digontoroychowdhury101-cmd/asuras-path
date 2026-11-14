@@ -1,0 +1,15 @@
+Shen fingerprint, Windows PC, 2026-11-14. Studio 0.747.0.7471481, Edit mode, places/AsurasPath.rbxlx opened from the checkout (sha256
+a353dd00028eb3bf..., never saved), HttpEnabled false, signed in as user 3148600636.
+
+tools/qa/SourceDigest.luau:
+scripts 286 bytes 2859366 digest 462022588 | AsuraAssets children 24
+
+tools/qa/ShenFingerprint.luau (the committed file, run twice through tools/studio_mcp.py with the same result; P1, P2 and anims also equal on two drafts):
+shen P1 295 2136849893 | P2 299 1475255551 | anims 64 1272680293 | modules 10 1784190466
+loads 173/173 ok: Animation.AnimationId 64/64, MeshPart.MeshId 85/85, Sound.SoundId 16/16, SurfaceAppearance.ColorMap 2/2,
+SurfaceAppearance.MetalnessMap 2/2, SurfaceAppearance.NormalMap 2/2, SurfaceAppearance.RoughnessMap 2/2
+
+Earlier drafts of the load check (not the committed file) passed mesh ids to PreloadAsync as bare strings, which Studio fetches as images
+("Asset type does not match requested type" for every mesh); the committed file preloads each MeshPart itself and each texture map through
+an ImageLabel. The "modules 9" digest of a draft left out PresentationAssets (where his 16 sound ids are).
+Another computer is the same Shen only when it prints these lines; this file is this PC's evidence, not the other computers'.

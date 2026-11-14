@@ -1,0 +1,75 @@
+Review x-ray (tools/blender/shen_import/review.py, SHEN_REVIEW_CLASH=UpperTorso, both arms, limit: past 0.18) on fresh review shots of all 64
+exported clips (work/opening_cast_bake/shen frame files, shot suffix _v1114), Windows PC 2026-11-14. Deepest per clip, three decimals as review.py
+prints them; the three closest re-measured at five decimals with scripts/xray_exact.py below. Shot frame = clip frame + 18.
+
+f1_AbbotSweep            83 frames  deepest 0.144
+f1_Death                115 frames  deepest 0.146
+f1_DeathblowVictim       91 frames  deepest 0.140
+f1_Feint                 57 frames  deepest 0.156
+f1_Flourish              73 frames  deepest 0.131
+f1_FlowingJian          130 frames  deepest 0.149
+f1_Guandao_Art           52 frames  deepest 0.125
+f1_Guandao_Heavy         50 frames  deepest 0.138
+f1_Guandao_L1            37 frames  deepest 0.138
+f1_Guandao_L2            38 frames  deepest 0.137
+f1_Guandao_L3            41 frames  deepest 0.141
+f1_Guandao_Running       43 frames  deepest 0.141
+f1_GuardHit              39 frames  deepest 0.132
+f1_GuardLoop             79 frames  deepest 0.143
+f1_HesitantMoon          89 frames  deepest 0.146
+f1_HitLightBack          39 frames  deepest 0.070
+f1_HitLightFront         39 frames  deepest 0.051
+f1_HitLightLeft          39 frames  deepest 0.044
+f1_HitLightRight         39 frames  deepest 0.112
+f1_Idle                 217 frames  deepest 0.044
+f1_PostureBreak          55 frames  deepest 0.145
+f1_PrayerBeads           88 frames  deepest 0.148
+f1_RunForward            47 frames  deepest 0.045
+f1_StrafeLeft            64 frames  deepest 0.044
+f1_StrafeRight           64 frames  deepest 0.044
+f1_Strike                58 frames  deepest 0.135
+f1_Transform             76 frames  deepest 0.137
+f1_TurnLeft              52 frames  deepest 0.046
+f1_TurnRight             52 frames  deepest 0.044
+f1_WalkBackward          70 frames  deepest 0.044
+f1_WalkForward           67 frames  deepest 0.044
+f1_WheelOfHeaven        103 frames  deepest 0.154
+f2_BloodWave             89 frames  deepest 0.167
+f2_CrimsonEmbrace        97 frames  deepest 0.166
+f2_Death                115 frames  deepest 0.174
+f2_DeathblowVictim       91 frames  deepest 0.169
+f2_Feint                 57 frames  deepest 0.139
+f2_Flourish              73 frames  deepest 0.176
+f2_GuandaoSkyfall       103 frames  deepest 0.179
+f2_Guandao_Art           52 frames  deepest 0.148
+f2_Guandao_Heavy         50 frames  deepest 0.174
+f2_Guandao_L1            37 frames  deepest 0.172
+f2_Guandao_L2            38 frames  deepest 0.174
+f2_Guandao_L3            41 frames  deepest 0.180
+f2_Guandao_Running       43 frames  deepest 0.173
+f2_GuardHit              39 frames  deepest 0.126
+f2_GuardLoop             79 frames  deepest 0.126
+f2_HitLightBack          39 frames  deepest 0.171
+f2_HitLightFront         39 frames  deepest 0.170
+f2_HitLightLeft          39 frames  deepest 0.179
+f2_HitLightRight         39 frames  deepest 0.139
+f2_Idle                 169 frames  deepest 0.126
+f2_PhantomDrift          85 frames  deepest 0.160
+f2_PostureBreak          55 frames  deepest 0.126
+f2_RendingArc           103 frames  deepest 0.169
+f2_RunForward            73 frames  deepest 0.174
+f2_StrafeLeft            97 frames  deepest 0.166
+f2_StrafeRight           97 frames  deepest 0.148
+f2_Strike                58 frames  deepest 0.164
+f2_Transform             70 frames  deepest 0.172
+f2_TurnLeft              52 frames  deepest 0.126
+f2_TurnRight             52 frames  deepest 0.175
+f2_WalkBackward          97 frames  deepest 0.175
+f2_WalkForward           97 frames  deepest 0.126
+
+Past 0.18 at three decimals: none. Five decimals (xray_exact.py):
+f2_Guandao_L3     f26 (clip f8) 0.18014  <- past 0.18 by 0.00014; REPORT section 8 item 2, open since 11-11, not changed by this pass
+f2_HitLightLeft   f29 0.17934
+f2_GuandaoSkyfall f97 0.17903
+L3 watched in normal renders (front and the player's camera, clip f7-9): the arm is in front of his chest; nothing shows through. Still a
+measured fail, not accepted.

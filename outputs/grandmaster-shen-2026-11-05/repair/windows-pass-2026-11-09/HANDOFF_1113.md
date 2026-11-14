@@ -21,6 +21,15 @@ What is final: the source on `ux/onboarding-overhaul`, the 64 exported clips and
 4. Prove it is this build: in the open place run `tools/qa/SourceDigest.luau` in the Command Bar. It must print
    `scripts 286 bytes 2859366 digest 462022588`. (`python3 tools/studio_mcp.py --digest places/AsurasPath.rbxlx` prints the same from
    the file.) A different number means a different build: rebuild with step 5 and compare again.
+   Then prove it is the same Shen: run `tools/qa/ShenFingerprint.luau` in the Command Bar (read-only; about 10 s). It must print
+   `shen P1 295 2136849893 | P2 299 1475255551 | anims 64 1272680293 | modules 10 1784190466` and
+   `loads 173/173 ok: Animation.AnimationId 64/64, MeshPart.MeshId 85/85, Sound.SoundId 16/16, SurfaceAppearance.* 2/2 each`.
+   The first line covers both of his models (every part, bone, attachment, mesh and texture id, size, offset, colour and attribute), his
+   64 animation ids and the 10 modules that pose, clothe and voice him; the second proves this computer's Roblox account can load every
+   asset he uses (a different account shows the same ids but no meshes). Recorded on the Windows PC on 2026-11-14 in Studio 0.747.0.7471481
+   with `places/AsurasPath.rbxlx`. The file itself is byte-identical on every computer (`*.rbxlx` is `-text` in `.gitattributes`):
+   `shasum -a 256 places/AsurasPath.rbxlx` (Mac) or `certutil -hashfile places\AsurasPath.rbxlx SHA256` (Windows) must start
+   a353dd00028eb3bf.
 5. Optional rebuild from source (same result): `python3 tools/build.py` (Rojo 7.7.1, `tools/toolchain.env`). It rewrites
    `outputs/AsurasPath.rbxlx`, `places/AsurasPath.rbxlx` and `places/AsurasPath.rbxl`; `git status` should then show no change.
 6. Smoke check in Studio: Play; Grandmaster Shen's fight (Ash Colosseum) should play his clips with no animation errors in Output. The
@@ -41,6 +50,12 @@ What is final: the source on `ux/onboarding-overhaul`, the 64 exported clips and
 - The five-decimal x-ray without Blender: `scripts/xray_exact.py` on review shot JSON (`shots_fade.py` writes it).
 
 ## Studio settings and plugins
+
+What "identical" covers: the place (file hash), the game's scripts (SourceDigest) and Shen (ShenFingerprint, including asset loads)
+are proved equal by the three checks above. Not covered by Git and not made identical by it: the Studio build itself (it auto-updates;
+update every computer before comparing, and note the version the fingerprint prints), installed plugins, Studio settings, graphics
+quality and GPU. Those change how the same Shen is drawn, not what he is. Sign in to the account that owns the assets (user 3148600636)
+on every computer, or `loads` will fall short.
 
 - Rojo plugin only if live-syncing (`bash tools/start_sync.sh`); not needed to open the built place.
 - Game Settings > Security > Allow HTTP Requests stays off. Nothing here needs it.
@@ -69,4 +84,5 @@ What is final: the source on `ux/onboarding-overhaul`, the 64 exported clips and
 - `assets/build/shen_audio/` (generated, see above), `work/bin/luau` (download Luau 0.742), the asset archive branch (restore as
   ARCHIVE.md says) and the Studio content folder are outside the code branch.
 - The Windows computer's uncommitted Studio edits of the old place are kept only in a backup on that computer, outside the repo.
-- Do not call the computers identical until step 4 prints the digest above on the other one and its smoke check passes.
+- Do not call the computers identical until step 4 prints the file hash, the script digest and both ShenFingerprint lines above on the
+  other one and its smoke check passes.
