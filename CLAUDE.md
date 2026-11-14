@@ -36,3 +36,17 @@ The creator is entirely vibe-coding this Roblox game and does not write code man
 - Use `workspace:Raycast()` with `RaycastParams` instead of deprecated `FindPartOnRay`.
 - Keep ModuleScripts modular and clean.
 - Follow Schema version 4 with attributes: Vigor, Endurance, Strength, Dexterity, ArcaneQi.
+
+## Agent skills
+
+### Issue tracker
+
+Issues live in GitHub Issues (`gh` CLI). See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Default five labels: needs-triage, needs-info, ready-for-agent, ready-for-human, wontfix. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context: root `GLOSSARY.md` + `docs/adr/` (created lazily). See `docs/agents/domain.md`.

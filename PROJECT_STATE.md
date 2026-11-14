@@ -674,3 +674,5 @@ Studio diagnostic: all 8 altars wake correctly, and reclaim/forfeit work. Fixed:
 - 2026-10-28 fps cap: 144 Hz panel didn't change it (Play 24.0, Edit ~12-18 evenly paced), and it isn't the MCP tools. Next: NVIDIA vsync Off for Studio, or Studio on the Intel GPU, then rerun RegionFrameTime.
 - 2026-10-28 fps cap: NVIDIA vsync Off + Studio restart changed nothing (Play 24.0, Edit 18 evenly paced). Next: run Studio on the Intel GPU (Windows Graphics settings), re-measure.
 - 2026-10-28 fps cap found: the RTX-render/Intel-display hand-off. Studio on the Intel GPU: Edit 220 fps, Play 44-47 (was 18/24). Next: laptop GPU mode set to discrete (Vantage/Legion Space, reboot), Studio back to default GPU, rerun RegionFrameTime.
+
+- 2026-11-14: Matt Pocock skills configured (docs/agents/, CLAUDE.md "Agent skills"). Next: run `gh auth login`, then create the five triage labels.
