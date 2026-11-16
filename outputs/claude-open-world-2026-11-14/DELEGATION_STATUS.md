@@ -93,3 +93,18 @@ The lead's task and milestone ledger is `LEDGER.md` in this folder.
 - Seventh stop at about 08:13 on 16 Nov, about 40 minutes after the previous resume: a usage-limit stop followed by the Claude Code process exiting. Every running worker was lost; only the reachability worker (22d) had finished. Resumed by message at 12:45 with a reconcile-first instruction.
 - Routing fault found and corrected: when the lead resumed existing workers with SendMessage and ended its turn, their completion notices went to the Fable session instead of the lead, so the lead was not woken. One worker report (22d) reached Fable this way and was forwarded as a pointer to its note. The lead now starts jobs with the Agent tool so notices return to it.
 - Fable usage since the last entry: two resume messages, one forwarding message, two state checks, this tally. No inventory, design authoring or code.
+
+## Mac resume (Computer B, checked by Fable 2026-11-16 15:20 Sydney)
+
+- Checkout `358e24f`, asset snapshot `1412139` restored (1277 same / 0 different), `verify_all.sh` 14/14, local test place `work/handoff-local/AsurasPathTEST.rbxlx` digest 1516687798, saved baseline 462022588 unchanged.
+- Mac run 1 (session `0d1edc58-27a9-47f1-a13c-8e275bc95d10`): the Claude Code process exited about two minutes after the lead started; lead and both workers were lost. Only `workers/mac-01-studio-open.md` (plan plus "open command issued") was written; no source change.
+
+| Agent ID | Parent | Task | Requested | Observed model (responses) | Status |
+| --- | --- | --- | --- | --- | --- |
+| `a59b783833c4a6fd7` | Fable session | Engineering lead | `opus` | `claude-opus-5-5` (8) | lost at process exit |
+| `a7af59b82bc009415` | lead | Studio open + identity check | `sonnet` | `claude-sonnet-5-5` (14) | lost, unfinished |
+| `a7c49c9a1c6e7a708` | lead | Resume sheet from worker notes | `haiku` | `claude-haiku-5-5` (11) | lost, nothing written |
+
+Evidence: `~/.claude/projects/-Users-digonto-Documents/0d1edc58-27a9-47f1-a13c-8e275bc95d10/subagents/agent-<id>.meta.json` (`model`, `parentAgentId`, `spawnDepth` 1 for the lead and 2 for workers) and the `model` field on assistant responses in the matching `.jsonl`. Explicit `model` selection and depth-2 spawning both work on this Mac; no fallback warning seen.
+- A fresh lead is started from the durable notes in the next session (`e35b1c65-d031-4fc4-bafa-88f8c1f6954f`).
+- Fable usage: checkout/tool/asset recovery, the documented checks, the test-place build, the lead brief and this routing check. No design or source work.

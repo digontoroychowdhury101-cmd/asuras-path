@@ -1,5 +1,29 @@
 # CONTINUATION — read this first after any restart
 
+## Mac resume — 2026-11-16 (Computer B, current checkpoint)
+
+Lead: Opus 5.5 (fresh, from durable notes), oversight Fable 5.2. Start HEAD 358e24f.
+Mac verified by oversight 15:20: tools, plugins, assets (1277/1277 restored), verify_all 14/14,
+test place work/handoff-local/AsurasPathTEST.rbxlx = 275 / 3149701 / 1516687798; baseline
+places/AsurasPath.rbxlx = 286 / 2859366 / 462022588 (must stay). Previous Mac lead lost after
+~2 min (workers/mac-01-studio-open.md: open command only, no source change).
+Lead finding: src/server/Services/OverworldTerrainCompute.luau exists but is NOT mapped in
+default.project.json nor required (T4 step 4 started, unwired).
+
+| Lane | Worker note | Model | Owns | Status |
+|---|---|---|---|---|
+| S Studio operator (TEST window only) | workers/mac-02-studio.md | sonnet | Studio TEST window, captures/mac/ | launching |
+| T4 terrain finish (source) | workers/24a-terrain-heartbeat.md (T4b section) | sonnet | OverworldTerrain*.luau, new worker script, Overworld.luau Terrain section (Edit only), test_overworld_terrain/order | launching |
+| U upload diagnosis (sole uploader) | workers/20a-upload.md (Mac section) | sonnet | work/upload-diag/, assets/*KIT*REGISTRY when real IDs exist | launching |
+| F far-tree reconcile (source) | workers/22b-slice-kit-placement.md (D7 section) | sonnet | SliceDressing.luau, SliceDressingService.luau, test_slice_dressing.luau | launching |
+| I upload-queue inventory (read) | workers/mac-03-upload-inventory.md | haiku | that note only | launching |
+
+Lead owns default.project.json, Bootstrap files, WorldDefinitions hooks, CONTINUATION/LEDGER.
+Blocked on creator: Mac MCP upload approval in the cloud place (not yet given on this Mac).
+Two-client tests: pending — other computer.
+Next action if interrupted: read each worker note's last checkpoint; relaunch fresh workers
+from the note (explicit model), never SendMessage-resume.
+
 ## Codex handoff completion — 2026-11-16 (current checkpoint)
 
 The creator asked Codex to finish Claude's handoff, outstanding commits and pushes
