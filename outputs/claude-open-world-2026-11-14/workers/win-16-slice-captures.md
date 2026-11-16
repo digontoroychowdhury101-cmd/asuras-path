@@ -1,0 +1,9 @@
+# win-16 slice captures (Sonnet worker, single heavy slot)
+Plan: copy verify_build6 (HEAD 78662d6) -> slice/AsurasPath_slice_C.rbxlx; open; assert digest; Play; record slice stats/console; captures 01-07; canopy; 20 s frame times; close w/o saving.
+## Log
+- [plan] written; committed memory before open 15.52 GB; copy made.
+- [open] slice_C digest scripts 281 bytes 3254714 PlaceId 0 persistedToCloud false (3rd hash not recomputed). Play: SliceDressing 60/60 cells, 2597 MeshParts, 0 placeholder, 46.0 s. Clock method: epoch=ServerTimeNow-7000 => ~11.9h Clear. cap 01 saved.
+- [caps] 01-07 saved (hidden avatar via LocalTransparency; NPCs hidden client-side except extra_04). Player was displaced to lobby once by a server guard after ~2 min (re-teleported). Next: canopy, frame time.
+- [results] 60/60 cells, 2597 slice MeshParts, 0 placeholders, build 46.0 s; terrain complete 125.5 s. Canopy (ray method mine, no documented one found): blocked fraction of 60 az x 4 elev (20/40/60/80 deg) rays, 150 studs, SliceDressing meshes (CanQuery forced true in Play copy): 01/07 0%; 02 18%; 03 10%; 04 12%; 05 12%; 06 7%. Quiet frame (Studio client, terrain done, cap 01): n350 mean 57.2 ms p50 57.1 p95 61.1 max 66.9 (17.5 fps); Stats total 3858 MB; instances 76953 (client), 40670 server; MeshParts 6097 server / 4499 client (slice 2597).
+- [console] 142 failed-ContentId lines: 122 'No asset content representation found while do_not_fallback_to_baseline is set to true.' (24 unique rbxassetid, all are TextureID of the 234 _Far tree sub-meshes), 19 rbxassethash 'Game server must be running in a universe with a valid place. Place universe not found.', 1 rbxassetid://203785492 type mismatch (known). Only warning: PerfBudget HeartbeatHz=19.1 at start.
+- [END] Play stopped, Studio force-killed (close prompt), nothing saved; 0 Studio processes; committed memory 15.50 GB.
