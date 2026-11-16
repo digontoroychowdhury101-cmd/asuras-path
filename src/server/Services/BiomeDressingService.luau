@@ -189,8 +189,7 @@ end
 
 -- Registry-built piece: every sub-mesh must resolve (a half tree is worse than the placeholder). The biome registry first, then the slice one
 -- (the pieces both modules share are keyed by the same names).
-local function registryPiece(pl: any, frame: CFrame, def: any): Instance?
-	local base = def.Key or pl.Piece -- a hero slot (Biome.Slots) keys its registry rows by the uploaded hero's name
+local function registryTry(pl: any, frame: CFrame, def: any, base: string): Instance?
 	local reg: any = Biome.Registry[base] or Slice.Registry[base]
 	if type(reg) ~= "table" then
 		return nil
@@ -228,6 +227,17 @@ local function registryPiece(pl: any, frame: CFrame, def: any): Instance?
 	local holder = Instance.new("Model")
 	for _, m in made do m.Parent = holder end
 	return holder
+end
+
+-- A hero slot (Biome.Slots) keys its registry rows by the refined hero's name; absent that, the hero pack's own rows (keyed by the slot name, subs
+-- of the slice definition) still stand in.
+local function registryPiece(pl: any, frame: CFrame, def: any): Instance?
+	local made = registryTry(pl, frame, def, def.Key or pl.Piece)
+	local heroDef = Slice.Pieces[pl.Piece]
+	if made == nil and def.Key ~= nil and heroDef ~= nil then
+		return registryTry(pl, frame, heroDef, pl.Piece)
+	end
+	return made
 end
 
 -- Registered-asset fit (BiomeDressing.Assets): clone the ServerStorage model, keep the named MeshPart, scale it to sit inside the piece box.

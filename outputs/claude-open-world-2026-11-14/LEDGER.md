@@ -432,3 +432,22 @@ DECISION (audio upload): blocked. There is no upload tooling or credentials path
 
 DECISION (lead, Mac): Mac engine baseline on current code already meets glade/altars/map/memory; T4b (Actor pool) is adopted only if a Studio run beats or matches it AND removes the >1 s dip under 30 Hz. Otherwise revert T4b and keep current writer.
 DECISION (lead, Mac): far density lowered to 0.4 accepted (budget kept, no Budget number raised); revisit after real-mesh Studio profile.
+
+## Mac milestone M1 (2026-11-16, lead Opus 5.5)
+| Task | Agent ID | Model requested | Artifact | Validation |
+|---|---|---|---|---|
+| S2 Studio T4b measure | a2e68f7b859f019d8 | sonnet | workers/mac-05-studio-t4b.md | found SharedTableRegistry global defect; patched-in-memory map 30–50 s |
+| V summit diagnosis (source) | a116f2bf6b03a6bd6 | sonnet | workers/mac-06-summit-temple.md | no source cause; probe written |
+| B Shen walk-in | a50e15abbebe25fb9 | sonnet | WorldService updateGates margin | lune 325/0 but engine defect (Vector3 + table) found by S4 |
+| B2 Shen engine fix | af3eaf1cde7afafb3 | sonnet | WorldService:913 plain-table Size; test runs the real line | test fails on old line, passes on fix; verify_all 14/14 |
+| R kit registry tool | abefc13b05f5ad028 | sonnet | tools/assets/kit_registry.py, test_kit_registry.py (+ verify_all line by lead) | 7 tests pass |
+| P multi-client pending | ae1c0e8389a53fbee | haiku | workers/mac-04-multiclient-pending.md | 10 tests pending — other computer |
+| T4c terrain defects | ae45952c4d0abdc22 | sonnet | OverworldTerrain*, Worker, PerfBudget, tests | order 492/0, terrain 102/0, perf 14/0 |
+| S3 Studio summit probe | a7bad8c8ce7776dfb | sonnet | workers/mac-09-studio-summit.md, captures/mac/summit_probe_* | temple AND terrain culled beyond ~600 studs at QualityLevel Automatic; drawn at Level21 |
+| K biome registries | a9b0ce68032eac666 | sonnet | BiomeDressing*, test_biome_dressing | 19073/0; Snow 1270->1005 parts, Mountain 1500->1460 |
+| S4 Studio M1 evidence | ab49231086559e232 | sonnet | workers/mac-11-studio-m1.md, captures/mac/m1_* | local window 7d39aa8d, build 277/3173368/2122571996. ENGINE: hb 50–61 Hz while writing; only sub-30 Hz window is 1 s at load (6.5–8.6 Hz) before writes; glade 1.8 s, altars 2.7 s, map 13.6–14.0 s, 97–98 MB. ALL TERRAIN TARGETS PASS. Shen walk-in 8/22 st/s seals + GrandmasterShen, walk-out unsealed, with the B2 line patched in memory (identical to committed fix). |
+| U2 lantern upload (cloud window a8446776) | a1f705af3f8471d9a | sonnet | workers/20a-upload.md | REFUSED before sending: Mac path not in approved upload directories. Needs creator approval of assets/source/overworld/upload in Assistant Settings -> MCP Permissions. |
+
+DECISION (lead): T4b/T4c adopted — engine run beats baseline on every target (map 114 s -> 14 s). The 45-min time-sliced version is gone.
+DECISION (lead): summit temple visibility is engine render distance at QualityLevel Automatic (terrain is culled too); not a source defect. Landmark visibility from distant summits holds only at higher quality levels; recorded as a known limit, no code change.
+RISK: the repo lives in iCloud-synced ~/Documents; conflict copies appeared (.git/index 2/3, work/legacy/tools 3/4, generated " 2" files). Generated duplicates removed; .git untouched. Reported to oversight.

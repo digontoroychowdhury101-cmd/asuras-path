@@ -518,6 +518,15 @@
           "OverworldTerrain": {
             "$path": "src/server/Services/OverworldTerrain.luau"
           },
+          "OverworldTerrainCompute": {
+            "$path": "src/server/Services/OverworldTerrainCompute.luau"
+          },
+          "OverworldTerrainWorker": {
+            "$className": "Actor",
+            "Worker": {
+              "$path": "src/server/Services/OverworldTerrainWorker.server.luau"
+            }
+          },
           "OverworldService": {
             "$path": "src/server/Services/OverworldService.luau"
           },

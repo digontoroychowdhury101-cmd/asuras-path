@@ -156,7 +156,29 @@ if okFs then
 	local gates = string.match(world, "local function updateGates.-\nend\n") or ""
 	check(string.find(gates, "and wasArmed[userId] and inBounds(gate.Trigger", 1, true) ~= nil, "trigger requires an outside-first entrant")
 	check(string.find(gates, "if not inBounds(boss.Arena, p) then\n\t\t\t\t\tgateArmed[userId] = true", 1, true) ~= nil, "outside the arena arms the trigger")
-	check(string.find(gates, "elseif not inBounds(gate.Trigger, p) then\n\t\t\t\t\tgateArmed[userId] = nil", 1, true) ~= nil, "inside the arena off the trigger disarms")
+	check(string.find(gates, "elseif not inBounds(reach, p) then\n\t\t\t\t\tgateArmed[userId] = nil", 1, true) ~= nil, "inside the arena clear of the trigger disarms")
+	-- Engine gate.Trigger.Size is a plain {X,Y,Z} table: run the real `reach` line with a Vector3 that has no arithmetic.
+	do
+		local line = assert(string.match(gates, "\n\t\t(local reach = [^\n]+)"), "reach line present")
+		local fake: any = { new = function(x: number, y: number, z: number) return { X = x, Y = y, Z = z } end }
+		local chunk = assert((loadstring :: any)("local gate, Vector3 = ...\n" .. line .. "\nreturn reach"))
+		local g = assert(World.FogGates[World.Bosses.GrandmasterShen.FogGate])
+		local ok, reach = pcall(chunk, { Trigger = { Center = g.Trigger.Center, Size = { X = g.Trigger.Size.X, Y = g.Trigger.Size.Y, Z = g.Trigger.Size.Z } } }, fake)
+		check(ok and reach.Size.X == g.Trigger.Size.X + 4 and reach.Size.Z == g.Trigger.Size.Z + 4, "disarm margin adds 4 studs to the plain-table trigger size")
+	end
+	-- Walk-in (Mac 02): with the shipped data, every foot sample between outside and the trigger stays armed (no strip disarms a walker).
+	do
+		local shen = World.Bosses.GrandmasterShen
+		local g = assert(World.FogGates[shen.FogGate])
+		local c, sz = g.Trigger.Center, g.Trigger.Size
+		local reach = { Center = c, Size = { X = sz.X + 4, Y = sz.Y + 4, Z = sz.Z + 4 } }
+		local armedNow = true
+		for z = g.Outside.Z, c.Z - sz.Z * 0.5, -0.25 do
+			local inArena = World.contains(shen.Arena, c.X, g.Inside.Y + 3, z)
+			if inArena and not World.contains(reach, c.X, g.Inside.Y + 3, z) then armedNow = false end
+		end
+		check(armedNow, "walking in from the outside point reaches the trigger still armed")
+	end
 	-- Retired builders stay unreachable from boss arenas.
 	local arenas: string = fs.readFile("src/server/Services/BossArenas.luau")
 	for _, name in { "CampaignTerrain", "MonasteryService", "CampaignWorld", "MonasteryTerrain" } do

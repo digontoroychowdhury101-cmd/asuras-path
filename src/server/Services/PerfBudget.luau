@@ -49,7 +49,7 @@ function PerfBudget.Sample(self: any): { [string]: number }
 	local ents = env.entities()
 	m.Entities, m.StepP95Ms = ents.entities, ents.p95StepMs
 	local t = env.terrain()
-	m.TerrainTotal, m.TerrainDone, m.TerrainFailed = t.Total, t.Done, t.Failed
+	m.TerrainTotal, m.TerrainDone, m.TerrainFailed = t.Total, t.Done, if t.Failed and t.Failed ~= 0 then 1 else 0 -- Failed is the error text (or nil) in the live Overworld.Stats
 	if (self.N - 1) % PerfBudget.COUNT_EVERY == 0 then self.Counts = env.count() end
 	m.Instances_Map = self.Counts.Instances
 	for region, parts in self.Counts.Regions or {} do m["Parts_" .. region] = parts end

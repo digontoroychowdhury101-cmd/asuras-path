@@ -4,7 +4,7 @@
 -- or inline on the main thread (the fallback, and every offline test). A tile is sampled once per column (height, road,
 -- channel and chasm weights, material), the shell bottom of each column is taken from the cached heights, and only the
 -- voxels that exist (occupancy >= 0.02, plus lake water) are packed, column by column, into one buffer:
---   header (24 bytes): u16 nx, u16 nz, f32 floor, i32 kMin, i32 kMax, u32 solid, u32 reserved
+--   header (24 bytes): u16 nx, u16 nz, f32 floor, i32 kMin, i32 kMax, u32 solid, u32 reserved (the worker stores its compute microseconds here)
 --   column table, nx * nz entries (c = i * nz + j): i16 lo (voxel index of the first voxel), u16 count
 --   voxel stream, per column in order, count x { u8 material id, u8 occupancy * 255 }
 -- A voxel index k spans world Y 4k .. 4k + 4 (centre 4k + 2); the Y grid is world aligned, as WriteVoxels needs.
@@ -25,6 +25,7 @@ for id, name in NAMES do
 	IDS[name] = id - 1
 end
 Compute.Materials = NAMES -- id + 1 -> name
+Compute.Header = HEADER
 
 local H: { number } = table.create(STRIDE * STRIDE, 0) -- height at each column centre, margin of one column all round
 local RW: { number } = table.create(STRIDE * STRIDE, 0)

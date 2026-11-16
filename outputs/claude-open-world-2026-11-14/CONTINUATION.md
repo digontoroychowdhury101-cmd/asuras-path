@@ -32,11 +32,21 @@ default.project.json nor required (T4 step 4 started, unwired).
 
 | Lane | Worker note | Model | Owns | Status |
 |---|---|---|---|---|
-| S Studio operator (TEST window only) | workers/mac-02-studio.md | sonnet | Studio TEST window, captures/mac/ | launching |
-| T4 terrain finish (source) | workers/24a-terrain-heartbeat.md (T4b section) | sonnet | OverworldTerrain*.luau, new worker script, Overworld.luau Terrain section (Edit only), test_overworld_terrain/order | launching |
-| U upload diagnosis (sole uploader) | workers/20a-upload.md (Mac section) | sonnet | work/upload-diag/, assets/*KIT*REGISTRY when real IDs exist | launching |
-| F far-tree reconcile (source) | workers/22b-slice-kit-placement.md (D7 section) | sonnet | SliceDressing.luau, SliceDressingService.luau, test_slice_dressing.luau | launching |
-| I upload-queue inventory (read) | workers/mac-03-upload-inventory.md | haiku | that note only | launching |
+| Lane (agent) | Note | Model | Files on disk | State |
+|---|---|---|---|---|
+| S baseline (a66e090cf80d6c2ae) | mac-02-studio.md | sonnet | captures/mac | done, committed 32d448e. Engine baseline 358e24f: 59 Hz, 17 Hz 1.6 s mid-write dip, glade 4.8 s, altars 12 s, map 114 s, 97 MB |
+| T4b (a8da77eb39a9e8635) + T4c (ae45952c4d0abdc22) | 24a-terrain-heartbeat.md | sonnet | OverworldTerrain.luau, OverworldTerrainCompute.luau, NEW OverworldTerrainWorker.server.luau, Overworld.luau (padsNear, Terrain section), PerfBudget.luau, test_overworld_order/terrain, test_perf_budget, deleted tools/_bench_t4*.luau; lead: default.project.json mapping | complete in source, uncommitted; T4b engine (with in-memory SharedTableRegistry patch): map 30–50 s, glade 2.9 s, altars 4.5 s, 95–99 MB, no mid-write dip in clean run; load dip 1.9/4.4 Hz 0–2 s. T4c fixes registry global, inline fallback, DecodeMs, PerfBudget string, startup Settle. NOT yet re-measured |
+| S2 T4b measure (a2e68f7b859f019d8) | mac-05-studio-t4b.md | sonnet | captures/mac t4b_*, rain_facing_wind, haze_600 | done (window 99dabea9, not saved) |
+| U lantern (a5c3be2616d9a1138) | 20a-upload.md | sonnet | upload/diag A/B/C variants (ignored asset files) | diagnosis done; no upload (no cloud window then) |
+| D7 far trees (ade3ac19f1904f9eb) | 22b (D7) | sonnet | SliceDressing.luau, test_slice_dressing | done, committed 32d448e, in cloud v6 |
+| I inventory (a1535a610f5cd46f0) | mac-03 | haiku | note | done |
+| V summit diag (a116f2bf6b03a6bd6) + S3 probe (a7bad8c8ce7776dfb) | mac-06, mac-09 | sonnet | captures/mac summit_probe_* | done: temple + terrain culled beyond ~600 studs at QualityLevel Automatic; drawn at Level21. Engine render-distance, not a temple bug |
+| B Shen walk-in (a50e15abbebe25fb9) | mac-07-shen-entry.md | sonnet | WorldService.luau updateGates margin, test_boss_encounters | complete in source (325/0); Studio repro pending |
+| R registry tool (abefc13b05f5ad028) | mac-08-kit-registry.md | sonnet | NEW tools/assets/kit_registry.py, tools/test_kit_registry.py; lead added to verify_all.sh | complete |
+| P multi-client (ae1c0e8389a53fbee) | mac-04-multiclient-pending.md | haiku | note | done; 10 tests pending — other computer |
+| K biome registries (a9b0ce68032eac666) | mac-10-biome-registries.md | sonnet | BiomeDressing.luau, BiomeDressingService.luau, test_biome_dressing | complete in source (19073/0); Frostmere 32 + Ashen 34 specs, Hero/Frost/Ashen registry requires; Studio look pending |
+
+Milestone M1 candidate = T4b/T4c + Shen walk-in + biome registries + kit_registry. Next: local build work/mac-m1, Studio evidence (terrain targets, Shen walk-in, biome look), verify_all, commit/push, then cloud integration per new rules (cloud v6 digest 1357214079).
 
 Lead owns default.project.json, Bootstrap files, WorldDefinitions hooks, CONTINUATION/LEDGER.
 Blocked on creator: Mac MCP upload approval in the cloud place (not yet given on this Mac).

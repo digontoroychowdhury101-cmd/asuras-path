@@ -635,5 +635,35 @@ do
 	check("no pale blue-grey material on or beside the slice roads", #list == 0)
 end
 
+-- 15. padsNear (T4b): culling pads per 128-stud tile never changes sampleAt (bit-identical on every column centre of the
+-- tiles that hold each altar, ring, the gate corridor and the arena, plus the margin ring), and does cull.
+do
+	local D = O.terrainData()
+	local seen, tiles, same, culled, samples = {}, {}, true, 0, 0
+	for _, p in D.Pads do
+		local i, j = math.floor((p.X - F.MinX) / 128), math.floor((p.Z - F.MinZ) / 128)
+		if not seen[i .. "," .. j] and p.X >= F.MinX and p.X < F.MaxX and p.Z >= F.MinZ and p.Z < F.MaxZ then
+			seen[i .. "," .. j] = true
+			table.insert(tiles, { F.MinX + i * 128, F.MinZ + j * 128 })
+		end
+	end
+	for _, t in tiles do
+		local pads = O.padsNear(t[1] - 4, t[2] - 4, t[1] + 132, t[2] + 132)
+		culled += #D.Pads - #pads
+		for i = -1, 32 do
+			for j = -1, 32 do
+				local x, z = t[1] + (i + 0.5) * 4, t[2] + (j + 0.5) * 4
+				local a, b, c, d = O.sampleAt(x, z)
+				local a2, b2, c2, d2 = O.sampleAt(x, z, pads)
+				samples += 1
+				if a ~= a2 or b ~= b2 or c ~= c2 or d ~= d2 then same = false end
+			end
+		end
+	end
+	print(string.format("padsNear: %d pad tiles, %d samples identical=%s, %d of %d pads culled per tile on average", #tiles, samples, tostring(same), culled / #tiles, #D.Pads))
+	check("padsNear: sampleAt is bit-identical with the culled pad list on every pad tile", same and #tiles >= 10)
+	check("padsNear: it culls most pads (a tile far from every pad keeps none)", culled / #tiles >= 10 and #O.padsNear(F.MinX, F.MinZ, F.MinX + 8, F.MinZ + 8) <= #D.Pads)
+end
+
 print(string.format("overworld terrain: %d passed, %d failed", passed, failed))
 if failed > 0 then error("overworld terrain checks failed") end

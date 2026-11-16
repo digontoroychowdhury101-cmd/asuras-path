@@ -83,7 +83,6 @@ local P: { [string]: any } = {
 	Salt_Crystal_Cluster = kit({ 9, 8, 9 }, 0.5, false, { s("Salt", "Salt", SLT, 3000) }),
 
 	-- Frostmere Heads
-	Snow_Watch_Beacon = kit({ 18, 100, 18 }, 2, true, { s("Stone", "Slate", STN, 7000, true), s("Timber", "Wood", TIM, 2400, true), s("Fire", "Neon", GLW, 800) }),
 	Snow_Ruin_Wall = kit({ 14, 8, 3 }, 0.5, true, { s("Stone", "Slate", STN, 1400, true) }),
 	Snow_Ruin_Pillar = kit({ 4, 14, 4 }, 0.6, true, { s("Stone", "Slate", STN, 600, true) }),
 	Snow_Refuge_Hut = kit({ 24, 12, 18 }, 0.5, true, { s("Stone", "Slate", STN, 4000, true), s("Timber", "Wood", TIM, 3600, true), s("Roof", "Wood", TIM, 2400) }),
@@ -92,20 +91,8 @@ local P: { [string]: any } = {
 	Snow_Ice_Marker = kit({ 3, 9, 3 }, 0.4, true, { s("Ice", "Glacier", ICE, 400, true) }),
 	Snow_Pass_Gate = kit({ 22, 18, 5 }, 0.6, true, { s("Stone", "Slate", STN, 2600, true) }),
 	Snow_Pass_Cairn = kit({ 4, 5, 4 }, 0.3, false, { s("Stone", "Slate", STN, 600) }),
-	Snow_Boulder_A = kit({ 15, 8, 10 }, 1.0, false, { s("Stone", "Rock", ROK, 7000) }),
-	Snow_Boulder_B = kit({ 11, 11, 8 }, 1.0, false, { s("Stone", "Rock", ROK, 6500) }),
-	Snow_Boulder_C = kit({ 22, 4, 10 }, 0.6, false, { s("Stone", "Rock", ROK, 5500) }),
-	Snow_Drift_Mound = kit({ 20, 3.5, 14 }, 0.5, false, { s("Snow", "Snow", SNW, 1200) }),
-	Snow_Pine_A = kit({ 16, 46, 16 }, 0.8, false, { s("Bark", "Wood", BARK, 1200, false, false, "Cylinder"), s("Boughs", "Grass", PINE, 4000), s("Boughs_Detail", "Grass", PINE2, 6000, false, true) }, 1.8),
-	Snow_Pine_B = kit({ 12, 60, 12 }, 0.8, false, { s("Bark", "Wood", BARK, 1400, false, false, "Cylinder"), s("Boughs", "Grass", PINE, 4800), s("Boughs_Detail", "Grass", PINE2, 7200, false, true) }, 1.4),
-	Snow_Shrub = kit({ 6, 4, 6 }, 0.3, false, { s("Stems", "Wood", BARK, 900), s("Leaves", "Grass", PINE, 1200) }),
-	Snow_Shrub_Small = kit({ 3, 2.4, 3 }, 0.2, false, { s("Stems", "Wood", BARK, 500), s("Leaves", "Grass", PINE, 600) }),
-	Frost_Tussock = kit({ 6, 3, 6 }, 0.2, false, { s("Blades", "Grass", FRO, 1200) }),
-	Snow_Grass_Tuft = kit({ 3.4, 2.6, 3 }, 0.1, false, { s("Blades", "Grass", PGR, 200) }),
 
 	-- The Ashen Stair
-	Summit_Temple_Pagoda = kit({ 60, 160, 60 }, 3, true, { s("Stone", "Slate", STN, 16000, true), s("Timber", "Wood", TIM, 14000, true), s("Roof", "Slate", BAS, 15000), s("Bronze", "Metal", BRZ, 6000) }),
-	Summit_Temple_Wing = kit({ 40, 60, 50 }, 2, true, { s("Stone", "Slate", STN, 12000, true), s("Roof", "Slate", BAS, 8000), s("Timber", "Wood", TIM, 4000, true) }),
 	Mtn_Thousand_Steps_Gate = kit({ 36, 34, 8 }, 1, true, { s("Stone", "Slate", STN, 7000, true), s("Timber", "Wood", TIM, 3000, true) }),
 	Mtn_Pass_Gate = kit({ 24, 18, 5 }, 0.6, true, { s("Stone", "Slate", STN, 3600, true) }),
 	Mtn_Stair_Run = kit({ 14, 12, 22 }, 0.4, true, { steps(STN, 2200, 14, 0.85, 1.6, 14) }),
@@ -116,23 +103,10 @@ local P: { [string]: any } = {
 	Mtn_Lift_Pylon = kit({ 6, 46, 6 }, 0.8, true, { s("Timber", "Wood", TIM, 2000, true) }),
 	Mtn_Wind_Cairn = kit({ 4, 6, 4 }, 0.3, false, { s("Stone", "Slate", STN, 700) }),
 	Mtn_Viewpoint_Cairn = kit({ 8, 9, 8 }, 0.5, false, { s("Stone", "Slate", STN, 1800) }),
-	Mtn_Boulder_A = kit({ 16, 9, 11 }, 1.0, false, { s("Stone", "Rock", ROK, 7500) }),
-	Mtn_Boulder_B = kit({ 12, 13, 9 }, 1.0, false, { s("Stone", "Rock", ROK, 7000) }),
-	Mtn_Crag = kit({ 14, 38, 12 }, 1.4, false, { s("Stone", "Basalt", BAS, 9000) }),
-	Mtn_Scree = kit({ 20, 3, 14 }, 0.5, false, { s("Stone", "Rock", ROK, 3000) }),
-	Mtn_Pine_A = kit({ 18, 50, 18 }, 0.8, false, { s("Bark", "Wood", BARK, 1200, false, false, "Cylinder"), s("Boughs", "Grass", PINE, 4000), s("Boughs_Detail", "Grass", PINE2, 6000, false, true) }, 2.0),
-	Mtn_Pine_B = kit({ 14, 64, 14 }, 0.8, false, { s("Bark", "Wood", BARK, 1400, false, false, "Cylinder"), s("Boughs", "Grass", PINE, 4800), s("Boughs_Detail", "Grass", PINE2, 7200, false, true) }, 1.6),
-	Mtn_Shrub = kit({ 6.5, 5, 6 }, 0.3, false, { s("Stems", "Wood", BARK, 1200), s("Leaves", "Grass", PINE2, 1400) }),
-	Mtn_Shrub_Small = kit({ 3.4, 2.8, 3.2 }, 0.2, false, { s("Stems", "Wood", BARK, 600), s("Leaves", "Grass", PINE2, 700) }),
-	Mtn_Fern = kit({ 7, 3, 7 }, 0.2, false, { s("Fronds", "Grass", PINE2, 1800) }),
-	Mtn_Grass_Tuft = kit({ 3.8, 3.2, 3.2 }, 0.1, false, { s("Blades", "Grass", GRS, 200) }),
 }
-for _, grass in { "Snow_Grass_Tuft", "Mtn_Grass_Tuft" } do
-	P[grass].DoubleSided = true
-end
 
 -------------------------------------------------------------------------------------------------
--- Upload kits (lane D5): every piece of assets/source/overworld/upload/{amberfall,saltreach}/upload_manifest.json has a placeholder spec.
+-- Upload kits (lanes D5, K): every piece of assets/source/overworld/upload/{amberfall,saltreach,frostmere,ashen}/upload_manifest.json has a placeholder spec.
 -- Data only: rows are { piece, family (v veg, r rock, b built, h hero), silhouette archetype (SIL below), X, Y up, Z, "Sub:tris ..." } copied from
 -- the manifests (size_studs_xyz_roblox, sub_meshes), so sub names match the registry keys (<Piece>__<Sub>) and a real-mesh swap stays a data
 -- change: Registry (generated module) -> Assets -> silhouette placeholder. test_biome_dressing checks every row against its own copy, +-5%.
@@ -225,6 +199,77 @@ local SALTREACH_KIT: { any } = {
 	{ "Shore_Reeds", "v", "Plant", 9.9, 14.2, 8.1, "Blades:630 Heads:560" },
 }
 
+local FROSTMERE_KIT: { any } = {
+	{ "Frost_Fir_A", "v", "Conifer", 16.6, 47.5, 16.3, "Bark:254 Boughs:4524 Snow:4524" },
+	{ "Frost_Fir_B", "v", "Conifer", 12.4, 61.5, 12.3, "Bark:254 Boughs:5436 Snow:5436" },
+	{ "Frost_Fir_Broad", "v", "Conifer", 20.5, 35.5, 21.8, "Bark:254 Boughs:3216 Snow:3216" },
+	{ "Frost_Fir_Sapling", "v", "Conifer", 8.2, 15.9, 8.7, "Bark:254 Boughs:1620 Snow:1620" },
+	{ "Frost_Birch_A", "v", "Tree", 19.3, 31.2, 24.1, "Bark:908 Twigs:3360" },
+	{ "Frost_Birch_B", "v", "Tree", 25.3, 23.1, 20.1, "Bark:796 Twigs:2800" },
+	{ "Frost_Shrub_Frozen", "v", "Plant", 9, 5.5, 11, "Ice:980 Snow:2792 Stems:2072" },
+	{ "Frost_Shrub_Small", "v", "Plant", 3.3, 2.7, 3.3, "Ice:260 Snow:712 Stems:504" },
+	{ "Frost_Grass_Tuft_A", "v", "Tuft", 4.6, 2.9, 4.5, "Blades:350 Snow:96" },
+	{ "Frost_Grass_Tuft_B", "v", "Tuft", 7.1, 4.9, 6.2, "Blades:630 Snow:96" },
+	{ "Frost_Dead_Snag", "v", "Snag", 14.8, 36.7, 11.6, "Bark:698 Ends:14 Snow:344" },
+	{ "Frost_Fallen_Log", "v", "Slab", 25.8, 6.4, 13.4, "Bark:520 Ends:28 Snow:2112" },
+	{ "Frost_Boulder_A", "r", "Rock", 16.4, 7.3, 10, "Stone:7680" },
+	{ "Frost_Boulder_B", "r", "Rock", 11.3, 10.3, 7.3, "Stone:7680" },
+	{ "Frost_Boulder_C", "r", "Rock", 23.8, 3.9, 9.9, "Stone:6720" },
+	{ "Frost_Ice_Shards_A", "r", "Rock", 14.7, 12.9, 16.4, "Base:1600 Ice:484" },
+	{ "Frost_Ice_Shards_B", "r", "Rock", 9.2, 8.8, 7.8, "Base:1600 Ice:308" },
+	{ "Frost_Cliff_Wall_A", "r", "Rock", 41.8, 34, 23.8, "Stone:8176" },
+	{ "Frost_Cliff_Wall_B", "r", "Rock", 29.5, 47.5, 23, "Stone:11200" },
+	{ "Frost_Cliff_Corner", "r", "Rock", 45.8, 29.8, 36.5, "Stone:17504" },
+	{ "Frost_Scree_A", "r", "Slab", 20.1, 2.8, 19.8, "Stone:1620" },
+	{ "Frost_Scree_B", "r", "Slab", 16.8, 2.4, 18.2, "Stone:2200" },
+	{ "Frost_Fishing_Hut", "b", "Hall", 19.6, 14.4, 20.3, "Ice:44 Iron:56 Roof:24 Rope:14 Snow:536 Timber:2688" },
+	{ "Frost_Cairn", "b", "Column", 11.4, 17.2, 9.9, "Stone:4800" },
+	{ "Frost_Dock_Section", "b", "Slab", 29.2, 5.6, 19.8, "Ice:420 Snow:1056 Timber:984" },
+	{ "Frost_Prayer_Flags", "b", "Wall", 34.4, 16, 8.6, "Flags:480 Footing:2560 Poles:184 Rope:140" },
+	{ "Frost_Brazier", "b", "Column", 8.2, 10.5, 7.7, "Fire:456 Iron:406 Snow:112 Stone:44" },
+	{ "Frost_Stair_Run", "b", "Ramp", 12.4, 13.9, 24.1, "Snow:1144 Steps:528 Walls:2112" },
+	{ "Frost_Retaining_Wall", "b", "Wall", 25.9, 10.6, 11.2, "Coping:308 Snow:692 Wall:2068" },
+	{ "Frost_Sled", "b", "Slab", 15.9, 4.6, 4.5, "Iron:232 Rope:104 Snow:192 Timber:980" },
+	{ "Frost_Lantern", "b", "Column", 7, 12.3, 6.9, "Glow:44 Iron:248 Snow:216 Stone:232" },
+	{ "Frost_Beacon_Hero", "h", "Tower", 18, 100, 18.1, "Fire:516 Stone:6432 Timber:3260" },
+}
+local ASHEN_KIT: { any } = {
+	{ "Ash_Pine_A", "v", "Conifer", 17.3, 54.6, 19.8, "Bark:884 Boughs:2304 Boughs_Detail:3288" },
+	{ "Ash_Lichen_B", "v", "Slab", 6.3, 0.7, 7.7, "Crust:400" },
+	{ "Ash_Pine_B", "v", "Conifer", 15.8, 68.6, 16.3, "Bark:1036 Boughs:2880 Boughs_Detail:4104" },
+	{ "Ash_Pine_C", "v", "Conifer", 19.4, 31, 17.8, "Bark:680 Boughs:1728 Boughs_Detail:2456" },
+	{ "Ash_Snag_A", "v", "Snag", 13.9, 40.2, 12.3, "Bark:790 Ends:14" },
+	{ "Ash_Snag_B", "v", "Snag", 12.2, 32.8, 12.8, "Bark:760 Ends:14" },
+	{ "Ash_Snag_Fallen", "v", "Slab", 23.6, 5.5, 9.4, "Bark:680 Ends:28" },
+	{ "Ash_Shrub", "v", "Plant", 12.7, 6.7, 11.5, "Leaves:3952 Stems:2664" },
+	{ "Ash_Shrub_Small", "v", "Plant", 5.8, 3.7, 7.1, "Leaves:2640 Stems:1764" },
+	{ "Ash_Tussock_A", "v", "Tuft", 7.3, 3, 7.5, "Blades:910" },
+	{ "Ash_Tussock_B", "v", "Tuft", 5.1, 2.5, 4.9, "Blades:350" },
+	{ "Ash_Lichen_A", "v", "Slab", 8.2, 0.8, 8.6, "Crust:720" },
+	{ "Ash_Boulder_A", "r", "Rock", 19.4, 9.9, 12.1, "Stone:8000" },
+	{ "Ash_Boulder_B", "r", "Rock", 13.5, 11.3, 8.4, "Stone:7680" },
+	{ "Ash_Boulder_C", "r", "Rock", 30.5, 4.6, 11.7, "Stone:6720" },
+	{ "Ash_Scree_A", "r", "Slab", 18.2, 2.8, 21.3, "Stone:1620" },
+	{ "Ash_Scree_B", "r", "Slab", 17.8, 2.5, 19, "Stone:2200" },
+	{ "Ash_Cliff_Switchback_A", "r", "Rock", 40.7, 33.9, 23.7, "Stone:6820" },
+	{ "Ash_Cliff_Switchback_B", "r", "Rock", 30.6, 46.1, 20, "Stone:6856" },
+	{ "Ash_Cliff_Corner", "r", "Rock", 45, 32.2, 37.6, "Stone:8000" },
+	{ "Ash_Ledge", "r", "Slab", 33.5, 5.1, 15.8, "Stone:2948" },
+	{ "Ash_Crag", "r", "Tower", 16.3, 41.3, 10.8, "Stone:16004" },
+	{ "Ash_Stair_Run_Straight", "b", "Ramp", 14.4, 14.7, 22.6, "Steps:616 Walls:2464" },
+	{ "Ash_Stair_Run_Long", "b", "Ramp", 10.8, 26.6, 45, "Steps:1232 Walls:4928" },
+	{ "Ash_Stair_Run_Turn", "b", "Ramp", 25.1, 16.4, 25.1, "Steps:748 Walls:2992" },
+	{ "Ash_Retaining_Wall_A", "b", "Wall", 18.2, 12.1, 7, "Coping:264 Wall:1540" },
+	{ "Ash_Retaining_Wall_B", "b", "Wall", 22.1, 11.1, 12.3, "Coping:220 Wall:2068" },
+	{ "Ash_Shrine_Pilgrim", "b", "Hall", 13, 15.8, 15.3, "Bronze:1028 Glow:44 Roof:1088 Stone:264 Timber:600" },
+	{ "Ash_Prayer_Flags", "b", "Wall", 29.8, 17.4, 3.7, "Flags:336 Poles:144 Rope:136 Stone:176" },
+	{ "Ash_Lantern_Stone", "b", "Column", 4.1, 10.6, 4.1, "Bronze:248 Glow:44 Stone:232" },
+	{ "Ash_Rest_Pavilion", "b", "Hall", 30.3, 24.1, 30.4, "Bronze:656 Roof:1568 Stone:528 Timber:1588" },
+	{ "Ash_Gate_Broken", "b", "Arch", 25, 18.2, 12.1, "Stone:1144 Timber:36" },
+	{ "Ash_Summit_Pagoda", "h", "Tower", 60, 160.6, 60, "Bronze:4544 Roof:9440 Stone:4048 Timber:10824" },
+	{ "Ash_Summit_Wing", "h", "Hall", 40, 60, 50, "Roof:3168 Stone:792 Timber:5892" },
+}
+
 local ROPE, SALTW, IRON, CANVAS, TWIG = { 150, 125, 85 }, { 128, 108, 84 }, { 74, 74, 80 }, { 210, 200, 176 }, { 120, 92, 60 }
 -- Material and colour by the sub name's first word, per kit (the stone palette differs: amber sandstone against pale shore stone).
 local LOOKS_AMBER: { [string]: { any } } = {
@@ -238,14 +283,24 @@ local LOOKS_SALT: { [string]: { any } } = {
 	Roof = { "Slate", STN }, Bund = { "Sandstone", SND }, Crust = { "Salt", SLT }, Canvas = { "Fabric", CANVAS }, Hull = { "Wood", SALTW }, Ribs = { "Wood", TWIG }, Net = { "Fabric", ROPE },
 	Anchor = { "Metal", IRON }, Arms = { "Sandstone", SND }, Base = { "Slate", STN }, Body = { "Sandstone", SND }, Cords = { "Fabric", ROPE }, Head = { "Sandstone", SND },
 }
+local LOOKS_FROST: { [string]: { any } } = {
+	Bark = { "Wood", BARK }, Boughs = { "Grass", PINE }, Snow = { "Snow", SNW }, Twigs = { "Wood", TWIG }, Stems = { "Wood", TWIG }, Ice = { "Glacier", ICE }, Blades = { "Grass", PGR }, Ends = { "Wood", { 170, 140, 100 } },
+	Stone = { "Slate", STN }, Base = { "Slate", STN }, Footing = { "Slate", STN }, Steps = { "Slate", STN }, Wall = { "Slate", STN }, Walls = { "Slate", BAS }, Coping = { "Slate", BAS }, Roof = { "Slate", BAS },
+	Iron = { "Metal", IRON }, Rope = { "Fabric", ROPE }, Timber = { "Wood", TIM }, Poles = { "Wood", TIM }, Flags = { "Fabric", { 190, 40, 40 } }, Fire = { "Neon", GLW }, Glow = { "Neon", GLW },
+}
+local LOOKS_ASH: { [string]: { any } } = {
+	Bark = { "Wood", BARK }, Boughs = { "Grass", PINE }, Leaves = { "Grass", PINE2 }, Stems = { "Wood", BARK }, Blades = { "Grass", GRS }, Crust = { "Grass", { 150, 160, 96 } }, Ends = { "Wood", { 170, 140, 100 } },
+	Stone = { "Slate", STN }, Steps = { "Slate", STN }, Wall = { "Slate", STN }, Walls = { "Slate", BAS }, Coping = { "Slate", BAS }, Roof = { "Slate", BAS }, Bronze = { "Metal", BRZ }, Glow = { "Neon", GLW },
+	Timber = { "Wood", TIM }, Poles = { "Wood", TIM }, Flags = { "Fabric", { 190, 40, 40 } }, Rope = { "Fabric", ROPE },
+}
 local LEAF_TINT: { [string]: { number } } = { Amber_Maple_Red = { 170, 56, 40 }, Amber_Maple_Gold = { 212, 164, 56 }, Amber_Maple_Sapling = { 190, 110, 50 }, Amber_RedTrunk_A = { 186, 98, 52 },
 	Amber_RedTrunk_B = { 160, 84, 46 }, Amber_Cliff_Pine = PINE2, Amber_Shrub_Sumac = { 176, 48, 40 }, Amber_Leaf_Litter_A = { 170, 96, 48 }, Amber_Leaf_Litter_B = { 190, 128, 56 } }
 -- Subs a character or a projectile meets (placeholder collision); plants, rock and glow never collide in the placeholder (as the scatter pieces above).
 local HARD: { [string]: boolean } = { Stone = true, Timber = true, Piers = true, Arches = true, Deck = true, Steps = true, Walls = true, Wall = true, Coping = true, Hull = true, Bund = true,
-	Base = true, Body = true, Crust = true }
+	Base = true, Body = true, Crust = true, Footing = true }
 local UPRIGHT: { [string]: boolean } = { Tree = true, Conifer = true, Snag = true }
 
-for _, group in { { AMBERFALL_KIT, LOOKS_AMBER }, { SALTREACH_KIT, LOOKS_SALT } } do
+for _, group in { { AMBERFALL_KIT, LOOKS_AMBER }, { SALTREACH_KIT, LOOKS_SALT }, { FROSTMERE_KIT, LOOKS_FROST }, { ASHEN_KIT, LOOKS_ASH } } do
 	for _, row in group[1] do
 		local name, fam, arch, X, Y, Z = row[1], row[2], row[3], row[4], row[5], row[6]
 		assert(P[name] == nil and Slice.Pieces[name] == nil, "BiomeDressing kit: duplicate piece " .. name)
@@ -266,7 +321,8 @@ for _, group in { { AMBERFALL_KIT, LOOKS_AMBER }, { SALTREACH_KIT, LOOKS_SALT } 
 end
 
 -- Hero slots: the biome's landmark slot name (hero placements, tests) resolves to the uploaded hero's spec, so its registry keys are the hero's.
-BiomeDressing.Slots = { Ravine_Aqueduct_Arch = "Amber_Aqueduct_Hero", Basin_Gate_Statue = "Saltreach_Gate_Statue" } :: { [string]: string }
+BiomeDressing.Slots = { Ravine_Aqueduct_Arch = "Amber_Aqueduct_Hero", Basin_Gate_Statue = "Saltreach_Gate_Statue", Snow_Watch_Beacon = "Frost_Beacon_Hero",
+	Summit_Temple_Pagoda = "Ash_Summit_Pagoda", Summit_Temple_Wing = "Ash_Summit_Wing" } :: { [string]: string }
 for slot, hero in BiomeDressing.Slots do
 	assert(P[hero] and P[slot] == nil, "BiomeDressing.Slots: " .. slot .. " / " .. hero)
 	P[slot] = P[hero]
@@ -656,16 +712,17 @@ BiomeDressing.Defs = {
 		Lane = { Hero = "WatchBeacon", Edge = "S1_HeadwaterGorge>S3_Watchpost", Reach = 700, HalfWidth = 14 },
 		Scatter = {
 			Rock = { Salt = 5, Spacing = 34, Base = 0.7, MaxSlope = 1.6, MinSlope = 0.1, Tall = true, Scale = { 0.8, 1.3 },
-				Pieces = { { "Snow_Boulder_A", 0.2 }, { "Snow_Boulder_B", 0.15 }, { "Snow_Boulder_C", 0.1 }, { "Snow_Drift_Mound", 0.55 } },
+				Pieces = { { "Frost_Boulder_A", 0.12 }, { "Frost_Boulder_B", 0.12 }, { "Frost_Boulder_C", 0.08 }, { "Frost_Ice_Shards_A", 0.1 }, { "Frost_Ice_Shards_B", 0.1 }, { "Frost_Scree_A", 0.12 },
+					{ "Frost_Scree_B", 0.1 }, { "Frost_Cliff_Wall_A", 0.1 }, { "Frost_Cliff_Wall_B", 0.08 }, { "Frost_Cliff_Corner", 0.08 } },
 				Material = { Rock = 1, Snow = 0.35, Slate = 0.5, Ground = 0.2 } },
 			Tree = { Salt = 1, Spacing = 38, Base = 0.8, MaxSlope = 0.6, Tall = true, Scale = { 0.85, 1.2 }, Alt = { 300, 720, 120 },
-				Pieces = { { "Snow_Pine_A", 0.55 }, { "Snow_Pine_B", 0.45 } }, Material = { Snow = 0.5, Ground = 1, Slate = 0.3, Rock = 0.05 } },
+				Pieces = { { "Frost_Fir_A", 0.24 }, { "Frost_Fir_B", 0.2 }, { "Frost_Fir_Broad", 0.16 }, { "Frost_Fir_Sapling", 0.12 }, { "Frost_Birch_A", 0.1 }, { "Frost_Birch_B", 0.08 }, { "Frost_Dead_Snag", 0.1 } }, Material = { Snow = 0.5, Ground = 1, Slate = 0.3, Rock = 0.05 } },
 			Shrub = { Salt = 2, Spacing = 20, Base = 0.4, MaxSlope = 0.7, Scale = { 0.8, 1.4 }, Alt = { 300, 780, 120 },
-				Pieces = { { "Snow_Shrub", 0.4 }, { "Snow_Shrub_Small", 0.6 } }, Material = { Snow = 0.45, Ground = 1, Slate = 0.2 } },
-			Fern = { Salt = 3, Spacing = 16, Base = 0.4, MaxSlope = 0.8, Scale = { 0.8, 1.4 }, Alt = { 300, 800, 150 },
-				Pieces = { { "Frost_Tussock", 1 } }, Material = { Snow = 0.6, Ground = 0.9, Slate = 0.2 } },
-			Grass = { Salt = 4, Spacing = 12, Base = 0.4, MaxSlope = 0.6, Scale = { 0.9, 1.6 }, Alt = { 300, 760, 120 },
-				Pieces = { { "Snow_Grass_Tuft", 1 } }, Material = { Snow = 0.7, Ground = 1, Slate = 0.15 } },
+				Pieces = { { "Frost_Shrub_Frozen", 0.4 }, { "Frost_Shrub_Small", 0.4 }, { "Frost_Fallen_Log", 0.2 } }, Material = { Snow = 0.45, Ground = 1, Slate = 0.2 } },
+			Fern = { Salt = 3, Spacing = 19, Base = 0.4, MaxSlope = 0.8, Scale = { 0.8, 1.4 }, Alt = { 300, 800, 150 },
+				Pieces = { { "Frost_Grass_Tuft_B", 1 } }, Material = { Snow = 0.6, Ground = 0.9, Slate = 0.2 } },
+			Grass = { Salt = 4, Spacing = 15, Base = 0.4, MaxSlope = 0.6, Scale = { 0.9, 1.6 }, Alt = { 300, 760, 120 },
+				Pieces = { { "Frost_Grass_Tuft_A", 1 } }, Material = { Snow = 0.7, Ground = 1, Slate = 0.15 } },
 		},
 		Hero = snowHeroes,
 	},
@@ -675,16 +732,17 @@ BiomeDressing.Defs = {
 		Lane = { Hero = "SummitPagoda", Edge = "Altar_MountainRefuge>M4_ThousandSteps", Reach = 900, HalfWidth = 16 },
 		Scatter = {
 			Rock = { Salt = 5, Spacing = 36, Base = 0.5, MaxSlope = 1.8, MinSlope = 0.1, Tall = true, Scale = { 0.8, 1.3 },
-				Pieces = { { "Mtn_Boulder_A", 0.3 }, { "Mtn_Boulder_B", 0.25 }, { "Mtn_Crag", 0.2 }, { "Mtn_Scree", 0.25 } },
+				Pieces = { { "Ash_Boulder_A", 0.12 }, { "Ash_Boulder_B", 0.12 }, { "Ash_Boulder_C", 0.08 }, { "Ash_Scree_A", 0.1 }, { "Ash_Scree_B", 0.1 }, { "Ash_Ledge", 0.1 }, { "Ash_Crag", 0.1 },
+					{ "Ash_Cliff_Switchback_A", 0.1 }, { "Ash_Cliff_Switchback_B", 0.08 }, { "Ash_Cliff_Corner", 0.1 } },
 				Material = { Rock = 1, Basalt = 0.8, Slate = 0.6, Ground = 0.4, Snow = 0.2, LeafyGrass = 0.15, Grass = 0.15 } },
 			Tree = { Salt = 1, Spacing = 34, Base = 0.9, MaxSlope = 0.6, Tall = true, Scale = { 0.85, 1.2 }, Alt = { 100, 560, 140 },
-				Pieces = { { "Mtn_Pine_A", 0.55 }, { "Mtn_Pine_B", 0.45 } }, Material = { LeafyGrass = 1, Grass = 0.8, Ground = 0.5, Slate = 0.15, Rock = 0.05 } },
+				Pieces = { { "Ash_Pine_A", 0.3 }, { "Ash_Pine_B", 0.25 }, { "Ash_Pine_C", 0.2 }, { "Ash_Snag_A", 0.13 }, { "Ash_Snag_B", 0.12 } }, Material = { LeafyGrass = 1, Grass = 0.8, Ground = 0.5, Slate = 0.15, Rock = 0.05 } },
 			Shrub = { Salt = 2, Spacing = 18, Base = 0.45, MaxSlope = 0.8, Scale = { 0.8, 1.4 }, Alt = { 100, 800, 160 },
-				Pieces = { { "Mtn_Shrub", 0.4 }, { "Mtn_Shrub_Small", 0.6 } }, Material = { LeafyGrass = 1, Grass = 0.7, Ground = 0.5, Slate = 0.25 } },
+				Pieces = { { "Ash_Shrub", 0.35 }, { "Ash_Shrub_Small", 0.4 }, { "Ash_Snag_Fallen", 0.25 } }, Material = { LeafyGrass = 1, Grass = 0.7, Ground = 0.5, Slate = 0.25 } },
 			Fern = { Salt = 3, Spacing = 16, Base = 0.35, MaxSlope = 0.8, Scale = { 0.8, 1.4 }, Alt = { 100, 520, 120 },
-				Pieces = { { "Mtn_Fern", 1 } }, Material = { LeafyGrass = 1, Grass = 0.6, Ground = 0.4 } },
+				Pieces = { { "Ash_Tussock_A", 0.5 }, { "Ash_Lichen_A", 0.25 }, { "Ash_Lichen_B", 0.25 } }, Material = { LeafyGrass = 1, Grass = 0.6, Ground = 0.4 } },
 			Grass = { Salt = 4, Spacing = 11, Base = 0.4, MaxSlope = 0.7, Scale = { 0.9, 1.6 }, Alt = { 100, 700, 150 },
-				Pieces = { { "Mtn_Grass_Tuft", 1 } }, Material = { Grass = 1, LeafyGrass = 0.7, Ground = 0.4, Slate = 0.1 } },
+				Pieces = { { "Ash_Tussock_B", 1 } }, Material = { Grass = 1, LeafyGrass = 0.7, Ground = 0.4, Slate = 0.1 } },
 		},
 		Hero = mountainHeroes,
 	},
@@ -1431,8 +1489,6 @@ local PILLAR_FIT = { Registry = PH5, Id = 83165492087847, Path = "AsuraAssets/As
 BiomeDressing.Assets = {
 	Amber_Boulder_A = STONE_FIT, Amber_Boulder_B = STONE_FIT, Amber_Boulder_C = STONE_FIT,
 	Tide_Boulder_A = STONE_FIT, Tide_Boulder_B = STONE_FIT, Tide_Boulder_C = STONE_FIT,
-	Snow_Boulder_A = STONE_FIT, Snow_Boulder_B = STONE_FIT, Snow_Boulder_C = STONE_FIT,
-	Mtn_Boulder_A = STONE_FIT, Mtn_Boulder_B = STONE_FIT,
 	Snow_Ruin_Pillar = PILLAR_FIT, Basin_Obelisk = PILLAR_FIT,
 	Cave_Brazier = { Registry = PH5, Id = 108335955316266, Path = "AsuraAssets/AsuraFirePit", Part = "texturedMesh.002" },
 	Cave_Mouth_Arch = { Registry = PH5, Id = 103358279439886, Path = "AsuraAssets/AsuraRuinArch", Part = "geom-RuinArchOne200" },
@@ -1442,10 +1498,11 @@ for name in BiomeDressing.Assets do
 end
 -- Generated from assets/BIOME_KIT_UPLOADED.json once a biome kit is uploaded (same shape as SliceDressing.Registry: [piece][piece__Sub] = { MeshId, ... }).
 BiomeDressing.Registry = {} :: any
--- The uploaded kits reach runtime as generated modules next to this file (the "pieces" table of assets/AMBERFALL_KIT_UPLOADED.json and
--- assets/SALTREACH_KIT_UPLOADED.json, same shape as SliceKitRegistry). Absent module = pieces stay assets or silhouettes. A hero slot looks up its hero's key.
+-- The uploaded kits reach runtime as generated modules next to this file (the "pieces" table of assets/<KIT>_KIT_UPLOADED.json, same shape as
+-- SliceKitRegistry; tools/assets/kit_registry.py). Absent module = pieces stay assets or silhouettes. A hero slot looks up its hero's key; the hero
+-- pack (HeroKitRegistry) is read first so a kit row of the same name wins, and the service falls back to it for a slot whose refined hero is absent.
 if hasScript then
-	for _, moduleName in { "AmberfallKitRegistry", "SaltreachKitRegistry" } do
+	for _, moduleName in { "HeroKitRegistry", "AmberfallKitRegistry", "SaltreachKitRegistry", "FrostmereKitRegistry", "AshenKitRegistry" } do
 		local ok, reg = pcall(function() return require((script :: any).Parent[moduleName]) end)
 		if ok and type(reg) == "table" then
 			for piece, subs in reg do
@@ -1464,10 +1521,13 @@ BiomeDressing.SetKits = {
 	AridBasin = { Large = { "Gate_Arch", "Salt_Pan_Channel", "Boat_Hull_A", "Gate_Pier", "Salt_Pan_Frame" },
 		Medium = { "Boardwalk_Straight", "Fisher_Hut_A", "Pier_Section", "Net_Rack", "Fisher_Hut_B", "Boat_Hull_B", "Pier_End", "Boardwalk_Steps", "Stone_Lantern_Salt" },
 		Small = { "Salt_Cairn", "Dune_Scrub_A", "Dune_Scrub_B", "Salt_Grass_Tuft" } },
-	Snowfields = { Large = { "Snow_Pine_A", "Snow_Pine_B" }, Medium = { "Snow_Boulder_A", "Snow_Windbreak", "Snow_Drift_Mound", "Snow_Trail_Stake", "Snow_Ruin_Wall" },
-		Small = { "Snow_Pass_Cairn", "Snow_Shrub", "Snow_Shrub_Small", "Frost_Tussock", "Snow_Grass_Tuft" } },
-	MountainAscent = { Large = { "Mtn_Crag", "Mtn_Pine_A", "Mtn_Pine_B" }, Medium = { "Mtn_Boulder_A", "Mtn_Boulder_B", "Mtn_Windbreak", "Mtn_Retaining_Wall", "Mtn_Viewpoint_Cairn" },
-		Small = { "Mtn_Wind_Cairn", "Mtn_Shrub_Small", "Mtn_Fern", "Mtn_Grass_Tuft", "Mtn_Shrub" } },
+	-- Frostmere and Ashen: the same walk over the kits' built pieces (lane K).
+	Snowfields = { Large = { "Frost_Dock_Section", "Frost_Prayer_Flags", "Frost_Stair_Run", "Frost_Retaining_Wall", "Frost_Cliff_Wall_B" },
+		Medium = { "Frost_Fishing_Hut", "Frost_Cairn", "Frost_Brazier", "Frost_Lantern", "Frost_Sled", "Frost_Ice_Shards_A" },
+		Small = { "Frost_Shrub_Small", "Frost_Grass_Tuft_A", "Frost_Grass_Tuft_B" } },
+	MountainAscent = { Large = { "Ash_Rest_Pavilion", "Ash_Gate_Broken", "Ash_Stair_Run_Turn", "Ash_Prayer_Flags", "Ash_Stair_Run_Long" },
+		Medium = { "Ash_Shrine_Pilgrim", "Ash_Retaining_Wall_A", "Ash_Retaining_Wall_B", "Ash_Lantern_Stone", "Ash_Stair_Run_Straight", "Ash_Snag_Fallen" },
+		Small = { "Ash_Lichen_A", "Ash_Tussock_A", "Ash_Tussock_B", "Ash_Shrub_Small", "Ash_Lichen_B" } },
 }
 
 local function strHash(s: string): number

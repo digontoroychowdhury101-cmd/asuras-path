@@ -1263,6 +1263,21 @@ function Overworld.shellBottom(hs: any, i: number, j: number, shell: number): nu
 	return low - shell
 end
 
+-- The pads (in their own order) that can change sampleAt anywhere in the box x0..x1, z0..z1: a pad's weight is exactly 0
+-- beyond R + Blend of its shape, so passing this list as sampleAt's `pads` gives the same results with ~60 fewer pads.
+function Overworld.padsNear(x0: number, z0: number, x1: number, z1: number): { any }
+	local D = built or data()
+	local cx, cz, qx, qz = (x0 + x1) / 2, (z0 + z1) / 2, (x1 - x0) / 2, (z1 - z0) / 2
+	local out = {}
+	for _, p in D.Pads do
+		local dx, dz = math.max(math.abs(cx - p.X) - qx - (p.HX or 0), 0), math.max(math.abs(cz - p.Z) - qz - (p.HZ or 0), 0)
+		if math.sqrt(dx * dx + dz * dz) <= p.R + p.Blend then
+			table.insert(out, p)
+		end
+	end
+	return out
+end
+
 -------------------------------------------------------------------------------------------------
 -- Integration (WorldDefinitions, only while Active)
 -------------------------------------------------------------------------------------------------

@@ -50,6 +50,13 @@ do
 	check("one log line per LOG_EVERY", #s.logs == 1 and s.logs[1]:find("hb=", 1, true) ~= nil)
 end
 
+-- 2b. Overworld.Stats().Failed is the error text: published as 1, never fed to round() as a string.
+do
+	local perf, s = make({ terrain = function() return { Total = 10, Done = 4, Failed = "boom" } end })
+	perf:Sample()
+	check("string Failed becomes 1", s.attrs.TerrainFailed == 1)
+end
+
 -- 3. Breach warns once per key; Min budget (heartbeat) and per-region parts budget both apply.
 do
 	local perf, s = make()

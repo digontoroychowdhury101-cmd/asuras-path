@@ -908,6 +908,9 @@ local function updateGates()
 		local gateArmed = armed[gateId] or {}
 		armed[gateId] = gateArmed
 		local wasArmed: { [number]: boolean } = table.clone(gateArmed)
+		-- Disarm only past a 2-stud margin: the trigger stops 1 stud short of the arena edge (z -8191 vs -8190), and a
+		-- walker sampled in that strip was disarmed before ever reaching the trigger, so walking in never started the fight.
+		local reach = { Center = gate.Trigger.Center, Size = { X = gate.Trigger.Size.X + 4, Y = gate.Trigger.Size.Y + 4, Z = gate.Trigger.Size.Z + 4 } }
 		for userId in gateArmed do
 			if not sessions[userId] then gateArmed[userId] = nil end
 		end
@@ -917,7 +920,7 @@ local function updateGates()
 				local p = e.Root.Position
 				if not inBounds(boss.Arena, p) then
 					gateArmed[userId] = true
-				elseif not inBounds(gate.Trigger, p) then
+				elseif not inBounds(reach, p) then
 					gateArmed[userId] = nil
 				end
 			end

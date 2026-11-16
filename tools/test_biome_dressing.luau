@@ -40,7 +40,7 @@ for name, p in B.Pieces do
 	check(name .. " tris are the sub-mesh sum", p.Tris == subTris and p.MeshParts == #p.Subs and p.PlaceholderParts >= 1)
 	check(name .. " has a radius and sink", p.Radius > 0 and p.Sink >= 0)
 end
-check("kit slot list has the expected size (" .. slotCount .. ")", slotCount >= 140 and slotCount <= 170)
+check("kit slot list has the expected size (" .. slotCount .. ")", slotCount >= 140 and slotCount <= 210)
 check("the four biomes are listed in order", #B.Order == 4 and B.Order[1] == "GoldenRavine" and B.Order[4] == "MountainAscent")
 
 -- Exclusion circles re-derived from Overworld (the slice test's list; heroes are added per biome)
@@ -403,7 +403,7 @@ for id, kitDef in B.SetKits do
 	end
 end
 
--- Upload kits (lane D5): every piece of the Amberfall and Saltreach manifests has a placeholder spec. Rows are this test's own copy of
+-- Upload kits (lanes D5, K): every piece of the Amberfall, Saltreach, Frostmere and Ashen manifests has a placeholder spec. Rows are this test's own copy of
 -- upload_manifest.json { piece, size_studs_xyz_roblox (X, Y up, Z), tris_total, sub_meshes }.
 local AMBERFALL = {
 	{ "Amber_Maple_Red", 37.2, 42.0, 40.5, 14698, "Bark:1602 Leaves_Detail:9640 Leaves_Mass:3456" },
@@ -491,8 +491,78 @@ local SALTREACH = {
 	{ "Kelp_Wrack", 25.9, 1.1, 25.4, 656, "Blades:336 Holdfast:320" },
 	{ "Shore_Reeds", 9.9, 14.2, 8.1, 1190, "Blades:630 Heads:560" },
 }
-local KITS = { GoldenRavine = AMBERFALL, AridBasin = SALTREACH }
-check("the manifests hold 45 + 37 pieces", #AMBERFALL == 45 and #SALTREACH == 37)
+local FROSTMERE = {
+	{ "Frost_Fir_A", 16.6, 47.5, 16.3, 9302, "Bark:254 Boughs:4524 Snow:4524" },
+	{ "Frost_Fir_B", 12.4, 61.5, 12.3, 11126, "Bark:254 Boughs:5436 Snow:5436" },
+	{ "Frost_Fir_Broad", 20.5, 35.5, 21.8, 6686, "Bark:254 Boughs:3216 Snow:3216" },
+	{ "Frost_Fir_Sapling", 8.2, 15.9, 8.7, 3494, "Bark:254 Boughs:1620 Snow:1620" },
+	{ "Frost_Birch_A", 19.3, 31.2, 24.1, 4268, "Bark:908 Twigs:3360" },
+	{ "Frost_Birch_B", 25.3, 23.1, 20.1, 3596, "Bark:796 Twigs:2800" },
+	{ "Frost_Shrub_Frozen", 9, 5.5, 11, 5844, "Ice:980 Snow:2792 Stems:2072" },
+	{ "Frost_Shrub_Small", 3.3, 2.7, 3.3, 1476, "Ice:260 Snow:712 Stems:504" },
+	{ "Frost_Grass_Tuft_A", 4.6, 2.9, 4.5, 446, "Blades:350 Snow:96" },
+	{ "Frost_Grass_Tuft_B", 7.1, 4.9, 6.2, 726, "Blades:630 Snow:96" },
+	{ "Frost_Dead_Snag", 14.8, 36.7, 11.6, 1056, "Bark:698 Ends:14 Snow:344" },
+	{ "Frost_Fallen_Log", 25.8, 6.4, 13.4, 2660, "Bark:520 Ends:28 Snow:2112" },
+	{ "Frost_Boulder_A", 16.4, 7.3, 10, 7680, "Stone:7680" },
+	{ "Frost_Boulder_B", 11.3, 10.3, 7.3, 7680, "Stone:7680" },
+	{ "Frost_Boulder_C", 23.8, 3.9, 9.9, 6720, "Stone:6720" },
+	{ "Frost_Ice_Shards_A", 14.7, 12.9, 16.4, 2084, "Base:1600 Ice:484" },
+	{ "Frost_Ice_Shards_B", 9.2, 8.8, 7.8, 1908, "Base:1600 Ice:308" },
+	{ "Frost_Cliff_Wall_A", 41.8, 34, 23.8, 8176, "Stone:8176" },
+	{ "Frost_Cliff_Wall_B", 29.5, 47.5, 23, 11200, "Stone:11200" },
+	{ "Frost_Cliff_Corner", 45.8, 29.8, 36.5, 17504, "Stone:17504" },
+	{ "Frost_Scree_A", 20.1, 2.8, 19.8, 1620, "Stone:1620" },
+	{ "Frost_Scree_B", 16.8, 2.4, 18.2, 2200, "Stone:2200" },
+	{ "Frost_Fishing_Hut", 19.6, 14.4, 20.3, 3362, "Ice:44 Iron:56 Roof:24 Rope:14 Snow:536 Timber:2688" },
+	{ "Frost_Cairn", 11.4, 17.2, 9.9, 4800, "Stone:4800" },
+	{ "Frost_Dock_Section", 29.2, 5.6, 19.8, 2460, "Ice:420 Snow:1056 Timber:984" },
+	{ "Frost_Prayer_Flags", 34.4, 16, 8.6, 3364, "Flags:480 Footing:2560 Poles:184 Rope:140" },
+	{ "Frost_Brazier", 8.2, 10.5, 7.7, 1018, "Fire:456 Iron:406 Snow:112 Stone:44" },
+	{ "Frost_Stair_Run", 12.4, 13.9, 24.1, 3784, "Snow:1144 Steps:528 Walls:2112" },
+	{ "Frost_Retaining_Wall", 25.9, 10.6, 11.2, 3068, "Coping:308 Snow:692 Wall:2068" },
+	{ "Frost_Sled", 15.9, 4.6, 4.5, 1508, "Iron:232 Rope:104 Snow:192 Timber:980" },
+	{ "Frost_Lantern", 7, 12.3, 6.9, 740, "Glow:44 Iron:248 Snow:216 Stone:232" },
+	{ "Frost_Beacon_Hero", 18, 100, 18.1, 10208, "Fire:516 Stone:6432 Timber:3260" },
+}
+local ASHEN = {
+	{ "Ash_Pine_A", 17.3, 54.6, 19.8, 6476, "Bark:884 Boughs:2304 Boughs_Detail:3288" },
+	{ "Ash_Lichen_B", 6.3, 0.7, 7.7, 400, "Crust:400" },
+	{ "Ash_Pine_B", 15.8, 68.6, 16.3, 8020, "Bark:1036 Boughs:2880 Boughs_Detail:4104" },
+	{ "Ash_Pine_C", 19.4, 31, 17.8, 4864, "Bark:680 Boughs:1728 Boughs_Detail:2456" },
+	{ "Ash_Snag_A", 13.9, 40.2, 12.3, 804, "Bark:790 Ends:14" },
+	{ "Ash_Snag_B", 12.2, 32.8, 12.8, 774, "Bark:760 Ends:14" },
+	{ "Ash_Snag_Fallen", 23.6, 5.5, 9.4, 708, "Bark:680 Ends:28" },
+	{ "Ash_Shrub", 12.7, 6.7, 11.5, 6616, "Leaves:3952 Stems:2664" },
+	{ "Ash_Shrub_Small", 5.8, 3.7, 7.1, 4404, "Leaves:2640 Stems:1764" },
+	{ "Ash_Tussock_A", 7.3, 3, 7.5, 910, "Blades:910" },
+	{ "Ash_Tussock_B", 5.1, 2.5, 4.9, 350, "Blades:350" },
+	{ "Ash_Lichen_A", 8.2, 0.8, 8.6, 720, "Crust:720" },
+	{ "Ash_Boulder_A", 19.4, 9.9, 12.1, 8000, "Stone:8000" },
+	{ "Ash_Boulder_B", 13.5, 11.3, 8.4, 7680, "Stone:7680" },
+	{ "Ash_Boulder_C", 30.5, 4.6, 11.7, 6720, "Stone:6720" },
+	{ "Ash_Scree_A", 18.2, 2.8, 21.3, 1620, "Stone:1620" },
+	{ "Ash_Scree_B", 17.8, 2.5, 19, 2200, "Stone:2200" },
+	{ "Ash_Cliff_Switchback_A", 40.7, 33.9, 23.7, 6820, "Stone:6820" },
+	{ "Ash_Cliff_Switchback_B", 30.6, 46.1, 20, 6856, "Stone:6856" },
+	{ "Ash_Cliff_Corner", 45, 32.2, 37.6, 8000, "Stone:8000" },
+	{ "Ash_Ledge", 33.5, 5.1, 15.8, 2948, "Stone:2948" },
+	{ "Ash_Crag", 16.3, 41.3, 10.8, 16004, "Stone:16004" },
+	{ "Ash_Stair_Run_Straight", 14.4, 14.7, 22.6, 3080, "Steps:616 Walls:2464" },
+	{ "Ash_Stair_Run_Long", 10.8, 26.6, 45, 6160, "Steps:1232 Walls:4928" },
+	{ "Ash_Stair_Run_Turn", 25.1, 16.4, 25.1, 3740, "Steps:748 Walls:2992" },
+	{ "Ash_Retaining_Wall_A", 18.2, 12.1, 7, 1804, "Coping:264 Wall:1540" },
+	{ "Ash_Retaining_Wall_B", 22.1, 11.1, 12.3, 2288, "Coping:220 Wall:2068" },
+	{ "Ash_Shrine_Pilgrim", 13, 15.8, 15.3, 3024, "Bronze:1028 Glow:44 Roof:1088 Stone:264 Timber:600" },
+	{ "Ash_Prayer_Flags", 29.8, 17.4, 3.7, 792, "Flags:336 Poles:144 Rope:136 Stone:176" },
+	{ "Ash_Lantern_Stone", 4.1, 10.6, 4.1, 524, "Bronze:248 Glow:44 Stone:232" },
+	{ "Ash_Rest_Pavilion", 30.3, 24.1, 30.4, 4340, "Bronze:656 Roof:1568 Stone:528 Timber:1588" },
+	{ "Ash_Gate_Broken", 25, 18.2, 12.1, 1180, "Stone:1144 Timber:36" },
+	{ "Ash_Summit_Pagoda", 60, 160.6, 60, 28856, "Bronze:4544 Roof:9440 Stone:4048 Timber:10824" },
+	{ "Ash_Summit_Wing", 40, 60, 50, 9852, "Roof:3168 Stone:792 Timber:5892" },
+}
+local KITS = { GoldenRavine = AMBERFALL, AridBasin = SALTREACH, Snowfields = FROSTMERE, MountainAscent = ASHEN }
+check("the manifests hold 45 + 37 + 32 + 34 pieces", #AMBERFALL == 45 and #SALTREACH == 37 and #FROSTMERE == 32 and #ASHEN == 34)
 local function within(a, b) return math.abs(a - b) <= 0.05 * b end
 for id, rows in KITS do
 	for _, m in rows do
@@ -531,8 +601,29 @@ do
 	check("the Aqueduct landmark hero is the slot of Amber_Aqueduct_Hero", a ~= nil and a.Landmark == true and B.Pieces[a.Piece].Key == "Amber_Aqueduct_Hero")
 	check("the GateStatue landmark hero is the slot of Saltreach_Gate_Statue", st ~= nil and st.Landmark == true and B.Pieces[st.Piece].Key == "Saltreach_Gate_Statue")
 end
+check("Snow_Watch_Beacon is Frost_Beacon_Hero (18 x 100 x 18)", B.Slots.Snow_Watch_Beacon == "Frost_Beacon_Hero" and B.Pieces.Snow_Watch_Beacon == B.Pieces.Frost_Beacon_Hero and B.Pieces.Snow_Watch_Beacon.Key == "Frost_Beacon_Hero" and within(B.Pieces.Snow_Watch_Beacon.Size[2], 100))
+check("Summit_Temple_Pagoda / Wing are Ash_Summit_Pagoda / Wing", B.Slots.Summit_Temple_Pagoda == "Ash_Summit_Pagoda" and B.Pieces.Summit_Temple_Pagoda == B.Pieces.Ash_Summit_Pagoda and B.Slots.Summit_Temple_Wing == "Ash_Summit_Wing"
+	and B.Pieces.Summit_Temple_Wing == B.Pieces.Ash_Summit_Wing and within(B.Pieces.Summit_Temple_Pagoda.Size[2], 160.56))
+-- Every hero slot name is a piece of the hero pack (upload/hero), so HeroKitRegistry rows (keyed by the slot name) resolve it when the refined hero has no registry
+for slot in B.Slots do check("hero slot " .. slot .. " is a hero-pack piece with a slice definition", S.Pieces[slot] ~= nil) end
+do
+	local hero = B.build("Snowfields").Heroes
+	local beacon = nil
+	for _, h in hero do if h.Id == "WatchBeacon" then beacon = h end end
+	check("the WatchBeacon landmark hero is the slot of Frost_Beacon_Hero", beacon ~= nil and beacon.Landmark == true and B.Pieces[beacon.Piece].Key == "Frost_Beacon_Hero")
+	local pagoda = nil
+	for _, h in B.build("MountainAscent").Heroes do if h.Id == "SummitPagoda" then pagoda = h end end
+	check("the SummitPagoda landmark hero is the slot of Ash_Summit_Pagoda", pagoda ~= nil and pagoda.Landmark == true and B.Pieces[pagoda.Piece].Key == "Ash_Summit_Pagoda")
+end
+-- No kit registry module exists until real uploads: every registry is absent here, so the registry is empty and every biome still built (above)
+do
+	local n = 0
+	for _ in B.Registry do n += 1 end
+	check("with every kit registry absent (Hero, Amberfall, Saltreach, Frostmere, Ashen) the registry is empty and all four biomes build", n == 0 and #B.Order == 4 and B.build("Snowfields") ~= nil and B.build("MountainAscent") ~= nil)
+end
 -- Old placeholder-only scatter pieces are gone where the kits replaced them; a real-mesh swap resolves by registry key (data only)
-for _, gone in { "Sandstone_Boulder_A", "Red_Trunk_Tree_A", "Dry_Shrub", "Pale_Grass_Clump", "Basin_Boulder_A", "Dead_Acacia", "Desert_Scrub", "Agave_Clump", "Dry_Grass_Clump" } do
+for _, gone in { "Sandstone_Boulder_A", "Red_Trunk_Tree_A", "Dry_Shrub", "Pale_Grass_Clump", "Basin_Boulder_A", "Dead_Acacia", "Desert_Scrub", "Agave_Clump", "Dry_Grass_Clump",
+	"Snow_Pine_A", "Snow_Boulder_A", "Snow_Shrub", "Frost_Tussock", "Snow_Grass_Tuft", "Mtn_Pine_A", "Mtn_Boulder_A", "Mtn_Crag", "Mtn_Fern", "Mtn_Grass_Tuft" } do
 	check(gone .. " no longer holds a kit slot", B.Pieces[gone] == nil)
 end
 

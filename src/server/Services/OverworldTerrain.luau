@@ -1,39 +1,51 @@
 --!strict
 -- ModuleScript: ServerScriptService/AsurasPath/Services/OverworldTerrain
 -- Writes the canonical overworld ground (Overworld.surfaceAt) as an 8-stud Terrain shell (deeper under steep faces) at resolution 4,
--- one 128-stud tile at a time, plus river and lake water up to Frame.WaterY. Work is time-sliced: the writer yields one
+-- one 128-stud tile at a time, plus river and lake water up to Frame.WaterY. A tile is computed off the main thread (a pool of
+-- OverworldTerrainWorker Actors; OverworldTerrainCompute packs only the voxels that exist into a buffer) or, with no workers
+-- mapped, inline; the main thread only decodes the buffer into tight WriteVoxels boxes. Work is time-sliced: the writer yields one
 -- Heartbeat (task.wait) whenever it has used BUDGET seconds of the current frame, mid-tile if need be, so the server keeps its frame rate.
--- Every WriteVoxels / FillBlock is a box of about CALL_TARGET seconds (measured per voxel), reserved against the frame before it runs,
--- and the frame budget halves (floor a quarter) while the last Heartbeat was slower than 1/45 s.
+-- Every WriteVoxels / FillBlock is a box of about CALL_TARGET seconds (cost = per call + per voxel, fitted online), reserved
+-- against the frame before it runs, and the frame budget halves (floor a quarter) while the last Heartbeat was slower than 1/45 s (it grows to 1.5x while Heartbeats are under 1/55 s).
 -- Everything written is listed in Terrain.Manifest (tile XZ boxes and the Y slabs written); Clear only
 -- empties those boxes, and nothing is ever written or cleared outside Overworld.Frame.
 local Workspace = game:GetService("Workspace")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Overworld = require(ReplicatedStorage.AsurasPath.Shared.Overworld) :: any
+local Compute = require(script.Parent:WaitForChild("OverworldTerrainCompute") :: ModuleScript) :: any
 
 local OverworldTerrain = {}
 
 local RES = 4
 local TILE = 128 -- studs; 32 columns
 local SHELL = 8 -- studs of solid below the lowest of a column and its 8 neighbours (C3 ruling 1a: 202 MB at 12, about 160 MB at 8)
-local SLAB = 64 -- studs of height written per slab (a slab is written in boxes, one column wide, never in one call)
+local SLAB = 64 -- studs of height per Manifest slab (Clear empties whole slabs; the writer itself writes only the voxels that exist)
 local BUDGET = 0.006 -- seconds of writer work per Heartbeat (C3 ruling 1b: server heartbeat stays at or above 45 Hz)
 local CALL_TARGET = 0.0025 -- seconds one WriteVoxels / FillBlock call may be expected to take (24a: a whole slab call stalled frames)
-local VOXEL_COST0 = 8e-6 -- seconds per voxel assumed until the first call is measured; the measurement replaces it
-local MIN_V = 16 -- voxels in the smallest call (one column of a slab)
+local VOXEL_COST0 = 8e-6 -- seconds per voxel assumed until calls are measured; the fit replaces it
+local CALL_COST0 = 60e-6 -- seconds per engine call assumed until measured (a guess: the Studio operator reads the fit, Stats.WriteMs / WriteCalls)
+local MIN_V = 16 -- voxels in the smallest call (one column)
 local SLOW_DT = 1 / 45 -- a Heartbeat longer than this makes the slicer back off
 local MIN_SCALE = 0.25 -- the slicer never works less than this share of BUDGET per frame
+local MAX_SCALE = 1.5 -- ... nor more than this share, and only while Heartbeats are faster than GOOD_DT (idle frame time is free)
+local GOOD_DT = 1 / 55 -- a Heartbeat this short or shorter lets the slice grow past BUDGET
+local WORKERS = 4 -- Actors computing tiles in parallel
+local WINDOW = 8 -- tiles requested ahead of the one being written
+local WORKER_WAIT = 5 -- seconds before a requested tile is given up on and computed inline (and the pool is dropped)
+local RESULTS = "OverworldTerrainResults" -- SharedTableRegistry name of the workers' result table (tile key -> packed string)
 local N = TILE // RES
 
 -- { [tileKey] = { X0, Z0, X1, Z1, Regions = { [id] = true }, Slabs = { y0, ... } } }
 OverworldTerrain.Manifest = {} :: { [string]: any }
 
--- Counters for the Studio operator (read OverworldTerrain.Stats): milliseconds are work time only, never the time spent
--- yielded (YieldMs). ComputeMs = SampleMs + MaterialMs + ShellMs + FillMs; per tile = value / Tiles.
+-- Counters for the Studio operator (read OverworldTerrain.Stats): milliseconds are main-thread work time only, never the time
+-- spent yielded (YieldMs). ComputeMs = tiles computed inline on the main thread; WorkerMs = compute time on the Actors (off the
+-- main thread, summed over workers); DecodeMs = buffer -> WriteVoxels arrays; WriteMs = inside WriteVoxels / FillBlock.
+-- Per tile = value / Tiles. BoxVoxels counts what was handed to the engine, SolidVoxels what exists (box ratio = BoxVoxels / SolidVoxels).
 local function newStats(): { [string]: number }
-	return { Tiles = 0, WriteCalls = 0, BoxVoxels = 0, SolidVoxels = 0, SampleMs = 0, MaterialMs = 0, ShellMs = 0, FillMs = 0,
-		ComputeMs = 0, WriteMs = 0, YieldMs = 0 }
+	return { Tiles = 0, Parallel = 0, Inline = 0, WriteCalls = 0, BoxVoxels = 0, SolidVoxels = 0,
+		ComputeMs = 0, WorkerMs = 0, DecodeMs = 0, WriteMs = 0, YieldMs = 0 }
 end
 OverworldTerrain.Stats = newStats()
 
@@ -69,32 +81,34 @@ local function tilesFor(regionIds: { string }): { any }
 	return out
 end
 
-local materials: { [string]: Enum.Material } = {}
-local function material(name: string): Enum.Material
-	local m = materials[name]
+local materials: { Enum.Material } = {}
+local function materialOf(id: number): Enum.Material -- Compute's material id -> Enum.Material
+	local m = materials[id + 1]
 	if not m then
-		m = (Enum.Material :: any)[name]
-		materials[name] = m
+		m = (Enum.Material :: any)[Compute.Materials[id + 1]]
+		materials[id + 1] = m
 	end
 	return m
 end
 
 export type Slicer = {
 	Yields: number, Backoffs: number, Skipped: number, Scale: number,
-	Begin: () -> (), Check: () -> boolean, Reserve: (number) -> boolean, Limit: () -> number,
+	Begin: () -> (), Check: () -> boolean, Reserve: (number) -> boolean, Limit: () -> number, Wait: () -> (),
 }
 
 -- Frame time slice. Check() yields one frame (yield, task.wait) once the slice limit (budget * Scale) has passed since the
 -- slice began, and starts the next slice when it resumes; returns true if it yielded. Reserve(est) is Check for an
--- uninterruptible call expected to take est seconds: it yields first if the call would not fit in the slice.
+-- uninterruptible call expected to take est seconds: it yields first if the call would not fit in the slice. Wait() yields
+-- one frame unconditionally (waiting for a worker).
 -- Begin() restarts the slice (call after any other wait). With frameDt (last Heartbeat dt) the slice adapts on every
 -- resume: a frame longer than SLOW_DT halves Scale (floor MIN_SCALE; at the floor one extra frame is skipped), a good frame
--- grows it back by a quarter up to 1.
+-- grows it back by a quarter up to 1, and up to MAX_SCALE while frames take GOOD_DT or less.
 function OverworldTerrain.NewSlicer(budget: number, clock: () -> number, yield: () -> any, frameDt: (() -> number)?): Slicer
 	local began = clock()
 	local self: Slicer = {
 		Yields = 0, Backoffs = 0, Skipped = 0, Scale = 1,
 		Begin = function() end, Check = function() return false end, Reserve = function(_: number) return false end, Limit = function() return budget end,
+		Wait = function() end,
 	}
 	local function resume()
 		self.Yields += 1
@@ -108,11 +122,12 @@ function OverworldTerrain.NewSlicer(budget: number, clock: () -> number, yield: 
 				end
 				self.Scale = math.max(self.Scale / 2, MIN_SCALE)
 			else
-				self.Scale = math.min(self.Scale * 1.25, 1)
+				self.Scale = math.min(self.Scale * 1.25, if frameDt() <= GOOD_DT then MAX_SCALE else 1)
 			end
 		end
 		began = clock()
 	end
+	self.Wait = resume
 	self.Limit = function()
 		return budget * self.Scale
 	end
@@ -147,13 +162,11 @@ if RunService then
 end
 
 local clock: () -> number = os.clock
-local mark, phase = 0, "FillMs"
--- Adds the time since the last lap to a phase counter (and to ComputeMs unless it is the write phase).
+local mark, phase = 0, "DecodeMs"
+-- Adds the time since the last lap to a main-thread phase counter.
 local function lap(key: string)
 	local t = clock()
-	local ms = (t - mark) * 1000
-	OverworldTerrain.Stats[key] += ms
-	if key ~= "WriteMs" then OverworldTerrain.Stats.ComputeMs += ms end
+	OverworldTerrain.Stats[key] += (t - mark) * 1000
 	mark, phase = t, key
 end
 local function counted(y: () -> any): () -> any
@@ -167,26 +180,143 @@ local function counted(y: () -> any): () -> any
 end
 local slicer = OverworldTerrain.NewSlicer(BUDGET, clock, counted(task.wait), function() return lastDt end)
 OverworldTerrain.Slicer = slicer
-local perVoxel = VOXEL_COST0 -- measured seconds per voxel of the slowest recent call (rises at once, decays 10% per call)
 
--- Test hook: swap the clock, the yield and the frame-time source (fakes), and forget the measured voxel cost.
+-- Engine call cost model: seconds = callCost + perVoxel * voxels, fitted online (least squares, each sample's weight decays
+-- 5% per call). A call 2x slower than the model is believed at once and restarts the fit (rises at once, so a spike never repeats).
+local callCost, perVoxel = CALL_COST0, VOXEL_COST0
+local fitW, fitV, fitV2, fitT, fitVT = 0, 0, 0, 0, 0
+local function learn(v: number, t: number)
+	if t > 2 * (callCost + perVoxel * v) then
+		perVoxel = math.max(t - callCost, t / 2) / v
+		fitW, fitV, fitV2, fitT, fitVT = 0, 0, 0, 0, 0
+		return
+	end
+	fitW, fitV, fitV2, fitT, fitVT = fitW * 0.95 + 1, fitV * 0.95 + v, fitV2 * 0.95 + v * v, fitT * 0.95 + t, fitVT * 0.95 + v * t
+	local det = fitW * fitV2 - fitV * fitV
+	if det > 1e-3 * fitW * fitV2 then -- the call sizes vary enough to separate the two costs
+		perVoxel = math.max((fitW * fitVT - fitV * fitT) / det, 1e-7)
+		callCost = math.max((fitT - perVoxel * fitV) / fitW, 0)
+	else
+		perVoxel = fitT / fitV -- one size so far: the mean rate, which overstates the voxel cost and never understates a call
+	end
+end
+
+-- Workers: Actors (SendMessage) whose results come back as strings in a table keyed by tile key (a SharedTable in the game).
+-- Empty pool = compute inline on the main thread.
+local pool: { any } = {}
+local results: any = nil
+local inflight: { [string]: number } = {}
+local nextActor = 1
+local poolTried = false
+local settled = false -- the boot settle wait (Settle) has run
+local pending: { any }? = nil -- actors cloned by startPool, not yet pinged
+
+-- Test hook: use these fake actors / results table instead of the mapped OverworldTerrainWorker Actors.
+function OverworldTerrain.UsePool(actors: { any }, shared: any)
+	pool, results, poolTried, inflight, nextActor, pending = actors, shared, actors ~= nil, {}, 1, nil
+end
+
+-- Test hook: swap the clock, the yield and the frame-time source (fakes), and forget the measured call cost.
 function OverworldTerrain.Use(c: () -> number, yield: () -> any, frameDt: (() -> number)?)
-	clock = c
+	clock, settled, mark = c, true, c()
 	slicer = OverworldTerrain.NewSlicer(BUDGET, c, counted(yield), frameDt)
 	OverworldTerrain.Slicer = slicer
-	perVoxel = VOXEL_COST0
+	callCost, perVoxel = CALL_COST0, VOXEL_COST0
+	fitW, fitV, fitV2, fitT, fitVT = 0, 0, 0, 0, 0
 	OverworldTerrain.Stats = newStats()
 end
 
--- Voxels the next engine call may cover: about CALL_TARGET seconds at the measured cost, never more than half a slice.
+-- Maps the worker Actor (default.project.json: Services.OverworldTerrainWorker) into WORKERS copies (awaitWorkers keeps those
+-- that answer a ping). Not mapped: no pool, tiles are computed inline.
+local function startPool()
+	poolTried = true
+	local template = (script.Parent :: any):FindFirstChild("OverworldTerrainWorker")
+	if not template or not template:IsA("Actor") then
+		warn("OverworldTerrain: OverworldTerrainWorker Actor not mapped, computing tiles inline")
+		return
+	end
+	local registry: any, shared: any = game:GetService("SharedTableRegistry"), SharedTable -- the registry is a service, not a global
+	results = shared.new()
+	registry:SetSharedTable(RESULTS, results)
+	local actors: { any } = { template }
+	for i = 2, WORKERS do
+		local a = template:Clone()
+		a.Name = "OverworldTerrainWorker" .. i
+		a.Parent = template.Parent
+		actors[i] = a
+	end
+	pending = actors
+end
+
+-- Keeps the cloned actors that answer a ping within 3 s. None answers: no pool, tiles are computed inline.
+local function awaitWorkers(actors: { any })
+	local deadline, answered = clock() + 3, {}
+	while #answered < #actors and clock() < deadline do
+		answered = {}
+		for i, a in actors do
+			if results["ping" .. i] then
+				table.insert(answered, a)
+			else
+				a:SendMessage("Ping", i) -- a message sent before the worker has bound is dropped, so ask again each frame
+			end
+		end
+		if #answered < #actors then
+			slicer.Wait()
+		end
+	end
+	pool = answered
+	if #pool == 0 then
+		warn("OverworldTerrain: no worker answered, computing tiles inline")
+	end
+end
+
+-- Waits (at most 3 s) until 3 consecutive Heartbeats take under 1/45 s, so the boot cost (instances, Actor scripts) and the
+-- write cost do not stack. dtOf() is the latest Heartbeat dt.
+local function settle(dtOf: () -> number)
+	local deadline, calm = clock() + 3, 0
+	while calm < 3 and clock() < deadline do
+		slicer.Wait()
+		calm = if dtOf() < 1 / 45 then calm + 1 else 0
+	end
+end
+OverworldTerrain.Settle = settle
+
+-- Asks the pool for the tile (and the next WINDOW - 1 after it); returns its packed buffer, or nil if no worker delivered.
+local function fetch(tiles: { any }, at: number): buffer?
+	for k = at, math.min(at + WINDOW - 1, #tiles) do
+		local tile = tiles[k]
+		if not inflight[tile.Key] and not results[tile.Key] then
+			inflight[tile.Key] = clock()
+			pool[nextActor]:SendMessage("Tile", tile.Key, tile.X0, tile.Z0, (tile.X1 - tile.X0) // RES, (tile.Z1 - tile.Z0) // RES)
+			nextActor = nextActor % #pool + 1
+		end
+	end
+	local key = tiles[at].Key
+	local sent = inflight[key] or clock()
+	while true do
+		local s = results[key]
+		if s then
+			results[key], inflight[key] = nil, nil
+			return buffer.fromstring(s)
+		end
+		if clock() - sent > WORKER_WAIT then
+			warn("OverworldTerrain: worker gave no tile in " .. WORKER_WAIT .. " s, computing inline from now on")
+			pool, inflight[key] = {}, nil
+			return nil
+		end
+		slicer.Wait()
+	end
+end
+
+-- Voxels the next engine call may cover: about CALL_TARGET seconds at the fitted cost, never more than half a slice.
 local function callVoxels(): number
-	return math.max(math.floor(math.min(CALL_TARGET, slicer.Limit() / 2) / perVoxel), MIN_V)
+	return math.max(math.floor((math.min(CALL_TARGET, slicer.Limit() / 2) - callCost) / perVoxel), MIN_V)
 end
 
 -- Runs one engine call of `voxels` voxels: reserves its estimated cost in the slice, then measures it.
 local function timed(voxels: number, call: () -> ())
-	slicer.Reserve(perVoxel * voxels)
-	lap(phase)
+	slicer.Reserve(callCost + perVoxel * voxels)
+	lap("DecodeMs")
 	local t0 = clock()
 	call()
 	local t1 = clock()
@@ -195,121 +325,112 @@ local function timed(voxels: number, call: () -> ())
 	stats.BoxVoxels += voxels
 	stats.WriteMs += (t1 - t0) * 1000
 	mark = t1
-	local s = (t1 - t0) / voxels
-	perVoxel = if s > perVoxel then s else perVoxel * 0.9 + s * 0.1
+	learn(voxels, t1 - t0)
 end
 
--- Writes one tile; returns the number of solid or water voxels written.
-local function writeTile(tile: any): number
-	local F = Overworld.Frame
-	local nx, nz = (tile.X1 - tile.X0) // RES, (tile.Z1 - tile.Z0) // RES
-	mark, phase = clock(), "SampleMs"
-	-- Column samples at voxel centres plus a one-column margin all round: forward differences for slope, and
-	-- the 8 neighbours that set how deep each column is filled.
-	local hs, roadW, channelW, chasmW = {}, {}, {}, {}
-	local minH, maxH = math.huge, -math.huge
-	for i = -1, nx do
-		hs[i], roadW[i], channelW[i], chasmW[i] = {}, {}, {}, {}
-		for j = -1, nz do
-			local h, r, c, k = Overworld.sampleAt(tile.X0 + (i + 0.5) * RES, tile.Z0 + (j + 0.5) * RES)
-			hs[i][j], roadW[i][j], channelW[i][j], chasmW[i][j] = h, r, c, k
-			if i >= 0 and i < nx and j >= 0 and j < nz then
-				minH, maxH = math.min(minH, h), math.max(maxH, h)
-			end
-		end
-		slicer.Check()
-	end
-	lap("SampleMs")
-	local mats = table.create(nx)
-	for i = 0, nx - 1 do
-		mats[i + 1] = table.create(nz)
-		for j = 0, nz - 1 do
-			local h = hs[i][j]
-			local slope = math.sqrt((hs[i + 1][j] - h) ^ 2 + (hs[i][j + 1] - h) ^ 2) / RES
-			mats[i + 1][j + 1] = material(Overworld.materialAt(
-				tile.X0 + (i + 0.5) * RES, tile.Z0 + (j + 0.5) * RES, h, slope, roadW[i][j], channelW[i][j], chasmW[i][j]))
-		end
-		slicer.Check()
-	end
+local HEADER = Compute.Header
+local LO, CNT, OFF = table.create(N * N, 0), table.create(N * N, 0), table.create(N * N, 0)
 
-	lap("MaterialMs")
-	local top = math.max(maxH, if minH < F.WaterY then F.WaterY else -math.huge)
-	local written = 0
-	tile.Slabs = {}
-	local bottoms, floor = table.create(nx), math.huge
-	for i = 1, nx do
-		bottoms[i] = table.create(nz)
-		for j = 1, nz do
-			local b = Overworld.shellBottom(hs, i - 1, j - 1, SHELL)
-			bottoms[i][j] = b
-			if b < floor then floor = b end
-		end
-		slicer.Check()
+-- Writes columns j0 .. j0 + zc - 1 of row i for voxel heights lo .. hi as one WriteVoxels box (X one column, Y and Z as long as needed).
+local function emit(tile: any, buf: buffer, nz: number, i: number, j0: number, zc: number, lo: number, hi: number)
+	local ny = hi - lo + 1
+	local air = Enum.Material.Air
+	local mcol, ocol = table.create(ny), table.create(ny)
+	for k = 1, ny do
+		mcol[k], ocol[k] = table.create(zc, air), table.create(zc, 0)
 	end
-	tile.Floor = floor
-	lap("ShellMs")
-	phase = "FillMs"
-	for y0 = math.floor((floor - RES) / SLAB) * SLAB, top, SLAB do
-		local ny = SLAB // RES
-		local slabAny = false
-		-- A slab is written in boxes one column wide and zc columns long, zc sized so one WriteVoxels call costs about
-		-- CALL_TARGET (WriteVoxels cannot be interrupted, so the call itself must be small).
-		for i = 1, nx do
-			local j0 = 1
-			while j0 <= nz do
-				local zc = math.min(math.max(callVoxels() // ny, 1), nz - j0 + 1)
-				local mcol, ocol = table.create(ny), table.create(ny)
-				for k = 1, ny do
-					mcol[k], ocol[k] = table.create(zc, Enum.Material.Air), table.create(zc, 0)
-				end
-				local any = false
-				for jj = 1, zc do
-					local j = j0 + jj - 1
-					local h = hs[i - 1][j - 1]
-					local lake = h < F.WaterY and chasmW[i - 1][j - 1] == 0
-					local m = mats[i][j]
-					local bottom = bottoms[i][j]
-					for k = 1, ny do
-						local yc = y0 + (k - 0.5) * RES
-						local occ = math.min(math.clamp((h - yc) / RES + 0.5, 0, 1), math.clamp((yc - bottom) / RES + 0.5, 0, 1))
-						if occ >= 0.02 then
-							if occ < 0.5 and lake then
-								local w = math.clamp((F.WaterY - yc) / RES + 0.5, 0, 1)
-								if w > occ then
-									mcol[k][jj], ocol[k][jj] = Enum.Material.Water, w
-									written += 1
-									any = true
-									continue
-								end
-							end
-							mcol[k][jj], ocol[k][jj] = m, occ
-							written += 1
-							any = true
-						elseif lake and yc < F.WaterY then
-							mcol[k][jj], ocol[k][jj] = Enum.Material.Water, math.clamp((F.WaterY - yc) / RES + 0.5, 0, 1)
-							written += 1
-							any = true
-						end
-					end
-				end
-				if any then
-					slabAny = true
-					local x0, z0 = tile.X0 + (i - 1) * RES, tile.Z0 + (j0 - 1) * RES
-					timed(ny * zc, function()
-						terrain():WriteVoxels(Region3.new(Vector3.new(x0, y0, z0), Vector3.new(x0 + RES, y0 + SLAB, z0 + zc * RES)), RES, { mcol }, { ocol })
-					end)
-				end
-				slicer.Check()
-				j0 += zc
+	for jj = 1, zc do
+		local c = i * nz + j0 + jj - 1
+		local at, first = OFF[c], LO[c] - lo + 1
+		for n = 0, CNT[c] - 1 do
+			local id = buffer.readu8(buf, at + n * 2)
+			if id ~= 0 then
+				mcol[first + n][jj], ocol[first + n][jj] = materialOf(id), buffer.readu8(buf, at + n * 2 + 1) / 255
 			end
 		end
-		if slabAny then
-			table.insert(tile.Slabs, y0)
+	end
+	local x0, z0 = tile.X0 + i * RES, tile.Z0 + j0 * RES
+	timed(ny * zc, function()
+		terrain():WriteVoxels(Region3.new(Vector3.new(x0, lo * RES, z0), Vector3.new(x0 + RES, (hi + 1) * RES, z0 + zc * RES)), RES, { mcol }, { ocol })
+	end)
+	slicer.Check()
+end
+
+-- Decodes a packed tile (OverworldTerrainCompute) and writes it; returns the number of solid or water voxels. Each row of
+-- columns is cut into runs that become one box each: a column joins the run while the air its box would add costs less than
+-- the engine call it saves (callCost / perVoxel voxels), up to the voxels one call may cover.
+local function writeBuffer(tile: any, buf: buffer): number
+	local nx, nz = buffer.readu16(buf, 0), buffer.readu16(buf, 2)
+	local kMin, kMax, solid = buffer.readi32(buf, 8), buffer.readi32(buf, 12), buffer.readu32(buf, 16)
+	tile.Floor, tile.Slabs = buffer.readf32(buf, 4), {}
+	if solid == 0 then
+		return 0
+	end
+	local at = HEADER + nx * nz * 4
+	for c = 0, nx * nz - 1 do
+		LO[c], CNT[c], OFF[c] = buffer.readi16(buf, HEADER + c * 4), buffer.readu16(buf, HEADER + c * 4 + 2), at
+		at += CNT[c] * 2
+	end
+	for y0 = math.floor(kMin * RES / SLAB) * SLAB, kMax * RES + RES - 1, SLAB do
+		table.insert(tile.Slabs, y0)
+	end
+	for i = 0, nx - 1 do
+		local j0, runLo, runHi, zc, cap = 0, 0, 0, 0, 0
+		for j = 0, nz do -- j == nz only flushes the last run
+			local c = i * nz + j
+			local count = if j < nz then CNT[c] else 0
+			if count > 0 then
+				local lo = LO[c]
+				local hi = lo + count - 1
+				if zc > 0 then
+					local nlo, nhi = math.min(runLo, lo), math.max(runHi, hi)
+					local merged = (nhi - nlo + 1) * (zc + 1)
+					if merged <= cap and (merged - (runHi - runLo + 1) * zc - count) * perVoxel <= callCost then
+						runLo, runHi, zc = nlo, nhi, zc + 1
+						continue
+					end
+					emit(tile, buf, nz, i, j0, zc, runLo, runHi)
+				end
+				j0, runLo, runHi, zc, cap = j, lo, hi, 1, callVoxels()
+			elseif zc > 0 then
+				emit(tile, buf, nz, i, j0, zc, runLo, runHi)
+				zc = 0
+			end
 		end
 	end
-	lap("FillMs")
-	OverworldTerrain.Stats.Tiles += 1
-	OverworldTerrain.Stats.SolidVoxels += written
+	return solid
+end
+
+-- Writes one tile (tiles[at]); returns the number of solid or water voxels written.
+local function writeTile(tiles: { any }, at: number): number
+	local tile, F = tiles[at], Overworld.Frame
+	local nx, nz = (tile.X1 - tile.X0) // RES, (tile.Z1 - tile.Z0) // RES
+	local stats = OverworldTerrain.Stats
+	local buf: buffer? = nil
+	if #pool > 0 then
+		mark, phase = clock(), "DecodeMs" -- waiting for a worker is YieldMs, not work
+		local ok, got = pcall(fetch, tiles, at)
+		if ok then
+			buf = got
+		else
+			warn("OverworldTerrain: worker pool failed (" .. tostring(got) .. "), computing inline from now on")
+			pool = {}
+		end
+	end
+	if buf then
+		stats.Parallel += 1
+		stats.WorkerMs += buffer.readu32(buf, 20) / 1000
+	else
+		mark, phase = clock(), "ComputeMs"
+		buf = Compute.tile(Overworld, tile.X0, tile.Z0, nx, nz, F.WaterY, Overworld.padsNear(tile.X0 - RES, tile.Z0 - RES, tile.X1 + RES, tile.Z1 + RES), slicer.Check)
+		lap("ComputeMs")
+		stats.Inline += 1
+	end
+	mark, phase = clock(), "DecodeMs"
+	local written = writeBuffer(tile, buf :: buffer)
+	lap("DecodeMs")
+	stats.Tiles += 1
+	stats.SolidVoxels += written
 	return written
 end
 
@@ -495,6 +616,29 @@ function OverworldTerrain.Build(regionIds: { string }?, onTile: ((number, number
 		table.sort(tiles, function(a: any, b: any) return a.Order < b.Order end)
 	end
 	local stats = { Tiles = #tiles, Voxels = 0, Seconds = 0, Yields = 0, TileSeconds = table.create(#tiles) }
+	mark, phase = clock(), "DecodeMs" -- the counters partition the work from here (Clear and the hooks reset it too)
+	slicer.Begin()
+	if not poolTried then
+		local ok, err = pcall(startPool) -- any failure: one warn, tiles are computed inline
+		if not ok then
+			warn("OverworldTerrain: worker pool failed to start (" .. tostring(err) .. "), computing tiles inline")
+			pool, pending = {}, nil
+		end
+	end
+	if not settled then
+		settled = true
+		settle(function() return lastDt end)
+	end
+	if pending then
+		local actors = pending
+		pending = nil
+		local ok, err = pcall(awaitWorkers, actors)
+		if not ok then
+			warn("OverworldTerrain: worker pool failed to start (" .. tostring(err) .. "), computing tiles inline")
+			pool = {}
+		end
+	end
+	mark = clock()
 	slicer.Begin()
 	for i = 1, #tiles do
 		if order and focus and i % REFOCUS_EVERY == 0 then
@@ -502,7 +646,7 @@ function OverworldTerrain.Build(regionIds: { string }?, onTile: ((number, number
 		end
 		local tile = tiles[i]
 		local t0 = os.clock()
-		stats.Voxels += writeTile(tile)
+		stats.Voxels += writeTile(tiles, i)
 		local dt = os.clock() - t0
 		stats.TileSeconds[i] = dt
 		stats.Seconds += dt
@@ -527,6 +671,7 @@ function OverworldTerrain.Clear(regionIds: { string }?)
 		local hit = regionIds == nil
 		for _, id in regionIds or {} do hit = hit or tile.Regions[id] == true end
 		if hit then
+			mark = clock()
 			slicer.Begin()
 			for _, y0 in tile.Slabs do
 				-- boxes one voxel column wide, sized like the writer's: FillBlock is as uninterruptible as WriteVoxels

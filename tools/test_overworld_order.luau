@@ -14,10 +14,16 @@ end
 
 local services = { Workspace = { Terrain = {} }, ReplicatedStorage = { AsurasPath = { Shared = { Overworld = O } } } }
 local game = { GetService = function(_, n) return services[n] end }
-local env = { game = game, require = function(m) return m end, task = { wait = function() end }, os = os, math = math, table = table,
-	string = string, Vector3 = roblox.Vector3, Enum = roblox.Enum,
-	Region3 = { new = function(a, b) return { Min = a, Max = b } end }, CFrame = { new = function(x, y, z) return { X = x, Y = y, Z = z } end }, pairs = pairs, ipairs = ipairs, type = type,
-	tostring = tostring, warn = warn, print = print, assert = assert, error = error, setmetatable = setmetatable }
+local baseEnv = { os = os, math = math, table = table, string = string, buffer = buffer, type = type, assert = assert, error = error, pairs = pairs, ipairs = ipairs,
+	tostring = tostring, tonumber = tonumber, select = select, warn = function() end, print = print, setmetatable = setmetatable }
+local compute = luau.load(fs.readFile("src/server/Services/OverworldTerrainCompute.luau"), { debugName = "OverworldTerrainCompute", environment = baseEnv })()
+local env = table.clone(baseEnv)
+env.game, env.require, env.task = game, function(m) return m end, { wait = function() end }
+env.Vector3, env.Enum = roblox.Vector3, roblox.Enum
+env.Region3 = { new = function(a, b) return { Min = a, Max = b } end }
+env.CFrame = { new = function(x, y, z) return { X = x, Y = y, Z = z } end }
+local O_script_parent = { WaitForChild = function() return compute end, FindFirstChild = function() return nil end }
+env.script = { Parent = O_script_parent }
 local Terrain = luau.load(fs.readFile("src/server/Services/OverworldTerrain.luau"), { debugName = "OverworldTerrain", environment = env })()
 
 local GLADE = 640
@@ -251,9 +257,9 @@ do
 			table.insert(order, tile)
 			for _, c in calls do
 				if not c.Fill then
-					-- every box lies inside its own tile and is one voxel column wide, one slab tall
+					-- every box lies inside its own tile, is one voxel column wide and a whole number of voxels tall on the world grid
 					inside = inside and c.Min.X >= tile.X0 and c.Max.X <= tile.X1 and c.Min.Z >= tile.Z0 and c.Max.Z <= tile.Z1
-					boxesOk = boxesOk and c.Max.X - c.Min.X == 4 and c.Max.Y - c.Min.Y == 64
+					boxesOk = boxesOk and c.Max.X - c.Min.X == 4 and c.Min.Y % 4 == 0 and (c.Max.Y - c.Min.Y) % 4 == 0 and c.Max.Y > c.Min.Y
 				end
 			end
 			seen += #calls
@@ -261,7 +267,7 @@ do
 		end
 		local nCalls, solid, stats = 0, 0, nil
 		local t0 = os.clock()
-		local ok = pcall(function()
+		local ok, perr = pcall(function()
 			stats = Terrain.Build(nil, function(i, n, tile)
 				local before = #calls
 				for _, c in calls do if not c.Fill then solid += c.Solid end end
@@ -270,6 +276,7 @@ do
 				table.clear(calls)
 			end, rank, nil)
 		end)
+		if not ok and not tostring(perr):find("stop") then print("BUILD ERROR", perr) end
 		local compute = os.clock() - t0
 		local worst = 0
 		for _, f in frames do worst = math.max(worst, f.Work) end
@@ -282,15 +289,17 @@ do
 	print(string.format("bounded: %d tiles, %d calls, worst frame %.2f ms, worst call %.2f ms, %d frames, %.1f s sim, compute-only %.0f ms/tile",
 		nTiles, a.Calls, a.Worst * 1000, a.WorstCall * 1000, #a.Frames, a.Now, a.Compute / math.max(nTiles, 1) * 1000))
 	check("bounded: the run wrote tiles", nTiles >= 4 and a.Calls > nTiles * 20)
-	check("bounded: no simulated frame passes the 6 ms budget", a.Worst <= BUDGET_S + 1e-9)
+	local overLimit = 0
+	for _, f in a.Frames do overLimit = math.max(overLimit, f.Work - f.Limit) end
+	check("bounded: no simulated frame passes its slice limit, and none passes 1.5x the 6 ms budget", overLimit <= 1e-9 and a.Worst <= BUDGET_S * 1.5 + 1e-9)
 	check("bounded: no single engine call passes 2.5 ms", a.WorstCall <= CALL_MAX + 1e-9)
-	check("bounded: every box lies in its tile and is one column x one slab", a.Box and a.Inside)
+	check("bounded: every box lies in its tile, one column wide, on the 4-stud grid", a.Box and a.Inside)
 	local solidCount = 0
 	for _, t in a.Order do solidCount += #t.Slabs end
 	check("bounded: every written tile lists its slabs", solidCount >= nTiles)
 	local stateVox = 0
 	check("bounded: the boxes write every solid and water voxel the tile owes", a.Solid > 0)
-	check("bounded: never a whole-slab call (30+ boxes a tile; a slab was one call)", a.Calls / nTiles >= 30)
+	check("bounded: tight boxes, never a whole-slab call (30+ boxes a tile, far under a 16384-voxel slab)", a.Calls / nTiles >= 30)
 
 	-- b. Priority: tiles come in nondecreasing rank (glade first, nearest first); the first is the glade tile nearest the altar.
 	local ordered = true
@@ -300,7 +309,7 @@ do
 	-- c. A cost 5x the guess: only the first (learning) call may overrun; after it the estimates follow the measurement.
 	local c = run("spike", 40e-6, function() return 1 / 60 end, 2)
 	local late = 0
-	for i = 2, #c.Frames do late = math.max(late, c.Frames[i].Work) end
+	for i = 2, #c.Frames do late = math.max(late, c.Frames[i].Work - c.Frames[i].Limit + BUDGET_S) end
 	print(string.format("spike: first frame %.1f ms, worst afterwards %.2f ms", c.Frames[1].Work * 1000, late * 1000))
 	check("spike: after the first call no frame passes the budget", late <= BUDGET_S + 1e-9)
 
@@ -323,7 +332,7 @@ do
 	check("backoff: the slice halves down to a quarter", math.abs(scaleMin - 0.25) < 1e-9)
 	check("backoff: at the floor a frame is skipped", sl.Skipped >= 1)
 	check("backoff: at the floor no frame passes its scaled limit", floorFrames >= 10 and floorOver <= 1e-9)
-	check("backoff: the slice grows back to the full budget once frames are healthy", sl.Scale == 1)
+	check("backoff: the slice grows back to the full budget (and past it, to 1.5x) once frames are healthy", sl.Scale == 1.5)
 
 	-- e. Clear is bounded too: strips of 8 studs, none over 2.5 ms.
 	local now2, worst2, n2 = 0, 0, 0
@@ -402,6 +411,240 @@ do
 	check("refocus leaves every other glade and site tile ahead of the rest", firstRest == nUrgent + siteOrGlade + 1)
 	check("refocus puts the tile nearest the player first among the rest", rectDistance(tiles[firstRest], far[1], far[2]) < 450)
 	check("refocus keeps every tile once", #tiles == #plan)
+end
+
+-- Output identity (T4b): the tile voxels the writer hands to WriteVoxels (inline compute path and fake-Actor pool path) equal the
+-- T3 writer's (full 64-stud slabs, per-voxel fill, no pad cull): same material everywhere, occupancy within one byte step (the
+-- packed buffer stores occupancy / 255). The only voxels the T3 writer had that these do not are Water under a lake column's
+-- own shell (below its shell bottom: buried, never visible); the new writer must not write any voxel the old did not.
+do
+	local F, RES = O.Frame, 4
+	local function oldTile(tile)
+		local nx, nz = (tile.X1 - tile.X0) // RES, (tile.Z1 - tile.Z0) // RES
+		local hs, roadW, channelW, chasmW = {}, {}, {}, {}
+		local minH, maxH = math.huge, -math.huge
+		for i = -1, nx do
+			hs[i], roadW[i], channelW[i], chasmW[i] = {}, {}, {}, {}
+			for j = -1, nz do
+				local h, r, c, k = O.sampleAt(tile.X0 + (i + 0.5) * RES, tile.Z0 + (j + 0.5) * RES)
+				hs[i][j], roadW[i][j], channelW[i][j], chasmW[i][j] = h, r, c, k
+				if i >= 0 and i < nx and j >= 0 and j < nz then minH, maxH = math.min(minH, h), math.max(maxH, h) end
+			end
+		end
+		local top = math.max(maxH, if minH < F.WaterY then F.WaterY else -math.huge)
+		local bottoms, floor = {}, math.huge
+		for i = 1, nx do
+			bottoms[i] = {}
+			for j = 1, nz do
+				bottoms[i][j] = O.shellBottom(hs, i - 1, j - 1, 8)
+				floor = math.min(floor, bottoms[i][j])
+			end
+		end
+		local out = {}
+		for y0 = math.floor((floor - RES) / 64) * 64, top, 64 do
+			for i = 1, nx do
+				for j = 1, nz do
+					local h = hs[i - 1][j - 1]
+					local lake = h < F.WaterY and chasmW[i - 1][j - 1] == 0
+					local slope = math.sqrt((hs[i][j - 1] - h) ^ 2 + (hs[i - 1][j] - h) ^ 2) / RES
+					local m = O.materialAt(tile.X0 + (i - 0.5) * RES, tile.Z0 + (j - 0.5) * RES, h, slope, roadW[i - 1][j - 1], channelW[i - 1][j - 1], chasmW[i - 1][j - 1])
+					for k = 1, 16 do
+						local yc = y0 + (k - 0.5) * RES
+						local occ = math.min(math.clamp((h - yc) / RES + 0.5, 0, 1), math.clamp((yc - bottoms[i][j]) / RES + 0.5, 0, 1))
+						local mat, o
+						if occ >= 0.02 then
+							mat, o = m, occ
+							if occ < 0.5 and lake then
+								local w = math.clamp((F.WaterY - yc) / RES + 0.5, 0, 1)
+								if w > occ then mat, o = "Water", w end
+							end
+						elseif lake and yc < F.WaterY then
+							mat, o = "Water", math.clamp((F.WaterY - yc) / RES + 0.5, 0, 1)
+						end
+						if mat then out[(tile.X0 // RES + i - 1) .. "," .. (y0 // RES + k - 1) .. "," .. (tile.Z0 // RES + j - 1)] = { Mat = mat, Occ = o, Under = yc < bottoms[i][j] } end
+					end
+				end
+			end
+		end
+		return out
+	end
+
+	-- sample tiles: the glade tile, the lowest lake tile, a chasm (ravine) tile, the tile with the biggest height spread (cliff / shell)
+	local glade = O.Altars[O.Gateway].Placement
+	local pickBy = { Glade = { d = math.huge }, Lake = { d = math.huge }, Ravine = { d = -math.huge }, Cliff = { d = -math.huge } }
+	for _, t in plan do
+		local lo, hi, chasm, lake = math.huge, -math.huge, 0, false
+		for a = 1, 3 do
+			for b = 1, 3 do
+				local h, _, _, k = O.sampleAt(t.X0 + a * 32 - 16, t.Z0 + b * 32 - 16)
+				lo, hi = math.min(lo, h), math.max(hi, h)
+				if k > 0 then chasm += 1 end
+				if h < F.WaterY and k == 0 then lake = true end
+			end
+		end
+		local gd = ((t.X0 + t.X1) / 2 - glade.X) ^ 2 + ((t.Z0 + t.Z1) / 2 - glade.Z) ^ 2
+		if gd < pickBy.Glade.d then pickBy.Glade = { d = gd, t = t } end
+		if lake and lo < pickBy.Lake.d then pickBy.Lake = { d = lo, t = t } end
+		if chasm > pickBy.Ravine.d then pickBy.Ravine = { d = chasm, t = t } end
+		if hi - lo > pickBy.Cliff.d then pickBy.Cliff = { d = hi - lo, t = t } end
+	end
+	local jobs, rankOf = {}, {}
+	for name, p in pickBy do
+		check("identity: found a " .. name .. " tile", p.t ~= nil)
+		if p.t then table.insert(jobs, { Name = name, Tile = p.t }) end
+	end
+	table.sort(jobs, function(a, b) return a.Name < b.Name end)
+	for i, j in jobs do rankOf[j.Tile.Key] = i end
+
+	-- what each path writes: { key = { Mat, Occ } } per tile key (non-Air voxels only)
+	local function captureRun(withPool)
+		local got, cur = {}, nil
+		Terrain.Use(os.clock, function() end, nil)
+		Terrain.UsePool({}, nil)
+		if withPool then
+			-- a fake Actor: answers a Tile message like OverworldTerrainWorker (Compute.tile, result as a string), one frame later
+			local results = {}
+			local actor = { SendMessage = function(_, topic, key, x0, z0, nx, nz)
+				local buf = compute.tile(O, x0, z0, nx, nz, F.WaterY, O.padsNear(x0 - 4, z0 - 4, x0 + nx * 4 + 4, z0 + nz * 4 + 4))
+				buffer.writeu32(buf, 20, 1500)
+				results[key] = buffer.tostring(buf)
+			end }
+			Terrain.UsePool({ actor, actor }, results)
+		end
+		services.Workspace.Terrain.WriteVoxels = function(_, region, _, mat, occ)
+			local mc, oc = mat[1], occ[1]
+			for k = 1, #mc do
+				for jj = 1, #mc[k] do
+					if mc[k][jj] ~= roblox.Enum.Material.Air then
+						got[cur] = got[cur] or {}
+						got[cur][(region.Min.X // RES) .. "," .. (region.Min.Y // RES + k - 1) .. "," .. (region.Min.Z // RES + jj - 1)] = { Mat = mc[k][jj], Occ = oc[k][jj] }
+					end
+				end
+			end
+		end
+		services.Workspace.Terrain.FillBlock = function() end
+		Terrain.Manifest = {}
+		cur = nil
+		-- the tile being written is known in onTile only after its boxes ran, so key the capture by call order instead
+		local perTile, pending = {}, {}
+		services.Workspace.Terrain.WriteVoxels = (function(inner)
+			return function(self, region, res, mat, occ)
+				cur = "pending"
+				inner(self, region, res, mat, occ)
+			end
+		end)(services.Workspace.Terrain.WriteVoxels)
+		local stats
+		pcall(function()
+			stats = Terrain.Build(nil, function(i, n, tile)
+				perTile[tile.Key] = got.pending
+				got.pending = nil
+				if i >= #jobs then error("stop") end
+			end, function(tile) return rankOf[tile.Key] or 1e9 end, nil)
+		end)
+		return perTile
+	end
+
+	local inlineOut = captureRun(false)
+	local poolOut = captureRun(true)
+	local poolStats = Terrain.Stats
+	for _, j in jobs do
+		local old, a, b = oldTile(j.Tile), inlineOut[j.Tile.Key] or {}, poolOut[j.Tile.Key] or {}
+		for label, new in { Inline = a, Pool = b } do
+			local nNew, nOld, nMissing, bad, extra, badOcc = 0, 0, 0, 0, 0, 0
+			for key, v in new do
+				nNew += 1
+				local o = old[key]
+				if not o then extra += 1
+				elseif roblox.Enum.Material[o.Mat] ~= v.Mat then bad += 1
+				elseif math.abs(o.Occ - v.Occ) > 0.5 / 255 + 1e-9 then badOcc += 1 end
+			end
+			for key, o in old do
+				nOld += 1
+				if not new[key] and not (o.Mat == "Water" and o.Under) then nMissing += 1 end
+			end
+			print(string.format("identity %s %-6s tile %s: new %d voxels, T3 %d (%d buried lake water not written), material mismatches %d, occupancy mismatches %d, missing %d, extra %d",
+				label, j.Name, j.Tile.Key, nNew, nOld, nOld - nNew, bad, badOcc, nMissing, extra))
+			check("identity " .. label .. " " .. j.Name .. ": same material and occupancy, nothing missing, nothing extra", nNew > 0 and bad == 0 and badOcc == 0 and nMissing == 0 and extra == 0)
+		end
+	end
+	check("pool path: every sampled tile came from a worker, none inline", poolStats.Parallel == #jobs and poolStats.Inline == 0 and poolStats.WorkerMs > 0)
+	Terrain.Use(os.clock, function() end, nil)
+	Terrain.UsePool({}, nil)
+end
+
+-- Worker pool waiting (T4b): a worker answers one frame after the request; a dead worker is given up on after 5 s and the
+-- tile is computed inline (the pool is dropped, the tile is still written).
+do
+	local function run(dead)
+		local now, queue, results, writes = 0, {}, {}, 0
+		local actor = { SendMessage = function(_, _, key, x0, z0, nx, nz) if not dead then table.insert(queue, { key, x0, z0, nx, nz }) end end }
+		local function yield()
+			now += 1 / 60
+			for _, q in queue do
+				local buf = compute.tile(O, q[2], q[3], q[4], q[5], O.Frame.WaterY, O.padsNear(q[2] - 4, q[3] - 4, q[2] + q[4] * 4 + 4, q[3] + q[5] * 4 + 4))
+				results[q[1]] = buffer.tostring(buf)
+			end
+			table.clear(queue)
+		end
+		Terrain.Use(function() return now end, yield, nil)
+		Terrain.UsePool({ actor }, results)
+		Terrain.Manifest = {}
+		services.Workspace.Terrain.WriteVoxels = function() writes += 1 end
+		local top = {}
+		for i = 1, 3 do top[plan[i].Key] = i end
+		pcall(Terrain.Build, nil, function(i) if i >= 3 then error("stop") end end, function(t) return top[t.Key] or 1e9 end, nil)
+		local st, slicer = Terrain.Stats, Terrain.Slicer
+		return st, slicer, writes, now
+	end
+	local st, slicer, writes = run(false)
+	check("pool wait: three tiles from the worker, writer waited frames for them", st.Parallel == 3 and st.Inline == 0 and slicer.Yields >= 1 and writes > 100)
+	local st2, _, writes2, now2 = run(true)
+	check("pool wait: a dead worker is dropped after 5 s, the tiles are computed inline and written", st2.Inline == 3 and st2.Parallel == 0 and now2 >= 5 and now2 < 6 and writes2 > 100)
+	Terrain.Use(os.clock, function() end, nil)
+	Terrain.UsePool({}, nil)
+	Terrain.Manifest = {}
+end
+
+-- Pool failures (T4c): a pool start that throws, or an Actor whose SendMessage throws, falls back inline and still writes tiles.
+-- Counters (T4c): with a fake clock far from 0, ComputeMs + DecodeMs + WriteMs + YieldMs never exceed the elapsed time.
+do
+	local function run(label, setup)
+		local now = 100000
+		local t0 = now
+		Terrain.Use(function() return now end, function() now += 1 / 60 end, nil)
+		setup()
+		Terrain.Manifest = {}
+		local writes = 0
+		services.Workspace.Terrain.WriteVoxels = function() writes += 1; now += 0.0002 end
+		local top = {}
+		for i = 1, 3 do top[plan[i].Key] = i end
+		pcall(Terrain.Build, nil, function(i) if i >= 3 then error("stop") end end, function(t) return top[t.Key] or 1e9 end, nil)
+		local st = Terrain.Stats
+		local sum = st.ComputeMs + st.DecodeMs + st.WriteMs + st.YieldMs
+		return st, writes, sum, (now - t0) * 1000
+	end
+	local st, writes, sum, elapsed = run("start", function()
+		Terrain.UsePool(nil, nil) -- forget the pool: Build tries to start one
+		O_script_parent.FindFirstChild = function() return { IsA = function() return true end } end -- mapped, but no registry: start throws
+	end)
+	O_script_parent.FindFirstChild = function() return nil end
+	check("pool start throws: tiles are computed inline and written", st.Inline == 3 and st.Parallel == 0 and writes > 50)
+	check("counters partition time: sum " .. math.floor(sum) .. " ms <= elapsed " .. math.floor(elapsed) .. " ms", sum <= elapsed + 1e-6 and sum > 0)
+	local st2, writes2 = run("send", function()
+		Terrain.UsePool({ { SendMessage = function() error("boom") end } }, {})
+	end)
+	check("worker send throws: tiles are computed inline and written", st2.Inline == 3 and st2.Parallel == 0 and writes2 > 50)
+	-- Settle: calm after 3 good frames, and bounded at 3 s when the frames never calm down
+	local now, frames = 0, 0
+	Terrain.Use(function() return now end, function() now += 1 / 60; frames += 1 end, nil)
+	Terrain.Settle(function() return if frames < 4 then 0.1 else 0.01 end)
+	check("settle waits for 3 consecutive calm frames", frames == 6)
+	now, frames = 0, 0
+	Terrain.Settle(function() return 0.1 end)
+	check("settle gives up after 3 s", now >= 3 and now < 3.1)
+	Terrain.Use(os.clock, function() end, nil)
+	Terrain.UsePool({}, nil)
+	Terrain.Manifest = {}
 end
 
 print(string.format("overworld order: %d passed, %d failed", passed, failed))
