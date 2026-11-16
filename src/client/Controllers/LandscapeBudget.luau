@@ -8,6 +8,7 @@ local RunService = game:GetService("RunService")
 local Tags = game:GetService("CollectionService")
 local Shared = game:GetService("ReplicatedStorage").AsurasPath.Shared
 local Effects = require(Shared.EffectsPreference)
+local WorldMap = require(Shared.WorldMap)
 local Budget = {}
 Budget.__index = Budget
 local protected = { "Lantern", "Frosted", "Sheltered", "Paper", "WarmLight", "Candle", "Column_", "Roof_", "Beam_" }
@@ -25,8 +26,14 @@ local function keep(part: BasePart): boolean
 	return part.Size.Magnitude > 38
 end
 
+-- Far silhouette visibility with a 15-stud hysteresis band; the lobby never shows the overworld silhouettes.
+function Budget.farShown(distance: number, beyond: number, wasShown: boolean?, lobby: boolean): boolean
+	if lobby then return false end
+	return distance > beyond + (if wasShown then 0 else 15)
+end
+
 function Budget.new(): any
-	local self = setmetatable({ Parts = {}, Emitters = {}, Lights = {}, Shadows = {}, Links = {}, Time = 1, Alive = true }, Budget) :: any
+	local self = setmetatable({ Parts = {}, Emitters = {}, Lights = {}, Shadows = {}, Far = {}, Links = {}, Time = 1, Alive = true }, Budget) :: any
 	local function register(item: Instance)
 		if not item:IsDescendantOf(workspace) then return end
 		local root: Instance? = item
@@ -59,6 +66,28 @@ function Budget.new(): any
 			if self.Shadows[part] and part.Parent then part.CastShadow = true end
 			self.Shadows[part] = nil
 		end))
+	end
+	if Tags then
+		-- "<Id>_Far" silhouettes overlap the detailed landmark: shown only beyond FarBeyond studs.
+		-- The model stays parented (Persistent streaming); only LocalTransparencyModifier changes.
+		local function farAdd(model: Instance)
+			if not model:IsA("Model") or self.Far[model] then return end
+			local parts = {}
+			for _, d in model:GetDescendants() do
+				if d:IsA("BasePart") then table.insert(parts, { Part = d, Original = d.LocalTransparencyModifier }) end
+			end
+			self.Far[model] = { Parts = parts, Center = model:GetPivot().Position,
+				Beyond = model:GetAttribute("FarBeyond") or 700, Shown = nil }
+		end
+		self.FarRestore = function(model: Instance)
+			local row = self.Far[model]
+			if not row then return end
+			for _, p in row.Parts do if p.Part.Parent then p.Part.LocalTransparencyModifier = p.Original end end
+			self.Far[model] = nil
+		end
+		for _, model in Tags:GetTagged("OverworldLandmarkFar") do farAdd(model) end
+		table.insert(self.Links, Tags:GetInstanceAddedSignal("OverworldLandmarkFar"):Connect(farAdd))
+		table.insert(self.Links, Tags:GetInstanceRemovedSignal("OverworldLandmarkFar"):Connect(self.FarRestore))
 	end
 	table.insert(self.Links, RunService.Heartbeat:Connect(function(dt)
 		self.Time += dt
@@ -100,6 +129,17 @@ function Budget.Refresh(self: any)
 		if part.LocalTransparencyModifier ~= value then part.LocalTransparencyModifier = value end
 		if fade >= 1 then hidden += 1 end
 	end
+	local lobby = WorldMap.isLobby(Players.LocalPlayer:GetAttribute("AsuraRegion"), at.X, at.Z)
+	for model, row in self.Far do
+		if not model.Parent then self.Far[model] = nil; continue end
+		local shown = Budget.farShown((row.Center - at).Magnitude, row.Beyond, row.Shown, lobby)
+		if row.Shown ~= shown then
+			row.Shown = shown
+			for _, p in row.Parts do
+				if p.Part.Parent then p.Part.LocalTransparencyModifier = if shown then p.Original else math.max(p.Original, 1) end
+			end
+		end
+	end
 	local range = if low then 64 else 110
 	for i = #self.Lights, 1, -1 do
 		local row = self.Lights[i]; local light = row.Light
@@ -133,6 +173,7 @@ function Budget.Destroy(self: any)
 	self.Alive = false
 	for _, link in self.Links do link:Disconnect() end
 	for part in self.Shadows do if part.Parent then part.CastShadow = true end end
+	for model in self.Far do self.FarRestore(model) end
 	for _, row in self.Parts do if row.Part.Parent then row.Part.LocalTransparencyModifier = row.Original end end
 	for _, row in self.Lights do if row.Light.Parent then row.Light.Enabled = row.Enabled end end
 	for _, row in self.Emitters do if row.Emitter.Parent then row.Emitter.Rate, row.Emitter.Enabled = row.Rate, row.Enabled end end

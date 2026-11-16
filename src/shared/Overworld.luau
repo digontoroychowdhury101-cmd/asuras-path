@@ -240,17 +240,31 @@ Overworld.ReservedArenas = {
 -- Landmarks (long-distance silhouettes, Persistent under streaming) and POIs
 -------------------------------------------------------------------------------------------------
 
-local function landmark(id: string, region: string, node: string, x: number, y: number, z: number, height: number)
-	return { Id = id, Region = region, Node = node, Position = v(x, y, z), Height = height, Persistent = true }
+-- Silhouette: few big boxes {dx, dy, dz, sx, sy, sz}; dy is the box centre above the base (terrain - 3), same massing
+-- as the detailed model. The service builds them as "<Id>_Far" (tag OverworldLandmarkFar, attr FarBeyond studs).
+local function landmark(id: string, region: string, node: string, x: number, y: number, z: number, height: number, silhouette: { { number } })
+	return { Id = id, Region = region, Node = node, Position = v(x, y, z), Height = height, Persistent = true, Silhouette = silhouette, FarBeyond = 700 }
 end
 
 Overworld.Landmarks = {
-	BrokenBellTower = landmark("BrokenBellTower", "Forest", "Altar_DesecratedCloister", -5100, 300, -3950, 90),
-	FarSideAqueduct = landmark("FarSideAqueduct", "GoldenRavine", "G4_FarSide", -6650, 300, -3300, 80),
-	GateStatue = landmark("GateStatue", "AridBasin", "B4_SaltPan", -9500, 60, -3000, 140),
-	WatchBeacon = landmark("WatchBeacon", "Snowfields", "S3_Watchpost", -3500, 880, -7300, 100),
-	ThousandSteps = landmark("ThousandSteps", "MountainAscent", "M4_ThousandSteps", -7400, 1300, -7300, 120),
-	SummitTemple = landmark("SummitTemple", "MountainAscent", "Altar_ColosseumAntechamber", -7200, 1650, -8100, 160),
+	BrokenBellTower = landmark("BrokenBellTower", "Forest", "Altar_DesecratedCloister", -5100, 300, -3950, 90, {
+		{ 0, 35, 0, 16, 70, 16 }, { 0, 77, 0, 16, 14, 14 },
+	}),
+	FarSideAqueduct = landmark("FarSideAqueduct", "GoldenRavine", "G4_FarSide", -6650, 300, -3300, 80, {
+		{ 0, 40, 0, 190, 80, 6 }, { 0, 84, 0, 190, 9, 10 },
+	}),
+	GateStatue = landmark("GateStatue", "AridBasin", "B4_SaltPan", -9500, 60, -3000, 140, {
+		{ 0, 35, 0, 74, 70, 26 }, { 0, 105, 0, 56, 70, 30 }, { 36, 91, 0, 14, 42, 14 },
+	}),
+	WatchBeacon = landmark("WatchBeacon", "Snowfields", "S3_Watchpost", -3500, 880, -7300, 100, {
+		{ 0, 36, 0, 18, 72, 18 }, { 0, 78, 0, 28, 12, 28 },
+	}),
+	ThousandSteps = landmark("ThousandSteps", "MountainAscent", "M4_ThousandSteps", -7400, 1300, -7300, 120, {
+		{ 0, 20, 0, 70, 40, 70 }, { 0, 60, 0, 50, 40, 50 }, { 0, 100, 0, 25, 40, 25 },
+	}),
+	SummitTemple = landmark("SummitTemple", "MountainAscent", "Altar_ColosseumAntechamber", -7200, 1650, -8100, 160, {
+		{ 0, 24, 0, 74, 48, 90 }, { 0, 51.5, 0, 92, 3, 100 }, { 0, 67, 0, 70, 3, 80 }, { 0, 82, 0, 48, 3, 60 }, { 0, 101, 0, 6, 34, 6 },
+	}),
 }
 Overworld.SummitId = "SummitTemple"
 

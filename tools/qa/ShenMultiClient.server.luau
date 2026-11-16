@@ -177,7 +177,19 @@ local ok, err = xpcall(function()
 	check(untilTrue(function() return alive(A) and alive(B) end, 60), "both players alive after A's respawn")
 	C.GetEntity(A.UserId).Fighter.KOProtected = true; C.GetEntity(B.UserId).Fighter.KOProtected = true
 	stand(A, 40, -6); stand(B, 40, 6); task.wait(2.5)
-	C.Teleport(A.UserId, CFrame.new(trigger + Vector3.new(-0.4, 0.5, 0))); C.Teleport(B.UserId, CFrame.new(trigger + Vector3.new(0.4, 0.5, 0)))
+	-- Fire the client "Position" event too (as stand() does) or A's client reasserts its old spot and A is outside at the tick.
+	local function place(p, dx)
+		local f = CFrame.new(trigger + Vector3.new(dx, 0.5, 0))
+		C.Teleport(p.UserId, f); event:FireClient(p, "Position", f)
+	end
+	local function inside(p) return inBounds(gate.Trigger, pos(p)) or inBounds(boss.Arena, pos(p)) end
+	place(A, -0.4); place(B, 0.4)
+	for _ = 1, 3 do -- one-shot placement can be overwritten by the client; retry until both are inside before the fight tick
+		if inside(A) and inside(B) then break end
+		place(A, -0.4); place(B, 0.4)
+	end
+	local enA = C.GetEntity(A.UserId)
+	check(inside(A) and inside(B), "BOTH-INSIDE precondition: A and B both in trigger/arena before the fight tick", { aPos = tostring(pos(A)), bPos = tostring(pos(B)), aTrigger = inBounds(gate.Trigger, pos(A)), bTrigger = inBounds(gate.Trigger, pos(B)), aArena = inBounds(boss.Arena, pos(A)), bArena = inBounds(boss.Arena, pos(B)), aRespawning = enA.Respawning, aState = enA.Fighter.State, aEnc = tostring(A:GetAttribute("AsuraEncounter")) })
 	local both = untilTrue(sealed, 15)
 	check(both and untilTrue(function() return A:GetAttribute("AsuraEncounter") == boss.Id and B:GetAttribute("AsuraEncounter") == boss.Id end, 5), "BOTH-INSIDE: simultaneous entry seals the gate with both as participants", { a = tostring(A:GetAttribute("AsuraEncounter")), b = tostring(B:GetAttribute("AsuraEncounter")), aPos = tostring(pos(A)), bPos = tostring(pos(B)), aInArena = inBounds(boss.Arena, pos(A)), bInArena = inBounds(boss.Arena, pos(B)), aInTrigger = inBounds(gate.Trigger, pos(A)), bInTrigger = inBounds(gate.Trigger, pos(B)), trigger = tostring(Vector3.new(gate.Trigger.Size.X, gate.Trigger.Size.Y, gate.Trigger.Size.Z)) })
 	if both then

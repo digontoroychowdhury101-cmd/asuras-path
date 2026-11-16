@@ -1,0 +1,40 @@
+{
+  "note": "Real IDs only. Audio uploaded 2026-11-16 by win-11 (cloud window). moderationState at upload time: Reviewing (re-check before use).",
+  "audio": {
+    "amberfall_ravine": {
+      "assetId": "rbxassetid://129806106031158",
+      "operationId": "a079a202-b8d5-44ec-bcf2-de6f7743322a",
+      "source": "assets/source/overworld/upload/audio/amberfall_ravine.ogg",
+      "uploaded": "2026-11-16",
+      "moderationState": "Reviewing"
+    },
+    "ashen_stair": {
+      "assetId": "rbxassetid://93963168737720",
+      "operationId": "47aee63d-0ec4-4008-a91e-f03bd1709882",
+      "source": "assets/source/overworld/upload/audio/ashen_stair.ogg",
+      "uploaded": "2026-11-16",
+      "moderationState": "Reviewing"
+    },
+    "bellwood_forest_day": {
+      "assetId": "rbxassetid://105210588065430",
+      "operationId": "f9d2bc36-efb9-4610-9742-be85150d9928",
+      "source": "assets/source/overworld/upload/audio/bellwood_forest_day.ogg",
+      "uploaded": "2026-11-16",
+      "moderationState": "Reviewing"
+    },
+    "frostmere_snow": {
+      "assetId": "rbxassetid://89969995114537",
+      "operationId": "a432a623-cec9-4d14-9960-46f4b8f9eadd",
+      "source": "assets/source/overworld/upload/audio/frostmere_snow.ogg",
+      "uploaded": "2026-11-16",
+      "moderationState": "Reviewing"
+    },
+    "saltreach_basin_r2": {
+      "assetId": "rbxassetid://123518992828989",
+      "operationId": "289d2744-1c8a-4a23-b5e7-612cb229a0b6",
+      "source": "assets/source/overworld/upload/audio/saltreach_basin_r2.ogg",
+      "uploaded": "2026-11-16",
+      "moderationState": "Reviewing"
+    }
+  }
+}

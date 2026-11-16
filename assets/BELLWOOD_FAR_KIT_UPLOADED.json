@@ -1,0 +1,145 @@
+{
+  "note": "Real IDs only. modelAssets = Assets API id (LoadAsset target). pieces = sub-mesh MeshId/maps read from a verified LoadAsset.",
+  "modelAssets": {
+    "Canopy_Tree_A_Far": {
+      "assetId": "rbxassetid://73650879252786",
+      "operationId": "7f278bbf-1ffb-466e-92fc-52e8f8729143",
+      "source": "assets/source/overworld/upload/bellwood_far/Canopy_Tree_A_Far.glb",
+      "uploaded": "2026-11-16",
+      "moderationState": "Approved"
+    },
+    "Canopy_Tree_B_Far": {
+      "assetId": "rbxassetid://110794827835245",
+      "operationId": "c57976d1-3b79-4e3c-bb6c-08271dfb40b4",
+      "source": "assets/source/overworld/upload/bellwood_far/Canopy_Tree_B_Far.glb",
+      "uploaded": "2026-11-16",
+      "moderationState": "Approved"
+    },
+    "Canopy_Tree_C_Far": {
+      "assetId": "rbxassetid://84006049232452",
+      "operationId": "262511d1-071a-414c-a469-6d6100fd7ce8",
+      "source": "assets/source/overworld/upload/bellwood_far/Canopy_Tree_C_Far.glb",
+      "uploaded": "2026-11-16",
+      "moderationState": "Approved"
+    },
+    "Canopy_Tree_D_Far": {
+      "assetId": "rbxassetid://137187261517726",
+      "operationId": "bf0a24e1-98db-47eb-b374-cc82bb9a31f5",
+      "source": "assets/source/overworld/upload/bellwood_far/Canopy_Tree_D_Far.glb",
+      "uploaded": "2026-11-16",
+      "moderationState": "Approved"
+    },
+    "Conifer_Tall_Far": {
+      "assetId": "rbxassetid://89133187998464",
+      "operationId": "78cd3cc2-04f7-4ca6-8ed0-1fa2e5a7308f",
+      "source": "assets/source/overworld/upload/bellwood_far/Conifer_Tall_Far.glb",
+      "uploaded": "2026-11-16",
+      "moderationState": "Approved"
+    },
+    "Old_Gnarled_Tree_Far": {
+      "assetId": "rbxassetid://96002328461183",
+      "operationId": "0137afd9-6c49-4188-bf89-2fceb613a42e",
+      "source": "assets/source/overworld/upload/bellwood_far/Old_Gnarled_Tree_Far.glb",
+      "uploaded": "2026-11-16",
+      "moderationState": "Approved"
+    }
+  },
+  "pieces": {
+    "Canopy_Tree_B_Far": {
+      "Canopy_Tree_B_Far__Leaves": {
+        "MeshId": "rbxassetid://115035009966560",
+        "ColorMap": "",
+        "NormalMap": "",
+        "RoughnessMap": "",
+        "MetalnessMap": ""
+      },
+      "Canopy_Tree_B_Far__Bark": {
+        "MeshId": "rbxassetid://71921475501394",
+        "ColorMap": "",
+        "NormalMap": "",
+        "RoughnessMap": "",
+        "MetalnessMap": ""
+      }
+    },
+    "Canopy_Tree_C_Far": {
+      "Canopy_Tree_C_Far__Leaves": {
+        "MeshId": "rbxassetid://100582403955048",
+        "ColorMap": "",
+        "NormalMap": "",
+        "RoughnessMap": "",
+        "MetalnessMap": ""
+      },
+      "Canopy_Tree_C_Far__Bark": {
+        "MeshId": "rbxassetid://94341596460817",
+        "ColorMap": "",
+        "NormalMap": "",
+        "RoughnessMap": "",
+        "MetalnessMap": ""
+      }
+    },
+    "Old_Gnarled_Tree_Far": {
+      "Old_Gnarled_Tree_Far__Leaves": {
+        "MeshId": "rbxassetid://116990344233219",
+        "ColorMap": "",
+        "NormalMap": "",
+        "RoughnessMap": "",
+        "MetalnessMap": ""
+      },
+      "Old_Gnarled_Tree_Far__Bark": {
+        "MeshId": "rbxassetid://124824097966875",
+        "ColorMap": "",
+        "NormalMap": "",
+        "RoughnessMap": "",
+        "MetalnessMap": ""
+      }
+    },
+    "Canopy_Tree_D_Far": {
+      "Canopy_Tree_D_Far__Leaves": {
+        "MeshId": "rbxassetid://135007262284955",
+        "ColorMap": "",
+        "NormalMap": "",
+        "RoughnessMap": "",
+        "MetalnessMap": ""
+      },
+      "Canopy_Tree_D_Far__Bark": {
+        "MeshId": "rbxassetid://77569432911704",
+        "ColorMap": "",
+        "NormalMap": "",
+        "RoughnessMap": "",
+        "MetalnessMap": ""
+      }
+    },
+    "Canopy_Tree_A_Far": {
+      "Canopy_Tree_A_Far__Leaves": {
+        "MeshId": "rbxassetid://97341778136107",
+        "ColorMap": "",
+        "NormalMap": "",
+        "RoughnessMap": "",
+        "MetalnessMap": ""
+      },
+      "Canopy_Tree_A_Far__Bark": {
+        "MeshId": "rbxassetid://126339544267111",
+        "ColorMap": "",
+        "NormalMap": "",
+        "RoughnessMap": "",
+        "MetalnessMap": ""
+      }
+    },
+    "Conifer_Tall_Far": {
+      "Conifer_Tall_Far__Needles": {
+        "MeshId": "rbxassetid://98110626628078",
+        "ColorMap": "",
+        "NormalMap": "",
+        "RoughnessMap": "",
+        "MetalnessMap": ""
+      },
+      "Conifer_Tall_Far__Bark": {
+        "MeshId": "rbxassetid://95623870032846",
+        "ColorMap": "",
+        "NormalMap": "",
+        "RoughnessMap": "",
+        "MetalnessMap": ""
+      }
+    }
+  }
+}

@@ -145,6 +145,31 @@ check("every landmark has a silhouette", (function()
 	for id in O.Landmarks do table.insert(ids, id) end
 	return #ids == 6
 end)())
+check("every landmark has a far silhouette (1-6 boxes, positive sizes, FarBeyond)", (function()
+	for _, l in O.Landmarks do
+		if not l.Silhouette or #l.Silhouette < 1 or #l.Silhouette > 6 or not l.FarBeyond or l.FarBeyond <= 0 then return false end
+		for _, b in l.Silhouette do
+			if #b ~= 6 or b[4] <= 0 or b[5] <= 0 or b[6] <= 0 then return false end
+		end
+	end
+	return true
+end)())
+check("silhouettes stay within the landmark height (+20%)", (function()
+	for _, l in O.Landmarks do
+		for _, b in l.Silhouette do if b[2] + b[5] / 2 > l.Height * 1.2 then return false end end
+	end
+	return true
+end)())
+-- Builder is Roblox-only: assert by source (when @lune/fs exists) that it emits "<Id>_Far" from Silhouette, Persistent and tagged.
+do
+	local okFs, fs = pcall(require, "@lune/fs")
+	if okFs then
+		local src = fs.readFile("src/server/Services/OverworldService.luau")
+		check("builder creates a Persistent tagged _Far model from Silhouette", src:find('id .. "_Far"', 1, true) ~= nil and src:find("def.Silhouette", 1, true) ~= nil and src:find('LANDMARK_TAG .. "Far"', 1, true) ~= nil and src:find("far.ModelStreamingMode = Enum.ModelStreamingMode.Persistent", 1, true) ~= nil)
+	else
+		print("  SKIP builder _Far source check: @lune/fs unavailable in this runner")
+	end
+end
 
 print(string.format("overworld blockout: %d passed, %d failed", passed, failed))
 if failed > 0 then error("overworld blockout tests failed") end

@@ -198,6 +198,22 @@ local function buildLandmarks()
 			build(model, def.Position.X + shift[1], def.Position.Z + shift[2], def.Height)
 			CollectionService:AddTag(model, LANDMARK_TAG)
 			model.Parent = folders[def.Region]
+			-- Far silhouette: a few big boxes that still draw at low quality; LandscapeBudget shows it beyond FarBeyond only.
+			if def.Silhouette then
+				local far = Instance.new("Model")
+				far.Name = id .. "_Far"
+				far.ModelStreamingMode = Enum.ModelStreamingMode.Persistent
+				far:SetAttribute("AsuraRegion", def.Region)
+				far:SetAttribute("FarBeyond", def.FarBeyond)
+				local x, z = def.Position.X + shift[1], def.Position.Z + shift[2]
+				local base = ground(x, z) - 3
+				for i, b in def.Silhouette do
+					local p = part(far, "Far" .. i, Vector3.new(b[4], b[5], b[6]), CFrame.new(x + b[1], base + b[2], z + b[3]), STONE, nil, false)
+					p.CastShadow, p.CanQuery, p.CanTouch = false, false, false
+				end
+				CollectionService:AddTag(far, LANDMARK_TAG .. "Far")
+				far.Parent = folders[def.Region]
+			end
 		else
 			warn("[Overworld] no silhouette for landmark " .. id)
 		end

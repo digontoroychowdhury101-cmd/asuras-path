@@ -1,0 +1,116 @@
+# win-11 uploads (Sonnet, sole uploader, cloud window 9d16bd41, placeId 118614906972571, persistedToCloud=true)
+Committed memory before open: 15.37 GB. Registry: SLICE/BELLWOOD/BELLWOOD_FAR/HERO/OVERWORLD_AUDIO json. Uploads from upload/<group>/ originals.
+## Checkpoints (group/piece | operationId | assetId)
+- slice/Bell_Lantern_Post | a18c4491-d60d-4a82-aa02-e47f77770fff | 106633407703784 (pre-existing, win-04)
+- slice/Bell_Stair_Segment | a17fa004-3f3f-4e8f-82b2-25b78eb53037 | 109850801774463
+- slice/Bell_Terrace_Pavilion | d5756466-8037-40fb-9a8b-b3763b42c1aa | 95430125213617
+- slice/Bell_Terrace_Wall | 35ecbd3a-f729-4530-8254-be2b7bc0abd2 | 73801276031015
+- slice/Bell_Timber_Gate | 85231b6b-2605-4901-93dc-0fbd2a2dc955 | 90855504530205
+- slice/Bell_Tower_Broken | f9eeadbb-e28e-415a-a6b3-113f48523735 | 77362183523751
+- slice/Boulder_Granite_A | 6a25038d-2a2f-46c6-8c38-24dd23aa7e50 | 89168332530533
+- slice/Boulder_Granite_B | d8da1b2a-95ff-4730-bd04-430591c1aa97 | 137537542245531
+- slice/Boulder_Granite_C | 3c270b42-b783-40c2-90b2-2c849f848cad | 72049827651379
+- slice/Canopy_Tree_A | 0ef76891-f379-42ad-963d-7c1cb0b0ccc4 | 109718244979586
+- slice/Fern_Clump | 2b204fc3-bac0-4db7-a369-33c6deb84299 | 124332132677081
+- slice/Grass_Clump | 667b9198-fe89-4cb8-a0b8-1e3961df7bc7 | 139507923725034
+- slice/Stepping_Stones | d39f5e6a-8d00-4b65-ba1c-84570f2f9369 | 114476630994510
+- slice/Understory_Shrub | 3b6a6188-fcae-4d1e-8843-7f9c9b4fc180 | 95436990537555
+- slice/Understory_Shrub_Small | d0de3500-9db9-45d3-8494-ad157a03d5a8 | 85157258650422
+- slice/Canopy_Tree_B | 99e79254-5e25-41f6-90a3-260e9dcd9332 | 106036948034286
+- bellwood_built_a/Bell_Edging_Cobble | d98aa92f-3990-415d-908e-3e28e9aaa706 | 139207498624027
+- bellwood_built_a/Bell_Edging_Kerb | bc37b415-45f6-4b94-bd3e-dbb8934658fe | 105776158055845
+- bellwood_built_a/Bell_Fence_Picket | e7c2427b-6b8d-4e22-8388-6aebd44673f1 | 95024079727505
+- bellwood_built_a/Bell_Fence_Post | 9d23f7d9-656a-4252-92be-77985258e770 | 115302885536029
+- bellwood_built_a/Bell_Fence_Rail | 17ac8645-29ba-40d3-ba07-79751b8d7a73 | 89234462212669
+- bellwood_built_a/Bell_Grave_A | 101c3a0f-5e85-4756-89c9-aa90495a8125 | 88056624351392
+- bellwood_built_a/Bell_Grave_B | d93f3af8-61a0-4515-9162-09e3d3004bd9 | 75804058467809
+- bellwood_built_a/Bell_Grave_C | ada9864b-decf-4011-84ac-a874e64f3d85 | 88061141493919
+- bellwood_built_a/Bell_Paving_Flag | d87a1ac6-c6b4-4c1b-b3aa-9e0d416d10be | 105645307729175
+- bellwood_built_a/Bell_Paving_Sett | 8e95f0a8-b375-4224-993e-c18dc6ea503f | 127460008455087
+- bellwood_built_a/Bell_Prayer_Flags_Long | 00188992-9338-4079-86f0-d1a94fbcf733 | 91386343168594
+- bellwood_built_a/Bell_Prayer_Flags_Short | f58b1d50-8c39-4ad0-9701-63708c2782fe | 101522602743478
+- bellwood_built_a/Bell_Retain_Wall_Corner | 90d879ad-352a-45e6-a33b-e319f2746d37 | 139914250894797
+- bellwood_built_a/Bell_Retain_Wall_Long | b405dd5d-ce55-4ba1-a76b-333a971196b9 | 87090291970199
+- bellwood_built_a/Bell_Retain_Wall_Short | 696e6de2-06c8-4919-95c0-a695482e2f6c | 75989410624745
+- bellwood_built_a/Bell_Shrine_Roadside | 3d778161-5e1a-479f-b5e6-919428e10f36 | 79494870281260
+- bellwood_built_a/Bell_Signpost_A | c05a349a-4a67-4967-afcd-9bee68840398 | 95107843540078
+- bellwood_built_a/Bell_Signpost_B | 1f985b4a-9635-494b-9bf2-992efdabed12 | 118725558243103
+- bellwood_built_a/Bell_Stair_Straight_A | a48e879e-4480-4ec2-b6af-228162c5710b | 96035407239136
+- bellwood_built_a/Bell_Stair_Straight_B | fec20f23-ed85-4648-bc55-49847e488754 | 119885930394421
+- bellwood_built_a/Bell_Stair_Turn | 2e1e5c01-c5b7-42e7-b82f-f309597ba3a9 | 94941503919554
+- bellwood_built_a/Bell_Timber_Gate_Side | 70f441dd-26f9-4454-bdde-f34404583285 | 110735243256028
+- bellwood_built_a/Bell_Well | 7e3a372e-44e5-462a-8d88-980b519ced89 | 96879447545050
+- bellwood_built_a/Boulder_Granite_D | a353e953-dfc2-467e-939a-e404d9283144 | 93702038425831
+- bellwood_built_a/Boulder_Granite_Split | c1762073-ee49-435f-b9fe-b528690b49de | 77850593280461
+- bellwood_built_a/Cliff_Face_A | 14763c5b-badc-4475-bffd-1783e6eea0f1 | 82712800865915
+- bellwood_built_a/Cliff_Face_B | 255e39fb-df16-48d4-8d2d-5492b1907085 | 126647188380722
+- bellwood_built_a/Cliff_Face_C | ecb39623-a49b-4f60-8c7d-aa067cac9df5 | 88911513922924
+- bellwood_built_a/Outcrop_Mossy | a558e6fb-abf8-4ec3-9ac3-b3d17a130c5f | 113167814868623
+- bellwood_built_a/Scree_Patch_A | bd67f77d-fd4e-42a5-b407-26f25a21d06e | 96729286465117
+- bellwood_built_a/Scree_Patch_B | f74c8913-f491-4763-bed4-819e8abf1cc0 | 106579527925554
+PENDING built_b ops: Bell_Tower_Ruined cb3eb988-5c63-4049-90cc-8fdaf2d4cf17; Cart_A 99e870d5-385b-42a4-8999-f5e1cb6038ee; Cart_B b2eb15cf-b0ed-4b9b-9e18-96aa2af2948c; Crate_A ad46562f-5120-4d88-bcdf-57ca9c032038; Crate_B 20c9ff26-ae16-42a6-90b0-42fd3324b234; Crate_C 3611fea3-afb2-4e65-aa21-86d3a430cc3e; Falls_Alcove fcb426b2-bdd8-42c9-a5b2-525891205fa3; Hermit_Hut adcabd6b-426a-42f0-ab36-9cad3ac534a9
+- bellwood_built_b/Bell_Tower_Ruined | cb3eb988-5c63-4049-90cc-8fdaf2d4cf17 | 91776849780850
+- bellwood_built_b/Cart_A | 99e870d5-385b-42a4-8999-f5e1cb6038ee | 100058969020685
+- bellwood_built_b/Cart_B | b2eb15cf-b0ed-4b9b-9e18-96aa2af2948c | 112057325910569
+- bellwood_built_b/Crate_A | ad46562f-5120-4d88-bcdf-57ca9c032038 | 96674506135525
+- bellwood_built_b/Crate_B | 20c9ff26-ae16-42a6-90b0-42fd3324b234 | 87883256283653
+- bellwood_built_b/Crate_C | 3611fea3-afb2-4e65-aa21-86d3a430cc3e | 114640024726265
+- bellwood_built_b/Falls_Alcove | fcb426b2-bdd8-42c9-a5b2-525891205fa3 | 82129426186715
+- bellwood_built_b/Hermit_Hut | adcabd6b-426a-42f0-ab36-9cad3ac534a9 | 137066173758767
+PENDING built_b ops: Lantern_Hanging b591de29-591e-4c16-8649-66d3f02df990; Lantern_Stone 8d7477d7-c78a-499d-8c82-f596b291795d; Pot_A df2b0e39-15c1-4c56-99b9-6eeb91a5e51d; Pot_B bbdfe0d1-1462-4066-84c4-f316c2657820; Pot_C 53f6800c-8f6b-4146-bb44-4339653730c7; Rope_Bridge_Anchor 159f8628-7bdd-4b38-984d-90aa0d8f6563; Rope_Bridge_Deck_A 0ccd11f3-5499-4b79-9c2d-e56538de328b; Rope_Bridge_Deck_B 2e4fb4c4-92a1-41ec-880d-42797739fd7f
+- bellwood_built_b/Lantern_Hanging | b591de29-591e-4c16-8649-66d3f02df990 | 110256393499938
+- bellwood_built_b/Lantern_Stone | 8d7477d7-c78a-499d-8c82-f596b291795d | 105605079072351
+- bellwood_built_b/Pot_A | df2b0e39-15c1-4c56-99b9-6eeb91a5e51d | 76162571401367
+- bellwood_built_b/Pot_B | bbdfe0d1-1462-4066-84c4-f316c2657820 | 82299914991454
+- bellwood_built_b/Pot_C | 53f6800c-8f6b-4146-bb44-4339653730c7 | 131916870285657
+- bellwood_built_b/Rope_Bridge_Anchor | 159f8628-7bdd-4b38-984d-90aa0d8f6563 | 127244002280521
+- bellwood_built_b/Rope_Bridge_Deck_A | 0ccd11f3-5499-4b79-9c2d-e56538de328b | 120543798718532
+- bellwood_built_b/Rope_Bridge_Deck_B | 2e4fb4c4-92a1-41ec-880d-42797739fd7f | 102185350248712
+PENDING veg ops: Canopy_Tree_C fa6ceb24-23a7-49e7-a320-d51274c89541; Canopy_Tree_D a9451574-e2ec-4a95-a8aa-874ed0fbe3f9; Conifer_Tall 8f60dd27-5e10-40f3-918b-c55e95deb79e; Dead_Standing_Trunk fc4896db-d54c-48ce-adca-bae8f099b970; Exposed_Roots_A d46ab7b0-f325-420e-963c-19422e0d9f7d; Exposed_Roots_B 8f99a124-96c1-4e11-99af-bc899ad69292; Fallen_Log_A e2b7900f-4cae-4c74-a8eb-e03a0e0f5b51; Fallen_Log_B fdc1fe19-5d4a-4bef-ba9e-cedd5560a456
+- bellwood_veg/Canopy_Tree_C | fa6ceb24-23a7-49e7-a320-d51274c89541 | 124035900891135
+- bellwood_veg/Canopy_Tree_D | a9451574-e2ec-4a95-a8aa-874ed0fbe3f9 | 87159676848942
+- bellwood_veg/Conifer_Tall | 8f60dd27-5e10-40f3-918b-c55e95deb79e | 78418540896182
+- bellwood_veg/Dead_Standing_Trunk | fc4896db-d54c-48ce-adca-bae8f099b970 | 83932179756255
+- bellwood_veg/Exposed_Roots_A | d46ab7b0-f325-420e-963c-19422e0d9f7d | 127143601235615
+- bellwood_veg/Exposed_Roots_B | 8f99a124-96c1-4e11-99af-bc899ad69292 | 102833722845248
+- bellwood_veg/Fallen_Log_A | e2b7900f-4cae-4c74-a8eb-e03a0e0f5b51 | 126143462003710
+- bellwood_veg/Fallen_Log_B | fdc1fe19-5d4a-4bef-ba9e-cedd5560a456 | 115469294991154
+PENDING veg2 ops: Fern_Bracken b8e30fa1-d2d8-42b5-bcd4-a55b52b2af9e; Fern_Sword 7be04224-f65d-4e74-9eae-55efda2074b3; Flowers_Daisy b76a0f6c-fe47-4a09-82e7-fc99aacdb8ef; Flowers_Foxglove 042c8d16-45e9-4e2b-a6cd-b44ad5fcca39; Grass_Lush 72445ff7-9be3-4b1d-b796-5d162576d9ca; Grass_Seed 535411d7-c8ec-4550-b39f-f84848e78fd2; Grass_Tall dc56e525-996c-4552-8891-26bf3e0fb2de; Moss_Drape e03a4e0d-1b21-4918-8ca7-dff786e06dec; Mushroom_Cluster ddce79d3-d975-450c-8d37-91b420940e11; Old_Gnarled_Tree 3fe9424f-9edc-427a-bc6b-b96131923fa2; Reed_Clump_A 8caa4f17-3145-4003-ad92-a9ef91f2394d
+- bellwood_veg/Fern_Bracken | b8e30fa1-d2d8-42b5-bcd4-a55b52b2af9e | 82352920442581
+- bellwood_veg/Fern_Sword | 7be04224-f65d-4e74-9eae-55efda2074b3 | 81065515733343
+- bellwood_veg/Flowers_Daisy | b76a0f6c-fe47-4a09-82e7-fc99aacdb8ef | 134192755825057
+- bellwood_veg/Flowers_Foxglove | 042c8d16-45e9-4e2b-a6cd-b44ad5fcca39 | 74084115842598
+- bellwood_veg/Grass_Lush | 72445ff7-9be3-4b1d-b796-5d162576d9ca | 125294308661107
+- bellwood_veg/Grass_Seed | 535411d7-c8ec-4550-b39f-f84848e78fd2 | 95800521006697
+- bellwood_veg/Grass_Tall | dc56e525-996c-4552-8891-26bf3e0fb2de | 90022930023207
+- bellwood_veg/Moss_Drape | e03a4e0d-1b21-4918-8ca7-dff786e06dec | 90636031918626
+- bellwood_veg/Mushroom_Cluster | ddce79d3-d975-450c-8d37-91b420940e11 | 111104244738801
+- bellwood_veg/Old_Gnarled_Tree | 3fe9424f-9edc-427a-bc6b-b96131923fa2 | 83282129694415
+- bellwood_veg/Reed_Clump_A | 8caa4f17-3145-4003-ad92-a9ef91f2394d | 110599369969933
+PENDING veg3 ops: Reed_Clump_B 341fc04f-9a76-40ff-9bff-f3402b2237b8; Sapling_Tree b9465792-1725-4aae-b5d5-7c83962fe146; Shrub_Berry b4b120ca-ca6f-462f-b465-883c6c96d4ac; Shrub_Hazel fe052eae-1c0a-4b4e-a4b7-8eb343fa632c; Shrub_Thicket 0b356539-862f-4f75-a50b-ed464b844ed1; Tree_Stump_A d4674b14-4f4d-4a22-b19d-651dab2a396d; Tree_Stump_B 063699fa-1ee9-4b4e-b910-00850e330b8b; Vine_Hanging 702784f9-d3c8-4682-a108-c109b9bf1f9a
+- bellwood_veg/Reed_Clump_B | 341fc04f-9a76-40ff-9bff-f3402b2237b8 | 122111364729366
+- bellwood_veg/Sapling_Tree | b9465792-1725-4aae-b5d5-7c83962fe146 | 108131150286093
+- bellwood_veg/Shrub_Berry | b4b120ca-ca6f-462f-b465-883c6c96d4ac | 107348717226726
+- bellwood_veg/Shrub_Hazel | fe052eae-1c0a-4b4e-a4b7-8eb343fa632c | 98295607944028
+- bellwood_veg/Shrub_Thicket | 0b356539-862f-4f75-a50b-ed464b844ed1 | 138462738553808
+- bellwood_veg/Tree_Stump_A | d4674b14-4f4d-4a22-b19d-651dab2a396d | 116411996826060
+- bellwood_veg/Tree_Stump_B | 063699fa-1ee9-4b4e-b910-00850e330b8b | 101350220744350
+- bellwood_veg/Vine_Hanging | 702784f9-d3c8-4682-a108-c109b9bf1f9a | 99958090709933
+PENDING far/hero ops: far Canopy_Tree_A_Far 7f278bbf-1ffb-466e-92fc-52e8f8729143; B c57976d1-3b79-4e3c-bb6c-08271dfb40b4; C 262511d1-071a-414c-a469-6d6100fd7ce8; D bf0a24e1-98db-47eb-b374-cc82bb9a31f5; Conifer_Tall_Far 78cd3cc2-04f7-4ca6-8ed0-1fa2e5a7308f; Old_Gnarled_Tree_Far 0137afd9-6c49-4188-bf89-2fceb613a42e; hero Basin_Gate_Statue e770a66c-a7db-4b16-934f-9038cb136289; Ravine_Aqueduct_Arch 894d547f-4ed9-4573-bfc8-5455a4e07d3c; Snow_Watch_Beacon eb6034bd-2a72-43ff-b137-dcfe05c5e848; Summit_Temple_Pagoda 10905d1d-7d75-4e25-a5b2-959f0d2d79bb; Summit_Temple_Wing 00fb60e6-787e-4fe5-b4b2-535127288f4e
+- bellwood_far/Canopy_Tree_A_Far | 7f278bbf-1ffb-466e-92fc-52e8f8729143 | 73650879252786
+- bellwood_far/Canopy_Tree_B_Far | c57976d1-3b79-4e3c-bb6c-08271dfb40b4 | 110794827835245
+- bellwood_far/Canopy_Tree_C_Far | 262511d1-071a-414c-a469-6d6100fd7ce8 | 84006049232452
+- bellwood_far/Canopy_Tree_D_Far | bf0a24e1-98db-47eb-b374-cc82bb9a31f5 | 137187261517726
+- bellwood_far/Conifer_Tall_Far | 78cd3cc2-04f7-4ca6-8ed0-1fa2e5a7308f | 89133187998464
+- bellwood_far/Old_Gnarled_Tree_Far | 0137afd9-6c49-4188-bf89-2fceb613a42e | 96002328461183
+- hero/Basin_Gate_Statue | e770a66c-a7db-4b16-934f-9038cb136289 | 122033153603433
+- hero/Ravine_Aqueduct_Arch | 894d547f-4ed9-4573-bfc8-5455a4e07d3c | 129519900284284
+- hero/Snow_Watch_Beacon | eb6034bd-2a72-43ff-b137-dcfe05c5e848 | 113435556292563
+- hero/Summit_Temple_Pagoda | 10905d1d-7d75-4e25-a5b2-959f0d2d79bb | 86668686732769
+- hero/Summit_Temple_Wing | 00fb60e6-787e-4fe5-b4b2-535127288f4e | 83111548547545
+PENDING audio ops: amberfall_ravine a079a202-b8d5-44ec-bcf2-de6f7743322a (Audio, audio/ogg)
+- audio/amberfall_ravine | a079a202-b8d5-44ec-bcf2-de6f7743322a | 129806106031158 (moderation Reviewing)
+- audio/ashen_stair | 47aee63d-0ec4-4008-a91e-f03bd1709882 | 93963168737720 (moderation Reviewing)
+- audio/bellwood_forest_day | f9d2bc36-efb9-4610-9742-be85150d9928 | 105210588065430 (moderation Reviewing)
+- audio/frostmere_snow | a432a623-cec9-4d14-9960-46f4b8f9eadd | 89969995114537 (moderation Reviewing)
+- audio/saltreach_basin_r2 | 289d2744-1c8a-4a23-b5e7-612cb229a0b6 | 123518992828989 (moderation Reviewing)
