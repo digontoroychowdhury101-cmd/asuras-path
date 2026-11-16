@@ -1,5 +1,9 @@
 # Windows handoff — Mac open-world checkpoint, 16 November 2026
 
+**Historical Mac-to-Windows transfer.** For the newer Windows-to-Mac return on 17 November 2026, use
+[MAC_HANDOFF.md](MAC_HANDOFF.md) and [handoff/MAC_RESUME_PROMPT.md](handoff/MAC_RESUME_PROMPT.md).
+The candidate and upload/acceptance state below predate the later Windows W1–W6 work; keep them as history.
+
 Read this before the older Mac handoff. The creator asked Codex to read Claude's entire open-world continuation chat, preserve and push its work, prepare this Windows handoff, and close every Roblox window after preserving edits. This is a development checkpoint. The world and its art have not passed final acceptance.
 
 ## 1. Which version to open

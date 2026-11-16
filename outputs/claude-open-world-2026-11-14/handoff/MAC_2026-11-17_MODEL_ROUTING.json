@@ -1,0 +1,200 @@
+{
+  "date": "2026-11-17",
+  "session": "cf199ba6-5196-408d-920a-4e8e615ad3f5",
+  "main_runtime_model": "claude-fable-5-2",
+  "totals": {
+    "opus": 1,
+    "sonnet": 15,
+    "haiku": 1
+  },
+  "evidence": "Local Windows meta.json requested models and assistant message.model fields; raw transcripts remain local. Synthetic messages excluded. No fallback seen in these records.",
+  "agents": [
+    {
+      "agent_id": "aea86cfe008aaec94",
+      "parent_agent_id": null,
+      "requested_model": "opus",
+      "observed_models": {
+        "claude-opus-5-5": 162
+      },
+      "first_response": "2026-11-16T06:42:01.514Z",
+      "last_response": "2026-11-16T13:59:12.943Z",
+      "record": "cf199ba6-5196-408d-920a-4e8e615ad3f5/subagents/agent-aea86cfe008aaec94.meta.json"
+    },
+    {
+      "agent_id": "a7ba4f05e836f2848",
+      "parent_agent_id": "aea86cfe008aaec94",
+      "requested_model": "sonnet",
+      "observed_models": {
+        "claude-sonnet-5-5": 132
+      },
+      "first_response": "2026-11-16T06:44:22.206Z",
+      "last_response": "2026-11-16T07:06:46.339Z",
+      "record": "cf199ba6-5196-408d-920a-4e8e615ad3f5/subagents/agent-a7ba4f05e836f2848.meta.json"
+    },
+    {
+      "agent_id": "a5805b6e0457ffae0",
+      "parent_agent_id": "aea86cfe008aaec94",
+      "requested_model": "sonnet",
+      "observed_models": {
+        "claude-sonnet-5-5": 151
+      },
+      "first_response": "2026-11-16T06:44:32.486Z",
+      "last_response": "2026-11-16T07:16:30.006Z",
+      "record": "cf199ba6-5196-408d-920a-4e8e615ad3f5/subagents/agent-a5805b6e0457ffae0.meta.json"
+    },
+    {
+      "agent_id": "ac28da64fbf71bd13",
+      "parent_agent_id": "aea86cfe008aaec94",
+      "requested_model": "sonnet",
+      "observed_models": {
+        "claude-sonnet-5-5": 208
+      },
+      "first_response": "2026-11-16T06:44:45.089Z",
+      "last_response": "2026-11-16T07:23:59.841Z",
+      "record": "cf199ba6-5196-408d-920a-4e8e615ad3f5/subagents/agent-ac28da64fbf71bd13.meta.json"
+    },
+    {
+      "agent_id": "aa471cd7523409155",
+      "parent_agent_id": "aea86cfe008aaec94",
+      "requested_model": "sonnet",
+      "observed_models": {
+        "claude-sonnet-5-5": 57
+      },
+      "first_response": "2026-11-16T06:44:56.601Z",
+      "last_response": "2026-11-16T06:54:20.615Z",
+      "record": "cf199ba6-5196-408d-920a-4e8e615ad3f5/subagents/agent-aa471cd7523409155.meta.json"
+    },
+    {
+      "agent_id": "ad5adbeabce7e7c87",
+      "parent_agent_id": "aea86cfe008aaec94",
+      "requested_model": "sonnet",
+      "observed_models": {
+        "claude-sonnet-5-5": 182
+      },
+      "first_response": "2026-11-16T06:45:03.164Z",
+      "last_response": "2026-11-16T07:46:22.270Z",
+      "record": "cf199ba6-5196-408d-920a-4e8e615ad3f5/subagents/agent-ad5adbeabce7e7c87.meta.json"
+    },
+    {
+      "agent_id": "a7852c6518e2a2a6c",
+      "parent_agent_id": "aea86cfe008aaec94",
+      "requested_model": "haiku",
+      "observed_models": {
+        "claude-haiku-5-5": 32
+      },
+      "first_response": "2026-11-16T06:45:10.273Z",
+      "last_response": "2026-11-16T06:48:14.217Z",
+      "record": "cf199ba6-5196-408d-920a-4e8e615ad3f5/subagents/agent-a7852c6518e2a2a6c.meta.json"
+    },
+    {
+      "agent_id": "a0a4de09f7b35a35d",
+      "parent_agent_id": "aea86cfe008aaec94",
+      "requested_model": "sonnet",
+      "observed_models": {
+        "claude-sonnet-5-5": 97
+      },
+      "first_response": "2026-11-16T12:54:49.371Z",
+      "last_response": "2026-11-16T13:05:09.278Z",
+      "record": "cf199ba6-5196-408d-920a-4e8e615ad3f5/subagents/agent-a0a4de09f7b35a35d.meta.json"
+    },
+    {
+      "agent_id": "add6a88ab330c2245",
+      "parent_agent_id": "aea86cfe008aaec94",
+      "requested_model": "sonnet",
+      "observed_models": {
+        "claude-sonnet-5-5": 71
+      },
+      "first_response": "2026-11-16T12:55:05.876Z",
+      "last_response": "2026-11-16T13:07:34.510Z",
+      "record": "cf199ba6-5196-408d-920a-4e8e615ad3f5/subagents/agent-add6a88ab330c2245.meta.json"
+    },
+    {
+      "agent_id": "ae85b001f42e4bcd7",
+      "parent_agent_id": "aea86cfe008aaec94",
+      "requested_model": "sonnet",
+      "observed_models": {
+        "claude-sonnet-5-5": 20
+      },
+      "first_response": "2026-11-16T13:11:44.837Z",
+      "last_response": "2026-11-16T13:13:01.652Z",
+      "record": "cf199ba6-5196-408d-920a-4e8e615ad3f5/subagents/agent-ae85b001f42e4bcd7.meta.json"
+    },
+    {
+      "agent_id": "a845fb67324f36e23",
+      "parent_agent_id": "aea86cfe008aaec94",
+      "requested_model": "sonnet",
+      "observed_models": {
+        "claude-sonnet-5-5": 33
+      },
+      "first_response": "2026-11-16T13:11:55.969Z",
+      "last_response": "2026-11-16T13:14:48.172Z",
+      "record": "cf199ba6-5196-408d-920a-4e8e615ad3f5/subagents/agent-a845fb67324f36e23.meta.json"
+    },
+    {
+      "agent_id": "a9c7d189df5e47ffe",
+      "parent_agent_id": "aea86cfe008aaec94",
+      "requested_model": "sonnet",
+      "observed_models": {
+        "claude-sonnet-5-5": 328
+      },
+      "first_response": "2026-11-16T13:15:22.163Z",
+      "last_response": "2026-11-16T13:30:22.029Z",
+      "record": "cf199ba6-5196-408d-920a-4e8e615ad3f5/subagents/agent-a9c7d189df5e47ffe.meta.json"
+    },
+    {
+      "agent_id": "a44bcc6b05fb7e4a9",
+      "parent_agent_id": "aea86cfe008aaec94",
+      "requested_model": "sonnet",
+      "observed_models": {
+        "claude-sonnet-5-5": 52
+      },
+      "first_response": "2026-11-16T13:15:36.920Z",
+      "last_response": "2026-11-16T13:17:59.901Z",
+      "record": "cf199ba6-5196-408d-920a-4e8e615ad3f5/subagents/agent-a44bcc6b05fb7e4a9.meta.json"
+    },
+    {
+      "agent_id": "ac0b8f607a3d01244",
+      "parent_agent_id": "aea86cfe008aaec94",
+      "requested_model": "sonnet",
+      "observed_models": {
+        "claude-sonnet-5-5": 38
+      },
+      "first_response": "2026-11-16T13:34:16.202Z",
+      "last_response": "2026-11-16T13:36:39.067Z",
+      "record": "cf199ba6-5196-408d-920a-4e8e615ad3f5/subagents/agent-ac0b8f607a3d01244.meta.json"
+    },
+    {
+      "agent_id": "ad4dc048671cd34fb",
+      "parent_agent_id": "aea86cfe008aaec94",
+      "requested_model": "sonnet",
+      "observed_models": {
+        "claude-sonnet-5-5": 76
+      },
+      "first_response": "2026-11-16T13:39:16.291Z",
+      "last_response": "2026-11-16T13:46:21.096Z",
+      "record": "cf199ba6-5196-408d-920a-4e8e615ad3f5/subagents/agent-ad4dc048671cd34fb.meta.json"
+    },
+    {
+      "agent_id": "aea1fbe4d6f6fede5",
+      "parent_agent_id": "aea86cfe008aaec94",
+      "requested_model": "sonnet",
+      "observed_models": {
+        "claude-sonnet-5-5": 27
+      },
+      "first_response": "2026-11-16T13:46:42.281Z",
+      "last_response": "2026-11-16T13:48:20.560Z",
+      "record": "cf199ba6-5196-408d-920a-4e8e615ad3f5/subagents/agent-aea1fbe4d6f6fede5.meta.json"
+    },
+    {
+      "agent_id": "a0d29b142d616b523",
+      "parent_agent_id": "aea86cfe008aaec94",
+      "requested_model": "sonnet",
+      "observed_models": {
+        "claude-sonnet-5-5": 119
+      },
+      "first_response": "2026-11-16T13:50:34.475Z",
+      "last_response": "2026-11-16T13:58:24.909Z",
+      "record": "cf199ba6-5196-408d-920a-4e8e615ad3f5/subagents/agent-a0d29b142d616b523.meta.json"
+    }
+  ]
+}

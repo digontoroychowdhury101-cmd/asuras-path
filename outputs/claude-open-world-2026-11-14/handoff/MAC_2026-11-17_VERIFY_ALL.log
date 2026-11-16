@@ -1,0 +1,147 @@
+==========================================================
+ Running Full Verification Suite for Asura's Path
+==========================================================
+[1/14] Testing Asura Stage 1...
+Asura Stage 1: all checks passed
+[2/14] Testing Asura Stage 2...
+Asura Stage 2: all checks passed
+[3/14] Testing Asura Stage 3...
+Asura Stage 3: all checks passed
+[4/14] Testing Weapons & Spells Contracts and Omnidirectional Combat...
+Phase 2 weapons and spells: 383 checks passed
+PASS     test_omni_combat.luau: omni combat: 84 passed, 0 failed (local regression; Studio, hardware and human play separate)
+[5/14] Testing Weapons & Spells Server Runtime...
+Phase 2 server effects: 16 scenarios passed
+[6/14] Testing Profile Integrity & Migrations...
+PASS profile integrity: invalid numbers, nested corruption, locked styles, future versions, valid-data preservation and table isolation
+[7/14] Testing Movement Controller & Kinetics...
+PASS: 59 kinetic movement/input/effects assertions (engine fakes; Studio contact QA separate)
+[8/14] Testing Boss Encounters & Runtime...
+Boss encounters: 303 checks passed
+miniboss reward: 16 passed, 0 failed
+Boss runtime: 35 checks passed
+Boss HUD: 2 checks passed
+Boss phase coordinator: 8 checks passed
+Boss fog coordinator: 11 checks passed
+Shen integration: ok
+Boss mix-up: 115 checks passed
+P1 ok: rest drift 1.143, sprint trail 0.17
+P2 ok: rest drift 1.187, sprint trail 0.39
+cloth sim: ok
+[9/14] Testing Objectives System...
+Objectives: all checks passed (including six encounter routes)
+[10/14] Testing Progression, Lore, Review & Campaign Region Regressions...
+PASS progression and lore: 161 checks
+PASS progression runtime: 149 checks
+PASS ending credits: 25 sourced rows and project lines match assets/CREDITS.md
+Review regressions: 20 checks passed
+chain built and walked in 35.4s
+campaign regions: 421 passed, 0 failed
+  BambooPass        1407 parts  203 colliding  26 lights  31 emitters
+  AshColosseum       217 parts  105 colliding  20 lights  26 emitters
+  SanctuaryDepths    310 parts   97 colliding  20 lights  18 emitters
+  CelestialPagoda    268 parts  120 colliding  11 lights  13 emitters
+  SkyCitadel         201 parts   90 colliding   8 lights  15 emitters
+  Sanctuary routes   356 parts   88 colliding  14 lights   0 emitters
+campaign build: 27 passed, 0 failed
+GoldenRavine    placements 1289 = hero  56 + interior 50 + scatter 1183 (R53 T45 S167 F135 G783)  parts 1734/2010  tris 2.74M (2.48M lod)  cells 66  dropped 29  0.4s
+AridBasin       placements 1768 = hero  73 + interior 19 + scatter 1676 (R102 T22 S389 F94 G1069)  parts 2155/2217  tris 2.46M (2.22M lod)  cells 168  dropped 21  1.6s
+Snowfields      placements 1335 = hero 183 + interior  0 + scatter 1152 (R76 T114 S214 F248 G500)  parts 2896/2896  tris 2.38M (2.38M lod)  cells 207  dropped 88  2.2s
+MountainAscent  placements 1270 = hero  81 + interior  7 + scatter 1182 (R132 T98 S224 F136 G592)  parts 1677/2011  tris 2.82M (2.57M lod)  cells 153  dropped 20  2.0s
+GoldenRavine    plan  679 placements, parts 1069/1500 (trimmed   0, masked 635), sites  4, sets  30, scales L73 M191 S415  0.0s
+AridBasin       plan  884 placements, parts 1078/1500 (trimmed   0, masked 947), sites 10, sets  72, scales L79 M422 S383  0.0s
+Snowfields      plan  813 placements, parts 1005/1500 (trimmed   0, masked 582), sites  9, sets  65, scales L98 M283 S432  0.0s
+MountainAscent  plan  727 placements, parts 1320/1500 (trimmed   0, masked 627), sites 12, sets  88, scales L127 M176 S424  0.0s
+GoldenRavine    kit use 38/45 (unused Amber_Aqueduct_Span_A,Amber_Aqueduct_Span_Tall,Amber_Boulder_C,Amber_Cliff_Wall_A,Amber_Cliff_Wall_B,Amber_Retaining_Wall_B,Amber_Stair_Worn)  set pieces 30 (built 13)  parts 1069/1500
+AridBasin       kit use 36/37 (unused Salt_Crust_Slab_B)  set pieces 72 (built 31)  parts 1078/1500
+Snowfields      kit use 32/32 (all)  set pieces 65 (built 24)  parts 1005/1500
+MountainAscent  kit use 34/34 (all)  set pieces 88 (built 34)  parts 1320/1500
+test_biome_dressing: 19045 passed, 0 failed
+PASS     test_armor.luau: armour: 87 passed, 0 failed (local rules only; visuals, replication and live saves are separate)
+PASS     test_arsenal_codex.luau: arsenal codex: 169 passed, 0 failed
+PASS     test_boss_encounters.luau: Boss encounters: 325 checks passed
+PASS     test_boss_presentation.luau: boss presentation: 247 passed, 0 failed
+PASS     test_boss_rewards.luau: boss rewards: 131 passed, 0 failed
+PASS     test_boss_rigs.luau: boss rigs: 68 passed, 0 failed (emulated attachments; the engine's solver and Studio playback are separate)
+PASS     test_camera_shake.luau: camera shake: 7 passed, 0 failed
+PASS     test_campaign_ledger.luau: campaign ledger: 104 passed, 0 failed (seeded state, not earned play)
+PASS     test_cast_visuals.luau: cast visuals: 48 passed, 0 failed
+PASS     test_colosseum_runtime.luau: colosseum runtime: 135 passed, 0 failed (local mocks; live DataStore and multi-client not exercised)
+PASS     test_combat_contact.luau: combat contact: 68 passed, 0 failed
+PASS     test_combat_presentation.luau: combat presentation: 225 passed, 0 failed
+PASS     test_compass_bearing.luau: compass bearing: 1828 passed, 0 failed
+PASS     test_cutover.luau: cutover: 506 passed, 0 failed
+PASS     test_death_note.luau: death note: 6 passed, 0 failed
+PASS     test_device_layout.luau: device layout: 90 passed, 0 failed (geometry + emulation; no phone, tablet or controller hardware)
+PASS     test_hud_layout.luau: hud layout: 259 passed, 0 failed
+PASS     test_input_map.luau: input map: 446 passed, 0 failed
+PASS     test_iron_bull.luau: iron bull: 49 passed, 0 failed
+PASS     test_landscape_far.luau: landscape far: 13 passed, 0 failed
+PASS     test_live_world_mechanics.luau: live world mechanics: 1050 passed, 0 failed
+PASS     test_monastery_discovery.luau: monastery discovery: 60 passed, 0 failed
+PASS     test_monastery_route.luau: monastery route: 82 passed, 0 failed
+PASS     test_omni_combat.luau: omni combat: 84 passed, 0 failed (local regression; Studio, hardware and human play separate)
+PASS     test_opening_tutorial.luau: opening tutorial: 124 passed, 0 failed
+PASS     test_ordinary_foe_fairness.luau: ordinary foe fairness: 26 passed, 0 failed (offline behaviour; feel needs human play)
+PASS     test_overworld_blockout.luau: overworld blockout: 10 passed, 0 failed
+PASS     test_overworld_order.luau: overworld order: 492 passed, 0 failed
+PASS     test_ravine_span.luau: ravine span: 25 passed, 0 failed
+PASS     test_recovery_lifecycle.luau: recovery lifecycle: 109 passed, 0 failed
+PASS     test_rest_dialogue.luau: rest dialogue: 71 passed, 0 failed
+PASS     test_route_foundry.luau: route foundry: 68 passed, 0 failed (local rules only; Studio geometry, input and live saves are separate)
+PASS     test_sanguine_dispatch.luau: sanguine dispatch: 30 passed, 0 failed (state/render adapters; Studio visual acceptance separate)
+PASS     test_session_cleanup.luau: session cleanup: 7 passed, 0 failed (emulated counts; no profiler or Studio session)
+PASS     test_shen_presentation.luau: shen presentation: 34 passed, 0 failed (engine fakes; Studio look and sound separate)
+PASS     test_slice_dressing.luau: slice dressing: 1347 passed, 0 failed
+PASS     test_stage2_closure.luau: stage 2 closure: 57 passed, 0 failed (offline behaviour; Studio and two-client fairness separate)
+PASS     test_stage2_timing.luau: stage 2 timing: 111 passed, 0 failed (offline behaviour; Studio, latency and feel separate)
+PASS     test_stage3_motion.luau: stage 3 motion: 284 passed, 0 failed (offline behaviour; Studio, frame order and feel separate)
+PASS     test_twins_monastery.luau: twins + monastery: 46 passed, 0 failed
+PASS     test_weather_composition.luau: weather composition: 247 passed, 0 failed
+[11/14] Testing Backend Persistence & Commercial Systems (local mocks)...
+PASS backend: leases, expiry/fencing, bounded retries, load failure protection, callback replay, commit-response loss, receipts across reconnect, schema migration, durable result inbox recovery, exactly-once results, practice rejection and request schemas
+[Commercial Test] 1. ProfileSchema Invariants & Migration...
+[Commercial Test] 2. ShopCatalog Immutability & Drop Probability Sums...
+[Commercial Test] 3. ELO Rating Calculation & Division Belts...
+[Commercial Test] 4. Matchmaking Queue & Expanding Search Window...
+[Commercial Test] 5. Multi-Arena Cage Allocation & Release...
+[Commercial Test] 6. Gacha Pity Counter Simulation...
+PASS Commercial Systems: ProfileSchema integrity, ShopCatalog immutability, ELO rating math, expanding queue brackets, multi-arena cage allocation, and gacha pity guarantee.
+[12/14] Testing Audiovisual Modules & Imported Media (engine fakes)...
+PASS: 45 audiovisual runtime assertions (engine fakes; Studio QA separate)
+C:\Users\disha\Documents\asuras-path\tools\test_audiovisual.py:63: DeprecationWarning: Testing an element's truth value will always return True in future versions.  Use specific 'len(elem)' or 'elem is not None' test instead.
+  if surface:
+PASS: 13 imported templates, 101 complete PBR MeshParts; saved Automatic fidelity
+PASS: 0 PBR exports validated; audio format/peak/DC checks passed (available media only)
+PASS: 280 GitHub terrain/effect numerical checks
+PASS: 3 qualifying pinned repositories, 8 verified CC0 assets
+......Bell_Stair__Stone.NormalMap: not a rbxassetid://<positive integer> string (None)
+REFUSED: 1 problem(s); nothing written
+.missing sub-mesh Bell_Stair__Rail (use --allow-missing to omit)
+REFUSED: 1 problem(s); nothing written
+.Bell_Stair__Stone: modelAssets.Bell_Stair.assetId is not a rbxassetid://<positive integer> string ('rbxassetid://abc')
+Bell_Stair__Rail: modelAssets.Bell_Stair.assetId is not a rbxassetid://<positive integer> string ('rbxassetid://abc')
+REFUSED: 2 problem(s); nothing written
+.Bell_Stair__Stone.MeshId: not a rbxassetid://<positive integer> string ('rbxassetid://12ab56')
+REFUSED: 1 problem(s); nothing written
+...
+----------------------------------------------------------------------
+Ran 12 tests in 0.138s
+
+OK
+wrote BellwoodFarKitRegistry.luau: 2 sub-meshes in 1 pieces
+OK: 2 sub-meshes in 1 pieces
+wrote BellwoodFarKitRegistry.luau: 2 sub-meshes in 1 pieces
+wrote SliceKitRegistry.luau: 1 sub-meshes in 1 pieces
+wrote SliceKitRegistry.luau: 2 sub-meshes in 1 pieces
+wrote SliceKitRegistry.luau: 2 sub-meshes in 1 pieces
+[13/14] Syntax-compiling every source script...
+Compiled 60 KLOC into 3430 KB bytecode (read 0.03s, parse 0.07s, compile 0.15s)
+[14/14] Compiling Roblox Place to /tmp/AsurasPath_verify.rbxlx ...
+Building project 'AsurasPath'
+Built project to AsurasPath_verify.rbxlx
+Built C:\Users\disha\AppData\Local\Temp\AsurasPath_verify.rbxlx: 308 mapped sources; 1842 distinct Roblox asset IDs referenced
+==========================================================
+ SUCCESS: All local checks passed; place built at /tmp/AsurasPath_verify.rbxlx
+ (saved outputs/AsurasPath.rbxlx left unchanged)
+==========================================================

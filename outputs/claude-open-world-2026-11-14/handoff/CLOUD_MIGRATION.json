@@ -215,5 +215,19 @@
     "round_2_integrated": false,
     "cold_reopen_performed": false,
     "all_studio_instances_closed": true
+  },
+  "windows_to_mac_2026_11_17": {
+    "cloud_state": "M1",
+    "last_independent_windows_cold_reopen": {
+      "version": 9,
+      "scripts": 277,
+      "bytes": 3173417,
+      "digest": 786797912,
+      "evidence": "workers/win-04-cloud-upload.md"
+    },
+    "m2_integrated": false,
+    "m2_candidate_digest": 1882323309,
+    "new_cloud_action_by_codex": false,
+    "current_handoff": "../MAC_HANDOFF.md"
   }
 }

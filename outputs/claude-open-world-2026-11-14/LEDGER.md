@@ -1,5 +1,18 @@
 # Open-World Replacement — Ledger (lead: Opus 5.5, restart #2)
 
+## Windows-to-Mac delivery — 2026-11-17 (newest resume state)
+
+- Completed Windows source/captures through **2d4b1ed**, runtime source **78662d6**, are already in origin.
+- [MAC_HANDOFF.md](MAC_HANDOFF.md) replaces the older current-state Mac instructions; [ready prompt](handoff/MAC_RESUME_PROMPT.md).
+- Fresh Codex verifier **14/14 exit 0** and asset restore **1277 same / 0 add / 0 DIFFERENT**; logs in handoff/MAC_2026-11-17_*.
+- New local checkpoint: **281 scripts / 3254714 bytes / 1882323309**. Cloud is separately M1 **version 9 / 277 / 3173417 / 786797912**;
+  cold-reopened on Windows by win-04. No M2 cloud integration, no Fable real-mesh slice verdict before quota.
+- Next: review seven real-mesh images, diagnose/fix far-tree textures and canopy/material defects, then verified M2 integration under
+  the existing gate. Reuse registered assets; do not replay solved lantern diagnosis. Multiplayer harness reruns/audio/device/remaining biomes stay open.
+- Current hierarchy: **Fable overall lead → Opus engineering lead → max TWO workers; ONE heavy job machine-wide**. ECC remains enabled.
+- Routing supplement verifies **17 latest Windows agent records (1 Opus, 15 Sonnet, 1 Haiku)**. Existing Fable routing edit preserved unstaged.
+- Codex handoff performed local verification/delivery and recorded-image inspection only; no new Studio, multiplayer, audio or device pass.
+
 ## Oversight ruling on ecb202e — 2026-11-17 (Fable 5.2)
 
 - No cloud integration of ecb202e alone. Next integration = M2 (ecb202e + real-mesh forest slice) after local suites and one

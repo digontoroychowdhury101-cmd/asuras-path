@@ -1,5 +1,19 @@
 # Matching Studio checkpoints on Windows and Mac
 
+## Current return to Mac — 17 November 2026
+
+Use **AsurasPath_OpenWorld_WindowsHandoff_2026-11-17.rbxlx**, copied from the fresh 14/14 verification build of
+source/evidence HEAD **2d4b1ed** (runtime source **78662d6**). SHA-256:
+**5584b95dee2f49797309c22d0028e6ba603a2610822f36f7c1757d19757b295f**, 10,793,680 bytes.
+Expected scripts **281 / 3254714 bytes / digest 1882323309**. Adjacent JSON records identity.
+Use a local working copy for QA. This is the unfinished real-mesh M2 candidate, not an accepted world or current cloud save.
+
+Shared Development cloud is independently **M1 / version 9 / 277 / 3173417 / 786797912**, place **118614906972571**,
+universe **10777041159**. M2 was held before Fable's slice verdict; do not overwrite cloud with this candidate until its gate passes.
+Read `outputs/claude-open-world-2026-11-14/MAC_HANDOFF.md` and `handoff/MAC_RESUME_PROMPT.md` for exact continuation.
+
+## Earlier checkpoint/migration instructions (historical)
+
 **Newest Mac-to-Windows local candidate:** `AsurasPath_OpenWorld_MacHandoff_2026-11-16.rbxlx`,
 **277 scripts / 3174231 bytes / digest 1755809200**, SHA-256
 `1e15bb0cb5855e5213a9855d9fb4da4a0a0b559813f64fbb9082fc637780c465`.

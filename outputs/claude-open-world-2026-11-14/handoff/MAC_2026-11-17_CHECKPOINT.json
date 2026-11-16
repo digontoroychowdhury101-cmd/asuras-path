@@ -1,0 +1,79 @@
+{
+  "date": "2026-11-17",
+  "source_evidence_commit": "2d4b1ed827d94e5eff7d62ca8e74551cd153a121",
+  "runtime_source_commit": "78662d6",
+  "candidate": {
+    "date": "2026-11-17",
+    "source_commit": "2d4b1ed827d94e5eff7d62ca8e74551cd153a121",
+    "runtime_source_commit": "78662d6",
+    "path": "places/checkpoints/AsurasPath_OpenWorld_WindowsHandoff_2026-11-17.rbxlx",
+    "bytes": 10793680,
+    "sha256": "5584b95dee2f49797309c22d0028e6ba603a2610822f36f7c1757d19757b295f",
+    "scripts": 281,
+    "source_bytes": 3254714,
+    "source_digest": 1882323309,
+    "scope": "Local M2 real-mesh candidate; not integrated in cloud; not visually accepted"
+  },
+  "chat_review": {
+    "main_text_records_read": 112,
+    "final_lead_report_read": true,
+    "raw_transcript_in_git": false
+  },
+  "cloud": {
+    "place_id": 118614906972571,
+    "universe_id": 10777041159,
+    "last_recorded_version": 9,
+    "runtime_source_commit": "3465430923161d9621ba50ccef53aebf352a78df",
+    "scripts": 277,
+    "source_bytes": 3173417,
+    "source_digest": 786797912,
+    "cold_reopen_evidence": "workers/win-04-cloud-upload.md",
+    "reopened_by_codex_this_handoff": false,
+    "m2_integrated": false
+  },
+  "validation": {
+    "full_verifier_stages_passed": 14,
+    "full_verifier_exit": 0,
+    "slice_assertions_passed": 1347,
+    "biome_assertions_passed": 19045,
+    "weather_assertions_passed": 247,
+    "asset_restore": {
+      "same": 1277,
+      "add": 0,
+      "different": 0
+    },
+    "new_studio_test": false,
+    "new_multiplayer_test": false,
+    "new_audio_audition": false,
+    "device_profile": false
+  },
+  "assets": {
+    "snapshot_commit": "1412139fbb6c9adc519031a5d02063c7a952732c",
+    "new_snapshot_needed": false,
+    "tracked_diagnostic_extras": 3,
+    "models_registered": 101,
+    "audio_registered": 5,
+    "audio_status_at_upload": "Reviewing; current status unverified"
+  },
+  "studio_handoff": {
+    "connected_instances_at_check": 0,
+    "native_heavy_jobs_before_verify": 0,
+    "memory_committed_gb": 16.15,
+    "memory_commit_limit_gb": 26.72,
+    "free_physical_gb": 5.43
+  },
+  "preserved_local_only": [
+    "outputs/claude-open-world-2026-11-14/DELEGATION_STATUS.md pre-existing Fable edit",
+    "outputs/mugen-combat-review-2026-11-09/ unrelated untracked folder"
+  ],
+  "pending": [
+    "Fable slice verdict",
+    "far-tree texture diagnosis and fixes",
+    "dense-canopy and material/placement quality",
+    "M2 deliberate cloud integration/save/cold reopen",
+    "Automatic/low-quality landmark proof",
+    "updated Shen simultaneous-entry and terrain-priority multiplayer runs",
+    "audio moderation/load/audition/integration",
+    "remaining original five-biome, navigation, progression, cave/lift and device acceptance"
+  ]
+}

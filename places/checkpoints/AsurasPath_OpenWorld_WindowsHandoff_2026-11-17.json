@@ -1,0 +1,12 @@
+{
+  "date": "2026-11-17",
+  "source_commit": "2d4b1ed827d94e5eff7d62ca8e74551cd153a121",
+  "runtime_source_commit": "78662d6",
+  "path": "places/checkpoints/AsurasPath_OpenWorld_WindowsHandoff_2026-11-17.rbxlx",
+  "bytes": 10793680,
+  "sha256": "5584b95dee2f49797309c22d0028e6ba603a2610822f36f7c1757d19757b295f",
+  "scripts": 281,
+  "source_bytes": 3254714,
+  "source_digest": 1882323309,
+  "scope": "Local M2 real-mesh candidate; not integrated in cloud; not visually accepted"
+}

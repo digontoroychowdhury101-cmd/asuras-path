@@ -1,5 +1,24 @@
 # CONTINUATION — read this first after any restart
 
+## Current Windows-to-Mac handoff — 2026-11-17
+
+Read [MAC_HANDOFF.md](MAC_HANDOFF.md) fully, then [handoff/MAC_RESUME_PROMPT.md](handoff/MAC_RESUME_PROMPT.md).
+Source/evidence HEAD at takeover: **2d4b1ed**; runtime source **78662d6**. Fresh full verifier **14/14**, exit 0;
+asset dry run **1277 same / 0 add / 0 DIFFERENT**. New dated local candidate:
+`places/checkpoints/AsurasPath_OpenWorld_WindowsHandoff_2026-11-17.rbxlx`, **281 / 3254714 / 1882323309**,
+SHA-256 **5584b95dee2f49797309c22d0028e6ba603a2610822f36f7c1757d19757b295f**.
+Cloud remains last independently verified **M1 / version 9 / 277 / 3173417 / 786797912**, place 118614906972571,
+universe 10777041159. Windows cold-reopen evidence is in win-04; older “not reopened” notes are superseded.
+**M2 is NOT integrated or visually accepted.** Quota stopped after the final lead report, before Fable's verdict.
+First action: Fable review of slice_real_01..07, bounded far-tree texture diagnosis, then canopy/material/placement fixes.
+Real meshes build (2597, zero placeholders); 234 far sub-meshes have failed textures, canopy diagnostic 0–18%.
+Reuse **101 registered models + 5 audio IDs**; lantern is solved, audio status/audition/integration remains open.
+Continue landmark/stair/weather proof, M2 guarded integration when the gate passes, then pending multiplayer/acceptance.
+Roles: **Fable overall oversight → one fresh Opus engineering lead → max TWO Sonnet/Haiku workers; ONE heavy job**.
+Latest Windows routing verified 1 Opus / 15 Sonnet / 1 Haiku; details/limits in handoff receipt. Old IDs are history.
+No connected Studio/Blender job at takeover; no cloud writes or gameplay changes by this handoff. Preserve canonical baselines,
+pre-existing Fable DELEGATION_STATUS.md edit and unrelated combat-review folder. Raw Windows transcripts remain local.
+
 ## After oversight ruling on ecb202e (newest; ruling text in LEDGER)
 
 Pushed W1 = ecb202e. Memory before launch: commit 16.0/26.7 GB, 4.3 GB free physical, no Studio/Blender.

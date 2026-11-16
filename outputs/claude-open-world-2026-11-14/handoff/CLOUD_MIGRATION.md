@@ -1,5 +1,14 @@
 # Shared Save to Roblox checkpoint — 16 November 2026
 
+## Latest recorded cloud identity — Windows-to-Mac handoff, 17 November 2026
+
+Current shared place remains **M1 / version 9 / 277 scripts / 3173417 bytes / digest 786797912**,
+source **3465430**, place **118614906972571**, universe **10777041159**. Windows **win-04** independently
+cold-reopened and matched this state twice with protected collection hashes; the old M1 “not cold reopened” limit below is historical.
+M2 local candidate is **281 / 3254714 / 1882323309**, through runtime source **78662d6**, and **has not been integrated**.
+Read [../MAC_HANDOFF.md](../MAC_HANDOFF.md) for the pending slice verdict/fixes and current cloud integration gate.
+Codex performed no new cloud reopen/write/save in this handoff. The version-5/6 receipts below are preserved migration history.
+
 **Completed at the creator's explicit request.** The creator asked whether the
 Mac prompt used the Save to Roblox version, then asked Codex to migrate the
 verified build into it. This supersedes the earlier uploads-only restriction for
