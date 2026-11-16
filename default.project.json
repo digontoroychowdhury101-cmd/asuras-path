@@ -272,6 +272,18 @@
           "SliceDressing": {
             "$path": "src/shared/SliceDressing.luau"
           },
+          "SliceKitRegistry": {
+            "$path": "src/shared/SliceKitRegistry.luau"
+          },
+          "BellwoodKitRegistry": {
+            "$path": "src/shared/BellwoodKitRegistry.luau"
+          },
+          "BellwoodFarKitRegistry": {
+            "$path": "src/shared/BellwoodFarKitRegistry.luau"
+          },
+          "HeroKitRegistry": {
+            "$path": "src/shared/HeroKitRegistry.luau"
+          },
           "BiomeDressing": {
             "$path": "src/shared/BiomeDressing.luau"
           },

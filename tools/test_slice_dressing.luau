@@ -833,7 +833,37 @@ for piece, a in S.Assets do
 	check("Assets." .. piece .. " has Registry, numeric Id, Path", type(a.Registry) == "string" and type(a.Id) == "number" and type(a.Path) == "string")
 end
 check("Registry is a table (empty until SliceKitRegistry exists)", type(S.Registry) == "table")
-check("build() succeeds with SliceKitRegistry absent (the documented fallback: empty Registry, Assets, then placeholder)", next(S.Registry) == nil and #S.build(true).Placements > 0)
+check("build() succeeds with every registry module absent (the documented fallback: empty Registry, Assets, then placeholder; plain Luau has no script.Parent)", next(S.Registry) == nil and #S.build(true).Placements > 0)
+
+-- 8c. Every piece the generated registries cover must match Pieces sub-for-sub (the service builds a piece only if every sub resolves), and each piece has a registry.
+do
+	local mods = {
+		{ "SliceKitRegistry", require("../src/shared/SliceKitRegistry") }, { "BellwoodKitRegistry", require("../src/shared/BellwoodKitRegistry") },
+		{ "BellwoodFarKitRegistry", require("../src/shared/BellwoodFarKitRegistry") }, { "HeroKitRegistry", require("../src/shared/HeroKitRegistry") },
+	}
+	local owner, clash = {}, 0
+	for _, m in mods do
+		for piece, subs in m[2] do
+			if owner[piece] then clash += 1 end
+			owner[piece] = owner[piece] or m[1]
+			local def = S.Pieces[piece]
+			check(m[1] .. " piece " .. piece .. " is a SliceDressing piece", def ~= nil)
+			for _, sb in (def and def.Subs) or {} do
+				local e = subs[piece .. "__" .. sb.Name]
+				check(piece .. "__" .. sb.Name .. " is in " .. m[1] .. " with a MeshId", type(e) == "table" and type(e.MeshId) == "string" and e.MeshId:match("^rbxassetid://%d+$") ~= nil)
+			end
+		end
+	end
+	check("no piece is in two registries (the merge order never matters)", clash == 0)
+	local bare = {}
+	for name in S.Pieces do
+		if not owner[name] then table.insert(bare, name) end
+	end
+	check("every piece has registry meshes (placeholders left: " .. table.concat(bare, ", ") .. ")", #bare == 0)
+	for _, far in S.FarPieces do
+		check("far tree " .. far .. "_Far resolves from BellwoodFarKitRegistry", owner[far .. "_Far"] == "BellwoodFarKitRegistry" and owner[far] ~= nil)
+	end
+end
 
 -- 9. The service on the Instance shim (Lune or lune_compat only).
 local okLune, roblox = pcall(function() return require("@lune/roblox") end)

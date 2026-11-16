@@ -565,11 +565,17 @@ SliceDressing.Assets = {
 -- the "pieces" table of assets/SLICE_KIT_UPLOADED.json. It reaches runtime as the generated module src/shared/SliceKitRegistry.luau
 -- (a sibling of this file; see WIRING FOR LEAD in workers/12g). Absent module = empty registry = every piece stays a placeholder.
 SliceDressing.Registry = {} :: any
--- Documented fallback: SliceKitRegistry.luau is generated from assets/SLICE_KIT_UPLOADED.json after uploads; absent until then, so resolution falls through to Assets then placeholder.
-do
-	local ok, reg = pcall(function() return require((script :: any).Parent.SliceKitRegistry) end)
+-- Documented fallback: each generated module is pcall-required and merged by piece name (disjoint names; the first module wins a clash). Absent modules = those pieces stay placeholders.
+-- Slice kit, the Bellwood near pieces (trees C/D, conifer, shrubs, stairs, walls...), the <Piece>_Far low-tri trees and the hero set all dress pieces already in Pieces/KIT under the same names.
+SliceDressing.RegistryModules = { "SliceKitRegistry", "BellwoodKitRegistry", "BellwoodFarKitRegistry", "HeroKitRegistry" }
+for _, moduleName in SliceDressing.RegistryModules do
+	local ok, reg = pcall(function() return require((script :: any).Parent[moduleName]) end)
 	if ok and type(reg) == "table" then
-		SliceDressing.Registry = reg
+		for piece, subs in reg do
+			if SliceDressing.Registry[piece] == nil then
+				SliceDressing.Registry[piece] = subs
+			end
+		end
 	end
 end
 

@@ -55,18 +55,21 @@ def validate(kit, root, allow_missing=()):
                 need = ("MeshId",) + tuple(m for m in MAPS if m in mats.get(mat, pm.get("maps_per_material", {}).get(mat, {})))
                 bad = [k for k in entry if k not in MAPS + ("MeshId", "center", "operations")]
                 errs += [f"{key}: unknown field {k}" for k in bad]
+                # No SurfaceAppearance (far trees): every map empty is accepted; otherwise each listed map must be present.
+                bare = not any(entry.get(m) for m in MAPS)
                 for f in MAPS + ("MeshId",):
                     v = entry.get(f)
-                    if f in need and not (isinstance(v, str) and ID.fullmatch(v)):
+                    if v:
+                        if not (isinstance(v, str) and ID.fullmatch(v)):
+                            errs.append(f"{key}.{f}: not a rbxassetid://<positive integer> string ({v!r})")
+                        elif f not in need and f != "MetalnessMap":  # importer derives MetalnessMap from packed metallicRoughness
+                            errs.append(f"{key}.{f}: material {mat} has no such map")
+                    elif f in need and not (bare and f != "MeshId"):
                         errs.append(f"{key}.{f}: not a rbxassetid://<positive integer> string ({v!r})")
-                    elif f not in need and v:
-                        errs.append(f"{key}.{f}: material {mat} has no such map")
-                    elif f in need and isinstance(v, str):
-                        # a mesh ID is unique per sub; a map ID may repeat only for the same material and map kind
-                        who = (f if f == "MeshId" else (mat, f), key)
-                        prev = seen.setdefault(v, who)
-                        if prev[0] != who[0] or (f == "MeshId" and prev[1] != key):
-                            errs.append(f"{key}.{f}: ID {v} already used by {prev[1]}")
+                    if f == "MeshId" and isinstance(v, str):
+                        prev = seen.setdefault(v, key)  # Roblox dedupes identical images, so map IDs may repeat; mesh IDs may not
+                        if prev != key:
+                            errs.append(f"{key}.MeshId: ID {v} already used by {prev}")
                 c = entry.get("center")
                 if c is not None and not (isinstance(c, list) and len(c) == 3 and all(isinstance(n, (int, float)) and not isinstance(n, bool) for n in c)):
                     errs.append(f"{key}.center: want [x, y, z] numbers")

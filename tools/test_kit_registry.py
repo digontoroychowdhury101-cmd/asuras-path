@@ -111,6 +111,42 @@ class KitRegistry(unittest.TestCase):
         build(self.root, "slice", ["slice"], reg=reg)
         self.assertEqual(K.main(["slice", "--check", "--root", str(self.root)]), 1)
 
+    def test_extra_metalness_and_shared_maps_allowed(self):
+        def reg(p, s):
+            a, b = entry(), entry()
+            a["MetalnessMap"] = rid()
+            b["NormalMap"], b["RoughnessMap"] = a["NormalMap"], a["RoughnessMap"]  # Roblox dedupes identical images
+            return {p: {s[0]: a, s[1]: b}}
+        build(self.root, "slice", ["slice"], reg=reg)
+        self.assertEqual(K.validate("slice", self.root)[0], [])
+
+    def test_bad_metalness_id_and_unlisted_other_map_refused(self):
+        def reg(p, s):
+            a = entry()
+            a["MetalnessMap"] = "rbxassetid://abc"
+            return {p: {s[0]: a, s[1]: entry()}}
+        build(self.root, "slice", ["slice"], reg=reg)
+        self.assertTrue(any("MetalnessMap" in e for e in K.validate("slice", self.root)[0]))
+        with tempfile.TemporaryDirectory() as t:  # far material lists only ColorMap: a NormalMap is not a legit extra
+            build(Path(t), "bellwood_far", ["bellwood_far"], far=True, reg=lambda p, s: {p: {s[0]: dict(entry(True), NormalMap=rid()), s[1]: entry(True)}})
+            self.assertTrue(any("NormalMap" in e for e in K.validate("bellwood_far", Path(t))[0]))
+
+    def test_bare_far_pieces_allowed_but_partial_refused(self):
+        bare = lambda: {"MeshId": rid(), "ColorMap": "", "NormalMap": "", "RoughnessMap": "", "MetalnessMap": ""}
+        build(self.root, "bellwood_far", ["bellwood_far"], far=True, reg=lambda p, s: {p: {s[0]: bare(), s[1]: bare()}})
+        self.assertEqual(K.main(["bellwood_far", "--root", str(self.root)]), 0)
+        self.assertNotIn("ColorMap", (self.root / "src/shared/BellwoodFarKitRegistry.luau").read_text())
+        with tempfile.TemporaryDirectory() as t:  # missing MeshId is refused even on a bare piece
+            build(Path(t), "bellwood_far", ["bellwood_far"], far=True, reg=lambda p, s: {p: {s[0]: dict(bare(), MeshId=""), s[1]: bare()}})
+            self.assertTrue(any("MeshId" in e for e in K.validate("bellwood_far", Path(t))[0]))
+
+    def test_shared_mesh_id_still_refused(self):
+        def reg(p, s):
+            a = entry()
+            return {p: {s[0]: a, s[1]: dict(entry(), MeshId=a["MeshId"])}}
+        build(self.root, "slice", ["slice"], reg=reg)
+        self.assertTrue(any("already used" in e for e in K.validate("slice", self.root)[0]))
+
 
 if __name__ == "__main__":
     unittest.main()
