@@ -201,7 +201,11 @@ def run(test):
 
 def main(argv):
     tests = sorted((ROOT / "tools").glob("test_*.luau")) if argv == ["--all"] else [Path(a).resolve() for a in argv]
-    tests = [t for t in tests if "@lune/" in t.read_text()]
+    if argv == ["--all"]:  # only suites that need Lune; a test named on the command line always runs (never skipped silently)
+        tests = [t for t in tests if "@lune/" in t.read_text()]
+    if not tests:
+        print("FAIL     no test to run")
+        return 1
     failed = 0
     for test in tests:
         result = run(test)

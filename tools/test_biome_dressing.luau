@@ -74,9 +74,10 @@ for _, road in O.terrainData().Roads do
 	for k = 2, #road.Points do table.insert(roads, { road.Points[k - 1], road.Points[k] }) end
 end
 
+-- (Ravine hero min 70 -> 55: cliff-stair flights on flat or sheer ground are now dropped, see STAIR_FAMILY.)
 -- Expected counts: { total min, total max, hero min, scatter min, interior min } and per-piece exact counts.
 local EXPECT = {
-	GoldenRavine = { 1100, 1900, 70, 900, 40, { Ravine_Lift_Station = 2, Cave_Mouth_Arch = 1, Ravine_Aqueduct_Arch = 1, Ravine_Mausoleum = 1, Ravine_Span_Pylon = 4, Ravine_Rope_Post = 4, Ravine_Grotto_Landing = 1 } },
+	GoldenRavine = { 1100, 1900, 55, 900, 40, { Ravine_Lift_Station = 2, Cave_Mouth_Arch = 1, Ravine_Aqueduct_Arch = 1, Ravine_Mausoleum = 1, Ravine_Span_Pylon = 4, Ravine_Rope_Post = 4, Ravine_Grotto_Landing = 1 } },
 	AridBasin = { 1200, 1900, 60, 1000, 15, { Basin_Gate_Statue = 1, Cave_Mouth_Arch = 1, Basin_Kiln_Shed = 1, Basin_Cistern_Pavilion = 1, Basin_Kiln_Stack = 2 } },
 	Snowfields = { 1200, 1900, 150, 1000, 0, { Snow_Watch_Beacon = 1, Snow_Refuge_Hut = 1, Snow_Windbreak = 8 } },
 	MountainAscent = { 1000, 1900, 60, 900, 5, { Summit_Temple_Pagoda = 1, Summit_Temple_Wing = 1, Mtn_Thousand_Steps_Gate = 1, Mtn_Lift_Station = 2, Mtn_Refuge_Hall = 1, Mtn_Pass_Gate = 1 } },
@@ -266,13 +267,16 @@ for _, id in B.Order do
 			local sink = lowG - (h.Y - h.Sink * h.Scale)
 			if highG < lowG - 0.5 then table.insert(stairBad, h.Id .. " climbs down the slope") end
 			if sink < 0 or sink > 2 then table.insert(stairBad, h.Id .. " low-end sink " .. string.format("%.1f", sink)) end
-			-- win-02: the high end too. Columns stand from the flat underside, so the top tread must not end more than 1 stud below the ground there (MountainAscent only: the Ravine cliff stairs, 2.5-22 buried, are a known open defect)
-			local topY = h.Y - h.Sink * h.Scale + p.Subs[1].Steps * p.Subs[1].Rise * h.Scale
-			if id == "MountainAscent" and topY < highG - 1 then table.insert(stairBad, h.Id .. " high end buried " .. string.format("%.1f", highG - topY)) end
+			-- Both ends, every region: columns stand from the flat underside, so the top tread must not end more than 1 stud below the ground at the high end, and the underside must not float more than 2 studs above the ground at either end
+			local under = h.Y - h.Sink * h.Scale
+			local topY = under + p.Subs[1].Steps * p.Subs[1].Rise * h.Scale
+			if topY < highG - 1 then table.insert(stairBad, h.Id .. " high end buried " .. string.format("%.1f", highG - topY)) end
+			if topY > highG + 2 then table.insert(stairBad, h.Id .. " top tread floats " .. string.format("%.1f", topY - highG) .. " above the high-end ground") end
+			if under - lowG > 2 or under - highG > 2 then table.insert(stairBad, h.Id .. " floats " .. string.format("%.1f", math.max(under - lowG, under - highG))) end
 		end
 	end
 	if #stairBad > 0 then print("  " .. id .. " stair problems: " .. table.concat(stairBad, "; ", 1, math.min(#stairBad, 10))) end
-	check(id .. ": " .. stairs .. " stair flights face the rising slope and sit 0..2 studs into the ground at the low end", #stairBad == 0)
+	check(id .. ": " .. stairs .. " stair flights face the rising slope, sit 0..2 studs into the ground at the low end, and neither bury nor float at the high end", #stairBad == 0)
 
 	-- Landmarks
 	for lid, lm in O.Landmarks do

@@ -1,6 +1,16 @@
 # CONTINUATION — read this first after any restart
 
-## Reconcile after Windows restart — 2026-11-16 ~23:50 Sydney (newest)
+## After oversight ruling on ecb202e (newest; ruling text in LEDGER)
+
+Pushed W1 = ecb202e. Memory before launch: commit 16.0/26.7 GB, 4.3 GB free physical, no Studio/Blender.
+| Lane | Note | Model | Heavy? | Owns | State |
+|---|---|---|---|---|---|
+| win-07 solo Studio pass of ecb202e + isPublished read | workers/win-07-solo-pass.md | sonnet | HEAVY (only one) | copy work/windows-resume/solo/AsurasPath_ecb202e.rbxlx (sha 5e46b299…, build digest 1146079001), captures/win/solo_* | launching |
+| win-08 light source fixes | workers/win-08-source-fixes.md | sonnet | light (no Studio/Blender) | WeatherController + weather test, BiomeDressing + biome test, tools/verify_all.sh biome line, tools/lune_compat.py | launching |
+W2 (win-07 + win-08 done): solo pass of ecb202e OK (lobby/portal/glade/encounter/map/rain; compass partial); quiet readings this machine only: glade ~15-17 fps CPU-bound (render ~43 ms), heartbeat 61 Hz idle / 36-53 writing, 3354 MB, terrain 99.6 MB, glade 18.3 s, altars 27.7 s, map 218 s. isPublished: public details IsForSale false, IsPublicDomain false, ProductId 0 -> ordinary owner-only (asset:read not granted). win-08: Reduced effects honoured, snow/dust sprites, all-region stair footing test + fix (some flights dropped), biome test in verify_all, lune_compat runs named tests. verify_all 14/14 (biome 19045/0, weather 247/0), build 277/3177507/238544734.
+Queued (after win-07): uploads lane (one owner) -> slice real-mesh captures -> M2. Queued light: landmark silhouettes, Shen classification read.
+
+## Reconcile after Windows restart — 2026-11-16 ~23:50 Sydney
 
 Binding memory rule (creator): Opus lead + at most TWO active workers; one heavy job at a time machine-wide (Studio Play,
 multiplayer test, Blender job, full verify or build); check committed memory before each heavy launch; close only finished

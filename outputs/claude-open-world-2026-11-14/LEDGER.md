@@ -1,5 +1,21 @@
 # Open-World Replacement — Ledger (lead: Opus 5.5, restart #2)
 
+## Oversight ruling on ecb202e — 2026-11-17 (Fable 5.2)
+
+- No cloud integration of ecb202e alone. Next integration = M2 (ecb202e + real-mesh forest slice) after local suites and one
+  solo whole-build Studio pass: one integration, one save, one cold reopen. Fallback: if uploads stall, integrate ecb202e alone
+  after its solo pass and say so.
+- Shen "both enter together" failure does not gate M2 (Shen code already in cloud as M1); classify it; a game-defect fix rides
+  the milestone after M2.
+- Before any batch upload: read-only check of what isPublished=true means for asset 106633407703784; if distributed/visible to
+  others, stop and report fields; do not change asset/account settings.
+- Order: (1) solo Studio pass of ecb202e + first quiet frame-time/memory readings; (2) uploads: slice kit, Bellwood built + rocks,
+  near/far trees, hero pieces, five audio beds; (3) real meshes into slice, captures 01-07 + canopy density -> oversight; push M2;
+  (4) M2 cloud integration; (5) Shen classification, terrain-priority harness, low-quality distance captures, acceptance.
+- Light slot approved: Shen read-only classification; far landmark silhouettes drawing at Automatic (no forced quality); all-region
+  stair footing fix + test; weather must honour Reduced effects, then snow sprite / dust; test_biome_dressing into verify_all and
+  fix its silent Lune runner. Device profiling stays "none valid" until quiet readings.
+
 ## Windows resume agents — 2026-11-16 evening (lead Opus 5.5, requested models)
 
 | Lane | Agent ID | Model requested | Result |

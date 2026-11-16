@@ -62,6 +62,10 @@ local P: { [string]: any } = {
 	Ravine_Lift_Station = kit({ 18, 22, 18 }, 0.8, true, { s("Stone", "Sandstone", AMB, 3200, true), s("Timber", "Wood", TIM, 2800, true), s("Winch", "Metal", BRZ, 600) }),
 	Ravine_Lift_Pylon = kit({ 6, 40, 6 }, 0.8, true, { s("Timber", "Wood", TIM, 1800, true) }),
 	Ravine_Cliff_Stair = kit({ 6, 20, 12 }, 0.3, true, { steps(AMB, 900, 22, 0.9, 0.5, 6) }),
+	-- same footprint, other climbs (15.4 / 22 / 25.3): the builder picks the one that meets the ground at both ends (STAIR_FAMILY)
+	Ravine_Cliff_Stair_Low = kit({ 6, 16, 12 }, 0.3, true, { steps(AMB, 900, 22, 0.7, 0.5, 6) }),
+	Ravine_Cliff_Stair_Mid = kit({ 6, 22, 12 }, 0.3, true, { steps(AMB, 900, 22, 1, 0.5, 6) }),
+	Ravine_Cliff_Stair_Steep = kit({ 6, 26, 12 }, 0.3, true, { steps(AMB, 900, 22, 1.15, 0.5, 6) }),
 	Ravine_Grotto_Landing = kit({ 20, 2, 14 }, 0, true, { s("Stone", "Sandstone", AMB, 600, true) }),
 	Ravine_Bell_Post = kit({ 4, 12, 4 }, 0.5, true, { s("Stone", "Sandstone", AMB, 200, true), s("Bell", "Metal", BRZ, 500) }),
 	Ravine_Cairn = kit({ 3.2, 4.2, 3.2 }, 0.3, false, { s("Stone", "Sandstone", AMB, 500) }),
@@ -70,7 +74,8 @@ local P: { [string]: any } = {
 	Basin_Statue_Hand = kit({ 22, 14, 30 }, 1, true, { s("Stone", "Sandstone", SND, 8000, true) }),
 	Basin_Statue_Head = kit({ 26, 28, 30 }, 1.5, true, { s("Stone", "Sandstone", SND, 10000, true) }),
 	Basin_Cistern_Pavilion = kit({ 22, 16, 16 }, 0.5, true, { s("Stone", "Sandstone", SND, 3500, true), s("Roof", "Slate", STN, 2000) }),
-	Basin_Cistern_Stair = kit({ 12, 12, 22 }, 0.3, true, { steps(SND, 1500, 12, 1, 1.8, 12) }),
+	Basin_Cistern_Stair = kit({ 12, 5, 22 }, 0.3, true, { steps(SND, 1500, 12, 0.4, 1.8, 12) }),
+	Basin_Cistern_Stair_Mid = kit({ 12, 8, 22 }, 0.3, true, { steps(SND, 1500, 12, 0.6, 1.8, 12) }),
 	Basin_Kiln_Shed = kit({ 30, 14, 20 }, 0.6, true, { s("Stone", "Sandstone", SND, 4200, true), s("Timber", "Wood", TIM, 3000, true), s("Roof", "Slate", STN, 2600) }),
 	Basin_Kiln_Stack = kit({ 14, 42, 14 }, 1, true, { s("Brick", "Brick", AMBD, 5200, true) }),
 	Basin_Clay_Heap = kit({ 10, 4, 10 }, 0.4, false, { s("Clay", "Mud", AMBD, 1500) }),
@@ -97,6 +102,7 @@ local P: { [string]: any } = {
 	Mtn_Pass_Gate = kit({ 24, 18, 5 }, 0.6, true, { s("Stone", "Slate", STN, 3600, true) }),
 	Mtn_Stair_Run = kit({ 14, 12, 22 }, 0.4, true, { steps(STN, 2200, 14, 0.85, 1.6, 14) }),
 	-- steeper flights for the summit ramp, where the ground climbs 13 to 19 studs per 22 (Run climbs 11.9): same footprint, higher treads
+	Mtn_Stair_Low = kit({ 14, 7, 22 }, 0.4, true, { steps(STN, 2200, 14, 0.45, 1.6, 14) }),
 	Mtn_Stair_Mid = kit({ 14, 14, 22 }, 0.4, true, { steps(STN, 2200, 14, 0.95, 1.6, 14) }),
 	Mtn_Stair_Steep = kit({ 14, 19, 22 }, 0.4, true, { steps(STN, 2200, 14, 1.35, 1.6, 14) }),
 	Mtn_Retaining_Wall = kit({ 18, 10, 3.6 }, 0.6, true, { s("Stone", "Slate", STN, 1600, true) }),
@@ -434,6 +440,14 @@ local function portal(id: string): any
 		if p.Id == id then return p end
 	end
 	error("BiomeDressing: no portal " .. id)
+end
+
+-- Stair flights that share a footprint and differ in climb. A flight takes the member whose top tread ends within -1..+2 studs of the ground at its high end, or is dropped
+-- (flat or sheer ground has nowhere to put it): columns stand from a flat underside, so a mismatched climb floats or buries the top.
+local STAIR_FAMILY: { [string]: { string } } = {}
+for _, family in { { "Ravine_Cliff_Stair_Low", "Ravine_Cliff_Stair", "Ravine_Cliff_Stair_Mid", "Ravine_Cliff_Stair_Steep" }, { "Basin_Cistern_Stair", "Basin_Cistern_Stair_Mid" },
+	{ "Mtn_Stair_Low", "Mtn_Stair_Run", "Mtn_Stair_Mid", "Mtn_Stair_Steep" } } do
+	for _, name in family do STAIR_FAMILY[name] = family end
 end
 
 -- Stairs down a ramp (the blockout's stand-in slab): one flight per `rise` studs of drop, along A to B.
@@ -1157,7 +1171,7 @@ function BiomeDressing.build(id: string, fresh: boolean?, tick: (() -> ())?): an
 
 	for _, spec in expand(def.Hero()) do
 		pace()
-		local piece = P[spec.Piece]
+		local name, piece = spec.Piece, P[spec.Piece]
 		assert(piece, "BiomeDressing: unknown piece " .. tostring(spec.Piece) .. " (" .. spec.Id .. ")")
 		local x, z, yaw = spec.X, spec.Z, spec.Yaw
 		if spec.Edge then
@@ -1178,11 +1192,21 @@ function BiomeDressing.build(id: string, fresh: boolean?, tick: (() -> ())?): an
 				local sy, cy = math.sin(r0), math.cos(r0)
 				if Overworld.heightAt(x + sy * half, z + cy * half) > Overworld.heightAt(x - sy * half, z - cy * half) then yaw += 180 end
 				fx, fz = 0, half
+				-- the family member whose top tread meets the ground at the high end (-1..+2 studs), else no flight here
+				local lowG = Overworld.heightAt(x + math.sin(math.rad(yaw)) * half, z + math.cos(math.rad(yaw)) * half)
+				local highG = Overworld.heightAt(x - math.sin(math.rad(yaw)) * half, z - math.cos(math.rad(yaw)) * half)
+				local best, bestGap = nil, math.huge
+				for _, member in STAIR_FAMILY[name] or { name } do
+					local mp = P[member]
+					local gap = lowG - mp.Sink * scale + mp.Subs[1].Steps * mp.Subs[1].Rise * scale - highG
+					if gap >= -1 and gap <= 2 and math.abs(gap) < bestGap then best, bestGap = member, math.abs(gap) end
+				end
+				if best then name, piece = best, P[best] else dropped += 1; continue end
 			end
 			local rad = math.rad(yaw)
 			local gx, gz = x + fx * math.cos(rad) + fz * math.sin(rad), z - fx * math.sin(rad) + fz * math.cos(rad)
-			local h = { Id = spec.Id, Piece = spec.Piece, Class = "Hero", Kind = if spec.Interior then "Interior" else "Hero", X = x, Z = z, GX = gx, GZ = gz,
-				Y = spec.Y or Overworld.heightAt(gx, gz), Yaw = yaw + (BiomeDressing.ImportYaw[spec.Piece] or 0), Scale = scale, Sink = piece.Sink, Landmark = spec.Landmark == true,
+			local h = { Id = spec.Id, Piece = name, Class = "Hero", Kind = if spec.Interior then "Interior" else "Hero", X = x, Z = z, GX = gx, GZ = gz,
+				Y = spec.Y or Overworld.heightAt(gx, gz), Yaw = yaw + (BiomeDressing.ImportYaw[name] or 0), Scale = scale, Sink = piece.Sink, Landmark = spec.Landmark == true,
 				Cell = Slice.cellOf(x, z), Road = spec.Road == true, Shelf = spec.Shelf == true, Cliff = spec.Cliff == true, LiftEnd = spec.LiftEnd, Shelter = spec.Shelter, CaveMouth = spec.CaveMouth }
 			table.insert(heroes, h)
 			table.insert(placements, h)

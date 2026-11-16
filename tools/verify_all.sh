@@ -67,6 +67,7 @@ python3 tools/test_progression_runtime.py
 python3 tools/test_review_regressions.py
 python3 tools/test_campaign_regions.py
 python3 tools/test_campaign_build.py
+"$LUAU" tools/test_biome_dressing.luau
 python3 tools/lune_compat.py --all
 
 echo "[11/14] Testing Backend Persistence & Commercial Systems (local mocks)..."

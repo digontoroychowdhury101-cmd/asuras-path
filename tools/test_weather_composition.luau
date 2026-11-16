@@ -255,8 +255,8 @@ workspaceFake.CurrentCamera = nil
 workspaceFake:SetAttribute("AsuraWorldEpoch", epoch)
 local shared = { Shared = { Overworld = "Overworld", EnvironmentProfiles = "EnvironmentProfiles", Wind = "Wind", EffectsPreference = "EffectsPreference" },
 	WaitForChild = function(_, name) return name end }
-local reducedMotion = false
-local modules = { Config = Config, Overworld = Overworld, EnvironmentProfiles = Profiles, Wind = Wind, EffectsPreference = { reducedMotion = function() return reducedMotion end } }
+local reducedMotion, reducedEffects = false, false
+local modules = { Config = Config, Overworld = Overworld, EnvironmentProfiles = Profiles, Wind = Wind, EffectsPreference = { reducedMotion = function() return reducedMotion end, reduced = function() return reducedEffects end } }
 local services = { Players = { LocalPlayer = player }, CollectionService = CollectionService, ReplicatedStorage = { WaitForChild = function() return shared end } }
 local controllerEnv = { game = { GetService = function(_, name) return services[name] end }, workspace = workspaceFake,
 	require = function(name) return modules[name] end }
@@ -319,6 +319,13 @@ reducedMotion = true
 weather:Sample()
 check("comfort preference thins the rain", weather.Fx:FindFirstChild("Rain").Rate < Weather.Kinds.Rain.Rate * 0.4)
 reducedMotion = false
+reducedEffects = true
+weather:Sample()
+local thin = weather.Fx:FindFirstChild("Rain")
+check("Reduced effects setting thins the rain too, but keeps a visible minimum", thin ~= nil and thin.Rate < Weather.Kinds.Rain.Rate * 0.4 and thin.Rate * Weather.Kinds.Rain.Life >= 100)
+reducedEffects = false
+weather:Sample()
+check("rain returns to full when Reduced effects is off", weather.Fx:FindFirstChild("Rain").Rate > Weather.Kinds.Rain.Rate * 0.9)
 own = nil
 weather:Sample()
 parts, emitters = counts(weather)
@@ -464,6 +471,8 @@ check("rain is a streak at player height: >= 1 stud long, scaled with fall speed
 	Kinds.Rain.Size >= 1 and near(Kinds.Rain.Size, Kinds.Rain.Fall * 0.02, 1e-6) and Kinds.Rain.Squash < 0 and Kinds.Rain.Alpha >= 0.2 and Kinds.Rain.Alpha <= 0.6
 	and Kinds.Rain.Color[3] > Kinds.Rain.Color[1] and Kinds.Rain.Color[1] >= 150)
 check("snow flakes >= 0.4 stud and dust puffs stay translucent", Kinds.Snow.Size >= 0.4 and Kinds.Snow.Alpha <= 0.3 and Kinds.Dust.Alpha <= 0.8 and Kinds.Dust.Size >= 1.5)
+check("snow uses the soft round sprite, not the default star, and dust reads (Alpha is transparency: <= 0.6, Size >= 2.6)", Kinds.Snow.Texture == "rbxasset://textures/particles/smoke_main.dds"
+	and Kinds.Snow.Alpha <= 0.2 and Kinds.Dust.Alpha <= 0.6 and Kinds.Dust.Size >= 2.6)
 check("dust uses a soft smoke sprite, not the default star (Studio: glitter)", Kinds.Dust.Texture == "rbxasset://textures/particles/smoke_main.dds"
 	and string.find(weatherSource, "emitter.Texture = spec.Texture", 1, true) ~= nil)
 for kind, spec in Kinds do
