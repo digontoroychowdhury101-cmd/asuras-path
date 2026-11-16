@@ -1,0 +1,12 @@
+{
+  "format": 1,
+  "place": "places/checkpoints/AsurasPath_OpenWorld_2026-11-16.rbxlx",
+  "source_commit": "358e24fa02865c2579e565697d62c8699d017a61",
+  "source_branch": "ux/onboarding-overhaul",
+  "sha256": "d9be83ac03d7c1ceb61ab99a60601271a68c222401847d478ffbcbacdc644cf6",
+  "bytes": 10686935,
+  "scripts": 275,
+  "script_bytes": 3149701,
+  "script_digest": 1516687798,
+  "status": "unfinished development checkpoint; runtime-generated terrain; mesh uploads unverified"
+}

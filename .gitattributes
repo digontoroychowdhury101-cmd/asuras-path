@@ -6,3 +6,5 @@ assets/github/** -text
 
 # Handoff descriptors are hashed byte-for-byte on Windows and macOS.
 outputs/claude-open-world-2026-11-14/handoff/*.json text eol=lf
+places/checkpoints/*.json text eol=lf
+places/checkpoints/*.sha256 text eol=lf

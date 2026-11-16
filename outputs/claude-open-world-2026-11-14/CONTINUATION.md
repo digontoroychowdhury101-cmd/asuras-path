@@ -15,6 +15,11 @@ use this section for the current resume point.
 - Claude had already pushed `b658140` on `ux/onboarding-overhaul`. Codex preserved
   its later `Overworld.luau` terrain changes; all 14 full-verifier stages pass.
   Current temp build: **275 scripts / 3149701 bytes / digest 1516687798**.
+- **Shared saved file added after the creator asked how to match Mac/Windows:**
+  `places/checkpoints/AsurasPath_OpenWorld_2026-11-16.rbxlx`, built from `358e24f`.
+  Both computers pull and open that dated file, verifying its adjacent SHA-256
+  record and script digest. See `places/checkpoints/README.md`. The older baseline
+  remains preserved. Current runtime geometry is generated during Play.
 - Ignored sources are snapshotted on **`codex/overworld-assets-2026-11-16`**:
   **1277 files**, 609 unique contents, fifteen parts; archive SHA-256
   `4b475b05a63f8b24720885040cd0a0c3d2e53cc5462b2e63faec4cb475e9fbb8`.
