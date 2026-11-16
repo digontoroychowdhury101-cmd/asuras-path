@@ -681,3 +681,4 @@ Studio diagnostic: all 8 altars wake correctly, and reclaim/forfeit work. Fixed:
 - 2026-10-28 fps cap found: the RTX-render/Intel-display hand-off. Studio on the Intel GPU: Edit 220 fps, Play 44-47 (was 18/24). Next: laptop GPU mode set to discrete (Vantage/Legion Space, reboot), Studio back to default GPU, rerun RegionFrameTime.
 
 - 2026-11-14: Matt Pocock skills configured (docs/agents/, CLAUDE.md "Agent skills"). Next: run `gh auth login`, then create the five triage labels.
+- 2026-11-16 (Mac M1 saved to cloud): git 3465430 (parallel terrain writer: map 14 s, 50-61 Hz; Shen on-foot entry; biome kit registries) is in cloud place 118614906972571, digest 786797912, saved, latest version 9. Next: creator approves the Mac upload folder, then lantern, real-mesh slice and captures. See handoff/CLOUD_MIGRATION.md.

@@ -153,11 +153,12 @@
     "protected_collections_unchanged": true,
     "protected_fingerprints_note": "Mac recomputed own descendant-count/hash before and after (identical): lobby 128/1483680705, assets 1442/107357800, materials 12/1023564582; counts match recorded 129/1443/13 incl. root; recorded property-digest algorithm is not in the repo",
     "save": {
-      "tool": null,
+      "tool": "Studio File > Save to Roblox (menu item clicked in the cloud window's own process, title-guarded)",
       "location": "TeamCreate",
-      "status": "not_invoked",
-      "version": null,
-      "message": "No save_place tool in the Mac Studio MCP toolset; Team Create autosave state/version not observed. Lead/Windows to run save_place and record the version."
+      "status": "Saved",
+      "version": 9,
+      "message": "Studio log: Saved new changes in \"Asura's Path — Development\" to Roblox (StudioSavePlaceToCloud 2135 ms). Open Cloud asset versions list shows latest version 9, created 2026-11-16T05:31:53Z by the Team Create session after the M1 edits (versions 7, 8, 9 were created during this Mac session); the explicit save added no further version. Edit digest re-read after the save: 277 / 3173417 / 786797912. Version 9's contents were not checked by a cold reopen.",
+      "saved_at_utc": "2026-11-16T05:34:22Z"
     },
     "validation": {
       "per_script_hash_guard_pre_and_post": true,

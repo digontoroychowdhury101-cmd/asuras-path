@@ -1,5 +1,13 @@
 # CONTINUATION — read this first after any restart
 
+## Current cloud state — M1 saved, 2026-11-16 16:35 Sydney (newest; overrides digests quoted below)
+
+Cloud place 118614906972571 now holds **M1 = git `3465430`** (notes at `98477b7`+): **277 scripts / 3173417 bytes /
+digest 786797912**, saved with File > Save to Roblox at 05:34:22Z; latest cloud version **9**. Oversight rebuilt HEAD
+and re-read the cloud Edit digest: both match. The version-6 digest 1357214079 in the section below is superseded.
+Open: upload folder approval on this Mac (lantern refused before sending), cold-reopen check of version 9, real-mesh
+slice and captures (wait on uploads), two-client tests (other computer). Evidence: handoff/CLOUD_MIGRATION.md.
+
 ## Cloud checkpoint now migrated — latest update, 2026-11-16
 
 The creator explicitly asked Codex to move the verified build into the Save to

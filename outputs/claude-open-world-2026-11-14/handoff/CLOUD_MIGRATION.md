@@ -133,8 +133,12 @@ persistedToCloud=true) from the 32d448e state (275 / 3151007 / 1357214079).
   `Worker` (RunContext Legacy, as built). All hashes matched.
 - Result: scripts 277 / bytes 3173417 / digest 786797912 (= work/mac-m1c build). Lobby, asset and
   material fingerprints unchanged (Mac's own descendant hash; recorded algorithm not in repo).
-- Save: the Mac Studio MCP exposes no save_place, so no version was returned and none is claimed.
-  Version 6 remains the last recorded explicit save; M1 needs a save_place by an integrator that has it.
+- Save: done by oversight at 05:34:22Z (16:34 Sydney) with Studio's own File > Save to Roblox on the cloud window
+  (Publish was not used). Studio logged "Saved new changes in "Asura's Path — Development" to Roblox". The Open
+  Cloud version list shows **version 9** as latest (created 05:31:53Z by the Team Create session after the M1 edits;
+  7, 8 and 9 all date from this Mac session); the explicit save added no newer version. Edit digest re-read after the
+  save: **277 / 3173417 / 786797912** = build of `3465430`. Limit: version 9 was not checked by a cold reopen, and the
+  open session still reports its load version 6.
 - Smoke (single client, mock persistence, no edit): server and client ready, Sanctuary and
   Map_Overworld present, terrain complete 4356 tiles in 14.6 s (glade 2.6 s, altars 3.5 s), hb 60 Hz at
   end; startup PerfBudget HeartbeatHz=34.2 warning and the known EditableImage warning only; no

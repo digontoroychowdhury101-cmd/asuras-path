@@ -108,3 +108,53 @@ The lead's task and milestone ledger is `LEDGER.md` in this folder.
 Evidence: `~/.claude/projects/-Users-digonto-Documents/0d1edc58-27a9-47f1-a13c-8e275bc95d10/subagents/agent-<id>.meta.json` (`model`, `parentAgentId`, `spawnDepth` 1 for the lead and 2 for workers) and the `model` field on assistant responses in the matching `.jsonl`. Explicit `model` selection and depth-2 spawning both work on this Mac; no fallback warning seen.
 - A fresh lead is started from the durable notes in the next session (`e35b1c65-d031-4fc4-bafa-88f8c1f6954f`).
 - Fable usage: checkout/tool/asset recovery, the documented checks, the test-place build, the lead brief and this routing check. No design or source work.
+
+### Mac run 2 (session `e35b1c65-d031-4fc4-bafa-88f8c1f6954f`, checked 15:30)
+
+| Agent ID | Parent | Task | Requested | Observed model (responses so far) |
+| --- | --- | --- | --- | --- |
+| `ae25fc41f4f9aaea0` | Fable session | Engineering lead | `opus` | `claude-opus-5-5` (39) |
+| `a66e090cf80d6c2ae` | lead | Studio operator, TEST window | `sonnet` | `claude-sonnet-5-5` (30) |
+| `a5c3be2616d9a1138` | lead | Lantern upload diagnosis | `sonnet` | `claude-sonnet-5-5` (14) |
+| `a8da77eb39a9e8635` | lead | T4 terrain finish (source) | `sonnet` | `claude-sonnet-5-5` (14) |
+| `ade3ac19f1904f9eb` | lead | Far-tree spec reconcile | `sonnet` | `claude-sonnet-5-5` (11) |
+| `a1535a610f5cd46f0` | lead | Upload queue inventory | `haiku` | `claude-haiku-5-5` (15) |
+
+Every record's observed model matches the request; workers are at spawn depth 2 under the lead. Same evidence types as above, under this session's `subagents/` folder.
+
+### Mac run 2 after the cloud migration (checked by Fable 2026-11-16 16:00)
+
+- Fast-forwarded to Windows handoff `2bbe176` with all uncommitted lane work intact (the commit touched notes only).
+- Cloud place opened on this Mac and verified read-only: place 118614906972571, universe 10777041159, `persistedToCloud=true`, PlaceVersion 6, **275 scripts / 3151007 bytes / digest 1357214079**; no newer coordinated change. Studio id `a8446776-69fa-44f2-97cf-842f86e25f0f`.
+- 14 agent records in the session: one Opus lead and 13 workers (11 Sonnet, 2 Haiku requested). Every record's observed model matches the request; all workers at spawn depth 2 under the lead; no fallback warning and no unavailable model.
+- Responses by observed model: Sonnet 791, Opus 68 (lead), Haiku 41. Response counts only; no token or cost figures are available.
+- Worker tasks so far: Studio TEST operator, lantern upload diagnosis, T4 terrain finish, far-tree reconcile (committed `32d448e`), upload-queue inventory (Haiku), multi-client pending note (Haiku), Shen walk-in check, summit temple visibility diagnosis and Studio probe, kit registry generator, Studio T4b engine measurement, T4c terrain defect fixes, biome kit registry integration.
+- Lead re-briefed with the creator's new rule: develop and test locally, integrate verified milestones into the cloud place with matching Git commit, digest and save version; never restore the old baseline there.
+- Fable usage since the last entry: the reconcile and fast-forward, reading the migration notes, opening and fingerprinting the cloud place, two messages to the lead, this tally. No design or source work.
+
+### Mac run 2 at milestone M1 (checked by Fable 2026-11-16 16:40)
+
+| Agent ID | Task | Requested | Observed model (responses) |
+| --- | --- | --- | --- |
+| `a5c3be2616d9a1138` | Lantern upload diagnosis lane | `sonnet` | claude-sonnet-5-5 (17) |
+| `a1535a610f5cd46f0` | Upload queue inventory reader | `haiku` | claude-haiku-5-5 (23) |
+| `ade3ac19f1904f9eb` | Far-tree spec reconcile lane | `sonnet` | claude-sonnet-5-5 (32) |
+| `a8da77eb39a9e8635` | T4 terrain finish source lane | `sonnet` | claude-sonnet-5-5 (109) |
+| `a66e090cf80d6c2ae` | Studio operator TEST window | `sonnet` | claude-sonnet-5-5 (204) |
+| `ae1c0e8389a53fbee` | Multi-client pending note reader | `haiku` | claude-haiku-5-5 (18) |
+| `a50e15abbebe25fb9` | Shen walk-in encounter check | `sonnet` | claude-sonnet-5-5 (25) |
+| `a116f2bf6b03a6bd6` | Summit temple visibility diagnosis | `sonnet` | claude-sonnet-5-5 (33) |
+| `abefc13b05f5ad028` | Overworld kit registry generator | `sonnet` | claude-sonnet-5-5 (25) |
+| `a2e68f7b859f019d8` | Studio T4b engine measurement | `sonnet` | claude-sonnet-5-5 (157) |
+| `a7bad8c8ce7776dfb` | Studio summit temple probe | `sonnet` | claude-sonnet-5-5 (103) |
+| `a9b0ce68032eac666` | Biome kit registry integration | `sonnet` | claude-sonnet-5-5 (50) |
+| `ae45952c4d0abdc22` | T4c terrain defect fixes | `sonnet` | claude-sonnet-5-5 (47) |
+| `a1f705af3f8471d9a` | Lantern upload via cloud window | `sonnet` | claude-sonnet-5-5 (16) |
+| `ab49231086559e232` | Studio M1 milestone evidence | `sonnet` | claude-sonnet-5-5 (157) |
+| `af3eaf1cde7afafb3` | Fix WorldService gate margin | `sonnet` | claude-sonnet-5-5 (10) |
+| `a30013f718e5c75ad` | Cloud integration of milestone M1 | `sonnet` | claude-sonnet-5-5 (101) |
+| `ae25fc41f4f9aaea0` | Opus lead: open-world resume 2 | `opus` | claude-opus-5-5 (119) |
+
+- 18 agent records; records whose observed model differs from the request: 0. No fallback warning and no unavailable model.
+- Responses by observed model: claude-sonnet-5-5 1086, claude-opus-5-5 119, claude-haiku-5-5 41. Response counts only; no token or cost figures per model.
+- Oversight checked M1 independently: HEAD build 277 / 3173417 / 786797912 equals the cloud Edit digest; saved the cloud place (latest version 9) and recorded it in handoff/CLOUD_MIGRATION. No design or source work by Fable.
