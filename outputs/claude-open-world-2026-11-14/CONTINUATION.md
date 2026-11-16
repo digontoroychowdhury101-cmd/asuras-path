@@ -1,7 +1,49 @@
 # CONTINUATION — read this first after any restart
 
+## Codex handoff completion — 2026-11-16 (current checkpoint)
+
+The creator asked Codex to finish Claude's handoff, outstanding commits and pushes
+after the usage-limit stop. That authorises this checkpoint's task commits/pushes
+and supersedes the older no-commit instructions below. It does not authorise
+unrelated edits or cloud-place changes. Historical rounds below remain evidence;
+use this section for the current resume point.
+
+- Read [MAC_HANDOFF.md](MAC_HANDOFF.md) for a fresh Mac/computers A and C setup,
+  pinned ECC/Ponytail/Matt Pocock repositories, MCP connections, asset restore and
+  the exact source-vs-saved-place distinction. Ready prompt:
+  [handoff/RESUME_PROMPT.md](handoff/RESUME_PROMPT.md).
+- Claude had already pushed `b658140` on `ux/onboarding-overhaul`. Codex preserved
+  its later `Overworld.luau` terrain changes; all 14 full-verifier stages pass.
+  Current temp build: **275 scripts / 3149701 bytes / digest 1516687798**.
+- Ignored sources are snapshotted on **`codex/overworld-assets-2026-11-16`**:
+  **1277 files**, 609 unique contents, fifteen parts; archive SHA-256
+  `4b475b05a63f8b24720885040cd0a0c3d2e53cc5462b2e63faec4cb475e9fbb8`.
+  Pinned manifests and restore instructions are under `handoff/`. Current Blender
+  scenes are included; 20 `.blend1` automatic backups are excluded explicitly.
+- Round 9 source lanes: D6 completed (276 trees; static tower visibility 74%);
+  M8 exported six distant tree forms and comparison renders; T4 is **partial**.
+  T4 added timing stats and late hot-path annotations/weight reuse/region cache;
+  tighter voxel boxes and parallel compute were planned, not finished. Its worker
+  note has not claimed a new Studio measurement. Inspect before continuing.
+- Upload folder approval works. Lantern operation
+  `b921007b-9ee0-472f-88e7-3442c56770e7` failed terminally with Unknown Error and no
+  asset ID. No model/audio registry or successful upload is established. Diagnose
+  one asset on the local test copy before batching. See `workers/20a-upload.md`.
+- Source remains Overworld.Active=true. Saved `places/AsurasPath` and
+  `outputs/AsurasPath.rbxlx` remain the pre-overworld baseline **462022588**.
+  Build a NEW local test place; do not overwrite this baseline as a handoff side
+  effect. Discover Studio IDs anew. Cloud universe 10777041159 / place
+  118614906972571 is private with Team Create; uploads only, no temporary edits.
+- Still open: lantern import diagnosis, real mesh registries/integration, terrain
+  frame-rate/startup targets, latest real-mesh forest acceptance, weather/haze and
+  summit captures, Shen walk-out, multiplayer and device profiling. Evidence and
+  explicit limits: [handoff/VALIDATION.md](handoff/VALIDATION.md).
+- Only one computer writes at a time. Pull and restore the assets on the next
+  computer; a GitHub push does not pull/install there automatically. The unrelated
+  pre-existing Mugen review directory was left untouched and out of this handoff.
+
 Ledger: [LEDGER.md](LEDGER.md). Oversight: [DELEGATION_STATUS.md](DELEGATION_STATUS.md). Spec: `.scratch/asuras-open-world/SPEC.md`. Plan: [GEOGRAPHY_PLAN.md](GEOGRAPHY_PLAN.md) (Amendments binding). Tickets: `.scratch/asuras-open-world/issues/`.
-Baseline HEAD `fb51a42`, branch `ux/onboarding-overhaul`. NO commit/push/stash/add -A/reset. Never save the Studio place.
+Historical starting HEAD `fb51a42`, branch `ux/onboarding-overhaul`. The old no-commit/push rule was superseded by the creator's handoff request above. Preserve the saved Studio baseline.
 
 ## State (reconciled 2026-11-15 after usage-limit stop)
 C1 signed off. Working toward C2. Studio open on places/AsurasPath.rbxlx (studio_id 86e1c871-bc73-441c-8651-eecbb01c7004), Edit mode, digest 462022588 (= baseline), no overworld terrain present.

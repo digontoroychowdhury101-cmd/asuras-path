@@ -1,0 +1,88 @@
+{
+  "format": 1,
+  "branch": "codex/overworld-assets-2026-11-16",
+  "archive": "overworld-assets-2026-11-16.zip",
+  "archive_sha256": "4b475b05a63f8b24720885040cd0a0c3d2e53cc5462b2e63faec4cb475e9fbb8",
+  "archive_bytes": 1231545662,
+  "manifest_sha256": "83e6b5c5ed9af398314958ddda327e43cccbc7f22070dd8d13fbac0c37b043ae",
+  "file_count": 1277,
+  "source_bytes": 2216435383,
+  "unique_contents": 609,
+  "parts": [
+    {
+      "name": "overworld-assets-2026-11-16.zip.part000",
+      "bytes": 83886080,
+      "sha256": "9cdef0cd71470f49fe911ed89b547a190f1742bb99e830f92406bec7d48e9599"
+    },
+    {
+      "name": "overworld-assets-2026-11-16.zip.part001",
+      "bytes": 83886080,
+      "sha256": "8bd2a829d0dcb2efe7e3dcbda04bda746d3d3cbde1445652baaf9d268184b05b"
+    },
+    {
+      "name": "overworld-assets-2026-11-16.zip.part002",
+      "bytes": 83886080,
+      "sha256": "4ec48950a8cd267414b4568b0b8b1e9a1b4a7d10bf9f43d44febe5fb762d0a08"
+    },
+    {
+      "name": "overworld-assets-2026-11-16.zip.part003",
+      "bytes": 83886080,
+      "sha256": "c4df672641ecee954b2269f49e8c68b570e218cbc67f00ecd8fafe736839c4a4"
+    },
+    {
+      "name": "overworld-assets-2026-11-16.zip.part004",
+      "bytes": 83886080,
+      "sha256": "09542216dc938c67b8c271b54f9d436332b97307659af60f91ce258fa7151774"
+    },
+    {
+      "name": "overworld-assets-2026-11-16.zip.part005",
+      "bytes": 83886080,
+      "sha256": "c835fe45b58496713f61fd50e5fa946aa7199ad45ffed378325617d19076931b"
+    },
+    {
+      "name": "overworld-assets-2026-11-16.zip.part006",
+      "bytes": 83886080,
+      "sha256": "c70bf8729013b3a54c4eee92ecbba3a7e06217d471a1f2f1d0a4b946e6035e75"
+    },
+    {
+      "name": "overworld-assets-2026-11-16.zip.part007",
+      "bytes": 83886080,
+      "sha256": "572ff7b23a23f6606bee9964e16091f911b11cb8c20284eba8a74e8342f29927"
+    },
+    {
+      "name": "overworld-assets-2026-11-16.zip.part008",
+      "bytes": 83886080,
+      "sha256": "50fe8acf12fc316a9e539968999e27628be40ff30c3c57f07f206129261f46b2"
+    },
+    {
+      "name": "overworld-assets-2026-11-16.zip.part009",
+      "bytes": 83886080,
+      "sha256": "44e8a7ff730234ac00b99f9604df777f2867aaf21234b5481a99429407cbddca"
+    },
+    {
+      "name": "overworld-assets-2026-11-16.zip.part010",
+      "bytes": 83886080,
+      "sha256": "f405686b8c4270ff254ac01da9eaf5ee13c8fb425b06d0b396d5c7af037a840c"
+    },
+    {
+      "name": "overworld-assets-2026-11-16.zip.part011",
+      "bytes": 83886080,
+      "sha256": "9527579fee7c9114fe388d5331c4200e691c60fbfe485bfdb1f2c7cd02436f24"
+    },
+    {
+      "name": "overworld-assets-2026-11-16.zip.part012",
+      "bytes": 83886080,
+      "sha256": "b09e7071ba3cfadff42fae4f7693cc894c03c48dcea38db6d9c3481d6957cbf7"
+    },
+    {
+      "name": "overworld-assets-2026-11-16.zip.part013",
+      "bytes": 83886080,
+      "sha256": "c7b1d119a5dfda1aac55667ec06b877fed71b05cc377c161ee247c3b060530d9"
+    },
+    {
+      "name": "overworld-assets-2026-11-16.zip.part014",
+      "bytes": 57140542,
+      "sha256": "5f5b6c67c13d7c490d09bdc99f138257273f3f92e80acf4b8d5bb448fbe9ea30"
+    }
+  ]
+}

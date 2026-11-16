@@ -1,6 +1,23 @@
 # Open-World Replacement — Ledger (lead: Opus 5.5, restart #2)
 
-Baseline: HEAD `fb51a42` on `ux/onboarding-overhaul`. No commits/pushes/stash this run. Oversight file: [DELEGATION_STATUS.md](DELEGATION_STATUS.md) (Fable-owned, not edited here). Resume point: [CONTINUATION.md](CONTINUATION.md).
+Historical starting baseline: HEAD `fb51a42` on `ux/onboarding-overhaul`. The creator subsequently authorised commits and pushes for the cross-computer handoff. Oversight file: [DELEGATION_STATUS.md](DELEGATION_STATUS.md) (Fable-owned, not edited here). Current resume point: the **Codex handoff completion** section at the top of [CONTINUATION.md](CONTINUATION.md).
+
+## Handoff checkpoint — 2026-11-16
+
+Claude pushed `b658140` before the usage stop. Codex then preserved the late T4
+terrain edit, finished [MAC_HANDOFF.md](MAC_HANDOFF.md), added the missing reference
+archive required by the brief, and delivered the ignored mesh/audio sources on
+`codex/overworld-assets-2026-11-16` (commit
+`1412139fbb6c9adc519031a5d02063c7a952732c`). The asset branch is data only; never
+merge it into the code branch. SHA-256 pins and safe restore tooling are in
+`handoff/` and `tools/assets/overworld_handoff.py`.
+
+Local validation is green; new Studio validation is absent. T4 remains partial,
+M8 far trees are exported, D6 has 276 trees and 74% static tower visibility.
+The lantern folder permission now works, but processing returned Unknown Error
+without an ID. Registries, real-mesh integration and engine performance/visual
+acceptance remain open. Saved places and the cloud place were not changed.
+See [handoff/VALIDATION.md](handoff/VALIDATION.md) for evidence and scope limits.
 
 ## Milestones
 States: planned / blockout / integrated / verified / blocked.

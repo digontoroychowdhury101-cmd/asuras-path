@@ -607,15 +607,18 @@ for _, c in Overworld.TerrainDef.Clearings do
 	c.Far2 = (c.R * 1.5) ^ 2
 end
 
+@native
 local function smooth(t: number): number
 	t = math.clamp(t, 0, 1)
 	return t * t * (3 - 2 * t)
 end
 
+@native
 local function smax(a: number, b: number, k: number): number
 	return (a + b + math.sqrt((a - b) ^ 2 + k * k)) * 0.5
 end
 
+@native
 local function smin(a: number, b: number, k: number): number
 	return a + b - smax(a, b, k)
 end
@@ -645,10 +648,12 @@ local function buildIndex(segs: { any }, reach: number): { [number]: { any } }
 	return index
 end
 
+@native
 local function near(index: { [number]: { any } }, x: number, z: number): { any }
 	return index[math.floor(x / CELL) * 65536 + math.floor(z / CELL)] or EMPTY
 end
 
+@native
 local function segDist(s: any, x: number, z: number): (number, number)
 	local dx, dz = s.x1 - s.x0, s.z1 - s.z0
 	local t = math.clamp(((x - s.x0) * dx + (z - s.z0) * dz) / s.len2, 0, 1)
@@ -844,23 +849,42 @@ end
 -- Region weights that never switch (blendAt falls back to the nearest box where none covers a point,
 -- which would step the relief): each region's weight decays smoothly with distance outside its box.
 -- With h, AridBasin and MountainAscent are told apart by height where their boxes overlap.
-local function softWeights(x: number, z: number, h: number?): { [string]: number }
-	local out, total = {}, 0
-	for _, id in Overworld.RegionIds do
-		local d = signedDistance(Overworld.Regions[id].Bounds, x, z)
-		local w = 1 / (1 + math.max(d, 0) / Overworld.Blend) ^ 2
-		if h and ((id == "AridBasin" and h > 245) or (id == "MountainAscent" and h <= 245)) then
+-- Fills and returns out (the caller's reusable table: no allocation per call); boxes are read once.
+local regionBoxes: { { Id: string, X: number, Z: number, HX: number, HZ: number } } = {}
+@native
+local function softWeights(out: { [string]: number }, x: number, z: number, h: number?): { [string]: number }
+	if #regionBoxes == 0 then
+		for _, id in Overworld.RegionIds do
+			local b = Overworld.Regions[id].Bounds
+			table.insert(regionBoxes, { Id = id, X = b.Center.X, Z = b.Center.Z, HX = b.Size.X * 0.5, HZ = b.Size.Z * 0.5 })
+		end
+	end
+	local total, blend = 0, Overworld.Blend
+	for _, r in regionBoxes do
+		-- same distance as signedDistance: negative inside, positive outside
+		local dx, dz = math.abs(x - r.X) - r.HX, math.abs(z - r.Z) - r.HZ
+		local d: number
+		if dx <= 0 and dz <= 0 then
+			d = math.max(dx, dz)
+		else
+			d = math.sqrt(math.max(dx, 0) ^ 2 + math.max(dz, 0) ^ 2)
+		end
+		local w = 1 / (1 + math.max(d, 0) / blend) ^ 2
+		if h and ((r.Id == "AridBasin" and h > 245) or (r.Id == "MountainAscent" and h <= 245)) then
 			w *= 0.01
 		end
-		out[id] = w
+		out[r.Id] = w
 		total += w
 	end
-	for id, w in out do
-		out[id] = w / total
+	for _, r in regionBoxes do
+		out[r.Id] /= total
 	end
 	return out
 end
+local weightsSample: { [string]: number } = {} -- sampleAt's scratch (relief reads it)
+local weightsMaterial: { [string]: number } = {} -- materialAt's scratch
 
+@native
 local function shelf(t: number): number
 	local knots = Overworld.TerrainDef.Chasm.Shelf
 	for k = 2, #knots do
@@ -874,6 +898,7 @@ end
 
 -- World edge. Returns u (0 at the foot line, 1 at the Frame edge, 0 inside), the sea share c (0 range .. 1 sea cliff)
 -- and the walkable inset in studs (positive on the walkable side of the foot line; scaled on the south and east sides).
+@native
 local function edgeAt(x: number, z: number): (number, number, number)
 	local E, F = Overworld.TerrainDef.Edge, Overworld.Frame
 	local k, sc = E.CornerK, E.Scale
@@ -901,6 +926,7 @@ function Overworld.edgeInset(x: number, z: number): number
 end
 
 -- Height added by the edge to ground at h. The crest is held under its region's height band (Y top - 8).
+@native
 local function edgeDelta(x: number, z: number, h: number): number
 	local u, c = edgeAt(x, z)
 	if u <= 0 then
@@ -937,6 +963,7 @@ local function edgeDelta(x: number, z: number, h: number): number
 end
 
 -- Share (0..1) of a meadow bowl at x, z.
+@native
 local function clearingAt(x: number, z: number): number
 	local best = 0
 	for _, c in Overworld.TerrainDef.Clearings do
@@ -950,6 +977,7 @@ end
 
 -- Relief: Bellwood ridges and
 -- meadow bowls, and the Ashen Stair terraces, spurs and crown. W = softWeights, clr = clearingAt, h = ground so far.
+@native
 local function relief(D: any, x: number, z: number, h: number, W: { [string]: number }, clr: number): number
 	local def, e = Overworld.TerrainDef, 0
 	local wF = W.Forest
@@ -997,6 +1025,7 @@ local function relief(D: any, x: number, z: number, h: number, W: { [string]: nu
 end
 
 -- Node-pinned surface with the summit massif and divide ridge, before road correction and relief.
+@native
 function Overworld.baseAt(x: number, z: number): number
 	local D, def = built or data(), Overworld.TerrainDef
 	local num, den = 0, 0
@@ -1028,8 +1057,9 @@ function Overworld.baseAt(x: number, z: number): number
 end
 
 -- Height of the ground at x, z, plus the road, channel and chasm weights (0..1) that shaped it.
-function Overworld.sampleAt(x: number, z: number): (number, number, number, number)
-	local D, def = data(), Overworld.TerrainDef
+@native
+function Overworld.sampleAt(x: number, z: number, pads: any?): (number, number, number, number)
+	local D, def = built or data(), Overworld.TerrainDef
 	local h = Overworld.baseAt(x, z)
 	local csum, cw = 0, 0
 	for _, s in near(D.corrIndex, x, z) do
@@ -1042,7 +1072,7 @@ function Overworld.sampleAt(x: number, z: number): (number, number, number, numb
 	end
 	h += cw / math.max(csum, 1)
 
-	local W, amp = softWeights(x, z, nil), 0
+	local W, amp = softWeights(weightsSample, x, z, nil), 0
 	for id, w in W do
 		amp += w * def.Relief[id]
 	end
@@ -1079,7 +1109,7 @@ function Overworld.sampleAt(x: number, z: number): (number, number, number, numb
 
 	local padW = 0
 	local wsum, wt = 0, 0
-	for _, p in D.Pads do
+	for _, p in (pads or D.Pads) do
 		local dx, dz = x - p.X, z - p.Z
 		if p.HX then -- rectangular pad: distance to the box
 			dx, dz = math.max(math.abs(dx) - p.HX, 0), math.max(math.abs(dz) - p.HZ, 0)
@@ -1121,6 +1151,7 @@ function Overworld.sampleAt(x: number, z: number): (number, number, number, numb
 	return h, roadW, channelW, chasmW
 end
 
+@native
 function Overworld.heightAt(x: number, z: number): number
 	return (Overworld.sampleAt(x, z))
 end
@@ -1129,6 +1160,7 @@ end
 -- by low-frequency noise so every border is a ragged band, not a line. slope = |grad h| (rise / run).
 local ROAD_MATERIAL: { [string]: string } = { Forest = "Ground", GoldenRavine = "Ground", AridBasin = "Limestone", Snowfields = "Slate", MountainAscent = "Slate" }
 
+@native
 local function regionMaterial(id: string, x: number, z: number, h: number, slope: number, roadW: number, channelW: number, chasmW: number, n1: number, n2: number): string
 	local def = Overworld.TerrainDef
 	if chasmW > 0.02 then
@@ -1174,6 +1206,7 @@ local function regionMaterial(id: string, x: number, z: number, h: number, slope
 	return if slope > 1.0 then "Basalt" else "Rock"
 end
 
+@native
 function Overworld.materialAt(x: number, z: number, h: number, slope: number, roadW: number?, channelW: number?, chasmW: number?): string
 	local n1 = math.noise(x / 47 + 5.5, z / 47 + 9.1)
 	local n2 = math.noise(x / 190 - 2.3, z / 190 + 13.7)
@@ -1184,7 +1217,7 @@ function Overworld.materialAt(x: number, z: number, h: number, slope: number, ro
 		return if n1 > -0.12 then "LeafyGrass" else "Grass" -- forest floor round the glade altar, never a bare Ground or Rock slab
 	end
 	local pick, cum = "Forest", 0
-	local weights = softWeights(x, z, h)
+	local weights = softWeights(weightsMaterial, x, z, h)
 	local floor, top, topId = 0, 0, "Forest"
 	for _, id in Overworld.RegionIds do
 		if weights[id] > top then top, topId = weights[id], id end
@@ -1207,6 +1240,7 @@ function Overworld.materialAt(x: number, z: number, h: number, slope: number, ro
 end
 
 -- Height, material name and slope hint (rise / run over 4 studs) at x, z.
+@native
 function Overworld.surfaceAt(x: number, z: number): (number, string, number)
 	local h, roadW, channelW, chasmW = Overworld.sampleAt(x, z)
 	local hx, hz = Overworld.heightAt(x + 4, z), Overworld.heightAt(x, z + 4)
@@ -1216,6 +1250,7 @@ end
 
 -- Bottom (stud Y) of the solid written under column (i, j) of a height grid hs[i][j] (margin index -1..n): the
 -- shell below its own surface, or below its lowest 8-neighbour so steep faces leave no vertical gap between columns.
+@native
 function Overworld.shellBottom(hs: any, i: number, j: number, shell: number): number
 	local low = hs[i][j]
 	for di = -1, 1 do

@@ -1,38 +1,58 @@
-# Mac handoff: open-world replacement (written 2026-11-16 13:25 Sydney, Windows computer)
+# Mac / computers A and C handoff: open-world replacement (completed 2026-11-16)
 
-Read this first on the Mac, then `CONTINUATION.md` and `LEDGER.md` in this folder (the lead keeps those current; this file is the fixed setup guide). Assume the Mac has nothing installed.
+Read this first, then `handoff/RESUME_PROMPT.md`, `CONTINUATION.md` and `LEDGER.md`. Claude's 13:22 checkpoint was already pushed as `b658140`. Codex finished the handoff after the usage-limit stop, preserving the late terrain edit and providing the ignored assets on a separate branch. This is an unfinished development checkpoint, not a release or visual acceptance. Assume the receiving computer has nothing installed. No installation on a remote computer is claimed.
 
 ## 1. What travels by Git and what does not
 
 | Travels (branch `ux/onboarding-overhaul`) | Does NOT travel |
 |---|---|
-| All source (`src/`), tests and tools (`tools/`), `default.project.json`, registries under `assets/*.json`, `assets/models/` | `assets/source/` (git-ignored by house rule): every new mesh kit (GLB), `.blend` files, vignettes, audio sources and the upload packs under `assets/source/overworld/` and `assets/source/audio/overworld/`. NOT YET TRANSFERRED; see section 7 |
-| This folder: brief, `CONTINUATION.md`, `LEDGER.md`, `DELEGATION_STATUS.md`, `GEOGRAPHY_PLAN.md`, worker notes, captures, kit sheets | Claude transcripts and agent state. The Opus lead running on Windows cannot be resumed on the Mac; start a fresh lead from `CONTINUATION.md` (section 6) |
+| All source (`src/`), tests and tools (`tools/`), `default.project.json`, registries under `assets/*.json`, `assets/models/` | The ignored mesh/audio sources travel on **`codex/overworld-assets-2026-11-16`**, restored with the checksummed command below. A normal code pull alone is insufficient |
+| This folder: brief, current state, worker notes, captures and kit sheets. Also `outputs/hero-grand-soul-review-2026-11-09/`, which the brief reads | Claude transcripts and agent state. Start a fresh lead from the durable notes rather than relying on a Windows agent ID |
 | Spec and tickets: `.scratch/asuras-open-world/` | `.mcp.json` (git-ignored), Studio MCP permissions (set per place, per Studio), scratchpad test copies of the place |
 | `places/AsurasPath.rbxlx` exactly as on Windows: still the PRE-overworld baseline on purpose (tests restore to it; script digest 462022588, 286 scripts, 2859366 bytes). Do not rebuild it until final handoff | Roblox login, GitHub login, any keys |
 
 ## 2. Install on the Mac
 
 1. Git and GitHub CLI: `brew install git gh`, then `gh auth login`.
-2. Clone and switch:
+2. Clone and switch (if the folder already exists, inspect its changes first; preserve local work):
    - `git clone https://github.com/digontoroychowdhury101-cmd/asuras-path.git`
-   - `cd asuras-path && git checkout ux/onboarding-overhaul && git pull --rebase origin ux/onboarding-overhaul`
+   - `cd asuras-path && git switch ux/onboarding-overhaul && git pull --ff-only origin ux/onboarding-overhaul`
 3. Python 3 (Windows used 3.15.0; earlier Mac work used 3.14.3): `brew install python`. Shen tooling also needs `numpy` and `scipy` in a venv; not needed for the overworld work.
-4. Rojo 7.7.1 and Luau 0.742 (pinned in `tools/toolchain.env`). Download from https://github.com/rojo-rbx/rojo/releases and https://github.com/luau-lang/luau/releases, put the binaries in `work/bin/rojo` and `work/bin/luau` (or on PATH). `docs/BUILD.md` has the details. Lune is NOT needed: `python3 tools/lune_compat.py --all` runs the Lune suites under a local shim.
+4. Rojo **7.7.1** and Luau **0.742** (pinned in `tools/toolchain.env`). Download the Mac releases from [Rojo](https://github.com/rojo-rbx/rojo/releases/tag/v7.7.1) and [Luau](https://github.com/luau-lang/luau/releases/tag/0.742). Put `rojo` in `work/bin/rojo/`, and `luau`, `luau-compile`, `luau-analyze` in `work/bin/luau/`; make them executable. `docs/BUILD.md` has the build contract. A separate Lune binary is unnecessary for the local shim suites.
 5. Blender 5.2.2 LTS from blender.org. Check headless works: `/Applications/Blender.app/Contents/MacOS/Blender -b --python-expr "import bpy; print(bpy.app.version_string)"`.
 6. Roblox Studio, signed in as the creator.
 7. `uv` (for the Blender MCP server): `brew install uv`.
-8. Claude Code (desktop app or CLI), signed in.
+8. Claude Code, signed in. Install its CLI too if using the terminal plugin/MCP commands below; verify `claude --version`. Account authentication stays local to each machine.
 
-## 3. Claude Code plugins used on Windows (install all three)
+The curated upstream libraries (`tools/vendor/effekseer`, `tools/vendor/fastnoise-lite`, `assets/github/`) are already carried in Git; their origins and pins are in `assets/GITHUB_REUSE.json`. The headless environment generators run under Blender's bundled Python. Restore the asset snapshot before regenerating anything.
 
-| Plugin | Version here | Source |
+## 3. Recreate the three plugins at the recorded revisions
+
+| Plugin | Version here | Actual source revision |
 |---|---|---|
-| `ecc@ecc` | 2.2.3 | marketplace `ecc`, git `https://github.com/affaan-m/ECC.git` |
-| `ponytail@ponytail` | 5.3.3 | marketplace `ponytail`, GitHub `DietrichGebert/ponytail` |
-| `mattpocock-skills@claude-plugins-official` | 1.3.1 | marketplace `claude-plugins-official`, GitHub `anthropics/claude-plugins-official` |
+| `ecc@ecc` | 2.2.3 | `affaan-m/ECC`, `d2ef2680594f9a17526a6e1a2e18b3d242c5d17b` |
+| `ponytail@ponytail` | 5.3.3 | `DietrichGebert/ponytail`, `96608e078b2d5ea607c5c3b8b5a54d1c1fba6846` |
+| Matt Pocock skills | 1.3.1 | `mattpocock/skills`, `49dd158d1076134a641b33efb035946536778336` (Windows installed this through `claude-plugins-official`) |
 
-In Claude Code: `/plugin marketplace add affaan-m/ECC`, `/plugin marketplace add DietrichGebert/ponytail`, `/plugin marketplace add anthropics/claude-plugins-official`, then `/plugin install ecc@ecc`, `/plugin install ponytail@ponytail`, `/plugin install mattpocock-skills@claude-plugins-official`. If the command form differs in your version, open `/plugin` and add the same three sources by hand. Not verified on the Mac.
+For a fresh computer, run from the project root:
+
+```sh
+mkdir -p work/setup
+git clone https://github.com/affaan-m/ECC.git work/setup/ecc
+git -C work/setup/ecc checkout --detach d2ef2680594f9a17526a6e1a2e18b3d242c5d17b
+git clone https://github.com/DietrichGebert/ponytail.git work/setup/ponytail
+git -C work/setup/ponytail checkout --detach 96608e078b2d5ea607c5c3b8b5a54d1c1fba6846
+git clone https://github.com/mattpocock/skills.git work/setup/mattpocock
+git -C work/setup/mattpocock checkout --detach 49dd158d1076134a641b33efb035946536778336
+claude plugin marketplace add ./work/setup/ecc
+claude plugin marketplace add ./work/setup/ponytail
+claude plugin marketplace add ./work/setup/mattpocock
+claude plugin install ecc@ecc
+claude plugin install ponytail@ponytail
+claude plugin install mattpocock-skills@mattpocock
+```
+
+Matt's own pinned marketplace is named `mattpocock`; the skill namespace remains `mattpocock-skills`. This gives the same plugin source as the Windows official-marketplace installation. Install it once, through either source, to avoid duplicate skills. Existing nonempty `work/setup/` clones need inspection rather than replacement. Local-directory marketplace commands are documented by [Claude Code](https://code.claude.com/docs/en/plugin-marketplaces). These setup commands were checked against installed metadata and documentation; they have not been run on a Mac in this task.
 
 This task was started with `/ecc:orch-change-feature` and runs with `/ponytail:ponytail full`. The Matt Pocock skills are read from the plugin's files on disk.
 
@@ -40,11 +60,13 @@ This task was started with `/ecc:orch-change-feature` and runs with `/ponytail:p
 
 | Name | How it runs here | On the Mac |
 |---|---|---|
-| `roblox-studio` | repo `.mcp.json` (git-ignored) → `cmd /c tools\studiomcp_win.cmd` | Create `.mcp.json` in the repo root with a `roblox-studio` stdio server that launches Studio's bundled StudioMCP proxy. `tools/run_studiomcp.py` and `tools/studio_mcp.py` are the repo's clients; `docs/BUILD.md` ("Studio probe") gives the Mac launch line. NOT verified on the Mac in this task |
-| `blender` | `uvx blender-mcp` (Claude Code) and `uvx mcp-for-blender` (desktop app); Blender must be open with its MCP add-on enabled | Same commands; install the add-on in Blender |
-| `hyper3d` | http `https://api.hyper3d.com/api/mcp` | Not needed. It spends credits and is not used by this task |
+| `roblox-studio` | repo `.mcp.json` → `cmd /c tools\studiomcp_win.cmd` | From the checkout: `claude mcp add --scope local --transport stdio roblox-studio -- python3 "$PWD/tools/run_studiomcp.py"`. The tracked launcher discovers `/Applications/RobloxStudio.app/Contents/MacOS/StudioMCP` |
+| `blender` | `uvx blender-mcp` / `uvx mcp-for-blender` and the Blender add-on | `uvx mcp-for-blender install-addon`, enable **Interface: MCP for Blender** in Blender, then `claude mcp add --scope local --transport stdio blender -- uvx mcp-for-blender`. Run one live MCP Blender operator |
+| `hyper3d` | HTTP `https://api.hyper3d.com/api/mcp` | Optional for this checkpoint; no existing world asset requires it. Reconnect through the receiving account if needed |
 
-Never copy keys or tokens between computers through Git. None are needed for the work so far.
+The Blender package's current upstream name is `mcp-for-blender`; `blender-mcp` is a compatibility wrapper. See its [maintainer's setup guide](https://github.com/ahujasid/mcp-for-blender#quickstart). Studio has a separate creator-side MCP connection/permission step. Verify tools with `/mcp` and `python3 tools/studio_mcp.py --list`; a config entry does not prove connection. The local stdio syntax is documented by [Claude Code](https://code.claude.com/docs/en/mcp).
+
+ElevenLabs, Forge GUI and any other Claude account connectors need connection on the receiving account; their login state is not in Git. The existing audio files are in the snapshot, so continuation does not need to regenerate or buy them. The creator-reported Studio Animator plugin is installed through Roblox's own plugin management on the receiving computer; its exact asset/version was not independently inventoried here. Headless Blender generation works without that plugin. Forge GUI remains optional under the original visual-quality rule. Never copy keys, tokens, `.claude.json`, `.mcp.json` or app credential stores through Git.
 
 ## 5. Roblox and Studio state
 
@@ -56,20 +78,32 @@ Never copy keys or tokens between computers through Git. None are needed for the
 
 ## 6. How to continue on the Mac
 
-1. `git pull --rebase origin ux/onboarding-overhaul`, then read the top of `PROJECT_STATE.md`.
-2. Read, in order: `CLAUDE_OPEN_WORLD_PROMPT.md` (the creator's brief), `CONTINUATION.md` (current round, each lane's resume point), `LEDGER.md` (decisions and rulings), `GEOGRAPHY_PLAN.md`, `DELEGATION_STATUS.md`.
-3. Check the baseline: `python3 tools/lune_compat.py --all` and `bash tools/verify_all.sh` (builds to a temp file; never overwrites the saved place).
-4. Start Claude Code in the repo and give it: "Read outputs/claude-open-world-2026-11-14/MAC_HANDOFF.md and CONTINUATION.md and continue the open-world replacement from the recorded state, following the brief's delegation rules." Hierarchy: Fable 5.2 oversight only → one Opus 5.5 lead (fresh, started from `CONTINUATION.md`) → Sonnet workers and Haiku readers, four to six lanes at once, one operator per live tool (per Studio window, per live Blender), headless Blender for extra mesh lanes.
-5. Only one computer works at a time. Before leaving a computer: suites green, commit, `git pull --rebase`, push, `git status` clean.
+1. Check `git status --short`; preserve existing work. Pull `ux/onboarding-overhaul` with `--ff-only`, then read the top of `PROJECT_STATE.md`. Compare `git rev-parse HEAD` with the source machine before work starts.
+2. Fetch and restore the asset snapshot (about **1.23 GB** download, plus local Git/cache and about 2.1 GB of restored files):
 
-## 7. Open items at handoff (13:25, 16 Nov)
+   ```sh
+   git fetch origin codex/overworld-assets-2026-11-16:refs/remotes/origin/codex/overworld-assets-2026-11-16
+   python3 tools/assets/overworld_handoff.py restore
+   python3 tools/assets/overworld_handoff.py restore --apply
+   ```
 
-- **Mesh kits not on GitHub.** `assets/source/overworld/` holds the kits (Bellwood 95 pieces, Amberfall 45, Saltreach 37, Frostmere 32, Ashen Stair 34, hero models, vignettes, upload packs) and is git-ignored. The house pattern for this is a separate assets branch with zip parts under 100 MB and a SHA-256 manifest (see `outputs/grandmaster-shen-2026-11-05/repair/handoff-2026-11-09/ARCHIVE.md` and its `scripts/restore_untracked.py`). That has NOT been done for the overworld kits yet. Every kit is rebuilt by its script under `tools/blender/overworld/`, which IS in Git, so the Mac can regenerate them headless if the archive is not made.
+   The default is a dry run. It verifies every part, archive, manifest and content hash. `--apply` writes missing files only; differing files are preserved and produce exit 2. Inspect those conflicts before starting. Do not check out or merge the asset branch. `handoff/BUNDLE.json` and `handoff/ASSET_MANIFEST.json` pin the snapshot. The full SHA-256 restore was tested into a new directory on Windows; Mac execution remains unverified.
+
+   Expected asset-branch commit: `1412139fbb6c9adc519031a5d02063c7a952732c`. Check with `git rev-parse origin/codex/overworld-assets-2026-11-16`.
+3. Read, in order: `CLAUDE_OPEN_WORLD_PROMPT.md` (the creator's brief), the **Codex handoff completion** section at the top of `CONTINUATION.md`, `LEDGER.md`, `GEOGRAPHY_PLAN.md`, `DELEGATION_STATUS.md`. Historical round-8 stops lower in the files are superseded by the top checkpoint.
+4. Run `python3 tools/test_overworld_handoff.py` and `bash tools/verify_all.sh`. Build your local test place with `python3 tools/build.py --output work/handoff-local/AsurasPathTEST.rbxlx`; open **that** file in Studio. Its expected script fingerprint is **275 scripts, 3149701 bytes, digest 1516687798**. The preserved pre-overworld place's fingerprint is different by design. Use `tools/qa/SourceDigest.luau` to confirm identity, and confirm `persistedToCloud=false` before writes.
+5. Start Claude Code and use `handoff/RESUME_PROMPT.md`. Hierarchy: Fable 5.2 oversight only → one Opus 5.5 lead → Sonnet workers and Haiku readers, four to six lanes, one operator per live Studio window and live Blender, headless Blender for extra mesh lanes. Check actual model routing before expensive work; model labels in prose do not prove delegation.
+6. Only one computer writes the shared branch at a time. Before handoff, stop/finish workers, verify, commit explicit task paths, fetch and reconcile remote changes, push, and compare local/remote commit IDs. Repack changed ignored sources as a **new immutable snapshot** with updated pins. `tools/handoff.sh` and `.cmd` rebuild saved places and stage broad folders; use explicit commands for this checkpoint so the baseline and unrelated work remain preserved.
+
+## 7. Exact unfinished work at the completed handoff
+
+- **Assets are now preserved:** 1,277 files / 609 unique contents, including current Blender scenes, GLBs, maps, upload packs, vignettes and audio. Twenty `.blend1` automatic backups are omitted and listed in the manifest; current `.blend` files are included. Restore these before regeneration. `tools/blender/overworld/` carries the generators.
+- **T4 terrain optimisation is partial:** the late `Overworld.luau` changes add native annotations, cached region boxes, reused weight tables and an optional pre-culled pad list. Full local verification passes. No new Studio performance measurement exists. Continue `workers/24a-terrain-heartbeat.md`; tight voxel boxes / parallel compute were planned, not completed. Avoid presenting compute-only benchmarks as engine results.
 - **Server frame rate while terrain is written fails** (20.9 Hz average, drops to 2–7 Hz). Targets set: 45 Hz or more, glade ready in 20 s, altars in 90 s, whole map in 10 minutes, memory 185 MB or less (memory passes at 178.8 MB). The 45-minute time-sliced version was rejected.
-- **Forest slice not signed off.** Built pieces approved. Trees go back for lighter near and distant variants, distinct silhouettes, at least 250 trees in the slice, clear sightline from the glade to the ruined bell tower.
+- **Forest slice not signed off.** D6 now places 276 trees (101 near / 175 far), with 74% tower height clear in the static test. Six far-tree GLBs and comparison renders exist. These are local numerical/render results, not real-mesh Studio acceptance. Review `workers/22b-slice-kit-placement.md` and `25a-tree-far.md`, reconcile estimated far specs with the actual manifests, and capture the latest build in Studio.
 - **Not yet verified in Studio:** rain and haze fixes, Shen walk-out fix, five summit views, slice captures on the latest build.
 - **Creator decisions pending for the final report:** endings deferred with the archived bosses; 12 retired builder source files left on disk; `SolarForms` and `PresentationAudit` are unused but still mapped.
-- **Checkpoint commits may be mid-round.** The commit message says whether the suites were green. The last fully green state recorded by the lead before this checkpoint: lune 39/39, Python 14/14, temp build digest 1543764707.
+- **Validation at this checkpoint:** full `bash tools/verify_all.sh` passed all 14 stages (including 39 Lune-shim suites); current temp build fingerprint 1516687798. The handoff tool's corruption, path and conflict checks passed; the symlink test was skipped on Windows because creating a symlink required privileges. See `handoff/VALIDATION.md`. No new Studio, multiplayer, device or human visual acceptance was performed by Codex.
 
 ## 8. Rules that still bind on any computer
 
