@@ -3,6 +3,7 @@ local Workspace=game:GetService("Workspace")
 local Shared=game:GetService("ReplicatedStorage"):WaitForChild("AsurasPath")
 local Catalog=require(Shared.Shared.ArsenalCatalog)
 local World=require(Shared.Shared.WorldDefinitions)
+local Overworld=require(Shared.Shared.Overworld)
 local InputMap=require(Shared.Shared.InputMap)
 local LootWorld={}
 local function part(parent: Instance,name: string,size: Vector3,position: Vector3): Part
@@ -29,7 +30,8 @@ function LootWorld.build(claim: (Player,string)->(),openSmith: (Player)->()): (F
   prompt.HoldDuration=0.6;prompt.MaxActivationDistance=9;InputMap.applyPrompt(prompt)
   prompt.RequiresLineOfSight=true;prompt.Parent=chest
   table.insert(connections,prompt.Triggered:Connect(function(player: Player) claim(player,id) end))
-  if id=="WaterfallAlcove" then
+  if Overworld.Active and Overworld.Caches[id] then -- ledge and chest only: the old alcove, ladder and mausoleum scenery fits retired ground
+  elseif id=="WaterfallAlcove" then
    local water=part(root,"SecretWaterfall",Vector3.new(12,25,0.5),position+Vector3.new(0,9,5))
    water.CanCollide=false;water.CanQuery=false;water.Transparency=0.65;water.Material=Enum.Material.Glass;water.Color=Color3.fromRGB(89,168,177)
    for _,side in {-1,1} do part(root,"AlcoveRock",Vector3.new(4,12,12),position+Vector3.new(side*6,3,0)) end

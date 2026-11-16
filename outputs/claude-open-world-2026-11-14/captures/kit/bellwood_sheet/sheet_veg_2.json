@@ -1,0 +1,55 @@
+{
+ "png": "sheet_veg_2.png",
+ "group": "veg",
+ "pieces": [
+  {
+   "name": "Canopy_Tree_D",
+   "pack": "bellwood_veg",
+   "tris": 18368,
+   "size": [
+    45.16,
+    37.31,
+    45.52
+   ],
+   "subs": 3,
+   "tex": "512x512"
+  },
+  {
+   "name": "Old_Gnarled_Tree",
+   "pack": "bellwood_veg",
+   "tris": 10074,
+   "size": [
+    35.06,
+    31.17,
+    28.73
+   ],
+   "subs": 3,
+   "tex": "512x512"
+  },
+  {
+   "name": "Vine_Hanging",
+   "pack": "bellwood_veg",
+   "tris": 3274,
+   "size": [
+    14.66,
+    19.14,
+    9.56
+   ],
+   "subs": 2,
+   "tex": "512x512"
+  },
+  {
+   "name": "Moss_Drape",
+   "pack": "bellwood_veg",
+   "tris": 560,
+   "size": [
+    13.11,
+    19.1,
+    11.96
+   ],
+   "subs": 2,
+   "tex": "128x256/512x512"
+  }
+ ],
+ "failed": []
+}

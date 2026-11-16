@@ -29,7 +29,7 @@ local function load(path: string, env: { [string]: any }): any
 	return luau.load(fs.readFile(path), { debugName = path, environment = env })()
 end
 local Ending = load("src/shared/EndingRules.luau", {})
-local Objectives = load("src/shared/Objectives.luau", { script = { Parent = { EndingRules = Ending } } })
+local Objectives = load("src/shared/Objectives.luau", { script = { Parent = { EndingRules = Ending, Overworld = require("../src/shared/Overworld") } } })
 local Codex = load("src/client/Controllers/CodexView.luau", { game = { GetService = function() return { AsurasPath = { Shared = {
 	NarrativeCatalog = Narrative, WorldDefinitions = World, InputMap = require("../src/shared/InputMap"), EndingRules = Ending } } } end } })
 

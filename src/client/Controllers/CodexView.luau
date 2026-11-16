@@ -56,7 +56,7 @@ function Codex.summary(data: any): Summary
 		local known = bosses[id] == true
 		if known then result.Rested += 1 end
 		local boss = World.Bosses[id]
-		table.insert(result.Souls, { Id = id, Title = if known then bossName(id) else "Unbound sovereign", Hint = if known then "at rest" else regionName(boss and boss.Region), Known = known })
+		table.insert(result.Souls, { Id = id, Title = if known then bossName(id) else "Unbound sovereign", Hint = if known then "at rest" else regionName(if boss and not boss.Inactive then boss.Region else nil), Known = known })
 	end
 	return result
 end

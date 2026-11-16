@@ -106,7 +106,7 @@ local services = {
 	DataStoreService = { GetDataStore = function(_, name) return datastore(name .. ":") end },
 }
 local function finder(t) return setmetatable(t, { __index = { WaitForChild = function(self, n) return rawget(self, n) end } }) end
-local SharedModules = finder({ CombatSettings = require("../src/shared/CombatSettings"), WorldDefinitions = World, IntentProtocol = require("../src/infrastructure/IntentProtocol"), ArenaRules = Arena })
+local SharedModules = finder({ CombatSettings = require("../src/shared/CombatSettings"), WorldDefinitions = World, Overworld = require("../src/shared/Overworld"), IntentProtocol = require("../src/infrastructure/IntentProtocol"), ArenaRules = Arena })
 local AsurasPath = finder({ Config = require("../src/shared/Config"), Shared = SharedModules, Simulation = finder({ MatchmakingRules = require("../src/simulation/MatchmakingRules") }),
 	Net = finder({ ColosseumIntent = remotes.ColosseumIntent, WagerIntent = remotes.WagerIntent }) })
 services.ReplicatedStorage = finder({ AsurasPath = AsurasPath })

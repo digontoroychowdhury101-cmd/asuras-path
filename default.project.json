@@ -12,7 +12,11 @@
           2
         ],
         "Gravity": 196.2,
-        "StreamingEnabled": false
+        "StreamOutBehavior": "Opportunistic",
+        "StreamingEnabled": true,
+        "StreamingIntegrityMode": "PauseOutsideLoadedArea",
+        "StreamingMinRadius": 128,
+        "StreamingTargetRadius": 1024
       },
       "Camera": {
         "$className": "Camera",
@@ -259,6 +263,21 @@
           "BossRoster": {
             "$path": "src/shared/BossRoster.luau"
           },
+          "Wind": {
+            "$path": "src/shared/Wind.luau"
+          },
+          "Overworld": {
+            "$path": "src/shared/Overworld.luau"
+          },
+          "SliceDressing": {
+            "$path": "src/shared/SliceDressing.luau"
+          },
+          "BiomeDressing": {
+            "$path": "src/shared/BiomeDressing.luau"
+          },
+          "WorldMap": {
+            "$path": "src/shared/WorldMap.luau"
+          },
           "BossArmaments": {
             "$path": "src/shared/BossArmaments.luau"
           },
@@ -318,9 +337,6 @@
           },
           "MonasteryZones": {
             "$path": "src/shared/MonasteryZones.luau"
-          },
-          "MonasteryRidgeProfile": {
-            "$path": "src/shared/MonasteryRidgeProfile.luau"
           },
           "EffectEasing": {
             "$path": "src/shared/EffectEasing.luau"
@@ -496,35 +512,23 @@
           "SanctuaryService": {
             "$path": "src/server/Services/SanctuaryService.luau"
           },
-          "MonasteryService": {
-            "$path": "src/server/Services/MonasteryService.luau"
-          },
           "RegionDecor": {
             "$path": "src/server/Services/RegionDecor.luau"
           },
-          "CampaignWorld": {
-            "$path": "src/server/Services/CampaignWorld.luau"
+          "OverworldTerrain": {
+            "$path": "src/server/Services/OverworldTerrain.luau"
           },
-          "CampaignTerrain": {
-            "$path": "src/server/Services/CampaignTerrain.luau"
+          "OverworldService": {
+            "$path": "src/server/Services/OverworldService.luau"
           },
-          "CampaignBounds": {
-            "$path": "src/server/Services/CampaignBounds.luau"
+          "SliceDressingService": {
+            "$path": "src/server/Services/SliceDressingService.luau"
           },
-          "BambooDressing": {
-            "$path": "src/server/Services/BambooDressing.luau"
+          "BiomeDressingService": {
+            "$path": "src/server/Services/BiomeDressingService.luau"
           },
-          "ColosseumDressing": {
-            "$path": "src/server/Services/ColosseumDressing.luau"
-          },
-          "CryptDressing": {
-            "$path": "src/server/Services/CryptDressing.luau"
-          },
-          "PagodaDressing": {
-            "$path": "src/server/Services/PagodaDressing.luau"
-          },
-          "CitadelDressing": {
-            "$path": "src/server/Services/CitadelDressing.luau"
+          "PerfBudget": {
+            "$path": "src/server/Services/PerfBudget.luau"
           },
           "SanctuaryApproach": {
             "$path": "src/server/Services/SanctuaryApproach.luau"
@@ -534,39 +538,6 @@
           },
           "MonasteryFx": {
             "$path": "src/server/Services/MonasteryFx.luau"
-          },
-          "MonasteryGrounds": {
-            "$path": "src/server/Services/MonasteryGrounds.luau"
-          },
-          "MonasteryTerrain": {
-            "$path": "src/server/Services/MonasteryTerrain.luau"
-          },
-          "MonasteryRuins": {
-            "$path": "src/server/Services/MonasteryRuins.luau"
-          },
-          "MonasteryHalls": {
-            "$path": "src/server/Services/MonasteryHalls.luau"
-          },
-          "MonasteryLandmarks": {
-            "$path": "src/server/Services/MonasteryLandmarks.luau"
-          },
-          "MonasteryAtmosphere": {
-            "$path": "src/server/Services/MonasteryAtmosphere.luau"
-          },
-          "MonasteryDressing": {
-            "$path": "src/server/Services/MonasteryDressing.luau"
-          },
-          "MonasterySurvey": {
-            "$path": "src/server/Services/MonasterySurvey.luau"
-          },
-          "MonasteryBounds": {
-            "$path": "src/server/Services/MonasteryBounds.luau"
-          },
-          "MonasteryPockets": {
-            "$path": "src/server/Services/MonasteryPockets.luau"
-          },
-          "MonasterySecrets": {
-            "$path": "src/server/Services/MonasterySecrets.luau"
           },
           "TutorialService": {
             "$path": "src/server/Services/TutorialService.luau"
@@ -730,14 +701,8 @@
           "SanctuaryEcology": {
             "$path": "src/server/Services/SanctuaryEcology.luau"
           },
-          "BambooEcology": {
-            "$path": "src/server/Services/BambooEcology.luau"
-          },
           "RouteGates": {
             "$path": "src/server/Services/RouteGates.luau"
-          },
-          "BambooFoundry": {
-            "$path": "src/server/Services/BambooFoundry.luau"
           },
           "BambooGateArt": {
             "$path": "src/server/Services/BambooGateArt.luau"
@@ -939,6 +904,9 @@
             "SakuraMinimap": {
               "$path": "src/client/Controllers/SakuraMinimap.luau"
             },
+            "WorldMapController": {
+              "$path": "src/client/Controllers/WorldMapController.luau"
+            },
             "MinimapRoute": {
               "$path": "src/client/Controllers/MinimapRoute.luau"
             },
@@ -1037,6 +1005,9 @@
             },
             "MasteryEffects": {
               "$path": "src/client/Controllers/MasteryEffects.luau"
+            },
+            "WeatherController": {
+              "$path": "src/client/Controllers/WeatherController.luau"
             },
             "EnvironmentController": {
               "$path": "src/client/Controllers/EnvironmentController.luau"

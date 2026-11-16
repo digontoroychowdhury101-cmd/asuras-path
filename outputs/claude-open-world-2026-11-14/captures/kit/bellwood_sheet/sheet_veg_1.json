@@ -1,0 +1,67 @@
+{
+ "png": "sheet_veg_1.png",
+ "group": "veg",
+ "pieces": [
+  {
+   "name": "Conifer_Tall",
+   "pack": "bellwood_veg",
+   "tris": 25060,
+   "size": [
+    26.94,
+    68.45,
+    29.53
+   ],
+   "subs": 3,
+   "tex": "512x512"
+  },
+  {
+   "name": "Canopy_Tree_B",
+   "pack": "slice",
+   "tris": 19660,
+   "size": [
+    31.83,
+    58.6,
+    30.79
+   ],
+   "subs": 3,
+   "tex": "512x512"
+  },
+  {
+   "name": "Canopy_Tree_C",
+   "pack": "bellwood_veg",
+   "tris": 18366,
+   "size": [
+    38.65,
+    49.59,
+    42.33
+   ],
+   "subs": 3,
+   "tex": "512x512"
+  },
+  {
+   "name": "Canopy_Tree_A",
+   "pack": "slice",
+   "tris": 14742,
+   "size": [
+    39.7,
+    44.23,
+    41.11
+   ],
+   "subs": 3,
+   "tex": "512x512"
+  },
+  {
+   "name": "Dead_Standing_Trunk",
+   "pack": "bellwood_veg",
+   "tris": 808,
+   "size": [
+    15.29,
+    39.55,
+    13.32
+   ],
+   "subs": 2,
+   "tex": "512x512"
+  }
+ ],
+ "failed": []
+}

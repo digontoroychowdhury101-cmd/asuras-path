@@ -38,7 +38,7 @@ for _, class in { "Part", "TrussPart" } do -- LootWorld places by Position, whic
 	roblox.implementProperty(class, "Position", function(p) return p.CFrame.Position end, function(p, v) p.CFrame = CF.new(v) * p.CFrame.Rotation end)
 end
 local workspace = Instance.new("Folder")
-local shared = { WaitForChild = function() return { Shared = { ArsenalCatalog = Arsenal, WorldDefinitions = World, InputMap = InputMap, NarrativeCatalog = Narrative,
+local shared = { WaitForChild = function() return { Shared = { ArsenalCatalog = Arsenal, WorldDefinitions = World, InputMap = InputMap, NarrativeCatalog = Narrative, Overworld = require("../src/shared/Overworld"),
 	CostumeSchema = Schema, LooksCast = Rig.load("src/shared/LooksCast.luau", { script = { Parent = { CostumeSchema = Schema } } }) } } end }
 shared.AsurasPath = shared:WaitForChild()
 local game = { GetService = function(_, n) return if n == "Workspace" then workspace else shared end }
@@ -341,7 +341,8 @@ check("marker shows the stage name and walked distance", string.find(src("src/cl
 for _, name in { "MonasteryPockets", "MonasterySecrets" } do
 	local text = src("src/server/Services/" .. name .. ".luau")
 	local _, lines = string.gsub(text, "\n", "")
-	check(name .. " strict, under 150 lines and registered", string.sub(text, 1, 9) == "--!strict" and lines < 150 and string.find(src("default.project.json"), name .. ".luau", 1, true))
+	-- C3 ruling 4: retired with the monastery builders; kept as source, not mapped.
+	check(name .. " strict, under 150 lines and retired (not mapped)", string.sub(text, 1, 9) == "--!strict" and lines < 150 and string.find(src("default.project.json"), name .. ".luau", 1, true) == nil)
 end
 
 print(string.format("monastery discovery: %d passed, %d failed", passed, failed))

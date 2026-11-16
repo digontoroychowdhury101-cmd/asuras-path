@@ -40,11 +40,12 @@ for _, binding in Map.Bindings do
 end
 local preserved = { Light = "MouseButton1", Heavy = "V", Guard = "F", Jump = "Space", Dash = "LeftShift", Slide = "C",
 	Aim = "MouseButton2", Lock = "X", Heal = "R", WeaponArt = "G", Sprint = "CapsLock", Shoulder = "T", Cursor = "LeftAlt",
-	SpellOne = "One", Arsenal = "B", Controls = "H", Pause = "P" }
+	SpellOne = "One", Arsenal = "B", Controls = "H", Pause = "P", Map = "M" }
 for command, key in preserved do
 	local binding = Map.get(command)
 	check(command .. " keeps " .. key, has(binding.Keys, key) or has(binding.Mouse, key))
 end
+check("Map: keyboard M, touch MAP, no free pad button so pad is \"—\" (Respite reaches it)", Map.label("Map", "Keyboard") == "M" and Map.label("Map", "Touch") == "MAP" and Map.label("Map", "Gamepad") == "—" and Map.get("Map").Owner == "Interface" and Map.get("Map").Help ~= nil)
 check("roll aliases dash", Map.get("Roll") == Map.get("Dash"))
 check("touch captions", Map.label("Interact", "Touch") == "USE" and Map.label("Sprint", "Touch") == "—")
 check("gamepad captions", Map.label("Swap", "Gamepad") == "D-Right" and Map.label("Interact", "Gamepad") == "X")

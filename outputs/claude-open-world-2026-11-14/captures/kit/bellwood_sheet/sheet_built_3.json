@@ -1,0 +1,103 @@
+{
+ "png": "sheet_built_3.png",
+ "group": "built",
+ "pieces": [
+  {
+   "name": "Bell_Lantern_Post",
+   "pack": "slice",
+   "tris": 524,
+   "size": [
+    4.1,
+    10.55,
+    4.1
+   ],
+   "subs": 3,
+   "tex": "128x128/256x256/512x512"
+  },
+  {
+   "name": "Bell_Timber_Gate_Side",
+   "pack": "bellwood_built_a",
+   "tris": 1384,
+   "size": [
+    10,
+    10.53,
+    3.57
+   ],
+   "subs": 3,
+   "tex": "256x256/512x512"
+  },
+  {
+   "name": "Lantern_Stone",
+   "pack": "bellwood_built_b",
+   "tris": 476,
+   "size": [
+    5.52,
+    10.0,
+    5.52
+   ],
+   "subs": 2,
+   "tex": "128x128/512x512"
+  },
+  {
+   "name": "Bell_Shrine_Roadside",
+   "pack": "bellwood_built_a",
+   "tris": 3776,
+   "size": [
+    9.23,
+    9.92,
+    11.69
+   ],
+   "subs": 4,
+   "tex": "256x256/512x512"
+  },
+  {
+   "name": "Bell_Signpost_A",
+   "pack": "bellwood_built_a",
+   "tris": 412,
+   "size": [
+    6.55,
+    9.42,
+    2.45
+   ],
+   "subs": 3,
+   "tex": "256x256/512x512"
+  },
+  {
+   "name": "Bell_Stair_Turn",
+   "pack": "bellwood_built_a",
+   "tris": 8976,
+   "size": [
+    16.44,
+    9.23,
+    16.62
+   ],
+   "subs": 1,
+   "tex": "512x512"
+  },
+  {
+   "name": "Bell_Terrace_Wall",
+   "pack": "slice",
+   "tris": 1540,
+   "size": [
+    15.96,
+    9,
+    3.6
+   ],
+   "subs": 1,
+   "tex": "512x512"
+  },
+  {
+   "name": "Bell_Stair_Straight_A",
+   "pack": "bellwood_built_a",
+   "tris": 7392,
+   "size": [
+    10.45,
+    8.68,
+    14.02
+   ],
+   "subs": 1,
+   "tex": "512x512"
+  }
+ ],
+ "failed": []
+}

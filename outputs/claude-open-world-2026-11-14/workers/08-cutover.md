@@ -1,0 +1,33 @@
+# 08 cutover worker progress
+
+Supersedes: nothing (no 08 file in workers/). Linked from: ticket 08 / LEDGER.md.
+Why new: durable per-step log for the T08 cutover and its Studio run.
+Prompt: Read C:/Users/disha/Documents/asuras-path/outputs/claude-open-world-2026-11-14/CLAUDE_OPEN_WORLD_PROMPT.md and implement its complete world replacement, following its authorisation, model delegation, preservation requirements and acceptance criteria.
+
+## Log
+- [start] file created; read ticket 08, LEDGER decision, 03/07/01 worker notes.
+- [read] World defs: Roster adds SD/CP/SC regions+altars+5 bosses+gates; Overworld.apply adds overworld. Plan: apply() retires regions/altars/inactive-boss arenas+gates (Boss.Inactive=true, repointed to Overworld.ReservedArenas); WorldDefinitions filters spawns after warden relocation; validator skips gate check for Inactive; BossArenas/ArenaLighting skip Inactive.
+- [edit1] Overworld.Active=true; apply() retires regions/altars/inactive bosses; WorldDefinitions spawn filter + Inactive validator; BossArenas (floor=spawnY-3, early return for old portals/road), ArenaLighting skip Inactive.
+- [edit2] Overworld.Rings data (Gatehouse -2300,59,-1320 Forest; Octagon -8425,290,-4625 MountainAscent; scanned flat, no road/channel) + pads in data(); ColosseumService relocates when Active.
+- [edit3] Bootstrap.server: removed Monastery/Campaign require+start+destroy, added OverworldWorld.Destroy on shutdown.
+- [edit4] Overworld.Training (Sparring Phantom DM_Sparring_Phantom relocated to glade; client TutorialController asserts the id); WorldDefinitions relocation loop covers warden+phantom.
+- [edit5] EnvironmentProfiles: 5 biome exploration+combat+arena entries; acoustics: AshColosseum Cloister, GoldenRavine chasm Ravine. Soundscape POIs already gated on region=='DesecratedMonastery' (never true now) - no edit.
+- [edit6] Discoveries: Overworld.revealedAt (POI 40 3D / landmark 150 2D); WorldService Session.Discoveries, publishDiscoveries attr AsuraDiscoveries, discover() in 1 s tick via enqueue(RecordDiscovery).
+- [tests1] first run with Active=true: fails: stage3:18, boss_encounters:22, miniboss_reward(warden spawn), overworld_data(2: inactive-by-default, old regions untouched), objectives.py, progression_runtime.py, review_regressions.py, campaign_regions.py(36), campaign_build.py, boss_runtime.py?, lune --all (arsenal_codex ...). Triage in progress; runner at scratchpad/runall.sh
+- [flag] Overworld.Active = _G.AsuraLegacyWorld ~= true (tests of archived builders set the global; Overworld is frozen so no other stub possible)
+- [flag2] _G flag impossible (luau CLI sandbox: _G readonly). Reverted: Overworld.Active = true plain; harnesses text-replace for archived-builder tests.
+- [tests2] fixed: overworld_data (applied World, 2744/0), asura_stage3 (new-world asserts). Next: boss_encounters, miniboss_reward, py suites, lune --all
+- [tests3] boss_encounters, miniboss_reward fixed; AIService zone leash only when old corridor exists (warden would have leashed to old Graves zone). Next: py suites + lune --all
+- [tests4] fixed py: objectives (legacy stub text-replace for test_objectives only), progression_runtime (lore Y), review_regressions, boss_runtime. Remaining: campaign_regions.py, campaign_build.py, lune --all (arsenal_codex, ledger, ...), combat_presentation, new cutover test
+- [tests5] tools/legacy_world.py (new; patched src copy with Active=false) used by test_campaign_regions.py (421/0) + test_campaign_build.py (27/0). Next: lune_compat legacy support for ledger/monastery/arsenal_codex
+- [tests6] lune_compat.py: LEGACY set (ledger, monastery_*, opening_tutorial, recovery_lifecycle, route_foundry) runs from legacy_world copy: all pass. Left: colosseum_runtime (test env lacks Overworld), arsenal_codex
+- [tests7] colosseum_runtime (Overworld in env), arsenal_codex (+CodexView hides archived boss region), NEW tools/test_cutover.luau written; running
+- [tests8] ALL GREEN: plain luau 14, py 14 (+objectives_overworld), lune --all 33 PASS 0 FAIL (incl. test_cutover 128/0). Next compile, temp build, Studio
+- [studio-prep] t08 map.json from temp build digest scripts 291 bytes 2994282 digest 1169859200; served at 127.0.0.1:8766 from scratchpad/t08 (stop at end); baseline.json alongside
+- [studio1] Synced (26 changed, 5 created). Studio digest scripts 291 bytes 2994282 digest 1169859200 == temp build digest (identity proven, repo state, no Studio-only edits).
+- [studio2] Play solo: console clean (only pre-existing ContentId 203785492 warnings); workspace children AsuraArenaLighting,AsurasPath,Camera,JadeCataclysm,Map_Overworld,Sanctuary,SpectatorBalcony,Terrain,WorldDiscoveryCaches (no old Map_*); no strays in old corridor box, no dup altars/NPCs; 1 fog gate FogGate_Gate_AshColosseum; rings: Promenade (94,600,900), Gatehouse (-2300,59,-1320), Octagon (-8425,290,-4625). GladeReadySeconds 6.35. Portal via character_navigation (0,627,785) -> arrived (-2200,65,-1408) region Forest at t=42 s; captures/t08/glade_arrival.jpg shows compass 'S 180', objective 'Kindle the Gateway Glade', training card
+- [studio3] rest at glade altar -> AsuraResult Rest, active Altar_MonasteryGate. Setup death (Humanoid.Health=0 server) -> respawned (-2200,65,-1408) at glade altar, bloodstain Bloodstain_<uid> at death point; Z hold recovered: essence 0 -> 500, stain gone. Discoveries: standing near ReturnGate -> AsuraDiscoveries='ReturnGate' (server-validated). Return gate: prompt only shows when camera frames the Seal (camera was clipped inside it; ProximityPrompt not shown, Z went to Interact -> !NothingNearby); after approaching facing it, hold Z -> teleported to (0,603,920) region Sanctuary. Server memory 3120 MB at boot.
+- [studio4] lobby cameras L1-L5 retaken -> captures/t08/lobby_L1..L5.jpg: pixel diff vs baseline before_L*: mean 2.16/0.76/1.46/2.18/0.90, >40 px 0.04/0.00/0.02/0.10/0.01 % (unchanged lobby). M in lobby: no map (captures/t08/M_in_lobby_no_map.jpg; objective 'Climb the Ascension Stairs'). Portal again -> glade, M opens World Map with Bellwood/Amberfall/Gateway Glade (captures/t08/map_overworld.jpg); compass 'S 180' bearings.
+- [fix] Studio: terrain surface is pad Y+2 (voxel), rings were buried 1.6; Overworld.Rings Y now floor height (61/292), pad at Y-2 (terrain unchanged). Resyncing.
+- [studio5] rerun after ring fix: Gatehouse terrain 61.0 vs floorTop 61.4, Octagon 292.0 vs 292.4; glade 6.7 s, all 4129 tiles 179.3 s; server mem 3067 MB (t=30) -> 3234 MB complete; console clean. Restoring baseline.
+- [restore] Studio Edit, digest scripts 286 bytes 2859366 digest 462022588 (baseline), no Map_Overworld, 0 solid voxels at 5 overworld sites; place NOT saved; local http server stopped. DONE.

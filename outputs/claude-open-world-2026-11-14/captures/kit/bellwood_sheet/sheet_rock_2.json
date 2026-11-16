@@ -1,0 +1,67 @@
+{
+ "png": "sheet_rock_2.png",
+ "group": "rock",
+ "pieces": [
+  {
+   "name": "Outcrop_Mossy",
+   "pack": "bellwood_built_a",
+   "tris": 9600,
+   "size": [
+    19.54,
+    6.1,
+    10.21
+   ],
+   "subs": 1,
+   "tex": "1024x1024"
+  },
+  {
+   "name": "Boulder_Granite_C",
+   "pack": "slice",
+   "tris": 6720,
+   "size": [
+    24.35,
+    4.1,
+    11.12
+   ],
+   "subs": 1,
+   "tex": "1024x1024"
+  },
+  {
+   "name": "Stepping_Stones",
+   "pack": "slice",
+   "tris": 6720,
+   "size": [
+    15.81,
+    2.19,
+    21.86
+   ],
+   "subs": 1,
+   "tex": "1024x1024"
+  },
+  {
+   "name": "Scree_Patch_B",
+   "pack": "bellwood_built_a",
+   "tris": 11600,
+   "size": [
+    17.55,
+    1.38,
+    12.57
+   ],
+   "subs": 1,
+   "tex": "1024x1024"
+  },
+  {
+   "name": "Scree_Patch_A",
+   "pack": "bellwood_built_a",
+   "tris": 7600,
+   "size": [
+    15.19,
+    1.0,
+    12.12
+   ],
+   "subs": 1,
+   "tex": "1024x1024"
+  }
+ ],
+ "failed": []
+}

@@ -294,7 +294,7 @@ chunks.append(r'''
  local function setup(ids:any)
   table.clear(sessions);table.clear(fights);table.clear(sealed);table.clear(awards);drops=0;present=true;failSpawn=false
   for _,id in ids do
-   local e=actor(id,0,3,-1880)
+   local o=World.FogGates.Gate_AshColosseum.Placement;local e=actor(id,o.X,o.Y,o.Z+10)
    sessions[id]={UserId=id,Player=e.Model,Bosses={},Fight=nil}
   end
  end
@@ -303,11 +303,11 @@ chunks.append(r'''
 end)()
 local gate=World.FogGates.Gate_AshColosseum
 GateCoordinator.Setup({1,2})
-actors[2].Root.Position=vec(0,3,-1920)
+actors[2].Root.Position=vec(gate.Inside.X,gate.Inside.Y,gate.Inside.Z-10)
 check(GateCoordinator.Enter(1,gate),"interacting with fog begins encounter")
 check(GateCoordinator.Sealed[gate.Id] and GateCoordinator.Sessions[2].Fight==gate.Id,"fog seals and includes living allies already inside")
 check(actors[1].Model:GetAttribute("AsuraEncounter")=="GrandmasterShen","encounter identity replicates to participant")
-actors[1].Root.Position=vec(300,3,-1900);GateCoordinator.Update()
+actors[1].Root.Position=vec(gate.Inside.X+300,gate.Inside.Y,gate.Inside.Z);GateCoordinator.Update()
 check(actors[1].Root.Position.X==gate.Inside.X,"participant cannot escape arena perimeter")
 actors[1].Fighter.State="KO";GateCoordinator.Update()
 check(GateCoordinator.Sealed[gate.Id] and GateCoordinator.Sessions[1].Fight==nil,"one death releases that player while co-op encounter stays sealed")

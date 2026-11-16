@@ -225,7 +225,7 @@ check("camera turns with the arrival", string.find(src("src/client/Controllers/I
 	and string.find(src("src/client/Controllers/CameraController.luau"), "function Controller.Face", 1, true))
 local Ending = luau.load(src("src/shared/EndingRules.luau"), { debugName = "EndingRules", environment = { Vector3 = V3, table = table, math = math } })()
 local Objectives = luau.load(src("src/shared/Objectives.luau"), { debugName = "Objectives", environment = { Vector3 = V3, string = string, type = type, table = table,
-	script = { Parent = { EndingRules = Ending } }, require = function(m) return m end } })()
+	script = { Parent = { EndingRules = Ending, Overworld = require("../src/shared/Overworld") } }, require = function(m) return m end } })()
 local function sanctuary(altars)
 	return Objectives.resolve({ Region = "Sanctuary", Altars = altars, InBoss = false, InColosseum = false, BossFelled = false, Rested = true })
 end
@@ -245,7 +245,19 @@ for _, name in { "MonasteryTerrain", "MonasteryBounds", "MonasteryGrounds", "Mon
 	local text = src("src/server/Services/" .. name .. ".luau")
 	local _, lines = string.gsub(text, "\n", "")
 	check(name .. " strict and under 150 lines", string.sub(text, 1, 9) == "--!strict" and lines < 150)
-	check(name .. " registered", string.find(project, "Services/" .. name .. ".luau", 1, true) ~= nil)
+	-- C3 ruling 4: retired builders stay as source for the creator but must not be mapped into the build.
+	if name ~= "MonasteryKit" then -- MonasteryKit stays live (lobby, RegionDecor)
+		check(name .. " retired: not mapped into the build", string.find(project, "Services/" .. name .. ".luau", 1, true) == nil)
+	else
+		check(name .. " registered", string.find(project, "Services/" .. name .. ".luau", 1, true) ~= nil)
+	end
+end
+-- Reachability from the runtime roots is proven by tools/test_retired_unreachable.py; here: no retired builder is mapped.
+for _, name in { "MonasteryService", "CampaignWorld", "CampaignTerrain", "CampaignBounds", "BambooDressing", "PagodaDressing", "CitadelDressing",
+	"MonasteryGrounds", "MonasteryTerrain", "MonasteryAtmosphere", "MonasteryBounds", "BambooEcology", "BambooFoundry", "ColosseumDressing",
+	"CryptDressing", "MonasteryDressing", "MonasteryHalls", "MonasteryLandmarks", "MonasteryPockets", "MonasteryRuins", "MonasterySecrets",
+	"MonasterySurvey", "MonasteryRidgeProfile" } do
+	check(name .. " retired: not mapped into the build", string.find(project, "/" .. name .. ".luau", 1, true) == nil)
 end
 
 print(string.format("monastery route: %d passed, %d failed", passed, failed))

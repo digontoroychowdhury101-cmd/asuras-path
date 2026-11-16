@@ -1,0 +1,31 @@
+{
+ "png": "sheet_built_7.png",
+ "group": "built",
+ "pieces": [
+  {
+   "name": "Bell_Paving_Sett",
+   "pack": "bellwood_built_a",
+   "tris": 9388,
+   "size": [
+    8.05,
+    1.44,
+    7.98
+   ],
+   "subs": 1,
+   "tex": "512x512"
+  },
+  {
+   "name": "Bell_Paving_Flag",
+   "pack": "bellwood_built_a",
+   "tris": 2156,
+   "size": [
+    7.98,
+    1.41,
+    7.98
+   ],
+   "subs": 1,
+   "tex": "512x512"
+  }
+ ],
+ "failed": []
+}

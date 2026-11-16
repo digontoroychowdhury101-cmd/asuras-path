@@ -12,6 +12,7 @@ local PhysicsService = game:GetService("PhysicsService")
 local Shared = ReplicatedStorage:WaitForChild("AsurasPath")
 local Config = require(Shared:WaitForChild("Config") :: ModuleScript) :: any
 local World = require(Shared.Shared.WorldDefinitions)
+local Overworld = require(Shared.Shared.Overworld)
 local InputMap = require(Shared.Shared.InputMap)
 local Settings = require(Shared.Shared.CombatSettings) :: any
 local Weapons = require(Shared.Simulation.WeaponSchema) :: any
@@ -43,6 +44,7 @@ type Session = {
 	Altars: { [string]: boolean },
 	Bosses: { [string]: boolean },
 	Minibosses: { [string]: boolean },
+	Discoveries: { [string]: boolean },
 	Region: string?,
 	Fight: string?,
 	Stain: BasePart?,
@@ -169,6 +171,7 @@ local function session(userId: number): Session?
 		Altars = table.clone(record.world.altars),
 		Bosses = table.clone(record.world.bosses),
 		Minibosses = table.clone(record.world.minibosses or {}),
+		Discoveries = table.clone(record.world.discoveries or {}),
 		Region = nil,
 		Fight = nil,
 		Stain = nil,
@@ -184,6 +187,16 @@ local function session(userId: number): Session?
 	player:SetAttribute("AsuraElixirsMax", created.MaxElixirs)
 	player:SetAttribute("AsuraUnbanked", 0)
 	return created
+end
+
+-- Read-only mirror for the world map (like AsuraAltars): sorted, comma-joined discovery ids.
+local function publishDiscoveries(s: Session)
+	local ids: { string } = {}
+	for id in s.Discoveries do
+		table.insert(ids, id)
+	end
+	table.sort(ids)
+	s.Player:SetAttribute("AsuraDiscoveries", table.concat(ids, ","))
 end
 
 local function publish(s: Session)
@@ -219,6 +232,7 @@ local function publish(s: Session)
 		end
 		table.sort(altars)
 		player:SetAttribute("AsuraAltars", table.concat(altars, ","))
+		publishDiscoveries(s)
 		-- Read-only progress mirror for the client objective tracker; never read back by the server.
 		local bosses: { string } = {}
 		for id, defeated in s.Bosses do
@@ -271,6 +285,19 @@ end
 local function enqueue(s: Session, label: string, run: (engine: any) -> (boolean, string?))
 	table.insert(s.Queue, { Label = label, Run = run })
 	processQueue(s)
+end
+
+-- Server-validated discovery: standing near a POI or landmark records it once (idempotent in the store).
+local function discover(s: Session, position: Vector3)
+	for _, id in Overworld.revealedAt(position.X, position.Y, position.Z) do
+		if not s.Discoveries[id] then
+			s.Discoveries[id] = true
+			publishDiscoveries(s)
+			enqueue(s, "Discovery", function(store: any): (boolean, string?)
+				return store:RecordDiscovery(s.UserId, id)
+			end)
+		end
+	end
 end
 
 -- Banks unbanked essence and gourd charges. Returns immediately; work is serialised per player.
@@ -870,16 +897,37 @@ local function traverseGate(userId: number, gate: FogGate): (boolean, string)
 	return true, "FogTraversed"
 end
 
+-- gateId -> userId -> seen outside the arena since last inside it. The trigger lies inside the arena, so only a
+-- player who walked in (armed) seals it; one already inside (fight reset, teleport) walking out never does.
+local armed: { [string]: { [number]: boolean } } = {}
+
 local function updateGates()
 	for gateId, gate in World.FogGates do
 		local boss = World.Bosses[gate.Boss]
 		local fight = fights[gateId]
+		local gateArmed = armed[gateId] or {}
+		armed[gateId] = gateArmed
+		local wasArmed: { [number]: boolean } = table.clone(gateArmed)
+		for userId in gateArmed do
+			if not sessions[userId] then gateArmed[userId] = nil end
+		end
+		for userId in sessions do
+			local e = Characters.GetEntity(userId)
+			if e then
+				local p = e.Root.Position
+				if not inBounds(boss.Arena, p) then
+					gateArmed[userId] = true
+				elseif not inBounds(gate.Trigger, p) then
+					gateArmed[userId] = nil
+				end
+			end
+		end
 		if fight == nil then
 			local entrants: { number } = {}
 			for userId, s in sessions do
 				local e = Characters.GetEntity(userId)
 				if e and e.Fighter.State ~= "KO" and not s.Bosses[boss.Id] and not s.Fight and not Characters.IsInDuel(userId)
-					and inBounds(gate.Trigger, e.Root.Position) then
+					and wasArmed[userId] and inBounds(gate.Trigger, e.Root.Position) then
 					table.insert(entrants, userId)
 				end
 			end
@@ -1185,8 +1233,12 @@ function WorldService.Start()
 		local prompt = Instance.new("ProximityPrompt")
 		prompt.ActionText, prompt.ObjectText, prompt.HoldDuration = "Traverse the Mist", World.Bosses[gate.Boss].Name, 0.35
 		InputMap.applyPrompt(prompt)
+		prompt.RequiresLineOfSight = false -- the summit wall sits inside the pad's blend slope; terrain would hide the prompt
 		prompt.MaxActivationDistance, prompt.Parent = GATE_RADIUS, gateParts[gate.Id]
-		table.insert(connections, prompt.Triggered:Connect(function(player: Player) traverseGate(player.UserId, gate) end))
+		table.insert(connections, prompt.Triggered:Connect(function(player: Player)
+			local ok, reason = traverseGate(player.UserId, gate)
+			player:SetAttribute("AsuraResult", (if ok then "" else "!") .. reason) -- refusals toast via InterfaceController.REASONS
+		end))
 	end
 	markGeometry(worldRoot)
 	local arena = root:FindFirstChild(Config.Names.Arena)
@@ -1223,6 +1275,7 @@ function WorldService.Start()
 						s.Region = region
 						s.Player:SetAttribute("AsuraRegion", region)
 					end
+					discover(s, position)
 				end
 				if clock - s.LastFlush >= FLUSH_INTERVAL then
 					flush(s)

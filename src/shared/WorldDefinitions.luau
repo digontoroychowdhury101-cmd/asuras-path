@@ -19,7 +19,7 @@ type GapCloser = { Range: number, Delay: number, Cooldown: number, Motion: Motio
 export type Vec3 = { X: number, Y: number, Z: number }
 export type Placement = { X: number, Y: number, Z: number, Yaw: number }
 export type Bounds = { Center: Vec3, Size: Vec3 }
-export type RegionId = "Sanctuary" | "DesecratedMonastery" | "BambooPass" | "AshColosseum" | "SanctuaryDepths" | "CelestialPagoda" | "SkyCitadel"
+export type RegionId = "Sanctuary" | "DesecratedMonastery" | "BambooPass" | "AshColosseum" | "SanctuaryDepths" | "CelestialPagoda" | "SkyCitadel" | "Forest" | "GoldenRavine" | "AridBasin" | "Snowfields" | "MountainAscent"
 export type WeaponType = "Unarmed" | "Jian" | "Dao" | "Guandao" | "Catalyst" | "PrayerOfTheDefiled" | "CalamityBoneCleaver" | "HeavenPiercingGuandao"
 
 export type Stats = {
@@ -142,6 +142,7 @@ export type BossDef = {
 	Arena: Bounds,
 	Spawn: Placement,
 	FogGate: string,
+	Inactive: boolean?,
 	Essence: number,
 	Phases: { BossPhase },
 	BodyColor: { number },
@@ -640,6 +641,38 @@ Roster.apply(World, profile)
 local Armaments: any
 if hasScript then Armaments = require(script.Parent.BossArmaments) else Armaments = require("./BossArmaments") end
 Armaments.apply(World)
+-- Replacement overworld: inert until Overworld.Active is set (ticket 08 cutover).
+local Overworld: any
+if hasScript then Overworld = require(script.Parent.Overworld) else Overworld = require("./Overworld") end
+if Overworld.Active then
+	Overworld.apply(World)
+	-- The Hollow-Bell Warden and the training Sparring Phantom keep their spawn ids and mobs (so the reward
+	-- flag stays claimed and the tutorial finds its home) on the new ground.
+	for _, moved in { Overworld.Minibosses.HollowBellWarden, Overworld.Training } do
+		for index, entry in World.Spawns do
+			if entry.Id == moved.Spawn then
+				local at = moved.Placement -- placement Y is heightAt; the voxel surface is 2 above it and a root stands 3 above the floor
+				World.Spawns[index] = spawn(entry.Id, entry.Mob, moved.Region, at.X, at.Z, at.Yaw, moved.Radius, at.Y + 2)
+			end
+		end
+	end
+	-- Ordinary encounters (ticket 09): the existing archetypes on the authored fighting ground, same floor convention.
+	for _, spot in Overworld.EncounterSpots do
+		local p = spot.Placement
+		table.insert(World.Spawns, spawn(spot.Spawn, spot.Mob, spot.Region, p.X, p.Z, p.Yaw, spot.Radius, p.Y + 2))
+	end
+	-- Old-corridor mobs go with their regions; the colosseum's old gate guards fall outside the domain box.
+	local kept: { MobSpawn } = {}
+	for _, entry in World.Spawns do
+		local region = World.Regions[entry.Region]
+		local p = entry.Placement
+		local c, size = if region then region.Bounds.Center else nil, if region then region.Bounds.Size else nil
+		if c and size and math.abs(p.X - c.X) <= size.X * 0.5 and math.abs(p.Y - c.Y) <= size.Y * 0.5 and math.abs(p.Z - c.Z) <= size.Z * 0.5 then
+			table.insert(kept, entry)
+		end
+	end
+	World.Spawns = kept
+end
 
 -------------------------------------------------------------------------------------------------
 -- Queries
@@ -771,7 +804,7 @@ do
 		assert(region and inside(region.Bounds, boss.Arena.Center), "Boss arena outside region " .. id)
 		assert(inside(boss.Arena, boss.Spawn), "Boss spawn outside arena " .. id)
 		local gate = World.FogGates[boss.FogGate]
-		assert(gate and gate.Boss == id, "Boss fog gate mismatch " .. id)
+		assert(boss.Inactive or (gate and gate.Boss == id), "Boss fog gate mismatch " .. id)
 		assert(#boss.Phases >= 1 and boss.Phases[1].Stats.MaxHP ~= nil, "Boss opening phase needs MaxHP " .. id)
 		for index, phase in boss.Phases do
 			for _, attack in phase.Attacks or {} do

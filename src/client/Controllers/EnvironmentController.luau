@@ -11,8 +11,8 @@ local Ash = require(script.Parent.ArenaAsh)
 local Controller = {}
 Controller.__index = Controller
 
-function Controller.new(state: any): any
-	local self = setmetatable({ State = state, Key = "", Elapsed = 1, Phase = 1, Boss = "", Tweens = {} }, Controller)
+function Controller.new(state: any, weather: any?): any
+	local self = setmetatable({ State = state, Weather = weather, Key = "", Elapsed = 1, Phase = 1, Boss = "", Tweens = {} }, Controller)
 	self.Ash = Ash.new()
 	self.Sky = {}
 	local sky = Lighting:FindFirstChildOfClass("Sky")
@@ -23,6 +23,21 @@ function Controller.new(state: any): any
 		end
 	end)
 	return self
+end
+local function applySky(self: any, key: string)
+	local sky = Lighting:FindFirstChildOfClass("Sky")
+	if sky then
+		local kind = Profiles.skyFor(key)
+		local night = kind == "Night"
+		sky.CelestialBodiesShown = not night
+		sky.StarCount = if sky.CelestialBodiesShown then 500 else 0
+		local set = if night then Assets.Sky elseif kind == "Sunset" then Assets.SunsetSky else nil
+		for face, suffix in {Back="Bk",Down="Dn",Front="Ft",Left="Lf",Right="Rt",Up="Up"} do
+			local id = if set then set[face] else nil
+			local value=if id and id~="" then id else self.Sky[suffix]
+			if value then (sky :: any)["Skybox"..suffix]=value end
+		end
+	end
 end
 function Controller.Update(self: any, dt: number)
 	local actor = self.State:Own()
@@ -47,6 +62,27 @@ function Controller.Update(self: any, dt: number)
 	local definition = if boss ~= "" then World.Bosses[boss] else nil
 	local arena = if definition then definition.Region else nil
 	local key = Profiles.resolve(region, boss ~= "" and alive, self.Phase, arena)
+	-- Open overworld: the composed biome/time/weather profile (nil in the lobby, the domain and fights, which keep the keyed path below).
+	local composed = if self.Weather then self.Weather:Profile(if boss ~= "" and alive then { Phase = self.Phase, Arena = arena } else nil) else nil
+	if composed then
+		local entering = self.Key ~= "Weather"
+		self.Key = "Weather"
+		for _, tween in self.Tweens do tween:Cancel() end
+		table.clear(self.Tweens)
+		for name, values in composed do
+			local target = if name == "Lighting" then Lighting else Lighting:FindFirstChild(name)
+			if not target then continue end
+			if name == "Lighting" and math.abs(values.ClockTime - Lighting.ClockTime) > 12 then
+				-- The clock wraps at midnight: snap instead of tweening the long way round through the day.
+				Lighting.ClockTime = values.ClockTime
+				values = table.clone(values); values.ClockTime = nil
+			end
+			local tween = TweenService:Create(target, TweenInfo.new(if entering then 2.4 else 0.4, Enum.EasingStyle.Sine), values)
+			table.insert(self.Tweens, tween); tween:Play()
+		end
+		if entering then applySky(self, "Weather") end
+		return
+	end
 	if key == self.Key then return end
 	self.Key = key
 	for _, tween in self.Tweens do tween:Cancel() end
@@ -62,19 +98,7 @@ function Controller.Update(self: any, dt: number)
 			table.insert(self.Tweens, tween); tween:Play()
 		end
 	end
-	local sky = Lighting:FindFirstChildOfClass("Sky")
-	if sky then
-		local kind = Profiles.skyFor(key)
-		local night = kind == "Night"
-		sky.CelestialBodiesShown = not night
-		sky.StarCount = if sky.CelestialBodiesShown then 500 else 0
-		local set = if night then Assets.Sky elseif kind == "Sunset" then Assets.SunsetSky else nil
-		for face, suffix in {Back="Bk",Down="Dn",Front="Ft",Left="Lf",Right="Rt",Up="Up"} do
-			local id = if set then set[face] else nil
-			local value=if id and id~="" then id else self.Sky[suffix]
-			if value then (sky :: any)["Skybox"..suffix]=value end
-		end
-	end
+	applySky(self, key)
 end
 function Controller.Destroy(self: any)
 	self.Disconnect()

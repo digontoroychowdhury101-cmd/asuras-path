@@ -1,0 +1,24 @@
+# 20a upload (Studio operator + sole uploader), slice kit
+
+Supersedes: nothing (searched workers/20a*: none). Link from LEDGER.md (coordinator).
+Prompt: Read C:/Users/disha/Documents/asuras-path/outputs/claude-open-world-2026-11-14/CLAUDE_OPEN_WORLD_PROMPT.md and implement its complete world replacement, following its authorisation, model delegation, preservation requirements and acceptance criteria.
+
+## Log
+- [step 1] Read workers/10e-studio.md (T4: open_cloud_invoke refused for upload dir), upload_manifest.json (16 pieces, all sub-meshes <= 12896 tris, Bell_Lantern_Post = Bronze 248 / Glow 44 / Stone 232 tris), UPLOAD.md, tools/assets/register_uploads.py (registry pattern: Models -> parts with MeshId/ColorMap/NormalMap/RoughnessMap/MetalnessMap).
+- [step 1] Studio 86e1c871-... in Edit mode; StudioService:GetUserId() = 3148600636 (logged-in creator).
+- [step 2] UPLOAD ATTEMPT Bell_Lantern_Post.glb via mcp__roblox-studio__open_cloud_invoke POST /assets/v1/assets (assetType Model, creator userId 3148600636, scopes asset:read asset:write). REFUSED before sending, exact text:
+  "C:/Users/disha/Documents/asuras-path/assets/source/overworld/upload/slice/Bell_Lantern_Post.glb is not inside a directory approved for uploads. Ask the creator to add the file's directory to the approved upload directories in Assistant Settings -> MCP Permissions, then retry. Do not copy or move the file to work around this."
+- STOP per authorisation: nothing uploaded, no IDs, no payment/settings/permission prompt, no workaround attempted, no file copied, Studio not modified (no play, no inserts, no repo load), place not saved, assets/SLICE_KIT_UPLOADED.json not created (would hold invented/empty IDs).
+- To unblock: creator adds C:/Users/disha/Documents/asuras-path/assets/source/overworld/upload/slice (the folder holding the GLBs) in Assistant Settings -> MCP Permissions. Then: upload Bell_Lantern_Post, poll /assets/v1/operations/{id}, InsertService:LoadAsset in a Play copy for the t14 capture, then batches of <= 5.
+STUDIO RESTORED: unchanged (no edits made); Edit mode, HttpEnabled untouched, baseline digest 462022588 not altered.
+
+## Round 9 (cloud window)
+Plan: lane U, one piece only (Bell_Lantern_Post.glb, subs Bronze/Glow/Stone). Confirm window 63346620-... placeId 118614906972571 via list_roblox_studios before each call. assets/SLICE_KIT_UPLOADED.json absent, so no existing ID. Upload via open_cloud_invoke POST /assets/v1/assets (Model, userId 3148600636, files fileContent). If "directory not approved" recurs: report exact text, no copy/move. Poll the operation; search before any retry on unknown outcome. Write only real IDs to the registry. Re-check digest 462022588 read-only at the end.
+- [round 9] open_cloud_invoke POST /assets/v1/assets (studio 63346620-..., placeId 118614906972571 confirmed, Model, userId 3148600636, files fileContent=Bell_Lantern_Post.glb) REFUSED again, exact text: "C:/Users/disha/Documents/asuras-path/assets/source/overworld/upload/slice/Bell_Lantern_Post.glb is not inside a directory approved for uploads. Ask the creator to add the file's directory to the approved upload directories in Assistant Settings -> MCP Permissions, then retry. Do not copy or move the file to work around this."
+- [round 9] STOP: nothing uploaded, no IDs, no registry file created, no workaround, window untouched.
+
+## Codex retry after creator approved the upload directory (2026-11-16)
+- Creator explicitly requested: "done, try again". Previous uploader lane was finished; no registry or existing asset ID was present.
+- POST through cloud Studio `63346620-c6f9-4ccd-a757-93ef69953ef4`, same original Bell_Lantern_Post.glb, creator 3148600636: **200 OK**, operation `b921007b-9ee0-472f-88e7-3442c56770e7`. Directory approval now works.
+- GET operation: **done=true, error.code=Unknown, error.message=Unknown Error**, no assetId returned. This is a terminal processing failure, not a permission/folder denial. Do not register an ID or treat upload as successful. No automatic resubmission made.
+- Studio contents were not modified. No Play, sync, save, or publish by Codex. Lead retains ownership of integration and subsequent uploads; inspect format/API support before another attempt.

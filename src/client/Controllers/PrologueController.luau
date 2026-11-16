@@ -5,7 +5,7 @@
 -- 1.5 s), so no grey silhouette or half-built HUD shows through. New players (nothing kindled
 -- beyond the Primal Bonfire) then see four letterboxed lines; any key, button or tap skips. The
 -- camera is set behind the standing avatar before the veil lifts, and the handoff names the first
--- step (rest at the bonfire, then train at the Monastery Gate). Replayable from the Respite menu.
+-- step (rest at the bonfire, then train at the Gateway Glade). Replayable from the Respite menu.
 -- Presentation only; input is parked in menu mode while the veil is up.
 local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
@@ -27,7 +27,7 @@ local LINES: { { string } } = {
 }
 
 local Controller = {}
-Controller.Handoff = { "WALK THE ASURA'S PATH", "Kneel at the bonfire to rest · then train at the Monastery Gate" }
+Controller.Handoff = { "WALK THE ASURA'S PATH", "Kneel at the bonfire to rest · then train at the Gateway Glade" }
 Controller.HandoffSeconds = 4
 
 function Controller.isNewcomer(altars: any): boolean

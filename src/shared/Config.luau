@@ -129,7 +129,9 @@ local Config = {
 		-- Saved-place / Studio settings. Ordinary Scripts do not assign these.
 		-- -400, not -100: falls off the Citadel bridge (y -20) and bastion reached -100 before their
 		-- CampaignBounds catch could fire, so the engine deleted the body (Studio F20).
-		StreamingEnabled = false, FallenPartsDestroyHeight = -400,
+		-- Open-world residency: lobby is Persistent; the overworld streams in around the player.
+		StreamingEnabled = true, StreamingIntegrityMode = "PauseOutsideLoadedArea", StreamOutBehavior = "Opportunistic",
+		StreamingMinRadius = 128, StreamingTargetRadius = 1024, FallenPartsDestroyHeight = -400,
 	},
 	Lighting = {
 		LightingStyle = "Realistic", PrioritizeLightingQuality = true,

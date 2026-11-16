@@ -38,20 +38,28 @@ local function collect(row: any)
 	return #row.Parts > 0 and not waiting
 end
 
+-- The sole GlobalWind writer: the shared overworld wind while the weather controller has one, else the baked lobby value.
+local function push(self: any)
+	local w = if self.Weather then self.Weather.Wind else nil
+	local base: Vector3 = if w then Vector3.new(w.X, w.Y, w.Z) else self.BaseWind
+	local target = base * (if self.Reduced then 0.1 else 1)
+	if workspace.GlobalWind ~= target then workspace.GlobalWind = target end
+end
+
 local function comfort(self: any)
 	if not self.Alive then return end
 	local ok, platform = pcall(function() return GuiService.ReducedMotionEnabled end)
 	self.Reduced = Effects.reducedMotion() or (ok and platform == true)
 	-- The game's comfort preference also weakens native terrain wind on this client. Roblox
 	-- additionally handles its own accessibility preference inside the native grass renderer.
-	workspace.GlobalWind = self.BaseWind * (if self.Reduced then 0.1 else 1)
+	push(self)
 	if self.Reduced then for _, row in self.Active do restore(row) end end
 	self.RefreshAt = 0
 end
 
-function Wind.new(): any
+function Wind.new(weather: any?): any
 	local self = setmetatable({ Rows = {}, Cells = {}, Active = {}, Pending = {}, Links = {}, Clock = 0,
-		RefreshAt = 0, MetricsAt = 0, Count = 0, Alive = true, Reduced = Effects.reducedMotion() }, Wind) :: any
+		RefreshAt = 0, MetricsAt = 0, Count = 0, Alive = true, Reduced = Effects.reducedMotion(), Weather = weather }, Wind) :: any
 	self.BaseWind = workspace.GlobalWind
 	local function remove(model: Instance)
 		local row = self.Rows[model]
@@ -170,6 +178,7 @@ function Wind.Update(self: any, dt: number)
 	local low = (quality > 0 and quality <= 4) or (quality == 0 and UIS.TouchEnabled)
 	if t >= self.RefreshAt then
 		self:Refresh(workspace.CurrentCamera.CFrame.Position, low)
+		push(self)
 		self.RefreshAt = t + 0.5
 	end
 	local parts, frames = {}, {}

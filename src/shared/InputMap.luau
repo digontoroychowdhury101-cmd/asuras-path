@@ -9,7 +9,7 @@ local InputMap = {}
 export type Command =
 	"Light" | "Heavy" | "WeaponArt" | "Guard" | "Roll" | "Dash" | "Sprint" | "Lock" | "Swap" | "Heal"
 	| "Interact" | "Shoulder" | "Cursor" | "Jump" | "Slide" | "Aim"
-	| "SpellOne" | "SpellTwo" | "Arsenal" | "Codex" | "Controls" | "Pause"
+	| "SpellOne" | "SpellTwo" | "Arsenal" | "Codex" | "Controls" | "Pause" | "Map"
 export type Owner = "Combat" | "Spell" | "Interface"
 export type Binding = {
 	Command: Command,
@@ -46,6 +46,8 @@ InputMap.Bindings = {
 	bind("Arsenal", "Spell", { "B" }, {}, { "ButtonSelect" }, "B", "Select", "ARSENAL", "Open the Arsenal"),
 	bind("Sprint", "Combat", { "CapsLock" }, {}, { "DPadLeft" }, "Caps", "D-Left", nil, "Toggle sprint"),
 	bind("Codex", "Interface", { "J" }, {}, {}, "J", "—", "CODEX", "Open the Codex"),
+	-- Every gamepad button is claimed above, so the pad and touch reach the map through the Respite menu / blossom button.
+	bind("Map", "Interface", { "M" }, {}, {}, "M", "—", "MAP", "Open the world map"),
 	bind("Shoulder", "Combat", { "T" }, {}, {}, "T", "—", nil, "Switch camera shoulder"),
 	bind("Cursor", "Combat", { "LeftAlt" }, {}, {}, "Alt", "—", nil, "Hold to release the mouse cursor"),
 	bind("Controls", "Interface", { "H" }, {}, {}, "H", "—", nil, nil),

@@ -1,0 +1,114 @@
+"""Build the by-hand upload pack for the overworld slice kit (stdlib only, no Blender needed).
+
+python tools/blender/overworld/make_upload_pack.py
+
+Reads assets/source/overworld/slice/*.glb (+ maps/, manifest.json), copies them to
+assets/source/overworld/upload/slice/, and writes upload_manifest.json with tris/size/pivot
+re-derived from the GLB itself (so a drifted manifest.json fails loudly). Never uploads, never invents IDs.
+"""
+import json
+import shutil
+import struct
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[3]
+KITS = [(ROOT / "assets/source/overworld/slice", ROOT / "assets/source/overworld/upload/slice"),
+        (ROOT / "assets/source/overworld/hero", ROOT / "assets/source/overworld/upload/hero")]  # hero = far-biome landmark blockouts
+CAP = 18000
+
+
+def read_glb(path):
+    data = path.read_bytes()
+    magic, version, _ = struct.unpack_from("<4sII", data, 0)
+    assert magic == b"glTF" and version == 2, path
+    length, kind = struct.unpack_from("<I4s", data, 12)
+    assert kind == b"JSON", path
+    return json.loads(data[20:20 + length])
+
+
+def inspect(path):
+    g = read_glb(path)
+    subs, lo, hi = {}, [1e9] * 3, [-1e9] * 3
+    for node in g["nodes"]:
+        if "mesh" not in node:
+            continue
+        assert not any(abs(a) > 1e-6 for a in node.get("rotation", [0, 0, 0, 1])[:3]), (path.name, "rotated node")
+        t, s = node.get("translation", [0, 0, 0]), node.get("scale", [1, 1, 1])
+        mesh = g["meshes"][node["mesh"]]
+        tris = mat = 0
+        for prim in mesh["primitives"]:
+            tris += g["accessors"][prim["indices"]]["count"] // 3
+            a = g["accessors"][prim["attributes"]["POSITION"]]
+            for i in range(3):
+                lo[i] = min(lo[i], a["min"][i] * s[i] + t[i])
+                hi[i] = max(hi[i], a["max"][i] * s[i] + t[i])
+            mat = g["materials"][prim["material"]]["name"]
+        subs[node.get("name") or mesh["name"]] = {"tris": tris, "material": mat}
+    return g, subs, lo, hi
+
+
+def pack(SRC, OUT):
+    registry = "assets/SLICE_KIT_UPLOADED.json" if OUT.name == "slice" else "assets/HERO_KIT_UPLOADED.json"
+    manifest = json.loads((SRC / "manifest.json").read_text())
+    OUT.mkdir(parents=True, exist_ok=True)
+    (OUT / "maps").mkdir(exist_ok=True)
+    pieces, used_mats, problems = {}, set(), []
+    for name, meta in manifest["pieces"].items():
+        src = SRC / meta["file"]
+        g, subs, lo, hi = inspect(src)
+        for sub, info in subs.items():
+            if info["tris"] >= CAP:
+                problems.append(f"{sub} {info['tris']} tris >= {CAP}")
+            if meta["sub_meshes"].get(sub) != info["tris"]:
+                problems.append(f"{sub} manifest {meta['sub_meshes'].get(sub)} vs glb {info['tris']}")
+        size = [round(hi[i] - lo[i], 2) for i in range(3)]  # glTF X, Y(up), Z
+        bx, bz = meta["size_studs_xyz"][0], meta["size_studs_xyz"][1]
+        if abs(size[0] - bx) > 0.15 or abs(size[2] - bz) > 0.15:
+            problems.append(f"{name} size {size} vs manifest {meta['size_studs_xyz']}")
+        pivot = {"min_y": round(lo[1], 3), "centre_x": round((lo[0] + hi[0]) / 2, 3), "centre_z": round((lo[2] + hi[2]) / 2, 3)}
+        if abs(pivot["min_y"]) > 3.0:
+            problems.append(f"{name} base too deep (buried roots are intended up to 3 studs): min_y {pivot['min_y']}")
+        shutil.copy2(src, OUT / meta["file"])
+        for info in subs.values():
+            used_mats.add(info["material"])
+        pieces[name] = {
+            "name": name,
+            "file": meta["file"],
+            "sub_meshes": {k: v["tris"] for k, v in subs.items()},
+            "sub_mesh_materials": {k: v["material"] for k, v in subs.items()},
+            "tris_total": sum(v["tris"] for v in subs.values()),
+            "size_studs_xyz_roblox": size,
+            "pivot": "base centre at origin (Y up); " + json.dumps(pivot),
+            "studio_target": f"ServerStorage/SliceKit/{name}",
+            "registry_file": registry,
+        }
+    materials = {}
+    for mat in sorted(used_mats):
+        maps = {}
+        for slot, suffix in (("ColorMap", "Color"), ("NormalMap", "Normal"), ("RoughnessMap", "Roughness"), ("MetalnessMap", "Metal")):
+            f = SRC / "maps" / f"{mat}_{suffix}.png"
+            if f.exists():
+                shutil.copy2(f, OUT / "maps" / f.name)
+                maps[slot] = "maps/" + f.name
+        materials[mat] = maps
+    for name, p in pieces.items():
+        p["maps_per_material"] = {m: materials[m] for m in sorted(set(p["sub_mesh_materials"].values()))}
+    (OUT / "upload_manifest.json").write_text(json.dumps({
+        "format": "GLB (glTF 2.0, textures embedded; same maps also loose in maps/)",
+        "why_glb_not_fbx": "Studio 3D Importer reads glTF PBR (baseColor/normal/metallicRoughness) into SurfaceAppearance directly and the repo's earlier uploads (FusedTreeStatue, GuardianLion, SanctuaryVista) all used GLB; FBX would drop PBR slots",
+        "units": "1 stud = 1 unit, Y up after import",
+        "tri_cap_per_sub_mesh": CAP,
+        "registry_file": registry,
+        "registry_shape": {"pieces": {"<Piece>": {"<Piece>__<Sub>": {"MeshId": "rbxassetid://...", "ColorMap": "", "NormalMap": "", "RoughnessMap": "", "MetalnessMap": ""}}}},
+        "registry_pattern_source": "assets/SANCTUARY_VISTA_UPLOADED.json (pieces/sub-mesh) and assets/PHASE5_UPLOADED.json (Models/ColorMap..)",
+        "no_ids_yet": True,
+        "pieces": pieces,
+        "materials": materials,
+        "manifest_check": "problems: " + (", ".join(problems) if problems else "none"),
+    }, indent=2) + "\n")
+    print(OUT.name, len(pieces), "pieces,", len(materials), "materials;", "problems:", problems or "none")
+    return problems
+
+
+sys.exit(1 if any([pack(*k) for k in KITS]) else 0)

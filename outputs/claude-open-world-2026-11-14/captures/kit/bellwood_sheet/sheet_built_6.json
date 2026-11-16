@@ -1,0 +1,103 @@
+{
+ "png": "sheet_built_6.png",
+ "group": "built",
+ "pieces": [
+  {
+   "name": "Pot_A",
+   "pack": "bellwood_built_b",
+   "tris": 720,
+   "size": [
+    4.7,
+    4.45,
+    4.7
+   ],
+   "subs": 1,
+   "tex": "256x256"
+  },
+  {
+   "name": "Bell_Fence_Picket",
+   "pack": "bellwood_built_a",
+   "tris": 948,
+   "size": [
+    8.55,
+    4.44,
+    1.05
+   ],
+   "subs": 1,
+   "tex": "512x512"
+  },
+  {
+   "name": "Rope_Bridge_Deck_A",
+   "pack": "bellwood_built_b",
+   "tris": 1180,
+   "size": [
+    6.11,
+    4.37,
+    8.42
+   ],
+   "subs": 2,
+   "tex": "256x256/512x512"
+  },
+  {
+   "name": "Crate_A",
+   "pack": "bellwood_built_b",
+   "tris": 1104,
+   "size": [
+    4.36,
+    4.37,
+    4.18
+   ],
+   "subs": 2,
+   "tex": "256x256/512x512"
+  },
+  {
+   "name": "Rope_Bridge_Deck_B",
+   "pack": "bellwood_built_b",
+   "tris": 1084,
+   "size": [
+    6.07,
+    4.31,
+    8.42
+   ],
+   "subs": 2,
+   "tex": "256x256/512x512"
+  },
+  {
+   "name": "Bell_Grave_B",
+   "pack": "bellwood_built_a",
+   "tris": 2256,
+   "size": [
+    5.26,
+    4.18,
+    3.91
+   ],
+   "subs": 3,
+   "tex": "1024x1024/256x256/512x512"
+  },
+  {
+   "name": "Bell_Edging_Kerb",
+   "pack": "bellwood_built_a",
+   "tris": 528,
+   "size": [
+    1.32,
+    1.69,
+    7.91
+   ],
+   "subs": 1,
+   "tex": "512x512"
+  },
+  {
+   "name": "Bell_Edging_Cobble",
+   "pack": "bellwood_built_a",
+   "tris": 1920,
+   "size": [
+    1.74,
+    1.61,
+    8.12
+   ],
+   "subs": 1,
+   "tex": "1024x1024"
+  }
+ ],
+ "failed": []
+}

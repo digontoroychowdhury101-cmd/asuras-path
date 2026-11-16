@@ -1,0 +1,91 @@
+{
+ "png": "sheet_built_4.png",
+ "group": "built",
+ "pieces": [
+  {
+   "name": "Cart_B",
+   "pack": "bellwood_built_b",
+   "tris": 4130,
+   "size": [
+    23.8,
+    8.66,
+    12.05
+   ],
+   "subs": 3,
+   "tex": "256x256/512x512"
+  },
+  {
+   "name": "Bell_Stair_Straight_B",
+   "pack": "bellwood_built_a",
+   "tris": 5896,
+   "size": [
+    14.45,
+    8.33,
+    13.28
+   ],
+   "subs": 1,
+   "tex": "512x512"
+  },
+  {
+   "name": "Bell_Retain_Wall_Long",
+   "pack": "bellwood_built_a",
+   "tris": 10032,
+   "size": [
+    24.0,
+    8.01,
+    5.01
+   ],
+   "subs": 2,
+   "tex": "512x512"
+  },
+  {
+   "name": "Bell_Retain_Wall_Short",
+   "pack": "bellwood_built_a",
+   "tris": 5456,
+   "size": [
+    12.02,
+    7.52,
+    4.99
+   ],
+   "subs": 1,
+   "tex": "512x512"
+  },
+  {
+   "name": "Bell_Retain_Wall_Corner",
+   "pack": "bellwood_built_a",
+   "tris": 7392,
+   "size": [
+    10.69,
+    7.51,
+    10.65
+   ],
+   "subs": 1,
+   "tex": "512x512"
+  },
+  {
+   "name": "Cart_A",
+   "pack": "bellwood_built_b",
+   "tris": 2942,
+   "size": [
+    19.1,
+    7.13,
+    7.98
+   ],
+   "subs": 3,
+   "tex": "256x256/512x512"
+  },
+  {
+   "name": "Bell_Fence_Post",
+   "pack": "bellwood_built_a",
+   "tris": 920,
+   "size": [
+    2.62,
+    6.57,
+    2.34
+   ],
+   "subs": 3,
+   "tex": "256x256/512x512"
+  }
+ ],
+ "failed": []
+}

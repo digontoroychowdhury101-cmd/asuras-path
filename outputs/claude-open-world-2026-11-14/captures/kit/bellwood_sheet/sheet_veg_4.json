@@ -1,0 +1,91 @@
+{
+ "png": "sheet_veg_4.png",
+ "group": "veg",
+ "pieces": [
+  {
+   "name": "Understory_Shrub",
+   "pack": "slice",
+   "tris": 5760,
+   "size": [
+    9.29,
+    7.37,
+    7.69
+   ],
+   "subs": 2,
+   "tex": "512x512"
+  },
+  {
+   "name": "Reed_Clump_A",
+   "pack": "bellwood_veg",
+   "tris": 414,
+   "size": [
+    5.53,
+    6.99,
+    5.93
+   ],
+   "subs": 1,
+   "tex": "128x256"
+  },
+  {
+   "name": "Tree_Stump_A",
+   "pack": "bellwood_veg",
+   "tris": 1174,
+   "size": [
+    18.24,
+    6.95,
+    17.95
+   ],
+   "subs": 3,
+   "tex": "512x512"
+  },
+  {
+   "name": "Fallen_Log_B",
+   "pack": "bellwood_veg",
+   "tris": 948,
+   "size": [
+    17.93,
+    6.78,
+    6.23
+   ],
+   "subs": 3,
+   "tex": "512x512"
+  },
+  {
+   "name": "Exposed_Roots_A",
+   "pack": "bellwood_veg",
+   "tris": 1156,
+   "size": [
+    21.45,
+    5.86,
+    21.17
+   ],
+   "subs": 2,
+   "tex": "512x512"
+  },
+  {
+   "name": "Flowers_Foxglove",
+   "pack": "bellwood_veg",
+   "tris": 2340,
+   "size": [
+    6.92,
+    5.48,
+    6.19
+   ],
+   "subs": 2,
+   "tex": "256x256"
+  },
+  {
+   "name": "Grass_Seed",
+   "pack": "bellwood_veg",
+   "tris": 1104,
+   "size": [
+    5.62,
+    5.38,
+    5.84
+   ],
+   "subs": 2,
+   "tex": "128x256/256x256"
+  }
+ ],
+ "failed": []
+}

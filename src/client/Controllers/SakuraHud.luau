@@ -1,7 +1,7 @@
 --!strict
 -- ModuleScript: StarterPlayer/StarterPlayerScripts/AsurasPath/Controllers/SakuraHud
 -- Owns the sakura HUD furniture that is not tied to combat state: the compass, the minimap (with
--- its Respite / Controls buttons) and a light drift of screen-space petals. Hidden with the rest
+-- its Respite / Controls / Map buttons; the radar disc itself is the lobby's alone) and a light drift of screen-space petals. Hidden with the rest
 -- of the HUD during the prologue and the death screen. Petals are decoration: they thin out and
 -- fade during fights (and with reduced effects) so warnings stay the brightest thing on screen.
 local Players = game:GetService("Players")
@@ -11,6 +11,7 @@ local Visibility = require(script.Parent:WaitForChild("HudVisibility") :: Module
 local Sakura = require(script.Parent:WaitForChild("SakuraKit") :: ModuleScript)
 local Compass = require(script.Parent:WaitForChild("SakuraCompass") :: ModuleScript)
 local Minimap = require(script.Parent:WaitForChild("SakuraMinimap") :: ModuleScript)
+local WorldMap = require(game:GetService("ReplicatedStorage"):WaitForChild("AsurasPath"):WaitForChild("Shared"):WaitForChild("WorldMap") :: ModuleScript)
 
 local Controller = {}
 Controller.__index = Controller
@@ -25,7 +26,7 @@ local BLEND = 2.5 -- density change per second
 
 type Petal = { Gui: Frame, X: number, Y: number, Speed: number, Phase: number, Spin: number, Size: number, Alpha: number }
 export type SakuraHud = typeof(setmetatable({} :: {
-	Ui: any, State: any, Compass: Compass.View, Minimap: Minimap.View, Layer: Frame, Petals: { Petal }, Random: Random,
+	Ui: any, State: any, Map: any, Compass: Compass.View, Minimap: Minimap.View, Layer: Frame, Petals: { Petal }, Random: Random,
 	Density: number, Engaged: boolean, Probe: number,
 }, Controller))
 
@@ -48,7 +49,7 @@ local function engaged(state: any): boolean
 	return false
 end
 
-function Controller.new(state: any, ui: any, pause: any, controls: any): SakuraHud
+function Controller.new(state: any, ui: any, pause: any, controls: any, map: any): SakuraHud
 	local layer = HudKit.make("Frame", ui.Gui, {
 		Name = "SakuraPetals", Size = UDim2.fromScale(1, 1), BackgroundTransparency = 1, ZIndex = 0, Active = false,
 	}) :: Frame
@@ -68,11 +69,12 @@ function Controller.new(state: any, ui: any, pause: any, controls: any): SakuraH
 		})
 	end
 	local buttons = {
-		{ Glyph = "≡", Angle = 305, Press = function() pause:Toggle() end },
-		{ Glyph = "?", Angle = 55, Press = function() controls:SetOpen(not controls.Open) end },
+		{ Glyph = "≡", Angle = 305, Slot = 1, Press = function() pause:Toggle() end },
+		{ Glyph = "?", Angle = 55, Slot = 2, Press = function() controls:SetOpen(not controls.Open) end },
+		{ Glyph = "M", Angle = 180, Slot = 3, MapOnly = true, Press = function() map:Toggle() end },
 	}
 	return setmetatable({
-		Ui = ui, State = state, Compass = Compass.new(ui.Gui), Minimap = Minimap.new(ui.Gui, state, buttons), Layer = layer, Petals = petals,
+		Ui = ui, State = state, Map = map, Compass = Compass.new(ui.Gui), Minimap = Minimap.new(ui.Gui, state, buttons), Layer = layer, Petals = petals,
 		Random = rng, Density = 1, Engaged = false, Probe = 0,
 	}, Controller)
 end
@@ -84,7 +86,13 @@ function Controller.Update(self: SakuraHud, dt: number)
 	self.Layer.Visible = not hidden
 	if hidden then return end
 	Compass.step(self.Compass)
-	Minimap.step(self.Minimap, self.Ui.Route)
+	-- The radar belongs to the lobby; beyond it the M map replaces it and the placed waypoint rides the compass.
+	-- Position keeps the radar off inside the overworld frame even where no region box holds the player.
+	local own = self.State:Own()
+	local root = own and own.Root
+	local radar = WorldMap.isLobby(Players.LocalPlayer:GetAttribute("AsuraRegion"), root and root.Position.X, root and root.Position.Z)
+	Minimap.step(self.Minimap, self.Ui.Route, radar, self.Ui.TouchHud == true)
+	Compass.setMarker(self.Compass, "Waypoint", if radar then nil else self.Map:WaypointBearing())
 	self.Probe -= dt
 	if self.Probe <= 0 then
 		self.Probe, self.Engaged = 0.25, engaged(self.State)

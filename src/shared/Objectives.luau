@@ -1,6 +1,7 @@
 --!strict
 local hasScript = pcall(function() return script.Parent end)
 local Ending: any = if hasScript then require(script.Parent.EndingRules) else require("./EndingRules")
+local Overworld: any = if hasScript then require(script.Parent.Overworld) else require("./Overworld")
 local Objectives = {}
 
 export type Facts = {
@@ -40,9 +41,21 @@ local ROUTE: { AltarInfo } = {
 	{ Id = "Altar_BambooShrine", Name = "Whispering Bamboo Shrine", Region = "BambooPass" },
 	{ Id = "Altar_ColosseumAntechamber", Name = "Colosseum Antechamber", Region = "AshColosseum" },
 }
+-- Overworld cutover: the long route's altars in walking order after the lobby bonfire. The opening
+-- road keeps its index contract (3 = first kindle, 4 and 5 end it), so Bell Terrace takes the Cloister's slot.
+if Overworld.Active then
+	ROUTE = { ROUTE[1] }
+	for _, id in Overworld.LongRoute do
+		local altar = Overworld.Altars[id]
+		if altar then
+			table.insert(ROUTE, { Id = id, Name = altar.Name, Region = altar.Region })
+		end
+	end
+end
 Objectives.Route = ROUTE
 
-local BOSS_APPROACH = Vector3.new(0, 3, -1880)
+local function vec(p: any): Vector3 return Vector3.new(p.X, p.Y, p.Z) end
+local BOSS_APPROACH = if Overworld.Active then vec(Overworld.Barrier.Gate.Placement) else Vector3.new(0, 3, -1880)
 -- The Sanctuary's northern gate always delivers to this altar (WorldDefinitions.Sanctuary.PortalDestination).
 local PORTAL_ARRIVAL = ROUTE[2]
 
@@ -67,7 +80,7 @@ end
 
 function Objectives.regionOf(altarId: string): string?
 	local expanded: { [string]: string } = { Altar_BellTerrace = "BambooPass", Altar_SanctuaryDepths = "SanctuaryDepths", Altar_CelestialPagoda = "CelestialPagoda", Altar_SkyCitadel = "SkyCitadel" }
-	if expanded[altarId] then return expanded[altarId] end
+	if expanded[altarId] and not Overworld.Active then return expanded[altarId] end
 	for _, altar in ROUTE do
 		if altar.Id == altarId then
 			return altar.Region
@@ -76,7 +89,7 @@ function Objectives.regionOf(altarId: string): string?
 	return nil
 end
 
-local ENCOUNTERS = {
+local ENCOUNTERS: { { Id: string, Name: string, Region: string, Position: Vector3 } } = {
 	{ Id = "TwinSentinels", Name = "The Twin Sentinels", Region = "DesecratedMonastery", Position = Vector3.new(300, 3, -822) },
 	{ Id = "VenerableBaize", Name = "Venerable Baize", Region = "BambooPass", Position = Vector3.new(0, 3, -1362) },
 	{ Id = "GrandmasterShen", Name = "Grandmaster Shen", Region = "AshColosseum", Position = BOSS_APPROACH },
@@ -84,6 +97,9 @@ local ENCOUNTERS = {
 	{ Id = "SovereignWu", Name = "Sovereign Wu", Region = "CelestialPagoda", Position = Vector3.new(0, 3, -2272) },
 	{ Id = "AzureWyrm", Name = "Azure Wyrm", Region = "SkyCitadel", Position = Vector3.new(0, 3, -2722) },
 }
+if Overworld.Active then -- the inactive sovereigns are never named as a next objective
+	ENCOUNTERS = { { Id = "GrandmasterShen", Name = "Grandmaster Shen", Region = "AshColosseum", Position = BOSS_APPROACH } }
+end
 Objectives.Encounters = ENCOUNTERS
 
 -- The opening road, once the Monastery Gate is kindled: training, the courtyard's lone monk, the
@@ -93,6 +109,9 @@ Objectives.Encounters = ENCOUNTERS
 local FIRST_MONK = Vector3.new(0, 3, -786) -- World spawn DM_Monk_Courtyard_A
 local TRAINING = Vector3.new(15, 3, -705) -- World spawn DM_Sparring_Phantom
 local INSCRIPTION = Vector3.new(13, 3, -740) -- NarrativeCatalog.Lore.Pillars: on the landing, out of every patrol's sight
+if Overworld.Active then -- the glade teaches first: training at the gate, the first foe at the Bell Terrace, the Pillars tablet
+	FIRST_MONK, TRAINING, INSCRIPTION = vec(Overworld.Altars.Altar_BellTerrace.Placement), vec(Overworld.Altars.Altar_MonasteryGate.Placement), vec(Overworld.Lore.Pillars.Position)
+end
 local SMITH = Vector3.new(-86, 603, 899) -- NarrativeCatalog.NPCs.Gao
 Objectives.Opening = table.freeze({ FirstMonk = FIRST_MONK, Training = TRAINING, Inscription = INSCRIPTION, Smith = SMITH })
 local CLOISTER = ROUTE[3]
@@ -218,7 +237,7 @@ function Objectives.resolve(facts: Facts): Objective?
 	local road = opening(facts)
 	if road then return road end
 	for _, altar in ROUTE do
-		if not facts.Altars[altar.Id] and (not facts.Bosses or altar.Region == facts.Region or facts.Region == "Sanctuary" or facts.Region == nil) then
+		if not facts.Altars[altar.Id] and (Overworld.Active or not facts.Bosses or altar.Region == facts.Region or facts.Region == "Sanctuary" or facts.Region == nil) then
 			if altar.Region == "Sanctuary" then
 				return {
 					Key = altar.Id,

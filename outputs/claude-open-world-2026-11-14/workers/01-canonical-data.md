@@ -1,0 +1,12 @@
+# Worker 01 - overworld canonical data (progress)
+- [x] Read ticket, SPEC, GEOGRAPHY_PLAN, WorldDefinitions, BossRoster, ArsenalCatalog caches, NarrativeCatalog lore (IDs: Pillars Feast Bell Emissary Bamboo Founder Wraith Pagoda Dawn).
+- Decisions: all overworld regions + domain share MapFolder "Map_Overworld" (WorldService greybox uses FindFirstChild(MapFolder,true); one root suppresses all five greyboxes; domain is a child). Hook: WorldDefinitions after Armaments.apply, gated by Overworld.Active (false).
+- [ ] write src/shared/Overworld.luau
+- [ ] hook in WorldDefinitions (type RegionId widened, require, `if Overworld.Active then Overworld.apply(World) end`)
+- [ ] tools/test_overworld_data.luau
+- [ ] run tests + luau-compile
+- [x] Overworld.luau written + compiles (next: hook in WorldDefinitions, test)
+- [x] hook added to WorldDefinitions (after Armaments.apply) + RegionId widened
+- [x] test written; running
+- [x] test passes (2381/0) via plain luau CLI; running regression suite
+- [x] all runs green; deliver

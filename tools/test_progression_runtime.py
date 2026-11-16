@@ -356,7 +356,7 @@ hunting=false
 local folder
 for _,c in workspace.Children or {} do if c.Name=="JadeCataclysm" then folder=c end end
 check(folder~=nil,"lore world is built")
-local stone=folder:FindFirstChild("Pillars");move(Catalog.Lore.Pillars.X,3,Catalog.Lore.Pillars.Z)
+local stone=folder:FindFirstChild("Pillars");move(Catalog.Lore.Pillars.X,Catalog.Lore.Pillars.Y or 3,Catalog.Lore.Pillars.Z)
 bank=engine:Get(7).qiEssence
 hunting=true;stone:FindFirstChild("NarrativePrompt").Triggered:Fire(player)
 check(latest().action=="Refused" and not engine:Get(7).inventory.LoreEntries.Pillars,"a memorial read while hunted says why and pays nothing")

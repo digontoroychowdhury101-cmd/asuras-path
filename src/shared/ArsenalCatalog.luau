@@ -1,4 +1,6 @@
 --!strict
+local hasScript=pcall(function() return script.Parent end)
+local Overworld: any=if hasScript then require(script.Parent.Overworld) else require("./Overworld")
 -- Discovery and transmutation rewards are authored here, never supplied by clients.
 export type Recipe={Boss: string,Kind: string,Reward: string,Name: string}
 export type Cache={Name: string,Region: string,X: number,Y: number,Z: number,Weapon: string?,Spells: {string},Extras: {string}?,Materials: {[string]: number}?}
@@ -32,6 +34,18 @@ Catalog.Caches={
  SanctuaryEaves={Name="Loggia Eaves",Region="Sanctuary",X=-76,Y=617,Z=923,Weapon="WarFan",Spells={"JadeAegis","CelestialSupernova"}},
  SanctuaryReliquary={Name="Cloud Reliquary",Region="Sanctuary",X=46,Y=605,Z=988,Weapon="Catalyst",Spells={"EmberCataclysm","BlazingSunAwakening"}},
 } :: {[string]: Cache}
+-- Overworld cutover: the old caches move onto the new ground and two new ones appear, so only a world
+-- that has the cache places it. A profile holding a cache id this world lacks drops it on migrate. Spells
+-- are a set, so a cache paying a spell the profile owns grants no duplicate.
+if Overworld.Active then
+ for id,entry in {FrostWatchpost={"Frost Watchpost","WindSlash"},SaltCaravan={"Salt Caravan","Thunderfall"}} do
+  Catalog.Caches[id]={Name=entry[1],Region="",X=0,Y=0,Z=0,Spells={entry[2]}}
+ end
+ for id,at in Overworld.Caches do
+  local c=Catalog.Caches[id]
+  c.Region,c.X,c.Y,c.Z=at.Region,at.Position.X,at.Position.Y,at.Position.Z
+ end
+end
 -- Practical use, authored as words only: every number on an Arsenal card is derived from
 -- SpellSchema / WeaponSchema and the scaling rules (ArsenalFacts), never written here.
 Catalog.SpellUses={

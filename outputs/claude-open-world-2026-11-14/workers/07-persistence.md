@@ -1,0 +1,10 @@
+# 07 persistence progress
+- [ ] started; reading tickets
+- [x] read ticket/preservation/Overworld/ProfileStore/ArsenalInventory/WorldService. Findings: World & Overworld are deep-frozen (tests cannot flip Active) -> ProfileStore.MigrateSouls gets optional `world` param (default World) so tests inject Overworld-applied stub. Travel already filters World.Altars (WorldService travel L731). Claim is idempotent (Inventory.claim refuses 2nd, spells are boolean set).
+- Plan: ArsenalCatalog caches from Overworld when Active + New caches defined always (New=true; LootWorld skips unless Active); ProfileStore retired-altar map + stain relocate + discoveries; NarrativeCatalog/Objectives/WorldDefinitions gated; tests tools/test_persistence_migration.luau
+- [x] ProfileStore (retired altar map, anchorStain on migrate+RecordDeath, discoveries+RecordDiscovery), ArsenalCatalog (new caches always defined New=true, Overworld placement when Active), LootWorld (skip New unless Active; no old scenery for moved caches) edited. TODO: NarrativeCatalog lore/Hermit, Objectives, WorldDefinitions miniboss, tests, scratch Active=true run harness
+- [x] NarrativeCatalog lore+Hermit gated, WorldDefinitions warden respawn gated. TODO Objectives, tests
+- [x] Objectives gated edits; compile ok. TODO analyze, tests, scratch Active=true harness
+- [x] Active=false: test_objectives.py (patched py to inline Overworld), progression_runtime, miniboss_reward, profile_integrity, backend all pass. TODO new test tools/test_persistence_migration.luau + scratch Active=true run
+- [x] tools/test_persistence_migration.luau (34 legacy / 53 Active pass) + tools/test_objectives_overworld.luau (run via test_objectives.py <name>; py extended). Active run uses scratch copy w/ flag sed + spawn-assert relaxed (ticket 08 owns colosseum spawns). TODO full regression, report
+- [x] DONE. All suites green legacy (lune_compat --all 32 pass, py suites, luau suites); Active scratch run: persistence 52/0, objectives overworld pass. Risks: discoveries additive (older server drops on next save); WorldService untouched (travel already filters World.Altars).

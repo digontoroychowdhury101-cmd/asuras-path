@@ -170,6 +170,7 @@ for _, key in { "BloodPetal", "EmberPetal" } do
 	local c = Sakura.Colors[key]
 	check(key .. " is blood red, not pink", c.R > 0.4 and c.G < c.R * 0.25 and c.B < c.R * 0.3)
 end
+check("radar stays off inside the overworld frame even with no region (position passed to isLobby)", has(C .. "SakuraHud.luau", "WorldMap.isLobby(Players.LocalPlayer:GetAttribute(\"AsuraRegion\"), root and root.Position.X, root and root.Position.Z)"))
 check("petals use the blood palette", has(C .. "SakuraHud.luau", "C.BloodPetal") and not has(C .. "SakuraHud.luau", "C.Sakura else C.Blossom"))
 local flowers = 0
 for _, name in fs.readDir(C) do

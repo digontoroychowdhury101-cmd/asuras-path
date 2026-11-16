@@ -131,6 +131,16 @@ function Rules.parse(text: any): { [string]: boolean }
 	return done
 end
 
+-- True while the kindled altars (the comma list in AsuraAltars) are only the starting bonfire and the gateway glade:
+-- the stakes card is for the traveller who has not yet kindled anything beyond them.
+function Rules.onlyOpeningAltars(text: any): boolean
+	if type(text) ~= "string" then return true end
+	for id in string.gmatch(text, "[^,]+") do
+		if id ~= "Altar_SanctuaryBonfire" and id ~= "Altar_MonasteryGate" then return false end
+	end
+	return true
+end
+
 -- Fills {Command} placeholders with live key captions.
 function Rules.text(template: string, label: (command: string) -> string): string
 	return (string.gsub(template, "{(%a+)}", function(command: string) return "[" .. label(command) .. "]" end))

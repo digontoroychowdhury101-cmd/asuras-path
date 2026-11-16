@@ -1,0 +1,103 @@
+{
+ "png": "sheet_veg_5.png",
+ "group": "veg",
+ "pieces": [
+  {
+   "name": "Exposed_Roots_B",
+   "pack": "bellwood_veg",
+   "tris": 1314,
+   "size": [
+    18.68,
+    5.12,
+    17.25
+   ],
+   "subs": 2,
+   "tex": "512x512"
+  },
+  {
+   "name": "Grass_Tall",
+   "pack": "bellwood_veg",
+   "tris": 490,
+   "size": [
+    6.39,
+    4.93,
+    6.17
+   ],
+   "subs": 1,
+   "tex": "128x256"
+  },
+  {
+   "name": "Shrub_Berry",
+   "pack": "bellwood_veg",
+   "tris": 7996,
+   "size": [
+    7.5,
+    4.61,
+    6.42
+   ],
+   "subs": 3,
+   "tex": "256x256/512x512"
+  },
+  {
+   "name": "Flowers_Daisy",
+   "pack": "bellwood_veg",
+   "tris": 2976,
+   "size": [
+    6.53,
+    4.3,
+    7.33
+   ],
+   "subs": 2,
+   "tex": "256x256"
+  },
+  {
+   "name": "Mushroom_Cluster",
+   "pack": "bellwood_veg",
+   "tris": 3360,
+   "size": [
+    8.05,
+    3.67,
+    7.27
+   ],
+   "subs": 1,
+   "tex": "256x256"
+  },
+  {
+   "name": "Fern_Sword",
+   "pack": "bellwood_veg",
+   "tris": 3808,
+   "size": [
+    10.64,
+    3.61,
+    10.86
+   ],
+   "subs": 1,
+   "tex": "256x256"
+  },
+  {
+   "name": "Understory_Shrub_Small",
+   "pack": "slice",
+   "tris": 3236,
+   "size": [
+    4.14,
+    3.46,
+    4.65
+   ],
+   "subs": 2,
+   "tex": "512x512"
+  },
+  {
+   "name": "Grass_Clump",
+   "pack": "slice",
+   "tris": 220,
+   "size": [
+    4.07,
+    3.39,
+    3.48
+   ],
+   "subs": 1,
+   "tex": "128x256"
+  }
+ ],
+ "failed": []
+}

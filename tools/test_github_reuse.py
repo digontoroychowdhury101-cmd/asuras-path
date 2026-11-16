@@ -12,8 +12,9 @@ import xml.etree.ElementTree as ET
 ROOT = Path(__file__).resolve().parents[1]
 manifest = json.loads((ROOT / "assets/GITHUB_REUSE.json").read_text())
 shared_tree = json.loads((ROOT / "default.project.json").read_text())["tree"]["ReplicatedStorage"]["AsurasPath"]["Shared"]
-for module in ("EffectEasing", "MonasteryRidgeProfile"):
-    assert shared_tree[module]["$path"] == f"src/shared/{module}.luau", f"Unmapped runtime dependency: {module}"
+assert shared_tree["EffectEasing"]["$path"] == "src/shared/EffectEasing.luau", "Unmapped runtime dependency: EffectEasing"
+# C3 ruling 4: MonasteryRidgeProfile's only requirer (MonasteryTerrain) is retired, so it is retired too.
+assert "MonasteryRidgeProfile" not in shared_tree, "Retired module still mapped: MonasteryRidgeProfile"
 for entry in json.loads((ROOT / "assets/GITHUB_CODE_SOURCES.json").read_text()):
     data = (ROOT / entry["file"]).read_bytes()
     assert hashlib.sha1(f"blob {len(data)}\0".encode() + data).hexdigest() == entry["blob_sha"], entry["file"]

@@ -1,0 +1,91 @@
+{
+ "png": "sheet_rock_1.png",
+ "group": "rock",
+ "pieces": [
+  {
+   "name": "Cliff_Face_B",
+   "pack": "bellwood_built_a",
+   "tris": 7146,
+   "size": [
+    16,
+    14.0,
+    4.88
+   ],
+   "subs": 1,
+   "tex": "1024x1024"
+  },
+  {
+   "name": "Cliff_Face_A",
+   "pack": "bellwood_built_a",
+   "tris": 7146,
+   "size": [
+    16,
+    13.99,
+    4.79
+   ],
+   "subs": 1,
+   "tex": "1024x1024"
+  },
+  {
+   "name": "Cliff_Face_C",
+   "pack": "bellwood_built_a",
+   "tris": 7146,
+   "size": [
+    16,
+    13.51,
+    6.75
+   ],
+   "subs": 1,
+   "tex": "1024x1024"
+  },
+  {
+   "name": "Boulder_Granite_B",
+   "pack": "slice",
+   "tris": 7680,
+   "size": [
+    12.34,
+    10.55,
+    7.64
+   ],
+   "subs": 1,
+   "tex": "1024x1024"
+  },
+  {
+   "name": "Boulder_Granite_D",
+   "pack": "bellwood_built_a",
+   "tris": 8320,
+   "size": [
+    11.55,
+    8.25,
+    9.52
+   ],
+   "subs": 1,
+   "tex": "1024x1024"
+  },
+  {
+   "name": "Boulder_Granite_A",
+   "pack": "slice",
+   "tris": 8000,
+   "size": [
+    17.25,
+    7.81,
+    10.49
+   ],
+   "subs": 1,
+   "tex": "1024x1024"
+  },
+  {
+   "name": "Boulder_Granite_Split",
+   "pack": "bellwood_built_a",
+   "tris": 11520,
+   "size": [
+    13.25,
+    7.24,
+    8.88
+   ],
+   "subs": 1,
+   "tex": "1024x1024"
+  }
+ ],
+ "failed": []
+}

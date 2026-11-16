@@ -1,0 +1,91 @@
+{
+ "png": "sheet_built_2.png",
+ "group": "built",
+ "pieces": [
+  {
+   "name": "Bell_Timber_Gate",
+   "pack": "slice",
+   "tris": 624,
+   "size": [
+    19.0,
+    17.6,
+    3.2
+   ],
+   "subs": 3,
+   "tex": "256x256/512x512"
+  },
+  {
+   "name": "Rope_Bridge_Anchor",
+   "pack": "bellwood_built_b",
+   "tris": 1572,
+   "size": [
+    10.9,
+    14.7,
+    15.69
+   ],
+   "subs": 4,
+   "tex": "256x256/512x512"
+  },
+  {
+   "name": "Bell_Prayer_Flags_Long",
+   "pack": "bellwood_built_a",
+   "tris": 1326,
+   "size": [
+    24.25,
+    13.04,
+    2.26
+   ],
+   "subs": 3,
+   "tex": "256x256/512x512"
+  },
+  {
+   "name": "Bell_Prayer_Flags_Short",
+   "pack": "bellwood_built_a",
+   "tris": 942,
+   "size": [
+    12.25,
+    13.03,
+    2.25
+   ],
+   "subs": 3,
+   "tex": "256x256/512x512"
+  },
+  {
+   "name": "Bell_Well",
+   "pack": "bellwood_built_a",
+   "tris": 13106,
+   "size": [
+    9.93,
+    12.54,
+    8.58
+   ],
+   "subs": 4,
+   "tex": "256x256/512x512"
+  },
+  {
+   "name": "Lantern_Hanging",
+   "pack": "bellwood_built_b",
+   "tris": 622,
+   "size": [
+    4.33,
+    11.5,
+    5.0
+   ],
+   "subs": 3,
+   "tex": "128x128/256x256"
+  },
+  {
+   "name": "Bell_Stair_Segment",
+   "pack": "slice",
+   "tris": 2200,
+   "size": [
+    12.4,
+    11,
+    20.15
+   ],
+   "subs": 1,
+   "tex": "512x512"
+  }
+ ],
+ "failed": []
+}

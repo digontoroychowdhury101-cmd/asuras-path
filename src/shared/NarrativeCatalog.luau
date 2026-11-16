@@ -1,4 +1,6 @@
 --!strict
+local hasScript=pcall(function() return script.Parent end)
+local Overworld: any=if hasScript then require(script.Parent.Overworld) else require("./Overworld")
 export type Choice={Label: string,Next: string?,Action: string?,Close: boolean?}
 export type Node={Text: string,Choices: {Choice}}
 export type NPC={Name: string,X: number,Y: number,Z: number,Color: {number},Start: string,Nodes: {[string]: Node}}
@@ -50,6 +52,17 @@ Catalog.LoreOrder={"Pillars","Feast","Bell","Emissary","Bamboo","Founder","Wrait
 Catalog.NPCs.Lin.Nodes.Release={Text="Six chains have fallen silent. The ferryman waits beyond the jade dawn. You may cross, Emissary—or remain a little longer, and carry their names where the living have forgotten.",Choices={{Label="Cross the river of souls",Next="Release",Action="Cross"},{Label="Remain a little longer",Next="Release",Action="Remain"},{Label="Guide my Ascension",Next="Ascend",Action="Level"},{Label="Farewell",Close=true}}}
 Catalog.NPCs.Lin.Nodes.Summons={Text="Six chains have fallen silent. The crossing cannot be made through incense smoke, Emissary. Come home to the Primal Bonfire; I will be waiting beside it.",Choices={{Label="Guide my Ascension",Next="Ascend",Action="Level"},{Label="Farewell",Close=true}}}
 Catalog.NPCs.Lin.Nodes.Postgame={Text="You crossed, and the river carried you back to the incense. Your path is your own now, Emissary. Walk it as long as you wish.",Choices={{Label="Walk the crossing again",Next="Postgame",Action="Cross"},{Label="Guide my Ascension",Next="Ascend",Action="Level"},{Label="Farewell",Close=true}}}
+-- Overworld cutover: the nine inscriptions keep their ids and rewards (so found entries stay found) and
+-- the Hermit moves to his hut; Overworld.Lore / POIs hold the placements.
+if Overworld.Active then
+ for id,at in Overworld.Lore do
+  local l=Catalog.Lore[id]
+  l.Region,l.X,l.Y,l.Z=at.Region,at.Position.X,at.Position.Y,at.Position.Z
+ end
+ for _,poi in Overworld.POIs do
+  if poi.Id=="HermitHut" then local h=Catalog.NPCs.Hermit;h.X,h.Y,h.Z=poi.Position.X,poi.Position.Y,poi.Position.Z end
+ end
+end
 local function freeze(t: any) for _,v in t do if type(v)=="table" then freeze(v) end end;table.freeze(t) end
 freeze(Catalog)
 return Catalog

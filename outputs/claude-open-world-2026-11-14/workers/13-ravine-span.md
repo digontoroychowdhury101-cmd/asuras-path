@@ -1,0 +1,11 @@
+# 13 ravine span (lane 5b, source only, no Studio)
+
+Supersedes: nothing (searched workers for *ravine*span*; only CONTINUATION.md names the lane). Linked from CONTINUATION.md; the lead adds the LEDGER.md link (LEDGER is not a lane 5b file). Why new: durable log for the Amberfall stone span rework and the AsuraShelter tags.
+Prompt: Read C:/Users/disha/Documents/asuras-path/outputs/claude-open-world-2026-11-14/CLAUDE_OPEN_WORLD_PROMPT.md and implement its complete world replacement, following its authorisation, model delegation, preservation requirements and acceptance criteria.
+
+## Log
+- [impl OverworldService.luau] stoneBridge replaced: one Slate deck slab A to B (ends = Overworld.surfaceAt + 1), stone parapets L/R (Cobblestone, 3.5 high), 7 tapering Slate piers (<= 8 tiers each) seated 4 below the lowest ground under the footprint, 8 bays each with 8 Cobblestone voussoirs plus 8 spandrel columns, two Slate abutments reaching 26 studs onto the chasm walls, 18 pilasters on the parapets. Width stays def.Width 18, deck grade 0.7 deg. 199 parts, no new meshes. Ids, A/B data and route edges untouched.
+- [impl] cave-mouth Lintel now carries AsuraShelter (shelter Roofs already did). Builders exposed as OverworldService.Build.{StoneBridge,Shelter,Portal} for the test.
+- [test] tools/test_ravine_span.luau 25/0: deck gap 0.00, step 0.00, ends within 1 of A/B and within 2 of the written surface, width 18, grade 0.7, parapets both sides, piers seated and reaching deck underside, abutments 2, 8 shelter roofs and 3 cave lintels tagged.
+- [verify] luau-compile --null ok (service, Overworld, test); lune_compat --all 35 PASS, FAIL only test_monastery_discovery and test_monastery_route (MonasteryTerrain "attempt to index nil with Bounds", legacy tree; none of my files; another lane's concurrent runs also collided on generated files once); scratch build l5b.rbxlx ok (320 sources).
+- [studio must capture] the span from the A rim, from the chasm floor looking up, and a player walking A to B (no snag at deck ends, parapets stop falling); weather: stand under a shelter roof and a cave lintel. Not seen in Studio: proportions, Cobblestone/Slate look, abutment fit against the real voxel wall.

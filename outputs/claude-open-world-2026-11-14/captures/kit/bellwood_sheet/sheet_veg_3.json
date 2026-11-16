@@ -1,0 +1,79 @@
+{
+ "png": "sheet_veg_3.png",
+ "group": "veg",
+ "pieces": [
+  {
+   "name": "Sapling_Tree",
+   "pack": "bellwood_veg",
+   "tris": 7804,
+   "size": [
+    20.94,
+    16.89,
+    22.8
+   ],
+   "subs": 3,
+   "tex": "512x512"
+  },
+  {
+   "name": "Shrub_Thicket",
+   "pack": "bellwood_veg",
+   "tris": 6844,
+   "size": [
+    14.64,
+    11.2,
+    13.59
+   ],
+   "subs": 2,
+   "tex": "512x512"
+  },
+  {
+   "name": "Fallen_Log_A",
+   "pack": "bellwood_veg",
+   "tris": 1874,
+   "size": [
+    30.26,
+    10.26,
+    16.27
+   ],
+   "subs": 3,
+   "tex": "512x512"
+  },
+  {
+   "name": "Reed_Clump_B",
+   "pack": "bellwood_veg",
+   "tris": 878,
+   "size": [
+    8.26,
+    9.69,
+    8.05
+   ],
+   "subs": 2,
+   "tex": "128x256/256x256"
+  },
+  {
+   "name": "Tree_Stump_B",
+   "pack": "bellwood_veg",
+   "tris": 1174,
+   "size": [
+    14.84,
+    9.19,
+    13.83
+   ],
+   "subs": 3,
+   "tex": "512x512"
+  },
+  {
+   "name": "Shrub_Hazel",
+   "pack": "bellwood_veg",
+   "tris": 4876,
+   "size": [
+    12.09,
+    7.73,
+    9.36
+   ],
+   "subs": 2,
+   "tex": "512x512"
+  }
+ ],
+ "failed": []
+}

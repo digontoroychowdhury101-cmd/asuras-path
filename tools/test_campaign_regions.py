@@ -45,8 +45,9 @@ source = (ROOT / "tools/test_campaign_regions.luau").read_text()
 for marker, code in replacements.items():
     assert source.count(marker) == 1, marker
     source = source.replace(marker, code)
-output = ROOT / "work/test_campaign_regions.generated.luau"
-output.parent.mkdir(exist_ok=True)
+sys.path.insert(0, str(ROOT / "tools"))
+import legacy_world
+output = legacy_world.build(ROOT) / "work" / "test_campaign_regions.generated.luau" # archived corridor: pre-cutover world
 output.write_text(source)
 result = subprocess.run([str(ROOT / "work/bin/luau/luau"), "--codegen", str(output), "-a", *sys.argv[1:]], cwd=ROOT / "tools")
 output.unlink()

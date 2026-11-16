@@ -31,8 +31,15 @@ end
 function Environment.Apply()
 	local l = Config.Lighting
 	Workspace.Gravity = Config.Workspace.Gravity
+	-- GlobalWind is baked into the place (project.json) and written at runtime only by the client FoliageWind,
+	-- the sole writer, from Shared/Wind. The server just checks the lobby value still agrees with Config.
 	local wind = Config.Workspace.GlobalWind
-	Workspace.GlobalWind = Vector3.new(wind[1], wind[2], wind[3])
+	if Workspace.GlobalWind ~= Vector3.new(wind[1], wind[2], wind[3]) then
+		warn("[AsurasPath] In Studio set Workspace.GlobalWind to the Config value (the server no longer writes it).")
+	end
+	-- World clock (ticket 11): clients derive the hour and each region's weather from this one epoch, so a late
+	-- joiner agrees with everyone. Lighting.ClockTime stays the lobby's static baseline on the server.
+	Workspace:SetAttribute("AsuraWorldEpoch", Workspace:GetServerTimeNow())
 
 	Lighting.Brightness = l.Brightness
 	Lighting.ClockTime = l.ClockTime
@@ -53,8 +60,10 @@ function Environment.Apply()
 	if Lighting.LightingStyle ~= Enum.LightingStyle.Realistic or Lighting.PrioritizeLightingQuality ~= l.PrioritizeLightingQuality then
 		warn("[AsurasPath] In Studio set LightingStyle=Realistic and PrioritizeLightingQuality=true.")
 	end
-	if Workspace.StreamingEnabled ~= Config.Workspace.StreamingEnabled then
-		warn("[AsurasPath] In Studio set Workspace.StreamingEnabled to the Config value.")
+	local w = Config.Workspace
+	-- Only StreamingEnabled is readable by scripts; the mode, behaviour and radii are plugin-only, pinned by Config and the Rojo tree.
+	if Workspace.StreamingEnabled ~= w.StreamingEnabled then
+		warn("[AsurasPath] In Studio set the Workspace streaming properties to the Config values.")
 	end
 	if Workspace.FallenPartsDestroyHeight ~= Config.Workspace.FallenPartsDestroyHeight then
 		warn("[AsurasPath] In Studio set Workspace.FallenPartsDestroyHeight to the Config value.")
@@ -111,6 +120,18 @@ function Environment.Apply()
 			warn("[AsurasPath] Extra Atmosphere in Lighting overrides the configured sky: " .. child.Name)
 		end
 	end
+end
+
+-- Seconds since the epoch and the world hour (nil before Apply). Same arithmetic the clients use.
+function Environment.Clock(): (number?, number?)
+	local epoch = Workspace:GetAttribute("AsuraWorldEpoch")
+	if type(epoch) ~= "number" then return nil, nil end
+	local t = Workspace:GetServerTimeNow() - epoch
+	return t, Profiles.hourAt(t)
+end
+
+function Environment.Stop()
+	Workspace:SetAttribute("AsuraWorldEpoch", nil)
 end
 
 return table.freeze(Environment)

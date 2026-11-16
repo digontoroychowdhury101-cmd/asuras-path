@@ -1,0 +1,20 @@
+# 09a fixes worker progress
+
+Supersedes: nothing. Linked from LEDGER.md (ticket 09a). Why new: durable per-step log for three post-cutover defect fixes.
+Prompt: Read C:/Users/disha/Documents/asuras-path/outputs/claude-open-world-2026-11-14/CLAUDE_OPEN_WORLD_PROMPT.md and implement its complete world replacement, following its authorisation, model delegation, preservation requirements and acceptance criteria.
+
+## Log
+- [start] read 05-survey failures (enemies-1, map-1) and 08-cutover; read Overworld.luau 1-866.
+- [defect3] SakuraHud passes root XZ to WorldMap.isLobby (isLobby already frame-aware); SakuraMinimap needs no change (takes radar flag). test_hud_layout +1 source check.
+- [defect2-plan] coverage grid (80x80) shows 674/6561 misses. Plan: Mountain x[-10000,-5600] z[-9200,-4200] y250..1750 (min stays); Basin z[-4200,-800] y-100..450 (SlumberingTitan reserved arena -> MountainAscent, Mountain y min -100? check); Ravine z[-4200,-800] y-200..600; Forest z[-4200,-800] y-100..500; Snow z[-9200,-4200] y250..1050; add Band Snowfields/GoldenRavine. Keeps rectangles 3D-disjoint.
+- [defect2-edit] Overworld.luau Bounds changed per plan (Mountain y100..1750 since a basin-edge surface point is y245), ReservedArenas Titan->(-9300,130,-2000) Twins->(-1900,150,-3100), +Band Snowfields/GoldenRavine. Next: coverage test + run data/terrain/cutover tests.
+- [defect2-edit] Overworld.luau Bounds changed (Mountain y100..1750 since a basin-edge surface point is y245), ReservedArenas Titan->(-9300,130,-2000) Twins->(-1900,150,-3100), +Band Snowfields/GoldenRavine. Next: coverage test + run data/terrain/cutover tests.
+- [defect2-done] coverage grid 81x81 miss 0 multi 0; tests: overworld_data 2754/0 (+2 coverage checks), terrain 31/0, blockout 8/0, world_map 119/0, cutover 128/0. Next: defect 1.
+- [defect1-edit] OverworldTerrain.sites() adds Spawn_<id> for Training + Minibosses (rank 0 after glade); OverworldService sets root attr SiteReady_<id> when a site's tiles are done; AIService.SpawnMob awaitGround (bounded 300 s, task.wait 0.1, attr flag; no yield once set). Next: tests (order: spawn sites), compile, lune --all, temp build, Studio.
+- [defect1-edit] OverworldTerrain.sites() adds Spawn_<id> for Training + Minibosses (rank 0 after glade); OverworldService sets root attr SiteReady_<id> when a site's tiles are done; AIService.SpawnMob awaitGround (bounded 300 s, task.wait 0.1, attr flag; no yield once set). Next: tests (order: spawn sites), compile, lune --all, temp build, Studio.
+- [defect1-tests] test_overworld_order +spawn site checks (39/0).
+- [tests] after all edits: overworld_data 2754/0, terrain 31/0, blockout 8/0, order 39/0, world_map 119/0, cutover 128/0, hud_layout 259/0, compass 1828, input_map 433, arsenal 169, colosseum 135, device 90, boss_encounters 287, stage3, miniboss 16, py: objectives, review_regressions 20, progression 149, boss_runtime, campaign_regions 421, campaign_build 27. lune --all collided with another worker's legacy copy (work/legacy); retry later.
+- [studio-prep] t09 build digest scripts 291 bytes 2999506 digest 1908150238 (repo state incl. 09a edits); map.json/baseline.json in scratchpad/t09 (to be served 127.0.0.1:8766).
+STUDIO RUN STARTED: baseline loaded (digest 462022588, Edit, no Map_Overworld, HttpEnabled false); loading t09 build 1908150238 via local http 8766; restore via scratchpad/t09/baseline.json and HttpEnabled=false
+- [studio1] synced (31 changed, 5 created); Studio digest scripts 291 bytes 2999506 digest 1908150238 == temp build (identity). HttpEnabled set true (restore false). Next: Play, mob Y at 15/60 s.
+- [studio2] Play (build 1908150238): Phantom y65.2/ground62.0, Warden y144.7-145.0/ground140.4-140.7 at t=8,15,60 s; spawn sites ready before spawn (glade 6.57 s, altars 8.66 s, tiles 300@15 s, 1400@60 s); console clean (only ContentId 203785492 warnings). Region attr at 7 positions incl. 4 former gaps matches regionAt. STUDIO RESTORED: digest scripts 286 bytes 2859366 digest 462022588, Edit, no Map_Overworld, 0 solid voxels at sites, HttpEnabled false, place NOT saved; http server stopped.

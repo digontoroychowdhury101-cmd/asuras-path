@@ -1,0 +1,43 @@
+{
+ "png": "sheet_veg_6.png",
+ "group": "veg",
+ "pieces": [
+  {
+   "name": "Fern_Clump",
+   "pack": "slice",
+   "tris": 2016,
+   "size": [
+    8.45,
+    3.18,
+    8.21
+   ],
+   "subs": 1,
+   "tex": "256x256"
+  },
+  {
+   "name": "Fern_Bracken",
+   "pack": "bellwood_veg",
+   "tris": 1296,
+   "size": [
+    11.72,
+    3.11,
+    12.97
+   ],
+   "subs": 1,
+   "tex": "256x256"
+  },
+  {
+   "name": "Grass_Lush",
+   "pack": "bellwood_veg",
+   "tris": 450,
+   "size": [
+    6.42,
+    2.27,
+    5.71
+   ],
+   "subs": 1,
+   "tex": "128x256"
+  }
+ ],
+ "failed": []
+}

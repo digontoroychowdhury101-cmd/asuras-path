@@ -15,24 +15,17 @@ end
 -------------------------------------------------------------------------------------------------
 -- World manifest
 -------------------------------------------------------------------------------------------------
-assert(World.Regions.DesecratedMonastery and World.Regions.BambooPass and World.Regions.AshColosseum)
-assert(World.regionAt(0, 3, -900) == "DesecratedMonastery" and World.regionAt(0, 3, -1400) == "BambooPass")
-assert(World.regionAt(0, 3, -1960) == "AshColosseum" and World.regionAt(0, 3, 0) == nil)
+assert(World.Regions.Forest and World.Regions.MountainAscent and World.Regions.AshColosseum)
+assert(World.Regions.DesecratedMonastery == nil and World.Regions.BambooPass == nil, "the old corridor regions are retired")
+assert(World.regionAt(-2200, 60, -1400) == "Forest" and World.regionAt(-8100, 40, -2300) == "AridBasin")
+assert(World.regionAt(-7200, 1600, -8250) == "AshColosseum" and World.regionAt(0, 3, 0) == nil)
 assert(World.startingAltar().Id == "Altar_SanctuaryBonfire")
 assert(World.Regions.Sanctuary.Altars.SanctuaryBonfire == World.Altars.Altar_SanctuaryBonfire)
-assert(World.Regions.DesecratedMonastery.Altars.MonasteryGate.Id == World.Sanctuary.PortalDestination)
+assert(World.Regions.Forest.Altars.MonasteryGate.Id == World.Sanctuary.PortalDestination)
 local origin = World.Sanctuary.Origin
 assert(World.regionAt(origin.X, origin.Y + 3, origin.Z) == "Sanctuary")
 assert(World.RegionOrder[1] == "Sanctuary" and not World.Altars.Altar_MonasteryGate.Starting)
-local monks, swordsmen = 0, 0
-for _, entry in World.Spawns do
-	if entry.Mob == "CorruptWanderingMonk" then
-		monks += 1
-	elseif entry.Mob == "CursedSwordsman" then
-		swordsmen += 1
-	end
-end
-assert(monks > 0 and swordsmen > 0, "both mob archetypes are placed")
+assert(World.spawnById("DM_Warden_Graves") and World.spawnById("DM_Sparring_Phantom"), "the warden and the training phantom keep their spawns on the glade side")
 local shen = World.Bosses.GrandmasterShen
 assert(shen.Phases[1].Weapon == "Guandao" and shen.Phases[2].Weapon == "Guandao", "his sculpts carry the guandao in both phases")
 assert(World.phaseFor(shen, 1, 0.8, 0) == 1, "healthy, no deathblow: phase 1")
@@ -72,7 +65,7 @@ assert(souls.inventory.elixirs.charges == Settings.Elixir.BaseCharges)
 
 -- Death drops carried + unbanked essence into a bloodstain.
 assert(store:GrantEssence(7, 500))
-local ok, err, dropped = store:RecordDeath(7, "BambooPass", 10, 3, -1400, 120)
+local ok, err, dropped = store:RecordDeath(7, "Forest", -2210, 60, -1400, 120)
 assert(ok and dropped == 1120, tostring(err))
 souls = store:Souls(7)
 assert(souls.essence == 0 and souls.world.bloodstain.essence == 1120 and souls.deaths == 1)
@@ -80,10 +73,10 @@ local firstDeath = souls.world.bloodstain.death
 
 -- Dying again before retrieval destroys the old essence.
 assert(store:GrantEssence(7, 40))
-ok, err, dropped = store:RecordDeath(7, "BambooPass", 20, 3, -1450, 0)
+ok, err, dropped = store:RecordDeath(7, "Forest", -2190, 60, -1450, 0)
 assert(ok and dropped == 40)
 souls = store:Souls(7)
-assert(souls.world.bloodstain.essence == 40 and souls.world.bloodstain.x == 20)
+assert(souls.world.bloodstain.essence == 40 and souls.world.bloodstain.x == -2190)
 assert(not store:RecoverBloodstain(7, firstDeath), "stale bloodstain cannot be recovered")
 local recovered
 ok, err, recovered = store:RecoverBloodstain(7, souls.world.bloodstain.death)

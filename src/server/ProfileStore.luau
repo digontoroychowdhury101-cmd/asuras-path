@@ -6,18 +6,20 @@
 local hasScript = pcall(function()
 	return script.Parent
 end)
-local Settings: any, Weapons: any, World: any, Arsenal: any
+local Settings: any, Weapons: any, World: any, Arsenal: any, Overworld: any
 if hasScript then
 	local Shared = game:GetService("ReplicatedStorage"):WaitForChild("AsurasPath")
 	Settings = require(Shared.Shared.CombatSettings)
 	Weapons = require(Shared.Simulation.WeaponSchema)
 	World = require(Shared.Shared.WorldDefinitions)
 	Arsenal = require(Shared.Simulation.ArsenalInventory)
+	Overworld = require(Shared.Shared.Overworld)
 else
 	Settings = require("../shared/CombatSettings")
 	Weapons = require("../simulation/WeaponSchema")
 	World = require("../shared/WorldDefinitions")
 	Arsenal = require("../simulation/ArsenalInventory")
+	Overworld = require("../shared/Overworld")
 end
 
 local Bridge: any = if hasScript then require(script.Parent.ProfileBridge) else require("./ProfileBridge")
@@ -37,7 +39,7 @@ export type Inventory = {
 	elixirs: Elixirs,
 	reinforcement: { [string]: number },
 }
-export type WorldState = { altars: { [string]: boolean }, activeAltar: string, bosses: { [string]: boolean }, bloodstain: Bloodstain?, tutorial: { [string]: boolean }?, story: { [string]: boolean }?, minibosses: { [string]: boolean }? }
+export type WorldState = { altars: { [string]: boolean }, activeAltar: string, bosses: { [string]: boolean }, bloodstain: Bloodstain?, tutorial: { [string]: boolean }?, story: { [string]: boolean }?, minibosses: { [string]: boolean }?, discoveries: { [string]: boolean }? }
 export type Souls = {
 	version: number,
 	level: number,
@@ -242,7 +244,8 @@ function Store.DefaultSouls(startingAltar: string?): Souls
 		-- tutorial: opening-training steps completed (TutorialRules ids, "Skipped" when declined).
 		-- story: six-sovereign ending flags (EndingRules.Flags); they only ever gain entries.
 		-- minibosses: optional foes whose one-time reward was claimed (World.Mobs[...].Reward.Flag).
-		world = { altars = { [altar] = true }, activeAltar = altar, bosses = {}, bloodstain = nil, tutorial = {}, story = {}, minibosses = {} },
+		-- discoveries: overworld finds already made. Additive optional field, schema stays 4; an older server drops it on its next save.
+		world = { altars = { [altar] = true }, activeAltar = altar, bosses = {}, bloodstain = nil, tutorial = {}, story = {}, minibosses = {}, discoveries = {} },
 		deaths = 0,
 	}
 end
@@ -353,10 +356,24 @@ function Store.ValidateSouls(raw: any): (boolean, string?)
 	if world.minibosses ~= nil and not validFlagSet(world.minibosses) then
 		return false, "Invalid miniboss progress"
 	end
+	if world.discoveries ~= nil and not validFlagSet(world.discoveries) then
+		return false, "Invalid discoveries"
+	end
 	if world.bloodstain ~= nil and not validBloodstain(world.bloodstain) then
 		return false, "Invalid bloodstain"
 	end
 	return true, nil
+end
+
+-- A stain outside every active region (its home was retired) would be unreachable and forfeit on the
+-- next death: move it, essence untouched, to the active altar's spawn, else the glade.
+local function anchorStain(souls: any)
+	local stain = souls.world.bloodstain
+	if not stain or World.regionAt(stain.x, stain.y, stain.z) then
+		return
+	end
+	local altar = World.Altars[souls.world.activeAltar] or World.Altars[Overworld.Gateway] or World.startingAltar()
+	stain.region, stain.x, stain.y, stain.z = altar.Region, altar.Spawn.X, altar.Spawn.Y, altar.Spawn.Z
 end
 
 function Store.MigrateSouls(raw: any, startingAltar: string?): Souls
@@ -448,12 +465,23 @@ function Store.MigrateSouls(raw: any, startingAltar: string?): Souls
 				(souls.world.minibosses :: { [string]: boolean })[id] = true
 			end
 		end
-		if identifier(world.activeAltar) and souls.world.altars[world.activeAltar] then
-			souls.world.activeAltar = world.activeAltar
+		if validFlagSet(world.discoveries) then -- older records have found none
+			for id in world.discoveries do
+				(souls.world.discoveries :: { [string]: boolean })[id] = true
+			end
+		end
+		local active = world.activeAltar
+		-- A retired altar respawns at its mapped successor (kept in `altars`, never offered for travel).
+		if identifier(active) and not World.Altars[active] and Overworld.RetiredAltars[active] then
+			active = Overworld.RetiredAltars[active]
+		end
+		if identifier(active) and souls.world.altars[active] then
+			souls.world.activeAltar = active
 		end
 		-- A corrupt bloodstain is dropped rather than repaired: its essence was already forfeit.
 		if world.bloodstain ~= nil and validBloodstain(world.bloodstain) then
 			souls.world.bloodstain = copy(world.bloodstain)
+			anchorStain(souls)
 		end
 	end
 	local migratedArsenal = Arsenal.migrate(if type(raw)=="table" then raw.inventory else nil)
@@ -781,6 +809,7 @@ function Store.RecordDeath(self: Engine, id: number, region: string, x: number, 
 				death = souls.deaths,
 			}
 			else nil
+		anchorStain(souls)
 	end)
 	return ok, err, if ok then dropped else 0
 end
@@ -892,6 +921,29 @@ function Store.RecordMinibossDefeat(self: Engine, id: number, flag: string, esse
 		self:AddElixirCapacity(id)
 	end
 	return ok, err, ok and claimed
+end
+
+-- Overworld finds: idempotent, capped like the other world maps. Returns whether this call recorded it.
+function Store.RecordDiscovery(self: Engine, id: number, discovery: string): (boolean, string?, boolean)
+	if not identifier(discovery) then
+		return false, "Invalid discovery", false
+	end
+	local recorded = false
+	local ok, err = self:Transaction(id, function(p)
+		local world = p.souls.world
+		world.discoveries = world.discoveries or {}
+		local found = world.discoveries :: { [string]: boolean }
+		local count = 0
+		for _ in found do
+			count += 1
+		end
+		if found[discovery] or count >= MAX_WORLD_ENTRIES then
+			return
+		end
+		found[discovery] = true
+		recorded = true
+	end)
+	return ok, err, ok and recorded
 end
 
 function Store.UnlockWeapon(self: Engine, id: number, weapon: string): (boolean, string?)

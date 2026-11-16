@@ -108,7 +108,7 @@ local function leaks(sum, known)
 	return false
 end
 check("empty: no titles leak", not leaks(empty, {}))
-check("empty: every locked entry says where to look", empty.Inscriptions[5].Hint == "Bamboo Pass" and empty.Souls[1].Hint == "Ash Colosseum")
+check("empty: every locked entry says where to look", empty.Inscriptions[5].Hint == "The Bellwood" and empty.Souls[1].Hint == "Ash Colosseum" and empty.Souls[2].Hint == "an unexplored region")
 local partialLore = { Pillars = true, Bamboo = true }
 local partial = Codex.summary(state(partialLore, { GrandmasterShen = true }))
 check("partial: counts", partial.Found == 2 and partial.Rested == 1 and string.find(Codex.status(partial), "2 / 9", 1, true))

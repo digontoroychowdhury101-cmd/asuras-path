@@ -1,0 +1,67 @@
+{
+ "png": "sheet_built_1.png",
+ "group": "built",
+ "pieces": [
+  {
+   "name": "Bell_Terrace_Pavilion",
+   "pack": "slice",
+   "tris": 11664,
+   "size": [
+    66.67,
+    89.16,
+    67.34
+   ],
+   "subs": 4,
+   "tex": "256x256/512x512"
+  },
+  {
+   "name": "Bell_Tower_Ruined",
+   "pack": "bellwood_built_b",
+   "tris": 32492,
+   "size": [
+    53.79,
+    76.68,
+    52.9
+   ],
+   "subs": 8,
+   "tex": "256x256/512x512"
+  },
+  {
+   "name": "Bell_Tower_Broken",
+   "pack": "slice",
+   "tris": 2364,
+   "size": [
+    29.0,
+    29.6,
+    29.0
+   ],
+   "subs": 3,
+   "tex": "256x256/512x512"
+  },
+  {
+   "name": "Falls_Alcove",
+   "pack": "bellwood_built_b",
+   "tris": 30928,
+   "size": [
+    46.04,
+    21.6,
+    22.09
+   ],
+   "subs": 6,
+   "tex": "1024x1024/512x512"
+  },
+  {
+   "name": "Hermit_Hut",
+   "pack": "bellwood_built_b",
+   "tris": 12208,
+   "size": [
+    20.0,
+    20.34,
+    19.62
+   ],
+   "subs": 4,
+   "tex": "256x256/512x512"
+  }
+ ],
+ "failed": []
+}

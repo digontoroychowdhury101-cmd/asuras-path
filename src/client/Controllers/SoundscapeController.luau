@@ -6,6 +6,7 @@ local Shared = game:GetService("ReplicatedStorage"):WaitForChild("AsurasPath")
 local World = require(Shared.Shared.WorldDefinitions)
 local Profiles = require(Shared.Shared.EnvironmentProfiles)
 local Audio = require(script.Parent.SpatialAudio)
+local Wind = require(Shared.Shared.Wind)
 local Controller = {}
 Controller.__index = Controller
 local function stop(s: Sound?)
@@ -13,8 +14,13 @@ local function stop(s: Sound?)
 	local tween = Tween:Create(s, TweenInfo.new(0.7), { Volume = 0 })
 	tween.Completed:Once(function() s:Destroy() end); tween:Play()
 end
-function Controller.new(state: any, movement: any): any
-	return setmetatable({ State = state, Movement = movement, LastMovement = "", Loop = nil,
+-- Overworld: loudness follows the one wind sample; the lobby and domain (no weather wind) keep their fixed levels.
+local function windVolume(self: any, region: string): number
+	local w = if self.Weather then self.Weather.Wind else nil
+	return if w then Wind.ambience(w) elseif region == "Sanctuary" then 0.12 else 0.22
+end
+function Controller.new(state: any, movement: any, weather: any?): any
+	return setmetatable({ State = state, Movement = movement, Weather = weather, LastMovement = "", Loop = nil,
 		Region = "", Ambient = nil, Water = nil, Tick = 0, BellAt = 9, Time = 0 }, Controller)
 end
 function Controller.Update(self: any, dt: number)
@@ -30,8 +36,10 @@ function Controller.Update(self: any, dt: number)
 	Audio.zone(Profiles.acoustics(region, p))
 	if region ~= self.Region then
 		self.Region = region; stop(self.Ambient); stop(self.Water)
-		self.Ambient = Audio.play("Wind", SoundService, if region == "Sanctuary" then 0.12 else 0.22, true)
+		self.Ambient = Audio.play("Wind", SoundService, windVolume(self, region), true)
 		self.Water = nil
+	elseif self.Ambient and self.Ambient.Parent then
+		self.Ambient.Volume = windVolume(self, region)
 	end
 	-- Water and bells are positioned in world space, so turning the camera changes their direction.
 	if region == "DesecratedMonastery" and self.Time >= self.BellAt then

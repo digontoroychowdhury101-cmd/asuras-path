@@ -21,6 +21,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Shared = ReplicatedStorage:WaitForChild("AsurasPath")
 local World = require(Shared.Shared.WorldDefinitions)
+local Overworld = require(Shared.Shared.Overworld) :: any
 local InputMap = require(Shared.Shared.InputMap)
 local Animations = require(Shared.Shared.AnimationCatalog)
 local Characters = require(script.Parent:WaitForChild("CharacterService") :: ModuleScript)
@@ -60,6 +61,7 @@ local DESTINATION = World.Altars[LAYOUT.PortalDestination]
 
 local PORTAL_FADE = 0.5
 local PORTAL_COOLDOWN = 4
+local PORTAL_READY_WAIT = 20 -- bounded wait for the overworld glade terrain (Overworld.Active only)
 local CATCH_DEPTH = 40
 local CATCH_RADIUS = 1300
 local CATCH_LIMITS = { Radius = CATCH_RADIUS, FloorY = ORIGIN.Y - CATCH_DEPTH }
@@ -76,7 +78,7 @@ local DESCENT = Vector3.new(0, 0, 88) -- the Well of Descent pavilion (Sanctuary
 -- State
 -------------------------------------------------------------------------------------------------
 
-local root: Folder? = nil
+local root: Model? = nil
 local spawnCFrame = CFrame.new()
 local smithPosition = Vector3.zero
 local connections: { RBXScriptConnection } = {}
@@ -237,7 +239,7 @@ local function spawnSmith(parent: Instance, base: CFrame)
 	end)
 end
 
-local function buildLoggia(parent: Folder): (ProximityPrompt, ProximityPrompt)
+local function buildLoggia(parent: Model): (ProximityPrompt, ProximityPrompt)
 	local base = CFrame.new(LOGGIA)
 	local loggia = Forge.Build(parent, base, function(mouth: BasePart)
 		embers(mouth, 16, 25, 6).EmissionDirection = Enum.NormalId.Right
@@ -275,7 +277,7 @@ local function buildLoggia(parent: Folder): (ProximityPrompt, ProximityPrompt)
 	return reinforce, refill
 end
 
-local function buildHeroStatueDais(parent: Folder)
+local function buildHeroStatueDais(parent: Model)
 	-- The colossus closes the main axis behind the Ascension gate (SanctuaryColossus), so the
 	-- plaza's north side stays clear for the stairs and the view up them ends on her.
 	Colossus.Build(parent, ORIGIN, LAYOUT.StairSteps * LAYOUT.StairRise, STAIR_START + LAYOUT.StairSteps * LAYOUT.StairRun + LANDING_DEPTH)
@@ -316,10 +318,35 @@ local function onPortal(hit: BasePart)
 	if not e or e.Model ~= model or e.Fighter.State == "KO" or e.Respawning or Characters.IsInDuel(userId) then
 		return
 	end
-	transit[userId] = clock + PORTAL_COOLDOWN
+	-- With the overworld active the glade terrain is written in the background: wait (bounded, with the same
+	-- transit cue) until it exists, or refuse rather than drop the player into the void.
+	local gated = Overworld.Active
+	local overworld = if gated then require(script.Parent:WaitForChild("OverworldService") :: ModuleScript) :: any else nil
+	-- While the glade is unwritten the veil waits too: its cue ends in an "Arrived" banner that would sit over the lobby.
+	local waiting = overworld ~= nil and not overworld.Ready("Glade")
+	transit[userId] = clock + PORTAL_COOLDOWN + (if gated then PORTAL_READY_WAIT else 0)
 	Characters.Cinematic(userId, PORTAL_FADE * 2)
-	Characters.Cue("PortalTransit", userId, { to = DESTINATION.Id, name = DESTINATION.Name, fade = PORTAL_FADE })
+	if not waiting then
+		Characters.Cue("PortalTransit", userId, { to = DESTINATION.Id, name = DESTINATION.Name, fade = PORTAL_FADE })
+	end
 	task.delay(PORTAL_FADE, function()
+		if overworld then
+			if waiting then
+				Characters.Cinematic(userId, PORTAL_READY_WAIT + PORTAL_FADE)
+				if not overworld.WaitReady(PORTAL_READY_WAIT, "Glade") then
+					transit[userId] = os.clock() + PORTAL_COOLDOWN
+					Characters.Cinematic(userId, 0)
+					local refused = Players:GetPlayerByUserId(userId)
+					if refused then
+						result(refused, false, "The glade is not ready")
+					end
+					return
+				end
+				Characters.Cue("PortalTransit", userId, { to = DESTINATION.Id, name = DESTINATION.Name, fade = PORTAL_FADE })
+				task.wait(PORTAL_FADE)
+			end
+			transit[userId] = os.clock() + PORTAL_COOLDOWN
+		end
 		local current = Characters.GetEntity(userId)
 		if running and current and current.Fighter.State ~= "KO" and not Characters.IsInDuel(userId) then
 			Characters.Teleport(userId, arrivalCFrame(DESTINATION))
@@ -364,7 +391,9 @@ function SanctuaryService.Start()
 	if existing then
 		existing:Destroy()
 	end
-	local sanctuary = Instance.new("Folder")
+	-- A Persistent Model, not a Folder: the mode covers every descendant, so the lobby never streams out.
+	local sanctuary = Instance.new("Model")
+	sanctuary.ModelStreamingMode = Enum.ModelStreamingMode.Persistent
 	sanctuary.Name = World.Regions.Sanctuary.MapFolder
 	root = sanctuary
 	spawnCFrame = toCFrame(BONFIRE_ALTAR.Spawn)

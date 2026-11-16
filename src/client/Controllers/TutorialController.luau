@@ -1,16 +1,17 @@
 --!strict
 -- ModuleScript: StarterPlayer/StarterPlayerScripts/AsurasPath/Controllers/TutorialController
 -- The training card for the opening (TutorialRules). Shows the current step with the player's live
--- key captions while they are near the Sparring Phantom on the Monastery Gate landing, ticks steps
+-- key captions while they are near the Sparring Phantom on the Gateway Glade landing, ticks steps
 -- off when the server confirms them (TutorialStep cue), and reports the two client-only proofs
 -- (camera locked on a foe; an Air Glide held for TutorialRules.GlideSeconds). "Skip training"
 -- needs a confirming second press; Replay comes from the Respite menu. The recovery-stakes card is
--- shown on completion, on skip, and the first time a newcomer walks into the courtyard.
+-- shown on completion, on skip, and the first time a newcomer leaves the glade for the first lethal ground.
 local Players = game:GetService("Players")
 local Shared = game:GetService("ReplicatedStorage"):WaitForChild("AsurasPath")
 local Rules = require(Shared.Shared.TutorialRules)
 local InputMap = require(Shared.Shared.InputMap)
 local World = require(Shared.Shared.WorldDefinitions)
+local Overworld = require(Shared.Shared.Overworld) :: any
 local HudKit = require(script.Parent:WaitForChild("HudKit") :: ModuleScript)
 local UiKit = require(script.Parent:WaitForChild("UiKit") :: ModuleScript)
 local Layout = require(script.Parent:WaitForChild("HudLayout") :: ModuleScript)
@@ -18,10 +19,10 @@ local Layout = require(script.Parent:WaitForChild("HudLayout") :: ModuleScript)
 local Controller = {}
 Controller.__index = Controller
 Controller.ShowRadius = 70 -- the card appears near the training landing
+Controller.StakesRadius = 160 -- this far from the glade, before kindling any altar beyond it: the first lethal ground
 local T = UiKit.Theme
 local spawn = assert(World.spawnById("DM_Sparring_Phantom"), "Sparring Phantom spawn missing")
 local HOME = Vector3.new(spawn.Placement.X, spawn.Placement.Y, spawn.Placement.Z)
-local COURTYARD_Z = -750 -- past the gatehouse: the first lethal encounter
 
 function Controller.new(state: any, camera: any, movement: any, input: any, ui: any): any
 	local remote = Shared.Net:WaitForChild("TutorialIntent") :: RemoteEvent
@@ -98,8 +99,9 @@ function Controller.Update(self: any, dt: number)
 	local ui = self.Ui
 	-- Any open window (Arsenal, Codex, Respite) owns the screen; the card sat beside the Arsenal (F05).
 	local hidden = ui.PrologueActive or ui.DialogueOpen or ui.DeathShown or (ui.Altar and ui.Altar.Visible) or (ui.Input and ui.Input.MenuOpen)
-	if root and not self.StakesShown and root.Position.Z < COURTYARD_Z and root.Position.Z > -900 and math.abs(root.Position.X) < 90
-		and root.Position.Y < 100 and string.find(tostring(player:GetAttribute("AsuraAltars") or ""), "Cloister", 1, true) == nil then
+	local F, p = Overworld.Frame, root and root.Position
+	if p and not self.StakesShown and p.X >= F.MinX and p.X <= F.MaxX and p.Z >= F.MinZ and p.Z <= F.MaxZ and Vector2.new(p.X - HOME.X, p.Z - HOME.Z).Magnitude > Controller.StakesRadius
+		and Rules.onlyOpeningAltars(player:GetAttribute("AsuraAltars")) then
 		self:Stakes()
 	end
 	-- F08: the cursor is captured in play, so the card also folds once the fight starts (any combat state).

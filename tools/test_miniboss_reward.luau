@@ -6,7 +6,6 @@
 -- and a full gourd still pays the Essence.
 -- Run from the project root: work/bin/luau/luau tools/test_miniboss_reward.luau
 local World = require("../src/shared/WorldDefinitions")
-local Zones = require("../src/shared/MonasteryZones")
 local Settings = require("../src/shared/CombatSettings")
 local Store = require("../src/server/ProfileStore")
 local Profiles = require("../src/shared/ProfileSchema")
@@ -27,9 +26,9 @@ for _, entry in World.Spawns do
 	if entry.Mob == "HollowBellWarden" then spawn = entry end
 end
 check("one warden spawn, stable id", spawn ~= nil and spawn.Id == "DM_Warden_Graves")
-check("warden leashed to the grave field", Zones.Spawns.DM_Warden_Graves == "Graves")
-local graves = Zones.get("Graves")
-check("warden spawns inside the grave field", graves ~= nil and Zones.contains(graves, spawn.Placement.X, spawn.Placement.Z, 0))
+-- Cutover: the warden keeps its spawn id on the Bell Terrace graves (Overworld.Minibosses) and has no old zone leash.
+local site = require("../src/shared/Overworld").Minibosses.HollowBellWarden.Placement
+check("warden spawns at the relocated graves", spawn.Region == "Forest" and math.abs(spawn.Placement.X - site.X) < 1e-6 and math.abs(spawn.Placement.Z - site.Z) < 1e-6)
 
 -- 2. Exactly once, through real store transactions.
 local data: { [string]: any } = {}

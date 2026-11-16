@@ -18,6 +18,7 @@ local Shared = ReplicatedStorage:WaitForChild("AsurasPath")
 local Config = require(Shared:WaitForChild("Config") :: ModuleScript) :: any
 local Settings = require(Shared.Shared.CombatSettings) :: any
 local World = require(Shared.Shared.WorldDefinitions)
+local Overworld = require(Shared.Shared.Overworld) :: any
 local Protocol = require(Shared.Shared.IntentProtocol)
 local Rules = require(Shared.Simulation.MatchmakingRules) :: any
 local ArenaRules = require(Shared.Shared.ArenaRules)
@@ -185,6 +186,16 @@ local RING_DEFINITIONS: { RingDefinition } = {
 		Yaw = 0,
 	},
 }
+
+-- Overworld cutover: the two corridor rings keep their ids and move to flat pads in the overworld.
+if Overworld.Active then
+	for _, definition in RING_DEFINITIONS do
+		local site = Overworld.Rings[definition.Id]
+		if site then
+			definition.Region, definition.Center = site.Region, Vector3.new(site.X, site.Y, site.Z)
+		end
+	end
+end
 
 -------------------------------------------------------------------------------------------------
 -- State

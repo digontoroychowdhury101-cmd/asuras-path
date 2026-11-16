@@ -8,6 +8,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Shared = ReplicatedStorage:WaitForChild("AsurasPath")
 local World = require(Shared.Shared.WorldDefinitions)
+local Overworld = require(Shared.Shared.Overworld) :: any
 local Settings = require(Shared.Shared.CombatSettings) :: any
 local Weapons = require(Shared.Simulation.WeaponSchema) :: any
 local Tempo = require(Shared.Simulation.Tempo) :: any
@@ -926,7 +927,32 @@ end
 -- Spawning
 -------------------------------------------------------------------------------------------------
 
+-- The overworld ground is written in the background (OverworldService, spawn tiles right after the glade): a mob's
+-- first spawn waits, bounded, for the tiles under it so it never falls into the void. Once the site flag is set
+-- (and for every respawn) this returns at once without yielding.
+local GROUND_TIMEOUT = 300 -- the whole overworld is written ~180 s after boot
+local function awaitGround(spawnId: string): boolean
+	local entry = World.spawnById(spawnId)
+	local map = if Overworld.Active and entry and Overworld.Regions[entry.Region] then Workspace:FindFirstChild(Overworld.Root) else nil
+	if not map then
+		return true
+	end
+	local flag = "SiteReady_Spawn_" .. spawnId
+	local deadline = os.clock() + GROUND_TIMEOUT
+	while not map:GetAttribute(flag) do
+		if os.clock() >= deadline or not map.Parent then
+			warn("[AIService] Ground under " .. spawnId .. " never became ready; not spawned.")
+			return false
+		end
+		task.wait(0.1)
+	end
+	return true
+end
+
 function AIService.SpawnMob(spawnId: string): number?
+	if not awaitGround(spawnId) then
+		return nil
+	end
 	local existing = spawnAgents[spawnId]
 	if existing and agents[existing] and Characters.GetEntity(existing) then
 		return existing
@@ -958,9 +984,11 @@ function AIService.SpawnMob(spawnId: string): number?
 	end
 	local agent = newAgent(id, "Mob", mob.Id, mob.AI, entry.Region, mob.Essence, home, patrol)
 	agent.SpawnId = spawnId
-	local zoneId = Zones.Spawns[spawnId]
-	-- Campaign regions (batches 17-21) leash their foes the same way, to their layout zone.
-	agent.Zone = if zoneId then Zones.get(zoneId) else Campaign.zoneForSpawn(spawnId) :: any
+	-- Only the old corridor leashes its foes to layout zones (batches 15-21); the overworld spawns have none.
+	if World.Regions.DesecratedMonastery then
+		local zoneId = Zones.Spawns[spawnId]
+		agent.Zone = if zoneId then Zones.get(zoneId) else Campaign.zoneForSpawn(spawnId) :: any
+	end
 	spawnAgents[spawnId] = id
 	return id
 end

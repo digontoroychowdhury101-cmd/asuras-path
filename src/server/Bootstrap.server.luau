@@ -2,8 +2,8 @@
 -- Script: ServerScriptService/AsurasPath/Bootstrap
 -- Asura's Path master server entry. Brings services up in dependency order:
 --   Environment -> LagCompensation -> ProfileStore (Persistence) -> CharacterService -> AIService
---   -> SanctuaryService -> MonasteryService -> WorldService -> ColosseumService
--- SanctuaryService and MonasteryService precede WorldService: their map folders suppress greybox
+--   -> SanctuaryService -> OverworldService -> WorldService -> ColosseumService
+-- SanctuaryService and OverworldService precede WorldService: their map folders suppress greybox
 -- and their altar anchors receive the rest prompts.
 -- then owns the player lifecycle: leased profile hydration, durable ranked-result recovery,
 -- character admission, death/respawn telemetry and an ordered, deadline-bounded shutdown save.
@@ -31,8 +31,11 @@ local Persistence = require(Services:WaitForChild("PersistenceService") :: Modul
 local Characters = require(Services:WaitForChild("CharacterService") :: ModuleScript)
 local AI = require(Services:WaitForChild("AIService") :: ModuleScript)
 local Sanctuary = require(Services:WaitForChild("SanctuaryService") :: ModuleScript)
-local Monastery = require(Services:WaitForChild("MonasteryService") :: ModuleScript)
-local Campaign = require(Services:WaitForChild("CampaignWorld") :: ModuleScript)
+local OverworldWorld = require(Services:WaitForChild("OverworldService") :: ModuleScript)
+local SliceDressing = require(Services:WaitForChild("SliceDressingService") :: ModuleScript) :: any
+local BiomeDressing = require(Services:WaitForChild("BiomeDressingService") :: ModuleScript) :: any
+local PerfBudget = require(Services:WaitForChild("PerfBudget") :: ModuleScript) :: any
+local perf: any = nil
 local WorldService = require(Services:WaitForChild("WorldService") :: ModuleScript)
 local Colosseum = require(Services:WaitForChild("ColosseumService") :: ModuleScript)
 local Shop = require(Services:WaitForChild("ShopService") :: ModuleScript) :: any
@@ -95,11 +98,17 @@ local function teardown()
 	if started.World then
 		pcall(WorldService.Destroy)
 	end
-	if started.Campaign then
-		pcall(Campaign.Destroy)
+	if perf then
+		pcall(perf.Stop, perf); perf = nil
 	end
-	if started.Monastery then
-		pcall(Monastery.Destroy)
+	if started.BiomeDressing then
+		pcall(BiomeDressing.Destroy)
+	end
+	if started.SliceDressing then
+		pcall(SliceDressing.Destroy)
+	end
+	if started.Overworld then
+		pcall(OverworldWorld.Destroy)
 	end
 	if started.Sanctuary then
 		pcall(Sanctuary.Destroy)
@@ -370,10 +379,13 @@ local ok, problem = xpcall(function(): boolean
 	started.AI = true
 	Sanctuary.Start()
 	started.Sanctuary = true
-	Monastery.Start()
-	started.Monastery = true
-	Campaign.Start() -- Bamboo Pass .. Sky Citadel maps (batches 17-21); before WorldService, like the Monastery
-	started.Campaign = true
+	-- MonasteryService and CampaignWorld (the old corridor) are retired from the runtime; their sources stay for review.
+	OverworldWorld.Start() -- Map_Overworld blockout and background terrain; before WorldService so its folder suppresses greybox
+	started.Overworld = true
+	SliceDressing.Start()
+	started.SliceDressing = true
+	BiomeDressing.Start()
+	started.BiomeDressing = true
 	WorldService.Start()
 	started.World = true
 	started.Arsenal = true
@@ -386,6 +398,7 @@ local ok, problem = xpcall(function(): boolean
 	started.Colosseum = true
 	local presented, presentationError = pcall(Presentation.Start)
 	if not presented then warn("[Asura AV] Dressing skipped: " .. tostring(presentationError)) end
+	perf = PerfBudget.Boot({ Characters = Characters, Overworld = OverworldWorld }) -- nil outside Studio unless Perf.Enabled
 
 	table.insert(disconnectors, Characters.Subscribe(onCombatEvent))
 	table.insert(disconnectors, Characters.OnEntityAdded(onEntityAdded))

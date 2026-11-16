@@ -1,0 +1,67 @@
+{
+ "png": "sheet_hero_1.png",
+ "group": "hero",
+ "pieces": [
+  {
+   "name": "Summit_Temple_Pagoda",
+   "pack": "hero",
+   "tris": 1216,
+   "size": [
+    61.8,
+    160.9,
+    65.58
+   ],
+   "subs": 4,
+   "tex": "128x128"
+  },
+  {
+   "name": "Basin_Gate_Statue",
+   "pack": "hero",
+   "tris": 272,
+   "size": [
+    70,
+    139.01,
+    44
+   ],
+   "subs": 3,
+   "tex": "128x128"
+  },
+  {
+   "name": "Snow_Watch_Beacon",
+   "pack": "hero",
+   "tris": 598,
+   "size": [
+    19.58,
+    101,
+    19.65
+   ],
+   "subs": 4,
+   "tex": "128x128"
+  },
+  {
+   "name": "Ravine_Aqueduct_Arch",
+   "pack": "hero",
+   "tris": 744,
+   "size": [
+    125,
+    82,
+    24
+   ],
+   "subs": 3,
+   "tex": "128x128"
+  },
+  {
+   "name": "Summit_Temple_Wing",
+   "pack": "hero",
+   "tris": 504,
+   "size": [
+    40,
+    60.24,
+    54.8
+   ],
+   "subs": 4,
+   "tex": "128x128"
+  }
+ ],
+ "failed": []
+}

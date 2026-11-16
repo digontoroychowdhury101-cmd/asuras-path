@@ -112,8 +112,9 @@ printed(string.format("campaign build: %d passed, %d failed", passed, failed))
 if failed > 0 then error("campaign build regression failed") end
 '''
 source = harness.replace("-- LOADERS", "\n".join(loaders))
-output = ROOT / "work/test_campaign_build.generated.luau"
-output.parent.mkdir(exist_ok=True)
+sys.path.insert(0, str(ROOT / "tools"))
+import legacy_world
+output = legacy_world.build(ROOT) / "work" / "test_campaign_build.generated.luau" # archived builders: pre-cutover world
 output.write_text(source)
 result = subprocess.run([str(ROOT / "work/bin/luau/luau"), str(output)], cwd=ROOT / "tools")
 output.unlink()

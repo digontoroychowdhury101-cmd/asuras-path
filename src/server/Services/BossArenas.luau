@@ -9,10 +9,22 @@ local Bodies = require(Shared.Shared.BossBodies)
 local Characters = require(script.Parent.CharacterService)
 local Routes = require(Shared.Shared.SanctuaryRoutes)
 local Campaign = require(Shared.Shared.CampaignZones)
-local Ground = require(script.Parent.CampaignTerrain)
+local Overworld = require(Shared.Shared.Overworld)
+-- Expose an authored floor without moving it: the voxel ground must not cover an arena's lid. The smooth surface
+-- can protrude ~0.4 stud past the last voxel, so undercut inside the solid slab and let the Part lid own contact.
+local function exposeFloor(p: BasePart)
+	local t = workspace:FindFirstChildOfClass("Terrain")
+	if t then
+		local undercut = math.min(4, p.Size.Y)
+		t:FillBlock(p.CFrame * CFrame.new(0, p.Size.Y / 2 + (8 - undercut) / 2, 0), Vector3.new(p.Size.X + 0.5, 8 + undercut, p.Size.Z + 0.5), Enum.Material.Air)
+	end
+end
 local Decor = require(script.Parent.RegionDecor)
 local Arenas = {}
 Arenas.FloorColor = Color3.fromRGB(118, 110, 100) -- duel floor tone (F09 readability)
+-- Floor/approach tops sit this far above the spawn-3 surface: the summit terrain pad is voxel-flat at exactly that
+-- height (+-0.9 jitter), so a coplanar slab z-fought into dark panels. Must exceed the jitter and stay a walkable step.
+Arenas.FloorLift = 1
 local walls: { [string]: { Part } } = {}
 local function part(parent: Instance, name: string, size: Vector3, position: Vector3, color: Color3): Part
 	local p = Instance.new("Part")
@@ -49,14 +61,16 @@ function Arenas.build(root: Instance)
 	local folder = Instance.new("Folder")
 	folder.Name, folder.Parent = "BossArenas", root
 	for _, boss in World.Bosses do
+		if boss.Inactive then continue end
 		local c, s = boss.Arena.Center, boss.Arena.Size
-		local center = Vector3.new(c.X, 0, c.Z)
+		-- Floor top is three studs under the boss spawn (0 in the old corridor, the summit in the overworld).
+		local center = Vector3.new(c.X, boss.Spawn.Y - 3 + Arenas.FloorLift, c.Z)
 		-- F09: a mid stone, not near-black slate: at the low dusk sun the bare Titan and Wu floors read
 		-- black, and dark costumes (the player, Wu) vanished against them. Lights are unchanged.
 		local floor = part(folder, boss.Id .. "Floor", Vector3.new(s.X, 4, s.Z), center - Vector3.new(0, 2, 0), Arenas.FloorColor)
 		if boss.Region == "BambooPass" then
 			floor.MaterialVariant, floor.Color = "AsuraPaving", Color3.fromRGB(177, 179, 169)
-			Ground.exposeFloor(floor)
+			exposeFloor(floor)
 		end
 		part(folder, boss.Id .. "Approach", Vector3.new(30, 4, 40), center + Vector3.new(0, -2, s.Z / 2 + 20), Color3.fromRGB(61, 56, 48))
 		local boundary: { Part } = {}
@@ -86,6 +100,7 @@ function Arenas.build(root: Instance)
 			end
 		end
 	end
+	if Overworld.Active then return end -- the old corridor's road and portal legs are retired
 	-- Traversable link for the Monastery's side courtyard. The Pagoda and Summit roads that used to
 	-- bridge the campaign regions are now their layouts' cloud stair and saddle bridge (batches 20-21).
 	part(folder, "CourtyardRoad", Vector3.new(160, 4, 24), Vector3.new(220, -2, -810), Color3.fromRGB(61, 56, 48))

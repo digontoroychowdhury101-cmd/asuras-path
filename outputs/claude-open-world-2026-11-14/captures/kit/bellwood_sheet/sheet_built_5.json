@@ -1,0 +1,103 @@
+{
+ "png": "sheet_built_5.png",
+ "group": "built",
+ "pieces": [
+  {
+   "name": "Pot_B",
+   "pack": "bellwood_built_b",
+   "tris": 880,
+   "size": [
+    4.28,
+    6.25,
+    3.7
+   ],
+   "subs": 1,
+   "tex": "256x256"
+  },
+  {
+   "name": "Bell_Grave_A",
+   "pack": "bellwood_built_a",
+   "tris": 1492,
+   "size": [
+    5.35,
+    6.16,
+    3.97
+   ],
+   "subs": 4,
+   "tex": "1024x1024/256x256/512x512"
+  },
+  {
+   "name": "Bell_Grave_C",
+   "pack": "bellwood_built_a",
+   "tris": 1468,
+   "size": [
+    5.17,
+    6.06,
+    4.22
+   ],
+   "subs": 3,
+   "tex": "1024x1024/256x256/512x512"
+  },
+  {
+   "name": "Crate_B",
+   "pack": "bellwood_built_b",
+   "tris": 792,
+   "size": [
+    6,
+    5.82,
+    5.53
+   ],
+   "subs": 1,
+   "tex": "512x512"
+  },
+  {
+   "name": "Crate_C",
+   "pack": "bellwood_built_b",
+   "tris": 1216,
+   "size": [
+    4.5,
+    5.7,
+    3.58
+   ],
+   "subs": 2,
+   "tex": "256x256/512x512"
+  },
+  {
+   "name": "Bell_Signpost_B",
+   "pack": "bellwood_built_a",
+   "tris": 1250,
+   "size": [
+    4.8,
+    5.48,
+    2.97
+   ],
+   "subs": 3,
+   "tex": "256x256/512x512"
+  },
+  {
+   "name": "Pot_C",
+   "pack": "bellwood_built_b",
+   "tris": 1112,
+   "size": [
+    5.7,
+    4.9,
+    5.7
+   ],
+   "subs": 2,
+   "tex": "256x256"
+  },
+  {
+   "name": "Bell_Fence_Rail",
+   "pack": "bellwood_built_a",
+   "tris": 468,
+   "size": [
+    8.75,
+    4.45,
+    0.97
+   ],
+   "subs": 1,
+   "tex": "512x512"
+  }
+ ],
+ "failed": []
+}

@@ -173,11 +173,26 @@ def generate(test):
     return "--!nonstrict\n" + snapshot() + PRELUDE + "\n".join(helpers) + "\ndo\n" + body + "\nend\n"
 
 
+# Suites of the archived campaign builders (ticket 08) run on the pre-cutover world: a copy of src/ with
+# Overworld.Active = false (tools/legacy_world.py).
+LEGACY = {"test_campaign_ledger", "test_monastery_discovery", "test_monastery_route", "test_opening_tutorial",
+          "test_recovery_lifecycle", "test_route_foundry"}
+
+
+@lru_cache(maxsize=1)
+def legacy_tree():
+    sys.path.insert(0, str(ROOT / "tools"))
+    import legacy_world
+    return legacy_world.build(ROOT)
+
+
 def run(test):
-    out = ROOT / "tools" / f"_lune_{test.stem}.generated.luau"  # beside the suite: its ./ requires resolve
+    if test.stem in LEGACY:
+        test = legacy_tree() / "tools" / test.name
+    out = test.parent / f"_lune_{test.stem}.generated.luau"  # beside the suite: its ./ requires resolve
     out.write_text(generate(test))
     try:
-        result = subprocess.run([str(LUAU), str(out)], cwd=ROOT / "tools", capture_output=True, text=True, timeout=300)
+        result = subprocess.run([str(LUAU), str(out)], cwd=test.parent, capture_output=True, text=True, timeout=300)
     finally:
         if not os.environ.get("LUNE_COMPAT_KEEP"):
             out.unlink(missing_ok=True)

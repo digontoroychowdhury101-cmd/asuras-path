@@ -5,6 +5,8 @@
 -- dots for other fighters, gold diamonds for Incense Altars, the region name beneath, and small
 -- round blossom buttons on the rim (Respite menu, Controls). Follow-up 14: under the dots, the
 -- objective's walked route (MinimapRoute) - doorways, climbs, portal exits and the bloodstain.
+-- Open world: the radar is the lobby's alone. Beyond the sanctuary the disc is hidden (the M map
+-- replaces it) and the blossoms fold into a small row in the same corner, with a Map blossom added.
 local Workspace = game:GetService("Workspace")
 local Players = game:GetService("Players")
 local Shared = game:GetService("ReplicatedStorage"):WaitForChild("AsurasPath")
@@ -22,9 +24,15 @@ local RANGE = 140 -- studs from centre to rim
 local DOT_POOL = 24
 local ALTAR_POOL = 8
 
-export type Button = { Glyph: string, Angle: number, Press: () -> () }
+local CLUSTER = Vector2.new(35, 35) -- first blossom of the radar-less row, in root pixels
+local CLUSTER_STEP = 38
+local TOUCH_TARGET = 44
+
+-- Slot is the blossom's place in the radar-less row; MapOnly blossoms exist only without the radar.
+export type Button = { Glyph: string, Angle: number, Press: () -> (), Slot: number, MapOnly: boolean? }
+type Blossom = { Holder: GuiObject, Button: TextButton, Rim: UDim2, Row: UDim2, MapOnly: boolean }
 export type View = { Root: Frame, Disc: Frame, Letters: { [number]: TextLabel }, Dots: { Frame }, Altars: { Frame }, Region: TextLabel, State: any,
-	Route: RouteLayer.View }
+	Route: RouteLayer.View, Blossoms: { Blossom }, Radar: boolean, Touch: boolean }
 
 local function dot(parent: Instance, size: number, color: Color3, diamond: boolean): Frame
 	local d = HudKit.make("Frame", parent, {
@@ -66,14 +74,35 @@ function Map.new(gui: ScreenGui, state: any, buttons: { Button }): View
 	local region = HudKit.label(disc, "", 11, Enum.Font.Garamond, C.Blossom, {
 		AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.new(0.5, 0, 0.66, 0), Size = UDim2.fromOffset(110, 14), ZIndex = 4, TextStrokeTransparency = 0.3,
 	})
+	local blossoms: { Blossom } = {}
 	for _, b in buttons do
 		local a = math.rad(b.Angle - 90)
 		local r = DIAMETER * 0.5 + 4
-		local button = Sakura.roundButton(root, 30, centre + UDim2.fromOffset(math.cos(a) * r, math.sin(a) * r), b.Glyph)
+		local rim = centre + UDim2.fromOffset(math.cos(a) * r, math.sin(a) * r)
+		local button = Sakura.roundButton(root, 30, rim, b.Glyph)
 		button.TextSize, button.Font = 15, Enum.Font.GothamBold
 		button.Activated:Connect(b.Press)
+		local holder = button.Parent :: GuiObject
+		holder.Visible = b.MapOnly ~= true
+		table.insert(blossoms, { Holder = holder, Button = button, Rim = rim, Row = UDim2.fromOffset(CLUSTER.X + (b.Slot - 1) * CLUSTER_STEP, CLUSTER.Y), MapOnly = b.MapOnly == true })
 	end
-	return { Root = root, Disc = disc, Letters = letters, Dots = dots, Altars = altars, Region = region, State = state, Route = route }
+	return { Root = root, Disc = disc, Letters = letters, Dots = dots, Altars = altars, Region = region, State = state, Route = route,
+		Blossoms = blossoms, Radar = true, Touch = false }
+end
+
+-- Radar (lobby) or radar-less row (open world). Touch grows the Map blossom to a 44 pt target the way DeviceLayout does for the others.
+local function arrange(view: View, radar: boolean, touch: boolean)
+	view.Radar, view.Touch = radar, touch
+	view.Disc.Visible = radar
+	local scale = view.Root:FindFirstChildOfClass("UIScale")
+	for _, b in view.Blossoms do
+		b.Holder.Position = if radar then b.Rim else b.Row
+		if b.MapOnly then
+			b.Holder.Visible = not radar
+			local grow = (b.Button:FindFirstChild("TouchGrow") :: UIScale?) or (HudKit.make("UIScale", b.Button, { Name = "TouchGrow" }) :: UIScale)
+			grow.Scale = if touch then math.max(1, TOUCH_TARGET / (30 * (if scale then scale.Scale else 1))) else 1
+		end
+	end
 end
 
 -- Places `offset` (world, studs) on the disc relative to the camera's flat heading.
@@ -87,8 +116,11 @@ local function place(gui: Frame, offset: Vector3, look: Vector3, right: Vector3)
 	gui.Visible = true
 end
 
--- `route` is ObjectiveController's staged route (ui.Route), nil when guidance is hidden.
-function Map.step(view: View, route: RouteLayer.Route?)
+-- `route` is ObjectiveController's staged route (ui.Route), nil when guidance is hidden. `radar`
+-- is false beyond the lobby: only the blossom row is arranged then.
+function Map.step(view: View, route: RouteLayer.Route?, radar: boolean, touch: boolean)
+	if radar ~= view.Radar or touch ~= view.Touch then arrange(view, radar, touch) end
+	if not radar then return end
 	local camera = Workspace.CurrentCamera
 	local own = view.State:Own()
 	local root = own and own.Root

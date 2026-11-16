@@ -72,6 +72,7 @@ function Menu.new(camera: any, input: any, ui: any, remote: RemoteEvent, control
 		{ Text = "Settings", Variant = "Secondary", Fn = function() self:Show("Settings") end },
 		{ Text = "Controls", Variant = "Secondary", Fn = function() self:Close(); controls:SetOpen(true) end },
 		{ Text = "Codex", Variant = "Secondary", Fn = function() self:Close(); if ui.OpenCodex then ui.OpenCodex() end end },
+		{ Text = "World map", Variant = "Secondary", Fn = function() self:Close(); if ui.OpenMap then ui.OpenMap() end end },
 		{ Text = "Replay training", Variant = "Secondary", Fn = function() self:Close(); if ui.OnTraining then ui.OnTraining("Replay") end end },
 		{ Text = "Replay opening", Variant = "Secondary", Fn = function() self:Close(); if ui.OnPrologue then ui.OnPrologue() end end },
 	}

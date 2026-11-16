@@ -72,9 +72,12 @@ local WEAPON_GLYPH: { [string]: string } = { Unarmed = "FIST", Jian = "JIAN", Da
 local MATERIAL_NAME: { [string]: string } = { SpiritIronOre = "Spirit Iron Ore", StarfallShard = "Starfall Shard" }
 local WEAPON_NAME: { [string]: string } = { Unarmed = "Iron Fist", Jian = "Jian Sword", Dao = "Dao Sabre", Guandao = "Guandao Glaive", None = "—" }
 local REASONS: { [string]: string } = {
+	["The glade is not ready"] = "The glade is still taking shape. Try the portal again shortly.",
 	GourdEmpty = "The gourd is empty.",
 	EnemiesNearby = "Cannot rest while enemies hunt you.",
 	InBossFight = "The fog binds you to this fight.",
+	ArenaOccupied = "Another warrior is facing this foe. Wait for the fog to lift.",
+	BossFelled = "This foe has already fallen.",
 	NotAtAltar = "Kneel at an Incense Altar first.",
 	NoAltar = "There is no altar here.",
 	TooFar = "Move closer to the altar.",

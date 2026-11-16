@@ -1904,6 +1904,14 @@ function Service.Teleport(id: number, cframe: CFrame)
 	local e = entities[id]
 	if e and alive(e) then
 		e.Placement = nil
+		-- Callers expect an immediate pivot, so the stream request is fired without waiting; the
+		-- PauseOutsideLoadedArea contract holds the client until the destination has loaded.
+		local player = e.Player
+		if player and (e.Root.Position - cframe.Position).Magnitude > 128 then
+			task.spawn(function()
+				pcall(player.RequestStreamAroundAsync, player, cframe.Position, 5)
+			end)
+		end
 		e.Model:PivotTo(cframe)
 		e.Root.AssemblyLinearVelocity = Vector3.zero
 		e.LastMoveTo = Vector3.new(math.huge, 0, 0)

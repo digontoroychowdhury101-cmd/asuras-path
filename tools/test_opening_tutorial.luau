@@ -36,6 +36,9 @@ end
 check("perilous step names the concrete inputs", Rules.text(Rules.Steps[8].Do, function(c) return InputMap.label(c, "Keyboard") end) == "When ▲ PERILOUS flashes, deflect with [F] or dodge with [Shift/Q].")
 check("air glide taught before bosses ask for it", string.find(Rules.Steps[10].Why, "Counter: Air Glide", 1, true) ~= nil)
 check("health ceiling and rally explained", string.find(Rules.Steps[6].Why, "ceiling", 1, true) and string.find(Rules.Steps[6].Why, "rest", 1, true))
+-- C3: a newcomer's AsuraAltars is the starting bonfire (comma list), so the card must still be due; any other altar ends it.
+check("stakes card due with only the bonfire and the glade kindled", Rules.onlyOpeningAltars("Altar_SanctuaryBonfire") and Rules.onlyOpeningAltars("Altar_SanctuaryBonfire,Altar_MonasteryGate") and Rules.onlyOpeningAltars("") and Rules.onlyOpeningAltars(nil))
+check("stakes card ends once an altar beyond the glade is kindled", not Rules.onlyOpeningAltars("Altar_SanctuaryBonfire,Altar_MonasteryGate,Altar_BellTerrace") and not Rules.onlyOpeningAltars("Altar_BellTerrace"))
 check("stakes explain carried, reclaimed and lost Essence", string.find(Rules.Stakes, "bloodstain", 1, true) and string.find(Rules.Stakes, "lost", 1, true) and string.find(Rules.Stakes, "Spend Essence", 1, true))
 local done = {}
 check("only the current step advances", Rules.advance(done, "Light") == nil and Rules.advance(done, "LockOn") == "LockOn")
@@ -229,7 +232,7 @@ check("waits for the avatar's appearance and the spawn hold", string.find(pro, "
 check("no blind delay before the veil", not string.find(pro, "task.wait(1.5) -- let the profile", 1, true))
 check("camera framed behind the avatar before reveal", string.find(pro, "camera:Face(root.CFrame.LookVector)", 1, true) ~= nil)
 check("skip works on any device, replay forces the lines", string.find(pro, "Press any key or tap to skip", 1, true) and string.find(pro, "force == true", 1, true))
-check("handoff names the first rest and the training", string.find(pro, "then train at the Monastery Gate", 1, true) ~= nil)
+check("handoff names the first rest and the training", string.find(pro, "then train at the Gateway Glade", 1, true) ~= nil)
 check("handoff window published before its banner", string.find(pro, "ui.HandoffUntil = os.clock() + Controller.HandoffSeconds", 1, true) ~= nil)
 local pause, boot = src("src/client/Controllers/PauseMenu.luau"), src("src/client/Bootstrap.client.luau")
 check("Respite offers replay of training and opening", string.find(pause, "Replay training", 1, true) and string.find(pause, "Replay opening", 1, true))
@@ -242,7 +245,7 @@ check("skip needs a confirming press", string.find(tc, "Press again to skip", 1,
 check("skip names the cursor key a mouse player must hold to click it (F08)", string.find(tc, 'self:Label("Cursor") .. "] to click"', 1, true) ~= nil)
 check("stakes card folds once the fight starts and clears the action bar (F08)", string.find(tc, 'snapshot.State ~= "Idle" then self.StakesPanel:Destroy()', 1, true) ~= nil
 	and string.find(tc, 'Position = UDim2.new(0.5, 0, 0.72, 0)', 1, true) ~= nil)
-check("stakes shown before the courtyard fight", string.find(tc, "root.Position.Z < COURTYARD_Z", 1, true) ~= nil)
+check("stakes shown once the player leaves the glade, inside the overworld frame", string.find(tc, "Magnitude > Controller.StakesRadius", 1, true) ~= nil and string.find(tc, "Overworld.Frame", 1, true) ~= nil)
 -- F08 (Studio, fresh profile): the Space or click that skips the prologue reached the Controls card's
 -- fold rule while it was hidden under the veil, so the reference never showed at the handoff. The
 -- real ControlsCard runs on permissive engine stubs.

@@ -47,8 +47,9 @@ function Controller.new(state: any,ui: any,net: Instance,camera: any?): SpellCon
   if packet.action=="State" then
    self.Slots=packet.inventory.spellSlots;self.Cooldowns=packet.cooldowns or {};Panel.update(self.Panel,packet.inventory)
    -- A claimed cache stops offering itself, on this client only; the server still refuses a second claim.
+   self.Claimed=packet.inventory.caches or {}
    local caches=workspace:FindFirstChild("WorldDiscoveryCaches")
-   for id,claimed in packet.inventory.caches or {} do
+   for id,claimed in self.Claimed do
     local chest=caches and caches:FindFirstChild(id)
     local prompt=chest and chest:FindFirstChildOfClass("ProximityPrompt")
     if prompt and claimed then prompt.Enabled=false end
@@ -57,6 +58,15 @@ function Controller.new(state: any,ui: any,net: Instance,camera: any?): SpellCon
   elseif packet.action=="Cooldown" then self.Cooldowns[packet.id]=packet.untilTime
   elseif packet.action=="Result" and not packet.ok then ui:ShowToast(packet.message) end
  end))
+ -- Chests stream in and out; a claimed one that streams back in must stay quiet.
+ task.spawn(function()
+  local caches=workspace:WaitForChild("WorldDiscoveryCaches",30)
+  if not caches then return end
+  table.insert(self.Connections,caches.ChildAdded:Connect(function(chest: Instance)
+   local prompt=chest:FindFirstChildOfClass("ProximityPrompt")
+   if prompt and self.Claimed and self.Claimed[chest.Name] then prompt.Enabled=false end
+  end))
+ end)
  -- Showcase sorceries (Supernova, Blazing Sun) take their own cues; everything else keeps SpellVfx.
  self.Showcase=Showcase.new(state,camera)
  self.Unsubscribe=state:OnCue(function(cue: any) if not Showcase.cue(self.Showcase,cue) then Vfx.cue(cue,state) end end)
