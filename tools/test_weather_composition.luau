@@ -464,6 +464,8 @@ check("rain is a streak at player height: >= 1 stud long, scaled with fall speed
 	Kinds.Rain.Size >= 1 and near(Kinds.Rain.Size, Kinds.Rain.Fall * 0.02, 1e-6) and Kinds.Rain.Squash < 0 and Kinds.Rain.Alpha >= 0.2 and Kinds.Rain.Alpha <= 0.6
 	and Kinds.Rain.Color[3] > Kinds.Rain.Color[1] and Kinds.Rain.Color[1] >= 150)
 check("snow flakes >= 0.4 stud and dust puffs stay translucent", Kinds.Snow.Size >= 0.4 and Kinds.Snow.Alpha <= 0.3 and Kinds.Dust.Alpha <= 0.8 and Kinds.Dust.Size >= 1.5)
+check("dust uses a soft smoke sprite, not the default star (Studio: glitter)", Kinds.Dust.Texture == "rbxasset://textures/particles/smoke_main.dds"
+	and string.find(weatherSource, "emitter.Texture = spec.Texture", 1, true) ~= nil)
 for kind, spec in Kinds do
 	local full = spec.Rate * spec.Life
 	local comfortLive = full * 0.35

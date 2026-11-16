@@ -24,7 +24,7 @@ local FX_TAG, SHELTER_TAG = "AsuraWeatherFx", "AsuraShelter"
 local KINDS: { [string]: any } = {
 	Rain = { Rate = 540, Fall = 70, Share = 0.6, Life = 1.1, Size = 1.4, Squash = -2, Alpha = 0.3, Glow = 0.4, Influence = 0.5, Color = { 200, 215, 235 } },
 	Snow = { Rate = 110, Fall = 10, Share = 0.8, Life = 5, Size = 0.45, Alpha = 0.1, Glow = 0.2, Color = { 245, 248, 255 } },
-	Dust = { Rate = 100, Fall = 1, Share = 1.5, Life = 4, Size = 2.2, Alpha = 0.7, Glow = 0, Color = { 222, 190, 140 } },
+	Dust = { Rate = 100, Fall = 1, Share = 1.5, Life = 4, Size = 2.2, Alpha = 0.7, Glow = 0, Color = { 222, 190, 140 }, Texture = "rbxasset://textures/particles/smoke_main.dds" },
 }
 -- The emitter box is a tall volume around the player (drops spawn anywhere in it, so rain fills head height).
 local FX_SIZE, FX_LIFT = Vector3.new(40, 44, 40), 22
@@ -112,6 +112,8 @@ local function precipitation(self: any, position: Vector3, rates: { [string]: nu
 			emitter.Color = ColorSequence.new(Color3.fromRGB(spec.Color[1], spec.Color[2], spec.Color[3]))
 			emitter.Speed = NumberRange.new(spec.Fall * 0.5, spec.Fall * 0.7)
 			emitter.LightEmission, emitter.LightInfluence = spec.Glow, spec.Influence or 1
+			-- Dust uses the soft smoke sprite; the default texture is an eight-point star that reads as glitter.
+			if spec.Texture then emitter.Texture = spec.Texture end
 			if spec.Squash then
 				emitter.Orientation, emitter.Squash = Enum.ParticleOrientation.VelocityParallel, NumberSequence.new(spec.Squash)
 			end

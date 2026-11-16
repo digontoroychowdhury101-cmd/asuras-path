@@ -1,5 +1,71 @@
 # CONTINUATION — read this first after any restart
 
+## Reconcile after Windows restart — 2026-11-16 ~23:50 Sydney (newest)
+
+Binding memory rule (creator): Opus lead + at most TWO active workers; one heavy job at a time machine-wide (Studio Play,
+multiplayer test, Blender job, full verify or build); check committed memory before each heavy launch; close only finished
+test instances; no duplicate Studio sessions or leftover polling.
+Memory at reconcile: commit 15.6 / 26.7 GB (pagefile 11.0 GB allocated, 0.4 GB used), 4.4 GB free of 15.7 GB physical.
+Largest: Discord 0.7 GB, three claude processes ~1.6 GB, Defender 0.5 GB. No Studio, no Blender, no local server,
+no dead-worker polling found (only hooks, MCP servers, oversight's git). list_roblox_studios = none. Stale *.lock files
+next to the closed copies under work/windows-resume/*/ and work/multiclient/ are left (harmless).
+
+Lane resume points (all lane workers reported FINAL before the stop except win-05):
+- win-01 rain/snow/dust: DONE. Dust sprite fix (WeatherController Texture=smoke_main) + test; weather lune 244/0. Rain/snow fill
+  head height; shelter x3, respawn, rain<->lobby x3 = no leaks. Open: weather ignores Reduced effects toggle; snow star sprites;
+  faint dust; no rain sound; FPS numbers confounded.
+- win-02 stairs/tower: DONE in source + Studio. Mtn_Stair_Mid/Steep picked by ground climb; summit Stair_1/2 high ends 0.0/+0.5.
+  Tower visible from glade eyes (placeholder geometry). Open: Stair_3 + Switchback flights float 8-11; Ravine cliff stairs buried.
+- win-03 farvis: DONE with gaps. Temple absent below ~L15-18 in all regions incl. Auto; drawn L21. Recommend cheap far silhouette.
+- win-04 cloud + lantern: DONE. Cold-open cloud: PlaceVersion 9, 277/3173417/786797912 (= M1), protected digests x2 = Mac baseline.
+  Lantern attempt 1 SUCCEEDED: op a18c4491-…, asset 106633407703784; local LoadAsset 3 MeshParts + SurfaceAppearance;
+  registered in assets/SLICE_KIT_UPLOADED.json. B/A/C not sent. Batch of kits/audio NOT started.
+- win-05 multiplayer (note exists; harness edits in tools/qa/*MultiClient*): Shen run 7 = 35 checks, failed=1
+  (BOTH-INSIDE: only B became participant; unclassified). Diagnostics added, rerun pending. TerrainPriority harness NOT run.
+- win-06 acceptance inventory: DONE (note).
+
+Skipped / failed during the memory failures (original outcome -> retry):
+1. Full verify after lane edits: never run (17:44 run was 14/14 EXIT=0 on clean HEAD 03827d6 only) -> rerun now.
+2. lune biome test: printed nothing (paging pressure), unconfirmed -> rerun (inside verify_all).
+3. test_biome_dressing luau: 2 fails = 20 s build-time checks at 21-25 s under load -> rerun unloaded.
+4. win-03 low-level captures for Saltreach/Frostmere/Amberfall/Ashen taken at 3300/4356 tiles; Frostmere L03/L05,
+   Saltreach L05 missing; server "not enough memory" in CombatRules.encode -> re-verify once terrain is complete.
+5. win-05 Shen runs 1-2 clients crashed (RSL panic, low RAM); run 7 BOTH-INSIDE fail unclassified -> rerun alone.
+6. TerrainPriorityMultiClient: never run -> run alone.
+7. All frame-time figures from today (rain 35 vs 23 fps, farvis 5-14 fps) confounded by concurrent windows -> remeasure solo.
+
+Retried: (1) verify_all with lane edits = 14/14 EXIT=0 (work/windows-resume/verify_all2.log), slice 1013/0, weather 244/0;
+new source build = 277 scripts / 3175399 bytes / digest 1146079001. (2)+(3) test_biome_dressing under luau, unloaded:
+19091/0 in 21 s (build-time checks pass). lune_compat prints nothing for this file on Windows (rc 0); biome is not in verify_all.
+Harness files compile (luau-compile --null). Milestone W1 committed/pushed with these results.
+Next: win-05 rerun (heavy, solo): Shen BOTH-INSIDE classification, then TerrainPriority; then remaining acceptance.
+
+## Windows resume 2026-11-16 evening (superseded by the reconcile above)
+
+Oversight Fable 5.2; lead Opus 5.5 (fresh, from notes). HEAD 03827d6 = origin. Checked by lead 17:5x Sydney:
+candidate SHA-256 1e15bb0c… matches; assets dry-run 1277 same / 0 add / 0 DIFFERENT (nothing to restore);
+tools luau 0.742 + rojo 7.7.1 (work/bin), Blender 5.2.2, Python 3.15; plugins ECC 2.2.3 d2ef268, Ponytail 5.3.3 96608e0,
+Matt 1.3.1 49dd158 (match pins). Studio: list_roblox_studios = NO instances open (nothing unsaved to preserve).
+Working copy work/windows-resume/AsurasPathTEST.rbxlx (copy of candidate). verify_all running -> work/windows-resume/verify_all.log.
+DELEGATION_STATUS.md shows an oversight modification; lead does not touch it.
+
+Rules: each Studio lane opens ITS OWN copy under work/windows-resume/<lane>/ (never places/, outputs/AsurasPath.rbxlx,
+checkpoints); assert persistedToCloud=false before every write; Source patches in Studio are in-memory, never saved over source.
+Only win-04 touches the cloud window (read-only identity check + bounded lantern uploads). Workers do not commit; lead commits.
+
+| Lane | Note | Model | Owns (exclusive) | Studio window |
+|---|---|---|---|---|
+| win-01 rain + snow/dust | workers/win-01-rain.md | sonnet | src/client/Controllers/WeatherController.luau, tools/test_weather_composition.luau, captures/win/rain_*, snow_*, dust_* | own copy work/windows-resume/rain/ |
+| win-02 stairs + tower sightline | workers/win-02-stairs.md | sonnet | src/shared/BiomeDressing.luau, tools/test_biome_dressing.luau, src/shared/SliceDressing.luau, tools/test_slice_dressing.luau, captures/win/stair_*, tower_* | own copy work/windows-resume/stairs/ |
+| win-03 landmark visibility | workers/win-03-farvis.md | sonnet | note + captures/win/farvis_* only | own copy work/windows-resume/farvis/ |
+| win-04 cloud identity + lantern upload | workers/win-04-cloud-upload.md | sonnet | assets/source/overworld/upload/** registries (real IDs only), tools/qa/ProtectedDigest.luau | cloud window (read-only + uploads), own copy work/windows-resume/upload/ |
+| win-05 multiplayer harnesses | workers/win-05-multiclient.md | sonnet | tools/qa/ShenMultiClient.*, tools/qa/TerrainPriorityMultiClient.*, work/multiclient/ | own QA copy work/multiclient/ |
+| win-06 acceptance inventory | workers/win-06-acceptance.md | haiku | note only | none |
+
+Lead owns default.project.json, Bootstrap files, CONTINUATION/LEDGER, commits. Next if interrupted: read each win-NN note's
+last checkpoint; relaunch a fresh worker from it (explicit model), never SendMessage-resume. Cloud integration only after
+local suites + focused Studio pass green and milestone pushed (step 7 of the resume brief).
+
 ## Windows delivery after Mac quota stop — 2026-11-16 (newest)
 
 Read [WINDOWS_HANDOFF.md](WINDOWS_HANDOFF.md) and [handoff/WINDOWS_RESUME_PROMPT.md](handoff/WINDOWS_RESUME_PROMPT.md).

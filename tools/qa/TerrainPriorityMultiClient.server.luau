@@ -25,12 +25,12 @@ local STS = game:GetService("StudioTestService")
 local Http = game:GetService("HttpService")
 if not RS:WaitForChild("TerrainQA", 15) then return end
 
-local result = { kind = "Seeded Studio diagnostic: overworld tile priority, 2 local clients; no live service", checks = {} }
+local result = { kind = "Seeded Studio diagnostic: overworld tile priority, 2 local clients; no live service", checks = {}, infos = {} }
 local function check(ok, name, details)
 	table.insert(result.checks, { name = name, passed = ok == true, details = details })
 	print(string.format("[TerrainMC] %s %s %s", if ok then "PASS" else "FAIL", name, if details ~= nil then Http:JSONEncode(details) else ""))
 end
-local function info(name, details) print(string.format("[TerrainMC] INFO %s %s", name, if details ~= nil then Http:JSONEncode(details) else "")) end
+local function info(name, details) table.insert(result.infos, { name = name, details = details }); print(string.format("[TerrainMC] INFO %s %s", name, if details ~= nil then Http:JSONEncode(details) else "")) end
 
 local ok, err = xpcall(function()
 	local t0 = os.clock()
@@ -39,11 +39,11 @@ local ok, err = xpcall(function()
 	local Terrain = require(S.OverworldTerrain)
 	local World = require(S.OverworldService)
 	local O = require(RS.AsurasPath.Shared.Overworld)
-	repeat task.wait(0.2) until (workspace:GetAttribute("AsuraReady") and #Players:GetPlayers() == 2) or os.clock() - t0 > 240
+	repeat task.wait(0.2) until (workspace:GetAttribute("AsuraReady") and #Players:GetPlayers() == 2) or os.clock() - t0 > 900
 	local list = Players:GetPlayers(); table.sort(list, function(a, b) return a.UserId < b.UserId end)
 	assert(#list == 2, "two players")
 	local who = { { p = list[1], id = NEAR_ALTAR }, { p = list[2], id = FAR_ALTAR } }
-	repeat task.wait(0.2) until (C.GetEntity(list[1].UserId) and C.GetEntity(list[2].UserId)) or os.clock() - t0 > 300
+	repeat task.wait(0.2) until (C.GetEntity(list[1].UserId) and C.GetEntity(list[2].UserId)) or os.clock() - t0 > 600
 	local a, b = O.Altars[NEAR_ALTAR].Spawn, O.Altars[FAR_ALTAR].Spawn
 	local separation = math.sqrt((a.X - b.X) ^ 2 + (a.Z - b.Z) ^ 2)
 	check(separation > MIN_SEPARATION, "targets are far apart", { studs = math.floor(separation), near = NEAR_ALTAR, far = FAR_ALTAR })

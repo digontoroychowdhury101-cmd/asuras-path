@@ -41,6 +41,9 @@ event.OnClientEvent:Connect(function(op, arg, arg2)
 			sealed = part and part:GetAttribute("Sealed"), encounter = player:GetAttribute("AsuraEncounter"),
 			shenFound = found ~= nil, health = h and h.Health, maxHealth = h and h.MaxHealth,
 		})
+	elseif op == "Intent" then
+		local remote = RS:FindFirstChild("ActionIntent", true)
+		if remote then remote:FireServer({ seq = arg2, action = arg, time = workspace:GetServerTimeNow() }) end
 	elseif op == "Leave" then
 		game:GetService("StudioTestService"):LeaveTest()
 	end

@@ -1,5 +1,17 @@
 # Open-World Replacement — Ledger (lead: Opus 5.5, restart #2)
 
+## Windows resume agents — 2026-11-16 evening (lead Opus 5.5, requested models)
+
+| Lane | Agent ID | Model requested | Result |
+|---|---|---|---|
+| win-01 rain/snow/dust | a7ba4f05e836f2848 | sonnet | dust sprite fix + test; no leaks across shelter/respawn/lobby |
+| win-02 stairs/tower | a5805b6e0457ffae0 | sonnet | summit Stair_1/2 fixed (Mid/Steep pieces) + high-end test; tower visible |
+| win-03 far visibility | ac28da64fbf71bd13 | sonnet | temple draws only at ~L15-21; Auto absent everywhere |
+| win-04 cloud identity + lantern | aa471cd7523409155 | sonnet | cloud v9 = M1 digests; lantern asset 106633407703784 |
+| win-05 multiplayer | not in this lead's launch records (note exists) | unverified | Shen run 7: 35 checks, failed 1; terrain harness not run |
+| win-06 acceptance inventory | a7852c6518e2a2a6c | haiku | gap list |
+Routing to be verified by oversight from runtime records; the lead did not inspect transcripts.
+
 ## Latest delivery — Mac to Windows, 2026-11-16
 
 Codex preserved and verified Claude's pending round-2 work after the quota stop; [WINDOWS_HANDOFF.md](WINDOWS_HANDOFF.md)

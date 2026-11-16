@@ -266,6 +266,9 @@ for _, id in B.Order do
 			local sink = lowG - (h.Y - h.Sink * h.Scale)
 			if highG < lowG - 0.5 then table.insert(stairBad, h.Id .. " climbs down the slope") end
 			if sink < 0 or sink > 2 then table.insert(stairBad, h.Id .. " low-end sink " .. string.format("%.1f", sink)) end
+			-- win-02: the high end too. Columns stand from the flat underside, so the top tread must not end more than 1 stud below the ground there (MountainAscent only: the Ravine cliff stairs, 2.5-22 buried, are a known open defect)
+			local topY = h.Y - h.Sink * h.Scale + p.Subs[1].Steps * p.Subs[1].Rise * h.Scale
+			if id == "MountainAscent" and topY < highG - 1 then table.insert(stairBad, h.Id .. " high end buried " .. string.format("%.1f", highG - topY)) end
 		end
 	end
 	if #stairBad > 0 then print("  " .. id .. " stair problems: " .. table.concat(stairBad, "; ", 1, math.min(#stairBad, 10))) end

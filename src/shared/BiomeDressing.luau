@@ -96,6 +96,9 @@ local P: { [string]: any } = {
 	Mtn_Thousand_Steps_Gate = kit({ 36, 34, 8 }, 1, true, { s("Stone", "Slate", STN, 7000, true), s("Timber", "Wood", TIM, 3000, true) }),
 	Mtn_Pass_Gate = kit({ 24, 18, 5 }, 0.6, true, { s("Stone", "Slate", STN, 3600, true) }),
 	Mtn_Stair_Run = kit({ 14, 12, 22 }, 0.4, true, { steps(STN, 2200, 14, 0.85, 1.6, 14) }),
+	-- steeper flights for the summit ramp, where the ground climbs 13 to 19 studs per 22 (Run climbs 11.9): same footprint, higher treads
+	Mtn_Stair_Mid = kit({ 14, 14, 22 }, 0.4, true, { steps(STN, 2200, 14, 0.95, 1.6, 14) }),
+	Mtn_Stair_Steep = kit({ 14, 19, 22 }, 0.4, true, { steps(STN, 2200, 14, 1.35, 1.6, 14) }),
 	Mtn_Retaining_Wall = kit({ 18, 10, 3.6 }, 0.6, true, { s("Stone", "Slate", STN, 1600, true) }),
 	Mtn_Refuge_Hall = kit({ 28, 14, 22 }, 0.6, true, { s("Stone", "Slate", STN, 5000, true), s("Timber", "Wood", TIM, 3800, true), s("Roof", "Slate", BAS, 2600) }),
 	Mtn_Windbreak = kit({ 18, 8, 2.6 }, 0.4, true, { s("Stone", "Slate", STN, 900, true) }),
@@ -434,14 +437,23 @@ local function portal(id: string): any
 end
 
 -- Stairs down a ramp (the blockout's stand-in slab): one flight per `rise` studs of drop, along A to B.
-local function rampStairs(ramp: any, piece: string, rise: number): { any }
+-- `taller` (optional) lists steeper variants of `piece` (rise ascending, 22 studs long): a flight takes the first whose climb reaches the ground's rise over its length.
+local function rampStairs(ramp: any, piece: string, rise: number, taller: { { any } }?): { any }
 	local out = {}
 	local n = math.max(1, math.ceil(math.abs(ramp.A.Y - ramp.B.Y) / rise))
 	local dx, dz = ramp.B.X - ramp.A.X, ramp.B.Z - ramp.A.Z
 	local yaw = math.deg(math.atan2(dx, dz))
 	for k = 1, n do
 		local t = (k - 0.5) / n
-		table.insert(out, at(ramp.Id .. "_Stair_" .. k, piece, ramp.A.X + dx * t, ramp.A.Z + dz * t, yaw, { Cliff = true }))
+		local x, z, pick = ramp.A.X + dx * t, ramp.A.Z + dz * t, piece
+		if taller then
+			local sx, sz = math.sin(math.rad(yaw)) * 11, math.cos(math.rad(yaw)) * 11
+			local climb = math.abs(Overworld.heightAt(x + sx, z + sz) - Overworld.heightAt(x - sx, z - sz))
+			for _, v in taller do
+				if climb > v[2] then pick = v[1] end -- v = { piece, the ground climb above which it replaces the one before }
+			end
+		end
+		table.insert(out, at(ramp.Id .. "_Stair_" .. k, pick, x, z, yaw, { Cliff = true }))
 	end
 	return out
 end
@@ -651,7 +663,7 @@ local function mountainHeroes(): { any }
 	extend(H, shelters("MountainAscent", { MountainRefuge = "Mtn_Refuge_Hall" }))
 	extend(H, ring("RefugeWindbreak", "Mtn_Windbreak", -7750, -6500, 52, 5))
 	for _, r in Overworld.Blockout.Ramps do
-		if r.Region == "MountainAscent" then extend(H, rampStairs(r, "Mtn_Stair_Run", 10)) end
+		if r.Region == "MountainAscent" then extend(H, rampStairs(r, "Mtn_Stair_Run", 10, { { "Mtn_Stair_Mid", 12.9 }, { "Mtn_Stair_Steep", 16 } })) end
 	end
 	for _, l in Overworld.Blockout.Lifts do
 		if l.Region == "MountainAscent" then extend(H, liftEnds(l, "Mtn_Lift_Station", "Mtn_Lift_Pylon", 5)) end

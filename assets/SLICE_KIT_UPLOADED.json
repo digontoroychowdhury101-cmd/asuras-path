@@ -1,0 +1,37 @@
+{
+  "note": "Real IDs only. modelAssets = Assets API Model id (LoadAsset target). pieces = sub-mesh MeshId/maps read from a verified LoadAsset (2026-11-16).",
+  "modelAssets": {
+    "Bell_Lantern_Post": {
+      "assetId": "rbxassetid://106633407703784",
+      "operationId": "a18c4491-d60d-4a82-aa02-e47f77770fff",
+      "source": "assets/source/overworld/upload/slice/Bell_Lantern_Post.glb",
+      "uploaded": "2026-11-16",
+      "moderationState": "Approved"
+    }
+  },
+  "pieces": {
+    "Bell_Lantern_Post": {
+      "Bell_Lantern_Post__Stone": {
+        "MeshId": "rbxassetid://140330797161785",
+        "ColorMap": "rbxassetid://81572422853175",
+        "NormalMap": "rbxassetid://133568385555825",
+        "RoughnessMap": "rbxassetid://103997890852707",
+        "MetalnessMap": "rbxassetid://87232472257109"
+      },
+      "Bell_Lantern_Post__Glow": {
+        "MeshId": "rbxassetid://90883687888028",
+        "ColorMap": "rbxassetid://114001902073274",
+        "NormalMap": "",
+        "RoughnessMap": "rbxassetid://121476398534218",
+        "MetalnessMap": "rbxassetid://108740570960240"
+      },
+      "Bell_Lantern_Post__Bronze": {
+        "MeshId": "rbxassetid://105375408076143",
+        "ColorMap": "rbxassetid://95523375764903",
+        "NormalMap": "rbxassetid://102789620654437",
+        "RoughnessMap": "rbxassetid://136667534942132",
+        "MetalnessMap": "rbxassetid://132441202373627"
+      }
+    }
+  }
+}
