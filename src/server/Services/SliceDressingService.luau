@@ -11,7 +11,7 @@
 -- Geometry: PLACEHOLDER parts sized from the kit manifest. makePiece is the one place that maps piece name -> Instance; it clones
 -- ServerStorage/SliceKit/<Piece> (a Model of the imported MeshParts, pivot at the foot centre) when one exists and otherwise builds
 -- the placeholder. Resolution order: SliceKit template, else the slice kit REGISTRY by name (Slice.Registry, from assets/SLICE_KIT_UPLOADED.json:
--- one MeshPart per sub-mesh built with AssetService:CreateMeshPartAsync + SurfaceAppearance, foot-centre pivot), else a registered fit from
+-- one MeshPart per sub-mesh cloned from the piece's uploaded model (InsertService:LoadAsset, cached), foot-centre pivot), else a registered fit from
 -- Slice.Assets (ServerStorage clone), else the placeholder. Ids are never written here.
 -- Ground: a raycast down onto Terrain (written voxels sit about 2 studs above Overworld.heightAt), falling back to heightAt + 2.
 local Workspace = game:GetService("Workspace")
@@ -38,9 +38,9 @@ local stats = { Cells = 0, Built = 0, MeshParts = 0, PlaceholderParts = 0, Real 
 
 -- Replaceable for tests (and for a Studio capture that wants flat ground): (x, z, heightAt) -> surface Y.
 SliceDressingService.Ground = nil :: ((number, number, number) -> number)?
--- Replaceable for tests: the slice kit registry (default Slice.Registry) and the MeshPart factory (assetId, structure) -> MeshPart?.
+-- Replaceable for tests: the slice kit registry (default Slice.Registry) and the model loader (assetId) -> Model? (default InsertService:LoadAsset).
 SliceDressingService.Registry = nil :: any
-SliceDressingService.MakeMesh = nil :: ((string, boolean) -> Instance?)?
+SliceDressingService.LoadModel = nil :: ((string) -> Instance?)?
 
 local function ground(x: number, z: number, surface: number): number
 	if SliceDressingService.Ground then
@@ -157,36 +157,57 @@ local function tagSub(p: BasePart, subName: string, lod: boolean, def: any, stru
 	end
 end
 
-local function createMesh(assetId: string, structure: boolean): Instance?
-	if SliceDressingService.MakeMesh then
-		return SliceDressingService.MakeMesh(assetId, structure)
+-- Models come from InsertService:LoadAsset (server only). SurfaceAppearance maps and MeshId are not writable from game scripts, so the
+-- template is a clone of the uploaded model's own MeshPart, which already carries its SurfaceAppearance. One load per asset, never per placement.
+local modelCache: { [string]: Instance | boolean } = {} -- "rbxassetid://N" -> loaded Model (never parented anywhere; false = load failed, warned once)
+
+local function loadModel(assetId: string): Instance?
+	local hit = modelCache[assetId]
+	if hit ~= nil then
+		return if hit == false then nil else hit :: Instance
 	end
-	local ok, part = pcall(function()
-		return (game:GetService("AssetService") :: any):CreateMeshPartAsync(assetId, { CollisionFidelity = Enum.CollisionFidelity.Box })
-	end)
-	if not ok then
-		warn(string.format("[SliceDressing] mesh %s not created: %s", assetId, tostring(part)))
-		return nil
+	local model: Instance? = nil
+	if SliceDressingService.LoadModel then
+		model = SliceDressingService.LoadModel(assetId)
+	else
+		local ok, res = pcall(function()
+			return (game:GetService("InsertService") :: any):LoadAsset(tonumber(string.match(assetId, "%d+")) :: number)
+		end)
+		if ok then
+			model = res
+		else
+			warn(string.format("[SliceDressing] model %s not loaded: %s", assetId, tostring(res)))
+		end
 	end
-	return part
+	modelCache[assetId] = model or false
+	return model
 end
 
--- One template MeshPart (with its SurfaceAppearance) per registry sub-mesh, cached; clones are cheap and share the mesh.
-local function meshTemplate(key: string, entry: any, structure: boolean): Instance?
+local function meshNumber(id: any): string?
+	return if type(id) == "string" then string.match(id, "%d+") else nil
+end
+
+-- One template MeshPart per registry sub-mesh, cached: the loaded model's MeshPart whose MeshId matches, else the one named like the sub-mesh.
+local function meshTemplate(key: string, entry: any): Instance?
 	local hit = meshCache[key]
 	if hit ~= nil then
 		return if hit == false then nil else hit :: Instance
 	end
-	local tpl = createMesh(entry.MeshId, structure)
-	if tpl then
-		local sa = Instance.new("SurfaceAppearance")
-		for _, map in { "ColorMap", "NormalMap", "RoughnessMap", "MetalnessMap" } do
-			local id = entry[map]
-			if type(id) == "string" and id ~= "" then
-				(sa :: any)[map] = id
+	local tpl: Instance? = nil
+	local model = if type(entry.Asset) == "string" then loadModel(entry.Asset) else nil
+	if model then
+		local want, byName = meshNumber(entry.MeshId), nil
+		for _, d in model:GetDescendants() do
+			if d:IsA("MeshPart") then
+				if want and meshNumber((d :: any).MeshId) == want then
+					tpl = d
+					break
+				elseif (d.Name == key or d.Name == string.match(key, "__(.+)$")) and not byName then
+					byName = d
+				end
 			end
 		end
-		sa.Parent = tpl
+		tpl = tpl or byName
 	end
 	meshCache[key] = tpl or false
 	return tpl
@@ -215,7 +236,7 @@ local function registryPiece(pl: any, frame: CFrame, def: any): Instance?
 	end
 	local made: { Instance } = {}
 	for _, r in list do
-		local tpl = meshTemplate(r.Key, r.Entry, def.Structure == true)
+		local tpl = meshTemplate(r.Key, r.Entry)
 		if not tpl then
 			for _, m in made do m:Destroy() end
 			return nil
@@ -469,6 +490,7 @@ function SliceDressingService.Destroy()
 	end
 	stats = { Cells = 0, Built = 0, MeshParts = 0, PlaceholderParts = 0, Real = 0, Seconds = 0, Failed = 0 }
 	meshCache = {}
+	modelCache = {}
 end
 
 -- Exposed for tools/test_slice_dressing.luau.

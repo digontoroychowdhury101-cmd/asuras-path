@@ -1,7 +1,7 @@
 """Validate an uploaded overworld kit registry and write the Luau module the game requires. Never uploads or invents IDs.
 python3 tools/assets/kit_registry.py slice [--check] [--allow-missing Piece | Piece__Sub ...] [--root DIR]
-Reads assets/<KIT>_UPLOADED.json ({"pieces": {Piece: {Piece__Sub: {MeshId, ColorMap, NormalMap, RoughnessMap[, MetalnessMap], center?, operations?}}}})
-and the pack's upload_manifest.json; writes src/shared/<Module>.luau (siblings of SliceDressing / BiomeDressing, which pcall-require them).
+Reads assets/<KIT>_UPLOADED.json ({"modelAssets": {Piece: {assetId}}, "pieces": {Piece: {Piece__Sub: {MeshId, ColorMap, NormalMap, RoughnessMap[, MetalnessMap], center?, operations?}}}})
+and the pack's upload_manifest.json; each sub entry also gets Asset = the piece's modelAssets assetId (the LoadAsset target). Writes src/shared/<Module>.luau (siblings of SliceDressing / BiomeDressing, which pcall-require them).
 """
 import argparse
 import json
@@ -39,6 +39,7 @@ def validate(kit, root, allow_missing=()):
     if not isinstance(reg, dict):
         return [f"{stem}_KIT_UPLOADED.json: no 'pieces' object"], {}
     errs, out, expected, seen = [], {}, set(), {}
+    models = data.get("modelAssets") if isinstance(data.get("modelAssets"), dict) else {}
     for pack in packs:
         man = load(root / f"assets/source/overworld/upload/{pack}/upload_manifest.json")
         for piece, pm in man["pieces"].items():
@@ -76,7 +77,10 @@ def validate(kit, root, allow_missing=()):
                 ops = entry.get("operations")
                 if ops is not None and not (isinstance(ops, dict) and all(isinstance(v, (str, int)) and str(v) for v in ops.values())):
                     errs.append(f"{key}.operations: want {{field: operation id}}")
-                out.setdefault(piece, {})[key] = entry
+                asset = (models.get(piece) or {}).get("assetId")
+                if not (isinstance(asset, str) and ID.fullmatch(asset)):
+                    errs.append(f"{key}: modelAssets.{piece}.assetId is not a rbxassetid://<positive integer> string ({asset!r})")
+                out.setdefault(piece, {})[key] = dict(entry, Asset=asset)
     for piece, subs in reg.items():
         for key in subs if isinstance(subs, dict) else ():
             if key not in expected:
@@ -91,7 +95,7 @@ def luau(kit, pieces):
         lines.append(f"\t[{json.dumps(piece)}] = {{")
         for key in sorted(pieces[piece]):
             e = pieces[piece][key]
-            f = [f"{k} = {json.dumps(e[k])}" for k in ("MeshId",) + MAPS if e.get(k)]
+            f = [f"{k} = {json.dumps(e[k])}" for k in ("MeshId", "Asset") + MAPS if e.get(k)]
             if e.get("center"):
                 f.append("center = { " + ", ".join(repr(float(n)) for n in e["center"]) + " }")
             lines.append(f"\t\t[{json.dumps(key)}] = {{ " + ", ".join(f) + " },")

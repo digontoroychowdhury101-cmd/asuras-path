@@ -1,0 +1,11 @@
+# win-14 slice real meshes (Sonnet worker, single heavy slot)
+Plan: A) copy verify_build5.rbxlx -> work/windows-resume/slice/AsurasPath_slice_A.rbxlx, open, read back sub-mesh centres via LoadAsset, write `center` into 4 JSONs, regenerate registries, run tests, close. B) build fresh place to slice/AsurasPath_slice_B.rbxlx, open, Play, captures 01-07, canopy, frame time, close.
+Files: assets/{SLICE,BELLWOOD,BELLWOOD_FAR,HERO}_KIT_UPLOADED.json (center only), src/shared/{Slice,Bellwood,BellwoodFar,Hero}KitRegistry.luau (generated), this note, captures/win/slice_real_*.jpg.
+## Log
+- [plan] written; copy of verify_build5 made as slice_A; committed memory before open 15.43 GB
+- [A done] SourceDigest 281/3239337/1419408769 persistedToCloud false PlaceId 0. 65 multi-sub pieces read via LoadAsset, 186 centers (no part rotated, no misses) written to 4 JSONs; registries regenerated (16/31, 74/161, 6/12, 5/18); test_kit_registry and lune test_slice_dressing 1344 pass. Window A to close.
+- [A closed, B built] build.py --output slice_B ok (308 sources). committed memory before B open 15.54 GB
+- [B open] digest 281/3245064/1352609061, PlaceId 0, persistedToCloud false. Play started.
+- [FINDING] unpatched B Play: SliceDressing 16/60 cells built, 44 cells skipped: 'The current thread cannot write ColorMap (lacking capability Plugin)' (SliceDressingService meshTemplate line ~185 sa[map]=id). 84 real MeshParts, 0 placeholder in built cells. Will patch IN-MEMORY in scratch place B only (map..'Content' = Content.fromUri) to continue captures; src NOT edited.
+- [BLOCKER] In-memory patch (ColorMapContent = Content.fromUri) fails identically: 'cannot write ColorMapContent (lacking capability Plugin)'. SurfaceAppearance map properties are plugin-only, so a game script can never build SurfaceAppearance at runtime; 44 of 60 cells skipped (unpatched run: 16/60 cells, 84 MeshParts, 0 placeholders in built cells; the 16 cells that built likely had no map IDs). Fix needed in SliceDressingService.meshTemplate: take the SurfaceAppearance from InsertService:LoadAsset(modelAssets id) (or ServerStorage clone) instead of writing map strings.
+- [END] captures 01-07, canopy, frame time NOT taken (dressing does not build). Window B killed (0 Studio processes), nothing saved; committed memory 15.45 GB. Placeholder-vs-real counts not valid.

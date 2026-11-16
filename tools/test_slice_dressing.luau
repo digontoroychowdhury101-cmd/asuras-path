@@ -975,20 +975,31 @@ else
 	end
 
 	-- Registry: a fake registry makes the builder build real MeshParts; pieces it does not cover (or covers partly) stay placeholders.
-	local function sub(id, center) return { MeshId = "rbxassetid://" .. id, ColorMap = "rbxassetid://" .. id + 1, NormalMap = "rbxassetid://" .. id + 2, center = center } end
+	local function sub(id, center, asset) return { MeshId = "rbxassetid://" .. id, Asset = "rbxassetid://" .. (asset or 5000), ColorMap = "rbxassetid://" .. id + 1, NormalMap = "rbxassetid://" .. id + 2, center = center } end
 	local fake = {
-		Grass_Clump = { Grass_Clump__Blades = sub(9001) }, -- single sub, no centre: Size/2 up
-		Canopy_Tree_A = { Canopy_Tree_A__Bark = sub(9010, { 0, 14, 0 }), Canopy_Tree_A__Leaves_Mass = sub(9020, { 0, 30, 0 }), Canopy_Tree_A__Leaves_Detail = sub(9030, { 0, 36, 0 }) },
-		Canopy_Tree_B = { Canopy_Tree_B__Bark = sub(9040, { 0, 14, 0 }) }, -- partial: must fall back whole
+		Grass_Clump = { Grass_Clump__Blades = sub(9001, nil, 5001) }, -- single sub, no centre: Size/2 up
+		Canopy_Tree_A = { Canopy_Tree_A__Bark = sub(9010, { 0, 14, 0 }, 5002), Canopy_Tree_A__Leaves_Mass = sub(9020, { 0, 30, 0 }, 5002), Canopy_Tree_A__Leaves_Detail = sub(9030, { 0, 36, 0 }, 5002) },
+		Canopy_Tree_B = { Canopy_Tree_B__Bark = sub(9040, { 0, 14, 0 }, 5003) }, -- partial: must fall back whole
 		Fern_Clump = { Fern_Clump__Fronds = { MeshId = "" } }, -- malformed
 	}
 	local Service3, map3 = load(nil, true)
-	local made = {}
+	local loads = {}
 	Service3.Registry = fake
-	Service3.MakeMesh = function(id, structure)
-		made[id] = (made[id] or 0) + 1
-		local m = roblox.Instance.new("MeshPart")
-		m.Size = roblox.Vector3.new(4, 3, 4)
+	-- Fake InsertService:LoadAsset result: a Model whose MeshParts carry the sub-mesh MeshIds (as the uploaded models do). Asset 5003 fails to load.
+	local models = {
+		["rbxassetid://5001"] = { 9001 }, ["rbxassetid://5002"] = { 9010, 9020, 9030 },
+	}
+	Service3.LoadModel = function(assetId)
+		loads[assetId] = (loads[assetId] or 0) + 1
+		local ids = models[assetId]
+		if not ids then return nil end
+		local m = roblox.Instance.new("Model")
+		for _, id in ids do
+			local mp = roblox.Instance.new("MeshPart")
+			mp.Size = roblox.Vector3.new(4, 3, 4)
+			mp.MeshId = "rbxassetid://" .. id
+			mp.Parent = m
+		end
 		return m
 	end
 	Service3.Start()
@@ -1021,7 +1032,13 @@ else
 	check("a partly covered piece (Canopy_Tree_B) stays a placeholder", treeB > 0 and nTreeBPlaceholder > 0)
 	check("a malformed registry entry (Fern_Clump) stays a placeholder", nFernPlaceholder > 0)
 	check("real part count is reported (" .. Service3.Stats().Real .. ")", Service3.Stats().Real == realParts and realParts == nGrass + nBark * 3)
-	check("each distinct mesh is created once (cached), not per placement", made["rbxassetid://9001"] == 1 and made["rbxassetid://9010"] == 1)
+	check("each model is loaded once (cached), not per placement", loads["rbxassetid://5001"] == 1 and loads["rbxassetid://5002"] == 1)
+	check("a piece whose model never loads (asset 5003 absent) is not loaded, and stays a placeholder", loads["rbxassetid://5003"] == nil and nTreeBPlaceholder > 0)
+	-- Source guard: no runtime SurfaceAppearance map / MeshId writes, templates only via cached LoadAsset.
+	local code = (string.gsub(source, "%-%-[^" .. string.char(10) .. "]*", ""))
+	check("no runtime SurfaceAppearance map or MeshId writes remain", string.find(code, "SurfaceAppearance", 1, true) == nil and string.find(code, "CreateMeshPartAsync", 1, true) == nil
+		and string.find(code, "%.MeshId%s*=[^=]") == nil and string.find(code, "%[map%]") == nil)
+	check("templates come from InsertService:LoadAsset behind modelCache", string.find(code, ":LoadAsset(", 1, true) ~= nil and string.find(code, "modelCache[assetId]", 1, true) ~= nil)
 	Service3.Destroy()
 
 	-- B: only the cells nearest the glade have their tiles; the rest are never built (and the service says so).

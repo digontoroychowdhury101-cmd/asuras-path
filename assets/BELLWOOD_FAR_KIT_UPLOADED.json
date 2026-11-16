@@ -51,14 +51,24 @@
         "ColorMap": "",
         "NormalMap": "",
         "RoughnessMap": "",
-        "MetalnessMap": ""
+        "MetalnessMap": "",
+        "center": [
+          0,
+          35.98,
+          0
+        ]
       },
       "Canopy_Tree_B_Far__Bark": {
         "MeshId": "rbxassetid://71921475501394",
         "ColorMap": "",
         "NormalMap": "",
         "RoughnessMap": "",
-        "MetalnessMap": ""
+        "MetalnessMap": "",
+        "center": [
+          1.07,
+          27.74,
+          0.45
+        ]
       }
     },
     "Canopy_Tree_C_Far": {
@@ -67,14 +77,24 @@
         "ColorMap": "",
         "NormalMap": "",
         "RoughnessMap": "",
-        "MetalnessMap": ""
+        "MetalnessMap": "",
+        "center": [
+          0,
+          32.49,
+          0
+        ]
       },
       "Canopy_Tree_C_Far__Bark": {
         "MeshId": "rbxassetid://94341596460817",
         "ColorMap": "",
         "NormalMap": "",
         "RoughnessMap": "",
-        "MetalnessMap": ""
+        "MetalnessMap": "",
+        "center": [
+          0.34,
+          21.57,
+          2.52
+        ]
       }
     },
     "Old_Gnarled_Tree_Far": {
@@ -83,14 +103,24 @@
         "ColorMap": "",
         "NormalMap": "",
         "RoughnessMap": "",
-        "MetalnessMap": ""
+        "MetalnessMap": "",
+        "center": [
+          0,
+          19.45,
+          0
+        ]
       },
       "Old_Gnarled_Tree_Far__Bark": {
         "MeshId": "rbxassetid://124824097966875",
         "ColorMap": "",
         "NormalMap": "",
         "RoughnessMap": "",
-        "MetalnessMap": ""
+        "MetalnessMap": "",
+        "center": [
+          0.77,
+          13.78,
+          -1.19
+        ]
       }
     },
     "Canopy_Tree_D_Far": {
@@ -99,14 +129,24 @@
         "ColorMap": "",
         "NormalMap": "",
         "RoughnessMap": "",
-        "MetalnessMap": ""
+        "MetalnessMap": "",
+        "center": [
+          0,
+          23.49,
+          0
+        ]
       },
       "Canopy_Tree_D_Far__Bark": {
         "MeshId": "rbxassetid://77569432911704",
         "ColorMap": "",
         "NormalMap": "",
         "RoughnessMap": "",
-        "MetalnessMap": ""
+        "MetalnessMap": "",
+        "center": [
+          -1,
+          15.38,
+          0.39
+        ]
       }
     },
     "Canopy_Tree_A_Far": {
@@ -115,14 +155,24 @@
         "ColorMap": "",
         "NormalMap": "",
         "RoughnessMap": "",
-        "MetalnessMap": ""
+        "MetalnessMap": "",
+        "center": [
+          0,
+          31.06,
+          0
+        ]
       },
       "Canopy_Tree_A_Far__Bark": {
         "MeshId": "rbxassetid://126339544267111",
         "ColorMap": "",
         "NormalMap": "",
         "RoughnessMap": "",
-        "MetalnessMap": ""
+        "MetalnessMap": "",
+        "center": [
+          0.25,
+          19.11,
+          -1.47
+        ]
       }
     },
     "Conifer_Tall_Far": {
@@ -131,14 +181,24 @@
         "ColorMap": "",
         "NormalMap": "",
         "RoughnessMap": "",
-        "MetalnessMap": ""
+        "MetalnessMap": "",
+        "center": [
+          0,
+          34.22,
+          0
+        ]
       },
       "Conifer_Tall_Far__Bark": {
         "MeshId": "rbxassetid://95623870032846",
         "ColorMap": "",
         "NormalMap": "",
         "RoughnessMap": "",
-        "MetalnessMap": ""
+        "MetalnessMap": "",
+        "center": [
+          -0.84,
+          33.66,
+          0.15
+        ]
       }
     }
   }

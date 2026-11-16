@@ -33,7 +33,7 @@ def entry(far=False):
     return e
 
 
-def build(root, kit, packs, far=False, reg=None):
+def build(root, kit, packs, far=False, reg=None, no_models=False):
     man, piece, subs = manifest(far)
     for p in packs:
         d = root / "assets/source/overworld/upload" / p
@@ -41,7 +41,8 @@ def build(root, kit, packs, far=False, reg=None):
         (d / "upload_manifest.json").write_text(json.dumps(man))
     (root / "src/shared").mkdir(parents=True)
     pieces = {piece: {s: entry(far) for s in subs}} if reg is None else reg(piece, subs)
-    (root / f"assets/{K.KITS[kit][0]}_KIT_UPLOADED.json").write_text(json.dumps({"pieces": pieces}))
+    models = {} if no_models else {pc: {"assetId": rid()} for pc in pieces}
+    (root / f"assets/{K.KITS[kit][0]}_KIT_UPLOADED.json").write_text(json.dumps({"modelAssets": models, "pieces": pieces}))
     return piece, subs
 
 
@@ -60,6 +61,23 @@ class KitRegistry(unittest.TestCase):
         if LUAU.exists():
             r = subprocess.run([str(LUAU), "--null", str(out)], capture_output=True, text=True)
             self.assertEqual(r.returncode, 0, r.stderr)
+
+    def test_model_asset_emitted_per_sub_and_required(self):
+        build(self.root, "slice", ["slice"])
+        want = json.loads((self.root / "assets/SLICE_KIT_UPLOADED.json").read_text())["modelAssets"]["Bell_Stair"]["assetId"]
+        self.assertEqual(K.main(["slice", "--root", str(self.root)]), 0)
+        text = (self.root / "src/shared/SliceKitRegistry.luau").read_text()
+        self.assertEqual(text.count(f'Asset = "{want}"'), 2)  # one per sub-mesh
+        with tempfile.TemporaryDirectory() as t:  # no modelAssets entry: refused, never invented
+            build(Path(t), "slice", ["slice"], no_models=True)
+            self.assertTrue(any("modelAssets.Bell_Stair.assetId" in e for e in K.validate("slice", Path(t))[0]))
+        with tempfile.TemporaryDirectory() as t:  # non-numeric model id refused
+            build(Path(t), "slice", ["slice"])
+            f = Path(t) / "assets/SLICE_KIT_UPLOADED.json"
+            d = json.loads(f.read_text())
+            d["modelAssets"]["Bell_Stair"]["assetId"] = "rbxassetid://abc"
+            f.write_text(json.dumps(d))
+            self.assertEqual(K.main(["slice", "--check", "--root", t]), 1)
 
     def test_check_writes_nothing(self):
         build(self.root, "slice", ["slice"])

@@ -527,21 +527,36 @@
         "ColorMap": "rbxassetid://81572422853175",
         "NormalMap": "rbxassetid://133568385555825",
         "RoughnessMap": "rbxassetid://103997890852707",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          0,
+          3.12,
+          -0.06
+        ]
       },
       "Bell_Grave_C__Mound": {
         "MeshId": "rbxassetid://107713113140957",
         "ColorMap": "rbxassetid://139117478830462",
         "NormalMap": "rbxassetid://70742406201021",
         "RoughnessMap": "rbxassetid://110513024516086",
-        "MetalnessMap": "rbxassetid://70849207112013"
+        "MetalnessMap": "rbxassetid://70849207112013",
+        "center": [
+          0,
+          0.51,
+          0
+        ]
       },
       "Bell_Grave_C__Bronze": {
         "MeshId": "rbxassetid://126042729411239",
         "ColorMap": "rbxassetid://95523375764903",
         "NormalMap": "rbxassetid://102789620654437",
         "RoughnessMap": "rbxassetid://136667534942132",
-        "MetalnessMap": "rbxassetid://132441202373627"
+        "MetalnessMap": "rbxassetid://132441202373627",
+        "center": [
+          -1.04,
+          5.07,
+          -0.04
+        ]
       }
     },
     "Bell_Grave_B": {
@@ -550,21 +565,36 @@
         "ColorMap": "rbxassetid://81572422853175",
         "NormalMap": "rbxassetid://133568385555825",
         "RoughnessMap": "rbxassetid://103997890852707",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          -0.42,
+          1.67,
+          0.11
+        ]
       },
       "Bell_Grave_B__Mound": {
         "MeshId": "rbxassetid://111895249915079",
         "ColorMap": "rbxassetid://139117478830462",
         "NormalMap": "rbxassetid://70742406201021",
         "RoughnessMap": "rbxassetid://110513024516086",
-        "MetalnessMap": "rbxassetid://70849207112013"
+        "MetalnessMap": "rbxassetid://70849207112013",
+        "center": [
+          0,
+          0.55,
+          0
+        ]
       },
       "Bell_Grave_B__Bronze": {
         "MeshId": "rbxassetid://117311749925874",
         "ColorMap": "rbxassetid://95523375764903",
         "NormalMap": "rbxassetid://102789620654437",
         "RoughnessMap": "rbxassetid://136667534942132",
-        "MetalnessMap": "rbxassetid://132441202373627"
+        "MetalnessMap": "rbxassetid://132441202373627",
+        "center": [
+          0.01,
+          3.29,
+          0.11
+        ]
       }
     },
     "Bell_Grave_A": {
@@ -573,28 +603,48 @@
         "ColorMap": "rbxassetid://81572422853175",
         "NormalMap": "rbxassetid://133568385555825",
         "RoughnessMap": "rbxassetid://103997890852707",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          -0.04,
+          3.53,
+          -0.03
+        ]
       },
       "Bell_Grave_A__Mound": {
         "MeshId": "rbxassetid://128295103617367",
         "ColorMap": "rbxassetid://139117478830462",
         "NormalMap": "rbxassetid://70742406201021",
         "RoughnessMap": "rbxassetid://110513024516086",
-        "MetalnessMap": "rbxassetid://70849207112013"
+        "MetalnessMap": "rbxassetid://70849207112013",
+        "center": [
+          0,
+          0.53,
+          0
+        ]
       },
       "Bell_Grave_A__Timber": {
         "MeshId": "rbxassetid://108540332918803",
         "ColorMap": "rbxassetid://96055445738801",
         "NormalMap": "rbxassetid://76587358494033",
         "RoughnessMap": "rbxassetid://123740114984395",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          -1.15,
+          4.85,
+          -0.2
+        ]
       },
       "Bell_Grave_A__Bronze": {
         "MeshId": "rbxassetid://122667341784976",
         "ColorMap": "rbxassetid://95523375764903",
         "NormalMap": "rbxassetid://102789620654437",
         "RoughnessMap": "rbxassetid://136667534942132",
-        "MetalnessMap": "rbxassetid://132441202373627"
+        "MetalnessMap": "rbxassetid://132441202373627",
+        "center": [
+          -1.18,
+          4.23,
+          -0.2
+        ]
       }
     },
     "Bell_Edging_Cobble": {
@@ -630,21 +680,36 @@
         "ColorMap": "rbxassetid://96055445738801",
         "NormalMap": "rbxassetid://76587358494033",
         "RoughnessMap": "rbxassetid://123740114984395",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          0.15,
+          3.99,
+          0
+        ]
       },
       "Bell_Fence_Post__Stone": {
         "MeshId": "rbxassetid://82661267894869",
         "ColorMap": "rbxassetid://81572422853175",
         "NormalMap": "rbxassetid://133568385555825",
         "RoughnessMap": "rbxassetid://103997890852707",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          0.14,
+          0.79,
+          0
+        ]
       },
       "Bell_Fence_Post__Bronze": {
         "MeshId": "rbxassetid://115630553177606",
         "ColorMap": "rbxassetid://95523375764903",
         "NormalMap": "rbxassetid://102789620654437",
         "RoughnessMap": "rbxassetid://136667534942132",
-        "MetalnessMap": "rbxassetid://132441202373627"
+        "MetalnessMap": "rbxassetid://132441202373627",
+        "center": [
+          -0.33,
+          3.73,
+          0
+        ]
       }
     },
     "Bell_Fence_Rail": {
@@ -698,21 +763,36 @@
         "ColorMap": "rbxassetid://96055445738801",
         "NormalMap": "rbxassetid://76587358494033",
         "RoughnessMap": "rbxassetid://123740114984395",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          0,
+          7.09,
+          0
+        ]
       },
       "Bell_Prayer_Flags_Long__Stone": {
         "MeshId": "rbxassetid://80484542564690",
         "ColorMap": "rbxassetid://81572422853175",
         "NormalMap": "rbxassetid://133568385555825",
         "RoughnessMap": "rbxassetid://103997890852707",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          0,
+          0.69,
+          0
+        ]
       },
       "Bell_Prayer_Flags_Long__Cloth": {
         "MeshId": "rbxassetid://126458075082844",
         "ColorMap": "rbxassetid://113127813283262",
         "NormalMap": "rbxassetid://92164708349196",
         "RoughnessMap": "rbxassetid://93178722479734",
-        "MetalnessMap": "rbxassetid://75451822241265"
+        "MetalnessMap": "rbxassetid://75451822241265",
+        "center": [
+          0.35,
+          9.65,
+          0
+        ]
       }
     },
     "Bell_Prayer_Flags_Short": {
@@ -721,21 +801,36 @@
         "ColorMap": "rbxassetid://96055445738801",
         "NormalMap": "rbxassetid://76587358494033",
         "RoughnessMap": "rbxassetid://123740114984395",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          0.01,
+          7.08,
+          0.01
+        ]
       },
       "Bell_Prayer_Flags_Short__Stone": {
         "MeshId": "rbxassetid://116216339630876",
         "ColorMap": "rbxassetid://81572422853175",
         "NormalMap": "rbxassetid://133568385555825",
         "RoughnessMap": "rbxassetid://103997890852707",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          0,
+          0.68,
+          0
+        ]
       },
       "Bell_Prayer_Flags_Short__Cloth": {
         "MeshId": "rbxassetid://102419600848967",
         "ColorMap": "rbxassetid://113127813283262",
         "NormalMap": "rbxassetid://92164708349196",
         "RoughnessMap": "rbxassetid://93178722479734",
-        "MetalnessMap": "rbxassetid://75451822241265"
+        "MetalnessMap": "rbxassetid://75451822241265",
+        "center": [
+          -0.07,
+          10.22,
+          0.01
+        ]
       }
     },
     "Bell_Shrine_Roadside": {
@@ -744,28 +839,48 @@
         "ColorMap": "rbxassetid://81572422853175",
         "NormalMap": "rbxassetid://133568385555825",
         "RoughnessMap": "rbxassetid://103997890852707",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          0,
+          2.32,
+          -0.06
+        ]
       },
       "Bell_Shrine_Roadside__Roof": {
         "MeshId": "rbxassetid://84868385518943",
         "ColorMap": "rbxassetid://128308932120433",
         "NormalMap": "rbxassetid://111716354992827",
         "RoughnessMap": "rbxassetid://128047726712318",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          0,
+          8.08,
+          1.22
+        ]
       },
       "Bell_Shrine_Roadside__Timber": {
         "MeshId": "rbxassetid://104518828249457",
         "ColorMap": "rbxassetid://96055445738801",
         "NormalMap": "rbxassetid://76587358494033",
         "RoughnessMap": "rbxassetid://123740114984395",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          0,
+          4.57,
+          1.22
+        ]
       },
       "Bell_Shrine_Roadside__Bronze": {
         "MeshId": "rbxassetid://78128614772237",
         "ColorMap": "rbxassetid://95523375764903",
         "NormalMap": "rbxassetid://102789620654437",
         "RoughnessMap": "rbxassetid://136667534942132",
-        "MetalnessMap": "rbxassetid://132441202373627"
+        "MetalnessMap": "rbxassetid://132441202373627",
+        "center": [
+          0,
+          7.41,
+          0.19
+        ]
       }
     },
     "Bell_Retain_Wall_Long": {
@@ -774,14 +889,24 @@
         "ColorMap": "rbxassetid://81572422853175",
         "NormalMap": "rbxassetid://133568385555825",
         "RoughnessMap": "rbxassetid://103997890852707",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          0,
+          5.8,
+          0.83
+        ]
       },
       "Bell_Retain_Wall_Long__Stone": {
         "MeshId": "rbxassetid://114152962190153",
         "ColorMap": "rbxassetid://81572422853175",
         "NormalMap": "rbxassetid://133568385555825",
         "RoughnessMap": "rbxassetid://103997890852707",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          0,
+          1.82,
+          -0.11
+        ]
       }
     },
     "Bell_Signpost_A": {
@@ -790,21 +915,36 @@
         "ColorMap": "rbxassetid://96055445738801",
         "NormalMap": "rbxassetid://76587358494033",
         "RoughnessMap": "rbxassetid://123740114984395",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          0,
+          5.27,
+          0.01
+        ]
       },
       "Bell_Signpost_A__Stone": {
         "MeshId": "rbxassetid://73126091504792",
         "ColorMap": "rbxassetid://81572422853175",
         "NormalMap": "rbxassetid://133568385555825",
         "RoughnessMap": "rbxassetid://103997890852707",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          0.27,
+          0.68,
+          0
+        ]
       },
       "Bell_Signpost_A__Bronze": {
         "MeshId": "rbxassetid://123485644671707",
         "ColorMap": "rbxassetid://95523375764903",
         "NormalMap": "rbxassetid://102789620654437",
         "RoughnessMap": "rbxassetid://136667534942132",
-        "MetalnessMap": "rbxassetid://132441202373627"
+        "MetalnessMap": "rbxassetid://132441202373627",
+        "center": [
+          0.27,
+          6.09,
+          -0.02
+        ]
       }
     },
     "Boulder_Granite_D": {
@@ -822,21 +962,36 @@
         "ColorMap": "rbxassetid://96055445738801",
         "NormalMap": "rbxassetid://76587358494033",
         "RoughnessMap": "rbxassetid://123740114984395",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          0,
+          5.93,
+          -0.2
+        ]
       },
       "Bell_Timber_Gate_Side__Stone": {
         "MeshId": "rbxassetid://95378191654495",
         "ColorMap": "rbxassetid://81572422853175",
         "NormalMap": "rbxassetid://133568385555825",
         "RoughnessMap": "rbxassetid://103997890852707",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          -0.01,
+          0.68,
+          0.75
+        ]
       },
       "Bell_Timber_Gate_Side__Bronze": {
         "MeshId": "rbxassetid://97803589085524",
         "ColorMap": "rbxassetid://95523375764903",
         "NormalMap": "rbxassetid://102789620654437",
         "RoughnessMap": "rbxassetid://136667534942132",
-        "MetalnessMap": "rbxassetid://132441202373627"
+        "MetalnessMap": "rbxassetid://132441202373627",
+        "center": [
+          0,
+          5.68,
+          0.74
+        ]
       }
     },
     "Bell_Signpost_B": {
@@ -845,21 +1000,36 @@
         "ColorMap": "rbxassetid://96055445738801",
         "NormalMap": "rbxassetid://76587358494033",
         "RoughnessMap": "rbxassetid://123740114984395",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          0,
+          3.46,
+          -0.93
+        ]
       },
       "Bell_Signpost_B__Stone": {
         "MeshId": "rbxassetid://116489895597018",
         "ColorMap": "rbxassetid://81572422853175",
         "NormalMap": "rbxassetid://133568385555825",
         "RoughnessMap": "rbxassetid://103997890852707",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          0.64,
+          2.74,
+          0.47
+        ]
       },
       "Bell_Signpost_B__Bronze": {
         "MeshId": "rbxassetid://92108528986085",
         "ColorMap": "rbxassetid://95523375764903",
         "NormalMap": "rbxassetid://102789620654437",
         "RoughnessMap": "rbxassetid://136667534942132",
-        "MetalnessMap": "rbxassetid://132441202373627"
+        "MetalnessMap": "rbxassetid://132441202373627",
+        "center": [
+          0.67,
+          3.27,
+          -0.68
+        ]
       }
     },
     "Bell_Well": {
@@ -868,28 +1038,48 @@
         "ColorMap": "rbxassetid://96055445738801",
         "NormalMap": "rbxassetid://76587358494033",
         "RoughnessMap": "rbxassetid://123740114984395",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          0.06,
+          4.69,
+          0
+        ]
       },
       "Bell_Well__Stone": {
         "MeshId": "rbxassetid://79708710994573",
         "ColorMap": "rbxassetid://81572422853175",
         "NormalMap": "rbxassetid://133568385555825",
         "RoughnessMap": "rbxassetid://103997890852707",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          0.05,
+          2.02,
+          0
+        ]
       },
       "Bell_Well__Roof": {
         "MeshId": "rbxassetid://102660749397753",
         "ColorMap": "rbxassetid://128308932120433",
         "NormalMap": "rbxassetid://111716354992827",
         "RoughnessMap": "rbxassetid://128047726712318",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          0.06,
+          10.47,
+          0
+        ]
       },
       "Bell_Well__Bronze": {
         "MeshId": "rbxassetid://117587043477872",
         "ColorMap": "rbxassetid://95523375764903",
         "NormalMap": "rbxassetid://102789620654437",
         "RoughnessMap": "rbxassetid://136667534942132",
-        "MetalnessMap": "rbxassetid://132441202373627"
+        "MetalnessMap": "rbxassetid://132441202373627",
+        "center": [
+          -2.58,
+          5.21,
+          0.31
+        ]
       }
     },
     "Bell_Stair_Straight_A": {
@@ -988,14 +1178,24 @@
         "ColorMap": "rbxassetid://96055445738801",
         "NormalMap": "rbxassetid://76587358494033",
         "RoughnessMap": "rbxassetid://123740114984395",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          -0.02,
+          2.85,
+          0
+        ]
       },
       "Crate_C__Bronze": {
         "MeshId": "rbxassetid://87306756783589",
         "ColorMap": "rbxassetid://95523375764903",
         "NormalMap": "rbxassetid://102789620654437",
         "RoughnessMap": "rbxassetid://136667534942132",
-        "MetalnessMap": "rbxassetid://132441202373627"
+        "MetalnessMap": "rbxassetid://132441202373627",
+        "center": [
+          0.5,
+          2.57,
+          0
+        ]
       }
     },
     "Hermit_Hut": {
@@ -1004,28 +1204,48 @@
         "ColorMap": "rbxassetid://81572422853175",
         "NormalMap": "rbxassetid://133568385555825",
         "RoughnessMap": "rbxassetid://103997890852707",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          -0.1,
+          10.17,
+          0
+        ]
       },
       "Hermit_Hut__Roof": {
         "MeshId": "rbxassetid://125929484108889",
         "ColorMap": "rbxassetid://128308932120433",
         "NormalMap": "rbxassetid://111716354992827",
         "RoughnessMap": "rbxassetid://128047726712318",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          -0.1,
+          14.03,
+          -0.04
+        ]
       },
       "Hermit_Hut__Timber": {
         "MeshId": "rbxassetid://122076019281807",
         "ColorMap": "rbxassetid://96055445738801",
         "NormalMap": "rbxassetid://76587358494033",
         "RoughnessMap": "rbxassetid://123740114984395",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          0.15,
+          9.2,
+          -0.73
+        ]
       },
       "Hermit_Hut__Bronze": {
         "MeshId": "rbxassetid://108433236349503",
         "ColorMap": "rbxassetid://95523375764903",
         "NormalMap": "rbxassetid://102789620654437",
         "RoughnessMap": "rbxassetid://136667534942132",
-        "MetalnessMap": "rbxassetid://132441202373627"
+        "MetalnessMap": "rbxassetid://132441202373627",
+        "center": [
+          4.13,
+          5.58,
+          -1.4
+        ]
       }
     },
     "Cart_B": {
@@ -1034,21 +1254,36 @@
         "ColorMap": "rbxassetid://96055445738801",
         "NormalMap": "rbxassetid://76587358494033",
         "RoughnessMap": "rbxassetid://123740114984395",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          0,
+          4.54,
+          0
+        ]
       },
       "Cart_B__Cloth": {
         "MeshId": "rbxassetid://99061457171229",
         "ColorMap": "rbxassetid://124763228075327",
         "NormalMap": "rbxassetid://90972801647817",
         "RoughnessMap": "rbxassetid://132120127541605",
-        "MetalnessMap": "rbxassetid://75451822241265"
+        "MetalnessMap": "rbxassetid://75451822241265",
+        "center": [
+          9.76,
+          5.74,
+          1.61
+        ]
       },
       "Cart_B__Bronze": {
         "MeshId": "rbxassetid://87096708401289",
         "ColorMap": "rbxassetid://95523375764903",
         "NormalMap": "rbxassetid://102789620654437",
         "RoughnessMap": "rbxassetid://136667534942132",
-        "MetalnessMap": "rbxassetid://132441202373627"
+        "MetalnessMap": "rbxassetid://132441202373627",
+        "center": [
+          2.88,
+          3.74,
+          1.67
+        ]
       }
     },
     "Falls_Alcove": {
@@ -1057,42 +1292,72 @@
         "ColorMap": "rbxassetid://96055445738801",
         "NormalMap": "rbxassetid://76587358494033",
         "RoughnessMap": "rbxassetid://123740114984395",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          13.96,
+          6.5,
+          -8.08
+        ]
       },
       "Falls_Alcove__Shrine_Stone": {
         "MeshId": "rbxassetid://114155867657631",
         "ColorMap": "rbxassetid://81572422853175",
         "NormalMap": "rbxassetid://133568385555825",
         "RoughnessMap": "rbxassetid://103997890852707",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          13.49,
+          4.5,
+          -8.78
+        ]
       },
       "Falls_Alcove__Rock_Sides": {
         "MeshId": "rbxassetid://133684989800566",
         "ColorMap": "rbxassetid://139117478830462",
         "NormalMap": "rbxassetid://70742406201021",
         "RoughnessMap": "rbxassetid://110513024516086",
-        "MetalnessMap": "rbxassetid://70849207112013"
+        "MetalnessMap": "rbxassetid://70849207112013",
+        "center": [
+          0,
+          7.44,
+          -3.59
+        ]
       },
       "Falls_Alcove__Rock_Rim": {
         "MeshId": "rbxassetid://93614580302834",
         "ColorMap": "rbxassetid://139117478830462",
         "NormalMap": "rbxassetid://70742406201021",
         "RoughnessMap": "rbxassetid://110513024516086",
-        "MetalnessMap": "rbxassetid://70849207112013"
+        "MetalnessMap": "rbxassetid://70849207112013",
+        "center": [
+          3.11,
+          1.6,
+          -5.61
+        ]
       },
       "Falls_Alcove__Rock_Lip": {
         "MeshId": "rbxassetid://112502985361018",
         "ColorMap": "rbxassetid://139117478830462",
         "NormalMap": "rbxassetid://70742406201021",
         "RoughnessMap": "rbxassetid://110513024516086",
-        "MetalnessMap": "rbxassetid://70849207112013"
+        "MetalnessMap": "rbxassetid://70849207112013",
+        "center": [
+          -0.02,
+          17.93,
+          -0.64
+        ]
       },
       "Falls_Alcove__Rock_Back": {
         "MeshId": "rbxassetid://128132133417335",
         "ColorMap": "rbxassetid://139117478830462",
         "NormalMap": "rbxassetid://70742406201021",
         "RoughnessMap": "rbxassetid://110513024516086",
-        "MetalnessMap": "rbxassetid://70849207112013"
+        "MetalnessMap": "rbxassetid://70849207112013",
+        "center": [
+          0.01,
+          10.14,
+          3.15
+        ]
       }
     },
     "Cart_A": {
@@ -1101,21 +1366,36 @@
         "ColorMap": "rbxassetid://124763228075327",
         "NormalMap": "rbxassetid://90972801647817",
         "RoughnessMap": "rbxassetid://132120127541605",
-        "MetalnessMap": "rbxassetid://75451822241265"
+        "MetalnessMap": "rbxassetid://75451822241265",
+        "center": [
+          -4.98,
+          5.85,
+          -0.01
+        ]
       },
       "Cart_A__Timber": {
         "MeshId": "rbxassetid://134389440599933",
         "ColorMap": "rbxassetid://96055445738801",
         "NormalMap": "rbxassetid://76587358494033",
         "RoughnessMap": "rbxassetid://123740114984395",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          0,
+          3.89,
+          0
+        ]
       },
       "Cart_A__Bronze": {
         "MeshId": "rbxassetid://116644712224608",
         "ColorMap": "rbxassetid://95523375764903",
         "NormalMap": "rbxassetid://102789620654437",
         "RoughnessMap": "rbxassetid://136667534942132",
-        "MetalnessMap": "rbxassetid://132441202373627"
+        "MetalnessMap": "rbxassetid://132441202373627",
+        "center": [
+          -6.53,
+          2.74,
+          -0.7
+        ]
       }
     },
     "Crate_B": {
@@ -1133,14 +1413,24 @@
         "ColorMap": "rbxassetid://96055445738801",
         "NormalMap": "rbxassetid://76587358494033",
         "RoughnessMap": "rbxassetid://123740114984395",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          0,
+          2.15,
+          0
+        ]
       },
       "Crate_A__Bronze": {
         "MeshId": "rbxassetid://73693728656504",
         "ColorMap": "rbxassetid://95523375764903",
         "NormalMap": "rbxassetid://102789620654437",
         "RoughnessMap": "rbxassetid://136667534942132",
-        "MetalnessMap": "rbxassetid://132441202373627"
+        "MetalnessMap": "rbxassetid://132441202373627",
+        "center": [
+          0,
+          4.31,
+          0
+        ]
       }
     },
     "Bell_Tower_Ruined": {
@@ -1149,56 +1439,96 @@
         "ColorMap": "rbxassetid://96055445738801",
         "NormalMap": "rbxassetid://76587358494033",
         "RoughnessMap": "rbxassetid://123740114984395",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          -5.81,
+          37.14,
+          5.06
+        ]
       },
       "Bell_Tower_Ruined__Stone_Base": {
         "MeshId": "rbxassetid://116517899661412",
         "ColorMap": "rbxassetid://81572422853175",
         "NormalMap": "rbxassetid://133568385555825",
         "RoughnessMap": "rbxassetid://103997890852707",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          1.03,
+          3.75,
+          -2.21
+        ]
       },
       "Bell_Tower_Ruined__Stone_Belfry": {
         "MeshId": "rbxassetid://129151570445410",
         "ColorMap": "rbxassetid://81572422853175",
         "NormalMap": "rbxassetid://133568385555825",
         "RoughnessMap": "rbxassetid://103997890852707",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          1.05,
+          62.84,
+          1.15
+        ]
       },
       "Bell_Tower_Ruined__Stone_B": {
         "MeshId": "rbxassetid://100874593173906",
         "ColorMap": "rbxassetid://81572422853175",
         "NormalMap": "rbxassetid://133568385555825",
         "RoughnessMap": "rbxassetid://103997890852707",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          1.07,
+          38.48,
+          1.14
+        ]
       },
       "Bell_Tower_Ruined__Stone_A": {
         "MeshId": "rbxassetid://121507134332683",
         "ColorMap": "rbxassetid://81572422853175",
         "NormalMap": "rbxassetid://133568385555825",
         "RoughnessMap": "rbxassetid://103997890852707",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          1.04,
+          17.73,
+          1.11
+        ]
       },
       "Bell_Tower_Ruined__Rubble": {
         "MeshId": "rbxassetid://134380960167071",
         "ColorMap": "rbxassetid://81572422853175",
         "NormalMap": "rbxassetid://133568385555825",
         "RoughnessMap": "rbxassetid://103997890852707",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          0,
+          1.87,
+          0
+        ]
       },
       "Bell_Tower_Ruined__Roof": {
         "MeshId": "rbxassetid://114216317348563",
         "ColorMap": "rbxassetid://128308932120433",
         "NormalMap": "rbxassetid://111716354992827",
         "RoughnessMap": "rbxassetid://128047726712318",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          5.99,
+          70.53,
+          1.04
+        ]
       },
       "Bell_Tower_Ruined__Bronze": {
         "MeshId": "rbxassetid://103294968715199",
         "ColorMap": "rbxassetid://95523375764903",
         "NormalMap": "rbxassetid://102789620654437",
         "RoughnessMap": "rbxassetid://136667534942132",
-        "MetalnessMap": "rbxassetid://132441202373627"
+        "MetalnessMap": "rbxassetid://132441202373627",
+        "center": [
+          2.78,
+          58.31,
+          1.14
+        ]
       }
     },
     "Rope_Bridge_Deck_B": {
@@ -1207,14 +1537,24 @@
         "ColorMap": "rbxassetid://96055445738801",
         "NormalMap": "rbxassetid://76587358494033",
         "RoughnessMap": "rbxassetid://123740114984395",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          -0.01,
+          0.72,
+          -0.04
+        ]
       },
       "Rope_Bridge_Deck_B__Rope": {
         "MeshId": "rbxassetid://91684062513781",
         "ColorMap": "rbxassetid://124763228075327",
         "NormalMap": "rbxassetid://90972801647817",
         "RoughnessMap": "rbxassetid://132120127541605",
-        "MetalnessMap": "rbxassetid://75451822241265"
+        "MetalnessMap": "rbxassetid://75451822241265",
+        "center": [
+          0,
+          2.16,
+          0
+        ]
       }
     },
     "Pot_B": {
@@ -1232,14 +1572,24 @@
         "ColorMap": "rbxassetid://96055445738801",
         "NormalMap": "rbxassetid://76587358494033",
         "RoughnessMap": "rbxassetid://123740114984395",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          0,
+          0.75,
+          -0.04
+        ]
       },
       "Rope_Bridge_Deck_A__Rope": {
         "MeshId": "rbxassetid://106474158756358",
         "ColorMap": "rbxassetid://124763228075327",
         "NormalMap": "rbxassetid://90972801647817",
         "RoughnessMap": "rbxassetid://132120127541605",
-        "MetalnessMap": "rbxassetid://75451822241265"
+        "MetalnessMap": "rbxassetid://75451822241265",
+        "center": [
+          0,
+          2.18,
+          0
+        ]
       }
     },
     "Pot_A": {
@@ -1257,28 +1607,48 @@
         "ColorMap": "rbxassetid://124763228075327",
         "NormalMap": "rbxassetid://90972801647817",
         "RoughnessMap": "rbxassetid://132120127541605",
-        "MetalnessMap": "rbxassetid://75451822241265"
+        "MetalnessMap": "rbxassetid://75451822241265",
+        "center": [
+          -0.04,
+          6.3,
+          2.03
+        ]
       },
       "Rope_Bridge_Anchor__Timber": {
         "MeshId": "rbxassetid://100002280328243",
         "ColorMap": "rbxassetid://96055445738801",
         "NormalMap": "rbxassetid://76587358494033",
         "RoughnessMap": "rbxassetid://123740114984395",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          -0.04,
+          7.13,
+          -3.94
+        ]
       },
       "Rope_Bridge_Anchor__Stone": {
         "MeshId": "rbxassetid://92910180831795",
         "ColorMap": "rbxassetid://81572422853175",
         "NormalMap": "rbxassetid://133568385555825",
         "RoughnessMap": "rbxassetid://103997890852707",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          0,
+          1.05,
+          -4.4
+        ]
       },
       "Rope_Bridge_Anchor__Bronze": {
         "MeshId": "rbxassetid://91579760668346",
         "ColorMap": "rbxassetid://95523375764903",
         "NormalMap": "rbxassetid://102789620654437",
         "RoughnessMap": "rbxassetid://136667534942132",
-        "MetalnessMap": "rbxassetid://132441202373627"
+        "MetalnessMap": "rbxassetid://132441202373627",
+        "center": [
+          -0.04,
+          14.43,
+          -2.62
+        ]
       }
     },
     "Pot_C": {
@@ -1287,14 +1657,24 @@
         "ColorMap": "rbxassetid://124763228075327",
         "NormalMap": "rbxassetid://90972801647817",
         "RoughnessMap": "rbxassetid://132120127541605",
-        "MetalnessMap": "rbxassetid://75451822241265"
+        "MetalnessMap": "rbxassetid://75451822241265",
+        "center": [
+          -0.01,
+          2.54,
+          0.02
+        ]
       },
       "Pot_C__Clay": {
         "MeshId": "rbxassetid://112506678252299",
         "ColorMap": "rbxassetid://133088352156041",
         "NormalMap": "rbxassetid://133706124812557",
         "RoughnessMap": "rbxassetid://87038760072440",
-        "MetalnessMap": "rbxassetid://75451822241265"
+        "MetalnessMap": "rbxassetid://75451822241265",
+        "center": [
+          0,
+          2.45,
+          0
+        ]
       }
     },
     "Lantern_Stone": {
@@ -1303,14 +1683,24 @@
         "ColorMap": "rbxassetid://81572422853175",
         "NormalMap": "rbxassetid://133568385555825",
         "RoughnessMap": "rbxassetid://103997890852707",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          0,
+          5,
+          0
+        ]
       },
       "Lantern_Stone__Glow": {
         "MeshId": "rbxassetid://101127576302982",
         "ColorMap": "rbxassetid://114001902073274",
         "NormalMap": "",
         "RoughnessMap": "rbxassetid://121476398534218",
-        "MetalnessMap": "rbxassetid://110391952734363"
+        "MetalnessMap": "rbxassetid://110391952734363",
+        "center": [
+          0,
+          5.5,
+          0
+        ]
       }
     },
     "Lantern_Hanging": {
@@ -1319,21 +1709,36 @@
         "ColorMap": "rbxassetid://124763228075327",
         "NormalMap": "rbxassetid://90972801647817",
         "RoughnessMap": "rbxassetid://132120127541605",
-        "MetalnessMap": "rbxassetid://75451822241265"
+        "MetalnessMap": "rbxassetid://75451822241265",
+        "center": [
+          0,
+          0.69,
+          0
+        ]
       },
       "Lantern_Hanging__Glow": {
         "MeshId": "rbxassetid://72956816163415",
         "ColorMap": "rbxassetid://114001902073274",
         "NormalMap": "",
         "RoughnessMap": "rbxassetid://121476398534218",
-        "MetalnessMap": "rbxassetid://110391952734363"
+        "MetalnessMap": "rbxassetid://110391952734363",
+        "center": [
+          0,
+          3.55,
+          0
+        ]
       },
       "Lantern_Hanging__Bronze": {
         "MeshId": "rbxassetid://92786783951102",
         "ColorMap": "rbxassetid://95523375764903",
         "NormalMap": "rbxassetid://102789620654437",
         "RoughnessMap": "rbxassetid://136667534942132",
-        "MetalnessMap": "rbxassetid://132441202373627"
+        "MetalnessMap": "rbxassetid://132441202373627",
+        "center": [
+          0,
+          6.4,
+          0
+        ]
       }
     },
     "Fallen_Log_A": {
@@ -1342,21 +1747,36 @@
         "ColorMap": "rbxassetid://85406409547697",
         "NormalMap": "rbxassetid://135049918611555",
         "RoughnessMap": "rbxassetid://84494544037416",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          -12.49,
+          2.3,
+          0.58
+        ]
       },
       "Fallen_Log_A__Moss": {
         "MeshId": "rbxassetid://77618203461531",
         "ColorMap": "rbxassetid://127040236750000",
         "NormalMap": "rbxassetid://127906158448939",
         "RoughnessMap": "rbxassetid://110191803851382",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          -1.3,
+          4.14,
+          -0.19
+        ]
       },
       "Fallen_Log_A__Bark": {
         "MeshId": "rbxassetid://138941889502106",
         "ColorMap": "rbxassetid://73636723925754",
         "NormalMap": "rbxassetid://81067035380510",
         "RoughnessMap": "rbxassetid://71120715249359",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          0,
+          5.13,
+          0
+        ]
       }
     },
     "Dead_Standing_Trunk": {
@@ -1365,14 +1785,24 @@
         "ColorMap": "rbxassetid://85406409547697",
         "NormalMap": "rbxassetid://135049918611555",
         "RoughnessMap": "rbxassetid://84494544037416",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          1.21,
+          33.26,
+          0.39
+        ]
       },
       "Dead_Standing_Trunk__Bark": {
         "MeshId": "rbxassetid://86816605460607",
         "ColorMap": "rbxassetid://73636723925754",
         "NormalMap": "rbxassetid://81067035380510",
         "RoughnessMap": "rbxassetid://71120715249359",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          0,
+          19.77,
+          0
+        ]
       }
     },
     "Fallen_Log_B": {
@@ -1381,21 +1811,36 @@
         "ColorMap": "rbxassetid://127040236750000",
         "NormalMap": "rbxassetid://127906158448939",
         "RoughnessMap": "rbxassetid://110191803851382",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          -0.4,
+          4.52,
+          0.43
+        ]
       },
       "Fallen_Log_B__Ends": {
         "MeshId": "rbxassetid://118187399039784",
         "ColorMap": "rbxassetid://85406409547697",
         "NormalMap": "rbxassetid://135049918611555",
         "RoughnessMap": "rbxassetid://84494544037416",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          -0.01,
+          2.47,
+          -0.24
+        ]
       },
       "Fallen_Log_B__Bark": {
         "MeshId": "rbxassetid://115102958822028",
         "ColorMap": "rbxassetid://73636723925754",
         "NormalMap": "rbxassetid://81067035380510",
         "RoughnessMap": "rbxassetid://71120715249359",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          0,
+          3.39,
+          0
+        ]
       }
     },
     "Conifer_Tall": {
@@ -1404,21 +1849,36 @@
         "ColorMap": "rbxassetid://105256105712924",
         "NormalMap": "rbxassetid://120548558708209",
         "RoughnessMap": "rbxassetid://80120113210189",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          -0.36,
+          30.99,
+          0.31
+        ]
       },
       "Conifer_Tall__Needles_Detail": {
         "MeshId": "rbxassetid://138529556842171",
         "ColorMap": "rbxassetid://105256105712924",
         "NormalMap": "rbxassetid://120548558708209",
         "RoughnessMap": "rbxassetid://80120113210189",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          0,
+          34.22,
+          0
+        ]
       },
       "Conifer_Tall__Bark": {
         "MeshId": "rbxassetid://135849358603848",
         "ColorMap": "rbxassetid://73636723925754",
         "NormalMap": "rbxassetid://81067035380510",
         "RoughnessMap": "rbxassetid://71120715249359",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          -0.33,
+          33.64,
+          0.72
+        ]
       }
     },
     "Canopy_Tree_C": {
@@ -1427,21 +1887,36 @@
         "ColorMap": "rbxassetid://102367205742520",
         "NormalMap": "rbxassetid://119940854808716",
         "RoughnessMap": "rbxassetid://87619770793441",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          0.9,
+          31.71,
+          1.49
+        ]
       },
       "Canopy_Tree_C__Leaves_Detail": {
         "MeshId": "rbxassetid://107200797681988",
         "ColorMap": "rbxassetid://102367205742520",
         "NormalMap": "rbxassetid://119940854808716",
         "RoughnessMap": "rbxassetid://87619770793441",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          0,
+          32.24,
+          -0.79
+        ]
       },
       "Canopy_Tree_C__Bark": {
         "MeshId": "rbxassetid://125630425694953",
         "ColorMap": "rbxassetid://73636723925754",
         "NormalMap": "rbxassetid://81067035380510",
         "RoughnessMap": "rbxassetid://71120715249359",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          0.45,
+          21.6,
+          1.76
+        ]
       }
     },
     "Exposed_Roots_A": {
@@ -1450,14 +1925,24 @@
         "ColorMap": "rbxassetid://127040236750000",
         "NormalMap": "rbxassetid://127906158448939",
         "RoughnessMap": "rbxassetid://110191803851382",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          0.53,
+          1.75,
+          0.11
+        ]
       },
       "Exposed_Roots_A__Bark": {
         "MeshId": "rbxassetid://89405291553205",
         "ColorMap": "rbxassetid://73636723925754",
         "NormalMap": "rbxassetid://81067035380510",
         "RoughnessMap": "rbxassetid://71120715249359",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          0,
+          2.93,
+          0
+        ]
       }
     },
     "Exposed_Roots_B": {
@@ -1466,14 +1951,24 @@
         "ColorMap": "rbxassetid://127040236750000",
         "NormalMap": "rbxassetid://127906158448939",
         "RoughnessMap": "rbxassetid://110191803851382",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          -0.96,
+          1.63,
+          0.2
+        ]
       },
       "Exposed_Roots_B__Bark": {
         "MeshId": "rbxassetid://121308972714648",
         "ColorMap": "rbxassetid://73636723925754",
         "NormalMap": "rbxassetid://81067035380510",
         "RoughnessMap": "rbxassetid://71120715249359",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          0,
+          2.56,
+          0
+        ]
       }
     },
     "Canopy_Tree_D": {
@@ -1482,21 +1977,36 @@
         "ColorMap": "rbxassetid://102367205742520",
         "NormalMap": "rbxassetid://119940854808716",
         "RoughnessMap": "rbxassetid://87619770793441",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          0.14,
+          23.06,
+          0
+        ]
       },
       "Canopy_Tree_D__Leaves_Mass": {
         "MeshId": "rbxassetid://73129957556801",
         "ColorMap": "rbxassetid://102367205742520",
         "NormalMap": "rbxassetid://119940854808716",
         "RoughnessMap": "rbxassetid://87619770793441",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          -0.81,
+          22.83,
+          0.6
+        ]
       },
       "Canopy_Tree_D__Bark": {
         "MeshId": "rbxassetid://93373622695544",
         "ColorMap": "rbxassetid://73636723925754",
         "NormalMap": "rbxassetid://81067035380510",
         "RoughnessMap": "rbxassetid://71120715249359",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          -0.33,
+          15.38,
+          0.66
+        ]
       }
     },
     "Reed_Clump_A": {
@@ -1514,14 +2024,24 @@
         "ColorMap": "rbxassetid://127662456940309",
         "NormalMap": "rbxassetid://101251167936328",
         "RoughnessMap": "rbxassetid://73488916920199",
-        "MetalnessMap": "rbxassetid://88132622876934"
+        "MetalnessMap": "rbxassetid://88132622876934",
+        "center": [
+          1.8,
+          8.62,
+          1.94
+        ]
       },
       "Moss_Drape__Bark": {
         "MeshId": "rbxassetid://128955461332009",
         "ColorMap": "rbxassetid://73636723925754",
         "NormalMap": "rbxassetid://81067035380510",
         "RoughnessMap": "rbxassetid://71120715249359",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          -0.51,
+          9.55,
+          -0.37
+        ]
       }
     },
     "Flowers_Daisy": {
@@ -1530,14 +2050,24 @@
         "ColorMap": "rbxassetid://128933845357683",
         "NormalMap": "rbxassetid://86269934185055",
         "RoughnessMap": "rbxassetid://130500621185520",
-        "MetalnessMap": "rbxassetid://75451822241265"
+        "MetalnessMap": "rbxassetid://75451822241265",
+        "center": [
+          0.18,
+          1.98,
+          0.24
+        ]
       },
       "Flowers_Daisy__Blooms": {
         "MeshId": "rbxassetid://124300129246085",
         "ColorMap": "rbxassetid://128933845357683",
         "NormalMap": "rbxassetid://86269934185055",
         "RoughnessMap": "rbxassetid://130500621185520",
-        "MetalnessMap": "rbxassetid://75451822241265"
+        "MetalnessMap": "rbxassetid://75451822241265",
+        "center": [
+          0,
+          2.21,
+          0
+        ]
       }
     },
     "Grass_Tall": {
@@ -1564,21 +2094,36 @@
         "ColorMap": "rbxassetid://102367205742520",
         "NormalMap": "rbxassetid://119940854808716",
         "RoughnessMap": "rbxassetid://87619770793441",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          0.16,
+          19.24,
+          0.03
+        ]
       },
       "Old_Gnarled_Tree__Leaves_Detail": {
         "MeshId": "rbxassetid://106665794209635",
         "ColorMap": "rbxassetid://102367205742520",
         "NormalMap": "rbxassetid://119940854808716",
         "RoughnessMap": "rbxassetid://87619770793441",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          0,
+          18.86,
+          0
+        ]
       },
       "Old_Gnarled_Tree__Bark": {
         "MeshId": "rbxassetid://108223608260638",
         "ColorMap": "rbxassetid://73636723925754",
         "NormalMap": "rbxassetid://81067035380510",
         "RoughnessMap": "rbxassetid://71120715249359",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          0.41,
+          13.86,
+          -1.64
+        ]
       }
     },
     "Mushroom_Cluster": {
@@ -1596,14 +2141,24 @@
         "ColorMap": "rbxassetid://128933845357683",
         "NormalMap": "rbxassetid://86269934185055",
         "RoughnessMap": "rbxassetid://130500621185520",
-        "MetalnessMap": "rbxassetid://75451822241265"
+        "MetalnessMap": "rbxassetid://75451822241265",
+        "center": [
+          -0.15,
+          2.69,
+          0.12
+        ]
       },
       "Grass_Seed__Blades": {
         "MeshId": "rbxassetid://104704509953848",
         "ColorMap": "rbxassetid://123146635625497",
         "NormalMap": "rbxassetid://101251167936328",
         "RoughnessMap": "rbxassetid://73488916920199",
-        "MetalnessMap": "rbxassetid://88132622876934"
+        "MetalnessMap": "rbxassetid://88132622876934",
+        "center": [
+          0,
+          1.84,
+          0
+        ]
       }
     },
     "Grass_Lush": {
@@ -1630,14 +2185,24 @@
         "ColorMap": "rbxassetid://128933845357683",
         "NormalMap": "rbxassetid://86269934185055",
         "RoughnessMap": "rbxassetid://130500621185520",
-        "MetalnessMap": "rbxassetid://75451822241265"
+        "MetalnessMap": "rbxassetid://75451822241265",
+        "center": [
+          0.18,
+          2.72,
+          0.2
+        ]
       },
       "Flowers_Foxglove__Blooms": {
         "MeshId": "rbxassetid://119219078177669",
         "ColorMap": "rbxassetid://128933845357683",
         "NormalMap": "rbxassetid://86269934185055",
         "RoughnessMap": "rbxassetid://130500621185520",
-        "MetalnessMap": "rbxassetid://75451822241265"
+        "MetalnessMap": "rbxassetid://75451822241265",
+        "center": [
+          0,
+          2.79,
+          0
+        ]
       }
     },
     "Tree_Stump_A": {
@@ -1646,21 +2211,36 @@
         "ColorMap": "rbxassetid://127040236750000",
         "NormalMap": "rbxassetid://127906158448939",
         "RoughnessMap": "rbxassetid://110191803851382",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          -0.21,
+          1.79,
+          1.22
+        ]
       },
       "Tree_Stump_A__Ends": {
         "MeshId": "rbxassetid://121111975722713",
         "ColorMap": "rbxassetid://85406409547697",
         "NormalMap": "rbxassetid://135049918611555",
         "RoughnessMap": "rbxassetid://84494544037416",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          -0.07,
+          5.07,
+          0.13
+        ]
       },
       "Tree_Stump_A__Bark": {
         "MeshId": "rbxassetid://83119963007440",
         "ColorMap": "rbxassetid://73636723925754",
         "NormalMap": "rbxassetid://81067035380510",
         "RoughnessMap": "rbxassetid://71120715249359",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          0,
+          3.47,
+          0
+        ]
       }
     },
     "Shrub_Thicket": {
@@ -1669,14 +2249,24 @@
         "ColorMap": "rbxassetid://73636723925754",
         "NormalMap": "rbxassetid://81067035380510",
         "RoughnessMap": "rbxassetid://71120715249359",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          -0.16,
+          5.59,
+          0.1
+        ]
       },
       "Shrub_Thicket__Leaves": {
         "MeshId": "rbxassetid://90911623949993",
         "ColorMap": "rbxassetid://102367205742520",
         "NormalMap": "rbxassetid://119940854808716",
         "RoughnessMap": "rbxassetid://87619770793441",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          0,
+          5.6,
+          0
+        ]
       }
     },
     "Vine_Hanging": {
@@ -1685,14 +2275,24 @@
         "ColorMap": "rbxassetid://102367205742520",
         "NormalMap": "rbxassetid://119940854808716",
         "RoughnessMap": "rbxassetid://87619770793441",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          -0.02,
+          9.68,
+          0.83
+        ]
       },
       "Vine_Hanging__Bark": {
         "MeshId": "rbxassetid://96260530484354",
         "ColorMap": "rbxassetid://73636723925754",
         "NormalMap": "rbxassetid://81067035380510",
         "RoughnessMap": "rbxassetid://71120715249359",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          0.78,
+          9.57,
+          -0.87
+        ]
       }
     },
     "Tree_Stump_B": {
@@ -1701,21 +2301,36 @@
         "ColorMap": "rbxassetid://127040236750000",
         "NormalMap": "rbxassetid://127906158448939",
         "RoughnessMap": "rbxassetid://110191803851382",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          -0.4,
+          4.3,
+          0.16
+        ]
       },
       "Tree_Stump_B__Ends": {
         "MeshId": "rbxassetid://116961183416491",
         "ColorMap": "rbxassetid://85406409547697",
         "NormalMap": "rbxassetid://135049918611555",
         "RoughnessMap": "rbxassetid://84494544037416",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          -0.15,
+          6.84,
+          0.44
+        ]
       },
       "Tree_Stump_B__Bark": {
         "MeshId": "rbxassetid://130955957164135",
         "ColorMap": "rbxassetid://73636723925754",
         "NormalMap": "rbxassetid://81067035380510",
         "RoughnessMap": "rbxassetid://71120715249359",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          0,
+          4.6,
+          0
+        ]
       }
     },
     "Shrub_Berry": {
@@ -1724,21 +2339,36 @@
         "ColorMap": "rbxassetid://73636723925754",
         "NormalMap": "rbxassetid://81067035380510",
         "RoughnessMap": "rbxassetid://71120715249359",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          -0.03,
+          2.53,
+          -0.01
+        ]
       },
       "Shrub_Berry__Leaves": {
         "MeshId": "rbxassetid://107452692692318",
         "ColorMap": "rbxassetid://102367205742520",
         "NormalMap": "rbxassetid://119940854808716",
         "RoughnessMap": "rbxassetid://87619770793441",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          0,
+          2.3,
+          0
+        ]
       },
       "Shrub_Berry__Berries": {
         "MeshId": "rbxassetid://129149807215628",
         "ColorMap": "rbxassetid://128933845357683",
         "NormalMap": "rbxassetid://86269934185055",
         "RoughnessMap": "rbxassetid://130500621185520",
-        "MetalnessMap": "rbxassetid://75451822241265"
+        "MetalnessMap": "rbxassetid://75451822241265",
+        "center": [
+          -0.01,
+          2.37,
+          -0.02
+        ]
       }
     },
     "Shrub_Hazel": {
@@ -1747,14 +2377,24 @@
         "ColorMap": "rbxassetid://73636723925754",
         "NormalMap": "rbxassetid://81067035380510",
         "RoughnessMap": "rbxassetid://71120715249359",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          -0.27,
+          3.75,
+          -0.43
+        ]
       },
       "Shrub_Hazel__Leaves": {
         "MeshId": "rbxassetid://137913229373871",
         "ColorMap": "rbxassetid://102367205742520",
         "NormalMap": "rbxassetid://119940854808716",
         "RoughnessMap": "rbxassetid://87619770793441",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          0,
+          3.87,
+          0
+        ]
       }
     },
     "Reed_Clump_B": {
@@ -1763,14 +2403,24 @@
         "ColorMap": "rbxassetid://128933845357683",
         "NormalMap": "rbxassetid://86269934185055",
         "RoughnessMap": "rbxassetid://130500621185520",
-        "MetalnessMap": "rbxassetid://75451822241265"
+        "MetalnessMap": "rbxassetid://75451822241265",
+        "center": [
+          -0.48,
+          4.85,
+          0.39
+        ]
       },
       "Reed_Clump_B__Blades": {
         "MeshId": "rbxassetid://136618846114704",
         "ColorMap": "rbxassetid://101072417784730",
         "NormalMap": "rbxassetid://101251167936328",
         "RoughnessMap": "rbxassetid://73488916920199",
-        "MetalnessMap": "rbxassetid://88132622876934"
+        "MetalnessMap": "rbxassetid://88132622876934",
+        "center": [
+          0,
+          2.27,
+          0
+        ]
       }
     },
     "Sapling_Tree": {
@@ -1779,21 +2429,36 @@
         "ColorMap": "rbxassetid://102367205742520",
         "NormalMap": "rbxassetid://119940854808716",
         "RoughnessMap": "rbxassetid://87619770793441",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          -0.14,
+          10.73,
+          -1.23
+        ]
       },
       "Sapling_Tree__Leaves_Detail": {
         "MeshId": "rbxassetid://107623387575275",
         "ColorMap": "rbxassetid://102367205742520",
         "NormalMap": "rbxassetid://119940854808716",
         "RoughnessMap": "rbxassetid://87619770793441",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          0,
+          10.25,
+          0
+        ]
       },
       "Sapling_Tree__Bark": {
         "MeshId": "rbxassetid://103973723854215",
         "ColorMap": "rbxassetid://73636723925754",
         "NormalMap": "rbxassetid://81067035380510",
         "RoughnessMap": "rbxassetid://71120715249359",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MetalnessMap": "rbxassetid://89863602509302",
+        "center": [
+          -0.04,
+          6.69,
+          -0.88
+        ]
       }
     }
   }
