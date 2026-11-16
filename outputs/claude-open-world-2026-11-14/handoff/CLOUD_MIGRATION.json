@@ -142,6 +142,35 @@
     "EditableImage unavailable; existing Frame-grid fallback is present"
   ],
   "latest_cloud_checkpoint": {
+    "runtime_source_commit": "3465430",
+    "source_change": "M1: parallel terrain writer (OverworldTerrain, OverworldTerrainCompute, OverworldTerrainWorker Actor+Script), Overworld.padsNear, PerfBudget, WorldService Shen gate fix, BiomeDressing kit registries + BiomeDressingService",
+    "scripts": 277,
+    "bytes": 3173417,
+    "digest": 786797912,
+    "target_verified": true,
+    "exact_previous_source_guard": true,
+    "edit_mode_guard": true,
+    "protected_collections_unchanged": true,
+    "protected_fingerprints_note": "Mac recomputed own descendant-count/hash before and after (identical): lobby 128/1483680705, assets 1442/107357800, materials 12/1023564582; counts match recorded 129/1443/13 incl. root; recorded property-digest algorithm is not in the repo",
+    "save": {
+      "tool": null,
+      "location": "TeamCreate",
+      "status": "not_invoked",
+      "version": null,
+      "message": "No save_place tool in the Mac Studio MCP toolset; Team Create autosave state/version not observed. Lead/Windows to run save_place and record the version."
+    },
+    "validation": {
+      "per_script_hash_guard_pre_and_post": true,
+      "cloud_script_digest_matches_build": true,
+      "single_client_play_smoke": true,
+      "terrain_4356_tiles_s": 14.6,
+      "edit_digest_after_play_matches": true,
+      "console_errors": "none new; known EditableImage warning only"
+    },
+    "timestamp": "2026-11-16T05:31:23Z",
+    "integrator": "Mac lane C1 (mac-12)"
+  },
+  "previous_cloud_checkpoint": {
     "runtime_source_commit": "32d448e",
     "source_change": "ReplicatedStorage.AsurasPath.Shared.SliceDressing only; real far-tree manifest and FarDensity 0.4",
     "preserved_mac_commits": [

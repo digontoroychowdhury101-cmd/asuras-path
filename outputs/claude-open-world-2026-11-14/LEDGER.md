@@ -451,3 +451,4 @@ DECISION (lead, Mac): far density lowered to 0.4 accepted (budget kept, no Budge
 DECISION (lead): T4b/T4c adopted — engine run beats baseline on every target (map 114 s -> 14 s). The 45-min time-sliced version is gone.
 DECISION (lead): summit temple visibility is engine render distance at QualityLevel Automatic (terrain is culled too); not a source defect. Landmark visibility from distant summits holds only at higher quality levels; recorded as a known limit, no code change.
 RISK: the repo lives in iCloud-synced ~/Documents; conflict copies appeared (.git/index 2/3, work/legacy/tools 3/4, generated " 2" files). Generated duplicates removed; .git untouched. Reported to oversight.
+| C1 cloud integration M1 | a30013f718e5c75ad | sonnet | workers/mac-12-cloud-m1.md, handoff/CLOUD_MIGRATION.md/.json | cloud Edit digest 786797912 == build 3465430; smoke map 14.6 s; NOT SAVED (no save tool on Mac MCP) |

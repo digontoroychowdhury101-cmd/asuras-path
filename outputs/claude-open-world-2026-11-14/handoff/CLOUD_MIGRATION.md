@@ -119,3 +119,24 @@ Saving to Roblox updates the shared Studio version. It does not release the game
 to players. The original open-world brief and its unfinished acceptance criteria
 still apply. The asset branch still carries raw mesh/audio sources; this migration
 did not resolve the lantern upload or invent any asset IDs.
+
+## Mac milestone M1 — git 3465430
+
+Integrated by the Mac cloud lane (C1) into the shared Development place (Edit, Team Create,
+persistedToCloud=true) from the 32d448e state (275 / 3151007 / 1357214079).
+
+- Method: each script guarded by path, class, Edit mode and a byte-hash of the exact 32d448e source,
+  changed with Studio MCP `multi_edit` (hunk replacements; large sources need no HttpEnabled), then
+  hash-compared to the 3465430 file. Modified: Services.{PerfBudget, WorldService, BiomeDressingService,
+  OverworldTerrain}, Shared.{Overworld, BiomeDressing}. Added (asserted absent first):
+  Services.OverworldTerrainCompute (ModuleScript), Services.OverworldTerrainWorker (Actor) with Script
+  `Worker` (RunContext Legacy, as built). All hashes matched.
+- Result: scripts 277 / bytes 3173417 / digest 786797912 (= work/mac-m1c build). Lobby, asset and
+  material fingerprints unchanged (Mac's own descendant hash; recorded algorithm not in repo).
+- Save: the Mac Studio MCP exposes no save_place, so no version was returned and none is claimed.
+  Version 6 remains the last recorded explicit save; M1 needs a save_place by an integrator that has it.
+- Smoke (single client, mock persistence, no edit): server and client ready, Sanctuary and
+  Map_Overworld present, terrain complete 4356 tiles in 14.6 s (glade 2.6 s, altars 3.5 s), hb 60 Hz at
+  end; startup PerfBudget HeartbeatHz=34.2 warning and the known EditableImage warning only; no
+  Actor/SharedTable/PerfBudget errors. Play stopped; Edit digest re-checked equal.
+- After Play the Edit tree holds only the single OverworldTerrainWorker Actor (runtime clones are not kept).
