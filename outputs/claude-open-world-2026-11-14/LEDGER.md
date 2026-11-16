@@ -4,6 +4,20 @@ Historical starting baseline: HEAD `fb51a42` on `ux/onboarding-overhaul`. The cr
 
 ## Handoff checkpoint — 2026-11-16
 
+**Later cloud migration completed:** the creator explicitly authorised moving the
+verified build into the existing private Development place 118614906972571 /
+universe 10777041159. Cloud reopen version 4 matched the source fingerprint
+1516687798 and unchanged lobby/assets/materials. Final Studio MCP save reported
+version 5. The subsequent guarded Mac far-tree update from `32d448e` is saved as
+version 6: **275 scripts / 3151007 bytes / digest 1357214079**, matching the fresh
+temporary build. Local far-tree regression 1013/0 and module compile passed;
+protected collection fingerprints stayed unchanged. Both new Mac commits are
+preserved. A single-client boot of the initial migrated checkpoint reached the
+shrine, HUD/compass and overworld generation; Play stopped. Current target/evidence:
+[handoff/CLOUD_MIGRATION.md](handoff/CLOUD_MIGRATION.md). This supersedes the older
+uploads-only restriction for the authorised migration. Temporary sync-and-restore
+QA remains local; the integrated cloud must not be restored to the old baseline.
+
 Claude pushed `b658140` before the usage stop. Codex then preserved the late T4
 terrain edit, finished [MAC_HANDOFF.md](MAC_HANDOFF.md), added the missing reference
 archive required by the brief, and delivered the ignored mesh/audio sources on

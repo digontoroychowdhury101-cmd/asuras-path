@@ -1,6 +1,26 @@
 # CONTINUATION — read this first after any restart
 
-## Mac resume — 2026-11-16 (Computer B, current checkpoint)
+## Cloud checkpoint now migrated — latest update, 2026-11-16
+
+The creator explicitly asked Codex to move the verified build into the Save to
+Roblox version. This is complete: **Asura's Path — Development**, place
+**118614906972571**, universe **10777041159**, remains **PRIVATE**. Initial cold
+reopen matched the migrated checkpoint. Mac commits `de50f6f` and `32d448e` are
+preserved; its sole runtime change, the far-tree module, is also integrated.
+Current cloud: **275 scripts / 3151007 bytes / digest 1357214079**, explicit save
+**version 6**, matching a temporary build of runtime source at `32d448e`. Lobby
+kit, asset library and material fingerprints remain unchanged. The initial
+single-client boot reached the shrine, HUD/compass and overworld generation;
+Play was stopped. Follow-up local far-tree regression: 1013 passed, 0 failed.
+
+Read [handoff/CLOUD_MIGRATION.md](handoff/CLOUD_MIGRATION.md) first for backups,
+evidence, open warnings and the Mac cloud-open instructions. This is now the
+shared integrated cloud checkpoint, superseding the older uploads-only rule for
+the completed authorised migration. Keep temporary sync-and-restore QA local;
+never restore 462022588 into this cloud place. Source work, unfinished terrain,
+asset upload diagnosis and acceptance gates remain as recorded below.
+
+## Mac source lane checkpoint — 2026-11-16 (Computer B)
 
 Lead: Opus 5.5 (fresh, from durable notes), oversight Fable 5.2. Start HEAD 358e24f.
 Mac verified by oversight 15:20: tools, plugins, assets (1277/1277 restored), verify_all 14/14,
@@ -24,13 +44,13 @@ Two-client tests: pending — other computer.
 Next action if interrupted: read each worker note's last checkpoint; relaunch fresh workers
 from the note (explicit model), never SendMessage-resume.
 
-## Codex handoff completion — 2026-11-16 (current checkpoint)
+## Earlier Codex handoff completion — 2026-11-16 (before cloud migration)
 
 The creator asked Codex to finish Claude's handoff, outstanding commits and pushes
 after the usage-limit stop. That authorises this checkpoint's task commits/pushes
 and supersedes the older no-commit instructions below. It does not authorise
 unrelated edits or cloud-place changes. Historical rounds below remain evidence;
-use this section for the current resume point.
+use the top cloud checkpoint for the current integrated resume point.
 
 - Read [MAC_HANDOFF.md](MAC_HANDOFF.md) for a fresh Mac/computers A and C setup,
   pinned ECC/Ponytail/Matt Pocock repositories, MCP connections, asset restore and
@@ -62,7 +82,8 @@ use this section for the current resume point.
   `outputs/AsurasPath.rbxlx` remain the pre-overworld baseline **462022588**.
   Build a NEW local test place; do not overwrite this baseline as a handoff side
   effect. Discover Studio IDs anew. Cloud universe 10777041159 / place
-  118614906972571 is private with Team Create; uploads only, no temporary edits.
+  118614906972571 is private with Team Create; its later authorised migration is
+  recorded in the newest section above. No temporary sync-and-restore edits there.
 - Still open: lantern import diagnosis, real mesh registries/integration, terrain
   frame-rate/startup targets, latest real-mesh forest acceptance, weather/haze and
   summit captures, Shen walk-out, multiplayer and device profiling. Evidence and

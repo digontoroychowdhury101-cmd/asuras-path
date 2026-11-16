@@ -1,0 +1,175 @@
+{
+  "date": "2026-11-16",
+  "authorization": "Creator explicitly requested migration of the verified local build into the existing Save to Roblox version.",
+  "universe_id": 10777041159,
+  "place_id": 118614906972571,
+  "display_name": "Asura’s Path — Development",
+  "visibility": "PRIVATE",
+  "source_commit": "358e24fa02865c2579e565697d62c8699d017a61",
+  "checkpoint_delivery_commit": "fbb589488dc7fa396e02bd2306aab0da0551a1af",
+  "local_checkpoint": "places/checkpoints/AsurasPath_OpenWorld_2026-11-16.rbxlx",
+  "local_checkpoint_sha256": "d9be83ac03d7c1ceb61ab99a60601271a68c222401847d478ffbcbacdc644cf6",
+  "backup": {
+    "path": "work/cloud-migration-2026-11-16/CLOUD_BEFORE_v2.rbxl",
+    "bytes": 2784009,
+    "sha256": "6be2ccc60e0305da5e24ccf34197d1eb944e591cd26f62f6be9a8241d0d713f9",
+    "git_ignored": true
+  },
+  "cloud_before": {
+    "bytes": 2859366,
+    "universeId": 10777041159,
+    "placeId": 118614906972571,
+    "running": false,
+    "version": 2,
+    "scripts": 286,
+    "materials": {
+      "bytes": 3159,
+      "digest": 306913035,
+      "instances": 13
+    },
+    "assets": {
+      "bytes": 408372,
+      "digest": 442941466,
+      "instances": 1443
+    },
+    "lobby": {
+      "bytes": 36497,
+      "digest": 308331669,
+      "instances": 129
+    },
+    "digest": 462022588
+  },
+  "local_before": {
+    "bytes": 3149701,
+    "universeId": 0,
+    "placeId": 0,
+    "running": false,
+    "version": 0,
+    "scripts": 275,
+    "materials": {
+      "bytes": 3159,
+      "digest": 306913035,
+      "instances": 13
+    },
+    "assets": {
+      "bytes": 408372,
+      "digest": 442941466,
+      "instances": 1443
+    },
+    "lobby": {
+      "bytes": 36497,
+      "digest": 308331669,
+      "instances": 129
+    },
+    "digest": 1516687798
+  },
+  "cloud_reopened": {
+    "bytes": 3149701,
+    "universeId": 10777041159,
+    "placeId": 118614906972571,
+    "running": false,
+    "version": 4,
+    "scripts": 275,
+    "materials": {
+      "bytes": 3159,
+      "digest": 306913035,
+      "instances": 13
+    },
+    "assets": {
+      "bytes": 408372,
+      "digest": 442941466,
+      "instances": 1443
+    },
+    "lobby": {
+      "bytes": 36497,
+      "digest": 308331669,
+      "instances": 129
+    },
+    "digest": 1516687798
+  },
+  "final_save": {
+    "tool": "save_place",
+    "status": "Saved",
+    "location": "TeamCreate",
+    "version": 5,
+    "message": "Saved to Roblox."
+  },
+  "edit_after_play": {
+    "bytes": 3149701,
+    "universeId": 10777041159,
+    "placeId": 118614906972571,
+    "running": false,
+    "version": 4,
+    "scripts": 275,
+    "materials": {
+      "bytes": 3159,
+      "digest": 306913035,
+      "instances": 13
+    },
+    "assets": {
+      "bytes": 408372,
+      "digest": 442941466,
+      "instances": 1443
+    },
+    "lobby": {
+      "bytes": 36497,
+      "digest": 308331669,
+      "instances": 129
+    },
+    "digest": 1516687798
+  },
+  "smoke": {
+    "single_client": true,
+    "mock_persistence": true,
+    "sanctuary_present": true,
+    "overworld_map_present": true,
+    "character_spawned": true,
+    "server_and_client_ready": true,
+    "hud_and_compass_visible": true,
+    "play_stopped": true,
+    "full_traversal": false
+  },
+  "limits": [
+    "No public publish or privacy/settings change",
+    "Raw task mesh/audio upload work remains unfinished",
+    "No full terrain, combat, multiplayer, device or visual acceptance"
+  ],
+  "warnings": [
+    "Initial Team Create reopen failed: Server did not start [0]; one retry connected",
+    "Transient Studio script-asset commit HTTP 429 warnings; full reopened source fingerprint matched",
+    "Startup Heartbeat budget warning",
+    "Existing asset-type mismatch for 203785492",
+    "EditableImage unavailable; existing Frame-grid fallback is present"
+  ],
+  "latest_cloud_checkpoint": {
+    "runtime_source_commit": "32d448e",
+    "source_change": "ReplicatedStorage.AsurasPath.Shared.SliceDressing only; real far-tree manifest and FarDensity 0.4",
+    "preserved_mac_commits": [
+      "de50f6f",
+      "32d448e"
+    ],
+    "scripts": 275,
+    "bytes": 3151007,
+    "digest": 1357214079,
+    "target_verified": true,
+    "exact_previous_source_guard": true,
+    "edit_mode_guard": true,
+    "protected_collections_unchanged": true,
+    "save": {
+      "tool": "save_place",
+      "location": "TeamCreate",
+      "status": "Saved",
+      "version": 6,
+      "message": "Saved to Roblox."
+    },
+    "validation": {
+      "far_tree_assertions_passed": 1013,
+      "far_tree_assertions_failed": 0,
+      "luau_compile_passed": true,
+      "temporary_build_passed": true,
+      "cloud_script_digest_matches_build": true,
+      "play_repeated_after_followup": false
+    },
+    "temporary_build": "work/cloud-migration-2026-11-16/AsurasPath_MacReconciled.rbxlx"
+  }
+}

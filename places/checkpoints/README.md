@@ -1,4 +1,16 @@
-# The same Studio checkpoint on Windows and Mac
+# Matching Studio checkpoints on Windows and Mac
+
+**Current shared Save to Roblox target:** Asura's Path — Development, place
+**118614906972571**, universe **10777041159**. The creator subsequently authorised
+moving the dated build below into that existing private cloud place; this is now
+complete, including the subsequent Mac far-tree change from `32d448e` (latest
+save version 6, 275 scripts / 3151007 bytes / digest 1357214079). Open the game
+through Studio's Roblox experiences on both computers and verify those IDs.
+Details: `outputs/claude-open-world-2026-11-14/handoff/CLOUD_MIGRATION.md`.
+
+The instructions below also verify the dated **local reference file**, useful for
+backups and separate QA. It contains the initial migration source checkpoint,
+before the one-module Mac update; do not overwrite newer cloud source with it.
 
 Open **`places/checkpoints/AsurasPath_OpenWorld_2026-11-16.rbxlx`** on both
 computers after pulling `ux/onboarding-overhaul`. This is a build of the Windows
@@ -53,8 +65,10 @@ does not mean those gates passed. Raw mesh/audio source files remain on the
 separate checksummed asset branch described in
 `outputs/claude-open-world-2026-11-14/MAC_HANDOFF.md`.
 
-This is a **local** test file, not an update to the private Team Create cloud
-place. Do not save it over the cloud place as a way to make a date look current.
+The dated file itself is a **local reference**. A verified copy was deliberately
+saved into the existing private Team Create cloud place as documented above.
+Later local edits do not automatically update that cloud place. Use deliberate,
+verified milestone transfers while preserving the newest work on both computers.
 For later handoffs, build a newly named checkpoint from the agreed code commit,
 record its hash and script digest, commit/push it, then pull/open/verify that same
 file on the other computer. Preserve each computer's uncommitted Studio work.

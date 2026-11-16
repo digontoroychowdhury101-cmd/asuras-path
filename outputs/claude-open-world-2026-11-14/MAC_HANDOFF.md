@@ -2,6 +2,16 @@
 
 Read this first, then `handoff/RESUME_PROMPT.md`, `CONTINUATION.md` and `LEDGER.md`. Claude's 13:22 checkpoint was already pushed as `b658140`. Codex finished the handoff after the usage-limit stop, preserving the late terrain edit and providing the ignored assets on a separate branch. This is an unfinished development checkpoint, not a release or visual acceptance. Assume the receiving computer has nothing installed. No installation on a remote computer is claimed.
 
+**Later cloud migration completed at the creator's request:** the verified build
+is now saved to the existing private Development cloud place. Read
+[handoff/CLOUD_MIGRATION.md](handoff/CLOUD_MIGRATION.md). On the Mac, open that
+experience from Roblox and verify place **118614906972571** / universe
+**10777041159**, `persistedToCloud=true`, script digest **1357214079** (275 scripts,
+3151007 bytes; runtime source `32d448e`, including the Mac far-tree change). The
+latest explicit save reported version **6**. The dated local reference remains
+at digest 1516687798. Older uploads-only instructions below and
+in historical worker notes are superseded for this completed migration.
+
 ## 1. What travels by Git and what does not
 
 | Travels (branch `ux/onboarding-overhaul`) | Does NOT travel |
@@ -72,7 +82,7 @@ ElevenLabs, Forge GUI and any other Claude account connectors need connection on
 ## 5. Roblox and Studio state
 
 - Cloud place made by the creator on 2026-11-16 so MCP permissions could be set: "Asura's Path — Development", universe 10777041159, root place 118614906972571, PRIVATE. Team Create is ON there, so any edit in Edit mode writes to the cloud copy.
-- Rule: the cloud place is for approved uploads ONLY (no script edits, inserts, saves, publishes or settings changes). All sync-and-restore tests, Play runs and captures happen in a separate LOCAL copy of the place (copy `places/AsurasPath.rbxlx` to a scratch folder and open that; confirm it is not cloud-saved before every write).
+- Current cloud state: the creator explicitly authorised migration of the verified open-world build, now completed and saved with the Mac far-tree reconciliation (latest save version 6, fingerprint 1357214079, runtime source 32d448e). This is the shared integrated target. Build/test candidate changes locally, then deliberately integrate verified milestones into this same place with the corresponding Git checkpoint. Temporary sync-and-restore tests stay local; do not restore the old baseline into the shared cloud place. See `handoff/CLOUD_MIGRATION.md` for preservation evidence and open issues. No public release or account/settings change was performed.
 - MCP upload permission is per place and per Studio. On the Mac the creator must open the cloud place and approve `…/asuras-path/assets/source/overworld` (and the audio pack folder) in Assistant Settings → MCP Permissions. Claude must not change that setting.
 - Upload authorisation from the creator: this task's meshes and textures, and the five overworld audio beds, to the creator's own account. One upload owner, registry checked before every upload, no duplicates, nothing public, nothing that costs Robux.
 - Upload status at 13:15: the directory approval works (POST returned 200), but the one test, `Bell_Lantern_Post.glb`, ended with operation `b921007b-9ee0-472f-88e7-3442c56770e7` done=true, error "Unknown Error", no asset ID. Nothing is uploaded and no registry exists yet. Details in `workers/20a-upload.md` ("Codex retry"). Next step is diagnosis, one change at a time (request fields, mesh-only GLB, texture size, 3D Importer on the local copy).
@@ -92,7 +102,7 @@ ElevenLabs, Forge GUI and any other Claude account connectors need connection on
 
    Expected asset-branch commit: `1412139fbb6c9adc519031a5d02063c7a952732c`. Check with `git rev-parse origin/codex/overworld-assets-2026-11-16`.
 3. Read, in order: `CLAUDE_OPEN_WORLD_PROMPT.md` (the creator's brief), the **Codex handoff completion** section at the top of `CONTINUATION.md`, `LEDGER.md`, `GEOGRAPHY_PLAN.md`, `DELEGATION_STATUS.md`. Historical round-8 stops lower in the files are superseded by the top checkpoint.
-4. Run `python3 tools/test_overworld_handoff.py` and `bash tools/verify_all.sh`. To open the **same saved file on both computers**, use `places/checkpoints/AsurasPath_OpenWorld_2026-11-16.rbxlx`; verify it with `shasum -a 256 -c places/checkpoints/AsurasPath_OpenWorld_2026-11-16.sha256` from the repo root. Follow `places/checkpoints/README.md` for the exact open command. This dated checkpoint's fingerprint is **275 scripts, 3149701 bytes, digest 1516687798**. Copy it to `work/handoff-local/` for temporary edits, or build there from newer agreed source with `python3 tools/build.py --output work/handoff-local/AsurasPathTEST.rbxlx`. The older baseline's fingerprint differs by design. Check `persistedToCloud=false` before writes. Runtime terrain appears during Play; the saved file is an unfinished development build, not visual acceptance.
+4. Run `python3 tools/test_overworld_handoff.py` and `bash tools/verify_all.sh`. For the requested **Save to Roblox workflow**, open Asura's Path — Development from Studio's Roblox experiences and confirm cloud place **118614906972571**, universe **10777041159**, `persistedToCloud=true`. Verify **275 scripts, 3149701 bytes, digest 1516687798** using `tools/qa/SourceDigest.luau`. The dated local reference remains `places/checkpoints/AsurasPath_OpenWorld_2026-11-16.rbxlx`, with its adjacent SHA-256 record; use a copy under `work/handoff-local/` for temporary tests, or build there from newer agreed source. Confirm `persistedToCloud=false` before temporary sync-and-restore writes. Runtime terrain appears during Play; this is an unfinished development build.
 5. Start Claude Code and use `handoff/RESUME_PROMPT.md`. Hierarchy: Fable 5.2 oversight only → one Opus 5.5 lead → Sonnet workers and Haiku readers, four to six lanes, one operator per live Studio window and live Blender, headless Blender for extra mesh lanes. Check actual model routing before expensive work; model labels in prose do not prove delegation.
 6. Only one computer writes the shared branch at a time. Before handoff, stop/finish workers, verify, commit explicit task paths, fetch and reconcile remote changes, push, and compare local/remote commit IDs. Repack changed ignored sources as a **new immutable snapshot** with updated pins. `tools/handoff.sh` and `.cmd` rebuild saved places and stage broad folders; use explicit commands for this checkpoint so the baseline and unrelated work remain preserved.
 
