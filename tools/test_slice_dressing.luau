@@ -28,7 +28,7 @@ local MANIFEST = {
 	Stepping_Stones = { 15.8, 21.9, 2.2, 6720 },
 }
 local pieceCount = 0
-for _, p in S.Pieces do pieceCount += if p.Far then 0 else 1 end -- the _Far estimate specs (lane D6) are not manifest pieces
+for _, p in S.Pieces do pieceCount += if p.Far then 0 else 1 end -- the _Far specs (lane D6/D7, bellwood_far manifest) are not near-kit pieces
 -- 1b. Placeholder specs (lane 22b): every piece of the five upload manifests (slice, hero, bellwood_veg, bellwood_built_a/b) has a spec whose
 -- sub names and tris match and whose boxes span the manifest bounding box +-5%. { piece, X, Y up, Z, tris_total, "Sub:tris ..." } = size_studs_xyz_roblox.
 local ALL = {
@@ -695,7 +695,7 @@ do
 	check("the tower rises at least 1 degree above everything behind it (the far tree line)", behind == 0 or worstAng <= towerAng - 1)
 	check("the tower keeps its Raise range (scale 1..1.7)", tower.Scale >= 1 and tower.Scale <= 1.7)
 end
-do -- near / far trees: a _Far variant exactly when the tree is beyond FarSwitch of every road centreline and capture eye; the _Far specs are same-bbox estimates
+do -- near / far trees: a _Far variant exactly when the tree is beyond FarSwitch of every road centreline and capture eye; the _Far specs are the bellwood_far manifest (same bbox, real tris)
 	local caps2 = S.captures()
 	local function farFromAll(x, z)
 		local d = roadDistance(x, z)
@@ -720,17 +720,19 @@ do -- near / far trees: a _Far variant exactly when the tree is beyond FarSwitch
 	check("the far switch is 140 studs", S.FarSwitch == 140)
 	for _, name in S.FarPieces do
 		local nearP, farP = S.Pieces[name], S.Pieces[name .. "_Far"]
-		check(name .. "_Far exists, flagged as an estimate of " .. name, farP ~= nil and farP.Far == true and farP.Estimate == true and farP.FarOf == name)
+		check(name .. "_Far exists, built from the manifest (no Estimate flag) for " .. name, farP ~= nil and farP.Far == true and farP.Estimate == nil and farP.FarOf == name)
 		if farP then
 			local bn, bf = S.specBounds(name), S.specBounds(name .. "_Far")
 			check(name .. "_Far has the same bbox (placeholder union and Size)", farP.Size[1] == nearP.Size[1] and farP.Size[2] == nearP.Size[2] and farP.Size[3] == nearP.Size[3]
 				and near(bn[1], bf[1], 1e-6) and near(bn[2], bf[2], 1e-6) and near(bn[3], bf[3], 1e-6) and near(nearP.Radius, farP.Radius))
-			local same = #nearP.Subs == #farP.Subs
-			for i, sb in nearP.Subs do same = same and farP.Subs[i] ~= nil and farP.Subs[i].Name == sb.Name end
-			check(name .. "_Far keeps the sub-mesh names (registry keys <Piece>_Far__<Sub>)", same)
+			local ms = S.FarManifestSize[name]
+			check(name .. "_Far manifest bbox equals the near piece within rounding", ms ~= nil and near(ms[1], nearP.Size[1], 0.05) and near(ms[2], nearP.Size[2], 0.05) and near(ms[3], nearP.Size[3], 0.05))
+			local want = if name == "Conifer_Tall" then { "Bark", "Needles" } else { "Bark", "Leaves" } -- registry keys <Piece>_Far__<Sub> as in upload_manifest.json
+			check(name .. "_Far sub-meshes are " .. table.concat(want, "+") .. " (Needles for the conifer)", #farP.Subs == 2 and farP.Subs[1].Name == want[1] and farP.Subs[2].Name == want[2])
 			local ratio = farP.Tris / nearP.Tris
-			check(string.format("%s_Far has %.0f%% of the near tris (10-15%%)", name, ratio * 100), ratio >= 0.10 and ratio <= 0.15)
-			check(name .. "_Far never has more placeholder parts than the near piece", farP.PlaceholderParts <= nearP.PlaceholderParts and farP.MeshParts == nearP.MeshParts)
+			check(string.format("%s_Far has %d tris (%.1f%% of the near tris, < 15%%)", name, farP.Tris, ratio * 100), farP.Tris >= 900 and farP.Tris <= 1500 and ratio < 0.15)
+			check(name .. "_Far keeps the near crown (Under, Crown)", near(farP.Under, nearP.Under) and near(farP.Crown, nearP.Crown))
+			check(name .. "_Far never has more placeholder parts than the near piece", farP.PlaceholderParts <= nearP.PlaceholderParts and farP.MeshParts == 2 and farP.MeshParts < nearP.MeshParts)
 		end
 	end
 end

@@ -406,3 +406,15 @@ DECISION (audio upload): blocked. There is no upload tooling or credentials path
 ## Decisions log
 - 2026-11-15: restart #2; nothing on disk from run #1 except brief + DELEGATION_STATUS.md.
 - 03c-studio (Lane 1 Studio verification of lanes 4/5): workers/03c-studio.md
+
+## Mac resume rows (2026-11-16, Computer B, lead Opus 5.5)
+| Task | Agent ID | Model requested | Artifact | Validation |
+|---|---|---|---|---|
+| S Studio open + baseline terrain + captures | a66e090cf80d6c2ae | sonnet | workers/mac-02-studio.md, captures/mac/ | TEST window 9a692a82 (local, persistedToCloud=false, digest 1516687798 before/after, not saved). ENGINE baseline on 358e24f code: hb avg 59 Hz, one 1.6 s dip at 17 Hz mid-write (run 2), glade 4.8 s, altars 12 s, all 4356 tiles 114 s, TerrainVoxels 97 MB peak. Slice 07 tower visible. Summit temple NOT drawn from 5 summit views (open). Shen walk-out PASS; on-foot walk-in starts no encounter (open). |
+| T4b terrain finish (tight boxes, Actor pool) | a8da77eb39a9e8635 | sonnet | OverworldTerrain*.luau, OverworldTerrainWorker.server.luau, Overworld.padsNear, tests | order 487/0, terrain 102/0; voxel identity vs old writer; offline compute only (box/solid 6.3x -> 1.33x). Lead applied project.json mapping; verify_all 14/14; build work/mac-t4b 277/3165847/1344721424. Engine measurement pending; adopt only if >= baseline. |
+| U lantern diagnosis | a5c3be2616d9a1138 | sonnet | workers/20a-upload.md (Mac), upload/diag/ variants A/B/C | GLB valid (3 roots, 8 PNGs, no extensions); no cloud window on this Mac -> no upload; BLOCKED on creator. |
+| D7 far-tree reconcile | ade3ac19f1904f9eb | sonnet | SliceDressing.luau, test_slice_dressing.luau | 1013/0; real far specs; FarDensity .6 -> .4 to keep TrisLod <= 3.2M (trees 218: 101 near/117 far); tower 74%. |
+| I upload inventory | a1535a610f5cd46f0 | haiku | workers/mac-03-upload-inventory.md | done; register_uploads.py is Phase-5 only -> overworld registry generator needed. |
+
+DECISION (lead, Mac): Mac engine baseline on current code already meets glade/altars/map/memory; T4b (Actor pool) is adopted only if a Studio run beats or matches it AND removes the >1 s dip under 30 Hz. Otherwise revert T4b and keep current writer.
+DECISION (lead, Mac): far density lowered to 0.4 accepted (budget kept, no Budget number raised); revisit after real-mesh Studio profile.

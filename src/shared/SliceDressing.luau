@@ -286,25 +286,46 @@ for _, row in KIT do
 	SliceDressing.Pieces[name] = { Size = { X, Y, Z }, Structure = if rec.Solid then true else nil, Sink = rec.Sink, Trunk = if rec.Trunk then rec.Trunk * math.max(X, Z) else nil, Subs = list, Kit = true }
 end
 
--- Near/far (lane D6): beyond FarSwitch studs from every capture eye and road centreline a tree stands as <Piece>_Far, the low-tri variant lane M8 builds
--- (pack assets/source/overworld/upload/bellwood_far/: same bbox, about 10-15% of the tris). The pack did not exist when this was written, so every _Far spec is an
--- ESTIMATE (Estimate = true): the near piece's sub names, boxes and bbox with Tris = FarTrisFraction of each near sub. Replace the fraction by the pack manifest numbers on arrival;
--- the registry keys are <Piece>_Far__<Sub> and a missing key leaves the placeholder, exactly like a near piece.
+-- Near/far (lanes D6, D7): beyond FarSwitch studs from every capture eye and road centreline a tree stands as <Piece>_Far, the low-tri variant lane M8 built
+-- (pack assets/source/overworld/upload/bellwood_far/upload_manifest.json: same bbox and pivot, 4-12% of the near tris, one Bark and one Leaves/Needles sub-mesh).
+-- FAR below is that manifest: { piece, size studs, "<Sub>:tris" }. The registry keys are <Piece>_Far__<Sub>; a missing key leaves the placeholder, exactly like a near piece.
+-- Placeholder: the Bark box of the near piece, and one leaf box over the whole near crown (the Mass and Detail boxes united: the far lumps fill the full bbox).
+-- The manifest's per-piece switch_distance_studs (150-220, read off the 60/150/300 renders) is NOT used: one FarSwitch keeps the budget in step with the placement rules.
 SliceDressing.FarSwitch = 140
-SliceDressing.FarTrisFraction = 0.12
-SliceDressing.FarPieces = { "Canopy_Tree_A", "Canopy_Tree_B", "Canopy_Tree_C", "Canopy_Tree_D", "Conifer_Tall", "Old_Gnarled_Tree" }
-for _, name in SliceDressing.FarPieces do
+local FAR: { any } = {
+	{ "Canopy_Tree_A", 39.7, 44.23, 41.11, "Bark:299 Leaves:1200" },
+	{ "Canopy_Tree_B", 31.83, 58.6, 30.79, "Bark:299 Leaves:1200" },
+	{ "Canopy_Tree_C", 38.65, 49.59, 42.33, "Bark:296 Leaves:1200" },
+	{ "Canopy_Tree_D", 45.16, 37.31, 45.52, "Bark:295 Leaves:1200" },
+	{ "Conifer_Tall", 26.94, 68.45, 29.53, "Bark:216 Needles:768" },
+	{ "Old_Gnarled_Tree", 35.06, 31.17, 28.73, "Bark:238 Leaves:960" },
+}
+SliceDressing.FarPieces = {}
+SliceDressing.FarManifestSize = {} :: { [string]: { number } } -- the manifest's exact bbox per near piece (the specs keep the near piece's one-decimal Size)
+for _, f in FAR do
+	local name = f[1] :: string
 	local nearSpec = SliceDressing.Pieces[name]
-	local subs = {}
+	local bark, mass, detail
 	for _, sb in nearSpec.Subs do
-		local c = table.clone(sb)
-		c.Tris = math.max(1, math.floor(sb.Tris * SliceDressing.FarTrisFraction + 0.5))
-		if string.find(sb.Name, "_Mass$") and #sb.B == 2 then -- the far placeholder merges the crown and its cap into one box (same height and footprint)
-			c.B = { { 0, 0, sb.B[1][3], sb.B[2][4], sb.B[1][5], sb.B[1][6] } }
-		end
+		if sb.Name == "Bark" then bark = sb elseif string.find(sb.Name, "_Mass$") then mass = sb elseif string.find(sb.Name, "_Detail$") then detail = sb end
+	end
+	local y0, y1, w = math.min(mass.B[1][3], detail.B[1][3]), 0, 0
+	for _, sb in { mass, detail } do
+		for _, b in sb.B do y1, w = math.max(y1, b[4]), math.max(w, b[5], b[6]) end
+	end
+	local subs = {}
+	for subName, tris in string.gmatch(f[5] :: string, "(%S+):(%d+)") do
+		local src = if subName == "Bark" then bark else mass
+		local c = table.clone(src)
+		c.Name, c.Tris = subName, tonumber(tris) :: number
+		if subName ~= "Bark" then c.B = { { 0, 0, y0, y1, w, w } } end
 		table.insert(subs, c)
 	end
-	SliceDressing.Pieces[name .. "_Far"] = { Size = nearSpec.Size, Structure = nearSpec.Structure, Sink = nearSpec.Sink, Trunk = nearSpec.Trunk, Subs = subs, Kit = true, Far = true, FarOf = name, Estimate = true }
+	table.insert(SliceDressing.FarPieces, name)
+	SliceDressing.FarManifestSize[name] = { f[2], f[3], f[4] }
+	-- Under/Crown: the near crown (Leaves_Mass) is what hides, shades and crowds the neighbours; the _Mass sub-mesh is gone here, so they are carried over.
+	SliceDressing.Pieces[name .. "_Far"] = { Size = nearSpec.Size, Structure = nearSpec.Structure, Sink = nearSpec.Sink, Trunk = nearSpec.Trunk, Subs = subs, Kit = true, Far = true, FarOf = name,
+		Under = mass.B[1][3], Crown = mass.B[1][5] * 0.5 * math.max(nearSpec.Size[1], nearSpec.Size[3]) }
 end
 
 -- The union of a piece's placeholder boxes (and step blocks) as { x, y, z } extents in studs; equals Size within the recipe's fractions.
@@ -466,7 +487,7 @@ SliceDressing.Classes = { "Tree", "Rock", "Cliff", "Outcrop", "Scree", "Deadwood
 SliceDressing.KeepAs = { Sapling = "Tree", Deadwood = "Rock", Cliff = "Rock", Outcrop = "Rock", Scree = "Shrub", Flower = "Grass", Mushroom = "Fern", Reed = "Fern" } :: { [string]: string }
 SliceDressing.Scatter = {
 	Tree = { Salt = 1, Spacing = 22, Base = 0.85, Jitter = 1, MaxSlope = 0.55, Clearing = 0.9, Tall = true, Scale = { 0.7, 1.4 }, Cluster = { Lo = 0.3, Hi = 0.52, Floor = 0.05 }, Roadside = 2.6,
-			FarBelt = 170, FarDensity = 0.6, -- beyond Half + Fade of the route, out to FarBelt studs more, at FarDensity of the chance: _Far variants only (they are > FarSwitch from every road)
+			FarBelt = 170, FarDensity = 0.4, -- beyond Half + Fade of the route, out to FarBelt studs more, at FarDensity of the chance: _Far variants only (they are > FarSwitch from every road)
 		Pieces = { { "Canopy_Tree_A", 0.26 }, { "Canopy_Tree_B", 0.14 }, { "Canopy_Tree_C", 0.18 }, { "Canopy_Tree_D", 0.14 }, { "Conifer_Tall", 0.04 }, { "Old_Gnarled_Tree", 0.14 } }, Material = { LeafyGrass = 1, Grass = 0.9, Ground = 0.5, Mud = 0.3, Rock = 0.1 } },
 	Rock = { Salt = 5, Spacing = 40, Base = 0.8, Jitter = 1, MaxSlope = 1.6, MinSlope = 0.1, Clearing = 0.9, Tall = true, Scale = { 0.7, 1.2 },
 		Pieces = { { "Boulder_Granite_A", 0.3 }, { "Boulder_Granite_B", 0.25 }, { "Boulder_Granite_C", 0.15 }, { "Boulder_Granite_D", 0.15 }, { "Boulder_Granite_Split", 0.15 } }, Material = { Rock = 1, Ground = 0.5, Mud = 0.2, LeafyGrass = 0.3, Grass = 0.25 } },
