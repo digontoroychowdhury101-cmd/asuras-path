@@ -1,0 +1,8 @@
+# mac-15 lane R2-2 rain at player height (source + LOCAL window 7d39aa8d)
+Plan: 1 diagnose; 2 edit WeatherController rain (volume emitter, density, brightness) + tests; 3 run weather test + luau-compile; 4 local window: push Source, Play, same camera/time clear vs rain (facing wind + across) -> captures/mac/rain2_*.jpg; 5 FPS/particle count; 6 restore Source from disk, no save.
+Files: src/client/Controllers/WeatherController.luau, tools/test_weather_composition.luau (+ this note, captures).
+Diagnosis: emitter Part is 70x1x70 at root+55; ParticleEmitter on a Part spawns inside the part volume, so every drop spawns at y+55, lives 1.1 s at 35-49 studs/s (38-54 studs of fall) and dies 1-17 studs ABOVE the root. No rain exists at head/camera height, only a ceiling band above: the "thin sparse" read.
+- edit1 WeatherController: Rain Rate 420->540 (live 462->594, cap 600 unchanged), Alpha .4->.3, Glow .15->.4, LightInfluence 1->.5, color 170,190,215->200,215,235; emitter box 70x1x70 @+55 -> 48x50x48 volume @+25 and 14 studs ahead of camera (fxPosition). test: +1 check (volume/glow/rate). weather test 243/0, luau-compile OK
+- studio: LOCAL 7d39aa8d PlaceId 0 persistedToCloud=false asserted; WeatherController Source patched in Edit (same edits). Next: Play, capture clear/rain
+- cap rain2_clear_into_wind.jpg: local Play, glade root (-2230,65,-1430) eye +2.5 facing ESE (0.924,-0.05,0.383) into wind, hour 11.95 clear (epoch t=7005), GUI hidden; sky blue, gate ahead, no streaks. Rendering normal (not throttled).
+- finding: camera-ahead offset dropped (game camera read by Update returned north-look, FX never followed my camera in Play); box is now 40x44x40 @+22 centred on player. Diagnostic: stock 70x1x70 box emitted at one height.

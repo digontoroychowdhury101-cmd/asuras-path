@@ -1,5 +1,16 @@
 # Open-World Replacement — Ledger (lead: Opus 5.5, restart #2)
 
+## Latest delivery — Mac to Windows, 2026-11-16
+
+Codex preserved and verified Claude's pending round-2 work after the quota stop; [WINDOWS_HANDOFF.md](WINDOWS_HANDOFF.md)
+is the current handoff. New source checkpoint **277 / 3174231 / 1755809200**, full verifier **14/14 PASS**.
+Cloud M1 remains **277 / 3173417 / 786797912** (`3465430`), latest save recorded v9; round 2 is local only.
+Rain/stair/sightline source and regression checks delivered, Studio acceptance incomplete. Multiplayer harnesses delivered,
+compile-only, pending Windows. Base assets 1277/1277 unchanged; three lantern diagnostics explicitly tracked with hashes.
+Every open Mac Studio place was saved/backed up before graceful closure; see `places/checkpoints/mac-session-2026-11-16/`.
+Correction: mac-13's missing-shelter-caller claim is false; WeatherController already passes `Sheltered = covered` to compose.
+No fresh multiplayer/device/art acceptance is claimed. Original acceptance work remains open.
+
 Historical starting baseline: HEAD `fb51a42` on `ux/onboarding-overhaul`. The creator subsequently authorised commits and pushes for the cross-computer handoff. Oversight file: [DELEGATION_STATUS.md](DELEGATION_STATUS.md) (Fable-owned, not edited here). Current resume point: the **Codex handoff completion** section at the top of [CONTINUATION.md](CONTINUATION.md).
 
 ## Handoff checkpoint — 2026-11-16

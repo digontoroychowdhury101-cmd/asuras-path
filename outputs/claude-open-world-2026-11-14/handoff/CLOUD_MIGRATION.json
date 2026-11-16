@@ -201,5 +201,19 @@
       "play_repeated_after_followup": false
     },
     "temporary_build": "work/cloud-migration-2026-11-16/AsurasPath_MacReconciled.rbxlx"
+  },
+  "mac_shutdown_preservation": {
+    "date": "2026-11-16",
+    "reason": "Creator requested preservation and closure of all Roblox windows during Windows handoff.",
+    "place_id": 118614906972571,
+    "backup": "places/checkpoints/mac-session-2026-11-16/AsurasPathCloud_M1_recovered.rbxl",
+    "backup_sha256": "2cad474bfff2b06b602b037df4535227ac82641b20bf5baa3ce09677b45e2fa1",
+    "action": "File > Download a Copy; Studio also saved the existing cloud content to Roblox",
+    "save_succeeded_at_utc": "2026-11-16T05:54:26Z",
+    "message": "Saved new changes in Asura’s Path — Development to Roblox.",
+    "new_version_number": null,
+    "round_2_integrated": false,
+    "cold_reopen_performed": false,
+    "all_studio_instances_closed": true
   }
 }

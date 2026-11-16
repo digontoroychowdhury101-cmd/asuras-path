@@ -603,8 +603,9 @@ do
 	print(string.format("  set pieces %d in %d sets; hero placements %d", setTotal, wanted, #heroes))
 end
 
--- F. Lane D6: the sight cone from the glade eye (captures 01 and 07) to the tower, the tower above the far tree line, and the near/far tree scheme.
+-- F. Lane D6 (R2-4: 90% from both eyes, shelters included): the sight cone from the glade eye (captures 01 and 07) to the tower, the tower above the far tree line, and the near/far tree scheme.
 local function boxesOf(p) -- every placement's occluders re-derived from the piece data (not the builder's Occ): { radius, y0, y1 }; trees = trunk + canopy circle, else the bounding circle
+	if p.Box then return { p.Box } end
 	local pc, sc = S.Pieces[p.Piece], p.Scale
 	local half = 0.5 * math.sqrt(pc.Size[1] ^ 2 + pc.Size[3] ^ 2) * sc
 	local bot, topY = p.Y - pc.Sink * sc, p.Y + (pc.Size[2] - pc.Sink) * sc
@@ -643,6 +644,9 @@ local function towerVisible(list, eye) -- fraction of the tower's height (19 sam
 	local seen, total = 0, 0
 	local others = {}
 	for _, pl in list do if pl.Id ~= "TowerMid" then table.insert(others, pl) end end
+	for _, sh in O.Blockout.Shelters do -- the blockout shelters stand outside the placement list: a 10 stud tall cylinder over the half diagonal
+		table.insert(others, { X = sh.X, Z = sh.Z, Box = { 0.5 * math.sqrt(sh.W ^ 2 + sh.D ^ 2), O.heightAt(sh.X, sh.Z), O.heightAt(sh.X, sh.Z) + 10 } })
+	end
 	for k = 1, 19 do
 		local f = 0.05 * k
 		local ok = true
@@ -668,7 +672,7 @@ do
 	for id, eye in eyes do
 		local frac = towerVisible(R.Placements, eye)
 		print(string.format("  tower from %s (%.0f, %.0f, eye %.1f): %.0f%% of its height unobstructed", id, eye.X, eye.Z, eye.Y, frac * 100))
-		check(string.format("at least 60%% of the tower's height is unobstructed from %s (%.0f%%)", id, frac * 100), frac >= 0.6)
+		check(string.format("at least 90%% of the tower's height is unobstructed from %s (%.0f%%)", id, frac * 100), frac >= 0.9)
 		local fake = { Id = "FakeCrown", Piece = "Canopy_Tree_B", X = eye.X + (tower.X - eye.X) * 0.4, Z = eye.Z + (tower.Z - eye.Z) * 0.4, Scale = 1.4 }
 		fake.Y = O.heightAt(fake.X, fake.Z)
 		local withFake = table.clone(R.Placements)

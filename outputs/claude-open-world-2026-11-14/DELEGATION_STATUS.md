@@ -158,3 +158,40 @@ Every record's observed model matches the request; workers are at spawn depth 2 
 - 18 agent records; records whose observed model differs from the request: 0. No fallback warning and no unavailable model.
 - Responses by observed model: claude-sonnet-5-5 1086, claude-opus-5-5 119, claude-haiku-5-5 41. Response counts only; no token or cost figures per model.
 - Oversight checked M1 independently: HEAD build 277 / 3173417 / 786797912 equals the cloud Edit digest; saved the cloud place (latest version 9) and recorded it in handoff/CLOUD_MIGRATION. No design or source work by Fable.
+
+## Final Mac quota-stop audit (Codex, 16 November 2026)
+
+Read the parent conversation from its initial Windows-resume request to its final quota-failure notification, then reconciled the worker records, notes and pending files. Active session: `e35b1c65-d031-4fc4-bafa-88f8c1f6954f`. Earlier two-minute aborted Mac run is recorded above and is not counted again. No new agents were launched for this handoff.
+
+| Agent | Task | Requested | Observed response model | Response records |
+| --- | --- | --- | --- | --- |
+| `a116f2bf6b03a6bd6` | Summit temple visibility diagnosis | sonnet | claude-sonnet-5-5 | 33 |
+| `a1535a610f5cd46f0` | Upload queue inventory reader | haiku | claude-haiku-5-5 | 23 |
+| `a18b35612e17211ea` | Rain density fix and capture | sonnet | claude-sonnet-5-5 | 70 |
+| `a1cf42b69ab0a997b` | Far visibility evidence lane | sonnet | claude-sonnet-5-5 | 63 |
+| `a1f705af3f8471d9a` | Lantern upload via cloud window | sonnet | claude-sonnet-5-5 | 16 |
+| `a2e68f7b859f019d8` | Studio T4b engine measurement | sonnet | claude-sonnet-5-5 | 157 |
+| `a30013f718e5c75ad` | Cloud integration of milestone M1 | sonnet | claude-sonnet-5-5 | 101 |
+| `a50e15abbebe25fb9` | Shen walk-in encounter check | sonnet | claude-sonnet-5-5 | 25 |
+| `a5c3be2616d9a1138` | Lantern upload diagnosis lane | sonnet | claude-sonnet-5-5 | 17 |
+| `a66e090cf80d6c2ae` | Studio operator TEST window | sonnet | claude-sonnet-5-5 | 204 |
+| `a7273478bf8a85123` | Acceptance sweep reader | haiku | claude-haiku-5-5 | 21 |
+| `a7bad8c8ce7776dfb` | Studio summit temple probe | sonnet | claude-sonnet-5-5 | 103 |
+| `a8d279c55ff980590` | Two-client harnesses write only | sonnet | claude-sonnet-5-5 | 44 |
+| `a8da77eb39a9e8635` | T4 terrain finish source lane | sonnet | claude-sonnet-5-5 | 109 |
+| `a9a8d793e8bfc9bda` | Fault C and mountain stairs | sonnet | claude-sonnet-5-5 | 50 |
+| `a9b0ce68032eac666` | Biome kit registry integration | sonnet | claude-sonnet-5-5 | 50 |
+| `ab49231086559e232` | Studio M1 milestone evidence | sonnet | claude-sonnet-5-5 | 157 |
+| `abefc13b05f5ad028` | Overworld kit registry generator | sonnet | claude-sonnet-5-5 | 25 |
+| `ade3ac19f1904f9eb` | Far-tree spec reconcile lane | sonnet | claude-sonnet-5-5 | 32 |
+| `ae1c0e8389a53fbee` | Multi-client pending note reader | haiku | claude-haiku-5-5 | 18 |
+| `ae25fc41f4f9aaea0` | Opus lead: open-world resume 2 | opus | claude-opus-5-5 | 130 |
+| `ae2f7e402a83ce69d` | Cloud v9 check and digests | sonnet | claude-sonnet-5-5 | 27 |
+| `ae45952c4d0abdc22` | T4c terrain defect fixes | sonnet | claude-sonnet-5-5 | 47 |
+| `af3eaf1cde7afafb3` | Fix WorldService gate margin | sonnet | claude-sonnet-5-5 | 10 |
+
+Records: 24 total; haiku 3, opus 1, sonnet 20. Every observed model matches its requested tier; no fallback observed. Counts exclude missing model fields and synthetic compaction records. They are response records, not tokens or cost.
+
+Evidence: `~/.claude/projects/-Users-digonto-Documents/e35b1c65-d031-4fc4-bafa-88f8c1f6954f.jsonl` and its `subagents/agent-<id>.meta.json` / matching `.jsonl`. `pickedEffortModel` is the parent effort setting, not proof of a worker model. Raw transcripts remain local; no credentials, private account context, or unrelated chat material is included in Git.
+
+Round 2: rain and far-visibility workers and the lead hit the quota limit. Stairs/sightline, harnesses, acceptance sweep and digest utility produced durable results. A tool-reported `finished` flag does not mean the assigned acceptance passed. Current outcome, corrections and exact Windows resume steps: [WINDOWS_HANDOFF.md](WINDOWS_HANDOFF.md).

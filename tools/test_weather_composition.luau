@@ -289,6 +289,7 @@ check("rain velocity falls faster than it drifts and blows WNW (toward 292.5 deg
 	and near(vx / horiz, Wind.Toward.X, 1e-6) and near(vz / horiz, Wind.Toward.Z, 1e-6) and Wind.Toward.X < 0 and Wind.Toward.Z < 0)
 check("rain emits within the shared 600 budget; snow and dust stay soft, never velocity-parallel", emitter.Rate * rk.Life <= Weather.Budget + 1e-6
 	and Weather.Kinds.Snow.Squash == nil and Weather.Kinds.Dust.Squash == nil)
+check("rain emitter is a tall volume (drops spawn at head height) and streaks stay bright", weather.Fx.Size.Y >= 30 and rk.Glow >= 0.3 and rk.Rate * rk.Life >= 500)
 check("weather wind and profile reach the lighting owner", weather.Wind ~= nil and near(weather.Wind.Speed, P.Speed * Profiles.Weather.Rain.Wind, 1e-6)
 	and weather:Profile(nil) ~= nil and weather:Profile({ Phase = 1 }) == nil)
 check("clock hour composed from the server epoch", near(weather.Info.Hour, Profiles.hourAt(rainAt), 1e-6))

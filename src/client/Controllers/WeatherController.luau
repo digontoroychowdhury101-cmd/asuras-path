@@ -19,12 +19,15 @@ local FX_TAG, SHELTER_TAG = "AsuraWeatherFx", "AsuraShelter"
 -- Rain is a velocity-aligned streak: Size is its length in studs (Fall * 0.02 s of motion blur, 1.4 studs), stretched by
 -- Squash. VelocityParallel lays the particle along its velocity, and a POSITIVE squash widened it across that axis (the
 -- horizontal dashes of 12e), so the sign is negative: tall along the fall line. Alpha is transparency. Live particles = Rate * Life * intensity, and the
--- sum over kinds is capped at BUDGET (rain 462, snow 550, dust 400 at full; comfort multiplies intensity by 0.35).
+-- sum over kinds is capped at BUDGET (rain 594, snow 550, dust 400 at full; comfort multiplies intensity by 0.35).
+-- Rain Glow/Influence: bright, pale streaks that stay visible against sky and dark terrain (Influence = LightInfluence).
 local KINDS: { [string]: any } = {
-	Rain = { Rate = 420, Fall = 70, Share = 0.6, Life = 1.1, Size = 1.4, Squash = -2, Alpha = 0.4, Glow = 0.15, Color = { 170, 190, 215 } },
+	Rain = { Rate = 540, Fall = 70, Share = 0.6, Life = 1.1, Size = 1.4, Squash = -2, Alpha = 0.3, Glow = 0.4, Influence = 0.5, Color = { 200, 215, 235 } },
 	Snow = { Rate = 110, Fall = 10, Share = 0.8, Life = 5, Size = 0.45, Alpha = 0.1, Glow = 0.2, Color = { 245, 248, 255 } },
 	Dust = { Rate = 100, Fall = 1, Share = 1.5, Life = 4, Size = 2.2, Alpha = 0.7, Glow = 0, Color = { 222, 190, 140 } },
 }
+-- The emitter box is a tall volume around the player (drops spawn anywhere in it, so rain fills head height).
+local FX_SIZE, FX_LIFT = Vector3.new(40, 44, 40), 22
 local Controller = {}
 Controller.__index = Controller
 Controller.Kinds, Controller.Budget = KINDS, 600
@@ -82,12 +85,12 @@ local function precipitation(self: any, position: Vector3, rates: { [string]: nu
 	if not self.Fx then
 		local part = Instance.new("Part")
 		part.Name, part.Anchored, part.CanCollide, part.CanQuery, part.CanTouch = "AsuraWeatherFx", true, false, false, false
-		part.CastShadow, part.Transparency, part.Size = false, 1, Vector3.new(70, 1, 70)
+		part.CastShadow, part.Transparency, part.Size = false, 1, FX_SIZE
 		part.Parent = workspace
 		CollectionService:AddTag(part, FX_TAG)
 		self.Fx = part
 	end
-	self.Fx.CFrame = CFrame.new(position + Vector3.new(0, 55, 0))
+	self.Fx.CFrame = CFrame.new(position + Vector3.new(0, FX_LIFT, 0))
 	local live = 0
 	for kind, spec in KINDS do
 		local r = rates[kind] or 0
@@ -108,7 +111,7 @@ local function precipitation(self: any, position: Vector3, rates: { [string]: nu
 			emitter.Size, emitter.Transparency = NumberSequence.new(spec.Size), NumberSequence.new(spec.Alpha)
 			emitter.Color = ColorSequence.new(Color3.fromRGB(spec.Color[1], spec.Color[2], spec.Color[3]))
 			emitter.Speed = NumberRange.new(spec.Fall * 0.5, spec.Fall * 0.7)
-			emitter.LightEmission = spec.Glow
+			emitter.LightEmission, emitter.LightInfluence = spec.Glow, spec.Influence or 1
 			if spec.Squash then
 				emitter.Orientation, emitter.Squash = Enum.ParticleOrientation.VelocityParallel, NumberSequence.new(spec.Squash)
 			end
@@ -157,7 +160,7 @@ end
 function Controller.Update(self: any, dt: number)
 	if self.Fx then
 		local own = self.State:Own()
-		if own and own.Root then self.Fx.CFrame = CFrame.new(own.Root.Position + Vector3.new(0, 55, 0)) end
+		if own and own.Root then self.Fx.CFrame = CFrame.new(own.Root.Position + Vector3.new(0, FX_LIFT, 0)) end
 	end
 	self.Elapsed += dt
 	if self.Elapsed < 0.2 then return end

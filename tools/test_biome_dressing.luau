@@ -254,6 +254,23 @@ for _, id in B.Order do
 	if #bad > 0 then print("  " .. id .. " hero problems: " .. table.concat(bad, "; ", 1, math.min(#bad, 10))) end
 	check(id .. ": hero footing (" .. #heroes .. " heroes, " .. #bad .. " problems, worst footprint relief " .. string.format("%.0f", worstRelief) .. ")", #bad == 0)
 
+	-- Stairs (mac-17): a flight climbs toward local -Z from its underside at the +Z end, so it must face the rising ground and sit 0..2 studs into the ground at the low end
+	local stairs, stairBad = 0, {}
+	for _, h in heroes do
+		local p = B.Pieces[h.Piece]
+		if p.Subs[1].Shape == "Steps" then
+			stairs += 1
+			local half = p.Size[3] / 2 * h.Scale
+			local sy, cy = math.sin(math.rad(h.Yaw)), math.cos(math.rad(h.Yaw))
+			local lowG, highG = O.heightAt(h.X + sy * half, h.Z + cy * half), O.heightAt(h.X - sy * half, h.Z - cy * half)
+			local sink = lowG - (h.Y - h.Sink * h.Scale)
+			if highG < lowG - 0.5 then table.insert(stairBad, h.Id .. " climbs down the slope") end
+			if sink < 0 or sink > 2 then table.insert(stairBad, h.Id .. " low-end sink " .. string.format("%.1f", sink)) end
+		end
+	end
+	if #stairBad > 0 then print("  " .. id .. " stair problems: " .. table.concat(stairBad, "; ", 1, math.min(#stairBad, 10))) end
+	check(id .. ": " .. stairs .. " stair flights face the rising slope and sit 0..2 studs into the ground at the low end", #stairBad == 0)
+
 	-- Landmarks
 	for lid, lm in O.Landmarks do
 		if lm.Region == id then

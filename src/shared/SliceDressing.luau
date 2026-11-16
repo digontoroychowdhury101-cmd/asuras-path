@@ -540,7 +540,7 @@ SliceDressing.Sights = {
 -- overlaps the band of rays from LowFrac to the top is refused. Beyond the hero (up to Beyond studs, same cone) nothing may rise within SkyMargin degrees of the hero's
 -- top as seen from the eye, so the hero stands above the far tree line.
 SliceDressing.Cones = {
-	{ Id = "TowerCone", Captures = { "01_glade_arrival", "07_tower_from_glade" }, To = "TowerMid", Deg = 4, Pad = 6, LowFrac = 0.25, SkyMargin = 1.5, Beyond = 700 },
+	{ Id = "TowerCone", Captures = { "01_glade_arrival", "07_tower_from_glade" }, To = "TowerMid", Deg = 4, Pad = 6, LowFrac = 0.03, SkyMargin = 1.5, Beyond = 700 },
 } :: { any }
 
 -- Forest floor round the glade altar (fault D): ferns, grass and a few small rocks in the ring Inner..Outer (the pad is 22 radius and stays

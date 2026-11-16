@@ -53,3 +53,36 @@ Status for every row: **pending — other computer**. Nothing below was run on t
 - **Lobby multiplayer (LobbyMultiplayer.*):** a harness exists but has never been recorded as run.
 
 Skipped: did not read the qa_inject and qa_place scripts, the ShenProbe body, or the LobbyMultiplayer scripts. Risk: the harness lists are from file names and worker notes, not from running anything. Nothing was executed; no Studio, git or tests touched.
+
+## R2-5 harnesses
+
+Plan (written first): add two write-only harnesses under tools/qa/ for the two gaps in section 3 (Shen with two players, row 3/4/6/7; terrain priority with two far-apart players, row 8), compile-check them, document launch. Nothing run; no Studio MCP; no commit (lane brief).
+- [checkpoint 1] Design read from source: WorldService traverseGate (refuses with ArenaOccupied while fights[gate] exists, line ~889; the prompt handler now sets AsuraResult "!ArenaOccupied", toast text in InterfaceController REASONS line 79, so the 10b "no feedback" finding is fixed in source), updateGates (non-participant inside Boss.Arena while a fight runs is teleported to Gate.Outside; reset when living == 0), startFight (only players inside the arena at start join), PlayerRemoving (drops participant, endFight if none left), setGate (wall CanCollide + Sealed attribute). So by design B outside cannot join: prompt refused with feedback, walker blocked by the sealed wall or expelled. OverworldTerrain: Priority + Refocus (players inside the Frame and their 2 s look-ahead, URGENT 256 studs first), OverworldService focus()/guard()/SiteReady/Ready(altarId), Stats.Parallel/Inline.
+- [checkpoint 2] Files written, compiled with work/bin/luau/luau-compile --null: OK for all three.
+
+### tools/qa/ShenMultiClient.server.luau + .client.luau (needs RemoteEvent "ShenQA" in ReplicatedStorage; 2 players)
+Asserts (PASS/FAIL line each, prefix `[ShenMC]`, final `[ShenMC RESULT] {json}`):
+1. gate wall found, open; both start outside the arena;
+2. A walks in on foot (Humanoid:MoveTo to the trigger) and the gate seals (fallback to the prompt, logged as INFO "entry route used");
+3. A.AsuraEncounter = GrandmasterShen, B.AsuraEncounter nil, boss present, Shen entity found (INFO: AI mode, Idle = the 10b terrain-plug symptom);
+4. B outside: prompt refused with `!ArenaOccupied`; B walking at the sealed gate does not become a participant nor stay in the arena; fight and seal untouched;
+5. replication to both clients: Sealed, AsuraEncounter per client, Shen Humanoid.Health/MaxHealth equals server Fighter.ActiveHP after seeded damage (B: if StreamingEnabled and B is outside stream range the check is INFO not FAIL);
+6. A killed by Shen (seeded lethal hit): gate unsealed, Shen despawned, A encounter nil, B untouched;
+7. B then walks in (fresh sealed fight), leaves mid-fight via LeaveTest: PlayerRemoving unseals and resets, A has no encounter.
+Not covered: A and B both as participants (the shipped design refuses a second player once sealed; both-participants needs a simultaneous walk-in and cannot be driven reliably, earlier runs seeded it), BossFelled re-entry (row 6), terrain-plug fix (row 5). Players are KOProtected until the seeded death. Evidence type: seeded Studio diagnostic.
+
+### tools/qa/TerrainPriorityMultiClient.server.luau (needs RemoteEvent "TerrainQA"; no client script; 2 players)
+Two players placed right after AsuraReady at Altar_MonasteryGate (glade) and Altar_BasinCistern (~5900 studs apart, constants at top; PLACE_EARLY true), anchored until their site is Ready, then released. Asserts (`[TerrainMC]`): targets > 3000 apart; each player's ground written (Terrain.Verdict nil and Ready(site)) within 90 s; both grounded without falls (5 s watch after release; Fell verdict, Y drop > 60, KO); no player left on unwritten ground (Map_Overworld Rescues delta 0, none free-standing over Unwritten); server Heartbeat mean of 1 s windows >= 45 Hz and no window < 30 Hz while writing; generation did not fail. INFO: placement-time readiness, per-player seconds, OverworldTerrain.Stats (Parallel/Inline deltas, WriteCalls, WriteMs, ComputeMs, YieldMs), Done/Total.
+Caveat: with PLACE_EARLY the guard is expected to bounce the far player once any altar is ready and the far site is not (that is its design); the harness reports it as FAIL on the guard line and puts the player back so timing continues. Set PLACE_EARLY=false to place each player only when his site is written (the real travel rule) for a guard-free timing run; the two runs together separate "priority speed" from "guard behaviour".
+
+### Launch steps (both; other computer only)
+1. `git pull --rebase origin ux/onboarding-overhaul`, note `git rev-parse --short HEAD`.
+2. `mkdir -p work/multiclient && python3 tools/build.py --output work/multiclient/AsurasPath_MC.rbxlx` (fresh build of the current commit).
+3. Digest of the plain build: `python3 tools/studio_mcp.py --digest work/multiclient/AsurasPath_MC.rbxlx` (record it).
+4. Server harness into a copy: `python3 tools/qa/qa_place.py work/multiclient/AsurasPath_MC_QA.rbxlx tools/qa/ShenMultiClient.server.luau tools/qa/TerrainPriorityMultiClient.server.luau`. This builds from default.project.json of the same commit with the probes as `QA_<name>` Scripts in ServerScriptService (qa_inject.py is refused by newer Studio). Run one harness per Play: disable the other (Disabled = true in the Explorer) so they do not both call EndTest.
+5. Open the QA copy via File > Open from File (never the dated checkpoint, never the cloud place). Edit mode, Command Bar: confirm `game.PlaceId`/`game:GetService("RunService"):IsStudio()` and that persistedToCloud = false (Team Create off). Run tools/qa/SourceDigest.luau; expected = step 3 digest plus exactly the two QA scripts (so scripts +2, otherwise identical); any other difference: stop.
+6. In memory only (Command Bar, Edit mode): create RemoteEvent `ShenQA` (Shen) or `TerrainQA` (terrain) in ReplicatedStorage; for Shen also paste tools/qa/ShenMultiClient.client.luau as a LocalScript into StarterPlayer.StarterPlayerScripts (it is cloned into each client's PlayerScripts). Do not save.
+7. Test tab > Clients and Servers > Local Server, Players = 2, Start. (Or `game:GetService("StudioTestService"):ExecuteMultiplayerTestAsync(2, {})`.) The server ends the test itself after printing RESULT.
+8. Results: copy the server output lines `[ShenMC ...]` / `[TerrainMC ...]` into a new file workers/<id>-multiclient-run.md (one block per harness, Studio ids, commit hash, digest). Delete nothing; End Test and close without saving.
+
+Status: **pending — other computer** for both ShenMultiClient and TerrainPriorityMultiClient. Compile-checked only (luau-compile --null); never executed, so selectors such as the gate wall name FogGate_Gate_AshColosseum, client-side prompt:InputHoldBegin and EndTest from the harness are unproven.

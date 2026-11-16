@@ -1158,8 +1158,16 @@ function BiomeDressing.build(id: string, fresh: boolean?, tick: (() -> ())?): an
 			dropped += 1
 		else
 			local scale = spec.Scale or 1
-			local rad = math.rad(yaw)
 			local fx, fz = if spec.Foot then spec.Foot[1] else 0, if spec.Foot then spec.Foot[2] else 0
+			if piece.Subs[1].Shape == "Steps" and not spec.Y then
+				-- a stair climbs toward local -Z and its flat underside sits at the low (+Z) end's ground: face the rising slope, stand on the low end
+				local half = 0.5 * piece.Size[3] * scale
+				local r0 = math.rad(yaw)
+				local sy, cy = math.sin(r0), math.cos(r0)
+				if Overworld.heightAt(x + sy * half, z + cy * half) > Overworld.heightAt(x - sy * half, z - cy * half) then yaw += 180 end
+				fx, fz = 0, half
+			end
+			local rad = math.rad(yaw)
 			local gx, gz = x + fx * math.cos(rad) + fz * math.sin(rad), z - fx * math.sin(rad) + fz * math.cos(rad)
 			local h = { Id = spec.Id, Piece = spec.Piece, Class = "Hero", Kind = if spec.Interior then "Interior" else "Hero", X = x, Z = z, GX = gx, GZ = gz,
 				Y = spec.Y or Overworld.heightAt(gx, gz), Yaw = yaw + (BiomeDressing.ImportYaw[spec.Piece] or 0), Scale = scale, Sink = piece.Sink, Landmark = spec.Landmark == true,

@@ -1,5 +1,13 @@
 # Matching Studio checkpoints on Windows and Mac
 
+**Newest Mac-to-Windows local candidate:** `AsurasPath_OpenWorld_MacHandoff_2026-11-16.rbxlx`,
+**277 scripts / 3174231 bytes / digest 1755809200**, SHA-256
+`1e15bb0cb5855e5213a9855d9fb4da4a0a0b559813f64fbb9082fc637780c465`.
+Open a working copy for local tests. Last verified cloud content is M1 **277 / 3173417 / 786797912**,
+runtime source `3465430`, latest save recorded **v9**. New local source has not been integrated into cloud.
+Read `outputs/claude-open-world-2026-11-14/WINDOWS_HANDOFF.md` and the recovery manifest under
+`places/checkpoints/mac-session-2026-11-16/`. Older version-6/current-checkpoint statements below are historical.
+
 **Current shared Save to Roblox target:** Asura's Path — Development, place
 **118614906972571**, universe **10777041159**. The creator subsequently authorised
 moving the dated build below into that existing private cloud place; this is now

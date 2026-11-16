@@ -1,5 +1,27 @@
 # CONTINUATION — read this first after any restart
 
+## Windows delivery after Mac quota stop — 2026-11-16 (newest)
+
+Read [WINDOWS_HANDOFF.md](WINDOWS_HANDOFF.md) and [handoff/WINDOWS_RESUME_PROMPT.md](handoff/WINDOWS_RESUME_PROMPT.md).
+Codex recovered Claude's complete continuation chat and pending round-2 patch after the creator requested a push/handoff.
+New local candidate: `places/checkpoints/AsurasPath_OpenWorld_MacHandoff_2026-11-16.rbxlx`, **277 / 3174231 / 1755809200**.
+Full local verifier **14/14 PASS**; four new QA scripts compile. Round-2 rain/stair/sightline source, tests, eight captures,
+five worker notes, property digest, multiplayer harnesses and three lantern diagnostic assets are preserved in this delivery.
+All 1277 base-snapshot assets still match; no full asset repack is needed. New diagnostics are explicitly tracked and hashed.
+
+Cloud remains the last verified M1 content **277 / 3173417 / 786797912**, source `3465430`, latest save recorded **v9**.
+No round-2 cloud integration occurred. The cloud-check worker did NOT cold-reopen v9; its loaded session still said v6.
+Codex saved/downloaded recovery copies of every open Studio place, stopped both Play sessions and gracefully closed all
+Studio windows. Backups, hashes and source differences: `places/checkpoints/mac-session-2026-11-16/MANIFEST.json`.
+The cloud Download a Copy action also saved existing cloud content to Roblox successfully at 16:54:26 Sydney; no new version number is claimed.
+
+R2-1 property-digest utility: delivered, needs reproducibility/cold reopen. R2-2 rain: source delivered, visual pass incomplete.
+R2-3 far visibility: seven quality captures delivered, full sweep incomplete. R2-4 stairs/tower: local checks pass, Studio pending;
+two steep summit stair flights remain buried. R2-5 harnesses: delivered, compile-only, pending Windows. R2-6 sweep: delivered,
+but its claim that shelter has no caller is WRONG: WeatherController.Sample already passes `Sheltered = covered` to compose.
+Roof/interior/lifecycle acceptance remains open. Caves/lifts round 3, uploads, real meshes, multiplayer and device gates remain open.
+Earlier lane tables and M1-unsaved statements below are historical and superseded by this section.
+
 ## Current cloud state — M1 saved, 2026-11-16 16:35 Sydney (newest; overrides digests quoted below)
 
 Cloud place 118614906972571 now holds **M1 = git `3465430`** (notes at `98477b7`+): **277 scripts / 3173417 bytes /
@@ -27,6 +49,18 @@ shared integrated cloud checkpoint, superseding the older uploads-only rule for
 the completed authorised migration. Keep temporary sync-and-restore QA local;
 never restore 462022588 into this cloud place. Source work, unfinished terrain,
 asset upload diagnosis and acceptance gates remain as recorded below.
+
+## Mac round 2 (no uploads) — launched after M1 save (cloud v9, digest 786797912)
+
+| Lane | Note | Model | Owns | Studio window | State |
+|---|---|---|---|---|---|
+| R2-1 cloud v9 check + protected digests | workers/mac-14-cloud-v9.md | sonnet | NEW tools/qa/ProtectedDigest.luau | cloud a8446776 READ-ONLY | launching |
+| R2-2 rain density | workers/mac-15-rain.md | sonnet | src/client/**/WeatherController*, its test | local 7d39aa8d (M1 build) | launching |
+| R2-3 far visibility evidence | workers/mac-16-far-visibility.md | sonnet | note + captures only | local 9a692a82 (TEST) | launching |
+| R2-4 fault C + mountain stairs | workers/mac-17-sightline-stairs.md | sonnet | SliceDressing.luau, test_slice_dressing, BiomeDressing.luau, test_biome_dressing | none (captures in M2 pass) | launching |
+| R2-5 two-client harnesses | workers/mac-04-multiclient-pending.md | sonnet | NEW tools/qa/ShenMultiClient.*, TerrainPriorityMultiClient.* | none (do not run) | launching |
+| R2-6 acceptance sweep | workers/mac-13-acceptance-sweep.md | haiku | note only | none | launching |
+Deferred to round 3: caves and lifts (would collide on WeatherController). Saving: integrator stops at digest match; oversight saves.
 
 ## Mac source lane checkpoint — 2026-11-16 (Computer B)
 

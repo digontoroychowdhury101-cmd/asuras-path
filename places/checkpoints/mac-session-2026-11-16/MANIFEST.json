@@ -1,0 +1,93 @@
+{
+  "date": "2026-11-16",
+  "purpose": "New source candidate plus recovery copies of all four open Studio places, preserved before graceful shutdown. Original canonical baseline files were not rebuilt. Cloud copy is a download of M1, not M2 integration.",
+  "closed_studios": true,
+  "records": [
+    {
+      "path": "places/checkpoints/AsurasPath_OpenWorld_MacHandoff_2026-11-16.rbxlx",
+      "bytes": 10712284,
+      "sha256": "1e15bb0cb5855e5213a9855d9fb4da4a0a0b559813f64fbb9082fc637780c465",
+      "source_digest": "scripts 277 bytes 3174231 digest 1755809200",
+      "source_differences_from_candidate": []
+    },
+    {
+      "path": "places/checkpoints/mac-session-2026-11-16/AsurasPathCloud_M1_recovered.rbxl",
+      "bytes": 2870008,
+      "sha256": "2cad474bfff2b06b602b037df4535227ac82641b20bf5baa3ce09677b45e2fa1"
+    },
+    {
+      "path": "places/checkpoints/mac-session-2026-11-16/AsurasPathM1_before_save.rbxlx",
+      "bytes": 10711418,
+      "sha256": "c8e65c8f6342fcdbfaf96c806481ae7b27867783f607a8c5a775772b136a35f6",
+      "source_digest": "scripts 277 bytes 3173368 digest 2122571996",
+      "source_differences_from_candidate": [
+        "ReplicatedStorage.AsurasPath.Shared.BiomeDressing",
+        "ReplicatedStorage.AsurasPath.Shared.SliceDressing",
+        "ServerScriptService.AsurasPath.Services.WorldService",
+        "StarterPlayer.StarterPlayerScripts.AsurasPath.Controllers.WeatherController"
+      ]
+    },
+    {
+      "path": "places/checkpoints/mac-session-2026-11-16/AsurasPathM1_recovered.rbxlx",
+      "bytes": 10451379,
+      "sha256": "5837e09ee0892d3caecd9dcf911e7caa5c042db2f07d0a57a37612769ff77f18",
+      "source_digest": "scripts 277 bytes 3173948 digest 2144582658",
+      "source_differences_from_candidate": [
+        "ReplicatedStorage.AsurasPath.Shared.BiomeDressing",
+        "ReplicatedStorage.AsurasPath.Shared.SliceDressing",
+        "ServerScriptService.AsurasPath.Services.WorldService",
+        "StarterPlayer.StarterPlayerScripts.AsurasPath.Controllers.WeatherController"
+      ]
+    },
+    {
+      "path": "places/checkpoints/mac-session-2026-11-16/AsurasPathT4B_before_save.rbxlx",
+      "bytes": 10703879,
+      "sha256": "205601503c4e770b03b4003829aa2ae8822c5a7122ee8f5e7fc25f1d3fefc9d8",
+      "source_digest": "scripts 277 bytes 3165847 digest 1344721424",
+      "source_differences_from_candidate": [
+        "ReplicatedStorage.AsurasPath.Shared.BiomeDressing",
+        "ReplicatedStorage.AsurasPath.Shared.SliceDressing",
+        "ServerScriptService.AsurasPath.Services.BiomeDressingService",
+        "ServerScriptService.AsurasPath.Services.OverworldTerrain",
+        "ServerScriptService.AsurasPath.Services.OverworldTerrainWorker.Worker",
+        "ServerScriptService.AsurasPath.Services.PerfBudget",
+        "ServerScriptService.AsurasPath.Services.WorldService",
+        "StarterPlayer.StarterPlayerScripts.AsurasPath.Controllers.WeatherController"
+      ]
+    },
+    {
+      "path": "places/checkpoints/mac-session-2026-11-16/AsurasPathT4B_recovered.rbxlx",
+      "bytes": 10443278,
+      "sha256": "fa7c326be5a1dfa51d5c9d6692b6ded81f993640e887e581b7ade78af998ac31",
+      "source_digest": "scripts 277 bytes 3165847 digest 1344721424",
+      "source_differences_from_candidate": [
+        "ReplicatedStorage.AsurasPath.Shared.BiomeDressing",
+        "ReplicatedStorage.AsurasPath.Shared.SliceDressing",
+        "ServerScriptService.AsurasPath.Services.BiomeDressingService",
+        "ServerScriptService.AsurasPath.Services.OverworldTerrain",
+        "ServerScriptService.AsurasPath.Services.OverworldTerrainWorker.Worker",
+        "ServerScriptService.AsurasPath.Services.PerfBudget",
+        "ServerScriptService.AsurasPath.Services.WorldService",
+        "StarterPlayer.StarterPlayerScripts.AsurasPath.Controllers.WeatherController"
+      ]
+    },
+    {
+      "path": "places/checkpoints/mac-session-2026-11-16/AsurasPathTEST_recovered.rbxlx",
+      "bytes": 10423667,
+      "sha256": "59680cc01aa94560a4f420d831efe66deaa307185a2119519e50a5fd5f3092f6",
+      "source_digest": "scripts 275 bytes 3149701 digest 1516687798",
+      "source_differences_from_candidate": [
+        "ReplicatedStorage.AsurasPath.Shared.BiomeDressing",
+        "ReplicatedStorage.AsurasPath.Shared.Overworld",
+        "ReplicatedStorage.AsurasPath.Shared.SliceDressing",
+        "ServerScriptService.AsurasPath.Services.BiomeDressingService",
+        "ServerScriptService.AsurasPath.Services.OverworldTerrain",
+        "ServerScriptService.AsurasPath.Services.OverworldTerrainCompute",
+        "ServerScriptService.AsurasPath.Services.OverworldTerrainWorker.Worker",
+        "ServerScriptService.AsurasPath.Services.PerfBudget",
+        "ServerScriptService.AsurasPath.Services.WorldService",
+        "StarterPlayer.StarterPlayerScripts.AsurasPath.Controllers.WeatherController"
+      ]
+    }
+  ]
+}

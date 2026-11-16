@@ -1,0 +1,23 @@
+{
+  "format": 1,
+  "date": "2026-11-16",
+  "base_snapshot_commit": "1412139fbb6c9adc519031a5d02063c7a952732c",
+  "delivery": "Three explicit force-tracked additions on ux/onboarding-overhaul; base snapshot and its pins are unchanged. Do not upload until the receiving Studio authorises these original paths.",
+  "files": [
+    {
+      "path": "assets/source/overworld/upload/diag/Bell_Lantern_Post_A_notextures.glb",
+      "bytes": 1567644,
+      "sha256": "d7cda6e80a3eab2bc22f637bdc8900382f493e65f993e75b4f9c065fcaef631c"
+    },
+    {
+      "path": "assets/source/overworld/upload/diag/Bell_Lantern_Post_B_singleroot.glb",
+      "bytes": 1568804,
+      "sha256": "33e7769d465617be0b177cf621a53c4ddbf463310be01394f949c1c098fb56a8"
+    },
+    {
+      "path": "assets/source/overworld/upload/diag/Bell_Lantern_Post_C.fbx",
+      "bytes": 1333884,
+      "sha256": "3264e243b6dda780b04617706da2d0fede163fd4d1cad038aef776a7d8ab8052"
+    }
+  ]
+}

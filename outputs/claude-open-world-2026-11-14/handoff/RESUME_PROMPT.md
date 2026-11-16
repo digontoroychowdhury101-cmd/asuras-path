@@ -1,5 +1,9 @@
 # Resume the open-world checkpoint on another computer
 
+**Newer checkpoint:** read [WINDOWS_RESUME_PROMPT.md](WINDOWS_RESUME_PROMPT.md) and
+`../WINDOWS_HANDOFF.md` first. They supersede the version-6/current-terrain statements below.
+Current local candidate: 277 / 3174231 / 1755809200. Last verified cloud M1: 277 / 3173417 / 786797912, latest recorded save v9.
+
 Continue Asura's Path's existing open-world implementation. Read
 `outputs/claude-open-world-2026-11-14/handoff/CLOUD_MIGRATION.md`,
 `MAC_HANDOFF.md`, the top checkpoint in

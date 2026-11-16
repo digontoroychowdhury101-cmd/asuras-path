@@ -1,5 +1,10 @@
 # Mac / computers A and C handoff: open-world replacement (completed 2026-11-16)
 
+**Superseded for current state by [WINDOWS_HANDOFF.md](WINDOWS_HANDOFF.md).** Mac M1 was subsequently saved as cloud v9
+(277 / 3173417 / 786797912), and a later round-2 local candidate is now delivered (277 / 3174231 / 1755809200).
+All Mac Studio places were backed up and closed. Use the Windows handoff/current continuation for resume identities;
+the setup/provenance below remains historical reference.
+
 Read this first, then `handoff/RESUME_PROMPT.md`, `CONTINUATION.md` and `LEDGER.md`. Claude's 13:22 checkpoint was already pushed as `b658140`. Codex finished the handoff after the usage-limit stop, preserving the late terrain edit and providing the ignored assets on a separate branch. This is an unfinished development checkpoint, not a release or visual acceptance. Assume the receiving computer has nothing installed. No installation on a remote computer is claimed.
 
 **Later cloud migration completed at the creator's request:** the verified build
