@@ -27,6 +27,13 @@ Pushed f407964 (canopy pass 2 + retone tool + notes/captures).
 | mac-30 retone v2: metalness 0 on non-metal MR (B uniform 255 -> 0, bronze kept), lifts recalibrated for diffuse, hero kit included; Blender generator root-cause fix (no Blender run) | workers/mac-30-retone2.md | sonnet | light | tools/assets/retone_glb.py, tools/blender/overworld/* (MR export only), work/mac-resume-2026-11-18/retone2/ | launching |
 | mac-31 Mac build of pass 2 (f407964): canopy per view, 03 fixed?, terrain grass decoration check for 01 blades | workers/mac-31-canopy2-play.md | sonnet | HEAVY | work/mac-resume-2026-11-18/canopy31/*.rbxlx, captures/mac/slice_canopy31_* | launching |
 
+
+### 2026-11-19 — creator priority: Vesperhold citadel (oversight)
+Codex built the Snowfields castle (committed e8be23c: GothicCitadel/GothicMarch services, ridge terrain, weather weight). Creator: better, but
+not the colossal haunted gothic citadel; wants exceptional detail and withered trees; gave a reference image; open-source tools/CC0 assets allowed.
+Verdict + brief + reference description + review gate: [workers/mac-40-vesperhold-verdict.md](workers/mac-40-vesperhold-verdict.md). Castle is now
+the lead's first lane; forest re-tone re-upload (mac-30) rides in the same cloud-window upload session. Forest results a02754d; slice verdict still open.
+
 ## Current Windows-to-Mac handoff — 2026-11-17
 
 Read [MAC_HANDOFF.md](MAC_HANDOFF.md) fully, then [handoff/MAC_RESUME_PROMPT.md](handoff/MAC_RESUME_PROMPT.md).
