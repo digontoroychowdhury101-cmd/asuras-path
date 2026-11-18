@@ -16,11 +16,7 @@ local slate, trim, lime = rgb(102,108,113), rgb(147,149,145), rgb(171,169,154)
 local cap, rock, gravel = rgb(91,98,102), rgb(92,102,109), rgb(116,112,106)
 local oak, iron, rust = rgb(100,81,66), rgb(71,72,73), rgb(129,84,64)
 local deco = { Collide = false, Query = false }
-local lane = {
-	-- Pass between the refuge stores, then around the west end of its existing windbreak.
-	{0,585},{0,568},{-17,550},{-19,538},{-31,504},{-34,468},{-6,431},{18,404},{28,368},
-	{15,335},{-13,305},{-27,269},{-25,240},{-12,210},{0,183},{0,157},
-}
+local lane = Layout.Lane -- shared with the layout so the dead trees follow the road
 -- Trestle followed by a cliff gallery, turning back to the east postern.
 local postern = {
 	V(0,-20,183), V(31,-23,178), V(59,-26,151), V(77,-23,122), V(96,-18,101),

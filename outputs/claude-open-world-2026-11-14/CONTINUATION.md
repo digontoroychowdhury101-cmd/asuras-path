@@ -1,5 +1,19 @@
 # CONTINUATION — read this first after any restart
 
+## WRAP-UP 2026-11-19 — Mac run ended, handed to Windows (coordinator order)
+No workers running. No Studio (only StudioMCP bridge procs) or Blender running; memory 65% free. Nothing uploaded this run; no operation IDs;
+VESPERHOLD_KIT_UPLOADED.json does not exist; cloud place untouched (M1 v9). outputs/vesperhold/* untracked files are the creator's/Codex's: not staged.
+Models: mac-21..24, 26..31, 42, 43, 44, 48 sonnet; mac-25, 41r1, 41r2 haiku. IDs in the Mac-resume summary and rows above.
+Windows TODO (order): 1 Studio local build of massing pass 2 under work/ (walk grand stair, V2/V3, gate with a Humanoid; parts, frame time, 7 prelim views).
+2 Kit fixes (weak pieces listed in mac-42/44 rows) + reconcile VesperholdLayout.Piece sizes with assets/source/vesperhold/*/manifest; regen kit
+(Blender) with VESP_NORMAL=jpeg (or trim atlas) so every GLB < 50 MB. 3 Loader: KITS entry in tools/assets/kit_registry.py, VesperholdKitRegistry,
+SliceDressing.RegistryModules, default.project.json; clone helper replacing VespKitSlot stand-ins; glass/flame -> Neon+light; tests with LoadModel fakes.
+4 Atmosphere (eclipse, storm, fog banks, grade, lightning, crows, candles, small snow, waterfall mist), local to the Vesperhold weight.
+5 ONE cloud-window upload session (pilot first): castle kit/props/trees + 101 retone2 forest GLBs (Mac paths work/mac-resume-2026-11-18/retone2/,
+regenerate on Windows with tools/assets/retone_glb.py --all); record operation IDs; register via kit_registry.py. 6 Loader Play captures of the 7
+Vesperhold views + numbers. 7 Forest: rebuild + slice re-capture (mac-20 gate), Terrain Decoration grass decision, canopy 04-06 <25% trade-off.
+8 Wire test_vesperhold_massing into verify_all; Blender regen to prove slice_kit/hero_silhouettes metal fix. 9 Then M2 integration and acceptance list.
+
 ## Vesperhold — 2026-11-19 (FIRST lane; forest continues behind it)
 
 Work order workers/mac-40-vesperhold-verdict.md (NOT ACCEPTED: toy scale, two palettes, Part surfaces). Plan:
@@ -14,6 +28,8 @@ Downloads (CC0/generators) need the creator's own chat approval; first pass is p
 | mac-42 kit A-E (materials, architecture) Blender | workers/mac-42-vesp-kit.md | sonnet | HEAVY (Blender) | tools/blender/vesperhold/vesperhold_kit.py, assets/source/vesperhold/ | DONE: 31 pieces, 7 materials @2048 (Metal map always linked), max sub 11,880 tris, renders assets/source/vesperhold/kit/renders/ (12 sheets), upload pack assets/source/vesperhold/upload/kit/ (manifest_check none); GLBs NOT texture-embedded yet (VESP_EMBED=jpeg option); weak: Spire_Base_Oct plain, Bastion_Face regular grid, Lucarne chunky. ~27 s run, mem 52->40% |
 | mac-43 massing rework + massing test | workers/mac-43-vesp-massing.md | sonnet | light | GothicCitadel.luau, GothicMarch.luau, Overworld.luau (Vesperhold ridge), tools/test_vesperhold_massing.luau | DONE: src/shared/VesperholdLayout.luau (tiers, route, 404 kit slots); frontage 680, view-01 55% w / 56% h (eye -15,-24,548), look-up min 27.0 deg, T0 drop 170, ridge +330, 35 spires, 8 flyer pairs, rose 48, gate 26 / portal 28, 10 statues; walk route 13 segs, 0 holes; terrain outside Vesperhold checksum-identical; massing 8012/0, terrain 102/0, slice 1356/0, biome 18958/0. test_objectives_overworld.luau fails in EndingRules (not in verify_all; test_objectives.py passes) = pre-existing harness gap |
 New targets from oversight 1403f7c (ref_02..05): (a) >=3 viaducts at different levels over >=3 pinnacles + >=2 spired outposts; (b) grand stair >=60 steps, braziers+statues ~20 studs; (c) waterfalls; (d) ruined-arch viewpoint at 01/02; (e) lightning lighting the silhouette; own banner sigil (no white-tree crest).
+| mac-44 kit F + withered trees + added pieces (banner sigil, brazier post, staff statue, ruined arch, waterfall cards) + upload embedding | workers/mac-44-vesp-props.md | sonnet | HEAVY (Blender) | tools/blender/vesperhold/vesperhold_props.py, vesperhold_trees.py, assets/source/vesperhold/{props,trees,upload}/ | launching |
+| mac-48 massing pass 2: pinnacles P2/P3, viaducts V2/V3, outposts, grand stair, waterfalls, ruined-arch viewpoint | workers/mac-48-vesp-massing2.md | sonnet | light | VesperholdLayout, GothicCitadel, GothicMarch, Overworld (Vesperhold only), test_vesperhold_massing | DONE (a9b582c2c3573307c): P2/P3, V1 ~-9 / V2 +150 / V3 +280, 3 outposts 1128-1361, 71 spires, grand stair 61 steps (rise 1.148, tread 2.55, w 24), 4 waterfalls + mist anchors, 2 ruined arches, 31 dead trees, graveyard; 920 kit slots, ~4381 parts (359 collide); massing 14967/0, 5 Overworld suites pass |
 
 ## Mac resume — 2026-11-18
 
@@ -39,8 +55,8 @@ Lead hypothesis (to verify before any re-upload): MR images carry B=255 (metal) 
 | mac-28 Studio map-pixel check (MetalnessMap/RoughnessMap/ColorMap means of uploaded maps) | (no note written; result here) | sonnet | HEAVY | local copy work/mac-resume-2026-11-18/map28/ | DONE: **metal hypothesis TRUE** — MetalnessMap 89863602509302 (stone/timber/roof/bark/leaf), 88132622876934 (grass), 75451822241265 (fern) are solid 255 (min=max=255); Bronze 132441202373627 mean 221 (real metal). Importer ignored glTF metallicFactor 0. Root cause of black trunks/timber and hard leaf specular. Fix = MR B channel 0 on non-metal + re-upload |
 | mac-29 canopy pass 2 (eye trunk keep, 01/07 stands outside cone, grass cap at capture eyes/arrival, 04-06 flanks) | workers/mac-29-canopy2.md | sonnet | light | src/shared/SliceDressing.luau rules, tools/test_slice_dressing.luau | DONE: Keep.Eye 14 + EyeView; Stands for 01/07 and lane; Taper.Ramp 60; near/far trees 154/185, MeshParts 2347, tris 4.49M; predicted Studio sky 23/54/29/22/22/16/23 (04-06 short of 25: HermitCamp leash, altar pad, pavilion sight). 01 foreground blades are NOT scatter cards (nearest card 21.7 studs) — suspect Terrain.Decoration grass; needs Studio check. Slice 1356/0 |
 Pushed f407964 (canopy pass 2 + retone tool + notes/captures).
-| mac-30 retone v2: metalness 0 on non-metal MR (B uniform 255 -> 0, bronze kept), lifts recalibrated for diffuse, hero kit included; Blender generator root-cause fix (no Blender run) | workers/mac-30-retone2.md | sonnet | light | tools/assets/retone_glb.py, tools/blender/overworld/* (MR export only), work/mac-resume-2026-11-18/retone2/ | launching |
-| mac-31 Mac build of pass 2 (f407964): canopy per view, 03 fixed?, terrain grass decoration check for 01 blades | workers/mac-31-canopy2-play.md | sonnet | HEAVY | work/mac-resume-2026-11-18/canopy31/*.rbxlx, captures/mac/slice_canopy31_* | launching |
+| mac-30 retone v2: metalness 0 on non-metal MR (B uniform 255 -> 0, bronze kept), lifts recalibrated for diffuse, hero kit included; Blender generator root-cause fix (no Blender run) | workers/mac-30-retone2.md | sonnet | light | tools/assets/retone_glb.py, tools/blender/overworld/* (MR export only), work/mac-resume-2026-11-18/retone2/ | DONE (a425242aea01f7950): 101 GLBs in work/mac-resume-2026-11-18/retone2/ (report.json, contact_sheet.png); generator fix committed a02754d, not yet run in Blender; NOT uploaded |
+| mac-31 Mac build of pass 2 (f407964): canopy per view, 03 fixed?, terrain grass decoration check for 01 blades | workers/mac-31-canopy2-play.md | sonnet | HEAVY | work/mac-resume-2026-11-18/canopy31/*.rbxlx, captures/mac/slice_canopy31_* | DONE (add8a43b5a340b128): canopy 01 20.0, 02 54.6, 03 23.8, 04 31.2, 05 23.3, 06 15.4, 07 20.0 %; frame 16.6 ms mean; captures/mac/slice_canopy31_*; giant 01 blades = Terrain Decoration grass |
 
 
 ### 2026-11-19 — creator priority: Vesperhold citadel (oversight)

@@ -254,6 +254,7 @@ local function covered(w)
 end
 local holes, blocked, samples = 0, 0, 0
 for _, r in route do
+	if r.Kind == "stair" then continue end -- stepped: sampled per tread below
 	local len = math.sqrt((r.B[1] - r.A[1]) ^ 2 + (r.B[3] - r.A[3]) ^ 2 + (r.B[2] - r.A[2]) ^ 2)
 	for i = 0, math.ceil(len / 4) do
 		local t = i / math.ceil(len / 4)
@@ -270,9 +271,236 @@ for _, r in route do
 		end
 	end
 end
+-- Spurs and alternates: same floor / headroom sampling, chained from the main route.
+local function sampleSeg(r)
+	local len = math.sqrt((r.B[1] - r.A[1]) ^ 2 + (r.B[3] - r.A[3]) ^ 2 + (r.B[2] - r.A[2]) ^ 2)
+	for i = 0, math.ceil(len / 4) do
+		local t = i / math.ceil(len / 4)
+		local x, y, z = r.A[1] + (r.B[1] - r.A[1]) * t, r.A[2] + (r.B[2] - r.A[2]) * t, r.A[3] + (r.B[3] - r.A[3]) * t
+		samples += 1
+		if not covered(origin * Vector3.new(x, y - 0.75, z)) then holes += 1; print(string.format("    hole in %s at (%.0f, %.1f, %.0f)", r.Name, x, y, z)) end
+		if covered(origin * Vector3.new(x, y + 3.5, z)) then blocked += 1; print(string.format("    blocked in %s at (%.0f, %.1f, %.0f)", r.Name, x, y, z)) end
+	end
+end
+local function distToRoute(p)
+	local best = math.huge
+	for _, r in route do
+		local a, b = vec({ X = r.A[1], Y = r.A[2], Z = r.A[3] }), vec({ X = r.B[1], Y = r.B[2], Z = r.B[3] })
+		local ab = b - a
+		local t = math.clamp((vec({ X = p[1], Y = p[2], Z = p[3] }) - a):Dot(ab) / math.max(ab:Dot(ab), 1e-9), 0, 1)
+		best = math.min(best, (vec({ X = p[1], Y = p[2], Z = p[3] }) - (a + ab * t)).Magnitude)
+	end
+	return best
+end
+for _, r in L.Alternates do sampleSeg(r) end
+check("alternates end on the main route (stair top)", (vec({ X = L.Alternates[2].B[1], Y = L.Alternates[2].B[2], Z = L.Alternates[2].B[3] }) - vec({ X = L.Stair.B[1], Y = L.Stair.B[2], Z = L.Stair.B[3] })).Magnitude <= 1)
+for name, spur in L.Spurs do
+	check(name .. " spur starts on the main route", distToRoute(spur.From) <= 1)
+	for i, r in spur.Segs do
+		sampleSeg(r)
+		check(name .. " " .. r.Name .. " width >= 10", r.Width >= 10)
+		local a, b = r.A, r.B
+		local run = math.sqrt((b[1] - a[1]) ^ 2 + (b[3] - a[3]) ^ 2)
+		check(name .. " " .. r.Name .. " slope <= 40", math.deg(math.atan2(math.abs(b[2] - a[2]), run)) <= 40)
+		local prev = if i == 1 then spur.From else spur.Segs[i - 1].B
+		check(name .. " continuous into " .. r.Name, (vec({ X = a[1], Y = a[2], Z = a[3] }) - vec({ X = prev[1], Y = prev[2], Z = prev[3] })).Magnitude <= 1)
+	end
+end
+-- Grand stair treads: solid floor at every tread centre, free headroom above it.
+local St = L.Stair
+for _, st in St.Steps do
+	samples += 1
+	if not covered(origin * Vector3.new(st.CX, st.Top - 0.75, st.CZ)) then holes += 1; print("    stair hole at step " .. st.Index) end
+	if covered(origin * Vector3.new(st.CX, st.Top + 3.5, st.CZ)) then blocked += 1; print("    stair blocked at step " .. st.Index) end
+end
+for _, l in St.Landings do
+	samples += 1
+	if not covered(origin * Vector3.new(l.CX, l.Top - 0.75, l.CZ)) then holes += 1; print("    landing hole") end
+	if covered(origin * Vector3.new(l.CX, l.Top + 3.5, l.CZ)) then blocked += 1; print("    landing blocked") end
+end
 print(string.format("  route samples: %d, floor holes: %d, blocked headroom: %d", samples, holes, blocked))
 check("walk route has a collidable floor at every sample (no gap > 1 stud)", holes == 0)
 check("walk route has headroom at every sample", blocked == 0)
+
+-- 6. Pass 2 (mac-48): sprawl, viaducts, grand stair, waterfalls, ruined-arch viewpoint.
+local function dist2(ax, az, bx, bz) return math.sqrt((ax - bx) ^ 2 + (az - bz) ^ 2) end
+local function segDist(p, a, b) -- point to segment, 3D
+	local ab = b - a
+	local t = math.clamp((p - a):Dot(ab) / ab:Dot(ab), 0, 1)
+	return (p - (a + ab * t)).Magnitude
+end
+local per = {}
+for _, sl in slots do per[sl.Piece] = (per[sl.Piece] or 0) + 1 end
+local names = {}
+for k, v in per do table.insert(names, k .. "=" .. v) end
+table.sort(names)
+print("  slots per piece: " .. table.concat(names, " "))
+-- (a) pinnacles, viaducts, outposts, spires
+local pinn = 1
+local rockParts, cragParts, cragSolid = 0, 0, 0
+for _, d in root:GetDescendants() do
+	if d:IsA("BasePart") and d.Name:find("^Pinnacle") then rockParts += 1 end
+	if d:IsA("BasePart") and d.Name:find("^Crag") then cragParts += 1; if d.CanCollide then cragSolid += 1 end end
+end
+for _ in L.Pinnacles do pinn += 1 end
+print(string.format("  pinnacles %d (P1 + %d rock cores, %d course Parts), crag Parts %d", pinn, pinn - 1, rockParts, cragParts))
+check("3+ cliff pinnacles", pinn >= 3)
+check("rock courses built and collidable", rockParts >= 6)
+check("crags built without collision", cragParts >= 6 and cragSolid == 0)
+for id, r in L.Pinnacles do
+	local cs = L.rock(r, ground)
+	check(id .. " rises from terrain to its Top", math.abs(cs[#cs].Y1 - r.Top) < 1e-6 and cs[1].Y0 <= ground(r.X, r.Z) - 8)
+	check(id .. " top course is square and clear of P1 tiers", cs[#cs].Yaw == 0 and math.abs(r.X) - r.HX > T.T2.X)
+end
+local levels = { L.Viaducts.V1.Level, L.Viaducts.V2.Level, L.Viaducts.V3.Level }
+check("V1 level is the road", math.abs(levels[1] - (L.viaductLevel(4) + L.viaductLevel(157)) / 2) < 1)
+for i = 1, 3 do for j = i + 1, 3 do check("viaduct levels >= 80 apart", math.abs(levels[i] - levels[j]) >= 80) end end
+for name, v in { V2 = L.Viaducts.V2, V3 = L.Viaducts.V3 } do
+	local vb, vs, vc, vbal, vban = {}, { [-1] = {}, [1] = {} }, 0, 0, 0
+	for _, sl in slots do
+		if sl.Viaduct == name then
+			if sl.Group == "ViaductHigh" then table.insert(vb, sl) end
+			if sl.Group == "Pedestal" then table.insert(vs[sl.Side], sl.Along) end
+			if sl.Group == "Candle" then vc += 1 end
+			if sl.Group == "Balustrade" then vbal += 1 end
+			if sl.Group == "Banner" then vban += 1 end
+		end
+	end
+	check(name .. " has 5+ arched bays", #vb >= 5)
+	check(name .. " has balustrade, candles and banners", vbal >= 2 * #vb and vc >= 2 * #vb and vban >= 2)
+	for _, b in vb do
+		check(name .. " bay stands on terrain and reaches the deck", math.abs(b.Y - (ground(b.X, b.Z) - 5)) < 0.01 and b.Y + 120 * b.SY < v.Level)
+	end
+	for _, side in { -1, 1 } do
+		table.sort(vs[side])
+		check(name .. " pedestal statues on both sides", #vs[side] >= 5)
+		for i = 2, #vs[side] do check(name .. " pedestal spacing 25-35", math.abs(vs[side][i] - vs[side][i - 1]) >= 25 and math.abs(vs[side][i] - vs[side][i - 1]) <= 35) end
+	end
+	check(name .. " deck is walkable with parapets", (function()
+		local n = 0
+		for _, d in root:GetDescendants() do if d:IsA("BasePart") and d.Name == name .. "DeckParapet" and d.CanCollide then n += 1 end end
+		return n == 2
+	end)())
+end
+local outposts = {}
+for _, sp in L.Spires do if sp[6] == "OutpostTower" then table.insert(outposts, sp) end end
+check("2+ distant outposts", #outposts >= 2)
+for _, sp in outposts do
+	local d = dist2(sp[1], sp[2], 0, 0)
+	check("outpost 800-1500 studs from the gate: " .. d, d >= 800 and d <= 1500)
+	local crag
+	for _, c in L.Crags do if c.X == sp[1] and c.Z == sp[2] then crag = c end end
+	check("outpost spire stands on its crag", crag ~= nil and sp[3] == crag.Top and sp[4] - sp[3] >= 250)
+end
+print(string.format("  spires total %d (P1 35)", #L.Spires))
+check("45+ spires across the sprawl", #L.Spires >= 45)
+-- (b) grand stair
+check("stair >= 60 steps", St.Count >= 60 and #St.Steps == St.Count)
+check("stair rise <= 1.6, tread >= 2.5, width >= 24", St.Rise <= 1.6 and St.Tread >= 2.5 and St.Width >= 24)
+for i, st in St.Steps do
+	local prev = if i == 1 then St.Base else St.Steps[i - 1].Top
+	check("step rise <= 1.6", st.Top - prev <= 1.6 + 1e-6 and st.Top > prev - 1e-6)
+end
+check("stair top meets the T3 floor and the portal landing", math.abs(St.TopY - T.T3.FloorY) < 1e-6 and math.abs(L.Route[11].A[1] - St.B[1]) < 1e-6)
+check("stair axis points at the portal door", math.abs((St.B[1] + St.UX * 22) - St.Door[1]) < 1e-6 and math.abs((St.B[3] + St.UZ * 22) - St.Door[3]) < 1e-6)
+check("stair foot on T2 and ramp lands beside it", St.S[2] == T.T2.FloorY and math.abs(St.S[1]) <= T.T2.X and St.S[3] <= T.T2.FrontZ - 4)
+check("stair is on the main route", (function() for _, r in route do if r.Kind == "stair" then return true end end return false end)())
+check("landings every ~20 steps", #St.Landings == 2 and St.Landings[1].S0 >= 18 * St.Tread and St.Landings[1].S0 <= 22 * St.Tread + 4 and St.Landings[2].S0 > St.Landings[1].S0 + 18 * St.Tread)
+local stat = { Brazier = { [-1] = {}, [1] = {} }, Pedestal = { [-1] = {}, [1] = {} }, BannerPole = { [-1] = {}, [1] = {} } }
+for _, sl in slots do
+	if sl.Track == "Stair" then table.insert(stat[sl.Group][sl.Side], sl.Along) end
+end
+for g2, bySide in stat do
+	for side, list in bySide do
+		table.sort(list)
+		if g2 == "BannerPole" then
+			check("banner pole pair at each of 3 landings", #list == 3)
+		else
+			check(g2 .. " posts on the stair, 8 per side", #list == 8)
+			for i = 2, #list do check(g2 .. " spacing ~20", list[i] - list[i - 1] >= 18 and list[i] - list[i - 1] <= 22) end
+		end
+	end
+end
+-- (c) waterfalls
+local falls, mist = {}, {}
+for _, sl in slots do
+	if sl.Group == "Waterfall" then table.insert(falls, sl) end
+	if sl.Group == "Mist" then table.insert(mist, sl) end
+end
+local owners = {}
+for _, f in falls do
+	owners[f.Owner] = true
+	check("waterfall 80-200 tall: " .. f.Height, f.Height >= 80 and f.Height <= 200 and math.abs(L.Piece[f.Piece][2] * f.SY - f.Height) < 1e-6)
+end
+print(string.format("  waterfalls %d, mist anchors %d", #falls, #mist))
+check("3+ waterfalls under P1 and P2", #falls >= 3 and owners.P1 and owners.P2)
+check("a mist anchor at the base of every fall", #mist == #falls)
+for i, f in falls do check("mist anchor at fall base", math.abs(mist[i].Y - f.Y) < 1e-6 and math.abs(mist[i].X - f.X) < 1e-6) end
+-- (d) ruined-arch viewpoint
+local arches = {}
+for _, sl in slots do if sl.Piece == "Ruined_Arch" then table.insert(arches, sl) end end
+check("ruined arch slots", #arches >= 1)
+local cen = Vector3.new(0, 0, 0)
+for _, k in { "T1", "T2", "T3" } do cen += Vector3.new(0, T[k].Top / 2 + T[k].FloorY / 2, (T[k].FrontZ + T[k].BackZ) / 2) / 3 end
+local function rayHitsBox(o, d, lo, hi)
+	local t0, t1 = 0, 1
+	for _, ax in { "X", "Y", "Z" } do
+		local oo, dd = o[ax], d[ax]
+		if math.abs(dd) < 1e-9 then
+			if oo < lo[ax] or oo > hi[ax] then return false end
+		else
+			local a, b = (lo[ax] - oo) / dd, (hi[ax] - oo) / dd
+			t0, t1 = math.max(t0, math.min(a, b)), math.min(t1, math.max(a, b))
+			if t0 > t1 then return false end
+		end
+	end
+	return true
+end
+for _, a in arches do
+	local d = L.Piece.Ruined_Arch
+	local lo = Vector3.new(a.X - d[1] * a.SX / 2, a.Y, a.Z - d[3] * a.SZ / 2)
+	local hi = Vector3.new(a.X + d[1] * a.SX / 2, a.Y + d[2] * a.SY, a.Z + d[3] * a.SZ / 2)
+	for _, target in { aim, cen } do
+		check("arch does not block the castle ray from eye 01", not rayHitsBox(eye, target - eye, lo, hi))
+	end
+	local sx, sy = project((lo.X + hi.X) / 2, (lo.Y + hi.Y) / 2, (lo.Z + hi.Z) / 2)
+	check("arch is inside the view-01 frame", math.abs(sx) < 1 and math.abs(sy) < 1)
+	check("arch 30-60 tall", d[2] * a.SY >= 30 and d[2] * a.SY <= 60)
+end
+local archBanners, species, trees, graves, tombs, fences, gibbets = 0, {}, {}, 0, 0, 0, 0
+for _, sl in slots do
+	if sl.Banner then end
+	if sl.Group == "Banner" and sl.Arch then archBanners += 1 end
+	if sl.Group == "Tree" then species[sl.Piece] = true; table.insert(trees, sl) end
+	if sl.Group == "Grave" then if sl.Tomb then tombs += 1 else graves += 1 end end
+	if sl.Group == "Fence" then fences += 1 end
+	if sl.Group == "Gibbet" and sl.Rim then gibbets += 1 end
+end
+check("2 torn banners on the arch", archBanners == 2)
+check("3 dead species", species.Dead_Oak_Gnarled and species.Dead_Pine_Snapped and species.Thorn_Twisted)
+print(string.format("  dead trees %d, gravestones %d, tomb slabs %d, fence pieces %d, gibbets %d", #trees, graves, tombs, fences, gibbets))
+check("30+ dead trees", #trees >= 30)
+check("graveyard: 20+ stones, tomb slabs, iron fence; 2+ gibbets on the rim", graves >= 20 and tombs >= 1 and fences >= 4 and gibbets >= 2)
+local clusters = {}
+for _, t in trees do clusters[t.Cluster] = (clusters[t.Cluster] or 0) + 1 end
+check("trees cluster at the arch, road, rim and graveyard", clusters.Arch and clusters.Road and clusters.Rim and clusters.Graveyard)
+local sights = { { eye, aim }, { vec(L.Eye02), vec(L.Aim02) } }
+for _, t in trees do
+	local base = Vector3.new(t.X, t.Y, t.Z)
+	local h = L.Piece[t.Piece][2] * t.SY
+	local dir = Vector3.new(math.sin(t.Yaw), 0, math.cos(t.Yaw))
+	local tip = base + Vector3.new(0, math.cos(t.Lean), 0) * h + dir * (math.sin(t.Lean) * h)
+	check("tree leans a little", t.Lean > 0.05 and t.Lean < 0.4)
+	for _, sg in sights do
+		local lo = math.huge
+		for i = 0, 10 do
+			local p = base:Lerp(tip, i / 10)
+			lo = math.min(lo, segDist(p, sg[1], sg[2]))
+		end
+		check("tree clear of the view-01/02 sightline (>= 14 studs): " .. string.format("%.0f", lo), lo >= 14)
+	end
+end
+print(string.format("  Part estimate (built here): %d", parts))
 
 print(string.format("passed %d, failed %d", passed, failed))
 if failed > 0 then error(string.format("%d vesperhold massing checks failed", failed)) end

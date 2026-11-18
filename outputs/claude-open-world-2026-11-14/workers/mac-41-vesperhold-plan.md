@@ -69,3 +69,24 @@ approval in this session (my safety rule), so the first pass is fully procedural
 | mac-47 loader reuse + kit placement + local Play: 7 views, frame time x3, MeshParts/tris, console | sonnet | HEAVY | GothicCitadel/March kit placement, SliceDressingService public clone helper, VesperholdKitRegistry wiring |
 Acceptance numbers are the verdict's targets 1-8; the massing test asserts frame fractions, look-up angle, spire count,
 buttress pairs, statue spacing, portal/door sizes and walkability (gate floor continuity).
+
+## Added targets (oversight 1403f7c, ref_02..05) — plan update
+Massing pass 2 (mac-48, light): (a) SPRAWL — the main citadel on pinnacle P1 (existing tiers) plus >= 2 more cliff pinnacles
+(P2 chapter-house/belfry rock flanking north, P3 ossuary/watch rock south) each carrying a tiered keep built from the same
+kit, linked by >= 3 arched viaducts at clearly different levels (V1 existing processional at road level; V2 mid-level
+P1-T2 <-> P2 ~+150; V3 high P1-T3 <-> P3 ~+280), plus >= 2 distant spired outposts on far crags (spire stacks on rock,
+skyline only, no walk); (b) GRAND STAIR >= 60 steps (rise <= 1.6, tread >= 2.5, width >= 24) from the last viaduct landing
+up to the T3 glowing portal, landings every ~20 steps, Brazier_Post + Pedestal_Statue pairs every ~20 studs, Banner_Pole
+pairs; it replaces part of the close->T2->T3 ramp route as the player's main climb (ramps stay as alternates);
+(c) WATERFALL slots on the gorge walls under P1/P2 (>= 3 falls, 80-200 studs tall) + spray/mist emitters at the base;
+(d) RUINED-ARCH VIEWPOINT at the 01/02 reveal (a broken gothic arch on the cliff edge framing the citadel, dead trees,
+2 tattered banners, graves on the lower terrace). Test asserts all of these from layout data.
+Kit additions (mac-44, heavy Blender): Banner_Torn_A/B + Banner_Pole (our sigil: crimson field, black six-spoked Asura
+wheel enclosing a flame-eye, tarnished gold edging; NO tree emblem), Brazier_Post, Pedestal_Statue_Staff (hooded,
+staff-bearing), Ruined_Arch (broken gothic arch 30-40 tall), Waterfall_Sheet (layered alpha cards, scrolling done at
+runtime via TextureID offset is impossible on MeshParts -> use stacked translucent card meshes + ParticleEmitter mist),
+Crag_Pinnacle rock shells (optional; terrain may carry them), plus group F and the withered trees from mac-41.
+Upload readiness: GLBs must carry embedded textures for the importer to build SurfaceAppearance; embed Color/Roughness/
+Metal as JPEG q90 and Normal as PNG, or share trim atlases so each piece uses <= 3 materials; report per-GLB size.
+Atmosphere (mac-45, light, after mac-48): add (e) lightning flashes that briefly light the silhouette (Lighting brightness/
+colour pulse + a far PointLight burst, local to the Vesperhold weight).

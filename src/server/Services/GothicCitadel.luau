@@ -58,10 +58,11 @@ local function standIn(parent: Instance, s: { [string]: any }, origin: CFrame)
 	m:SetAttribute("VespSlotId", s.Id)
 	m:SetAttribute("VespGroup", s.Group)
 	local f = origin * C(s.X, s.Y, s.Z) * A(0, s.Yaw, 0)
+	if s.Lean then f = f * A(s.Lean, 0, 0) end -- dead trees lean toward their yaw
 	local g, piece = s.Group, s.Piece
 	-- b: box centred (x, y, z) in the slot frame; wall-cladding pieces project outward (z = dp/2), the rest centre on the slot.
-	local function b(name: string, x: number, y: number, z: number, sx: number, sy: number, sz: number, color: Color3?, mat: Enum.Material?)
-		part(m, name, f * C(x, y, z), sx, sy, sz, color or soot, mat)
+	local function b(name: string, x: number, y: number, z: number, sx: number, sy: number, sz: number, color: Color3?, mat: Enum.Material?): BasePart
+		return part(m, name, f * C(x, y, z), sx, sy, sz, color or soot, mat)
 	end
 	local cz = if g == "Arcade" or g == "Bastion" or g == "Balustrade" or g == "Lancet" or g == "Rose" or g == "Portal" then dp / 2 else 0
 	if g == "Arcade" then
@@ -126,6 +127,45 @@ local function standIn(parent: Instance, s: { [string]: any }, origin: CFrame)
 	elseif g == "Banner" then
 		b("Pole", 0, 0, 1, w + 2, 0.5, 0.5, iron, M.Metal)
 		b("Cloth", 0, -h / 2, 1, w, h, 0.2, crimson, M.Fabric)
+	elseif g == "ViaductHigh" then
+		for _, k in { -1, 1 } do b("Pier", k * (w / 2 - 2.5), h / 2, 0, 5, h, dp, charcoal) end
+		b("Spandrel", 0, h - 8, 0, w - 5, 10, dp, soot)
+		for _, k in { -1, 1 } do b("Haunch", k * (w / 2 - 7), h - 20, 0, 6, 14, dp * 0.9, charcoal) end
+	elseif g == "Pedestal" then
+		b("Plinth", 0, 2, 0, w, 4, dp, charcoal)
+		b("Robe", 0, 4 + (h - 4) * 0.4, 0, w * 0.7, (h - 4) * 0.8, dp * 0.7, wet)
+		b("Hood", 0, h - 2.2, 0, w * 0.5, 4, dp * 0.5, charcoal)
+		b("Staff", w * 0.4, h * 0.55, dp * 0.3, 0.4, h * 0.9, 0.4, iron, M.Metal)
+	elseif g == "Brazier" then
+		b("Post", 0, h * 0.4, 0, 0.8, h * 0.8, 0.8, iron, M.Metal)
+		b("Bowl", 0, h * 0.85, 0, w, 1.6, dp, iron, M.Metal)
+		b("Flame", 0, h * 0.85 + 1.8, 0, w * 0.5, 2.4, dp * 0.5, ember, M.Neon)
+	elseif g == "BannerPole" then
+		b("Pole", 0, h / 2, 0, 0.6, h, 0.6, iron, M.Metal)
+		b("Cloth", 0, h - 14, 0.6, 7, 24, 0.2, crimson, M.Fabric)
+	elseif g == "Tree" then
+		local bark = rgb(46, 40, 36)
+		b("Trunk", 0, h * 0.45, 0, w * 0.16, h * 0.9, dp * 0.16, bark, M.Wood)
+		for k = 1, 3 do
+			b("Limb", (k - 2) * w * 0.18, h * (0.5 + 0.13 * k), 0, w * 0.5, h * 0.03, dp * 0.05, bark, M.Wood)
+		end
+	elseif g == "Arch" then
+		for _, k in { -1, 1 } do b("Pier", k * (w / 2 - 4), h * 0.35, 0, 8, h * 0.7, dp, soot) end
+		b("CrownLeft", -w / 4, h * 0.8, 0, w / 2 - 2, h * 0.3, dp, charcoal)
+		b("CrownStub", w / 4 + 2, h * 0.76, 0, w / 5, h * 0.18, dp, soot)
+	elseif g == "Grave" then
+		b("Stone", 0, h / 2, 0, w, h, dp, charcoal)
+	elseif g == "Fence" then
+		b("Rails", 0, h * 0.6, 0, w, 0.5, dp, iron, M.Metal)
+		b("Spikes", 0, h * 0.4, 0, w, h * 0.8, 0.3, iron, M.Metal)
+	elseif g == "Gibbet" then
+		b("Post", -w / 2, h / 2, 0, 0.6, h, 0.6, iron, M.Metal)
+		b("Cage", 0, h * 0.4, 0, w * 0.6, h * 0.45, dp * 0.6, iron, M.Metal)
+	elseif g == "Waterfall" then
+		b("Sheet", 0, h / 2, dp / 2, w, h, dp, rgb(62, 72, 84), M.Glass).Transparency = 0.5
+	elseif g == "Mist" then
+		local a = Kit.part(m, "MistAnchor", V(1, 1, 1), f, soot, M.SmoothPlastic, decor)
+		a.Transparency = 1
 	end
 end
 
@@ -163,7 +203,7 @@ local function massing(castle: Model, origin: CFrame, ground: (number, number) -
 	-- T2 cloister terrace: its 178-stud front wall faces the close and carries the cloister ramp.
 	local b2 = low(-T2.X, T2.X, T2.BackZ, T2.FrontZ)
 	core(m, "T2Core", origin, -T2.X, T2.X, b2, T2.FloorY, T2.BackZ, T2.FrontZ)
-	core(m, "T2Parapet", origin, -T2.X, T2.X - 28, T2.FloorY, T2.FloorY + 6, T2.FrontZ - 2, T2.FrontZ)
+	core(m, "T2Parapet", origin, -T2.X + 28, T2.X, T2.FloorY, T2.FloorY + 6, T2.FrontZ - 2, T2.FrontZ)
 	blindBands(m, origin * C(0, T1.FloorY, T2.FrontZ), 2 * T2.X, T2.FloorY - T1.FloorY)
 	for _, s in { -1, 1 } do ends(s * T2.X, math.max(b2, -30), T2.FloorY, T2.BackZ, T2.FrontZ) end
 	-- T3 cathedral terrace: core, west front with the portal opening, tower feet, nave shell and vault.
@@ -177,7 +217,13 @@ local function massing(castle: Model, origin: CFrame, ground: (number, number) -
 		core(m, "WestFront", origin, if s < 0 then -90 else G.Half, if s < 0 then -G.Half else 90, y0, y1, zf, T3.FrontZ)
 		core(m, "OuterFront", origin, if s < 0 then -T3.X else 150, if s < 0 then -150 else T3.X, y0, y1, zf, T3.FrontZ)
 		core(m, "WestTowerFoot", origin, s * Layout.Tower.X - 30, s * Layout.Tower.X + 30, y0, Layout.Tower.BaseY, Layout.Tower.Z - 30, Layout.Tower.Z + 30)
-		core(m, "NaveWall", origin, if s < 0 then -48 else 40, if s < 0 then -40 else 48, y0, y0 + 45, T3.BackZ + 8, zf)
+		local nx0, nx1 = if s < 0 then -48 else 40, if s < 0 then -40 else 48
+		if s < 0 then
+			core(m, "NaveWall", origin, nx0, nx1, y0, y0 + 45, T3.BackZ + 8, zf)
+		else -- east wall has a door onto the T3 roof terrace (the V3 spur)
+			core(m, "NaveWall", origin, nx0, nx1, y0, y0 + 45, T3.BackZ + 8, Layout.NaveDoor.Z0)
+			core(m, "NaveWall", origin, nx0, nx1, y0, y0 + 45, Layout.NaveDoor.Z1, zf)
+		end
 		local tilt = -s * math.atan2(25, 48)
 		local vault = part(m, "NaveVault", origin * C(s * 24, y0 + 57.5, (T3.BackZ + 8 + zf) / 2) * A(0, 0, tilt),
 			math.sqrt(48 ^ 2 + 25 ^ 2) + 1, 3, zf - T3.BackZ - 8, wet, M.Slate, true)
@@ -193,24 +239,74 @@ local function massing(castle: Model, origin: CFrame, ground: (number, number) -
 		Props.brazier(m, origin * C(s * 17, 0, 4), 21)
 		for _, z in { -215, -240, -265, -290 } do Props.bench(m, origin * C(s * 22, y0, z)) end
 	end
-	-- Decks from the route data: gate apron, passage ramp, cloister and cathedral ramps, landings, supporting piers.
+	-- Decks from the route data: gate apron, passage ramp, cloister ramp, landings, grand stair, alternates, spurs.
 	local routes = section(castle, "WalkRoute")
-	for _, r in Layout.Route do
-		if r.Kind == "slab" then
-			local a, bb = origin * V(r.A[1], r.A[2], r.A[3]), origin * V(r.B[1], r.B[2], r.B[3])
-			deck(routes, r.Name, a, bb, r.Slab, r.Thick)
-			if r.Base then
-				local n = math.max(1, math.ceil((a - bb).Magnitude / 36))
-				for i = 0, n do
-					local p = a:Lerp(bb, i / n)
-					local top = p.Y - origin.Y - r.Thick
-					if top - r.Base > 1 then
-						part(routes, "RampPier", C(p.X, origin.Y + (top + r.Base) / 2, p.Z), 6, top - r.Base, 6, charcoal, M.Slate, true)
-					end
+	local function slabSeg(r: { [string]: any })
+		local a, bb = origin * V(r.A[1], r.A[2], r.A[3]), origin * V(r.B[1], r.B[2], r.B[3])
+		deck(routes, r.Name, a, bb, r.Slab, r.Thick)
+		if r.Base then
+			local n = math.max(1, math.ceil((a - bb).Magnitude / 36))
+			for i = 0, n do
+				local p = a:Lerp(bb, i / n)
+				local top = p.Y - origin.Y - r.Thick
+				if top - r.Base > 1 then
+					part(routes, "RampPier", C(p.X, origin.Y + (top + r.Base) / 2, p.Z), 6, top - r.Base, 6, charcoal, M.Slate, true)
 				end
 			end
 		end
 	end
+	local function spanSeg(r: { [string]: any })
+		local a, bb = origin * V(r.A[1], r.A[2], r.A[3]), origin * V(r.B[1], r.B[2], r.B[3])
+		local len = (a - bb).Magnitude
+		deck(routes, r.Name, a, bb, r.Width, r.Thick)
+		for _, s in { -1, 1 } do -- collidable parapets keep walkers on the deck
+			local off = (bb - a).Unit:Cross(V(0, 1, 0)) * (s * (r.Width / 2 - 0.9)) + V(0, 1.7, 0)
+			Kit.part(routes, r.Name .. "Parapet", V(1.8, 3.4, len), CFrame.lookAt((a + bb) / 2 + off, bb + off), soot, M.Slate)
+		end
+		local n = math.max(1, math.ceil(len / 30))
+		for i = 0, n do -- masonry piers down to terrain (the Viaduct_Bay stand-ins are decor)
+			local t = i / n
+			local px, py, pz = r.A[1] + (r.B[1] - r.A[1]) * t, r.A[2] + (r.B[2] - r.A[2]) * t, r.A[3] + (r.B[3] - r.A[3]) * t
+			local g = ground(px, pz) - 5
+			if py - r.Thick - g > 2 then
+				part(routes, "SpanPier", origin * C(px, (g + py - r.Thick) / 2, pz), 7, py - r.Thick - g, 7, charcoal, M.Slate, true)
+			end
+		end
+	end
+	for _, r in Layout.Route do
+		if r.Kind == "slab" then slabSeg(r) end
+	end
+	for _, r in Layout.Alternates do
+		if r.Kind == "slab" then slabSeg(r) end
+	end
+	for _, spur in Layout.Spurs do
+		for _, r in spur.Segs do
+			if r.Kind == "span" then spanSeg(r) end
+		end
+	end
+	-- Grand stair: every tread a solid block from the T2 floor up, flat landings, decor cheek walls.
+	local St = Layout.Stair
+	for _, step in St.Steps do
+		part(routes, "StairStep", origin * C(step.CX, (step.Top + St.Base) / 2, step.CZ) * A(0, St.Yaw, 0), St.Width, step.Top - St.Base, step.Len + 0.02, charcoal, M.Slate, true)
+	end
+	for _, l in St.Landings do
+		part(routes, "StairLanding", origin * C(l.CX, (l.Top + St.Base) / 2, l.CZ) * A(0, St.Yaw, 0), St.Width, l.Top - St.Base, l.Len + 0.02, charcoal, M.Slate, true)
+	end
+	for _, s in { -1, 1 } do
+		local off = V(-St.UZ, 0, St.UX) * (s * (St.Width / 2 + 1))
+		local a, bb = origin * (V(St.S[1], St.S[2] + 2, St.S[3]) + off), origin * (V(St.B[1], St.B[2] + 2, St.B[3]) + off)
+		part(routes, "StairCheek", CFrame.lookAt((a + bb) / 2, bb), 2, 4, (a - bb).Magnitude, soot)
+	end
+	-- Pinnacles P2/P3 (collidable rock courses), distant crags (decor), and the keep masonry.
+	local rock = section(castle, "Rock")
+	local function course(name: string, r: { [string]: number }, solid: boolean)
+		for _, c in Layout.rock(r, ground) do
+			part(rock, name, origin * C(c.CX, (c.Y0 + c.Y1) / 2, c.CZ) * A(0, c.Yaw, 0), 2 * c.HX, c.Y1 - c.Y0, 2 * c.HZ, wet, M.Slate, solid)
+		end
+	end
+	for id, r in Layout.Pinnacles do course("Pinnacle" .. id, r, true) end
+	for id, r in Layout.Crags do course("Crag" .. id, r, false) end
+	for _, k in Layout.KeepCores do core(m, k[1], origin, k[2], k[3], k[4], k[5], k[6], k[7]) end
 end
 
 function Citadel.build(parent: Instance, origin: CFrame): Model
