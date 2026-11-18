@@ -486,7 +486,8 @@ SliceDressing.Classes = { "Tree", "Rock", "Cliff", "Outcrop", "Scree", "Deadwood
 -- Keep / exclusion table a class borrows (Keep has Tree, Shrub, Fern, Grass, Rock only): saplings keep clear like trees (their crown must not reach the road).
 SliceDressing.KeepAs = { Sapling = "Tree", Deadwood = "Rock", Cliff = "Rock", Outcrop = "Rock", Scree = "Shrub", Flower = "Grass", Mushroom = "Fern", Reed = "Fern" } :: { [string]: string }
 SliceDressing.Scatter = {
-	Tree = { Salt = 1, Spacing = 12, Base = 0.52, Jitter = 1, MaxSlope = 0.55, Clearing = 0.55, Tall = true, Scale = { 0.75, 1.4 }, Cluster = { Lo = 0.28, Hi = 0.46, Floor = 0.15 }, Roadside = 5, RoadMin = { 26, 1.38 }, Taper = { From = 40, To = 140, Min = 0.04 }, RoadPieces = { { "Canopy_Tree_A", 0.3 }, { "Canopy_Tree_C", 0.3 }, { "Canopy_Tree_D", 0.4 } },
+	Tree = { Salt = 1, Spacing = 12, Base = 0.52, Jitter = 1, MaxSlope = 0.55, Clearing = 0.55, Tall = true, Scale = { 0.75, 1.4 }, Cluster = { Lo = 0.28, Hi = 0.46, Floor = 0.15 }, Roadside = 5, RoadMin = { 26, 1.38 }, Taper = { From = 40, To = 140, Ramp = 60, Min = 0.04 }, RoadPieces = { { "Canopy_Tree_A", 0.3 }, { "Canopy_Tree_C", 0.3 }, { "Canopy_Tree_D", 0.4 } },
+			StandPieces = { { "Canopy_Tree_A", 0.6 }, { "Canopy_Tree_B", 0.2 }, { "Canopy_Tree_C", 0.2 } },
 			FarBelt = 170, FarDensity = 0.22, -- beyond Half + Fade of the route, out to FarBelt studs more, at FarDensity of the chance: _Far variants only (they are > FarSwitch from every road)
 		Pieces = { { "Canopy_Tree_A", 0.26 }, { "Canopy_Tree_B", 0.14 }, { "Canopy_Tree_C", 0.18 }, { "Canopy_Tree_D", 0.14 }, { "Conifer_Tall", 0.055 }, { "Old_Gnarled_Tree", 0.14 } }, Material = { LeafyGrass = 1, Grass = 0.9, Ground = 0.5, Mud = 0.3, Rock = 0.1 } },
 	Rock = { Salt = 5, Spacing = 40, Base = 0.55, Jitter = 1, MaxSlope = 1.6, MinSlope = 0.1, Clearing = 0.9, Tall = true, Scale = { 0.7, 1.2 },
@@ -543,6 +544,13 @@ SliceDressing.Cones = {
 	{ Id = "TowerCone", Captures = { "01_glade_arrival", "07_tower_from_glade" }, To = "TowerMid", Deg = 4, Pad = 6, LowFrac = 0.03, SkyMargin = 1.5, Beyond = 700 },
 } :: { any }
 
+-- Canopy stands (mac-29): a ring Inner..Outer studs round a capture eye where the tree chance is multiplied by 1 + Boost (the Taper does not thin it, and StandPieces
+-- favours the cheap Canopy_Tree_A, MinScale = the smallest crown scale: the same tris cover more sky), so crowns rise above the eye in the 40-60 degree band. Every keep, sight and the tower cone still apply: stands only fill what they leave free.
+SliceDressing.Stands = {
+	{ Id = "GladeStand", Eyes = { "01_glade_arrival", "07_tower_from_glade" }, Inner = 18, Outer = 85, Boost = 3, MinScale = 1.38 },
+	{ Id = "LaneStand", Eyes = { "04_broken_tower", "05_pavilion_lane", "06_terrace_stair" }, Inner = 18, Outer = 85, Boost = 3, MinScale = 1.38 },
+} :: { any }
+
 -- Forest floor round the glade altar (fault D): ferns, grass and a few small rocks in the ring Inner..Outer (the pad is 22 radius and stays
 -- clear; arrival and altar keeps are skipped here, every other exclusion stays). Spacing = the jittered cell, Chance = per cell.
 SliceDressing.Floor = { Altar = "Altar_MonasteryGate", Inner = 24, Outer = 34, Spacing = 3.4, Chance = 1, Rocks = 4, RockChance = 0.25, RockPiece = "Boulder_Granite_B", RockScale = { 0.22, 0.4 },
@@ -596,6 +604,7 @@ SliceDressing.Keep = {
 	Shelter = keep(14, 7, 4, 3, 8), -- added to the shelter's half diagonal
 	SpanEnd = keep(36, 30, 24, 20, 36), -- bridge / ramp / lift / portal ends
 	Hero = keep(8, 5, 3, 2, 4), -- added to the hero's radius * scale
+	Eye = keep(14, 6, 6, 8, 14), -- every review-capture eye (mac-29): no trunk / tall piece within 14 (capture 03 sat 3.8 studs off a trunk), no plant card filling the lens
 	-- Encounter homes: fractions of the foe's LeashRange (WorldDefinitions). Tall pieces keep half the leash clear (sight and
 	-- camera), low plants only the fighting ground; nothing collides, so the chase space itself stays open.
 	Leash = { Tree = 0.5, Rock = 0.5, Shrub = 0.22, Fern = 0.16, Grass = 0.12 },
@@ -604,6 +613,9 @@ SliceDressing.MobLeash = { CorruptWanderingMonk = 90, CursedSwordsman = 110, Hol
 
 -- Review captures (Studio, player height). From = world XZ or an Arc (+ Off); To = a hero id or world XZ; Eye above ground.
 SliceDressing.Eye = 5
+-- The first Len studs of each capture's view direction stay open (mac-29): any piece whose occluder reaches within Pad studs of that run must have its underside
+-- at least Clear studs above the eye, so a crown may overhang from above eye + Clear but nothing stands in the first frames of the view.
+SliceDressing.EyeView = { Len = 10, Pad = 2, Clear = 10 }
 SliceDressing.Captures = ({
 	{ Id = "01_glade_arrival", Note = "Altar spawn looking down the road to the glade gate: ground materials, canopy wall, lanterns", From = { X = -2203, Z = -1415 }, ToHero = "GateGlade", ToDy = 8 },
 	{ Id = "02_road_lanterns", Note = "Mid-glade road looking along it: lantern posts, canopy gap at player height", FromArc = 215, ToArc = 330, ToDy = 7 },
@@ -727,6 +739,10 @@ local function circles(heroes: { any }): { any }
 	end
 	for _, r in Overworld.Rings do
 		add(r.X, r.Z, K.Ring)
+	end
+	for _, cap: any in SliceDressing.Captures do
+		local fx, fz = captureEye(cap)
+		add(fx, fz, K.Eye)
 	end
 	local rg = Overworld.Blockout.ReturnGate
 	add(rg.X, rg.Z, K.ReturnGate)
@@ -1038,13 +1054,60 @@ function SliceDressing.build(fresh: boolean?): any
 		end
 		return false
 	end
+	-- Capture eyes (mac-29): where each one stands and looks, the open first run of its view (EyeView) and the canopy stands round it (Stands).
+	local captureById: { [string]: any } = {}
+	for _, cap: any in SliceDressing.Captures do captureById[cap.Id] = cap end
+	local eyeViews: { any } = {}
+	for _, cap: any in SliceDressing.Captures do
+		local fx, fz = captureEye(cap)
+		local tx, tz = fx, fz + 1
+		if cap.ToHero then
+			tx, tz = heroById[cap.ToHero].X, heroById[cap.ToHero].Z
+		elseif cap.ToArc then
+			local px, pz, ux, uz = SliceDressing.pointAt(cap.ToArc)
+			tx, tz = px - uz * (cap.ToOff or 0), pz + ux * (cap.ToOff or 0)
+		end
+		local l = math.max(worldDist(fx, fz, tx, tz), 1e-6)
+		table.insert(eyeViews, { X = fx, Z = fz, Y0 = Overworld.heightAt(fx, fz) + SliceDressing.Eye, Dx = (tx - fx) / l, Dz = (tz - fz) / l })
+	end
+	local function eyeBlocks(x: number, z: number, groundY: number, piece: any, scale: number): boolean
+		local ev: any = SliceDressing.EyeView
+		for _, v in eyeViews do
+			local d = segDist(v.X, v.Z, v.X + v.Dx * ev.Len, v.Z + v.Dz * ev.Len, x, z)
+			for _, o in piece.Occ do
+				if d - o[1] * scale < ev.Pad and groundY + o[2] * scale < v.Y0 + ev.Clear then
+					return true
+				end
+			end
+		end
+		return false
+	end
+	local stands: { any } = {}
+	for _, st: any in SliceDressing.Stands do
+		for _, id in st.Eyes do
+			assert(captureById[id], "SliceDressing.Stands: unknown capture " .. tostring(id))
+			local fx, fz = captureEye(captureById[id])
+			table.insert(stands, { X = fx, Z = fz, Inner = st.Inner, Outer = st.Outer, Boost = st.Boost, MinScale = st.MinScale })
+		end
+	end
+	local function standAt(x: number, z: number): (number, number, number) -- (tree chance boost, ring weight 0..1, minimum tree scale) at the strongest stand ring
+		local boost, weight, minScale = 0, 0, 0
+		for _, s in stands do
+			local d = worldDist(x, z, s.X, s.Z)
+			local w = smooth((d - s.Inner) / 10) * (1 - smooth((d - s.Outer) / 20))
+			if w * s.Boost > boost then
+				boost, weight, minScale = w * s.Boost, w, s.MinScale
+			end
+		end
+		return boost, weight, minScale
+	end
 	local function blocksSight(x: number, z: number, groundY: number, piece: any, scale: number): boolean
 		for _, s in sights do
 			if blocks(s, x, z, groundY, heightOf(piece, scale), piece.Radius * scale) then
 				return true
 			end
 		end
-		return coneBlocks(x, z, groundY, piece, scale)
+		return coneBlocks(x, z, groundY, piece, scale) or eyeBlocks(x, z, groundY, piece, scale)
 	end
 	local eyeSpots: { { number } } = {} -- every capture eye: the far switch measures from these and from the roads
 	for _, cap: any in SliceDressing.Captures do
@@ -1083,8 +1146,11 @@ function SliceDressing.build(fresh: boolean?): any
 		table.insert(arrivals, a.Spawn)
 		table.insert(arrivals, a.Exit)
 	end
-	local function plantScale(rule: any, x: number, z: number, r: number): number
-		local lo, hi = rule.Scale[1], rule.Scale[2]
+	for _, e in eyeSpots do -- every capture eye counts as an arrival for the grass cap (mac-29)
+		table.insert(arrivals, { X = e[1], Z = e[2] })
+	end
+	local function plantScale(rule: any, x: number, z: number, r: number, floorScale: number?): number
+		local lo, hi = math.max(rule.Scale[1], floorScale or 0), rule.Scale[2]
 		if rule.RoadMin and nearRoad(x, z) < rule.RoadMin[1] then
 			lo = rule.RoadMin[2]
 		end
@@ -1316,22 +1382,27 @@ function SliceDressing.build(fresh: boolean?): any
 							if rule.Roadside then -- crowns reach over the road: denser just past the written road edge (the road blends out by ~21 studs)
 								factor *= 1 + rule.Roadside * (1 - smooth((nearRoad(x, z) - 20) / 16))
 							end
-							if rule.Taper then -- near trees (full mesh, 8x the far tris) thin out between From and To studs of every road and capture eye; past To the cheap _Far trees stand at full density
+							local standBoost, standW, standMin = 0, 0, 0
+							if rule.StandPieces then
+								standBoost, standW, standMin = standAt(x, z)
+								factor *= 1 + standBoost
+							end
+							if rule.Taper then -- near trees (full mesh, 8x the far tris) thin out between From and To studs of every road and capture eye (not inside a stand); past To the cheap _Far trees stand at full density
 								local t = rule.Taper
-								factor *= 1 - (1 - t.Min) * smooth((farFrom(x, z) - t.From) / (t.To - t.From)) * (1 - smooth((farFrom(x, z) - t.To) / 20))
+								factor *= 1 - (1 - t.Min) * smooth((farFrom(x, z) - t.From) / t.Ramp) * (1 - smooth((farFrom(x, z) - t.To) / 20)) * (1 - standW)
 							end
 							if rule.Gap then -- understory favours canopy gaps and glades
 								factor *= if underCrown(x, z) then rule.Under else rule.Gap
 								factor *= 1 + (rule.Glade - 1) * glade
 							end
 							if rand(gi, gj, rule.Salt * 10 + 3) < rule.Base * wc * math.clamp(factor, 0, 1.6) then
-								local pick = pickPiece(if rule.RoadPieces and nearRoad(x, z) < rule.RoadMin[1] then { Pieces = rule.RoadPieces } else rule, rand(gi, gj, rule.Salt * 10 + 4))
+								local pick = pickPiece(if rule.RoadPieces and nearRoad(x, z) < rule.RoadMin[1] then { Pieces = rule.RoadPieces } elseif standW > 0.5 then { Pieces = rule.StandPieces } else rule, rand(gi, gj, rule.Salt * 10 + 4))
 								local isFar = belt and farFrom(x, z) > SliceDressing.FarSwitch
 								if isFar then
 									pick ..= "_Far" -- low-tri variant, same bbox
 								end
 								local piece = P[pick]
-								local scale = plantScale(rule, x, z, rand(gi, gj, rule.Salt * 10 + 5))
+								local scale = plantScale(rule, x, z, rand(gi, gj, rule.Salt * 10 + 5), if standW > 0.5 then standMin else 0)
 								local fits = isFar or not beltOnly
 								if class == "Tree" then
 									local lift = piece.Under * piece.Size[2] - piece.Sink -- underside above the foot at scale 1

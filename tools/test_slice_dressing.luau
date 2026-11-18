@@ -413,6 +413,7 @@ for _, p in R.Placements do
 	if p.Class == "Grass" then
 		local d = roadDistance(p.X, p.Z)
 		for _, a in O.Altars do d = math.min(d, dist(p.X, p.Z, a.Spawn.X, a.Spawn.Z), dist(p.X, p.Z, a.Exit.X, a.Exit.Z)) end
+		for _, c in S.captures() do d = math.min(d, dist(p.X, p.Z, c.From.X, c.From.Z)) end -- every capture eye counts as an arrival (mac-29)
 		if d < nearCap.Dist then
 			nearN += 1
 			nearBad += if p.Scale > nearCap.Scale[2] + 1e-9 then 1 else 0
@@ -422,10 +423,41 @@ for _, p in R.Placements do
 end
 check(string.format("grass within %d studs of a road or arrival is capped at scale %.1f (%d cards, tallest %.1f studs, %d over the cap)", nearCap.Dist, nearCap.Scale[2], nearN, tallest, nearBad), nearN >= 30 and nearBad == 0 and tallest < S.Eye + 1e-9)
 
+-- A2c. Capture eyes (mac-29): capture 03 stood 3.8 studs from a trunk (black frame). Every scatter placement keeps Keep.Eye of its class from each eye (trunks, rocks and
+-- other tall pieces 14 studs), and nothing whose occluder reaches within EyeView.Pad of the first EyeView.Len studs of the view direction has its underside lower than
+-- eye + EyeView.Clear (a crown may overhang from above that). Set pieces obey the view run too (a trunk-like piece is dropped, not planted in the frame).
+local KE, EV = K.Eye, S.EyeView
+local eyeNear, eyeRunBad, eyeKeepBad, eyeGrassBad, eyeN = math.huge, 0, 0, 0, 0
+for _, c in S.captures() do
+	local dx, dz = c.To.X - c.From.X, c.To.Z - c.From.Z
+	local l = math.sqrt(dx * dx + dz * dz)
+	local ux, uz = dx / l, dz / l
+	for _, p in R.Placements do
+		if p.Kind == "Scatter" or p.Set then
+			eyeN += 1
+			local piece = S.Pieces[p.Piece]
+			local d = dist(c.From.X, c.From.Z, p.X, p.Z)
+			if p.Kind == "Scatter" then
+				local keepClass = S.KeepAs[p.Class] or p.Class
+				if KE[keepClass] and d < KE[keepClass] - 1e-6 then eyeKeepBad += 1 end
+				if p.Class == "Grass" and d < KE.Grass - 1e-6 then eyeGrassBad += 1 end
+				if S.Scatter[p.Class].Tall then eyeNear = math.min(eyeNear, d) end
+			end
+			local run = S.segDist(c.From.X, c.From.Z, c.From.X + ux * EV.Len, c.From.Z + uz * EV.Len, p.X, p.Z)
+			for _, o in piece.Occ do
+				if run - o[1] * p.Scale < EV.Pad - 1e-6 and p.Y + o[2] * p.Scale < c.From.Y + EV.Clear - 1e-6 then eyeRunBad += 1 break end
+			end
+		end
+	end
+end
+check(string.format("capture eyes: no scatter placement inside Keep.Eye of any eye (%d over; nearest tall piece %.1f studs, need >= %d; %d grass inside %d studs)", eyeKeepBad, eyeNear, KE.Tree, eyeGrassBad, KE.Grass),
+	eyeN > 100 and eyeKeepBad == 0 and eyeGrassBad == 0 and eyeNear >= KE.Tree - 1e-6)
+check(string.format("capture eyes: the first %d studs of every view are open below eye + %d (%d placements reach it lower)", EV.Len, EV.Clear, eyeRunBad), eyeRunBad == 0)
+
 -- A3. Sky occlusion per capture eye (mirrors the Studio diagnostic): 60 azimuths x 4 elevations (20/40/60/80 deg), 150-stud rays from the eye; a ray is blocked when
 -- it passes through a tree's crown cylinder (CrownFrac * Radius * Scale, underside..top) or trunk cylinder. Terrain, heroes and plants are ignored. "Outside the cone" drops azimuths within
 -- 8 deg of the tower bearing (01 and 07). Printed, not asserted: it predicts the Studio number.
-local function skyBlocked(eye, ignoreAz)
+local function skyBlocked(eye, ignoreAz, onlyEl)
 	local blocked, total = 0, 0
 	for a = 0, 59 do
 		local az = a * 6
@@ -435,7 +467,7 @@ local function skyBlocked(eye, ignoreAz)
 			skipAz = diff <= 8
 		end
 		if not skipAz then
-			for _, el in { 20, 40, 60, 80 } do
+			for _, el in (onlyEl and { onlyEl } or { 20, 40, 60, 80 }) do
 				total += 1
 				local ux, uz = math.cos(math.rad(az)) * math.cos(math.rad(el)), math.sin(math.rad(az)) * math.cos(math.rad(el))
 				local uy = math.sin(math.rad(el))
@@ -467,7 +499,7 @@ end
 local skyLine = {}
 for _, c in S.captures() do
 	local f = skyBlocked(c.From, nil)
-	local part = string.format("%s %.0f%%", string.sub(c.Id, 1, 2), f * 100)
+	local part = string.format("%s %.0f%% [%.0f/%.0f/%.0f/%.0f]", string.sub(c.Id, 1, 2), f * 100, skyBlocked(c.From, nil, 20) * 100, skyBlocked(c.From, nil, 40) * 100, skyBlocked(c.From, nil, 60) * 100, skyBlocked(c.From, nil, 80) * 100)
 	if c.Id == "01_glade_arrival" or c.Id == "07_tower_from_glade" then
 		local bearing = math.deg(math.atan2(towerHero.Z - c.From.Z, towerHero.X - c.From.X)) % 360
 		part ..= string.format(" (%.0f%% outside the tower cone)", skyBlocked(c.From, bearing) * 100)
@@ -475,6 +507,20 @@ for _, c in S.captures() do
 	table.insert(skyLine, part)
 end
 print("  sky blocked by crowns (60 az x 4 el, 150 studs): " .. table.concat(skyLine, ", "))
+-- Calibration (mac-29): pass 1 modelled 16/65/80/28/25/14/16 % and Studio (win-16 ray method, mac-27) measured 11.2/54.6/77.5/19.6/19.2/11.2/11.2 %: the model runs 1.0-1.4x high
+-- (crown cylinders are fatter than the real crowns). Predicted Studio = model x that per-view ratio. Floors: 01 / 07 (cone excluded) >= 20 %, 04 / 05 >= 20 %, 06 >= 15 % (06 stands on the
+-- altar plateau: the altar pad, terrace walls and the pavilion sight keep most of the ring clear).
+local RATIO = { ["01"] = 11.2 / 16, ["02"] = 54.6 / 65, ["03"] = 77.5 / 80, ["04"] = 19.6 / 28, ["05"] = 19.2 / 25, ["06"] = 11.2 / 14, ["07"] = 11.2 / 16 }
+local FLOOR = { ["01"] = 0.20, ["04"] = 0.20, ["05"] = 0.20, ["06"] = 0.15, ["07"] = 0.20 }
+local predLine = {}
+for _, c in S.captures() do
+	local key = string.sub(c.Id, 1, 2)
+	local f = skyBlocked(c.From, if key == "01" or key == "07" then math.deg(math.atan2(towerHero.Z - c.From.Z, towerHero.X - c.From.X)) % 360 else nil)
+	local pred = f * RATIO[key]
+	table.insert(predLine, string.format("%s %.0f%%", key, pred * 100))
+	if FLOOR[key] then check(string.format("predicted Studio sky blocked at %s: %.1f%% (model %.1f%% x %.2f; need >= %.0f%%)", c.Id, pred * 100, f * 100, RATIO[key], FLOOR[key] * 100), pred >= FLOOR[key]) end
+end
+print("  predicted Studio sky blocked: " .. table.concat(predLine, ", "))
 local classLine = {}
 for _, c in S.Classes do table.insert(classLine, c .. " " .. (R.ByClass[c] or 0)) end
 print("  per-class counts: " .. table.concat(classLine, ", "))
