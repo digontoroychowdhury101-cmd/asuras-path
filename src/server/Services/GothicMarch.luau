@@ -2,6 +2,7 @@
 -- The east fork from Snow Refuge. Coordinates are local to the castle threshold, in studs.
 local Shared = game:GetService("ReplicatedStorage"):WaitForChild("AsurasPath").Shared
 local Overworld = require(Shared.Overworld)
+local Layout = require(Shared.VesperholdLayout)
 local Kit = require(script.Parent.MonasteryKit)
 local Decor = require(script.Parent.RegionDecor)
 local SanctuaryKit = require(script.Parent.SanctuaryKit)
@@ -67,55 +68,6 @@ local function deck(parent: Instance, frame: CFrame, name: string, a: Vector3, b
 	return Kit.part(parent,name,V(width,depth,(a-b).Magnitude+0.7),frame*axis*F(0,-depth/2,0),tint,material)
 end
 
-local function escarpment(parent: Instance, o: CFrame)
-	local m = group(parent,"The Black Scarp")
-	-- The platform is held up by bedrock even before the fine rock meshes stream in.
-	for _, t in {{0,-98,178,206,-1.6},{-4,-106,186,192,-9},{0,-97,195,194,-20},
-		{0,-225,253,61,-9},{0,-332,204,188,-9},{0,-312,343,73,-9}} do
-		local x,z,width,depth,top=t[1],t[2],t[3],t[4],t[5]
-		local base=ground(o,x,z)
-		for _,side in {-0.5,0,0.5} do
-			for _,endZ in {-0.5,0.5} do
-				base=math.min(base,ground(o,x+width*side,z+depth*endZ))
-			end
-		end
-		base=math.min(base-10,top-8)
-		local shelf=stone(m,o,"Fractured bedrock",x,(top+base)/2,z,width,top-base,depth,rgb(183,193,194),M.Rock,true)
-		shelf.MaterialVariant="AsuraCliff"
-	end
-	local rng = Random.new(4513)
-	local function cliff(x: number, z: number, y: number, yaw: number, width: number)
-		local foot = ground(o,x,z) - 9
-		SanctuaryKit.place(m,"Cliff_Ledge",o*F(x,y,z)*A(0,rad(yaw),0),V(width/42.7,(y-foot)/30,rng:NextNumber(0.85,1.35)))
-		SanctuaryKit.place(m,"Cliff_Spur",o*F(x,y-8,z)*A(0,rad(yaw+7),0),V(1.7,(y-foot)/50,1.8))
-	end
-	for _, side in {-1,1} do
-		for i, z in { -184,-151,-107,-66,-26 } do
-			cliff(side*(90+rng:NextNumber(-5,2)),z,-2-rng:NextNumber(1,7),side*89+6*i,44+rng:NextNumber(0,17))
-		end
-	end
-	for _, x in {-73,-39,0,39,73} do
-		cliff(x,0,-4-rng:NextNumber(0,8),rng:NextNumber(-12,13),45)
-	end
-	-- Bedrock follows the arms of the transept and breaks into fluted buttresses below the apse.
-	local function strata(x: number,z: number,width: number,depth: number,top: number,yaw: number)
-		local bottom=ground(o,x,z)-8
-		if bottom>top-7 then return end
-		SanctuaryKit.place(m,"Vista_Ridge",o*F(x,bottom,z)*A(0,rad(yaw),0),V(width/156.5,(top-bottom)/155.2,depth/62.3))
-	end
-	for _,s in {-1,1} do
-		for i,t in {{110,-196,57,43},{124,-224,77,57},{114,-250,68,50},{141,-279,97,48},
-			{168,-315,81,58},{141,-346,85,56},{99,-363,70,44},{97,-405,85,56}} do
-			local yaw=if i==1 or i==4 or i==6 then 10*s else 82*s
-			strata(s*t[1],t[2],t[3],t[4],-8-rng:NextNumber(0,4),yaw+rng:NextNumber(-12,12))
-			cliff(s*t[1],t[2],-10-rng:NextNumber(0,6),yaw,44)
-		end
-	end
-	for _,x in {-73,-21,40,80} do
-		strata(x,-420,74,63,-10-rng:NextNumber(0,6),3+x/8)
-	end
-end
-
 local function roadHeight(o: CFrame,x: number,z: number): number
 	-- The rounded four-stud terrain voxels crest above the sampled mathematical surface.
 	local clearance = 0.75 + 1.65 * math.clamp((585-z)/24,0,1)
@@ -173,74 +125,69 @@ local function pilgrimLane(parent: Instance,o: CFrame)
 end
 
 local function viaduct(parent: Instance,o: CFrame)
+	-- Same deck path and levels as before; piers now run down to the terrain in 30-stud bays (layout: VesperholdLayout.Viaduct).
 	local m = group(parent,"The Processional Bridge")
-	local function level(z: number): number return -18*(z-4)/153 end
-	local a,b = V(0,level(4),4),V(0,-18,157)
-	local paving=deck(m,o,"Processional deck",a,b,19.5,3.5,rgb(160,164,157),M.Slate)
+	local W = Layout.Viaduct
+	local level = Layout.viaductLevel
+	local dark,mid = rgb(34,35,38),rgb(54,56,61)
+	local bay,count = W.Bay,5
+	local a,b = V(0,level(W.Z0),W.Z0),V(0,-18,W.Z1)
+	local paving=deck(m,o,"Processional deck",a,b,W.Width,3.5,rgb(86,88,92),M.Slate)
 	paving.MaterialVariant="AsuraPaving"
-	local bay = 153/6
 	for _, s in {-1,1} do
-		local x=s*9.4
-		rail(m,o,"Drip ledge",a+V(x,-2,0),b+V(x,-2,0),1.6,0.85,trim,M.Limestone)
-		for i=0,5 do
-			local first,last=4+bay*i,4+bay*(i+1)
+		local x=s*W.Rail
+		rail(m,o,"Drip ledge",a+V(x,-2,0),b+V(x,-2,0),1.6,0.85,mid,M.Slate)
+		for i=0,count do
+			local first=W.Z0+bay*i
+			local last=math.min(first+bay,W.Z1)
 			local notch=first+bay*(if i%2==0 then 0.38 else 0.62)
+			local ranges=if last-first>20 then {{first,notch-1.25},{notch+1.25,last}} else {{first,last}}
 			local chipped=(s==-1 and i==3) or (s==1 and i==1)
-			for j,range in {{first,notch-1.25},{notch+1.25,last}} do
+			for j,range in ranges do
 				local lo,hi=range[1],range[2]
 				local height=if chipped and j==2 then 1.65 else 2.8
 				local p,q=V(x,level(lo)+height/2,lo),V(x,level(hi)+height/2,hi)
-				rail(m,o,"Parapet",p,q,1.8,height,if i%3==2 then slate else cap,M.Brick,true)
+				rail(m,o,"Parapet",p,q,1.8,height,dark,M.Slate,true)
 				if not (chipped and j==2) then
-					rail(m,o,"Weathered coping",p+V(0,height/2+0.2,0),q+V(0,height/2+0.2,0),2.25,0.55,trim,M.Limestone)
-				end
-			end
-			-- Low scupper cut under the coping, open directly above the projecting stone drain.
-			stone(m,o,"Drain lintel",x,level(notch)+2.28,notch,2.1,1.1,2.8,cap,M.Limestone)
-			stone(m,o,"Scupper trough",s*10.4,level(notch)-0.43,notch,4.15,0.47,2.3,trim,M.Limestone)
-			for _,edge in {-1,1} do
-				stone(m,o,"Drain cheek",s*11.0,level(notch)-0.11,notch+edge*1.08,2.95,0.45,0.35,cap,M.Slate)
-			end
-			if chipped then
-				for n=1,3 do
-					stone(m,o*F(x-s*(1.0+n*0.42),level(last-n)+0.25,last-n)*A(0,rad(n*19),rad(n*4)),
-						"Fallen coping",0,0,0,1.22+n*0.21,0.55,0.72+n*0.22,trim,M.Limestone)
+					rail(m,o,"Coping",p+V(0,height/2+0.2,0),q+V(0,height/2+0.2,0),2.25,0.55,mid,M.Slate)
 				end
 			end
 		end
 	end
-	for i,t in {{-2.5,31,4,6.2},{3.2,35,3.8,5.5},{3.4,71,5,7.5},{-1.7,72,4,7.1},{-4.9,120,3.8,7.2}} do
-		local x,z,w,l=t[1],t[2],t[3],t[4]
-		local patch=deck(m,o,"Mended flagstone",V(x,level(z-l/2)+0.1,z-l/2),V(x,level(z+l/2)+0.1,z+l/2),w,0.25,
-			if i%2==0 then rgb(159,159,146) else rgb(131,139,141),M.Slate)
-		patch.CanCollide,patch.CanTouch,patch.CanQuery=false,false,false
-		patch.MaterialVariant="AsuraStone"
-	end
-	for i=0,6 do
-		local z=4+i*bay
+	for i=0,count do
+		local z=W.Z0+i*bay
 		local g=ground(o,0,z)-5
 		local y=level(z)
-		stone(m,o,"Battered pier",0,(g+y-7)/2,z,20,y-7-g,6.1,slate,M.Brick,true)
-		stone(m,o,"Springer course",0,y-12,z,21.3,2,7.4,trim,M.Limestone)
+		stone(m,o,"Battered pier",0,(g+y-7)/2,z,22,y-7-g,8,dark,M.Slate,true)
+		stone(m,o,"Springer course",0,y-12,z,23.3,2,9.4,mid,M.Slate)
 		for _, s in {-1,1} do
-			stone(m,o,"Guard pier",s*9.4,y+2,z,2.75,4.7,2.75,slate,M.Brick)
-			stone(m,o,"Pyramidal coping",s*9.4,y+4.55,z,3.4,0.7,3.4,lime,M.Limestone)
+			stone(m,o,"Guard pier",s*W.Rail,y+2,z,2.75,4.7,2.75,dark,M.Slate)
+			stone(m,o,"Pier cap",s*W.Rail,y+4.55,z,3.4,0.7,3.4,mid,M.Slate)
 		end
-		if i==6 then break end
-		local mid=z+bay/2
-		local function arc(theta: number): Vector3
-			local at = mid-0.5*bay*math.cos(theta)
-			return V(0,level(at)-17+12*math.sin(theta),at)
-		end
-		for j=1,8 do
-			local p,q = arc((j-1)*math.pi/8),arc(j*math.pi/8)
-			local midPoint = (p+q)/2
-			local top = level(midPoint.Z)-3
-			local fillHeight = top - math.max(p.Y,q.Y)
-			if fillHeight>0 then
-				stone(m,o,"Tympanum",0,top-fillHeight/2,midPoint.Z,17.8,fillHeight+0.5,q.Z-p.Z+0.12,cap,M.Brick)
+		if i==count then break end
+		-- One marked Model per bay holds the arch stand-ins; the kit loader swaps it for a Viaduct_Bay mesh.
+		local at=z+bay/2
+		local stand=group(m,"Viaduct bay")
+		stand:SetAttribute("VespKitSlot","Viaduct_Bay")
+		stand:SetAttribute("VespBay",i+1)
+		local stages=math.max(1,math.floor((level(at)-12-(ground(o,0,at)-5))/50))
+		for t=0,stages-1 do
+			local function arc(theta: number): Vector3
+				local zz=at-0.5*bay*math.cos(theta)
+				return V(0,level(zz)-17-t*50+12*math.sin(theta),zz)
 			end
-			rail(m,o,"Arch vault",p,q,19.8,3.4,if j%3==0 then trim else slate,M.Limestone)
+			for j=1,8 do
+				local p,q=arc((j-1)*math.pi/8),arc(j*math.pi/8)
+				if t==0 then
+					local midPoint=(p+q)/2
+					local top=level(midPoint.Z)-3
+					local fill=top-math.max(p.Y,q.Y)
+					if fill>0 then
+						stone(stand,o,"Tympanum",0,top-fill/2,midPoint.Z,17.8,fill+0.5,q.Z-p.Z+0.12,dark,M.Slate)
+					end
+				end
+				rail(stand,o,"Arch vault",p,q,19.8,3.4,if j%3==0 then mid else dark,M.Slate)
+			end
 		end
 	end
 end
@@ -540,14 +487,6 @@ local function dressMarch(parent: Instance,o: CFrame)
 	journey(crofts,o)
 	waystone(crofts,o,8,574,-12,"VESPERHOLD")
 	waystone(crofts,o,-47,292,30,"NINTH VIGIL")
-	-- Stakes and a torn ensign mark where the outer defence once blocked the road.
-	local field=o*F(-43,ground(o,-43,268),268)*A(0,rad(28),0)
-	rail(crofts,field,"Fallen chevaux de frise",V(-5,1,0),V(6,1,0),1.35,1.35,oak,M.Wood)
-	for _,x in {-4,-1,2,5} do
-		rail(crofts,field,"Broken stake",V(x-0.35,-0.4,-1),V(x+0.4,2.9,2.8),0.6,0.55,oak,M.Wood)
-	end
-	rail(crofts,field,"Bent ensign",V(-5,0,1),V(-6.3,8.5,2),0.28,0.28,iron,M.Metal)
-	Decor.banner(crofts,field*F(-6.2,8.0,1.9)*A(0,rad(-28),rad(9)),3.6,rgb(98,60,62))
 	sealBridge(parent,o)
 	-- Real scanned roots kink around the bridge abutment and beneath a wayside grave.
 	for i,t in {{-50,192,18},{-107,254,13},{-55,508,19},{44,392,15}} do
@@ -559,7 +498,6 @@ end
 
 function March.build(parent: Instance, origin: CFrame)
 	local march=group(parent,"Vesper March")
-	escarpment(march,origin)
 	pilgrimLane(march,origin)
 	viaduct(march,origin)
 	posternWalk(march,origin)

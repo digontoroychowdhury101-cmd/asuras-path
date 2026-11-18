@@ -1,5 +1,20 @@
 # CONTINUATION — read this first after any restart
 
+## Vesperhold — 2026-11-19 (FIRST lane; forest continues behind it)
+
+Work order workers/mac-40-vesperhold-verdict.md (NOT ACCEPTED: toy scale, two palettes, Part surfaces). Plan:
+workers/mac-41-vesperhold-plan.md (tiers T0-T3 + crown, ~690-stud frontage, kit groups A-G, massing kept vs meshed).
+HEAD b3c8226 = origin at start. Creator's Studio windows OPEN (do not edit/save/close): work/vesperhold/VesperholdSurvey.rbxlx,
+outputs/vesperhold/AsurasPath-Vesperhold.rbxlx. Our test copies: work/vesperhold-claude/. Memory 51% free at plan time.
+Downloads (CC0/generators) need the creator's own chat approval; first pass is procedural.
+
+| Lane | Note | Model | Heavy? | Owns | State |
+|---|---|---|---|---|---|
+| mac-41r1/r2 code + pipeline maps | (in plan) | haiku x2 | light | none | DONE |
+| mac-42 kit A-E (materials, architecture) Blender | workers/mac-42-vesp-kit.md | sonnet | HEAVY (Blender) | tools/blender/vesperhold/vesperhold_kit.py, assets/source/vesperhold/ | DONE: 31 pieces, 7 materials @2048 (Metal map always linked), max sub 11,880 tris, renders assets/source/vesperhold/kit/renders/ (12 sheets), upload pack assets/source/vesperhold/upload/kit/ (manifest_check none); GLBs NOT texture-embedded yet (VESP_EMBED=jpeg option); weak: Spire_Base_Oct plain, Bastion_Face regular grid, Lucarne chunky. ~27 s run, mem 52->40% |
+| mac-43 massing rework + massing test | workers/mac-43-vesp-massing.md | sonnet | light | GothicCitadel.luau, GothicMarch.luau, Overworld.luau (Vesperhold ridge), tools/test_vesperhold_massing.luau | DONE: src/shared/VesperholdLayout.luau (tiers, route, 404 kit slots); frontage 680, view-01 55% w / 56% h (eye -15,-24,548), look-up min 27.0 deg, T0 drop 170, ridge +330, 35 spires, 8 flyer pairs, rose 48, gate 26 / portal 28, 10 statues; walk route 13 segs, 0 holes; terrain outside Vesperhold checksum-identical; massing 8012/0, terrain 102/0, slice 1356/0, biome 18958/0. test_objectives_overworld.luau fails in EndingRules (not in verify_all; test_objectives.py passes) = pre-existing harness gap |
+New targets from oversight 1403f7c (ref_02..05): (a) >=3 viaducts at different levels over >=3 pinnacles + >=2 spired outposts; (b) grand stair >=60 steps, braziers+statues ~20 studs; (c) waterfalls; (d) ruined-arch viewpoint at 01/02; (e) lightning lighting the silhouette; own banner sigil (no white-tree crest).
+
 ## Mac resume — 2026-11-18
 
 Oversight (Opus 5.5, in place of Fable) -> Opus 5.5 engineering lead -> max TWO workers, ONE heavy job. HEAD 9dc6d11 = origin.

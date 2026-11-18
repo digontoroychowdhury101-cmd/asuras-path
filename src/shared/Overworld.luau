@@ -1120,6 +1120,12 @@ function Overworld.sampleAt(x: number, z: number, pads: any?): (number, number, 
 		h -= 34 * gully * (1 - smooth((math.abs(side) - 155) / 185))
 		local shoulder = 1 - smooth(math.abs(math.abs(side) - 170 - crag * 58) / 112)
 		h += (67 + 30 * crag) * shoulder * smooth((along - 170) / 100) * smooth((590 - along) / 148)
+		-- Bastion gorge: the T0 faces drop >= 150 studs either side of the gate, and the viaduct crosses a deeper scour.
+		-- Confined to |side| < 255 and along -115..170 (the long ramps keep every 4-stud step under 6), inside vesperholdWeight's support, so no other height moves.
+		local bite = smooth((math.abs(side) - 40) / 100) * (1 - smooth((math.abs(side) - 150) / 105))
+			* smooth((along + 115) / 105) * (1 - smooth((along - 20) / 150))
+		local scour = (1 - smooth(math.abs(side) / 70)) * smooth((along - 10) / 60) * (1 - smooth((along - 100) / 70))
+		h -= (95 + 10 * crag) * bite + 45 * scour
 	end
 
 	-- Target grade: centrelines weighted by exp(-(d - nearest)/10), so the nearest one dominates and the

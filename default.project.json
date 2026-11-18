@@ -269,6 +269,9 @@
           "Overworld": {
             "$path": "src/shared/Overworld.luau"
           },
+          "VesperholdLayout": {
+            "$path": "src/shared/VesperholdLayout.luau"
+          },
           "SliceDressing": {
             "$path": "src/shared/SliceDressing.luau"
           },
