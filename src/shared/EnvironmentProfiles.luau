@@ -376,6 +376,20 @@ function Profiles.compose(input: any): (any?, any)
 	-- Roofed shelter suppresses weather: no precipitation and no weather grading, the clock still applies.
 	local mix = if input.Sheltered then { Clear = 1 } else (input.Mix or { Clear = 1 })
 	local precip, gain = applyWeather(p, mix, input.Comfort == true)
+	local ridge = input.Vesperhold or 0
+	if ridge > 0 then
+		local fog = p.CB_Atmosphere
+		fog.Density += 0.11 * ridge
+		fog.Haze += 0.64 * ridge
+		fog.Color = fog.Color:Lerp(rgb(165, 172, 182), 0.67 * ridge)
+		fog.Decay = fog.Decay:Lerp(rgb(85, 89, 97), 0.65 * ridge)
+		local light = p.Lighting
+		light.Brightness *= 1 - 0.32 * ridge
+		light.ExposureCompensation -= 0.21 * ridge
+		light.EnvironmentSpecularScale *= 1 - 0.32 * ridge
+		p.CB_ColorCorrection.Saturation -= 0.29 * ridge
+		p.CB_SunRays.Intensity *= 1 - 0.85 * ridge
+	end
 	guard(p, input.Comfort == true)
 	return p, { Hour = hour, Daylight = daylight, Precip = precip, WindGain = gain }
 end

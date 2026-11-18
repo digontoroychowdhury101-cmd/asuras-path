@@ -542,6 +542,12 @@
           "OverworldService": {
             "$path": "src/server/Services/OverworldService.luau"
           },
+          "GothicMarch": {
+            "$path": "src/server/Services/GothicMarch.luau"
+          },
+          "GothicCitadel": {
+            "$path": "src/server/Services/GothicCitadel.luau"
+          },
           "SliceDressingService": {
             "$path": "src/server/Services/SliceDressingService.luau"
           },
@@ -1163,6 +1169,20 @@
               "$path": "src/client/Controllers/FoliageWind.luau"
             }
           }
+        }
+      }
+    },
+    "SoundService": {
+      "$className": "SoundService",
+      "AsuraAudio": {
+        "$className": "Folder",
+        "VesperRaven": {
+          "$className": "Sound",
+          "$properties": { "SoundId": "rbxassetid://9118066014" }
+        },
+        "VesperTimber": {
+          "$className": "Sound",
+          "$properties": { "SoundId": "rbxassetid://9120839010" }
         }
       }
     },

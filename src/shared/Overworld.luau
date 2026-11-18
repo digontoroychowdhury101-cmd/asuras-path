@@ -19,6 +19,16 @@ Overworld.DomainId = "AshColosseum"
 
 local function v(x: number, y: number, z: number) return { X = x, Y = y, Z = z } end
 local function at(x: number, y: number, z: number, yaw: number) return { X = x, Y = y, Z = z, Yaw = yaw } end
+-- The gate looks west across the processional bridge toward Snow Refuge.
+Overworld.Vesperhold = at(-2800, 650, -6400, -90)
+
+-- Fade the ridge's cold air across its flanks and the last stretch into Snow Refuge.
+function Overworld.vesperholdWeight(x: number, z: number): number
+	local g = Overworld.Vesperhold
+	local outside = math.max(math.abs(z - g.Z) - 175, g.X - 490 - x, x - (g.X + 430), 0)
+	local t = math.clamp(1 - outside / 85, 0, 1)
+	return t*t*(3-2*t)
+end
 -- Box from X, Z and Y extents.
 local function box(x0: number, x1: number, z0: number, z1: number, y0: number, y1: number)
 	return { Center = v((x0 + x1) / 2, (y0 + y1) / 2, (z0 + z1) / 2), Size = v(x1 - x0, y1 - y0, z1 - z0) }
@@ -287,6 +297,7 @@ Overworld.POIs = {
 	poi("DuneRuin", "Ruin", "AridBasin", -9500, 50, -1400, "Surface", false),
 	poi("FrozenLake", "Lake", "Snowfields", -4400, 540, -5800, "Surface", false),
 	poi("WatchpostRuins", "Ruin", "Snowfields", -3500, 820, -7300, "Surface", false),
+	poi("Vesperhold", "Temple", "Snowfields", Overworld.Vesperhold.X, Overworld.Vesperhold.Y, Overworld.Vesperhold.Z, "Surface", false),
 	poi("WhitePass", "Pass", "Snowfields", -5500, 900, -6800, "Surface", false),
 	poi("CliffGalleries", "Gallery", "MountainAscent", -8300, 820, -6400, "Surface", false),
 	poi("TempleLift", "Lift", "MountainAscent", -7000, 1560, -7900, "Surface", false),
@@ -1096,6 +1107,20 @@ function Overworld.sampleAt(x: number, z: number, pads: any?): (number, number, 
 		+ 0.1 * math.noise(x / 33 + 7.91, z / 33 - 23.57) + 0.03 * math.noise(x / 13 - 11.43, z / 13 + 5.29))
 	h += edgeDelta(x, z, h)
 	h += relief(D, x, z, h, W, clr) -- before the roads and pads, so they ease into it over their own banks
+	local gate = Overworld.Vesperhold
+	local side, along = z - gate.Z, gate.X - x
+	if math.abs(side) < 340 and along > -480 and along < 590 then
+		-- A weather-cut ridge under the curtain wall, tapering down behind the apse.
+		local crag = math.noise(side / 76, along / 88)
+		local spur = 1 - smooth((math.abs(side + 0.09 * along) - 58 - 22 * crag) / 135)
+		spur *= smooth((22 - along) / 78) * smooth((along + 480) / 260)
+		h += spur * math.max(0, gate.Y - 21 + crag * 12 - h)
+		-- Scour across the viaduct, with two uneven shoulders framing the approach.
+		local gully = 1 - smooth(math.abs(along - 89 - 0.23 * side - 16 * crag) / 80)
+		h -= 34 * gully * (1 - smooth((math.abs(side) - 155) / 185))
+		local shoulder = 1 - smooth(math.abs(math.abs(side) - 170 - crag * 58) / 112)
+		h += (67 + 30 * crag) * shoulder * smooth((along - 170) / 100) * smooth((590 - along) / 148)
+	end
 
 	-- Target grade: centrelines weighted by exp(-(d - nearest)/10), so the nearest one dominates and the
 	-- target is continuous where parts of one road, or two roads, lie close together. The bank widens with
@@ -1200,6 +1225,10 @@ local function regionMaterial(id: string, x: number, z: number, h: number, slope
 		if slope > 0.5 then return "Sandstone" end
 		return if n1 > 0.2 then "Limestone" else "Sand"
 	elseif id == "Snowfields" then
+		local ridge = Overworld.vesperholdWeight(x, z)
+		if ridge > 0 and n1 * 0.5 + slope * 0.6 + ridge * 0.6 > 0.59 then
+			return if slope + n2 * 0.4 > 0.38 then "Rock" else "Slate"
+		end
 		local p = def.FrozenLake
 		if math.sqrt((x - p.X) ^ 2 + (z - p.Z) ^ 2) < p.R * (1 + 0.15 * n1) and slope < 0.2 then return "Glacier" end
 		if channelW > 0.3 then return "Glacier" end

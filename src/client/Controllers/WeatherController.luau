@@ -36,13 +36,13 @@ function Controller.new(state: any): any
 	return setmetatable({ State = state, Elapsed = 1, Active = false, Fx = nil, Emitters = {}, Wind = nil, Composed = nil, Info = nil }, Controller)
 end
 
-local function sheltered(position: Vector3): boolean
+local function sheltered(position: Vector3, height: number): boolean
 	local roofs = CollectionService:GetTagged(SHELTER_TAG)
 	if #roofs == 0 then return false end
 	local params = RaycastParams.new()
 	params.FilterType = Enum.RaycastFilterType.Include
 	params.FilterDescendantsInstances = roofs
-	return workspace:Raycast(position, Vector3.yAxis * 60, params) ~= nil
+	return workspace:Raycast(position, Vector3.yAxis * height, params) ~= nil
 end
 
 function Controller.Counts(_self: any): { Parts: number, Emitters: number }
@@ -64,6 +64,7 @@ end
 
 -- Idle state: no FX, no profile, no wind, no attributes. Lobby, respawn, shelter-less domain and Destroy all land here.
 function Controller.Reset(self: any)
+	if self.RidgeClouds then self.RidgeClouds:Destroy(); self.RidgeClouds = nil end
 	for kind in table.clone(self.Emitters) do drop(self, kind) end
 	if self.Fx then self.Fx:Destroy() end
 	self.Fx, self.Active, self.Composed, self.Info, self.Wind = nil, false, nil, nil, nil
@@ -72,7 +73,7 @@ function Controller.Reset(self: any)
 	player:SetAttribute("AsuraSheltered", nil)
 end
 
-local function precipitation(self: any, position: Vector3, rates: { [string]: number })
+local function precipitation(self: any, position: Vector3, rates: { [string]: number }, ridge: number)
 	local wanted = false
 	for kind, rate in rates do
 		if KINDS[kind] and rate > 0.02 then wanted = true end
@@ -121,6 +122,10 @@ local function precipitation(self: any, position: Vector3, rates: { [string]: nu
 			self.Emitters[kind] = emitter
 		end
 		emitter.Rate = spec.Rate * math.min(rate, 1) * fit
+		if kind == "Snow" then
+			-- Fine windblown snow keeps the gate and its defenders readable at eye level.
+			emitter.Size = NumberSequence.new(spec.Size * (1 - 0.72 * ridge))
+		end
 		-- Sideways drift is the one wind sample, so rain slants the way the grass bends.
 		local x, y, z = Wind.drift(self.Wind, spec.Fall * 0.2, spec.Share)
 		emitter.Acceleration = Vector3.new(x, y, z)
@@ -139,14 +144,33 @@ function Controller.Sample(self: any)
 	local t = workspace:GetServerTimeNow() - epoch
 	local player = Players.LocalPlayer
 	local encounter = player:GetAttribute("AsuraEncounter")
-	local covered = sheltered(position)
+	local ridge = if region == "Snowfields" then Overworld.vesperholdWeight(position.X, position.Z) else 0
+	local covered = sheltered(position, if ridge > 0 then 230 else 60)
 	local mix = Profiles.weatherBlend(weights, t)
+	local cover = ridge * (0.73 + 0.12 * ((mix.Overcast or 0) + (mix.Snow or 0)))
+	if ridge > 0 then
+		if not self.RidgeClouds then
+			local clouds = Instance.new("Clouds")
+			clouds.Name = "VesperholdClouds"
+			clouds.Color = Color3.fromRGB(166, 169, 176)
+			clouds.Density = 0.67
+			clouds.Cover = cover
+			clouds.Parent = workspace.Terrain
+			self.RidgeClouds = clouds
+		else
+			self.RidgeClouds.Cover = cover
+		end
+	elseif self.RidgeClouds then
+		self.RidgeClouds:Destroy()
+		self.RidgeClouds = nil
+	end
 	local profile, info = Profiles.compose({ Weights = weights, Time = t, Mix = mix,
-		Sheltered = covered, Comfort = Effects.reducedMotion() or Effects.reduced() })
+		Sheltered = covered, Comfort = Effects.reducedMotion() or Effects.reduced(),
+		Vesperhold = ridge })
 	self.Active, self.Composed, self.Info = true, profile, info
 	self.Wind = Wind.sample(true, Config.Workspace.GlobalWind, info.WindGain)
 	-- Weather stays out of a fight: the arena look and readability floor belong to the encounter.
-	precipitation(self, position, if type(encounter) == "string" and encounter ~= "" then {} else info.Precip)
+	precipitation(self, position, if type(encounter) == "string" and encounter ~= "" then {} else info.Precip, ridge)
 	local best, share = "Clear", 0
 	for state, w in mix do
 		if w > share then best, share = state, w end

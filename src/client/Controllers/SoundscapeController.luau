@@ -7,6 +7,15 @@ local World = require(Shared.Shared.WorldDefinitions)
 local Profiles = require(Shared.Shared.EnvironmentProfiles)
 local Audio = require(script.Parent.SpatialAudio)
 local Wind = require(Shared.Shared.Wind)
+local Overworld = require(Shared.Shared.Overworld)
+local gate = Overworld.Vesperhold
+local ridge = CFrame.new(gate.X, gate.Y, gate.Z) * CFrame.Angles(0, math.rad(gate.Yaw), 0)
+-- Distance tests use the same rolloff as the played voice. The bell carries across the fork.
+local ridgeCues = {
+	{ Key = "Bell", Position = ridge * Vector3.new(-57, 71, -170), Range = 710, Gain = 0.38, Delay = 41 },
+	{ Key = "VesperTimber", Position = ridge * Vector3.new(104, -11, 87), Range = 115, Gain = 0.32, Delay = 19 },
+	{ Key = "VesperRaven", Position = ridge * Vector3.new(-47, -15, 414), Range = 205, Gain = 0.31, Delay = 29 },
+}
 local Controller = {}
 Controller.__index = Controller
 local function stop(s: Sound?)
@@ -21,7 +30,7 @@ local function windVolume(self: any, region: string): number
 end
 function Controller.new(state: any, movement: any, weather: any?): any
 	return setmetatable({ State = state, Movement = movement, Weather = weather, LastMovement = "", Loop = nil,
-		Region = "", Ambient = nil, Water = nil, Tick = 0, BellAt = 9, Time = 0 }, Controller)
+		Region = "", Ambient = nil, Water = nil, Tick = 0, BellAt = 9, RidgeAt = { 9, 5, 7 }, Time = 0 }, Controller)
 end
 function Controller.Update(self: any, dt: number)
 	self.Time += dt; self.Tick += dt
@@ -33,7 +42,21 @@ function Controller.Update(self: any, dt: number)
 	end
 	local p = own.Root.Position
 	local region = World.regionAt(p.X, p.Y, p.Z) or tostring(Players.LocalPlayer:GetAttribute("AsuraRegion") or "Sanctuary")
-	Audio.zone(Profiles.acoustics(region, p))
+	local insideKeep = region == "Snowfields" and p.X > gate.X + 120 and p.X < gate.X + 419
+		and math.abs(p.Z - gate.Z) < 45 and p.Y >= gate.Y
+	Audio.zone(if insideKeep then "Cloister" else Profiles.acoustics(region, p))
+	if region == "Snowfields" and Overworld.vesperholdWeight(p.X, p.Z) > 0 then
+		for i, cue in ridgeCues do
+			if self.Time >= self.RidgeAt[i] and (p - cue.Position).Magnitude < cue.Range then
+				local sound = Audio.at(cue.Key, cue.Position, cue.Gain)
+				if sound then
+					sound.RollOffMaxDistance = cue.Range
+					sound.RollOffMinDistance = if i == 1 then 85 else 14
+				end
+				self.RidgeAt[i] = self.Time + cue.Delay + math.random() * 9
+			end
+		end
+	end
 	if region ~= self.Region then
 		self.Region = region; stop(self.Ambient); stop(self.Water)
 		self.Ambient = Audio.play("Wind", SoundService, windVolume(self, region), true)
