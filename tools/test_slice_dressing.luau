@@ -319,7 +319,7 @@ nnMean /= #nn
 local nnVar = 0
 for _, d in nn do nnVar += (d - nnMean) ^ 2 end
 local nnCv = math.sqrt(nnVar / #nn) / nnMean
-local CV_MIN, COVER_MIN = 0.3, 0.3 -- a jittered grid scores ~0.2; a Poisson scatter ~0.5
+local CV_MIN, COVER_MIN = 0.3, 0.6 -- a jittered grid scores ~0.2; a Poisson scatter ~0.5
 check(string.format("tree nearest-neighbour spacing is irregular (CV %.2f over %d trees, need > %.2f: not a grid)", nnCv, #trees, CV_MIN), #trees >= 100 and nnCv > CV_MIN)
 
 local function allowsTree(x, z) -- ground a tree may stand on: every exclusion, road, lane, glade, kept sight, slope and material re-derived
@@ -357,6 +357,127 @@ local coverage = covered / math.max(free, 1)
 check(string.format("canopy covers %.0f%% of the %d free ground samples off the road (need > %.0f%%)", coverage * 100, free, COVER_MIN * 100), free > 500 and coverage > COVER_MIN)
 check("the canopy has gaps too (coverage under 85%)", coverage < 0.85)
 print(string.format("  distribution: %d trees, NN CV %.2f, canopy coverage %.0f%% of %d free samples", #trees, nnCv, coverage * 100, free))
+
+-- A2. Road canopy (mac-23): fraction of road centreline samples (every 4 studs, inside the route corridor; arrival/altar discs, authored glades and the
+-- tower cone excluded) that lie under a crown (CrownFrac of the crown radius, as the coverage above) whose underside clears RoadClearance.
+local towerHero
+for _, h in heroes do if h.Id == "TowerMid" then towerHero = h end end
+local coneEyes = {}
+for _, c in S.captures() do if c.Id == "01_glade_arrival" or c.Id == "07_tower_from_glade" then table.insert(coneEyes, c.From) end end
+local function inTowerCone(x, z) -- the TowerCone rule: Pad 6 studs + Deg 4 widening from the capture eye to the tower
+	local cone = S.Cones[1]
+	for _, e in coneEyes do
+		local len = dist(e.X, e.Z, towerHero.X, towerHero.Z)
+		local t = ((x - e.X) * (towerHero.X - e.X) + (z - e.Z) * (towerHero.Z - e.Z)) / (len * len)
+		if t >= 0 and t <= 1 + cone.Beyond / len and S.segDist(e.X, e.Z, towerHero.X, towerHero.Z, x, z) < cone.Pad + t * len * math.tan(math.rad(cone.Deg)) then return true end
+	end
+	return false
+end
+local function roadCrown(x, z) -- covered by a crown, and (second result) by one whose underside clears the road
+	local covered, clears = false, false
+	for _, t in trees do
+		local piece = S.Pieces[t.Piece]
+		if dist(x, z, t.X, t.Z) < S.CrownFrac * piece.Radius * t.Scale then
+			covered = true
+			clears = clears or (piece.Under * piece.Size[2] - piece.Sink) * t.Scale >= S.RoadClearance - 1e-6
+		end
+	end
+	return covered, clears
+end
+local roadN, roadCovered, roadClear = 0, 0, 0
+for _, s in roads do
+	local len = dist(s[1][1], s[1][2], s[2][1], s[2][2])
+	for k = 0, math.floor(len / 4) do
+		local x, z = s[1][1] + (s[2][1] - s[1][1]) * k * 4 / len, s[1][2] + (s[2][2] - s[1][2]) * k * 4 / len
+		local d = math.huge
+		for q = 2, #route.Points do d = math.min(d, S.segDist(route.Points[q - 1][1], route.Points[q - 1][2], route.Points[q][1], route.Points[q][2], x, z)) end
+		local skip = d > S.Corridor.Half or inTowerCone(x, z)
+		for _, c in circles do if c.Keep == K.Altar or c.Keep == K.Arrival then skip = skip or dist(x, z, c.X, c.Z) < 40 end end
+		for _, g in glades do skip = skip or dist(x, z, g.X, g.Z) < g.R end
+		if not skip then
+			roadN += 1
+			local covered, clears = roadCrown(x, z)
+			roadCovered += if covered then 1 else 0
+			roadClear += if clears then 1 else 0
+		end
+	end
+end
+local ROAD_CANOPY_MIN = 0.12
+print(string.format("  road canopy: %.1f%% of %d road centreline samples under a crown, %.1f%% under a crown clearing %d studs", 100 * roadCovered / roadN, roadN, 100 * roadClear / roadN, S.RoadClearance))
+check(string.format("road canopy: %.0f%% of road centreline samples sit under a crown that clears the road (need >= %.0f%%; every covering crown clears: %s)",
+	100 * roadClear / roadN, ROAD_CANOPY_MIN * 100, tostring(roadClear == roadCovered)), roadN > 100 and roadClear / roadN >= ROAD_CANOPY_MIN and roadClear == roadCovered)
+
+-- A2b. Grass cards near the road and arrival points stay below the 5 stud eye: within NearScale.Dist of a road centreline or an altar spawn / exit, Scale <= NearScale.Scale[2].
+local nearCap, nearN, nearBad, tallest = S.Scatter.Grass.NearScale, 0, 0, 0
+for _, p in R.Placements do
+	if p.Class == "Grass" then
+		local d = roadDistance(p.X, p.Z)
+		for _, a in O.Altars do d = math.min(d, dist(p.X, p.Z, a.Spawn.X, a.Spawn.Z), dist(p.X, p.Z, a.Exit.X, a.Exit.Z)) end
+		if d < nearCap.Dist then
+			nearN += 1
+			nearBad += if p.Scale > nearCap.Scale[2] + 1e-9 then 1 else 0
+			tallest = math.max(tallest, S.Pieces[p.Piece].Size[2] * p.Scale)
+		end
+	end
+end
+check(string.format("grass within %d studs of a road or arrival is capped at scale %.1f (%d cards, tallest %.1f studs, %d over the cap)", nearCap.Dist, nearCap.Scale[2], nearN, tallest, nearBad), nearN >= 30 and nearBad == 0 and tallest < S.Eye + 1e-9)
+
+-- A3. Sky occlusion per capture eye (mirrors the Studio diagnostic): 60 azimuths x 4 elevations (20/40/60/80 deg), 150-stud rays from the eye; a ray is blocked when
+-- it passes through a tree's crown cylinder (CrownFrac * Radius * Scale, underside..top) or trunk cylinder. Terrain, heroes and plants are ignored. "Outside the cone" drops azimuths within
+-- 8 deg of the tower bearing (01 and 07). Printed, not asserted: it predicts the Studio number.
+local function skyBlocked(eye, ignoreAz)
+	local blocked, total = 0, 0
+	for a = 0, 59 do
+		local az = a * 6
+		local skipAz = false
+		if ignoreAz then
+			local diff = math.abs(((az - ignoreAz + 180) % 360) - 180)
+			skipAz = diff <= 8
+		end
+		if not skipAz then
+			for _, el in { 20, 40, 60, 80 } do
+				total += 1
+				local ux, uz = math.cos(math.rad(az)) * math.cos(math.rad(el)), math.sin(math.rad(az)) * math.cos(math.rad(el))
+				local uy = math.sin(math.rad(el))
+				local hit = false
+				for _, t in trees do
+					local piece = S.Pieces[t.Piece]
+					if dist(eye.X, eye.Z, t.X, t.Z) < 150 + piece.Radius * t.Scale then
+						local y0, y1 = t.Y + (piece.Under * piece.Size[2] - piece.Sink) * t.Scale, t.Y + (piece.Size[2] - piece.Sink) * t.Scale
+						for _, cyl in { { S.CrownFrac * piece.Radius * t.Scale, y0, y1 }, { 0.5 * piece.Trunk * t.Scale, t.Y, y0 } } do
+							local dx, dz = t.X - eye.X, t.Z - eye.Z
+							local b = dx * ux + dz * uz -- along the ray (unit uy included in the horizontal length): solve |p(s) - c| = r on the horizontal projection
+							local h2 = ux * ux + uz * uz
+							local disc = b * b - h2 * (dx * dx + dz * dz - cyl[1] * cyl[1])
+							if disc > 0 then
+								local sa, sb = (b - math.sqrt(disc)) / h2, (b + math.sqrt(disc)) / h2
+								sa, sb = math.max(sa, 0), math.min(sb, 150)
+								if sa < sb and eye.Y + uy * sa < cyl[3] and eye.Y + uy * sb > cyl[2] then hit = true break end
+							end
+						end
+					end
+					if hit then break end
+				end
+				blocked += if hit then 1 else 0
+			end
+		end
+	end
+	return blocked / total
+end
+local skyLine = {}
+for _, c in S.captures() do
+	local f = skyBlocked(c.From, nil)
+	local part = string.format("%s %.0f%%", string.sub(c.Id, 1, 2), f * 100)
+	if c.Id == "01_glade_arrival" or c.Id == "07_tower_from_glade" then
+		local bearing = math.deg(math.atan2(towerHero.Z - c.From.Z, towerHero.X - c.From.X)) % 360
+		part ..= string.format(" (%.0f%% outside the tower cone)", skyBlocked(c.From, bearing) * 100)
+	end
+	table.insert(skyLine, part)
+end
+print("  sky blocked by crowns (60 az x 4 el, 150 studs): " .. table.concat(skyLine, ", "))
+local classLine = {}
+for _, c in S.Classes do table.insert(classLine, c .. " " .. (R.ByClass[c] or 0)) end
+print("  per-class counts: " .. table.concat(classLine, ", "))
 
 local sMin, sMax, tall, small = math.huge, 0, 0, 0
 local bins, cx, cy = {}, 0, 0

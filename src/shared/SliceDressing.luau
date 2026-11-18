@@ -486,10 +486,10 @@ SliceDressing.Classes = { "Tree", "Rock", "Cliff", "Outcrop", "Scree", "Deadwood
 -- Keep / exclusion table a class borrows (Keep has Tree, Shrub, Fern, Grass, Rock only): saplings keep clear like trees (their crown must not reach the road).
 SliceDressing.KeepAs = { Sapling = "Tree", Deadwood = "Rock", Cliff = "Rock", Outcrop = "Rock", Scree = "Shrub", Flower = "Grass", Mushroom = "Fern", Reed = "Fern" } :: { [string]: string }
 SliceDressing.Scatter = {
-	Tree = { Salt = 1, Spacing = 22, Base = 0.85, Jitter = 1, MaxSlope = 0.55, Clearing = 0.9, Tall = true, Scale = { 0.7, 1.4 }, Cluster = { Lo = 0.3, Hi = 0.52, Floor = 0.05 }, Roadside = 2.6,
-			FarBelt = 170, FarDensity = 0.4, -- beyond Half + Fade of the route, out to FarBelt studs more, at FarDensity of the chance: _Far variants only (they are > FarSwitch from every road)
-		Pieces = { { "Canopy_Tree_A", 0.26 }, { "Canopy_Tree_B", 0.14 }, { "Canopy_Tree_C", 0.18 }, { "Canopy_Tree_D", 0.14 }, { "Conifer_Tall", 0.04 }, { "Old_Gnarled_Tree", 0.14 } }, Material = { LeafyGrass = 1, Grass = 0.9, Ground = 0.5, Mud = 0.3, Rock = 0.1 } },
-	Rock = { Salt = 5, Spacing = 40, Base = 0.8, Jitter = 1, MaxSlope = 1.6, MinSlope = 0.1, Clearing = 0.9, Tall = true, Scale = { 0.7, 1.2 },
+	Tree = { Salt = 1, Spacing = 12, Base = 0.52, Jitter = 1, MaxSlope = 0.55, Clearing = 0.55, Tall = true, Scale = { 0.75, 1.4 }, Cluster = { Lo = 0.28, Hi = 0.46, Floor = 0.15 }, Roadside = 5, RoadMin = { 26, 1.38 }, Taper = { From = 40, To = 140, Min = 0.04 }, RoadPieces = { { "Canopy_Tree_A", 0.3 }, { "Canopy_Tree_C", 0.3 }, { "Canopy_Tree_D", 0.4 } },
+			FarBelt = 170, FarDensity = 0.22, -- beyond Half + Fade of the route, out to FarBelt studs more, at FarDensity of the chance: _Far variants only (they are > FarSwitch from every road)
+		Pieces = { { "Canopy_Tree_A", 0.26 }, { "Canopy_Tree_B", 0.14 }, { "Canopy_Tree_C", 0.18 }, { "Canopy_Tree_D", 0.14 }, { "Conifer_Tall", 0.055 }, { "Old_Gnarled_Tree", 0.14 } }, Material = { LeafyGrass = 1, Grass = 0.9, Ground = 0.5, Mud = 0.3, Rock = 0.1 } },
+	Rock = { Salt = 5, Spacing = 40, Base = 0.55, Jitter = 1, MaxSlope = 1.6, MinSlope = 0.1, Clearing = 0.9, Tall = true, Scale = { 0.7, 1.2 },
 		Pieces = { { "Boulder_Granite_A", 0.3 }, { "Boulder_Granite_B", 0.25 }, { "Boulder_Granite_C", 0.15 }, { "Boulder_Granite_D", 0.15 }, { "Boulder_Granite_Split", 0.15 } }, Material = { Rock = 1, Ground = 0.5, Mud = 0.2, LeafyGrass = 0.3, Grass = 0.25 } },
 	Cliff = { Salt = 6, Spacing = 60, Base = 0.5, Jitter = 1, MaxSlope = 2.4, MinSlope = 0.5, Clearing = 0.9, Tall = true, Scale = { 0.8, 1.3 }, FaceDownhill = true,
 		Pieces = { { "Cliff_Face_A", 1 }, { "Cliff_Face_B", 1 }, { "Cliff_Face_C", 1 } }, Material = { Rock = 1, Ground = 0.4, LeafyGrass = 0.2, Grass = 0.2, Mud = 0.1 } },
@@ -497,25 +497,25 @@ SliceDressing.Scatter = {
 		Pieces = { { "Outcrop_Mossy", 1 } }, Material = { Rock = 1, Ground = 0.5, LeafyGrass = 0.15, Grass = 0.1 } },
 	Scree = { Salt = 9, Spacing = 50, Base = 0.5, Jitter = 1, MaxSlope = 1.0, MinSlope = 0.15, Clearing = 0.9, Scale = { 0.8, 1.3 },
 		Pieces = { { "Scree_Patch_A", 1 }, { "Scree_Patch_B", 1 } }, Material = { Rock = 1, Ground = 0.6, Mud = 0.1 } },
-	Deadwood = { Salt = 11, Spacing = 30, Base = 0.45, Jitter = 1, MaxSlope = 0.6, Clearing = 0.5, Tall = true, Under = 1.8, Gap = 0.5, Glade = 0.6, Scale = { 0.8, 1.2 },
+	Deadwood = { Salt = 11, Spacing = 30, Base = 0.3, Jitter = 1, MaxSlope = 0.6, Clearing = 0.5, Tall = true, Under = 1.8, Gap = 0.5, Glade = 0.6, Scale = { 0.8, 1.2 },
 		Pieces = { { "Fallen_Log_A", 0.22 }, { "Fallen_Log_B", 0.2 }, { "Tree_Stump_A", 0.15 }, { "Tree_Stump_B", 0.15 }, { "Dead_Standing_Trunk", 0.06 }, { "Exposed_Roots_A", 0.11 }, { "Exposed_Roots_B", 0.11 } },
 		Material = { LeafyGrass = 1, Grass = 0.6, Ground = 0.6, Mud = 0.5 } },
-	Sapling = { Salt = 12, Spacing = 24, Base = 0.1, Jitter = 1, MaxSlope = 0.6, Clearing = 0.6, Under = 0.5, Gap = 1.5, Glade = 2, Scale = { 0.8, 1.3 },
+	Sapling = { Salt = 12, Spacing = 24, Base = 0.07, Jitter = 1, MaxSlope = 0.6, Clearing = 0.6, Under = 0.5, Gap = 1.5, Glade = 2, Scale = { 0.8, 1.3 },
 		Pieces = { { "Sapling_Tree", 1 } }, Material = { LeafyGrass = 1, Grass = 0.8, Ground = 0.4, Mud = 0.3 } },
-	Shrub = { Salt = 2, Spacing = 20, Base = 0.22, Jitter = 1, MaxSlope = 0.7, Clearing = 0.5, Under = 0.25, Gap = 1.5, Glade = 1.8, Scale = { 0.8, 1.4 },
+	Shrub = { Salt = 2, Spacing = 20, Base = 0.18, Jitter = 1, MaxSlope = 0.7, Clearing = 0.5, Under = 0.6, Gap = 0.9, Glade = 1.8, Scale = { 0.8, 1.4 },
 		Pieces = { { "Understory_Shrub", 0.15 }, { "Understory_Shrub_Small", 0.5 }, { "Shrub_Hazel", 0.15 }, { "Shrub_Thicket", 0.1 }, { "Shrub_Berry", 0.1 } }, Material = { LeafyGrass = 1, Grass = 0.7, Ground = 0.45, Mud = 0.4, Rock = 0.12 } },
-	Fern = { Salt = 3, Spacing = 15, Base = 0.22, Jitter = 1, MaxSlope = 0.8, Clearing = 0.3, Under = 0.4, Gap = 1.4, Glade = 1.6, Scale = { 0.8, 1.5 },
+	Fern = { Salt = 3, Spacing = 15, Base = 0.17, Jitter = 1, MaxSlope = 0.8, Clearing = 0.3, Under = 1.0, Gap = 0.7, Glade = 1.6, Scale = { 0.8, 1.5 },
 		Pieces = { { "Fern_Clump", 0.4 }, { "Fern_Bracken", 0.3 }, { "Fern_Sword", 0.3 } }, Material = { Mud = 1, LeafyGrass = 0.85, Grass = 0.45, Ground = 0.25 } },
-	Flower = { Salt = 13, Spacing = 14, Base = 0.09, Jitter = 1, MaxSlope = 0.5, Clearing = -0.3, Under = 0.4, Gap = 1.6, Glade = 2.4, Scale = { 0.9, 1.5 },
+	Flower = { Salt = 13, Spacing = 14, Base = 0.05, Jitter = 1, MaxSlope = 0.5, Clearing = -0.3, Under = 0.1, Gap = 1.0, Glade = 2.4, Scale = { 0.9, 1.5 },
 		Pieces = { { "Flowers_Daisy", 0.5 }, { "Flowers_Foxglove", 0.5 } }, Material = { Grass = 1, LeafyGrass = 0.8, Ground = 0.2 } },
-	Mushroom = { Salt = 14, Spacing = 28, Base = 0.25, Jitter = 1, MaxSlope = 0.7, Clearing = 0.5, Under = 1.8, Gap = 0.35, Glade = 0.5, Scale = { 0.9, 1.4 },
+	Mushroom = { Salt = 14, Spacing = 28, Base = 0.14, Jitter = 1, MaxSlope = 0.7, Clearing = 0.5, Under = 1.8, Gap = 0.35, Glade = 0.5, Scale = { 0.9, 1.4 },
 		Pieces = { { "Mushroom_Cluster", 1 } }, Material = { Mud = 1, LeafyGrass = 0.8, Ground = 0.5, Grass = 0.3 } },
 	Reed = { Salt = 15, Spacing = 16, Base = 0.3, Jitter = 1, MaxSlope = 0.5, Clearing = 0, Under = 1, Gap = 1, Glade = 1, Scale = { 0.9, 1.4 },
 		Pieces = { { "Reed_Clump_A", 0.5 }, { "Reed_Clump_B", 0.5 } }, Material = { Mud = 1 } },
-	Grass = { Salt = 4, Spacing = 11, Base = 0.33, Jitter = 1, MaxSlope = 0.6, Clearing = -0.6, Under = 0.5, Gap = 1.3, Glade = 1.5, Scale = { 0.9, 1.7 },
+	Grass = { Salt = 4, Spacing = 11, Base = 0.33, Jitter = 1, MaxSlope = 0.6, Clearing = -0.6, Under = 0.15, Gap = 1.25, Glade = 1.5, Scale = { 0.9, 1.7 }, NearScale = { Dist = 32, Scale = { 0.5, 0.9 } },
 		Pieces = { { "Grass_Clump", 0.4 }, { "Grass_Tall", 0.2 }, { "Grass_Lush", 0.25 }, { "Grass_Seed", 0.15 } }, Material = { Grass = 1, LeafyGrass = 0.65, Ground = 0.2, Mud = 0.2 } },
 }
-SliceDressing.CrownSpacing = 0.45 -- two crowns keep this fraction of their summed radii apart (they may overlap: that is a canopy)
+SliceDressing.CrownSpacing = 0.25 -- two crowns keep this fraction of their summed radii apart (they may overlap: that is a canopy)
 SliceDressing.CrownFrac = 0.8 -- the drawn leaf mass is this fraction of a tree's footprint (Leaves_Mass); coverage is measured with it
 SliceDressing.RoadClearance = 14 -- a crown that overhangs a road has its underside at least this high (fault A); VoxelLift is the written surface above heightAt
 SliceDressing.VoxelLift = 2
@@ -545,7 +545,7 @@ SliceDressing.Cones = {
 
 -- Forest floor round the glade altar (fault D): ferns, grass and a few small rocks in the ring Inner..Outer (the pad is 22 radius and stays
 -- clear; arrival and altar keeps are skipped here, every other exclusion stays). Spacing = the jittered cell, Chance = per cell.
-SliceDressing.Floor = { Altar = "Altar_MonasteryGate", Inner = 24, Outer = 34, Spacing = 4, Chance = 0.9, Rocks = 4, RockChance = 0.25, RockPiece = "Boulder_Granite_B", RockScale = { 0.22, 0.4 },
+SliceDressing.Floor = { Altar = "Altar_MonasteryGate", Inner = 24, Outer = 34, Spacing = 3.4, Chance = 1, Rocks = 4, RockChance = 0.25, RockPiece = "Boulder_Granite_B", RockScale = { 0.22, 0.4 },
 	Flower = 0.12, Fern = 0.4, Grass = 0.7 }
 
 -------------------------------------------------------------------------------------------------
@@ -1076,6 +1076,31 @@ function SliceDressing.build(fresh: boolean?): any
 		return d
 	end
 
+	-- Scale draw r (0..1) for a plant at (x, z): the rule's Scale, except trees within RoadMin[1] of a road start at RoadMin[2] (big crowns that reach over it),
+	-- and plants with NearScale (grass cards) shrink within Dist of a road centreline (plants stand 20+ studs off it: the written road blends out that far) or an altar arrival / exit so they stay below the 5 stud eye.
+	local arrivals: { any } = {}
+	for _, a in Overworld.Altars do
+		table.insert(arrivals, a.Spawn)
+		table.insert(arrivals, a.Exit)
+	end
+	local function plantScale(rule: any, x: number, z: number, r: number): number
+		local lo, hi = rule.Scale[1], rule.Scale[2]
+		if rule.RoadMin and nearRoad(x, z) < rule.RoadMin[1] then
+			lo = rule.RoadMin[2]
+		end
+		local cap = rule.NearScale
+		if cap then
+			local near = nearRoad(x, z) < cap.Dist
+			for _, a in arrivals do
+				near = near or worldDist(x, z, a.X, a.Z) < cap.Dist
+			end
+			if near then
+				lo, hi = cap.Scale[1], cap.Scale[2]
+			end
+		end
+		return lo + (hi - lo) * r
+	end
+
 	-- Composed set pieces (SliceDressing.Sets): resolved once the roads, sights and heroes exist; items that would stand in water, on a road, inside an altar pad
 	-- or in a kept sight are dropped (and counted). They are hero placements, so every scatter class keeps clear of them.
 	local setStats: { [string]: any } = {}
@@ -1258,65 +1283,73 @@ function SliceDressing.build(fresh: boolean?): any
 		local n = 0
 		local belt = rule.FarBelt ~= nil
 		local ext = if belt then beltExtra else 0
-		for gi = math.floor((x0 - ext) / S), math.ceil((x1 + ext) / S) do
-			for gj = math.floor((z0 - ext) / S), math.ceil((z1 + ext) / S) do
-				local x = (gi + 0.5 + (rand(gi, gj, rule.Salt * 10 + 1) - 0.5) * jitter) * S
-				local z = (gj + 0.5 + (rand(gi, gj, rule.Salt * 10 + 2) - 0.5) * jitter) * S
-				local wc = corridorWeight(x, z)
-				local beltOnly = false -- the far belt plants only _Far variants; a belt spot near a side road or a capture eye stays empty (a near tree there would cost 8x the tris)
-				if belt and wc <= 0.001 then
-					wc, beltOnly = beltWeight(x, z, rule), true
-				end
-				-- Early out before the terrain sample: the chance can never exceed Base * corridor * 1.6 (grass loves a clearing).
-				if wc > 0 and rand(gi, gj, rule.Salt * 10 + 3) < rule.Base * wc * 1.6 and not hostile(x, z, class, list, roadSegs, lanes, rule.Tall == true) then
-					local h, roadW, channelW, chasmW = Overworld.sampleAt(x, z)
-					if roadW < 0.5 and channelW < 0.05 and chasmW < 0.01 and h > 3 then
-						local sx, sz = (Overworld.heightAt(x + 4, z) - h) / 4, (Overworld.heightAt(x, z + 4) - h) / 4
-						local slope = math.sqrt(sx * sx + sz * sz)
-						local mat = Overworld.materialAt(x, z, h, slope, roadW, channelW, chasmW)
-						local factor = rule.Material[mat] or 0
-						factor *= 1 - smooth((slope - (rule.MaxSlope - 0.15)) / 0.15)
-						if rule.MinSlope then
-							factor *= smooth((slope - rule.MinSlope + 0.1) / 0.2)
-						end
-						factor *= 1 - rule.Clearing * clearingFactor(x, z)
-						local glade = gladeWeight(x, z)
-						if rule.Cluster then -- groves and gaps
-							local c = rule.Cluster
-							factor *= c.Floor + (1 - c.Floor) * smooth((SliceDressing.cluster(x, z) - c.Lo) / (c.Hi - c.Lo))
-						end
-						if rule.Roadside then -- crowns reach over the road: denser just past the written road edge (the road blends out by ~21 studs)
-							factor *= 1 + rule.Roadside * (1 - smooth((nearRoad(x, z) - 20) / 16))
-						end
-						if rule.Gap then -- understory favours canopy gaps and glades
-							factor *= if underCrown(x, z) then rule.Under else rule.Gap
-							factor *= 1 + (rule.Glade - 1) * glade
-						end
-						if rand(gi, gj, rule.Salt * 10 + 3) < rule.Base * wc * math.clamp(factor, 0, 1.6) then
-							local pick = pickPiece(rule, rand(gi, gj, rule.Salt * 10 + 4))
-							local isFar = belt and farFrom(x, z) > SliceDressing.FarSwitch
-							if isFar then
-								pick ..= "_Far" -- low-tri variant, same bbox
+		-- Trees with RoadMin plant the road band (trunk within RoadMin[1] of a centreline) first, so the big crowns that reach over the road are never crowded out by the grove behind them.
+		for pass = 1, if rule.RoadMin then 2 else 1 do
+			for gi = math.floor((x0 - ext) / S), math.ceil((x1 + ext) / S) do
+				for gj = math.floor((z0 - ext) / S), math.ceil((z1 + ext) / S) do
+					local x = (gi + 0.5 + (rand(gi, gj, rule.Salt * 10 + 1) - 0.5) * jitter) * S
+					local z = (gj + 0.5 + (rand(gi, gj, rule.Salt * 10 + 2) - 0.5) * jitter) * S
+					if rule.RoadMin and (nearRoad(x, z) < rule.RoadMin[1]) ~= (pass == 1) then continue end
+					local wc = corridorWeight(x, z)
+					local beltOnly = false -- the far belt plants only _Far variants; a belt spot near a side road or a capture eye stays empty (a near tree there would cost 8x the tris)
+					if belt and wc <= 0.001 then
+						wc, beltOnly = beltWeight(x, z, rule), true
+					end
+					-- Early out before the terrain sample: the chance can never exceed Base * corridor * 1.6 (grass loves a clearing).
+					if wc > 0 and rand(gi, gj, rule.Salt * 10 + 3) < rule.Base * wc * 1.6 and not hostile(x, z, class, list, roadSegs, lanes, rule.Tall == true) then
+						local h, roadW, channelW, chasmW = Overworld.sampleAt(x, z)
+						if roadW < 0.5 and channelW < 0.05 and chasmW < 0.01 and h > 3 then
+							local sx, sz = (Overworld.heightAt(x + 4, z) - h) / 4, (Overworld.heightAt(x, z + 4) - h) / 4
+							local slope = math.sqrt(sx * sx + sz * sz)
+							local mat = Overworld.materialAt(x, z, h, slope, roadW, channelW, chasmW)
+							local factor = rule.Material[mat] or 0
+							factor *= 1 - smooth((slope - (rule.MaxSlope - 0.15)) / 0.15)
+							if rule.MinSlope then
+								factor *= smooth((slope - rule.MinSlope + 0.1) / 0.2)
 							end
-							local piece = P[pick]
-							local scale = rule.Scale[1] + (rule.Scale[2] - rule.Scale[1]) * rand(gi, gj, rule.Salt * 10 + 5)
-							local fits = isFar or not beltOnly
-							if class == "Tree" then
-								local lift = piece.Under * piece.Size[2] - piece.Sink -- underside above the foot at scale 1
-								if nearRoad(x, z) < piece.Radius * scale and lift * scale < SliceDressing.RoadClearance then
-									scale = SliceDressing.RoadClearance / lift + 0.01 -- an overhanging crown clears the road, or is not planted
-									fits = scale <= rule.Scale[2]
+							factor *= 1 - rule.Clearing * clearingFactor(x, z)
+							local glade = gladeWeight(x, z)
+							if rule.Cluster then -- groves and gaps
+								local c = rule.Cluster
+								factor *= c.Floor + (1 - c.Floor) * smooth((SliceDressing.cluster(x, z) - c.Lo) / (c.Hi - c.Lo))
+							end
+							if rule.Roadside then -- crowns reach over the road: denser just past the written road edge (the road blends out by ~21 studs)
+								factor *= 1 + rule.Roadside * (1 - smooth((nearRoad(x, z) - 20) / 16))
+							end
+							if rule.Taper then -- near trees (full mesh, 8x the far tris) thin out between From and To studs of every road and capture eye; past To the cheap _Far trees stand at full density
+								local t = rule.Taper
+								factor *= 1 - (1 - t.Min) * smooth((farFrom(x, z) - t.From) / (t.To - t.From)) * (1 - smooth((farFrom(x, z) - t.To) / 20))
+							end
+							if rule.Gap then -- understory favours canopy gaps and glades
+								factor *= if underCrown(x, z) then rule.Under else rule.Gap
+								factor *= 1 + (rule.Glade - 1) * glade
+							end
+							if rand(gi, gj, rule.Salt * 10 + 3) < rule.Base * wc * math.clamp(factor, 0, 1.6) then
+								local pick = pickPiece(if rule.RoadPieces and nearRoad(x, z) < rule.RoadMin[1] then { Pieces = rule.RoadPieces } else rule, rand(gi, gj, rule.Salt * 10 + 4))
+								local isFar = belt and farFrom(x, z) > SliceDressing.FarSwitch
+								if isFar then
+									pick ..= "_Far" -- low-tri variant, same bbox
 								end
-								if glade > 0 then
-									for _, g in glades do
-										if worldDist(x, z, g.X, g.Z) < g.R then fits = false end
+								local piece = P[pick]
+								local scale = plantScale(rule, x, z, rand(gi, gj, rule.Salt * 10 + 5))
+								local fits = isFar or not beltOnly
+								if class == "Tree" then
+									local lift = piece.Under * piece.Size[2] - piece.Sink -- underside above the foot at scale 1
+									if nearRoad(x, z) < piece.Radius * scale and lift * scale < SliceDressing.RoadClearance then
+										scale = SliceDressing.RoadClearance / lift + 0.01 -- an overhanging crown clears the road, or is not planted
+										fits = scale <= rule.Scale[2]
+									end
+									if glade > 0 then
+										for _, g in glades do
+											if worldDist(x, z, g.X, g.Z) < g.R then fits = false end
+										end
 									end
 								end
-							end
-							local radius, trunk = piece.Radius * scale, piece.Trunk * scale
-							if fits and not blocksSight(x, z, h, piece, scale) and (class == "Grass" or not crowded(x, z, class, radius, trunk)) then
-								n += 1
-								accept(class, string.format("%s_%04d", class, n), pick, x, z, h, scale, if rule.FaceDownhill then math.deg(math.atan2(-sx, -sz)) / 360 else rand(gi, gj, rule.Salt * 10 + 6), radius, trunk, false)
+								local radius, trunk = piece.Radius * scale, piece.Trunk * scale
+								if fits and not blocksSight(x, z, h, piece, scale) and (class == "Grass" or not crowded(x, z, class, radius, trunk)) then
+									n += 1
+									accept(class, string.format("%s_%04d", class, n), pick, x, z, h, scale, if rule.FaceDownhill then math.deg(math.atan2(-sx, -sz)) / 360 else rand(gi, gj, rule.Salt * 10 + 6), radius, trunk, false)
+								end
 							end
 						end
 					end
@@ -1339,7 +1372,7 @@ function SliceDressing.build(fresh: boolean?): any
 				local rule: any = (SliceDressing.Scatter :: any)[class]
 				local pick = if class == "Rock" then F.RockPiece else pickPiece(rule, rand(gi, gj, 79))
 				local range = if class == "Rock" then F.RockScale else rule.Scale
-				local scale = range[1] + (range[2] - range[1]) * rand(gi, gj, 76)
+				local scale = if class == "Rock" then range[1] + (range[2] - range[1]) * rand(gi, gj, 76) else plantScale(rule, x, z, rand(gi, gj, 76))
 				local piece = P[pick]
 				if not hostile(x, z, class, listNoAltar, roadSegs, lanes, false) then
 					local h, roadW, channelW, chasmW = Overworld.sampleAt(x, z)

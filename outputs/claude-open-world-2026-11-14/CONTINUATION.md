@@ -1,5 +1,21 @@
 # CONTINUATION — read this first after any restart
 
+## Mac resume — 2026-11-18
+
+Oversight (Opus 5.5, in place of Fable) -> Opus 5.5 engineering lead -> max TWO workers, ONE heavy job. HEAD 9dc6d11 = origin.
+Work order: workers/mac-20-slice-verdict.md (slice NOT ACCEPTED, M2 held). Mac verify_all (work/mac-resume-2026-11-17/verify_all.log): **exit 0**
+(slice 1347/0, biome 19045/0, weather 247/0). Candidate copy work/mac-resume-2026-11-17/AsurasPathM2cand.rbxlx = 281 / 3254714 / 1882323309.
+Light finding (lead): far GLBs carry ONE baseColor PNG and no normal/roughness maps; registry readback shows far MeshParts have NO
+SurfaceAppearance (all maps empty), so the importer put the colour on MeshPart.TextureID; those TextureIDs are the 24 failing IDs. Near trees
+carry full PBR (Color/Normal/Roughness) and load. Cause of the failing TextureID content not yet established.
+
+| Lane | Note | Model | Heavy? | Owns | State |
+|---|---|---|---|---|---|
+| mac-21 Studio texture/material diagnosis (far trees + dark built pieces + runtime writability) | workers/mac-21-texture-diag.md | sonnet | HEAVY | copy work/mac-resume-2026-11-17/diag21/*.rbxlx, its note | run 1 BLOCKED: Studio auto-updated 0.747->0.748, place never opened, no diagnosis. Lead opened the copy with plain `open <file>` (Edit, persistedToCloud=false); relaunched as mac-21b |
+| mac-22 offline GLB/texture analysis (dark built pieces, foliage, grass) | workers/mac-22-asset-analysis.md | sonnet | light | its note, scratch scripts under work/mac-resume-2026-11-17/analysis22/ | DONE: dark pieces = dark colour maps (Bell_Timber_Color lum 27.8, 54% near-black; Bell_Roof_Color lum 46.6; Stone 82.3); normals/vertex colours/registry OK. Foliage roughness 0.50-0.62 (hard specular), leaf sat 0.74; grass card hue 70 vs forest 106; bark value 0.23 |
+| mac-21b Studio diagnosis rerun (same order, place already open) | workers/mac-21-texture-diag.md | sonnet | HEAVY | same | launching |
+| mac-23 canopy/grass layout in source | workers/mac-23-canopy.md | sonnet | light (single suites only) | src/shared/SliceDressing.luau Scatter/canopy rules, tools/test_slice_dressing.luau | launching |
+
 ## Current Windows-to-Mac handoff — 2026-11-17
 
 Read [MAC_HANDOFF.md](MAC_HANDOFF.md) fully, then [handoff/MAC_RESUME_PROMPT.md](handoff/MAC_RESUME_PROMPT.md).
