@@ -2,8 +2,10 @@
 
 Usage (run with python3 -I):
   retone_glb.py IN.glb OUT.glb      re-tone one file
-  retone_glb.py --all               every upload group -> work/mac-resume-2026-11-18/retone/
-  retone_glb.py --selfcheck         assert-based check on Crate_B, Canopy_Tree_A, Canopy_Tree_A_Far
+  retone_glb.py --all               every upload group -> work/mac-resume-2026-11-18/retone2/
+  retone_glb.py --selfcheck         assert-based check on Crate_B, Canopy_Tree_A, Canopy_Tree_A_Far, Cart_B
+v2: Roblox builds MetalnessMap from the glTF MR blue channel and ignores metallicFactor 0, so solid-255 B of
+non-metal materials is zeroed; colour lifts are gentler because surfaces now render diffuse.
 Needs Pillow + numpy.
 """
 import sys
@@ -14,13 +16,13 @@ from PIL import Image, ImageDraw
 
 REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 UP = REPO + "/assets/source/overworld/upload/"
-OUT = REPO + "/work/mac-resume-2026-11-18/retone/"
+OUT = REPO + "/work/mac-resume-2026-11-18/retone2/"
 GROUPS = "slice bellwood_built_a bellwood_built_b bellwood_veg bellwood_far hero".split()
-LIFT = {"Timber": 72, "Roof": 75, "Bark": 75}          # target mean luminance (whole image)
-HSV = {"Leaf": (100, .55, .41), "Conifer": (112, .55, .41),  # (hue deg, sat, val) lit-mean targets
-       "Grass": (95, .45, None), "Fern": (None, .55, None)}
-ROUGH_G = 235                                           # 0.92
-FAR_ROUGH_G = 242                                       # 0.95
+LIFT = {"Timber": 55, "Roof": 60, "Bark": 60}          # target mean luminance (whole image)
+HSV = {"Leaf": (None, .62, None), "Conifer": (120, .55, None),  # (hue deg, sat, val) lit-mean targets
+       "Grass": (95, .45, None)}                          # Fern colour unchanged
+ROUGH_G = 204                                           # 0.80
+FAR_ROUGH_G = 230                                       # 0.90
 
 
 # ---------- GLB io ----------
@@ -155,12 +157,35 @@ def classify(name):
     m = re.match(r"^Bell_(Timber|Roof|Bark)_Color$", name) or re.match(r"^Bell_\w*?(Timber)_Color$", name)
     if m:
         return "lift", m.group(1)
-    m = re.match(r"^Bell_(Leaf|Conifer|Grass|Fern)_(Color|Roughness)$", name)
+    m = re.match(r"^Bell_(Leaf|Conifer|Grass)_Color$", name)
     if m:
-        return ("hsv" if m.group(2) == "Color" else "rough"), m.group(1)
+        return "hsv", m.group(1)
+    m = re.match(r"^Bell_(Leaf|Conifer|Grass|Fern)_Roughness$", name)
+    if m:
+        return "rough", m.group(1)
     if re.match(r"^Bell_Far_\w+_Color$", name):
         return "far", "Conifer" if "Conifer" in name else "Leaf"
     return None
+
+
+def unmetal(a):
+    """B (metalness) uniformly >=250 -> 0; varying B (real metal data) untouched."""
+    if a[..., 2].min() < 250:
+        return a
+    a = a.copy()
+    a[..., 2] = 0
+    return a
+
+
+def nonmetal_mr_images(j):
+    """Image indices of MR maps used by materials with explicit metallicFactor 0 (bronze/gold have none)."""
+    out = set()
+    for m in j.get("materials", []):
+        p = m.get("pbrMetallicRoughness", {})
+        t = p.get("metallicRoughnessTexture")
+        if t and p.get("metallicFactor") == 0:
+            out.add(j["textures"][t["index"]]["source"])
+    return out
 
 
 def apply_near(kind, key, a):
@@ -208,14 +233,22 @@ def retone_file(src, dst=None):
     """Returns list of (image name, before ndarray, after ndarray) changed; writes dst if anything changed."""
     j, bin_ = read_glb(src)
     views = [view_bytes(j, bin_, i) for i in range(len(j["bufferViews"]))]
-    changed = []
+    changed, mr = [], nonmetal_mr_images(j)
     for ii, im in enumerate(j.get("images", [])):
         name = im.get("name") or slot_name(j, ii)
         c = classify(name)
-        if not c:
+        if not c and ii not in mr:
             continue
         a = load_img(views[im["bufferView"]])
-        b = apply_far(c[1], a) if c[0] == "far" else apply_near(c[0], c[1], a)
+        if not c:
+            c = ("metal", "")
+            b = a
+        else:
+            b = apply_far(c[1], a) if c[0] == "far" else apply_near(c[0], c[1], a)
+        if ii in mr:
+            b = unmetal(b)
+        if b is a:
+            continue
         views[im["bufferView"]] = png(b)
         changed.append((name, a, b, c[0]))
         if c[0] == "far":
@@ -278,6 +311,7 @@ def registered(group):
 
 def run_all():
     report, sheet, seen = {}, [], {}
+    hero_color = {}
     for g in GROUPS:
         reg = registered(g)
         report[g] = []
@@ -286,6 +320,11 @@ def run_all():
             ch = retone_file(p, f"{OUT}{g}/{piece}.glb")
             if not ch:
                 continue
+            if g == "hero":
+                j, b = read_glb(p)
+                for im in j["images"]:
+                    if im["name"].endswith("_Color"):
+                        hero_color[im["name"]] = summ(load_img(view_bytes(j, b, im["bufferView"])))
             report[g].append({"piece": piece, "registered": piece in reg, "images": [c[0] for c in ch]})
             for name, a, b, kind in ch:
                 key = hashlib.md5(a.tobytes()).hexdigest()
@@ -293,7 +332,13 @@ def run_all():
                     seen[key] = {"name": name, "before": summ(a), "after": summ(b), "pieces": 0}
                     sheet.append((name, a, b))
                 seen[key]["pieces"] += 1
-    json.dump({"groups": report, "images": list(seen.values())}, open(OUT + "report.json", "w"), indent=1)
+    unaffected = {}
+    for f, gs in (("SLICE", ["slice"]), ("BELLWOOD", ["bellwood_built_a", "bellwood_built_b", "bellwood_veg"]),
+                  ("BELLWOOD_FAR", ["bellwood_far"]), ("HERO", ["hero"])):
+        reg = set(json.load(open(f"{REPO}/assets/{f}_KIT_UPLOADED.json"))["modelAssets"])
+        unaffected[f] = sorted(reg - {r["piece"] for g in gs for r in report[g]})
+    json.dump({"groups": report, "images": list(seen.values()), "heroColor": hero_color,
+               "registeredButUnaffected": unaffected}, open(OUT + "report.json", "w"), indent=1)
     contact_sheet(sheet, OUT + "contact_sheet.png")
     for g, rows in report.items():
         reg = [r for r in rows if r["registered"]]
@@ -321,7 +366,7 @@ def contact_sheet(rows, path, sw=200):
 def selfcheck():
     import tempfile
     tmp = tempfile.mkdtemp()
-    cases = [("bellwood_built_b/Crate_B", {"Bell_Timber_Color"}, 0), ("slice/Canopy_Tree_A", None, 0),
+    cases = [("bellwood_built_b/Crate_B", {"Bell_Timber_Color"}, 0), ("slice/Canopy_Tree_A", None, 0), ("bellwood_built_b/Cart_B", None, 0),
              ("bellwood_far/Canopy_Tree_A_Far", {"Bell_Far_Canopy_Tree_A_Color"}, 2)]
     for piece, want, extra_imgs in cases:
         dst = f"{tmp}/{os.path.basename(piece)}.glb"
@@ -344,15 +389,31 @@ def selfcheck():
             Image.open(io.BytesIO(view_bytes(j1, b1, im["bufferView"]))).load()
         for name, a, b, kind in ch:
             if kind == "lift":
-                assert lum(a).mean() < 50 and 66 < lum(b).mean() < 80, (name, lum(a).mean(), lum(b).mean())
+                assert abs(lum(b).mean() - LIFT[classify(name)[1]]) < 3 and lum(a).mean() < lum(b).mean(), (name, lum(a).mean(), lum(b).mean())
             if kind == "hsv" and "Leaf" in name:
                 sa, sb = lit_stats(a), lit_stats(b)
-                assert sb[1] < sa[1] - .1 and 0.38 < sb[2] < 0.44, (sa, sb)
+                assert sb[1] < sa[1] - .05 and abs(sb[1] - .62) < .04 and abs(sb[2] - sa[2]) < .03, (sa, sb)
             if kind == "far":
                 assert lum(b).mean() != lum(a).mean()
         if extra_imgs:
             m = j1["materials"][0]
             assert "normalTexture" in m and "metallicRoughnessTexture" in m["pbrMetallicRoughness"]
+        for ii, im in enumerate(j0["images"]):          # metal fix: non-metal MR B -> 0, metal MR B unchanged
+            if not im["name"].endswith("_Roughness"):
+                continue
+            a0 = load_img(view_bytes(j0, b0, im["bufferView"]))
+            a1 = load_img(view_bytes(j1, b1, j1["images"][ii]["bufferView"]))
+            if ii in nonmetal_mr_images(j0):
+                assert a0[..., 2].min() >= 250 and a1[..., 2].max() == 0, (piece, im["name"])
+            else:
+                assert "Metal-" in im["name"] and (a0[..., 2] == a1[..., 2]).all() and a1[..., 2].mean() > 150, (piece, im["name"])
+        if piece.endswith("Cart_B"):
+            assert sum("Metal-" in im["name"] for im in j1["images"]) == 1
+        if extra_imgs:
+            for im in j1["images"][-2:]:
+                if im["name"].endswith("_Roughness"):
+                    far_mr = load_img(view_bytes(j1, b1, im["bufferView"]))
+                    assert far_mr[..., 2].max() == 0 and abs(far_mr[..., 1].mean() - FAR_ROUGH_G) < 1
         if piece.endswith("Canopy_Tree_A"):
             for im in j1["images"]:
                 if im["name"] == "Bell_Leaf_Roughness":

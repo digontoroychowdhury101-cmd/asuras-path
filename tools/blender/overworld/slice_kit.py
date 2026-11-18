@@ -83,8 +83,11 @@ def material(name, color, rough, normal=None, metal=None, double=False):
 
     tex(color, "Base Color")
     tex(rough, "Roughness")
-    if metal is not None:
-        tex(metal, "Metallic")
+    if metal is None:  # unlinked Metallic: glTF exporter fills MR.B with 255 and Roblox renders full metal; pack a black map instead
+        metal = bpy.data.images.new(name + "_Metal0", *rough.size, alpha=False, is_data=True)
+        metal.pixels.foreach_set(np.tile(np.array([0, 0, 0, 1], np.float32), rough.size[0] * rough.size[1]))
+        metal.pack()
+    tex(metal, "Metallic")
     if normal is not None:
         t = nt.nodes.new("ShaderNodeTexImage")
         t.image = normal

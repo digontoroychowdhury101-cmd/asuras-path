@@ -71,8 +71,7 @@ def material(name, rgb, rough, metal=0.0, emit=None, seed=1, n=128):
 
     tex(_save(f"{name}_Color", col, False), "Base Color")
     tex(_save(f"{name}_Roughness", np.clip(rough + 0.12 * (h - 0.5), 0, 1), True), "Roughness")
-    if metal > 0:
-        tex(_save(f"{name}_Metal", np.full((n, n), metal), True), "Metallic")
+    tex(_save(f"{name}_Metal", np.full((n, n), metal), True), "Metallic")  # always linked: unlinked makes the exporter write MR.B=255
     t = nt.nodes.new("ShaderNodeTexImage")
     t.image = _save(f"{name}_Normal", nrm, True)
     nm = nt.nodes.new("ShaderNodeNormalMap")
