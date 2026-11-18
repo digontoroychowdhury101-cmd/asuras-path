@@ -207,3 +207,5 @@ Oversight verified before recruiting: HEAD 9dc6d11 = origin; candidate copy `wor
 | `aa52207034abab9fe` | Opus engineering lead, Mac run 3 | opus | claude-opus-5-5 (39 responses at first check) | meta.json `model: opus`, spawnDepth 1; jsonl `model` fields |
 
 Limits given to the lead: max two active Sonnet/Haiku workers, explicit `model` per worker, one heavy job machine-wide, local copies only until oversight accepts M2. Worker routing is appended here when the lead reports.
+
+2026-11-19: creator asked to "Use more subagents and even opus subagents". The lead's cap is raised from two to five active workers, and Opus workers are allowed for design-heavy castle lanes. Still one heavy job machine-wide. Castle brief: [workers/mac-40-vesperhold-verdict.md](workers/mac-40-vesperhold-verdict.md).
