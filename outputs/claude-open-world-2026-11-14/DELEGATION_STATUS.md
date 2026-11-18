@@ -195,3 +195,15 @@ Records: 24 total; haiku 3, opus 1, sonnet 20. Every observed model matches its 
 Evidence: `~/.claude/projects/-Users-digonto-Documents/e35b1c65-d031-4fc4-bafa-88f8c1f6954f.jsonl` and its `subagents/agent-<id>.meta.json` / matching `.jsonl`. `pickedEffortModel` is the parent effort setting, not proof of a worker model. Raw transcripts remain local; no credentials, private account context, or unrelated chat material is included in Git.
 
 Round 2: rain and far-visibility workers and the lead hit the quota limit. Stairs/sightline, harnesses, acceptance sweep and digest utility produced durable results. A tool-reported `finished` flag does not mean the assigned acceptance passed. Current outcome, corrections and exact Windows resume steps: [WINDOWS_HANDOFF.md](WINDOWS_HANDOFF.md).
+
+## Mac run 3 — 2026-11-18 (Windows-to-Mac handoff 9dc6d11)
+
+Overall lead / creative oversight: this session, **Opus 5.5** (`claude-opus-5-5`). The creator switched it from Fable 5.2 with /model before this run; the notes' "Fable" oversight role is filled by Opus 5.5 here. Not a silent substitution.
+
+Oversight verified before recruiting: HEAD 9dc6d11 = origin; candidate copy `work/mac-resume-2026-11-17/AsurasPathM2cand.rbxlx` SHA 5584b95d…, 281 / 3254714 / 1882323309; asset restore dry run 1277 same / 0 different; `tools/verify_all.sh` exit 0 (log `work/mac-resume-2026-11-17/verify_all.log`, built to a temp path, `outputs/AsurasPath.rbxlx` unchanged). Slice review done: [workers/mac-20-slice-verdict.md](workers/mac-20-slice-verdict.md) — NOT ACCEPTED, M2 held.
+
+| Agent | Role | Requested | Observed | Evidence |
+|---|---|---|---|---|
+| `aa52207034abab9fe` | Opus engineering lead, Mac run 3 | opus | claude-opus-5-5 (39 responses at first check) | meta.json `model: opus`, spawnDepth 1; jsonl `model` fields |
+
+Limits given to the lead: max two active Sonnet/Haiku workers, explicit `model` per worker, one heavy job machine-wide, local copies only until oversight accepts M2. Worker routing is appended here when the lead reports.
