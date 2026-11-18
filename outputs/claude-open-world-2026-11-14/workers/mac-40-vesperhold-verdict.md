@@ -25,6 +25,24 @@ from a near tower. Sky: churning charcoal storm cloud with a blood-red eclipse/b
 roll between the tiers and swallow the cliff base. Palette: black and charcoal stone, grey fog, crimson accents, warm
 orange points of light. Density of vertical detail (crockets, finials, tracery) is extreme; nothing reads as a box.
 
+### More references (2026-11-19, saved as outputs/vesperhold/reference/ref_02..05.webp; ref_01 was chat-only)
+- **ref_02 aerial:** the citadel is a SPRAWL across several cliff pinnacles linked by arched viaducts at different heights;
+  small spired outposts sit on far crags; long stairs climb between tiers; bridge piers carry hooded staff-bearing statues;
+  banners and candles along every run.
+- **ref_03 grand stair:** a wide stair climbs straight to the glowing portal, lined by brazier posts and pedestal statues,
+  with banners on poles either side. This is the arrival moment: the player should climb it.
+- **ref_04 approach:** the viewpoint is a ruined arch with withered trees and tattered banners on a cliff edge; across a
+  deep gorge with waterfalls the citadel stacks up on terraced cliffs, with viaducts at three levels and graves on the
+  lower terraces. This is the 01/02 reveal to match.
+- **ref_05 storm:** lightning in the clouds; massive arched viaduct towers hung with long banners; stairs and statues.
+- Banner emblem: make OUR OWN sigil (e.g. the Asura order's mark). The references show a white-tree emblem that reads as
+  a well-known film franchise's crest — do not copy it.
+
+Added targets: (a) >= 3 viaducts at different levels linking >= 3 pinnacles, plus >= 2 distant spired outposts on crags
+for the skyline; (b) a grand stair (>= 60 steps, braziers + statues every ~20 studs) from the last viaduct to the portal;
+(c) waterfalls/spray down the gorge walls under the citadel; (d) a ruined-arch viewpoint with dead trees and banners at the
+reveal (view 01/02); (e) lightning flashes that briefly light the silhouette.
+
 ## What is wrong now
 1. **Only the spires are big.** The gatehouse and curtain wall are ~40-60 studs: a toy castle in front of two towers.
    From Snow Refuge the mass fills a sliver of the frame; nothing hangs over the player on the approach.
