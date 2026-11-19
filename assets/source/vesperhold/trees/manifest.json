@@ -1,0 +1,334 @@
+{
+  "kit": "Vesperhold withered trees (group G)",
+  "build": "blender -b -P tools/blender/vesperhold/vesperhold_kit.py",
+  "tri_cap_per_sub_mesh": 18000,
+  "units": "studs (1 BU = 1 stud)",
+  "pivot": "foot centre at origin, z=0 (Blender Z up, GLB Y up)",
+  "pieces": {
+    "Dead_Oak_Gnarled_A": {
+      "group": "G",
+      "sub_meshes": {
+        "Dead_Oak_Gnarled_A__Frost": 2960,
+        "Dead_Oak_Gnarled_A__Bark": 13299,
+        "Dead_Oak_Gnarled_A__Bark_2": 13299,
+        "Dead_Oak_Gnarled_A__Bark_3": 13298,
+        "Dead_Oak_Gnarled_A__Bark_4": 13295
+      },
+      "tris_total": 56151,
+      "size_studs_xyz": [
+        103.6,
+        102.8,
+        74.8
+      ],
+      "bbox_min": [
+        -40.68,
+        -55.74,
+        -2.8
+      ],
+      "bbox_max": [
+        62.87,
+        47.08,
+        72.03
+      ],
+      "materials": [
+        "Vesp_DeadBark",
+        "Vesp_Frost"
+      ],
+      "file": "Dead_Oak_Gnarled_A.glb"
+    },
+    "Dead_Oak_Gnarled_B": {
+      "group": "G",
+      "sub_meshes": {
+        "Dead_Oak_Gnarled_B__Frost": 2544,
+        "Dead_Oak_Gnarled_B__Bark": 14916,
+        "Dead_Oak_Gnarled_B__Bark_2": 14915,
+        "Dead_Oak_Gnarled_B__Bark_3": 14914
+      },
+      "tris_total": 47289,
+      "size_studs_xyz": [
+        55.6,
+        56.4,
+        88.8
+      ],
+      "bbox_min": [
+        -24.22,
+        -34.22,
+        -2.8
+      ],
+      "bbox_max": [
+        31.41,
+        22.16,
+        86.0
+      ],
+      "materials": [
+        "Vesp_DeadBark",
+        "Vesp_Frost"
+      ],
+      "file": "Dead_Oak_Gnarled_B.glb"
+    },
+    "Dead_Pine_Snapped_A": {
+      "group": "G",
+      "sub_meshes": {
+        "Dead_Pine_Snapped_A__Frost": 2303,
+        "Dead_Pine_Snapped_A__Bark": 12217,
+        "Dead_Pine_Snapped_A__Bark_2": 12217
+      },
+      "tris_total": 26737,
+      "size_studs_xyz": [
+        25.1,
+        29.7,
+        65.6
+      ],
+      "bbox_min": [
+        -12.58,
+        -16.97,
+        -2.43
+      ],
+      "bbox_max": [
+        12.55,
+        12.68,
+        63.15
+      ],
+      "materials": [
+        "Vesp_DeadBark",
+        "Vesp_Frost"
+      ],
+      "file": "Dead_Pine_Snapped_A.glb"
+    },
+    "Dead_Pine_Snapped_B": {
+      "group": "G",
+      "sub_meshes": {
+        "Dead_Pine_Snapped_B__Frost": 2342,
+        "Dead_Pine_Snapped_B__Bark": 10807,
+        "Dead_Pine_Snapped_B__Bark_2": 10806
+      },
+      "tris_total": 23955,
+      "size_studs_xyz": [
+        24.0,
+        33.7,
+        74.9
+      ],
+      "bbox_min": [
+        -10.76,
+        -13.2,
+        -2.43
+      ],
+      "bbox_max": [
+        13.29,
+        20.49,
+        72.44
+      ],
+      "materials": [
+        "Vesp_DeadBark",
+        "Vesp_Frost"
+      ],
+      "file": "Dead_Pine_Snapped_B.glb"
+    },
+    "Thorn_Twisted_A": {
+      "group": "G",
+      "sub_meshes": {
+        "Thorn_Twisted_A__Frost": 1355,
+        "Thorn_Twisted_A__Bark": 14471,
+        "Thorn_Twisted_A__Bark_2": 14468
+      },
+      "tris_total": 30294,
+      "size_studs_xyz": [
+        42.0,
+        27.7,
+        32.8
+      ],
+      "bbox_min": [
+        -13.55,
+        -17.12,
+        -2.8
+      ],
+      "bbox_max": [
+        28.43,
+        10.58,
+        30.0
+      ],
+      "materials": [
+        "Vesp_DeadBark",
+        "Vesp_Frost"
+      ],
+      "file": "Thorn_Twisted_A.glb"
+    },
+    "Thorn_Twisted_B": {
+      "group": "G",
+      "sub_meshes": {
+        "Thorn_Twisted_B__Frost": 1801,
+        "Thorn_Twisted_B__Bark": 10633,
+        "Thorn_Twisted_B__Bark_2": 10633,
+        "Thorn_Twisted_B__Bark_3": 10632
+      },
+      "tris_total": 33699,
+      "size_studs_xyz": [
+        36.8,
+        40.3,
+        40.8
+      ],
+      "bbox_min": [
+        -19.75,
+        -22.04,
+        -2.8
+      ],
+      "bbox_max": [
+        17.06,
+        18.29,
+        38.02
+      ],
+      "materials": [
+        "Vesp_DeadBark",
+        "Vesp_Frost"
+      ],
+      "file": "Thorn_Twisted_B.glb"
+    },
+    "Dead_Stump_A": {
+      "group": "G",
+      "sub_meshes": {
+        "Dead_Stump_A__Frost": 74,
+        "Dead_Stump_A__Bark": 3066
+      },
+      "tris_total": 3140,
+      "size_studs_xyz": [
+        29.8,
+        26.4,
+        13.7
+      ],
+      "bbox_min": [
+        -15.14,
+        -13.19,
+        -2.8
+      ],
+      "bbox_max": [
+        14.69,
+        13.22,
+        10.86
+      ],
+      "materials": [
+        "Vesp_DeadBark",
+        "Vesp_Frost"
+      ],
+      "file": "Dead_Stump_A.glb"
+    },
+    "Dead_Stump_B": {
+      "group": "G",
+      "sub_meshes": {
+        "Dead_Stump_B__Frost": 67,
+        "Dead_Stump_B__Bark": 2895
+      },
+      "tris_total": 2962,
+      "size_studs_xyz": [
+        32.2,
+        27.6,
+        15.5
+      ],
+      "bbox_min": [
+        -14.94,
+        -13.5,
+        -2.59
+      ],
+      "bbox_max": [
+        17.24,
+        14.06,
+        12.9
+      ],
+      "materials": [
+        "Vesp_DeadBark",
+        "Vesp_Frost"
+      ],
+      "file": "Dead_Stump_B.glb"
+    },
+    "Dead_Log_A": {
+      "group": "G",
+      "sub_meshes": {
+        "Dead_Log_A__Frost": 211,
+        "Dead_Log_A__Bark": 3853
+      },
+      "tris_total": 4064,
+      "size_studs_xyz": [
+        49.3,
+        16.7,
+        12.3
+      ],
+      "bbox_min": [
+        -28.49,
+        -7.84,
+        -1.71
+      ],
+      "bbox_max": [
+        20.83,
+        8.87,
+        10.59
+      ],
+      "materials": [
+        "Vesp_DeadBark",
+        "Vesp_Frost"
+      ],
+      "file": "Dead_Log_A.glb"
+    },
+    "Dead_Log_B": {
+      "group": "G",
+      "sub_meshes": {
+        "Dead_Log_B__Frost": 283,
+        "Dead_Log_B__Bark": 3608
+      },
+      "tris_total": 3891,
+      "size_studs_xyz": [
+        40.9,
+        16.7,
+        11.4
+      ],
+      "bbox_min": [
+        -23.92,
+        -8.0,
+        -1.67
+      ],
+      "bbox_max": [
+        16.94,
+        8.72,
+        9.77
+      ],
+      "materials": [
+        "Vesp_DeadBark",
+        "Vesp_Frost"
+      ],
+      "file": "Dead_Log_B.glb"
+    }
+  },
+  "glb_images": "none (maps/ is the source; vesp_embed.py embeds Color/ORM JPEG q90 + Normal PNG into upload/ GLBs)",
+  "textures": {
+    "Vesp_DeadBark_Color": [
+      2048,
+      2048
+    ],
+    "Vesp_DeadBark_Metal": [
+      2048,
+      2048
+    ],
+    "Vesp_DeadBark_Normal": [
+      2048,
+      2048
+    ],
+    "Vesp_DeadBark_Roughness": [
+      2048,
+      2048
+    ],
+    "Vesp_Frost_Color": [
+      2048,
+      2048
+    ],
+    "Vesp_Frost_Metal": [
+      2048,
+      2048
+    ],
+    "Vesp_Frost_Normal": [
+      2048,
+      2048
+    ],
+    "Vesp_Frost_Roughness": [
+      2048,
+      2048
+    ]
+  }
+}
