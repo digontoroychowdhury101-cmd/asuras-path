@@ -5,13 +5,15 @@ Writes <out_dir>/gate_a_contact_sheet.jpg and <out_dir>/gate_a_tris.md (every pi
 per-sub tris, max sub, total, map resolutions found in <group>/maps, decimation statement). Needs Pillow.
 """
 import json
+import os
 import sys
 from pathlib import Path
 
 from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[3]
-SRC = ROOT / "assets/source/vesperhold"
+# VESP_SHEET_SRC points the table at a candidate folder holding kit/props/trees (e.g. candidate-win-2026-11-19).
+SRC = Path(os.environ.get("VESP_SHEET_SRC") or ROOT / "assets/source/vesperhold")
 CAP = 18000
 
 
