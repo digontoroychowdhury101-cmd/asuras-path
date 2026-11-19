@@ -68,7 +68,7 @@ python3 tools/test_review_regressions.py
 python3 tools/test_campaign_regions.py
 python3 tools/test_campaign_build.py
 "$LUAU" tools/test_biome_dressing.luau
-python3 tools/lune_compat.py --all
+python3 tools/lune_compat.py --all # includes test_vesperhold_massing / _loader / _atmosphere, test_slice_dressing, test_weather_composition
 
 echo "[11/14] Testing Backend Persistence & Commercial Systems (local mocks)..."
 "$LUAU" tools/test_backend.luau
@@ -78,6 +78,7 @@ echo "[12/14] Testing Audiovisual Modules & Imported Media (engine fakes)..."
 python3 tools/test_audiovisual.py
 python3 tools/test_github_reuse.py
 python3 tools/test_kit_registry.py
+python3 tools/test_vesperhold_layout_sizes.py
 
 echo "[13/14] Syntax-compiling every source script..."
 find src -name '*.luau' -print0 | xargs -0 "$LUAU_COMPILE" --null

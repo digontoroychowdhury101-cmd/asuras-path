@@ -1,6 +1,6 @@
 --!strict
 -- Vesperhold's registry references uploaded models. Their imported MeshParts own
--- mesh, PBR maps and collision fidelity. Structural decks retain their simple
+-- mesh and PBR maps; collision is set per sub role here (see CORE below). Structural decks retain their simple
 -- collision. An unavailable or incomplete visual piece falls back as a unit.
 local Kit = {}
 Kit.Registry = nil :: any
@@ -9,6 +9,9 @@ Kit.MaxLights = 80
 
 local DECOR = { Twigs = true, Banner = true, Rope = true, Wax = true, Candle = true, Flame = true, Staff = true,
 	Sword = true, Tracery = true, Crockets = true, Frost = true, Glass = true, Water = true, Bone = true, Chain = true }
+-- Collision fidelity by sub role (creator's import rules): cores Hull (PreciseConvexDecomposition only when opts.Walkable), everything
+-- else that collides is a thin solid: Box. Decorative roles never collide.
+local CORE = { Stone = true, Plinth = true, Bark = true }
 local SOLID_GROUPS = { Statue = true, Pedestal = true, Tree = true, Grave = true }
 local PRIMARY = { "Stone", "Robe", "Body", "Bark", "Plinth", "Iron", "Water", "Banner", "Figure", "FigureSmooth" }
 local CRIMSON, AMBER, FLAME = Color3.fromRGB(150, 26, 38), Color3.fromRGB(224, 142, 62), Color3.fromRGB(255, 138, 52)
@@ -183,6 +186,10 @@ function Kit.place(piece: string, frame: CFrame, scale: Vector3, opts: Options?)
 		part.Anchored,part.CanTouch = true,false
 		part.CanCollide = solid and not DECOR[sub.Role]
 		part.CanQuery = part.CanCollide
+		if part.CanCollide then
+			part.CollisionFidelity = if not CORE[sub.Role] then Enum.CollisionFidelity.Box
+				elseif o.Walkable then Enum.CollisionFidelity.PreciseConvexDecomposition else Enum.CollisionFidelity.Hull
+		end
 		lightPart(part,sub.Role,name)
 		part.Parent = model
 		local rank = table.find(PRIMARY,sub.Role) or #PRIMARY+1

@@ -13,6 +13,7 @@ local Overworld = require(Shared.Shared.Overworld)
 local Profiles = require(Shared.Shared.EnvironmentProfiles)
 local Wind = require(Shared.Shared.Wind)
 local Effects = require(Shared.Shared.EffectsPreference)
+local Atmosphere = require(script.Parent.VesperholdAtmosphere) :: any
 
 local FX_TAG, SHELTER_TAG = "AsuraWeatherFx", "AsuraShelter"
 -- Rate is particles per second at full intensity; Fall is the downward pull, Share how much of the wind carries them.
@@ -23,7 +24,7 @@ local FX_TAG, SHELTER_TAG = "AsuraWeatherFx", "AsuraShelter"
 -- Rain Glow/Influence: bright, pale streaks that stay visible against sky and dark terrain (Influence = LightInfluence).
 local KINDS: { [string]: any } = {
 	Rain = { Rate = 540, Fall = 70, Share = 0.6, Life = 1.1, Size = 1.4, Squash = -2, Alpha = 0.3, Glow = 0.4, Influence = 0.5, Color = { 200, 215, 235 } },
-	Snow = { Rate = 110, Fall = 10, Share = 0.8, Life = 5, Size = 0.6, Alpha = 0.15, Glow = 0.2, Color = { 245, 248, 255 }, Texture = "rbxasset://textures/particles/smoke_main.dds" },
+	Snow = { Rate = 110, Fall = 10, Share = 0.8, Life = 5, Size = 0.45, Alpha = 0.15, Glow = 0.2, Color = { 245, 248, 255 }, Texture = "rbxasset://textures/particles/smoke_main.dds" },
 	Dust = { Rate = 100, Fall = 1, Share = 1.5, Life = 4, Size = 2.8, Alpha = 0.55, Glow = 0, Color = { 222, 190, 140 }, Texture = "rbxasset://textures/particles/smoke_main.dds" },
 }
 -- The emitter box is a tall volume around the player (drops spawn anywhere in it, so rain fills head height).
@@ -65,6 +66,8 @@ end
 -- Idle state: no FX, no profile, no wind, no attributes. Lobby, respawn, shelter-less domain and Destroy all land here.
 function Controller.Reset(self: any)
 	if self.RidgeClouds then self.RidgeClouds:Destroy(); self.RidgeClouds = nil end
+	if self.Atmos then self.Atmos:Destroy(); self.Atmos = nil end
+	self.Ridge = 0
 	for kind in table.clone(self.Emitters) do drop(self, kind) end
 	if self.Fx then self.Fx:Destroy() end
 	self.Fx, self.Active, self.Composed, self.Info, self.Wind = nil, false, nil, nil, nil
@@ -124,7 +127,8 @@ local function precipitation(self: any, position: Vector3, rates: { [string]: nu
 		emitter.Rate = spec.Rate * math.min(rate, 1) * fit
 		if kind == "Snow" then
 			-- Fine windblown snow keeps the gate and its defenders readable at eye level.
-			emitter.Size = NumberSequence.new(spec.Size * (1 - 0.72 * ridge))
+			-- Small flakes on the ridge: at 0.17 stud they stay specks even a stud from the camera (the old 0.6 sprites read as huge blobs).
+			emitter.Size = NumberSequence.new(spec.Size * (1 - 0.62 * ridge))
 		end
 		-- Sideways drift is the one wind sample, so rain slants the way the grass bends.
 		local x, y, z = Wind.drift(self.Wind, spec.Fall * 0.2, spec.Share)
@@ -147,13 +151,13 @@ function Controller.Sample(self: any)
 	local ridge = if region == "Snowfields" then Overworld.vesperholdWeight(position.X, position.Z) else 0
 	local covered = sheltered(position, if ridge > 0 then 230 else 60)
 	local mix = Profiles.weatherBlend(weights, t)
-	local cover = ridge * (0.73 + 0.12 * ((mix.Overcast or 0) + (mix.Snow or 0)))
+	local cover = math.min(1, ridge * (0.86 + 0.12 * ((mix.Overcast or 0) + (mix.Snow or 0))))
 	if ridge > 0 then
 		if not self.RidgeClouds then
 			local clouds = Instance.new("Clouds")
 			clouds.Name = "VesperholdClouds"
-			clouds.Color = Color3.fromRGB(166, 169, 176)
-			clouds.Density = 0.67
+			clouds.Color = Color3.fromRGB(88, 90, 99)
+			clouds.Density = 0.82
 			clouds.Cover = cover
 			clouds.Parent = workspace.Terrain
 			self.RidgeClouds = clouds
@@ -164,6 +168,8 @@ function Controller.Sample(self: any)
 		self.RidgeClouds:Destroy()
 		self.RidgeClouds = nil
 	end
+	self.Ridge, self.Comfort = ridge, Effects.reducedMotion() or Effects.reduced()
+	if ridge > 0 and not self.Atmos then self.Atmos = Atmosphere.new() end
 	local profile, info = Profiles.compose({ Weights = weights, Time = t, Mix = mix,
 		Sheltered = covered, Comfort = Effects.reducedMotion() or Effects.reduced(),
 		Vesperhold = ridge })
@@ -187,6 +193,15 @@ function Controller.Update(self: any, dt: number)
 	if self.Fx then
 		local own = self.State:Own()
 		if own and own.Root then self.Fx.CFrame = CFrame.new(own.Root.Position + Vector3.new(0, FX_LIFT, 0)) end
+	end
+	if self.Atmos then
+		local camera = workspace.CurrentCamera
+		local own = self.State:Own()
+		local at = if camera then camera.CFrame.Position elseif own and own.Root then own.Root.Position else nil
+		if at then self.Atmos:Update(self.Ridge or 0, dt, at, self.Comfort == true) end
+		if self.RidgeClouds then -- a strike pulses the cloud layer pale blue-white
+			self.RidgeClouds.Color = Color3.fromRGB(88, 90, 99):Lerp(Color3.fromRGB(214, 224, 255), 0.85 * self.Atmos.Flash)
+		end
 	end
 	self.Elapsed += dt
 	if self.Elapsed < 0.2 then return end

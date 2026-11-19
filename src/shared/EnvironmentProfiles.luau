@@ -389,6 +389,14 @@ function Profiles.compose(input: any): (any?, any)
 		light.EnvironmentSpecularScale *= 1 - 0.32 * ridge
 		p.CB_ColorCorrection.Saturation -= 0.29 * ridge
 		p.CB_SunRays.Intensity *= 1 - 0.85 * ridge
+		-- Storm grade: darker overcast, a faint red cast in the key light and grade, cold shadows, denser banks of haze.
+		light.Brightness *= 1 - 0.18 * ridge
+		light.ColorShift_Top = light.ColorShift_Top:Lerp(rgb(150, 72, 74), 0.35 * ridge)
+		light.ColorShift_Bottom = light.ColorShift_Bottom:Lerp(rgb(18, 24, 38), 0.5 * ridge)
+		p.CB_ColorCorrection.TintColor = p.CB_ColorCorrection.TintColor:Lerp(rgb(208, 176, 178), 0.4 * ridge)
+		p.CB_ColorCorrection.Contrast += 0.08 * ridge
+		fog.Density += 0.05 * ridge
+		fog.Decay = fog.Decay:Lerp(rgb(96, 62, 66), 0.2 * ridge)
 	end
 	guard(p, input.Comfort == true)
 	return p, { Hour = hour, Daylight = daylight, Precip = precip, WindGain = gain }

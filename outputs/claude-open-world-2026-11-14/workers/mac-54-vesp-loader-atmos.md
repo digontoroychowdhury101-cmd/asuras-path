@@ -1,9 +1,21 @@
-# mac-54 Vesperhold loader + atmosphere (worker, Sonnet) - running log
-Status 2026-11-19: A, D done and green on massing/slice/biome/kit_registry. B in loader. C and E in progress (see bottom).
-Done so far (uncommitted):
-- tools/assets/kit_registry.py: "vesperhold" kit (kit/props/trees manifests, one assets/VESPERHOLD_KIT_UPLOADED.json, absent = empty module); 3 new python tests.
-- src/shared/VesperholdKitRegistry.luau (empty, generated), default.project.json entries, SliceDressing.RegistryModules += VesperholdKitRegistry.
-- src/server/Services/VesperholdKit.luau: has/resolve/place (LoadAsset once, clone, per-axis scale, PrimaryPart core sub, collision per sub role, Neon+PointLight for Glass/Flame).
-- GothicCitadel/GothicMarch: kit mesh replaces stand-in (and Viaduct_Bay arches, Part snag -> Thorn_Twisted) when registry has the piece; stand-ins remain the fallback.
-- VesperholdLayout.Piece = manifest sizes (w=x,h=z,d=y), hardcoded divisors now read Piece.
-- BiomeDressing: Snow_Trail_Stake (red-brown 14-stud timber pole, colour 150,62,42) dropped where vesperholdWeight>0: this is the stray red post of view 01.
+# mac-54 Vesperhold kit loader + atmosphere (Sonnet worker) - FINAL
+Source only (no Studio/uploads/builds/commits). Observed model: Sonnet (claude-sonnet-5-5).
+
+## Files
+- tools/assets/kit_registry.py: `vesperhold` kit (kit/props/trees manifests, ONE registry assets/VESPERHOLD_KIT_UPLOADED.json; absent = empty module). `python3 tools/assets/kit_registry.py vesperhold` wrote src/shared/VesperholdKitRegistry.luau (empty). tools/test_kit_registry.py +3.
+- default.project.json: VesperholdKitRegistry (shared), VesperholdKit (server). SliceDressing.RegistryModules += VesperholdKitRegistry.
+- src/server/Services/VesperholdKit.luau (Codex rewrote it at 15:49; kept; I only added CollisionFidelity per sub role on top): has/resolve/place, LoadAsset once, clone, per-axis scale, PrimaryPart core sub (Stone>Robe>Body>Bark>Plinth..), Anchored, decorative roles no collide/query, thin solids Box, cores Hull (Precise with opts.Walkable), Glass/Flame Neon + warm colour + PointLight (cap MaxLights 80). Collides only in groups Statue/Pedestal/Tree/Grave; everything else non-colliding (massing Parts own the walk route).
+- GothicCitadel: kit mesh (KitMeshes) replaces the stand-in at the same CFrame when registry has the piece (cladding offset, flyer yawed 90 + axis swap, tree _A/_B variants by slot id); stand-ins stay the fallback. GothicMarch: Viaduct_Bay arch stand-ins skipped when the kit has the bay; Part snag shells replaced by Thorn_Twisted when present.
+- src/shared/VesperholdLayout.luau: Layout.Piece = manifest bboxes (w=x, h=z, d=y; trees avg A/B; Flying_Buttress_40 rotated); hardcoded divisors now read Piece. tools/assets/vesperhold_layout_sizes.py (`--write` resyncs from manifests) + tools/test_vesperhold_layout_sizes.py (in verify_all).
+- Atmosphere: src/client/Controllers/VesperholdAtmosphere.luau (new; fog banks gorge+between tiers, blood-red eclipse disc with dark core on the spire bearing, rare double lightning = sky burst + 3 tower point lights + cloud pulse, 8 crows (3 Parts each) on tower orbits, 12-light candle pool, waterfall mist at Layout Mist anchors; comfort = no lightning, 4 crows, half fog; all scaled by weight, destroyed at 0). WeatherController feeds it Overworld.vesperholdWeight (Snowfields only), darker storm clouds (88,90,99, cover to 1), small snow (ridge size 0.45*(1-0.62w)=0.17, was 0.6*0.28 soft sprites near the camera = blobs). EnvironmentProfiles ridge branch: darker, red cast in ColorShift/tint/decay, cold shadows, denser haze (weight 0 = byte-identical profile, proven by test).
+- STRAY RED POST: BiomeDressing `Snow_Trail_Stake` (14-stud Wood pole colour 150,62,42 + red flag, placed every 50 studs along the Refuge trails). Now dropped wherever vesperholdWeight > 0 (BiomeDressing hero loop). Not verified in Studio view 01 (source reasoning + placement test only).
+- Tests: tools/test_vesperhold_loader.luau (39), tools/test_vesperhold_atmosphere.luau (24), weather composition +11 (section 11, stubbed atmosphere in harness), massing stub for VesperholdKit. All ride `lune_compat.py --all` in verify_all (massing was already covered by --all); added the layout-size python test to step 12.
+
+## Results (this tree)
+massing 14733/0, slice dressing 1356/0, weather composition 258/0, loader 39/0, atmosphere 24/0, biome dressing 18928/0, kit_registry py 15/0, layout sizes py 2/0, all src compiles. Full verify_all NOT run.
+
+## For the Studio upload/Play lane
+- Upload, then `python3 tools/assets/kit_registry.py vesperhold`; check the kit pivot (module re-foots by bbox), kit front direction on cladding pieces (Offset z = depth/2 assumes model centred in depth), flyer yaw sign, glass Neon vs SurfaceAppearance look, light counts, crow/eclipse look, lightning comfort, view 01 red post gone, snow size.
+- Statue_Plinth (9.2x12) and Hooded_Statue_* (own Plinth sub) both exist: viaduct statues stand at top + Statue_Plinth height, so with real kit they double-plinth; decide in Play (drop the separate plinth slot).
+- IN FLUX: manifests still show Hooded_Statue_A 16.2 tall total, B 19.6, Pedestal 23.3 (lead says A is now ~14 figure on 5x2x5 plinth, and Statue_Veiled_Scan is coming: not in any manifest, no layout slot yet). After regeneration run `python3 tools/assets/vesperhold_layout_sizes.py --write` then the massing + layout-size tests. Arcade/Bastion/Rose/Portal heights (bboxes include pinnacles) also still changing.
+- Lightning cannot pulse Lighting (EnvironmentController tweens it); the flash is local lights, sky burst and clouds.

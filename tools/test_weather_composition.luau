@@ -256,9 +256,12 @@ workspaceFake:SetAttribute("AsuraWorldEpoch", epoch)
 local shared = { Shared = { Overworld = "Overworld", EnvironmentProfiles = "EnvironmentProfiles", Wind = "Wind", EffectsPreference = "EffectsPreference" },
 	WaitForChild = function(_, name) return name end }
 local reducedMotion, reducedEffects = false, false
-local modules = { Config = Config, Overworld = Overworld, EnvironmentProfiles = Profiles, Wind = Wind, EffectsPreference = { reducedMotion = function() return reducedMotion end, reduced = function() return reducedEffects end } }
+local atmosCalls = {}
+local atmosphereStub = { new = function() return { Flash = 0, Update = function(_, weight) table.insert(atmosCalls, weight) end, Destroy = function() table.insert(atmosCalls, "destroyed") end } end }
+local modules = { VesperholdAtmosphere = atmosphereStub, Config = Config, Overworld = Overworld, EnvironmentProfiles = Profiles, Wind = Wind, EffectsPreference = { reducedMotion = function() return reducedMotion end, reduced = function() return reducedEffects end } }
 local services = { Players = { LocalPlayer = player }, CollectionService = CollectionService, ReplicatedStorage = { WaitForChild = function() return shared end } }
 local controllerEnv = { game = { GetService = function(_, name) return services[name] end }, workspace = workspaceFake,
+	script = { Parent = { VesperholdAtmosphere = "VesperholdAtmosphere" } },
 	require = function(name) return modules[name] end }
 local Weather = load("src/client/Controllers/WeatherController.luau", controllerEnv)
 local state = { Own = function() return own end }
@@ -577,6 +580,44 @@ check("lobby atmosphere values unchanged", sa.Density == 0.38 and sa.Haze == 2.2
 	and sa.Color == roblox.Color3.fromRGB(250, 215, 185) and sa.Decay == roblox.Color3.fromRGB(120, 130, 165))
 -- Fights keep their own combat atmosphere (the overworld haze change does not reach them).
 check("combat atmospheres untouched by the overworld haze change", Profiles.get("Combat:Forest").CB_Atmosphere.Density == 0.28 and Profiles.get("Combat:MountainAscent").CB_Atmosphere.Haze == 1.6)
+
+-- 11. Vesperhold atmosphere is gated by Overworld.vesperholdWeight only ------------------------------------------
+local function same(x, y)
+	if type(x) ~= "table" or type(y) ~= "table" then return x == y end
+	for k, v in x do if not same(v, y[k]) then return false end end
+	for k in y do if x[k] == nil then return false end end
+	return true
+end
+local base = Profiles.compose({ Weights = { Snowfields = 1 }, Time = noon, Mix = { Clear = 1 } })
+check("Vesperhold weight 0 (or absent) composes the exact regional profile", same(base, Profiles.compose({ Weights = { Snowfields = 1 }, Time = noon, Mix = { Clear = 1 }, Vesperhold = 0 })))
+local storm = Profiles.compose({ Weights = { Snowfields = 1 }, Time = noon, Mix = { Clear = 1 }, Vesperhold = 1 })
+check("full Vesperhold weight: darker, hazier, desaturated, red-cast", storm.Lighting.Brightness < base.Lighting.Brightness and storm.CB_Atmosphere.Haze > base.CB_Atmosphere.Haze
+	and storm.CB_ColorCorrection.Saturation < base.CB_ColorCorrection.Saturation and (storm.CB_ColorCorrection.TintColor.R - storm.CB_ColorCorrection.TintColor.B) > (base.CB_ColorCorrection.TintColor.R - base.CB_ColorCorrection.TintColor.B))
+local half = Profiles.compose({ Weights = { Snowfields = 1 }, Time = noon, Mix = { Clear = 1 }, Vesperhold = 0.5 })
+check("the grade blends in with the weight", half.CB_Atmosphere.Haze > base.CB_Atmosphere.Haze and half.CB_Atmosphere.Haze < storm.CB_Atmosphere.Haze)
+check("the lobby never composes, even with a Vesperhold weight", Profiles.compose({ Time = noon, Vesperhold = 1 }) == nil)
+check("other regions ignore a zero weight and the Sanctuary profile is untouched", same(Profiles.compose({ Weights = { Forest = 1 }, Time = noon, Mix = { Clear = 1 }, Vesperhold = 0 }), clear))
+check("Vesperhold grade code is inside the ridge branch", string.find(fs.readFile("src/shared/EnvironmentProfiles.luau"), "if ridge > 0 then", 1, true) ~= nil)
+table.clear(atmosCalls)
+local gate = Overworld.Vesperhold
+local ridgeWeather = Weather.new(state)
+place(gate.X - 100, Overworld.heightAt(gate.X - 100, gate.Z) + 6, gate.Z)
+check("test setup: the gate approach is Snowfields with full ridge weight", Overworld.regionAt(gate.X - 100, Overworld.heightAt(gate.X - 100, gate.Z) + 6, gate.Z) == "Snowfields" and Overworld.vesperholdWeight(gate.X - 100, gate.Z) == 1)
+ridgeWeather:Sample()
+ridgeWeather:Update(0.016)
+check("on the ridge the atmosphere is created and fed the weight", atmosCalls[1] == 1 and ridgeWeather.Atmos ~= nil)
+place(-3000, 140, -2000)
+ridgeWeather:Sample()
+ridgeWeather:Update(0.016)
+check("leaving the ridge feeds the atmosphere weight 0 (it clears itself) and drops the clouds", atmosCalls[#atmosCalls] == 0 and ridgeWeather.RidgeClouds == nil and ridgeWeather.Ridge == 0)
+local calls = #atmosCalls
+local lobbyWeather = Weather.new(state)
+own = nil
+lobbyWeather:Sample()
+lobbyWeather:Update(0.016)
+check("lobby (no own root / no region): the atmosphere is never created", #atmosCalls == calls and lobbyWeather.Atmos == nil)
+check("snow flakes are small on the ridge (no huge blobs)", Weather.Kinds.Snow.Size * (1 - 0.62) < 0.2)
+ridgeWeather:Destroy()
 
 print(string.format("weather composition: %d passed, %d failed", passed, failed))
 if failed > 0 then
