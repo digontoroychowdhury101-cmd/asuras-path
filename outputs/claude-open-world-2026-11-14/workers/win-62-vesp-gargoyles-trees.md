@@ -29,3 +29,22 @@ Rules: workers/mac-50-vesp-rebuild-rules.md (heavy mkdir lock, memory before/aft
 | trees_bake3 (Oak B + Pine A/B bake, 440 s) | OK. Oak B spreading gnarled crown; pines bleached grey, frost on root flare, snapped crown shards, mild bowed lean. Pine trunk furrows read shallower than the oak | 6.0 -> 6.3 GB |
 | trees_bake4 (Thorn A/B + Stump A/B + Log A/B, 383 s) | OK. Thorns lean and twist, thorny crowns read; weak: root LOW faceted (8 sides) up close, frost blotches on roots. Stumps/logs: CC0 scans retoned grey with frost, at stud scale (stumps 5.7/9.4, logs 16.5/15.7 studs) | 6.0 -> 6.6 GB |
 | garg_bake2 (A+B re-bake, sat 0.4, 414 s) | OK, final. Brown cast gone: soot-grey/black stone, frost on tops. Manifest 27 pieces intact | 6.3 -> 6.5 GB |
+
+## Codex continuation, 20 November
+
+Continued from `067bcd9` in the Windows candidate. The second gargoyle bake had completed before Claude stopped, so the
+existing final A/B exports were carried forward. Their squat winged and long-spouted silhouettes read distinctly in the
+renders. The interrupted tree bake was re-run with weighted normals and 2048 maps. The export check found that both oak
+roots extended below the declared burial limit, even though the centreline was clamped. The generator now compresses the
+buried ends smoothly and keeps the shape above ground. The two oaks retain visible seams where some major limbs join the trunk,
+and one low limb on the broader oak still forms a hook.
+
+| Windows Blender batch | Free GiB before → after | Result |
+|---|---|---|
+| Weighted-normal oak rebuild | 5.30 → 6.45 | Baked and rendered. GLB check found underside depths 3.32 and 5.22 studs. |
+| Weighted-normal pines | 6.44 → 6.70 | Both baked and rendered. |
+| Weighted-normal thorns, plus stump and log scans | 6.70 → 6.49 | Six baked and rendered. |
+| Oak burial correction | 6.23 → 6.86 | Both rebaked. GLB bases sit 2.65 and 2.79 studs below grade. |
+
+All 10 tree exports passed direct GLB and manifest checks. Their 42 submeshes top out at 16,967 triangles with four
+2048 × 2048 maps per material.

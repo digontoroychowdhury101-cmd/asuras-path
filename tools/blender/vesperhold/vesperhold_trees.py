@@ -400,6 +400,17 @@ def tube_mesh(acc, b, level, lobes=None, flare=0.55):
         if n > 2:
             V[-2] += T[-2] * (jag[:, None] * 0.35)
     rows = n - 1 if pt else n
+    cpt = (C[-1] if pt else C[-1] + T[-1] * Rs[-1] * 0.25).copy()
+    if min(V[:rows, :, 2].min(), cpt[2]) < ZMIN:
+        # Large root radii can extend below the clamped centreline. Compress the buried
+        # end smoothly so there is no flat stack of coincident triangles at the limit.
+        span = 1.3
+        start = ZMIN + span
+        z = V[:rows, :, 2]
+        below = z < start
+        z[below] = start - span * np.tanh((start - z[below]) / span)
+        if cpt[2] < start:
+            cpt[2] = start - span * np.tanh((start - cpt[2]) / span)
     base = acc.n
     acc.V.append(V[:rows].reshape(-1, 3))
     acc.n += rows * nphi
@@ -419,7 +430,6 @@ def tube_mesh(acc, b, level, lobes=None, flare=0.55):
         acc.QU.append(qu)
     # tip: apex point (twig ends taper to points) or a splintered cap
     last = base + (rows - 1) * nphi
-    cpt = C[-1] if pt else C[-1] + T[-1] * Rs[-1] * 0.25
     ci = acc.n
     acc.V.append(cpt[None])
     acc.n += 1
