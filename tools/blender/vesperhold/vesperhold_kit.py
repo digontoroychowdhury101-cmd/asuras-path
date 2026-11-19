@@ -246,9 +246,18 @@ def get_image(name, kind, arr):
     return im
 
 
+def _ph_maps(name):
+    """CC0 Poly Haven base layer when downloaded (tools/blender/vesperhold/vesp_polyhaven.py), else None -> procedural."""
+    if os.environ.get("VESP_PROCEDURAL") == "1":
+        return None
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    import vesp_polyhaven
+    return vesp_polyhaven.maps(name, N)
+
+
 def build_material(name):
     t = time.time()
-    maps = {} if (REUSE and all((OUT / "maps" / f"{name}_{k}.png").exists() for k in KIND)) else GENS[name]()
+    maps = {} if (REUSE and all((OUT / "maps" / f"{name}_{k}.png").exists() for k in KIND)) else (_ph_maps(name) or GENS[name]())
     ims = {k: get_image(name, k, maps.get(k)) for k in KIND}
     m = bpy.data.materials.new(name)
     try:

@@ -11,7 +11,9 @@ import struct
 from pathlib import Path
 
 import numpy as np
-from PIL import Image
+from PIL import Image, ImageFile
+
+ImageFile.MAXBLOCK = 1 << 26  # optimize=True on 2048 JPEGs overflowed the default block ("Suspension not allowed here")
 
 _CACHE = {}
 

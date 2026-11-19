@@ -16,6 +16,7 @@ if "--" not in sys.argv or not sys.argv[sys.argv.index("--") + 1:]:
     sys.argv += ["--", str(Path(__file__).resolve().parents[3] / "assets/source/vesperhold/props")]
 import vesp_common as C  # noqa: E402
 from vesp_common import K, USub, cfg, fbm, vnoise  # noqa: E402
+import vesperhold_figures  # noqa: E402,F401  (keeps the hand-modelled statues' manifest entries; they are built there)
 import bmesh  # noqa: E402
 import bpy  # noqa: E402
 from mathutils import Matrix, Vector  # noqa: E402
@@ -852,7 +853,7 @@ gibbet_cage.cfg = dict(frost_from=("Stone",), frost_area=0.5)
 SUBST = {"Bone": "Bone"}
 K.SUBMAT["Bone"] = "Vesp_Frost"
 
-PLAN = [("Hooded_Statue_A", "F", hs_a), ("Hooded_Statue_B", "F", hs_b), ("Pedestal_Statue_Staff", "F", pedestal_statue),
+PLAN = [  # Hooded_Statue_A/B + Pedestal_Statue_Staff: built and exported by vesperhold_figures.py (mac-51); manifest kept via its import
         ("Gargoyle_A", "F", gargoyle_A), ("Gargoyle_B", "F", gargoyle_B), ("Candle_Cluster_A", "F", candle_A), ("Candle_Cluster_B", "F", candle_B),
         ("Brazier_Iron", "F", brazier_iron), ("Brazier_Post", "F", brazier_post), ("Banner_Torn_A", "F", banner_A), ("Banner_Torn_B", "F", banner_B),
         ("Banner_Pole", "F", banner_pole), ("Chain_Hang", "F", chain_hang), ("Gibbet_Cage", "F", gibbet_cage), ("Iron_Fence_10", "F", iron_fence),

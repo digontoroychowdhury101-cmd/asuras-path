@@ -264,7 +264,7 @@ def build_custom(name):
     mp = OUT / "maps"
     paths = {k: mp / f"{name}_{k}.png" for k in KINDS}
     if not (K.REUSE and all(p.exists() for p in paths.values())):
-        m = GENS2[name]()
+        m = K._ph_maps(name) or GENS2[name]()
         c = m["Color"]
         h, w = c.shape[:2]
         save_png(paths["Color"], c, "Color", m.get("Alpha"))
