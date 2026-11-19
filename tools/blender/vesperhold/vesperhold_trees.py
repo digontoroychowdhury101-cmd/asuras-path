@@ -53,18 +53,23 @@ class Tree:
         n = max(3, int(length / ds))
         sd = rng.random() * 100
         t = np.arange(n) / n
-        fq = self.cfg["freq"]
+        fq = self.cfg["freq"] * max(1.0, length / 12.0)  # long limbs kink back and forth instead of drifting into tusk crescents
         nv = np.stack([vnoise(np.stack([sd + t * fq + 31 * k, np.full(n, 1.7 + k), np.full(n, 0.3)], -1), k) for k in range(3)], 1)
         d = nrm(np.asarray(d0, float))
         pts, dirs = [np.asarray(p0, float)], []
         cs = 1 if rng.random() < 0.5 else -1
+        h0 = np.array([d[0], d[1], 0.0])
+        hn = float(np.linalg.norm(h0))
+        h0 = h0 / max(hn, 1e-9)
         for i in range(n):
             d = d + nv[i] * w * ds * 0.55 + np.array([0, 0, (up * (1 - t[i]) - droop * t[i]) * ds * 0.1])
+            if hn > 0.3 and d @ h0 < 0.25:  # never double back toward the parent: loops wrapped limbs round the trunk
+                d = d + (0.25 - d @ h0) * h0
             if curl:
                 a = curl * ds * 0.12 * cs
                 d = np.array([d[0] * math.cos(a) - d[1] * math.sin(a), d[0] * math.sin(a) + d[1] * math.cos(a), d[2]])
-            if pts[-1][2] < 4.0:  # keep limbs off the ground (no branch sliding along the floor)
-                d[2] = max(d[2], 0.25)
+            if pts[-1][2] < 7.0:  # keep limbs off the ground (no branch sliding along the floor): lift harder the lower it gets
+                d[2] = max(d[2], 0.25 + 0.1 * (7.0 - pts[-1][2]))
             d = nrm(d)
             dirs.append(d)
             pts.append(pts[-1] + d * ds)
@@ -88,7 +93,8 @@ class Tree:
             R[0] *= 1.2
         self.add(pts, R, kind, "broken" if brk else "point", depth)
         if brk and R[-1] > 0.25:
-            self.splinters(pts[-1], dirs[-1], R[-1], depth, rng.randint(3, 6))
+            self.splinters(pts[-1], dirs[-1], R[-1], depth, rng.randint(2, 3) if R[-1] < 0.8 else rng.randint(3, 6),
+                           (min(1.2, 2.5 * R[-1]), min(4.5, 6.0 * R[-1])))  # small stubs: short splinters (else a hedgehog)
         if cfg.get("thorns") and r0 < 1.2:
             for i in range(1, n, 1):
                 if rng.random() < cfg["thorns"]:
@@ -163,7 +169,7 @@ OAK = dict(maxdepth=5, nchild=[(0, 0), (4, 6), (3, 5), (3, 4), (2, 4), (0, 0)], 
            pbreak=[0, 0.12, 0.18, 0.2, 0.12, 0.05])
 
 
-def dead_oak(seed, H, reach):
+def dead_oak(seed, H, reach, arm_droop=0.4, arm_up=0.5):
     g = Tree(seed, OAK)
     rng = g.rng
     th = H * 0.3
@@ -179,7 +185,7 @@ def dead_oak(seed, H, reach):
     for a in reach:  # long sinuous reaching arms (ref_04 left): low elevation, thin, wandering
         i = rng.randint(len(pts) * 5 // 10, len(pts) * 8 // 10)
         g.grow(pts[i] + np.array([math.cos(a), math.sin(a), 0]) * R[i] * 0.4, (math.cos(a), math.sin(a), 0.32), H * rng.uniform(0.7, 0.85),
-               R[i] * 0.36, 1, up=0.5, no_break=True, droop_scale=0.4, w=0.85)
+               R[i] * 0.36, 1, up=arm_up, no_break=True, droop_scale=arm_droop, w=0.85)
     for _ in range(3):  # broken side limbs low on the trunk
         i = rng.randint(len(pts) // 4, len(pts) * 3 // 4)
         a = rng.uniform(0, 2 * PI)
@@ -217,8 +223,8 @@ def dead_pine(seed, H):
             a = 2 * PI * k / 4 + wi * 0.9 + rng.uniform(-0.4, 0.4)
             c, s = math.cos(a), math.sin(a)
             base = P[zi] + np.array([c, s, 0]) * R[zi] * 0.5
-            if low > 0.55 and rng.random() < 0.45:
-                g.grow(base, (c, s, rng.uniform(-0.15, 0.15)), rng.uniform(7, 14) * low, rng.uniform(0.45, 0.75), 1, droop_scale=1.3, no_break=rng.random() < 0.5)
+            if low > 0.35 and rng.random() < 0.5:
+                g.grow(base, (c, s, rng.uniform(-0.15, 0.15)), rng.uniform(8, 16) * low, rng.uniform(0.45, 0.75), 1, droop_scale=1.3, no_break=rng.random() < 0.5)
             else:
                 g.grow(base, (c, s, rng.uniform(-0.35, 0.05)), rng.uniform(0.8, 3.0), rng.uniform(0.28, 0.6), 1, rend=rng.uniform(0.5, 0.8), kids=False)
         zw += rng.uniform(2.4, 3.6)
@@ -249,7 +255,7 @@ def thorn(seed, H):
             out = nrm(np.array([P[i, 0], P[i, 1], 0]) + 1e-3)
             d = nrm(out * rng.uniform(0.6, 1.1) + [0, 0, 1.0] + np.array([rng.uniform(-0.3, 0.3), rng.uniform(-0.3, 0.3), 0]))
             g.grow(P[i], d, H * rng.uniform(0.32, 0.48), R[i] * 0.75, 1, up=1.2)
-    g.roots(6, 1.6, 6.0, rr=0.7)
+    g.roots(6, 1.6, 6.0, rr=0.5)
     g.flare = 0.18  # several stems: a full flare on each makes overlapping skirts
     return g
 
@@ -495,11 +501,11 @@ def gibbet_chain(g, H, level):
 # ============================================================================================ hero tree build
 SPECS = {
     "Dead_Oak_Gnarled_A": dict(fn=dead_oak, args=(11, 70.0, (2.6, -0.9)), H=72.0, chain=True),
-    "Dead_Oak_Gnarled_B": dict(fn=dead_oak, args=(23, 84.0, (0.5, 3.6, 4.6)), H=86.0),
-    "Dead_Pine_Snapped_A": dict(fn=dead_pine, args=(5, 66.0), H=None),
-    "Dead_Pine_Snapped_B": dict(fn=dead_pine, args=(9, 78.0), H=None),
-    "Thorn_Twisted_A": dict(fn=thorn, args=(3, 30.0), H=30.0),
-    "Thorn_Twisted_B": dict(fn=thorn, args=(8, 38.0), H=38.0),
+    "Dead_Oak_Gnarled_B": dict(fn=dead_oak, args=(23, 84.0, (0.5, 3.6), 0.12, 0.9), H=86.0),  # gentle arms: droop + ground lift swung U-loops
+    "Dead_Pine_Snapped_A": dict(fn=dead_pine, args=(5, 66.0), H=None, lean=(0.12, 30.0)),
+    "Dead_Pine_Snapped_B": dict(fn=dead_pine, args=(9, 78.0), H=None, lean=(0.17, 200.0)),
+    "Thorn_Twisted_A": dict(fn=thorn, args=(3, 30.0), H=30.0, lean=(0.24, 120.0)),
+    "Thorn_Twisted_B": dict(fn=thorn, args=(8, 38.0), H=38.0, lean=(0.2, -40.0)),
 }
 SCANS = {  # CC0 Poly Haven scans: (asset, studs per metre, yaw deg, sink studs)
     "Dead_Stump_A": ("tree_stump_01", 3.57, 0.0, 0.25),
@@ -531,6 +537,12 @@ def hero(name, out, mode):
     g = sp["fn"](*sp["args"])
     if sp["H"]:
         g.scale(sp["H"] / g.top())
+    if sp.get("lean"):  # bowed lean (offset grows as z^1.5, top moves k*H): upright poles read as props, not haunted trees
+        k, az = sp["lean"]
+        h0, dv = g.top(), np.array([math.cos(math.radians(az)), math.sin(math.radians(az))])
+        for b in g.br:
+            z = np.maximum(b["P"][:, 2], 0.0)
+            b["P"][:, :2] += dv * (k * z ** 1.5 / h0 ** 0.5)[:, None]
     for b in g.br:
         b["P"][:, 2] = np.maximum(b["P"][:, 2], ZMIN + 0.05)
         b["twist"] = name.startswith("Thorn")
@@ -544,6 +556,8 @@ def hero(name, out, mode):
         lc.name, hc.name = f"{name}__Chain", f"HI_{name}__Chain"
         FG.weather(hc, chip=0.02, erode=0.008, freq=4.0, seed=5, edge_pct=(80, 99))
         lows["Chain"], highs["Chain"] = lc, hc
+    for o in lows.values():
+        FG.weighted_normals(o)  # binding rule; must precede the bake (tangent normals are relative to these)
     log(f"{name}: H {H:.1f}  {len(g.br)} branches  low " + " ".join(f"{r}={VB.tris(o)}" for r, o in lows.items()) +
         "  high " + " ".join(f"{r}={VB.tris(o)}" for r, o in highs.items()) + f"  {time.time() - t:.1f}s")
     trunk = next(b for b in g.br if b["kind"] == "trunk")
@@ -719,7 +733,7 @@ def main():
                   "pivot": "trunk base centre at origin, z=0 ground (Blender Z up, GLB Y up); roots buried <= 2.8 studs"})
         m.pop("textures", None)
         mf.write_text(json.dumps(m, indent=2))
-    v2 = ROOT / "outputs/vesperhold/kit-renders-v2"
+    v2 = Path(os.environ.get("VESP_SHEET_DIR", ROOT / "outputs/vesperhold/kit-renders-v2"))
     v2.mkdir(parents=True, exist_ok=True)
     for sheet_name, names in SHEETS:
         rows = [sorted((out / "renders").glob(f"{n}_{tag}_*.png")) for n in names]

@@ -37,12 +37,12 @@ manifest = {"kit": "Vesperhold gothic kit A-E", "build": "blender -b -P tools/bl
             "pieces": {}}
 SUBMAT = {"Stone": "Vesp_Soot", "Tracery": "Vesp_Charcoal", "Pinnacles": "Vesp_Charcoal", "Crockets": "Vesp_Charcoal",
           "Dress": "Vesp_Charcoal", "Roof": "Vesp_Slate", "Frost": "Vesp_Frost", "Glass": "Vesp_Glass", "Iron": "Vesp_Iron",
-          "Verdigris": "Vesp_Verdigris", "GlassR": "Vesp_Glass"}
+          "Verdigris": "Vesp_Verdigris", "GlassR": "Vesp_Glass", "Louvre": "Vesp_Charcoal"}
 # studs per texture repeat (mac-53): castle_wall_slates has ~26 rubble courses per tile -> 64 gives ~2.5-stud courses;
 # medieval_blocks_03 has 5 ashlar courses per tile -> 15 gives 3-stud courses on the dressings.
 TILE = {"Vesp_Soot": 64.0, "Vesp_Charcoal": 15.0, "Vesp_Frost": 12.0, "Vesp_Slate": 14.0, "Vesp_Iron": 8.0,
         "Vesp_Verdigris": 8.0, "Vesp_Glass": 12.0}
-NOFROST = {"Frost", "Glass", "GlassR", "Iron", "Verdigris", "Roof"}
+NOFROST = {"Frost", "Glass", "GlassR", "Iron", "Verdigris", "Roof", "Louvre"}  # win-63: frosted louvres read as white blinds
 NOWEATHER = {"Frost", "Glass", "GlassR", "Iron", "Verdigris"}
 FINIAL_COPPER = False  # mac-53: soot-black stone finials (oversight: green copper read as toy-like); True restores verdigris caps
 
@@ -262,9 +262,10 @@ def gen_glass():
     flesh, green = np.array([0.62, 0.42, 0.24], np.float32), np.array([0.05, 0.16, 0.08], np.float32)
     col = np.zeros((N, N, 3), np.float32)
     gsel = (pid % 11)[..., None]  # warm-dominant ground (ref_01 glows amber/crimson), blue-violet as the cool accent
-    col = np.where(ground[..., None], np.where(gsel < 4, crim2, np.where(gsel < 6, amber * 0.55, np.where(gsel < 9, blue, viol))), col)
+    # win-63: warm-dominant ground (amber 5/11, crimson 4/11, cool 2/11) and tonal petals (amber/amber-dark, not a crimson pinwheel)
+    col = np.where(ground[..., None], np.where(gsel < 4, crim2, np.where(gsel < 9, amber * np.where(gsel < 6, 0.5, 0.36), np.where(gsel < 10, blue, viol))), col)
     col = np.where(band[..., None], np.where(((pid % 2) == 0)[..., None], amber * 0.85, crim2), col)
-    col = np.where(ros[..., None], np.where((sec % 2 == 0)[..., None], amber, crim), col)
+    col = np.where(ros[..., None], np.where((sec % 2 == 0)[..., None], amber * 0.9, gold * 0.62), col)
     col = np.where(fig[..., None], crim, col)
     robe_c = np.where((((ci + cj) // 2) % 2 == 0)[..., None], blue * 1.3, viol * 1.2)
     col = np.where((fig & robe)[..., None], robe_c, col)
@@ -553,11 +554,21 @@ def place_spear(sub, px, y, pz, dx, dz, w, ln, th):
 
 def foil(sub, cx, cz, r, n, y, sgn, bw=0.5, h=0.9, centred=False):
     """Cusped ring (foil): swept circle + n spearhead cusps pointing at the centre."""
-    sub.add(sweep(circle(cx, cz, r, 28 if r > 2 else 16), barc(bw, h) if centred else barf(bw, h), y, sgn, closed=True))
+    prof = barc(bw, h) if centred else barf(bw, h)
+    sub.add(sweep(circle(cx, cz, r, 28 if r > 2 else 16), prof, y, sgn, closed=True))
+    # win-63: true foils -- n tangent lobes inside the ring meeting in sharp cusps (spear cusps read as a broken clock face)
+    ri = r - bw * 0.5
+    s_ = math.sin(math.pi / n)
+    rl = ri * s_ / (1 + s_)
+    d = ri - rl
+    m = 9 if r > 2 else 6
+    pts = []
     for k in range(n):
-        ang = 2 * math.pi * (k + 0.5) / n
-        place_spear(sub, cx + (r - bw * 0.4) * math.cos(ang), y + (0 if centred else sgn * h * 0.5), cz + (r - bw * 0.4) * math.sin(ang),
-                    -math.cos(ang), -math.sin(ang), bw * 2.3, max(r * 0.42, bw * 2), h)
+        ak = math.pi / 2 + 2 * math.pi * k / n
+        lx, lz = cx + d * math.cos(ak), cz + d * math.sin(ak)
+        a0, sp = ak - math.pi / 2 - math.pi / n, math.pi + 2 * math.pi / n
+        pts += [(lx + rl * math.cos(a0 + sp * i / m), lz + rl * math.sin(a0 + sp * i / m)) for i in range(m)]
+    sub.add(sweep(pts, barc(bw * 0.8, h) if centred else barf(bw * 0.8, h * 0.9), y, sgn, closed=True))
 
 
 def frame(pos, x, z):
@@ -810,10 +821,31 @@ def edge_rib(sub, p0, p1, w, radial):
 
 
 # ============================================================================================ GROUP E
+def balustrade_qf(St, Tr_, x0, x1, z0, y, h=7.5, depth=1.8):
+    """win-63: pierced quatrefoil balustrade (row of round openings, each with a lobed quatrefoil), base rail + moulded coping."""
+    St.add(box(x0, x1, y - depth / 2, y + depth / 2, z0, z0 + 0.9))
+    St.add(xext([(y - depth / 2 - 0.25, z0 + h - 1.1), (y + depth / 2 + 0.25, z0 + h - 1.1), (y + depth / 2 + 0.25, z0 + h - 0.45),
+                 (y + depth / 2 - 0.1, z0 + h), (y - depth / 2 + 0.1, z0 + h), (y - depth / 2 - 0.25, z0 + h - 0.45)], x0, x1))
+    ph = h - 2.0
+    n = max(1, int((x1 - x0) / min(3.4, ph * 0.66)))
+    pitch = (x1 - x0) / n
+    r = min(pitch * 0.42, ph * 0.38)
+    zc = z0 + 0.9 + ph / 2
+    holes = []
+    for i in range(n):
+        c = x0 + pitch * (i + 0.5)
+        holes.append(circle(c, zc, r, 20))
+        foil(Tr_, c, zc, r + 0.05, 4, y, 1.0, max(0.22, r * 0.17), depth * 0.55, True)
+        if i:  # small blind trefoil in the spandrel between neighbouring openings
+            foil(Tr_, c - pitch / 2, z0 + h - 1.1 - r * 0.42, r * 0.34, 3, y - depth * 0.3, -1, 0.15, 0.25)
+    St.add(prism([[(x0, z0 + 0.9), (x1, z0 + 0.9), (x1, z0 + h - 1.1), (x0, z0 + h - 1.1)]] + holes, y - depth * 0.3, y + depth * 0.3))
+
+
 def viaduct_balustrade(S):
     L = 30.0
     st, tr, pn, cr = S["Stone"], S["Tracery"], S["Pinnacles"], S["Crockets"]
-    balustrade(st, tr, -L / 2 + 1.5, L / 2 - 1.5, 0.0, 0.0, 7.5, 1.4, 1.8)
+    balustrade_qf(st, tr, -L / 2 + 1.5, -1.1, 0.0, 0.0, 7.5, 1.8)
+    balustrade_qf(st, tr, 1.1, L / 2 - 1.5, 0.0, 0.0, 7.5, 1.8)
     for sx in (-1, 1):
         px = sx * (L / 2 - 0.75)
         st.add(box(px - 0.75, px + 0.75, -1.1, 1.1, 0.0, 9.2))
@@ -992,6 +1024,29 @@ def wimperg(sub, cr, hw, zb, hgt, y, th, arc=None, foil_r=0.0, foil_z=None, croc
         foil(sub, cx, foil_z if foil_z is not None else zb + hgt * 0.45, foil_r, 3, y - th / 2, -1, max(0.3, foil_r * 0.14), max(0.4, foil_r * 0.2))
 
 
+def harp(sub, x0, x1, zlo, ztop, y, pitch=2.2, w=0.36, d=0.55, skip=None):
+    """win-63: Strasbourg-style 'harp string' screen -- free-standing tracery rods in front of a wall plane at y (toward -y),
+    each pair joined by a cusped pointed head under ztop(x). zlo/ztop: x -> z. skip(x) -> [(z0, z1)] gaps (e.g. a rose)."""
+    n = max(1, int((x1 - x0) / pitch))
+    p = (x1 - x0) / n
+    xs = [x0 + p * i for i in range(n + 1)]
+    a = p / 2 - w / 2
+    for x in xs:
+        z0, z1 = zlo(x), ztop(x)
+        if z1 - z0 < 2.0:
+            continue
+        cuts = sorted(skip(x) if skip else [])
+        for g0, g1 in cuts + [(z1, z1)]:
+            if min(g0, z1) - z0 > 1.0:
+                sub.add(box(x - w / 2, x + w / 2, y - d, y, z0, min(g0, z1)))
+            z0 = max(z0, g1)
+    for i in range(n):
+        xa, xb = xs[i], xs[i + 1]
+        zt = min(ztop(xa), ztop(xb)) - arch_h(a, 2 * a) - 0.2
+        if zt - max(zlo(xa), zlo(xb)) > 3.0 and not any(g0 - 0.5 < zt + 2 * a and g1 > zt - 0.5 for g0, g1 in (skip((xa + xb) / 2) if skip else [])):
+            sub.add(sweep(arch(a, zt, 2 * a, 0, 7), barc(w * 0.8, d), y - d / 2, 1.0), Tr((xa + xb) / 2, 0, 0))
+
+
 def pin_cluster(D, C, cx, cy, z0, w, h, lvl=2, minis=4, rot=0.0):
     """Main crocketed pinnacle with smaller pinnacles crowding its base (gothic stage-transition cluster)."""
     pinnacle(D, C, cx, cy, z0, w, h, lvl)
@@ -1118,6 +1173,7 @@ def tower_stage(S):
         holes = []
         for cx in (-6.4, 6.4):
             holes.append([(cx + x, z) for x, z in hl])
+            L["Glass"].add(prism([[(cx + x, z) for x, z in hl]], -15.0, -14.86))  # win-63: glazed (warm lancets, ref_01), not blind rubble
             archivolt(L["Tracery"], 2.7, zs, Rr, [(0.0, [("roll", 0.6, 0.6), ("cove", 0.5, 0.4), ("roll", 0.8, 0.8)])], -16.0, -1, z0=15.0,
                       cx=cx, n=10)
             head_tracery(L["Tracery"], cx, zs, 2.7, Rr, -15.4, 0.4, zs + 0.8)
@@ -1138,6 +1194,7 @@ def tower_stage(S):
             L["Tracery"].add(loft([rect(c, -16.4, 55.6, 0.3, 0.3), rect(c, -16.6, 57.2, 0.55, 0.6)]))
     for k in range(4):
         local(S, Rz(k * math.pi / 2), face)
+    S["Glass"].uvfn = glass_uv(2.7, (-6.4, 6.4))
     for sx, sy in ((-1, -1), (-1, 1), (1, -1), (1, 1)):
         corner_pier(S, sx, sy, 0.0, 60.0, (26.0, 44.0), gar_z=54.0)
     tr.add(loft([rect(0, 0, 0.0, 16.8, 16.8), rect(0, 0, 1.0, 16.8, 16.8), rect(0, 0, 1.8, 16.4, 16.4)]))
@@ -1162,7 +1219,8 @@ def spire_base_oct(S):
 
     def sface(L):
         blind_arcade(L["Tracery"], -13.6, 13.6, 1.0, 7.0, -16.0, 8, 0.5)
-        wimperg(L["Tracery"], L["Crockets"], 7.4, 10.2, 16.0, -16.2, 1.2, foil_r=3.0, foil_z=16.4, crock=1.0)
+        wimperg(L["Tracery"], L["Crockets"], 7.4, 10.2, 16.0, -16.2, 1.2, foil_r=2.4, foil_z=18.2, crock=1.0)
+        blind_arcade(L["Tracery"], -4.6, 4.6, 10.8, 4.4, -16.8, 3, 0.5)  # win-63: blind lights in the gable field (was a bare triangle)
     for k in range(4):
         local(S, Rz(k * math.pi / 2), sface)
     for sx, sy in ((-1, -1), (-1, 1), (1, -1), (1, 1)):
@@ -1190,7 +1248,7 @@ def spire_belfry_stage(S):
         L["Stone"].add(prism([[(-sw - 0.1, 2.4), (sw + 0.1, 2.4), (sw + 0.1, 40.0), (-sw - 0.1, 40.0)]] + holes, -0.9, 0.9))
         for cx in (-2.35, 2.35):
             archivolt(L["Tracery"], 1.75, zs, Rr, [(0.0, [("roll", 0.4, 0.4), ("cove", 0.3, 0.3)])], -0.9, -1, z0=9.6, cx=cx, n=9)
-            louvres(L["Tracery"], cx, 1.7, 9.6, zs + 1.0, 0.2)
+            louvres(L["Louvre"], cx, 1.7, 9.6, zs + 1.0, 0.2)
             L["Tracery"].add(box(cx - 2.1, cx + 2.1, -1.8, -0.8, 9.0, 9.6))
         archivolt(L["Tracery"], 4.2, zso, Ro, [(0.2, [("roll", 0.5, 0.6), ("cove", 0.4, 0.4), ("roll", 0.6, 0.7)])], -0.9, -1, z0=None, n=12,
                   crock=(0.8, 2.0, 0.3))
@@ -1338,6 +1396,17 @@ def rose_glass(G, cx, cz, R, y0, y1, cells=24, nseg=96, nring=12):
     G.uvfn = uvfn
 
 
+def glass_uv(a, centres, axis=None, cols=1):
+    """win-63: lancet glazing mapped to the opening, `cols` medallion columns across width 2a (cells stay square), so each light
+    reads as a Chartres-style column of medallions instead of a cropped wallpaper grid. axis None: face axis from the centroid."""
+    def fn(c, ctr):
+        ax = axis if axis is not None else (0 if abs(ctr[1]) >= abs(ctr[0]) else 1)
+        cc = min(centres, key=lambda q: abs(ctr[ax] - q))
+        k = cols * 0.25 / (2 * a)
+        return ((c[ax] - cc + a) * k, c[2] * k)
+    return fn
+
+
 def rose(T, G, cx, cz, R, n, y=0.0):
     """Rayonnant rose (mac-53): hub six-foil, n radiating colonnette spokes, a middle ring, cusped pointed heads at the outer ends
     of the lights, a ring of cusped roundels between the heads. G: the GlassR sub (polar-UV disc)."""
@@ -1428,6 +1497,8 @@ def lancet_unit(S, cx, a, y0=-2.0, y1=2.0, z_sill=1.5, apex=41.5, wall=None):
     for sgn, y in ((-1, y0), (1, y1)):
         archivolt(tr, a, zs, Rr, [(0.0, [("roll", 0.7, 0.6), ("cove", 0.7, 0.5), ("roll", 1.2, 1.0)])], y, sgn, z0=z_sill, cx=cx, n=10, crock=(0.9, 2.3, 0.2))
     gl.add(prism([hole], 0.4, 0.7))
+    gl.cents = getattr(gl, "cents", []) + [cx]
+    gl.uvfn = glass_uv(a, gl.cents, axis=0, cols=2)  # a=4: two medallion columns per 8-stud light
     head_tracery(tr, cx, zs, a, Rr, 0.0, 0.5, zs + 0.9)
     tr.add(box(cx - 0.25, cx + 0.25, -0.45, 0.45, z_sill, zs + 0.9))
     for zt_ in (zs * 0.34, zs * 0.66):
@@ -1553,8 +1624,10 @@ def portal_great(S):
     finial(cr, 0.0, yg, zb + hg - 0.3, 1.6)
     tr.add(sweep(circle(0, rz, rr, 40), mould([("roll", 0.5, 0.5), ("cove", 0.4, 0.4), ("roll", 0.7, 0.7)]), yg - 0.9, -1, closed=True, flip=True))
     rose(tr, S["GlassR"], 0.0, rz, rr, 8, yg)
-    for sx in (-1, 1):
-        foil(tr, sx * 9.0, 52.0, 2.6, 3, yg - 0.9, -1, 0.35, 0.6)
+    dd = dstep * nord + 4.6  # win-63: harp-string tracery screen over the bare gable field (ref_01 west front), parted round the rose
+    harp(tr, -hw + 2.6, hw - 2.6, lambda x: max(zb, archz(x, a0, zs, R0, dd) + 0.6 if abs(x) < a0 + dd else zb),
+         lambda x: zb + hg * (1 - abs(x) / hw) - 2.4, yg - 0.9, 2.15,
+         skip=lambda x: [(rz - math.sqrt(max((rr + 1.6) ** 2 - x * x, 0.0)), rz + math.sqrt(max((rr + 1.6) ** 2 - x * x, 0.0)))] if abs(x) < rr + 1.6 else [])
     # flanking buttress towers
     yb = yfront(nord - 1) - 2.6
     for sx in (-1, 1):
@@ -1954,7 +2027,7 @@ def ledge(co, nrm, area):
     if min(max(xs) - min(xs), max(ys) - min(ys)) > 4.2:
         return False
     cx, cy, cz = (sum(xs) / len(xs), sum(ys) / len(ys), sum(c[2] for c in co) / len(co))
-    return _wn(cx * 0.21, cy * 0.21, cz * 0.21) > -0.75
+    return _wn(cx * 0.21, cy * 0.21, cz * 0.21) > -0.05  # win-63: ~half the ledges (continuous white rings read as paint)
 
 
 def write_manifest(man=None):
@@ -2149,15 +2222,20 @@ def composite(sc, cam, ground, tag, items, tgt, off, res=(1600, 1000), man=None,
 
 
 # C3: the spire stack Base_Oct + Belfry + Lucarne + Needle (~186 studs to the cross); C3b the lower stages close; D4 the west front.
-STK = [("Spire_Base_Oct", (0, 0, 0.0), 0.0), ("Spire_Belfry_Stage", (0, 0, 30.0), 0.0), ("Spire_Lucarne_Mid", (0, 0, 70.0), 0.0),
-       ("Spire_Needle_Tip", (0, 0, 118.0), 0.0)]
+# win-63: the main stack stands on Tower_Corner_Stage (~246 studs to the cross); a shorter broken-topped stack beside it (asymmetry).
+STK = [("Tower_Corner_Stage", (0, 0, 0.0), 0.0), ("Spire_Base_Oct", (0, 0, 60.0), 0.0), ("Spire_Belfry_Stage", (0, 0, 90.0), 0.0),
+       ("Spire_Lucarne_Mid", (0, 0, 130.0), 0.0), ("Spire_Needle_Tip", (0, 0, 178.0), 0.0)]
+STK2 = STK + [("Spire_Base_Oct", (64.0, 46.0, 0.0), 0.0), ("Spire_Belfry_Stage", (64.0, 46.0, 30.0), 0.0),
+              ("Spire_Lucarne_Mid", (64.0, 46.0, 70.0), 0.0), ("Spire_Broken_Top", (64.0, 46.0, 118.0), 0.0)]
 WEST = [("Portal_Great", (0, 0, 0), 0.0), ("Rose_Window_Great", (0, 8.0, 84.0), 0.0), ("Buttress_Pier", (-36.0, 4.0, 0), 0.0),
         ("Buttress_Pier", (36.0, 4.0, 0), 0.0), ("Lancet_Pair", (-55.0, 6.0, 0), 0.0), ("Lancet_Pair", (55.0, 6.0, 0), 0.0),
         ("Lancet_Tall", (-55.0, 6.0, 72.0), 0.0), ("Lancet_Tall", (55.0, 6.0, 72.0), 0.0), ("Buttress_Pier", (-74.0, 4.0, 0), 0.0),
-        ("Buttress_Pier", (74.0, 4.0, 0), 0.0), ("@backdrop", ((-82.0, 82.0, 8.0, 14.0, 0.0, 140.0), 0, 0), 0.0)]
-COMPOSITES = [("C3_spire_stack", STK, (0, 0, 92.0), (95.0, -255.0, -62.0), (1000, 1600), (19.0, -24.0, 0.0)),
-              ("C3b_spire_stack_low", STK, (0, 0, 40.0), (52.0, -92.0, -30.0), (1600, 1000), (19.0, -24.0, 0.0)),
-              ("D4_west_front", WEST, (0, 0, 72.0), (48.0, -235.0, -50.0), (1600, 1000), (8.0, -22.0, 0.0))]
+        ("Buttress_Pier", (74.0, 4.0, 0), 0.0), ("@backdrop", ((-82.0, 82.0, 12.0, 18.0, 0.0, 140.0), 0, 0), 0.0)]
+# win-63: the west front between two tower+spire stacks (ref_01/03), asymmetric: the right one carries an extra tower stage.
+WEST += [(n, (-104.0, 10.0, z), r) for n, (_, _, z), r in STK] + [("Tower_Corner_Stage", (104.0, 10.0, 0.0), 0.0)] +         [(n, (104.0, 10.0, z + 60.0), r) for n, (_, _, z), r in STK]
+COMPOSITES = [("C3_spire_stack", STK2, (28.0, 18.0, 136.0), (34.0, -200.0, -126.0), (1000, 1600), (6.0, -24.0, 0.0), 27),
+              ("C3b_spire_stack_low", STK, (0, 0, 66.0), (58.0, -112.0, -54.0), (1600, 1000), (6.0, -24.0, 0.0)),
+              ("D4_west_front", WEST, (0, 0, 132.0), (34.0, -292.0, -120.0), (1600, 1200), (8.0, -22.0, 0.0), 20)]
 
 
 def main():
@@ -2201,8 +2279,8 @@ def main():
             t = time.time()
             sheet(sc, cam, ground, tag, items)
             log(f"render {tag} {time.time() - t:.1f}s")
-    for tag, items, tgt, off, res, man in COMPOSITES:
-        composite(sc, cam, ground, tag, items, tgt, off, res, man)
+    for tag, items, tgt, off, res, man, *lens in COMPOSITES:
+        composite(sc, cam, ground, tag, items, tgt, off, res, man, *lens)
     log("renders done")
 
 

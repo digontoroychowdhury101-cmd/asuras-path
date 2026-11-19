@@ -34,6 +34,7 @@ PIECES = ("Gargoyle_A", "Gargoyle_B")
 BUILDER = "tools/blender/vesperhold/vesperhold_gargoyles.py (mac-52, SDF hand-sculpt, Cycles-baked)"
 PI = math.pi
 BIG = 1e3
+TIPMIN = 0.024  # >= ~1.2 HIGH cells: thinner tips polygonise into detached fragments
 MARG = 0.3  # evaluation margin (studs) around every primitive; > 2 cells + blend radius at every resolution used here
 
 
@@ -112,7 +113,7 @@ def tube(pts, radii, step=0.1):
     pts = np.asarray(pts, float)
     Lc = float(np.linalg.norm(np.diff(pts, axis=0), axis=1).sum())
     C, s, L, _ = spline(pts, max(4, int(Lc / step) + 1))
-    R = np.interp(s, np.linspace(0, 1, len(radii)), radii)
+    R = np.maximum(np.interp(s, np.linspace(0, 1, len(radii)), radii), TIPMIN)  # sub-cell tips fray into floating bits
     parts = []
     for i in range(len(C) - 1):
         lo = np.minimum(C[i] - R[i], C[i + 1] - R[i + 1])
@@ -483,9 +484,9 @@ def wing(F, sx, root, elbow, wrist, tips, rbone=(0.24, 0.16, 0.11), t=0.06, sag=
         F.u(sheet(G, t), 0.025)
         if tatter:
             for _ in range(tatter):
-                s_, u_ = rng.uniform(0.15, 0.85), rng.uniform(0.55, 1.0)
+                s_, u_ = rng.uniform(0.2, 0.8), rng.uniform(0.8, 1.0)  # edge notches only: inner holes cut islands
                 i, j = int(s_ * (ns - 1)), int(u_ * (nt - 1))
-                F.c(sphere(G[i, j] + rng.normal(0, 0.05, 3), rng.uniform(0.1, 0.24)), 0.02)
+                F.c(sphere(G[i, j] + rng.normal(0, 0.05, 3), rng.uniform(0.07, 0.14)), 0.02)
 
 
 def claws(F, base, d1, d2, r=0.07):
@@ -502,7 +503,7 @@ def teeth(F, c, r, R, up, ts, lens, rad=0.05, xf=0.74):
         f = math.sqrt(max(0.0, 1 - t * t))
         for sx in (-1, 1):
             base = c + R @ np.array([sx * r[0] * xf * f, t * r[1], up * r[2] * 0.45])
-            F.u(tube([base - d * 0.04, base + d * (L * 0.6) - R[:, 1] * 0.02, base + d * L - R[:, 1] * 0.05], [rad * (1 + L), rad * 0.6 * (1 + L), 0.014]), 0.015)
+            F.u(tube([base - d * 0.04, base + d * (L * 0.6) - R[:, 1] * 0.02, base + d * L - R[:, 1] * 0.05], [rad * (1.5 + L), rad * 0.75 * (1 + L), 0.0]), 0.015)
 
 
 # ============================================================================================ Gargoyle_A: crouching winged beast on a corbel
@@ -543,23 +544,29 @@ def spec_A():
     C, s, _, _ = spline(torso, 40)
     R = np.interp(s, np.linspace(0, 1, len(tr)), tr)
     body.u(tube(C[3:39] + np.array([0, 0, 1.0]) * (R[3:39, None] * 0.9), [0.13, 0.15, 0.1]), 0.08)  # spine ridge
+    for i in range(14, 27, 3):  # gaunt ribs under the hide on both flanks (the torso read as a smooth sack)
+        for sx in (-1, 1):
+            arc = [C[i] + np.array([sx * R[i] * 0.99 * math.cos(a), 0.12 * (1 - math.sin(a)), R[i] * 0.99 * math.sin(a)])
+                   for a in np.linspace(math.radians(55), math.radians(-40), 7)]
+            body.u(tube(arc, [0.07, 0.08, 0.06]), 0.09)
     for i in range(3, 39, 2):
         top = C[i] + np.array([0, 0, R[i] * 0.97])
         n = nrm(np.array([0, 0.45, 1.0]))
         body.u(tube([top - n * 0.08, top + n * (0.3 + 0.12 * math.sin(PI * i / 40))], [0.17, 0.03]), 0.05)
     # ---- head
     head.u(tube([(0, -0.6, 4.55), (0, -1.2, 4.92), (0, -1.65, 5.1)], [0.62, 0.55, 0.48]))
-    head.u(ellip((0, -1.95, 5.3), (0.6, 0.68, 0.52)), 0.15)  # cranium
+    head.u(ellip((0, -1.9, 5.2), (0.62, 0.74, 0.42)), 0.15)  # cranium: low and flat (a dome reads cat-like)
+    head.u(tube([(0, -2.45, 5.48), (0, -1.9, 5.66), (0, -1.25, 5.5)], [0.07, 0.1, 0.05]), 0.08)  # sagittal crest
     head.u(ellip((0, -2.62, 5.18), (0.4, 0.62, 0.27), rotx(12)), 0.12)  # snout
     head.u(ellip((0, -2.45, 4.72), (0.34, 0.55, 0.13), rotx(28)), 0.1)  # open jaw
     head.c(ellip((0, -2.5, 4.88), (0.28, 0.5, 0.1), rotx(14)), 0.05)  # mouth cavity
     mirror(lambda sx: head.u(ellip((sx * 0.42, -2.2, 5.12), (0.2, 0.36, 0.2)), 0.1))  # cheeks
-    mirror(lambda sx: head.u(tube([(sx * 0.05, -2.68, 5.38), (sx * 0.32, -2.6, 5.5), (sx * 0.6, -2.3, 5.58)], [0.14, 0.18, 0.12]), 0.07))  # heavy scowling brow
-    mirror(lambda sx: head.c(sphere((sx * 0.3, -2.5, 5.3), 0.155), 0.03))  # deep eye sockets under the brow
-    mirror(lambda sx: head.u(sphere((sx * 0.3, -2.4, 5.29), 0.075), 0.01))  # eyes deep inside
+    mirror(lambda sx: head.u(tube([(sx * 0.04, -2.72, 5.3), (sx * 0.32, -2.62, 5.46), (sx * 0.62, -2.3, 5.56)], [0.15, 0.19, 0.12]), 0.07))  # heavy V scowl brow
+    mirror(lambda sx: head.c(sphere((sx * 0.3, -2.5, 5.27), 0.155), 0.03))  # deep eye sockets under the brow
+    mirror(lambda sx: head.u(sphere((sx * 0.3, -2.38, 5.25), 0.06), 0.01))  # small eyes sunk deep inside
     for y, z in ((-2.58, 5.41), (-2.7, 5.38), (-2.82, 5.34)):  # snarl wrinkles on the muzzle
         head.u(tube([(-0.27, y + 0.03, z - 0.08), (0, y, z), (0.27, y + 0.03, z - 0.08)], [0.035, 0.05, 0.035]), 0.04)
-    mirror(lambda sx: head.c(sphere((sx * 0.1, -3.16, 5.08), 0.042), 0.015))  # nostrils
+    mirror(lambda sx: head.c(ellip((sx * 0.11, -3.12, 5.1), (0.07, 0.04, 0.022), rotx(-30)), 0.012))  # nostril slits (dots read as eyes)
     teeth(head, (0, -2.62, 5.18), (0.4, 0.62, 0.27), rotx(12), -1, (-0.8, -0.66, -0.5, -0.36, -0.22), (0.16, 0.34, 0.14, 0.12, 0.1))
     teeth(head, (0, -2.45, 4.72), (0.34, 0.55, 0.13), rotx(28), 1, (-0.82, -0.66, -0.5, -0.34), (0.14, 0.28, 0.12, 0.1))
     mirror(lambda sx: head.u(tube([(sx * 0.3, -1.85, 5.65), (sx * 0.55, -1.6, 6.2), (sx * 0.8, -1.05, 6.55), (sx * 1.0, -0.45, 6.5),
@@ -633,20 +640,20 @@ def spec_B():
     mirror(lambda sx: head.u(tube([(sx * 0.22, -2.4, 5.0), (sx * 0.2, -4.8, 4.78), (sx * 0.18, -7.2, 4.75)], [0.09, 0.07, 0.08]), 0.06))  # tendons
     C, s, _, _ = spline(neck, 30)
     R = np.interp(s, np.linspace(0, 1, len(nr_)), nr_)
-    for i in range(2, 27, 2):
-        mirror(lambda sx, i=i: head.u(sphere(C[i] + [sx * 0.17, 0, R[i] * 0.86], 0.085), 0.05))  # paired vertebra knobs
+    for i in range(3, 27, 4):  # sparse: a dense row read as scales
+        mirror(lambda sx, i=i: head.u(sphere(C[i] + [sx * 0.15, 0, R[i] * 0.84], 0.07), 0.05))  # paired vertebra knobs
     head.u(ellip((0, -8.0, 5.12), (0.42, 0.55, 0.4)), 0.15)  # cranium
     head.u(ellip((0, -8.65, 5.18), (0.3, 0.6, 0.19), rotx(-18)), 0.1)  # upper jaw, tipped up: screaming
     head.u(ellip((0, -8.5, 4.58), (0.28, 0.6, 0.13), rotx(35)), 0.1)  # lower jaw, dropped
     head.c(ellip((0, -8.55, 4.88), (0.23, 0.62, 0.19), rotx(8)), 0.04)  # maw
     mirror(lambda sx: head.u(ellip((sx * 0.33, -8.2, 4.98), (0.12, 0.3, 0.12)), 0.06))  # cheekbones
     mirror(lambda sx: head.c(sphere((sx * 0.45, -7.85, 5.15), 0.12), 0.08))  # sunken temples
-    mirror(lambda sx: head.c(sphere((sx * 0.22, -8.42, 5.24), 0.11), 0.03))  # eye sockets
-    mirror(lambda sx: head.u(sphere((sx * 0.22, -8.36, 5.22), 0.055), 0.01))
+    mirror(lambda sx: head.c(sphere((sx * 0.22, -8.42, 5.22), 0.13), 0.03))  # empty eye sockets (an eyeball read cartoonish)
+    mirror(lambda sx: head.u(tube([(sx * 0.07, -8.6, 5.36), (sx * 0.24, -8.5, 5.42), (sx * 0.4, -8.22, 5.36)], [0.06, 0.08, 0.05]), 0.05))  # brow ridge
     mirror(lambda sx: head.u(tube([(sx * 0.22, -7.85, 5.42), (sx * 0.38, -7.35, 5.72), (sx * 0.42, -6.75, 5.75), (sx * 0.36, -6.35, 5.55)],
                                    [0.1, 0.08, 0.05, 0.008]), 0.04))  # swept-back horns
-    teeth(head, (0, -8.65, 5.18), (0.3, 0.6, 0.19), rotx(-18), -1, (-0.86, -0.72, -0.58, -0.44, -0.3, -0.16), (0.14, 0.24, 0.13, 0.12, 0.11, 0.09), rad=0.04)
-    teeth(head, (0, -8.5, 4.58), (0.28, 0.6, 0.13), rotx(35), 1, (-0.84, -0.7, -0.56, -0.42, -0.28), (0.12, 0.22, 0.11, 0.1, 0.09), rad=0.04)
+    teeth(head, (0, -8.65, 5.18), (0.3, 0.6, 0.19), rotx(-18), -1, (-0.86, -0.72, -0.58, -0.44, -0.3, -0.16), (0.14, 0.24, 0.13, 0.12, 0.11, 0.09), rad=0.05)
+    teeth(head, (0, -8.5, 4.58), (0.28, 0.6, 0.13), rotx(35), 1, (-0.84, -0.7, -0.56, -0.42, -0.28), (0.12, 0.22, 0.11, 0.1, 0.09), rad=0.05)
     # water channel: open trough along the back of the neck + a bore through the throat into the maw
     trough = np.array([(0, -2.3, 5.8), (0, -3.4, 5.54), (0, -4.8, 5.29), (0, -6.2, 5.17), (0, -7.3, 5.26)])
     head.c(tube(trough, [0.11, 0.1, 0.1, 0.1, 0.1]), 0.03)
@@ -656,7 +663,7 @@ def spec_B():
     def wg(sx):  # small tattered wings folded along the back
         wing(wings, sx, (sx * 0.38, -1.7, 5.72), (sx * 0.85, -1.05, 6.35), (sx * 1.12, -0.25, 6.55),
              [(sx * 1.75, 0.45, 6.05), (sx * 1.55, 0.95, 5.5), (sx * 1.0, 0.8, 5.25)], rbone=(0.16, 0.11, 0.08), t=0.05, sag=0.38,
-             billow=0.08, flank=[(sx * 1.12, -0.25, 6.55), (sx * 0.85, -1.05, 6.35), (sx * 0.5, -0.4, 5.85)], tatter=4, rng=rng)
+             billow=0.08, flank=[(sx * 1.12, -0.25, 6.55), (sx * 0.85, -1.05, 6.35), (sx * 0.5, -0.4, 5.85)], tatter=2, rng=rng)
     mirror(wg)
     hvoid = dict(spheres=[((0.22, -8.4, 5.24), 0.13, 0.85), ((-0.22, -8.4, 5.24), 0.13, 0.85), ((0, -8.55, 4.86), 0.3, 0.8)],
                  segs=[((0, -6.6, 4.9), (0, -8.4, 4.85), 0.22, 0.9)])
@@ -700,8 +707,13 @@ def gargoyle(name, out, mode):
             V, Q = surface_nets(*F.grid(R["hi"]), R["hi"])
             vd = voids(V, **R["void"]) if R.get("void") else None
             hi = mesh_from(f"HI_{name}__{role}", V, Q, vd)
+            co0, nr0 = _co_nr(hi)
+            thin = sst(-0.04, -0.012, F.eval(co0 - nr0 * 0.05))  # 1 in teeth/claws/horn tips: chips there fray them into bits
             detail(hi, bump=0.005, pit=0.008, freq=3.2, seed=7 + i)
             FG.weather(hi, chip=0.012, erode=0.002, freq=3.0, seed=17 + i, edge_pct=(94, 99.7))
+            co1, _ = _co_nr(hi)
+            hi.data.vertices.foreach_set("co", (co0 + (co1 - co0) * (1 - thin)[:, None]).astype(np.float32).ravel())
+            hi.data.update()
         FG.weighted_normals(lo)
         lows[role], highs[role] = lo, hi
         log(f"{name}__{role}: low {VB.tris(lo)} tris, high {VB.tris(hi)} tris  {time.time() - t:.1f}s")
@@ -721,7 +733,7 @@ def gargoyle(name, out, mode):
         o.data.materials.append(stone)
     for o in lows.values():
         VB.unwrap(o)
-    look = VB.Look(base=0.12, grime=0.4, frost=0.45, streak_dark=0.26)
+    look = VB.Look(base=0.12, grime=0.4, frost=0.5, streak_dark=0.26, sat=0.4)  # sat<1: rock_04 read brown, target soot-black
     rays = {r: ((0.1, 0.25) if "loft" in R else (0.06, 0.16)) for r, R in roles.items()}
     return finish(name, "F", lows, highs, out, {"*": look}, rays, src["source"], render_kw=rkw)
 
@@ -761,9 +773,9 @@ def main():
         FG.sheet(rows, dst)
         log("sheet", dst)
         if mode != "clay":
-            v2 = ROOT / "outputs/vesperhold/kit-renders-v2"
+            v2 = Path(os.environ.get("VESP_SHEET_DIR", ROOT / "outputs/vesperhold/kit-renders-v2"))
             v2.mkdir(parents=True, exist_ok=True)
-            shutil.copy2(dst, v2 / "F2_gargoyles_v2.jpg")
+            shutil.copy2(dst, v2 / os.environ.get("VESP_SHEET_NAME", "F2_gargoyles_v2.jpg"))
 
 
 if __name__ == "__main__":
