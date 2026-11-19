@@ -225,3 +225,14 @@ Lead adc6b08 opus; mac-51/52/53 opus (stopped mid-pass); mac-54 sonnet (self-rep
 - Last activity: workers between 17:48 and 18:46, then the Claude Code process ended. Nothing was committed on this computer in that window (HEAD stayed at `03827d6`).
 - Memory: the creator reported Windows memory exhaustion (VirtualAlloc failures, error 1455) behind the ECC warnings and capped the run at the lead plus two workers, heavy Studio, multiplayer and Blender jobs one at a time. The lead launched six lanes before that reached it. The cap was restated in the 23:45 resume message, with a reconcile-first instruction and commits at each verified item.
 - Fable usage since the last entry: two messages to the lead, one read of the CONTINUATION top section, this tally, and an amendment to the saved parallel-work preference. No inventory, design or code.
+
+## Windows run 4 — 2026-11-19 (resume of Mac run 3b, 1d03c2d)
+Oversight and acceptance lead: this session, Opus 5.5 (`claude-opus-5-5`). Sync: local 16 Nov notes committed and rebased onto origin (b97bcc8); nothing discarded. Free RAM ~3.6 of 15.7 GB, so workers are capped at two and one heavy job machine-wide (`work/vesperhold-claude/heavy.lock`, guarded form).
+Codex: no `codex` CLI on this PC (only the Codex desktop app), so the lead cannot assign Codex lanes; every lane below is Claude. Codex can take a lane by owning files no Claude lane holds.
+
+| Lane | Role | Requested | Observed | Owns |
+|---|---|---|---|---|
+| win-61 | statues pass 2 + veiled scan | opus | pending report | vesperhold_figures.py, vesp_bake.py |
+| win-62 | gargoyles + withered trees | opus | pending report | vesperhold_gargoyles.py, vesperhold_trees.py |
+| win-63 | architecture density (queued until a slot frees) | opus | — | vesperhold_kit.py, vesp_common.py, vesperhold_props.py |
+Output for all lanes: `assets/source/vesperhold/candidate-win-2026-11-19/{kit,props,trees}` (copy of the Mac candidate + trees; Mac candidate kept pristine).

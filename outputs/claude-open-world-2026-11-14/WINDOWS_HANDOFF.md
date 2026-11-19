@@ -38,6 +38,12 @@ was removed.
    loader and atmosphere code, but **no kit meshes yet** (empty registry → stand-ins). Check the hash on Windows. The
    in-Studio SourceDigest was NOT recorded on the Mac: run `tools/qa/SourceDigest.luau` in the opened copy
    (persistedToCloud=false) and record it here. Do not open it as the cloud place or save it into the cloud.
+   **Windows, 2026-11-19 22:20 Sydney (Opus 5.5 lead):** SHA-256 matches. Copy `work/windows-resume-2026-11-19/VespHandoffCopy.rbxlx`
+   opened in Studio Edit, persistedToCloud=false; SourceDigest = `scripts 286 bytes 3351900 digest 1396434633 | AsuraAssets
+   children 24`, identical to `tools/studio_mcp.py --digest` on the same file. Closed unsaved.
+   `bash tools/verify_all.sh` (build to `work/windows-resume-2026-11-19/`): **exit 1**, single failure = the
+   outside-terrain checksum in `test_vesperhold_massing.luau` (Windows sum 176934331.6347 vs Mac constant 176934331.5874,
+   libm drift over 112,666 samples). Tolerance made relative (1e-8) in 20672bb; massing then 14769/0. Full re-run pending.
 4. Tools: Blender 5.2.2 was used on the Mac. blender-skills (kevinbadi, pinned `b2f0f816d320b56ae86d52597a35284e0e6cc929`,
    **no licence → never commit its files**) was installed into `~/.claude/skills` from a clone in
    `work/third_party/blender-skills`. On Windows, clone it at that commit if a Claude agent wants it. Codex agents only
