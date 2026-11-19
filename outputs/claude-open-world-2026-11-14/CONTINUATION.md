@@ -1,5 +1,7 @@
 # CONTINUATION — read this first after any restart
 
+**Current: Mac -> Windows handoff 2026-11-19 — read [WINDOWS_HANDOFF.md](WINDOWS_HANDOFF.md) and [handoff/WINDOWS_RESUME_PROMPT.md](handoff/WINDOWS_RESUME_PROMPT.md). verify_all exit 0 on Mac.**
+
 ## WRAP-UP 2026-11-19 — Mac run ended, handed to Windows (coordinator order)
 No workers running. No Studio (only StudioMCP bridge procs) or Blender running; memory 65% free. Nothing uploaded this run; no operation IDs;
 VESPERHOLD_KIT_UPLOADED.json does not exist; cloud place untouched (M1 v9). outputs/vesperhold/* untracked files are the creator's/Codex's: not staged.

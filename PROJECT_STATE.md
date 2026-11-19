@@ -684,3 +684,4 @@ Studio diagnostic: all 8 altars wake correctly, and reclaim/forfeit work. Fixed:
 
 - 2026-11-14: Matt Pocock skills configured (docs/agents/, CLAUDE.md "Agent skills"). Next: run `gh auth login`, then create the five triage labels.
 - 2026-11-16 (Mac M1 saved to cloud): git 3465430 (parallel terrain writer: map 14 s, 50-61 Hz; Shen on-foot entry; biome kit registries) is in cloud place 118614906972571, digest 786797912, saved, latest version 9. Next: creator approves the Mac upload folder, then lantern, real-mesh slice and captures. See handoff/CLOUD_MIGRATION.md.
+- 2026-11-19 (Mac) Vesperhold citadel rebuilt in source (tiers, 3 viaducts, grand stair, 71 spires) + Blender gothic kit, props, withered trees; forest metalness root cause and retone tool. Nothing uploaded; cloud M1 v9. verify_all passes. Next (Windows): Studio walk check, kit fixes, loader, atmosphere, upload, captures — see outputs/claude-open-world-2026-11-14/WINDOWS_HANDOFF.md.
