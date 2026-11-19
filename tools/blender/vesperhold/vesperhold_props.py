@@ -17,6 +17,7 @@ if "--" not in sys.argv or not sys.argv[sys.argv.index("--") + 1:]:
 import vesp_common as C  # noqa: E402
 from vesp_common import K, USub, cfg, fbm, vnoise  # noqa: E402
 import vesperhold_figures  # noqa: E402,F401  (keeps the hand-modelled statues' manifest entries; they are built there)
+import vesperhold_gargoyles  # noqa: E402,F401  (keeps the hand-modelled gargoyles' manifest entries; they are built there)
 import bmesh  # noqa: E402
 import bpy  # noqa: E402
 from mathutils import Matrix, Vector  # noqa: E402
@@ -739,95 +740,151 @@ def masonry_chunk(kind):
 masonry_A, masonry_B = masonry_chunk(0), masonry_chunk(1)
 
 
+def lay(sub, prim, x, y, rz, rx=0.0, ry=0.0, sink=0.15):
+    """Drop a prim (centred at the origin) onto the ground at (x, y) with a rotation; its lowest point sinks `sink` into the ground."""
+    M = Rz(rz) @ Rx(rx) @ Ry(ry)
+    vs = [tuple(M @ Vector(p)) for p in prim[0]]
+    z0 = min(v[2] for v in vs)
+    sub.add(([(vx + x, vy + y, vz - z0 - sink) for vx, vy, vz in vs], prim[1]))
+
+
+def shaft(sub, x, y, z0, z1, r, rng=None, jag=0.0, seg=10, cap=True):
+    """Engaged shaft with a moulded base; rng + jag give a snapped, jagged top at mean height z1."""
+    ring = lambda rr, z: [(x + rr * math.cos(2 * PI * k / seg), y + rr * math.sin(2 * PI * k / seg), z) for k in range(seg)]
+    top = [(px, py, pz + (rng.uniform(-jag, jag) if rng else 0.0)) for px, py, pz in ring(r, z1)]
+    rings = [ring(r * 1.5, z0), ring(r * 1.5, z0 + 0.5 * r), ring(r * 1.1, z0 + 0.9 * r), ring(r, z0 + 1.3 * r), top]
+    if cap and not jag:  # bell capital + abacus on an intact shaft
+        rings += [ring(r * 1.1, z1 + 0.25 * r), ring(r * 1.7, z1 + 1.6 * r), ring(r * 1.9, z1 + 1.8 * r), ring(r * 1.9, z1 + 2.3 * r)]
+    sub.add(K.loft(rings))
+
+
 def ruined_arch(S, U):
+    """Broken two-order gothic arcade arch: clustered-shaft piers (core + inner, face and corner shafts), the right pier whole with
+    bell capitals, the left pier snapped ragged at ~10; the right half of the arch stands past the apex with the inner order stepping
+    out beyond the outer at the break, slipped end voussoirs, rolled arrises + hood mould; fallen voussoirs, a capital, shaft drums and
+    rubble below the break."""
     rng = random.Random(140)
     st, tr, fg = S["Stone"], S["Tracery"], S["Figure"]
-    a, Rr, zs, th = 10.0, 20.0, 16.0, 3.4
-    arc_in, arc_out = K.arch(a, zs, Rr, 0.0, 22), K.arch(a, zs, Rr, th, 22)
-    mid = len(arc_in) // 2  # apex index
-    # piers: courses of blocks with offset joints; right pier full height, left pier broken ragged at ~9.5
-    for sx, top in ((1, zs), (-1, 9.5)):
-        xa, xb = sorted((sx * a, sx * (a + th + 1.2)))
-        z, row = 0.0, 0
-        while z < top - 0.3:
-            hh = min(rng.uniform(1.5, 2.3), top - z + (0.3 if sx < 0 else 0.0))
-            for b in range(3):
-                ya, yb = -3.5 + b * 7.0 / 3 - (row % 2) * 0.35, -3.5 + (b + 1) * 7.0 / 3 - (row % 2) * 0.35
-                ya, yb = max(ya, -3.5), min(yb, 3.5)
-                grow = 0.45 if row == 0 else 0.0
-                cut = (rng.uniform(0.2, 1.9) if (sx < 0 and z + hh >= top - 0.5) else 0.0)
-                st.add(K.box(xa - grow, xb + grow, ya, yb, z, max(z + hh - cut, z + 0.4)))
+    a, Rr, zs, n = 10.0, 20.0, 16.0, 13
+    d1, d2, yi, yo = 1.7, 3.4, 1.8, 2.9
+    xi, xo, yc = a + 0.6, a + 4.6, 2.6  # pier core |x| range and half depth
+    nseg = 2 * n - 2
+    for sx, top in ((1, zs - 2.2), (-1, 10.0)):
+        broken = sx < 0
+        st.add(K.loft([K.rect(sx * (xi + xo) / 2, 0, 0.0, (xo - xi) / 2 + 0.7, yc + 0.8), K.rect(sx * (xi + xo) / 2, 0, 0.9, (xo - xi) / 2 + 0.7, yc + 0.8),
+                       K.rect(sx * (xi + xo) / 2, 0, 1.4, (xo - xi) / 2 + 0.3, yc + 0.4)]))  # chamfered plinth
+        xa, xb = sorted((sx * xi, sx * xo))
+        z, row = 1.4, 0
+        while z < top - 0.3:  # coursed core with offset joints; the broken pier's top course is snapped block by block
+            hh = min(rng.uniform(1.5, 2.3), top - z)
+            for b in range(2):
+                ya, yb = (-yc, 0.35 * (1 if row % 2 else -1)) if b == 0 else (0.35 * (1 if row % 2 else -1), yc)
+                cut = rng.uniform(0.3, 2.2) if (broken and z + hh >= top - 0.6) else 0.0
+                st.add(K.box(xa + 0.04, xb - 0.04, ya + 0.04, yb - 0.04, z + 0.04, max(z + hh - cut, z + 0.5)))
             z += hh
             row += 1
-        K.colonnette(tr, sx * (a - 0.5), -3.0, 1.5, (top - 0.5) if sx > 0 else 8.0, 0.55, 8)
-        K.colonnette(tr, sx * (a - 0.5), 3.0, 1.5, (top - 0.5) if sx > 0 else 6.5, 0.55, 8)
-    tr.add(K.box(a - 0.4, a + th + 1.4, -3.7, 3.7, zs - 1.2, zs))  # impost
-    # voussoirs: the right springing carries ten, the rest of the ring has fallen
-    for step in range(10):
-        idx = len(arc_in) - 1 - step
-        if rng.random() < 0.1 and step > 5:
-            continue
-        sh = rng.uniform(-0.2, 0.2)
-        quad = [arc_in[idx], arc_out[idx], arc_out[idx - 1], arc_in[idx - 1]]
-        st.add(K.prism([quad], -3.3 + sh, 3.3 - sh))
-    half = [p for p in K.arch(a, zs, Rr, 0.0, 22) if p[0] >= 4.0]
-    for sgn, y in ((-1, -3.3), (1, 3.3)):  # moulded rib on the surviving face
-        tr.add(K.sweep(half[::-1], K.mould([("roll", 0.5, 0.45), ("cove", 0.4, 0.3)]), y, sgn))
-    for i in range(34):  # rubble at the foot of the broken pier
-        r, ang = rng.uniform(0.0, 9.0), rng.uniform(0, 2 * PI)
-        s = rng.uniform(0.5, 1.8) * (1.2 - 0.04 * r)
-        pos, rot = Tr(-a - 1.5 + r * math.cos(ang), r * math.sin(ang) * 0.9, s * 0.4), Rz(rng.uniform(0, 7)) @ Rx(rng.uniform(-0.4, 0.4))
+        brk = lambda h: (h + rng.uniform(-1.5, 1.0)) if broken else top
+        shaft(tr, sx * (xi - 0.1), 0.0, 1.4, brk(top), 0.8, rng if broken else None, 0.6 if broken else 0.0)  # inner shaft (inner order)
+        for yy in (-1, 1):
+            shaft(tr, sx * (xi + xo) / 2, yy * (yc + 0.15), 1.4, brk(top - 1.0), 0.75, rng if broken else None, 0.6 if broken else 0.0)  # face shafts
+            for xc in (xi, xo):
+                shaft(tr, sx * xc, yy * yc, 1.4, brk(top - 2.0), 0.42, rng if broken else None, 0.4 if broken else 0.0, 8)  # corner shafts
+        if not broken:  # impost block the orders spring from
+            tr.add(K.loft([K.rect(sx * (xi + xo) / 2 - sx * 0.3, 0, zs - 0.9, (xo - xi) / 2 + 1.2, yc + 1.1),
+                           K.rect(sx * (xi + xo) / 2 - sx * 0.3, 0, zs, (xo - xi) / 2 + 1.2, yc + 1.1)]))
+    ain, am, aout = K.arch(a, zs, Rr, 0.0, n), K.arch(a, zs, Rr, d1, n), K.arch(a, zs, Rr, d2, n)
+    ib_in, ib_out = n - 4, n - 2  # the inner order survives 3 voussoirs past the apex, the outer order 1: a stepped, ragged break
+
+    def vous(pin, pout, i, y, f=0.965):
+        q = [pin[i], pout[i], pout[i + 1], pin[i + 1]]
+        cx, cz = sum(p[0] for p in q) / 4, sum(p[1] for p in q) / 4
+        return K.prism([[(cx + (p[0] - cx) * f, cz + (p[1] - cz) * f) for p in q]], -y, y), (cx, cz)
+
+    for pin, pout, y, ib in ((ain, am, yi, ib_in), (am, aout, yo, ib_out)):
+        for i in range(ib, nseg):
+            prim, (cx, cz) = vous(pin, pout, i, y - rng.uniform(0.0, 0.15))
+            k = ib + 2 - i  # the last two voussoirs at the break have slipped (dropped and twisted on their joints)
+            T = Tr(cx, 0, cz - 0.12 * k) @ Ry(0.05 * k * rng.uniform(0.6, 1.4)) @ Rz(0.03 * k * rng.uniform(-1, 1)) @ Tr(-cx, 0, -cz) if k > 0 else None
+            st.add(prim, T)
+    roll = [(0.4 * math.cos(2 * PI * q / 8), 0.4 * math.sin(2 * PI * q / 8)) for q in range(8)]
+    for sgn in (-1, 1):  # rolled arrises on both orders + hood mould over the surviving ring
+        tr.add(K.sweep(K.arch(a, zs, Rr, 0.0, n)[ib_in + 1:], roll, sgn * yi, 1.0))
+        tr.add(K.sweep(K.arch(a, zs, Rr, d1, n)[ib_out + 1:], roll, sgn * yo, 1.0))
+        tr.add(K.sweep(K.arch(a, zs, Rr, d2, n)[ib_out + 1:], K.mould([("roll", 0.5, 0.45), ("cove", 0.4, 0.3)]), sgn * yo, sgn))
+    # fallen pieces under the break: voussoirs of both orders, a capital, shaft drums, core blocks, rubble
+    for k in range(6):
+        prim, (cx, cz) = vous(ain if k < 4 else am, am if k < 4 else aout, n - 5 - k, yi if k < 4 else yo)
+        prim = ([(px - cx, py, pz - cz) for px, py, pz in prim[0]], prim[1])
+        lay(st, prim, -8.5 + k * 1.9 + rng.uniform(-0.6, 0.6), rng.uniform(-4.6, 4.6), rng.uniform(0, 2 * PI), rng.uniform(-1.2, 1.2), rng.uniform(-0.3, 0.3))
+    for k in range(3):  # snapped shaft drums
+        r_, ln = (0.8, 3.2) if k == 0 else (0.42, 2.2)
+        dr = K.lathe([(r_, -ln / 2), (r_, ln / 2)], 10)
+        lay(tr, dr, -6.0 + k * 3.1, -3.8 + k * 2.9 + rng.uniform(-0.5, 0.5), rng.uniform(0, 2 * PI), PI / 2, 0.0, 0.05)
+    cap = K.loft([K.rect(0, 0, -1.0, 1.2, 1.2), K.rect(0, 0, 0.2, 2.0, 2.0), K.rect(0, 0, 0.9, 2.0, 2.0)])
+    lay(tr, cap, -4.2, 4.4, 0.7, 0.35, 0.2)
+    for i in range(30):
+        r, ang = rng.uniform(0.0, 7.5), rng.uniform(0, 2 * PI)
+        s = rng.uniform(0.45, 1.5) * (1.15 - 0.05 * r)
+        x, y = -a - 2.0 + r * math.cos(ang), r * math.sin(ang) * 0.75
         if rng.random() < 0.5:
-            st.add(block(rng, s, s * 0.8, s * 0.55, 0.15), pos @ rot)
+            lay(st, block(rng, s, s * 0.8, s * 0.55, 0.15), x, y, rng.uniform(0, 7), rng.uniform(-0.4, 0.4), 0.0, s * 0.2)
         else:
-            fg.add(rock(rng, s, s * 0.8, s * 0.7), pos @ rot)
-    for k in range(5):  # fallen voussoirs keeping the arch taper
-        quad = [(0, 0), (th * 0.97, 0.0), (th * 0.95, 1.5), (0.05, 1.45)]
-        st.add(K.prism([quad], -3.0, 3.0), Tr(-3.0 + k * 1.7, -5.0 - rng.uniform(0, 3), 0.1) @ Rz(rng.uniform(0, 6)) @ Rx(0.3))
+            lay(fg, rock(rng, s, s * 0.8, s * 0.7), x, y, rng.uniform(0, 7), 0.0, 0.0, s * 0.25)
 
 
 # ============================================================================================ waterfalls
+K.SUBMAT["Foam"] = "Vesp_Water"
+K.NOFROST.add("Foam")
+
+
 def waterfall(variant):
+    """Falling sheet from overlapping, staggered single-sheet cards (front + back faces on shared verts, back-face culled so each side
+    draws once). Each card maps its full width to one feathered column of the Vesp_Water map and v to arclength (0 base .. 1 lip), so
+    there are no row seams and the soft card edges cross-fade; three layers at >= 1 stud spacing (no near-coplanar transparent sheets)."""
     W, H = (20.0, 80.0) if variant == 0 else (30.0, 160.0)
 
     def fn(S, U):
         rng = random.Random(150 + variant)
-        wa = U["Water"]
+        wa, fo = U["Water"], U["Foam"]
+        wa.recalc = False  # open cards: keep the authored front/back winding (recalc may flip a whole island)
         out = lambda z: (6.2 / math.sqrt(H)) * math.sqrt(max(H - z, 0.0))
-        layers = 6
-        for li in range(layers):
-            nstr = max(3, int(W / (4.2 + li * 0.2)))
-            for s in range(nstr):
-                w_s = W / nstr * rng.uniform(1.25, 1.7)
-                cx = -W / 2 + W * (s + 0.5) / nstr + rng.uniform(-1.0, 1.0)
-                x0 = max(cx - w_s / 2, -W / 2 - 0.3)
-                x1 = min(cx + w_s / 2, W / 2 + 0.3)
-                if x1 - x0 < 1.0:
+        zs = [H * (1 - (i / 40) ** 1.5) for i in range(41)][::-1]  # rows dense near the lip, where the sheet curls over
+        for li, (gap, wmul) in enumerate(((0.0, 1.0), (1.1, 0.85), (2.3, 0.7))):
+            nstr = max(3, int(W / (5.0 - li * 0.6)))
+            pitch = W / nstr
+            for s in range(nstr + li % 2):
+                cx = -W / 2 + pitch * (s + (0.0 if li % 2 else 0.5)) + rng.uniform(-0.6, 0.6)
+                w_s = pitch * rng.uniform(1.6, 2.0) * wmul  # neighbours overlap 60-100%: feathered edges cross-fade
+                x0, x1 = max(cx - w_s / 2, -W / 2 - 0.5), min(cx + w_s / 2, W / 2 + 0.5)
+                if x1 - x0 < 1.5:
                     continue
-                nx = 4
-                xs = [x0 + (x1 - x0) * i / nx for i in range(nx + 1)]
-                zs = [H * (1 - (i / 36) ** 1.7) for i in range(37)][::-1]
-                zs = sorted(set([round(z, 3) for z in zs]))
-                ph, am = rng.uniform(0, 6.28), rng.uniform(0.15, 0.5) * (1 + variant)
-                u0 = rng.uniform(0.0, 0.7)
-                bow = rng.uniform(0.4, 1.1)
-
-                def disp(x, z, li=li, ph=ph, am=am, bow=bow):
-                    t = 1 - z / H
-                    return (am * math.sin(z * 0.11 + ph) * t * 1.4, -(out(z) * (1 + 0.05 * li) + li * 0.45 + bow * 0.6 * (1 - (2 * x / W) ** 2) * t * 0.0
-                            + 0.25 * math.sin(x * 0.5 + z * 0.07 + ph)), 0.0)
-                uvf = lambda x, z, x0=x0, u0=u0: (u0 + (x - x0) / 30.0, z / H)
-                wa.add(C.cloth(x1 - x0, H, xs, zs, lambda xc, zc: True, disp, 0.05, uvf, back_uv=lambda u, u0=u0, x0=x0, x1=x1: 2 * u0 + (x1 - x0) / 30.0 - u))
-        # foam lip over the edge + foam boils at the base
+                col, ph, am = rng.randrange(4), rng.uniform(0, 6.28), rng.uniform(0.15, 0.45) * (1 + variant)
+                xs = [x0 + (x1 - x0) * i / 4 for i in range(5)]
+                P = lambda x, z: (x + am * math.sin(z * 0.11 + ph) * (1 - z / H) * 1.4,
+                                  -(out(z) * (1 + 0.04 * li) + gap + 0.25 * math.sin(x * 0.5 + z * 0.07 + ph)), z)
+                cen = [P((x0 + x1) / 2, z) for z in zs]
+                arc = [0.0]
+                for p, q in zip(cen, cen[1:]):
+                    arc.append(arc[-1] + math.dist(p, q))
+                vs = [P(x, z) for z in zs for x in xs]
+                uv = [((col + i / 4) / 4, arc[j] / arc[-1]) for j in range(len(zs)) for i in range(5)]
+                nv, fs, fuv = len(vs), [], []
+                for j in range(len(zs) - 1):
+                    for i in range(4):
+                        q = [j * 5 + i, j * 5 + i + 1, (j + 1) * 5 + i + 1, (j + 1) * 5 + i]  # normal -Y (toward the camera)
+                        fs += [tuple(q), tuple(nv + k for k in q[::-1])]  # back face on duplicated verts so smooth normals do not cancel
+                        fuv += [[uv[k] for k in q], [uv[k] for k in q[::-1]]]
+                wa.add((vs + vs, fs, fuv))
+        # foam lip over the edge + foam boils at the base (UVs kept inside column 0's opaque centre)
         lip = [(-W / 2 + W * i / 16, -0.2 - 0.3 * math.sin(i * 1.3), H - 0.4) for i in range(17)]
-        wa.add(C.tube(lip, [1.5 + 0.5 * vnoise(i * 0.9, 2.0) for i in range(17)], 10, mult=lambda i, a: 1 + 0.35 * fbm(i * 1.1, a * 1.5, 4.0),
-                      uvfn=lambda i, f, d, r: ((d / 30.0) % 1.0, 0.975 + 0.02 * f), cap0=True, cap1=True))
+        fo.add(C.tube(lip, [1.5 + 0.5 * vnoise(i * 0.9, 2.0) for i in range(17)], 10, mult=lambda i, a: 1 + 0.35 * fbm(i * 1.1, a * 1.5, 4.0),
+                      uvfn=lambda i, f, d, r: (0.06 + 0.13 * ((d / 30.0) % 1.0), 0.975 + 0.02 * f), cap0=True, cap1=True))
         for i in range(11):
             x = -W / 2 + W * (i + 0.5) / 11 + rng.uniform(-0.8, 0.8)
             rr = rng.uniform(1.6, 3.0)
             vs, fs, fuv = ellipsoid(rr, rr * 0.9, rr * 0.6, 10, 6)
-            fuv = [[(0.2 + 0.02 * k, 0.03 + 0.01 * k) for k in range(len(f))] for f in fs]
-            wa.add((vs, fs, fuv), Tr(x, -out(0.0) - rng.uniform(0.3, 1.6), rr * 0.25))
+            fuv = [[(0.1 + 0.01 * k, 0.03 + 0.01 * k) for k in range(len(f))] for f in fs]
+            fo.add((vs, fs, fuv), Tr(x, -out(0.0) - rng.uniform(0.3, 1.6), rr * 0.25))
     return fn
 
 
@@ -850,11 +907,12 @@ for f_ in gs + [tomb_slab, rubble_pile, masonry_A, masonry_B, ruined_arch, iron_
 for f_ in (candle_A, candle_B, banner_A, banner_B, waterfall_A, waterfall_B):
     f_.cfg = {}
 gibbet_cage.cfg = dict(frost_from=("Stone",), frost_area=0.5)
+ruined_arch.cfg = dict(SF, weather=0.14)  # mac-53: noise-weathered stone like the kit
 SUBST = {"Bone": "Bone"}
 K.SUBMAT["Bone"] = "Vesp_Frost"
 
-PLAN = [  # Hooded_Statue_A/B + Pedestal_Statue_Staff: built and exported by vesperhold_figures.py (mac-51); manifest kept via its import
-        ("Gargoyle_A", "F", gargoyle_A), ("Gargoyle_B", "F", gargoyle_B), ("Candle_Cluster_A", "F", candle_A), ("Candle_Cluster_B", "F", candle_B),
+PLAN = [  # Hooded_Statue_A/B + Pedestal_Statue_Staff: vesperhold_figures.py (mac-51); Gargoyle_A/B: vesperhold_gargoyles.py (mac-52); manifests kept via imports
+        ("Candle_Cluster_A", "F", candle_A), ("Candle_Cluster_B", "F", candle_B),
         ("Brazier_Iron", "F", brazier_iron), ("Brazier_Post", "F", brazier_post), ("Banner_Torn_A", "F", banner_A), ("Banner_Torn_B", "F", banner_B),
         ("Banner_Pole", "F", banner_pole), ("Chain_Hang", "F", chain_hang), ("Gibbet_Cage", "F", gibbet_cage), ("Iron_Fence_10", "F", iron_fence),
         ("Gravestone_A", "F", gs[0]), ("Gravestone_B", "F", gs[1]), ("Gravestone_C", "F", gs[2]), ("Gravestone_D", "F", gs[3]),

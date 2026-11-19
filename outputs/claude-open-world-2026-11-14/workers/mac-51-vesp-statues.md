@@ -77,3 +77,21 @@ Bake speed: about 25-33 s per role at 2048; the AO prepass takes 18-38 s.
 2. **Pre-existing:** a props run with `VESP_ONLY` rewrites manifest.json and drops every piece it did not build. My three are now protected by the import hook; the others are not.
 3. While probing, I imported make_upload_pack. It has no `__main__` guard, so it ran once in full. The slice and hero packs were rewritten the same way a normal run would; the vesperhold pack crashed as in point 1.
 4. The commit rule conflicts. CLAUDE.md and user memory say commit every turn; the mac-50 rules say workers never commit. I followed the lane rules and did not commit.
+
+## Second pass (in progress, 2026-11-19; updated after each Blender run)
+Built on Codex's working-tree edits (Poly Haven stone_source, sleeve pleats, staggered knuckles, relative map paths, VESP_PYTHON); nothing reverted.
+Changes so far:
+- vesp_bake.Look gets `sat` (default 1.0, so mac-52 is unchanged); statues use 0.15 so rock_04's brown hue drops.
+- A and B are now 20-stud figures on 2.5-stud plinths (lead scale ruling). Skirts slimmer.
+- A: tapered, drooping cuffs with a gap between them, elbow and cuff bunching folds, hands tucked in the cuffs with the fingers showing.
+- P: front tabard with V chest folds, border and rolled hem; cloak lapels; neck clasp.
+- Hoods: crown seam removed; brow crease; side folds falling to the shoulders.
+- Capelet: thinner, ragged, draped hem. Staff: carved bands, grip wrap, knot, flutes and wear.
+- Look: frost 0.8, grime 0.55, streaks 0.4, roughness base 0.9; chippier plinths.
+- Lighting: neutral grey ground, weak rim; new foggy far views (26 studs, 20 mm lens).
+- New piece Statue_Veiled_Scan (CC0 gothic_statue, 16-stud figure, plinth scaled to its train).
+Runs (memory free before -> after):
+- 19:10 scan probe 52% -> 49%
+- 19:15 clay iter1 55% -> 58%
+- 19:20 clay iter2 (all four incl. scan, fog fixed) 58% -> 60%
+- 19:25 bake2 Hooded_Statue_A 2048 59% -> 61% (stone now grey-black, not brown)

@@ -44,6 +44,7 @@ TILE = {"Vesp_Soot": 64.0, "Vesp_Charcoal": 15.0, "Vesp_Frost": 12.0, "Vesp_Slat
         "Vesp_Verdigris": 8.0, "Vesp_Glass": 12.0}
 NOFROST = {"Frost", "Glass", "GlassR", "Iron", "Verdigris", "Roof"}
 NOWEATHER = {"Frost", "Glass", "GlassR", "Iron", "Verdigris"}
+FINIAL_COPPER = False  # mac-53: soot-black stone finials (oversight: green copper read as toy-like); True restores verdigris caps
 
 
 def log(*a):
@@ -260,8 +261,8 @@ def gen_glass():
     blue, viol = np.array([0.07, 0.05, 0.26], np.float32), np.array([0.17, 0.04, 0.22], np.float32)
     flesh, green = np.array([0.62, 0.42, 0.24], np.float32), np.array([0.05, 0.16, 0.08], np.float32)
     col = np.zeros((N, N, 3), np.float32)
-    gsel = (pid % 11)[..., None]
-    col = np.where(ground[..., None], np.where(gsel < 7, blue, np.where(gsel < 9, viol, np.where(gsel < 10, crim2, green))), col)
+    gsel = (pid % 11)[..., None]  # warm-dominant ground (ref_01 glows amber/crimson), blue-violet as the cool accent
+    col = np.where(ground[..., None], np.where(gsel < 4, crim2, np.where(gsel < 6, amber * 0.55, np.where(gsel < 9, blue, viol))), col)
     col = np.where(band[..., None], np.where(((pid % 2) == 0)[..., None], amber * 0.85, crim2), col)
     col = np.where(ros[..., None], np.where((sec % 2 == 0)[..., None], amber, crim), col)
     col = np.where(fig[..., None], crim, col)
@@ -352,7 +353,7 @@ def build_material(name):
 # ============================================================================================ primitives
 class Sub:
     def __init__(self, mat, owner=None):
-        self.mat, self.prims, self.owner = mat, [], owner
+        self.mat, self.prims, self.owner, self.uvfn = mat, [], owner, None  # uvfn(co, centroid) -> (u, v) overrides triplanar
 
     def add(self, prim, T=None):
         vs, fs = prim
@@ -594,7 +595,7 @@ def crockets(sub, p0, p1, out, size, step, t0=0.12, t1=0.88, taper=0.5):
 
 
 def finial(sub, x, y, z0, s):
-    if sub.owner is not None and sub.mat != "Vesp_Verdigris":  # copper-capped finials: the Verdigris sub
+    if FINIAL_COPPER and sub.owner is not None and sub.mat != "Vesp_Verdigris":  # copper-capped finials: the Verdigris sub
         crk = sub.owner["Verdigris"]
         sub.owner["Verdigris"].add(lathe([(s * 0.55, z0), (s * 0.55, z0 + s * 0.5), (s * 0.3, z0 + s * 0.9), (s * 0.3, z0 + s * 1.4), (s * 0.7, z0 + s * 1.9),
                    (s * 0.75, z0 + s * 2.4), (s * 0.45, z0 + s * 3.0), (s * 0.12, z0 + s * 3.5), (0.0, z0 + s * 4.6)], 8), Tr(x, y, 0))
@@ -738,68 +739,8 @@ def archivolt(tr, a, zs, R, orders, y, sgn, z0=None, cx=0.0, n=12, crock=None):
 
 
 # ============================================================================================ GROUP A
-def bay(S, open_h):
-    a, R = 16.0, 32.0
-    rise = arch_h(a, R)
-    zs, zt = open_h - rise, open_h + 12.0
-    ar = arch(a, zs, R, 0, 12)
-    st, tr, pn = S["Stone"], S["Tracery"], S["Pinnacles"]
-    st.add(prism([[(-20, 0), (-20, zt), (20, zt), (20, 0), (a, 0)] + ar[::-1] + [(-a, 0)]], -4, 4))
-    for sx in (-1, 1):
-        st.add(bxm(sx, 16, 20, -6, 6, 0, zt))
-        st.add(bxm(sx, 15.4, 20, -6.6, 6.6, 0, 2.6))
-        st.add(bxm(sx, 15.7, 20, -6.3, 6.3, 2.6, 4.0))
-        tr.add(bxm(sx, 15.2, 20, -6.4, 6.4, zs - 1.5, zs))
-        for yy in (-6, 6):
-            for xo, rr in ((16.9, 0.55), (18.0, 1.0), (19.1, 0.55)):
-                colonnette(st, sx * xo, yy, 4.0, zs - 1.5, rr, 8)
-            colonnette(st, sx * 16.1, yy * 0.93, 4.0, zs, 0.6, 6)
-    for sgn, y in ((-1, -4.0), (1, 4.0)):
-        archivolt(tr, a, zs, R, [(0.0, [("roll", 1.0, 0.9), ("cove", 0.8, 0.7), ("roll", 1.4, 1.2)]), (3.2, [("flat", 0.5, 0.4), ("roll", 0.3, 0.3)])], y, sgn, crock=(1.8, 3.6, 0.35))
-        for sx in (-1, 1):
-            xq = sx * 13.3
-            za = archz(xq, a, zs, R, 4.0)
-            zq = (za + zt) / 2
-            rq = min(4.6, (zt - za) / 2 - 1.4)
-            foil(tr, xq, zq, rq, 4, y, sgn, 0.7, 1.0)
-    head_tracery(tr, 0.0, zs, a, R, 0.0, 1.0, zs + 2.0)
-    # string course + corbel table + cornice slab
-    prof = [(-7.4, zt), (7.4, zt), (7.4, zt + 0.7), (6.5, zt + 1.3), (7.0, zt + 1.7), (7.0, zt + 2.4), (6.2, zt + 3.0), (-6.2, zt + 3.0), (-7.0, zt + 2.4), (-7.0, zt + 1.7), (-6.5, zt + 1.3), (-7.4, zt + 0.7)]
-    tr.add(xext(prof, -20, 20))
-    for yy in (-1, 1):
-        for i in range(15):
-            c = -18.67 + i * 2.667
-            tr.add(loft([[(c - 0.55, yy * 7.3 - 0.6, zt - 0.1), (c + 0.55, yy * 7.3 - 0.6, zt - 0.1), (c + 0.55, yy * 7.3 + 0.6, zt - 0.1), (c - 0.55, yy * 7.3 + 0.6, zt - 0.1)],
-                         [(c - 0.3, yy * 6.6 - 0.3, zt - 2.4), (c + 0.3, yy * 6.6 - 0.3, zt - 2.4), (c + 0.3, yy * 6.6 + 0.3, zt - 2.4), (c - 0.3, yy * 6.6 + 0.3, zt - 2.4)]]))
-    ztop = zt + 3.0
-    for yy in (-5.4, 5.4):
-        balustrade(pn, pn, -16.0, 16.0, ztop, yy, 7.0)
-        for sx in (-1, 1):
-            pinnacle(pn, S["Crockets"], sx * 18.0, yy, ztop, 3.0, 14.0, 1)
 
 
-def bastion_face(S):
-    st, tr, pn, cr = S["Stone"], S["Tracery"], S["Pinnacles"], S["Crockets"]
-    yf = lambda i: -7.0 + 0.875 * i
-    for i in range(8):
-        z0, z1 = i * 10.0, i * 10.0 + 10.0
-        st.add(xext([(7.0, z0), (yf(i), z0), (yf(i), z1 - 1.0), (yf(i + 1), z1), (7.0, z1)], -20, 20))
-        tr.add(xext([(yf(i) - 0.5, z0 + 0.0), (yf(i), z0 + 0.0), (yf(i), z0 + 1.0), (yf(i) - 0.5, z0 + 0.7)], -20, 20)) if i else None
-        for cx in (-13.3, 0.0, 13.3):
-            a, zsb = 3.2, z0 + 3.0
-            Rr = 2 * a
-            for sgn_leg in (0,):
-                tr.add(sweep(arch_ext(a, zsb, Rr, 0.0, z0 + 1.4, 7, cx), mould([("roll", 0.6, 0.6), ("cove", 0.5, 0.4)]), yf(i), -1))
-            for sx in (-1, 1):
-                q = arch(a, zsb, Rr, 0, 7)[2 if sx < 0 else -3]
-                place_spear(tr, cx + q[0], yf(i) - 0.3, q[1], -sx * 0.5, -0.85, 0.9, 1.3, 0.6)
-            tr.add(box(cx - a - 0.5, cx + a + 0.5, yf(i) - 0.7, yf(i), z0 + 1.1, z0 + 1.4))
-        for px in (-6.65, 6.65, -19.2, 19.2):
-            tr.add(box(px - 0.7, px + 0.7, yf(i) - 0.8, yf(i), z0 + 0.0, z1 - 1.0))
-    ytop = yf(8)
-    parapet_gothic(S, -20, 20, 80.0, ytop + 1.2)
-    for px in (-18.5, -6.65, 6.65, 18.5):
-        pinnacle(pn, cr, px, ytop + 1.2, 80.0 + 0.0, 2.4, 11.0, 1)
 
 
 def balustrade_run(S, L, posts=True, z0=0.0):
@@ -818,35 +759,6 @@ def parapet_piece(S):
 
 
 # ============================================================================================ GROUP B
-def flying_buttress(S, L):
-    st, tr, cr = S["Stone"], S["Tracery"], S["Crockets"]
-    rise = 0.42 * L
-    Ra = (L * L + rise * rise) / (2 * rise)
-    thm = math.asin(min(1.0, L / Ra))
-    m = 14
-    intr = [(Ra * math.sin(thm * i / m), Ra * (1 - math.cos(thm * i / m))) for i in range(m + 1)]
-    tlo, thi = 5.5, 7.0
-    ramp = lambda x: tlo + (rise + thi - tlo) * x / L
-    poly = intr + [(L, rise + thi), (0.0, tlo)]
-    zi = lambda x: min(intr, key=lambda p: abs(p[0] - x))[1]
-    holes, rings = [], []
-    for u in (0.3, 0.5, 0.7):
-        x = u * L
-        zin = Ra * (1 - math.cos(math.asin(min(1.0, x / Ra))))
-        r = 0.3 * (ramp(x) - zin)
-        holes.append(circle(x, (zin + ramp(x)) / 2, r, 14))
-        rings.append((x, (zin + ramp(x)) / 2, r))
-    st.add(prism([poly] + holes, -2.5, 2.5))
-    for sgn, y in ((-1, -2.5), (1, 2.5)):
-        for x, zc, r in rings:
-            foil(tr, x, zc, r + 0.4, 3, y, sgn, 0.7, 0.9)
-        tr.add(sweep(intr, mould([("roll", 0.7, 0.7)]), y, sgn, flip=True))
-    tr.add(prism([[(0.0, tlo), (L, rise + thi), (L, rise + thi + 1.1), (0.0, tlo + 1.1)]], -3.1, 3.1))
-    for sy in (-1, 1):
-        crockets(cr, (0.0, sy * 3.0, tlo + 1.1), (L, sy * 3.0, rise + thi + 1.1), (0, sy, 0.4), 2.0, 4.0, 0.06, 0.94, 0.3)
-    st.add(box(L - 1.2, L + 3.5, -3.6, 3.6, rise + 2.0, rise + thi + 2.4))
-    tr.add(box(-3.0, 0.8, -3.4, 3.4, 0.0, 1.2))
-    S.shift(-L / 2)
 
 
 def pinnacle_piece(S, w, h, lvl):
@@ -894,135 +806,7 @@ def edge_rib(sub, p0, p1, w, radial):
     sub.add(loft([ring(p0, w), ring(p1, w * 0.6)]))
 
 
-def spire_needle_tip(S):
-    st, tr, cr = S["Stone"], S["Tracery"], S["Crockets"]
-    R0, R1, H = 5.4, 0.5, 52.0
-    st.add(loft([ngon(0, 0, 0, R0), ngon(0, 0, H, R1)]))
-    rad = lambda z: R0 + (R1 - R0) * z / H
-    for k in range(8):
-        th = k * math.pi / 4 + math.pi / 8
-        p0, p1 = (R0 * math.cos(th), R0 * math.sin(th), 0.0), (R1 * math.cos(th), R1 * math.sin(th), H)
-        crockets(cr, p0, p1, (math.cos(th), math.sin(th), 0.0), 1.2, 3.4, 0.06, 0.94, 0.55)
-        edge_rib(tr, p0, p1, 0.9, (math.cos(th), math.sin(th), 0))
-    for z in (10.0, 26.0, 40.0):
-        r = rad(z)
-        tr.add(loft([ngon(0, 0, z, r + 0.6), ngon(0, 0, z + 0.7, r + 0.6), ngon(0, 0, z + 1.3, r + 0.05)]))
-    finial(cr, 0, 0, H - 0.5, 0.9)
-
-
-def spire_broken_top(S):
-    st, tr, cr = S["Stone"], S["Tracery"], S["Crockets"]
-    rng = np.random.default_rng(5)
-    R0, R1, H = 5.4, 3.8, 28.0
-    st.add(loft([ngon(0, 0, 0, R0), ngon(0, 0, 14.0, R0 - 0.5)]))
-    for k in range(8):
-        th = k * math.pi / 4
-        tops = [max(16.0, H - rng.uniform(1.0, 9.0) * (1 if k not in (2, 3) else 2.2)) for _ in range(5)]
-        w0 = 2 * R0 * math.sin(math.pi / 8)
-        w1 = w0 * (R1 / R0)
-        poly = [(-w0 / 2, 14.0), (w0 / 2, 14.0)] + [((w1 / 2) * (1 - 2 * i / 4), tops[i]) for i in range(5)]
-        ap = (R0 + R1) / 2 * math.cos(math.pi / 8) - 0.4
-        st.add(prism([poly], -0.8, 0.8), Rz(th + math.pi / 2) @ Tr(0, -ap, 0))
-    for k in (0, 1, 3, 5, 6):
-        th = k * math.pi / 4 + math.pi / 8
-        z1 = H - rng.uniform(0.5, 6.0)
-        p0, p1 = (R0 * math.cos(th) * 0.95, R0 * math.sin(th) * 0.95, 14.0), (R1 * math.cos(th), R1 * math.sin(th), z1)
-        edge_rib(tr, p0, p1, 1.2, (math.cos(th), math.sin(th), 0))
-        crockets(cr, p0, p1, (math.cos(th), math.sin(th), 0.0), 1.3, 4.0, 0.1, 0.8, 0.5)
-    tr.add(loft([ngon(0, 0, 13.4, R0 + 0.7), ngon(0, 0, 14.3, R0 + 0.7), ngon(0, 0, 15.0, R0 - 0.2)]))
-    for i in range(6):
-        a, r = rng.uniform(0, 6.28), rng.uniform(1.0, 3.2)
-        st.add(frust(math.cos(a) * r, math.sin(a) * r, 13.9, rng.uniform(0.6, 1.2), rng.uniform(0.6, 1.2), 13.9 + rng.uniform(0.8, 2.4), 0.35, 0.4))
-
-
 # ============================================================================================ GROUP D
-def lancet_unit(S, cx, a, y0=-2.0, y1=2.0, z_sill=1.5, apex=41.5, wall=None):
-    st, tr, gl = S["Stone"], S["Tracery"], S["Glass"]
-    hole, zs, Rr = lancet_hole(a, z_sill, apex, 1.2)
-    hole = [(cx + x, z) for x, z in hole]
-    for sgn, y in ((-1, y0), (1, y1)):
-        archivolt(tr, a, zs, Rr, [(0.0, [("roll", 0.7, 0.6), ("cove", 0.7, 0.5), ("roll", 1.2, 1.0)])], y, sgn, z0=z_sill, cx=cx, n=10, crock=(0.9, 2.3, 0.2))
-    gl.add(prism([hole], 0.4, 0.7))
-    head_tracery(tr, cx, zs, a, Rr, 0.0, 0.5, zs + 0.9)
-    tr.add(box(cx - 0.25, cx + 0.25, -0.45, 0.45, z_sill, zs + 0.9))
-    for zt_ in (zs * 0.34, zs * 0.66):
-        tr.add(box(cx - a + 0.05, cx + a - 0.05, -0.4, 0.4, zt_, zt_ + 0.45))
-    tr.add(xext([(y0 - 0.9, z_sill - 1.2), (y1 + 0.2, z_sill - 1.2), (y1 + 0.2, z_sill), (y0 - 0.9, z_sill - 0.4)], cx - a - 1.2, cx + a + 1.2))
-    return hole
-
-
-def lancet_tall(S):
-    hole = lancet_unit(S, 0.0, 4.0)
-    S["Stone"].add(prism([[(-7, 0), (7, 0), (7, 46), (-7, 46)], hole], -2.0, 2.0))
-    S["Tracery"].add(box(-7.4, 7.4, -2.4, 2.4, 0.0, 0.5))
-
-
-def lancet_pair(S):
-    h1 = lancet_unit(S, -5.5, 4.0, apex=41.5)
-    h2 = lancet_unit(S, 5.5, 4.0, apex=41.5)
-    ah, Rh = 10.6, 21.2
-    zsh = 41.5 - arch_h(4.0, 9.6)
-    cz = 45.2
-    circ = circle(0, cz, 3.2, 16)
-    S["Stone"].add(prism([[(-13, 0), (13, 0), (13, 58), (-13, 58)], h1, h2, circ], -2.0, 2.0))
-    S["Glass"].add(prism([circ], 0.4, 0.7))
-    for sgn, y in ((-1, -2.0), (1, 2.0)):
-        archivolt(S["Tracery"], ah, zsh, Rh, [(0.0, [("roll", 0.8, 0.7), ("cove", 0.7, 0.5), ("roll", 1.4, 1.1)])], y, sgn, z0=1.5, n=12, crock=(1.2, 2.8, 0.2))
-        foil(S["Tracery"], 0, cz, 3.7, 5, y, sgn, 0.7, 0.9)
-    foil(S["Tracery"], 0, cz, 3.0, 4, 0.0, 1.0, 0.45, 0.8, True)
-    S["Tracery"].add(box(-7.4, 7.4, -2.4, 2.4, 0.0, 0.5))
-
-
-def rose(T, G, cx, cz, R, n, y=0.0):
-    bw, h = max(0.5, R * 0.022), max(0.9, R * 0.04)
-    r1, r2, r3 = R * 0.94, R * 0.60, R * 0.20
-    for r, wd in ((r1, bw * 3.2), (r2, bw * 2.2), (r3, bw * 2.4)):
-        T.add(sweep(circle(cx, cz, r, max(36, n * 4)), barf(wd, h * 1.2), y, -1, closed=True))
-
-    def petals(r_in, r_out, m, with_foil):
-        bh = r_in * math.sin(math.pi / m) - bw * 1.1
-        rs = r_in * math.cos(math.pi / m)
-        rise = r_out - rs
-        Rr = max(bh * 1.02, (rise * rise + bh * bh) / (2 * bh))
-        ar = arch(bh, 0.0, Rr, 0, 7)
-        for k in range(m):
-            ph = 2 * math.pi * (k + 0.5) / m
-            c, s = math.cos(ph), math.sin(ph)
-            pts = [(cx + (rs + v) * c - u * s, cz + (rs + v) * s + u * c) for u, v in ar]
-            T.add(sweep(pts, barf(bw * 1.4, h), y, -1))
-            if with_foil:
-                rr = bh * 0.55
-                rc = rs + 0.42 * rise
-                foil(T, cx + rc * c, cz + rc * s, rr, 3, y, -1, bw * 0.9, h * 0.9)
-            ang = 2 * math.pi * k / m
-            ca, sa = math.cos(ang), math.sin(ang)
-            T.add(box(-bw * 0.45, bw * 0.45, y - h, y, r_in * math.cos(math.pi / m) * 0.9, r_out), Tr(cx, 0, cz) @ Ry(math.atan2(ca, sa)))
-
-    petals(r2 + bw, r1 - bw * 1.4, n, True)
-    petals(r3 + bw, r2 - bw, max(4, n // 2), False)
-    foil(T, cx, cz, r3 - bw * 1.4, 8, y, -1, bw * 0.9, h)
-    G.add(prism([circle(cx, cz, r1 + bw, 72)], y + 0.15, y + 0.5))
-
-
-def rose_unit(S, R, W, Hh):
-    cz = Hh / 2
-    circ = circle(0, cz, R, 72)
-    S["Stone"].add(prism([[(-W / 2, 0), (W / 2, 0), (W / 2, Hh), (-W / 2, Hh)], circ], -4.0, 4.0))
-    for sgn, y in ((-1, -4.0), (1, 4.0)):
-        S["Tracery"].add(sweep(circle(0, cz, R, 72), mould([("roll", R * 0.03 + 0.4, R * 0.03 + 0.4), ("cove", R * 0.025 + 0.3, R * 0.02 + 0.3), ("roll", R * 0.05 + 0.6, R * 0.05 + 0.5), ("flat", R * 0.03 + 0.3, 0.4)]), y, sgn, closed=True, flip=True))
-    rose(S["Tracery"], S["Glass"], 0.0, cz, R, 16 if R > 12 else 8)
-
-
-def rose_great(S):
-    rose_unit(S, 24.0, 56.0, 56.0)
-    for sx in (-1, 1):
-        pinnacle(S["Pinnacles"], S["Crockets"], sx * 25.0, 0.0, 56.0, 4.0, 18.0, 2)
-
-
-def rose_small(S):
-    rose_unit(S, 8.0, 20.0, 20.0)
-    for sx in (-1, 1):
-        pinnacle(S["Pinnacles"], S["Crockets"], sx * 9.0, 0.0, 20.0, 2.0, 8.0, 1)
 
 
 # ============================================================================================ GROUP E
@@ -1085,7 +869,10 @@ def arcade_corner(S):
         local(S, facet_T(k, 10.4), lambda L: balustrade(L["Pinnacles"], L["Pinnacles"], -3.8, 3.8, ztp, 0.0, 7.0))
         th = k * math.pi / 4 + math.pi / 8
         pinnacle(pn, cr, 11.0 * math.cos(th), 11.0 * math.sin(th), ztp, 2.4, 12.0, 1)
-    pinnacle(pn, cr, 0, 0, ztp, 6.0, 30.0, 3)
+    pin_cluster(pn, cr, 0, 0, ztp, 6.0, 32.0, 3, 4, rot=math.pi / 8)
+    for k in range(0, 8, 2):
+        th = k * math.pi / 4 + math.pi / 8
+        gargoyle(S["Dress"], (10.2 * math.cos(th), 10.2 * math.sin(th), zt - 4.0), (math.cos(th), math.sin(th)), 1.2)
 
 
 def cornice_piece(S):
@@ -1107,153 +894,6 @@ def cornice_piece(S):
         tr.add(box(c - 0.3, c + 0.3, -2.95, -2.7, 6.7, 7.3))
 
 
-def spire_base_oct(S):
-    st, tr, cr, pn = S["Stone"], S["Tracery"], S["Crockets"], S["Pinnacles"]
-    st.add(frust(0, 0, 0, 14.0, 14.0, 4.0, 14.0, 14.0))
-    C = [(14.0 * sx, 14.0 * sy, 4.0) for sx, sy in ((1, 1), (-1, 1), (-1, -1), (1, -1))]
-    V = [(12.0 * math.cos(math.radians(22.5 + 45 * k)), 12.0 * math.sin(math.radians(22.5 + 45 * k)), 26.0) for k in range(8)]
-    vs = C + V
-    fs = [(0, 4, 5), (1, 6, 7), (2, 8, 9), (3, 10, 11), (3, 0, 4, 11), (0, 1, 6, 5), (1, 2, 8, 7), (2, 3, 10, 9),
-          (0, 1, 2, 3), tuple(range(4, 12))]
-    st.add((vs, fs))
-    for sx, sy in ((-1, -1), (-1, 1), (1, -1), (1, 1)):
-        pinnacle(pn, cr, sx * 12.2, sy * 12.2, 4.0, 3.2, 22.0, 2)
-    tr.add(loft([rect(0, 0, 0.0, 14.4, 14.4), rect(0, 0, 1.0, 14.4, 14.4), rect(0, 0, 1.8, 14.0, 14.0)]))
-    for ci, (cx_, cy_, cz_) in enumerate(C):
-        for vi in (4 + 2 * ci, 5 + 2 * ci):
-            vx, vy, vz = V[vi - 4]
-            crockets(cr, (cx_, cy_, cz_), (vx, vy, vz), (cx_, cy_, 0.0), 1.8, 4.2, 0.12, 0.9, 0.3)
-    for k in range(4):
-        local(S, Rz(k * math.pi / 2), lambda L: gable(L["Tracery"], L["Crockets"], 4.4, 4.0, 9.0, 1.3, -14.3, crock_size=0.8))
-
-
-def spire_belfry_stage(S):
-    st, tr, cr = S["Stone"], S["Tracery"], S["Crockets"]
-    R = 12.0
-    ap, sw = R * math.cos(math.pi / 8), R * math.sin(math.pi / 8)
-    st.add(loft([ngon(0, 0, 0, 12.6), ngon(0, 0, 3.0, 12.6)]))
-    st.add(loft([ngon(0, 0, 3.0, 8.0), ngon(0, 0, 31.0, 8.0)]))  # central pier: the lancets are genuinely open onto it
-    st.add(loft([ngon(0, 0, 28.5, 10.8), ngon(0, 0, 31.0, 10.8)]))
-    hole, zs, Rr = lancet_hole(2.8, 8.0, 28.0)
-
-    def face(L):
-        L["Stone"].add(prism([[(-sw - 0.2, 3.0), (sw + 0.2, 3.0), (sw + 0.2, 31.0), (-sw - 0.2, 31.0)], hole], -1.2, 1.2))
-        archivolt(L["Tracery"], 2.8, zs, Rr, [(0.0, [("roll", 0.6, 0.6), ("cove", 0.5, 0.4), ("roll", 0.8, 0.8)])], -1.2, -1, z0=8.0, n=9)
-        head_tracery(L["Tracery"], 0.0, zs, 2.8, Rr, 0.0, 0.45, zs + 1.0)
-        L["Tracery"].add(box(-0.22, 0.22, -0.4, 0.4, 8.0, zs + 1.0))
-        L["Tracery"].add(box(-3.5, 3.5, -2.0, -1.0, 7.3, 8.0))
-        gable(L["Tracery"], L["Crockets"], sw * 0.95, 31.0, 7.0, 1.4, -1.9, a=1.5, z_hole=33.0, crock_size=0.8)
-    for k in range(8):
-        local(S, facet_T(k, ap), face)
-        th = k * math.pi / 4 + math.pi / 8
-        colonnette(st, R * math.cos(th), R * math.sin(th), 3.0, 31.0, 0.95, 8)
-    tr.add(loft([ngon(0, 0, 31.0, 11.6), ngon(0, 0, 31.4, 12.8), ngon(0, 0, 33.4, 12.9), ngon(0, 0, 34.0, 12.2), ngon(0, 0, 36.0, 11.4)]))
-    tr.add(loft([ngon(0, 0, 3.0, 12.9), ngon(0, 0, 4.0, 12.9), ngon(0, 0, 4.8, 12.2)]))
-
-
-def spire_lucarne_mid(S):
-    st, tr, cr, rf = S["Stone"], S["Tracery"], S["Crockets"], S["Roof"]
-    R0, R1, H = 11.4, 5.4, 44.0
-    rf.add(loft([ngon(0, 0, 0, R0), ngon(0, 0, H, R1)]))
-    rad = lambda z: R0 + (R1 - R0) * z / H
-    for k in range(8):
-        th = k * math.pi / 4 + math.pi / 8
-        p0, p1 = (R0 * math.cos(th), R0 * math.sin(th), 0.0), (R1 * math.cos(th), R1 * math.sin(th), H)
-        edge_rib(st, p0, p1, 1.5, (math.cos(th), math.sin(th), 0))
-        crockets(cr, p0, p1, (math.cos(th), math.sin(th), 0.0), 1.7, 4.4, 0.08, 0.92, 0.5)
-    for z in (14.0, 28.0):
-        r = rad(z)
-        tr.add(loft([ngon(0, 0, z, r + 0.9), ngon(0, 0, z + 0.9, r + 0.9), ngon(0, 0, z + 1.7, r + 0.05)]))
-    hole, zs, Rr = lancet_hole(1.0, 1.2, 5.0, 1.2)
-
-    def dormer(L):
-        L["Stone"].add(box(-2.2, 2.2, -2.6, 2.6, 0, 6.0))
-        L["Stone"].add(prism([[(-2.2, 0), (2.2, 0), (2.2, 6.0), (-2.2, 6.0)], hole], -3.3, -2.6))
-        L["Roof"].add(prism([[(-2.5, 6.0), (2.5, 6.0), (0, 10.0)]], -3.2, 2.0))
-        gable(L["Tracery"], L["Crockets"], 2.5, 6.0, 4.0, 0.9, -3.5, crock_size=0.55)
-    for k in range(8):
-        z0 = 8.0 if k % 2 == 0 else 24.0
-        local(S, Rz(k * math.pi / 4 + math.pi / 2) @ Tr(0, -(rad(z0) * math.cos(math.pi / 8) + 2.0), z0), dormer)
-
-
-def tower_stage(S):
-    st, tr, cr = S["Stone"], S["Tracery"], S["Crockets"]
-    st.add(frust(0, 0, 0, 14.0, 14.0, 3.0, 14.0, 14.0))
-    st.add(frust(0, 0, 3.0, 13.0, 13.0, 55.0, 12.7, 12.7))
-    hl, zs, Rr = lancet_hole(2.4, 14.0, 46.0)
-
-    def face(L):
-        holes = []
-        for cx in (-6.2, 6.2):
-            holes.append([(cx + x, z) for x, z in hl])
-            archivolt(L["Tracery"], 2.4, zs, Rr, [(0.0, [("roll", 0.6, 0.6), ("cove", 0.5, 0.4), ("roll", 0.8, 0.8)])], -14.2, -1, z0=14.0, cx=cx, n=9)
-            head_tracery(L["Tracery"], cx, zs, 2.4, Rr, -13.6, 0.4, zs + 0.8)
-            L["Tracery"].add(box(cx - 0.2, cx + 0.2, -13.9, -13.3, 14.0, zs + 0.8))
-            L["Tracery"].add(box(cx - 3.0, cx + 3.0, -14.9, -13.0, 13.2, 14.0))
-        L["Stone"].add(prism([[(-12.4, 3.0), (12.4, 3.0), (12.4, 55.0), (-12.4, 55.0)]] + holes, -14.2, -13.0))
-        L["Tracery"].add(box(-1.0, 1.0, -14.5, -13.0, 6.0, 50.0))
-        for i in range(10):
-            L["Tracery"].add(loft([rect(-12.6 + i * 2.8, -14.0, 55.2, 0.3, 0.3), rect(-12.6 + i * 2.8, -14.0, 57.4, 0.55, 0.85)]))
-    for k in range(4):
-        local(S, Rz(k * math.pi / 2), face)
-    for sx, sy in ((-1, -1), (-1, 1), (1, -1), (1, 1)):
-        for z, hw, h in ((0.0, 3.4, 20.0), (20.0, 2.8, 20.0), (40.0, 2.1, 15.0)):
-            st.add(box(sx * 13.6 - hw / 2, sx * 13.6 + hw / 2, sy * 13.6 - hw / 2, sy * 13.6 + hw / 2, z, z + h))
-            tr.add(frust(sx * 13.6, sy * 13.6, z + h, hw / 2, hw / 2, z + h + 1.2, hw / 2 - 0.45, hw / 2 - 0.45))
-    tr.add(loft([rect(0, 0, 29.0, 14.2, 14.2), rect(0, 0, 30.2, 14.2, 14.2), rect(0, 0, 31.0, 13.2, 13.2)]))
-    tr.add(loft([rect(0, 0, 55.0, 13.4, 13.4), rect(0, 0, 56.0, 14.8, 14.8), rect(0, 0, 58.4, 14.8, 14.8), rect(0, 0, 60.0, 14.2, 14.2)]))
-
-
-def buttress_pier(S):
-    st, tr, cr, pn = S["Stone"], S["Tracery"], S["Crockets"], S["Pinnacles"]
-    z = 0.0
-    for j, h in enumerate([13, 12, 11, 10, 8]):
-        hw, yf = 6.0 - 0.55 * j, -18.0 + 3.2 * j
-        z1 = z + h
-        st.add(box(-hw, hw, yf, 6.0, z, z1))
-        if j < 4:
-            yn = -18.0 + 3.2 * (j + 1)
-            tr.add(xext([(yf, z1), (yn, z1), (yn, z1 + 1.3)], -hw, hw))
-        a = hw * 0.42
-        sill, zs = z + 2.6, z + 1.5 + 0.35 * (h - 3) + 1.4
-        hole = [(-a, sill)] + arch(a, zs, 2 * a, 0, 7) + [(a, sill)]
-        tr.add(prism([[(-hw + 0.5, z + 1.5), (hw - 0.5, z + 1.5), (hw - 0.5, z1 - 1.5), (-hw + 0.5, z1 - 1.5)], hole], yf - 0.5, yf))
-        archivolt(tr, a, zs, 2 * a, [(0.0, [("roll", 0.5, 0.5)])], yf - 0.5, -1, z0=sill, n=7)
-        if j < 3:
-            for sx in (-1, 1):
-                colonnette(st, sx * (hw - 0.3), yf + 0.1, z, z1 - 0.2, 0.55, 6)
-        if j:
-            tr.add(xext([(yf - 0.4, z), (yf, z), (yf, z + 0.9), (yf - 0.4, z + 0.6)], -hw, hw))
-        z = z1
-    pinnacle(pn, cr, 0.0, 0.4, z, 4.4, 16.0, 3)
-
-
-def portal_great(S):
-    st, tr, cr, pn, gl = S["Stone"], S["Tracery"], S["Crockets"], S["Pinnacles"], S["Glass"]
-    a, Rr = 7.0, 15.4
-    zs = 28.0 - arch_h(a, Rr)
-    for i in range(6):  # 5 receding orders (front widest) + the door passage
-        d = 3.4 * (4 - i) if i < 5 else 0.0
-        y0 = -10.0 + 2.0 * i if i < 5 else 0.0
-        ar = arch(a, zs, Rr, d, 12)
-        st.add(prism([[(-28, 0), (-28, 44), (28, 44), (28, 0), (a + d, 0)] + ar[::-1] + [(-(a + d), 0)]], y0, y0 + 2.0 if i < 5 else 10.0))
-    for i in range(4):  # jamb shafts + archivolt rolls on the four steps
-        dc = 3.4 * (3 - i) + 1.7
-        yc = -10.0 + 2.0 * (i + 1) - 0.45
-        for sx in (-1, 1):
-            colonnette(st, sx * (a + dc), yc, 0.0, zs, 0.9, 10)
-        tr.add(sweep(arch(a, zs, Rr, dc, 12), [(0.9 * math.cos(2 * math.pi * q / 10), 0.9 * math.sin(2 * math.pi * q / 10)) for q in range(10)], yc, 1.0))
-    archivolt(tr, a, zs, Rr, [(13.6, [("roll", 1.0, 0.9), ("cove", 0.8, 0.6), ("roll", 1.6, 1.4), ("flat", 1.0, 0.6)])], -10.0, -1, z0=0.0, n=14, crock=(2.4, 4.6, 0.3))
-    tr.add(xext([(-10.9, 44.0), (-5.5, 44.0), (-5.5, 45.6), (-10.4, 45.6), (-10.9, 44.8)], -28, 28))
-    tr.add(xext([(-10.9, 0.0), (-7.0, 0.0), (-7.0, 3.0), (-10.4, 3.0)], -28, 28))
-    st.add(prism([[(-28, 44), (28, 44), (0, 86)]], -6.0, -3.0))
-    gable(tr, cr, 28.0, 44.0, 42.0, 3.0, -8.5, a=5.5, z_hole=50.0, crock_size=2.6, apex=74.0)
-    gh, gzs, gR = lancet_hole(5.5, 50.0, 74.0)
-    gl.add(prism([gh], -8.9, -8.6))
-    archivolt(tr, 5.5, gzs, gR, [(0.0, [("roll", 0.8, 0.7), ("cove", 0.6, 0.5), ("roll", 1.2, 1.1)])], -10.0, -1, z0=50.0, n=10)
-    head_tracery(tr, 0.0, gzs, 5.5, gR, -8.7, 0.6, gzs + 1.0)
-    for sx in (-1, 1):
-        pinnacle(pn, cr, sx * 27.0, -7.0, 44.0, 5.0, 34.0, 2)
 
 
 def portcullis(S):
@@ -1295,38 +935,6 @@ def door_iron(S):
     ir.add(sweep(arch_ext(a, zs, Rr, 0.0, 0.0, 12), barc(0.9, 2.0), 0.0, 1.0))
 
 
-def viaduct_bay(S):
-    st, tr, cr = S["Stone"], S["Tracery"], S["Crockets"]
-    a, Rr, zs, zdk = 12.0, 24.0, 88.0, 116.0
-    ar = arch(a, zs, Rr, 0, 14)
-    st.add(prism([[(-15, zs - 8), (-15, zdk), (15, zdk), (15, zs - 8), (a, zs - 8)] + ar[::-1] + [(-a, zs - 8)]], -5.0, 5.0))
-    for sx in (-1, 1):
-        st.add(loft([[(sx * 15.0, -7.0, 0), (sx * 10.0, -7.0, 0), (sx * 10.0, 7.0, 0), (sx * 15.0, 7.0, 0)],
-                     [(sx * 15.0, -6.2, 40), (sx * 11.6, -6.2, 40), (sx * 11.6, 6.2, 40), (sx * 15.0, 6.2, 40)],
-                     [(sx * 15.0, -5.6, 80), (sx * 12.0, -5.6, 80), (sx * 12.0, 5.6, 80), (sx * 15.0, 5.6, 80)]]))
-        for yy in (-1, 1):  # half cutwater (the neighbour bay mirrors it); tip tapers to the pier face at z=60
-            st.add(loft([[(sx * 10.0, yy * 7.0, 0), (sx * 15.0, yy * 7.0, 0), (sx * 15.0, yy * 14.5, 0)],
-                         [(sx * 11.6, yy * 6.2, 40), (sx * 15.0, yy * 6.2, 40), (sx * 15.0, yy * 10.2, 40)],
-                         [(sx * 11.4, yy * 5.8, 60), (sx * 15.0, yy * 5.8, 60), (sx * 15.0, yy * 5.95, 60)]]))
-            tr.add(box(min(sx * 13.4, sx * 15.0), max(sx * 13.4, sx * 15.0), min(yy * 5.0, yy * 5.9), max(yy * 5.0, yy * 5.9), 80.0, zdk))
-        tr.add(bxm(sx, 11.2, 15.0, -5.6, 5.6, zs - 1.6, zs))
-    for sgn, y in ((-1, -5.0), (1, 5.0)):
-        archivolt(tr, a, zs, Rr, [(0.0, [("roll", 0.8, 0.8), ("cove", 0.6, 0.6), ("roll", 1.2, 1.1)]), (2.6, [("flat", 0.4, 0.4)])], y, sgn, n=14, crock=(1.4, 3.4, 0.3))
-        for sx in (-1, 1):
-            xq = sx * 12.8
-            za = archz(xq, a, zs, Rr, 3.0)
-            rq = min(4.4, (zdk - za) / 2 - 1.3)
-            if rq > 1.5:
-                foil(tr, xq, (za + zdk) / 2, rq, 4, y, sgn, 0.8, 1.0)
-    for yy in (-3.6, 0.0, 3.6):  # soffit ribs
-        tr.add(sweep(arch(a, zs, Rr, 0.0, 14), [(-0.3, -0.7), (0.5, -0.7), (0.95, -0.35), (0.95, 0.35), (0.5, 0.7), (-0.3, 0.7)], yy, 1.0, flip=True))
-    tr.add(xext([(-7.6, zdk), (7.6, zdk), (7.6, zdk + 1.0), (6.4, zdk + 1.7), (7.0, zdk + 2.2), (7.0, zdk + 3.4), (6.0, zdk + 4.0), (-6.0, zdk + 4.0),
-                 (-7.0, zdk + 3.4), (-7.0, zdk + 2.2), (-6.4, zdk + 1.7), (-7.6, zdk + 1.0)], -15, 15))
-    for yy in (-1, 1):
-        for i in range(11):
-            c = -13.5 + i * 2.7
-            tr.add(loft([[(c - 0.6, yy * 7.0 - 0.6, zdk), (c + 0.6, yy * 7.0 - 0.6, zdk), (c + 0.6, yy * 7.0 + 0.6, zdk), (c - 0.6, yy * 7.0 + 0.6, zdk)],
-                         [(c - 0.3, yy * 6.0 - 0.3, zdk - 2.4), (c + 0.3, yy * 6.0 - 0.3, zdk - 2.4), (c + 0.3, yy * 6.0 + 0.3, zdk - 2.4), (c - 0.3, yy * 6.0 + 0.3, zdk - 2.4)]]))
 
 
 def statue_plinth(S):
@@ -1340,6 +948,882 @@ def statue_plinth(S):
     for sx, sy in ((-1, -1), (-1, 1), (1, -1), (1, 1)):
         colonnette(st, sx * 3.45, sy * 3.45, 3.0, 9.6, 0.45, 6)
     tr.add(loft([rect(0, 0, 9.6, 3.8, 3.8), rect(0, 0, 10.2, 4.4, 4.4), rect(0, 0, 11.2, 4.5, 4.5), rect(0, 0, 11.9, 3.7, 3.7)]))
+
+
+# ============================================================================================ mac-53 detail helpers
+def Rx(a):
+    return Matrix.Rotation(a, 4, "X")
+
+
+def blind_arcade(sub, x0, x1, z0, h, y, n=None, depth=0.5, cusp=True):
+    """Blind arcade relief on a wall plane at y (relief toward -y): pointed recesses, cusped heads. Local XZ frame."""
+    n = n or max(1, int(round((x1 - x0) / 3.0)))
+    p = (x1 - x0) / n
+    a = p / 2 - min(0.35, p * 0.12)
+    holes = []
+    for i in range(n):
+        c = x0 + p * (i + 0.5)
+        hole, zs, Rr = lancet_hole(a, z0 + 0.35, z0 + h - 0.35, 1.1)
+        holes.append([(c + x, z) for x, z in hole])
+        if cusp and a > 0.45:
+            ar = arch(a, zs, Rr, 0, 9)
+            for j in (2, len(ar) - 3):
+                q = ar[j]
+                dx = 0.6 if q[0] < 0 else -0.6
+                place_spear(sub, c + q[0], y - depth / 2, q[1], dx, -0.8, a * 0.45, a * 0.5, depth * 0.8)
+    sub.add(prism([[(x0, z0), (x1, z0), (x1, z0 + h), (x0, z0 + h)]] + holes, y - depth, y))
+
+
+def wimperg(sub, cr, hw, zb, hgt, y, th, arc=None, foil_r=0.0, foil_z=None, crock=1.0, cx=0.0, fin=True):
+    """Crocketed gable (wimperg) in the XZ plane centred at y. arc: extrados (x, z) left->right cut out of its foot so it sits
+    over an archivolt. foil_r > 0 adds a blind cusped trefoil in the field."""
+    poly = [(cx - hw, zb)]
+    if arc:
+        poly += [(x, z) for x, z in arc if z > zb + 0.05 and abs(x - cx) < hw * (1 - (z - zb) / hgt) - 0.3]
+    poly += [(cx + hw, zb), (cx, zb + hgt)]
+    sub.add(prism([clean(poly)], y - th / 2, y + th / 2))
+    for sx in (-1, 1):
+        p0, p1 = (cx + sx * hw, y, zb), (cx, y, zb + hgt)
+        edge_rib(sub, p0, p1, th + 0.5, (sx * hgt, 0, hw))
+        crockets(cr, p0, p1, (sx * hgt, 0, hw), crock, crock * 2.0, 0.07, 0.9, 0.35)
+    if fin:
+        finial(cr, cx, y, zb + hgt - 0.2, crock * 0.75)
+    if foil_r > 0:
+        foil(sub, cx, foil_z if foil_z is not None else zb + hgt * 0.45, foil_r, 3, y - th / 2, -1, max(0.3, foil_r * 0.14), max(0.4, foil_r * 0.2))
+
+
+def pin_cluster(D, C, cx, cy, z0, w, h, lvl=2, minis=4, rot=0.0):
+    """Main crocketed pinnacle with smaller pinnacles crowding its base (gothic stage-transition cluster)."""
+    pinnacle(D, C, cx, cy, z0, w, h, lvl)
+    for k in range(minis):
+        a = rot + math.pi / 4 + k * 2 * math.pi / minis
+        pinnacle(D, C, cx + math.cos(a) * w * 0.78, cy + math.sin(a) * w * 0.78, z0, w * 0.42, h * 0.58, 1)
+
+
+def gargoyle(sub, pos, d, s=1.0):
+    """Simple water-spout beast on a corbel: base at pos (on the wall), projecting along horizontal direction d."""
+    T = Tr(*pos) @ Rz(math.atan2(d[1], d[0]))
+    spec = [(-0.4, 0.62, 0.62, 0.0), (0.0, 0.6, 0.55, 0.0), (0.9, 0.52, 0.46, 0.12), (1.6, 0.34, 0.32, 0.3), (2.05, 0.44, 0.38, 0.38),
+            (2.6, 0.3, 0.26, 0.26), (3.1, 0.13, 0.12, 0.14)]
+    sub.add(loft([[(x * s, -hy * s, (zc - hz) * s), (x * s, hy * s, (zc - hz) * s), (x * s, hy * s, (zc + hz) * s), (x * s, -hy * s, (zc + hz) * s)]
+                  for x, hy, hz, zc in spec]), T)
+    for sy in (-1, 1):
+        sub.add(prism([[(0.1 * s, 0.3 * s), (1.5 * s, 0.45 * s), (0.4 * s, 1.7 * s)]], (sy * 0.55 - 0.07) * s, (sy * 0.55 + 0.07) * s), T)
+        sub.add(loft([rect(0, 0, 0, 0.09 * s, 0.09 * s)], cap1=False, apex=(0, 0, 0.7 * s)), T @ Tr(2.0 * s, sy * 0.24 * s, 0.68 * s) @ Ry(-0.6))
+        sub.add(box(1.0 * s, 1.35 * s, (sy * 0.32 - 0.12) * s, (sy * 0.32 + 0.12) * s, -0.75 * s, -0.2 * s), T)
+    sub.add(loft([rect(-0.25 * s, 0, -1.5 * s, 0.35 * s, 0.55 * s), rect(0.25 * s, 0, -0.5 * s, 0.85 * s, 0.62 * s)]), T)
+
+
+def statuette(h, seg=6):
+    """Robed hooded figure as a lathe, foot at origin, up +Z (voussoir / jamb / niche figures)."""
+    return lathe([(0.19 * h, 0.0), (0.18 * h, 0.06 * h), (0.14 * h, 0.40 * h), (0.115 * h, 0.60 * h), (0.14 * h, 0.68 * h), (0.11 * h, 0.77 * h),
+                  (0.095 * h, 0.85 * h), (0.07 * h, 0.95 * h), (0.0, 1.0 * h)], seg)
+
+
+def canopy(sub, T, w, h):
+    """Gabled niche canopy over a figure (local frame, base at origin)."""
+    sub.add(box(-w / 2, w / 2, -w / 2, w / 2, 0, h * 0.35), T)
+    sub.add(loft([rect(0, 0, h * 0.35, w * 0.5, w * 0.5)], cap1=False, apex=(0, 0, h)), T)
+
+
+def statue_niche(st, cr, cx, y, z0, h, w=None):
+    """Figure on a corbel under a canopy, standing in front of a wall plane at y (faces -y)."""
+    w = w or h * 0.42
+    st.add(loft([rect(cx, y - w * 0.35, z0 - h * 0.18, w * 0.25, w * 0.2), rect(cx, y - w * 0.45, z0, w * 0.45, w * 0.45)]))
+    st.add(statuette(h, 8), Tr(cx, y - w * 0.45, z0))
+    canopy(cr, Tr(cx, y - w * 0.45, z0 + h * 1.04), w * 1.05, h * 0.45)
+
+
+def louvres(sub, cx, a, z0, z1, y, step=1.25):
+    z = z0 + 0.6
+    while z < z1:
+        sub.add(box(-a, a, -0.06, 0.06, -0.55, 0.55), Tr(cx, y, z) @ Rx(0.62))
+        z += step
+
+
+def spire_tracery(S, R0, R1, H, tiers, faces=range(8), bw=0.34):
+    """Blind lancet panels (outline, mullion, trefoil) lying on the sloped faces of an octagonal spire (vertices at 22.5+45k)."""
+    c8 = math.cos(math.pi / 8)
+    for k in faces:
+        ph = k * math.pi / 4
+        n = Vector((math.cos(ph), math.sin(ph), 0.0))
+        P0, P1 = n * (R0 * c8), n * (R1 * c8) + Vector((0, 0, H))
+        L = (P1 - P0).length
+        T = frame(P0, (-math.sin(ph), math.cos(ph), 0.0), tuple(P1 - P0))
+        for z0, z1 in tiers:
+            t0, t1 = z0 / H * L, z1 / H * L
+            w = (R0 + (R1 - R0) * z1 / H) * math.sin(math.pi / 8)
+            a = w * 0.6
+            if a < 0.5 or t1 - t0 < 3.0:
+                continue
+            hole, zs, Rr = lancet_hole(a, t0 + 0.6, t1 - 0.7, 1.15)
+
+            def fn(Lc, hole=hole, zs=zs, a=a, t0=t0, Rr=Rr):
+                Lc["Tracery"].add(sweep(hole, barf(bw, bw * 1.5), 0.0, -1, closed=True))
+                Lc["Tracery"].add(box(-bw / 2, bw / 2, -bw * 1.2, 0.0, t0 + 0.6, zs + 0.2))
+                if a > 0.9:
+                    foil(Lc["Tracery"], 0.0, zs + arch_h(a, Rr) * 0.42, a * 0.42, 3, 0.0, -1, bw * 0.8, bw * 1.2)
+            local(S, T, fn)
+
+
+def dormer(L, w=2.4, h=6.5, roof=4.2, depth=7.0, crock=0.55, pins=True):
+    """Gabled lucarne: front plane y=0, body runs +y into the spire, lancet recess, slate roof, crocketed gable, corner pinnacles."""
+    hole, zs, Rr = lancet_hole(w * 0.42, 1.0, h - 0.6, 1.2)
+    L["Stone"].add(box(-w, w, 0.0, depth, 0, h))
+    L["Stone"].add(prism([[(-w, 0), (w, 0), (w, h), (-w, h)], hole], -0.7, 0.0))
+    L["Tracery"].add(box(-w - 0.35, w + 0.35, -1.2, 0.0, -0.5, 0.0))
+    L["Roof"].add(prism([[(-w - 0.4, h), (w + 0.4, h), (0, h + roof)]], -0.6, depth))
+    wimperg(L["Tracery"], L["Crockets"], w + 0.5, h - 0.3, roof + 2.0, -1.0, 0.5, crock=crock)
+    if pins:
+        for sx in (-1, 1):
+            pinnacle(L["Pinnacles"], L["Crockets"], sx * (w + 0.1), -0.9, 0.0, 0.8, h + 2.2, 1)
+
+
+def corner_pier(S, sx, sy, z0, z1, ph=(30.0, 48.0), gar_z=None):
+    """Tower corner pier x,y in [13.6, 19.0] (signed): blind panels on its two outer faces, angle shafts, engaged pinnacles."""
+    st, tr, pn, cr = S["Stone"], S["Tracery"], S["Pinnacles"], S["Crockets"]
+    st.add(box(min(sx * 13.6, sx * 19.0), max(sx * 13.6, sx * 19.0), min(sy * 13.6, sy * 19.0), max(sy * 13.6, sy * 19.0), z0, z1))
+    colonnette(st, sx * 19.0, sy * 19.0, z0 + 0.5, z1 - 0.5, 0.55, 6)
+    for (fx, fy) in ((1, 0), (0, 1)):  # the two outer faces, each in a local frame whose -y points out of the face
+        ang = math.atan2(sy * fy, sx * fx) + math.pi / 2
+        T = Tr(sx * 16.3 if fx == 0 else sx * 19.0, sy * 16.3 if fy == 0 else sy * 19.0, 0) @ Rz(ang)
+
+        def fn(L, z0=z0, z1=z1):
+            for za, zb in ((z0 + 3.0, z0 + (z1 - z0) * 0.45), (z0 + (z1 - z0) * 0.5 + 1.5, z1 - 3.0)):
+                if zb - za > 6:
+                    blind_arcade(L["Tracery"], -1.9, 1.9, za, zb - za, 0.0, 1, 0.45)
+            for zp in ph:
+                if z0 + 2 < zp < z1 - 6:
+                    pinnacle(L["Pinnacles"], L["Crockets"], 0.0, -0.9, zp, 1.5, 9.0, 1)
+        local(S, T, fn)
+    for zb in (z0 + 12.0, z0 + 30.0):
+        if zb < z1 - 1:
+            tr.add(frust(sx * 16.3, sy * 16.3, zb, 2.95, 2.95, zb + 0.9, 2.95, 2.95))
+    if gar_z is not None:
+        gargoyle(S["Dress"], (sx * 19.0, sy * 19.0, gar_z), (sx, sy), 1.0)
+
+
+# ============================================================================================ GROUP C (mac-53 rebuild)
+C8, S8 = math.cos(math.pi / 8), math.sin(math.pi / 8)
+
+
+def tower_stage(S):
+    """Square tower stage 32 x 32 x 60 with corner piers (interface: square 32 + piers 13.6..19.0 at z 0 and 60)."""
+    st, tr, cr, pn = S["Stone"], S["Tracery"], S["Crockets"], S["Pinnacles"]
+    st.add(frust(0, 0, 0, 16.4, 16.4, 3.0, 16.4, 16.4))
+    st.add(frust(0, 0, 3.0, 14.8, 14.8, 60.0, 14.8, 14.8))
+    hl, zs, Rr = lancet_hole(2.7, 15.0, 47.0)
+
+    def face(L):
+        holes = []
+        for cx in (-6.4, 6.4):
+            holes.append([(cx + x, z) for x, z in hl])
+            archivolt(L["Tracery"], 2.7, zs, Rr, [(0.0, [("roll", 0.6, 0.6), ("cove", 0.5, 0.4), ("roll", 0.8, 0.8)])], -16.0, -1, z0=15.0,
+                      cx=cx, n=10)
+            head_tracery(L["Tracery"], cx, zs, 2.7, Rr, -15.4, 0.4, zs + 0.8)
+            L["Tracery"].add(box(cx - 0.2, cx + 0.2, -15.7, -15.1, 15.0, zs + 0.8))
+            for zt_ in (24.0, 33.0):
+                L["Tracery"].add(box(cx - 2.6, cx + 2.6, -15.6, -15.1, zt_, zt_ + 0.4))
+            L["Tracery"].add(box(cx - 3.3, cx + 3.3, -17.0, -15.8, 14.2, 15.0))
+            ext = arch(2.7, zs, Rr, 2.4, 14)
+            wimperg(L["Tracery"], L["Crockets"], 5.6, 43.0, 14.0, -16.9, 0.7, arc=[(cx + x, z) for x, z in ext], foil_r=1.1,
+                    foil_z=52.4, crock=0.75, cx=cx)
+        L["Stone"].add(prism([[(-13.6, 3.0), (13.6, 3.0), (13.6, 60.0), (-13.6, 60.0)]] + holes, -16.0, -14.8))
+        blind_arcade(L["Tracery"], -13.6, 13.6, 4.0, 8.4, -16.0, 9, 0.5)
+        blind_arcade(L["Tracery"], -1.5, 1.5, 15.0, 31.0, -16.0, 1, 0.5)
+        for zb, wdt in ((12.4, 1.0), (36.0, 0.8), (57.2, 1.4)):
+            L["Tracery"].add(xext([(-16.0, zb), (-17.1, zb + 0.3), (-17.1, zb + wdt), (-16.0, zb + wdt + 0.4)], -13.6, 13.6))
+        for i in range(12):
+            c = -12.65 + i * 2.3
+            L["Tracery"].add(loft([rect(c, -16.4, 55.6, 0.3, 0.3), rect(c, -16.6, 57.2, 0.55, 0.6)]))
+    for k in range(4):
+        local(S, Rz(k * math.pi / 2), face)
+    for sx, sy in ((-1, -1), (-1, 1), (1, -1), (1, 1)):
+        corner_pier(S, sx, sy, 0.0, 60.0, (26.0, 44.0), gar_z=54.0)
+    tr.add(loft([rect(0, 0, 0.0, 16.8, 16.8), rect(0, 0, 1.0, 16.8, 16.8), rect(0, 0, 1.8, 16.4, 16.4)]))
+    st.add(frust(0, 0, 59.0, 16.0, 16.0, 60.0, 16.0, 16.0))
+
+
+def spire_base_oct(S):
+    """Square 32 (+ corner piers) -> octagon R14, h 30: blind-arcaded square stage, octagonal drum with twin blind lancets,
+    crocketed wimpergs on the cardinal faces, pinnacle clusters on the four corner piers."""
+    st, tr, cr, pn = S["Stone"], S["Tracery"], S["Crockets"], S["Pinnacles"]
+    st.add(frust(0, 0, 0, 16.0, 16.0, 9.0, 16.0, 16.0))
+    tr.add(loft([rect(0, 0, 8.4, 16.0, 16.0), rect(0, 0, 9.0, 16.8, 16.8), rect(0, 0, 9.8, 16.8, 16.8), rect(0, 0, 10.2, 15.6, 15.6)]))
+    st.add(loft([ngon(0, 0, 9.0, 14.0), ngon(0, 0, 30.0, 14.0)]))
+    ap = 14.0 * C8
+    hd, zsd, Rd = lancet_hole(4.6, 11.0, 27.6, 1.05)
+
+    def oface(L):
+        blind_arcade(L["Tracery"], -4.6, 4.6, 11.0, 15.0, 0.0, 2, 0.6)
+        archivolt(L["Tracery"], 4.6, zsd, Rd, [(0.2, [("roll", 0.5, 0.5), ("cove", 0.4, 0.4)])], 0.0, -1, z0=None, n=12, crock=(0.7, 1.9, 0.25))
+    for k in range(8):
+        local(S, facet_T(k, ap), oface)
+
+    def sface(L):
+        blind_arcade(L["Tracery"], -13.6, 13.6, 1.0, 7.0, -16.0, 8, 0.5)
+        wimperg(L["Tracery"], L["Crockets"], 7.4, 10.2, 16.0, -16.2, 1.2, foil_r=3.0, foil_z=16.4, crock=1.0)
+    for k in range(4):
+        local(S, Rz(k * math.pi / 2), sface)
+    for sx, sy in ((-1, -1), (-1, 1), (1, -1), (1, 1)):
+        corner_pier(S, sx, sy, 0.0, 11.0, (), gar_z=None)
+        tr.add(frust(sx * 16.3, sy * 16.3, 10.2, 3.2, 3.2, 11.0, 3.2, 3.2))
+        pin_cluster(pn, cr, sx * 16.3, sy * 16.3, 11.0, 4.6, 30.0, 2, 4, rot=0.0)
+        gargoyle(S["Dress"], (sx * 19.0, sy * 19.0, 8.6), (sx, sy), 1.1)
+    tr.add(loft([ngon(0, 0, 28.4, 14.0), ngon(0, 0, 29.2, 14.8), ngon(0, 0, 30.0, 14.8), ngon(0, 0, 30.0, 14.0)]))
+    tr.add(loft([rect(0, 0, 0.0, 16.8, 16.8), rect(0, 0, 0.9, 16.8, 16.8), rect(0, 0, 1.6, 16.3, 16.3)]))
+
+
+def spire_belfry_stage(S):
+    """Octagon R14 -> deck R13.6 at z 40: tall paired louvred openings under crocketed hoods, wimpergs, pierced balustrade,
+    pinnacle clusters on the eight angle buttresses (the stage-transition crown rises above the z 40 interface)."""
+    st, tr, cr, pn = S["Stone"], S["Tracery"], S["Crockets"], S["Pinnacles"]
+    st.add(loft([ngon(0, 0, 0, 14.4), ngon(0, 0, 2.4, 14.4)]))
+    st.add(loft([ngon(0, 0, 2.4, 9.5), ngon(0, 0, 40.0, 9.5)]))
+    ap = 14.0 * C8
+    sw = 14.0 * S8
+    hl, zs, Rr = lancet_hole(1.75, 9.6, 31.0, 1.25)
+    ho, zso, Ro = lancet_hole(4.2, 9.6, 34.6, 1.0)
+
+    def face(L):
+        holes = [[(cx + x, z) for x, z in hl] for cx in (-2.35, 2.35)]
+        L["Stone"].add(prism([[(-sw - 0.1, 2.4), (sw + 0.1, 2.4), (sw + 0.1, 40.0), (-sw - 0.1, 40.0)]] + holes, -0.9, 0.9))
+        for cx in (-2.35, 2.35):
+            archivolt(L["Tracery"], 1.75, zs, Rr, [(0.0, [("roll", 0.4, 0.4), ("cove", 0.3, 0.3)])], -0.9, -1, z0=9.6, cx=cx, n=9)
+            louvres(L["Tracery"], cx, 1.7, 9.6, zs + 1.0, 0.2)
+            L["Tracery"].add(box(cx - 2.1, cx + 2.1, -1.8, -0.8, 9.0, 9.6))
+        archivolt(L["Tracery"], 4.2, zso, Ro, [(0.2, [("roll", 0.5, 0.6), ("cove", 0.4, 0.4), ("roll", 0.6, 0.7)])], -0.9, -1, z0=None, n=12,
+                  crock=(0.8, 2.0, 0.3))
+        foil(L["Tracery"], 0.0, 32.6, 1.15, 4, -0.9, -1, 0.3, 0.6)
+        blind_arcade(L["Tracery"], -sw + 0.6, sw - 0.6, 3.0, 5.6, -0.9, 4, 0.45)
+        ext = arch(4.2, zso, Ro, 2.2, 14)
+        wimperg(L["Tracery"], L["Crockets"], 5.1, 33.0, 14.0, -1.7, 0.7, arc=ext, foil_r=1.5, foil_z=40.6, crock=0.85)
+        balustrade(L["Pinnacles"], L["Pinnacles"], -sw + 0.8, sw - 0.8, 40.0, 0.2, 5.4, 1.0, 1.2)
+    for k in range(8):
+        local(S, facet_T(k, ap), face)
+        th = k * math.pi / 4 + math.pi / 8
+        vx, vy = 14.2 * math.cos(th), 14.2 * math.sin(th)
+        for dt in (-0.07, 0.07):
+            colonnette(st, 14.3 * math.cos(th + dt), 14.3 * math.sin(th + dt), 2.4, 38.0, 0.6, 6)
+        st.add(frust(vx, vy, 2.4, 1.3, 1.3, 40.0, 1.3, 1.3))
+        pin_cluster(pn, cr, 14.6 * math.cos(th), 14.6 * math.sin(th), 40.0, 2.6, 16.0, 2, 2, rot=th + math.pi / 4)
+        gargoyle(S["Dress"], (14.6 * math.cos(th), 14.6 * math.sin(th), 37.0), (math.cos(th), math.sin(th)), 0.85)
+    tr.add(loft([ngon(0, 0, 8.6, 14.5), ngon(0, 0, 9.0, 14.9), ngon(0, 0, 9.6, 14.3)]))
+    tr.add(loft([ngon(0, 0, 36.8, 14.0), ngon(0, 0, 38.0, 14.8), ngon(0, 0, 39.4, 14.9), ngon(0, 0, 40.0, 14.2)]))
+    for k in range(24):
+        a = k * 2 * math.pi / 24
+        tr.add(loft([rect(0, 0, 0.0, 0.3, 0.3), rect(0, 0, 1.3, 0.55, 0.7)]), Tr(13.9 * math.cos(a), 13.9 * math.sin(a), 36.6) @ Rz(a))
+    st.add(loft([ngon(0, 0, 39.2, 13.6), ngon(0, 0, 40.0, 13.6)]))
+    tr.add(loft([ngon(0, 0, 0.0, 14.8), ngon(0, 0, 1.0, 14.8), ngon(0, 0, 1.8, 14.4)]))
+
+
+def spire_lucarne_mid(S):
+    """Stone spire frustum R13 -> R6.5 over 48: crocketed edge ribs, three bands, blind tracery on every face, two tiers of
+    gabled lucarnes, a ring of small pinnacles at the top transition."""
+    st, tr, cr, pn = S["Stone"], S["Tracery"], S["Crockets"], S["Pinnacles"]
+    R0, R1, H = 13.0, 6.5, 48.0
+    st.add(loft([ngon(0, 0, 0, R0), ngon(0, 0, H, R1)]))
+    rad = lambda z: R0 + (R1 - R0) * z / H
+    for k in range(8):
+        th = k * math.pi / 4 + math.pi / 8
+        p0, p1 = (R0 * math.cos(th), R0 * math.sin(th), 0.0), (R1 * math.cos(th), R1 * math.sin(th), H)
+        edge_rib(tr, p0, p1, 1.5, (math.cos(th), math.sin(th), 0))
+        crockets(cr, p0, p1, (math.cos(th), math.sin(th), 0.0), 1.6, 3.2, 0.04, 0.96, 0.45)
+    for z in (16.0, 32.0):
+        r = rad(z)
+        tr.add(loft([ngon(0, 0, z, r + 0.9), ngon(0, 0, z + 0.8, r + 0.95), ngon(0, 0, z + 1.6, r + 0.05)]))
+    spire_tracery(S, R0, R1, H, [(1.6, 15.6), (17.6, 31.6), (33.6, 46.0)], bw=0.4)
+    for k in range(8):
+        ph = k * math.pi / 4
+        z0, w = (2.0, 2.5) if k % 2 == 0 else (19.0, 2.0)
+        local(S, Rz(ph + math.pi / 2) @ Tr(0, -(rad(z0 + 3.0) * C8 + 1.6), z0), lambda L, w=w: dormer(L, w, 6.2 if w > 2.2 else 5.2, 3.8, 7.0))
+    tr.add(loft([ngon(0, 0, H - 1.4, R1 + 0.9), ngon(0, 0, H - 0.6, R1 + 1.2), ngon(0, 0, H, R1 + 1.2), ngon(0, 0, H, R1)]))
+    for k in range(8):
+        ph = k * math.pi / 4
+        pinnacle(pn, cr, (R1 * C8 + 1.1) * math.cos(ph), (R1 * C8 + 1.1) * math.sin(ph), H, 1.1, 7.0, 1)
+
+
+def spire_needle_tip(S):
+    """Needle R6.5 -> point over 56: crocketed ribs, bands, blind tracery, gabled lucarnes on alternate faces, finial + iron cross."""
+    st, tr, cr = S["Stone"], S["Tracery"], S["Crockets"]
+    R0, R1, H = 6.5, 0.35, 56.0
+    st.add(loft([ngon(0, 0, 0, R0), ngon(0, 0, H, R1)]))
+    rad = lambda z: R0 + (R1 - R0) * z / H
+    for k in range(8):
+        th = k * math.pi / 4 + math.pi / 8
+        p0, p1 = (R0 * math.cos(th), R0 * math.sin(th), 0.0), (R1 * math.cos(th), R1 * math.sin(th), H)
+        crockets(cr, p0, p1, (math.cos(th), math.sin(th), 0.0), 1.15, 2.6, 0.05, 0.95, 0.55)
+        edge_rib(tr, p0, p1, 0.95, (math.cos(th), math.sin(th), 0))
+    for z in (14.0, 28.0, 42.0):
+        r = rad(z)
+        tr.add(loft([ngon(0, 0, z, r + 0.6), ngon(0, 0, z + 0.6, r + 0.65), ngon(0, 0, z + 1.2, r + 0.05)]))
+    spire_tracery(S, R0, R1, H, [(1.2, 13.6), (15.2, 27.6)], bw=0.28)
+    for k in range(8):
+        ph = k * math.pi / 4
+        z0, w = (3.0, 1.5) if k % 2 == 0 else (17.0, 1.1)
+        local(S, Rz(ph + math.pi / 2) @ Tr(0, -(rad(z0 + 2.0) * C8 + 1.0), z0), lambda L, w=w: dormer(L, w, 3.6 * w / 1.5 + 0.6, 2.4, 4.0, 0.4, False))
+    finial(cr, 0, 0, H - 0.6, 1.1)
+    ir = S["Iron"]
+    zc = H - 0.6 + 1.1 * 4.6
+    ir.add(box(-0.22, 0.22, -0.22, 0.22, zc - 0.6, zc + 7.0))
+    ir.add(box(-2.0, 2.0, -0.2, 0.2, zc + 4.2, zc + 4.7))
+    ir.add(sweep(circle(0, zc + 4.45, 1.1, 16), barc(0.18, 0.3), 0.0, 1.0, closed=True))
+
+
+def spire_broken_top(S):
+    """Needle snapped at ~28: shell plates with ragged tops (inner faces show the thickness), broken ribs, one lucarne, rubble."""
+    st, tr, cr = S["Stone"], S["Tracery"], S["Crockets"]
+    rng = np.random.default_rng(5)
+    R0, H = 6.5, 56.0
+    rad = lambda z: R0 + (0.35 - R0) * z / H
+    st.add(loft([ngon(0, 0, 0, R0), ngon(0, 0, 9.0, rad(9.0))]))
+    tops = [27.0, 21.5, 15.0, 12.0, 17.5, 24.5, 29.0, 26.0]
+    for k in range(8):
+        ph = k * math.pi / 4
+        zt = tops[k]
+        w0, w1 = rad(9.0) * S8, rad(zt) * S8
+        prof = [(-w0, 9.0), (w0, 9.0)] + [(w1 * (1 - 2 * i / 5) + rng.uniform(-0.25, 0.25), zt - rng.uniform(0.0, 4.5) * (i % 2 + 0.4)) for i in range(6)]
+        ap0 = rad(9.0) * C8
+        sl = (rad(9.0) - rad(zt)) * C8 / (zt - 9.0)
+        # plate leaning with the spire slope (shear in y by z)
+        M = Matrix(((1, 0, 0, 0), (0, 1, sl, 0), (0, 0, 1, 0), (0, 0, 0, 1)))
+        st.add(prism([clean(prof)], -0.45, 0.45), Rz(ph + math.pi / 2) @ Tr(0, -ap0 + 0.45, 0) @ Tr(0, 0, 9.0) @ M @ Tr(0, 0, -9.0))
+    for k in (0, 1, 5, 6, 7):
+        th = k * math.pi / 4 + math.pi / 8
+        z1 = min(tops[k], tops[(k + 1) % 8]) - rng.uniform(0.5, 3.0)
+        p0, p1 = (R0 * math.cos(th), R0 * math.sin(th), 0.0), (rad(z1) * math.cos(th), rad(z1) * math.sin(th), z1)
+        edge_rib(tr, p0, p1, 0.95, (math.cos(th), math.sin(th), 0))
+        crockets(cr, p0, p1, (math.cos(th), math.sin(th), 0.0), 1.15, 2.6, 0.08, 0.85, 0.3)
+    r = rad(14.0)
+    tr.add(loft([ngon(0, 0, 14.0, r + 0.6), ngon(0, 0, 14.6, r + 0.65), ngon(0, 0, 15.2, r + 0.05)]))
+    spire_tracery(S, R0, 0.35, H, [(1.2, 13.6)], faces=(0, 1, 2, 3, 5, 6, 7), bw=0.28)
+    local(S, Rz(math.pi / 2) @ Tr(0, -(rad(5.0) * C8 + 1.0), 3.0), lambda L: dormer(L, 1.5, 4.2, 2.4, 4.0, 0.4, False))
+    for i in range(9):
+        a, rr = rng.uniform(0, 6.28), rng.uniform(1.0, 3.6)
+        st.add(frust(math.cos(a) * rr, math.sin(a) * rr, 8.8, rng.uniform(0.4, 0.9), rng.uniform(0.4, 0.9), 8.8 + rng.uniform(0.6, 1.8), 0.3, 0.35))
+    for i in range(6):  # broken crocket stubs and fragments lodged on the band
+        a = rng.uniform(0, 6.28)
+        st.add(box(-0.5, 0.5, -0.4, 0.4, 0, rng.uniform(0.5, 1.2)), Tr(math.cos(a) * (r + 0.3), math.sin(a) * (r + 0.3), 15.2) @ Rz(a))
+
+
+# ============================================================================================ GROUP D (mac-53 rebuild)
+def rose_glass(G, cx, cz, R, y0, y1, cells=24, nseg=96, nring=12):
+    """Dense annulus disc (both faces + rim) so the polar UVs interpolate: u = cells/4 tiles around, v = r/R (4 cell rings)."""
+    vs, fs = [], []
+    for side, y in ((0, y0), (1, y1)):
+        b = len(vs)
+        vs.append((cx, y, cz))
+        for i in range(1, nring + 1):
+            r = R * i / nring
+            vs += [(cx + r * math.cos(2 * math.pi * k / nseg), y, cz + r * math.sin(2 * math.pi * k / nseg)) for k in range(nseg)]
+        ring = lambda i, k: b + 1 + (i - 1) * nseg + k % nseg
+        for k in range(nseg):
+            fs.append((b, ring(1, k), ring(1, k + 1)) if side else (b, ring(1, k + 1), ring(1, k)))
+            for i in range(1, nring):
+                q = (ring(i, k), ring(i + 1, k), ring(i + 1, k + 1), ring(i, k + 1))
+                fs.append(q if side else q[::-1])
+    o0, o1 = 1 + (nring - 1) * nseg, len(vs) // 2 + 1 + (nring - 1) * nseg
+    for k in range(nseg):
+        fs.append((o0 + k, o0 + (k + 1) % nseg, o1 + (k + 1) % nseg, o1 + k))
+    G.add((vs, fs))
+    K = cells / 4.0
+
+    def uvfn(c, ctr):
+        dx, dz = c[0] - cx, c[2] - cz
+        r = math.hypot(dx, dz)
+        tc = math.atan2(ctr[2] - cz, ctr[0] - cx)
+        t = math.atan2(dz, dx) if r > 1e-4 else tc
+        t += 2 * math.pi * round((tc - t) / (2 * math.pi))
+        return (t / (2 * math.pi) * K, r / R)
+    G.uvfn = uvfn
+
+
+def rose(T, G, cx, cz, R, n, y=0.0):
+    """Rayonnant rose (mac-53): hub six-foil, n radiating colonnette spokes, a middle ring, cusped pointed heads at the outer ends
+    of the lights, a ring of cusped roundels between the heads. G: the GlassR sub (polar-UV disc)."""
+    bw, h = max(0.32, R * 0.017), max(0.7, R * 0.045)
+    r_hub, r_mid, r_spr, r_head = 0.20 * R, 0.55 * R, 0.70 * R, 0.84 * R
+    T.add(sweep(circle(cx, cz, R * 0.985, max(48, n * 6)), barf(bw * 3.4, h * 1.25), y, -1, closed=True))
+    T.add(sweep(circle(cx, cz, r_mid, max(48, n * 4)), barf(bw * 1.7, h), y, -1, closed=True))
+    T.add(sweep(circle(cx, cz, r_hub, 32), barf(bw * 2.2, h * 1.1), y, -1, closed=True))
+    T.add(lathe([(r_hub * 0.45, 0.0), (r_hub * 0.4, h * 0.9), (r_hub * 0.15, h * 1.5), (0.0, h * 1.7)], 12), Tr(cx, y, cz) @ Rx(math.pi / 2))
+    foil(T, cx, cz, r_hub * 0.82, 6, y, -1, bw * 0.9, h * 0.9)
+    m = n
+    for k in range(m):  # spokes on the light boundaries
+        ang = 2 * math.pi * k / m
+        T.add(box(-bw * 0.5, bw * 0.5, y - h, y, r_hub, r_spr + 0.2), Tr(cx, 0, cz) @ Ry(math.atan2(math.cos(ang), math.sin(ang))))
+    bh = r_spr * math.sin(math.pi / m) - bw * 0.6
+    rs = r_spr * math.cos(math.pi / m)
+    rise = r_head - rs
+    Rr = max(bh * 1.02, (rise * rise + bh * bh) / (2 * bh))
+    ar = arch(bh, 0.0, Rr, 0, 9)
+    for k in range(m):
+        ph = 2 * math.pi * (k + 0.5) / m
+        c, s = math.cos(ph), math.sin(ph)
+        loc = lambda u, v: (cx + (rs + v) * c - u * s, cz + (rs + v) * s + u * c)
+        T.add(sweep([loc(u, v) for u, v in ar], barf(bw * 1.3, h * 0.95), y, -1))
+        for j in (2, len(ar) - 3):  # cusps inside the head (trefoil)
+            u, v = ar[j]
+            px, pz = loc(u, v)
+            du, dv = (-0.7 if u > 0 else 0.7), -0.7
+            place_spear(T, px, y - h * 0.5, pz, du * -s + dv * c, du * c + dv * s, bw * 1.6, bw * 2.4, h * 0.8)
+        for rr in (r_mid,):  # trefoil cusps on the middle ring inside each light
+            px, pz = cx + (rr + bw) * c, cz + (rr + bw) * s
+            place_spear(T, px, y - h * 0.5, pz, c, s, bw * 1.8, bw * 2.2, h * 0.8)
+        rc = (r_head + R * 0.985) / 2 + bw * 0.4  # roundel between this head and the outer ring, on the spoke line
+        pa = 2 * math.pi * (k + 1) / m
+        rr_ = min((R * 0.985 - r_head) * 0.48, rc * math.sin(math.pi / m) * 0.8)
+        if rr_ > bw * 2:
+            foil(T, cx + rc * math.cos(pa), cz + rc * math.sin(pa), rr_, 4, y, -1, bw * 0.9, h * 0.85)
+    rose_glass(G, cx, cz, R + bw, y + 0.15, y + 0.5, cells=24)
+
+
+def rose_unit(S, R, W, Hh):
+    cz = Hh / 2
+    circ = circle(0, cz, R, 72)
+    S["Stone"].add(prism([[(-W / 2, 0), (W / 2, 0), (W / 2, Hh), (-W / 2, Hh)], circ], -4.0, 4.0))
+    for sgn, y in ((-1, -4.0), (1, 4.0)):
+        S["Tracery"].add(sweep(circle(0, cz, R, 72), mould([("roll", R * 0.03 + 0.4, R * 0.03 + 0.4), ("cove", R * 0.025 + 0.3, R * 0.02 + 0.3), ("roll", R * 0.05 + 0.6, R * 0.05 + 0.5), ("flat", R * 0.03 + 0.3, 0.4)]), y, sgn, closed=True, flip=True))
+    rose(S["Tracery"], S["GlassR"], 0.0, cz, R, 16 if R > 12 else 8)
+
+
+def rose_great(S):
+    """56 x 56 rose module: rose R24, crocketed hood over the upper half, cusped spandrel foils, gallery of blind arcading,
+    angle buttresses with niches, pierced balustrade and pinnacle clusters on the crown."""
+    st, tr, cr, pn = S["Stone"], S["Tracery"], S["Crockets"], S["Pinnacles"]
+    rose_unit(S, 24.0, 56.0, 56.0)
+    cz, R = 28.0, 24.0
+    up = [(x, z) for x, z in circle(0, cz, R + 3.6, 64) if z > cz + 2]
+    up.sort(key=lambda p: p[0])
+    path_crockets(cr, up, -5.6, 1.5, 3.4)
+    for sx in (-1, 1):
+        for sz in (-1, 1):
+            foil(tr, sx * 23.2, cz + sz * 23.2, 3.0, 3, -4.0, -1, 0.4, 0.7)
+        st.add(bxm(sx, 26.0, 30.0, -6.0, 4.0, 0.0, 56.0))
+        local(S, Tr(sx * 28.0, -6.0, 0.0), lambda L: (blind_arcade(L["Tracery"], -1.8, 1.8, 3.0, 22.0, 0.0, 1, 0.45),
+                                                     statue_niche(L["Stone"], L["Crockets"], 0.0, 0.0, 30.0, 6.0, 2.8),
+                                                     blind_arcade(L["Tracery"], -1.8, 1.8, 42.0, 12.0, 0.0, 1, 0.45)))
+        for zb in (26.0, 56.0):
+            tr.add(bxm(sx, 25.6, 30.4, -6.5, 4.4, zb - 0.9, zb))
+        pin_cluster(pn, cr, sx * 28.0, -1.0, 56.0, 4.2, 22.0, 2, 4)
+        gargoyle(S["Dress"], (sx * 28.0, -6.0, 53.0), (0, -1), 1.0)
+    blind_arcade(tr, -22.0, 22.0, 0.6, 3.6, -4.0, 14, 0.4, False)
+    balustrade(pn, pn, -25.5, 25.5, 56.0, -1.0, 6.2, 1.2, 1.4)
+    tr.add(box(-26.0, 26.0, -5.0, 3.0, 55.0, 56.0))
+
+
+def rose_small(S):
+    rose_unit(S, 8.0, 20.0, 20.0)
+    for sx in (-1, 1):
+        pin_cluster(S["Pinnacles"], S["Crockets"], sx * 9.0, 0.0, 20.0, 2.0, 9.0, 2, 2)
+    up = [(x, z) for x, z in circle(0, 10.0, 8.0 + 1.6, 40) if z > 11.0]
+    up.sort(key=lambda p: p[0])
+    path_crockets(S["Crockets"], up, -5.0, 0.8, 1.9)
+
+
+def lancet_unit(S, cx, a, y0=-2.0, y1=2.0, z_sill=1.5, apex=41.5, wall=None):
+    st, tr, gl = S["Stone"], S["Tracery"], S["Glass"]
+    hole, zs, Rr = lancet_hole(a, z_sill, apex, 1.2)
+    hole = [(cx + x, z) for x, z in hole]
+    for sgn, y in ((-1, y0), (1, y1)):
+        archivolt(tr, a, zs, Rr, [(0.0, [("roll", 0.7, 0.6), ("cove", 0.7, 0.5), ("roll", 1.2, 1.0)])], y, sgn, z0=z_sill, cx=cx, n=10, crock=(0.9, 2.3, 0.2))
+    gl.add(prism([hole], 0.4, 0.7))
+    head_tracery(tr, cx, zs, a, Rr, 0.0, 0.5, zs + 0.9)
+    tr.add(box(cx - 0.25, cx + 0.25, -0.45, 0.45, z_sill, zs + 0.9))
+    for zt_ in (zs * 0.34, zs * 0.66):
+        tr.add(box(cx - a + 0.05, cx + a - 0.05, -0.4, 0.4, zt_, zt_ + 0.45))
+    tr.add(xext([(y0 - 0.9, z_sill - 1.2), (y1 + 0.2, z_sill - 1.2), (y1 + 0.2, z_sill), (y0 - 0.9, z_sill - 0.4)], cx - a - 1.2, cx + a + 1.2))
+    return hole
+
+
+def lancet_tall(S):
+    """Lancet light under a crocketed wimperg, angle shafts and pinnacles on the wall ends (14 wide)."""
+    hole = lancet_unit(S, 0.0, 4.0)
+    _, zs, Rr = lancet_hole(4.0, 1.5, 41.5, 1.2)
+    S["Stone"].add(prism([[(-7, 0), (7, 0), (7, 46), (-7, 46)], hole], -2.0, 2.0))
+    S["Tracery"].add(box(-7.4, 7.4, -2.4, 2.4, 0.0, 0.5))
+    wimperg(S["Tracery"], S["Crockets"], 8.2, 31.0, 28.0, -3.4, 0.9, arc=arch(4.0, zs, Rr, 2.8, 16), foil_r=1.8, foil_z=50.5, crock=1.0)
+    for sx in (-1, 1):
+        colonnette(S["Stone"], sx * 6.4, -2.3, 0.5, 45.5, 0.55, 6)
+        pinnacle(S["Pinnacles"], S["Crockets"], sx * 6.2, -0.4, 46.0, 1.9, 12.0, 1)
+    S["Tracery"].add(box(-7.3, 7.3, -2.5, 2.5, 45.2, 46.0))
+
+
+def lancet_pair(S):
+    h1 = lancet_unit(S, -5.5, 4.0, apex=41.5)
+    h2 = lancet_unit(S, 5.5, 4.0, apex=41.5)
+    ah, Rh = 10.6, 21.2
+    zsh = 41.5 - arch_h(4.0, 9.6)
+    cz = 45.2
+    circ = circle(0, cz, 3.2, 16)
+    S["Stone"].add(prism([[(-13, 0), (13, 0), (13, 58), (-13, 58)], h1, h2, circ], -2.0, 2.0))
+    rose_glass(S["GlassR"], 0.0, cz, 3.4, 0.4, 0.7, cells=8, nseg=48, nring=5)
+    for sgn, y in ((-1, -2.0), (1, 2.0)):
+        archivolt(S["Tracery"], ah, zsh, Rh, [(0.0, [("roll", 0.8, 0.7), ("cove", 0.7, 0.5), ("roll", 1.4, 1.1)])], y, sgn, z0=1.5, n=12, crock=(1.2, 2.8, 0.2))
+        foil(S["Tracery"], 0, cz, 3.7, 5, y, sgn, 0.7, 0.9)
+    foil(S["Tracery"], 0, cz, 3.0, 4, 0.0, 1.0, 0.45, 0.8, True)
+    S["Tracery"].add(box(-13.4, 13.4, -2.4, 2.4, 0.0, 0.5))
+    wimperg(S["Tracery"], S["Crockets"], 14.0, 42.0, 26.0, -3.6, 1.0, arc=arch(ah, zsh, Rh, 3.6, 18), foil_r=2.4, foil_z=60.0, crock=1.3)
+    for sx in (-1, 1):
+        colonnette(S["Stone"], sx * 12.4, -2.3, 0.5, 57.5, 0.6, 6)
+        pin_cluster(S["Pinnacles"], S["Crockets"], sx * 11.8, -0.2, 58.0, 2.4, 15.0, 2, 2)
+    S["Tracery"].add(box(-13.3, 13.3, -2.5, 2.5, 57.2, 58.0))
+
+
+def portal_great(S):
+    """West portal (ref_01/03/05): six receding orders (voussoir figures on 1/3/5, foliage crockets on 2/4), jamb statues,
+    trumeau with figure, lintel + tympanum (mandorla figure, rows of small figures), crocketed wimperg with a glazed rose,
+    flanking buttress towers with niches and pinnacle clusters. Doorways: two 5.6 x 17 openings beside the trumeau; the rear
+    passage keeps the a=7 / apex 28 arch for Door_Iron and Portcullis."""
+    st, tr, cr, pn, ds = S["Stone"], S["Tracery"], S["Crockets"], S["Pinnacles"], S["Dress"]
+    a0, R0 = 7.0, 16.8
+    zs = 34.0 - arch_h(a0, R0)
+    nord, dstep, ystep = 6, 2.9, 2.0
+    yfront = lambda i: -1.5 - ystep * (i + 1)  # front face of order slab i
+    ar_pass = arch(7.0, 28.0 - arch_h(7.0, 15.4), 15.4, 0, 12)
+    st.add(prism([[(-24, 0), (-24, 58), (24, 58), (24, 0), (7.0, 0)] + ar_pass[::-1] + [(-7.0, 0)]], -1.5, 8.0))
+    for i in range(nord):
+        d = dstep * i
+        ar = arch(a0, zs, R0, d, 16)
+        st.add(prism([[(-24, 0), (-24, 58), (24, 58), (24, 0), (a0 + d, 0)] + ar[::-1] + [(-(a0 + d), 0)]], yfront(i), yfront(i) + ystep))
+        tr.add(sweep(arch_ext(a0, zs, R0, d, 0.0, 16), [(0.0, 0.0), (0.45, 0.0), (0.45, -0.35), (0.0, -0.6)], yfront(i), 1.0))
+        dc = d + dstep - 0.95  # step corner between order i and order i+1
+        yc = yfront(i) - 0.95 + 0.3
+        st.add(bxm(1, a0 + d, a0 + d + dstep, yfront(i) - 0.6, yfront(i) + 0.2, 0.0, 3.2))
+        st.add(bxm(-1, a0 + d, a0 + d + dstep, yfront(i) - 0.6, yfront(i) + 0.2, 0.0, 3.2))
+        for sx in (-1, 1):
+            if 1 <= i <= 4:
+                colonnette(st, sx * (a0 + dc), yc, 15.2, zs, 0.75, 8)
+                statue_niche(ds, cr, sx * (a0 + dc), yc + 0.6, 4.6, 8.4, 2.2)
+            else:
+                colonnette(st, sx * (a0 + dc), yc, 3.2, zs, 0.75, 8)
+        path = arch(a0, zs, R0, dc, 24)
+        if i % 2 == 1:  # voussoir figures standing along the arc, heads toward the apex, each under a small canopy
+            pts = clean(path, False)
+            segs = [(pts[j], pts[j + 1], math.hypot(pts[j + 1][0] - pts[j][0], pts[j + 1][1] - pts[j][1])) for j in range(len(pts) - 1)]
+            tot = sum(g[2] for g in segs)
+            nf = max(4, int(tot / 3.1))
+            for f in range(nf):
+                s_, acc = (f + 0.5) / nf * tot, 0.0
+                for p, q, l in segs:
+                    if acc + l >= s_:
+                        u = (s_ - acc) / l
+                        pos, t = (p[0] + u * (q[0] - p[0]), p[1] + u * (q[1] - p[1])), ((q[0] - p[0]) / l, (q[1] - p[1]) / l)
+                        break
+                    acc += l
+                if pos[0] > 0:
+                    t = (-t[0], -t[1])
+                Tf = frame((pos[0], yc - 0.4, pos[1]), (t[1], 0.0, -t[0]), (t[0], 0.0, t[1]))
+                ds.add(statuette(2.3, 6), Tf)
+                canopy(cr, Tf @ Tr(0, 0, 2.4), 1.2, 0.9)
+        else:
+            tr.add(sweep(path, [(0.75 * math.cos(2 * math.pi * q / 10), 0.75 * math.sin(2 * math.pi * q / 10)) for q in range(10)], yc, 1.0))
+            if i in (2, 4):
+                path_crockets(cr, path, yc - 0.6, 0.9, 1.6)
+    archivolt(tr, a0, zs, R0, [(dstep * nord, [("roll", 1.0, 0.9), ("cove", 0.8, 0.6), ("roll", 1.6, 1.4), ("flat", 1.0, 0.6)])], yfront(nord - 1), -1,
+              z0=0.0, n=18)
+    # trumeau, lintel, tympanum
+    yt = yfront(0)
+    st.add(box(-1.25, 1.25, yt - 0.6, -1.5, 0.0, 17.0))
+    statue_niche(ds, cr, 0.0, yt - 0.6, 4.4, 7.6, 2.3)
+    st.add(box(-a0 - 0.2, a0 + 0.2, yt - 0.4, -1.5, 17.0, 19.0))
+    tym = [(x, z) for x, z in arch(a0, zs, R0, 0, 16) if z > 19.0]
+    st.add(prism([clean([(-a0, 19.0)] + tym + [(a0, 19.0)])], yt + 0.4, -1.5))
+    ds.add(statuette(6.2, 8), Tr(0.0, yt + 0.1, 20.2))
+    tr.add(sweep([(math.cos(2 * math.pi * q / 28) * 2.4, 24.0 + math.sin(2 * math.pi * q / 28) * 4.6) for q in range(28)], barf(0.4, 0.6), yt + 0.4, -1, closed=True))
+    for sx in (-1, 1):
+        for j in range(3):
+            ds.add(statuette(2.2, 6), Tr(sx * (3.5 + j * 1.15), yt + 0.2, 19.2))
+        for j in range(2):
+            ds.add(statuette(2.0, 6), Tr(sx * (3.4 + j * 1.1), yt + 0.2, 22.4))
+        tr.add(box(sx * 2.9, sx * 6.9, yt, yt + 0.4, 21.6, 22.0) if sx > 0 else box(-6.9, -2.9, yt, yt + 0.4, 21.6, 22.0))
+        for cxd in (sx * 4.1,):  # cusped doorway heads under the lintel
+            for dx in (-1, 1):
+                place_spear(tr, cxd + dx * 2.6, yt - 0.2, 16.6, -dx * 0.5, -0.86, 1.0, 1.3, 0.5)
+    # gable (wimperg) over the portal with a glazed rose
+    zb, hw, hg, yg = 40.0, 25.5, 47.0, yfront(nord - 1) - 1.8
+    ext = arch(a0, zs, R0, dstep * nord + 4.6, 24)
+    rz, rr = 67.0, 6.6
+    loops_poly = [(-hw, zb)] + [(x, z) for x, z in ext if z > zb + 0.05 and abs(x) < hw * (1 - (z - zb) / hg) - 0.3] + [(hw, zb), (0.0, zb + hg)]
+    st.add(prism([clean(loops_poly), circle(0, rz, rr, 40)], yg - 0.9, yg + 0.9))
+    for sx in (-1, 1):
+        p0, p1 = (sx * hw, yg, zb), (0.0, yg, zb + hg)
+        edge_rib(tr, p0, p1, 2.4, (sx * hg, 0, hw))
+        crockets(cr, p0, p1, (sx * hg, 0, hw), 2.2, 3.6, 0.06, 0.92, 0.35)
+    finial(cr, 0.0, yg, zb + hg - 0.3, 1.6)
+    tr.add(sweep(circle(0, rz, rr, 40), mould([("roll", 0.5, 0.5), ("cove", 0.4, 0.4), ("roll", 0.7, 0.7)]), yg - 0.9, -1, closed=True, flip=True))
+    rose(tr, S["GlassR"], 0.0, rz, rr, 8, yg)
+    for sx in (-1, 1):
+        foil(tr, sx * 9.0, 52.0, 2.6, 3, yg - 0.9, -1, 0.35, 0.6)
+    # flanking buttress towers
+    yb = yfront(nord - 1) - 2.6
+    for sx in (-1, 1):
+        st.add(bxm(sx, 22.0, 29.0, yb, 8.0, 0.0, 62.0))
+        local(S, Tr(sx * 25.5, yb, 0.0), lambda L: (blind_arcade(L["Tracery"], -3.2, 3.2, 3.0, 14.0, 0.0, 2, 0.5),
+                                                    statue_niche(L["Stone"], L["Crockets"], 0.0, 0.0, 22.0, 7.5, 3.0),
+                                                    blind_arcade(L["Tracery"], -3.2, 3.2, 36.0, 22.0, 0.0, 2, 0.5)))
+        for zb_ in (19.5, 34.0, 61.0):
+            tr.add(bxm(sx, 21.6, 29.4, yb - 0.6, 8.4, zb_ - 1.0, zb_))
+        pin_cluster(pn, cr, sx * 25.5, yb + 3.6, 62.0, 5.2, 32.0, 2, 4)
+        gargoyle(S["Dress"], (sx * 25.5, yb, 58.0), (0, -1), 1.3)
+        colonnette(st, sx * 22.2, yb - 0.2, 0.5, 60.5, 0.7, 8)
+        colonnette(st, sx * 28.8, yb - 0.2, 0.5, 60.5, 0.7, 8)
+    blind_arcade(tr, -22.0, 22.0, 51.5, 6.5, yfront(nord - 1), 12, 0.5)
+    tr.add(box(-22.0, 22.0, yfront(nord - 1) - 1.2, 8.0, 57.4, 58.6))
+    tr.add(xext([(yfront(nord - 1) - 1.4, 0.0), (8.0, 0.0), (8.0, 0.8), (yfront(nord - 1) - 1.0, 0.8)], -29.0, 29.0))
+
+
+# ============================================================================================ GROUP A/B/E (mac-53 density pass)
+def bay(S, open_h):
+    """Arcade bay 40 wide: pointed arch with crocketed archivolts and Y tracery, cusped spandrel foils, crocketed wimperg over the
+    arch on both faces, pier buttresses with set-off gablets, blind panels and gargoyles, corbel-table cornice, pierced
+    balustrade with pinnacle clusters."""
+    a, R = 16.0, 32.0
+    rise = arch_h(a, R)
+    zs, zt = open_h - rise, open_h + 12.0
+    ar = arch(a, zs, R, 0, 12)
+    st, tr, pn, cr = S["Stone"], S["Tracery"], S["Pinnacles"], S["Crockets"]
+    st.add(prism([[(-20, 0), (-20, zt), (20, zt), (20, 0), (a, 0)] + ar[::-1] + [(-a, 0)]], -4, 4))
+    for sx in (-1, 1):
+        st.add(bxm(sx, 16, 20, -6, 6, 0, zt))
+        st.add(bxm(sx, 15.4, 20, -6.6, 6.6, 0, 2.6))
+        st.add(bxm(sx, 15.7, 20, -6.3, 6.3, 2.6, 4.0))
+        tr.add(bxm(sx, 15.2, 20, -6.4, 6.4, zs - 1.5, zs))
+        for yy in (-6, 6):
+            for xo, rr in ((16.9, 0.55), (19.1, 0.55)):
+                colonnette(st, sx * xo, yy, 4.0, zs - 1.5, rr, 8)
+            colonnette(st, sx * 16.1, yy * 0.93, 4.0, zs, 0.6, 6)
+    for sgn, y in ((-1, -4.0), (1, 4.0)):
+        archivolt(tr, a, zs, R, [(0.0, [("roll", 1.0, 0.9), ("cove", 0.8, 0.7), ("roll", 1.4, 1.2)]), (3.2, [("flat", 0.5, 0.4), ("roll", 0.3, 0.3)])], y, sgn, crock=(1.8, 3.6, 0.35))
+        for sx in (-1, 1):
+            xq = sx * 13.3
+            za = archz(xq, a, zs, R, 4.0)
+            zq = (za + zt) / 2
+            rq = min(4.6, (zt - za) / 2 - 1.4)
+            foil(tr, xq, zq, rq, 4, y, sgn, 0.7, 1.0)
+    head_tracery(tr, 0.0, zs, a, R, 0.0, 1.0, zs + 2.0)
+    prof = [(-7.4, zt), (7.4, zt), (7.4, zt + 0.7), (6.5, zt + 1.3), (7.0, zt + 1.7), (7.0, zt + 2.4), (6.2, zt + 3.0), (-6.2, zt + 3.0), (-7.0, zt + 2.4), (-7.0, zt + 1.7), (-6.5, zt + 1.3), (-7.4, zt + 0.7)]
+    tr.add(xext(prof, -20, 20))
+    for yy in (-1, 1):
+        for i in range(15):
+            c = -18.67 + i * 2.667
+            tr.add(loft([[(c - 0.55, yy * 7.3 - 0.6, zt - 0.1), (c + 0.55, yy * 7.3 - 0.6, zt - 0.1), (c + 0.55, yy * 7.3 + 0.6, zt - 0.1), (c - 0.55, yy * 7.3 + 0.6, zt - 0.1)],
+                         [(c - 0.3, yy * 6.6 - 0.3, zt - 2.4), (c + 0.3, yy * 6.6 - 0.3, zt - 2.4), (c + 0.3, yy * 6.6 + 0.3, zt - 2.4), (c - 0.3, yy * 6.6 + 0.3, zt - 2.4)]]))
+    ztop = zt + 3.0
+
+    def face(L):  # one long face (front; the back is the same rotated 180 deg)
+        for sx in (-1, 1):  # pier buttress with two set-offs, gablets, blind panel, gargoyle
+            xa, xb = sorted((sx * 16.4, sx * 19.6))
+            z1 = max(zs * 0.5, 14.0)
+            L["Stone"].add(box(xa, xb, -8.8, -6.0, 0.0, z1))
+            L["Tracery"].add(xext([(-8.8, z1), (-6.0, z1), (-6.0, z1 + 1.8), (-8.0, z1 + 0.4)], xa, xb))
+            L["Stone"].add(box(xa + 0.2, xb - 0.2, -8.0, -6.0, z1, zt - 0.2))
+            blind_arcade(L["Tracery"], xa + 0.4, xb - 0.4, 3.0, z1 - 5.0, -8.8, 1, 0.4)
+            k = max(1, math.ceil((zt - z1 - 6.0) / 18.0))
+            hz = (zt - z1 - 6.0) / k
+            for q in range(k):
+                blind_arcade(L["Tracery"], xa + 0.6, xb - 0.6, z1 + 3.0 + q * hz, hz - 0.4, -8.0, 1, 0.4)
+            wimperg(L["Tracery"], L["Crockets"], 1.5, z1 + 0.4, 4.2, -8.6, 0.4, crock=0.5, cx=sx * 18.0)
+            gargoyle(L["Dress"], (sx * 18.0, -8.0, zt - 3.2), (0, -1), 1.0)
+        ext = arch(a, zs, R, 6.0, 18)
+        hw_, zb_, hg_ = 16.0, open_h - 6.0, 22.0
+        back = [(-hw_, zb_)] + [(x, z) for x, z in ext if z > zb_ + 0.05 and abs(x) < hw_ * (1 - (z - zb_) / hg_) - 0.3] + [(hw_, zb_), (0.0, zb_ + hg_)]
+        L["Stone"].add(prism([clean(back)], -8.0, -4.0))  # backing so the gable stands on the wall, in front of the cornice
+        wimperg(L["Tracery"], L["Crockets"], hw_, zb_, hg_, -8.4, 0.8, arc=ext, foil_r=2.0, foil_z=open_h + 10.0, crock=1.5)
+    local(S, Matrix.Identity(4), face)
+    local(S, Rz(math.pi), face)
+    for yy in (-5.4, 5.4):
+        balustrade(pn, pn, -16.0, 16.0, ztop, yy, 7.0)
+        for sx in (-1, 1):
+            pin_cluster(pn, S["Crockets"], sx * 18.0, yy, ztop, 3.0, 17.0, 2, 2, rot=math.pi / 4)
+
+
+def bastion_face(S):
+    """Battered bastion 40 x 80: irregular coursed rubble-ashlar (random course heights, block lengths and proud faces, chamfered
+    arrises, a few missing blocks), blind relieving arch, string course, machicolation, gargoyles, gothic parapet."""
+    st, tr, pn, cr = S["Stone"], S["Tracery"], S["Pinnacles"], S["Crockets"]
+    rng = np.random.default_rng(17)
+    yf = lambda z: -7.0 + 7.0 * z / 80.0
+    st.add(loft([[(-20, yf(0) + 0.7, 0), (20, yf(0) + 0.7, 0), (20, 7.0, 0), (-20, 7.0, 0)],
+                 [(-20, yf(72) + 0.7, 72), (20, yf(72) + 0.7, 72), (20, 7.0, 72), (-20, 7.0, 72)]]))
+    z, row = 0.0, 0
+    while z < 71.9:
+        hh = min(rng.uniform(2.1, 3.5) * (1.3 if z < 9 else 1.0), 72.0 - z)
+        if 72.0 - z - hh < 1.2:
+            hh = 72.0 - z
+        x = -20.0
+        first = True
+        while x < 19.95:
+            ln = (4.6 if row % 2 else 2.9) if first else rng.uniform(2.6, 6.8)
+            if x + ln > 18.6:
+                ln = 20.0 - x
+            first = False
+            if 3.0 < z < 66 and -17 < x < 16 and rng.random() < 0.035:
+                x += ln
+                continue
+            pr = rng.uniform(0.0, 0.5)
+            y0 = yf(z + hh / 2) - pr
+            ins = rng.uniform(0.12, 0.32)
+            j = 0.07
+            x0, x1, z0, z1 = x + j, x + ln - j, z + j, z + hh - j
+            st.add(loft([[(x0, y0 + 1.6, z0), (x1, y0 + 1.6, z0), (x1, y0 + 1.6, z1), (x0, y0 + 1.6, z1)],
+                         [(x0, y0 + ins, z0), (x1, y0 + ins, z0), (x1, y0 + ins, z1), (x0, y0 + ins, z1)],
+                         [(x0 + ins, y0, z0 + ins), (x1 - ins, y0, z0 + ins), (x1 - ins, y0, z1 - ins), (x0 + ins, y0, z1 - ins)]]))
+            x += ln
+        z += hh
+        row += 1
+    # blind relieving arch (voussoirs proud of the rubble) with a recessed tympanum
+    a, zsa = 7.0, 8.0
+    vin, vout = arch(a, zsa, 2 * a, 0.0, 15), arch(a, zsa, 2 * a, 2.2, 15)
+    for i in range(len(vin) - 1):
+        yv = yf((vin[i][1] + vin[i + 1][1]) / 2) - 0.8
+        tr.add(prism([[vin[i], vout[i], vout[i + 1], vin[i + 1]]], yv, yv + 1.6))
+    for sx in (-1, 1):
+        tr.add(bxm(sx, a - 1.0, a + 1.2, yf(4) - 0.8, yf(4) + 1.0, 0.0, zsa))
+    # string course following the batter, gargoyles, machicolation and the parapet
+    tr.add(xext([(yf(40) - 0.8, 39.6), (yf(40) + 0.6, 39.6), (yf(41.6) + 0.6, 41.6), (yf(41.6) - 0.4, 41.3)], -20, 20))
+    for gx in (-12.0, 0.0, 12.0):
+        gargoyle(S["Dress"], (gx, yf(68) - 0.4, 68.0), (0, -1), 1.3)
+    st.add(loft([[(-20, yf(72) - 0.2, 72), (20, yf(72) - 0.2, 72), (20, 7.0, 72), (-20, 7.0, 72)],
+                 [(-20, yf(80) - 0.2, 80), (20, yf(80) - 0.2, 80), (20, 7.0, 80), (-20, 7.0, 80)]]))
+    for i in range(16):
+        c = -18.75 + i * 2.5
+        tr.add(loft([rect(c, yf(73) - 0.6, 73.0, 0.45, 0.6), rect(c, yf(77) - 1.6, 77.0, 0.65, 1.4)]))
+    tr.add(box(-20.0, 20.0, yf(80) - 2.6, yf(80) + 0.2, 77.0, 80.0))
+    ytop = yf(80)
+    parapet_gothic(S, -20, 20, 80.0, ytop + 1.2)
+    for px in (-18.5, -6.65, 6.65, 18.5):
+        pinnacle(pn, cr, px, ytop + 1.2, 80.0, 2.4, 13.0, 2)
+
+
+def buttress_pier(S):
+    """Five-stage buttress: blind cusped panels, angle shafts, crocketed gablets on every set-off, engaged pinnacles, gargoyles,
+    crowned by a pinnacle cluster."""
+    st, tr, cr, pn = S["Stone"], S["Tracery"], S["Crockets"], S["Pinnacles"]
+    z = 0.0
+    for j, h in enumerate([13, 12, 11, 10, 8]):
+        hw, yf = 6.0 - 0.55 * j, -18.0 + 3.2 * j
+        z1 = z + h
+        st.add(box(-hw, hw, yf, 6.0, z, z1))
+        if j < 4:
+            yn = -18.0 + 3.2 * (j + 1)
+            tr.add(xext([(yf, z1), (yn, z1), (yn, z1 + 1.3)], -hw, hw))
+            wimperg(tr, cr, (6.0 - 0.55 * (j + 1)) * 0.7, z1 + 0.6, 4.6 - 0.4 * j, yn - 0.35, 0.5, foil_r=0.7, foil_z=z1 + 2.2, crock=0.6)
+            for sx in (-1, 1):
+                pinnacle(pn, cr, sx * (hw - 0.6), yf + 0.7, z1, 1.1, 6.0 - 0.6 * j, 1)
+        a = hw * 0.42
+        sill, zs = z + 2.6, z + 1.5 + 0.35 * (h - 3) + 1.4
+        hole = [(-a, sill)] + arch(a, zs, 2 * a, 0, 7) + [(a, sill)]
+        tr.add(prism([[(-hw + 0.5, z + 1.5), (hw - 0.5, z + 1.5), (hw - 0.5, z1 - 1.5), (-hw + 0.5, z1 - 1.5)], hole], yf - 0.5, yf))
+        archivolt(tr, a, zs, 2 * a, [(0.0, [("roll", 0.5, 0.5)])], yf - 0.5, -1, z0=sill, n=7, crock=(0.5, 1.3, 0.15))
+        ar = arch(a, zs, 2 * a, 0, 9)
+        for q in (ar[2], ar[-3]):
+            place_spear(tr, q[0], yf - 0.25, q[1], 0.6 if q[0] < 0 else -0.6, -0.8, a * 0.4, a * 0.45, 0.4)
+        for sx in (-1, 1):  # blind panels on the flanks
+            T = Tr(sx * hw, (yf + 6.0) / 2, 0) @ Rz(sx * math.pi / 2)
+            local(S, T, lambda L, z=z, h=h, yf=yf: blind_arcade(L["Tracery"], -(6.0 - yf) / 2 + 0.8, (6.0 - yf) / 2 - 0.8, z + 1.4, h - 2.8, 0.0,
+                                                               max(1, int((6.0 - yf) / 4.5)), 0.35))
+        if j < 3:
+            for sx in (-1, 1):
+                colonnette(st, sx * (hw - 0.3), yf + 0.1, z, z1 - 0.2, 0.55, 6)
+        if j:
+            tr.add(xext([(yf - 0.4, z), (yf, z), (yf, z + 0.9), (yf - 0.4, z + 0.6)], -hw, hw))
+        if j in (1, 3):
+            gargoyle(S["Dress"], (0.0, yf, z1 - 1.0), (0, -1), 1.0 - 0.15 * j)
+        z = z1
+    pin_cluster(pn, cr, 0.0, 0.4, z, 4.4, 18.0, 3, 4)
+
+
+def flying_buttress(S, L):
+    """Flyer: intrados roll, web pierced by a row of cusped lancet lights with moulded surrounds, crocketed coping with finials,
+    gargoyle spout at the low end."""
+    st, tr, cr = S["Stone"], S["Tracery"], S["Crockets"]
+    rise = 0.42 * L
+    Ra = (L * L + rise * rise) / (2 * rise)
+    thm = math.asin(min(1.0, L / Ra))
+    m = 18
+    intr = [(Ra * math.sin(thm * i / m), Ra * (1 - math.cos(thm * i / m))) for i in range(m + 1)]
+    tlo, thi = 5.5, 7.0
+    ramp = lambda x: tlo + (rise + thi - tlo) * x / L
+    zin = lambda x: Ra * (1 - math.cos(math.asin(max(-1.0, min(1.0, x / Ra)))))
+    poly = intr + [(L, rise + thi), (0.0, tlo)]
+    n = max(4, int(L / 8.0))
+    pitch = L * 0.84 / n
+    holes, lights = [], []
+    for i in range(n):
+        x = L * 0.08 + pitch * (i + 0.5)
+        a = pitch * 0.3
+        zl = max(zin(x - a), zin(x + a)) + 0.9
+        zt = min(ramp(x - a), ramp(x + a)) - 0.9
+        if zt - zl < arch_h(a, 2.2 * a) + 0.8:
+            continue
+        hole, zs, Rr = lancet_hole(a, zl, zt, 1.1)
+        holes.append([(x + px, pz) for px, pz in hole])
+        lights.append((x, a, zs, Rr, zl))
+    st.add(prism([poly] + holes, -2.5, 2.5))
+    for sgn, y in ((-1, -2.5), (1, 2.5)):
+        for (x, a, zs, Rr, zl), hole in zip(lights, holes):
+            tr.add(sweep(hole, barf(0.45, 0.5), y, sgn, closed=True))
+            ar = arch(a, zs, Rr, 0, 9)
+            for q in (ar[2], ar[-3]):
+                place_spear(tr, x + q[0], y, q[1], 0.6 if q[0] < 0 else -0.6, -0.8, a * 0.45, a * 0.5, 1.0)
+        tr.add(sweep(intr, mould([("roll", 0.7, 0.7)]), y, sgn, flip=True))
+    tr.add(prism([[(0.0, tlo), (L, rise + thi), (L, rise + thi + 1.1), (0.0, tlo + 1.1)]], -3.1, 3.1))
+    for sy in (-1, 1):
+        crockets(cr, (0.0, sy * 3.0, tlo + 1.1), (L, sy * 3.0, rise + thi + 1.1), (0, sy, 0.4), 2.0, 3.2, 0.06, 0.94, 0.3)
+    for i in range(1, int(L / 10.0) + 1):
+        x = i * L / (int(L / 10.0) + 1)
+        finial(cr, x, 0.0, ramp(x) + 1.0, 0.6)
+    st.add(box(L - 1.2, L + 3.5, -3.6, 3.6, rise + 2.0, rise + thi + 2.4))
+    tr.add(box(-3.0, 0.8, -3.4, 3.4, 0.0, 1.2))
+    gargoyle(S["Dress"], (0.0, 0.0, tlo + 0.2), (-1, 0), 1.1)
+    S.shift(-L / 2)
+
+
+def viaduct_bay(S):
+    """Viaduct bay 30 x 120: four-order pointed arch (each order rolled, outer order crocketed), clustered-shaft piers with
+    stepped cutwaters (weathered offsets, pyramidal caps), blind-panelled pier faces, cusped spandrel foils, corbel-table deck."""
+    st, tr, cr, ds = S["Stone"], S["Tracery"], S["Crockets"], S["Dress"]
+    a, Rr, zs, zdk = 12.0, 24.0, 88.0, 116.0
+    base = [(-15, zs), (-15, zdk), (15, zdk), (15, zs)]
+    roll = [(0.45 * math.cos(2 * math.pi * q / 8), 0.45 * math.sin(2 * math.pi * q / 8)) for q in range(8)]
+    for d, y0, y1 in ((0.0, -2.0, 2.0), (0.9, -3.0, -2.0), (1.8, -4.0, -3.0), (2.7, -5.0, -4.0), (0.9, 2.0, 3.0), (1.8, 3.0, 4.0), (2.7, 4.0, 5.0)):
+        st.add(prism([base + arch(a, zs, Rr, d, 16)[::-1]], y0, y1))
+        if d > 0:  # rolled arris on each stepped order
+            tr.add(sweep(arch(a, zs, Rr, d - 0.45, 16), roll, y0 if y0 < 0 else y1, 1.0))
+    for sgn, y in ((-1, -5.0), (1, 5.0)):
+        archivolt(tr, a, zs, Rr, [(2.7, [("roll", 0.6, 0.6), ("cove", 0.5, 0.4), ("roll", 0.8, 0.8)])], y, sgn, n=16, crock=(1.4, 3.0, 0.3))
+        for sx in (-1, 1):
+            xq = sx * 12.6
+            za = archz(xq, a, zs, Rr, 4.6)
+            rq = min(2.2, (zdk - za) / 2 - 1.2)
+            if rq > 1.2:
+                foil(tr, xq, (za + zdk) / 2, rq, 4, y, sgn, 0.6, 0.8)
+    for sx in (-1, 1):
+        st.add(bxm(sx, 12.0, 15.0, -5.0, 5.0, 0.0, zs))
+        st.add(bxm(sx, 10.8, 15.0, -6.4, 6.4, 0.0, 6.0))
+        tr.add(xext([(-6.4, 6.0), (6.4, 6.0), (5.2, 7.2), (-5.2, 7.2)], *sorted((sx * 10.8, sx * 15.0))))
+        tr.add(bxm(sx, 11.2, 15.0, -5.6, 5.6, zs - 1.6, zs))
+        tr.add(bxm(sx, 11.6, 15.0, -5.5, 5.5, zs - 9.0, zs - 8.0))
+        for yy in (-3.2, 0.0, 3.2):
+            colonnette(st, sx * 12.2, yy, 7.2, zs - 1.6, 0.62 if yy else 0.8, 8)
+        for yy in (-1, 1):  # half cutwater (the neighbour bay mirrors it): stepped prow, weathered offset, pyramidal cap
+            rings = [(0.0, 12.5), (30.0, 12.0), (31.6, 10.8), (48.0, 10.8), (56.0, 5.2)]
+            st.add(loft([[(sx * 12.0, yy * 5.0, z), (sx * 15.0, yy * 5.0, z), (sx * 15.0, yy * tip, z)] for z, tip in rings]))
+            tr.add(loft([[(sx * 11.8, yy * 5.0, z), (sx * 15.0, yy * 5.0, z), (sx * 15.0, yy * (tip + 0.4), z)] for z, tip in ((29.4, 12.0), (30.4, 12.5), (31.2, 12.5))]))
+            T = Tr(sx * 13.5, yy * 5.0, 0) @ Rz(0.0 if yy < 0 else math.pi)
+            local(S, T, lambda L: blind_arcade(L["Tracery"], -1.3, 1.3, 58.0, zs - 10.0 - 58.0, 0.0, 1, 0.4))
+            gargoyle(ds, (sx * 13.5, yy * 5.6, zdk - 3.4), (0, yy), 1.1)
+            finial(cr, sx * 15.0, yy * 5.6, 56.0, 0.7)
+    for yy in (-3.6, 0.0, 3.6):
+        tr.add(sweep(arch(a, zs, Rr, 0.0, 14), [(-0.3, -0.7), (0.5, -0.7), (0.95, -0.35), (0.95, 0.35), (0.5, 0.7), (-0.3, 0.7)], yy, 1.0, flip=True))
+    tr.add(xext([(-7.6, zdk), (7.6, zdk), (7.6, zdk + 1.0), (6.4, zdk + 1.7), (7.0, zdk + 2.2), (7.0, zdk + 3.4), (6.0, zdk + 4.0), (-6.0, zdk + 4.0),
+                 (-7.0, zdk + 3.4), (-7.0, zdk + 2.2), (-6.4, zdk + 1.7), (-7.6, zdk + 1.0)], -15, 15))
+    for yy in (-1, 1):
+        for i in range(11):
+            c = -13.5 + i * 2.7
+            tr.add(loft([[(c - 0.6, yy * 7.0 - 0.6, zdk), (c + 0.6, yy * 7.0 - 0.6, zdk), (c + 0.6, yy * 7.0 + 0.6, zdk), (c - 0.6, yy * 7.0 + 0.6, zdk)],
+                         [(c - 0.3, yy * 6.0 - 0.3, zdk - 2.4), (c + 0.3, yy * 6.0 - 0.3, zdk - 2.4), (c + 0.3, yy * 6.0 + 0.3, zdk - 2.4), (c - 0.3, yy * 6.0 + 0.3, zdk - 2.4)]]))
 
 
 # ============================================================================================ build / export
@@ -1357,12 +1841,13 @@ PLAN = [
     ("Rose_Window_Small", "D", rose_small), ("Portal_Great", "D", portal_great), ("Portcullis", "D", portcullis), ("Door_Iron", "D", door_iron),
     ("Viaduct_Bay", "E", viaduct_bay), ("Viaduct_Balustrade_30", "E", viaduct_balustrade), ("Statue_Plinth", "E", statue_plinth),
 ]
-STACK = {"Tower_Corner_Stage": {"h": 60.0, "bottom": "square 28 (plinth 28)", "top": "square 28 flat"},
-         "Spire_Base_Oct": {"h": 26.0, "bottom": "square 28", "top": "octagon R12 (vertices at 22.5+k*45 deg)"},
-         "Spire_Belfry_Stage": {"h": 36.0, "bottom": "octagon R12", "top": "octagon R11.4"},
-         "Spire_Lucarne_Mid": {"h": 44.0, "bottom": "octagon R11.4", "top": "octagon R5.4"},
-         "Spire_Needle_Tip": {"h": 52.0, "bottom": "octagon R5.4", "top": "point"},
-         "Spire_Broken_Top": {"h": 28.0, "bottom": "octagon R5.4", "top": "broken"}}
+STACK = {"Tower_Corner_Stage": {"h": 60.0, "bottom": "square 32 core (walls +-16) + corner piers x,y in +-[13.6, 19.0]", "top": "same, flat at z 60"},
+         "Spire_Base_Oct": {"h": 30.0, "bottom": "square 32 + corner piers (sits on Tower_Corner_Stage)", "top": "octagon R14 (vertices at 22.5+k*45 deg)",
+                            "crown": "corner pinnacle clusters rise to z ~45"},
+         "Spire_Belfry_Stage": {"h": 40.0, "bottom": "octagon R14", "top": "deck octagon R13.6 (Lucarne R13 sits on it)", "crown": "wimpergs, balustrade, 8 pinnacle clusters to z ~58"},
+         "Spire_Lucarne_Mid": {"h": 48.0, "bottom": "octagon R13", "top": "octagon R6.5", "crown": "ring of 8 small pinnacles to z ~56"},
+         "Spire_Needle_Tip": {"h": 56.0, "bottom": "octagon R6.5", "top": "point; finial + iron cross to z ~68"},
+         "Spire_Broken_Top": {"h": 29.0, "bottom": "octagon R6.5", "top": "broken"}}
 
 
 def commit(sub):
@@ -1404,14 +1889,38 @@ def chunks(faces):
     return out
 
 
-def make_obj(name, mat, faces):
+def _wn(x, y, z):
+    """Cheap continuous noise ~[-1.9, 1.9] (sum of incommensurate sines): same input -> same output, so welded seams stay closed."""
+    return math.sin(x * 0.71 + y * 1.13 + z * 0.37) + 0.5 * math.sin(x * 1.9 - z * 1.3 + y * 0.5 + 1.7) + 0.35 * math.sin(y * 2.3 + z * 2.9 - x * 0.8 + 0.4)
+
+
+def weather_co(c, amp, zlo=0.0, zhi=None):
+    """Erode masonry out of true: displace by smooth noise, faded to zero within 1.5 studs of the stacking planes zlo/zhi."""
+    x, y, z = c
+    f = min(1.0, max(0.0, (z - zlo) / 1.5))
+    if zhi is not None:
+        f = min(f, max(0.0, abs(z - zhi) / 1.5))
+    if f <= 0.0:
+        return c
+    q = 0.45
+    return (x + amp * f * _wn(x * q, y * q, z * q) * 0.5, y + amp * f * _wn(y * q + 3.1, z * q, x * q) * 0.5, z + amp * f * 0.3 * _wn(z * q, x * q + 1.3, y * q))
+
+
+def make_obj(name, mat, faces, uvfn=None, weather=None):
     tile = TILE[mat]
     verts, polys, uvs = [], [], []
     for co, nrm, _ in faces:
         b = len(verts)
+        if weather:
+            co = [weather_co(c, *weather) for c in co]
         verts += co
         polys.append(tuple(range(b, b + len(co))))
         ax, ay, az = abs(nrm[0]), abs(nrm[1]), abs(nrm[2])
+        if uvfn is not None:
+            ctr = tuple(sum(c[i] for c in co) / len(co) for i in range(3))
+            for c in co:
+                uvs += uvfn(c, ctr)
+            continue
         for c in co:
             u, v = (c[0], c[1]) if (az >= ax and az >= ay) else ((c[1], c[2]) if ax >= ay else (c[0], c[2]))
             uvs += (u / tile, v / tile)
@@ -1434,6 +1943,35 @@ def bbox(objs):
     return Vector((min(p.x for p in pts), min(p.y for p in pts), min(p.z for p in pts))), Vector((max(p.x for p in pts), max(p.y for p in pts), max(p.z for p in pts)))
 
 
+WEATHER_AMP = 0.16
+
+
+def ledge(co, nrm, area):
+    """Frost only on ledges (mac-53): up-facing, narrow in plan (sills, copings, set-offs, string courses), patchy."""
+    if nrm[2] < 0.72 or area < 0.25:
+        return False
+    xs, ys = [c[0] for c in co], [c[1] for c in co]
+    if min(max(xs) - min(xs), max(ys) - min(ys)) > 4.2:
+        return False
+    cx, cy, cz = (sum(xs) / len(xs), sum(ys) / len(ys), sum(c[2] for c in co) / len(co))
+    return _wn(cx * 0.21, cy * 0.21, cz * 0.21) > -0.75
+
+
+def write_manifest(man=None):
+    """Merge into <OUT>/manifest.json: pieces built this run replace their entries, pieces not built (VESP_ONLY runs, pieces
+    owned by other scripts) are kept. shortcut: a piece deleted from every PLAN lingers until removed by hand."""
+    man = manifest if man is None else man
+    mf = OUT / "manifest.json"
+    if mf.exists():
+        try:
+            old = json.loads(mf.read_text())
+        except ValueError:
+            old = {}
+        for k, v in old.get("pieces", {}).items():
+            man["pieces"].setdefault(k, v)
+    mf.write_text(json.dumps(man, indent=2))
+
+
 def finish(name, group, S):
     data = {}
     for sname, sub in list(S.items()):
@@ -1444,15 +1982,17 @@ def finish(name, group, S):
         if sname in NOFROST:
             continue
         for co, nrm, area in faces:
-            if nrm[2] >= 0.6 and area >= 1.0:
+            if ledge(co, nrm, area):
                 dz = 0.12 if nrm[2] >= 0.8 else 0.08
                 frost.append(([(x, y, z + dz) for x, y, z in co], nrm, area))
     if frost:
         data["Frost"] = frost
     objs, subs = [], {}
+    hst = STACK.get(name, {}).get("h")
     for sname, faces in data.items():
+        wz = None if sname in NOWEATHER else (WEATHER_AMP, 0.0, hst)
         for i, ch in enumerate(chunks(faces)):
-            o, tris = make_obj(f"{name}__{sname}" + (f"_{i + 1}" if i else ""), SUBMAT[sname], ch)
+            o, tris = make_obj(f"{name}__{sname}" + (f"_{i + 1}" if i else ""), SUBMAT[sname], ch, getattr(S.get(sname), "uvfn", None), wz)
             objs.append(o)
             subs[o.name] = tris
     PIECES[name] = objs
@@ -1553,6 +2093,73 @@ def sheet(sc, cam, ground, tag, items, az=24.0, scale=None):
         bpy.data.objects.remove(o)
 
 
+def mannequin(sc, loc):
+    """Render-only 5-stud figure for scale (not exported)."""
+    vs, fs = lathe([(0.55, 0.0), (0.6, 0.4), (0.5, 2.4), (0.78, 3.5), (0.45, 3.95), (0.3, 4.1), (0.42, 4.45), (0.35, 4.85), (0.0, 5.0)], 12)
+    me = bpy.data.meshes.new("Mannequin")
+    me.from_pydata(vs, [], fs)
+    me.update()
+    m = bpy.data.materials.new("Mannequin")
+    m.use_nodes = True
+    next(n for n in m.node_tree.nodes if n.type == "BSDF_PRINCIPLED").inputs["Base Color"].default_value = (0.55, 0.5, 0.42, 1)
+    me.materials.append(m)
+    me.shade_smooth()
+    o = bpy.data.objects.new("Mannequin", me)
+    o.location = loc
+    sc.collection.objects.link(o)
+    return o
+
+
+def backdrop(sc, x0, x1, y0, y1, z0, z1):
+    """Render-only soot wall behind an assembly (fills the gaps a real facade would fill)."""
+    b = Sub("Vesp_Soot")
+    b.add(box(x0, x1, y0, y1, z0, z1))
+    o, _ = make_obj("Backdrop", "Vesp_Soot", commit(b))
+    return o
+
+
+def composite(sc, cam, ground, tag, items, tgt, off, res=(1600, 1000), man=None, lens=35):
+    """Assembly render: items [(piece, (x, y, z), rotz)] placed in one scene; optional 5-stud mannequin at man."""
+    if not all(n in PIECES for n, _, _ in items if not n.startswith("@")):
+        return
+    V = []
+    for n, (x, y, z), rz in items:
+        if n.startswith("@backdrop"):
+            V.append(backdrop(sc, *x))
+            continue
+        for o in PIECES[n]:
+            c = bpy.data.objects.new("V_" + o.name, o.data)
+            c.matrix_world = Matrix.Translation((x, y, z)) @ Matrix.Rotation(rz, 4, "Z")
+            sc.collection.objects.link(c)
+            V.append(c)
+    if man:
+        V.append(mannequin(sc, man))
+    ground.scale, ground.location = (900, 900, 1), Vector((0, 0, 0))
+    cam.data.lens = lens
+    cam.location = Vector(tgt) + Vector(off)
+    cam.rotation_euler = (Vector(tgt) - cam.location).to_track_quat("-Z", "Y").to_euler()
+    sc.render.resolution_x, sc.render.resolution_y = res
+    sc.render.filepath = str(OUT / "renders" / f"{tag}.png")
+    t = time.time()
+    bpy.ops.render.render(write_still=True)
+    log(f"render {tag} {time.time() - t:.1f}s")
+    for o in V:
+        bpy.data.objects.remove(o)
+    cam.data.lens = 35
+
+
+# C3: the spire stack Base_Oct + Belfry + Lucarne + Needle (~186 studs to the cross); C3b the lower stages close; D4 the west front.
+STK = [("Spire_Base_Oct", (0, 0, 0.0), 0.0), ("Spire_Belfry_Stage", (0, 0, 30.0), 0.0), ("Spire_Lucarne_Mid", (0, 0, 70.0), 0.0),
+       ("Spire_Needle_Tip", (0, 0, 118.0), 0.0)]
+WEST = [("Portal_Great", (0, 0, 0), 0.0), ("Rose_Window_Great", (0, 8.0, 84.0), 0.0), ("Buttress_Pier", (-36.0, 4.0, 0), 0.0),
+        ("Buttress_Pier", (36.0, 4.0, 0), 0.0), ("Lancet_Pair", (-55.0, 6.0, 0), 0.0), ("Lancet_Pair", (55.0, 6.0, 0), 0.0),
+        ("Lancet_Tall", (-55.0, 6.0, 72.0), 0.0), ("Lancet_Tall", (55.0, 6.0, 72.0), 0.0), ("Buttress_Pier", (-74.0, 4.0, 0), 0.0),
+        ("Buttress_Pier", (74.0, 4.0, 0), 0.0), ("@backdrop", ((-82.0, 82.0, 8.0, 14.0, 0.0, 140.0), 0, 0), 0.0)]
+COMPOSITES = [("C3_spire_stack", STK, (0, 0, 92.0), (95.0, -255.0, -62.0), (1000, 1600), (19.0, -24.0, 0.0)),
+              ("C3b_spire_stack_low", STK, (0, 0, 40.0), (52.0, -92.0, -30.0), (1600, 1000), (19.0, -24.0, 0.0)),
+              ("D4_west_front", WEST, (0, 0, 72.0), (48.0, -235.0, -50.0), (1600, 1000), (8.0, -22.0, 0.0))]
+
+
 def main():
     (OUT / "maps").mkdir(parents=True, exist_ok=True)
     (OUT / "renders").mkdir(parents=True, exist_ok=True)
@@ -1569,7 +2176,7 @@ def main():
         export_piece(name)
     manifest["textures"] = {i.name: list(i.size) for i in bpy.data.images if i.name.startswith("Vesp_")}
     manifest["glb_images"] = EMBED or "none (maps/ is the single source; see module docstring)"
-    (OUT / "manifest.json").write_text(json.dumps(manifest, indent=2))
+    write_manifest()
     log("exported", len(PIECES), "pieces")
     if os.environ.get("VESP_NORENDER"):
         return
@@ -1587,31 +2194,15 @@ def main():
               ("D2_rose_great_portal", [("Rose_Window_Great", 1), ("Portal_Great", 1)]),
               ("D3_portcullis_door", [("Portcullis", 1), ("Door_Iron", 1)]),
               ("E1_viaduct", [("Viaduct_Bay", 1), ("Viaduct_Balustrade_30", 1.5), ("Statue_Plinth", 3)])]
+    SHEETS = [t for t in SHEETS if not ONLY or any(n in ONLY for n, _ in t[1])]
     for tag, items in SHEETS:
         items = [(n, s) for n, s in items if n in PIECES]
         if items:
             t = time.time()
             sheet(sc, cam, ground, tag, items)
             log(f"render {tag} {time.time() - t:.1f}s")
-    # stacked tower for the stack-interface check (Tower x2, Base, Belfry, Lucarne, Needle)
-    stack = [("Tower_Corner_Stage", 0.0), ("Tower_Corner_Stage", 60.0), ("Spire_Base_Oct", 120.0), ("Spire_Belfry_Stage", 146.0),
-             ("Spire_Lucarne_Mid", 182.0), ("Spire_Needle_Tip", 226.0)]
-    if all(n in PIECES for n, _ in stack):
-        V = []
-        for n, z in stack:
-            for o in PIECES[n]:
-                c = bpy.data.objects.new("V_" + o.name, o.data)
-                c.location = (0, 0, z)
-                sc.collection.objects.link(c)
-                V.append(c)
-        ground.scale, ground.location = (400, 400, 1), Vector((0, 0, 0))
-        tgt = Vector((0, 0, 135))
-        cam.location = tgt + Vector((150, -520, 20))
-        cam.rotation_euler = (tgt - cam.location).to_track_quat("-Z", "Y").to_euler()
-        sc.render.filepath = str(OUT / "renders" / "C3_spire_stack.png")
-        bpy.ops.render.render(write_still=True)
-        for o in V:
-            bpy.data.objects.remove(o)
+    for tag, items, tgt, off, res, man in COMPOSITES:
+        composite(sc, cam, ground, tag, items, tgt, off, res, man)
     log("renders done")
 
 

@@ -254,7 +254,7 @@ class Look:
     """Tunable compose. Values are sRGB pixel values (what Roblox reads). Defaults: weathered black stone."""
 
     def __init__(self, base=0.135, grime=0.30, edge=0.95, edge_lo=0.50, edge_hi=0.62, frost=0.0, frost_col=(0.62, 0.65, 0.70),
-                 streak_dark=0.18, rough_base=0.80, wet_gloss=0.30, occl_pow=1.25, seed=7):
+                 streak_dark=0.18, rough_base=0.80, wet_gloss=0.30, occl_pow=1.25, seed=7, sat=1.0):
         self.__dict__.update(locals())
         del self.__dict__["self"]
 
@@ -285,7 +285,7 @@ def compose(alb_lin, d1, d2, look, cov):
     metal, nz, rbase = d2[..., 0], d2[..., 1] * 2 - 1, d2[..., 2]
     alb = _srgb(alb_lin)
     lum = alb.mean(-1, keepdims=True)
-    tone = alb / np.maximum(lum, 1e-4)
+    tone = 1.0 + L.sat * (alb / np.maximum(lum, 1e-4) - 1.0)  # sat < 1 drops the source photo's hue (brown rock -> grey stone)
     p = point[cov] if cov.any() else point.ravel()
     lo, hi = np.percentile(p, 50), np.percentile(p, 99.0)
     wear = _smooth((point - lo) / max(hi - lo, 1e-4), L.edge_lo, L.edge_hi + 0.3)

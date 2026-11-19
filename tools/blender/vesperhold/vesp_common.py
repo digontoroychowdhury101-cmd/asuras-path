@@ -143,9 +143,13 @@ def gen_deadbark():
 
 
 def gen_water():
-    """White-blue vertical streaks with alpha (v = down the fall, bottom = 0): foam at the lip (top) and the base."""
+    """Water cards (mac-53): u holds 4 card columns (u = (col + across) / 4), each feathered to alpha 0 at its side edges so the
+    overlapping staggered cards cross-fade with no hard strip edge; v = arclength up the fall (0 base .. 1 lip), streaks run along v,
+    foam bands at both ends."""
     y, x = np.mgrid[0:N, 0:N]
     v = y / (N - 1.0)
+    cu = (x * 4.0 / N) % 1.0
+    edge = np.sin(np.pi * np.clip((cu - 0.02) / 0.96, 0, 1)) ** 0.7
     s1, s2, s3 = K.fld(0.9, 251, 30.0), K.fld(1.2, 252, 12.0), K.fld(0.6, 253, 4.0)
     f1 = K.fld(1.2, 254)
     streak = np.clip(0.5 + 0.38 * s1 + 0.22 * s2, 0, 1)
@@ -157,7 +161,7 @@ def gen_water():
     white = np.array([0.93, 0.97, 1.0], np.float32)
     k = np.clip(streak * 0.9 + fm * 0.8, 0, 1)[..., None]
     col = base + (white - base) * k
-    alpha = np.clip(0.22 + 0.40 * streak + 0.55 * fm, 0.12, 0.96)
+    alpha = np.clip(0.22 + 0.40 * streak + 0.55 * fm, 0.12, 0.96) * edge
     h = 0.5 + 0.12 * s1 + 0.05 * s2 + 0.05 * fm
     return dict(Color=np.clip(col, 0, 1), Alpha=alpha.astype(np.float32), Normal=K.nmap(h.astype(np.float32), 5), Roughness=np.clip(0.10 + 0.25 * fm, 0.05, 1))
 
@@ -276,7 +280,7 @@ def build_custom(name):
         mat.use_nodes = True
     except Exception:
         pass
-    mat.use_backface_culling = False if name in ("Vesp_Banner", "Vesp_Water") else True
+    mat.use_backface_culling = name != "Vesp_Banner"  # water cards carry explicit back faces (two coplanar unculled sides z-fought)
     nt = mat.node_tree
     p = next(n for n in nt.nodes if n.type == "BSDF_PRINCIPLED")
     ims = {}
@@ -558,7 +562,7 @@ def make_obj_u(name, mat, faces, vco, smooth=True):
 
 
 def finish_mixed(name, group, S, U, frost_from=(), frost_uv=(), axis=None, frost_nz=0.62, frost_area=1.0, frost_keep=1.0, frost_off=0.08,
-                 flat_subs=(), frost_amax=1e9):
+                 flat_subs=(), frost_amax=1e9, weather=None):
     """S: kit Subs (flat, triplanar). U: USubs (smooth, UV). Frost = up-facing faces of the listed subs copied into one Frost sub."""
     objs, subs = [], {}
     kdata = {s: K.commit(sub) for s, sub in S.items() if s != "Frost" and sub.prims}
@@ -582,7 +586,8 @@ def finish_mixed(name, group, S, U, frost_from=(), frost_uv=(), axis=None, frost
         kdata["Frost"] = frost
     for s, faces in kdata.items():
         for i, ch in enumerate(chunks_axis(faces, axis) if axis is not None else K.chunks(faces)):
-            o, t = K.make_obj(f"{name}__{s}" + (f"_{i + 1}" if i else ""), K.SUBMAT[s], ch)
+            wz = None if weather is None or s in K.NOWEATHER else (weather, 0.0, None)  # opt-in noise weathering (mac-53)
+            o, t = K.make_obj(f"{name}__{s}" + (f"_{i + 1}" if i else ""), K.SUBMAT[s], ch, None, wz)
             objs.append(o)
             subs[o.name] = t
     for s, (faces, vco) in udata.items():
@@ -632,7 +637,7 @@ def run(title, plan, mat_names, sheets, extra_sheets=None):
     for name in K.PIECES:
         K.export_piece(name)
     K.manifest["textures"] = {i.name: list(i.size) for i in bpy.data.images if i.name.startswith("Vesp_")}
-    (OUT / "manifest.json").write_text(json.dumps(K.manifest, indent=2))
+    K.write_manifest()  # merges: a VESP_ONLY run keeps the pieces it did not build (mac-53)
     log("exported", len(K.PIECES), "pieces")
     if os.environ.get("VESP_NORENDER"):
         return

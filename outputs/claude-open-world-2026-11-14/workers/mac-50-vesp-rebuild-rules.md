@@ -38,6 +38,8 @@ CC0 Poly Haven textures/models obtained through the blender-skills polyhaven-* m
   `mkdir "/Users/digonto/Documents/ChatGPT/Roblox game 2/work/vesperhold-claude/heavy.lock"` (fails = someone holds it:
   wait and retry every 30-60 s; write your lane id into `heavy.lock/owner`). Run `memory_pressure | tail -1` before and
   after, record both in your note, then `rm -rf` the lock dir. Keep runs short (use VESP_ONLY=Piece). Kill only your pids.
+  Guarded form only (19:14 incident: a failed mkdir followed by `; rm -rf` removed another worker's lock):
+  `mkdir "$LOCK" && { <run>; rm -rf "$LOCK"; }` — remove the lock only if your own mkdir succeeded.
 - Blender: `/Applications/Blender.app/Contents/MacOS/Blender -b --python-exit-code 1 -P <script> -- <out_dir>` (5.2.2 LTS).
 - Hooks: your first Bash is blocked by a Fact-Forcing Gate: state the request in one sentence and what the command
   verifies, then retry. First Writes and destructive commands need the facts it asks for.
