@@ -1,7 +1,8 @@
 """Embed the loose PBR maps into Vesperhold GLBs so the Roblox 3D importer builds a SurfaceAppearance per material (no Blender needed).
 
 Per material (Vesp_*): Color -> JPEG q90 (PNG RGBA only when the map has real alpha, e.g. Vesp_Water, alphaMode BLEND),
-Roughness+Metal -> one glTF metallicRoughness image (G = roughness, B = metalness; metal is black for non-metals), Normal -> PNG (OpenGL, 2048 kept).
+Roughness+Metal -> one lossless glTF metallicRoughness PNG (G = roughness, B = metalness);
+Normal -> PNG by default (OpenGL, 2048 kept).
 Stdlib + numpy + PIL. Usage: embed(src_glb, dst_glb, maps_dir) -> bytes written. Texture encodes are cached per maps_dir.
 """
 import io
@@ -40,8 +41,9 @@ def _encode(maps, mat):
     metal = np.asarray(_load(maps / f"{mat}_Metal.png").convert("L"))
     orm = np.stack([np.full_like(rough, 255), rough, metal], -1)
     buf = io.BytesIO()
-    Image.fromarray(orm, "RGB").save(buf, "JPEG", quality=90, optimize=True, subsampling=0)  # 4:4:4 so metal/rough edges stay clean
-    rm = (buf.getvalue(), "image/jpeg")
+    # JPEG's colour conversion leaks roughness into the zeroed metal channel.
+    Image.fromarray(orm, "RGB").save(buf, "PNG")
+    rm = (buf.getvalue(), "image/png")
     buf = io.BytesIO()
     if os.environ.get("VESP_NORMAL") == "jpeg":  # size fix: 6 MB instead of 11 MB per 2048 normal map (lossy; default is PNG)
         _load(maps / f"{mat}_Normal.png").convert("RGB").save(buf, "JPEG", quality=92, subsampling=0, optimize=True)

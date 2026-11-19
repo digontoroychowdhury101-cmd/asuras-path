@@ -37,7 +37,7 @@ Layout.Piece = {
 	Spire_Lucarne_Mid = { 30.9, 44.1, 30.9 }, Spire_Needle_Tip = { 11.3, 55.7, 11.3 }, Spire_Broken_Top = { 11.3, 27, 11.3 },
 	Lancet_Tall = { 14.8, 46.2, 6.9 }, Rose_Window_Great = { 57.7, 76, 12.2 }, Portal_Great = { 61, 93.1, 21.8 },
 	Statue_Veiled_Scan = { 5, 18, 5 }, -- placeholder until its manifest lands (graveyard / niche statue)
-	Viaduct_Bay = { 35.2, 120.1, 29 }, Statue_Plinth = { 9.2, 12, 9.2 }, Hooded_Statue_A = { 5.1, 16.2, 5.1 },
+	Viaduct_Bay = { 35.2, 120.1, 29 }, Statue_Plinth = { 9.2, 12, 9.2 }, Hooded_Statue_A = { 7.3, 22.8, 7.3 },
 	Hooded_Statue_B = { 5.4, 19.6, 5.1 }, Candle_Cluster_A = { 6.5, 5.8, 6.5 }, Banner_Torn_A = { 8.4, 31, 2 },
 	-- pass 2 additions (mac-44 builds these meshes)
 	Viaduct_Balustrade_30 = { 30.3, 19.3, 3 }, Pedestal_Statue_Staff = { 6, 23.3, 6 }, Brazier_Post = { 4.5, 10.5, 4 },

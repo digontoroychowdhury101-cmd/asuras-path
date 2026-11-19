@@ -620,7 +620,7 @@ def render_glow():
 def run(title, plan, mat_names, sheets, extra_sheets=None):
     """plan: [(name, group, fn(S, U) or fn(S))]. Builds, exports GLBs, writes manifest.json, renders contact sheets."""
     K.manifest["kit"] = title
-    K.manifest["glb_images"] = "none (maps/ is the source; vesp_embed.py embeds Color/ORM JPEG q90 + Normal PNG into upload/ GLBs)"
+    K.manifest["glb_images"] = "none (maps/ is the source; vesp_embed.py embeds Color, lossless ORM and Normal into upload/ GLBs)"
     (OUT / "maps").mkdir(parents=True, exist_ok=True)
     (OUT / "renders").mkdir(parents=True, exist_ok=True)
     bpy.ops.wm.read_factory_settings(use_empty=True)

@@ -44,6 +44,11 @@ was removed.
    `bash tools/verify_all.sh` (build to `work/windows-resume-2026-11-19/`): **exit 1**, single failure = the
    outside-terrain checksum in `test_vesperhold_massing.luau` (Windows sum 176934331.6347 vs Mac constant 176934331.5874,
    libm drift over 112,666 samples). Tolerance made relative (1e-8) in 20672bb; massing then 14769/0. Full re-run pending.
+   **Windows, 20 November (Codex):** full verifier exit 0, all 14 stages. The layout-size check required syncing the
+   existing Hooded_Statue_A stand-in dimensions with the restored baseline manifest. The temporary verification build
+   `work/windows-resume-2026-11-19/CodexVesperholdVerify.rbxlx` has 313 mapped sources and 1844 distinct asset IDs.
+   Vesperhold massing 14769/0, loader 42/0, and atmosphere 26/0. The original checkpoint digest above is for the earlier
+   Studio session.
 4. Tools: Blender 5.2.2 was used on the Mac. blender-skills (kevinbadi, pinned `b2f0f816d320b56ae86d52597a35284e0e6cc929`,
    **no licence → never commit its files**) was installed into `~/.claude/skills` from a clone in
    `work/third_party/blender-skills`. On Windows, clone it at that commit if a Claude agent wants it. Codex agents only
