@@ -166,8 +166,8 @@ def gen_water():
     return dict(Color=np.clip(col, 0, 1), Alpha=alpha.astype(np.float32), Normal=K.nmap(h.astype(np.float32), 5), Roughness=np.clip(0.10 + 0.25 * fm, 0.05, 1))
 
 
-# ---- banner (512 wide x 2048 tall; 8 x 30 studs = 64 / 68 px per stud): crimson field, black six-spoked Asura wheel + flame-eye, tarnished gold
-BW, BH, BWS, BHS = 512, 2048, 8.0, 30.0
+# ---- banner: 2048 x 2048 maps; crimson field, black six-spoked Asura wheel, tarnished gold
+BW, BH, BWS, BHS = 2048, 2048, 8.0, 30.0
 
 
 def _sd_seg(X, Y, ax, ay, bx, by):
@@ -181,7 +181,7 @@ def gen_banner():
     X, Y = (xx + 0.5) / BW * BWS, (yy + 0.5) / BH * BHS  # studs from bottom-left
     f1, f2, f3 = field2(BH, BW, 1.3, 261), field2(BH, BW, 0.8, 262), field2(BH, BW, 0.4, 263)
     drip = field2(BH, BW, 1.1, 264, 12.0)
-    weave = 0.5 + 0.5 * np.sin(xx * 2.1) * np.sin(yy * 2.1)
+    weave = 0.5 + 0.5 * np.sin(X * 134.4) * np.sin(yy * 2.1)
     crim = np.array([0.40, 0.025, 0.04], np.float32)
     col = crim * (0.85 + 0.12 * f1[..., None] + 0.04 * f3[..., None]) * (0.92 + 0.08 * weave[..., None])
     stain = np.clip((drip - 0.4) * 0.7, 0, 0.7) * np.clip((22 - Y) / 22 + 0.25, 0, 1)

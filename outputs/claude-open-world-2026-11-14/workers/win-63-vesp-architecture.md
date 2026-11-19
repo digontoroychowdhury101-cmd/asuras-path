@@ -22,3 +22,18 @@ tools/blender/vesperhold/vesperhold_kit.py, vesp_common.py, vesperhold_props.py 
 | r1 | 6 spire pieces (mac-53 session-2 code as left) | 5.1 -> 5.4 GB | ok 14 s; dense, but louvres frosted white, continuous frost rings, spear "foils" read as a broken clock face, tower lancets blind rubble, C3 stood on the ground without the tower stage |
 | r2 | same + louvre sub (no frost), patchy ledge frost, glazed tower lancets, gable blind lights, C3 = tower + spire stack (~246) beside a broken stack | 6.6 -> 6.3 GB | ok 13 s; glass a cropped wallpaper grid, foils still notched rings, C3 framed too far |
 | r3 | spire 6 + west front (Portal_Great, Rose_Window_Great/Small, Lancet_Tall/Pair, Buttress_Pier); lobed foils (n tangent lobes, sharp cusps), medallion-column glass UVs on lancets | 6.4 -> 6.4 GB | ok 15 s; west front reads; D4 backdrop hid the great rose glass, portal gable a bare rubble triangle, glass ground blue-heavy pinwheels |
+
+## Codex continuation, 20 November
+
+Blender 5.2.2 rebuilt the full 31-piece architecture kit from the checked-in Windows edits and rerendered the spire, west
+front, viaduct, arcades, and buttresses. The west-front assembly places the rose clear of its backdrop and frames it with
+asymmetric towers. The viaduct and facade are module previews on a flat stage. The gorge and the full citadel silhouette
+require the later Studio views.
+
+The first render exposed cached materials from before the glass and waterfall changes. The final run regenerates the maps
+so the window palette uses the warmer glass and the overlapping water cards use the feathered alpha. The original Asura
+banner design now samples at 2048 × 2048. These renders are part of the gate (a) sheet.
+
+The kit and prop refreshes took 49 and 60 seconds under the guarded lock, with free memory 6.51 → 6.41 GiB for the pair.
+The 31 architecture exports contain 164 submeshes (largest 13,996 triangles). The rebuilt waterfall Color map has alpha
+zero at each of its four card edges and nonzero alpha through the middle of each card.
