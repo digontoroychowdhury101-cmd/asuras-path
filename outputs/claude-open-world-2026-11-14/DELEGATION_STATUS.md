@@ -209,3 +209,6 @@ Oversight verified before recruiting: HEAD 9dc6d11 = origin; candidate copy `wor
 Limits given to the lead: max two active Sonnet/Haiku workers, explicit `model` per worker, one heavy job machine-wide, local copies only until oversight accepts M2. Worker routing is appended here when the lead reports.
 
 2026-11-19: creator asked to "Use more subagents and even opus subagents". The lead's cap is raised from two to five active workers, and Opus workers are allowed for design-heavy castle lanes. Still one heavy job machine-wide. Castle brief: [workers/mac-40-vesperhold-verdict.md](workers/mac-40-vesperhold-verdict.md).
+
+## Mac run 3b (2026-11-19, stopped 19:28 for Windows)
+Lead adc6b08 opus; mac-51/52/53 opus (stopped mid-pass); mac-54 sonnet (self-reported claude-sonnet-5-5). Observed-model check from subagent meta.json not done this run (usage limit) — do it on Windows from the Mac transcripts if needed, or treat as requested-only.

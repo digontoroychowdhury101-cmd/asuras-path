@@ -1,6 +1,6 @@
 # CONTINUATION — read this first after any restart
 
-**Current: Mac -> Windows handoff 2026-11-19 — read [WINDOWS_HANDOFF.md](WINDOWS_HANDOFF.md) and [handoff/WINDOWS_RESUME_PROMPT.md](handoff/WINDOWS_RESUME_PROMPT.md). verify_all exit 0 on Mac.**
+**Current: Mac -> Windows handoff run 3b 2026-11-19 19:30 (castle model rebuild stopped mid-pass) — read [WINDOWS_HANDOFF.md](WINDOWS_HANDOFF.md) and [handoff/WINDOWS_RESUME_PROMPT.md](handoff/WINDOWS_RESUME_PROMPT.md); gitignored assets on branch `codex/vesperhold-assets-2026-11-19`.**
 
 ## Vesperhold rebuild — 2026-11-19 (blender-skills, CC0 only; creator rejected the kit "especially the statues")
 Order: oversight work order (steps 1-7). Rules for all workers: [workers/mac-50-vesp-rebuild-rules.md](workers/mac-50-vesp-rebuild-rules.md).
