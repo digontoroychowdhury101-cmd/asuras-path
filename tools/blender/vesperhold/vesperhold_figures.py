@@ -15,6 +15,7 @@ Units studs, pivot foot centre (z=0), figure faces -Y. Imported by vesperhold_pr
 import json
 import math
 import os
+import shutil
 import subprocess
 import sys
 import time
@@ -503,7 +504,9 @@ def sleeve(mb, cfg, arm, level):
         el = s[int(np.argmax(curv * sst(0.2, 0.35, s) * sst(0.85, 0.7, s)))]
         ring = 0.05 * k * np.exp(-((SS - el) / 0.07) ** 2) * np.maximum(np.cos(PH - phin[:, None]), 0) * prof(SS * L / (0.2 * k))
         disp = disp + ring + 0.004 * k * fbm(C[:, None, :] * 3 + PH[..., None] * 0.3, 3, sd + 53)
-    R = R + disp
+    # Hanging cloth gathers against the inner forearm and falls in two long pleats below it.
+    pleat = np.maximum(np.cos(PH), 0) * np.cos(2 * PH + SS * 1.4)
+    R = R * (0.91 + 0.11 * pleat * sst(0.2, 0.85, SS)) + disp
     P = tube_pts(C, D, S, R, phis)
     P = P + T[:, None, :] * (arm.get("tail", 0.3) * k * sst(0.85, 1.0, SS) * np.maximum(np.cos(PH), 0) ** 2)[..., None]
     N = nrm(P - C[:, None, :])
@@ -580,7 +583,8 @@ def grip_hand(mb, hand, F, k, level):
         pk = psic + psiw * 0.9
         rho_f = rg + fr * 1.02
         js = [pk, pk + 1.2 * Ls, pk + 2.1 * Ls, pk + 2.85 * Ls]
-        hh = h * fw - 0.02 * sc * np.arange(5)
+        # Knuckles stagger down the grip. Shorter fingertips curl toward the palm at different heights.
+        hh = h * fw - sc * np.array([0, 0.025, 0.055, 0.095, 0.13]) * (1.4 - 0.18 * i)
         pts = [c + A * hh[0] + dirp(pk - 0.35) * (rhoc - 0.02 * sc), c + A * hh[1] + dirp(js[0]) * (rho_f + 0.02 * sc)]
         pts += [c + A * hh[j + 2] + dirp(js[j + 1]) * rho_f for j in range(3)]
         n = fres[0] * 3
@@ -1070,7 +1074,8 @@ def statue(name, out, mode):
              "materials": sorted({m.name for o in objs for m in o.data.materials}), "file": glb.name,
              "builder": "tools/blender/vesperhold/vesperhold_figures.py (mac-51, hand-modelled, Cycles-baked)",
              "no_decimation": True, "map_resolution": res[next(iter(res))]["size"],
-             "maps": {r: v["maps"] for r, v in maps_rec.items()},
+             "maps": {r: {kind: Path(path).relative_to(out).as_posix() for kind, path in v["maps"].items()}
+                      for r, v in maps_rec.items()},
              "base_layer": src_stone["source"],
              "high_poly_tris": {r: n for r, n in HIGH_TRIS.get(name, {}).items()}}
     log(f"{name}: exported {glb.name} {glb.stat().st_size / 1e6:.1f} MB; subs {subs}")
@@ -1112,7 +1117,10 @@ for r in rr:
     out.paste(r, (0, y)); y += r.height + 8
 out.save(dst, quality=90)
 '''
-    subprocess.run(["/usr/bin/env", "python3", "-c", code, json.dumps([[str(f) for f in fs] for fs in files_by_piece]), str(dst)], check=True)
+    python = os.environ.get("VESP_PYTHON") or shutil.which("python3") or shutil.which("python")
+    if not python:
+        raise RuntimeError("Set VESP_PYTHON to a Python interpreter with Pillow for the review sheet")
+    subprocess.run([python, "-c", code, json.dumps([[str(f) for f in fs] for fs in files_by_piece]), str(dst)], check=True)
 
 
 def main():

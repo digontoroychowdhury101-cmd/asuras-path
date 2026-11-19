@@ -2,6 +2,22 @@
 
 **Current: Mac -> Windows handoff 2026-11-19 — read [WINDOWS_HANDOFF.md](WINDOWS_HANDOFF.md) and [handoff/WINDOWS_RESUME_PROMPT.md](handoff/WINDOWS_RESUME_PROMPT.md). verify_all exit 0 on Mac.**
 
+## Vesperhold rebuild — 2026-11-19 (blender-skills, CC0 only; creator rejected the kit "especially the statues")
+Order: oversight work order (steps 1-7). Rules for all workers: [workers/mac-50-vesp-rebuild-rules.md](workers/mac-50-vesp-rebuild-rules.md).
+Creator: no Meshy, free parts only; high-poly pipeline (no decimation, subs < 18k, 2048 baked PBR, black Metal on non-metal).
+Step 1 DONE (lead, fe603e1): skills run against the "MCP for Blender" v1.8 addon (ahujasid lineage) in GUI Blender on 9876;
+8 CC0 textures + 4 CC0 models; skill `--search` param mismatch (`categories` vs `category`) recorded in outputs/vesperhold/THIRD_PARTY.md.
+Interrupted 15:31-15:35 by the 5-hour limit (recovery: handoff/CLAUDE_RECOVERY_2026-11-19.md); all lanes resumed by SendMessage 19:05.
+Stray GUI Blender pid 38625 (started 15:26, not the lead's, idle, port 9876) left running.
+
+| Lane | Agent ID | Model requested | Owns | State |
+|---|---|---|---|---|
+| mac-51 hooded statues (+ vesp_bake) | a4a810e127fed2ab9 | opus | vesperhold_figures.py, vesp_bake.py, 3 statue PLAN entries | pass 1 DONE (fe603e1: A 63,752 / B 73,876 / P 104,028 tris, max sub 17,164); pass 2 running |
+| mac-52 gargoyles + hero trees + CC0 logs/stumps | a6edf9542872002e8 | opus | vesperhold_gargoyles.py, vesperhold_trees.py, 2 gargoyle PLAN entries | running (restarted, nothing saved before 429) |
+| mac-53 architecture density, spire stack, west front, glass, ruined arch, waterfalls | ac3f07365c1aa3c09 | opus | vesperhold_kit.py, props Ruined_Arch/Waterfall builders | running (partial kit edits in tree) |
+| mac-54 Luau loader, placement/collision, atmosphere, Layout sizes, tests | afa2070ecc339bf50 | sonnet | GothicCitadel/March, VesperholdKit(.luau), registry, atmosphere | running (partial, uncommitted) |
+Gate (a): contact sheet (statues, gargoyles, trees, spire stack, west front + tris per sub, map res, no-decimation) to oversight before any upload.
+
 ## WRAP-UP 2026-11-19 — Mac run ended, handed to Windows (coordinator order)
 No workers running. No Studio (only StudioMCP bridge procs) or Blender running; memory 65% free. Nothing uploaded this run; no operation IDs;
 VESPERHOLD_KIT_UPLOADED.json does not exist; cloud place untouched (M1 v9). outputs/vesperhold/* untracked files are the creator's/Codex's: not staged.

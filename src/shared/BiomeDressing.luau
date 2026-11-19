@@ -1180,7 +1180,8 @@ function BiomeDressing.build(id: string, fresh: boolean?, tick: (() -> ())?): an
 			x, z = px - tz * (spec.Off or 0), pz + tx * (spec.Off or 0)
 			yaw = math.deg(math.atan2(tx, tz)) + (spec.YawAdd or 0)
 		end
-		if (spec.Clip and not inBox(bounds, x, z)) or ((spec.Ground or spec.AvoidRoad) and not groundOk(x, z, if spec.Road then 0 else (spec.AvoidRoad or 0))) then
+		-- The red-brown trail stake (a 14-stud timber pole) stood in the foreground of Vesperhold view 01; the ridge has its own Part posts.
+		if (spec.Clip and not inBox(bounds, x, z)) or (name == "Snow_Trail_Stake" and Overworld.vesperholdWeight(x, z) > 0) or ((spec.Ground or spec.AvoidRoad) and not groundOk(x, z, if spec.Road then 0 else (spec.AvoidRoad or 0))) then
 			dropped += 1
 		else
 			local scale = spec.Scale or 1

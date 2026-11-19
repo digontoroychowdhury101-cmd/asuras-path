@@ -8,6 +8,7 @@ local Decor = require(script.Parent.RegionDecor)
 local SanctuaryKit = require(script.Parent.SanctuaryKit)
 
 local Pbr = require(script.Parent.PbrAssets)
+local VespKit = require(script.Parent.VesperholdKit) :: any
 
 local March = {}
 local V, F, A = Vector3.new, CFrame.new, CFrame.Angles
@@ -127,6 +128,7 @@ local function viaduct(parent: Instance,o: CFrame)
 	local level = Layout.viaductLevel
 	local dark,mid = rgb(34,35,38),rgb(54,56,61)
 	local bay,count = W.Bay,5
+	local meshBays = VespKit.has("Viaduct_Bay") -- GothicCitadel places the kit bays from the layout slots; the arch stand-ins are the fallback
 	local a,b = V(0,level(W.Z0),W.Z0),V(0,-18,W.Z1)
 	local paving=deck(m,o,"Processional deck",a,b,W.Width,3.5,rgb(86,88,92),M.Slate)
 	paving.MaterialVariant="AsuraPaving"
@@ -161,7 +163,8 @@ local function viaduct(parent: Instance,o: CFrame)
 			stone(m,o,"Pier cap",s*W.Rail,y+4.55,z,3.4,0.7,3.4,mid,M.Slate)
 		end
 		if i==count then break end
-		-- One marked Model per bay holds the arch stand-ins; the kit loader swaps it for a Viaduct_Bay mesh.
+		if meshBays then continue end
+		-- One marked Model per bay holds the arch stand-ins (not built once the kit has Viaduct_Bay).
 		local at=z+bay/2
 		local stand=group(m,"Viaduct bay")
 		stand:SetAttribute("VespKitSlot","Viaduct_Bay")
@@ -415,7 +418,9 @@ local function verges(parent: Instance,o: CFrame)
 		{-46,332,0.9},{61,283,1.08},{-117,220,0.8},{115,158,0.92}} do
 		local x,z=t[1],t[2]
 		local f=o*F(x,ground(o,x,z)-0.7,z)
-		snag(m,f,t[3],21+(i*19)%66)
+		-- A kit thorn replaces the Part snag when uploaded; without it the snag stays.
+		local kitTree=VespKit.place("Thorn_Twisted",f*A(0,rad(21+(i*19)%66),0),V(1,1,1)*(t[3]*0.4),{Group="Tree",Seed=i})
+		if kitTree then kitTree.Parent=m else snag(m,f,t[3],21+(i*19)%66) end
 	end
 	for i,t in {{-23,559,9},{-57,449,8},{54,367,6.5},{-49,298,7},{84,237,6},{-77,119,9}} do
 		local f=o*F(t[1],ground(o,t[1],t[2])-1.3,t[2])*A(0,rad(i*71),0)

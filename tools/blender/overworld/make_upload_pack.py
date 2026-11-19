@@ -147,4 +147,10 @@ def pack(SRC, OUT):
     return problems
 
 
-sys.exit(1 if any([pack(*k) for k in KITS if not sys.argv[1:] or k[1].name in [{'vesperhold': 'kit'}.get(x, x) for x in sys.argv[1:]]]) else 0)
+if __name__ == "__main__":
+    groups = {"kit" if name == "vesperhold" else name for name in sys.argv[1:]}
+    unknown = groups - {out.name for _, out in KITS}
+    if unknown:
+        raise SystemExit(f"Unknown pack groups: {sorted(unknown)}")
+    results = [pack(src, out) for src, out in KITS if not groups or out.name in groups]
+    sys.exit(1 if any(results) else 0)

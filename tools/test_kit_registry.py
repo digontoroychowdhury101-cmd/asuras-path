@@ -165,6 +165,35 @@ class KitRegistry(unittest.TestCase):
         build(self.root, "slice", ["slice"], reg=reg)
         self.assertTrue(any("already used" in e for e in K.validate("slice", self.root)[0]))
 
+    def _vesp(self, reg=None):
+        for pack in ("kit", "props", "trees"):
+            d = self.root / "assets/source/vesperhold" / pack
+            d.mkdir(parents=True)
+            piece = {"kit": "Arcade_Bay_40", "props": "Hooded_Statue_A", "trees": "Dead_Pine_Snapped_A"}[pack]
+            (d / "manifest.json").write_text(json.dumps({"pieces": {piece: {"sub_meshes": {piece + "__Stone": 10}}}}))
+        (self.root / "src/shared").mkdir(parents=True)
+        if reg is not None:
+            (self.root / "assets/VESPERHOLD_KIT_UPLOADED.json").write_text(json.dumps(reg))
+
+    def test_vesperhold_absent_registry_writes_empty_module(self):
+        self._vesp()
+        self.assertEqual(K.main(["vesperhold", "--root", str(self.root)]), 0)
+        self.assertNotIn("MeshId", (self.root / "src/shared/VesperholdKitRegistry.luau").read_text())
+
+    def test_vesperhold_three_packs_one_module_maps_optional(self):
+        names = {"Arcade_Bay_40": "kit", "Hooded_Statue_A": "props", "Dead_Pine_Snapped_A": "trees"}
+        reg = {"modelAssets": {p: {"assetId": rid()} for p in names}, "pieces": {p: {p + "__Stone": {"MeshId": rid(), "ColorMap": rid()}} for p in names}}
+        self._vesp(reg)
+        self.assertEqual(K.main(["vesperhold", "--root", str(self.root)]), 0)
+        text = (self.root / "src/shared/VesperholdKitRegistry.luau").read_text()
+        for p in names:
+            self.assertIn(f'["{p}__Stone"]', text)
+
+    def test_vesperhold_unknown_sub_refused(self):
+        reg = {"modelAssets": {"Arcade_Bay_40": {"assetId": rid()}}, "pieces": {"Arcade_Bay_40": {"Arcade_Bay_40__Ghost": {"MeshId": rid()}}}}
+        self._vesp(reg)
+        self.assertEqual(K.main(["vesperhold", "--check", "--allow-missing", "Hooded_Statue_A", "--allow-missing", "Dead_Pine_Snapped_A", "--allow-missing", "Arcade_Bay_40", "--root", str(self.root)]), 1)
+
 
 if __name__ == "__main__":
     unittest.main()

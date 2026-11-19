@@ -64,22 +64,15 @@ def cycles(samples=4):
 
 
 def stone_source(name, maps_dir):
-    """Base layer maps for a Vesp_* material: Poly Haven via vesp_polyhaven.maps(name) when the lead's module exists,
-    else the procedural PNGs in maps_dir (<name>_Color.png ...). Returns {"Color": path, "Roughness": path|None}."""
-    try:
-        import vesp_polyhaven  # lead-owned; hook kept so the switch is automatic
-        m = vesp_polyhaven.maps(name)
-        out = {}
-        for k in ("Color", "Roughness"):
-            v = m.get(k) if hasattr(m, "get") else None
-            if isinstance(v, (str, Path)) and Path(v).exists():
-                out[k] = Path(v)
-        if "Color" in out:
-            out.setdefault("Roughness", None)
-            out["source"] = f"vesp_polyhaven.maps({name!r})"
-            return out
-    except Exception:
-        pass
+    """Resolve actual image paths for the high-poly shader. The bake applies its own stone grade."""
+    import vesp_polyhaven
+    if name in vesp_polyhaven.SRC and os.environ.get("VESP_PROCEDURAL") != "1":
+        asset = vesp_polyhaven.SRC[name][0]
+        folder = vesp_polyhaven.PH / asset
+        color = folder / f"{asset}_Diffuse_2k.jpg"
+        rough = folder / f"{asset}_Rough_2k.jpg"
+        if color.is_file() and rough.is_file():
+            return {"Color": color, "Roughness": rough, "source": f"Poly Haven {asset} 2K"}
     d = Path(maps_dir)
     r = d / f"{name}_Roughness.png"
     return {"Color": d / f"{name}_Color.png", "Roughness": r if r.exists() else None, "source": f"procedural {name} (vesp_common)"}

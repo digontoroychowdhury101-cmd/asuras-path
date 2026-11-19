@@ -192,6 +192,7 @@ local stubs = {
 	MonasteryKit = Kit,
 	RegionDecor = { banner = noop, nature = noop, han = noop },
 	PbrAssets = { place = noop },
+	VesperholdKit = { has = function() return false end, place = function() return nil end }, -- no uploads yet: every slot keeps its stand-in
 }
 local env = { game = { GetService = function(_, n) return services[n] end },
 	script = { Parent = setmetatable({ WaitForChild = function(_, n) return stubs[n] end }, { __index = stubs }) },

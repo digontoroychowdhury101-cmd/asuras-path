@@ -287,6 +287,9 @@
           "HeroKitRegistry": {
             "$path": "src/shared/HeroKitRegistry.luau"
           },
+          "VesperholdKitRegistry": {
+            "$path": "src/shared/VesperholdKitRegistry.luau"
+          },
           "BiomeDressing": {
             "$path": "src/shared/BiomeDressing.luau"
           },
@@ -550,6 +553,9 @@
           },
           "GothicCitadel": {
             "$path": "src/server/Services/GothicCitadel.luau"
+          },
+          "VesperholdKit": {
+            "$path": "src/server/Services/VesperholdKit.luau"
           },
           "SliceDressingService": {
             "$path": "src/server/Services/SliceDressingService.luau"

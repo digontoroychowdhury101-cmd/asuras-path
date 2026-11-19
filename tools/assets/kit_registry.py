@@ -1,6 +1,6 @@
 """Validate an uploaded overworld kit registry and write the Luau module the game requires. Never uploads or invents IDs.
 python3 tools/assets/kit_registry.py slice [--check] [--allow-missing Piece | Piece__Sub ...] [--root DIR]
-Reads assets/<KIT>_UPLOADED.json ({"modelAssets": {Piece: {assetId}}, "pieces": {Piece: {Piece__Sub: {MeshId, ColorMap, NormalMap, RoughnessMap[, MetalnessMap], center?, operations?}}}})
+Reads assets/<KIT>_UPLOADED.json (vesperhold: absent = empty module) ({"modelAssets": {Piece: {assetId}}, "pieces": {Piece: {Piece__Sub: {MeshId, ColorMap, NormalMap, RoughnessMap[, MetalnessMap], center?, operations?}}}})
 and the pack's upload_manifest.json; each sub entry also gets Asset = the piece's modelAssets assetId (the LoadAsset target). Writes src/shared/<Module>.luau (siblings of SliceDressing / BiomeDressing, which pcall-require them).
 """
 import argparse
@@ -18,7 +18,13 @@ KITS = {
     "hero": ("HERO", "HeroKitRegistry", ("hero",)),
     **{k: ("BELLWOOD", "BellwoodKitRegistry", BELLWOOD) for k in BELLWOOD},
     **{k: (k.upper(), k.capitalize() + "KitRegistry", (k,)) for k in ("amberfall", "saltreach", "frostmere", "ashen")},
+    # Vesperhold kit/props/trees: one JSON (assets/VESPERHOLD_KIT_UPLOADED.json), manifests at assets/source/vesperhold/<pack>/manifest.json.
+    "vesperhold": ("VESPERHOLD", "VesperholdKitRegistry", ("kit", "props", "trees")),
 }
+# Kits whose registry may not exist yet (nothing uploaded): validate() returns an empty registry and the module is written empty.
+OPTIONAL = {"vesperhold"}
+# Kits whose manifest is the Vesperhold generator's (pieces -> sub_meshes), not an importer upload_manifest.
+VESP_MANIFEST = "assets/source/vesperhold/{pack}/manifest.json"
 # Required today: SliceKitRegistry (SliceDressing.luau pcall-require), Amberfall/SaltreachKitRegistry (BiomeDressing.luau). The rest have no consumer yet.
 ID = re.compile(r"rbxassetid://[1-9][0-9]{5,19}")
 MAPS = ("ColorMap", "NormalMap", "RoughnessMap", "MetalnessMap")
@@ -34,14 +40,23 @@ def load(path):
 def validate(kit, root, allow_missing=()):
     """Return (errors, pieces) where pieces = {piece: {key: entry}} ready to write (allowed-missing subs omitted)."""
     stem, _, packs = KITS[kit]
-    data = load(root / f"assets/{stem}_KIT_UPLOADED.json")
+    path = root / f"assets/{stem}_KIT_UPLOADED.json"
+    if kit in OPTIONAL and not path.exists():
+        return [], {}
+    data = load(path)
     reg = data.get("pieces") if isinstance(data, dict) else None
     if not isinstance(reg, dict):
         return [f"{stem}_KIT_UPLOADED.json: no 'pieces' object"], {}
     errs, out, expected, seen = [], {}, set(), {}
     models = data.get("modelAssets") if isinstance(data.get("modelAssets"), dict) else {}
     for pack in packs:
-        man = load(root / f"assets/source/overworld/upload/{pack}/upload_manifest.json")
+        if kit == "vesperhold":
+            man = load(root / VESP_MANIFEST.format(pack=pack))
+            # Textures travel inside the uploaded model (SurfaceAppearance), so only MeshId is required per sub-mesh.
+            for pm in man["pieces"].values():
+                pm["sub_mesh_materials"] = {k: "" for k in pm["sub_meshes"]}
+        else:
+            man = load(root / f"assets/source/overworld/upload/{pack}/upload_manifest.json")
         for piece, pm in man["pieces"].items():
             mats = man.get("materials", {})
             for key, mat in pm["sub_mesh_materials"].items():
@@ -63,7 +78,7 @@ def validate(kit, root, allow_missing=()):
                     if v:
                         if not (isinstance(v, str) and ID.fullmatch(v)):
                             errs.append(f"{key}.{f}: not a rbxassetid://<positive integer> string ({v!r})")
-                        elif f not in need and f != "MetalnessMap":  # importer derives MetalnessMap from packed metallicRoughness
+                        elif f not in need and f != "MetalnessMap" and kit != "vesperhold":  # importer derives MetalnessMap from packed metallicRoughness
                             errs.append(f"{key}.{f}: material {mat} has no such map")
                     elif f in need and not (bare and f != "MeshId"):
                         errs.append(f"{key}.{f}: not a rbxassetid://<positive integer> string ({v!r})")

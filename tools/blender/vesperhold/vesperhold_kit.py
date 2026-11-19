@@ -37,10 +37,13 @@ manifest = {"kit": "Vesperhold gothic kit A-E", "build": "blender -b -P tools/bl
             "pieces": {}}
 SUBMAT = {"Stone": "Vesp_Soot", "Tracery": "Vesp_Charcoal", "Pinnacles": "Vesp_Charcoal", "Crockets": "Vesp_Charcoal",
           "Dress": "Vesp_Charcoal", "Roof": "Vesp_Slate", "Frost": "Vesp_Frost", "Glass": "Vesp_Glass", "Iron": "Vesp_Iron",
-          "Verdigris": "Vesp_Verdigris"}
-TILE = {"Vesp_Soot": 24.0, "Vesp_Charcoal": 24.0, "Vesp_Frost": 12.0, "Vesp_Slate": 16.0, "Vesp_Iron": 8.0,
+          "Verdigris": "Vesp_Verdigris", "GlassR": "Vesp_Glass"}
+# studs per texture repeat (mac-53): castle_wall_slates has ~26 rubble courses per tile -> 64 gives ~2.5-stud courses;
+# medieval_blocks_03 has 5 ashlar courses per tile -> 15 gives 3-stud courses on the dressings.
+TILE = {"Vesp_Soot": 64.0, "Vesp_Charcoal": 15.0, "Vesp_Frost": 12.0, "Vesp_Slate": 14.0, "Vesp_Iron": 8.0,
         "Vesp_Verdigris": 8.0, "Vesp_Glass": 12.0}
-NOFROST = {"Frost", "Glass", "Iron", "Verdigris", "Roof"}
+NOFROST = {"Frost", "Glass", "GlassR", "Iron", "Verdigris", "Roof"}
+NOWEATHER = {"Frost", "Glass", "GlassR", "Iron", "Verdigris"}
 
 
 def log(*a):
@@ -206,16 +209,77 @@ def gen_verdigris():
 
 
 def gen_glass():
-    d1, d2, cid = worley(18, 61)
-    lead = np.clip(1 - (d2 - d1) / 0.07, 0, 1)
-    pal = np.array([[0.78, 0.05, 0.06], [0.55, 0.03, 0.05], [0.95, 0.55, 0.09], [0.92, 0.33, 0.05], [0.65, 0.08, 0.16],
-                    [0.98, 0.72, 0.20]], np.float32)
-    pick = np.random.default_rng(62).choice(6, 18 * 18, p=[0.28, 0.2, 0.18, 0.14, 0.1, 0.1])
-    f1, f2 = fld(1.2, 63), fld(0.4, 64)
-    col = pal[pick][cid] * (0.78 + 0.25 * np.clip(1 - d1 * 1.3, 0, 1)[..., None] + 0.07 * f1[..., None])
-    col = np.clip(col * (1 - lead[..., None]) + np.array([0.03, 0.028, 0.03], np.float32) * lead[..., None], 0, 1)
-    h = 0.5 - 0.25 * lead + 0.02 * f1 + 0.01 * f2
-    return dict(Color=col, Normal=nmap(h.astype(np.float32), 12), Roughness=np.clip(0.25 + 0.5 * lead, 0, 1))
+    """Medallion glazing (mac-53): 4x4 cells per tile (3 studs at TILE 12). Each cell holds a leaded medallion -- a haloed standing
+    figure (circle cells) or an eight-petal rosette (quatrefoil cells) on crimson -- set in a deep blue-violet diamond-quarry
+    ground, with iron saddle bars on the cell rows. Panes are lead-bounded regions with one tone each (no per-pixel confetti).
+    Polar UVs (rose windows, see rose_glass) wrap the same cells into concentric rings of radiating panes."""
+    C = 4
+    y, x = np.mgrid[0:N, 0:N].astype(np.float32)
+    cs = N / C
+    gx, gy = x / cs, y / cs
+    ci, cj = np.floor(gx).astype(np.int32), np.floor(gy).astype(np.int32)
+    lx, ly = gx - ci - 0.5, gy - cj - 0.5  # cell-local, y up (row 0 = v 0)
+    r = np.hypot(lx, ly)
+    th = np.arctan2(ly, lx)
+    quat = ((ci + cj) % 2) == 1
+    rmed = np.where(quat, 0.31 + 0.10 * np.abs(np.cos(2 * th)), 0.41)
+    w = 0.012  # lead half-width in cell units (~6 px)
+    inside = r < rmed
+    lead = np.abs(r - rmed) < w * 1.5
+    band = inside & (r > rmed - 0.055)
+    lead |= inside & (np.abs(r - (rmed - 0.055)) < w)
+    # figure (circle cells): halo, head, robe; rosette (quatrefoil cells): 8 radial petals around a boss
+    hx, hy = lx, ly - 0.15
+    halo, head = np.hypot(hx, hy) < 0.095, np.hypot(hx, hy) < 0.055
+    robe = (ly < 0.09) & (ly > -0.30) & (np.abs(lx) < 0.05 + (0.09 - ly) * 0.22)
+    fig = ~quat & inside & ~band
+    lead |= fig & (np.abs(np.hypot(hx, hy) - 0.095) < w) | fig & (np.abs(np.hypot(hx, hy) - 0.055) < w)
+    rob_e = (np.abs(np.abs(lx) - (0.05 + (0.09 - ly) * 0.22)) < w) & (ly < 0.09) & (ly > -0.30)
+    lead |= fig & (rob_e | ((np.abs(ly - 0.09) < w) & (np.abs(lx) < 0.07)) | ((np.abs(ly + 0.30) < w) & (np.abs(lx) < 0.13)))
+    lead |= fig & (np.abs(lx) < w * 0.8) & (ly < 0.0) & (ly > -0.30)  # robe fold
+    ros = quat & inside & ~band
+    sec = np.floor((th + np.pi) / (np.pi / 4)).astype(np.int32) % 8
+    lead |= ros & (np.abs(np.sin(4 * th)) * r < w * 1.2) & (r > 0.07)
+    lead |= ros & (np.abs(r - 0.07) < w)
+    # ground: diamond quarries, lead on both diagonals; pane id per diamond
+    s = 0.16
+    pu, pv = (gx + gy) / s, (gx - gy) / s
+    ground = ~inside
+    lead |= ground & ((np.abs((pu % 1.0) - 0.5) > 0.5 - w / s * 1.2) | (np.abs((pv % 1.0) - 0.5) > 0.5 - w / s * 1.2))
+    sad = np.abs(((gy + 0.5) % 1.0) - 0.5) > 0.5 - 0.016  # iron saddle bars between cell rows (thicker than lead)
+    lead |= sad
+    # pane ids -> one tone each
+    pid = np.where(ground, (np.floor(pu).astype(np.int64) * 7919 + np.floor(pv).astype(np.int64) * 104729) % 9973, 0)
+    pid = np.where(band, 20000 + (np.floor((th + np.pi) / (np.pi / 8)).astype(np.int64) % 16) + (ci * 31 + cj) * 17, pid)
+    pid = np.where(ros, 30000 + sec + (ci * 31 + cj) * 13, pid)
+    pid = np.where(fig, 40000 + (ci * 31 + cj) * 11 + halo * 1 + head * 2 + robe * 3, pid)
+    rng = np.random.default_rng(62)
+    tone = rng.uniform(0.80, 1.12, 50000).astype(np.float32)[pid % 50000]
+    crim, crim2 = np.array([0.40, 0.025, 0.035], np.float32), np.array([0.26, 0.015, 0.03], np.float32)
+    amber, gold = np.array([0.72, 0.36, 0.05], np.float32), np.array([0.80, 0.55, 0.14], np.float32)
+    blue, viol = np.array([0.07, 0.05, 0.26], np.float32), np.array([0.17, 0.04, 0.22], np.float32)
+    flesh, green = np.array([0.62, 0.42, 0.24], np.float32), np.array([0.05, 0.16, 0.08], np.float32)
+    col = np.zeros((N, N, 3), np.float32)
+    gsel = (pid % 11)[..., None]
+    col = np.where(ground[..., None], np.where(gsel < 7, blue, np.where(gsel < 9, viol, np.where(gsel < 10, crim2, green))), col)
+    col = np.where(band[..., None], np.where(((pid % 2) == 0)[..., None], amber * 0.85, crim2), col)
+    col = np.where(ros[..., None], np.where((sec % 2 == 0)[..., None], amber, crim), col)
+    col = np.where(fig[..., None], crim, col)
+    robe_c = np.where((((ci + cj) // 2) % 2 == 0)[..., None], blue * 1.3, viol * 1.2)
+    col = np.where((fig & robe)[..., None], robe_c, col)
+    col = np.where((fig & halo)[..., None], gold, col)
+    col = np.where((fig & head)[..., None], flesh, col)
+    col = np.where((ros & (r < 0.07))[..., None], gold, col)
+    f1, f2 = fld(1.4, 63), fld(0.6, 64)
+    thick = 0.92 + 0.10 * f1 * 0.5 + 0.03 * f2  # gentle glass thickness variation, no per-pane speckle
+    col = col * (tone * thick)[..., None]
+    grime = np.clip(fld(1.2, 65) * 0.3 + 0.1, 0, 0.35)[..., None]  # soot film, darker toward the leads
+    col = col * (1 - grime)
+    leadc = np.array([0.022, 0.02, 0.024], np.float32)
+    col = np.where(lead[..., None], leadc, col)
+    h = np.where(lead, 0.85, 0.42 + 0.03 * f1)
+    return dict(Color=np.clip(col, 0, 1).astype(np.float32), Normal=nmap(h.astype(np.float32), 5),
+                Roughness=np.where(lead, 0.75, 0.12 + 0.05 * np.abs(f2)).astype(np.float32))
 
 
 GENS = {"Vesp_Soot": gen_soot, "Vesp_Charcoal": gen_charcoal, "Vesp_Frost": gen_frost, "Vesp_Slate": gen_slate,

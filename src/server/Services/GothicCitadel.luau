@@ -1,13 +1,15 @@
 --!strict
 -- Vesperhold massing. Local +Z faces the approach; origin is the top of the gate threshold. Everything here is built from
 -- src/shared/VesperholdLayout: solid cores and decks carry collision and the walk route, soot/charcoal stone only. Every
--- kit slot gets a plain-Part stand-in Model marked VespKitSlot / VespSlotId so the kit loader can replace it with a mesh.
+-- kit slot gets a plain-Part stand-in Model marked VespKitSlot / VespSlotId; when VesperholdKit has the piece (uploaded kit) the
+-- mesh Model is placed at the same CFrame instead and the stand-in is not built (no registry = every stand-in stays).
 local CollectionService = game:GetService("CollectionService")
 local Shared = game:GetService("ReplicatedStorage"):WaitForChild("AsurasPath").Shared
 local Overworld = require(Shared.Overworld)
 local Layout = require(Shared.VesperholdLayout)
 local Kit = require(script.Parent:WaitForChild("SanctuaryKit") :: ModuleScript)
 local Props = require(script.Parent:WaitForChild("SanctuaryProps") :: ModuleScript)
+local VespKit = require(script.Parent:WaitForChild("VesperholdKit") :: ModuleScript) :: any
 local Citadel = {}
 
 local V, C, A = Vector3.new, CFrame.new, CFrame.Angles
@@ -48,6 +50,24 @@ end
 -- Deck whose top surface runs exactly A -> B (as GothicMarch.deck), thickness t.
 local function deck(p: Instance, name: string, a: Vector3, b: Vector3, width: number, t: number): BasePart
 	return Kit.part(p, name, V(width, t, (a - b).Magnitude + 0.5), CFrame.lookAt((a + b) / 2, b) * C(0, -t / 2, 0), charcoal, M.Slate)
+end
+
+-- Wall-cladding pieces project outward from the slot (stand-in z = depth / 2); the flying buttress runs along X in the kit, along Z here.
+local CLAD = { Arcade = true, Bastion = true, Balustrade = true, Lancet = true, Rose = true, Portal = true }
+
+-- Kit mesh for one slot (same frame and per-axis scale as its stand-in). Returns false when the registry lacks the piece.
+local function kitMesh(parent: Instance, s: { [string]: any }, origin: CFrame): boolean
+	local d = Layout.Piece[s.Piece]
+	local f = origin * C(s.X, s.Y, s.Z) * A(0, s.Yaw, 0)
+	if s.Lean then f = f * A(s.Lean, 0, 0) end
+	local offset = if CLAD[s.Group] then C(0, 0, d[3] * s.SZ / 2) elseif s.Group == "Flyer" then A(0, math.pi / 2, 0) else nil
+	local scale = if s.Group == "Flyer" then V(s.SZ, s.SY, s.SX) else V(s.SX, s.SY, s.SZ) -- the offset turns the kit's X onto the layout's Z
+	local m = VespKit.place(s.Piece, f, scale, { Group = s.Group, Seed = s.Id, Offset = offset })
+	if not m then return false end
+	m:SetAttribute("VespSlotId", s.Id)
+	m:SetAttribute("VespGroup", s.Group)
+	m.Parent = parent
+	return true
 end
 
 local function standIn(parent: Instance, s: { [string]: any }, origin: CFrame)
@@ -319,8 +339,13 @@ function Citadel.build(parent: Instance, origin: CFrame): Model
 	end
 	massing(castle, origin, ground)
 	local stand = section(castle, "KitStandIns")
+	local meshes = section(castle, "KitMeshes")
 	for _, s in Layout.slots(ground) do
-		if s.Group ~= "Viaduct" then standIn(stand, s, origin) end -- GothicMarch builds the viaduct bays
+		if s.Group == "Viaduct" then
+			kitMesh(meshes, s, origin) -- GothicMarch builds the stand-in bays (and skips them when the kit has Viaduct_Bay)
+		elseif not kitMesh(meshes, s, origin) then
+			standIn(stand, s, origin)
+		end
 	end
 	castle.Parent = parent
 	return castle

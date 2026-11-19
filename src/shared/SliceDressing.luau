@@ -575,7 +575,7 @@ SliceDressing.Assets = {
 SliceDressing.Registry = {} :: any
 -- Documented fallback: each generated module is pcall-required and merged by piece name (disjoint names; the first module wins a clash). Absent modules = those pieces stay placeholders.
 -- Slice kit, the Bellwood near pieces (trees C/D, conifer, shrubs, stairs, walls...), the <Piece>_Far low-tri trees and the hero set all dress pieces already in Pieces/KIT under the same names.
-SliceDressing.RegistryModules = { "SliceKitRegistry", "BellwoodKitRegistry", "BellwoodFarKitRegistry", "HeroKitRegistry" }
+SliceDressing.RegistryModules = { "SliceKitRegistry", "BellwoodKitRegistry", "BellwoodFarKitRegistry", "HeroKitRegistry", "VesperholdKitRegistry" }
 for _, moduleName in SliceDressing.RegistryModules do
 	local ok, reg = pcall(function() return require((script :: any).Parent[moduleName]) end)
 	if ok and type(reg) == "table" then

@@ -26,22 +26,24 @@ Layout.Tiers = {
 Layout.Gate = { Half = 13, Height = 26, Lintel = 30 }
 Layout.Rose = { X = 0, Y = 312, Z = -180, Diameter = 48 }
 Layout.Tower = { X = 120, Z = -212, BaseY = 330, Foot = 60 } -- west towers sit on the T3 front corners
--- Stand-in sizes are native piece sizes in studs: { width, height, depth }; slots carry scale factors.
+-- Native piece sizes in studs { width, height, depth } = the generator's bounding box in assets/source/vesperhold/{kit,props,trees}/manifest.json
+-- (size_studs_xyz is Blender x, y, z-up, so width = x, height = z, depth = y; trees average their _A/_B variants; Flying_Buttress_40 is rotated 90 degrees: it runs along X in the kit, along Z here). Slots carry scale factors
+-- relative to these, so a kit mesh and its stand-in fill the same box. tools/test_vesperhold_loader.luau compares them with the manifests.
 Layout.Piece = {
-	Arcade_Bay_60 = { 40, 60, 14 }, Arcade_Bay_50 = { 40, 50, 14 }, Arcade_Bay_40 = { 40, 40, 14 },
-	Bastion_Face = { 40, 80, 10 }, Buttress_Pier = { 12, 70, 12 }, Balustrade_20 = { 20, 8, 2 },
-	Flying_Buttress_40 = { 6, 30, 40 }, Pinnacle_Crocket_S = { 6, 12, 6 }, Pinnacle_Crocket_M = { 8, 24, 8 },
-	Pinnacle_Crocket_L = { 10, 40, 10 }, Spire_Base_Oct = { 24, 60, 24 }, Spire_Belfry_Stage = { 20, 50, 20 },
-	Spire_Lucarne_Mid = { 16, 40, 16 }, Spire_Needle_Tip = { 10, 30, 10 }, Spire_Broken_Top = { 10, 20, 10 },
-	Lancet_Tall = { 8, 40, 4 }, Rose_Window_Great = { 48, 48, 6 }, Portal_Great = { 44, 28, 12 },
-	Viaduct_Bay = { 30, 120, 22 }, Statue_Plinth = { 6, 4, 6 }, Hooded_Statue_A = { 3, 10, 3 },
-	Hooded_Statue_B = { 3, 10, 3 }, Candle_Cluster_A = { 2, 2, 2 }, Banner_Torn_A = { 8, 30, 1 },
+	Arcade_Bay_60 = { 43.6, 89.9, 15.8 }, Arcade_Bay_50 = { 43.6, 79.9, 15.8 }, Arcade_Bay_40 = { 43.6, 69.9, 15.8 },
+	Bastion_Face = { 40, 96.6, 15.1 }, Buttress_Pier = { 13.1, 71.1, 25.5 }, Balustrade_20 = { 20.3, 16.2, 2.3 },
+	Flying_Buttress_40 = { 10.1, 27, 46.5 }, Pinnacle_Crocket_S = { 4, 12.8, 4 }, Pinnacle_Crocket_M = { 8.4, 25.6, 8.4 },
+	Pinnacle_Crocket_L = { 12.6, 42.7, 12.6 }, Spire_Base_Oct = { 29.9, 27.5, 29.9 }, Spire_Belfry_Stage = { 27.4, 40.1, 27.4 },
+	Spire_Lucarne_Mid = { 30.9, 44.1, 30.9 }, Spire_Needle_Tip = { 11.3, 55.7, 11.3 }, Spire_Broken_Top = { 11.3, 27, 11.3 },
+	Lancet_Tall = { 14.8, 46.2, 6.9 }, Rose_Window_Great = { 57.7, 76, 12.2 }, Portal_Great = { 61, 93.1, 21.8 },
+	Viaduct_Bay = { 35.2, 120.1, 29 }, Statue_Plinth = { 9.2, 12, 9.2 }, Hooded_Statue_A = { 5.1, 16.2, 5.1 },
+	Hooded_Statue_B = { 5.4, 19.6, 5.1 }, Candle_Cluster_A = { 6.5, 5.8, 6.5 }, Banner_Torn_A = { 8.4, 31, 2 },
 	-- pass 2 additions (mac-44 builds these meshes)
-	Viaduct_Balustrade_30 = { 30, 8, 2 }, Pedestal_Statue_Staff = { 5, 16, 5 }, Brazier_Post = { 3, 12, 3 },
-	Banner_Pole = { 1, 40, 1 }, Banner_Torn_B = { 8, 30, 1 }, Ruined_Arch = { 34, 38, 8 },
-	Dead_Oak_Gnarled = { 40, 75, 40 }, Dead_Pine_Snapped = { 20, 70, 20 }, Thorn_Twisted = { 18, 32, 18 },
-	Gravestone_A = { 3, 5, 1 }, Gravestone_B = { 4, 6, 1 }, Tomb_Slab = { 7, 3, 4 }, Iron_Fence_10 = { 10, 5, 0.6 },
-	Gibbet_Cage = { 4, 8, 4 }, Waterfall_Sheet_A = { 24, 100, 3 }, Waterfall_Sheet_B = { 40, 160, 4 }, Mist_Anchor = { 1, 1, 1 },
+	Viaduct_Balustrade_30 = { 30.3, 19.3, 3 }, Pedestal_Statue_Staff = { 6, 23.3, 6 }, Brazier_Post = { 4.5, 10.5, 4 },
+	Banner_Pole = { 12.4, 39.3, 5.2 }, Banner_Torn_B = { 9, 30.8, 1.8 }, Ruined_Arch = { 36.4, 30.4, 19.7 },
+	Dead_Oak_Gnarled = { 79.6, 81.8, 79.6 }, Dead_Pine_Snapped = { 24.6, 70.2, 31.7 }, Thorn_Twisted = { 39.4, 36.8, 34 },
+	Gravestone_A = { 4.4, 6.4, 1.9 }, Gravestone_B = { 4.1, 6, 2.3 }, Tomb_Slab = { 12.5, 4.5, 7.3 }, Iron_Fence_10 = { 10.4, 8.5, 1.6 },
+	Gibbet_Cage = { 3.4, 16, 2.2 }, Waterfall_Sheet_A = { 22.2, 82.4, 12.2 }, Waterfall_Sheet_B = { 33.6, 162.5, 12.3 }, Mist_Anchor = { 1, 1, 1 },
 }
 
 -- The pilgrims' deck: unchanged path, but now 30-stud bays on tall piers. Level is the deck top at z.
@@ -293,15 +295,16 @@ function Layout.slots(ground: (number, number) -> number): { { [string]: any } }
 		end
 		low -= 8
 		local drop = -low
+		local P = Layout.Piece
 		local n = math.ceil(drop / 80)
 		for k = 0, n - 1 do
-			add("Bastion_Face", "Bastion", cx, low + k * drop / n, T0.FrontZ, 0, 1, drop / n / 80, 1, { Drop = drop })
+			add("Bastion_Face", "Bastion", cx, low + k * drop / n, T0.FrontZ, 0, 1, drop / n / P.Bastion_Face[2], 1, { Drop = drop })
 		end
 	end
 	for i = 0, 17 do
 		local x = (i - 8.5) * T0.Bay
 		local low = math.min(ground(x, T0.FrontZ), ground(x, T0.FrontZ - 30)) - 8
-		add("Buttress_Pier", "Buttress", x, low, T0.FrontZ + 6, 0, 1, (-low + 24) / 70, 1)
+		add("Buttress_Pier", "Buttress", x, low, T0.FrontZ + 6, 0, 1, (-low + 24) / Layout.Piece.Buttress_Pier[2], 1)
 	end
 	-- T1: three stacked arcade galleries (arches 60/60/50), balustrade, pinnacle row. The gate bay is open at level 0.
 	for lvl, band in { { 0, 60, "Arcade_Bay_60" }, { 60, 120, "Arcade_Bay_60" }, { 120, 170, "Arcade_Bay_50" } } do
@@ -320,21 +323,21 @@ function Layout.slots(ground: (number, number) -> number): { { [string]: any } }
 	-- T2 cloister gallery, two levels (40 then 30 tall), on the back wall of the terrace.
 	for lvl = 1, 2 do
 		for i = 1, 13 do
-			add("Arcade_Bay_40", "Arcade", (i - 7) * 40, T2.FloorY + (lvl - 1) * 40, -124, 0, 1, if lvl == 1 then 1 else 0.75, 1, { Tier = "T2", Level = lvl })
+			add("Arcade_Bay_40", "Arcade", (i - 7) * 40, T2.FloorY + (lvl - 1) * 40, -124, 0, 1, (if lvl == 1 then 40 else 30) / Layout.Piece.Arcade_Bay_40[2], 1, { Tier = "T2", Level = lvl })
 		end
 	end
 	-- T2 -> T3: eight pairs of flying buttresses springing from piers on the terrace to the T3 front wall.
 	for _, x in { 28, 42, 56, 70, 84, 162, 176, 190 } do
 		for _, s in { -1, 1 } do
 			add("Buttress_Pier", "Buttress", s * x, T2.FloorY, -150, 0, 1, 1, 1, { Tier = "T2" })
-			add("Flying_Buttress_40", "Flyer", s * x, 250, -150, 0, 1, 35 / 30, 30 / 40, { Tier = "T2", Pair = x })
+			add("Flying_Buttress_40", "Flyer", s * x, 250, -150, 0, 1, 35 / Layout.Piece.Flying_Buttress_40[2], 30 / Layout.Piece.Flying_Buttress_40[3], { Tier = "T2", Pair = x })
 			add("Pinnacle_Crocket_L", "Pinnacle", s * x, 260, -150, 0, 1, 1, 1, { Tier = "T2" })
 		end
 	end
 	-- T3 west front: dominant rose window over a deep portal, lancet rows.
 	add("Rose_Window_Great", "Rose", Layout.Rose.X, Layout.Rose.Y - 24, Layout.Rose.Z, 0, 1, 1, 1)
-	add("Portal_Great", "Portal", 0, 0, T1.FrontZ, 0, Layout.Gate.Height / 28, Layout.Gate.Height / 28, 1, { Height = Layout.Gate.Height })
-	add("Portal_Great", "Portal", 0, T3.FloorY, T3.FrontZ, 0, 1, 1, 1, { Height = 28 })
+	add("Portal_Great", "Portal", 0, 0, T1.FrontZ, 0, Layout.Gate.Height / Layout.Piece.Portal_Great[2], Layout.Gate.Height / Layout.Piece.Portal_Great[2], 1, { Height = Layout.Gate.Height })
+	add("Portal_Great", "Portal", 0, T3.FloorY, T3.FrontZ, 0, 28 / Layout.Piece.Portal_Great[2], 28 / Layout.Piece.Portal_Great[2], 1, { Height = 28 })
 	for _, x in { -190, -170, -60, 60, 170, 190 } do add("Lancet_Tall", "Lancet", x, 262, T3.FrontZ, 0, 1, 1, 1) end
 
 	-- Bays of a wall piece along an axis: a0..a1 along "x" (facing +/-Z) or "z" (facing +/-X), `fixed` on the other axis.
@@ -395,11 +398,11 @@ function Layout.slots(ground: (number, number) -> number): { { [string]: any } }
 	for i = 0, 4 do
 		local zc = V.Z0 + V.Bay * (i + 0.5)
 		local base = ground(0, zc) - 5
-		add("Viaduct_Bay", "Viaduct", 0, base, zc, 0, 1, (Layout.viaductLevel(zc) - 3.5 - base) / 120, 1, { Level = Layout.viaductLevel(zc) })
+		add("Viaduct_Bay", "Viaduct", 0, base, zc, 0, 1, (Layout.viaductLevel(zc) - 3.5 - base) / Layout.Piece.Viaduct_Bay[2], 1, { Level = Layout.viaductLevel(zc) })
 		for _, s in { -1, 1 } do
 			local top = Layout.viaductLevel(zc)
 			add("Statue_Plinth", "Statue", s * V.Rail, top, zc, 0, 1, 1, 1)
-			add(if i % 2 == 0 then "Hooded_Statue_A" else "Hooded_Statue_B", "Statue", s * V.Rail, top + 4, zc, if s > 0 then math.pi * 0.5 else -math.pi * 0.5, 1, 1, 1, { Side = s })
+			add(if i % 2 == 0 then "Hooded_Statue_A" else "Hooded_Statue_B", "Statue", s * V.Rail, top + Layout.Piece.Statue_Plinth[2], zc, if s > 0 then math.pi * 0.5 else -math.pi * 0.5, 1, 1, 1, { Side = s })
 			add("Candle_Cluster_A", "Candle", s * V.Rail, top, zc + 5, 0, 1, 1, 1)
 		end
 	end
@@ -416,10 +419,10 @@ function Layout.slots(ground: (number, number) -> number): { { [string]: any } }
 		for i = 0, n - 1 do
 			local xc = v.X0 + dir * bay * (i + 0.5)
 			local base = ground(xc, v.Z) - 5
-			add("Viaduct_Bay", "ViaductHigh", xc, base, v.Z, 0, bay / 30, (v.Level - 3.5 - base) / 120, 1, { Viaduct = name, Level = v.Level, Bay = i + 1 })
+			add("Viaduct_Bay", "ViaductHigh", xc, base, v.Z, 0, bay / Layout.Piece.Viaduct_Bay[1], (v.Level - 3.5 - base) / Layout.Piece.Viaduct_Bay[2], 1, { Viaduct = name, Level = v.Level, Bay = i + 1 })
 			for _, s in { -1, 1 } do
 				local zz = v.Z + s * (v.Width / 2 - 0.9)
-				add("Viaduct_Balustrade_30", "Balustrade", xc, v.Level, zz, if s > 0 then 0 else PI, bay / 30, 1, 1, { Viaduct = name })
+				add("Viaduct_Balustrade_30", "Balustrade", xc, v.Level, zz, if s > 0 then 0 else PI, bay / Layout.Piece.Viaduct_Balustrade_30[1], 1, 1, { Viaduct = name })
 				add("Pedestal_Statue_Staff", "Pedestal", xc, v.Level, zz + s * 1.5, if s > 0 then PI else 0, 1, 1, 1, { Viaduct = name, Side = s, Along = xc })
 				add("Candle_Cluster_A", "Candle", xc + bay * 0.25, v.Level, zz, 0, 1, 1, 1, { Viaduct = name })
 				if (i + (if s > 0 then 1 else 0)) % 2 == 0 then
