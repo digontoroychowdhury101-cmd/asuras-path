@@ -255,7 +255,12 @@ ROBE = dict(
     ryb=[(0, 1.45), (0.06, 1.16), (0.3, 0.98), (0.5, 0.92), (0.53, 0.86), (0.6, 0.95), (0.72, 1.05), (0.8, 1.0), (0.83, 0.85),
          (0.855, 0.58), (0.875, 0.44)],
     cy=[(0, 0.0), (0.5, 0.0), (0.7, -0.05), (0.85, -0.2), (0.875, -0.25)],
-    t_top=0.875, belt=0.53, t_sh=0.80, n1=10, amp1=0.28, n2=29, amp2=0.05, n3=5, amp3=0.09, n4=9, amp4=0.08, chest=0.75)
+    t_top=0.875, belt=0.53, t_sh=0.80, n1=10, amp1=0.28, n2=29, amp2=0.05, n3=5, amp3=0.09, n4=11, amp4=0.14, chest=1.0)
+HOOD_S, PEAK_S = 1.18, 0.7
+# win-61 stone grade: grey-black (albedo ~0.08-0.2), soot streaks with rain-washed stone between, soft frost on
+# shoulders/ledges, matte. Shared by the hand-made statues and the scan.
+STONE_LOOK = dict(frost=1.0, base=0.16, grime=0.55, occl_pow=1.6, edge=0.8, streak_dark=0.5, rough_base=0.9, wet_gloss=0.1,
+                  sat=0.15, streak_lo=0.47, streak_hi=0.62, wash=0.12, frost_nz=(0.35, 0.75), frost_break=(0.34, 0.62))  # win-61: bigger, deeper cowl, less gnome-pointed (heads read tiny at 20+ studs)
 
 CFG = {
     "Hooded_Statue_A": dict(
@@ -263,11 +268,11 @@ CFG = {
         hood=dict(c=(0, -0.3, 12.7), axis=(0, -1, -0.3), r=(0.98, 1.25, 0.86), peak=0.45, t=0.11),
         arms=[dict(path=[(-0.85, 0.05, 10.9), (-1.28, 0.1, 10.75), (-1.47, 0.14, 9.85), (-1.42, 0.0, 9.0), (-1.02, -0.88, 8.68), (-0.46, -1.34, 8.6)],
                    r=[0.3, 0.35, 0.37, 0.36, 0.42, 0.5], sag=[0, 0, 0, 0.25, 0.75, 1.0], ref=(0, 0, -1), tail=0.3, droop=0.28,
-                   hand=dict(kind="flat", c=(-0.5, -1.37, 8.46), axis=(1, -0.3, -0.1), up=(0, -0.25, 1))),
+                   hand=dict(kind="flat", c=(-0.88, -1.26, 8.5), axis=(1, -0.3, -0.1), up=(0, -0.25, 1))),
               dict(path=[(0.85, 0.05, 10.9), (1.28, 0.1, 10.75), (1.47, 0.14, 9.85), (1.42, 0.0, 9.0), (1.02, -0.88, 8.68), (0.46, -1.34, 8.6)],
                    r=[0.3, 0.35, 0.37, 0.36, 0.42, 0.5], sag=[0, 0, 0, 0.25, 0.75, 1.0], ref=(0, 0, -1), tail=0.3, droop=0.28,
-                   hand=dict(kind="flat", c=(0.5, -1.37, 8.53), axis=(-1, -0.3, -0.1), up=(0, -0.25, 1)))],
-        cords=True, staff=None, sword=None, plinth="low"),
+                   hand=dict(kind="flat", c=(0.88, -1.26, 8.57), axis=(-1, -0.3, -0.1), up=(0, -0.25, 1)))],
+        cords=True, staff=None, sword=None, plinth="low", slim=0.88),
     "Hooded_Statue_B": dict(
         H=20.0, z0=2.5, yaw=-12.0, seed=23, knee=-1, robe=dict(n1=9, amp1=0.3), capelet=True, cloak=False,
         hood=dict(c=(0, -0.28, 12.75), axis=(-0.15, -1, -0.22), r=(0.98, 1.25, 0.86), peak=0.48, t=0.11),
@@ -276,7 +281,7 @@ CFG = {
                    hand=dict(c=(-2.05, -1.05, 9.25), axis=(0, 0, 1), back=(-1, -0.25, 0), rg=0.13, forearm=1.1)),
               dict(path=[(0.85, 0.05, 10.9), (1.3, 0.1, 10.75), (1.56, 0.14, 9.7), (1.62, 0.06, 8.5), (1.6, -0.12, 7.4), (1.56, -0.22, 6.55)],
                    r=[0.3, 0.35, 0.38, 0.42, 0.56, 0.78], sag=[0, 0, 0, 0, 0, 0], ref=(0, 1, 0), tail=0.0, hand=None)],
-        cords=True, staff=dict(x=-2.05, y=-1.05, top=16.6, r=0.13), sword=None, plinth="low"),
+        cords=True, staff=dict(x=-2.05, y=-1.05, top=16.6, r=0.13), sword=None, plinth="low", slim=0.88),
     "Pedestal_Statue_Staff": dict(
         H=16.0, z0=7.0, yaw=0.0, seed=37, knee=1, robe=dict(n1=11, amp4=0.1, chest=1.05), capelet=False, cloak=True, tabard=0.62,
         hood=dict(c=(0, -0.32, 12.75), axis=(0, -1, -0.28), r=(1.0, 1.27, 0.88), peak=0.46, t=0.11),
@@ -286,7 +291,8 @@ CFG = {
               dict(path=[(0.85, 0.05, 10.9), (1.3, 0.1, 10.75), (1.55, 0.05, 9.9), (1.52, -0.42, 9.0), (0.95, -1.22, 8.4), (0.42, -1.7, 8.22)],
                    r=[0.3, 0.35, 0.38, 0.39, 0.45, 0.54], sag=[0, 0, 0, 0.1, 0.35, 0.55], ref=(0, 0, -1), droop=0.12,
                    hand=dict(c=(0, -2.01, 8.12), axis="sword", back=(1, -0.5, 0), rg=0.12))],
-        cords=False, staff=None, sword=dict(tip=(0, -2.28, 0.05), top=(0, -1.98, 9.05), guard=7.0, grip=(7.05, 8.62)), plinth="pedestal"),
+        cords=False, staff=None, sword=dict(tip=(0, -2.28, 0.05), top=(0, -1.98, 9.05), guard=7.0, grip=(7.05, 8.62)), plinth="pedestal",
+        slim=0.92),
 }
 
 RES = {  # (rows, cols) per level
@@ -395,12 +401,12 @@ def hood(mb, cfg, level, void_strength=1.0):
     a0 = 0.42 + 0.43 * (np.abs(B) / PI) ** 1.2
     al = a0 + V * (PI - 0.035 - a0)
     d = a[None, None] * np.cos(al)[..., None] + (u0[None, None] * np.cos(B)[..., None] + sv[None, None] * np.sin(B)[..., None]) * np.sin(al)[..., None]
-    ra, ru, rs = (np.array(h["r"]) * k)
+    ra, ru, rs = (np.array(h["r"]) * k * HOOD_S)
     da, du_, ds = d @ a, d @ u0, d @ sv
     R = 1.0 / np.sqrt((da / ra) ** 2 + (du_ / ru) ** 2 + (ds / rs) ** 2)
     pdir = nrm(-a * 0.6 + u0 * 0.8)
     ang = np.arccos(np.clip(d @ pdir, -1, 1))
-    R = R + h["peak"] * k * np.exp(-(ang / 0.28) ** 2)
+    R = R + h["peak"] * PEAK_S * k * np.exp(-(ang / 0.28) ** 2)
     P = Hc + d * R[..., None]
     N = grid_normals(P, True, P - Hc)
     # folds run diagonally from the crown back/down to the shoulders (sides and nape), not as ribs around the face
@@ -432,8 +438,8 @@ def capelet(mb, cfg, robe, level):
     zn, zs = 12.25, 11.0
     w = 10 * TH / (2 * PI) + 0.4 * circ_noise(TH, V * 0.8, 1.4, sd + 32)
     # draped hem: lower where a fold hangs, ragged, dipping at front and back
-    zh = 10.3 - 0.2 * np.cos(2 * TH) + 0.1 * circ_noise(TH, 0, 2, sd + 31) - 0.16 * prof(w) * rnd_fold(w, 10, sd + 33) \
-        - 0.035 * np.sin(23 * TH + 2.0 * circ_noise(TH, 1, 3, sd + 35))
+    zh = 10.2 - 0.2 * np.cos(2 * TH) + 0.12 * circ_noise(TH, 0, 2, sd + 31) - 0.08 * prof(w) * rnd_fold(w, 10, sd + 33) \
+        - 0.012 * np.sin(23 * TH + 2.0 * circ_noise(TH, 1, 3, sd + 35))  # win-61: worn hem, not pie-crust scallops
     (rxn, ryn), (rxs, rys), (rxh, ryh) = (0.74, 0.66), (1.7, 1.18), (1.78, 1.26)
     dome = V < vs
     rx = np.where(dome, rxn + (rxs - rxn) * np.sin(om), rxs + (rxh - rxs) * f2) * k
@@ -570,8 +576,9 @@ def sleeve(mb, cfg, arm, level):
     curv = np.linalg.norm(kap, axis=-1)
     el = s[int(np.argmax(curv * sst(0.2, 0.35, s) * sst(0.85, 0.7, s)))]
     inner = 0.35 + 0.65 * np.maximum(np.cos(PH - phin[:, None]), 0)
-    ringw = SS * L / (0.26 * k) + 0.25 * np.sin(PH + sd)
-    disp = disp + 0.07 * k * np.exp(-((SS - el) / 0.09) ** 2) * inner * prof(ringw)
+    # win-61: irregular, diagonal bunching (regular rings read as a puffer jacket)
+    ringw = SS * L / (0.3 * k) + 0.7 * np.sin(PH + sd) + 0.5 * vnoise(np.stack([SS * 6, np.cos(PH) * 1.5, np.sin(PH) * 1.5], -1), sd + 54)
+    disp = disp + 0.05 * k * np.exp(-((SS - el) / 0.09) ** 2) * inner * prof(ringw) * rnd_fold(ringw, 9, sd + 55)
     disp = disp + 0.045 * k * np.exp(-((SS - 0.84) / 0.05) ** 2) * (0.5 + 0.5 * np.maximum(-np.cos(PH), 0)) * prof(ringw * 1.2 + 0.3)
     if level == "hi":
         disp = disp + 0.004 * k * fbm(C[:, None, :] * 3 + PH[..., None] * 0.3, 3, sd + 53)
@@ -649,7 +656,7 @@ def grip_hand(mb, hand, F, k, level):
     psic, psiw = 0.2, 1.05
     rhoc = rg + 0.125 * sc
     pr = RES["palm"][level]
-    superq(mb, None, None, None, None, (psiw, 2.15 * fw, 0.13 * sc), e=0.4, res=pr, bend=(c, A, Bk, Fw, psic, rhoc))
+    superq(mb, None, None, None, None, (psiw, 2.15 * fw, 0.13 * sc), e=0.8, res=pr, bend=(c, A, Bk, Fw, psic, rhoc))  # win-61: e 0.4 read as a box
     fres = RES["finger"][level]
     for i, (h, Ls) in enumerate(zip((1.5, 0.5, -0.5, -1.5), (1.0, 1.07, 1.0, 0.82))):
         pk = psic + psiw * 0.9
@@ -693,7 +700,8 @@ def flat_hand(mb, hand, k, level):
                         b + A * ln * k - up * 0.13 * k])
         tube_part(mb, pts, round_end(np.array([1.1, 1.0, 0.92, 0.82]) * 0.05 * k, fres[0] * 3, 0.15, start=False), level, "finger",
                   ref=up, n=(fres[0] * 3, fres[1]))
-    tube_part(mb, np.array([c - A * 0.1 * k, c - A * 0.4 * k, c - A * 0.75 * k]), np.array([0.1, 0.11, 0.12]) * k, level, "finger",
+    # wrist stays short: the hands sit deep in the cuffs (win-61), a long wrist would exit the sleeve at the bend
+    tube_part(mb, np.array([c - A * 0.08 * k, c - A * 0.2 * k, c - A * 0.32 * k]), np.array([0.1, 0.11, 0.12]) * k, level, "finger",
               ref=up, n=(fres[0], fres[1] * 2))
 
 
@@ -947,11 +955,13 @@ def build(name, level):
     if cfg["sword"]:
         roles["Sword"] = MB()
         sword(roles["Sword"], cfg, level)
+    slim = cfg.get("slim", 1.0)
     if cfg["plinth"] == "low":
-        plinth_low(roles["Plinth"], level, k, cfg["z0"] / 2.0)
+        plinth_low(roles["Plinth"], level, k * slim, cfg["z0"] / 2.0)
     else:
         pedestal(roles["Plinth"], level)
     M = Mrot_z(cfg["yaw"], cfg["z0"])
+    M[:3, :3] = M[:3, :3] @ np.diag([slim, slim, 1.0])  # win-61: slender silhouette (figure only, plinth sized above)
     objs = {}
     for r, mb in roles.items():
         nm = f"{name}__{r}" if level == "lo" else f"HI_{name}__{r}"
@@ -1069,7 +1079,7 @@ def setup_scene(samples=64):
     return sc, cam, man
 
 
-def fog_on(sc, density=0.014):
+def fog_on(sc, density=0.009):  # win-61: 0.014 washed the statue pale at 26 studs; ref_01/05 read dark
     """Viaduct look (ref_01): grey fog sky + world volume, so the statue reads as a silhouette at 20-30 studs."""
     nt = sc.world.node_tree
     bg = next(n for n in nt.nodes if n.type == "BACKGROUND")
@@ -1151,7 +1161,9 @@ def statue(name, out, mode):
     bpy.ops.wm.read_factory_settings(use_empty=True)
     t = time.time()
     lows = build(name, "lo")
-    log(f"{name}: low built " + " ".join(f"{r}={VB.tris(o)}" for r, o in lows.items()) + f"  {time.time() - t:.1f}s")
+    blo, bhi = bbox([o for r, o in lows.items() if r != "Staff"])
+    log(f"{name}: low built " + " ".join(f"{r}={VB.tris(o)}" for r, o in lows.items()) + f"  {time.time() - t:.1f}s"
+        + f"; figure+plinth top {bhi[2]:.2f}, footprint {bhi[0] - blo[0]:.2f} x {bhi[1] - blo[1]:.2f} studs")
     t = time.time()
     highs = build(name, "hi")
     log(f"{name}: high built " + " ".join(f"{r}={VB.tris(o)}" for r, o in highs.items()) + f"  {time.time() - t:.1f}s")
@@ -1193,7 +1205,7 @@ def statue(name, out, mode):
         weighted_normals(o)
         VB.unwrap(o)
     # soot-black stone: deep cavity grime, soot streaks down the folds, frost on up-facing ledges, matte (lead review 2)
-    look = VB.Look(frost=0.8, base=0.12, grime=0.55, occl_pow=1.6, edge=0.7, streak_dark=0.4, rough_base=0.9, wet_gloss=0.1, sat=0.15)
+    look = VB.Look(**STONE_LOOK)
     rays = {"Robe": (0.08, 0.2), "Hood": (0.05, 0.14), "Arms": (0.045, 0.12), "Plinth": (0.1, 0.25), "Staff": (0.04, 0.1), "Sword": (0.04, 0.1)}
     metal_look = VB.Look(frost=0.35, base=0.09, grime=0.55, edge=0.5, streak_dark=0.35, rough_base=0.88, wet_gloss=0.1, sat=0.15)
     looks = {"*": look, "Staff": metal_look, "Sword": metal_look}
@@ -1306,7 +1318,8 @@ def scan_statue(name, out, mode):
         o.data.materials.append(stone)
     weighted_normals(lows["Plinth"])
     VB.unwrap(lows["Plinth"])
-    look = VB.Look(frost=0.8, base=0.12, grime=0.55, occl_pow=1.6, edge=0.7, streak_dark=0.4, rough_base=0.9, wet_gloss=0.1, sat=0.15)
+    # big flat plinth + train: full frost read as camouflage blotches -> thinner, more even dusting
+    look = VB.Look(**dict(STONE_LOOK, frost=0.6, frost_break=(0.22, 0.6)))
     res = VB.bake(name, {r: (lows[r], [highs[r]]) for r in lows}, maps, size=2048, look=look, log=log,
                   rays={"Body": (0.02, 0.06), "Plinth": (0.1, 0.25)}, ao_distance=1.2)
     # scan detail back in: its normal map, and its albedo's relative luminance (carving, chain links, folds)

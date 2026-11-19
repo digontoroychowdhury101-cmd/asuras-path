@@ -254,7 +254,10 @@ class Look:
     """Tunable compose. Values are sRGB pixel values (what Roblox reads). Defaults: weathered black stone."""
 
     def __init__(self, base=0.135, grime=0.30, edge=0.95, edge_lo=0.50, edge_hi=0.62, frost=0.0, frost_col=(0.62, 0.65, 0.70),
-                 streak_dark=0.18, rough_base=0.80, wet_gloss=0.30, occl_pow=1.25, seed=7, sat=1.0):
+                 streak_dark=0.18, rough_base=0.80, wet_gloss=0.30, occl_pow=1.25, seed=7, sat=1.0,
+                 streak_lo=0.55, streak_hi=0.75, wash=0.0, frost_nz=(0.55, 0.9), frost_break=(0.46, 0.58)):
+        # win-61 optional knobs (defaults = previous behaviour): streak_lo/hi = noise band that becomes a soot streak;
+        # wash = lighten the rain-washed stone between streaks; frost_nz = up-facing range; frost_break = patch softness.
         self.__dict__.update(locals())
         del self.__dict__["self"]
 
@@ -293,15 +296,19 @@ def compose(alb_lin, d1, d2, look, cov):
     rel = lum / max(float(np.median(lum[cov])) if cov.any() else 0.2, 1e-3)  # keep the tiled map's variation, re-centred
     v = L.base * np.clip(rel, 0.75, 1.3)
     v = v * (1.0 - L.grime + L.grime * ao[..., None]) * (1.0 + L.edge * wear[..., None])
-    v = v * (1.0 - L.streak_dark * _smooth(streak, 0.55, 0.75)[..., None])
+    sk = _smooth(streak, L.streak_lo, L.streak_hi)
+    v = v * (1.0 - L.streak_dark * sk[..., None])
+    if L.wash:
+        v = v * (1.0 + L.wash * (1 - _smooth(streak, L.streak_lo - 0.2, L.streak_lo))[..., None] * ao[..., None])
     col = np.clip(v * tone, 0, 1) * (1 - metal[..., None]) + alb * metal[..., None]
     if L.frost > 0:
         # breakup from the object-space streak noise (seamless across UV islands), denser on flatter tops
-        fm = _smooth(nz, 0.55, 0.9) * _smooth(streak + 0.25 * (nz - 0.8), 0.46, 0.58) * L.frost * (0.4 + 0.6 * ao)
+        fm = _smooth(nz, *L.frost_nz) * _smooth(streak + 0.25 * (nz - 0.8), *L.frost_break) * L.frost * (0.4 + 0.6 * ao)
         col = col * (1 - fm[..., None]) + np.array(L.frost_col, np.float32) * fm[..., None]
     void = occl < 0.04
     col[void] = np.minimum(col[void], 0.02)
-    rough = np.clip(L.rough_base + 0.12 * (rbase - 0.5) + 0.12 * (1 - ao) - L.wet_gloss * _smooth(streak, 0.5, 0.8) - 0.08 * wear, 0.25, 1.0)
+    rough = np.clip(L.rough_base + 0.12 * (rbase - 0.5) + 0.12 * (1 - ao) - L.wet_gloss * _smooth(streak, L.streak_lo - 0.05, L.streak_hi + 0.05)
+                    - 0.08 * wear, 0.25, 1.0)
     rough = rough * (1 - metal) + np.clip(0.35 + 0.3 * rbase, 0.2, 0.8) * metal
     return col.astype(np.float32), rough.astype(np.float32), metal.astype(np.float32)
 
