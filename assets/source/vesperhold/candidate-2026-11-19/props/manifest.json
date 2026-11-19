@@ -1,0 +1,1095 @@
+{
+  "kit": "Vesperhold props (group F)",
+  "build": "blender -b -P tools/blender/vesperhold/vesperhold_kit.py",
+  "tri_cap_per_sub_mesh": 18000,
+  "units": "studs (1 BU = 1 stud)",
+  "pivot": "foot centre at origin, z=0 (Blender Z up, GLB Y up)",
+  "pieces": {
+    "Hooded_Statue_A": {
+      "group": "F",
+      "sub_meshes": {
+        "Hooded_Statue_A__Robe": 17164,
+        "Hooded_Statue_A__Robe_2": 17164,
+        "Hooded_Statue_A__Hood": 9312,
+        "Hooded_Statue_A__Hood_2": 9312,
+        "Hooded_Statue_A__Arms": 10584,
+        "Hooded_Statue_A__Plinth": 216
+      },
+      "tris_total": 63752,
+      "size_studs_xyz": [
+        5.1,
+        5.1,
+        16.2
+      ],
+      "bbox_min": [
+        -2.56,
+        -2.56,
+        0.0
+      ],
+      "bbox_max": [
+        2.56,
+        2.56,
+        16.2
+      ],
+      "materials": [
+        "Vesp_Hooded_Statue_A__Arms",
+        "Vesp_Hooded_Statue_A__Hood",
+        "Vesp_Hooded_Statue_A__Plinth",
+        "Vesp_Hooded_Statue_A__Robe"
+      ],
+      "file": "Hooded_Statue_A.glb",
+      "builder": "tools/blender/vesperhold/vesperhold_figures.py (mac-51, hand-modelled, Cycles-baked)",
+      "no_decimation": true,
+      "map_resolution": 2048,
+      "maps": {
+        "Robe": {
+          "Color": "maps/Vesp_Hooded_Statue_A__Robe_Color.png",
+          "Normal": "maps/Vesp_Hooded_Statue_A__Robe_Normal.png",
+          "Roughness": "maps/Vesp_Hooded_Statue_A__Robe_Roughness.png",
+          "Metal": "maps/Vesp_Hooded_Statue_A__Robe_Metal.png"
+        },
+        "Hood": {
+          "Color": "maps/Vesp_Hooded_Statue_A__Hood_Color.png",
+          "Normal": "maps/Vesp_Hooded_Statue_A__Hood_Normal.png",
+          "Roughness": "maps/Vesp_Hooded_Statue_A__Hood_Roughness.png",
+          "Metal": "maps/Vesp_Hooded_Statue_A__Hood_Metal.png"
+        },
+        "Arms": {
+          "Color": "maps/Vesp_Hooded_Statue_A__Arms_Color.png",
+          "Normal": "maps/Vesp_Hooded_Statue_A__Arms_Normal.png",
+          "Roughness": "maps/Vesp_Hooded_Statue_A__Arms_Roughness.png",
+          "Metal": "maps/Vesp_Hooded_Statue_A__Arms_Metal.png"
+        },
+        "Plinth": {
+          "Color": "maps/Vesp_Hooded_Statue_A__Plinth_Color.png",
+          "Normal": "maps/Vesp_Hooded_Statue_A__Plinth_Normal.png",
+          "Roughness": "maps/Vesp_Hooded_Statue_A__Plinth_Roughness.png",
+          "Metal": "maps/Vesp_Hooded_Statue_A__Plinth_Metal.png"
+        }
+      },
+      "base_layer": "Poly Haven rock_04 2K",
+      "high_poly_tris": {
+        "Robe": 1064880,
+        "Hood": 581600,
+        "Arms": 262720,
+        "Plinth": 205948
+      }
+    },
+    "Hooded_Statue_B": {
+      "group": "F",
+      "sub_meshes": {
+        "Hooded_Statue_B__Robe": 17164,
+        "Hooded_Statue_B__Robe_2": 17164,
+        "Hooded_Statue_B__Hood": 9312,
+        "Hooded_Statue_B__Hood_2": 9312,
+        "Hooded_Statue_B__Arms": 16304,
+        "Hooded_Statue_B__Plinth": 216,
+        "Hooded_Statue_B__Staff": 4424
+      },
+      "tris_total": 73896,
+      "size_studs_xyz": [
+        5.4,
+        5.1,
+        19.6
+      ],
+      "bbox_min": [
+        -2.82,
+        -2.56,
+        0.0
+      ],
+      "bbox_max": [
+        2.56,
+        2.56,
+        19.58
+      ],
+      "materials": [
+        "Vesp_Hooded_Statue_B__Arms",
+        "Vesp_Hooded_Statue_B__Hood",
+        "Vesp_Hooded_Statue_B__Plinth",
+        "Vesp_Hooded_Statue_B__Robe",
+        "Vesp_Hooded_Statue_B__Staff"
+      ],
+      "file": "Hooded_Statue_B.glb",
+      "builder": "tools/blender/vesperhold/vesperhold_figures.py (mac-51, hand-modelled, Cycles-baked)",
+      "no_decimation": true,
+      "map_resolution": 2048,
+      "maps": {
+        "Robe": {
+          "Color": "maps/Vesp_Hooded_Statue_B__Robe_Color.png",
+          "Normal": "maps/Vesp_Hooded_Statue_B__Robe_Normal.png",
+          "Roughness": "maps/Vesp_Hooded_Statue_B__Robe_Roughness.png",
+          "Metal": "maps/Vesp_Hooded_Statue_B__Robe_Metal.png"
+        },
+        "Hood": {
+          "Color": "maps/Vesp_Hooded_Statue_B__Hood_Color.png",
+          "Normal": "maps/Vesp_Hooded_Statue_B__Hood_Normal.png",
+          "Roughness": "maps/Vesp_Hooded_Statue_B__Hood_Roughness.png",
+          "Metal": "maps/Vesp_Hooded_Statue_B__Hood_Metal.png"
+        },
+        "Arms": {
+          "Color": "maps/Vesp_Hooded_Statue_B__Arms_Color.png",
+          "Normal": "maps/Vesp_Hooded_Statue_B__Arms_Normal.png",
+          "Roughness": "maps/Vesp_Hooded_Statue_B__Arms_Roughness.png",
+          "Metal": "maps/Vesp_Hooded_Statue_B__Arms_Metal.png"
+        },
+        "Plinth": {
+          "Color": "maps/Vesp_Hooded_Statue_B__Plinth_Color.png",
+          "Normal": "maps/Vesp_Hooded_Statue_B__Plinth_Normal.png",
+          "Roughness": "maps/Vesp_Hooded_Statue_B__Plinth_Roughness.png",
+          "Metal": "maps/Vesp_Hooded_Statue_B__Plinth_Metal.png"
+        },
+        "Staff": {
+          "Color": "maps/Vesp_Hooded_Statue_B__Staff_Color.png",
+          "Normal": "maps/Vesp_Hooded_Statue_B__Staff_Normal.png",
+          "Roughness": "maps/Vesp_Hooded_Statue_B__Staff_Roughness.png",
+          "Metal": "maps/Vesp_Hooded_Statue_B__Staff_Metal.png"
+        }
+      },
+      "base_layer": "Poly Haven rock_04 2K",
+      "high_poly_tris": {
+        "Robe": 1064880,
+        "Hood": 581600,
+        "Arms": 348736,
+        "Plinth": 205948,
+        "Staff": 123120
+      }
+    },
+    "Pedestal_Statue_Staff": {
+      "group": "F",
+      "sub_meshes": {
+        "Pedestal_Statue_Staff__Robe": 15472,
+        "Pedestal_Statue_Staff__Robe_2": 15472,
+        "Pedestal_Statue_Staff__Hood": 11856,
+        "Pedestal_Statue_Staff__Hood_2": 11856,
+        "Pedestal_Statue_Staff__Hood_3": 11858,
+        "Pedestal_Statue_Staff__Arms": 11012,
+        "Pedestal_Statue_Staff__Arms_2": 11012,
+        "Pedestal_Statue_Staff__Plinth": 13848,
+        "Pedestal_Statue_Staff__Sword": 2642
+      },
+      "tris_total": 105028,
+      "size_studs_xyz": [
+        6.0,
+        6.0,
+        23.3
+      ],
+      "bbox_min": [
+        -3.0,
+        -3.0,
+        0.0
+      ],
+      "bbox_max": [
+        3.0,
+        3.0,
+        23.31
+      ],
+      "materials": [
+        "Vesp_Pedestal_Statue_Staff__Arms",
+        "Vesp_Pedestal_Statue_Staff__Hood",
+        "Vesp_Pedestal_Statue_Staff__Plinth",
+        "Vesp_Pedestal_Statue_Staff__Robe",
+        "Vesp_Pedestal_Statue_Staff__Sword"
+      ],
+      "file": "Pedestal_Statue_Staff.glb",
+      "builder": "tools/blender/vesperhold/vesperhold_figures.py (mac-51, hand-modelled, Cycles-baked)",
+      "no_decimation": true,
+      "map_resolution": 2048,
+      "maps": {
+        "Robe": {
+          "Color": "maps/Vesp_Pedestal_Statue_Staff__Robe_Color.png",
+          "Normal": "maps/Vesp_Pedestal_Statue_Staff__Robe_Normal.png",
+          "Roughness": "maps/Vesp_Pedestal_Statue_Staff__Robe_Roughness.png",
+          "Metal": "maps/Vesp_Pedestal_Statue_Staff__Robe_Metal.png"
+        },
+        "Hood": {
+          "Color": "maps/Vesp_Pedestal_Statue_Staff__Hood_Color.png",
+          "Normal": "maps/Vesp_Pedestal_Statue_Staff__Hood_Normal.png",
+          "Roughness": "maps/Vesp_Pedestal_Statue_Staff__Hood_Roughness.png",
+          "Metal": "maps/Vesp_Pedestal_Statue_Staff__Hood_Metal.png"
+        },
+        "Arms": {
+          "Color": "maps/Vesp_Pedestal_Statue_Staff__Arms_Color.png",
+          "Normal": "maps/Vesp_Pedestal_Statue_Staff__Arms_Normal.png",
+          "Roughness": "maps/Vesp_Pedestal_Statue_Staff__Arms_Roughness.png",
+          "Metal": "maps/Vesp_Pedestal_Statue_Staff__Arms_Metal.png"
+        },
+        "Plinth": {
+          "Color": "maps/Vesp_Pedestal_Statue_Staff__Plinth_Color.png",
+          "Normal": "maps/Vesp_Pedestal_Statue_Staff__Plinth_Normal.png",
+          "Roughness": "maps/Vesp_Pedestal_Statue_Staff__Plinth_Roughness.png",
+          "Metal": "maps/Vesp_Pedestal_Statue_Staff__Plinth_Metal.png"
+        },
+        "Sword": {
+          "Color": "maps/Vesp_Pedestal_Statue_Staff__Sword_Color.png",
+          "Normal": "maps/Vesp_Pedestal_Statue_Staff__Sword_Normal.png",
+          "Roughness": "maps/Vesp_Pedestal_Statue_Staff__Sword_Roughness.png",
+          "Metal": "maps/Vesp_Pedestal_Statue_Staff__Sword_Metal.png"
+        }
+      },
+      "base_layer": "Poly Haven rock_04 2K",
+      "high_poly_tris": {
+        "Robe": 1002720,
+        "Hood": 1162800,
+        "Arms": 434752,
+        "Plinth": 617908,
+        "Sword": 81208
+      }
+    },
+    "Gargoyle_A": {
+      "group": "F",
+      "sub_meshes": {
+        "Gargoyle_A__Stone": 24,
+        "Gargoyle_A__Frost": 90,
+        "Gargoyle_A__Figure": 3929
+      },
+      "tris_total": 4043,
+      "size_studs_xyz": [
+        7.7,
+        9.3,
+        8.2
+      ],
+      "bbox_min": [
+        -3.86,
+        -5.42,
+        0.0
+      ],
+      "bbox_max": [
+        3.86,
+        3.9,
+        8.24
+      ],
+      "materials": [
+        "Vesp_Frost",
+        "Vesp_Soot",
+        "Vesp_Weathered"
+      ],
+      "file": "Gargoyle_A.glb"
+    },
+    "Gargoyle_B": {
+      "group": "F",
+      "sub_meshes": {
+        "Gargoyle_B__Stone": 24,
+        "Gargoyle_B__Frost": 83,
+        "Gargoyle_B__Figure": 3929
+      },
+      "tris_total": 4036,
+      "size_studs_xyz": [
+        11.3,
+        9.3,
+        7.7
+      ],
+      "bbox_min": [
+        -5.64,
+        -5.42,
+        0.0
+      ],
+      "bbox_max": [
+        5.64,
+        3.9,
+        7.75
+      ],
+      "materials": [
+        "Vesp_Frost",
+        "Vesp_Soot",
+        "Vesp_Weathered"
+      ],
+      "file": "Gargoyle_B.glb"
+    },
+    "Candle_Cluster_A": {
+      "group": "F",
+      "sub_meshes": {
+        "Candle_Cluster_A__Iron": 392,
+        "Candle_Cluster_A__Wax": 3428,
+        "Candle_Cluster_A__Flame": 1764,
+        "Candle_Cluster_A__Rope": 175
+      },
+      "tris_total": 5759,
+      "size_studs_xyz": [
+        6.5,
+        6.5,
+        5.8
+      ],
+      "bbox_min": [
+        -3.26,
+        -3.26,
+        0.0
+      ],
+      "bbox_max": [
+        3.26,
+        3.26,
+        5.77
+      ],
+      "materials": [
+        "Vesp_Flame",
+        "Vesp_Iron",
+        "Vesp_Rope",
+        "Vesp_Wax"
+      ],
+      "file": "Candle_Cluster_A.glb"
+    },
+    "Candle_Cluster_B": {
+      "group": "F",
+      "sub_meshes": {
+        "Candle_Cluster_B__Iron": 392,
+        "Candle_Cluster_B__Wax": 4248,
+        "Candle_Cluster_B__Flame": 2268,
+        "Candle_Cluster_B__Rope": 225
+      },
+      "tris_total": 7133,
+      "size_studs_xyz": [
+        7.6,
+        7.6,
+        5.9
+      ],
+      "bbox_min": [
+        -3.78,
+        -3.78,
+        0.0
+      ],
+      "bbox_max": [
+        3.78,
+        3.78,
+        5.88
+      ],
+      "materials": [
+        "Vesp_Flame",
+        "Vesp_Iron",
+        "Vesp_Rope",
+        "Vesp_Wax"
+      ],
+      "file": "Candle_Cluster_B.glb"
+    },
+    "Brazier_Iron": {
+      "group": "F",
+      "sub_meshes": {
+        "Brazier_Iron__Iron": 3319,
+        "Brazier_Iron__Flame": 2548
+      },
+      "tris_total": 5867,
+      "size_studs_xyz": [
+        6.2,
+        5.8,
+        6.9
+      ],
+      "bbox_min": [
+        -3.09,
+        -2.88,
+        0.0
+      ],
+      "bbox_max": [
+        3.09,
+        2.88,
+        6.88
+      ],
+      "materials": [
+        "Vesp_Flame",
+        "Vesp_Iron"
+      ],
+      "file": "Brazier_Iron.glb"
+    },
+    "Brazier_Post": {
+      "group": "F",
+      "sub_meshes": {
+        "Brazier_Post__Iron": 3910,
+        "Brazier_Post__Stone": 24,
+        "Brazier_Post__Frost": 4,
+        "Brazier_Post__Flame": 2548
+      },
+      "tris_total": 6486,
+      "size_studs_xyz": [
+        4.5,
+        4.0,
+        10.5
+      ],
+      "bbox_min": [
+        -2.24,
+        -2.0,
+        0.0
+      ],
+      "bbox_max": [
+        2.24,
+        2.0,
+        10.48
+      ],
+      "materials": [
+        "Vesp_Flame",
+        "Vesp_Frost",
+        "Vesp_Iron",
+        "Vesp_Soot"
+      ],
+      "file": "Brazier_Post.glb"
+    },
+    "Banner_Torn_A": {
+      "group": "F",
+      "sub_meshes": {
+        "Banner_Torn_A__Banner": 7104,
+        "Banner_Torn_A__Rope": 162
+      },
+      "tris_total": 7266,
+      "size_studs_xyz": [
+        8.4,
+        2.0,
+        31.0
+      ],
+      "bbox_min": [
+        -4.1,
+        -0.59,
+        0.0
+      ],
+      "bbox_max": [
+        4.3,
+        1.37,
+        31.01
+      ],
+      "materials": [
+        "Vesp_Banner",
+        "Vesp_Rope"
+      ],
+      "file": "Banner_Torn_A.glb"
+    },
+    "Banner_Torn_B": {
+      "group": "F",
+      "sub_meshes": {
+        "Banner_Torn_B__Banner": 6988,
+        "Banner_Torn_B__Rope": 162
+      },
+      "tris_total": 7150,
+      "size_studs_xyz": [
+        9.0,
+        1.8,
+        30.8
+      ],
+      "bbox_min": [
+        -4.1,
+        -0.59,
+        0.25
+      ],
+      "bbox_max": [
+        4.88,
+        1.16,
+        31.01
+      ],
+      "materials": [
+        "Vesp_Banner",
+        "Vesp_Rope"
+      ],
+      "file": "Banner_Torn_B.glb"
+    },
+    "Banner_Pole": {
+      "group": "F",
+      "sub_meshes": {
+        "Banner_Pole__Iron": 1748,
+        "Banner_Pole__Stone": 24,
+        "Banner_Pole__Verdigris": 270,
+        "Banner_Pole__Frost": 4,
+        "Banner_Pole__Rope": 150
+      },
+      "tris_total": 2196,
+      "size_studs_xyz": [
+        12.4,
+        5.2,
+        39.3
+      ],
+      "bbox_min": [
+        -6.2,
+        -2.6,
+        0.0
+      ],
+      "bbox_max": [
+        6.2,
+        2.6,
+        39.3
+      ],
+      "materials": [
+        "Vesp_Frost",
+        "Vesp_Iron",
+        "Vesp_Rope",
+        "Vesp_Soot",
+        "Vesp_Verdigris"
+      ],
+      "file": "Banner_Pole.glb"
+    },
+    "Chain_Hang": {
+      "group": "F",
+      "sub_meshes": {
+        "Chain_Hang__Iron": 5076
+      },
+      "tris_total": 5076,
+      "size_studs_xyz": [
+        2.2,
+        1.0,
+        25.5
+      ],
+      "bbox_min": [
+        -1.1,
+        -0.49,
+        -0.47
+      ],
+      "bbox_max": [
+        1.1,
+        0.49,
+        25.06
+      ],
+      "materials": [
+        "Vesp_Iron"
+      ],
+      "file": "Chain_Hang.glb"
+    },
+    "Gibbet_Cage": {
+      "group": "F",
+      "sub_meshes": {
+        "Gibbet_Cage__Iron": 3260,
+        "Gibbet_Cage__Bone": 966
+      },
+      "tris_total": 4226,
+      "size_studs_xyz": [
+        3.4,
+        2.2,
+        16.0
+      ],
+      "bbox_min": [
+        -1.7,
+        -1.1,
+        0.0
+      ],
+      "bbox_max": [
+        1.7,
+        1.1,
+        15.99
+      ],
+      "materials": [
+        "Vesp_Frost",
+        "Vesp_Iron"
+      ],
+      "file": "Gibbet_Cage.glb"
+    },
+    "Iron_Fence_10": {
+      "group": "F",
+      "sub_meshes": {
+        "Iron_Fence_10__Iron": 1174,
+        "Iron_Fence_10__Stone": 24,
+        "Iron_Fence_10__Frost": 4
+      },
+      "tris_total": 1202,
+      "size_studs_xyz": [
+        10.4,
+        1.6,
+        8.5
+      ],
+      "bbox_min": [
+        -5.2,
+        -0.8,
+        0.0
+      ],
+      "bbox_max": [
+        5.2,
+        0.8,
+        8.5
+      ],
+      "materials": [
+        "Vesp_Frost",
+        "Vesp_Iron",
+        "Vesp_Soot"
+      ],
+      "file": "Iron_Fence_10.glb"
+    },
+    "Gravestone_A": {
+      "group": "F",
+      "sub_meshes": {
+        "Gravestone_A__Figure": 516,
+        "Gravestone_A__Frost": 4
+      },
+      "tris_total": 520,
+      "size_studs_xyz": [
+        4.4,
+        1.9,
+        6.4
+      ],
+      "bbox_min": [
+        -2.2,
+        -0.95,
+        -1.0
+      ],
+      "bbox_max": [
+        2.2,
+        0.95,
+        5.4
+      ],
+      "materials": [
+        "Vesp_Frost",
+        "Vesp_Weathered"
+      ],
+      "file": "Gravestone_A.glb"
+    },
+    "Gravestone_B": {
+      "group": "F",
+      "sub_meshes": {
+        "Gravestone_B__Figure": 516,
+        "Gravestone_B__Frost": 4
+      },
+      "tris_total": 520,
+      "size_studs_xyz": [
+        4.1,
+        2.3,
+        6.0
+      ],
+      "bbox_min": [
+        -2.12,
+        -1.16,
+        -1.4
+      ],
+      "bbox_max": [
+        2.03,
+        1.12,
+        4.56
+      ],
+      "materials": [
+        "Vesp_Frost",
+        "Vesp_Weathered"
+      ],
+      "file": "Gravestone_B.glb"
+    },
+    "Gravestone_C": {
+      "group": "F",
+      "sub_meshes": {
+        "Gravestone_C__Figure": 128,
+        "Gravestone_C__Frost": 10
+      },
+      "tris_total": 138,
+      "size_studs_xyz": [
+        4.9,
+        3.3,
+        5.1
+      ],
+      "bbox_min": [
+        -2.15,
+        -2.31,
+        -1.19
+      ],
+      "bbox_max": [
+        2.72,
+        0.99,
+        3.86
+      ],
+      "materials": [
+        "Vesp_Frost",
+        "Vesp_Weathered"
+      ],
+      "file": "Gravestone_C.glb"
+    },
+    "Gravestone_D": {
+      "group": "F",
+      "sub_meshes": {
+        "Gravestone_D__Figure": 292,
+        "Gravestone_D__Frost": 10
+      },
+      "tris_total": 302,
+      "size_studs_xyz": [
+        3.8,
+        2.1,
+        6.5
+      ],
+      "bbox_min": [
+        -1.98,
+        -1.03,
+        -1.3
+      ],
+      "bbox_max": [
+        1.81,
+        1.09,
+        5.16
+      ],
+      "materials": [
+        "Vesp_Frost",
+        "Vesp_Weathered"
+      ],
+      "file": "Gravestone_D.glb"
+    },
+    "Tomb_Slab": {
+      "group": "F",
+      "sub_meshes": {
+        "Tomb_Slab__Figure": 94,
+        "Tomb_Slab__Tracery": 408,
+        "Tomb_Slab__Frost": 6,
+        "Tomb_Slab__FigureSmooth": 334
+      },
+      "tris_total": 842,
+      "size_studs_xyz": [
+        12.5,
+        7.3,
+        4.5
+      ],
+      "bbox_min": [
+        -5.0,
+        -4.52,
+        0.0
+      ],
+      "bbox_max": [
+        7.52,
+        2.8,
+        4.53
+      ],
+      "materials": [
+        "Vesp_Charcoal",
+        "Vesp_Frost",
+        "Vesp_Weathered"
+      ],
+      "file": "Tomb_Slab.glb"
+    },
+    "Rubble_Pile": {
+      "group": "F",
+      "sub_meshes": {
+        "Rubble_Pile__Stone": 268,
+        "Rubble_Pile__Figure": 968,
+        "Rubble_Pile__Frost": 91
+      },
+      "tris_total": 1327,
+      "size_studs_xyz": [
+        14.4,
+        14.9,
+        4.6
+      ],
+      "bbox_min": [
+        -7.77,
+        -6.84,
+        -1.14
+      ],
+      "bbox_max": [
+        6.65,
+        8.03,
+        3.49
+      ],
+      "materials": [
+        "Vesp_Frost",
+        "Vesp_Soot",
+        "Vesp_Weathered"
+      ],
+      "file": "Rubble_Pile.glb"
+    },
+    "Masonry_Chunk_A": {
+      "group": "F",
+      "sub_meshes": {
+        "Masonry_Chunk_A__Stone": 164,
+        "Masonry_Chunk_A__Figure": 46,
+        "Masonry_Chunk_A__Frost": 10
+      },
+      "tris_total": 220,
+      "size_studs_xyz": [
+        6.0,
+        3.7,
+        4.3
+      ],
+      "bbox_min": [
+        -2.68,
+        -1.76,
+        0.0
+      ],
+      "bbox_max": [
+        3.28,
+        1.96,
+        4.32
+      ],
+      "materials": [
+        "Vesp_Frost",
+        "Vesp_Soot",
+        "Vesp_Weathered"
+      ],
+      "file": "Masonry_Chunk_A.glb"
+    },
+    "Masonry_Chunk_B": {
+      "group": "F",
+      "sub_meshes": {
+        "Masonry_Chunk_B__Stone": 56,
+        "Masonry_Chunk_B__Figure": 24,
+        "Masonry_Chunk_B__Frost": 13
+      },
+      "tris_total": 93,
+      "size_studs_xyz": [
+        9.6,
+        5.4,
+        2.8
+      ],
+      "bbox_min": [
+        -4.81,
+        -2.45,
+        -0.25
+      ],
+      "bbox_max": [
+        4.81,
+        2.95,
+        2.58
+      ],
+      "materials": [
+        "Vesp_Frost",
+        "Vesp_Soot",
+        "Vesp_Weathered"
+      ],
+      "file": "Masonry_Chunk_B.glb"
+    },
+    "Ruined_Arch": {
+      "group": "F",
+      "sub_meshes": {
+        "Ruined_Arch__Stone": 876,
+        "Ruined_Arch__Tracery": 1460,
+        "Ruined_Arch__Figure": 388,
+        "Ruined_Arch__Frost": 184
+      },
+      "tris_total": 2908,
+      "size_studs_xyz": [
+        36.4,
+        19.7,
+        30.4
+      ],
+      "bbox_min": [
+        -21.33,
+        -12.21,
+        -0.79
+      ],
+      "bbox_max": [
+        15.05,
+        7.49,
+        29.6
+      ],
+      "materials": [
+        "Vesp_Charcoal",
+        "Vesp_Frost",
+        "Vesp_Soot",
+        "Vesp_Weathered"
+      ],
+      "file": "Ruined_Arch.glb"
+    },
+    "Waterfall_Sheet_A": {
+      "group": "F",
+      "sub_meshes": {
+        "Waterfall_Sheet_A__Water": 9240,
+        "Waterfall_Sheet_A__Water_2": 9238
+      },
+      "tris_total": 18478,
+      "size_studs_xyz": [
+        22.2,
+        12.2,
+        82.4
+      ],
+      "bbox_min": [
+        -10.64,
+        -10.27,
+        -0.91
+      ],
+      "bbox_max": [
+        11.54,
+        1.98,
+        81.45
+      ],
+      "materials": [
+        "Vesp_Water"
+      ],
+      "file": "Waterfall_Sheet_A.glb"
+    },
+    "Waterfall_Sheet_B": {
+      "group": "F",
+      "sub_meshes": {
+        "Waterfall_Sheet_B__Water": 14024,
+        "Waterfall_Sheet_B__Water_2": 14022
+      },
+      "tris_total": 28046,
+      "size_studs_xyz": [
+        33.6,
+        12.3,
+        162.5
+      ],
+      "bbox_min": [
+        -17.12,
+        -10.27,
+        -1.02
+      ],
+      "bbox_max": [
+        16.46,
+        1.99,
+        161.45
+      ],
+      "materials": [
+        "Vesp_Water"
+      ],
+      "file": "Waterfall_Sheet_B.glb"
+    }
+  },
+  "glb_images": "none (maps/ is the source; vesp_embed.py embeds Color/ORM JPEG q90 + Normal PNG into upload/ GLBs)",
+  "textures": {
+    "Vesp_Banner_Color": [
+      512,
+      2048
+    ],
+    "Vesp_Banner_Metal": [
+      512,
+      2048
+    ],
+    "Vesp_Banner_Normal": [
+      512,
+      2048
+    ],
+    "Vesp_Banner_Roughness": [
+      512,
+      2048
+    ],
+    "Vesp_Charcoal_Color": [
+      2048,
+      2048
+    ],
+    "Vesp_Charcoal_Metal": [
+      2048,
+      2048
+    ],
+    "Vesp_Charcoal_Normal": [
+      2048,
+      2048
+    ],
+    "Vesp_Charcoal_Roughness": [
+      2048,
+      2048
+    ],
+    "Vesp_Flame_Color": [
+      2048,
+      2048
+    ],
+    "Vesp_Flame_Metal": [
+      2048,
+      2048
+    ],
+    "Vesp_Flame_Normal": [
+      2048,
+      2048
+    ],
+    "Vesp_Flame_Roughness": [
+      2048,
+      2048
+    ],
+    "Vesp_Frost_Color": [
+      2048,
+      2048
+    ],
+    "Vesp_Frost_Metal": [
+      2048,
+      2048
+    ],
+    "Vesp_Frost_Normal": [
+      2048,
+      2048
+    ],
+    "Vesp_Frost_Roughness": [
+      2048,
+      2048
+    ],
+    "Vesp_Iron_Color": [
+      2048,
+      2048
+    ],
+    "Vesp_Iron_Metal": [
+      2048,
+      2048
+    ],
+    "Vesp_Iron_Normal": [
+      2048,
+      2048
+    ],
+    "Vesp_Iron_Roughness": [
+      2048,
+      2048
+    ],
+    "Vesp_Rope_Color": [
+      2048,
+      2048
+    ],
+    "Vesp_Rope_Metal": [
+      2048,
+      2048
+    ],
+    "Vesp_Rope_Normal": [
+      2048,
+      2048
+    ],
+    "Vesp_Rope_Roughness": [
+      2048,
+      2048
+    ],
+    "Vesp_Soot_Color": [
+      2048,
+      2048
+    ],
+    "Vesp_Soot_Metal": [
+      2048,
+      2048
+    ],
+    "Vesp_Soot_Normal": [
+      2048,
+      2048
+    ],
+    "Vesp_Soot_Roughness": [
+      2048,
+      2048
+    ],
+    "Vesp_Verdigris_Color": [
+      2048,
+      2048
+    ],
+    "Vesp_Verdigris_Metal": [
+      2048,
+      2048
+    ],
+    "Vesp_Verdigris_Normal": [
+      2048,
+      2048
+    ],
+    "Vesp_Verdigris_Roughness": [
+      2048,
+      2048
+    ],
+    "Vesp_Water_Color": [
+      2048,
+      2048
+    ],
+    "Vesp_Water_Metal": [
+      2048,
+      2048
+    ],
+    "Vesp_Water_Normal": [
+      2048,
+      2048
+    ],
+    "Vesp_Water_Roughness": [
+      2048,
+      2048
+    ],
+    "Vesp_Wax_Color": [
+      2048,
+      2048
+    ],
+    "Vesp_Wax_Metal": [
+      2048,
+      2048
+    ],
+    "Vesp_Wax_Normal": [
+      2048,
+      2048
+    ],
+    "Vesp_Wax_Roughness": [
+      2048,
+      2048
+    ],
+    "Vesp_Weathered_Color": [
+      2048,
+      2048
+    ],
+    "Vesp_Weathered_Metal": [
+      2048,
+      2048
+    ],
+    "Vesp_Weathered_Normal": [
+      2048,
+      2048
+    ],
+    "Vesp_Weathered_Roughness": [
+      2048,
+      2048
+    ]
+  }
+}
