@@ -16,8 +16,8 @@ was removed.
 
 ## 1. Getting the exact Mac state on Windows
 1. `git fetch origin` and fast-forward `ux/onboarding-overhaul`. Do not reset or clean.
-2. **Gitignored source assets** are pushed to branch `codex/vesperhold-assets-2026-11-19` (7 chunk commits on top of
-   07ede5f, one per folder below; use the branch tip). To restore them into the working tree without switching branches:
+2. **Gitignored source assets** are pushed to branch `codex/vesperhold-assets-2026-11-19` (tip `c369f3b`, batch commits on
+   top of 07ede5f; all 617 files confirmed on the remote with counts matching the Mac). To restore them into the working tree without switching branches:
    `git fetch origin codex/vesperhold-assets-2026-11-19` then
    `git checkout origin/codex/vesperhold-assets-2026-11-19 -- assets/source/vesperhold work/mac-resume-2026-11-18/retone2`
    then `git reset -q -- assets/source/vesperhold work/mac-resume-2026-11-18/retone2`, so the files stay on disk but out
