@@ -1,6 +1,12 @@
 # CONTINUATION — read this first after any restart
 
-**Current: Mac -> Windows handoff run 3b 2026-11-19 19:30 (castle model rebuild stopped mid-pass) — read [WINDOWS_HANDOFF.md](WINDOWS_HANDOFF.md) and [handoff/WINDOWS_RESUME_PROMPT.md](handoff/WINDOWS_RESUME_PROMPT.md); gitignored assets on branch `codex/vesperhold-assets-2026-11-19`.**
+**Current, 20 November (Windows).** The gargoyles, withered trees and architecture are at gate (a) with the statue pass 3
+Wraith and Mourner from refs 06 and 07. The next action is the creator's review of the contact sheet before Roblox uploads.
+[Gate (a) results](workers/win-64-vesp-gate-a.md) · [Contact sheet](../vesperhold/kit-renders-win/gate_a_contact_sheet.jpg)
+
+The earlier Mac run 3b and Windows run 4 are in the [Windows handoff](WINDOWS_HANDOFF.md) and
+[resume prompt](handoff/WINDOWS_RESUME_PROMPT.md). The Git branch `codex/vesperhold-assets-2026-11-19` stores the Mac source
+snapshot. The newer Windows candidate is local under `assets/source/vesperhold/candidate-win-2026-11-19`.
 
 ## Vesperhold rebuild — 2026-11-19 (blender-skills, CC0 only; creator rejected the kit "especially the statues")
 Order: oversight work order (steps 1-7). Rules for all workers: [workers/mac-50-vesp-rebuild-rules.md](workers/mac-50-vesp-rebuild-rules.md).

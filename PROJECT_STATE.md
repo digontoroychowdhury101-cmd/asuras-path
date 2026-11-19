@@ -689,3 +689,5 @@ Studio diagnostic: all 8 altars wake correctly, and reclaim/forfeit work. Fixed:
 - 2026-11-19 19:30 Mac: castle model rebuild stopped mid-pass for Windows. Loader/atmosphere committed; statues/gargoyles/architecture scripts edited, not re-run. Assets on codex/vesperhold-assets-2026-11-19; checkpoint places/checkpoints/AsurasPath_Vesperhold_MacHandoff_2026-11-19.rbxlx. Next: finish art lanes, gate (a) sheet, cloud upload, 7 Play views (WINDOWS_HANDOFF.md).
 
 2026-11-19 Windows run 4 (Opus lead): checkpoint verified (SHA, Studio digest 1396434633); verify_all exit 1 = libm drift, fixed (massing 14769/0). Statues pass 2 baked; creator sent new statue refs 06/07, pass 3 brief win-60 queued. Gargoyles/trees and architecture stopped mid re-bake at usage limit (WIP committed). Next: resume win-62/63, statue pass 3, gate (a) sheet.
+
+2026-11-20 Windows (Codex): finished the Vesperhold art rebakes and statue pass 3. Gate (a) contact sheet and mesh ledger are in outputs/vesperhold/kit-renders-win. Full local verifier passed 14/14 with a temporary place. Next is the creator's pre-upload art review. See outputs/claude-open-world-2026-11-14/workers/win-64-vesp-gate-a.md.

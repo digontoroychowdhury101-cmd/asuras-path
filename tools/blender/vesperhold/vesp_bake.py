@@ -255,7 +255,8 @@ class Look:
 
     def __init__(self, base=0.135, grime=0.30, edge=0.95, edge_lo=0.50, edge_hi=0.62, frost=0.0, frost_col=(0.62, 0.65, 0.70),
                  streak_dark=0.18, rough_base=0.80, wet_gloss=0.30, occl_pow=1.25, seed=7, sat=1.0,
-                 streak_lo=0.55, streak_hi=0.75, wash=0.0, frost_nz=(0.55, 0.9), frost_break=(0.46, 0.58)):
+                 streak_lo=0.55, streak_hi=0.75, wash=0.0, frost_nz=(0.55, 0.9), frost_break=(0.46, 0.58),
+                 growth=0.0, stone_tint=(1.0, 1.0, 1.0)):
         # win-61 optional knobs (defaults = previous behaviour): streak_lo/hi = noise band that becomes a soot streak;
         # wash = lighten the rain-washed stone between streaks; frost_nz = up-facing range; frost_break = patch softness.
         self.__dict__.update(locals())
@@ -300,7 +301,13 @@ def compose(alb_lin, d1, d2, look, cov):
     v = v * (1.0 - L.streak_dark * sk[..., None])
     if L.wash:
         v = v * (1.0 + L.wash * (1 - _smooth(streak, L.streak_lo - 0.2, L.streak_lo))[..., None] * ao[..., None])
-    col = np.clip(v * tone, 0, 1) * (1 - metal[..., None]) + alb * metal[..., None]
+    col = np.clip(v * tone * np.asarray(L.stone_tint, np.float32), 0, 1) * (1 - metal[..., None]) + alb * metal[..., None]
+    if L.growth:
+        nonmetal = 1 - metal
+        moss = (1 - _smooth(occl, 0.20, 0.73)) * _smooth(streak, 0.46, 0.61) * _smooth(nz, -0.12, 0.72)
+        lichen = _smooth(rel[..., 0], 1.05, 1.26) * _smooth(occl, 0.22, 0.65) * (1 - sk)
+        col *= 1 - (moss * L.growth * nonmetal)[..., None] * np.array([0.35, 0.12, 0.48], np.float32)
+        col += (lichen * L.growth * nonmetal)[..., None] * np.array([0.11, 0.12, 0.09], np.float32)
     if L.frost > 0:
         # breakup from the object-space streak noise (seamless across UV islands), denser on flatter tops
         fm = _smooth(nz, *L.frost_nz) * _smooth(streak + 0.25 * (nz - 0.8), *L.frost_break) * L.frost * (0.4 + 0.6 * ao)

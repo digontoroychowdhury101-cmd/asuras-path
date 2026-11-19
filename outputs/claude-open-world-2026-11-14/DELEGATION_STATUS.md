@@ -236,3 +236,9 @@ Codex: no `codex` CLI on this PC (only the Codex desktop app), so the lead canno
 | win-62 | gargoyles + withered trees | opus | pending report | vesperhold_gargoyles.py, vesperhold_trees.py |
 | win-63 | architecture density (queued until a slot frees) | opus | — | vesperhold_kit.py, vesp_common.py, vesperhold_props.py |
 Output for all lanes: `assets/source/vesperhold/candidate-win-2026-11-19/{kit,props,trees}` (copy of the Mac candidate + trees; Mac candidate kept pristine).
+
+## Windows continuation, 20 November
+
+The creator asked Codex desktop to resume the latest Claude session. Codex (GPT-6) carried forward the gargoyle pair,
+finished the tree and architecture work, and ran pass 3 and gate (a) sequentially under the heavy-job lock. The candidate
+remains in the Windows source directory above. [Gate (a) record](workers/win-64-vesp-gate-a.md)
