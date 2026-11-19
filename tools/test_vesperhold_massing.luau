@@ -25,7 +25,8 @@ for wx = -10000, -1600, 25 do
 		if O.vesperholdWeight(wx, wz) == 0 then sum += O.heightAt(wx, wz) * ((wx / 25 + wz / 25) % 5 + 1) end
 	end
 end
-check("terrain outside the Vesperhold weight is unchanged", math.abs(sum - 176934331.5874) < 0.01)
+-- Relative tolerance: Mac and Windows libm differ by ~0.05 over 112,666 samples; a real edit moves the sum by thousands.
+check("terrain outside the Vesperhold weight is unchanged", math.abs(sum - 176934331.5874) < 1e-8 * 176934331.5874)
 local T = L.Tiers
 local lowest = 0
 for i = 1, 17 do lowest = math.min(lowest, ground((i - 9) * T.T0.Bay, T.T0.FrontZ)) end
