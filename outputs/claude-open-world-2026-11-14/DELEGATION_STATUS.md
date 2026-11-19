@@ -212,3 +212,16 @@ Limits given to the lead: max two active Sonnet/Haiku workers, explicit `model` 
 
 ## Mac run 3b (2026-11-19, stopped 19:28 for Windows)
 Lead adc6b08 opus; mac-51/52/53 opus (stopped mid-pass); mac-54 sonnet (self-reported claude-sonnet-5-5). Observed-model check from subagent meta.json not done this run (usage limit) — do it on Windows from the Mac transcripts if needed, or treat as requested-only.
+
+## Windows resume after the Mac handoff (session `cf199ba6-5196-408d-920a-4e8e615ad3f5`, checked by Fable 2026-11-16 17:50 Sydney)
+
+- The previous Windows lead (`ad5a8196886e699c1`) was stopped by the usage limit at about 13:30 while opening a local test copy, and is retired: its context predates the Mac's M1 and round-2 work. It was not resumed.
+- Fable did the handoff's step 1 itself (inspect, fetch, fast-forward to `03827d6`; the checkout was clean, nothing discarded) and read `WINDOWS_HANDOFF.md`. No other inventory, design or code.
+- Fresh engineering lead started from durable notes with the Agent tool: `aea86cfe008aaec94`, requested `opus`, observed `claude-opus-5-5` on its first 8 responses. No fallback seen. Its workers will be listed in `LEDGER.md` and checked here against the runtime records at the next checkpoint.
+
+## Windows resume, first window and restart (checked by Fable 2026-11-16 23:50 Sydney)
+
+- Agents started since the Windows resume: the Opus lead `aea86cfe008aaec94` and six workers. Requested and observed models match on every record: five Sonnet (`a5805b6e0457ffae0`, `a7ba4f05e836f2848`, `aa471cd7523409155`, `ac28da64fbf71bd13`, `ad5adbeabce7e7c87`) and one Haiku (`a7852c6518e2a2a6c`). No fallback seen. Each worker record's one or two `claude-opus-5-5` entries are the lead's spawn calls.
+- Last activity: workers between 17:48 and 18:46, then the Claude Code process ended. Nothing was committed on this computer in that window (HEAD stayed at `03827d6`).
+- Memory: the creator reported Windows memory exhaustion (VirtualAlloc failures, error 1455) behind the ECC warnings and capped the run at the lead plus two workers, heavy Studio, multiplayer and Blender jobs one at a time. The lead launched six lanes before that reached it. The cap was restated in the 23:45 resume message, with a reconcile-first instruction and commits at each verified item.
+- Fable usage since the last entry: two messages to the lead, one read of the CONTINUATION top section, this tally, and an amendment to the saved parallel-work preference. No inventory, design or code.
