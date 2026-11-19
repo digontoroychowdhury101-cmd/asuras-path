@@ -5,14 +5,17 @@
 -- Vesperhold input of EnvironmentProfiles.compose, so this module never writes Lighting.
 --   fog banks     soft smoke emitters in the gorge and on the ledges between the tiers
 --   eclipse       a blood-red disc with a dark core behind the spires (billboard on the sky, follows the camera direction)
---   lightning     rare double flash: sky burst + three far point lights on the towers + a Flash level for the cloud layer
+--   lightning     rare double flash: sky burst + three far point lights on the towers + its own ColorCorrectionEffect (VesperholdFlash, a Lighting
+--                 child only this module creates, pulses and destroys) + a Flash level for the cloud layer
 --   crows         a few flapping crows circling the towers (3 Parts each, moved on paths)
 --   candle glow   a small pool of warm lights moved onto the nearest candle clusters
 --   mist          emitters at the Layout waterfall anchors
+-- EnvironmentController tweens only the Lighting children it names (CB_*), so this extra effect is never touched by it.
 -- Comfort (reduced motion / effects): no lightning, half the crows and fog.
 local Shared = game:GetService("ReplicatedStorage"):WaitForChild("AsurasPath")
 local Overworld = require(Shared.Shared.Overworld) :: any
 local Layout = require(Shared.Shared.VesperholdLayout) :: any
+local Lighting = game:GetService("Lighting")
 
 local Atmosphere = {}
 Atmosphere.__index = Atmosphere
@@ -130,6 +133,10 @@ local function build(self: any, comfort: boolean)
 	self.EclipsePart = eclipsePart
 	self.EclipseGlow, self.EclipseRim, self.EclipseCore = disc(gui, 1, Color3.fromRGB(150, 20, 26)), disc(gui, 0.62, Color3.fromRGB(176, 26, 30)), disc(gui, 0.56, Color3.fromRGB(18, 4, 6))
 	-- Lightning: a white-blue sky burst and a point light on each tower.
+	local grade = Instance.new("ColorCorrectionEffect")
+	grade.Name, grade.Brightness, grade.Contrast, grade.Saturation, grade.TintColor = "VesperholdFlash", 0, 0, 0, Color3.new(1, 1, 1)
+	grade.Parent = Lighting
+	self.Grade = grade
 	local burstPart, burstGui = sky(folder, "LightningBurst", 900)
 	self.BurstPart, self.BurstDisc = burstPart, disc(burstGui, 1, Color3.fromRGB(196, 208, 255))
 	self.BurstLights = {}
@@ -169,6 +176,8 @@ end
 
 function Atmosphere.Clear(self: any)
 	if self.Folder then self.Folder:Destroy() end
+	if self.Grade then self.Grade:Destroy() end
+	self.Grade = nil
 	self.Folder, self.Banks, self.Mists, self.Crows, self.Glow, self.BurstLights = nil, nil, nil, nil, nil, nil
 	self.Weight, self.Flash, self.Strike = 0, 0, 0
 end
@@ -216,6 +225,9 @@ function Atmosphere.Update(self: any, weight: number, dt: number, camera: Vector
 	self.EclipseRim.BackgroundTransparency = 1 - 0.85 * weight
 	self.EclipseCore.BackgroundTransparency = 1 - 0.96 * weight
 	self.BurstDisc.BackgroundTransparency = 1 - 0.8 * self.Flash * weight
+	local f = self.Flash * weight
+	self.Grade.Brightness, self.Grade.Contrast = 0.2 * f, 0.12 * f
+	self.Grade.TintColor = Color3.new(1, 1, 1):Lerp(Color3.fromRGB(196, 212, 255), 0.6 * f)
 	for _, light in self.BurstLights do
 		light.Enabled, light.Brightness = self.Flash > 0, 8 * self.Flash * weight
 	end

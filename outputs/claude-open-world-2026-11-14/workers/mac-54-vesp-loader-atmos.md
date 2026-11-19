@@ -16,6 +16,10 @@ massing 14733/0, slice dressing 1356/0, weather composition 258/0, loader 39/0, 
 
 ## For the Studio upload/Play lane
 - Upload, then `python3 tools/assets/kit_registry.py vesperhold`; check the kit pivot (module re-foots by bbox), kit front direction on cladding pieces (Offset z = depth/2 assumes model centred in depth), flyer yaw sign, glass Neon vs SurfaceAppearance look, light counts, crow/eclipse look, lightning comfort, view 01 red post gone, snow size.
-- Statue_Plinth (9.2x12) and Hooded_Statue_* (own Plinth sub) both exist: viaduct statues stand at top + Statue_Plinth height, so with real kit they double-plinth; decide in Play (drop the separate plinth slot).
 - IN FLUX: manifests still show Hooded_Statue_A 16.2 tall total, B 19.6, Pedestal 23.3 (lead says A is now ~14 figure on 5x2x5 plinth, and Statue_Veiled_Scan is coming: not in any manifest, no layout slot yet). After regeneration run `python3 tools/assets/vesperhold_layout_sizes.py --write` then the massing + layout-size tests. Arcade/Bastion/Rose/Portal heights (bboxes include pinnacles) also still changing.
-- Lightning cannot pulse Lighting (EnvironmentController tweens it); the flash is local lights, sky burst and clouds.
+
+
+## Follow-ups (lead, 2026-11-19)
+1. Lightning no longer needs Lighting writes: VesperholdAtmosphere creates/owns a ColorCorrectionEffect `VesperholdFlash` under Lighting (Brightness 0.2, Contrast 0.12, cold tint pulse), plus the tower point lights, sky burst and cloud pulse. EnvironmentController only touches the named CB_* children (checked in source and tested), so it never sees the effect. Weight 0 / lobby: effect not created, destroyed on leaving; test asserts Lighting children unchanged. Atmosphere test now 26.
+2. Statue plinth double-stack: Statue_Plinth slots carry `Carries = <statue piece>`; GothicCitadel skips the plinth when the registry has that statue and stands the mesh on the deck (`Base`); without the statue the Part plinth + stand-in remain. Added Layout.Piece.Statue_Veiled_Scan = {5, 18, 5} (placeholder, no manifest) and 4 graveyard slots (group Statue, Graveyard=true, stand-in Robe/Hood parts until the kit exists). Piece sizes for A/B/Pedestal NOT touched: the resync (`python3 tools/assets/vesperhold_layout_sizes.py --write`) is the lead's after mac-51 finishes; the layout-size test will fail until then if manifests change.
+Suites: massing 14769/0 (slots +4), slice 1356/0, weather 258/0, loader 42/0, atmosphere 26/0, biome 18928/0, kit_registry py 15, layout sizes py 2, src compiles.

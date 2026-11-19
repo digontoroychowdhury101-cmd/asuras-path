@@ -36,6 +36,7 @@ Layout.Piece = {
 	Pinnacle_Crocket_L = { 12.6, 42.7, 12.6 }, Spire_Base_Oct = { 29.9, 27.5, 29.9 }, Spire_Belfry_Stage = { 27.4, 40.1, 27.4 },
 	Spire_Lucarne_Mid = { 30.9, 44.1, 30.9 }, Spire_Needle_Tip = { 11.3, 55.7, 11.3 }, Spire_Broken_Top = { 11.3, 27, 11.3 },
 	Lancet_Tall = { 14.8, 46.2, 6.9 }, Rose_Window_Great = { 57.7, 76, 12.2 }, Portal_Great = { 61, 93.1, 21.8 },
+	Statue_Veiled_Scan = { 5, 18, 5 }, -- placeholder until its manifest lands (graveyard / niche statue)
 	Viaduct_Bay = { 35.2, 120.1, 29 }, Statue_Plinth = { 9.2, 12, 9.2 }, Hooded_Statue_A = { 5.1, 16.2, 5.1 },
 	Hooded_Statue_B = { 5.4, 19.6, 5.1 }, Candle_Cluster_A = { 6.5, 5.8, 6.5 }, Banner_Torn_A = { 8.4, 31, 2 },
 	-- pass 2 additions (mac-44 builds these meshes)
@@ -401,8 +402,11 @@ function Layout.slots(ground: (number, number) -> number): { { [string]: any } }
 		add("Viaduct_Bay", "Viaduct", 0, base, zc, 0, 1, (Layout.viaductLevel(zc) - 3.5 - base) / Layout.Piece.Viaduct_Bay[2], 1, { Level = Layout.viaductLevel(zc) })
 		for _, s in { -1, 1 } do
 			local top = Layout.viaductLevel(zc)
-			add("Statue_Plinth", "Statue", s * V.Rail, top, zc, 0, 1, 1, 1)
-			add(if i % 2 == 0 then "Hooded_Statue_A" else "Hooded_Statue_B", "Statue", s * V.Rail, top + Layout.Piece.Statue_Plinth[2], zc, if s > 0 then math.pi * 0.5 else -math.pi * 0.5, 1, 1, 1, { Side = s })
+			-- Every kit statue carries its own __Plinth sub: the Part-era plinth slot is dropped by the loader when the statue mesh exists
+			-- (Carries), and the mesh then stands on the deck (Base) instead of on top of that plinth.
+			local statue = if i % 2 == 0 then "Hooded_Statue_A" else "Hooded_Statue_B"
+			add("Statue_Plinth", "Statue", s * V.Rail, top, zc, 0, 1, 1, 1, { Carries = statue })
+			add(statue, "Statue", s * V.Rail, top + Layout.Piece.Statue_Plinth[2], zc, if s > 0 then math.pi * 0.5 else -math.pi * 0.5, 1, 1, 1, { Side = s, Base = top })
 			add("Candle_Cluster_A", "Candle", s * V.Rail, top, zc + 5, 0, 1, 1, 1)
 		end
 	end
@@ -534,6 +538,10 @@ function Layout.slots(ground: (number, number) -> number): { { [string]: any } }
 			local z = 24 + (row - 1) * 20 + (hash(seed + 3) - 0.5) * 6
 			add(if (row + col) % 2 == 0 then "Gravestone_A" else "Gravestone_B", "Grave", x, ground(x, z) - 0.5, z, (hash(seed + 7) - 0.5) * 0.5, 1, 0.8 + 0.5 * hash(seed + 9), 1, { Row = row })
 		end
+	end
+	-- Veiled statues at the graveyard's front edge (each with its own plinth).
+	for _, x in { -300, -240, -180, -130 } do
+		add("Statue_Veiled_Scan", "Statue", x, ground(x, 12) - 0.5, 12, math.rad(180), 1, 1, 1, { Graveyard = true })
 	end
 	for i = 1, 6 do
 		local x = -300 + (i - 1) * 32

@@ -58,7 +58,7 @@ local CLAD = { Arcade = true, Bastion = true, Balustrade = true, Lancet = true, 
 -- Kit mesh for one slot (same frame and per-axis scale as its stand-in). Returns false when the registry lacks the piece.
 local function kitMesh(parent: Instance, s: { [string]: any }, origin: CFrame): boolean
 	local d = Layout.Piece[s.Piece]
-	local f = origin * C(s.X, s.Y, s.Z) * A(0, s.Yaw, 0)
+	local f = origin * C(s.X, s.Base or s.Y, s.Z) * A(0, s.Yaw, 0) -- Base: a kit statue carries its own plinth and stands on the deck
 	if s.Lean then f = f * A(s.Lean, 0, 0) end
 	local offset = if CLAD[s.Group] then C(0, 0, d[3] * s.SZ / 2) elseif s.Group == "Flyer" then A(0, math.pi / 2, 0) else nil
 	local scale = if s.Group == "Flyer" then V(s.SZ, s.SY, s.SX) else V(s.SX, s.SY, s.SZ) -- the offset turns the kit's X onto the layout's Z
@@ -343,6 +343,8 @@ function Citadel.build(parent: Instance, origin: CFrame): Model
 	for _, s in Layout.slots(ground) do
 		if s.Group == "Viaduct" then
 			kitMesh(meshes, s, origin) -- GothicMarch builds the stand-in bays (and skips them when the kit has Viaduct_Bay)
+		elseif s.Carries and VespKit.has(s.Carries) then
+			-- the statue mesh has its own plinth: no separate plinth (the Part plinth stays when the registry lacks the statue)
 		elseif not kitMesh(meshes, s, origin) then
 			standIn(stand, s, origin)
 		end

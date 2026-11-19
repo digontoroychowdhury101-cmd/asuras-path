@@ -213,6 +213,25 @@ local kitRoot = buildCastle(registry)
 local kit = tally(kitRoot)
 check("registry piece: the statue meshes replace the stand-ins at every slot", kit.Mesh.Hooded_Statue_A == count(nil, "Hooded_Statue_A") and kit.Stand.Hooded_Statue_A == nil)
 check("pieces missing from the registry keep their stand-ins", kit.Stand.Hooded_Statue_B == count(nil, "Hooded_Statue_B") and kit.Stand.Pedestal_Statue_Staff == count(nil, "Pedestal_Statue_Staff"))
+local carriesA, carriesB = 0, 0
+for _, sl in slots do
+	if sl.Piece == "Statue_Plinth" then
+		if sl.Carries == "Hooded_Statue_A" then carriesA += 1 else carriesB += 1 end
+	end
+end
+check("statue meshes drop the separate plinth they carry; other plinths stay as Part stand-ins", carriesA > 0 and carriesB > 0 and kit.Stand.Statue_Plinth == carriesB and plain.Stand.Statue_Plinth == carriesA + carriesB)
+local lowest = math.huge
+for _, d in kitRoot:GetDescendants() do
+	if d:IsA("Model") and d.Name == "Hooded_Statue_A" and d:GetAttribute("VespKitPiece") then
+		local plinth = d:FindFirstChild("Hooded_Statue_A__Plinth")
+		lowest = math.min(lowest, plinth.Position.Y - plinth.Size.Y / 2)
+	end
+end
+local decks = {}
+for _, sl in slots do if sl.Piece == "Hooded_Statue_A" then table.insert(decks, origin.Y + sl.Base) end end
+table.sort(decks)
+check("the kit statue stands on the deck (its own plinth foot at the deck top), not on a second plinth", math.abs(lowest - decks[1]) < 0.01 and decks[1] ~= nil)
+check("Statue_Veiled_Scan graveyard slots exist and keep stand-ins without a registry piece", count(nil, "Statue_Veiled_Scan") == 4 and kit.Stand.Statue_Veiled_Scan == 4)
 check("variant pieces (Dead_Pine_Snapped_A/B) replace the layout tree slots", kit.Mesh.Dead_Pine_Snapped == count(nil, "Dead_Pine_Snapped") and kit.Stand.Dead_Pine_Snapped == nil)
 local tower = 0
 for _, d in kitRoot:GetDescendants() do

@@ -16,8 +16,10 @@ local function check(name: string, ok: any)
 end
 
 local ws = Instance.new("Folder")
+local lighting = Instance.new("Folder") -- stands in for Lighting; CB_* children belong to EnvironmentController
+for _, n in { "CB_Atmosphere", "CB_ColorCorrection" } do local c = Instance.new("Folder"); c.Name = n; c.Parent = lighting end
 local env = setmetatable({ workspace = ws, require = function(m) return m end,
-	game = { GetService = function() return { WaitForChild = function() return { Shared = { Overworld = O, VesperholdLayout = L } } end } end },
+	game = { GetService = function(_, n) if n == "Lighting" then return lighting end return { WaitForChild = function() return { Shared = { Overworld = O, VesperholdLayout = L } } end } end },
 	Instance = Instance, Vector3 = Vector3, CFrame = CFrame, Color3 = roblox.Color3, Enum = roblox.Enum, UDim = roblox.UDim, UDim2 = roblox.UDim2,
 	Vector2 = roblox.Vector2, NumberSequence = roblox.NumberSequence, NumberSequenceKeypoint = roblox.NumberSequenceKeypoint,
 	NumberRange = roblox.NumberRange, ColorSequence = roblox.ColorSequence, Random = roblox.Random }, { __index = _G })
@@ -33,7 +35,7 @@ local function emitters(a) return a:Counts().Emitters end
 -- 1. Weight 0: no effect at all -------------------------------------------------------------------------------------
 local a = Atmos.new()
 for _ = 1, 50 do a:Update(0, 0.1, near, false) end
-check("weight 0 creates nothing and fires no lightning", root() == 0 and a.Folder == nil and a.Flash == 0 and a:Counts().Instances == 0)
+check("weight 0 creates nothing (workspace and Lighting untouched) and fires no lightning", #lighting:GetChildren() == 2 and root() == 0 and a.Folder == nil and a.Flash == 0 and a:Counts().Instances == 0)
 a:Update(0.02, 0.1, near, false)
 check("a weight at the floor (0.02) is still nothing", root() == 0)
 
@@ -63,9 +65,11 @@ a:Update(1, 0.016, near, false)
 check("no strike before one is scheduled", a.Flash == 0 and not a.BurstLights[1].Enabled)
 a:Lightning()
 a:Update(1, 0.05, near, false)
+local grade = lighting:FindFirstChild("VesperholdFlash")
+check("a strike pulses the module's own ColorCorrectionEffect (brightness and cold tint)", grade ~= nil and grade.Brightness > 0.1 and grade.TintColor.B > grade.TintColor.R)
 check("a strike lights the towers and the sky burst", a.Flash > 0.5 and a.BurstLights[1].Enabled and a.BurstLights[1].Brightness > 1 and a.BurstDisc.BackgroundTransparency < 0.5)
 a:Update(1, 0.6, near, false)
-check("the flash is over within 0.7 s (a short double pulse)", a.Flash == 0 and not a.BurstLights[1].Enabled)
+check("the flash is over within 0.7 s (a short double pulse); the grade returns to neutral", grade.Brightness == 0 and grade.TintColor.R == 1 and a.Flash == 0 and not a.BurstLights[1].Enabled)
 local strikes, t = 0, 0
 local prev = 0
 for _ = 1, 20000 do -- ~ 55 minutes of 0.167 s steps
@@ -99,15 +103,17 @@ check("comfort never flashes", a.Flash == 0 and not a.BurstLights[1].Enabled)
 
 -- 7. Leaving the ridge destroys everything --------------------------------------------------------------------------------
 a:Update(0, 0.1, near, false)
-check("weight back to 0 removes every instance", root() == 0 and a:Counts().Instances == 0 and a.Weight == 0 and a.Flash == 0)
+check("weight back to 0 removes every instance, including the Lighting effect, leaving the CB_ children alone", #lighting:GetChildren() == 2 and lighting:FindFirstChild("CB_Atmosphere") ~= nil and root() == 0 and a:Counts().Instances == 0 and a.Weight == 0 and a.Flash == 0)
 local b = Atmos.new()
 b:Update(1, 0.1, near, false)
 b:Destroy()
-check("Destroy clears the folder", root() == 0)
+check("Destroy clears the folder and the effect", root() == 0 and #lighting:GetChildren() == 2)
 
 -- 8. Scope: never touches Lighting, only runs on the ridge ----------------------------------------------------------------
 local src = fs.readFile("src/client/Controllers/VesperholdAtmosphere.luau")
-check("the module never writes Lighting or tweens", string.find(src, 'GetService("Lighting")', 1, true) == nil and string.find(src, "TweenService", 1, true) == nil)
+check("the module writes no Lighting property and never tweens (it only parents its own effect)", string.find(src, "Lighting%.%w+%s*=[^=]") == nil and string.find(src, "TweenService", 1, true) == nil and string.find(src, "grade.Parent = Lighting", 1, true) ~= nil)
+local envSrc = fs.readFile("src/client/Controllers/EnvironmentController.luau")
+check("EnvironmentController only touches the named CB_* children (never iterates or clears Lighting)", string.find(envSrc, "Lighting:FindFirstChild(name)", 1, true) ~= nil and string.find(envSrc, "Lighting:GetChildren", 1, true) == nil and string.find(envSrc, "ClearAllChildren", 1, true) == nil and string.find(src, "VesperholdFlash", 1, true) ~= nil and string.find(envSrc, "VesperholdFlash", 1, true) == nil)
 local weatherSrc = fs.readFile("src/client/Controllers/WeatherController.luau")
 check("WeatherController creates the atmosphere only for ridge > 0", string.find(weatherSrc, "if ridge > 0 and not self.Atmos then self.Atmos = Atmosphere.new() end", 1, true) ~= nil
 	and string.find(weatherSrc, "if region == \"Snowfields\" then Overworld.vesperholdWeight", 1, true) ~= nil)
