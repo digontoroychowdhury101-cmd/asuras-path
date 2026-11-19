@@ -1,0 +1,1166 @@
+{
+  "kit": "Vesperhold gothic kit A-E",
+  "build": "blender -b -P tools/blender/vesperhold/vesperhold_kit.py",
+  "tri_cap_per_sub_mesh": 18000,
+  "units": "studs (1 BU = 1 stud)",
+  "pivot": "foot centre at origin, z=0 (Blender Z up, GLB Y up)",
+  "pieces": {
+    "Arcade_Bay_60": {
+      "group": "A",
+      "sub_meshes": {
+        "Arcade_Bay_60__Stone": 2280,
+        "Arcade_Bay_60__Tracery": 5428,
+        "Arcade_Bay_60__Pinnacles": 1456,
+        "Arcade_Bay_60__Crockets": 2736,
+        "Arcade_Bay_60__Verdigris": 1620,
+        "Arcade_Bay_60__Frost": 588
+      },
+      "tris_total": 14108,
+      "size_studs_xyz": [
+        43.6,
+        15.8,
+        89.9
+      ],
+      "bbox_min": [
+        -21.81,
+        -7.9,
+        0.0
+      ],
+      "bbox_max": [
+        21.81,
+        7.9,
+        89.94
+      ],
+      "materials": [
+        "Vesp_Charcoal",
+        "Vesp_Frost",
+        "Vesp_Soot",
+        "Vesp_Verdigris"
+      ],
+      "file": "Arcade_Bay_60.glb"
+    },
+    "Arcade_Bay_50": {
+      "group": "A",
+      "sub_meshes": {
+        "Arcade_Bay_50__Stone": 2280,
+        "Arcade_Bay_50__Tracery": 5428,
+        "Arcade_Bay_50__Pinnacles": 1456,
+        "Arcade_Bay_50__Crockets": 2736,
+        "Arcade_Bay_50__Verdigris": 1620,
+        "Arcade_Bay_50__Frost": 588
+      },
+      "tris_total": 14108,
+      "size_studs_xyz": [
+        43.6,
+        15.8,
+        79.9
+      ],
+      "bbox_min": [
+        -21.81,
+        -7.9,
+        0.0
+      ],
+      "bbox_max": [
+        21.81,
+        7.9,
+        79.94
+      ],
+      "materials": [
+        "Vesp_Charcoal",
+        "Vesp_Frost",
+        "Vesp_Soot",
+        "Vesp_Verdigris"
+      ],
+      "file": "Arcade_Bay_50.glb"
+    },
+    "Arcade_Bay_40": {
+      "group": "A",
+      "sub_meshes": {
+        "Arcade_Bay_40__Stone": 2280,
+        "Arcade_Bay_40__Tracery": 5428,
+        "Arcade_Bay_40__Pinnacles": 1456,
+        "Arcade_Bay_40__Crockets": 2736,
+        "Arcade_Bay_40__Verdigris": 1620,
+        "Arcade_Bay_40__Frost": 588
+      },
+      "tris_total": 14108,
+      "size_studs_xyz": [
+        43.6,
+        15.8,
+        69.9
+      ],
+      "bbox_min": [
+        -21.81,
+        -7.9,
+        0.0
+      ],
+      "bbox_max": [
+        21.81,
+        7.9,
+        69.94
+      ],
+      "materials": [
+        "Vesp_Charcoal",
+        "Vesp_Frost",
+        "Vesp_Soot",
+        "Vesp_Verdigris"
+      ],
+      "file": "Arcade_Bay_40.glb"
+    },
+    "Arcade_Corner": {
+      "group": "A",
+      "sub_meshes": {
+        "Arcade_Corner__Stone": 1940,
+        "Arcade_Corner__Tracery": 10788,
+        "Arcade_Corner__Pinnacles": 2710,
+        "Arcade_Corner__Crockets": 2592,
+        "Arcade_Corner__Verdigris": 2430,
+        "Arcade_Corner__Frost": 412
+      },
+      "tris_total": 20872,
+      "size_studs_xyz": [
+        23.3,
+        23.3,
+        107.2
+      ],
+      "bbox_min": [
+        -11.66,
+        -11.66,
+        0.0
+      ],
+      "bbox_max": [
+        11.66,
+        11.66,
+        107.21
+      ],
+      "materials": [
+        "Vesp_Charcoal",
+        "Vesp_Frost",
+        "Vesp_Soot",
+        "Vesp_Verdigris"
+      ],
+      "file": "Arcade_Corner.glb"
+    },
+    "Bastion_Face": {
+      "group": "A",
+      "sub_meshes": {
+        "Bastion_Face__Stone": 768,
+        "Bastion_Face__Tracery": 11880,
+        "Bastion_Face__Pinnacles": 216,
+        "Bastion_Face__Crockets": 1152,
+        "Bastion_Face__Verdigris": 3240,
+        "Bastion_Face__Frost": 244
+      },
+      "tris_total": 17500,
+      "size_studs_xyz": [
+        40.0,
+        15.1,
+        96.6
+      ],
+      "bbox_min": [
+        -20.0,
+        -8.07,
+        0.0
+      ],
+      "bbox_max": [
+        20.0,
+        7.0,
+        96.61
+      ],
+      "materials": [
+        "Vesp_Charcoal",
+        "Vesp_Frost",
+        "Vesp_Soot",
+        "Vesp_Verdigris"
+      ],
+      "file": "Bastion_Face.glb"
+    },
+    "Balustrade_20": {
+      "group": "A",
+      "sub_meshes": {
+        "Balustrade_20__Stone": 316,
+        "Balustrade_20__Tracery": 64,
+        "Balustrade_20__Pinnacles": 108,
+        "Balustrade_20__Crockets": 288,
+        "Balustrade_20__Verdigris": 540,
+        "Balustrade_20__Frost": 42
+      },
+      "tris_total": 1358,
+      "size_studs_xyz": [
+        20.3,
+        2.3,
+        16.2
+      ],
+      "bbox_min": [
+        -10.15,
+        -1.15,
+        0.0
+      ],
+      "bbox_max": [
+        10.15,
+        1.15,
+        16.2
+      ],
+      "materials": [
+        "Vesp_Charcoal",
+        "Vesp_Frost",
+        "Vesp_Soot",
+        "Vesp_Verdigris"
+      ],
+      "file": "Balustrade_20.glb"
+    },
+    "Parapet_Gothic_20": {
+      "group": "A",
+      "sub_meshes": {
+        "Parapet_Gothic_20__Stone": 332,
+        "Parapet_Gothic_20__Tracery": 420,
+        "Parapet_Gothic_20__Verdigris": 1080,
+        "Parapet_Gothic_20__Frost": 32
+      },
+      "tris_total": 1864,
+      "size_studs_xyz": [
+        20.0,
+        4.1,
+        16.2
+      ],
+      "bbox_min": [
+        -10.0,
+        -2.5,
+        0.4
+      ],
+      "bbox_max": [
+        10.0,
+        1.6,
+        16.61
+      ],
+      "materials": [
+        "Vesp_Charcoal",
+        "Vesp_Frost",
+        "Vesp_Soot",
+        "Vesp_Verdigris"
+      ],
+      "file": "Parapet_Gothic_20.glb"
+    },
+    "Cornice_20": {
+      "group": "A",
+      "sub_meshes": {
+        "Cornice_20__Stone": 408,
+        "Cornice_20__Tracery": 364,
+        "Cornice_20__Frost": 42
+      },
+      "tris_total": 814,
+      "size_studs_xyz": [
+        20.0,
+        5.5,
+        8.5
+      ],
+      "bbox_min": [
+        -10.0,
+        -2.95,
+        0.0
+      ],
+      "bbox_max": [
+        10.0,
+        2.6,
+        8.52
+      ],
+      "materials": [
+        "Vesp_Charcoal",
+        "Vesp_Frost",
+        "Vesp_Soot"
+      ],
+      "file": "Cornice_20.glb"
+    },
+    "Buttress_Pier": {
+      "group": "B",
+      "sub_meshes": {
+        "Buttress_Pier__Stone": 684,
+        "Buttress_Pier__Tracery": 1640,
+        "Buttress_Pier__Crockets": 144,
+        "Buttress_Pier__Pinnacles": 774,
+        "Buttress_Pier__Verdigris": 270,
+        "Buttress_Pier__Frost": 92
+      },
+      "tris_total": 3604,
+      "size_studs_xyz": [
+        13.1,
+        25.5,
+        71.1
+      ],
+      "bbox_min": [
+        -6.55,
+        -19.48,
+        0.0
+      ],
+      "bbox_max": [
+        6.55,
+        6.0,
+        71.07
+      ],
+      "materials": [
+        "Vesp_Charcoal",
+        "Vesp_Frost",
+        "Vesp_Soot",
+        "Vesp_Verdigris"
+      ],
+      "file": "Buttress_Pier.glb"
+    },
+    "Flying_Buttress_40": {
+      "group": "B",
+      "sub_meshes": {
+        "Flying_Buttress_40__Stone": 256,
+        "Flying_Buttress_40__Tracery": 2656,
+        "Flying_Buttress_40__Crockets": 648,
+        "Flying_Buttress_40__Frost": 190
+      },
+      "tris_total": 3750,
+      "size_studs_xyz": [
+        46.5,
+        10.1,
+        27.0
+      ],
+      "bbox_min": [
+        -23.0,
+        -5.05,
+        -0.7
+      ],
+      "bbox_max": [
+        23.5,
+        5.05,
+        26.32
+      ],
+      "materials": [
+        "Vesp_Charcoal",
+        "Vesp_Frost",
+        "Vesp_Soot"
+      ],
+      "file": "Flying_Buttress_40.glb"
+    },
+    "Flying_Buttress_60": {
+      "group": "B",
+      "sub_meshes": {
+        "Flying_Buttress_60__Stone": 256,
+        "Flying_Buttress_60__Tracery": 2656,
+        "Flying_Buttress_60__Crockets": 1008,
+        "Flying_Buttress_60__Frost": 242
+      },
+      "tris_total": 4162,
+      "size_studs_xyz": [
+        66.5,
+        10.1,
+        35.4
+      ],
+      "bbox_min": [
+        -33.0,
+        -5.07,
+        -0.7
+      ],
+      "bbox_max": [
+        33.5,
+        5.07,
+        34.72
+      ],
+      "materials": [
+        "Vesp_Charcoal",
+        "Vesp_Frost",
+        "Vesp_Soot"
+      ],
+      "file": "Flying_Buttress_60.glb"
+    },
+    "Pinnacle_Crocket_S": {
+      "group": "B",
+      "sub_meshes": {
+        "Pinnacle_Crocket_S__Stone": 54,
+        "Pinnacle_Crocket_S__Crockets": 288,
+        "Pinnacle_Crocket_S__Verdigris": 270,
+        "Pinnacle_Crocket_S__Frost": 8
+      },
+      "tris_total": 620,
+      "size_studs_xyz": [
+        4.0,
+        4.0,
+        12.8
+      ],
+      "bbox_min": [
+        -2.0,
+        -2.0,
+        0.0
+      ],
+      "bbox_max": [
+        2.0,
+        2.0,
+        12.8
+      ],
+      "materials": [
+        "Vesp_Charcoal",
+        "Vesp_Frost",
+        "Vesp_Soot",
+        "Vesp_Verdigris"
+      ],
+      "file": "Pinnacle_Crocket_S.glb"
+    },
+    "Pinnacle_Crocket_M": {
+      "group": "B",
+      "sub_meshes": {
+        "Pinnacle_Crocket_M__Stone": 358,
+        "Pinnacle_Crocket_M__Crockets": 288,
+        "Pinnacle_Crocket_M__Verdigris": 270,
+        "Pinnacle_Crocket_M__Frost": 24
+      },
+      "tris_total": 940,
+      "size_studs_xyz": [
+        8.4,
+        8.4,
+        25.6
+      ],
+      "bbox_min": [
+        -4.2,
+        -4.2,
+        0.0
+      ],
+      "bbox_max": [
+        4.2,
+        4.2,
+        25.61
+      ],
+      "materials": [
+        "Vesp_Charcoal",
+        "Vesp_Frost",
+        "Vesp_Soot",
+        "Vesp_Verdigris"
+      ],
+      "file": "Pinnacle_Crocket_M.glb"
+    },
+    "Pinnacle_Crocket_L": {
+      "group": "B",
+      "sub_meshes": {
+        "Pinnacle_Crocket_L__Stone": 774,
+        "Pinnacle_Crocket_L__Crockets": 288,
+        "Pinnacle_Crocket_L__Verdigris": 270,
+        "Pinnacle_Crocket_L__Frost": 40
+      },
+      "tris_total": 1372,
+      "size_studs_xyz": [
+        12.6,
+        12.6,
+        42.7
+      ],
+      "bbox_min": [
+        -6.3,
+        -6.3,
+        0.0
+      ],
+      "bbox_max": [
+        6.3,
+        6.3,
+        42.68
+      ],
+      "materials": [
+        "Vesp_Charcoal",
+        "Vesp_Frost",
+        "Vesp_Soot",
+        "Vesp_Verdigris"
+      ],
+      "file": "Pinnacle_Crocket_L.glb"
+    },
+    "Finial": {
+      "group": "B",
+      "sub_meshes": {
+        "Finial__Stone": 24,
+        "Finial__Verdigris": 270,
+        "Finial__Frost": 4
+      },
+      "tris_total": 298,
+      "size_studs_xyz": [
+        3.4,
+        3.4,
+        10.1
+      ],
+      "bbox_min": [
+        -1.72,
+        -1.72,
+        0.0
+      ],
+      "bbox_max": [
+        1.72,
+        1.72,
+        10.1
+      ],
+      "materials": [
+        "Vesp_Frost",
+        "Vesp_Soot",
+        "Vesp_Verdigris"
+      ],
+      "file": "Finial.glb"
+    },
+    "Spire_Base_Oct": {
+      "group": "C",
+      "sub_meshes": {
+        "Spire_Base_Oct__Stone": 32,
+        "Spire_Base_Oct__Tracery": 52,
+        "Spire_Base_Oct__Crockets": 4032,
+        "Spire_Base_Oct__Pinnacles": 1432,
+        "Spire_Base_Oct__Verdigris": 2160,
+        "Spire_Base_Oct__Frost": 74
+      },
+      "tris_total": 7782,
+      "size_studs_xyz": [
+        29.9,
+        29.9,
+        27.5
+      ],
+      "bbox_min": [
+        -14.95,
+        -14.95,
+        0.0
+      ],
+      "bbox_max": [
+        14.95,
+        14.95,
+        27.47
+      ],
+      "materials": [
+        "Vesp_Charcoal",
+        "Vesp_Frost",
+        "Vesp_Soot",
+        "Vesp_Verdigris"
+      ],
+      "stack": {
+        "h": 26.0,
+        "bottom": "square 28",
+        "top": "octagon R12 (vertices at 22.5+k*45 deg)"
+      },
+      "file": "Spire_Base_Oct.glb"
+    },
+    "Spire_Belfry_Stage": {
+      "group": "C",
+      "sub_meshes": {
+        "Spire_Belfry_Stage__Stone": 1940,
+        "Spire_Belfry_Stage__Tracery": 11880,
+        "Spire_Belfry_Stage__Crockets": 1728,
+        "Spire_Belfry_Stage__Verdigris": 2160,
+        "Spire_Belfry_Stage__Frost": 222
+      },
+      "tris_total": 17930,
+      "size_studs_xyz": [
+        27.4,
+        27.4,
+        40.1
+      ],
+      "bbox_min": [
+        -13.69,
+        -13.69,
+        0.0
+      ],
+      "bbox_max": [
+        13.69,
+        13.69,
+        40.11
+      ],
+      "materials": [
+        "Vesp_Charcoal",
+        "Vesp_Frost",
+        "Vesp_Soot",
+        "Vesp_Verdigris"
+      ],
+      "stack": {
+        "h": 36.0,
+        "bottom": "octagon R12",
+        "top": "octagon R11.4"
+      },
+      "file": "Spire_Belfry_Stage.glb"
+    },
+    "Spire_Lucarne_Mid": {
+      "group": "C",
+      "sub_meshes": {
+        "Spire_Lucarne_Mid__Stone": 928,
+        "Spire_Lucarne_Mid__Tracery": 152,
+        "Spire_Lucarne_Mid__Crockets": 3456,
+        "Spire_Lucarne_Mid__Roof": 92,
+        "Spire_Lucarne_Mid__Verdigris": 2160,
+        "Spire_Lucarne_Mid__Frost": 92
+      },
+      "tris_total": 6880,
+      "size_studs_xyz": [
+        30.9,
+        30.9,
+        44.1
+      ],
+      "bbox_min": [
+        -15.47,
+        -15.47,
+        -0.08
+      ],
+      "bbox_max": [
+        15.47,
+        15.47,
+        44.06
+      ],
+      "materials": [
+        "Vesp_Charcoal",
+        "Vesp_Frost",
+        "Vesp_Slate",
+        "Vesp_Soot",
+        "Vesp_Verdigris"
+      ],
+      "stack": {
+        "h": 44.0,
+        "bottom": "octagon R11.4",
+        "top": "octagon R5.4"
+      },
+      "file": "Spire_Lucarne_Mid.glb"
+    },
+    "Spire_Needle_Tip": {
+      "group": "C",
+      "sub_meshes": {
+        "Spire_Needle_Tip__Stone": 28,
+        "Spire_Needle_Tip__Tracery": 228,
+        "Spire_Needle_Tip__Crockets": 3744,
+        "Spire_Needle_Tip__Verdigris": 270,
+        "Spire_Needle_Tip__Frost": 66
+      },
+      "tris_total": 4336,
+      "size_studs_xyz": [
+        11.3,
+        11.3,
+        55.7
+      ],
+      "bbox_min": [
+        -5.63,
+        -5.63,
+        -0.03
+      ],
+      "bbox_max": [
+        5.63,
+        5.63,
+        55.64
+      ],
+      "materials": [
+        "Vesp_Charcoal",
+        "Vesp_Frost",
+        "Vesp_Soot",
+        "Vesp_Verdigris"
+      ],
+      "stack": {
+        "h": 52.0,
+        "bottom": "octagon R5.4",
+        "top": "point"
+      },
+      "file": "Spire_Needle_Tip.glb"
+    },
+    "Spire_Broken_Top": {
+      "group": "C",
+      "sub_meshes": {
+        "Spire_Broken_Top__Stone": 292,
+        "Spire_Broken_Top__Tracery": 104,
+        "Spire_Broken_Top__Crockets": 252,
+        "Spire_Broken_Top__Frost": 40
+      },
+      "tris_total": 688,
+      "size_studs_xyz": [
+        11.3,
+        11.3,
+        27.0
+      ],
+      "bbox_min": [
+        -5.64,
+        -5.64,
+        0.0
+      ],
+      "bbox_max": [
+        5.64,
+        5.64,
+        26.99
+      ],
+      "materials": [
+        "Vesp_Charcoal",
+        "Vesp_Frost",
+        "Vesp_Soot"
+      ],
+      "stack": {
+        "h": 28.0,
+        "bottom": "octagon R5.4",
+        "top": "broken"
+      },
+      "file": "Spire_Broken_Top.glb"
+    },
+    "Tower_Corner_Stage": {
+      "group": "C",
+      "sub_meshes": {
+        "Tower_Corner_Stage__Stone": 856,
+        "Tower_Corner_Stage__Tracery": 11776,
+        "Tower_Corner_Stage__Frost": 208
+      },
+      "tris_total": 12840,
+      "size_studs_xyz": [
+        30.9,
+        30.9,
+        60.1
+      ],
+      "bbox_min": [
+        -15.46,
+        -15.46,
+        0.0
+      ],
+      "bbox_max": [
+        15.46,
+        15.46,
+        60.12
+      ],
+      "materials": [
+        "Vesp_Charcoal",
+        "Vesp_Frost",
+        "Vesp_Soot"
+      ],
+      "stack": {
+        "h": 60.0,
+        "bottom": "square 28 (plinth 28)",
+        "top": "square 28 flat"
+      },
+      "file": "Tower_Corner_Stage.glb"
+    },
+    "Lancet_Tall": {
+      "group": "D",
+      "sub_meshes": {
+        "Lancet_Tall__Stone": 92,
+        "Lancet_Tall__Tracery": 2288,
+        "Lancet_Tall__Glass": 72,
+        "Lancet_Tall__Crockets": 792,
+        "Lancet_Tall__Verdigris": 540,
+        "Lancet_Tall__Frost": 42
+      },
+      "tris_total": 3826,
+      "size_studs_xyz": [
+        14.8,
+        6.9,
+        46.2
+      ],
+      "bbox_min": [
+        -7.4,
+        -3.45,
+        0.0
+      ],
+      "bbox_max": [
+        7.4,
+        3.45,
+        46.2
+      ],
+      "materials": [
+        "Vesp_Charcoal",
+        "Vesp_Frost",
+        "Vesp_Glass",
+        "Vesp_Soot",
+        "Vesp_Verdigris"
+      ],
+      "file": "Lancet_Tall.glb"
+    },
+    "Lancet_Pair": {
+      "group": "D",
+      "sub_meshes": {
+        "Lancet_Pair__Stone": 240,
+        "Lancet_Pair__Tracery": 7576,
+        "Lancet_Pair__Glass": 204,
+        "Lancet_Pair__Crockets": 2952,
+        "Lancet_Pair__Verdigris": 1620,
+        "Lancet_Pair__Frost": 188
+      },
+      "tris_total": 12780,
+      "size_studs_xyz": [
+        29.4,
+        7.1,
+        58.1
+      ],
+      "bbox_min": [
+        -14.7,
+        -3.55,
+        0.0
+      ],
+      "bbox_max": [
+        14.7,
+        3.55,
+        58.12
+      ],
+      "materials": [
+        "Vesp_Charcoal",
+        "Vesp_Frost",
+        "Vesp_Glass",
+        "Vesp_Soot",
+        "Vesp_Verdigris"
+      ],
+      "file": "Lancet_Pair.glb"
+    },
+    "Rose_Window_Great": {
+      "group": "D",
+      "sub_meshes": {
+        "Rose_Window_Great__Stone": 304,
+        "Rose_Window_Great__Tracery": 8216,
+        "Rose_Window_Great__Tracery_2": 8216,
+        "Rose_Window_Great__Glass": 284,
+        "Rose_Window_Great__Pinnacles": 716,
+        "Rose_Window_Great__Crockets": 576,
+        "Rose_Window_Great__Verdigris": 540,
+        "Rose_Window_Great__Frost": 1270
+      },
+      "tris_total": 20122,
+      "size_studs_xyz": [
+        57.7,
+        12.2,
+        76.0
+      ],
+      "bbox_min": [
+        -28.84,
+        -6.12,
+        -0.84
+      ],
+      "bbox_max": [
+        28.84,
+        6.12,
+        75.21
+      ],
+      "materials": [
+        "Vesp_Charcoal",
+        "Vesp_Frost",
+        "Vesp_Glass",
+        "Vesp_Soot",
+        "Vesp_Verdigris"
+      ],
+      "file": "Rose_Window_Great.glb"
+    },
+    "Rose_Window_Small": {
+      "group": "D",
+      "sub_meshes": {
+        "Rose_Window_Small__Stone": 304,
+        "Rose_Window_Small__Tracery": 11584,
+        "Rose_Window_Small__Glass": 284,
+        "Rose_Window_Small__Pinnacles": 108,
+        "Rose_Window_Small__Crockets": 576,
+        "Rose_Window_Small__Verdigris": 540,
+        "Rose_Window_Small__Frost": 78
+      },
+      "tris_total": 13474,
+      "size_studs_xyz": [
+        21.4,
+        10.7,
+        29.4
+      ],
+      "bbox_min": [
+        -10.68,
+        -5.36,
+        -0.68
+      ],
+      "bbox_max": [
+        10.68,
+        5.36,
+        28.72
+      ],
+      "materials": [
+        "Vesp_Charcoal",
+        "Vesp_Frost",
+        "Vesp_Glass",
+        "Vesp_Soot",
+        "Vesp_Verdigris"
+      ],
+      "file": "Rose_Window_Small.glb"
+    },
+    "Portal_Great": {
+      "group": "D",
+      "sub_meshes": {
+        "Portal_Great__Stone": 2088,
+        "Portal_Great__Tracery": 4646,
+        "Portal_Great__Crockets": 1980,
+        "Portal_Great__Pinnacles": 716,
+        "Portal_Great__Glass": 72,
+        "Portal_Great__Verdigris": 1080,
+        "Portal_Great__Frost": 442
+      },
+      "tris_total": 11024,
+      "size_studs_xyz": [
+        61.0,
+        21.8,
+        93.1
+      ],
+      "bbox_min": [
+        -30.5,
+        -11.83,
+        0.0
+      ],
+      "bbox_max": [
+        30.5,
+        10.0,
+        93.08
+      ],
+      "materials": [
+        "Vesp_Charcoal",
+        "Vesp_Frost",
+        "Vesp_Glass",
+        "Vesp_Soot",
+        "Vesp_Verdigris"
+      ],
+      "file": "Portal_Great.glb"
+    },
+    "Portcullis": {
+      "group": "D",
+      "sub_meshes": {
+        "Portcullis__Iron": 1010
+      },
+      "tris_total": 1010,
+      "size_studs_xyz": [
+        14.6,
+        1.7,
+        28.0
+      ],
+      "bbox_min": [
+        -7.3,
+        -0.9,
+        0.0
+      ],
+      "bbox_max": [
+        7.3,
+        0.8,
+        28.0
+      ],
+      "materials": [
+        "Vesp_Iron"
+      ],
+      "file": "Portcullis.glb"
+    },
+    "Door_Iron": {
+      "group": "D",
+      "sub_meshes": {
+        "Door_Iron__Iron": 1188
+      },
+      "tris_total": 1188,
+      "size_studs_xyz": [
+        14.7,
+        2.4,
+        28.0
+      ],
+      "bbox_min": [
+        -7.35,
+        -1.38,
+        0.0
+      ],
+      "bbox_max": [
+        7.35,
+        1.0,
+        28.05
+      ],
+      "materials": [
+        "Vesp_Iron"
+      ],
+      "file": "Door_Iron.glb"
+    },
+    "Viaduct_Bay": {
+      "group": "E",
+      "sub_meshes": {
+        "Viaduct_Bay__Stone": 224,
+        "Viaduct_Bay__Tracery": 5496,
+        "Viaduct_Bay__Crockets": 1224,
+        "Viaduct_Bay__Verdigris": 540,
+        "Viaduct_Bay__Frost": 308
+      },
+      "tris_total": 7792,
+      "size_studs_xyz": [
+        35.2,
+        29.0,
+        120.1
+      ],
+      "bbox_min": [
+        -17.6,
+        -14.5,
+        0.0
+      ],
+      "bbox_max": [
+        17.6,
+        14.5,
+        120.12
+      ],
+      "materials": [
+        "Vesp_Charcoal",
+        "Vesp_Frost",
+        "Vesp_Soot",
+        "Vesp_Verdigris"
+      ],
+      "file": "Viaduct_Bay.glb"
+    },
+    "Viaduct_Balustrade_30": {
+      "group": "E",
+      "sub_meshes": {
+        "Viaduct_Balustrade_30__Stone": 508,
+        "Viaduct_Balustrade_30__Tracery": 112,
+        "Viaduct_Balustrade_30__Pinnacles": 162,
+        "Viaduct_Balustrade_30__Crockets": 576,
+        "Viaduct_Balustrade_30__Verdigris": 810,
+        "Viaduct_Balustrade_30__Frost": 60
+      },
+      "tris_total": 2228,
+      "size_studs_xyz": [
+        30.3,
+        3.0,
+        19.3
+      ],
+      "bbox_min": [
+        -15.15,
+        -1.5,
+        0.0
+      ],
+      "bbox_max": [
+        15.15,
+        1.5,
+        19.3
+      ],
+      "materials": [
+        "Vesp_Charcoal",
+        "Vesp_Frost",
+        "Vesp_Soot",
+        "Vesp_Verdigris"
+      ],
+      "file": "Viaduct_Balustrade_30.glb"
+    },
+    "Statue_Plinth": {
+      "group": "E",
+      "sub_meshes": {
+        "Statue_Plinth__Stone": 440,
+        "Statue_Plinth__Tracery": 352,
+        "Statue_Plinth__Frost": 56
+      },
+      "tris_total": 848,
+      "size_studs_xyz": [
+        9.2,
+        9.2,
+        12.0
+      ],
+      "bbox_min": [
+        -4.6,
+        -4.6,
+        0.0
+      ],
+      "bbox_max": [
+        4.6,
+        4.6,
+        12.02
+      ],
+      "materials": [
+        "Vesp_Charcoal",
+        "Vesp_Frost",
+        "Vesp_Soot"
+      ],
+      "file": "Statue_Plinth.glb"
+    }
+  },
+  "textures": {
+    "Vesp_Charcoal_Color": [
+      2048,
+      2048
+    ],
+    "Vesp_Charcoal_Metal": [
+      2048,
+      2048
+    ],
+    "Vesp_Charcoal_Normal": [
+      2048,
+      2048
+    ],
+    "Vesp_Charcoal_Roughness": [
+      2048,
+      2048
+    ],
+    "Vesp_Frost_Color": [
+      2048,
+      2048
+    ],
+    "Vesp_Frost_Metal": [
+      2048,
+      2048
+    ],
+    "Vesp_Frost_Normal": [
+      2048,
+      2048
+    ],
+    "Vesp_Frost_Roughness": [
+      2048,
+      2048
+    ],
+    "Vesp_Glass_Color": [
+      2048,
+      2048
+    ],
+    "Vesp_Glass_Metal": [
+      2048,
+      2048
+    ],
+    "Vesp_Glass_Normal": [
+      2048,
+      2048
+    ],
+    "Vesp_Glass_Roughness": [
+      2048,
+      2048
+    ],
+    "Vesp_Iron_Color": [
+      2048,
+      2048
+    ],
+    "Vesp_Iron_Metal": [
+      2048,
+      2048
+    ],
+    "Vesp_Iron_Normal": [
+      2048,
+      2048
+    ],
+    "Vesp_Iron_Roughness": [
+      2048,
+      2048
+    ],
+    "Vesp_Slate_Color": [
+      2048,
+      2048
+    ],
+    "Vesp_Slate_Metal": [
+      2048,
+      2048
+    ],
+    "Vesp_Slate_Normal": [
+      2048,
+      2048
+    ],
+    "Vesp_Slate_Roughness": [
+      2048,
+      2048
+    ],
+    "Vesp_Soot_Color": [
+      2048,
+      2048
+    ],
+    "Vesp_Soot_Metal": [
+      2048,
+      2048
+    ],
+    "Vesp_Soot_Normal": [
+      2048,
+      2048
+    ],
+    "Vesp_Soot_Roughness": [
+      2048,
+      2048
+    ],
+    "Vesp_Verdigris_Color": [
+      2048,
+      2048
+    ],
+    "Vesp_Verdigris_Metal": [
+      2048,
+      2048
+    ],
+    "Vesp_Verdigris_Normal": [
+      2048,
+      2048
+    ],
+    "Vesp_Verdigris_Roughness": [
+      2048,
+      2048
+    ]
+  },
+  "glb_images": "none (maps/ is the single source; see module docstring)"
+}
