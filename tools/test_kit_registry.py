@@ -137,6 +137,10 @@ class KitRegistry(unittest.TestCase):
         self.assertIn('["Canopy_Tree_A_Far"] = {', text)
         self.assertIn('["Canopy_Tree_A_Far__Leaves"] = {', text)
         self.assertNotIn("NormalMap", text)  # far materials carry a colour map only
+        with tempfile.TemporaryDirectory() as t:  # the re-toned far atlases add Normal/Roughness/Metalness maps
+            build(Path(t), "bellwood_far", ["bellwood_far"], far=True,
+                  reg=lambda p, s: {p: {k: dict(entry(), MetalnessMap=rid()) for k in s}})
+            self.assertEqual(K.main(["bellwood_far", "--check", "--root", t]), 0)
 
     def test_missing_required_map_refused(self):
         def reg(p, s):
@@ -155,16 +159,13 @@ class KitRegistry(unittest.TestCase):
         build(self.root, "slice", ["slice"], reg=reg)
         self.assertEqual(K.validate("slice", self.root)[0], [])
 
-    def test_bad_metalness_id_and_unlisted_other_map_refused(self):
+    def test_bad_metalness_id_refused(self):
         def reg(p, s):
             a = entry()
             a["MetalnessMap"] = "rbxassetid://abc"
             return {p: {s[0]: a, s[1]: entry()}}
         build(self.root, "slice", ["slice"], reg=reg)
         self.assertTrue(any("MetalnessMap" in e for e in K.validate("slice", self.root)[0]))
-        with tempfile.TemporaryDirectory() as t:  # far material lists only ColorMap: a NormalMap is not a legit extra
-            build(Path(t), "bellwood_far", ["bellwood_far"], far=True, reg=lambda p, s: {p: {s[0]: dict(entry(True), NormalMap=rid()), s[1]: entry(True)}})
-            self.assertTrue(any("NormalMap" in e for e in K.validate("bellwood_far", Path(t))[0]))
 
     def test_bare_far_pieces_allowed_but_partial_refused(self):
         bare = lambda: {"MeshId": rid(), "ColorMap": "", "NormalMap": "", "RoughnessMap": "", "MetalnessMap": ""}

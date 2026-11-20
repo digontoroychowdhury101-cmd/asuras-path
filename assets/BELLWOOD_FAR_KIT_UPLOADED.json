@@ -2,56 +2,62 @@
   "note": "Real IDs only. modelAssets = Assets API id (LoadAsset target). pieces = sub-mesh MeshId/maps read from a verified LoadAsset.",
   "modelAssets": {
     "Canopy_Tree_A_Far": {
-      "assetId": "rbxassetid://73650879252786",
-      "operationId": "7f278bbf-1ffb-466e-92fc-52e8f8729143",
-      "source": "assets/source/overworld/upload/bellwood_far/Canopy_Tree_A_Far.glb",
-      "uploaded": "2026-11-16",
-      "moderationState": "Approved"
+      "assetId": "rbxassetid://117522250021513",
+      "operationId": "4d305908-6cca-4a3b-93ff-38667794de2c",
+      "source": "work/mac-resume-2026-11-18/retone2/bellwood_far/Canopy_Tree_A_Far.glb",
+      "uploaded": "2026-11-20",
+      "moderationState": "Approved",
+      "replaces": "rbxassetid://73650879252786"
     },
     "Canopy_Tree_B_Far": {
-      "assetId": "rbxassetid://110794827835245",
-      "operationId": "c57976d1-3b79-4e3c-bb6c-08271dfb40b4",
-      "source": "assets/source/overworld/upload/bellwood_far/Canopy_Tree_B_Far.glb",
-      "uploaded": "2026-11-16",
-      "moderationState": "Approved"
+      "assetId": "rbxassetid://88012375766227",
+      "operationId": "0b4bae56-610b-48ef-a741-1d2198e74d4c",
+      "source": "work/mac-resume-2026-11-18/retone2/bellwood_far/Canopy_Tree_B_Far.glb",
+      "uploaded": "2026-11-20",
+      "moderationState": "Approved",
+      "replaces": "rbxassetid://110794827835245"
     },
     "Canopy_Tree_C_Far": {
-      "assetId": "rbxassetid://84006049232452",
-      "operationId": "262511d1-071a-414c-a469-6d6100fd7ce8",
-      "source": "assets/source/overworld/upload/bellwood_far/Canopy_Tree_C_Far.glb",
-      "uploaded": "2026-11-16",
-      "moderationState": "Approved"
+      "assetId": "rbxassetid://128610830130445",
+      "operationId": "b2cfd21d-174e-47cc-a2ee-f379ab3c057e",
+      "source": "work/mac-resume-2026-11-18/retone2/bellwood_far/Canopy_Tree_C_Far.glb",
+      "uploaded": "2026-11-20",
+      "moderationState": "Approved",
+      "replaces": "rbxassetid://84006049232452"
     },
     "Canopy_Tree_D_Far": {
-      "assetId": "rbxassetid://137187261517726",
-      "operationId": "bf0a24e1-98db-47eb-b374-cc82bb9a31f5",
-      "source": "assets/source/overworld/upload/bellwood_far/Canopy_Tree_D_Far.glb",
-      "uploaded": "2026-11-16",
-      "moderationState": "Approved"
+      "assetId": "rbxassetid://101790240422258",
+      "operationId": "f0c27c75-3437-4b47-8274-0b08dc0916a2",
+      "source": "work/mac-resume-2026-11-18/retone2/bellwood_far/Canopy_Tree_D_Far.glb",
+      "uploaded": "2026-11-20",
+      "moderationState": "Approved",
+      "replaces": "rbxassetid://137187261517726"
     },
     "Conifer_Tall_Far": {
-      "assetId": "rbxassetid://89133187998464",
-      "operationId": "78cd3cc2-04f7-4ca6-8ed0-1fa2e5a7308f",
-      "source": "assets/source/overworld/upload/bellwood_far/Conifer_Tall_Far.glb",
-      "uploaded": "2026-11-16",
-      "moderationState": "Approved"
+      "assetId": "rbxassetid://137763922635958",
+      "operationId": "ec446d02-6f25-4560-a51c-f7fce17e40e9",
+      "source": "work/mac-resume-2026-11-18/retone2/bellwood_far/Conifer_Tall_Far.glb",
+      "uploaded": "2026-11-20",
+      "moderationState": "Approved",
+      "replaces": "rbxassetid://89133187998464"
     },
     "Old_Gnarled_Tree_Far": {
-      "assetId": "rbxassetid://96002328461183",
-      "operationId": "0137afd9-6c49-4188-bf89-2fceb613a42e",
-      "source": "assets/source/overworld/upload/bellwood_far/Old_Gnarled_Tree_Far.glb",
-      "uploaded": "2026-11-16",
-      "moderationState": "Approved"
+      "assetId": "rbxassetid://77490974107139",
+      "operationId": "a9f3da92-9f31-4b38-b619-d432991e8963",
+      "source": "work/mac-resume-2026-11-18/retone2/bellwood_far/Old_Gnarled_Tree_Far.glb",
+      "uploaded": "2026-11-20",
+      "moderationState": "Approved",
+      "replaces": "rbxassetid://96002328461183"
     }
   },
   "pieces": {
     "Canopy_Tree_B_Far": {
       "Canopy_Tree_B_Far__Leaves": {
+        "ColorMap": "rbxassetid://136311721561505",
+        "NormalMap": "rbxassetid://94631532259402",
+        "RoughnessMap": "rbxassetid://87888195744512",
         "MeshId": "rbxassetid://115035009966560",
-        "ColorMap": "",
-        "NormalMap": "",
-        "RoughnessMap": "",
-        "MetalnessMap": "",
+        "MetalnessMap": "rbxassetid://131639030932363",
         "center": [
           0,
           35.98,
@@ -59,11 +65,11 @@
         ]
       },
       "Canopy_Tree_B_Far__Bark": {
+        "ColorMap": "rbxassetid://136311721561505",
+        "NormalMap": "rbxassetid://94631532259402",
+        "RoughnessMap": "rbxassetid://87888195744512",
         "MeshId": "rbxassetid://71921475501394",
-        "ColorMap": "",
-        "NormalMap": "",
-        "RoughnessMap": "",
-        "MetalnessMap": "",
+        "MetalnessMap": "rbxassetid://131639030932363",
         "center": [
           1.07,
           27.74,
@@ -73,11 +79,11 @@
     },
     "Canopy_Tree_C_Far": {
       "Canopy_Tree_C_Far__Leaves": {
+        "ColorMap": "rbxassetid://136311721561505",
+        "NormalMap": "rbxassetid://94631532259402",
+        "RoughnessMap": "rbxassetid://87888195744512",
         "MeshId": "rbxassetid://100582403955048",
-        "ColorMap": "",
-        "NormalMap": "",
-        "RoughnessMap": "",
-        "MetalnessMap": "",
+        "MetalnessMap": "rbxassetid://131639030932363",
         "center": [
           0,
           32.49,
@@ -85,11 +91,11 @@
         ]
       },
       "Canopy_Tree_C_Far__Bark": {
+        "ColorMap": "rbxassetid://136311721561505",
+        "NormalMap": "rbxassetid://94631532259402",
+        "RoughnessMap": "rbxassetid://87888195744512",
         "MeshId": "rbxassetid://94341596460817",
-        "ColorMap": "",
-        "NormalMap": "",
-        "RoughnessMap": "",
-        "MetalnessMap": "",
+        "MetalnessMap": "rbxassetid://131639030932363",
         "center": [
           0.34,
           21.57,
@@ -99,11 +105,11 @@
     },
     "Old_Gnarled_Tree_Far": {
       "Old_Gnarled_Tree_Far__Leaves": {
+        "ColorMap": "rbxassetid://136311721561505",
+        "NormalMap": "rbxassetid://94631532259402",
+        "RoughnessMap": "rbxassetid://87888195744512",
         "MeshId": "rbxassetid://116990344233219",
-        "ColorMap": "",
-        "NormalMap": "",
-        "RoughnessMap": "",
-        "MetalnessMap": "",
+        "MetalnessMap": "rbxassetid://131639030932363",
         "center": [
           0,
           19.45,
@@ -111,11 +117,11 @@
         ]
       },
       "Old_Gnarled_Tree_Far__Bark": {
+        "ColorMap": "rbxassetid://136311721561505",
+        "NormalMap": "rbxassetid://94631532259402",
+        "RoughnessMap": "rbxassetid://87888195744512",
         "MeshId": "rbxassetid://124824097966875",
-        "ColorMap": "",
-        "NormalMap": "",
-        "RoughnessMap": "",
-        "MetalnessMap": "",
+        "MetalnessMap": "rbxassetid://131639030932363",
         "center": [
           0.77,
           13.78,
@@ -125,11 +131,11 @@
     },
     "Canopy_Tree_D_Far": {
       "Canopy_Tree_D_Far__Leaves": {
+        "ColorMap": "rbxassetid://136311721561505",
+        "NormalMap": "rbxassetid://94631532259402",
+        "RoughnessMap": "rbxassetid://87888195744512",
         "MeshId": "rbxassetid://135007262284955",
-        "ColorMap": "",
-        "NormalMap": "",
-        "RoughnessMap": "",
-        "MetalnessMap": "",
+        "MetalnessMap": "rbxassetid://131639030932363",
         "center": [
           0,
           23.49,
@@ -137,11 +143,11 @@
         ]
       },
       "Canopy_Tree_D_Far__Bark": {
+        "ColorMap": "rbxassetid://136311721561505",
+        "NormalMap": "rbxassetid://94631532259402",
+        "RoughnessMap": "rbxassetid://87888195744512",
         "MeshId": "rbxassetid://77569432911704",
-        "ColorMap": "",
-        "NormalMap": "",
-        "RoughnessMap": "",
-        "MetalnessMap": "",
+        "MetalnessMap": "rbxassetid://131639030932363",
         "center": [
           -1,
           15.38,
@@ -151,11 +157,11 @@
     },
     "Canopy_Tree_A_Far": {
       "Canopy_Tree_A_Far__Leaves": {
+        "ColorMap": "rbxassetid://136311721561505",
+        "NormalMap": "rbxassetid://94631532259402",
+        "RoughnessMap": "rbxassetid://87888195744512",
         "MeshId": "rbxassetid://97341778136107",
-        "ColorMap": "",
-        "NormalMap": "",
-        "RoughnessMap": "",
-        "MetalnessMap": "",
+        "MetalnessMap": "rbxassetid://131639030932363",
         "center": [
           0,
           31.06,
@@ -163,11 +169,11 @@
         ]
       },
       "Canopy_Tree_A_Far__Bark": {
+        "ColorMap": "rbxassetid://136311721561505",
+        "NormalMap": "rbxassetid://94631532259402",
+        "RoughnessMap": "rbxassetid://87888195744512",
         "MeshId": "rbxassetid://126339544267111",
-        "ColorMap": "",
-        "NormalMap": "",
-        "RoughnessMap": "",
-        "MetalnessMap": "",
+        "MetalnessMap": "rbxassetid://131639030932363",
         "center": [
           0.25,
           19.11,
@@ -177,11 +183,11 @@
     },
     "Conifer_Tall_Far": {
       "Conifer_Tall_Far__Needles": {
+        "ColorMap": "rbxassetid://112467658325719",
+        "NormalMap": "rbxassetid://94631532259402",
+        "RoughnessMap": "rbxassetid://87888195744512",
         "MeshId": "rbxassetid://98110626628078",
-        "ColorMap": "",
-        "NormalMap": "",
-        "RoughnessMap": "",
-        "MetalnessMap": "",
+        "MetalnessMap": "rbxassetid://131639030932363",
         "center": [
           0,
           34.22,
@@ -189,11 +195,11 @@
         ]
       },
       "Conifer_Tall_Far__Bark": {
+        "ColorMap": "rbxassetid://112467658325719",
+        "NormalMap": "rbxassetid://94631532259402",
+        "RoughnessMap": "rbxassetid://87888195744512",
         "MeshId": "rbxassetid://95623870032846",
-        "ColorMap": "",
-        "NormalMap": "",
-        "RoughnessMap": "",
-        "MetalnessMap": "",
+        "MetalnessMap": "rbxassetid://131639030932363",
         "center": [
           -0.84,
           33.66,

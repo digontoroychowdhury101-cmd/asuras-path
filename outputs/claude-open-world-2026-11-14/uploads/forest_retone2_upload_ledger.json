@@ -1,0 +1,1012 @@
+{
+ "r2/bellwood_built_a/Bell_Edging_Cobble": {
+  "assetId": "115639783747676",
+  "bytes": 5341440,
+  "displayName": "R2_bellwood_built_a_Bell_Edging_Cobble",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_built_a/Bell_Edging_Cobble.glb",
+  "moderation": "Approved",
+  "operationId": "ea4a5142-b5fb-47cf-ae5d-b913348ec6a5",
+  "sha256": "5620161315d806d1f3a1b1b22d158eff2d6fb34ca7664a2c7e2229889c1be213"
+ },
+ "r2/bellwood_built_a/Bell_Edging_Kerb": {
+  "assetId": "110086613945752",
+  "bytes": 1247988,
+  "displayName": "R2_bellwood_built_a_Bell_Edging_Kerb",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_built_a/Bell_Edging_Kerb.glb",
+  "moderation": "Approved",
+  "operationId": "be694536-f12f-4712-a138-03f06b89ffe9",
+  "sha256": "8af24cde5e5f86a87be27b8ecce5e9182234e2162a34734e6cd0b0f16a4d545c"
+ },
+ "r2/bellwood_built_a/Bell_Fence_Picket": {
+  "assetId": "101295044398610",
+  "bytes": 1286540,
+  "displayName": "R2_bellwood_built_a_Bell_Fence_Picket",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_built_a/Bell_Fence_Picket.glb",
+  "moderation": "Approved",
+  "operationId": "fa405792-20ed-44cb-9c4d-045980ab14fd",
+  "sha256": "1dcdfa245f4e055494307d31b828ad54798a0b3e6d4017d0b7df59f1f190d797"
+ },
+ "r2/bellwood_built_a/Bell_Fence_Post": {
+  "assetId": "90221857312901",
+  "bytes": 2751788,
+  "displayName": "R2_bellwood_built_a_Bell_Fence_Post",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_built_a/Bell_Fence_Post.glb",
+  "moderation": "Approved",
+  "operationId": "393d316e-4d99-41ff-9172-388e3e22691c",
+  "sha256": "fc0caa4bfe41d8e3e86d2819979d3d39a4ede29cedc8a6c1d0a7148770632e6f"
+ },
+ "r2/bellwood_built_a/Bell_Fence_Rail": {
+  "assetId": "94369751374129",
+  "bytes": 1248300,
+  "displayName": "R2_bellwood_built_a_Bell_Fence_Rail",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_built_a/Bell_Fence_Rail.glb",
+  "moderation": "Approved",
+  "operationId": "d4a35fb4-3387-4f61-9448-23eb2b8e37e3",
+  "sha256": "382fa8fd21c61bdc2445ff593127ed4c8225ab43d29c1296079f364963834467"
+ },
+ "r2/bellwood_built_a/Bell_Grave_A": {
+  "assetId": "125622149809910",
+  "bytes": 8055520,
+  "displayName": "R2_bellwood_built_a_Bell_Grave_A",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_built_a/Bell_Grave_A.glb",
+  "moderation": "Approved",
+  "operationId": "14d93bd1-f0e8-4220-be72-4952a5ac160e",
+  "sha256": "8c29f4d8f71b319b99b0e666713e6d53cb620dc94f0a1c5a9eb24d7c64f6f1bf"
+ },
+ "r2/bellwood_built_a/Bell_Grave_B": {
+  "assetId": "131037235026663",
+  "bytes": 6899172,
+  "displayName": "R2_bellwood_built_a_Bell_Grave_B",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_built_a/Bell_Grave_B.glb",
+  "moderation": "Approved",
+  "operationId": "7dbd48b0-da94-419d-96a8-da5dc11c61ca",
+  "sha256": "3f77a8476588a26254d83c5cc8db3b9a43d62ec474e23e036cbd3b2265aded9b"
+ },
+ "r2/bellwood_built_a/Bell_Grave_C": {
+  "assetId": "94795816825169",
+  "bytes": 6838052,
+  "displayName": "R2_bellwood_built_a_Bell_Grave_C",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_built_a/Bell_Grave_C.glb",
+  "moderation": "Approved",
+  "operationId": "3e2178d4-6e5c-45e4-a494-434f4600f819",
+  "sha256": "be5a9ec889072850512d973f2c2856ef9ac66c144b71eb346f35e1beb67a7751"
+ },
+ "r2/bellwood_built_a/Bell_Paving_Flag": {
+  "assetId": "126936547001288",
+  "bytes": 1371424,
+  "displayName": "R2_bellwood_built_a_Bell_Paving_Flag",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_built_a/Bell_Paving_Flag.glb",
+  "moderation": "Approved",
+  "operationId": "8e2cb81d-a1cc-4acd-8386-8c80f911921e",
+  "sha256": "d7e4c4951a187f10ff8f18ab7ff464eb09e0209319065fc3f87ee5db8a93fa4d"
+ },
+ "r2/bellwood_built_a/Bell_Paving_Sett": {
+  "assetId": "84367672901981",
+  "bytes": 1918568,
+  "displayName": "R2_bellwood_built_a_Bell_Paving_Sett",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_built_a/Bell_Paving_Sett.glb",
+  "moderation": "Approved",
+  "operationId": "ead4aa5b-615e-46c2-bda3-3188ab9bb394",
+  "sha256": "fca26c53fe6128bc0c4cef900867a5e483246da36c2b3f39396f79d4ad76ede3"
+ },
+ "r2/bellwood_built_a/Bell_Prayer_Flags_Long": {
+  "assetId": "133208870575016",
+  "bytes": 2797024,
+  "displayName": "R2_bellwood_built_a_Bell_Prayer_Flags_Long",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_built_a/Bell_Prayer_Flags_Long.glb",
+  "moderation": "Approved",
+  "operationId": "35a33f2b-4c9b-4074-a96c-a14cd059f0b0",
+  "sha256": "995618ecc60a126314e61fd9d051d86e8be8fed482b31333e7d33df3bf76be7e"
+ },
+ "r2/bellwood_built_a/Bell_Prayer_Flags_Short": {
+  "assetId": "131576735220217",
+  "bytes": 2770132,
+  "displayName": "R2_bellwood_built_a_Bell_Prayer_Flags_Short",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_built_a/Bell_Prayer_Flags_Short.glb",
+  "moderation": "Approved",
+  "operationId": "1aa0763e-dd12-4ccb-aa34-461ce3bd742e",
+  "sha256": "04acb808ec7be3b5e4b6a1e7ecadfbd714dc516a1cbdc024e0db7b862ad25371"
+ },
+ "r2/bellwood_built_a/Bell_Retain_Wall_Corner": {
+  "assetId": "122258256805226",
+  "bytes": 1768240,
+  "displayName": "R2_bellwood_built_a_Bell_Retain_Wall_Corner",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_built_a/Bell_Retain_Wall_Corner.glb",
+  "moderation": "Approved",
+  "operationId": "a869958f-7665-40eb-bf53-22d476ee6dad",
+  "sha256": "a6a2367ddedc0b145002afa3e05a7e4cd1343c5803d4d85c886d6477944d6ce9"
+ },
+ "r2/bellwood_built_a/Bell_Retain_Wall_Long": {
+  "assetId": "84579995863057",
+  "bytes": 1969316,
+  "displayName": "R2_bellwood_built_a_Bell_Retain_Wall_Long",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_built_a/Bell_Retain_Wall_Long.glb",
+  "moderation": "Approved",
+  "operationId": "4abde0e8-5795-4f16-9fd0-66cd6e69c5e2",
+  "sha256": "d45ee0387215f1653ddb60cc02ee45ea6af4301baca51a7ad1847d66eb354551"
+ },
+ "r2/bellwood_built_a/Bell_Retain_Wall_Short": {
+  "assetId": "77836102817519",
+  "bytes": 1621452,
+  "displayName": "R2_bellwood_built_a_Bell_Retain_Wall_Short",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_built_a/Bell_Retain_Wall_Short.glb",
+  "moderation": "Approved",
+  "operationId": "bf3b3ed7-b0d3-47d0-8c61-1a1c1627f61a",
+  "sha256": "798f5982c30730258acc23e77febe6f23a8dca399d48c18dfbc1615ac9d5564c"
+ },
+ "r2/bellwood_built_a/Bell_Shrine_Roadside": {
+  "assetId": "113327166276033",
+  "bytes": 3878588,
+  "displayName": "R2_bellwood_built_a_Bell_Shrine_Roadside",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_built_a/Bell_Shrine_Roadside.glb",
+  "moderation": "Approved",
+  "operationId": "a7cd6e6f-e8ef-495b-8593-c24e34682dd9",
+  "sha256": "a61f7c71a66f56d793307d04034aa747b1baadb17456ad0276ba9f55542a417d"
+ },
+ "r2/bellwood_built_a/Bell_Signpost_A": {
+  "assetId": "121915190506566",
+  "bytes": 2715072,
+  "displayName": "R2_bellwood_built_a_Bell_Signpost_A",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_built_a/Bell_Signpost_A.glb",
+  "moderation": "Approved",
+  "operationId": "87c776cc-2f5c-4b88-81a7-4e3e6e300661",
+  "sha256": "9caf08e82cab588fc29f464015acbb4ae753c5dfab207a6392a0fe4f7f156f1d"
+ },
+ "r2/bellwood_built_a/Bell_Signpost_B": {
+  "assetId": "95290670258834",
+  "bytes": 2778036,
+  "displayName": "R2_bellwood_built_a_Bell_Signpost_B",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_built_a/Bell_Signpost_B.glb",
+  "moderation": "Approved",
+  "operationId": "eaeb0573-6a5f-45cc-b622-3562093f0db2",
+  "sha256": "a03b4c3faa6feeae59c305141c8a43db6a4854aa910b65899dfda43fb4f6dc98"
+ },
+ "r2/bellwood_built_a/Bell_Stair_Straight_A": {
+  "assetId": "135315236195568",
+  "bytes": 1768364,
+  "displayName": "R2_bellwood_built_a_Bell_Stair_Straight_A",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_built_a/Bell_Stair_Straight_A.glb",
+  "moderation": "Approved",
+  "operationId": "96795cb8-fe8c-4cb2-92be-88e2dcb6f1be",
+  "sha256": "003026088521e4f3dab5e899aa8f01b470861edecd0880839f6e915957d3ad4e"
+ },
+ "r2/bellwood_built_a/Bell_Stair_Straight_B": {
+  "assetId": "70433943611538",
+  "bytes": 1654876,
+  "displayName": "R2_bellwood_built_a_Bell_Stair_Straight_B",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_built_a/Bell_Stair_Straight_B.glb",
+  "moderation": "Approved",
+  "operationId": "ba4901d1-24d5-430e-8324-b4165a098087",
+  "sha256": "0e6e8b930354e2674001a2d841fbcb1acb2f1e58514edf416fce3df0057c91ab"
+ },
+ "r2/bellwood_built_a/Bell_Stair_Turn": {
+  "assetId": "73434003459851",
+  "bytes": 1888444,
+  "displayName": "R2_bellwood_built_a_Bell_Stair_Turn",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_built_a/Bell_Stair_Turn.glb",
+  "moderation": "Approved",
+  "operationId": "520ea7be-90c1-467e-a537-43f4a5b7cac4",
+  "sha256": "dc617900dbd4479a44af535cfb98b9b2349febfe4b42e9748252715b36c17049"
+ },
+ "r2/bellwood_built_a/Bell_Timber_Gate_Side": {
+  "assetId": "84387299204165",
+  "bytes": 2782356,
+  "displayName": "R2_bellwood_built_a_Bell_Timber_Gate_Side",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_built_a/Bell_Timber_Gate_Side.glb",
+  "moderation": "Approved",
+  "operationId": "441da09e-7a90-44c6-a95e-1dbf26e96d19",
+  "sha256": "13735ae72e09fdfa99e8875c57b04e9f1f1dce5f9c9f494d111a7a505ad415ef"
+ },
+ "r2/bellwood_built_a/Bell_Well": {
+  "assetId": "140652568551044",
+  "bytes": 4588236,
+  "displayName": "R2_bellwood_built_a_Bell_Well",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_built_a/Bell_Well.glb",
+  "moderation": "Approved",
+  "operationId": "2562ea67-a4fa-4d37-88c8-dc5e5fa4eeef",
+  "sha256": "72bd458d77a48ed40985c53aee9518d4932ac1e55258ed1ce034bb4f566f13d8"
+ },
+ "r2/bellwood_built_a/Boulder_Granite_D": {
+  "assetId": "107318759281666",
+  "bytes": 5520108,
+  "displayName": "R2_bellwood_built_a_Boulder_Granite_D",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_built_a/Boulder_Granite_D.glb",
+  "moderation": "Approved",
+  "operationId": "94b980b8-1716-49a7-ac50-f932ae80cec3",
+  "sha256": "1b66922815f67c469bde0a6e73110e97424a25cf8dba16934a26d73e9cea6573"
+ },
+ "r2/bellwood_built_a/Boulder_Granite_Split": {
+  "assetId": "126934202729845",
+  "bytes": 6078144,
+  "displayName": "R2_bellwood_built_a_Boulder_Granite_Split",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_built_a/Boulder_Granite_Split.glb",
+  "moderation": "Approved",
+  "operationId": "d4750699-6401-4cd8-a85b-816a30c1b167",
+  "sha256": "cdd3f188b141423436f31437e638d678acea80490d429ac091d18b463457686c"
+ },
+ "r2/bellwood_built_a/Cliff_Face_A": {
+  "assetId": "125836010836791",
+  "bytes": 5762252,
+  "displayName": "R2_bellwood_built_a_Cliff_Face_A",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_built_a/Cliff_Face_A.glb",
+  "moderation": "Approved",
+  "operationId": "43d5fa38-3f5d-4a05-882c-442de49e6d62",
+  "sha256": "c79fc8ae51217c2a5f5c8af194c4ccaaccc1656c195a2a126796bd3ff9682b34"
+ },
+ "r2/bellwood_built_a/Cliff_Face_B": {
+  "assetId": "96168684028197",
+  "bytes": 5448420,
+  "displayName": "R2_bellwood_built_a_Cliff_Face_B",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_built_a/Cliff_Face_B.glb",
+  "moderation": "Approved",
+  "operationId": "2ac411bb-fcf9-4bc0-b9d2-d4bfc01ba5ce",
+  "sha256": "064e31d19e90815706202c8026bc77f658fb23f26118c37f8e5bd1ce8918a2b9"
+ },
+ "r2/bellwood_built_a/Cliff_Face_C": {
+  "assetId": "138332851840251",
+  "bytes": 5447296,
+  "displayName": "R2_bellwood_built_a_Cliff_Face_C",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_built_a/Cliff_Face_C.glb",
+  "moderation": "Approved",
+  "operationId": "6a222e77-a484-4e94-889c-bcaa8212c7b2",
+  "sha256": "50054a50ea490cc2e1d478f23ec935912e036d75eff55196751773bc8049de00"
+ },
+ "r2/bellwood_built_a/Outcrop_Mossy": {
+  "assetId": "132379493850408",
+  "bytes": 5903792,
+  "displayName": "R2_bellwood_built_a_Outcrop_Mossy",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_built_a/Outcrop_Mossy.glb",
+  "moderation": "Approved",
+  "operationId": "9982045e-f16e-4d71-9f9c-f69ac562cd85",
+  "sha256": "e7e9cf528fd3ef12093de3d8107e53d50d6ecfe11bdb0106f3465961cb01bedb"
+ },
+ "r2/bellwood_built_a/Scree_Patch_A": {
+  "assetId": "121961279008259",
+  "bytes": 6006932,
+  "displayName": "R2_bellwood_built_a_Scree_Patch_A",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_built_a/Scree_Patch_A.glb",
+  "moderation": "Approved",
+  "operationId": "cdea6c7d-4385-44fb-b405-58914615d15c",
+  "sha256": "a743ca435e70689414a195fd2d11adda27135955274994d77e67e44cb90321c3"
+ },
+ "r2/bellwood_built_a/Scree_Patch_B": {
+  "assetId": "122436688095113",
+  "bytes": 6216980,
+  "displayName": "R2_bellwood_built_a_Scree_Patch_B",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_built_a/Scree_Patch_B.glb",
+  "moderation": "Approved",
+  "operationId": "db810e18-dfdd-407c-aeb3-739dea719b23",
+  "sha256": "8d1d65dc5bc64bed9ac160e592c0c155b9c8dddc5eb65d9f7f6dd6fae5ddc08d"
+ },
+ "r2/bellwood_built_b/Bell_Tower_Ruined": {
+  "assetId": "123178481788418",
+  "bytes": 6065496,
+  "displayName": "R2_bellwood_built_b_Bell_Tower_Ruined",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_built_b/Bell_Tower_Ruined.glb",
+  "moderation": "Approved",
+  "operationId": "fed853c3-3a93-42e8-a695-90df76e2441e",
+  "sha256": "7c2d29a7ec6ad282c4c6ffd32b1e2a7fb027b6216283c5939f4332d1696432ba"
+ },
+ "r2/bellwood_built_b/Cart_A": {
+  "assetId": "102195697954483",
+  "bytes": 1942840,
+  "displayName": "R2_bellwood_built_b_Cart_A",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_built_b/Cart_A.glb",
+  "moderation": "Approved",
+  "operationId": "c0a60015-42aa-4a28-ab08-b1a547fdafbe",
+  "sha256": "39bab2e277d768cf69b396cdc9ed339a3aa02ebbde875487bde35ecde2b7a895"
+ },
+ "r2/bellwood_built_b/Cart_B": {
+  "assetId": "136360362379856",
+  "bytes": 2016088,
+  "displayName": "R2_bellwood_built_b_Cart_B",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_built_b/Cart_B.glb",
+  "moderation": "Approved",
+  "operationId": "ea468e93-f12a-48bf-9b96-a0b6622aef07",
+  "sha256": "b85e1bb72af13160dab72ca04b4a8f25205a4cfe8372c4ded6361bd9a807b59b"
+ },
+ "r2/bellwood_built_b/Crate_A": {
+  "assetId": "88941171739721",
+  "bytes": 1562592,
+  "displayName": "R2_bellwood_built_b_Crate_A",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_built_b/Crate_A.glb",
+  "moderation": "Approved",
+  "operationId": "1c3555b0-cbbb-4250-8ae4-0689ef55f5cf",
+  "sha256": "dd4a9861873e5ab787099779061d4b32c6f95254816baf5afe8d9942d61ec6ad"
+ },
+ "r2/bellwood_built_b/Crate_B": {
+  "assetId": "117562870371809",
+  "bytes": 1275564,
+  "displayName": "R2_bellwood_built_b_Crate_B",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_built_b/Crate_B.glb",
+  "moderation": "Approved",
+  "operationId": "cf8565f5-2129-4820-8f37-b29c29daf4a1",
+  "sha256": "dfc02c7694e27dde380a38a27ec081887dd148fe38f038a3502d8e435213f8d6"
+ },
+ "r2/bellwood_built_b/Crate_C": {
+  "assetId": "105647779540027",
+  "bytes": 1570920,
+  "displayName": "R2_bellwood_built_b_Crate_C",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_built_b/Crate_C.glb",
+  "moderation": "Approved",
+  "operationId": "0a66bb8d-facc-4de6-a9e6-a1f28f708574",
+  "sha256": "2e5a493112bae268798307e7fd7b289e0f141b13bc0feae97b1de55f1cc5c019"
+ },
+ "r2/bellwood_built_b/Falls_Alcove": {
+  "assetId": "84104873616547",
+  "bytes": 9117540,
+  "displayName": "R2_bellwood_built_b_Falls_Alcove",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_built_b/Falls_Alcove.glb",
+  "moderation": "Approved",
+  "operationId": "a90d01f0-c1d5-402d-918e-585483176d09",
+  "sha256": "88d792199adb813d9428e796e96d705ed50ee8d6a2766e7e973150a0e27651f1"
+ },
+ "r2/bellwood_built_b/Hermit_Hut": {
+  "assetId": "100874502863011",
+  "bytes": 4485464,
+  "displayName": "R2_bellwood_built_b_Hermit_Hut",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_built_b/Hermit_Hut.glb",
+  "moderation": "Approved",
+  "operationId": "5e237941-85c1-46c5-8c43-2008b09091f7",
+  "sha256": "b61d2e5459439129036544ab5e3f77664d5be94aa98f0a3ebcc4c5ea9e38f115"
+ },
+ "r2/bellwood_built_b/Lantern_Hanging": {
+  "assetId": "81149591646810",
+  "bytes": 576460,
+  "displayName": "R2_bellwood_built_b_Lantern_Hanging",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_built_b/Lantern_Hanging.glb",
+  "moderation": "Approved",
+  "operationId": "0fef137f-0ee3-4ea3-bf61-b589881f2158",
+  "sha256": "5adeb326b9d4d04d36e4f5362fabeb6fad8f6313dabf7bed949f3a5d55f6915f"
+ },
+ "r2/bellwood_built_b/Lantern_Stone": {
+  "assetId": "114314944162265",
+  "bytes": 1256072,
+  "displayName": "R2_bellwood_built_b_Lantern_Stone",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_built_b/Lantern_Stone.glb",
+  "moderation": "Approved",
+  "operationId": "6c5eb44b-03e3-4914-94e7-a106b5eb58cb",
+  "sha256": "93a48c794a94cabad7ea9f1aa879c1b68b8526c61fcffaab50b65d8c6d9cd2bf"
+ },
+ "r2/bellwood_built_b/Pot_A": {
+  "assetId": "96742101094568",
+  "bytes": 320668,
+  "displayName": "R2_bellwood_built_b_Pot_A",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_built_b/Pot_A.glb",
+  "moderation": "Approved",
+  "operationId": "aa618717-0a8b-4b9c-a434-345a26ebcf7c",
+  "sha256": "eb1fe56ee17a92f871a2019462491d03f112de1a4cdf9df2b8d62a014587c5b4"
+ },
+ "r2/bellwood_built_b/Pot_B": {
+  "assetId": "72220227528849",
+  "bytes": 325424,
+  "displayName": "R2_bellwood_built_b_Pot_B",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_built_b/Pot_B.glb",
+  "moderation": "Approved",
+  "operationId": "41fddd56-d0a0-42e8-bbf7-878ec5f73f89",
+  "sha256": "93021deeb29c78d0c16141272c82e267b29948e2ccb93f92a01442c7ad1b4150"
+ },
+ "r2/bellwood_built_b/Pot_C": {
+  "assetId": "79809850436324",
+  "bytes": 590516,
+  "displayName": "R2_bellwood_built_b_Pot_C",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_built_b/Pot_C.glb",
+  "moderation": "Approved",
+  "operationId": "e72aae32-77a4-4e56-b9d3-d93ea8bba19b",
+  "sha256": "20cac7df7e4702473e990dec9e36c88200e573b148b5f62a6edac586f62e097f"
+ },
+ "r2/bellwood_built_b/Rope_Bridge_Anchor": {
+  "assetId": "81892326823106",
+  "bytes": 3052356,
+  "displayName": "R2_bellwood_built_b_Rope_Bridge_Anchor",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_built_b/Rope_Bridge_Anchor.glb",
+  "moderation": "Approved",
+  "operationId": "92fc44e4-c292-4059-943d-a70dff914aa2",
+  "sha256": "cc4cb61f0ec088823d62d3ed1eafaba3ad34aa5d49782469c27dda1e23d4324d"
+ },
+ "r2/bellwood_built_b/Rope_Bridge_Deck_A": {
+  "assetId": "91702496581918",
+  "bytes": 1550396,
+  "displayName": "R2_bellwood_built_b_Rope_Bridge_Deck_A",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_built_b/Rope_Bridge_Deck_A.glb",
+  "moderation": "Approved",
+  "operationId": "70869288-1606-420c-84c9-37c1fa71dc14",
+  "sha256": "e11024bd0ef33c734f3c94a42b606961c75ad733b7771bd25155e90e5225ee28"
+ },
+ "r2/bellwood_built_b/Rope_Bridge_Deck_B": {
+  "assetId": "130188770909771",
+  "bytes": 1543676,
+  "displayName": "R2_bellwood_built_b_Rope_Bridge_Deck_B",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_built_b/Rope_Bridge_Deck_B.glb",
+  "moderation": "Approved",
+  "operationId": "3526e04a-1a2d-4181-b8fd-f1153d8650d3",
+  "sha256": "9b63ea7565d63bfcab569ca4c91d668f59389f178dddebad683bb865b61abfdc"
+ },
+ "r2/bellwood_far/Canopy_Tree_A_Far": {
+  "assetId": "117522250021513",
+  "bytes": 93464,
+  "displayName": "R2_bellwood_far_Canopy_Tree_A_Far",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_far/Canopy_Tree_A_Far.glb",
+  "moderation": "Approved",
+  "operationId": "4d305908-6cca-4a3b-93ff-38667794de2c",
+  "sha256": "b8ff4001636a28e2616ce8bb2bef1d97bfe67e9a0a8074308021fca8dd59356e"
+ },
+ "r2/bellwood_far/Canopy_Tree_B_Far": {
+  "assetId": "88012375766227",
+  "bytes": 93592,
+  "displayName": "R2_bellwood_far_Canopy_Tree_B_Far",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_far/Canopy_Tree_B_Far.glb",
+  "moderation": "Approved",
+  "operationId": "0b4bae56-610b-48ef-a741-1d2198e74d4c",
+  "sha256": "48dc0cf38ff69015c8270c1fcd5fd26bb262518397ab6f932a9dff31a3bc9bd7"
+ },
+ "r2/bellwood_far/Canopy_Tree_C_Far": {
+  "assetId": "128610830130445",
+  "bytes": 93828,
+  "displayName": "R2_bellwood_far_Canopy_Tree_C_Far",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_far/Canopy_Tree_C_Far.glb",
+  "moderation": "Approved",
+  "operationId": "b2cfd21d-174e-47cc-a2ee-f379ab3c057e",
+  "sha256": "6704b7919a19761d475664549fe2a249931b2a53fc98ace333c9a864172faf27"
+ },
+ "r2/bellwood_far/Canopy_Tree_D_Far": {
+  "assetId": "101790240422258",
+  "bytes": 93828,
+  "displayName": "R2_bellwood_far_Canopy_Tree_D_Far",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_far/Canopy_Tree_D_Far.glb",
+  "moderation": "Approved",
+  "operationId": "f0c27c75-3437-4b47-8274-0b08dc0916a2",
+  "sha256": "eb2ed24013074e90a2bc4abbf5023674a1cb0c1c6a74c6410ea540618ed3740e"
+ },
+ "r2/bellwood_far/Conifer_Tall_Far": {
+  "assetId": "137763922635958",
+  "bytes": 87636,
+  "displayName": "R2_bellwood_far_Conifer_Tall_Far",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_far/Conifer_Tall_Far.glb",
+  "moderation": "Approved",
+  "operationId": "ec446d02-6f25-4560-a51c-f7fce17e40e9",
+  "sha256": "895aa55dbb0c2d2a0ce63ab7511f946605f5ee61eaa3391a331fbd85f861cfcb"
+ },
+ "r2/bellwood_far/Old_Gnarled_Tree_Far": {
+  "assetId": "77490974107139",
+  "bytes": 86308,
+  "displayName": "R2_bellwood_far_Old_Gnarled_Tree_Far",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_far/Old_Gnarled_Tree_Far.glb",
+  "moderation": "Approved",
+  "operationId": "a9f3da92-9f31-4b38-b619-d432991e8963",
+  "sha256": "a91dae1f5531b5b10bcca383536b1ca9f3e54c38c8d65c06745b48fa95cea4b3"
+ },
+ "r2/bellwood_veg/Canopy_Tree_C": {
+  "assetId": "124614801968146",
+  "bytes": 2448920,
+  "displayName": "R2_bellwood_veg_Canopy_Tree_C",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_veg/Canopy_Tree_C.glb",
+  "moderation": "Approved",
+  "operationId": "2103deb4-d710-4862-8f85-00916e62c623",
+  "sha256": "7e0d678c7b77eaac47fb294869bb1966babceb89bedbac785b0ba0d9d133c478"
+ },
+ "r2/bellwood_veg/Canopy_Tree_D": {
+  "assetId": "121338644068667",
+  "bytes": 2448996,
+  "displayName": "R2_bellwood_veg_Canopy_Tree_D",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_veg/Canopy_Tree_D.glb",
+  "moderation": "Approved",
+  "operationId": "8c8e110e-3d70-40ee-b838-30bfde8bcd4b",
+  "sha256": "a6bd307cc3202dc71afcbfe811e8be94a450b40c9f4ff475d475e1b9182fa08a"
+ },
+ "r2/bellwood_veg/Conifer_Tall": {
+  "assetId": "75155175145951",
+  "bytes": 2551412,
+  "displayName": "R2_bellwood_veg_Conifer_Tall",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_veg/Conifer_Tall.glb",
+  "moderation": "Approved",
+  "operationId": "9460eba9-6c9e-4b5b-a068-246fee0250e3",
+  "sha256": "c5e8423e2eb77e5799487865c06473b4b3c51e9a8a239240378277aee97f20c4"
+ },
+ "r2/bellwood_veg/Dead_Standing_Trunk": {
+  "assetId": "109025351926941",
+  "bytes": 2457908,
+  "displayName": "R2_bellwood_veg_Dead_Standing_Trunk",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_veg/Dead_Standing_Trunk.glb",
+  "moderation": "Approved",
+  "operationId": "6b24ed25-a631-4f86-b7b1-095db52d4f4c",
+  "sha256": "ac30a17ad4a0105d7550fc3a3cf56f366132b805ff0af79cc1308f301a364f99"
+ },
+ "r2/bellwood_veg/Exposed_Roots_A": {
+  "assetId": "89633169367005",
+  "bytes": 2671832,
+  "displayName": "R2_bellwood_veg_Exposed_Roots_A",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_veg/Exposed_Roots_A.glb",
+  "moderation": "Approved",
+  "operationId": "1e4cfc36-ebba-415e-bf99-70a55169194d",
+  "sha256": "a6b799f1c8021e56f24b58917cb41ea70396c46963a55e1ecd03ca576ee260da"
+ },
+ "r2/bellwood_veg/Exposed_Roots_B": {
+  "assetId": "134670981361995",
+  "bytes": 2678504,
+  "displayName": "R2_bellwood_veg_Exposed_Roots_B",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_veg/Exposed_Roots_B.glb",
+  "moderation": "Approved",
+  "operationId": "458c9a54-d4fd-46a9-b502-9c310b954570",
+  "sha256": "436b54151ecf59a990b1625f0983e098d2fb3d367586b877784d51d33bffcadf"
+ },
+ "r2/bellwood_veg/Fallen_Log_A": {
+  "assetId": "71193132948951",
+  "bytes": 3927036,
+  "displayName": "R2_bellwood_veg_Fallen_Log_A",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_veg/Fallen_Log_A.glb",
+  "moderation": "Approved",
+  "operationId": "0ac0e456-1528-4094-bd1e-60b649285f25",
+  "sha256": "7d112e8379fbb596c5228da50722609675c06bca11dcf499968b12fd78f67d18"
+ },
+ "r2/bellwood_veg/Fallen_Log_B": {
+  "assetId": "107466025138992",
+  "bytes": 3902912,
+  "displayName": "R2_bellwood_veg_Fallen_Log_B",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_veg/Fallen_Log_B.glb",
+  "moderation": "Approved",
+  "operationId": "5b49c4be-27f1-439a-a300-c60bcfec9cf9",
+  "sha256": "e3f6c9cafbc01d3310849c82524e9dfb6e85b116398c19f1310774ee6ceff595"
+ },
+ "r2/bellwood_veg/Fern_Bracken": {
+  "assetId": "95245948345853",
+  "bytes": 172072,
+  "displayName": "R2_bellwood_veg_Fern_Bracken",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_veg/Fern_Bracken.glb",
+  "moderation": "Approved",
+  "operationId": "f855a02c-623f-459d-a27e-68a075ff145f",
+  "sha256": "9e23e81398c5d752b94944f701e3798566a389b14195a95e6b5f1467d9391381"
+ },
+ "r2/bellwood_veg/Fern_Sword": {
+  "assetId": "138673464412801",
+  "bytes": 347912,
+  "displayName": "R2_bellwood_veg_Fern_Sword",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_veg/Fern_Sword.glb",
+  "moderation": "Approved",
+  "operationId": "bc69d5e0-25f7-4af2-ba84-0e9096e69097",
+  "sha256": "6b10544b70155dd78bed02a0e7ded76e6d0ba46b3e47cfa53a80cc16c73a5a19"
+ },
+ "r2/bellwood_veg/Flowers_Daisy": {
+  "assetId": "87236317425530",
+  "bytes": 431236,
+  "displayName": "R2_bellwood_veg_Flowers_Daisy",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_veg/Flowers_Daisy.glb",
+  "moderation": "Approved",
+  "operationId": "3acef9a9-ab72-4a34-974c-94e72670b980",
+  "sha256": "8fac2648cb16d88dc14df3374830ece89184712d58f41f07b181b35eff89ebc9"
+ },
+ "r2/bellwood_veg/Flowers_Foxglove": {
+  "assetId": "84488153664693",
+  "bytes": 397088,
+  "displayName": "R2_bellwood_veg_Flowers_Foxglove",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_veg/Flowers_Foxglove.glb",
+  "moderation": "Approved",
+  "operationId": "f4338f2a-1c71-4159-bf63-0b3b1df2c5b5",
+  "sha256": "d450677c0c89c67d9ea743b43ff5c66fa5bc6723ed09a54b6a20e682071706e0"
+ },
+ "r2/bellwood_veg/Grass_Lush": {
+  "assetId": "90286295754016",
+  "bytes": 80192,
+  "displayName": "R2_bellwood_veg_Grass_Lush",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_veg/Grass_Lush.glb",
+  "moderation": "Approved",
+  "operationId": "4628e26c-4875-4148-ad21-2ae6d303a26b",
+  "sha256": "cb90b1aecb9bdd9640b47a0deaa43f4ee9f011be3c5eaa9cc61600ed23a37a3c"
+ },
+ "r2/bellwood_veg/Grass_Seed": {
+  "assetId": "97324741989403",
+  "bytes": 375076,
+  "displayName": "R2_bellwood_veg_Grass_Seed",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_veg/Grass_Seed.glb",
+  "moderation": "Approved",
+  "operationId": "9affdddd-2069-4c33-8000-f2389112c39f",
+  "sha256": "3d794670db01e30a6aa198a35f03aa172cec2dc4bcbdc99badf641999c37c87b"
+ },
+ "r2/bellwood_veg/Grass_Tall": {
+  "assetId": "101734961324508",
+  "bytes": 82356,
+  "displayName": "R2_bellwood_veg_Grass_Tall",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_veg/Grass_Tall.glb",
+  "moderation": "Approved",
+  "operationId": "4d086863-c6e7-47a7-9215-5312c31c778d",
+  "sha256": "1dd77e2c107d0f53febea073fab72d2731e9862fc23676aa52668dbfacd8847e"
+ },
+ "r2/bellwood_veg/Moss_Drape": {
+  "assetId": "128302086550479",
+  "bytes": 1275760,
+  "displayName": "R2_bellwood_veg_Moss_Drape",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_veg/Moss_Drape.glb",
+  "moderation": "Approved",
+  "operationId": "f84ea865-f7b3-468f-bef1-c81ad1289038",
+  "sha256": "f7cd9bc222ae12dd9e982a7480d0a65b6200e51561034892a48a671e420219dc"
+ },
+ "r2/bellwood_veg/Mushroom_Cluster": {
+  "assetId": "133099871134665",
+  "bytes": 261372,
+  "displayName": "R2_bellwood_veg_Mushroom_Cluster",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_veg/Mushroom_Cluster.glb",
+  "moderation": "Approved",
+  "operationId": "88a54e98-f576-4474-b343-3e91ec45a01f",
+  "sha256": "c1be40849e04c648c3d00521b9a6c6c549cb30c441add82a58f01d182181bc42"
+ },
+ "r2/bellwood_veg/Old_Gnarled_Tree": {
+  "assetId": "84983257567580",
+  "bytes": 2034376,
+  "displayName": "R2_bellwood_veg_Old_Gnarled_Tree",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_veg/Old_Gnarled_Tree.glb",
+  "moderation": "Approved",
+  "operationId": "00bbcb94-ccdb-4980-802a-142e061fe7f7",
+  "sha256": "6147503c19ed61b29b5c408e2b95342a7fa231d5e9314e0759534563f48d4b1f"
+ },
+ "r2/bellwood_veg/Reed_Clump_A": {
+  "assetId": "127037060667206",
+  "bytes": 79096,
+  "displayName": "R2_bellwood_veg_Reed_Clump_A",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_veg/Reed_Clump_A.glb",
+  "moderation": "Approved",
+  "operationId": "6a0d0de5-7933-421b-8d68-e07f20aa6dda",
+  "sha256": "93aae5b3401421f3d19e2b4135bc565c51be673c7ae513838512509c3aa4a4fa"
+ },
+ "r2/bellwood_veg/Reed_Clump_B": {
+  "assetId": "120166223011291",
+  "bytes": 340324,
+  "displayName": "R2_bellwood_veg_Reed_Clump_B",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_veg/Reed_Clump_B.glb",
+  "moderation": "Approved",
+  "operationId": "c4a22586-5ad8-4f54-991b-7caa692aab8c",
+  "sha256": "502371d8f857d2e7c327b391b84974d3cae266d5c842371e53a9e5ef09d9d2ec"
+ },
+ "r2/bellwood_veg/Sapling_Tree": {
+  "assetId": "113655823199041",
+  "bytes": 1968816,
+  "displayName": "R2_bellwood_veg_Sapling_Tree",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_veg/Sapling_Tree.glb",
+  "moderation": "Approved",
+  "operationId": "e4b742b7-4db5-46ad-a165-9b5c8cc6ddf2",
+  "sha256": "41d23a1c91729803ec543e2dc2922ec206ad3348da6c0d651a8a557bb6e78f29"
+ },
+ "r2/bellwood_veg/Shrub_Berry": {
+  "assetId": "88062911283339",
+  "bytes": 2177880,
+  "displayName": "R2_bellwood_veg_Shrub_Berry",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_veg/Shrub_Berry.glb",
+  "moderation": "Approved",
+  "operationId": "41362134-e826-4ca6-b709-836b68c27b15",
+  "sha256": "3bd117b4616bbeefb34f8a5db1da809db785a7e70d49b1addc00d1272878d831"
+ },
+ "r2/bellwood_veg/Shrub_Hazel": {
+  "assetId": "121867039940945",
+  "bytes": 1845460,
+  "displayName": "R2_bellwood_veg_Shrub_Hazel",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_veg/Shrub_Hazel.glb",
+  "moderation": "Approved",
+  "operationId": "e6e4e627-b51a-4dfa-a012-adc8759c8877",
+  "sha256": "411e69d770d8e36594755c2c48851a51f0fbc1d1cd1f7f53f72cd0e1adad8f46"
+ },
+ "r2/bellwood_veg/Shrub_Thicket": {
+  "assetId": "105892527705568",
+  "bytes": 1936376,
+  "displayName": "R2_bellwood_veg_Shrub_Thicket",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_veg/Shrub_Thicket.glb",
+  "moderation": "Approved",
+  "operationId": "27183394-2d60-4d8a-831e-3848208a9216",
+  "sha256": "e930e061640e5d3211c49cecf299c568123f1e19cf5d7b18117623f3c793b9f7"
+ },
+ "r2/bellwood_veg/Tree_Stump_A": {
+  "assetId": "106809702641374",
+  "bytes": 3909060,
+  "displayName": "R2_bellwood_veg_Tree_Stump_A",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_veg/Tree_Stump_A.glb",
+  "moderation": "Approved",
+  "operationId": "82c0cceb-1009-42e9-8b51-a545c242ab63",
+  "sha256": "f8bc53c05c79f93daac9767084fb1f1ab7c9111aa6faf0e3f4ac51480a1e8c50"
+ },
+ "r2/bellwood_veg/Tree_Stump_B": {
+  "assetId": "87754585905267",
+  "bytes": 3908460,
+  "displayName": "R2_bellwood_veg_Tree_Stump_B",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_veg/Tree_Stump_B.glb",
+  "moderation": "Approved",
+  "operationId": "0c48b592-e4e5-4f01-8cda-28a2dc2858ec",
+  "sha256": "3b28260f07c8635d94329027bb9664aa890c6801b047ddaf2af433f229f4381c"
+ },
+ "r2/bellwood_veg/Vine_Hanging": {
+  "assetId": "70529603913590",
+  "bytes": 1762412,
+  "displayName": "R2_bellwood_veg_Vine_Hanging",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/bellwood_veg/Vine_Hanging.glb",
+  "moderation": "Approved",
+  "operationId": "a1a834d0-90a5-48b5-85ff-932ded6246cb",
+  "sha256": "a29a4833b0746f5b759a545d9d6982b90272133bb477b826199d5753681bc4ac"
+ },
+ "r2/hero/Basin_Gate_Statue": {
+  "assetId": "114787283644372",
+  "bytes": 171908,
+  "displayName": "R2_hero_Basin_Gate_Statue",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/hero/Basin_Gate_Statue.glb",
+  "moderation": "Approved",
+  "operationId": "831d4e35-ea16-4ca8-ae43-b590f83c96d2",
+  "sha256": "f544126e18328e2fc18ec3d79667b93b55b9593fab7caa4fb47a0c3c673d477d"
+ },
+ "r2/hero/Ravine_Aqueduct_Arch": {
+  "assetId": "129272920546533",
+  "bytes": 269788,
+  "displayName": "R2_hero_Ravine_Aqueduct_Arch",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/hero/Ravine_Aqueduct_Arch.glb",
+  "moderation": "Approved",
+  "operationId": "73618566-61f7-4383-99d5-f22957d68cbc",
+  "sha256": "50e627b8ec018f14bc287c72ace5093817a32b2e5117c265115f1c16ef87275f"
+ },
+ "r2/hero/Snow_Watch_Beacon": {
+  "assetId": "109174562052209",
+  "bytes": 338704,
+  "displayName": "R2_hero_Snow_Watch_Beacon",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/hero/Snow_Watch_Beacon.glb",
+  "moderation": "Approved",
+  "operationId": "be4c9814-b9b1-4f3c-b7c6-a486400db5be",
+  "sha256": "2ae15e71e61275f8b68730ee7351d737c562b73b981268c8d0ddf0740f7583ce"
+ },
+ "r2/hero/Summit_Temple_Pagoda": {
+  "assetId": "72425278265108",
+  "bytes": 384008,
+  "displayName": "R2_hero_Summit_Temple_Pagoda",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/hero/Summit_Temple_Pagoda.glb",
+  "moderation": "Approved",
+  "operationId": "d6f69572-b9c7-4a9c-a2c6-5e622e9592f0",
+  "sha256": "ace93fa5c5d521f97f697dcef87e82d6ac7dcaf9ecc03bc9ff02f4c346bd5219"
+ },
+ "r2/hero/Summit_Temple_Wing": {
+  "assetId": "107566223085782",
+  "bytes": 330628,
+  "displayName": "R2_hero_Summit_Temple_Wing",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/hero/Summit_Temple_Wing.glb",
+  "moderation": "Approved",
+  "operationId": "042ac002-8d79-49df-8a77-30e7c379e85d",
+  "sha256": "26cdbfcc70a77a9b6f4598d4163c19a535e8979ab85a6bae24800a521c3017b1"
+ },
+ "r2/slice/Bell_Lantern_Post": {
+  "assetId": "125402338623521",
+  "bytes": 1524668,
+  "displayName": "R2_slice_Bell_Lantern_Post",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/slice/Bell_Lantern_Post.glb",
+  "moderation": "Approved",
+  "operationId": "86ea0bd8-4fbc-4632-a614-706fc8c65b63",
+  "sha256": "f065973becf021a33d4c61dd22144abe27516bc4bac3da0eb6246501769bd19b"
+ },
+ "r2/slice/Bell_Stair_Segment": {
+  "assetId": "130495783101241",
+  "bytes": 1374736,
+  "displayName": "R2_slice_Bell_Stair_Segment",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/slice/Bell_Stair_Segment.glb",
+  "moderation": "Approved",
+  "operationId": "161123aa-e87c-4126-ba68-aa75b8f8da78",
+  "sha256": "cf4a4b4d9854e4ae1ce8ee1d2a484a13bbfcfbdc3c93b55b345319f0594dd164"
+ },
+ "r2/slice/Bell_Terrace_Pavilion": {
+  "assetId": "91707596872913",
+  "bytes": 4420260,
+  "displayName": "R2_slice_Bell_Terrace_Pavilion",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/slice/Bell_Terrace_Pavilion.glb",
+  "moderation": "Approved",
+  "operationId": "c60a8789-cd53-474b-9ac0-e6595b4dc342",
+  "sha256": "0549180a0b7d82c158634aaf4b6944357f6602c57efe5c09178194bbb7369955"
+ },
+ "r2/slice/Bell_Terrace_Wall": {
+  "assetId": "110785420369583",
+  "bytes": 1324688,
+  "displayName": "R2_slice_Bell_Terrace_Wall",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/slice/Bell_Terrace_Wall.glb",
+  "moderation": "Approved",
+  "operationId": "8d7d4077-37dc-436c-a424-2a4ea6c05aa7",
+  "sha256": "3d43bb5ed31ea0a5beccc11136d0493dbdd9027d1790d60e97a9822bec979388"
+ },
+ "r2/slice/Bell_Timber_Gate": {
+  "assetId": "127320223590675",
+  "bytes": 2723848,
+  "displayName": "R2_slice_Bell_Timber_Gate",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/slice/Bell_Timber_Gate.glb",
+  "moderation": "Approved",
+  "operationId": "12dcc69f-78a4-4ed5-a219-99e8d9f0824f",
+  "sha256": "6c623f6284cc4399477d847a9c673dad195ccabd3956e9e52d93663a76da6d90"
+ },
+ "r2/slice/Bell_Tower_Broken": {
+  "assetId": "100308759094920",
+  "bytes": 2861528,
+  "displayName": "R2_slice_Bell_Tower_Broken",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/slice/Bell_Tower_Broken.glb",
+  "moderation": "Approved",
+  "operationId": "efc205bb-c8cb-4070-a20e-52107be46e5a",
+  "sha256": "e58422e1d5856f74aadcdfc3d57fcf0a8c180f79186a860e55c2554b66d4cb99"
+ },
+ "r2/slice/Boulder_Granite_A": {
+  "assetId": "89814370055320",
+  "bytes": 5581936,
+  "displayName": "R2_slice_Boulder_Granite_A",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/slice/Boulder_Granite_A.glb",
+  "moderation": "Approved",
+  "operationId": "4b2e9a44-56a3-4331-96e6-e9cd25bbe6bb",
+  "sha256": "4e62c21f9bbb2fd5d6c1a8e19c5fe267ebda7b028869a8152ed6ea7fd4217676"
+ },
+ "r2/slice/Boulder_Granite_B": {
+  "assetId": "100435298729900",
+  "bytes": 5750552,
+  "displayName": "R2_slice_Boulder_Granite_B",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/slice/Boulder_Granite_B.glb",
+  "moderation": "Approved",
+  "operationId": "a41a6e31-34ef-45ad-800f-408de1a11f70",
+  "sha256": "b15db2cde9a47ed6686110f623b15fe3dd29e5f35fcf8daffcc1bbe5874111a6"
+ },
+ "r2/slice/Boulder_Granite_C": {
+  "assetId": "130229706285630",
+  "bytes": 5675160,
+  "displayName": "R2_slice_Boulder_Granite_C",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/slice/Boulder_Granite_C.glb",
+  "moderation": "Approved",
+  "operationId": "d98ee54b-6cb8-4b2f-87d1-6725da883ca4",
+  "sha256": "1d5a93a8136436c3a2accb829a4b315d5838ea889f3cd0bd1d297fd8f8213852"
+ },
+ "r2/slice/Canopy_Tree_A": {
+  "assetId": "133114704843108",
+  "bytes": 2284320,
+  "displayName": "R2_slice_Canopy_Tree_A",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/slice/Canopy_Tree_A.glb",
+  "moderation": "Approved",
+  "operationId": "89f6d384-ff73-4f7b-899a-59d37549bf2f",
+  "sha256": "f1517c2ab4720a5e9a675e83babf3b5e7e3dabe1098f842b85fa151f8d05fe82"
+ },
+ "r2/slice/Canopy_Tree_B": {
+  "assetId": "108625100076655",
+  "bytes": 2504264,
+  "displayName": "R2_slice_Canopy_Tree_B",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/slice/Canopy_Tree_B.glb",
+  "moderation": "Approved",
+  "operationId": "88164a07-d31c-4b91-8b70-5035d6bfc42f",
+  "sha256": "0ef6c0cfcc041e5f1653163fb063375310b191ad093238d80110154cc2d4211b"
+ },
+ "r2/slice/Fern_Clump": {
+  "assetId": "96651258348560",
+  "bytes": 222492,
+  "displayName": "R2_slice_Fern_Clump",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/slice/Fern_Clump.glb",
+  "moderation": "Approved",
+  "operationId": "b508573d-d63b-4d15-b0b9-0ebc9fa411f4",
+  "sha256": "0761f09b501e95a9f795b09abdc27c45a5e409e731aac888e23dc3b794433ea0"
+ },
+ "r2/slice/Grass_Clump": {
+  "assetId": "106545089671787",
+  "bytes": 62600,
+  "displayName": "R2_slice_Grass_Clump",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/slice/Grass_Clump.glb",
+  "moderation": "Approved",
+  "operationId": "65b306de-b838-4cc0-921c-1f9039ef40d9",
+  "sha256": "3cab3d582eb45092a0bd0b560a67a8fd15532752494f6d070237ec5f38ce7d46"
+ },
+ "r2/slice/Stepping_Stones": {
+  "assetId": "131365920568138",
+  "bytes": 5517344,
+  "displayName": "R2_slice_Stepping_Stones",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/slice/Stepping_Stones.glb",
+  "moderation": "Approved",
+  "operationId": "8cbb119d-b880-4cf8-a815-4af5dce666e8",
+  "sha256": "7d06c3331631d45c25534a0f69395b529f2dfd9687455aee88325dde400f2933"
+ },
+ "r2/slice/Understory_Shrub": {
+  "assetId": "121146412623500",
+  "bytes": 1887456,
+  "displayName": "R2_slice_Understory_Shrub",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/slice/Understory_Shrub.glb",
+  "moderation": "Approved",
+  "operationId": "e3c268fe-abd2-45c0-b495-fa8c7bb7a322",
+  "sha256": "2c80a28880fca31a6913bf7a50a53169abc2ac1fc772b2839fa4032369313149"
+ },
+ "r2/slice/Understory_Shrub_Small": {
+  "assetId": "74048743015238",
+  "bytes": 1768468,
+  "displayName": "R2_slice_Understory_Shrub_Small",
+  "error": null,
+  "file": "work/mac-resume-2026-11-18/retone2/slice/Understory_Shrub_Small.glb",
+  "moderation": "Approved",
+  "operationId": "16db0d50-a6bd-4f8c-87b5-0e90411f787b",
+  "sha256": "ba48a75522d47c278820eb526783d6c3024ac9a2957c25c7fd8a1811df8a3626"
+ }
+}

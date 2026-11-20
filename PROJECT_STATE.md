@@ -691,3 +691,5 @@ Studio diagnostic: all 8 altars wake correctly, and reclaim/forfeit work. Fixed:
 2026-11-19 Windows run 4 (Opus lead): checkpoint verified (SHA, Studio digest 1396434633); verify_all exit 1 = libm drift, fixed (massing 14769/0). Statues pass 2 baked; creator sent new statue refs 06/07, pass 3 brief win-60 queued. Gargoyles/trees and architecture stopped mid re-bake at usage limit (WIP committed). Next: resume win-62/63, statue pass 3, gate (a) sheet.
 
 2026-11-20 Windows (Codex): finished the Vesperhold art rebakes and statue pass 3. Gate (a) contact sheet and mesh ledger are in outputs/vesperhold/kit-renders-win. Full local verifier passed 14/14 with a temporary place. Next is the creator's pre-upload art review. See outputs/claude-open-world-2026-11-14/workers/win-64-vesp-gate-a.md.
+
+- 2026-11-20 Windows run 4 (lead): uploaded the approved Vesperhold set (38 pieces, 67 assets; 29 oversized pieces split in two) and 101 forest re-tones, all Approved and read back. Registries updated; full Lune suite passes. Next: seven Play views on a local copy, then statues pass 4 and held pieces.

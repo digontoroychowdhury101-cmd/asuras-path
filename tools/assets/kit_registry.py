@@ -25,6 +25,9 @@ KITS = {
 OPTIONAL = {"vesperhold"}
 # Kits whose manifest is the Vesperhold generator's (pieces -> sub_meshes), not an importer upload_manifest.
 VESP_MANIFEST = "assets/source/vesperhold/{pack}/manifest.json"
+# Kits whose uploaded GLBs may carry maps their upload manifest does not list (Vesperhold maps travel in the model; the far
+# atlases gained Normal + metallicRoughness in the mac-26/mac-30 re-tone).
+EXTRA_MAPS = {"vesperhold", "bellwood_far"}
 # Required today: SliceKitRegistry (SliceDressing.luau pcall-require), Amberfall/SaltreachKitRegistry (BiomeDressing.luau). The rest have no consumer yet.
 ID = re.compile(r"rbxassetid://[1-9][0-9]{5,19}")
 MAPS = ("ColorMap", "NormalMap", "RoughnessMap", "MetalnessMap")
@@ -78,7 +81,7 @@ def validate(kit, root, allow_missing=(), vesp_manifests=None):
                     if v:
                         if not (isinstance(v, str) and ID.fullmatch(v)):
                             errs.append(f"{key}.{f}: not a rbxassetid://<positive integer> string ({v!r})")
-                        elif f not in need and f != "MetalnessMap" and kit != "vesperhold":  # importer derives MetalnessMap from packed metallicRoughness
+                        elif f not in need and f != "MetalnessMap" and kit not in EXTRA_MAPS:  # importer derives MetalnessMap from packed metallicRoughness
                             errs.append(f"{key}.{f}: material {mat} has no such map")
                     elif f in need and not (bare and f != "MeshId"):
                         errs.append(f"{key}.{f}: not a rbxassetid://<positive integer> string ({v!r})")

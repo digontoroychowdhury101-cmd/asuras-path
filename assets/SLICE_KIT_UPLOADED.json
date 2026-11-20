@@ -2,126 +2,142 @@
   "note": "Real IDs only. modelAssets = Assets API Model id (LoadAsset target). pieces = sub-mesh MeshId/maps read from a verified LoadAsset (2026-11-16).",
   "modelAssets": {
     "Bell_Lantern_Post": {
-      "assetId": "rbxassetid://106633407703784",
-      "operationId": "a18c4491-d60d-4a82-aa02-e47f77770fff",
-      "source": "assets/source/overworld/upload/slice/Bell_Lantern_Post.glb",
-      "uploaded": "2026-11-16",
-      "moderationState": "Approved"
+      "assetId": "rbxassetid://125402338623521",
+      "operationId": "86ea0bd8-4fbc-4632-a614-706fc8c65b63",
+      "source": "work/mac-resume-2026-11-18/retone2/slice/Bell_Lantern_Post.glb",
+      "uploaded": "2026-11-20",
+      "moderationState": "Approved",
+      "replaces": "rbxassetid://106633407703784"
     },
     "Bell_Stair_Segment": {
-      "assetId": "rbxassetid://109850801774463",
-      "operationId": "a17fa004-3f3f-4e8f-82b2-25b78eb53037",
-      "source": "assets/source/overworld/upload/slice/Bell_Stair_Segment",
-      "uploaded": "2026-11-16",
-      "moderationState": "Approved"
+      "assetId": "rbxassetid://130495783101241",
+      "operationId": "161123aa-e87c-4126-ba68-aa75b8f8da78",
+      "source": "work/mac-resume-2026-11-18/retone2/slice/Bell_Stair_Segment.glb",
+      "uploaded": "2026-11-20",
+      "moderationState": "Approved",
+      "replaces": "rbxassetid://109850801774463"
     },
     "Bell_Terrace_Pavilion": {
-      "assetId": "rbxassetid://95430125213617",
-      "operationId": "d5756466-8037-40fb-9a8b-b3763b42c1aa",
-      "source": "assets/source/overworld/upload/slice/Bell_Terrace_Pavilion",
-      "uploaded": "2026-11-16",
-      "moderationState": "Approved"
+      "assetId": "rbxassetid://91707596872913",
+      "operationId": "c60a8789-cd53-474b-9ac0-e6595b4dc342",
+      "source": "work/mac-resume-2026-11-18/retone2/slice/Bell_Terrace_Pavilion.glb",
+      "uploaded": "2026-11-20",
+      "moderationState": "Approved",
+      "replaces": "rbxassetid://95430125213617"
     },
     "Bell_Terrace_Wall": {
-      "assetId": "rbxassetid://73801276031015",
-      "operationId": "35ecbd3a-f729-4530-8254-be2b7bc0abd2",
-      "source": "assets/source/overworld/upload/slice/Bell_Terrace_Wall",
-      "uploaded": "2026-11-16",
-      "moderationState": "Approved"
+      "assetId": "rbxassetid://110785420369583",
+      "operationId": "8d7d4077-37dc-436c-a424-2a4ea6c05aa7",
+      "source": "work/mac-resume-2026-11-18/retone2/slice/Bell_Terrace_Wall.glb",
+      "uploaded": "2026-11-20",
+      "moderationState": "Approved",
+      "replaces": "rbxassetid://73801276031015"
     },
     "Bell_Timber_Gate": {
-      "assetId": "rbxassetid://90855504530205",
-      "operationId": "85231b6b-2605-4901-93dc-0fbd2a2dc955",
-      "source": "assets/source/overworld/upload/slice/Bell_Timber_Gate",
-      "uploaded": "2026-11-16",
-      "moderationState": "Approved"
+      "assetId": "rbxassetid://127320223590675",
+      "operationId": "12dcc69f-78a4-4ed5-a219-99e8d9f0824f",
+      "source": "work/mac-resume-2026-11-18/retone2/slice/Bell_Timber_Gate.glb",
+      "uploaded": "2026-11-20",
+      "moderationState": "Approved",
+      "replaces": "rbxassetid://90855504530205"
     },
     "Bell_Tower_Broken": {
-      "assetId": "rbxassetid://77362183523751",
-      "operationId": "f9eeadbb-e28e-415a-a6b3-113f48523735",
-      "source": "assets/source/overworld/upload/slice/Bell_Tower_Broken",
-      "uploaded": "2026-11-16",
-      "moderationState": "Approved"
+      "assetId": "rbxassetid://100308759094920",
+      "operationId": "efc205bb-c8cb-4070-a20e-52107be46e5a",
+      "source": "work/mac-resume-2026-11-18/retone2/slice/Bell_Tower_Broken.glb",
+      "uploaded": "2026-11-20",
+      "moderationState": "Approved",
+      "replaces": "rbxassetid://77362183523751"
     },
     "Boulder_Granite_A": {
-      "assetId": "rbxassetid://89168332530533",
-      "operationId": "6a25038d-2a2f-46c6-8c38-24dd23aa7e50",
-      "source": "assets/source/overworld/upload/slice/Boulder_Granite_A",
-      "uploaded": "2026-11-16",
-      "moderationState": "Approved"
+      "assetId": "rbxassetid://89814370055320",
+      "operationId": "4b2e9a44-56a3-4331-96e6-e9cd25bbe6bb",
+      "source": "work/mac-resume-2026-11-18/retone2/slice/Boulder_Granite_A.glb",
+      "uploaded": "2026-11-20",
+      "moderationState": "Approved",
+      "replaces": "rbxassetid://89168332530533"
     },
     "Boulder_Granite_B": {
-      "assetId": "rbxassetid://137537542245531",
-      "operationId": "d8da1b2a-95ff-4730-bd04-430591c1aa97",
-      "source": "assets/source/overworld/upload/slice/Boulder_Granite_B.glb",
-      "uploaded": "2026-11-16",
-      "moderationState": "Approved"
+      "assetId": "rbxassetid://100435298729900",
+      "operationId": "a41a6e31-34ef-45ad-800f-408de1a11f70",
+      "source": "work/mac-resume-2026-11-18/retone2/slice/Boulder_Granite_B.glb",
+      "uploaded": "2026-11-20",
+      "moderationState": "Approved",
+      "replaces": "rbxassetid://137537542245531"
     },
     "Boulder_Granite_C": {
-      "assetId": "rbxassetid://72049827651379",
-      "operationId": "3c270b42-b783-40c2-90b2-2c849f848cad",
-      "source": "assets/source/overworld/upload/slice/Boulder_Granite_C.glb",
-      "uploaded": "2026-11-16",
-      "moderationState": "Approved"
+      "assetId": "rbxassetid://130229706285630",
+      "operationId": "d98ee54b-6cb8-4b2f-87d1-6725da883ca4",
+      "source": "work/mac-resume-2026-11-18/retone2/slice/Boulder_Granite_C.glb",
+      "uploaded": "2026-11-20",
+      "moderationState": "Approved",
+      "replaces": "rbxassetid://72049827651379"
     },
     "Canopy_Tree_A": {
-      "assetId": "rbxassetid://109718244979586",
-      "operationId": "0ef76891-f379-42ad-963d-7c1cb0b0ccc4",
-      "source": "assets/source/overworld/upload/slice/Canopy_Tree_A.glb",
-      "uploaded": "2026-11-16",
-      "moderationState": "Approved"
+      "assetId": "rbxassetid://133114704843108",
+      "operationId": "89f6d384-ff73-4f7b-899a-59d37549bf2f",
+      "source": "work/mac-resume-2026-11-18/retone2/slice/Canopy_Tree_A.glb",
+      "uploaded": "2026-11-20",
+      "moderationState": "Approved",
+      "replaces": "rbxassetid://109718244979586"
     },
     "Fern_Clump": {
-      "assetId": "rbxassetid://124332132677081",
-      "operationId": "2b204fc3-bac0-4db7-a369-33c6deb84299",
-      "source": "assets/source/overworld/upload/slice/Fern_Clump.glb",
-      "uploaded": "2026-11-16",
-      "moderationState": "Approved"
+      "assetId": "rbxassetid://96651258348560",
+      "operationId": "b508573d-d63b-4d15-b0b9-0ebc9fa411f4",
+      "source": "work/mac-resume-2026-11-18/retone2/slice/Fern_Clump.glb",
+      "uploaded": "2026-11-20",
+      "moderationState": "Approved",
+      "replaces": "rbxassetid://124332132677081"
     },
     "Grass_Clump": {
-      "assetId": "rbxassetid://139507923725034",
-      "operationId": "667b9198-fe89-4cb8-a0b8-1e3961df7bc7",
-      "source": "assets/source/overworld/upload/slice/Grass_Clump.glb",
-      "uploaded": "2026-11-16",
-      "moderationState": "Approved"
+      "assetId": "rbxassetid://106545089671787",
+      "operationId": "65b306de-b838-4cc0-921c-1f9039ef40d9",
+      "source": "work/mac-resume-2026-11-18/retone2/slice/Grass_Clump.glb",
+      "uploaded": "2026-11-20",
+      "moderationState": "Approved",
+      "replaces": "rbxassetid://139507923725034"
     },
     "Stepping_Stones": {
-      "assetId": "rbxassetid://114476630994510",
-      "operationId": "d39f5e6a-8d00-4b65-ba1c-84570f2f9369",
-      "source": "assets/source/overworld/upload/slice/Stepping_Stones.glb",
-      "uploaded": "2026-11-16",
-      "moderationState": "Approved"
+      "assetId": "rbxassetid://131365920568138",
+      "operationId": "8cbb119d-b880-4cf8-a815-4af5dce666e8",
+      "source": "work/mac-resume-2026-11-18/retone2/slice/Stepping_Stones.glb",
+      "uploaded": "2026-11-20",
+      "moderationState": "Approved",
+      "replaces": "rbxassetid://114476630994510"
     },
     "Understory_Shrub": {
-      "assetId": "rbxassetid://95436990537555",
-      "operationId": "3b6a6188-fcae-4d1e-8843-7f9c9b4fc180",
-      "source": "assets/source/overworld/upload/slice/Understory_Shrub.glb",
-      "uploaded": "2026-11-16",
-      "moderationState": "Approved"
+      "assetId": "rbxassetid://121146412623500",
+      "operationId": "e3c268fe-abd2-45c0-b495-fa8c7bb7a322",
+      "source": "work/mac-resume-2026-11-18/retone2/slice/Understory_Shrub.glb",
+      "uploaded": "2026-11-20",
+      "moderationState": "Approved",
+      "replaces": "rbxassetid://95436990537555"
     },
     "Understory_Shrub_Small": {
-      "assetId": "rbxassetid://85157258650422",
-      "operationId": "d0de3500-9db9-45d3-8494-ad157a03d5a8",
-      "source": "assets/source/overworld/upload/slice/Understory_Shrub_Small.glb",
-      "uploaded": "2026-11-16",
-      "moderationState": "Approved"
+      "assetId": "rbxassetid://74048743015238",
+      "operationId": "16db0d50-a6bd-4f8c-87b5-0e90411f787b",
+      "source": "work/mac-resume-2026-11-18/retone2/slice/Understory_Shrub_Small.glb",
+      "uploaded": "2026-11-20",
+      "moderationState": "Approved",
+      "replaces": "rbxassetid://85157258650422"
     },
     "Canopy_Tree_B": {
-      "assetId": "rbxassetid://106036948034286",
-      "operationId": "99e79254-5e25-41f6-90a3-260e9dcd9332",
-      "source": "assets/source/overworld/upload/slice/Canopy_Tree_B.glb",
-      "uploaded": "2026-11-16",
-      "moderationState": "Approved"
+      "assetId": "rbxassetid://108625100076655",
+      "operationId": "88164a07-d31c-4b91-8b70-5035d6bfc42f",
+      "source": "work/mac-resume-2026-11-18/retone2/slice/Canopy_Tree_B.glb",
+      "uploaded": "2026-11-20",
+      "moderationState": "Approved",
+      "replaces": "rbxassetid://106036948034286"
     }
   },
   "pieces": {
     "Bell_Lantern_Post": {
       "Bell_Lantern_Post__Stone": {
-        "MeshId": "rbxassetid://140330797161785",
         "ColorMap": "rbxassetid://81572422853175",
         "NormalMap": "rbxassetid://133568385555825",
         "RoughnessMap": "rbxassetid://103997890852707",
-        "MetalnessMap": "rbxassetid://87232472257109",
+        "MeshId": "rbxassetid://140330797161785",
+        "MetalnessMap": "rbxassetid://125081447625785",
         "center": [
           0,
           4.93,
@@ -129,11 +145,10 @@
         ]
       },
       "Bell_Lantern_Post__Glow": {
-        "MeshId": "rbxassetid://90883687888028",
         "ColorMap": "rbxassetid://114001902073274",
-        "NormalMap": "",
         "RoughnessMap": "rbxassetid://121476398534218",
-        "MetalnessMap": "rbxassetid://108740570960240",
+        "MeshId": "rbxassetid://90883687888028",
+        "MetalnessMap": "rbxassetid://94036857641017",
         "center": [
           0,
           7.5,
@@ -141,10 +156,10 @@
         ]
       },
       "Bell_Lantern_Post__Bronze": {
-        "MeshId": "rbxassetid://105375408076143",
         "ColorMap": "rbxassetid://95523375764903",
         "NormalMap": "rbxassetid://102789620654437",
         "RoughnessMap": "rbxassetid://136667534942132",
+        "MeshId": "rbxassetid://105375408076143",
         "MetalnessMap": "rbxassetid://132441202373627",
         "center": [
           0,
@@ -155,11 +170,11 @@
     },
     "Bell_Terrace_Pavilion": {
       "Bell_Terrace_Pavilion__Timber": {
-        "MeshId": "rbxassetid://126264560181054",
-        "ColorMap": "rbxassetid://96055445738801",
+        "ColorMap": "rbxassetid://119398947882938",
         "NormalMap": "rbxassetid://76587358494033",
         "RoughnessMap": "rbxassetid://123740114984395",
-        "MetalnessMap": "rbxassetid://89863602509302",
+        "MeshId": "rbxassetid://126264560181054",
+        "MetalnessMap": "rbxassetid://125081447625785",
         "center": [
           0,
           35.1,
@@ -167,11 +182,11 @@
         ]
       },
       "Bell_Terrace_Pavilion__Stone": {
-        "MeshId": "rbxassetid://100604210893915",
         "ColorMap": "rbxassetid://81572422853175",
         "NormalMap": "rbxassetid://133568385555825",
         "RoughnessMap": "rbxassetid://103997890852707",
-        "MetalnessMap": "rbxassetid://89863602509302",
+        "MeshId": "rbxassetid://100604210893915",
+        "MetalnessMap": "rbxassetid://125081447625785",
         "center": [
           0,
           4.45,
@@ -179,11 +194,11 @@
         ]
       },
       "Bell_Terrace_Pavilion__Roof": {
-        "MeshId": "rbxassetid://109582675791694",
-        "ColorMap": "rbxassetid://128308932120433",
+        "ColorMap": "rbxassetid://106493514305029",
         "NormalMap": "rbxassetid://111716354992827",
         "RoughnessMap": "rbxassetid://128047726712318",
-        "MetalnessMap": "rbxassetid://89863602509302",
+        "MeshId": "rbxassetid://109582675791694",
+        "MetalnessMap": "rbxassetid://125081447625785",
         "center": [
           0,
           53.28,
@@ -191,10 +206,10 @@
         ]
       },
       "Bell_Terrace_Pavilion__Bronze": {
-        "MeshId": "rbxassetid://84522974548544",
         "ColorMap": "rbxassetid://95523375764903",
         "NormalMap": "rbxassetid://102789620654437",
         "RoughnessMap": "rbxassetid://136667534942132",
+        "MeshId": "rbxassetid://84522974548544",
         "MetalnessMap": "rbxassetid://132441202373627",
         "center": [
           0,
@@ -205,29 +220,29 @@
     },
     "Boulder_Granite_A": {
       "Boulder_Granite_A__Stone": {
-        "MeshId": "rbxassetid://124120639245669",
         "ColorMap": "rbxassetid://139117478830462",
         "NormalMap": "rbxassetid://70742406201021",
         "RoughnessMap": "rbxassetid://110513024516086",
-        "MetalnessMap": "rbxassetid://70849207112013"
+        "MeshId": "rbxassetid://124120639245669",
+        "MetalnessMap": "rbxassetid://133012910294403"
       }
     },
     "Bell_Terrace_Wall": {
       "Bell_Terrace_Wall__Stone": {
-        "MeshId": "rbxassetid://122047942203587",
         "ColorMap": "rbxassetid://81572422853175",
         "NormalMap": "rbxassetid://133568385555825",
         "RoughnessMap": "rbxassetid://103997890852707",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MeshId": "rbxassetid://122047942203587",
+        "MetalnessMap": "rbxassetid://125081447625785"
       }
     },
     "Bell_Timber_Gate": {
       "Bell_Timber_Gate__Timber": {
-        "MeshId": "rbxassetid://82097647403798",
-        "ColorMap": "rbxassetid://96055445738801",
+        "ColorMap": "rbxassetid://119398947882938",
         "NormalMap": "rbxassetid://76587358494033",
         "RoughnessMap": "rbxassetid://123740114984395",
-        "MetalnessMap": "rbxassetid://89863602509302",
+        "MeshId": "rbxassetid://82097647403798",
+        "MetalnessMap": "rbxassetid://125081447625785",
         "center": [
           0,
           9.5,
@@ -235,11 +250,11 @@
         ]
       },
       "Bell_Timber_Gate__Stone": {
-        "MeshId": "rbxassetid://125696756184777",
         "ColorMap": "rbxassetid://81572422853175",
         "NormalMap": "rbxassetid://133568385555825",
         "RoughnessMap": "rbxassetid://103997890852707",
-        "MetalnessMap": "rbxassetid://89863602509302",
+        "MeshId": "rbxassetid://125696756184777",
+        "MetalnessMap": "rbxassetid://125081447625785",
         "center": [
           0,
           0.7,
@@ -247,10 +262,10 @@
         ]
       },
       "Bell_Timber_Gate__Bronze": {
-        "MeshId": "rbxassetid://136840307969641",
         "ColorMap": "rbxassetid://95523375764903",
         "NormalMap": "rbxassetid://102789620654437",
         "RoughnessMap": "rbxassetid://136667534942132",
+        "MeshId": "rbxassetid://136840307969641",
         "MetalnessMap": "rbxassetid://132441202373627",
         "center": [
           0,
@@ -261,20 +276,20 @@
     },
     "Bell_Stair_Segment": {
       "Bell_Stair_Segment__Stone": {
-        "MeshId": "rbxassetid://106802368292909",
         "ColorMap": "rbxassetid://81572422853175",
         "NormalMap": "rbxassetid://133568385555825",
         "RoughnessMap": "rbxassetid://103997890852707",
-        "MetalnessMap": "rbxassetid://89863602509302"
+        "MeshId": "rbxassetid://106802368292909",
+        "MetalnessMap": "rbxassetid://125081447625785"
       }
     },
     "Bell_Tower_Broken": {
       "Bell_Tower_Broken__Timber": {
-        "MeshId": "rbxassetid://123539211884760",
-        "ColorMap": "rbxassetid://96055445738801",
+        "ColorMap": "rbxassetid://119398947882938",
         "NormalMap": "rbxassetid://76587358494033",
         "RoughnessMap": "rbxassetid://123740114984395",
-        "MetalnessMap": "rbxassetid://89863602509302",
+        "MeshId": "rbxassetid://123539211884760",
+        "MetalnessMap": "rbxassetid://125081447625785",
         "center": [
           8.5,
           26.45,
@@ -282,11 +297,11 @@
         ]
       },
       "Bell_Tower_Broken__Stone": {
-        "MeshId": "rbxassetid://119754048666553",
         "ColorMap": "rbxassetid://81572422853175",
         "NormalMap": "rbxassetid://133568385555825",
         "RoughnessMap": "rbxassetid://103997890852707",
-        "MetalnessMap": "rbxassetid://89863602509302",
+        "MeshId": "rbxassetid://119754048666553",
+        "MetalnessMap": "rbxassetid://125081447625785",
         "center": [
           0,
           14.4,
@@ -294,10 +309,10 @@
         ]
       },
       "Bell_Tower_Broken__Bronze": {
-        "MeshId": "rbxassetid://111550103648342",
         "ColorMap": "rbxassetid://95523375764903",
         "NormalMap": "rbxassetid://102789620654437",
         "RoughnessMap": "rbxassetid://136667534942132",
+        "MeshId": "rbxassetid://111550103648342",
         "MetalnessMap": "rbxassetid://132441202373627",
         "center": [
           8.5,
@@ -308,29 +323,29 @@
     },
     "Fern_Clump": {
       "Fern_Clump__Fronds": {
-        "MeshId": "rbxassetid://93439872028966",
         "ColorMap": "rbxassetid://120844512643299",
         "NormalMap": "rbxassetid://76927146935234",
-        "RoughnessMap": "rbxassetid://107652270472054",
-        "MetalnessMap": "rbxassetid://75451822241265"
+        "RoughnessMap": "rbxassetid://94433417853859",
+        "MeshId": "rbxassetid://93439872028966",
+        "MetalnessMap": "rbxassetid://115183972532059"
       }
     },
     "Boulder_Granite_B": {
       "Boulder_Granite_B__Stone": {
-        "MeshId": "rbxassetid://105004831010665",
         "ColorMap": "rbxassetid://139117478830462",
         "NormalMap": "rbxassetid://70742406201021",
         "RoughnessMap": "rbxassetid://110513024516086",
-        "MetalnessMap": "rbxassetid://70849207112013"
+        "MeshId": "rbxassetid://105004831010665",
+        "MetalnessMap": "rbxassetid://133012910294403"
       }
     },
     "Canopy_Tree_A": {
       "Canopy_Tree_A__Leaves_Mass": {
-        "MeshId": "rbxassetid://134341709077510",
-        "ColorMap": "rbxassetid://102367205742520",
+        "ColorMap": "rbxassetid://77950985710853",
         "NormalMap": "rbxassetid://119940854808716",
-        "RoughnessMap": "rbxassetid://87619770793441",
-        "MetalnessMap": "rbxassetid://89863602509302",
+        "RoughnessMap": "rbxassetid://107948030666204",
+        "MeshId": "rbxassetid://134341709077510",
+        "MetalnessMap": "rbxassetid://125081447625785",
         "center": [
           -0.12,
           30.53,
@@ -338,11 +353,11 @@
         ]
       },
       "Canopy_Tree_A__Leaves_Detail": {
-        "MeshId": "rbxassetid://71909753679555",
-        "ColorMap": "rbxassetid://102367205742520",
+        "ColorMap": "rbxassetid://77950985710853",
         "NormalMap": "rbxassetid://119940854808716",
-        "RoughnessMap": "rbxassetid://87619770793441",
-        "MetalnessMap": "rbxassetid://89863602509302",
+        "RoughnessMap": "rbxassetid://107948030666204",
+        "MeshId": "rbxassetid://71909753679555",
+        "MetalnessMap": "rbxassetid://125081447625785",
         "center": [
           0,
           30.91,
@@ -350,11 +365,11 @@
         ]
       },
       "Canopy_Tree_A__Bark": {
-        "MeshId": "rbxassetid://78779094113215",
-        "ColorMap": "rbxassetid://73636723925754",
+        "ColorMap": "rbxassetid://140594595381269",
         "NormalMap": "rbxassetid://81067035380510",
         "RoughnessMap": "rbxassetid://71120715249359",
-        "MetalnessMap": "rbxassetid://89863602509302",
+        "MeshId": "rbxassetid://78779094113215",
+        "MetalnessMap": "rbxassetid://125081447625785",
         "center": [
           0.59,
           19.13,
@@ -364,20 +379,20 @@
     },
     "Stepping_Stones": {
       "Stepping_Stones__Stone": {
-        "MeshId": "rbxassetid://102312557367330",
         "ColorMap": "rbxassetid://139117478830462",
         "NormalMap": "rbxassetid://70742406201021",
         "RoughnessMap": "rbxassetid://110513024516086",
-        "MetalnessMap": "rbxassetid://70849207112013"
+        "MeshId": "rbxassetid://102312557367330",
+        "MetalnessMap": "rbxassetid://133012910294403"
       }
     },
     "Canopy_Tree_B": {
       "Canopy_Tree_B__Leaves_Mass": {
-        "MeshId": "rbxassetid://120869549008862",
-        "ColorMap": "rbxassetid://102367205742520",
+        "ColorMap": "rbxassetid://77950985710853",
         "NormalMap": "rbxassetid://119940854808716",
-        "RoughnessMap": "rbxassetid://87619770793441",
-        "MetalnessMap": "rbxassetid://89863602509302",
+        "RoughnessMap": "rbxassetid://107948030666204",
+        "MeshId": "rbxassetid://120869549008862",
+        "MetalnessMap": "rbxassetid://125081447625785",
         "center": [
           0.98,
           35.59,
@@ -385,11 +400,11 @@
         ]
       },
       "Canopy_Tree_B__Leaves_Detail": {
-        "MeshId": "rbxassetid://120722516854654",
-        "ColorMap": "rbxassetid://102367205742520",
+        "ColorMap": "rbxassetid://77950985710853",
         "NormalMap": "rbxassetid://119940854808716",
-        "RoughnessMap": "rbxassetid://87619770793441",
-        "MetalnessMap": "rbxassetid://89863602509302",
+        "RoughnessMap": "rbxassetid://107948030666204",
+        "MeshId": "rbxassetid://120722516854654",
+        "MetalnessMap": "rbxassetid://125081447625785",
         "center": [
           0,
           35.57,
@@ -397,11 +412,11 @@
         ]
       },
       "Canopy_Tree_B__Bark": {
-        "MeshId": "rbxassetid://110462169785709",
-        "ColorMap": "rbxassetid://73636723925754",
+        "ColorMap": "rbxassetid://140594595381269",
         "NormalMap": "rbxassetid://81067035380510",
         "RoughnessMap": "rbxassetid://71120715249359",
-        "MetalnessMap": "rbxassetid://89863602509302",
+        "MeshId": "rbxassetid://110462169785709",
+        "MetalnessMap": "rbxassetid://125081447625785",
         "center": [
           1.09,
           27.81,
@@ -411,29 +426,29 @@
     },
     "Boulder_Granite_C": {
       "Boulder_Granite_C__Stone": {
-        "MeshId": "rbxassetid://77466716156519",
         "ColorMap": "rbxassetid://139117478830462",
         "NormalMap": "rbxassetid://70742406201021",
         "RoughnessMap": "rbxassetid://110513024516086",
-        "MetalnessMap": "rbxassetid://70849207112013"
+        "MeshId": "rbxassetid://77466716156519",
+        "MetalnessMap": "rbxassetid://133012910294403"
       }
     },
     "Grass_Clump": {
       "Grass_Clump__Blades": {
-        "MeshId": "rbxassetid://80619023352358",
-        "ColorMap": "rbxassetid://123146635625497",
+        "ColorMap": "rbxassetid://125080023950582",
         "NormalMap": "rbxassetid://101251167936328",
-        "RoughnessMap": "rbxassetid://73488916920199",
-        "MetalnessMap": "rbxassetid://88132622876934"
+        "RoughnessMap": "rbxassetid://99114002507880",
+        "MeshId": "rbxassetid://80619023352358",
+        "MetalnessMap": "rbxassetid://105771938566568"
       }
     },
     "Understory_Shrub_Small": {
       "Understory_Shrub_Small__Stems": {
-        "MeshId": "rbxassetid://106633501014225",
-        "ColorMap": "rbxassetid://73636723925754",
+        "ColorMap": "rbxassetid://140594595381269",
         "NormalMap": "rbxassetid://81067035380510",
         "RoughnessMap": "rbxassetid://71120715249359",
-        "MetalnessMap": "rbxassetid://89863602509302",
+        "MeshId": "rbxassetid://106633501014225",
+        "MetalnessMap": "rbxassetid://125081447625785",
         "center": [
           0.06,
           1.74,
@@ -441,11 +456,11 @@
         ]
       },
       "Understory_Shrub_Small__Leaves": {
-        "MeshId": "rbxassetid://121844978936060",
-        "ColorMap": "rbxassetid://102367205742520",
+        "ColorMap": "rbxassetid://77950985710853",
         "NormalMap": "rbxassetid://119940854808716",
-        "RoughnessMap": "rbxassetid://87619770793441",
-        "MetalnessMap": "rbxassetid://89863602509302",
+        "RoughnessMap": "rbxassetid://107948030666204",
+        "MeshId": "rbxassetid://121844978936060",
+        "MetalnessMap": "rbxassetid://125081447625785",
         "center": [
           0,
           1.73,
@@ -455,11 +470,11 @@
     },
     "Understory_Shrub": {
       "Understory_Shrub__Stems": {
-        "MeshId": "rbxassetid://86668274498882",
-        "ColorMap": "rbxassetid://73636723925754",
+        "ColorMap": "rbxassetid://140594595381269",
         "NormalMap": "rbxassetid://81067035380510",
         "RoughnessMap": "rbxassetid://71120715249359",
-        "MetalnessMap": "rbxassetid://89863602509302",
+        "MeshId": "rbxassetid://86668274498882",
+        "MetalnessMap": "rbxassetid://125081447625785",
         "center": [
           0.11,
           3.86,
@@ -467,11 +482,11 @@
         ]
       },
       "Understory_Shrub__Leaves": {
-        "MeshId": "rbxassetid://106680352083639",
-        "ColorMap": "rbxassetid://102367205742520",
+        "ColorMap": "rbxassetid://77950985710853",
         "NormalMap": "rbxassetid://119940854808716",
-        "RoughnessMap": "rbxassetid://87619770793441",
-        "MetalnessMap": "rbxassetid://89863602509302",
+        "RoughnessMap": "rbxassetid://107948030666204",
+        "MeshId": "rbxassetid://106680352083639",
+        "MetalnessMap": "rbxassetid://125081447625785",
         "center": [
           0,
           3.69,

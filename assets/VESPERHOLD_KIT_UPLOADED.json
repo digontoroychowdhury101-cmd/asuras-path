@@ -1,0 +1,3210 @@
+{
+  "modelAssets": {
+    "Arcade_Bay_40": {
+      "assetId": "rbxassetid://114034603297988",
+      "moderationState": "Approved",
+      "operationId": "ff024498-dd1f-477e-82e7-5c7dd1d9d068",
+      "uploaded": "2026-11-20"
+    },
+    "Arcade_Bay_50": {
+      "assetId": "rbxassetid://135497919203235",
+      "moderationState": "Approved",
+      "operationId": "2b3092db-f256-46e8-b829-1d6c1d5115eb",
+      "uploaded": "2026-11-20"
+    },
+    "Arcade_Bay_60": {
+      "assetId": "rbxassetid://97385171215572",
+      "moderationState": "Approved",
+      "operationId": "b3b81f71-3ba0-4712-9aba-f47a0538d0d3",
+      "uploaded": "2026-11-20"
+    },
+    "Arcade_Corner": {
+      "assetId": "rbxassetid://84689787189389",
+      "moderationState": "Approved",
+      "operationId": "72032c63-b77f-48b5-87ce-143938dd8012",
+      "uploaded": "2026-11-20"
+    },
+    "Balustrade_20": {
+      "assetId": "rbxassetid://83403378693445",
+      "moderationState": "Approved",
+      "operationId": "5029d1e0-9fff-4d53-8f68-0d5813598b08",
+      "uploaded": "2026-11-20"
+    },
+    "Bastion_Face": {
+      "assetId": "rbxassetid://135933335578659",
+      "moderationState": "Approved",
+      "operationId": "89bbaa50-1f4d-4e98-9867-9eef9e9f9b8a",
+      "uploaded": "2026-11-20"
+    },
+    "Buttress_Pier": {
+      "assetId": "rbxassetid://134168841192105",
+      "moderationState": "Approved",
+      "operationId": "433dbb67-eec4-4dde-83e9-ef276b3b8533",
+      "uploaded": "2026-11-20"
+    },
+    "Cornice_20": {
+      "assetId": "rbxassetid://82905384682753",
+      "moderationState": "Approved",
+      "operationId": "f7d6d0af-e6e8-41ed-96e6-0e4581298f2b",
+      "uploaded": "2026-11-20"
+    },
+    "Dead_Log_A": {
+      "assetId": "rbxassetid://87753601357338",
+      "moderationState": "Approved",
+      "operationId": "76e07c1b-7b63-4530-a8c1-c3958594ded5",
+      "uploaded": "2026-11-20"
+    },
+    "Dead_Log_B": {
+      "assetId": "rbxassetid://99973068133767",
+      "moderationState": "Approved",
+      "operationId": "d4bb272a-0d14-49e1-80c6-e7e619e00024",
+      "uploaded": "2026-11-20"
+    },
+    "Dead_Oak_Gnarled_A": {
+      "assetId": "rbxassetid://109532424193448",
+      "moderationState": "Approved",
+      "operationId": "00834e28-97d4-4200-aecd-a1aacacff1de",
+      "uploaded": "2026-11-20"
+    },
+    "Dead_Oak_Gnarled_B": {
+      "assetId": "rbxassetid://93173535146718",
+      "moderationState": "Approved",
+      "operationId": "6f3afb28-cdce-4510-933f-5634b1007d1d",
+      "uploaded": "2026-11-20"
+    },
+    "Door_Iron": {
+      "assetId": "rbxassetid://106082442688876",
+      "moderationState": "Approved",
+      "operationId": "e8e9dd5f-b80c-491e-a3de-eb9b8e4fe108",
+      "uploaded": "2026-11-20"
+    },
+    "Finial": {
+      "assetId": "rbxassetid://117453035194900",
+      "moderationState": "Approved",
+      "operationId": "b526f461-b1e9-4873-b772-248e28c254b8",
+      "uploaded": "2026-11-20"
+    },
+    "Flying_Buttress_40": {
+      "assetId": "rbxassetid://102617857586395",
+      "moderationState": "Approved",
+      "operationId": "38a37d39-5ccf-4da7-9127-cd0a747127f8",
+      "uploaded": "2026-11-20"
+    },
+    "Flying_Buttress_60": {
+      "assetId": "rbxassetid://135575382508343",
+      "moderationState": "Approved",
+      "operationId": "c302810e-6de3-4ea2-b7ee-a40cb3c89f20",
+      "uploaded": "2026-11-20"
+    },
+    "Gargoyle_A": {
+      "assetId": "rbxassetid://94687077564229",
+      "moderationState": "Approved",
+      "operationId": "69e1ca7f-ef29-4470-b61d-1f811c400dee",
+      "uploaded": "2026-11-20"
+    },
+    "Gargoyle_B": {
+      "assetId": "rbxassetid://125444611158653",
+      "moderationState": "Approved",
+      "operationId": "f5df02c9-8ac8-4cb2-add1-77b7045ac8db",
+      "uploaded": "2026-11-20"
+    },
+    "Lancet_Pair": {
+      "assetId": "rbxassetid://78772362584692",
+      "moderationState": "Approved",
+      "operationId": "9dd0eb25-863c-43df-955c-73a59461373a",
+      "uploaded": "2026-11-20"
+    },
+    "Lancet_Tall": {
+      "assetId": "rbxassetid://138083931516586",
+      "moderationState": "Approved",
+      "operationId": "ed78e95a-1b43-475b-a7d8-3d995e99ca2a",
+      "uploaded": "2026-11-20"
+    },
+    "Parapet_Gothic_20": {
+      "assetId": "rbxassetid://106745063265694",
+      "moderationState": "Approved",
+      "operationId": "fb95d8d7-b158-4976-beed-f585b2da2180",
+      "uploaded": "2026-11-20"
+    },
+    "Pinnacle_Crocket_L": {
+      "assetId": "rbxassetid://132550976026921",
+      "moderationState": "Approved",
+      "operationId": "9087e1c3-4770-415e-ab2d-2c7158c18e2a",
+      "uploaded": "2026-11-20"
+    },
+    "Pinnacle_Crocket_M": {
+      "assetId": "rbxassetid://83677185024832",
+      "moderationState": "Approved",
+      "operationId": "29bae4e9-dbf7-4121-9cff-9de682c33092",
+      "uploaded": "2026-11-20"
+    },
+    "Pinnacle_Crocket_S": {
+      "assetId": "rbxassetid://106582866242981",
+      "moderationState": "Approved",
+      "operationId": "bafce483-7a61-4941-b804-af99da7bb077",
+      "uploaded": "2026-11-20"
+    },
+    "Portal_Great": {
+      "assetId": "rbxassetid://116842296637013",
+      "moderationState": "Approved",
+      "operationId": "55b64f4d-7d02-465e-b15e-b0bda7426251",
+      "uploaded": "2026-11-20"
+    },
+    "Portcullis": {
+      "assetId": "rbxassetid://125826157102203",
+      "moderationState": "Approved",
+      "operationId": "a615572c-6939-46b4-825e-8aca0893b2f0",
+      "uploaded": "2026-11-20"
+    },
+    "Rose_Window_Great": {
+      "assetId": "rbxassetid://77052014374635",
+      "moderationState": "Approved",
+      "operationId": "645b6fdc-7174-4bbf-82a4-199df4b36bc4",
+      "uploaded": "2026-11-20"
+    },
+    "Rose_Window_Small": {
+      "assetId": "rbxassetid://74288052804311",
+      "moderationState": "Approved",
+      "operationId": "a9c402f2-431a-44e1-8cfb-65a691eb67be",
+      "uploaded": "2026-11-20"
+    },
+    "Ruined_Arch": {
+      "assetId": "rbxassetid://137456478717279",
+      "moderationState": "Approved",
+      "operationId": "81a735ca-7f69-473c-9cde-2fcd15d451b5",
+      "uploaded": "2026-11-20"
+    },
+    "Spire_Base_Oct": {
+      "assetId": "rbxassetid://94555831809252",
+      "moderationState": "Approved",
+      "operationId": "4d926c84-37ea-4ed6-8688-80bfc73d9002",
+      "uploaded": "2026-11-20"
+    },
+    "Spire_Belfry_Stage": {
+      "assetId": "rbxassetid://98633650799092",
+      "moderationState": "Approved",
+      "operationId": "1fd165de-7be5-4ddc-88d7-56303275fc30",
+      "uploaded": "2026-11-20"
+    },
+    "Spire_Broken_Top": {
+      "assetId": "rbxassetid://114631494946433",
+      "moderationState": "Approved",
+      "operationId": "c701bf49-a7d1-4035-9ba1-8da594018603",
+      "uploaded": "2026-11-20"
+    },
+    "Spire_Lucarne_Mid": {
+      "assetId": "rbxassetid://115989904418722",
+      "moderationState": "Approved",
+      "operationId": "6ab9694c-594c-46fc-8de2-0604636ef1d6",
+      "uploaded": "2026-11-20"
+    },
+    "Spire_Needle_Tip": {
+      "assetId": "rbxassetid://89089594545615",
+      "moderationState": "Approved",
+      "operationId": "d5b21c86-47f7-41fa-8381-d184b057f80e",
+      "uploaded": "2026-11-20"
+    },
+    "Statue_Plinth": {
+      "assetId": "rbxassetid://70518453786588",
+      "moderationState": "Approved",
+      "operationId": "c43394f6-2d57-43ce-9b1b-edf2dcaefdea",
+      "uploaded": "2026-11-20"
+    },
+    "Thorn_Twisted_A": {
+      "assetId": "rbxassetid://115588682008522",
+      "moderationState": "Approved",
+      "operationId": "9b12bfa9-bb96-408b-b978-5f2c7b97bd39",
+      "uploaded": "2026-11-20"
+    },
+    "Thorn_Twisted_B": {
+      "assetId": "rbxassetid://75250499925589",
+      "moderationState": "Approved",
+      "operationId": "14d2c4ba-675b-425b-b468-7582c15f9236",
+      "uploaded": "2026-11-20"
+    },
+    "Tower_Corner_Stage": {
+      "assetId": "rbxassetid://100940809605259",
+      "moderationState": "Approved",
+      "operationId": "019ab4bb-e355-444c-bee1-d39cf8203b64",
+      "uploaded": "2026-11-20"
+    }
+  },
+  "note": "Real IDs only. modelAssets = Assets API Model id (LoadAsset target; part 1 of a split piece). pieces = sub-mesh MeshId/maps read from a verified LoadAsset; split pieces carry per-sub Asset and center (tools/assets/glb_split.py).",
+  "pieces": {
+    "Arcade_Bay_40": {
+      "Arcade_Bay_40__Crockets": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://105273266779970",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          0.0,
+          43.4443,
+          -0.1441
+        ],
+        "operations": {
+          "Asset": "ff024498-dd1f-477e-82e7-5c7dd1d9d068"
+        }
+      },
+      "Arcade_Bay_40__Dress": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://133817897551601",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          0.0426,
+          48.9163,
+          0.0
+        ],
+        "operations": {
+          "Asset": "ff024498-dd1f-477e-82e7-5c7dd1d9d068"
+        }
+      },
+      "Arcade_Bay_40__Frost": {
+        "ColorMap": "rbxassetid://112934057467425",
+        "MeshId": "rbxassetid://122312273992022",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://85475493365275",
+        "RoughnessMap": "rbxassetid://71413989103088",
+        "center": [
+          -0.0132,
+          33.545,
+          0.5774
+        ],
+        "operations": {
+          "Asset": "ff024498-dd1f-477e-82e7-5c7dd1d9d068"
+        }
+      },
+      "Arcade_Bay_40__Pinnacles": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://94419154942386",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          -0.0419,
+          62.4675,
+          -0.1045
+        ],
+        "operations": {
+          "Asset": "ff024498-dd1f-477e-82e7-5c7dd1d9d068"
+        }
+      },
+      "Arcade_Bay_40__Stone": {
+        "Asset": "rbxassetid://77304571426011",
+        "ColorMap": "rbxassetid://133570956886739",
+        "MeshId": "rbxassetid://119327252833987",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://130278610414465",
+        "RoughnessMap": "rbxassetid://89194722287585",
+        "center": [
+          0.0285,
+          28.0347,
+          -0.0827
+        ],
+        "operations": {
+          "Asset": "b928329d-94e2-41c0-a757-c4f3e6daa9fb"
+        }
+      },
+      "Arcade_Bay_40__Tracery": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://108693160068110",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          0.0146,
+          29.6221,
+          -0.0854
+        ],
+        "operations": {
+          "Asset": "ff024498-dd1f-477e-82e7-5c7dd1d9d068"
+        }
+      }
+    },
+    "Arcade_Bay_50": {
+      "Arcade_Bay_50__Crockets": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://127812815307028",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          0.0,
+          49.1668,
+          0.0099
+        ],
+        "operations": {
+          "Asset": "2b3092db-f256-46e8-b829-1d6c1d5115eb"
+        }
+      },
+      "Arcade_Bay_50__Dress": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://88550359273767",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          0.0317,
+          58.8868,
+          0.0
+        ],
+        "operations": {
+          "Asset": "2b3092db-f256-46e8-b829-1d6c1d5115eb"
+        }
+      },
+      "Arcade_Bay_50__Frost": {
+        "ColorMap": "rbxassetid://112934057467425",
+        "MeshId": "rbxassetid://137117653352765",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://85475493365275",
+        "RoughnessMap": "rbxassetid://71413989103088",
+        "center": [
+          0.0711,
+          38.545,
+          0.5968
+        ],
+        "operations": {
+          "Asset": "2b3092db-f256-46e8-b829-1d6c1d5115eb"
+        }
+      },
+      "Arcade_Bay_50__Pinnacles": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://94653246458082",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          -0.0044,
+          72.4523,
+          -0.1125
+        ],
+        "operations": {
+          "Asset": "2b3092db-f256-46e8-b829-1d6c1d5115eb"
+        }
+      },
+      "Arcade_Bay_50__Stone": {
+        "Asset": "rbxassetid://103399594100180",
+        "ColorMap": "rbxassetid://133570956886739",
+        "MeshId": "rbxassetid://94656646091611",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://130278610414465",
+        "RoughnessMap": "rbxassetid://89194722287585",
+        "center": [
+          -0.0014,
+          33.0285,
+          -0.0633
+        ],
+        "operations": {
+          "Asset": "3030062b-2f21-4e1a-97a8-39332905bf1c"
+        }
+      },
+      "Arcade_Bay_50__Tracery": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://92619222120735",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          -0.0197,
+          34.6111,
+          -0.0622
+        ],
+        "operations": {
+          "Asset": "2b3092db-f256-46e8-b829-1d6c1d5115eb"
+        }
+      }
+    },
+    "Arcade_Bay_60": {
+      "Arcade_Bay_60__Crockets": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://72033655120416",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          0.0,
+          55.2617,
+          0.136
+        ],
+        "operations": {
+          "Asset": "b3b81f71-3ba0-4712-9aba-f47a0538d0d3"
+        }
+      },
+      "Arcade_Bay_60__Dress": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://80114733930318",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          0.014,
+          68.8943,
+          0.0
+        ],
+        "operations": {
+          "Asset": "b3b81f71-3ba0-4712-9aba-f47a0538d0d3"
+        }
+      },
+      "Arcade_Bay_60__Frost": {
+        "ColorMap": "rbxassetid://112934057467425",
+        "MeshId": "rbxassetid://112356193565890",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://85475493365275",
+        "RoughnessMap": "rbxassetid://71413989103088",
+        "center": [
+          0.0141,
+          43.545,
+          -0.6113
+        ],
+        "operations": {
+          "Asset": "b3b81f71-3ba0-4712-9aba-f47a0538d0d3"
+        }
+      },
+      "Arcade_Bay_60__Pinnacles": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://97931801542852",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          0.0752,
+          82.472,
+          0.0698
+        ],
+        "operations": {
+          "Asset": "b3b81f71-3ba0-4712-9aba-f47a0538d0d3"
+        }
+      },
+      "Arcade_Bay_60__Stone": {
+        "Asset": "rbxassetid://136778281605282",
+        "ColorMap": "rbxassetid://133570956886739",
+        "MeshId": "rbxassetid://83926074633959",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://130278610414465",
+        "RoughnessMap": "rbxassetid://89194722287585",
+        "center": [
+          0.0065,
+          38.0338,
+          -0.0117
+        ],
+        "operations": {
+          "Asset": "8821c427-e461-4e13-8c22-78d63af24002"
+        }
+      },
+      "Arcade_Bay_60__Tracery": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://87292071464763",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          -0.0184,
+          39.5989,
+          0.0449
+        ],
+        "operations": {
+          "Asset": "b3b81f71-3ba0-4712-9aba-f47a0538d0d3"
+        }
+      }
+    },
+    "Arcade_Corner": {
+      "Arcade_Corner__Crockets": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://129890288436354",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          -0.0789,
+          95.8298,
+          -0.028
+        ],
+        "operations": {
+          "Asset": "72032c63-b77f-48b5-87ce-143938dd8012"
+        }
+      },
+      "Arcade_Corner__Dress": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://132114326998050",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          0.028,
+          68.0938,
+          0.0273
+        ],
+        "operations": {
+          "Asset": "72032c63-b77f-48b5-87ce-143938dd8012"
+        }
+      },
+      "Arcade_Corner__Frost": {
+        "ColorMap": "rbxassetid://112934057467425",
+        "MeshId": "rbxassetid://74883024667641",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://85475493365275",
+        "RoughnessMap": "rbxassetid://71413989103088",
+        "center": [
+          -0.0337,
+          56.9995,
+          -0.0201
+        ],
+        "operations": {
+          "Asset": "72032c63-b77f-48b5-87ce-143938dd8012"
+        }
+      },
+      "Arcade_Corner__Pinnacles": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://78699400699208",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          -0.0142,
+          89.2425,
+          -0.017
+        ],
+        "operations": {
+          "Asset": "72032c63-b77f-48b5-87ce-143938dd8012"
+        }
+      },
+      "Arcade_Corner__Stone": {
+        "Asset": "rbxassetid://103015158854077",
+        "ColorMap": "rbxassetid://133570956886739",
+        "MeshId": "rbxassetid://123691627861419",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://130278610414465",
+        "RoughnessMap": "rbxassetid://89194722287585",
+        "center": [
+          -0.0337,
+          36.0307,
+          -0.0201
+        ],
+        "operations": {
+          "Asset": "6b28dc09-598e-4b00-9dea-2793e6ecabb8"
+        }
+      },
+      "Arcade_Corner__Tracery": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://121749705854143",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          -0.0146,
+          41.1803,
+          0.0202
+        ],
+        "operations": {
+          "Asset": "72032c63-b77f-48b5-87ce-143938dd8012"
+        }
+      }
+    },
+    "Balustrade_20": {
+      "Balustrade_20__Crockets": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://91272017500404",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          0.0031,
+          14.7225,
+          -0.0255
+        ],
+        "operations": {
+          "Asset": "5029d1e0-9fff-4d53-8f68-0d5813598b08"
+        }
+      },
+      "Balustrade_20__Frost": {
+        "ColorMap": "rbxassetid://112934057467425",
+        "MeshId": "rbxassetid://122175489540850",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://85475493365275",
+        "RoughnessMap": "rbxassetid://71413989103088",
+        "center": [
+          -0.0411,
+          6.67,
+          0.0047
+        ],
+        "operations": {
+          "Asset": "5029d1e0-9fff-4d53-8f68-0d5813598b08"
+        }
+      },
+      "Balustrade_20__Pinnacles": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://102033090180799",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          0.0481,
+          11.853,
+          0.0011
+        ],
+        "operations": {
+          "Asset": "5029d1e0-9fff-4d53-8f68-0d5813598b08"
+        }
+      },
+      "Balustrade_20__Stone": {
+        "Asset": "rbxassetid://83899584583299",
+        "ColorMap": "rbxassetid://133570956886739",
+        "MeshId": "rbxassetid://75796417818902",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://130278610414465",
+        "RoughnessMap": "rbxassetid://89194722287585",
+        "center": [
+          0.0413,
+          4.6287,
+          0.0
+        ],
+        "operations": {
+          "Asset": "528b7839-49ee-4e76-8be5-e59321539d94"
+        }
+      },
+      "Balustrade_20__Tracery": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://113973267077319",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          -0.0203,
+          3.5498,
+          -0.0433
+        ],
+        "operations": {
+          "Asset": "5029d1e0-9fff-4d53-8f68-0d5813598b08"
+        }
+      }
+    },
+    "Bastion_Face": {
+      "Bastion_Face__Crockets": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://85550989781650",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          0.0584,
+          92.2274,
+          1.4558
+        ],
+        "operations": {
+          "Asset": "89bbaa50-1f4d-4e98-9867-9eef9e9f9b8a"
+        }
+      },
+      "Bastion_Face__Dress": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://137456453217273",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          0.0586,
+          68.0948,
+          -2.8165
+        ],
+        "operations": {
+          "Asset": "89bbaa50-1f4d-4e98-9867-9eef9e9f9b8a"
+        }
+      },
+      "Bastion_Face__Frost": {
+        "ColorMap": "rbxassetid://112934057467425",
+        "MeshId": "rbxassetid://94598032733422",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://85475493365275",
+        "RoughnessMap": "rbxassetid://71413989103088",
+        "center": [
+          0.0755,
+          47.369,
+          -2.0146
+        ],
+        "operations": {
+          "Asset": "89bbaa50-1f4d-4e98-9867-9eef9e9f9b8a"
+        }
+      },
+      "Bastion_Face__Pinnacles": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://137394731520754",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          0.0,
+          85.7055,
+          1.4586
+        ],
+        "operations": {
+          "Asset": "89bbaa50-1f4d-4e98-9867-9eef9e9f9b8a"
+        }
+      },
+      "Bastion_Face__Stone": {
+        "Asset": "rbxassetid://131965066583215",
+        "ColorMap": "rbxassetid://133570956886739",
+        "MeshId": "rbxassetid://73045967829283",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://130278610414465",
+        "RoughnessMap": "rbxassetid://89194722287585",
+        "center": [
+          0.0593,
+          47.5826,
+          0.0803
+        ],
+        "operations": {
+          "Asset": "83eca396-cc8e-4629-a7a6-522e15a639d1"
+        }
+      },
+      "Bastion_Face__Tracery": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://81098573684000",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          0.0769,
+          44.6716,
+          -2.0743
+        ],
+        "operations": {
+          "Asset": "89bbaa50-1f4d-4e98-9867-9eef9e9f9b8a"
+        }
+      }
+    },
+    "Buttress_Pier": {
+      "Buttress_Pier__Crockets": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://72818554743799",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          0.0841,
+          40.0711,
+          -0.8289
+        ],
+        "operations": {
+          "Asset": "433dbb67-eec4-4dde-83e9-ef276b3b8533"
+        }
+      },
+      "Buttress_Pier__Dress": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://100089764606020",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          0.0143,
+          34.3482,
+          -6.0568
+        ],
+        "operations": {
+          "Asset": "433dbb67-eec4-4dde-83e9-ef276b3b8533"
+        }
+      },
+      "Buttress_Pier__Frost": {
+        "ColorMap": "rbxassetid://112934057467425",
+        "MeshId": "rbxassetid://120422915078511",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://85475493365275",
+        "RoughnessMap": "rbxassetid://71413989103088",
+        "center": [
+          0.154,
+          26.8088,
+          -0.3277
+        ],
+        "operations": {
+          "Asset": "433dbb67-eec4-4dde-83e9-ef276b3b8533"
+        }
+      },
+      "Buttress_Pier__Pinnacles": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://72096224279638",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          0.039,
+          41.35,
+          -0.2921
+        ],
+        "operations": {
+          "Asset": "433dbb67-eec4-4dde-83e9-ef276b3b8533"
+        }
+      },
+      "Buttress_Pier__Stone": {
+        "Asset": "rbxassetid://138060153279904",
+        "ColorMap": "rbxassetid://133570956886739",
+        "MeshId": "rbxassetid://85773009243017",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://130278610414465",
+        "RoughnessMap": "rbxassetid://89194722287585",
+        "center": [
+          0.0,
+          27.0289,
+          0.4125
+        ],
+        "operations": {
+          "Asset": "500cb7ea-6e8b-4bca-80b9-017d64e4b987"
+        }
+      },
+      "Buttress_Pier__Tracery": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://110319841515186",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          0.0626,
+          27.6378,
+          -0.3945
+        ],
+        "operations": {
+          "Asset": "433dbb67-eec4-4dde-83e9-ef276b3b8533"
+        }
+      }
+    },
+    "Cornice_20": {
+      "Cornice_20__Frost": {
+        "ColorMap": "rbxassetid://112934057467425",
+        "MeshId": "rbxassetid://113072893654713",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://85475493365275",
+        "RoughnessMap": "rbxassetid://71413989103088",
+        "center": [
+          -0.0281,
+          4.62,
+          0.4211
+        ],
+        "operations": {
+          "Asset": "f7d6d0af-e6e8-41ed-96e6-0e4581298f2b"
+        }
+      },
+      "Cornice_20__Stone": {
+        "ColorMap": "rbxassetid://133570956886739",
+        "MeshId": "rbxassetid://107939849416781",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://130278610414465",
+        "RoughnessMap": "rbxassetid://89194722287585",
+        "center": [
+          -0.0312,
+          4.1953,
+          0.671
+        ],
+        "operations": {
+          "Asset": "f7d6d0af-e6e8-41ed-96e6-0e4581298f2b"
+        }
+      },
+      "Cornice_20__Tracery": {
+        "Asset": "rbxassetid://75650845349852",
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://76870619186102",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          0.0,
+          6.1912,
+          0.0
+        ],
+        "operations": {
+          "Asset": "c472b6d8-8053-435f-ab3c-905a8da0e49a"
+        }
+      }
+    },
+    "Dead_Log_A": {
+      "Dead_Log_A__Bark": {
+        "ColorMap": "rbxassetid://121062484697579",
+        "MeshId": "rbxassetid://114696381150510",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://116994548614251",
+        "RoughnessMap": "rbxassetid://122519420968988",
+        "operations": {
+          "Asset": "76e07c1b-7b63-4530-a8c1-c3958594ded5"
+        }
+      },
+      "Dead_Log_A__Bark_2": {
+        "ColorMap": "rbxassetid://121062484697579",
+        "MeshId": "rbxassetid://91330125110214",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://116994548614251",
+        "RoughnessMap": "rbxassetid://122519420968988",
+        "operations": {
+          "Asset": "76e07c1b-7b63-4530-a8c1-c3958594ded5"
+        }
+      },
+      "Dead_Log_A__Bark_3": {
+        "ColorMap": "rbxassetid://121062484697579",
+        "MeshId": "rbxassetid://77610422298401",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://116994548614251",
+        "RoughnessMap": "rbxassetid://122519420968988",
+        "operations": {
+          "Asset": "76e07c1b-7b63-4530-a8c1-c3958594ded5"
+        }
+      },
+      "Dead_Log_A__Bark_4": {
+        "ColorMap": "rbxassetid://121062484697579",
+        "MeshId": "rbxassetid://112454900774215",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://116994548614251",
+        "RoughnessMap": "rbxassetid://122519420968988",
+        "operations": {
+          "Asset": "76e07c1b-7b63-4530-a8c1-c3958594ded5"
+        }
+      },
+      "Dead_Log_A__Bark_5": {
+        "ColorMap": "rbxassetid://121062484697579",
+        "MeshId": "rbxassetid://80335481829224",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://116994548614251",
+        "RoughnessMap": "rbxassetid://122519420968988",
+        "operations": {
+          "Asset": "76e07c1b-7b63-4530-a8c1-c3958594ded5"
+        }
+      }
+    },
+    "Dead_Log_B": {
+      "Dead_Log_B__Bark": {
+        "ColorMap": "rbxassetid://136050516842442",
+        "MeshId": "rbxassetid://123221661485584",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://105642884614972",
+        "RoughnessMap": "rbxassetid://105794502310328",
+        "operations": {
+          "Asset": "d4bb272a-0d14-49e1-80c6-e7e619e00024"
+        }
+      },
+      "Dead_Log_B__Bark_2": {
+        "ColorMap": "rbxassetid://136050516842442",
+        "MeshId": "rbxassetid://132772137208521",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://105642884614972",
+        "RoughnessMap": "rbxassetid://105794502310328",
+        "operations": {
+          "Asset": "d4bb272a-0d14-49e1-80c6-e7e619e00024"
+        }
+      },
+      "Dead_Log_B__Bark_3": {
+        "ColorMap": "rbxassetid://136050516842442",
+        "MeshId": "rbxassetid://110071949328749",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://105642884614972",
+        "RoughnessMap": "rbxassetid://105794502310328",
+        "operations": {
+          "Asset": "d4bb272a-0d14-49e1-80c6-e7e619e00024"
+        }
+      },
+      "Dead_Log_B__Bark_4": {
+        "ColorMap": "rbxassetid://136050516842442",
+        "MeshId": "rbxassetid://100543113416798",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://105642884614972",
+        "RoughnessMap": "rbxassetid://105794502310328",
+        "operations": {
+          "Asset": "d4bb272a-0d14-49e1-80c6-e7e619e00024"
+        }
+      },
+      "Dead_Log_B__Bark_5": {
+        "ColorMap": "rbxassetid://136050516842442",
+        "MeshId": "rbxassetid://81403218257300",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://105642884614972",
+        "RoughnessMap": "rbxassetid://105794502310328",
+        "operations": {
+          "Asset": "d4bb272a-0d14-49e1-80c6-e7e619e00024"
+        }
+      },
+      "Dead_Log_B__Bark_6": {
+        "ColorMap": "rbxassetid://136050516842442",
+        "MeshId": "rbxassetid://79262920199939",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://105642884614972",
+        "RoughnessMap": "rbxassetid://105794502310328",
+        "operations": {
+          "Asset": "d4bb272a-0d14-49e1-80c6-e7e619e00024"
+        }
+      }
+    },
+    "Dead_Oak_Gnarled_A": {
+      "Dead_Oak_Gnarled_A__Branches": {
+        "ColorMap": "rbxassetid://95290235531298",
+        "MeshId": "rbxassetid://134195364168381",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://72081262927003",
+        "RoughnessMap": "rbxassetid://83232344656519",
+        "center": [
+          24.8466,
+          43.6076,
+          -2.0388
+        ],
+        "operations": {
+          "Asset": "00834e28-97d4-4200-aecd-a1aacacff1de"
+        }
+      },
+      "Dead_Oak_Gnarled_A__Branches_2": {
+        "ColorMap": "rbxassetid://95290235531298",
+        "MeshId": "rbxassetid://80844222157766",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://72081262927003",
+        "RoughnessMap": "rbxassetid://83232344656519",
+        "center": [
+          -40.7716,
+          41.375,
+          -0.7862
+        ],
+        "operations": {
+          "Asset": "00834e28-97d4-4200-aecd-a1aacacff1de"
+        }
+      },
+      "Dead_Oak_Gnarled_A__Chain": {
+        "ColorMap": "rbxassetid://117064954571442",
+        "MeshId": "rbxassetid://80910580286898",
+        "MetalnessMap": "rbxassetid://86435963968119",
+        "NormalMap": "rbxassetid://110613994932762",
+        "RoughnessMap": "rbxassetid://93438323399536",
+        "center": [
+          -14.7214,
+          18.4134,
+          -2.5894
+        ],
+        "operations": {
+          "Asset": "00834e28-97d4-4200-aecd-a1aacacff1de"
+        }
+      },
+      "Dead_Oak_Gnarled_A__Limbs": {
+        "ColorMap": "rbxassetid://116171761960841",
+        "MeshId": "rbxassetid://138803632057602",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://99352711083359",
+        "RoughnessMap": "rbxassetid://118894345047766",
+        "center": [
+          -0.2169,
+          41.653,
+          -0.6054
+        ],
+        "operations": {
+          "Asset": "00834e28-97d4-4200-aecd-a1aacacff1de"
+        }
+      },
+      "Dead_Oak_Gnarled_A__Trunk": {
+        "ColorMap": "rbxassetid://112319475913250",
+        "MeshId": "rbxassetid://136331636456720",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://112465089587516",
+        "RoughnessMap": "rbxassetid://132553524183126",
+        "center": [
+          -8.1533,
+          19.6407,
+          11.6726
+        ],
+        "operations": {
+          "Asset": "00834e28-97d4-4200-aecd-a1aacacff1de"
+        }
+      },
+      "Dead_Oak_Gnarled_A__Twigs": {
+        "Asset": "rbxassetid://138870204343077",
+        "ColorMap": "rbxassetid://103620802962395",
+        "MeshId": "rbxassetid://106594184901407",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://124069670282403",
+        "RoughnessMap": "rbxassetid://134344427837119",
+        "center": [
+          -11.0969,
+          42.9906,
+          2.6465
+        ],
+        "operations": {
+          "Asset": "24f7b550-198a-40ce-94b0-9d38b950cf09"
+        }
+      }
+    },
+    "Dead_Oak_Gnarled_B": {
+      "Dead_Oak_Gnarled_B__Branches": {
+        "ColorMap": "rbxassetid://133256021578781",
+        "MeshId": "rbxassetid://118198179828293",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://107956028862484",
+        "RoughnessMap": "rbxassetid://129229723365874",
+        "operations": {
+          "Asset": "6f3afb28-cdce-4510-933f-5634b1007d1d"
+        }
+      },
+      "Dead_Oak_Gnarled_B__Branches_2": {
+        "ColorMap": "rbxassetid://133256021578781",
+        "MeshId": "rbxassetid://76850572573738",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://107956028862484",
+        "RoughnessMap": "rbxassetid://129229723365874",
+        "operations": {
+          "Asset": "6f3afb28-cdce-4510-933f-5634b1007d1d"
+        }
+      },
+      "Dead_Oak_Gnarled_B__Limbs": {
+        "ColorMap": "rbxassetid://97860556349225",
+        "MeshId": "rbxassetid://127803392626023",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://108526537982867",
+        "RoughnessMap": "rbxassetid://74721377663127",
+        "operations": {
+          "Asset": "6f3afb28-cdce-4510-933f-5634b1007d1d"
+        }
+      },
+      "Dead_Oak_Gnarled_B__Trunk": {
+        "ColorMap": "rbxassetid://93989076120671",
+        "MeshId": "rbxassetid://131290763926275",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://85769815084571",
+        "RoughnessMap": "rbxassetid://136179824509657",
+        "operations": {
+          "Asset": "6f3afb28-cdce-4510-933f-5634b1007d1d"
+        }
+      },
+      "Dead_Oak_Gnarled_B__Twigs": {
+        "ColorMap": "rbxassetid://120927811064487",
+        "MeshId": "rbxassetid://108531430377177",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://72502935001705",
+        "RoughnessMap": "rbxassetid://105210153642449",
+        "operations": {
+          "Asset": "6f3afb28-cdce-4510-933f-5634b1007d1d"
+        }
+      },
+      "Dead_Oak_Gnarled_B__Twigs_2": {
+        "ColorMap": "rbxassetid://120927811064487",
+        "MeshId": "rbxassetid://112122843102493",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://72502935001705",
+        "RoughnessMap": "rbxassetid://105210153642449",
+        "operations": {
+          "Asset": "6f3afb28-cdce-4510-933f-5634b1007d1d"
+        }
+      }
+    },
+    "Door_Iron": {
+      "Door_Iron__Iron": {
+        "ColorMap": "rbxassetid://93983370644040",
+        "MeshId": "rbxassetid://104289112079566",
+        "MetalnessMap": "rbxassetid://135236569506881",
+        "NormalMap": "rbxassetid://73606967790982",
+        "RoughnessMap": "rbxassetid://96748498873777",
+        "operations": {
+          "Asset": "e8e9dd5f-b80c-491e-a3de-eb9b8e4fe108"
+        }
+      }
+    },
+    "Finial": {
+      "Finial__Crockets": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://104479496901003",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          0.0,
+          6.6025,
+          0.0
+        ],
+        "operations": {
+          "Asset": "b526f461-b1e9-4873-b772-248e28c254b8"
+        }
+      },
+      "Finial__Frost": {
+        "ColorMap": "rbxassetid://112934057467425",
+        "MeshId": "rbxassetid://81584168353066",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://85475493365275",
+        "RoughnessMap": "rbxassetid://71413989103088",
+        "center": [
+          0.0495,
+          3.9036,
+          0.024
+        ],
+        "operations": {
+          "Asset": "b526f461-b1e9-4873-b772-248e28c254b8"
+        }
+      },
+      "Finial__Stone": {
+        "Asset": "rbxassetid://121910806277047",
+        "ColorMap": "rbxassetid://133570956886739",
+        "MeshId": "rbxassetid://121988225572181",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://130278610414465",
+        "RoughnessMap": "rbxassetid://89194722287585",
+        "center": [
+          0.0409,
+          1.6158,
+          0.0317
+        ],
+        "operations": {
+          "Asset": "813364b8-26bf-454f-9f13-ca70f9976ab2"
+        }
+      }
+    },
+    "Flying_Buttress_40": {
+      "Flying_Buttress_40__Crockets": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://106517606259789",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          -0.8649,
+          17.0675,
+          0.0
+        ],
+        "operations": {
+          "Asset": "38a37d39-5ccf-4da7-9127-cd0a747127f8"
+        }
+      },
+      "Flying_Buttress_40__Dress": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://106447980891392",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          21.391,
+          6.4767,
+          0.0912
+        ],
+        "operations": {
+          "Asset": "38a37d39-5ccf-4da7-9127-cd0a747127f8"
+        }
+      },
+      "Flying_Buttress_40__Frost": {
+        "ColorMap": "rbxassetid://112934057467425",
+        "MeshId": "rbxassetid://140156230377678",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://85475493365275",
+        "RoughnessMap": "rbxassetid://71413989103088",
+        "center": [
+          3.9234,
+          12.3218,
+          0.0354
+        ],
+        "operations": {
+          "Asset": "38a37d39-5ccf-4da7-9127-cd0a747127f8"
+        }
+      },
+      "Flying_Buttress_40__Stone": {
+        "Asset": "rbxassetid://123470493030436",
+        "ColorMap": "rbxassetid://133570956886739",
+        "MeshId": "rbxassetid://111429190903414",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://130278610414465",
+        "RoughnessMap": "rbxassetid://89194722287585",
+        "center": [
+          -1.6997,
+          13.8322,
+          -0.0161
+        ],
+        "operations": {
+          "Asset": "8ab62548-c555-45d1-9f9b-46dc9556a292"
+        }
+      },
+      "Flying_Buttress_40__Tracery": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://126586920550161",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          1.301,
+          12.8366,
+          -0.004
+        ],
+        "operations": {
+          "Asset": "38a37d39-5ccf-4da7-9127-cd0a747127f8"
+        }
+      }
+    },
+    "Flying_Buttress_60": {
+      "Flying_Buttress_60__Crockets": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://79565533058968",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          -0.6811,
+          21.2369,
+          0.0
+        ],
+        "operations": {
+          "Asset": "c302810e-6de3-4ea2-b7ee-a40cb3c89f20"
+        }
+      },
+      "Flying_Buttress_60__Dress": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://89452108000316",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          31.4703,
+          6.5441,
+          0.0436
+        ],
+        "operations": {
+          "Asset": "c302810e-6de3-4ea2-b7ee-a40cb3c89f20"
+        }
+      },
+      "Flying_Buttress_60__Frost": {
+        "ColorMap": "rbxassetid://112934057467425",
+        "MeshId": "rbxassetid://103977771125022",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://85475493365275",
+        "RoughnessMap": "rbxassetid://71413989103088",
+        "center": [
+          3.5869,
+          16.9187,
+          -0.0423
+        ],
+        "operations": {
+          "Asset": "c302810e-6de3-4ea2-b7ee-a40cb3c89f20"
+        }
+      },
+      "Flying_Buttress_60__Stone": {
+        "Asset": "rbxassetid://88397784242253",
+        "ColorMap": "rbxassetid://133570956886739",
+        "MeshId": "rbxassetid://121674799304329",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://130278610414465",
+        "RoughnessMap": "rbxassetid://89194722287585",
+        "center": [
+          -1.6612,
+          18.0246,
+          0.0034
+        ],
+        "operations": {
+          "Asset": "2c2e33dc-77da-4acc-9ac3-f1a571801980"
+        }
+      },
+      "Flying_Buttress_60__Tracery": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://104148853571732",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          1.3803,
+          17.032,
+          -0.0086
+        ],
+        "operations": {
+          "Asset": "c302810e-6de3-4ea2-b7ee-a40cb3c89f20"
+        }
+      }
+    },
+    "Gargoyle_A": {
+      "Gargoyle_A__Body": {
+        "ColorMap": "rbxassetid://97843712281677",
+        "MeshId": "rbxassetid://105240661077131",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://119997034471315",
+        "RoughnessMap": "rbxassetid://114394261181120",
+        "operations": {
+          "Asset": "69e1ca7f-ef29-4470-b61d-1f811c400dee"
+        }
+      },
+      "Gargoyle_A__Body_2": {
+        "ColorMap": "rbxassetid://97843712281677",
+        "MeshId": "rbxassetid://84239103829573",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://119997034471315",
+        "RoughnessMap": "rbxassetid://114394261181120",
+        "operations": {
+          "Asset": "69e1ca7f-ef29-4470-b61d-1f811c400dee"
+        }
+      },
+      "Gargoyle_A__Body_3": {
+        "ColorMap": "rbxassetid://97843712281677",
+        "MeshId": "rbxassetid://101057483918740",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://119997034471315",
+        "RoughnessMap": "rbxassetid://114394261181120",
+        "operations": {
+          "Asset": "69e1ca7f-ef29-4470-b61d-1f811c400dee"
+        }
+      },
+      "Gargoyle_A__Corbel": {
+        "ColorMap": "rbxassetid://81302875951193",
+        "MeshId": "rbxassetid://79320820986431",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://85998535388266",
+        "RoughnessMap": "rbxassetid://79939841493157",
+        "operations": {
+          "Asset": "69e1ca7f-ef29-4470-b61d-1f811c400dee"
+        }
+      },
+      "Gargoyle_A__Head": {
+        "ColorMap": "rbxassetid://90757296889892",
+        "MeshId": "rbxassetid://80570688449581",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://132866673019546",
+        "RoughnessMap": "rbxassetid://140066177933904",
+        "operations": {
+          "Asset": "69e1ca7f-ef29-4470-b61d-1f811c400dee"
+        }
+      },
+      "Gargoyle_A__Head_2": {
+        "ColorMap": "rbxassetid://90757296889892",
+        "MeshId": "rbxassetid://100446290647786",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://132866673019546",
+        "RoughnessMap": "rbxassetid://140066177933904",
+        "operations": {
+          "Asset": "69e1ca7f-ef29-4470-b61d-1f811c400dee"
+        }
+      },
+      "Gargoyle_A__Wings": {
+        "ColorMap": "rbxassetid://88172725441480",
+        "MeshId": "rbxassetid://129744439127608",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://76990142299234",
+        "RoughnessMap": "rbxassetid://103432190716155",
+        "operations": {
+          "Asset": "69e1ca7f-ef29-4470-b61d-1f811c400dee"
+        }
+      },
+      "Gargoyle_A__Wings_2": {
+        "ColorMap": "rbxassetid://88172725441480",
+        "MeshId": "rbxassetid://111193966540242",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://76990142299234",
+        "RoughnessMap": "rbxassetid://103432190716155",
+        "operations": {
+          "Asset": "69e1ca7f-ef29-4470-b61d-1f811c400dee"
+        }
+      },
+      "Gargoyle_A__Wings_3": {
+        "ColorMap": "rbxassetid://88172725441480",
+        "MeshId": "rbxassetid://101109210253762",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://76990142299234",
+        "RoughnessMap": "rbxassetid://103432190716155",
+        "operations": {
+          "Asset": "69e1ca7f-ef29-4470-b61d-1f811c400dee"
+        }
+      }
+    },
+    "Gargoyle_B": {
+      "Gargoyle_B__Block": {
+        "ColorMap": "rbxassetid://102056782526455",
+        "MeshId": "rbxassetid://70823453565736",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://116028086748920",
+        "RoughnessMap": "rbxassetid://125329059105952",
+        "operations": {
+          "Asset": "f5df02c9-8ac8-4cb2-add1-77b7045ac8db"
+        }
+      },
+      "Gargoyle_B__Body": {
+        "ColorMap": "rbxassetid://128286327946641",
+        "MeshId": "rbxassetid://124231689935033",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://112438446850675",
+        "RoughnessMap": "rbxassetid://121767374875482",
+        "operations": {
+          "Asset": "f5df02c9-8ac8-4cb2-add1-77b7045ac8db"
+        }
+      },
+      "Gargoyle_B__Body_2": {
+        "ColorMap": "rbxassetid://128286327946641",
+        "MeshId": "rbxassetid://136058779664201",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://112438446850675",
+        "RoughnessMap": "rbxassetid://121767374875482",
+        "operations": {
+          "Asset": "f5df02c9-8ac8-4cb2-add1-77b7045ac8db"
+        }
+      },
+      "Gargoyle_B__Body_3": {
+        "ColorMap": "rbxassetid://128286327946641",
+        "MeshId": "rbxassetid://98117726046774",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://112438446850675",
+        "RoughnessMap": "rbxassetid://121767374875482",
+        "operations": {
+          "Asset": "f5df02c9-8ac8-4cb2-add1-77b7045ac8db"
+        }
+      },
+      "Gargoyle_B__Head": {
+        "ColorMap": "rbxassetid://131019832927004",
+        "MeshId": "rbxassetid://92160967301425",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://97140720852277",
+        "RoughnessMap": "rbxassetid://108759935312223",
+        "operations": {
+          "Asset": "f5df02c9-8ac8-4cb2-add1-77b7045ac8db"
+        }
+      },
+      "Gargoyle_B__Head_2": {
+        "ColorMap": "rbxassetid://131019832927004",
+        "MeshId": "rbxassetid://112949344345357",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://97140720852277",
+        "RoughnessMap": "rbxassetid://108759935312223",
+        "operations": {
+          "Asset": "f5df02c9-8ac8-4cb2-add1-77b7045ac8db"
+        }
+      },
+      "Gargoyle_B__Wings": {
+        "ColorMap": "rbxassetid://94761604660523",
+        "MeshId": "rbxassetid://124321863274600",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://139078240904106",
+        "RoughnessMap": "rbxassetid://116061390882313",
+        "operations": {
+          "Asset": "f5df02c9-8ac8-4cb2-add1-77b7045ac8db"
+        }
+      },
+      "Gargoyle_B__Wings_2": {
+        "ColorMap": "rbxassetid://94761604660523",
+        "MeshId": "rbxassetid://80841505724788",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://139078240904106",
+        "RoughnessMap": "rbxassetid://116061390882313",
+        "operations": {
+          "Asset": "f5df02c9-8ac8-4cb2-add1-77b7045ac8db"
+        }
+      }
+    },
+    "Lancet_Pair": {
+      "Lancet_Pair__Crockets": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://98478986197870",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          0.0186,
+          54.367,
+          -0.4279
+        ],
+        "operations": {
+          "Asset": "9dd0eb25-863c-43df-955c-73a59461373a"
+        }
+      },
+      "Lancet_Pair__Frost": {
+        "ColorMap": "rbxassetid://112934057467425",
+        "MeshId": "rbxassetid://127995354168831",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://85475493365275",
+        "RoughnessMap": "rbxassetid://71413989103088",
+        "center": [
+          0.0033,
+          33.62,
+          0.5645
+        ],
+        "operations": {
+          "Asset": "9dd0eb25-863c-43df-955c-73a59461373a"
+        }
+      },
+      "Lancet_Pair__Glass": {
+        "Asset": "rbxassetid://91998628413488",
+        "ColorMap": "rbxassetid://121750176916718",
+        "MeshId": "rbxassetid://137900411998878",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://109294453614323",
+        "RoughnessMap": "rbxassetid://90388922988167",
+        "center": [
+          0.0033,
+          21.5,
+          1.1145
+        ],
+        "operations": {
+          "Asset": "3324ba71-cca0-4225-823a-e0a939dc598c"
+        }
+      },
+      "Lancet_Pair__GlassR": {
+        "Asset": "rbxassetid://91998628413488",
+        "ColorMap": "rbxassetid://121750176916718",
+        "MeshId": "rbxassetid://102726951991415",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://109294453614323",
+        "RoughnessMap": "rbxassetid://90388922988167",
+        "center": [
+          0.0033,
+          45.2,
+          1.1145
+        ],
+        "operations": {
+          "Asset": "3324ba71-cca0-4225-823a-e0a939dc598c"
+        }
+      },
+      "Lancet_Pair__Pinnacles": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://127682618980821",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          0.0434,
+          64.5586,
+          0.3575
+        ],
+        "operations": {
+          "Asset": "9dd0eb25-863c-43df-955c-73a59461373a"
+        }
+      },
+      "Lancet_Pair__Stone": {
+        "Asset": "rbxassetid://91998628413488",
+        "ColorMap": "rbxassetid://133570956886739",
+        "MeshId": "rbxassetid://109921116385593",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://130278610414465",
+        "RoughnessMap": "rbxassetid://89194722287585",
+        "center": [
+          0.0422,
+          29.0146,
+          0.0557
+        ],
+        "operations": {
+          "Asset": "3324ba71-cca0-4225-823a-e0a939dc598c"
+        }
+      },
+      "Lancet_Pair__Tracery": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://137205672266109",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          -0.0486,
+          34.089,
+          0.0628
+        ],
+        "operations": {
+          "Asset": "9dd0eb25-863c-43df-955c-73a59461373a"
+        }
+      }
+    },
+    "Lancet_Tall": {
+      "Lancet_Tall__Crockets": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://138653913075339",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          -0.0294,
+          48.0618,
+          -0.3885
+        ],
+        "operations": {
+          "Asset": "ed78e95a-1b43-475b-a7d8-3d995e99ca2a"
+        }
+      },
+      "Lancet_Tall__Frost": {
+        "ColorMap": "rbxassetid://112934057467425",
+        "MeshId": "rbxassetid://113563499855796",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://85475493365275",
+        "RoughnessMap": "rbxassetid://71413989103088",
+        "center": [
+          0.1664,
+          26.87,
+          -0.1727
+        ],
+        "operations": {
+          "Asset": "ed78e95a-1b43-475b-a7d8-3d995e99ca2a"
+        }
+      },
+      "Lancet_Tall__Glass": {
+        "Asset": "rbxassetid://78723628800447",
+        "ColorMap": "rbxassetid://121750176916718",
+        "MeshId": "rbxassetid://131468014877861",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://109294453614323",
+        "RoughnessMap": "rbxassetid://90388922988167",
+        "center": [
+          0.0344,
+          21.5,
+          0.9212
+        ],
+        "operations": {
+          "Asset": "ba7274c7-c969-4c5d-be84-df5efebf5ef6"
+        }
+      },
+      "Lancet_Tall__Pinnacles": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://94685336367021",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          0.1008,
+          51.2674,
+          -0.0081
+        ],
+        "operations": {
+          "Asset": "ed78e95a-1b43-475b-a7d8-3d995e99ca2a"
+        }
+      },
+      "Lancet_Tall__Stone": {
+        "Asset": "rbxassetid://78723628800447",
+        "ColorMap": "rbxassetid://133570956886739",
+        "MeshId": "rbxassetid://107063262081846",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://130278610414465",
+        "RoughnessMap": "rbxassetid://89194722287585",
+        "center": [
+          0.0606,
+          23.0273,
+          -0.1351
+        ],
+        "operations": {
+          "Asset": "ba7274c7-c969-4c5d-be84-df5efebf5ef6"
+        }
+      },
+      "Lancet_Tall__Tracery": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://136933096645620",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          0.0,
+          29.5711,
+          0.0286
+        ],
+        "operations": {
+          "Asset": "ed78e95a-1b43-475b-a7d8-3d995e99ca2a"
+        }
+      }
+    },
+    "Parapet_Gothic_20": {
+      "Parapet_Gothic_20__Crockets": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://94955693991501",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          0.0538,
+          15.4101,
+          0.4191
+        ],
+        "operations": {
+          "Asset": "fb95d8d7-b158-4976-beed-f585b2da2180"
+        }
+      },
+      "Parapet_Gothic_20__Frost": {
+        "ColorMap": "rbxassetid://112934057467425",
+        "MeshId": "rbxassetid://71104201190542",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://85475493365275",
+        "RoughnessMap": "rbxassetid://71413989103088",
+        "center": [
+          -0.0297,
+          6.3865,
+          0.0274
+        ],
+        "operations": {
+          "Asset": "fb95d8d7-b158-4976-beed-f585b2da2180"
+        }
+      },
+      "Parapet_Gothic_20__Stone": {
+        "Asset": "rbxassetid://87401344593052",
+        "ColorMap": "rbxassetid://133570956886739",
+        "MeshId": "rbxassetid://112911030475433",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://130278610414465",
+        "RoughnessMap": "rbxassetid://89194722287585",
+        "center": [
+          0.0048,
+          7.3958,
+          -0.0474
+        ],
+        "operations": {
+          "Asset": "16d4500c-ad8a-4fc1-8b52-4007360f6db1"
+        }
+      },
+      "Parapet_Gothic_20__Tracery": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://71619238882743",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          0.0,
+          5.7839,
+          0.0082
+        ],
+        "operations": {
+          "Asset": "fb95d8d7-b158-4976-beed-f585b2da2180"
+        }
+      }
+    },
+    "Pinnacle_Crocket_L": {
+      "Pinnacle_Crocket_L__Crockets": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://122700968119902",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          -0.0273,
+          33.3248,
+          0.0122
+        ],
+        "operations": {
+          "Asset": "9087e1c3-4770-415e-ab2d-2c7158c18e2a"
+        }
+      },
+      "Pinnacle_Crocket_L__Frost": {
+        "ColorMap": "rbxassetid://112934057467425",
+        "MeshId": "rbxassetid://133311497332913",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://85475493365275",
+        "RoughnessMap": "rbxassetid://71413989103088",
+        "center": [
+          -0.0133,
+          22.6644,
+          -0.0001
+        ],
+        "operations": {
+          "Asset": "9087e1c3-4770-415e-ab2d-2c7158c18e2a"
+        }
+      },
+      "Pinnacle_Crocket_L__Stone": {
+        "Asset": "rbxassetid://95852621681260",
+        "ColorMap": "rbxassetid://133570956886739",
+        "MeshId": "rbxassetid://139428157679093",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://130278610414465",
+        "RoughnessMap": "rbxassetid://89194722287585",
+        "center": [
+          0.0,
+          17.6127,
+          0.0
+        ],
+        "operations": {
+          "Asset": "11bf4fc4-c78f-4130-9dc0-37aa3e751e7f"
+        }
+      }
+    },
+    "Pinnacle_Crocket_M": {
+      "Pinnacle_Crocket_M__Crockets": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://113449927363987",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          -0.0007,
+          19.9444,
+          -0.0438
+        ],
+        "operations": {
+          "Asset": "29bae4e9-dbf7-4121-9cff-9de682c33092"
+        }
+      },
+      "Pinnacle_Crocket_M__Frost": {
+        "ColorMap": "rbxassetid://112934057467425",
+        "MeshId": "rbxassetid://134050914414682",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://85475493365275",
+        "RoughnessMap": "rbxassetid://71413989103088",
+        "center": [
+          0.025,
+          13.6386,
+          0.9268
+        ],
+        "operations": {
+          "Asset": "29bae4e9-dbf7-4121-9cff-9de682c33092"
+        }
+      },
+      "Pinnacle_Crocket_M__Stone": {
+        "Asset": "rbxassetid://73343062131890",
+        "ColorMap": "rbxassetid://133570956886739",
+        "MeshId": "rbxassetid://138363433913004",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://130278610414465",
+        "RoughnessMap": "rbxassetid://89194722287585",
+        "center": [
+          0.0,
+          10.6018,
+          0.0
+        ],
+        "operations": {
+          "Asset": "3f7c5886-711a-4e03-bd44-b756b28545d2"
+        }
+      }
+    },
+    "Pinnacle_Crocket_S": {
+      "Pinnacle_Crocket_S__Crockets": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://79301273051275",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          -0.0553,
+          9.9566,
+          -0.0025
+        ],
+        "operations": {
+          "Asset": "bafce483-7a61-4941-b804-af99da7bb077"
+        }
+      },
+      "Pinnacle_Crocket_S__Frost": {
+        "ColorMap": "rbxassetid://112934057467425",
+        "MeshId": "rbxassetid://72998432070093",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://85475493365275",
+        "RoughnessMap": "rbxassetid://71413989103088",
+        "center": [
+          -0.0115,
+          3.72,
+          -0.0042
+        ],
+        "operations": {
+          "Asset": "bafce483-7a61-4941-b804-af99da7bb077"
+        }
+      },
+      "Pinnacle_Crocket_S__Stone": {
+        "Asset": "rbxassetid://77300191370544",
+        "ColorMap": "rbxassetid://133570956886739",
+        "MeshId": "rbxassetid://98917268937061",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://130278610414465",
+        "RoughnessMap": "rbxassetid://89194722287585",
+        "center": [
+          0.0,
+          5.2417,
+          0.0
+        ],
+        "operations": {
+          "Asset": "65c40818-bf90-42f9-a48d-2d7c6f8dfe69"
+        }
+      }
+    },
+    "Portal_Great": {
+      "Portal_Great__Crockets": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://121121733085661",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          -0.0754,
+          54.1546,
+          -5.5861
+        ],
+        "operations": {
+          "Asset": "55b64f4d-7d02-465e-b15e-b0bda7426251"
+        }
+      },
+      "Portal_Great__Dress": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://129665178721183",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          0.0094,
+          31.6171,
+          -5.3924
+        ],
+        "operations": {
+          "Asset": "55b64f4d-7d02-465e-b15e-b0bda7426251"
+        }
+      },
+      "Portal_Great__Frost": {
+        "ColorMap": "rbxassetid://112934057467425",
+        "MeshId": "rbxassetid://96227008521785",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://85475493365275",
+        "RoughnessMap": "rbxassetid://71413989103088",
+        "center": [
+          0.0128,
+          47.9995,
+          -4.9617
+        ],
+        "operations": {
+          "Asset": "55b64f4d-7d02-465e-b15e-b0bda7426251"
+        }
+      },
+      "Portal_Great__GlassR": {
+        "Asset": "rbxassetid://124889792311154",
+        "ColorMap": "rbxassetid://121750176916718",
+        "MeshId": "rbxassetid://121733414860960",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://109294453614323",
+        "RoughnessMap": "rbxassetid://90388922988167",
+        "center": [
+          -0.0632,
+          67.0,
+          -9.1217
+        ],
+        "operations": {
+          "Asset": "8b0ed3a6-59f6-4be2-a1d8-8b524a019e9c"
+        }
+      },
+      "Portal_Great__Pinnacles": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://84511545809094",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          -0.061,
+          76.0377,
+          -6.653
+        ],
+        "operations": {
+          "Asset": "55b64f4d-7d02-465e-b15e-b0bda7426251"
+        }
+      },
+      "Portal_Great__Stone": {
+        "Asset": "rbxassetid://124889792311154",
+        "ColorMap": "rbxassetid://133570956886739",
+        "MeshId": "rbxassetid://73448599763157",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://130278610414465",
+        "RoughnessMap": "rbxassetid://89194722287585",
+        "center": [
+          0.0,
+          43.5198,
+          0.4471
+        ],
+        "operations": {
+          "Asset": "8b0ed3a6-59f6-4be2-a1d8-8b524a019e9c"
+        }
+      },
+      "Portal_Great__Tracery": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://135932379290714",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          -0.0259,
+          29.2442,
+          1.6665
+        ],
+        "operations": {
+          "Asset": "55b64f4d-7d02-465e-b15e-b0bda7426251"
+        }
+      },
+      "Portal_Great__Tracery_2": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://80880231579537",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          0.0226,
+          63.4457,
+          1.3648
+        ],
+        "operations": {
+          "Asset": "55b64f4d-7d02-465e-b15e-b0bda7426251"
+        }
+      }
+    },
+    "Portcullis": {
+      "Portcullis__Iron": {
+        "ColorMap": "rbxassetid://93983370644040",
+        "MeshId": "rbxassetid://101329165981405",
+        "MetalnessMap": "rbxassetid://135236569506881",
+        "NormalMap": "rbxassetid://73606967790982",
+        "RoughnessMap": "rbxassetid://96748498873777",
+        "operations": {
+          "Asset": "a615572c-6939-46b4-825e-8aca0893b2f0"
+        }
+      }
+    },
+    "Rose_Window_Great": {
+      "Rose_Window_Great__Crockets": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://92286333335028",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          0.0268,
+          56.6872,
+          -1.8209
+        ],
+        "operations": {
+          "Asset": "645b6fdc-7174-4bbf-82a4-199df4b36bc4"
+        }
+      },
+      "Rose_Window_Great__Dress": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://117203139600064",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          -0.0448,
+          53.9324,
+          -5.822
+        ],
+        "operations": {
+          "Asset": "645b6fdc-7174-4bbf-82a4-199df4b36bc4"
+        }
+      },
+      "Rose_Window_Great__Frost": {
+        "ColorMap": "rbxassetid://112934057467425",
+        "MeshId": "rbxassetid://110313574422512",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://85475493365275",
+        "RoughnessMap": "rbxassetid://71413989103088",
+        "center": [
+          -0.0421,
+          34.55,
+          0.2337
+        ],
+        "operations": {
+          "Asset": "645b6fdc-7174-4bbf-82a4-199df4b36bc4"
+        }
+      },
+      "Rose_Window_Great__GlassR": {
+        "Asset": "rbxassetid://126845152416740",
+        "ColorMap": "rbxassetid://121750176916718",
+        "MeshId": "rbxassetid://118052968098612",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://109294453614323",
+        "RoughnessMap": "rbxassetid://90388922988167",
+        "center": [
+          0.0152,
+          28.84,
+          1.7603
+        ],
+        "operations": {
+          "Asset": "ed5aa415-235d-4167-8953-198af84a42d0"
+        }
+      },
+      "Rose_Window_Great__Pinnacles": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://101589488142046",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          0.0,
+          66.4878,
+          0.4398
+        ],
+        "operations": {
+          "Asset": "645b6fdc-7174-4bbf-82a4-199df4b36bc4"
+        }
+      },
+      "Rose_Window_Great__Stone": {
+        "Asset": "rbxassetid://126845152416740",
+        "ColorMap": "rbxassetid://133570956886739",
+        "MeshId": "rbxassetid://90525574278737",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://130278610414465",
+        "RoughnessMap": "rbxassetid://89194722287585",
+        "center": [
+          -0.0217,
+          28.8782,
+          -0.8067
+        ],
+        "operations": {
+          "Asset": "ed5aa415-235d-4167-8953-198af84a42d0"
+        }
+      },
+      "Rose_Window_Great__Tracery": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://97218424277713",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          4.2558,
+          28.8622,
+          1.2444
+        ],
+        "operations": {
+          "Asset": "645b6fdc-7174-4bbf-82a4-199df4b36bc4"
+        }
+      },
+      "Rose_Window_Great__Tracery_2": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://83862754874324",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          -2.204,
+          28.8622,
+          1.2482
+        ],
+        "operations": {
+          "Asset": "645b6fdc-7174-4bbf-82a4-199df4b36bc4"
+        }
+      }
+    },
+    "Rose_Window_Small": {
+      "Rose_Window_Small__Crockets": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://102273822376106",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          -0.0353,
+          21.6485,
+          -1.8166
+        ],
+        "operations": {
+          "Asset": "a9c402f2-431a-44e1-8cfb-65a691eb67be"
+        }
+      },
+      "Rose_Window_Small__Frost": {
+        "ColorMap": "rbxassetid://112934057467425",
+        "MeshId": "rbxassetid://106543997900214",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://85475493365275",
+        "RoughnessMap": "rbxassetid://71413989103088",
+        "center": [
+          1.3647,
+          12.035,
+          -0.0019
+        ],
+        "operations": {
+          "Asset": "a9c402f2-431a-44e1-8cfb-65a691eb67be"
+        }
+      },
+      "Rose_Window_Small__GlassR": {
+        "Asset": "rbxassetid://82091721209360",
+        "ColorMap": "rbxassetid://121750176916718",
+        "MeshId": "rbxassetid://73006516624680",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://109294453614323",
+        "RoughnessMap": "rbxassetid://90388922988167",
+        "center": [
+          0.0156,
+          10.68,
+          0.3231
+        ],
+        "operations": {
+          "Asset": "26265d20-0b9b-4c43-b7ae-8896659da87d"
+        }
+      },
+      "Rose_Window_Small__Pinnacles": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://119387884372296",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          0.0496,
+          24.626,
+          -0.0007
+        ],
+        "operations": {
+          "Asset": "a9c402f2-431a-44e1-8cfb-65a691eb67be"
+        }
+      },
+      "Rose_Window_Small__Stone": {
+        "Asset": "rbxassetid://82091721209360",
+        "ColorMap": "rbxassetid://133570956886739",
+        "MeshId": "rbxassetid://93906075788287",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://130278610414465",
+        "RoughnessMap": "rbxassetid://89194722287585",
+        "center": [
+          0.0212,
+          10.704,
+          -0.0073
+        ],
+        "operations": {
+          "Asset": "26265d20-0b9b-4c43-b7ae-8896659da87d"
+        }
+      },
+      "Rose_Window_Small__Tracery": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://74644648066709",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          -0.0423,
+          10.6976,
+          0.0
+        ],
+        "operations": {
+          "Asset": "a9c402f2-431a-44e1-8cfb-65a691eb67be"
+        }
+      }
+    },
+    "Ruined_Arch": {
+      "Ruined_Arch__Figure": {
+        "ColorMap": "rbxassetid://125665534361819",
+        "MeshId": "rbxassetid://127682987018118",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://105322257515223",
+        "RoughnessMap": "rbxassetid://112003325881334",
+        "center": [
+          10.2932,
+          0.9736,
+          0.9901
+        ],
+        "operations": {
+          "Asset": "81a735ca-7f69-473c-9cde-2fcd15d451b5"
+        }
+      },
+      "Ruined_Arch__Frost": {
+        "ColorMap": "rbxassetid://112934057467425",
+        "MeshId": "rbxassetid://71240976474502",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://85475493365275",
+        "RoughnessMap": "rbxassetid://71413989103088",
+        "center": [
+          -0.3899,
+          19.1303,
+          -0.535
+        ],
+        "operations": {
+          "Asset": "81a735ca-7f69-473c-9cde-2fcd15d451b5"
+        }
+      },
+      "Ruined_Arch__Stone": {
+        "Asset": "rbxassetid://121083849548562",
+        "ColorMap": "rbxassetid://94040383273600",
+        "MeshId": "rbxassetid://117192035457299",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://130278610414465",
+        "RoughnessMap": "rbxassetid://89194722287585",
+        "center": [
+          -0.7349,
+          18.7196,
+          -0.7558
+        ],
+        "operations": {
+          "Asset": "ba3ead1d-62fb-4c3a-b076-d2c5b00aaf33"
+        }
+      },
+      "Ruined_Arch__Tracery": {
+        "Asset": "rbxassetid://121083849548562",
+        "ColorMap": "rbxassetid://85574582085976",
+        "MeshId": "rbxassetid://70872397181204",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          -1.9471,
+          19.2819,
+          0.2226
+        ],
+        "operations": {
+          "Asset": "ba3ead1d-62fb-4c3a-b076-d2c5b00aaf33"
+        }
+      }
+    },
+    "Spire_Base_Oct": {
+      "Spire_Base_Oct__Crockets": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://86893797011794",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          9.7547,
+          27.5408,
+          -0.0091
+        ],
+        "operations": {
+          "Asset": "4d926c84-37ea-4ed6-8688-80bfc73d9002"
+        }
+      },
+      "Spire_Base_Oct__Crockets_2": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://77546642985172",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          -9.7793,
+          27.5977,
+          0.0451
+        ],
+        "operations": {
+          "Asset": "4d926c84-37ea-4ed6-8688-80bfc73d9002"
+        }
+      },
+      "Spire_Base_Oct__Dress": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://97812149405266",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          0.0,
+          8.6804,
+          -0.004
+        ],
+        "operations": {
+          "Asset": "4d926c84-37ea-4ed6-8688-80bfc73d9002"
+        }
+      },
+      "Spire_Base_Oct__Frost": {
+        "ColorMap": "rbxassetid://112934057467425",
+        "MeshId": "rbxassetid://137259972292643",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://85475493365275",
+        "RoughnessMap": "rbxassetid://71413989103088",
+        "center": [
+          0.0196,
+          20.6183,
+          0.7407
+        ],
+        "operations": {
+          "Asset": "4d926c84-37ea-4ed6-8688-80bfc73d9002"
+        }
+      },
+      "Spire_Base_Oct__Pinnacles": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://138233439460311",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          0.0182,
+          24.2006,
+          -0.021
+        ],
+        "operations": {
+          "Asset": "4d926c84-37ea-4ed6-8688-80bfc73d9002"
+        }
+      },
+      "Spire_Base_Oct__Stone": {
+        "Asset": "rbxassetid://120132678850650",
+        "ColorMap": "rbxassetid://133570956886739",
+        "MeshId": "rbxassetid://125532051570235",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://130278610414465",
+        "RoughnessMap": "rbxassetid://89194722287585",
+        "center": [
+          0.0602,
+          15.0,
+          -0.0416
+        ],
+        "operations": {
+          "Asset": "398d3b68-613a-498b-b1b0-85aa209b1615"
+        }
+      },
+      "Spire_Base_Oct__Tracery": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://82129578709520",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          0.0002,
+          15.0,
+          -0.0339
+        ],
+        "operations": {
+          "Asset": "4d926c84-37ea-4ed6-8688-80bfc73d9002"
+        }
+      }
+    },
+    "Spire_Belfry_Stage": {
+      "Spire_Belfry_Stage__Crockets": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://84247470385859",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          7.4771,
+          42.6588,
+          0.0084
+        ],
+        "operations": {
+          "Asset": "1fd165de-7be5-4ddc-88d7-56303275fc30"
+        }
+      },
+      "Spire_Belfry_Stage__Crockets_2": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://118390975079818",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          -7.5953,
+          42.6346,
+          -0.0314
+        ],
+        "operations": {
+          "Asset": "1fd165de-7be5-4ddc-88d7-56303275fc30"
+        }
+      },
+      "Spire_Belfry_Stage__Dress": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://85457843797281",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          0.0,
+          37.1082,
+          0.0
+        ],
+        "operations": {
+          "Asset": "1fd165de-7be5-4ddc-88d7-56303275fc30"
+        }
+      },
+      "Spire_Belfry_Stage__Frost": {
+        "ColorMap": "rbxassetid://112934057467425",
+        "MeshId": "rbxassetid://136695898441479",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://85475493365275",
+        "RoughnessMap": "rbxassetid://71413989103088",
+        "center": [
+          0.1436,
+          25.795,
+          -0.0044
+        ],
+        "operations": {
+          "Asset": "1fd165de-7be5-4ddc-88d7-56303275fc30"
+        }
+      },
+      "Spire_Belfry_Stage__Louvre": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://138579008862194",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          -0.0179,
+          18.9496,
+          -0.0119
+        ],
+        "operations": {
+          "Asset": "1fd165de-7be5-4ddc-88d7-56303275fc30"
+        }
+      },
+      "Spire_Belfry_Stage__Pinnacles": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://108645209852850",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          -0.0259,
+          47.0594,
+          0.0206
+        ],
+        "operations": {
+          "Asset": "1fd165de-7be5-4ddc-88d7-56303275fc30"
+        }
+      },
+      "Spire_Belfry_Stage__Stone": {
+        "Asset": "rbxassetid://133565418432922",
+        "ColorMap": "rbxassetid://133570956886739",
+        "MeshId": "rbxassetid://83458622947794",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://130278610414465",
+        "RoughnessMap": "rbxassetid://89194722287585",
+        "center": [
+          -0.0127,
+          20.0,
+          -0.0283
+        ],
+        "operations": {
+          "Asset": "7dc88da9-752e-4e7b-beb0-ed6c5098504b"
+        }
+      },
+      "Spire_Belfry_Stage__Tracery": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://72466959301531",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          -0.0392,
+          15.6175,
+          -0.0321
+        ],
+        "operations": {
+          "Asset": "1fd165de-7be5-4ddc-88d7-56303275fc30"
+        }
+      },
+      "Spire_Belfry_Stage__Tracery_2": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://95249983057162",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          -0.016,
+          38.8425,
+          -0.0203
+        ],
+        "operations": {
+          "Asset": "1fd165de-7be5-4ddc-88d7-56303275fc30"
+        }
+      }
+    },
+    "Spire_Broken_Top": {
+      "Spire_Broken_Top__Crockets": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://92206581729307",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          -1.5907,
+          12.0899,
+          0.0
+        ],
+        "operations": {
+          "Asset": "c701bf49-a7d1-4035-9ba1-8da594018603"
+        }
+      },
+      "Spire_Broken_Top__Frost": {
+        "ColorMap": "rbxassetid://112934057467425",
+        "MeshId": "rbxassetid://104754998699775",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://85475493365275",
+        "RoughnessMap": "rbxassetid://71413989103088",
+        "center": [
+          -0.0386,
+          15.0957,
+          1.4327
+        ],
+        "operations": {
+          "Asset": "c701bf49-a7d1-4035-9ba1-8da594018603"
+        }
+      },
+      "Spire_Broken_Top__Roof": {
+        "ColorMap": "rbxassetid://103013622799992",
+        "MeshId": "rbxassetid://94465883132232",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://92348979135771",
+        "RoughnessMap": "rbxassetid://109019151332701",
+        "center": [
+          -3.8809,
+          8.4411,
+          -0.0532
+        ],
+        "operations": {
+          "Asset": "c701bf49-a7d1-4035-9ba1-8da594018603"
+        }
+      },
+      "Spire_Broken_Top__Stone": {
+        "Asset": "rbxassetid://138512474218800",
+        "ColorMap": "rbxassetid://133570956886739",
+        "MeshId": "rbxassetid://71190339943673",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://130278610414465",
+        "RoughnessMap": "rbxassetid://89194722287585",
+        "center": [
+          0.2991,
+          14.06,
+          -0.0893
+        ],
+        "operations": {
+          "Asset": "6da1bf55-82fd-499c-b61d-c4febac56d38"
+        }
+      },
+      "Spire_Broken_Top__Tracery": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://110712565325878",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          -0.3926,
+          12.7002,
+          -0.0923
+        ],
+        "operations": {
+          "Asset": "c701bf49-a7d1-4035-9ba1-8da594018603"
+        }
+      }
+    },
+    "Spire_Lucarne_Mid": {
+      "Spire_Lucarne_Mid__Crockets": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://125094318838183",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          0.0,
+          14.2132,
+          0.0
+        ],
+        "operations": {
+          "Asset": "6ab9694c-594c-46fc-8de2-0604636ef1d6"
+        }
+      },
+      "Spire_Lucarne_Mid__Crockets_2": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://79632588505441",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          0.0562,
+          40.1248,
+          0.0411
+        ],
+        "operations": {
+          "Asset": "6ab9694c-594c-46fc-8de2-0604636ef1d6"
+        }
+      },
+      "Spire_Lucarne_Mid__Frost": {
+        "ColorMap": "rbxassetid://112934057467425",
+        "MeshId": "rbxassetid://129953200444961",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://85475493365275",
+        "RoughnessMap": "rbxassetid://71413989103088",
+        "center": [
+          -1.953,
+          26.9505,
+          0.0359
+        ],
+        "operations": {
+          "Asset": "6ab9694c-594c-46fc-8de2-0604636ef1d6"
+        }
+      },
+      "Spire_Lucarne_Mid__Pinnacles": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://113759253901416",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          -0.012,
+          28.165,
+          0.0241
+        ],
+        "operations": {
+          "Asset": "6ab9694c-594c-46fc-8de2-0604636ef1d6"
+        }
+      },
+      "Spire_Lucarne_Mid__Roof": {
+        "Asset": "rbxassetid://104456877019832",
+        "ColorMap": "rbxassetid://103013622799992",
+        "MeshId": "rbxassetid://108787291308560",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://92348979135771",
+        "RoughnessMap": "rbxassetid://109019151332701",
+        "center": [
+          0.0049,
+          18.1841,
+          -0.0119
+        ],
+        "operations": {
+          "Asset": "31a21e5a-8b55-4f2d-b8be-dd70b2c4c154"
+        }
+      },
+      "Spire_Lucarne_Mid__Stone": {
+        "Asset": "rbxassetid://104456877019832",
+        "ColorMap": "rbxassetid://133570956886739",
+        "MeshId": "rbxassetid://135779783907073",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://130278610414465",
+        "RoughnessMap": "rbxassetid://89194722287585",
+        "center": [
+          0.0087,
+          24.0805,
+          0.058
+        ],
+        "operations": {
+          "Asset": "31a21e5a-8b55-4f2d-b8be-dd70b2c4c154"
+        }
+      },
+      "Spire_Lucarne_Mid__Tracery": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://87176278895504",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          0.0146,
+          24.0719,
+          -0.0075
+        ],
+        "operations": {
+          "Asset": "6ab9694c-594c-46fc-8de2-0604636ef1d6"
+        }
+      },
+      "Spire_Lucarne_Mid__Tracery_2": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://82763857701113",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          -0.0424,
+          38.3078,
+          0.1298
+        ],
+        "operations": {
+          "Asset": "6ab9694c-594c-46fc-8de2-0604636ef1d6"
+        }
+      }
+    },
+    "Spire_Needle_Tip": {
+      "Spire_Needle_Tip__Crockets": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://81625649773716",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          -0.0127,
+          32.2235,
+          -0.0829
+        ],
+        "operations": {
+          "Asset": "d5b21c86-47f7-41fa-8381-d184b057f80e"
+        }
+      },
+      "Spire_Needle_Tip__Frost": {
+        "ColorMap": "rbxassetid://112934057467425",
+        "MeshId": "rbxassetid://101421498313164",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://85475493365275",
+        "RoughnessMap": "rbxassetid://71413989103088",
+        "center": [
+          -1.1596,
+          22.6772,
+          1.1091
+        ],
+        "operations": {
+          "Asset": "d5b21c86-47f7-41fa-8381-d184b057f80e"
+        }
+      },
+      "Spire_Needle_Tip__Iron": {
+        "Asset": "rbxassetid://98339191104108",
+        "ColorMap": "rbxassetid://93983370644040",
+        "MeshId": "rbxassetid://116907808689125",
+        "MetalnessMap": "rbxassetid://135236569506881",
+        "NormalMap": "rbxassetid://73606967790982",
+        "RoughnessMap": "rbxassetid://96748498873777",
+        "center": [
+          -0.0427,
+          63.7015,
+          -0.0078
+        ],
+        "operations": {
+          "Asset": "708c6c72-0484-419d-b40d-e54df1190bc8"
+        }
+      },
+      "Spire_Needle_Tip__Roof": {
+        "ColorMap": "rbxassetid://103013622799992",
+        "MeshId": "rbxassetid://95544165781261",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://92348979135771",
+        "RoughnessMap": "rbxassetid://109019151332701",
+        "center": [
+          0.0003,
+          14.9631,
+          -0.0281
+        ],
+        "operations": {
+          "Asset": "d5b21c86-47f7-41fa-8381-d184b057f80e"
+        }
+      },
+      "Spire_Needle_Tip__Stone": {
+        "Asset": "rbxassetid://98339191104108",
+        "ColorMap": "rbxassetid://133570956886739",
+        "MeshId": "rbxassetid://120754488780082",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://130278610414465",
+        "RoughnessMap": "rbxassetid://89194722287585",
+        "center": [
+          0.0013,
+          28.0415,
+          0.0347
+        ],
+        "operations": {
+          "Asset": "708c6c72-0484-419d-b40d-e54df1190bc8"
+        }
+      },
+      "Spire_Needle_Tip__Tracery": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://83503374119742",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          0.0,
+          28.0369,
+          0.011
+        ],
+        "operations": {
+          "Asset": "d5b21c86-47f7-41fa-8381-d184b057f80e"
+        }
+      }
+    },
+    "Statue_Plinth": {
+      "Statue_Plinth__Frost": {
+        "ColorMap": "rbxassetid://112934057467425",
+        "MeshId": "rbxassetid://82191826286320",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://85475493365275",
+        "RoughnessMap": "rbxassetid://71413989103088",
+        "center": [
+          0.0,
+          8.35,
+          0.0
+        ],
+        "operations": {
+          "Asset": "c43394f6-2d57-43ce-9b1b-edf2dcaefdea"
+        }
+      },
+      "Statue_Plinth__Stone": {
+        "ColorMap": "rbxassetid://133570956886739",
+        "MeshId": "rbxassetid://70834922721318",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://130278610414465",
+        "RoughnessMap": "rbxassetid://89194722287585",
+        "center": [
+          0.0,
+          4.8249,
+          0.0
+        ],
+        "operations": {
+          "Asset": "c43394f6-2d57-43ce-9b1b-edf2dcaefdea"
+        }
+      },
+      "Statue_Plinth__Tracery": {
+        "Asset": "rbxassetid://105713470149978",
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://100694100819443",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          0.0131,
+          6.7317,
+          0.0091
+        ],
+        "operations": {
+          "Asset": "220a4be2-2190-417e-8ef0-741c01233ed3"
+        }
+      }
+    },
+    "Thorn_Twisted_A": {
+      "Thorn_Twisted_A__Branches": {
+        "ColorMap": "rbxassetid://90640418476300",
+        "MeshId": "rbxassetid://71914728010394",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://87339954026428",
+        "RoughnessMap": "rbxassetid://109365561400973",
+        "operations": {
+          "Asset": "9b12bfa9-bb96-408b-b978-5f2c7b97bd39"
+        }
+      },
+      "Thorn_Twisted_A__Trunk": {
+        "ColorMap": "rbxassetid://105154234806204",
+        "MeshId": "rbxassetid://81901750134381",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://83184676786710",
+        "RoughnessMap": "rbxassetid://72248531282622",
+        "operations": {
+          "Asset": "9b12bfa9-bb96-408b-b978-5f2c7b97bd39"
+        }
+      },
+      "Thorn_Twisted_A__Twigs": {
+        "ColorMap": "rbxassetid://137434482310298",
+        "MeshId": "rbxassetid://93555193834910",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://131403722841651",
+        "RoughnessMap": "rbxassetid://76263750307523",
+        "operations": {
+          "Asset": "9b12bfa9-bb96-408b-b978-5f2c7b97bd39"
+        }
+      }
+    },
+    "Thorn_Twisted_B": {
+      "Thorn_Twisted_B__Branches": {
+        "ColorMap": "rbxassetid://87456424755600",
+        "MeshId": "rbxassetid://76349401780907",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://90407562551308",
+        "RoughnessMap": "rbxassetid://80182726352990",
+        "operations": {
+          "Asset": "14d2c4ba-675b-425b-b468-7582c15f9236"
+        }
+      },
+      "Thorn_Twisted_B__Trunk": {
+        "ColorMap": "rbxassetid://92787713385126",
+        "MeshId": "rbxassetid://104241477403047",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://77011313059518",
+        "RoughnessMap": "rbxassetid://131655889484965",
+        "operations": {
+          "Asset": "14d2c4ba-675b-425b-b468-7582c15f9236"
+        }
+      },
+      "Thorn_Twisted_B__Twigs": {
+        "ColorMap": "rbxassetid://73889708337708",
+        "MeshId": "rbxassetid://102915709816373",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://81430159207765",
+        "RoughnessMap": "rbxassetid://109527765262985",
+        "operations": {
+          "Asset": "14d2c4ba-675b-425b-b468-7582c15f9236"
+        }
+      },
+      "Thorn_Twisted_B__Twigs_2": {
+        "ColorMap": "rbxassetid://73889708337708",
+        "MeshId": "rbxassetid://138829293330256",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://81430159207765",
+        "RoughnessMap": "rbxassetid://109527765262985",
+        "operations": {
+          "Asset": "14d2c4ba-675b-425b-b468-7582c15f9236"
+        }
+      }
+    },
+    "Tower_Corner_Stage": {
+      "Tower_Corner_Stage__Crockets": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://103625542920498",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          10.8139,
+          45.3687,
+          -0.1096
+        ],
+        "operations": {
+          "Asset": "019ab4bb-e355-444c-bee1-d39cf8203b64"
+        }
+      },
+      "Tower_Corner_Stage__Crockets_2": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://78798528730242",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          -10.8264,
+          45.3744,
+          -0.122
+        ],
+        "operations": {
+          "Asset": "019ab4bb-e355-444c-bee1-d39cf8203b64"
+        }
+      },
+      "Tower_Corner_Stage__Dress": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://72189565583111",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          0.0,
+          54.0943,
+          0.0
+        ],
+        "operations": {
+          "Asset": "019ab4bb-e355-444c-bee1-d39cf8203b64"
+        }
+      },
+      "Tower_Corner_Stage__Frost": {
+        "ColorMap": "rbxassetid://112934057467425",
+        "MeshId": "rbxassetid://129776692923375",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://85475493365275",
+        "RoughnessMap": "rbxassetid://71413989103088",
+        "center": [
+          -0.0159,
+          31.795,
+          -0.2438
+        ],
+        "operations": {
+          "Asset": "019ab4bb-e355-444c-bee1-d39cf8203b64"
+        }
+      },
+      "Tower_Corner_Stage__Glass": {
+        "Asset": "rbxassetid://75357737116518",
+        "ColorMap": "rbxassetid://121750176916718",
+        "MeshId": "rbxassetid://74095213724092",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://109294453614323",
+        "RoughnessMap": "rbxassetid://90388922988167",
+        "center": [
+          -0.0159,
+          31.0,
+          -0.0885
+        ],
+        "operations": {
+          "Asset": "32c2a8a3-0194-4469-80cb-11509a4d3949"
+        }
+      },
+      "Tower_Corner_Stage__Pinnacles": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://75629537492488",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          -0.0146,
+          38.9383,
+          -0.1143
+        ],
+        "operations": {
+          "Asset": "019ab4bb-e355-444c-bee1-d39cf8203b64"
+        }
+      },
+      "Tower_Corner_Stage__Stone": {
+        "Asset": "rbxassetid://75357737116518",
+        "ColorMap": "rbxassetid://133570956886739",
+        "MeshId": "rbxassetid://83555800374538",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://130278610414465",
+        "RoughnessMap": "rbxassetid://89194722287585",
+        "center": [
+          -0.0407,
+          30.0,
+          -0.1189
+        ],
+        "operations": {
+          "Asset": "32c2a8a3-0194-4469-80cb-11509a4d3949"
+        }
+      },
+      "Tower_Corner_Stage__Tracery": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://104403433191382",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          -0.0177,
+          28.5395,
+          -0.0802
+        ],
+        "operations": {
+          "Asset": "019ab4bb-e355-444c-bee1-d39cf8203b64"
+        }
+      },
+      "Tower_Corner_Stage__Tracery_2": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://122616005787662",
+        "MetalnessMap": "rbxassetid://84996964753972",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          -0.0197,
+          45.2288,
+          -0.0327
+        ],
+        "operations": {
+          "Asset": "019ab4bb-e355-444c-bee1-d39cf8203b64"
+        }
+      }
+    }
+  }
+}

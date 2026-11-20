@@ -127,3 +127,18 @@ Keep the deep hood, the capelet, the rope belt, the staff crescent and the quatr
 - No publishing, settings, permission or account changes, and no purchases.
 - Leave untracked creator/Codex files alone: `outputs/vesperhold/AsurasPath-Vesperhold.rbxlx`, `walkthrough.mp4`.
 - Multi-client tests run on Windows only.
+
+## 7. Windows run 4 upload record (lead, Opus 5.5, 2026-11-20)
+- Route: Studio MCP `open_cloud_invoke` from the cloud place window (place 118614906972571, never edited or saved, closed
+  unsaved afterwards). Ledgers with every operation ID, asset ID, sha256 and moderation state:
+  `uploads/vesperhold_upload_ledger.json`, `uploads/forest_retone2_upload_ledger.json` (`tools/assets/upload_batch.py`).
+- Vesperhold approved set (win-65 verdict): 38 pieces, 67 Model assets, all Approved. 29 pieces exceed the 20,000,000-byte
+  Open Cloud file limit, so `tools/assets/glb_split.py` split each into two parts (whole sub-meshes, images copied byte for
+  byte, no re-encode); the loader rebuilds them from per-sub `Asset` + `center`. Pilots: Gargoyle_A (94687077564229) and
+  Spire_Needle_Tip__p2 (98339191104108), both read back with 2048 maps, black Metal on stone and the expected positions.
+- Forest retone2: 101/101 Approved; the SLICE / HERO / BELLWOOD / BELLWOOD_FAR registries now point at them (old IDs kept
+  as `replaces`). Far atlases now carry Normal + MR maps by design (mac-26/mac-30), so `kit_registry` accepts them.
+- Registries written from a read-only LoadAsset readback (`tools/assets/registry_readback.py`). Vesperhold validates
+  with `--vesp-manifests assets/source/vesperhold/candidate-win-2026-11-19` and the 31 held pieces as `--allow-missing`.
+- Not uploaded (held): all statues, Dead_Pine_Snapped_A/B, Dead_Stump_A/B, Viaduct_Bay, Viaduct_Balustrade_30,
+  Waterfall_Sheet_A/B. Next: §4 step 5 (seven Play views on a local copy), then the checkpoint rebuild with meshes.

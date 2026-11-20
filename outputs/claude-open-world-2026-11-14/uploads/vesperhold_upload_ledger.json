@@ -1,0 +1,842 @@
+{
+ "vesp/kit/Arcade_Bay_40": {
+  "bytes": 22153636,
+  "file": "work/windows-resume-2026-11-19/upload/kit/Arcade_Bay_40.glb",
+  "sha256": "e2c0d52c86dcd3a103d2a0e3f37d494c295c0eed985249688c818721ab4e6b4e",
+  "skipped": "over 20 MB Open Cloud file limit"
+ },
+ "vesp/kit/Arcade_Bay_40__p1": {
+  "assetId": "114034603297988",
+  "bytes": 14547996,
+  "displayName": "Vesp_Arcade_Bay_40__p1",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload_split/kit/Arcade_Bay_40__p1.glb",
+  "moderation": "Approved",
+  "operationId": "ff024498-dd1f-477e-82e7-5c7dd1d9d068",
+  "sha256": "fabf264e85a3db404dc4bf9fbec4b4b2994277505d06fd6ea7d2ac95f1d8c6fa"
+ },
+ "vesp/kit/Arcade_Bay_40__p2": {
+  "assetId": "77304571426011",
+  "bytes": 7605936,
+  "displayName": "Vesp_Arcade_Bay_40__p2",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload_split/kit/Arcade_Bay_40__p2.glb",
+  "moderation": "Approved",
+  "operationId": "b928329d-94e2-41c0-a757-c4f3e6daa9fb",
+  "sha256": "6c4315ddb46685522f27ddc8c98ba5b1f477ad4ef8ae8c84b8165dd2f827bb1a"
+ },
+ "vesp/kit/Arcade_Bay_50": {
+  "bytes": 22188416,
+  "file": "work/windows-resume-2026-11-19/upload/kit/Arcade_Bay_50.glb",
+  "sha256": "51d202d3c32dc3566c75551b8e8398a8047c6344f3f2ede0014c4fdf16ecdf3d",
+  "skipped": "over 20 MB Open Cloud file limit"
+ },
+ "vesp/kit/Arcade_Bay_50__p1": {
+  "assetId": "135497919203235",
+  "bytes": 14582776,
+  "displayName": "Vesp_Arcade_Bay_50__p1",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload_split/kit/Arcade_Bay_50__p1.glb",
+  "moderation": "Approved",
+  "operationId": "2b3092db-f256-46e8-b829-1d6c1d5115eb",
+  "sha256": "09559f9c50331e52214b0f237ae089393df8fe938e93f49b8c8879810e2b78c6"
+ },
+ "vesp/kit/Arcade_Bay_50__p2": {
+  "assetId": "103399594100180",
+  "bytes": 7605936,
+  "displayName": "Vesp_Arcade_Bay_50__p2",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload_split/kit/Arcade_Bay_50__p2.glb",
+  "moderation": "Approved",
+  "operationId": "3030062b-2f21-4e1a-97a8-39332905bf1c",
+  "sha256": "79ec7c727a9189575674877d86ee730242121535f9c4c13360a08ddf5ca336cd"
+ },
+ "vesp/kit/Arcade_Bay_60": {
+  "bytes": 22178884,
+  "file": "work/windows-resume-2026-11-19/upload/kit/Arcade_Bay_60.glb",
+  "sha256": "845c13d69dab7d69edda04732388ad41d28462cc006d63774e786a4f7978be99",
+  "skipped": "over 20 MB Open Cloud file limit"
+ },
+ "vesp/kit/Arcade_Bay_60__p1": {
+  "assetId": "97385171215572",
+  "bytes": 14573244,
+  "displayName": "Vesp_Arcade_Bay_60__p1",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload_split/kit/Arcade_Bay_60__p1.glb",
+  "moderation": "Approved",
+  "operationId": "b3b81f71-3ba0-4712-9aba-f47a0538d0d3",
+  "sha256": "f86a00ccf266a3f5f4434ac4153cdeddc6c0c649b3557d4d8137fe0a03edf261"
+ },
+ "vesp/kit/Arcade_Bay_60__p2": {
+  "assetId": "136778281605282",
+  "bytes": 7605936,
+  "displayName": "Vesp_Arcade_Bay_60__p2",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload_split/kit/Arcade_Bay_60__p2.glb",
+  "moderation": "Approved",
+  "operationId": "8821c427-e461-4e13-8c22-78d63af24002",
+  "sha256": "a3f86872aac4bfbfdffaf0817fc36eb0b401e29216183980aea40b09d5989fe5"
+ },
+ "vesp/kit/Arcade_Corner": {
+  "bytes": 21994020,
+  "file": "work/windows-resume-2026-11-19/upload/kit/Arcade_Corner.glb",
+  "sha256": "82593a341c96111334513be131879739519ebf4cba72796c09d1c468c414e3fb",
+  "skipped": "over 20 MB Open Cloud file limit"
+ },
+ "vesp/kit/Arcade_Corner__p1": {
+  "assetId": "84689787189389",
+  "bytes": 14381476,
+  "displayName": "Vesp_Arcade_Corner__p1",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload_split/kit/Arcade_Corner__p1.glb",
+  "moderation": "Approved",
+  "operationId": "72032c63-b77f-48b5-87ce-143938dd8012",
+  "sha256": "48b4f4a0b88e9f6ad133221216c8435f3c11ed75f77323e5918a713310b56ab4"
+ },
+ "vesp/kit/Arcade_Corner__p2": {
+  "assetId": "103015158854077",
+  "bytes": 7612844,
+  "displayName": "Vesp_Arcade_Corner__p2",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload_split/kit/Arcade_Corner__p2.glb",
+  "moderation": "Approved",
+  "operationId": "6b28dc09-598e-4b00-9dea-2793e6ecabb8",
+  "sha256": "daa442515abcc388b441a1d76279a6b7577c23087053e749827e6f9f4878b3df"
+ },
+ "vesp/kit/Balustrade_20": {
+  "bytes": 20186892,
+  "file": "work/windows-resume-2026-11-19/upload/kit/Balustrade_20.glb",
+  "sha256": "3e098b5611b5374a9b7120473cb7081df8c6b875edeeb1dcbab4e78169e69c0c",
+  "skipped": "over 20 MB Open Cloud file limit"
+ },
+ "vesp/kit/Balustrade_20__p1": {
+  "assetId": "83403378693445",
+  "bytes": 12693032,
+  "displayName": "Vesp_Balustrade_20__p1",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload_split/kit/Balustrade_20__p1.glb",
+  "moderation": "Approved",
+  "operationId": "5029d1e0-9fff-4d53-8f68-0d5813598b08",
+  "sha256": "d56176a4990b918d7c7d9e1561d42596419ce06f0c29bb81b791bbafae4fb048"
+ },
+ "vesp/kit/Balustrade_20__p2": {
+  "assetId": "83899584583299",
+  "bytes": 7494160,
+  "displayName": "Vesp_Balustrade_20__p2",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload_split/kit/Balustrade_20__p2.glb",
+  "moderation": "Approved",
+  "operationId": "528b7839-49ee-4e76-8be5-e59321539d94",
+  "sha256": "333ee7fbb1902a09fb5132bd30c62b7513cda699e966567f62032b02def3241b"
+ },
+ "vesp/kit/Bastion_Face": {
+  "bytes": 21041524,
+  "file": "work/windows-resume-2026-11-19/upload/kit/Bastion_Face.glb",
+  "sha256": "87daec4d84e7a452078e3f8cdcefe77ee42f9f1462ccef8c55c9597a4f0ceb01",
+  "skipped": "over 20 MB Open Cloud file limit"
+ },
+ "vesp/kit/Bastion_Face__p1": {
+  "assetId": "135933335578659",
+  "bytes": 13209292,
+  "displayName": "Vesp_Bastion_Face__p1",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload_split/kit/Bastion_Face__p1.glb",
+  "moderation": "Approved",
+  "operationId": "89bbaa50-1f4d-4e98-9867-9eef9e9f9b8a",
+  "sha256": "28ad9a443c1aeebdb1cfe044bbb1aa5521c5d9e67c93f06d1d61ed8aeb0726b8"
+ },
+ "vesp/kit/Bastion_Face__p2": {
+  "assetId": "131965066583215",
+  "bytes": 7832532,
+  "displayName": "Vesp_Bastion_Face__p2",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload_split/kit/Bastion_Face__p2.glb",
+  "moderation": "Approved",
+  "operationId": "83eca396-cc8e-4629-a7a6-522e15a639d1",
+  "sha256": "d35305bbcf95fe4791716f42d40947011245698d425c1d3d4dd14a5b436bc725"
+ },
+ "vesp/kit/Buttress_Pier": {
+  "bytes": 21560664,
+  "file": "work/windows-resume-2026-11-19/upload/kit/Buttress_Pier.glb",
+  "sha256": "0a9034fca9533d5cf242731e5bbb2e09a7b2b5904c5591eb968a731c70c77dc3",
+  "skipped": "over 20 MB Open Cloud file limit"
+ },
+ "vesp/kit/Buttress_Pier__p1": {
+  "assetId": "134168841192105",
+  "bytes": 14045776,
+  "displayName": "Vesp_Buttress_Pier__p1",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload_split/kit/Buttress_Pier__p1.glb",
+  "moderation": "Approved",
+  "operationId": "433dbb67-eec4-4dde-83e9-ef276b3b8533",
+  "sha256": "715c42d193c4343c8157015c7a970608229949aea0986424cce733b8bd9355a0"
+ },
+ "vesp/kit/Buttress_Pier__p2": {
+  "assetId": "138060153279904",
+  "bytes": 7515188,
+  "displayName": "Vesp_Buttress_Pier__p2",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload_split/kit/Buttress_Pier__p2.glb",
+  "moderation": "Approved",
+  "operationId": "500cb7ea-6e8b-4bca-80b9-017d64e4b987",
+  "sha256": "51a94a47d1d5b32ea09d49e024f31c88a88f244d81a496a72173d963b3b2e997"
+ },
+ "vesp/kit/Cornice_20": {
+  "bytes": 20147276,
+  "file": "work/windows-resume-2026-11-19/upload/kit/Cornice_20.glb",
+  "sha256": "725141cd444e08ff7070c3c53857d2417f53efa96bd2f9f1f6df999aa9ccdc17",
+  "skipped": "over 20 MB Open Cloud file limit"
+ },
+ "vesp/kit/Cornice_20__p1": {
+  "assetId": "82905384682753",
+  "bytes": 14107312,
+  "displayName": "Vesp_Cornice_20__p1",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload_split/kit/Cornice_20__p1.glb",
+  "moderation": "Approved",
+  "operationId": "f7d6d0af-e6e8-41ed-96e6-0e4581298f2b",
+  "sha256": "1b5d8cfc37fe6be32e88e5f8b95dd2db44b561c4ff36f77d7abbf343b9faf319"
+ },
+ "vesp/kit/Cornice_20__p2": {
+  "assetId": "75650845349852",
+  "bytes": 6040268,
+  "displayName": "Vesp_Cornice_20__p2",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload_split/kit/Cornice_20__p2.glb",
+  "moderation": "Approved",
+  "operationId": "c472b6d8-8053-435f-ab3c-905a8da0e49a",
+  "sha256": "78e0b1736d189d190b431e4f4fd5f1281493a66879c0c1159491eacd5337f3b6"
+ },
+ "vesp/kit/Door_Iron": {
+  "assetId": "106082442688876",
+  "bytes": 7852724,
+  "displayName": "Vesp_Door_Iron",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload/kit/Door_Iron.glb",
+  "moderation": "Approved",
+  "operationId": "e8e9dd5f-b80c-491e-a3de-eb9b8e4fe108",
+  "sha256": "d3a9dd5ea7f9b1d3bb74b1ef3a31bcc7e3c8bc1766307ad90293513a0ec0b387"
+ },
+ "vesp/kit/Finial": {
+  "bytes": 20106800,
+  "file": "work/windows-resume-2026-11-19/upload/kit/Finial.glb",
+  "sha256": "5887d251bb0de332861c3880bcf7dc834558880a6368f154bda6bae27b0f018c",
+  "skipped": "over 20 MB Open Cloud file limit"
+ },
+ "vesp/kit/Finial__p1": {
+  "assetId": "117453035194900",
+  "bytes": 12637372,
+  "displayName": "Vesp_Finial__p1",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload_split/kit/Finial__p1.glb",
+  "moderation": "Approved",
+  "operationId": "b526f461-b1e9-4873-b772-248e28c254b8",
+  "sha256": "fb96c600b4acf17dd0942ebe2f6b35004aecc3c8bdb046914414361389debe47"
+ },
+ "vesp/kit/Finial__p2": {
+  "assetId": "121910806277047",
+  "bytes": 7469724,
+  "displayName": "Vesp_Finial__p2",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload_split/kit/Finial__p2.glb",
+  "moderation": "Approved",
+  "operationId": "813364b8-26bf-454f-9f13-ca70f9976ab2",
+  "sha256": "1f9acad3ccfadf2e4bf4d8599859f13a40a9b659540cf7c1a5ac01e1106b5ba2"
+ },
+ "vesp/kit/Flying_Buttress_40": {
+  "bytes": 20506004,
+  "file": "work/windows-resume-2026-11-19/upload/kit/Flying_Buttress_40.glb",
+  "sha256": "01011ec0b5e419964c2d293c9bf5142181a085067d3023f199ec4a1c90abcf5c",
+  "skipped": "over 20 MB Open Cloud file limit"
+ },
+ "vesp/kit/Flying_Buttress_40__p1": {
+  "assetId": "102617857586395",
+  "bytes": 12995844,
+  "displayName": "Vesp_Flying_Buttress_40__p1",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload_split/kit/Flying_Buttress_40__p1.glb",
+  "moderation": "Approved",
+  "operationId": "38a37d39-5ccf-4da7-9127-cd0a747127f8",
+  "sha256": "4990e9931019448bad2513338a07bfac64b4137ec3e7152c2459ca60516d6b92"
+ },
+ "vesp/kit/Flying_Buttress_40__p2": {
+  "assetId": "123470493030436",
+  "bytes": 7510460,
+  "displayName": "Vesp_Flying_Buttress_40__p2",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload_split/kit/Flying_Buttress_40__p2.glb",
+  "moderation": "Approved",
+  "operationId": "8ab62548-c555-45d1-9f9b-46dc9556a292",
+  "sha256": "4cc2e6cbcdf34492f4fa2c971b67596a56a4574cb6c9c9b11c4dfcbaf51d1b26"
+ },
+ "vesp/kit/Flying_Buttress_60": {
+  "bytes": 20658564,
+  "file": "work/windows-resume-2026-11-19/upload/kit/Flying_Buttress_60.glb",
+  "sha256": "3d8431570ca6acd4e0cd076833283726ef432e0d6da883c80340398d8b8bfaf5",
+  "skipped": "over 20 MB Open Cloud file limit"
+ },
+ "vesp/kit/Flying_Buttress_60__p1": {
+  "assetId": "135575382508343",
+  "bytes": 13134508,
+  "displayName": "Vesp_Flying_Buttress_60__p1",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload_split/kit/Flying_Buttress_60__p1.glb",
+  "moderation": "Approved",
+  "operationId": "c302810e-6de3-4ea2-b7ee-a40cb3c89f20",
+  "sha256": "a5215f970989f507a12c748377a450bfeb2cf8048d3a8a121226e79a2ead76af"
+ },
+ "vesp/kit/Flying_Buttress_60__p2": {
+  "assetId": "88397784242253",
+  "bytes": 7524352,
+  "displayName": "Vesp_Flying_Buttress_60__p2",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload_split/kit/Flying_Buttress_60__p2.glb",
+  "moderation": "Approved",
+  "operationId": "2c2e33dc-77da-4acc-9ac3-f1a571801980",
+  "sha256": "75fc6873bfa98495fec9dd7e5df27e4911347bf57d0f237806ca1f869f4db704"
+ },
+ "vesp/kit/Lancet_Pair": {
+  "bytes": 28074776,
+  "file": "work/windows-resume-2026-11-19/upload/kit/Lancet_Pair.glb",
+  "sha256": "a83e0c35639e67e7209337e24016b0278ddd8dd3dbbe29905abcef86d1764fa4",
+  "skipped": "over 20 MB Open Cloud file limit"
+ },
+ "vesp/kit/Lancet_Pair__p1": {
+  "assetId": "78772362584692",
+  "bytes": 14076288,
+  "displayName": "Vesp_Lancet_Pair__p1",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload_split/kit/Lancet_Pair__p1.glb",
+  "moderation": "Approved",
+  "operationId": "9dd0eb25-863c-43df-955c-73a59461373a",
+  "sha256": "19ce3dd8870a5b3171958b19a4df41d0801ea260eb21329782181d38b54c667d"
+ },
+ "vesp/kit/Lancet_Pair__p2": {
+  "assetId": "91998628413488",
+  "bytes": 13998768,
+  "displayName": "Vesp_Lancet_Pair__p2",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload_split/kit/Lancet_Pair__p2.glb",
+  "moderation": "Approved",
+  "operationId": "3324ba71-cca0-4225-823a-e0a939dc598c",
+  "sha256": "a21615b39f19f69096462fe7fa08bb0fe410894844f8a6a54098aec475241c0d"
+ },
+ "vesp/kit/Lancet_Tall": {
+  "bytes": 27028780,
+  "file": "work/windows-resume-2026-11-19/upload/kit/Lancet_Tall.glb",
+  "sha256": "a6f11e54f7474f6e28a85446c0edfa9001cc23ca34349f1626c61189b6f35597",
+  "skipped": "over 20 MB Open Cloud file limit"
+ },
+ "vesp/kit/Lancet_Tall__p1": {
+  "assetId": "138083931516586",
+  "bytes": 13120396,
+  "displayName": "Vesp_Lancet_Tall__p1",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload_split/kit/Lancet_Tall__p1.glb",
+  "moderation": "Approved",
+  "operationId": "ed78e95a-1b43-475b-a7d8-3d995e99ca2a",
+  "sha256": "7c2b1d934939cc80d3987d28001426b6b3878ad8fddb4088d605c208982089e8"
+ },
+ "vesp/kit/Lancet_Tall__p2": {
+  "assetId": "78723628800447",
+  "bytes": 13908660,
+  "displayName": "Vesp_Lancet_Tall__p2",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload_split/kit/Lancet_Tall__p2.glb",
+  "moderation": "Approved",
+  "operationId": "ba7274c7-c969-4c5d-be84-df5efebf5ef6",
+  "sha256": "956374ace1f9387805841ee7e4fb926d6cf7e22177c7b2f5d2271dca5ad0ed77"
+ },
+ "vesp/kit/Parapet_Gothic_20": {
+  "bytes": 20227096,
+  "file": "work/windows-resume-2026-11-19/upload/kit/Parapet_Gothic_20.glb",
+  "sha256": "ffa5622932f3d22cf4f06091d4b34e0f3db1f98129ed816770565e5baacfd5dc",
+  "skipped": "over 20 MB Open Cloud file limit"
+ },
+ "vesp/kit/Parapet_Gothic_20__p1": {
+  "assetId": "106745063265694",
+  "bytes": 12732472,
+  "displayName": "Vesp_Parapet_Gothic_20__p1",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload_split/kit/Parapet_Gothic_20__p1.glb",
+  "moderation": "Approved",
+  "operationId": "fb95d8d7-b158-4976-beed-f585b2da2180",
+  "sha256": "bb8118eb3a724e431832369f9ce64f4c70665fa00e4b96daac837e5c73cf28b9"
+ },
+ "vesp/kit/Parapet_Gothic_20__p2": {
+  "assetId": "87401344593052",
+  "bytes": 7494920,
+  "displayName": "Vesp_Parapet_Gothic_20__p2",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload_split/kit/Parapet_Gothic_20__p2.glb",
+  "moderation": "Approved",
+  "operationId": "16d4500c-ad8a-4fc1-8b52-4007360f6db1",
+  "sha256": "62ea958bc1fbff398a77638482becb9a7fc3ae1b073943e32cc0d0848652714e"
+ },
+ "vesp/kit/Pinnacle_Crocket_L": {
+  "bytes": 20183908,
+  "file": "work/windows-resume-2026-11-19/upload/kit/Pinnacle_Crocket_L.glb",
+  "sha256": "f67af14b4cc644031a21858c36940ff254b56190a735235a3ccaa61b58a4e941",
+  "skipped": "over 20 MB Open Cloud file limit"
+ },
+ "vesp/kit/Pinnacle_Crocket_L__p1": {
+  "assetId": "132550976026921",
+  "bytes": 12657724,
+  "displayName": "Vesp_Pinnacle_Crocket_L__p1",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload_split/kit/Pinnacle_Crocket_L__p1.glb",
+  "moderation": "Approved",
+  "operationId": "9087e1c3-4770-415e-ab2d-2c7158c18e2a",
+  "sha256": "6735aa80e961bc93385a113091603eca8cf35b2dcbbb354bb12fab0a38d199ca"
+ },
+ "vesp/kit/Pinnacle_Crocket_L__p2": {
+  "assetId": "95852621681260",
+  "bytes": 7526488,
+  "displayName": "Vesp_Pinnacle_Crocket_L__p2",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload_split/kit/Pinnacle_Crocket_L__p2.glb",
+  "moderation": "Approved",
+  "operationId": "11bf4fc4-c78f-4130-9dc0-37aa3e751e7f",
+  "sha256": "990777185ec2877f1963921a908a360d6eb11f0c585a6420edd9f58d0d79da70"
+ },
+ "vesp/kit/Pinnacle_Crocket_M": {
+  "bytes": 20155724,
+  "file": "work/windows-resume-2026-11-19/upload/kit/Pinnacle_Crocket_M.glb",
+  "sha256": "dbdf9f2be375f8e47f8e7cd162f37f723662d8e6467321d90f37252251e0bff8",
+  "skipped": "over 20 MB Open Cloud file limit"
+ },
+ "vesp/kit/Pinnacle_Crocket_M__p1": {
+  "assetId": "83677185024832",
+  "bytes": 12658148,
+  "displayName": "Vesp_Pinnacle_Crocket_M__p1",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload_split/kit/Pinnacle_Crocket_M__p1.glb",
+  "moderation": "Approved",
+  "operationId": "29bae4e9-dbf7-4121-9cff-9de682c33092",
+  "sha256": "f091f6673d8ab7c9e0a00bb8b9f30619404dd477b60457c6df601cb136be7562"
+ },
+ "vesp/kit/Pinnacle_Crocket_M__p2": {
+  "assetId": "73343062131890",
+  "bytes": 7497880,
+  "displayName": "Vesp_Pinnacle_Crocket_M__p2",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload_split/kit/Pinnacle_Crocket_M__p2.glb",
+  "moderation": "Approved",
+  "operationId": "3f7c5886-711a-4e03-bd44-b756b28545d2",
+  "sha256": "f88b228e58de88da7b1b9e1d013b77de365edb5f40872e4a371afcf06d96721f"
+ },
+ "vesp/kit/Pinnacle_Crocket_S": {
+  "bytes": 20128492,
+  "file": "work/windows-resume-2026-11-19/upload/kit/Pinnacle_Crocket_S.glb",
+  "sha256": "43c3f789329bb0ddd1500c57c6dbcbdb57e4eafc4ccd7824a40d26cfd0dfe8d2",
+  "skipped": "over 20 MB Open Cloud file limit"
+ },
+ "vesp/kit/Pinnacle_Crocket_S__p1": {
+  "assetId": "106582866242981",
+  "bytes": 12656824,
+  "displayName": "Vesp_Pinnacle_Crocket_S__p1",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload_split/kit/Pinnacle_Crocket_S__p1.glb",
+  "moderation": "Approved",
+  "operationId": "bafce483-7a61-4941-b804-af99da7bb077",
+  "sha256": "eb6cdcff548fb5f3a3443f247e27df04c4681a41aeaa3ffbd3150ce5db6eb4be"
+ },
+ "vesp/kit/Pinnacle_Crocket_S__p2": {
+  "assetId": "77300191370544",
+  "bytes": 7471968,
+  "displayName": "Vesp_Pinnacle_Crocket_S__p2",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload_split/kit/Pinnacle_Crocket_S__p2.glb",
+  "moderation": "Approved",
+  "operationId": "65c40818-bf90-42f9-a48d-2d7c6f8dfe69",
+  "sha256": "b35d7cced173d087a0f8fdbd6f19fcfcf70cc0ab109155b1c27aef3733c870a8"
+ },
+ "vesp/kit/Portal_Great": {
+  "bytes": 29995256,
+  "file": "work/windows-resume-2026-11-19/upload/kit/Portal_Great.glb",
+  "sha256": "940b6a6d728b699dbb89e4f3ad0778831066750eb3420a083c1935ac45af30d7",
+  "skipped": "over 20 MB Open Cloud file limit"
+ },
+ "vesp/kit/Portal_Great__p1": {
+  "assetId": "116842296637013",
+  "bytes": 15482184,
+  "displayName": "Vesp_Portal_Great__p1",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload_split/kit/Portal_Great__p1.glb",
+  "moderation": "Approved",
+  "operationId": "55b64f4d-7d02-465e-b15e-b0bda7426251",
+  "sha256": "31272e65582f9ee5f1d440d6a97ff82b74f5ef1f30788a07eecaab0409cdf120"
+ },
+ "vesp/kit/Portal_Great__p2": {
+  "assetId": "124889792311154",
+  "bytes": 14513352,
+  "displayName": "Vesp_Portal_Great__p2",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload_split/kit/Portal_Great__p2.glb",
+  "moderation": "Approved",
+  "operationId": "8b0ed3a6-59f6-4be2-a1d8-8b524a019e9c",
+  "sha256": "a80e60b017b6276b905a1af1aac0bebaafc0e986579dc6d7eb5c77fb1e0d7ed5"
+ },
+ "vesp/kit/Portcullis": {
+  "assetId": "125826157102203",
+  "bytes": 7839884,
+  "displayName": "Vesp_Portcullis",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload/kit/Portcullis.glb",
+  "moderation": "Approved",
+  "operationId": "a615572c-6939-46b4-825e-8aca0893b2f0",
+  "sha256": "207a4cbde6989a4de93ae8058b9d80a76f6ba74d78e02179c4f5d71847943499"
+ },
+ "vesp/kit/Rose_Window_Great": {
+  "bytes": 29515024,
+  "file": "work/windows-resume-2026-11-19/upload/kit/Rose_Window_Great.glb",
+  "sha256": "7ba756c7eba8e4f67ba8dde5459e56176300aab02075a72bab2f937a8f10abfb",
+  "skipped": "over 20 MB Open Cloud file limit"
+ },
+ "vesp/kit/Rose_Window_Great__p1": {
+  "assetId": "77052014374635",
+  "bytes": 15258776,
+  "displayName": "Vesp_Rose_Window_Great__p1",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload_split/kit/Rose_Window_Great__p1.glb",
+  "moderation": "Approved",
+  "operationId": "645b6fdc-7174-4bbf-82a4-199df4b36bc4",
+  "sha256": "a2c917794c3eedfedf7df1025a859b671334e07c59dd3f9966eeb5e9466fde41"
+ },
+ "vesp/kit/Rose_Window_Great__p2": {
+  "assetId": "126845152416740",
+  "bytes": 14256528,
+  "displayName": "Vesp_Rose_Window_Great__p2",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload_split/kit/Rose_Window_Great__p2.glb",
+  "moderation": "Approved",
+  "operationId": "ed5aa415-235d-4167-8953-198af84a42d0",
+  "sha256": "e1fcf1b607b67e1ba68362c73d2ef7773d5df472e77145f53ed289ba0259dfd6"
+ },
+ "vesp/kit/Rose_Window_Small": {
+  "bytes": 27933988,
+  "file": "work/windows-resume-2026-11-19/upload/kit/Rose_Window_Small.glb",
+  "sha256": "d07dad09dd7bf32f2fc29985ad2d05d98e49baba4df47fd44d30f1bec9301ec5",
+  "skipped": "over 20 MB Open Cloud file limit"
+ },
+ "vesp/kit/Rose_Window_Small__p1": {
+  "assetId": "74288052804311",
+  "bytes": 13699012,
+  "displayName": "Vesp_Rose_Window_Small__p1",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload_split/kit/Rose_Window_Small__p1.glb",
+  "moderation": "Approved",
+  "operationId": "a9c402f2-431a-44e1-8cfb-65a691eb67be",
+  "sha256": "29695d289584bce17a4086708637f08d2f97c170c1e2aa5edb058d1ceb1dee21"
+ },
+ "vesp/kit/Rose_Window_Small__p2": {
+  "assetId": "82091721209360",
+  "bytes": 14235264,
+  "displayName": "Vesp_Rose_Window_Small__p2",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload_split/kit/Rose_Window_Small__p2.glb",
+  "moderation": "Approved",
+  "operationId": "26265d20-0b9b-4c43-b7ae-8896659da87d",
+  "sha256": "b739d3bc5fbf141c60a81b995fd794708f3486400275a82504ed13417c80b71b"
+ },
+ "vesp/kit/Spire_Base_Oct": {
+  "bytes": 23186392,
+  "file": "work/windows-resume-2026-11-19/upload/kit/Spire_Base_Oct.glb",
+  "sha256": "f865674a9e3f5ad5741406b635bd7a632f614d2cc62b433ecfc5f130a842d096",
+  "skipped": "over 20 MB Open Cloud file limit"
+ },
+ "vesp/kit/Spire_Base_Oct__p1": {
+  "assetId": "94555831809252",
+  "bytes": 15684112,
+  "displayName": "Vesp_Spire_Base_Oct__p1",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload_split/kit/Spire_Base_Oct__p1.glb",
+  "moderation": "Approved",
+  "operationId": "4d926c84-37ea-4ed6-8688-80bfc73d9002",
+  "sha256": "eab4c269743cd2099ee37f305cd94c75521fcf8916f21dc3c04817070383f3bb"
+ },
+ "vesp/kit/Spire_Base_Oct__p2": {
+  "assetId": "120132678850650",
+  "bytes": 7502576,
+  "displayName": "Vesp_Spire_Base_Oct__p2",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload_split/kit/Spire_Base_Oct__p2.glb",
+  "moderation": "Approved",
+  "operationId": "398d3b68-613a-498b-b1b0-85aa209b1615",
+  "sha256": "61dbd252136e91b799954de4af134b1636cc5522e970a460731339ef84c79019"
+ },
+ "vesp/kit/Spire_Belfry_Stage": {
+  "bytes": 24827704,
+  "file": "work/windows-resume-2026-11-19/upload/kit/Spire_Belfry_Stage.glb",
+  "sha256": "ad4d888a6712b19d206f8f456199961809aa519be87ee0d6d7f38de3f88eff18",
+  "skipped": "over 20 MB Open Cloud file limit"
+ },
+ "vesp/kit/Spire_Belfry_Stage__p1": {
+  "assetId": "98633650799092",
+  "bytes": 17114808,
+  "displayName": "Vesp_Spire_Belfry_Stage__p1",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload_split/kit/Spire_Belfry_Stage__p1.glb",
+  "moderation": "Approved",
+  "operationId": "1fd165de-7be5-4ddc-88d7-56303275fc30",
+  "sha256": "9b3cd44508fb48e32fc34433ed9986f63636fd4f31c2463c53feed5630f67d29"
+ },
+ "vesp/kit/Spire_Belfry_Stage__p2": {
+  "assetId": "133565418432922",
+  "bytes": 7713192,
+  "displayName": "Vesp_Spire_Belfry_Stage__p2",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload_split/kit/Spire_Belfry_Stage__p2.glb",
+  "moderation": "Approved",
+  "operationId": "7dc88da9-752e-4e7b-beb0-ed6c5098504b",
+  "sha256": "bb9fe9bf73a731c369f554e8bd86843c0aaee039c0a8d3d0e68c57d91e3eb909"
+ },
+ "vesp/kit/Spire_Broken_Top": {
+  "bytes": 25547900,
+  "file": "work/windows-resume-2026-11-19/upload/kit/Spire_Broken_Top.glb",
+  "sha256": "c5f002fd83a1743e60e9f6e8c9e62a8777b10dc69c73af35e8707e05a13efae4",
+  "skipped": "over 20 MB Open Cloud file limit"
+ },
+ "vesp/kit/Spire_Broken_Top__p1": {
+  "assetId": "114631494946433",
+  "bytes": 18038312,
+  "displayName": "Vesp_Spire_Broken_Top__p1",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload_split/kit/Spire_Broken_Top__p1.glb",
+  "moderation": "Approved",
+  "operationId": "c701bf49-a7d1-4035-9ba1-8da594018603",
+  "sha256": "7fc93fa6a9e22abfe9d4db59dd2cf7e4b0f134adfd4f0fb68116703cb5ac5b1d"
+ },
+ "vesp/kit/Spire_Broken_Top__p2": {
+  "assetId": "138512474218800",
+  "bytes": 7509884,
+  "displayName": "Vesp_Spire_Broken_Top__p2",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload_split/kit/Spire_Broken_Top__p2.glb",
+  "moderation": "Approved",
+  "operationId": "6da1bf55-82fd-499c-b61d-c4febac56d38",
+  "sha256": "5f2648b3ae65eb36cc98e9fbd24bc6e33e1046ffdd29c6807bd6602344073b7f"
+ },
+ "vesp/kit/Spire_Lucarne_Mid": {
+  "bytes": 27809392,
+  "file": "work/windows-resume-2026-11-19/upload/kit/Spire_Lucarne_Mid.glb",
+  "sha256": "5329523aba11a8eff93e4b2546ac883ae9f158c1480ade827d695d15c97e30d5",
+  "skipped": "over 20 MB Open Cloud file limit"
+ },
+ "vesp/kit/Spire_Lucarne_Mid__p1": {
+  "assetId": "115989904418722",
+  "bytes": 15292292,
+  "displayName": "Vesp_Spire_Lucarne_Mid__p1",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload_split/kit/Spire_Lucarne_Mid__p1.glb",
+  "moderation": "Approved",
+  "operationId": "6ab9694c-594c-46fc-8de2-0604636ef1d6",
+  "sha256": "bd0dcac3b757f60e958b87e85def63e6b1d91ac6ed5d093a513d91216d6b4711"
+ },
+ "vesp/kit/Spire_Lucarne_Mid__p2": {
+  "assetId": "104456877019832",
+  "bytes": 12517372,
+  "displayName": "Vesp_Spire_Lucarne_Mid__p2",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload_split/kit/Spire_Lucarne_Mid__p2.glb",
+  "moderation": "Approved",
+  "operationId": "31a21e5a-8b55-4f2d-b8be-dd70b2c4c154",
+  "sha256": "a838e016971edfaa98022d9359e4c677e5422db73aa871529b54552244f589af"
+ },
+ "vesp/kit/Spire_Needle_Tip": {
+  "bytes": 34196328,
+  "file": "work/windows-resume-2026-11-19/upload/kit/Spire_Needle_Tip.glb",
+  "sha256": "9b54d357fba77031b6b1ae07b9ea456b6720dcf611ee5c4f7db814d877d15c02",
+  "skipped": "over 20 MB Open Cloud file limit"
+ },
+ "vesp/kit/Spire_Needle_Tip__p1": {
+  "assetId": "89089594545615",
+  "bytes": 18873872,
+  "displayName": "Vesp_Spire_Needle_Tip__p1",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload_split/kit/Spire_Needle_Tip__p1.glb",
+  "moderation": "Approved",
+  "operationId": "d5b21c86-47f7-41fa-8381-d184b057f80e",
+  "sha256": "1a145200ea7dd1db759c2668add8000d09e6ac70c309d5359f4b67b182188a23"
+ },
+ "vesp/kit/Spire_Needle_Tip__p2": {
+  "assetId": "98339191104108",
+  "displayName": "Vesp_Spire_Needle_Tip__p2",
+  "file": "work/windows-resume-2026-11-19/upload_split/kit/Spire_Needle_Tip__p2.glb",
+  "moderation": "Approved",
+  "operationId": "708c6c72-0484-419d-b40d-e54df1190bc8",
+  "pilot": "split route readback ok: Stone/Iron at split.json centres + const foot offset 0.04, SA 2048, Stone metal 0, Iron metal mean 233"
+ },
+ "vesp/kit/Statue_Plinth": {
+  "bytes": 20146240,
+  "file": "work/windows-resume-2026-11-19/upload/kit/Statue_Plinth.glb",
+  "sha256": "6762209f5b6014530c81130f724245a373f0538efab3028eaf5154d002e033a9",
+  "skipped": "over 20 MB Open Cloud file limit"
+ },
+ "vesp/kit/Statue_Plinth__p1": {
+  "assetId": "70518453786588",
+  "bytes": 14102180,
+  "displayName": "Vesp_Statue_Plinth__p1",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload_split/kit/Statue_Plinth__p1.glb",
+  "moderation": "Approved",
+  "operationId": "c43394f6-2d57-43ce-9b1b-edf2dcaefdea",
+  "sha256": "35b1a647fa5fae79237ecb4dc45aca34dcebf9de70a247a5010371e9850dc530"
+ },
+ "vesp/kit/Statue_Plinth__p2": {
+  "assetId": "105713470149978",
+  "bytes": 6044360,
+  "displayName": "Vesp_Statue_Plinth__p2",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload_split/kit/Statue_Plinth__p2.glb",
+  "moderation": "Approved",
+  "operationId": "220a4be2-2190-417e-8ef0-741c01233ed3",
+  "sha256": "f1882f884f53aaf05d3a00274af2605eb7f5cf1da1357ba4c6d4e9054ce5b40d"
+ },
+ "vesp/kit/Tower_Corner_Stage": {
+  "bytes": 29718412,
+  "file": "work/windows-resume-2026-11-19/upload/kit/Tower_Corner_Stage.glb",
+  "sha256": "ae6669e84dba8a3489023ea086b8fe94a444af815532162628d5b91fb65a47af",
+  "skipped": "over 20 MB Open Cloud file limit"
+ },
+ "vesp/kit/Tower_Corner_Stage__p1": {
+  "assetId": "100940809605259",
+  "bytes": 15695384,
+  "displayName": "Vesp_Tower_Corner_Stage__p1",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload_split/kit/Tower_Corner_Stage__p1.glb",
+  "moderation": "Approved",
+  "operationId": "019ab4bb-e355-444c-bee1-d39cf8203b64",
+  "sha256": "84f9d8f9c2ee77cb2e7c3ff56923339e8a81ef48687edd8f8b2320423bae8fdb"
+ },
+ "vesp/kit/Tower_Corner_Stage__p2": {
+  "assetId": "75357737116518",
+  "bytes": 14023304,
+  "displayName": "Vesp_Tower_Corner_Stage__p2",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload_split/kit/Tower_Corner_Stage__p2.glb",
+  "moderation": "Approved",
+  "operationId": "32c2a8a3-0194-4469-80cb-11509a4d3949",
+  "sha256": "2cb959d5deba40c6d4f7dac0c4b1309a186e9a4cf6f897723434d144a5a7bf2b"
+ },
+ "vesp/props/Gargoyle_A": {
+  "assetId": "94687077564229",
+  "displayName": "Vesp_Gargoyle_A",
+  "file": "work/windows-resume-2026-11-19/upload/props/Gargoyle_A.glb",
+  "moderation": "Approved",
+  "operationId": "69e1ca7f-ef29-4470-b61d-1f811c400dee",
+  "pilot": "readback ok: 9 subs, SA C/N/R/M 2048, Metal mean 0, Color mean ~28"
+ },
+ "vesp/props/Gargoyle_B": {
+  "assetId": "125444611158653",
+  "bytes": 12269988,
+  "displayName": "Vesp_Gargoyle_B",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload/props/Gargoyle_B.glb",
+  "moderation": "Approved",
+  "operationId": "f5df02c9-8ac8-4cb2-add1-77b7045ac8db",
+  "sha256": "df4d675ac327216102d58c87223af02e12c11be92848a1bb27de357e09b57ce8"
+ },
+ "vesp/props/Ruined_Arch": {
+  "bytes": 27282836,
+  "file": "work/windows-resume-2026-11-19/upload/props/Ruined_Arch.glb",
+  "sha256": "bfea1acef8fa062ab25c4251f24cf7ed3c2899f22a87a145638bcfe14be51611",
+  "skipped": "over 20 MB Open Cloud file limit"
+ },
+ "vesp/props/Ruined_Arch__p1": {
+  "assetId": "137456478717279",
+  "bytes": 13395024,
+  "displayName": "Vesp_Ruined_Arch__p1",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload_split/props/Ruined_Arch__p1.glb",
+  "moderation": "Approved",
+  "operationId": "81a735ca-7f69-473c-9cde-2fcd15d451b5",
+  "sha256": "0f67676c37b6fb2acb4ad623d3a7290c60d770647ff550fe17f5c8265e89d5ea"
+ },
+ "vesp/props/Ruined_Arch__p2": {
+  "assetId": "121083849548562",
+  "bytes": 13888104,
+  "displayName": "Vesp_Ruined_Arch__p2",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload_split/props/Ruined_Arch__p2.glb",
+  "moderation": "Approved",
+  "operationId": "ba3ead1d-62fb-4c3a-b076-d2c5b00aaf33",
+  "sha256": "387ed62701700ca2c5cc2e395f6da2ca2bc54d129a218fae443c96b962d4558f"
+ },
+ "vesp/trees/Dead_Log_A": {
+  "assetId": "87753601357338",
+  "bytes": 5938508,
+  "displayName": "Vesp_Dead_Log_A",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload/trees/Dead_Log_A.glb",
+  "moderation": "Approved",
+  "operationId": "76e07c1b-7b63-4530-a8c1-c3958594ded5",
+  "sha256": "8988ec82bb4930978db29277d223fd2ce65634290f11ec175a1a1fa48e09f805"
+ },
+ "vesp/trees/Dead_Log_B": {
+  "assetId": "99973068133767",
+  "bytes": 5948716,
+  "displayName": "Vesp_Dead_Log_B",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload/trees/Dead_Log_B.glb",
+  "moderation": "Approved",
+  "operationId": "d4bb272a-0d14-49e1-80c6-e7e619e00024",
+  "sha256": "bbd51a9b7e8c20a92b6c3ca89a99eb8be5f42b55f6c1968e91742e1dc65a9195"
+ },
+ "vesp/trees/Dead_Oak_Gnarled_A": {
+  "bytes": 20615400,
+  "file": "work/windows-resume-2026-11-19/upload/trees/Dead_Oak_Gnarled_A.glb",
+  "sha256": "63e4928ae09aa595c9471930e159fa5645c0e2a30b36ba610fccb58b667951c9",
+  "skipped": "over 20 MB Open Cloud file limit"
+ },
+ "vesp/trees/Dead_Oak_Gnarled_A__p1": {
+  "assetId": "109532424193448",
+  "bytes": 17529436,
+  "displayName": "Vesp_Dead_Oak_Gnarled_A__p1",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload_split/trees/Dead_Oak_Gnarled_A__p1.glb",
+  "moderation": "Approved",
+  "operationId": "00834e28-97d4-4200-aecd-a1aacacff1de",
+  "sha256": "605e5cb22b8226a2098bc585186bd35b1bea13a670d8181b0aa0ba2f48edae25"
+ },
+ "vesp/trees/Dead_Oak_Gnarled_A__p2": {
+  "assetId": "138870204343077",
+  "bytes": 3086256,
+  "displayName": "Vesp_Dead_Oak_Gnarled_A__p2",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload_split/trees/Dead_Oak_Gnarled_A__p2.glb",
+  "moderation": "Approved",
+  "operationId": "24f7b550-198a-40ce-94b0-9d38b950cf09",
+  "sha256": "f494d36b940e64a4632a40f4d30b53a78081bd1b915f3f76a91135efcfc163db"
+ },
+ "vesp/trees/Dead_Oak_Gnarled_B": {
+  "assetId": "93173535146718",
+  "bytes": 18974252,
+  "displayName": "Vesp_Dead_Oak_Gnarled_B",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload/trees/Dead_Oak_Gnarled_B.glb",
+  "moderation": "Approved",
+  "operationId": "6f3afb28-cdce-4510-933f-5634b1007d1d",
+  "sha256": "8775dc450bdb1674c119090c68c1fe561e31e424baf2377f93ea24d5f557ccd7"
+ },
+ "vesp/trees/Thorn_Twisted_A": {
+  "assetId": "115588682008522",
+  "bytes": 10679448,
+  "displayName": "Vesp_Thorn_Twisted_A",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload/trees/Thorn_Twisted_A.glb",
+  "moderation": "Approved",
+  "operationId": "9b12bfa9-bb96-408b-b978-5f2c7b97bd39",
+  "sha256": "e9364da8acab1f6b65e24ce2312c43002af3167764274906fa07f51d57effcee"
+ },
+ "vesp/trees/Thorn_Twisted_B": {
+  "assetId": "75250499925589",
+  "bytes": 11191572,
+  "displayName": "Vesp_Thorn_Twisted_B",
+  "error": null,
+  "file": "work/windows-resume-2026-11-19/upload/trees/Thorn_Twisted_B.glb",
+  "moderation": "Approved",
+  "operationId": "14d2c4ba-675b-425b-b468-7582c15f9236",
+  "sha256": "f8766183a65fc1790b6a4705a3c8aba8d0f91605d4a94af391fced218d8e0e95"
+ }
+}
