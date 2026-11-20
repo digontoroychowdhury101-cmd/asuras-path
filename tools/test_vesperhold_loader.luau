@@ -37,6 +37,12 @@ services.AssetService = {
 		return part
 	end,
 }
+-- Build-time glass finishes (assets/models/AsuraVesperholdGlass.rbxmx): the rose has one, the fixture lancet does not.
+services.ServerStorage = Instance.new("Folder")
+local glassLib = Instance.new("Folder")
+glassLib.Name, glassLib.Parent = "AsuraVesperholdGlass", services.ServerStorage
+local roseFinish = Instance.new("SurfaceAppearance")
+roseFinish.Name, roseFinish.ColorMap, roseFinish.Parent = "Rose_Window_Great__GlassR", "rbxassetid://777", glassLib
 local base = { game = { GetService = function(_, n) return services[n] end }, Instance = Instance, Enum = Enum, Vector3 = Vector3, CFrame = CFrame,
 	Color3 = Color3, UDim2 = roblox.UDim2, Random = roblox.Random, typeof = typeof, warn = function() end,
 	Content = { fromUri = function(uri) return uri end } }
@@ -191,8 +197,14 @@ local rose = Kit.place("Rose_Window_Great", CFrame.new(), V3(1, 1, 1), { Group =
 local rg = rose:FindFirstChild("Rose_Window_Great__GlassR")
 check("imported GlassR is Neon crimson and non-colliding",
 	rg.Material == Enum.Material.Neon and rg.Color.R > 0.4 and rg.Color.G < 0.2 and not rg.CanCollide)
-check("glass drops its SurfaceAppearance so Neon glows; tracery and stone keep theirs", glass:FindFirstChildOfClass("SurfaceAppearance") == nil
-	and rg:FindFirstChildOfClass("SurfaceAppearance") == nil and lancet:FindFirstChild("Lancet_Tall__Tracery"):FindFirstChildOfClass("SurfaceAppearance") ~= nil
+local rgFinish = rg:FindFirstChildOfClass("SurfaceAppearance")
+check("glass with a build-time finish keeps its mosaic: the emissive template replaces the imported surface",
+	rgFinish ~= nil and rgFinish.ColorMap == "rbxassetid://777" and roseFinish.Parent == glassLib)
+local finishes = 0
+for _, c in rg:GetChildren() do if c:IsA("SurfaceAppearance") then finishes += 1 end end
+check("exactly one surface finish on the rose glass", finishes == 1)
+check("glass without a finish drops its SurfaceAppearance so Neon glows; tracery and stone keep theirs", glass:FindFirstChildOfClass("SurfaceAppearance") == nil
+	and lancet:FindFirstChild("Lancet_Tall__Tracery"):FindFirstChildOfClass("SurfaceAppearance") ~= nil
 	and lancet:FindFirstChild("Lancet_Tall__Stone"):FindFirstChildOfClass("SurfaceAppearance") ~= nil)
 check("glass never collides and non-glass subs get no light", not glass.CanCollide and lancet:FindFirstChild("Lancet_Tall__Stone"):FindFirstChild("PointLight") == nil)
 local brazier = Kit.place("Brazier_Post", CFrame.new(), V3(1, 1, 1), { Group = "Brazier" })

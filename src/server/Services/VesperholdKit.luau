@@ -155,9 +155,19 @@ local function lightPart(part: MeshPart, role: string, piece: string)
 	if role ~= "Glass" and role ~= "Flame" then return end
 	local color = if role == "Flame" then FLAME elseif piece:find("Rose",1,true) or piece:find("Portal",1,true) then CRIMSON else AMBER
 	part.Material, part.Color = Enum.Material.Neon, color
-	if role == "Glass" then -- a SurfaceAppearance without an emissive mask mutes Neon; the Tracery subs carry the leading
+	if role == "Glass" then
+		-- The stained-glass design lives in the ColorMap. A build-time finish (ServerStorage.AsuraVesperholdGlass, written by
+		-- tools/assets/build_vesperhold_glass.py) masks emission with that map so the mosaic glows; a running server cannot
+		-- set EmissiveMaskContent itself. Without one, drop the imported surface so flat Neon glows instead.
+		local library = game:GetService("ServerStorage"):FindFirstChild("AsuraVesperholdGlass")
+		local template = library and library:FindFirstChild(part.Name)
 		local finish = part:FindFirstChildOfClass("SurfaceAppearance")
 		if finish then finish:Destroy() end
+		if template and template:IsA("SurfaceAppearance") then
+			local glow = template:Clone()
+			glow.Name = "SurfaceAppearance"
+			glow.Parent = part
+		end
 	end
 	if Kit.Lights() >= Kit.MaxLights then return end
 	local light = Instance.new("PointLight")
