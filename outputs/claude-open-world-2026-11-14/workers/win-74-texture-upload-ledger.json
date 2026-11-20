@@ -1,0 +1,4 @@
+{
+ "forest/Bell_Bark_Color_lift3": {"file": "work/vesperhold-claude/win74/Bell_Bark_Color_lift3.png", "sha256": "6140de49b97b5fe9281e9c13bd2266e38b9e79976038df26f3d0ee31842401b0", "assetType": "Decal", "decalId": "103407729087075", "operationId": "68061494-af5b-4a8e-bf0a-c1f2aa189efc", "imageOperationId": "66aaeb78-e585-4678-8044-edb3925ed4de", "imageId": "79017489720966", "moderation": "Approved", "replaces": "140594595381269", "readback_mean": [109.8, 98.3, 72.5], "pilot": true},
+ "forest/Bell_Leaf_Color_lift22": {"file": "work/vesperhold-claude/win74/Bell_Leaf_Color_lift22.png", "sha256": "1899f7990f1cb075db25297a00aa6dddc6ee9360c30d7aafeb4ba80be0518618", "assetType": "Decal", "decalId": "115583237937541", "operationId": "251e40c5-090a-4db1-9fbc-42f8949c83fb", "imageOperationId": "da1a6922-1262-4b7e-bd55-941182222aea", "imageId": "130561688112982", "moderation": "Approved", "replaces": "77950985710853", "readback_mean": [53.5, 91.7, 34.9]}
+}

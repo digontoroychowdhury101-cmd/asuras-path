@@ -341,7 +341,7 @@
     },
     "Canopy_Tree_A": {
       "Canopy_Tree_A__Leaves_Mass": {
-        "ColorMap": "rbxassetid://77950985710853",
+        "ColorMap": "rbxassetid://130561688112982",
         "NormalMap": "rbxassetid://119940854808716",
         "RoughnessMap": "rbxassetid://107948030666204",
         "MeshId": "rbxassetid://134341709077510",
@@ -353,7 +353,7 @@
         ]
       },
       "Canopy_Tree_A__Leaves_Detail": {
-        "ColorMap": "rbxassetid://77950985710853",
+        "ColorMap": "rbxassetid://130561688112982",
         "NormalMap": "rbxassetid://119940854808716",
         "RoughnessMap": "rbxassetid://107948030666204",
         "MeshId": "rbxassetid://71909753679555",
@@ -365,7 +365,7 @@
         ]
       },
       "Canopy_Tree_A__Bark": {
-        "ColorMap": "rbxassetid://140594595381269",
+        "ColorMap": "rbxassetid://79017489720966",
         "NormalMap": "rbxassetid://81067035380510",
         "RoughnessMap": "rbxassetid://71120715249359",
         "MeshId": "rbxassetid://78779094113215",
@@ -388,7 +388,7 @@
     },
     "Canopy_Tree_B": {
       "Canopy_Tree_B__Leaves_Mass": {
-        "ColorMap": "rbxassetid://77950985710853",
+        "ColorMap": "rbxassetid://130561688112982",
         "NormalMap": "rbxassetid://119940854808716",
         "RoughnessMap": "rbxassetid://107948030666204",
         "MeshId": "rbxassetid://120869549008862",
@@ -400,7 +400,7 @@
         ]
       },
       "Canopy_Tree_B__Leaves_Detail": {
-        "ColorMap": "rbxassetid://77950985710853",
+        "ColorMap": "rbxassetid://130561688112982",
         "NormalMap": "rbxassetid://119940854808716",
         "RoughnessMap": "rbxassetid://107948030666204",
         "MeshId": "rbxassetid://120722516854654",
@@ -412,7 +412,7 @@
         ]
       },
       "Canopy_Tree_B__Bark": {
-        "ColorMap": "rbxassetid://140594595381269",
+        "ColorMap": "rbxassetid://79017489720966",
         "NormalMap": "rbxassetid://81067035380510",
         "RoughnessMap": "rbxassetid://71120715249359",
         "MeshId": "rbxassetid://110462169785709",
@@ -444,7 +444,7 @@
     },
     "Understory_Shrub_Small": {
       "Understory_Shrub_Small__Stems": {
-        "ColorMap": "rbxassetid://140594595381269",
+        "ColorMap": "rbxassetid://79017489720966",
         "NormalMap": "rbxassetid://81067035380510",
         "RoughnessMap": "rbxassetid://71120715249359",
         "MeshId": "rbxassetid://106633501014225",
@@ -456,7 +456,7 @@
         ]
       },
       "Understory_Shrub_Small__Leaves": {
-        "ColorMap": "rbxassetid://77950985710853",
+        "ColorMap": "rbxassetid://130561688112982",
         "NormalMap": "rbxassetid://119940854808716",
         "RoughnessMap": "rbxassetid://107948030666204",
         "MeshId": "rbxassetid://121844978936060",
@@ -470,7 +470,7 @@
     },
     "Understory_Shrub": {
       "Understory_Shrub__Stems": {
-        "ColorMap": "rbxassetid://140594595381269",
+        "ColorMap": "rbxassetid://79017489720966",
         "NormalMap": "rbxassetid://81067035380510",
         "RoughnessMap": "rbxassetid://71120715249359",
         "MeshId": "rbxassetid://86668274498882",
@@ -482,7 +482,7 @@
         ]
       },
       "Understory_Shrub__Leaves": {
-        "ColorMap": "rbxassetid://77950985710853",
+        "ColorMap": "rbxassetid://130561688112982",
         "NormalMap": "rbxassetid://119940854808716",
         "RoughnessMap": "rbxassetid://107948030666204",
         "MeshId": "rbxassetid://106680352083639",

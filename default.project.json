@@ -828,6 +828,9 @@
       },
       "AsuraVesperholdGlass": {
         "$path": "assets/models/AsuraVesperholdGlass.rbxmx"
+      },
+      "AsuraForestFinish": {
+        "$path": "assets/models/AsuraForestFinish.rbxmx"
       }
     },
     "StarterPlayer": {

@@ -69,3 +69,19 @@ Instruction: handoff §4 step 7, creator's "Yes continue".
 - Studio (work/vesperhold-claude/win73, closed unsaved): toggling all 143 shrubs at view 01 gave 43.9/43.5/44.0 vs 43.3/43.4/43.6 ms (~0.4 ms); budget raised to 7.95M / 4.35M.
 - Captures: captures/win/forest73/ (sheet forest73_before_after.jpg). The gain is clear in 03 (shrubs between the left trunks) and only slight in 01: the glade and keeps stay open by design.
 - Tests: slice 1357/0; verify_all exit 0. Canopy cover and view 06 unchanged (06 is the pavilion court, open sky is intended).
+
+## win-74: bark/leaf re-upload (creator: "Yes, upload 2")
+- Uploaded from the cloud window (place 118614906972571, Edit, never edited or saved), pilot first, both Approved; ledger
+  workers/win-74-texture-upload-ledger.json. Bark x3: Decal 103407729087075, op 68061494-af5b-4a8e-bf0a-c1f2aa189efc, image 79017489720966.
+  Leaf x2.2: Decal 115583237937541, op 251e40c5-090a-4db1-9fbc-42f8949c83fb, image 130561688112982. Pixel read-back matched the files.
+- Wiring: a game Script cannot write SurfaceAppearance maps (Studio test: "lacking capability Plugin"), so the uploaded models' own maps are kept and
+  ServerStorage.AsuraForestFinish (assets/models/AsuraForestFinish.rbxmx) carries one finished SurfaceAppearance per lifted image id.
+  SliceDressingService swaps it in once per template. Registries repointed: Slice 10 subs, Bellwood 29. In Studio 550 bark / 815 leaf surfaces use the new
+  images, 0 the old ones. Tests: slice 1361/0 (finish swap, repoint, narrowed source guard), kit registry pass, verify_all exit 0.
+- **Result is only partial.** Crowns are greener and sunlit bark reads, but shaded trunks are still near-black (captures/win/forest74/forest74_sheet.jpg).
+  Cause: the win-72 EditableImage preview treated pixels as linear (no sRGB decode), so it showed a stronger lift than an upload gives. Proof: the same
+  uploaded bark pixels through EditableImage render readable trunks (forest74_02_target.jpg).
+- Prepared, **not uploaded** (needs a new approval): work/vesperhold-claude/win74/Bell_Bark_Color_srgbfix.png (mean 173/164/143) and
+  Bell_Leaf_Color_srgbfix.png (116/153/98). Each is encoded so the decoded albedo equals the preview's. Swapping them in only means renaming the two
+  finish children and the registry ids. Unseen: how the paler bark reads in full sun, and the leaf at this level (the preview hit its memory budget).
+- Known, not touched: BiomeDressingService builds a SurfaceAppearance with Instance.new and writes its maps, which a game Script cannot do.

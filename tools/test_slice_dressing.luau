@@ -1035,6 +1035,18 @@ do
 	for _, far in S.FarPieces do
 		check("far tree " .. far .. "_Far resolves from BellwoodFarKitRegistry", owner[far .. "_Far"] == "BellwoodFarKitRegistry" and owner[far] ~= nil)
 	end
+	-- win-74: the dark bark / leaf albedo (140594595381269 / 77950985710853) is replaced by the lifted uploads (79017489720966 / 130561688112982).
+	local old, bark, leaf = 0, 0, 0
+	for _, m in mods do
+		for _, subs in m[2] do
+			for key, e in subs do
+				if e.ColorMap == "rbxassetid://140594595381269" or e.ColorMap == "rbxassetid://77950985710853" then old += 1 end
+				if e.ColorMap == "rbxassetid://79017489720966" then bark += 1 end
+				if e.ColorMap == "rbxassetid://130561688112982" then leaf += 1 end
+			end
+		end
+	end
+	check(string.format("no registry sub keeps the dark bark/leaf albedo (%d left); lifted bark on %d subs, leaf on %d", old, bark, leaf), old == 0 and bark >= 10 and leaf >= 10)
 end
 
 -- 9. The service on the Instance shim (Lune or lune_compat only).
@@ -1150,7 +1162,7 @@ else
 	local function sub(id, center, asset) return { MeshId = "rbxassetid://" .. id, Asset = "rbxassetid://" .. (asset or 5000), ColorMap = "rbxassetid://" .. id + 1, NormalMap = "rbxassetid://" .. id + 2, center = center } end
 	local fake = {
 		Grass_Clump = { Grass_Clump__Blades = sub(9001, nil, 5001) }, -- single sub, no centre: Size/2 up
-		Canopy_Tree_A = { Canopy_Tree_A__Bark = sub(9010, { 0, 14, 0 }, 5002), Canopy_Tree_A__Leaves_Mass = sub(9020, { 0, 30, 0 }, 5002), Canopy_Tree_A__Leaves_Detail = sub(9030, { 0, 36, 0 }, 5002) },
+		Canopy_Tree_A = { Canopy_Tree_A__Bark = { MeshId = "rbxassetid://9010", Asset = "rbxassetid://5002", ColorMap = "rbxassetid://777", center = { 0, 14, 0 } }, Canopy_Tree_A__Leaves_Mass = sub(9020, { 0, 30, 0 }, 5002), Canopy_Tree_A__Leaves_Detail = sub(9030, { 0, 36, 0 }, 5002) },
 		Canopy_Tree_B = { Canopy_Tree_B__Bark = sub(9040, { 0, 14, 0 }, 5003) }, -- partial: must fall back whole
 		Fern_Clump = { Fern_Clump__Fronds = { MeshId = "" } }, -- malformed
 	}
@@ -1170,10 +1182,19 @@ else
 			local mp = roblox.Instance.new("MeshPart")
 			mp.Size = roblox.Vector3.new(4, 3, 4)
 			mp.MeshId = "rbxassetid://" .. id
+			local own = roblox.Instance.new("SurfaceAppearance")
+			own.Name = "Own"
+			own.Parent = mp
 			mp.Parent = m
 		end
 		return m
 	end
+	-- win-74 finish library: a re-toned map the uploaded model does not carry (scripts cannot write SurfaceAppearance maps).
+	local finishLib = roblox.Instance.new("Folder")
+	local fin777 = roblox.Instance.new("SurfaceAppearance")
+	fin777.Name = "777"
+	fin777.Parent = finishLib
+	Service3.Finish = finishLib
 	Service3.Start()
 	local f3 = map3:FindFirstChild("SliceDressing")
 	local want = { Grass_Clump = 0, Canopy_Tree_A = 0 }
@@ -1204,11 +1225,27 @@ else
 	check("a partly covered piece (Canopy_Tree_B) stays a placeholder", treeB > 0 and nTreeBPlaceholder > 0)
 	check("a malformed registry entry (Fern_Clump) stays a placeholder", nFernPlaceholder > 0)
 	check("real part count is reported (" .. Service3.Stats().Real .. ")", Service3.Stats().Real == realParts and realParts == nGrass + nBark * 3)
+	local barkFinished, barkOwn, leafOwn, leafFinished = 0, 0, 0, 0
+	for _, d in f3:GetDescendants() do
+		if d:IsA("MeshPart") then
+			local sas = {}
+			for _, c in d:GetChildren() do if c.ClassName == "SurfaceAppearance" then table.insert(sas, c.Name) end end
+			local sub = d:GetAttribute("SliceSub")
+			if sub == "Bark" then
+				if #sas == 1 and sas[1] == "777" then barkFinished += 1 elseif table.find(sas, "Own") then barkOwn += 1 end
+			elseif sub == "Leaves_Mass" then
+				if #sas == 1 and sas[1] == "Own" then leafOwn += 1 elseif table.find(sas, "777") then leafFinished += 1 end
+			end
+		end
+	end
+	check(string.format("a registry ColorMap with a finish replaces the model's own SurfaceAppearance (%d bark finished, %d left own)", barkFinished, barkOwn), barkFinished == want.Canopy_Tree_A and barkOwn == 0)
+	check("subs without a finish keep the uploaded model's SurfaceAppearance", leafOwn == want.Canopy_Tree_A and leafFinished == 0)
+	check("the finish template itself is never moved out of the library", fin777.Parent == finishLib)
 	check("each model is loaded once (cached), not per placement", loads["rbxassetid://5001"] == 1 and loads["rbxassetid://5002"] == 1)
 	check("a piece whose model never loads (asset 5003 absent) is not loaded, and stays a placeholder", loads["rbxassetid://5003"] == nil and nTreeBPlaceholder > 0)
 	-- Source guard: no runtime SurfaceAppearance map / MeshId writes, templates only via cached LoadAsset.
 	local code = (string.gsub(source, "%-%-[^" .. string.char(10) .. "]*", ""))
-	check("no runtime SurfaceAppearance map or MeshId writes remain", string.find(code, "SurfaceAppearance", 1, true) == nil and string.find(code, "CreateMeshPartAsync", 1, true) == nil
+	check("no runtime SurfaceAppearance map or MeshId writes remain", string.find(code, "Map%w*%s*=[^=]") == nil and string.find(code, "Instance.new(\"SurfaceAppearance\")", 1, true) == nil and string.find(code, "CreateMeshPartAsync", 1, true) == nil
 		and string.find(code, "%.MeshId%s*=[^=]") == nil and string.find(code, "%[map%]") == nil)
 	check("templates come from InsertService:LoadAsset behind modelCache", string.find(code, ":LoadAsset(", 1, true) ~= nil and string.find(code, "modelCache[assetId]", 1, true) ~= nil)
 	Service3.Destroy()

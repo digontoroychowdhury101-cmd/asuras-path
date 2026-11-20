@@ -209,6 +209,18 @@ local function meshTemplate(key: string, entry: any): Instance?
 		end
 		tpl = tpl or byName
 	end
+	-- Re-toned maps (win-74): a registry ColorMap the uploaded model does not carry ships as a build-time finish (ServerStorage.AsuraForestFinish,
+	-- child named by the image id) that replaces the model's own, since a running server cannot write SurfaceAppearance maps.
+	local lib = SliceDressingService.Finish or game:GetService("ServerStorage"):FindFirstChild("AsuraForestFinish")
+	local colour = meshNumber(entry.ColorMap)
+	local finish = if tpl and lib and colour then lib:FindFirstChild(colour) else nil
+	if tpl and finish then
+		tpl = tpl:Clone()
+		for _, c in tpl:GetChildren() do
+			if c:IsA("SurfaceAppearance") then c:Destroy() end
+		end
+		finish:Clone().Parent = tpl
+	end
 	meshCache[key] = tpl or false
 	return tpl
 end
