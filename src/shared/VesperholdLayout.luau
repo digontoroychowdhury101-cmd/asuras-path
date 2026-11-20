@@ -377,11 +377,11 @@ function Layout.slots(ground: (number, number) -> number): { { [string]: any } }
 	for n, sp in Layout.Spires do
 		local x, z, y0, top, w, tag = sp[1], sp[2], sp[3], sp[4], sp[5], sp[6]
 		local broken = tag == "BrokenCorner"
-		local tip = if broken then 20 else 30
 		local h = top - y0
+		local tip = math.min(h, if broken then 20 else 30)
 		local base = if h >= 100 then 60 else 0
 		local mid = h - base - tip
-		local count = math.max(1, math.floor(mid / 45 + 0.5))
+		local count = if mid > 0 then math.max(1, math.floor(mid / 45 + 0.5)) else 0
 		local y = y0
 		local function module(piece: string, height: number, width: number)
 			local d = Layout.Piece[piece]

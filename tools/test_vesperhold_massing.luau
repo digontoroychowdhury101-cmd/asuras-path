@@ -109,9 +109,17 @@ check("8+ buttress towers", (spires.ButtressTower or 0) >= 8)
 check("14+ gallery needles", (spires.GalleryNeedle or 0) >= 14)
 check("exactly one broken spire", (spires.BrokenCorner or 0) == 1)
 local stacked = {}
-for _, s in byGroup.Spire do stacked[s.Spire] = true end
+for _, s in byGroup.Spire do
+	local height = L.Piece[s.Piece][2] * s.SY
+	local sp = L.Spires[s.Spire]
+	check("spire module has positive height and starts on its stack", height > 0 and math.abs(s.Y - (stacked[s.Spire] or sp[3])) < 1e-6)
+	stacked[s.Spire] = s.Y + height
+end
 local nStacks = 0
-for _ in stacked do nStacks += 1 end
+for id, y in stacked do
+	check("spire stack reaches its authored top", math.abs(y - L.Spires[id][4]) < 1e-6)
+	nStacks += 1
+end
 check("every spire is a stack of kit modules", nStacks == #tops)
 
 local pairsAt = {}

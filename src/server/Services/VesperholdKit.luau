@@ -20,6 +20,7 @@ type Sub = { Key: string, Source: MeshPart, Frame: CFrame, HasCenter: boolean, R
 type Options = { Group: string?, Walkable: boolean?, Seed: number?, Offset: CFrame? }
 local models: { [string]: Instance | boolean } = {}
 local templates: { [string]: {Sub} | boolean } = {}
+local collisionTemplates: { [MeshPart]: { [Enum.CollisionFidelity]: MeshPart | boolean } } = {}
 local lamps: { [PointLight]: boolean } = {}
 
 local function registry(): any
@@ -109,6 +110,7 @@ local function readTemplate(piece: string): {Sub}?
 			rel = CFrame.new(center[1],center[2],center[3])*rel.Rotation
 		end
 		local role = string.gsub(string.match(key,"__(.+)$") or key,"_%d+$","")
+		if role == "GlassR" then role = "Glass" end -- crimson glass has the same collision and light role
 		table.insert(list,{Key=key,Source=src,Frame=rel,HasCenter=center~=nil,Role=role})
 	end
 	-- A model returned by LoadAsset can have a Studio bounding-centre pivot.
@@ -172,6 +174,46 @@ local function scaledFrame(rel: CFrame, scale: Vector3): (CFrame?,Vector3?)
 	return CFrame.fromMatrix(rel.Position*scale,x,y,z),Vector3.new(sx,sy,sz)
 end
 
+local function collisionTemplate(source: MeshPart, fidelity: Enum.CollisionFidelity): MeshPart
+	if source.CollisionFidelity == fidelity then return source end
+	local variants = collisionTemplates[source]
+	if not variants then
+		variants = {}
+		collisionTemplates[source] = variants
+	end
+	local hit = variants[fidelity]
+	if hit ~= nil then return if hit == false then source else hit :: MeshPart end
+
+	-- Runtime scripts cannot assign CollisionFidelity. Cook a detached template once,
+	-- keeping the imported surface finish and all non-mesh properties on the clone.
+	local cooked: MeshPart? = nil
+	local variant: MeshPart? = nil
+	local ok, err = pcall(function()
+		local mesh = game:GetService("AssetService"):CreateMeshPartAsync(Content.fromUri(source.MeshId), {
+			CollisionFidelity = fidelity,
+			RenderFidelity = source.RenderFidelity,
+			FluidFidelity = source.FluidFidelity,
+		})
+		cooked = mesh
+		local copy = source:Clone() :: MeshPart
+		variant = copy
+		copy:ApplyMesh(mesh)
+		copy.TextureContent = source.TextureContent
+	end)
+	if cooked then cooked:Destroy() end
+	hit = variants[fidelity] -- another caller can finish while the engine is cooking
+	if hit ~= nil or not ok then
+		if variant then variant:Destroy() end
+		if hit ~= nil then return if hit == false then source else hit :: MeshPart end
+		variants[fidelity] = false
+		warn(string.format("[VesperholdKit] Could not cook %s for %s. Using imported collision: %s",
+			fidelity.Name, source.Name, tostring(err)))
+		return source
+	end
+	variants[fidelity] = variant or false
+	return variant or source
+end
+
 function Kit.place(piece: string, frame: CFrame, scale: Vector3, opts: Options?): Model?
 	if not (math.isfinite(scale.X) and math.isfinite(scale.Y) and math.isfinite(scale.Z))
 		or math.min(scale.X,scale.Y,scale.Z) <= 0 then return nil end
@@ -188,7 +230,14 @@ function Kit.place(piece: string, frame: CFrame, scale: Vector3, opts: Options?)
 	for _,sub in subs do
 		local pose, dimensions = scaledFrame(sub.Frame,scale)
 		if not pose or not dimensions then model:Destroy(); return nil end
-		local part = sub.Source:Clone() :: MeshPart?
+		local collides = solid and not DECOR[sub.Role]
+		local source = sub.Source
+		if collides then
+			local fidelity = if not CORE[sub.Role] then Enum.CollisionFidelity.Box
+				elseif o.Walkable then Enum.CollisionFidelity.PreciseConvexDecomposition else Enum.CollisionFidelity.Hull
+			source = collisionTemplate(source, fidelity)
+		end
+		local part = source:Clone() :: MeshPart?
 		if not part then model:Destroy(); return nil end
 		-- Only the imported surface finish travels onto these static kit parts.
 		for _,child in part:GetChildren() do
@@ -197,12 +246,7 @@ function Kit.place(piece: string, frame: CFrame, scale: Vector3, opts: Options?)
 		part.Name = sub.Key
 		part.Size,part.CFrame = sub.Source.Size*dimensions,base*pose
 		part.Anchored,part.CanTouch = true,false
-		part.CanCollide = solid and not DECOR[sub.Role]
-		part.CanQuery = part.CanCollide
-		if part.CanCollide then
-			part.CollisionFidelity = if not CORE[sub.Role] then Enum.CollisionFidelity.Box
-				elseif o.Walkable then Enum.CollisionFidelity.PreciseConvexDecomposition else Enum.CollisionFidelity.Hull
-		end
+		part.CanCollide, part.CanQuery = collides, collides
 		lightPart(part,sub.Role,name)
 		part.Parent = model
 		local rank = table.find(PRIMARY,sub.Role) or #PRIMARY+1
@@ -217,11 +261,17 @@ function Kit.place(piece: string, frame: CFrame, scale: Vector3, opts: Options?)
 end
 
 function Kit.Reset()
+	for _, variants in collisionTemplates do
+		for _, variant in variants do
+			if typeof(variant) == "Instance" then (variant :: Instance):Destroy() end
+		end
+	end
 	for _,model in models do
 		if typeof(model)=="Instance" then (model :: Instance):Destroy() end
 	end
 	table.clear(models)
 	table.clear(templates)
+	table.clear(collisionTemplates)
 	table.clear(lamps)
 	Kit.Registry, Kit.LoadModel = nil,nil
 end

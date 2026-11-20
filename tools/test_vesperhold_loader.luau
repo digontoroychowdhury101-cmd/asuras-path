@@ -15,10 +15,31 @@ local function check(name: string, ok: any)
 end
 local function near(a: number, b: number, e: number?) return math.abs(a - b) <= (e or 1e-4) end
 
+local collisionCooks, failCook = 0, false
+roblox.implementProperty("MeshPart", "CollisionFidelity", function(part)
+	return rawget(part, "_fidelity") or Enum.CollisionFidelity.Default
+end, function()
+	error("CollisionFidelity cannot be assigned by a running server")
+end)
+roblox.implementMethod("MeshPart", "ApplyMesh", function(part, source)
+	rawset(part, "_fidelity", source.CollisionFidelity)
+	part.MeshId, part.TextureContent = source.MeshId, source.TextureContent
+end)
 local services = { ReplicatedStorage = { WaitForChild = function() return { Shared = { Overworld = O, VesperholdLayout = L } } end },
 	CollectionService = { AddTag = function(_, inst, tag) inst:AddTag(tag) end } }
+services.AssetService = {
+	CreateMeshPartAsync = function(_, mesh, options)
+		collisionCooks += 1
+		if failCook then error("fixture collision cook failed") end
+		local part = Instance.new("MeshPart")
+		part.MeshId, part.TextureContent = mesh, ""
+		rawset(part, "_fidelity", options.CollisionFidelity)
+		return part
+	end,
+}
 local base = { game = { GetService = function(_, n) return services[n] end }, Instance = Instance, Enum = Enum, Vector3 = Vector3, CFrame = CFrame,
-	Color3 = Color3, UDim2 = roblox.UDim2, Random = roblox.Random, typeof = typeof, warn = function() end }
+	Color3 = Color3, UDim2 = roblox.UDim2, Random = roblox.Random, typeof = typeof, warn = function() end,
+	Content = { fromUri = function(uri) return uri end } }
 local function load(path: string, env: any, name: string)
 	return luau.load(fs.readFile(path), { debugName = name, environment = setmetatable(env, { __index = _G }) })()
 end
@@ -39,6 +60,10 @@ local function fakeAsset(piece: string, subs: { any }, assetId: string)
 		local key = piece .. "__" .. sub[1]
 		local m = Instance.new("MeshPart")
 		m.Name, m.MeshId, m.Size, m.CFrame, m.Archivable = key, newId(), sub[2], CFrame.new(sub[3]), true
+		m.TextureContent = "rbxassetid://600"
+		local finish = Instance.new("SurfaceAppearance")
+		finish.ColorMap = "rbxassetid://601"
+		finish.Parent = m
 		m.Anchored = false
 		m.Parent = model
 		entries[key] = { MeshId = m.MeshId, Asset = assetId }
@@ -57,7 +82,7 @@ local function register(piece: string, subs: { any })
 end
 register("Hooded_Statue_A", statueSubs)
 register("Lancet_Tall", { { "Stone", V3(8, 40, 4), V3(0, 20, 0) }, { "Glass", V3(4, 30, 1), V3(0, 22, 0) }, { "Tracery", V3(8, 6, 1), V3(0, 35, 0) } })
-register("Rose_Window_Great", { { "Stone", V3(40, 40, 6), V3(0, 20, 0) }, { "Glass", V3(30, 30, 1), V3(0, 20, 0) } })
+register("Rose_Window_Great", { { "Stone", V3(40, 40, 6), V3(0, 20, 0) }, { "GlassR", V3(30, 30, 1), V3(0, 20, 0) } })
 register("Brazier_Post", { { "Iron", V3(1, 8, 1), V3(0, 4, 0) }, { "Flame", V3(2, 2, 2), V3(0, 9, 0) } })
 register("Dead_Pine_Snapped_A", { { "Bark", V3(3, 60, 3), V3(0, 30, 0) } })
 register("Dead_Pine_Snapped_B", { { "Bark", V3(3, 50, 3), V3(0, 25, 0) } })
@@ -87,6 +112,7 @@ end
 local function setup(reg: any)
 	Kit.Reset()
 	loads = {}
+	collisionCooks = 0
 	Kit.Registry = reg
 	Kit.LoadModel = function(id: string)
 		table.insert(loads, id)
@@ -122,8 +148,12 @@ check("Plinth core collides with Hull fidelity", parts["Hooded_Statue_A__Plinth"
 local expect = frame:PointToWorldSpace(V3(0, 6, 0))
 check("parts sit at the slot frame (foot centre pivot)", (parts["Hooded_Statue_A__Robe"].Position - expect).Magnitude < 1e-3)
 check("mesh ids are the uploaded ones (never rewritten)", parts["Hooded_Statue_A__Robe"].MeshId == registry.Hooded_Statue_A["Hooded_Statue_A__Robe"].MeshId)
+check("the runtime cook keeps the imported texture and PBR surface",
+	parts["Hooded_Statue_A__Robe"].TextureContent == "rbxassetid://600"
+		and parts["Hooded_Statue_A__Robe"]:FindFirstChildOfClass("SurfaceAppearance").ColorMap == "rbxassetid://601")
 for _ = 1, 3 do Kit.place("Hooded_Statue_A", frame, V3(1, 1, 1), { Group = "Statue" }) end
 check("the asset is loaded once and cloned per placement", #loads == 1)
+check("the five colliding subs cook once each across repeated placements", collisionCooks == 5)
 check("the loaded model is never parented into the world", statue.PrimaryPart.Parent == statue and statue.Parent == nil)
 local walk = Kit.place("Hooded_Statue_A", frame, V3(1, 1, 1), { Group = "Statue", Walkable = true })
 check("Walkable cores use PreciseConvexDecomposition", walk:FindFirstChild("Hooded_Statue_A__Plinth").CollisionFidelity == Enum.CollisionFidelity.PreciseConvexDecomposition)
@@ -139,6 +169,14 @@ for _, p in arcade:GetChildren() do if p.CanCollide or p.CanQuery then anyHit = 
 check("arcade (wall cladding) never collides", not anyHit and arcade.PrimaryPart.Name == "Arcade_Bay_40__Stone")
 local tree = Kit.place("Dead_Pine_Snapped", CFrame.new(), V3(1, 1, 1), { Group = "Tree", Seed = 1 })
 check("tree trunk (Bark) collides with Hull", tree ~= nil and tree.PrimaryPart.CanCollide and tree.PrimaryPart.CollisionFidelity == Enum.CollisionFidelity.Hull)
+local beforeCook = collisionCooks
+failCook = true
+local parkedTree = Kit.place("Dead_Pine_Snapped", CFrame.new(), V3(1, 1, 1), { Group = "Tree", Seed = 0 })
+Kit.place("Dead_Pine_Snapped", CFrame.new(), V3(1, 1, 1), { Group = "Tree", Seed = 0 })
+failCook = false
+check("one failed cook keeps imported collision and is cached",
+	parkedTree ~= nil and parkedTree.PrimaryPart.CanCollide
+		and parkedTree.PrimaryPart.CollisionFidelity == Enum.CollisionFidelity.Default and collisionCooks == beforeCook + 1)
 
 -- 4. Variants -----------------------------------------------------------------------------------------------------------
 check("_A/_B variants resolve from the layout name by seed", Kit.has("Dead_Pine_Snapped") and Kit.resolve("Dead_Pine_Snapped", 0) == "Dead_Pine_Snapped_A" and Kit.resolve("Dead_Pine_Snapped", 1) == "Dead_Pine_Snapped_B")
@@ -150,8 +188,9 @@ local glass = lancet:FindFirstChild("Lancet_Tall__Glass")
 local light = glass:FindFirstChildOfClass("PointLight") or glass:FindFirstChild("PointLight")
 check("glass is Neon amber with a small shadowless PointLight", glass.Material == Enum.Material.Neon and glass.Color.R > glass.Color.B and light ~= nil and light.Range <= 16 and light.Shadows == false)
 local rose = Kit.place("Rose_Window_Great", CFrame.new(), V3(1, 1, 1), { Group = "Rose" })
-local rg = rose:FindFirstChild("Rose_Window_Great__Glass")
-check("rose window glass is deep crimson", rg.Material == Enum.Material.Neon and rg.Color.R > 0.4 and rg.Color.G < 0.2)
+local rg = rose:FindFirstChild("Rose_Window_Great__GlassR")
+check("imported GlassR is Neon crimson and non-colliding",
+	rg.Material == Enum.Material.Neon and rg.Color.R > 0.4 and rg.Color.G < 0.2 and not rg.CanCollide)
 check("glass never collides and non-glass subs get no light", not glass.CanCollide and lancet:FindFirstChild("Lancet_Tall__Stone"):FindFirstChild("PointLight") == nil)
 local brazier = Kit.place("Brazier_Post", CFrame.new(), V3(1, 1, 1), { Group = "Brazier" })
 local flame = brazier:FindFirstChild("Brazier_Post__Flame")

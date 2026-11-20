@@ -1045,6 +1045,9 @@
             "WeatherController": {
               "$path": "src/client/Controllers/WeatherController.luau"
             },
+            "VesperholdAtmosphere": {
+              "$path": "src/client/Controllers/VesperholdAtmosphere.luau"
+            },
             "EnvironmentController": {
               "$path": "src/client/Controllers/EnvironmentController.luau"
             },
