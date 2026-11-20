@@ -1,0 +1,14 @@
+{
+  "date": "2026-11-21",
+  "source_commit": "b9ad98a3db30db546c3ee048d68266e028b846c0",
+  "path": "places/checkpoints/AsurasPath_Vesperhold_2026-11-21.rbxlx",
+  "bytes": 11019882,
+  "sha256": "a0b75a83688aef25fcba27296ed5c24e432207ea433cbd6d410aaa1a39964bc1",
+  "scripts": 287,
+  "source_bytes": 3471464,
+  "source_digest": 2088899630,
+  "asura_assets_children": 24,
+  "vesperhold_registry": "51 pieces / 291 sub-meshes, all uploaded and Approved",
+  "verify_all": "14/14 pass (build to work/vesperhold-claude/win69/CheckpointVerify.rbxlx, copied byte for byte)",
+  "scope": "Local Vesperhold checkpoint with real kit meshes; not integrated in cloud (cloud stays M1 277/3173417/786797912)"
+}

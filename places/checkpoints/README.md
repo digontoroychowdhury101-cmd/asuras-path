@@ -1,6 +1,15 @@
 # Matching Studio checkpoints on Windows and Mac
 
-## Current return to Mac — 17 November 2026
+## Current — Vesperhold with meshes, 21 November 2026
+
+Use **AsurasPath_Vesperhold_2026-11-21.rbxlx**, copied byte for byte from the 14/14 verification build of source
+**b9ad98a**. SHA-256 **a0b75a83688aef25fcba27296ed5c24e432207ea433cbd6d410aaa1a39964bc1**, 11,019,882 bytes.
+Expected scripts **287 / 3471464 bytes / digest 2088899630** (file digest and in-Studio SourceDigest agree; AsuraAssets 24).
+Vesperhold registry: 51 pieces / 291 sub-meshes, all uploaded and Approved. Adjacent JSON records identity.
+Open a local working copy for QA. Not integrated into cloud: the Development place is still M1 **277 / 3173417 / 786797912**
+(it reports version 13 after Studio opens; scripts unchanged). Cloud integration needs its own approval.
+
+## Earlier return to Mac — 17 November 2026
 
 Use **AsurasPath_OpenWorld_WindowsHandoff_2026-11-17.rbxlx**, copied from the fresh 14/14 verification build of
 source/evidence HEAD **2d4b1ed** (runtime source **78662d6**). SHA-256:

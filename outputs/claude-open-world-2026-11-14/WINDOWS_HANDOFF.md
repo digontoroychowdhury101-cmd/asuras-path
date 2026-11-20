@@ -49,6 +49,10 @@ was removed.
    `work/windows-resume-2026-11-19/CodexVesperholdVerify.rbxlx` has 313 mapped sources and 1844 distinct asset IDs.
    Vesperhold massing 14769/0, loader 42/0, and atmosphere 26/0. The original checkpoint digest above is for the earlier
    Studio session.
+   **Windows, 21 November (Opus 5.5 lead, §4 step 6):** superseded by
+   `places/checkpoints/AsurasPath_Vesperhold_2026-11-21.rbxlx` (source b9ad98a, full verifier 14/14), SHA-256
+   `a0b75a83688aef25fcba27296ed5c24e432207ea433cbd6d410aaa1a39964bc1`, scripts 287 / 3471464 / digest 2088899630
+   (file and in-Studio SourceDigest agree, AsuraAssets 24). Contains all 51 uploaded Vesperhold pieces. Cloud untouched.
 4. Tools: Blender 5.2.2 was used on the Mac. blender-skills (kevinbadi, pinned `b2f0f816d320b56ae86d52597a35284e0e6cc929`,
    **no licence → never commit its files**) was installed into `~/.claude/skills` from a clone in
    `work/third_party/blender-skills`. On Windows, clone it at that commit if a Claude agent wants it. Codex agents only
