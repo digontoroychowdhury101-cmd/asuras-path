@@ -242,3 +242,10 @@ Output for all lanes: `assets/source/vesperhold/candidate-win-2026-11-19/{kit,pr
 The creator asked Codex desktop to resume the latest Claude session. Codex (GPT-6) carried forward the gargoyle pair,
 finished the tree and architecture work, and ran pass 3 and gate (a) sequentially under the heavy-job lock. The candidate
 remains in the Windows source directory above. [Gate (a) record](workers/win-64-vesp-gate-a.md)
+
+### Windows run 4, gate (a) review of Codex 46baa7e (2026-11-20)
+Lead verdict: workers/win-65-gate-a-verdict.md. Four-lens review (PM, Architect, Developer, QA): requested sonnet, analysis only, no tools used.
+| Lane | Role | Requested | Observed | Owns |
+|---|---|---|---|---|
+| win-66 | statues pass 4 (banding root cause, layered drapery, upturned Mourner) | opus | pending report | vesperhold_figures.py, vesp_bake.py |
+| win-67 | held pieces: snapped pines, stumps, viaduct bay, waterfalls | opus | pending report | vesperhold_trees.py (pines/stumps), vesperhold_kit.py (viaduct), vesperhold_props.py + vesp_common.py (water) |
