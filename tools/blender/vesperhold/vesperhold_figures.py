@@ -284,14 +284,14 @@ ROBE = dict(
     t_top=0.875, belt=0.53, t_sh=0.80, n1=10, amp1=0.28, n2=29, amp2=0.05, n3=5, amp3=0.09, n4=11, amp4=0.14, chest=1.0)
 HOOD_S, PEAK_S = 1.18, 0.7
 # Pale exposed ridges, wet streaks and deep grime follow refs 06 and 07.
-STONE_LOOK = dict(frost=0.20, frost_col=(0.53, 0.55, 0.51), base=0.35, grime=0.86, occl_pow=1.7,
-                  edge=0.40, streak_dark=0.66, rough_base=0.85, wet_gloss=0.16, sat=0.12,
+STONE_LOOK = dict(frost=0.20, frost_col=(0.53, 0.55, 0.51), base=0.36, grime=0.92, occl_pow=2.0,
+                  edge=0.45, streak_dark=0.5, rough_base=0.85, wet_gloss=0.16, sat=0.12,
                   streak_lo=0.45, streak_hi=0.63, wash=0.09, frost_nz=(0.35, 0.75),
-                  frost_break=(0.32, 0.70), growth=0.55)
+                  frost_break=(0.32, 0.70), growth=0.3, lichen=0.85, moss=0.9, cavity=0.6)  # win-66: crust, moss, packed grime
 
 CFG = {
     "Hooded_Statue_A": dict(
-        H=20.0, z0=2.5, yaw=0.0, seed=11, knee=1, robe={}, capelet=True, cloak=False,
+        H=20.0, z0=2.5, yaw=0.0, seed=11, knee=1, robe={}, cloak=False,
         hood=dict(c=(0, -0.3, 12.7), axis=(0, -1, -0.3), r=(0.98, 1.25, 0.86), peak=0.45, t=0.11),
         arms=[dict(path=[(-0.85, 0.05, 10.9), (-1.28, 0.1, 10.75), (-1.47, 0.14, 9.85), (-1.42, 0.0, 9.0), (-1.02, -0.88, 8.68), (-0.46, -1.34, 8.6)],
                    r=[0.3, 0.35, 0.37, 0.36, 0.42, 0.5], sag=[0, 0, 0, 0.25, 0.75, 1.0], ref=(0, 0, -1), tail=0.3, droop=0.28,
@@ -301,7 +301,7 @@ CFG = {
                    hand=dict(kind="flat", c=(0.88, -1.26, 8.57), axis=(-1, -0.3, -0.1), up=(0, -0.25, 1)))],
         cords=True, staff=None, sword=None, plinth="low", slim=0.88),
     "Hooded_Statue_B": dict(
-        H=20.0, z0=2.5, yaw=-12.0, seed=23, knee=-1, robe=dict(n1=9, amp1=0.3), capelet=True, cloak=False,
+        H=20.0, z0=2.5, yaw=-12.0, seed=23, knee=-1, robe=dict(n1=9, amp1=0.3), cloak=False,
         hood=dict(c=(0, -0.28, 12.75), axis=(-0.15, -1, -0.22), r=(0.98, 1.25, 0.86), peak=0.48, t=0.11),
         arms=[dict(path=[(-0.85, 0.05, 10.9), (-1.3, 0.1, 10.75), (-1.6, 0.16, 9.85), (-1.74, 0.1, 8.85), (-1.86, -0.18, 8.92), (-1.92, -0.36, 9.0)],
                    r=[0.3, 0.35, 0.38, 0.4, 0.44, 0.48], sag=[0, 0, 0, 0.15, 0.55, 0.8], ref=(0, 0, -1), tail=0.45, droop=0.12,
@@ -310,7 +310,7 @@ CFG = {
                    r=[0.3, 0.35, 0.38, 0.42, 0.56, 0.78], sag=[0, 0, 0, 0, 0, 0], ref=(0, 1, 0), tail=0.0, hand=None)],
         cords=True, staff=dict(x=-2.05, y=-1.05, top=16.6, r=0.13), sword=None, plinth="low", slim=0.88),
     WRAITH: dict(
-        H=19.8, z0=3.1, yaw=0.0, seed=37, knee=1, robe=dict(n1=8, amp1=0.36, amp4=0.15, chest=1.05), capelet=True, cloak=False,
+        H=19.8, z0=3.1, yaw=0.0, seed=37, knee=1, robe=dict(n1=8, amp1=0.36, amp4=0.15, chest=1.05), cloak=False,
         hood=dict(c=(0, -0.36, 12.75), axis=(0, -1, -0.12), r=(1.03, 1.26, 0.83), peak=0.59, t=0.11),
         arms=[dict(path=[(-0.85, 0.05, 10.9), (-1.3, 0.1, 10.75), (-1.55, 0.05, 9.9), (-1.5, -0.4, 8.85), (-0.95, -1.18, 7.85), (-0.42, -1.68, 7.5)],
                    r=[0.3, 0.35, 0.38, 0.39, 0.45, 0.54], sag=[0, 0, 0, 0.1, 0.35, 0.55], ref=(0, 0, -1), droop=0.12,
@@ -323,12 +323,12 @@ CFG = {
 }
 CFG[MOURNER] = deepcopy(CFG["Hooded_Statue_A"])
 CFG[MOURNER].update(H=18.2, z0=0.18, seed=71, slim=0.9, tomb=True, ivy=True, cords=False,
-                    robe=dict(n1=7, amp1=0.31), hood=dict(c=(0.08, -0.59, 12.88), axis=(0.13, -1, 0.21),
-                    r=(1.05, 1.18, 0.86), peak=0.12, t=0.065))
+                    robe=dict(n1=7, amp1=0.42), hood=dict(c=(0.08, -0.45, 12.95), axis=(0.1, -0.77, 0.64),
+                    r=(0.98, 1.1, 0.8), peak=0.12, t=0.065, open=0.5))
 CFG[MOURNER]["arms"] = [
-    dict(path=[(-0.7, 0, 10.75), (-1.4, 0.05, 10.12), (-1.92, -0.1, 8.7), (-2.58, -0.51, 7.0), (-3.02, -0.99, 5.68)],
-         r=[0.37, 0.43, 0.47, 0.44, 0.31], sag=[0, 0.15, 0.6, 0.65, 0.4], ref=(0, 0, -1), droop=0.14,
-         hand=dict(kind="flat", c=(-2.96, -1.08, 5.55), axis=(0.23, -0.27, -1), up=(0, -1, 0))),
+    dict(path=[(-0.7, 0, 10.75), (-1.4, 0.05, 10.12), (-1.95, -0.1, 8.7), (-2.45, -0.3, 7.1), (-2.74, -0.42, 5.72)],
+         r=[0.37, 0.43, 0.47, 0.44, 0.31], sag=[0, 0.15, 0.5, 0.45, 0.25], ref=(0, 0, -1), droop=0.1,
+         hand=dict(kind="flat", c=(-3.03, -0.51, 5.33), axis=(-0.85, -0.3, -0.2), up=(0, 0, 1))),  # win-66: ON the lid
     dict(path=[(0.7, 0, 10.75), (1.35, 0.11, 10.25), (1.5, -0.1, 8.7), (1.18, -1.21, 8.3), (0.65, -1.83, 8.86)],
          r=[0.36, 0.43, 0.47, 0.46, 0.38], sag=[0, 0.15, 0.4, 0.7, 0.6], ref=(0, 0, -1), droop=0.24,
          hand=dict(kind="flat", c=(0.56, -1.9, 8.9), axis=(-0.79, -0.14, 0.55), up=(0, -1, 0))),
@@ -337,9 +337,40 @@ for arm in CFG["Hooded_Statue_A"]["arms"]:
     arm.update(r=[0.32, 0.41, 0.44, 0.41, 0.34, 0.26], sag=[0, 0, 0.14, 0.26, 0.6, 0.42], tail=0.18)
 CFG[QUATREFOIL] = dict(CFG[WRAITH], H=16.0, z0=7.0, plinth="pedestal", ivy=False, cloak=True, tabard=0.62)
 
+
+# win-66 drapery (ref_07): innermost first. top/hem in T (fraction of H; hem = front, side, back), gap = front opening
+# half-width (rad), clear/flare/amp/thick in 14-stud units (x k). drips/tears = (count, half-width rad, length T).
+# res = ((rows, cols) low, (rows, cols) high).
+def _layers(mantle_gap, seed_shift=0.0):
+    return [
+        dict(top=0.80, hem=(0.11, 0.05, 0.022), gap=mantle_gap, clear=0.05, flare=0.8, nf=9, amp=0.36, diag=0.35 + seed_shift,
+             drips=(30, (0.035, 0.075), (0.015, 0.06)), tears=(10, (0.03, 0.06), (0.06, 0.2)), holes=3, thick=0.11,
+             res=((40, 170), (200, 600))),
+        dict(top=0.79, hem=(0.42, 0.33, 0.26), gap=mantle_gap + 0.3, clear=0.05, flare=0.3, nf=8, amp=0.3, diag=0.5,
+             drips=(20, (0.035, 0.07), (0.015, 0.055)), tears=(7, (0.03, 0.06), (0.05, 0.16)), holes=2, thick=0.1,
+             res=((30, 130), (160, 460))),
+        dict(top=0.875, hem=(0.63, 0.53, 0.48), gap=0.1, clear=0.07, flare=0.4, nf=10, amp=0.24, diag=-0.6,
+             drips=(18, (0.03, 0.06), (0.012, 0.045)), tears=(6, (0.025, 0.05), (0.04, 0.1)), holes=1, thick=0.1,
+             res=((34, 180), (170, 600))),
+    ]
+
+
+CFG[WRAITH].update(layers=_layers(0.3), plinth_half=4.5, robe=dict(n1=8, amp1=0.42, amp4=0.15, chest=1.05))
+CFG["Hooded_Statue_A"].update(layers=_layers(0.4, 0.1), plinth_scale=1.42, ivy=True)
+CFG["Hooded_Statue_A"]["layers"][2]["hem"] = (0.7, 0.55, 0.5)  # joined hands stay visible below the shawl
+CFG["Hooded_Statue_B"].update(layers=_layers(1.3, -0.1), plinth_scale=1.42, ivy=True, arm_front=1.3)
+CFG[MOURNER]["layers"] = [  # ref_06: a long heavy shawl, worn not shredded
+    dict(top=0.80, hem=(0.5, 0.42, 0.3), gap=0.95, clear=0.05, flare=0.22, nf=8, amp=0.28, diag=0.4,
+         drips=(8, (0.04, 0.07), (0.01, 0.03)), tears=(2, (0.03, 0.05), (0.03, 0.06)), holes=0, thick=0.1,
+         res=((34, 140), (180, 520))),
+    dict(top=0.875, hem=(0.66, 0.57, 0.52), gap=0.1, clear=0.07, flare=0.22, nf=12, amp=0.2, diag=-0.6,
+         drips=(6, (0.03, 0.05), (0.01, 0.03)), tears=(1, (0.03, 0.04), (0.03, 0.05)), holes=0, thick=0.1,
+         res=((34, 180), (170, 600))),
+]
+
 RES = {  # (rows, cols) per level
     "robe": {"lo": (112, 128), "hi": (620, 768)}, "hood": {"lo": (30, 72), "hi": (170, 400)}, "lip": {"lo": 5, "hi": 12},
-    "capelet": {"lo": (26, 112), "hi": (150, 640)}, "cloak": {"lo": (90, 72), "hi": (520, 420)},
+    "cloak": {"lo": (90, 72), "hi": (520, 420)},
     "sleeve": {"lo": (56, 36), "hi": (320, 160)}, "belt": {"lo": (120, 10), "hi": (900, 28)}, "cord": {"lo": (40, 8), "hi": (260, 24)},
     "finger": {"lo": (14, 10), "hi": (64, 32)}, "palm": {"lo": (14, 20), "hi": (64, 96)}, "staff": {"lo": (200, 16), "hi": (1400, 64)},
     "head": {"lo": (40, 12), "hi": (220, 40)}, "blade": {"lo": (40, 14), "hi": (420, 72)},
@@ -356,6 +387,7 @@ class Robe:
         self.knee = cfg["knee"]
         self.hi = level == "hi"
         self.belted = not (cfg["sword"] or cfg.get("tomb")) or cfg["plinth"] == "pedestal"
+        self.neck_void = not cfg.get("tomb")  # the mourner's upturned head exposes the collar: stone, not shadow
         self.tab = cfg.get("tabard", 0.0)  # half-width (rad) of a front tabard: folds damped under it
 
     def base(self, TH, T, env=False):
@@ -413,7 +445,7 @@ class Robe:
         t = np.linspace(0, self.c["t_top"], nr)
         TH, T = np.meshgrid(th, t)
         P, N, _ = self.eval(TH, T)
-        void = sst(0.845, 0.87, T)  # neck under the hood
+        void = sst(0.845, 0.87, T) * self.neck_void  # neck under the hood
         mb.grid(P, N, closed_u=True, cap0=self.hi, cap1=True, void=void)  # low: no hidden hem cap (saves ~15% of the map)
 
     def env(self, th, t):
@@ -429,7 +461,7 @@ class Robe:
         return out
 
 
-# ============================================================================================ hood, capelet, cloak
+# ============================================================================================ hood, cloak
 def hood(mb, cfg, level, void_strength=1.0):
     h, k, sd = cfg["hood"], cfg["H"] / 14.0, cfg["seed"]
     nr, nc = RES["hood"][level]
@@ -444,7 +476,7 @@ def hood(mb, cfg, level, void_strength=1.0):
     a0 = 0.42 + 0.43 * (np.abs(B) / PI) ** 1.2
     if cfg["sword"] or cfg.get("tomb"):
         a0 += 0.18 * np.cos(B) ** 4 + 0.06
-    a0 += 0.055 * circ_noise(B, 0.0, 2.0, sd + 28) + 0.024 * np.sin(B * 13 + sd)
+    a0 += 0.055 * circ_noise(B, 0.0, 2.0, sd + 28) + 0.024 * np.sin(B * 13 + sd) + h.get("open", 0.0)
     al = a0 + V * (PI - 0.035 - a0)
     d = a[None, None] * np.cos(al)[..., None] + (u0[None, None] * np.cos(B)[..., None] + sv[None, None] * np.sin(B)[..., None]) * np.sin(al)[..., None]
     ra, ru, rs = (np.array(h["r"]) * k * HOOD_S)
@@ -455,11 +487,15 @@ def hood(mb, cfg, level, void_strength=1.0):
     R = R + h["peak"] * PEAK_S * k * np.exp(-(ang / 0.28) ** 2)
     P = Hc + d * R[..., None]
     N = grid_normals(P, True, P - Hc)
-    # folds run diagonally from the crown back/down to the shoulders (sides and nape), not as ribs around the face
-    w = 6 * (B + PI) / (2 * PI) + 0.9 * V * np.sign(B) + 0.35 * circ_noise(B, V, 1.2, sd + 21)
-    side = sst(0.7, 1.5, np.abs(B))
-    folds = (0.14 if cfg["sword"] or cfg.get("tomb") else 0.075) * k
-    disp = folds * (0.3 + 0.7 * side) * sst(0.03, 0.35, V) * (1 - 0.5 * V) * prof(w) * rnd_fold(w, 6, sd + 22)
+    # win-66 banding fix: the fold phase used to run around the hood's FORWARD axis (B), which lays its ridges horizontally on
+    # the sides of the hood (stacked "puffer" bands). Phase now runs around the WORLD vertical, so every ridge hangs as a
+    # meridian from the crown, growing toward the hem the way heavy cloth falls.
+    rel = P - Hc
+    psi = np.arctan2(rel[..., 0], -rel[..., 1])
+    elev = rel[..., 2] / np.maximum(np.linalg.norm(rel, axis=-1), 1e-9)
+    w = 7 * psi / (2 * PI) + 0.45 * circ_noise(psi, elev * 0.8, 1.3, sd + 21)
+    folds = (0.2 if cfg["sword"] or cfg.get("tomb") else 0.16) * k
+    disp = folds * sst(0.97, -0.3, elev) * sst(0.03, 0.3, V) * prof(w) ** 1.2 * rnd_fold(w, 7, sd + 22)
     # pinched brow: a soft crease just behind the opening rim at the top, with the cloth bunched above it
     brow = np.exp(-(B / 0.9) ** 2)
     disp = disp - 0.035 * k * brow * np.exp(-((V - 0.14) / 0.04) ** 2) + 0.02 * k * brow * np.exp(-((V - 0.24) / 0.06) ** 2)
@@ -470,38 +506,6 @@ def hood(mb, cfg, level, void_strength=1.0):
     rows, nref, void = shell_rows(P[::-1], N[::-1], t, 0, RES["lip"][level], lip=0.025 * k,
                                   void_inner=void_strength * (0.3 + 0.7 * sst(0.05, 0.35, v[::-1])))
     mb.grid(rows, nref, closed_u=True, cap0=True, cap1=True, void=void)
-
-
-def capelet(mb, cfg, robe, level):
-    """Shoulder cowl: rounded dome from the neck over the shoulders (quarter ellipse), then a short hang to a wavy hem."""
-    k, sd, H = cfg["H"] / 14.0, cfg["seed"], cfg["H"]
-    nr, nc = RES["capelet"][level]
-    th = 2 * PI * np.arange(nc) / nc
-    v = np.linspace(0, 1, nr)
-    TH, V = np.meshgrid(th, v)
-    vs = 0.55
-    om = np.clip(V / vs, 0, 1) * PI / 2
-    f2 = np.clip((V - vs) / (1 - vs), 0, 1)
-    zn, zs = 12.25, 11.0
-    w = 10 * TH / (2 * PI) + 0.4 * circ_noise(TH, V * 0.8, 1.4, sd + 32)
-    # draped hem: lower where a fold hangs, ragged, dipping at front and back
-    zh = 10.2 - 0.2 * np.cos(2 * TH) + 0.12 * circ_noise(TH, 0, 2, sd + 31) - 0.08 * prof(w) * rnd_fold(w, 10, sd + 33) \
-        - 0.012 * np.sin(23 * TH + 2.0 * circ_noise(TH, 1, 3, sd + 35))  # win-61: worn hem, not pie-crust scallops
-    (rxn, ryn), (rxs, rys), (rxh, ryh) = (0.74, 0.66), (1.7, 1.18), (1.78, 1.26)
-    dome = V < vs
-    rx = np.where(dome, rxn + (rxs - rxn) * np.sin(om), rxs + (rxh - rxs) * f2) * k
-    ry = np.where(dome, ryn + (rys - ryn) * np.sin(om), rys + (ryh - rys) * f2) * k
-    z = np.where(dome, zs + (zn - zs) * np.cos(om), zs + (zh - zs) * f2) * k
-    cy = interp(robe.c["cy"], z / H) * k
-    P = np.stack([rx * np.sin(TH), cy + ry * np.cos(TH), z], -1)
-    N = grid_normals(P, True, np.stack([np.sin(TH), np.cos(TH), np.zeros_like(TH)], -1))
-    disp = 0.12 * k * sst(0.15, 1.0, V) ** 1.3 * prof(w) * rnd_fold(w, 10, sd + 33)
-    if level == "hi":
-        disp = disp + 0.004 * k * fbm(P * 3.5, 3, sd + 34)
-    P = P + N * disp[..., None]
-    i0 = int(nr * 0.5)
-    rows, nref, void = shell_rows(P, N, 0.045 * k, i0, RES["lip"][level], lip=0.01 * k)
-    mb.grid(rows, nref, closed_u=True, void=void)
 
 
 def _env_at(robe, TH, T):
@@ -549,61 +553,103 @@ def cloak(mb, cfg, robe, level):
         mb.grid(strip, np.stack([side, side], 1))
 
 
-def ragged_drapery(mb, cfg, robe, level):
-    """Pinned shoulder layers with uneven folds, tapering tails, and closed seams around tears."""
-    nr, nc = (142, 80) if level == "hi" else (48, 32)
-    u = np.linspace(0, 1, nc)
-    v = np.linspace(0, 1, nr)
-    U, V = np.meshgrid(u, v)
-    uc, vc = np.meshgrid((u[:-1] + u[1:]) / 2, (v[:-1] + v[1:]) / 2)
-    k, H, seed = cfg["H"] / 14.0, cfg["H"], cfg["seed"]
-    # Rear mantle, asymmetric outer folds and two scarves that turn in towards the chest.
-    cuts = [(-1.66, 1.73, 0.85, 0.10, 0.35, 0.15), (1.73, 1.67, 0.85, 0.14, 0.21, 0.15),
-            (-2.26, 0.99, 0.81, 0.03, 0.17, 0.40), (2.32, 1.05, 0.83, 0.22, 0.20, 0.40),
-            (2.62, 0.62, 0.76, 0.07, 0.18, 0.65)]
-    if cfg["sword"]:
-        cuts += [(-2.63, 0.66, 0.80, 0.12, 0.16, 0.65), (-1.91, 0.55, 0.70, 0.26, 0.09, 0.68)]
-    for i, (center, width, top, hem, skew, depth) in enumerate(cuts):
-        sign = 1 if center > 0 else -1
-        phase = seed + i * 3.8
-        theta = center + sign * (0.22 * V + skew * np.sin(PI * V))
-        theta += (U - 0.5) * width * (0.52 + 0.58 * np.sin(V * 1.6))
-        theta += 0.070 * V * np.sin(8.3 * V + 5.4 * U + phase)
-        waves = 0.065 * np.sin(16.0 * u + phase) + 0.02 * np.sin(46.0 * u - phase)
-        waves += 0.032 * np.sin(79.0 * u + phase) * np.sin(8.0 * u - phase) ** 2
-        end = np.clip(hem + waves + 0.10 * (u - 0.35) ** 2, 0.012, 0.65)
-        z = top - (top - end) * V + 0.046 * (U - 0.5) * np.sin(PI * V)
-        base, N, _ = robe.eval(theta, z)
-        folds = (1.7 + 0.11 * i) * U + 0.55 * (1 - V) ** 2 + 0.16 * np.sin(6 * V + U * 7 + phase)
-        offset = k * (depth + (0.09 + 0.19 * np.sin(PI * V * 0.84)) * prof(folds))
-        offset *= (0.45 + 0.55 * sst(0.03, 0.32, V))
-        surface = base + N * offset[..., None]
-        if level == "hi":
-            surface += N * (0.015 * k * fbm(surface * 4.6, 4, seed + i))[..., None]
-        normal = grid_normals(surface, False, N)
+def _gblur(a, sig, axis, wrap):
+    r = max(1, int(3 * sig))
+    kern = np.exp(-0.5 * (np.arange(-r, r + 1) / sig) ** 2)
+    kern /= kern.sum()
+    pad = [(0, 0)] * a.ndim
+    pad[axis] = (r, r)
+    a = np.pad(a, pad, mode="wrap" if wrap else "edge")
+    return np.apply_along_axis(lambda v: np.convolve(v, kern, "valid"), axis, a)
 
-        # Punch through a single layer. Adjacent layers occlude naturally and keep the silhouette continuous.
-        keep = np.ones_like(uc, dtype=bool)
-        for hu, hv, ru, rv in ((0.24 + 0.05 * (i % 3), 0.64, 0.13, 0.075),
-                              (0.68 - 0.06 * (i % 2), 0.82, 0.11, 0.086),
-                              (0.31 + 0.10 * (i % 4), 0.99, 0.095, 0.12)):
-            dx = (uc - hu - 0.44 * (vc - hv)) / ru
-            dy = (vc - hv) / rv
-            lip = 1 + 0.17 * np.sin(33 * uc + 39 * vc + phase) + 0.097 * np.cos(124 * uc - 43 * vc)
-            keep &= dx * dx + dy * dy > lip
-        mb.torn_sheet(surface, normal, keep, 0.07 * k)
 
-    # A folded cowl runs shoulder to shoulder above the hanging sheets.
-    nr, nc = (80, 170) if level == "hi" else (25, 64)
-    U, V = np.meshgrid(np.linspace(0, 1, nc), np.linspace(0, 1, nr))
-    theta = 1.30 + 3.69 * U
-    z = 0.815 - 0.062 * np.sin(PI * U) ** 1.5 + (0.06 - 0.13 * V) * np.sin(PI * U) ** 0.8
-    z += 0.012 * np.sin(9 * U + seed) * V + 0.031 * (U - 0.5) * np.sin(PI * V)
-    P, N, _ = robe.eval(theta, z)
-    fold = prof(2.8 * V + 0.78 * U + 0.25 * np.sin(8 * U + 3 * V))
-    amplitude = 0.048 + 0.049 * np.sin(PI * U + 1.4 * V) ** 2
-    P += N * (k * np.sin(PI * U) ** 0.7 * (0.40 + amplitude * fold))[..., None]
-    mb.torn_sheet(P, grid_normals(P, False, N), np.ones((nr - 1, nc - 1), dtype=bool), 0.085 * k)
+class Tent:
+    """What hanging cloth rests on (win-66): per (theta, T) the largest radius of the body at or above T, so cloth falls
+    from the widest thing it passes over (shoulders, elbows, the layer beneath) instead of clinging to the waist.
+    Dilated and blurred so it bridges gaps. theta 0 = back (+Y), +-PI = front (-Y); figure-local studs."""
+    NTH, NT, TOP = 240, 360, 0.95
+
+    def __init__(self, pts, H):
+        pts = np.asarray(pts, float)
+        i = np.floor((np.arctan2(pts[:, 0], pts[:, 1]) + PI) / (2 * PI) * self.NTH).astype(int) % self.NTH
+        j = np.clip((pts[:, 2] / H / self.TOP * self.NT).astype(int), 0, self.NT - 1)
+        R = np.zeros((self.NT, self.NTH))
+        np.maximum.at(R, (j, i), np.hypot(pts[:, 0], pts[:, 1]))
+        R = np.maximum.accumulate(R[::-1], axis=0)[::-1]
+        for _ in range(4):
+            R = np.maximum(R, np.maximum(np.roll(R, 1, 1), np.roll(R, -1, 1)))
+        self.R = _gblur(_gblur(R, 3.0, 1, True), 2.5, 0, False)
+
+    def __call__(self, TH, T):
+        fi = (np.angle(np.exp(1j * TH)) + PI) / (2 * PI) * self.NTH - 0.5
+        fj = np.clip(T / self.TOP * self.NT - 0.5, 0, self.NT - 1.001)
+        i0 = np.floor(fi).astype(int)
+        a = fi - i0
+        i0 %= self.NTH
+        i1 = (i0 + 1) % self.NTH
+        j0 = fj.astype(int)
+        b = fj - j0
+        R = self.R
+        return (R[j0, i0] * (1 - a) + R[j0, i1] * a) * (1 - b) + (R[j0 + 1, i0] * (1 - a) + R[j0 + 1, i1] * a) * b
+
+
+def hang_layer(mb, cfg, tent, level, L, idx):
+    """One heavy cloth layer pinned at T=top, hanging over `tent` to a ragged hem: broad flare toward the base, deep folds
+    whose phase depends on theta only (ridges always run down the cloth, never across it), thick slab tatters with dripping
+    tips, V tears and ragged holes. gap = half-width (rad) of the front opening."""
+    k, H, sd = cfg["H"] / 14.0, cfg["H"], cfg["seed"] + 101 * idx
+    rng = np.random.default_rng(sd)
+    nr, nc = L["res"][level == "hi"]
+    span = PI - L["gap"]
+    th = np.linspace(-span, span, nc)
+    v = np.linspace(0, 1, nr) ** 1.1
+    hem = np.interp(np.abs(angdiff(th, PI)) / PI, [0, 0.5, 1], L["hem"])
+    hem = hem + 0.014 * circ_noise(th, 0.3, 3.0, sd) + 0.006 * circ_noise(th, 0.7, 9.0, sd + 1)
+
+    def spikes(n, w, ln):  # pointed profiles: (1-|d|/w)^1.7 is a narrow tip on a broad root
+        c, ww, ll = rng.uniform(-span, span, n), rng.uniform(*w, n), rng.uniform(*ln, n)
+        return (ll[:, None] * np.clip(1 - np.abs(th[None] - c[:, None]) / ww[:, None], 0, 1) ** 1.7).max(0, initial=0.0)
+
+    hem = np.maximum(hem - spikes(*L["drips"]), 0.006)
+    hem = np.minimum(hem + spikes(*L["tears"]), L["top"] - 0.06)
+    TH, V = np.meshgrid(th, v)
+    T = L["top"] + (hem[None] - L["top"]) * V
+    s = np.clip((L["top"] - T) / L["top"], 0, 1)
+    r = tent(TH, T) + L["clear"] * k + L["flare"] * k * s ** 1.3
+    w = L["nf"] * TH / (2 * PI) + 0.45 * circ_noise(TH, T * 1.2, 1.6, sd + 2) + L.get("diag", 0.0) * s * np.sign(np.sin(TH))
+    amp = L["amp"] * k * (0.05 + 0.95 * sst(0.0, 0.75, V))  # pins at the top: no crowded pleats at the neck
+    fold = prof(w) ** 1.3 * rnd_fold(w, 997, sd + 3) + 0.3 * prof(2.6 * w + 0.4 * circ_noise(TH, T * 2.0, 2.5, sd + 4))
+    r = r + amp * fold
+    P = np.stack([r * np.sin(TH), r * np.cos(TH), T * H], -1)
+    out = np.stack([np.sin(TH), np.cos(TH), np.zeros_like(TH)], -1)
+    N = grid_normals(P, False, out)
+    if level == "hi":
+        crease = 0.022 * k * prof(4.3 * w + 1.7 * T + 0.5 * circ_noise(TH, T * 4, 4.0, sd + 5)) * (0.25 + 0.75 * V)
+        P = P + N * (crease + 0.013 * k * fbm(P * 4.6, 4, sd + 6) + 0.005 * k * fbm(P * 13.0, 2, sd + 7))[..., None]
+        N = grid_normals(P, False, out)
+    keep = np.ones((nr - 1, nc - 1), bool)
+    C = (P[:-1, :-1] + P[1:, 1:]) / 2
+    for _ in range(L["holes"]):
+        j, i = int(rng.uniform(0.04, 0.96) * (nc - 2)), int(rng.uniform(0.4, 0.82) * (nr - 1))
+        rad = rng.uniform(0.22, 0.45) * k
+        d = np.linalg.norm(C - C[i, j], axis=-1) / rad
+        keep &= d > 1 + 0.3 * vnoise(C * 3.0, sd + 8)
+    mb.torn_sheet(P, N, keep, L["thick"] * k)
+
+
+def drapery(mb, cfg, robe_mb, arms_mb, level):
+    """Layers from cfg['layers'], innermost first. Each layer's tent is the LOW body + arms at the sides + the LOW layers
+    already built, so high and low surfaces stay matched for the bake. Returns the outermost tent (ivy climbs on it)."""
+    H = cfg["H"]
+    A = np.vstack(arms_mb.V)
+    body = [np.vstack(robe_mb.V), A[np.abs(angdiff(np.arctan2(A[:, 0], A[:, 1]), PI)) > cfg.get("arm_front", 0.9)]]
+    for i, L in enumerate(cfg["layers"]):
+        tent = Tent(np.vstack(body), H)
+        hang_layer(mb, cfg, tent, level, L, i)
+        lo = MB()
+        hang_layer(lo, cfg, tent, "lo", L, i)
+        body.append(np.vstack(lo.V))
+    return Tent(np.vstack(body), H)
 
 
 def tabard(mb, cfg, robe, level):
@@ -1028,11 +1074,11 @@ def mourning_face(mb, hair, cfg, level):
     k = cfg["H"] / 14.0
     nr, nc = (194, 220) if level == "hi" else (76, 104)
     angle = 2 * PI * np.arange(nc) / nc - PI
-    z = np.linspace(-1.17, 1.05, nr)
+    z = np.linspace(-0.98, 1.05, nr)  # win-66: stops under the jaw; the neck tube carries the exposed throat
     A, Z = np.meshgrid(angle, z)
-    rx = interp([(-1.17, 0.39), (-0.94, 0.33), (-0.78, 0.43), (-0.62, 0.56),
+    rx = interp([(-0.98, 0.26), (-0.86, 0.36), (-0.78, 0.43), (-0.62, 0.56),
                  (-0.21, 0.66), (0.29, 0.675), (0.63, 0.61), (1.05, 0.07)], Z)
-    ry = interp([(-1.17, 0.28), (-0.91, 0.33), (-0.75, 0.54), (-0.50, 0.54),
+    ry = interp([(-0.98, 0.2), (-0.86, 0.36), (-0.75, 0.54), (-0.50, 0.54),
                  (0.1, 0.51), (0.45, 0.55), (0.84, 0.37), (1.05, 0.07)], Z)
     X = rx * np.sin(A)
     front = sst(0.20, 0.85, np.cos(A))
@@ -1054,33 +1100,40 @@ def mourning_face(mb, hair, cfg, level):
     Y -= 0.095 * feature(0, -0.414, 0.225, 0.056) + 0.083 * feature(0, -0.509, 0.193, 0.055)
     Y += 0.075 * feature(0, -0.461 + 0.52 * X * X, 0.22, 0.023)
     Y -= 0.12 * feature(0, -0.68, 0.26, 0.13)
-    up = nrm(np.array([0.12, 0.35, 1.0]))
+    for side in (-1, 1):  # nasolabial folds and the grieving inner brow
+        Y += 0.035 * feature(side * (0.17 + 0.5 * (-0.2 - Z)), -0.33, 0.035, 0.13)
+        Y -= 0.03 * feature(side * 0.12, 0.3, 0.07, 0.05)
+    up = nrm(np.array([0.08, 0.84, 1.0]))  # win-66: face turned ~40 degrees up to the sky (ref_06)
     forward = nrm(np.cross(up, [1.0, 0.0, 0.0]))
     right = np.cross(up, forward)
-    center = np.array([0.08, -0.98, 12.73])
+    center = np.array([0.08, -0.9, 12.78])
     P = (center + X[..., None] * right + Y[..., None] * forward + Z[..., None] * up) * k
     N = P - (center + Z[..., None] * up) * k
-    tear_shadow = 0.28 * feature(0.32 + 0.16 * (0.15 - Z), -0.13, 0.035, 0.21)
-    tear_shadow += 0.28 * feature(-0.31 - 0.18 * (0.15 - Z), -0.13, 0.038, 0.21)
+    # dark tear streaks from the inner eye corners down the cheeks to the jaw, plus the parted lips
+    tear_shadow = 0.85 * feature(0.24 + 0.14 * (0.15 - Z), -0.3, 0.03, 0.36)
+    tear_shadow += 0.85 * feature(-0.23 - 0.16 * (0.15 - Z), -0.3, 0.032, 0.36)
+    tear_shadow += 0.6 * feature(0, -0.465 + 0.5 * X * X, 0.14, 0.012)
     mb.grid(P, N, closed_u=True, cap0=True, cap1=True, void=tear_shadow)
-    neck = np.array([(0.05, -0.30, 10.61), (-0.02, -0.63, 11.08),
-                     (-0.07, -1.22, 11.68), center - 0.65 * up]) * k
-    tube_part(mb, neck, np.array([0.60, 0.52, 0.39, 0.37]) * k, level, "head",
+    neck = np.array([(0.05, -0.30, 10.61), (0.03, -0.65, 11.2),
+                     (0.04, -0.95, 11.75), center - 0.6 * up + 0.3 * forward]) * k
+    tube_part(mb, neck, np.array([0.60, 0.52, 0.48, 0.44]) * k, level, "head",
               ref=(1, 0, 0), ell=0.84, n=(90, 60) if level == "hi" else (30, 26))
 
-    hair_res = (100, 16) if level == "hi" else (33, 8)
+    hair_res = (110, 18) if level == "hi" else (36, 8)
     for side in (-1, 1):
-        for i in range(6):
-            x = 0.46 + i * 0.084
-            y = -1.39 + i * 0.096
-            end = 9.8 + 0.35 * math.sin(i * 3.7 + side)
-            wave = 0.075 * math.sin(i * 1.76 + side)
-            path = np.array([(side * x * 0.7, y + 0.15, 13.65), (side * x, y - 0.14, 12.96),
-                             (side * (x + 0.09 + wave), y, 12.23), (side * (x - 0.11 - wave), y - 0.11, 11.72 + wave),
-                             (side * (x + 0.23 + wave), y - 0.23, 11.22 - wave), (side * (x + 0.16 - wave), y - 0.39, 10.62),
-                             (side * (x + 0.37 + wave), y - 0.43, end)]) * k
-            tube_part(hair, path, np.array([0.09, 0.112, 0.080, 0.060, 0.018]) * k, level, "cord",
-                      ref=(0, -1, 0), groove=(0.20, 4, 13 * k), ell=0.70, n=hair_res)
+        for i in range(7):
+            wave = 0.09 * (-1) ** i + 0.03 * math.sin(i * 2.3 + side)
+            p0 = center + right * side * 0.58 + forward * (0.1 + 0.05 * i) + up * (0.45 - 0.12 * i)
+            path = np.array([p0, p0 + (side * 0.16, -0.08, -0.32),
+                             (side * (0.7 + 0.05 * i + wave), -1.3 - 0.03 * i, 11.45),
+                             (side * (0.8 + 0.05 * i - wave), -1.42, 10.85),
+                             (side * (0.76 + 0.06 * i + wave), -1.5, 10.25),
+                             (side * (0.86 + 0.05 * i - wave), -1.56, 9.6 + 0.25 * math.sin(i * 1.7 + side))]) * k
+            tube_part(hair, path, np.array([0.15, 0.22, 0.21, 0.18, 0.13, 0.03]) * k, level, "cord",
+                      ref=(0, -1, 0), groove=(0.18, 6, 13 * k), ell=0.42, n=hair_res)
+
+
+TOMB_DX = 0.55  # win-66: tomb moved toward the mourner so her hand rests on the lid
 
 
 def gothic_tomb(mb, level):
@@ -1090,8 +1143,8 @@ def gothic_tomb(mb, level):
                      (1.30, 5.88), (1.43, 6.02), (1.52, 6.15), (1.57, 6.45), (1.52, 6.66), (1.44, 6.90)],
                  0.19, 10 if level == "hi" else 5)
     for i in range(start, len(mb.V)):
-        mb.V[i] = mb.V[i] * [1.78, 1.22, 1.0] + [-6.05, -0.37, 0]
-    for x in (-7.36, -4.74):
+        mb.V[i] = mb.V[i] * [1.78, 1.22, 1.0] + [-6.05 + TOMB_DX, -0.37, 0]
+    for x in (-7.36 + TOMB_DX, -4.74 + TOMB_DX):
         for width, depth in ((0.93, -1.98), (0.71, -2.08)):
             path = [[x - width, depth, 1.04], [x - width, depth, 3.82], [x - width * 0.81, depth, 4.65],
                     [x - width * 0.43, depth, 5.18], [x, depth, 5.62], [x + width * 0.43, depth, 5.18],
@@ -1103,22 +1156,40 @@ def gothic_tomb(mb, level):
                   (28, 8) if level == "hi" else (16, 6))
 
 
-def ivy(mb, cfg, level):
-    """Separate vine and trilobed leaves, draped over the pedestal onto its front face."""
+def ivy(mb, cfg, level, tent=None, M=None):
+    """Separate vine and trilobed leaves, draped over the pedestal onto its front face; on the hooded statues three more
+    vines climb from the plinth top onto the outermost cloth hem (win-66, ref_07)."""
     rng = np.random.default_rng(cfg["seed"])
     tomb = cfg.get("tomb")
     z = 6.90 if tomb else cfg["z0"]
+    k = cfg["H"] / 14.0
+    if tomb:
+        f, ph = 1.0, 3.19
+    else:
+        ph = 3.21 * cfg.get("plinth_half", 3.16) / 3.16 if cfg["plinth"] == "block" else             2.56 * k * cfg.get("slim", 1.0) * cfg.get("plinth_scale", 1.0)
+        f = ph / 3.19
     vines = []
-    for i, x in enumerate((-7.5, -5.9, -4.32) if tomb else (-2.8, -1.49, 2.35)):
-        y = -2.34 if tomb else -3.22
+    for i, x in enumerate(tuple(x + TOMB_DX for x in (-7.5, -5.9, -4.32)) if tomb else (-2.8 * f, -1.49 * f, 2.35 * f)):
+        y = -2.34 if tomb else -ph - 0.03
         vines.append(([(x + 0.46, y + 1.12, z + 0.05), (x + 0.02, y, z + 0.08),
                        (x - 0.28, y - 0.21, z - 0.45), (x + 0.15, y - 0.16, z - 1.30),
-                       (x + 0.06, y + 0.03, z * 0.39), (x + 0.60, y + 0.01, 0.18 + 0.35 * i)],
+                       (x + 0.06, y + 0.03, z * 0.39), (x + 0.60, y + 0.01, 0.5 + 0.35 * i)],
                       (0, -1, 0), 19 if tomb else 15))
-    for x, side in ((-8.64, -1),) if tomb else ((-3.19, -1), (3.19, 1)):
+    for x, side in ((-8.64 + TOMB_DX, -1),) if tomb else ((-ph, -1), (ph, 1)):
         vines.append(([(x - 0.93 * side, -1.12, z + 0.06), (x, -0.91, z - 0.04),
                        (x + 0.09 * side, -0.63, z - 0.42), (x + 0.04 * side, -0.05, z - 0.85),
                        (x, 0.19, z * 0.47)], (side, 0, 0), 13))
+    if tent is not None and not tomb:
+        H = cfg["H"]
+        for j, (th0, top) in enumerate(((-2.3, 0.22), (2.2, 0.17), (0.8, 0.2))):
+            T = np.linspace(0.0, top, 7)
+            th = th0 + 0.12 * np.sin(T * 40 + j)
+            r = tent(th, T) + 0.05 * k
+            loc = np.stack([r * np.sin(th), r * np.cos(th), T * H], 1)
+            loc[0] += np.array([np.sin(th0), np.cos(th0), 0.0]) * 0.55 + [0, 0, 0.04]  # roots out on the plinth top
+            pts = loc @ M[:3, :3].T + M[:3, 3]
+            radial = M[:3, :3] @ np.array([np.sin(th0), np.cos(th0), 0.0])
+            vines.append((pts.tolist(), tuple(nrm(radial)), 16))
     for coords, outward, count in vines:
         path = np.array(coords)
         outward = np.array(outward)
@@ -1134,8 +1205,8 @@ def ivy(mb, cfg, level):
             tube_part(mb, np.array([p, (p + stem) / 2, stem]), (0.023, 0.013, 0.01), level, "cord",
                       ref=(0, -1, 0), n=(16, 6) if level == "hi" else (5, 5))
             length = rng.uniform(0.33, 0.61)
-            t = np.linspace(0, 1, 17 if level == "hi" else 9)
-            a = np.linspace(-1, 1, 7 if level == "hi" else 5)
+            t = np.linspace(0, 1, 17 if level == "hi" else 6)
+            a = np.linspace(-1, 1, 7 if level == "hi" else 4)
             U, V = np.meshgrid(a, t)
             width = interp([(0, 0.04), (0.16, 0.49), (0.29, 0.32), (0.61, 0.26), (0.84, 0.16), (1, 0.01)], V)
             P = stem + direction * (length * V)[..., None] + side * (length * width * U)[..., None]
@@ -1144,58 +1215,79 @@ def ivy(mb, cfg, level):
             mb.torn_sheet(P, np.broadcast_to(normal, P.shape), keep, 0.03)
 
 
-def stone_roses(mb, cfg, level):
+def _rose(mb, c, axis, r, level, rng, withered=0.0):
+    axis = nrm(axis)
+    u = nrm(np.cross(axis, [0.31, 0.17, 0.93]))
+    v = np.cross(axis, u)
+    for ring, petals in enumerate((3, 5, 6)):
+        for j in range(petals):
+            phi = j * 2 * PI / petals + ring * 1.49 + rng.uniform(-0.2, 0.2)
+            radial = math.cos(phi) * u + math.sin(phi) * v
+            tang = np.cross(axis, radial)
+            center = c + r * (0.22 + 0.22 * ring) * radial + r * (0.31 - 0.19 * ring) * axis
+            # withered: outer petals curl back and sag
+            tip = nrm(radial * (1 + withered * ring * 0.4) + axis * (0.9 - withered * ring * 0.45 + 0.12 * math.sin(j)))
+            superq(mb, center, tang, tip, np.cross(tip, tang), (r * 0.34, r * 0.42, r * 0.08), e=0.68,
+                   res=(14, 20) if level == "hi" else (5, 8))
+
+
+def _leaf(mb, base, direction, normal, length, level, curl=0.1):
+    t = np.linspace(0, 1, 13 if level == "hi" else 7)
+    a = np.linspace(-1, 1, 7 if level == "hi" else 5)
+    U, V = np.meshgrid(a, t)
+    side = nrm(np.cross(direction, normal))
+    width = interp([(0, 0.05), (0.25, 0.32), (0.6, 0.26), (1, 0.01)], V)
+    P = base + direction * (length * V)[..., None] + side * (length * width * U)[..., None]
+    P += normal * (curl * np.sin(PI * V) * (1 - np.abs(U)) + 0.06 * U * U - 0.12 * V * V)[..., None] * length
+    mb.torn_sheet(P, np.broadcast_to(normal, P.shape), np.ones((len(t) - 1, len(a) - 1), bool), 0.025)
+
+
+def stone_roses(mb, cfg, level, tent=None):
+    """Withered bouquet (~3.5-4 studs) cradled in the right arm: stems gathered under the hand, heads fanning above it, a
+    few hanging dead; rose brooch on the left shoulder of the shawl (win-66, ref_06). Figure-local studs."""
     k = cfg["H"] / 14
-    right, up, forward = np.eye(3)[[0, 2, 1]]
     rng = np.random.default_rng(67)
-    blossoms = [((0.16, -2.76, 9.73), 0.35), ((0.72, -2.61, 10.19), 0.37),
-                ((1.02, -2.33, 9.86), 0.33), ((-0.28, -2.60, 10.06), 0.29),
-                ((0.21, -2.47, 10.57), 0.33), ((1.25, -1.98, 9.39), 0.29)]
-    for i, (pos, radius) in enumerate(blossoms + [((-0.88, -1.14, 10.74), 0.34)]):
-        c = np.array(pos) * k
-        axis = nrm(-forward + (0.6 if i < 5 else -0.6) * up + rng.uniform(-0.55, 0.55) * right)
-        v = nrm(np.cross(axis, right))
-        u = np.cross(v, axis)
-        r = radius * k
-        if i < len(blossoms):
-            stem = np.array([0.35 + 0.03 * i, -1.91, 7.65 + 0.12 * i]) * k
-            tube_part(mb, [stem, 0.48 * stem + 0.52 * c + [0, -0.20, 0], c], (0.043, 0.042, 0.030),
-                      level, "cord", ref=right)
-        for ring, petals in enumerate((4, 6, 7)):
-            for j in range(petals):
-                phi = j * 2 * PI / petals + ring * 1.49
-                radial = math.cos(phi) * u + math.sin(phi) * v
-                tang = np.cross(axis, radial)
-                center = c + r * (0.22 + 0.20 * ring) * radial + r * (0.31 - 0.17 * ring) * axis
-                tip = nrm(radial + axis * (0.9 + 0.12 * math.sin(j)))
-                normal = np.cross(tip, tang)
-                superq(mb, center, tang, tip, normal, (r * 0.34, r * 0.42, r * 0.081), e=0.68,
-                       res=(18, 26) if level == "hi" else (8, 12))
+    base, tie = np.array([0.2, -1.6, 7.7]), np.array([0.62, -1.8, 8.8])
+    up = nrm(tie - base)
+    heads = []
+    for i in range(13):
+        a = i / 12
+        droop = i in (2, 6, 10, 12)
+        c = tie + up * (1.0 + 0.45 * math.sin(PI * a) + rng.uniform(-0.12, 0.12))             + np.array([1.0, 0, 0]) * (0.95 * a - 0.35) + np.array([0, -1.0, 0]) * rng.uniform(0.15, 0.5)
+        if droop:  # dead heads hang over the arm
+            c = c + np.array([0.35, -0.15, -0.75])
+        heads.append((c, droop))
+    for i, (c, droop) in enumerate(heads):
+        b = base + rng.uniform(-0.12, 0.12, 3) * [1, 0.5, 0.3]
+        t_ = tie + rng.uniform(-0.07, 0.07, 3) * [1, 0.6, 1]
+        mid = t_ + (c - t_) * 0.55 + (np.array([0.1, -0.05, 0.6]) if droop else 0)
+        path = np.array([b, t_, mid, c]) * k
+        tube_part(mb, path, (0.05, 0.052, 0.045, 0.04), level, "cord", ref=(1, 0, 0))
+        axis = nrm(c - mid) if not droop else nrm(np.array([0.3, -0.4, -1.0]) + rng.uniform(-0.2, 0.2, 3))
+        _rose(mb, c * k, axis, rng.uniform(0.3, 0.38) * k, level, rng, withered=0.6 if droop else 0.25)
+        if i % 2 == 0:  # withered leaves along the stems
+            p = (t_ + (mid - t_) * rng.uniform(0.2, 0.8)) * k
+            d = nrm(np.array([rng.choice([-1, 1]) * 0.7, -0.4, -0.6]))
+            _leaf(mb, p, d, nrm(np.cross(d, [0, 0, 1.0]) + [0, -0.3, 0]), rng.uniform(0.35, 0.5) * k, level, curl=0.25)
+    if tent is not None:  # rose brooch pinned on the shawl at the left shoulder
+        th, T = -2.25, 0.745
+        r = tent(th, T) + 0.03 * k
+        out = np.array([math.sin(th), math.cos(th), 0.15])
+        c = np.array([r * math.sin(th), r * math.cos(th), T * cfg["H"]])
+        _rose(mb, c, out, 0.3 * k, level, rng, withered=0.1)
+        for j in range(5):
+            a = j * 2 * PI / 5
+            d = nrm(np.cross(out, [0, 0, 1.0]) * math.cos(a) + np.array([0, 0, 1.0]) * math.sin(a))
+            _leaf(mb, c + d * 0.15 * k - nrm(out) * 0.08 * k, d, nrm(out), 0.42 * k, level, curl=0.05)
 
 
 # ============================================================================================ build one statue
-def build(name, level):
-    cfg = CFG[name]
+def arms(mb, cfg, level):
     k = cfg["H"] / 14.0
-    robe = Robe(cfg, level)
-    roles = {r: MB() for r in ("Robe", "Hood", "Arms", "Plinth")}
-    robe.grid(roles["Robe"], RES["robe"][level])
-    if robe.belted:
-        belt_and_cords(roles["Robe"], cfg, robe, level)
-    hood(roles["Hood"], cfg, level, void_strength=0.32 if cfg.get("tomb") else 1.0)
-    if cfg["capelet"]:
-        capelet(roles["Hood"], cfg, robe, level)
-    if cfg["cloak"]:
-        cloak(roles["Hood"], cfg, robe, level)
-        clasp(roles["Hood"], cfg, robe, level)
-    if cfg.get("tabard"):
-        tabard(roles["Robe"], cfg, robe, level)
-    roles["Drape"] = MB()
-    ragged_drapery(roles["Drape"], cfg, robe, level)
     for arm in cfg["arms"]:
-        sleeve(roles["Arms"], cfg, arm, level)
+        sleeve(mb, cfg, arm, level)
         if arm["hand"] and arm["hand"].get("kind") == "flat":
-            flat_hand(roles["Arms"], arm["hand"], k, level)
+            flat_hand(mb, arm["hand"], k, level)
         elif arm["hand"]:
             h = dict(arm["hand"])
             if h["axis"] == "sword":
@@ -1205,7 +1297,32 @@ def build(name, level):
                 h["axis_v"] = h["axis"]
             p = np.array(arm["path"], float) * k
             F = nrm(np.asarray(h["c"]) * k - p[-2])
-            grip_hand(roles["Arms"], h, F, k, level)
+            grip_hand(mb, h, F, k, level)
+
+
+def build(name, level):
+    cfg = CFG[name]
+    k = cfg["H"] / 14.0
+    robe = Robe(cfg, level)
+    roles = {r: MB() for r in ("Robe", "Hood", "Arms", "Plinth")}
+    robe.grid(roles["Robe"], RES["robe"][level])
+    if robe.belted:
+        belt_and_cords(roles["Robe"], cfg, robe, level)
+    hood(roles["Hood"], cfg, level, void_strength=0.32 if cfg.get("tomb") else 1.0)
+    if cfg["cloak"]:
+        cloak(roles["Hood"], cfg, robe, level)
+        clasp(roles["Hood"], cfg, robe, level)
+    if cfg.get("tabard"):
+        tabard(roles["Robe"], cfg, robe, level)
+    arms(roles["Arms"], cfg, level)
+    roles["Drape"] = MB()
+    if level == "lo":
+        body_robe, body_arms = roles["Robe"], roles["Arms"]
+    else:  # tents come from the LOW body so high and low cloth surfaces match
+        body_robe, body_arms = MB(), MB()
+        Robe(cfg, "lo").grid(body_robe, RES["robe"]["lo"])
+        arms(body_arms, cfg, "lo")
+    tent = drapery(roles["Drape"], cfg, body_robe, body_arms, level)
     if cfg["staff"]:
         roles["Staff"] = MB()
         staff(roles["Staff"], cfg, level)
@@ -1214,8 +1331,9 @@ def build(name, level):
         sword(roles["Sword"], cfg, level)
     slim = cfg.get("slim", 1.0)
     if cfg["plinth"] == "block":
-        square_lathe(roles["Plinth"], [(3.16, 0), (3.16, 0.20), (3.05, 0.32), (3.02, 2.50),
-                                     (3.21, 2.57), (3.21, 2.83), (3.00, cfg["z0"])],
+        ps = cfg.get("plinth_half", 3.16) / 3.16  # win-66: wider block under the flared mantle
+        square_lathe(roles["Plinth"], [(d * ps, z) for d, z in ((3.16, 0), (3.16, 0.20), (3.05, 0.32), (3.02, 2.50),
+                                                                  (3.21, 2.57), (3.21, 2.83), (3.00, cfg["z0"]))],
                      rc=0.16, nc=8 if level == "hi" else 4)
     elif cfg.get("tomb"):
         plinth_low(roles["Plinth"], level, k * slim, cfg["z0"] / 2)
@@ -1223,16 +1341,16 @@ def build(name, level):
             roles[role] = MB()
         gothic_tomb(roles["Tomb"], level)
         mourning_face(roles["Face"], roles["Hair"], cfg, level)
-        stone_roses(roles["Roses"], cfg, level)
+        stone_roses(roles["Roses"], cfg, level, tent)
     elif cfg["plinth"] == "low":
-        plinth_low(roles["Plinth"], level, k * slim, cfg["z0"] / 2.0)
+        plinth_low(roles["Plinth"], level, k * slim * cfg.get("plinth_scale", 1.0), cfg["z0"] / 2.0)
     else:
         pedestal(roles["Plinth"], level)
     M = Mrot_z(cfg["yaw"], cfg["z0"])
     M[:3, :3] = M[:3, :3] @ np.diag([slim, slim, 1.0])  # win-61: slender silhouette (figure only, plinth sized above)
     if cfg.get("ivy"):
         roles["Ivy"] = MB()
-        ivy(roles["Ivy"], cfg, level)
+        ivy(roles["Ivy"], cfg, level, tent, M)
     objs = {}
     for r, mb in roles.items():
         nm = f"{name}__{r}" if level == "lo" else f"HI_{name}__{r}"
@@ -1482,17 +1600,19 @@ def statue(name, out, mode):
         VB.unwrap(o)
     look = VB.Look(**STONE_LOOK)
     rays = {"Robe": (0.08, 0.2), "Hood": (0.05, 0.14), "Arms": (0.045, 0.12), "Plinth": (0.1, 0.25), "Staff": (0.04, 0.1), "Sword": (0.04, 0.1)}
-    rays.update(Drape=(0.026, 0.09), Face=(0.025, 0.08), Hair=(0.02, 0.065), Ivy=(0.02, 0.065),
+    rays.update(Drape=(0.035, 0.11), Face=(0.025, 0.08), Hair=(0.02, 0.065), Ivy=(0.02, 0.065),
                 Tomb=(0.10, 0.25), Roses=(0.02, 0.06))
     staff_look = VB.Look(frost=0.35, base=0.09, grime=0.55, edge=0.5, streak_dark=0.35, rough_base=0.88, wet_gloss=0.1, sat=0.15)
     looks = {"*": look, "Staff": staff_look,
-             "Ivy": VB.Look(**dict(STONE_LOOK, base=0.26, grime=0.68, frost=0.0, stone_tint=(0.58, 0.87, 0.38))),
-             "Hair": VB.Look(**dict(STONE_LOOK, base=0.29)),
+             "Sword": VB.Look(**dict(STONE_LOOK, base=0.12, edge=0.3, frost=0.0, lichen=0.3, stone_tint=(0.9, 0.94, 1.0))),
+             "Ivy": VB.Look(**dict(STONE_LOOK, base=0.26, grime=0.68, frost=0.0, lichen=0.0, moss=0.0, cavity=0.3,
+                                   stone_tint=(0.58, 0.87, 0.38))),
+             "Hair": VB.Look(**dict(STONE_LOOK, base=0.29)), "Face": VB.Look(**dict(STONE_LOOK, lichen=0.35, moss=0.45)),
              "Roses": VB.Look(**dict(STONE_LOOK, base=0.29, stone_tint=(0.92, 0.89, 0.81)))}
     res = VB.bake(name, {r: (lows[r], [highs[r]]) for r in lows}, maps, size=2048, look=looks, log=log, rays=rays)
     metadata = {WRAITH: {"replaces": QUATREFOIL}, MOURNER: {"use": "graveyard"}}
     return export_piece(name, out, lows, highs, res, src_stone["source"], focus,
-                        "tools/blender/vesperhold/vesperhold_figures.py (pass 3, hand-modelled, Cycles-baked)",
+                        "tools/blender/vesperhold/vesperhold_figures.py (pass 4, hand-modelled, Cycles-baked)",
                         extra=metadata.get(name))
 
 
@@ -1700,7 +1820,7 @@ def lineup(out):
         frame_width = max(w, hi[2] * res[0] / res[1]) * 1.17
         dist = (frame_width / 2) / math.tan(cam.data.angle_x / 2)
         look_at(cam, (cx - dist * 0.18, -dist, hi[2] * 0.43), (cx, 0, hi[2] * 0.50))
-        f = out / "renders" / f"F1_statues_v3_{tag}.png"
+        f = out / "renders" / f"F1_statues_v4_{tag}.png"
         sc.render.filepath = str(f)
         bpy.ops.render.render(write_still=True)
         files.append(f)
@@ -1732,7 +1852,7 @@ def main():
         merge_manifest(out, entries)
     if renders:
         tag = "clay" if mode == "clay" else "baked"
-        dst = out / "renders" / f"F1_statues_v3_{tag}.jpg"
+        dst = out / "renders" / f"F1_statues_v4_{tag}.jpg"
         sheet(renders, dst)
         log("sheet", dst)
 

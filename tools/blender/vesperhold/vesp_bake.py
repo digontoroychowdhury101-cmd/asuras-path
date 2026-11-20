@@ -157,6 +157,17 @@ def hi_material(name, src, tile=5.0, tint=(1.0, 1.0, 1.0), metal=0.0, rough=0.78
     L(mv.outputs[0], d2.inputs[0])
     L(nzm.outputs["Result"], d2.inputs[1])
     L(rsock, d2.inputs[2])
+    # D3 = (lichen blotches, moss blotches, fine crust) in object space: seamless across UV islands. Baked only when a Look
+    # asks for lichen or moss (win-66), so older callers bake exactly as before.
+    d3 = N("ShaderNodeCombineColor")
+    d3.name = "VB_D3"
+    for ch, (scale, detail, rough_) in enumerate(((0.9, 6.0, 0.62), (0.45, 4.0, 0.55), (7.0, 3.0, 0.6))):
+        bn = N("ShaderNodeTexNoise")
+        bn.inputs["Scale"].default_value = scale
+        bn.inputs["Detail"].default_value = detail
+        bn.inputs["Roughness"].default_value = rough_
+        L(tc.outputs["Object"], bn.inputs["Vector"])
+        L(bn.outputs["Fac"], d3.inputs[ch])
     L(mix.outputs[2], em.inputs["Color"])
     mat["vb_metal"] = metal
     return mat
@@ -166,7 +177,7 @@ def _set_pass(mats, which):
     for m in mats:
         nt = m.node_tree
         em = nt.nodes["VB_EMIT"]
-        src = nt.nodes[{"ALB": "VB_ALB", "D1": "VB_D1", "D2": "VB_D2"}[which]]
+        src = nt.nodes[{"ALB": "VB_ALB", "D1": "VB_D1", "D2": "VB_D2", "D3": "VB_D3"}[which]]
         nt.links.new(src.outputs[2] if which == "ALB" else src.outputs[0], em.inputs["Color"])
 
 
@@ -256,9 +267,12 @@ class Look:
     def __init__(self, base=0.135, grime=0.30, edge=0.95, edge_lo=0.50, edge_hi=0.62, frost=0.0, frost_col=(0.62, 0.65, 0.70),
                  streak_dark=0.18, rough_base=0.80, wet_gloss=0.30, occl_pow=1.25, seed=7, sat=1.0,
                  streak_lo=0.55, streak_hi=0.75, wash=0.0, frost_nz=(0.55, 0.9), frost_break=(0.46, 0.58),
-                 growth=0.0, stone_tint=(1.0, 1.0, 1.0)):
+                 growth=0.0, stone_tint=(1.0, 1.0, 1.0), lichen=0.0, moss=0.0, cavity=0.0,
+                 lichen_col=(0.66, 0.67, 0.58), moss_col=(0.17, 0.21, 0.12)):
         # win-61 optional knobs (defaults = previous behaviour): streak_lo/hi = noise band that becomes a soot streak;
         # wash = lighten the rain-washed stone between streaks; frost_nz = up-facing range; frost_break = patch softness.
+        # win-66 (default 0 = off): lichen = pale crusty patches on exposed stone, moss = green-grey growth in folds,
+        # cavity = black grime packed into concave texels (Cycles pointiness).
         self.__dict__.update(locals())
         del self.__dict__["self"]
 
@@ -283,7 +297,7 @@ def _blur(a, r):
     return a
 
 
-def compose(alb_lin, d1, d2, look, cov):
+def compose(alb_lin, d1, d2, look, cov, d3=None):
     L = look
     occl, point, streak = d1[..., 0], d1[..., 1], d1[..., 2]
     metal, nz, rbase = d2[..., 0], d2[..., 1] * 2 - 1, d2[..., 2]
@@ -312,10 +326,30 @@ def compose(alb_lin, d1, d2, look, cov):
         # breakup from the object-space streak noise (seamless across UV islands), denser on flatter tops
         fm = _smooth(nz, *L.frost_nz) * _smooth(streak + 0.25 * (nz - 0.8), *L.frost_break) * L.frost * (0.4 + 0.6 * ao)
         col = col * (1 - fm[..., None]) + np.array(L.frost_col, np.float32) * fm[..., None]
+    crust_r = np.zeros_like(occl)
+    if d3 is not None:
+        nonmetal = (1 - metal)[..., None]
+        crust = d3[..., 2]
+        # moss: in folds and under overhangs (mid occlusion, not the black voids), facing up or sideways
+        mm = (1 - _smooth(occl, 0.30, 0.78)) * _smooth(occl, 0.04, 0.14) * _smooth(d3[..., 1], 0.40, 0.56) * _smooth(nz, -0.45, 0.25)
+        mm = np.clip(mm * L.moss * (0.75 + 0.5 * crust), 0, 1)[..., None] * nonmetal
+        col = col * (1 - mm) + np.asarray(L.moss_col, np.float32) * (0.7 + 0.6 * crust[..., None]) * mm
+        # lichen: pale crusty rosettes on exposed stone, broken up by the fine crust noise
+        lm = _smooth(d3[..., 0], 0.56, 0.63) * _smooth(occl, 0.30, 0.65) * _smooth(crust, 0.30, 0.55)
+        lm = np.clip(lm * L.lichen, 0, 1)[..., None] * nonmetal
+        col = col * (1 - lm) + np.asarray(L.lichen_col, np.float32) * (0.8 + 0.4 * crust[..., None]) * lm
+        crust_r = 0.12 * lm[..., 0]
+    if L.cavity:
+        pm, plo = np.percentile(p, 50), np.percentile(p, 4)
+        span = pm - plo
+        # A flat bake (such as the Wraith's blade) can have identical pointiness percentiles.
+        if span > 0:
+            cav = _smooth(pm - point, 0.15 * span, span) * (1 - metal)
+            col = col * (1 - L.cavity * cav)[..., None]
     void = occl < 0.04
     col[void] = np.minimum(col[void], 0.02)
     rough = np.clip(L.rough_base + 0.12 * (rbase - 0.5) + 0.12 * (1 - ao) - L.wet_gloss * _smooth(streak, L.streak_lo - 0.05, L.streak_hi + 0.05)
-                    - 0.08 * wear, 0.25, 1.0)
+                    - 0.08 * wear + crust_r, 0.25, 1.0)
     rough = rough * (1 - metal) + np.clip(0.35 + 0.3 * rbase, 0.2, 0.8) * metal
     return col.astype(np.float32), rough.astype(np.float32), metal.astype(np.float32)
 
@@ -452,7 +486,9 @@ def bake(piece, roles, maps_dir, size=2048, look=None, cage=0.12, ray=0.35, ao_d
         tn = tmp.node_tree.nodes.new("ShaderNodeTexImage")
         tmp.node_tree.nodes.active = tn
         bufs = {}
-        for pas in ("ALB", "D1", "D2", "NORMAL"):
+        lk = looks.get(role, look)
+        passes = ("ALB", "D1", "D2", "NORMAL") + (("D3",) if lk.lichen or lk.moss else ())
+        for pas in passes:
             im = _new_img(f"vb_{pas}", size)
             tn.image = im
             if pas != "NORMAL":
@@ -463,8 +499,8 @@ def bake(piece, roles, maps_dir, size=2048, look=None, cage=0.12, ray=0.35, ao_d
             bpy.data.images.remove(im)
         _set_pass(mats, "ALB")
         cov = bufs["NORMAL"][..., 2] > 0.0  # baked texels (margin included)
-        lk = looks.get(role, look)
-        col, rough, metal = compose(bufs["ALB"][..., :3], bufs["D1"][..., :3], bufs["D2"][..., :3], lk, cov)
+        col, rough, metal = compose(bufs["ALB"][..., :3], bufs["D1"][..., :3], bufs["D2"][..., :3], lk, cov,
+                                    bufs["D3"][..., :3] if "D3" in bufs else None)
         paths = {k: maps_dir / f"{mname}_{k}.png" for k in KINDS}
         save_png(paths["Color"], col, True)
         save_png(paths["Normal"], bufs["NORMAL"][..., :3], False)

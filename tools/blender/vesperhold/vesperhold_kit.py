@@ -842,18 +842,21 @@ def balustrade_qf(St, Tr_, x0, x1, z0, y, h=7.5, depth=1.8):
 
 
 def viaduct_balustrade(S):
+    """win-67: heavier deck balustrade (8.5 high, 2.2 deep quatrefoil panels) between pier posts: half-posts at x = +-15 pair with the
+    neighbour into one 3.6-wide pier post under twin crocketed pinnacles (over every viaduct pier); a smaller post mid-span."""
     L = 30.0
     st, tr, pn, cr = S["Stone"], S["Tracery"], S["Pinnacles"], S["Crockets"]
-    balustrade_qf(st, tr, -L / 2 + 1.5, -1.1, 0.0, 0.0, 7.5, 1.8)
-    balustrade_qf(st, tr, 1.1, L / 2 - 1.5, 0.0, 0.0, 7.5, 1.8)
+    balustrade_qf(st, tr, -L / 2 + 1.8, -1.3, 0.0, 0.0, 8.5, 2.2)
+    balustrade_qf(st, tr, 1.3, L / 2 - 1.8, 0.0, 0.0, 8.5, 2.2)
+    st.add(box(-L / 2, L / 2, -1.5, 1.5, -0.6, 0.0))  # plinth course under the run
     for sx in (-1, 1):
-        px = sx * (L / 2 - 0.75)
-        st.add(box(px - 0.75, px + 0.75, -1.1, 1.1, 0.0, 9.2))
-        st.add(box(px - 0.9, px + 0.9, -1.25, 1.25, 9.2, 9.8))
-        pinnacle(pn, cr, px, 0, 9.8, 1.4, 6.0, 1)
-    st.add(box(-1.1, 1.1, -1.2, 1.2, 0.0, 9.0))
-    st.add(box(-1.4, 1.4, -1.5, 1.5, 9.0, 9.7))
-    pinnacle(pn, cr, 0, 0, 9.7, 2.2, 9.0, 1)
+        px = sx * (L / 2 - 0.9)
+        st.add(box(px - 0.9, px + 0.9, -1.5, 1.5, 0.0, 10.4))
+        tr.add(loft([rect(px, 0, 10.4, 0.9, 1.5), rect(px, 0, 10.9, 1.05, 1.7), rect(px, 0, 11.5, 1.05, 1.7)]))
+        pinnacle(pn, cr, px, 0, 11.5, 1.7, 9.0, 2)
+    st.add(box(-1.3, 1.3, -1.4, 1.4, 0.0, 9.6))
+    tr.add(loft([rect(0, 0, 9.6, 1.3, 1.4), rect(0, 0, 10.2, 1.5, 1.6)]))
+    pinnacle(pn, cr, 0, 0, 10.2, 2.0, 8.0, 1)
 
 
 # ---- clean rebuilds of the composite pieces (use local() frames)
@@ -1854,49 +1857,66 @@ def flying_buttress(S, L):
 
 
 def viaduct_bay(S):
-    """Viaduct bay 30 x 120: four-order pointed arch (each order rolled, outer order crocketed), clustered-shaft piers with
-    stepped cutwaters (weathered offsets, pyramidal caps), blind-panelled pier faces, cusped spandrel foils, corbel-table deck."""
-    st, tr, cr, ds = S["Stone"], S["Tracery"], S["Crockets"], S["Dress"]
-    a, Rr, zs, zdk = 12.0, 24.0, 88.0, 116.0
-    base = [(-15, zs), (-15, zdk), (15, zdk), (15, zs)]
+    """win-67 massive viaduct bay (ref_01/04/05; one thin arch was held at gate a). 30 x 120, piers shared at x = +-15 (each bay owns
+    half; the neighbour mirrors). Narrow equilateral arch (17 wide) through an 18-deep barrel with four stepped rolled orders running
+    down the jambs, soffit ribs, crocketed hood + finial; half-piers 6.5 wide on a battered plinth; stepped cutwater prows to z 38,
+    then shaft-clustered buttresses with weathered set-offs carrying crocketed pinnacles (pairs flank every pier); arched corbel
+    table, cornice, blind-quatrefoil fascia and moulded coping to the deck at z 120. Deck stays inside x +-15 (layout bay 30)."""
+    st, tr, cr, ds, pn = S["Stone"], S["Tracery"], S["Crockets"], S["Dress"], S["Pinnacles"]
+    a, zs, top, Y = 8.5, 80.0, 120.0, 9.0
+    Rr = 2 * a
     roll = [(0.45 * math.cos(2 * math.pi * q / 8), 0.45 * math.sin(2 * math.pi * q / 8)) for q in range(8)]
-    for d, y0, y1 in ((0.0, -2.0, 2.0), (0.9, -3.0, -2.0), (1.8, -4.0, -3.0), (2.7, -5.0, -4.0), (0.9, 2.0, 3.0), (1.8, 3.0, 4.0), (2.7, 4.0, 5.0)):
-        st.add(prism([base + arch(a, zs, Rr, d, 16)[::-1]], y0, y1))
-        if d > 0:  # rolled arris on each stepped order
-            tr.add(sweep(arch(a, zs, Rr, d - 0.45, 16), roll, y0 if y0 < 0 else y1, 1.0))
-    for sgn, y in ((-1, -5.0), (1, 5.0)):
-        archivolt(tr, a, zs, Rr, [(2.7, [("roll", 0.6, 0.6), ("cove", 0.5, 0.4), ("roll", 0.8, 0.8)])], y, sgn, n=16, crock=(1.4, 3.0, 0.3))
-        for sx in (-1, 1):
-            xq = sx * 12.6
-            za = archz(xq, a, zs, Rr, 4.6)
-            rq = min(2.2, (zdk - za) / 2 - 1.2)
-            if rq > 1.2:
-                foil(tr, xq, (za + zdk) / 2, rq, 4, y, sgn, 0.6, 0.8)
+    for d, y0, y1 in ((0.0, 0.0, 6.6), (1.0, 6.6, 7.4), (2.0, 7.4, 8.2), (3.0, 8.2, Y)):  # wall + piers + spandrel, one gate prism per order
+        poly = [(-15.0, 0.0), (-(a + d), 0.0)] + arch(a, zs, Rr, d, 18) + [(a + d, 0.0), (15.0, 0.0), (15.0, top), (-15.0, top)]
+        if d == 0.0:
+            st.add(prism([poly], -y1, y1))
+            continue
+        for sg in (-1, 1):
+            st.add(prism([poly], *sorted((sg * y0, sg * y1))))
+            tr.add(sweep(arch_ext(a, zs, Rr, d - 0.45, 9.2, 18), roll, sg * y1, 1.0))  # rolled arris runs down the jambs
+    for yy in (-4.6, 0.0, 4.6):  # soffit ribs
+        tr.add(sweep(arch_ext(a, zs, Rr, 0.0, 9.2, 16), [(-0.3, -0.7), (0.5, -0.7), (0.95, -0.35), (0.95, 0.35), (0.5, 0.7), (-0.3, 0.7)], yy, 1.0, flip=True))
+    for sg in (-1, 1):
+        archivolt(tr, a, zs, Rr, [(3.0, [("roll", 0.6, 0.6), ("cove", 0.5, 0.4), ("roll", 0.8, 0.8)])], sg * Y, sg, n=18, crock=(1.5, 3.0, 0.3))
     for sx in (-1, 1):
-        st.add(bxm(sx, 12.0, 15.0, -5.0, 5.0, 0.0, zs))
-        st.add(bxm(sx, 10.8, 15.0, -6.4, 6.4, 0.0, 6.0))
-        tr.add(xext([(-6.4, 6.0), (6.4, 6.0), (5.2, 7.2), (-5.2, 7.2)], *sorted((sx * 10.8, sx * 15.0))))
-        tr.add(bxm(sx, 11.2, 15.0, -5.6, 5.6, zs - 1.6, zs))
-        tr.add(bxm(sx, 11.6, 15.0, -5.5, 5.5, zs - 9.0, zs - 8.0))
-        for yy in (-3.2, 0.0, 3.2):
-            colonnette(st, sx * 12.2, yy, 7.2, zs - 1.6, 0.62 if yy else 0.8, 8)
-        for yy in (-1, 1):  # half cutwater (the neighbour bay mirrors it): stepped prow, weathered offset, pyramidal cap
-            rings = [(0.0, 12.5), (30.0, 12.0), (31.6, 10.8), (48.0, 10.8), (56.0, 5.2)]
-            st.add(loft([[(sx * 12.0, yy * 5.0, z), (sx * 15.0, yy * 5.0, z), (sx * 15.0, yy * tip, z)] for z, tip in rings]))
-            tr.add(loft([[(sx * 11.8, yy * 5.0, z), (sx * 15.0, yy * 5.0, z), (sx * 15.0, yy * (tip + 0.4), z)] for z, tip in ((29.4, 12.0), (30.4, 12.5), (31.2, 12.5))]))
-            T = Tr(sx * 13.5, yy * 5.0, 0) @ Rz(0.0 if yy < 0 else math.pi)
-            local(S, T, lambda L: blind_arcade(L["Tracery"], -1.3, 1.3, 58.0, zs - 10.0 - 58.0, 0.0, 1, 0.4))
-            gargoyle(ds, (sx * 13.5, yy * 5.6, zdk - 3.4), (0, yy), 1.1)
-            finial(cr, sx * 15.0, yy * 5.6, 56.0, 0.7)
-    for yy in (-3.6, 0.0, 3.6):
-        tr.add(sweep(arch(a, zs, Rr, 0.0, 14), [(-0.3, -0.7), (0.5, -0.7), (0.95, -0.35), (0.95, 0.35), (0.5, 0.7), (-0.3, 0.7)], yy, 1.0, flip=True))
-    tr.add(xext([(-7.6, zdk), (7.6, zdk), (7.6, zdk + 1.0), (6.4, zdk + 1.7), (7.0, zdk + 2.2), (7.0, zdk + 3.4), (6.0, zdk + 4.0), (-6.0, zdk + 4.0),
-                 (-7.0, zdk + 3.4), (-7.0, zdk + 2.2), (-6.4, zdk + 1.7), (-7.6, zdk + 1.0)], -15, 15))
+        st.add(bxm(sx, a - 0.8, 15.0, -10.4, 10.4, 0.0, 8.0))  # battered plinth + chamfer
+        tr.add(xext([(-10.4, 8.0), (10.4, 8.0), (9.2, 9.4), (-9.2, 9.4)], *sorted((sx * (a - 0.8), sx * 15.0))))
+        tr.add(bxm(sx, a - 0.5, 15.0, -9.6, 9.6, zs - 1.4, zs))  # impost band
+        for yy in (-1, 1):
+            # stepped cutwater prow (half; the neighbour bay completes it) with weathered cap and two drip courses
+            st.add(loft([[(sx * 11.0, yy * Y, z), (sx * 15.0, yy * Y, z), (sx * 15.0, yy * tip, z)] for z, tip in ((0.0, 16.0), (34.0, 15.4), (38.0, 12.4))]))
+            tr.add(loft([[(sx * 10.8, yy * Y, z), (sx * 15.0, yy * Y, z), (sx * 15.0, yy * tip, z)] for z, tip in ((7.4, 16.5), (8.4, 16.9), (9.2, 16.9))]))
+            tr.add(loft([[(sx * 10.8, yy * Y, z), (sx * 15.0, yy * Y, z), (sx * 15.0, yy * tip, z)] for z, tip in ((33.0, 15.8), (33.8, 16.2), (34.6, 16.2))]))
+            # buttress stage: weathered set-off, clustered shafts, blind lancet, twin crocketed pinnacle, gargoyle under the cornice
+            st.add(bxm(sx, 11.8, 15.0, *sorted((yy * Y, yy * 12.4)), 34.0, 78.0))
+            st.add(loft([[(sx * 11.8, yy * Y, z), (sx * 15.0, yy * Y, z), (sx * 15.0, yy * yo, z), (sx * 11.8, yy * yo, z)] for z, yo in ((78.0, 12.4), (82.0, 10.2))]))
+            for xx in (12.25, 14.55):
+                colonnette(st, sx * xx, yy * 12.45, 38.4, 77.0, 0.42, 8)
+            T = Tr(sx * 13.4, yy * 12.4, 0) @ Rz(0.0 if yy < 0 else math.pi)
+            local(S, T, lambda L: blind_arcade(L["Tracery"], -0.8, 0.8, 46.0, 26.0, 0.0, 1, 0.35, False))
+            pinnacle(pn, cr, sx * 13.4, yy * 10.9, 78.6, 2.4, 21.0, 2)
+            gargoyle(ds, (sx * 13.4, yy * 10.4, 103.0), (0, yy), 1.25)
+    # deck: arched corbel table, cornice, blind quatrefoil fascia, moulded coping (top = deck surface at z 120)
+    zb = 105.0
+    n = 12
+    p_ = 30.0 / n
     for yy in (-1, 1):
-        for i in range(11):
-            c = -13.5 + i * 2.7
-            tr.add(loft([[(c - 0.6, yy * 7.0 - 0.6, zdk), (c + 0.6, yy * 7.0 - 0.6, zdk), (c + 0.6, yy * 7.0 + 0.6, zdk), (c - 0.6, yy * 7.0 + 0.6, zdk)],
-                         [(c - 0.3, yy * 6.0 - 0.3, zdk - 2.4), (c + 0.3, yy * 6.0 - 0.3, zdk - 2.4), (c + 0.3, yy * 6.0 + 0.3, zdk - 2.4), (c - 0.3, yy * 6.0 + 0.3, zdk - 2.4)]]))
+        band = [(15.0, zb + 2.4), (-15.0, zb + 2.4), (-15.0, zb)]
+        for i in range(n):
+            c = -15.0 + p_ * (i + 0.5)
+            band += [(c - p_ / 2 + 0.35, zb)] + [(c + x, z) for x, z in arch(p_ / 2 - 0.35, zb + 0.2, p_ - 0.7, 0, 6)] + [(c + p_ / 2 - 0.35, zb)]
+        band.append((15.0, zb))
+        tr.add(prism([band], *sorted((yy * Y, yy * 10.5))))
+        for i in range(n + 1):
+            c = max(-14.6, min(14.6, -15.0 + p_ * i))
+            st.add(loft([[(c - 0.45, yy * Y, zb + 0.05), (c + 0.45, yy * Y, zb + 0.05), (c + 0.45, yy * 10.5, zb + 0.05), (c - 0.45, yy * 10.5, zb + 0.05)],
+                         [(c - 0.3, yy * Y, zb - 1.8), (c + 0.3, yy * Y, zb - 1.8), (c + 0.3, yy * 9.7, zb - 1.8), (c - 0.3, yy * 9.7, zb - 1.8)]]))
+        st.add(xext([(yy * Y, zb + 2.4), (yy * 11.2, zb + 2.4), (yy * 11.2, zb + 3.4), (yy * 10.6, zb + 4.4), (yy * Y, zb + 4.4)], -15.0, 15.0))
+        st.add(box(-15.0, 15.0, *sorted((yy * Y, yy * 10.3)), zb + 4.4, top - 5.0))
+        for i in range(8):
+            foil(tr, -13.125 + i * 3.75, (zb + 4.4 + top - 5.0) / 2, 1.45, 4, yy * 10.3, yy, 0.42, 0.55)
+        tr.add(xext([(yy * Y, top - 5.0), (yy * 10.8, top - 5.0), (yy * 11.4, top - 4.2), (yy * 11.4, top - 2.6), (yy * 10.9, top - 1.9),
+                     (yy * 11.1, top - 1.2), (yy * 11.1, top), (yy * Y, top)], -15.0, 15.0))
 
 
 # ============================================================================================ build / export

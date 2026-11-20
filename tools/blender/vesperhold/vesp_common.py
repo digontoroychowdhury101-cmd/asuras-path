@@ -143,27 +143,43 @@ def gen_deadbark():
 
 
 def gen_water():
-    """Water cards (mac-53): u holds 4 card columns (u = (col + across) / 4), each feathered to alpha 0 at its side edges so the
-    overlapping staggered cards cross-fade with no hard strip edge; v = arclength up the fall (0 base .. 1 lip), streaks run along v,
-    foam bands at both ends."""
+    """Water (win-67): u holds 4 columns (u = (col + across) / 4). Columns 0-2: ribbon streak maps, v = 0 base .. 1 lip: grey-white
+    water with darker lanes and torn gaps (alpha down to ~0.03), foam bands across the fall and at both ends, side edges feathered
+    with a ragged noise-driven width. Column 3: four stacked spray puffs (soft ragged discs) for the plunge/lip spray cards.
+    The old blue-white map with ~0.6 mean alpha read as opaque shower curtains."""
     y, x = np.mgrid[0:N, 0:N]
     v = y / (N - 1.0)
+    col = (x * 4) // N
     cu = (x * 4.0 / N) % 1.0
-    edge = np.sin(np.pi * np.clip((cu - 0.02) / 0.96, 0, 1)) ** 0.7
-    s1, s2, s3 = K.fld(0.9, 251, 30.0), K.fld(1.2, 252, 12.0), K.fld(0.6, 253, 4.0)
-    f1 = K.fld(1.2, 254)
-    streak = np.clip(0.5 + 0.38 * s1 + 0.22 * s2, 0, 1)
-    foam = np.clip((s3 - 0.6) * 0.8, 0, 1) * 0.5
-    top = np.clip((v - 0.955) / 0.03, 0, 1)
-    bot = np.clip((0.07 - v) / 0.05, 0, 1)
-    fm = np.clip(np.maximum(top, bot) * (0.75 + 0.25 * np.clip(f1 * 0.5 + 0.5, 0, 1)) + foam * 0.5, 0, 1)
-    base = np.array([0.45, 0.62, 0.80], np.float32)
-    white = np.array([0.93, 0.97, 1.0], np.float32)
-    k = np.clip(streak * 0.9 + fm * 0.8, 0, 1)[..., None]
-    col = base + (white - base) * k
-    alpha = np.clip(0.22 + 0.40 * streak + 0.55 * fm, 0.12, 0.96) * edge
-    h = 0.5 + 0.12 * s1 + 0.05 * s2 + 0.05 * fm
-    return dict(Color=np.clip(col, 0, 1), Alpha=alpha.astype(np.float32), Normal=K.nmap(h.astype(np.float32), 5), Roughness=np.clip(0.10 + 0.25 * fm, 0.05, 1))
+    s1, s2, s3 = K.fld(1.35, 251, 14.0), K.fld(1.7, 252, 6.0), K.fld(1.0, 253, 2.0)
+    bp = K.fld(2.2, 255).mean(axis=1)
+    bp = ((bp - bp.mean()) / bp.std())[:, None]  # 1-D profile along v: broad foam bands across the fall
+    blot = K.fld(1.5, 257, 4.0)  # tears the bands into ragged vertical blotches
+    rag = K.fld(1.0, 256, 2.0)
+    streak = np.clip(0.5 + 0.34 * s1 + 0.24 * s2 + 0.1 * s3, 0, 1)
+    dark = np.clip(-(0.6 * s1 + 0.4 * s2) - 0.35, 0, 1)
+    fband = np.clip((0.7 * bp + 0.6 * blot - 0.7) * 1.1, 0, 1)
+    top = np.clip((v - 0.965) / 0.025, 0, 1)
+    bot = np.clip((0.09 - v) / 0.07, 0, 1)
+    fm = np.clip(np.maximum(top, bot) * np.clip(0.75 + 0.25 * s3, 0, 1) + 0.75 * fband, 0, 1)
+    dist = np.minimum(cu, 1 - cu)
+    edge = np.clip((dist - 0.02 - 0.07 * np.clip(rag * 0.5 + 0.5, 0, 1)) / 0.15, 0, 1) ** 0.9
+    grey, dk, white = np.array([0.55, 0.58, 0.61], np.float32), np.array([0.25, 0.27, 0.30], np.float32), np.array([0.88, 0.90, 0.92], np.float32)
+    k = np.clip(0.55 * streak + 0.9 * fm, 0, 1)[..., None]
+    c = grey + (white - grey) * k
+    c = c * (1 - 0.6 * dark[..., None]) + dk * (0.6 * dark[..., None])
+    alpha = np.clip(0.06 + 0.6 * streak - 0.3 * dark + 0.55 * fm, 0.03, 0.9) * edge
+    # column 3: spray puffs, 4 cells stacked in v
+    cv = (v * 4.0) % 1.0
+    soft = K.fld(2.2, 258)  # smooth breakup (pass 2: the grainy puffs read as grey shrubs)
+    r = np.sqrt((cu - 0.5) ** 2 + (cv - 0.5) ** 2) * 2.0 * (1 + 0.3 * soft)
+    puff = np.clip(1.0 - r, 0, 1) ** 1.3 * np.clip(0.8 + 0.2 * blot, 0, 1) * np.clip(np.minimum(cv, 1 - cv) / 0.12, 0, 1) * np.clip(np.minimum(cu, 1 - cu) / 0.12, 0, 1)  # zero at the card rim
+    sp = col == 3
+    c = np.where(sp[..., None], np.array([0.86, 0.88, 0.9], np.float32) * (0.92 + 0.08 * np.clip(soft, -1, 1)[..., None]), c)
+    alpha = np.where(sp, np.clip(puff * 0.9, 0, 0.65), alpha)
+    fm = np.where(sp, puff, fm)
+    h = 0.5 + 0.12 * s1 + 0.05 * s2 + 0.06 * fm
+    return dict(Color=np.clip(c, 0, 1), Alpha=alpha.astype(np.float32), Normal=K.nmap(h.astype(np.float32), 5), Roughness=np.clip(0.12 + 0.3 * fm, 0.05, 1))
 
 
 # ---- banner: 2048 x 2048 maps; crimson field, black six-spoked Asura wheel, tarnished gold
@@ -280,7 +296,7 @@ def build_custom(name):
         mat.use_nodes = True
     except Exception:
         pass
-    mat.use_backface_culling = name != "Vesp_Banner"  # water cards carry explicit back faces (two coplanar unculled sides z-fought)
+    mat.use_backface_culling = name not in ("Vesp_Banner", "Vesp_Water")
     nt = mat.node_tree
     p = next(n for n in nt.nodes if n.type == "BSDF_PRINCIPLED")
     ims = {}

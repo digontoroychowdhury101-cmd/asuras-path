@@ -838,54 +838,85 @@ K.NOFROST.add("Foam")
 
 
 def waterfall(variant):
-    """Falling sheet from overlapping, staggered single-sheet cards (front + back faces on shared verts, back-face culled so each side
-    draws once). Each card maps its full width to one feathered column of the Vesp_Water map and v to arclength (0 base .. 1 lip), so
-    there are no row seams and the soft card edges cross-fade; three layers at >= 1 stud spacing (no near-coplanar transparent sheets)."""
+    """win-67: a fall built from many streaked ribbons instead of full-width cards (gate a: opaque white cards read as curtains).
+    Ribbons of uneven width (12-35 % of the fall) wander inside an outline that narrows and swells down the drop and widens toward the
+    base; most pour from staggered heights at the lip, some start or die mid-fall and taper to ragged points, so there is no straight
+    edge anywhere. Three depth layers at least 1.2 studs apart. Each ribbon maps across one of three feathered streak columns of Vesp_Water
+    (grey-white water, darker lanes, foam bands; v = 0 base .. 1 lip); the fourth column holds spray puffs used by crossed spray cards
+    at the plunge and the lip. The double-sided water material lets each ribbon use a single surface."""
     W, H = (20.0, 80.0) if variant == 0 else (30.0, 160.0)
 
     def fn(S, U):
         rng = random.Random(150 + variant)
         wa, fo = U["Water"], U["Foam"]
-        wa.recalc = False  # open cards: keep the authored front/back winding (recalc may flip a whole island)
+        wa.recalc = fo.recalc = False  # open cards: keep the authored winding
         out = lambda z: (6.2 / math.sqrt(H)) * math.sqrt(max(H - z, 0.0))
-        zs = [H * (1 - (i / 40) ** 1.5) for i in range(41)][::-1]  # rows dense near the lip, where the sheet curls over
-        for li, (gap, wmul) in enumerate(((0.0, 1.0), (1.1, 0.85), (2.3, 0.7))):
-            nstr = max(3, int(W / (5.0 - li * 0.6)))
-            pitch = W / nstr
-            for s in range(nstr + li % 2):
-                cx = -W / 2 + pitch * (s + (0.0 if li % 2 else 0.5)) + rng.uniform(-0.6, 0.6)
-                w_s = pitch * rng.uniform(1.6, 2.0) * wmul  # neighbours overlap 60-100%: feathered edges cross-fade
-                x0, x1 = max(cx - w_s / 2, -W / 2 - 0.5), min(cx + w_s / 2, W / 2 + 0.5)
-                if x1 - x0 < 1.5:
+        halfw = lambda z: W / 2 * (0.62 + 0.32 * (1 - z / H) ** 0.8) * (1 + 0.16 * vnoise(z * 0.045 + variant * 7, 3.1))
+        cxo = lambda z: 1.3 * (1 + variant) * vnoise(z * 0.02, 9.0 + variant)
+
+        def card(sub, vs, uv, nx, nz):
+            """vs/uv: row-major grid nz x nx; front faces toward -Y."""
+            fs, fuv = [], []
+            for j in range(nz - 1):
+                for i in range(nx - 1):
+                    a = j * nx + i
+                    q = (a, a + 1, a + nx + 1, a + nx)
+                    fs.append(q)
+                    fuv.append([uv[k] for k in q])
+            sub.add((vs, fs, fuv))
+
+        for li, gap in enumerate((0.0, 1.2, 2.5)):  # pass 2: 4 layers x W/3 ribbons stacked ~7 deep -> an opaque white column
+            for s in range(int(W / 5.5) + 2 - li):
+                u0 = rng.uniform(-1.0, 1.0)
+                wf = rng.uniform(0.12, 0.35) * (1.0 - 0.12 * li)
+                from_lip = rng.random() < 0.72
+                to_base = rng.random() < 0.8
+                zt = H - rng.uniform(0.0, 1.5) if from_lip else H * rng.uniform(0.45, 0.92)
+                zb = rng.uniform(-0.8, 1.5) if to_base else H * rng.uniform(0.12, 0.5)
+                if zt - zb < 8.0:
                     continue
-                col, ph, am = rng.randrange(4), rng.uniform(0, 6.28), rng.uniform(0.15, 0.45) * (1 + variant)
-                xs = [x0 + (x1 - x0) * i / 4 for i in range(5)]
-                P = lambda x, z: (x + am * math.sin(z * 0.11 + ph) * (1 - z / H) * 1.4,
-                                  -(out(z) * (1 + 0.04 * li) + gap + 0.25 * math.sin(x * 0.5 + z * 0.07 + ph)), z)
-                cen = [P((x0 + x1) / 2, z) for z in zs]
-                arc = [0.0]
-                for p, q in zip(cen, cen[1:]):
-                    arc.append(arc[-1] + math.dist(p, q))
-                vs = [P(x, z) for z in zs for x in xs]
-                uv = [((col + i / 4) / 4, arc[j] / arc[-1]) for j in range(len(zs)) for i in range(5)]
-                nv, fs, fuv = len(vs), [], []
-                for j in range(len(zs) - 1):
-                    for i in range(4):
-                        q = [j * 5 + i, j * 5 + i + 1, (j + 1) * 5 + i + 1, (j + 1) * 5 + i]  # normal -Y (toward the camera)
-                        fs += [tuple(q), tuple(nv + k for k in q[::-1])]  # back face on duplicated verts so smooth normals do not cancel
-                        fuv += [[uv[k] for k in q], [uv[k] for k in q[::-1]]]
-                wa.add((vs + vs, fs, fuv))
-        # foam lip over the edge + foam boils at the base (UVs kept inside column 0's opaque centre)
-        lip = [(-W / 2 + W * i / 16, -0.2 - 0.3 * math.sin(i * 1.3), H - 0.4) for i in range(17)]
-        fo.add(C.tube(lip, [1.5 + 0.5 * vnoise(i * 0.9, 2.0) for i in range(17)], 10, mult=lambda i, a: 1 + 0.35 * fbm(i * 1.1, a * 1.5, 4.0),
-                      uvfn=lambda i, f, d, r: (0.06 + 0.13 * ((d / 30.0) % 1.0), 0.975 + 0.02 * f), cap0=True, cap1=True))
-        for i in range(11):
-            x = -W / 2 + W * (i + 0.5) / 11 + rng.uniform(-0.8, 0.8)
-            rr = rng.uniform(1.6, 3.0)
-            vs, fs, fuv = ellipsoid(rr, rr * 0.9, rr * 0.6, 10, 6)
-            fuv = [[(0.1 + 0.01 * k, 0.03 + 0.01 * k) for k in range(len(f))] for f in fs]
-            fo.add((vs, fs, fuv), Tr(x, -out(0.0) - rng.uniform(0.3, 1.6), rr * 0.25))
+                vt, vb = (1.0 if from_lip else 0.9), (0.0 if to_base else 0.1)
+                nz = max(6, int((zt - zb) / 2.0))
+                col, ph, am, sd = rng.randrange(3), rng.uniform(0, 6.28), rng.uniform(0.3, 1.2), rng.uniform(0, 50)
+                vs, uv = [], []
+                for j in range(nz):
+                    t = j / (nz - 1)
+                    z = zb + (zt - zb) * t
+                    tip = (1.0 if to_base else 0.15 + 0.85 * K_sst(t / 0.18)) * (0.7 + 0.3 * K_sst((1 - t) / 0.04) if from_lip else 0.15 + 0.85 * K_sst((1 - t) / 0.18))
+                    hw = max(0.25, wf * halfw(z) * tip * (1 + 0.22 * vnoise(z * 0.06 + sd, 1.7 + li) + 0.07 * vnoise(z * 0.3 + sd, 4.2 + li)))
+                    c = cxo(z) + u0 * halfw(z) * (1 - wf) + am * math.sin(z * 0.09 + ph) * (1 - z / H)
+                    y = -(out(z) * (1 + 0.04 * li) + gap)
+                    for i in range(5):
+                        a = i / 4 * 2 - 1
+                        vs.append((c + a * hw, y - 0.35 * (1 - a * a) + 0.25 * math.sin(z * 0.07 + ph + a), z))
+                        uv.append(((col + i / 4) / 4, vb + (vt - vb) * t))
+                card(wa, vs, uv, 5, nz)
+        # spray: crossed puff cards at the plunge (widest, densest) and a few curling over the lip; column 3 holds 4 puff cells
+        for k in range(9 + 4 * variant):
+            x = cxo(0.0) + rng.uniform(-1, 1) * halfw(0.0) * 0.95
+            sz = rng.uniform(7.0, 13.0) * (1 + 0.3 * variant)
+            spray_card(fo, rng, x, -out(0.0) - rng.uniform(-0.5, 3.0), -0.6, sz, sz * rng.uniform(0.55, 0.85))
+        for k in range(5 + 2 * variant):
+            x = cxo(H) + rng.uniform(-1, 1) * halfw(H) * 0.85
+            sz = rng.uniform(3.0, 5.5)
+            spray_card(fo, rng, x, -0.6 - rng.uniform(0, 1.0), H - sz * 0.45, sz, sz * 0.6)
     return fn
+
+
+def K_sst(t):
+    t = min(1.0, max(0.0, t))
+    return t * t * (3 - 2 * t)
+
+
+def spray_card(sub, rng, x, y, z0, w, h):
+    """Two crossed vertical quads mapped to one spray-puff cell of the Vesp_Water map."""
+    cell = rng.randrange(4)
+    v0, v1 = cell / 4 + 0.004, (cell + 1) / 4 - 0.004
+    for ang in (rng.uniform(-0.3, 0.3), rng.uniform(0.9, 1.4)):
+        ca, sa = math.cos(ang) * w / 2, math.sin(ang) * w / 2
+        vs = [(x - ca, y - sa, z0), (x + ca, y + sa, z0), (x + ca, y + sa, z0 + h), (x - ca, y - sa, z0 + h)]
+        uv = [(0.754, v0), (0.996, v0), (0.996, v1), (0.754, v1)]
+        sub.add((vs, [(0, 1, 2, 3)], [uv]))
 
 
 waterfall_A, waterfall_B = waterfall(0), waterfall(1)

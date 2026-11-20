@@ -11,7 +11,7 @@ tropism/droop/curl, children at 25-70 deg, broken limbs with splinters, root spr
 vesp_bake bakes HIGH -> LOW per role (Trunk, Limbs, Branches, Twigs, Chain): Color/Normal/Roughness/Metal 2048 on the CC0
 bark_willow_02 base (UV-mapped along the branch), bleached grey dead wood, frost on up-facing limbs, black Metal. Dead_Oak_Gnarled_A
 carries a hanging iron gibbet chain (role Chain, metal). Never decimated: roles over the cap are split into <18k-tri subs.
-Stumps/logs (Dead_Stump_A/B, Dead_Log_A/B): Poly Haven CC0 scans tree_stump_01 / dead_tree_trunk_02 / dead_tree_trunk (GLB 2k),
+Stumps (win-67): generated broken stumps baked like the heroes. Logs (Dead_Log_A/B): Poly Haven CC0 scans dead_tree_trunk_02 / dead_tree_trunk (GLB 2k),
 scaled to studs (1 m = 3.57 studs; logs 15-18 studs long), their own 2k maps retoned to the dead-bark palette with baked frost,
 black Metal map, split (never decimated) into <18k-tri subs.
 Units studs, pivot trunk base centre (roots buried <= 2.8 studs). Writes <Piece>.glb + manifest.json entries + renders.
@@ -198,37 +198,122 @@ PINE = dict(maxdepth=2, nchild=[(0, 0), (3, 6), (2, 4)], t0=[0.2, 0.2, 0.3], ang
             rr=[0.5, 0.55, 0.6], rmin=0.07, wobble=[0.1, 0.45, 0.8], freq=1.4, droop=[0.0, 0.5, 0.8], taper_pow=0.9, pbreak=[0, 0.25, 0.3])
 
 
-def dead_pine(seed, H):
+def _perp(d):
+    d = nrm(np.asarray(d, float))
+    a = nrm(np.cross(d, [0, 0, 1.0] if abs(d[2]) < 0.9 else [1.0, 0, 0]))
+    return d, a, np.cross(d, a)
+
+
+def torn_fibres(g, top, d, r, n, tear, tall, short):
+    """win-67: snapped-wood break: thick shards round the rim, splaying outward, tallest across the tear half (azimuth tear), short
+    jagged teeth opposite; half end blunt and torn, half pointed; a few thin long fibres and peeled strips curling out and over
+    (clay pass 1: thin needles converging into one spike read as a brush on a pole)."""
+    rng = g.rng
+    d, a, b = _perp(d)
+    for k in range(n):
+        ang = 2 * PI * (k + rng.random() * 0.7) / n
+        rad = a * math.cos(ang) + b * math.sin(ang)
+        face = min(1.0, max(0.0, 0.35 + math.cos(ang - tear)) / 1.35) ** 1.4
+        thin = rng.random() < 0.25
+        L = short * rng.uniform(0.4, 1.3) + tall * face * rng.uniform(0.3, 1.0) * (1.25 if thin else 1.0)
+        base = top - d * r * 0.5 + rad * r * rng.uniform(0.55, 0.9)
+        w = r * (rng.uniform(0.07, 0.12) if thin else rng.uniform(0.17, 0.32))
+        sp = rad * rng.uniform(0.12, 0.32) * L
+        if face < 0.5 and rng.random() < 0.3:  # peeled strip curling out and over
+            pts = [base, base + d * L * 0.35 + rad * L * 0.1, base + d * L * 0.5 + rad * L * 0.45, base + d * L * 0.25 + rad * L * 0.8]
+        else:
+            j = lambda s_: (a * rng.uniform(-1, 1) + b * rng.uniform(-1, 1)) * s_
+            pts = [base, base + d * L * 0.35 + sp * 0.2 + j(0.15 * w + 0.05), base + d * L * 0.7 + sp * 0.55 + j(0.2 * w + 0.05), base + d * L + sp]
+        blunt = (not thin) and rng.random() < 0.5
+        g.add(pts, [w, w * 0.85, w * (0.6 if blunt else 0.5), w * 0.4 if blunt else 0.0], "splinter", "broken" if blunt else "point", 2)
+
+
+def dead_pine(seed, H, crown="hang", brk_f=0.78, tear_az=0.0):
+    """win-67: a SNAPPED pine: gnarled kinked trunk broken at brk_f*H in a jagged torn-fibre break; the lost crown either hangs from
+    the tear by a few strips ("hang") or lies at the base ("ground"); sparse whorls (bare knots, short broken stubs, a few long dead
+    limbs low down) instead of a bottle-brush."""
     g = Tree(seed, PINE)
     rng = g.rng
-    brk = 0.82 * H
-    n = int(brk / 1.2)
+    brk = brk_f * H
+    n = int(brk / 1.0)
     z = np.linspace(-2.0, brk, n + 1)
     zt = np.maximum(z, 0) / brk
     lean = np.array([rng.uniform(-1, 1), rng.uniform(-1, 1)]) * 0.04
-    P = np.stack([lean[0] * z + 0.9 * vnoise(np.stack([z * 0.04 + seed, np.ones_like(z), z * 0], -1), 1) * zt,
-                  lean[1] * z + 0.9 * vnoise(np.stack([z * 0.04, np.ones_like(z) * 5, z * 0 + seed], -1), 2) * zt, z], 1)
-    R = 3.3 * (1 - 0.58 * zt ** 0.85)
+    kink = np.array([math.cos(tear_az + 2.2), math.sin(tear_az + 2.2)]) * 1.6 * sst(0.38, 0.52, zt)[:, None]  # dog-leg mid trunk
+    wob = lambda o: (2.2 * vnoise(np.stack([z * 0.035 + seed + o, np.ones_like(z) * (1 + o), z * 0], -1), 1 + o)
+                     + 0.6 * vnoise(np.stack([z * 0.13, np.ones_like(z) * (5 + o), z * 0 + seed], -1), 2 + o))
+    P = np.stack([lean[0] * z + wob(0) * zt + kink[:, 0], lean[1] * z + wob(3) * zt + kink[:, 1], z], 1)
+    R = 3.4 * (1 - 0.4 * zt ** 0.8)
     g.add(P, R, "trunk", "broken", 0)
-    top, d = P[-1], nrm(P[-1] - P[-3])
-    g.splinters(top, d, R[-1], 1, 8, (2.5, 8.5))  # snapped crown: tall shards round the break
-    g.add([top + [R[-1] * 0.3, 0, -0.5], top + [R[-1] * 0.5, 0.3, 4.0], top + [R[-1] * 0.2, 0.6, 9.5]], [R[-1] * 0.45, R[-1] * 0.28, 0.0], "splinter", "point", 1)
-    g.roots(7, 3.3, 9.0, rr=0.6)
-    zw = 0.1 * H
-    wi = 0
-    while zw < brk - 2.0:  # whorls of dead branches: stubs higher up, a few long drooping limbs low down
+    top, d = P[-1], nrm(P[-1] - P[-4])
+    rt = float(R[-1])
+    side = np.array([math.cos(tear_az), math.sin(tear_az), 0.0])
+    torn_fibres(g, top, d, rt, 18, tear_az, 0.1 * H, 1.2)
+    g.roots(7, 3.4, 9.5, rr=0.6)
+    zw, wi = 0.12 * H, 0
+    while zw < brk - 4.0:  # sparse whorls: some bare (knots only), 1-3 short broken stubs, long dead limbs only low down
         zi = int(np.searchsorted(z, zw))
         low = 1 - zw / brk
-        for k in range(rng.randint(3, 5)):
-            a = 2 * PI * k / 4 + wi * 0.9 + rng.uniform(-0.4, 0.4)
-            c, s = math.cos(a), math.sin(a)
-            base = P[zi] + np.array([c, s, 0]) * R[zi] * 0.5
-            if low > 0.35 and rng.random() < 0.5:
-                g.grow(base, (c, s, rng.uniform(-0.15, 0.15)), rng.uniform(8, 16) * low, rng.uniform(0.45, 0.75), 1, droop_scale=1.3, no_break=rng.random() < 0.5)
-            else:
-                g.grow(base, (c, s, rng.uniform(-0.35, 0.05)), rng.uniform(0.8, 3.0), rng.uniform(0.28, 0.6), 1, rend=rng.uniform(0.5, 0.8), kids=False)
-        zw += rng.uniform(2.4, 3.6)
+        if rng.random() > 0.25:
+            for k in range(rng.randint(1, 3)):
+                a = 2 * PI * rng.random()
+                c, s = math.cos(a), math.sin(a)
+                base = P[zi] + np.array([c, s, 0]) * R[zi] * 0.5
+                if low > 0.3 and rng.random() < 0.5:  # clay 2: too few long limbs read as a bare pole
+                    g.grow(base, (c, s, rng.uniform(-0.1, 0.2)), rng.uniform(10, 18) * low, rng.uniform(0.5, 0.8), 1, droop_scale=1.4, no_break=rng.random() < 0.4)
+                else:
+                    g.grow(base, (c, s, rng.uniform(-0.3, 0.1)), rng.uniform(0.7, 2.2), rng.uniform(0.3, 0.55), 1, rend=rng.uniform(0.55, 0.8), kids=False)
+        zw += rng.uniform(4.0, 7.0)
         wi += 1
+    Lc, rc = 0.26 * H, rt * 0.92
+    if crown == "hang":  # crown folded over at the tear, still hanging by a few strips; broken butt up, thin top down
+        butt = top + side * (rt + rc * 0.55) - d * 0.4
+        v = nrm(side * 0.38 + np.array([0, 0, -1.0]))
+        s = np.linspace(0, 1, 14)
+        bend = np.cross(v, [0, 0, 1.0])
+        C = butt + v[None] * (Lc * s)[:, None] + bend[None] * (0.8 * np.sin(s * PI))[:, None] + side[None] * (1.2 * s ** 2)[:, None]
+        Cr = rc * (1 - 0.65 * s ** 0.9)
+        g.add(np.vstack([C[-1] + v * 0.9, C[::-1]]), np.concatenate([[0.03], Cr[::-1]]), "branch", "broken", 1)  # closed thin end
+        for i in (3, 6, 9, 11):  # its old whorls now point down and out
+            rad = nrm(np.cross(v, [rng.uniform(-1, 1), rng.uniform(-1, 1), rng.uniform(-1, 1)]))
+            g.grow(C[i] + rad * Cr[i] * 0.4, nrm(rad + v * 0.7), rng.uniform(1.0, 3.0), Cr[i] * 0.35, 2, rend=0.7, kids=False)
+        for k in range(6):  # hinge strips from the trunk rim to the butt
+            o = nrm(np.cross(d, [0, 0, 1.0]) * rng.uniform(-1, 1) + side) * rt * 0.75
+            p0 = top - d * 0.6 + o
+            w = rng.uniform(0.18, 0.36)
+            g.add([p0, p0 + d * 1.4 + side * 0.4, butt + d * (0.8 + 0.2 * k) + o * 0.3, butt + v * 0.6 + o * 0.4], [w, w * 0.9, w * 0.7, 0.0], "splinter", "point", 2)
+    else:  # crown fell toward the tear and lies at the foot, broken butt toward the trunk
+        p0 = np.array([side[0] * 4.2, side[1] * 4.2, rc * 0.7])
+        s = np.linspace(0, 1, 16)
+        perp = np.array([-side[1], side[0], 0.0])
+        C = p0[None] + side[None] * (Lc * 1.15 * s)[:, None] + perp[None] * (1.5 * np.sin(s * 2.4))[:, None]
+        Cr = rc * (1 - 0.8 * s ** 0.9)
+        C[:, 2] = Cr * 0.7 + 0.05
+        g.add(np.vstack([C[-1] + side * 0.9, C[::-1]]), np.concatenate([[0.03], Cr[::-1]]), "branch", "broken", 1)
+        for i in (3, 6, 9, 12):
+            a = rng.uniform(-1.2, 1.2)
+            dd = nrm(perp * math.sin(a) + np.array([0, 0, 1.0]) * math.cos(a) * 0.8 + side * 0.3)
+            g.grow(C[i] + dd * Cr[i] * 0.5, dd, rng.uniform(1.0, 2.6), Cr[i] * 0.35, 2, rend=0.7, kids=False)
+        torn_fibres(g, C[0] - side * 0.2, -side, rc, 12, PI / 2, 2.0, 0.8)  # torn fibres on the fallen butt
+    return g
+
+
+def dead_stump(seed, R, H, spread, tear_az):
+    """win-67: broken stump (CC0 scan read as a rock at 2-3 studs): short flared trunk with a jagged snapped top and torn fibres,
+    buttress roots; 4-7 studs tall, 6-12 wide."""
+    g = Tree(seed, PINE)
+    rng = g.rng
+    z = np.linspace(-2.0, H, 12)
+    zt = np.maximum(z, 0) / H
+    P = np.stack([0.25 * vnoise(np.stack([z * 0.2 + seed, np.ones_like(z), z * 0], -1), 1) * zt, 0.25 * vnoise(np.stack([z * 0.2, np.ones_like(z) * 4, z * 0 + seed], -1), 2) * zt, z], 1)
+    Rz = R * (1 - 0.12 * zt)
+    g.add(P, Rz, "trunk", "broken", 0)
+    top, d = P[-1], nrm(P[-1] - P[-3])
+    torn_fibres(g, top, d, float(Rz[-1]), 18, tear_az, 0.55 * H, 0.5)
+    g.roots(rng.randint(6, 7), R, spread, depth_z=-2.0, rr=0.55)
+    a = tear_az + 2.5
+    g.grow(P[7] + np.array([math.cos(a), math.sin(a), 0]) * R * 0.6, (math.cos(a), math.sin(a), 0.4), 1.6, R * 0.22, 1, rend=0.7, kids=False)
+    g.flare = 0.28
     return g
 
 
@@ -512,14 +597,14 @@ def gibbet_chain(g, H, level):
 SPECS = {
     "Dead_Oak_Gnarled_A": dict(fn=dead_oak, args=(11, 70.0, (2.6, -0.9)), H=72.0, chain=True),
     "Dead_Oak_Gnarled_B": dict(fn=dead_oak, args=(23, 84.0, (0.5, 3.6), 0.12, 0.9), H=86.0),  # gentle arms: droop + ground lift swung U-loops
-    "Dead_Pine_Snapped_A": dict(fn=dead_pine, args=(5, 66.0), H=None, lean=(0.12, 30.0)),
-    "Dead_Pine_Snapped_B": dict(fn=dead_pine, args=(9, 78.0), H=None, lean=(0.17, 200.0)),
+    "Dead_Pine_Snapped_A": dict(fn=dead_pine, args=(5, 76.0, "hang", 0.78, 0.6), H=None, lean=(0.15, 30.0), frost=0.75),  # win-67
+    "Dead_Pine_Snapped_B": dict(fn=dead_pine, args=(9, 88.0, "ground", 0.72, 3.6), H=None, lean=(0.2, 200.0), frost=0.75),
     "Thorn_Twisted_A": dict(fn=thorn, args=(3, 30.0), H=30.0, lean=(0.24, 120.0)),
     "Thorn_Twisted_B": dict(fn=thorn, args=(8, 38.0), H=38.0, lean=(0.2, -40.0)),
+    "Dead_Stump_A": dict(fn=dead_stump, args=(31, 2.2, 4.3, 2.8, 1.0), H=None, frost=0.8),  # win-67: built, not the 2-3 stud scan
+    "Dead_Stump_B": dict(fn=dead_stump, args=(37, 3.0, 3.6, 3.3, 4.0), H=None, frost=0.8),
 }
 SCANS = {  # CC0 Poly Haven scans: (asset, studs per metre, yaw deg, sink studs)
-    "Dead_Stump_A": ("tree_stump_01", 3.57, 0.0, 0.25),
-    "Dead_Stump_B": ("tree_stump_01", 5.2, 137.0, 0.35),
     "Dead_Log_A": ("dead_tree_trunk_02", 4.3, 18.0, 0.3),
     "Dead_Log_B": ("dead_tree_trunk", 5.6, -24.0, 0.12),
 }
@@ -590,7 +675,7 @@ def hero(name, out, mode):
         o.data.materials.append(iron if r == "Chain" else bark)
     for r, o in lows.items():
         VB.unwrap(o, keep_existing=True)
-    wood = VB.Look(base=0.25, grime=0.5, edge=0.55, frost=0.55, streak_dark=0.12, rough_base=0.88, wet_gloss=0.15, sat=0.3, frost_col=(0.7, 0.73, 0.78))
+    wood = VB.Look(base=0.25, grime=0.5, edge=0.55, frost=sp.get("frost", 0.55), streak_dark=0.12, rough_base=0.88, wet_gloss=0.15, sat=0.3, frost_col=(0.7, 0.73, 0.78))
     metal = VB.Look(base=0.1, grime=0.45, edge=1.2, frost=0.2, streak_dark=0.3)
     rays = {"Trunk": (0.32, 0.9), "Limbs": (0.26, 0.65), "Branches": (0.1, 0.26), "Twigs": (0.05, 0.12), "Chain": (0.03, 0.08)}
     extra = {"height_studs": round(H, 1), "branches": len(g.br)}

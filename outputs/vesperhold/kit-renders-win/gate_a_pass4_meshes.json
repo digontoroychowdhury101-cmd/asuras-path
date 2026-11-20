@@ -1,0 +1,359 @@
+[
+  {
+    "group": "kit",
+    "piece": "Viaduct_Bay",
+    "boundsBlender": [
+      30.4,
+      34.0,
+      120.1
+    ],
+    "triangles": 27038,
+    "submeshes": {
+      "Viaduct_Bay__Stone": 2784,
+      "Viaduct_Bay__Tracery": 8446,
+      "Viaduct_Bay__Tracery_2": 8446,
+      "Viaduct_Bay__Crockets": 5148,
+      "Viaduct_Bay__Dress": 464,
+      "Viaduct_Bay__Pinnacles": 1432,
+      "Viaduct_Bay__Frost": 318
+    },
+    "embeddedBytes": 22039672,
+    "parts": {
+      "Viaduct_Bay__p1.glb": {
+        "bytes": 14361496,
+        "sha256": "90955f09c7621f45b378fc1485479581c036cdaca66e3ddf331c454962b334da"
+      },
+      "Viaduct_Bay__p2.glb": {
+        "bytes": 7678480,
+        "sha256": "92a31034d379e1054daf07bb57c44501289d7851486474e95a3e46971f070060"
+      }
+    }
+  },
+  {
+    "group": "kit",
+    "piece": "Viaduct_Balustrade_30",
+    "boundsBlender": [
+      30.8,
+      3.6,
+      21.7
+    ],
+    "triangles": 7826,
+    "submeshes": {
+      "Viaduct_Balustrade_30__Stone": 640,
+      "Viaduct_Balustrade_30__Tracery": 4564,
+      "Viaduct_Balustrade_30__Pinnacles": 770,
+      "Viaduct_Balustrade_30__Crockets": 1674,
+      "Viaduct_Balustrade_30__Frost": 178
+    },
+    "embeddedBytes": 20652932,
+    "parts": {
+      "Viaduct_Balustrade_30__p1.glb": {
+        "bytes": 13131884,
+        "sha256": "8016a97bdee91ff4b2a34ba738931398520b35815dfa7e2f6b8a9079a37ee5be"
+      },
+      "Viaduct_Balustrade_30__p2.glb": {
+        "bytes": 7521348,
+        "sha256": "c8f0279f46133df5cd1a0c064519e96f471dc27d0d4c9ab61ead7bd63de61cca"
+      }
+    }
+  },
+  {
+    "group": "props",
+    "piece": "Waterfall_Sheet_A",
+    "boundsBlender": [
+      23.0,
+      15.8,
+      81.5
+    ],
+    "triangles": 3328,
+    "submeshes": {
+      "Waterfall_Sheet_A__Water": 3272,
+      "Waterfall_Sheet_A__Foam": 56
+    },
+    "embeddedBytes": 8325068,
+    "parts": {
+      "Waterfall_Sheet_A.glb": {
+        "bytes": 8325068,
+        "sha256": "1a2103dc18148b81fa7abff9edf547aa6c81f9f359aaea65dd71ac74937463a1"
+      }
+    }
+  },
+  {
+    "group": "props",
+    "piece": "Waterfall_Sheet_B",
+    "boundsBlender": [
+      37.2,
+      17.4,
+      161.5
+    ],
+    "triangles": 9784,
+    "submeshes": {
+      "Waterfall_Sheet_B__Water": 9704,
+      "Waterfall_Sheet_B__Foam": 80
+    },
+    "embeddedBytes": 8494956,
+    "parts": {
+      "Waterfall_Sheet_B.glb": {
+        "bytes": 8494956,
+        "sha256": "8e40d0754f7a33fd9487ad54f18d086396365d10bc5f07f5dfb572e1cee658fa"
+      }
+    }
+  },
+  {
+    "group": "props",
+    "piece": "Statue_Wraith",
+    "boundsBlender": [
+      10.0,
+      9.7,
+      23.5
+    ],
+    "triangles": 154840,
+    "submeshes": {
+      "Statue_Wraith__Robe": 14272,
+      "Statue_Wraith__Robe_2": 14272,
+      "Statue_Wraith__Hood": 9216,
+      "Statue_Wraith__Arms": 12612,
+      "Statue_Wraith__Arms_2": 12612,
+      "Statue_Wraith__Plinth": 224,
+      "Statue_Wraith__Drape": 16742,
+      "Statue_Wraith__Drape_2": 16744,
+      "Statue_Wraith__Drape_3": 16742,
+      "Statue_Wraith__Drape_4": 16744,
+      "Statue_Wraith__Sword": 2642,
+      "Statue_Wraith__Ivy": 11008,
+      "Statue_Wraith__Ivy_2": 11010
+    },
+    "embeddedBytes": 24614296,
+    "parts": {
+      "Statue_Wraith__p1.glb": {
+        "bytes": 17906768,
+        "sha256": "688f7305d4621bb7eb90315a64025a9df52937a2cfc3ea422423d6884dc66717"
+      },
+      "Statue_Wraith__p2.glb": {
+        "bytes": 6707780,
+        "sha256": "d0445ba983c5598b3b25c310b534f7c1118fe1d7589dd8b678f221e9df20beea"
+      }
+    }
+  },
+  {
+    "group": "props",
+    "piece": "Statue_Mourner",
+    "boundsBlender": [
+      11.8,
+      6.5,
+      18.6
+    ],
+    "triangles": 170028,
+    "submeshes": {
+      "Statue_Mourner__Robe": 14272,
+      "Statue_Mourner__Robe_2": 14272,
+      "Statue_Mourner__Hood": 9216,
+      "Statue_Mourner__Arms": 9772,
+      "Statue_Mourner__Arms_2": 9772,
+      "Statue_Mourner__Plinth": 216,
+      "Statue_Mourner__Drape": 14504,
+      "Statue_Mourner__Drape_2": 14504,
+      "Statue_Mourner__Drape_3": 14504,
+      "Statue_Mourner__Tomb": 5432,
+      "Statue_Mourner__Face": 17368,
+      "Statue_Mourner__Hair": 8064,
+      "Statue_Mourner__Roses": 12816,
+      "Statue_Mourner__Roses_2": 12816,
+      "Statue_Mourner__Ivy": 12500
+    },
+    "embeddedBytes": 32611416,
+    "parts": {
+      "Statue_Mourner__p1.glb": {
+        "bytes": 17769456,
+        "sha256": "66e5a0e50353149c0d0c5f6e294c1b1533d2845a4face2bf4542f31463e1804c"
+      },
+      "Statue_Mourner__p2.glb": {
+        "bytes": 14842204,
+        "sha256": "3eec289e6b8ac34d3dc960f7d2d95035ba65e8e0f6f0fbf606529fb9da0ef494"
+      }
+    }
+  },
+  {
+    "group": "props",
+    "piece": "Hooded_Statue_A",
+    "boundsBlender": [
+      9.9,
+      9.7,
+      22.9
+    ],
+    "triangles": 152442,
+    "submeshes": {
+      "Hooded_Statue_A__Robe": 17164,
+      "Hooded_Statue_A__Robe_2": 17164,
+      "Hooded_Statue_A__Hood": 9216,
+      "Hooded_Statue_A__Arms": 9772,
+      "Hooded_Statue_A__Arms_2": 9772,
+      "Hooded_Statue_A__Plinth": 216,
+      "Hooded_Statue_A__Drape": 16780,
+      "Hooded_Statue_A__Drape_2": 16780,
+      "Hooded_Statue_A__Drape_3": 16780,
+      "Hooded_Statue_A__Drape_4": 16780,
+      "Hooded_Statue_A__Ivy": 11008,
+      "Hooded_Statue_A__Ivy_2": 11010
+    },
+    "embeddedBytes": 22659108,
+    "parts": {
+      "Hooded_Statue_A__p1.glb": {
+        "bytes": 18792640,
+        "sha256": "6d09b1eb315467077783733aafed3a7a74078f9fa49af2756de25f7a039fb9a5"
+      },
+      "Hooded_Statue_A__p2.glb": {
+        "bytes": 3866744,
+        "sha256": "c62acca3be045f6a78e5507f70f420f338b285ffda991d5a8f2cad419b0dea54"
+      }
+    }
+  },
+  {
+    "group": "props",
+    "piece": "Hooded_Statue_B",
+    "boundsBlender": [
+      10.0,
+      9.7,
+      27.6
+    ],
+    "triangles": 159282,
+    "submeshes": {
+      "Hooded_Statue_B__Robe": 17164,
+      "Hooded_Statue_B__Robe_2": 17164,
+      "Hooded_Statue_B__Hood": 9216,
+      "Hooded_Statue_B__Arms": 8952,
+      "Hooded_Statue_B__Arms_2": 8952,
+      "Hooded_Statue_B__Plinth": 216,
+      "Hooded_Statue_B__Drape": 16706,
+      "Hooded_Statue_B__Drape_2": 16706,
+      "Hooded_Statue_B__Drape_3": 16706,
+      "Hooded_Statue_B__Drape_4": 16706,
+      "Hooded_Statue_B__Staff": 8776,
+      "Hooded_Statue_B__Ivy": 11008,
+      "Hooded_Statue_B__Ivy_2": 11010
+    },
+    "embeddedBytes": 23780460,
+    "parts": {
+      "Hooded_Statue_B__p1.glb": {
+        "bytes": 19264656,
+        "sha256": "a08b99b014ecff31851b6737e3625a1ca793cdb33d967a4a7007f3cbde11ee94"
+      },
+      "Hooded_Statue_B__p2.glb": {
+        "bytes": 4516068,
+        "sha256": "24c3010571c11d7e23651734251f3cca310754120436e7153233c669c6d6c9f4"
+      }
+    }
+  },
+  {
+    "group": "props",
+    "piece": "Statue_Veiled_Scan",
+    "boundsBlender": [
+      13.6,
+      14.4,
+      17.2
+    ],
+    "triangles": 27955,
+    "submeshes": {
+      "Statue_Veiled_Scan__Body": 13869,
+      "Statue_Veiled_Scan__Body_2": 13870,
+      "Statue_Veiled_Scan__Plinth": 216
+    },
+    "embeddedBytes": 8159704,
+    "parts": {
+      "Statue_Veiled_Scan.glb": {
+        "bytes": 8159704,
+        "sha256": "88ff725ef5c182d088e6ea11dedf7ad4ccf90ff84a05056ce278d9c290c0e6c6"
+      }
+    }
+  },
+  {
+    "group": "trees",
+    "piece": "Dead_Pine_Snapped_A",
+    "boundsBlender": [
+      24.3,
+      24.1,
+      71.1
+    ],
+    "triangles": 6352,
+    "submeshes": {
+      "Dead_Pine_Snapped_A__Trunk": 1695,
+      "Dead_Pine_Snapped_A__Branches": 2097,
+      "Dead_Pine_Snapped_A__Twigs": 2307,
+      "Dead_Pine_Snapped_A__Limbs": 253
+    },
+    "embeddedBytes": 9384988,
+    "parts": {
+      "Dead_Pine_Snapped_A.glb": {
+        "bytes": 9384988,
+        "sha256": "45778a778050a41ffea6cf3e8931013cddb5695e10047d18aef46a31db2afdd3"
+      }
+    }
+  },
+  {
+    "group": "trees",
+    "piece": "Dead_Pine_Snapped_B",
+    "boundsBlender": [
+      40.9,
+      25.8,
+      73.5
+    ],
+    "triangles": 5509,
+    "submeshes": {
+      "Dead_Pine_Snapped_B__Trunk": 1773,
+      "Dead_Pine_Snapped_B__Twigs": 1287,
+      "Dead_Pine_Snapped_B__Branches": 2108,
+      "Dead_Pine_Snapped_B__Limbs": 341
+    },
+    "embeddedBytes": 8702260,
+    "parts": {
+      "Dead_Pine_Snapped_B.glb": {
+        "bytes": 8702260,
+        "sha256": "59821d9d7a3356235253799bdbe1b5d9d4dd27e6d22ea864f7053282e57b643b"
+      }
+    }
+  },
+  {
+    "group": "trees",
+    "piece": "Dead_Stump_A",
+    "boundsBlender": [
+      8.7,
+      9.1,
+      8.6
+    ],
+    "triangles": 1264,
+    "submeshes": {
+      "Dead_Stump_A__Trunk": 661,
+      "Dead_Stump_A__Branches": 398,
+      "Dead_Stump_A__Twigs": 205
+    },
+    "embeddedBytes": 5959248,
+    "parts": {
+      "Dead_Stump_A.glb": {
+        "bytes": 5959248,
+        "sha256": "5f75f5f4d8e7cb4e69c5ff2aeb0f3f30802638a7f13192fdb6d7d428faa665f0"
+      }
+    }
+  },
+  {
+    "group": "trees",
+    "piece": "Dead_Stump_B",
+    "boundsBlender": [
+      12.0,
+      11.1,
+      8.4
+    ],
+    "triangles": 1241,
+    "submeshes": {
+      "Dead_Stump_B__Trunk": 626,
+      "Dead_Stump_B__Branches": 216,
+      "Dead_Stump_B__Twigs": 399
+    },
+    "embeddedBytes": 6034380,
+    "parts": {
+      "Dead_Stump_B.glb": {
+        "bytes": 6034380,
+        "sha256": "c36de2fef92264ef89aea339af539c8fbd5d0db8dbc424a1dea2d7492efa2639"
+      }
+    }
+  }
+]
