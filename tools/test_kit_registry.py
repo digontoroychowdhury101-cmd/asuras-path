@@ -79,6 +79,23 @@ class KitRegistry(unittest.TestCase):
             f.write_text(json.dumps(d))
             self.assertEqual(K.main(["slice", "--check", "--root", t]), 1)
 
+    def test_split_piece_sub_asset_needs_centers(self):
+        part2 = rid()
+
+        def reg(p, s, centers):
+            subs = {k: entry() for k in s}
+            subs[s[1]]["Asset"] = part2
+            if centers:
+                for e in subs.values():
+                    e["center"] = [0, 1, 0]
+            return {p: subs}
+        build(self.root, "slice", ["slice"], reg=lambda p, s: reg(p, s, False))
+        self.assertTrue(any("needs a center" in e for e in K.validate("slice", self.root)[0]))
+        with tempfile.TemporaryDirectory() as t:
+            build(Path(t), "slice", ["slice"], reg=lambda p, s: reg(p, s, True))
+            self.assertEqual(K.main(["slice", "--root", t]), 0)
+            self.assertEqual((Path(t) / "src/shared/SliceKitRegistry.luau").read_text().count(f'Asset = "{part2}"'), 1)
+
     def test_check_writes_nothing(self):
         build(self.root, "slice", ["slice"])
         self.assertEqual(K.main(["slice", "--check", "--root", str(self.root)]), 0)

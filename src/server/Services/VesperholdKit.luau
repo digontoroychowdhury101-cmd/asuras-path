@@ -70,19 +70,32 @@ local function readTemplate(piece: string): {Sub}?
 	if type(entries) ~= "table" then return nil end
 	local _,first = next(entries)
 	if type(first) ~= "table" or type(first.Asset) ~= "string" then return nil end
-	local wrapper = loadModel(first.Asset)
-	if not wrapper then return nil end
-	local named = wrapper:FindFirstChild(piece,true)
-	local root = if named and named:IsA("Model") then named else wrapper :: Model
-	local pivot = root:GetPivot()
-	local nodes = root:GetDescendants()
+	-- A piece over the 20 MB upload limit ships as several model assets; then every sub needs a foot-space center.
+	local multi = false
+	for _,e in entries do
+		if type(e) ~= "table" or type(e.Asset) ~= "string" then return nil end
+		if e.Asset ~= first.Asset then multi = true end
+	end
+	local roots: {[string]: {pivot: CFrame, nodes: {Instance}}} = {}
+	local function rootOf(asset: string)
+		if roots[asset] then return roots[asset] end
+		local wrapper = loadModel(asset)
+		if not wrapper then return nil end
+		local named = wrapper:FindFirstChild(piece,true)
+		local root = if named and named:IsA("Model") then named else wrapper :: Model
+		roots[asset] = {pivot = root:GetPivot(), nodes = root:GetDescendants()}
+		return roots[asset]
+	end
 	local list: {Sub} = {}
 	local used: {[MeshPart]: boolean} = {}
 	local lo = Vector3.new(math.huge,math.huge,math.huge)
 	local hi = -lo
 	for key,e in entries do
-		if type(key) ~= "string" or type(e) ~= "table" or type(e.MeshId) ~= "string" or e.Asset ~= first.Asset then return nil end
-		local src = findMesh(nodes,key,e.MeshId)
+		if type(key) ~= "string" or type(e.MeshId) ~= "string" or (multi and e.center == nil) then return nil end
+		local r = rootOf(e.Asset)
+		if not r then return nil end
+		local pivot = r.pivot
+		local src = findMesh(r.nodes,key,e.MeshId)
 		if not src or not src.Archivable or used[src] then return nil end
 		used[src] = true
 		local rel = pivot:ToObjectSpace(src.CFrame)

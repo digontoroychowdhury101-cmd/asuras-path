@@ -67,6 +67,22 @@ register("Banner_Torn_A", { { "Banner", V3(8, 30, 1), V3(0, 15, 0) } })
 registry.Banner_Torn_A["Banner_Torn_A__Rope"] = { MeshId = newId(), Asset = registry.Banner_Torn_A["Banner_Torn_A__Banner"].Asset }
 -- A piece whose asset does not load.
 registry.Gibbet_Cage = { Gibbet_Cage__Iron = { MeshId = newId(), Asset = "rbxassetid://404" } }
+-- A piece split across two model assets (over the 20 MB upload limit); each wrapper is recentred, so centers place the subs.
+register("Spire_Needle_Tip", { { "Stone", V3(4, 20, 4), V3(0, 0, 0) } })
+do
+	local w2, e2 = fakeAsset("Spire_Needle_Tip", { { "Lead", V3(2, 6, 2), V3(7, 7, 7) } }, newId())
+	local key = "Spire_Needle_Tip__Lead"
+	assets[e2[key].Asset] = w2
+	registry.Spire_Needle_Tip[key] = e2[key]
+	registry.Spire_Needle_Tip[key].center = { 1, 23, 0 }
+	registry.Spire_Needle_Tip["Spire_Needle_Tip__Stone"].center = { 0, 10, 0 }
+end
+register("Spire_Broken_Top", { { "Stone", V3(4, 20, 4), V3(0, 10, 0) } })
+do
+	local w2, e2 = fakeAsset("Spire_Broken_Top", { { "Lead", V3(2, 6, 2), V3(0, 3, 0) } }, newId())
+	assets[e2["Spire_Broken_Top__Lead"].Asset] = w2
+	registry.Spire_Broken_Top["Spire_Broken_Top__Lead"] = e2["Spire_Broken_Top__Lead"] -- no centers: refused
+end
 
 local function setup(reg: any)
 	Kit.Reset()
@@ -151,6 +167,12 @@ Kit.MaxLights = 80
 check("a sub the model lacks makes the whole piece unavailable", Kit.place("Banner_Torn_A", CFrame.new(), V3(1, 1, 1)) == nil and not Kit.has("Banner_Torn_A"))
 check("an asset that fails to load leaves no piece", Kit.place("Gibbet_Cage", CFrame.new(), V3(1, 1, 1)) == nil)
 check("unknown pieces are simply absent", not Kit.has("Nope") and Kit.place("Nope", CFrame.new(), V3(1, 1, 1)) == nil)
+local nloads = #loads
+local split = Kit.place("Spire_Needle_Tip", CFrame.new(100, 0, 0), V3(1, 1, 1))
+check("a piece split over two assets loads both and places subs by center", split ~= nil and #loads == nloads + 2
+	and (split:FindFirstChild("Spire_Needle_Tip__Lead").Position - V3(101, 23, 0)).Magnitude < 1e-3
+	and (split:FindFirstChild("Spire_Needle_Tip__Stone").Position - V3(100, 10, 0)).Magnitude < 1e-3)
+check("a split piece without centers is refused", Kit.place("Spire_Broken_Top", CFrame.new(), V3(1, 1, 1)) == nil)
 
 -- 7. GothicCitadel / GothicMarch with the real loader ---------------------------------------------------------------------
 local g = O.Vesperhold

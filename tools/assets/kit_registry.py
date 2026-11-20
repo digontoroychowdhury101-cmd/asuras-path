@@ -37,7 +37,7 @@ def load(path):
         raise SystemExit(f"cannot read {path}: {e}")
 
 
-def validate(kit, root, allow_missing=()):
+def validate(kit, root, allow_missing=(), vesp_manifests=None):
     """Return (errors, pieces) where pieces = {piece: {key: entry}} ready to write (allowed-missing subs omitted)."""
     stem, _, packs = KITS[kit]
     path = root / f"assets/{stem}_KIT_UPLOADED.json"
@@ -51,7 +51,7 @@ def validate(kit, root, allow_missing=()):
     models = data.get("modelAssets") if isinstance(data.get("modelAssets"), dict) else {}
     for pack in packs:
         if kit == "vesperhold":
-            man = load(root / VESP_MANIFEST.format(pack=pack))
+            man = load(Path(vesp_manifests) / pack / "manifest.json" if vesp_manifests else root / VESP_MANIFEST.format(pack=pack))
             # Textures travel inside the uploaded model (SurfaceAppearance), so only MeshId is required per sub-mesh.
             for pm in man["pieces"].values():
                 pm["sub_mesh_materials"] = {k: "" for k in pm["sub_meshes"]}
@@ -69,7 +69,7 @@ def validate(kit, root, allow_missing=()):
                         errs.append(f"missing sub-mesh {key} (use --allow-missing to omit)")
                     continue
                 need = ("MeshId",) + tuple(m for m in MAPS if m in mats.get(mat, pm.get("maps_per_material", {}).get(mat, {})))
-                bad = [k for k in entry if k not in MAPS + ("MeshId", "center", "operations")]
+                bad = [k for k in entry if k not in MAPS + ("MeshId", "center", "operations", "Asset")]
                 errs += [f"{key}: unknown field {k}" for k in bad]
                 # No SurfaceAppearance (far trees): every map empty is accepted; otherwise each listed map must be present.
                 bare = not any(entry.get(m) for m in MAPS)
@@ -92,10 +92,14 @@ def validate(kit, root, allow_missing=()):
                 ops = entry.get("operations")
                 if ops is not None and not (isinstance(ops, dict) and all(isinstance(v, (str, int)) and str(v) for v in ops.values())):
                     errs.append(f"{key}.operations: want {{field: operation id}}")
-                asset = (models.get(piece) or {}).get("assetId")
+                # A piece over the 20 MB upload limit is split (tools/assets/glb_split.py); its later parts name their own Asset.
+                asset = entry.get("Asset") or (models.get(piece) or {}).get("assetId")
                 if not (isinstance(asset, str) and ID.fullmatch(asset)):
                     errs.append(f"{key}: modelAssets.{piece}.assetId is not a rbxassetid://<positive integer> string ({asset!r})")
                 out.setdefault(piece, {})[key] = dict(entry, Asset=asset)
+    for piece, subs in out.items():
+        if len({e["Asset"] for e in subs.values()}) > 1:
+            errs += [f"{k}: {piece} spans several model assets, so every sub needs a center" for k, e in subs.items() if e.get("center") is None]
     for piece, subs in reg.items():
         for key in subs if isinstance(subs, dict) else ():
             if key not in expected:
@@ -124,8 +128,9 @@ def main(argv=None):
     ap.add_argument("--check", action="store_true", help="validate only, write nothing")
     ap.add_argument("--allow-missing", action="append", default=[], metavar="PIECE|PIECE__SUB")
     ap.add_argument("--root", type=Path, default=ROOT)
+    ap.add_argument("--vesp-manifests", type=Path, help="folder with kit/props/trees/manifest.json (default assets/source/vesperhold)")
     a = ap.parse_args(argv)
-    errs, pieces = validate(a.kit, a.root, set(a.allow_missing))
+    errs, pieces = validate(a.kit, a.root, set(a.allow_missing), a.vesp_manifests)
     if errs:
         print("\n".join(errs), file=sys.stderr)
         print(f"REFUSED: {len(errs)} problem(s); nothing written", file=sys.stderr)
