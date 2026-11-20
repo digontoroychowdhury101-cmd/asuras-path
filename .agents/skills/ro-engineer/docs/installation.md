@@ -9,7 +9,7 @@ credentials, endpoint, or Studio plugin is bundled here.
 ## Standalone folder: Claude Code and Codex
 
 Requirements: a host supporting filesystem skills, and access to the target
-directory. Extract `ro-engineer-skill-v1.0.1.zip`; copy the inner `ro-engineer`
+directory. Extract `ro-engineer-skill-v1.0.2.zip`; copy the inner `ro-engineer`
 folder intact to one destination:
 
 | Host | This project | This user |
@@ -105,7 +105,7 @@ Sources: [Build skills](https://learn.chatgpt.com/docs/build-skills),
 
 ## ChatGPT / OpenAI plugin package
 
-`ro-engineer-openai-plugin-v1.0.1.zip` contains portable root `plugin.json` and
+`ro-engineer-openai-plugin-v1.0.2.zip` contains portable root `plugin.json` and
 `skills/ro-engineer/` with the same canonical skill bytes. It has no MCP server
 or hooks. Its manifest is generated from `packaging/openai-plugin.json`; it does
 not reuse Claude's manifest or pretend those formats are interchangeable.

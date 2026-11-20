@@ -24,7 +24,9 @@ small fix does not need a new architecture or a game-design phase.
 
 Capabilities can combine. Detect actual tool descriptions and permissions;
 names and read/write/validation support vary between MCP implementations.
-Installing this skill grants no Studio or ROTEX connection. Never invent
+Installing this skill grants no Studio or ROTEX connection. Before MCP
+asset generation, store inserts, image uploads, or saves, follow
+[asset compliance](references/asset-compliance.md). Never invent
 inspection, execution, or test results. Read [tool modes](references/tool-modes.md)
 when choosing a target, connecting tools, or handling partial access.
 
@@ -48,6 +50,7 @@ the table is not a bundle to read in full. Templates are optional.
 | Known failure modes | [sharp edges](references/sharp-edges.md) |
 | Player loop / reference-game analysis | [loop design](workflows/design-game-loop.md) |
 | Retention / onboarding | [incentives](references/player-incentives.md); [retention audit](workflows/retention-audit.md) for a review |
+| Generating, inserting, uploading, or saving assets via Studio MCP | [asset compliance](references/asset-compliance.md) (Preview mode by default) |
 | Economy / progression / events | [economy](references/progression-economy.md), [economy audit](workflows/economy-audit.md), or [events](references/live-ops-events.md) |
 
 Keep game-design references out of unrelated engineering work. For significant

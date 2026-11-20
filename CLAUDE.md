@@ -39,6 +39,10 @@ The creator is entirely vibe-coding this Roblox game and does not write code man
 
 ## Agent skills
 
+### Ro-Engineer
+
+For Roblox/Luau implementation and review and whenever the user mentions ro-engineer, load `/ro-engineer:ro-engineer` from the Claude Code plugin at v1.0.2 or newer. If that plugin is unavailable or older, read the project copy at `.agents/skills/ro-engineer/SKILL.md`.
+
 ### Issue tracker
 
 Issues live in GitHub Issues (`gh` CLI). See `docs/agents/issue-tracker.md`.

@@ -20,9 +20,9 @@ permitted account; record client/version and result. Do not claim unrun tests.
 The builder checks local references and metadata, emits deterministic ZIPs with
 forward-slash paths, verifies entries/bytes, and writes SHA256SUMS.txt. Artifacts:
 
-- `dist/ro-engineer-skill-v1.0.1.zip`: one `ro-engineer/` directory containing
+- `dist/ro-engineer-skill-v1.0.2.zip`: one `ro-engineer/` directory containing
   the skill, supporting files, metadata, and license.
-- `dist/ro-engineer-openai-plugin-v1.0.1.zip`: root portable `plugin.json`,
+- `dist/ro-engineer-openai-plugin-v1.0.2.zip`: root portable `plugin.json`,
   README/license, and `skills/ro-engineer/` generated from that same content.
 
 Explicit allowlists exclude `.git`, promo, old archives, unrelated scripts,

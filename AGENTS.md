@@ -1,6 +1,6 @@
 # Asura’s Path coding workflow
 
-For Roblox/Luau implementation and review, use the project-local ro-engineer skill at `.agents/skills/ro-engineer/SKILL.md` when available. Read only the references relevant to the task. Preserve existing module interfaces, server authority, and project architecture; new frameworks require a demonstrated need.
+Use the project-local ro-engineer skill at `.agents/skills/ro-engineer/SKILL.md` for Roblox/Luau implementation and review and whenever the user mentions ro-engineer. Use v1.0.2 or newer and read only the references relevant to the task. Preserve existing module interfaces, server authority, and project architecture; new frameworks require a demonstrated need.
 
 Before editing, inspect affected callers, source mappings, and the current working tree. Preserve unrelated work in progress. Never stage or commit another task’s edits.
 

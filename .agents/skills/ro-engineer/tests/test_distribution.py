@@ -29,7 +29,7 @@ class DistributionTests(unittest.TestCase):
         shutil.copytree(ROOT, self.root, ignore=shutil.ignore_patterns('.git', 'dist', '__pycache__'))
 
     def test_packages_preserve_canonical_bytes_and_exclude_repository_noise(self):
-        (self.root / 'promo').mkdir()
+        (self.root / 'promo').mkdir(exist_ok=True)
         (self.root / 'promo/private.md').write_text('DO NOT PACKAGE')
         (self.root / '.mcp.json').write_text('{"secret": "not a connector"}')
         artifacts = packaging.build(self.root)

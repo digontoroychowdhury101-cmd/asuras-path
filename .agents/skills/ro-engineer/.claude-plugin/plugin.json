@@ -1,7 +1,7 @@
 {
   "name": "ro-engineer",
   "displayName": "ro-engineer",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Project-aware Roblox/Luau engineering and optional gameplay design with security, lifecycle, and evidence-based validation.",
   "author": {
     "name": "excaldev",

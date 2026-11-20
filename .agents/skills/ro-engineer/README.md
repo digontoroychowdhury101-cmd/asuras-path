@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="assets/banner-v1.0.1.png" alt="ro-engineer v1.0.1: Better context. Better Roblox code." width="100%">
+  <img src="assets/banner-v1.0.2.png" alt="ro-engineer v1.0.2: asset guardrails for the Roblox Studio MCP" width="100%">
 </p>
 
-# ro-engineer v1.0.1
+# ro-engineer v1.0.2
 
 Project-aware Roblox/Luau engineering for Claude Code, Codex, and supported
 ChatGPT environments. Inspect existing systems, choose architecture that fits,
@@ -24,11 +24,11 @@ does not install libraries, connect MCP, or grant Roblox Studio access.
 
 Use the complete `ro-engineer/` folder, including references, workflows,
 templates, and metadata. Root-level `SKILL.md` in an ordinary project is not
-a universal Codex installation. Use the [v1.0.1 release](https://github.com/excaldev/ro-engineer/releases/tag/v1.0.1):
+a universal Codex installation. Use the [v1.0.2 release](https://github.com/excaldev/ro-engineer/releases/tag/v1.0.2):
 
-- [Standalone skill ZIP](https://github.com/excaldev/ro-engineer/releases/download/v1.0.1/ro-engineer-skill-v1.0.1.zip): Claude standalone, Codex, and supported setup import.
-- [OpenAI plugin ZIP](https://github.com/excaldev/ro-engineer/releases/download/v1.0.1/ro-engineer-openai-plugin-v1.0.1.zip): supported ChatGPT custom-plugin installation.
-- [Download checksums](https://github.com/excaldev/ro-engineer/releases/download/v1.0.1/SHA256SUMS.txt): verify that downloaded files match the release packages.
+- [Standalone skill ZIP](https://github.com/excaldev/ro-engineer/releases/download/v1.0.2/ro-engineer-skill-v1.0.2.zip): Claude standalone, Codex, and supported setup import.
+- [OpenAI plugin ZIP](https://github.com/excaldev/ro-engineer/releases/download/v1.0.2/ro-engineer-openai-plugin-v1.0.2.zip): supported ChatGPT custom-plugin installation.
+- [Download checksums](https://github.com/excaldev/ro-engineer/releases/download/v1.0.2/SHA256SUMS.txt): verify that downloaded files match the release packages.
 
 See [installation and platform support](docs/installation.md) for requirements,
 manual paths, installer options, updates, uninstall, availability limits,

@@ -1,5 +1,22 @@
 # Changelog
 
+## v1.0.2 (2026-11-13)
+
+Light update: guardrails for agents that create or insert assets through the
+Roblox Studio MCP server.
+
+- Add `references/asset-compliance.md`: content, IP, and script-security checks
+  for MCP mesh/material/model/animation generation, store inserts, image
+  uploads, and saves; safe prompting for generators; blood/gore risk guide.
+- Preview mode by default (multi-angle captures, per-asset or batch approval,
+  including assets made by other skills); opt-in Autopilot with at most two
+  self-corrections, quarantine, and an end-of-run report.
+- Hard stops in every mode: image uploads, scripted store inserts, DO NOT
+  UPLOAD findings, unknown-rights content, cloud-place saves, destructive edits.
+- Stage in `ServerStorage/_AssetStaging`; quarantine in `_AssetQuarantine`.
+- Route asset work to the new reference from `SKILL.md`.
+
+
 ## v1.0.1 (2026-11-01)
 
 v1.0.0 included unnecessary generic programming explanations, repeated rules,
