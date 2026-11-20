@@ -448,6 +448,7 @@ do
 					local lake = h < F.WaterY and chasmW[i - 1][j - 1] == 0
 					local slope = math.sqrt((hs[i][j - 1] - h) ^ 2 + (hs[i - 1][j] - h) ^ 2) / RES
 					local m = O.materialAt(tile.X0 + (i - 0.5) * RES, tile.Z0 + (j - 0.5) * RES, h, slope, roadW[i - 1][j - 1], channelW[i - 1][j - 1], chasmW[i - 1][j - 1])
+					m = O.Paint[m] or m
 					for k = 1, 16 do
 						local yc = y0 + (k - 0.5) * RES
 						local occ = math.min(math.clamp((h - yc) / RES + 0.5, 0, 1), math.clamp((yc - bottoms[i][j]) / RES + 0.5, 0, 1))
@@ -645,6 +646,29 @@ do
 	Terrain.Use(os.clock, function() end, nil)
 	Terrain.UsePool({}, nil)
 	Terrain.Manifest = {}
+end
+
+-- Terrain grass (creator, 2026-11-21): only Enum.Material.Grass grows Terrain.Decoration blades, so the writer paints
+-- leafy ground as Grass (Overworld.Paint) while materialAt, which places the dressing, still says LeafyGrass.
+do
+	local g = O.Altars[O.Gateway].Placement
+	local x0, z0 = math.floor(g.X / 128) * 128, math.floor(g.Z / 128) * 128
+	local buf = compute.tile(O, x0, z0, 32, 32, O.Frame.WaterY, O.padsNear(x0 - 4, z0 - 4, x0 + 132, z0 + 132))
+	local count = {}
+	for at = compute.Header + 32 * 32 * 4, buffer.len(buf) - 2, 2 do
+		local name = compute.Materials[buffer.readu8(buf, at) + 1]
+		count[name] = (count[name] or 0) + 1
+	end
+	local leafy = 0
+	for x = x0, x0 + 124, 4 do
+		for z = z0, z0 + 124, 4 do
+			local _, m = O.surfaceAt(x + 2, z + 2)
+			if m == "LeafyGrass" then leafy += 1 end
+		end
+	end
+	print(string.format("glade tile paint: Grass %d, LeafyGrass %d voxels; materialAt LeafyGrass columns %d", count.Grass or 0, count.LeafyGrass or 0, leafy))
+	check("terrain grass: leafy ground is painted Grass (no LeafyGrass voxels written)", (count.LeafyGrass or 0) == 0 and (count.Grass or 0) > 0)
+	check("terrain grass: dressing still sees LeafyGrass (placement unchanged)", leafy > 0)
 end
 
 print(string.format("overworld order: %d passed, %d failed", passed, failed))

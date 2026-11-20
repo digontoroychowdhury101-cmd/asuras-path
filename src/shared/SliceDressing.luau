@@ -21,7 +21,8 @@ SliceDressing.Cell = 128 -- studs: the terrain tile size, so a cell key "i,j" is
 -- Budget the builder must stay inside (test_slice_dressing asserts it). MeshParts = final kit sub-meshes (one MeshPart each);
 -- PlaceholderParts = what the placeholder builder makes (stairs are step blocks); Tris = authored triangles if all were loaded
 -- (TrisLod = the same with every Lod sub-mesh dropped, i.e. Leaves_Detail beyond ~150 studs, manifest "lod"). Raise a number only with a Studio profile behind it.
-SliceDressing.Budget = { MeshParts = 3000, PlaceholderParts = 3400, Tris = 5000000, TrisLod = 3200000, Placements = 1900 }
+-- Tris / TrisLod raised 2026-11-21 when the far belt switched to near meshes (7.42M / 3.82M); the Studio A/B cost was ~2% frame time.
+SliceDressing.Budget = { MeshParts = 3000, PlaceholderParts = 3400, Tris = 7600000, TrisLod = 3900000, Placements = 1900 }
 
 -------------------------------------------------------------------------------------------------
 -- Pieces. Sub = one kit sub-mesh (Piece__Name). B = placeholder boxes { cx, cz, y0, y1, w, d } as fractions of the piece
@@ -292,6 +293,9 @@ end
 -- Placeholder: the Bark box of the near piece, and one leaf box over the whole near crown (the Mass and Detail boxes united: the far lumps fill the full bbox).
 -- The manifest's per-piece switch_distance_studs (150-220, read off the 60/150/300 renders) is NOT used: one FarSwitch keeps the budget in step with the placement rules.
 SliceDressing.FarSwitch = 140
+-- Creator, 2026-11-21: the _Far stacked-disc crowns read wrong, so the belt beyond FarSwitch plants the near mesh too (same spot,
+-- same bbox). Windows Studio A/B, all 185 belt trees: 58.0 vs 59.2 ms mean; Roblox mesh LOD thins them with distance.
+SliceDressing.FarVariants = false
 local FAR: { any } = {
 	{ "Canopy_Tree_A", 39.7, 44.23, 41.11, "Bark:299 Leaves:1200" },
 	{ "Canopy_Tree_B", 31.83, 58.6, 30.79, "Bark:299 Leaves:1200" },
@@ -1398,7 +1402,7 @@ function SliceDressing.build(fresh: boolean?): any
 							if rand(gi, gj, rule.Salt * 10 + 3) < rule.Base * wc * math.clamp(factor, 0, 1.6) then
 								local pick = pickPiece(if rule.RoadPieces and nearRoad(x, z) < rule.RoadMin[1] then { Pieces = rule.RoadPieces } elseif standW > 0.5 then { Pieces = rule.StandPieces } else rule, rand(gi, gj, rule.Salt * 10 + 4))
 								local isFar = belt and farFrom(x, z) > SliceDressing.FarSwitch
-								if isFar then
+								if isFar and SliceDressing.FarVariants then
 									pick ..= "_Far" -- low-tri variant, same bbox
 								end
 								local piece = P[pick]

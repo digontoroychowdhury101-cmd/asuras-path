@@ -1201,6 +1201,11 @@ function Overworld.heightAt(x: number, z: number): number
 	return (Overworld.sampleAt(x, z))
 end
 
+-- What the terrain writer paints in place of a materialAt name. Only Enum.Material.Grass grows Terrain.Decoration blades
+-- (creator, 2026-11-21: tall grass wherever it fits), so leafy forest floor and foothill meadows are painted Grass. The
+-- dressing keeps reading materialAt, so no tree, fern or prop moves. Desert, snow and the Vesperhold ridge never return LeafyGrass.
+Overworld.Paint = table.freeze({ LeafyGrass = "Grass" }) :: { [string]: string }
+
 -- Terrain material name (an Enum.Material name) for a column. Regions pick by blendAt weight, dithered
 -- by low-frequency noise so every border is a ragged band, not a line. slope = |grad h| (rise / run).
 local ROAD_MATERIAL: { [string]: string } = { Forest = "Ground", GoldenRavine = "Ground", AridBasin = "Limestone", Snowfields = "Slate", MountainAscent = "Slate" }

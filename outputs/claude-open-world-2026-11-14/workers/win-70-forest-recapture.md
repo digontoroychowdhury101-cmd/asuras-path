@@ -33,3 +33,16 @@ Instruction: handoff §4 step 7, creator's "Yes continue".
 5. Foliage: near crowns darker and textured, no longer neon; trunks and understory still near-black in shade (02, 03). **Partly.**
 
 **Lead assessment: not yet acceptable; M2 stays held.** Creator review of forest70_sheet.jpg pending.
+
+## win-71 follow-up (same day): creator's grass + tree calls
+- Creator: "Tall terrain grass looks good, manually apply it to as many regions as possible where it makes sense" and the
+  stacked-disc trees "look very odd and do not fit the aesthetic, fix".
+- Grass: `Overworld.Paint = { LeafyGrass = "Grass" }`, applied only by OverworldTerrainCompute. Only Grass grows
+  Terrain.Decoration, so leafy forest floor, the glade, Amberfall's wet east side and the Ashen Stair foothills now carry
+  blades. materialAt (dressing ecology) unchanged, so no tree or prop moved. Desert, snow and Vesperhold untouched.
+- Trees: `SliceDressing.FarVariants = false`. The 185 belt trees keep their spots and bbox but are the near meshes.
+  Studio A/B (all 185 swapped, same moment): 58.0 vs 59.2 ms mean. Budget raised to 7.6M / 3.9M tris (now 7.42M / 3.82M).
+- Build of the change: 63/63 cells, 2532 MeshParts, 0 _Far, 0 placeholders; view 07 3 x 300 frames 44.8 / 44.9 / 45.0 ms
+  (45.5 before); 4004 MB. Captures captures/win/forest71/ (before/after sheet forest71_before_after.jpg).
+- Tests: overworld order 494/0 (new paint checks), slice 1356/0, terrain 102/0; verify_all exit 0.
+- Not checked in Studio: grass in Amberfall and the Ashen Stair foothills (unit-tested only).

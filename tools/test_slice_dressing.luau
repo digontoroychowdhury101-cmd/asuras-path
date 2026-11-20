@@ -290,7 +290,7 @@ for _, p in R.Placements do
 			local a = O.Altars[disc.Altar].Placement
 			d = math.min(d, dist(p.X, p.Z, a.X, a.Z) - disc.R + S.Corridor.Half)
 		end
-		local reach = S.Corridor.Half + S.Corridor.Fade + (if S.Pieces[p.Piece].Far then S.Scatter.Tree.FarBelt + S.Corridor.Fade else 0) -- the far belt carries _Far trees only
+		local reach = S.Corridor.Half + S.Corridor.Fade + (if S.Pieces[p.Piece].Far or (not S.FarVariants and p.Class == "Tree") then S.Scatter.Tree.FarBelt + S.Corridor.Fade else 0) -- the far belt carries trees only (near meshes since FarVariants is off)
 		if d > reach then stray += 1 end
 	end
 end
@@ -884,9 +884,11 @@ do -- near / far trees: a _Far variant exactly when the tree is beyond FarSwitch
 			badNear += if d > S.FarSwitch then 1 else 0
 		end
 	end
-	print(string.format("  trees %d: %d near (full mesh) + %d far (_Far, > %d studs from every road and capture eye)", #trees, nNear, nFar, S.FarSwitch))
-	check("every _Far tree is beyond the switch distance from every road centreline and capture eye", nFar > 0 and badFar == 0)
-	check("every near tree is within the switch distance", badNear == 0)
+	print(string.format("  trees %d: %d near (full mesh) + %d far (_Far, > %d studs from every road and capture eye); %d near trees stand beyond it", #trees, nNear, nFar, S.FarSwitch, badNear))
+	-- Creator, 2026-11-21: the _Far stacked-disc crowns read wrong. Every tree is the near mesh at every distance (Studio A/B on
+	-- Windows: 58.0 vs 59.2 ms mean with all 185 belt trees swapped; engine mesh LOD carries the distance). The belt keeps its spots.
+	check("no _Far variant is planted (S.FarVariants off)", S.FarVariants == false and nFar == 0 and badFar == 0)
+	check("the far belt still plants trees beyond the switch distance, as near meshes", badNear >= 150)
 	check("tree count is at least the original 196 (" .. #trees .. ")", #trees >= 196)
 	check("the far switch is 140 studs", S.FarSwitch == 140)
 	for _, name in S.FarPieces do

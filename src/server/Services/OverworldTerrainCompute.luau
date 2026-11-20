@@ -56,7 +56,7 @@ local function materialRow(O: any, x0: number, z0: number, nz: number, i: number
 		local dx, dz = H[at + STRIDE] - h, H[at + 1] - h
 		local slope = math.sqrt(dx * dx + dz * dz) / RES
 		local name = O.materialAt(x, z0 + (j + 0.5) * RES, h, slope, RW[at], CW[at], KW[at])
-		local id = IDS[name]
+		local id = IDS[O.Paint[name] or name]
 		if not id then error("unknown terrain material " .. tostring(name)) end
 		MID[i * nz + j + 1] = id
 	end
