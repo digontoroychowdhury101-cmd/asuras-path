@@ -763,6 +763,17 @@
   "operationId": "ba3ead1d-62fb-4c3a-b076-d2c5b00aaf33",
   "sha256": "387ed62701700ca2c5cc2e395f6da2ca2bc54d129a218fae443c96b962d4558f"
  },
+ "vesp/props/Waterfall_Sheet_A": {
+  "assetId": "90427311650970",
+  "bytes": 8325068,
+  "displayName": "Vesp_Waterfall_Sheet_A",
+  "error": null,
+  "file": "work/vesperhold-claude/win69/pilot/props/Waterfall_Sheet_A.glb",
+  "moderation": "Approved",
+  "operationId": "ddc58aed-3bfb-4f53-b722-337a6e2f1965",
+  "sha256": "1a2103dc18148b81fa7abff9edf547aa6c81f9f359aaea65dd71ac74937463a1",
+  "source": "work/vesperhold-claude/win68/split/props/Waterfall_Sheet_A.glb"
+ },
  "vesp/trees/Dead_Log_A": {
   "assetId": "87753601357338",
   "bytes": 5938508,

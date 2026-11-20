@@ -1,7 +1,7 @@
 """Upload GLBs as Model assets from the cloud window via the Studio MCP bridge; resume-safe ledger (skip entries with assetId).
 python tools/assets/upload_batch.py <ledger.json> <prefix>=<dir> ...   (files <= 20,000,000 bytes only; larger ones are listed as skipped: split them with glb_split.py)"""
 import hashlib, json, os, subprocess, sys, time
-STUDIO, USER = "3a8c18c2-dd52-4834-89ac-3469ff0a5138", "3148600636"
+STUDIO, USER = os.environ.get("ASURA_CLOUD_STUDIO", "3a8c18c2-dd52-4834-89ac-3469ff0a5138"), "3148600636"  # cloud window id changes per launch
 ledger_path = sys.argv[1]
 ledger = json.load(open(ledger_path)) if os.path.exists(ledger_path) else {}
 p = subprocess.Popen([sys.executable, "tools/run_studiomcp.py"], stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True, encoding="utf-8")

@@ -15,7 +15,7 @@ import sys
 from datetime import date
 from pathlib import Path
 
-STUDIO = "3a8c18c2-dd52-4834-89ac-3469ff0a5138"
+STUDIO = os.environ.get("ASURA_CLOUD_STUDIO", "3a8c18c2-dd52-4834-89ac-3469ff0a5138")  # cloud window id changes per launch
 MAPS = ("ColorMap", "NormalMap", "RoughnessMap", "MetalnessMap")
 FOREST = {"slice": "SLICE", "hero": "HERO", "bellwood_far": "BELLWOOD_FAR",
           "bellwood_veg": "BELLWOOD", "bellwood_built_a": "BELLWOOD", "bellwood_built_b": "BELLWOOD"}
