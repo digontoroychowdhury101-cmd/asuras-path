@@ -524,6 +524,9 @@ print("  predicted Studio sky blocked: " .. table.concat(predLine, ", "))
 local classLine = {}
 for _, c in S.Classes do table.insert(classLine, c .. " " .. (R.ByClass[c] or 0)) end
 print("  per-class counts: " .. table.concat(classLine, ", "))
+-- win-73: wilderness, not park: a knee-to-head layer (shrubs, saplings) between the trunks, at least ~1 per 2 trees (was 74 / 339).
+local mid, nTree = (R.ByClass.Shrub or 0) + (R.ByClass.Sapling or 0), R.ByClass.Tree or 0
+check(string.format("understory mid layer: %d shrubs + saplings for %d trees (>= 0.45 per tree)", mid, nTree), nTree > 0 and mid >= 0.45 * nTree)
 
 local sMin, sMax, tall, small = math.huge, 0, 0, 0
 local bins, cx, cy = {}, 0, 0

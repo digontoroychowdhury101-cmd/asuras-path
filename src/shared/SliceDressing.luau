@@ -22,7 +22,8 @@ SliceDressing.Cell = 128 -- studs: the terrain tile size, so a cell key "i,j" is
 -- PlaceholderParts = what the placeholder builder makes (stairs are step blocks); Tris = authored triangles if all were loaded
 -- (TrisLod = the same with every Lod sub-mesh dropped, i.e. Leaves_Detail beyond ~150 studs, manifest "lod"). Raise a number only with a Studio profile behind it.
 -- Tris / TrisLod raised 2026-11-21 when the far belt switched to near meshes (7.42M / 3.82M); the Studio A/B cost was ~2% frame time.
-SliceDressing.Budget = { MeshParts = 3000, PlaceholderParts = 3400, Tris = 7600000, TrisLod = 3900000, Placements = 1900 }
+-- Raised again 2026-11-21 (win-73) for the denser shrub layer (7.89M / 4.30M): Studio toggle of all 143 shrubs cost 0.4 ms (43.8 vs 43.4).
+SliceDressing.Budget = { MeshParts = 3000, PlaceholderParts = 3400, Tris = 7950000, TrisLod = 4350000, Placements = 1900 }
 
 -------------------------------------------------------------------------------------------------
 -- Pieces. Sub = one kit sub-mesh (Piece__Name). B = placeholder boxes { cx, cz, y0, y1, w, d } as fractions of the piece
@@ -507,8 +508,8 @@ SliceDressing.Scatter = {
 		Material = { LeafyGrass = 1, Grass = 0.6, Ground = 0.6, Mud = 0.5 } },
 	Sapling = { Salt = 12, Spacing = 24, Base = 0.07, Jitter = 1, MaxSlope = 0.6, Clearing = 0.6, Under = 0.5, Gap = 1.5, Glade = 2, Scale = { 0.8, 1.3 },
 		Pieces = { { "Sapling_Tree", 1 } }, Material = { LeafyGrass = 1, Grass = 0.8, Ground = 0.4, Mud = 0.3 } },
-	Shrub = { Salt = 2, Spacing = 20, Base = 0.18, Jitter = 1, MaxSlope = 0.7, Clearing = 0.5, Under = 0.6, Gap = 0.9, Glade = 1.8, Scale = { 0.8, 1.4 },
-		Pieces = { { "Understory_Shrub", 0.15 }, { "Understory_Shrub_Small", 0.5 }, { "Shrub_Hazel", 0.15 }, { "Shrub_Thicket", 0.1 }, { "Shrub_Berry", 0.1 } }, Material = { LeafyGrass = 1, Grass = 0.7, Ground = 0.45, Mud = 0.4, Rock = 0.12 } },
+	Shrub = { Salt = 2, Spacing = 16, Base = 0.26, Jitter = 1, MaxSlope = 0.7, Clearing = 0.5, Under = 1.3, Gap = 0.9, Glade = 1.8, Scale = { 0.8, 1.4 },
+		Pieces = { { "Understory_Shrub", 0.25 }, { "Understory_Shrub_Small", 0.25 }, { "Shrub_Hazel", 0.3 }, { "Shrub_Thicket", 0.15 }, { "Shrub_Berry", 0.05 } }, Material = { LeafyGrass = 1, Grass = 0.7, Ground = 0.45, Mud = 0.4, Rock = 0.12 } },
 	Fern = { Salt = 3, Spacing = 15, Base = 0.17, Jitter = 1, MaxSlope = 0.8, Clearing = 0.3, Under = 1.0, Gap = 0.7, Glade = 1.6, Scale = { 0.8, 1.5 },
 		Pieces = { { "Fern_Clump", 0.4 }, { "Fern_Bracken", 0.3 }, { "Fern_Sword", 0.3 } }, Material = { Mud = 1, LeafyGrass = 0.85, Grass = 0.45, Ground = 0.25 } },
 	Flower = { Salt = 13, Spacing = 14, Base = 0.05, Jitter = 1, MaxSlope = 0.5, Clearing = -0.3, Under = 0.1, Gap = 1.0, Glade = 2.4, Scale = { 0.9, 1.5 },

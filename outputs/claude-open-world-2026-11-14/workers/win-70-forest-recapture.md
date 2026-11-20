@@ -60,3 +60,12 @@ Instruction: handoff §4 step 7, creator's "Yes continue".
 - Fix route: re-tone those two ColorMaps (tools/assets/retone_glb.py lifts: Bark 60 -> ~100 mean, Leaf value up ~1.5x) and re-upload the two images. Then
   repoint the Slice/Bellwood registries. **HELD: needs the creator's approval to upload** (pilot first, from the cloud window, op IDs recorded).
 - Not done here: no src change (the textures are assets, not code), no upload, no frame-time run (texture swap only, same resolution).
+
+## win-73 (loop iteration 2): park, not wilderness: a shrub layer between the trunks
+- The slice had 339 trees but only 53 shrubs and 21 saplings (0.22 per tree), so the floor between trunks read as lawn.
+- Test first: `understory mid layer >= 0.45 shrubs + saplings per tree` (test_slice_dressing), red at 74/339.
+- Change (Scatter.Shrub only): Spacing 20->16, Base 0.18->0.26, Under 0.6->1.3, mix toward the larger Hazel/Thicket/Understory_Shrub. Shrubs 53->143 (mid 164, 0.48/tree);
+  ferns 79->73, placements 1412, MeshParts 2703, tris 7.89M / 4.30M Lod.
+- Studio (work/vesperhold-claude/win73, closed unsaved): toggling all 143 shrubs at view 01 gave 43.9/43.5/44.0 vs 43.3/43.4/43.6 ms (~0.4 ms); budget raised to 7.95M / 4.35M.
+- Captures: captures/win/forest73/ (sheet forest73_before_after.jpg). The gain is clear in 03 (shrubs between the left trunks) and only slight in 01: the glade and keeps stay open by design.
+- Tests: slice 1357/0; verify_all exit 0. Canopy cover and view 06 unchanged (06 is the pavilion court, open sky is intended).
