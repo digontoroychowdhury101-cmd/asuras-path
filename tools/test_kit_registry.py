@@ -207,6 +207,19 @@ class KitRegistry(unittest.TestCase):
         for p in names:
             self.assertIn(f'["{p}__Stone"]', text)
 
+    def test_vesperhold_mesh_id_shared_across_pieces_only(self):
+        # Roblox dedupes identical geometry (both hooded statues' plinths); the loader resolves each piece inside its own model.
+        names = {"Arcade_Bay_40": "kit", "Hooded_Statue_A": "props", "Dead_Pine_Snapped_A": "trees"}
+        mesh = rid()
+        reg = {"modelAssets": {p: {"assetId": rid()} for p in names}, "pieces": {p: {p + "__Stone": {"MeshId": mesh}} for p in names}}
+        self._vesp(reg)
+        self.assertEqual(K.validate("vesperhold", self.root)[0], [])
+        man = self.root / "assets/source/vesperhold/kit/manifest.json"
+        man.write_text(json.dumps({"pieces": {"Arcade_Bay_40": {"sub_meshes": {"Arcade_Bay_40__Stone": 10, "Arcade_Bay_40__Trim": 10}}}}))
+        reg["pieces"]["Arcade_Bay_40"]["Arcade_Bay_40__Trim"] = {"MeshId": mesh}
+        (self.root / "assets/VESPERHOLD_KIT_UPLOADED.json").write_text(json.dumps(reg))
+        self.assertTrue(any("already used by Arcade_Bay_40__" in e for e in K.validate("vesperhold", self.root)[0]))
+
     def test_vesperhold_unknown_sub_refused(self):
         reg = {"modelAssets": {"Arcade_Bay_40": {"assetId": rid()}}, "pieces": {"Arcade_Bay_40": {"Arcade_Bay_40__Ghost": {"MeshId": rid()}}}}
         self._vesp(reg)

@@ -72,6 +72,30 @@
       "operationId": "6f3afb28-cdce-4510-933f-5634b1007d1d",
       "uploaded": "2026-11-20"
     },
+    "Dead_Pine_Snapped_A": {
+      "assetId": "rbxassetid://132033088944635",
+      "moderationState": "Approved",
+      "operationId": "3f1beed0-4ca3-46e3-ac56-6882e783ebf3",
+      "uploaded": "2026-11-21"
+    },
+    "Dead_Pine_Snapped_B": {
+      "assetId": "rbxassetid://83956594282092",
+      "moderationState": "Approved",
+      "operationId": "e248f9e7-f241-4d74-8766-72fc7b0a69f9",
+      "uploaded": "2026-11-21"
+    },
+    "Dead_Stump_A": {
+      "assetId": "rbxassetid://131576852436715",
+      "moderationState": "Approved",
+      "operationId": "c1944bf7-1a7e-4186-912f-b323bcac7ba5",
+      "uploaded": "2026-11-21"
+    },
+    "Dead_Stump_B": {
+      "assetId": "rbxassetid://100010870065607",
+      "moderationState": "Approved",
+      "operationId": "c694821e-acb5-4cc9-bda4-31f6251f2386",
+      "uploaded": "2026-11-21"
+    },
     "Door_Iron": {
       "assetId": "rbxassetid://106082442688876",
       "moderationState": "Approved",
@@ -107,6 +131,18 @@
       "moderationState": "Approved",
       "operationId": "f5df02c9-8ac8-4cb2-add1-77b7045ac8db",
       "uploaded": "2026-11-20"
+    },
+    "Hooded_Statue_A": {
+      "assetId": "rbxassetid://105405356572441",
+      "moderationState": "Approved",
+      "operationId": "6003c4a6-be82-4a82-a5a0-68955091f5a5",
+      "uploaded": "2026-11-21"
+    },
+    "Hooded_Statue_B": {
+      "assetId": "rbxassetid://97238663778899",
+      "moderationState": "Approved",
+      "operationId": "0c7d84af-694c-4522-bd9d-ee7296dbfc11",
+      "uploaded": "2026-11-21"
     },
     "Lancet_Pair": {
       "assetId": "rbxassetid://78772362584692",
@@ -204,11 +240,29 @@
       "operationId": "d5b21c86-47f7-41fa-8381-d184b057f80e",
       "uploaded": "2026-11-20"
     },
+    "Statue_Mourner": {
+      "assetId": "rbxassetid://90688345755433",
+      "moderationState": "Approved",
+      "operationId": "02867bda-85e4-408a-ad12-c41a8e34b7d1",
+      "uploaded": "2026-11-21"
+    },
     "Statue_Plinth": {
       "assetId": "rbxassetid://70518453786588",
       "moderationState": "Approved",
       "operationId": "c43394f6-2d57-43ce-9b1b-edf2dcaefdea",
       "uploaded": "2026-11-20"
+    },
+    "Statue_Veiled_Scan": {
+      "assetId": "rbxassetid://104766635913552",
+      "moderationState": "Approved",
+      "operationId": "9b31aff7-0802-4254-ad70-b75714ef1e63",
+      "uploaded": "2026-11-21"
+    },
+    "Statue_Wraith": {
+      "assetId": "rbxassetid://133054371700824",
+      "moderationState": "Approved",
+      "operationId": "130bc1b5-3eb5-4456-bb2b-f3f780122e6f",
+      "uploaded": "2026-11-21"
     },
     "Thorn_Twisted_A": {
       "assetId": "rbxassetid://115588682008522",
@@ -227,6 +281,30 @@
       "moderationState": "Approved",
       "operationId": "019ab4bb-e355-444c-bee1-d39cf8203b64",
       "uploaded": "2026-11-20"
+    },
+    "Viaduct_Balustrade_30": {
+      "assetId": "rbxassetid://121940175913831",
+      "moderationState": "Approved",
+      "operationId": "511aba1c-44a1-4bfa-8bd1-a099011c7aaf",
+      "uploaded": "2026-11-21"
+    },
+    "Viaduct_Bay": {
+      "assetId": "rbxassetid://134503562213313",
+      "moderationState": "Approved",
+      "operationId": "455ce771-c2ec-4395-919f-69bb2527871e",
+      "uploaded": "2026-11-21"
+    },
+    "Waterfall_Sheet_A": {
+      "assetId": "rbxassetid://90427311650970",
+      "moderationState": "Approved",
+      "operationId": "ddc58aed-3bfb-4f53-b722-337a6e2f1965",
+      "uploaded": "2026-11-21"
+    },
+    "Waterfall_Sheet_B": {
+      "assetId": "rbxassetid://70376202213588",
+      "moderationState": "Approved",
+      "operationId": "29c1e715-f8aa-4dcf-993a-b2fca674fe7b",
+      "uploaded": "2026-11-21"
     }
   },
   "note": "Real IDs only. modelAssets = Assets API Model id (LoadAsset target; part 1 of a split piece). pieces = sub-mesh MeshId/maps read from a verified LoadAsset; split pieces carry per-sub Asset and center (tools/assets/glb_split.py).",
@@ -1184,6 +1262,154 @@
         }
       }
     },
+    "Dead_Pine_Snapped_A": {
+      "Dead_Pine_Snapped_A__Branches": {
+        "ColorMap": "rbxassetid://128686850544034",
+        "MeshId": "rbxassetid://140230576428357",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://115729867391289",
+        "RoughnessMap": "rbxassetid://93462678247481",
+        "operations": {
+          "Asset": "3f1beed0-4ca3-46e3-ac56-6882e783ebf3"
+        }
+      },
+      "Dead_Pine_Snapped_A__Limbs": {
+        "ColorMap": "rbxassetid://136427675833796",
+        "MeshId": "rbxassetid://95870843749420",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://137694577492178",
+        "RoughnessMap": "rbxassetid://137803301433430",
+        "operations": {
+          "Asset": "3f1beed0-4ca3-46e3-ac56-6882e783ebf3"
+        }
+      },
+      "Dead_Pine_Snapped_A__Trunk": {
+        "ColorMap": "rbxassetid://140705740018138",
+        "MeshId": "rbxassetid://87449036755174",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://135850975349167",
+        "RoughnessMap": "rbxassetid://132789943713064",
+        "operations": {
+          "Asset": "3f1beed0-4ca3-46e3-ac56-6882e783ebf3"
+        }
+      },
+      "Dead_Pine_Snapped_A__Twigs": {
+        "ColorMap": "rbxassetid://102850589569837",
+        "MeshId": "rbxassetid://87970132013525",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://110836283794238",
+        "RoughnessMap": "rbxassetid://101645136782569",
+        "operations": {
+          "Asset": "3f1beed0-4ca3-46e3-ac56-6882e783ebf3"
+        }
+      }
+    },
+    "Dead_Pine_Snapped_B": {
+      "Dead_Pine_Snapped_B__Branches": {
+        "ColorMap": "rbxassetid://126026206096366",
+        "MeshId": "rbxassetid://94467966615377",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://140255609302646",
+        "RoughnessMap": "rbxassetid://136056767840043",
+        "operations": {
+          "Asset": "e248f9e7-f241-4d74-8766-72fc7b0a69f9"
+        }
+      },
+      "Dead_Pine_Snapped_B__Limbs": {
+        "ColorMap": "rbxassetid://134839457715091",
+        "MeshId": "rbxassetid://125232432421863",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://126740446283828",
+        "RoughnessMap": "rbxassetid://89011354460214",
+        "operations": {
+          "Asset": "e248f9e7-f241-4d74-8766-72fc7b0a69f9"
+        }
+      },
+      "Dead_Pine_Snapped_B__Trunk": {
+        "ColorMap": "rbxassetid://103918546565369",
+        "MeshId": "rbxassetid://84882333538102",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://101859418003551",
+        "RoughnessMap": "rbxassetid://81859525208315",
+        "operations": {
+          "Asset": "e248f9e7-f241-4d74-8766-72fc7b0a69f9"
+        }
+      },
+      "Dead_Pine_Snapped_B__Twigs": {
+        "ColorMap": "rbxassetid://77446686286936",
+        "MeshId": "rbxassetid://140310265364617",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://76775617336654",
+        "RoughnessMap": "rbxassetid://102587118036448",
+        "operations": {
+          "Asset": "e248f9e7-f241-4d74-8766-72fc7b0a69f9"
+        }
+      }
+    },
+    "Dead_Stump_A": {
+      "Dead_Stump_A__Branches": {
+        "ColorMap": "rbxassetid://129662782060650",
+        "MeshId": "rbxassetid://102845367429047",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://126129807024896",
+        "RoughnessMap": "rbxassetid://100374391034615",
+        "operations": {
+          "Asset": "c1944bf7-1a7e-4186-912f-b323bcac7ba5"
+        }
+      },
+      "Dead_Stump_A__Trunk": {
+        "ColorMap": "rbxassetid://89103498920390",
+        "MeshId": "rbxassetid://139647101272577",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://76563796546323",
+        "RoughnessMap": "rbxassetid://138609588819513",
+        "operations": {
+          "Asset": "c1944bf7-1a7e-4186-912f-b323bcac7ba5"
+        }
+      },
+      "Dead_Stump_A__Twigs": {
+        "ColorMap": "rbxassetid://89100446832918",
+        "MeshId": "rbxassetid://89103511188001",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://86068318834313",
+        "RoughnessMap": "rbxassetid://82214335553518",
+        "operations": {
+          "Asset": "c1944bf7-1a7e-4186-912f-b323bcac7ba5"
+        }
+      }
+    },
+    "Dead_Stump_B": {
+      "Dead_Stump_B__Branches": {
+        "ColorMap": "rbxassetid://98335231712513",
+        "MeshId": "rbxassetid://123891496883444",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://97474419481195",
+        "RoughnessMap": "rbxassetid://99692189834902",
+        "operations": {
+          "Asset": "c694821e-acb5-4cc9-bda4-31f6251f2386"
+        }
+      },
+      "Dead_Stump_B__Trunk": {
+        "ColorMap": "rbxassetid://136277745945825",
+        "MeshId": "rbxassetid://115084068945161",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://109877897231722",
+        "RoughnessMap": "rbxassetid://114636974384794",
+        "operations": {
+          "Asset": "c694821e-acb5-4cc9-bda4-31f6251f2386"
+        }
+      },
+      "Dead_Stump_B__Twigs": {
+        "ColorMap": "rbxassetid://119649355780428",
+        "MeshId": "rbxassetid://94926117088174",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://70829401081901",
+        "RoughnessMap": "rbxassetid://92317010765061",
+        "operations": {
+          "Asset": "c694821e-acb5-4cc9-bda4-31f6251f2386"
+        }
+      }
+    },
     "Door_Iron": {
       "Door_Iron__Iron": {
         "ColorMap": "rbxassetid://93983370644040",
@@ -1571,6 +1797,390 @@
         "RoughnessMap": "rbxassetid://116061390882313",
         "operations": {
           "Asset": "f5df02c9-8ac8-4cb2-add1-77b7045ac8db"
+        }
+      }
+    },
+    "Hooded_Statue_A": {
+      "Hooded_Statue_A__Arms": {
+        "ColorMap": "rbxassetid://136365134401992",
+        "MeshId": "rbxassetid://80498920452892",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://119321251979003",
+        "RoughnessMap": "rbxassetid://104985857467824",
+        "center": [
+          0.0129,
+          14.3341,
+          -0.525
+        ],
+        "operations": {
+          "Asset": "6003c4a6-be82-4a82-a5a0-68955091f5a5"
+        }
+      },
+      "Hooded_Statue_A__Arms_2": {
+        "ColorMap": "rbxassetid://136365134401992",
+        "MeshId": "rbxassetid://93099562266833",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://119321251979003",
+        "RoughnessMap": "rbxassetid://104985857467824",
+        "center": [
+          -0.0236,
+          16.5446,
+          -0.277
+        ],
+        "operations": {
+          "Asset": "6003c4a6-be82-4a82-a5a0-68955091f5a5"
+        }
+      },
+      "Hooded_Statue_A__Drape": {
+        "ColorMap": "rbxassetid://137555279527102",
+        "MeshId": "rbxassetid://116570465075502",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://136828717533045",
+        "RoughnessMap": "rbxassetid://96703823520201",
+        "center": [
+          0.117,
+          7.3768,
+          0.4494
+        ],
+        "operations": {
+          "Asset": "6003c4a6-be82-4a82-a5a0-68955091f5a5"
+        }
+      },
+      "Hooded_Statue_A__Drape_2": {
+        "ColorMap": "rbxassetid://137555279527102",
+        "MeshId": "rbxassetid://114665178791454",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://136828717533045",
+        "RoughnessMap": "rbxassetid://96703823520201",
+        "center": [
+          0.146,
+          12.8612,
+          0.4805
+        ],
+        "operations": {
+          "Asset": "6003c4a6-be82-4a82-a5a0-68955091f5a5"
+        }
+      },
+      "Hooded_Statue_A__Drape_3": {
+        "ColorMap": "rbxassetid://137555279527102",
+        "MeshId": "rbxassetid://80139166917890",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://136828717533045",
+        "RoughnessMap": "rbxassetid://96703823520201",
+        "center": [
+          0.021,
+          16.0692,
+          0.3249
+        ],
+        "operations": {
+          "Asset": "6003c4a6-be82-4a82-a5a0-68955091f5a5"
+        }
+      },
+      "Hooded_Statue_A__Drape_4": {
+        "ColorMap": "rbxassetid://137555279527102",
+        "MeshId": "rbxassetid://102783395268017",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://136828717533045",
+        "RoughnessMap": "rbxassetid://96703823520201",
+        "center": [
+          -0.0493,
+          18.5552,
+          0.1373
+        ],
+        "operations": {
+          "Asset": "6003c4a6-be82-4a82-a5a0-68955091f5a5"
+        }
+      },
+      "Hooded_Statue_A__Hood": {
+        "ColorMap": "rbxassetid://87720389680572",
+        "MeshId": "rbxassetid://74304189739490",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://137260314721746",
+        "RoughnessMap": "rbxassetid://87345473325080",
+        "center": [
+          -0.0077,
+          20.6074,
+          -0.0487
+        ],
+        "operations": {
+          "Asset": "6003c4a6-be82-4a82-a5a0-68955091f5a5"
+        }
+      },
+      "Hooded_Statue_A__Ivy": {
+        "ColorMap": "rbxassetid://70684595503769",
+        "MeshId": "rbxassetid://72402111156761",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://107936129065694",
+        "RoughnessMap": "rbxassetid://87392769239544",
+        "center": [
+          1.501,
+          3.5117,
+          -0.7525
+        ],
+        "operations": {
+          "Asset": "6003c4a6-be82-4a82-a5a0-68955091f5a5"
+        }
+      },
+      "Hooded_Statue_A__Ivy_2": {
+        "ColorMap": "rbxassetid://70684595503769",
+        "MeshId": "rbxassetid://90482954515554",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://107936129065694",
+        "RoughnessMap": "rbxassetid://87392769239544",
+        "center": [
+          -3.4148,
+          3.5156,
+          -0.7022
+        ],
+        "operations": {
+          "Asset": "6003c4a6-be82-4a82-a5a0-68955091f5a5"
+        }
+      },
+      "Hooded_Statue_A__Plinth": {
+        "ColorMap": "rbxassetid://128963727202385",
+        "MeshId": "rbxassetid://128870547686564",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://110339183001932",
+        "RoughnessMap": "rbxassetid://93751511446388",
+        "center": [
+          -0.0237,
+          1.25,
+          0.2869
+        ],
+        "operations": {
+          "Asset": "6003c4a6-be82-4a82-a5a0-68955091f5a5"
+        }
+      },
+      "Hooded_Statue_A__Robe": {
+        "Asset": "rbxassetid://71280870783011",
+        "ColorMap": "rbxassetid://80532212833369",
+        "MeshId": "rbxassetid://111150236576315",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://128614560479419",
+        "RoughnessMap": "rbxassetid://102771678126080",
+        "center": [
+          0.0954,
+          7.0064,
+          0.1742
+        ],
+        "operations": {
+          "Asset": "bf084d9c-6d4c-473d-8687-23d78a89e9a0"
+        }
+      },
+      "Hooded_Statue_A__Robe_2": {
+        "Asset": "rbxassetid://71280870783011",
+        "ColorMap": "rbxassetid://80532212833369",
+        "MeshId": "rbxassetid://128382007366244",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://128614560479419",
+        "RoughnessMap": "rbxassetid://102771678126080",
+        "center": [
+          0.0323,
+          15.666,
+          0.2308
+        ],
+        "operations": {
+          "Asset": "bf084d9c-6d4c-473d-8687-23d78a89e9a0"
+        }
+      }
+    },
+    "Hooded_Statue_B": {
+      "Hooded_Statue_B__Arms": {
+        "ColorMap": "rbxassetid://140243530489401",
+        "MeshId": "rbxassetid://116726441072939",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://105402548439289",
+        "RoughnessMap": "rbxassetid://100741053433654",
+        "center": [
+          0.2698,
+          13.6892,
+          0.0306
+        ],
+        "operations": {
+          "Asset": "0c7d84af-694c-4522-bd9d-ee7296dbfc11"
+        }
+      },
+      "Hooded_Statue_B__Arms_2": {
+        "ColorMap": "rbxassetid://140243530489401",
+        "MeshId": "rbxassetid://134869975756031",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://105402548439289",
+        "RoughnessMap": "rbxassetid://100741053433654",
+        "center": [
+          0.4209,
+          17.0045,
+          0.2451
+        ],
+        "operations": {
+          "Asset": "0c7d84af-694c-4522-bd9d-ee7296dbfc11"
+        }
+      },
+      "Hooded_Statue_B__Drape": {
+        "ColorMap": "rbxassetid://131996223611179",
+        "MeshId": "rbxassetid://96690560932591",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://96816869503633",
+        "RoughnessMap": "rbxassetid://112798333489800",
+        "center": [
+          0.1673,
+          7.2036,
+          1.1969
+        ],
+        "operations": {
+          "Asset": "0c7d84af-694c-4522-bd9d-ee7296dbfc11"
+        }
+      },
+      "Hooded_Statue_B__Drape_2": {
+        "ColorMap": "rbxassetid://131996223611179",
+        "MeshId": "rbxassetid://120534234681467",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://96816869503633",
+        "RoughnessMap": "rbxassetid://112798333489800",
+        "center": [
+          0.1486,
+          12.6943,
+          0.7423
+        ],
+        "operations": {
+          "Asset": "0c7d84af-694c-4522-bd9d-ee7296dbfc11"
+        }
+      },
+      "Hooded_Statue_B__Drape_3": {
+        "ColorMap": "rbxassetid://131996223611179",
+        "MeshId": "rbxassetid://88392769783650",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://96816869503633",
+        "RoughnessMap": "rbxassetid://112798333489800",
+        "center": [
+          0.2275,
+          15.8541,
+          0.507
+        ],
+        "operations": {
+          "Asset": "0c7d84af-694c-4522-bd9d-ee7296dbfc11"
+        }
+      },
+      "Hooded_Statue_B__Drape_4": {
+        "ColorMap": "rbxassetid://131996223611179",
+        "MeshId": "rbxassetid://110602283545986",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://96816869503633",
+        "RoughnessMap": "rbxassetid://112798333489800",
+        "center": [
+          -0.0174,
+          18.435,
+          0.2956
+        ],
+        "operations": {
+          "Asset": "0c7d84af-694c-4522-bd9d-ee7296dbfc11"
+        }
+      },
+      "Hooded_Statue_B__Hood": {
+        "ColorMap": "rbxassetid://115307484959943",
+        "MeshId": "rbxassetid://139309221783222",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://71104520910071",
+        "RoughnessMap": "rbxassetid://100514988596145",
+        "center": [
+          0.086,
+          20.6636,
+          0.0349
+        ],
+        "operations": {
+          "Asset": "0c7d84af-694c-4522-bd9d-ee7296dbfc11"
+        }
+      },
+      "Hooded_Statue_B__Ivy": {
+        "ColorMap": "rbxassetid://131791058151990",
+        "MeshId": "rbxassetid://109536287602780",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://129810907537936",
+        "RoughnessMap": "rbxassetid://102888582744412",
+        "center": [
+          1.7902,
+          3.5511,
+          -1.9664
+        ],
+        "operations": {
+          "Asset": "0c7d84af-694c-4522-bd9d-ee7296dbfc11"
+        }
+      },
+      "Hooded_Statue_B__Ivy_2": {
+        "ColorMap": "rbxassetid://131791058151990",
+        "MeshId": "rbxassetid://99942674144646",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://129810907537936",
+        "RoughnessMap": "rbxassetid://102888582744412",
+        "center": [
+          -3.1351,
+          3.4878,
+          -0.8413
+        ],
+        "operations": {
+          "Asset": "0c7d84af-694c-4522-bd9d-ee7296dbfc11"
+        }
+      },
+      "Hooded_Statue_B__Plinth": {
+        "ColorMap": "rbxassetid://125090381634713",
+        "MeshId": "rbxassetid://128870547686564",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://135108728038711",
+        "RoughnessMap": "rbxassetid://88444458120248",
+        "center": [
+          -0.0342,
+          1.25,
+          0.2877
+        ],
+        "operations": {
+          "Asset": "0c7d84af-694c-4522-bd9d-ee7296dbfc11"
+        }
+      },
+      "Hooded_Statue_B__Robe": {
+        "Asset": "rbxassetid://132139570597899",
+        "ColorMap": "rbxassetid://113179235668390",
+        "MeshId": "rbxassetid://112777989868150",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://106411935516007",
+        "RoughnessMap": "rbxassetid://93191926264001",
+        "center": [
+          -0.0442,
+          7.0107,
+          0.2829
+        ],
+        "operations": {
+          "Asset": "b8cdc3cf-03f5-4752-bc07-da163716f276"
+        }
+      },
+      "Hooded_Statue_B__Robe_2": {
+        "Asset": "rbxassetid://132139570597899",
+        "ColorMap": "rbxassetid://113179235668390",
+        "MeshId": "rbxassetid://91554754956677",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://106411935516007",
+        "RoughnessMap": "rbxassetid://93191926264001",
+        "center": [
+          -0.0314,
+          15.6667,
+          0.1967
+        ],
+        "operations": {
+          "Asset": "b8cdc3cf-03f5-4752-bc07-da163716f276"
+        }
+      },
+      "Hooded_Statue_B__Staff": {
+        "Asset": "rbxassetid://132139570597899",
+        "ColorMap": "rbxassetid://77716977442431",
+        "MeshId": "rbxassetid://131962419638067",
+        "MetalnessMap": "rbxassetid://92503988709574",
+        "NormalMap": "rbxassetid://125680002533392",
+        "RoughnessMap": "rbxassetid://78338860234714",
+        "center": [
+          2.7611,
+          15.0571,
+          -0.4604
+        ],
+        "operations": {
+          "Asset": "b8cdc3cf-03f5-4752-bc07-da163716f276"
         }
       }
     },
@@ -2945,6 +3555,239 @@
         }
       }
     },
+    "Statue_Mourner": {
+      "Statue_Mourner__Arms": {
+        "ColorMap": "rbxassetid://117565437595975",
+        "MeshId": "rbxassetid://110619994680127",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://97798908598673",
+        "RoughnessMap": "rbxassetid://78405686467657",
+        "center": [
+          -1.6673,
+          9.1261,
+          -0.8206
+        ],
+        "operations": {
+          "Asset": "02867bda-85e4-408a-ad12-c41a8e34b7d1"
+        }
+      },
+      "Statue_Mourner__Arms_2": {
+        "ColorMap": "rbxassetid://117565437595975",
+        "MeshId": "rbxassetid://135490626625916",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://97798908598673",
+        "RoughnessMap": "rbxassetid://78405686467657",
+        "center": [
+          -2.2616,
+          12.8626,
+          -0.7385
+        ],
+        "operations": {
+          "Asset": "02867bda-85e4-408a-ad12-c41a8e34b7d1"
+        }
+      },
+      "Statue_Mourner__Drape": {
+        "ColorMap": "rbxassetid://108671836404195",
+        "MeshId": "rbxassetid://74188696491182",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://76065704807142",
+        "RoughnessMap": "rbxassetid://137229000794741",
+        "center": [
+          -2.2699,
+          8.7659,
+          0.3974
+        ],
+        "operations": {
+          "Asset": "02867bda-85e4-408a-ad12-c41a8e34b7d1"
+        }
+      },
+      "Statue_Mourner__Drape_2": {
+        "ColorMap": "rbxassetid://108671836404195",
+        "MeshId": "rbxassetid://108309781624929",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://76065704807142",
+        "RoughnessMap": "rbxassetid://137229000794741",
+        "center": [
+          -2.4794,
+          12.6219,
+          0.2924
+        ],
+        "operations": {
+          "Asset": "02867bda-85e4-408a-ad12-c41a8e34b7d1"
+        }
+      },
+      "Statue_Mourner__Drape_3": {
+        "ColorMap": "rbxassetid://108671836404195",
+        "MeshId": "rbxassetid://105493874622088",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://76065704807142",
+        "RoughnessMap": "rbxassetid://137229000794741",
+        "center": [
+          -2.6436,
+          14.8713,
+          0.1415
+        ],
+        "operations": {
+          "Asset": "02867bda-85e4-408a-ad12-c41a8e34b7d1"
+        }
+      },
+      "Statue_Mourner__Face": {
+        "ColorMap": "rbxassetid://130420215092147",
+        "MeshId": "rbxassetid://88329506795305",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://94257815088331",
+        "RoughnessMap": "rbxassetid://117768207682162",
+        "center": [
+          -2.7029,
+          15.7867,
+          -0.763
+        ],
+        "operations": {
+          "Asset": "02867bda-85e4-408a-ad12-c41a8e34b7d1"
+        }
+      },
+      "Statue_Mourner__Hair": {
+        "ColorMap": "rbxassetid://132505473571212",
+        "MeshId": "rbxassetid://126846822285424",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://108974405187702",
+        "RoughnessMap": "rbxassetid://87508092632045",
+        "center": [
+          -2.6138,
+          14.7734,
+          -0.9536
+        ],
+        "operations": {
+          "Asset": "02867bda-85e4-408a-ad12-c41a8e34b7d1"
+        }
+      },
+      "Statue_Mourner__Hood": {
+        "ColorMap": "rbxassetid://84937924206349",
+        "MeshId": "rbxassetid://125580563864774",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://88528146323434",
+        "RoughnessMap": "rbxassetid://85856073663216",
+        "center": [
+          -2.6212,
+          16.821,
+          -0.0444
+        ],
+        "operations": {
+          "Asset": "02867bda-85e4-408a-ad12-c41a8e34b7d1"
+        }
+      },
+      "Statue_Mourner__Ivy": {
+        "Asset": "rbxassetid://85007303619611",
+        "ColorMap": "rbxassetid://91470036454593",
+        "MeshId": "rbxassetid://86439606621076",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://135002412974298",
+        "RoughnessMap": "rbxassetid://82497499077285",
+        "center": [
+          3.0348,
+          3.619,
+          -0.858
+        ],
+        "operations": {
+          "Asset": "3556640e-cfa5-4adf-9270-70f5f527420d"
+        }
+      },
+      "Statue_Mourner__Plinth": {
+        "ColorMap": "rbxassetid://105080493075505",
+        "MeshId": "rbxassetid://100482619568016",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://82704734036811",
+        "RoughnessMap": "rbxassetid://102016671397210",
+        "center": [
+          -2.5975,
+          0.09,
+          0.2501
+        ],
+        "operations": {
+          "Asset": "02867bda-85e4-408a-ad12-c41a8e34b7d1"
+        }
+      },
+      "Statue_Mourner__Robe": {
+        "Asset": "rbxassetid://85007303619611",
+        "ColorMap": "rbxassetid://121644989553199",
+        "MeshId": "rbxassetid://127040902456393",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://81719408275830",
+        "RoughnessMap": "rbxassetid://73377333523416",
+        "center": [
+          -2.5961,
+          4.2154,
+          0.2645
+        ],
+        "operations": {
+          "Asset": "3556640e-cfa5-4adf-9270-70f5f527420d"
+        }
+      },
+      "Statue_Mourner__Robe_2": {
+        "Asset": "rbxassetid://85007303619611",
+        "ColorMap": "rbxassetid://121644989553199",
+        "MeshId": "rbxassetid://115509692231683",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://81719408275830",
+        "RoughnessMap": "rbxassetid://73377333523416",
+        "center": [
+          -2.5903,
+          12.0899,
+          0.2315
+        ],
+        "operations": {
+          "Asset": "3556640e-cfa5-4adf-9270-70f5f527420d"
+        }
+      },
+      "Statue_Mourner__Roses": {
+        "Asset": "rbxassetid://85007303619611",
+        "ColorMap": "rbxassetid://114672462046894",
+        "MeshId": "rbxassetid://123084246503874",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://118649818588669",
+        "RoughnessMap": "rbxassetid://87644907061585",
+        "center": [
+          -2.3093,
+          12.2788,
+          -1.6911
+        ],
+        "operations": {
+          "Asset": "3556640e-cfa5-4adf-9270-70f5f527420d"
+        }
+      },
+      "Statue_Mourner__Roses_2": {
+        "Asset": "rbxassetid://85007303619611",
+        "ColorMap": "rbxassetid://114672462046894",
+        "MeshId": "rbxassetid://77027890671016",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://118649818588669",
+        "RoughnessMap": "rbxassetid://87644907061585",
+        "center": [
+          -4.4923,
+          12.5974,
+          -2.5845
+        ],
+        "operations": {
+          "Asset": "3556640e-cfa5-4adf-9270-70f5f527420d"
+        }
+      },
+      "Statue_Mourner__Tomb": {
+        "Asset": "rbxassetid://85007303619611",
+        "ColorMap": "rbxassetid://102799859878506",
+        "MeshId": "rbxassetid://93458619932390",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://108525149339810",
+        "RoughnessMap": "rbxassetid://127980763429373",
+        "center": [
+          2.9025,
+          3.45,
+          -0.1199
+        ],
+        "operations": {
+          "Asset": "3556640e-cfa5-4adf-9270-70f5f527420d"
+        }
+      }
+    },
     "Statue_Plinth": {
       "Statue_Plinth__Frost": {
         "ColorMap": "rbxassetid://112934057467425",
@@ -2990,6 +3833,238 @@
         ],
         "operations": {
           "Asset": "220a4be2-2190-417e-8ef0-741c01233ed3"
+        }
+      }
+    },
+    "Statue_Veiled_Scan": {
+      "Statue_Veiled_Scan__Body": {
+        "ColorMap": "rbxassetid://102512473562484",
+        "MeshId": "rbxassetid://74651204889772",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://87968594895275",
+        "RoughnessMap": "rbxassetid://103981238902115",
+        "operations": {
+          "Asset": "9b31aff7-0802-4254-ad70-b75714ef1e63"
+        }
+      },
+      "Statue_Veiled_Scan__Body_2": {
+        "ColorMap": "rbxassetid://102512473562484",
+        "MeshId": "rbxassetid://131610510688068",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://87968594895275",
+        "RoughnessMap": "rbxassetid://103981238902115",
+        "operations": {
+          "Asset": "9b31aff7-0802-4254-ad70-b75714ef1e63"
+        }
+      },
+      "Statue_Veiled_Scan__Plinth": {
+        "ColorMap": "rbxassetid://98537847785436",
+        "MeshId": "rbxassetid://84216751686147",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://135772037277172",
+        "RoughnessMap": "rbxassetid://104768400528352",
+        "operations": {
+          "Asset": "9b31aff7-0802-4254-ad70-b75714ef1e63"
+        }
+      }
+    },
+    "Statue_Wraith": {
+      "Statue_Wraith__Arms": {
+        "ColorMap": "rbxassetid://131658764131465",
+        "MeshId": "rbxassetid://75286816206288",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://113626972750407",
+        "RoughnessMap": "rbxassetid://133008830604527",
+        "center": [
+          0.2504,
+          13.5058,
+          -1.4962
+        ],
+        "operations": {
+          "Asset": "130bc1b5-3eb5-4456-bb2b-f3f780122e6f"
+        }
+      },
+      "Statue_Wraith__Arms_2": {
+        "ColorMap": "rbxassetid://131658764131465",
+        "MeshId": "rbxassetid://113459311446080",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://113626972750407",
+        "RoughnessMap": "rbxassetid://133008830604527",
+        "center": [
+          0.0568,
+          16.7265,
+          -0.9582
+        ],
+        "operations": {
+          "Asset": "130bc1b5-3eb5-4456-bb2b-f3f780122e6f"
+        }
+      },
+      "Statue_Wraith__Drape": {
+        "ColorMap": "rbxassetid://99856152871880",
+        "MeshId": "rbxassetid://76072823157451",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://123443445671272",
+        "RoughnessMap": "rbxassetid://140398666592453",
+        "center": [
+          -0.0851,
+          7.9915,
+          0.3842
+        ],
+        "operations": {
+          "Asset": "130bc1b5-3eb5-4456-bb2b-f3f780122e6f"
+        }
+      },
+      "Statue_Wraith__Drape_2": {
+        "ColorMap": "rbxassetid://99856152871880",
+        "MeshId": "rbxassetid://140419997124505",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://123443445671272",
+        "RoughnessMap": "rbxassetid://140398666592453",
+        "center": [
+          -0.1449,
+          13.3002,
+          0.5702
+        ],
+        "operations": {
+          "Asset": "130bc1b5-3eb5-4456-bb2b-f3f780122e6f"
+        }
+      },
+      "Statue_Wraith__Drape_3": {
+        "ColorMap": "rbxassetid://99856152871880",
+        "MeshId": "rbxassetid://84280633185050",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://123443445671272",
+        "RoughnessMap": "rbxassetid://140398666592453",
+        "center": [
+          -0.1316,
+          16.4012,
+          0.2569
+        ],
+        "operations": {
+          "Asset": "130bc1b5-3eb5-4456-bb2b-f3f780122e6f"
+        }
+      },
+      "Statue_Wraith__Drape_4": {
+        "ColorMap": "rbxassetid://99856152871880",
+        "MeshId": "rbxassetid://85679825949861",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://123443445671272",
+        "RoughnessMap": "rbxassetid://140398666592453",
+        "center": [
+          0.0583,
+          18.9421,
+          0.2554
+        ],
+        "operations": {
+          "Asset": "130bc1b5-3eb5-4456-bb2b-f3f780122e6f"
+        }
+      },
+      "Statue_Wraith__Hood": {
+        "ColorMap": "rbxassetid://95473522784341",
+        "MeshId": "rbxassetid://70928433121172",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://106500828676459",
+        "RoughnessMap": "rbxassetid://103552084746049",
+        "center": [
+          0.0169,
+          21.1629,
+          0.0724
+        ],
+        "operations": {
+          "Asset": "130bc1b5-3eb5-4456-bb2b-f3f780122e6f"
+        }
+      },
+      "Statue_Wraith__Ivy": {
+        "ColorMap": "rbxassetid://117239291995442",
+        "MeshId": "rbxassetid://124625592718891",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://85305800057952",
+        "RoughnessMap": "rbxassetid://106613825205878",
+        "center": [
+          1.4068,
+          3.7869,
+          -0.5849
+        ],
+        "operations": {
+          "Asset": "130bc1b5-3eb5-4456-bb2b-f3f780122e6f"
+        }
+      },
+      "Statue_Wraith__Ivy_2": {
+        "ColorMap": "rbxassetid://117239291995442",
+        "MeshId": "rbxassetid://123273144501511",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://85305800057952",
+        "RoughnessMap": "rbxassetid://106613825205878",
+        "center": [
+          -3.5732,
+          3.9915,
+          -0.6063
+        ],
+        "operations": {
+          "Asset": "130bc1b5-3eb5-4456-bb2b-f3f780122e6f"
+        }
+      },
+      "Statue_Wraith__Plinth": {
+        "Asset": "rbxassetid://110990659086969",
+        "ColorMap": "rbxassetid://77718709135362",
+        "MeshId": "rbxassetid://72262565298231",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://108715424503902",
+        "RoughnessMap": "rbxassetid://99497790768366",
+        "center": [
+          0.0592,
+          1.6494,
+          0.2865
+        ],
+        "operations": {
+          "Asset": "f87d51cc-44d6-4158-8724-4c39b0292898"
+        }
+      },
+      "Statue_Wraith__Robe": {
+        "Asset": "rbxassetid://110990659086969",
+        "ColorMap": "rbxassetid://134801348791115",
+        "MeshId": "rbxassetid://125426694225635",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://72586231036196",
+        "RoughnessMap": "rbxassetid://131260513843921",
+        "center": [
+          -0.0449,
+          7.5953,
+          -0.0025
+        ],
+        "operations": {
+          "Asset": "f87d51cc-44d6-4158-8724-4c39b0292898"
+        }
+      },
+      "Statue_Wraith__Robe_2": {
+        "Asset": "rbxassetid://110990659086969",
+        "ColorMap": "rbxassetid://134801348791115",
+        "MeshId": "rbxassetid://136704386793642",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://72586231036196",
+        "RoughnessMap": "rbxassetid://131260513843921",
+        "center": [
+          0.0963,
+          16.1587,
+          0.1747
+        ],
+        "operations": {
+          "Asset": "f87d51cc-44d6-4158-8724-4c39b0292898"
+        }
+      },
+      "Statue_Wraith__Sword": {
+        "ColorMap": "rbxassetid://131740953717772",
+        "MeshId": "rbxassetid://122101571125504",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://133236910822197",
+        "RoughnessMap": "rbxassetid://124547696301822",
+        "center": [
+          0.0592,
+          9.6828,
+          -2.4295
+        ],
+        "operations": {
+          "Asset": "130bc1b5-3eb5-4456-bb2b-f3f780122e6f"
         }
       }
     },
@@ -3203,6 +4278,236 @@
         ],
         "operations": {
           "Asset": "019ab4bb-e355-444c-bee1-d39cf8203b64"
+        }
+      }
+    },
+    "Viaduct_Balustrade_30": {
+      "Viaduct_Balustrade_30__Crockets": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://131960444942003",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          0.0597,
+          18.6488,
+          0.0054
+        ],
+        "operations": {
+          "Asset": "511aba1c-44a1-4bfa-8bd1-a099011c7aaf"
+        }
+      },
+      "Viaduct_Balustrade_30__Frost": {
+        "ColorMap": "rbxassetid://112934057467425",
+        "MeshId": "rbxassetid://131440630497336",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://85475493365275",
+        "RoughnessMap": "rbxassetid://71413989103088",
+        "center": [
+          -0.0189,
+          8.72,
+          0.035
+        ],
+        "operations": {
+          "Asset": "511aba1c-44a1-4bfa-8bd1-a099011c7aaf"
+        }
+      },
+      "Viaduct_Balustrade_30__Pinnacles": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://139660900622762",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          0.0,
+          15.3937,
+          0.0569
+        ],
+        "operations": {
+          "Asset": "511aba1c-44a1-4bfa-8bd1-a099011c7aaf"
+        }
+      },
+      "Viaduct_Balustrade_30__Stone": {
+        "Asset": "rbxassetid://112785649404301",
+        "ColorMap": "rbxassetid://133570956886739",
+        "MeshId": "rbxassetid://98031233636148",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://130278610414465",
+        "RoughnessMap": "rbxassetid://89194722287585",
+        "center": [
+          -0.0297,
+          5.5133,
+          -0.0291
+        ],
+        "operations": {
+          "Asset": "a39a169f-6ab5-487d-8fa8-54dcbc9be5a8"
+        }
+      },
+      "Viaduct_Balustrade_30__Tracery": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://121558334040742",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          -0.0147,
+          7.4806,
+          0.0
+        ],
+        "operations": {
+          "Asset": "511aba1c-44a1-4bfa-8bd1-a099011c7aaf"
+        }
+      }
+    },
+    "Viaduct_Bay": {
+      "Viaduct_Bay__Crockets": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://99412466474899",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          -0.0455,
+          92.1571,
+          -0.0272
+        ],
+        "operations": {
+          "Asset": "455ce771-c2ec-4395-919f-69bb2527871e"
+        }
+      },
+      "Viaduct_Bay__Dress": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://73488121996440",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          -0.0368,
+          103.1298,
+          0.0124
+        ],
+        "operations": {
+          "Asset": "455ce771-c2ec-4395-919f-69bb2527871e"
+        }
+      },
+      "Viaduct_Bay__Frost": {
+        "ColorMap": "rbxassetid://112934057467425",
+        "MeshId": "rbxassetid://107095968878158",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://85475493365275",
+        "RoughnessMap": "rbxassetid://71413989103088",
+        "center": [
+          0.0403,
+          64.72,
+          -0.003
+        ],
+        "operations": {
+          "Asset": "455ce771-c2ec-4395-919f-69bb2527871e"
+        }
+      },
+      "Viaduct_Bay__Pinnacles": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://138080205688871",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          0.0,
+          87.8317,
+          0.0091
+        ],
+        "operations": {
+          "Asset": "455ce771-c2ec-4395-919f-69bb2527871e"
+        }
+      },
+      "Viaduct_Bay__Stone": {
+        "Asset": "rbxassetid://117322374829939",
+        "ColorMap": "rbxassetid://133570956886739",
+        "MeshId": "rbxassetid://97770687106107",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://130278610414465",
+        "RoughnessMap": "rbxassetid://89194722287585",
+        "center": [
+          -0.0195,
+          60.0363,
+          -0.003
+        ],
+        "operations": {
+          "Asset": "aaa358e7-2c4e-4ece-b07e-e5f20e9369f8"
+        }
+      },
+      "Viaduct_Bay__Tracery": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://103208035962932",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          -0.0468,
+          56.6708,
+          0.0
+        ],
+        "operations": {
+          "Asset": "455ce771-c2ec-4395-919f-69bb2527871e"
+        }
+      },
+      "Viaduct_Bay__Tracery_2": {
+        "ColorMap": "rbxassetid://133011766265364",
+        "MeshId": "rbxassetid://82596396265347",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://135160822777085",
+        "RoughnessMap": "rbxassetid://104339113011381",
+        "center": [
+          0.0063,
+          112.5302,
+          -0.0095
+        ],
+        "operations": {
+          "Asset": "455ce771-c2ec-4395-919f-69bb2527871e"
+        }
+      }
+    },
+    "Waterfall_Sheet_A": {
+      "Waterfall_Sheet_A__Foam": {
+        "ColorMap": "rbxassetid://139265890268236",
+        "MeshId": "rbxassetid://95097111229031",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://107689787032489",
+        "RoughnessMap": "rbxassetid://74215904968569",
+        "operations": {
+          "Asset": "ddc58aed-3bfb-4f53-b722-337a6e2f1965"
+        }
+      },
+      "Waterfall_Sheet_A__Water": {
+        "ColorMap": "rbxassetid://139265890268236",
+        "MeshId": "rbxassetid://127903039593834",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://107689787032489",
+        "RoughnessMap": "rbxassetid://74215904968569",
+        "operations": {
+          "Asset": "ddc58aed-3bfb-4f53-b722-337a6e2f1965"
+        }
+      }
+    },
+    "Waterfall_Sheet_B": {
+      "Waterfall_Sheet_B__Foam": {
+        "ColorMap": "rbxassetid://139265890268236",
+        "MeshId": "rbxassetid://112920827589702",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://107689787032489",
+        "RoughnessMap": "rbxassetid://74215904968569",
+        "operations": {
+          "Asset": "29c1e715-f8aa-4dcf-993a-b2fca674fe7b"
+        }
+      },
+      "Waterfall_Sheet_B__Water": {
+        "ColorMap": "rbxassetid://139265890268236",
+        "MeshId": "rbxassetid://80625538319954",
+        "MetalnessMap": "rbxassetid://138743353964900",
+        "NormalMap": "rbxassetid://107689787032489",
+        "RoughnessMap": "rbxassetid://74215904968569",
+        "operations": {
+          "Asset": "29c1e715-f8aa-4dcf-993a-b2fca674fe7b"
         }
       }
     }

@@ -97,6 +97,8 @@ def vesp(ledger, split_dir, cache_path):
     cache = readback([v["assetId"] for v in entries.values()], cache_path)
     splits = {f.name[:-len(".split.json")]: json.loads(f.read_text()) for f in Path(split_dir).glob("*/*.split.json")}
     models, pieces, errs = {}, {}, []
+    reg = Path("assets/VESPERHOLD_KIT_UPLOADED.json")
+    before = json.loads(reg.read_text()).get("modelAssets", {}) if reg.exists() else {}
     for key, e in sorted(entries.items()):
         stem = key.split("/")[-1]
         piece, part = stem.rsplit("__", 1) if "__p" in stem else (stem, "")
@@ -109,7 +111,9 @@ def vesp(ledger, split_dir, cache_path):
         if sm and sorted(got) != sorted(sm["parts"][stem + ".glb"]):
             errs.append(f"{key}: readback subs {sorted(got)} != split part {sm['parts'][stem + '.glb']}")
         if part in ("", "p1"):
-            models[piece] = {"assetId": rid(e["assetId"]), "operationId": e["operationId"], "uploaded": date.today().isoformat(),
+            old = before.get(piece, {})  # a re-read keeps the date the asset was first registered
+            when = old["uploaded"] if old.get("assetId") == rid(e["assetId"]) and old.get("uploaded") else date.today().isoformat()
+            models[piece] = {"assetId": rid(e["assetId"]), "operationId": e["operationId"], "uploaded": when,
                              "moderationState": e.get("moderation")}
         for sub, fields in got.items():
             entry = {k: v for k, v in fields.items() if v}

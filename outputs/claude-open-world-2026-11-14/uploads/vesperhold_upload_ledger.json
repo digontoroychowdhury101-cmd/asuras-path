@@ -719,6 +719,46 @@
   "operationId": "32c2a8a3-0194-4469-80cb-11509a4d3949",
   "sha256": "2cb959d5deba40c6d4f7dac0c4b1309a186e9a4cf6f897723434d144a5a7bf2b"
  },
+ "vesp/kit/Viaduct_Balustrade_30__p1": {
+  "assetId": "121940175913831",
+  "bytes": 13131884,
+  "displayName": "Vesp_Viaduct_Balustrade_30__p1",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\work\\vesperhold-claude\\win68\\split\\kit\\Viaduct_Balustrade_30__p1.glb",
+  "moderation": "Approved",
+  "operationId": "511aba1c-44a1-4bfa-8bd1-a099011c7aaf",
+  "sha256": "8016a97bdee91ff4b2a34ba738931398520b35815dfa7e2f6b8a9079a37ee5be"
+ },
+ "vesp/kit/Viaduct_Balustrade_30__p2": {
+  "assetId": "112785649404301",
+  "bytes": 7521348,
+  "displayName": "Vesp_Viaduct_Balustrade_30__p2",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\work\\vesperhold-claude\\win68\\split\\kit\\Viaduct_Balustrade_30__p2.glb",
+  "moderation": "Approved",
+  "operationId": "a39a169f-6ab5-487d-8fa8-54dcbc9be5a8",
+  "sha256": "c8f0279f46133df5cd1a0c064519e96f471dc27d0d4c9ab61ead7bd63de61cca"
+ },
+ "vesp/kit/Viaduct_Bay__p1": {
+  "assetId": "134503562213313",
+  "bytes": 14361496,
+  "displayName": "Vesp_Viaduct_Bay__p1",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\work\\vesperhold-claude\\win68\\split\\kit\\Viaduct_Bay__p1.glb",
+  "moderation": "Approved",
+  "operationId": "455ce771-c2ec-4395-919f-69bb2527871e",
+  "sha256": "90955f09c7621f45b378fc1485479581c036cdaca66e3ddf331c454962b334da"
+ },
+ "vesp/kit/Viaduct_Bay__p2": {
+  "assetId": "117322374829939",
+  "bytes": 7678480,
+  "displayName": "Vesp_Viaduct_Bay__p2",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\work\\vesperhold-claude\\win68\\split\\kit\\Viaduct_Bay__p2.glb",
+  "moderation": "Approved",
+  "operationId": "aaa358e7-2c4e-4ece-b07e-e5f20e9369f8",
+  "sha256": "92a31034d379e1054daf07bb57c44501289d7851486474e95a3e46971f070060"
+ },
  "vesp/props/Gargoyle_A": {
   "assetId": "94687077564229",
   "displayName": "Vesp_Gargoyle_A",
@@ -736,6 +776,46 @@
   "moderation": "Approved",
   "operationId": "f5df02c9-8ac8-4cb2-add1-77b7045ac8db",
   "sha256": "df4d675ac327216102d58c87223af02e12c11be92848a1bb27de357e09b57ce8"
+ },
+ "vesp/props/Hooded_Statue_A__p1": {
+  "assetId": "105405356572441",
+  "bytes": 18792640,
+  "displayName": "Vesp_Hooded_Statue_A__p1",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\work\\vesperhold-claude\\win68\\split\\props\\Hooded_Statue_A__p1.glb",
+  "moderation": "Approved",
+  "operationId": "6003c4a6-be82-4a82-a5a0-68955091f5a5",
+  "sha256": "6d09b1eb315467077783733aafed3a7a74078f9fa49af2756de25f7a039fb9a5"
+ },
+ "vesp/props/Hooded_Statue_A__p2": {
+  "assetId": "71280870783011",
+  "bytes": 3866744,
+  "displayName": "Vesp_Hooded_Statue_A__p2",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\work\\vesperhold-claude\\win68\\split\\props\\Hooded_Statue_A__p2.glb",
+  "moderation": "Approved",
+  "operationId": "bf084d9c-6d4c-473d-8687-23d78a89e9a0",
+  "sha256": "c62acca3be045f6a78e5507f70f420f338b285ffda991d5a8f2cad419b0dea54"
+ },
+ "vesp/props/Hooded_Statue_B__p1": {
+  "assetId": "97238663778899",
+  "bytes": 19264656,
+  "displayName": "Vesp_Hooded_Statue_B__p1",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\work\\vesperhold-claude\\win68\\split\\props\\Hooded_Statue_B__p1.glb",
+  "moderation": "Approved",
+  "operationId": "0c7d84af-694c-4522-bd9d-ee7296dbfc11",
+  "sha256": "a08b99b014ecff31851b6737e3625a1ca793cdb33d967a4a7007f3cbde11ee94"
+ },
+ "vesp/props/Hooded_Statue_B__p2": {
+  "assetId": "132139570597899",
+  "bytes": 4516068,
+  "displayName": "Vesp_Hooded_Statue_B__p2",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\work\\vesperhold-claude\\win68\\split\\props\\Hooded_Statue_B__p2.glb",
+  "moderation": "Approved",
+  "operationId": "b8cdc3cf-03f5-4752-bc07-da163716f276",
+  "sha256": "24c3010571c11d7e23651734251f3cca310754120436e7153233c669c6d6c9f4"
  },
  "vesp/props/Ruined_Arch": {
   "bytes": 27282836,
@@ -763,6 +843,56 @@
   "operationId": "ba3ead1d-62fb-4c3a-b076-d2c5b00aaf33",
   "sha256": "387ed62701700ca2c5cc2e395f6da2ca2bc54d129a218fae443c96b962d4558f"
  },
+ "vesp/props/Statue_Mourner__p1": {
+  "assetId": "90688345755433",
+  "bytes": 17769456,
+  "displayName": "Vesp_Statue_Mourner__p1",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\work\\vesperhold-claude\\win68\\split\\props\\Statue_Mourner__p1.glb",
+  "moderation": "Approved",
+  "operationId": "02867bda-85e4-408a-ad12-c41a8e34b7d1",
+  "sha256": "66e5a0e50353149c0d0c5f6e294c1b1533d2845a4face2bf4542f31463e1804c"
+ },
+ "vesp/props/Statue_Mourner__p2": {
+  "assetId": "85007303619611",
+  "bytes": 14842204,
+  "displayName": "Vesp_Statue_Mourner__p2",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\work\\vesperhold-claude\\win68\\split\\props\\Statue_Mourner__p2.glb",
+  "moderation": "Approved",
+  "operationId": "3556640e-cfa5-4adf-9270-70f5f527420d",
+  "sha256": "3eec289e6b8ac34d3dc960f7d2d95035ba65e8e0f6f0fbf606529fb9da0ef494"
+ },
+ "vesp/props/Statue_Veiled_Scan": {
+  "assetId": "104766635913552",
+  "bytes": 8159704,
+  "displayName": "Vesp_Statue_Veiled_Scan",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\work\\vesperhold-claude\\win68\\split\\props\\Statue_Veiled_Scan.glb",
+  "moderation": "Approved",
+  "operationId": "9b31aff7-0802-4254-ad70-b75714ef1e63",
+  "sha256": "88ff725ef5c182d088e6ea11dedf7ad4ccf90ff84a05056ce278d9c290c0e6c6"
+ },
+ "vesp/props/Statue_Wraith__p1": {
+  "assetId": "133054371700824",
+  "bytes": 17906768,
+  "displayName": "Vesp_Statue_Wraith__p1",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\work\\vesperhold-claude\\win68\\split\\props\\Statue_Wraith__p1.glb",
+  "moderation": "Approved",
+  "operationId": "130bc1b5-3eb5-4456-bb2b-f3f780122e6f",
+  "sha256": "688f7305d4621bb7eb90315a64025a9df52937a2cfc3ea422423d6884dc66717"
+ },
+ "vesp/props/Statue_Wraith__p2": {
+  "assetId": "110990659086969",
+  "bytes": 6707780,
+  "displayName": "Vesp_Statue_Wraith__p2",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\work\\vesperhold-claude\\win68\\split\\props\\Statue_Wraith__p2.glb",
+  "moderation": "Approved",
+  "operationId": "f87d51cc-44d6-4158-8724-4c39b0292898",
+  "sha256": "d0445ba983c5598b3b25c310b534f7c1118fe1d7589dd8b678f221e9df20beea"
+ },
  "vesp/props/Waterfall_Sheet_A": {
   "assetId": "90427311650970",
   "bytes": 8325068,
@@ -773,6 +903,16 @@
   "operationId": "ddc58aed-3bfb-4f53-b722-337a6e2f1965",
   "sha256": "1a2103dc18148b81fa7abff9edf547aa6c81f9f359aaea65dd71ac74937463a1",
   "source": "work/vesperhold-claude/win68/split/props/Waterfall_Sheet_A.glb"
+ },
+ "vesp/props/Waterfall_Sheet_B": {
+  "assetId": "70376202213588",
+  "bytes": 8494956,
+  "displayName": "Vesp_Waterfall_Sheet_B",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\work\\vesperhold-claude\\win68\\split\\props\\Waterfall_Sheet_B.glb",
+  "moderation": "Approved",
+  "operationId": "29c1e715-f8aa-4dcf-993a-b2fca674fe7b",
+  "sha256": "8e40d0754f7a33fd9487ad54f18d086396365d10bc5f07f5dfb572e1cee658fa"
  },
  "vesp/trees/Dead_Log_A": {
   "assetId": "87753601357338",
@@ -829,6 +969,46 @@
   "moderation": "Approved",
   "operationId": "6f3afb28-cdce-4510-933f-5634b1007d1d",
   "sha256": "8775dc450bdb1674c119090c68c1fe561e31e424baf2377f93ea24d5f557ccd7"
+ },
+ "vesp/trees/Dead_Pine_Snapped_A": {
+  "assetId": "132033088944635",
+  "bytes": 9384988,
+  "displayName": "Vesp_Dead_Pine_Snapped_A",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\work\\vesperhold-claude\\win68\\split\\trees\\Dead_Pine_Snapped_A.glb",
+  "moderation": "Approved",
+  "operationId": "3f1beed0-4ca3-46e3-ac56-6882e783ebf3",
+  "sha256": "45778a778050a41ffea6cf3e8931013cddb5695e10047d18aef46a31db2afdd3"
+ },
+ "vesp/trees/Dead_Pine_Snapped_B": {
+  "assetId": "83956594282092",
+  "bytes": 8702260,
+  "displayName": "Vesp_Dead_Pine_Snapped_B",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\work\\vesperhold-claude\\win68\\split\\trees\\Dead_Pine_Snapped_B.glb",
+  "moderation": "Approved",
+  "operationId": "e248f9e7-f241-4d74-8766-72fc7b0a69f9",
+  "sha256": "59821d9d7a3356235253799bdbe1b5d9d4dd27e6d22ea864f7053282e57b643b"
+ },
+ "vesp/trees/Dead_Stump_A": {
+  "assetId": "131576852436715",
+  "bytes": 5959248,
+  "displayName": "Vesp_Dead_Stump_A",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\work\\vesperhold-claude\\win68\\split\\trees\\Dead_Stump_A.glb",
+  "moderation": "Approved",
+  "operationId": "c1944bf7-1a7e-4186-912f-b323bcac7ba5",
+  "sha256": "5f75f5f4d8e7cb4e69c5ff2aeb0f3f30802638a7f13192fdb6d7d428faa665f0"
+ },
+ "vesp/trees/Dead_Stump_B": {
+  "assetId": "100010870065607",
+  "bytes": 6034380,
+  "displayName": "Vesp_Dead_Stump_B",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\work\\vesperhold-claude\\win68\\split\\trees\\Dead_Stump_B.glb",
+  "moderation": "Approved",
+  "operationId": "c694821e-acb5-4cc9-bda4-31f6251f2386",
+  "sha256": "c36de2fef92264ef89aea339af539c8fbd5d0db8dbc424a1dea2d7492efa2639"
  },
  "vesp/trees/Thorn_Twisted_A": {
   "assetId": "115588682008522",

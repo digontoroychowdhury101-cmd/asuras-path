@@ -86,7 +86,9 @@ def validate(kit, root, allow_missing=(), vesp_manifests=None):
                     elif f in need and not (bare and f != "MeshId"):
                         errs.append(f"{key}.{f}: not a rbxassetid://<positive integer> string ({v!r})")
                     if f == "MeshId" and isinstance(v, str):
-                        prev = seen.setdefault(v, key)  # Roblox dedupes identical images, so map IDs may repeat; mesh IDs may not
+                        # Roblox dedupes identical images, so map IDs may repeat; mesh IDs may not, except across Vesperhold pieces
+                        # (identical geometry dedupes too, and VesperholdKit resolves each piece inside its own model by name).
+                        prev = seen.setdefault((piece, v) if kit == "vesperhold" else v, key)
                         if prev != key:
                             errs.append(f"{key}.MeshId: ID {v} already used by {prev}")
                 c = entry.get("center")
