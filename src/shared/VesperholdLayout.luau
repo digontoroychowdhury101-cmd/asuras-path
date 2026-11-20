@@ -24,6 +24,19 @@ Layout.Tiers = {
 	T3 = { FrontZ = -180, BackZ = -330, X = 200, FloorY = 260, Top = 330 },
 }
 Layout.Gate = { Half = 13, Height = 26, Lintel = 30 }
+-- Warm light for the gate (view 04) and the close (view 06): { kind, x, y, z, range, brightness? }. Lanterns flank the great
+-- portal in front of its face (it projects to z -23.9), hang in the gallery arches above it and line the passage; braziers
+-- light the portal from the apron and stand on the close paving between the T1 back wall and the close walk.
+Layout.Firelight = {
+	{ "Lantern", -12, 16, -21, 26, 1.6 }, { "Lantern", 12, 16, -21, 26, 1.6 },
+	{ "Lantern", -20, 85, -24, 40, 2.5 }, { "Lantern", 20, 85, -24, 40, 2.5 },
+	{ "Lantern", -20, 145, -24, 40, 2.5 }, { "Lantern", 20, 145, -24, 40, 2.5 },
+	{ "Brazier", -16, 0, -12, 30 }, { "Brazier", 16, 0, -12, 30 },
+	{ "Lantern", -11.5, 12, -40, 22 }, { "Lantern", 11.5, 12, -40, 22 },
+	{ "Lantern", -11.5, 17, -62, 22 }, { "Lantern", 11.5, 17, -62, 22 },
+	{ "Brazier", -40, 12, -74.5, 30 }, { "Brazier", 40, 12, -74.5, 30 }, { "Brazier", 100, 12, -74.5, 30 },
+	{ "Brazier", 160, 12, -74.5, 30 }, { "Brazier", 220, 12, -74.5, 30 },
+}
 Layout.Rose = { X = 0, Y = 312, Z = -180, Diameter = 48 }
 Layout.Tower = { X = 120, Z = -212, BaseY = 330, Foot = 60 } -- west towers sit on the T3 front corners
 -- Native piece sizes in studs { width, height, depth } = the generator's bounding box in assets/source/vesperhold/{kit,props,trees}/manifest.json
@@ -255,18 +268,40 @@ local function spireList(): { { any } }
 end
 Layout.Spires = spireList()
 
--- x of the eye -> aim line at depth z (nil outside the line's span): trees keep clear of both reveal sightlines.
-local function sightX(e: { [string]: number }, a: { [string]: number }, z: number): number?
-	local t = (e.Z - z) / (e.Z - a.Z)
-	if t < 0 or t > 1 then return nil end
-	return e.X + (a.X - e.X) * t
-end
-function Layout.clearOfSight(x: number, z: number, margin: number): boolean
-	for _, p in { { Layout.Eye, Layout.Aim }, { Layout.Eye02, Layout.Aim02 } } do
-		local sx = sightX(p[1], p[2], z)
-		if sx and math.abs(x - sx) < margin then return false end
+-- Does a canopy (sphere at x, y, z, radius r) noticeably cover the middle of reveal view 01 or 02? Noticeable = at least
+-- RevealMinSize of the frame height across and reaching above RevealFloor (ground litter stays). Roblox FieldOfView is vertical.
+Layout.RevealBand, Layout.RevealFloor, Layout.RevealMinSize = 0.5, -0.3, 0.15
+function Layout.blocksReveal(x: number, y: number, z: number, r: number): boolean
+	for _, v in { { Layout.Eye, Layout.Aim, Layout.Fov }, { Layout.Eye02, Layout.Aim02, Layout.Fov02 } } do
+		local e, a = v[1], v[2]
+		local fx, fy, fz = a.X - e.X, a.Y - e.Y, a.Z - e.Z
+		local fl = math.sqrt(fx * fx + fy * fy + fz * fz)
+		fx, fy, fz = fx / fl, fy / fl, fz / fl
+		local rl = math.sqrt(fx * fx + fz * fz)
+		local rx, rz = -fz / rl, fx / rl -- right = forward x world up
+		local ux, uy, uz = -rz * fy, rz * fx - rx * fz, rx * fy -- up = right x forward
+		local dx, dy, dz = x - e.X, y - e.Y, z - e.Z
+		local depth = dx * fx + dy * fy + dz * fz
+		if depth > -r then
+			local zc = math.max(depth, r) -- a canopy beside the eye projects as if it touched the near plane
+			local ty = math.tan(math.rad(v[3] / 2))
+			local tx = ty * Layout.Aspect
+			local sx, sy, ry = (dx * rx + dz * rz) / zc / tx, (dx * ux + dy * uy + dz * uz) / zc / ty, r / zc / ty
+			if ry >= Layout.RevealMinSize and math.abs(sx) - r / zc / tx < Layout.RevealBand and sy + ry > Layout.RevealFloor and sy - ry < 1 then
+				return true
+			end
+		end
 	end
-	return true
+	return false
+end
+
+-- Review cameras off the reveal line (view 05 on the gorge flank by the graveyard): canopies keep their crowns clear of them.
+Layout.ReviewEyes = { { X = -305, Z = 100 } }
+function Layout.crowdsEye(x: number, z: number, r: number): boolean
+	for _, e in Layout.ReviewEyes do
+		if math.sqrt((x - e.X) ^ 2 + (z - e.Z) ^ 2) < r + 12 then return true end
+	end
+	return false
 end
 
 -- Ruined-arch viewpoint (ref_04): the main arch on the east rim and a broken stub on the west, both in view 01.
@@ -484,11 +519,26 @@ function Layout.slots(ground: (number, number) -> number): { { [string]: any } }
 	local species = { { "Dead_Oak_Gnarled", 0.9 }, { "Dead_Pine_Snapped", 1.1 }, { "Thorn_Twisted", 1.3 } }
 	local nTree = 0
 	local function tree(x: number, z: number, scale: number, towardX: number, towardZ: number, tag: string)
-		if not Layout.clearOfSight(x, z, 30) then return end
+		local sp = species[(nTree + 1) % 3 + 1]
+		local lean = 0.12 + 0.2 * hash(nTree + 1)
+		local yaw, s, d = math.atan2(towardX - x, towardZ - z), scale * sp[2], Layout.Piece[sp[1]]
+		local y, reach = ground(x, z) - 1, d[2] * s * 0.6 -- canopy centre: 60% up the leaning trunk
+		-- A canopy over the middle of reveal 01/02 (or on a review eye) steps sideways until it frames the shot instead.
+		local side, r = if x >= -8 then 1 else -1, math.max(d[1], d[3]) * s / 2
+		for _ = 1, 12 do
+			local lx = math.sin(lean) * reach
+			yaw = math.atan2(towardX - x, towardZ - z)
+			local cx, cz = x + math.sin(yaw) * lx, z + math.cos(yaw) * lx
+			if not Layout.blocksReveal(cx, y + math.cos(lean) * reach, cz, r) and not Layout.crowdsEye(cx, cz, r) then break end
+			x += side * 12
+			y = ground(x, z) - 1
+		end
+		local lx = math.sin(lean) * reach
+		yaw = math.atan2(towardX - x, towardZ - z) -- x may have stepped once more after the last check
+		local cx, cz = x + math.sin(yaw) * lx, z + math.cos(yaw) * lx
+		if Layout.blocksReveal(cx, y + math.cos(lean) * reach, cz, r) or Layout.crowdsEye(cx, cz, r) then return end
 		nTree += 1
-		local sp = species[nTree % 3 + 1]
-		local lean = 0.12 + 0.2 * hash(nTree)
-		add(sp[1], "Tree", x, ground(x, z) - 1, z, math.atan2(towardX - x, towardZ - z), scale * sp[2], scale * sp[2], scale * sp[2], { Lean = lean, Cluster = tag })
+		add(sp[1], "Tree", x, y, z, yaw, s, s, s, { Lean = lean, Cluster = tag })
 	end
 	local function cluster(cx: number, cz: number, count: number, spread: number, towardX: number, towardZ: number, tag: string, seed: number)
 		for i = 1, count do

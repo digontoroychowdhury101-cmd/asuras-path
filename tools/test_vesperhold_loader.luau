@@ -191,6 +191,9 @@ local rose = Kit.place("Rose_Window_Great", CFrame.new(), V3(1, 1, 1), { Group =
 local rg = rose:FindFirstChild("Rose_Window_Great__GlassR")
 check("imported GlassR is Neon crimson and non-colliding",
 	rg.Material == Enum.Material.Neon and rg.Color.R > 0.4 and rg.Color.G < 0.2 and not rg.CanCollide)
+check("glass drops its SurfaceAppearance so Neon glows; tracery and stone keep theirs", glass:FindFirstChildOfClass("SurfaceAppearance") == nil
+	and rg:FindFirstChildOfClass("SurfaceAppearance") == nil and lancet:FindFirstChild("Lancet_Tall__Tracery"):FindFirstChildOfClass("SurfaceAppearance") ~= nil
+	and lancet:FindFirstChild("Lancet_Tall__Stone"):FindFirstChildOfClass("SurfaceAppearance") ~= nil)
 check("glass never collides and non-glass subs get no light", not glass.CanCollide and lancet:FindFirstChild("Lancet_Tall__Stone"):FindFirstChild("PointLight") == nil)
 local brazier = Kit.place("Brazier_Post", CFrame.new(), V3(1, 1, 1), { Group = "Brazier" })
 local flame = brazier:FindFirstChild("Brazier_Post__Flame")
@@ -302,6 +305,34 @@ for _, d in kitRoot:GetDescendants() do
 		if tower > 3 then break end
 	end
 end
+-- Far silhouette: spire, rose, lancet and portal models stay loaded (Persistent); only their silhouette subs (stone, roof,
+-- iron, glass) are AsuraKeepFar, so the decorative subs (tracery, crockets, frost...) still take the client's 900-stud cut.
+local far, near, keptRoles, cutRoles = {}, 0, {}, {}
+for _, d in kitRoot:GetDescendants() do
+	if d:IsA("Model") and d:GetAttribute("VespKitPiece") then
+		local group = d:GetAttribute("VespGroup")
+		if group == "Spire" or group == "Rose" or group == "Lancet" or group == "Portal" then
+			far[group] = (far[group] or 0) + 1
+			check("far silhouette " .. d.Name .. " is Persistent", d.ModelStreamingMode == Enum.ModelStreamingMode.Persistent)
+			for _, p in d:GetChildren() do
+				local role = string.match(p.Name, "__(.+)$")
+				if p:GetAttribute("AsuraKeepFar") then keptRoles[role] = true else cutRoles[role] = true end
+			end
+		else
+			if d.ModelStreamingMode == Enum.ModelStreamingMode.Persistent then near += 1 end
+			for _, p in d:GetChildren() do if p:GetAttribute("AsuraKeepFar") then near += 1 end end
+		end
+	end
+end
+check("spires, the rose and lancets were checked", far.Spire and far.Rose and far.Lancet)
+check("silhouette subs are AsuraKeepFar", keptRoles.Stone and keptRoles.Glass and keptRoles.GlassR)
+check("decorative subs keep the 900-stud cut", cutRoles.Tracery and not keptRoles.Tracery and not keptRoles.Lead)
+check("other kit pieces (statues, trees, arcades) keep default streaming and the 900-stud cut", near == 0)
+local castleModel = kitRoot:FindFirstChild("Vesperhold")
+check("the castle massing and pinnacle rock are Persistent; the castle itself streams by default",
+	castleModel:FindFirstChild("Massing").ModelStreamingMode == Enum.ModelStreamingMode.Persistent
+	and castleModel:FindFirstChild("Rock").ModelStreamingMode == Enum.ModelStreamingMode.Persistent
+	and castleModel.ModelStreamingMode ~= Enum.ModelStreamingMode.Persistent)
 local registryWithBay = table.clone(registry)
 register("Viaduct_Bay", { { "Stone", V3(35, 120, 29), V3(0, 60, 0) } })
 registryWithBay.Viaduct_Bay = registry.Viaduct_Bay

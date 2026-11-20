@@ -180,6 +180,7 @@ local services = {
 	ReplicatedStorage = { WaitForChild = function() return { Shared = { Overworld = O, VesperholdLayout = L } } end },
 }
 local Kit = {}
+local firelight = {} -- { world position, range } of every brazier and Kit light the builders place
 function Kit.part(parent, name, size, cf, color, material, options)
 	local o = options or {}
 	local p = roblox.Instance.new(o.Class or "Part")
@@ -193,15 +194,21 @@ end
 function Kit.disc(parent, name, radius, height, center, color, material, options)
 	return Kit.part(parent, name, Vector3.new(height, radius * 2, radius * 2), center * CFrame.Angles(0, 0, math.rad(90)), color, material, options)
 end
-function Kit.light() return {} end
+function Kit.light(parent, _, range)
+	if parent:IsA("BasePart") then table.insert(firelight, { parent.Position, range }) end
+	return {}
+end
 local noop = function() end
+local vergeThorns, vergeTrunks = {}, {}
 local stubs = {
 	SanctuaryKit = { part = Kit.part, disc = Kit.disc, light = Kit.light, place = noop, slab = Kit.part },
-	SanctuaryProps = { brazier = noop, bench = noop },
+	SanctuaryProps = { brazier = function(_, cf, range) table.insert(firelight, { cf.Position, range }) end, bench = noop },
 	MonasteryKit = Kit,
 	RegionDecor = { banner = noop, nature = noop, han = noop },
-	PbrAssets = { place = noop },
-	VesperholdKit = { has = function() return false end, place = function() return nil end }, -- no uploads yet: every slot keeps its stand-in
+	PbrAssets = { place = function(_, name, f, size) if name == "AsuraDeadTrunk" then table.insert(vergeTrunks, { f, size }) end end },
+	-- No uploads: every slot keeps its stand-in. The windward thorns are recorded where the kit would place them.
+	VesperholdKit = { has = function() return false end,
+		place = function(piece, f, scale) if piece == "Thorn_Twisted" then table.insert(vergeThorns, { f, scale.X }) end return nil end },
 }
 local env = { game = { GetService = function(_, n) return services[n] end },
 	script = { Parent = setmetatable({ WaitForChild = function(_, n) return stubs[n] end }, { __index = stubs }) },
@@ -510,6 +517,83 @@ for _, t in trees do
 		check("tree clear of the view-01/02 sightline (>= 14 studs): " .. string.format("%.0f", lo), lo >= 14)
 	end
 end
+-- Canopies (not just trunks) that fill >= 18% of the frame height stay out of the middle of reveal views 01/02 (litter low in
+-- the frame is fine); trees beside the frame remain.
+local views = { { L.Eye, L.Aim, L.Fov }, { L.Eye02, L.Aim02, L.Fov02 } }
+local function screen(view, p: Vector3, r: number)
+	local e = vec(view[1])
+	local f = (vec(view[2]) - e).Unit
+	local right = f:Cross(Vector3.new(0, 1, 0)).Unit
+	local up = right:Cross(f)
+	local d = p - e
+	local depth = d:Dot(f)
+	local ty = math.tan(math.rad(view[3] / 2))
+	local z = math.max(depth, r)
+	local sy, ry = d:Dot(up) / z / ty, r / z / ty
+	return depth, math.abs(d:Dot(right)) / z / (ty * L.Aspect) - r / z / (ty * L.Aspect), math.abs(sy) - ry, sy + ry
+end
+local canopies = {}
+for _, t in trees do
+	local d, s = L.Piece[t.Piece], t.SX
+	local reach = d[2] * s * 0.6
+	local lx = math.sin(t.Lean) * reach
+	table.insert(canopies, { Name = t.Piece .. "@" .. string.format("%.0f,%.0f", t.X, t.Z),
+		P = Vector3.new(t.X + math.sin(t.Yaw) * lx, t.Y + math.cos(t.Lean) * reach, t.Z + math.cos(t.Yaw) * lx), R = math.max(d[1], d[3]) * s / 2 })
+end
+local thornD = L.Piece.Thorn_Twisted
+for _, v in vergeThorns do
+	local p = origin:PointToObjectSpace(v[1].Position)
+	table.insert(canopies, { Name = string.format("verge thorn@%.0f,%.0f", p.X, p.Z), P = p + Vector3.new(0, thornD[2] * v[2] * 0.6, 0), R = math.max(thornD[1], thornD[3]) * v[2] / 2 })
+end
+for _, v in vergeTrunks do
+	local p = origin:PointToObjectSpace(v[1].Position)
+	table.insert(canopies, { Name = string.format("verge trunk@%.0f,%.0f", p.X, p.Z), P = p + Vector3.new(0, v[2] * 0.3, 0), R = v[2] / 2 })
+end
+check("windward thorns and trunks were placed", #vergeThorns >= 4 and #vergeTrunks >= 3)
+local framing = 0
+for _, c in canopies do
+	local inFrame = false
+	for k, view in views do
+		local depth, sx, sy, top = screen(view, c.P, c.R)
+		local size = c.R / math.max(depth, c.R) / math.tan(math.rad(view[3] / 2))
+		if depth > -c.R and size >= 0.18 then -- the middle 45% of the frame, above its lower 35%
+			check(string.format("view %02d: %s canopy clear of the central frame", k, c.Name), not (sx < 0.45 and sy < 1 and top > -0.25))
+		end
+		if depth > c.R and sx < 1 and sy < 1 then inFrame = true end
+	end
+	if inFrame then framing += 1 end
+end
+print(string.format("  canopies %d, framing the 01/02 reveals %d", #canopies, framing))
+-- The gorge-flank review camera (view 05 of the Gate B sheet, world eye -2900, -6705) never stands inside a canopy.
+local eye05 = origin:PointToObjectSpace(Vector3.new(-2900, origin.Position.Y, -6705))
+check("view 05 eye guarded by the layout", L.crowdsEye(eye05.X, eye05.Z, 0))
+for _, c in canopies do
+	local dx, dz = c.P.X - eye05.X, c.P.Z - eye05.Z
+	check("view 05 eye outside " .. c.Name, math.sqrt(dx * dx + dz * dz) >= c.R + 8)
+end
+check("withered trees still frame the 01/02 reveals (>= 6)", framing >= 6)
+-- Trees pushed off the reveal never land on the pilgrim road: every trunk stays 12+ studs off the lane centreline.
+local lane, nearLane = L.Lane, math.huge
+for _, t in trees do
+	for i = 2, #lane do
+		local ax, az, bx, bz = lane[i - 1][1], lane[i - 1][2], lane[i][1], lane[i][2]
+		local dx, dz = bx - ax, bz - az
+		local u = math.clamp(((t.X - ax) * dx + (t.Z - az) * dz) / (dx * dx + dz * dz), 0, 1)
+		nearLane = math.min(nearLane, math.sqrt((t.X - ax - dx * u) ^ 2 + (t.Z - az - dz * u) ^ 2))
+	end
+end
+print(string.format("  nearest trunk to the pilgrim road %.1f studs", nearLane))
+check("dead tree trunks clear the pilgrim road (>= 12 studs)", nearLane >= 12)
+-- Gate and close readability (views 04 and 06): warm light sources in the gate passage and along the close.
+local gateLights, closeLights = 0, 0
+for _, l in firelight do
+	local p = origin:PointToObjectSpace(l[1])
+	if math.abs(p.X) <= 30 and p.Z <= 20 and p.Z >= T.T1.BackZ and l[2] >= 18 then gateLights += 1 end
+	if p.Z < T.T1.BackZ and p.Z >= T.T1.CloseZ1 and p.Y >= T.T1.FloorY - 1 and l[2] >= 24 then closeLights += 1 end
+end
+print(string.format("  firelight: gate %d, close %d", gateLights, closeLights))
+check("the gate apron and passage carry >= 6 warm lights", gateLights >= 6)
+check("the close carries >= 5 warm lights", closeLights >= 5)
 print(string.format("  Part estimate (built here): %d", parts))
 
 print(string.format("passed %d, failed %d", passed, failed))

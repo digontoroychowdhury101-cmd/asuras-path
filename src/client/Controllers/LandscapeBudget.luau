@@ -37,13 +37,17 @@ function Budget.new(): any
 	local function register(item: Instance)
 		if not item:IsDescendantOf(workspace) then return end
 		local root: Instance? = item
-		while root and root.Parent ~= workspace do root = root.Parent end
+		local keepFar = false -- AsuraKeepFar on the part or an ancestor: a castle silhouette (spires, glass) read across the valley
+		while root and root.Parent ~= workspace do
+			keepFar = keepFar or root:GetAttribute("AsuraKeepFar") == true
+			root = root.Parent
+		end
 		if not root or (root.Name ~= "Sanctuary" and not root.Name:match("^Map_")) then return end
 		if item:IsA("BasePart") and item.Anchored then
 			-- Collision/query surfaces keep their visibility; decorative mesh siblings carry the art.
 			if item:IsA("MeshPart") or item:GetAttribute("AsuraMicroDetail") then
 				table.insert(self.Parts, { Part = item, Original = item.LocalTransparencyModifier,
-					Keep = keep(item), Radius = item.Size.Magnitude * 0.5, Sanctuary = root.Name == "Sanctuary" })
+					Keep = keepFar or keep(item), KeepFar = keepFar, Radius = item.Size.Magnitude * 0.5, Sanctuary = root.Name == "Sanctuary" })
 			end
 		elseif item:IsA("PointLight") and root.Name == "Sanctuary" then
 			table.insert(self.Lights, { Light = item, Enabled = item.Enabled })
@@ -105,6 +109,7 @@ function Budget.Refresh(self: any)
 	local low = (quality > 0 and quality <= 4) or (quality == 0 and UIS.TouchEnabled)
 	local threshold = if low then 0.028 else 0.013
 	local hidden, active, particles = 0, 0, 0
+	local lobby = WorldMap.isLobby(Players.LocalPlayer:GetAttribute("AsuraRegion"), at.X, at.Z)
 	local foliageShadows = 0
 	for part in self.Shadows do
 		if not part.Parent then self.Shadows[part] = nil; continue end
@@ -124,12 +129,11 @@ function Budget.Refresh(self: any)
 		local fade = if row.Keep then 0 else math.clamp((distance * threshold / math.max(row.Radius, 0.1) - 0.85) / 0.35, 0, 1)
 		-- Underground campaign meshes cannot contribute to a cloud-top vista. The 900-stud radius
 		-- preloads their visual state long before a portal arrival and follows the camera for shots.
-		if not row.Sanctuary and distance > 900 then fade = 1 end
+		if not row.Sanctuary and distance > 900 and (lobby or not row.KeepFar) then fade = 1 end
 		local value = math.max(row.Original, fade)
 		if part.LocalTransparencyModifier ~= value then part.LocalTransparencyModifier = value end
 		if fade >= 1 then hidden += 1 end
 	end
-	local lobby = WorldMap.isLobby(Players.LocalPlayer:GetAttribute("AsuraRegion"), at.X, at.Z)
 	for model, row in self.Far do
 		if not model.Parent then self.Far[model] = nil; continue end
 		local shown = Budget.farShown((row.Center - at).Magnitude, row.Beyond, row.Shown, lobby)

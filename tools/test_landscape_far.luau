@@ -1,6 +1,7 @@
 --!nonstrict
 -- Runs the real LandscapeBudget against fakes: the "<Id>_Far" silhouette shows only beyond FarBeyond
--- from the camera, hides nearer, hides in the lobby, follows tag add/remove and Destroy restores it.
+-- from the camera, hides nearer, hides in the lobby, follows tag add/remove and Destroy restores it; AsuraKeepFar map meshes
+-- skip the 900-stud cut and the size fade outside the lobby.
 local fs = require("@lune/fs")
 local luau = require("@lune/luau")
 local roblox = require("@lune/roblox") :: any
@@ -108,6 +109,41 @@ b:Refresh()
 check("unparented _Far row is dropped", b.Far[gone] == nil)
 b:Destroy()
 check("Destroy restores visibility", mod(1) == 0 and mod(2) == 0 and next(b.Far) == nil)
+
+-- AsuraKeepFar (Vesperhold spires, towers and glass windows): no 900-stud cut and no projected-size fade, except in the lobby.
+local function mapPart(name, at, radius, keepFar)
+	local map = inst("Folder", "Map_Overworld", fakeWorkspace)
+	local model = inst("Model", "Spire", map)
+	model.Attrs.AsuraKeepFar = (keepFar == true) or nil
+	local p = inst("MeshPart", name, model)
+	p.Attrs.AsuraKeepFar = (keepFar == "part") or nil
+	p.Anchored, p.Position, p.Size, p.LocalTransparencyModifier = true, at, Vector3.new(radius * 2, 0, 0), 0
+	function p:IsA(c) return c == "MeshPart" or c == "BasePart" end
+	function p:IsDescendantOf(x) return x == fakeWorkspace end
+	return p
+end
+local kept = mapPart("Spire_Needle_Tip__Iron", Vector3.new(0, 0, 1500), 10, true)
+local plain = mapPart("Spire_Needle_Tip__Iron", Vector3.new(0, 0, 1500), 10, false)
+local glass = mapPart("Portal_Great__GlassR", Vector3.new(0, 0, 600), 2, true)
+local stone = mapPart("Spire_Belfry_Stage__Stone", Vector3.new(0, 0, 1500), 10, "part") -- the attribute on the part itself
+camera.CFrame = CFrame.new(0, 0, 0)
+player.attrs.AsuraRegion = "Forest"
+local k = Budget.new()
+fakeWorkspace.DescendantAdded:Fire(kept); fakeWorkspace.DescendantAdded:Fire(plain); fakeWorkspace.DescendantAdded:Fire(glass)
+fakeWorkspace.DescendantAdded:Fire(stone)
+k:Refresh()
+check("all four meshes registered", #k.Parts == 4)
+check("a part marked AsuraKeepFar itself stays drawn at 1500", stone.LocalTransparencyModifier == 0)
+check("keep-far spire stays drawn at 1500 studs", kept.LocalTransparencyModifier == 0)
+check("an unmarked map mesh is still cut beyond 900", plain.LocalTransparencyModifier == 1)
+check("small keep-far glass is not faded by projected size", glass.LocalTransparencyModifier == 0)
+player.attrs.AsuraRegion = "Sanctuary"
+k:Refresh()
+check("the lobby still hides keep-far meshes beyond 900", kept.LocalTransparencyModifier == 1)
+player.attrs.AsuraRegion = "Forest"
+k:Refresh()
+check("leaving the lobby draws them again", kept.LocalTransparencyModifier == 0)
+k:Destroy()
 
 print(string.format("landscape far: %d passed, %d failed", passed, failed))
 if failed > 0 then error("landscape far toggle failed") end

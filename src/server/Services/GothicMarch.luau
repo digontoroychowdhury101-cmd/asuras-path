@@ -417,12 +417,15 @@ local function verges(parent: Instance,o: CFrame)
 	for i,t in {{-33,545,1.17},{37,519,0.83},{-51,466,0.78},{64,385,1.3},
 		{-46,332,0.9},{61,283,1.08},{-117,220,0.8},{115,158,0.92}} do
 		local x,z=t[1],t[2]
+		local d,sc=Layout.Piece.Thorn_Twisted,t[3]*0.4
+		if Layout.blocksReveal(x,ground(o,x,z)+d[2]*sc*0.6,z,math.max(d[1],d[3])*sc/2) then continue end -- keep the 01/02 reveals clear
 		local f=o*F(x,ground(o,x,z)-0.7,z)
 		-- A kit thorn replaces the Part snag when uploaded; without it the snag stays.
-		local kitTree=VespKit.place("Thorn_Twisted",f*A(0,rad(21+(i*19)%66),0),V(1,1,1)*(t[3]*0.4),{Group="Tree",Seed=i})
+		local kitTree=VespKit.place("Thorn_Twisted",f*A(0,rad(21+(i*19)%66),0),V(1,1,1)*sc,{Group="Tree",Seed=i})
 		if kitTree then kitTree.Parent=m else snag(m,f,t[3],21+(i*19)%66) end
 	end
 	for i,t in {{-23,559,9},{-57,449,8},{54,367,6.5},{-49,298,7},{84,237,6},{-77,119,9}} do
+		if Layout.blocksReveal(t[1],ground(o,t[1],t[2])+t[3]*0.3,t[2],t[3]/2) then continue end
 		local f=o*F(t[1],ground(o,t[1],t[2])-1.3,t[2])*A(0,rad(i*71),0)
 		Pbr.place(m,"AsuraDeadTrunk",f,t[3],"Longest")
 	end

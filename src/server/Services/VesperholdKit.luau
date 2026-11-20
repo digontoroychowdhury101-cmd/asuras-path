@@ -155,6 +155,10 @@ local function lightPart(part: MeshPart, role: string, piece: string)
 	if role ~= "Glass" and role ~= "Flame" then return end
 	local color = if role == "Flame" then FLAME elseif piece:find("Rose",1,true) or piece:find("Portal",1,true) then CRIMSON else AMBER
 	part.Material, part.Color = Enum.Material.Neon, color
+	if role == "Glass" then -- a SurfaceAppearance without an emissive mask mutes Neon; the Tracery subs carry the leading
+		local finish = part:FindFirstChildOfClass("SurfaceAppearance")
+		if finish then finish:Destroy() end
+	end
 	if Kit.Lights() >= Kit.MaxLights then return end
 	local light = Instance.new("PointLight")
 	light.Color, light.Shadows = color, false

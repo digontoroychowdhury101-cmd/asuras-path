@@ -55,6 +55,11 @@ end
 -- Wall-cladding pieces project outward from the slot (stand-in z = depth / 2); the flying buttress runs along X in the kit, along Z here.
 local CLAD = { Arcade = true, Bastion = true, Balustrade = true, Lancet = true, Rose = true, Portal = true }
 
+-- Silhouette groups that must read across the valley stay loaded; their silhouette subs skip the client's 900-stud mesh cut.
+-- The decorative subs (tracery, crockets, frost, dressing) cost ~95% of the triangles and are invisible at that range.
+local FAR = { Spire = true, Rose = true, Lancet = true, Portal = true }
+local FAR_ROLES = { Stone = true, Roof = true, Iron = true, Glass = true, GlassR = true }
+
 -- Kit mesh for one slot (same frame and per-axis scale as its stand-in). Returns false when the registry lacks the piece.
 local function kitMesh(parent: Instance, s: { [string]: any }, origin: CFrame): boolean
 	local d = Layout.Piece[s.Piece]
@@ -66,6 +71,13 @@ local function kitMesh(parent: Instance, s: { [string]: any }, origin: CFrame): 
 	if not m then return false end
 	m:SetAttribute("VespSlotId", s.Id)
 	m:SetAttribute("VespGroup", s.Group)
+	if FAR[s.Group] then
+		m.ModelStreamingMode = Enum.ModelStreamingMode.Persistent
+		for _, p in m:GetChildren() do
+			local role = string.gsub(string.match(p.Name, "__(.+)$") or "", "_%d+$", "")
+			if FAR_ROLES[role] then p:SetAttribute("AsuraKeepFar", true) end -- LandscapeBudget
+		end
+	end
 	m.Parent = parent
 	return true
 end
@@ -191,6 +203,7 @@ end
 
 local function massing(castle: Model, origin: CFrame, ground: (number, number) -> number)
 	local m = section(castle, "Massing")
+	m.ModelStreamingMode = Enum.ModelStreamingMode.Persistent -- the castle body stays on the skyline beyond the stream radius
 	local T, G = Layout.Tiers, Layout.Gate
 	local T0, T1, T2, T3 = T.T0, T.T1, T.T2, T.T3
 	local function low(x0: number, x1: number, z0: number, z1: number): number
@@ -259,6 +272,16 @@ local function massing(castle: Model, origin: CFrame, ground: (number, number) -
 		Props.brazier(m, origin * C(s * 17, 0, 4), 21)
 		for _, z in { -215, -240, -265, -290 } do Props.bench(m, origin * C(s * 22, y0, z)) end
 	end
+	for _, l in Layout.Firelight do
+		local cf = origin * C(l[2], l[3], l[4])
+		if l[1] == "Brazier" then
+			Props.brazier(m, cf, l[5])
+		else
+			local glow = Kit.part(m, "WallLantern", V(1.1, 1.6, 1.1), cf, ember, M.Neon, decor)
+			Kit.part(m, "LanternCap", V(1.5, 0.3, 1.5), cf * C(0, 0.95, 0), iron, M.Metal, decor)
+			Kit.light(glow, rgb(255, 170, 100), l[5], l[6] or 1.3, false)
+		end
+	end
 	-- Decks from the route data: gate apron, passage ramp, cloister ramp, landings, grand stair, alternates, spurs.
 	local routes = section(castle, "WalkRoute")
 	local function slabSeg(r: { [string]: any })
@@ -319,6 +342,7 @@ local function massing(castle: Model, origin: CFrame, ground: (number, number) -
 	end
 	-- Pinnacles P2/P3 (collidable rock courses), distant crags (decor), and the keep masonry.
 	local rock = section(castle, "Rock")
+	rock.ModelStreamingMode = Enum.ModelStreamingMode.Persistent -- the side keeps stand on these pinnacles in the far view
 	local function course(name: string, r: { [string]: number }, solid: boolean)
 		for _, c in Layout.rock(r, ground) do
 			part(rock, name, origin * C(c.CX, (c.Y0 + c.Y1) / 2, c.CZ) * A(0, c.Yaw, 0), 2 * c.HX, c.Y1 - c.Y0, 2 * c.HZ, wet, M.Slate, solid)

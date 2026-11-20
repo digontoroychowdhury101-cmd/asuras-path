@@ -1,0 +1,249 @@
+{
+ "kind": "seeded single-client Studio Play on disposable local file",
+ "build": "work/vesperhold-claude/win69/VespVisual_Fix4.rbxlx",
+ "conditions": {
+  "weather": "Snow",
+  "quality": "QualityLevel10",
+  "viewport": [
+   1736,
+   824
+  ],
+  "observer": "viaduct station (-2848, 648.8, -6400)",
+  "terrain": "primed at all seven baseline eyes",
+  "frameTime": "steady-state 180-frame mean after settling; 06 was measured before settling. Every view sits at 56-61 ms regardless of 0.17M-8.3M tris: the Studio floor is CPU/server bound (PerfBudget HeartbeatHz 33.7 vs 13.5 at baseline), not content.",
+  "memoryMB": 3895
+ },
+ "traversal": {
+  "waypoints": 126,
+  "seconds": 462.2,
+  "falls": 0,
+  "stalls": [
+   "54 CloisterRamp local(-250,190,-101): RampPier beside the ramp-to-landing corner; walker recovered"
+  ],
+  "build": "VespVisual_Fix3 (same geometry; Fix4 only moved two dead oaks)"
+ },
+ "console": {
+  "server": [
+   "[BiomeDressing] WatchBeacon skipped: cannot write ColorMap (lacking capability Plugin) - OverworldService, untouched",
+   "[PerfBudget] HeartbeatHz=33.7 breaches min 55",
+   "rbxassetid://203785492 asset type mismatch (also at baseline)",
+   "[Overworld] stood over unwritten ground x2 - probe teleports while priming"
+  ],
+  "client": [
+   "rbxassetid://203785492 asset type mismatch (also at baseline)"
+  ]
+ },
+ "views": [
+  {
+   "name": "01_snow_refuge",
+   "image": "01_snow_refuge.jpg",
+   "meanMS": 60.6,
+   "p95MS": 74.9,
+   "sceneTriangles": 7778785,
+   "sceneDrawCalls": 337,
+   "clock": 15.99,
+   "baseline": {
+    "sceneTriangles": 8835295,
+    "sceneDrawCalls": 334,
+    "meanMS": null
+   },
+   "camera": {
+    "eye": [
+     -3348,
+     626,
+     -6415
+    ],
+    "target": [
+     -2572,
+     863,
+     -6400
+    ],
+    "fov": 70
+   }
+  },
+  {
+   "name": "02_pilgrim_road",
+   "image": "02_pilgrim_road.jpg",
+   "meanMS": 58.5,
+   "p95MS": 63.9,
+   "sceneTriangles": 8255306,
+   "sceneDrawCalls": 365,
+   "clock": 16.2,
+   "baseline": {
+    "sceneTriangles": 8896911,
+    "sceneDrawCalls": 281,
+    "meanMS": 65.4723760775394
+   },
+   "camera": {
+    "eye": [
+     -3105,
+     614,
+     -6413
+    ],
+    "target": [
+     -2572,
+     842,
+     -6400
+    ],
+    "fov": 74
+   }
+  },
+  {
+   "name": "03_viaduct_midspan",
+   "image": "03_viaduct_midspan.jpg",
+   "meanMS": 58.1,
+   "p95MS": 66.4,
+   "sceneTriangles": 1700687,
+   "sceneDrawCalls": 130,
+   "clock": 16.4,
+   "baseline": {
+    "sceneTriangles": 1905441,
+    "sceneDrawCalls": 106,
+    "meanMS": 45.872479904856945
+   },
+   "camera": {
+    "eye": [
+     -2883,
+     645.7058715820312,
+     -6400
+    ],
+    "target": [
+     -2655,
+     760,
+     -6400
+    ],
+    "fov": 74
+   }
+  },
+  {
+   "name": "04_gate_looking_up",
+   "image": "04_gate_looking_up.jpg",
+   "meanMS": 56.6,
+   "p95MS": 61.1,
+   "sceneTriangles": 1059898,
+   "sceneDrawCalls": 74,
+   "clock": 16.61,
+   "baseline": {
+    "sceneTriangles": 1280064,
+    "sceneDrawCalls": 64,
+    "meanMS": null
+   },
+   "camera": {
+    "eye": [
+     -2805,
+     655,
+     -6400
+    ],
+    "target": [
+     -2649,
+     770,
+     -6400
+    ],
+    "fov": 78
+   }
+  },
+  {
+   "name": "05_gorge_flank",
+   "image": "05_gorge_flank.jpg",
+   "meanMS": 59.7,
+   "p95MS": 67.5,
+   "sceneTriangles": 6131469,
+   "sceneDrawCalls": 398,
+   "clock": 16.82,
+   "baseline": {
+    "sceneTriangles": 6695227,
+    "sceneDrawCalls": 310,
+    "meanMS": null
+   },
+   "camera": {
+    "eye": [
+     -2900,
+     630.4569091796875,
+     -6705
+    ],
+    "target": [
+     -2685,
+     827,
+     -6400
+    ],
+    "fov": 74
+   }
+  },
+  {
+   "name": "06_inside_the_close",
+   "image": "06_inside_the_close.jpg",
+   "meanMS": 70.7,
+   "p95MS": 82.7,
+   "sceneTriangles": 202107,
+   "sceneDrawCalls": 43,
+   "clock": 16.02,
+   "baseline": {
+    "sceneTriangles": 181844,
+    "sceneDrawCalls": 36,
+    "meanMS": 56.22705181853639
+   },
+   "camera": {
+    "eye": [
+     -2709,
+     667,
+     -6490
+    ],
+    "target": [
+     -2712,
+     766,
+     -6374
+    ],
+    "fov": 76
+   }
+  },
+  {
+   "name": "06b_close_walk_height",
+   "image": "06b_close_walk_height.jpg",
+   "meanMS": 59.1,
+   "p95MS": 68.4,
+   "sceneTriangles": 173756,
+   "sceneDrawCalls": 94,
+   "clock": 15.99,
+   "baseline": null,
+   "camera": null
+  },
+  {
+   "name": "07_silhouette_1630",
+   "image": "07_silhouette_1630.jpg",
+   "meanMS": 59.2,
+   "p95MS": 68.2,
+   "sceneTriangles": 1093593,
+   "sceneDrawCalls": 579,
+   "clock": 15.99,
+   "baseline": {
+    "sceneTriangles": 518853,
+    "sceneDrawCalls": 386,
+    "meanMS": null
+   },
+   "camera": {
+    "eye": [
+     -4420,
+     653.7760009765625,
+     -6580
+    ],
+    "target": [
+     -2620,
+     874,
+     -6400
+    ],
+    "fov": 65
+   }
+  },
+  {
+   "name": "rose_closeup",
+   "image": "rose_closeup.jpg",
+   "meanMS": null,
+   "p95MS": null,
+   "sceneTriangles": null,
+   "sceneDrawCalls": null,
+   "clock": null,
+   "baseline": null,
+   "camera": null
+  }
+ ]
+}
