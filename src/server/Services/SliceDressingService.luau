@@ -507,5 +507,7 @@ end
 
 -- Exposed for tools/test_slice_dressing.luau.
 SliceDressingService.Build = { Piece = makePiece, Cell = buildCell }
+-- Shared with BiomeDressingService (win-75): the one runtime-safe template path (cached LoadAsset clone + finish library).
+SliceDressingService.Template = meshTemplate
 
 return SliceDressingService

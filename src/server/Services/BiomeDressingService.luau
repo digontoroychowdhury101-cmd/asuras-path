@@ -29,6 +29,7 @@ local Biome = require(Shared.Shared.BiomeDressing) :: any
 local Slice = require(Shared.Shared.SliceDressing) :: any
 local Terrain = require(script.Parent:WaitForChild("OverworldTerrain") :: ModuleScript) :: any
 local OverworldWorld = require(script.Parent:WaitForChild("OverworldService") :: ModuleScript) :: any
+local SliceService = require(script.Parent:WaitForChild("SliceDressingService") :: ModuleScript) :: any
 
 local BiomeDressingService = {}
 
@@ -44,7 +45,6 @@ local KIT_FOLDER = "BiomeKit"
 local running = false
 local root: Folder? = nil
 local regions: { [string]: any } = {}
-local meshCache: { [string]: Instance | boolean } = {}
 
 local sliceStart = os.clock()
 -- Yield once SLICE seconds have passed since the last yield; unwinds a stopped service out of whatever it was doing.
@@ -160,32 +160,9 @@ local function kitTemplate(piece: string): Model?
 	return nil
 end
 
--- One template MeshPart (with its SurfaceAppearance) per registry sub-mesh, cached; clones are cheap and share the mesh.
-local function meshTemplate(key: string, entry: any): Instance?
-	local hit = meshCache[key]
-	if hit ~= nil then
-		return if hit == false then nil else hit :: Instance
-	end
-	local ok, tpl = pcall(function()
-		return (game:GetService("AssetService") :: any):CreateMeshPartAsync(entry.MeshId, { CollisionFidelity = Enum.CollisionFidelity.Box })
-	end)
-	if not ok then
-		warn(string.format("[BiomeDressing] mesh %s not created: %s", tostring(entry.MeshId), tostring(tpl)))
-		tpl = nil
-	end
-	if tpl then
-		local sa = Instance.new("SurfaceAppearance")
-		for _, map in { "ColorMap", "NormalMap", "RoughnessMap", "MetalnessMap" } do
-			local id = entry[map]
-			if type(id) == "string" and id ~= "" then
-				(sa :: any)[map] = id
-			end
-		end
-		sa.Parent = tpl
-	end
-	meshCache[key] = tpl or false
-	return tpl
-end
+-- One template MeshPart per registry sub-mesh, shared with the slice (win-75): a cached clone of the uploaded model's own MeshPart plus the
+-- finish library. A running server cannot write SurfaceAppearance maps, so the old CreateMeshPartAsync + map-write path refused every piece.
+local meshTemplate = SliceService.Template
 
 -- Registry-built piece: every sub-mesh must resolve (a half tree is worse than the placeholder). The biome registry first, then the slice one
 -- (the pieces both modules share are keyed by the same names).
@@ -611,7 +588,6 @@ function BiomeDressingService.Destroy()
 		root = nil
 	end
 	table.clear(regions)
-	table.clear(meshCache)
 end
 
 -- Exposed for a Studio check of one piece.

@@ -85,3 +85,17 @@ Instruction: handoff §4 step 7, creator's "Yes continue".
   Bell_Leaf_Color_srgbfix.png (116/153/98). Each is encoded so the decoded albedo equals the preview's. Swapping them in only means renaming the two
   finish children and the registry ids. Unseen: how the paler bark reads in full sun, and the leaf at this level (the preview hit its memory budget).
 - Known, not touched: BiomeDressingService builds a SurfaceAppearance with Instance.new and writes its maps, which a game Script cannot do.
+
+## win-75 (loop): region dressing refused every real mesh at runtime
+- Defect: BiomeDressingService built templates with AssetService:CreateMeshPartAsync + Instance.new SurfaceAppearance map writes. A game Script lacks
+  the Plugin capability, so every registry piece failed (Studio, work/vesperhold-claude/win75/BiomeBefore.rbxlx: "[BiomeDressing] Aqueduct skipped:
+  The current thread cannot write 'ColorMap' (lacking capability Plugin)"; BiomeDressing mesh=0 at Amberfall after ~150 s).
+- Tests first (test_slice_dressing, red 2): SliceDressingService.Template exported and returns the cached, finished template; BiomeDressingService
+  source carries no SurfaceAppearance creation, map writes or CreateMeshPartAsync and uses .Template.
+- Fix: SliceDressingService.Template = meshTemplate (cached LoadAsset clone + AsuraForestFinish); BiomeDressingService uses it, its own cache removed.
+- Studio after (BiomeAfter.rbxlx, closed unsaved, mtime unchanged): no map-write errors; the Golden Ravine aqueduct set piece builds as 3 textured
+  MeshParts (captures/win/biome75/biome75_amberfall_aqueduct_after.jpg). Build.Piece over all 208 region pieces: 15 real-mesh, 193 placeholder, 0 errors,
+  and none of the placeholders has a registry row.
+- Next visible gap (needs a decision): 193 of 208 region pieces (Amberfall, Saltreach, Frostmere, Ashen) have no uploaded kit (Amberfall/Saltreach/
+  Frostmere/AshenKitRegistry modules absent), so those regions read as coloured blocks. Making those meshes means Blender work plus Roblox uploads (held).
+- Scatter cells still wait for terrain tiles (1044/4356 after ~5 min), so only set pieces were seen live; scatter goes through the same path.

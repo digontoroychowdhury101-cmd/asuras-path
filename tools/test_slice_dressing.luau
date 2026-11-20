@@ -1248,6 +1248,15 @@ else
 	check("no runtime SurfaceAppearance map or MeshId writes remain", string.find(code, "Map%w*%s*=[^=]") == nil and string.find(code, "Instance.new(\"SurfaceAppearance\")", 1, true) == nil and string.find(code, "CreateMeshPartAsync", 1, true) == nil
 		and string.find(code, "%.MeshId%s*=[^=]") == nil and string.find(code, "%[map%]") == nil)
 	check("templates come from InsertService:LoadAsset behind modelCache", string.find(code, ":LoadAsset(", 1, true) ~= nil and string.find(code, "modelCache[assetId]", 1, true) ~= nil)
+	-- win-75: the region service (BiomeDressingService) shares this template path; its own CreateMeshPartAsync + map writes failed at runtime.
+	local tplFn = (Service3 :: any).Template
+	local shared = if type(tplFn) == "function" then tplFn("Canopy_Tree_A__Bark", fake.Canopy_Tree_A.Canopy_Tree_A__Bark) else nil
+	check("Template is exported and returns the finished, cached bark template", shared ~= nil and shared:FindFirstChild("777") ~= nil and shared:FindFirstChild("Own") == nil
+		and tplFn("Canopy_Tree_A__Bark", fake.Canopy_Tree_A.Canopy_Tree_A__Bark) == shared)
+	local biomeCode = (string.gsub(fs.readFile("src/server/Services/BiomeDressingService.luau"), "%-%-[^" .. string.char(10) .. "]*", ""))
+	check("BiomeDressingService writes no SurfaceAppearance maps and builds templates through SliceDressingService.Template",
+		string.find(biomeCode, "Instance.new(\"SurfaceAppearance\")", 1, true) == nil and string.find(biomeCode, "CreateMeshPartAsync", 1, true) == nil
+		and string.find(biomeCode, "%[map%]") == nil and string.find(biomeCode, ".Template", 1, true) ~= nil)
 	Service3.Destroy()
 
 	-- B: only the cells nearest the glade have their tiles; the rest are never built (and the service says so).
