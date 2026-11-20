@@ -46,3 +46,17 @@ Instruction: handoff §4 step 7, creator's "Yes continue".
   (45.5 before); 4004 MB. Captures captures/win/forest71/ (before/after sheet forest71_before_after.jpg).
 - Tests: overworld order 494/0 (new paint checks), slice 1356/0, terrain 102/0; verify_all exit 0.
 - Not checked in Studio: grass in Amberfall and the Ashen Stair foothills (unit-tested only).
+
+## win-72 (loop iteration 1): near-black trunks and understory — root cause, fix needs upload
+- Studio A/B on a copy of the 610d33d verify build (work/vesperhold-claude/win72, closed unsaved), view 02 and 03, clock ~12, Forest region.
+- Not lighting: Forest Ambient 78->118 and EnvironmentDiffuseScale 0.55->1 (held at RenderPriority.Last) left trunks black (forest72_02_ambient118.jpg).
+- Not metalness: trees use MetalnessMap 125081447625785 (the retone2 zero map, shared with the fixed timber/roof); the old metal map 89863602509302 is gone.
+- Not tint: SurfaceAppearance.Color 2,2,2 has no visible effect (clamped).
+- Cause: the live albedo maps are very dark. Bark ColorMap 140594595381269 reads mean 67/60/44 (about 4% linear); leaf 77950985710853 is similar.
+  In canopy shade only the occluded Ambient lights them, so they crush to black.
+- Proof: the same maps lifted in linear space (bark x3, leaf x2.5) through an EditableImage preview (1185 SurfaceAppearances). Trunks now show bark,
+  crowns read as foliage, and the view 02 "tunnel" opens up. Sheet: captures/win/forest72/forest72_before_after.jpg.
+  At x2.5 a sunlit shrub in 03 is slightly neon; target leaf about x2.2. The x2.0 preview hit the EditableImage memory budget (white fallback), so it was not judged.
+- Fix route: re-tone those two ColorMaps (tools/assets/retone_glb.py lifts: Bark 60 -> ~100 mean, Leaf value up ~1.5x) and re-upload the two images. Then
+  repoint the Slice/Bellwood registries. **HELD: needs the creator's approval to upload** (pilot first, from the cloud window, op IDs recorded).
+- Not done here: no src change (the textures are assets, not code), no upload, no frame-time run (texture swap only, same resolution).
