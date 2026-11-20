@@ -142,3 +142,19 @@ Keep the deep hood, the capelet, the rope belt, the staff crescent and the quatr
   with `--vesp-manifests assets/source/vesperhold/candidate-win-2026-11-19` and the 31 held pieces as `--allow-missing`.
 - Not uploaded (held): all statues, Dead_Pine_Snapped_A/B, Dead_Stump_A/B, Viaduct_Bay, Viaduct_Balustrade_30,
   Waterfall_Sheet_A/B. Next: §4 step 5 (seven Play views on a local copy), then the checkpoint rebuild with meshes.
+
+## 8. Windows continuation after the quota stop (Codex, 2026-11-20)
+
+- Held pass 4 (`74d9c6e`) is ready for creator review. The 13 pieces are packaged in 19 verified local parts under
+  `work/vesperhold-claude/win68/split`. All 86 submeshes are below 18,000 triangles, with 2K maps. See the
+  [statue sheet](../vesperhold/kit-renders-win/F1_statues_v4_win.jpg) and
+  [held assembly sheet](../vesperhold/kit-renders-win/gate_a_held_pass4.jpg).
+- Step 5 is recorded in the [recovery note](workers/win-68-vesperhold-recovery.md). Runtime fixes at `e11d405`
+  address the protected collision write, the missing atmosphere mapping, crimson glass and two nonpositive belfry
+  slots. The full verifier passed. The [seven views](../vesperhold/kit-renders-win/gate_b_studio_approved_set.jpg)
+  and [measurements](../vesperhold/kit-renders-win/gate_b_studio_metrics.json) are from a disposable Studio copy.
+- Source build available at `work/vesperhold-claude/win68/AsurasPath_Vesperhold_Approved_Final.rbxlx`,
+  digest **287 / 3437403 / 2079555092**, SHA-256
+  `fbb1988bca3cf401ac706ff212181c358437aba3382adc9cb28d4ac4099a3031`.
+  The creator review precedes the held upload and §4 step 6 checkpoint promotion. The master places and the
+  checkpoint in §1.3 retain their original hashes. The last verified cloud checkpoint remains M1 v9.

@@ -60,3 +60,84 @@ The first 2400 × 1100 Cycles lineup hit a Windows allocation failure on the fog
 1320 × 605 and six threads rendered both lineups. The source meshes and maps kept their original resolution.
 See the [statue comparison](../../vesperhold/kit-renders-win/F1_statues_v4_win.jpg) and
 [assembly renders](../../vesperhold/kit-renders-win/gate_a_held_pass4.jpg).
+
+## Approved set in local Studio
+
+The first source build passed the local verifier and matched its Studio script digest. Play stopped at the first
+registered thorn in `GothicMarch.verges`. The running server cannot write `MeshPart.CollisionFidelity`. The loader now
+uses a cached collision template created with `AssetService:CreateMeshPartAsync`, applies the geometry to an imported
+clone, and restores its texture content. The clone retains its SurfaceAppearance. A failed cook reuses the imported
+collision and warns once for that source and fidelity. The regression fake now forbids runtime property writes and
+checks the cook cache, texture retention, and the fallback.
+
+The next Play reached server readiness. Client startup still stopped in `WeatherController` because
+`VesperholdAtmosphere` existed in source without a Rojo mapping. The module is now packaged beside its caller. The
+project mapping check covers that normal build entry point.
+
+The first placement audit found three published `GlassR` submeshes still on their imported material and two
+approved belfry stand-ins at the ends of 26- and 30-stud spire stacks. `GlassR` now uses the same Neon and
+collision rules as `Glass`, with the crimson tint for rose windows and the portal. The layout now fits the tip
+inside short stacks and skips a belfry when it has no positive height. The massing suite checks every module
+height and every authored spire top.
+
+The final source build passes `bash tools/verify_all.sh` in all 14 stages, including loader 47/0, atmosphere 26/0,
+and massing 15,072/0. It has 314 mapped sources and 2,222 distinct referenced Roblox asset IDs.
+The disposable source build is `work/vesperhold-claude/win68/AsurasPath_Vesperhold_Approved_Final.rbxlx`.
+Its script fingerprint is **287 / 3437403 / 2079555092** and its SHA-256 is
+`fbb1988bca3cf401ac706ff212181c358437aba3382adc9cb28d4ac4099a3031`.
+
+The two seven-view passes each used a fresh local copy of that file with one capture-only script.
+It briefly prioritized terrain around the viewpoints in the existing writer and restored the normal queue before
+capture. Studio and offline fingerprints matched on both local copies. The observer stayed on the ridge at full
+weather weight. The cameras used the regular in-game Snow profile around 15:50, with the avatar and HUD hidden.
+The session files keep exact eye positions, draw calls and frame times. The final view requested the distant
+foreground through the existing streaming API.
+
+### Studio results
+
+The first pass had 24 unique content IDs with HTTP 406 “Asset content representation is being generated.” Foreground
+meshes in its first two shots appeared untextured. A fresh Play pass with 28 seconds of render warm-up showed textured
+bark and stone. The repeat logged zero of those 406 warnings. Its remaining console entries were the previously
+recorded asset type mismatch for `203785492` and one server heartbeat budget warning during startup.
+
+- The server placed **639 loaded kit models** and counted **3,959 MeshParts** among the castle's 5,439 parts. The
+  Windows manifests give **17,242,824 source triangles** across those placed kit submeshes. The repeat client had
+  3,739 castle MeshParts streamed in at the observer position.
+- Zero bad pivots. Worst positional deviation was **0.00071 studs**. The 242 cladding offsets agreed within
+  **0.00010 studs** and all 16 flying buttresses used the intended yaw. The 3,894 split submesh centres agreed within
+  **0.00028 studs**.
+- All **86 collidable kit submeshes** used the expected fidelity (10 Hull and 76 Box). Three rays across the gate,
+  from 3 studs above the floor at lateral offsets of −3, 0 and +3 studs, were clear for 48 studs. The stray red
+  trail stake is absent in view 01.
+- All **22 glass submeshes** had four SurfaceAppearance maps and Neon. The rose-window pair looks nearly identical
+  with Neon enabled or disabled beneath SurfaceAppearance. The centre crop averaged **1.05 RGB levels** of absolute
+  difference on a 0–255 scale. The warm glow in the brief is still weak.
+
+| View | Rendered scene triangles | Draw calls | Mean frame (ms) | P95 (ms) |
+|---|---:|---:|---:|---:|
+| 01 Snow Refuge | 8,835,295 | 334 | | |
+| 02 Pilgrim road | 8,896,911 | 281 | 65.47 | 67.17 |
+| 03 Viaduct midspan | 1,905,441 | 106 | 45.87 | 49.19 |
+| 04 Gate | 1,280,064 | 64 | | |
+| 05 Gorge flank | 6,695,227 | 310 | | |
+| 06 Inside the close | 181,844 | 36 | 56.23 | 68.68 |
+| 07 Silhouette, 1,630 studs | 518,853 | 386 | | |
+
+Frame times are 180 RenderStepped samples per measured view in one Studio client at 1736 × 824, saved quality
+Level 10, with the world still writing terrain. The far view can include incomplete terrain outside the sampled
+foreground. These timings cover a seeded review run. Multiplayer and device profiling remain open.
+
+The views 01 and 02 are still screened by foreground branches. The gate and close are very dark, and most of the
+spire detail is lost in the far silhouette. The approved-set scene continues to show authored stand-ins for held
+pieces. The frame-time and visual evidence are open for creator review before the checkpoint is promoted.
+See the [seven views](../../vesperhold/kit-renders-win/gate_b_studio_approved_set.jpg),
+[rose window pair](../../vesperhold/kit-renders-win/gate_b_glass_comparison.jpg), and
+[Studio measurements](../../vesperhold/kit-renders-win/gate_b_studio_metrics.json).
+
+## Resume point
+
+Creator review of the held meshes and the approved-set Play views comes next. The held files are ready in the local
+split folder for an approved pilot. Check placement and collision when those parts enter the registry and confirm the
+waterfall importer keeps alpha and both faces. Checkpoint promotion, forest re-captures and the grass decision follow
+the active review. Guarded M2 integration, multiplayer and device profiling remain open. The last verified cloud
+checkpoint is M1 v9. The existing local master and Mac handoff checkpoint hashes still match their earlier values.

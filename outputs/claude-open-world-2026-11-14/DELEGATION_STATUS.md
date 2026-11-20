@@ -249,3 +249,9 @@ Lead verdict: workers/win-65-gate-a-verdict.md. Four-lens review (PM, Architect,
 |---|---|---|---|---|
 | win-66 | statues pass 4 (banding root cause, layered drapery, upturned Mourner) | opus | pending report | vesperhold_figures.py, vesp_bake.py |
 | win-67 | held pieces: snapped pines, stumps, viaduct bay, waterfalls | opus | pending report | vesperhold_trees.py (pines/stumps), vesperhold_kit.py (viaduct), vesperhold_props.py + vesp_common.py (water) |
+
+### Windows continuation after the pass 4 interruption
+
+The creator asked Codex desktop to pick up the last Claude chat. Codex (GPT-6) waited for the existing win-66 and
+win-67 bakes to finish, recovered their outputs and ran the Blender and Studio checks serially. No extra workers were
+started. Win-67 self-reports Opus 5.5. See the [recovery record](workers/win-68-vesperhold-recovery.md).

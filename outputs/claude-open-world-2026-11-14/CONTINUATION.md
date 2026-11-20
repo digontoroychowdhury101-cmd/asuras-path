@@ -1,8 +1,14 @@
 # CONTINUATION — read this first after any restart
 
-**Current, 20 November (Windows).** The gargoyles, withered trees and architecture are at gate (a) with the statue pass 3
-Wraith and Mourner from refs 06 and 07. The next action is the creator's review of the contact sheet before Roblox uploads.
-[Gate (a) results](workers/win-64-vesp-gate-a.md) · [Contact sheet](../vesperhold/kit-renders-win/gate_a_contact_sheet.jpg)
+**Current, 20 November (Windows).** The approved set is uploaded and registered at `e3b471c` (38 Vesperhold pieces and
+101 forest re-tones). Claude's held art is recovered and packaged locally in pass 4 (`74d9c6e`). The Studio startup
+and placement fixes are at `e11d405`. The local Play review and its remaining art and texture checks are recorded
+below. Creator review gates the held-piece upload and the checkpoint promotion.
+
+[Recovery and Studio evidence](workers/win-68-vesperhold-recovery.md) ·
+[Statue pass 4](../vesperhold/kit-renders-win/F1_statues_v4_win.jpg) ·
+[Held assemblies](../vesperhold/kit-renders-win/gate_a_held_pass4.jpg) ·
+[Seven Studio views](../vesperhold/kit-renders-win/gate_b_studio_approved_set.jpg)
 
 The earlier Mac run 3b and Windows run 4 are in the [Windows handoff](WINDOWS_HANDOFF.md) and
 [resume prompt](handoff/WINDOWS_RESUME_PROMPT.md). The Git branch `codex/vesperhold-assets-2026-11-19` stores the Mac source

@@ -1,0 +1,544 @@
+{
+  "kind": "seeded single-client Studio Play on local file",
+  "build": "AsurasPath_Vesperhold_Approved_Retry.rbxlx",
+  "expectedDigest": "scripts 288 bytes 3440133 digest 512684416",
+  "views": [
+    {
+      "name": "01_snow_refuge",
+      "fov": 70,
+      "eye": [
+        -3348,
+        626,
+        -6415
+      ],
+      "horizontalGateDistance": 548.2052535319231,
+      "target": [
+        -2572,
+        863,
+        -6400
+      ],
+      "conditions": {
+        "haze": 2.140000104904175,
+        "studioVersion": "0.748.0.7481526",
+        "sceneDrawCalls": 334,
+        "graphicsPaused": false,
+        "density": 0.38999998569488525,
+        "sceneTriangles": 8835295,
+        "clientCastleMeshes": 3739,
+        "position": [
+          -2848,
+          648.8235473632812,
+          -6400
+        ],
+        "viewport": [
+          1736,
+          824
+        ],
+        "weather": "Snow",
+        "clock": 15.878055572509766,
+        "quality": "QualityLevel10"
+      },
+      "image": "01_snow_refuge.jpg"
+    },
+    {
+      "name": "02_pilgrim_road",
+      "fov": 74,
+      "eye": [
+        -3105,
+        614,
+        -6413
+      ],
+      "horizontalGateDistance": 305.27692346458156,
+      "target": [
+        -2572,
+        842,
+        -6400
+      ],
+      "conditions": {
+        "haze": 2.140000104904175,
+        "studioVersion": "0.748.0.7481526",
+        "sceneDrawCalls": 281,
+        "graphicsPaused": false,
+        "density": 0.38999998569488525,
+        "sceneTriangles": 8896911,
+        "clientCastleMeshes": 3739,
+        "position": [
+          -2848,
+          648.8235473632812,
+          -6400
+        ],
+        "viewport": [
+          1736,
+          824
+        ],
+        "weather": "Snow",
+        "clock": 15.85444450378418,
+        "quality": "QualityLevel10"
+      },
+      "image": "02_pilgrim_road.jpg",
+      "timing": {
+        "seconds": 11.78502769395709,
+        "statsGpu": 0.06520778524378935,
+        "meanMS": 65.4723760775394,
+        "p95MS": 67.1716034412384,
+        "frames": 180,
+        "statsCpu": 0.06337914893196689
+      }
+    },
+    {
+      "name": "03_viaduct_midspan",
+      "fov": 74,
+      "eye": [
+        -2883,
+        645.7058715820312,
+        -6400
+      ],
+      "horizontalGateDistance": 83,
+      "target": [
+        -2655,
+        760,
+        -6400
+      ],
+      "conditions": {
+        "haze": 2.140000104904175,
+        "studioVersion": "0.748.0.7481526",
+        "sceneDrawCalls": 106,
+        "graphicsPaused": false,
+        "density": 0.38999998569488525,
+        "sceneTriangles": 1905441,
+        "clientCastleMeshes": 3739,
+        "position": [
+          -2848,
+          648.8235473632812,
+          -6400
+        ],
+        "viewport": [
+          1736,
+          824
+        ],
+        "weather": "Snow",
+        "clock": 15.898333549499512,
+        "quality": "QualityLevel10"
+      },
+      "image": "03_viaduct_midspan.jpg",
+      "timing": {
+        "seconds": 8.25704638287425,
+        "statsGpu": 0.041663220504091845,
+        "meanMS": 45.872479904856945,
+        "p95MS": 49.185700714588165,
+        "frames": 180,
+        "statsCpu": 0.04391661956906319
+      }
+    },
+    {
+      "name": "04_gate_looking_up",
+      "fov": 78,
+      "eye": [
+        -2805,
+        655,
+        -6400
+      ],
+      "horizontalGateDistance": 5,
+      "target": [
+        -2649,
+        770,
+        -6400
+      ],
+      "conditions": {
+        "haze": 2.140000104904175,
+        "studioVersion": "0.748.0.7481526",
+        "sceneDrawCalls": 64,
+        "graphicsPaused": false,
+        "density": 0.38999998569488525,
+        "sceneTriangles": 1280064,
+        "clientCastleMeshes": 3739,
+        "position": [
+          -2848,
+          648.8235473632812,
+          -6400
+        ],
+        "viewport": [
+          1736,
+          824
+        ],
+        "weather": "Snow",
+        "clock": 15.88861083984375,
+        "quality": "QualityLevel10"
+      },
+      "image": "04_gate_looking_up.jpg"
+    },
+    {
+      "name": "05_gorge_flank",
+      "fov": 74,
+      "eye": [
+        -2900,
+        630.4569091796875,
+        -6705
+      ],
+      "horizontalGateDistance": 320.97507691408066,
+      "target": [
+        -2685,
+        827,
+        -6400
+      ],
+      "conditions": {
+        "haze": 2.140000104904175,
+        "studioVersion": "0.748.0.7481526",
+        "sceneDrawCalls": 310,
+        "graphicsPaused": false,
+        "density": 0.38999998569488525,
+        "sceneTriangles": 6695227,
+        "clientCastleMeshes": 3739,
+        "position": [
+          -2848,
+          648.8235473632812,
+          -6400
+        ],
+        "viewport": [
+          1736,
+          824
+        ],
+        "weather": "Snow",
+        "clock": 15.852777481079102,
+        "quality": "QualityLevel10"
+      },
+      "image": "05_gorge_flank.jpg"
+    },
+    {
+      "name": "06_inside_the_close",
+      "fov": 76,
+      "eye": [
+        -2709,
+        667,
+        -6490
+      ],
+      "horizontalGateDistance": 127.98828071350908,
+      "target": [
+        -2712,
+        766,
+        -6374
+      ],
+      "conditions": {
+        "haze": 2.140000104904175,
+        "studioVersion": "0.748.0.7481526",
+        "sceneDrawCalls": 36,
+        "graphicsPaused": false,
+        "density": 0.38999998569488525,
+        "sceneTriangles": 181844,
+        "clientCastleMeshes": 3739,
+        "position": [
+          -2848,
+          648.8235473632812,
+          -6400
+        ],
+        "viewport": [
+          1736,
+          824
+        ],
+        "weather": "Snow",
+        "clock": 15.893333435058594,
+        "quality": "QualityLevel10"
+      },
+      "image": "06_inside_the_close.jpg",
+      "timing": {
+        "seconds": 10.12086932733655,
+        "statsGpu": 0.04408436063677072,
+        "meanMS": 56.22705181853639,
+        "p95MS": 68.68059933185577,
+        "frames": 180,
+        "statsCpu": 0.05295047731035286
+      }
+    },
+    {
+      "name": "07_silhouette_1600",
+      "fov": 65,
+      "eye": [
+        -4420,
+        653.7760009765625,
+        -6580
+      ],
+      "horizontalGateDistance": 1629.969324864735,
+      "target": [
+        -2620,
+        874,
+        -6400
+      ],
+      "conditions": {
+        "haze": 2.140000104904175,
+        "studioVersion": "0.748.0.7481526",
+        "sceneDrawCalls": 386,
+        "graphicsPaused": false,
+        "density": 0.38999998569488525,
+        "sceneTriangles": 518853,
+        "clientCastleMeshes": 3739,
+        "position": [
+          -2848,
+          648.8235473632812,
+          -6400
+        ],
+        "viewport": [
+          1736,
+          824
+        ],
+        "weather": "Snow",
+        "clock": 15.894444465637207,
+        "quality": "QualityLevel10"
+      },
+      "image": "07_silhouette_1600.jpg"
+    }
+  ],
+  "cleanup": [],
+  "studio": {
+    "file": "AsurasPath_Vesperhold_Approved_Retry.rbxlx",
+    "mode": "Edit",
+    "name": "AsurasPath_Vesperhold_Approved_Retry.rbxlx",
+    "persistedToCloud": false,
+    "state": "- Current Studio Mode: Edit\n- Available DataModels: Edit\n- Focused DataModel in the viewport: Edit"
+  },
+  "studioDigest": "scripts 288 bytes 3440133 digest 512684416 | AsuraAssets children 24 | place AsurasPath_Vesperhold_Approved_Retry.rbxlx",
+  "terrainSetup": {
+    "method": "Prioritised review viewpoints in the existing terrain writer, then restored normal priority",
+    "missing": 0,
+    "tiles": 46,
+    "restored": true
+  },
+  "weatherSetup": {
+    "elapsed": 100,
+    "hour": 15.833333333333334,
+    "mix": {
+      "Snow": 1
+    }
+  },
+  "observerStation": {
+    "ridge": 1,
+    "position": [
+      -2848,
+      648.8235473632812,
+      -6400
+    ]
+  },
+  "serverPlacement": {
+    "glass": 22,
+    "glassNeon": 22,
+    "meshParts": 3959,
+    "maxPvAngle": 0.0006905339541845024,
+    "placed": 639,
+    "cladding": 242,
+    "colliderFidelities": {
+      "Hull": 10,
+      "Box": 76
+    },
+    "maxSplitCentreError": 0.00027019137633033097,
+    "parts": 5439,
+    "maxPv": 0.0007012405549176037,
+    "gateRay": [
+      {
+        "offset": -3,
+        "distance": 48,
+        "hit": false
+      },
+      {
+        "offset": 0,
+        "distance": 48,
+        "hit": false
+      },
+      {
+        "offset": 3,
+        "distance": 48,
+        "hit": false
+      }
+    ],
+    "totalTrailStakes": 0,
+    "flyers": 16,
+    "splitSubs": 3894,
+    "colliderMismatches": [],
+    "badPv": 0,
+    "standInCounts": {
+      "Hooded_Statue_A": 6,
+      "Waterfall_Sheet_A": 2,
+      "Viaduct_Bay": 12,
+      "Brazier_Post": 16,
+      "Gibbet_Cage": 6,
+      "Pedestal_Statue_Staff": 40,
+      "Iron_Fence_10": 29,
+      "Tomb_Slab": 6,
+      "Statue_Veiled_Scan": 4,
+      "Candle_Cluster_A": 34,
+      "Banner_Torn_B": 12,
+      "Gravestone_B": 18,
+      "Gravestone_A": 18,
+      "Dead_Pine_Snapped": 11,
+      "Banner_Pole": 6,
+      "Mist_Anchor": 4,
+      "Hooded_Statue_B": 4,
+      "Viaduct_Balustrade_30": 24,
+      "Waterfall_Sheet_B": 2,
+      "Banner_Torn_A": 5
+    },
+    "renderedCounts": {
+      "Spire_Belfry_Stage__Tracery_2": 95,
+      "Spire_Base_Oct__Crockets_2": 40,
+      "Thorn_Twisted_A__Trunk": 5,
+      "Pinnacle_Crocket_S__Crockets": 33,
+      "Flying_Buttress_40__Dress": 16,
+      "Thorn_Twisted_B__Twigs": 5,
+      "Bastion_Face__Dress": 32,
+      "Spire_Lucarne_Mid__Roof": 44,
+      "Arcade_Bay_60__Pinnacles": 30,
+      "Spire_Base_Oct__Stone": 40,
+      "Arcade_Bay_40__Tracery": 66,
+      "Spire_Broken_Top__Stone": 1,
+      "Buttress_Pier__Pinnacles": 50,
+      "Spire_Lucarne_Mid__Crockets": 44,
+      "Bastion_Face__Crockets": 32,
+      "Balustrade_20__Crockets": 71,
+      "Portal_Great__GlassR": 2,
+      "Balustrade_20__Pinnacles": 71,
+      "Spire_Broken_Top__Tracery": 1,
+      "Spire_Needle_Tip__Roof": 70,
+      "Arcade_Bay_50__Frost": 21,
+      "Spire_Belfry_Stage__Pinnacles": 95,
+      "Buttress_Pier__Dress": 50,
+      "Spire_Belfry_Stage__Crockets_2": 95,
+      "Statue_Plinth__Tracery": 10,
+      "Arcade_Bay_50__Pinnacles": 21,
+      "Buttress_Pier__Stone": 50,
+      "Portal_Great__Dress": 2,
+      "Arcade_Bay_50__Tracery": 21,
+      "Spire_Lucarne_Mid__Crockets_2": 44,
+      "Arcade_Bay_60__Stone": 30,
+      "Spire_Broken_Top__Roof": 1,
+      "Balustrade_20__Stone": 71,
+      "Dead_Oak_Gnarled_B__Twigs": 5,
+      "Arcade_Bay_50__Stone": 21,
+      "Buttress_Pier__Crockets": 50,
+      "Spire_Belfry_Stage__Crockets": 95,
+      "Arcade_Bay_40__Frost": 66,
+      "Flying_Buttress_40__Frost": 16,
+      "Arcade_Bay_60__Frost": 30,
+      "Dead_Oak_Gnarled_B__Trunk": 5,
+      "Spire_Belfry_Stage__Frost": 95,
+      "Lancet_Tall__Frost": 19,
+      "Buttress_Pier__Tracery": 50,
+      "Lancet_Tall__Tracery": 19,
+      "Spire_Needle_Tip__Frost": 70,
+      "Thorn_Twisted_A__Twigs": 5,
+      "Arcade_Bay_60__Tracery": 30,
+      "Spire_Needle_Tip__Tracery": 70,
+      "Buttress_Pier__Frost": 50,
+      "Thorn_Twisted_A__Branches": 5,
+      "Balustrade_20__Tracery": 71,
+      "Arcade_Bay_40__Crockets": 66,
+      "Portal_Great__Pinnacles": 2,
+      "Bastion_Face__Pinnacles": 32,
+      "Lancet_Tall__Stone": 19,
+      "Bastion_Face__Stone": 32,
+      "Portal_Great__Tracery": 2,
+      "Thorn_Twisted_B__Twigs_2": 5,
+      "Dead_Oak_Gnarled_A__Branches_2": 5,
+      "Rose_Window_Great__GlassR": 1,
+      "Pinnacle_Crocket_L__Frost": 16,
+      "Spire_Needle_Tip__Stone": 70,
+      "Rose_Window_Great__Crockets": 1,
+      "Portal_Great__Tracery_2": 2,
+      "Rose_Window_Great__Tracery_2": 1,
+      "Spire_Belfry_Stage__Tracery": 95,
+      "Flying_Buttress_40__Stone": 16,
+      "Balustrade_20__Frost": 71,
+      "Rose_Window_Great__Dress": 1,
+      "Flying_Buttress_40__Crockets": 16,
+      "Pinnacle_Crocket_L__Stone": 16,
+      "Flying_Buttress_40__Tracery": 16,
+      "Rose_Window_Great__Pinnacles": 1,
+      "Arcade_Bay_40__Dress": 66,
+      "Ruined_Arch__Tracery": 2,
+      "Spire_Lucarne_Mid__Pinnacles": 44,
+      "Portal_Great__Stone": 2,
+      "Rose_Window_Great__Tracery": 1,
+      "Spire_Lucarne_Mid__Tracery": 44,
+      "Lancet_Tall__Crockets": 19,
+      "Spire_Base_Oct__Frost": 40,
+      "Spire_Belfry_Stage__Stone": 95,
+      "Portal_Great__Frost": 2,
+      "Spire_Lucarne_Mid__Frost": 44,
+      "Arcade_Bay_50__Crockets": 21,
+      "Bastion_Face__Frost": 32,
+      "Spire_Needle_Tip__Crockets": 70,
+      "Spire_Base_Oct__Dress": 40,
+      "Pinnacle_Crocket_S__Frost": 33,
+      "Rose_Window_Great__Frost": 1,
+      "Ruined_Arch__Frost": 2,
+      "Dead_Oak_Gnarled_B__Limbs": 5,
+      "Spire_Belfry_Stage__Louvre": 95,
+      "Dead_Oak_Gnarled_B__Branches_2": 5,
+      "Statue_Plinth__Stone": 10,
+      "Spire_Lucarne_Mid__Tracery_2": 44,
+      "Dead_Oak_Gnarled_A__Twigs": 5,
+      "Arcade_Bay_50__Dress": 21,
+      "Rose_Window_Great__Stone": 1,
+      "Thorn_Twisted_B__Trunk": 5,
+      "Dead_Oak_Gnarled_A__Trunk": 5,
+      "Arcade_Bay_40__Pinnacles": 66,
+      "Dead_Oak_Gnarled_A__Limbs": 5,
+      "Dead_Oak_Gnarled_B__Twigs_2": 5,
+      "Dead_Oak_Gnarled_A__Branches": 5,
+      "Spire_Lucarne_Mid__Stone": 44,
+      "Spire_Base_Oct__Pinnacles": 40,
+      "Ruined_Arch__Stone": 2,
+      "Thorn_Twisted_B__Branches": 5,
+      "Arcade_Bay_60__Crockets": 30,
+      "Bastion_Face__Tracery": 32,
+      "Spire_Base_Oct__Tracery": 40,
+      "Ruined_Arch__Figure": 2,
+      "Spire_Broken_Top__Crockets": 1,
+      "Portal_Great__Crockets": 2,
+      "Dead_Oak_Gnarled_B__Branches": 5,
+      "Dead_Oak_Gnarled_A__Chain": 5,
+      "Statue_Plinth__Frost": 10,
+      "Spire_Broken_Top__Frost": 1,
+      "Spire_Needle_Tip__Iron": 70,
+      "Arcade_Bay_40__Stone": 66,
+      "Arcade_Bay_60__Dress": 30,
+      "Spire_Belfry_Stage__Dress": 95,
+      "Lancet_Tall__Glass": 19,
+      "Pinnacle_Crocket_S__Stone": 33,
+      "Spire_Base_Oct__Crockets": 40,
+      "Lancet_Tall__Pinnacles": 19,
+      "Pinnacle_Crocket_L__Crockets": 16
+    },
+    "glassMaps": 22,
+    "maxCladDepthError": 9.765625000035527e-05,
+    "nearTrailStakes": [],
+    "estimatedCastleKitSourceTriangles": 17242824
+  },
+  "glassComparison": {
+    "eye": [
+      -2676,
+      950,
+      -6400
+    ],
+    "target": [
+      -2620,
+      962,
+      -6400
+    ],
+    "fov": 62,
+    "neon": "glass_rose_neon.jpg",
+    "changed": 22,
+    "surfaceAppearance": "glass_rose_surface_appearance.jpg"
+  },
+  "serverLog": {
+    "[PerfBudget] HeartbeatHz=13.5 breaches min 55": 1,
+    "ContentId: rbxassetid://203785492 failed due to: Asset type does not match requested type": 1
+  },
+  "clientLog": {
+    "ContentId: rbxassetid://203785492 failed due to: Asset type does not match requested type": 1
+  },
+  "done": true,
+  "returnedToEdit": true,
+  "files": {
+    "rawCaptures": "work/vesperhold-claude/win68/play-e",
+    "contactSheet": "gate_b_studio_approved_set.jpg",
+    "glassComparison": "gate_b_glass_comparison.jpg"
+  }
+}
