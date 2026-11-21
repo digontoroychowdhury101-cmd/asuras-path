@@ -147,7 +147,7 @@ Roblox has a hard cap of about 20,000 triangles per MeshPart. Inspect each model
 
 **Export:**
 - Export with `-Z Forward`, `Y Up`, Apply Scalings **FBX All**, and Selected Objects + Mesh only. Use FBX for the Studio 3D Importer, or glTF binary (GLB, embedded textures) for the Open Cloud path.
-- Real-world scale: 1 Blender metre ≈ 3.57 studs. A doorway is about 2.2 m, so it reads correctly next to a 5-stud character.
+- Scale: follow the Vesperhold kit convention, 1 Blender unit = 1 stud, with the pivot at the foot centre. A character is about 5.5 studs tall, so a walk-through doorway is at least 10 studs.
 - Keep each GLB under 20 MB; otherwise run `python tools/assets/glb_split.py`.
 
 ### Phase 3: Roblox Studio import and configuration
