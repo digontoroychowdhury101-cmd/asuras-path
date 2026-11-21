@@ -815,6 +815,11 @@ local function circles(heroes: { any }): { any }
 				add(o.X + fx * along, o.Z + fz * along, keep(r, 10, 6, 4, r))
 			end
 		end
+		-- A sunken basin (mac-88): nothing over its bowl or rim cliffs (a heightAt placement would float there). A circle on the long semi-axis.
+		if lm.Basin then
+			local c, r = Landmarks.basinCentre(lm), math.max(lm.Basin.Width, lm.Basin.Depth) / 2 + lm.Basin.Thick + 6
+			add(c.X, c.Z, keep(r, r, r, r, r))
+		end
 	end
 	for _, h in heroes do
 		local radius = SliceDressing.Pieces[h.Piece].Radius * h.Scale

@@ -397,7 +397,7 @@ do
 	check("carve boxes are level (no tilt)", near(first.CFrame.UpVector.Y, 1))
 	-- mac-87: overworld terrain is an 8-stud crust, so the descending bore ran through void (sky showed through the mesh seams).
 	-- Rock packs wrap the underground run before the carve, wider and deeper than it, and never reach the written surface.
-	W.Height = O.heightAt
+	W.Height, W.Layout = O.heightAt, LL
 	local packs = W.packs(bw)
 	local wraps, under = #packs > 0, true
 	for _, b in packs do
@@ -410,6 +410,38 @@ do
 	end
 	check("rock packs wrap the underground bore (12+ studs of wall, 10 under the floor)", wraps)
 	check("rock packs stay under the written surface", under)
+	-- mac-88: the hidden basin. Bowl air inside the ellipse up over every rim top, a mud bed at the floor, rock rim cliffs RimRise over
+	-- the ground, and the lake (water to Floor + Water) inside the shore.
+	local floorY, waterY = LL.basinLevels(bw)
+	local fills = W.basin(bw)
+	for _, f in W.lake(bw) do table.insert(fills, f) end
+	local byMat, inBowl, rimOk, waterOk, bedOk, maxRim = {}, true, true, true, false, -math.huge
+	for k = 0, 63 do maxRim = math.max(maxRim, LL.rimTop(bw, k / 64 * 2 * math.pi, O.heightAt)) end
+	for _, f in fills do
+		local m = f.Material.Name
+		byMat[m] = (byMat[m] or 0) + 1
+		local c, h = f.CFrame, f.Size / 2
+		if m == "Air" or m == "Water" then
+			for _, sx in { -1, 1 } do for _, sz in { -1, 1 } do
+				local q = c:PointToWorldSpace(Vector3.new(sx * h.X, 0, sz * h.Z))
+				if LL.basinEllipse(bw, q.X, q.Z, 1) > 1 then if m == "Air" then inBowl = false else waterOk = false end end
+			end end
+			if m == "Air" and (c.Position.Y - h.Y > floorY + 0.01 or c.Position.Y + h.Y < maxRim) then inBowl = false end
+			if m == "Water" and (math.abs(c.Position.Y + h.Y - waterY) > 0.01 or math.abs(c.Position.Y - h.Y - floorY) > 0.01) then waterOk = false end
+		elseif m == "Mud" then
+			if math.abs(c.Position.Y + h.Y - floorY) < 0.01 then bedOk = true end
+		elseif m == "Rock" and f.Rim then
+			local p = c.Position
+			if p.Y + h.Y < O.heightAt(p.X, p.Z) + bw.Basin.RimRise - 8 or p.Y - h.Y > floorY - 15 then rimOk = false end
+		end
+	end
+	check("basin bowl: air strips inside the shore, from the floor up over every rim top", (byMat.Air or 0) >= 20 and inBowl)
+	check("basin bed: a mud layer topped at the floor", bedOk)
+	check("basin rim: 64+ rock cliffs from under the floor to RimRise over the ground", (byMat.Rock or 0) >= 64 and rimOk)
+	check("basin lake: water from the floor to Floor + Water, inside the shore", (byMat.Water or 0) >= 20 and waterOk)
+	local route = W.carves(bw)
+	local far = route[#route].CFrame.Position
+	check("the carve runs on through the passage into the basin", LL.basinEllipse(bw, far.X, far.Z) < 1)
 
 	-- build(): pieces at the foot frames, carve only after the region is ready, nothing carved when no piece loads.
 	local fills, readyAsked = 0, nil
@@ -429,8 +461,11 @@ do
 	local footW = W2.frame(bw) * CFrame.new(bw.Pieces.Face.Foot.X, bw.Pieces.Face.Foot.Y, bw.Pieces.Face.Foot.Z)
 	check("build places every piece in the region folder", lm ~= nil and lm:FindFirstChild("Bellwood_GiantFace") and lm:FindFirstChild("Bellwood_GiantCrown"))
 	check("pieces sit at origin * yaw * Foot", placedAt.Bellwood_GiantFace and (placedAt.Bellwood_GiantFace.Position - footW.Position).Magnitude < 1e-3)
-	check("the bore is packed then carved after the region's terrain is ready", readyAsked == "Forest" and fills == #packs + #boxes
-		and fillOrder[1] == "Rock" and fillOrder[#fillOrder] == "Air" and lm:GetAttribute("BoreCarved") == true)
+	local lastRock, lastAir = 0, 0
+	for i, m in fillOrder do if m == "Rock" then lastRock = i elseif m == "Air" then lastAir = i end end
+	check("pack, basin, then the bore and passage cut through the rim, the lake last, after the region's terrain is ready",
+		readyAsked == "Forest" and fills == #packs + #W2.basin(bw) + #boxes + #W2.lake(bw) and fillOrder[1] == "Rock" and fillOrder[#fillOrder] == "Water"
+		and lastAir > lastRock and lm:GetAttribute("BoreCarved") == true and lm:GetAttribute("BasinSculpted") == true)
 	-- mac-87: the bore was pitch dark at noon. Each niche: an always-on shadowless ember plus a night lantern light (tagged, off until dusk).
 	local niches, nicheOk = 0, true
 	for _, c in lm:GetChildren() do

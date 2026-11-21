@@ -132,5 +132,80 @@ end
 check("Bellwood tunnel has two lantern niches inside the bore, off the walk line", lit)
 check("Bellwood grove clears the face footprint and reaches past it", bw.Grove.Clear < bw.FootprintRadius and bw.Grove.R > bw.FootprintRadius + 30)
 
+-- Hidden basin (spec): rim cliffs block every road's view of the temple. The 8 road points nearest the basin centre (80+ apart)
+-- look from eye height at three temple-top targets (centre and +-50 across); the surface along each line is the basin floor inside,
+-- the rim top in the rim band and the written ground (heightAt + 2) outside, and it must rise to the line somewhere.
+do
+	local floorY = L.basinLevels(bw)
+	local c = L.basinCentre(bw)
+	local fx, fz = L.front(bw)
+	local rx, rz = -fz, fx
+	local function surface(x, z)
+		if L.basinEllipse(bw, x, z) < 1 then return floorY end
+		if L.basinEllipse(bw, x, z, bw.Basin.Thick) < 1 then
+			local dx, dz = x - c.X, z - c.Z
+			local theta = math.atan2((dx * fx + dz * fz) / (bw.Basin.Depth / 2), (dx * rx + dz * rz) / (bw.Basin.Width / 2))
+			return L.rimTop(bw, theta, O.heightAt)
+		end
+		return O.heightAt(x, z) + 2
+	end
+	local cands = {}
+	for _, sg in roads do
+		local p, q = sg[1], sg[2]
+		local n = math.max(1, math.floor(math.sqrt((q[1] - p[1]) ^ 2 + (q[2] - p[2]) ^ 2) / 20))
+		for k = 0, n do
+			local x, z = p[1] + (q[1] - p[1]) * k / n, p[2] + (q[2] - p[2]) * k / n
+			table.insert(cands, { x, z, math.sqrt((x - c.X) ^ 2 + (z - c.Z) ^ 2) })
+		end
+	end
+	table.sort(cands, function(u, v) return u[3] < v[3] end)
+	local eyes = {}
+	for _, e in cands do
+		local far = true
+		for _, k in eyes do if math.sqrt((k[1] - e[1]) ^ 2 + (k[2] - e[2]) ^ 2) < 80 then far = false end end
+		if far then table.insert(eyes, e) end
+		if #eyes == 8 then break end
+	end
+	local seen = {}
+	for _, e in eyes do
+		local ey = O.heightAt(e[1], e[2]) + 7.5
+		for _, off in { -50, 0, 50 } do
+			local tx, tz, ty = c.X + rx * off, c.Z + rz * off, floorY + bw.Basin.TempleTop
+			local blocked = false
+			for i = 1, 199 do
+				local t = i / 200
+				local x, z = e[1] + (tx - e[1]) * t, e[2] + (tz - e[2]) * t
+				if surface(x, z) >= ey + (ty - ey) * t then blocked = true; break end
+			end
+			if not blocked then table.insert(seen, string.format("(%.0f,%.0f)->%d", e[1], e[2], off)) end
+		end
+	end
+	print(string.format("  Bellwood basin: %d road eyes, nearest %.0f studs; unblocked %s", #eyes, eyes[1][3], table.concat(seen, " ")))
+	check("8 road points sample the basin's surroundings", #eyes == 8)
+	check("rim cliffs hide the temple from all 8 road points", #seen == 0)
+	local ok = true
+	for _, th in { 0, math.pi / 2, math.pi, 3 * math.pi / 2 } do
+		local x, z = L.basinRing(bw, th, 0)
+		if O.heightAt(x, z) - floorY < 20 then ok = false end
+	end
+	check("the basin floor is sunk 20+ studs under the surrounding ground", ok)
+	local pa, last = bw.Tunnel.Passage, bw.Tunnel.Path[#bw.Tunnel.Path]
+	local endW = { X = 0, Z = 0 }
+	do
+		local q = pa[#pa]
+		local o, a = bw.Origin, math.rad(bw.Yaw)
+		-- kit (x, y) -> world XZ: model (-x, ., y) rotated by Yaw
+		endW.X = o.X + (-q[1]) * math.cos(a) + q[2] * math.sin(a)
+		endW.Z = o.Z - (-q[1]) * math.sin(a) + q[2] * math.cos(a)
+	end
+	local level = true
+	for _, q in pa do if q[3] ~= last[3] then level = false end end
+	check("passage continues the bore from its End", pa[1][1] == last[1] and pa[1][2] == last[2] and pa[1][3] == last[3])
+	local walk = bw.Origin.Y + last[3] - 8
+	check("passage is level, its floor 0..2 over the lake bed (wading in)", level and walk - floorY >= 0 and walk - floorY <= 2)
+	check("lake bed top is on the 4-stud voxel grid (water shares no voxel with the bed)", floorY % 4 == 0)
+	check("passage ends inside the basin", L.basinEllipse(bw, endW.X, endW.Z) < 1)
+end
+
 print(string.format("landmark layout: %d passed, %d failed", passed, failed))
 if failed > 0 then error("landmark layout failed") end

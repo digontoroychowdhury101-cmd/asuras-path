@@ -25,11 +25,18 @@ Layout.Landmarks = {
 		Tunnel = { Width = 16.4, Height = 16.4, Length = 150, Descent = 35, Run = 140, End = { X = -24, Y = -80, Z = -35 }, Radius = 8.2,
 			Path = { { -4, 60, 8 }, { -4, 34, 8 }, { 2, 14, 3 }, { 8, -8, -5 }, { 4, -32, -13 }, { -8, -56, -21 }, { -24, -80, -27 } },
 			-- Two warm lantern niches (spec): kit points 5 studs off the centre line toward the wall, 1.5 under it.
-			Lanterns = { { 4, 24, 4 }, { 2.5, -46, -18.5 } } },
-		Basin = { Back = 260, Width = 350, Depth = 300 }, -- centre Back studs behind the origin, Width across, Depth along the front
+			Lanterns = { { 4, 24, 4 }, { 2.5, -46, -18.5 } },
+			-- Terrain passage on from the mesh End, level at the basin floor, out through the rim into the basin (kit axes, centre line).
+			Passage = { { -24, -80, -27 }, { -28, -104, -27 }, { -30, -132, -27 } } },
+		-- Hidden basin (spec): an ellipse Width across x Depth along the front, centre Back studs behind the origin. Bed = lake bed top
+		-- relative to Origin.Y, on the 4-stud voxel grid (a bed top inside a voxel ate the water, mac-88) and 1 under the passage floor;
+		-- Water = lake depth over it. A rock rim Thick studs wide rings it, RimRise over the
+		-- local surface (plus a little wobble), so no road sees in (tools/test_landmark_layout.luau casts from 8 road points).
+		-- TempleTop = how high over the floor the temple may stand and stay hidden.
+		Basin = { Back = 260, Width = 350, Depth = 300, Bed = -36, Water = 2.5, Thick = 28, RimRise = 24, TempleTop = 70 },
 		-- Grove (SliceDressing): forest scatter in R round the origin. Nothing tall within Clear (the face), and a lane LaneHalf wide from
 		-- the mouth out LaneTo studs along the front (the road sightline) stays open. Ferns and grass hug the base from Clear - 12.
-		Grove = { R = 120, Clear = 70, LaneHalf = 16, LaneTo = 170 },
+		Grove = { R = 150, Clear = 70, LaneHalf = 16, LaneTo = 170 },
 		-- Foot = where each GLB's foot (bbox centre X/Z, bbox minimum Y: tools/assets/glb_split.py) sits relative to the shared
 		-- kit origin, in Roblox model axes (Blender x, y, z -> -x, z, y), from assets/source/landmarks/bellwood_face/manifest.json.
 		Pieces = {
@@ -61,6 +68,40 @@ function Layout.basinCorners(lm: any): { Vec }
 		table.insert(out, { X = c.X + rx * w * s[1] + fx * d * s[2], Y = c.Y, Z = c.Z + rz * w * s[1] + fz * d * s[2] })
 	end
 	return out
+end
+
+-- Basin frame: centre XZ, the front axis (along) and the side axis (across).
+local function basinAxes(lm: any): (Vec, number, number, number, number)
+	local fx, fz = Layout.front(lm)
+	return Layout.basinCentre(lm), fx, fz, -fz, fx
+end
+
+-- Ellipse value of a world XZ point: < 1 inside the basin (pad studs grows both semi-axes).
+function Layout.basinEllipse(lm: any, x: number, z: number, pad: number?): number
+	local c, fx, fz, rx, rz = basinAxes(lm)
+	local dx, dz = x - c.X, z - c.Z
+	local across, along = dx * rx + dz * rz, dx * fx + dz * fz
+	local a, b = lm.Basin.Width / 2 + (pad or 0), lm.Basin.Depth / 2 + (pad or 0)
+	return (across / a) ^ 2 + (along / b) ^ 2
+end
+
+-- World XZ of the ellipse at angle theta, pushed out studs past the shore (along the semi-axes).
+function Layout.basinRing(lm: any, theta: number, out: number): (number, number)
+	local c, fx, fz, rx, rz = basinAxes(lm)
+	local across, along = math.cos(theta) * (lm.Basin.Width / 2 + out), math.sin(theta) * (lm.Basin.Depth / 2 + out)
+	return c.X + rx * across + fx * along, c.Z + rz * across + fz * along
+end
+
+-- Rim cliff top at angle theta: RimRise over the surface at the rim's middle, with a deterministic wobble (+-7).
+function Layout.rimTop(lm: any, theta: number, heightAt: (number, number) -> number): number
+	local x, z = Layout.basinRing(lm, theta, lm.Basin.Thick / 2)
+	return heightAt(x, z) + lm.Basin.RimRise + 4 * math.sin(3 * theta) + 3 * math.sin(7 * theta + 1)
+end
+
+-- World Y of the lake bed and the water surface.
+function Layout.basinLevels(lm: any): (number, number)
+	local f = lm.Origin.Y + lm.Basin.Bed
+	return f, f + lm.Basin.Water
 end
 
 return Layout

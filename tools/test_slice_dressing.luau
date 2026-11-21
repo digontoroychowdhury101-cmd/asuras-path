@@ -984,6 +984,11 @@ do
 	check("Bellwood face stands in a grove (" .. ring .. " trees 60-190 studs round it)", ring >= 40)
 	check("no tree or rock stands on the face (" .. onFace .. ")", onFace == 0)
 	check("the road-to-mouth lane is open (" .. inLane .. " tall pieces in it)", inLane == 0)
+	local inBasin = 0
+	for _, p in R.Placements do
+		if LL.basinEllipse(bw, p.X, p.Z, bw.Basin.Thick + 4) < 1 then inBasin += 1 end
+	end
+	check("nothing is scattered in the sunken basin or on its rim (" .. inBasin .. ")", inBasin == 0) -- they would float over the bowl
 end
 
 -- 7. Cells and landmarks.

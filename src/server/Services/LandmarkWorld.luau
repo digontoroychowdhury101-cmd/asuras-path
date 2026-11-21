@@ -34,14 +34,22 @@ function World.kitToWorld(lm: any, p: { number }): Vector3
 	return World.frame(lm):PointToWorldSpace(Vector3.new(-p[1], p[3], p[2]))
 end
 
+-- The bore centre line and, past the mesh End, the terrain passage into the basin.
+local function route(t: any): { { number } }
+	local out = table.clone(t.Path)
+	for i = 2, #(t.Passage or {}) do table.insert(out, t.Passage[i]) end
+	return out
+end
+
 -- Level air boxes along the bore centre line, from just under the walk floor (centre - 8) to over the crown (centre + Radius).
 function World.carves(lm: any): { { CFrame: CFrame, Size: Vector3 } }
 	local t = lm.Tunnel
 	local out = {}
 	if not (t and t.Path) then return out end
 	local below, above = 8.5, t.Radius + 0.5
-	for i = 2, #t.Path do
-		local a, b = World.kitToWorld(lm, t.Path[i - 1]), World.kitToWorld(lm, t.Path[i])
+	local path = route(t)
+	for i = 2, #path do
+		local a, b = World.kitToWorld(lm, path[i - 1]), World.kitToWorld(lm, path[i])
 		local flat = Vector3.new(b.X - a.X, 0, b.Z - a.Z)
 		local n = math.max(1, math.ceil((b - a).Magnitude / World.CarveStep))
 		for k = 0, n - 1 do
@@ -50,6 +58,61 @@ function World.carves(lm: any): { { CFrame: CFrame, Size: Vector3 } }
 			table.insert(out, { CFrame = CFrame.lookAt(mid, mid + flat), Size = Vector3.new(t.Width + 1.5, above + below, flat.Magnitude / n + 1) })
 		end
 	end
+	return out
+end
+
+-- The hidden basin (LandmarkLayout.Basin), as terrain fills in order: the bowl (air strips across the ellipse, floor to over the highest
+-- rim), its bed (rock with a mud top, reaching under the rim) and the rim cliffs (rock boxes round the shore, from under the floor to
+-- Layout.rimTop). The lake is separate (World.lake) so it goes in after the passage is cut. Rim = true marks a cliff box.
+World.BasinStep, World.RimSegments = 6, 128
+local function strips(lm: any, grow: number, bottom: number, top: number, material: Enum.Material, out: { any })
+	local L = World.Layout
+	local c, fx, fz = L.basinCentre(lm), L.front(lm)
+	local front = Vector3.new(fx, 0, fz)
+	local a, b = lm.Basin.Width / 2 + grow, lm.Basin.Depth / 2 + grow
+	local step = World.BasinStep
+	for u = -b, b - step, step do
+		local edge = math.max(math.abs(u), math.abs(u + step)) / b -- the outer edge of the strip keeps every corner inside
+		local w = a * math.sqrt(math.max(0, 1 - edge * edge))
+		if w > 1 then
+			local p = Vector3.new(c.X, (bottom + top) / 2, c.Z) + front * (u + step / 2)
+			table.insert(out, { CFrame = CFrame.lookAt(p, p + front), Size = Vector3.new(2 * w, top - bottom, step), Material = material })
+		end
+	end
+end
+
+function World.basin(lm: any): { any }
+	local L, height = World.Layout, World.Height
+	local out = {}
+	if not (lm.Basin and L and height) then return out end
+	local floorY = L.basinLevels(lm)
+	local tops, maxTop = {}, -math.huge
+	for k = 0, World.RimSegments - 1 do
+		tops[k] = L.rimTop(lm, k / World.RimSegments * 2 * math.pi, height)
+		maxTop = math.max(maxTop, tops[k])
+	end
+	strips(lm, 0, floorY, maxTop + 4, Enum.Material.Air, out)
+	strips(lm, lm.Basin.Thick, floorY - 16, floorY - 4, Enum.Material.Rock, out)
+	strips(lm, lm.Basin.Thick, floorY - 4, floorY, Enum.Material.Mud, out)
+	local th = lm.Basin.Thick
+	for k = 0, World.RimSegments - 1 do
+		local t0, t1 = k / World.RimSegments * 2 * math.pi, (k + 1) / World.RimSegments * 2 * math.pi
+		local x0, z0 = L.basinRing(lm, t0, th / 2)
+		local x1, z1 = L.basinRing(lm, t1, th / 2)
+		local bottom, top = floorY - 16, tops[k]
+		local mid = Vector3.new((x0 + x1) / 2, (bottom + top) / 2, (z0 + z1) / 2)
+		local along = Vector3.new(x1 - x0, 0, z1 - z0)
+		table.insert(out, { CFrame = CFrame.lookAt(mid, mid + along), Size = Vector3.new(th, top - bottom, along.Magnitude + 3), Material = Enum.Material.Rock, Rim = true })
+	end
+	return out
+end
+
+-- The lake: water strips 1 stud inside the shore, from the floor to Floor + Water.
+function World.lake(lm: any): { any }
+	local out = {}
+	if not (lm.Basin and World.Layout) then return out end
+	local floorY, waterY = World.Layout.basinLevels(lm)
+	strips(lm, -1, floorY, waterY, Enum.Material.Water, out)
 	return out
 end
 
@@ -88,8 +151,9 @@ function World.packs(lm: any): { { CFrame: CFrame, Size: Vector3, Floor: number 
 	local out = {}
 	if not (t and t.Path and height) then return out end
 	local half = (t.Width + 24) / 2
-	for i = 2, #t.Path do
-		local a, b = World.kitToWorld(lm, t.Path[i - 1]), World.kitToWorld(lm, t.Path[i])
+	local path = route(t)
+	for i = 2, #path do
+		local a, b = World.kitToWorld(lm, path[i - 1]), World.kitToWorld(lm, path[i])
 		local flat = Vector3.new(b.X - a.X, 0, b.Z - a.Z)
 		local n = math.max(1, math.ceil((b - a).Magnitude / World.CarveStep))
 		local len = flat.Magnitude / n + 1
@@ -137,13 +201,13 @@ function World.build(folders: { [string]: Instance }, waitReady: (string) -> boo
 			model.Parent = folders[lm.Region]
 			-- No mesh, no hole: the bore is only carved under a placed shell, after the tiles that would refill it are written.
 			if placed > 0 and lm.Tunnel and waitReady(lm.Region) then
-				for _, p in World.packs(lm) do
-					Workspace.Terrain:FillBlock(p.CFrame, p.Size, Enum.Material.Rock)
-				end
-				for _, c in World.carves(lm) do
-					Workspace.Terrain:FillBlock(c.CFrame, c.Size, Enum.Material.Air)
-				end
+				local terrain = Workspace.Terrain
+				for _, p in World.packs(lm) do terrain:FillBlock(p.CFrame, p.Size, Enum.Material.Rock) end
+				for _, f in World.basin(lm) do terrain:FillBlock(f.CFrame, f.Size, f.Material) end
+				for _, c in World.carves(lm) do terrain:FillBlock(c.CFrame, c.Size, Enum.Material.Air) end -- the passage cuts the rim
+				for _, f in World.lake(lm) do terrain:FillBlock(f.CFrame, f.Size, f.Material) end
 				model:SetAttribute("BoreCarved", true)
+				model:SetAttribute("BasinSculpted", #World.lake(lm) > 0)
 			end
 		end)
 	end
