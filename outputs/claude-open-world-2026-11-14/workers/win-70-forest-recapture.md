@@ -99,3 +99,9 @@ Instruction: handoff §4 step 7, creator's "Yes continue".
 - Next visible gap (needs a decision): 193 of 208 region pieces (Amberfall, Saltreach, Frostmere, Ashen) have no uploaded kit (Amberfall/Saltreach/
   Frostmere/AshenKitRegistry modules absent), so those regions read as coloured blocks. Making those meshes means Blender work plus Roblox uploads (held).
 - Scatter cells still wait for terrain tiles (1044/4356 after ~5 min), so only set pieces were seen live; scatter goes through the same path.
+
+## win-76 (loop): every remaining visible defect waits on a creator decision
+- Region kits: Amberfall 45, Saltreach 37, Frostmere 32, Ashen 34 GLBs are built in assets/source/overworld/upload/ but never uploaded
+  (no *_KIT_UPLOADED.json). The 2026-11-16 "Lead uploads them" authorisation puts other-biome dressing after the slice review, which is still pending.
+- Forest trunks: the corrected bark/leaf pair is held (win-74). Vesperhold: held pass 4 awaits review.
+- Research only: CC0 shortlist in workers/win-76-cc0-shortlist.md (Sapling, Poly Haven, Quaternius, Kenney). Nothing downloaded.
