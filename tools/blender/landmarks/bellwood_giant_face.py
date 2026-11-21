@@ -42,6 +42,9 @@ TUNNEL_R = 8.2  # round crown of the bore: 16.4 high at the centre line (centre 
 # so the far end is never visible from the mouth. Past the last point the passage continues as carved terrain (Studio).
 TUNNEL = [(-4.0, 60.0, 8.0), (-4.0, 34.0, 8.0), (2.0, 14.0, 3.0), (8.0, -8.0, -5.0), (4.0, -32.0, -13.0), (-8.0, -56.0, -21.0),
           (-24.0, -80.0, -27.0)]
+# The next point of the terrain passage (LandmarkLayout Bellwood Tunnel.Passage[2], level). The bore carve runs on to it so the
+# sleeve's rounded end cap is cut open: mac-88's in-engine walk hit that cap 5.5 studs past the last TUNNEL point.
+PASSAGE_ON = (-28.0, -104.0, -27.0)
 LOW_H, HIGH_H = 0.6, 0.32  # surface-net cell sizes (studs); no total tri cap (creator): LOW fine enough to carry the fractures
 # The round bore alone is only ~5.6 wide at the floor; two lower side lobes flatten it into an arch >= 14 wide at foot level.
 LOBE_OFF, LOBE_R, LOBE_Z = 4.0, 6.0, 5.5
@@ -50,10 +53,10 @@ WALK_W, WALK_H = 14.0, 16.0  # spec minimum walkable width and height
 
 def tunnel_prims(extra=0.0):
     """World-frame carve primitives of the walkable bore: the round crown plus two side lobes offset along the path normal."""
-    P = np.asarray(TUNNEL, float)
+    P = np.asarray(TUNNEL + [PASSAGE_ON], float)
     tg = np.gradient(P[:, :2], axis=0)
     nr = np.stack([-tg[:, 1], tg[:, 0]], 1) / np.linalg.norm(tg, axis=1)[:, None]
-    prims = [G.tube(TUNNEL, [TUNNEL_R + extra] * len(TUNNEL), step=0.6)]
+    prims = [G.tube(list(P), [TUNNEL_R + extra] * len(P), step=0.6)]
     for s in (-1.0, 1.0):
         side = np.c_[P[:, :2] + nr * s * LOBE_OFF, P[:, 2] - (8.0 - LOBE_Z)]
         prims.append(G.tube(list(side), [LOBE_R + extra] * len(P), step=0.6))
@@ -61,9 +64,10 @@ def tunnel_prims(extra=0.0):
 
 
 def tunnel_path(n=80, ext=8.0):
-    """Walk line on the bore floor (centre - 8) from just outside the mouth to just past the last point (world)."""
+    """Walk line on the bore floor (centre - 8) from just outside the mouth to ext past the last point, level toward the passage."""
     P = np.asarray(TUNNEL, float)
-    a, b = P[0] + (P[0] - P[1]) / np.linalg.norm(P[0] - P[1]) * ext, P[-1] + (P[-1] - P[-2]) / np.linalg.norm(P[-1] - P[-2]) * ext
+    on = np.asarray(PASSAGE_ON, float) - P[-1]
+    a, b = P[0] + (P[0] - P[1]) / np.linalg.norm(P[0] - P[1]) * ext, P[-1] + on / np.linalg.norm(on) * ext
     C = FG.spline(np.vstack([a, P, b]), n)[0]
     C[:, 2] -= 8.0
     return C
@@ -192,7 +196,7 @@ def weather_high(obj, seed=3):
 
 def check_walkable(F):
     """Self-check: the bore is open (air, F > 0) across WALK_W at foot and head height and WALK_H at the centre line."""
-    C = tunnel_path(60, ext=0.0)
+    C = tunnel_path(60, ext=16.0)  # 16 past the end: through where the sleeve's end cap sealed the bore (mac-88)
     tg = np.gradient(C[:, :2], axis=0)
     nr = np.c_[np.stack([-tg[:, 1], tg[:, 0]], 1) / np.linalg.norm(tg, axis=1)[:, None], np.zeros(len(C))]
     probes = [C + nr * t + np.array([0, 0, z]) for t in np.linspace(-WALK_W / 2 + 0.5, WALK_W / 2 - 0.5, 7) for z in (0.8, 5.5)]

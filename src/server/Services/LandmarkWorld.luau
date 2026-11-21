@@ -142,6 +142,39 @@ function World.lantern(at: Vector3): Model
 	return niche
 end
 
+-- Spec: dripping water and drifting moss spores in the bore. An invisible box under the roof at each inner Path point (the ends
+-- are the open mouth and the terrain passage) carries both emitters; the sprite is OverworldAmbience's procedural Glow (win-80).
+local GLOW = "rbxassetid://84933589518173"
+function World.tunnelFx(lm: any): Model
+	local fx = Instance.new("Model")
+	fx.Name = "TunnelFx"
+	local path = lm.Tunnel.Path
+	for i = 2, #path - 1 do
+		local c, nxt = World.kitToWorld(lm, path[i]), World.kitToWorld(lm, path[i + 1])
+		local at = c + Vector3.new(0, lm.Tunnel.Radius - 1.5, 0)
+		local box = Instance.new("Part")
+		box.Name, box.Size, box.Transparency = "Drip" .. (i - 1), Vector3.new(lm.Tunnel.Width - 4, 0.3, 8), 1
+		box.CFrame = CFrame.lookAt(at, Vector3.new(nxt.X, at.Y, nxt.Z))
+		box.Anchored, box.CanCollide, box.CanQuery, box.CanTouch, box.CastShadow = true, false, false, false, false
+		local drips = Instance.new("ParticleEmitter")
+		drips.Name, drips.Texture, drips.Rate, drips.Lifetime = "Drips", GLOW, 3, NumberRange.new(0.5, 0.8)
+		drips.Speed, drips.Acceleration, drips.EmissionDirection = NumberRange.new(0), Vector3.new(0, -70, 0), Enum.NormalId.Bottom
+		drips.Size, drips.Squash = NumberSequence.new(0.12), NumberSequence.new(-1.5) -- stretched along the fall
+		drips.Orientation, drips.Color = Enum.ParticleOrientation.VelocityParallel, ColorSequence.new(Color3.fromRGB(170, 196, 200))
+		drips.Transparency, drips.LightEmission = NumberSequence.new(0.35), 0.3
+		drips.Parent = box
+		local motes = Instance.new("ParticleEmitter")
+		motes.Name, motes.Texture, motes.Rate, motes.Lifetime = "Motes", GLOW, 1.2, NumberRange.new(6, 9)
+		motes.Speed, motes.SpreadAngle, motes.EmissionDirection = NumberRange.new(0.3, 0.8), Vector2.new(180, 180), Enum.NormalId.Bottom
+		motes.Acceleration, motes.Drag = Vector3.new(0, -0.15, 0), 0.5
+		motes.Size = NumberSequence.new({ NumberSequenceKeypoint.new(0, 0), NumberSequenceKeypoint.new(0.2, 0.16), NumberSequenceKeypoint.new(1, 0) })
+		motes.Color, motes.LightEmission = ColorSequence.new(Color3.fromRGB(176, 214, 120)), 0.7
+		motes.Parent = box
+		box.Parent = fx
+	end
+	return fx
+end
+
 -- Overworld terrain is an 8-stud crust over void (OverworldTerrainCompute SHELL), so the descending bore needs rock round it:
 -- level boxes along the centre line, Width + 24 across, from 10 under the walk floor up to Radius + 10 over the centre, cut to 1 stud
 -- under the lowest surface at the box's top corners (the ground never rises). Filled with Rock before the carve. Floor = walk floor Y.
@@ -198,6 +231,7 @@ function World.build(folders: { [string]: Instance }, waitReady: (string) -> boo
 			if placed > 0 and lm.Tunnel and lm.Tunnel.Lanterns then
 				for _, p in lm.Tunnel.Lanterns do World.lantern(World.kitToWorld(lm, p)).Parent = model end
 			end
+			if placed > 0 and lm.Tunnel and lm.Tunnel.Path then World.tunnelFx(lm).Parent = model end
 			model.Parent = folders[lm.Region]
 			-- No mesh, no hole: the bore is only carved under a placed shell, after the tiles that would refill it are written.
 			if placed > 0 and lm.Tunnel and waitReady(lm.Region) then

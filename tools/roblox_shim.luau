@@ -396,7 +396,7 @@ Inst.__newindex = function(o, k, v)
 		local old = rawget(o, "CFrame")
 		rawset(o, "CFrame", cf(v, if old then old.R else I)); return
 	end
-	if k == "Orientation" then
+	if k == "Orientation" and typeof(v) == "Vector3" then -- a ParticleEmitter Orientation is an enum, not a rotation
 		local old = rawget(o, "CFrame") or cf(v3(), I)
 		rawset(o, "CFrame", cf(old.P, Shim.CFrame.fromOrientation(math.rad(v.X), math.rad(v.Y), math.rad(v.Z)).R)); return
 	end

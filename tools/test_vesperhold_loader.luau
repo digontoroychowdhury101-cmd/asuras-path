@@ -45,6 +45,8 @@ local roseFinish = Instance.new("SurfaceAppearance")
 roseFinish.Name, roseFinish.ColorMap, roseFinish.Parent = "Rose_Window_Great__GlassR", "rbxassetid://777", glassLib
 local base = { game = { GetService = function(_, n) return services[n] end }, Instance = Instance, Enum = Enum, Vector3 = Vector3, CFrame = CFrame,
 	Color3 = Color3, UDim2 = roblox.UDim2, Random = roblox.Random, typeof = typeof, warn = function() end,
+	NumberRange = roblox.NumberRange, NumberSequence = roblox.NumberSequence, NumberSequenceKeypoint = roblox.NumberSequenceKeypoint,
+	ColorSequence = roblox.ColorSequence, Vector2 = roblox.Vector2,
 	Content = { fromUri = function(uri) return uri end } }
 local function load(path: string, env: any, name: string)
 	return luau.load(fs.readFile(path), { debugName = name, environment = setmetatable(env, { __index = _G }) })()
@@ -481,6 +483,19 @@ do
 		end
 	end
 	check("tunnel lantern niches: one per layout point, ember always on, night light tagged", niches == #bw.Tunnel.Lanterns and nicheOk)
+	-- Spec: dripping water and moss motes in the bore. One invisible emitter box under the roof at each inner Path point.
+	local fx = lm:FindFirstChild("TunnelFx")
+	local boxes, fxOk = fx and fx:GetChildren() or {}, fx ~= nil
+	for i, b in boxes do
+		local want = W2.kitToWorld(bw, bw.Tunnel.Path[i + 1])
+		local drips, motes = b:FindFirstChild("Drips"), b:FindFirstChild("Motes")
+		if not (b:IsA("BasePart") and b.Anchored and not b.CanCollide and not b.CanQuery and not b.CanTouch and b.Transparency == 1
+			and math.abs(b.Position.X - want.X) < 1e-3 and math.abs(b.Position.Z - want.Z) < 1e-3
+			and b.Position.Y > want.Y and b.Position.Y < want.Y + bw.Tunnel.Radius
+			and drips and drips.Acceleration.Y < -20 and drips.Rate > 0 and motes and motes.Rate > 0 and motes.LightEmission > 0
+			and string.match(drips.Texture, "^rbxassetid://%d+$") and string.match(motes.Texture, "^rbxassetid://%d+$")) then fxOk = false end
+	end
+	check("tunnel drips and moss motes: one roof box per inner path point", fxOk and #boxes == #bw.Tunnel.Path - 2)
 	fills = 0
 	W2.Kit = { place = function() return nil end }
 	local forest2 = Instance.new("Folder")
