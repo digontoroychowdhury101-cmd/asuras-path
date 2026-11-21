@@ -104,6 +104,8 @@ end
 local bw = L.Landmarks.Bellwood
 check("Bellwood tunnel >= 14 wide and 16 high", bw.Tunnel.Width >= 14 and bw.Tunnel.Height >= 16)
 check("Bellwood basin is 350 x 300", bw.Basin.Width == 350 and bw.Basin.Depth == 300)
+check("Bellwood tunnel leads down underground at a walkable grade", bw.Tunnel.End.Z < -20
+	and bw.Tunnel.Descent / bw.Tunnel.Run <= O.TerrainDef.Road.MaxGrade)
 check("Bellwood kit pieces share one origin", bw.Pieces.Face.Offset.X == 0 and bw.Pieces.Crown.Offset.X == 0)
 
 print(string.format("landmark layout: %d passed, %d failed", passed, failed))

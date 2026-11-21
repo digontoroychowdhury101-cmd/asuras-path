@@ -45,7 +45,7 @@ Vesperhold was made procedurally in Blender Python on the Mac, not with AI image
   - The test checks that it sits inside its region box (`src/shared/Overworld.luau`), doesn't overlap altars, collectibles or roads, and keeps 250 studs or more from the existing landmarks unless it's meant to attach.
   - Sample the terrain height in Studio before fixing Y.
 - **Composition:** each landmark gets a road sightline, a lit focal point (lanterns tagged `AsuraLanternLight`), a foreground frame and one ambient life kind.
-- **Budget:** at most 250k tris per landmark, 18–20k per MeshPart, 1024 maps, and no new shadow-casting lights. LOD comes from `RenderFidelity=Automatic`.
+- **Budget:** no total triangle cap (creator, 2026-11-22: "there is no 250k cap"); visual quality first. Split into 18–20k-tri MeshParts, never decimate or coarsen the LOW to save triangles, 2048 maps, and no new shadow-casting lights. LOD comes from `RenderFidelity=Automatic`; measure and report performance.
 - **Collision:** walkable shells use Hull or PreciseConvexDecomposition only on floors and stairs you walk on. Decor gets `CanCollide=false`.
 
 ## 1. Bellwood (Forest): the Fallen Giant's Eye and the hidden Sunken Temple ★ first
@@ -67,7 +67,7 @@ Vesperhold was made procedurally in Blender Python on the Mac, not with AI image
 - **Roots:** thick roots pour over the head and down to the ground, with ferns, rocks and red-painted stone shards at the base.
 - **Kit pieces:** FaceShell (baked sculpt, split into 6–8 subs), TunnelInterior (walkable, Precise collision on the floor), Crown_Band, Crown_Medallion, Crown_Spires, Crown_Eave+Bell, Roots (2–3 variants), BaseRubble.
 - **Tunnel:**
-  - 60–90 studs long, curving so you can't see through it from outside.
+  - The eye leads **down underground**, not straight through (creator, 2026-11-22): level into the eye socket, then a bending walkable descent under the ground that surfaces in the sunken basin; you can't see through it from outside.
   - Dim light: two warm lantern niches tagged `AsuraLanternLight`, and dripping-water and moss particles.
   - Light bloom at the exit.
 

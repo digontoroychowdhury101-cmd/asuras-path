@@ -36,9 +36,37 @@ V = np.array([0.0, math.cos(TILT), math.sin(TILT)])
 W = np.cross(U, V)
 R = np.stack([U, V, W], 1)
 O = np.array([4.0, -2.0, 13.0 * -W[2]])  # sink the head until w = +13 (the lower cheek) meets the ground
-TUNNEL_R = 8.2  # 16.4 wide and high; centre 8 above ground (the walkable floor piece sits on the 0.2 dip)
-TUNNEL = [(-4.0, 60.0, 8.0), (-4.0, 34.0, 8.0), (4.0, 12.0, 8.0), (10.0, -10.0, 8.0), (0.0, -34.0, 8.0), (-14.0, -64.0, 8.0)]
-LOW_H, HIGH_H = 1.1, 0.42  # surface-net cell sizes (studs); LOW 1.1 keeps face + crown under the 250k landmark budget
+TUNNEL_R = 8.2  # round crown of the bore: 16.4 high at the centre line (centre 8 above ground)
+# Bore centre line (floor = centre - 8): level into the lower eye socket, then down under the ground toward the sunken basin
+# (creator 2026-11-22: the eye leads underground, not straight through). Grades 0.21..0.35 <= road MaxGrade 0.46; it bends
+# so the far end is never visible from the mouth. Past the last point the passage continues as carved terrain (Studio).
+TUNNEL = [(-4.0, 60.0, 8.0), (-4.0, 34.0, 8.0), (2.0, 14.0, 3.0), (8.0, -8.0, -5.0), (4.0, -32.0, -13.0), (-8.0, -56.0, -21.0),
+          (-24.0, -80.0, -27.0)]
+LOW_H, HIGH_H = 0.6, 0.32  # surface-net cell sizes (studs); no total tri cap (creator): LOW fine enough to carry the fractures
+# The round bore alone is only ~5.6 wide at the floor; two lower side lobes flatten it into an arch >= 14 wide at foot level.
+LOBE_OFF, LOBE_R, LOBE_Z = 4.0, 6.0, 5.5
+WALK_W, WALK_H = 14.0, 16.0  # spec minimum walkable width and height
+
+
+def tunnel_prims(extra=0.0):
+    """World-frame carve primitives of the walkable bore: the round crown plus two side lobes offset along the path normal."""
+    P = np.asarray(TUNNEL, float)
+    tg = np.gradient(P[:, :2], axis=0)
+    nr = np.stack([-tg[:, 1], tg[:, 0]], 1) / np.linalg.norm(tg, axis=1)[:, None]
+    prims = [G.tube(TUNNEL, [TUNNEL_R + extra] * len(TUNNEL), step=0.6)]
+    for s in (-1.0, 1.0):
+        side = np.c_[P[:, :2] + nr * s * LOBE_OFF, P[:, 2] - (8.0 - LOBE_Z)]
+        prims.append(G.tube(list(side), [LOBE_R + extra] * len(P), step=0.6))
+    return prims
+
+
+def tunnel_path(n=80, ext=8.0):
+    """Walk line on the bore floor (centre - 8) from just outside the mouth to just past the last point (world)."""
+    P = np.asarray(TUNNEL, float)
+    a, b = P[0] + (P[0] - P[1]) / np.linalg.norm(P[0] - P[1]) * ext, P[-1] + (P[-1] - P[-2]) / np.linalg.norm(P[-1] - P[-2]) * ext
+    C = FG.spline(np.vstack([a, P, b]), n)[0]
+    C[:, 2] -= 8.0
+    return C
 
 
 def to_head(Pw):
@@ -93,14 +121,60 @@ def head_field():
     for s in (-1, 1):
         F.u(E((2, -6, 33.5 * s), (14, 7, 4)), k=4)
         F.c(E((2, -4, 36.5 * s), (8, 3.5, 2)), k=1.5)
-    # World-frame cuts: the curved walkable tunnel from the lower eye through the skull, then the ground plane.
-    F.c(world_prim(G.tube(TUNNEL, [TUNNEL_R] * len(TUNNEL), step=0.6)), k=2.5)
-    # A rough arched cave mouth flaring out of the lower eye socket (not a clean round bore), and a flared exit.
+    # Spalled chunks: flat-faced chips broken off the exposed edges (nose tip, chin, lips, ear, brow, cranium).
+    rng = np.random.default_rng(13)
+    for c, r in (((-21, 57, 2), 5.5), ((-54, 27, -6), 6.5), ((-40, 43, -11), 4.0), ((2, -6, -38), 5.0), ((13, 41, -22), 5.0),
+                 ((44, -12, -30), 7.0), ((58, -20, -8), 6.0), ((-10, 38, -27), 4.5), ((30, 22, -28), 5.5)):
+        F.c(E(c, (r, r, r * 0.38), np.linalg.qr(rng.normal(size=(3, 3)))[0]), k=0.6)
+    # Underground: a rock sleeve round the descending bore, spared by the ground cut, so the throat has stone walls below grade.
+    sleeve = G.tube(TUNNEL[2:], [TUNNEL_R + 4.0] * len(TUNNEL[2:]), step=0.6)
+    F.u(world_prim(sleeve), k=3.0)
+    sfn = sleeve[2]
+    F.c(world_prim((np.array([-200.0, -200.0, -120.0]), np.array([200.0, 200.0, -0.6]),
+                    lambda P: np.maximum(P[:, 2] + 0.6, -sfn(P)))))
+    # The walkable bore from the lower eye socket down under the ground, with a rough arched mouth flaring out of the socket.
+    for pr in tunnel_prims():
+        F.c(world_prim(pr), k=2.5)
     eye = to_world((3, 37, 14))
     F.c(world_prim(G.ellip((eye[0] - 5.0, eye[1] - 6.0, 10.0), (9.5, 9.0, 12.0))), k=6)
-    F.c(world_prim(G.ellip((TUNNEL[-2][0] - 6.0, TUNNEL[-2][1] - 16.0, 9.0), (12.0, 10.0, 10.5))), k=5)
-    F.c(world_prim((np.array([-200.0, -200.0, -120.0]), np.array([200.0, 200.0, -0.6]), lambda P: P[:, 2] + 0.6)))
-    return F
+    return Weathered(F)
+
+
+class Weathered:
+    """The head field plus large-scale weathering IN the shape (creator: too smooth): a fracture network 2-3 studs deep, finer
+    secondary cracks and broad lumps. Being part of the field, the LOW silhouette carries it, not only the baked normals."""
+
+    def __init__(self, F):
+        self.F, self.ops = F, F.ops
+
+    def bounds(self):
+        return self.F.bounds()
+
+    @staticmethod
+    def disp(Ph):
+        Pw = to_world(Ph)
+        # Amplitudes stay under the feature scale (mac-86b: 0.9 lumps + 2.4 cracks buried the nose, lips and eye).
+        grain = 0.35 * fbm(Pw / 7.0, 3, 41)
+        warp = Pw / 38.0 + 0.6 * fbm(Pw / 30.0, 2, 45)[:, None]  # long, wandering fractures, not closed cells
+        major = sst(0.03, 0.0, np.abs(fbm(warp, 3, 43)))
+        mask = sst(-0.05, 0.15, fbm(Pw / 50.0 + 3.0, 2, 46))  # secondary cracking in patches only
+        minor = sst(0.025, 0.0, np.abs(fbm(Pw / 13.0 + 7.0, 2, 44))) * mask
+        return grain + 1.6 * major + 0.6 * minor  # + = eroded inward
+
+    def eval(self, P):
+        return self.F.eval(P) + self.disp(P)
+
+    def grid(self, h, pad=4):
+        D, lo = self.F.grid(h, pad)
+        ys, zs = lo[1] + h * np.arange(D.shape[1]), lo[2] + h * np.arange(D.shape[2])
+        for i in range(D.shape[0]):
+            sl = D[i]
+            m = np.abs(sl) < 4.5  # displacement only matters near the surface
+            if m.any():
+                yy, zz = np.meshgrid(ys, zs, indexing="ij")
+                P = np.stack([np.full(m.sum(), lo[0] + h * i), yy[m], zz[m]], 1)
+                sl[m] += self.disp(P).astype(sl.dtype)
+        return D, lo
 
 
 def weather_high(obj, seed=3):
@@ -116,8 +190,52 @@ def weather_high(obj, seed=3):
     obj.data.update()
 
 
+def check_walkable(F):
+    """Self-check: the bore is open (air, F > 0) across WALK_W at foot and head height and WALK_H at the centre line."""
+    C = tunnel_path(60, ext=0.0)
+    tg = np.gradient(C[:, :2], axis=0)
+    nr = np.c_[np.stack([-tg[:, 1], tg[:, 0]], 1) / np.linalg.norm(tg, axis=1)[:, None], np.zeros(len(C))]
+    probes = [C + nr * t + np.array([0, 0, z]) for t in np.linspace(-WALK_W / 2 + 0.5, WALK_W / 2 - 0.5, 7) for z in (0.8, 5.5)]
+    probes.append(C + np.array([0, 0, WALK_H - 0.5]))
+    d = F.eval(to_head(np.vstack(probes)))
+    assert d.min() > 0, f"tunnel not walkable: {int((d <= 0).sum())} probes inside stone (min {d.min():.2f})"
+    log(f"tunnel walkable: {len(d)} probes clear, {WALK_W:.0f} wide x {WALK_H:.0f} high")
+
+
+def tunnel_floor(F):
+    """Rubble-strewn dirt floor ribbon along the descending walk line (own role: Precise collision in Roblox), stones kept off
+    the walkway. Starts at the mouth: points with open sky 20 studs above them are outside and get dropped."""
+    rng = np.random.default_rng(7)
+    C = tunnel_path(70)
+    roof = F.eval(to_head(C + np.array([0.0, 0.0, 20.0]))) < 0
+    C = C[max(int(np.argmax(roof)) - 1, 0):]
+    tg = np.gradient(C[:, :2], axis=0)
+    nr = np.c_[np.stack([-tg[:, 1], tg[:, 0]], 1) / np.linalg.norm(tg, axis=1)[:, None], np.zeros(len(C))]
+    grid = np.array([[c + n * t for t in np.linspace(-9.0, 9.0, 11)] for c, n in zip(C, nr)])
+    grid[..., 2] = C[:, None, 2] + 0.1 + 0.3 * fbm(grid.reshape(-1, 3) * 0.22, 2, 11).reshape(grid.shape[:2])
+    F = G.Field()
+    F.u(G.sheet(grid, 0.45))
+    for i in range(2, len(C) - 2, 3):
+        for s in (-1, 1):
+            r = rng.uniform(0.5, 1.3)
+            c = C[i] + nr[i] * s * rng.uniform(5.5, 8.0) + np.array([0, 0, 0.35 + r * 0.25])
+            F.u(G.ellip(c, (r, r * 0.8, r * 0.6), np.linalg.qr(rng.normal(size=(3, 3)))[0]), k=0.3)
+    out = []
+    for nm, h in ((f"{NAME}__Floor", 0.5), (f"HI_{NAME}__Floor", 0.25)):
+        V, Q = G.surface_nets(*F.grid(h), h)
+        if nm.startswith(NAME):
+            V = G.project(F, V, h)
+        out.append(G.mesh_from(nm, V, Q))
+        log(f"{nm} {len(Q) * 2} tris")
+    lo, hi = out
+    G.detail(hi, bump=0.05, pit=0.04, freq=1.4, seed=8)
+    FG.weighted_normals(lo)
+    return lo, hi
+
+
 def sculpt():
     F = head_field()
+    check_walkable(F)
     t = time.time()
     V, Q = G.surface_nets(*F.grid(LOW_H), LOW_H)
     V = G.project(F, V, LOW_H)
@@ -137,7 +255,7 @@ def sculpt():
     hi.data.update()
     log(f"HIGH {len(Q) * 2} tris  {time.time() - t:.1f}s")
     FG.weighted_normals(lo)
-    return lo, hi
+    return lo, hi, F
 
 
 def main():
@@ -147,26 +265,35 @@ def main():
     rdir.mkdir(parents=True, exist_ok=True)
     mode = os.environ.get("FACE_MODE", "clay")
     bpy.ops.wm.read_factory_settings(use_empty=True)
-    lo, hi = sculpt()
+    lo, hi, F = sculpt()
+    flo, fhi = tunnel_floor(F)
     lo_b, hi_b = FG.bbox([hi])
+    lo_b[2] = max(lo_b[2], 0.0)  # frame the visible head, not the buried rock sleeve
     high34 = (195.0, lo_b, hi_b, 60.0)  # the concept's elevated 3/4 camera (no mannequin)
     rkw = {"views": (("q34", 150.0), ("front", 180.0), ("back", 20.0)), "ez": 6.0, "res": (1600, 1000), "close": high34}
     if mode == "clay":
         cm = G.clay_mat()
         hi.data.materials.append(cm)
-        lo.hide_render = True
-        files = G.render_set(NAME, [hi], rdir, "clayhi", **rkw)
+        fhi.data.materials.append(cm)
+        lo.hide_render = flo.hide_render = True
+        files = G.render_set(NAME, [hi, fhi], rdir, "clayhi", **rkw)
         entry = None
     else:
         import vesp_bake as VB
         src = VB.stone_source("Vesp_Weathered", out / "maps")
         hi.data.materials.append(VB.hi_material("Hi_Granite", src, tile=8.0, tint=(1.0, 1.0, 0.97)))
+        fhi.data.materials.append(VB.hi_material("Hi_Dirt", src, tile=4.0, tint=(1.0, 0.95, 0.9)))
         VB.unwrap(lo)
+        VB.unwrap(flo)
         # Grey granite (concept), dark cracks not lit lips (low edge wear, strong cavity), green moss blanketing the tops.
         look = VB.Look(base=0.34, grime=0.35, edge=0.30, streak_dark=0.15, sat=0.15, stone_tint=(0.96, 0.98, 1.0),
                        moss=0.85, moss_open=0.9, moss_col=(0.27, 0.34, 0.13), lichen=0.3, cavity=0.75, rough_base=0.86)
-        files, entry = G.finish(NAME, "Bellwood", {"Shell": lo}, {"Shell": hi}, out, {"*": look}, {"Shell": (0.6, 1.4)},
-                                src["source"], builder=BUILDER, render_kw=rkw)
+        dirt = VB.Look(base=0.2, grime=0.5, edge=0.3, sat=0.5, stone_tint=(1.0, 0.82, 0.62), moss=0.35, moss_col=(0.27, 0.34, 0.13),
+                       cavity=0.7, rough_base=0.95)
+        files, entry = G.finish(NAME, "Bellwood", {"Shell": lo, "Floor": flo}, {"Shell": hi, "Floor": fhi}, out,
+                                {"*": look, "Floor": dirt}, {"Shell": (0.6, 1.4), "Floor": (0.4, 0.8)}, src["source"],
+                                extra={"collision": {"Floor": "PreciseConvexDecomposition", "Shell": "Hull"}},
+                                builder=BUILDER, render_kw=rkw)
         G.merge_manifest(out, {NAME: entry}, "Bellwood landmark: Fallen Giant's Face")
     dst = rdir / f"{NAME}_{'clay' if mode == 'clay' else 'baked'}_sheet.jpg"
     FG.sheet([files], dst)
