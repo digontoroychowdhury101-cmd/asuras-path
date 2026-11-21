@@ -4,32 +4,50 @@
     "Bellwood_GiantFace": {
       "group": "Bellwood",
       "sub_meshes": {
-        "Bellwood_GiantFace__Shell": 16922,
-        "Bellwood_GiantFace__Shell_2": 16922,
-        "Bellwood_GiantFace__Shell_3": 16922,
-        "Bellwood_GiantFace__Shell_4": 16924,
-        "Bellwood_GiantFace__Shell_5": 16922,
-        "Bellwood_GiantFace__Shell_6": 16922,
-        "Bellwood_GiantFace__Shell_7": 16924,
-        "Bellwood_GiantFace__Shell_8": 16922
+        "Bellwood_GiantFace__Shell": 17402,
+        "Bellwood_GiantFace__Shell_2": 17402,
+        "Bellwood_GiantFace__Shell_3": 17402,
+        "Bellwood_GiantFace__Shell_4": 17404,
+        "Bellwood_GiantFace__Shell_5": 17402,
+        "Bellwood_GiantFace__Shell_6": 17402,
+        "Bellwood_GiantFace__Shell_7": 17402,
+        "Bellwood_GiantFace__Shell_8": 17404,
+        "Bellwood_GiantFace__Shell_9": 17402,
+        "Bellwood_GiantFace__Shell_10": 17402,
+        "Bellwood_GiantFace__Shell_11": 17402,
+        "Bellwood_GiantFace__Shell_12": 17404,
+        "Bellwood_GiantFace__Shell_13": 17402,
+        "Bellwood_GiantFace__Shell_14": 17402,
+        "Bellwood_GiantFace__Shell_15": 17402,
+        "Bellwood_GiantFace__Shell_16": 17404,
+        "Bellwood_GiantFace__Shell_17": 17402,
+        "Bellwood_GiantFace__Shell_18": 17402,
+        "Bellwood_GiantFace__Shell_19": 17402,
+        "Bellwood_GiantFace__Shell_20": 17404,
+        "Bellwood_GiantFace__Shell_21": 17402,
+        "Bellwood_GiantFace__Floor": 14876,
+        "Bellwood_GiantFace__Floor_2": 14876,
+        "Bellwood_GiantFace__Floor_3": 14876,
+        "Bellwood_GiantFace__Floor_4": 14876
       },
-      "tris_total": 135380,
+      "tris_total": 424956,
       "size_studs_xyz": [
         126.5,
-        103.7,
-        51.7
+        144.7,
+        89.8
       ],
       "bbox_min": [
-        -60.0,
-        -50.98,
-        -1.13
+        -59.92,
+        -92.12,
+        -39.23
       ],
       "bbox_max": [
-        66.54,
-        52.72,
-        50.61
+        66.6,
+        52.59,
+        50.52
       ],
       "materials": [
+        "Vesp_Bellwood_GiantFace__Floor",
         "Vesp_Bellwood_GiantFace__Shell"
       ],
       "file": "Bellwood_GiantFace.glb",
@@ -37,7 +55,8 @@
       "no_decimation": true,
       "decimation": "none: roles over the cap are split into <18k-tri subs; LOW is a separate polygonisation",
       "map_resolution": {
-        "Shell": 2048
+        "Shell": 2048,
+        "Floor": 2048
       },
       "maps": {
         "Shell": {
@@ -45,11 +64,150 @@
           "Normal": "maps/Vesp_Bellwood_GiantFace__Shell_Normal.png",
           "Roughness": "maps/Vesp_Bellwood_GiantFace__Shell_Roughness.png",
           "Metal": "maps/Vesp_Bellwood_GiantFace__Shell_Metal.png"
+        },
+        "Floor": {
+          "Color": "maps/Vesp_Bellwood_GiantFace__Floor_Color.png",
+          "Normal": "maps/Vesp_Bellwood_GiantFace__Floor_Normal.png",
+          "Roughness": "maps/Vesp_Bellwood_GiantFace__Floor_Roughness.png",
+          "Metal": "maps/Vesp_Bellwood_GiantFace__Floor_Metal.png"
         }
       },
       "base_layer": "Poly Haven rock_04 2K",
       "high_poly_tris": {
-        "Shell": 495028
+        "Shell": 1306952,
+        "Floor": 238832
+      },
+      "collision": {
+        "Floor": "PreciseConvexDecomposition",
+        "Shell": "Hull"
+      }
+    },
+    "Bellwood_GiantCrown": {
+      "group": "Bellwood",
+      "sub_meshes": {
+        "Bellwood_GiantCrown__Band": 14136,
+        "Bellwood_GiantCrown__Band_2": 14136,
+        "Bellwood_GiantCrown__Band_3": 14138,
+        "Bellwood_GiantCrown__Band_4": 14136,
+        "Bellwood_GiantCrown__Band_5": 14138,
+        "Bellwood_GiantCrown__Gold": 14660,
+        "Bellwood_GiantCrown__Gold_2": 14660,
+        "Bellwood_GiantCrown__Gold_3": 14660,
+        "Bellwood_GiantCrown__Gold_4": 14660,
+        "Bellwood_GiantCrown__Gold_5": 14660,
+        "Bellwood_GiantCrown__Bronze": 17156,
+        "Bellwood_GiantCrown__Bronze_2": 17158,
+        "Bellwood_GiantCrown__Bronze_3": 17158,
+        "Bellwood_GiantCrown__Bronze_4": 17158,
+        "Bellwood_GiantCrown__Bronze_5": 17158,
+        "Bellwood_GiantCrown__Bronze_6": 17158,
+        "Bellwood_GiantCrown__Bronze_7": 17158,
+        "Bellwood_GiantCrown__Eave": 15674,
+        "Bellwood_GiantCrown__Eave_2": 15674,
+        "Bellwood_GiantCrown__Roots": 17282,
+        "Bellwood_GiantCrown__Roots_2": 17282,
+        "Bellwood_GiantCrown__Roots_3": 17284,
+        "Bellwood_GiantCrown__Roots_4": 17282,
+        "Bellwood_GiantCrown__Roots_5": 17284,
+        "Bellwood_GiantCrown__Roots_6": 17282,
+        "Bellwood_GiantCrown__Roots_7": 17284,
+        "Bellwood_GiantCrown__Roots_8": 17282,
+        "Bellwood_GiantCrown__Roots_9": 17284,
+        "Bellwood_GiantCrown__Roots_10": 17282,
+        "Bellwood_GiantCrown__Roots_11": 17284,
+        "Bellwood_GiantCrown__Roots_12": 17282,
+        "Bellwood_GiantCrown__Roots_13": 17284,
+        "Bellwood_GiantCrown__Roots_14": 17282,
+        "Bellwood_GiantCrown__Roots_15": 17284,
+        "Bellwood_GiantCrown__Rubble": 16408,
+        "Bellwood_GiantCrown__Rubble_2": 16410,
+        "Bellwood_GiantCrown__Rubble_3": 16410,
+        "Bellwood_GiantCrown__Rubble_4": 16408,
+        "Bellwood_GiantCrown__Rubble_5": 16410,
+        "Bellwood_GiantCrown__Rubble_6": 16410
+      },
+      "tris_total": 653136,
+      "size_studs_xyz": [
+        139.2,
+        116.1,
+        75.0
+      ],
+      "bbox_min": [
+        -69.09,
+        -64.76,
+        -0.65
+      ],
+      "bbox_max": [
+        70.08,
+        51.35,
+        74.34
+      ],
+      "materials": [
+        "Vesp_Bellwood_GiantCrown__Band",
+        "Vesp_Bellwood_GiantCrown__Bronze",
+        "Vesp_Bellwood_GiantCrown__Eave",
+        "Vesp_Bellwood_GiantCrown__Gold",
+        "Vesp_Bellwood_GiantCrown__Roots",
+        "Vesp_Bellwood_GiantCrown__Rubble"
+      ],
+      "file": "Bellwood_GiantCrown.glb",
+      "builder": "tools/blender/landmarks/bellwood_giant_crown.py (mac-85, SDF props on the face's head frame, Cycles-baked)",
+      "no_decimation": true,
+      "decimation": "none: roles over the cap are split into <18k-tri subs; LOW is a separate polygonisation",
+      "map_resolution": {
+        "Band": 2048,
+        "Gold": 2048,
+        "Bronze": 2048,
+        "Eave": 2048,
+        "Roots": 2048,
+        "Rubble": 2048
+      },
+      "maps": {
+        "Band": {
+          "Color": "maps/Vesp_Bellwood_GiantCrown__Band_Color.png",
+          "Normal": "maps/Vesp_Bellwood_GiantCrown__Band_Normal.png",
+          "Roughness": "maps/Vesp_Bellwood_GiantCrown__Band_Roughness.png",
+          "Metal": "maps/Vesp_Bellwood_GiantCrown__Band_Metal.png"
+        },
+        "Gold": {
+          "Color": "maps/Vesp_Bellwood_GiantCrown__Gold_Color.png",
+          "Normal": "maps/Vesp_Bellwood_GiantCrown__Gold_Normal.png",
+          "Roughness": "maps/Vesp_Bellwood_GiantCrown__Gold_Roughness.png",
+          "Metal": "maps/Vesp_Bellwood_GiantCrown__Gold_Metal.png"
+        },
+        "Bronze": {
+          "Color": "maps/Vesp_Bellwood_GiantCrown__Bronze_Color.png",
+          "Normal": "maps/Vesp_Bellwood_GiantCrown__Bronze_Normal.png",
+          "Roughness": "maps/Vesp_Bellwood_GiantCrown__Bronze_Roughness.png",
+          "Metal": "maps/Vesp_Bellwood_GiantCrown__Bronze_Metal.png"
+        },
+        "Eave": {
+          "Color": "maps/Vesp_Bellwood_GiantCrown__Eave_Color.png",
+          "Normal": "maps/Vesp_Bellwood_GiantCrown__Eave_Normal.png",
+          "Roughness": "maps/Vesp_Bellwood_GiantCrown__Eave_Roughness.png",
+          "Metal": "maps/Vesp_Bellwood_GiantCrown__Eave_Metal.png"
+        },
+        "Roots": {
+          "Color": "maps/Vesp_Bellwood_GiantCrown__Roots_Color.png",
+          "Normal": "maps/Vesp_Bellwood_GiantCrown__Roots_Normal.png",
+          "Roughness": "maps/Vesp_Bellwood_GiantCrown__Roots_Roughness.png",
+          "Metal": "maps/Vesp_Bellwood_GiantCrown__Roots_Metal.png"
+        },
+        "Rubble": {
+          "Color": "maps/Vesp_Bellwood_GiantCrown__Rubble_Color.png",
+          "Normal": "maps/Vesp_Bellwood_GiantCrown__Rubble_Normal.png",
+          "Roughness": "maps/Vesp_Bellwood_GiantCrown__Rubble_Roughness.png",
+          "Metal": "maps/Vesp_Bellwood_GiantCrown__Rubble_Metal.png"
+        }
+      },
+      "base_layer": "Poly Haven rock_04 2K + metal_plate_02, roof_slates_02, bark_willow_02",
+      "high_poly_tris": {
+        "Band": 215520,
+        "Gold": 204672,
+        "Bronze": 347936,
+        "Eave": 87256,
+        "Roots": 584688,
+        "Rubble": 306884
       }
     }
   }
