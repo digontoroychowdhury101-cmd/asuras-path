@@ -4,6 +4,7 @@
 -- collision. An unavailable or incomplete visual piece falls back as a unit.
 local Kit = {}
 Kit.Registry = nil :: any
+Kit.LandmarkRegistry = nil :: any -- open-world landmark pieces (LandmarkKitRegistry) load through the same placement rules
 Kit.LoadModel = nil :: ((string) -> Instance?)?
 Kit.MaxLights = 80
 
@@ -17,7 +18,8 @@ local PRIMARY = { "Stone", "Robe", "Body", "Bark", "Plinth", "Iron", "Water", "B
 local CRIMSON, AMBER, FLAME = Color3.fromRGB(150, 26, 38), Color3.fromRGB(224, 142, 62), Color3.fromRGB(255, 138, 52)
 
 type Sub = { Key: string, Source: MeshPart, Frame: CFrame, HasCenter: boolean, Role: string }
-type Options = { Group: string?, Walkable: boolean?, Seed: number?, Offset: CFrame? }
+-- Fidelity: per-role collision that replaces the group rules (a role it does not list never collides).
+type Options = { Group: string?, Walkable: boolean?, Seed: number?, Offset: CFrame?, Fidelity: { [string]: Enum.CollisionFidelity }? }
 local models: { [string]: Instance | boolean } = {}
 local templates: { [string]: {Sub} | boolean } = {}
 local collisionTemplates: { [MeshPart]: { [Enum.CollisionFidelity]: MeshPart | boolean } } = {}
@@ -29,6 +31,17 @@ local function registry(): any
 		Kit.Registry = require(shared:WaitForChild("VesperholdKitRegistry") :: ModuleScript)
 	end
 	return Kit.Registry
+end
+
+local function landmarks(): any
+	if Kit.LandmarkRegistry == nil then
+		local ok, reg = pcall(function()
+			local shared = game:GetService("ReplicatedStorage"):WaitForChild("AsurasPath"):WaitForChild("Shared")
+			return require(shared:FindFirstChild("LandmarkKitRegistry") :: ModuleScript)
+		end)
+		Kit.LandmarkRegistry = if ok and type(reg) == "table" then reg else {}
+	end
+	return Kit.LandmarkRegistry
 end
 
 local function loadModel(asset: string): Instance?
@@ -67,7 +80,7 @@ local function extent(frame: CFrame, half: Vector3): Vector3
 end
 
 local function readTemplate(piece: string): {Sub}?
-	local entries = registry()[piece]
+	local entries = registry()[piece] or landmarks()[piece]
 	if type(entries) ~= "table" then return nil end
 	local _,first = next(entries)
 	if type(first) ~= "table" or type(first.Asset) ~= "string" then return nil end
@@ -244,10 +257,11 @@ function Kit.place(piece: string, frame: CFrame, scale: Vector3, opts: Options?)
 	for _,sub in subs do
 		local pose, dimensions = scaledFrame(sub.Frame,scale)
 		if not pose or not dimensions then model:Destroy(); return nil end
-		local collides = solid and not DECOR[sub.Role]
+		local fid = if o.Fidelity then o.Fidelity[sub.Role] else nil
+		local collides = if o.Fidelity then fid ~= nil else solid and not DECOR[sub.Role]
 		local source = sub.Source
 		if collides then
-			local fidelity = if not CORE[sub.Role] then Enum.CollisionFidelity.Box
+			local fidelity = if fid then fid elseif not CORE[sub.Role] then Enum.CollisionFidelity.Box
 				elseif o.Walkable then Enum.CollisionFidelity.PreciseConvexDecomposition else Enum.CollisionFidelity.Hull
 			source = collisionTemplate(source, fidelity)
 		end
@@ -287,7 +301,7 @@ function Kit.Reset()
 	table.clear(templates)
 	table.clear(collisionTemplates)
 	table.clear(lamps)
-	Kit.Registry, Kit.LoadModel = nil,nil
+	Kit.Registry, Kit.LandmarkRegistry, Kit.LoadModel = nil,nil,nil
 end
 
 return Kit

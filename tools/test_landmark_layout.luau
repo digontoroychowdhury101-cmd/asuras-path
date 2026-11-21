@@ -106,7 +106,10 @@ check("Bellwood tunnel >= 14 wide and 16 high", bw.Tunnel.Width >= 14 and bw.Tun
 check("Bellwood basin is 350 x 300", bw.Basin.Width == 350 and bw.Basin.Depth == 300)
 check("Bellwood tunnel leads down underground at a walkable grade", bw.Tunnel.End.Z < -20
 	and bw.Tunnel.Descent / bw.Tunnel.Run <= O.TerrainDef.Road.MaxGrade)
-check("Bellwood kit pieces share one origin", bw.Pieces.Face.Offset.X == 0 and bw.Pieces.Crown.Offset.X == 0)
+check("Bellwood kit pieces carry a foot frame", bw.Pieces.Face.Foot ~= nil and bw.Pieces.Crown.Foot ~= nil)
+local last = bw.Tunnel.Path[#bw.Tunnel.Path]
+check("Bellwood tunnel path ends 8 above the End floor point", last[1] == bw.Tunnel.End.X and last[2] == bw.Tunnel.End.Y
+	and last[3] - 8 == bw.Tunnel.End.Z)
 
 print(string.format("landmark layout: %d passed, %d failed", passed, failed))
 if failed > 0 then error("landmark layout failed") end

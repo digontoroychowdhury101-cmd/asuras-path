@@ -360,5 +360,63 @@ check("collision: only the statue group collides (arcade/bastion/viaduct meshes 
 	return true
 end)())
 
+-- 9. Open-world landmarks: LandmarkKitRegistry pieces through the same loader, per-role collision, LandmarkWorld frames + carve --
+do
+	local function near(a: number, b: number) return math.abs(a - b) <= 1e-4 end -- section 8 reuses the name for a count
+	local landmarkReg = {}
+	local id = newId()
+	local w, e = fakeAsset("Bellwood_GiantFace", { { "Shell", V3(90, 60, 6), V3(0, 30, 0) }, { "Shell_2", V3(90, 60, 6), V3(0, 30, 6) },
+		{ "Floor", V3(18, 1, 60), V3(0, 0.5, 0) } }, id)
+	assets[id] = w
+	landmarkReg.Bellwood_GiantFace = e
+	setup(registry)
+	Kit.LandmarkRegistry = landmarkReg
+	local PRECISE = Enum.CollisionFidelity.PreciseConvexDecomposition
+	local face = Kit.place("Bellwood_GiantFace", CFrame.new(), V3(1, 1, 1), { Fidelity = { Shell = PRECISE } })
+	check("landmark pieces resolve from LandmarkKitRegistry", face ~= nil and Kit.has("Bellwood_GiantFace"))
+	local shell2, floor = face:FindFirstChild("Bellwood_GiantFace__Shell_2"), face:FindFirstChild("Bellwood_GiantFace__Floor")
+	check("Fidelity: a listed role (numbered subs too) collides at that fidelity", shell2.CanCollide and shell2.CollisionFidelity == PRECISE)
+	check("Fidelity: an unlisted role never collides", not floor.CanCollide and not floor.CanQuery)
+
+	local W = load("src/server/Services/LandmarkWorld.luau", table.clone(base), "LandmarkWorld")
+	local LL = require("../src/shared/LandmarkLayout")
+	local bw = LL.Landmarks.Bellwood
+	local fx, fz = LL.front(bw)
+	local mouth = W.kitToWorld(bw, { 0, 1, 0 }) - W.kitToWorld(bw, { 0, 0, 0 })
+	check("kitToWorld: kit +Y (the mouth) points along LandmarkLayout.front", near(mouth.X, fx) and near(mouth.Z, fz) and near(mouth.Y, 0))
+	check("kitToWorld: kit +Z is world up", near((W.kitToWorld(bw, { 0, 0, 1 }) - W.kitToWorld(bw, { 0, 0, 0 })).Y, 1))
+	local boxes = W.carves(bw)
+	local o = bw.Origin
+	local lowest, first = math.huge, boxes[1]
+	for _, b in boxes do lowest = math.min(lowest, b.CFrame.Position.Y - b.Size.Y / 2) end
+	check("carve boxes reach the End floor (35 below the origin) and no deeper than 1 stud under it",
+		lowest <= o.Y + bw.Tunnel.End.Z + 0.5 and lowest >= o.Y + bw.Tunnel.End.Z - 1)
+	check("carve boxes are at least the walk width and height", first.Size.X >= bw.Tunnel.Width and first.Size.Y >= bw.Tunnel.Height)
+	check("carve boxes are level (no tilt)", near(first.CFrame.UpVector.Y, 1))
+
+	-- build(): pieces at the foot frames, carve only after the region is ready, nothing carved when no piece loads.
+	local fills, readyAsked = 0, nil
+	local env = table.clone(base)
+	local ws = { Terrain = { FillBlock = function() fills += 1 end } }
+	env.game = { GetService = function(_, n) if n == "Workspace" then return ws end return services[n] end }
+	env.task = { spawn = function(f) f() end }
+	local W2 = load("src/server/Services/LandmarkWorld.luau", env, "LandmarkWorld")
+	local placedAt = {}
+	W2.Kit = { place = function(piece, frame) placedAt[piece] = frame; local m = Instance.new("Model"); m.Name = piece; return m end }
+	W2.Layout = LL
+	local forest = Instance.new("Folder")
+	W2.build({ Forest = forest }, function(region) readyAsked = region; return true end)
+	local lm = forest:FindFirstChild("Landmark_Bellwood")
+	local footW = W2.frame(bw) * CFrame.new(bw.Pieces.Face.Foot.X, bw.Pieces.Face.Foot.Y, bw.Pieces.Face.Foot.Z)
+	check("build places every piece in the region folder", lm ~= nil and lm:FindFirstChild("Bellwood_GiantFace") and lm:FindFirstChild("Bellwood_GiantCrown"))
+	check("pieces sit at origin * yaw * Foot", placedAt.Bellwood_GiantFace and (placedAt.Bellwood_GiantFace.Position - footW.Position).Magnitude < 1e-3)
+	check("the bore is carved after the region's terrain is ready", readyAsked == "Forest" and fills == #boxes and lm:GetAttribute("BoreCarved") == true)
+	fills = 0
+	W2.Kit = { place = function() return nil end }
+	local forest2 = Instance.new("Folder")
+	W2.build({ Forest = forest2 }, function() return true end)
+	check("no piece loaded: no hole is carved", fills == 0)
+end
+
 print(string.format("vesperhold loader: %d passed, %d failed", passed, failed))
 if failed > 0 then error("vesperhold loader checks failed") end

@@ -4,7 +4,7 @@
 -- Frame per landmark: Origin = kit foot-centre on the terrain (studs, world), Yaw in degrees about +Y. The Blender kits face +Y
 -- (tunnel mouth) = glTF -Z, and a Roblox import is glTF turned 180 deg about Y (tools/assets/glb_split.py), so the mouth is model
 -- +Z and the front in world XZ is (sin Yaw, cos Yaw) for CFrame.Angles(0, rad(Yaw), 0). Every kit piece of a landmark shares
--- the origin (Offset 0) so the GLBs line up exactly as baked.
+-- the origin; Foot places each GLB's own foot frame back on it so the pieces line up exactly as baked.
 local Layout = {}
 
 export type Vec = { X: number, Y: number, Z: number }
@@ -21,11 +21,15 @@ Layout.Landmarks = {
 		MinClearance = 250,
 		-- The eye leads underground (creator 2026-11-22): level into the lower eye socket, then a bending descent of 35 studs over
 		-- 150 (kit, Blender axes: +Y = mouth, Z up). The mesh bore ends at End; terrain carves the rest of the passage to the basin.
-		Tunnel = { Width = 16.4, Height = 16.4, Length = 150, Descent = 35, Run = 140, End = { X = -24, Y = -80, Z = -35 } },
+		-- Path = the bore centre line (TUNNEL in bellwood_giant_face.py, radius Radius); the walk floor runs 8 below it.
+		Tunnel = { Width = 16.4, Height = 16.4, Length = 150, Descent = 35, Run = 140, End = { X = -24, Y = -80, Z = -35 }, Radius = 8.2,
+			Path = { { -4, 60, 8 }, { -4, 34, 8 }, { 2, 14, 3 }, { 8, -8, -5 }, { 4, -32, -13 }, { -8, -56, -21 }, { -24, -80, -27 } } },
 		Basin = { Back = 260, Width = 350, Depth = 300 }, -- centre Back studs behind the origin, Width across, Depth along the front
+		-- Foot = where each GLB's foot (bbox centre X/Z, bbox minimum Y: tools/assets/glb_split.py) sits relative to the shared
+		-- kit origin, in Roblox model axes (Blender x, y, z -> -x, z, y), from assets/source/landmarks/bellwood_face/manifest.json.
 		Pieces = {
-			Face = { Model = "Bellwood_GiantFace", Offset = { X = 0, Y = 0, Z = 0 } },
-			Crown = { Model = "Bellwood_GiantCrown", Offset = { X = 0, Y = 0, Z = 0 } },
+			Face = { Model = "Bellwood_GiantFace", Foot = { X = -3.34, Y = -39.23, Z = -19.765 } },
+			Crown = { Model = "Bellwood_GiantCrown", Foot = { X = -0.495, Y = -0.65, Z = -6.705 } },
 		},
 	},
 }

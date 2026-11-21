@@ -691,6 +691,9 @@ function OverworldService.Start()
 	local gateFrame = CFrame.new(gate.X, gate.Y, gate.Z) * CFrame.Angles(0, math.rad(gate.Yaw), 0)
 	require(script.Parent.GothicMarch).build(folders.Snowfields, gateFrame)
 	require(script.Parent.GothicCitadel).build(folders.Snowfields, gateFrame)
+	require(script.Parent.LandmarkWorld).build(folders, function(area: string): boolean
+		return OverworldService.WaitReady(900, area)
+	end)
 	each(B.Bridges, function(def, parent)
 		if def.Kind == "stone" then stoneBridge(def, parent) else ropeBridge(def, parent) end
 	end)
