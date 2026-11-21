@@ -42,12 +42,12 @@ def unit(v):
 
 
 def skull():
-    """The face's first three masses (cranium, face, brow): the only ones that reach the band (u 15..25)."""
+    """Band guide: the face's cranium + face masses only. The brow ridge (u <= 23) is left out on purpose: its upper face is
+    parallel to the band slab, so a shell hugging it spreads into a fin; the real brow simply swallows the band there."""
     F = G.Field()
     E = G.ellip
     F.u(E((22, -14, 0), (42, 36, 32)))
     F.u(E((-16, 10, 0), (44, 34, 31)), k=12)
-    F.u(E((9, 34, 0), (8, 8, 28)), k=6)
     return F
 
 
@@ -322,7 +322,7 @@ DETAIL = {"Band": (0.035, 0.03, 1.1), "Gold": (0.015, 0.012, 2.2), "Bronze": (0.
 def build():
     Fs, Hf = skull(), H.head_field()
     roles = {}
-    for fn, arg in ((band, Fs), (medallion, Fs), (spires, Fs), (eave, Fs), (door_ring, Fs), (roots, Hf), (rubble, Hf)):
+    for fn, arg in ((band, Fs), (medallion, Hf), (spires, Fs), (eave, Fs), (door_ring, Fs), (roots, Hf), (rubble, Hf)):
         t = time.time()
         for role, parts in fn(arg).items():
             roles.setdefault(role, []).extend(parts)
