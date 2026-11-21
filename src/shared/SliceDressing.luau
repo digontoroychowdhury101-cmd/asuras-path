@@ -12,6 +12,7 @@
 -- { X, Y up, Z } = { bx, bz, by }). Pivot = foot centre. Nothing here is an asset id.
 local hasScript = pcall(function() return script.Parent end)
 local Overworld: any = if hasScript then require(script.Parent.Overworld) else require("./Overworld")
+local Landmarks: any = if hasScript then require(script.Parent.LandmarkLayout) else require("./LandmarkLayout")
 
 local SliceDressing = {}
 
@@ -23,7 +24,8 @@ SliceDressing.Cell = 128 -- studs: the terrain tile size, so a cell key "i,j" is
 -- (TrisLod = the same with every Lod sub-mesh dropped, i.e. Leaves_Detail beyond ~150 studs, manifest "lod"). Raise a number only with a Studio profile behind it.
 -- Tris / TrisLod raised 2026-11-21 when the far belt switched to near meshes (7.42M / 3.82M); the Studio A/B cost was ~2% frame time.
 -- Raised again 2026-11-21 (win-73) for the denser shrub layer (7.89M / 4.30M): Studio toggle of all 143 shrubs cost 0.4 ms (43.8 vs 43.4).
-SliceDressing.Budget = { MeshParts = 3000, PlaceholderParts = 3400, Tris = 7950000, TrisLod = 4350000, Placements = 1900 }
+-- Raised 2026-11-22 (mac-87) for the Bellwood face grove (LandmarkLayout Grove, +~1.3M tris, +~210 MeshParts); measured in Studio Play, see PROJECT_STATE mac-87.
+SliceDressing.Budget = { MeshParts = 3200, PlaceholderParts = 3900, Tris = 9400000, TrisLod = 5100000, Placements = 1900 }
 
 -------------------------------------------------------------------------------------------------
 -- Pieces. Sub = one kit sub-mesh (Piece__Name). B = placeholder boxes { cx, cz, y0, y1, w, d } as fractions of the piece
@@ -730,6 +732,20 @@ local function worldDist(x0: number, z0: number, x1: number, z1: number): number
 	return math.sqrt((x1 - x0) ^ 2 + (z1 - z0) ^ 2)
 end
 
+-- Scatter discs { X, Z, R }: the corridor's altar clearings plus every landmark Grove (LandmarkLayout), so a landmark off the
+-- route still stands in forest (mac-87).
+local function discs(): { { X: number, Z: number, R: number } }
+	local out = {}
+	for _, d in (SliceDressing.Corridor :: any).Discs do
+		local a = Overworld.Altars[d.Altar].Placement
+		table.insert(out, { X = a.X, Z = a.Z, R = d.R })
+	end
+	for _, lm in Landmarks.Landmarks do
+		if lm.Grove then table.insert(out, { X = lm.Origin.X, Z = lm.Origin.Z, R = lm.Grove.R }) end
+	end
+	return out
+end
+
 -- The circular exclusions (everything but roads, lanes): { X, Z, Keep = class table or per-class radii }.
 local function circles(heroes: { any }): { any }
 	local K: any = SliceDressing.Keep
@@ -787,6 +803,19 @@ local function circles(heroes: { any }): { any }
 		home(m.Placement.X, m.Placement.Z, m.Id)
 	end
 	home(Overworld.Training.Placement.X, Overworld.Training.Placement.Z, "SparringPhantom")
+	-- Landmark groves: nothing tall on the landmark (ferns and grass hug its base), and the road-to-mouth lane open (circles LaneHalf + 4
+	-- across, 8 apart, cover a band LaneHalf wide).
+	for _, lm in Landmarks.Landmarks do
+		local g = lm.Grove
+		if g then
+			local o, fx, fz = lm.Origin, Landmarks.front(lm)
+			add(o.X, o.Z, keep(g.Clear, g.Clear - 8, g.Clear - 12, g.Clear - 12, g.Clear))
+			local r = g.LaneHalf + 4
+			for along = 55, g.LaneTo, 8 do
+				add(o.X + fx * along, o.Z + fz * along, keep(r, 10, 6, 4, r))
+			end
+		end
+	end
 	for _, h in heroes do
 		local radius = SliceDressing.Pieces[h.Piece].Radius * h.Scale
 		local k = {}
@@ -958,9 +987,8 @@ function SliceDressing.build(fresh: boolean?): any
 		x0, x1, z0, z1 = math.min(x0, x - r), math.max(x1, x + r), math.min(z0, z - r), math.max(z1, z + r)
 	end
 	for _, p in R.Points do grow(p[1], p[2], C.Half + C.Fade) end
-	for _, d in C.Discs do
-		local a = Overworld.Altars[d.Altar].Placement
-		grow(a.X, a.Z, d.R + C.Fade)
+	for _, d in discs() do
+		grow(d.X, d.Z, d.R + C.Fade)
 	end
 	local treeRule: any = (SliceDressing.Scatter :: any).Tree
 	local beltExtra = if treeRule.FarBelt then treeRule.FarBelt + C.Fade else 0 -- the tree grid and the road list reach this far past the corridor box
@@ -1270,9 +1298,8 @@ function SliceDressing.build(fresh: boolean?): any
 			d = math.min(d, segDist(p[1], p[2], q[1], q[2], x, z))
 		end
 		local w = 1 - smooth((d - C.Half) / C.Fade)
-		for _, disc in C.Discs do
-			local a = Overworld.Altars[disc.Altar].Placement
-			w = math.max(w, 1 - smooth((worldDist(x, z, a.X, a.Z) - disc.R) / C.Fade))
+		for _, disc in discs() do
+			w = math.max(w, 1 - smooth((worldDist(x, z, disc.X, disc.Z) - disc.R) / C.Fade))
 		end
 		return w
 	end

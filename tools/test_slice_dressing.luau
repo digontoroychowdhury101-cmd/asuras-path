@@ -290,6 +290,9 @@ for _, p in R.Placements do
 			local a = O.Altars[disc.Altar].Placement
 			d = math.min(d, dist(p.X, p.Z, a.X, a.Z) - disc.R + S.Corridor.Half)
 		end
+		for _, lm in require("../src/shared/LandmarkLayout").Landmarks do -- landmark groves are clearing discs too (mac-87)
+			if lm.Grove then d = math.min(d, dist(p.X, p.Z, lm.Origin.X, lm.Origin.Z) - lm.Grove.R + S.Corridor.Half) end
+		end
 		local reach = S.Corridor.Half + S.Corridor.Fade + (if S.Pieces[p.Piece].Far or (not S.FarVariants and p.Class == "Tree") then S.Scatter.Tree.FarBelt + S.Corridor.Fade else 0) -- the far belt carries trees only (near meshes since FarVariants is off)
 		if d > reach then stray += 1 end
 	end
@@ -923,7 +926,7 @@ end
 local function count(piece) return R.Counts[piece] or 0 end
 local function cls(c) return R.ByClass[c] or 0 end
 local ranges = {
-	{ "trees (near + far)", cls("Tree"), 196, 420 }, { "shrubs", cls("Shrub"), 40, 300 }, { "ferns", cls("Fern"), 70, 350 }, { "grass", cls("Grass"), 400, 1300 },
+	{ "trees (near + far)", cls("Tree"), 196, 480 }, { "shrubs", cls("Shrub"), 40, 300 }, { "ferns", cls("Fern"), 70, 350 }, { "grass", cls("Grass"), 400, 1300 },
 	{ "boulders", cls("Rock"), 10, 60 }, { "flowers", cls("Flower"), 30, 300 }, { "deadwood", cls("Deadwood"), 25, 150 }, { "saplings", cls("Sapling"), 10, 100 },
 	{ "mushrooms", cls("Mushroom"), 10, 100 },
 }
@@ -962,6 +965,26 @@ for _, c in R.Cells do
 	cellMax = math.max(cellMax, parts)
 end
 check("no cell is heavier than 900 placeholder parts (Atomic streaming unit; heaviest " .. cellMax .. ")", cellMax <= 900)
+
+-- 6b. Landmark groves (mac-87): the Bellwood face stood on bare meadow 555 studs past the corridor; the spec puts it "in the forest".
+do
+	local LL = require("../src/shared/LandmarkLayout")
+	local bw = LL.Landmarks.Bellwood
+	local o, fx, fz = bw.Origin, LL.front(bw)
+	local ring, onFace, inLane = 0, 0, 0
+	for _, p in R.Placements do
+		local d = dist(p.X, p.Z, o.X, o.Z)
+		local tall = p.Class == "Tree" or p.Class == "Rock" or p.Class == "Sapling" or p.Class == "Cliff" or p.Class == "Outcrop"
+		if p.Class == "Tree" and d >= 60 and d <= 190 then ring += 1 end
+		if tall and d < bw.Grove.Clear then onFace += 1 end
+		-- the walk from the road to the mouth: along the front, inside LaneHalf of the centre line
+		local along, side = (p.X - o.X) * fx + (p.Z - o.Z) * fz, math.abs((p.X - o.X) * fz - (p.Z - o.Z) * fx)
+		if tall and along > 55 and along < bw.Grove.LaneTo and side < bw.Grove.LaneHalf then inLane += 1 end
+	end
+	check("Bellwood face stands in a grove (" .. ring .. " trees 60-190 studs round it)", ring >= 40)
+	check("no tree or rock stands on the face (" .. onFace .. ")", onFace == 0)
+	check("the road-to-mouth lane is open (" .. inLane .. " tall pieces in it)", inLane == 0)
+end
 
 -- 7. Cells and landmarks.
 local cellsOk, needsOk = true, true

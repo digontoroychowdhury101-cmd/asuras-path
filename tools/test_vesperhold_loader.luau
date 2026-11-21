@@ -395,24 +395,57 @@ do
 		lowest <= o.Y + bw.Tunnel.End.Z + 0.5 and lowest >= o.Y + bw.Tunnel.End.Z - 1)
 	check("carve boxes are at least the walk width and height", first.Size.X >= bw.Tunnel.Width and first.Size.Y >= bw.Tunnel.Height)
 	check("carve boxes are level (no tilt)", near(first.CFrame.UpVector.Y, 1))
+	-- mac-87: overworld terrain is an 8-stud crust, so the descending bore ran through void (sky showed through the mesh seams).
+	-- Rock packs wrap the underground run before the carve, wider and deeper than it, and never reach the written surface.
+	W.Height = O.heightAt
+	local packs = W.packs(bw)
+	local wraps, under = #packs > 0, true
+	for _, b in packs do
+		local c, h = b.CFrame, b.Size / 2
+		for _, sx in { -1, 1 } do for _, sz in { -1, 1 } do
+			local top = c:PointToWorldSpace(Vector3.new(sx * h.X, h.Y, sz * h.Z))
+			if top.Y > O.heightAt(top.X, top.Z) - 0.5 then under = false end
+		end end
+		if b.Size.X < bw.Tunnel.Width + 20 or c.Position.Y - h.Y > b.Floor - 9.5 then wraps = false end
+	end
+	check("rock packs wrap the underground bore (12+ studs of wall, 10 under the floor)", wraps)
+	check("rock packs stay under the written surface", under)
 
 	-- build(): pieces at the foot frames, carve only after the region is ready, nothing carved when no piece loads.
 	local fills, readyAsked = 0, nil
 	local env = table.clone(base)
-	local ws = { Terrain = { FillBlock = function() fills += 1 end } }
+	local fillOrder = {}
+	local ws = { Terrain = { FillBlock = function(_, _, _, m) fills += 1; table.insert(fillOrder, m.Name) end } }
 	env.game = { GetService = function(_, n) if n == "Workspace" then return ws end return services[n] end }
 	env.task = { spawn = function(f) f() end }
 	local W2 = load("src/server/Services/LandmarkWorld.luau", env, "LandmarkWorld")
 	local placedAt = {}
 	W2.Kit = { place = function(piece, frame) placedAt[piece] = frame; local m = Instance.new("Model"); m.Name = piece; return m end }
 	W2.Layout = LL
+	W2.Height = O.heightAt
 	local forest = Instance.new("Folder")
 	W2.build({ Forest = forest }, function(region) readyAsked = region; return true end)
 	local lm = forest:FindFirstChild("Landmark_Bellwood")
 	local footW = W2.frame(bw) * CFrame.new(bw.Pieces.Face.Foot.X, bw.Pieces.Face.Foot.Y, bw.Pieces.Face.Foot.Z)
 	check("build places every piece in the region folder", lm ~= nil and lm:FindFirstChild("Bellwood_GiantFace") and lm:FindFirstChild("Bellwood_GiantCrown"))
 	check("pieces sit at origin * yaw * Foot", placedAt.Bellwood_GiantFace and (placedAt.Bellwood_GiantFace.Position - footW.Position).Magnitude < 1e-3)
-	check("the bore is carved after the region's terrain is ready", readyAsked == "Forest" and fills == #boxes and lm:GetAttribute("BoreCarved") == true)
+	check("the bore is packed then carved after the region's terrain is ready", readyAsked == "Forest" and fills == #packs + #boxes
+		and fillOrder[1] == "Rock" and fillOrder[#fillOrder] == "Air" and lm:GetAttribute("BoreCarved") == true)
+	-- mac-87: the bore was pitch dark at noon. Each niche: an always-on shadowless ember plus a night lantern light (tagged, off until dusk).
+	local niches, nicheOk = 0, true
+	for _, c in lm:GetChildren() do
+		if c.Name == "TunnelLantern" then
+			niches += 1
+			local flame = c:FindFirstChild("Flame")
+			local ember, night = flame and flame:FindFirstChild("Ember"), flame and flame:FindFirstChild("LanternLight")
+			if not (flame and flame.Material == Enum.Material.Neon and not flame.CanCollide and flame.Anchored
+				and ember and ember.Enabled and not ember.Shadows and night and not night.Enabled and not night.Shadows
+				and night:HasTag("AsuraLanternLight") and not ember:HasTag("AsuraLanternLight")) then nicheOk = false end
+			local want = W2.kitToWorld(bw, bw.Tunnel.Lanterns[niches])
+			if flame and (flame.Position - want).Magnitude > 1e-3 then nicheOk = false end
+		end
+	end
+	check("tunnel lantern niches: one per layout point, ember always on, night light tagged", niches == #bw.Tunnel.Lanterns and nicheOk)
 	fills = 0
 	W2.Kit = { place = function() return nil end }
 	local forest2 = Instance.new("Folder")

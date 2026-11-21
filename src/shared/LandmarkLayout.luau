@@ -23,8 +23,13 @@ Layout.Landmarks = {
 		-- 150 (kit, Blender axes: +Y = mouth, Z up). The mesh bore ends at End; terrain carves the rest of the passage to the basin.
 		-- Path = the bore centre line (TUNNEL in bellwood_giant_face.py, radius Radius); the walk floor runs 8 below it.
 		Tunnel = { Width = 16.4, Height = 16.4, Length = 150, Descent = 35, Run = 140, End = { X = -24, Y = -80, Z = -35 }, Radius = 8.2,
-			Path = { { -4, 60, 8 }, { -4, 34, 8 }, { 2, 14, 3 }, { 8, -8, -5 }, { 4, -32, -13 }, { -8, -56, -21 }, { -24, -80, -27 } } },
+			Path = { { -4, 60, 8 }, { -4, 34, 8 }, { 2, 14, 3 }, { 8, -8, -5 }, { 4, -32, -13 }, { -8, -56, -21 }, { -24, -80, -27 } },
+			-- Two warm lantern niches (spec): kit points 5 studs off the centre line toward the wall, 1.5 under it.
+			Lanterns = { { 4, 24, 4 }, { 2.5, -46, -18.5 } } },
 		Basin = { Back = 260, Width = 350, Depth = 300 }, -- centre Back studs behind the origin, Width across, Depth along the front
+		-- Grove (SliceDressing): forest scatter in R round the origin. Nothing tall within Clear (the face), and a lane LaneHalf wide from
+		-- the mouth out LaneTo studs along the front (the road sightline) stays open. Ferns and grass hug the base from Clear - 12.
+		Grove = { R = 120, Clear = 70, LaneHalf = 16, LaneTo = 170 },
 		-- Foot = where each GLB's foot (bbox centre X/Z, bbox minimum Y: tools/assets/glb_split.py) sits relative to the shared
 		-- kit origin, in Roblox model axes (Blender x, y, z -> -x, z, y), from assets/source/landmarks/bellwood_face/manifest.json.
 		Pieces = {

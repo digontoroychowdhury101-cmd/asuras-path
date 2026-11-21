@@ -111,5 +111,26 @@ local last = bw.Tunnel.Path[#bw.Tunnel.Path]
 check("Bellwood tunnel path ends 8 above the End floor point", last[1] == bw.Tunnel.End.X and last[2] == bw.Tunnel.End.Y
 	and last[3] - 8 == bw.Tunnel.End.Z)
 
+-- Lantern niches sit inside the bore, off the walk line: 3..Radius-2 studs from the centre polyline (3D, kit axes).
+local function toPath(q)
+	local best = math.huge
+	local P = bw.Tunnel.Path
+	for i = 2, #P do
+		local a, b = P[i - 1], P[i]
+		local d = { b[1] - a[1], b[2] - a[2], b[3] - a[3] }
+		local len2 = d[1] ^ 2 + d[2] ^ 2 + d[3] ^ 2
+		local t = math.clamp(((q[1] - a[1]) * d[1] + (q[2] - a[2]) * d[2] + (q[3] - a[3]) * d[3]) / len2, 0, 1)
+		best = math.min(best, math.sqrt((a[1] + d[1] * t - q[1]) ^ 2 + (a[2] + d[2] * t - q[2]) ^ 2 + (a[3] + d[3] * t - q[3]) ^ 2))
+	end
+	return best
+end
+local lit = #bw.Tunnel.Lanterns >= 2
+for _, q in bw.Tunnel.Lanterns do
+	local d = toPath(q)
+	if d < 3 or d > bw.Tunnel.Radius - 2 then lit = false end
+end
+check("Bellwood tunnel has two lantern niches inside the bore, off the walk line", lit)
+check("Bellwood grove clears the face footprint and reaches past it", bw.Grove.Clear < bw.FootprintRadius and bw.Grove.R > bw.FootprintRadius + 30)
+
 print(string.format("landmark layout: %d passed, %d failed", passed, failed))
 if failed > 0 then error("landmark layout failed") end

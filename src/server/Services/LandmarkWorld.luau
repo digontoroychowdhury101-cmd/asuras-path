@@ -16,8 +16,11 @@ World.Fidelity = { Shell = PRECISE, Floor = PRECISE, Band = HULL, Bronze = HULL,
 
 local function deps()
 	World.Kit = World.Kit or require(script.Parent:WaitForChild("VesperholdKit") :: ModuleScript)
-	World.Layout = World.Layout
-		or require(ReplicatedStorage:WaitForChild("AsurasPath"):WaitForChild("Shared"):WaitForChild("LandmarkLayout") :: ModuleScript)
+	if not (World.Layout and World.Height) then
+		local shared = ReplicatedStorage:WaitForChild("AsurasPath"):WaitForChild("Shared")
+		World.Layout = World.Layout or require(shared:WaitForChild("LandmarkLayout") :: ModuleScript)
+		World.Height = World.Height or (require(shared:WaitForChild("Overworld") :: ModuleScript) :: any).heightAt
+	end
 	return World.Kit, World.Layout
 end
 
@@ -50,6 +53,65 @@ function World.carves(lm: any): { { CFrame: CFrame, Size: Vector3 } }
 	return out
 end
 
+-- A lantern niche in the bore: a small neon flame on a stone bracket, an always-on shadowless ember (the bore is dark at noon) and
+-- the night lantern light, tagged AsuraLanternLight and off, so OverworldAmbience switches it with every other lantern.
+local EMBER = Color3.fromRGB(255, 160, 80)
+function World.lantern(at: Vector3): Model
+	local niche = Instance.new("Model")
+	niche.Name = "TunnelLantern"
+	local bracket = Instance.new("Part")
+	bracket.Name, bracket.Size, bracket.Material, bracket.Color = "Bracket", Vector3.new(1.6, 0.6, 1.6), Enum.Material.Slate, Color3.fromRGB(70, 66, 60)
+	bracket.CFrame, bracket.Anchored, bracket.CanCollide, bracket.CastShadow = CFrame.new(at - Vector3.new(0, 0.9, 0)), true, false, false
+	bracket.Parent = niche
+	local flame = Instance.new("Part")
+	flame.Name, flame.Shape, flame.Size, flame.Material, flame.Color = "Flame", Enum.PartType.Ball, Vector3.one * 0.8, Enum.Material.Neon, EMBER
+	flame.CFrame, flame.Anchored, flame.CanCollide, flame.CanQuery, flame.CastShadow = CFrame.new(at), true, false, false, false
+	flame.Parent = niche
+	local ember = Instance.new("PointLight")
+	ember.Name, ember.Color, ember.Range, ember.Brightness, ember.Shadows = "Ember", EMBER, 16, 1.1, false
+	ember.Parent = flame
+	local night = Instance.new("PointLight")
+	night.Name, night.Color, night.Range, night.Brightness = "LanternLight", Color3.fromRGB(255, 172, 92), 22, 1.6
+	night.Shadows, night.Enabled = false, false
+	night:AddTag("AsuraLanternLight")
+	night.Parent = flame
+	niche.PrimaryPart = flame
+	return niche
+end
+
+-- Overworld terrain is an 8-stud crust over void (OverworldTerrainCompute SHELL), so the descending bore needs rock round it:
+-- level boxes along the centre line, Width + 24 across, from 10 under the walk floor up to Radius + 10 over the centre, cut to 1 stud
+-- under the lowest surface at the box's top corners (the ground never rises). Filled with Rock before the carve. Floor = walk floor Y.
+World.Height = nil :: ((number, number) -> number)?
+function World.packs(lm: any): { { CFrame: CFrame, Size: Vector3, Floor: number } }
+	local t, height = lm.Tunnel, World.Height
+	local out = {}
+	if not (t and t.Path and height) then return out end
+	local half = (t.Width + 24) / 2
+	for i = 2, #t.Path do
+		local a, b = World.kitToWorld(lm, t.Path[i - 1]), World.kitToWorld(lm, t.Path[i])
+		local flat = Vector3.new(b.X - a.X, 0, b.Z - a.Z)
+		local n = math.max(1, math.ceil((b - a).Magnitude / World.CarveStep))
+		local len = flat.Magnitude / n + 1
+		local fwd = flat.Unit
+		local right = Vector3.new(-fwd.Z, 0, fwd.X)
+		for k = 0, n - 1 do
+			local c = a:Lerp(b, (k + 0.5) / n)
+			local ground = math.huge
+			for _, sx in { -half, half } do for _, sz in { -len / 2, len / 2 } do
+				local q = c + right * sx + fwd * sz
+				ground = math.min(ground, height(q.X, q.Z))
+			end end
+			local bottom, top = c.Y - 18, math.min(c.Y + t.Radius + 10, ground - 1)
+			if top > bottom + 1 then -- near the mouth this is only the ground under the floor; deeper it walls the whole bore
+				local mid = Vector3.new(c.X, (bottom + top) / 2, c.Z)
+				table.insert(out, { CFrame = CFrame.lookAt(mid, mid + flat), Size = Vector3.new(half * 2, top - bottom, len), Floor = c.Y - 8 })
+			end
+		end
+	end
+	return out
+end
+
 -- folders: region id -> Map_Overworld region folder. waitReady(region) blocks until that region's terrain is written.
 function World.build(folders: { [string]: Instance }, waitReady: (string) -> boolean)
 	local Kit, Layout = deps()
@@ -69,9 +131,15 @@ function World.build(folders: { [string]: Instance }, waitReady: (string) -> boo
 					warn("[LandmarkWorld] " .. id .. ": kit piece " .. piece.Model .. " is not available")
 				end
 			end
+			if placed > 0 and lm.Tunnel and lm.Tunnel.Lanterns then
+				for _, p in lm.Tunnel.Lanterns do World.lantern(World.kitToWorld(lm, p)).Parent = model end
+			end
 			model.Parent = folders[lm.Region]
 			-- No mesh, no hole: the bore is only carved under a placed shell, after the tiles that would refill it are written.
 			if placed > 0 and lm.Tunnel and waitReady(lm.Region) then
+				for _, p in World.packs(lm) do
+					Workspace.Terrain:FillBlock(p.CFrame, p.Size, Enum.Material.Rock)
+				end
 				for _, c in World.carves(lm) do
 					Workspace.Terrain:FillBlock(c.CFrame, c.Size, Enum.Material.Air)
 				end
