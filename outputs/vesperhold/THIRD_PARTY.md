@@ -29,6 +29,8 @@ Downloaded 2026-11-19 at 2k (2048 x 2048 JPEG maps; models 2k .blend re-exported
 | bark_willow_02 | texture | Vesp_DeadBark (withered trees) | Diffuse, nor_gl, Rough, Displacement | Poly Haven |
 | snow_02 | texture | Vesp_Frost (ledge frost) | Diffuse, nor_gl, Rough, Displacement | Poly Haven |
 | dark_rock | texture | Vesp_Rock (crags, plinth rock, rubble) | Diffuse, nor_gl, Rough, Displacement | Poly Haven |
+| distressed_painted_planks | texture | Bellwood temple red lacquer timber (re-tinted; fetched 2026-11-22 via api.polyhaven.com) | Diffuse, nor_gl, Rough | Rob Tuytel |
+| ceramic_roof_01 | texture | Bellwood temple roof tiles (darkened, desaturated; fetched 2026-11-22) | Diffuse, nor_gl, Rough | Rob Tuytel |
 | gothic_statue | model, 27,739 tris | candidate niche/graveyard statue | 2k | Benny Weimer |
 | dead_tree_trunk | model, 101,802 tris | fallen log source | 2k | Rob Tuytel |
 | dead_tree_trunk_02 | model, 83,128 tris | fallen log source | 2k | Jenelle van Heerden, Rico Cilliers |
