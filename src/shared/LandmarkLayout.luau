@@ -2,7 +2,8 @@
 -- Open-world landmark layout (LANDMARK-BUILD-SPEC, "Shared rules"). Pure numbers, no Roblox types; tools/test_landmark_layout.luau
 -- checks every entry against the real Overworld (region box, 250-stud clearance, roads, rivers, terrain, orientation).
 -- Frame per landmark: Origin = kit foot-centre on the terrain (studs, world), Yaw in degrees about +Y. The Blender kits face +Y
--- (tunnel mouth), which imports as model -Z, so the front in world XZ is (-sin Yaw, -cos Yaw). Every kit piece of a landmark shares
+-- (tunnel mouth) = glTF -Z, and a Roblox import is glTF turned 180 deg about Y (tools/assets/glb_split.py), so the mouth is model
+-- +Z and the front in world XZ is (sin Yaw, cos Yaw) for CFrame.Angles(0, rad(Yaw), 0). Every kit piece of a landmark shares
 -- the origin (Offset 0) so the GLBs line up exactly as baked.
 local Layout = {}
 
@@ -15,7 +16,7 @@ Layout.Landmarks = {
 	Bellwood = {
 		Region = "Forest",
 		Origin = { X = -3430, Y = 184, Z = -2350 },
-		Yaw = -86,
+		Yaw = 94,
 		FootprintRadius = 82, -- face bbox 126 x 104 half-diagonal
 		MinClearance = 250,
 		Tunnel = { Width = 16.4, Height = 16.4, Length = 130 }, -- curved bore from the lower eye socket to the back of the skull
@@ -30,7 +31,7 @@ Layout.Landmarks = {
 -- World XZ unit vector the landmark faces (the tunnel mouth for Bellwood).
 function Layout.front(lm: any): (number, number)
 	local a = math.rad(lm.Yaw)
-	return -math.sin(a), -math.cos(a)
+	return math.sin(a), math.cos(a)
 end
 
 function Layout.basinCentre(lm: any): Vec
