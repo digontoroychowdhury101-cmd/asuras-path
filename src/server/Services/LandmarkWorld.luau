@@ -10,9 +10,9 @@ World.Layout = nil :: any
 World.CarveStep = 3
 
 local PRECISE, HULL = Enum.CollisionFidelity.PreciseConvexDecomposition, Enum.CollisionFidelity.Hull
--- Walkable shells and the tunnel floor are precise (a hull per shell slice would fill the bore); crown solids are hulls; roots
--- and gilt trim never collide.
-World.Fidelity = { Shell = PRECISE, Floor = PRECISE, Rubble = HULL, Band = HULL, Bronze = HULL, Eave = HULL }
+-- Walkable shells and the tunnel floor are precise (a hull per shell slice would fill the bore); crown solids are hulls; roots,
+-- gilt trim and rubble never collide (the rubble strip spans the bore, so its hull walled the tunnel, mac-86f).
+World.Fidelity = { Shell = PRECISE, Floor = PRECISE, Band = HULL, Bronze = HULL, Eave = HULL }
 
 local function deps()
 	World.Kit = World.Kit or require(script.Parent:WaitForChild("VesperholdKit") :: ModuleScript)

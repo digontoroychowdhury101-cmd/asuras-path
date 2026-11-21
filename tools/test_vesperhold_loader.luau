@@ -384,6 +384,8 @@ do
 	local fx, fz = LL.front(bw)
 	local mouth = W.kitToWorld(bw, { 0, 1, 0 }) - W.kitToWorld(bw, { 0, 0, 0 })
 	check("kitToWorld: kit +Y (the mouth) points along LandmarkLayout.front", near(mouth.X, fx) and near(mouth.Z, fz) and near(mouth.Y, 0))
+	-- mac-86f: the crown's 108-stud Rubble strip crosses over the bore; its hull put an invisible wall in the tunnel.
+	check("crown rubble never collides (its hull spans the bore)", W.Fidelity.Rubble == nil and W.Fidelity.Shell == PRECISE)
 	check("kitToWorld: kit +Z is world up", near((W.kitToWorld(bw, { 0, 0, 1 }) - W.kitToWorld(bw, { 0, 0, 0 })).Y, 1))
 	local boxes = W.carves(bw)
 	local o = bw.Origin

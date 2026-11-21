@@ -290,6 +290,12 @@
           "VesperholdKitRegistry": {
             "$path": "src/shared/VesperholdKitRegistry.luau"
           },
+          "LandmarkKitRegistry": {
+            "$path": "src/shared/LandmarkKitRegistry.luau"
+          },
+          "LandmarkLayout": {
+            "$path": "src/shared/LandmarkLayout.luau"
+          },
           "AmberfallKitRegistry": {
             "$path": "src/shared/AmberfallKitRegistry.luau"
           },
@@ -568,6 +574,9 @@
           },
           "VesperholdKit": {
             "$path": "src/server/Services/VesperholdKit.luau"
+          },
+          "LandmarkWorld": {
+            "$path": "src/server/Services/LandmarkWorld.luau"
           },
           "SliceDressingService": {
             "$path": "src/server/Services/SliceDressingService.luau"
