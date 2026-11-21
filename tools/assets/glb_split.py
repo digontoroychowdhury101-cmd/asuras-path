@@ -144,7 +144,8 @@ def split(src, out_dir, limit=19_500_000):
     for n in by_mat:
         if size(j, [n]) > limit:
             sys.exit(f"{src}: node {j['nodes'][n]['name']} alone is over {limit} bytes")
-        fit = next((p for p in parts if size(j, p + [n]) <= limit), None)
+        # size() undercounts the written file by a few KB (JSON + padding): pack to a 64 KB margin, check the real file below.
+        fit = next((p for p in parts if size(j, p + [n]) <= limit - 65536), None)
         fit.append(n) if fit else parts.append([n])
     out_dir = Path(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)

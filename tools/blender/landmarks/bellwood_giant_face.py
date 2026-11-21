@@ -288,7 +288,7 @@ def main():
         # Grey granite (concept), dark cracks not lit lips (low edge wear, strong cavity), green moss blanketing the tops.
         look = VB.Look(base=0.34, grime=0.35, edge=0.30, streak_dark=0.15, sat=0.15, stone_tint=(0.96, 0.98, 1.0),
                        moss=0.85, moss_open=0.9, moss_col=(0.27, 0.34, 0.13), lichen=0.3, cavity=0.75, rough_base=0.86)
-        dirt = VB.Look(base=0.2, grime=0.5, edge=0.3, sat=0.5, stone_tint=(1.0, 0.82, 0.62), moss=0.35, moss_col=(0.27, 0.34, 0.13),
+        dirt = VB.Look(base=0.17, grime=0.5, edge=0.3, sat=0.22, stone_tint=(0.93, 0.86, 0.76), moss=0.35, moss_col=(0.27, 0.34, 0.13),
                        cavity=0.7, rough_base=0.95)
         files, entry = G.finish(NAME, "Bellwood", {"Shell": lo, "Floor": flo}, {"Shell": hi, "Floor": fhi}, out,
                                 {"*": look, "Floor": dirt}, {"Shell": (0.6, 1.4), "Floor": (0.4, 0.8)}, src["source"],
