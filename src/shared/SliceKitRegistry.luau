@@ -37,12 +37,12 @@ return {
 		["Boulder_Granite_C__Stone"] = { MeshId = "rbxassetid://77466716156519", Asset = "rbxassetid://130229706285630", ColorMap = "rbxassetid://139117478830462", NormalMap = "rbxassetid://70742406201021", RoughnessMap = "rbxassetid://110513024516086", MetalnessMap = "rbxassetid://133012910294403" },
 	},
 	["Canopy_Tree_A"] = {
-		["Canopy_Tree_A__Bark"] = { MeshId = "rbxassetid://78779094113215", Asset = "rbxassetid://133114704843108", ColorMap = "rbxassetid://91229031784225", NormalMap = "rbxassetid://81067035380510", RoughnessMap = "rbxassetid://71120715249359", MetalnessMap = "rbxassetid://125081447625785", center = { 0.59, 19.13, -1.81 } },
+		["Canopy_Tree_A__Bark"] = { MeshId = "rbxassetid://78779094113215", Asset = "rbxassetid://133114704843108", ColorMap = "rbxassetid://76262404027450", NormalMap = "rbxassetid://81067035380510", RoughnessMap = "rbxassetid://71120715249359", MetalnessMap = "rbxassetid://125081447625785", center = { 0.59, 19.13, -1.81 } },
 		["Canopy_Tree_A__Leaves_Detail"] = { MeshId = "rbxassetid://71909753679555", Asset = "rbxassetid://133114704843108", ColorMap = "rbxassetid://130835662917478", NormalMap = "rbxassetid://119940854808716", RoughnessMap = "rbxassetid://107948030666204", MetalnessMap = "rbxassetid://125081447625785", center = { 0.0, 30.91, 0.0 } },
 		["Canopy_Tree_A__Leaves_Mass"] = { MeshId = "rbxassetid://134341709077510", Asset = "rbxassetid://133114704843108", ColorMap = "rbxassetid://130835662917478", NormalMap = "rbxassetid://119940854808716", RoughnessMap = "rbxassetid://107948030666204", MetalnessMap = "rbxassetid://125081447625785", center = { -0.12, 30.53, -2.08 } },
 	},
 	["Canopy_Tree_B"] = {
-		["Canopy_Tree_B__Bark"] = { MeshId = "rbxassetid://110462169785709", Asset = "rbxassetid://108625100076655", ColorMap = "rbxassetid://91229031784225", NormalMap = "rbxassetid://81067035380510", RoughnessMap = "rbxassetid://71120715249359", MetalnessMap = "rbxassetid://125081447625785", center = { 1.09, 27.81, 0.36 } },
+		["Canopy_Tree_B__Bark"] = { MeshId = "rbxassetid://110462169785709", Asset = "rbxassetid://108625100076655", ColorMap = "rbxassetid://76262404027450", NormalMap = "rbxassetid://81067035380510", RoughnessMap = "rbxassetid://71120715249359", MetalnessMap = "rbxassetid://125081447625785", center = { 1.09, 27.81, 0.36 } },
 		["Canopy_Tree_B__Leaves_Detail"] = { MeshId = "rbxassetid://120722516854654", Asset = "rbxassetid://108625100076655", ColorMap = "rbxassetid://130835662917478", NormalMap = "rbxassetid://119940854808716", RoughnessMap = "rbxassetid://107948030666204", MetalnessMap = "rbxassetid://125081447625785", center = { 0.0, 35.57, 0.0 } },
 		["Canopy_Tree_B__Leaves_Mass"] = { MeshId = "rbxassetid://120869549008862", Asset = "rbxassetid://108625100076655", ColorMap = "rbxassetid://130835662917478", NormalMap = "rbxassetid://119940854808716", RoughnessMap = "rbxassetid://107948030666204", MetalnessMap = "rbxassetid://125081447625785", center = { 0.98, 35.59, 0.04 } },
 	},
@@ -57,10 +57,10 @@ return {
 	},
 	["Understory_Shrub"] = {
 		["Understory_Shrub__Leaves"] = { MeshId = "rbxassetid://106680352083639", Asset = "rbxassetid://121146412623500", ColorMap = "rbxassetid://130835662917478", NormalMap = "rbxassetid://119940854808716", RoughnessMap = "rbxassetid://107948030666204", MetalnessMap = "rbxassetid://125081447625785", center = { 0.0, 3.69, 0.0 } },
-		["Understory_Shrub__Stems"] = { MeshId = "rbxassetid://86668274498882", Asset = "rbxassetid://121146412623500", ColorMap = "rbxassetid://91229031784225", NormalMap = "rbxassetid://81067035380510", RoughnessMap = "rbxassetid://71120715249359", MetalnessMap = "rbxassetid://125081447625785", center = { 0.11, 3.86, -0.21 } },
+		["Understory_Shrub__Stems"] = { MeshId = "rbxassetid://86668274498882", Asset = "rbxassetid://121146412623500", ColorMap = "rbxassetid://76262404027450", NormalMap = "rbxassetid://81067035380510", RoughnessMap = "rbxassetid://71120715249359", MetalnessMap = "rbxassetid://125081447625785", center = { 0.11, 3.86, -0.21 } },
 	},
 	["Understory_Shrub_Small"] = {
 		["Understory_Shrub_Small__Leaves"] = { MeshId = "rbxassetid://121844978936060", Asset = "rbxassetid://74048743015238", ColorMap = "rbxassetid://130835662917478", NormalMap = "rbxassetid://119940854808716", RoughnessMap = "rbxassetid://107948030666204", MetalnessMap = "rbxassetid://125081447625785", center = { 0.0, 1.73, 0.0 } },
-		["Understory_Shrub_Small__Stems"] = { MeshId = "rbxassetid://106633501014225", Asset = "rbxassetid://74048743015238", ColorMap = "rbxassetid://91229031784225", NormalMap = "rbxassetid://81067035380510", RoughnessMap = "rbxassetid://71120715249359", MetalnessMap = "rbxassetid://125081447625785", center = { 0.06, 1.74, 0.01 } },
+		["Understory_Shrub_Small__Stems"] = { MeshId = "rbxassetid://106633501014225", Asset = "rbxassetid://74048743015238", ColorMap = "rbxassetid://76262404027450", NormalMap = "rbxassetid://81067035380510", RoughnessMap = "rbxassetid://71120715249359", MetalnessMap = "rbxassetid://125081447625785", center = { 0.06, 1.74, 0.01 } },
 	},
 }

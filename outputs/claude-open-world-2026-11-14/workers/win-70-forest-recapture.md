@@ -124,3 +124,10 @@ Instruction: handoff §4 step 7, creator's "Yes continue".
 - Repointed the finish library and registries from the win-74 ids (Slice 10 subs, Bellwood 29); test now rejects the old ids. Slice 1363/0, verify_all exit 0.
 - Studio (work/vesperhold-claude/win78, closed unsaved): 54 surfaces on the new images, 0 on the old. View 03: shaded trunks read as bark (were near-black);
   view 02: trunks brown, corridor road and lanterns visible. Sunlit bark is pale, almost birch-like (captures/win/forest78/).
+
+## win-79 bark tone-down (creator: "Darken bark slightly")
+- Bell_Bark_Color_srgbfix x [0.80, 0.77, 0.74] -> Bell_Bark_Color_dark79.png (mean 138/126/105). Uploaded from cloud window a3449a9a (Edit, never edited or saved):
+  Decal 122504657990286 Approved, op 9c45e93a-a0d2-4d2e-a3e1-f754e9636e4e, image 76262404027450 (child op 9490c820-924e-4008-994b-7350033b9e45), read-back mean = file.
+- Repointed 91229031784225 -> 76262404027450 (finish library 2, Slice 4, Bellwood 17); test rejects the previous id. Slice 1363/0, biome 18928/0, verify_all exit 0.
+- Studio (work/vesperhold-claude/win79, closed unsaved, hash unchanged): server 23 bark + 31 leaf surfaces on new ids, 0 old. Sunlit trunks mid-brown instead of birch-pale;
+  shaded trunks still read as bark (captures/win/forest79/).
