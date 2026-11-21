@@ -207,6 +207,23 @@ class KitRegistry(unittest.TestCase):
         for p in names:
             self.assertIn(f'["{p}__Stone"]', text)
 
+    def test_landmark_split_piece_reads_landmark_manifest(self):
+        d = self.root / "assets/source/landmarks/bellwood_face"
+        d.mkdir(parents=True)
+        subs = ["Bellwood_GiantFace__Shell", "Bellwood_GiantFace__Floor"]
+        (d / "manifest.json").write_text(json.dumps({"pieces": {"Bellwood_GiantFace": {"sub_meshes": {s: 10 for s in subs}}}}))
+        (self.root / "src/shared").mkdir(parents=True)
+        # Split across two model assets: the second part's sub names its own Asset, and both carry centers.
+        reg = {"modelAssets": {"Bellwood_GiantFace": {"assetId": rid()}}, "pieces": {"Bellwood_GiantFace": {
+            subs[0]: {"MeshId": rid(), "center": [0, 1, 2]}, subs[1]: {"MeshId": rid(), "Asset": rid(), "center": [3, 0, -1]}}}}
+        (self.root / "assets/LANDMARK_KIT_UPLOADED.json").write_text(json.dumps(reg))
+        self.assertEqual(K.main(["landmark", "--root", str(self.root)]), 0)
+        text = (self.root / "src/shared/LandmarkKitRegistry.luau").read_text()
+        self.assertIn('["Bellwood_GiantFace__Floor"]', text)
+        del reg["pieces"]["Bellwood_GiantFace"][subs[1]]["center"]
+        (self.root / "assets/LANDMARK_KIT_UPLOADED.json").write_text(json.dumps(reg))
+        self.assertTrue(any("needs a center" in e for e in K.validate("landmark", self.root)[0]))
+
     def test_vesperhold_mesh_id_shared_across_pieces_only(self):
         # Roblox dedupes identical geometry (both hooded statues' plinths); the loader resolves each piece inside its own model.
         names = {"Arcade_Bay_40": "kit", "Hooded_Statue_A": "props", "Dead_Pine_Snapped_A": "trees"}

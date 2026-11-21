@@ -4,6 +4,8 @@
       -> assets/VESPERHOLD_KIT_UPLOADED.json. Split pieces (glb_split.py): modelAssets = part 1, subs from other parts carry
          their own Asset, every sub of a split piece gets its split.json center. operations.Asset = upload operation ID.
   python tools/assets/registry_readback.py forest <ledger.json> [--cache rb.json]
+  python tools/assets/registry_readback.py landmark <ledger.json> <split_dir> [--cache rb.json]
+      -> assets/LANDMARK_KIT_UPLOADED.json, same split handling as vesp (ledger keys landmark/<Piece>__pN).
   python tools/assets/registry_readback.py region <ledger.json> [--cache rb.json]
       -> region kits (ledger keys <kit>/<Piece>, kit = amberfall|saltreach|frostmere|ashen) -> assets/<KIT>_KIT_UPLOADED.json; every sub
          gets center = its MeshPart position from the model's bounding-box foot centre (the frame BiomeDressingService places on).
@@ -99,12 +101,13 @@ def got_for(cache, key, e, errs):
     return got
 
 
-def vesp(ledger, split_dir, cache_path):
-    entries = {k: v for k, v in ledger.items() if k.startswith("vesp/") and v.get("assetId")}
+def vesp(ledger, split_dir, cache_path, prefix="vesp", kit_stem="VESPERHOLD"):
+    """Split-aware readback; also the open-world landmarks (prefix landmark -> assets/LANDMARK_KIT_UPLOADED.json)."""
+    entries = {k: v for k, v in ledger.items() if k.startswith(prefix + "/") and v.get("assetId")}
     cache = readback([v["assetId"] for v in entries.values()], cache_path)
     splits = {f.name[:-len(".split.json")]: json.loads(f.read_text()) for f in Path(split_dir).glob("*/*.split.json")}
     models, pieces, errs = {}, {}, []
-    reg = Path("assets/VESPERHOLD_KIT_UPLOADED.json")
+    reg = Path(f"assets/{kit_stem}_KIT_UPLOADED.json")
     before = json.loads(reg.read_text()).get("modelAssets", {}) if reg.exists() else {}
     for key, e in sorted(entries.items()):
         stem = key.split("/")[-1]
@@ -133,11 +136,11 @@ def vesp(ledger, split_dir, cache_path):
     errs += [f"{piece}: no part 1 / model asset" for piece in pieces if piece not in models]
     if errs:
         sys.exit("\n".join(errs))
-    Path("assets/VESPERHOLD_KIT_UPLOADED.json").write_text(json.dumps({
+    reg.write_text(json.dumps({
         "note": "Real IDs only. modelAssets = Assets API Model id (LoadAsset target; part 1 of a split piece). pieces = sub-mesh MeshId/maps "
                 "read from a verified LoadAsset; split pieces carry per-sub Asset and center (tools/assets/glb_split.py).",
         "modelAssets": models, "pieces": pieces}, indent=2, sort_keys=True) + "\n")
-    print(f"wrote VESPERHOLD: {len(models)} pieces, {sum(len(v) for v in pieces.values())} subs")
+    print(f"wrote {kit_stem}: {len(models)} pieces, {sum(len(v) for v in pieces.values())} subs")
 
 
 def region(ledger, cache_path):
@@ -200,6 +203,8 @@ if __name__ == "__main__":
     cache = a[a.index("--cache") + 1] if "--cache" in a else None
     if a[0] == "vesp":
         vesp(json.load(open(a[1])), a[2], cache)
+    elif a[0] == "landmark":
+        vesp(json.load(open(a[1])), a[2], cache, "landmark", "LANDMARK")
     elif a[0] == "region":
         region(json.load(open(a[1])), cache)
     else:

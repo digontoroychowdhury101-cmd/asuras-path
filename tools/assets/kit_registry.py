@@ -20,14 +20,16 @@ KITS = {
     **{k: (k.upper(), k.capitalize() + "KitRegistry", (k,)) for k in ("amberfall", "saltreach", "frostmere", "ashen")},
     # Vesperhold kit/props/trees: one JSON (assets/VESPERHOLD_KIT_UPLOADED.json), manifests at assets/source/vesperhold/<pack>/manifest.json.
     "vesperhold": ("VESPERHOLD", "VesperholdKitRegistry", ("kit", "props", "trees")),
+    # Open-world landmarks (LANDMARK-BUILD-SPEC): one JSON, generator manifests at assets/source/landmarks/<pack>/manifest.json.
+    "landmark": ("LANDMARK", "LandmarkKitRegistry", ("bellwood_face",)),
 }
 # Kits whose registry may not exist yet (nothing uploaded): validate() returns an empty registry and the module is written empty.
-OPTIONAL = {"vesperhold"}
+OPTIONAL = {"vesperhold", "landmark"}
 # Kits whose manifest is the Vesperhold generator's (pieces -> sub_meshes), not an importer upload_manifest.
 VESP_MANIFEST = "assets/source/vesperhold/{pack}/manifest.json"
 # Kits whose uploaded GLBs may carry maps their upload manifest does not list (Vesperhold maps travel in the model; the far
 # atlases gained Normal + metallicRoughness in the mac-26/mac-30 re-tone).
-EXTRA_MAPS = {"vesperhold", "bellwood_far"}
+EXTRA_MAPS = {"vesperhold", "bellwood_far", "landmark"}
 # Required today: SliceKitRegistry (SliceDressing.luau pcall-require), Amberfall/SaltreachKitRegistry (BiomeDressing.luau). The rest have no consumer yet.
 ID = re.compile(r"rbxassetid://[1-9][0-9]{5,19}")
 MAPS = ("ColorMap", "NormalMap", "RoughnessMap", "MetalnessMap")
@@ -53,8 +55,9 @@ def validate(kit, root, allow_missing=(), vesp_manifests=None):
     errs, out, expected, seen = [], {}, set(), {}
     models = data.get("modelAssets") if isinstance(data.get("modelAssets"), dict) else {}
     for pack in packs:
-        if kit == "vesperhold":
-            man = load(Path(vesp_manifests) / pack / "manifest.json" if vesp_manifests else root / VESP_MANIFEST.format(pack=pack))
+        if kit in ("vesperhold", "landmark"):
+            man = load(Path(vesp_manifests) / pack / "manifest.json" if vesp_manifests
+                       else root / (VESP_MANIFEST if kit == "vesperhold" else "assets/source/landmarks/{pack}/manifest.json").format(pack=pack))
             # Textures travel inside the uploaded model (SurfaceAppearance), so only MeshId is required per sub-mesh.
             for pm in man["pieces"].values():
                 pm["sub_mesh_materials"] = {k: "" for k in pm["sub_meshes"]}
