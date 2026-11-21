@@ -105,3 +105,14 @@ Instruction: handoff §4 step 7, creator's "Yes continue".
   (no *_KIT_UPLOADED.json). The 2026-11-16 "Lead uploads them" authorisation puts other-biome dressing after the slice review, which is still pending.
 - Forest trunks: the corrected bark/leaf pair is held (win-74). Vesperhold: held pass 4 awaits review.
 - Research only: CC0 shortlist in workers/win-76-cc0-shortlist.md (Sapling, Poly Haven, Quaternius, Kenney). Nothing downloaded.
+
+## win-77: region kits uploaded (creator: "Yes, upload kits")
+- Cloud window 4fde9f54 (place 118614906972571, Edit, never edited or saved). Pilot amberfall/Amber_Stump: op f2b36b9a-d62a-4655-b249-94ef9fe4ab37, asset 114547139873155, Approved, LoadAsset OK.
+  Then 147 more via tools/assets/upload_batch.py: 148/148 Approved, 0 errors. Every op ID is in workers/win-77-region-kit-ledger.json.
+- Readback: `registry_readback.py region` (new mode; sub center = MeshPart position from the model's bounding-box foot, the same as the hero registry,
+  checked on Summit_Temple_Wing) wrote assets/{AMBERFALL,SALTREACH,FROSTMERE,ASHEN}_KIT_UPLOADED.json; kit_registry.py generated the four modules
+  (91/73/79/68 subs), wired in default.project.json.
+- Studio (work/vesperhold-claude/win77/Regions.rbxlx, closed unsaved, mtime unchanged): Build.Piece over the 208 region pieces gives 157 real, 51 placeholder (was 15/193),
+  0 errors. All 51 placeholders are older Basin_/Mtn_/Ravine_/Snow_/Cave_ pieces with no kit mesh. Golden Ravine live: 137 MeshParts vs 11 placeholder parts
+  (captures/win/region77/region77_amberfall_after.jpg).
+- Tests: biome 18928/0, slice 1363/0, test_kit_registry pass, verify_all exit 0. Not seen live: Saltreach, Frostmere, Ashen (counted by Build.Piece only).

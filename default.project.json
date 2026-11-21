@@ -290,6 +290,18 @@
           "VesperholdKitRegistry": {
             "$path": "src/shared/VesperholdKitRegistry.luau"
           },
+          "AmberfallKitRegistry": {
+            "$path": "src/shared/AmberfallKitRegistry.luau"
+          },
+          "SaltreachKitRegistry": {
+            "$path": "src/shared/SaltreachKitRegistry.luau"
+          },
+          "FrostmereKitRegistry": {
+            "$path": "src/shared/FrostmereKitRegistry.luau"
+          },
+          "AshenKitRegistry": {
+            "$path": "src/shared/AshenKitRegistry.luau"
+          },
           "BiomeDressing": {
             "$path": "src/shared/BiomeDressing.luau"
           },

@@ -4,6 +4,10 @@
       -> assets/VESPERHOLD_KIT_UPLOADED.json. Split pieces (glb_split.py): modelAssets = part 1, subs from other parts carry
          their own Asset, every sub of a split piece gets its split.json center. operations.Asset = upload operation ID.
   python tools/assets/registry_readback.py forest <ledger.json> [--cache rb.json]
+  python tools/assets/registry_readback.py region <ledger.json> [--cache rb.json]
+      -> region kits (ledger keys <kit>/<Piece>, kit = amberfall|saltreach|frostmere|ashen) -> assets/<KIT>_KIT_UPLOADED.json; every sub
+         gets center = its MeshPart position from the model's bounding-box foot centre (the frame BiomeDressingService places on).
+  python tools/assets/registry_readback.py forest <ledger.json> [--cache rb.json]
       -> re-uploads (ledger keys r2/<pack>/<Piece>) replace model, mesh and map IDs in the existing SLICE / HERO / BELLWOOD /
          BELLWOOD_FAR registries; centers are kept (same geometry) and the readback sub names must match the registry.
 Then run tools/assets/kit_registry.py for each kit to validate and regenerate the Luau modules.
@@ -26,10 +30,13 @@ for _, id in IDS do
 	local ok, m = pcall(function() return game:GetService("InsertService"):LoadAsset(id) end)
 	if ok and m then
 		local subs = {}
+		local bcf, bsize = m:GetBoundingBox()
+		local foot = bcf * CFrame.new(0, -bsize.Y / 2, 0)
 		for _, d in m:GetDescendants() do
 			if d:IsA("MeshPart") then
 				local sa = d:FindFirstChildOfClass("SurfaceAppearance")
-				subs[d.Name] = { MeshId = d.MeshId, ColorMap = sa and sa.ColorMap or "", NormalMap = sa and sa.NormalMap or "",
+				local c = foot:PointToObjectSpace(d.Position)
+				subs[d.Name] = { center = WITH_CENTER and { math.round(c.X * 100) / 100, math.round(c.Y * 100) / 100, math.round(c.Z * 100) / 100 } or nil, MeshId = d.MeshId, ColorMap = sa and sa.ColorMap or "", NormalMap = sa and sa.NormalMap or "",
 					RoughnessMap = sa and sa.RoughnessMap or "", MetalnessMap = sa and sa.MetalnessMap or "" }
 			end
 		end
@@ -44,7 +51,7 @@ return HS:JSONEncode(out)
 '''
 
 
-def readback(ids, cache_path):
+def readback(ids, cache_path, with_center=False):
     cache = json.load(open(cache_path)) if cache_path and os.path.exists(cache_path) else {}
     need = [i for i in ids if i not in cache]
     if not need:
@@ -71,7 +78,7 @@ def readback(ids, cache_path):
     for i in range(0, len(need), 8):
         chunk = need[i:i + 8]
         send({"jsonrpc": "2.0", "id": 100 + i, "method": "tools/call", "params": {"name": "execute_luau", "arguments": {
-            "studio_id": STUDIO, "datamodel_type": "Edit", "code": "local IDS = {" + ",".join(chunk) + "}\n" + LUAU}}})
+            "studio_id": STUDIO, "datamodel_type": "Edit", "code": f"local WITH_CENTER = {str(with_center).lower()}\nlocal IDS = {{" + ",".join(chunk) + "}\n" + LUAU}}})
         text = reply(100 + i)["result"]["content"][0]["text"]
         cache.update(json.loads(text[text.index("{"):]))
         if cache_path:
@@ -133,6 +140,32 @@ def vesp(ledger, split_dir, cache_path):
     print(f"wrote VESPERHOLD: {len(models)} pieces, {sum(len(v) for v in pieces.values())} subs")
 
 
+def region(ledger, cache_path):
+    entries = {k: v for k, v in ledger.items() if k.split("/")[0] in ("amberfall", "saltreach", "frostmere", "ashen") and v.get("assetId")}
+    cache = readback([v["assetId"] for v in entries.values()], cache_path, with_center=True)
+    regs, errs = {}, []
+    for key, e in sorted(entries.items()):
+        kit, piece = key.split("/")
+        got = got_for(cache, key, e, errs)
+        if got is None:
+            continue
+        man = json.load(open(f"assets/source/overworld/upload/{kit}/upload_manifest.json"))["pieces"][piece]["sub_meshes"]
+        if sorted(got) != sorted(man):
+            errs.append(f"{key}: readback subs {sorted(got)} != manifest {sorted(man)}")
+            continue
+        reg = regs.setdefault(kit, {"note": "Real IDs only. modelAssets = Assets API Model id (LoadAsset target). pieces = sub-mesh MeshId/maps and "
+                                            "foot-centre center read from a verified LoadAsset (tools/assets/registry_readback.py region).",
+                                    "modelAssets": {}, "pieces": {}})
+        reg["modelAssets"][piece] = {"assetId": rid(e["assetId"]), "operationId": e["operationId"], "uploaded": date.today().isoformat(),
+                                     "moderationState": e.get("moderation"), "source": f"assets/source/overworld/upload/{kit}/{piece}.glb"}
+        reg["pieces"][piece] = {sub: {**{k: v for k, v in f.items() if v}, "operations": {"Asset": e["operationId"]}} for sub, f in got.items()}
+    if errs:
+        sys.exit("\n".join(errs))
+    for kit, reg in regs.items():
+        Path(f"assets/{kit.upper()}_KIT_UPLOADED.json").write_text(json.dumps(reg, indent=2, sort_keys=True) + "\n")
+        print(f"wrote {kit.upper()}: {len(reg['modelAssets'])} pieces")
+
+
 def forest(ledger, cache_path):
     entries = {k: v for k, v in ledger.items() if k.startswith("r2/") and v.get("assetId")}
     cache = readback([v["assetId"] for v in entries.values()], cache_path)
@@ -167,5 +200,7 @@ if __name__ == "__main__":
     cache = a[a.index("--cache") + 1] if "--cache" in a else None
     if a[0] == "vesp":
         vesp(json.load(open(a[1])), a[2], cache)
+    elif a[0] == "region":
+        region(json.load(open(a[1])), cache)
     else:
         forest(json.load(open(a[1])), cache)

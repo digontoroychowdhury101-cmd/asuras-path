@@ -1,0 +1,1435 @@
+{
+  "modelAssets": {
+    "Boardwalk_Steps": {
+      "assetId": "rbxassetid://89126169727215",
+      "moderationState": "Approved",
+      "operationId": "c232c557-17b1-413c-9290-a22fd275a579",
+      "source": "assets/source/overworld/upload/saltreach/Boardwalk_Steps.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Boardwalk_Straight": {
+      "assetId": "rbxassetid://78619197428828",
+      "moderationState": "Approved",
+      "operationId": "6de80544-40e5-4f2d-8116-289818089e0b",
+      "source": "assets/source/overworld/upload/saltreach/Boardwalk_Straight.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Boat_Hull_A": {
+      "assetId": "rbxassetid://119032692863822",
+      "moderationState": "Approved",
+      "operationId": "25692ef5-f556-40e3-8cb5-3bf38fc5587a",
+      "source": "assets/source/overworld/upload/saltreach/Boat_Hull_A.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Boat_Hull_B": {
+      "assetId": "rbxassetid://107914670668598",
+      "moderationState": "Approved",
+      "operationId": "28dd5e34-565a-43da-adc3-7428733a0dfd",
+      "source": "assets/source/overworld/upload/saltreach/Boat_Hull_B.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Driftwood_Log": {
+      "assetId": "rbxassetid://130034175642622",
+      "moderationState": "Approved",
+      "operationId": "ce6a1581-39cd-4d6c-9531-9c39fa860f2c",
+      "source": "assets/source/overworld/upload/saltreach/Driftwood_Log.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Driftwood_Pile": {
+      "assetId": "rbxassetid://79463825539430",
+      "moderationState": "Approved",
+      "operationId": "fad2edde-026b-4f7a-a3bd-2ec93008d217",
+      "source": "assets/source/overworld/upload/saltreach/Driftwood_Pile.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Dune_Scrub_A": {
+      "assetId": "rbxassetid://102088429619707",
+      "moderationState": "Approved",
+      "operationId": "9c787a61-39d9-4143-88ef-b4466a288301",
+      "source": "assets/source/overworld/upload/saltreach/Dune_Scrub_A.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Dune_Scrub_B": {
+      "assetId": "rbxassetid://96536180416718",
+      "moderationState": "Approved",
+      "operationId": "a6d46837-c3c5-4c36-a9f5-0c948646255a",
+      "source": "assets/source/overworld/upload/saltreach/Dune_Scrub_B.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Fisher_Hut_A": {
+      "assetId": "rbxassetid://125796666207655",
+      "moderationState": "Approved",
+      "operationId": "8672bf28-6308-49bf-8448-0cbe2c6ecddb",
+      "source": "assets/source/overworld/upload/saltreach/Fisher_Hut_A.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Fisher_Hut_B": {
+      "assetId": "rbxassetid://112676258329336",
+      "moderationState": "Approved",
+      "operationId": "60bcfda0-e981-41b6-aec4-036ce4e5c787",
+      "source": "assets/source/overworld/upload/saltreach/Fisher_Hut_B.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Gate_Arch": {
+      "assetId": "rbxassetid://109128035985191",
+      "moderationState": "Approved",
+      "operationId": "e54b710a-00c8-4af0-b585-2da5dabead96",
+      "source": "assets/source/overworld/upload/saltreach/Gate_Arch.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Gate_Pier": {
+      "assetId": "rbxassetid://79779594945721",
+      "moderationState": "Approved",
+      "operationId": "809542c1-38f6-4dc1-ad0f-a086695224b9",
+      "source": "assets/source/overworld/upload/saltreach/Gate_Pier.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Kelp_Wrack": {
+      "assetId": "rbxassetid://115674309098301",
+      "moderationState": "Approved",
+      "operationId": "48fc97e7-8436-4557-acb2-25f62a14329e",
+      "source": "assets/source/overworld/upload/saltreach/Kelp_Wrack.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Net_Rack": {
+      "assetId": "rbxassetid://111667357806853",
+      "moderationState": "Approved",
+      "operationId": "d162961b-4d92-49eb-9cd5-5bb58804a9e2",
+      "source": "assets/source/overworld/upload/saltreach/Net_Rack.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Pier_End": {
+      "assetId": "rbxassetid://124132238864541",
+      "moderationState": "Approved",
+      "operationId": "dd2a7a84-651c-4889-b457-be8f1dc123fb",
+      "source": "assets/source/overworld/upload/saltreach/Pier_End.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Pier_Section": {
+      "assetId": "rbxassetid://95630733491587",
+      "moderationState": "Approved",
+      "operationId": "b1575719-d7d9-441d-b00f-059deb17cfc4",
+      "source": "assets/source/overworld/upload/saltreach/Pier_Section.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Salt_Crust_Slab_A": {
+      "assetId": "rbxassetid://122003522209473",
+      "moderationState": "Approved",
+      "operationId": "4f0efb3a-80fd-4ac9-9a3b-50157a2e4288",
+      "source": "assets/source/overworld/upload/saltreach/Salt_Crust_Slab_A.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Salt_Crust_Slab_B": {
+      "assetId": "rbxassetid://118706425628303",
+      "moderationState": "Approved",
+      "operationId": "25cb6bf7-6b5d-4727-9b61-4a726e7d2875",
+      "source": "assets/source/overworld/upload/saltreach/Salt_Crust_Slab_B.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Salt_Grass_Tall": {
+      "assetId": "rbxassetid://138581681053780",
+      "moderationState": "Approved",
+      "operationId": "5eb469e0-03eb-4b3f-9a16-c32a51778e24",
+      "source": "assets/source/overworld/upload/saltreach/Salt_Grass_Tall.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Salt_Grass_Tuft": {
+      "assetId": "rbxassetid://121665937855831",
+      "moderationState": "Approved",
+      "operationId": "1a3431c1-5007-47e6-90bb-93651cceff5f",
+      "source": "assets/source/overworld/upload/saltreach/Salt_Grass_Tuft.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Salt_Pan_Channel": {
+      "assetId": "rbxassetid://135660896612994",
+      "moderationState": "Approved",
+      "operationId": "693434c3-f565-4fac-8193-c18437f6b387",
+      "source": "assets/source/overworld/upload/saltreach/Salt_Pan_Channel.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Salt_Pan_Frame": {
+      "assetId": "rbxassetid://125103886947918",
+      "moderationState": "Approved",
+      "operationId": "9595d398-e736-4c5e-9ff7-958aa8c0c717",
+      "source": "assets/source/overworld/upload/saltreach/Salt_Pan_Frame.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Salt_Pine_A": {
+      "assetId": "rbxassetid://133117751971494",
+      "moderationState": "Approved",
+      "operationId": "1b4bcfbb-0e27-4df7-85b8-6afd35328d1b",
+      "source": "assets/source/overworld/upload/saltreach/Salt_Pine_A.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Salt_Pine_B": {
+      "assetId": "rbxassetid://115286300107657",
+      "moderationState": "Approved",
+      "operationId": "17766c21-1da3-45d8-9009-776cac154387",
+      "source": "assets/source/overworld/upload/saltreach/Salt_Pine_B.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Salt_Pine_Dead": {
+      "assetId": "rbxassetid://86910255003706",
+      "moderationState": "Approved",
+      "operationId": "50dcbaa2-484e-46de-a9fe-dc4b6a8b0e81",
+      "source": "assets/source/overworld/upload/saltreach/Salt_Pine_Dead.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Saltreach_Gate_Statue": {
+      "assetId": "rbxassetid://93129565557560",
+      "moderationState": "Approved",
+      "operationId": "608269a9-725c-4a05-ae0b-dc9915da1689",
+      "source": "assets/source/overworld/upload/saltreach/Saltreach_Gate_Statue.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Sea_Stack_Base": {
+      "assetId": "rbxassetid://124335982732282",
+      "moderationState": "Approved",
+      "operationId": "de696c6e-d5e1-4f63-9504-61b5317cf65d",
+      "source": "assets/source/overworld/upload/saltreach/Sea_Stack_Base.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Sea_Stack_Cap": {
+      "assetId": "rbxassetid://100634018545215",
+      "moderationState": "Approved",
+      "operationId": "9dec70cd-aa63-4996-926c-ccb010a7f54a",
+      "source": "assets/source/overworld/upload/saltreach/Sea_Stack_Cap.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Sea_Stack_Mid": {
+      "assetId": "rbxassetid://126505889032482",
+      "moderationState": "Approved",
+      "operationId": "5150b7c2-093d-4527-a5f9-897bf6a97386",
+      "source": "assets/source/overworld/upload/saltreach/Sea_Stack_Mid.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Shore_Cliff_A": {
+      "assetId": "rbxassetid://128080827270633",
+      "moderationState": "Approved",
+      "operationId": "7aca8e8e-754b-42e6-a359-276b9431af6f",
+      "source": "assets/source/overworld/upload/saltreach/Shore_Cliff_A.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Shore_Cliff_B": {
+      "assetId": "rbxassetid://122974955929958",
+      "moderationState": "Approved",
+      "operationId": "c67e0529-1a69-41e0-bb4b-70873b1b2cec",
+      "source": "assets/source/overworld/upload/saltreach/Shore_Cliff_B.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Shore_Cliff_Corner": {
+      "assetId": "rbxassetid://106035621819638",
+      "moderationState": "Approved",
+      "operationId": "e4437d19-ebd0-4144-919d-59f93f0f1a52",
+      "source": "assets/source/overworld/upload/saltreach/Shore_Cliff_Corner.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Shore_Reeds": {
+      "assetId": "rbxassetid://124496767638958",
+      "moderationState": "Approved",
+      "operationId": "d97c6538-f2eb-4a3b-b170-72ff337f6a6b",
+      "source": "assets/source/overworld/upload/saltreach/Shore_Reeds.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Stone_Lantern_Salt": {
+      "assetId": "rbxassetid://131119332356281",
+      "moderationState": "Approved",
+      "operationId": "987ac34b-86f5-41ce-b1cd-1deba6495dec",
+      "source": "assets/source/overworld/upload/saltreach/Stone_Lantern_Salt.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Tide_Boulder_A": {
+      "assetId": "rbxassetid://87628399342867",
+      "moderationState": "Approved",
+      "operationId": "a0e5fe1e-3486-43ea-9d7c-1d7900e39a27",
+      "source": "assets/source/overworld/upload/saltreach/Tide_Boulder_A.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Tide_Boulder_B": {
+      "assetId": "rbxassetid://134286148130639",
+      "moderationState": "Approved",
+      "operationId": "33236a79-bda8-4769-9683-3fdd81a98510",
+      "source": "assets/source/overworld/upload/saltreach/Tide_Boulder_B.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Tide_Boulder_C": {
+      "assetId": "rbxassetid://104747774797428",
+      "moderationState": "Approved",
+      "operationId": "fdc644eb-7f9a-41d2-8c5b-50be86179ce8",
+      "source": "assets/source/overworld/upload/saltreach/Tide_Boulder_C.glb",
+      "uploaded": "2026-11-21"
+    }
+  },
+  "note": "Real IDs only. modelAssets = Assets API Model id (LoadAsset target). pieces = sub-mesh MeshId/maps and foot-centre center read from a verified LoadAsset (tools/assets/registry_readback.py region).",
+  "pieces": {
+    "Boardwalk_Steps": {
+      "Boardwalk_Steps__Rope": {
+        "ColorMap": "rbxassetid://103473526955239",
+        "MeshId": "rbxassetid://108474360490873",
+        "MetalnessMap": "rbxassetid://79023695760001",
+        "NormalMap": "rbxassetid://112935313844199",
+        "RoughnessMap": "rbxassetid://124605660311498",
+        "center": [
+          -0.01,
+          8.63,
+          0
+        ],
+        "operations": {
+          "Asset": "c232c557-17b1-413c-9290-a22fd275a579"
+        }
+      },
+      "Boardwalk_Steps__Timber": {
+        "ColorMap": "rbxassetid://99163484320477",
+        "MeshId": "rbxassetid://126210307229023",
+        "MetalnessMap": "rbxassetid://96102738318528",
+        "NormalMap": "rbxassetid://89274159290967",
+        "RoughnessMap": "rbxassetid://109480439640853",
+        "center": [
+          0,
+          5.1,
+          0
+        ],
+        "operations": {
+          "Asset": "c232c557-17b1-413c-9290-a22fd275a579"
+        }
+      }
+    },
+    "Boardwalk_Straight": {
+      "Boardwalk_Straight__Rope": {
+        "ColorMap": "rbxassetid://103473526955239",
+        "MeshId": "rbxassetid://123186122041155",
+        "MetalnessMap": "rbxassetid://79023695760001",
+        "NormalMap": "rbxassetid://112935313844199",
+        "RoughnessMap": "rbxassetid://124605660311498",
+        "center": [
+          -0.01,
+          6.52,
+          0
+        ],
+        "operations": {
+          "Asset": "6de80544-40e5-4f2d-8116-289818089e0b"
+        }
+      },
+      "Boardwalk_Straight__Timber": {
+        "ColorMap": "rbxassetid://99163484320477",
+        "MeshId": "rbxassetid://127051242679022",
+        "MetalnessMap": "rbxassetid://96102738318528",
+        "NormalMap": "rbxassetid://89274159290967",
+        "RoughnessMap": "rbxassetid://109480439640853",
+        "center": [
+          0,
+          3.5,
+          0
+        ],
+        "operations": {
+          "Asset": "6de80544-40e5-4f2d-8116-289818089e0b"
+        }
+      }
+    },
+    "Boat_Hull_A": {
+      "Boat_Hull_A__Canvas": {
+        "ColorMap": "rbxassetid://78908080374265",
+        "MeshId": "rbxassetid://88922444152309",
+        "MetalnessMap": "rbxassetid://79023695760001",
+        "NormalMap": "rbxassetid://112753569726021",
+        "RoughnessMap": "rbxassetid://111008354686990",
+        "center": [
+          -6.34,
+          4.92,
+          0
+        ],
+        "operations": {
+          "Asset": "25692ef5-f556-40e3-8cb5-3bf38fc5587a"
+        }
+      },
+      "Boat_Hull_A__Hull": {
+        "ColorMap": "rbxassetid://99163484320477",
+        "MeshId": "rbxassetid://96760898036489",
+        "MetalnessMap": "rbxassetid://88355072291884",
+        "NormalMap": "rbxassetid://89274159290967",
+        "RoughnessMap": "rbxassetid://109480439640853",
+        "center": [
+          -0.34,
+          3.3,
+          0
+        ],
+        "operations": {
+          "Asset": "25692ef5-f556-40e3-8cb5-3bf38fc5587a"
+        }
+      },
+      "Boat_Hull_A__Ribs": {
+        "ColorMap": "rbxassetid://99163484320477",
+        "MeshId": "rbxassetid://110096932516076",
+        "MetalnessMap": "rbxassetid://88355072291884",
+        "NormalMap": "rbxassetid://89274159290967",
+        "RoughnessMap": "rbxassetid://109480439640853",
+        "center": [
+          0.75,
+          3.64,
+          0
+        ],
+        "operations": {
+          "Asset": "25692ef5-f556-40e3-8cb5-3bf38fc5587a"
+        }
+      }
+    },
+    "Boat_Hull_B": {
+      "Boat_Hull_B__Hull": {
+        "ColorMap": "rbxassetid://99163484320477",
+        "MeshId": "rbxassetid://118846409809567",
+        "MetalnessMap": "rbxassetid://88355072291884",
+        "NormalMap": "rbxassetid://89274159290967",
+        "RoughnessMap": "rbxassetid://109480439640853",
+        "center": [
+          0,
+          2.99,
+          0
+        ],
+        "operations": {
+          "Asset": "28dd5e34-565a-43da-adc3-7428733a0dfd"
+        }
+      },
+      "Boat_Hull_B__Ribs": {
+        "ColorMap": "rbxassetid://99163484320477",
+        "MeshId": "rbxassetid://134148640369532",
+        "MetalnessMap": "rbxassetid://88355072291884",
+        "NormalMap": "rbxassetid://89274159290967",
+        "RoughnessMap": "rbxassetid://109480439640853",
+        "center": [
+          -0.21,
+          2.78,
+          -0.07
+        ],
+        "operations": {
+          "Asset": "28dd5e34-565a-43da-adc3-7428733a0dfd"
+        }
+      }
+    },
+    "Driftwood_Log": {
+      "Driftwood_Log__Wood": {
+        "ColorMap": "rbxassetid://98917859138312",
+        "MeshId": "rbxassetid://91624595618084",
+        "MetalnessMap": "rbxassetid://88355072291884",
+        "NormalMap": "rbxassetid://90997664520529",
+        "RoughnessMap": "rbxassetid://102967107565914",
+        "center": [
+          0,
+          3.28,
+          0
+        ],
+        "operations": {
+          "Asset": "ce6a1581-39cd-4d6c-9531-9c39fa860f2c"
+        }
+      }
+    },
+    "Driftwood_Pile": {
+      "Driftwood_Pile__Wood": {
+        "ColorMap": "rbxassetid://98917859138312",
+        "MeshId": "rbxassetid://76016560071805",
+        "MetalnessMap": "rbxassetid://88355072291884",
+        "NormalMap": "rbxassetid://90997664520529",
+        "RoughnessMap": "rbxassetid://102967107565914",
+        "center": [
+          0,
+          4.11,
+          0
+        ],
+        "operations": {
+          "Asset": "fad2edde-026b-4f7a-a3bd-2ec93008d217"
+        }
+      }
+    },
+    "Dune_Scrub_A": {
+      "Dune_Scrub_A__Leaves": {
+        "ColorMap": "rbxassetid://140294047133452",
+        "MeshId": "rbxassetid://90314410147919",
+        "MetalnessMap": "rbxassetid://88355072291884",
+        "NormalMap": "rbxassetid://100476926731298",
+        "RoughnessMap": "rbxassetid://117303523592513",
+        "center": [
+          0,
+          1.72,
+          0
+        ],
+        "operations": {
+          "Asset": "9c787a61-39d9-4143-88ef-b4466a288301"
+        }
+      },
+      "Dune_Scrub_A__Stems": {
+        "ColorMap": "rbxassetid://104745923691993",
+        "MeshId": "rbxassetid://110736344718840",
+        "MetalnessMap": "rbxassetid://88355072291884",
+        "NormalMap": "rbxassetid://128774684764895",
+        "RoughnessMap": "rbxassetid://97345786330976",
+        "center": [
+          0.18,
+          1.31,
+          0
+        ],
+        "operations": {
+          "Asset": "9c787a61-39d9-4143-88ef-b4466a288301"
+        }
+      }
+    },
+    "Dune_Scrub_B": {
+      "Dune_Scrub_B__Leaves": {
+        "ColorMap": "rbxassetid://140294047133452",
+        "MeshId": "rbxassetid://89543342509147",
+        "MetalnessMap": "rbxassetid://88355072291884",
+        "NormalMap": "rbxassetid://100476926731298",
+        "RoughnessMap": "rbxassetid://117303523592513",
+        "center": [
+          0,
+          0.88,
+          0
+        ],
+        "operations": {
+          "Asset": "a6d46837-c3c5-4c36-a9f5-0c948646255a"
+        }
+      },
+      "Dune_Scrub_B__Stems": {
+        "ColorMap": "rbxassetid://104745923691993",
+        "MeshId": "rbxassetid://76557488950428",
+        "MetalnessMap": "rbxassetid://88355072291884",
+        "NormalMap": "rbxassetid://128774684764895",
+        "RoughnessMap": "rbxassetid://97345786330976",
+        "center": [
+          -0.13,
+          0.65,
+          -0.02
+        ],
+        "operations": {
+          "Asset": "a6d46837-c3c5-4c36-a9f5-0c948646255a"
+        }
+      }
+    },
+    "Fisher_Hut_A": {
+      "Fisher_Hut_A__Roof": {
+        "ColorMap": "rbxassetid://99163484320477",
+        "MeshId": "rbxassetid://119028798924667",
+        "MetalnessMap": "rbxassetid://88355072291884",
+        "NormalMap": "rbxassetid://89274159290967",
+        "RoughnessMap": "rbxassetid://109480439640853",
+        "center": [
+          0,
+          10.45,
+          0
+        ],
+        "operations": {
+          "Asset": "8672bf28-6308-49bf-8448-0cbe2c6ecddb"
+        }
+      },
+      "Fisher_Hut_A__Stone": {
+        "ColorMap": "rbxassetid://127166116825535",
+        "MeshId": "rbxassetid://91422012371838",
+        "MetalnessMap": "rbxassetid://88355072291884",
+        "NormalMap": "rbxassetid://117664153733929",
+        "RoughnessMap": "rbxassetid://74815392604496",
+        "center": [
+          -0.54,
+          7.42,
+          0.09
+        ],
+        "operations": {
+          "Asset": "8672bf28-6308-49bf-8448-0cbe2c6ecddb"
+        }
+      },
+      "Fisher_Hut_A__Timber": {
+        "ColorMap": "rbxassetid://99163484320477",
+        "MeshId": "rbxassetid://104823520827717",
+        "MetalnessMap": "rbxassetid://88355072291884",
+        "NormalMap": "rbxassetid://89274159290967",
+        "RoughnessMap": "rbxassetid://109480439640853",
+        "center": [
+          -0.15,
+          7.1,
+          -0.73
+        ],
+        "operations": {
+          "Asset": "8672bf28-6308-49bf-8448-0cbe2c6ecddb"
+        }
+      }
+    },
+    "Fisher_Hut_B": {
+      "Fisher_Hut_B__Roof": {
+        "ColorMap": "rbxassetid://99163484320477",
+        "MeshId": "rbxassetid://116921217088765",
+        "MetalnessMap": "rbxassetid://88355072291884",
+        "NormalMap": "rbxassetid://89274159290967",
+        "RoughnessMap": "rbxassetid://109480439640853",
+        "center": [
+          1.27,
+          16.27,
+          0.9
+        ],
+        "operations": {
+          "Asset": "60bcfda0-e981-41b6-aec4-036ce4e5c787"
+        }
+      },
+      "Fisher_Hut_B__Stone": {
+        "ColorMap": "rbxassetid://127166116825535",
+        "MeshId": "rbxassetid://112757713843530",
+        "MetalnessMap": "rbxassetid://88355072291884",
+        "NormalMap": "rbxassetid://117664153733929",
+        "RoughnessMap": "rbxassetid://74815392604496",
+        "center": [
+          1.25,
+          1.95,
+          0.9
+        ],
+        "operations": {
+          "Asset": "60bcfda0-e981-41b6-aec4-036ce4e5c787"
+        }
+      },
+      "Fisher_Hut_B__Timber": {
+        "ColorMap": "rbxassetid://99163484320477",
+        "MeshId": "rbxassetid://111131327127015",
+        "MetalnessMap": "rbxassetid://88355072291884",
+        "NormalMap": "rbxassetid://89274159290967",
+        "RoughnessMap": "rbxassetid://109480439640853",
+        "center": [
+          0,
+          7.68,
+          -0.4
+        ],
+        "operations": {
+          "Asset": "60bcfda0-e981-41b6-aec4-036ce4e5c787"
+        }
+      }
+    },
+    "Gate_Arch": {
+      "Gate_Arch__Iron": {
+        "ColorMap": "rbxassetid://120132861226766",
+        "MeshId": "rbxassetid://75365600206929",
+        "MetalnessMap": "rbxassetid://104784703823571",
+        "NormalMap": "rbxassetid://133932492340234",
+        "RoughnessMap": "rbxassetid://117325849339224",
+        "center": [
+          -0.01,
+          15.75,
+          0
+        ],
+        "operations": {
+          "Asset": "e54b710a-00c8-4af0-b585-2da5dabead96"
+        }
+      },
+      "Gate_Arch__Stone": {
+        "ColorMap": "rbxassetid://127166116825535",
+        "MeshId": "rbxassetid://107630502545664",
+        "MetalnessMap": "rbxassetid://88355072291884",
+        "NormalMap": "rbxassetid://117664153733929",
+        "RoughnessMap": "rbxassetid://74815392604496",
+        "center": [
+          0,
+          12.59,
+          0
+        ],
+        "operations": {
+          "Asset": "e54b710a-00c8-4af0-b585-2da5dabead96"
+        }
+      },
+      "Gate_Arch__Timber": {
+        "ColorMap": "rbxassetid://99163484320477",
+        "MeshId": "rbxassetid://131262721443857",
+        "MetalnessMap": "rbxassetid://88355072291884",
+        "NormalMap": "rbxassetid://89274159290967",
+        "RoughnessMap": "rbxassetid://109480439640853",
+        "center": [
+          -0.01,
+          26.62,
+          0
+        ],
+        "operations": {
+          "Asset": "e54b710a-00c8-4af0-b585-2da5dabead96"
+        }
+      }
+    },
+    "Gate_Pier": {
+      "Gate_Pier__Iron": {
+        "ColorMap": "rbxassetid://120132861226766",
+        "MeshId": "rbxassetid://105516296801427",
+        "MetalnessMap": "rbxassetid://104784703823571",
+        "NormalMap": "rbxassetid://133932492340234",
+        "RoughnessMap": "rbxassetid://117325849339224",
+        "center": [
+          -0.21,
+          12.5,
+          -0.01
+        ],
+        "operations": {
+          "Asset": "809542c1-38f6-4dc1-ad0f-a086695224b9"
+        }
+      },
+      "Gate_Pier__Stone": {
+        "ColorMap": "rbxassetid://127166116825535",
+        "MeshId": "rbxassetid://101476479842201",
+        "MetalnessMap": "rbxassetid://88355072291884",
+        "NormalMap": "rbxassetid://117664153733929",
+        "RoughnessMap": "rbxassetid://74815392604496",
+        "center": [
+          0.93,
+          12.53,
+          0
+        ],
+        "operations": {
+          "Asset": "809542c1-38f6-4dc1-ad0f-a086695224b9"
+        }
+      },
+      "Gate_Pier__Timber": {
+        "ColorMap": "rbxassetid://99163484320477",
+        "MeshId": "rbxassetid://118024642384301",
+        "MetalnessMap": "rbxassetid://88355072291884",
+        "NormalMap": "rbxassetid://89274159290967",
+        "RoughnessMap": "rbxassetid://109480439640853",
+        "center": [
+          -3.66,
+          18.3,
+          -0.01
+        ],
+        "operations": {
+          "Asset": "809542c1-38f6-4dc1-ad0f-a086695224b9"
+        }
+      }
+    },
+    "Kelp_Wrack": {
+      "Kelp_Wrack__Blades": {
+        "ColorMap": "rbxassetid://86932370826202",
+        "MeshId": "rbxassetid://99610837337013",
+        "MetalnessMap": "rbxassetid://88132622876934",
+        "NormalMap": "rbxassetid://101251167936328",
+        "RoughnessMap": "rbxassetid://73488916920199",
+        "center": [
+          0,
+          0.29,
+          0
+        ],
+        "operations": {
+          "Asset": "48fc97e7-8436-4557-acb2-25f62a14329e"
+        }
+      },
+      "Kelp_Wrack__Holdfast": {
+        "ColorMap": "rbxassetid://86932370826202",
+        "MeshId": "rbxassetid://124365722871776",
+        "MetalnessMap": "rbxassetid://88132622876934",
+        "NormalMap": "rbxassetid://101251167936328",
+        "RoughnessMap": "rbxassetid://73488916920199",
+        "center": [
+          -3.66,
+          0.55,
+          3.02
+        ],
+        "operations": {
+          "Asset": "48fc97e7-8436-4557-acb2-25f62a14329e"
+        }
+      }
+    },
+    "Net_Rack": {
+      "Net_Rack__Net": {
+        "ColorMap": "rbxassetid://103473526955239",
+        "MeshId": "rbxassetid://91074252866108",
+        "MetalnessMap": "rbxassetid://79023695760001",
+        "NormalMap": "rbxassetid://112935313844199",
+        "RoughnessMap": "rbxassetid://124605660311498",
+        "center": [
+          -0.08,
+          5.7,
+          1.39
+        ],
+        "operations": {
+          "Asset": "d162961b-4d92-49eb-9cd5-5bb58804a9e2"
+        }
+      },
+      "Net_Rack__Timber": {
+        "ColorMap": "rbxassetid://99163484320477",
+        "MeshId": "rbxassetid://116727765960284",
+        "MetalnessMap": "rbxassetid://88355072291884",
+        "NormalMap": "rbxassetid://89274159290967",
+        "RoughnessMap": "rbxassetid://109480439640853",
+        "center": [
+          0,
+          5.89,
+          -1.08
+        ],
+        "operations": {
+          "Asset": "d162961b-4d92-49eb-9cd5-5bb58804a9e2"
+        }
+      }
+    },
+    "Pier_End": {
+      "Pier_End__Iron": {
+        "ColorMap": "rbxassetid://120132861226766",
+        "MeshId": "rbxassetid://111689045070679",
+        "MetalnessMap": "rbxassetid://104784703823571",
+        "NormalMap": "rbxassetid://133932492340234",
+        "RoughnessMap": "rbxassetid://117325849339224",
+        "center": [
+          0.13,
+          14.2,
+          0.35
+        ],
+        "operations": {
+          "Asset": "dd2a7a84-651c-4889-b457-be8f1dc123fb"
+        }
+      },
+      "Pier_End__Lantern": {
+        "ColorMap": "rbxassetid://101128409256732",
+        "MeshId": "rbxassetid://92187920996949",
+        "MetalnessMap": "rbxassetid://112249682778278",
+        "NormalMap": "rbxassetid://114041101617482",
+        "RoughnessMap": "rbxassetid://121476398534218",
+        "center": [
+          4.95,
+          17.85,
+          3.28
+        ],
+        "operations": {
+          "Asset": "dd2a7a84-651c-4889-b457-be8f1dc123fb"
+        }
+      },
+      "Pier_End__Rope": {
+        "ColorMap": "rbxassetid://103473526955239",
+        "MeshId": "rbxassetid://120774531394437",
+        "MetalnessMap": "rbxassetid://79023695760001",
+        "NormalMap": "rbxassetid://112935313844199",
+        "RoughnessMap": "rbxassetid://124605660311498",
+        "center": [
+          -1.06,
+          10,
+          0.48
+        ],
+        "operations": {
+          "Asset": "dd2a7a84-651c-4889-b457-be8f1dc123fb"
+        }
+      },
+      "Pier_End__Timber": {
+        "ColorMap": "rbxassetid://99163484320477",
+        "MeshId": "rbxassetid://137072371264403",
+        "MetalnessMap": "rbxassetid://88355072291884",
+        "NormalMap": "rbxassetid://89274159290967",
+        "RoughnessMap": "rbxassetid://109480439640853",
+        "center": [
+          -0.05,
+          9,
+          -0.1
+        ],
+        "operations": {
+          "Asset": "dd2a7a84-651c-4889-b457-be8f1dc123fb"
+        }
+      }
+    },
+    "Pier_Section": {
+      "Pier_Section__Timber": {
+        "ColorMap": "rbxassetid://99163484320477",
+        "MeshId": "rbxassetid://138017058090551",
+        "MetalnessMap": "rbxassetid://88355072291884",
+        "NormalMap": "rbxassetid://89274159290967",
+        "RoughnessMap": "rbxassetid://109480439640853",
+        "center": [
+          0,
+          6.3,
+          0
+        ],
+        "operations": {
+          "Asset": "b1575719-d7d9-441d-b00f-059deb17cfc4"
+        }
+      }
+    },
+    "Salt_Crust_Slab_A": {
+      "Salt_Crust_Slab_A__Crust": {
+        "ColorMap": "rbxassetid://112129735824928",
+        "MeshId": "rbxassetid://75425451704866",
+        "MetalnessMap": "rbxassetid://88355072291884",
+        "NormalMap": "rbxassetid://82771042313423",
+        "RoughnessMap": "rbxassetid://138640936198919",
+        "center": [
+          0,
+          1.22,
+          0
+        ],
+        "operations": {
+          "Asset": "4f0efb3a-80fd-4ac9-9a3b-50157a2e4288"
+        }
+      }
+    },
+    "Salt_Crust_Slab_B": {
+      "Salt_Crust_Slab_B__Crust": {
+        "ColorMap": "rbxassetid://112129735824928",
+        "MeshId": "rbxassetid://71427291307787",
+        "MetalnessMap": "rbxassetid://88355072291884",
+        "NormalMap": "rbxassetid://82771042313423",
+        "RoughnessMap": "rbxassetid://138640936198919",
+        "center": [
+          0,
+          1.23,
+          0
+        ],
+        "operations": {
+          "Asset": "25cb6bf7-6b5d-4727-9b61-4a726e7d2875"
+        }
+      }
+    },
+    "Salt_Grass_Tall": {
+      "Salt_Grass_Tall__Blades": {
+        "ColorMap": "rbxassetid://88437714227274",
+        "MeshId": "rbxassetid://129005538603392",
+        "MetalnessMap": "rbxassetid://88132622876934",
+        "NormalMap": "rbxassetid://101251167936328",
+        "RoughnessMap": "rbxassetid://73488916920199",
+        "center": [
+          0,
+          3.07,
+          0
+        ],
+        "operations": {
+          "Asset": "5eb469e0-03eb-4b3f-9a16-c32a51778e24"
+        }
+      }
+    },
+    "Salt_Grass_Tuft": {
+      "Salt_Grass_Tuft__Blades": {
+        "ColorMap": "rbxassetid://88437714227274",
+        "MeshId": "rbxassetid://107188295759117",
+        "MetalnessMap": "rbxassetid://88132622876934",
+        "NormalMap": "rbxassetid://101251167936328",
+        "RoughnessMap": "rbxassetid://73488916920199",
+        "center": [
+          0,
+          1.66,
+          0
+        ],
+        "operations": {
+          "Asset": "1a3431c1-5007-47e6-90bb-93651cceff5f"
+        }
+      }
+    },
+    "Salt_Pan_Channel": {
+      "Salt_Pan_Channel__Crust": {
+        "ColorMap": "rbxassetid://112129735824928",
+        "MeshId": "rbxassetid://107993667690267",
+        "MetalnessMap": "rbxassetid://88355072291884",
+        "NormalMap": "rbxassetid://82771042313423",
+        "RoughnessMap": "rbxassetid://138640936198919",
+        "center": [
+          0,
+          0.4,
+          0
+        ],
+        "operations": {
+          "Asset": "693434c3-f565-4fac-8193-c18437f6b387"
+        }
+      },
+      "Salt_Pan_Channel__Stone": {
+        "ColorMap": "rbxassetid://127166116825535",
+        "MeshId": "rbxassetid://88130761525910",
+        "MetalnessMap": "rbxassetid://88355072291884",
+        "NormalMap": "rbxassetid://117664153733929",
+        "RoughnessMap": "rbxassetid://74815392604496",
+        "center": [
+          0,
+          1.62,
+          0
+        ],
+        "operations": {
+          "Asset": "693434c3-f565-4fac-8193-c18437f6b387"
+        }
+      },
+      "Salt_Pan_Channel__Timber": {
+        "ColorMap": "rbxassetid://99163484320477",
+        "MeshId": "rbxassetid://138714893199945",
+        "MetalnessMap": "rbxassetid://88355072291884",
+        "NormalMap": "rbxassetid://89274159290967",
+        "RoughnessMap": "rbxassetid://109480439640853",
+        "center": [
+          0,
+          4.35,
+          0
+        ],
+        "operations": {
+          "Asset": "693434c3-f565-4fac-8193-c18437f6b387"
+        }
+      }
+    },
+    "Salt_Pan_Frame": {
+      "Salt_Pan_Frame__Bund": {
+        "ColorMap": "rbxassetid://127166116825535",
+        "MeshId": "rbxassetid://116946842414246",
+        "MetalnessMap": "rbxassetid://88355072291884",
+        "NormalMap": "rbxassetid://117664153733929",
+        "RoughnessMap": "rbxassetid://74815392604496",
+        "center": [
+          0,
+          1.9,
+          0
+        ],
+        "operations": {
+          "Asset": "9595d398-e736-4c5e-9ff7-958aa8c0c717"
+        }
+      },
+      "Salt_Pan_Frame__Crust": {
+        "ColorMap": "rbxassetid://112129735824928",
+        "MeshId": "rbxassetid://133167360771046",
+        "MetalnessMap": "rbxassetid://88355072291884",
+        "NormalMap": "rbxassetid://82771042313423",
+        "RoughnessMap": "rbxassetid://138640936198919",
+        "center": [
+          0,
+          1.8,
+          0
+        ],
+        "operations": {
+          "Asset": "9595d398-e736-4c5e-9ff7-958aa8c0c717"
+        }
+      },
+      "Salt_Pan_Frame__Timber": {
+        "ColorMap": "rbxassetid://99163484320477",
+        "MeshId": "rbxassetid://125862817206774",
+        "MetalnessMap": "rbxassetid://88355072291884",
+        "NormalMap": "rbxassetid://89274159290967",
+        "RoughnessMap": "rbxassetid://109480439640853",
+        "center": [
+          0,
+          4.49,
+          0
+        ],
+        "operations": {
+          "Asset": "9595d398-e736-4c5e-9ff7-958aa8c0c717"
+        }
+      }
+    },
+    "Salt_Pine_A": {
+      "Salt_Pine_A__Bark": {
+        "ColorMap": "rbxassetid://104745923691993",
+        "MeshId": "rbxassetid://87647576593401",
+        "MetalnessMap": "rbxassetid://88355072291884",
+        "NormalMap": "rbxassetid://128774684764895",
+        "RoughnessMap": "rbxassetid://97345786330976",
+        "center": [
+          -3.09,
+          25.69,
+          -3.48
+        ],
+        "operations": {
+          "Asset": "1b4bcfbb-0e27-4df7-85b8-6afd35328d1b"
+        }
+      },
+      "Salt_Pine_A__Needles_Detail": {
+        "ColorMap": "rbxassetid://76654633357288",
+        "MeshId": "rbxassetid://123298130020970",
+        "MetalnessMap": "rbxassetid://88355072291884",
+        "NormalMap": "rbxassetid://125467996254972",
+        "RoughnessMap": "rbxassetid://118891884189470",
+        "center": [
+          3.65,
+          32.81,
+          1.71
+        ],
+        "operations": {
+          "Asset": "1b4bcfbb-0e27-4df7-85b8-6afd35328d1b"
+        }
+      },
+      "Salt_Pine_A__Needles_Mass": {
+        "ColorMap": "rbxassetid://76654633357288",
+        "MeshId": "rbxassetid://107283612874743",
+        "MetalnessMap": "rbxassetid://88355072291884",
+        "NormalMap": "rbxassetid://125467996254972",
+        "RoughnessMap": "rbxassetid://118891884189470",
+        "center": [
+          3.86,
+          32.74,
+          2.81
+        ],
+        "operations": {
+          "Asset": "1b4bcfbb-0e27-4df7-85b8-6afd35328d1b"
+        }
+      }
+    },
+    "Salt_Pine_B": {
+      "Salt_Pine_B__Bark": {
+        "ColorMap": "rbxassetid://104745923691993",
+        "MeshId": "rbxassetid://140671870566394",
+        "MetalnessMap": "rbxassetid://88355072291884",
+        "NormalMap": "rbxassetid://128774684764895",
+        "RoughnessMap": "rbxassetid://97345786330976",
+        "center": [
+          -2.59,
+          16.84,
+          -3.14
+        ],
+        "operations": {
+          "Asset": "17766c21-1da3-45d8-9009-776cac154387"
+        }
+      },
+      "Salt_Pine_B__Needles_Detail": {
+        "ColorMap": "rbxassetid://76654633357288",
+        "MeshId": "rbxassetid://70713524710202",
+        "MetalnessMap": "rbxassetid://88355072291884",
+        "NormalMap": "rbxassetid://125467996254972",
+        "RoughnessMap": "rbxassetid://118891884189470",
+        "center": [
+          3.25,
+          21.2,
+          1.03
+        ],
+        "operations": {
+          "Asset": "17766c21-1da3-45d8-9009-776cac154387"
+        }
+      },
+      "Salt_Pine_B__Needles_Mass": {
+        "ColorMap": "rbxassetid://76654633357288",
+        "MeshId": "rbxassetid://126507316023450",
+        "MetalnessMap": "rbxassetid://88355072291884",
+        "NormalMap": "rbxassetid://125467996254972",
+        "RoughnessMap": "rbxassetid://118891884189470",
+        "center": [
+          2.79,
+          21.91,
+          0.81
+        ],
+        "operations": {
+          "Asset": "17766c21-1da3-45d8-9009-776cac154387"
+        }
+      }
+    },
+    "Salt_Pine_Dead": {
+      "Salt_Pine_Dead__Bark": {
+        "ColorMap": "rbxassetid://104745923691993",
+        "MeshId": "rbxassetid://88947911245896",
+        "MetalnessMap": "rbxassetid://88355072291884",
+        "NormalMap": "rbxassetid://128774684764895",
+        "RoughnessMap": "rbxassetid://97345786330976",
+        "center": [
+          0,
+          21.09,
+          0
+        ],
+        "operations": {
+          "Asset": "50dcbaa2-484e-46de-a9fe-dc4b6a8b0e81"
+        }
+      }
+    },
+    "Saltreach_Gate_Statue": {
+      "Saltreach_Gate_Statue__Anchor": {
+        "ColorMap": "rbxassetid://120132861226766",
+        "MeshId": "rbxassetid://86254720445755",
+        "MetalnessMap": "rbxassetid://104784703823571",
+        "NormalMap": "rbxassetid://133932492340234",
+        "RoughnessMap": "rbxassetid://117325849339224",
+        "center": [
+          0,
+          61.88,
+          -10.92
+        ],
+        "operations": {
+          "Asset": "608269a9-725c-4a05-ae0b-dc9915da1689"
+        }
+      },
+      "Saltreach_Gate_Statue__Arms": {
+        "ColorMap": "rbxassetid://128291959467295",
+        "MeshId": "rbxassetid://75234292600511",
+        "MetalnessMap": "rbxassetid://137379579832042",
+        "NormalMap": "rbxassetid://86821940550875",
+        "RoughnessMap": "rbxassetid://103632478955430",
+        "center": [
+          0,
+          80.24,
+          -3.93
+        ],
+        "operations": {
+          "Asset": "608269a9-725c-4a05-ae0b-dc9915da1689"
+        }
+      },
+      "Saltreach_Gate_Statue__Base": {
+        "ColorMap": "rbxassetid://127166116825535",
+        "MeshId": "rbxassetid://70681102780406",
+        "MetalnessMap": "rbxassetid://88355072291884",
+        "NormalMap": "rbxassetid://117664153733929",
+        "RoughnessMap": "rbxassetid://74815392604496",
+        "center": [
+          0,
+          9.76,
+          0
+        ],
+        "operations": {
+          "Asset": "608269a9-725c-4a05-ae0b-dc9915da1689"
+        }
+      },
+      "Saltreach_Gate_Statue__Body": {
+        "ColorMap": "rbxassetid://128291959467295",
+        "MeshId": "rbxassetid://107189098995909",
+        "MetalnessMap": "rbxassetid://137379579832042",
+        "NormalMap": "rbxassetid://86821940550875",
+        "RoughnessMap": "rbxassetid://103632478955430",
+        "center": [
+          -0.13,
+          62.29,
+          1.41
+        ],
+        "operations": {
+          "Asset": "608269a9-725c-4a05-ae0b-dc9915da1689"
+        }
+      },
+      "Saltreach_Gate_Statue__Cords": {
+        "ColorMap": "rbxassetid://103473526955239",
+        "MeshId": "rbxassetid://93470715448788",
+        "MetalnessMap": "rbxassetid://79023695760001",
+        "NormalMap": "rbxassetid://112935313844199",
+        "RoughnessMap": "rbxassetid://124605660311498",
+        "center": [
+          0,
+          82.35,
+          -9.38
+        ],
+        "operations": {
+          "Asset": "608269a9-725c-4a05-ae0b-dc9915da1689"
+        }
+      },
+      "Saltreach_Gate_Statue__Head": {
+        "ColorMap": "rbxassetid://128291959467295",
+        "MeshId": "rbxassetid://89925793899050",
+        "MetalnessMap": "rbxassetid://137379579832042",
+        "NormalMap": "rbxassetid://86821940550875",
+        "RoughnessMap": "rbxassetid://103632478955430",
+        "center": [
+          -0.22,
+          122.04,
+          0.88
+        ],
+        "operations": {
+          "Asset": "608269a9-725c-4a05-ae0b-dc9915da1689"
+        }
+      }
+    },
+    "Sea_Stack_Base": {
+      "Sea_Stack_Base__Stone": {
+        "ColorMap": "rbxassetid://128291959467295",
+        "MeshId": "rbxassetid://119399606045002",
+        "MetalnessMap": "rbxassetid://137379579832042",
+        "NormalMap": "rbxassetid://86821940550875",
+        "RoughnessMap": "rbxassetid://103632478955430",
+        "center": [
+          0,
+          9.25,
+          0
+        ],
+        "operations": {
+          "Asset": "de696c6e-d5e1-4f63-9504-61b5317cf65d"
+        }
+      }
+    },
+    "Sea_Stack_Cap": {
+      "Sea_Stack_Cap__Stone": {
+        "ColorMap": "rbxassetid://128291959467295",
+        "MeshId": "rbxassetid://133165335667539",
+        "MetalnessMap": "rbxassetid://137379579832042",
+        "NormalMap": "rbxassetid://86821940550875",
+        "RoughnessMap": "rbxassetid://103632478955430",
+        "center": [
+          0,
+          8.17,
+          0
+        ],
+        "operations": {
+          "Asset": "9dec70cd-aa63-4996-926c-ccb010a7f54a"
+        }
+      }
+    },
+    "Sea_Stack_Mid": {
+      "Sea_Stack_Mid__Stone": {
+        "ColorMap": "rbxassetid://128291959467295",
+        "MeshId": "rbxassetid://80425668739434",
+        "MetalnessMap": "rbxassetid://137379579832042",
+        "NormalMap": "rbxassetid://86821940550875",
+        "RoughnessMap": "rbxassetid://103632478955430",
+        "center": [
+          0,
+          8,
+          0
+        ],
+        "operations": {
+          "Asset": "5150b7c2-093d-4527-a5f9-897bf6a97386"
+        }
+      }
+    },
+    "Shore_Cliff_A": {
+      "Shore_Cliff_A__Stone": {
+        "ColorMap": "rbxassetid://128291959467295",
+        "MeshId": "rbxassetid://76631086019946",
+        "MetalnessMap": "rbxassetid://137379579832042",
+        "NormalMap": "rbxassetid://86821940550875",
+        "RoughnessMap": "rbxassetid://103632478955430",
+        "center": [
+          0,
+          12.28,
+          0
+        ],
+        "operations": {
+          "Asset": "7aca8e8e-754b-42e6-a359-276b9431af6f"
+        }
+      }
+    },
+    "Shore_Cliff_B": {
+      "Shore_Cliff_B__Stone": {
+        "ColorMap": "rbxassetid://128291959467295",
+        "MeshId": "rbxassetid://80323330397765",
+        "MetalnessMap": "rbxassetid://137379579832042",
+        "NormalMap": "rbxassetid://86821940550875",
+        "RoughnessMap": "rbxassetid://103632478955430",
+        "center": [
+          0,
+          13.74,
+          0
+        ],
+        "operations": {
+          "Asset": "c67e0529-1a69-41e0-bb4b-70873b1b2cec"
+        }
+      }
+    },
+    "Shore_Cliff_Corner": {
+      "Shore_Cliff_Corner__Stone": {
+        "ColorMap": "rbxassetid://128291959467295",
+        "MeshId": "rbxassetid://112311257856907",
+        "MetalnessMap": "rbxassetid://137379579832042",
+        "NormalMap": "rbxassetid://86821940550875",
+        "RoughnessMap": "rbxassetid://103632478955430",
+        "center": [
+          0,
+          13.65,
+          0
+        ],
+        "operations": {
+          "Asset": "e4437d19-ebd0-4144-919d-59f93f0f1a52"
+        }
+      }
+    },
+    "Shore_Reeds": {
+      "Shore_Reeds__Blades": {
+        "ColorMap": "rbxassetid://109547166517950",
+        "MeshId": "rbxassetid://87294788929179",
+        "MetalnessMap": "rbxassetid://88132622876934",
+        "NormalMap": "rbxassetid://101251167936328",
+        "RoughnessMap": "rbxassetid://73488916920199",
+        "center": [
+          0,
+          5.37,
+          0
+        ],
+        "operations": {
+          "Asset": "d97c6538-f2eb-4a3b-b170-72ff337f6a6b"
+        }
+      },
+      "Shore_Reeds__Heads": {
+        "ColorMap": "rbxassetid://109547166517950",
+        "MeshId": "rbxassetid://98421546289532",
+        "MetalnessMap": "rbxassetid://88132622876934",
+        "NormalMap": "rbxassetid://101251167936328",
+        "RoughnessMap": "rbxassetid://73488916920199",
+        "center": [
+          -1.2,
+          7.18,
+          -1.18
+        ],
+        "operations": {
+          "Asset": "d97c6538-f2eb-4a3b-b170-72ff337f6a6b"
+        }
+      }
+    },
+    "Stone_Lantern_Salt": {
+      "Stone_Lantern_Salt__Glow": {
+        "ColorMap": "rbxassetid://101128409256732",
+        "MeshId": "rbxassetid://81809826606230",
+        "MetalnessMap": "rbxassetid://112249682778278",
+        "NormalMap": "rbxassetid://114041101617482",
+        "RoughnessMap": "rbxassetid://121476398534218",
+        "center": [
+          0,
+          9.02,
+          0
+        ],
+        "operations": {
+          "Asset": "987ac34b-86f5-41ce-b1cd-1deba6495dec"
+        }
+      },
+      "Stone_Lantern_Salt__Iron": {
+        "ColorMap": "rbxassetid://120132861226766",
+        "MeshId": "rbxassetid://106708210054243",
+        "MetalnessMap": "rbxassetid://104784703823571",
+        "NormalMap": "rbxassetid://133932492340234",
+        "RoughnessMap": "rbxassetid://117325849339224",
+        "center": [
+          0,
+          7.59,
+          0
+        ],
+        "operations": {
+          "Asset": "987ac34b-86f5-41ce-b1cd-1deba6495dec"
+        }
+      },
+      "Stone_Lantern_Salt__Stone": {
+        "ColorMap": "rbxassetid://127166116825535",
+        "MeshId": "rbxassetid://85606320619520",
+        "MetalnessMap": "rbxassetid://88355072291884",
+        "NormalMap": "rbxassetid://117664153733929",
+        "RoughnessMap": "rbxassetid://74815392604496",
+        "center": [
+          0,
+          6.94,
+          0
+        ],
+        "operations": {
+          "Asset": "987ac34b-86f5-41ce-b1cd-1deba6495dec"
+        }
+      }
+    },
+    "Tide_Boulder_A": {
+      "Tide_Boulder_A__Stone": {
+        "ColorMap": "rbxassetid://128291959467295",
+        "MeshId": "rbxassetid://82158142498426",
+        "MetalnessMap": "rbxassetid://137379579832042",
+        "NormalMap": "rbxassetid://86821940550875",
+        "RoughnessMap": "rbxassetid://103632478955430",
+        "center": [
+          0,
+          4.61,
+          0
+        ],
+        "operations": {
+          "Asset": "a0e5fe1e-3486-43ea-9d7c-1d7900e39a27"
+        }
+      }
+    },
+    "Tide_Boulder_B": {
+      "Tide_Boulder_B__Stone": {
+        "ColorMap": "rbxassetid://128291959467295",
+        "MeshId": "rbxassetid://138795720042928",
+        "MetalnessMap": "rbxassetid://137379579832042",
+        "NormalMap": "rbxassetid://86821940550875",
+        "RoughnessMap": "rbxassetid://103632478955430",
+        "center": [
+          0,
+          5.69,
+          0
+        ],
+        "operations": {
+          "Asset": "33236a79-bda8-4769-9683-3fdd81a98510"
+        }
+      }
+    },
+    "Tide_Boulder_C": {
+      "Tide_Boulder_C__Stone": {
+        "ColorMap": "rbxassetid://128291959467295",
+        "MeshId": "rbxassetid://119672986338552",
+        "MetalnessMap": "rbxassetid://137379579832042",
+        "NormalMap": "rbxassetid://86821940550875",
+        "RoughnessMap": "rbxassetid://103632478955430",
+        "center": [
+          0,
+          2.2,
+          0
+        ],
+        "operations": {
+          "Asset": "fdc644eb-7f9a-41d2-8c5b-50be86179ce8"
+        }
+      }
+    }
+  }
+}

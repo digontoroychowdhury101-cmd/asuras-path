@@ -1,0 +1,1777 @@
+{
+  "modelAssets": {
+    "Amber_Aqueduct_Abutment": {
+      "assetId": "rbxassetid://89113984353882",
+      "moderationState": "Approved",
+      "operationId": "01a8f734-0e5b-4eb2-b9c4-7fd01fb3cbb0",
+      "source": "assets/source/overworld/upload/amberfall/Amber_Aqueduct_Abutment.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Amber_Aqueduct_Hero": {
+      "assetId": "rbxassetid://132092587340804",
+      "moderationState": "Approved",
+      "operationId": "26f89aba-6268-4dc4-991a-26c766c3e0fc",
+      "source": "assets/source/overworld/upload/amberfall/Amber_Aqueduct_Hero.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Amber_Aqueduct_Span_A": {
+      "assetId": "rbxassetid://78163617275362",
+      "moderationState": "Approved",
+      "operationId": "0f99c28e-937a-419d-ad20-c71e6e658a5b",
+      "source": "assets/source/overworld/upload/amberfall/Amber_Aqueduct_Span_A.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Amber_Aqueduct_Span_Ruined": {
+      "assetId": "rbxassetid://96713856893669",
+      "moderationState": "Approved",
+      "operationId": "addc3250-ccfa-4708-a721-655aecadb7f6",
+      "source": "assets/source/overworld/upload/amberfall/Amber_Aqueduct_Span_Ruined.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Amber_Aqueduct_Span_Tall": {
+      "assetId": "rbxassetid://136674113824398",
+      "moderationState": "Approved",
+      "operationId": "7d11ce57-5cfa-44cf-8b4b-0ae1cd7021a6",
+      "source": "assets/source/overworld/upload/amberfall/Amber_Aqueduct_Span_Tall.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Amber_Boulder_A": {
+      "assetId": "rbxassetid://135999138197209",
+      "moderationState": "Approved",
+      "operationId": "4a2731de-2188-4111-9068-0b0116e60c9c",
+      "source": "assets/source/overworld/upload/amberfall/Amber_Boulder_A.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Amber_Boulder_B": {
+      "assetId": "rbxassetid://113898917160521",
+      "moderationState": "Approved",
+      "operationId": "e570d927-fe9c-47aa-b992-edd97400cc83",
+      "source": "assets/source/overworld/upload/amberfall/Amber_Boulder_B.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Amber_Boulder_C": {
+      "assetId": "rbxassetid://90467080215022",
+      "moderationState": "Approved",
+      "operationId": "e698541a-0767-436d-adb0-036c090b11d9",
+      "source": "assets/source/overworld/upload/amberfall/Amber_Boulder_C.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Amber_Cart": {
+      "assetId": "rbxassetid://99404017737981",
+      "moderationState": "Approved",
+      "operationId": "8c739d04-5bcb-40cb-88b8-35feb6702b89",
+      "source": "assets/source/overworld/upload/amberfall/Amber_Cart.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Amber_Cliff_Corner": {
+      "assetId": "rbxassetid://135926683721526",
+      "moderationState": "Approved",
+      "operationId": "3ac991d6-7f7c-40ab-b97a-63d7bbd1a5ba",
+      "source": "assets/source/overworld/upload/amberfall/Amber_Cliff_Corner.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Amber_Cliff_Pine": {
+      "assetId": "rbxassetid://79561426749547",
+      "moderationState": "Approved",
+      "operationId": "2f85420a-8c36-446d-8fb7-89c909196130",
+      "source": "assets/source/overworld/upload/amberfall/Amber_Cliff_Pine.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Amber_Cliff_Wall_A": {
+      "assetId": "rbxassetid://110747847828437",
+      "moderationState": "Approved",
+      "operationId": "da2a7971-0b56-4925-9fe2-68f209a47b54",
+      "source": "assets/source/overworld/upload/amberfall/Amber_Cliff_Wall_A.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Amber_Cliff_Wall_B": {
+      "assetId": "rbxassetid://135618783592296",
+      "moderationState": "Approved",
+      "operationId": "1a993c98-b633-40f3-a318-cb32332d9682",
+      "source": "assets/source/overworld/upload/amberfall/Amber_Cliff_Wall_B.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Amber_Crate_Stack": {
+      "assetId": "rbxassetid://102923971887811",
+      "moderationState": "Approved",
+      "operationId": "526f1fed-6f4c-4529-8686-344dc3c168a9",
+      "source": "assets/source/overworld/upload/amberfall/Amber_Crate_Stack.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Amber_Dead_Snag": {
+      "assetId": "rbxassetid://127111772716950",
+      "moderationState": "Approved",
+      "operationId": "e3011dfd-892e-4010-8b2b-92eec12ed38e",
+      "source": "assets/source/overworld/upload/amberfall/Amber_Dead_Snag.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Amber_Fallen_Log": {
+      "assetId": "rbxassetid://84816740397445",
+      "moderationState": "Approved",
+      "operationId": "17d7c7ca-b972-49b9-bccf-945973e17aae",
+      "source": "assets/source/overworld/upload/amberfall/Amber_Fallen_Log.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Amber_Fern_Bronze": {
+      "assetId": "rbxassetid://125288845846344",
+      "moderationState": "Approved",
+      "operationId": "a73c62bd-a4a1-4902-9113-6c20b6dc5be7",
+      "source": "assets/source/overworld/upload/amberfall/Amber_Fern_Bronze.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Amber_Footbridge_Rope": {
+      "assetId": "rbxassetid://85582548813705",
+      "moderationState": "Approved",
+      "operationId": "fec2c915-3973-4681-bd72-496f306987db",
+      "source": "assets/source/overworld/upload/amberfall/Amber_Footbridge_Rope.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Amber_Grass_Dry": {
+      "assetId": "rbxassetid://76295624123290",
+      "moderationState": "Approved",
+      "operationId": "db0f9896-600f-44f4-bd33-ed88b41fe8f6",
+      "source": "assets/source/overworld/upload/amberfall/Amber_Grass_Dry.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Amber_Grass_Pale": {
+      "assetId": "rbxassetid://131934405832982",
+      "moderationState": "Approved",
+      "operationId": "c3259c77-e780-4e79-b52a-34c37221a7f8",
+      "source": "assets/source/overworld/upload/amberfall/Amber_Grass_Pale.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Amber_Grass_Seed": {
+      "assetId": "rbxassetid://104890039488091",
+      "moderationState": "Approved",
+      "operationId": "a1c08e0e-c972-4e2e-93f6-1cdc818bbee0",
+      "source": "assets/source/overworld/upload/amberfall/Amber_Grass_Seed.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Amber_Lantern_Hanging": {
+      "assetId": "rbxassetid://116219970366884",
+      "moderationState": "Approved",
+      "operationId": "9af878fd-c703-4b94-8684-5b03c02ace41",
+      "source": "assets/source/overworld/upload/amberfall/Amber_Lantern_Hanging.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Amber_Lantern_Stone": {
+      "assetId": "rbxassetid://136549466494365",
+      "moderationState": "Approved",
+      "operationId": "6792bc5c-876c-449a-a903-94026253c5d6",
+      "source": "assets/source/overworld/upload/amberfall/Amber_Lantern_Stone.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Amber_Leaf_Litter_A": {
+      "assetId": "rbxassetid://126893288173990",
+      "moderationState": "Approved",
+      "operationId": "6560f9be-68b9-4d49-8872-a7e0df4831c4",
+      "source": "assets/source/overworld/upload/amberfall/Amber_Leaf_Litter_A.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Amber_Leaf_Litter_B": {
+      "assetId": "rbxassetid://118305787466305",
+      "moderationState": "Approved",
+      "operationId": "037ce9aa-61d5-4c8d-ab0e-232dec837878",
+      "source": "assets/source/overworld/upload/amberfall/Amber_Leaf_Litter_B.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Amber_Ledge_Long": {
+      "assetId": "rbxassetid://112478904246239",
+      "moderationState": "Approved",
+      "operationId": "2978352d-336f-46c0-a599-4b8baf847251",
+      "source": "assets/source/overworld/upload/amberfall/Amber_Ledge_Long.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Amber_Ledge_Overhang": {
+      "assetId": "rbxassetid://91141173658337",
+      "moderationState": "Approved",
+      "operationId": "8da707d0-0373-4cc5-ba06-369f1de50a9c",
+      "source": "assets/source/overworld/upload/amberfall/Amber_Ledge_Overhang.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Amber_Maple_Gold": {
+      "assetId": "rbxassetid://94761258730274",
+      "moderationState": "Approved",
+      "operationId": "84799332-6a9b-40fe-a64d-86c896bab1fe",
+      "source": "assets/source/overworld/upload/amberfall/Amber_Maple_Gold.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Amber_Maple_Red": {
+      "assetId": "rbxassetid://135767478979521",
+      "moderationState": "Approved",
+      "operationId": "44209f75-fab5-450b-abf3-e8952ddd2c05",
+      "source": "assets/source/overworld/upload/amberfall/Amber_Maple_Red.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Amber_Maple_Sapling": {
+      "assetId": "rbxassetid://128392368571424",
+      "moderationState": "Approved",
+      "operationId": "374d16af-6f4e-4b0a-899c-2570f00bd723",
+      "source": "assets/source/overworld/upload/amberfall/Amber_Maple_Sapling.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Amber_RedTrunk_A": {
+      "assetId": "rbxassetid://116859083541966",
+      "moderationState": "Approved",
+      "operationId": "411f83df-1636-444b-8720-33aeffe1c048",
+      "source": "assets/source/overworld/upload/amberfall/Amber_RedTrunk_A.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Amber_RedTrunk_B": {
+      "assetId": "rbxassetid://117990892136421",
+      "moderationState": "Approved",
+      "operationId": "dcbae82e-81db-4593-95eb-0021206e03a5",
+      "source": "assets/source/overworld/upload/amberfall/Amber_RedTrunk_B.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Amber_Retaining_Wall_A": {
+      "assetId": "rbxassetid://109138975738492",
+      "moderationState": "Approved",
+      "operationId": "3cd91105-6a78-4fd6-956f-5b5f81fcefb1",
+      "source": "assets/source/overworld/upload/amberfall/Amber_Retaining_Wall_A.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Amber_Retaining_Wall_B": {
+      "assetId": "rbxassetid://80895554242381",
+      "moderationState": "Approved",
+      "operationId": "0b889c8b-1031-407a-97e0-ce456b4916a5",
+      "source": "assets/source/overworld/upload/amberfall/Amber_Retaining_Wall_B.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Amber_Root_Tangle": {
+      "assetId": "rbxassetid://99940173158250",
+      "moderationState": "Approved",
+      "operationId": "73899aaf-df44-4200-a499-d3838ee9348d",
+      "source": "assets/source/overworld/upload/amberfall/Amber_Root_Tangle.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Amber_Rope_Rail": {
+      "assetId": "rbxassetid://91419301564894",
+      "moderationState": "Approved",
+      "operationId": "dc9bce3a-9840-4a8c-a794-93fc93b08fdc",
+      "source": "assets/source/overworld/upload/amberfall/Amber_Rope_Rail.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Amber_Scree_A": {
+      "assetId": "rbxassetid://86554500330134",
+      "moderationState": "Approved",
+      "operationId": "c82f08e5-848d-48b6-a73e-fa9d658a6f55",
+      "source": "assets/source/overworld/upload/amberfall/Amber_Scree_A.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Amber_Scree_B": {
+      "assetId": "rbxassetid://89267230540346",
+      "moderationState": "Approved",
+      "operationId": "16fecb8d-d20a-49bb-80a7-f24991a47f65",
+      "source": "assets/source/overworld/upload/amberfall/Amber_Scree_B.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Amber_Shrine": {
+      "assetId": "rbxassetid://96569948105565",
+      "moderationState": "Approved",
+      "operationId": "4325019b-7366-44bc-8946-0ef819251642",
+      "source": "assets/source/overworld/upload/amberfall/Amber_Shrine.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Amber_Shrub_Dry": {
+      "assetId": "rbxassetid://102117043392881",
+      "moderationState": "Approved",
+      "operationId": "782962df-fa73-441c-ad26-28b6be3e0373",
+      "source": "assets/source/overworld/upload/amberfall/Amber_Shrub_Dry.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Amber_Shrub_Sumac": {
+      "assetId": "rbxassetid://89492534761652",
+      "moderationState": "Approved",
+      "operationId": "6d07c2f5-1e2e-47d2-95a2-f4e312cd70d4",
+      "source": "assets/source/overworld/upload/amberfall/Amber_Shrub_Sumac.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Amber_Spire": {
+      "assetId": "rbxassetid://122729458374379",
+      "moderationState": "Approved",
+      "operationId": "64dfc9ba-f3cd-4e77-8409-f3db7b41419c",
+      "source": "assets/source/overworld/upload/amberfall/Amber_Spire.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Amber_Stair_Run": {
+      "assetId": "rbxassetid://73381417953853",
+      "moderationState": "Approved",
+      "operationId": "edf0135e-8c32-469b-b057-cbe28efd6e38",
+      "source": "assets/source/overworld/upload/amberfall/Amber_Stair_Run.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Amber_Stair_Worn": {
+      "assetId": "rbxassetid://85090917657691",
+      "moderationState": "Approved",
+      "operationId": "346034aa-a1b4-4189-a561-a1b94b65a286",
+      "source": "assets/source/overworld/upload/amberfall/Amber_Stair_Worn.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Amber_Stump": {
+      "assetId": "rbxassetid://114547139873155",
+      "moderationState": "Approved",
+      "operationId": "f2b36b9a-d62a-4655-b249-94ef9fe4ab37",
+      "source": "assets/source/overworld/upload/amberfall/Amber_Stump.glb",
+      "uploaded": "2026-11-21"
+    }
+  },
+  "note": "Real IDs only. modelAssets = Assets API Model id (LoadAsset target). pieces = sub-mesh MeshId/maps and foot-centre center read from a verified LoadAsset (tools/assets/registry_readback.py region).",
+  "pieces": {
+    "Amber_Aqueduct_Abutment": {
+      "Amber_Aqueduct_Abutment__Arches": {
+        "ColorMap": "rbxassetid://131850201092070",
+        "MeshId": "rbxassetid://105658282092499",
+        "MetalnessMap": "rbxassetid://81553928851811",
+        "NormalMap": "rbxassetid://137717955312064",
+        "RoughnessMap": "rbxassetid://126761277000373",
+        "center": [
+          0,
+          5.6,
+          -4.34
+        ],
+        "operations": {
+          "Asset": "01a8f734-0e5b-4eb2-b9c4-7fd01fb3cbb0"
+        }
+      },
+      "Amber_Aqueduct_Abutment__Deck": {
+        "ColorMap": "rbxassetid://91480384655451",
+        "MeshId": "rbxassetid://116405802019845",
+        "MetalnessMap": "rbxassetid://81553928851811",
+        "NormalMap": "rbxassetid://86096385599048",
+        "RoughnessMap": "rbxassetid://93549129312270",
+        "center": [
+          0,
+          28.42,
+          -0.2
+        ],
+        "operations": {
+          "Asset": "01a8f734-0e5b-4eb2-b9c4-7fd01fb3cbb0"
+        }
+      },
+      "Amber_Aqueduct_Abutment__Piers": {
+        "ColorMap": "rbxassetid://91480384655451",
+        "MeshId": "rbxassetid://127664031552877",
+        "MetalnessMap": "rbxassetid://81553928851811",
+        "NormalMap": "rbxassetid://86096385599048",
+        "RoughnessMap": "rbxassetid://93549129312270",
+        "center": [
+          0,
+          14.48,
+          3.45
+        ],
+        "operations": {
+          "Asset": "01a8f734-0e5b-4eb2-b9c4-7fd01fb3cbb0"
+        }
+      }
+    },
+    "Amber_Aqueduct_Hero": {
+      "Amber_Aqueduct_Hero__Arches": {
+        "ColorMap": "rbxassetid://131850201092070",
+        "MeshId": "rbxassetid://76715720367350",
+        "MetalnessMap": "rbxassetid://81553928851811",
+        "NormalMap": "rbxassetid://137717955312064",
+        "RoughnessMap": "rbxassetid://126761277000373",
+        "center": [
+          0,
+          55.99,
+          0
+        ],
+        "operations": {
+          "Asset": "26f89aba-6268-4dc4-991a-26c766c3e0fc"
+        }
+      },
+      "Amber_Aqueduct_Hero__Deck": {
+        "ColorMap": "rbxassetid://91480384655451",
+        "MeshId": "rbxassetid://99399996129069",
+        "MetalnessMap": "rbxassetid://81553928851811",
+        "NormalMap": "rbxassetid://86096385599048",
+        "RoughnessMap": "rbxassetid://93549129312270",
+        "center": [
+          0,
+          67.55,
+          -0.01
+        ],
+        "operations": {
+          "Asset": "26f89aba-6268-4dc4-991a-26c766c3e0fc"
+        }
+      },
+      "Amber_Aqueduct_Hero__Piers": {
+        "ColorMap": "rbxassetid://91480384655451",
+        "MeshId": "rbxassetid://128610098626103",
+        "MetalnessMap": "rbxassetid://81553928851811",
+        "NormalMap": "rbxassetid://86096385599048",
+        "RoughnessMap": "rbxassetid://93549129312270",
+        "center": [
+          0,
+          39.3,
+          0
+        ],
+        "operations": {
+          "Asset": "26f89aba-6268-4dc4-991a-26c766c3e0fc"
+        }
+      }
+    },
+    "Amber_Aqueduct_Span_A": {
+      "Amber_Aqueduct_Span_A__Arches": {
+        "ColorMap": "rbxassetid://131850201092070",
+        "MeshId": "rbxassetid://81246656595768",
+        "MetalnessMap": "rbxassetid://81553928851811",
+        "NormalMap": "rbxassetid://137717955312064",
+        "RoughnessMap": "rbxassetid://126761277000373",
+        "center": [
+          0,
+          22.5,
+          0
+        ],
+        "operations": {
+          "Asset": "0f99c28e-937a-419d-ad20-c71e6e658a5b"
+        }
+      },
+      "Amber_Aqueduct_Span_A__Deck": {
+        "ColorMap": "rbxassetid://91480384655451",
+        "MeshId": "rbxassetid://122617548164079",
+        "MetalnessMap": "rbxassetid://81553928851811",
+        "NormalMap": "rbxassetid://86096385599048",
+        "RoughnessMap": "rbxassetid://93549129312270",
+        "center": [
+          0,
+          30.42,
+          0
+        ],
+        "operations": {
+          "Asset": "0f99c28e-937a-419d-ad20-c71e6e658a5b"
+        }
+      },
+      "Amber_Aqueduct_Span_A__Piers": {
+        "ColorMap": "rbxassetid://91480384655451",
+        "MeshId": "rbxassetid://139386695410665",
+        "MetalnessMap": "rbxassetid://81553928851811",
+        "NormalMap": "rbxassetid://86096385599048",
+        "RoughnessMap": "rbxassetid://93549129312270",
+        "center": [
+          0,
+          14.48,
+          -0.03
+        ],
+        "operations": {
+          "Asset": "0f99c28e-937a-419d-ad20-c71e6e658a5b"
+        }
+      }
+    },
+    "Amber_Aqueduct_Span_Ruined": {
+      "Amber_Aqueduct_Span_Ruined__Arches": {
+        "ColorMap": "rbxassetid://131850201092070",
+        "MeshId": "rbxassetid://91790205236022",
+        "MetalnessMap": "rbxassetid://81553928851811",
+        "NormalMap": "rbxassetid://137717955312064",
+        "RoughnessMap": "rbxassetid://126761277000373",
+        "center": [
+          0,
+          14.68,
+          0
+        ],
+        "operations": {
+          "Asset": "addc3250-ccfa-4708-a721-655aecadb7f6"
+        }
+      },
+      "Amber_Aqueduct_Span_Ruined__Deck": {
+        "ColorMap": "rbxassetid://91480384655451",
+        "MeshId": "rbxassetid://114650333756893",
+        "MetalnessMap": "rbxassetid://81553928851811",
+        "NormalMap": "rbxassetid://86096385599048",
+        "RoughnessMap": "rbxassetid://93549129312270",
+        "center": [
+          -10,
+          27.43,
+          -0.05
+        ],
+        "operations": {
+          "Asset": "addc3250-ccfa-4708-a721-655aecadb7f6"
+        }
+      },
+      "Amber_Aqueduct_Span_Ruined__Piers": {
+        "ColorMap": "rbxassetid://91480384655451",
+        "MeshId": "rbxassetid://117612711732108",
+        "MetalnessMap": "rbxassetid://81553928851811",
+        "NormalMap": "rbxassetid://86096385599048",
+        "RoughnessMap": "rbxassetid://93549129312270",
+        "center": [
+          0,
+          12.98,
+          -0.05
+        ],
+        "operations": {
+          "Asset": "addc3250-ccfa-4708-a721-655aecadb7f6"
+        }
+      }
+    },
+    "Amber_Aqueduct_Span_Tall": {
+      "Amber_Aqueduct_Span_Tall__Arches": {
+        "ColorMap": "rbxassetid://131850201092070",
+        "MeshId": "rbxassetid://129405535312675",
+        "MetalnessMap": "rbxassetid://81553928851811",
+        "NormalMap": "rbxassetid://137717955312064",
+        "RoughnessMap": "rbxassetid://126761277000373",
+        "center": [
+          0,
+          32.5,
+          -0.03
+        ],
+        "operations": {
+          "Asset": "7d11ce57-5cfa-44cf-8b4b-0ae1cd7021a6"
+        }
+      },
+      "Amber_Aqueduct_Span_Tall__Deck": {
+        "ColorMap": "rbxassetid://91480384655451",
+        "MeshId": "rbxassetid://127770925224415",
+        "MetalnessMap": "rbxassetid://81553928851811",
+        "NormalMap": "rbxassetid://86096385599048",
+        "RoughnessMap": "rbxassetid://93549129312270",
+        "center": [
+          0,
+          40.37,
+          -0.03
+        ],
+        "operations": {
+          "Asset": "7d11ce57-5cfa-44cf-8b4b-0ae1cd7021a6"
+        }
+      },
+      "Amber_Aqueduct_Span_Tall__Piers": {
+        "ColorMap": "rbxassetid://91480384655451",
+        "MeshId": "rbxassetid://114184034092499",
+        "MetalnessMap": "rbxassetid://81553928851811",
+        "NormalMap": "rbxassetid://86096385599048",
+        "RoughnessMap": "rbxassetid://93549129312270",
+        "center": [
+          0,
+          23.47,
+          0
+        ],
+        "operations": {
+          "Asset": "7d11ce57-5cfa-44cf-8b4b-0ae1cd7021a6"
+        }
+      }
+    },
+    "Amber_Boulder_A": {
+      "Amber_Boulder_A__Stone": {
+        "ColorMap": "rbxassetid://140538991820369",
+        "MeshId": "rbxassetid://116082685460603",
+        "MetalnessMap": "rbxassetid://131795268482922",
+        "NormalMap": "rbxassetid://93909070666605",
+        "RoughnessMap": "rbxassetid://85120968715999",
+        "center": [
+          0,
+          4.41,
+          0
+        ],
+        "operations": {
+          "Asset": "4a2731de-2188-4111-9068-0b0116e60c9c"
+        }
+      }
+    },
+    "Amber_Boulder_B": {
+      "Amber_Boulder_B__Stone": {
+        "ColorMap": "rbxassetid://140538991820369",
+        "MeshId": "rbxassetid://130409899785193",
+        "MetalnessMap": "rbxassetid://131795268482922",
+        "NormalMap": "rbxassetid://93909070666605",
+        "RoughnessMap": "rbxassetid://85120968715999",
+        "center": [
+          0,
+          6.25,
+          0
+        ],
+        "operations": {
+          "Asset": "e570d927-fe9c-47aa-b992-edd97400cc83"
+        }
+      }
+    },
+    "Amber_Boulder_C": {
+      "Amber_Boulder_C__Stone": {
+        "ColorMap": "rbxassetid://140538991820369",
+        "MeshId": "rbxassetid://113378433606004",
+        "MetalnessMap": "rbxassetid://131795268482922",
+        "NormalMap": "rbxassetid://93909070666605",
+        "RoughnessMap": "rbxassetid://85120968715999",
+        "center": [
+          0,
+          2.2,
+          0
+        ],
+        "operations": {
+          "Asset": "e698541a-0767-436d-adb0-036c090b11d9"
+        }
+      }
+    },
+    "Amber_Cart": {
+      "Amber_Cart__Timber": {
+        "ColorMap": "rbxassetid://78839463221136",
+        "MeshId": "rbxassetid://122913313969174",
+        "MetalnessMap": "rbxassetid://81553928851811",
+        "NormalMap": "rbxassetid://103885996342197",
+        "RoughnessMap": "rbxassetid://73980905761480",
+        "center": [
+          0,
+          3.4,
+          0
+        ],
+        "operations": {
+          "Asset": "8c739d04-5bcb-40cb-88b8-35feb6702b89"
+        }
+      }
+    },
+    "Amber_Cliff_Corner": {
+      "Amber_Cliff_Corner__Stone": {
+        "ColorMap": "rbxassetid://140538991820369",
+        "MeshId": "rbxassetid://72732618196526",
+        "MetalnessMap": "rbxassetid://131795268482922",
+        "NormalMap": "rbxassetid://93909070666605",
+        "RoughnessMap": "rbxassetid://85120968715999",
+        "center": [
+          0,
+          14.93,
+          0
+        ],
+        "operations": {
+          "Asset": "3ac991d6-7f7c-40ab-b97a-63d7bbd1a5ba"
+        }
+      }
+    },
+    "Amber_Cliff_Pine": {
+      "Amber_Cliff_Pine__Bark": {
+        "ColorMap": "rbxassetid://125527263853213",
+        "MeshId": "rbxassetid://92323158376519",
+        "MetalnessMap": "rbxassetid://81553928851811",
+        "NormalMap": "rbxassetid://86312582501284",
+        "RoughnessMap": "rbxassetid://130169839282286",
+        "center": [
+          0.07,
+          14.23,
+          0.34
+        ],
+        "operations": {
+          "Asset": "2f85420a-8c36-446d-8fb7-89c909196130"
+        }
+      },
+      "Amber_Cliff_Pine__Leaves_Detail": {
+        "ColorMap": "rbxassetid://117212988830383",
+        "MeshId": "rbxassetid://131092377987544",
+        "MetalnessMap": "rbxassetid://131795268482922",
+        "NormalMap": "rbxassetid://130110610814145",
+        "RoughnessMap": "rbxassetid://125835095031316",
+        "center": [
+          0,
+          19.26,
+          0
+        ],
+        "operations": {
+          "Asset": "2f85420a-8c36-446d-8fb7-89c909196130"
+        }
+      },
+      "Amber_Cliff_Pine__Leaves_Mass": {
+        "ColorMap": "rbxassetid://117212988830383",
+        "MeshId": "rbxassetid://95722878035141",
+        "MetalnessMap": "rbxassetid://131795268482922",
+        "NormalMap": "rbxassetid://130110610814145",
+        "RoughnessMap": "rbxassetid://125835095031316",
+        "center": [
+          -0.05,
+          20.05,
+          0.1
+        ],
+        "operations": {
+          "Asset": "2f85420a-8c36-446d-8fb7-89c909196130"
+        }
+      }
+    },
+    "Amber_Cliff_Wall_A": {
+      "Amber_Cliff_Wall_A__Stone": {
+        "ColorMap": "rbxassetid://140538991820369",
+        "MeshId": "rbxassetid://134905905555186",
+        "MetalnessMap": "rbxassetid://131795268482922",
+        "NormalMap": "rbxassetid://93909070666605",
+        "RoughnessMap": "rbxassetid://85120968715999",
+        "center": [
+          0,
+          16.92,
+          0
+        ],
+        "operations": {
+          "Asset": "da2a7971-0b56-4925-9fe2-68f209a47b54"
+        }
+      }
+    },
+    "Amber_Cliff_Wall_B": {
+      "Amber_Cliff_Wall_B__Stone": {
+        "ColorMap": "rbxassetid://140538991820369",
+        "MeshId": "rbxassetid://106140213669289",
+        "MetalnessMap": "rbxassetid://131795268482922",
+        "NormalMap": "rbxassetid://93909070666605",
+        "RoughnessMap": "rbxassetid://85120968715999",
+        "center": [
+          0,
+          24.07,
+          0
+        ],
+        "operations": {
+          "Asset": "1a993c98-b633-40f3-a318-cb32332d9682"
+        }
+      }
+    },
+    "Amber_Crate_Stack": {
+      "Amber_Crate_Stack__Rope": {
+        "ColorMap": "rbxassetid://123560850837708",
+        "MeshId": "rbxassetid://100991810362082",
+        "MetalnessMap": "rbxassetid://81553928851811",
+        "NormalMap": "rbxassetid://130646674175819",
+        "RoughnessMap": "rbxassetid://116560551572003",
+        "center": [
+          2.81,
+          4,
+          -2.84
+        ],
+        "operations": {
+          "Asset": "526f1fed-6f4c-4529-8686-344dc3c168a9"
+        }
+      },
+      "Amber_Crate_Stack__Timber": {
+        "ColorMap": "rbxassetid://78839463221136",
+        "MeshId": "rbxassetid://95550597469755",
+        "MetalnessMap": "rbxassetid://81553928851811",
+        "NormalMap": "rbxassetid://103885996342197",
+        "RoughnessMap": "rbxassetid://73980905761480",
+        "center": [
+          0,
+          3.32,
+          0
+        ],
+        "operations": {
+          "Asset": "526f1fed-6f4c-4529-8686-344dc3c168a9"
+        }
+      }
+    },
+    "Amber_Dead_Snag": {
+      "Amber_Dead_Snag__Bark": {
+        "ColorMap": "rbxassetid://132092464957735",
+        "MeshId": "rbxassetid://114368691669927",
+        "MetalnessMap": "rbxassetid://81553928851811",
+        "NormalMap": "rbxassetid://96598245687767",
+        "RoughnessMap": "rbxassetid://85468026399422",
+        "center": [
+          0,
+          18.97,
+          0
+        ],
+        "operations": {
+          "Asset": "e3011dfd-892e-4010-8b2b-92eec12ed38e"
+        }
+      },
+      "Amber_Dead_Snag__Ends": {
+        "ColorMap": "rbxassetid://125623201940356",
+        "MeshId": "rbxassetid://81600297989019",
+        "MetalnessMap": "rbxassetid://81553928851811",
+        "NormalMap": "rbxassetid://93909809406578",
+        "RoughnessMap": "rbxassetid://111733300987538",
+        "center": [
+          1.24,
+          32.17,
+          0.16
+        ],
+        "operations": {
+          "Asset": "e3011dfd-892e-4010-8b2b-92eec12ed38e"
+        }
+      }
+    },
+    "Amber_Fallen_Log": {
+      "Amber_Fallen_Log__Bark": {
+        "ColorMap": "rbxassetid://132092464957735",
+        "MeshId": "rbxassetid://114964299085231",
+        "MetalnessMap": "rbxassetid://81553928851811",
+        "NormalMap": "rbxassetid://96598245687767",
+        "RoughnessMap": "rbxassetid://85468026399422",
+        "center": [
+          0,
+          3.03,
+          0
+        ],
+        "operations": {
+          "Asset": "17d7c7ca-b972-49b9-bccf-945973e17aae"
+        }
+      },
+      "Amber_Fallen_Log__Ends": {
+        "ColorMap": "rbxassetid://125623201940356",
+        "MeshId": "rbxassetid://120777845622626",
+        "MetalnessMap": "rbxassetid://81553928851811",
+        "NormalMap": "rbxassetid://93909809406578",
+        "RoughnessMap": "rbxassetid://111733300987538",
+        "center": [
+          -0.93,
+          2.5,
+          0.05
+        ],
+        "operations": {
+          "Asset": "17d7c7ca-b972-49b9-bccf-945973e17aae"
+        }
+      }
+    },
+    "Amber_Fern_Bronze": {
+      "Amber_Fern_Bronze__Fronds": {
+        "ColorMap": "rbxassetid://82255028865590",
+        "MeshId": "rbxassetid://98453151241403",
+        "MetalnessMap": "rbxassetid://79023695760001",
+        "NormalMap": "rbxassetid://76927146935234",
+        "RoughnessMap": "rbxassetid://132623570502999",
+        "center": [
+          0,
+          1.37,
+          0
+        ],
+        "operations": {
+          "Asset": "a73c62bd-a4a1-4902-9113-6c20b6dc5be7"
+        }
+      }
+    },
+    "Amber_Footbridge_Rope": {
+      "Amber_Footbridge_Rope__Rope": {
+        "ColorMap": "rbxassetid://123560850837708",
+        "MeshId": "rbxassetid://111607502919707",
+        "MetalnessMap": "rbxassetid://81553928851811",
+        "NormalMap": "rbxassetid://130646674175819",
+        "RoughnessMap": "rbxassetid://116560551572003",
+        "center": [
+          0,
+          7.06,
+          -0.02
+        ],
+        "operations": {
+          "Asset": "fec2c915-3973-4681-bd72-496f306987db"
+        }
+      },
+      "Amber_Footbridge_Rope__Stone": {
+        "ColorMap": "rbxassetid://91480384655451",
+        "MeshId": "rbxassetid://139425034447931",
+        "MetalnessMap": "rbxassetid://81553928851811",
+        "NormalMap": "rbxassetid://86096385599048",
+        "RoughnessMap": "rbxassetid://93549129312270",
+        "center": [
+          0,
+          4,
+          0
+        ],
+        "operations": {
+          "Asset": "fec2c915-3973-4681-bd72-496f306987db"
+        }
+      },
+      "Amber_Footbridge_Rope__Timber": {
+        "ColorMap": "rbxassetid://78839463221136",
+        "MeshId": "rbxassetid://99664543469177",
+        "MetalnessMap": "rbxassetid://81553928851811",
+        "NormalMap": "rbxassetid://103885996342197",
+        "RoughnessMap": "rbxassetid://73980905761480",
+        "center": [
+          -0.4,
+          7.8,
+          0
+        ],
+        "operations": {
+          "Asset": "fec2c915-3973-4681-bd72-496f306987db"
+        }
+      }
+    },
+    "Amber_Grass_Dry": {
+      "Amber_Grass_Dry__Blades": {
+        "ColorMap": "rbxassetid://115003420409073",
+        "MeshId": "rbxassetid://122202680495295",
+        "MetalnessMap": "rbxassetid://88132622876934",
+        "NormalMap": "rbxassetid://101251167936328",
+        "RoughnessMap": "rbxassetid://73488916920199",
+        "center": [
+          0,
+          1.23,
+          0
+        ],
+        "operations": {
+          "Asset": "db0f9896-600f-44f4-bd33-ed88b41fe8f6"
+        }
+      }
+    },
+    "Amber_Grass_Pale": {
+      "Amber_Grass_Pale__Blades": {
+        "ColorMap": "rbxassetid://115003420409073",
+        "MeshId": "rbxassetid://82035814478871",
+        "MetalnessMap": "rbxassetid://88132622876934",
+        "NormalMap": "rbxassetid://101251167936328",
+        "RoughnessMap": "rbxassetid://73488916920199",
+        "center": [
+          0,
+          2.55,
+          0
+        ],
+        "operations": {
+          "Asset": "c3259c77-e780-4e79-b52a-34c37221a7f8"
+        }
+      }
+    },
+    "Amber_Grass_Seed": {
+      "Amber_Grass_Seed__Blades": {
+        "ColorMap": "rbxassetid://115003420409073",
+        "MeshId": "rbxassetid://71352402157193",
+        "MetalnessMap": "rbxassetid://88132622876934",
+        "NormalMap": "rbxassetid://101251167936328",
+        "RoughnessMap": "rbxassetid://73488916920199",
+        "center": [
+          0,
+          1.94,
+          0
+        ],
+        "operations": {
+          "Asset": "a1c08e0e-c972-4e2e-93f6-1cdc818bbee0"
+        }
+      },
+      "Amber_Grass_Seed__Seeds": {
+        "ColorMap": "rbxassetid://117212988830383",
+        "MeshId": "rbxassetid://98211970855925",
+        "MetalnessMap": "rbxassetid://131795268482922",
+        "NormalMap": "rbxassetid://130110610814145",
+        "RoughnessMap": "rbxassetid://125835095031316",
+        "center": [
+          0.2,
+          2.74,
+          -0.13
+        ],
+        "operations": {
+          "Asset": "a1c08e0e-c972-4e2e-93f6-1cdc818bbee0"
+        }
+      }
+    },
+    "Amber_Lantern_Hanging": {
+      "Amber_Lantern_Hanging__Bronze": {
+        "ColorMap": "rbxassetid://117957346909003",
+        "MeshId": "rbxassetid://83762124027695",
+        "MetalnessMap": "rbxassetid://103728839581257",
+        "NormalMap": "rbxassetid://120638869224297",
+        "RoughnessMap": "rbxassetid://121417918625819",
+        "center": [
+          -2.47,
+          8.6,
+          0
+        ],
+        "operations": {
+          "Asset": "9af878fd-c703-4b94-8684-5b03c02ace41"
+        }
+      },
+      "Amber_Lantern_Hanging__Glow": {
+        "ColorMap": "rbxassetid://93205476789310",
+        "MeshId": "rbxassetid://97527512871603",
+        "MetalnessMap": "rbxassetid://112249682778278",
+        "NormalMap": "rbxassetid://114041101617482",
+        "RoughnessMap": "rbxassetid://121476398534218",
+        "center": [
+          -2.47,
+          8.65,
+          0
+        ],
+        "operations": {
+          "Asset": "9af878fd-c703-4b94-8684-5b03c02ace41"
+        }
+      },
+      "Amber_Lantern_Hanging__Rope": {
+        "ColorMap": "rbxassetid://123560850837708",
+        "MeshId": "rbxassetid://112968305932996",
+        "MetalnessMap": "rbxassetid://96102738318528",
+        "NormalMap": "rbxassetid://130646674175819",
+        "RoughnessMap": "rbxassetid://116560551572003",
+        "center": [
+          -2.47,
+          10.85,
+          0
+        ],
+        "operations": {
+          "Asset": "9af878fd-c703-4b94-8684-5b03c02ace41"
+        }
+      },
+      "Amber_Lantern_Hanging__Timber": {
+        "ColorMap": "rbxassetid://78839463221136",
+        "MeshId": "rbxassetid://92932653334723",
+        "MetalnessMap": "rbxassetid://96102738318528",
+        "NormalMap": "rbxassetid://103885996342197",
+        "RoughnessMap": "rbxassetid://73980905761480",
+        "center": [
+          0.36,
+          6.11,
+          0
+        ],
+        "operations": {
+          "Asset": "9af878fd-c703-4b94-8684-5b03c02ace41"
+        }
+      }
+    },
+    "Amber_Lantern_Stone": {
+      "Amber_Lantern_Stone__Bronze": {
+        "ColorMap": "rbxassetid://117957346909003",
+        "MeshId": "rbxassetid://131826029154336",
+        "MetalnessMap": "rbxassetid://103728839581257",
+        "NormalMap": "rbxassetid://120638869224297",
+        "RoughnessMap": "rbxassetid://121417918625819",
+        "center": [
+          0,
+          8.65,
+          0
+        ],
+        "operations": {
+          "Asset": "6792bc5c-876c-449a-a903-94026253c5d6"
+        }
+      },
+      "Amber_Lantern_Stone__Glow": {
+        "ColorMap": "rbxassetid://93205476789310",
+        "MeshId": "rbxassetid://76471570641113",
+        "MetalnessMap": "rbxassetid://112249682778278",
+        "NormalMap": "rbxassetid://114041101617482",
+        "RoughnessMap": "rbxassetid://121476398534218",
+        "center": [
+          0,
+          7.5,
+          0
+        ],
+        "operations": {
+          "Asset": "6792bc5c-876c-449a-a903-94026253c5d6"
+        }
+      },
+      "Amber_Lantern_Stone__Stone": {
+        "ColorMap": "rbxassetid://91480384655451",
+        "MeshId": "rbxassetid://118718152872992",
+        "MetalnessMap": "rbxassetid://96102738318528",
+        "NormalMap": "rbxassetid://86096385599048",
+        "RoughnessMap": "rbxassetid://93549129312270",
+        "center": [
+          0,
+          4.94,
+          0
+        ],
+        "operations": {
+          "Asset": "6792bc5c-876c-449a-a903-94026253c5d6"
+        }
+      }
+    },
+    "Amber_Leaf_Litter_A": {
+      "Amber_Leaf_Litter_A__Leaves": {
+        "ColorMap": "rbxassetid://117212988830383",
+        "MeshId": "rbxassetid://117663014559833",
+        "MetalnessMap": "rbxassetid://131795268482922",
+        "NormalMap": "rbxassetid://130110610814145",
+        "RoughnessMap": "rbxassetid://125835095031316",
+        "center": [
+          0,
+          0.19,
+          0
+        ],
+        "operations": {
+          "Asset": "6560f9be-68b9-4d49-8872-a7e0df4831c4"
+        }
+      },
+      "Amber_Leaf_Litter_A__Twigs": {
+        "ColorMap": "rbxassetid://132092464957735",
+        "MeshId": "rbxassetid://127065286320943",
+        "MetalnessMap": "rbxassetid://96102738318528",
+        "NormalMap": "rbxassetid://96598245687767",
+        "RoughnessMap": "rbxassetid://85468026399422",
+        "center": [
+          0.08,
+          0.42,
+          0.64
+        ],
+        "operations": {
+          "Asset": "6560f9be-68b9-4d49-8872-a7e0df4831c4"
+        }
+      }
+    },
+    "Amber_Leaf_Litter_B": {
+      "Amber_Leaf_Litter_B__Leaves": {
+        "ColorMap": "rbxassetid://117212988830383",
+        "MeshId": "rbxassetid://118664713641977",
+        "MetalnessMap": "rbxassetid://131795268482922",
+        "NormalMap": "rbxassetid://130110610814145",
+        "RoughnessMap": "rbxassetid://125835095031316",
+        "center": [
+          0,
+          1.24,
+          0
+        ],
+        "operations": {
+          "Asset": "037ce9aa-61d5-4c8d-ab0e-232dec837878"
+        }
+      }
+    },
+    "Amber_Ledge_Long": {
+      "Amber_Ledge_Long__Stone": {
+        "ColorMap": "rbxassetid://140538991820369",
+        "MeshId": "rbxassetid://75077152547657",
+        "MetalnessMap": "rbxassetid://131795268482922",
+        "NormalMap": "rbxassetid://93909070666605",
+        "RoughnessMap": "rbxassetid://85120968715999",
+        "center": [
+          0,
+          2.58,
+          0
+        ],
+        "operations": {
+          "Asset": "2978352d-336f-46c0-a599-4b8baf847251"
+        }
+      }
+    },
+    "Amber_Ledge_Overhang": {
+      "Amber_Ledge_Overhang__Stone": {
+        "ColorMap": "rbxassetid://140538991820369",
+        "MeshId": "rbxassetid://110284314282796",
+        "MetalnessMap": "rbxassetid://131795268482922",
+        "NormalMap": "rbxassetid://93909070666605",
+        "RoughnessMap": "rbxassetid://85120968715999",
+        "center": [
+          0,
+          9.73,
+          0
+        ],
+        "operations": {
+          "Asset": "8da707d0-0373-4cc5-ba06-369f1de50a9c"
+        }
+      }
+    },
+    "Amber_Maple_Gold": {
+      "Amber_Maple_Gold__Bark": {
+        "ColorMap": "rbxassetid://125527263853213",
+        "MeshId": "rbxassetid://131243347166001",
+        "MetalnessMap": "rbxassetid://96102738318528",
+        "NormalMap": "rbxassetid://86312582501284",
+        "RoughnessMap": "rbxassetid://130169839282286",
+        "center": [
+          -0.11,
+          15.35,
+          0.12
+        ],
+        "operations": {
+          "Asset": "84799332-6a9b-40fe-a64d-86c896bab1fe"
+        }
+      },
+      "Amber_Maple_Gold__Leaves_Detail": {
+        "ColorMap": "rbxassetid://117212988830383",
+        "MeshId": "rbxassetid://135648906760521",
+        "MetalnessMap": "rbxassetid://94453496888674",
+        "NormalMap": "rbxassetid://130110610814145",
+        "RoughnessMap": "rbxassetid://125835095031316",
+        "center": [
+          0.67,
+          22.31,
+          0
+        ],
+        "operations": {
+          "Asset": "84799332-6a9b-40fe-a64d-86c896bab1fe"
+        }
+      },
+      "Amber_Maple_Gold__Leaves_Mass": {
+        "ColorMap": "rbxassetid://117212988830383",
+        "MeshId": "rbxassetid://102510710913901",
+        "MetalnessMap": "rbxassetid://94453496888674",
+        "NormalMap": "rbxassetid://130110610814145",
+        "RoughnessMap": "rbxassetid://125835095031316",
+        "center": [
+          -1.67,
+          22.32,
+          0.92
+        ],
+        "operations": {
+          "Asset": "84799332-6a9b-40fe-a64d-86c896bab1fe"
+        }
+      }
+    },
+    "Amber_Maple_Red": {
+      "Amber_Maple_Red__Bark": {
+        "ColorMap": "rbxassetid://125527263853213",
+        "MeshId": "rbxassetid://110355049527021",
+        "MetalnessMap": "rbxassetid://96102738318528",
+        "NormalMap": "rbxassetid://86312582501284",
+        "RoughnessMap": "rbxassetid://130169839282286",
+        "center": [
+          -0.94,
+          18.14,
+          0.22
+        ],
+        "operations": {
+          "Asset": "44209f75-fab5-450b-abf3-e8952ddd2c05"
+        }
+      },
+      "Amber_Maple_Red__Leaves_Detail": {
+        "ColorMap": "rbxassetid://117212988830383",
+        "MeshId": "rbxassetid://82035472927391",
+        "MetalnessMap": "rbxassetid://94453496888674",
+        "NormalMap": "rbxassetid://130110610814145",
+        "RoughnessMap": "rbxassetid://125835095031316",
+        "center": [
+          0.36,
+          26.99,
+          0
+        ],
+        "operations": {
+          "Asset": "44209f75-fab5-450b-abf3-e8952ddd2c05"
+        }
+      },
+      "Amber_Maple_Red__Leaves_Mass": {
+        "ColorMap": "rbxassetid://117212988830383",
+        "MeshId": "rbxassetid://125883277504344",
+        "MetalnessMap": "rbxassetid://94453496888674",
+        "NormalMap": "rbxassetid://130110610814145",
+        "RoughnessMap": "rbxassetid://125835095031316",
+        "center": [
+          -1.53,
+          26.49,
+          0.57
+        ],
+        "operations": {
+          "Asset": "44209f75-fab5-450b-abf3-e8952ddd2c05"
+        }
+      }
+    },
+    "Amber_Maple_Sapling": {
+      "Amber_Maple_Sapling__Bark": {
+        "ColorMap": "rbxassetid://125527263853213",
+        "MeshId": "rbxassetid://111463197742838",
+        "MetalnessMap": "rbxassetid://96102738318528",
+        "NormalMap": "rbxassetid://86312582501284",
+        "RoughnessMap": "rbxassetid://130169839282286",
+        "center": [
+          0.39,
+          6.69,
+          0.07
+        ],
+        "operations": {
+          "Asset": "374d16af-6f4e-4b0a-899c-2570f00bd723"
+        }
+      },
+      "Amber_Maple_Sapling__Leaves_Detail": {
+        "ColorMap": "rbxassetid://117212988830383",
+        "MeshId": "rbxassetid://94614893630561",
+        "MetalnessMap": "rbxassetid://94453496888674",
+        "NormalMap": "rbxassetid://130110610814145",
+        "RoughnessMap": "rbxassetid://125835095031316",
+        "center": [
+          0,
+          11.27,
+          0
+        ],
+        "operations": {
+          "Asset": "374d16af-6f4e-4b0a-899c-2570f00bd723"
+        }
+      },
+      "Amber_Maple_Sapling__Leaves_Mass": {
+        "ColorMap": "rbxassetid://117212988830383",
+        "MeshId": "rbxassetid://129074361472395",
+        "MetalnessMap": "rbxassetid://94453496888674",
+        "NormalMap": "rbxassetid://130110610814145",
+        "RoughnessMap": "rbxassetid://125835095031316",
+        "center": [
+          -0.04,
+          10.87,
+          -0.41
+        ],
+        "operations": {
+          "Asset": "374d16af-6f4e-4b0a-899c-2570f00bd723"
+        }
+      }
+    },
+    "Amber_RedTrunk_A": {
+      "Amber_RedTrunk_A__Bark": {
+        "ColorMap": "rbxassetid://117121602140692",
+        "MeshId": "rbxassetid://114853409078540",
+        "MetalnessMap": "rbxassetid://96102738318528",
+        "NormalMap": "rbxassetid://132351461228188",
+        "RoughnessMap": "rbxassetid://136635771706581",
+        "center": [
+          -2.46,
+          19.53,
+          1.57
+        ],
+        "operations": {
+          "Asset": "411f83df-1636-444b-8720-33aeffe1c048"
+        }
+      },
+      "Amber_RedTrunk_A__Leaves_Detail": {
+        "ColorMap": "rbxassetid://117212988830383",
+        "MeshId": "rbxassetid://97981936469726",
+        "MetalnessMap": "rbxassetid://94453496888674",
+        "NormalMap": "rbxassetid://130110610814145",
+        "RoughnessMap": "rbxassetid://125835095031316",
+        "center": [
+          0.44,
+          34.57,
+          0
+        ],
+        "operations": {
+          "Asset": "411f83df-1636-444b-8720-33aeffe1c048"
+        }
+      },
+      "Amber_RedTrunk_A__Leaves_Mass": {
+        "ColorMap": "rbxassetid://117212988830383",
+        "MeshId": "rbxassetid://116854758921219",
+        "MetalnessMap": "rbxassetid://94453496888674",
+        "NormalMap": "rbxassetid://130110610814145",
+        "RoughnessMap": "rbxassetid://125835095031316",
+        "center": [
+          -2.01,
+          34.25,
+          0.95
+        ],
+        "operations": {
+          "Asset": "411f83df-1636-444b-8720-33aeffe1c048"
+        }
+      }
+    },
+    "Amber_RedTrunk_B": {
+      "Amber_RedTrunk_B__Bark": {
+        "ColorMap": "rbxassetid://117121602140692",
+        "MeshId": "rbxassetid://95219338515014",
+        "MetalnessMap": "rbxassetid://96102738318528",
+        "NormalMap": "rbxassetid://132351461228188",
+        "RoughnessMap": "rbxassetid://136635771706581",
+        "center": [
+          -0.68,
+          26.03,
+          0.93
+        ],
+        "operations": {
+          "Asset": "dcbae82e-81db-4593-95eb-0021206e03a5"
+        }
+      },
+      "Amber_RedTrunk_B__Leaves_Detail": {
+        "ColorMap": "rbxassetid://117212988830383",
+        "MeshId": "rbxassetid://111116386040539",
+        "MetalnessMap": "rbxassetid://94453496888674",
+        "NormalMap": "rbxassetid://130110610814145",
+        "RoughnessMap": "rbxassetid://125835095031316",
+        "center": [
+          0,
+          45.88,
+          0
+        ],
+        "operations": {
+          "Asset": "dcbae82e-81db-4593-95eb-0021206e03a5"
+        }
+      },
+      "Amber_RedTrunk_B__Leaves_Mass": {
+        "ColorMap": "rbxassetid://117212988830383",
+        "MeshId": "rbxassetid://111806568198270",
+        "MetalnessMap": "rbxassetid://94453496888674",
+        "NormalMap": "rbxassetid://130110610814145",
+        "RoughnessMap": "rbxassetid://125835095031316",
+        "center": [
+          -1.68,
+          45.43,
+          0.45
+        ],
+        "operations": {
+          "Asset": "dcbae82e-81db-4593-95eb-0021206e03a5"
+        }
+      }
+    },
+    "Amber_Retaining_Wall_A": {
+      "Amber_Retaining_Wall_A__Coping": {
+        "ColorMap": "rbxassetid://131850201092070",
+        "MeshId": "rbxassetid://103441065976826",
+        "MetalnessMap": "rbxassetid://96102738318528",
+        "NormalMap": "rbxassetid://137717955312064",
+        "RoughnessMap": "rbxassetid://126761277000373",
+        "center": [
+          0,
+          10.8,
+          -0.84
+        ],
+        "operations": {
+          "Asset": "3cd91105-6a78-4fd6-956f-5b5f81fcefb1"
+        }
+      },
+      "Amber_Retaining_Wall_A__Wall": {
+        "ColorMap": "rbxassetid://91480384655451",
+        "MeshId": "rbxassetid://104112395270001",
+        "MetalnessMap": "rbxassetid://96102738318528",
+        "NormalMap": "rbxassetid://86096385599048",
+        "RoughnessMap": "rbxassetid://93549129312270",
+        "center": [
+          0,
+          5.22,
+          0
+        ],
+        "operations": {
+          "Asset": "3cd91105-6a78-4fd6-956f-5b5f81fcefb1"
+        }
+      }
+    },
+    "Amber_Retaining_Wall_B": {
+      "Amber_Retaining_Wall_B__Coping": {
+        "ColorMap": "rbxassetid://131850201092070",
+        "MeshId": "rbxassetid://96668146662674",
+        "MetalnessMap": "rbxassetid://96102738318528",
+        "NormalMap": "rbxassetid://137717955312064",
+        "RoughnessMap": "rbxassetid://126761277000373",
+        "center": [
+          1.03,
+          9.2,
+          0.22
+        ],
+        "operations": {
+          "Asset": "0b889c8b-1031-407a-97e0-ce456b4916a5"
+        }
+      },
+      "Amber_Retaining_Wall_B__Wall": {
+        "ColorMap": "rbxassetid://91480384655451",
+        "MeshId": "rbxassetid://94766488148439",
+        "MetalnessMap": "rbxassetid://96102738318528",
+        "NormalMap": "rbxassetid://86096385599048",
+        "RoughnessMap": "rbxassetid://93549129312270",
+        "center": [
+          0,
+          4.72,
+          0
+        ],
+        "operations": {
+          "Asset": "0b889c8b-1031-407a-97e0-ce456b4916a5"
+        }
+      }
+    },
+    "Amber_Root_Tangle": {
+      "Amber_Root_Tangle__Bark": {
+        "ColorMap": "rbxassetid://132092464957735",
+        "MeshId": "rbxassetid://121598710767147",
+        "MetalnessMap": "rbxassetid://96102738318528",
+        "NormalMap": "rbxassetid://96598245687767",
+        "RoughnessMap": "rbxassetid://85468026399422",
+        "center": [
+          0,
+          2.88,
+          0
+        ],
+        "operations": {
+          "Asset": "73899aaf-df44-4200-a499-d3838ee9348d"
+        }
+      }
+    },
+    "Amber_Rope_Rail": {
+      "Amber_Rope_Rail__Rope": {
+        "ColorMap": "rbxassetid://123560850837708",
+        "MeshId": "rbxassetid://124497342059073",
+        "MetalnessMap": "rbxassetid://96102738318528",
+        "NormalMap": "rbxassetid://130646674175819",
+        "RoughnessMap": "rbxassetid://116560551572003",
+        "center": [
+          0,
+          2.9,
+          -0.02
+        ],
+        "operations": {
+          "Asset": "dc9bce3a-9840-4a8c-a794-93fc93b08fdc"
+        }
+      },
+      "Amber_Rope_Rail__Timber": {
+        "ColorMap": "rbxassetid://78839463221136",
+        "MeshId": "rbxassetid://112868842813387",
+        "MetalnessMap": "rbxassetid://96102738318528",
+        "NormalMap": "rbxassetid://103885996342197",
+        "RoughnessMap": "rbxassetid://73980905761480",
+        "center": [
+          0,
+          2.62,
+          0
+        ],
+        "operations": {
+          "Asset": "dc9bce3a-9840-4a8c-a794-93fc93b08fdc"
+        }
+      }
+    },
+    "Amber_Scree_A": {
+      "Amber_Scree_A__Stone": {
+        "ColorMap": "rbxassetid://140538991820369",
+        "MeshId": "rbxassetid://89488849608752",
+        "MetalnessMap": "rbxassetid://94453496888674",
+        "NormalMap": "rbxassetid://93909070666605",
+        "RoughnessMap": "rbxassetid://85120968715999",
+        "center": [
+          0,
+          1.31,
+          0
+        ],
+        "operations": {
+          "Asset": "c82f08e5-848d-48b6-a73e-fa9d658a6f55"
+        }
+      }
+    },
+    "Amber_Scree_B": {
+      "Amber_Scree_B__Stone": {
+        "ColorMap": "rbxassetid://140538991820369",
+        "MeshId": "rbxassetid://80618209182183",
+        "MetalnessMap": "rbxassetid://94453496888674",
+        "NormalMap": "rbxassetid://93909070666605",
+        "RoughnessMap": "rbxassetid://85120968715999",
+        "center": [
+          0,
+          1.29,
+          0
+        ],
+        "operations": {
+          "Asset": "16fecb8d-d20a-49bb-80a7-f24991a47f65"
+        }
+      }
+    },
+    "Amber_Shrine": {
+      "Amber_Shrine__Bronze": {
+        "ColorMap": "rbxassetid://117957346909003",
+        "MeshId": "rbxassetid://117602753087253",
+        "MetalnessMap": "rbxassetid://103728839581257",
+        "NormalMap": "rbxassetid://120638869224297",
+        "RoughnessMap": "rbxassetid://121417918625819",
+        "center": [
+          0,
+          14.05,
+          0.35
+        ],
+        "operations": {
+          "Asset": "4325019b-7366-44bc-8946-0ef819251642"
+        }
+      },
+      "Amber_Shrine__Glow": {
+        "ColorMap": "rbxassetid://93205476789310",
+        "MeshId": "rbxassetid://113386955845677",
+        "MetalnessMap": "rbxassetid://112249682778278",
+        "NormalMap": "rbxassetid://114041101617482",
+        "RoughnessMap": "rbxassetid://121476398534218",
+        "center": [
+          0,
+          7.25,
+          0.35
+        ],
+        "operations": {
+          "Asset": "4325019b-7366-44bc-8946-0ef819251642"
+        }
+      },
+      "Amber_Shrine__Roof": {
+        "ColorMap": "rbxassetid://126712891644387",
+        "MeshId": "rbxassetid://70795947045504",
+        "MetalnessMap": "rbxassetid://96102738318528",
+        "NormalMap": "rbxassetid://108815232953800",
+        "RoughnessMap": "rbxassetid://74445301975391",
+        "center": [
+          0,
+          17.05,
+          0.35
+        ],
+        "operations": {
+          "Asset": "4325019b-7366-44bc-8946-0ef819251642"
+        }
+      },
+      "Amber_Shrine__Stone": {
+        "ColorMap": "rbxassetid://91480384655451",
+        "MeshId": "rbxassetid://129643166095728",
+        "MetalnessMap": "rbxassetid://96102738318528",
+        "NormalMap": "rbxassetid://86096385599048",
+        "RoughnessMap": "rbxassetid://93549129312270",
+        "center": [
+          0,
+          6.5,
+          -1.5
+        ],
+        "operations": {
+          "Asset": "4325019b-7366-44bc-8946-0ef819251642"
+        }
+      },
+      "Amber_Shrine__Timber": {
+        "ColorMap": "rbxassetid://78839463221136",
+        "MeshId": "rbxassetid://81839561999053",
+        "MetalnessMap": "rbxassetid://96102738318528",
+        "NormalMap": "rbxassetid://103885996342197",
+        "RoughnessMap": "rbxassetid://73980905761480",
+        "center": [
+          0,
+          12.8,
+          0.35
+        ],
+        "operations": {
+          "Asset": "4325019b-7366-44bc-8946-0ef819251642"
+        }
+      }
+    },
+    "Amber_Shrub_Dry": {
+      "Amber_Shrub_Dry__Leaves": {
+        "ColorMap": "rbxassetid://117212988830383",
+        "MeshId": "rbxassetid://88473213313675",
+        "MetalnessMap": "rbxassetid://94453496888674",
+        "NormalMap": "rbxassetid://130110610814145",
+        "RoughnessMap": "rbxassetid://125835095031316",
+        "center": [
+          0,
+          3.37,
+          0
+        ],
+        "operations": {
+          "Asset": "782962df-fa73-441c-ad26-28b6be3e0373"
+        }
+      },
+      "Amber_Shrub_Dry__Stems": {
+        "ColorMap": "rbxassetid://125527263853213",
+        "MeshId": "rbxassetid://115720708591761",
+        "MetalnessMap": "rbxassetid://96102738318528",
+        "NormalMap": "rbxassetid://86312582501284",
+        "RoughnessMap": "rbxassetid://130169839282286",
+        "center": [
+          -0.11,
+          2.82,
+          -0.05
+        ],
+        "operations": {
+          "Asset": "782962df-fa73-441c-ad26-28b6be3e0373"
+        }
+      }
+    },
+    "Amber_Shrub_Sumac": {
+      "Amber_Shrub_Sumac__Leaves": {
+        "ColorMap": "rbxassetid://117212988830383",
+        "MeshId": "rbxassetid://82662805242104",
+        "MetalnessMap": "rbxassetid://94453496888674",
+        "NormalMap": "rbxassetid://130110610814145",
+        "RoughnessMap": "rbxassetid://125835095031316",
+        "center": [
+          0,
+          3.52,
+          0
+        ],
+        "operations": {
+          "Asset": "6d07c2f5-1e2e-47d2-95a2-f4e312cd70d4"
+        }
+      },
+      "Amber_Shrub_Sumac__Stems": {
+        "ColorMap": "rbxassetid://125527263853213",
+        "MeshId": "rbxassetid://81716632676651",
+        "MetalnessMap": "rbxassetid://96102738318528",
+        "NormalMap": "rbxassetid://86312582501284",
+        "RoughnessMap": "rbxassetid://130169839282286",
+        "center": [
+          0.1,
+          3.11,
+          0.1
+        ],
+        "operations": {
+          "Asset": "6d07c2f5-1e2e-47d2-95a2-f4e312cd70d4"
+        }
+      }
+    },
+    "Amber_Spire": {
+      "Amber_Spire__Stone": {
+        "ColorMap": "rbxassetid://140538991820369",
+        "MeshId": "rbxassetid://111081984749513",
+        "MetalnessMap": "rbxassetid://94453496888674",
+        "NormalMap": "rbxassetid://93909070666605",
+        "RoughnessMap": "rbxassetid://85120968715999",
+        "center": [
+          0,
+          20.64,
+          0
+        ],
+        "operations": {
+          "Asset": "64dfc9ba-f3cd-4e77-8409-f3db7b41419c"
+        }
+      }
+    },
+    "Amber_Stair_Run": {
+      "Amber_Stair_Run__Steps": {
+        "ColorMap": "rbxassetid://91480384655451",
+        "MeshId": "rbxassetid://71433498006736",
+        "MetalnessMap": "rbxassetid://96102738318528",
+        "NormalMap": "rbxassetid://86096385599048",
+        "RoughnessMap": "rbxassetid://93549129312270",
+        "center": [
+          0,
+          5.9,
+          0
+        ],
+        "operations": {
+          "Asset": "edf0135e-8c32-469b-b057-cbe28efd6e38"
+        }
+      },
+      "Amber_Stair_Run__Walls": {
+        "ColorMap": "rbxassetid://131850201092070",
+        "MeshId": "rbxassetid://104366223499032",
+        "MetalnessMap": "rbxassetid://96102738318528",
+        "NormalMap": "rbxassetid://137717955312064",
+        "RoughnessMap": "rbxassetid://126761277000373",
+        "center": [
+          0,
+          6.8,
+          0
+        ],
+        "operations": {
+          "Asset": "edf0135e-8c32-469b-b057-cbe28efd6e38"
+        }
+      }
+    },
+    "Amber_Stair_Worn": {
+      "Amber_Stair_Worn__Steps": {
+        "ColorMap": "rbxassetid://91480384655451",
+        "MeshId": "rbxassetid://104325065354103",
+        "MetalnessMap": "rbxassetid://96102738318528",
+        "NormalMap": "rbxassetid://86096385599048",
+        "RoughnessMap": "rbxassetid://93549129312270",
+        "center": [
+          0,
+          5.86,
+          -0.01
+        ],
+        "operations": {
+          "Asset": "346034aa-a1b4-4189-a561-a1b94b65a286"
+        }
+      },
+      "Amber_Stair_Worn__Walls": {
+        "ColorMap": "rbxassetid://131850201092070",
+        "MeshId": "rbxassetid://88435429444805",
+        "MetalnessMap": "rbxassetid://96102738318528",
+        "NormalMap": "rbxassetid://137717955312064",
+        "RoughnessMap": "rbxassetid://126761277000373",
+        "center": [
+          0,
+          6.5,
+          0
+        ],
+        "operations": {
+          "Asset": "346034aa-a1b4-4189-a561-a1b94b65a286"
+        }
+      }
+    },
+    "Amber_Stump": {
+      "Amber_Stump__Bark": {
+        "ColorMap": "rbxassetid://132092464957735",
+        "MeshId": "rbxassetid://71795255065888",
+        "MetalnessMap": "rbxassetid://130366499393704",
+        "NormalMap": "rbxassetid://96598245687767",
+        "RoughnessMap": "rbxassetid://85468026399422",
+        "center": [
+          0,
+          3.65,
+          0
+        ],
+        "operations": {
+          "Asset": "f2b36b9a-d62a-4655-b249-94ef9fe4ab37"
+        }
+      },
+      "Amber_Stump__Ends": {
+        "ColorMap": "rbxassetid://125623201940356",
+        "MeshId": "rbxassetid://95391470233823",
+        "MetalnessMap": "rbxassetid://81553928851811",
+        "NormalMap": "rbxassetid://93909809406578",
+        "RoughnessMap": "rbxassetid://111733300987538",
+        "center": [
+          0.36,
+          5.29,
+          0.44
+        ],
+        "operations": {
+          "Asset": "f2b36b9a-d62a-4655-b249-94ef9fe4ab37"
+        }
+      }
+    }
+  }
+}

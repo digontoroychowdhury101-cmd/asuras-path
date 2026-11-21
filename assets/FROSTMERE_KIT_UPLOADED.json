@@ -1,0 +1,1480 @@
+{
+  "modelAssets": {
+    "Frost_Beacon_Hero": {
+      "assetId": "rbxassetid://101288509219378",
+      "moderationState": "Approved",
+      "operationId": "d2428182-2e61-49c7-ab8d-8b52eb33ed69",
+      "source": "assets/source/overworld/upload/frostmere/Frost_Beacon_Hero.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Frost_Birch_A": {
+      "assetId": "rbxassetid://101095085675093",
+      "moderationState": "Approved",
+      "operationId": "38c7c5df-b265-4f07-84dd-8682f1da4497",
+      "source": "assets/source/overworld/upload/frostmere/Frost_Birch_A.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Frost_Birch_B": {
+      "assetId": "rbxassetid://72098555063169",
+      "moderationState": "Approved",
+      "operationId": "248e75dc-53cd-4548-acef-c042d996899f",
+      "source": "assets/source/overworld/upload/frostmere/Frost_Birch_B.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Frost_Boulder_A": {
+      "assetId": "rbxassetid://122713617155193",
+      "moderationState": "Approved",
+      "operationId": "5cb35797-a785-44c2-bfb9-042aace793b9",
+      "source": "assets/source/overworld/upload/frostmere/Frost_Boulder_A.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Frost_Boulder_B": {
+      "assetId": "rbxassetid://119979975677059",
+      "moderationState": "Approved",
+      "operationId": "65253669-95cd-4887-a818-a496e8e35641",
+      "source": "assets/source/overworld/upload/frostmere/Frost_Boulder_B.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Frost_Boulder_C": {
+      "assetId": "rbxassetid://74014861625701",
+      "moderationState": "Approved",
+      "operationId": "d8bcf9d7-3a3a-421d-a060-ddc9b72e3b53",
+      "source": "assets/source/overworld/upload/frostmere/Frost_Boulder_C.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Frost_Brazier": {
+      "assetId": "rbxassetid://130345402950869",
+      "moderationState": "Approved",
+      "operationId": "ca3644f6-359a-46ff-aca7-638f5e2cb475",
+      "source": "assets/source/overworld/upload/frostmere/Frost_Brazier.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Frost_Cairn": {
+      "assetId": "rbxassetid://112413270375001",
+      "moderationState": "Approved",
+      "operationId": "4cf23adb-ebef-4f20-a52b-144c90355a42",
+      "source": "assets/source/overworld/upload/frostmere/Frost_Cairn.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Frost_Cliff_Corner": {
+      "assetId": "rbxassetid://89651271593560",
+      "moderationState": "Approved",
+      "operationId": "4395ff3a-2329-45c2-8e0e-eae08ca56051",
+      "source": "assets/source/overworld/upload/frostmere/Frost_Cliff_Corner.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Frost_Cliff_Wall_A": {
+      "assetId": "rbxassetid://109451278611645",
+      "moderationState": "Approved",
+      "operationId": "cd09d8df-bdf0-4329-acd9-3284fdc8e717",
+      "source": "assets/source/overworld/upload/frostmere/Frost_Cliff_Wall_A.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Frost_Cliff_Wall_B": {
+      "assetId": "rbxassetid://125611787626103",
+      "moderationState": "Approved",
+      "operationId": "115b5944-2571-4873-ae3d-3ef80c8ea0a0",
+      "source": "assets/source/overworld/upload/frostmere/Frost_Cliff_Wall_B.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Frost_Dead_Snag": {
+      "assetId": "rbxassetid://128056860279733",
+      "moderationState": "Approved",
+      "operationId": "38a1f554-03d8-4494-8eff-1b26651c03e7",
+      "source": "assets/source/overworld/upload/frostmere/Frost_Dead_Snag.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Frost_Dock_Section": {
+      "assetId": "rbxassetid://85405134485996",
+      "moderationState": "Approved",
+      "operationId": "272bee0c-b00b-4351-9600-3bd657cd9062",
+      "source": "assets/source/overworld/upload/frostmere/Frost_Dock_Section.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Frost_Fallen_Log": {
+      "assetId": "rbxassetid://117867831888368",
+      "moderationState": "Approved",
+      "operationId": "bf975e1b-e08c-41e1-a237-4cf7356f5018",
+      "source": "assets/source/overworld/upload/frostmere/Frost_Fallen_Log.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Frost_Fir_A": {
+      "assetId": "rbxassetid://77379729752824",
+      "moderationState": "Approved",
+      "operationId": "9f7cf463-5581-467d-af24-c6f267d37a84",
+      "source": "assets/source/overworld/upload/frostmere/Frost_Fir_A.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Frost_Fir_B": {
+      "assetId": "rbxassetid://111131661971900",
+      "moderationState": "Approved",
+      "operationId": "cc935996-9b77-47e9-8225-8323ed7f71c0",
+      "source": "assets/source/overworld/upload/frostmere/Frost_Fir_B.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Frost_Fir_Broad": {
+      "assetId": "rbxassetid://93486140158873",
+      "moderationState": "Approved",
+      "operationId": "66e96635-5c78-499d-8d2a-88b3ad47b9c9",
+      "source": "assets/source/overworld/upload/frostmere/Frost_Fir_Broad.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Frost_Fir_Sapling": {
+      "assetId": "rbxassetid://127379768602886",
+      "moderationState": "Approved",
+      "operationId": "4d6fb088-5292-4f6a-a7cf-1cd2a172eda3",
+      "source": "assets/source/overworld/upload/frostmere/Frost_Fir_Sapling.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Frost_Fishing_Hut": {
+      "assetId": "rbxassetid://109399828248341",
+      "moderationState": "Approved",
+      "operationId": "5f159da5-cc56-4050-b9b8-4314cccd03c2",
+      "source": "assets/source/overworld/upload/frostmere/Frost_Fishing_Hut.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Frost_Grass_Tuft_A": {
+      "assetId": "rbxassetid://138622798921560",
+      "moderationState": "Approved",
+      "operationId": "34b11e5d-c4dd-4d29-9f7f-9ce087a48ded",
+      "source": "assets/source/overworld/upload/frostmere/Frost_Grass_Tuft_A.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Frost_Grass_Tuft_B": {
+      "assetId": "rbxassetid://84615344831954",
+      "moderationState": "Approved",
+      "operationId": "30d2da14-f61f-4f7a-a2c8-eca3786288c5",
+      "source": "assets/source/overworld/upload/frostmere/Frost_Grass_Tuft_B.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Frost_Ice_Shards_A": {
+      "assetId": "rbxassetid://135325793038383",
+      "moderationState": "Approved",
+      "operationId": "79fb6b39-211b-477c-8315-33e414a41e2d",
+      "source": "assets/source/overworld/upload/frostmere/Frost_Ice_Shards_A.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Frost_Ice_Shards_B": {
+      "assetId": "rbxassetid://100464855697979",
+      "moderationState": "Approved",
+      "operationId": "0ace9301-c0b0-43a2-ba5b-455d2d4d794d",
+      "source": "assets/source/overworld/upload/frostmere/Frost_Ice_Shards_B.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Frost_Lantern": {
+      "assetId": "rbxassetid://104243930670122",
+      "moderationState": "Approved",
+      "operationId": "4f8fe791-cdc9-40d7-b3e0-cb371b454996",
+      "source": "assets/source/overworld/upload/frostmere/Frost_Lantern.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Frost_Prayer_Flags": {
+      "assetId": "rbxassetid://80614695242457",
+      "moderationState": "Approved",
+      "operationId": "f0560b74-3f17-4489-9dbd-2a0a1ea2da6a",
+      "source": "assets/source/overworld/upload/frostmere/Frost_Prayer_Flags.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Frost_Retaining_Wall": {
+      "assetId": "rbxassetid://91728889269707",
+      "moderationState": "Approved",
+      "operationId": "40e15228-0895-48d8-9661-6064abbce134",
+      "source": "assets/source/overworld/upload/frostmere/Frost_Retaining_Wall.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Frost_Scree_A": {
+      "assetId": "rbxassetid://118019972971666",
+      "moderationState": "Approved",
+      "operationId": "681bb655-45a3-440f-ad25-081f04ae1f37",
+      "source": "assets/source/overworld/upload/frostmere/Frost_Scree_A.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Frost_Scree_B": {
+      "assetId": "rbxassetid://130209488510452",
+      "moderationState": "Approved",
+      "operationId": "e80cb073-9355-4dc0-852b-654f5849ff81",
+      "source": "assets/source/overworld/upload/frostmere/Frost_Scree_B.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Frost_Shrub_Frozen": {
+      "assetId": "rbxassetid://129676120687376",
+      "moderationState": "Approved",
+      "operationId": "7bb671bb-a32a-4a90-9bcd-cfbd2b4bace1",
+      "source": "assets/source/overworld/upload/frostmere/Frost_Shrub_Frozen.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Frost_Shrub_Small": {
+      "assetId": "rbxassetid://91227507798934",
+      "moderationState": "Approved",
+      "operationId": "a1158110-027d-4156-ae8d-71edb02baf10",
+      "source": "assets/source/overworld/upload/frostmere/Frost_Shrub_Small.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Frost_Sled": {
+      "assetId": "rbxassetid://90606864865533",
+      "moderationState": "Approved",
+      "operationId": "cb5c37fc-755e-4b09-a9ea-fdf37bfc5a75",
+      "source": "assets/source/overworld/upload/frostmere/Frost_Sled.glb",
+      "uploaded": "2026-11-21"
+    },
+    "Frost_Stair_Run": {
+      "assetId": "rbxassetid://77578597498794",
+      "moderationState": "Approved",
+      "operationId": "6adaf759-2bce-48bc-bc7d-294914db519f",
+      "source": "assets/source/overworld/upload/frostmere/Frost_Stair_Run.glb",
+      "uploaded": "2026-11-21"
+    }
+  },
+  "note": "Real IDs only. modelAssets = Assets API Model id (LoadAsset target). pieces = sub-mesh MeshId/maps and foot-centre center read from a verified LoadAsset (tools/assets/registry_readback.py region).",
+  "pieces": {
+    "Frost_Beacon_Hero": {
+      "Frost_Beacon_Hero__Fire": {
+        "ColorMap": "rbxassetid://85972572659223",
+        "MeshId": "rbxassetid://85989172636858",
+        "MetalnessMap": "rbxassetid://112249682778278",
+        "NormalMap": "rbxassetid://114041101617482",
+        "RoughnessMap": "rbxassetid://121476398534218",
+        "center": [
+          -0.05,
+          94.3,
+          0.1
+        ],
+        "operations": {
+          "Asset": "d2428182-2e61-49c7-ab8d-8b52eb33ed69"
+        }
+      },
+      "Frost_Beacon_Hero__Stone": {
+        "ColorMap": "rbxassetid://116805838334463",
+        "MeshId": "rbxassetid://134885612284825",
+        "MetalnessMap": "rbxassetid://137379579832042",
+        "NormalMap": "rbxassetid://111022978946545",
+        "RoughnessMap": "rbxassetid://70487974442734",
+        "center": [
+          0,
+          36.4,
+          0.02
+        ],
+        "operations": {
+          "Asset": "d2428182-2e61-49c7-ab8d-8b52eb33ed69"
+        }
+      },
+      "Frost_Beacon_Hero__Timber": {
+        "ColorMap": "rbxassetid://96176509930942",
+        "MeshId": "rbxassetid://76735426093754",
+        "MetalnessMap": "rbxassetid://108654761729011",
+        "NormalMap": "rbxassetid://103885996342197",
+        "RoughnessMap": "rbxassetid://133789878232363",
+        "center": [
+          0,
+          45.6,
+          -0.25
+        ],
+        "operations": {
+          "Asset": "d2428182-2e61-49c7-ab8d-8b52eb33ed69"
+        }
+      }
+    },
+    "Frost_Birch_A": {
+      "Frost_Birch_A__Bark": {
+        "ColorMap": "rbxassetid://73209532581271",
+        "MeshId": "rbxassetid://140331353007433",
+        "MetalnessMap": "rbxassetid://108654761729011",
+        "NormalMap": "rbxassetid://107007773062104",
+        "RoughnessMap": "rbxassetid://79461097825703",
+        "center": [
+          -0.13,
+          15.6,
+          -0.29
+        ],
+        "operations": {
+          "Asset": "38c7c5df-b265-4f07-84dd-8682f1da4497"
+        }
+      },
+      "Frost_Birch_A__Twigs": {
+        "ColorMap": "rbxassetid://86046142858462",
+        "MeshId": "rbxassetid://107690816490428",
+        "MetalnessMap": "rbxassetid://108654761729011",
+        "NormalMap": "rbxassetid://97601528950510",
+        "RoughnessMap": "rbxassetid://125366579221019",
+        "center": [
+          0,
+          19.43,
+          0
+        ],
+        "operations": {
+          "Asset": "38c7c5df-b265-4f07-84dd-8682f1da4497"
+        }
+      }
+    },
+    "Frost_Birch_B": {
+      "Frost_Birch_B__Bark": {
+        "ColorMap": "rbxassetid://73209532581271",
+        "MeshId": "rbxassetid://98538314085123",
+        "MetalnessMap": "rbxassetid://108654761729011",
+        "NormalMap": "rbxassetid://107007773062104",
+        "RoughnessMap": "rbxassetid://79461097825703",
+        "center": [
+          -0.22,
+          11.57,
+          0.06
+        ],
+        "operations": {
+          "Asset": "248e75dc-53cd-4548-acef-c042d996899f"
+        }
+      },
+      "Frost_Birch_B__Twigs": {
+        "ColorMap": "rbxassetid://86046142858462",
+        "MeshId": "rbxassetid://113417367912549",
+        "MetalnessMap": "rbxassetid://108654761729011",
+        "NormalMap": "rbxassetid://97601528950510",
+        "RoughnessMap": "rbxassetid://125366579221019",
+        "center": [
+          0,
+          14.05,
+          0
+        ],
+        "operations": {
+          "Asset": "248e75dc-53cd-4548-acef-c042d996899f"
+        }
+      }
+    },
+    "Frost_Boulder_A": {
+      "Frost_Boulder_A__Stone": {
+        "ColorMap": "rbxassetid://116805838334463",
+        "MeshId": "rbxassetid://75084733935842",
+        "MetalnessMap": "rbxassetid://137379579832042",
+        "NormalMap": "rbxassetid://111022978946545",
+        "RoughnessMap": "rbxassetid://70487974442734",
+        "center": [
+          0,
+          3.65,
+          0
+        ],
+        "operations": {
+          "Asset": "5cb35797-a785-44c2-bfb9-042aace793b9"
+        }
+      }
+    },
+    "Frost_Boulder_B": {
+      "Frost_Boulder_B__Stone": {
+        "ColorMap": "rbxassetid://116805838334463",
+        "MeshId": "rbxassetid://79589760586707",
+        "MetalnessMap": "rbxassetid://137379579832042",
+        "NormalMap": "rbxassetid://111022978946545",
+        "RoughnessMap": "rbxassetid://70487974442734",
+        "center": [
+          0,
+          5.17,
+          0
+        ],
+        "operations": {
+          "Asset": "65253669-95cd-4887-a818-a496e8e35641"
+        }
+      }
+    },
+    "Frost_Boulder_C": {
+      "Frost_Boulder_C__Stone": {
+        "ColorMap": "rbxassetid://116805838334463",
+        "MeshId": "rbxassetid://138298469378671",
+        "MetalnessMap": "rbxassetid://137379579832042",
+        "NormalMap": "rbxassetid://111022978946545",
+        "RoughnessMap": "rbxassetid://70487974442734",
+        "center": [
+          0,
+          1.95,
+          0
+        ],
+        "operations": {
+          "Asset": "d8bcf9d7-3a3a-421d-a060-ddc9b72e3b53"
+        }
+      }
+    },
+    "Frost_Brazier": {
+      "Frost_Brazier__Fire": {
+        "ColorMap": "rbxassetid://85972572659223",
+        "MeshId": "rbxassetid://86608778317289",
+        "MetalnessMap": "rbxassetid://112249682778278",
+        "NormalMap": "rbxassetid://114041101617482",
+        "RoughnessMap": "rbxassetid://121476398534218",
+        "center": [
+          0,
+          7.71,
+          0.14
+        ],
+        "operations": {
+          "Asset": "ca3644f6-359a-46ff-aca7-638f5e2cb475"
+        }
+      },
+      "Frost_Brazier__Iron": {
+        "ColorMap": "rbxassetid://81261631973968",
+        "MeshId": "rbxassetid://122703141394043",
+        "MetalnessMap": "rbxassetid://100141802937622",
+        "NormalMap": "rbxassetid://120638869224297",
+        "RoughnessMap": "rbxassetid://78030012970784",
+        "center": [
+          0,
+          3.78,
+          -0.01
+        ],
+        "operations": {
+          "Asset": "ca3644f6-359a-46ff-aca7-638f5e2cb475"
+        }
+      },
+      "Frost_Brazier__Snow": {
+        "ColorMap": "rbxassetid://118976472756070",
+        "MeshId": "rbxassetid://140103204962850",
+        "MetalnessMap": "rbxassetid://108654761729011",
+        "NormalMap": "rbxassetid://86569243418513",
+        "RoughnessMap": "rbxassetid://93738889952544",
+        "center": [
+          0,
+          1.03,
+          0
+        ],
+        "operations": {
+          "Asset": "ca3644f6-359a-46ff-aca7-638f5e2cb475"
+        }
+      },
+      "Frost_Brazier__Stone": {
+        "ColorMap": "rbxassetid://118467012024188",
+        "MeshId": "rbxassetid://81261146052223",
+        "MetalnessMap": "rbxassetid://108654761729011",
+        "NormalMap": "rbxassetid://132049253765106",
+        "RoughnessMap": "rbxassetid://78464860274095",
+        "center": [
+          0,
+          1.46,
+          0.14
+        ],
+        "operations": {
+          "Asset": "ca3644f6-359a-46ff-aca7-638f5e2cb475"
+        }
+      }
+    },
+    "Frost_Cairn": {
+      "Frost_Cairn__Stone": {
+        "ColorMap": "rbxassetid://116805838334463",
+        "MeshId": "rbxassetid://92512809801413",
+        "MetalnessMap": "rbxassetid://137379579832042",
+        "NormalMap": "rbxassetid://111022978946545",
+        "RoughnessMap": "rbxassetid://70487974442734",
+        "center": [
+          0,
+          8.58,
+          0
+        ],
+        "operations": {
+          "Asset": "4cf23adb-ebef-4f20-a52b-144c90355a42"
+        }
+      }
+    },
+    "Frost_Cliff_Corner": {
+      "Frost_Cliff_Corner__Stone": {
+        "ColorMap": "rbxassetid://116805838334463",
+        "MeshId": "rbxassetid://79166598668520",
+        "MetalnessMap": "rbxassetid://135999056532719",
+        "NormalMap": "rbxassetid://111022978946545",
+        "RoughnessMap": "rbxassetid://70487974442734",
+        "center": [
+          0,
+          14.91,
+          0
+        ],
+        "operations": {
+          "Asset": "4395ff3a-2329-45c2-8e0e-eae08ca56051"
+        }
+      }
+    },
+    "Frost_Cliff_Wall_A": {
+      "Frost_Cliff_Wall_A__Stone": {
+        "ColorMap": "rbxassetid://116805838334463",
+        "MeshId": "rbxassetid://138060314309205",
+        "MetalnessMap": "rbxassetid://135999056532719",
+        "NormalMap": "rbxassetid://111022978946545",
+        "RoughnessMap": "rbxassetid://70487974442734",
+        "center": [
+          0,
+          17.01,
+          0
+        ],
+        "operations": {
+          "Asset": "cd09d8df-bdf0-4329-acd9-3284fdc8e717"
+        }
+      }
+    },
+    "Frost_Cliff_Wall_B": {
+      "Frost_Cliff_Wall_B__Stone": {
+        "ColorMap": "rbxassetid://116805838334463",
+        "MeshId": "rbxassetid://133394898197500",
+        "MetalnessMap": "rbxassetid://135999056532719",
+        "NormalMap": "rbxassetid://111022978946545",
+        "RoughnessMap": "rbxassetid://70487974442734",
+        "center": [
+          0,
+          23.77,
+          0
+        ],
+        "operations": {
+          "Asset": "115b5944-2571-4873-ae3d-3ef80c8ea0a0"
+        }
+      }
+    },
+    "Frost_Dead_Snag": {
+      "Frost_Dead_Snag__Bark": {
+        "ColorMap": "rbxassetid://117346033746029",
+        "MeshId": "rbxassetid://87588704713004",
+        "MetalnessMap": "rbxassetid://76747879741100",
+        "NormalMap": "rbxassetid://126308334158224",
+        "RoughnessMap": "rbxassetid://112402436422425",
+        "center": [
+          0,
+          18.4,
+          0
+        ],
+        "operations": {
+          "Asset": "38a1f554-03d8-4494-8eff-1b26651c03e7"
+        }
+      },
+      "Frost_Dead_Snag__Ends": {
+        "ColorMap": "rbxassetid://85928020940983",
+        "MeshId": "rbxassetid://138438705158806",
+        "MetalnessMap": "rbxassetid://76747879741100",
+        "NormalMap": "rbxassetid://104209616280205",
+        "RoughnessMap": "rbxassetid://108370140716786",
+        "center": [
+          1.42,
+          31.29,
+          0.2
+        ],
+        "operations": {
+          "Asset": "38a1f554-03d8-4494-8eff-1b26651c03e7"
+        }
+      },
+      "Frost_Dead_Snag__Snow": {
+        "ColorMap": "rbxassetid://118976472756070",
+        "MeshId": "rbxassetid://97666063441727",
+        "MetalnessMap": "rbxassetid://76747879741100",
+        "NormalMap": "rbxassetid://86569243418513",
+        "RoughnessMap": "rbxassetid://93738889952544",
+        "center": [
+          -0.06,
+          16.01,
+          -0.07
+        ],
+        "operations": {
+          "Asset": "38a1f554-03d8-4494-8eff-1b26651c03e7"
+        }
+      }
+    },
+    "Frost_Dock_Section": {
+      "Frost_Dock_Section__Ice": {
+        "ColorMap": "rbxassetid://139868580760012",
+        "MeshId": "rbxassetid://78716691698024",
+        "MetalnessMap": "rbxassetid://76747879741100",
+        "NormalMap": "rbxassetid://87732355995121",
+        "RoughnessMap": "rbxassetid://90984517213220",
+        "center": [
+          0,
+          1.06,
+          0.09
+        ],
+        "operations": {
+          "Asset": "272bee0c-b00b-4351-9600-3bd657cd9062"
+        }
+      },
+      "Frost_Dock_Section__Snow": {
+        "ColorMap": "rbxassetid://118976472756070",
+        "MeshId": "rbxassetid://96942258520446",
+        "MetalnessMap": "rbxassetid://76747879741100",
+        "NormalMap": "rbxassetid://86569243418513",
+        "RoughnessMap": "rbxassetid://93738889952544",
+        "center": [
+          0.75,
+          2.85,
+          0
+        ],
+        "operations": {
+          "Asset": "272bee0c-b00b-4351-9600-3bd657cd9062"
+        }
+      },
+      "Frost_Dock_Section__Timber": {
+        "ColorMap": "rbxassetid://96176509930942",
+        "MeshId": "rbxassetid://115424197322058",
+        "MetalnessMap": "rbxassetid://76747879741100",
+        "NormalMap": "rbxassetid://103885996342197",
+        "RoughnessMap": "rbxassetid://133789878232363",
+        "center": [
+          0.72,
+          2.8,
+          0.09
+        ],
+        "operations": {
+          "Asset": "272bee0c-b00b-4351-9600-3bd657cd9062"
+        }
+      }
+    },
+    "Frost_Fallen_Log": {
+      "Frost_Fallen_Log__Bark": {
+        "ColorMap": "rbxassetid://117346033746029",
+        "MeshId": "rbxassetid://90239049969239",
+        "MetalnessMap": "rbxassetid://76747879741100",
+        "NormalMap": "rbxassetid://126308334158224",
+        "RoughnessMap": "rbxassetid://112402436422425",
+        "center": [
+          0.14,
+          3.38,
+          0.48
+        ],
+        "operations": {
+          "Asset": "bf975e1b-e08c-41e1-a237-4cf7356f5018"
+        }
+      },
+      "Frost_Fallen_Log__Ends": {
+        "ColorMap": "rbxassetid://85928020940983",
+        "MeshId": "rbxassetid://119980672992666",
+        "MetalnessMap": "rbxassetid://76747879741100",
+        "NormalMap": "rbxassetid://104209616280205",
+        "RoughnessMap": "rbxassetid://108370140716786",
+        "center": [
+          -1.42,
+          2.91,
+          0.4
+        ],
+        "operations": {
+          "Asset": "bf975e1b-e08c-41e1-a237-4cf7356f5018"
+        }
+      },
+      "Frost_Fallen_Log__Snow": {
+        "ColorMap": "rbxassetid://118976472756070",
+        "MeshId": "rbxassetid://99925639259050",
+        "MetalnessMap": "rbxassetid://76747879741100",
+        "NormalMap": "rbxassetid://86569243418513",
+        "RoughnessMap": "rbxassetid://93738889952544",
+        "center": [
+          -0.42,
+          2.31,
+          0
+        ],
+        "operations": {
+          "Asset": "bf975e1b-e08c-41e1-a237-4cf7356f5018"
+        }
+      }
+    },
+    "Frost_Fir_A": {
+      "Frost_Fir_A__Bark": {
+        "ColorMap": "rbxassetid://71586376551984",
+        "MeshId": "rbxassetid://132105210510698",
+        "MetalnessMap": "rbxassetid://76747879741100",
+        "NormalMap": "rbxassetid://94738760438011",
+        "RoughnessMap": "rbxassetid://103114616481203",
+        "center": [
+          -0.49,
+          23.76,
+          -0.02
+        ],
+        "operations": {
+          "Asset": "9f7cf463-5581-467d-af24-c6f267d37a84"
+        }
+      },
+      "Frost_Fir_A__Boughs": {
+        "ColorMap": "rbxassetid://74419366864134",
+        "MeshId": "rbxassetid://130181749075650",
+        "MetalnessMap": "rbxassetid://76747879741100",
+        "NormalMap": "rbxassetid://93295684881784",
+        "RoughnessMap": "rbxassetid://100975595358628",
+        "center": [
+          0,
+          27.59,
+          0
+        ],
+        "operations": {
+          "Asset": "9f7cf463-5581-467d-af24-c6f267d37a84"
+        }
+      },
+      "Frost_Fir_A__Snow": {
+        "ColorMap": "rbxassetid://118976472756070",
+        "MeshId": "rbxassetid://138647591450684",
+        "MetalnessMap": "rbxassetid://76747879741100",
+        "NormalMap": "rbxassetid://86569243418513",
+        "RoughnessMap": "rbxassetid://93738889952544",
+        "center": [
+          -0.27,
+          29.06,
+          0.02
+        ],
+        "operations": {
+          "Asset": "9f7cf463-5581-467d-af24-c6f267d37a84"
+        }
+      }
+    },
+    "Frost_Fir_B": {
+      "Frost_Fir_B__Bark": {
+        "ColorMap": "rbxassetid://71586376551984",
+        "MeshId": "rbxassetid://106861993645924",
+        "MetalnessMap": "rbxassetid://76747879741100",
+        "NormalMap": "rbxassetid://94738760438011",
+        "RoughnessMap": "rbxassetid://103114616481203",
+        "center": [
+          0.13,
+          30.76,
+          -0.26
+        ],
+        "operations": {
+          "Asset": "cc935996-9b77-47e9-8225-8323ed7f71c0"
+        }
+      },
+      "Frost_Fir_B__Boughs": {
+        "ColorMap": "rbxassetid://74419366864134",
+        "MeshId": "rbxassetid://133009292870391",
+        "MetalnessMap": "rbxassetid://76747879741100",
+        "NormalMap": "rbxassetid://93295684881784",
+        "RoughnessMap": "rbxassetid://100975595358628",
+        "center": [
+          0,
+          34.88,
+          0
+        ],
+        "operations": {
+          "Asset": "cc935996-9b77-47e9-8225-8323ed7f71c0"
+        }
+      },
+      "Frost_Fir_B__Snow": {
+        "ColorMap": "rbxassetid://118976472756070",
+        "MeshId": "rbxassetid://130386914078106",
+        "MetalnessMap": "rbxassetid://76747879741100",
+        "NormalMap": "rbxassetid://86569243418513",
+        "RoughnessMap": "rbxassetid://93738889952544",
+        "center": [
+          0.28,
+          36.37,
+          -0.26
+        ],
+        "operations": {
+          "Asset": "cc935996-9b77-47e9-8225-8323ed7f71c0"
+        }
+      }
+    },
+    "Frost_Fir_Broad": {
+      "Frost_Fir_Broad__Bark": {
+        "ColorMap": "rbxassetid://71586376551984",
+        "MeshId": "rbxassetid://97723453573367",
+        "MetalnessMap": "rbxassetid://76747879741100",
+        "NormalMap": "rbxassetid://94738760438011",
+        "RoughnessMap": "rbxassetid://103114616481203",
+        "center": [
+          0.11,
+          17.76,
+          0.18
+        ],
+        "operations": {
+          "Asset": "66e96635-5c78-499d-8d2a-88b3ad47b9c9"
+        }
+      },
+      "Frost_Fir_Broad__Boughs": {
+        "ColorMap": "rbxassetid://74419366864134",
+        "MeshId": "rbxassetid://116159667162959",
+        "MetalnessMap": "rbxassetid://76747879741100",
+        "NormalMap": "rbxassetid://93295684881784",
+        "RoughnessMap": "rbxassetid://100975595358628",
+        "center": [
+          0,
+          18.43,
+          0
+        ],
+        "operations": {
+          "Asset": "66e96635-5c78-499d-8d2a-88b3ad47b9c9"
+        }
+      },
+      "Frost_Fir_Broad__Snow": {
+        "ColorMap": "rbxassetid://118976472756070",
+        "MeshId": "rbxassetid://127702848025641",
+        "MetalnessMap": "rbxassetid://76747879741100",
+        "NormalMap": "rbxassetid://86569243418513",
+        "RoughnessMap": "rbxassetid://93738889952544",
+        "center": [
+          -0.09,
+          19.58,
+          0.49
+        ],
+        "operations": {
+          "Asset": "66e96635-5c78-499d-8d2a-88b3ad47b9c9"
+        }
+      }
+    },
+    "Frost_Fir_Sapling": {
+      "Frost_Fir_Sapling__Bark": {
+        "ColorMap": "rbxassetid://71586376551984",
+        "MeshId": "rbxassetid://121171866498516",
+        "MetalnessMap": "rbxassetid://76747879741100",
+        "NormalMap": "rbxassetid://94738760438011",
+        "RoughnessMap": "rbxassetid://103114616481203",
+        "center": [
+          0.05,
+          7.76,
+          0.07
+        ],
+        "operations": {
+          "Asset": "4d6fb088-5292-4f6a-a7cf-1cd2a172eda3"
+        }
+      },
+      "Frost_Fir_Sapling__Boughs": {
+        "ColorMap": "rbxassetid://74419366864134",
+        "MeshId": "rbxassetid://82262612364126",
+        "MetalnessMap": "rbxassetid://76747879741100",
+        "NormalMap": "rbxassetid://93295684881784",
+        "RoughnessMap": "rbxassetid://100975595358628",
+        "center": [
+          0,
+          8.78,
+          0
+        ],
+        "operations": {
+          "Asset": "4d6fb088-5292-4f6a-a7cf-1cd2a172eda3"
+        }
+      },
+      "Frost_Fir_Sapling__Snow": {
+        "ColorMap": "rbxassetid://118976472756070",
+        "MeshId": "rbxassetid://108953942205887",
+        "MetalnessMap": "rbxassetid://76747879741100",
+        "NormalMap": "rbxassetid://86569243418513",
+        "RoughnessMap": "rbxassetid://93738889952544",
+        "center": [
+          -0.06,
+          9.81,
+          0.09
+        ],
+        "operations": {
+          "Asset": "4d6fb088-5292-4f6a-a7cf-1cd2a172eda3"
+        }
+      }
+    },
+    "Frost_Fishing_Hut": {
+      "Frost_Fishing_Hut__Ice": {
+        "ColorMap": "rbxassetid://139868580760012",
+        "MeshId": "rbxassetid://71210020999320",
+        "MetalnessMap": "rbxassetid://76747879741100",
+        "NormalMap": "rbxassetid://87732355995121",
+        "RoughnessMap": "rbxassetid://90984517213220",
+        "center": [
+          -5.8,
+          1.71,
+          -7.07
+        ],
+        "operations": {
+          "Asset": "5f159da5-cc56-4050-b9b8-4314cccd03c2"
+        }
+      },
+      "Frost_Fishing_Hut__Iron": {
+        "ColorMap": "rbxassetid://81261631973968",
+        "MeshId": "rbxassetid://113417367219261",
+        "MetalnessMap": "rbxassetid://100141802937622",
+        "NormalMap": "rbxassetid://120638869224297",
+        "RoughnessMap": "rbxassetid://78030012970784",
+        "center": [
+          -2.6,
+          11.94,
+          1.73
+        ],
+        "operations": {
+          "Asset": "5f159da5-cc56-4050-b9b8-4314cccd03c2"
+        }
+      },
+      "Frost_Fishing_Hut__Roof": {
+        "ColorMap": "rbxassetid://105834723817524",
+        "MeshId": "rbxassetid://72831567364213",
+        "MetalnessMap": "rbxassetid://76747879741100",
+        "NormalMap": "rbxassetid://108815232953800",
+        "RoughnessMap": "rbxassetid://102334707111892",
+        "center": [
+          -0.2,
+          10.44,
+          0.33
+        ],
+        "operations": {
+          "Asset": "5f159da5-cc56-4050-b9b8-4314cccd03c2"
+        }
+      },
+      "Frost_Fishing_Hut__Rope": {
+        "ColorMap": "rbxassetid://104707692454779",
+        "MeshId": "rbxassetid://121744814772209",
+        "MetalnessMap": "rbxassetid://76747879741100",
+        "NormalMap": "rbxassetid://130646674175819",
+        "RoughnessMap": "rbxassetid://116560551572003",
+        "center": [
+          -5.8,
+          4.51,
+          -7.08
+        ],
+        "operations": {
+          "Asset": "5f159da5-cc56-4050-b9b8-4314cccd03c2"
+        }
+      },
+      "Frost_Fishing_Hut__Snow": {
+        "ColorMap": "rbxassetid://118976472756070",
+        "MeshId": "rbxassetid://77075158101662",
+        "MetalnessMap": "rbxassetid://76747879741100",
+        "NormalMap": "rbxassetid://86569243418513",
+        "RoughnessMap": "rbxassetid://93738889952544",
+        "center": [
+          0,
+          6.41,
+          0
+        ],
+        "operations": {
+          "Asset": "5f159da5-cc56-4050-b9b8-4314cccd03c2"
+        }
+      },
+      "Frost_Fishing_Hut__Timber": {
+        "ColorMap": "rbxassetid://96176509930942",
+        "MeshId": "rbxassetid://93563709185827",
+        "MetalnessMap": "rbxassetid://76747879741100",
+        "NormalMap": "rbxassetid://103885996342197",
+        "RoughnessMap": "rbxassetid://133789878232363",
+        "center": [
+          -1.2,
+          6.87,
+          -1.26
+        ],
+        "operations": {
+          "Asset": "5f159da5-cc56-4050-b9b8-4314cccd03c2"
+        }
+      }
+    },
+    "Frost_Grass_Tuft_A": {
+      "Frost_Grass_Tuft_A__Blades": {
+        "ColorMap": "rbxassetid://82107874096140",
+        "MeshId": "rbxassetid://110260891762471",
+        "MetalnessMap": "rbxassetid://88132622876934",
+        "NormalMap": "rbxassetid://101251167936328",
+        "RoughnessMap": "rbxassetid://73488916920199",
+        "center": [
+          0.3,
+          1.75,
+          0
+        ],
+        "operations": {
+          "Asset": "34b11e5d-c4dd-4d29-9f7f-9ce087a48ded"
+        }
+      },
+      "Frost_Grass_Tuft_A__Snow": {
+        "ColorMap": "rbxassetid://118976472756070",
+        "MeshId": "rbxassetid://87432552438626",
+        "MetalnessMap": "rbxassetid://76747879741100",
+        "NormalMap": "rbxassetid://86569243418513",
+        "RoughnessMap": "rbxassetid://93738889952544",
+        "center": [
+          -0.5,
+          0.56,
+          -0.2
+        ],
+        "operations": {
+          "Asset": "34b11e5d-c4dd-4d29-9f7f-9ce087a48ded"
+        }
+      }
+    },
+    "Frost_Grass_Tuft_B": {
+      "Frost_Grass_Tuft_B__Blades": {
+        "ColorMap": "rbxassetid://82107874096140",
+        "MeshId": "rbxassetid://115643386067737",
+        "MetalnessMap": "rbxassetid://88132622876934",
+        "NormalMap": "rbxassetid://101251167936328",
+        "RoughnessMap": "rbxassetid://73488916920199",
+        "center": [
+          0,
+          2.83,
+          0
+        ],
+        "operations": {
+          "Asset": "30d2da14-f61f-4f7a-a2c8-eca3786288c5"
+        }
+      },
+      "Frost_Grass_Tuft_B__Snow": {
+        "ColorMap": "rbxassetid://118976472756070",
+        "MeshId": "rbxassetid://131600956560024",
+        "MetalnessMap": "rbxassetid://76747879741100",
+        "NormalMap": "rbxassetid://86569243418513",
+        "RoughnessMap": "rbxassetid://93738889952544",
+        "center": [
+          -0.59,
+          0.64,
+          -0.39
+        ],
+        "operations": {
+          "Asset": "30d2da14-f61f-4f7a-a2c8-eca3786288c5"
+        }
+      }
+    },
+    "Frost_Ice_Shards_A": {
+      "Frost_Ice_Shards_A__Base": {
+        "ColorMap": "rbxassetid://116805838334463",
+        "MeshId": "rbxassetid://83937920417233",
+        "MetalnessMap": "rbxassetid://135999056532719",
+        "NormalMap": "rbxassetid://111022978946545",
+        "RoughnessMap": "rbxassetid://70487974442734",
+        "center": [
+          1.6,
+          2.18,
+          -1
+        ],
+        "operations": {
+          "Asset": "79fb6b39-211b-477c-8315-33e414a41e2d"
+        }
+      },
+      "Frost_Ice_Shards_A__Ice": {
+        "ColorMap": "rbxassetid://139868580760012",
+        "MeshId": "rbxassetid://101410747844780",
+        "MetalnessMap": "rbxassetid://76747879741100",
+        "NormalMap": "rbxassetid://87732355995121",
+        "RoughnessMap": "rbxassetid://90984517213220",
+        "center": [
+          -0.34,
+          6.46,
+          0
+        ],
+        "operations": {
+          "Asset": "79fb6b39-211b-477c-8315-33e414a41e2d"
+        }
+      }
+    },
+    "Frost_Ice_Shards_B": {
+      "Frost_Ice_Shards_B__Base": {
+        "ColorMap": "rbxassetid://116805838334463",
+        "MeshId": "rbxassetid://102853752460393",
+        "MetalnessMap": "rbxassetid://135999056532719",
+        "NormalMap": "rbxassetid://111022978946545",
+        "RoughnessMap": "rbxassetid://70487974442734",
+        "center": [
+          0,
+          1.54,
+          0
+        ],
+        "operations": {
+          "Asset": "0ace9301-c0b0-43a2-ba5b-455d2d4d794d"
+        }
+      },
+      "Frost_Ice_Shards_B__Ice": {
+        "ColorMap": "rbxassetid://139868580760012",
+        "MeshId": "rbxassetid://119313610622381",
+        "MetalnessMap": "rbxassetid://76747879741100",
+        "NormalMap": "rbxassetid://87732355995121",
+        "RoughnessMap": "rbxassetid://90984517213220",
+        "center": [
+          0.21,
+          4.38,
+          0.01
+        ],
+        "operations": {
+          "Asset": "0ace9301-c0b0-43a2-ba5b-455d2d4d794d"
+        }
+      }
+    },
+    "Frost_Lantern": {
+      "Frost_Lantern__Glow": {
+        "ColorMap": "rbxassetid://85972572659223",
+        "MeshId": "rbxassetid://82931799347273",
+        "MetalnessMap": "rbxassetid://112249682778278",
+        "NormalMap": "rbxassetid://114041101617482",
+        "RoughnessMap": "rbxassetid://121476398534218",
+        "center": [
+          0.01,
+          9.06,
+          0.1
+        ],
+        "operations": {
+          "Asset": "4f8fe791-cdc9-40d7-b3e0-cb371b454996"
+        }
+      },
+      "Frost_Lantern__Iron": {
+        "ColorMap": "rbxassetid://81261631973968",
+        "MeshId": "rbxassetid://85553261436006",
+        "MetalnessMap": "rbxassetid://100141802937622",
+        "NormalMap": "rbxassetid://120638869224297",
+        "RoughnessMap": "rbxassetid://78030012970784",
+        "center": [
+          0.01,
+          10.23,
+          0.1
+        ],
+        "operations": {
+          "Asset": "4f8fe791-cdc9-40d7-b3e0-cb371b454996"
+        }
+      },
+      "Frost_Lantern__Snow": {
+        "ColorMap": "rbxassetid://118976472756070",
+        "MeshId": "rbxassetid://79052182608255",
+        "MetalnessMap": "rbxassetid://76747879741100",
+        "NormalMap": "rbxassetid://86569243418513",
+        "RoughnessMap": "rbxassetid://93738889952544",
+        "center": [
+          0,
+          5.68,
+          0
+        ],
+        "operations": {
+          "Asset": "4f8fe791-cdc9-40d7-b3e0-cb371b454996"
+        }
+      },
+      "Frost_Lantern__Stone": {
+        "ColorMap": "rbxassetid://118467012024188",
+        "MeshId": "rbxassetid://113209514085585",
+        "MetalnessMap": "rbxassetid://76747879741100",
+        "NormalMap": "rbxassetid://132049253765106",
+        "RoughnessMap": "rbxassetid://78464860274095",
+        "center": [
+          0.01,
+          6.35,
+          0.1
+        ],
+        "operations": {
+          "Asset": "4f8fe791-cdc9-40d7-b3e0-cb371b454996"
+        }
+      }
+    },
+    "Frost_Prayer_Flags": {
+      "Frost_Prayer_Flags__Flags": {
+        "ColorMap": "rbxassetid://98979902213019",
+        "MeshId": "rbxassetid://125699184983244",
+        "MetalnessMap": "rbxassetid://76747879741100",
+        "NormalMap": "rbxassetid://84201362393639",
+        "RoughnessMap": "rbxassetid://137729009504029",
+        "center": [
+          0.04,
+          12.48,
+          -1.94
+        ],
+        "operations": {
+          "Asset": "f0560b74-3f17-4489-9dbd-2a0a1ea2da6a"
+        }
+      },
+      "Frost_Prayer_Flags__Footing": {
+        "ColorMap": "rbxassetid://116805838334463",
+        "MeshId": "rbxassetid://121270639836256",
+        "MetalnessMap": "rbxassetid://135999056532719",
+        "NormalMap": "rbxassetid://111022978946545",
+        "RoughnessMap": "rbxassetid://70487974442734",
+        "center": [
+          -0.04,
+          1.25,
+          -1.96
+        ],
+        "operations": {
+          "Asset": "f0560b74-3f17-4489-9dbd-2a0a1ea2da6a"
+        }
+      },
+      "Frost_Prayer_Flags__Poles": {
+        "ColorMap": "rbxassetid://96176509930942",
+        "MeshId": "rbxassetid://139559375331949",
+        "MetalnessMap": "rbxassetid://76747879741100",
+        "NormalMap": "rbxassetid://103885996342197",
+        "RoughnessMap": "rbxassetid://133789878232363",
+        "center": [
+          0,
+          8,
+          0.52
+        ],
+        "operations": {
+          "Asset": "f0560b74-3f17-4489-9dbd-2a0a1ea2da6a"
+        }
+      },
+      "Frost_Prayer_Flags__Rope": {
+        "ColorMap": "rbxassetid://104707692454779",
+        "MeshId": "rbxassetid://130962916128235",
+        "MetalnessMap": "rbxassetid://76747879741100",
+        "NormalMap": "rbxassetid://130646674175819",
+        "RoughnessMap": "rbxassetid://116560551572003",
+        "center": [
+          0,
+          8.61,
+          1.03
+        ],
+        "operations": {
+          "Asset": "f0560b74-3f17-4489-9dbd-2a0a1ea2da6a"
+        }
+      }
+    },
+    "Frost_Retaining_Wall": {
+      "Frost_Retaining_Wall__Coping": {
+        "ColorMap": "rbxassetid://113524483994075",
+        "MeshId": "rbxassetid://138903627551796",
+        "MetalnessMap": "rbxassetid://76747879741100",
+        "NormalMap": "rbxassetid://138185365119242",
+        "RoughnessMap": "rbxassetid://140232506703711",
+        "center": [
+          0.1,
+          9.8,
+          1.28
+        ],
+        "operations": {
+          "Asset": "40e15228-0895-48d8-9661-6064abbce134"
+        }
+      },
+      "Frost_Retaining_Wall__Snow": {
+        "ColorMap": "rbxassetid://118976472756070",
+        "MeshId": "rbxassetid://81783123265704",
+        "MetalnessMap": "rbxassetid://76747879741100",
+        "NormalMap": "rbxassetid://86569243418513",
+        "RoughnessMap": "rbxassetid://93738889952544",
+        "center": [
+          0,
+          5.37,
+          -1.2
+        ],
+        "operations": {
+          "Asset": "40e15228-0895-48d8-9661-6064abbce134"
+        }
+      },
+      "Frost_Retaining_Wall__Wall": {
+        "ColorMap": "rbxassetid://118467012024188",
+        "MeshId": "rbxassetid://81327512748970",
+        "MetalnessMap": "rbxassetid://76747879741100",
+        "NormalMap": "rbxassetid://132049253765106",
+        "RoughnessMap": "rbxassetid://78464860274095",
+        "center": [
+          0.08,
+          4.72,
+          2.1
+        ],
+        "operations": {
+          "Asset": "40e15228-0895-48d8-9661-6064abbce134"
+        }
+      }
+    },
+    "Frost_Scree_A": {
+      "Frost_Scree_A__Stone": {
+        "ColorMap": "rbxassetid://116805838334463",
+        "MeshId": "rbxassetid://138555129978186",
+        "MetalnessMap": "rbxassetid://135999056532719",
+        "NormalMap": "rbxassetid://111022978946545",
+        "RoughnessMap": "rbxassetid://70487974442734",
+        "center": [
+          0,
+          1.4,
+          0
+        ],
+        "operations": {
+          "Asset": "681bb655-45a3-440f-ad25-081f04ae1f37"
+        }
+      }
+    },
+    "Frost_Scree_B": {
+      "Frost_Scree_B__Stone": {
+        "ColorMap": "rbxassetid://116805838334463",
+        "MeshId": "rbxassetid://86599513721459",
+        "MetalnessMap": "rbxassetid://135999056532719",
+        "NormalMap": "rbxassetid://111022978946545",
+        "RoughnessMap": "rbxassetid://70487974442734",
+        "center": [
+          0,
+          1.19,
+          0
+        ],
+        "operations": {
+          "Asset": "e80cb073-9355-4dc0-852b-654f5849ff81"
+        }
+      }
+    },
+    "Frost_Shrub_Frozen": {
+      "Frost_Shrub_Frozen__Ice": {
+        "ColorMap": "rbxassetid://139868580760012",
+        "MeshId": "rbxassetid://70706283353149",
+        "MetalnessMap": "rbxassetid://76747879741100",
+        "NormalMap": "rbxassetid://87732355995121",
+        "RoughnessMap": "rbxassetid://90984517213220",
+        "center": [
+          -0.07,
+          2.9,
+          0.08
+        ],
+        "operations": {
+          "Asset": "7bb671bb-a32a-4a90-9bcd-cfbd2b4bace1"
+        }
+      },
+      "Frost_Shrub_Frozen__Snow": {
+        "ColorMap": "rbxassetid://118976472756070",
+        "MeshId": "rbxassetid://127009722960716",
+        "MetalnessMap": "rbxassetid://76747879741100",
+        "NormalMap": "rbxassetid://86569243418513",
+        "RoughnessMap": "rbxassetid://93738889952544",
+        "center": [
+          0,
+          2.73,
+          0
+        ],
+        "operations": {
+          "Asset": "7bb671bb-a32a-4a90-9bcd-cfbd2b4bace1"
+        }
+      },
+      "Frost_Shrub_Frozen__Stems": {
+        "ColorMap": "rbxassetid://86046142858462",
+        "MeshId": "rbxassetid://106742705947707",
+        "MetalnessMap": "rbxassetid://76747879741100",
+        "NormalMap": "rbxassetid://97601528950510",
+        "RoughnessMap": "rbxassetid://125366579221019",
+        "center": [
+          -0.06,
+          2.78,
+          0.06
+        ],
+        "operations": {
+          "Asset": "7bb671bb-a32a-4a90-9bcd-cfbd2b4bace1"
+        }
+      }
+    },
+    "Frost_Shrub_Small": {
+      "Frost_Shrub_Small__Ice": {
+        "ColorMap": "rbxassetid://139868580760012",
+        "MeshId": "rbxassetid://94925669177967",
+        "MetalnessMap": "rbxassetid://76747879741100",
+        "NormalMap": "rbxassetid://87732355995121",
+        "RoughnessMap": "rbxassetid://90984517213220",
+        "center": [
+          -0.09,
+          1.34,
+          0.19
+        ],
+        "operations": {
+          "Asset": "a1158110-027d-4156-ae8d-71edb02baf10"
+        }
+      },
+      "Frost_Shrub_Small__Snow": {
+        "ColorMap": "rbxassetid://118976472756070",
+        "MeshId": "rbxassetid://125484913074628",
+        "MetalnessMap": "rbxassetid://76747879741100",
+        "NormalMap": "rbxassetid://86569243418513",
+        "RoughnessMap": "rbxassetid://93738889952544",
+        "center": [
+          0,
+          1.37,
+          0
+        ],
+        "operations": {
+          "Asset": "a1158110-027d-4156-ae8d-71edb02baf10"
+        }
+      },
+      "Frost_Shrub_Small__Stems": {
+        "ColorMap": "rbxassetid://86046142858462",
+        "MeshId": "rbxassetid://91075320345682",
+        "MetalnessMap": "rbxassetid://76747879741100",
+        "NormalMap": "rbxassetid://97601528950510",
+        "RoughnessMap": "rbxassetid://125366579221019",
+        "center": [
+          0,
+          1.36,
+          0.02
+        ],
+        "operations": {
+          "Asset": "a1158110-027d-4156-ae8d-71edb02baf10"
+        }
+      }
+    },
+    "Frost_Sled": {
+      "Frost_Sled__Iron": {
+        "ColorMap": "rbxassetid://81261631973968",
+        "MeshId": "rbxassetid://102952591476986",
+        "MetalnessMap": "rbxassetid://100141802937622",
+        "NormalMap": "rbxassetid://120638869224297",
+        "RoughnessMap": "rbxassetid://78030012970784",
+        "center": [
+          1.71,
+          0.84,
+          -0.08
+        ],
+        "operations": {
+          "Asset": "cb5c37fc-755e-4b09-a9ea-fdf37bfc5a75"
+        }
+      },
+      "Frost_Sled__Rope": {
+        "ColorMap": "rbxassetid://104707692454779",
+        "MeshId": "rbxassetid://97852723131441",
+        "MetalnessMap": "rbxassetid://76747879741100",
+        "NormalMap": "rbxassetid://130646674175819",
+        "RoughnessMap": "rbxassetid://116560551572003",
+        "center": [
+          -2.22,
+          2.31,
+          -0.08
+        ],
+        "operations": {
+          "Asset": "cb5c37fc-755e-4b09-a9ea-fdf37bfc5a75"
+        }
+      },
+      "Frost_Sled__Snow": {
+        "ColorMap": "rbxassetid://118976472756070",
+        "MeshId": "rbxassetid://80701936616342",
+        "MetalnessMap": "rbxassetid://76747879741100",
+        "NormalMap": "rbxassetid://86569243418513",
+        "RoughnessMap": "rbxassetid://93738889952544",
+        "center": [
+          2.97,
+          3.07,
+          0
+        ],
+        "operations": {
+          "Asset": "cb5c37fc-755e-4b09-a9ea-fdf37bfc5a75"
+        }
+      },
+      "Frost_Sled__Timber": {
+        "ColorMap": "rbxassetid://96176509930942",
+        "MeshId": "rbxassetid://92929907528917",
+        "MetalnessMap": "rbxassetid://76747879741100",
+        "NormalMap": "rbxassetid://103885996342197",
+        "RoughnessMap": "rbxassetid://133789878232363",
+        "center": [
+          1.71,
+          2.25,
+          -0.08
+        ],
+        "operations": {
+          "Asset": "cb5c37fc-755e-4b09-a9ea-fdf37bfc5a75"
+        }
+      }
+    },
+    "Frost_Stair_Run": {
+      "Frost_Stair_Run__Snow": {
+        "ColorMap": "rbxassetid://118976472756070",
+        "MeshId": "rbxassetid://110779628325991",
+        "MetalnessMap": "rbxassetid://76747879741100",
+        "NormalMap": "rbxassetid://86569243418513",
+        "RoughnessMap": "rbxassetid://93738889952544",
+        "center": [
+          0,
+          7.9,
+          0
+        ],
+        "operations": {
+          "Asset": "6adaf759-2bce-48bc-bc7d-294914db519f"
+        }
+      },
+      "Frost_Stair_Run__Steps": {
+        "ColorMap": "rbxassetid://118467012024188",
+        "MeshId": "rbxassetid://83332661313174",
+        "MetalnessMap": "rbxassetid://76747879741100",
+        "NormalMap": "rbxassetid://132049253765106",
+        "RoughnessMap": "rbxassetid://78464860274095",
+        "center": [
+          0,
+          5.9,
+          0
+        ],
+        "operations": {
+          "Asset": "6adaf759-2bce-48bc-bc7d-294914db519f"
+        }
+      },
+      "Frost_Stair_Run__Walls": {
+        "ColorMap": "rbxassetid://113524483994075",
+        "MeshId": "rbxassetid://139164891262125",
+        "MetalnessMap": "rbxassetid://76747879741100",
+        "NormalMap": "rbxassetid://138185365119242",
+        "RoughnessMap": "rbxassetid://140232506703711",
+        "center": [
+          0,
+          6.8,
+          0
+        ],
+        "operations": {
+          "Asset": "6adaf759-2bce-48bc-bc7d-294914db519f"
+        }
+      }
+    }
+  }
+}

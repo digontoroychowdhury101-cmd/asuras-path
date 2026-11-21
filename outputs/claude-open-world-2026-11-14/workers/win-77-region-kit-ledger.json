@@ -1,0 +1,1482 @@
+{
+ "amberfall/Amber_Aqueduct_Abutment": {
+  "assetId": "89113984353882",
+  "bytes": 2988248,
+  "displayName": "amberfall_Amber_Aqueduct_Abutment",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\amberfall\\Amber_Aqueduct_Abutment.glb",
+  "moderation": "Approved",
+  "operationId": "01a8f734-0e5b-4eb2-b9c4-7fd01fb3cbb0",
+  "sha256": "89451bcac6884a18765a4a0b83b0f8962670b87a5bfa50e2c784a74dadb194e8"
+ },
+ "amberfall/Amber_Aqueduct_Hero": {
+  "assetId": "132092587340804",
+  "bytes": 5024224,
+  "displayName": "amberfall_Amber_Aqueduct_Hero",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\amberfall\\Amber_Aqueduct_Hero.glb",
+  "moderation": "Approved",
+  "operationId": "26f89aba-6268-4dc4-991a-26c766c3e0fc",
+  "sha256": "e4f0cdab98a18cb9b8a68779dabaa765ab99c31fdeb1c1fb61b2f3fb40dd3ae4"
+ },
+ "amberfall/Amber_Aqueduct_Span_A": {
+  "assetId": "78163617275362",
+  "bytes": 2968284,
+  "displayName": "amberfall_Amber_Aqueduct_Span_A",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\amberfall\\Amber_Aqueduct_Span_A.glb",
+  "moderation": "Approved",
+  "operationId": "0f99c28e-937a-419d-ad20-c71e6e658a5b",
+  "sha256": "d9344bfe642be0a48138ac52d07cb576e2d0918153aaa9e032ef84647cff1168"
+ },
+ "amberfall/Amber_Aqueduct_Span_Ruined": {
+  "assetId": "96713856893669",
+  "bytes": 2952476,
+  "displayName": "amberfall_Amber_Aqueduct_Span_Ruined",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\amberfall\\Amber_Aqueduct_Span_Ruined.glb",
+  "moderation": "Approved",
+  "operationId": "addc3250-ccfa-4708-a721-655aecadb7f6",
+  "sha256": "38eab2908cf90415874f962e2e094b99f96b3152ea1aa186e4e686b61ead2c96"
+ },
+ "amberfall/Amber_Aqueduct_Span_Tall": {
+  "assetId": "136674113824398",
+  "bytes": 3126868,
+  "displayName": "amberfall_Amber_Aqueduct_Span_Tall",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\amberfall\\Amber_Aqueduct_Span_Tall.glb",
+  "moderation": "Approved",
+  "operationId": "7d11ce57-5cfa-44cf-8b4b-0ae1cd7021a6",
+  "sha256": "4759ed8fc0c62af5b620e98ba033b65f13d19fa23b8d1466e394c647bb32625c"
+ },
+ "amberfall/Amber_Boulder_A": {
+  "assetId": "135999138197209",
+  "bytes": 5781188,
+  "displayName": "amberfall_Amber_Boulder_A",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\amberfall\\Amber_Boulder_A.glb",
+  "moderation": "Approved",
+  "operationId": "4a2731de-2188-4111-9068-0b0116e60c9c",
+  "sha256": "95f7c847f896609e33f90dfc46a3c8eb94cdf450da03a52ef2709a8d9ec241f0"
+ },
+ "amberfall/Amber_Boulder_B": {
+  "assetId": "113898917160521",
+  "bytes": 6045164,
+  "displayName": "amberfall_Amber_Boulder_B",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\amberfall\\Amber_Boulder_B.glb",
+  "moderation": "Approved",
+  "operationId": "e570d927-fe9c-47aa-b992-edd97400cc83",
+  "sha256": "c37bc5387c4d05a2560b7f4f435a66a5d8faf04e1ae244199bd60a66584262bd"
+ },
+ "amberfall/Amber_Boulder_C": {
+  "assetId": "90467080215022",
+  "bytes": 5965392,
+  "displayName": "amberfall_Amber_Boulder_C",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\amberfall\\Amber_Boulder_C.glb",
+  "moderation": "Approved",
+  "operationId": "e698541a-0767-436d-adb0-036c090b11d9",
+  "sha256": "7647c6a7b9ed72e02f9fa1ae4c75c4b803595085235a1c7d400535229a962be1"
+ },
+ "amberfall/Amber_Cart": {
+  "assetId": "99404017737981",
+  "bytes": 1293492,
+  "displayName": "amberfall_Amber_Cart",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\amberfall\\Amber_Cart.glb",
+  "moderation": "Approved",
+  "operationId": "8c739d04-5bcb-40cb-88b8-35feb6702b89",
+  "sha256": "68fd511d2c6a07878355c5b6a905e5349b0ec04164674312250b206ac265fa49"
+ },
+ "amberfall/Amber_Cliff_Corner": {
+  "assetId": "135926683721526",
+  "bytes": 6564696,
+  "displayName": "amberfall_Amber_Cliff_Corner",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\amberfall\\Amber_Cliff_Corner.glb",
+  "moderation": "Approved",
+  "operationId": "3ac991d6-7f7c-40ab-b97a-63d7bbd1a5ba",
+  "sha256": "41d593f0e0555020ef23810f42a66e00860a5e0e8adc791348b3a26c28ef3fba"
+ },
+ "amberfall/Amber_Cliff_Pine": {
+  "assetId": "79561426749547",
+  "bytes": 4484716,
+  "displayName": "amberfall_Amber_Cliff_Pine",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\amberfall\\Amber_Cliff_Pine.glb",
+  "moderation": "Approved",
+  "operationId": "2f85420a-8c36-446d-8fb7-89c909196130",
+  "sha256": "3560875467aea16d01eaa8adfa506c279351278bac14795e234a355219016215"
+ },
+ "amberfall/Amber_Cliff_Wall_A": {
+  "assetId": "110747847828437",
+  "bytes": 6156340,
+  "displayName": "amberfall_Amber_Cliff_Wall_A",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\amberfall\\Amber_Cliff_Wall_A.glb",
+  "moderation": "Approved",
+  "operationId": "da2a7971-0b56-4925-9fe2-68f209a47b54",
+  "sha256": "85e48cf55f88f7f2af4fe17482c79a447c5833b980685b0a97d7935f467514c6"
+ },
+ "amberfall/Amber_Cliff_Wall_B": {
+  "assetId": "135618783592296",
+  "bytes": 6338496,
+  "displayName": "amberfall_Amber_Cliff_Wall_B",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\amberfall\\Amber_Cliff_Wall_B.glb",
+  "moderation": "Approved",
+  "operationId": "1a993c98-b633-40f3-a318-cb32332d9682",
+  "sha256": "90c382da18f5162dc47789e08559b55b726939101050a8868bce94e3030e0a73"
+ },
+ "amberfall/Amber_Crate_Stack": {
+  "assetId": "102923971887811",
+  "bytes": 1697088,
+  "displayName": "amberfall_Amber_Crate_Stack",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\amberfall\\Amber_Crate_Stack.glb",
+  "moderation": "Approved",
+  "operationId": "526f1fed-6f4c-4529-8686-344dc3c168a9",
+  "sha256": "cb95190d74574841ded265afd11ecb1b78a106df6c96aa0aa336b882073a3c40"
+ },
+ "amberfall/Amber_Dead_Snag": {
+  "assetId": "127111772716950",
+  "bytes": 2526040,
+  "displayName": "amberfall_Amber_Dead_Snag",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\amberfall\\Amber_Dead_Snag.glb",
+  "moderation": "Approved",
+  "operationId": "e3011dfd-892e-4010-8b2b-92eec12ed38e",
+  "sha256": "1902f2eb9558d887443b9d1dd40733d155cb55a61c7b294063ba3a77ec12d106"
+ },
+ "amberfall/Amber_Fallen_Log": {
+  "assetId": "84816740397445",
+  "bytes": 2531772,
+  "displayName": "amberfall_Amber_Fallen_Log",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\amberfall\\Amber_Fallen_Log.glb",
+  "moderation": "Approved",
+  "operationId": "17d7c7ca-b972-49b9-bccf-945973e17aae",
+  "sha256": "dc35da40730b1e52aef4e3427552e72391af4c0d97a7dd6654164ff40330a517"
+ },
+ "amberfall/Amber_Fern_Bronze": {
+  "assetId": "125288845846344",
+  "bytes": 231288,
+  "displayName": "amberfall_Amber_Fern_Bronze",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\amberfall\\Amber_Fern_Bronze.glb",
+  "moderation": "Approved",
+  "operationId": "a73c62bd-a4a1-4902-9113-6c20b6dc5be7",
+  "sha256": "aa709c962146def0c9fbff84c98732a9919b5572eea94cfff473623b7e3b30f6"
+ },
+ "amberfall/Amber_Footbridge_Rope": {
+  "assetId": "85582548813705",
+  "bytes": 3097576,
+  "displayName": "amberfall_Amber_Footbridge_Rope",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\amberfall\\Amber_Footbridge_Rope.glb",
+  "moderation": "Approved",
+  "operationId": "fec2c915-3973-4681-bd72-496f306987db",
+  "sha256": "e1bb3212e1fe0359e3b30a8d9d5bd9b68f9c4639a80136d1295f53fb78446b93"
+ },
+ "amberfall/Amber_Grass_Dry": {
+  "assetId": "76295624123290",
+  "bytes": 98472,
+  "displayName": "amberfall_Amber_Grass_Dry",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\amberfall\\Amber_Grass_Dry.glb",
+  "moderation": "Approved",
+  "operationId": "db0f9896-600f-44f4-bd33-ed88b41fe8f6",
+  "sha256": "142a9c71fc3d7b9d00d38fb9b8a3751fcb1cac7dd33d57391730504187857d9d"
+ },
+ "amberfall/Amber_Grass_Pale": {
+  "assetId": "131934405832982",
+  "bytes": 110060,
+  "displayName": "amberfall_Amber_Grass_Pale",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\amberfall\\Amber_Grass_Pale.glb",
+  "moderation": "Approved",
+  "operationId": "c3259c77-e780-4e79-b52a-34c37221a7f8",
+  "sha256": "77a4e953388c12ae553ba212352152b87aaf09ac490a944f6917e7b813ce28f0"
+ },
+ "amberfall/Amber_Grass_Seed": {
+  "assetId": "104890039488091",
+  "bytes": 3183932,
+  "displayName": "amberfall_Amber_Grass_Seed",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\amberfall\\Amber_Grass_Seed.glb",
+  "moderation": "Approved",
+  "operationId": "a1c08e0e-c972-4e2e-93f6-1cdc818bbee0",
+  "sha256": "1d5ef73fd638ecd14dc9497bbb3afb9df2f4d834edd83df06d470943a820dddd"
+ },
+ "amberfall/Amber_Lantern_Hanging": {
+  "assetId": "116219970366884",
+  "bytes": 1864240,
+  "displayName": "amberfall_Amber_Lantern_Hanging",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\amberfall\\Amber_Lantern_Hanging.glb",
+  "moderation": "Approved",
+  "operationId": "9af878fd-c703-4b94-8684-5b03c02ace41",
+  "sha256": "3859a89155aeeebdbe04d7b8eba0f029296b6a010c27c190505c28e77aaaf7c5"
+ },
+ "amberfall/Amber_Lantern_Stone": {
+  "assetId": "136549466494365",
+  "bytes": 1691688,
+  "displayName": "amberfall_Amber_Lantern_Stone",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\amberfall\\Amber_Lantern_Stone.glb",
+  "moderation": "Approved",
+  "operationId": "6792bc5c-876c-449a-a903-94026253c5d6",
+  "sha256": "7c16915292453187a053f104f674c265eeed4b427004494891447938af5ff49b"
+ },
+ "amberfall/Amber_Leaf_Litter_A": {
+  "assetId": "126893288173990",
+  "bytes": 4605064,
+  "displayName": "amberfall_Amber_Leaf_Litter_A",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\amberfall\\Amber_Leaf_Litter_A.glb",
+  "moderation": "Approved",
+  "operationId": "6560f9be-68b9-4d49-8872-a7e0df4831c4",
+  "sha256": "6e78685929b67aadec0ca449fb7f4a8ec8eb0f938b154de19353fef20cc28ad2"
+ },
+ "amberfall/Amber_Leaf_Litter_B": {
+  "assetId": "118305787466305",
+  "bytes": 3436412,
+  "displayName": "amberfall_Amber_Leaf_Litter_B",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\amberfall\\Amber_Leaf_Litter_B.glb",
+  "moderation": "Approved",
+  "operationId": "037ce9aa-61d5-4c8d-ab0e-232dec837878",
+  "sha256": "fbead4d0e7d12d8cc0f5b52f85339e250de52698a4e8bbc9893a9b961215c07d"
+ },
+ "amberfall/Amber_Ledge_Long": {
+  "assetId": "112478904246239",
+  "bytes": 5729872,
+  "displayName": "amberfall_Amber_Ledge_Long",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\amberfall\\Amber_Ledge_Long.glb",
+  "moderation": "Approved",
+  "operationId": "2978352d-336f-46c0-a599-4b8baf847251",
+  "sha256": "0a17dc577281e1fa4f56395ed2f00f70f19b1407d36a540afeaf45d6eec25d32"
+ },
+ "amberfall/Amber_Ledge_Overhang": {
+  "assetId": "91141173658337",
+  "bytes": 5819904,
+  "displayName": "amberfall_Amber_Ledge_Overhang",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\amberfall\\Amber_Ledge_Overhang.glb",
+  "moderation": "Approved",
+  "operationId": "8da707d0-0373-4cc5-ba06-369f1de50a9c",
+  "sha256": "02879b3330c6650824e67c472785fa22995023ca6f53bc8cfe0a6a340594b75b"
+ },
+ "amberfall/Amber_Maple_Gold": {
+  "assetId": "94761258730274",
+  "bytes": 5107960,
+  "displayName": "amberfall_Amber_Maple_Gold",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\amberfall\\Amber_Maple_Gold.glb",
+  "moderation": "Approved",
+  "operationId": "84799332-6a9b-40fe-a64d-86c896bab1fe",
+  "sha256": "1fd55cb1ac95839e5389b693434ac8ecbe80637827bd6ed0e96fd4e0ffc76619"
+ },
+ "amberfall/Amber_Maple_Red": {
+  "assetId": "135767478979521",
+  "bytes": 4936116,
+  "displayName": "amberfall_Amber_Maple_Red",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\amberfall\\Amber_Maple_Red.glb",
+  "moderation": "Approved",
+  "operationId": "44209f75-fab5-450b-abf3-e8952ddd2c05",
+  "sha256": "42b16ca6be444051c138c5908f670a93ddd60b2876ab695371c099ad406e893f"
+ },
+ "amberfall/Amber_Maple_Sapling": {
+  "assetId": "128392368571424",
+  "bytes": 4640328,
+  "displayName": "amberfall_Amber_Maple_Sapling",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\amberfall\\Amber_Maple_Sapling.glb",
+  "moderation": "Approved",
+  "operationId": "374d16af-6f4e-4b0a-899c-2570f00bd723",
+  "sha256": "7056038bed7a6652dbc40b821c91bbd8a2dcee2b7b1f1579b5f9d833065c77f3"
+ },
+ "amberfall/Amber_RedTrunk_A": {
+  "assetId": "116859083541966",
+  "bytes": 4675060,
+  "displayName": "amberfall_Amber_RedTrunk_A",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\amberfall\\Amber_RedTrunk_A.glb",
+  "moderation": "Approved",
+  "operationId": "411f83df-1636-444b-8720-33aeffe1c048",
+  "sha256": "ed2e001c0790111209e2b1d6a86bd770bbe2abbc2fdac49927b5d3f7c4d58bfc"
+ },
+ "amberfall/Amber_RedTrunk_B": {
+  "assetId": "117990892136421",
+  "bytes": 4618912,
+  "displayName": "amberfall_Amber_RedTrunk_B",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\amberfall\\Amber_RedTrunk_B.glb",
+  "moderation": "Approved",
+  "operationId": "dcbae82e-81db-4593-95eb-0021206e03a5",
+  "sha256": "5d6b00e6e0ebacb571b0b0f69f6afd20e175721d179fdc5c0286f2a01d156f01"
+ },
+ "amberfall/Amber_Retaining_Wall_A": {
+  "assetId": "109138975738492",
+  "bytes": 2913152,
+  "displayName": "amberfall_Amber_Retaining_Wall_A",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\amberfall\\Amber_Retaining_Wall_A.glb",
+  "moderation": "Approved",
+  "operationId": "3cd91105-6a78-4fd6-956f-5b5f81fcefb1",
+  "sha256": "2c930201e5aac295798b9442604ca2a85d1c83eaaaff9f5bba29f1b90197b6b5"
+ },
+ "amberfall/Amber_Retaining_Wall_B": {
+  "assetId": "80895554242381",
+  "bytes": 2939824,
+  "displayName": "amberfall_Amber_Retaining_Wall_B",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\amberfall\\Amber_Retaining_Wall_B.glb",
+  "moderation": "Approved",
+  "operationId": "0b889c8b-1031-407a-97e0-ce456b4916a5",
+  "sha256": "ec480501f10979881e209c4c85a8e3e5f80fb8345c7b362a7f472587cea67445"
+ },
+ "amberfall/Amber_Root_Tangle": {
+  "assetId": "99940173158250",
+  "bytes": 1260076,
+  "displayName": "amberfall_Amber_Root_Tangle",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\amberfall\\Amber_Root_Tangle.glb",
+  "moderation": "Approved",
+  "operationId": "73899aaf-df44-4200-a499-d3838ee9348d",
+  "sha256": "fcb8d87b324ba2fb8bcacb41a13e17a77b127c56c37c6167832f30d57b3164e2"
+ },
+ "amberfall/Amber_Rope_Rail": {
+  "assetId": "91419301564894",
+  "bytes": 1582456,
+  "displayName": "amberfall_Amber_Rope_Rail",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\amberfall\\Amber_Rope_Rail.glb",
+  "moderation": "Approved",
+  "operationId": "dc9bce3a-9840-4a8c-a794-93fc93b08fdc",
+  "sha256": "698795f450e494cb895b608d284c20f798384461f4b176308f6d89551c76d03b"
+ },
+ "amberfall/Amber_Scree_A": {
+  "assetId": "86554500330134",
+  "bytes": 5675512,
+  "displayName": "amberfall_Amber_Scree_A",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\amberfall\\Amber_Scree_A.glb",
+  "moderation": "Approved",
+  "operationId": "c82f08e5-848d-48b6-a73e-fa9d658a6f55",
+  "sha256": "4a79306e088f7480476999b72129b1b3c8aab6071cee6119d5ebaffa43755a82"
+ },
+ "amberfall/Amber_Scree_B": {
+  "assetId": "89267230540346",
+  "bytes": 5737136,
+  "displayName": "amberfall_Amber_Scree_B",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\amberfall\\Amber_Scree_B.glb",
+  "moderation": "Approved",
+  "operationId": "16fecb8d-d20a-49bb-80a7-f24991a47f65",
+  "sha256": "c6dba13408193b341f5b7016996120cfe23c60c2feb202bd6f9f801b93007684"
+ },
+ "amberfall/Amber_Shrine": {
+  "assetId": "96569948105565",
+  "bytes": 3042120,
+  "displayName": "amberfall_Amber_Shrine",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\amberfall\\Amber_Shrine.glb",
+  "moderation": "Approved",
+  "operationId": "4325019b-7366-44bc-8946-0ef819251642",
+  "sha256": "79d44f898504b1375aaceeba3ed3e003a7d12212ef6ba7be703c122c58a86746"
+ },
+ "amberfall/Amber_Shrub_Dry": {
+  "assetId": "102117043392881",
+  "bytes": 4553512,
+  "displayName": "amberfall_Amber_Shrub_Dry",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\amberfall\\Amber_Shrub_Dry.glb",
+  "moderation": "Approved",
+  "operationId": "782962df-fa73-441c-ad26-28b6be3e0373",
+  "sha256": "908f8495605c29bcc80703a7ecdc1a5458da306295e1ac9c004a278b364065e3"
+ },
+ "amberfall/Amber_Shrub_Sumac": {
+  "assetId": "89492534761652",
+  "bytes": 4484276,
+  "displayName": "amberfall_Amber_Shrub_Sumac",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\amberfall\\Amber_Shrub_Sumac.glb",
+  "moderation": "Approved",
+  "operationId": "6d07c2f5-1e2e-47d2-95a2-f4e312cd70d4",
+  "sha256": "e5aa3fb04e49fbd8e0a7a662f3d22044a97cf06a34c183279a5d69361513ff24"
+ },
+ "amberfall/Amber_Spire": {
+  "assetId": "122729458374379",
+  "bytes": 6021788,
+  "displayName": "amberfall_Amber_Spire",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\amberfall\\Amber_Spire.glb",
+  "moderation": "Approved",
+  "operationId": "64dfc9ba-f3cd-4e77-8409-f3db7b41419c",
+  "sha256": "3840364db5e5038d5e76d518ef9be4e14b812aa9df517af1d0f9f31fcaf8ce09"
+ },
+ "amberfall/Amber_Stair_Run": {
+  "assetId": "73381417953853",
+  "bytes": 2946428,
+  "displayName": "amberfall_Amber_Stair_Run",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\amberfall\\Amber_Stair_Run.glb",
+  "moderation": "Approved",
+  "operationId": "edf0135e-8c32-469b-b057-cbe28efd6e38",
+  "sha256": "a3014ed662695ad9f808bdcba5e260092d04243c9a1972a88113cdea3e90a281"
+ },
+ "amberfall/Amber_Stair_Worn": {
+  "assetId": "85090917657691",
+  "bytes": 2836388,
+  "displayName": "amberfall_Amber_Stair_Worn",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\amberfall\\Amber_Stair_Worn.glb",
+  "moderation": "Approved",
+  "operationId": "346034aa-a1b4-4189-a561-a1b94b65a286",
+  "sha256": "9852e8ede57aab43389c4c62fb049d0b2c4f57b6141b4d8825e0bb644faaf1dc"
+ },
+ "amberfall/Amber_Stump": {
+  "assetId": "114547139873155",
+  "bytes": 2525436,
+  "displayName": "amberfall_Amber_Stump",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\amberfall\\Amber_Stump.glb",
+  "moderation": "Approved",
+  "operationId": "f2b36b9a-d62a-4655-b249-94ef9fe4ab37",
+  "sha256": "506d8ad18591917245ac5c6caf4d25a337eb612634ce64d133aa9c363e8a9998"
+ },
+ "ashen/Ash_Boulder_A": {
+  "assetId": "110868284398626",
+  "bytes": 5773420,
+  "displayName": "ashen_Ash_Boulder_A",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\ashen\\Ash_Boulder_A.glb",
+  "moderation": "Approved",
+  "operationId": "5a1d7675-1b97-4652-8720-87324e6d2de3",
+  "sha256": "36fd5100479b98a0ba5a2e66a39ee8a03f206e0c8fb2b64bcf4747c841f7e2d3"
+ },
+ "ashen/Ash_Boulder_B": {
+  "assetId": "85080172548278",
+  "bytes": 5651692,
+  "displayName": "ashen_Ash_Boulder_B",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\ashen\\Ash_Boulder_B.glb",
+  "moderation": "Approved",
+  "operationId": "6b99689f-991d-456a-98b8-bc1c19d3f1fb",
+  "sha256": "fb98ff7068ecf7cd869c02ff3556d223d2b5c96d762539cc7d2b3d7c8a5fe5ee"
+ },
+ "ashen/Ash_Boulder_C": {
+  "assetId": "93921132261507",
+  "bytes": 5584876,
+  "displayName": "ashen_Ash_Boulder_C",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\ashen\\Ash_Boulder_C.glb",
+  "moderation": "Approved",
+  "operationId": "7492cdc7-b4e8-4f07-96b6-bfbb9aa26c6a",
+  "sha256": "09db8f7aefefb7dce9c7609d993504e549564a141c001acb31af6a51e45d8e25"
+ },
+ "ashen/Ash_Cliff_Corner": {
+  "assetId": "125881725137374",
+  "bytes": 5710324,
+  "displayName": "ashen_Ash_Cliff_Corner",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\ashen\\Ash_Cliff_Corner.glb",
+  "moderation": "Approved",
+  "operationId": "9c0e98e8-0169-480e-b0c2-358f2c6832ba",
+  "sha256": "eac5952c09491b55977b2d4a077c55f33b413847eedadd69f2f8122387890151"
+ },
+ "ashen/Ash_Cliff_Switchback_A": {
+  "assetId": "81207900646819",
+  "bytes": 5634616,
+  "displayName": "ashen_Ash_Cliff_Switchback_A",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\ashen\\Ash_Cliff_Switchback_A.glb",
+  "moderation": "Approved",
+  "operationId": "dd813870-e975-483c-b6c6-c3fd0f5ab363",
+  "sha256": "699b55b0d19184064863844292d1abc070f6afac45aca2036ba6772dea4349bc"
+ },
+ "ashen/Ash_Cliff_Switchback_B": {
+  "assetId": "90558342307258",
+  "bytes": 5639760,
+  "displayName": "ashen_Ash_Cliff_Switchback_B",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\ashen\\Ash_Cliff_Switchback_B.glb",
+  "moderation": "Approved",
+  "operationId": "fbd3bca0-8fb0-4cf6-9975-4c702f164313",
+  "sha256": "4047e1eee6c82032f7dff887cc84f5544cb1167ad6c93450567e8eb47a44577b"
+ },
+ "ashen/Ash_Crag": {
+  "assetId": "92394478188638",
+  "bytes": 6286124,
+  "displayName": "ashen_Ash_Crag",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\ashen\\Ash_Crag.glb",
+  "moderation": "Approved",
+  "operationId": "3b3524d0-be86-459f-ac1a-cd53a03d0270",
+  "sha256": "f3952fceb628da860f57892dbdfe144ef5cf55732fe11efeb6a660a5993f0341"
+ },
+ "ashen/Ash_Gate_Broken": {
+  "assetId": "90728295710302",
+  "bytes": 2640460,
+  "displayName": "ashen_Ash_Gate_Broken",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\ashen\\Ash_Gate_Broken.glb",
+  "moderation": "Approved",
+  "operationId": "73fb784c-7a25-4620-898b-6973f191107b",
+  "sha256": "7cfca81315b32120a1079fc222a4dbcdcf7b46c1d0b8e77243b22e828f775acb"
+ },
+ "ashen/Ash_Lantern_Stone": {
+  "assetId": "137191095887427",
+  "bytes": 1588096,
+  "displayName": "ashen_Ash_Lantern_Stone",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\ashen\\Ash_Lantern_Stone.glb",
+  "moderation": "Approved",
+  "operationId": "d02ca82d-9bad-495c-802e-f4473c4f5ca4",
+  "sha256": "e2fefcd4db42ac4b24d7cd563280f120880d646ab2b35babf5349e7e6d587c93"
+ },
+ "ashen/Ash_Ledge": {
+  "assetId": "115764376499536",
+  "bytes": 5372616,
+  "displayName": "ashen_Ash_Ledge",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\ashen\\Ash_Ledge.glb",
+  "moderation": "Approved",
+  "operationId": "d11399de-adfc-4749-9289-f1ae55053a6f",
+  "sha256": "06de3be372e8de30cae353ab79713b9c9991dbfc6e07ca2f27d0b3b1f7ad8123"
+ },
+ "ashen/Ash_Lichen_A": {
+  "assetId": "101518971372562",
+  "bytes": 1513812,
+  "displayName": "ashen_Ash_Lichen_A",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\ashen\\Ash_Lichen_A.glb",
+  "moderation": "Approved",
+  "operationId": "b92820ee-079c-46a2-ae48-4f25182f6c46",
+  "sha256": "2c264182f55528b74954c3977670ff96d09fe0e40fcae2d6aa413840224ae780"
+ },
+ "ashen/Ash_Lichen_B": {
+  "assetId": "92372816118818",
+  "bytes": 1504468,
+  "displayName": "ashen_Ash_Lichen_B",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\ashen\\Ash_Lichen_B.glb",
+  "moderation": "Approved",
+  "operationId": "0053a00c-073a-4038-97c8-9af5bef1b4a7",
+  "sha256": "3883ba9d88ef67e03828717f99dfcce22fd30d787f4daf3b395af97ccaacb547"
+ },
+ "ashen/Ash_Pine_A": {
+  "assetId": "77855104070069",
+  "bytes": 4533040,
+  "displayName": "ashen_Ash_Pine_A",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\ashen\\Ash_Pine_A.glb",
+  "moderation": "Approved",
+  "operationId": "a08087a7-e5be-4be0-b7b9-48182a60a4fa",
+  "sha256": "68ff7322ab38e6bd20d95b26af42c3e2e969c1712e209d4ca23375c334ca2c97"
+ },
+ "ashen/Ash_Pine_B": {
+  "assetId": "87727135583014",
+  "bytes": 4600188,
+  "displayName": "ashen_Ash_Pine_B",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\ashen\\Ash_Pine_B.glb",
+  "moderation": "Approved",
+  "operationId": "d2216306-e6e0-4e71-99f5-e1bbd0328aac",
+  "sha256": "1e30e47790901c1a79e63453963511715b75719aeb6c86507c43b42a5170d3a1"
+ },
+ "ashen/Ash_Pine_C": {
+  "assetId": "103760479292419",
+  "bytes": 4463308,
+  "displayName": "ashen_Ash_Pine_C",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\ashen\\Ash_Pine_C.glb",
+  "moderation": "Approved",
+  "operationId": "ee4177b4-daf8-4024-abe6-719cc9ee9351",
+  "sha256": "17d7de18136da45fe2c3102cb2d239d5acbff74527152632758f580fdd8ac389"
+ },
+ "ashen/Ash_Prayer_Flags": {
+  "assetId": "72807729810620",
+  "bytes": 3198204,
+  "displayName": "ashen_Ash_Prayer_Flags",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\ashen\\Ash_Prayer_Flags.glb",
+  "moderation": "Approved",
+  "operationId": "81247d9e-262e-485f-8141-e4bf390d3119",
+  "sha256": "f0842c3f9f4ce61d8102044825fdf845f37a2550cb36d482d01008eb0de8e82d"
+ },
+ "ashen/Ash_Rest_Pavilion": {
+  "assetId": "108980322555660",
+  "bytes": 3248904,
+  "displayName": "ashen_Ash_Rest_Pavilion",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\ashen\\Ash_Rest_Pavilion.glb",
+  "moderation": "Approved",
+  "operationId": "cbe2c019-82fd-457d-8f44-a4709b1df0f6",
+  "sha256": "5e087a4993d68fbc9b33be1c3af1390423b7a907fc8fc7034dbdd951240a05ad"
+ },
+ "ashen/Ash_Retaining_Wall_A": {
+  "assetId": "71939708405092",
+  "bytes": 2562456,
+  "displayName": "ashen_Ash_Retaining_Wall_A",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\ashen\\Ash_Retaining_Wall_A.glb",
+  "moderation": "Approved",
+  "operationId": "7e83caa5-4418-420e-90d6-127998455913",
+  "sha256": "713931996d0ea5d48c7fb34d4b04c196464770daa079f3b26bcfdf4c3326ef1a"
+ },
+ "ashen/Ash_Retaining_Wall_B": {
+  "assetId": "77391139893389",
+  "bytes": 2599152,
+  "displayName": "ashen_Ash_Retaining_Wall_B",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\ashen\\Ash_Retaining_Wall_B.glb",
+  "moderation": "Approved",
+  "operationId": "413eae4f-0b7e-4b70-849e-779136ef227d",
+  "sha256": "0b552bd10e65aad274afb93ba830ffcbaa0d7e82d1e932aa91a5dc6dcfa8d34b"
+ },
+ "ashen/Ash_Scree_A": {
+  "assetId": "104643583671186",
+  "bytes": 5317244,
+  "displayName": "ashen_Ash_Scree_A",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\ashen\\Ash_Scree_A.glb",
+  "moderation": "Approved",
+  "operationId": "21c26025-0a8b-4f36-b18a-ea2f837bd089",
+  "sha256": "6d853089c5e37c11ad651bba81c0a5b956828f8d7a3ef034faabb03738815570"
+ },
+ "ashen/Ash_Scree_B": {
+  "assetId": "81002244064514",
+  "bytes": 5379156,
+  "displayName": "ashen_Ash_Scree_B",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\ashen\\Ash_Scree_B.glb",
+  "moderation": "Approved",
+  "operationId": "c6562c30-0510-475f-a7b1-73674efa6db2",
+  "sha256": "28291f79ec1ea0d33ec230ea4a5f841870380918d3967436354e949699c11f40"
+ },
+ "ashen/Ash_Shrine_Pilgrim": {
+  "assetId": "84155905067678",
+  "bytes": 3169556,
+  "displayName": "ashen_Ash_Shrine_Pilgrim",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\ashen\\Ash_Shrine_Pilgrim.glb",
+  "moderation": "Approved",
+  "operationId": "07884d10-1327-44e4-9185-44edb6c60bea",
+  "sha256": "bdfb190456d2dbb9af0b6a63f86f18d262274a34f97e2217dd876b065ad7edc4"
+ },
+ "ashen/Ash_Shrub": {
+  "assetId": "71578169556791",
+  "bytes": 4561772,
+  "displayName": "ashen_Ash_Shrub",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\ashen\\Ash_Shrub.glb",
+  "moderation": "Approved",
+  "operationId": "af0872e1-09c8-4ea0-a8d4-951aa836f097",
+  "sha256": "382dc0cd9d074828b7be4da156248553f911d097ce54e310a3dc3309d4e4e9e0"
+ },
+ "ashen/Ash_Shrub_Small": {
+  "assetId": "134183263847367",
+  "bytes": 4458356,
+  "displayName": "ashen_Ash_Shrub_Small",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\ashen\\Ash_Shrub_Small.glb",
+  "moderation": "Approved",
+  "operationId": "866733ad-8896-4729-8b5a-a4435be36c11",
+  "sha256": "f68d5fd4bb8dbd3e766ee7af3d279a25b212f15a4b098a23ac065e5231e97808"
+ },
+ "ashen/Ash_Snag_A": {
+  "assetId": "135931447195781",
+  "bytes": 2580136,
+  "displayName": "ashen_Ash_Snag_A",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\ashen\\Ash_Snag_A.glb",
+  "moderation": "Approved",
+  "operationId": "8d4ce160-bd69-41b0-90b1-889396e48181",
+  "sha256": "78d9be4434af26868afa452f66267c16e6675065edb2546522947ef785052d99"
+ },
+ "ashen/Ash_Snag_B": {
+  "assetId": "75515694840658",
+  "bytes": 2536788,
+  "displayName": "ashen_Ash_Snag_B",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\ashen\\Ash_Snag_B.glb",
+  "moderation": "Approved",
+  "operationId": "a5c96757-d517-4fc1-96e9-1a32bc3b2354",
+  "sha256": "a45dbc3973a7321618fcc29491acdb10050f7065c5e2aa12bf6916caa0c8873a"
+ },
+ "ashen/Ash_Snag_Fallen": {
+  "assetId": "126239555230820",
+  "bytes": 2575904,
+  "displayName": "ashen_Ash_Snag_Fallen",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\ashen\\Ash_Snag_Fallen.glb",
+  "moderation": "Approved",
+  "operationId": "0bbf1a12-2552-4c51-9f67-32d2e8b137b4",
+  "sha256": "c20d571006394a478097e503deae65a483a876ff3c4b25e7c417fe51718bda6c"
+ },
+ "ashen/Ash_Stair_Run_Long": {
+  "assetId": "112113341423547",
+  "bytes": 2892720,
+  "displayName": "ashen_Ash_Stair_Run_Long",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\ashen\\Ash_Stair_Run_Long.glb",
+  "moderation": "Approved",
+  "operationId": "e7ca7ae8-97b4-45b6-931e-8a169c5b4d5e",
+  "sha256": "fe53dc4d98b32b9731b561af772c497334186346b3c90763f568984908f4e7d9"
+ },
+ "ashen/Ash_Stair_Run_Straight": {
+  "assetId": "81827303764553",
+  "bytes": 2659176,
+  "displayName": "ashen_Ash_Stair_Run_Straight",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\ashen\\Ash_Stair_Run_Straight.glb",
+  "moderation": "Approved",
+  "operationId": "1081c60a-db9c-40ce-8407-8dfd94d47c0d",
+  "sha256": "679c1908e06f39051e8f81da2d21ec553f150bb6509cde4b560a418e3b616a22"
+ },
+ "ashen/Ash_Stair_Run_Turn": {
+  "assetId": "109682633927398",
+  "bytes": 2709204,
+  "displayName": "ashen_Ash_Stair_Run_Turn",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\ashen\\Ash_Stair_Run_Turn.glb",
+  "moderation": "Approved",
+  "operationId": "aa59bd48-ec56-4981-a5e9-41b278e94d4f",
+  "sha256": "f584ce7187c147c1bfe7895a72a8a6527799b75fce74243000f85774e9240133"
+ },
+ "ashen/Ash_Summit_Pagoda": {
+  "assetId": "72132189046799",
+  "bytes": 4976180,
+  "displayName": "ashen_Ash_Summit_Pagoda",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\ashen\\Ash_Summit_Pagoda.glb",
+  "moderation": "Approved",
+  "operationId": "89f727a1-c97f-4df0-9636-65154d6f7c47",
+  "sha256": "fd44606fef2fdf7a76032dc4218bbc7eac6faf6b9958b40b2e4e56a6d1aa9655"
+ },
+ "ashen/Ash_Summit_Wing": {
+  "assetId": "140253572234165",
+  "bytes": 3370556,
+  "displayName": "ashen_Ash_Summit_Wing",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\ashen\\Ash_Summit_Wing.glb",
+  "moderation": "Approved",
+  "operationId": "649445dd-4a83-4e0d-ad85-90d4cd45b5af",
+  "sha256": "bf4e9defe5a6bb21a5e7dc248bd69fc0ef18b1044f3b4865eda2ca9cb98e403b"
+ },
+ "ashen/Ash_Tussock_A": {
+  "assetId": "113044021520919",
+  "bytes": 117500,
+  "displayName": "ashen_Ash_Tussock_A",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\ashen\\Ash_Tussock_A.glb",
+  "moderation": "Approved",
+  "operationId": "5b5aafa5-0c30-4fc8-8b14-756afd505350",
+  "sha256": "14ed640e489aa1a24fab9326a1f59cb706f0a29a0553a6db60601e6d148b4276"
+ },
+ "ashen/Ash_Tussock_B": {
+  "assetId": "87597223684582",
+  "bytes": 76372,
+  "displayName": "ashen_Ash_Tussock_B",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\ashen\\Ash_Tussock_B.glb",
+  "moderation": "Approved",
+  "operationId": "fad2bd5d-f90c-49c9-a4b4-d6be7a7134f6",
+  "sha256": "21db915e10094cfba315181ec0d143a884330a710338631c146d3e58cd01c61e"
+ },
+ "frostmere/Frost_Beacon_Hero": {
+  "assetId": "101288509219378",
+  "bytes": 7238900,
+  "displayName": "frostmere_Frost_Beacon_Hero",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\frostmere\\Frost_Beacon_Hero.glb",
+  "moderation": "Approved",
+  "operationId": "d2428182-2e61-49c7-ab8d-8b52eb33ed69",
+  "sha256": "f7314003d0801baf5c1679f80738a1390d712282852af7cdec2848a34fb79f50"
+ },
+ "frostmere/Frost_Birch_A": {
+  "assetId": "101095085675093",
+  "bytes": 2568392,
+  "displayName": "frostmere_Frost_Birch_A",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\frostmere\\Frost_Birch_A.glb",
+  "moderation": "Approved",
+  "operationId": "38c7c5df-b265-4f07-84dd-8682f1da4497",
+  "sha256": "461e247cc348d7a08e9bf0e3c0ede2656bb1dc14b3d2a477615c40319dd3ebfb"
+ },
+ "frostmere/Frost_Birch_B": {
+  "assetId": "72098555063169",
+  "bytes": 2538372,
+  "displayName": "frostmere_Frost_Birch_B",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\frostmere\\Frost_Birch_B.glb",
+  "moderation": "Approved",
+  "operationId": "248e75dc-53cd-4548-acef-c042d996899f",
+  "sha256": "96b550c8988f51a140c74e600dfdc23b272ffd6866d08c04f526dc1f8e20cbcb"
+ },
+ "frostmere/Frost_Boulder_A": {
+  "assetId": "122713617155193",
+  "bytes": 5560856,
+  "displayName": "frostmere_Frost_Boulder_A",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\frostmere\\Frost_Boulder_A.glb",
+  "moderation": "Approved",
+  "operationId": "5cb35797-a785-44c2-bfb9-042aace793b9",
+  "sha256": "5107ebbadd7b2f0d33eca1d3dcd31092a64a2348b5498da5b6cff345b5fa1494"
+ },
+ "frostmere/Frost_Boulder_B": {
+  "assetId": "119979975677059",
+  "bytes": 5806020,
+  "displayName": "frostmere_Frost_Boulder_B",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\frostmere\\Frost_Boulder_B.glb",
+  "moderation": "Approved",
+  "operationId": "65253669-95cd-4887-a818-a496e8e35641",
+  "sha256": "635dd41e62e0bf89c6bc7b624471bc11b54bb78182dbbc124f5cc2fcf6425ed8"
+ },
+ "frostmere/Frost_Boulder_C": {
+  "assetId": "74014861625701",
+  "bytes": 5709924,
+  "displayName": "frostmere_Frost_Boulder_C",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\frostmere\\Frost_Boulder_C.glb",
+  "moderation": "Approved",
+  "operationId": "d8bcf9d7-3a3a-421d-a060-ddc9b72e3b53",
+  "sha256": "a98264761d523c1f4da1c9937b3fe7ac8494b7dbb00dd7b32c6a6faeb40d3d04"
+ },
+ "frostmere/Frost_Brazier": {
+  "assetId": "130345402950869",
+  "bytes": 2868272,
+  "displayName": "frostmere_Frost_Brazier",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\frostmere\\Frost_Brazier.glb",
+  "moderation": "Approved",
+  "operationId": "ca3644f6-359a-46ff-aca7-638f5e2cb475",
+  "sha256": "0052b6d99965451d673b02117dcbcb3f5189d661da8414ee3009ccf082363545"
+ },
+ "frostmere/Frost_Cairn": {
+  "assetId": "112413270375001",
+  "bytes": 5733036,
+  "displayName": "frostmere_Frost_Cairn",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\frostmere\\Frost_Cairn.glb",
+  "moderation": "Approved",
+  "operationId": "4cf23adb-ebef-4f20-a52b-144c90355a42",
+  "sha256": "fd889acc40700afa42a9243ec2325358e26d67cd4b8c28bcee7cc7fd62abe30f"
+ },
+ "frostmere/Frost_Cliff_Corner": {
+  "assetId": "89651271593560",
+  "bytes": 6531596,
+  "displayName": "frostmere_Frost_Cliff_Corner",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\frostmere\\Frost_Cliff_Corner.glb",
+  "moderation": "Approved",
+  "operationId": "4395ff3a-2329-45c2-8e0e-eae08ca56051",
+  "sha256": "3037c42920b8728eaea8fb7b49d464f6c6411cff842c9978ba659dcda3f03699"
+ },
+ "frostmere/Frost_Cliff_Wall_A": {
+  "assetId": "109451278611645",
+  "bytes": 5879452,
+  "displayName": "frostmere_Frost_Cliff_Wall_A",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\frostmere\\Frost_Cliff_Wall_A.glb",
+  "moderation": "Approved",
+  "operationId": "cd09d8df-bdf0-4329-acd9-3284fdc8e717",
+  "sha256": "dc0a21a1ff7f341c6f6893d1478a2b445d19483c88b5d110f97b88073cd15cf8"
+ },
+ "frostmere/Frost_Cliff_Wall_B": {
+  "assetId": "125611787626103",
+  "bytes": 6093276,
+  "displayName": "frostmere_Frost_Cliff_Wall_B",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\frostmere\\Frost_Cliff_Wall_B.glb",
+  "moderation": "Approved",
+  "operationId": "115b5944-2571-4873-ae3d-3ef80c8ea0a0",
+  "sha256": "3bb97ab2af1da2a42090f8f22d5e1b536d74fd0db07fcfddd2a8859a4294afb5"
+ },
+ "frostmere/Frost_Dead_Snag": {
+  "assetId": "128056860279733",
+  "bytes": 3765100,
+  "displayName": "frostmere_Frost_Dead_Snag",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\frostmere\\Frost_Dead_Snag.glb",
+  "moderation": "Approved",
+  "operationId": "38a1f554-03d8-4494-8eff-1b26651c03e7",
+  "sha256": "1abbef4b8aa9a88d2f148d6138ae39fdeece81c9858aa9c7a2c07a9f4119c215"
+ },
+ "frostmere/Frost_Dock_Section": {
+  "assetId": "85405134485996",
+  "bytes": 3935688,
+  "displayName": "frostmere_Frost_Dock_Section",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\frostmere\\Frost_Dock_Section.glb",
+  "moderation": "Approved",
+  "operationId": "272bee0c-b00b-4351-9600-3bd657cd9062",
+  "sha256": "497ab3f62191bdae25ea4371ccc3946e289c6d3decdd818f760daa21f94e80cb"
+ },
+ "frostmere/Frost_Fallen_Log": {
+  "assetId": "117867831888368",
+  "bytes": 3797508,
+  "displayName": "frostmere_Frost_Fallen_Log",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\frostmere\\Frost_Fallen_Log.glb",
+  "moderation": "Approved",
+  "operationId": "bf975e1b-e08c-41e1-a237-4cf7356f5018",
+  "sha256": "23100eeca2708d86f53ff2af1eb657051f1a9f80173eb75632a4baf83c3b8beb"
+ },
+ "frostmere/Frost_Fir_A": {
+  "assetId": "77379729752824",
+  "bytes": 4128636,
+  "displayName": "frostmere_Frost_Fir_A",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\frostmere\\Frost_Fir_A.glb",
+  "moderation": "Approved",
+  "operationId": "9f7cf463-5581-467d-af24-c6f267d37a84",
+  "sha256": "9addbe2dfc6058d9ef73f55722dd6c084aa64fa32fbdeb361e085b49577fcd71"
+ },
+ "frostmere/Frost_Fir_B": {
+  "assetId": "111131661971900",
+  "bytes": 4163808,
+  "displayName": "frostmere_Frost_Fir_B",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\frostmere\\Frost_Fir_B.glb",
+  "moderation": "Approved",
+  "operationId": "cc935996-9b77-47e9-8225-8323ed7f71c0",
+  "sha256": "da5d6a021fcf0d12aeba113422f1f89b205a4e42de9ad19f351265a5a2a5d4af"
+ },
+ "frostmere/Frost_Fir_Broad": {
+  "assetId": "93486140158873",
+  "bytes": 4078320,
+  "displayName": "frostmere_Frost_Fir_Broad",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\frostmere\\Frost_Fir_Broad.glb",
+  "moderation": "Approved",
+  "operationId": "66e96635-5c78-499d-8d2a-88b3ad47b9c9",
+  "sha256": "21ce475a2adfab97bcccba20b7f64491882fc170cc83537e5194d172de30f353"
+ },
+ "frostmere/Frost_Fir_Sapling": {
+  "assetId": "127379768602886",
+  "bytes": 4017164,
+  "displayName": "frostmere_Frost_Fir_Sapling",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\frostmere\\Frost_Fir_Sapling.glb",
+  "moderation": "Approved",
+  "operationId": "4d6fb088-5292-4f6a-a7cf-1cd2a172eda3",
+  "sha256": "8607da5069d5e7f47437ba89a156540a9579bbef0ad942bebc55fbd46c2ed325"
+ },
+ "frostmere/Frost_Fishing_Hut": {
+  "assetId": "109399828248341",
+  "bytes": 4692244,
+  "displayName": "frostmere_Frost_Fishing_Hut",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\frostmere\\Frost_Fishing_Hut.glb",
+  "moderation": "Approved",
+  "operationId": "5f159da5-cc56-4050-b9b8-4314cccd03c2",
+  "sha256": "757849a2e6a131ef3ac2792c924b3bdad142a1a77dd4b5759a91bec8831a0e89"
+ },
+ "frostmere/Frost_Grass_Tuft_A": {
+  "assetId": "138622798921560",
+  "bytes": 1321976,
+  "displayName": "frostmere_Frost_Grass_Tuft_A",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\frostmere\\Frost_Grass_Tuft_A.glb",
+  "moderation": "Approved",
+  "operationId": "34b11e5d-c4dd-4d29-9f7f-9ce087a48ded",
+  "sha256": "1eca12dca7c7c7e64ff7eeceaea5ce78ad6c4669778cce5552d64f2970bd0c25"
+ },
+ "frostmere/Frost_Grass_Tuft_B": {
+  "assetId": "84615344831954",
+  "bytes": 1342216,
+  "displayName": "frostmere_Frost_Grass_Tuft_B",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\frostmere\\Frost_Grass_Tuft_B.glb",
+  "moderation": "Approved",
+  "operationId": "30d2da14-f61f-4f7a-a2c8-eca3786288c5",
+  "sha256": "4265ee9f1db17ea57bba72c06d46a5877bc6b6ea38405074f1a76a7ded466e41"
+ },
+ "frostmere/Frost_Ice_Shards_A": {
+  "assetId": "135325793038383",
+  "bytes": 6779256,
+  "displayName": "frostmere_Frost_Ice_Shards_A",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\frostmere\\Frost_Ice_Shards_A.glb",
+  "moderation": "Approved",
+  "operationId": "79fb6b39-211b-477c-8315-33e414a41e2d",
+  "sha256": "0836044d8fbe356c091540988209b2e32bceb932122f8afcb9fb399efe8aeb95"
+ },
+ "frostmere/Frost_Ice_Shards_B": {
+  "assetId": "100464855697979",
+  "bytes": 6769368,
+  "displayName": "frostmere_Frost_Ice_Shards_B",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\frostmere\\Frost_Ice_Shards_B.glb",
+  "moderation": "Approved",
+  "operationId": "0ace9301-c0b0-43a2-ba5b-455d2d4d794d",
+  "sha256": "5d9f6670e8dae514158ad5605a529e75ec928a54c1a16dfb7ff6bcd9c37450a0"
+ },
+ "frostmere/Frost_Lantern": {
+  "assetId": "104243930670122",
+  "bytes": 2883196,
+  "displayName": "frostmere_Frost_Lantern",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\frostmere\\Frost_Lantern.glb",
+  "moderation": "Approved",
+  "operationId": "4f8fe791-cdc9-40d7-b3e0-cb371b454996",
+  "sha256": "7fe5422c004a20cd88b0f8fb93f0a8e96134bb6f147acb7165e77adb7621a450"
+ },
+ "frostmere/Frost_Prayer_Flags": {
+  "assetId": "80614695242457",
+  "bytes": 7512000,
+  "displayName": "frostmere_Frost_Prayer_Flags",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\frostmere\\Frost_Prayer_Flags.glb",
+  "moderation": "Approved",
+  "operationId": "f0560b74-3f17-4489-9dbd-2a0a1ea2da6a",
+  "sha256": "eb66dc2104d243251701b4fae696ab45f9a2ccc21b49fca8a90d7fbcf2bc74d8"
+ },
+ "frostmere/Frost_Retaining_Wall": {
+  "assetId": "91728889269707",
+  "bytes": 4167108,
+  "displayName": "frostmere_Frost_Retaining_Wall",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\frostmere\\Frost_Retaining_Wall.glb",
+  "moderation": "Approved",
+  "operationId": "40e15228-0895-48d8-9661-6064abbce134",
+  "sha256": "8efbe6de78862d1be1b9ab094281c6dfc551753be8fb6b0137ae52b15b28b55d"
+ },
+ "frostmere/Frost_Scree_A": {
+  "assetId": "118019972971666",
+  "bytes": 5457520,
+  "displayName": "frostmere_Frost_Scree_A",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\frostmere\\Frost_Scree_A.glb",
+  "moderation": "Approved",
+  "operationId": "681bb655-45a3-440f-ad25-081f04ae1f37",
+  "sha256": "a407f6a4d22ab3f77636da7ea51eeee1a05546ddc541356c902acec0474c4f57"
+ },
+ "frostmere/Frost_Scree_B": {
+  "assetId": "130209488510452",
+  "bytes": 5519592,
+  "displayName": "frostmere_Frost_Scree_B",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\frostmere\\Frost_Scree_B.glb",
+  "moderation": "Approved",
+  "operationId": "e80cb073-9355-4dc0-852b-654f5849ff81",
+  "sha256": "6e54430d2d8cd364d8f0dc16936911840711aed8e62ede81fa852587f2acd980"
+ },
+ "frostmere/Frost_Shrub_Frozen": {
+  "assetId": "129676120687376",
+  "bytes": 3959168,
+  "displayName": "frostmere_Frost_Shrub_Frozen",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\frostmere\\Frost_Shrub_Frozen.glb",
+  "moderation": "Approved",
+  "operationId": "7bb671bb-a32a-4a90-9bcd-cfbd2b4bace1",
+  "sha256": "7ec9a10415918832e0ed64a11d179fb3e2bcc4655775661fa11cb3df2fae5fe4"
+ },
+ "frostmere/Frost_Shrub_Small": {
+  "assetId": "91227507798934",
+  "bytes": 3819656,
+  "displayName": "frostmere_Frost_Shrub_Small",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\frostmere\\Frost_Shrub_Small.glb",
+  "moderation": "Approved",
+  "operationId": "a1158110-027d-4156-ae8d-71edb02baf10",
+  "sha256": "220a72f55acb5baaae5bef520bd332f532f68d7aa924fa8eea26c1b5918a6e24"
+ },
+ "frostmere/Frost_Sled": {
+  "assetId": "90606864865533",
+  "bytes": 3136348,
+  "displayName": "frostmere_Frost_Sled",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\frostmere\\Frost_Sled.glb",
+  "moderation": "Approved",
+  "operationId": "cb5c37fc-755e-4b09-a9ea-fdf37bfc5a75",
+  "sha256": "98313664bd800d0bd6dbf2cabfd2ae5058ca648f43cf70589e3536593f41eb54"
+ },
+ "frostmere/Frost_Stair_Run": {
+  "assetId": "77578597498794",
+  "bytes": 4217084,
+  "displayName": "frostmere_Frost_Stair_Run",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\frostmere\\Frost_Stair_Run.glb",
+  "moderation": "Approved",
+  "operationId": "6adaf759-2bce-48bc-bc7d-294914db519f",
+  "sha256": "f0b3dd2ea31300728159094c6e5e5c27af0f9bb3b4d6b11f4139d07cab2f998f"
+ },
+ "saltreach/Boardwalk_Steps": {
+  "assetId": "89126169727215",
+  "bytes": 1445168,
+  "displayName": "saltreach_Boardwalk_Steps",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\saltreach\\Boardwalk_Steps.glb",
+  "moderation": "Approved",
+  "operationId": "c232c557-17b1-413c-9290-a22fd275a579",
+  "sha256": "429cba56a221651bfff6504393c6a676a592d103144b2d4029b61e227cde78b6"
+ },
+ "saltreach/Boardwalk_Straight": {
+  "assetId": "78619197428828",
+  "bytes": 1472532,
+  "displayName": "saltreach_Boardwalk_Straight",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\saltreach\\Boardwalk_Straight.glb",
+  "moderation": "Approved",
+  "operationId": "6de80544-40e5-4f2d-8116-289818089e0b",
+  "sha256": "11290a260873f8c9ae3fe560221e5df222b172c8f87c6f3c983b184b4215ebac"
+ },
+ "saltreach/Boat_Hull_A": {
+  "assetId": "119032692863822",
+  "bytes": 1521172,
+  "displayName": "saltreach_Boat_Hull_A",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\saltreach\\Boat_Hull_A.glb",
+  "moderation": "Approved",
+  "operationId": "25692ef5-f556-40e3-8cb5-3bf38fc5587a",
+  "sha256": "4246e794584a04ba95034580816e4ee146b776a726f2c48b282f6e20df8afc20"
+ },
+ "saltreach/Boat_Hull_B": {
+  "assetId": "107914670668598",
+  "bytes": 1387160,
+  "displayName": "saltreach_Boat_Hull_B",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\saltreach\\Boat_Hull_B.glb",
+  "moderation": "Approved",
+  "operationId": "28dd5e34-565a-43da-adc3-7428733a0dfd",
+  "sha256": "b119ac82c1b25f208ce56cb31f31e12946621ecae27b8a4f68029735f8cd55ae"
+ },
+ "saltreach/Driftwood_Log": {
+  "assetId": "130034175642622",
+  "bytes": 1350388,
+  "displayName": "saltreach_Driftwood_Log",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\saltreach\\Driftwood_Log.glb",
+  "moderation": "Approved",
+  "operationId": "ce6a1581-39cd-4d6c-9531-9c39fa860f2c",
+  "sha256": "4ec42188abdf9007c67028942180ed87c5c7a148caa0ce0402b55ff80876b032"
+ },
+ "saltreach/Driftwood_Pile": {
+  "assetId": "79463825539430",
+  "bytes": 1388320,
+  "displayName": "saltreach_Driftwood_Pile",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\saltreach\\Driftwood_Pile.glb",
+  "moderation": "Approved",
+  "operationId": "fad2edde-026b-4f7a-a3bd-2ec93008d217",
+  "sha256": "b38f872c91fb1b25c1be7b8184d3dab3f2082dfbd092fb9a47487a575b128cce"
+ },
+ "saltreach/Dune_Scrub_A": {
+  "assetId": "102088429619707",
+  "bytes": 1927392,
+  "displayName": "saltreach_Dune_Scrub_A",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\saltreach\\Dune_Scrub_A.glb",
+  "moderation": "Approved",
+  "operationId": "9c787a61-39d9-4143-88ef-b4466a288301",
+  "sha256": "fdbe76d56df074c8b8c3840682952931b92c964df9b204720908dfac5b330a91"
+ },
+ "saltreach/Dune_Scrub_B": {
+  "assetId": "96536180416718",
+  "bytes": 1911320,
+  "displayName": "saltreach_Dune_Scrub_B",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\saltreach\\Dune_Scrub_B.glb",
+  "moderation": "Approved",
+  "operationId": "a6d46837-c3c5-4c36-a9f5-0c948646255a",
+  "sha256": "a54e38a0889f9ef0e8245d6f6538ec22d3e67bdbdaafdc979a132778e421ba64"
+ },
+ "saltreach/Fisher_Hut_A": {
+  "assetId": "125796666207655",
+  "bytes": 3140116,
+  "displayName": "saltreach_Fisher_Hut_A",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\saltreach\\Fisher_Hut_A.glb",
+  "moderation": "Approved",
+  "operationId": "8672bf28-6308-49bf-8448-0cbe2c6ecddb",
+  "sha256": "0b138a289b71e642d10a78c42de7cb8f5a2ab09f4bf68b9c60890fe34c0a341d"
+ },
+ "saltreach/Fisher_Hut_B": {
+  "assetId": "112676258329336",
+  "bytes": 2914644,
+  "displayName": "saltreach_Fisher_Hut_B",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\saltreach\\Fisher_Hut_B.glb",
+  "moderation": "Approved",
+  "operationId": "60bcfda0-e981-41b6-aec4-036ce4e5c787",
+  "sha256": "5048ba8aa61d888cd3937b7b4d53d956d51fd5263a93a2f1a0e1fe2b6e0041e9"
+ },
+ "saltreach/Gate_Arch": {
+  "assetId": "109128035985191",
+  "bytes": 3638300,
+  "displayName": "saltreach_Gate_Arch",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\saltreach\\Gate_Arch.glb",
+  "moderation": "Approved",
+  "operationId": "e54b710a-00c8-4af0-b585-2da5dabead96",
+  "sha256": "873e9e8a4b7ccb0bd1f628ebcd5f81565811c4ed03b919b1e081ff3ba79b6354"
+ },
+ "saltreach/Gate_Pier": {
+  "assetId": "79779594945721",
+  "bytes": 3275452,
+  "displayName": "saltreach_Gate_Pier",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\saltreach\\Gate_Pier.glb",
+  "moderation": "Approved",
+  "operationId": "809542c1-38f6-4dc1-ad0f-a086695224b9",
+  "sha256": "189945de0eb0f9c9f574e3da1caeb0d6b0c0c1f85fcd2539c5ac41eb47a8ff2f"
+ },
+ "saltreach/Kelp_Wrack": {
+  "assetId": "115674309098301",
+  "bytes": 66548,
+  "displayName": "saltreach_Kelp_Wrack",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\saltreach\\Kelp_Wrack.glb",
+  "moderation": "Approved",
+  "operationId": "48fc97e7-8436-4557-acb2-25f62a14329e",
+  "sha256": "238f99174450bce7968970253363111b5a48350e9a6df6dfd5b2d4767852ba43"
+ },
+ "saltreach/Net_Rack": {
+  "assetId": "111667357806853",
+  "bytes": 1428900,
+  "displayName": "saltreach_Net_Rack",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\saltreach\\Net_Rack.glb",
+  "moderation": "Approved",
+  "operationId": "d162961b-4d92-49eb-9cd5-5bb58804a9e2",
+  "sha256": "770568e243b89a411cf6f80e293eb6f2cfd4032f661a132ad7d3382482f77bd4"
+ },
+ "saltreach/Pier_End": {
+  "assetId": "124132238864541",
+  "bytes": 1841836,
+  "displayName": "saltreach_Pier_End",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\saltreach\\Pier_End.glb",
+  "moderation": "Approved",
+  "operationId": "dd2a7a84-651c-4889-b457-be8f1dc123fb",
+  "sha256": "2e5dd719f11069d366b0b60c09da85cbce324ec3700e40b34766bacb86794e18"
+ },
+ "saltreach/Pier_Section": {
+  "assetId": "95630733491587",
+  "bytes": 1431188,
+  "displayName": "saltreach_Pier_Section",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\saltreach\\Pier_Section.glb",
+  "moderation": "Approved",
+  "operationId": "b1575719-d7d9-441d-b00f-059deb17cfc4",
+  "sha256": "648b2dd910b9e4a31f3aaa9964d253dc3442d8fc3741e54dbedd22fce17ac610"
+ },
+ "saltreach/Salt_Crust_Slab_A": {
+  "assetId": "122003522209473",
+  "bytes": 1306280,
+  "displayName": "saltreach_Salt_Crust_Slab_A",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\saltreach\\Salt_Crust_Slab_A.glb",
+  "moderation": "Approved",
+  "operationId": "4f0efb3a-80fd-4ac9-9a3b-50157a2e4288",
+  "sha256": "a07320da1866960dc80307fb3ce47fe9529f3efdcc38cd71142fa697c845e305"
+ },
+ "saltreach/Salt_Crust_Slab_B": {
+  "assetId": "118706425628303",
+  "bytes": 1299604,
+  "displayName": "saltreach_Salt_Crust_Slab_B",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\saltreach\\Salt_Crust_Slab_B.glb",
+  "moderation": "Approved",
+  "operationId": "25cb6bf7-6b5d-4727-9b61-4a726e7d2875",
+  "sha256": "46c42481a1b5f5bd47448bc18ff5614f3acf846f40dd4b4bcaeda4fb3de5fa8e"
+ },
+ "saltreach/Salt_Grass_Tall": {
+  "assetId": "138581681053780",
+  "bytes": 97736,
+  "displayName": "saltreach_Salt_Grass_Tall",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\saltreach\\Salt_Grass_Tall.glb",
+  "moderation": "Approved",
+  "operationId": "5eb469e0-03eb-4b3f-9a16-c32a51778e24",
+  "sha256": "61cd7d1639914d9f6f3b14f30e925788d4ed2b27672cf620d7c77ab1d6fa38a4"
+ },
+ "saltreach/Salt_Grass_Tuft": {
+  "assetId": "121665937855831",
+  "bytes": 108176,
+  "displayName": "saltreach_Salt_Grass_Tuft",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\saltreach\\Salt_Grass_Tuft.glb",
+  "moderation": "Approved",
+  "operationId": "1a3431c1-5007-47e6-90bb-93651cceff5f",
+  "sha256": "ba8fcc86ccf4944a5bd20520fb047277069df51977b7b2b8e6dc7466b9c0f6cb"
+ },
+ "saltreach/Salt_Pan_Channel": {
+  "assetId": "135660896612994",
+  "bytes": 4444252,
+  "displayName": "saltreach_Salt_Pan_Channel",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\saltreach\\Salt_Pan_Channel.glb",
+  "moderation": "Approved",
+  "operationId": "693434c3-f565-4fac-8193-c18437f6b387",
+  "sha256": "e4a4cea64674ac2f36352aee8f334220159ea6c5abdf343b2ebd2c7acef2c559"
+ },
+ "saltreach/Salt_Pan_Frame": {
+  "assetId": "125103886947918",
+  "bytes": 3949328,
+  "displayName": "saltreach_Salt_Pan_Frame",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\saltreach\\Salt_Pan_Frame.glb",
+  "moderation": "Approved",
+  "operationId": "9595d398-e736-4c5e-9ff7-958aa8c0c717",
+  "sha256": "04a37d5f2f490652238081ce000b510c575d555ae99f86130ea84f239d7d6d1f"
+ },
+ "saltreach/Salt_Pine_A": {
+  "assetId": "133117751971494",
+  "bytes": 3160592,
+  "displayName": "saltreach_Salt_Pine_A",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\saltreach\\Salt_Pine_A.glb",
+  "moderation": "Approved",
+  "operationId": "1b4bcfbb-0e27-4df7-85b8-6afd35328d1b",
+  "sha256": "cc9177fd80afa3cf81e4cf131fb5df2bf765f87cc2154d53f06a959bad166e7a"
+ },
+ "saltreach/Salt_Pine_B": {
+  "assetId": "115286300107657",
+  "bytes": 2916728,
+  "displayName": "saltreach_Salt_Pine_B",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\saltreach\\Salt_Pine_B.glb",
+  "moderation": "Approved",
+  "operationId": "17766c21-1da3-45d8-9009-776cac154387",
+  "sha256": "1111b494e93ebeaa574ff6d295466ed34b8e3ca86bbfddd70e40dda885158677"
+ },
+ "saltreach/Salt_Pine_Dead": {
+  "assetId": "86910255003706",
+  "bytes": 1331256,
+  "displayName": "saltreach_Salt_Pine_Dead",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\saltreach\\Salt_Pine_Dead.glb",
+  "moderation": "Approved",
+  "operationId": "50dcbaa2-484e-46de-a9fe-dc4b6a8b0e81",
+  "sha256": "f48c4461d8da7afd9707a5fc458c359ec16a2bac83ffaaf7afa0ff0ac234d150"
+ },
+ "saltreach/Saltreach_Gate_Statue": {
+  "assetId": "93129565557560",
+  "bytes": 8453260,
+  "displayName": "saltreach_Saltreach_Gate_Statue",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\saltreach\\Saltreach_Gate_Statue.glb",
+  "moderation": "Approved",
+  "operationId": "608269a9-725c-4a05-ae0b-dc9915da1689",
+  "sha256": "18b812d6ca708132f42c3bc83cdeefb8e34d5bb2969d5a98a49de6123e4fff9c"
+ },
+ "saltreach/Sea_Stack_Base": {
+  "assetId": "124335982732282",
+  "bytes": 5877932,
+  "displayName": "saltreach_Sea_Stack_Base",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\saltreach\\Sea_Stack_Base.glb",
+  "moderation": "Approved",
+  "operationId": "de696c6e-d5e1-4f63-9504-61b5317cf65d",
+  "sha256": "791af454d9070a454353233cd760381d84e6dc34879e9f00649b06e8ffc97225"
+ },
+ "saltreach/Sea_Stack_Cap": {
+  "assetId": "100634018545215",
+  "bytes": 5791124,
+  "displayName": "saltreach_Sea_Stack_Cap",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\saltreach\\Sea_Stack_Cap.glb",
+  "moderation": "Approved",
+  "operationId": "9dec70cd-aa63-4996-926c-ccb010a7f54a",
+  "sha256": "6d7fbf3ea5e75685b435224a791a13e797994456e757ced63c487ad8c94551df"
+ },
+ "saltreach/Sea_Stack_Mid": {
+  "assetId": "126505889032482",
+  "bytes": 5783460,
+  "displayName": "saltreach_Sea_Stack_Mid",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\saltreach\\Sea_Stack_Mid.glb",
+  "moderation": "Approved",
+  "operationId": "5150b7c2-093d-4527-a5f9-897bf6a97386",
+  "sha256": "88e6c67999e3d4cb67cc3b8c364744d9b5593ea706d3d9cec6810d0134a0b9e7"
+ },
+ "saltreach/Shore_Cliff_A": {
+  "assetId": "128080827270633",
+  "bytes": 5989324,
+  "displayName": "saltreach_Shore_Cliff_A",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\saltreach\\Shore_Cliff_A.glb",
+  "moderation": "Approved",
+  "operationId": "7aca8e8e-754b-42e6-a359-276b9431af6f",
+  "sha256": "08a58028fe2e2a08b633ced96a3e9dd96d4d6d2bcd3d52b43885a8dd5b7798d2"
+ },
+ "saltreach/Shore_Cliff_B": {
+  "assetId": "122974955929958",
+  "bytes": 6070416,
+  "displayName": "saltreach_Shore_Cliff_B",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\saltreach\\Shore_Cliff_B.glb",
+  "moderation": "Approved",
+  "operationId": "c67e0529-1a69-41e0-bb4b-70873b1b2cec",
+  "sha256": "64f703fc5a18009895c1c3ad9575c7d4574cdbd0e2365f415690d0abaeb71b86"
+ },
+ "saltreach/Shore_Cliff_Corner": {
+  "assetId": "106035621819638",
+  "bytes": 6079916,
+  "displayName": "saltreach_Shore_Cliff_Corner",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\saltreach\\Shore_Cliff_Corner.glb",
+  "moderation": "Approved",
+  "operationId": "e4437d19-ebd0-4144-919d-59f93f0f1a52",
+  "sha256": "a35d2f98bdad7e0ef6a0897cb53e97bbf887496cfe03beca9937dc42243b9757"
+ },
+ "saltreach/Shore_Reeds": {
+  "assetId": "124496767638958",
+  "bytes": 120860,
+  "displayName": "saltreach_Shore_Reeds",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\saltreach\\Shore_Reeds.glb",
+  "moderation": "Approved",
+  "operationId": "d97c6538-f2eb-4a3b-b170-72ff337f6a6b",
+  "sha256": "66e0ffc20be24b23e280a3e45ebfdc2c28bad7d5edae5d6eb9b1a55f79bb0fc8"
+ },
+ "saltreach/Stone_Lantern_Salt": {
+  "assetId": "131119332356281",
+  "bytes": 1690252,
+  "displayName": "saltreach_Stone_Lantern_Salt",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\saltreach\\Stone_Lantern_Salt.glb",
+  "moderation": "Approved",
+  "operationId": "987ac34b-86f5-41ce-b1cd-1deba6495dec",
+  "sha256": "9635997fe9233ef34337914475b7582443589989c533bf8d4e7339aa70e2911a"
+ },
+ "saltreach/Tide_Boulder_A": {
+  "assetId": "87628399342867",
+  "bytes": 5935832,
+  "displayName": "saltreach_Tide_Boulder_A",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\saltreach\\Tide_Boulder_A.glb",
+  "moderation": "Approved",
+  "operationId": "a0e5fe1e-3486-43ea-9d7c-1d7900e39a27",
+  "sha256": "9edbaadda1c078a0efd261c329821bf087ce50ddc0e868303e4bb5d38978e5d7"
+ },
+ "saltreach/Tide_Boulder_B": {
+  "assetId": "134286148130639",
+  "bytes": 5852600,
+  "displayName": "saltreach_Tide_Boulder_B",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\saltreach\\Tide_Boulder_B.glb",
+  "moderation": "Approved",
+  "operationId": "33236a79-bda8-4769-9683-3fdd81a98510",
+  "sha256": "033a3e507185a3a30d596188a63508a1f1645e7a13fac279b22d2c47defac619"
+ },
+ "saltreach/Tide_Boulder_C": {
+  "assetId": "104747774797428",
+  "bytes": 5838044,
+  "displayName": "saltreach_Tide_Boulder_C",
+  "error": null,
+  "file": "C:\\Users\\disha\\Documents\\asuras-path\\assets\\source\\overworld\\upload\\saltreach\\Tide_Boulder_C.glb",
+  "moderation": "Approved",
+  "operationId": "fdc644eb-7f9a-41d2-8c5b-50be86179ce8",
+  "sha256": "5ec24613e13eb5bc9b93eb364f433f2890ab880b4dbf14500c90c458d10d1d00"
+ }
+}

@@ -33,7 +33,7 @@ for spec in sys.argv[2:]:
             sha = hashlib.sha256(open(path, "rb").read()).hexdigest()
             if size > 20_000_000:
                 ledger[key] = {"file": path, "bytes": size, "sha256": sha, "skipped": "over 20 MB Open Cloud file limit"}; save(); continue
-            name = (f"Vesp_{stem}" if prefix == "vesp" else f"R2_{sub}_{stem}")[:50]
+            name = (f"Vesp_{stem}" if prefix == "vesp" else f"{prefix}_{stem}" if sub == "." else f"R2_{sub}_{stem}")[:50]
             if not e.get("operationId"):
                 req = {"request": {"assetType": "Model", "displayName": name, "description": f"Asura's Path {key}", "creationContext": {"creator": {"userId": USER}}}}
                 t = call("open_cloud_invoke", {"studio_id": STUDIO, "method": "POST", "endpoint": "/assets/v1/assets", "scopes": ["asset:read", "asset:write"],
