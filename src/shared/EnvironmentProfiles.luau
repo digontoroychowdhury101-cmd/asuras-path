@@ -186,6 +186,8 @@ Profiles.Night = table.freeze({ Ambient = 44, Outdoor = 72 })
 -- Sunrise/sunset strength at full dusk factor: fill and sun brightness cut, exposure drop, extra fog density and haze.
 -- win-80: no dusk exposure cut (Exposure 0): with the moonlight blend the sunset hour under the canopy was the darkest moment of the day.
 Profiles.Horizon = table.freeze({ Fill = 0.2, Sun = 0.3, Exposure = 0, Density = 0.07, Haze = 0.8 })
+-- Golden hour (2B, sun low and up): warm back-rim share and lift of the outdoor fill, sun-ray target and spread.
+Profiles.Golden = table.freeze({ Rim = 0.5, Lift = 0.06, Rays = 0.12, Spread = 0.6, Warm = rgb(255, 180, 120) })
 -- Moonlight (win-80): at full night the fill blends to these and exposure rises by Exposure, so the overworld reads as blue moonlight
 -- (path, trunks, silhouettes) instead of the old ~48/255 black under the canopy. Still dimmer than day; the sun is gone.
 Profiles.Moon = table.freeze({ Ambient = rgb(74, 88, 124), Outdoor = rgb(100, 118, 162), Exposure = 0.3, Top = rgb(150, 175, 235) })
@@ -323,6 +325,15 @@ local function applyTime(p: any, hour: number): number
 	a.Decay = a.Decay:Lerp(rgb(255, 130, 84), 0.45 * dusk)
 	c.TintColor = c.TintColor:Lerp(rgb(190, 205, 240), 0.5 * (1 - d)):Lerp(rgb(255, 214, 182), 0.25 * dusk)
 	r.Intensity *= d * (1 + 0.6 * dusk)
+	-- Golden hour (2B): looking into the low sun the understory went muddy (cool, dim fill). While the sun is low and still
+	-- up, warm the outdoor fill toward a back-rim colour at the same luminance, lift it slightly, and ramp wider rays; 0 after sunset.
+	local Gd = Profiles.Golden
+	local golden = smooth(dusk / 0.6) * smooth(s / 0.08)
+	local o = l.OutdoorAmbient
+	local rim = scaled(Gd.Warm, lum(o) / lum(Gd.Warm))
+	l.OutdoorAmbient = scaled(o:Lerp(rim, Gd.Rim * golden), 1 + Gd.Lift * golden)
+	r.Spread += (Gd.Spread - r.Spread) * golden
+	r.Intensity += (Gd.Rays * d - r.Intensity) * golden
 	return d
 end
 

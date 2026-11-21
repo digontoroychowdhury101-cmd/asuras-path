@@ -514,6 +514,22 @@ for _, region in regions do
 	end
 	check(region .. " brightness changes smoothly through the cycle (" .. string.format("%.3f of %.3f", worstStep, swing) .. ")", worstStep <= 0.3 * swing)
 end
+-- 9b. Golden hour into the sun (NEXT-VISUAL-PASS 2B): looking west at 17.5 h the understory went muddy. A warm back-rim fill,
+-- a little more outdoor fill and a wider sun-ray ramp while the sun is low and up; all of it gone at night and at noon.
+for _, region in regions do
+	local noon, gold, night = lighting(12, region), lighting(17.5, region), lighting(0, region)
+	local function warmth(c) return c.R / math.max(c.B, 1e-3) end
+	check(region .. string.format(" golden hour: outdoor fill warmer than noon (R/B %.2f vs %.2f)", warmth(gold.Lighting.OutdoorAmbient), warmth(noon.Lighting.OutdoorAmbient)),
+		warmth(gold.Lighting.OutdoorAmbient) >= warmth(noon.Lighting.OutdoorAmbient) + 0.15)
+	check(region .. string.format(" golden hour: outdoor fill %.0f >= 0.82 x noon %.0f (understory readable)", L(gold.Lighting.OutdoorAmbient), L(noon.Lighting.OutdoorAmbient)),
+		L(gold.Lighting.OutdoorAmbient) >= 0.82 * L(noon.Lighting.OutdoorAmbient))
+	check(region .. string.format(" golden hour: sun rays %.3f in 0.08..cap, spread %.2f ~0.6", gold.CB_SunRays.Intensity, gold.CB_SunRays.Spread),
+		gold.CB_SunRays.Intensity >= 0.08 and gold.CB_SunRays.Intensity <= G.Rays and gold.CB_SunRays.Spread >= 0.5 and gold.CB_SunRays.Spread <= 0.65)
+	check(region .. " golden hour: rays fade to 0 at night", night.CB_SunRays.Intensity == 0)
+	check(region .. " golden hour: noon spread unchanged by the ramp", near(noon.CB_SunRays.Spread, (Profiles :: any)[region].CB_SunRays.Spread, 1e-6))
+	local rain = Profiles.compose({ Weights = { [region] = 1 }, Time = hourT(17.5), Mix = { Rain = 1 } })
+	check(region .. " golden hour: rain still kills the rays", rain.CB_SunRays.Intensity == 0)
+end
 -- Lobby untouched by the horizon look: the shrine profile table is not part of compose and keeps its values.
 check("lobby profile identical after the dawn change", Profiles.Sanctuary.Lighting.Brightness == 2.2 and Profiles.Sanctuary.Lighting.ShadowSoftness == 0.24
 	and Profiles.Sanctuary.Lighting.ClockTime == 17.4 and Profiles.Sanctuary.CB_Atmosphere.Density == 0.38)
