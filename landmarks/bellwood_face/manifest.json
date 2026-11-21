@@ -1,0 +1,56 @@
+{
+  "kit": "Bellwood landmark: Fallen Giant's Face",
+  "pieces": {
+    "Bellwood_GiantFace": {
+      "group": "Bellwood",
+      "sub_meshes": {
+        "Bellwood_GiantFace__Shell": 16922,
+        "Bellwood_GiantFace__Shell_2": 16922,
+        "Bellwood_GiantFace__Shell_3": 16922,
+        "Bellwood_GiantFace__Shell_4": 16924,
+        "Bellwood_GiantFace__Shell_5": 16922,
+        "Bellwood_GiantFace__Shell_6": 16922,
+        "Bellwood_GiantFace__Shell_7": 16924,
+        "Bellwood_GiantFace__Shell_8": 16922
+      },
+      "tris_total": 135380,
+      "size_studs_xyz": [
+        126.5,
+        103.7,
+        51.7
+      ],
+      "bbox_min": [
+        -60.0,
+        -50.98,
+        -1.13
+      ],
+      "bbox_max": [
+        66.54,
+        52.72,
+        50.61
+      ],
+      "materials": [
+        "Vesp_Bellwood_GiantFace__Shell"
+      ],
+      "file": "Bellwood_GiantFace.glb",
+      "builder": "tools/blender/landmarks/bellwood_giant_face.py (mac-84, SDF sculpt, Cycles-baked)",
+      "no_decimation": true,
+      "decimation": "none: roles over the cap are split into <18k-tri subs; LOW is a separate polygonisation",
+      "map_resolution": {
+        "Shell": 2048
+      },
+      "maps": {
+        "Shell": {
+          "Color": "maps/Vesp_Bellwood_GiantFace__Shell_Color.png",
+          "Normal": "maps/Vesp_Bellwood_GiantFace__Shell_Normal.png",
+          "Roughness": "maps/Vesp_Bellwood_GiantFace__Shell_Roughness.png",
+          "Metal": "maps/Vesp_Bellwood_GiantFace__Shell_Metal.png"
+        }
+      },
+      "base_layer": "Poly Haven rock_04 2K",
+      "high_poly_tris": {
+        "Shell": 495028
+      }
+    }
+  }
+}
