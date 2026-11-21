@@ -268,7 +268,7 @@ class Look:
                  streak_dark=0.18, rough_base=0.80, wet_gloss=0.30, occl_pow=1.25, seed=7, sat=1.0,
                  streak_lo=0.55, streak_hi=0.75, wash=0.0, frost_nz=(0.55, 0.9), frost_break=(0.46, 0.58),
                  growth=0.0, stone_tint=(1.0, 1.0, 1.0), lichen=0.0, moss=0.0, cavity=0.0,
-                 lichen_col=(0.66, 0.67, 0.58), moss_col=(0.17, 0.21, 0.12)):
+                 lichen_col=(0.66, 0.67, 0.58), moss_col=(0.17, 0.21, 0.12), moss_open=0.0):
         # win-61 optional knobs (defaults = previous behaviour): streak_lo/hi = noise band that becomes a soot streak;
         # wash = lighten the rain-washed stone between streaks; frost_nz = up-facing range; frost_break = patch softness.
         # win-66 (default 0 = off): lichen = pale crusty patches on exposed stone, moss = green-grey growth in folds,
@@ -332,6 +332,8 @@ def compose(alb_lin, d1, d2, look, cov, d3=None):
         crust = d3[..., 2]
         # moss: in folds and under overhangs (mid occlusion, not the black voids), facing up or sideways
         mm = (1 - _smooth(occl, 0.30, 0.78)) * _smooth(occl, 0.04, 0.14) * _smooth(d3[..., 1], 0.40, 0.56) * _smooth(nz, -0.45, 0.25)
+        # mac-84 moss_open (default 0 = off): blanket moss on up-facing open stone too (Bellwood's overgrown giant face)
+        mm = mm + L.moss_open * _smooth(nz, 0.2, 0.7) * _smooth(d3[..., 1], 0.38, 0.58) * _smooth(occl, 0.04, 0.14)
         mm = np.clip(mm * L.moss * (0.75 + 0.5 * crust), 0, 1)[..., None] * nonmetal
         col = col * (1 - mm) + np.asarray(L.moss_col, np.float32) * (0.7 + 0.6 * crust[..., None]) * mm
         # lichen: pale crusty rosettes on exposed stone, broken up by the fine crust noise

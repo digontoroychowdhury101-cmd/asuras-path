@@ -162,7 +162,9 @@ def main():
         src = VB.stone_source("Vesp_Weathered", out / "maps")
         hi.data.materials.append(VB.hi_material("Hi_Granite", src, tile=8.0, tint=(1.0, 1.0, 0.97)))
         VB.unwrap(lo)
-        look = VB.Look(base=0.30, grime=0.35, streak_dark=0.18, sat=0.55, moss=0.55, lichen=0.25, cavity=0.35, rough_base=0.86)
+        # Grey granite (concept), dark cracks not lit lips (low edge wear, strong cavity), green moss blanketing the tops.
+        look = VB.Look(base=0.34, grime=0.35, edge=0.30, streak_dark=0.15, sat=0.15, stone_tint=(0.96, 0.98, 1.0),
+                       moss=0.85, moss_open=0.9, moss_col=(0.27, 0.34, 0.13), lichen=0.3, cavity=0.75, rough_base=0.86)
         files, entry = G.finish(NAME, "Bellwood", {"Shell": lo}, {"Shell": hi}, out, {"*": look}, {"Shell": (0.6, 1.4)},
                                 src["source"], builder=BUILDER, render_kw=rkw)
         G.merge_manifest(out, {NAME: entry}, "Bellwood landmark: Fallen Giant's Face")
