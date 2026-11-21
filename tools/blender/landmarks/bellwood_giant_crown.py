@@ -8,6 +8,7 @@ same skull: a red lacquer band with gold rims round the forehead, a bronze lotus
 tracery spires standing up from the band, a green-tiled eave with gold scroll corners and a bronze bell + red tassel, a bronze
 door ring beside the cave, roots draped over the skull onto the ground, and faceted rubble with broken lacquer panels (kept off
 the tunnel walkway). Each role is its own SDF -> LOW (projected) + HIGH (weathered) and gets its own 2048 bake; never decimated.
+LOW cell sizes are set so face + crown stay under the spec's 250k-tri landmark budget; the HIGH bake carries the detail.
 The face GLB is imported for context renders only. Materials: Poly Haven CC0 (rock_04, metal_plate_02, roof_slates_02,
 bark_willow_02) graded by vesp_bake.Look.
 """
@@ -55,6 +56,12 @@ def cuts(F):
     """Keep every prop out of the walkable tunnel and below-ground."""
     F.c(H.world_prim(G.tube(H.TUNNEL, [H.TUNNEL_R + 0.5] * len(H.TUNNEL), step=0.6)), k=1.0)
     F.c(H.world_prim((np.array([-200.0, -200.0, -120.0]), np.array([200.0, 200.0, -0.6]), lambda P: P[:, 2] + 0.6)))
+    return F
+
+
+def exit_cut(F):
+    """Clear the tunnel-exit walkway behind the head (band and roots used to dip into the exit flare)."""
+    F.c(H.world_prim(G.rbox((-7.0, -57.0, 7.0), (14.0, 33.0, 9.0), rr=1.0)), k=1.5)
     return F
 
 
@@ -116,8 +123,8 @@ def band(Fs):
         R = G.Field()
         R.u((np.array([uc - 1.6, lo[1], lo[2]]), np.array([uc + 1.6, hi[1], hi[2]]),
              lambda P, uc=uc: np.maximum(np.abs(P[:, 0] - uc) - 0.8, np.abs(Fs.eval(P) - 1.55) - 1.55)))
-        Gd.append((cuts(R), 0.3, 0.18))
-    return {"Band": [(cuts(B), 0.45, 0.3)], "Gold": Gd}
+        Gd.append((exit_cut(cuts(R)), 0.55, 0.18))
+    return {"Band": [(exit_cut(cuts(B)), 0.8, 0.3)], "Gold": Gd}
 
 
 def medallion(Fs):
@@ -144,7 +151,7 @@ def medallion(Fs):
         T.u(G.tube([top + n * 0.2, mid + a * 3.6 * L + nq * 0.2], [0.32, 0.32], step=0.2))
         aq = unit(a - nq * (a @ nq))
         T.u(G.ellip(mid, (1.25, 3.6 * L, 0.32), np.stack([np.cross(nq, aq), aq, nq], 1)), k=0.3)
-    return {"Bronze": [(cuts(M), 0.28, 0.16)], "Gold": [(cuts(T), 0.25, 0.15)]}
+    return {"Bronze": [(cuts(M), 0.4, 0.16)], "Gold": [(cuts(T), 0.25, 0.15)]}
 
 
 def spires(Fs):
@@ -168,7 +175,7 @@ def spires(Fs):
         apex = b0 + y * (h1 + math.sqrt(3) * a)
         S.u(G.tube([apex - y * 0.3, apex + y * 2.6, apex + y * 5.5], [1.05, 0.65, 0.05], step=0.2), k=0.3)
         S.u(G.ellip(b0 + y * 0.2, (a + 1.4, 1.4, 1.8), np.stack([x, y, np.cross(x, y)], 1)), k=0.4)  # plinth
-        out.append((cuts(S), 0.3, 0.18))
+        out.append((cuts(S), 0.42, 0.18))
     return {"Bronze": out}
 
 
@@ -204,8 +211,8 @@ def eave(Fs):
     Bl.u(G.tube([T - y * 4.9, T - y * 5.6], [2.6, 2.3], step=0.1), k=0.15)  # lip
     Rd.u(G.tube([T - y * 5.3, T - y * 7.4], [0.35], step=0.15))  # tassel cord
     Rd.u(G.tube([T - y * 7.2, T - y * 8.7, T - y * 10.8], [0.5, 0.85, 1.0], step=0.12), k=0.2)
-    return {"Eave": [(cuts(Ev), 0.25, 0.15)], "Band": [(cuts(Rd), 0.2, 0.12)], "Gold": [(cuts(Gd), 0.16, 0.1)],
-            "Bronze": [(cuts(Bl), 0.2, 0.12)]}
+    return {"Eave": [(cuts(Ev), 0.45, 0.15)], "Band": [(cuts(Rd), 0.3, 0.12)], "Gold": [(cuts(Gd), 0.25, 0.1)],
+            "Bronze": [(cuts(Bl), 0.3, 0.12)]}
 
 
 def door_ring(Fs):
@@ -221,14 +228,14 @@ def door_ring(Fs):
     R.u(G.tube([boss, boss + n * 0.6 - y * 1.1], [0.55], step=0.15), k=0.3)
     R.u(loop(boss - y * 4.4 + n * 0.9, e1, y, 3.4, 0.62))
     log(f"door ring at ring angle {math.degrees(th):.0f} deg, world z {H.to_world(p)[2]:.1f}")
-    return {"Bronze": [(cuts(R), 0.24, 0.14)]}
+    return {"Bronze": [(cuts(R), 0.35, 0.14)]}
 
 
 def roots(Hf):
     # (u start, u end, ring angle start, end (deg), radius): front roots stay at u > 34 (clear of medallion and cave),
     # back roots wrap round the cranium to the ground behind; two cross the band at the back (concept).
     spec = [(58, 52, -96, 40, 2.5), (47, 40, -102, 28, 2.1), (40, 34, -80, 12, 1.6), (61, 57, -84, -228, 2.6),
-            (51, 45, -96, -222, 2.2), (36, 30, -92, -214, 1.9), (22, 16, -112, -208, 1.7), (55, 46, -70, -10, 1.7),
+            (51, 45, -96, -222, 2.2), (36, 30, -92, -214, 1.9), (55, 46, -70, -10, 1.7),
             (44, 50, -66, -238, 2.3), (30, 25, -100, -232, 1.8), (62, 60, -110, 30, 2.0)]
     out = []
     for i, (ua, ub, ta, tb, r0) in enumerate(spec):
@@ -247,14 +254,14 @@ def roots(Hf):
         tail = [foot + outh * d + side * (1.6 * math.sin(d * 0.4 + i)) for d in (2.5, 6.0, 10.0, 14.0)]
         path = np.vstack([w, tail])
         path += 0.45 * np.stack([fbm(path * 0.18 + k * 7.0, 2, 30 + i) for k in range(3)], 1)
-        rr = np.maximum(np.concatenate([rad, rad[-1] * np.array([0.85, 0.7, 0.55, 0.42])]), 0.42)
+        rr = np.maximum(np.concatenate([rad, rad[-1] * np.array([0.85, 0.7, 0.55, 0.42])]), 0.8)  # >= 2 LOW cells
         Rt = G.Field()
         Rt.u(H.world_prim(G.tube(list(path), list(rr), step=0.35)))
         j = int(len(w) * 0.7)  # a side runner splitting off toward the ground
         br = [path[j], path[j] + side * 3 + np.array([0, 0, -0.3 * rad[j]]), tail[1] + side * 6.0, tail[2] + side * 9.0]
         br = [np.array([q[0], q[1], max(q[2], 0.4)]) for q in br]
-        Rt.u(H.world_prim(G.tube(br, [rad[j] * 0.6, 0.6, 0.5, 0.42], step=0.35)), k=0.4)
-        out.append((cuts(Rt), 0.3, 0.2))
+        Rt.u(H.world_prim(G.tube(br, [max(rad[j] * 0.6, 0.85), 0.85, 0.8, 0.8], step=0.35)), k=0.4)
+        out.append((exit_cut(cuts(Rt)), 0.7, 0.2))
     return {"Roots": out}
 
 
@@ -290,7 +297,7 @@ def rubble(Hf):
             grid = np.array([[c + e1 * w_ * s + e2 * h_ * t + np.array([0, 0, 0.6 * (t + 1)]) for t in (-1, 1)] for s in (-1, 1)])
             panels.u(H.world_prim(G.sheet(grid, 0.3)))
     log(f"rubble: {n_rock} rocks")
-    return {"Rubble": [(cuts(rocks), 0.35, 0.2)], "Band": [(cuts(panels), 0.25, 0.15)]}
+    return {"Rubble": [(cuts(rocks), 0.75, 0.2)], "Band": [(cuts(panels), 0.35, 0.15)]}
 
 
 # --- polygonise + materials ---------------------------------------------------------------------------------------------------

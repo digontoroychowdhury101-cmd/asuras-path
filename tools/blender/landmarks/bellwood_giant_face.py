@@ -38,7 +38,7 @@ R = np.stack([U, V, W], 1)
 O = np.array([4.0, -2.0, 13.0 * -W[2]])  # sink the head until w = +13 (the lower cheek) meets the ground
 TUNNEL_R = 8.2  # 16.4 wide and high; centre 8 above ground (the walkable floor piece sits on the 0.2 dip)
 TUNNEL = [(-4.0, 60.0, 8.0), (-4.0, 34.0, 8.0), (4.0, 12.0, 8.0), (10.0, -10.0, 8.0), (0.0, -34.0, 8.0), (-14.0, -64.0, 8.0)]
-LOW_H, HIGH_H = 0.8, 0.42  # surface-net cell sizes (studs)
+LOW_H, HIGH_H = 1.1, 0.42  # surface-net cell sizes (studs); LOW 1.1 keeps face + crown under the 250k landmark budget
 
 
 def to_head(Pw):
