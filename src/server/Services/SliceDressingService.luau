@@ -221,6 +221,16 @@ local function meshTemplate(key: string, entry: any): Instance?
 		end
 		finish:Clone().Parent = tpl
 	end
+	-- win-80: a lantern's glow sub carries the lantern light (warm pool on the path after dusk). Off and tagged here; the client
+	-- (OverworldAmbience) switches the tagged lights by the hour. Shadowless, so a row of lanterns stays cheap. A clone, never the loaded model.
+	if tpl and string.match(key, "__Glow$") then
+		if tpl.Parent ~= nil then tpl = tpl:Clone() end
+		local light = Instance.new("PointLight")
+		light.Name, light.Color, light.Range, light.Brightness = "LanternLight", Color3.fromRGB(255, 172, 92), 20, 1.6
+		light.Shadows, light.Enabled = false, false
+		light.Parent = tpl
+		CollectionService:AddTag(light, "AsuraLanternLight")
+	end
 	meshCache[key] = tpl or false
 	return tpl
 end

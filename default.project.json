@@ -1066,6 +1066,9 @@
             "VesperholdAtmosphere": {
               "$path": "src/client/Controllers/VesperholdAtmosphere.luau"
             },
+            "OverworldAmbience": {
+              "$path": "src/client/Controllers/OverworldAmbience.luau"
+            },
             "EnvironmentController": {
               "$path": "src/client/Controllers/EnvironmentController.luau"
             },

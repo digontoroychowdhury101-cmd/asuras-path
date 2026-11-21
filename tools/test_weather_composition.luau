@@ -258,10 +258,12 @@ local shared = { Shared = { Overworld = "Overworld", EnvironmentProfiles = "Envi
 local reducedMotion, reducedEffects = false, false
 local atmosCalls = {}
 local atmosphereStub = { new = function() return { Flash = 0, Update = function(_, weight) table.insert(atmosCalls, weight) end, Destroy = function() table.insert(atmosCalls, "destroyed") end } end }
-local modules = { VesperholdAtmosphere = atmosphereStub, Config = Config, Overworld = Overworld, EnvironmentProfiles = Profiles, Wind = Wind, EffectsPreference = { reducedMotion = function() return reducedMotion end, reduced = function() return reducedEffects end } }
+local ambienceCalls = {}
+local ambienceStub = { new = function() return { Update = function(_, _dt, _at, rates) if rates then table.insert(ambienceCalls, rates) end end, Destroy = function() table.insert(ambienceCalls, "destroyed") end } end }
+local modules = { VesperholdAtmosphere = atmosphereStub, OverworldAmbience = ambienceStub, Config = Config, Overworld = Overworld, EnvironmentProfiles = Profiles, Wind = Wind, EffectsPreference = { reducedMotion = function() return reducedMotion end, reduced = function() return reducedEffects end } }
 local services = { Players = { LocalPlayer = player }, CollectionService = CollectionService, ReplicatedStorage = { WaitForChild = function() return shared end } }
 local controllerEnv = { game = { GetService = function(_, name) return services[name] end }, workspace = workspaceFake,
-	script = { Parent = { VesperholdAtmosphere = "VesperholdAtmosphere" } },
+	script = { Parent = { VesperholdAtmosphere = "VesperholdAtmosphere", OverworldAmbience = "OverworldAmbience" } },
 	require = function(name) return modules[name] end }
 local Weather = load("src/client/Controllers/WeatherController.luau", controllerEnv)
 local state = { Own = function() return own end }
@@ -490,8 +492,11 @@ for _, region in regions do
 	for _, hour in { 6.3, 19.5 } do
 		local p = lighting(hour, region)
 		check(string.format("%s at %.1f: brightness %.2f <= 0.8 x noon %.2f", region, hour, p.Lighting.Brightness, day.Lighting.Brightness), p.Lighting.Brightness <= 0.8 * day.Lighting.Brightness)
-		check(string.format("%s at %.1f: ambient %.0f/outdoor %.0f <= 0.85 x noon %.0f/%.0f", region, hour, L(p.Lighting.Ambient), L(p.Lighting.OutdoorAmbient),
-			L(day.Lighting.Ambient), L(day.Lighting.OutdoorAmbient)), L(p.Lighting.Ambient) <= 0.85 * L(day.Lighting.Ambient) and L(p.Lighting.OutdoorAmbient) <= 0.85 * L(day.Lighting.OutdoorAmbient))
+		-- Dawn (sun up) keeps the dimmed fill; 19.5 is after sunset, where the fill is the moonlight (win-80) and only the sun is cut.
+		local moonlit = hour > 18
+		check(string.format("%s at %.1f: ambient %.0f/outdoor %.0f <= 0.85 x noon %.0f/%.0f (or the moonlight after sunset)", region, hour, L(p.Lighting.Ambient), L(p.Lighting.OutdoorAmbient),
+			L(day.Lighting.Ambient), L(day.Lighting.OutdoorAmbient)), if moonlit then L(p.Lighting.OutdoorAmbient) <= L(Profiles.Moon.Outdoor) + 1
+			else L(p.Lighting.Ambient) <= 0.85 * L(day.Lighting.Ambient) and L(p.Lighting.OutdoorAmbient) <= 0.85 * L(day.Lighting.OutdoorAmbient))
 		check(region .. " at " .. hour .. ": exploration fill floor and glare cap hold", L(p.Lighting.Ambient) >= Night.Ambient - 0.5 and L(p.Lighting.OutdoorAmbient) >= Night.Outdoor - 0.5
 			and p.Lighting.Brightness <= G.Brightness and p.CB_SunRays.Intensity <= G.Rays and p.CB_Bloom.Intensity <= G.Bloom)
 	end
@@ -609,7 +614,7 @@ check("on the ridge the atmosphere is created and fed the weight", atmosCalls[1]
 place(-3000, 140, -2000)
 ridgeWeather:Sample()
 ridgeWeather:Update(0.016)
-check("leaving the ridge feeds the atmosphere weight 0 (it clears itself) and drops the clouds", atmosCalls[#atmosCalls] == 0 and ridgeWeather.RidgeClouds == nil and ridgeWeather.Ridge == 0)
+check("leaving the ridge feeds the atmosphere weight 0 (it clears itself) and the deck drops to the regional sky", atmosCalls[#atmosCalls] == 0 and ridgeWeather.Clouds ~= nil and ridgeWeather.Clouds.Cover < 0.86 and ridgeWeather.Ridge == 0)
 local calls = #atmosCalls
 local lobbyWeather = Weather.new(state)
 own = nil
@@ -618,6 +623,82 @@ lobbyWeather:Update(0.016)
 check("lobby (no own root / no region): the atmosphere is never created", #atmosCalls == calls and lobbyWeather.Atmos == nil)
 check("snow flakes are small on the ridge (no huge blobs)", Weather.Kinds.Snow.Size * (1 - 0.62) < 0.2)
 ridgeWeather:Destroy()
+
+-- 12. Living sky and ambient life: one volumetric cloud deck over the overworld, regional ambience (win-80) ---------------------
+check("no cloud deck or ambience outside the overworld", Profiles.clouds({ Time = noon }) == nil and Profiles.ambience({ Time = noon }) == nil)
+local function deck(region, mix, t, ridge) return Profiles.clouds({ Weights = { [region] = 1 }, Mix = mix or { Clear = 1 }, Time = t or noon, Vesperhold = ridge }) end
+local function life(region, mix, t, extra)
+	local input = { Weights = { [region] = 1 }, Mix = mix or { Clear = 1 }, Time = t or noon }
+	for k, v in extra or {} do input[k] = v end
+	return Profiles.ambience(input)
+end
+for _, region in regions do
+	local c = deck(region)
+	-- Studio win-80: the engine shows almost no deck below ~0.55 cover and an overcast lid near 0.9; 0.68 reads as broken cumulus.
+	check(string.format("%s clear sky keeps broken cumulus (cover %.2f in 0.55..0.74, density %.2f in 0.3..0.6)", region, c.Cover, c.Density),
+		c.Cover >= 0.55 and c.Cover <= 0.74 and c.Density >= 0.3 and c.Density <= 0.6)
+	for _, state in { "Overcast", "Rain", "Snow" } do
+		local w = deck(region, { [state] = 1 })
+		check(region .. " " .. state .. " closes the sky (more cover, denser, greyer than clear)", w.Cover > c.Cover and w.Density > c.Density
+			and Profiles.luminance(w.Color) < Profiles.luminance(c.Color))
+	end
+	check(region .. " dust thins the deck and warms it", deck(region, { Dust = 1 }).Cover < c.Cover and deck(region, { Dust = 1 }).Color.B < deck(region, { Dust = 1 }).Color.R)
+	check(region .. " cover never seals the sky shut (<= 0.92)", deck(region, { Rain = 1 }).Cover <= 0.92)
+end
+check("dry Saltreach is the clearest sky, the Ashen Stair the heaviest", deck("AridBasin").Cover < deck("Forest").Cover and deck("MountainAscent").Cover >= deck("Forest").Cover)
+local ridgeDeck = deck("Snowfields", { Clear = 1 }, noon, 1)
+check("the Vesperhold ridge keeps its storm deck (cover >= 0.86, dark slate)", ridgeDeck.Cover >= 0.86 and ridgeDeck.Color == roblox.Color3.fromRGB(88, 90, 99))
+check("the ridge deck blends in with the weight", deck("Snowfields", { Clear = 1 }, noon, 0.5).Cover > deck("Snowfields").Cover and deck("Snowfields", { Clear = 1 }, noon, 0.5).Cover < ridgeDeck.Cover)
+check("test setup: midnight is hour 0", near(Profiles.hourAt(midnight), 0, 1e-6))
+local day, night = life("Forest"), life("Forest", nil, midnight)
+check("Bellwood day: sunlit motes and falling leaves, no fireflies", day.Motes > 0.6 and day.Leaves > 0.6 and day.Fireflies == 0)
+check("Bellwood night: fireflies, motes gone", night.Fireflies > 0.6 and night.Motes < 0.1)
+check("Amberfall sheds the most leaves", life("GoldenRavine").Leaves >= day.Leaves)
+check("rain grounds the motes and fireflies", life("Forest", { Rain = 1 }).Motes == 0 and life("Forest", { Rain = 1 }, midnight).Fireflies == 0)
+local frost = life("Snowfields")
+check("Frostmere clear day: diamond-dust glitter, no leaves or fireflies", frost.Glitter > 0.6 and frost.Leaves == 0 and frost.Fireflies == 0)
+check("Saltreach: no leaves, no fireflies", life("AridBasin").Leaves == 0 and life("AridBasin", nil, midnight).Fireflies == 0)
+local calm = life("Forest", nil, nil, { Comfort = true })
+check("comfort keeps at most 40% of the ambience", calm.Motes <= day.Motes * 0.4 + 1e-9 and calm.Leaves <= day.Leaves * 0.4 + 1e-9)
+local roofed = life("Forest", nil, nil, { Sheltered = true })
+check("under a roof: no falling leaves or glitter", roofed.Leaves == 0 and roofed.Glitter == 0)
+for _, region in regions do
+	for _, t in { noon, midnight } do
+		for kind, v in life(region, nil, t) do check(region .. " " .. kind .. " stays in 0..1", v >= 0 and v <= 1) end
+	end
+end
+-- Moonlit night (Studio win-80: at 23 h under the Bellwood canopy fill of ~48/255 rendered pitch black; ~80 / ~110 with +0.4 exposure
+-- reads as moonlight: path, trunks and silhouettes visible, still clearly night).
+for _, region in regions do
+	local mid = Profiles.compose({ Weights = { [region] = 1 }, Time = midnight, Mix = { Clear = 1 } }).Lighting
+	local day = Profiles.compose({ Weights = { [region] = 1 }, Time = noon, Mix = { Clear = 1 } }).Lighting
+	check(string.format("%s midnight is moonlit: fill %.0f >= 70, outdoor %.0f >= 100, exposure %.2f >= 0.3", region, L(mid.Ambient), L(mid.OutdoorAmbient), mid.ExposureCompensation),
+		L(mid.Ambient) >= 70 and L(mid.OutdoorAmbient) >= 100 and mid.ExposureCompensation >= 0.3)
+	check(region .. " moonlight is blue (B leads R by > 25)", (mid.OutdoorAmbient.B - mid.OutdoorAmbient.R) * 255 > 25)
+	check(region .. " midnight is still night: dimmer sky fill and sun than noon", L(mid.OutdoorAmbient) < L(day.OutdoorAmbient) and mid.Brightness < day.Brightness)
+end
+-- Lanterns light after dusk everywhere in the overworld, independent of weather.
+for _, region in regions do
+	check(region .. " lanterns: off at noon, full at midnight, lit by deep dusk", life(region).Lanterns == 0 and life(region, nil, midnight).Lanterns > 0.95
+		and life(region, { Rain = 1 }, midnight).Lanterns > 0.95 and life(region, nil, hourT(19)).Lanterns > 0.3)
+end
+check("lantern lights keep shining under comfort (they are light, not motion)", life("Forest", nil, midnight, { Comfort = true }).Lanterns > 0.95)
+-- The controller owns the one deck and feeds the ambience; both are gone outside the overworld.
+table.clear(ambienceCalls)
+local skyWeather = Weather.new(state)
+place(-3000, 140, -2000)
+skyWeather:Sample()
+skyWeather:Update(0.016)
+check("in the overworld the controller makes one cloud deck named OverworldClouds", skyWeather.Clouds ~= nil and skyWeather.Clouds.Name == "OverworldClouds" and skyWeather.Clouds.ClassName == "Clouds")
+local fed = ambienceCalls[#ambienceCalls]
+check("the ambience is fed the composed rates", type(fed) == "table" and fed.Leaves ~= nil)
+place(gate.X - 100, Overworld.heightAt(gate.X - 100, gate.Z) + 6, gate.Z)
+skyWeather:Sample()
+check("the ridge thickens the same deck (no second Clouds)", skyWeather.Clouds ~= nil and skyWeather.Clouds.Cover >= 0.86)
+own = nil
+skyWeather:Sample()
+check("outside the overworld the deck and ambience are destroyed", skyWeather.Clouds == nil and skyWeather.Ambience == nil and ambienceCalls[#ambienceCalls] == "destroyed")
+skyWeather:Destroy()
 
 print(string.format("weather composition: %d passed, %d failed", passed, failed))
 if failed > 0 then

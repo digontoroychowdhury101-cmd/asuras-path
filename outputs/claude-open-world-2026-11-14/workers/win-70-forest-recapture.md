@@ -131,3 +131,16 @@ Instruction: handoff §4 step 7, creator's "Yes continue".
 - Repointed 91229031784225 -> 76262404027450 (finish library 2, Slice 4, Bellwood 17); test rejects the previous id. Slice 1363/0, biome 18928/0, verify_all exit 0.
 - Studio (work/vesperhold-claude/win79, closed unsaved, hash unchanged): server 23 bark + 31 leaf surfaces on new ids, 0 old. Sunlit trunks mid-brown instead of birch-pale;
   shaded trunks still read as bark (captures/win/forest79/).
+
+## win-80 living sky, ambient life, moonlit night (creator: "make the graphics insane", no questions)
+- Clouds: WeatherController owns one Terrain.Clouds (OverworldClouds) from EnvironmentProfiles.clouds (region cover 0.57-0.72, weather adds/greys,
+  dust thins, the Vesperhold ridge thickens the same deck). Studio: the engine shows almost nothing below ~0.55 cover; 0.68 is broken cumulus.
+- OverworldAmbience (client): Motes, tumbling Leaves (amber over Amberfall), Fireflies after dusk, Glitter in cold sun; camera-following box,
+  live particles <= 420; rates from EnvironmentProfiles.ambience. Sprites drawn in repo (assets/source/ambience): leaf Decal 132994924234331 /
+  image 138860325591751 (op 225a32be-c231-43ad-a443-37036eac650a, pilot), glow Decal 98577977518478 / image 84933589518173
+  (op 28084126-608c-498f-9b78-9973900cd60e), both Approved, uploaded from a blank local Studio window (the cloud place did not open; never touched).
+- Night: at 23 h the Bellwood rendered black (fill ~48/255; Studio proved ambient works once the controller stops re-tweening). Moonlight blend
+  (Profiles.Moon, by sun height) + exposure +0.3, dusk exposure cut removed. Lantern __Glow templates carry a tagged shadowless PointLight the
+  client switches after dusk (29 in the slice). Captures captures/win/sky80 (day after; dusk/night before/after).
+- Tests: weather 386/0, slice 1367/0, ambience 19/0, biome 18928/0, verify_all exit 0. Not measured: frame cost (Studio throttled in background),
+  Amberfall/Saltreach/Frostmere/Ashen views at night.

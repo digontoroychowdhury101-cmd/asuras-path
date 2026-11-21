@@ -85,5 +85,30 @@
   "tone": "srgbfix x [0.80,0.77,0.74]",
   "pilot": true,
   "uploaded": "2026-11-21 (win-79)"
+ },
+ "ambience/Ambience_Leaf": {
+  "file": "assets/source/ambience/Ambience_Leaf.png",
+  "sha256": "3b62a8b76a5a9f3bcdf21bddaa237c17f88fc76f9e257f313b4f543c7f791f28",
+  "assetType": "Decal",
+  "decalId": "132994924234331",
+  "operationId": "225a32be-c231-43ad-a443-37036eac650a",
+  "imageOperationId": "a0ede2e7-bac5-4b44-98a8-dd420c70228d",
+  "imageId": "138860325591751",
+  "moderation": "Approved",
+  "pilot": true,
+  "source": "procedural, drawn in repo (win-80)",
+  "uploaded": "2026-11-21 (win-80, blank local Studio window; cloud place not opened)"
+ },
+ "ambience/Ambience_Glow": {
+  "file": "assets/source/ambience/Ambience_Glow.png",
+  "sha256": "e5c37ccfb9d74b2423a7ae955876f9f5dd67407d4591c1cca003d4fc07bf7bf8",
+  "assetType": "Decal",
+  "decalId": "98577977518478",
+  "operationId": "28084126-608c-498f-9b78-9973900cd60e",
+  "imageOperationId": "8950f712-f48d-4af1-94f2-775937b51184",
+  "imageId": "84933589518173",
+  "moderation": "Approved",
+  "source": "procedural, drawn in repo (win-80)",
+  "uploaded": "2026-11-21 (win-80, blank local Studio window; cloud place not opened)"
  }
 }

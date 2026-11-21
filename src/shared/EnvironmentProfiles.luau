@@ -184,7 +184,11 @@ Profiles.Clock = table.freeze({ DayLength = 1800, StartHour = 14.5, SlotLength =
 -- Exploration never reads darker than this (luminance 0..255), even at midnight in rain; fights use Floor.
 Profiles.Night = table.freeze({ Ambient = 44, Outdoor = 72 })
 -- Sunrise/sunset strength at full dusk factor: fill and sun brightness cut, exposure drop, extra fog density and haze.
-Profiles.Horizon = table.freeze({ Fill = 0.2, Sun = 0.3, Exposure = 0.12, Density = 0.07, Haze = 0.8 })
+-- win-80: no dusk exposure cut (Exposure 0): with the moonlight blend the sunset hour under the canopy was the darkest moment of the day.
+Profiles.Horizon = table.freeze({ Fill = 0.2, Sun = 0.3, Exposure = 0, Density = 0.07, Haze = 0.8 })
+-- Moonlight (win-80): at full night the fill blends to these and exposure rises by Exposure, so the overworld reads as blue moonlight
+-- (path, trunks, silhouettes) instead of the old ~48/255 black under the canopy. Still dimmer than day; the sun is gone.
+Profiles.Moon = table.freeze({ Ambient = rgb(74, 88, 124), Outdoor = rgb(100, 118, 162), Exposure = 0.3, Top = rgb(150, 175, 235) })
 Profiles.Glare = table.freeze({ Bloom = 0.35, Threshold = 1.8, Rays = 0.12, Atmosphere = 0.4, Brightness = 2.4 })
 
 -- Density/Haze add to the biome, Rays/Fill/Wind multiply, Sat adds, Tint lerps by Amount (all scaled by the state's weight).
@@ -308,7 +312,11 @@ local function applyTime(p: any, hour: number): number
 	l.Brightness *= (0.65 + 0.35 * d) * (1 - H.Sun * dusk)
 	l.ExposureCompensation += 0.1 * (1 - d) - H.Exposure * dusk
 	l.ShadowSoftness *= 1 - 0.4 * dusk
-	l.ColorShift_Top = l.ColorShift_Top:Lerp(rgb(170, 190, 235), 1 - d):Lerp(rgb(255, 176, 120), 0.65 * dusk)
+	-- Moonlight follows the sun height: half at sunset, full once the sun is ~9 deg down, almost none at early dawn.
+	local M, moon = Profiles.Moon, smooth((0.15 - s) / 0.3)
+	l.Ambient, l.OutdoorAmbient = l.Ambient:Lerp(M.Ambient, moon), l.OutdoorAmbient:Lerp(M.Outdoor, moon)
+	l.ExposureCompensation += M.Exposure * moon
+	l.ColorShift_Top = l.ColorShift_Top:Lerp(M.Top, moon):Lerp(rgb(255, 176, 120), 0.65 * dusk)
 	a.Density += 0.05 * (1 - d) + H.Density * dusk
 	a.Haze += H.Haze * dusk
 	a.Color = a.Color:Lerp(rgb(60, 72, 110), 0.5 * (1 - d)):Lerp(rgb(255, 178, 128), 0.55 * dusk)
@@ -400,6 +408,86 @@ function Profiles.compose(input: any): (any?, any)
 	end
 	guard(p, input.Comfort == true)
 	return p, { Hour = hour, Daylight = daylight, Precip = precip, WindGain = gain }
+end
+
+-- Living sky (win-80): one volumetric cloud deck (Terrain.Clouds, owned by WeatherController) over the whole overworld.
+-- Cover/Density per biome: the dry Saltreach is the clearest, the Ashen Stair the heaviest; weather adds cover and greys it,
+-- dust thins and warms it. The Vesperhold ridge blends to its storm deck by weight. nil outside the overworld.
+local deck: { [string]: { number } } = {
+	-- Studio win-80: the engine draws almost nothing below ~0.55 cover and a closed lid near 0.9; 0.68 / 0.45 is broken cumulus.
+	Forest = { 0.67, 0.45 }, GoldenRavine = { 0.62, 0.4 }, AridBasin = { 0.57, 0.34 }, Snowfields = { 0.67, 0.48 }, MountainAscent = { 0.72, 0.52 },
+}
+local deckWeather: { [string]: any } = {
+	Clear = { 0, 0, rgb(255, 255, 255) }, Overcast = { 0.12, 0.15, rgb(206, 211, 220) }, Rain = { 0.18, 0.3, rgb(150, 156, 168) },
+	Snow = { 0.14, 0.2, rgb(214, 220, 232) }, Dust = { -0.08, -0.1, rgb(240, 216, 182) },
+}
+Profiles.RidgeDeck = table.freeze({ Density = 0.82, Color = rgb(88, 90, 99) })
+function Profiles.clouds(input: any): { Cover: number, Density: number, Color: Color3 }?
+	if not input.Weights then return nil end
+	local cover, density = 0, 0
+	for region, w in input.Weights do
+		local d = deck[region] or deck.Forest
+		cover += d[1] * w; density += d[2] * w
+	end
+	local color = rgb(255, 255, 255)
+	for state, w in input.Mix or { Clear = 1 } do
+		local m = deckWeather[state]
+		if m and w > 0 then
+			cover += m[1] * w; density += m[2] * w
+			color = color:Lerp(m[3], w)
+		end
+	end
+	local ridge = input.Vesperhold or 0
+	if ridge > 0 then
+		local mix = input.Mix or {}
+		local storm = 0.86 + 0.12 * ((mix.Overcast or 0) + (mix.Snow or 0))
+		cover += (storm - cover) * ridge
+		density += (Profiles.RidgeDeck.Density - density) * ridge
+		color = color:Lerp(Profiles.RidgeDeck.Color, ridge)
+	end
+	return { Cover = math.clamp(cover, 0, if ridge > 0 then 0.98 else 0.92), Density = math.clamp(density, 0, 1), Color = color }
+end
+
+-- Ambient life (win-80): 0..1 rates per kind for OverworldAmbience. Motes are sunlit pollen and dust, Leaves fall from the
+-- canopy, Fireflies come out after dusk, Glitter is diamond dust in cold clear sun. Rain and snow ground the motes and
+-- fireflies; a roof stops leaves and glitter; comfort keeps 40%. nil outside the overworld.
+local life: { [string]: { [string]: number } } = {
+	Forest = { Motes = 1, Leaves = 0.85, Fireflies = 1 },
+	GoldenRavine = { Motes = 0.8, Leaves = 1, Fireflies = 0.6 },
+	AridBasin = { Motes = 0.45 },
+	Snowfields = { Glitter = 1 },
+	MountainAscent = { Motes = 0.25, Glitter = 0.6 },
+}
+Profiles.AmbienceKinds = table.freeze({ "Motes", "Leaves", "Fireflies", "Glitter" })
+function Profiles.ambience(input: any): { [string]: number }?
+	if not input.Weights then return nil end
+	local hour = Profiles.hourAt(input.Time or 0)
+	local s = math.sin(math.pi * 2 * (hour - 6) / 24)
+	local day = smooth((s + 0.15) / 0.4)
+	local dark = smooth((-s + 0.02) / 0.25)
+	local mix = input.Mix or { Clear = 1 }
+	local wet = math.clamp((mix.Rain or 0) + (mix.Snow or 0), 0, 1)
+	local clear = mix.Clear or 0
+	local out: { [string]: number } = {}
+	for _, kind in Profiles.AmbienceKinds do
+		local base = 0
+		for region, w in input.Weights do
+			local r = life[region]
+			base += (if r then r[kind] or 0 else 0) * w
+		end
+		local v = base
+		if kind == "Motes" then v *= day * (clear + 0.4 * (mix.Overcast or 0) + 0.6 * (mix.Dust or 0))
+		elseif kind == "Leaves" then v *= 1 - 0.3 * wet
+		elseif kind == "Fireflies" then v *= dark * (1 - wet) * (1 - (mix.Dust or 0))
+		elseif kind == "Glitter" then v *= day * (clear + 0.5 * (mix.Snow or 0)) end
+		if input.Sheltered and (kind == "Leaves" or kind == "Glitter") then v = 0 end
+		if input.Comfort then v *= 0.4 end
+		out[kind] = math.clamp(v, 0, 1)
+	end
+	-- Lantern lights: on from deep dusk to dawn in every region and weather; comfort keeps them (light, not motion).
+	out.Lanterns = smooth((-s + 0.12) / 0.3)
+	out.Amber = math.clamp(input.Weights.GoldenRavine or 0, 0, 1) -- leaf tint share (Amberfall turns the leaves amber)
+	return out
 end
 
 return table.freeze(Profiles)

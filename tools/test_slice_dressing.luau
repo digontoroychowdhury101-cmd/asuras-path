@@ -1227,6 +1227,17 @@ else
 	check("a partly covered piece (Canopy_Tree_B) stays a placeholder", treeB > 0 and nTreeBPlaceholder > 0)
 	check("a malformed registry entry (Fern_Clump) stays a placeholder", nFernPlaceholder > 0)
 	check("real part count is reported (" .. Service3.Stats().Real .. ")", Service3.Stats().Real == realParts and realParts == nGrass + nBark * 3)
+	-- win-80: a lantern's __Glow sub carries one warm, shadowless PointLight (off until the client lights it after dusk), tagged
+	-- AsuraLanternLight; other subs carry no light, and the loaded model's own MeshPart is never modified.
+	models["rbxassetid://5004"] = { 9050, 9051 }
+	local glow = Service3.Template("Bell_Lantern_Post__Glow", { MeshId = "rbxassetid://9050", Asset = "rbxassetid://5004" })
+	local stone = Service3.Template("Bell_Lantern_Post__Stone", { MeshId = "rbxassetid://9051", Asset = "rbxassetid://5004" })
+	local light = glow and glow:FindFirstChildOfClass("PointLight")
+	check("lantern glow template carries one tagged, shadowless warm PointLight, off by default", light ~= nil and #glow:GetChildren() >= 1 and not light.Shadows
+		and light.Enabled == false and light.Range >= 14 and light.Range <= 26 and light.Color.R > light.Color.B and light:HasTag("AsuraLanternLight"))
+	check("non-glow subs carry no light", stone ~= nil and stone:FindFirstChildOfClass("PointLight") == nil)
+	check("the glow template is a clone (the cached loaded model is untouched)", glow ~= nil and glow.Parent == nil)
+	check("the glow template is cached (one light, not one per call)", Service3.Template("Bell_Lantern_Post__Glow", {}) == glow)
 	local barkFinished, barkOwn, leafOwn, leafFinished = 0, 0, 0, 0
 	for _, d in f3:GetDescendants() do
 		if d:IsA("MeshPart") then

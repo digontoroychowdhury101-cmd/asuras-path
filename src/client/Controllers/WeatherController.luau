@@ -14,6 +14,7 @@ local Profiles = require(Shared.Shared.EnvironmentProfiles)
 local Wind = require(Shared.Shared.Wind)
 local Effects = require(Shared.Shared.EffectsPreference)
 local Atmosphere = require(script.Parent.VesperholdAtmosphere) :: any
+local Ambience = require(script.Parent.OverworldAmbience) :: any
 
 local FX_TAG, SHELTER_TAG = "AsuraWeatherFx", "AsuraShelter"
 -- Rate is particles per second at full intensity; Fall is the downward pull, Share how much of the wind carries them.
@@ -65,7 +66,8 @@ end
 
 -- Idle state: no FX, no profile, no wind, no attributes. Lobby, respawn, shelter-less domain and Destroy all land here.
 function Controller.Reset(self: any)
-	if self.RidgeClouds then self.RidgeClouds:Destroy(); self.RidgeClouds = nil end
+	if self.Clouds then self.Clouds:Destroy(); self.Clouds = nil end
+	if self.Ambience then self.Ambience:Destroy(); self.Ambience = nil end
 	if self.Atmos then self.Atmos:Destroy(); self.Atmos = nil end
 	self.Ridge = 0
 	for kind in table.clone(self.Emitters) do drop(self, kind) end
@@ -151,23 +153,21 @@ function Controller.Sample(self: any)
 	local ridge = if region == "Snowfields" then Overworld.vesperholdWeight(position.X, position.Z) else 0
 	local covered = sheltered(position, if ridge > 0 then 230 else 60)
 	local mix = Profiles.weatherBlend(weights, t)
-	local cover = math.min(1, ridge * (0.86 + 0.12 * ((mix.Overcast or 0) + (mix.Snow or 0))))
-	if ridge > 0 then
-		if not self.RidgeClouds then
+	-- One volumetric deck over the whole overworld; the ridge thickens the same instance (Profiles.clouds), never a second one.
+	local sky = Profiles.clouds({ Weights = weights, Mix = mix, Time = t, Vesperhold = ridge })
+	if sky then
+		if not self.Clouds then
 			local clouds = Instance.new("Clouds")
-			clouds.Name = "VesperholdClouds"
-			clouds.Color = Color3.fromRGB(88, 90, 99)
-			clouds.Density = 0.82
-			clouds.Cover = cover
+			clouds.Name = "OverworldClouds"
 			clouds.Parent = workspace.Terrain
-			self.RidgeClouds = clouds
-		else
-			self.RidgeClouds.Cover = cover
+			self.Clouds = clouds
 		end
-	elseif self.RidgeClouds then
-		self.RidgeClouds:Destroy()
-		self.RidgeClouds = nil
+		self.Clouds.Cover, self.Clouds.Density, self.DeckColor = sky.Cover, sky.Density, sky.Color
+		if not self.Atmos then self.Clouds.Color = sky.Color end
 	end
+	self.Rates = Profiles.ambience({ Weights = weights, Mix = mix, Time = t, Sheltered = covered,
+		Comfort = Effects.reducedMotion() or Effects.reduced() })
+	if not self.Ambience then self.Ambience = Ambience.new() end
 	self.Ridge, self.Comfort = ridge, Effects.reducedMotion() or Effects.reduced()
 	if ridge > 0 and not self.Atmos then self.Atmos = Atmosphere.new() end
 	local profile, info = Profiles.compose({ Weights = weights, Time = t, Mix = mix,
@@ -199,9 +199,15 @@ function Controller.Update(self: any, dt: number)
 		local own = self.State:Own()
 		local at = if camera then camera.CFrame.Position elseif own and own.Root then own.Root.Position else nil
 		if at then self.Atmos:Update(self.Ridge or 0, dt, at, self.Comfort == true) end
-		if self.RidgeClouds then -- a strike pulses the cloud layer pale blue-white
-			self.RidgeClouds.Color = Color3.fromRGB(88, 90, 99):Lerp(Color3.fromRGB(214, 224, 255), 0.85 * self.Atmos.Flash)
+		if self.Clouds and self.DeckColor then -- a strike pulses the cloud layer pale blue-white
+			self.Clouds.Color = self.DeckColor:Lerp(Color3.fromRGB(214, 224, 255), 0.85 * self.Atmos.Flash)
 		end
+	end
+	if self.Ambience then
+		local camera = workspace.CurrentCamera
+		local own = self.State:Own()
+		local at = if camera then camera.CFrame.Position elseif own and own.Root then own.Root.Position else nil
+		self.Ambience:Update(dt, at, self.Rates, self.Wind)
 	end
 	self.Elapsed += dt
 	if self.Elapsed < 0.2 then return end
