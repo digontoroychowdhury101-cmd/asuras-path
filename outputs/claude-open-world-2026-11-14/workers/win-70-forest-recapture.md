@@ -116,3 +116,11 @@ Instruction: handoff §4 step 7, creator's "Yes continue".
   0 errors. All 51 placeholders are older Basin_/Mtn_/Ravine_/Snow_/Cave_ pieces with no kit mesh. Golden Ravine live: 137 MeshParts vs 11 placeholder parts
   (captures/win/region77/region77_amberfall_after.jpg).
 - Tests: biome 18928/0, slice 1363/0, test_kit_registry pass, verify_all exit 0. Not seen live: Saltreach, Frostmere, Ashen (counted by Build.Piece only).
+
+## win-78: sRGB-corrected bark/leaf pair uploaded (creator: "Yes, upload pair")
+- Cloud window ba1bd084 (place 118614906972571, Edit, never edited or saved), bark first as pilot. Bark: Decal 127726316682341, op efbc5d6d-e214-41d5-b4b4-e3be3b397838,
+  image 91229031784225 (read-back mean 172/164/143 = file). Leaf: Decal 75662204090632, op 9846b8b7-27d5-431f-9e21-dc8ba058145b, image 130835662917478 (115/153/98 = file).
+  Both Approved; ledger workers/win-74-texture-upload-ledger.json.
+- Repointed the finish library and registries from the win-74 ids (Slice 10 subs, Bellwood 29); test now rejects the old ids. Slice 1363/0, verify_all exit 0.
+- Studio (work/vesperhold-claude/win78, closed unsaved): 54 surfaces on the new images, 0 on the old. View 03: shaded trunks read as bark (were near-black);
+  view 02: trunks brown, corridor road and lanterns visible. Sunlit bark is pale, almost birch-like (captures/win/forest78/).

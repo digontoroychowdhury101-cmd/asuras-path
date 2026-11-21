@@ -1035,14 +1035,16 @@ do
 	for _, far in S.FarPieces do
 		check("far tree " .. far .. "_Far resolves from BellwoodFarKitRegistry", owner[far .. "_Far"] == "BellwoodFarKitRegistry" and owner[far] ~= nil)
 	end
-	-- win-74: the dark bark / leaf albedo (140594595381269 / 77950985710853) is replaced by the lifted uploads (79017489720966 / 130561688112982).
+	-- win-74/78: the dark bark / leaf albedo (140594595381269 / 77950985710853) and the first, too-weak lifts (79017489720966 / 130561688112982)
+	-- are replaced by the sRGB-corrected uploads (91229031784225 / 130835662917478).
 	local old, bark, leaf = 0, 0, 0
+	local stale = { ["rbxassetid://140594595381269"] = true, ["rbxassetid://77950985710853"] = true, ["rbxassetid://79017489720966"] = true, ["rbxassetid://130561688112982"] = true }
 	for _, m in mods do
 		for _, subs in m[2] do
 			for key, e in subs do
-				if e.ColorMap == "rbxassetid://140594595381269" or e.ColorMap == "rbxassetid://77950985710853" then old += 1 end
-				if e.ColorMap == "rbxassetid://79017489720966" then bark += 1 end
-				if e.ColorMap == "rbxassetid://130561688112982" then leaf += 1 end
+				if stale[e.ColorMap] then old += 1 end
+				if e.ColorMap == "rbxassetid://91229031784225" then bark += 1 end
+				if e.ColorMap == "rbxassetid://130835662917478" then leaf += 1 end
 			end
 		end
 	end

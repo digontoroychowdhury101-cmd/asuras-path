@@ -1839,7 +1839,7 @@
         ]
       },
       "Fallen_Log_A__Bark": {
-        "ColorMap": "rbxassetid://79017489720966",
+        "ColorMap": "rbxassetid://91229031784225",
         "NormalMap": "rbxassetid://81067035380510",
         "RoughnessMap": "rbxassetid://71120715249359",
         "MeshId": "rbxassetid://138941889502106",
@@ -1865,7 +1865,7 @@
         ]
       },
       "Dead_Standing_Trunk__Bark": {
-        "ColorMap": "rbxassetid://79017489720966",
+        "ColorMap": "rbxassetid://91229031784225",
         "NormalMap": "rbxassetid://81067035380510",
         "RoughnessMap": "rbxassetid://71120715249359",
         "MeshId": "rbxassetid://86816605460607",
@@ -1903,7 +1903,7 @@
         ]
       },
       "Fallen_Log_B__Bark": {
-        "ColorMap": "rbxassetid://79017489720966",
+        "ColorMap": "rbxassetid://91229031784225",
         "NormalMap": "rbxassetid://81067035380510",
         "RoughnessMap": "rbxassetid://71120715249359",
         "MeshId": "rbxassetid://115102958822028",
@@ -1941,7 +1941,7 @@
         ]
       },
       "Conifer_Tall__Bark": {
-        "ColorMap": "rbxassetid://79017489720966",
+        "ColorMap": "rbxassetid://91229031784225",
         "NormalMap": "rbxassetid://81067035380510",
         "RoughnessMap": "rbxassetid://71120715249359",
         "MeshId": "rbxassetid://135849358603848",
@@ -1955,7 +1955,7 @@
     },
     "Canopy_Tree_C": {
       "Canopy_Tree_C__Leaves_Mass": {
-        "ColorMap": "rbxassetid://130561688112982",
+        "ColorMap": "rbxassetid://130835662917478",
         "NormalMap": "rbxassetid://119940854808716",
         "RoughnessMap": "rbxassetid://107948030666204",
         "MeshId": "rbxassetid://135107699520349",
@@ -1967,7 +1967,7 @@
         ]
       },
       "Canopy_Tree_C__Leaves_Detail": {
-        "ColorMap": "rbxassetid://130561688112982",
+        "ColorMap": "rbxassetid://130835662917478",
         "NormalMap": "rbxassetid://119940854808716",
         "RoughnessMap": "rbxassetid://107948030666204",
         "MeshId": "rbxassetid://107200797681988",
@@ -1979,7 +1979,7 @@
         ]
       },
       "Canopy_Tree_C__Bark": {
-        "ColorMap": "rbxassetid://79017489720966",
+        "ColorMap": "rbxassetid://91229031784225",
         "NormalMap": "rbxassetid://81067035380510",
         "RoughnessMap": "rbxassetid://71120715249359",
         "MeshId": "rbxassetid://125630425694953",
@@ -2005,7 +2005,7 @@
         ]
       },
       "Exposed_Roots_A__Bark": {
-        "ColorMap": "rbxassetid://79017489720966",
+        "ColorMap": "rbxassetid://91229031784225",
         "NormalMap": "rbxassetid://81067035380510",
         "RoughnessMap": "rbxassetid://71120715249359",
         "MeshId": "rbxassetid://89405291553205",
@@ -2031,7 +2031,7 @@
         ]
       },
       "Exposed_Roots_B__Bark": {
-        "ColorMap": "rbxassetid://79017489720966",
+        "ColorMap": "rbxassetid://91229031784225",
         "NormalMap": "rbxassetid://81067035380510",
         "RoughnessMap": "rbxassetid://71120715249359",
         "MeshId": "rbxassetid://121308972714648",
@@ -2045,7 +2045,7 @@
     },
     "Canopy_Tree_D": {
       "Canopy_Tree_D__Leaves_Detail": {
-        "ColorMap": "rbxassetid://130561688112982",
+        "ColorMap": "rbxassetid://130835662917478",
         "NormalMap": "rbxassetid://119940854808716",
         "RoughnessMap": "rbxassetid://107948030666204",
         "MeshId": "rbxassetid://127544683486763",
@@ -2057,7 +2057,7 @@
         ]
       },
       "Canopy_Tree_D__Leaves_Mass": {
-        "ColorMap": "rbxassetid://130561688112982",
+        "ColorMap": "rbxassetid://130835662917478",
         "NormalMap": "rbxassetid://119940854808716",
         "RoughnessMap": "rbxassetid://107948030666204",
         "MeshId": "rbxassetid://73129957556801",
@@ -2069,7 +2069,7 @@
         ]
       },
       "Canopy_Tree_D__Bark": {
-        "ColorMap": "rbxassetid://79017489720966",
+        "ColorMap": "rbxassetid://91229031784225",
         "NormalMap": "rbxassetid://81067035380510",
         "RoughnessMap": "rbxassetid://71120715249359",
         "MeshId": "rbxassetid://93373622695544",
@@ -2104,7 +2104,7 @@
         ]
       },
       "Moss_Drape__Bark": {
-        "ColorMap": "rbxassetid://79017489720966",
+        "ColorMap": "rbxassetid://91229031784225",
         "NormalMap": "rbxassetid://81067035380510",
         "RoughnessMap": "rbxassetid://71120715249359",
         "MeshId": "rbxassetid://128955461332009",
@@ -2162,7 +2162,7 @@
     },
     "Old_Gnarled_Tree": {
       "Old_Gnarled_Tree__Leaves_Mass": {
-        "ColorMap": "rbxassetid://130561688112982",
+        "ColorMap": "rbxassetid://130835662917478",
         "NormalMap": "rbxassetid://119940854808716",
         "RoughnessMap": "rbxassetid://107948030666204",
         "MeshId": "rbxassetid://100710744177278",
@@ -2174,7 +2174,7 @@
         ]
       },
       "Old_Gnarled_Tree__Leaves_Detail": {
-        "ColorMap": "rbxassetid://130561688112982",
+        "ColorMap": "rbxassetid://130835662917478",
         "NormalMap": "rbxassetid://119940854808716",
         "RoughnessMap": "rbxassetid://107948030666204",
         "MeshId": "rbxassetid://106665794209635",
@@ -2186,7 +2186,7 @@
         ]
       },
       "Old_Gnarled_Tree__Bark": {
-        "ColorMap": "rbxassetid://79017489720966",
+        "ColorMap": "rbxassetid://91229031784225",
         "NormalMap": "rbxassetid://81067035380510",
         "RoughnessMap": "rbxassetid://71120715249359",
         "MeshId": "rbxassetid://108223608260638",
@@ -2303,7 +2303,7 @@
         ]
       },
       "Tree_Stump_A__Bark": {
-        "ColorMap": "rbxassetid://79017489720966",
+        "ColorMap": "rbxassetid://91229031784225",
         "NormalMap": "rbxassetid://81067035380510",
         "RoughnessMap": "rbxassetid://71120715249359",
         "MeshId": "rbxassetid://83119963007440",
@@ -2317,7 +2317,7 @@
     },
     "Shrub_Thicket": {
       "Shrub_Thicket__Stems": {
-        "ColorMap": "rbxassetid://79017489720966",
+        "ColorMap": "rbxassetid://91229031784225",
         "NormalMap": "rbxassetid://81067035380510",
         "RoughnessMap": "rbxassetid://71120715249359",
         "MeshId": "rbxassetid://105693475070195",
@@ -2329,7 +2329,7 @@
         ]
       },
       "Shrub_Thicket__Leaves": {
-        "ColorMap": "rbxassetid://130561688112982",
+        "ColorMap": "rbxassetid://130835662917478",
         "NormalMap": "rbxassetid://119940854808716",
         "RoughnessMap": "rbxassetid://107948030666204",
         "MeshId": "rbxassetid://90911623949993",
@@ -2343,7 +2343,7 @@
     },
     "Vine_Hanging": {
       "Vine_Hanging__Leaves": {
-        "ColorMap": "rbxassetid://130561688112982",
+        "ColorMap": "rbxassetid://130835662917478",
         "NormalMap": "rbxassetid://119940854808716",
         "RoughnessMap": "rbxassetid://107948030666204",
         "MeshId": "rbxassetid://115940470520431",
@@ -2355,7 +2355,7 @@
         ]
       },
       "Vine_Hanging__Bark": {
-        "ColorMap": "rbxassetid://79017489720966",
+        "ColorMap": "rbxassetid://91229031784225",
         "NormalMap": "rbxassetid://81067035380510",
         "RoughnessMap": "rbxassetid://71120715249359",
         "MeshId": "rbxassetid://96260530484354",
@@ -2393,7 +2393,7 @@
         ]
       },
       "Tree_Stump_B__Bark": {
-        "ColorMap": "rbxassetid://79017489720966",
+        "ColorMap": "rbxassetid://91229031784225",
         "NormalMap": "rbxassetid://81067035380510",
         "RoughnessMap": "rbxassetid://71120715249359",
         "MeshId": "rbxassetid://130955957164135",
@@ -2407,7 +2407,7 @@
     },
     "Shrub_Berry": {
       "Shrub_Berry__Stems": {
-        "ColorMap": "rbxassetid://79017489720966",
+        "ColorMap": "rbxassetid://91229031784225",
         "NormalMap": "rbxassetid://81067035380510",
         "RoughnessMap": "rbxassetid://71120715249359",
         "MeshId": "rbxassetid://92206419102281",
@@ -2419,7 +2419,7 @@
         ]
       },
       "Shrub_Berry__Leaves": {
-        "ColorMap": "rbxassetid://130561688112982",
+        "ColorMap": "rbxassetid://130835662917478",
         "NormalMap": "rbxassetid://119940854808716",
         "RoughnessMap": "rbxassetid://107948030666204",
         "MeshId": "rbxassetid://107452692692318",
@@ -2445,7 +2445,7 @@
     },
     "Shrub_Hazel": {
       "Shrub_Hazel__Stems": {
-        "ColorMap": "rbxassetid://79017489720966",
+        "ColorMap": "rbxassetid://91229031784225",
         "NormalMap": "rbxassetid://81067035380510",
         "RoughnessMap": "rbxassetid://71120715249359",
         "MeshId": "rbxassetid://126703458409566",
@@ -2457,7 +2457,7 @@
         ]
       },
       "Shrub_Hazel__Leaves": {
-        "ColorMap": "rbxassetid://130561688112982",
+        "ColorMap": "rbxassetid://130835662917478",
         "NormalMap": "rbxassetid://119940854808716",
         "RoughnessMap": "rbxassetid://107948030666204",
         "MeshId": "rbxassetid://137913229373871",
@@ -2497,7 +2497,7 @@
     },
     "Sapling_Tree": {
       "Sapling_Tree__Leaves_Mass": {
-        "ColorMap": "rbxassetid://130561688112982",
+        "ColorMap": "rbxassetid://130835662917478",
         "NormalMap": "rbxassetid://119940854808716",
         "RoughnessMap": "rbxassetid://107948030666204",
         "MeshId": "rbxassetid://133971255260155",
@@ -2509,7 +2509,7 @@
         ]
       },
       "Sapling_Tree__Leaves_Detail": {
-        "ColorMap": "rbxassetid://130561688112982",
+        "ColorMap": "rbxassetid://130835662917478",
         "NormalMap": "rbxassetid://119940854808716",
         "RoughnessMap": "rbxassetid://107948030666204",
         "MeshId": "rbxassetid://107623387575275",
@@ -2521,7 +2521,7 @@
         ]
       },
       "Sapling_Tree__Bark": {
-        "ColorMap": "rbxassetid://79017489720966",
+        "ColorMap": "rbxassetid://91229031784225",
         "NormalMap": "rbxassetid://81067035380510",
         "RoughnessMap": "rbxassetid://71120715249359",
         "MeshId": "rbxassetid://103973723854215",
