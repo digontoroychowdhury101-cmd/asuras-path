@@ -113,6 +113,30 @@ function Layout.rimTop(lm: any, theta: number, heightAt: (number, number) -> num
 	return heightAt(x, z) + lm.Basin.RimRise + 4 * math.sin(3 * theta) + 3 * math.sin(7 * theta + 1)
 end
 
+-- The final ground height at x, z once a sunken basin is carved (lake bed in the bowl, cap top on the rim, the outer grass slope past
+-- it), or nil away from every basin. Dressing placed before the carve lands on this, not on the pre-carve ground (it floated).
+-- The slope mirrors LandmarkWorld.basin: top at the rim's outer edge, run 1.8 x drop, never under the forest floor + 2.
+function Layout.carvedSurface(x: number, z: number, heightAt: (number, number) -> number): number?
+	for _, lm in Layout.Landmarks do
+		if not lm.Basin then continue end
+		if Layout.basinEllipse(lm, x, z) < 1 then return (Layout.basinLevels(lm)) end
+		local c, fx, fz, rx, rz = basinAxes(lm)
+		local dx, dz = x - c.X, z - c.Z
+		local theta = math.atan2((dx * fx + dz * fz) / (lm.Basin.Depth / 2), (dx * rx + dz * rz) / (lm.Basin.Width / 2))
+		local top = Layout.rimTop(lm, theta, heightAt)
+		if Layout.basinEllipse(lm, x, z, lm.Basin.Thick) < 1 then return top end
+		local ex, ez = Layout.basinRing(lm, theta, lm.Basin.Thick)
+		local drop = math.max(4, top - heightAt(ex, ez))
+		local run = math.max(8, drop * 1.8)
+		local s = math.sqrt((x - ex) ^ 2 + (z - ez) ^ 2)
+		if s > run then continue end
+		local fx2, fz2 = Layout.basinRing(lm, theta, lm.Basin.Thick + run)
+		local base = math.min(heightAt(ex, ez), heightAt(fx2, fz2)) - 6
+		return math.max(heightAt(x, z) + 2, top - (top - base) * s / (run + 1))
+	end
+	return nil
+end
+
 -- World position of a basin piece's origin (Across / Along off the basin centre, Lift over the lake bed).
 local function basinSpot(lm: any, P: any): Vec
 	local c, fx, fz, rx, rz = basinAxes(lm)

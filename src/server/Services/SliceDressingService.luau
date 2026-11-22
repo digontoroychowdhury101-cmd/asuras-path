@@ -21,6 +21,7 @@ local CollectionService = game:GetService("CollectionService")
 local Shared = ReplicatedStorage:WaitForChild("AsurasPath")
 local Overworld = require(Shared.Shared.Overworld) :: any
 local Slice = require(Shared.Shared.SliceDressing) :: any
+local Landmarks = require(Shared.Shared.LandmarkLayout) :: any
 local Terrain = require(script.Parent:WaitForChild("OverworldTerrain") :: ModuleScript) :: any
 local OverworldWorld = require(script.Parent:WaitForChild("OverworldService") :: ModuleScript) :: any
 
@@ -45,6 +46,11 @@ SliceDressingService.LoadModel = nil :: ((string) -> Instance?)?
 local function ground(x: number, z: number, surface: number): number
 	if SliceDressingService.Ground then
 		return SliceDressingService.Ground(x, z, surface)
+	end
+	-- A sunken basin's rim slope is written after this cell may be built: use its final surface, not a pre-carve raycast (it floated).
+	local carved = Landmarks.carvedSurface(x, z, Overworld.heightAt)
+	if carved then
+		return carved
 	end
 	local terrain = Workspace:FindFirstChildOfClass("Terrain")
 	if terrain then

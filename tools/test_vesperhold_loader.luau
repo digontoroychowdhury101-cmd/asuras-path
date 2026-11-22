@@ -442,7 +442,7 @@ do
 					if LL.basinEllipse(bw, q.X, q.Z, -bw.Basin.Shelf + 1) > 1 then dishOk = false end
 				end end
 			end
-		elseif m == "Mud" then
+		elseif m == "Mud" and not f.Rim then
 			if math.abs(c.Position.Y + h.Y - floorY) < 0.01 then bedOk = true end
 		elseif f.Rim then
 			rimMats[m] = true
@@ -472,6 +472,85 @@ do
 	-- mac-89: the first rim was one dark rock wall standing on open meadow (captures/mac/bellwood_face/ingame_basin_aerial_before.jpg).
 	check("basin rim: strata cliffs from under the floor up to a grass cap, in 2+ stone kinds", rimOk and nMats >= 2 and #(function() local n = {} for k in rimSpan do table.insert(n, k) end return n end)() >= 64)
 	check("basin rim: a leafy grass cap on every segment, RimRise over the ground", caps >= 64 and capOk)
+	-- Bellwood terrain defects (22 Nov): regular black stripes round the rim, a dark vertical streak on the left cliff, floating vegetation.
+	do
+		local rimFills = {}
+		for _, f in W.basin(bw) do
+			if f.Rim then rimFills[f.Segment] = rimFills[f.Segment] or {}; table.insert(rimFills[f.Segment], f) end
+		end
+		local nSeg = 0
+		for _ in rimFills do nSeg += 1 end
+		local DARK = { Basalt = true, Slate = true }
+		local function matAt(k: number, y: number): string
+			for _, f in rimFills[k] do
+				if y >= f.CFrame.Position.Y - f.Size.Y / 2 and y < f.CFrame.Position.Y + f.Size.Y / 2 then return f.Material.Name end
+			end
+			return "?"
+		end
+		local lo, hi = floorY - 16, floorY + 20
+		local darkRun, darkTotal, rows, rowDark, seqs, thick = 0, 0, 0, {}, {}, {}
+		for k = 0, nSeg - 1 do
+			local run, sig = 0, {}
+			table.sort(rimFills[k], function(a, b) return a.CFrame.Position.Y < b.CFrame.Position.Y end)
+			for _, f in rimFills[k] do thick[math.floor(f.Size.Y * 2)] = true end
+			for y = lo, hi - 1 do
+				local m = matAt(k, y + 0.5)
+				table.insert(sig, m)
+				if DARK[m] then run += 1; darkTotal += 1; rowDark[y] = (rowDark[y] or 0) + 1; darkRun = math.max(darkRun, run) else run = 0 end
+			end
+			seqs[table.concat(sig, ",")] = true
+		end
+		local distinctSeqs, distinctThick, worstRow = 0, 0, 0
+		for _ in seqs do distinctSeqs += 1 end
+		for _ in thick do distinctThick += 1 end
+		for _, n in rowDark do worstRow = math.max(worstRow, n / nSeg) end
+		check("rim strata: no continuous dark band wider than 4 studs (" .. darkRun .. ")", darkRun <= 4)
+		check("rim strata: dark stone (Slate, Basalt) is under 30% of the rim face", darkTotal / (nSeg * (hi - lo)) < 0.30)
+		check("rim strata: no height row is more than 40% dark round the ring (" .. string.format("%.2f", worstRow) .. ")", worstRow <= 0.40)
+		check("rim strata: the bands vary round the ring (" .. distinctSeqs .. " layer sequences, " .. distinctThick .. " thicknesses)", distinctSeqs >= 12 and distinctThick >= 5)
+		local mats = {}
+		for k = 0, nSeg - 1 do for _, f in rimFills[k] do mats[f.Material.Name] = true end end
+		check("rim strata: Slate/Rock/Basalt mixed with Ground/Mud/Grass ledges", mats.Rock and mats.Ground and mats.Mud and mats.Grass and mats.Slate)
+		-- a vertical streak is a segment whose layers differ from both neighbours, which agree with each other
+		local streaks, maxJump = 0, 0
+		for k = 0, nSeg - 1 do
+			local a, b = (k - 1) % nSeg, (k + 1) % nSeg
+			local dA, dB, dAB = 0, 0, 0
+			for y = lo, hi - 1 do
+				local m, ma, mb = matAt(k, y + 0.5), matAt(a, y + 0.5), matAt(b, y + 0.5)
+				if m ~= ma then dA += 1 end
+				if m ~= mb then dB += 1 end
+				if ma ~= mb then dAB += 1 end
+			end
+			if dA > 8 and dB > 8 and dAB < dA / 2 then streaks += 1 end
+			local fa, fb = rimFills[k], rimFills[b]
+			for i = 1, math.min(#fa, #fb) - 2 do -- the top bands absorb the rim top's own wobble
+				maxJump = math.max(maxJump, math.abs((fa[i].CFrame.Position.Y + fa[i].Size.Y / 2) - (fb[i].CFrame.Position.Y + fb[i].Size.Y / 2)))
+			end
+		end
+		check("rim strata: no isolated segment forms a vertical streak (" .. streaks .. ")", streaks == 0)
+		check("rim strata: band tops move smoothly from segment to segment (max jump " .. string.format("%.2f", maxJump) .. ")", maxJump <= 1.5)
+		-- vegetation anchors: LandmarkLayout.carvedSurface follows the written rim slope (so a build before or after the carve lands on it)
+		local flatOk, slopes = true, 0
+		for _, f in W.basin(bw) do
+			if f.Wedge then
+				local h = f.Size / 2
+				local hiE, loE = f.CFrame:PointToWorldSpace(Vector3.new(0, h.Y, h.Z)), f.CFrame:PointToWorldSpace(Vector3.new(0, -h.Y, -h.Z))
+				for _, t in { 0.1, 0.3, 0.5 } do
+					local px, pz = hiE.X + (loE.X - hiE.X) * t, hiE.Z + (loE.Z - hiE.Z) * t
+					local py = hiE.Y + (loE.Y - hiE.Y) * t
+					local want = math.max(py, O.heightAt(px, pz) + 2)
+					local got = LL.carvedSurface(px, pz, O.heightAt)
+					slopes += 1
+					if not got or math.abs(got - want) > 4 then flatOk = false end
+				end
+			end
+		end
+		check("vegetation ground: carvedSurface follows the rim slope wedges within 4 studs (" .. slopes .. " samples)", flatOk and slopes >= 192)
+		local cc = LL.basinCentre(bw)
+		check("vegetation ground: carvedSurface is the lake bed in the bowl and nil far from the basin",
+			LL.carvedSurface(cc.X, cc.Z, O.heightAt) == floorY and LL.carvedSurface(cc.X + 5000, cc.Z, O.heightAt) == nil)
+	end
 	check("basin rim: a grass slope from the rim top down under the forest floor outside", flanks >= 64 and flankOk)
 	check("basin lake: water from the floor to Floor + Water, inside the shore", (byMat.Water or 0) >= 20 and waterOk)
 	-- mac-89: a 2.5-stud lake showed the bed's voxel ridges as dark dashes. The middle deepens by Deep, Shelf studs in from the shore.

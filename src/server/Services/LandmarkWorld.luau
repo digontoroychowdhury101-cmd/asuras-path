@@ -113,7 +113,25 @@ end
 -- from the lip, and a grass slope (Wedge = true, a terrain wedge: high edge at +Z on the rim, low edge under the forest floor) so
 -- from outside it reads as a wooded ridge. Segment = the rim segment index.
 World.BasinStep, World.RimSegments, World.RimStrata, World.RimCap = 6, 128, 6, 3
-local STRATA = { Enum.Material.Rock, Enum.Material.Slate, Enum.Material.Rock, Enum.Material.Basalt }
+-- Irregular strata (22 Nov): band thickness and stone come from smooth fields over (band, angle), so the layers wander round the
+-- ring (no uniform black stripes) without any segment-to-segment jump (a jump reads as a vertical streak). Dark stone (Slate,
+-- Basalt) never sits in two bands in a row and stays under 3.5 studs thick; Ground, Mud and Grass make the ledges.
+local DARK = { [Enum.Material.Slate] = true, [Enum.Material.Basalt] = true }
+local function stratumMaterial(i: number, tm: number, prevDark: boolean, thick: number): Enum.Material
+	local f = 0.5 + 0.25 * math.sin(i * 2.17 + tm * 5.3) + 0.15 * math.sin(i * 0.71 + tm * 2.1 + 1.3) + 0.1 * math.sin(tm * 11 + i * 3.7)
+	local m = if f < 0.28 then Enum.Material.Rock elseif f < 0.42 then Enum.Material.Limestone elseif f < 0.55 then Enum.Material.Ground
+		elseif f < 0.66 then Enum.Material.Mud elseif f < 0.76 then Enum.Material.Rock elseif f < 0.86 then Enum.Material.Slate
+		elseif f < 0.92 then Enum.Material.Basalt else Enum.Material.Grass
+	if DARK[m] and (prevDark or thick > 3.5) then return Enum.Material.Rock end -- never a wide or doubled dark stripe
+	return m
+end
+-- Band edges: fixed irregular widths (3.6-7.4 studs, the same on every segment) plus a smooth +-1 stud wander round the ring.
+local function stratumWidth(i: number): number
+	return 5.5 + 1.9 * math.sin(i * 2.7 + 0.6) * (0.55 + 0.45 * math.sin(i * 1.3))
+end
+local function stratumWander(i: number, tm: number): number
+	return 0.6 * math.sin(i * 1.9 + tm * 3.1) + 0.4 * math.sin(i * 0.8 + tm * 1.7 + 2)
+end
 local function strips(lm: any, grow: number, bottom: number, top: number, material: Enum.Material, out: { any })
 	local L = World.Layout
 	local c, fx, fz = L.basinCentre(lm), L.front(lm)
@@ -158,14 +176,17 @@ function World.basin(lm: any): { any }
 		local toOut = if frame.RightVector:Dot(outward) > 0 then 1 else -1
 		local bottom, top = floorY - 16, tops[k]
 		local capY = top - World.RimCap
-		local z, i = bottom, 0
+		local z, i, prevDark, edge = bottom, 0, false, bottom
 		while z < capY - 0.01 do
-			local zt = math.min(z + World.RimStrata, capY)
+			edge += stratumWidth(i)
+			local zt = math.min(edge + stratumWander(i, tm), capY)
+			if capY - zt < 2 then zt = capY end
+			local material = stratumMaterial(i, tm, prevDark, zt - z) -- heights never depend on the stone, so no cascade jumps between segments
 			-- deterministic ledges: each stratum steps up to 1.5 studs in or out, varying round the ring
 			local step = 1.5 * math.sin(i * 2.3 + tm * 9) * math.sin(tm * 3 + i)
 			table.insert(out, { CFrame = frame * CFrame.new(toOut * step, (z + zt) / 2, 0), Size = Vector3.new(th, zt - z, len),
-				Material = STRATA[i % #STRATA + 1], Rim = true, Segment = k })
-			z, i = zt, i + 1
+				Material = material, Rim = true, Segment = k })
+			z, i, prevDark = zt, i + 1, DARK[material] == true
 		end
 		-- the cap, set back 2 from the lip so a rock edge shows from the lake
 		table.insert(out, { CFrame = frame * CFrame.new(toOut, (capY + top) / 2, 0), Size = Vector3.new(th - 2, top - capY, len),
