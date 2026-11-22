@@ -20,9 +20,11 @@ Report static review, local regression, Studio integration, multiplayer, and dev
   - Allowed: CC0, CC-BY (credit in `outputs/vesperhold/THIRD_PARTY.md` and `assets/CREDITS.md`) and MIT-style open models or repos, plus ElevenLabs SFX.
   - Never allowed: NC, ND, paid or unclear licences, Creator Store models, or Meshy credits.
   - Verify each licence on the asset's own page before downloading.
+- **Anti-slop craft rules (creator, 22 Nov 2026).** Use antislop when making anything in the project, including models, world art, UI, in-game text, docs and code comments. Mode is "during": apply it while building, without asking. The vendored MIT copy and a guide to which skill fits which job are in `.agents/skills/antislop/` (start with `SOURCE.md`).
 - **Bellwood temple.**
   - `assets/source/landmarks/bellwood_temple_colossal/creator-stair-reference.png` is the target, recreated closely. It overrides older temple art direction.
   - The bare hero tree comes first.
+  - Current Bellwood work order: `outputs/claude-open-world-2026-11-14/handoff/CLAUDE_BELLWOOD_REPLACEMENT_HANDOFF.md`. Finish the art (tree, root grip, both guardians, side and rear foundations) before building the Roblox replacement.
   - The creator wants Vesperhold-scale landmarks and larger arenas.
 - **Hard limits.**
   - Never modify `places/AsurasPath.rbxlx` or `outputs/AsurasPath.rbxlx`.
