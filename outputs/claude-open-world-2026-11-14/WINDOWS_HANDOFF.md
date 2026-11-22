@@ -1,164 +1,190 @@
-# Windows handoff — Mac run 3b, 19 November 2026 (castle model rebuild, stopped mid-pass)
+# Windows handoff: Mac landmark loop, 22 November 2026 (Bellwood: face, tunnel, basin and temple hall)
 
-Replaces the earlier 19 Nov handoff at d1e92fa (in git history). Branch `ux/onboarding-overhaul`; use the remote HEAD
-that contains this file. Resume prompt: [handoff/WINDOWS_RESUME_PROMPT.md](handoff/WINDOWS_RESUME_PROMPT.md).
-Interruption record from the earlier 429 outage, written by Codex:
-[handoff/CLAUDE_RECOVERY_2026-11-19.md](handoff/CLAUDE_RECOVERY_2026-11-19.md).
-The shared cloud place has NOT changed: it is still **M1, version 9** (277 / 3173417 / 786797912). No uploads were made
-this run, there are no operation IDs, and `assets/VESPERHOLD_KIT_UPLOADED.json` does not exist (the registry is
-generated empty).
+**Read this first, all of it, before touching anything.** It replaces the 19–21 November handoff (Vesperhold castle run
+3b plus the Windows and Codex records). That version is in git history at `97deae7`:
+`git show 97deae7:outputs/claude-open-world-2026-11-14/WINDOWS_HANDOFF.md`. Its open Vesperhold items are carried over
+in §8. The resume prompt is [handoff/WINDOWS_RESUME_PROMPT.md](handoff/WINDOWS_RESUME_PROMPT.md).
 
-## 0. Why it stopped
-The creator said to stop everything and hand off to Windows (7% weekly usage left). The lead (Opus) and lanes
-mac-51/52/53 were stopped mid-pass at about 19:28 Sydney time. Their last script edits are committed (07ede5f) and they
-compile, but they were **not re-run** after those edits. No Blender batch job is left running, and the heavy-job lock
-was removed.
+- Branch: `ux/onboarding-overhaul`. The last Mac code commit is `d7ccb63`; use the remote HEAD that contains this file.
+- Source assets (gitignored) are on branch `landmark-assets-2026-11-21` (tip `9522423`).
 
-## 1. Getting the exact Mac state on Windows
-1. `git fetch origin` and fast-forward `ux/onboarding-overhaul`. Do not reset or clean.
-2. **Gitignored source assets** are pushed to branch `codex/vesperhold-assets-2026-11-19` (tip `c369f3b`, batch commits on
-   top of 07ede5f; all 617 files confirmed on the remote with counts matching the Mac). To restore them into the working tree without switching branches:
-   `git fetch origin codex/vesperhold-assets-2026-11-19` then
-   `git checkout origin/codex/vesperhold-assets-2026-11-19 -- assets/source/vesperhold work/mac-resume-2026-11-18/retone2`
-   then `git reset -q -- assets/source/vesperhold work/mac-resume-2026-11-18/retone2`, so the files stay on disk but out
-   of the index (the paths are gitignored).
-   Contents (617 files, about 1.5 GB, none over 90 MB):
-   - `assets/source/vesperhold/candidate-2026-11-19/` — Codex's recovery rebuild and the **newest set**. kit: 31 GLBs
-     plus maps, renders and manifest. props: Hooded_Statue_A/B and Pedestal_Statue_Staff (baked, every sub under 16k),
-     with sheet `props/renders/F1_statues_v2_baked.jpg`.
-   - `assets/source/vesperhold/{kit,props,trees}/` — the first Mac kit (the creator rejected its statues).
-   - `assets/source/vesperhold/polyhaven/` — 8 CC0 2K texture sets and 4 scans (provenance in
-     `outputs/vesperhold/THIRD_PARTY.md`).
-   - `work/mac-resume-2026-11-18/retone2/` — the 101 metal-fixed forest GLBs that need re-uploading.
-   - **Not pushed:** `assets/source/vesperhold/upload/` (3.1 GB of old >50 MB packs). Regenerate with
-     `tools/blender/overworld/make_upload_pack.py` using `VESP_NORMAL=jpeg` so every GLB is under 50 MB.
-3. **Checkpoint place (identical to the Mac):** `places/checkpoints/AsurasPath_Vesperhold_MacHandoff_2026-11-19.rbxlx`,
-   SHA-256 `a806d824eac09c0e46edc7cdca83fe500e32eefd6503cb25801948f36cbbb04a` (in the `.sha256` next to it). It was built
-   from source 07ede5f with `tools/build.py --output`. It has 313 mapped sources and 1844 asset IDs. It contains the new
-   loader and atmosphere code, but **no kit meshes yet** (empty registry → stand-ins). Check the hash on Windows. The
-   in-Studio SourceDigest was NOT recorded on the Mac: run `tools/qa/SourceDigest.luau` in the opened copy
-   (persistedToCloud=false) and record it here. Do not open it as the cloud place or save it into the cloud.
-   **Windows, 2026-11-19 22:20 Sydney (Opus 5.5 lead):** SHA-256 matches. Copy `work/windows-resume-2026-11-19/VespHandoffCopy.rbxlx`
-   opened in Studio Edit, persistedToCloud=false; SourceDigest = `scripts 286 bytes 3351900 digest 1396434633 | AsuraAssets
-   children 24`, identical to `tools/studio_mcp.py --digest` on the same file. Closed unsaved.
-   `bash tools/verify_all.sh` (build to `work/windows-resume-2026-11-19/`): **exit 1**, single failure = the
-   outside-terrain checksum in `test_vesperhold_massing.luau` (Windows sum 176934331.6347 vs Mac constant 176934331.5874,
-   libm drift over 112,666 samples). Tolerance made relative (1e-8) in 20672bb; massing then 14769/0. Full re-run pending.
-   **Windows, 20 November (Codex):** full verifier exit 0, all 14 stages. The layout-size check required syncing the
-   existing Hooded_Statue_A stand-in dimensions with the restored baseline manifest. The temporary verification build
-   `work/windows-resume-2026-11-19/CodexVesperholdVerify.rbxlx` has 313 mapped sources and 1844 distinct asset IDs.
-   Vesperhold massing 14769/0, loader 42/0, and atmosphere 26/0. The original checkpoint digest above is for the earlier
-   Studio session.
-   **Windows, 21 November (Opus 5.5 lead, §4 step 6):** superseded by
-   `places/checkpoints/AsurasPath_Vesperhold_2026-11-21.rbxlx` (source b9ad98a, full verifier 14/14), SHA-256
-   `a0b75a83688aef25fcba27296ed5c24e432207ea433cbd6d410aaa1a39964bc1`, scripts 287 / 3471464 / digest 2088899630
-   (file and in-Studio SourceDigest agree, AsuraAssets 24). Contains all 51 uploaded Vesperhold pieces. Cloud untouched.
-4. Tools: Blender 5.2.2 was used on the Mac. blender-skills (kevinbadi, pinned `b2f0f816d320b56ae86d52597a35284e0e6cc929`,
-   **no licence → never commit its files**) was installed into `~/.claude/skills` from a clone in
-   `work/third_party/blender-skills`. On Windows, clone it at that commit if a Claude agent wants it. Codex agents only
-   need the committed `tools/blender/vesperhold/*.py` (PolyHaven fetching is in `vesp_polyhaven.py`). Meshy and other
-   paid generation is **off** (creator: "No Meshy, free parts only").
+## 0. Read order and precedence
+1. `CLAUDE.md`: the repo rules. Its "git add -A" line is overridden: commit explicit paths only (see §6).
+2. This file.
+3. The top lines of `PROJECT_STATE.md`. The newest line is at the top; the `(Mac)` lines are this run.
+4. The spec, which is the contract:
+   - `outputs/claude-open-world-2026-11-14/LANDMARK-BUILD-SPEC.md`
+   - `concepts/*.webp`. Open and look at them.
+   - `NEXT-VISUAL-PASS-PROMPT.md`
+   - `outputs/vesperhold/THIRD_PARTY.md` (texture licences)
+5. The loop prompt the Mac ran: `MAC-LOOP-PROMPT.md`. Everything in it still applies, except where §1 changes it.
 
-## 2. Verified at stop (Mac)
-- Commits this run: fe603e1 (statues v2, PolyHaven, embed fix), 62954f2 (mixed checkpoint after the outage, including
-  Codex's recovery), 67e35d9 and 0d9013a (mac-54 loader, atmosphere, tests), 07ede5f (stopped lanes' script edits).
-- mac-54 suites at 0d9013a: massing 14769/0, slice 1356/0, weather 258/0, loader 42/0, atmosphere 26/0, biome 18928/0,
-  kit_registry 15, layout_sizes 2, and all `src/` compiles. `py_compile` of `tools/blender/vesperhold/*.py` passes at
-  07ede5f.
-- **Not run:** full `bash tools/verify_all.sh` at 07ede5f, any Studio or Play check of the new loader and atmosphere, and
-  any Blender run of the 07ede5f script edits.
-- Models used: oversight Opus 5.5. Lead `adc6b08` Opus. mac-51/52/53 Opus. mac-54 Sonnet (self-reported
-  claude-sonnet-5-5). Codex did the outage recovery in between (its own record).
+## 1. Creator decisions made on 22 November (these override older docs)
+- **Save builds to Roblox. The creator chose this explicitly.**
+  - Older docs say the cloud place "stays M1 v9" and must never be saved. That no longer holds.
+  - The creator wants verified builds saved to the Development place (placeId `118614906972571`, universe `10777041159`), because a cloud-saved place is what lets Studio grant all the MCP and script permissions.
+  - Use **File > Save to Roblox / Save to Roblox As**, which creates a saved version. **Never use Publish**; going live is still forbidden.
+  - Still never modify `places/AsurasPath.rbxlx` or `outputs/AsurasPath.rbxlx`.
+- **No triangle cap.** "There is no 250k cap."
+  - Visual quality comes first: sub-meshes under about 18–20k tris, no decimation, 2048 maps.
+  - The spec's 250k line is void.
+- **The eye tunnel leads down underground**, not straight through. This is done.
+- **"Why is it so smooth and lacking detail":** keep pushing surface detail (HIGH-poly bakes, weathering, moss). Clean, flat surfaces get rejected.
+- Free sources only: procedural code in the repo, Poly Haven CC0, and the creator's concept art.
+  - No Meshy or other paid generation.
+  - No Creator Store free models, and no NC, ND or paid assets.
 
-## 3. Lane state at stop (notes in `workers/`, each has its own detail)
-| Lane | Owner files | Done | Left |
-|---|---|---|---|
-| mac-50 rules | `mac-50-vesp-rebuild-rules.md` | Binding high-poly rules, heavy-job lock (guarded `mkdir "$LOCK" && {…; rm -rf "$LOCK"; }` only) | — |
-| mac-51 statues | `vesperhold_figures.py`, `vesp_bake.py` | v2 sculpts and Codex re-bake (A, B, Pedestal). Pass-2 edits applied for the oversight fixes (below) | Re-run the bake, then the fourth veiled statue (`Statue_Veiled_Scan` slot exists, no mesh). Scale A/B to about 22–23 studs total |
-| mac-52 gargoyles and trees | `vesperhold_gargoyles.py` (new), `vesperhold_trees.py` | New gargoyle generator. Tree edits | Finish the gargoyle bake and tree runs, then render them. A/B must differ clearly |
-| mac-53 architecture | `vesperhold_kit.py`, `vesp_common.py`, `vesperhold_props.py` | Density edits (crockets, wimpergs, viaduct orders kept inside the 15-stud half-width, stained-glass rework) | Re-run the kit, then merge manifests and render spire stack, west front and viaduct |
-| mac-54 Luau | `src/server/Services/VesperholdKit.luau`, `VesperholdAtmosphere.luau`, `GothicCitadel/March`, `VesperholdLayout`, `EnvironmentProfiles`, `kit_registry.py`, tests | Loader, collision by sub role, Neon glass/flames, swap-in at stand-in CFrames, atmosphere (storm, eclipse, fog, lightning via the owned `VesperholdFlash` ColorCorrection, crows, candles, mist, 0.17-stud snow), red trail-stake dropped on the ridge, plinth dedupe | Studio/Play check. After statues regenerate, run `vesperhold_layout_sizes.py --write` and then the massing and layout-size tests |
+## 2. Where Bellwood stands (spec §1), all in game and verified in Play on the Mac
+| Part | State | Where |
+|---|---|---|
+| Fallen Giant's Face + crown | Uploaded and placed. The face was re-uploaded on 22 Nov with the bore end opened. | `tools/blender/landmarks/bellwood_giant_face.py`, `bellwood_giant_crown.py`. Model IDs: face `131930696366547`, crown `70377213417316` |
+| Eye tunnel | Level into the socket, then a bending 35-stud descent over 150 studs. The terrain passage runs on into the basin. It has 2 warm lantern niches, drip and moss-mote emitters, and invisible `AsuraShelter` roofs so rain never falls inside. | `src/server/Services/LandmarkWorld.luau` (`carves`, `packs`, `tunnelFx`, `shelters`, `lantern`) |
+| Hidden basin | A 350 × 300 bowl behind the face. Rim: 128 segments of stepped rock/slate/basalt strata with a LeafyGrass cap and grass wedge slopes outside. Lake: 2.5 deep at the shore, 8 deeper from 36 studs in (cut to air first, because water does not replace solid voxels). Road sightline test from 8 road points. | `LandmarkWorld.basin`, `.lake`; numbers in `src/shared/LandmarkLayout.luau` `Basin` |
+| Sunken Temple **main hall** | Two-storey hall, 90 × 59 × 59 studs, uploaded (2 parts Approved). It stands in the deep lake, facing the passage exit, on the right of the exit view, with the stair wading in and the deck 0.1 over the water. Collision: Stone precise, Lacquer default, roofs none. 60 fps in Play. | `tools/blender/landmarks/bellwood_temple_hall.py`; `LandmarkLayout.Basin.Temple`, `templeSpot`; `LandmarkWorld.templeFrame`. Model `113452079836448` (part 2 `71016664280110`) |
 
-**Oversight fixes still open for the statues** (from my review of `F1_statues_v2_baked.jpg` against `ref_01`):
-- A's sleeves are stiff tubes. Make them droop and taper, with folds.
-- C/Pedestal has a blank oval chest. Add drapery, a cloak opening and a tabard or mail edge, plus elbow folds.
-- Every hood has a visible seam at the crown. Hide it or make it a fold.
-- They look like clean clay. Add soot streaks, frost on shoulders and ledges, chipped plinths, a matte finish, and
-  albedo of about 0.08–0.2.
-- Silhouettes must read slender at 20+ studs on the balustrade.
+**Acceptance captures:** `outputs/claude-open-world-2026-11-14/captures/mac/bellwood_face/`. Newest:
+- `ingame_temple_hall_from_exit.jpg`
+- `ingame_basin_aerial_deep_lake.jpg`
+- `ingame_tunnel_sheltered_rain.jpg`
 
-Keep the deep hood, the capelet, the rope belt, the staff crescent and the quatrefoil pedestal.
+The older ones show the defects that were fixed.
 
-## 4. TODO on Windows, in order
-1. Restore the assets (§1.2) and check the checkpoint SHA (§1.3). Run `bash tools/verify_all.sh` and record the result.
-2. **Finish the art lanes (one Blender job at a time):** re-run the figures bake, the gargoyles, the trees and the kit
-   from the 07ede5f scripts. Output goes to `assets/source/vesperhold/candidate-2026-11-19/` (or a new dated candidate
-   folder).
-3. **Gate (a) contact sheet:** `tools/blender/vesperhold/vesp_contact_sheet.py` covering statues, gargoyles, trees,
-   spire stack and west front. Show triangle counts per sub (each under 18–20k, **never decimate**), map resolution
-   (2048+) and a no-decimation statement. Judge it against `outputs/vesperhold/reference/ref_01..05.webp` and
-   `workers/mac-40-vesperhold-verdict.md`. The creator must see it: their bar is "look really good and match the
-   inspiration images … colossal in size and haunting".
-4. Upload packs (`make_upload_pack.py`, `VESP_NORMAL=jpeg`, each under 50 MB). Then **one cloud-window upload session**:
-   uploads only work from the cloud place window, and its DataModel must never be edited or saved. Upload a pilot piece
-   first, then the castle kit, props and trees plus the 101 retone2 forest GLBs. Record every operation ID, read each
-   back, write `assets/VESPERHOLD_KIT_UPLOADED.json`, and run `python3 tools/assets/kit_registry.py vesperhold`.
-5. Play captures of the 7 views in mac-40 (01 Snow Refuge, 02 pilgrim road, 03 viaduct looking up, 04 gate looking up,
-   05 gorge flank, 06 inside the close, 07 silhouette from ≥1500 studs). Also record frame time ×3, MeshParts and tris,
-   and console failures. Check the pivot and cladding depth, the flyer yaw sign, Neon glass against SurfaceAppearance,
-   and that the red post is gone in view 01. Then the creator reviews.
-6. Rebuild the checkpoint with meshes, update §1.3, and commit.
-7. Then the forest re-capture (mac-20 gate, Terrain.Decoration grass decision), M2 guarded cloud integration, the
-   multiplayer reruns and the rest of the acceptance list in `MAC_HANDOFF.md`.
+**Cloud Development place:** saved twice on 22 Nov. The last save was the `d7ccb63` build (temple hall included), via Save to
+Roblox As > Asura's Path — Development > Overwrite. It was saved, not published.
 
-## 5. Working with T3 (Claude and Codex agents together)
-- Use one overall lead for oversight and acceptance (Claude Opus 5.5, high effort; no ultracode). It assigns lanes.
-  Claude or Codex agents can implement, and each lane owns disjoint files (§3 table). Two agents never edit the same
-  file. Before editing, re-check mtimes and `git status`. If a file changed under you, stop and report.
-- There is ONE heavy job machine-wide (Blender batch, Studio, full verify, upload window). Use the guarded lock
-  `work/vesperhold-claude/heavy.lock` per mac-50.
-- Every lane writes a note in `workers/` (state, files, tests run, model used). Commit explicit paths after each
-  verified step and push. Never `git add -A`.
-- Record the requested model and the observed model for every agent in `DELEGATION_STATUS.md`.
+## 3. Get the exact Mac state on Windows
+1. Check local changes first. Then `git fetch origin` and fast-forward `ux/onboarding-overhaul`. Never reset, clean, stash or force-push.
+2. **Restore the gitignored landmark sources** (GLBs, 2048 maps, renders and manifests) without switching branches:
+   ```
+   git fetch origin landmark-assets-2026-11-21
+   git checkout origin/landmark-assets-2026-11-21 -- assets/source/landmarks
+   git reset -q -- assets/source/landmarks
+   ```
+   The files stay on disk but out of the index. `tools/assets/kit_registry.py landmark` needs
+   `assets/source/landmarks/{bellwood_face,bellwood_temple}/manifest.json` present, or it refuses to write.
+3. Run the full check: `ASURA_BUILD_OUTPUT=work/verify.rbxlx bash tools/verify_all.sh`. It must end in `SUCCESS` (it did on the Mac at `d7ccb63`).
+   - The two landmark test files are:
+     - `tools/test_landmark_layout.luau` (32 checks)
+     - `tools/test_vesperhold_loader.luau` (174 checks)
+   - Run them with `python3 tools/lune_compat.py tools/<name>.luau`.
+   - If a stray `tools/_lune_*.generated N.luau` appears (a sync duplicate), move it out of the repo; never commit it.
+4. Toolchain: `tools/toolchain.env` (Rojo 7.7.1, Luau 0.742, Lune). Blender 5.2.2 LTS built every landmark.
 
-## 6. Rules that still apply
-- Open-source: CC0 (Poly Haven, ambientCG) and GPL/MIT generator tools are OK. Pin and record them in `THIRD_PARTY.md`.
-  No NC/ND licences, ripped assets or Creator Store free models. No paid generation.
-- The banner sigil must be our own design (the references show a franchise-like tree; do not copy it).
-- Never modify `places/AsurasPath.rbxlx` or `outputs/AsurasPath.rbxlx`. Build only with `--output`. Never restore old
-  baselines into the cloud.
-- Preserve the lobby, lobby lighting, combat, progression, persistent IDs and the single Shen barrier.
-- No publishing, settings, permission or account changes, and no purchases.
-- Leave untracked creator/Codex files alone: `outputs/vesperhold/AsurasPath-Vesperhold.rbxlx`, `walkthrough.mp4`.
-- Multi-client tests run on Windows only.
+## 4. What to do next, in order (one kit or one placement step per iteration, verified and pushed)
+1. **Sunken Temple, remaining spec pieces** (spec §1, "Sunken Temple"). Build each like `bellwood_temple_hall.py`: a Blender script under `tools/blender/landmarks/`, clay first, then a bake.
+   - **The tree:** a giant crimson maple out of the roof ridge, roots strangling the roof tiers, crimson leaf particles (OverworldAmbience Leaves kind).
+   - **Twin gate towers** (paifang-pagoda) with a moss stair between them on the **left third of the exit view**. The hall already holds the right third; the reveal shot must match `concepts/bellwood_3_sunken_temple_reveal.webp`.
+   - **Hall dressing:** red banners with a gold wheel sigil (our own design, never a copied sigil), a bronze gong inside, hanging vines and moss.
+   - **Midground:** a toppled stone colonnade in the water.
+   - **Right foreground:** a headless guardian lion on a plinth with red ivy.
+   - **On the water:** a boat wreck, lily pads and pink lotus cards.
+   - **Water and air settings:** terrain WaterColor about (40, 58, 52), WaterTransparency 0.3, WaterReflectance 0.6, WaveSize 0.05; low mist over the water; SunRays. Change these only inside the basin, or zone them so the lobby lighting is untouched.
+   - **Placement:** each piece gets an entry like `Basin.Temple`, with a test first.
+2. **Fix the visible defects listed in §7.**
+3. Then, in spec order:
+   - Amberfall (§2)
+   - Saltreach (§3)
+   - Frostmere (§4)
+   - Ashen Stair (§5)
+   - the Vesperhold extension (§6, attached to the existing castle through `VesperholdLayout` / `VesperholdKitRegistry` / `VesperholdKit`; see §8 first)
+   - lore glue (§7; waystone shrines make a good quick win between heavy jobs)
+4. Between heavy jobs: region C/D/E lighting, ground and grading (NEXT-VISUAL-PASS-PROMPT priorities).
+5. Speed up collision cooking: precise decomposition on big meshes makes the landmark appear about 5.5 minutes into Play.
 
-## 7. Windows run 4 upload record (lead, Opus 5.5, 2026-11-20)
-- Route: Studio MCP `open_cloud_invoke` from the cloud place window (place 118614906972571, never edited or saved, closed
-  unsaved afterwards). Ledgers with every operation ID, asset ID, sha256 and moderation state:
-  `uploads/vesperhold_upload_ledger.json`, `uploads/forest_retone2_upload_ledger.json` (`tools/assets/upload_batch.py`).
-- Vesperhold approved set (win-65 verdict): 38 pieces, 67 Model assets, all Approved. 29 pieces exceed the 20,000,000-byte
-  Open Cloud file limit, so `tools/assets/glb_split.py` split each into two parts (whole sub-meshes, images copied byte for
-  byte, no re-encode); the loader rebuilds them from per-sub `Asset` + `center`. Pilots: Gargoyle_A (94687077564229) and
-  Spire_Needle_Tip__p2 (98339191104108), both read back with 2048 maps, black Metal on stone and the expected positions.
-- Forest retone2: 101/101 Approved; the SLICE / HERO / BELLWOOD / BELLWOOD_FAR registries now point at them (old IDs kept
-  as `replaces`). Far atlases now carry Normal + MR maps by design (mac-26/mac-30), so `kit_registry` accepts them.
-- Registries written from a read-only LoadAsset readback (`tools/assets/registry_readback.py`). Vesperhold validates
-  with `--vesp-manifests assets/source/vesperhold/candidate-win-2026-11-19` and the 31 held pieces as `--allow-missing`.
-- Not uploaded (held): all statues, Dead_Pine_Snapped_A/B, Dead_Stump_A/B, Viaduct_Bay, Viaduct_Balustrade_30,
-  Waterfall_Sheet_A/B. Next: §4 step 5 (seven Play views on a local copy), then the checkpoint rebuild with meshes.
+## 5. Procedures (exact, as run on the Mac)
+**Tests first.** Add the failing check, then change the code, then run both landmark tests and `verify_all.sh`.
 
-## 8. Windows continuation after the quota stop (Codex, 2026-11-20)
+**Disposable Studio build:**
+- Run `python3 tools/build.py --output work/latest.rbxlx`, or copy the `work/verify.rbxlx` that `verify_all.sh` wrote.
+- Open the file locally in Studio. Check with `list_roblox_studios` that `persistedToCloud` is false before Play.
 
-- Held pass 4 (`74d9c6e`) is ready for creator review. The 13 pieces are packaged in 19 verified local parts under
-  `work/vesperhold-claude/win68/split`. All 86 submeshes are below 18,000 triangles, with 2K maps. See the
-  [statue sheet](../vesperhold/kit-renders-win/F1_statues_v4_win.jpg) and
-  [held assembly sheet](../vesperhold/kit-renders-win/gate_a_held_pass4.jpg).
-- Step 5 is recorded in the [recovery note](workers/win-68-vesperhold-recovery.md). Runtime fixes at `e11d405`
-  address the protected collision write, the missing atmosphere mapping, crimson glass and two nonpositive belfry
-  slots. The full verifier passed. The [seven views](../vesperhold/kit-renders-win/gate_b_studio_approved_set.jpg)
-  and [measurements](../vesperhold/kit-renders-win/gate_b_studio_metrics.json) are from a disposable Studio copy.
-- Source build available at `work/vesperhold-claude/win68/AsurasPath_Vesperhold_Approved_Final.rbxlx`,
-  digest **287 / 3437403 / 2079555092**, SHA-256
-  `fbb1988bca3cf401ac706ff212181c358437aba3382adc9cb28d4ac4099a3031`.
-  The creator review precedes the held upload and §4 step 6 checkpoint promotion. The master places and the
-  checkpoint in §1.3 retain their original hashes. The last verified cloud checkpoint remains M1 v9.
+**Play check and capture:**
+- Start Play and wait about 330 s. The landmark needs collision cooking, so `Landmark_Bellwood` appears only after about 5.5 minutes; run the wait in the background.
+- On the server (`execute_luau`, datamodel Server):
+  - Set the noon light with `workspace:SetAttribute("AsuraWorldEpoch", workspace:GetServerTimeNow() - 1650)`.
+  - Anchor the HumanoidRootPart near the subject but out of frame.
+  - Read the world points from `LandmarkWorld` / `LandmarkLayout`, e.g. `kitToWorld(bw, bw.Tunnel.Passage[#...])` for the exit and `templeSpot`, and store them as workspace attributes.
+- On the client:
+  - Disable the ScreenGuis.
+  - Bind the camera with `RunService:BindToRenderStep("__cap", Enum.RenderPriority.Last.Value + 10, ...)` (Scriptable, `CFrame.lookAt`).
+- Wait about 6 s for the SurfaceAppearance maps to stream in. The first frame shows untextured white roofs; that isn't a defect.
+- Screenshot the viewport and save it as a jpg under `captures/mac/<landmark>/`, or `captures/win/...` on Windows.
+- Measure fps by counting RenderStepped over 4 s (the hall scene: 60).
+
+**Heavy jobs (Blender bakes):**
+- Only ONE machine-wide. Create `work/vesperhold-claude/heavy.lock` before starting and delete it after.
+- On the 8 GB Mac, Studio was closed for every bake.
+- Command: `Blender -b --python-exit-code 1 -P tools/blender/landmarks/<script>.py -- [out_dir]`
+  - Set `HALL_MODE=clay` first and review the clay sheet; then set `HALL_MODE=bake`.
+  - Other scripts have their own `*_MODE` env; read each script's header.
+- Outputs go to `assets/source/landmarks/<pack>/`: GLB, `maps/`, `renders/` with a `*_sheet.jpg`, and `manifest.json` (foot frame, bbox, collision per role).
+- Look at the sheet and the close render before moving on.
+
+**Upload pipeline:**
+1. Push the sources to the asset branch. Use a temp index: `GIT_INDEX_FILE=<tmp> git read-tree origin/landmark-assets-2026-11-21`, then `git hash-object -w` and `git update-index --add --cacheinfo` for each file (each under 100 MB), then `git write-tree`, then `git commit-tree -p origin/landmark-assets-2026-11-21`, then `git push origin "<commit>:refs/heads/landmark-assets-2026-11-21"`. In zsh, write `${C}`, not `$C:` (`:r` is a modifier).
+2. **Embed and split:**
+   - `VESP_EMBED=jpeg python3 -c "import sys; sys.path.insert(0,'tools/blender/vesperhold'); import vesp_embed; vesp_embed.embed(<glb>, work/landmark_upload_<run>/embed/<name>.glb, <pack>/maps)"`
+   - then `python3 tools/assets/glb_split.py <embedded.glb> work/landmark_upload_<run>/split`.
+   - Every part must be ≤ 20,000,000 bytes.
+3. **Cloud window, for upload only:**
+   - Launch Studio with `-task EditPlace -placeId 118614906972571 -universeId 10777041159`.
+   - Read its studio id from `list_roblox_studios`.
+   - Pilot first: copy part 2 to `pilot/`, then run `ASURA_CLOUD_STUDIO=<id> python3 tools/assets/upload_batch.py outputs/claude-open-world-2026-11-14/workers/<run>-landmark-ledger.json landmark=<pilot dir>`.
+   - Check the ledger entry is `Approved`, then upload `rest/`.
+   - Close the window with File > Close Place. Never save the upload window itself.
+4. **Readback REWRITES the whole `assets/LANDMARK_KIT_UPLOADED.json` from one ledger:**
+   - Merge the previous ledger's entries into the new ledger first (mac-90's ledger holds face, crown and hall).
+   - Point it at a parent dir holding every piece's `*.split.json` one level down, e.g. `all/prev/` + `all/temple/` (it globs `*/*.split.json`).
+   - Command: `ASURA_CLOUD_STUDIO=<id> python3 tools/assets/registry_readback.py landmark <ledger> <parent dir> --cache <rb.json>`.
+5. `python3 tools/assets/kit_registry.py landmark` regenerates `src/shared/LandmarkKitRegistry.luau`. A new pack must be added to `KITS["landmark"]` in `tools/assets/kit_registry.py`, and the fixture in `tools/test_kit_registry.py` given that pack's manifest.
+6. **Placement:**
+   - Add a layout entry with the manifest foot frame. Blender (x, y, z) → model (-x, z, y); the model front is +Z.
+   - Fidelity roles go in `LandmarkWorld.Fidelity`: a role it doesn't list never collides.
+
+**Saving to Roblox** (after a verified Play check, from the local build in Edit mode):
+1. File > Save to Roblox As > "Asura's Path — Development" > select the existing place > Overwrite.
+2. Studio says "Applying script changes. Studio will close automatically"; click OK. Then "Successfully saved!", then Close.
+3. Studio may then auto-open the cloud place ("Setting up server…"). Cancel that if you need Studio closed.
+4. Never press Publish.
+
+## 6. Repo hygiene rules from the loop
+- **Commits:**
+  - Commit explicit paths only, never `git add -A`.
+  - Never commit `outputs/mugen-combat-review-2026-11-09/`, `assets/source/`, `.blend` files, `.mcp.json` / `.claude.json`, or the blender-skills files (no licence).
+  - End each commit message with the co-author line the repo uses.
+- After every verified step:
+  - Append ≤ 60 words tagged `(Mac)` or `(Windows)` at the top of `PROJECT_STATE.md`.
+  - Push, then check that `git status` is clean.
+- Pre-existing untracked files that are **not ours**, so leave them alone:
+  - `.scratch/probe_r24.luau`
+  - `ShenHandoff-2026-11-09/`
+  - `outputs/vesperhold/AsurasPath-Vesperhold.rbxlx`
+  - `outputs/vesperhold/walkthrough.mp4(.json)`
+- **Never break:**
+  - the lobby, `Workspace.Sanctuary`, `ServerStorage.AsuraLobbyKit` or the lobby lighting
+  - combat or progression
+  - persistent IDs
+  - the single Shen barrier
+- Never clear all of Workspace or Terrain. Always use the task library and modern Luau.
+- No two-client or multi-server tests on the MacBook. Windows can run them.
+
+## 7. Known defects (fix before calling Bellwood done)
+- **Rim strata band too evenly:** from above, the rock/slate/basalt tiers read as regular black stripes. Vary them per segment (tier height, which material, set-back) and add ledge vegetation or a waterfall. See `ingame_basin_aerial_deep_lake.jpg`.
+- **Dark vertical streak on the left rim cliff** in the exit view (`ingame_temple_hall_from_exit.jpg`). Probably a strata box edge or a slope wedge seam. Not yet investigated.
+- **The reveal isn't the concept shot yet:** the left third (gate towers), the tree, the mist and the water colour are still missing (§4.1).
+- **The hall is 90 wide;** the spec says the temple complex is about 120. The towers and colonnade should make up the width.
+- **The landmark appears about 5.5 minutes into Play** because of collision cooking (§4.5).
+
+## 8. Vesperhold castle lane, carried over from the 21 Nov handoff (`97deae7` §7–8; read it there for detail)
+- **In game:** the approved set is uploaded and registered. That's 38 pieces, all Approved, with the forest retone2 101/101.
+  - Ledgers: `uploads/vesperhold_upload_ledger.json` and `uploads/forest_retone2_upload_ledger.json`.
+  - Checkpoint: `places/checkpoints/AsurasPath_Vesperhold_2026-11-21.rbxlx`.
+- **Held, waiting for the creator's review:** pass 4 (`74d9c6e`), 13 pieces in 19 local parts under `work/vesperhold-claude/win68/split` (on the Windows PC).
+  - The pieces: statues, Dead_Pine_Snapped_A/B, Dead_Stump_A/B, Viaduct_Bay, Viaduct_Balustrade_30, Waterfall_Sheet_A/B.
+  - Sheets: `outputs/vesperhold/kit-renders-win/F1_statues_v4_win.jpg`, `gate_a_held_pass4.jpg`.
+  - After the creator approves: upload with a pilot, read back, then promote the checkpoint (old §4 step 6).
+- The Vesperhold extension (spec §6) attaches to this castle. Don't start it before the held set is settled.
+
+## 9. Housekeeping done 22 November
+- Moved 15 unreferenced scratch places (78 MB) from `work/` to the Mac Trash (`~/.Trash/asuras-path-places-2026-11-22`). They were old QA, handoff, diag and canopy copies, plus a byte-identical duplicate of `places/checkpoints/AsurasPath_Vesperhold_MacHandoff_2026-11-19.rbxlx`.
+- Kept every place a doc or tool references, all tracked checkpoints, and the other Roblox experiences.

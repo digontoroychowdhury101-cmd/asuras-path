@@ -28,6 +28,7 @@ The creator is entirely vibe-coding this Roblox game and does not write code man
 - **When Starting Any Session**:
   1. Run `git pull --rebase origin ux/onboarding-overhaul`.
   2. Inspect the top of `PROJECT_STATE.md` to see what the other computer finished.
+  3. Read the current handoff in full before working: `outputs/claude-open-world-2026-11-14/WINDOWS_HANDOFF.md` (state, creator decisions, exact procedures, ordered next steps; resume prompt in `handoff/WINDOWS_RESUME_PROMPT.md`).
 - Handoff scripts: `./tools/handoff.sh` (Mac) or `tools\handoff.cmd` (Windows) automate this entire flow.
 
 ## Modern Luau Standards
