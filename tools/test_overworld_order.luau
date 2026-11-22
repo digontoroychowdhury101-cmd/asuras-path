@@ -374,6 +374,8 @@ for _, t in plan do if t.Key == here then t.Floor = 40; Terrain.Manifest[t.Key] 
 check("verdict: written tile, standing on it", Terrain.Verdict(mid.X, 120, mid.Z) == nil)
 check("verdict: written tile, below its floor", Terrain.Verdict(mid.X, 40 - 25, mid.Z) == "Fell")
 check("verdict: written tile, just under the shell is tolerated", Terrain.Verdict(mid.X, 40 - 20, mid.Z) == nil)
+check("verdict: standing on a ready carved floor under the tile", Terrain.Verdict(mid.X, 5, mid.Z, 0) == nil)
+check("verdict: falling below a carved floor still triggers rescue", Terrain.Verdict(mid.X, -25, mid.Z, 0) == "Fell")
 local ready = {}
 check("rescue: nothing ready, nowhere to go", Terrain.RescueAltar(mid.X, mid.Z, function(id) return ready[id] == true end) == nil)
 ready.Altar_MonasteryGate, ready.Altar_BasinCistern, ready.Altar_ColosseumAntechamber = true, true, true

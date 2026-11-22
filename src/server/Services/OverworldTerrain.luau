@@ -576,7 +576,7 @@ end
 
 -- Where the written ground fails a body: "Unwritten" over a tile not yet written, "Fell" below a written tile's
 -- floor, nil when it stands on written ground or outside the Frame (nothing outside is judged).
-function OverworldTerrain.Verdict(x: number, y: number, z: number): string?
+function OverworldTerrain.Verdict(x: number, y: number, z: number, carvedFloor: number?): string?
 	local key = tileKeyAt(x, z)
 	if not key then
 		return nil
@@ -585,7 +585,7 @@ function OverworldTerrain.Verdict(x: number, y: number, z: number): string?
 	if not tile then
 		return "Unwritten"
 	end
-	if tile.Floor and y < tile.Floor - FALL_MARGIN then
+	if tile.Floor and y < math.min(tile.Floor, carvedFloor or tile.Floor) - FALL_MARGIN then
 		return "Fell"
 	end
 	return nil

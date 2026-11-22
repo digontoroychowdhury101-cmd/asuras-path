@@ -532,6 +532,14 @@ do
 	local G = bw.Basin.Gate
 	local gate = placedAt.Bellwood_GateTowers
 	local gspot = LL.gateSpot(bw)
+	local gateFoot = Vector3.new(gspot.X, gspot.Y + 3, gspot.Z)
+	check("built basin supplies its carved floor to the fall guard",
+		W2.lowerFloorAt({ Forest = forest }, gateFoot) == floorY - bw.Basin.Deep)
+	local bore = W2.kitToWorld(bw, bw.Tunnel.Path[5])
+	check("the underground bore supplies its local floor to the fall guard",
+		math.abs((W2.lowerFloorAt({ Forest = forest }, bore) or math.huge) - (bore.Y - 8.5)) < 0.01)
+	check("landmark fall guard excludes an unbuilt basin and points outside the cavity",
+		W2.lowerFloorAt({}, gateFoot) == nil and W2.lowerFloorAt({ Forest = forest }, gateFoot + Vector3.new(500, 0, 0)) == nil)
 	local gateOk = gate ~= nil and lm:FindFirstChild("Bellwood_GateTowers") ~= nil
 	local gframe = W2.gateFrame(bw)
 	if gate then
@@ -547,8 +555,8 @@ do
 			and math.abs(origin.UpVector.Y - 1) < 1e-6 and view:Dot(right) < 0 and ang >= 6 and ang <= 35
 	end
 	check("gate towers stand at their spot facing the basin centre, left of centre in the exit view", gateOk)
-	check("gate collision: stone stair precise, roots hull, roofs and ribbons never collide",
-		W2.Fidelity.Stone == Enum.CollisionFidelity.PreciseConvexDecomposition and W2.Fidelity.Root == Enum.CollisionFidelity.Hull
+	check("gate collision: stone stair precise, shared root mesh cannot bridge the stair",
+		W2.Fidelity.Stone == Enum.CollisionFidelity.PreciseConvexDecomposition and W2.Fidelity.Root == nil
 		and W2.Fidelity.Tiles == nil and W2.Fidelity.Soffit == nil and W2.Fidelity.Ribbon == nil and W2.Fidelity.Roots == nil)
 	-- The landing (Landing over the pivot) meets a terrain ledge that runs back to the rim; a footing fills the deep dish under the
 	-- steps and towers up to the lake bed so nothing hangs over the dish.

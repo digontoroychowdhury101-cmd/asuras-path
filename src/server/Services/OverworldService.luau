@@ -17,6 +17,7 @@ local World = require(Shared.Shared.WorldDefinitions) :: any
 local InputMap = require(Shared.Shared.InputMap) :: any
 local Characters = require(script.Parent:WaitForChild("CharacterService") :: ModuleScript) :: any
 local Terrain = require(script.Parent:WaitForChild("OverworldTerrain") :: ModuleScript) :: any
+local Landmarks = require(script.Parent:WaitForChild("LandmarkWorld") :: ModuleScript)
 
 local OverworldService = {}
 
@@ -519,6 +520,10 @@ local function guard()
 		if e and e.Fighter.State ~= "KO" and not e.Respawning and not Characters.IsInDuel(userId) then
 			local p = e.Root.Position
 			local why = Terrain.Verdict(p.X, p.Y, p.Z)
+			if why == "Fell" then
+				local floor = Landmarks.lowerFloorAt(folders, p)
+				if floor then why = Terrain.Verdict(p.X, p.Y, p.Z, floor) end
+			end
 			if why then
 				local id = Terrain.RescueAltar(p.X, p.Z, OverworldService.Ready)
 				if id then
@@ -691,7 +696,7 @@ function OverworldService.Start()
 	local gateFrame = CFrame.new(gate.X, gate.Y, gate.Z) * CFrame.Angles(0, math.rad(gate.Yaw), 0)
 	require(script.Parent.GothicMarch).build(folders.Snowfields, gateFrame)
 	require(script.Parent.GothicCitadel).build(folders.Snowfields, gateFrame)
-	require(script.Parent.LandmarkWorld).build(folders, function(area: string): boolean
+	Landmarks.build(folders, function(area: string): boolean
 		return OverworldService.WaitReady(900, area)
 	end)
 	each(B.Bridges, function(def, parent)

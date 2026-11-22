@@ -1,4 +1,24 @@
 {
+ "landmark/Bellwood_GateTowers__p1": {
+  "assetId": "124794635973767",
+  "bytes": 19159544,
+  "displayName": "landmark_Bellwood_GateTowers__p1",
+  "error": null,
+  "file": "work/landmark_upload_sol_gate/rest/Bellwood_GateTowers__p1.glb",
+  "moderation": "Approved",
+  "operationId": "f024896e-4348-40af-ae12-adec79d948b5",
+  "sha256": "41bc6dd00df91429fe7af740e43aeaa685bd698cf75fcb54d5835f31c6328380"
+ },
+ "landmark/Bellwood_GateTowers__p2": {
+  "assetId": "128073970387733",
+  "bytes": 7306244,
+  "displayName": "landmark_Bellwood_GateTowers__p2",
+  "error": null,
+  "file": "work/landmark_upload_sol_gate/pilot/Bellwood_GateTowers__p2.glb",
+  "moderation": "Approved",
+  "operationId": "4552cad6-c975-4825-b684-80bcb485b902",
+  "sha256": "effbc08b6557cf9ff6d35fe51e28781493a730657d1afcf63b40391170d7938f"
+ },
  "landmark/Bellwood_GiantCrown__p1": {
   "assetId": "70377213417316",
   "bytes": 19371368,

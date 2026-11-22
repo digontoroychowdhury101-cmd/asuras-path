@@ -215,14 +215,22 @@ class KitRegistry(unittest.TestCase):
         t = self.root / "assets/source/landmarks/bellwood_temple"  # every landmark pack needs its manifest
         t.mkdir(parents=True)
         (t / "manifest.json").write_text(json.dumps({"pieces": {}}))
+        gate = "Bellwood_GateTowers"
+        gate_sub = gate + "__Stone"
+        g = self.root / "assets/source/landmarks/bellwood_gate"
+        g.mkdir(parents=True)
+        (g / "manifest.json").write_text(json.dumps({"pieces": {gate: {"sub_meshes": {gate_sub: 10}}}}))
         (self.root / "src/shared").mkdir(parents=True)
         # Split across two model assets: the second part's sub names its own Asset, and both carry centers.
         reg = {"modelAssets": {"Bellwood_GiantFace": {"assetId": rid()}}, "pieces": {"Bellwood_GiantFace": {
             subs[0]: {"MeshId": rid(), "center": [0, 1, 2]}, subs[1]: {"MeshId": rid(), "Asset": rid(), "center": [3, 0, -1]}}}}
+        reg["modelAssets"][gate] = {"assetId": rid()}
+        reg["pieces"][gate] = {gate_sub: {"MeshId": rid()}}
         (self.root / "assets/LANDMARK_KIT_UPLOADED.json").write_text(json.dumps(reg))
         self.assertEqual(K.main(["landmark", "--root", str(self.root)]), 0)
         text = (self.root / "src/shared/LandmarkKitRegistry.luau").read_text()
         self.assertIn('["Bellwood_GiantFace__Floor"]', text)
+        self.assertIn(f'["{gate_sub}"]', text)
         del reg["pieces"]["Bellwood_GiantFace"][subs[1]]["center"]
         (self.root / "assets/LANDMARK_KIT_UPLOADED.json").write_text(json.dumps(reg))
         self.assertTrue(any("needs a center" in e for e in K.validate("landmark", self.root)[0]))

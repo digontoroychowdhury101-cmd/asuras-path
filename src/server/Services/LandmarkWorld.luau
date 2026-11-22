@@ -10,13 +10,14 @@ World.Layout = nil :: any
 World.CarveStep = 3
 
 local PRECISE, HULL = Enum.CollisionFidelity.PreciseConvexDecomposition, Enum.CollisionFidelity.Hull
+local BORE_DEPTH = 8.5 -- below the centre line
 -- Walkable shells and the tunnel floor are precise (a hull per shell slice would fill the bore); crown solids are hulls; roots,
 -- gilt trim and rubble never collide (the rubble strip spans the bore, so its hull walled the tunnel, mac-86f).
 -- Temple hall (mac-90): the stone platform and stair are walked on; the lacquer frame keeps its own shape (a hull would fill the hall);
--- the roofs (Tiles, Soffit) never collide. Gate towers (mac-91): the stone stair is walked on, the tower roots (Root; the crown's are
--- Roots) are hulls, ribbons never collide.
+-- the roofs (Tiles, Soffit) never collide. The gate uses stone collision for the stair. Its root mesh spans both towers,
+-- so a convex hull across those roots would block the flight.
 World.Fidelity = { Shell = PRECISE, Floor = PRECISE, Band = HULL, Bronze = HULL, Eave = HULL,
-	Stone = PRECISE, Lacquer = Enum.CollisionFidelity.Default, Root = HULL }
+	Stone = PRECISE, Lacquer = Enum.CollisionFidelity.Default }
 
 local function deps()
 	World.Kit = World.Kit or require(script.Parent:WaitForChild("VesperholdKit") :: ModuleScript)
@@ -50,7 +51,7 @@ function World.carves(lm: any): { { CFrame: CFrame, Size: Vector3 } }
 	local t = lm.Tunnel
 	local out = {}
 	if not (t and t.Path) then return out end
-	local below, above = 8.5, t.Radius + 0.5
+	local below, above = BORE_DEPTH, t.Radius + 0.5
 	local path = route(t)
 	for i = 2, #path do
 		local a, b = World.kitToWorld(lm, path[i - 1]), World.kitToWorld(lm, path[i])
@@ -63,6 +64,45 @@ function World.carves(lm: any): { { CFrame: CFrame, Size: Vector3 } }
 		end
 	end
 	return out
+end
+
+local function boreFloorAt(lm: any, position: Vector3): number?
+	local frame = World.frame(lm)
+	local point = frame:PointToObjectSpace(position)
+	local path = route(lm.Tunnel)
+	local distanceLimit = ((lm.Tunnel.Width + 1.5) / 2) ^ 2
+	local floor: number? = nil
+	for i = 2, #path do
+		local a, b = path[i - 1], path[i]
+		local x, z = -point.X - a[1], point.Z - a[2]
+		local dx, dz = b[1] - a[1], b[2] - a[2]
+		local t = math.clamp((x * dx + z * dz) / (dx * dx + dz * dz), 0, 1)
+		local distance = (x - dx * t) ^ 2 + (z - dz * t) ^ 2
+		if distance <= distanceLimit then
+			distanceLimit = distance
+			floor = frame.Y + a[3] + (b[3] - a[3]) * t - BORE_DEPTH
+		end
+	end
+	return floor
+end
+
+-- The terrain manifest records the original tile floor. Once a landmark carves below it,
+-- allow the authored cavity while still rescuing characters that fall below its floor.
+function World.lowerFloorAt(folders: { [string]: Instance }, position: Vector3): number?
+	local layout = World.Layout
+	if not layout then return nil end
+	for id, lm in layout.Landmarks do
+		local folder = folders[lm.Region]
+		local landmark = folder and folder:FindFirstChild("Landmark_" .. id)
+		if not (landmark and landmark:GetAttribute("BoreCarved")) then continue end
+		if lm.Basin and landmark:GetAttribute("BasinSculpted") and layout.basinEllipse(lm, position.X, position.Z) <= 1 then
+			local bed = layout.basinLevels(lm)
+			return bed - lm.Basin.Deep
+		end
+		local floor = boreFloorAt(lm, position)
+		if floor then return floor end
+	end
+	return nil
 end
 
 -- The hidden basin (LandmarkLayout.Basin), as terrain fills in order: the bowl (air strips across the ellipse, floor to over the highest

@@ -1,5 +1,11 @@
 {
   "modelAssets": {
+    "Bellwood_GateTowers": {
+      "assetId": "rbxassetid://124794635973767",
+      "moderationState": "Approved",
+      "operationId": "f024896e-4348-40af-ae12-adec79d948b5",
+      "uploaded": "2026-11-22"
+    },
     "Bellwood_GiantCrown": {
       "assetId": "rbxassetid://70377213417316",
       "moderationState": "Approved",
@@ -21,6 +27,115 @@
   },
   "note": "Real IDs only. modelAssets = Assets API Model id (LoadAsset target; part 1 of a split piece). pieces = sub-mesh MeshId/maps read from a verified LoadAsset; split pieces carry per-sub Asset and center (tools/assets/glb_split.py).",
   "pieces": {
+    "Bellwood_GateTowers": {
+      "Bellwood_GateTowers__Ribbon": {
+        "ColorMap": "rbxassetid://136703699121522",
+        "MeshId": "rbxassetid://101965011047860",
+        "MetalnessMap": "rbxassetid://77579942535104",
+        "NormalMap": "rbxassetid://83083231334770",
+        "RoughnessMap": "rbxassetid://88085542548554",
+        "center": [
+          0.2929,
+          14.994,
+          17.7507
+        ],
+        "operations": {
+          "Asset": "f024896e-4348-40af-ae12-adec79d948b5"
+        }
+      },
+      "Bellwood_GateTowers__Root": {
+        "ColorMap": "rbxassetid://82672442552756",
+        "MeshId": "rbxassetid://75530030987445",
+        "MetalnessMap": "rbxassetid://77579942535104",
+        "NormalMap": "rbxassetid://92945996947115",
+        "RoughnessMap": "rbxassetid://129135340229970",
+        "center": [
+          0.0,
+          14.6335,
+          17.9526
+        ],
+        "operations": {
+          "Asset": "f024896e-4348-40af-ae12-adec79d948b5"
+        }
+      },
+      "Bellwood_GateTowers__Soffit": {
+        "ColorMap": "rbxassetid://120873988600721",
+        "MeshId": "rbxassetid://109230689547351",
+        "MetalnessMap": "rbxassetid://77579942535104",
+        "NormalMap": "rbxassetid://131928254038504",
+        "RoughnessMap": "rbxassetid://97922184318253",
+        "center": [
+          11.6442,
+          32.8325,
+          13.6401
+        ],
+        "operations": {
+          "Asset": "f024896e-4348-40af-ae12-adec79d948b5"
+        }
+      },
+      "Bellwood_GateTowers__Soffit_2": {
+        "ColorMap": "rbxassetid://120873988600721",
+        "MeshId": "rbxassetid://71575184934719",
+        "MetalnessMap": "rbxassetid://77579942535104",
+        "NormalMap": "rbxassetid://131928254038504",
+        "RoughnessMap": "rbxassetid://97922184318253",
+        "center": [
+          -11.4199,
+          32.8325,
+          13.6401
+        ],
+        "operations": {
+          "Asset": "f024896e-4348-40af-ae12-adec79d948b5"
+        }
+      },
+      "Bellwood_GateTowers__Stone": {
+        "ColorMap": "rbxassetid://79805665402962",
+        "MeshId": "rbxassetid://87754601756639",
+        "MetalnessMap": "rbxassetid://77579942535104",
+        "NormalMap": "rbxassetid://114411373779092",
+        "RoughnessMap": "rbxassetid://111225784397578",
+        "center": [
+          0.1321,
+          25.6773,
+          -1.7356
+        ],
+        "operations": {
+          "Asset": "f024896e-4348-40af-ae12-adec79d948b5"
+        }
+      },
+      "Bellwood_GateTowers__Tiles": {
+        "Asset": "rbxassetid://128073970387733",
+        "ColorMap": "rbxassetid://79020258850164",
+        "MeshId": "rbxassetid://125111197052294",
+        "MetalnessMap": "rbxassetid://77579942535104",
+        "NormalMap": "rbxassetid://103231754619864",
+        "RoughnessMap": "rbxassetid://75250150135865",
+        "center": [
+          12.0625,
+          34.261,
+          13.6544
+        ],
+        "operations": {
+          "Asset": "4552cad6-c975-4825-b684-80bcb485b902"
+        }
+      },
+      "Bellwood_GateTowers__Tiles_2": {
+        "Asset": "rbxassetid://128073970387733",
+        "ColorMap": "rbxassetid://79020258850164",
+        "MeshId": "rbxassetid://98608525967653",
+        "MetalnessMap": "rbxassetid://77579942535104",
+        "NormalMap": "rbxassetid://103231754619864",
+        "RoughnessMap": "rbxassetid://75250150135865",
+        "center": [
+          -11.8611,
+          34.261,
+          13.6544
+        ],
+        "operations": {
+          "Asset": "4552cad6-c975-4825-b684-80bcb485b902"
+        }
+      }
+    },
     "Bellwood_GiantCrown": {
       "Bellwood_GiantCrown__Band": {
         "ColorMap": "rbxassetid://116120809346515",

@@ -11,7 +11,7 @@ Hard-surface LOW -> HIGH (bellwood_temple_hall.high_copy) -> vesp_bake per role 
   Stone   medieval_blocks_03, grey-green, heavy moss          (collision: precise, the stair is walkable)
   Tiles   ceramic_roof_01, wet grey, blanket moss              (no collision)
   Soffit  distressed_painted_planks, dark red-brown eaves      (no collision)
-  Root    bark_willow_02, dark wet bark with moss              (collision: hull)
+  Root    bark_willow_02, dark wet bark with moss              (no collision: one mesh spans both towers)
   Ribbon  distressed_painted_planks re-tinted faded vermilion  (no collision)
 Units studs, Z up. Pivot: stair-foot centre on the lake bed (z = 0). The stair climbs toward -Y; the kit front (+Y) faces the lake.
 """
@@ -242,7 +242,7 @@ def main():
         }
         files, entry = G.finish(NAME, "Bellwood", lows, highs, out, looks, {r: (0.35, 0.7) for r in ROLES},
                                 "Poly Haven medieval_blocks_03, ceramic_roof_01, distressed_painted_planks, bark_willow_02 (CC0)",
-                                extra={"collision": {"Stone": "PreciseConvexDecomposition", "Root": "Hull"}},
+                                extra={"collision": {"Stone": "PreciseConvexDecomposition"}},
                                 builder=BUILDER, render_kw=rkw)
         G.merge_manifest(out, {NAME: entry}, "Bellwood landmark: Sunken Temple gate towers")
     dst = rdir / f"{NAME}_{mode}_sheet.jpg"
