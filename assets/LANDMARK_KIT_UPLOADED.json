@@ -7,9 +7,9 @@
       "uploaded": "2026-11-22"
     },
     "Bellwood_GiantFace": {
-      "assetId": "rbxassetid://95719673701358",
+      "assetId": "rbxassetid://131930696366547",
       "moderationState": "Approved",
-      "operationId": "2d6da2ca-8229-490c-94b2-8e049605a823",
+      "operationId": "066552d1-0a22-43e1-8af5-55583e50a37e",
       "uploaded": "2026-11-22"
     }
   },
@@ -646,383 +646,382 @@
     },
     "Bellwood_GiantFace": {
       "Bellwood_GiantFace__Floor": {
-        "ColorMap": "rbxassetid://99200378866166",
-        "MeshId": "rbxassetid://87425501205157",
-        "MetalnessMap": "rbxassetid://97517260376650",
-        "NormalMap": "rbxassetid://72602461316623",
-        "RoughnessMap": "rbxassetid://75406855569415",
+        "ColorMap": "rbxassetid://108197615725834",
+        "MeshId": "rbxassetid://120419923048071",
+        "MetalnessMap": "rbxassetid://77579942535104",
+        "NormalMap": "rbxassetid://100238174030662",
+        "RoughnessMap": "rbxassetid://86813260305526",
         "center": [
-          20.21,
-          7.0969,
-          -54.4977
+          19.5155,
+          7.7554,
+          -54.0247
         ],
         "operations": {
-          "Asset": "2d6da2ca-8229-490c-94b2-8e049605a823"
+          "Asset": "066552d1-0a22-43e1-8af5-55583e50a37e"
         }
       },
       "Bellwood_GiantFace__Floor_2": {
-        "ColorMap": "rbxassetid://99200378866166",
-        "MeshId": "rbxassetid://77139335171483",
-        "MetalnessMap": "rbxassetid://97517260376650",
-        "NormalMap": "rbxassetid://72602461316623",
-        "RoughnessMap": "rbxassetid://75406855569415",
+        "ColorMap": "rbxassetid://108197615725834",
+        "MeshId": "rbxassetid://94658047047740",
+        "MetalnessMap": "rbxassetid://77579942535104",
+        "NormalMap": "rbxassetid://100238174030662",
+        "RoughnessMap": "rbxassetid://86813260305526",
         "center": [
-          5.4467,
-          14.7875,
-          -21.9444
+          5.5028,
+          14.8477,
+          -22.8351
         ],
         "operations": {
-          "Asset": "2d6da2ca-8229-490c-94b2-8e049605a823"
+          "Asset": "066552d1-0a22-43e1-8af5-55583e50a37e"
         }
       },
       "Bellwood_GiantFace__Floor_3": {
-        "ColorMap": "rbxassetid://99200378866166",
-        "MeshId": "rbxassetid://76506245284107",
-        "MetalnessMap": "rbxassetid://97517260376650",
-        "NormalMap": "rbxassetid://72602461316623",
-        "RoughnessMap": "rbxassetid://75406855569415",
+        "ColorMap": "rbxassetid://108197615725834",
+        "MeshId": "rbxassetid://123783761734660",
+        "MetalnessMap": "rbxassetid://77579942535104",
+        "NormalMap": "rbxassetid://100238174030662",
+        "RoughnessMap": "rbxassetid://86813260305526",
         "center": [
-          -2.7035,
-          26.0211,
-          9.7333
+          -2.6634,
+          26.086,
+          8.7691
         ],
         "operations": {
-          "Asset": "2d6da2ca-8229-490c-94b2-8e049605a823"
+          "Asset": "066552d1-0a22-43e1-8af5-55583e50a37e"
         }
       },
       "Bellwood_GiantFace__Floor_4": {
-        "ColorMap": "rbxassetid://99200378866166",
-        "MeshId": "rbxassetid://137497643975255",
-        "MetalnessMap": "rbxassetid://97517260376650",
-        "NormalMap": "rbxassetid://72602461316623",
-        "RoughnessMap": "rbxassetid://75406855569415",
+        "ColorMap": "rbxassetid://108197615725834",
+        "MeshId": "rbxassetid://81704538624149",
+        "MetalnessMap": "rbxassetid://77579942535104",
+        "NormalMap": "rbxassetid://100238174030662",
+        "RoughnessMap": "rbxassetid://86813260305526",
         "center": [
-          3.0463,
-          35.5083,
-          43.6003
+          3.0551,
+          35.5362,
+          42.3478
         ],
         "operations": {
-          "Asset": "2d6da2ca-8229-490c-94b2-8e049605a823"
+          "Asset": "066552d1-0a22-43e1-8af5-55583e50a37e"
         }
       },
       "Bellwood_GiantFace__Shell": {
-        "ColorMap": "rbxassetid://90476757347727",
-        "MeshId": "rbxassetid://119303189082912",
-        "MetalnessMap": "rbxassetid://97517260376650",
-        "NormalMap": "rbxassetid://133109708364133",
-        "RoughnessMap": "rbxassetid://79757091732850",
+        "ColorMap": "rbxassetid://112845957709113",
+        "MeshId": "rbxassetid://140253295266484",
+        "MetalnessMap": "rbxassetid://77579942535104",
+        "NormalMap": "rbxassetid://130287865031056",
+        "RoughnessMap": "rbxassetid://140474009367720",
         "center": [
-          25.0018,
-          12.7712,
-          -64.6904
+          23.7346,
+          13.2403,
+          -62.6266
         ],
         "operations": {
-          "Asset": "2d6da2ca-8229-490c-94b2-8e049605a823"
+          "Asset": "066552d1-0a22-43e1-8af5-55583e50a37e"
         }
       },
       "Bellwood_GiantFace__Shell_10": {
-        "ColorMap": "rbxassetid://90476757347727",
-        "MeshId": "rbxassetid://96384826223083",
-        "MetalnessMap": "rbxassetid://97517260376650",
-        "NormalMap": "rbxassetid://133109708364133",
-        "RoughnessMap": "rbxassetid://79757091732850",
+        "ColorMap": "rbxassetid://112845957709113",
+        "MeshId": "rbxassetid://84020980274733",
+        "MetalnessMap": "rbxassetid://77579942535104",
+        "NormalMap": "rbxassetid://130287865031056",
+        "RoughnessMap": "rbxassetid://140474009367720",
         "center": [
-          7.5295,
-          51.2815,
-          1.2813
+          6.9375,
+          51.5002,
+          1.073
         ],
         "operations": {
-          "Asset": "2d6da2ca-8229-490c-94b2-8e049605a823"
+          "Asset": "066552d1-0a22-43e1-8af5-55583e50a37e"
         }
       },
       "Bellwood_GiantFace__Shell_11": {
-        "ColorMap": "rbxassetid://90476757347727",
-        "MeshId": "rbxassetid://127946030745714",
-        "MetalnessMap": "rbxassetid://97517260376650",
-        "NormalMap": "rbxassetid://133109708364133",
-        "RoughnessMap": "rbxassetid://79757091732850",
+        "ColorMap": "rbxassetid://112845957709113",
+        "MeshId": "rbxassetid://135179922038235",
+        "MetalnessMap": "rbxassetid://77579942535104",
+        "NormalMap": "rbxassetid://130287865031056",
+        "RoughnessMap": "rbxassetid://140474009367720",
         "center": [
-          5.1419,
-          52.3253,
-          5.932
+          4.6994,
+          52.531,
+          5.8349
         ],
         "operations": {
-          "Asset": "2d6da2ca-8229-490c-94b2-8e049605a823"
+          "Asset": "066552d1-0a22-43e1-8af5-55583e50a37e"
         }
       },
       "Bellwood_GiantFace__Shell_12": {
-        "ColorMap": "rbxassetid://90476757347727",
-        "MeshId": "rbxassetid://122644220892047",
-        "MetalnessMap": "rbxassetid://97517260376650",
-        "NormalMap": "rbxassetid://133109708364133",
-        "RoughnessMap": "rbxassetid://79757091732850",
+        "ColorMap": "rbxassetid://112845957709113",
+        "MeshId": "rbxassetid://72946450073439",
+        "MetalnessMap": "rbxassetid://77579942535104",
+        "NormalMap": "rbxassetid://130287865031056",
+        "RoughnessMap": "rbxassetid://140474009367720",
         "center": [
-          3.0312,
-          53.0776,
-          10.9316
+          2.5885,
+          52.4929,
+          10.7875
         ],
         "operations": {
-          "Asset": "2d6da2ca-8229-490c-94b2-8e049605a823"
+          "Asset": "066552d1-0a22-43e1-8af5-55583e50a37e"
         }
       },
       "Bellwood_GiantFace__Shell_13": {
-        "ColorMap": "rbxassetid://90476757347727",
-        "MeshId": "rbxassetid://139328186998859",
-        "MetalnessMap": "rbxassetid://97517260376650",
-        "NormalMap": "rbxassetid://133109708364133",
-        "RoughnessMap": "rbxassetid://79757091732850",
+        "ColorMap": "rbxassetid://112845957709113",
+        "MeshId": "rbxassetid://122677205477927",
+        "MetalnessMap": "rbxassetid://77579942535104",
+        "NormalMap": "rbxassetid://130287865031056",
+        "RoughnessMap": "rbxassetid://140474009367720",
         "center": [
-          0.876,
-          53.1659,
-          16.0709
+          0.5884,
+          53.495,
+          15.7274
         ],
         "operations": {
-          "Asset": "2d6da2ca-8229-490c-94b2-8e049605a823"
+          "Asset": "066552d1-0a22-43e1-8af5-55583e50a37e"
         }
       },
       "Bellwood_GiantFace__Shell_14": {
-        "ColorMap": "rbxassetid://90476757347727",
-        "MeshId": "rbxassetid://111089375103067",
-        "MetalnessMap": "rbxassetid://97517260376650",
-        "NormalMap": "rbxassetid://133109708364133",
-        "RoughnessMap": "rbxassetid://79757091732850",
+        "ColorMap": "rbxassetid://112845957709113",
+        "MeshId": "rbxassetid://128299772303738",
+        "MetalnessMap": "rbxassetid://77579942535104",
+        "NormalMap": "rbxassetid://130287865031056",
+        "RoughnessMap": "rbxassetid://140474009367720",
         "center": [
-          -1.075,
-          54.6577,
-          21.3832
+          -1.4168,
+          55.0012,
+          20.9649
         ],
         "operations": {
-          "Asset": "2d6da2ca-8229-490c-94b2-8e049605a823"
+          "Asset": "066552d1-0a22-43e1-8af5-55583e50a37e"
         }
       },
       "Bellwood_GiantFace__Shell_15": {
-        "ColorMap": "rbxassetid://90476757347727",
-        "MeshId": "rbxassetid://119461367542017",
-        "MetalnessMap": "rbxassetid://97517260376650",
-        "NormalMap": "rbxassetid://133109708364133",
-        "RoughnessMap": "rbxassetid://79757091732850",
+        "ColorMap": "rbxassetid://112845957709113",
+        "MeshId": "rbxassetid://86124628428429",
+        "MetalnessMap": "rbxassetid://77579942535104",
+        "NormalMap": "rbxassetid://130287865031056",
+        "RoughnessMap": "rbxassetid://140474009367720",
         "center": [
-          -3.2261,
-          56.4637,
-          26.4587
+          -3.5648,
+          56.7702,
+          25.9923
         ],
         "operations": {
-          "Asset": "2d6da2ca-8229-490c-94b2-8e049605a823"
+          "Asset": "066552d1-0a22-43e1-8af5-55583e50a37e"
         }
       },
       "Bellwood_GiantFace__Shell_16": {
-        "ColorMap": "rbxassetid://90476757347727",
-        "MeshId": "rbxassetid://97953956684286",
-        "MetalnessMap": "rbxassetid://97517260376650",
-        "NormalMap": "rbxassetid://133109708364133",
-        "RoughnessMap": "rbxassetid://79757091732850",
+        "ColorMap": "rbxassetid://112845957709113",
+        "MeshId": "rbxassetid://131909929222839",
+        "MetalnessMap": "rbxassetid://77579942535104",
+        "NormalMap": "rbxassetid://130287865031056",
+        "RoughnessMap": "rbxassetid://140474009367720",
         "center": [
-          -5.8124,
-          58.2328,
-          31.9582
+          -6.2096,
+          58.4028,
+          31.2731
         ],
         "operations": {
-          "Asset": "2d6da2ca-8229-490c-94b2-8e049605a823"
+          "Asset": "066552d1-0a22-43e1-8af5-55583e50a37e"
         }
       },
       "Bellwood_GiantFace__Shell_17": {
-        "ColorMap": "rbxassetid://90476757347727",
-        "MeshId": "rbxassetid://132963008776864",
-        "MetalnessMap": "rbxassetid://97517260376650",
-        "NormalMap": "rbxassetid://133109708364133",
-        "RoughnessMap": "rbxassetid://79757091732850",
+        "ColorMap": "rbxassetid://112845957709113",
+        "MeshId": "rbxassetid://102397864790177",
+        "MetalnessMap": "rbxassetid://77579942535104",
+        "NormalMap": "rbxassetid://130287865031056",
+        "RoughnessMap": "rbxassetid://140474009367720",
         "center": [
-          -9.5891,
-          59.562,
-          37.1628
+          -10.0432,
+          59.6862,
+          36.3625
         ],
         "operations": {
-          "Asset": "2d6da2ca-8229-490c-94b2-8e049605a823"
+          "Asset": "066552d1-0a22-43e1-8af5-55583e50a37e"
         }
       },
       "Bellwood_GiantFace__Shell_18": {
-        "ColorMap": "rbxassetid://90476757347727",
-        "MeshId": "rbxassetid://114405355361540",
-        "MetalnessMap": "rbxassetid://97517260376650",
-        "NormalMap": "rbxassetid://133109708364133",
-        "RoughnessMap": "rbxassetid://79757091732850",
+        "ColorMap": "rbxassetid://112845957709113",
+        "MeshId": "rbxassetid://128200975111931",
+        "MetalnessMap": "rbxassetid://77579942535104",
+        "NormalMap": "rbxassetid://130287865031056",
+        "RoughnessMap": "rbxassetid://140474009367720",
         "center": [
-          -15.2449,
+          -15.8183,
           60.7968,
-          42.3179
+          41.6619
         ],
         "operations": {
-          "Asset": "2d6da2ca-8229-490c-94b2-8e049605a823"
+          "Asset": "066552d1-0a22-43e1-8af5-55583e50a37e"
         }
       },
       "Bellwood_GiantFace__Shell_19": {
-        "ColorMap": "rbxassetid://90476757347727",
-        "MeshId": "rbxassetid://88377089056532",
-        "MetalnessMap": "rbxassetid://97517260376650",
-        "NormalMap": "rbxassetid://133109708364133",
-        "RoughnessMap": "rbxassetid://79757091732850",
+        "ColorMap": "rbxassetid://112845957709113",
+        "MeshId": "rbxassetid://96623545326776",
+        "MetalnessMap": "rbxassetid://77579942535104",
+        "NormalMap": "rbxassetid://130287865031056",
+        "RoughnessMap": "rbxassetid://140474009367720",
         "center": [
-          -19.3391,
-          63.7465,
-          48.5183
+          -19.3757,
+          63.657,
+          47.59
         ],
         "operations": {
-          "Asset": "2d6da2ca-8229-490c-94b2-8e049605a823"
+          "Asset": "066552d1-0a22-43e1-8af5-55583e50a37e"
         }
       },
       "Bellwood_GiantFace__Shell_2": {
-        "ColorMap": "rbxassetid://90476757347727",
-        "MeshId": "rbxassetid://73715949034996",
-        "MetalnessMap": "rbxassetid://97517260376650",
-        "NormalMap": "rbxassetid://133109708364133",
-        "RoughnessMap": "rbxassetid://79757091732850",
+        "ColorMap": "rbxassetid://112845957709113",
+        "MeshId": "rbxassetid://113098292298277",
+        "MetalnessMap": "rbxassetid://77579942535104",
+        "NormalMap": "rbxassetid://130287865031056",
+        "RoughnessMap": "rbxassetid://140474009367720",
         "center": [
-          20.8812,
-          14.4157,
-          -51.5418
+          18.8995,
+          15.387,
+          -48.653
         ],
         "operations": {
-          "Asset": "2d6da2ca-8229-490c-94b2-8e049605a823"
+          "Asset": "066552d1-0a22-43e1-8af5-55583e50a37e"
         }
       },
       "Bellwood_GiantFace__Shell_20": {
-        "ColorMap": "rbxassetid://90476757347727",
-        "MeshId": "rbxassetid://75820843825400",
-        "MetalnessMap": "rbxassetid://97517260376650",
-        "NormalMap": "rbxassetid://133109708364133",
-        "RoughnessMap": "rbxassetid://79757091732850",
+        "ColorMap": "rbxassetid://112845957709113",
+        "MeshId": "rbxassetid://83867574723148",
+        "MetalnessMap": "rbxassetid://77579942535104",
+        "NormalMap": "rbxassetid://130287865031056",
+        "RoughnessMap": "rbxassetid://140474009367720",
         "center": [
-          -17.8598,
-          61.6704,
-          55.5216
+          -17.7041,
+          61.5467,
+          54.5793
         ],
         "operations": {
-          "Asset": "2d6da2ca-8229-490c-94b2-8e049605a823"
+          "Asset": "066552d1-0a22-43e1-8af5-55583e50a37e"
         }
       },
       "Bellwood_GiantFace__Shell_21": {
-        "ColorMap": "rbxassetid://90476757347727",
-        "MeshId": "rbxassetid://93716245645165",
-        "MetalnessMap": "rbxassetid://97517260376650",
-        "NormalMap": "rbxassetid://133109708364133",
-        "RoughnessMap": "rbxassetid://79757091732850",
+        "ColorMap": "rbxassetid://112845957709113",
+        "MeshId": "rbxassetid://113743202254610",
+        "MetalnessMap": "rbxassetid://77579942535104",
+        "NormalMap": "rbxassetid://130287865031056",
+        "RoughnessMap": "rbxassetid://140474009367720",
         "center": [
-          -16.6095,
+          -16.3772,
           56.7631,
-          65.3534
+          64.3431
         ],
         "operations": {
-          "Asset": "2d6da2ca-8229-490c-94b2-8e049605a823"
+          "Asset": "066552d1-0a22-43e1-8af5-55583e50a37e"
         }
       },
       "Bellwood_GiantFace__Shell_3": {
-        "ColorMap": "rbxassetid://90476757347727",
-        "MeshId": "rbxassetid://133088714521037",
-        "MetalnessMap": "rbxassetid://97517260376650",
-        "NormalMap": "rbxassetid://133109708364133",
-        "RoughnessMap": "rbxassetid://79757091732850",
+        "ColorMap": "rbxassetid://112845957709113",
+        "MeshId": "rbxassetid://129065225984419",
+        "MetalnessMap": "rbxassetid://77579942535104",
+        "NormalMap": "rbxassetid://130287865031056",
+        "RoughnessMap": "rbxassetid://140474009367720",
         "center": [
-          14.174,
-          17.3502,
-          -39.8833
+          12.8409,
+          28.7167,
+          -37.1611
         ],
         "operations": {
-          "Asset": "2d6da2ca-8229-490c-94b2-8e049605a823"
+          "Asset": "066552d1-0a22-43e1-8af5-55583e50a37e"
         }
       },
       "Bellwood_GiantFace__Shell_4": {
-        "ColorMap": "rbxassetid://90476757347727",
-        "MeshId": "rbxassetid://139665255414463",
-        "MetalnessMap": "rbxassetid://97517260376650",
-        "NormalMap": "rbxassetid://133109708364133",
-        "RoughnessMap": "rbxassetid://79757091732850",
+        "ColorMap": "rbxassetid://112845957709113",
+        "MeshId": "rbxassetid://112258809483486",
+        "MetalnessMap": "rbxassetid://77579942535104",
+        "NormalMap": "rbxassetid://130287865031056",
+        "RoughnessMap": "rbxassetid://140474009367720",
         "center": [
-          17.107,
-          34.0943,
-          -30.4624
+          18.4388,
+          36.0473,
+          -28.8973
         ],
         "operations": {
-          "Asset": "2d6da2ca-8229-490c-94b2-8e049605a823"
+          "Asset": "066552d1-0a22-43e1-8af5-55583e50a37e"
         }
       },
       "Bellwood_GiantFace__Shell_5": {
-        "Asset": "rbxassetid://127106612598404",
-        "ColorMap": "rbxassetid://90476757347727",
-        "MeshId": "rbxassetid://129525475786911",
-        "MetalnessMap": "rbxassetid://97517260376650",
-        "NormalMap": "rbxassetid://133109708364133",
-        "RoughnessMap": "rbxassetid://79757091732850",
+        "ColorMap": "rbxassetid://112845957709113",
+        "MeshId": "rbxassetid://90032870654120",
+        "MetalnessMap": "rbxassetid://77579942535104",
+        "NormalMap": "rbxassetid://130287865031056",
+        "RoughnessMap": "rbxassetid://140474009367720",
         "center": [
-          20.1826,
-          38.511,
-          -24.269
+          20.817,
+          39.6818,
+          -23.5955
         ],
         "operations": {
-          "Asset": "7b953973-96e6-4c06-b626-af1def96af73"
+          "Asset": "066552d1-0a22-43e1-8af5-55583e50a37e"
         }
       },
       "Bellwood_GiantFace__Shell_6": {
-        "Asset": "rbxassetid://127106612598404",
-        "ColorMap": "rbxassetid://90476757347727",
-        "MeshId": "rbxassetid://135952207994865",
-        "MetalnessMap": "rbxassetid://97517260376650",
-        "NormalMap": "rbxassetid://133109708364133",
-        "RoughnessMap": "rbxassetid://79757091732850",
+        "Asset": "rbxassetid://103105329061830",
+        "ColorMap": "rbxassetid://112845957709113",
+        "MeshId": "rbxassetid://91073289837146",
+        "MetalnessMap": "rbxassetid://77579942535104",
+        "NormalMap": "rbxassetid://130287865031056",
+        "RoughnessMap": "rbxassetid://140474009367720",
         "center": [
-          21.2739,
-          41.7604,
-          -18.8536
+          20.9213,
+          42.7395,
+          -18.2852
         ],
         "operations": {
-          "Asset": "7b953973-96e6-4c06-b626-af1def96af73"
+          "Asset": "ca091d3d-2607-4a30-b5e4-369dda102e9e"
         }
       },
       "Bellwood_GiantFace__Shell_7": {
-        "Asset": "rbxassetid://127106612598404",
-        "ColorMap": "rbxassetid://90476757347727",
-        "MeshId": "rbxassetid://98364113994032",
-        "MetalnessMap": "rbxassetid://97517260376650",
-        "NormalMap": "rbxassetid://133109708364133",
-        "RoughnessMap": "rbxassetid://79757091732850",
+        "Asset": "rbxassetid://103105329061830",
+        "ColorMap": "rbxassetid://112845957709113",
+        "MeshId": "rbxassetid://117418981728713",
+        "MetalnessMap": "rbxassetid://77579942535104",
+        "NormalMap": "rbxassetid://130287865031056",
+        "RoughnessMap": "rbxassetid://140474009367720",
         "center": [
-          20.3158,
-          44.3503,
-          -13.4508
+          19.7816,
+          44.8555,
+          -12.9727
         ],
         "operations": {
-          "Asset": "7b953973-96e6-4c06-b626-af1def96af73"
+          "Asset": "ca091d3d-2607-4a30-b5e4-369dda102e9e"
         }
       },
       "Bellwood_GiantFace__Shell_8": {
-        "Asset": "rbxassetid://127106612598404",
-        "ColorMap": "rbxassetid://90476757347727",
-        "MeshId": "rbxassetid://91005869792725",
-        "MetalnessMap": "rbxassetid://97517260376650",
-        "NormalMap": "rbxassetid://133109708364133",
-        "RoughnessMap": "rbxassetid://79757091732850",
+        "Asset": "rbxassetid://103105329061830",
+        "ColorMap": "rbxassetid://112845957709113",
+        "MeshId": "rbxassetid://135893812964921",
+        "MetalnessMap": "rbxassetid://77579942535104",
+        "NormalMap": "rbxassetid://130287865031056",
+        "RoughnessMap": "rbxassetid://140474009367720",
         "center": [
-          16.9448,
-          46.1882,
-          -7.7136
+          14.6426,
+          46.6298,
+          -7.7324
         ],
         "operations": {
-          "Asset": "7b953973-96e6-4c06-b626-af1def96af73"
+          "Asset": "ca091d3d-2607-4a30-b5e4-369dda102e9e"
         }
       },
       "Bellwood_GiantFace__Shell_9": {
-        "Asset": "rbxassetid://127106612598404",
-        "ColorMap": "rbxassetid://90476757347727",
-        "MeshId": "rbxassetid://114217216138104",
-        "MetalnessMap": "rbxassetid://97517260376650",
-        "NormalMap": "rbxassetid://133109708364133",
-        "RoughnessMap": "rbxassetid://79757091732850",
+        "Asset": "rbxassetid://103105329061830",
+        "ColorMap": "rbxassetid://112845957709113",
+        "MeshId": "rbxassetid://92094062949414",
+        "MetalnessMap": "rbxassetid://77579942535104",
+        "NormalMap": "rbxassetid://130287865031056",
+        "RoughnessMap": "rbxassetid://140474009367720",
         "center": [
-          10.9158,
-          50.2863,
-          -3.2654
+          9.9987,
+          50.6809,
+          -3.2684
         ],
         "operations": {
-          "Asset": "7b953973-96e6-4c06-b626-af1def96af73"
+          "Asset": "ca091d3d-2607-4a30-b5e4-369dda102e9e"
         }
       }
     }

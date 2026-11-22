@@ -40,7 +40,7 @@ Layout.Landmarks = {
 		-- Foot = where each GLB's foot (bbox centre X/Z, bbox minimum Y: tools/assets/glb_split.py) sits relative to the shared
 		-- kit origin, in Roblox model axes (Blender x, y, z -> -x, z, y), from assets/source/landmarks/bellwood_face/manifest.json.
 		Pieces = {
-			Face = { Model = "Bellwood_GiantFace", Foot = { X = -3.34, Y = -39.23, Z = -19.765 } },
+			Face = { Model = "Bellwood_GiantFace", Foot = { X = -3.34, Y = -39.23, Z = -18.56 } },
 			Crown = { Model = "Bellwood_GiantCrown", Foot = { X = -0.495, Y = -0.65, Z = -6.705 } },
 		},
 	},

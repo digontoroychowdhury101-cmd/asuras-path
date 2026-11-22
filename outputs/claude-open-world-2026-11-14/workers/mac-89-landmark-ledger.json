@@ -1,0 +1,52 @@
+{
+ "landmark/Bellwood_GiantCrown__p1": {
+  "assetId": "70377213417316",
+  "bytes": 19371368,
+  "displayName": "landmark_Bellwood_GiantCrown__p1",
+  "error": null,
+  "file": "/Users/digonto/Documents/ChatGPT/Roblox game 2/work/landmark_upload/rest/Bellwood_GiantCrown__p1.glb",
+  "moderation": "Approved",
+  "operationId": "71afb292-165c-4bcd-b80a-c14c9d569d6a",
+  "sha256": "01fe3e42beb78bba9046c9a80413389eb35e9d0480b738a5e81e7b6ef11da0e1"
+ },
+ "landmark/Bellwood_GiantCrown__p2": {
+  "assetId": "87675264376541",
+  "bytes": 19482200,
+  "displayName": "landmark_Bellwood_GiantCrown__p2",
+  "error": null,
+  "file": "/Users/digonto/Documents/ChatGPT/Roblox game 2/work/landmark_upload/rest/Bellwood_GiantCrown__p2.glb",
+  "moderation": "Approved",
+  "operationId": "a3d92375-0983-4d1d-9aac-a5afb864596b",
+  "sha256": "6ba51e384539556d3cc20e9fc2de73dfd72b281a30998b2bab356e01e04c5c79"
+ },
+ "landmark/Bellwood_GiantCrown__p3": {
+  "assetId": "97920563013296",
+  "bytes": 16889984,
+  "displayName": "landmark_Bellwood_GiantCrown__p3",
+  "error": null,
+  "file": "/Users/digonto/Documents/ChatGPT/Roblox game 2/work/landmark_upload/rest/Bellwood_GiantCrown__p3.glb",
+  "moderation": "Approved",
+  "operationId": "1f3f8261-dedd-466a-9cbd-a19d26de9f43",
+  "sha256": "e5fd677652ac5f985a283b75f6c1fc271eba8eee2a8729f8d11185aa35dad9ac"
+ },
+ "landmark/Bellwood_GiantFace__p1": {
+  "assetId": "131930696366547",
+  "bytes": 19033668,
+  "displayName": "landmark_Bellwood_GiantFace__p1",
+  "error": null,
+  "file": "/Users/digonto/Documents/ChatGPT/Roblox game 2/work/landmark_upload_mac89/rest/Bellwood_GiantFace__p1.glb",
+  "moderation": "Approved",
+  "operationId": "066552d1-0a22-43e1-8af5-55583e50a37e",
+  "sha256": "b4fac40d35d607ff33d6544c7caca6b17c48adea29d494408ae95f59addf3c88"
+ },
+ "landmark/Bellwood_GiantFace__p2": {
+  "assetId": "103105329061830",
+  "bytes": 8784592,
+  "displayName": "landmark_Bellwood_GiantFace__p2",
+  "error": null,
+  "file": "/Users/digonto/Documents/ChatGPT/Roblox game 2/work/landmark_upload_mac89/pilot/Bellwood_GiantFace__p2.glb",
+  "moderation": "Approved",
+  "operationId": "ca091d3d-2607-4a30-b5e4-369dda102e9e",
+  "sha256": "c113a8206c2b7ddfe40f65da0fe11a6c7f9a390a3cd3d633c1a6879d93d8aa0d"
+ }
+}
