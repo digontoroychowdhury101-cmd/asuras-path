@@ -179,10 +179,11 @@ def hall(pc):
     platform(pc)
     top1 = frame_storey(pc, COL_X, COL_Y, PLAT_Z, COL_TOP, COL_R, 1.3)
     walls(pc, (-24.0, -12.0, 0.0, 12.0, 24.0), (-14.0, 14.0), PLAT_Z, COL_TOP, True)
-    for (W, D, H, tg, lift, kick, thick, rs, nu, nt), z, (xs, ys, z0, z1, r, bh) in (
+    for (W, D, H, tg, lift, kick, thick, rs, nu, nt), z, upper in (
             ((82.0, 56.0, 10.0, 0.62, 2.8, 1.8, (0.8, 1.7), 1.5, 64, (11, 7)), max(EAVE1, top1 - 0.2), None),
             ((56.0, 36.0, 11.5, 0.55, 2.4, 1.5, (0.7, 1.5), 1.9, 52, (10, 7)), None, (UP_X, UP_Y, UP_Z0, UP_TOP, 1.0, 1.0))):
-        if z is None:  # upper storey rising out of the lower roof
+        if upper:  # upper storey rising out of the lower roof
+            xs, ys, z0, z1, r, bh = upper
             top2 = frame_storey(pc, xs, ys, z0, z1, r, bh)
             walls(pc, xs, ys, z0, z1, False)
             z = max(EAVE2, top2 - 0.2)
