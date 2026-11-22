@@ -45,6 +45,7 @@ The creator is entirely vibe-coding this Roblox game and does not write code man
 - **Bellwood temple.**
   - `assets/source/landmarks/bellwood_temple_colossal/creator-stair-reference.png` is the target, recreated closely. It overrides older temple art direction.
   - The bare hero tree comes first.
+  - Guardian lions (creator, 22 Nov): their faces looked bad, so both heads are intentionally destroyed, with no faces. Show crisp old fractures, fallen head fragments and rubble on well-carved bodies, and give each lion a different break.
   - Current Bellwood work order: `outputs/claude-open-world-2026-11-14/handoff/CLAUDE_BELLWOOD_REPLACEMENT_HANDOFF.md`. Finish the art (tree, root grip, both guardians, side and rear foundations) before building the Roblox replacement.
   - The creator wants Vesperhold-scale landmarks and larger arenas.
 - **Hard limits.**
