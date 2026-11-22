@@ -207,5 +207,22 @@ do
 	check("passage ends inside the basin", L.basinEllipse(bw, endW.X, endW.Z) < 1)
 end
 
+-- 8. The Sunken Temple hall (tools/blender/landmarks/bellwood_temple_hall.py) stands in the deep middle of the lake, its stone
+-- platform just over the water, its roof under TempleTop so no road sees it.
+do
+	local T = bw.Basin.Temple
+	local floorY, waterY = L.basinLevels(bw)
+	local s = L.templeSpot(bw)
+	check("temple hall is a kit piece with a foot frame", T and T.Model == "Bellwood_TempleHall" and T.Foot ~= nil)
+	local inDish = true
+	for k = 0, 15 do
+		local a = k / 16 * 2 * math.pi
+		if L.basinEllipse(bw, s.X + T.Radius * math.cos(a), s.Z + T.Radius * math.sin(a), -bw.Basin.Shelf) >= 1 then inDish = false end
+	end
+	check("temple footprint stays in the deep middle of the lake", inDish)
+	check("temple platform top is just over the water (0..1.5 above)", s.Y + T.Deck - waterY >= 0 and s.Y + T.Deck - waterY <= 1.5)
+	check("temple roof stays under TempleTop", s.Y + T.Height <= floorY + bw.Basin.TempleTop)
+end
+
 print(string.format("landmark layout: %d passed, %d failed", passed, failed))
 if failed > 0 then error("landmark layout failed") end

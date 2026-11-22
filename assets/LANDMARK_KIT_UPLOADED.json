@@ -11,6 +11,12 @@
       "moderationState": "Approved",
       "operationId": "066552d1-0a22-43e1-8af5-55583e50a37e",
       "uploaded": "2026-11-22"
+    },
+    "Bellwood_TempleHall": {
+      "assetId": "rbxassetid://113452079836448",
+      "moderationState": "Approved",
+      "operationId": "3d1bd17b-5619-496c-93c3-ebf40ba629d1",
+      "uploaded": "2026-11-22"
     }
   },
   "note": "Real IDs only. modelAssets = Assets API Model id (LoadAsset target; part 1 of a split piece). pieces = sub-mesh MeshId/maps read from a verified LoadAsset; split pieces carry per-sub Asset and center (tools/assets/glb_split.py).",
@@ -1022,6 +1028,114 @@
         ],
         "operations": {
           "Asset": "ca091d3d-2607-4a30-b5e4-369dda102e9e"
+        }
+      }
+    },
+    "Bellwood_TempleHall": {
+      "Bellwood_TempleHall__Lacquer": {
+        "ColorMap": "rbxassetid://84819162417448",
+        "MeshId": "rbxassetid://136607191223916",
+        "MetalnessMap": "rbxassetid://77579942535104",
+        "NormalMap": "rbxassetid://78012821489613",
+        "RoughnessMap": "rbxassetid://140572823620199",
+        "center": [
+          0.905,
+          23.25,
+          -4.113
+        ],
+        "operations": {
+          "Asset": "3d1bd17b-5619-496c-93c3-ebf40ba629d1"
+        }
+      },
+      "Bellwood_TempleHall__Lacquer_2": {
+        "ColorMap": "rbxassetid://84819162417448",
+        "MeshId": "rbxassetid://138489951343329",
+        "MetalnessMap": "rbxassetid://77579942535104",
+        "NormalMap": "rbxassetid://78012821489613",
+        "RoughnessMap": "rbxassetid://140572823620199",
+        "center": [
+          -14.15,
+          23.25,
+          -4.113
+        ],
+        "operations": {
+          "Asset": "3d1bd17b-5619-496c-93c3-ebf40ba629d1"
+        }
+      },
+      "Bellwood_TempleHall__Soffit": {
+        "ColorMap": "rbxassetid://100368791701130",
+        "MeshId": "rbxassetid://105982127113200",
+        "MetalnessMap": "rbxassetid://77579942535104",
+        "NormalMap": "rbxassetid://93852701498329",
+        "RoughnessMap": "rbxassetid://128917162326887",
+        "center": [
+          9.5127,
+          30.025,
+          -4.131
+        ],
+        "operations": {
+          "Asset": "3d1bd17b-5619-496c-93c3-ebf40ba629d1"
+        }
+      },
+      "Bellwood_TempleHall__Soffit_2": {
+        "ColorMap": "rbxassetid://100368791701130",
+        "MeshId": "rbxassetid://97497650059531",
+        "MetalnessMap": "rbxassetid://77579942535104",
+        "NormalMap": "rbxassetid://93852701498329",
+        "RoughnessMap": "rbxassetid://128917162326887",
+        "center": [
+          -12.5126,
+          30.025,
+          -4.095
+        ],
+        "operations": {
+          "Asset": "3d1bd17b-5619-496c-93c3-ebf40ba629d1"
+        }
+      },
+      "Bellwood_TempleHall__Stone": {
+        "Asset": "rbxassetid://71016664280110",
+        "ColorMap": "rbxassetid://106331195460230",
+        "MeshId": "rbxassetid://80296798514290",
+        "MetalnessMap": "rbxassetid://77579942535104",
+        "NormalMap": "rbxassetid://100352326504926",
+        "RoughnessMap": "rbxassetid://118130645468041",
+        "center": [
+          0.0,
+          3.5,
+          0.122
+        ],
+        "operations": {
+          "Asset": "e7f13009-f6d1-464b-85a4-f7d9932b7d00"
+        }
+      },
+      "Bellwood_TempleHall__Tiles": {
+        "ColorMap": "rbxassetid://135510187565233",
+        "MeshId": "rbxassetid://89019636093126",
+        "MetalnessMap": "rbxassetid://77579942535104",
+        "NormalMap": "rbxassetid://120135599768307",
+        "RoughnessMap": "rbxassetid://109872803726064",
+        "center": [
+          22.0668,
+          41.4025,
+          -4.113
+        ],
+        "operations": {
+          "Asset": "3d1bd17b-5619-496c-93c3-ebf40ba629d1"
+        }
+      },
+      "Bellwood_TempleHall__Tiles_2": {
+        "ColorMap": "rbxassetid://135510187565233",
+        "MeshId": "rbxassetid://113514291525217",
+        "MetalnessMap": "rbxassetid://77579942535104",
+        "NormalMap": "rbxassetid://120135599768307",
+        "RoughnessMap": "rbxassetid://109872803726064",
+        "center": [
+          -22.1077,
+          41.4025,
+          -4.113
+        ],
+        "operations": {
+          "Asset": "3d1bd17b-5619-496c-93c3-ebf40ba629d1"
         }
       }
     }

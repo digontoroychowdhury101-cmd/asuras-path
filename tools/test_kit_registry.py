@@ -212,6 +212,9 @@ class KitRegistry(unittest.TestCase):
         d.mkdir(parents=True)
         subs = ["Bellwood_GiantFace__Shell", "Bellwood_GiantFace__Floor"]
         (d / "manifest.json").write_text(json.dumps({"pieces": {"Bellwood_GiantFace": {"sub_meshes": {s: 10 for s in subs}}}}))
+        t = self.root / "assets/source/landmarks/bellwood_temple"  # every landmark pack needs its manifest
+        t.mkdir(parents=True)
+        (t / "manifest.json").write_text(json.dumps({"pieces": {}}))
         (self.root / "src/shared").mkdir(parents=True)
         # Split across two model assets: the second part's sub names its own Asset, and both carry centers.
         reg = {"modelAssets": {"Bellwood_GiantFace": {"assetId": rid()}}, "pieces": {"Bellwood_GiantFace": {

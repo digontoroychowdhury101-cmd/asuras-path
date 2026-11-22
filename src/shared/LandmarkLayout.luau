@@ -35,7 +35,13 @@ Layout.Landmarks = {
 		-- TempleTop = how high over the floor the temple may stand and stay hidden.
 		-- Deep = how much deeper the lake gets Shelf studs in from the shore (mac-89: a 2.5-stud lake showed the bed's voxel ridges
 		-- through the water as dark dashes); keeps the deep bed on the 4-stud voxel grid.
-		Basin = { Back = 260, Width = 350, Depth = 300, Bed = -36, Water = 2.5, Thick = 28, RimRise = 24, TempleTop = 70, Deep = 8, Shelf = 36 },
+		Basin = { Back = 260, Width = 350, Depth = 300, Bed = -36, Water = 2.5, Thick = 28, RimRise = 24, TempleTop = 70, Deep = 8, Shelf = 36,
+			-- The Sunken Temple hall (tools/blender/landmarks/bellwood_temple_hall.py, mac-90): its origin (platform centre, foot) stands
+			-- Across/Along studs off the basin centre (basin axes: Along = toward the face) and Lift over the lake bed, so the stair
+			-- wades in and the deck (Deck over the foot) is just over the water. Radius = footprint half-diagonal, Height = roof top.
+			-- It turns to face the passage exit (LandmarkWorld.templeFrame). Foot = GLB foot frame from its manifest (model axes).
+			Temple = { Model = "Bellwood_TempleHall", Across = -60, Along = -20, Lift = -1, Radius = 55, Deck = 3.6, Height = 59.4,
+				Foot = { X = 0, Y = 0, Z = 4.115 } } },
 		-- Grove (SliceDressing): forest scatter in R round the origin. Nothing tall within Clear (the face), and a lane LaneHalf wide from
 		-- the mouth out LaneTo studs along the front (the road sightline) stays open. Ferns and grass hug the base from Clear - 12.
 		Grove = { R = 150, Clear = 70, LaneHalf = 16, LaneTo = 170 },
@@ -98,6 +104,13 @@ end
 function Layout.rimTop(lm: any, theta: number, heightAt: (number, number) -> number): number
 	local x, z = Layout.basinRing(lm, theta, lm.Basin.Thick / 2)
 	return heightAt(x, z) + lm.Basin.RimRise + 4 * math.sin(3 * theta) + 3 * math.sin(7 * theta + 1)
+end
+
+-- World position of the temple hall's origin (platform centre, on its foot).
+function Layout.templeSpot(lm: any): Vec
+	local c, fx, fz, rx, rz = basinAxes(lm)
+	local T = lm.Basin.Temple
+	return { X = c.X + rx * T.Across + fx * T.Along, Y = lm.Origin.Y + lm.Basin.Bed + T.Lift, Z = c.Z + rz * T.Across + fz * T.Along }
 end
 
 -- World Y of the lake bed and the water surface.

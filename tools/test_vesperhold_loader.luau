@@ -506,6 +506,28 @@ do
 	local footW = W2.frame(bw) * CFrame.new(bw.Pieces.Face.Foot.X, bw.Pieces.Face.Foot.Y, bw.Pieces.Face.Foot.Z)
 	check("build places every piece in the region folder", lm ~= nil and lm:FindFirstChild("Bellwood_GiantFace") and lm:FindFirstChild("Bellwood_GiantCrown"))
 	check("pieces sit at origin * yaw * Foot", placedAt.Bellwood_GiantFace and (placedAt.Bellwood_GiantFace.Position - footW.Position).Magnitude < 1e-3)
+	-- mac-90: the Sunken Temple hall stands in the lake, its front (model +Z) toward the passage exit, in the right half of the exit view.
+	local T = bw.Basin.Temple
+	local hall = placedAt.Bellwood_TempleHall
+	local spot = LL.templeSpot(bw)
+	local exitW = W2.kitToWorld(bw, bw.Tunnel.Passage[#bw.Tunnel.Passage])
+	local hallOk = hall ~= nil and lm:FindFirstChild("Bellwood_TempleHall") ~= nil
+	if hall then
+		local origin = hall * CFrame.new(-T.Foot.X, -T.Foot.Y, -T.Foot.Z)
+		local toExit = Vector3.new(exitW.X - origin.X, 0, exitW.Z - origin.Z).Unit
+		local view = Vector3.new(spot.X - exitW.X, 0, spot.Z - exitW.Z).Unit
+		local c = LL.basinCentre(bw)
+		local look = Vector3.new(c.X - exitW.X, 0, c.Z - exitW.Z).Unit
+		local right = look:Cross(Vector3.yAxis)
+		local ang = math.deg(math.acos(math.clamp(view:Dot(look), -1, 1)))
+		hallOk = hallOk and (origin.Position - Vector3.new(spot.X, spot.Y, spot.Z)).Magnitude < 1e-3
+			and origin.LookVector:Dot(-toExit) > 0.999 -- model +Z = -LookVector faces the exit
+			and math.abs(origin.UpVector.Y - 1) < 1e-6 and view:Dot(right) > 0 and ang >= 6 and ang <= 30
+	end
+	check("temple hall stands at its spot facing the passage exit, right of centre in the exit view", hallOk)
+	check("temple collision: stone platform precise, lacquer frame default, roofs never collide",
+		W2.Fidelity.Stone == Enum.CollisionFidelity.PreciseConvexDecomposition and W2.Fidelity.Lacquer == Enum.CollisionFidelity.Default
+		and W2.Fidelity.Tiles == nil and W2.Fidelity.Soffit == nil)
 	local lastRock, lastAir = 0, 0
 	for i, m in fillOrder do if m == "Rock" then lastRock = i elseif m == "Air" then lastAir = i end end
 	check("pack, basin, then the bore and passage cut through the rim, the lake last, after the region's terrain is ready",

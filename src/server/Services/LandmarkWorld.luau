@@ -12,7 +12,10 @@ World.CarveStep = 3
 local PRECISE, HULL = Enum.CollisionFidelity.PreciseConvexDecomposition, Enum.CollisionFidelity.Hull
 -- Walkable shells and the tunnel floor are precise (a hull per shell slice would fill the bore); crown solids are hulls; roots,
 -- gilt trim and rubble never collide (the rubble strip spans the bore, so its hull walled the tunnel, mac-86f).
-World.Fidelity = { Shell = PRECISE, Floor = PRECISE, Band = HULL, Bronze = HULL, Eave = HULL }
+-- Temple hall (mac-90): the stone platform and stair are walked on; the lacquer frame keeps its own shape (a hull would fill the hall);
+-- the roofs (Tiles, Soffit) never collide.
+World.Fidelity = { Shell = PRECISE, Floor = PRECISE, Band = HULL, Bronze = HULL, Eave = HULL,
+	Stone = PRECISE, Lacquer = Enum.CollisionFidelity.Default }
 
 local function deps()
 	World.Kit = World.Kit or require(script.Parent:WaitForChild("VesperholdKit") :: ModuleScript)
@@ -287,6 +290,15 @@ function World.packs(lm: any): { { CFrame: CFrame, Size: Vector3, Floor: number 
 	return out
 end
 
+-- The temple hall's origin frame: at Layout.templeSpot, upright, its front (model +Z) turned to the passage exit.
+function World.templeFrame(lm: any): CFrame
+	local s = World.Layout.templeSpot(lm)
+	local at = Vector3.new(s.X, s.Y, s.Z)
+	local exit = World.kitToWorld(lm, lm.Tunnel.Passage[#lm.Tunnel.Passage])
+	local away = at - Vector3.new(exit.X - at.X, 0, exit.Z - at.Z) -- lookAt aims -Z, so aim away from the exit
+	return CFrame.lookAt(at, away)
+end
+
 -- folders: region id -> Map_Overworld region folder. waitReady(region) blocks until that region's terrain is written.
 function World.build(folders: { [string]: Instance }, waitReady: (string) -> boolean)
 	local Kit, Layout = deps()
@@ -305,6 +317,11 @@ function World.build(folders: { [string]: Instance }, waitReady: (string) -> boo
 				else
 					warn("[LandmarkWorld] " .. id .. ": kit piece " .. piece.Model .. " is not available")
 				end
+			end
+			local T = lm.Basin and lm.Basin.Temple
+			if T then
+				local m = Kit.place(T.Model, World.templeFrame(lm) * CFrame.new(T.Foot.X, T.Foot.Y, T.Foot.Z), Vector3.one, { Fidelity = World.Fidelity })
+				if m then m.Parent = model else warn("[LandmarkWorld] " .. id .. ": kit piece " .. T.Model .. " is not available") end
 			end
 			if placed > 0 and lm.Tunnel and lm.Tunnel.Lanterns then
 				for _, p in lm.Tunnel.Lanterns do World.lantern(World.kitToWorld(lm, p)).Parent = model end
