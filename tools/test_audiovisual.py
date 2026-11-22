@@ -19,6 +19,21 @@ for name in modules:
 harness=(ROOT/'tools/test_audiovisual.luau').read_text().replace('-- MODULES_INSERT','\n'.join(chunks))
 output=ROOT/'work/test_audiovisual.generated.luau';output.parent.mkdir(exist_ok=True);output.write_text(harness)
 subprocess.run([str(ROOT/'work/bin/luau/luau'),str(output)],cwd=ROOT,check=True)
+audio_registry = json.loads((ROOT / 'assets/OVERWORLD_AUDIO_UPLOADED.json').read_text())['audio']
+landmark_audio = [asset for asset in audio_registry.values() if 'cueKey' in asset]
+assert len(landmark_audio) == len({asset['cueKey'] for asset in landmark_audio}) == 26
+assert len({asset['assetId'] for asset in landmark_audio}) == 26
+presentation_source = (ROOT / 'src/shared/PresentationAssets.luau').read_text()
+audio_source = presentation_source.split('Assets.Audio = {', 1)[1].split('Assets.Textures = {', 1)[0]
+for asset in landmark_audio:
+    key, asset_id = asset['cueKey'], asset['assetId']
+    assert re.fullmatch(r'rbxassetid://[1-9][0-9]+', asset_id), key
+    assert re.fullmatch(r'[a-f0-9]{64}', asset['sha256']), key
+    entry = re.search(rf'(?m)^\s*{re.escape(key)}\s*=\s*"([^"]+)"', audio_source)
+    if asset['moderationState'] == 'Approved':
+        assert entry and entry.group(1) == asset_id, key
+    else:
+        assert entry is None, key
 media=0
 for report_path in (ROOT/'assets/build').glob('*/report.json'):
     if report_path.parent.name not in ('stone_01','stone_fire_pit','brass_diya_lantern','RuinArch_01','RomanRail_01','PillarSegment_01','FoundationRuin_01','TempleRuin_01'): continue

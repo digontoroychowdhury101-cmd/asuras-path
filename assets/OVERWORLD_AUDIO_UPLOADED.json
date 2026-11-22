@@ -1,5 +1,5 @@
 {
-  "note": "Real IDs only. Audio uploaded 2026-11-16 by win-11 (cloud window). moderationState at upload time: Reviewing (re-check before use).",
+  "note": "IDs and moderation states come from Studio Open Cloud readback. The 2026-11-16 rows preserve the original win-11 snapshot. The 2026-11-22 landmark rows expose only Approved assets to PresentationAssets.Audio.",
   "audio": {
     "amberfall_ravine": {
       "assetId": "rbxassetid://129806106031158",
@@ -35,6 +35,266 @@
       "source": "assets/source/overworld/upload/audio/saltreach_basin_r2.ogg",
       "uploaded": "2026-11-16",
       "moderationState": "Reviewing"
+    },
+    "bell_great_toll": {
+      "assetId": "rbxassetid://128702221998510",
+      "operationId": "9c118f3d-1d7e-4a52-b1e4-0df65cd5bd9e",
+      "source": "assets/source/audio/vesperhold/bell_great_toll.mp3",
+      "uploaded": "2026-11-22",
+      "moderationState": "Approved",
+      "cueKey": "VesperBellGreat",
+      "loop": false,
+      "sha256": "b5ca31eca1b115a83062921daf1e7ad94c3cc04186325aa5646337bdc0244347"
+    },
+    "bell_distant": {
+      "assetId": "rbxassetid://92658341982807",
+      "operationId": "3fdf9bd1-b4d1-442c-bb36-293a4a85c5f4",
+      "source": "assets/source/audio/vesperhold/bell_distant.mp3",
+      "uploaded": "2026-11-22",
+      "moderationState": "Approved",
+      "cueKey": "VesperBellDistant",
+      "loop": false,
+      "sha256": "576a1ef0168f71d75eb5902fded1c8d1523dc24c1d4b153f5a81f3f0ed12db5f"
+    },
+    "wind_spires_loop": {
+      "assetId": "rbxassetid://74361622397313",
+      "operationId": "001e8482-6f68-421d-bc4f-30e51e70d3f2",
+      "source": "assets/source/audio/landmark_masters/wind_spires_loop.wav",
+      "uploaded": "2026-11-22",
+      "moderationState": "Approved",
+      "cueKey": "VesperWindSpires",
+      "loop": true,
+      "sha256": "221b3e0b6c02135935c9fdb2e191e6579956a7448e11bf775f20d4ab5e7ed15d"
+    },
+    "gate_creak": {
+      "assetId": "rbxassetid://106418274898730",
+      "operationId": "b608ffd8-88a6-4bf7-8f6b-132471c0ecf1",
+      "source": "assets/source/audio/vesperhold/gate_creak.mp3",
+      "uploaded": "2026-11-22",
+      "moderationState": "Approved",
+      "cueKey": "VesperGateCreak",
+      "loop": false,
+      "sha256": "70c97e5ff01fd1c8ae153a9afb0472a2d9892a7194e0a9a58cb1595fe82fa75a"
+    },
+    "gate_slam": {
+      "assetId": "rbxassetid://119324656990868",
+      "operationId": "e1e93362-aa96-4336-be14-6427ff7fe970",
+      "source": "assets/source/audio/landmark_masters/gate_slam.wav",
+      "uploaded": "2026-11-22",
+      "moderationState": "Approved",
+      "cueKey": "VesperGateSlam",
+      "loop": false,
+      "sha256": "a7cbcaeb31a058e5c2f3ba35898ea3a3253825fe54f55b8428c2c7851d85161a"
+    },
+    "chain_rattle": {
+      "assetId": "rbxassetid://88467400282494",
+      "operationId": "707dd264-ed6b-4446-af21-463a706aa18d",
+      "source": "assets/source/audio/vesperhold/chain_rattle.mp3",
+      "uploaded": "2026-11-22",
+      "moderationState": "Approved",
+      "cueKey": "VesperChain",
+      "loop": false,
+      "sha256": "8525fbfda961b6d4c8d7fe8b02517022270d7b7f6247ab205f8ef40465dff01a"
+    },
+    "raven_caws": {
+      "assetId": "rbxassetid://87773898781698",
+      "operationId": "b08fbf88-295a-4c82-8558-66bbc2c66a4a",
+      "source": "assets/source/audio/vesperhold/raven_caws.mp3",
+      "uploaded": "2026-11-22",
+      "moderationState": "Reviewing",
+      "cueKey": "VesperRaven",
+      "loop": false,
+      "sha256": "bd52abca04fa16544e765131517ee0c40189fd64789d838a3b94750494917f92"
+    },
+    "torch_crackle_loop": {
+      "assetId": "rbxassetid://108311378068953",
+      "operationId": "dc0bf5de-653e-41b6-af9f-91885da5639f",
+      "source": "assets/source/audio/landmark_masters/torch_crackle_loop.wav",
+      "uploaded": "2026-11-22",
+      "moderationState": "Approved",
+      "cueKey": "VesperTorch",
+      "loop": true,
+      "sha256": "e9ad353b550024bac3455d84f2be37e43c61e63701028d0e06af1e585e1e3bf7"
+    },
+    "crypt_drips_loop": {
+      "assetId": "rbxassetid://131448820002734",
+      "operationId": "d72f21ea-3931-46d9-b510-8934e4ec9225",
+      "source": "assets/source/audio/landmark_masters/crypt_drips_loop.wav",
+      "uploaded": "2026-11-22",
+      "moderationState": "Approved",
+      "cueKey": "VesperCryptDrips",
+      "loop": true,
+      "sha256": "220312605e9c2f5ef0edee67bd0231d91b34c3d3284c663732b2ca235019b82a"
+    },
+    "rain_slate_loop": {
+      "assetId": "rbxassetid://103863806061212",
+      "operationId": "4877ce12-4356-4b57-b2a2-e47326fdd1ec",
+      "source": "assets/source/audio/landmark_masters/rain_slate_loop.wav",
+      "uploaded": "2026-11-22",
+      "moderationState": "Approved",
+      "cueKey": "VesperRain",
+      "loop": true,
+      "sha256": "a90ea9a74a2e87a314bf5793f1ca46602ed9a92ae946a207a03b847832883b09"
+    },
+    "choir_drone_loop": {
+      "assetId": "rbxassetid://106668797426143",
+      "operationId": "f2b064e2-4691-4ab4-a365-a48a17aa893b",
+      "source": "assets/source/audio/landmark_masters/choir_drone_loop.wav",
+      "uploaded": "2026-11-22",
+      "moderationState": "Approved",
+      "cueKey": "VesperChoir",
+      "loop": true,
+      "sha256": "2a156b78d230f31050a23ac6a01e912bebbd8935fd447fcc7062d80ef6d596ba"
+    },
+    "stone_door_grind": {
+      "assetId": "rbxassetid://74200473418156",
+      "operationId": "4e3a6a3a-fc7a-4db1-92ee-4b6f7eb55ad4",
+      "source": "assets/source/audio/vesperhold/stone_door_grind.mp3",
+      "uploaded": "2026-11-22",
+      "moderationState": "Approved",
+      "cueKey": "VesperStoneDoor",
+      "loop": false,
+      "sha256": "fe4d640bad0c81624d2c9786b2282109fba07d690252b68dc151f1d228d83b40"
+    },
+    "gargoyle_crack": {
+      "assetId": "rbxassetid://76189483075453",
+      "operationId": "d3820377-e8c6-4780-8d60-c4e5073c3586",
+      "source": "assets/source/audio/vesperhold/gargoyle_crack.mp3",
+      "uploaded": "2026-11-22",
+      "moderationState": "Approved",
+      "cueKey": "VesperGargoyle",
+      "loop": false,
+      "sha256": "3fdce0bae0cc902b6c59d0933669fc7070ad071eff242c8c722524f0c03800af"
+    },
+    "temple_gong": {
+      "assetId": "rbxassetid://137194649933625",
+      "operationId": "44ade721-8a38-4f25-acf0-09c83fb2fc79",
+      "source": "assets/source/audio/landmark_masters/temple_gong.wav",
+      "uploaded": "2026-11-22",
+      "moderationState": "Approved",
+      "cueKey": "BasinGong",
+      "loop": false,
+      "sha256": "d9c8d23ea7f9f946ecfa373823c988dae8c041c8a2ba7612d85774e3780791c8"
+    },
+    "ribbon_flutter_loop": {
+      "assetId": "rbxassetid://111650986154482",
+      "operationId": "b85e0650-de01-42bf-bc22-1b1ea75717c1",
+      "source": "assets/source/audio/landmark_masters/ribbon_flutter_loop.wav",
+      "uploaded": "2026-11-22",
+      "moderationState": "Approved",
+      "cueKey": "BasinRibbons",
+      "loop": true,
+      "sha256": "07eafd50e7f65c10edf5a52fc0cd4e2e5f38416526b07a851c4339af69c2c654"
+    },
+    "lake_lapping_loop": {
+      "assetId": "rbxassetid://102143866785254",
+      "operationId": "e111aa8a-2ad0-4125-8504-ab6eb6bc5584",
+      "source": "assets/source/audio/landmark_masters/lake_lapping_loop.wav",
+      "uploaded": "2026-11-22",
+      "moderationState": "Approved",
+      "cueKey": "BasinLake",
+      "loop": true,
+      "sha256": "f3bf7cfff56f9a609fc854e7de8f6266e404b10499e215bb232928c407c0e2ee"
+    },
+    "waterfall_distant_loop": {
+      "assetId": "rbxassetid://97819091093033",
+      "operationId": "3efdffa5-f5c4-4933-80d1-baaf76e2c2ef",
+      "source": "assets/source/audio/landmark_masters/waterfall_distant_loop.wav",
+      "uploaded": "2026-11-22",
+      "moderationState": "Approved",
+      "cueKey": "BasinWaterfall",
+      "loop": true,
+      "sha256": "d255f0355ba60b74cb8459b50878fc9a22ed72df9ec86ae500007e73e68b748d"
+    },
+    "rain_tunnel_loop": {
+      "assetId": "rbxassetid://87105848281281",
+      "operationId": "133398bb-3a5a-4347-b588-22d9f407310f",
+      "source": "assets/source/audio/landmark_masters/rain_tunnel_loop.wav",
+      "uploaded": "2026-11-22",
+      "moderationState": "Approved",
+      "cueKey": "BasinRainTunnel",
+      "loop": true,
+      "sha256": "d1cd65395462be198cf8d653e7e218f1e3a04f435bda904614ab7709feb81930"
+    },
+    "basin_birds_insects_loop": {
+      "assetId": "rbxassetid://88022528365588",
+      "operationId": "d12c79e1-d157-48ae-a806-87848a626e78",
+      "source": "assets/source/audio/landmark_masters/basin_birds_insects_loop.wav",
+      "uploaded": "2026-11-22",
+      "moderationState": "Approved",
+      "cueKey": "BasinBirdsInsects",
+      "loop": true,
+      "sha256": "49442ae320348cf39c262a4e06efd547e264aa0159333470f8279d891143de9d"
+    },
+    "boat_creak": {
+      "assetId": "rbxassetid://79887850462943",
+      "operationId": "76f53fe3-52ef-418b-8eb8-450b6c7f7254",
+      "source": "assets/source/audio/bellwood/boat_creak.mp3",
+      "uploaded": "2026-11-22",
+      "moderationState": "Approved",
+      "cueKey": "BasinBoat",
+      "loop": false,
+      "sha256": "688a96525ec6196d65d45034503880df91e93584fceed23ef60bb2f290973800"
+    },
+    "wind_chimes": {
+      "assetId": "rbxassetid://100008474423569",
+      "operationId": "c554af43-0f7c-4556-934f-68f14a9f3cd4",
+      "source": "assets/source/audio/landmark_masters/wind_chimes.wav",
+      "uploaded": "2026-11-22",
+      "moderationState": "Approved",
+      "cueKey": "BasinChimes",
+      "loop": true,
+      "sha256": "e995ecb3ac3a49b75fd439abde064699c85d8dac5705a296e1f3589c97fce4c7"
+    },
+    "frostmere_blizzard_loop": {
+      "assetId": "rbxassetid://92117244492279",
+      "operationId": "563d2e05-58b0-4a2f-8f8e-dd4f0d6a9475",
+      "source": "assets/source/audio/landmark_masters/frostmere_blizzard_loop.wav",
+      "uploaded": "2026-11-22",
+      "moderationState": "Approved",
+      "cueKey": "FrostmereBlizzard",
+      "loop": true,
+      "sha256": "a95f9da653ab9b316808083e151f7685b555f00424c66e33f9ed40e0ab64e9c5"
+    },
+    "frostmere_ice_crack": {
+      "assetId": "rbxassetid://83676906288166",
+      "operationId": "b5afb880-8dfb-4f8d-ad5a-572e462bafe2",
+      "source": "assets/source/audio/regions/frostmere_ice_crack.mp3",
+      "uploaded": "2026-11-22",
+      "moderationState": "Approved",
+      "cueKey": "FrostmereIceCrack",
+      "loop": false,
+      "sha256": "2352bbbf12858860eedfd22e407a43f62b2c1ae3b0c40cfb02c67f7153823d0d"
+    },
+    "amberfall_ravine_roar_loop": {
+      "assetId": "rbxassetid://112448285053190",
+      "operationId": "9ff6c1c9-4fd7-4306-ad75-e2c312fc7dca",
+      "source": "assets/source/audio/landmark_masters/amberfall_ravine_roar_loop.wav",
+      "uploaded": "2026-11-22",
+      "moderationState": "Approved",
+      "cueKey": "AmberfallRoar",
+      "loop": true,
+      "sha256": "537748f9affda0e8600099c3ded8e29f900c02aa3295af454e6cd676e6ced675"
+    },
+    "saltreach_surf_loop": {
+      "assetId": "rbxassetid://101880220175941",
+      "operationId": "dff8ee54-0397-4d1d-97b5-dc2ac2960c86",
+      "source": "assets/source/audio/landmark_masters/saltreach_surf_loop.wav",
+      "uploaded": "2026-11-22",
+      "moderationState": "Approved",
+      "cueKey": "SaltreachSurf",
+      "loop": true,
+      "sha256": "08ba003eca3de0938a82b35c4ee64643ec998a504e37774ba2c3ace9758d2d92"
+    },
+    "ashen_stair_ash_wind_loop": {
+      "assetId": "rbxassetid://131006012808636",
+      "operationId": "9088a354-6e8a-4dd1-a46f-267184daaf9c",
+      "source": "assets/source/audio/landmark_masters/ashen_stair_ash_wind_loop.wav",
+      "uploaded": "2026-11-22",
+      "moderationState": "Approved",
+      "cueKey": "AshenStairWind",
+      "loop": true,
+      "sha256": "992115ea7f9e6b8775974e386aad7c2489ce81314b4672a7dcc83df4ea3eef69"
     }
   }
 }

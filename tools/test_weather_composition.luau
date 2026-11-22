@@ -716,6 +716,83 @@ skyWeather:Sample()
 check("outside the overworld the deck and ambience are destroyed", skyWeather.Clouds == nil and skyWeather.Ambience == nil and ambienceCalls[#ambienceCalls] == "destroyed")
 skyWeather:Destroy()
 
+-- The new landmark beds use the controller's existing voice lifecycle.
+do
+	local Layout = load("src/shared/LandmarkLayout.luau")
+	local Castle = load("src/shared/VesperholdLayout.luau")
+	local sounds = {}
+	local function voice(key, position)
+		local s = { Name = key, Parent = { Position = position, IsA = function() return position ~= nil end } }
+		s.Destroy = function() s.Parent = nil end
+		table.insert(sounds, s)
+		return s
+	end
+	local audio = {
+		id = function(key) return key end,
+		zone = function() end,
+		play = function(key) return voice(key) end,
+		at = function(key, position) return voice(key, position) end,
+		destroy = function() for _, s in sounds do s:Destroy() end end,
+	}
+	local region = "Sanctuary"
+	local position = roblox.Vector3.new(0, 600, 0)
+	local listening = true
+	local signals = {
+		SoundService = {}, Players = { LocalPlayer = { GetAttribute = function() return nil end } },
+		TweenService = { Create = function()
+			local complete
+			return { Completed = { Once = function(_, fn) complete = fn end }, Play = function() complete() end }
+		end },
+		ReplicatedStorage = { WaitForChild = function() return { Shared = {
+			WorldDefinitions = { regionAt = function() return region end },
+			EnvironmentProfiles = Profiles, Wind = Wind, Overworld = Overworld,
+			LandmarkLayout = Layout, VesperholdLayout = Castle,
+		} } end },
+	}
+	local Soundscape = load("src/client/Controllers/SoundscapeController.luau", {
+		game = { GetService = function(_, name) return signals[name] end },
+		script = { Parent = { SpatialAudio = audio } },
+		workspace = { FindFirstChild = function()
+			return { FindFirstChild = function()
+				return { FindFirstChild = function() return { GetAttribute = function() return true end } end }
+			end }
+		end },
+		TweenInfo = { new = function() return {} end }, require = function(module) return module end,
+	})
+	local space = Soundscape.new({ Own = function()
+		return if listening then { Root = { Position = position } } else nil
+	end }, { State = "" })
+	local function live(key)
+		for _, s in sounds do if s.Name == key and s.Parent then return true end end
+		return false
+	end
+	space:Update(0.2)
+	check("Sanctuary still uses its authored wind bed", live("Wind"))
+	region = "Snowfields"
+	position = roblox.Vector3.new(-4300, 535, -5800)
+	space:Update(0.2)
+	check("Frostmere replaces its wind bed with the blizzard", live("FrostmereBlizzard") and not live("Wind"))
+	region = "Forest"
+	local basin = Layout.Landmarks.Bellwood
+	local centre = Layout.basinCentre(basin)
+	local bed = Layout.basinLevels(basin)
+	position = roblox.Vector3.new(centre.X, bed + 6, centre.Z)
+	space:Update(0.2)
+	check("the hidden basin takes over the outdoor ambience below the rim", live("BasinBirdsInsects") and not live("FrostmereBlizzard"))
+	local gate = Layout.gateSpot(basin)
+	position = roblox.Vector3.new(gate.X, gate.Y + 17, gate.Z)
+	space:Update(0.2)
+	check("Bellwood ribbons play spatially beside the gate", live("BasinRibbons"))
+	position += roblox.Vector3.new(0, 140, 0)
+	space:Update(0.2)
+	check("moving above the basin restores Bellwood wind and releases the gate loop",
+		live("Wind") and not live("BasinBirdsInsects") and not live("BasinRibbons"))
+	listening = false
+	space:Update(0.2)
+	check("losing the character releases environmental loops", not live("Wind"))
+	space:Destroy()
+end
+
 print(string.format("weather composition: %d passed, %d failed", passed, failed))
 if failed > 0 then
 	error("weather composition regression failed")

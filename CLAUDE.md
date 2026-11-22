@@ -19,16 +19,16 @@ The creator is entirely vibe-coding this Roblox game and does not write code man
 
 ## Multi-Machine Relay & Git Protocol (CRITICAL)
 - Active branch: `ux/onboarding-overhaul` (all pushes/pulls target this branch).
-- **Zero-Stash Rule**: NEVER conclude a task or session with uncommitted changes in the working directory.
+- **Zero-Stash Rule**: Commit your completed work and preserve unrelated changes and untracked files.
 - **Before Concluding Any Turn/Batch**:
-  1. If code, assets, or `default.project.json` changed, run `python3 tools/build.py` to ensure `places/AsurasPath.rbxlx` is updated.
-  2. Append at most 60 words to `PROJECT_STATE.md` stating what was completed and what comes next.
-  3. Commit and push: `git add -A && git commit -m "feat/fix: summary" && git push origin ux/onboarding-overhaul`
-  4. Confirm `git status` is clean so the other computer pulls complete, unbroken work.
+  1. If code, assets, or `default.project.json` changed, run `ASURA_BUILD_OUTPUT=work/verify.rbxlx bash tools/verify_all.sh` to keep the saved places intact.
+  2. Add at most 60 words at the top of `PROJECT_STATE.md` stating what was completed and what comes next.
+  3. Stage explicit paths, commit, and push to `origin ux/onboarding-overhaul`.
+  4. Confirm `git status` shows only preserved user files or unrelated work.
 - **When Starting Any Session**:
-  1. Run `git pull --rebase origin ux/onboarding-overhaul`.
+  1. Run `git status`, fetch `origin`, and fast-forward `ux/onboarding-overhaul`.
   2. Inspect the top of `PROJECT_STATE.md` to see what the other computer finished.
-  3. Read the current handoff in full before working: `outputs/claude-open-world-2026-11-14/WINDOWS_HANDOFF.md` (state, creator decisions, exact procedures, ordered next steps; resume prompt in `handoff/WINDOWS_RESUME_PROMPT.md`).
+  3. Read the latest creator direction and completed work in `outputs/claude-open-world-2026-11-14/handoff/CLAUDE_RETURN_HANDOFF.md`, then read `outputs/claude-open-world-2026-11-14/WINDOWS_HANDOFF.md` for the project procedures and backlog.
 - Handoff scripts: `./tools/handoff.sh` (Mac) or `tools\handoff.cmd` (Windows) automate this entire flow.
 
 ## Modern Luau Standards
