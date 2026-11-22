@@ -8,6 +8,7 @@ import sys
 
 import bpy
 from mathutils import Matrix, Vector
+from mathutils.noise import noise
 
 ROOT = Path.cwd()
 sys.path.insert(0, str(ROOT / "tools/blender"))
@@ -31,7 +32,7 @@ PALETTE = {
     "MapleAmber": ((0.62, 0.17, 0.035), (0.37, 0.042, 0.012), 0.74, 0.21),
     "MapleDeep": ((0.31, 0.036, 0.041), (0.14, 0.009, 0.025), 0.82, 0.25),
     "Ivy": ((0.21, 0.28, 0.085), (0.033, 0.052, 0.014), 0.84, 0.27),
-    "Moss": ((0.19, 0.22, 0.073), (0.038, 0.052, 0.011), 0.94, 0.31),
+    "Moss": ((0.25, 0.21, 0.06), (0.07, 0.066, 0.02), 0.94, 0.31),  # olive-ochre, #6b6a3a to #8a7f45
 }
 POLY_HAVEN = ROOT / "assets/source/vesperhold/polyhaven"
 TEXTURES = {
@@ -181,10 +182,49 @@ def roof(hall, w, d, rise, z, n):
                 profiles.append([Vector((x + dx, y, z + zz + lift + dy)) for dx, dy in
                                  [(-.67, 0), (-.44, .36), (0, .55), (.44, .36), (.67, 0)]])
             tile.grid(profiles, None, expect=Vector((0, 0, 1)), open_surface=True)
+    # The back and both hip ends carry tile courses too, with more missing tiles where weather hits hardest.
+    rng = random.Random(round(w * 7 + d * 3 + z))
+    arch = [(-.67, 0), (-.44, .36), (0, .55), (.44, .36), (.67, 0)]
+    for face in (-1, 2, -2):
+        t_end = 1.0 if face == -1 else .55
+        courses = 14 if face == -1 else 8
+        across = Vector((1, 0, 0)) if face == -1 else Vector((0, 1, 0))
+        for course in range(courses):
+            t0, t1 = t_end * course / courses, min(t_end, t_end * (course + 1.16) / courses)
+            half = w / 2 - d / 2 * min(t0, .55) if face == -1 else d / 2 * (1 - t0)
+            count = int(2 * half / 3.03)
+            for col in range(count):
+                s = (-1 + (col + .5 + .5 * (course % 2)) * 2 / count) * .96
+                if abs(s) > .96 or noise(Vector((s * 3.1 + face * 5, t0 * 5.3, w * .013))) > (.3 if face == -1 else .36):
+                    continue
+                lift = rng.uniform(.25, .56)
+                rows = [[p + across * dx + Vector((0, 0, z + lift + dy)) for dx, dy in arch]
+                        for p in (roof_point(w, d, rise, face, s, t0), roof_point(w, d, rise, face, s, t1))]
+                tile.grid(rows, None, expect=Vector((0, 0, 1)), open_surface=True)
+    if rise > 10:  # guardian figures in a row up each hip from the upturned corner
+        for sx in (-1, 1):
+            for sy in (-1, 1):
+                for k in range(4):
+                    p = roof_point(w, d, rise, sy, sx, .045 + .05 * k)
+                    size = 1.15 if k == 0 else .9
+                    tile.lathe([(r * size, h * size) for r, h in ((.6, 0), (.66, .55), (.44, 1.25), (.55, 1.7), (.3, 2.2),
+                                                                  (0, 2.5))], 8, at(p.x, p.y, z + p.z + 1.25))
     gold = hall.m("Gold")
     for s in (-1, 1):
         x = s * (w - 0.55 * d) * 0.5
         gold.lathe([(1.7, 0), (1.45, 0.65), (0.7, 2.1), (1.05, 2.7), (0, 4.1)], 14, at(x, 0, z + rise + 1.4))
+
+
+def roof_point(w, d, rise, face, s, t, tg=.55, lift=7.5, kick=4.5):
+    """A point on the kit roof skin (lobby_kit_roofs.hall with roof()'s settings), relative to the eave line."""
+    a, b = w / 2, d / 2
+    if abs(face) == 1:
+        x, y = s * (a - b * min(t, tg)), face * b * (1 - t)
+    else:
+        x, y = (1 if face == 2 else -1) * (a - b * t), s * b * (1 - t)
+    c = min(abs(x) / a, 1) * min(abs(y) / b, 1)
+    return Vector((x + math.copysign(kick * c ** 4, x) if x else 0.0, y + math.copysign(kick * c ** 4, y) if y else 0.0,
+                   rise * (.3 * t + .7 * t * t) + lift * c ** 3))
 
 
 def banners(hall):
@@ -475,5 +515,70 @@ def main():
     bpy.ops.render.render(write_still=True)
 
 
+AUDIT_VIEWS = {  # name: (eye, target, vertical field of view in degrees); +X is image-left in the hero portrait
+    "front": ((0, 1350, 250), (0, -70, 240), 26),
+    "left": ((1350, -40, 250), (0, -110, 240), 27),
+    "right": ((-1350, -40, 250), (0, -110, 240), 27),
+    "rear": ((40, -1500, 260), (10, -140, 240), 26),
+    "rear_oblique": ((-900, -1150, 640), (10, -140, 230), 30),
+    "roof": ((480, -700, 1150), (10, -130, 280), 33),
+}
+CLOSE_VIEWS = {  # supports and junctions at player scale, rendered only when named in VESP_VIEWS
+    "rear_close": ((150, -480, 170), (20, -240, 290), 40),
+    "side_close": ((380, -40, 150), (110, -130, 200), 42),
+    "west_close": ((-400, -120, 190), (-150, -180, 230), 42),
+    "ground_close": ((-340, -430, 22), (-200, -285, 45), 48),
+}
+
+
+def architecture_audit():
+    """Architecture-only check renders, neutral light, no tree, crags or fog (VESP_ARCH_AUDIT=1).
+    Floating details and thin supports show here; the storm portrait hides them."""
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    import stair_reference as sr  # imports this file as `temple_preview`; use its kit so PALETTE edits apply
+    out = Path(os.environ.get("VESP_STUDY_OUT", str(ROOT / "work/claude-bellwood-arch")))
+    out.mkdir(parents=True, exist_ok=True)
+    bpy.ops.wm.read_factory_settings(use_empty=True)
+    temple = sr.Hall()
+    lamps = sr.stonework(temple)
+    for x, y, z, w, d, ht, bays, arch in sr.TIERS:
+        sr.pavilion(temple, (x, y, z), w, d, ht, bays, arch=arch)
+    sr.galleries(temple)
+    for side in (-1, 1):
+        x, y, z = sr.guardian_base(side)
+        sr.lion_plinth(temple, (x, y, z + 9.15), side * .47, side)
+    for x, y, z in ((-34, -44, 113), (34, -44, 113), (-84, -44, 113), (84, -44, 113)):
+        lamps.append(sr.lantern(temple, (x, y, z), 1.0))
+    for x in (-22, 22):
+        sr.gate_lantern(temple, x, -46, 146)
+    mats = sr.art_materials()
+    sr.build_objects(temple, mats)
+    triangles = sum(sum(len(f.vertices) - 2 for f in ob.data.polygons) for ob in bpy.data.objects if ob.type == "MESH")
+    print("Architecture triangles", triangles, flush=True)
+    scene, camera, mannequin = figures.setup_scene(samples=int(os.environ.get("VESP_RENDER_SAMPLES", 16)), cool_rim=True)
+    scene.cycles.device = "CPU"
+    bpy.data.objects.remove(mannequin, do_unlink=True)
+    ground = bpy.data.objects["Ground"]
+    ground.scale = (40, 40, 1)
+    ground.data.materials[0] = mats["Masonry"]
+    background = next(n for n in scene.world.node_tree.nodes if n.type == "BACKGROUND")
+    background.inputs["Color"].default_value = (.42, .44, .47, 1)
+    background.inputs["Strength"].default_value = .9
+    bpy.data.lights["overcast"].energy = 2.4
+    bpy.data.lights["rim"].energy = 1.0
+    scene.view_settings.exposure = float(os.environ.get("VESP_EXPOSURE", 0))
+    scene.render.image_settings.file_format = "JPEG"
+    scene.render.image_settings.quality = 92
+    camera.data.clip_end = 9000
+    for name in os.environ.get("VESP_VIEWS", ",".join(AUDIT_VIEWS)).split(","):
+        eye, target, angle = {**AUDIT_VIEWS, **CLOSE_VIEWS}[name]
+        scene.render.resolution_x, scene.render.resolution_y = 1200, 900
+        scene.render.resolution_percentage = int(os.environ.get("VESP_RENDER_PERCENT", 100))
+        camera.data.angle_y = math.radians(angle)
+        figures.look_at(camera, eye, target)
+        scene.render.filepath = str(out / f"arch_{name}.jpg")
+        bpy.ops.render.render(write_still=True)
+
+
 if __name__ == "__main__":
-    main()
+    architecture_audit() if os.environ.get("VESP_ARCH_AUDIT") == "1" else main()
