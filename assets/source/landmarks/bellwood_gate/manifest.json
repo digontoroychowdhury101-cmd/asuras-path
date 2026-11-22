@@ -1,0 +1,95 @@
+{
+  "kit": "Bellwood landmark: Sunken Temple gate towers",
+  "pieces": {
+    "Bellwood_GateTowers": {
+      "group": "Bellwood",
+      "sub_meshes": {
+        "Bellwood_GateTowers__Stone": 9380,
+        "Bellwood_GateTowers__Tiles": 16880,
+        "Bellwood_GateTowers__Tiles_2": 16880,
+        "Bellwood_GateTowers__Soffit": 11326,
+        "Bellwood_GateTowers__Soffit_2": 11326,
+        "Bellwood_GateTowers__Root": 3020,
+        "Bellwood_GateTowers__Ribbon": 1204
+      },
+      "tris_total": 70016,
+      "size_studs_xyz": [
+        54.4,
+        54.3,
+        50.8
+      ],
+      "bbox_min": [
+        -27.06,
+        -40.8,
+        -0.58
+      ],
+      "bbox_max": [
+        27.33,
+        13.49,
+        50.2
+      ],
+      "materials": [
+        "Vesp_Bellwood_GateTowers__Ribbon",
+        "Vesp_Bellwood_GateTowers__Root",
+        "Vesp_Bellwood_GateTowers__Soffit",
+        "Vesp_Bellwood_GateTowers__Stone",
+        "Vesp_Bellwood_GateTowers__Tiles"
+      ],
+      "file": "Bellwood_GateTowers.glb",
+      "builder": "tools/blender/landmarks/bellwood_gate_towers.py (mac-91, hard-surface + Cycles bake)",
+      "no_decimation": true,
+      "decimation": "none: roles over the cap are split into <18k-tri subs; LOW is a separate polygonisation",
+      "map_resolution": {
+        "Stone": 2048,
+        "Tiles": 2048,
+        "Soffit": 2048,
+        "Root": 2048,
+        "Ribbon": 2048
+      },
+      "maps": {
+        "Stone": {
+          "Color": "maps/Vesp_Bellwood_GateTowers__Stone_Color.png",
+          "Normal": "maps/Vesp_Bellwood_GateTowers__Stone_Normal.png",
+          "Roughness": "maps/Vesp_Bellwood_GateTowers__Stone_Roughness.png",
+          "Metal": "maps/Vesp_Bellwood_GateTowers__Stone_Metal.png"
+        },
+        "Tiles": {
+          "Color": "maps/Vesp_Bellwood_GateTowers__Tiles_Color.png",
+          "Normal": "maps/Vesp_Bellwood_GateTowers__Tiles_Normal.png",
+          "Roughness": "maps/Vesp_Bellwood_GateTowers__Tiles_Roughness.png",
+          "Metal": "maps/Vesp_Bellwood_GateTowers__Tiles_Metal.png"
+        },
+        "Soffit": {
+          "Color": "maps/Vesp_Bellwood_GateTowers__Soffit_Color.png",
+          "Normal": "maps/Vesp_Bellwood_GateTowers__Soffit_Normal.png",
+          "Roughness": "maps/Vesp_Bellwood_GateTowers__Soffit_Roughness.png",
+          "Metal": "maps/Vesp_Bellwood_GateTowers__Soffit_Metal.png"
+        },
+        "Root": {
+          "Color": "maps/Vesp_Bellwood_GateTowers__Root_Color.png",
+          "Normal": "maps/Vesp_Bellwood_GateTowers__Root_Normal.png",
+          "Roughness": "maps/Vesp_Bellwood_GateTowers__Root_Roughness.png",
+          "Metal": "maps/Vesp_Bellwood_GateTowers__Root_Metal.png"
+        },
+        "Ribbon": {
+          "Color": "maps/Vesp_Bellwood_GateTowers__Ribbon_Color.png",
+          "Normal": "maps/Vesp_Bellwood_GateTowers__Ribbon_Normal.png",
+          "Roughness": "maps/Vesp_Bellwood_GateTowers__Ribbon_Roughness.png",
+          "Metal": "maps/Vesp_Bellwood_GateTowers__Ribbon_Metal.png"
+        }
+      },
+      "base_layer": "Poly Haven medieval_blocks_03, ceramic_roof_01, distressed_painted_planks, bark_willow_02 (CC0)",
+      "high_poly_tris": {
+        "Stone": 354588,
+        "Tiles": 65754,
+        "Soffit": 73102,
+        "Root": 22870,
+        "Ribbon": 3220
+      },
+      "collision": {
+        "Stone": "PreciseConvexDecomposition",
+        "Root": "Hull"
+      }
+    }
+  }
+}

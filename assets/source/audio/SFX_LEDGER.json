@@ -1,0 +1,292 @@
+{
+  "note": "All files MP3 128k 44.1k stereo, as delivered by ElevenLabs (ffmpeg unavailable; not converted to OGG, not loudness-normalised). Loops are model-generated 'seamless loop' prompts: not verified seamless; check/crossfade before relying. 17 credits per generation (26 total ~434).",
+  "flow": "ElevenLabs flow ITN0MjRt2M80yFOJBCQ6",
+  "sounds": {
+    "bell_great_toll": {
+      "file": "assets/source/audio/vesperhold/bell_great_toll.mp3",
+      "prompt": "Colossal cathedral bell tolling once, deep bronze, huge stone gothic citadel, long cavernous reverb tail fading over 8 seconds, cold mountain air, dark and ominous, no music",
+      "model": "eleven_text_to_sound_v3",
+      "duration": 10,
+      "loop": false,
+      "region": "vesperhold",
+      "category": "bell",
+      "source": "ElevenLabs text-to-sound (generated for this project)",
+      "generated": "2026-11-22"
+    },
+    "bell_distant": {
+      "file": "assets/source/audio/vesperhold/bell_distant.mp3",
+      "prompt": "Distant church bell tolling twice, heard from far across a snowy mountain valley, muffled by wind and distance, soft long echo, haunted, 8 seconds",
+      "model": "eleven_text_to_sound_v3",
+      "duration": 8,
+      "loop": false,
+      "region": "vesperhold",
+      "category": "bell",
+      "source": "ElevenLabs text-to-sound (generated for this project)",
+      "generated": "2026-11-22"
+    },
+    "wind_spires_loop": {
+      "file": "assets/source/audio/vesperhold/wind_spires_loop.mp3",
+      "prompt": "Cold wind howling and moaning through tall stone gothic spires and arches, eerie whistling, gusts rising and falling, no voices, seamless loop, 20 seconds",
+      "model": "eleven_text_to_sound_v3",
+      "duration": 20,
+      "loop": true,
+      "region": "vesperhold",
+      "category": "ambience",
+      "source": "ElevenLabs text-to-sound (generated for this project)",
+      "generated": "2026-11-22"
+    },
+    "gate_creak": {
+      "file": "assets/source/audio/vesperhold/gate_creak.mp3",
+      "prompt": "Massive rusted iron gate slowly creaking open, long groaning hinges, heavy metal scrape, large stone courtyard reverb, 5 seconds",
+      "model": "eleven_text_to_sound_v3",
+      "duration": 5,
+      "loop": false,
+      "region": "vesperhold",
+      "category": "oneshot",
+      "source": "ElevenLabs text-to-sound (generated for this project)",
+      "generated": "2026-11-22"
+    },
+    "gate_slam": {
+      "file": "assets/source/audio/vesperhold/gate_slam.mp3",
+      "prompt": "Huge iron portcullis gate slamming shut, deafening metal clang with boom, echoing through a vast stone hall, reverb tail 4 seconds",
+      "model": "eleven_text_to_sound_v3",
+      "duration": 5,
+      "loop": false,
+      "region": "vesperhold",
+      "category": "oneshot",
+      "source": "ElevenLabs text-to-sound (generated for this project)",
+      "generated": "2026-11-22"
+    },
+    "chain_rattle": {
+      "file": "assets/source/audio/vesperhold/chain_rattle.mp3",
+      "prompt": "Heavy iron chains rattling and dragging across stone floor, swaying in wind, dungeon castle space, medium reverb, 6 seconds",
+      "model": "eleven_text_to_sound_v3",
+      "duration": 6,
+      "loop": false,
+      "region": "vesperhold",
+      "category": "oneshot",
+      "source": "ElevenLabs text-to-sound (generated for this project)",
+      "generated": "2026-11-22"
+    },
+    "raven_caws": {
+      "file": "assets/source/audio/vesperhold/raven_caws.mp3",
+      "prompt": "Several ravens cawing harshly in cold open air, three distinct caws with pauses, faint wing flaps, echo off stone towers, 6 seconds",
+      "model": "eleven_text_to_sound_v3",
+      "duration": 6,
+      "loop": false,
+      "region": "vesperhold",
+      "category": "oneshot",
+      "source": "ElevenLabs text-to-sound (generated for this project)",
+      "generated": "2026-11-22"
+    },
+    "torch_crackle_loop": {
+      "file": "assets/source/audio/vesperhold/torch_crackle_loop.mp3",
+      "prompt": "Wall-mounted torch fire crackling softly with occasional pops and gentle flame flutter, close, dry stone corridor, seamless loop, 15 seconds",
+      "model": "eleven_text_to_sound_v3",
+      "duration": 15,
+      "loop": true,
+      "region": "vesperhold",
+      "category": "emitter",
+      "source": "ElevenLabs text-to-sound (generated for this project)",
+      "generated": "2026-11-22"
+    },
+    "crypt_drips_loop": {
+      "file": "assets/source/audio/vesperhold/crypt_drips_loop.mp3",
+      "prompt": "Slow water drips echoing in a deep stone crypt, sparse irregular drops into puddles, damp cavernous reverb, quiet low hum of silence, seamless loop, 20 seconds",
+      "model": "eleven_text_to_sound_v3",
+      "duration": 20,
+      "loop": true,
+      "region": "vesperhold",
+      "category": "ambience",
+      "source": "ElevenLabs text-to-sound (generated for this project)",
+      "generated": "2026-11-22"
+    },
+    "rain_slate_loop": {
+      "file": "assets/source/audio/vesperhold/rain_slate_loop.mp3",
+      "prompt": "Steady heavy rain falling on slate rooftops and stone ledges, gutters trickling, outdoor, no thunder, no music, seamless loop, 20 seconds",
+      "model": "eleven_text_to_sound_v3",
+      "duration": 20,
+      "loop": true,
+      "region": "vesperhold",
+      "category": "ambience",
+      "source": "ElevenLabs text-to-sound (generated for this project)",
+      "generated": "2026-11-22"
+    },
+    "choir_drone_loop": {
+      "file": "assets/source/audio/vesperhold/choir_drone_loop.mp3",
+      "prompt": "Low haunted choir drone, distant male voices sustaining a dark minor chord with no words, huge cathedral reverb, slowly swelling and fading, eerie, ambient, seamless loop, 20 seconds",
+      "model": "eleven_text_to_sound_v3",
+      "duration": 20,
+      "loop": true,
+      "region": "vesperhold",
+      "category": "ambience",
+      "source": "ElevenLabs text-to-sound (generated for this project)",
+      "generated": "2026-11-22"
+    },
+    "stone_door_grind": {
+      "file": "assets/source/audio/vesperhold/stone_door_grind.mp3",
+      "prompt": "Giant stone door grinding open on dust and rock, deep rumbling scrape, falling grit, ancient mechanism, large hall reverb, 6 seconds",
+      "model": "eleven_text_to_sound_v3",
+      "duration": 6,
+      "loop": false,
+      "region": "vesperhold",
+      "category": "oneshot",
+      "source": "ElevenLabs text-to-sound (generated for this project)",
+      "generated": "2026-11-22"
+    },
+    "gargoyle_crack": {
+      "file": "assets/source/audio/vesperhold/gargoyle_crack.mp3",
+      "prompt": "Stone statue cracking and splitting, sharp crack then grinding, small rubble falling and rolling, outdoor courtyard, 3 seconds",
+      "model": "eleven_text_to_sound_v3",
+      "duration": 3,
+      "loop": false,
+      "region": "vesperhold",
+      "category": "oneshot",
+      "source": "ElevenLabs text-to-sound (generated for this project)",
+      "generated": "2026-11-22"
+    },
+    "temple_gong": {
+      "file": "assets/source/audio/bellwood/temple_gong.mp3",
+      "prompt": "Large temple bronze gong struck once with a padded mallet, deep shimmering resonance, long decay over 10 seconds, open wooden temple hall with mountain air, serene",
+      "model": "eleven_text_to_sound_v3",
+      "duration": 10,
+      "loop": false,
+      "region": "bellwood",
+      "category": "oneshot",
+      "source": "ElevenLabs text-to-sound (generated for this project)",
+      "generated": "2026-11-22"
+    },
+    "ribbon_flutter_loop": {
+      "file": "assets/source/audio/bellwood/ribbon_flutter_loop.mp3",
+      "prompt": "Many cloth prayer ribbons fluttering and snapping softly in a gentle breeze, light fabric rustle, quiet outdoor temple, seamless loop, 15 seconds",
+      "model": "eleven_text_to_sound_v3",
+      "duration": 15,
+      "loop": true,
+      "region": "bellwood",
+      "category": "emitter",
+      "source": "ElevenLabs text-to-sound (generated for this project)",
+      "generated": "2026-11-22"
+    },
+    "lake_lapping_loop": {
+      "file": "assets/source/audio/bellwood/lake_lapping_loop.mp3",
+      "prompt": "Gentle water lapping on a still lotus lake shore, soft ripples and small wavelets on stones, calm, no birds, seamless loop, 20 seconds",
+      "model": "eleven_text_to_sound_v3",
+      "duration": 20,
+      "loop": true,
+      "region": "bellwood",
+      "category": "emitter",
+      "source": "ElevenLabs text-to-sound (generated for this project)",
+      "generated": "2026-11-22"
+    },
+    "waterfall_distant_loop": {
+      "file": "assets/source/audio/bellwood/waterfall_distant_loop.mp3",
+      "prompt": "Distant tall waterfall roar and soft mist spray heard from far away, steady rushing white noise, forest valley, seamless loop, 20 seconds",
+      "model": "eleven_text_to_sound_v3",
+      "duration": 20,
+      "loop": true,
+      "region": "bellwood",
+      "category": "emitter",
+      "source": "ElevenLabs text-to-sound (generated for this project)",
+      "generated": "2026-11-22"
+    },
+    "rain_tunnel_loop": {
+      "file": "assets/source/audio/bellwood/rain_tunnel_loop.mp3",
+      "prompt": "Rain falling and dripping inside a long stone tunnel, hollow echoing drops, running water trickle along the floor, damp resonant reverb, seamless loop, 20 seconds",
+      "model": "eleven_text_to_sound_v3",
+      "duration": 20,
+      "loop": true,
+      "region": "bellwood",
+      "category": "ambience",
+      "source": "ElevenLabs text-to-sound (generated for this project)",
+      "generated": "2026-11-22"
+    },
+    "basin_birds_insects_loop": {
+      "file": "assets/source/audio/bellwood/basin_birds_insects_loop.mp3",
+      "prompt": "Sheltered forest basin ambience, soft songbirds, distant frogs and crickets, light leaf rustle, peaceful misty morning, seamless loop, 20 seconds",
+      "model": "eleven_text_to_sound_v3",
+      "duration": 20,
+      "loop": true,
+      "region": "bellwood",
+      "category": "ambience",
+      "source": "ElevenLabs text-to-sound (generated for this project)",
+      "generated": "2026-11-22"
+    },
+    "boat_creak": {
+      "file": "assets/source/audio/bellwood/boat_creak.mp3",
+      "prompt": "Old wooden rowboat creaking and gently rocking on calm water, wood groans, rope strain, soft water slap, outdoors, 5 seconds",
+      "model": "eleven_text_to_sound_v3",
+      "duration": 5,
+      "loop": false,
+      "region": "bellwood",
+      "category": "oneshot",
+      "source": "ElevenLabs text-to-sound (generated for this project)",
+      "generated": "2026-11-22"
+    },
+    "wind_chimes": {
+      "file": "assets/source/audio/bellwood/wind_chimes.mp3",
+      "prompt": "Bronze and bamboo wind chimes tinkling gently in a soft breeze, delicate bell tones, open temple veranda, seamless loop, 15 seconds",
+      "model": "eleven_text_to_sound_v3",
+      "duration": 15,
+      "loop": true,
+      "region": "bellwood",
+      "category": "emitter",
+      "source": "ElevenLabs text-to-sound (generated for this project)",
+      "generated": "2026-11-22"
+    },
+    "frostmere_blizzard_loop": {
+      "file": "assets/source/audio/regions/frostmere_blizzard_loop.mp3",
+      "prompt": "Howling arctic blizzard wind across open snowfield, whipping gusts, fine ice particles hissing, bleak and cold, seamless loop, 20 seconds",
+      "model": "eleven_text_to_sound_v3",
+      "duration": 20,
+      "loop": true,
+      "region": "frostmere",
+      "category": "ambience",
+      "source": "ElevenLabs text-to-sound (generated for this project)",
+      "generated": "2026-11-22"
+    },
+    "frostmere_ice_crack": {
+      "file": "assets/source/audio/regions/frostmere_ice_crack.mp3",
+      "prompt": "Frozen lake ice cracking and groaning, long deep creak with sharp cracks and a resonant boom, open cold air, 5 seconds",
+      "model": "eleven_text_to_sound_v3",
+      "duration": 5,
+      "loop": false,
+      "region": "frostmere",
+      "category": "oneshot",
+      "source": "ElevenLabs text-to-sound (generated for this project)",
+      "generated": "2026-11-22"
+    },
+    "amberfall_ravine_roar_loop": {
+      "file": "assets/source/audio/regions/amberfall_ravine_roar_loop.mp3",
+      "prompt": "Powerful waterfall roar in a narrow rocky ravine, thundering water crash with rushing spray, canyon reverb, seamless loop, 20 seconds",
+      "model": "eleven_text_to_sound_v3",
+      "duration": 20,
+      "loop": true,
+      "region": "amberfall",
+      "category": "emitter",
+      "source": "ElevenLabs text-to-sound (generated for this project)",
+      "generated": "2026-11-22"
+    },
+    "saltreach_surf_loop": {
+      "file": "assets/source/audio/regions/saltreach_surf_loop.mp3",
+      "prompt": "Salt coast ocean waves rolling and hissing on pebble shore, distant seagulls, sea breeze, cold gray morning, seamless loop, 20 seconds",
+      "model": "eleven_text_to_sound_v3",
+      "duration": 20,
+      "loop": true,
+      "region": "saltreach",
+      "category": "ambience",
+      "source": "ElevenLabs text-to-sound (generated for this project)",
+      "generated": "2026-11-22"
+    },
+    "ashen_stair_ash_wind_loop": {
+      "file": "assets/source/audio/regions/ashen_stair_ash_wind_loop.mp3",
+      "prompt": "Dry hot ash wind over a burnt volcanic stone stairway, soft hissing ash, occasional ember crackles and distant low rumble, desolate, seamless loop, 20 seconds",
+      "model": "eleven_text_to_sound_v3",
+      "duration": 20,
+      "loop": true,
+      "region": "ashen_stair",
+      "category": "ambience",
+      "source": "ElevenLabs text-to-sound (generated for this project)",
+      "generated": "2026-11-22"
+    }
+  }
+}
