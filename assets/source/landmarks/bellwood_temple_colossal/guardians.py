@@ -940,9 +940,9 @@ SCAN_SPECS = {
     # Sol's v10 heights (scan and its slab), plus a few degrees of extra turn toward the stair.
     # `support` only picks the plinth's front roundel: "ball" carves the wheel, "wheel" the lotus.
     "east": dict(side=1, seed=4127, height=23.9, turn=math.radians(5), support="ball", moss=.7, lichen=.55,
-                 wear=.8, tint=(1.0, .97, .92)),
+                 wear=.8, tint=(.80, .84, .74)),
     "west": dict(side=-1, seed=8803, height=22.1, turn=math.radians(2.5), support="wheel", moss=1.15, lichen=.3,
-                 wear=.45, tint=(.9, .94, .93)),
+                 wear=.45, tint=(.73, .80, .72)),
 }
 SHIELD_OUT = Vector((-.957, 0, -.29)).normalized()  # the escutcheon's face looks forward and a little down
 SHIELD_CENTRE = Vector((-8.95, 1.0, 8.4))          # its middle, in the normalised scan frame
@@ -1020,7 +1020,7 @@ def scan_material(src, key, tint):
     one = N.new("ShaderNodeValue")
     one.outputs[0].default_value = 1.0
     c = mix(albedo if albedo else tuple(base.default_value), (*tint, 1), one.outputs[0], "MULTIPLY")
-    c = mix(c, (.30, .28, .25, 1), sep.outputs[0], "MULTIPLY")
+    c = mix(c, (.22, .26, .18, 1), sep.outputs[0], "MULTIPLY")  # green-black grime, as on the reference
     wear = N.new("ShaderNodeMath")
     wear.operation = "MULTIPLY"
     wear.inputs[1].default_value = .55
@@ -1073,7 +1073,11 @@ def build_scan_guardian(key, collection):
     cx, cy = (slab[:, :2].max(0) + slab[:, :2].min(0)) / 2
     W, D = span[0] + 3.6, span[1] + 3.4  # about 1.7 studs of seat around the scan's slab
     plinth_b, seat = build_plinth(spec, rng, W, D)
+    first_tuft = moss_tufts(plinth_b, rng, 7)
     plinth = plinth_b.mesh_object(name + "_Plinth", collection)
+    tuft = np.zeros(len(plinth.data.vertices), np.float32)
+    tuft[first_tuft:] = 1
+    plinth.data.attributes.new("Tuft", "FLOAT", "POINT").data.foreach_set("value", tuft)
     for p in plinth.data.polygons:
         p.use_smooth = True
     recalc_normals(plinth.data)
@@ -1130,6 +1134,7 @@ def build_plinth(spec, rng, W, D):
     b.add_bm(stone_block((W + .5, D + .5, .85), Matrix.Translation((0, 0, z + .42)), rng, radius=.32,
                          erosion=.08, chips=3, cut=.8))
     z += .85
+    b.ledges = [((W + .5) / 2, (D + .5) / 2, z)]
     # waist: recessed core, proud corner posts, framed panels with carved roundels
     waist_h, cw, cd = 3.5, W - 3.2, D - 3.2
     b.add_bm(stone_block((cw, cd, waist_h), Matrix.Translation((0, 0, z + waist_h / 2)), rng, radius=.15,
@@ -1188,12 +1193,54 @@ def build_plinth(spec, rng, W, D):
     b.add_bm(stone_block((W - .6, D - .6, seat_h), Matrix.Translation((0, 0, z + seat_h / 2)), rng, radius=.3,
                          erosion=.07, chips=4, cut=.7))
     z += seat_h
+    b.ledges.append(((W - .6) / 2, (D - .6) / 2, z))
     return b, z
+
+
+def moss_tufts(b, rng, count):
+    """Moss cushions over the ledge lips, each trailing a fringe of drooping tapered strands.
+    Returns the first vertex index of the tufts so the masks can mark them as moss."""
+    first = len(b.verts)
+    for _ in range(count):
+        hx, hy, z = rng.choice(b.ledges)
+        face = rng.choice(("front", "front", "left", "right"))  # the back faces the terrace and stays bare
+        if face == "front":
+            p, out, along = Vector((rng.uniform(-.8, .8) * hx, hy, z)), Vector((0, 1, 0)), Vector((1, 0, 0))
+        else:
+            sx = 1 if face == "right" else -1
+            p, out, along = Vector((sx * hx, rng.uniform(-.8, .8) * hy, z)), Vector((sx, 0, 0)), Vector((0, 1, 0))
+        spread = rng.uniform(.6, 1.2)
+        pad = bmesh.new()
+        bmesh.ops.create_icosphere(pad, subdivisions=2, radius=1)
+        for v in pad.verts:
+            v.co *= 1 + .25 * (rng.random() - .5)
+        axes = Matrix((along * spread * 1.15, out * .55, Vector((0, 0, .22)))).transposed().to_4x4()
+        b.add_bm(pad, Matrix.Translation(p + out * .02 + Vector((0, 0, .04))) @ axes)
+        for _ in range(rng.randint(6, 10)):
+            u = rng.uniform(-1, 1)
+            root = p + along * u * spread + out * rng.uniform(.05, .3) - Vector((0, 0, .08))
+            length = rng.uniform(.5, 1.9) * (1.1 - .5 * abs(u))  # longest at the middle of the clump
+            width = rng.uniform(.07, .14)
+            sway = along * rng.uniform(-.25, .25)
+            rings = []
+            for k in range(7):
+                t = k / 6
+                c = root + out * (.16 * math.sin(math.pi * t * .7)) - Vector((0, 0, length * t)) + sway * t * t
+                r = width * (1 - .85 * t)
+                rings.append([c + (along * math.cos(a) + out * math.sin(a)) * r
+                              for a in (j * math.pi / 2 for j in range(4))])
+            tip = root - Vector((0, 0, length * 1.04)) + sway + out * .13
+            verts = [v for ring in rings for v in ring] + [tip]
+            faces = [(k * 4 + j, k * 4 + (j + 1) % 4, (k + 1) * 4 + (j + 1) % 4, (k + 1) * 4 + j)
+                     for k in range(6) for j in range(4)]
+            faces += [(24 + j, 24 + (j + 1) % 4, 28) for j in range(4)] + [(3, 2, 1, 0)]
+            b.add(verts, faces)
+    return first
 
 
 # ---------------------------------------------------------------- weathering and materials
 
-def weathering(ob, spec, rng, bake_with=()):
+def weathering(ob, spec, rng, bake_with=(), gain=1.0, joints=.5):
     """Weather attribute: R grime (baked AO), G moss, B worn edges, A lichen. Masks only; no geometry moves."""
     me = ob.data
     scene = bpy.context.scene
@@ -1232,7 +1279,7 @@ def weathering(ob, spec, rng, bake_with=()):
     patch = np.array([fbm(p, .22, 3, seed) for p in co])
     up = np.clip(nr[:, 2], 0, 1) ** 1.3
     zrel = (co[:, 2] - co[:, 2].min()) / (np.ptp(co[:, 2]) + 1e-6)
-    moss = np.clip(spec["moss"] * (up * (.55 + .8 * grime) + .5 * grime * (1 - zrel))
+    moss = np.clip(gain * spec["moss"] * (up * (.55 + .8 * grime) + joints * grime * (1 - .5 * zrel))
                    * np.clip(.55 + 1.6 * patch, 0, 1.3) - .12, 0, 1)
     wear = np.clip(conv * 2.6 - .1, 0, 1) * spec["wear"] * (1 - moss)
     fr = me.attributes.get("Fracture")
@@ -1242,6 +1289,11 @@ def weathering(ob, spec, rng, bake_with=()):
         moss = moss * (1 - f) + f * np.clip(grime * spec["moss"] * .45 - .08, 0, .35)
         grime = grime * (1 - .5 * f)
         wear = wear * (1 - f) + f * .72
+    tuft = me.attributes.get("Tuft")
+    if tuft:  # hanging moss is moss through and through
+        t = np.empty(len(co), np.float32)
+        tuft.data.foreach_get("value", t)
+        moss, wear = np.maximum(moss, t), wear * (1 - t)
     print(f"WEATHER {ob.name}: grime {grime.mean():.2f}, moss {moss.mean():.2f} (>{.3}: {(moss > .3).mean():.0%}), "
           f"wear {wear.mean():.2f}")
     spots = np.array([fbm(p, .6, 2, seed + 11) for p in co])
@@ -1255,63 +1307,84 @@ def weathering(ob, spec, rng, bake_with=()):
 
 
 def granite(name, tint):
+    """Dark grey-green granite: flecked grain, water stains running down from the ledges, grime in the
+    joints (R), pale fresh stone on chipped arrises (B) and broken-edged moss (G)."""
     mat = bpy.data.materials.new(name)
     mat.use_nodes = True
-    nt = mat.node_tree
-    N, L = nt.nodes, nt.links
+    N, L = mat.node_tree.nodes, mat.node_tree.links
     bsdf = next(n for n in N if n.type == "BSDF_PRINCIPLED")
     attr = N.new("ShaderNodeAttribute")
     attr.attribute_name = "Weather"
     sep = N.new("ShaderNodeSeparateColor")
     L.new(attr.outputs["Color"], sep.inputs[0])
-    tex = N.new("ShaderNodeTexCoord")
-    grain = N.new("ShaderNodeTexNoise")
-    grain.inputs["Scale"].default_value = .9
-    grain.inputs["Detail"].default_value = 8
-    L.new(tex.outputs["Object"], grain.inputs["Vector"])
-    ramp = N.new("ShaderNodeValToRGB")
-    ramp.color_ramp.elements[0].color = (tint[0] * .72, tint[1] * .72, tint[2] * .72, 1)
-    ramp.color_ramp.elements[1].color = (*tint, 1)
-    L.new(grain.outputs["Fac"], ramp.inputs[0])
-    dirt = N.new("ShaderNodeMix")
-    dirt.data_type = "RGBA"
-    dirt.blend_type = "MULTIPLY"
-    L.new(sep.outputs[0], dirt.inputs["Factor"])
-    L.new(ramp.outputs[0], dirt.inputs[6])
-    dirt.inputs[7].default_value = (.32, .30, .27, 1)
-    wear = N.new("ShaderNodeMix")
-    wear.data_type = "RGBA"
-    L.new(sep.outputs[2], wear.inputs["Factor"])
-    L.new(dirt.outputs[2], wear.inputs[6])
-    wear.inputs[7].default_value = (.56, .54, .5, 1)
-    mossn = N.new("ShaderNodeTexNoise")
-    mossn.inputs["Scale"].default_value = 3.5
-    mossn.inputs["Detail"].default_value = 6
-    L.new(tex.outputs["Object"], mossn.inputs["Vector"])
-    mramp = N.new("ShaderNodeValToRGB")
-    mramp.color_ramp.elements[0].color = (.045, .065, .018, 1)
-    mramp.color_ramp.elements[1].color = (.15, .19, .05, 1)
-    L.new(mossn.outputs["Fac"], mramp.inputs[0])
-    moss = N.new("ShaderNodeMix")
-    moss.data_type = "RGBA"
-    L.new(sep.outputs[1], moss.inputs["Factor"])
-    L.new(wear.outputs[2], moss.inputs[6])
-    L.new(mramp.outputs[0], moss.inputs[7])
-    L.new(moss.outputs[2], bsdf.inputs["Base Color"])
-    rough = N.new("ShaderNodeMath")
-    rough.operation = "MULTIPLY_ADD"
-    rough.inputs[1].default_value = -.3
-    rough.inputs[2].default_value = .9
-    L.new(sep.outputs[2], rough.inputs[0])
-    L.new(rough.outputs[0], bsdf.inputs["Roughness"])
-    pits = N.new("ShaderNodeTexNoise")
-    pits.inputs["Scale"].default_value = 14
-    pits.inputs["Detail"].default_value = 6
-    L.new(tex.outputs["Object"], pits.inputs["Vector"])
+    obj = N.new("ShaderNodeTexCoord").outputs["Object"]
+    geo = N.new("ShaderNodeNewGeometry")
+
+    def noise(scale, detail, vector=obj):
+        n = N.new("ShaderNodeTexNoise")
+        n.inputs["Scale"].default_value = scale
+        n.inputs["Detail"].default_value = detail
+        L.new(vector, n.inputs["Vector"])
+        return n.outputs["Fac"]
+
+    def ramp(fac, lo, hi, c0=(0, 0, 0, 1), c1=(1, 1, 1, 1)):
+        r = N.new("ShaderNodeValToRGB")
+        r.color_ramp.elements[0].position, r.color_ramp.elements[1].position = lo, hi
+        r.color_ramp.elements[0].color, r.color_ramp.elements[1].color = c0, c1
+        L.new(fac, r.inputs[0])
+        return r.outputs[0]
+
+    def math_(op, a, b):
+        m = N.new("ShaderNodeMath")
+        m.operation = op
+        for i, v in enumerate((a, b)):
+            if isinstance(v, (int, float)):
+                m.inputs[i].default_value = v
+            else:
+                L.new(v, m.inputs[i])
+        return m.outputs[0]
+
+    def mix(a, b_, factor, blend="MIX"):
+        m = N.new("ShaderNodeMix")
+        m.data_type, m.blend_type = "RGBA", blend
+        L.new(factor, m.inputs["Factor"])
+        for i, v in ((6, a), (7, b_)):
+            if isinstance(v, tuple):
+                m.inputs[i].default_value = v
+            else:
+                L.new(v, m.inputs[i])
+        return m.outputs[2]
+
+    c = ramp(noise(.9, 8), 0, 1, (tint[0] * .7, tint[1] * .7, tint[2] * .7, 1), (*tint, 1))
+    flecks = ramp(noise(38, 2), .62, .7)
+    c = mix(c, (tint[0] * 1.9, tint[1] * 1.85, tint[2] * 1.8, 1), math_("MULTIPLY", flecks, .35))
+    # water stains: noise stretched down the faces, strongest on walls, fading toward the footing
+    stretch = N.new("ShaderNodeMapping")
+    stretch.inputs["Scale"].default_value = (2.6, 2.6, .09)
+    L.new(obj, stretch.inputs["Vector"])
+    wall = N.new("ShaderNodeSeparateXYZ")
+    L.new(geo.outputs["Normal"], wall.inputs[0])
+    streak = math_("MULTIPLY", ramp(noise(3.0, 3, stretch.outputs[0]), .48, .66),
+                   math_("SUBTRACT", 1.0, math_("ABSOLUTE", wall.outputs["Z"], 0)))
+    height = N.new("ShaderNodeSeparateXYZ")
+    L.new(obj, height.inputs[0])
+    streak = math_("MULTIPLY", streak, math_("ADD", math_("MULTIPLY", height.outputs["Z"], .06), .35))
+    c = mix(c, (.30, .36, .27, 1), math_("MINIMUM", math_("MULTIPLY", streak, .9), 1.0), "MULTIPLY")
+    c = mix(c, (.34, .38, .29, 1), sep.outputs[0], "MULTIPLY")
+    chips = math_("MINIMUM", math_("MULTIPLY", sep.outputs[2], math_("ADD", noise(11, 3), .55)), 1.0)
+    c = mix(c, (.19, .195, .18, 1), chips)  # fresh stone on chipped arrises, a step lighter, not white
+    # moss: the mask decides where, a fine noise breaks its edge into clumps
+    clump = noise(7.5, 5)
+    moss = ramp(math_("MULTIPLY", sep.outputs[1], math_("ADD", clump, .45)), .3, .55)
+    mcol = ramp(noise(16, 4), .25, .8, (.028, .048, .012, 1), (.11, .16, .035, 1))
+    m_f = math_("ADD", moss, 0)  # colour to scalar
+    L.new(mix(c, mcol, m_f), bsdf.inputs["Base Color"])
+    rough = math_("ADD", math_("MULTIPLY", chips, -.22), .86)
+    L.new(math_("MINIMUM", math_("ADD", rough, math_("MULTIPLY", m_f, .14)), 1.0), bsdf.inputs["Roughness"])
     bump = N.new("ShaderNodeBump")
-    bump.inputs["Strength"].default_value = .35
+    bump.inputs["Strength"].default_value = .4
     bump.inputs["Distance"].default_value = .05
-    L.new(pits.outputs["Fac"], bump.inputs["Height"])
+    L.new(math_("ADD", noise(14, 6), math_("MULTIPLY", m_f, math_("MULTIPLY", noise(45, 3), 1.5))), bump.inputs["Height"])
     L.new(bump.outputs["Normal"], bsdf.inputs["Normal"])
     return mat
 
@@ -1422,15 +1495,159 @@ def tris(ob):
     return sum(len(p.vertices) - 2 for p in ob.data.polygons)
 
 
-def export(objs, path):
+def export(objs, path, colors="ACTIVE"):
     for o in bpy.context.view_layer.objects:
         o.select_set(o in objs)
     kw = dict(filepath=str(path), export_format="GLB", use_selection=True, export_apply=True,
               export_yup=True)
     try:
-        bpy.ops.export_scene.gltf(**kw, export_vertex_color="ACTIVE")
+        bpy.ops.export_scene.gltf(**kw, export_vertex_color=colors)
     except TypeError:
         bpy.ops.export_scene.gltf(**kw)
+
+
+# ---------------------------------------------------------------- upload parts (split, never decimated)
+
+PART_LIMIT = 18000
+
+
+def split_faces(ob, groups):
+    """One new object per (name, face mask). Faces are only shared out; none are removed or simplified."""
+    parts = []
+    for name, keep in groups:
+        me = ob.data.copy()
+        me.name = name
+        bm = bmesh.new()
+        bm.from_mesh(me)
+        bm.faces.ensure_lookup_table()
+        bmesh.ops.delete(bm, geom=[f for f in bm.faces if not keep[f.index]], context="FACES")
+        bm.to_mesh(me)
+        bm.free()
+        part = bpy.data.objects.new(name, me)
+        part.matrix_world = ob.matrix_world.copy()
+        ob.users_collection[0].objects.link(part)
+        parts.append(part)
+    assert sum(tris(o) for o in parts) == tris(ob), "a split must keep every triangle"
+    assert all(tris(o) <= PART_LIMIT for o in parts), [tris(o) for o in parts]
+    return parts
+
+
+def split_lion(lion):
+    """Base (slab, paws, haunches) and body (chest, mane, head), cut at the narrowest level that leaves
+    both under the limit. The cut stays in the lower body, far below the face."""
+    me = lion.data
+    tri = np.array([len(p.vertices) - 2 for p in me.polygons])
+    cz = np.empty(len(me.polygons) * 3)
+    me.polygons.foreach_get("center", cz)
+    cz = cz.reshape(-1, 3)[:, 2]
+    loop_edge = np.empty(len(me.loops), int)
+    me.loops.foreach_get("edge_index", loop_edge)
+    loop_face = np.repeat(np.arange(len(me.polygons)), [p.loop_total for p in me.polygons])
+    lo = np.full(len(me.edges), np.inf)
+    hi = np.full(len(me.edges), -np.inf)
+    np.minimum.at(lo, loop_edge, cz[loop_face])
+    np.maximum.at(hi, loop_edge, cz[loop_face])
+    top, height = cz.max(), np.ptp(cz)
+    best = None
+    for z in np.linspace(cz.min(), top - .45 * height, 400):
+        below = tri[cz < z].sum()
+        if below <= PART_LIMIT and tri.sum() - below <= PART_LIMIT:
+            seam = int(((lo < z) & (hi >= z)).sum())
+            if best is None or seam < best[0]:
+                best = (seam, z)
+    assert best, "no level splits the scan under the limit"
+    print(f"LION SPLIT {lion.name}: z {best[1]:.2f} ({(best[1] - cz.min()) / height:.0%} up), seam {best[0]} edges")
+    return split_faces(lion, [(lion.name + "_Base", cz < best[1]), (lion.name + "_Body", cz >= best[1])])
+
+
+def split_plinth(plinth):
+    """Lower and upper plinth along a joint between whole stones (each block is its own island)."""
+    bm = bmesh.new()
+    bm.from_mesh(plinth.data)
+    bm.faces.ensure_lookup_table()
+    island = np.full(len(bm.faces), -1)
+    for f in bm.faces:
+        if island[f.index] >= 0:
+            continue
+        stack_ = [f]
+        island[f.index] = f.index
+        while stack_:
+            g = stack_.pop()
+            for e in g.edges:
+                for h in e.link_faces:
+                    if island[h.index] < 0:
+                        island[h.index] = f.index
+                        stack_.append(h)
+    tri = np.array([len(f.verts) - 2 for f in bm.faces])
+    cz = np.array([f.calc_center_median().z for f in bm.faces])
+    bm.free()
+    ids, inv = np.unique(island, return_inverse=True)
+    iz = np.bincount(inv, cz * tri) / np.bincount(inv, tri)  # tri-weighted island height
+    cut = min(np.unique(iz), key=lambda z: max(tri[iz[inv] < z].sum(), tri[iz[inv] >= z].sum()))
+    low = iz[inv] < cut
+    return split_faces(plinth, [(plinth.name + "_Lower", low), (plinth.name + "_Upper", ~low)])
+
+
+def bake_maps(ob, folder, size=2048):
+    """Own UV layout, then albedo, roughness and tangent normal baked from the render material
+    (masks and all) into 2048 maps; the part ends with one UV map and a plain PBR material."""
+    me = ob.data
+    scene = bpy.context.scene
+    source_uv = me.uv_layers[0].name if me.uv_layers else None
+    me.uv_layers.new(name="Bake")
+    me.uv_layers.active = me.uv_layers["Bake"]
+    for o in bpy.context.view_layer.objects:
+        o.select_set(o == ob)
+    bpy.context.view_layer.objects.active = ob
+    bpy.ops.object.mode_set(mode="EDIT")
+    bpy.ops.mesh.select_all(action="SELECT")
+    bpy.ops.uv.smart_project(angle_limit=math.radians(60), island_margin=.004)
+    bpy.ops.object.mode_set(mode="OBJECT")
+    me.uv_layers["Bake"].active_render = True
+    work = me.materials[0].copy()
+    me.materials[0] = work
+    N, L = work.node_tree.nodes, work.node_tree.links
+    for n in [n for n in N if n.type == "TEX_IMAGE" and not n.inputs[0].is_linked]:
+        uv = N.new("ShaderNodeUVMap")  # scan textures keep reading their own layout
+        uv.uv_map = source_uv
+        L.new(uv.outputs[0], n.inputs[0])
+    target = N.new("ShaderNodeTexImage")
+    N.active = target
+    scene.render.engine = "CYCLES"
+    scene.cycles.device = "CPU"
+    scene.cycles.samples = 4
+    scene.cycles.texture_limit_render = "2048"
+    scene.render.bake.target = "IMAGE_TEXTURES"
+    scene.render.bake.margin = 16
+    maps = {}
+    for kind, bake, colour in (("albedo", "DIFFUSE", "sRGB"), ("roughness", "ROUGHNESS", "Non-Color"),
+                               ("normal", "NORMAL", "Non-Color")):
+        img = bpy.data.images.new(f"{ob.name}_{kind}", size, size, alpha=False)
+        img.colorspace_settings.name = colour
+        target.image = img
+        kw = dict(pass_filter={"COLOR"}) if bake == "DIFFUSE" else {}
+        bpy.ops.object.bake(type=bake, **kw)
+        img.filepath_raw = str(folder / f"{ob.name}_{kind}.png")
+        img.file_format = "PNG"
+        img.save()
+        maps[kind] = img
+    if source_uv:
+        me.uv_layers.remove(me.uv_layers[source_uv])
+    final = bpy.data.materials.new(ob.name)
+    final.use_nodes = True
+    N, L = final.node_tree.nodes, final.node_tree.links
+    bsdf = next(n for n in N if n.type == "BSDF_PRINCIPLED")
+    tex = {}
+    for kind, img in maps.items():
+        tex[kind] = N.new("ShaderNodeTexImage")
+        tex[kind].image = img
+    L.new(tex["albedo"].outputs["Color"], bsdf.inputs["Base Color"])
+    L.new(tex["roughness"].outputs["Color"], bsdf.inputs["Roughness"])
+    nmap = N.new("ShaderNodeNormalMap")
+    L.new(tex["normal"].outputs["Color"], nmap.inputs["Color"])
+    L.new(nmap.outputs["Normal"], bsdf.inputs["Normal"])
+    me.materials[0] = final
+    bpy.data.materials.remove(work)
 
 
 # ---------------------------------------------------------------- review renders (not exported)
@@ -1622,7 +1839,8 @@ def projected_box(scene, cam, objs, res):
     return int(max(0, min(xs))), int(max(0, min(ys))), int(min(res[0], max(xs))), int(min(res[1], max(ys)))
 
 
-def render_all(built, out, shots, breaks=False):
+def render_all(built, out, shots, breaks=False, closes_only=False):
+    """closes_only: just the two closes and the reference sheet; its stair crop is rendered into `out`."""
     shots.mkdir(parents=True, exist_ok=True)
     context_scene(built)
     scene, cam = setup_render(int(os.environ.get("GUARD_SAMPLES", 64)))
@@ -1631,17 +1849,18 @@ def render_all(built, out, shots, breaks=False):
     portrait = (960, 1440)
     pct = int(os.environ.get("GUARD_PERCENT", 100)) / 100
     # lower stair: standing on the approach just below the first step, as in the creator's frame
-    shot(scene, cam, shots / "mac94_guardians_stair_view.jpg", Vector((0, 300, 5.2)), Vector((0, 200, 42)), 17,
-         portrait)
-    stair_boxes = {k: projected_box(scene, cam, built[k][0][:2], (portrait[0] * pct, portrait[1] * pct))
-                   for k in built}
-    shot(scene, cam, shots / "mac94_guardians_front.jpg", Vector((0, 276, 5.2)), Vector((0, 200, 36)), 20,
-         (1600, 1000))
-    shot(scene, cam, shots / "mac94_guardians_back.jpg", Vector((6, 128, 72)), mid + Vector((0, 4, 18)), 26,
-         (1600, 1000))
-    _, yr, zr, wr = stair_profile(12)
-    shot(scene, cam, shots / "mac94_guardians_rail_view.jpg", Vector((-wr / 2 + 2.5, yr, zr + 4.6)),
-         west + Vector((2, 0, 20)), 30, (1000, 1200))
+    stair_path = (out if closes_only else shots) / "mac94_guardians_stair_view.jpg"
+    shot(scene, cam, stair_path, Vector((0, 300, 5.2)), Vector((0, 200, 42)), 17, portrait)
+    stair_boxes = {k: projected_box(scene, cam, [o for o in built[k][0] if "Rubble" not in o.name],
+                                    (portrait[0] * pct, portrait[1] * pct)) for k in built}
+    if not closes_only:
+        shot(scene, cam, shots / "mac94_guardians_front.jpg", Vector((0, 276, 5.2)), Vector((0, 200, 36)), 20,
+             (1600, 1000))
+        shot(scene, cam, shots / "mac94_guardians_back.jpg", Vector((6, 128, 72)), mid + Vector((0, 4, 18)), 26,
+             (1600, 1000))
+        _, yr, zr, wr = stair_profile(12)
+        shot(scene, cam, shots / "mac94_guardians_rail_view.jpg", Vector((-wr / 2 + 2.5, yr, zr + 4.6)),
+             west + Vector((2, 0, 20)), 30, (1000, 1200))
     for key, loc in (("west", west), ("east", east)):
         side = -1 if key == "west" else 1
         eye = loc + Vector((-side * 35, 23, 28))
@@ -1651,7 +1870,7 @@ def render_all(built, out, shots, breaks=False):
                  loc + Vector((0, -1, 28)), 50, (1200, 1200))
     # reference lions (the viewer's left is East) beside ours from the same lower-stair viewpoint
     ref = load_pixels(REFERENCE)
-    ours = load_pixels(shots / "mac94_guardians_stair_view.jpg")
+    ours = load_pixels(stair_path)
     h, w = ours.shape[:2]
     pad = 20
     rows = []
@@ -1716,7 +1935,7 @@ def main():
         built[key] = (build_scan_guardian if mode == "scan" else build_guardian)(key, col)
     plain = {}
     for key, (parts, spec, rng) in built.items():
-        tint = (.25, .25, .235) if key == "east" else (.23, .235, .22)
+        tint = (.12, .13, .11) if key == "east" else (.11, .125, .105)  # dark grey-green, as on the reference
         stone = granite(f"Bellwood guardian granite ({key})", tint)
         for ob in parts:
             if mode == "scan" and ob is parts[0]:
@@ -1725,7 +1944,8 @@ def main():
                 ob.data.materials.append(scan_material(plain[key], key, spec["tint"]))
             else:
                 ob.data.materials.append(stone)
-            weathering(ob, spec, rng, bake_with=parts)
+            heavy = mode == "scan" and ob is not parts[0]  # the plinth carries the reference's thick joint moss
+            weathering(ob, spec, rng, bake_with=parts, **(dict(gain=1.5, joints=1.5) if heavy else {}))
     for key, (parts, spec, rng) in built.items():
         lion = parts[0]
         if mode == "scan":  # the GLB carries the scan's plain albedo and normal map; masks ride in COLOR_0
@@ -1736,11 +1956,23 @@ def main():
             lion.data.materials[0] = render_mat
         print(f"GUARDIAN {key} ({mode}): " + ", ".join(f"{o.name} {tris(o)}" for o in parts)
               + f"; GLB total {sum(tris(o) for o in parts)} tris; statue height {lion.dimensions.z:.2f}")
+    if mode == "scan" and os.environ.get("GUARD_PARTS", "1") != "0":
+        folder = OUT / "textures"
+        folder.mkdir(exist_ok=True)
+        for key, (parts, spec, rng) in list(built.items()):
+            pieces = split_lion(parts[0]) + split_plinth(parts[1])
+            for o in pieces:
+                bake_maps(o, folder)
+            export(pieces, OUT / f"bellwood_guardian_{key}_parts.glb", colors="NONE")
+            for o in parts:  # the whole meshes stay in the .blend; the renders show the shipped parts
+                o.hide_render = True
+            built[key] = (pieces, spec, rng)
+            print(f"PARTS {key}: " + ", ".join(f"{o.name} {tris(o)}" for o in pieces) + f"; peak {peak_mb():.0f} MB")
     bpy.ops.wm.save_as_mainfile(filepath=str(OUT / f"bellwood_guardians{'' if mode == 'scan' else '_broken'}.blend"))
     if os.environ.get("GUARD_CLAY") == "1":
         clay_sheet(built, OUT / "clay_sheet.jpg")
     if os.environ.get("GUARD_RENDER", "1") != "0":
-        render_all(built, OUT, SHOTS, breaks=(mode == "broken"))
+        render_all(built, OUT, SHOTS, breaks=(mode == "broken"), closes_only=os.environ.get("GUARD_SHOTS") == "closes")
     print(f"PEAK_RSS_MB {peak_mb():.0f}")
 
 
