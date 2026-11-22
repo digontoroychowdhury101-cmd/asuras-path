@@ -940,9 +940,9 @@ SCAN_SPECS = {
     # Sol's v10 heights (scan and its slab), plus a few degrees of extra turn toward the stair.
     # `support` only picks the plinth's front roundel: "ball" carves the wheel, "wheel" the lotus.
     "east": dict(side=1, seed=4127, height=23.9, turn=math.radians(5), support="ball", moss=.7, lichen=.55,
-                 wear=.8, tint=(.80, .84, .74)),
+                 wear=.8, tint=(.68, .71, .63)),
     "west": dict(side=-1, seed=8803, height=22.1, turn=math.radians(2.5), support="wheel", moss=1.15, lichen=.3,
-                 wear=.45, tint=(.73, .80, .72)),
+                 wear=.45, tint=(.62, .68, .61)),
 }
 SHIELD_OUT = Vector((-.957, 0, -.29)).normalized()  # the escutcheon's face looks forward and a little down
 SHIELD_CENTRE = Vector((-8.95, 1.0, 8.4))          # its middle, in the normalised scan frame
@@ -1021,6 +1021,10 @@ def scan_material(src, key, tint):
     one.outputs[0].default_value = 1.0
     c = mix(albedo if albedo else tuple(base.default_value), (*tint, 1), one.outputs[0], "MULTIPLY")
     c = mix(c, (.22, .26, .18, 1), sep.outputs[0], "MULTIPLY")  # green-black grime, as on the reference
+    recess = N.new("ShaderNodeMapRange")  # deep occlusion only: grime pools in the folds of the mane and legs
+    recess.inputs["From Min"].default_value, recess.inputs["From Max"].default_value = .3, .75
+    L.new(sep.outputs[0], recess.inputs["Value"])
+    c = mix(c, (.42, .45, .36, 1), recess.outputs["Result"], "MULTIPLY")
     wear = N.new("ShaderNodeMath")
     wear.operation = "MULTIPLY"
     wear.inputs[1].default_value = .55
@@ -1043,8 +1047,7 @@ def scan_material(src, key, tint):
     moss_n.inputs["Detail"].default_value = 6
     L.new(coord.outputs["Object"], moss_n.inputs["Vector"])
     moss_r = N.new("ShaderNodeValToRGB")
-    moss_r.color_ramp.elements[0].color = (.045, .065, .018, 1)
-    moss_r.color_ramp.elements[1].color = (.15, .19, .05, 1)
+    moss_r.color_ramp.elements[0].color, moss_r.color_ramp.elements[1].color = (.068, .078, .026, 1), (.14, .135, .048, 1)
     L.new(moss_n.outputs["Fac"], moss_r.inputs[0])
     c = mix(c, moss_r.outputs[0], sep.outputs[1])
     L.new(c, base)
@@ -1209,18 +1212,18 @@ def moss_tufts(b, rng, count):
         else:
             sx = 1 if face == "right" else -1
             p, out, along = Vector((sx * hx, rng.uniform(-.8, .8) * hy, z)), Vector((sx, 0, 0)), Vector((0, 1, 0))
-        spread = rng.uniform(.6, 1.2)
+        spread = rng.uniform(.35, 1.3)
         pad = bmesh.new()
         bmesh.ops.create_icosphere(pad, subdivisions=2, radius=1)
         for v in pad.verts:
             v.co *= 1 + .25 * (rng.random() - .5)
         axes = Matrix((along * spread * 1.15, out * .55, Vector((0, 0, .22)))).transposed().to_4x4()
         b.add_bm(pad, Matrix.Translation(p + out * .02 + Vector((0, 0, .04))) @ axes)
-        for _ in range(rng.randint(6, 10)):
+        for _ in range(rng.randint(3, 13)):
             u = rng.uniform(-1, 1)
-            root = p + along * u * spread + out * rng.uniform(.05, .3) - Vector((0, 0, .08))
-            length = rng.uniform(.5, 1.9) * (1.1 - .5 * abs(u))  # longest at the middle of the clump
-            width = rng.uniform(.07, .14)
+            root = p + along * u * spread + out * rng.uniform(.03, .35) - Vector((0, 0, rng.uniform(.04, .2)))
+            length = rng.uniform(.25, 2.4) * (1.1 - .5 * abs(u)) * rng.choice((.5, 1, 1, 1.3))
+            width = rng.uniform(.03, .08)
             sway = along * rng.uniform(-.25, .25)
             rings = []
             for k in range(7):
@@ -1368,15 +1371,16 @@ def granite(name, tint):
                    math_("SUBTRACT", 1.0, math_("ABSOLUTE", wall.outputs["Z"], 0)))
     height = N.new("ShaderNodeSeparateXYZ")
     L.new(obj, height.inputs[0])
-    streak = math_("MULTIPLY", streak, math_("ADD", math_("MULTIPLY", height.outputs["Z"], .06), .35))
-    c = mix(c, (.30, .36, .27, 1), math_("MINIMUM", math_("MULTIPLY", streak, .9), 1.0), "MULTIPLY")
+    streak = math_("MULTIPLY", streak, math_("ADD", math_("MULTIPLY", height.outputs["Z"], .1), .2))
+    c = mix(c, (.22, .27, .20, 1), math_("MINIMUM", streak, 1.0), "MULTIPLY")
     c = mix(c, (.34, .38, .29, 1), sep.outputs[0], "MULTIPLY")
     chips = math_("MINIMUM", math_("MULTIPLY", sep.outputs[2], math_("ADD", noise(11, 3), .55)), 1.0)
     c = mix(c, (.19, .195, .18, 1), chips)  # fresh stone on chipped arrises, a step lighter, not white
     # moss: the mask decides where, a fine noise breaks its edge into clumps
     clump = noise(7.5, 5)
     moss = ramp(math_("MULTIPLY", sep.outputs[1], math_("ADD", clump, .45)), .3, .55)
-    mcol = ramp(noise(16, 4), .25, .8, (.028, .048, .012, 1), (.11, .16, .035, 1))
+    mcol = ramp(noise(16, 4), .25, .8, (.068, .078, .026, 1), (.14, .135, .048, 1))
+    mcol = mix(mcol, (.045, .05, .018, 1), ramp(sep.outputs[0], .6, .95))  # #3c3f24 in the joints
     m_f = math_("ADD", moss, 0)  # colour to scalar
     L.new(mix(c, mcol, m_f), bsdf.inputs["Base Color"])
     rough = math_("ADD", math_("MULTIPLY", chips, -.22), .86)
