@@ -184,3 +184,10 @@ already credited Terrain3D / ambientCG Rock023 CC0 maps above; the original Terr
 remain intact. Variant A is uploaded in `AsuraBambooFrostSteps`; B/C remain local source options.
 Three supports reuse that geometry and the existing CragC material. Real creator-owned IDs and the
 source hash are recorded in `assets/BAMBOO_FROST_STEPS_UPLOADED.json`.
+
+## Guardian lion sculpt base — 22 November 2026 (pending ship)
+
+| Source | Link | Licence | Use |
+|---|---|---|---|
+| Lion Statue - optimized — nebulousflynn1 (Thomas Flynn), Zenodo | [Zenodo record](https://zenodo.org/records/10324226) | CC0-1.0 | Scan file `lion_scan.glb` (MD5 77f9da14228246a2758105c2368be79f, matches Zenodo), sculpt base. modified: resculpted into original Bellwood guardian lions; escutcheon replaced. |
+| Löwe — www.noe-3d.at, Sketchfab (original scan) | [Sketchfab model](https://sketchfab.com/3d-models/lowe-4522a4cdc1c14190bf1a8811fa27da32) | CC0-1.0 | Original scan underlying the Zenodo record. modified: resculpted into original Bellwood guardian lions; escutcheon replaced. |
