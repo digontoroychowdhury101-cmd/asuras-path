@@ -1,5 +1,21 @@
 # Codex handoff: Bellwood roots, lions in scene, then the Roblox replacement (23 Nov 2026)
 
+## 23 November Codex checkpoint
+
+The v17 art recipe and pilot baker are on the raw asset branch at `ed2ebf7`. The editable Blender scene is `work/sol-bellwood-v17/bellwood_stair_reference.blend`. It uses the finished, baked guardian GLBs from `work/claude-bellwood-guardians`. Rebuild them with `guardians.py` if those files are missing.
+
+- Eight authored roots now leave the trunk and descend both stair flanks, with toes beyond the lion plinths. The low paths follow measured retaining-wall and coping profiles. Upper guides use roof, masonry, soffit and lacquer contacts. A surface survey reduced unsupported upper intervals from 28 reported guide segments to 10. Some of the remaining segments still cross open bays. Keep the eight full paths and move those spans against walls or piers before export.
+- The approved lion faces, mane and shield carving are intact. Both lions and their weathered plinths are in the temple scene with the final 2048 maps. The original light GLBs include color masks used by the bake and are unsuitable for final scene renders. Use the `_parts.glb` variants. Each guardian’s four mesh parts remain under 18,000 triangles. The six locally split files are under `work/sol-bellwood-guardian-pilot/split/`. They were not sent to Roblox.
+- The crown now uses single tapered shoots and fewer terminal forks. Branch collars follow the limb and taper beneath its surface. The stair has new stone piers, lanterns, patchy moss and chipped tread lips. The full study still needs closer grain and support checks before a production pack.
+- `export_pilot.py` baked the v16 study’s eave and stair surfaces at 2048. The stair has 2,902 triangles and the eave 2,428. After JPEG embed and split, the two meshes fit into one roughly 15.4 MB GLB under `work/sol-bellwood-v15/pilot/split/`. This is an offline material and file-size check. Full production topology, collision, bake, upload and registry work remain.
+- The terrain-only fit survey found all eight road viewpoints still see the upper roof and crown at every measured site. A front rock ridge behind the giant face hid all 48 crown rays at a 420-stud world crest for the candidate at Across 30, Along −115. That candidate’s sampled foundation corners fit inside the inner rim, and its stair toe is about 148 studs from the gate origin. The ridge existed only in `work/sol-bellwood-v14/world_fit.luau`. It needs shape, clearances, an entry approach and inspection in Studio before use.
+- All 14 local project verification stages passed. Layout passed 71 checks and loader 202. There was no new Studio Play, Development save or Publish. The older hall remains the game’s registered temple.
+
+Review the [reference comparison](../captures/mac/bellwood_face/sol_bellwood_v17_reference_comparison.jpg), [root close-up](../captures/mac/bellwood_face/sol_bellwood_v17_root.jpg) [side view](../captures/mac/bellwood_face/sol_bellwood_v17_side.jpg), [fork close-up](../captures/mac/bellwood_face/sol_bellwood_v17_fork.jpg) and [approved lion in context](../captures/mac/bellwood_face/sol_bellwood_guardian_in_context.jpg). The roots reach the lower terraces, but the lower bark still reads too smooth in close-up.
+
+The notes below describe Claude’s earlier v13 checkpoint and the original art brief. Use the v17 state above when resuming.
+
+
 Claude stopped at mac-94 because the root delta failed twice (v12, v13). Everything below is ready for you to pick up. Read `CLAUDE.md` / `AGENTS.md` standing decisions first. The rules that matter most here:
 - Never modify `places/` or `outputs/AsurasPath.rbxlx`.
 - Use no Meshy, paid, NC, ND or Creator Store assets.

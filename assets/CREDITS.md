@@ -185,9 +185,9 @@ remain intact. Variant A is uploaded in `AsuraBambooFrostSteps`; B/C remain loca
 Three supports reuse that geometry and the existing CragC material. Real creator-owned IDs and the
 source hash are recorded in `assets/BAMBOO_FROST_STEPS_UPLOADED.json`.
 
-## Guardian lion sculpt base — 22 November 2026 (pending ship)
+## Bellwood guardian lion scan (pending ship)
 
 Not shipped yet, so these are listed here and not in the table rows that `src/shared/EndingCredits.luau` must mirror. When the guardians ship, turn them into table rows and add matching `EndingCredits` entries.
 
-- Lion Statue - optimized, by nebulousflynn1 (Thomas Flynn), on Zenodo: https://zenodo.org/records/10324226. Licence CC0-1.0. Scan file `lion_scan.glb`, MD5 77f9da14228246a2758105c2368be79f, which matches Zenodo's checksum. Used as the sculpt base. Modified: resculpted into original Bellwood guardian lions, with the escutcheon replaced.
+- Lion Statue - optimized, by nebulousflynn1 (Thomas Flynn), on Zenodo: https://zenodo.org/records/10324226. Licence CC0-1.0. Scan file `lion_scan.glb`, MD5 77f9da14228246a2758105c2368be79f, which matches Zenodo's checksum. Used for both Bellwood guardian lions. The scan’s face and carving are intact. The pair has mirrored placement, separate granite plinths, moss and wear, and a Bellwood wheel detail on the original shield.
 - Löwe, by www.noe-3d.at, the original scan on Sketchfab: https://sketchfab.com/3d-models/lowe-4522a4cdc1c14190bf1a8811fa27da32. Licence CC0-1.0. It is the scan underneath the Zenodo record. Modified in the same way.
