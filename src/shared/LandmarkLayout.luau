@@ -100,6 +100,18 @@ function Layout.basinEllipse(lm: any, x: number, z: number, pad: number?): numbe
 	return (across / a) ^ 2 + (along / b) ^ 2
 end
 
+-- Basin grade weight at a world XZ (0..1, max over every landmark with a basin): 1 inside the shore, easing to 0 a little past it
+-- (normalised radius 0.92 -> 1.12, ~17 studs on the 150 semi-axis), so the grade is gone before the forest beyond the rim.
+function Layout.basinWeight(x: number, z: number): number
+	local w = 0
+	for _, lm in Layout.Landmarks do
+		if not lm.Basin then continue end
+		local t = math.clamp((1.12 - math.sqrt(Layout.basinEllipse(lm, x, z))) / 0.2, 0, 1)
+		w = math.max(w, t * t * (3 - 2 * t))
+	end
+	return w
+end
+
 -- World XZ of the ellipse at angle theta, pushed out studs past the shore (along the semi-axes).
 function Layout.basinRing(lm: any, theta: number, out: number): (number, number)
 	local c, fx, fz, rx, rz = basinAxes(lm)

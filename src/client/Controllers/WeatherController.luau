@@ -12,6 +12,7 @@ local Config = require(Shared:WaitForChild("Config") :: ModuleScript) :: any
 local Overworld = require(Shared.Shared.Overworld)
 local Profiles = require(Shared.Shared.EnvironmentProfiles)
 local Wind = require(Shared.Shared.Wind)
+local LandmarkLayout = require(Shared.Shared.LandmarkLayout) :: any
 local Effects = require(Shared.Shared.EffectsPreference)
 local Atmosphere = require(script.Parent.VesperholdAtmosphere) :: any
 local Ambience = require(script.Parent.OverworldAmbience) :: any
@@ -151,6 +152,7 @@ function Controller.Sample(self: any)
 	local player = Players.LocalPlayer
 	local encounter = player:GetAttribute("AsuraEncounter")
 	local ridge = if region == "Snowfields" then Overworld.vesperholdWeight(position.X, position.Z) else 0
+	local basin = if region == "Forest" then LandmarkLayout.basinWeight(position.X, position.Z) else 0
 	local covered = sheltered(position, if ridge > 0 then 230 else 60)
 	local mix = Profiles.weatherBlend(weights, t)
 	-- One volumetric deck over the whole overworld; the ridge thickens the same instance (Profiles.clouds), never a second one.
@@ -168,11 +170,12 @@ function Controller.Sample(self: any)
 	self.Rates = Profiles.ambience({ Weights = weights, Mix = mix, Time = t, Sheltered = covered,
 		Comfort = Effects.reducedMotion() or Effects.reduced() })
 	if not self.Ambience then self.Ambience = Ambience.new() end
+	self.Basin = basin
 	self.Ridge, self.Comfort = ridge, Effects.reducedMotion() or Effects.reduced()
 	if ridge > 0 and not self.Atmos then self.Atmos = Atmosphere.new() end
 	local profile, info = Profiles.compose({ Weights = weights, Time = t, Mix = mix,
 		Sheltered = covered, Comfort = Effects.reducedMotion() or Effects.reduced(),
-		Vesperhold = ridge })
+		Vesperhold = ridge, Basin = basin })
 	self.Active, self.Composed, self.Info = true, profile, info
 	self.Wind = Wind.sample(true, Config.Workspace.GlobalWind, info.WindGain)
 	-- Weather stays out of a fight: the arena look and readability floor belong to the encounter.

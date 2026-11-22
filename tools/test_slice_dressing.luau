@@ -989,6 +989,29 @@ do
 		if LL.basinEllipse(bw, p.X, p.Z, bw.Basin.Thick + 4) < 1 then inBasin += 1 end
 	end
 	check("nothing is scattered in the sunken basin or on its rim (" .. inBasin .. ")", inBasin == 0) -- they would float over the bowl
+	-- Basin exclusion is a true ellipse (rotated by the landmark yaw), not a circle on the long semi-axis.
+	local function at(lm, across, along)
+		local c, fx, fz = LL.basinCentre(lm), LL.front(lm)
+		return c.X + fz * -across + fx * along, c.Z + fx * across + fz * along
+	end
+	local pad = bw.Basin.Thick + 6
+	local ex, ez = at(bw, 0, bw.Basin.Depth / 2 + pad - 3)
+	check("basin exclusion: a point just inside the rim band on the short axis is excluded", S.inBasinExclusion(bw, ex, ez))
+	ex, ez = at(bw, 0, bw.Basin.Depth / 2 + pad + 3)
+	check("basin exclusion: a point just outside it on the short axis is NOT excluded", not S.inBasinExclusion(bw, ex, ez))
+	ex, ez = at(bw, bw.Basin.Width / 2 + pad - 3, 0)
+	check("basin exclusion: the long axis excludes to its own rim and not past it", S.inBasinExclusion(bw, ex, ez) and not S.inBasinExclusion(bw, at(bw, bw.Basin.Width / 2 + pad + 3, 0)))
+	local big = table.clone(bw)
+	big.Basin = table.clone(bw.Basin)
+	big.Basin.Width, big.Basin.Depth = 1400, 1120
+	ex, ez = at(big, 0, 560 + pad + 5)
+	local c = LL.basinCentre(big)
+	check("basin exclusion: an enlarged 1400 x 1120 basin does not clear forest past its short rim (the old circle did)",
+		not S.inBasinExclusion(big, ex, ez) and math.sqrt((ex - c.X) ^ 2 + (ez - c.Z) ^ 2) < 700 + pad)
+	ex, ez = at(big, 100, 100)
+	check("basin exclusion: the enlarged basin's interior is excluded", S.inBasinExclusion(big, ex, ez))
+	local ax, az = at(big, 650, 0)
+	check("basin exclusion follows the yaw (the across axis is the wide one)", S.inBasinExclusion(big, ax, az))
 end
 
 -- 7. Cells and landmarks.

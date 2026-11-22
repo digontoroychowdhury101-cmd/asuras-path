@@ -637,6 +637,36 @@ do
 			and math.abs(origin.UpVector.Y - 1) < 1e-6 and view:Dot(right) < 0 and ang >= 6 and ang <= 35
 	end
 	check("gate towers stand at their spot facing the basin centre, left of centre in the exit view", gateOk)
+	do -- own function scope: this section is near Luau's 200-local limit
+	(function()
+		-- Basin accent lights: warm, shadowless, on invisible anchored parts at the hall's eave/doorway and the gate's niches/lintel.
+		local lights = lm:FindFirstChild("BasinLights")
+		local nLights, allInside, allWarm, partsOk, perModel = 0, true, true, true, { Temple = 0, Gate = 0 }
+		local tFrame, gFrame = W2.templeFrame(bw), W2.gateFrame(bw)
+		for _, part in if lights then lights:GetChildren() else {} do
+			local light = part:FindFirstChildWhichIsA("PointLight")
+			nLights += 1
+			partsOk = partsOk and part.Anchored == true and part.CanCollide == false and part.CanQuery == false and part.CanTouch == false
+				and part.Transparency == 1 and part.CastShadow == false and light ~= nil
+			local p = part.Position
+			allInside = allInside and LL.basinEllipse(bw, p.X, p.Z) < 1
+			if light then
+				allWarm = allWarm and light.Shadows == false and light.Range >= 18 and light.Range <= 40 and light.Brightness > 0 and light.Brightness <= 3
+					and light.Color.R > light.Color.G and light.Color.G > light.Color.B
+			end
+			local kind = part:GetAttribute("For")
+			if perModel[kind] ~= nil then perModel[kind] += 1 end
+			local frame = if kind == "Temple" then tFrame else gFrame
+			local r = if kind == "Temple" then T.Radius else G.Radius
+			allInside = allInside and (frame.Position - p).Magnitude <= r * 1.2
+		end
+		check("basin lights: 4..12 in total (budget 12), some at the hall and some at the gate", nLights >= 4 and nLights <= 12 and perModel.Temple >= 2 and perModel.Gate >= 2)
+		check("basin lights: all inside the basin ellipse and within their landmark's footprint", nLights > 0 and allInside)
+		check("basin lights: warm amber, shadowless, range 18-40, modest brightness", nLights > 0 and allWarm)
+		check("basin lights: parts invisible, anchored, CanCollide/CanQuery/CanTouch false", nLights > 0 and partsOk)
+		check("basin lights: none are night-only lanterns (always-on daytime accent)", lights ~= nil and #lights:GetDescendants() == nLights * 2)
+	end)()
+	end
 	check("gate collision: stone stair precise, shared root mesh cannot bridge the stair",
 		W2.Fidelity.Stone == Enum.CollisionFidelity.PreciseConvexDecomposition and W2.Fidelity.Root == nil
 		and W2.Fidelity.Tiles == nil and W2.Fidelity.Soffit == nil and W2.Fidelity.Ribbon == nil and W2.Fidelity.Roots == nil)

@@ -368,6 +368,36 @@ function World.gateFrame(lm: any): CFrame
 	return CFrame.lookAt(at, at + Vector3.new(s.X - c.X, 0, s.Z - c.Z)) -- lookAt aims -Z, so aim away from the centre
 end
 
+-- Warm accent lights (noon rain left the hall and the gate towers as near-black silhouettes): { x, y, z, range, brightness } in each
+-- model's origin frame (+Z = its front, toward the viewer / basin centre). Hall: doorway and two eave lines. Gate: both arch niches,
+-- the lintel and the upper tower faces. 10 lights in all (budget 12), no shadows. Always on, like the bore's ember.
+local ACCENT = Color3.fromRGB(255, 170, 90)
+World.Accents = {
+	Temple = { { 0, 12, 34, 32, 1.6 }, { -26, 24, 36, 38, 1.5 }, { 26, 24, 36, 38, 1.5 }, { -14, 40, 30, 30, 1.2 }, { 14, 40, 30, 30, 1.2 } },
+	Gate = { { -24, 10, 6, 26, 1.5 }, { 24, 10, 6, 26, 1.5 }, { 0, 26, 8, 32, 1.5 }, { -26, 34, 6, 28, 1.2 }, { 26, 34, 6, 28, 1.2 } },
+}
+
+-- Invisible anchored non-colliding anchors, one PointLight each. which = { Temple = bool, Gate = bool } (the pieces that placed).
+function World.accents(lm: any, which: { [string]: boolean }): Model
+	local model = Instance.new("Model")
+	model.Name = "BasinLights"
+	for kind, frame in { Temple = World.templeFrame(lm), Gate = World.gateFrame(lm) } do
+		if not which[kind] then continue end
+		for i, a in World.Accents[kind] do
+			local part = Instance.new("Part")
+			part.Name, part.Size, part.Transparency = kind .. "Accent" .. i, Vector3.one, 1
+			part.CFrame = frame * CFrame.new(a[1], a[2], a[3])
+			part.Anchored, part.CanCollide, part.CanQuery, part.CanTouch, part.CastShadow = true, false, false, false, false
+			part:SetAttribute("For", kind)
+			local light = Instance.new("PointLight")
+			light.Name, light.Color, light.Range, light.Brightness, light.Shadows = "Accent", ACCENT, a[4], a[5], false
+			light.Parent = part
+			part.Parent = model
+		end
+	end
+	return model
+end
+
 -- Terrain under the gate, filled after the lake (gate frame axes): a mud footing over the deep dish under the steps and towers, up to
 -- the lake bed, and a rock ledge with a grass top from the landing back into the rim, so the stair's top meets walkable ground.
 function World.gateFills(lm: any): { any }
@@ -405,15 +435,18 @@ function World.build(folders: { [string]: Instance }, waitReady: (string) -> boo
 					warn("[LandmarkWorld] " .. id .. ": kit piece " .. piece.Model .. " is not available")
 				end
 			end
-			local T = lm.Basin and lm.Basin.Temple
+			local T, templePlaced = lm.Basin and lm.Basin.Temple, false
 			if T then
 				local m = Kit.place(T.Model, World.templeFrame(lm) * CFrame.new(T.Foot.X, T.Foot.Y, T.Foot.Z), Vector3.one, { Fidelity = World.Fidelity })
-				if m then m.Parent = model else warn("[LandmarkWorld] " .. id .. ": kit piece " .. T.Model .. " is not available") end
+				if m then m.Parent, templePlaced = model, true else warn("[LandmarkWorld] " .. id .. ": kit piece " .. T.Model .. " is not available") end
 			end
 			local G, gatePlaced = lm.Basin and lm.Basin.Gate, false
 			if G then
 				local m = Kit.place(G.Model, World.gateFrame(lm) * CFrame.new(G.Foot.X, G.Foot.Y, G.Foot.Z), Vector3.one, { Fidelity = World.Fidelity })
 				if m then m.Parent, gatePlaced = model, true else warn("[LandmarkWorld] " .. id .. ": kit piece " .. G.Model .. " is not available") end
+			end
+			if lm.Basin and (templePlaced or gatePlaced) then
+				World.accents(lm, { Temple = templePlaced, Gate = gatePlaced }).Parent = model
 			end
 			if placed > 0 and lm.Tunnel and lm.Tunnel.Lanterns then
 				for _, p in lm.Tunnel.Lanterns do World.lantern(World.kitToWorld(lm, p)).Parent = model end

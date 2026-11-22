@@ -253,14 +253,14 @@ workspaceFake.GetServerTimeNow = function() return now end
 workspaceFake.Raycast = function() return if roofHit then { Instance = true } else nil end
 workspaceFake.CurrentCamera = nil
 workspaceFake:SetAttribute("AsuraWorldEpoch", epoch)
-local shared = { Shared = { Overworld = "Overworld", EnvironmentProfiles = "EnvironmentProfiles", Wind = "Wind", EffectsPreference = "EffectsPreference" },
+local shared = { Shared = { Overworld = "Overworld", EnvironmentProfiles = "EnvironmentProfiles", Wind = "Wind", EffectsPreference = "EffectsPreference", LandmarkLayout = "LandmarkLayout" },
 	WaitForChild = function(_, name) return name end }
 local reducedMotion, reducedEffects = false, false
 local atmosCalls = {}
 local atmosphereStub = { new = function() return { Flash = 0, Update = function(_, weight) table.insert(atmosCalls, weight) end, Destroy = function() table.insert(atmosCalls, "destroyed") end } end }
 local ambienceCalls = {}
 local ambienceStub = { new = function() return { Update = function(_, _dt, _at, rates) if rates then table.insert(ambienceCalls, rates) end end, Destroy = function() table.insert(ambienceCalls, "destroyed") end } end }
-local modules = { VesperholdAtmosphere = atmosphereStub, OverworldAmbience = ambienceStub, Config = Config, Overworld = Overworld, EnvironmentProfiles = Profiles, Wind = Wind, EffectsPreference = { reducedMotion = function() return reducedMotion end, reduced = function() return reducedEffects end } }
+local modules = { LandmarkLayout = load("src/shared/LandmarkLayout.luau"), VesperholdAtmosphere = atmosphereStub, OverworldAmbience = ambienceStub, Config = Config, Overworld = Overworld, EnvironmentProfiles = Profiles, Wind = Wind, EffectsPreference = { reducedMotion = function() return reducedMotion end, reduced = function() return reducedEffects end } }
 local services = { Players = { LocalPlayer = player }, CollectionService = CollectionService, ReplicatedStorage = { WaitForChild = function() return shared end } }
 local controllerEnv = { game = { GetService = function(_, name) return services[name] end }, workspace = workspaceFake,
 	script = { Parent = { VesperholdAtmosphere = "VesperholdAtmosphere", OverworldAmbience = "OverworldAmbience" } },
@@ -791,6 +791,48 @@ do
 	space:Update(0.2)
 	check("losing the character releases environmental loops", not live("Wind"))
 	space:Destroy()
+end
+
+-- 12. Bellwood hidden-basin sub-region grade (LandmarkLayout.basinWeight -> compose input Basin) ----------------
+do
+	local LL = load("src/shared/LandmarkLayout.luau")
+	local bw = LL.Landmarks.Bellwood
+	local c = LL.basinCentre(bw)
+	local fx, fz = LL.front(bw)
+	local rainBase = Profiles.compose({ Weights = { Forest = 1 }, Time = noon, Mix = { Rain = 1 } })
+	check("basin weight is 1 at the basin centre", near(LL.basinWeight(c.X, c.Z), 1))
+	check("basin weight is 0 outside the ellipse (short axis, 60 studs past the rim)", LL.basinWeight(c.X + fx * (bw.Basin.Depth / 2 + 60), c.Z + fz * (bw.Basin.Depth / 2 + 60)) == 0)
+	check("basin weight is 0 at the face origin and in the lobby-side world", LL.basinWeight(bw.Origin.X, bw.Origin.Z) == 0 and LL.basinWeight(0, 0) == 0)
+	local rimW = LL.basinWeight(c.X + fx * (bw.Basin.Depth / 2 + 6), c.Z + fz * (bw.Basin.Depth / 2 + 6))
+	check("basin weight blends at the rim (strictly between 0 and 1)", rimW > 0 and rimW < 1)
+	check("Basin weight 0 or absent composes the exact forest grade", same(rainBase, Profiles.compose({ Weights = { Forest = 1 }, Time = noon, Mix = { Rain = 1 }, Basin = 0 })))
+	local lit = Profiles.compose({ Weights = { Forest = 1 }, Time = noon, Mix = { Rain = 1 }, Basin = 1 })
+	check("full basin grade lifts exposure and fill, warms the key and cools the shadows",
+		lit.Lighting.ExposureCompensation > rainBase.Lighting.ExposureCompensation and L(lit.Lighting.OutdoorAmbient) > L(rainBase.Lighting.OutdoorAmbient)
+		and lit.CB_ColorCorrection.Brightness > rainBase.CB_ColorCorrection.Brightness
+		and lit.Lighting.ColorShift_Top.R - lit.Lighting.ColorShift_Top.B > rainBase.Lighting.ColorShift_Top.R - rainBase.Lighting.ColorShift_Top.B
+		and lit.Lighting.ColorShift_Bottom.B - lit.Lighting.ColorShift_Bottom.R > rainBase.Lighting.ColorShift_Bottom.B - rainBase.Lighting.ColorShift_Bottom.R)
+	-- mac-93 Play capture: +0.06 saturation and a 0.25 warm tint turned the grey storm sky olive; the warm lights carry the facades
+	check("full basin grade keeps the storm palette (no saturation boost, tint within 0.06 of the forest grade)",
+		lit.CB_ColorCorrection.Saturation <= rainBase.CB_ColorCorrection.Saturation
+		and math.abs(lit.CB_ColorCorrection.TintColor.B - rainBase.CB_ColorCorrection.TintColor.B) <= 0.06
+		and lit.Lighting.ExposureCompensation - rainBase.Lighting.ExposureCompensation <= 0.2 + 1e-6)
+	local halfLit = Profiles.compose({ Weights = { Forest = 1 }, Time = noon, Mix = { Rain = 1 }, Basin = 0.5 })
+	check("the basin grade blends with the weight", halfLit.Lighting.ExposureCompensation > rainBase.Lighting.ExposureCompensation and halfLit.Lighting.ExposureCompensation < lit.Lighting.ExposureCompensation)
+	check("the lobby never composes, even with a basin weight", Profiles.compose({ Time = noon, Basin = 1 }) == nil)
+	check("basin grade code is inside its own branch", string.find(fs.readFile("src/shared/EnvironmentProfiles.luau"), "if basin > 0 then", 1, true) ~= nil)
+	check("WeatherController feeds the basin weight, only in the Forest, and does not write Lighting for it",
+		has("src/client/Controllers/WeatherController.luau", "LandmarkLayout.basinWeight") and has("src/client/Controllers/WeatherController.luau", "Basin = basin"))
+	-- Controller: inside the basin the composed profile is graded; outside it equals the forest-only profile.
+	local bt = Overworld.heightAt(c.X, c.Z)
+	place(c.X, bt + 6, c.Z)
+	weather:Sample()
+	local inside, insideBasin = weather:Profile(nil), weather.Basin
+	place(-3000, 140, -2000)
+	weather:Sample()
+	local outside = weather:Profile(nil)
+	check("controller: basin centre composes a lifted profile, a forest point does not",
+		inside ~= nil and outside ~= nil and insideBasin == 1 and weather.Basin == 0 and inside.Lighting.ExposureCompensation > outside.Lighting.ExposureCompensation)
 end
 
 print(string.format("weather composition: %d passed, %d failed", passed, failed))

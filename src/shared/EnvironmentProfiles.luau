@@ -417,6 +417,20 @@ function Profiles.compose(input: any): (any?, any)
 		fog.Density += 0.05 * ridge
 		fog.Decay = fog.Decay:Lerp(rgb(96, 62, 66), 0.2 * ridge)
 	end
+	-- Hidden Bellwood basin (LandmarkLayout.basinWeight, 0 elsewhere): the hall and gate towers read as black silhouettes under noon
+	-- rain, so lift fill and exposure a little and split the grade warm (key, tint) / cool (shadows). Weighted, so it eases at the rim.
+	local basin = input.Basin or 0
+	if basin > 0 then
+		local light, grade = p.Lighting, p.CB_ColorCorrection
+		-- mac-93 Play: saturation and a strong warm tint turned the storm sky olive, so the grade stays near-neutral; the accent lights warm the facades.
+		light.ExposureCompensation += 0.2 * basin
+		light.OutdoorAmbient, light.Ambient = scaled(light.OutdoorAmbient, 1 + 0.35 * basin), scaled(light.Ambient, 1 + 0.2 * basin)
+		light.ColorShift_Top = light.ColorShift_Top:Lerp(rgb(255, 200, 150), 0.2 * basin)
+		light.ColorShift_Bottom = light.ColorShift_Bottom:Lerp(rgb(70, 100, 150), 0.4 * basin)
+		grade.Brightness += 0.03 * basin
+		grade.Contrast += 0.06 * basin
+		grade.TintColor = grade.TintColor:Lerp(rgb(250, 240, 228), 0.08 * basin)
+	end
 	guard(p, input.Comfort == true)
 	return p, { Hour = hour, Daylight = daylight, Precip = precip, WindGain = gain }
 end

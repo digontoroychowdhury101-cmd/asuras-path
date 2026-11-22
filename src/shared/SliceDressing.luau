@@ -25,7 +25,9 @@ SliceDressing.Cell = 128 -- studs: the terrain tile size, so a cell key "i,j" is
 -- Tris / TrisLod raised 2026-11-21 when the far belt switched to near meshes (7.42M / 3.82M); the Studio A/B cost was ~2% frame time.
 -- Raised again 2026-11-21 (win-73) for the denser shrub layer (7.89M / 4.30M): Studio toggle of all 143 shrubs cost 0.4 ms (43.8 vs 43.4).
 -- Raised 2026-11-22 (mac-87) for the Bellwood face grove (LandmarkLayout Grove, +~1.3M tris, +~210 MeshParts); measured in Studio Play, see PROJECT_STATE mac-87.
-SliceDressing.Budget = { MeshParts = 3200, PlaceholderParts = 3900, Tris = 9400000, TrisLod = 5100000, Placements = 1900 }
+-- Raised 2026-11-22 (+0.2M / +0.1M) for the basin exclusion becoming a true ellipse (forest returns in the corners the old circle cleared; 9.49M / 5.13M).
+-- NOT Studio-profiled: +1% tris; re-profile with the enlarged 1400 x 1120 basin.
+SliceDressing.Budget = { MeshParts = 3200, PlaceholderParts = 3900, Tris = 9600000, TrisLod = 5200000, Placements = 1900 }
 
 -------------------------------------------------------------------------------------------------
 -- Pieces. Sub = one kit sub-mesh (Piece__Name). B = placeholder boxes { cx, cz, y0, y1, w, d } as fractions of the piece
@@ -746,7 +748,12 @@ local function discs(): { { X: number, Z: number, R: number } }
 	return out
 end
 
--- The circular exclusions (everything but roads, lanes): { X, Z, Keep = class table or per-class radii }.
+-- Inside a landmark's sunken basin plus its rim cliffs and a 6-stud margin: Layout's yaw-rotated ellipse, grown by Thick + 6.
+function SliceDressing.inBasinExclusion(lm: any, x: number, z: number): boolean
+	return Landmarks.basinEllipse(lm, x, z, lm.Basin.Thick + 6) < 1
+end
+
+-- The circular exclusions (everything but roads, lanes; a basin is an ellipse entry): { X, Z, Keep = class table or per-class radii }.
 local function circles(heroes: { any }): { any }
 	local K: any = SliceDressing.Keep
 	local list: { any } = {}
@@ -815,10 +822,11 @@ local function circles(heroes: { any }): { any }
 				add(o.X + fx * along, o.Z + fz * along, keep(r, 10, 6, 4, r))
 			end
 		end
-		-- A sunken basin (mac-88): nothing over its bowl or rim cliffs (a heightAt placement would float there). A circle on the long semi-axis.
+		-- A sunken basin (mac-88): nothing over its bowl or rim cliffs (a heightAt placement would float there). A true ellipse
+		-- (hostile() tests Basin with SliceDressing.inBasinExclusion), so an enlarged basin does not clear forest past its short rim.
 		if lm.Basin then
-			local c, r = Landmarks.basinCentre(lm), math.max(lm.Basin.Width, lm.Basin.Depth) / 2 + lm.Basin.Thick + 6
-			add(c.X, c.Z, keep(r, r, r, r, r))
+			local c = Landmarks.basinCentre(lm)
+			table.insert(list, { X = c.X, Z = c.Z, Keep = keep(0, 0, 0, 0, 0), Altar = false, Basin = lm })
 		end
 	end
 	for _, h in heroes do
@@ -836,7 +844,9 @@ local function hostile(x: number, z: number, class: string, list: { any }, roadS
 	local K: any = SliceDressing.Keep
 	local cls = (SliceDressing.KeepAs :: any)[class] or class
 	for _, c in list do
-		if worldDist(x, z, c.X, c.Z) < c.Keep[cls] then
+		if c.Basin then
+			if SliceDressing.inBasinExclusion(c.Basin, x, z) then return true end
+		elseif worldDist(x, z, c.X, c.Z) < c.Keep[cls] then
 			return true
 		end
 	end
