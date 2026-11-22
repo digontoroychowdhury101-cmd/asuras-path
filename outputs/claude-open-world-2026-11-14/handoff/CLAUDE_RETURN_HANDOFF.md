@@ -4,6 +4,10 @@
 
 The creator asked Sol to wrap up and hand back the work. Start with the colossal Bellwood temple and its tree. The creator supplied a portrait image as the target and explicitly asked for a close recreation. They rejected the earlier temple as flat, sparse and insufficiently dark fantasy. They then pointed out that the branches looked unnatural and appeared attached to the trunk. Sol rebuilt the junctions and rendered the result. The creator still wants further sculpting, especially the tree.
 
+## Latest handoff for Claude
+
+Start with [Bellwood temple replacement](CLAUDE_BELLWOOD_REPLACEMENT_HANDOFF.md) for the paused v10 study, all-angle audit, new guardian source, Claude Code Blender setup and the path to replacing the old hall. The Development build still uses the old temple.
+
 ## Continuation after mac-93 (Sol, 22 Nov)
 
 Claude's latest chat confirmed that v9 stopped before it changed the v8 recipe. The basin work survived locally in four Luau files and in `mac93_basin_enlarge_wip.patch`. The last verified Development save before this continuation was lighting and colour grade at `b1b2ca9`. The earlier raven and five ambience readings below were superseded by the Approved values in `48e60b6`.
