@@ -1,0 +1,86 @@
+{
+  "kit": "Bellwood landmark: Sunken Temple",
+  "pieces": {
+    "Bellwood_TempleHall": {
+      "group": "Bellwood",
+      "sub_meshes": {
+        "Bellwood_TempleHall__Stone": 16716,
+        "Bellwood_TempleHall__Lacquer": 10564,
+        "Bellwood_TempleHall__Lacquer_2": 10564,
+        "Bellwood_TempleHall__Tiles": 11444,
+        "Bellwood_TempleHall__Tiles_2": 11444,
+        "Bellwood_TempleHall__Soffit": 8822,
+        "Bellwood_TempleHall__Soffit_2": 8822
+      },
+      "tris_total": 78376,
+      "size_studs_xyz": [
+        90.4,
+        71.1,
+        59.4
+      ],
+      "bbox_min": [
+        -45.2,
+        -31.44,
+        0.0
+      ],
+      "bbox_max": [
+        45.2,
+        39.67,
+        59.4
+      ],
+      "materials": [
+        "Vesp_Bellwood_TempleHall__Lacquer",
+        "Vesp_Bellwood_TempleHall__Soffit",
+        "Vesp_Bellwood_TempleHall__Stone",
+        "Vesp_Bellwood_TempleHall__Tiles"
+      ],
+      "file": "Bellwood_TempleHall.glb",
+      "builder": "tools/blender/landmarks/bellwood_temple_hall.py (mac-89, hard-surface + Cycles bake)",
+      "no_decimation": true,
+      "decimation": "none: roles over the cap are split into <18k-tri subs; LOW is a separate polygonisation",
+      "map_resolution": {
+        "Stone": 2048,
+        "Lacquer": 2048,
+        "Tiles": 2048,
+        "Soffit": 2048
+      },
+      "maps": {
+        "Stone": {
+          "Color": "maps/Vesp_Bellwood_TempleHall__Stone_Color.png",
+          "Normal": "maps/Vesp_Bellwood_TempleHall__Stone_Normal.png",
+          "Roughness": "maps/Vesp_Bellwood_TempleHall__Stone_Roughness.png",
+          "Metal": "maps/Vesp_Bellwood_TempleHall__Stone_Metal.png"
+        },
+        "Lacquer": {
+          "Color": "maps/Vesp_Bellwood_TempleHall__Lacquer_Color.png",
+          "Normal": "maps/Vesp_Bellwood_TempleHall__Lacquer_Normal.png",
+          "Roughness": "maps/Vesp_Bellwood_TempleHall__Lacquer_Roughness.png",
+          "Metal": "maps/Vesp_Bellwood_TempleHall__Lacquer_Metal.png"
+        },
+        "Tiles": {
+          "Color": "maps/Vesp_Bellwood_TempleHall__Tiles_Color.png",
+          "Normal": "maps/Vesp_Bellwood_TempleHall__Tiles_Normal.png",
+          "Roughness": "maps/Vesp_Bellwood_TempleHall__Tiles_Roughness.png",
+          "Metal": "maps/Vesp_Bellwood_TempleHall__Tiles_Metal.png"
+        },
+        "Soffit": {
+          "Color": "maps/Vesp_Bellwood_TempleHall__Soffit_Color.png",
+          "Normal": "maps/Vesp_Bellwood_TempleHall__Soffit_Normal.png",
+          "Roughness": "maps/Vesp_Bellwood_TempleHall__Soffit_Roughness.png",
+          "Metal": "maps/Vesp_Bellwood_TempleHall__Soffit_Metal.png"
+        }
+      },
+      "base_layer": "Poly Haven medieval_blocks_03, distressed_painted_planks, ceramic_roof_01 (CC0)",
+      "high_poly_tris": {
+        "Stone": 491712,
+        "Lacquer": 270760,
+        "Tiles": 149020,
+        "Soffit": 321476
+      },
+      "collision": {
+        "Stone": "PreciseConvexDecomposition",
+        "Lacquer": "Default"
+      }
+    }
+  }
+}
