@@ -1,7 +1,8 @@
 """Staging scene for the creator's stair-side Bellwood reference. Blender units = studs.
 
 Camera convention: the portrait camera looks down -Y, so image-left is world +X.
-Env knobs: VESP_RENDER_SAMPLES, VESP_TREE_VOXEL (bark union voxel size), VESP_TWIG_DEPTH,
+Env knobs: VESP_RENDER_SAMPLES, VESP_TREE_VOXEL (bark union voxel size), VESP_TWIG_DEPTH, VESP_YAW (portrait turn
+left, degrees), VESP_GLOW (gallery light per stud of width), VESP_HAZE, VESP_EXPOSURE,
 VESP_VIEWS (comma list of portrait,fork,root).
 """
 
@@ -21,7 +22,7 @@ from mathutils.noise import noise
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import temple_preview as kit
-from temple_preview import Hall, at, figures, light, tier
+from temple_preview import Hall, at, figures, light
 
 RNG = random.Random(711)
 OUT = Path.cwd() / "work/sol-bellwood-scale"
@@ -96,6 +97,41 @@ def organic_path(mesh, profile, controls, radii, record=None):
     mesh.grid(rings, uvs, wrap=True)
     mesh.poly(rings[0])
     mesh.poly(list(reversed(rings[-1])))
+
+
+def root_bundle(mesh, pts, rr):
+    """Strangler-fig root: a core plus thinner strands that weave apart and rejoin, leaving real gaps."""
+    count = max(3, min(6, round(rr[0] / 1.8)))
+    organic_path(mesh, circle(10), pts, [r * .42 for r in rr], SPINE)  # children fork from this core
+    along = [0.0]
+    for a, b in zip(pts, pts[1:]):
+        along.append(along[-1] + (b - a).length)
+    for _ in range(count - 1):
+        amp, wave, phase = RNG.uniform(.95, 1.7), RNG.uniform(11, 24), RNG.uniform(0, math.tau)
+        lift, thin = RNG.uniform(-.1, .45), RNG.uniform(.26, .38)
+        ctrl, radii = [], []
+        for i, (p, r) in enumerate(zip(pts, rr)):
+            t = pts[min(i + 1, len(pts) - 1)] - pts[max(0, i - 1)]
+            t = t.normalized() if t.length > 1e-6 else UP
+            side = t.cross(UP)
+            side = side.normalized() if side.length > 1e-3 else Vector((1, 0, 0))
+            normal = side.cross(t).normalized()
+            if normal.z < 0:
+                normal = -normal
+            ramp = min(1.0, along[i] / 22)  # strands grow out of a fused crown, then net apart
+            ctrl.append(p + (side * amp * math.sin(along[i] / wave + phase) + normal * lift) * r * ramp)
+            radii.append(r * thin)
+        organic_path(mesh, circle(8), ctrl, radii, SPINE)
+
+
+def curved(pts, rr):
+    """Catmull-Rom midpoints so twigs arc instead of bending at hard elbows."""
+    out, radii = [], []
+    for i in range(len(pts) - 1):
+        p0, p1, p2, p3 = pts[max(0, i - 1)], pts[i], pts[i + 1], pts[min(len(pts) - 1, i + 2)]
+        out += [p1, (-p0 + 9 * p1 + 9 * p2 - p3) / 16]
+        radii += [rr[i], (rr[i] + rr[i + 1]) * .5]
+    return out + [pts[-1]], radii + [rr[-1]]
 
 
 def merge(hall, piece, frame):
@@ -215,7 +251,68 @@ def stonework(h):
     return lamps
 
 
-def panelwork(h, width, depth, base, z):
+GLOWS = []  # (x, y, z, width) warm light inside each gallery
+
+
+def gallery_tier(h, half_x, half_y, bottom, top, bays, radius):
+    """Open colonnade around a recessed hall: railings, bracket sets, lattice transoms and hanging lanterns."""
+    wood, so, stone, gold, amber = (h.m(role) for role in ("Lacquer", "Soffit", "Masonry", "Gold", "Lantern"))
+    height = top - bottom
+    core = half_y * .45
+    so.box((0, 0, bottom + height / 2), (half_x * 2 - 6, core * 2, height - 1), bevel=.3)
+    stone.box((0, 0, bottom - .7), (half_x * 2 + 7, half_y * 2 + 7, 1.6), bevel=.3)
+    so.box((0, 0, top - 1.6), (half_x * 2 + 2, half_y * 2 + 2, 1.4), bevel=.2)  # gallery ceiling
+    columns = [-half_x + 2 * half_x * i / bays for i in range(bays + 1)]
+    for sign in (-1, 1):
+        y = sign * half_y
+        for i, x in enumerate(columns):
+            stone.lathe([(radius * 1.65, 0), (radius * 1.65, .7), (radius * 1.28, 1.35), (radius * 1.2, 2.1)],
+                        14, at(x, y, bottom))
+            wood.lathe([(radius, 0), (radius * .94, 2.1), (radius * .81, height - 3), (radius * 1.1, height)],
+                       14, at(x, y, bottom + 1.1))
+            for z in (bottom + 3.2, top - 3.1):
+                gold.lathe([(radius * 1.03, 0), (radius * 1.03, .6)], 14, at(x, y, z))
+            for b in range(4):  # stepped bracket set carrying the eave
+                z = top + b * 1.6
+                so.box((x, y + sign * b * .9, z), (5.6 + b * 3.1, 7 + b * 2.4, 1.28), bevel=.18)
+                wood.box((x, y + sign * (4 + b * 1.35), z + .32), (2.42, 8.7, 1.08), bevel=.13)
+            for s in (-1, 1):  # cloud braces under the lintel
+                wood.box((0, 0, 0), (1.1, 1.4, 6.5), at(x + s * (radius + 2.2), y, top - 5.2)
+                         @ Matrix.Rotation(s * .62, 4, "Y"), bevel=.12)
+            if i == bays:
+                continue
+            middle = (x + columns[i + 1]) / 2
+            span = columns[i + 1] - x - radius * 2
+            so.box((middle, y - .5 * sign, top - 4.6), (span, .7, 4.4), bevel=.1)  # lattice transom
+            for k in range(1, 9):
+                wood.box((middle - span / 2 + span * k / 9, y - .05 * sign, top - 4.6), (.38, .5, 4.2))
+            gold.box((middle, y + .05 * sign, top - 7.1), (span, .45, .5), bevel=.05)
+            if sign < 0:
+                continue
+            for zz, t in ((bottom + 4.6, .75), (bottom + 1.9, .5)):  # railing
+                wood.box((middle, y + .6, zz), (span, t + .25, t), bevel=.08)
+            pickets = max(2, int(span / 2.6))
+            for k in range(1, pickets):
+                wood.box((middle - span / 2 + span * k / pickets, y + .6, bottom + 3.2), (.42, .42, 2.9))
+            if RNG.random() < .7:  # paper lanterns hang in the open bays
+                lz = top - 9 - RNG.uniform(0, 4)
+                ly = y - (half_y - core) * .45
+                amber.lathe([(.01, -2.2), (1.5, -1.7), (2.0, 0), (1.5, 1.7), (.01, 2.2)], 10, at(middle, ly, lz))
+                gold.box((middle, ly, (lz + top - 1.6) / 2 + 1.1), (.2, .2, top - 1.6 - lz - 2.2))
+            if RNG.random() < .35:  # broken railing
+                wood.box((0, 0, 0), (span * .4, .6, .6), at(middle + span * .2, y + 2.2, bottom + .6)
+                         @ Matrix.Rotation(RNG.uniform(-.5, .5), 4, "Z"), bevel=.08)
+        wood.box((0, y, top - 1), (half_x * 2 + 8, 7, 4.5), bevel=.35)
+        wood.box((0, y, top + 5.6), (half_x * 2 + 11, 10, 2.6), bevel=.35)
+        gold.box((0, y + sign * 3.7, top - .4), (half_x * 2 + 4, .66, 1.0), bevel=.1)
+    for sign in (-1, 1):
+        for y in (-half_y * .53, 0, half_y * .53):
+            wood.lathe([(radius, 0), (radius * .85, height - 1), (radius * 1.13, height)], 14,
+                       at(sign * half_x, y, bottom))
+        wood.box((sign * half_x, 0, top - 1), (6, 2 * half_y + 3, 4.4), bevel=.35)
+
+
+def panelwork(h, width, depth, base, z, banners=True):
     timber, brass, cloth = (h.m(key) for key in ("Lacquer", "Gold", "Cloth"))
     front = depth * .40 + 1.9
     frieze = width * .73
@@ -230,7 +327,7 @@ def panelwork(h, width, depth, base, z):
                                 z - 1.08 + (.42 + .48 * math.sin(t * 1.35)) * s))
                         for t in [m * .22 for m in range(13)]]
             brass.sweep(circle(5), ornament, scales=[.135] * len(ornament))
-    for x in (-frieze / 3, frieze / 3):
+    for x in (-frieze / 3, frieze / 3) if banners else ():
         y = front - .55
         length = min(33, z - base - 7)
         span = max(9, width * .085)
@@ -244,10 +341,13 @@ def panelwork(h, width, depth, base, z):
 
 def pavilion(hall, loc, width, depth, height, bays, arch=False):
     block = Hall()
-    tier(block, width * .412, depth * .388, 0, height, bays, max(2.2, width * .019))
+    gallery_tier(block, width * .412, depth * .388, 0, height, bays, max(2.2, width * .019))
     eave = height + 8
     kit.roof(block, width, depth, width * .146, eave, min(116, max(34, int(width * .48))))
-    panelwork(block, width, depth, 0, height - 1.45)
+    # A lower skirt eave sits under the main roof so each tier reads as layered, upturned eaves.
+    kit.roof(block, width * .93, depth * 1.04, width * .05, eave - 5.5, min(90, max(30, int(width * .4))))
+    panelwork(block, width, depth, 0, height - 1.45, banners=arch)
+    GLOWS.append((loc[0], loc[1] + depth * .3, loc[2] + height * .55, width))
     if arch:
         crest(block, width, depth, eave)
     merge(hall, block, at(*loc))
@@ -409,7 +509,8 @@ def aged_tree(h):
             organic_path(bark, circle(12), pts, rr, SPINE)
             stats["bark_branches"] += 1
         else:
-            twigs.sweep(circle(6 if radius > .5 else 4), pts, scales=rr)
+            path, scales = curved(pts, rr)
+            twigs.sweep(circle(6 if radius > .5 else 4), path, scales=scales)
             stats["twigs"] += 1
         if not depth:
             return
@@ -584,8 +685,10 @@ def aged_tree(h):
         if len(pts) < 3:
             return
         rr[-1] = max(.25, rr[-1] * .3)
-        if rr[0] >= THICK:
-            organic_path(bark, BARK_PROFILE if rr[0] > 6 else circle(12), pts, rr, SPINE)
+        if rr[0] > 3.0:
+            root_bundle(bark, pts, rr)
+        elif rr[0] >= THICK:
+            organic_path(bark, circle(12), pts, rr, SPINE)
         else:
             organic_path(twigs, circle(7), pts, rr)
         for p, r in zip(pts[::3], rr[::3]):  # greenery where root and stone meet
@@ -599,6 +702,9 @@ def aged_tree(h):
              (RNG.uniform(30, 105), RNG.uniform(-25, 160))) for _ in range(11)]
     plan += [(-1, RNG.uniform(-.1, .6), RNG.uniform(5.5, 9.5), RNG.uniform(260, 360),
               (-RNG.uniform(60, 170), RNG.uniform(-50, 90))) for _ in range(5)]
+    # The cascade: long roots that pour over the near left retaining walls down beside the stair.
+    plan += [(1, RNG.uniform(.35, 1.1), RNG.uniform(6, 9.5), RNG.uniform(640, 820),
+              (RNG.uniform(45, 165), RNG.uniform(110, 205))) for _ in range(7)]
     for side, lean, radius, length, goal in plan:
         h2 = Vector((side, lean)).normalized()
         z = RNG.uniform(232, 350)
@@ -635,18 +741,24 @@ def crags(h):
             radius = RNG.uniform(55, 100) if near else RNG.uniform(40, 85)
             flutes = RNG.randrange(5, 9)
             rings = []
-            ledges = sorted(RNG.uniform(.2, .9) for _ in range(3))
-            for j in range(22):
-                t = j / 21
+            # Stacked karst: bedded blocks, each offset and narrowed, with an undercut joint between beds.
+            beds = RNG.randrange(6, 11)
+            bed_scale = [RNG.uniform(.78, 1.06) for _ in range(beds)]
+            bed_shift = [Vector((RNG.uniform(-.13, .13), RNG.uniform(-.13, .13), 0)) * radius for _ in range(beds)]
+            for j in range(56):
+                t = j / 55
                 z = -40 + height * t
-                shrink = (1 - .8 * t ** 1.3) * (1 - .12 * sum(t > ledge for ledge in ledges))
+                bed = min(beds - 1, int(t * beds))
+                within = t * beds - bed
+                joint = .8 if within < .06 or within > .94 else 1.0
+                shrink = (1 - .8 * t ** 1.3) * bed_scale[bed] * joint
                 ring = []
-                for k in range(18):
-                    a = k * math.tau / 18
-                    wobble = (1 + .2 * math.sin(a * flutes + i + t * 1.5) + .32 * noise(Vector((a * 1.3, t * 5, i)))
+                for k in range(30):
+                    a = k * math.tau / 30
+                    wobble = (1 + .2 * math.sin(a * flutes + i + bed * .7) + .32 * noise(Vector((a * 1.3, bed * .9, i)))
                               + .12 * noise(Vector((a * 4, t * 17, i))))
-                    ring.append(Vector((x + math.cos(a) * radius * shrink * wobble,
-                                        y + math.sin(a) * radius * shrink * wobble * 1.1, z)))
+                    ring.append(Vector((x + bed_shift[bed].x + math.cos(a) * radius * shrink * wobble,
+                                        y + bed_shift[bed].y + math.sin(a) * radius * shrink * wobble * 1.1, z)))
                 rings.append(ring)
             rock.grid(rings, None, wrap=True)
             top = sum(rings[-1], Vector()) / len(rings[-1])
@@ -700,6 +812,28 @@ def bark_material(name, attributes):
     rough_img = image("bark_willow_02_Rough_2k.jpg", False)
     grey = nodes.new("ShaderNodeRGBToBW")
     links.new(diffuse.outputs["Color"], grey.inputs[0])
+    grey_out = grey.outputs[0]
+    if attributes:
+        coords = nodes.new("ShaderNodeTexCoord")
+        box_scale = nodes.new("ShaderNodeVectorMath")
+        box_scale.operation = "SCALE"
+        box_scale.inputs["Scale"].default_value = .06
+        links.new(coords.outputs["Object"], box_scale.inputs[0])
+        boxed = nodes.new("ShaderNodeTexImage")
+        boxed.image = diffuse.image
+        boxed.projection = "BOX"
+        boxed.projection_blend = .35
+        links.new(box_scale.outputs[0], boxed.inputs["Vector"])
+        boxed_grey = nodes.new("ShaderNodeRGBToBW")
+        links.new(boxed.outputs["Color"], boxed_grey.inputs[0])
+        junction = nodes.new("ShaderNodeAttribute")
+        junction.attribute_name = "bark_blend"
+        fade = nodes.new("ShaderNodeMix")
+        fade.data_type = "FLOAT"
+        links.new(junction.outputs["Fac"], sock(fade.inputs, "Factor", "VALUE"))
+        links.new(grey.outputs[0], sock(fade.inputs, "A", "VALUE"))
+        links.new(boxed_grey.outputs[0], sock(fade.inputs, "B", "VALUE"))
+        grey_out = sock(fade.outputs, "Result", "VALUE")
     if attributes:
         ridge = nodes.new("ShaderNodeAttribute")
         ridge.attribute_name = "bark_ridge"
@@ -710,7 +844,7 @@ def bark_material(name, attributes):
         ridge_out = value.outputs[0]
     mix_r = nodes.new("ShaderNodeMath")
     mix_r.operation = "MULTIPLY_ADD"
-    links.new(grey.outputs[0], mix_r.inputs[0])
+    links.new(grey_out, mix_r.inputs[0])
     mix_r.inputs[1].default_value = .55
     links.new(ridge_out, mix_r.inputs[2])
     ramp = nodes.new("ShaderNodeValToRGB")
@@ -803,9 +937,17 @@ def fuse_tree(obj):
     assert all(edge.is_manifold for edge in tree.edges), "Fused bark contains open seams"
     tree.to_mesh(obj.data)
     tree.free()
+    # Smooth limb junctions fully, but keep root strands crisp so their gaps do not melt shut.
+    group = obj.vertex_groups.new(name="Smooth above roots")
+    levels = {}
+    for v in obj.data.vertices:
+        levels.setdefault(round(.2 + .8 * min(1.0, max(0.0, (v.co.z - 230) / 120)), 1), []).append(v.index)
+    for weight, indices in levels.items():
+        group.add(indices, weight, "REPLACE")
     smooth = obj.modifiers.new("Blend grown wood junctions", "SMOOTH")
     smooth.factor = .55
     smooth.iterations = 4
+    smooth.vertex_group = group.name
     bpy.ops.object.modifier_apply(modifier=smooth.name)
     bark_grain(obj)
     obj.data.shade_smooth()
@@ -829,12 +971,14 @@ def bark_grain(obj):
     us = array("f", [0]) * count
     vs = array("f", [0]) * count
     period = array("f", [0]) * count
+    blend = array("f", [0]) * count
     for i in range(count):
         p = Vector(coords[3 * i:3 * i + 3])
         total = height = 0.0
         best_u = best_v = best_w = 0.0
         best_period = 1.0
         hits = kd.find_n(p, 4)
+        per_path = {}
         for _, index, _ in hits:
             c, t, side, up, r, s, base, pid = SPINE[index]
             d = p - c
@@ -852,6 +996,7 @@ def bark_grain(obj):
             weight = 1 / (abs(math.hypot(x, y) - r) + 1.0) ** 2
             total += weight
             height += value * weight
+            per_path[pid] = max(per_path.get(pid, 0.0), weight)
             if weight > best_w:
                 best_w, best_u, best_v, best_period = weight, a * base / 6, along / 6, math.tau * base / 6
         value = height / total
@@ -864,9 +1009,12 @@ def bark_grain(obj):
         low = min(1.0, max(0.0, (340 - p.z) / 150))
         mossy[i] = min(1.0, max(0.0, (nz - .2) * 1.6) * low + max(0.0, .5 - value) * low * .8)
         us[i], vs[i], period[i] = best_u, best_v, best_period
+        ranked = sorted(per_path.values(), reverse=True)
+        # Where two limbs' UV frames compete (junctions), fade to a seamless projected bark instead.
+        blend[i] = min(1.0, max(0.0, (ranked[1] / ranked[0] - .2) / .45)) if len(ranked) > 1 else 0.0
     vertices.foreach_set("co", coords)
     mesh = obj.data
-    for name, data in (("bark_ridge", ridge), ("bark_moss", mossy)):
+    for name, data in (("bark_ridge", ridge), ("bark_moss", mossy), ("bark_blend", blend)):
         attribute = mesh.attributes.new(name, "FLOAT", "POINT")
         attribute.data.foreach_set("value", data)
     layer = mesh.uv_layers.new(name="UVMap")
@@ -908,6 +1056,24 @@ def atmosphere(scene, mats, h):
     storm.color_ramp.elements[1].color = (.42, .44, .47, 1)
     storm.color_ramp.elements.new(.5).color = (.07, .08, .095, 1)
     world.links.new(cloud.outputs["Fac"], storm.inputs[0])
+    # Large cloud masses: darker banks and paler breaks so the sky is not one even texture.
+    masses = world.nodes.new("ShaderNodeTexNoise")
+    masses.inputs["Scale"].default_value = 1.1
+    masses.inputs["Detail"].default_value = 3
+    world.links.new(stretch.outputs[0], masses.inputs["Vector"])
+    weight = world.nodes.new("ShaderNodeMapRange")
+    weight.inputs["From Min"].default_value = .32
+    weight.inputs["From Max"].default_value = .68
+    weight.inputs["To Min"].default_value = .35
+    weight.inputs["To Max"].default_value = 1.45
+    world.links.new(masses.outputs["Fac"], weight.inputs["Value"])
+    banks = world.nodes.new("ShaderNodeMix")
+    banks.data_type = "RGBA"
+    banks.blend_type = "MULTIPLY"
+    sock(banks.inputs, "Factor", "VALUE").default_value = 1.0
+    world.links.new(storm.outputs[0], sock(banks.inputs, "A"))
+    world.links.new(weight.outputs[0], sock(banks.inputs, "B"))
+    storm_out = sock(banks.outputs, "Result")
     glow_dot = world.nodes.new("ShaderNodeVectorMath")
     glow_dot.operation = "DOT_PRODUCT"
     glow_dot.inputs[1].default_value = Vector((.1, -.62, .78)).normalized()
@@ -921,7 +1087,7 @@ def atmosphere(scene, mats, h):
     lit.data_type = "RGBA"
     lit.blend_type = "SCREEN"
     world.links.new(glow.outputs[0], sock(lit.inputs, "Factor", "VALUE"))
-    world.links.new(storm.outputs[0], sock(lit.inputs, "A"))
+    world.links.new(storm_out, sock(lit.inputs, "A"))
     sock(lit.inputs, "B").default_value = (.62, .66, .7, 1)
     world.links.new(sock(lit.outputs, "Result"), background.inputs["Color"])
     background.inputs["Strength"].default_value = .8
@@ -932,7 +1098,7 @@ def atmosphere(scene, mats, h):
     hn.remove(hn.get("Principled BSDF"))
     scatter = hn.new("ShaderNodeVolumeScatter")
     scatter.inputs["Color"].default_value = (.7, .76, .82, 1)
-    scatter.inputs["Density"].default_value = float(os.environ.get("VESP_HAZE", .00055))
+    scatter.inputs["Density"].default_value = float(os.environ.get("VESP_HAZE", .0006))
     scatter.inputs["Anisotropy"].default_value = .3
     haze_mat.node_tree.links.new(scatter.outputs[0], hn.get("Material Output").inputs["Volume"])
     bpy.ops.mesh.primitive_cube_add(size=2, location=(0, -350, 420))
@@ -974,12 +1140,16 @@ def atmosphere(scene, mats, h):
     links.new(falloff.outputs[0], density.inputs[1])
     links.new(density.outputs[0], mist.inputs["Density"])
     links.new(mist.outputs["Volume"], nodes.get("Material Output").inputs["Volume"])
-    for location, size in (((95, 120, 14), (70, 110, 24)), ((-95, 130, 14), (70, 100, 22)),
-                           ((150, -60, 120), (80, 60, 40)),
-                           ((205, -110, 150), (95, 120, 45)), ((-215, -120, 160), (100, 130, 45)),
+    for location, size in ((((95, 120, 14), (70, 110, 24)), ((-95, 130, 14), (70, 100, 22)),
+                           ((250, -190, 140), (80, 60, 40)),
+                           ((280, -230, 175), (95, 120, 45)), ((-215, -120, 160), (100, 130, 45)),
                            ((0, -330, 260), (260, 90, 60)), ((420, -520, 120), (200, 260, 80)),
                            ((-420, -560, 140), (220, 280, 80)), ((300, -300, 200), (120, 160, 70)),
-                           ((-300, -320, 210), (120, 160, 70))):
+                           ((-300, -320, 210), (120, 160, 70)),
+                           # mid-ground banks either side of the upper stair and across its head
+                           ((-120, 50, 52), (85, 60, 26)), ((0, -30, 108), (230, 26, 10)))
+                           # thin layers that sit between the tiers, wrapping each floor line
+                           + tuple(((x, y + d * .3, z + 3), (w * .62, d * .55, 7)) for x, y, z, w, d, *_ in TIERS[1:6])):
         bpy.ops.mesh.primitive_cube_add(size=2, location=location)
         obj = bpy.context.object
         obj.name = "Broken ribbons of fog"
@@ -1043,6 +1213,9 @@ def main():
     bpy.data.lights["rim"].color = (.8, .88, .96)
     for i, position in enumerate(lamps):
         light("Temple amber " + str(i), position, (position[0], position[1] + 1, position[2] - 5), 380, 1.8, (1, .55, .2))
+    for x, y, z, w in GLOWS:  # warm light inside each open gallery, aimed at the recessed hall wall
+        light("Gallery glow", (x, y, z), (x, y - 40, z - 6), float(os.environ.get("VESP_GLOW", 90)) * w, w * .35,
+              (1, .5, .18))
     light("Gate interior glow", (0, -60, 132), (0, -20, 128), 60000, 30.0, (1, .5, .2))
     light("Cool sky key", (300, 60, 640), (0, -150, 300), 420000, 220, (.74, .85, 1))
     scene.render.image_settings.file_format = "JPEG"
@@ -1058,10 +1231,12 @@ def main():
     bpy.ops.wm.save_as_mainfile(filepath=str(OUT / "bellwood_stair_reference.blend"))
     eye = Vector((0, 268, 30))
     pitch = math.radians(20)
+    yaw = math.radians(float(os.environ.get("VESP_YAW", 8)))  # turns left so the root-hung terraces fill the left third
     contact = min(CONTACTS, key=lambda c: (c[0] - Vector((70, 40, 50))).length)[0] if CONTACTS else Vector((70, 40, 50))
     print("Root close-up target", tuple(round(c) for c in contact), flush=True)
     views = {
-        "portrait": (900, 1350, 78, eye, eye + Vector((0, -math.cos(pitch), math.sin(pitch))) * 100),
+        "portrait": (900, 1350, 78, eye, eye + Vector((math.sin(yaw) * math.cos(pitch), -math.cos(yaw) * math.cos(pitch),
+                                                        math.sin(pitch))) * 100),
         "fork": (900, 900, 46, Vector((95, -20, 500)), TRUNK[4] + Vector((0, 0, 20))),
         "root": (900, 900, 52, Vector((12, contact.y + 75, max(stair_profile((START_Y - contact.y - 75) / STEP_RUN)[2] + 14,
                                                               contact.z + 26))), contact + Vector((0, 0, 4))),
