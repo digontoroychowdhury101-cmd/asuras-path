@@ -32,6 +32,7 @@ Assets.Audio = {
 	VesperChoir = "rbxassetid://106668797426143",
 	VesperStoneDoor = "rbxassetid://74200473418156",
 	VesperGargoyle = "rbxassetid://76189483075453",
+	VesperRaven = "rbxassetid://87773898781698",
 	BasinGong = "rbxassetid://137194649933625",
 	BasinRibbons = "rbxassetid://111650986154482",
 	BasinLake = "rbxassetid://102143866785254",

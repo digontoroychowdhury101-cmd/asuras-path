@@ -6,35 +6,40 @@
       "operationId": "a079a202-b8d5-44ec-bcf2-de6f7743322a",
       "source": "assets/source/overworld/upload/audio/amberfall_ravine.ogg",
       "uploaded": "2026-11-16",
-      "moderationState": "Reviewing"
+      "moderationState": "Approved",
+      "moderationChecked": "2026-11-22 (mac-92, Open Cloud assets/v1 readMask=moderationResult)"
     },
     "ashen_stair": {
       "assetId": "rbxassetid://93963168737720",
       "operationId": "47aee63d-0ec4-4008-a91e-f03bd1709882",
       "source": "assets/source/overworld/upload/audio/ashen_stair.ogg",
       "uploaded": "2026-11-16",
-      "moderationState": "Reviewing"
+      "moderationState": "Approved",
+      "moderationChecked": "2026-11-22 (mac-92, Open Cloud assets/v1 readMask=moderationResult)"
     },
     "bellwood_forest_day": {
       "assetId": "rbxassetid://105210588065430",
       "operationId": "f9d2bc36-efb9-4610-9742-be85150d9928",
       "source": "assets/source/overworld/upload/audio/bellwood_forest_day.ogg",
       "uploaded": "2026-11-16",
-      "moderationState": "Reviewing"
+      "moderationState": "Approved",
+      "moderationChecked": "2026-11-22 (mac-92, Open Cloud assets/v1 readMask=moderationResult)"
     },
     "frostmere_snow": {
       "assetId": "rbxassetid://89969995114537",
       "operationId": "a432a623-cec9-4d14-9960-46f4b8f9eadd",
       "source": "assets/source/overworld/upload/audio/frostmere_snow.ogg",
       "uploaded": "2026-11-16",
-      "moderationState": "Reviewing"
+      "moderationState": "Approved",
+      "moderationChecked": "2026-11-22 (mac-92, Open Cloud assets/v1 readMask=moderationResult)"
     },
     "saltreach_basin_r2": {
       "assetId": "rbxassetid://123518992828989",
       "operationId": "289d2744-1c8a-4a23-b5e7-612cb229a0b6",
       "source": "assets/source/overworld/upload/audio/saltreach_basin_r2.ogg",
       "uploaded": "2026-11-16",
-      "moderationState": "Reviewing"
+      "moderationState": "Approved",
+      "moderationChecked": "2026-11-22 (mac-92, Open Cloud assets/v1 readMask=moderationResult)"
     },
     "bell_great_toll": {
       "assetId": "rbxassetid://128702221998510",
@@ -101,10 +106,11 @@
       "operationId": "b08fbf88-295a-4c82-8558-66bbc2c66a4a",
       "source": "assets/source/audio/vesperhold/raven_caws.mp3",
       "uploaded": "2026-11-22",
-      "moderationState": "Reviewing",
+      "moderationState": "Approved",
       "cueKey": "VesperRaven",
       "loop": false,
-      "sha256": "bd52abca04fa16544e765131517ee0c40189fd64789d838a3b94750494917f92"
+      "sha256": "bd52abca04fa16544e765131517ee0c40189fd64789d838a3b94750494917f92",
+      "moderationChecked": "2026-11-22 (mac-92, Open Cloud assets/v1 readMask=moderationResult)"
     },
     "torch_crackle_loop": {
       "assetId": "rbxassetid://108311378068953",
