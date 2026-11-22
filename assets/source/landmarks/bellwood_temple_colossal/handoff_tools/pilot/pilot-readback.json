@@ -1,0 +1,16 @@
+{
+ "103921928662667": {
+  "Bellwood_ColossalTemple__Lantern02_01_Part01": {
+   "ColorMap": "rbxassetid://124160008121651",
+   "NormalMap": "rbxassetid://114677808447568",
+   "center": [
+    0,
+    21.17,
+    0
+   ],
+   "MeshId": "rbxassetid://119759722040072",
+   "MetalnessMap": "rbxassetid://110461792116703",
+   "RoughnessMap": "rbxassetid://136042171744671"
+  }
+ }
+}
