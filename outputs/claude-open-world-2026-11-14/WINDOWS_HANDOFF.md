@@ -18,7 +18,7 @@ in §8. The resume prompt is [handoff/WINDOWS_RESUME_PROMPT.md](handoff/WINDOWS_
    - `NEXT-VISUAL-PASS-PROMPT.md`
    - `outputs/vesperhold/THIRD_PARTY.md` (texture licences)
 5. The loop prompt the Mac ran: `MAC-LOOP-PROMPT.md`. Everything in it still applies, except where §1 changes it.
-6. The mac-91 delta (22 Nov, later), in `handoff/SOL_RESUME_PROMPT.md` §2–§4:
+6. **Current state: `handoff/CLAUDE_RETURN_HANDOFF.md`** (Sol's hand-back, verified on the Mac). Older still: the mac-91 delta in `handoff/SOL_RESUME_PROMPT.md` §2–§4:
    - Sourcing is widened to CC0/CC-BY/MIT open models and repos.
    - ElevenLabs SFX are approved; 26 were generated.
    - The gate towers are baked.

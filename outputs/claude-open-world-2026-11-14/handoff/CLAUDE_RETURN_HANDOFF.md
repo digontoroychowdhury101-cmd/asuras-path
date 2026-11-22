@@ -4,6 +4,17 @@
 
 The creator asked Sol to wrap up and hand back the work. Start with the colossal Bellwood temple and its tree. The creator supplied a portrait image as the target and explicitly asked for a close recreation. They rejected the earlier temple as flat, sparse and insufficiently dark fantasy. They then pointed out that the branches looked unnatural and appeared attached to the trunk. Sol rebuilt the junctions and rendered the result. The creator still wants further sculpting, especially the tree.
 
+## Verification note (Claude, Mac, 22 Nov, mac-92)
+Claude checked these claims against the repo at `ff0d6bc` on the Mac:
+- **Tests:** layout 40/0 and loader 182/0.
+- **Gate:** model IDs `124794635973767` and `128073970387733` are in `assets/LANDMARK_KIT_UPLOADED.json`, and `bellwood_gate` is in `KITS["landmark"]` and its test fixture.
+- **Audio:** 31 entries in the audio registry. All 26 new cues have IDs and 25 are Approved. Raven `87773898781698` is still Reviewing, and its cue is correctly absent from `PresentationAssets.Audio`.
+- **Asset branch:** commits `61eba0f`, `f18eca4` and `659168d` exist, and the colossal study files are in `61eba0f`.
+- **Study files:** the reference image, the two Python recipes, the `.blend` and the preview render are on disk.
+- **Art gap:** the render was compared with the reference side by side, and the gap described below is accurate.
+
+The verification also turned up something new. The five older region ambiences from 16 Nov (amberfall_ravine, ashen_stair, bellwood_forest_day, frostmere_snow, saltreach_basin_r2) still read "Reviewing" in the registry. Re-read their moderation in the cloud window before relying on them.
+
 ## Files to open first
 
 | File | What it contains |

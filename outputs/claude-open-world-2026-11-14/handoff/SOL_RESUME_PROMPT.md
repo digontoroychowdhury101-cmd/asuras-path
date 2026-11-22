@@ -1,3 +1,5 @@
+> **Superseded 22 Nov 2026 (later).** Sol ran this prompt and handed back. Read `CLAUDE_RETURN_HANDOFF.md` instead.
+
 # Resume prompt for ChatGPT 6.2 Sol (Codex), 22 November 2026: Asura's Path landmark and audio loop
 
 Current status and creator direction after Sol’s work are in [the return handoff to Claude](CLAUDE_RETURN_HANDOFF.md). Use it for completed steps, existing asset IDs and the new temple reference before using this earlier prompt.

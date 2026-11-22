@@ -31,6 +31,27 @@ The creator is entirely vibe-coding this Roblox game and does not write code man
   3. Read the latest creator direction and completed work in `outputs/claude-open-world-2026-11-14/handoff/CLAUDE_RETURN_HANDOFF.md`, then read `outputs/claude-open-world-2026-11-14/WINDOWS_HANDOFF.md` for the project procedures and backlog.
 - Handoff scripts: `./tools/handoff.sh` (Mac) or `tools\handoff.cmd` (Windows) automate this entire flow.
 
+## Standing creator decisions (every machine, every agent; updated 22 Nov 2026)
+- **Current state and next work:** `outputs/claude-open-world-2026-11-14/handoff/CLAUDE_RETURN_HANDOFF.md`. Its claims were verified on the Mac on 22 Nov (see its verification note). Procedures and the older backlog are in `outputs/claude-open-world-2026-11-14/WINDOWS_HANDOFF.md`.
+- **Always save to Roblox.** After Play verification, use File > Save to Roblox (As) to the Development place 118614906972571 (universe 10777041159). A saved place is what lets Studio grant the MCP and script permissions. **Never Publish.**
+- **Quality bar: "stunning".**
+  - There is no total triangle cap.
+  - Keep upload sub-meshes under 18–20k tris, never decimate, and use 2048 maps.
+- **Sourcing.**
+  - Allowed: CC0, CC-BY (credit in `outputs/vesperhold/THIRD_PARTY.md` and `assets/CREDITS.md`) and MIT-style open models or repos, plus ElevenLabs SFX.
+  - Never allowed: NC, ND, paid or unclear licences, Creator Store models, or Meshy credits.
+  - Verify each licence on the asset's own page before downloading.
+- **Bellwood temple.**
+  - `assets/source/landmarks/bellwood_temple_colossal/creator-stair-reference.png` is the target, recreated closely. It overrides older temple art direction.
+  - The bare hero tree comes first.
+  - The creator wants Vesperhold-scale landmarks and larger arenas.
+- **Hard limits.**
+  - Never modify `places/AsurasPath.rbxlx` or `outputs/AsurasPath.rbxlx`.
+  - Never break the lobby, combat, progression, persistent IDs or the Shen barrier.
+  - Stage explicit paths only.
+  - Run one heavy Blender job at a time, under `work/vesperhold-claude/heavy.lock`.
+  - No multi-client tests on the MacBook.
+
 ## Modern Luau Standards
 - Always use the `task` library (`task.wait()`, `task.spawn()`, `task.delay()`). NEVER use deprecated `wait()`, `spawn()`, or `delay()`.
 - Use modern physics constraints (`LinearVelocity`, `VectorForce`, `AlignOrientation`) instead of deprecated BodyMovers (`BodyVelocity`, `BodyGyro`).
