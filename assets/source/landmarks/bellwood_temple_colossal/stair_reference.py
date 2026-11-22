@@ -3,7 +3,7 @@
 Camera convention: the portrait camera looks down -Y, so image-left is world +X.
 Env knobs: VESP_RENDER_SAMPLES, VESP_TREE_VOXEL (bark union voxel size), VESP_TWIG_DEPTH, VESP_YAW (portrait turn
 left, degrees), VESP_GLOW (gallery light per stud of width), VESP_HAZE, VESP_EXPOSURE,
-VESP_VIEWS (comma list of portrait,fork,root).
+VESP_VIEWS (comma list of views; a clay_ prefix renders that view in grey clay), VESP_CPU.
 """
 
 import math
@@ -99,29 +99,38 @@ def organic_path(mesh, profile, controls, radii, record=None):
     mesh.poly(list(reversed(rings[-1])))
 
 
-def root_bundle(mesh, pts, rr):
-    """Strangler-fig root: a core plus thinner strands that weave apart and rejoin, leaving real gaps."""
-    count = max(3, min(6, round(rr[0] / 1.8)))
-    organic_path(mesh, circle(10), pts, [r * .42 for r in rr], SPINE)  # children fork from this core
+def root_rope(mesh, pts, rr, holds=()):
+    """One load-bearing root that swells at each hold and necks between them. One or two strands peel away
+    for a short span and rejoin, so gaps read without a continuous bundle of parallel cables."""
     along = [0.0]
     for a, b in zip(pts, pts[1:]):
         along.append(along[-1] + (b - a).length)
-    for _ in range(count - 1):
-        amp, wave, phase = RNG.uniform(.95, 1.7), RNG.uniform(11, 24), RNG.uniform(0, math.tau)
-        lift, thin = RNG.uniform(-.1, .45), RNG.uniform(.26, .38)
-        ctrl, radii = [], []
-        for i, (p, r) in enumerate(zip(pts, rr)):
+    wave, phase = RNG.uniform(26, 52), RNG.uniform(0, math.tau)
+    grip = [0.0] * len(pts)
+    for i in holds:  # a root thickens where it bears on stone
+        for j in range(max(0, i - 3), min(len(pts), i + 2)):
+            grip[j] = max(grip[j], 1 - abs(j - i) / 3.5)
+    radii = [r * (.8 + .17 * math.sin(s / wave + phase) + .09 * math.sin(s / (wave * .31) + 2 * phase)
+                  + .22 * max(0.0, 1 - s / 30) + .28 * g) for r, s, g in zip(rr, along, grip)]
+    organic_path(mesh, BARK_PROFILE, pts, radii, SPINE)
+    total = along[-1]
+    for _ in range(1 if rr[0] < 6.5 else 2):
+        s0 = total * RNG.uniform(.12, .55)
+        span = [i for i, s in enumerate(along) if s0 <= s <= s0 + RNG.uniform(34, 70)]
+        if len(span) < 4:
+            continue
+        sign, thin = RNG.choice((-1, 1)), RNG.uniform(.3, .42)
+        ctrl, widths = [], []
+        for k, i in enumerate(span):
+            p = pts[i]
             t = pts[min(i + 1, len(pts) - 1)] - pts[max(0, i - 1)]
             t = t.normalized() if t.length > 1e-6 else UP
             side = t.cross(UP)
             side = side.normalized() if side.length > 1e-3 else Vector((1, 0, 0))
-            normal = side.cross(t).normalized()
-            if normal.z < 0:
-                normal = -normal
-            ramp = min(1.0, along[i] / 22)  # strands grow out of a fused crown, then net apart
-            ctrl.append(p + (side * amp * math.sin(along[i] / wave + phase) + normal * lift) * r * ramp)
-            radii.append(r * thin)
-        organic_path(mesh, circle(8), ctrl, radii, SPINE)
+            out = math.sin(math.pi * k / (len(span) - 1))  # leaves the core and returns to it
+            ctrl.append(p + side * sign * rr[i] * (.5 + 1.25 * out) + UP * rr[i] * .25 * out)
+            widths.append(rr[i] * thin * (.75 + .25 * out))
+        organic_path(mesh, circle(10), ctrl, widths, SPINE)
 
 
 def path_point(points, segment, t):
@@ -648,20 +657,39 @@ def random_unit():
 def aged_tree(h):
     bark, twigs, ivy, moss = h.m("Bark"), h.m("BarkTwigs"), h.m("Ivy"), h.m("Moss")
     centre = Vector((TRUNK[2].x, TRUNK[2].y, 0))
-    stats = {"twigs": 0, "bark_branches": 0}
+    stats = {"twigs": 0, "bark_branches": 0, "pruned": 0}
+    occupied = {}  # branch starts per size class on a coarse grid
+
+    def crowded(p, d, length):
+        """A fork beside a near-parallel sibling of the same size adds clutter, not form."""
+        level = max(0, int(math.log2(max(1.0, length))))
+        cell = 2 ** level * .45
+        heads = occupied.setdefault((level, round(p.x / cell), round(p.y / cell), round(p.z / cell)), [])
+        if any(d.dot(o) > .55 for o in heads):
+            stats["pruned"] += 1
+            return True
+        heads.append(d)
+        return False
 
     def branch(start, direction, length, radius, depth):
         if radius < .075 or length < .9:
             return
         d = direction.normalized()
+        if crowded(start, d, length):
+            return
         side = d.cross(UP)
         side = side.normalized() if side.length > 1e-3 else Vector((1, 0, 0))
-        lift = side.cross(d)
-        bend = side * RNG.uniform(-.3, .3) * length + lift * RNG.uniform(-.18, .26) * length
-        kink = (side * RNG.uniform(-.14, .14) + lift * RNG.uniform(-.1, .1)) * length
-        pts = [start, start + d * length * .34 + bend * .55 + kink, start + d * length * .68 + bend - kink * .6,
-               start + d * length + bend * .3 + UP * RNG.uniform(-.14, .24) * length]
-        rr = [radius, radius * RNG.uniform(.7, .84), radius * RNG.uniform(.48, .6), radius * .2]
+        outward = Vector((start.x - centre.x, start.y - centre.y, 0))
+        outward = outward.normalized() if outward.length > 1 else side
+        # Thick wood climbs outward; the finest shoots droop. One steady curl per limb instead of zigzags.
+        tropism = (outward * .45 + UP * (.32 if radius > .6 else -.2)).normalized()
+        axis = d.cross(random_unit())
+        turn = Matrix.Rotation(RNG.uniform(.07, .2), 3, axis.normalized() if axis.length > 1e-3 else side)
+        pts, heading = [start], d
+        for _ in range(4):
+            heading = (turn @ heading).lerp(tropism, .14).normalized()
+            pts.append(pts[-1] + heading * length * RNG.uniform(.21, .29))
+        rr = [radius, radius * .8, radius * .62, radius * .42, radius * .16]
         if radius >= THICK:
             organic_path(bark, circle(12), pts, rr, SPINE)
             stats["bark_branches"] += 1
@@ -672,21 +700,31 @@ def aged_tree(h):
             stats["twigs"] += 1
         if not depth:
             return
-        for _ in range(RNG.choice((2, 3, 3, 4)) if depth > 2 else RNG.choice((3, 3, 4))):
-            seg = RNG.randrange(0, 3)
-            t = RNG.uniform(.15, 1.0)
+        count = RNG.choice((2, 2, 3)) if depth > 2 else 3  # sparse structure, dense fringe at the tips
+        flip = RNG.choice((-1, 1))
+        for c in range(count):
+            f = (.25 + .55 * (c + RNG.uniform(.15, .85)) / count) * 4  # spread where the parent is still thick
+            seg = min(3, int(f))
+            t = f - seg
             where = path_point(pts, seg, t)
             here = rr[seg] * (1 - t) + rr[seg + 1] * t
-            tangent = path_point(pts, seg, min(1, t + .04)) - path_point(pts, seg, max(0, t - .04))
-            vector = (tangent.normalized() * RNG.uniform(.5, 1.1)
-                      + random_unit() * RNG.uniform(.45, .95) + UP * RNG.uniform(-.25, .45))
-            branch(where, vector, length * RNG.uniform(.46, .7), here * RNG.uniform(.5, .78), depth - 1)
+            tangent = (path_point(pts, seg, min(1, t + .05)) - path_point(pts, seg, max(0, t - .05))).normalized()
+            across = tangent.cross(UP)
+            across = across.normalized() if across.length > 1e-3 else side
+            flip = -flip  # children alternate sides and keep the parent's direction of growth
+            vector = tangent + across * flip * RNG.uniform(.45, .85) + UP * RNG.uniform(-.1, .3)
+            branch(where, vector, length * RNG.uniform(.55, .7), min(here, radius * RNG.uniform(.5, .64)), depth - 1)
 
-    def limb(points, radii, spawn=(2, 2, 3, 3), twig_depth=None):
+    def limb(points, radii, spawn=(2, 3, 3, 4), twig_depth=None, collar=True):
         points = [Vector(p) for p in points]
         points = [Vector((p.x, p.y, 445 + (p.z - 445) * CROWN_SQUASH)) if p.z > 445 else p for p in points]
-        pts, rr = gnarl(points, radii, .11)
+        pts, rr = gnarl(points, radii, .15)
         organic_path(bark, BARK_PROFILE, pts, rr, SPINE)
+        # Branch collar: a broad swelling where the limb leaves its parent, so the joint reads as grown wood.
+        d0 = (pts[1] - pts[0]).normalized()
+        if collar:
+            organic_path(bark, BARK_PROFILE, [pts[0], pts[0] + d0 * rr[0] * 1.0, pts[0] + d0 * rr[0] * 2.4],
+                         [rr[0] * 1.35, rr[0] * 1.18, rr[0] * 1.02], SPINE)
         for i in range(1, len(pts)):
             a, b = pts[i - 1], pts[i]
             r = (rr[i - 1] + rr[i]) * .5
@@ -694,11 +732,13 @@ def aged_tree(h):
                 t = RNG.uniform(.1, .95)
                 where = path_point(pts, i - 1, t)
                 outward = Vector((where.x - centre.x, where.y - centre.y, 0))
-                outward = outward.normalized() if outward.length > 1 else random_unit()
-                vector = ((b - a).normalized() * RNG.uniform(.3, .9) + outward * RNG.uniform(.2, .8)
-                          + random_unit() * .55 + UP * RNG.uniform(-.4, .75))
-                radius = r * RNG.uniform(.3, .52)
-                branch(where, vector, radius * RNG.uniform(10, 15), radius,
+                if outward.length < 62 and where.z < 600:
+                    continue  # keep the fork bare so the leaders read
+                outward = outward.normalized()
+                vector = ((b - a).normalized() * RNG.uniform(.5, 1.0) + outward * RNG.uniform(.2, .6)
+                          + random_unit() * .25 + UP * RNG.uniform(0, .6))
+                radius = r * RNG.uniform(.28, .46)
+                branch(where, vector, radius * RNG.uniform(13, 19), radius,
                        TWIG_DEPTH if twig_depth is None else twig_depth)
         return pts, rr
 
@@ -714,15 +754,17 @@ def aged_tree(h):
             scales.append(RNG.uniform(3.0, 7.5) * (.6 if j == len(TRUNK) - 1 else 1))
         organic_path(bark, circle(10), route, scales, SPINE)
     fork = TRUNK[4]
+    # Three leaders in separate planes: image-left arches forward and over, the centre climbs behind,
+    # image-right reaches out low and forward. Each rises, then levels, so the crown reads as a broad dome.
     leaders = [
-        ([fork, (34, -150, 488), (62, -146, 535), (80, -138, 590), (112, -130, 640), (146, -122, 690), (170, -110, 740)],
-         [26, 21, 17, 14, 11, 7.5, 4.5]),
-        ([TRUNK[3], (-16, -160, 490), (-32, -158, 550), (-24, -150, 615), (-44, -140, 680), (-52, -130, 750), (-40, -120, 810)],
-         [29, 23, 19, 15, 11, 7, 3.5]),
-        ([fork, (-34, -170, 478), (-80, -178, 508), (-122, -172, 550), (-160, -168, 590), (-206, -160, 628), (-240, -150, 660)],
-         [23, 18, 15, 12, 9, 6, 3.5]),
+        ([fork, (44, -150, 510), (84, -138, 560), (130, -124, 600), (184, -108, 630), (240, -94, 645), (300, -80, 640)],
+         [27, 22, 18, 14.5, 11, 7.5, 4.5]),
+        ([TRUNK[3], (-8, -178, 500), (-14, -198, 570), (4, -216, 640), (-10, -228, 710), (-30, -238, 780)],
+         [29, 23, 19, 15, 10, 6]),
+        ([fork, (-30, -156, 500), (-72, -142, 545), (-118, -126, 580), (-170, -112, 604), (-228, -100, 612),
+          (-286, -92, 600)], [24, 19, 15.5, 12.5, 9.5, 6.5, 4]),
     ]
-    built = [limb(p, r) for p, r in leaders]
+    built = [limb(p, r, collar=False) for p, r in leaders]  # the trunk itself splits
     l1, l2, l3 = built
 
     def on(pts, z):  # nearest gnarled control point to a height
@@ -737,16 +779,13 @@ def aged_tree(h):
          [11, 9, 7, 5.5, 3.8, 2.4]),
         ([on(l2[0], 550), (-88, -140, 582), (-150, -116, 592), (-218, -88, 632), (-280, -60, 642), (-336, -36, 680)],
          [12, 10, 8, 6, 4, 2.5]),
-        ([on(l2[0], 615), (-16, -104, 648), (0, -44, 676), (22, 16, 690), (36, 80, 720), (40, 140, 742)],
-         [10, 9, 7, 5.5, 4, 2.6]),
         ([on(l1[0], 535), (88, -100, 570), (112, -44, 592), (140, 14, 628), (160, 70, 650)], [11, 9, 7, 5, 3]),
         ([on(l3[0], 508), (-92, -220, 552), (-104, -262, 596), (-86, -300, 646)], [10, 8, 6, 3.5]),
         ([on(l3[0], 550), (-128, -120, 590), (-130, -60, 615), (-120, 0, 650), (-110, 60, 665)], [9, 8, 6, 4.5, 3]),
         ([on(l1[0], 640), (120, -170, 690), (96, -210, 740), (110, -250, 790)], [8, 6.5, 5, 3]),
         ([on(l2[0], 490), (-44, -118, 500), (-72, -62, 522), (-112, -12, 512), (-170, 30, 540), (-222, 62, 532)],
          [11, 9, 7.5, 6, 4.2, 2.8]),
-        ([on(l1[0], 488), (62, -110, 472), (102, -62, 456), (150, -22, 472), (204, 18, 462)], [10, 8, 6.4, 4.4, 2.8]),
-    ]
+    ]  # two redundant laterals were dropped so the centre and lower left keep open sky between limbs
     built_laterals = [limb(p, r) for p, r in laterals]
     # Drooping secondaries hang down and out from the long laterals.
     for (pts, rr), index, drop in ((built_laterals[1], 6, (-36, 10, -26)), (built_laterals[0], 6, (28, 12, -24)),
@@ -770,6 +809,8 @@ def aged_tree(h):
 
     def blocked(p):
         _, _, _, w = stair_profile(max(0, min(STEP_COUNT - 1, (START_Y - p.y) / STEP_RUN)))
+        if abs(p.x) < 72 and p.y > -132 and p.z < 176:
+            return True  # nothing hangs into the gate front below its first eave
         return p.y > -46 and abs(p.x) < w / 2 + 7  # the player route stays clear
 
     def steer(p, heading, goal):
@@ -778,9 +819,24 @@ def aged_tree(h):
             heading = heading + Vector((math.copysign(1.4, p.x if abs(p.x) > 1 else 1), -.2))
         return heading.normalized()
 
+    def face(xy, z, heading, r):
+        """Where a root pressed to the wall at height z sits: just off the first face met coming back in."""
+        h3 = Vector((heading.x, heading.y, 0))
+        origin = Vector((xy.x, xy.y, z)) + h3 * 80
+        best = None
+        for tree in trees:
+            hit = tree.ray_cast(origin, -h3, 130)
+            if hit[0] is not None and (best is None or hit[3] < best[3]):
+                best = hit
+        if best is not None:
+            back = (best[0].xy - xy).dot(heading)
+            if -30 < back < r * 1.5 + 4:  # a face set back under an eave, never a far wall or a block's inside
+                return best[0].xy + heading * r * 1.05, True
+        return xy + heading * r * 1.05, False
+
     def root(start, heading, r0, length, depth, goal):
         heading = Vector(heading).normalized()
-        pts, rr = [start.copy()], [r0]
+        pts, rr, holds = [start.copy()], [r0], []
         p = start.copy()
         travelled, next_fork = 0.0, RNG.uniform(40, 80)
         step = 5.0
@@ -803,22 +859,34 @@ def aged_tree(h):
                         lo = mid
                 edge = Vector((p.x, p.y)) + heading * step * lo
                 drop = p.z - ground
-                # Arch over the lip, then sweep diagonally down the face instead of hanging like a curtain.
-                # Tall faces are crossed diagonally so neighbouring roots braid instead of curtaining.
-                lateral = Vector((-heading.y, heading.x)) * RNG.choice((-1, 1)) * drop * RNG.uniform(.25, .6)
-                land = edge + heading * (r * 1.3 + drop * .42) + lateral
+                # Arch over the lip, then hug the face on a diagonal and bear on it at mid height and at its foot.
+                # The diagonal varies per root so neighbours cross instead of hanging as a parallel curtain.
+                lateral = Vector((-heading.y, heading.x)) * RNG.choice((-1, 1)) * drop * RNG.uniform(.35, .75)
+                hug, walled = face(edge + lateral * .66, p.z - drop * .66, heading, r)
+                foot, _ = face(edge + lateral, ground + r * 1.5, heading, r)
+                land = foot + heading * (r * .4 + drop * .1)
+                if (not walled and drop > max(14.0, r * 3)) or blocked(Vector((hug.x, hug.y, p.z - drop * .66))) \
+                        or blocked(Vector((land.x, land.y, ground))):
+                    # An eave over open air or the gate front: follow the lip instead of spanning the gap as a strut.
+                    heading = heading @ Matrix.Rotation(RNG.choice((-1, 1)) * RNG.uniform(.8, 1.5), 2)
+                    travelled += 1.5
+                    continue
                 land_z = surface(land.x, land.y, ground + r + 6) + r * .2
+                bulge = RNG.uniform(.4, 1.1)  # how far the root bows off the face between its holds
+                upper, _ = face(edge + lateral * .3, p.z - drop * .3, heading, r)
                 arc = ((edge, p.z + r * .75, 1.0),
-                       (edge + heading * (r * .9 + drop * .07) + lateral * .25, p.z - drop * .28, .92),
-                       (edge + heading * (r * 1.1 + drop * .22) + lateral * .7, land_z + drop * .3, .86),
-                       (land, land_z, .8))
-                for xy, z, shrink in arc:
+                       (upper + heading * r * bulge, p.z - drop * .3, .86),
+                       (hug, p.z - drop * .66, 1.0),
+                       (land, land_z, .82))
+                for k, (xy, z, shrink) in enumerate(arc):
                     pts.append(Vector((xy.x, xy.y, z)))
-                    rr.append(r * shrink * RNG.uniform(.92, 1.04))
-                r0 *= .92  # a root thins as it gives off grip forks over each course
+                    rr.append(r * shrink * RNG.uniform(.9, 1.06))
+                    if k in (2, 3) and drop > 14:
+                        holds.append(len(pts) - 1)
+                        CONTACTS.append((pts[-1].copy(), r))
+                r0 *= .9  # a root thins as it gives off grip forks over each course
                 p = pts[-1].copy()
                 travelled += step + drop * .6
-                CONTACTS.append((p.copy(), r))
                 if depth and r > .9:  # break into gripping forks along the wall foot
                     for sign in (-1, 1):
                         if RNG.random() < .7:
@@ -844,27 +912,38 @@ def aged_tree(h):
                   round(travelled), "/", round(length), flush=True)
         if len(pts) < 3:
             return
-        rr[-1] = max(.25, rr[-1] * .3)
+        # The tip dives behind the block or into the joint it was following instead of ending on top.
+        dive = pts[-1] - pts[-2]
+        dive = Vector((dive.x, dive.y, 0)).normalized() if dive.xy.length > 1e-3 else Vector((0, 0, 0))
+        pts.append(pts[-1] + dive * rr[-1] * 1.2 + Vector((0, 0, -rr[-1] * 2.2)))
+        rr.append(rr[-1] * .4)
+        rr[-1] = max(.25, rr[-1])
+        holds.append(len(pts) - 2)
         if rr[0] > 3.0:
-            root_bundle(bark, pts, rr)
+            root_rope(bark, pts, rr, holds)
         elif rr[0] >= THICK:
             organic_path(bark, circle(12), pts, rr, SPINE)
         else:
             organic_path(twigs, circle(7), pts, rr)
-        for p, r in zip(pts[::3], rr[::3]):  # greenery where root and stone meet
-            if p.z < 330 and RNG.random() < .5:
-                for _ in range(RNG.randrange(2, 7)):
-                    kit.leaf(ivy if RNG.random() < .6 else moss,
-                             p + Vector((RNG.uniform(-r, r), RNG.uniform(-r, r), -r * .3)), RNG.uniform(.6, 1.6))
+        for i in holds:  # greenery only where the root bears on stone, thinning away from the hold
+            p, r = pts[i], rr[i]
+            if p.z > 340:
+                continue
+            for _ in range(RNG.randrange(3, 9)):
+                spread = RNG.uniform(.3, 1.0) ** 2 * r * 2.6
+                a = RNG.uniform(0, math.tau)
+                kit.leaf(ivy if RNG.random() < .55 else moss,
+                         p + Vector((math.cos(a) * spread, math.sin(a) * spread, -r * .35)), RNG.uniform(.6, 1.6))
 
     # Most of the root mass pours down the image-left (+X) terraces as separate, netted roots; a few go right.
-    plan = [(1, RNG.uniform(-.25, .75), RNG.uniform(4.7, 8.3), RNG.uniform(430, 620),
-             (RNG.uniform(55, 155), RNG.uniform(-25, 166))) for _ in range(9)]
-    plan += [(-1, RNG.uniform(-.1, .6), RNG.uniform(5.5, 9.5), RNG.uniform(260, 360),
-              (-RNG.uniform(60, 170), RNG.uniform(-50, 90))) for _ in range(5)]
+    # Fewer, heavier ropes than v10: separate main roots with real gaps, each forking at its holds.
+    plan = [(1, RNG.uniform(-.3, .5), RNG.uniform(6.0, 9.5), RNG.uniform(430, 620),
+             (RNG.uniform(115, 205), RNG.uniform(-25, 166))) for _ in range(6)]  # the reference's left sweep
+    plan += [(-1, RNG.uniform(-.1, .6), RNG.uniform(5.5, 8.5), RNG.uniform(260, 360),
+              (-RNG.uniform(60, 170), RNG.uniform(-50, 90))) for _ in range(4)]
     # The cascade: long roots that pour over the near left retaining walls down beside the stair.
-    plan += [(1, RNG.uniform(.35, 1.1), RNG.uniform(4.3, 7.7), RNG.uniform(640, 820),
-              goal) for goal in ((63, 176), (143, 211), (105, 154), (194, 163), (176, 127))]
+    plan += [(1, RNG.uniform(.35, 1.1), RNG.uniform(5.5, 8.5), RNG.uniform(640, 820),
+              goal) for goal in ((63, 176), (143, 211), (194, 163), (176, 127))]
     for side, lean, radius, length, goal in plan:
         h2 = Vector((side, lean)).normalized()
         z = RNG.uniform(232, 350)
@@ -873,19 +952,6 @@ def aged_tree(h):
         start = TRUNK[level] + Vector((around.x, around.y, 0)) * (40 - 2 * level) + Vector((0, 0, z - TRUNK[level].z))
         root(start, h2, radius, length, 3, Vector(goal))
 
-    # Hanging aerial roots and ivy curtains under the eaves of the lower tiers.
-    for x0, y0, z0, w, d, ht, _, _ in TIERS[:3]:
-        y = y0 + d / 2 + 6
-        z = z0 + ht + 7
-        for i in range(23):
-            x = x0 + RNG.uniform(-w * .46, w * .46)
-            drop = RNG.uniform(8, 30)
-            points = [Vector((x + math.sin(j * .71 + i) * 1.56, y + math.sin(j * 1.34) * .72, z - j / 8 * drop)) for j in range(9)]
-            twigs.sweep(circle(5), points, scales=[.42 - j * .04 for j in range(9)])
-            for p, q in zip(points, points[1:]):
-                for k in range(3):
-                    stem = p.lerp(q, k / 3) + Vector((RNG.uniform(-1.04, 1.04), .41, RNG.uniform(-.15, .15)))
-                    kit.leaf(ivy if k % 3 else moss, stem, RNG.uniform(.48, 1.44))
     print("Tree", stats, "spine samples", len(SPINE), "root contacts", len(CONTACTS), flush=True)
 
 
@@ -1138,6 +1204,10 @@ def bark_grain(obj):
     for i, record in enumerate(SPINE):
         kd.insert(record[0], i)
     kd.balance()
+    grip = KDTree(max(1, len(CONTACTS)))
+    for i, (c, _) in enumerate(CONTACTS):
+        grip.insert(c, i)
+    grip.balance()
     vertices = obj.data.vertices
     count = len(vertices)
     coords = array("f", [0]) * (3 * count)
@@ -1179,17 +1249,19 @@ def bark_grain(obj):
                 best_w, best_u, best_v, best_period = weight, a * base / 6, along / 6, math.tau * base / 6
         value = height / total
         nearest_r = SPINE[hits[0][1]][4]
-        amplitude = min(nearest_r * .26, 8.0)
+        ranked = sorted(per_path.values(), reverse=True)
+        clash = min(1.0, max(0.0, (ranked[1] / ranked[0] - .2) / .45)) if len(ranked) > 1 else 0.0
+        amplitude = min(nearest_r * .26, 8.0) * (1 - .65 * clash)  # junction grain stays continuous, not scaly
         for axis in range(3):
             coords[3 * i + axis] += normals[3 * i + axis] * (value - .55) * amplitude
         ridge[i] = min(1.0, max(0.0, value))
         nz = normals[3 * i + 2]
-        low = min(1.0, max(0.0, (340 - p.z) / 150))
-        mossy[i] = min(1.0, max(0.0, (nz - .2) * 1.6) * low + max(0.0, .5 - value) * low * .8)
+        # Moss gathers where a root bears on stone and fades over a few root widths, not everywhere low.
+        hold = grip.find(p) if CONTACTS else None
+        near = max(0.0, 1 - hold[2] / (CONTACTS[hold[1]][1] * 3.5 + 6)) ** 1.5 if hold and hold[0] is not None else 0.0
+        mossy[i] = min(1.0, (max(0.0, (nz - .2) * 1.6) + max(0.0, .5 - value) * .8) * near)
         us[i], vs[i], period[i] = best_u, best_v, best_period
-        ranked = sorted(per_path.values(), reverse=True)
-        # Where two limbs' UV frames compete (junctions), fade to a seamless projected bark instead.
-        blend[i] = min(1.0, max(0.0, (ranked[1] / ranked[0] - .2) / .45)) if len(ranked) > 1 else 0.0
+        blend[i] = clash  # where two limbs' UV frames compete (junctions), fade to a seamless projected bark
     vertices.foreach_set("co", coords)
     mesh = obj.data
     for name, data in (("bark_ridge", ridge), ("bark_moss", mossy), ("bark_blend", blend)):
@@ -1386,6 +1458,8 @@ def main():
         place_lion(location, yaw, side)
     scene, camera, mannequin = figures.setup_scene(samples=int(os.environ.get("VESP_RENDER_SAMPLES", 12)), cool_rim=True)
     atmosphere(scene, mats, temple)
+    if os.environ.get("VESP_CPU"):  # Metal buffers sit in unified memory; CPU keeps the peak footprint lower
+        scene.cycles.device = "CPU"
     bpy.data.objects["Ground"].scale = (30, 30, 1)
     bpy.data.objects["Ground"].data.materials[0] = mats["Masonry"]
     bpy.data.objects.remove(mannequin, do_unlink=True)
@@ -1425,8 +1499,17 @@ def main():
         "root": (900, 900, 52, Vector((12, contact.y + 75, max(stair_profile((START_Y - contact.y - 75) / STEP_RUN)[2] + 14,
                                                               contact.z + 26))), contact + Vector((0, 0, 4))),
     }
+    clay = bpy.data.materials.new("Neutral clay seam check")
+    clay.diffuse_color = (.5, .5, .5, 1)
+    clay.use_nodes = True
+    next(n for n in clay.node_tree.nodes if n.type == "BSDF_PRINCIPLED").inputs["Roughness"].default_value = .8
     for name in os.environ.get("VESP_VIEWS", "portrait,approach,fork,root").split(","):
-        width, height, angle, where, target = views[name]
+        is_clay = name.startswith("clay_")  # grey override, fog hidden: seams and twig starts show
+        width, height, angle, where, target = views[name[5:] if is_clay else name]
+        scene.view_layers[0].material_override = clay if is_clay else None
+        for ob in scene.objects:
+            if ob.name.startswith(("Valley haze", "Broken ribbons of fog")):
+                ob.hide_render = is_clay
         scene.render.resolution_x, scene.render.resolution_y = width, height
         scene.render.resolution_percentage = int(os.environ.get("VESP_RENDER_PERCENT", 100))
         camera.data.angle_y = math.radians(angle)
