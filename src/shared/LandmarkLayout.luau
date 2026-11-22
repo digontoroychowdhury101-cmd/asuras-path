@@ -309,8 +309,20 @@ local function basinSpot(lm: any, P: any): Vec
 end
 
 -- World position of the temple hall's origin (platform centre, on its foot).
-function Layout.templeSpot(lm: any): Vec
-	return basinSpot(lm, lm.Basin.Temple)
+function Layout.templeSpot(lm: any, temple: any?): Vec
+	return basinSpot(lm, temple or lm.Basin.Temple)
+end
+
+-- The crest sits behind the giant face and beyond the lake exit. The bore cuts through it after the fill.
+function Layout.colossalRidgeHeight(lm: any, x: number, z: number): number?
+	local centre, fx, fz, ax, az = basinAxes(lm)
+	local dx, dz = x - centre.X, z - centre.Z
+	local across, along = dx * ax + dz * az, dx * fx + dz * fz
+	local edge = math.abs((across + 100) / 530)
+	local depth = math.abs((along - (651 + 25 * math.sin(across / 111))) / 63)
+	if edge >= 1 or depth >= 1 then return nil end
+	local floor = Layout.basinLevels(lm)
+	return floor + (420 - floor) * (1 - edge ^ 3) * (1 - depth ^ .86)
 end
 
 -- World position of the gate towers' origin (tower-line centre, on the lake bed).

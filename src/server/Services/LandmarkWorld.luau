@@ -355,12 +355,74 @@ function World.packs(lm: any): { { CFrame: CFrame, Size: Vector3, Floor: number 
 end
 
 -- The temple hall's origin frame: at Layout.templeSpot, upright, its front (model +Z) turned to the passage exit.
-function World.templeFrame(lm: any): CFrame
-	local s = World.Layout.templeSpot(lm)
+function World.templeFrame(lm: any, temple: any?): CFrame
+	local s = World.Layout.templeSpot(lm, temple)
 	local at = Vector3.new(s.X, s.Y, s.Z)
 	local exit = World.kitToWorld(lm, lm.Tunnel.Passage[#lm.Tunnel.Passage])
 	local away = at - Vector3.new(exit.X - at.X, 0, exit.Z - at.Z) -- lookAt aims -Z, so aim away from the exit
 	return CFrame.lookAt(at, away)
+end
+
+-- Invisible solid treads follow the art recipe in Blender +Y. They avoid cooking collision for the decorative mesh kit.
+function World.colossalTempleCollision(frame: CFrame): Folder
+	local folder = Instance.new("Folder")
+	folder.Name = "ColossalTempleCollision"
+	local function add(name: string, run: number, top: number, width: number, depth: number, thickness: number)
+		local part = Instance.new("Part")
+		part.Name = name
+		part.Size = Vector3.new(width, thickness, depth)
+		part.CFrame = frame * CFrame.new(0, top - thickness / 2, run)
+		part.Anchored, part.CanCollide, part.CanQuery, part.CanTouch = true, true, true, false
+		part.Transparency, part.CastShadow = 1, false
+		part.Parent = folder
+	end
+	for i = 0, 127 do
+		add(string.format("Tread%03d", i), 257 - i * 2.35, 0.60 + i * 0.88, 77 - 33 * i / 128, 2.37, 1.10)
+	end
+	add("HallFloor", -84, 113, 144, 88, 2)
+	return folder
+end
+
+function World.colossalRidgeFills(lm: any): { any }
+	local L = World.Layout
+	local centre, fx, fz = L.basinCentre(lm), L.front(lm)
+	local floor = L.basinLevels(lm)
+	local front = Vector3.new(fx, 0, fz)
+	local across = Vector3.new(-fz, 0, fx)
+	local out = {}
+	for x = -620, 420, 20 do
+		for z = 574, 728, 14 do
+			local centreline = Vector3.new(centre.X, 0, centre.Z) + across * x + front * z
+			local top = L.colossalRidgeHeight(lm, centreline.X, centreline.Z)
+			if not top or top - floor < 8 then continue end
+			local mid = centreline + Vector3.new(0, (top + floor) / 2 - 6, 0)
+			table.insert(out, { CFrame = CFrame.lookAt(mid, mid + front),
+				Size = Vector3.new(20, top - floor + 12, 14), Material = Enum.Material.Rock })
+		end
+	end
+	return out
+end
+
+-- The level runs sit on a rock footing from below the deep dish. Low steps join the passage and the two stair toes.
+function World.colossalApproach(lm: any, frame: CFrame): { any }
+	local entry = World.kitToWorld(lm, lm.Tunnel.Passage[#lm.Tunnel.Passage]) - Vector3.new(0, 8, 0)
+	local stair = frame * Vector3.new(0, .60, 258)
+	local gate = World.gateFrame(lm) * Vector3.new(0, .4, lm.Basin.Gate.Steps + 4)
+	local bed = World.Layout.basinLevels(lm) - lm.Basin.Deep - 3
+	local out = {}
+	local function path(a: Vector3, b: Vector3, width: number)
+		local flat = (b - a) * Vector3.new(1, 0, 1)
+		local segments = math.max(1, math.ceil(flat.Magnitude / 16))
+		for i = 1, segments do
+			local sample = a:Lerp(b, (i - .5) / segments)
+			local mid = Vector3.new(sample.X, (sample.Y + bed) / 2, sample.Z)
+			table.insert(out, { CFrame = CFrame.lookAt(mid, mid + flat),
+				Size = Vector3.new(width, sample.Y - bed, flat.Magnitude / segments + .8), Material = Enum.Material.Rock })
+		end
+	end
+	path(entry, stair, 16)
+	path(stair:Lerp(entry, .24), gate, 12)
+	return out
 end
 
 -- The gate towers' origin frame: at Layout.gateSpot, upright, its front (model +Z) turned to the basin centre.
@@ -380,12 +442,12 @@ World.Accents = {
 }
 
 -- Invisible anchored non-colliding anchors, one PointLight each. which = { Temple = bool, Gate = bool } (the pieces that placed).
-function World.accents(lm: any, which: { [string]: boolean }): Model
+function World.accents(lm: any, which: { [string]: boolean }, temple: any?): Model
 	local model = Instance.new("Model")
 	model.Name = "BasinLights"
-	for kind, frame in { Temple = World.templeFrame(lm), Gate = World.gateFrame(lm) } do
+	for kind, frame in { Temple = World.templeFrame(lm, temple), Gate = World.gateFrame(lm) } do
 		if not which[kind] then continue end
-		for i, a in World.Accents[kind] do
+		for i, a in (if kind == "Temple" and temple and temple.Accents then temple.Accents else World.Accents[kind]) do
 			local part = Instance.new("Part")
 			part.Name, part.Size, part.Transparency = kind .. "Accent" .. i, Vector3.one, 1
 			part.CFrame = frame * CFrame.new(a[1], a[2], a[3])
@@ -494,7 +556,29 @@ function World.build(folders: { [string]: Instance }, waitReady: (string) -> boo
 				end
 			end
 			local T, templePlaced = lm.Basin and lm.Basin.Temple, false
-			if T then
+			local candidate = lm.Basin and lm.Basin.ColossalTemple
+			local colossalFrame: CFrame? = nil
+			if candidate and #candidate.Pieces > 0 then
+				local frame = World.templeFrame(lm, candidate)
+				local pack = Instance.new("Model")
+				pack.Name = candidate.Model
+				for _, piece in candidate.Pieces do
+					local pose = frame * CFrame.new(piece.X, piece.Y, piece.Z)
+						* CFrame.Angles(0, piece.Yaw or 0, 0) * CFrame.new(piece.Foot.X, piece.Foot.Y, piece.Foot.Z)
+					local placedPiece = Kit.place(piece.Model, pose, Vector3.one, { Fidelity = {} })
+					if not placedPiece then break end
+					placedPiece.Parent = pack
+				end
+				if #pack:GetChildren() == #candidate.Pieces then
+					local collision = World.colossalTempleCollision(frame)
+					collision.Parent = pack
+					colossalFrame, templePlaced, T = frame, true, candidate
+					pack.Parent = model
+				else
+					pack:Destroy()
+				end
+			end
+			if T and not templePlaced then
 				local m = Kit.place(T.Model, World.templeFrame(lm) * CFrame.new(T.Foot.X, T.Foot.Y, T.Foot.Z), Vector3.one, { Fidelity = World.Fidelity })
 				if m then m.Parent, templePlaced = model, true else warn("[LandmarkWorld] " .. id .. ": kit piece " .. T.Model .. " is not available") end
 			end
@@ -504,7 +588,7 @@ function World.build(folders: { [string]: Instance }, waitReady: (string) -> boo
 				if m then m.Parent, gatePlaced = model, true else warn("[LandmarkWorld] " .. id .. ": kit piece " .. G.Model .. " is not available") end
 			end
 			if lm.Basin and (templePlaced or gatePlaced) then
-				World.accents(lm, { Temple = templePlaced, Gate = gatePlaced }).Parent = model
+				World.accents(lm, { Temple = templePlaced, Gate = gatePlaced }, T).Parent = model
 			end
 			if placed > 0 and lm.Tunnel and lm.Tunnel.Lanterns then
 				for _, p in lm.Tunnel.Lanterns do World.lantern(World.kitToWorld(lm, p)).Parent = model end
@@ -529,9 +613,19 @@ function World.build(folders: { [string]: Instance }, waitReady: (string) -> boo
 				end
 				for _, p in World.packs(lm) do fill({ CFrame = p.CFrame, Size = p.Size, Material = Enum.Material.Rock }) end
 				for _, f in World.basin(lm) do fill(f) end
+				if colossalFrame then
+					for _, f in World.colossalRidgeFills(lm) do fill(f) end
+				end
 				for _, c in World.carves(lm) do fill({ CFrame = c.CFrame, Size = c.Size, Material = Enum.Material.Air }) end -- the passage cuts the rim
 				local lake = World.lake(lm)
 				for _, f in lake do fill(f) end
+				if colossalFrame then
+					for _, f in World.colossalApproach(lm, colossalFrame) do fill(f) end
+					model:SetAttribute("ColossalTemplePlayableTop", colossalFrame.Y + 122)
+					if T.Chimes then
+						model:SetAttribute("ColossalTempleChimes", colossalFrame * Vector3.new(T.Chimes.X, T.Chimes.Y, T.Chimes.Z))
+					end
+				end
 				if gatePlaced then -- no ledge in the lake without its stair
 					for _, f in World.gateFills(lm) do fill(f) end
 					for _, f in World.routeFills(lm) do fill(f) end

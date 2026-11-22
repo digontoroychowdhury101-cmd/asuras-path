@@ -27,7 +27,7 @@ local face = CFrame.new(bellwood.Origin.X, bellwood.Origin.Y, bellwood.Origin.Z)
 local basinBed, basinWater = LandmarkLayout.basinLevels(bellwood)
 local basinGate, basinTemple = LandmarkLayout.gateSpot(bellwood), LandmarkLayout.templeSpot(bellwood)
 local ribbons = Vector3.new(basinGate.X, basinGate.Y + 17, basinGate.Z)
-local chimes = Vector3.new(basinTemple.X, basinTemple.Y + 18, basinTemple.Z)
+local defaultChimes = Vector3.new(basinTemple.X, basinTemple.Y + 18, basinTemple.Z)
 local tunnel = bellwood.Tunnel.Path
 local torchPositions = {}
 for _, light in VesperholdLayout.Firelight do
@@ -98,12 +98,13 @@ local function updateEnvironment(self: any, position: Vector3, region: string, i
 	local rain = Players.LocalPlayer:GetAttribute("AsuraWeather") == "Rain"
 	local ellipse = LandmarkLayout.basinEllipse(bellwood, position.X, position.Z)
 	local nearBasin = region == "Forest" and ellipse <= 1 and position.Y >= basinBed - basin.Deep - 8
-		and position.Y <= basinWater + basin.TempleTop
 	local tunnelAt = if region == "Forest" and rain then tunnelSource(position) else nil
 	local map = if nearBasin or tunnelAt then workspace:FindFirstChild(Overworld.Root) else nil
 	local forest = map and map:FindFirstChild(bellwood.Region)
 	local landmark = forest and forest:FindFirstChild("Landmark_Bellwood")
-	local atBasin = nearBasin and landmark ~= nil and landmark:GetAttribute("BasinSculpted") == true
+	local playableTop = landmark and landmark:GetAttribute("ColossalTemplePlayableTop")
+	local basinCeiling = if typeof(playableTop) == "number" then playableTop else basinWater + basin.TempleTop
+	local atBasin = nearBasin and position.Y <= basinCeiling and landmark ~= nil and landmark:GetAttribute("BasinSculpted") == true
 	local ambient = if atBasin then "BasinBirdsInsects" elseif ridgeWeight > 0.3 then "VesperWindSpires" else ambientKeys[region] or "Wind"
 	if ambient ~= "Wind" and Audio.id(ambient) == "" then ambient = "Wind" end
 	local gain = if ambient == "Wind" then windVolume(self, region) else 0.30
@@ -129,6 +130,8 @@ local function updateEnvironment(self: any, position: Vector3, region: string, i
 	end
 	setLoop(self, "BasinLake", shore ~= nil and (position - (shore :: Vector3)).Magnitude < 82, 0.40, shore, 8, 82)
 	setLoop(self, "BasinRibbons", atBasin and (position - ribbons).Magnitude < 38, 0.26, ribbons, 5, 38)
+	local templeChimes = landmark and landmark:GetAttribute("ColossalTempleChimes")
+	local chimes = if typeof(templeChimes) == "Vector3" then templeChimes else defaultChimes
 	setLoop(self, "BasinChimes", atBasin and (position - chimes).Magnitude < 45, 0.23, chimes, 5, 45)
 	setLoop(self, "AmberfallRoar", region == "GoldenRavine" and (position - ravineSound).Magnitude < 250, 0.25, ravineSound, 30, 250)
 	local sea: Vector3? = nil

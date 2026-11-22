@@ -1,0 +1,33 @@
+{
+  "placeId": 118614906972571,
+  "universeId": 10777041159,
+  "source": "v20 preserved visual mesh",
+  "triangles": 1470,
+  "maps_baked": [
+    2048,
+    2048
+  ],
+  "upload": {
+    "assetId": "103921928662667",
+    "operationId": "d68dd362-6856-45a1-99af-92407d866e80",
+    "moderation": "Approved",
+    "bytes": 1869552,
+    "sha256": "7d1356cd5001334b64d84bc149ac262674c9ff4d1a65fb2006fd754f75da9cb9"
+  },
+  "readback": {
+    "103921928662667": {
+      "Bellwood_ColossalTemple__Lantern02_01_Part01": {
+        "ColorMap": "rbxassetid://124160008121651",
+        "NormalMap": "rbxassetid://114677808447568",
+        "center": [
+          0,
+          21.17,
+          0
+        ],
+        "MeshId": "rbxassetid://119759722040072",
+        "MetalnessMap": "rbxassetid://110461792116703",
+        "RoughnessMap": "rbxassetid://136042171744671"
+      }
+    }
+  }
+}

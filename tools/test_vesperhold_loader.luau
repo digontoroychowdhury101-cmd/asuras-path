@@ -673,6 +673,55 @@ do
 		and W2.Fidelity.Tiles == nil and W2.Fidelity.Soffit == nil and W2.Fidelity.Ribbon == nil and W2.Fidelity.Roots == nil)
 	-- The landing (Landing over the pivot) meets a terrain ledge that runs back to the rim; a footing fills the deep dish under the
 	-- steps and towers up to the lake bed so nothing hangs over the dish.
+	do
+	(function()
+		local frame = CFrame.new(60, 150, -38) * CFrame.Angles(0, math.rad(18), 0)
+		local model = W2.colossalTempleCollision(frame)
+		local stairCount, continuous, lastTop = 0, true, nil
+		for _, part in model:GetChildren() do
+			local localPose = frame:ToObjectSpace(part.CFrame)
+			if string.match(part.Name, "^Tread") then
+				stairCount += 1
+				local top = localPose.Y + part.Size.Y / 2
+				continuous = continuous and part.Size.Z >= 2.35 and part.Size.X > 40
+					and (lastTop == nil or math.abs(top - lastTop - .88) < 1e-4)
+					and part.CanCollide and part.CanQuery and not part.CanTouch and part.Anchored and part.Transparency == 1
+				lastTop = top
+			end
+		end
+		local deck = model:FindFirstChild("HallFloor")
+		check("colossal Temple builds ordered independent walkable stair treads", stairCount == 128 and continuous)
+		check("colossal Temple stair meets the hall floor within one tread rise", deck ~= nil and lastTop ~= nil
+			and frame:ToObjectSpace(deck.CFrame).Y + deck.Size.Y / 2 - lastTop <= .88)
+		local original = W2.Kit
+		local allReady = false
+		bw.Basin.ColossalTemple = { Model = "ColossalTest", Across = 30, Along = -115, Lift = 2,
+			Pieces = {
+				{ Model = "ColossalTestBody", X = 0, Y = 0, Z = 0, Foot = { X = 0, Y = 0, Z = 0 } },
+				{ Model = "ColossalTestGuardian", X = 40, Y = 16, Z = 201, Foot = { X = 0, Y = 0, Z = 0 } },
+			},
+		}
+		W2.Kit = { place = function(piece, pose, scale, options)
+			if piece == "ColossalTestGuardian" and not allReady then return nil end
+			return original.place(piece, pose, scale, options)
+		end }
+		local testFolder = Instance.new("Folder")
+		W2.build({ Forest = testFolder }, function() return false end)
+		local failedLandmark = testFolder:FindFirstChild("Landmark_Bellwood")
+		check("an incomplete colossal pack keeps the original hall and discards partial art", failedLandmark ~= nil
+			and failedLandmark:FindFirstChild("ColossalTest") == nil and failedLandmark:FindFirstChild("Bellwood_TempleHall") ~= nil)
+		allReady = true
+		testFolder = Instance.new("Folder")
+		W2.build({ Forest = testFolder }, function() return false end)
+		local readyLandmark = testFolder:FindFirstChild("Landmark_Bellwood")
+		local pack = readyLandmark and readyLandmark:FindFirstChild("ColossalTest")
+		check("a complete colossal pack is assembled with separate collision and replaces the old hall", pack ~= nil
+			and pack:FindFirstChild("ColossalTempleCollision") ~= nil
+			and readyLandmark:FindFirstChild("Bellwood_TempleHall") == nil)
+		W2.Kit = original
+		bw.Basin.ColossalTemple = nil
+	end)()
+	end
 	local gfills = W2.gateFills(bw)
 	local rfills = W2.routeFills(bw)
 	local landingTop = gspot.Y + G.Landing

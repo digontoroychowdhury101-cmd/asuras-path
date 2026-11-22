@@ -225,6 +225,21 @@ do
 	check("temple roof stays under TempleTop", s.Y + T.Height <= floorY + bw.Basin.TempleTop)
 end
 
+-- The assembled temple keeps the old hall placement as a fallback.
+do
+	local floor = L.basinLevels(bw)
+	local c = L.basinCentre(bw)
+	local fx, fz = L.front(bw)
+	local function height(across, along)
+		return L.colossalRidgeHeight(bw, c.X - fz * across + fx * along, c.Z + fx * across + fz * along)
+	end
+	check("colossal ridge stands above the old basin rim on the road side", height(-100, 631) > floor + 240)
+	check("colossal ridge leaves the passage mouth and inner lake clear", height(0, 750) == nil and height(0, 535) == nil)
+	local candidate = L.templeSpot(bw, { Across = 30, Along = -115, Lift = 0 })
+	check("colossal temple origin stays in deep water", L.basinEllipse(bw, candidate.X, candidate.Z, -bw.Basin.Shelf) < 1
+		and candidate.Y == floor)
+end
+
 -- 9. The Sunken Temple's gate towers (tools/blender/landmarks/bellwood_gate_towers.py, concept bellwood_3 left third): on the left of
 -- the exit view, front steps wading in at the shore, the stair climbing away from the lake to a landing inside the bowl near the shore.
 do

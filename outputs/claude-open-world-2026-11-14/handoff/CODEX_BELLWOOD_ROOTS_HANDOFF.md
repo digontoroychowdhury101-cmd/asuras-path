@@ -1,5 +1,15 @@
 # Codex handoff: Bellwood roots, lions in scene, then the Roblox replacement (23 Nov 2026)
 
+## v20 art and Roblox import pilot
+
+The supported-root and accessible entrance recipe and the nondestructive module exporter are on the raw branch at `0708ab5`. The [v20 reference comparison](../captures/mac/bellwood_face/sol_bellwood_v20_reference_comparison.jpg) and [neutral and storm review sheet](../captures/mac/bellwood_face/sol_bellwood_v19_review_sheet.jpg) cover the current root and guardian study. The packed scene is `work/sol-bellwood-v20/bellwood_stair_reference.blend`.
+
+- The eight roots descend both stair flanks. The eastern crag buttress rises from the terrace and carries the longest crossing. The support search measured 23 detours along the roof, stone and timber surfaces. The upper-root views still expose some angular turns, and lower bark still has smooth patches. The stair has chunkier stone rails, turned balusters, lanterns and worn tread edges. The v20 entrance leaves the central bay open and hollows out the ground-floor interior.
+- Blender verified that each guardian part retained its baked 2048 albedo, normal and roughness maps. The review scene uses a darker granite tint. The scan faces, shields and plinth geometry remain intact.
+- This pack uses the prior project’s nondestructive split. It keeps the authored visual geometry, preserves corner normals and alignment, bakes 2048 maps onto bounded UV atlases, and exports with tangents and a 17,480-triangle split target. A separate stair and hall floor assembly owns walkable collision.
+- Roblox approved the [1,470-triangle pilot](../workers/sol-bellwood-v20-pilot.json), Model `103921928662667`. The Development Studio instance read back the expected mesh and all four surface-map IDs. The upload window closed in Edit without a scene save.
+- The loader tests exercise a complete candidate and an incomplete one. The existing hall stays active until the full visual pack is registered. Local layout passed 74, loader 206 and weather composition 434. All 14 verification stages passed. The complete pack bake, placement and single-client Play evidence remain separate from the pilot.
+
 ## 23 November Codex checkpoint
 
 The v17 art recipe and pilot baker are on the raw asset branch at `ed2ebf7`. The editable Blender scene is `work/sol-bellwood-v17/bellwood_stair_reference.blend`. It uses the finished, baked guardian GLBs from `work/claude-bellwood-guardians`. Rebuild them with `guardians.py` if those files are missing.
