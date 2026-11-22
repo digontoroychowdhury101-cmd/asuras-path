@@ -889,6 +889,32 @@ def stonework(h):
                     (moss if RNG.random() < .5 else leaf).poly(
                         [Vector((lx + dx, ly + dy, top + .05)) for dx, dy in ((-1, -.3), (.2, -.6), (1, 0), (.4, .6))],
                         open_surface=True)
+    # Chunkier end piers frame the climb. Damp wear stays on the stair margins.
+    dress = random.Random(7014)
+    for side in (-1, 1):
+        for k in (3, 18, 36, 54, 72, 90, 108, 123):
+            _, y, z, w = stair_profile(k)
+            x = side * (w / 2 + 3)
+            stair.box((x, y, z + .85), (4.1, 4.3, 1.65), bevel=.22)
+            stair.box((x, y, z + 3.18), (2.55, 2.65, 3.7), bevel=.25)
+            stair.box((x, y, z + 5.22), (3.5, 3.5, .76), bevel=.18)
+            if k in (3, 36, 72, 108, 123):
+                lamps.append(lantern(h, (x, y, z + 5.56), .52))
+        for k in range(STEP_COUNT):
+            _, y, z, w = stair_profile(k)
+            if dress.random() > .71:
+                continue
+            for _ in range(dress.randrange(3, 8)):
+                x = side * (w / 2 - dress.uniform(.65, 6.4))
+                yy = y + dress.uniform(-.78, .78)
+                sx, sy = dress.uniform(.32, 1.75), dress.uniform(.15, .42)
+                moss.poly([Vector((x+a*sx, yy+b*sy, z+dress.uniform(.065,.13)))
+                           for a,b in ((-1,.14),(-.42,-1),(.38,-.7),(1,.05),(.34,.67),(-.36,.8))],
+                          open_surface=True)
+            if k in (10, 29, 51, 77, 93, 119):
+                x = side * (w / 2 - 2.9)
+                frame = at(x + side * 1.48, y + .5, z + .21) @ Matrix.Rotation(side * .026, 4, "Y")
+                stair.box((0, 0, 0), (2.9, 1.25, .49), frame, bevel=.17)
     # Lion plinths stand on the terraces beside the stair.
     for side in (-1, 1):
         px, y, z = guardian_base(side)
@@ -1125,81 +1151,26 @@ def form(mesh, point, dimensions, yaw=0):
     return mesh.lathe(shape, 20, transform)
 
 
-def lion_plinth(h, location, yaw, side):
-    frame = at(*location) @ Matrix.Rotation(yaw, 4, "Z")
-    stone, trim = h.m("Masonry"), h.m("DarkStone")
-    stone.box((0, 0, 1.9), (23.6, 26.5, 3.8), frame, bevel=.58)
-    stone.box((0, 0, 4.0), (22.1, 24.8, 1.3), frame, bevel=.37)
-    stone.box((0, 0, 4.85), (20.8, 23.9, .9), frame, bevel=.21)
-    trim.box((0, 13.05, 2.15), (15.6, .40, 2.05), frame, bevel=.30)
-    local_rng = random.Random(113 + side)
-    for sign in (-1, 1):
-        for k in range(4):
-            trim.box((sign * (10.7 + local_rng.uniform(-.2, .4)), -8.6 + k * 5.8, 2.1),
-                     (1.38, 1.25, .92), frame, bevel=.18)
-    for k in range(11):
-        x = local_rng.uniform(-10.5, 10.5)
-        z = local_rng.uniform(.25, 4.4)
-        pts = [frame @ Vector((x+dx, 13.27, z+dz)) for dx,dz in ((-.46,.16),(.24,.32),(.55,-.22),(-.09,-.36))]
-        h.m("Moss").poly(pts, open_surface=True)
-
-
 def place_lion(location, yaw, side):
-    """Seat a mirrored, moss-stained CC0 stone scan on the authored plinth."""
-    source = kit.ROOT / "assets/source/props_cc0/zenodo_lion_scan/lion_scan.glb"
+    """Use the approved scan and its finished granite plinth as a single assembly."""
+    key = "east" if side > 0 else "west"
+    directory = Path(os.environ.get("VESP_GUARDIANS_DIR", kit.ROOT / "work/claude-bellwood-guardians"))
+    filepath = directory / f"bellwood_guardian_{key}_parts.glb"
+    if not filepath.is_file():
+        raise FileNotFoundError(f"Build the approved Bellwood guardians with guardians.py: {filepath}")
     previous = set(bpy.context.scene.objects)
-    bpy.ops.import_scene.gltf(filepath=str(source))
+    bpy.ops.import_scene.gltf(filepath=str(filepath))
     bpy.context.view_layer.update()
     imported = set(bpy.context.scene.objects) - previous
-    ob, = [item for item in imported if item.type == "MESH"]
-    corners = [ob.matrix_world @ Vector(point) for point in ob.bound_box]
-    x, y = [(min(p[i] for p in corners)+max(p[i] for p in corners))*.5 for i in range(2)]
-    low, high = min(p.z for p in corners), max(p.z for p in corners)
-    size = (23.9 if side > 0 else 22.1) / (high-low)
-    mirror = Matrix.Diagonal((side, 1, 1, 1))
-    object_to_world = ob.matrix_world.copy()
-    ob.parent = None
-    ob.matrix_world = (at(location[0], location[1], location[2]+5.16)
-                       @ Matrix.Rotation(yaw, 4, "Z") @ mirror
-                       @ Matrix.Rotation(-math.pi/2, 4, "Z") @ Matrix.Scale(size, 4)
-                       @ at(-x, -y, -low) @ object_to_world)
-    ob.data.transform(ob.matrix_world)
-    if side < 0:
-        ob.data.flip_normals()
-    ob.matrix_world = Matrix.Identity(4)
-    ob.name = "Bellwood_Guardian_" + ("East" if side > 0 else "West")
-    for item in imported - {ob}:
-        bpy.data.objects.remove(item, do_unlink=True)
-    for slot in ob.material_slots:
-        if slot.material is None:
-            continue
-        material = slot.material.copy()
-        slot.material = material
-        material.name = "Weathered guardian sandstone"
-        nodes, links = material.node_tree.nodes, material.node_tree.links
-        shader = next(node for node in nodes if node.type == "BSDF_PRINCIPLED")
-        base = shader.inputs["Base Color"]
-        image = next((edge.from_socket for edge in base.links), None)
-        moss = nodes.new("ShaderNodeTexNoise")
-        moss.inputs["Scale"].default_value = 7.2
-        moss.inputs["Detail"].default_value = 5
-        coord = nodes.new("ShaderNodeTexCoord")
-        links.new(coord.outputs["Generated"], moss.inputs["Vector"])
-        patches = nodes.new("ShaderNodeValToRGB")
-        patches.color_ramp.elements[0].position = .50
-        patches.color_ramp.elements[0].color = (0,0,0,1)
-        patches.color_ramp.elements[1].position = .79
-        patches.color_ramp.elements[1].color = (.73,.73,.73,1)
-        links.new(moss.outputs["Fac"], patches.inputs[0])
-        mix = nodes.new("ShaderNodeMixRGB")
-        links.new(patches.outputs[0], mix.inputs[0])
-        if image:
-            links.new(image, mix.inputs[1])
-        else:
-            mix.inputs[1].default_value = base.default_value
-        mix.inputs[2].default_value = (.055,.075,.029,1)
-        links.new(mix.outputs[0], base)
-    return ob
+    frame = at(*location) @ Matrix.Rotation(yaw, 4, "Z")
+    for obj in imported:
+        if obj.type == "MESH":
+            world = obj.matrix_world.copy()
+            obj.parent = None
+            obj.matrix_world = frame @ world
+    for obj in imported:
+        if obj.type != "MESH":
+            bpy.data.objects.remove(obj, do_unlink=True)
 
 
 def lantern(h, centre, scale=1):
@@ -1258,6 +1229,138 @@ def random_unit():
     return v.normalized() if v.length > 1e-6 else Vector((1, 0, 0))
 
 
+# Four distinct silhouettes on each side, authored in Blender studs. Image-left is +X.
+# The upper anchors pass over eaves or follow the masonry spine beside each open gallery.
+ROOT_GUIDES = (
+    (8.4, ((32,-129,295),(58,-114,320),(84,-102,322),(97,-98,317),(108,-96,277),(115,-95,257),
+           (119,-85,230),(117,-85,203),(128,-89,181),(117,-94,173),(109,-72,113)), (110,94,105,87,82,76,70)),
+    (7.0, ((38,-137,316),(67,-133,335),(98,-139,338),(112,-143,321),(136,-153,303),(156,-152,295),(142,-145,273),
+           (134,-138,247),(150,-129,232),(152,-133,201),(153,-94,173),(147,-84,162),
+           (144,-56,130),(121,-46,114)),
+           (133,141,126,119,100,89,83)),
+    (6.6, ((42,-127,270),(58,-114,250),(76,-88,249),(92,-74,244),(102,-82,232),(111,-82,201),
+           (95,-70,171),(81,-72,136),(94,-61,113)), (97,99,84,73,64,59,52)),
+    (7.9, ((31,-152,346),(61,-160,391),(87,-150,391),(109,-144,382),(101,-142,374),(119,-154,343),
+           (157,-152,295),(157,-170,297),(159,-180,261),(175,-142,234),(169,-133,180),(160,-96,173),
+           (161,-84,165),(158,-48,160),(145,-42,113)), (156,155,148,140,126,117,105)),
+    (8.0, ((23,-138,300),(-7,-124,327),(-35,-116,329),(-66,-110,326),(-95,-113,316),
+           (-112,-107,281),(-102,-113,244),(-128,-145,196),(-133,-120,169),
+           (-129,-93,166),(-119,-91,135),(-110,-67,113)),
+           (-111,-99,-103,-89,-77,-75,-67)),
+    (7.1, ((14,-147,348),(-22,-153,382),(-54,-150,388),(-77,-145,385),(-89,-144,352),(-102,-154,337),
+           (-136,-160,289),(-148,-171,251),(-143,-154,229),(-151,-148,181),(-156,-108,170),(-154,-93,167),
+           (-142,-79,164),(-132,-56,113)), (-139,-145,-132,-118,-109,-94,-88)),
+    (6.2, ((33,-126,254),(9,-113,251),(-20,-94,252),(-43,-84,247),(-67,-72,242),
+           (-92,-76,240),(-85,-84,222),(-88,-82,191),(-81,-71,146),(-98,-51,113)),
+           (-91,-84,-73,-69,-63,-58,-51)),
+    (5.7, ((27,-155,328),(-2,-162,357),(-36,-173,386),(-75,-183,388),(-72,-180,357),(-100,-177,341),
+           (-129,-195,294),(-142,-178,280),(-167,-161,230),(-176,-150,168),(-168,-109,172),(-164,-86,168),
+           (-165,-63,165),(-154,-46,113)), (-158,-153,-148,-143,-129,-119,-109)),
+)
+
+
+def terrace_roots(h, bark, twigs, ivy, moss):
+    """Drape each authored guide over the measured roof and the retaining-wall profiles."""
+    roof = [BVHTree.FromBMesh(h.m(role).bm) for role in ("Tile", "Masonry", "Soffit", "Lacquer")]
+    lower = roof[1]
+    rng = random.Random(1416)
+
+    def contact(point, radius, trees, reach):
+        hits = [tree.find_nearest(point, reach) for tree in trees]
+        hits = [hit for hit in hits if hit[0] is not None]
+        if not hits:
+            return point, False
+        surface, normal, _, _ = min(hits, key=lambda hit: hit[3])
+        # The center sits within one radius of the face, embedding the back of the bark.
+        return surface + normal * min(radius * .39, 2.5), True
+
+    def sweep(guide, radii, mesh, profile, stem=0, upper_end=0):
+        points, widths, holds = [], [], []
+        for i, (a, b) in enumerate(zip(guide, guide[1:])):
+            count = max(1, math.ceil((b-a).length / 4))
+            for j in range(count):
+                t = j / count
+                pt = path_point(guide, i, t)
+                radius = radii[i] * (1-t) + radii[i+1] * t
+                supported = False
+                if i >= stem and i < upper_end:
+                    pt, supported = contact(pt, radius, roof, 16)
+                elif i >= stem:
+                    # Lower guides carry the wall and coping offsets explicitly. Nearest-face projection here
+                    # would pull consecutive samples toward opposite faces of a chipped block.
+                    supported = lower.find_nearest(pt, radius + 2.0)[0] is not None
+                if not points or (pt-points[-1]).length > .35:
+                    if supported and len(points) % 6 == 0:
+                        holds.append(len(points))
+                    points.append(pt)
+                    widths.append(radius)
+        if (guide[-1] - points[-1]).length > .35:
+            points.append(guide[-1])
+            widths.append(radii[-1])
+        else:
+            widths[-1] = radii[-1]
+        if len(points) >= 2:
+            organic_path(mesh, profile, points, widths, SPINE if mesh is bark else None)
+        CONTACTS.extend((points[i], widths[i]) for i in holds if i < len(points))
+        return points, widths
+
+    for number, (base, upper, positions) in enumerate(ROOT_GUIDES, 1):
+        guide = [Vector(v) for v in upper]
+        side = 1 if positions[0] > 0 else -1
+        terraces = sorted((f for f in FLANKS if f[0] * side > 0), key=lambda item: item[4], reverse=True)
+        guide.extend((Vector((positions[0], -42, 112.5)), Vector((positions[0]-side*2, -39.5, 100)),
+                      Vector((positions[0]-side*5, -39, 85)), Vector((positions[0]-side*1, -36, terraces[0][4]))))
+        for i, (x0, x1, _, front, top) in enumerate(terraces[:-1]):
+            lo = terraces[i+1][4]
+            x = min(x1-3, max(x0+3, positions[i]))
+            next_x = min(x1-2, max(x0+2, positions[i+1]))
+            bend = rng.uniform(-8, 8)
+            lip = x + (next_x - x) * rng.uniform(.29, .61) + bend
+            mid = lip + (next_x - lip) * rng.uniform(.45, .76)
+            guide.extend(Vector(p) for p in (
+                (x, front-rng.uniform(9, 16), top+1.2), (lip, front-1.7, top+1.4),
+                (mid, front+2.1, top-(top-lo)*rng.uniform(.39, .53)),
+                (next_x, front+3.8, lo+1.9), (next_x+bend*.45, front+10.5, lo+1)))
+        _, _, _, front, top = terraces[-1]
+        last = positions[-1]
+        guide.extend((Vector((last, front-12, top)), Vector((last+side*3, front-2, top-.5)),
+                      Vector((last+side*4, front+.8, 1.4)), Vector((last+side*5, front+3, .38))))
+        lengths = [0.0]
+        for a, b in zip(guide, guide[1:]):
+            lengths.append(lengths[-1] + (b-a).length)
+        radii = [max(.72, base * (1-len_at / lengths[-1]) ** .60)
+                 * (1 + .16 * math.sin(len_at * .086 + number) + .075 * math.sin(len_at * .22))
+                 for len_at in lengths]
+        points, widths = sweep(guide, radii, bark, BARK_PROFILE, stem=1, upper_end=len(upper)-1)
+
+        # Gripping fingers leave the parent near the wall feet, fan sideways and bury their tips in joints.
+        for fraction in (.60, .71, .83, .92):
+            index = min(len(points)-3, int(fraction * len(points)))
+            p, r = points[index], widths[index]
+            direction = side if rng.random() < .76 else -side
+            length = rng.uniform(17, 33)
+            hands = [p, p + Vector((length*.22*direction, 1.8, -.5)),
+                     p + Vector((length*.58*direction, 4.4, -2.4)), p + Vector((length*direction, 8, -6))]
+            fingers = [hands[0]]
+            for hand, width in zip(hands[1:], (r*.52, r*.30, .30)):
+                pt, found = contact(hand, width, (lower,), 7)
+                if not found:
+                    break
+                fingers.append(pt)
+            if len(fingers) >= 3:
+                widths_child = [r*.70, r*.52, r*.30, .30][:len(fingers)]
+                widths_child[-1] = .30
+                medium = bark if widths_child[0] > 1.8 else twigs
+                sweep(fingers, widths_child, medium, circle(12), stem=1)
+            if p.z < 125:
+                for _ in range(7):
+                    q = p + Vector((rng.uniform(-6, 6), rng.uniform(-3, 4), rng.uniform(-2, 1)))
+                    q, supported = contact(q, .3, (lower,), 3)
+                    if supported:
+                        kit.leaf(ivy if rng.random() < .32 else moss, q, rng.uniform(.6, 1.5))
+        print(f"Authored root {number}: {len(points)} samples to {tuple(round(v,1) for v in points[-1])}", flush=True)
+
+
 def aged_tree(h):
     bark, twigs, ivy, moss = h.m("Bark"), h.m("BarkTwigs"), h.m("Ivy"), h.m("Moss")
     centre = Vector((TRUNK[2].x, TRUNK[2].y, 0))
@@ -1307,7 +1410,7 @@ def aged_tree(h):
             TIPS.append((pts[-2].copy(), (pts[-2] - pts[-3]).normalized(), rr[-2], depth + 1))
         if not depth:
             return
-        count = RNG.choice((2, 2, 3)) if depth > 2 else 3  # sparse structure, dense fringe at the tips
+        count = RNG.choice((2, 2, 3)) if depth > 1 else 2
         flip = RNG.choice((-1, 1))
         for c in range(count):
             f = (.25 + .55 * (c + RNG.uniform(.15, .85)) / count) * 4  # spread where the parent is still thick
@@ -1319,7 +1422,7 @@ def aged_tree(h):
             across = tangent.cross(UP)
             across = across.normalized() if across.length > 1e-3 else side
             flip = -flip  # children alternate sides and keep the parent's direction of growth
-            vector = tangent + across * flip * RNG.uniform(.45, .85) + UP * RNG.uniform(-.1, .3)
+            vector = tangent + across * flip * RNG.uniform(.52, 1.32) + UP * RNG.uniform(-.32, .26)
             branch(where, vector, length * RNG.uniform(.55, .7), min(here, radius * RNG.uniform(.5, .64)), depth - 1)
 
     def limb(points, radii, spawn=(2, 3, 3, 4), twig_depth=None, collar=True):
@@ -1327,11 +1430,11 @@ def aged_tree(h):
         points = [Vector((p.x, p.y, 445 + (p.z - 445) * CROWN_SQUASH)) if p.z > 445 else p for p in points]
         pts, rr = gnarl(points, radii, .15)
         organic_path(bark, BARK_PROFILE, pts, rr, SPINE)
-        # Branch collar: a broad swelling where the limb leaves its parent, so the joint reads as grown wood.
-        d0 = (pts[1] - pts[0]).normalized()
+        # Let the collar narrow along the first bend of the limb and end inside the main wood.
         if collar:
-            organic_path(bark, BARK_PROFILE, [pts[0], pts[0] + d0 * rr[0] * 1.0, pts[0] + d0 * rr[0] * 2.4],
-                         [rr[0] * 1.35, rr[0] * 1.18, rr[0] * 1.02], SPINE)
+            swell = [pts[0], path_point(pts, 0, .48), pts[1], path_point(pts, 1, .48), pts[2]]
+            organic_path(bark, BARK_PROFILE, swell,
+                         [rr[0]*1.27, (rr[0]+rr[1])*.57, rr[1]*1.05, (rr[1]+rr[2])*.41, rr[2]*.60], SPINE)
         for i in range(1, len(pts)):
             a, b = pts[i - 1], pts[i]
             r = (rr[i - 1] + rr[i]) * .5
@@ -1668,85 +1771,40 @@ def aged_tree(h):
                 kit.leaf(ivy if RNG.random() < .55 else moss,
                          p + Vector((math.cos(a) * spread, math.sin(a) * spread, -r * .35)), RNG.uniform(.6, 1.6))
 
-    # Most of the root mass pours down the image-left (+X) terraces as separate, netted roots; a few go right.
-    # Fewer, heavier ropes than v10: separate main roots with real gaps, each forking at its holds.
-    # v12: the image-left is one delta. Four heavy roots leave the trunk together and fan out as they pour over the
-    # retaining walls toward the west lion; two lighter ones cover the upper left cliff. The right gets a small fall.
-    lion_x, lion_y, _ = guardian_base(1)
-    # They leave the trunk's flank low, onto the stepped masonry beside the tiers, never across an open gallery:
-    # unheld spans are cut by cling, so a root has to start on stone to survive to the terraces.
-    # v13 (creator reference): heavy roots leave the trunk base over the upper roofs and cascade down the terraces
-    # on both sides of the stair, framing the gate and splitting near the lion plinths. (side, lean, radius, length,
-    # goal, spread, z range, depth); h2 @ M turns clockwise.
-    east_x, east_y, _ = guardian_base(-1)
-    plan = [(1, -.1, RNG.uniform(9.0, 11.0), RNG.uniform(760, 880), (lion_x + dx, lion_y + dy), (.2, .45),
-             (240, 300), 3) for dx, dy in ((10, -22), (70, 4), (125, -40), (160, -120))]
-    plan += [(-1, -.1, RNG.uniform(7.5, 9.0), RNG.uniform(700, 820), (east_x + dx, east_y + dy), (-.45, -.2),
-              (250, 320), 3) for dx, dy in ((-10, -20), (-75, 0), (-140, -70))]
-    # two lighter roots cross the side shrines' roofs
-    plan += [(side, .3, RNG.uniform(5.5, 6.5), RNG.uniform(380, 460), (side * 182, -40), (-.2, .2), (280, 330), 2)
-             for side in (1, -1)]
-    # Buttress flares: short heavy roots that fold the trunk base over the roofs of the tiers it rises through.
+    # Short buttresses bind the trunk to the building above the hand-placed cascades.
     for k in range(8):
-        a = math.radians(-20 + 220 * k / 7 + RNG.uniform(-8, 8))  # front half and both flanks, not the hidden back
+        a = math.radians(-20 + 220 * k / 7 + RNG.uniform(-8, 8))
         out = Vector((math.cos(a), math.sin(a)))
-        plan.append((out.x, out.y, RNG.uniform(11, 15), RNG.uniform(70, 120), tuple(Vector(TRUNK[2].xy) + out * 150),
-                     (0, 0), (318, 372), 1))
-    for side, lean, radius, length, goal, spread, (z0, z1), depth in plan:
-        h2 = Vector((side, lean)).normalized()
-        z = RNG.uniform(z0, z1)
+        z = RNG.uniform(318, 372)
         level = min(range(len(TRUNK)), key=lambda j: abs(TRUNK[j].z - z))
-        around = h2 @ Matrix.Rotation(RNG.uniform(*spread), 2)
-        start = TRUNK[level] + Vector((around.x, around.y, 0)) * (40 - 2 * level) + Vector((0, 0, z - TRUNK[level].z))
-        root(start, h2, radius, length, depth, Vector(goal))
+        start = TRUNK[level] + Vector((out.x, out.y, z - TRUNK[level].z))
+        root(start, out, RNG.uniform(10, 13), RNG.uniform(55, 91), 0, TRUNK[2].xy + out * 105)
+
+    terrace_roots(h, bark, twigs, ivy, moss)
 
     print("Tree", stats, "spine samples", len(SPINE), "root contacts", len(CONTACTS), flush=True)
 
 
-def twig_spray(rng, index):
-    """One spray of fine twigs, one unit long up +Z: a curling shoot with alternating side twigs that fork once."""
-    mesh = kit.Mesh(f"Bellwood_Crown_Spray_{index:02d}", "BarkTwigs", 1.0)
-    count = [0]
-
-    def shoot(start, heading, length, radius, depth):
-        count[0] += 1
-        axis = heading.cross(Vector((rng.gauss(0, 1), rng.gauss(0, 1), rng.gauss(0, 1))))
-        curl = Matrix.Rotation(rng.uniform(.1, .32), 3, axis.normalized() if axis.length > 1e-4 else Vector((1, 0, 0)))
-        pts, d = [start], heading.normalized()
-        for _ in range(4):
-            d = (curl @ d + Vector((0, 0, rng.uniform(-.08, .1)))).normalized()
-            pts.append(pts[-1] + d * length / 4)
-        mesh.sweep(circle(4 if depth else 3), pts, scales=[radius, radius * .82, radius * .64, radius * .46, radius * .26],
-                   caps=False)
-        if not depth:
-            return
-        side = rng.choice((-1, 1))
-        for k in range(rng.randint(3, 5) if depth > 1 else rng.randint(1, 2)):
-            f = .22 + .66 * (k + rng.uniform(.1, .9)) / 5
-            seg = min(3, int(f * 4))
-            where = pts[seg].lerp(pts[seg + 1], f * 4 - seg)
-            along = (pts[seg + 1] - pts[seg]).normalized()
-            across = along.cross(Vector((rng.gauss(0, .3), rng.gauss(0, .3), 1)))
-            across = across.normalized() if across.length > 1e-4 else Vector((1, 0, 0))
-            side = -side
-            shoot(where, along + across * side * rng.uniform(.6, 1.1), length * (1 - f) * rng.uniform(.55, .8),
-                  radius * rng.uniform(.5, .62) * (1 - f * .5), depth - 1)
-
-    shoot(Vector((0, 0, 0)), Vector((rng.uniform(-.15, .15), rng.uniform(-.15, .15), 1)), 1.0, .03, 2)  # v13: fewer, thicker twigs per spray
-    return mesh, count[0]
+def twig_shoot(rng, index):
+    """One tapered shoot for the finest silhouettes at the edge of the crown."""
+    mesh = kit.Mesh(f"Bellwood_Crown_Shoot_{index:02d}", "BarkTwigs", 1.0)
+    heading = Vector((rng.uniform(-.2, .2), rng.uniform(-.2, .2), 1)).normalized()
+    sideways = rng.uniform(.12, .30)
+    points = [heading * t + Vector((sideways * t * t, -.11 * t * t, 0))
+              for t in (0, .22, .46, .73, 1)]
+    mesh.sweep(circle(4), points, scales=[.017, .014, .011, .006, .002], caps=False)
+    return mesh
 
 
 def crown_fringe(mats):
-    """Lace fringe for the crown: many short curved twig sprays at the ends of the finest wood, densest at the dome
-    edge. Twelve sprays are instanced by geometry nodes, so hundreds of thousands of twigs cost little memory."""
+    """Place single shoots at selected tips to leave open sky between the branch silhouettes."""
     if not TIPS:
         return
     rng = random.Random(1207)
     library = bpy.data.collections.new("Bellwood crown twig sprays")
     bpy.context.scene.collection.children.link(library)
-    per_spray = []
     for index in range(12):
-        source, twigs = twig_spray(rng, index)
+        source = twig_shoot(rng, index)
         bm = source.finish()
         mesh = bpy.data.meshes.new(source.name)
         bm.to_mesh(mesh)
@@ -1754,7 +1812,6 @@ def crown_fringe(mats):
         mesh.shade_smooth()
         mesh.materials.append(mats["BarkTwigs"])
         library.objects.link(bpy.data.objects.new(source.name, mesh))
-        per_spray.append(twigs)
     bpy.context.view_layer.layer_collection.children[library.name].exclude = True  # sources only, never at origin
     # Dome edge: distance through an ellipsoid fitted to the crown wood, 0 at its centre and ~1 at the rim.
     lo = Vector([min(t[0][i] for t in TIPS) for i in range(3)])
@@ -1766,9 +1823,7 @@ def crown_fringe(mats):
         rel = p - centre
         edge = min(1.3, math.sqrt((rel.x / half.x) ** 2 + (rel.y / max(half.y, 1)) ** 2
                                   + (max(0.0, rel.z) / (hi.z - centre.z)) ** 2))
-        # v12c: many small sprays per tip clumped into dark blobs; fewer, longer, more open sprays read as lace
-        # v13: v12h's sprays read as grey tufts; about half as many, so sky shows between the twigs
-        n = int(.2 + 1.8 * edge ** 2 + rng.random()) - (1 if depth > 1 else 0)
+        n = int(.28 + .66 * edge ** 2 + rng.random()) if depth <= 1 else 0
         outward = rel.normalized() if rel.length > 1e-3 else UP
         for _ in range(max(0, n)):
             heading = (d * rng.uniform(.6, 1.2) + outward * (.35 + .5 * edge) + UP * rng.uniform(-.1, .35)
@@ -1777,7 +1832,7 @@ def crown_fringe(mats):
             q = q @ Matrix.Rotation(rng.uniform(0, math.tau), 4, "Z").to_quaternion()
             points.append(p + d * rng.uniform(-1.5, .5))
             rotations.extend((q.w, q.x, q.y, q.z))
-            scales.append(rng.uniform(12.0, 24.0) * (.8 + .45 * edge))
+            scales.append(rng.uniform(12.0, 27.0) * (.84 + .4 * edge))
             variants.append(rng.randrange(12))
     mesh = bpy.data.meshes.new("Bellwood_Crown_Fringe_Points")
     mesh.from_pydata(points, [], [])
@@ -1808,9 +1863,7 @@ def crown_fringe(mats):
     links.new(place.outputs[0], group_out.inputs[0])
     holder.modifiers.new("Instanced twig sprays", "NODES").node_group = tree
     holder.data.materials.append(mats["BarkTwigs"])
-    twigs = sum(per_spray[v] for v in variants)
-    print("Crown fringe", len(points), "sprays,", twigs, "instanced twigs from", len(TIPS), "tips", flush=True)
-    return twigs
+    print("Crown fringe", len(points), "single shoots from", len(TIPS), "tips", flush=True)
 
 
 def crags(h):
@@ -1934,10 +1987,26 @@ def bark_material(name, attributes):
     ramp = nodes.new("ShaderNodeValToRGB")
     els = ramp.color_ramp.elements
     els[0].position, els[0].color = .3, (.018, .017, .015, 1)
-    els[1].position, els[1].color = 1.0, (.70, .68, .62, 1)
+    els[1].position, els[1].color = 1.0, (.55, .51, .43, 1)
     mid = els.new(.62)
-    mid.color = (.2, .19, .165, 1)
-    links.new(mix_r.outputs[0], ramp.inputs[0])
+    mid.color = (.16, .14, .116, 1)
+    if attributes:
+        breakup = nodes.new("ShaderNodeTexNoise")
+        breakup.inputs["Scale"].default_value = .105
+        breakup.inputs["Detail"].default_value = 5.5
+        links.new(coords.outputs["Object"], breakup.inputs["Vector"])
+        contrast = nodes.new("ShaderNodeMath")
+        contrast.operation = "MULTIPLY_ADD"
+        links.new(breakup.outputs["Fac"], contrast.inputs[0])
+        contrast.inputs[1].default_value = .58
+        links.new(mix_r.outputs[0], contrast.inputs[2])
+        center = nodes.new("ShaderNodeMath")
+        center.operation = "SUBTRACT"
+        links.new(contrast.outputs[0], center.inputs[0])
+        center.inputs[1].default_value = .30
+        links.new(center.outputs[0], ramp.inputs[0])
+    else:
+        links.new(mix_r.outputs[0], ramp.inputs[0])
     colour = ramp.outputs[0]
     if attributes:
         mossy = nodes.new("ShaderNodeAttribute")
@@ -1968,7 +2037,7 @@ def bark_material(name, attributes):
         damp = nodes.new("ShaderNodeMapRange")
         damp.inputs["From Min"].default_value = 22
         damp.inputs["From Max"].default_value = 310
-        damp.inputs["To Min"].default_value = .46
+        damp.inputs["To Min"].default_value = .39
         damp.inputs["To Max"].default_value = 1
         links.new(split.outputs["Z"], damp.inputs["Value"])
         darken = nodes.new("ShaderNodeMixRGB")
@@ -2129,10 +2198,15 @@ def bark_grain(obj):
         nearest_r = SPINE[hits[0][1]][4]
         ranked = sorted(per_path.values(), reverse=True)
         clash = min(1.0, max(0.0, (ranked[1] / ranked[0] - .2) / .45)) if len(ranked) > 1 else 0.0
-        amplitude = depth / total * (1 - .25 * clash)  # grain carries through junctions, slightly softened
-        # v12h: where the sunk trunk strands end inside the fork their thin rings won the weighting and left a
-        # flat patch; the fork keeps at least trunk-scale grooves.
-        amplitude = max(amplitude, 3.2 * min(1.0, max(0.0, (90 - (p - TRUNK[4]).length) / 30)))
+        # Finish the finest grain in the shader at crotches. Large offsets across competing tangents
+        # create rectangular ledges even when the underlying wood is watertight.
+        fork_weight = min(1.0, max(0.0, (88 - (p - TRUNK[4]).length) / 42))
+        seam = max(fork_weight * .73, clash * .85)
+        amplitude = min(depth / total, 4.2) * (1 - .82 * seam)
+        shade = .53 + .30 * noise(p * .27)
+        value = value * (1 - .55 * seam) + shade * (.55 * seam)
+        if p.z < 190:
+            value += .22 * noise(p * .33) + .10 * noise(p * .79)
         for axis in range(3):
             coords[3 * i + axis] += normals[3 * i + axis] * (value - .55) * amplitude
         ridge[i] = min(1.0, max(0.0, value))
@@ -2142,7 +2216,7 @@ def bark_grain(obj):
         near = max(0.0, 1 - hold[2] / (CONTACTS[hold[1]][1] * 3.5 + 6)) ** 1.5 if hold and hold[0] is not None else 0.0
         mossy[i] = min(1.0, (max(0.0, (nz - .2) * 1.6) + max(0.0, .5 - value) * .8) * near)
         us[i], vs[i], period[i] = best_u, best_v, best_period
-        blend[i] = clash  # where two limbs' UV frames compete (junctions), fade to a seamless projected bark
+        blend[i] = seam  # use the box projection where spines compete
     vertices.foreach_set("co", coords)
     mesh = obj.data
     for name, data in (("bark_ridge", ridge), ("bark_moss", mossy), ("bark_blend", blend)):
@@ -2322,16 +2396,15 @@ def main():
     guardians = []
     for side in (-1, 1):
         x, y, z = guardian_base(side)
-        location, yaw = (x, y, z + 9.15), side * .47
-        lion_plinth(temple, location, yaw, side)
-        guardians.append((location, yaw, side))
+        guardians.append(((x, y, z + 9.15), side * .38, side))
     for x, y, z in ((-34, -44, 113), (34, -44, 113), (-84, -44, 113), (84, -44, 113)):
         lamps.append(lantern(temple, (x, y, z), 1.0))
     for x in (-22, 22):  # big paper lanterns hang in the gate
         gate_lantern(temple, x, -46, 146)
         lamps.append((x, -46, 146))
     crags(temple)
-    aged_tree(temple)
+    if os.environ.get("VESP_SKIP_TREE") != "1":
+        aged_tree(temple)
     traveller(temple)
     mats = art_materials()
     build_objects(temple, mats)
@@ -2368,7 +2441,8 @@ def main():
     # v12: a narrower lens from a step further back makes the six tiers larger; traveller and both lions stay in.
     eye = Vector((0, 366, 14))
     target = Vector((20, -100, 250))
-    contact = min(CONTACTS, key=lambda c: (c[0] - Vector((70, 40, 50))).length)[0] if CONTACTS else Vector((70, 40, 50))
+    low_terrace = Vector((77, 170, 26))
+    contact = min(CONTACTS, key=lambda c: (c[0] - low_terrace).length)[0] if CONTACTS else low_terrace
     print("Root close-up target", tuple(round(c) for c in contact), flush=True)
     views = {
         "portrait": (900, 1350, 66, eye, target),
@@ -2376,11 +2450,11 @@ def main():
         "side": (1152, 864, 53, Vector((480, 12, 139)), Vector((0, -125, 285))),
         "rear": (1152, 864, 56, Vector((-280, -720, 185)), Vector((0, -151, 271))),
         "guardian": (1080, 910, 42, Vector((-1, 258, 32)), Vector((2, 198, 43))),
-        "left_guardian": (900, 900, 37, Vector((29, 252, 34)), Vector(guardian_base(1)) + Vector((0, 0, 24))),
+        "left_guardian": (900, 900, 43, Vector((22, 260, 37)), Vector(guardian_base(1)) + Vector((0, 0, 28))),
         "right_guardian": (900, 900, 37, Vector((-29, 249, 32)), Vector(guardian_base(-1)) + Vector((0, 0, 24))),
         "fork": (900, 900, 46, Vector((95, -20, 500)), TRUNK[4] + Vector((0, 0, 20))),
-        "root": (900, 900, 52, Vector((12, contact.y + 75, max(stair_profile((START_Y - contact.y - 75) / STEP_RUN)[2] + 14,
-                                                              contact.z + 26))), contact + Vector((0, 0, 4))),
+        "root": (900, 900, 52, Vector((145, contact.y + 52, contact.z + 40)),
+                 contact + Vector((0, 0, 6))),
     }
     clay = bpy.data.materials.new("Neutral clay seam check")
     clay.diffuse_color = (.5, .5, .5, 1)
