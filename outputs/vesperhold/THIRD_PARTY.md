@@ -38,3 +38,7 @@ Downloaded 2026-11-19 at 2k (2048 x 2048 JPEG maps; models 2k .blend re-exported
 
 Tone mapping to the castle palette: `tools/blender/vesperhold/vesp_polyhaven.py` (desaturate, value targets from mac-40,
 grime runs, matte roughness lift). Set `VESP_PROCEDURAL=1` to fall back to the old procedural maps.
+
+## ElevenLabs generated SFX
+
+26 sound effects (Vesperhold, Bellwood basin / Sunken Temple, Frostmere, Amberfall, Saltreach, Ashen Stair) were generated on 2026-11-22 with ElevenLabs text-to-sound (`eleven_text_to_sound_v3`) under the creator's ElevenLabs account (tier reported by account usage: `starter`). They are original generations made for this project, not third-party assets. Prompts, durations and loop flags are in `assets/source/audio/SFX_LEDGER.json`; files live in `assets/source/audio/{vesperhold,bellwood,regions}/`. Licence/commercial-use terms are those of the account's ElevenLabs plan; they have not been independently verified here, so check the plan terms before shipping.

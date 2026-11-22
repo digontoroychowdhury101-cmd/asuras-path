@@ -13,9 +13,10 @@ local PRECISE, HULL = Enum.CollisionFidelity.PreciseConvexDecomposition, Enum.Co
 -- Walkable shells and the tunnel floor are precise (a hull per shell slice would fill the bore); crown solids are hulls; roots,
 -- gilt trim and rubble never collide (the rubble strip spans the bore, so its hull walled the tunnel, mac-86f).
 -- Temple hall (mac-90): the stone platform and stair are walked on; the lacquer frame keeps its own shape (a hull would fill the hall);
--- the roofs (Tiles, Soffit) never collide.
+-- the roofs (Tiles, Soffit) never collide. Gate towers (mac-91): the stone stair is walked on, the tower roots (Root; the crown's are
+-- Roots) are hulls, ribbons never collide.
 World.Fidelity = { Shell = PRECISE, Floor = PRECISE, Band = HULL, Bronze = HULL, Eave = HULL,
-	Stone = PRECISE, Lacquer = Enum.CollisionFidelity.Default }
+	Stone = PRECISE, Lacquer = Enum.CollisionFidelity.Default, Root = HULL }
 
 local function deps()
 	World.Kit = World.Kit or require(script.Parent:WaitForChild("VesperholdKit") :: ModuleScript)
@@ -299,6 +300,31 @@ function World.templeFrame(lm: any): CFrame
 	return CFrame.lookAt(at, away)
 end
 
+-- The gate towers' origin frame: at Layout.gateSpot, upright, its front (model +Z) turned to the basin centre.
+function World.gateFrame(lm: any): CFrame
+	local s, c = World.Layout.gateSpot(lm), World.Layout.basinCentre(lm)
+	local at = Vector3.new(s.X, s.Y, s.Z)
+	return CFrame.lookAt(at, at + Vector3.new(s.X - c.X, 0, s.Z - c.Z)) -- lookAt aims -Z, so aim away from the centre
+end
+
+-- Terrain under the gate, filled after the lake (gate frame axes): a mud footing over the deep dish under the steps and towers, up to
+-- the lake bed, and a rock ledge with a grass top from the landing back into the rim, so the stair's top meets walkable ground.
+function World.gateFills(lm: any): { any }
+	local G = lm.Basin and lm.Basin.Gate
+	if not (G and World.Layout) then return {} end
+	local frame = World.gateFrame(lm)
+	local floorY = World.Layout.basinLevels(lm)
+	local function box(w: number, y0: number, y1: number, z0: number, z1: number, material: Enum.Material)
+		return { CFrame = frame * CFrame.new(0, (y0 + y1) / 2 - frame.Y, (z0 + z1) / 2), Size = Vector3.new(w, y1 - y0, z0 - z1), Material = material }
+	end
+	local top, landing = frame.Y + G.Landing, G.Back + 6
+	return {
+		box(44, floorY - lm.Basin.Deep - 4, floorY, G.Steps + 2, G.Back, Enum.Material.Mud),
+		box(G.Width + 6, floorY - 4, top - 2, landing, G.Back - 24, Enum.Material.Rock),
+		box(G.Width + 6, top - 2, top, landing, G.Back - 24, Enum.Material.LeafyGrass),
+	}
+end
+
 -- folders: region id -> Map_Overworld region folder. waitReady(region) blocks until that region's terrain is written.
 function World.build(folders: { [string]: Instance }, waitReady: (string) -> boolean)
 	local Kit, Layout = deps()
@@ -323,6 +349,11 @@ function World.build(folders: { [string]: Instance }, waitReady: (string) -> boo
 				local m = Kit.place(T.Model, World.templeFrame(lm) * CFrame.new(T.Foot.X, T.Foot.Y, T.Foot.Z), Vector3.one, { Fidelity = World.Fidelity })
 				if m then m.Parent = model else warn("[LandmarkWorld] " .. id .. ": kit piece " .. T.Model .. " is not available") end
 			end
+			local G, gatePlaced = lm.Basin and lm.Basin.Gate, false
+			if G then
+				local m = Kit.place(G.Model, World.gateFrame(lm) * CFrame.new(G.Foot.X, G.Foot.Y, G.Foot.Z), Vector3.one, { Fidelity = World.Fidelity })
+				if m then m.Parent, gatePlaced = model, true else warn("[LandmarkWorld] " .. id .. ": kit piece " .. G.Model .. " is not available") end
+			end
 			if placed > 0 and lm.Tunnel and lm.Tunnel.Lanterns then
 				for _, p in lm.Tunnel.Lanterns do World.lantern(World.kitToWorld(lm, p)).Parent = model end
 			end
@@ -340,6 +371,9 @@ function World.build(folders: { [string]: Instance }, waitReady: (string) -> boo
 				end
 				for _, c in World.carves(lm) do terrain:FillBlock(c.CFrame, c.Size, Enum.Material.Air) end -- the passage cuts the rim
 				for _, f in World.lake(lm) do terrain:FillBlock(f.CFrame, f.Size, f.Material) end
+				if gatePlaced then -- no ledge in the lake without its stair
+					for _, f in World.gateFills(lm) do terrain:FillBlock(f.CFrame, f.Size, f.Material) end
+				end
 				model:SetAttribute("BoreCarved", true)
 				model:SetAttribute("BasinSculpted", #World.lake(lm) > 0)
 			end

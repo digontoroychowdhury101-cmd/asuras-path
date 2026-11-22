@@ -528,10 +528,56 @@ do
 	check("temple collision: stone platform precise, lacquer frame default, roofs never collide",
 		W2.Fidelity.Stone == Enum.CollisionFidelity.PreciseConvexDecomposition and W2.Fidelity.Lacquer == Enum.CollisionFidelity.Default
 		and W2.Fidelity.Tiles == nil and W2.Fidelity.Soffit == nil)
+	-- mac-91: the gate towers stand on the left of the exit view, front (model +Z) to the basin centre, stair climbing to the shore.
+	local G = bw.Basin.Gate
+	local gate = placedAt.Bellwood_GateTowers
+	local gspot = LL.gateSpot(bw)
+	local gateOk = gate ~= nil and lm:FindFirstChild("Bellwood_GateTowers") ~= nil
+	local gframe = W2.gateFrame(bw)
+	if gate then
+		local origin = gate * CFrame.new(-G.Foot.X, -G.Foot.Y, -G.Foot.Z)
+		local c = LL.basinCentre(bw)
+		local toCentre = Vector3.new(c.X - origin.X, 0, c.Z - origin.Z).Unit
+		local view = Vector3.new(gspot.X - exitW.X, 0, gspot.Z - exitW.Z).Unit
+		local look = Vector3.new(c.X - exitW.X, 0, c.Z - exitW.Z).Unit
+		local right = look:Cross(Vector3.yAxis)
+		local ang = math.deg(math.acos(math.clamp(view:Dot(look), -1, 1)))
+		gateOk = gateOk and (origin.Position - Vector3.new(gspot.X, gspot.Y, gspot.Z)).Magnitude < 1e-3
+			and origin.LookVector:Dot(-toCentre) > 0.999 -- model +Z = -LookVector faces the basin centre
+			and math.abs(origin.UpVector.Y - 1) < 1e-6 and view:Dot(right) < 0 and ang >= 6 and ang <= 35
+	end
+	check("gate towers stand at their spot facing the basin centre, left of centre in the exit view", gateOk)
+	check("gate collision: stone stair precise, roots hull, roofs and ribbons never collide",
+		W2.Fidelity.Stone == Enum.CollisionFidelity.PreciseConvexDecomposition and W2.Fidelity.Root == Enum.CollisionFidelity.Hull
+		and W2.Fidelity.Tiles == nil and W2.Fidelity.Soffit == nil and W2.Fidelity.Ribbon == nil and W2.Fidelity.Roots == nil)
+	-- The landing (Landing over the pivot) meets a terrain ledge that runs back to the rim; a footing fills the deep dish under the
+	-- steps and towers up to the lake bed so nothing hangs over the dish.
+	local gfills = W2.gateFills(bw)
+	local landingTop = gspot.Y + G.Landing
+	local ledgeOk, footOk = false, false
+	local function contains(f, p)
+		local lp = f.CFrame:PointToObjectSpace(p)
+		return math.abs(lp.X) <= f.Size.X / 2 + 1e-3 and math.abs(lp.Y) <= f.Size.Y / 2 + 1e-3 and math.abs(lp.Z) <= f.Size.Z / 2 + 1e-3
+	end
+	for _, f in gfills do
+		local top = f.CFrame.Position.Y + f.Size.Y / 2
+		local back = gframe:PointToWorldSpace(Vector3.new(0, 0, G.Back - 1))
+		local behind = f.CFrame:PointToWorldSpace(Vector3.new(0, 0, f.Size.Z / 2)) -- the far end (lookAt keeps +Z backward)
+		local farEnd = gframe:PointToWorldSpace(Vector3.new(0, 0, G.Back - 18))
+		if math.abs(top - landingTop) <= 1.5 and contains(f, Vector3.new(back.X, top - 0.5, back.Z))
+			and LL.basinEllipse(bw, farEnd.X, farEnd.Z) >= 1 and contains(f, Vector3.new(farEnd.X, top - 0.5, farEnd.Z)) then ledgeOk = true end
+		local step = gframe:PointToWorldSpace(Vector3.new(0, 0, G.Steps))
+		local tw = gframe:PointToWorldSpace(Vector3.new(13, 0, 0))
+		if math.abs(top - floorY) < 1e-3 and f.Material.Name ~= "Air" and f.Material.Name ~= "Water"
+			and contains(f, Vector3.new(step.X, floorY - bw.Basin.Deep, step.Z)) and contains(f, Vector3.new(tw.X, floorY - bw.Basin.Deep, tw.Z)) then footOk = true end
+	end
+	check("gate landing meets a terrain ledge (top within 1.5) that runs back into the rim", ledgeOk)
+	check("gate footing fills the deep dish under the steps and towers up to the lake bed", footOk)
 	local lastRock, lastAir = 0, 0
-	for i, m in fillOrder do if m == "Rock" then lastRock = i elseif m == "Air" then lastAir = i end end
-	check("pack, basin, then the bore and passage cut through the rim, the lake last, after the region's terrain is ready",
-		readyAsked == "Forest" and fills == #packs + #W2.basin(bw) + #boxes + #W2.lake(bw) and fillOrder[1] == "Rock" and fillOrder[#fillOrder] == "Water"
+	for i = 1, #fillOrder - #gfills do local m = fillOrder[i]; if m == "Rock" then lastRock = i elseif m == "Air" then lastAir = i end end
+	check("pack, basin, then the bore and passage cut through the rim, the lake, then the gate fills, after the region's terrain is ready",
+		readyAsked == "Forest" and fills == #packs + #W2.basin(bw) + #boxes + #W2.lake(bw) + #gfills and #gfills > 0
+		and fillOrder[1] == "Rock" and fillOrder[#fillOrder - #gfills] == "Water"
 		and lastAir > lastRock and lm:GetAttribute("BoreCarved") == true and lm:GetAttribute("BasinSculpted") == true)
 	local nWedge = 0
 	for _, f in W2.basin(bw) do if f.Wedge then nWedge += 1 end end
@@ -598,6 +644,15 @@ do
 			and string.match(drips.Texture, "^rbxassetid://%d+$") and string.match(motes.Texture, "^rbxassetid://%d+$")) then fxOk = false end
 	end
 	check("tunnel drips and moss motes: one roof box per inner path point", fxOk and #boxes == #bw.Tunnel.Path - 2)
+	-- the gate GLB is not uploaded yet: build warns, places the rest, and leaves the lake without the gate's ledge
+	fills = 0
+	W2.Kit = { place = function(piece) if piece == "Bellwood_GateTowers" then return nil end; local m = Instance.new("Model"); m.Name = piece; return m end }
+	local forest3 = Instance.new("Folder")
+	local okNoGate = pcall(W2.build, { Forest = forest3 }, function() return true end)
+	local lm3 = forest3:FindFirstChild("Landmark_Bellwood")
+	check("gate kit missing: build still runs, places the rest, and fills no gate ledge",
+		okNoGate and lm3 ~= nil and lm3:FindFirstChild("Bellwood_TempleHall") ~= nil and lm3:FindFirstChild("Bellwood_GateTowers") == nil
+		and fills == #packs + #W2.basin(bw) + #W2.carves(bw) + #W2.lake(bw))
 	fills = 0
 	W2.Kit = { place = function() return nil end }
 	local forest2 = Instance.new("Folder")

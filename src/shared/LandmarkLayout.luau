@@ -41,7 +41,14 @@ Layout.Landmarks = {
 			-- wades in and the deck (Deck over the foot) is just over the water. Radius = footprint half-diagonal, Height = roof top.
 			-- It turns to face the passage exit (LandmarkWorld.templeFrame). Foot = GLB foot frame from its manifest (model axes).
 			Temple = { Model = "Bellwood_TempleHall", Across = -60, Along = -20, Lift = -1, Radius = 55, Deck = 3.6, Height = 59.4,
-				Foot = { X = 0, Y = 0, Z = 4.115 } } },
+				Foot = { X = 0, Y = 0, Z = 4.115 } },
+			-- The temple's twin gate towers and moss stair (tools/blender/landmarks/bellwood_gate_towers.py, mac-91; concept bellwood_3,
+			-- left third): origin = tower-line centre on the bed, Across/Along/Lift as the temple, front (model +Z) to the basin centre
+			-- (LandmarkWorld.gateFrame). Model Z: lowest step front edge at Steps, landing (Width wide, top Landing over the origin) back
+			-- to Back; the stair climbs away from the lake to a terrain ledge (LandmarkWorld.gateFills). Height = finial top.
+			-- Foot from assets/source/landmarks/bellwood_gate/manifest.json (bbox x -27.06..27.33, y -40.8..13.49, z min -0.58).
+			Gate = { Model = "Bellwood_GateTowers", Across = 105, Along = -60, Lift = 0, Radius = 42, Steps = 10, Back = -40.8,
+				Width = 15, Landing = 14, Height = 50.2, Foot = { X = -0.135, Y = -0.58, Z = -13.655 } } },
 		-- Grove (SliceDressing): forest scatter in R round the origin. Nothing tall within Clear (the face), and a lane LaneHalf wide from
 		-- the mouth out LaneTo studs along the front (the road sightline) stays open. Ferns and grass hug the base from Clear - 12.
 		Grove = { R = 150, Clear = 70, LaneHalf = 16, LaneTo = 170 },
@@ -106,11 +113,20 @@ function Layout.rimTop(lm: any, theta: number, heightAt: (number, number) -> num
 	return heightAt(x, z) + lm.Basin.RimRise + 4 * math.sin(3 * theta) + 3 * math.sin(7 * theta + 1)
 end
 
+-- World position of a basin piece's origin (Across / Along off the basin centre, Lift over the lake bed).
+local function basinSpot(lm: any, P: any): Vec
+	local c, fx, fz, rx, rz = basinAxes(lm)
+	return { X = c.X + rx * P.Across + fx * P.Along, Y = lm.Origin.Y + lm.Basin.Bed + P.Lift, Z = c.Z + rz * P.Across + fz * P.Along }
+end
+
 -- World position of the temple hall's origin (platform centre, on its foot).
 function Layout.templeSpot(lm: any): Vec
-	local c, fx, fz, rx, rz = basinAxes(lm)
-	local T = lm.Basin.Temple
-	return { X = c.X + rx * T.Across + fx * T.Along, Y = lm.Origin.Y + lm.Basin.Bed + T.Lift, Z = c.Z + rz * T.Across + fz * T.Along }
+	return basinSpot(lm, lm.Basin.Temple)
+end
+
+-- World position of the gate towers' origin (tower-line centre, on the lake bed).
+function Layout.gateSpot(lm: any): Vec
+	return basinSpot(lm, lm.Basin.Gate)
 end
 
 -- World Y of the lake bed and the water surface.

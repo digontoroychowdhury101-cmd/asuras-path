@@ -18,6 +18,11 @@ in §8. The resume prompt is [handoff/WINDOWS_RESUME_PROMPT.md](handoff/WINDOWS_
    - `NEXT-VISUAL-PASS-PROMPT.md`
    - `outputs/vesperhold/THIRD_PARTY.md` (texture licences)
 5. The loop prompt the Mac ran: `MAC-LOOP-PROMPT.md`. Everything in it still applies, except where §1 changes it.
+6. The mac-91 delta (22 Nov, later), in `handoff/SOL_RESUME_PROMPT.md` §2–§4:
+   - Sourcing is widened to CC0/CC-BY/MIT open models and repos.
+   - ElevenLabs SFX are approved; 26 were generated.
+   - The gate towers are baked.
+   - The prompt also has the updated next steps. It is the current entry point for any agent (Claude, Codex or ChatGPT Sol).
 
 ## 1. Creator decisions made on 22 November (these override older docs)
 - **Save builds to Roblox. The creator chose this explicitly.**

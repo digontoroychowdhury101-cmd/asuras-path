@@ -1,0 +1,253 @@
+{
+  "generated": "2026-11-22",
+  "rule": "CC0/CC-BY/MIT only; verify page before download",
+  "props": {
+    "stone_guardian_lion": [
+      {
+        "name": "Lion Statue - optimized",
+        "url": "https://sketchfab.com/3d-models/lion-statue-optimized-62662d27c94d4994b2479b8de3a66ca7",
+        "source": "Sketchfab",
+        "licence": "CC0",
+        "licence_url_or_evidence": "Page shows 'CC0 Public Domain' (fetched 2026-11-22). Source credit: based on 'Lowe' by noe-3d.at, CC0.",
+        "author": "Thomas Flynn (@nebulousflynn)",
+        "formats": "Not shown on page (only a Download button); check for glTF/GLB before use",
+        "polycount_if_known": "28.5k tris (14.2k verts)",
+        "why_it_fits": "Upright sitting stone lion statue; a seated guardian-lion silhouette. Not a foo dog, so it needs a weathering/moss pass in Studio or Blender.",
+        "attribution_text": "None required (CC0). Optional credit: Lion Statue by Thomas Flynn, based on Lowe by noe-3d.at, CC0."
+      },
+      {
+        "name": "Lion Head",
+        "url": "https://polyhaven.com/a/lion_head",
+        "source": "Poly Haven",
+        "licence": "CC0",
+        "licence_url_or_evidence": "Poly Haven asset page (fetched) shows CC0; Poly Haven license page (fetched) states all models are CC0.",
+        "author": "Poly Haven (scan/credit per asset page)",
+        "formats": "glTF, FBX, Blend, USD, ZIP",
+        "polycount_if_known": "about 47K tris",
+        "why_it_fits": "High-quality lion sculpture with PBR textures. Usable as a broken or headless guardian fragment, or as a head to place on a rebuilt body. Confirm it is stone-like in look.",
+        "attribution_text": "None required (CC0). Optional credit: Poly Haven."
+      },
+      {
+        "name": "Old Chinese Guardian Lion",
+        "url": "https://sketchfab.com/3d-models/old-chinese-guardian-lion-b55b0da1aec44a9e98731ca599c1edc4",
+        "source": "Sketchfab",
+        "licence": "CC-BY 4.0",
+        "licence_url_or_evidence": "Page shows 'CC Attribution' (fetched 2026-11-22). Confirm the exact version (4.0) on the page before use.",
+        "author": "dlfitch",
+        "formats": "Not shown on page; check for glTF/GLB",
+        "polycount_if_known": "251.2k tris (heavy; needs decimation)",
+        "why_it_fits": "Very old, weathered Guardian Lion (foo dog) as the brief asks. Attribution required, and the mesh is too heavy as-is.",
+        "attribution_text": "Old Chinese Guardian Lion by dlfitch (Sketchfab), licensed CC BY 4.0. Link to the model page."
+      }
+    ],
+    "wrecked_rowboat": [],
+    "lily_pads_lotus": [
+      {
+        "name": "CC0 Water Lily, Nymphaea cv.",
+        "url": "https://sketchfab.com/3d-models/cc0-water-lily-nymphaea-cv-e7830f486a0248b6b894f3e7a63b8c16",
+        "source": "Sketchfab",
+        "licence": "CC0",
+        "licence_url_or_evidence": "Page shows 'CC0 Public Domain' (fetched 2026-11-22).",
+        "author": "ffish.asia / floraZia.com (@ffishAsia-and-floraZia)",
+        "formats": "Not shown on page (only a Download button)",
+        "polycount_if_known": "1.9M tris (far too heavy; use as a reference for a decimated version)",
+        "why_it_fits": "Botanically accurate water lily (flower and pad). Strong quality, but it must be decimated or re-topologised heavily before use in Roblox.",
+        "attribution_text": "None required (CC0). Optional credit: ffish.asia / floraZia.com."
+      },
+      {
+        "name": "CC0 East Asian Yellow Water-lily (Nuphar japonica)",
+        "url": "https://sketchfab.com/3d-models/cc0-east-asian-yellow-water-lily-6c773515f311424cb0821988c9b015e6",
+        "source": "Sketchfab",
+        "licence": "CC0",
+        "licence_url_or_evidence": "Search result snippet shows 'CC0' for the same uploader; page not opened, so verify on the page before download.",
+        "author": "ffish.asia / floraZia.com (@ffishAsia-and-floraZia)",
+        "formats": "Not verified",
+        "polycount_if_known": "about 1.7M tris per search summary (not fetched)",
+        "why_it_fits": "East-Asian pond plant that suits the Asian temple-lake setting. Same caveat: very heavy, needs decimation.",
+        "attribution_text": "None required (CC0). Optional credit: ffish.asia / floraZia.com."
+      },
+      {
+        "name": "Lily pad",
+        "url": "https://sketchfab.com/3d-models/lily-pad-05c45cb602e54982b3cf5ae4ec0d2ec5",
+        "source": "Sketchfab",
+        "licence": "CC-BY 4.0",
+        "licence_url_or_evidence": "Search summary says 'CC Attribution'; page not opened. Verify the exact version on the page.",
+        "author": "ThatMelGuy (@naviogutierrezdavid)",
+        "formats": "Not verified",
+        "polycount_if_known": "about 270 tris (per search summary)",
+        "why_it_fits": "Very light lily pad mesh that suits a Roblox water surface. Low detail, so pair it with a texture pass.",
+        "attribution_text": "Lily pad by ThatMelGuy (Sketchfab), licensed CC BY 4.0. Link to the model page."
+      }
+    ],
+    "bronze_gong_wooden_frame": [
+      {
+        "name": "Bronze wine-vessel gong (12th C. BCE)",
+        "url": "https://sketchfab.com/3d-models/21495772026148c8b7967aef3ea425fe",
+        "source": "Sketchfab (Minneapolis Institute of Art)",
+        "licence": "CC0",
+        "licence_url_or_evidence": "Page shows 'CC0 Public Domain' (fetched 2026-11-22).",
+        "author": "Minneapolis Institute of Art (@artsmia)",
+        "formats": "Not shown on page (only a Download button)",
+        "polycount_if_known": "200k tris (per page)",
+        "why_it_fits": "Real bronze Chinese gong from a museum scan, CC0. It has no wooden frame, so a frame would need to be modelled separately. Page calls it a low-res version; the museum offers higher-res files on request.",
+        "attribution_text": "None required (CC0). Optional credit: Minneapolis Institute of Art."
+      }
+    ],
+    "toppled_stone_columns": [
+      {
+        "name": "Ultimate Modular Ruins Pack",
+        "url": "https://quaternius.com/packs/ultimatemodularruins.html",
+        "source": "Quaternius",
+        "licence": "CC0",
+        "licence_url_or_evidence": "Pack page shows CC0 (fetched 2026-11-22).",
+        "author": "Quaternius",
+        "formats": "FBX, OBJ, Blend (no glTF listed; convert before use)",
+        "polycount_if_known": "Not stated",
+        "why_it_fits": "Modular ruin pieces that can be laid out as toppled sections. The page does not confirm that broken columns are included, so check the contents first.",
+        "attribution_text": "None required (CC0). Optional credit: Quaternius."
+      },
+      {
+        "name": "Fantasy Ruins Pack (3 Tier Digital Studios)",
+        "url": "https://opengameart.org/content/3-tier-digital-studios-fantasy-ruins-pack",
+        "source": "OpenGameArt",
+        "licence": "CC0",
+        "licence_url_or_evidence": "Search snippet says 'CC0 - Public Domain'; page fetch returned 403, so verify on the page before download.",
+        "author": "3 Tier Digital Studios / Ron Kapaun (per search snippet)",
+        "formats": "DAE (per search snippet); needs conversion to glTF",
+        "polycount_if_known": "Not stated",
+        "why_it_fits": "Fantasy ruin pieces that could serve as toppled columns. Needs conversion and a quality check.",
+        "attribution_text": "None required (CC0). Optional credit: 3 Tier Digital Studios."
+      }
+    ],
+    "japanese_maple_tree": [
+      {
+        "name": "Tree Small 02",
+        "url": "https://polyhaven.com/a/tree_small_02",
+        "source": "Poly Haven",
+        "licence": "CC0",
+        "licence_url_or_evidence": "Poly Haven asset page (fetched) shows CC0, category 'Broadleaf Trees'.",
+        "author": "Poly Haven",
+        "formats": "glTF, FBX, Blend, USD, ZIP",
+        "polycount_if_known": "5M tris (far too heavy; must be decimated for Roblox)",
+        "why_it_fits": "Broadleaf tree with realistic PBR leaves. Not a Japanese maple (species not confirmed), so use it as a broadleaf base and reshape the crown.",
+        "attribution_text": "None required (CC0). Optional credit: Poly Haven."
+      },
+      {
+        "name": "Ultimate Nature Pack",
+        "url": "https://quaternius.com/packs/ultimatenature.html",
+        "source": "Quaternius",
+        "licence": "CC0",
+        "licence_url_or_evidence": "Pack page shows CC0 public domain dedication (fetched 2026-11-22).",
+        "author": "Quaternius",
+        "formats": "FBX, OBJ, Blend (no glTF listed)",
+        "polycount_if_known": "Not stated",
+        "why_it_fits": "Stylised low-poly nature set that may include broadleaf trees. Tree species are not confirmed, so this is a weak realistic-look fit.",
+        "attribution_text": "None required (CC0). Optional credit: Quaternius."
+      }
+    ],
+    "stone_lantern_toro": [
+      {
+        "name": "Wooden Lantern 01",
+        "url": "https://polyhaven.com/a/wooden_lantern_01",
+        "source": "Poly Haven",
+        "licence": "CC0",
+        "licence_url_or_evidence": "Poly Haven asset page (fetched) shows CC0.",
+        "author": "Poly Haven",
+        "formats": "glTF, FBX, Blend, USD, ZIP",
+        "polycount_if_known": "about 8K tris",
+        "why_it_fits": "Poor fit. A wooden hanging lantern, not a stone toro. Only a lantern-shaped stand-in; no CC0 stone toro was found.",
+        "attribution_text": "None required (CC0). Optional credit: Poly Haven."
+      }
+    ],
+    "gothic_gargoyle_ornaments_chains_ravens": [
+      {
+        "name": "Gothic Statue",
+        "url": "https://polyhaven.com/a/gothic_statue",
+        "source": "Poly Haven",
+        "licence": "CC0",
+        "licence_url_or_evidence": "Poly Haven asset page (fetched) shows CC0.",
+        "author": "Poly Haven",
+        "formats": "glTF, FBX, Blend, USD, ZIP",
+        "polycount_if_known": "about 28K tris",
+        "why_it_fits": "Gothic figure statue with PBR textures. Good for a haunted citadel ornament; not a gargoyle (human figure), so it covers the gothic-statue slot only.",
+        "attribution_text": "None required (CC0). Optional credit: Poly Haven."
+      },
+      {
+        "name": "Common raven",
+        "url": "https://sketchfab.com/3d-models/common-raven-ec9c0ac738fd4495af334ea2092e8d89",
+        "source": "Sketchfab (Virtual Museums of Malopolska)",
+        "licence": "CC0",
+        "licence_url_or_evidence": "Page shows 'CC0 Public Domain' (fetched 2026-11-22).",
+        "author": "Virtual Museums of Malopolska (@WirtualneMuzeaMalopolski)",
+        "formats": "Not shown on page (only a Download button)",
+        "polycount_if_known": "384.3k tris (heavy; decimate for Roblox)",
+        "why_it_fits": "Museum-scan raven (Corvus corax), realistic and CC0. Suits the ravens/crows brief; it will need decimation.",
+        "attribution_text": "None required (CC0). Optional credit: Virtual Museums of Malopolska."
+      },
+      {
+        "name": "Gargoyle (Unspirations)",
+        "url": "https://sketchfab.com/3d-models/gargoyle-a413444edfe941b589df0510ddbd2a61",
+        "source": "Sketchfab",
+        "licence": "CC-BY 4.0",
+        "licence_url_or_evidence": "Search summary lists it as 'CC Attribution'; page not opened. Verify on the page (and the exact version) before download.",
+        "author": "Unspirations",
+        "formats": "Not verified",
+        "polycount_if_known": "Not verified",
+        "why_it_fits": "Gothic gargoyle, which is the main missing piece for the brief. Only a candidate until its page and mesh are checked.",
+        "attribution_text": "Gargoyle by Unspirations (Sketchfab), licensed CC BY 4.0. Link to the model page."
+      }
+    ],
+    "gothic_church_bell": [
+      {
+        "name": "High-poly church bell",
+        "url": "https://opengameart.org/content/high-poly-church-bell",
+        "source": "OpenGameArt",
+        "licence": "CC0",
+        "licence_url_or_evidence": "Page shows CC0 license (fetched 2026-11-22).",
+        "author": "Lamoot",
+        "formats": "church_bell.blend, church_bell1.blend (Blender only; convert to glTF)",
+        "polycount_if_known": "Not stated (2010 static mesh)",
+        "why_it_fits": "Church bell in CC0, but old (2010) and likely low detail for 'really good' quality. Best CC0 church-bell option found.",
+        "attribution_text": "None required (CC0). Optional credit: Lamoot, OpenGameArt."
+      },
+      {
+        "name": "1998.123 Buddhist Ritual Bell",
+        "url": "https://sketchfab.com/3d-models/1998123-buddhist-ritual-bell-40fd03799d4248ae8f60748a31525a2e",
+        "source": "Sketchfab (Cleveland Museum of Art)",
+        "licence": "CC0",
+        "licence_url_or_evidence": "Page shows 'CC0 Public Domain' (fetched 2026-11-22).",
+        "author": "Cleveland Museum of Art (@clevelandart)",
+        "formats": "Not shown on page (only a Download button)",
+        "polycount_if_known": "70k tris",
+        "why_it_fits": "Poor fit for a gothic church bell: it is a Korean Goryeo-period five-pronged vajra-style ritual bell. Listed only as a museum-quality CC0 bell scan.",
+        "attribution_text": "None required (CC0). Optional credit: Cleveland Museum of Art."
+      }
+    ],
+    "mossy_rocks_boulders_roots": [
+      {
+        "name": "Boulder 01",
+        "url": "https://polyhaven.com/a/boulder_01",
+        "source": "Poly Haven",
+        "licence": "CC0",
+        "licence_url_or_evidence": "Poly Haven asset page (fetched) shows CC0 and a 3D model download.",
+        "author": "Poly Haven",
+        "formats": "Blend, glTF, USD, FBX, ZIP",
+        "polycount_if_known": "124K tris (decimate for Roblox)",
+        "why_it_fits": "Scanned boulder with PBR textures. Tagged lichen rather than moss, so add moss via a texture or a vertex-colour pass.",
+        "attribution_text": "None required (CC0). Optional credit: Poly Haven."
+      },
+      {
+        "name": "Rock Boulder Cracked",
+        "url": "https://polyhaven.com/a/rock_boulder_cracked",
+        "source": "Poly Haven",
+        "licence": "CC0",
+        "licence_url_or_evidence": "Listed as a Poly Haven CC0 asset in search results; page not opened, so verify formats and licence on the page.",
+        "author": "Poly Haven",
+        "formats": "Not verified",
+        "polycount_if_known": "Not verified",
+        "why_it_fits": "Cracked boulder for rock variety. Only a candidate until its page is checked.",
+        "attribution_text": "None required (CC0). Optional credit: Poly Haven."
+      }
+    ]
+  }
+}

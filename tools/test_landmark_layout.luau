@@ -224,5 +224,45 @@ do
 	check("temple roof stays under TempleTop", s.Y + T.Height <= floorY + bw.Basin.TempleTop)
 end
 
+-- 9. The Sunken Temple's gate towers (tools/blender/landmarks/bellwood_gate_towers.py, concept bellwood_3 left third): on the left of
+-- the exit view, front steps wading in at the shore, the stair climbing away from the lake to a landing inside the bowl near the shore.
+do
+	local G, T = bw.Basin.Gate, bw.Basin.Temple
+	local floorY, waterY = L.basinLevels(bw)
+	local s, t, c = L.gateSpot(bw), L.templeSpot(bw), L.basinCentre(bw)
+	check("gate towers are a kit piece with a foot frame", G and G.Model == "Bellwood_GateTowers" and G.Foot ~= nil)
+	-- the passage exit in world XZ (kit x, y -> model -x, y; yawed)
+	local q, o, a = bw.Tunnel.Passage[#bw.Tunnel.Passage], bw.Origin, math.rad(bw.Yaw)
+	local ex, ez = o.X + (-q[1]) * math.cos(a) + q[2] * math.sin(a), o.Z - (-q[1]) * math.sin(a) + q[2] * math.cos(a)
+	local lx, lz = c.X - ex, c.Z - ez
+	local ll = math.sqrt(lx * lx + lz * lz)
+	lx, lz = lx / ll, lz / ll
+	local vx, vz = s.X - ex, s.Z - ez
+	local vl = math.sqrt(vx * vx + vz * vz)
+	vx, vz = vx / vl, vz / vl
+	local ang = math.deg(math.acos(math.clamp(vx * lx + vz * lz, -1, 1)))
+	-- view right = look x up = (-lz, lx) in XZ
+	check(string.format("gate stands left of centre in the exit view (%.1f deg)", ang), vx * -lz + vz * lx < 0 and ang >= 6 and ang <= 35)
+	-- gate model axes in world XZ: front (+Z) toward the basin centre, side across it
+	local ux, uz = c.X - s.X, c.Z - s.Z
+	local ul = math.sqrt(ux * ux + uz * uz)
+	ux, uz = ux / ul, uz / ul
+	local function at(x, z) return s.X + ux * z - uz * x, s.Z + uz * z + ux * x end
+	local sx, sz = at(0, G.Steps)
+	check("gate pivot is under the water and its front step stands in the lake", s.Y < waterY and s.Y >= floorY - 1
+		and L.basinEllipse(bw, sx, sz) < 1)
+	local inside, nearShore = true, false
+	for _, side in { -1, 1 } do
+		local bx, bz = at(side * G.Width / 2, G.Back)
+		if L.basinEllipse(bw, bx, bz) >= 1 then inside = false end
+		if L.basinEllipse(bw, bx, bz, -10) >= 1 then nearShore = true end
+	end
+	check("gate landing stays inside the bowl (not buried in the rim) and within 10 studs of the shore", inside and nearShore)
+	check("gate landing stands over the water", s.Y + G.Landing > waterY + 8)
+	check("gate towers stay under TempleTop", s.Y + G.Height <= floorY + bw.Basin.TempleTop)
+	check("gate and temple footprints do not overlap", math.sqrt((s.X - t.X) ^ 2 + (s.Z - t.Z) ^ 2) > G.Radius + T.Radius)
+	check("gate keeps clear of the tunnel exit", math.sqrt((s.X - ex) ^ 2 + (s.Z - ez) ^ 2) > G.Radius + bw.Tunnel.Width)
+end
+
 print(string.format("landmark layout: %d passed, %d failed", passed, failed))
 if failed > 0 then error("landmark layout failed") end
