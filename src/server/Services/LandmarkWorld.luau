@@ -119,7 +119,7 @@ World.BasinStep, World.RimSegments, World.RimStrata, World.RimCap = 6, 128, 6, 3
 local DARK = { [Enum.Material.Slate] = true, [Enum.Material.Basalt] = true }
 local function stratumMaterial(i: number, tm: number, prevDark: boolean, thick: number): Enum.Material
 	local f = 0.5 + 0.25 * math.sin(i * 2.17 + tm * 5.3) + 0.15 * math.sin(i * 0.71 + tm * 2.1 + 1.3) + 0.1 * math.sin(tm * 11 + i * 3.7)
-	local m = if f < 0.28 then Enum.Material.Rock elseif f < 0.42 then Enum.Material.Limestone elseif f < 0.55 then Enum.Material.Ground
+	local m = if f < 0.42 then Enum.Material.Rock elseif f < 0.55 then Enum.Material.Ground -- no Limestone: its pale texture blotched the rim (mac-92)
 		elseif f < 0.66 then Enum.Material.Mud elseif f < 0.76 then Enum.Material.Rock elseif f < 0.86 then Enum.Material.Slate
 		elseif f < 0.92 then Enum.Material.Basalt else Enum.Material.Grass
 	if DARK[m] and (prevDark or thick > 3.5) then return Enum.Material.Rock end -- never a wide or doubled dark stripe

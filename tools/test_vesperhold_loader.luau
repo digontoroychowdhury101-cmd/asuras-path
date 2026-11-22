@@ -511,6 +511,9 @@ do
 		local mats = {}
 		for k = 0, nSeg - 1 do for _, f in rimFills[k] do mats[f.Material.Name] = true end end
 		check("rim strata: Slate/Rock/Basalt mixed with Ground/Mud/Grass ledges", mats.Rock and mats.Ground and mats.Mud and mats.Grass and mats.Slate)
+		-- mac-92 Play capture: Limestone's large pale texture read as camouflage blotches across the rim
+		check("rim strata: no pale blotchy stone (Limestone, Sand, Sandstone, Salt, Snow)",
+			not (mats.Limestone or mats.Sand or mats.Sandstone or mats.Salt or mats.Snow))
 		-- a vertical streak is a segment whose layers differ from both neighbours, which agree with each other
 		local streaks, maxJump = 0, 0
 		for k = 0, nSeg - 1 do
