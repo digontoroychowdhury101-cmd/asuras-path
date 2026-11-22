@@ -63,8 +63,13 @@ end
 
 -- The hidden basin (LandmarkLayout.Basin), as terrain fills in order: the bowl (air strips across the ellipse, floor to over the highest
 -- rim), its bed (rock with a mud top, reaching under the rim) and the rim cliffs (rock boxes round the shore, from under the floor to
--- Layout.rimTop). The lake is separate (World.lake) so it goes in after the passage is cut. Rim = true marks a cliff box.
-World.BasinStep, World.RimSegments = 6, 128
+-- Layout.rimTop). The lake is separate (World.lake) so it goes in after the passage is cut.
+-- mac-89: the first rim was one dark rock wall on open meadow. Each of the RimSegments is now a cliff of RimStrata-stud strata
+-- (Rim = true; rock, slate and basalt, each stepped in or out a little so the face has ledges), a LeafyGrass cap (Cap = true) set back
+-- from the lip, and a grass slope (Wedge = true, a terrain wedge: high edge at +Z on the rim, low edge under the forest floor) so
+-- from outside it reads as a wooded ridge. Segment = the rim segment index.
+World.BasinStep, World.RimSegments, World.RimStrata, World.RimCap = 6, 128, 6, 3
+local STRATA = { Enum.Material.Rock, Enum.Material.Slate, Enum.Material.Rock, Enum.Material.Basalt }
 local function strips(lm: any, grow: number, bottom: number, top: number, material: Enum.Material, out: { any })
 	local L = World.Layout
 	local c, fx, fz = L.basinCentre(lm), L.front(lm)
@@ -94,15 +99,42 @@ function World.basin(lm: any): { any }
 	strips(lm, 0, floorY, maxTop + 4, Enum.Material.Air, out)
 	strips(lm, lm.Basin.Thick, floorY - 16, floorY - 4, Enum.Material.Rock, out)
 	strips(lm, lm.Basin.Thick, floorY - 4, floorY, Enum.Material.Mud, out)
-	local th = lm.Basin.Thick
-	for k = 0, World.RimSegments - 1 do
-		local t0, t1 = k / World.RimSegments * 2 * math.pi, (k + 1) / World.RimSegments * 2 * math.pi
+	local th, n = lm.Basin.Thick, World.RimSegments
+	for k = 0, n - 1 do
+		local t0, t1 = k / n * 2 * math.pi, (k + 1) / n * 2 * math.pi
+		local tm = (t0 + t1) / 2
 		local x0, z0 = L.basinRing(lm, t0, th / 2)
 		local x1, z1 = L.basinRing(lm, t1, th / 2)
-		local bottom, top = floorY - 16, tops[k]
-		local mid = Vector3.new((x0 + x1) / 2, (bottom + top) / 2, (z0 + z1) / 2)
 		local along = Vector3.new(x1 - x0, 0, z1 - z0)
-		table.insert(out, { CFrame = CFrame.lookAt(mid, mid + along), Size = Vector3.new(th, top - bottom, along.Magnitude + 3), Material = Enum.Material.Rock, Rim = true })
+		local len = along.Magnitude + 3
+		local cx, cz = L.basinRing(lm, tm, th / 2)
+		local ox, oz = L.basinRing(lm, tm, th / 2 + 1)
+		local outward = Vector3.new(ox - cx, 0, oz - cz).Unit
+		local frame = CFrame.lookAt(Vector3.new(cx, 0, cz), Vector3.new(cx, 0, cz) + along) -- X = across the rim, Z = along it
+		local toOut = if frame.RightVector:Dot(outward) > 0 then 1 else -1
+		local bottom, top = floorY - 16, tops[k]
+		local capY = top - World.RimCap
+		local z, i = bottom, 0
+		while z < capY - 0.01 do
+			local zt = math.min(z + World.RimStrata, capY)
+			-- deterministic ledges: each stratum steps up to 1.5 studs in or out, varying round the ring
+			local step = 1.5 * math.sin(i * 2.3 + tm * 9) * math.sin(tm * 3 + i)
+			table.insert(out, { CFrame = frame * CFrame.new(toOut * step, (z + zt) / 2, 0), Size = Vector3.new(th, zt - z, len),
+				Material = STRATA[i % #STRATA + 1], Rim = true, Segment = k })
+			z, i = zt, i + 1
+		end
+		-- the cap, set back 2 from the lip so a rock edge shows from the lake
+		table.insert(out, { CFrame = frame * CFrame.new(toOut, (capY + top) / 2, 0), Size = Vector3.new(th - 2, top - capY, len),
+			Material = Enum.Material.LeafyGrass, Cap = true, Segment = k })
+		-- the outer slope: from the rim's outer edge down past the forest floor, run = 1.8 x the drop (about 30 degrees)
+		local ex, ez = L.basinRing(lm, tm, th)
+		local drop = math.max(4, top - height(ex, ez))
+		local run = math.max(8, drop * 1.8)
+		local fx2, fz2 = L.basinRing(lm, tm, th + run)
+		local base = math.min(height(ex, ez), height(fx2, fz2)) - 6
+		local mid = Vector3.new((ex + fx2) / 2, (base + top) / 2, (ez + fz2) / 2)
+		table.insert(out, { CFrame = CFrame.lookAt(mid, mid + outward), Size = Vector3.new(len, top - base, run + 1),
+			Material = Enum.Material.LeafyGrass, Wedge = true, Segment = k })
 	end
 	return out
 end
@@ -113,6 +145,12 @@ function World.lake(lm: any): { any }
 	if not (lm.Basin and World.Layout) then return out end
 	local floorY, waterY = World.Layout.basinLevels(lm)
 	strips(lm, -1, floorY, waterY, Enum.Material.Water, out)
+	-- mac-89: a deeper middle, Deep more, Shelf studs in from the shore, so the bed's voxel relief stops showing through. Water does
+	-- not replace solid voxels, so the dish is cut to air (Dish = true) before it is filled.
+	local n = #out
+	strips(lm, -lm.Basin.Shelf, floorY - lm.Basin.Deep, floorY, Enum.Material.Air, out)
+	for i = n + 1, #out do out[i].Dish = true end
+	strips(lm, -lm.Basin.Shelf, floorY - lm.Basin.Deep, waterY, Enum.Material.Water, out)
 	return out
 end
 
@@ -175,6 +213,46 @@ function World.tunnelFx(lm: any): Model
 	return fx
 end
 
+-- mac-89: rain fell inside the bore. WeatherController calls a spot sheltered when a part tagged AsuraShelter is within 60 studs
+-- straight up; terrain cannot be tagged, so invisible, non-colliding roof slabs sit 2 over the bore crown along the whole route
+-- from the second Path point (inside the socket) to the basin.
+function World.shelters(lm: any): Model
+	local model = Instance.new("Model")
+	model.Name = "TunnelShelter"
+	local path = route(lm.Tunnel)
+	local L = World.Layout
+	local width = lm.Tunnel.Width + 8
+	-- open sky over the lake: no roof corner reaches into the bowl (a CanQuery slab there catches raycasts over the water)
+	local function overBowl(cf: CFrame, len: number): boolean
+		if not (L and lm.Basin) then return false end
+		for _, sx in { -1, 1 } do for _, sz in { -1, 1 } do
+			local q = cf:PointToWorldSpace(Vector3.new(sx * width / 2, 0, sz * len / 2))
+			if L.basinEllipse(lm, q.X, q.Z, -2) < 1 then return true end
+		end end
+		return false
+	end
+	for i = 2, #path - 1 do
+		local a, b = World.kitToWorld(lm, path[i]), World.kitToWorld(lm, path[i + 1])
+		local flat = Vector3.new(b.X - a.X, 0, b.Z - a.Z)
+		local y = math.max(a.Y, b.Y) + lm.Tunnel.Radius + 2
+		local ahead = flat.Magnitude + 4 -- the slab runs from 4 behind a to ahead along the walk
+		local function slab(): (CFrame, number)
+			local mid = Vector3.new(a.X, y, a.Z) + flat.Unit * ((ahead - 4) / 2)
+			return CFrame.lookAt(mid, mid + flat), ahead + 4
+		end
+		while ahead > 0 and overBowl(slab()) do ahead -= 1 end
+		if ahead <= 0 then continue end
+		local cf, len = slab()
+		local roof = Instance.new("Part")
+		roof.Name, roof.Size, roof.Transparency = "Roof" .. (i - 1), Vector3.new(width, 1, len), 1
+		roof.CFrame = cf
+		roof.Anchored, roof.CanCollide, roof.CanTouch, roof.CanQuery, roof.CastShadow = true, false, false, true, false
+		roof:AddTag("AsuraShelter")
+		roof.Parent = model
+	end
+	return model
+end
+
 -- Overworld terrain is an 8-stud crust over void (OverworldTerrainCompute SHELL), so the descending bore needs rock round it:
 -- level boxes along the centre line, Width + 24 across, from 10 under the walk floor up to Radius + 10 over the centre, cut to 1 stud
 -- under the lowest surface at the box's top corners (the ground never rises). Filled with Rock before the carve. Floor = walk floor Y.
@@ -231,13 +309,18 @@ function World.build(folders: { [string]: Instance }, waitReady: (string) -> boo
 			if placed > 0 and lm.Tunnel and lm.Tunnel.Lanterns then
 				for _, p in lm.Tunnel.Lanterns do World.lantern(World.kitToWorld(lm, p)).Parent = model end
 			end
-			if placed > 0 and lm.Tunnel and lm.Tunnel.Path then World.tunnelFx(lm).Parent = model end
+			if placed > 0 and lm.Tunnel and lm.Tunnel.Path then
+				World.tunnelFx(lm).Parent = model
+				World.shelters(lm).Parent = model
+			end
 			model.Parent = folders[lm.Region]
 			-- No mesh, no hole: the bore is only carved under a placed shell, after the tiles that would refill it are written.
 			if placed > 0 and lm.Tunnel and waitReady(lm.Region) then
 				local terrain = Workspace.Terrain
 				for _, p in World.packs(lm) do terrain:FillBlock(p.CFrame, p.Size, Enum.Material.Rock) end
-				for _, f in World.basin(lm) do terrain:FillBlock(f.CFrame, f.Size, f.Material) end
+				for _, f in World.basin(lm) do
+					if f.Wedge then terrain:FillWedge(f.CFrame, f.Size, f.Material) else terrain:FillBlock(f.CFrame, f.Size, f.Material) end
+				end
 				for _, c in World.carves(lm) do terrain:FillBlock(c.CFrame, c.Size, Enum.Material.Air) end -- the passage cuts the rim
 				for _, f in World.lake(lm) do terrain:FillBlock(f.CFrame, f.Size, f.Material) end
 				model:SetAttribute("BoreCarved", true)

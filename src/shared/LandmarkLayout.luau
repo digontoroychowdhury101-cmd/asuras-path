@@ -33,7 +33,9 @@ Layout.Landmarks = {
 		-- Water = lake depth over it. A rock rim Thick studs wide rings it, RimRise over the
 		-- local surface (plus a little wobble), so no road sees in (tools/test_landmark_layout.luau casts from 8 road points).
 		-- TempleTop = how high over the floor the temple may stand and stay hidden.
-		Basin = { Back = 260, Width = 350, Depth = 300, Bed = -36, Water = 2.5, Thick = 28, RimRise = 24, TempleTop = 70 },
+		-- Deep = how much deeper the lake gets Shelf studs in from the shore (mac-89: a 2.5-stud lake showed the bed's voxel ridges
+		-- through the water as dark dashes); keeps the deep bed on the 4-stud voxel grid.
+		Basin = { Back = 260, Width = 350, Depth = 300, Bed = -36, Water = 2.5, Thick = 28, RimRise = 24, TempleTop = 70, Deep = 8, Shelf = 36 },
 		-- Grove (SliceDressing): forest scatter in R round the origin. Nothing tall within Clear (the face), and a lane LaneHalf wide from
 		-- the mouth out LaneTo studs along the front (the road sightline) stays open. Ferns and grass hug the base from Clear - 12.
 		Grove = { R = 150, Clear = 70, LaneHalf = 16, LaneTo = 170 },

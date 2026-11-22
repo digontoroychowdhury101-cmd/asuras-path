@@ -418,6 +418,8 @@ do
 	local fills = W.basin(bw)
 	for _, f in W.lake(bw) do table.insert(fills, f) end
 	local byMat, inBowl, rimOk, waterOk, bedOk, maxRim = {}, true, true, true, false, -math.huge
+	local rimSpan, rimMats, capTop, caps, capOk, flanks, flankOk = {}, {}, {}, 0, true, 0, true
+	local dishWater, dishAir, dishOk = 0, 0, true
 	for k = 0, 63 do maxRim = math.max(maxRim, LL.rimTop(bw, k / 64 * 2 * math.pi, O.heightAt)) end
 	for _, f in fills do
 		local m = f.Material.Name
@@ -428,19 +430,59 @@ do
 				local q = c:PointToWorldSpace(Vector3.new(sx * h.X, 0, sz * h.Z))
 				if LL.basinEllipse(bw, q.X, q.Z, 1) > 1 then if m == "Air" then inBowl = false else waterOk = false end end
 			end end
-			if m == "Air" and (c.Position.Y - h.Y > floorY + 0.01 or c.Position.Y + h.Y < maxRim) then inBowl = false end
-			if m == "Water" and (math.abs(c.Position.Y + h.Y - waterY) > 0.01 or math.abs(c.Position.Y - h.Y - floorY) > 0.01) then waterOk = false end
+			if m == "Air" and not f.Dish and (c.Position.Y - h.Y > floorY + 0.01 or c.Position.Y + h.Y < maxRim) then inBowl = false end
+			if f.Dish then dishAir += 1; if m ~= "Air" or math.abs(c.Position.Y - h.Y - (floorY - bw.Basin.Deep)) > 0.01 then dishOk = false end end
+			local bottom = c.Position.Y - h.Y
+			local deep = math.abs(bottom - (floorY - bw.Basin.Deep)) < 0.01
+			if deep and m == "Water" then dishWater += 1 end
+			if m == "Water" and (math.abs(c.Position.Y + h.Y - waterY) > 0.01 or (math.abs(bottom - floorY) > 0.01 and not deep)) then waterOk = false end
+			if (m == "Air" and f.Dish) or deep then
+				for _, sx in { -1, 1 } do for _, sz in { -1, 1 } do
+					local q = c:PointToWorldSpace(Vector3.new(sx * h.X, 0, sz * h.Z))
+					if LL.basinEllipse(bw, q.X, q.Z, -bw.Basin.Shelf + 1) > 1 then dishOk = false end
+				end end
+			end
 		elseif m == "Mud" then
 			if math.abs(c.Position.Y + h.Y - floorY) < 0.01 then bedOk = true end
-		elseif m == "Rock" and f.Rim then
+		elseif f.Rim then
+			rimMats[m] = true
+			local seg = rimSpan[f.Segment] or { lo = math.huge, hi = -math.huge }
+			seg.lo, seg.hi = math.min(seg.lo, c.Position.Y - h.Y), math.max(seg.hi, c.Position.Y + h.Y)
+			rimSpan[f.Segment] = seg
+		elseif f.Cap then
+			caps += 1
 			local p = c.Position
-			if p.Y + h.Y < O.heightAt(p.X, p.Z) + bw.Basin.RimRise - 8 or p.Y - h.Y > floorY - 15 then rimOk = false end
+			if m ~= "LeafyGrass" or p.Y + h.Y < O.heightAt(p.X, p.Z) + bw.Basin.RimRise - 8 then capOk = false end
+			capTop[f.Segment] = p.Y - h.Y
+		elseif f.Wedge then
+			flanks += 1
+			-- WedgePart convention: high edge at +Z (toward the rim), low edge at -Z (out over the forest floor)
+			local hiEdge, loEdge = c:PointToWorldSpace(Vector3.new(0, h.Y, h.Z)), c:PointToWorldSpace(Vector3.new(0, -h.Y, -h.Z))
+			if LL.basinEllipse(bw, hiEdge.X, hiEdge.Z, bw.Basin.Thick + 1) > 1.001 or LL.basinEllipse(bw, loEdge.X, loEdge.Z, bw.Basin.Thick) < 1
+				or loEdge.Y > O.heightAt(loEdge.X, loEdge.Z) - 1 or hiEdge.Y < O.heightAt(hiEdge.X, hiEdge.Z) + bw.Basin.RimRise - 14 then flankOk = false end
 		end
 	end
+	for k, seg in rimSpan do
+		if seg.lo > floorY - 15 or not capTop[k] or math.abs(seg.hi - capTop[k]) > 0.01 then rimOk = false end
+	end
+	local nMats = 0
+	for _ in rimMats do nMats += 1 end
 	check("basin bowl: air strips inside the shore, from the floor up over every rim top", (byMat.Air or 0) >= 20 and inBowl)
 	check("basin bed: a mud layer topped at the floor", bedOk)
-	check("basin rim: 64+ rock cliffs from under the floor to RimRise over the ground", (byMat.Rock or 0) >= 64 and rimOk)
+	-- mac-89: the first rim was one dark rock wall standing on open meadow (captures/mac/bellwood_face/ingame_basin_aerial_before.jpg).
+	check("basin rim: strata cliffs from under the floor up to a grass cap, in 2+ stone kinds", rimOk and nMats >= 2 and #(function() local n = {} for k in rimSpan do table.insert(n, k) end return n end)() >= 64)
+	check("basin rim: a leafy grass cap on every segment, RimRise over the ground", caps >= 64 and capOk)
+	check("basin rim: a grass slope from the rim top down under the forest floor outside", flanks >= 64 and flankOk)
 	check("basin lake: water from the floor to Floor + Water, inside the shore", (byMat.Water or 0) >= 20 and waterOk)
+	-- mac-89: a 2.5-stud lake showed the bed's voxel ridges as dark dashes. The middle deepens by Deep, Shelf studs in from the shore.
+	-- water does not replace solid voxels (mac-89 Play check), so the dish is cut to air first, then filled
+	local order, firstAir, firstDeep = W.lake(bw), nil, nil
+	for i, f in order do
+		if f.Dish and not firstAir then firstAir = i end
+		if f.Material.Name == "Water" and math.abs(f.CFrame.Position.Y - f.Size.Y / 2 - (floorY - bw.Basin.Deep)) < 0.01 and not firstDeep then firstDeep = i end
+	end
+	check("basin lake: a deeper middle Shelf studs in from the shore, cut to air before the water, on the voxel grid",
+		dishWater >= 10 and dishAir == dishWater and dishOk and firstAir ~= nil and firstDeep ~= nil and firstAir < firstDeep and (floorY - bw.Basin.Deep) % 4 == 0)
 	local route = W.carves(bw)
 	local far = route[#route].CFrame.Position
 	check("the carve runs on through the passage into the basin", LL.basinEllipse(bw, far.X, far.Z) < 1)
@@ -448,8 +490,9 @@ do
 	-- build(): pieces at the foot frames, carve only after the region is ready, nothing carved when no piece loads.
 	local fills, readyAsked = 0, nil
 	local env = table.clone(base)
-	local fillOrder = {}
-	local ws = { Terrain = { FillBlock = function(_, _, _, m) fills += 1; table.insert(fillOrder, m.Name) end } }
+	local fillOrder, wedges = {}, 0
+	local ws = { Terrain = { FillBlock = function(_, _, _, m) fills += 1; table.insert(fillOrder, m.Name) end,
+		FillWedge = function(_, _, _, m) fills += 1; wedges += 1; table.insert(fillOrder, m.Name) end } }
 	env.game = { GetService = function(_, n) if n == "Workspace" then return ws end return services[n] end }
 	env.task = { spawn = function(f) f() end }
 	local W2 = load("src/server/Services/LandmarkWorld.luau", env, "LandmarkWorld")
@@ -468,6 +511,43 @@ do
 	check("pack, basin, then the bore and passage cut through the rim, the lake last, after the region's terrain is ready",
 		readyAsked == "Forest" and fills == #packs + #W2.basin(bw) + #boxes + #W2.lake(bw) and fillOrder[1] == "Rock" and fillOrder[#fillOrder] == "Water"
 		and lastAir > lastRock and lm:GetAttribute("BoreCarved") == true and lm:GetAttribute("BasinSculpted") == true)
+	local nWedge = 0
+	for _, f in W2.basin(bw) do if f.Wedge then nWedge += 1 end end
+	check("build fills the rim slopes as wedges", wedges == nWedge and nWedge > 0)
+	-- mac-89: rain fell inside the bore (captures/mac/bellwood_face/ingame_tunnel_rain_leak.jpg). Invisible roofs tagged AsuraShelter
+	-- (WeatherController casts 60 up) over the whole route; terrain cannot be tagged.
+	local shelter = lm:FindFirstChild("TunnelShelter")
+	local roofs, roofOk = shelter and shelter:GetChildren() or {}, shelter ~= nil
+	for _, r in roofs do
+		if not (r:IsA("BasePart") and r:HasTag("AsuraShelter") and r.Anchored and not r.CanCollide and not r.CanTouch and r.CanQuery
+			and r.Transparency == 1 and not r.CastShadow) then roofOk = false end
+	end
+	local path = {}
+	for _, p in bw.Tunnel.Path do table.insert(path, W2.kitToWorld(bw, p)) end
+	for i = 2, #bw.Tunnel.Passage do table.insert(path, W2.kitToWorld(bw, bw.Tunnel.Passage[i])) end
+	local overBowl = false
+	for _, r in roofs do
+		for _, sx in { -1, 1 } do for _, sz in { -1, 1 } do
+			local q = r.CFrame:PointToWorldSpace(Vector3.new(sx * r.Size.X / 2, 0, sz * r.Size.Z / 2))
+			if LL.basinEllipse(bw, q.X, q.Z, -2) < 1 then overBowl = true end
+		end end
+	end
+	local covered2 = 0
+	local samples2 = 0
+	for i = 2, #path - 1 do
+		for _, t in { 0, 0.25, 0.5, 0.75 } do
+			local q = path[i]:Lerp(path[i + 1], t) - Vector3.new(0, 5, 0)
+			if LL.basinEllipse(bw, q.X, q.Z) >= 1 then -- under rock: must be covered
+				samples2 += 1
+				for _, r in roofs do
+					local lp = r.CFrame:PointToObjectSpace(q)
+					if math.abs(lp.X) <= r.Size.X / 2 and math.abs(lp.Z) <= r.Size.Z / 2 and r.Position.Y > q.Y and r.Position.Y < q.Y + 60 then covered2 += 1; break end
+				end
+			end
+		end
+	end
+	check(string.format("tunnel shelter roofs cover the walk under rock (%d/%d) and never hang over the open bowl", covered2, samples2),
+		roofOk and covered2 == samples2 and samples2 > 10 and not overBowl)
 	-- mac-87: the bore was pitch dark at noon. Each niche: an always-on shadowless ember plus a night lantern light (tagged, off until dusk).
 	local niches, nicheOk = 0, true
 	for _, c in lm:GetChildren() do
