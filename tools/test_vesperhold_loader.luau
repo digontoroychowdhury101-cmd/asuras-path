@@ -576,7 +576,8 @@ do
 	local ws = { Terrain = { FillBlock = function(_, _, _, m) fills += 1; table.insert(fillOrder, m.Name) end,
 		FillWedge = function(_, _, _, m) fills += 1; wedges += 1; table.insert(fillOrder, m.Name) end } }
 	env.game = { GetService = function(_, n) if n == "Workspace" then return ws end return services[n] end }
-	env.task = { spawn = function(f) f() end }
+	local waits = 0
+	env.task = { spawn = function(f) f() end, wait = function() waits += 1; return 0 end }
 	local W2 = load("src/server/Services/LandmarkWorld.luau", env, "LandmarkWorld")
 	local placedAt = {}
 	W2.Kit = { place = function(piece, frame) placedAt[piece] = frame; local m = Instance.new("Model"); m.Name = piece; return m end }
@@ -673,6 +674,7 @@ do
 	-- The landing (Landing over the pivot) meets a terrain ledge that runs back to the rim; a footing fills the deep dish under the
 	-- steps and towers up to the lake bed so nothing hangs over the dish.
 	local gfills = W2.gateFills(bw)
+	local rfills = W2.routeFills(bw)
 	local landingTop = gspot.Y + G.Landing
 	local ledgeOk, footOk = false, false
 	local function contains(f, p)
@@ -685,23 +687,59 @@ do
 		local behind = f.CFrame:PointToWorldSpace(Vector3.new(0, 0, f.Size.Z / 2)) -- the far end (lookAt keeps +Z backward)
 		local farEnd = gframe:PointToWorldSpace(Vector3.new(0, 0, G.Back - 18))
 		if math.abs(top - landingTop) <= 1.5 and contains(f, Vector3.new(back.X, top - 0.5, back.Z))
-			and LL.basinEllipse(bw, farEnd.X, farEnd.Z) >= 1 and contains(f, Vector3.new(farEnd.X, top - 0.5, farEnd.Z)) then ledgeOk = true end
+			and contains(f, Vector3.new(farEnd.X, top - 0.5, farEnd.Z)) then ledgeOk = true end
 		local step = gframe:PointToWorldSpace(Vector3.new(0, 0, G.Steps))
 		local tw = gframe:PointToWorldSpace(Vector3.new(13, 0, 0))
 		if math.abs(top - floorY) < 1e-3 and f.Material.Name ~= "Air" and f.Material.Name ~= "Water"
 			and contains(f, Vector3.new(step.X, floorY - bw.Basin.Deep, step.Z)) and contains(f, Vector3.new(tw.X, floorY - bw.Basin.Deep, tw.Z)) then footOk = true end
 	end
-	check("gate landing meets a terrain ledge (top within 1.5) that runs back into the rim", ledgeOk)
+	check("gate landing meets a terrain ledge (top within 1.5) that runs back from the stair", ledgeOk)
+	-- Enlarged basin (22 Nov): the gate stands in the lake, so the route's causeway carries that ledge on to the shore, up a switchback and
+	-- onto the rim cap. Every route sample (causeway, treads, landings) must stand on a footing whose surface is within 1.5 studs, and the
+	-- lowest fill reaches under the lake dish so nothing hangs.
+	do
+		local route = LL.route(bw, O.heightAt)
+		local function surface(f: any, p: Vector3): number?
+			local lp = f.CFrame:PointToObjectSpace(p)
+			if math.abs(lp.X) > f.Size.X / 2 + 1e-3 or math.abs(lp.Z) > f.Size.Z / 2 + 1e-3 then return nil end
+			if f.Wedge then return f.CFrame.Position.Y - f.Size.Y / 2 + f.Size.Y * (lp.Z + f.Size.Z / 2) / f.Size.Z end -- high edge at +Z
+			return f.CFrame.Position.Y + f.Size.Y / 2
+		end
+		local covered, total, worst, deep = 0, 0, 0, math.huge
+		for _, f in rfills do deep = math.min(deep, f.CFrame.Position.Y - f.Size.Y / 2) end
+		for _, p in route.Points do
+			if p.Kind == "causeway" or p.Kind == "leg" or p.Kind == "landing" then
+				total += 1
+				local best: number? = nil
+				for _, f in rfills do
+					local y = surface(f, Vector3.new(p.X, f.CFrame.Position.Y, p.Z))
+					if y and (best == nil or math.abs(y - p.Y) < math.abs(best - p.Y)) then best = y end
+				end
+				if best and math.abs(best - p.Y) <= 1.5 then covered += 1 else worst = math.max(worst, best and math.abs(best - p.Y) or 99) end
+			end
+		end
+		check(string.format("route fills carry every causeway, tread and landing sample within 1.5 studs (%d/%d, worst miss %.1f)", covered, total, worst), covered == total and total > 60)
+		check("route footings reach under the lake dish", deep <= floorY - bw.Basin.Deep - 3)
+		local lanterns = W2.routeLanterns(bw)
+		check("a lantern on each switchback landing (not the top one)", #lanterns == #route.Landings - 1 and #lanterns >= 2)
+		local rWedges = 0
+		for _, f in rfills do if f.Wedge then rWedges += 1 end end
+		check("one wedge per leg, treads dirt-topped", rWedges == #route.Legs)
+	end
 	check("gate footing fills the deep dish under the steps and towers up to the lake bed", footOk)
 	local lastRock, lastAir = 0, 0
-	for i = 1, #fillOrder - #gfills do local m = fillOrder[i]; if m == "Rock" then lastRock = i elseif m == "Air" then lastAir = i end end
-	check("pack, basin, then the bore and passage cut through the rim, the lake, then the gate fills, after the region's terrain is ready",
-		readyAsked == "Forest" and fills == #packs + #W2.basin(bw) + #boxes + #W2.lake(bw) + #gfills and #gfills > 0
-		and fillOrder[1] == "Rock" and fillOrder[#fillOrder - #gfills] == "Water"
+	for i = 1, #fillOrder - #gfills - #rfills do local m = fillOrder[i]; if m == "Rock" then lastRock = i elseif m == "Air" then lastAir = i end end
+	check("pack, basin, then the bore and passage cut through the rim, the lake, then the gate and route fills, after the region's terrain is ready",
+		readyAsked == "Forest" and fills == #packs + #W2.basin(bw) + #boxes + #W2.lake(bw) + #gfills + #rfills and #gfills > 0 and #rfills > 0
+		and fillOrder[1] == "Rock" and fillOrder[#fillOrder - #gfills - #rfills] == "Water"
 		and lastAir > lastRock and lm:GetAttribute("BoreCarved") == true and lm:GetAttribute("BasinSculpted") == true)
 	local nWedge = 0
 	for _, f in W2.basin(bw) do if f.Wedge then nWedge += 1 end end
-	check("build fills the rim slopes as wedges", wedges == nWedge and nWedge > 0)
+	for _, f in rfills do if f.Wedge then nWedge += 1 end end
+	check("build fills the rim slopes and route treads as wedges", wedges == nWedge and nWedge > 0)
+	-- the enlarged basin is ~11k fills; build hands the frame back every YieldEvery fills or YieldVolume studs^3 (never one long stall)
+	local totalFills, bigWait = fills, 0
+	check(string.format("build yields between terrain writes (%d fills, %d waits)", totalFills, waits), waits >= totalFills / W2.YieldEvery - 1 and waits > 100)
 	-- mac-89: rain fell inside the bore (captures/mac/bellwood_face/ingame_tunnel_rain_leak.jpg). Invisible roofs tagged AsuraShelter
 	-- (WeatherController casts 60 up) over the whole route; terrain cannot be tagged.
 	local shelter = lm:FindFirstChild("TunnelShelter")

@@ -103,7 +103,8 @@ end
 -- 7. Bellwood kit numbers stay in step with the Blender kit (tools/blender/landmarks/bellwood_giant_face.py).
 local bw = L.Landmarks.Bellwood
 check("Bellwood tunnel >= 14 wide and 16 high", bw.Tunnel.Width >= 14 and bw.Tunnel.Height >= 16)
-check("Bellwood basin is 350 x 300", bw.Basin.Width == 350 and bw.Basin.Depth == 300)
+check("Bellwood basin is 1400 x 1120 (BELLWOOD_EXPANSION_PLAN)", bw.Basin.Width == 1400 and bw.Basin.Depth == 1120 and bw.Basin.Back == 750
+	and bw.Basin.Thick == 40 and bw.Basin.RimRise == 60 and bw.Basin.Segments == 320 and bw.Basin.Shelf == 60)
 check("Bellwood tunnel leads down underground at a walkable grade", bw.Tunnel.End.Z < -20
 	and bw.Tunnel.Descent / bw.Tunnel.Run <= O.TerrainDef.Road.MaxGrade)
 check("Bellwood kit pieces carry a foot frame", bw.Pieces.Face.Foot ~= nil and bw.Pieces.Crown.Foot ~= nil)
@@ -257,11 +258,190 @@ do
 		if L.basinEllipse(bw, bx, bz) >= 1 then inside = false end
 		if L.basinEllipse(bw, bx, bz, -10) >= 1 then nearShore = true end
 	end
-	check("gate landing stays inside the bowl (not buried in the rim) and within 10 studs of the shore", inside and nearShore)
+	-- the enlarged basin puts the gate in the lake (plan: across 150 left of centre, 140 toward the face); the causeway (section 10) links it to the shore
+	check("gate landing stays inside the bowl (not buried in the rim); a causeway, not the shore, carries it out", inside and not nearShore)
 	check("gate landing stands over the water", s.Y + G.Landing > waterY + 8)
 	check("gate towers stay under TempleTop", s.Y + G.Height <= floorY + bw.Basin.TempleTop)
 	check("gate and temple footprints do not overlap", math.sqrt((s.X - t.X) ^ 2 + (s.Z - t.Z) ^ 2) > G.Radius + T.Radius)
 	check("gate keeps clear of the tunnel exit", math.sqrt((s.X - ex) ^ 2 + (s.Z - ez) ^ 2) > G.Radius + bw.Tunnel.Width)
+end
+
+
+-- 10. Enlarged 1400 x 1120 basin, pre-carve gates (BELLWOOD_EXPANSION_PLAN sections 3 and 5): footprint, exit/gate/temple, the walkable route.
+do
+	local Thick, Margin = bw.Basin.Thick, 110
+	local c = L.basinCentre(bw)
+	check(string.format("basin centre is the plan's best fit near -4178 / -2298 (%.0f / %.0f)", c.X, c.Z), math.abs(c.X + 4178) < 2 and math.abs(c.Z + 2298) < 2)
+	-- the whole footprint (bowl + rim + a 110-stud margin) keeps clear of every placed thing, not just its centre
+	local function clear(x: number, z: number, extra: number?): boolean
+		return L.basinEllipse(bw, x, z, Thick + Margin + (extra or 0)) >= 1
+	end
+	local worstKind, worstE = "", math.huge
+	for _, p in points do
+		local e = L.basinEllipse(bw, p.x, p.z, Thick + Margin)
+		if e < worstE then worstE, worstKind = e, p.kind end
+	end
+	check("basin footprint + 110 stays clear of every altar, node, POI, landmark, cache, lore, ring, miniboss, encounter and Vesperhold (" .. worstKind .. ")", worstE >= 1)
+	local V = O.Vesperhold
+	check("basin footprint is clear of Vesperhold's gate and ridge (ellipse " .. string.format("%.1f", L.basinEllipse(bw, V.X, V.Z, Thick + Margin)) .. ")",
+		clear(V.X, V.Z) and clear(V.X - 490, V.Z) and clear(V.X + 430, V.Z))
+	local arena, gate = O.Barrier.Arena, O.Barrier.Gate
+	check("basin footprint is clear of the Shen arena, barrier gate and its approach", clear(arena.Center.X, arena.Center.Z, 100)
+		and clear(gate.Placement.X, gate.Placement.Z, 100) and clear(gate.Outside.X, gate.Outside.Z, 100))
+	local reservedOk = true
+	for _, ra in O.ReservedArenas do reservedOk = reservedOk and clear(ra.Arena.Center.X, ra.Arena.Center.Z, 90) end
+	check("basin footprint is clear of every reserved boss arena", reservedOk)
+	local okW, W = pcall(require, "../src/shared/WorldDefinitions")
+	local sanct = if okW then (W :: any).Regions.Sanctuary.Bounds else { Center = { X = 0, Z = 650 }, Size = { X = 600, Z = 920 } }
+	local sOk = true
+	for _, sx in { -1, 0, 1 } do for _, sz in { -1, 0, 1 } do
+		sOk = sOk and clear(sanct.Center.X + sx * sanct.Size.X / 2, sanct.Center.Z + sz * sanct.Size.Z / 2)
+	end end
+	check("basin footprint is clear of the lobby / Sanctuary region box", sOk)
+	-- roads and rivers: the outer slope's foot (Thick + 120 out) and the rim stay off every road and river
+	local minRoad, minRiver = math.huge, math.huge
+	for k = 0, 359 do
+		for _, out in { 0, Thick, Thick + 120 } do
+			local x, z = L.basinRing(bw, math.rad(k), out)
+			minRoad, minRiver = math.min(minRoad, (segDist(x, z, roads))), math.min(minRiver, (segDist(x, z, rivers)))
+		end
+	end
+	print(string.format("  Bellwood basin outer edge: %.0f studs from the nearest road, %.0f from a river", minRoad, minRiver))
+	check("the basin's outer slope foot is >= 110 studs from every road", minRoad >= Margin)
+	check("the basin's outer slope foot is >= 110 studs from every river", minRiver >= Margin)
+	-- the whole ellipse stays in the region box with a border band
+	local rb = O.Regions[bw.Region].Bounds
+	local inBox = true
+	for k = 0, 359 do
+		local x, z = L.basinRing(bw, math.rad(k), Thick + 120)
+		inBox = inBox and math.abs(x - rb.Center.X) <= rb.Size.X / 2 - 100 and math.abs(z - rb.Center.Z) <= rb.Size.Z / 2 - 100
+	end
+	check("the basin and its slopes sit inside the Forest region box", inBox)
+	-- the carve strips air to the highest rim top: no ground may stand above it inside the bowl
+	local maxTop, maxGround = -math.huge, -math.huge
+	for k = 0, bw.Basin.Segments - 1 do maxTop = math.max(maxTop, L.rimTop(bw, k / bw.Basin.Segments * 2 * math.pi, O.heightAt)) end
+	for k = 0, 359, 3 do for f = 0.05, 1, 0.05 do
+		local rx, rz = L.basinRing(bw, math.rad(k), 0)
+		maxGround = math.max(maxGround, O.heightAt(c.X + (rx - c.X) * f, c.Z + (rz - c.Z) * f))
+	end end
+	check("no ground inside the bowl rises above the highest rim top (the air strips would leave a hill)", maxGround < maxTop)
+	-- the Giant Face keeps its footprint free of the rim itself (the slope foot may rise behind it; reported)
+	local ox2, oz2 = bw.Origin.X, bw.Origin.Z
+	local rimNear = math.huge
+	for k = 0, 719 do
+		local x, z = L.basinRing(bw, k / 720 * 2 * math.pi, Thick)
+		rimNear = math.min(rimNear, math.sqrt((x - ox2) ^ 2 + (z - oz2) ^ 2))
+	end
+	check(string.format("the rim's outer edge stays outside the face footprint (%.0f > %d)", rimNear, bw.FootprintRadius), rimNear > bw.FootprintRadius + 40)
+
+	-- tunnel exit: the passage crosses the rim, the exit opens inside the bowl at the front shore
+	local pa = bw.Tunnel.Passage
+	local function kitXZ(q: { number }): (number, number)
+		local a = math.rad(bw.Yaw)
+		return bw.Origin.X + (-q[1]) * math.cos(a) + q[2] * math.sin(a), bw.Origin.Z - (-q[1]) * math.sin(a) + q[2] * math.cos(a)
+	end
+	local ex, ez = kitXZ(pa[#pa])
+	local shoreDist = math.huge
+	for k = 0, 719 do
+		local x, z = L.basinRing(bw, k / 720 * 2 * math.pi, 0)
+		shoreDist = math.min(shoreDist, math.sqrt((x - ex) ^ 2 + (z - ez) ^ 2))
+	end
+	check(string.format("tunnel exit is inside the bowl, %.0f studs from the front shore (10..40)", shoreDist), L.basinEllipse(bw, ex, ez) < 1 and shoreDist >= 10 and shoreDist <= 40)
+	local pre = pa[#pa - 1]
+	local px, pz = kitXZ(pre)
+	local crossed = false
+	for i = 1, #pa do
+		local qx, qz = kitXZ(pa[i])
+		if L.basinEllipse(bw, qx, qz) >= 1 and L.basinEllipse(bw, qx, qz, Thick) < 1 then crossed = true end
+	end
+	check("the passage crosses the rim band before it opens into the bowl", crossed and L.basinEllipse(bw, px, pz) >= 0.5)
+	local tx, tz = L.templeSpot(bw).X, L.templeSpot(bw).Z
+	check("temple hall stands in the bowl, right of the exit axis (plan: stair foot at 20, -110)", L.basinEllipse(bw, tx, tz) < 0.2 and
+		(tx - c.X) * -select(2, L.front(bw)) + (tz - c.Z) * (L.front(bw)) < 0)
+	local gs = L.gateSpot(bw)
+	check("gate towers stand in the bowl, left third of the exit view", L.basinEllipse(bw, gs.X, gs.Z) < 0.2)
+
+	-- the route (plan section 3)
+	local R = bw.Basin.Route
+	local r = L.route(bw, O.heightAt)
+	local pts = r.Points
+	local first, last = pts[1], pts[#pts]
+	local frontX, frontZ = L.front(bw)
+	local g = L.gateSpot(bw)
+	check("route starts at the gate stair's landing level", math.abs(first.Y - (g.Y + bw.Basin.Gate.Landing)) < 0.01
+		and math.sqrt((first.X - g.X) ^ 2 + (first.Z - g.Z) ^ 2) < 60)
+	local worst, worstRamp, maxGap, jump = 0, 0, 0, 0
+	for i = 2, #pts do
+		local a, b = pts[i - 1], pts[i]
+		local d = math.sqrt((b.X - a.X) ^ 2 + (b.Z - a.Z) ^ 2)
+		maxGap = math.max(maxGap, d)
+		if d > 1e-6 then
+			local deg = math.deg(math.atan(math.abs(b.Y - a.Y) / d))
+			worst = math.max(worst, deg)
+			if b.Kind == "leg" or b.Kind == "causeway" or b.Kind == "landing" or b.Kind == "crest" then worstRamp = math.max(worstRamp, deg) end
+		end
+	end
+	print(string.format("  Bellwood route: %d points, %d legs of %.1f rise, steepest %.1f deg (built ramps %.1f), crest %.1f", #pts, #r.Legs, r.Rise, worst, worstRamp, r.Crest))
+	check(string.format("route gradient never exceeds %d deg between samples (%.1f)", R.Max, worst), worst <= R.Max)
+	check(string.format("built ramps stay within the 28 deg target (%.1f)", worstRamp), worstRamp <= 28)
+	check("route is continuous: no sample gap over Step + 0.01", maxGap <= R.Step + 0.01)
+	check("route is at least 12 wide, landings at least 16 x 16", R.Width >= 12 and R.Pad >= 16 and #r.Landings == #r.Legs)
+	local landOk, treadOk, prevZ = true, true, r.Deck
+	for i, leg in r.Legs do
+		treadOk = treadOk and math.abs(leg.Z0 - prevZ) <= 1 and leg.Z1 > leg.Z0 and math.abs(leg.T1 - leg.T0 - r.Run * (if leg.T1 > leg.T0 then 1 else -1)) < 1e-6
+		prevZ = leg.Z1
+		local ld = r.Landings[i]
+		if ld then landOk = landOk and math.abs(ld.Z - leg.Z1) <= 1 and ld.T1 - ld.T0 >= 16 and ld.N1 - ld.N0 >= 16 end
+	end
+	check("no gap over 1 stud between a landing and its treads; each tread climbs one Rise", landOk and treadOk)
+	check("the last tread tops out on the rim segment's cap", math.abs(r.Legs[#r.Legs].Z1 - r.Crest) < 0.01
+		and math.abs(r.Crest - L.rimTop(bw, r.Segment / bw.Basin.Segments * 2 * math.pi, O.heightAt)) < 0.01)
+	-- every tread and landing corner stands inside the bowl with a margin (nothing is carved into the rim or built outside it)
+	local inside = true
+	local function corner(t, n) local x, z = L.routeAt(r, t, n) inside = inside and L.basinEllipse(bw, x, z, -4) < 1 end
+	for _, leg in r.Legs do for _, t in { leg.T0, leg.T1 } do for _, s in { -1, 1 } do corner(t, leg.Lane + s * R.Width / 2) end end end
+	for _, ld in r.Landings do if not ld.Rim then for _, t in { ld.T0, ld.T1 } do for _, n in { ld.N0, ld.N1 } do corner(t, n) end end end end
+	for _, p in pts do
+		if p.Kind == "causeway" or p.Kind == "leg" or p.Kind == "landing" then inside = inside and L.basinEllipse(bw, p.X, p.Z, -4) < 1 end
+	end
+	check("treads, landings and causeway stay inside the bowl", inside)
+	-- lanes are one tread wide apart, so legs never overlap
+	local lanesOk = true
+	for i = 2, #r.Legs do lanesOk = lanesOk and math.abs(r.Legs[i - 1].Lane - r.Legs[i].Lane) >= R.Width - 1e-6 end
+	check("neighbouring legs sit a full width apart", lanesOk)
+	-- the crossing runs through the middle of the rim segment (t = 0): the top landing is centred on it and reaches back into the cap
+	local top = r.Landings[#r.Landings]
+	check("the top landing is centred on the rim segment and reaches the cap", top.Rim and math.abs((top.T0 + top.T1) / 2) < 1e-6 and top.N0 <= 0 and top.Z == r.Crest)
+	-- the route reaches the rim cap flat, goes down the slope and ends on natural forest ground
+	local kinds = {}
+	for _, p in pts do kinds[p.Kind] = (kinds[p.Kind] or 0) + 1 end
+	check("route runs causeway, legs, landings, crest, slope and forest", kinds.causeway and kinds.leg and kinds.landing and kinds.crest and kinds.slope and kinds.forest)
+	check("route ends in the forest, outside the rim and slope, on the written ground", last.Kind == "forest" and L.basinEllipse(bw, last.X, last.Z, Thick + 100) >= 1
+		and math.abs(last.Y - O.heightAt(last.X, last.Z)) < 0.01)
+	local lane = L.routeLane(r)
+	check("the forest lane is a segment outside the basin for SliceDressing", math.sqrt((lane[3] - lane[1]) ^ 2 + (lane[4] - lane[2]) ^ 2) >= R.Forest - 10
+		and L.basinEllipse(bw, lane[1], lane[2], Thick) >= 1)
+	local firstSlope
+	for _, p in pts do
+		if p.Kind == "slope" then firstSlope = p; break end
+	end
+	check("the dressing lane protects the descent as well as the forest stretch",
+		firstSlope and lane[1] == firstSlope.X and lane[2] == firstSlope.Z)
+	-- the route follows the slope wedge World.basin writes; carvedSurface quantises to the same chord
+	local agree = true
+	for _, p in pts do
+		if p.Kind == "slope" then
+			local cs = L.carvedSurface(p.X, p.Z, O.heightAt)
+			if cs and math.abs(cs - p.Y) > 4 then agree = false end
+		end
+	end
+	check("route slope samples match LandmarkLayout.carvedSurface within 4 studs", agree)
+	-- not on a road: the route stays off the road band, and clear of every placed thing by 60
+	local nearest = math.huge
+	for _, p in pts do
+		for _, q in points do nearest = math.min(nearest, math.sqrt((p.X - q.x) ^ 2 + (p.Z - q.z) ^ 2)) end
+	end
+	check(string.format("route keeps 60 studs from every altar, node and landmark (%.0f)", nearest), nearest >= 60)
 end
 
 print(string.format("landmark layout: %d passed, %d failed", passed, failed))

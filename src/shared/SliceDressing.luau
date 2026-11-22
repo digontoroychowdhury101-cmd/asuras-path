@@ -753,6 +753,17 @@ function SliceDressing.inBasinExclusion(lm: any, x: number, z: number): boolean
 	return Landmarks.basinEllipse(lm, x, z, lm.Basin.Thick + 6) < 1
 end
 
+local function inBoreApron(lm: any, x: number, z: number): boolean
+	local basin = lm.Basin
+	local apron = basin.Apron
+	if apron == nil then return false end
+	local dx, dz = x - lm.Origin.X, z - lm.Origin.Z
+	local fx, fz = Landmarks.front(lm)
+	local back = -dx * fx - dz * fz
+	return back >= apron.Back and back <= basin.Back - basin.Depth / 2
+		and math.abs(dx * fz - dz * fx) < apron.HalfWidth
+end
+
 -- The circular exclusions (everything but roads, lanes; a basin is an ellipse entry): { X, Z, Keep = class table or per-class radii }.
 local function circles(heroes: { any }): { any }
 	local K: any = SliceDressing.Keep
@@ -845,7 +856,7 @@ local function hostile(x: number, z: number, class: string, list: { any }, roadS
 	local cls = (SliceDressing.KeepAs :: any)[class] or class
 	for _, c in list do
 		if c.Basin then
-			if SliceDressing.inBasinExclusion(c.Basin, x, z) then return true end
+			if SliceDressing.inBasinExclusion(c.Basin, x, z) or inBoreApron(c.Basin, x, z) then return true end
 		elseif worldDist(x, z, c.X, c.Z) < c.Keep[cls] then
 			return true
 		end
@@ -858,7 +869,7 @@ local function hostile(x: number, z: number, class: string, list: { any }, roadS
 	end
 	if tall then
 		for _, s in lanes do
-			if segDist(s[1], s[2], s[3], s[4], x, z) < SliceDressing.Lane.HalfWidth then
+			if segDist(s[1], s[2], s[3], s[4], x, z) < (s[5] or SliceDressing.Lane.HalfWidth) then
 				return true
 			end
 		end
@@ -1023,6 +1034,14 @@ function SliceDressing.build(fresh: boolean?): any
 			if worldDist(p[1], p[2], pavilion.X, pavilion.Z) <= SliceDressing.Lane.Reach then
 				table.insert(lanes, { p[1], p[2], pavilion.X, pavilion.Z })
 			end
+		end
+	end
+	for _, landmark in Landmarks.Landmarks do
+		local route = landmark.Basin and landmark.Basin.Route
+		if route then
+			local lane = Landmarks.routeLane(Landmarks.route(landmark, Overworld.heightAt))
+			lane[5] = route.Width / 2 + 5
+			table.insert(lanes, lane)
 		end
 	end
 

@@ -984,11 +984,24 @@ do
 	check("Bellwood face stands in a grove (" .. ring .. " trees 60-190 studs round it)", ring >= 40)
 	check("no tree or rock stands on the face (" .. onFace .. ")", onFace == 0)
 	check("the road-to-mouth lane is open (" .. inLane .. " tall pieces in it)", inLane == 0)
-	local inBasin = 0
+	local inBasin, inApron, onRoute = 0, 0, 0
+	local basin = bw.Basin
+	local apron = basin.Apron
+	local lane = LL.routeLane(LL.route(bw, O.heightAt))
 	for _, p in R.Placements do
 		if LL.basinEllipse(bw, p.X, p.Z, bw.Basin.Thick + 4) < 1 then inBasin += 1 end
+		local dx, dz = p.X - o.X, p.Z - o.Z
+		local back = -dx * fx - dz * fz
+		if back >= apron.Back and back <= basin.Back - basin.Depth / 2
+			and math.abs(dx * fz - dz * fx) < apron.HalfWidth then inApron += 1 end
+		local tall = p.Class == "Tree" or p.Class == "Rock" or p.Class == "Sapling"
+		if tall and S.segDist(lane[1], lane[2], lane[3], lane[4], p.X, p.Z) < basin.Route.Width / 2 then
+			onRoute += 1
+		end
 	end
 	check("nothing is scattered in the sunken basin or on its rim (" .. inBasin .. ")", inBasin == 0) -- they would float over the bowl
+	check("the forward apron above the bore stays open", inApron == 0)
+	check("no tall dressing in the route from the rim into the forest", onRoute == 0)
 	-- Basin exclusion is a true ellipse (rotated by the landmark yaw), not a circle on the long semi-axis.
 	local function at(lm, across, along)
 		local c, fx, fz = LL.basinCentre(lm), LL.front(lm)

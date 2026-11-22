@@ -108,11 +108,13 @@ end
 -- The hidden basin (LandmarkLayout.Basin), as terrain fills in order: the bowl (air strips across the ellipse, floor to over the highest
 -- rim), its bed (rock with a mud top, reaching under the rim) and the rim cliffs (rock boxes round the shore, from under the floor to
 -- Layout.rimTop). The lake is separate (World.lake) so it goes in after the passage is cut.
--- mac-89: the first rim was one dark rock wall on open meadow. Each of the RimSegments is now a cliff of RimStrata-stud strata
+-- mac-89: the first rim was one dark rock wall on open meadow. Each of the Basin.Segments (320 since the 22 Nov enlargement) is now a cliff of RimStrata-stud strata
 -- (Rim = true; rock, slate and basalt, each stepped in or out a little so the face has ledges), a LeafyGrass cap (Cap = true) set back
 -- from the lip, and a grass slope (Wedge = true, a terrain wedge: high edge at +Z on the rim, low edge under the forest floor) so
 -- from outside it reads as a wooded ridge. Segment = the rim segment index.
-World.BasinStep, World.RimSegments, World.RimStrata, World.RimCap = 6, 128, 6, 3
+World.BasinStep, World.RimStrata, World.RimCap = 6, 6, 3
+-- The enlarged basin is ~5x the volume and ~2.5x the rim, so build() hands the frame back every YieldEvery fills or YieldVolume studs^3 of fill.
+World.YieldEvery, World.YieldVolume = 40, 4e6
 -- Irregular strata (22 Nov): band thickness and stone come from smooth fields over (band, angle), so the layers wander round the
 -- ring (no uniform black stripes) without any segment-to-segment jump (a jump reads as a vertical streak). Dark stone (Slate,
 -- Basalt) never sits in two bands in a row and stays under 3.5 studs thick; Ground, Mud and Grass make the ledges.
@@ -154,14 +156,14 @@ function World.basin(lm: any): { any }
 	if not (lm.Basin and L and height) then return out end
 	local floorY = L.basinLevels(lm)
 	local tops, maxTop = {}, -math.huge
-	for k = 0, World.RimSegments - 1 do
-		tops[k] = L.rimTop(lm, k / World.RimSegments * 2 * math.pi, height)
+	for k = 0, lm.Basin.Segments - 1 do
+		tops[k] = L.rimTop(lm, k / lm.Basin.Segments * 2 * math.pi, height)
 		maxTop = math.max(maxTop, tops[k])
 	end
 	strips(lm, 0, floorY, maxTop + 4, Enum.Material.Air, out)
 	strips(lm, lm.Basin.Thick, floorY - 16, floorY - 4, Enum.Material.Rock, out)
 	strips(lm, lm.Basin.Thick, floorY - 4, floorY, Enum.Material.Mud, out)
-	local th, n = lm.Basin.Thick, World.RimSegments
+	local th, n = lm.Basin.Thick, lm.Basin.Segments
 	for k = 0, n - 1 do
 		local t0, t1 = k / n * 2 * math.pi, (k + 1) / n * 2 * math.pi
 		local tm = (t0 + t1) / 2
@@ -416,6 +418,62 @@ function World.gateFills(lm: any): { any }
 	}
 end
 
+-- The walkable route gate landing -> rim (Layout.route; the rim cap, the outer slope and the forest are already terrain): a rock causeway
+-- over the lake, then a switchback of ramps against the cliff. Boxes and wedges in order: Rock footings from under the lake dish up to the
+-- tread, a 2-stud Ground top (Ground is the path, the dish keeps the footing from hanging). A wedge's high edge is +Z (see World.basin).
+function World.routeFills(lm: any): { any }
+	local L = World.Layout
+	if not (lm.Basin and lm.Basin.Route and L and World.Height) then return {} end
+	local r = L.route(lm, World.Height)
+	local floorY = L.basinLevels(lm)
+	local foot = floorY - lm.Basin.Deep - 4
+	local W = lm.Basin.Route.Width
+	local out = {}
+	local function block(cx: number, cz: number, dx: number, dz: number, across: number, along: number, y0: number, y1: number, material: Enum.Material)
+		if y1 - y0 < 0.01 then return end
+		local p = Vector3.new(cx, (y0 + y1) / 2, cz)
+		table.insert(out, { CFrame = CFrame.lookAt(p, p + Vector3.new(dx, 0, dz)), Size = Vector3.new(across, y1 - y0, along), Material = material })
+	end
+	-- a footing plus its path-coloured top, over a rectangle (centre, long axis direction, across x along)
+	local function slab(cx: number, cz: number, dx: number, dz: number, across: number, along: number, top: number)
+		block(cx, cz, dx, dz, across, along, foot, top - 2, Enum.Material.Rock)
+		block(cx, cz, dx, dz, across, along, top - 2, top, Enum.Material.Ground)
+	end
+	local a, b = r.Causeway.A, r.Causeway.B
+	local len = math.sqrt((b.X - a.X) ^ 2 + (b.Z - a.Z) ^ 2)
+	slab((a.X + b.X) / 2, (a.Z + b.Z) / 2, b.X - a.X, b.Z - a.Z, W, len + W, r.Causeway.Y)
+	local f = r.Frame
+	for _, leg in r.Legs do
+		local cx, cz = L.routeAt(r, (leg.T0 + leg.T1) / 2, leg.Lane)
+		local up = if leg.T1 > leg.T0 then 1 else -1 -- along +T the leg climbs when up = 1; the wedge looks downhill
+		block(cx, cz, f.Tx, f.Tz, W, r.Run, foot, leg.Z0, Enum.Material.Rock)
+		local p = Vector3.new(cx, (leg.Z0 + leg.Z1) / 2, cz)
+		table.insert(out, { CFrame = CFrame.lookAt(p, p - Vector3.new(f.Tx, 0, f.Tz) * up), Size = Vector3.new(W, leg.Z1 - leg.Z0, r.Run),
+			Material = Enum.Material.Ground, Wedge = true })
+	end
+	for _, ld in r.Landings do
+		local cx, cz = L.routeAt(r, (ld.T0 + ld.T1) / 2, (ld.N0 + ld.N1) / 2)
+		slab(cx, cz, f.Tx, f.Tz, ld.N1 - ld.N0, ld.T1 - ld.T0, ld.Z)
+	end
+	return out
+end
+
+-- A lantern on each switchback landing's outer corner (the plan's rail/lantern per landing; the rail itself is not built).
+function World.routeLanterns(lm: any): { Model }
+	local L = World.Layout
+	if not (lm.Basin and lm.Basin.Route and L and World.Height) then return {} end
+	local r = L.route(lm, World.Height)
+	local out = {}
+	for i = 1, #r.Landings - 1 do
+		local ld = r.Landings[i]
+		local x, z = L.routeAt(r, if (ld.T0 + ld.T1) / 2 < 0 then ld.T0 else ld.T1, ld.N0 + 1.5)
+		local lantern = World.lantern(Vector3.new(x, ld.Z + 4, z))
+		lantern.Name = "RouteLantern"
+		table.insert(out, lantern)
+	end
+	return out
+end
+
 -- folders: region id -> Map_Overworld region folder. waitReady(region) blocks until that region's terrain is written.
 function World.build(folders: { [string]: Instance }, waitReady: (string) -> boolean)
 	local Kit, Layout = deps()
@@ -459,17 +517,28 @@ function World.build(folders: { [string]: Instance }, waitReady: (string) -> boo
 			-- No mesh, no hole: the bore is only carved under a placed shell, after the tiles that would refill it are written.
 			if placed > 0 and lm.Tunnel and waitReady(lm.Region) then
 				local terrain = Workspace.Terrain
-				for _, p in World.packs(lm) do terrain:FillBlock(p.CFrame, p.Size, Enum.Material.Rock) end
-				for _, f in World.basin(lm) do
+				local sinceWait, volumeSinceWait = 0, 0
+				local function fill(f: any) -- one terrain write, then hand the frame back often enough that the server keeps ticking
 					if f.Wedge then terrain:FillWedge(f.CFrame, f.Size, f.Material) else terrain:FillBlock(f.CFrame, f.Size, f.Material) end
+					sinceWait += 1
+					volumeSinceWait += f.Size.X * f.Size.Y * f.Size.Z
+					if sinceWait >= World.YieldEvery or volumeSinceWait >= World.YieldVolume then
+						sinceWait, volumeSinceWait = 0, 0
+						task.wait()
+					end
 				end
-				for _, c in World.carves(lm) do terrain:FillBlock(c.CFrame, c.Size, Enum.Material.Air) end -- the passage cuts the rim
-				for _, f in World.lake(lm) do terrain:FillBlock(f.CFrame, f.Size, f.Material) end
+				for _, p in World.packs(lm) do fill({ CFrame = p.CFrame, Size = p.Size, Material = Enum.Material.Rock }) end
+				for _, f in World.basin(lm) do fill(f) end
+				for _, c in World.carves(lm) do fill({ CFrame = c.CFrame, Size = c.Size, Material = Enum.Material.Air }) end -- the passage cuts the rim
+				local lake = World.lake(lm)
+				for _, f in lake do fill(f) end
 				if gatePlaced then -- no ledge in the lake without its stair
-					for _, f in World.gateFills(lm) do terrain:FillBlock(f.CFrame, f.Size, f.Material) end
+					for _, f in World.gateFills(lm) do fill(f) end
+					for _, f in World.routeFills(lm) do fill(f) end
+					for _, lantern in World.routeLanterns(lm) do lantern.Parent = model end
 				end
 				model:SetAttribute("BoreCarved", true)
-				model:SetAttribute("BasinSculpted", #World.lake(lm) > 0)
+				model:SetAttribute("BasinSculpted", #lake > 0)
 			end
 		end)
 	end
