@@ -187,7 +187,7 @@ source hash are recorded in `assets/BAMBOO_FROST_STEPS_UPLOADED.json`.
 
 ## Guardian lion sculpt base — 22 November 2026 (pending ship)
 
-| Source | Link | Licence | Use |
-|---|---|---|---|
-| Lion Statue - optimized — nebulousflynn1 (Thomas Flynn), Zenodo | [Zenodo record](https://zenodo.org/records/10324226) | CC0-1.0 | Scan file `lion_scan.glb` (MD5 77f9da14228246a2758105c2368be79f, matches Zenodo), sculpt base. modified: resculpted into original Bellwood guardian lions; escutcheon replaced. |
-| Löwe — www.noe-3d.at, Sketchfab (original scan) | [Sketchfab model](https://sketchfab.com/3d-models/lowe-4522a4cdc1c14190bf1a8811fa27da32) | CC0-1.0 | Original scan underlying the Zenodo record. modified: resculpted into original Bellwood guardian lions; escutcheon replaced. |
+Not shipped yet, so these are listed here and not in the table rows that `src/shared/EndingCredits.luau` must mirror. When the guardians ship, turn them into table rows and add matching `EndingCredits` entries.
+
+- Lion Statue - optimized, by nebulousflynn1 (Thomas Flynn), on Zenodo: https://zenodo.org/records/10324226. Licence CC0-1.0. Scan file `lion_scan.glb`, MD5 77f9da14228246a2758105c2368be79f, which matches Zenodo's checksum. Used as the sculpt base. Modified: resculpted into original Bellwood guardian lions, with the escutcheon replaced.
+- Löwe, by www.noe-3d.at, the original scan on Sketchfab: https://sketchfab.com/3d-models/lowe-4522a4cdc1c14190bf1a8811fa27da32. Licence CC0-1.0. It is the scan underneath the Zenodo record. Modified in the same way.
