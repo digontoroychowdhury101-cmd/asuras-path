@@ -25,24 +25,24 @@ import temple_preview as kit
 from temple_preview import Hall, at, figures, light
 
 RNG = random.Random(711)
-OUT = Path.cwd() / "work/sol-bellwood-scale"
+OUT = Path(os.environ.get("VESP_STUDY_OUT", str(Path.cwd() / "work/sol-bellwood-v9")))
 UP = Vector((0, 0, 1))
-STEP_COUNT = 112
-STEP_RUN, STEP_RISE = 2.25, 1.0
-START_Y = 212.0
+STEP_COUNT = 128
+STEP_RUN, STEP_RISE = 2.35, .88
+START_Y = 257.0
+GUARDIAN_STEP = 23
 VOXEL = float(os.environ.get("VESP_TREE_VOXEL", 1.0))
-TWIG_DEPTH = int(os.environ.get("VESP_TWIG_DEPTH", 6))
-CROWN_SQUASH = .72  # keeps the crown inside the portrait frame instead of climbing out of it
+TWIG_DEPTH = int(os.environ.get("VESP_TWIG_DEPTH", 5))
+CROWN_SQUASH = .79
 THICK = 1.9  # branches at least this thick join the voxel-united bark body
 SPINE = []  # (centre, tangent, side, up, radius, s, base_radius, path_id) for every bark ring
 CONTACTS = []  # root points where a root grips stone after dropping over an edge
 # (centre x, y, floor z, width, depth, column height, bays, crest)
-TIERS = [(0, -82, 113, 184, 78, 50, 7, True), (-6, -112, 186, 214, 82, 40, 9, True),
-         (8, -140, 252, 192, 76, 38, 7, False), (-4, -178, 314, 166, 70, 34, 7, False),
-         (4, -205, 368, 136, 60, 30, 5, False), (0, -226, 416, 104, 50, 26, 5, False),
-         (0, -242, 458, 74, 40, 22, 3, False)]
-TRUNK = [Vector(p) for p in ((16, -132, 236), (12, -138, 290), (0, -146, 345), (-8, -150, 398),
-                             (2, -154, 445), (-4, -158, 470))]
+TIERS = [(0, -82, 113, 189, 78, 51, 7, True), (16, -120, 191, 236, 89, 46, 9, False),
+         (-14, -143, 269, 211, 81, 42, 7, False), (12, -171, 338, 195, 76, 39, 7, False),
+         (23, -204, 402, 151, 63, 33, 5, False), (34, -237, 459, 109, 53, 28, 5, False)]
+TRUNK = [Vector(p) for p in ((46, -126, 228), (34, -133, 291), (15, -148, 358), (5, -162, 423),
+                             (16, -169, 477), (5, -169, 505))]
 
 
 def circle(sides):
@@ -142,7 +142,12 @@ def merge(hall, piece, frame):
 def stair_profile(k):
     """Centre x, tread centre y, tread top z and width of step k."""
     fraction = k / STEP_COUNT
-    return (0.0, START_Y - STEP_RUN * k, .6 + STEP_RISE * k, 46 - 10 * fraction)
+    return (0.0, START_Y - STEP_RUN * k, .6 + STEP_RISE * k, 77 - 33 * fraction)
+
+
+def guardian_base(side):
+    _, y, z, width = stair_profile(GUARDIAN_STEP + (4 if side < 0 else 0))
+    return side * (width / 2 + 19), y, z
 
 
 def coursed_face(stone, x0, x1, y, top, courses, rng_depth=(.7, 1.6)):
@@ -225,11 +230,18 @@ def stonework(h):
                         open_surface=True)
     # Lion plinths stand on the terraces beside the stair.
     for side in (-1, 1):
-        x, y, z, w = stair_profile(18)
-        px = side * (w / 2 + 21)
+        px, y, z = guardian_base(side)
         stair.box((px, y, (z + 8) / 2), (27, 27, z + 8), bevel=.8)
         stair.box((px, y, z + 8.4), (29.5, 29.5, 1.6), bevel=.4)
         coursed_face(stair, px - 13, px + 13, y + 13.9, z + 6.5, 3)
+        growth = random.Random(371 + side)
+        for _ in range(42):
+            xx = px + growth.uniform(-13.6, 13.6)
+            tip = z + growth.uniform(1, 8.7)
+            size = growth.uniform(.2, .9)
+            moss.poly([Vector((xx + dx * size, y + 14.25 + growth.uniform(-.16, .15), tip + dz * size))
+                       for dx, dz in ((.2, .7), (1, .2), (.7, -.85), (.1, -.25), (-.5, -1), (-1, 0))],
+                      open_surface=True)
     # Threshold platform for the gate hall and the stepped cores that carry the upper tiers.
     x, y, z, w = stair_profile(STEP_COUNT - 1)
     stair.box((0, -84, z / 2), (250, 88, z), bevel=1.2)
@@ -400,6 +412,30 @@ def galleries(h):
             gold.box((midpoint, y + s * 6.58, z + 4.4), (width, .26, .35), bevel=.06)
 
 
+def traveller(h):
+    """Five-stud traveler in a conical straw hat, looking up at the entrance."""
+    coat, leather, straw = (h.m(role) for role in ("TravelerCloth", "DarkStone", "Straw"))
+    _, y, z, _ = stair_profile(4)
+    x = 8.0
+    origin = at(x, y, z + .07)
+    for s in (-1, 1):
+        leather.box((s * .28, .06 * s, .49), (.36, .46, .92), origin, bevel=.07)
+        leather.box((s * .28, -.10 + .06 * s, .15), (.40, .66, .29), origin, bevel=.08)
+        coat.sweep(circle(8), [Vector((x + s * .57, y, z + 3.43)), Vector((x + s * .74, y + .11, z + 2.8)),
+                              Vector((x + s * .69, y - .12, z + 2.35))], scales=[.26, .25, .17])
+    leather.lathe([(.38, 1.4), (.44, 2.3), (.55, 3.28), (.40, 3.62)], 12, origin)
+    hem = []
+    for j, (level, width, depth) in enumerate(((.82, 1.15, .62), (1.65, .90, .55), (2.57, .62, .47), (3.51, .57, .40))):
+        hem.append([Vector((x + math.cos(a) * width, y + math.sin(a) * depth + .06 * j,
+                            z + level + (.14 * math.sin(5 * a) if j == 0 else 0)))
+                    for a in (k * math.tau / 28 for k in range(28))])
+    coat.grid(hem, None, wrap=True)
+    form(leather, (x, y, z + 3.99), (.38, .30, .47))
+    straw.lathe([(1.17, 4.29), (1.22, 4.36), (.94, 4.44), (.50, 4.74), (.12, 4.93), (0, 4.97)],
+                22, origin @ Matrix.Rotation(-.13, 4, "Y"))
+    leather.lathe([(1.16, 4.28), (1.22, 4.34), (1.20, 4.38)], 22, origin @ Matrix.Rotation(-.13, 4, "Y"))
+
+
 def form(mesh, point, dimensions, yaw=0):
     ox, oy, oz = point
     sx, sy, sz = dimensions
@@ -464,6 +500,22 @@ def lantern(h, centre, scale=1):
             trim.box((s * 1.20, 0, zz), (.21, 2.34, .18), f)
     trim.lathe([(2.15, 11.3), (2.02, 11.65), (1.37, 12.0), (.55, 12.81), (0, 13.47)], 8, f)
     return (x, y, z + 9.5 * scale)
+
+
+def gate_lantern(h, x, y, z):
+    frame = at(x, y, z)
+    paper, iron, gold = (h.m(role) for role in ("Lantern", "Soffit", "Gold"))
+    paper.lathe([(1.25, -4.4), (2.3, -2.8), (2.65, 0), (2.3, 2.8), (1.25, 4.4)], 16, frame)
+    for height in (-4.4, -2.8, 2.8, 4.4):
+        radius = 1.55 if abs(height) > 4 else 2.48
+        iron.lathe([(radius, height - .19), (radius, height + .19)], 16, frame, caps=(False, False))
+    for i in range(8):
+        a = math.tau * i / 8
+        path = [Vector((x + radius * math.cos(a), y + radius * math.sin(a), z + height))
+                for height, radius in ((-4.4, 1.50), (-2.8, 2.45), (0, 2.79), (2.8, 2.45), (4.4, 1.50))]
+        iron.sweep(circle(5), path, scales=[.155] * len(path))
+    gold.lathe([(.32, -7.8), (.54, -6.8), (.48, -5.1), (.2, -4.3)], 8, frame)
+    iron.box((0, 0, 8.1), (.34, .34, 7.5), frame, bevel=.045)
 
 
 def gnarl(points, radii, amount=.13):
@@ -543,13 +595,13 @@ def aged_tree(h):
         return pts, rr
 
     # The trunk: one colossal pale column with a lean, a twist and three unequal leaders.
-    organic_path(bark, BARK_PROFILE, TRUNK, [48, 43, 38, 35, 32, 30], SPINE)
+    organic_path(bark, BARK_PROFILE, TRUNK, [40, 39, 34, 30, 26, 22], SPINE)
     for i in range(18):  # rope-like strands spiral up the trunk and run on into leaders and roots
         phase = i * math.tau / 18 + RNG.uniform(-.12, .12)
         route, scales = [], []
         for j in range(len(TRUNK)):
             t = phase + .34 * j * (1 if i % 3 else -.6)
-            r = (44 - 2.7 * j) * RNG.uniform(.86, .97)
+            r = (38 - 3.3 * j) * RNG.uniform(.86, .99)
             route.append(TRUNK[j] + Vector((math.cos(t) * r, math.sin(t) * r, RNG.uniform(-3, 3))))
             scales.append(RNG.uniform(3.0, 7.5) * (.6 if j == len(TRUNK) - 1 else 1))
         organic_path(bark, circle(10), route, scales, SPINE)
@@ -698,13 +750,13 @@ def aged_tree(h):
                              p + Vector((RNG.uniform(-r, r), RNG.uniform(-r, r), -r * .3)), RNG.uniform(.6, 1.6))
 
     # Most of the root mass pours down the image-left (+X) terraces as separate, netted roots; a few go right.
-    plan = [(1, RNG.uniform(-.25, .75), RNG.uniform(5.5, 11), RNG.uniform(430, 620),
-             (RNG.uniform(30, 105), RNG.uniform(-25, 160))) for _ in range(11)]
+    plan = [(1, RNG.uniform(-.25, .75), RNG.uniform(4.7, 8.3), RNG.uniform(430, 620),
+             (RNG.uniform(55, 155), RNG.uniform(-25, 166))) for _ in range(9)]
     plan += [(-1, RNG.uniform(-.1, .6), RNG.uniform(5.5, 9.5), RNG.uniform(260, 360),
               (-RNG.uniform(60, 170), RNG.uniform(-50, 90))) for _ in range(5)]
     # The cascade: long roots that pour over the near left retaining walls down beside the stair.
-    plan += [(1, RNG.uniform(.35, 1.1), RNG.uniform(6, 9.5), RNG.uniform(640, 820),
-              (RNG.uniform(45, 165), RNG.uniform(110, 205))) for _ in range(7)]
+    plan += [(1, RNG.uniform(.35, 1.1), RNG.uniform(4.3, 7.7), RNG.uniform(640, 820),
+              goal) for goal in ((63, 176), (143, 211), (105, 154), (194, 163), (176, 127))]
     for side, lean, radius, length, goal in plan:
         h2 = Vector((side, lean)).normalized()
         z = RNG.uniform(232, 350)
@@ -717,7 +769,7 @@ def aged_tree(h):
     for x0, y0, z0, w, d, ht, _, _ in TIERS[:3]:
         y = y0 + d / 2 + 6
         z = z0 + ht + 7
-        for i in range(36):
+        for i in range(23):
             x = x0 + RNG.uniform(-w * .46, w * .46)
             drop = RNG.uniform(8, 30)
             points = [Vector((x + math.sin(j * .71 + i) * 1.56, y + math.sin(j * 1.34) * .72, z - j / 8 * drop)) for j in range(9)]
@@ -877,6 +929,22 @@ def bark_material(name, attributes):
         links.new(colour, sock(green.inputs, "A"))
         sock(green.inputs, "B").default_value = (.055, .075, .022, 1)
         colour = sock(green.outputs, "Result")
+    if attributes:
+        position = nodes.new("ShaderNodeNewGeometry")
+        split = nodes.new("ShaderNodeSeparateXYZ")
+        links.new(position.outputs["Position"], split.inputs["Vector"])
+        damp = nodes.new("ShaderNodeMapRange")
+        damp.inputs["From Min"].default_value = 22
+        damp.inputs["From Max"].default_value = 310
+        damp.inputs["To Min"].default_value = .46
+        damp.inputs["To Max"].default_value = 1
+        links.new(split.outputs["Z"], damp.inputs["Value"])
+        darken = nodes.new("ShaderNodeMixRGB")
+        darken.blend_type = "MULTIPLY"
+        darken.inputs[0].default_value = 1
+        links.new(colour, darken.inputs[1])
+        links.new(damp.outputs["Result"], darken.inputs[2])
+        colour = darken.outputs[0]
     links.new(colour, shader.inputs["Base Color"])
     links.new(rough_img.outputs["Color"], shader.inputs["Roughness"])
     nmap = nodes.new("ShaderNodeNormalMap")
@@ -897,6 +965,8 @@ def art_materials():
         "Lantern": ((1, .78, .37), (.83, .39, .074), .47, .55),
         "Crag": ((.16, .17, .175), (.035, .04, .042), .9, .05),
         "Pine": ((.035, .06, .04), (.012, .022, .015), .9, .4),
+        "TravelerCloth": ((.055, .050, .045), (.017, .022, .026), .91, .08),
+        "Straw": ((.29, .19, .091), (.11, .069, .032), .83, .09),
     })
     kit.TEXTURES["Crag"] = ("dark_rock", .018, .85)
     mats = kit.materials()
@@ -1098,7 +1168,7 @@ def atmosphere(scene, mats, h):
     hn.remove(hn.get("Principled BSDF"))
     scatter = hn.new("ShaderNodeVolumeScatter")
     scatter.inputs["Color"].default_value = (.7, .76, .82, 1)
-    scatter.inputs["Density"].default_value = float(os.environ.get("VESP_HAZE", .0006))
+    scatter.inputs["Density"].default_value = float(os.environ.get("VESP_HAZE", .00039))
     scatter.inputs["Anisotropy"].default_value = .3
     haze_mat.node_tree.links.new(scatter.outputs[0], hn.get("Material Output").inputs["Volume"])
     bpy.ops.mesh.primitive_cube_add(size=2, location=(0, -350, 420))
@@ -1188,25 +1258,23 @@ def main():
         pavilion(temple, (x, y, z), w, d, ht, bays, arch=arch)
     galleries(temple)
     for side in (-1, 1):
-        x, y, z, w = stair_profile(18)
-        lion(temple, (side * (w / 2 + 21), y, z + 9.2), -side * .32, .95)
+        x, y, z = guardian_base(side)
+        lion(temple, (x, y, z + 9.2), -side * .42, .95)
     for x, y, z in ((-34, -44, 113), (34, -44, 113), (-84, -44, 113), (84, -44, 113)):
         lamps.append(lantern(temple, (x, y, z), 1.0))
     for x in (-22, 22):  # big paper lanterns hang in the gate
-        temple.m("Lantern").lathe([(.01, -4.2), (2.4, -3.2), (3.3, 0), (2.4, 3.2), (.01, 4.2)], 14, at(x, -46, 146))
-        temple.m("Gold").box((x, -46, 151.5), (1.2, 1.2, 3), bevel=.1)
+        gate_lantern(temple, x, -46, 146)
         lamps.append((x, -46, 146))
     crags(temple)
     aged_tree(temple)
+    traveller(temple)
     mats = art_materials()
     build_objects(temple, mats)
     scene, camera, mannequin = figures.setup_scene(samples=int(os.environ.get("VESP_RENDER_SAMPLES", 12)), cool_rim=True)
     atmosphere(scene, mats, temple)
     bpy.data.objects["Ground"].scale = (30, 30, 1)
     bpy.data.objects["Ground"].data.materials[0] = mats["Masonry"]
-    _, py, pz, _ = stair_profile(11)
-    mannequin.location = (-2.5, py, pz)
-    mannequin.data.materials[0] = mats["DarkStone"]
+    bpy.data.objects.remove(mannequin, do_unlink=True)
     bpy.data.lights["overcast"].energy = 1.25
     bpy.data.lights["overcast"].color = (.72, .82, 1.0)
     bpy.data.lights["rim"].energy = 2.4
@@ -1214,9 +1282,9 @@ def main():
     for i, position in enumerate(lamps):
         light("Temple amber " + str(i), position, (position[0], position[1] + 1, position[2] - 5), 380, 1.8, (1, .55, .2))
     for x, y, z, w in GLOWS:  # warm light inside each open gallery, aimed at the recessed hall wall
-        light("Gallery glow", (x, y, z), (x, y - 40, z - 6), float(os.environ.get("VESP_GLOW", 90)) * w, w * .35,
+        light("Gallery glow", (x, y, z), (x, y - 40, z - 6), float(os.environ.get("VESP_GLOW", 65)) * w, w * .35,
               (1, .5, .18))
-    light("Gate interior glow", (0, -60, 132), (0, -20, 128), 60000, 30.0, (1, .5, .2))
+    light("Gate interior glow", (0, -60, 132), (0, -20, 128), 44000, 30.0, (1, .5, .2))
     light("Cool sky key", (300, 60, 640), (0, -150, 300), 420000, 220, (.74, .85, 1))
     scene.render.image_settings.file_format = "JPEG"
     scene.render.image_settings.quality = 92
@@ -1227,28 +1295,28 @@ def main():
     scene.view_settings.exposure = float(os.environ.get("VESP_EXPOSURE", .7))
     camera.data.sensor_fit = "VERTICAL"
     camera.data.clip_end = 9000
-    bpy.ops.file.pack_all()
-    bpy.ops.wm.save_as_mainfile(filepath=str(OUT / "bellwood_stair_reference.blend"))
-    eye = Vector((0, 268, 30))
-    pitch = math.radians(20)
-    yaw = math.radians(float(os.environ.get("VESP_YAW", 8)))  # turns left so the root-hung terraces fill the left third
+    eye = Vector((-14, 347, 13.5))
+    target = Vector((26, -86, 245))
     contact = min(CONTACTS, key=lambda c: (c[0] - Vector((70, 40, 50))).length)[0] if CONTACTS else Vector((70, 40, 50))
     print("Root close-up target", tuple(round(c) for c in contact), flush=True)
     views = {
-        "portrait": (900, 1350, 78, eye, eye + Vector((math.sin(yaw) * math.cos(pitch), -math.cos(yaw) * math.cos(pitch),
-                                                        math.sin(pitch))) * 100),
+        "portrait": (900, 1350, 73, eye, target),
+        "approach": (1280, 900, 60, Vector((0, 208, 26)), Vector((14, -56, 172))),
         "fork": (900, 900, 46, Vector((95, -20, 500)), TRUNK[4] + Vector((0, 0, 20))),
         "root": (900, 900, 52, Vector((12, contact.y + 75, max(stair_profile((START_Y - contact.y - 75) / STEP_RUN)[2] + 14,
                                                               contact.z + 26))), contact + Vector((0, 0, 4))),
     }
-    for name in os.environ.get("VESP_VIEWS", "portrait,fork,root").split(","):
+    for name in os.environ.get("VESP_VIEWS", "portrait,approach,fork,root").split(","):
         width, height, angle, where, target = views[name]
         scene.render.resolution_x, scene.render.resolution_y = width, height
-        scene.render.resolution_percentage = 100
+        scene.render.resolution_percentage = int(os.environ.get("VESP_RENDER_PERCENT", 100))
         camera.data.angle_y = math.radians(angle)
         figures.look_at(camera, where, target)
         scene.render.filepath = str(OUT / ("bellwood_stair_reference_view.jpg" if name == "portrait"
                                            else f"bellwood_stair_reference_{name}.jpg"))
+        if name == "portrait":
+            bpy.ops.file.pack_all()
+            bpy.ops.wm.save_as_mainfile(filepath=str(OUT / "bellwood_stair_reference.blend"))
         bpy.ops.render.render(write_still=True)
 
 
