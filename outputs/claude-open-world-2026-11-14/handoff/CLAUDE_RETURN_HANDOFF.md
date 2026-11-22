@@ -6,7 +6,7 @@ The creator asked Sol to wrap up and hand back the work. Start with the colossal
 
 ## Latest handoff for Claude
 
-Start with [Bellwood temple replacement](CLAUDE_BELLWOOD_REPLACEMENT_HANDOFF.md) for the paused v10 study, all-angle audit, new guardian source, Claude Code Blender setup and the path to replacing the old hall. The Development build still uses the old temple.
+Start with the [Bellwood v20 handoff](CODEX_BELLWOOD_V20_HANDOFF.md) for the current art, full export status, approved pilot and exact Studio acceptance steps. The [v10 handoff](CLAUDE_BELLWOOD_REPLACEMENT_HANDOFF.md) records the Claude Code Blender setup and earlier visual history. Development still uses the old temple.
 
 ## Continuation after mac-93 (Sol, 22 Nov)
 

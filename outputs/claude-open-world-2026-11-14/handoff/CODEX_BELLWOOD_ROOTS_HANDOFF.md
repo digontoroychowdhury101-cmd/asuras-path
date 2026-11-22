@@ -1,5 +1,7 @@
 # Codex handoff: Bellwood roots, lions in scene, then the Roblox replacement (23 Nov 2026)
 
+**Current resume point:** [Bellwood v20 handoff for Claude](CODEX_BELLWOOD_V20_HANDOFF.md). The checkpoints below record earlier work.
+
 ## v20 art and Roblox import pilot
 
 The supported-root and accessible entrance recipe and the nondestructive module exporter are on the raw branch at `0708ab5`. The [v20 reference comparison](../captures/mac/bellwood_face/sol_bellwood_v20_reference_comparison.jpg) and [neutral and storm review sheet](../captures/mac/bellwood_face/sol_bellwood_v19_review_sheet.jpg) cover the current root and guardian study. The packed scene is `work/sol-bellwood-v20/bellwood_stair_reference.blend`.

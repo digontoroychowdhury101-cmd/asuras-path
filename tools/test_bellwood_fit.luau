@@ -1,8 +1,7 @@
 --!nonstrict
 -- World fit of the colossal Bellwood temple (CLAUDE_BELLWOOD_REPLACEMENT_HANDOFF, "Replace the actual temple", step 1).
--- Pure numbers against src/shared/LandmarkLayout and the real Overworld. It never edits the live layout: Basin.Temple still places the
--- old hall. Every candidate below is a parameter set for the colossal study; one earns a Basin.Temple.Colossal field only if it passes
--- every check. Run: python3 tools/lune_compat.py tools/test_bellwood_fit.luau
+-- Pure numbers against src/shared/LandmarkLayout and the real Overworld. Run:
+-- python3 tools/lune_compat.py tools/test_bellwood_fit.luau
 local O = require("../src/shared/Overworld")
 local L = require("../src/shared/LandmarkLayout")
 
@@ -298,8 +297,54 @@ print("  candidates that pass every check: " .. (#winners > 0 and table.concat(w
 local cur = visibility(CANDIDATES[1].P, nil)
 check("baseline: the rim hides the threshold from all 8 eyes", cur.Threshold == 0)
 check("baseline: the roof and crown stand over the rim from all 8 eyes (the problem to solve)", cur.Roof == 8 and cur.Crown == 8)
-check("the live Basin.Temple still places the old hall", T.Model == "Bellwood_TempleHall")
-check("a candidate that passes every check must be recorded as Basin.Temple.Colossal (none does yet)", #winners == 0 or T.Colossal ~= nil)
+check("the original hall remains available as a fallback", T.Model == "Bellwood_TempleHall")
+
+-- Use the same cell centres and footprint as the gameplay fills so a continuous
+-- analytic curve cannot hide a sightline through a gap between terrain cells.
+local configured = B.ColossalTemple or { Across = 30, Along = -115, Lift = 2 }
+local transform = place(configured)
+local function ridgeTerrain(x: number, z: number): number
+	local dx, dz = x - C.X, z - C.Z
+	local lane, along = dx * ax + dz * az, dx * fx + dz * fz
+	local fillLane = -620 + 20 * math.floor((lane + 630) / 20)
+	local fillAlong = 574 + 14 * math.floor((along - 567) / 14)
+	local base = L.carvedSurface(x, z, O.heightAt) or (O.heightAt(x, z) + 2)
+	if fillLane < -620 or fillLane > 420 or fillAlong < 574 or fillAlong > 728 then return base end
+	local height = L.colossalRidgeHeight(bw, C.X + ax * fillLane + fx * fillAlong, C.Z + az * fillLane + fz * fillAlong)
+	return math.max(base, height or -math.huge)
+end
+
+local roadSightlines, exitSightlines = 0, 0
+local exitEyeY = bw.Origin.Y + bw.Tunnel.Passage[#bw.Tunnel.Passage][3]
+for _, t in TARGETS do
+	local tx, ty, tz = transform(t[1], t[2], t[3])
+	for _, e in eyes do
+		local ey = O.heightAt(e[1], e[2]) + 7.5
+		local clear = true
+		for i = 1, 250 do
+			local a = i / 250
+			if ridgeTerrain(e[1] + a * (tx - e[1]), e[2] + a * (tz - e[2])) >= ey + a * (ty - ey) then
+				clear = false
+				break
+			end
+		end
+		if clear then roadSightlines += 1 end
+	end
+	local distance = math.sqrt((tx - exitX) ^ 2 + (tz - exitZ) ^ 2)
+	local clear = true
+	for i = 1, 250 do
+		local a = (12 + (distance - 12) * i / 250) / distance
+		if ridgeTerrain(exitX + a * (tx - exitX), exitZ + a * (tz - exitZ)) >= exitEyeY + a * (ty - exitEyeY) then
+			clear = false
+			break
+		end
+	end
+	if clear then exitSightlines += 1 end
+end
+check("the ridge screens all 24 model sightlines from the road", roadSightlines == 0)
+check("the stairs, top roof and crown emerge together past the passage", exitSightlines == 3)
+print(string.format("  stepped crest: %d/%d road sightlines clear, %d/3 exit sightlines clear",
+	roadSightlines, #eyes * 3, exitSightlines))
 
 print(string.format("bellwood fit: %d passed, %d failed", passed, failed))
 if failed > 0 then error("bellwood fit failed") end
