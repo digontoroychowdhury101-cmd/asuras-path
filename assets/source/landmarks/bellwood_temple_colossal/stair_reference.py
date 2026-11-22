@@ -25,7 +25,7 @@ import temple_preview as kit
 from temple_preview import Hall, at, figures, light
 
 RNG = random.Random(711)
-OUT = Path(os.environ.get("VESP_STUDY_OUT", str(Path.cwd() / "work/sol-bellwood-v9")))
+OUT = Path(os.environ.get("VESP_STUDY_OUT", str(Path.cwd() / "work/sol-bellwood-v10")))
 UP = Vector((0, 0, 1))
 STEP_COUNT = 128
 STEP_RUN, STEP_RISE = 2.35, .88
@@ -124,14 +124,20 @@ def root_bundle(mesh, pts, rr):
         organic_path(mesh, circle(8), ctrl, radii, SPINE)
 
 
-def curved(pts, rr):
-    """Catmull-Rom midpoints so twigs arc instead of bending at hard elbows."""
-    out, radii = [], []
-    for i in range(len(pts) - 1):
-        p0, p1, p2, p3 = pts[max(0, i - 1)], pts[i], pts[i + 1], pts[min(len(pts) - 1, i + 2)]
-        out += [p1, (-p0 + 9 * p1 + 9 * p2 - p3) / 16]
-        radii += [rr[i], (rr[i] + rr[i + 1]) * .5]
-    return out + [pts[-1]], radii + [rr[-1]]
+def path_point(points, segment, t):
+    p0, p1, p2, p3 = (points[min(len(points) - 1, max(0, j))]
+                      for j in range(segment - 1, segment + 3))
+    return (2 * p1 + (p2 - p0) * t + (2 * p0 - 5 * p1 + 4 * p2 - p3) * t**2
+            + (-p0 + 3 * p1 - 3 * p2 + p3) * t**3) * .5
+
+
+def curved(points, radii, sections):
+    """Sample one spine for both the mesh and all the child attachments."""
+    distances = [step / sections for step in range(sections)]
+    path = [path_point(points, i, t) for i in range(len(points) - 1) for t in distances]
+    scales = [radii[i] * (1 - t) + radii[i + 1] * t
+              for i in range(len(points) - 1) for t in distances]
+    return path + [points[-1]], scales + [radii[-1]]
 
 
 def merge(hall, piece, frame):
@@ -161,6 +167,53 @@ def coursed_face(stone, x0, x1, y, top, courses, rng_depth=(.7, 1.6)):
                 mv = at(x + length / 2, y, top - 1.6 - course * 2.95) @ Matrix.Rotation(RNG.uniform(-.03, .03), 4, "Y")
                 stone.box((0, 0, 0), (length - .35, RNG.uniform(*rng_depth), height), mv, bevel=RNG.uniform(.12, .5))
             x += length
+
+
+def weathered_footings(h):
+    """Break the exposed outer faces into craggy buttresses and terraced retaining walls."""
+    rock, stone, moss = (h.m(role) for role in ("Crag", "Masonry", "Moss"))
+    rng = random.Random(872)
+    for side, outside in ((-1, 251), (1, 271)):
+        for j in range(13):
+            y = -118 - 15.3 * j + rng.uniform(-4, 4)
+            x = side * (outside - rng.uniform(5, 23))
+            floor = 3 + rng.uniform(-4, 2)
+            height = rng.uniform(49, 128) + 4 * j
+            width = rng.uniform(12, 29)
+            rings = []
+            angles = circle(8)
+            for fraction, scale in ((0, 1.22), (.18, 1.10), (.43, .84), (.69, .73), (.86, .50), (1, .23)):
+                anchor_x = x - side * fraction * rng.uniform(6, 24)
+                anchor_y = y + fraction * rng.uniform(-14, 14)
+                rings.append([Vector((anchor_x + a * width * scale * rng.uniform(.72, 1.32),
+                                      anchor_y + b * width * .87 * scale * rng.uniform(.74, 1.2),
+                                      floor + height * fraction + rng.uniform(-4, 4))) for a, b in angles])
+            rock.grid(rings, wrap=True)
+            rock.poly(rings[-1])
+            for _ in range(9):
+                top = rng.uniform(.29, .96) * height
+                face = side * (abs(x) + width * (1 - top / height) * .81)
+                tilt = rng.uniform(-.35, .35)
+                stone.box((0, 0, 0), (rng.uniform(4, 10), rng.uniform(7, 20), rng.uniform(2, 6)),
+                          at(face, y + rng.uniform(-8, 8), top)
+                          @ Matrix.Rotation(tilt, 4, "Z"), bevel=rng.uniform(.4, 1.5))
+    for j in range(11):
+        x = -230 + 45 * j
+        reach = rng.uniform(10, 28)
+        height = rng.uniform(74, 197) * (1 - .37 * abs(x) / 230)
+        for level in range(6):
+            rise = height / 6
+            lip = reach * (1 - level / 7)
+            y = -291 - lip / 2 + rng.uniform(-3.1, 1.7)
+            stone.box((x + rng.uniform(-4, 4), y, rise * (level + .5)),
+                      (rng.uniform(39, 50), lip + 22, rise + .6), bevel=rng.uniform(1.4, 3.2))
+            for _ in range(6):
+                xx = x + rng.uniform(-19, 19)
+                yy = y - lip * .5 - 10 + rng.uniform(-.4, 1.3)
+                zz = rise * (level + 1)
+                moss.poly([Vector((xx + dx, yy + dy, zz + .04))
+                           for dx, dy in ((-1.4, -.6), (0, -1.3), (1.8, -.2), (.8, 1.3))],
+                          open_surface=True)
 
 
 def stonework(h):
@@ -260,6 +313,7 @@ def stonework(h):
     for (tx, ty, tz, tw, td, th, bays, _), (_, _, pz, *_) in zip(TIERS[1:], TIERS):
         stair.box((tx, ty, (pz + tz) / 2), (tw * .66, td * .72, tz - pz + 4), bevel=1.0)
         stair.box((tx, ty, tz - .8), (tw * .86, td * .86, 2.2), bevel=.45)
+    weathered_footings(h)
     return lamps
 
 
@@ -271,7 +325,8 @@ def gallery_tier(h, half_x, half_y, bottom, top, bays, radius):
     wood, so, stone, gold, amber = (h.m(role) for role in ("Lacquer", "Soffit", "Masonry", "Gold", "Lantern"))
     height = top - bottom
     core = half_y * .45
-    so.box((0, 0, bottom + height / 2), (half_x * 2 - 6, core * 2, height - 1), bevel=.3)
+    inner_width = half_x * .68
+    so.box((0, 0, bottom + height / 2), (inner_width * 2, core * 2, height - 1), bevel=.3)
     stone.box((0, 0, bottom - .7), (half_x * 2 + 7, half_y * 2 + 7, 1.6), bevel=.3)
     so.box((0, 0, top - 1.6), (half_x * 2 + 2, half_y * 2 + 2, 1.4), bevel=.2)  # gallery ceiling
     columns = [-half_x + 2 * half_x * i / bays for i in range(bays + 1)]
@@ -299,21 +354,34 @@ def gallery_tier(h, half_x, half_y, bottom, top, bays, radius):
             for k in range(1, 9):
                 wood.box((middle - span / 2 + span * k / 9, y - .05 * sign, top - 4.6), (.38, .5, 4.2))
             gold.box((middle, y + .05 * sign, top - 7.1), (span, .45, .5), bevel=.05)
-            if sign < 0:
-                continue
+            # Recessed shutter panels leave deep shadow between the outer columns.
+            if i % 2 == 0:
+                for shutter in (-1, 1):
+                    sx = middle + shutter * span * .16
+                    if abs(sx) < inner_width:
+                        wood.box((sx, sign * (core + .16), bottom + height * .34),
+                                 (span * .27, .68, height * .56), bevel=.23)
+                        for bar in range(5):
+                            gold.box((sx + (bar - 2) * span * .04, sign * (core + .58),
+                                      bottom + height * .38), (.19, .25, height * .38))
             for zz, t in ((bottom + 4.6, .75), (bottom + 1.9, .5)):  # railing
-                wood.box((middle, y + .6, zz), (span, t + .25, t), bevel=.08)
+                wood.box((middle, y + sign * .6, zz), (span, t + .25, t), bevel=.08)
             pickets = max(2, int(span / 2.6))
             for k in range(1, pickets):
-                wood.box((middle - span / 2 + span * k / pickets, y + .6, bottom + 3.2), (.42, .42, 2.9))
-            if RNG.random() < .7:  # paper lanterns hang in the open bays
-                lz = top - 9 - RNG.uniform(0, 4)
+                wood.box((middle - span / 2 + span * k / pickets, y + sign * .6, bottom + 3.2), (.42, .42, 2.9))
+            gallery_rng = RNG if sign > 0 else random.Random(2101 + i + bays * 11)
+            if gallery_rng.random() < .7:  # paper lanterns hang in the open bays
+                lz = top - 9 - gallery_rng.uniform(0, 4)
                 ly = y - (half_y - core) * .45
-                amber.lathe([(.01, -2.2), (1.5, -1.7), (2.0, 0), (1.5, 1.7), (.01, 2.2)], 10, at(middle, ly, lz))
+                amber.lathe([(.01, -1.7), (.86, -1.55), (1.16, -.8), (1.16, .8), (.86, 1.55), (.01, 1.7)],
+                            12, at(middle, ly, lz))
+                for ring in (-.85, .85):
+                    so.lathe([(1.20, ring - .08), (1.20, ring + .08)], 12,
+                             at(middle, ly, lz), caps=(False, False))
                 gold.box((middle, ly, (lz + top - 1.6) / 2 + 1.1), (.2, .2, top - 1.6 - lz - 2.2))
-            if RNG.random() < .35:  # broken railing
-                wood.box((0, 0, 0), (span * .4, .6, .6), at(middle + span * .2, y + 2.2, bottom + .6)
-                         @ Matrix.Rotation(RNG.uniform(-.5, .5), 4, "Z"), bevel=.08)
+            if gallery_rng.random() < .35:  # broken railing
+                wood.box((0, 0, 0), (span * .4, .6, .6), at(middle + span * .2, y + sign * 2.2, bottom + .6)
+                         @ Matrix.Rotation(gallery_rng.uniform(-.5, .5), 4, "Z"), bevel=.08)
         wood.box((0, y, top - 1), (half_x * 2 + 8, 7, 4.5), bevel=.35)
         wood.box((0, y, top + 5.6), (half_x * 2 + 11, 10, 2.6), bevel=.35)
         gold.box((0, y + sign * 3.7, top - .4), (half_x * 2 + 4, .66, 1.0), bevel=.1)
@@ -444,44 +512,81 @@ def form(mesh, point, dimensions, yaw=0):
     return mesh.lathe(shape, 20, transform)
 
 
-def lion(h, location, yaw, scale=1.0):
-    carving = Hall()
-    s, shade, gold = (carving.m(role) for role in ("Masonry", "DarkStone", "Gold"))
-    s.box((0, 0, 2.8), (24.2, 25.4, 5.6), bevel=.55)
-    s.box((0, 0, 6.1), (20.2, 20.8, 1.6), bevel=.32)
-    form(s, (0, -2.8, 14), (6.8, 8.1, 7.7))
-    form(s, (0, 2.4, 17.1), (6.4, 5.1, 8.1))
-    form(s, (0, 2.8, 22.2), (7.2, 5.2, 6.6))
-    form(s, (0, 5.2, 25.1), (5.9, 5.0, 5.1))
-    form(shade, (0, 9.5, 23.15), (4.6, 1.1, 1.45))
-    form(s, (0, 9, 24.5), (4.4, 2.0, 1.43))
-    form(shade, (0, 10.4, 25.45), (1.8, 1.1, .57))
-    form(s, (0, 8.4, 21.9), (4.0, 1.5, 1.23))
-    for side in (-1, 1):
-        for x, y in ((side * 3.6, 3.9), (side * 5.8, -3.9)):
-            form(s, (x, y, 10.2), (2.2, 2.65, 4.5))
-            form(s, (x, y + 1.65, 7.7), (2.7, 2.9, 1.32))
-            for k in range(3):
-                form(s, (x - 1.35 + k * 1.36, y + 3.35, 7.9), (.68, 1.28, .58))
-        form(s, (side * 4.2, 3.6, 29.1), (1.8, 1.23, 2.2))
-        form(s, (side * 2.55, 8.55, 26.79), (2.27, 1.25, .87), side * -.29)
-        form(shade, (side * 2.55, 9.05, 26.3), (1.11, .83, .48), side * -.29)
-        form(gold, (side * 2.42, 9.65, 26.35), (.30, .26, .29))
-        form(s, (side * 3.5, 7.6, 23.9), (1.69, 1.30, 1.37))
-        for row in range(3):
-            for k in range(8):
-                t = -.90 + k * .40 + row * .15
-                c = Vector((side * (5.5 + math.cos(t) * 1.52), 4.1 + 3.26 * math.sin(t) - row * .49,
-                            17.2 + row * 2.5 + (math.cos(t) + .65) * 2.9))
-                curl = [c + Vector((side * (.92 * math.cos(j / 3.1) * (1 - j / 31)),
-                                    .87 * math.sin(j / 3.1) * (1 - j / 31), -.05 * j))
-                        for j in range(18)]
-                s.sweep(circle(7), curl, scales=[.71 - .023 * j for j in range(18)])
-    path = [Vector((0, 7.6, 18.6)), Vector((-2.5, 7.4, 17.8)), Vector((-5.6, 6.8, 19.1)),
-            Vector((-6.3, 4.75, 20.1))]
-    s.sweep(circle(10), path, scales=[.58, .55, .50, .42])
-    kit.wheel(gold, 0, 8.25, 17.75, 1.9, .16)
-    merge(h, carving, at(*location) @ Matrix.Rotation(yaw, 4, "Z") @ Matrix.Scale(scale, 4))
+def lion_plinth(h, location, yaw, side):
+    frame = at(*location) @ Matrix.Rotation(yaw, 4, "Z")
+    stone, trim = h.m("Masonry"), h.m("DarkStone")
+    stone.box((0, 0, 1.9), (23.6, 26.5, 3.8), frame, bevel=.58)
+    stone.box((0, 0, 4.0), (22.1, 24.8, 1.3), frame, bevel=.37)
+    stone.box((0, 0, 4.85), (20.8, 23.9, .9), frame, bevel=.21)
+    trim.box((0, 13.05, 2.15), (15.6, .40, 2.05), frame, bevel=.30)
+    local_rng = random.Random(113 + side)
+    for sign in (-1, 1):
+        for k in range(4):
+            trim.box((sign * (10.7 + local_rng.uniform(-.2, .4)), -8.6 + k * 5.8, 2.1),
+                     (1.38, 1.25, .92), frame, bevel=.18)
+    for k in range(11):
+        x = local_rng.uniform(-10.5, 10.5)
+        z = local_rng.uniform(.25, 4.4)
+        pts = [frame @ Vector((x+dx, 13.27, z+dz)) for dx,dz in ((-.46,.16),(.24,.32),(.55,-.22),(-.09,-.36))]
+        h.m("Moss").poly(pts, open_surface=True)
+
+
+def place_lion(location, yaw, side):
+    """Seat a mirrored, moss-stained CC0 stone scan on the authored plinth."""
+    source = kit.ROOT / "assets/source/props_cc0/zenodo_lion_scan/lion_scan.glb"
+    previous = set(bpy.context.scene.objects)
+    bpy.ops.import_scene.gltf(filepath=str(source))
+    bpy.context.view_layer.update()
+    imported = set(bpy.context.scene.objects) - previous
+    ob, = [item for item in imported if item.type == "MESH"]
+    corners = [ob.matrix_world @ Vector(point) for point in ob.bound_box]
+    x, y = [(min(p[i] for p in corners)+max(p[i] for p in corners))*.5 for i in range(2)]
+    low, high = min(p.z for p in corners), max(p.z for p in corners)
+    size = (23.9 if side > 0 else 22.1) / (high-low)
+    mirror = Matrix.Diagonal((side, 1, 1, 1))
+    object_to_world = ob.matrix_world.copy()
+    ob.parent = None
+    ob.matrix_world = (at(location[0], location[1], location[2]+5.16)
+                       @ Matrix.Rotation(yaw, 4, "Z") @ mirror
+                       @ Matrix.Rotation(-math.pi/2, 4, "Z") @ Matrix.Scale(size, 4)
+                       @ at(-x, -y, -low) @ object_to_world)
+    ob.data.transform(ob.matrix_world)
+    if side < 0:
+        ob.data.flip_normals()
+    ob.matrix_world = Matrix.Identity(4)
+    ob.name = "Bellwood_Guardian_" + ("East" if side > 0 else "West")
+    for item in imported - {ob}:
+        bpy.data.objects.remove(item, do_unlink=True)
+    for slot in ob.material_slots:
+        if slot.material is None:
+            continue
+        material = slot.material.copy()
+        slot.material = material
+        material.name = "Weathered guardian sandstone"
+        nodes, links = material.node_tree.nodes, material.node_tree.links
+        shader = next(node for node in nodes if node.type == "BSDF_PRINCIPLED")
+        base = shader.inputs["Base Color"]
+        image = next((edge.from_socket for edge in base.links), None)
+        moss = nodes.new("ShaderNodeTexNoise")
+        moss.inputs["Scale"].default_value = 7.2
+        moss.inputs["Detail"].default_value = 5
+        coord = nodes.new("ShaderNodeTexCoord")
+        links.new(coord.outputs["Generated"], moss.inputs["Vector"])
+        patches = nodes.new("ShaderNodeValToRGB")
+        patches.color_ramp.elements[0].position = .50
+        patches.color_ramp.elements[0].color = (0,0,0,1)
+        patches.color_ramp.elements[1].position = .79
+        patches.color_ramp.elements[1].color = (.73,.73,.73,1)
+        links.new(moss.outputs["Fac"], patches.inputs[0])
+        mix = nodes.new("ShaderNodeMixRGB")
+        links.new(patches.outputs[0], mix.inputs[0])
+        if image:
+            links.new(image, mix.inputs[1])
+        else:
+            mix.inputs[1].default_value = base.default_value
+        mix.inputs[2].default_value = (.055,.075,.029,1)
+        links.new(mix.outputs[0], base)
+    return ob
 
 
 def lantern(h, centre, scale=1):
@@ -561,17 +666,19 @@ def aged_tree(h):
             organic_path(bark, circle(12), pts, rr, SPINE)
             stats["bark_branches"] += 1
         else:
-            path, scales = curved(pts, rr)
-            twigs.sweep(circle(6 if radius > .5 else 4), path, scales=scales)
+            sections = 3 if radius > .54 else 2
+            path, scales = curved(pts, rr, sections)
+            twigs.sweep(circle(8 if radius > .54 else 5), path, scales=scales)
             stats["twigs"] += 1
         if not depth:
             return
         for _ in range(RNG.choice((2, 3, 3, 4)) if depth > 2 else RNG.choice((3, 3, 4))):
             seg = RNG.randrange(0, 3)
             t = RNG.uniform(.15, 1.0)
-            where = pts[seg].lerp(pts[seg + 1], t)
+            where = path_point(pts, seg, t)
             here = rr[seg] * (1 - t) + rr[seg + 1] * t
-            vector = ((pts[seg + 1] - pts[seg]).normalized() * RNG.uniform(.5, 1.1)
+            tangent = path_point(pts, seg, min(1, t + .04)) - path_point(pts, seg, max(0, t - .04))
+            vector = (tangent.normalized() * RNG.uniform(.5, 1.1)
                       + random_unit() * RNG.uniform(.45, .95) + UP * RNG.uniform(-.25, .45))
             branch(where, vector, length * RNG.uniform(.46, .7), here * RNG.uniform(.5, .78), depth - 1)
 
@@ -584,7 +691,8 @@ def aged_tree(h):
             a, b = pts[i - 1], pts[i]
             r = (rr[i - 1] + rr[i]) * .5
             for _ in range(RNG.choice(spawn)):
-                where = a.lerp(b, RNG.uniform(.1, .95))
+                t = RNG.uniform(.1, .95)
+                where = path_point(pts, i - 1, t)
                 outward = Vector((where.x - centre.x, where.y - centre.y, 0))
                 outward = outward.normalized() if outward.length > 1 else random_unit()
                 vector = ((b - a).normalized() * RNG.uniform(.3, .9) + outward * RNG.uniform(.2, .8)
@@ -1241,7 +1349,8 @@ def build_objects(temple, mats):
         mesh.update()
         if role in {"Bark", "BarkTwigs", "Masonry", "DarkStone", "Crag"}:
             mesh.shade_smooth()
-        mesh.set_sharp_from_angle(angle=math.radians(31))
+        if role != "BarkTwigs":
+            mesh.set_sharp_from_angle(angle=math.radians(31))
         obj = bpy.data.objects.new(source.name, mesh)
         obj.data.materials.append(mats[role])
         bpy.context.collection.objects.link(obj)
@@ -1257,9 +1366,12 @@ def main():
     for x, y, z, w, d, ht, bays, arch in TIERS:
         pavilion(temple, (x, y, z), w, d, ht, bays, arch=arch)
     galleries(temple)
+    guardians = []
     for side in (-1, 1):
         x, y, z = guardian_base(side)
-        lion(temple, (x, y, z + 9.2), -side * .42, .95)
+        location, yaw = (x, y, z + 9.15), side * .47
+        lion_plinth(temple, location, yaw, side)
+        guardians.append((location, yaw, side))
     for x, y, z in ((-34, -44, 113), (34, -44, 113), (-84, -44, 113), (84, -44, 113)):
         lamps.append(lantern(temple, (x, y, z), 1.0))
     for x in (-22, 22):  # big paper lanterns hang in the gate
@@ -1270,6 +1382,8 @@ def main():
     traveller(temple)
     mats = art_materials()
     build_objects(temple, mats)
+    for location, yaw, side in guardians:
+        place_lion(location, yaw, side)
     scene, camera, mannequin = figures.setup_scene(samples=int(os.environ.get("VESP_RENDER_SAMPLES", 12)), cool_rim=True)
     atmosphere(scene, mats, temple)
     bpy.data.objects["Ground"].scale = (30, 30, 1)
@@ -1302,6 +1416,11 @@ def main():
     views = {
         "portrait": (900, 1350, 73, eye, target),
         "approach": (1280, 900, 60, Vector((0, 208, 26)), Vector((14, -56, 172))),
+        "side": (1152, 864, 53, Vector((480, 12, 139)), Vector((0, -125, 285))),
+        "rear": (1152, 864, 56, Vector((-280, -720, 185)), Vector((0, -151, 271))),
+        "guardian": (1080, 910, 42, Vector((-1, 258, 32)), Vector((2, 198, 43))),
+        "left_guardian": (900, 900, 37, Vector((29, 252, 34)), Vector(guardian_base(1)) + Vector((0, 0, 24))),
+        "right_guardian": (900, 900, 37, Vector((-29, 249, 32)), Vector(guardian_base(-1)) + Vector((0, 0, 24))),
         "fork": (900, 900, 46, Vector((95, -20, 500)), TRUNK[4] + Vector((0, 0, 20))),
         "root": (900, 900, 52, Vector((12, contact.y + 75, max(stair_profile((START_Y - contact.y - 75) / STEP_RUN)[2] + 14,
                                                               contact.z + 26))), contact + Vector((0, 0, 4))),
