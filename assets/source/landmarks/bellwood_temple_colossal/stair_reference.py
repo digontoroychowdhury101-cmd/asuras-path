@@ -7,6 +7,8 @@ VESP_VIEWS (comma list of views; a clay_ prefix renders that view in grey clay),
 """
 
 import math
+from heapq import heappop, heappush
+from itertools import product
 from array import array
 import os
 from pathlib import Path
@@ -54,13 +56,13 @@ BARK_PROFILE = [((1 + .09 * math.sin(a * 6)) * math.cos(a), (1 + .11 * math.cos(
                 for a in [k * math.tau / 28 for k in range(28)]]
 
 
-def organic_path(mesh, profile, controls, radii, record=None):
+def organic_path(mesh, profile, controls, radii, record=None, samples=7):
     """Vary cross-sections in a smoothly transported frame, including near-vertical runs."""
     spine, scales = [], []
     for i in range(len(controls) - 1):
         p0, p1, p2, p3 = (controls[min(len(controls) - 1, max(0, j))] for j in range(i - 1, i + 3))
-        for k in range(7):
-            t = k / 7
+        for k in range(samples):
+            t = k / samples
             u = t * t
             spine.append((2 * p1 + (p2 - p0) * t + (2 * p0 - 5 * p1 + 4 * p2 - p3) * u
                           + (-p0 + 3 * p1 - 3 * p2 + p3) * t * u) * .5)
@@ -858,7 +860,7 @@ def stonework(h):
                 stair.lathe([(1.25, 0), (1.05, .4), (.55, 1.0), (0, 1.55)], 8, at(edge, y, z + 5.4))
             rail_hi.append(Vector((edge, y, z + 4.9)))
             rail_lo.append(Vector((edge, y, z + 2.5)))
-        for rail, size in ((rail_hi, .62), (rail_lo, .42)):
+        for rail, size in ((rail_hi, .96), (rail_lo, .63)):
             stair.sweep([(-size, -size * .8), (size, -size * .8), (size, size * .8), (-size, size * .8)], rail)
     # Stepped retaining terraces flank the raised stair; the left ones carry the root fall.
     for side in (-1, 1):
@@ -889,6 +891,13 @@ def stonework(h):
                     (moss if RNG.random() < .5 else leaf).poly(
                         [Vector((lx + dx, ly + dy, top + .05)) for dx, dy in ((-1, -.3), (.2, -.6), (1, 0), (.4, .6))],
                         open_surface=True)
+    # Short carved stone balusters carry the rail between the tall end piers.
+    for side in (-1, 1):
+        for k in range(1, STEP_COUNT - 1, 3):
+            _, yy, zz, width = stair_profile(k)
+            edge = side*(width/2+2.2)
+            stair.lathe([(.72,0),(.71,.38),(.47,1.08),(.34,1.55),(.59,2.4),(.67,2.72)],
+                        9, at(edge,yy,zz+1.8))
     # Chunkier end piers frame the climb. Damp wear stays on the stair margins.
     dress = random.Random(7014)
     for side in (-1, 1):
@@ -948,14 +957,19 @@ def stonework(h):
 GLOWS = []  # (x, y, z, width) warm light inside each gallery
 
 
-def gallery_tier(h, half_x, half_y, bottom, top, bays, radius):
+def gallery_tier(h, half_x, half_y, bottom, top, bays, radius, interior=False):
     """Colonnade on all four faces around a recessed hall: railings, bracket sets, lattice transoms, shutters.
     The front keeps the gold and most lanterns; the flanks are plainer and the back is closed and worn."""
     wood, so, stone, gold, amber = (h.m(role) for role in ("Lacquer", "Soffit", "Masonry", "Gold", "Lantern"))
     height = top - bottom
     core = half_y * .45
     inner_width = half_x * .68
-    so.box((0, 0, bottom + height / 2), (inner_width * 2, core * 2, height - 1), bevel=.3)
+    if interior:
+        so.box((0, -core, bottom + height / 2), (inner_width * 2, 2.4, height - 1), bevel=.3)
+        for x in (-inner_width, inner_width):
+            so.box((x, 0, bottom + height / 2), (2.4, core * 2, height - 1), bevel=.3)
+    else:
+        so.box((0, 0, bottom + height / 2), (inner_width * 2, core * 2, height - 1), bevel=.3)
     stone.box((0, 0, bottom - .7), (half_x * 2 + 7, half_y * 2 + 7, 1.6), bevel=.3)
     so.box((0, 0, top - 1.6), (half_x * 2 + 2, half_y * 2 + 2, 1.4), bevel=.2)  # gallery ceiling
     side_bays = max(2, round(bays * half_y / half_x))
@@ -994,6 +1008,7 @@ def gallery_tier(h, half_x, half_y, bottom, top, bays, radius):
                 continue
             middle = (x + columns[i + 1]) / 2
             span = columns[i + 1] - x - radius * 2
+            passage = interior and front and abs(middle) < length / n + 1
             for b in range(3):  # a lighter bracket set between the columns
                 so.box((0, 0, 0), (3.4 + b * 2.2, 5 + b * 1.8, 1.1), F(middle, depth + b * .8, top + b * 1.5), bevel=.15)
             so.box((0, 0, 0), (span, .7, 4.4), F(middle, depth - .5, top - 4.6), bevel=.1)  # lattice transom
@@ -1003,7 +1018,7 @@ def gallery_tier(h, half_x, half_y, bottom, top, bays, radius):
                 gold.box((0, 0, 0), (span, .45, .5), F(middle, depth + .05, top - 7.1), bevel=.05)
             local = random.Random(2101 + i + bays * 11 + 977 * f)
             # Hall-wall shutters: every bay is shut at the back, alternate bays elsewhere. Bars are gilt in front.
-            if i % 2 == 0 or dress == "rear":
+            if not passage and (i % 2 == 0 or dress == "rear"):
                 for shutter in (-1, 1):
                     sx = middle + shutter * span * .16
                     if abs(sx) < core_len:
@@ -1019,11 +1034,13 @@ def gallery_tier(h, half_x, half_y, bottom, top, bays, radius):
                              F(middle - span / 2 + span * k / 7, depth - 1.0, bottom + 4.4 + height * .29))
                 for k in range(1, 4):
                     wood.box((0, 0, 0), (span, .7, .32), F(middle, depth - 1.0, bottom + 4.4 + height * .58 * k / 4))
-            for zz, t in ((bottom + 4.6, .75), (bottom + 1.9, .5)):  # railing
-                wood.box((0, 0, 0), (span, t + .25, t), F(middle, depth + .6, zz), bevel=.08)
-            pickets = max(2, int(span / 2.6))
-            for k in range(1, pickets):
-                wood.box((0, 0, 0), (.42, .42, 2.9), F(middle - span / 2 + span * k / pickets, depth + .6, bottom + 3.2))
+            if not passage:
+                for zz, t in ((bottom + 4.6, .75), (bottom + 1.9, .5)):
+                    wood.box((0, 0, 0), (span, t + .25, t), F(middle, depth + .6, zz), bevel=.08)
+                pickets = max(2, int(span / 2.6))
+                for k in range(1, pickets):
+                    wood.box((0, 0, 0), (.42, .42, 2.9),
+                             F(middle - span / 2 + span * k / pickets, depth + .6, bottom + 3.2))
             gallery_rng = RNG if front else local  # the front keeps the draws the tree's stream expects
             if gallery_rng.random() < {"front": .7, "side": .3, "rear": .12}[dress]:  # paper lanterns in open bays
                 lz = top - 9 - gallery_rng.uniform(0, 4)
@@ -1035,8 +1052,10 @@ def gallery_tier(h, half_x, half_y, bottom, top, bays, radius):
                 (gold if front else so).box((0, 0, 0), (.2, .2, top - 1.6 - lz - 2.2),
                                             F(middle, ly, (lz + top - 1.6) / 2 + 1.1))
             if gallery_rng.random() < {"front": .35, "side": .3, "rear": .45}[dress]:  # broken railing
-                wood.box((0, 0, 0), (span * .4, .6, .6), F(middle + span * .2, depth + 2.2, bottom + .6)
-                         @ Matrix.Rotation(gallery_rng.uniform(-.5, .5), 4, "Z"), bevel=.08)
+                tilt = gallery_rng.uniform(-.5, .5)
+                if not passage:
+                    wood.box((0, 0, 0), (span * .4, .6, .6), F(middle + span * .2, depth + 2.2, bottom + .6)
+                             @ Matrix.Rotation(tilt, 4, "Z"), bevel=.08)
         wood.box((0, 0, 0), (length * 2 + 8, 7, 4.5), F(0, depth, top - 1), bevel=.35)
         wood.box((0, 0, 0), (length * 2 + 11, 10, 2.6), F(0, depth, top + 5.6), bevel=.35)
         if front:
@@ -1071,8 +1090,8 @@ def panelwork(h, width, depth, base, z, banners=True):
 
 
 def pavilion(hall, loc, width, depth, height, bays, arch=False):
-    block = Hall()
-    gallery_tier(block, width * .412, depth * .388, 0, height, bays, max(2.2, width * .019))
+    block = type(hall)()
+    gallery_tier(block, width * .412, depth * .388, 0, height, bays, max(2.2, width * .019), interior=arch)
     eave = height + 8
     kit.roof(block, width, depth, width * .146, eave, min(116, max(34, int(width * .48))))
     # A lower skirt eave sits under the main roof so each tier reads as layered, upturned eaves.
@@ -1168,6 +1187,20 @@ def place_lion(location, yaw, side):
             world = obj.matrix_world.copy()
             obj.parent = None
             obj.matrix_world = frame @ world
+            for material in obj.data.materials:
+                nodes, links = material.node_tree.nodes, material.node_tree.links
+                shader = next(node for node in nodes if node.type == "BSDF_PRINCIPLED")
+                maps = [node.image for node in nodes if node.type == "TEX_IMAGE" and node.image]
+                assert len(maps) >= 3 and all(tuple(image.size) == (2048, 2048) for image in maps), obj.name
+                assert all(shader.inputs[slot].is_linked for slot in ("Base Color", "Roughness", "Normal")), obj.name
+                albedo = shader.inputs["Base Color"].links[0].from_socket
+                granite = nodes.new("ShaderNodeMixRGB")
+                granite.blend_type = "MULTIPLY"
+                granite.inputs[0].default_value = 1
+                granite.inputs[2].default_value = (.67, .71, .63, 1)
+                links.new(albedo, granite.inputs[1])
+                links.new(granite.outputs[0], shader.inputs["Base Color"])
+                print(f"Guardian PBR {obj.name}: {[image.name for image in maps]}", flush=True)
     for obj in imported:
         if obj.type != "MESH":
             bpy.data.objects.remove(obj, do_unlink=True)
@@ -1233,23 +1266,23 @@ def random_unit():
 # The upper anchors pass over eaves or follow the masonry spine beside each open gallery.
 ROOT_GUIDES = (
     (8.4, ((32,-129,295),(58,-114,320),(84,-102,322),(97,-98,317),(108,-96,277),(115,-95,257),
-           (119,-85,230),(117,-85,203),(128,-89,181),(117,-94,173),(109,-72,113)), (110,94,105,87,82,76,70)),
-    (7.0, ((38,-137,316),(67,-133,335),(98,-139,338),(112,-143,321),(136,-153,303),(156,-152,295),(142,-145,273),
+           (119,-85,230),(117,-85,203),(128,-89,181),(117,-94,173),(109,-72,113)), (113,130,141,116,89,77,68)),
+    (7.0, ((38,-137,316),(67,-133,335),(95,-140,337),(91,-149,318),(100,-159,304),(118,-151,285),(134,-144,268),
            (134,-138,247),(150,-129,232),(152,-133,201),(153,-94,173),(147,-84,162),
            (144,-56,130),(121,-46,114)),
-           (133,141,126,119,100,89,83)),
+           (131,158,126,114,104,96,86)),
     (6.6, ((42,-127,270),(58,-114,250),(76,-88,249),(92,-74,244),(102,-82,232),(111,-82,201),
-           (95,-70,171),(81,-72,136),(94,-61,113)), (97,99,84,73,64,59,52)),
-    (7.9, ((31,-152,346),(61,-160,391),(87,-150,391),(109,-144,382),(101,-142,374),(119,-154,343),
-           (157,-152,295),(157,-170,297),(159,-180,261),(175,-142,234),(169,-133,180),(160,-96,173),
-           (161,-84,165),(158,-48,160),(145,-42,113)), (156,155,148,140,126,117,105)),
+           (95,-70,171),(81,-72,136),(94,-61,113)), (97,95,75,66,59,54,48)),
+    (7.9, ((31,-152,346),(61,-160,391),(87,-150,391),(100,-149,385),(96,-158,365),(97,-160,343),
+           (115,-159,323),(126,-173,298),(157,-170,297),(159,-180,261),(175,-142,234),(169,-133,180),(160,-96,173),
+           (161,-84,165),(158,-48,160),(145,-42,113)), (156,181,153,141,133,116,107)),
     (8.0, ((23,-138,300),(-7,-124,327),(-35,-116,329),(-66,-110,326),(-95,-113,316),
            (-112,-107,281),(-102,-113,244),(-128,-145,196),(-133,-120,169),
            (-129,-93,166),(-119,-91,135),(-110,-67,113)),
-           (-111,-99,-103,-89,-77,-75,-67)),
+           (-111,-113,-127,-101,-84,-70,-63)),
     (7.1, ((14,-147,348),(-22,-153,382),(-54,-150,388),(-77,-145,385),(-89,-144,352),(-102,-154,337),
            (-136,-160,289),(-148,-171,251),(-143,-154,229),(-151,-148,181),(-156,-108,170),(-154,-93,167),
-           (-142,-79,164),(-132,-56,113)), (-139,-145,-132,-118,-109,-94,-88)),
+           (-142,-79,164),(-132,-56,113)), (-138,-151,-142,-117,-106,-93,-85)),
     (6.2, ((33,-126,254),(9,-113,251),(-20,-94,252),(-43,-84,247),(-67,-72,242),
            (-92,-76,240),(-85,-84,222),(-88,-82,191),(-81,-71,146),(-98,-51,113)),
            (-91,-84,-73,-69,-63,-58,-51)),
@@ -1259,11 +1292,76 @@ ROOT_GUIDES = (
 )
 
 
+def supported_connector(start, end, distance, direct_limit):
+    """Find a short route along real supports when a guide crosses an open bay."""
+    delta = end - start
+    step = 3.0
+    count = max(1, math.ceil(delta.length / 1.5))
+    if all(distance(start.lerp(end, j / count)) <= direct_limit for j in range(1, count)):
+        return [end]
+    origin = tuple(round(coord / step) for coord in start)
+    goal = tuple(round(coord / step) for coord in end)
+
+    def point(key):
+        return Vector(key) * step
+
+    offsets = [(offset, math.sqrt(sum(v*v for v in offset)) * step)
+               for offset in product((-1, 0, 1), repeat=3) if any(offset)]
+    adjacent_limit = direct_limit + .75
+    frontier = [(delta.length, 0.0, origin)]
+    cost = {origin: 0.0}
+    parent = {}
+    while frontier and len(cost) < 20000:
+        _, travelled, node = heappop(frontier)
+        if travelled != cost[node]:
+            continue
+        a = point(node)
+        if (a-end).length <= 7 and all(distance(a.lerp(end, t)) <= adjacent_limit for t in (.3, .6, .9)):
+            route = [end]
+            while node != origin:
+                route.append(point(node))
+                node = parent[node]
+            return list(reversed(route))
+        for offset, stride in offsets:
+            nxt = tuple(v+w for v,w in zip(node, offset))
+            b = point(nxt)
+            radius = (b - start).length
+            if radius > delta.length + 36:
+                continue
+            stretch = distance(b)
+            if stretch > adjacent_limit or distance(a.lerp(b, .5)) > adjacent_limit:
+                continue
+            new_cost = travelled + stride + stretch * .32
+            if new_cost >= cost.get(nxt, math.inf):
+                continue
+            cost[nxt] = new_cost
+            parent[nxt] = node
+            heappush(frontier, (new_cost + (b-point(goal)).length, new_cost, nxt))
+    raise ValueError(f"Root support route not found between {tuple(round(v,1) for v in start)} and {tuple(round(v,1) for v in end)}")
+
+
+def root_buttress(h):
+    masonry = h.m("Masonry")
+    profile = ((139,-161,229,35,24), (136,-163,253,31,22), (128,-166,279,23,21),
+               (111,-167,303,17,19), (101,-181,323,12,17), (93,-184,339,8,10))
+    rings = [[Vector((x + a*width*(1+.13*math.cos(8*i)), y + b*depth, z+3*math.sin(i+row)))
+              for i,(a,b) in enumerate(circle(12))]
+             for row,(x,y,z,width,depth) in enumerate(profile)]
+    masonry.grid(rings, wrap=True)
+    masonry.poly(list(reversed(rings[0])))
+    masonry.poly(rings[-1])
+
+
 def terrace_roots(h, bark, twigs, ivy, moss):
     """Drape each authored guide over the measured roof and the retaining-wall profiles."""
     roof = [BVHTree.FromBMesh(h.m(role).bm) for role in ("Tile", "Masonry", "Soffit", "Lacquer")]
     lower = roof[1]
     rng = random.Random(1416)
+    bridged = 0
+
+    def distance(point):
+        hits = [tree.find_nearest(point, 9) for tree in roof]
+        return min((hit[3] for hit in hits if hit[0] is not None), default=10.0)
 
     def contact(point, radius, trees, reach):
         hits = [tree.find_nearest(point, reach) for tree in trees]
@@ -1275,7 +1373,9 @@ def terrace_roots(h, bark, twigs, ivy, moss):
         return surface + normal * min(radius * .39, 2.5), True
 
     def sweep(guide, radii, mesh, profile, stem=0, upper_end=0):
+        nonlocal bridged
         points, widths, holds = [], [], []
+        supported_last = False
         for i, (a, b) in enumerate(zip(guide, guide[1:])):
             count = max(1, math.ceil((b-a).length / 4))
             for j in range(count):
@@ -1284,7 +1384,19 @@ def terrace_roots(h, bark, twigs, ivy, moss):
                 radius = radii[i] * (1-t) + radii[i+1] * t
                 supported = False
                 if i >= stem and i < upper_end:
-                    pt, supported = contact(pt, radius, roof, 16)
+                    pt, supported = contact(pt, radius, roof, 64)
+                    if not supported:
+                        raise ValueError(f"Upper root has no support near {tuple(pt)}")
+                    if supported_last and points and (pt - points[-1]).length > 3.8:
+                        route = supported_connector(points[-1], pt, distance, radius*.76 + .55)
+                        if len(route) > 1:
+                            bridged += 1
+                            start_width = widths[-1]
+                            for n, anchor in enumerate(route[:-1], 1):
+                                if (anchor-points[-1]).length > .33:
+                                    points.append(anchor)
+                                    widths.append(start_width + (radius-start_width)*n/len(route))
+                    supported_last = True
                 elif i >= stem:
                     # Lower guides carry the wall and coping offsets explicitly. Nearest-face projection here
                     # would pull consecutive samples toward opposite faces of a chipped block.
@@ -1300,7 +1412,7 @@ def terrace_roots(h, bark, twigs, ivy, moss):
         else:
             widths[-1] = radii[-1]
         if len(points) >= 2:
-            organic_path(mesh, profile, points, widths, SPINE if mesh is bark else None)
+            organic_path(mesh, profile, points, widths, SPINE if mesh is bark else None, samples=1)
         CONTACTS.extend((points[i], widths[i]) for i in holds if i < len(points))
         return points, widths
 
@@ -1359,6 +1471,7 @@ def terrace_roots(h, bark, twigs, ivy, moss):
                     if supported:
                         kit.leaf(ivy if rng.random() < .32 else moss, q, rng.uniform(.6, 1.5))
         print(f"Authored root {number}: {len(points)} samples to {tuple(round(v,1) for v in points[-1])}", flush=True)
+    print("Upper root detours along supports:", bridged, flush=True)
 
 
 def aged_tree(h):
@@ -2206,7 +2319,8 @@ def bark_grain(obj):
         shade = .53 + .30 * noise(p * .27)
         value = value * (1 - .55 * seam) + shade * (.55 * seam)
         if p.z < 190:
-            value += .22 * noise(p * .33) + .10 * noise(p * .79)
+            value += .23 * noise(p * .31) + .12 * noise(p * .78)
+            amplitude *= 1.25
         for axis in range(3):
             coords[3 * i + axis] += normals[3 * i + axis] * (value - .55) * amplitude
         ridge[i] = min(1.0, max(0.0, value))
@@ -2403,6 +2517,7 @@ def main():
         gate_lantern(temple, x, -46, 146)
         lamps.append((x, -46, 146))
     crags(temple)
+    root_buttress(temple)
     if os.environ.get("VESP_SKIP_TREE") != "1":
         aged_tree(temple)
     traveller(temple)
@@ -2455,18 +2570,45 @@ def main():
         "fork": (900, 900, 46, Vector((95, -20, 500)), TRUNK[4] + Vector((0, 0, 20))),
         "root": (900, 900, 52, Vector((145, contact.y + 52, contact.z + 40)),
                  contact + Vector((0, 0, 6))),
+        "upper_root": (1080,900,42,Vector((245,8,326)),Vector((128,-137,284))),
+        "fork_alt": (1080,900,52,Vector((-160,-97,542)),TRUNK[4]+Vector((0,0,18))),
+        "front_elevation": (1080,1200,45,Vector((0,1100,377)),Vector((0,-90,377))),
+        "east_elevation": (1080,1200,45,Vector((1090,-70,377)),Vector((0,-70,377))),
+        "west_elevation": (1080,1200,45,Vector((-1090,-70,377)),Vector((0,-70,377))),
+        "rear_elevation": (1080,1200,45,Vector((0,-1300,377)),Vector((0,-90,377))),
+        "above": (1080,1100,45,Vector((42,-52,1420)),Vector((0,-69,200))),
     }
     clay = bpy.data.materials.new("Neutral clay seam check")
     clay.diffuse_color = (.5, .5, .5, 1)
     clay.use_nodes = True
     next(n for n in clay.node_tree.nodes if n.type == "BSDF_PRINCIPLED").inputs["Roughness"].default_value = .8
+    storm_world = scene.world
+    neutral_world = bpy.data.worlds.new("Neutral overcast review")
+    neutral_world.use_nodes = True
+    base = neutral_world.node_tree.nodes.get("Background")
+    base.inputs["Color"].default_value = (.27, .29, .32, 1)
+    base.inputs["Strength"].default_value = .66
+    suns = {name: (bpy.data.lights[name].energy, tuple(bpy.data.lights[name].color))
+            for name in ("overcast", "rim")}
     for name in os.environ.get("VESP_VIEWS", "portrait,approach,fork,root").split(","):
-        is_clay = name.startswith("clay_")  # grey override, fog hidden: seams and twig starts show
-        width, height, angle, where, target = views[name[5:] if is_clay else name]
+        is_clay = name.startswith("clay_")
+        neutral = is_clay or name.startswith("neutral_")
+        key = name.split("_", 1)[1] if neutral else name
+        width, height, angle, where, target = views[key]
         scene.view_layers[0].material_override = clay if is_clay else None
+        scene.world = neutral_world if neutral else storm_world
+        camera.data.type = "ORTHO" if key.endswith("_elevation") or key == "above" else "PERSP"
+        camera.data.ortho_scale = 920
+        for lamp, (energy, colour) in suns.items():
+            bpy.data.lights[lamp].energy = (1.9 if lamp=="overcast" else .58) if neutral else energy
+            bpy.data.lights[lamp].color = (1.0, .98, .96) if neutral else colour
         for ob in scene.objects:
             if ob.name.startswith(("Valley haze", "Broken ribbons of fog")):
-                ob.hide_render = is_clay
+                ob.hide_render = neutral
+            if ob.type=="LIGHT" and ob.name not in suns:
+                ob.hide_render = neutral
+            if ob.name.startswith(("Bellwood_Colossal_Crag","Bellwood_Colossal_Pine")):
+                ob.hide_render = neutral and camera.data.type=="ORTHO"
         scene.render.resolution_x, scene.render.resolution_y = width, height
         scene.render.resolution_percentage = int(os.environ.get("VESP_RENDER_PERCENT", 100))
         camera.data.angle_y = math.radians(angle)
