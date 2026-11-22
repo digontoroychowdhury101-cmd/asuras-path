@@ -39,7 +39,8 @@ The creator is entirely vibe-coding this Roblox game and does not write code man
   - Keep upload sub-meshes under 18–20k tris, never decimate, and use 2048 maps.
 - **Sourcing.**
   - Allowed: CC0, CC-BY (credit in `outputs/vesperhold/THIRD_PARTY.md` and `assets/CREDITS.md`) and MIT-style open models or repos, plus ElevenLabs SFX.
-  - Never allowed: NC, ND, paid or unclear licences, Creator Store models, or Meshy credits.
+  - Never allowed: NC, ND, paid or unclear licences, or Creator Store models.
+  - Meshy (creator, 22 Nov 2026): the creator connected Meshy and allows it when it is needed for a really good-looking model, through the Blender MCP `generate_3d` with provider `meshy`. Each generation costs the creator credits. Use it for hero props the procedural recipes do poorly, such as the guardian lions, lanterns and roof ornaments. Reuse a generated model rather than generating again, and never use it for the tree or the architecture. Record every generation (prompt or source image, date, task ID) in `assets/CREDITS.md`. If the account is on Meshy's free plan, its outputs are CC BY 4.0 and must be credited to Meshy; check the plan before shipping.
   - Verify each licence on the asset's own page before downloading.
 - **Anti-slop craft rules (creator, 22 Nov 2026).** Use antislop when making anything in the project, including models, world art, UI, in-game text, docs and code comments. Mode is "during": apply it while building, without asking. The vendored MIT copy and a guide to which skill fits which job are in `.agents/skills/antislop/` (start with `SOURCE.md`).
 - **Bellwood temple.**
