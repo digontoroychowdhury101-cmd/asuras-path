@@ -33,3 +33,19 @@ Creator note: the basin "should not have a sky since it is underground", and it 
 - Looking up: p50 64.2 ms. Looking away: p50 62.5 ms.
 - Memory: 3390 MB, of which graphics 2673 MB; 96,015 instances.
 - These numbers are an unfocused Studio window, not device numbers. Phone profiling is still open.
+
+## Play verification (built place, Development, single client)
+- **First Play: "Server startup failed".** `VesperholdKit.place` read `SurfaceAppearance.ColorMap`, which game scripts cannot do (Plugin capability). The Lune fakes do not enforce capabilities. Fixed in 684910d: the swap keys on the registry ColorMap carried in the kit template, and the test's imported surface now has a different ColorMap from its registry entry.
+- **Review finding.** Gold and lantern subs had been stripped of metalness. They now keep it, leaving 210 finishes. On the client, 539 temple surfaces are non-metal and 23 gold and lantern surfaces are metal.
+- **Second Play: clean start.** Results:
+  - HollowLights holds 32 PointLights, 14 of them StairFill.
+  - The sky is 83866687618973, and GlobalShadows is off inside.
+  - All 432 upward rays from the lake hit vault rock, so no sky is visible.
+- **Captures 10–15:** causeway (textures still streaming in: white for about 30 s on a cold client), stair with lions, up at the iris, far shore, hall interior, exit doorway.
+- **Frame time** (far-shore view, Studio unfocused): p50 57.1 ms, p95 64.2 ms; it was 66.2 / 77.2 before. Memory 3202 MB.
+- **Saved** to Development 118614906972571 as version 40. Never published.
+
+## Still open
+- **Hall back wall.** It stays black even with 50-stud lights 25 studs away (capture 14), so it is a near-black surface or an opening, not missing light. Trace the mesh.
+- **Stair variants made no difference.** The stair reads darker than the client-side preview (04). Seven pairs at brightness 3, or the gold and lantern metal cleared, both left the build's look unchanged. The preview's warmer treads remain unexplained.
+- **Not run in this batch:** the two-client multiplayer check, phone-emulator profiling and the switchback walk (route 380–395).
