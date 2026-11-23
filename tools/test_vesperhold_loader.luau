@@ -102,12 +102,14 @@ register("Brazier_Post", { { "Iron", V3(1, 8, 1), V3(0, 4, 0) }, { "Flame", V3(2
 register("Dead_Pine_Snapped_A", { { "Bark", V3(3, 60, 3), V3(0, 30, 0) } })
 register("Dead_Pine_Snapped_B", { { "Bark", V3(3, 50, 3), V3(0, 25, 0) } })
 register("Arcade_Bay_40", { { "Stone", V3(40, 40, 14), V3(0, 20, 0) }, { "Frost", V3(40, 1, 14), V3(0, 40.5, 0) } })
--- An incomplete piece: the registry lists a sub the uploaded model does not contain.
 register("Temple_Tier_A", { { "Stone", V3(20, 10, 20), V3(0, 5, 0) } })
-do -- the importer gave this sub a metalness map; its ColorMap has a stone finish
+do -- the importer gave this sub a metalness map; its registry ColorMap has a stone finish. The imported surface keeps 601:
+	-- game scripts cannot read SurfaceAppearance maps (Plugin capability; win-84 Play broke startup), so the swap keys on the registry.
+	registry.Temple_Tier_A["Temple_Tier_A__Stone"].ColorMap = "rbxassetid://602"
 	local sa = assets[registry.Temple_Tier_A["Temple_Tier_A__Stone"].Asset]:FindFirstChild("Temple_Tier_A__Stone", true):FindFirstChildOfClass("SurfaceAppearance")
-	sa.ColorMap, sa.MetalnessMap = "rbxassetid://602", "rbxassetid://604"
+	sa.MetalnessMap = "rbxassetid://604"
 end
+-- An incomplete piece: the registry lists a sub the uploaded model does not contain.
 register("Banner_Torn_A", { { "Banner", V3(8, 30, 1), V3(0, 15, 0) } })
 registry.Banner_Torn_A["Banner_Torn_A__Rope"] = { MeshId = newId(), Asset = registry.Banner_Torn_A["Banner_Torn_A__Banner"].Asset }
 -- A piece whose asset does not load.

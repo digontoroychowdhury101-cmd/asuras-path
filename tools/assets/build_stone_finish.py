@@ -2,8 +2,8 @@
 """Write assets/models/AsuraStoneFinish.rbxmx: one non-metal SurfaceAppearance per colossal-temple ColorMap.
 
 The 3D importer gave the Bellwood colossal temple, its guardians and the gate towers metalness maps, so the stone mirrors
-the black cave sky and renders black. Each finish repeats the uploaded colour, normal and roughness maps with no
-metalness. A running server cannot clear MetalnessMap, so VesperholdKit swaps these in by ColorMap id at placement.
+the black cave sky and renders black. Gold and lantern subs are real metal and keep theirs. Each finish repeats the
+uploaded colour, normal and roughness maps with no metalness. A running server cannot clear MetalnessMap, so VesperholdKit swaps these in by ColorMap id at placement.
 Rerun after a re-upload of those pieces (reads src/shared/LandmarkKitRegistry.luau).
 """
 import re
@@ -14,12 +14,13 @@ ROOT = Path(__file__).resolve().parents[2]
 REGISTRY = (ROOT / "src/shared/LandmarkKitRegistry.luau").read_text(encoding="utf-8")
 OUT = ROOT / "assets/models/AsuraStoneFinish.rbxmx"
 PIECES = ("Bellwood_Colossal", "Bellwood_GateTowers")
+METAL = re.compile(r"__(Gold|Lantern)")  # real metal: gilding and lantern frames keep their maps (lacquer is paint, so it is stone here)
 ROW = re.compile(r'\["([^"]+)"\] = \{ MeshId = "[^"]+", Asset = "[^"]+", ColorMap = "(rbxassetid://(\d+))", '
                  r'NormalMap = "(rbxassetid://\d+)", RoughnessMap = "(rbxassetid://\d+)"')
 
 finishes = {}
 for sub, colour, number, normal, rough in ROW.findall(REGISTRY):
-    if not sub.startswith(PIECES):
+    if not sub.startswith(PIECES) or METAL.search(sub):
         continue
     maps = (colour, normal, rough)
     assert finishes.setdefault(number, maps) == maps, f"{sub}: ColorMap {number} already used with other maps"

@@ -17,7 +17,7 @@ local SOLID_GROUPS = { Statue = true, Pedestal = true, Tree = true, Grave = true
 local PRIMARY = { "Stone", "Robe", "Body", "Bark", "Plinth", "Iron", "Water", "Banner", "Figure", "FigureSmooth" }
 local CRIMSON, AMBER, FLAME = Color3.fromRGB(150, 26, 38), Color3.fromRGB(224, 142, 62), Color3.fromRGB(255, 138, 52)
 
-type Sub = { Key: string, Source: MeshPart, Frame: CFrame, HasCenter: boolean, Role: string }
+type Sub = { Key: string, Source: MeshPart, Frame: CFrame, HasCenter: boolean, Role: string, Colour: string? }
 -- Fidelity: per-role collision that replaces the group rules (a role it does not list never collides).
 type Options = { Group: string?, Walkable: boolean?, Seed: number?, Offset: CFrame?, Fidelity: { [string]: Enum.CollisionFidelity }? }
 local models: { [string]: Instance | boolean } = {}
@@ -124,7 +124,7 @@ local function readTemplate(piece: string): {Sub}?
 		end
 		local role = string.gsub(string.match(key,"__(.+)$") or key,"_%d+$","")
 		if role == "GlassR" then role = "Glass" end -- crimson glass has the same collision and light role
-		table.insert(list,{Key=key,Source=src,Frame=rel,HasCenter=center~=nil,Role=role})
+		table.insert(list,{Key=key,Source=src,Frame=rel,HasCenter=center~=nil,Role=role,Colour=if type(e.ColorMap)=="string" then e.ColorMap else nil})
 	end
 	-- A model returned by LoadAsset can have a Studio bounding-centre pivot.
 	-- Missing explicit foot-space centres come from the whole assembled piece,
@@ -273,10 +273,11 @@ function Kit.place(piece: string, frame: CFrame, scale: Vector3, opts: Options?)
 		end
 		-- The 3D importer baked metalness into the colossal temple's stone, which mirrors the black cave sky as black.
 		-- A build-time finish (ServerStorage.AsuraStoneFinish, child named by ColorMap id, tools/assets/build_stone_finish.py)
-		-- carries the same maps without it; a running server cannot clear MetalnessMap itself.
+		-- carries the same maps without it; a running server cannot clear MetalnessMap itself, nor read the maps, so the key is the
+		-- registry's ColorMap.
 		local surface = part:FindFirstChildOfClass("SurfaceAppearance")
-		local stones = surface and game:GetService("ServerStorage"):FindFirstChild("AsuraStoneFinish")
-		local stone = stones and stones:FindFirstChild(string.match(surface.ColorMap, "%d+$") or "")
+		local stones = surface and sub.Colour and game:GetService("ServerStorage"):FindFirstChild("AsuraStoneFinish")
+		local stone = stones and stones:FindFirstChild(string.match(sub.Colour :: string, "%d+$") or "")
 		if surface and stone then
 			surface:Destroy()
 			stone:Clone().Parent = part
