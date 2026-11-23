@@ -65,7 +65,7 @@ local Lighting=instance('Lighting')
 for _,n in {'CB_Atmosphere','CB_ColorCorrection','CB_SunRays','CB_Bloom'}do local p=instance('Effect',n);p.Parent=Lighting end
 local player=instance('Player')
 local brazier=instance('PointLight')
-local Shared={StrikeTrajectories='StrikeTrajectories',PresentationAssets='PresentationAssets',EnvironmentProfiles='EnvironmentProfiles',WorldDefinitions='WorldDefinitions',EffectsPreference='EffectsPreference',EffectEasing='EffectEasing'}
+local Shared={StrikeTrajectories='StrikeTrajectories',PresentationAssets='PresentationAssets',EnvironmentProfiles='EnvironmentProfiles',WorldDefinitions='WorldDefinitions',LandmarkLayout='LandmarkLayout',EffectsPreference='EffectsPreference',EffectEasing='EffectEasing'}
 local AsurasPath={Shared=Shared,Simulation={StrikeGeometry='StrikeGeometry'}}
 local services={CollectionService={GetTagged=function()return {brazier}end},ReplicatedStorage={AsurasPath=AsurasPath,WaitForChild=function()return AsurasPath end},SoundService=SoundService,Lighting=Lighting,Players={LocalPlayer=player},TweenService=TweenService,
  Debris={AddItem=function()end},ServerStorage=instance('ServerStorage')}

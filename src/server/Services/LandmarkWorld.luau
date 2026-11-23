@@ -870,7 +870,7 @@ function World.build(folders: { [string]: Instance }, waitReady: (string) -> boo
 				for _, piece in candidate.Pieces do
 					local pose = frame * CFrame.new(piece.X, piece.Y, piece.Z)
 						* CFrame.Angles(0, piece.Yaw or 0, 0) * CFrame.new(piece.Foot.X, piece.Foot.Y, piece.Foot.Z)
-					local placedPiece = Kit.place(piece.Model, pose, Vector3.one, { Fidelity = {} })
+					local placedPiece = Kit.place(piece.Model, pose, Vector3.one, { Fidelity = {}, Omit = candidate.Omit })
 					if not placedPiece then break end
 					placedPiece.Parent = pack
 				end

@@ -232,6 +232,11 @@ check("glass without a finish drops its SurfaceAppearance so Neon glows; tracery
 	and lancet:FindFirstChild("Lancet_Tall__Tracery"):FindFirstChildOfClass("SurfaceAppearance") ~= nil
 	and lancet:FindFirstChild("Lancet_Tall__Stone"):FindFirstChildOfClass("SurfaceAppearance") ~= nil)
 check("glass never collides and non-glass subs get no light", not glass.CanCollide and lancet:FindFirstChild("Lancet_Tall__Stone"):FindFirstChild("PointLight") == nil)
+do
+	local trimmed = Kit.place("Lancet_Tall", CFrame.new(), V3(1, 1, 1), { Omit = { "Lancet_Tall__Glass" } })
+	check("Omit leaves the named sub out and places the rest", trimmed ~= nil and trimmed:FindFirstChild("Lancet_Tall__Glass") == nil
+		and trimmed:FindFirstChild("Lancet_Tall__Stone") ~= nil and trimmed:FindFirstChild("Lancet_Tall__Tracery") ~= nil)
+end
 local brazier = Kit.place("Brazier_Post", CFrame.new(), V3(1, 1, 1), { Group = "Brazier" })
 local flame = brazier:FindFirstChild("Brazier_Post__Flame")
 local fl = flame:FindFirstChild("PointLight")
@@ -847,6 +852,15 @@ do
 			end
 		end
 		check("colossal eave and doorway accents: one per configured accent, all inside the basin", templeLights == #colossal.Accents and inside)
+		-- win-85: the soffit's closed box stood in front of the hall's rear colonnade as an unlit black wall (lights on either side
+		-- left it black). The pack leaves it out, and two accents light the colonnade it hid.
+		local registry = require("../src/shared/LandmarkKitRegistry")
+		local omitted = colossal.Omit and colossal.Omit[1]
+		check("the colossal pack omits the hall's soffit box, a sub the registry really has",
+			omitted == "Bellwood_ColossalTemple__Soffit04_01_Part01" and registry.Bellwood_ColossalTemple[omitted] ~= nil)
+		local rear = 0
+		for _, a in colossal.Accents do if a[3] <= -120 and a[2] > 113 and a[2] < 150 then rear += 1 end end
+		check("two accents light the hall's rear colonnade", rear == 2)
 		local vault, doorway = W2.cavernShell(bw), W2.cavernExit(bw)
 		local extra = #W2.colossalRidgeFills(bw) + #W2.colossalApproach(bw, W2.templeFrame(bw, colossal)) + #vault + #doorway
 		check("colossal ridge and approach terrain are written on top of the hall build's fills", extra > 0 and fills - before == totalFills + extra

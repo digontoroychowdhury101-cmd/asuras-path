@@ -19,7 +19,7 @@ local CRIMSON, AMBER, FLAME = Color3.fromRGB(150, 26, 38), Color3.fromRGB(224, 1
 
 type Sub = { Key: string, Source: MeshPart, Frame: CFrame, HasCenter: boolean, Role: string, Colour: string? }
 -- Fidelity: per-role collision that replaces the group rules (a role it does not list never collides).
-type Options = { Group: string?, Walkable: boolean?, Seed: number?, Offset: CFrame?, Fidelity: { [string]: Enum.CollisionFidelity }? }
+type Options = { Group: string?, Walkable: boolean?, Seed: number?, Offset: CFrame?, Fidelity: { [string]: Enum.CollisionFidelity }?, Omit: { string }? }
 local models: { [string]: Instance | boolean } = {}
 local templates: { [string]: {Sub} | boolean } = {}
 local collisionTemplates: { [MeshPart]: { [Enum.CollisionFidelity]: MeshPart | boolean } } = {}
@@ -255,6 +255,7 @@ function Kit.place(piece: string, frame: CFrame, scale: Vector3, opts: Options?)
 	local primary: BasePart? = nil
 	local best = math.huge
 	for _,sub in subs do
+		if o.Omit and table.find(o.Omit,sub.Key) then continue end
 		local pose, dimensions = scaledFrame(sub.Frame,scale)
 		if not pose or not dimensions then model:Destroy(); return nil end
 		local fid = if o.Fidelity then o.Fidelity[sub.Role] else nil

@@ -7,6 +7,7 @@ local Shared = game:GetService("ReplicatedStorage"):WaitForChild("AsurasPath")
 local Profiles = require(Shared.Shared.EnvironmentProfiles)
 local Assets = require(Shared.Shared.PresentationAssets)
 local World = require(Shared.Shared.WorldDefinitions)
+local Layout = require(Shared.Shared.LandmarkLayout) :: any
 local Ash = require(script.Parent.ArenaAsh)
 local Controller = {}
 Controller.__index = Controller
@@ -74,6 +75,18 @@ function Controller.Update(self: any, dt: number)
 		end
 	end
 	local p = own.Root.Position
+	if not self.HollowFetch then
+		-- Fetched only on sight, the Hollow temple's ~600 maps rendered white for ~30 s (win-85): start the download on the approach.
+		local bw = Layout.Landmarks.Bellwood
+		local c = Layout.basinCentre(bw)
+		if (p.X - c.X) ^ 2 + (p.Z - c.Z) ^ 2 < bw.Basin.Cavern.Preload ^ 2 then
+			self.HollowFetch = true
+			task.spawn(function()
+				local maps = Layout.hollowMaps(require(Shared.Shared.LandmarkKitRegistry) :: any)
+				pcall(function() game:GetService("ContentProvider"):PreloadAsync(maps) end)
+			end)
+		end
+	end
 	local reported = Players.LocalPlayer:GetAttribute("AsuraRegion")
 	local region = World.regionAt(p.X, p.Y, p.Z) or (if type(reported)=="string" then reported else nil)
 	local alive = own.Snapshot == nil or own.Snapshot.State ~= "KO"

@@ -459,5 +459,26 @@ do
 	check(string.format("route keeps 60 studs from every altar, node and landmark (%.0f)", nearest), nearest >= 60)
 end
 
+-- win-85: the Hollow temple's maps rendered white for ~30 s when first seen. Clients start the download on the forest approach.
+do
+	local fake = {
+		Bellwood_ColossalTemple = { A = { ColorMap = "rbxassetid://1", NormalMap = "rbxassetid://2", RoughnessMap = "rbxassetid://3", MetalnessMap = "rbxassetid://4" },
+			B = { ColorMap = "rbxassetid://1", NormalMap = "rbxassetid://5", RoughnessMap = "rbxassetid://3" } },
+		Bellwood_GateTowers = { C = { ColorMap = "rbxassetid://6" } },
+		Bellwood_GiantFace = { D = { ColorMap = "rbxassetid://7" } },
+	}
+	local got, set = L.hollowMaps(fake), {}
+	for _, id in got do set[id] = (set[id] or 0) + 1 end
+	local ok = #got == 6 and not set["rbxassetid://7"]
+	for i = 1, 6 do ok = ok and set["rbxassetid://" .. i] == 1 end
+	check("hollowMaps: each temple and gate map once, nothing from other pieces", ok)
+	local real = L.hollowMaps(require("../src/shared/LandmarkKitRegistry"))
+	local hasStair = false
+	for _, id in real do if id == "rbxassetid://101954435353952" then hasStair = true end end
+	check(string.format("hollowMaps on the real registry covers the colossal pack (%d maps)", #real), #real > 400 and hasStair)
+	local bw = L.Landmarks.Bellwood
+	check("the Hollow preload starts at least 600 studs before the giant's face", (bw.Basin.Cavern.Preload or 0) >= bw.Basin.Back + 600)
+end
+
 print(string.format("landmark layout: %d passed, %d failed", passed, failed))
 if failed > 0 then error("landmark layout failed") end

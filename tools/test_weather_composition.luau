@@ -845,6 +845,10 @@ do
 		and has("src/client/Controllers/EnvironmentController.luau", "Lighting.GlobalShadows = if self.Shadows")
 		and has("src/client/Controllers/WeatherController.luau", "self.Cavern = basin, cavern")
 		and has("src/client/Controllers/WeatherController.luau", "sky.Cover * (1 - cavern)"))
+	check("EnvironmentController starts the Hollow temple's map download once, on the forest approach (win-85)",
+		has("src/client/Controllers/EnvironmentController.luau", "Layout.hollowMaps(")
+		and has("src/client/Controllers/EnvironmentController.luau", "bw.Basin.Cavern.Preload")
+		and has("src/client/Controllers/EnvironmentController.luau", "self.HollowFetch = true"))
 	check("WeatherController grades the Hollow only once the server flags it, and keeps rain out",
 		has("src/client/Controllers/WeatherController.luau", "AsuraCavern") and has("src/client/Controllers/WeatherController.luau", "Cavern = cavern")
 		and has("src/client/Controllers/WeatherController.luau", "or cavern > 0.5"))

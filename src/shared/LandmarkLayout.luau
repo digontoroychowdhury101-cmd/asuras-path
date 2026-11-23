@@ -55,8 +55,12 @@ Layout.Landmarks = {
 					{ Model = "Bellwood_ColossalGuardianEast", X = -54.5352, Y = 29.9900, Z = 202.9500, Yaw = 0.380, Foot = { X = -0.0405, Y = 0.0250, Z = 0.2623 } },
 					{ Model = "Bellwood_ColossalGuardianWest", X = 54.0195, Y = 33.5100, Z = 193.5500, Yaw = -0.380, Foot = { X = -0.1429, Y = 0.0250, Z = 0.3048 } },
 				},
+				-- The soffit sub's closed box stood in front of the hall's rear colonnade as an unlit black wall (win-85). It is left out,
+				-- and the last two accents light the colonnade it hid.
+				Omit = { "Bellwood_ColossalTemple__Soffit04_01_Part01" },
 				Accents = { { 0, 133, -52, 36, 1.55 }, { -22, 140, -46, 34, 1.35 },
-					{ 22, 140, -46, 34, 1.35 }, { -47, 124, -47, 30, 1.05 }, { 47, 124, -47, 30, 1.05 } },
+					{ 22, 140, -46, 34, 1.35 }, { -47, 124, -47, 30, 1.05 }, { 47, 124, -47, 30, 1.05 },
+					{ -30, 130, -128, 50, 2.6 }, { 30, 130, -128, 50, 2.6 } },
 				Chimes = { X = 0, Y = 132, Z = -58 },
 			},
 			-- The Hollow (creator 2026-11-23: the eye leads underground, so no sky over the colossal temple): a basalt vault springs from
@@ -64,8 +68,10 @@ Layout.Landmarks = {
 			-- the spring and Shell thick, with a Rock skin outside so from the forest it reads as a mountain. Power 4 and Apex 1160
 			-- clear every crown mesh's bounds by 29 studs (mac-95 Studio check). Light lives inside it: amber veins on the vault meet in a stone iris above the tree, crystal-tipped stalactites hang over the crown,
 			-- glowstones line the shallows and motes drift up. Built only with the colossal pack (the old hall keeps its open sky).
+			-- Preload: clients within this many studs of the basin centre start fetching the temple's maps (win-85: fetched on sight,
+			-- ~600 2048 maps rendered white for ~30 s); 1500 reaches 750 past the giant's face on the forest approach.
 			Cavern = { Apex = 1160, Power = 4, Inset = 6, Shell = 20, Step = 20, Columns = 160, Iris = 70, Veins = 12,
-				Stalactites = 36, TipFloor = 975, Glowstones = 64 },
+				Stalactites = 36, TipFloor = 975, Glowstones = 64, Preload = 1500 },
 			-- The temple's twin gate towers and moss stair (tools/blender/landmarks/bellwood_gate_towers.py, mac-91; concept bellwood_3,
 			-- left third): origin = tower-line centre on the bed, Across/Along/Lift as the temple, front (model +Z) to the basin centre
 			-- (LandmarkWorld.gateFrame). Model Z: lowest step front edge at Steps, landing (Width wide, top Landing over the origin) back
@@ -94,6 +100,22 @@ Layout.Landmarks = {
 function Layout.front(lm: any): (number, number)
 	local a = math.rad(lm.Yaw)
 	return math.sin(a), math.cos(a)
+end
+
+-- Every colour, normal, roughness and metalness map of the Hollow's temple pack and gate towers, once each (registry =
+-- LandmarkKitRegistry). Clients preload these on the approach; game scripts cannot read a SurfaceAppearance's maps.
+function Layout.hollowMaps(registry: any): { string }
+	local maps, seen = {}, {}
+	for piece, subs in registry do
+		if string.sub(piece, 1, 17) ~= "Bellwood_Colossal" and piece ~= "Bellwood_GateTowers" then continue end
+		for _, e in subs do
+			for _, key in { "ColorMap", "NormalMap", "RoughnessMap", "MetalnessMap" } do
+				local id = e[key]
+				if type(id) == "string" and id ~= "" and not seen[id] then seen[id] = true; table.insert(maps, id) end
+			end
+		end
+	end
+	return maps
 end
 
 function Layout.basinCentre(lm: any): Vec
