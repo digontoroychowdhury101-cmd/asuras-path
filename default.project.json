@@ -852,6 +852,9 @@
       },
       "AsuraForestFinish": {
         "$path": "assets/models/AsuraForestFinish.rbxmx"
+      },
+      "AsuraStoneFinish": {
+        "$path": "assets/models/AsuraStoneFinish.rbxmx"
       }
     },
     "StarterPlayer": {

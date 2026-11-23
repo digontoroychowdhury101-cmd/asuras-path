@@ -40,8 +40,9 @@ local function applySky(self: any, key: string)
 	end
 end
 -- Inside the Hollow's vault: no sky at all, and no global shadows, since the vault would shadow every surface even where the
--- engine culls it from view (mac-97). shortcut: the built-in black texture stands in for a cave skybox; upload one if it is ever removed.
-local CAVE_SKY = "rbxasset://textures/blackBkg_square.png"
+-- engine culls it from view (mac-97). The sky still lights PBR stone: pure black left the temple a dark mass, so all six faces take one
+-- flat dark-teal image with soft mottling (win-83, uploaded 2026-11-23, decal 111215040387593), the colour of the vault's glow.
+local CAVE_SKY = "rbxassetid://83866687618973"
 local function setCave(self: any, cave: boolean)
 	if cave == self.Cave then return end
 	self.Cave = cave

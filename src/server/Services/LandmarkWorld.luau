@@ -637,6 +637,18 @@ end
 --   glowstones: teal crystal clusters in the shallows round the shore, a few with a small light
 --   motes: slow rising amber sparks over the lake
 local AMBER, TEAL = Color3.fromRGB(255, 176, 90), Color3.fromRGB(90, 220, 210)
+-- Warm fill up the pilgrim stair (five pairs over the rails) and onto the side tiers (two pairs), from the stair ramp's tread line
+-- (rise 0.88, run 2.35). win-83 Studio check: the temple's dark stone read as a black mass under the vault light alone.
+function World.stairFill(frame: CFrame): { Vector3 }
+	local spots = {}
+	for _, i in { 4, 34, 64, 94, 124 } do
+		for _, x in { -34, 34 } do table.insert(spots, frame * Vector3.new(x, 10.6 + i * 0.88, 257 - i * 2.35)) end
+	end
+	for _, i in { 20, 60 } do
+		for _, x in { -105, 105 } do table.insert(spots, frame * Vector3.new(x, 14.6 + i * 0.88, 271 - i * 2.35)) end
+	end
+	return spots
+end
 function World.cavernLights(lm: any): (Model, { any })
 	local model = Instance.new("Model")
 	model.Name = "HollowLights"
@@ -803,6 +815,11 @@ function World.cavernLights(lm: any): (Model, { any })
 			first = first or p
 		end
 		if k % 8 == 0 then light(first, TEAL, 40, 1.3) end
+	end
+	for _, at in World.stairFill(World.templeFrame(lm, lm.Basin.ColossalTemple)) do
+		local spot = glow("StairFill", CFrame.new(at), Vector3.one, AMBER)
+		spot.Transparency = 1
+		light(spot, AMBER, 60, 2.6)
 	end
 	-- motes over the lake, emitted from a thin invisible slab across the basin
 	local field = Instance.new("Part")

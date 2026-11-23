@@ -838,8 +838,10 @@ do
 	check("at the doorway the clock eases halfway to noon the short way round", halfCave.Lighting.ClockTime >= 0 and halfCave.Lighting.ClockTime < 24
 		and math.abs(fromNoon(halfCave.Lighting.ClockTime) - fromNoon(night0.Lighting.ClockTime) / 2) < 1e-6 and fromNoon(night0.Lighting.ClockTime) > 6)
 	check("the cave keeps its fill at night", L(caveNight.Lighting.Ambient) > Profiles.Night.Ambient + 80 and caveNight.CB_SunRays.Intensity == 0)
-	check("EnvironmentController blacks out the sky and lifts global shadows inside the Hollow, and restores both",
-		has("src/client/Controllers/EnvironmentController.luau", "Lighting.GlobalShadows = false") and has("src/client/Controllers/EnvironmentController.luau", "CAVE_SKY")
+	-- win-83: a pure black sky left PBR stone with no environment light; the uploaded flat dark-teal face (one image, all six) lights it
+	check("EnvironmentController swaps in the dark-teal cave sky and lifts global shadows inside the Hollow, and restores both",
+		has("src/client/Controllers/EnvironmentController.luau", "Lighting.GlobalShadows = false")
+		and has("src/client/Controllers/EnvironmentController.luau", 'local CAVE_SKY = "rbxassetid://83866687618973"')
 		and has("src/client/Controllers/EnvironmentController.luau", "Lighting.GlobalShadows = if self.Shadows")
 		and has("src/client/Controllers/WeatherController.luau", "self.Cavern = basin, cavern")
 		and has("src/client/Controllers/WeatherController.luau", "sky.Cover * (1 - cavern)"))

@@ -271,6 +271,16 @@ function Kit.place(piece: string, frame: CFrame, scale: Vector3, opts: Options?)
 		for _,child in part:GetChildren() do
 			if not child:IsA("SurfaceAppearance") and not child:IsA("Decal") then child:Destroy() end
 		end
+		-- The 3D importer baked metalness into the colossal temple's stone, which mirrors the black cave sky as black.
+		-- A build-time finish (ServerStorage.AsuraStoneFinish, child named by ColorMap id, tools/assets/build_stone_finish.py)
+		-- carries the same maps without it; a running server cannot clear MetalnessMap itself.
+		local surface = part:FindFirstChildOfClass("SurfaceAppearance")
+		local stones = surface and game:GetService("ServerStorage"):FindFirstChild("AsuraStoneFinish")
+		local stone = stones and stones:FindFirstChild(string.match(surface.ColorMap, "%d+$") or "")
+		if surface and stone then
+			surface:Destroy()
+			stone:Clone().Parent = part
+		end
 		part.Name = sub.Key
 		part.Size,part.CFrame = sub.Source.Size*dimensions,base*pose
 		part.Anchored,part.CanTouch = true,false

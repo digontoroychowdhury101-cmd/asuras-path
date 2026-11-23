@@ -43,6 +43,13 @@ local glassLib = Instance.new("Folder")
 glassLib.Name, glassLib.Parent = "AsuraVesperholdGlass", services.ServerStorage
 local roseFinish = Instance.new("SurfaceAppearance")
 roseFinish.Name, roseFinish.ColorMap, roseFinish.Parent = "Rose_Window_Great__GlassR", "rbxassetid://777", glassLib
+-- Build-time stone finishes (assets/models/AsuraStoneFinish.rbxmx), named by ColorMap id: the same maps without the importer's metalness.
+do
+	local stoneLib = Instance.new("Folder")
+	stoneLib.Name, stoneLib.Parent = "AsuraStoneFinish", services.ServerStorage
+	local stoneFinish = Instance.new("SurfaceAppearance")
+	stoneFinish.Name, stoneFinish.ColorMap, stoneFinish.NormalMap, stoneFinish.Parent = "602", "rbxassetid://602", "rbxassetid://603", stoneLib
+end
 local base = { game = { GetService = function(_, n) return services[n] end }, Instance = Instance, Enum = Enum, Vector3 = Vector3, CFrame = CFrame,
 	Color3 = Color3, UDim2 = roblox.UDim2, Random = roblox.Random, typeof = typeof, warn = function() end,
 	NumberRange = roblox.NumberRange, NumberSequence = roblox.NumberSequence, NumberSequenceKeypoint = roblox.NumberSequenceKeypoint,
@@ -96,6 +103,11 @@ register("Dead_Pine_Snapped_A", { { "Bark", V3(3, 60, 3), V3(0, 30, 0) } })
 register("Dead_Pine_Snapped_B", { { "Bark", V3(3, 50, 3), V3(0, 25, 0) } })
 register("Arcade_Bay_40", { { "Stone", V3(40, 40, 14), V3(0, 20, 0) }, { "Frost", V3(40, 1, 14), V3(0, 40.5, 0) } })
 -- An incomplete piece: the registry lists a sub the uploaded model does not contain.
+register("Temple_Tier_A", { { "Stone", V3(20, 10, 20), V3(0, 5, 0) } })
+do -- the importer gave this sub a metalness map; its ColorMap has a stone finish
+	local sa = assets[registry.Temple_Tier_A["Temple_Tier_A__Stone"].Asset]:FindFirstChild("Temple_Tier_A__Stone", true):FindFirstChildOfClass("SurfaceAppearance")
+	sa.ColorMap, sa.MetalnessMap = "rbxassetid://602", "rbxassetid://604"
+end
 register("Banner_Torn_A", { { "Banner", V3(8, 30, 1), V3(0, 15, 0) } })
 registry.Banner_Torn_A["Banner_Torn_A__Rope"] = { MeshId = newId(), Asset = registry.Banner_Torn_A["Banner_Torn_A__Banner"].Asset }
 -- A piece whose asset does not load.
@@ -205,6 +217,15 @@ check("glass with a build-time finish keeps its mosaic: the emissive template re
 local finishes = 0
 for _, c in rg:GetChildren() do if c:IsA("SurfaceAppearance") then finishes += 1 end end
 check("exactly one surface finish on the rose glass", finishes == 1)
+do
+	local tier = Kit.place("Temple_Tier_A", CFrame.new(), V3(1, 1, 1), {}):FindFirstChild("Temple_Tier_A__Stone")
+	local tierSA = tier:FindFirstChildOfClass("SurfaceAppearance")
+	local tierCount = 0
+	for _, ch in tier:GetChildren() do if ch:IsA("SurfaceAppearance") then tierCount += 1 end end
+	check("stone with a build-time finish loses the importer's metalness: one non-metal surface with the same colour, library intact",
+		tierCount == 1 and tierSA.ColorMap == "rbxassetid://602" and tierSA.NormalMap == "rbxassetid://603" and (tierSA.MetalnessMap or "") == ""
+		and services.ServerStorage.AsuraStoneFinish:FindFirstChild("602") ~= nil)
+end
 check("glass without a finish drops its SurfaceAppearance so Neon glows; tracery and stone keep theirs", glass:FindFirstChildOfClass("SurfaceAppearance") == nil
 	and lancet:FindFirstChild("Lancet_Tall__Tracery"):FindFirstChildOfClass("SurfaceAppearance") ~= nil
 	and lancet:FindFirstChild("Lancet_Tall__Stone"):FindFirstChildOfClass("SurfaceAppearance") ~= nil)
@@ -866,6 +887,14 @@ do
 		local doorOk = #doorway > 0 and #doorway == inWall
 		for _, f in doorway do doorOk = doorOk and f.Material == Enum.Material.Air and f.Size.Y >= 24 end
 		check("a doorway is cut at every route point inside the vault wall", doorOk)
+		-- win-83: warm fill up the stair and onto the side tiers, within light range of the treads, inside the temple's footprint
+		local spots, spotsOk = W2.stairFill(frame), true
+		for _, s in spots do
+			local lp = frame:PointToObjectSpace(s)
+			local tread = math.clamp((257 - lp.Z) / 2.35, 0, 127)
+			spotsOk = spotsOk and math.abs(lp.X) <= 110 and lp.Y > 0.6 + tread * 0.88 and lp.Y < 0.6 + tread * 0.88 + 20 and lp.Z < 280
+		end
+		check("stair fill: 14 spots flank the stair and side tiers, just above the treads", #spots == 14 and spotsOk)
 		local hollow = built:FindFirstChild("HollowLights")
 		check("the Hollow is flagged for clients and its lights skip cleanly without raycasts", built:GetAttribute("Cavern") == true
 			and wsAttributes.AsuraCavern == true and hollow ~= nil and #hollow:GetChildren() == 0)
