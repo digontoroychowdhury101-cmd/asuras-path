@@ -722,7 +722,8 @@ BiomeDressing.Defs = {
 					{ "Sea_Stack_Mid", 0.06 }, { "Sea_Stack_Cap", 0.06 }, { "Shore_Cliff_A", 0.06 }, { "Shore_Cliff_B", 0.06 }, { "Shore_Cliff_Corner", 0.1 } },
 				ByMaterial = { Salt = { { "Salt_Crust_Slab_A", 0.3 }, { "Salt_Crust_Slab_B", 0.3 }, { "Salt_Crystal_Cluster", 0.25 }, { "Salt_Cairn", 0.15 } } },
 				Material = { Sandstone = 1, Limestone = 0.6, Sand = 0.35, Salt = 1.6, Ground = 0.4 } },
-			Tree = { Salt = 1, Spacing = 70, Base = 0.5, MaxSlope = 0.45, Tall = true, Scale = { 0.85, 1.2 },
+			-- Base 0.6 (win-87): the rolling-hills pass left 18 sparse pines on the new slopes; 0.6 keeps the Saltreach above 20.
+			Tree = { Salt = 1, Spacing = 70, Base = 0.6, MaxSlope = 0.45, Tall = true, Scale = { 0.85, 1.2 },
 				Pieces = { { "Salt_Pine_A", 0.35 }, { "Salt_Pine_B", 0.35 }, { "Salt_Pine_Dead", 0.3 } }, Material = { Sand = 0.5, Limestone = 0.4, Sandstone = 0.1, Ground = 0.3 } },
 			Shrub = { Salt = 2, Spacing = 22, Base = 0.45, MaxSlope = 0.7, Scale = { 0.8, 1.4 },
 				Pieces = { { "Dune_Scrub_A", 0.3 }, { "Dune_Scrub_B", 0.3 }, { "Driftwood_Log", 0.2 }, { "Driftwood_Pile", 0.2 } }, Material = { Sand = 1, Limestone = 0.7, Sandstone = 0.2, Ground = 0.4 } },

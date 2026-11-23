@@ -578,6 +578,14 @@ Overworld.TerrainDef = {
 	DivideRaise = 35, -- crest sits this far above the Divide polyline's Y
 	DivideSlope = 0.35,
 	Relief = { Forest = 14, GoldenRavine = 10, AridBasin = 12, Snowfields = 22, MountainAscent = 34 },
+	-- Rolling hills (win-87, creator: "elevation changes throughout"): kilometre swells Amp studs high per region (Amberfall
+	-- keeps its chasm and flat ravine floor; the Ashen Stair its massif), calm over
+	-- the salt pan, the frozen lake and the Vesperhold ridge (which is shaped on its own), clear of the glade-to-summit lane.
+	Hills = { Scale = 760, Detail = 260, Amp = { Forest = 95, GoldenRavine = 0, AridBasin = 95, Snowfields = 90, MountainAscent = 0 },
+		Calm = { { X = -9500, Z = -3000, R = 650 }, { X = -4400, Z = -5800, R = 300 }, { X = -2800, Z = -6400, R = 650 },
+			{ X = -3000, Z = -2000, R = 480 }, { X = -2750, Z = -1645, R = 380 }, -- + the Bellwood slice's authored ridge and terrace
+			{ X = -4178, Z = -2298, R = 760 }, { X = -3430, Z = -2350, R = 260 } }, -- + the Bellwood temple basin and its face
+		CalmFade = 300, LaneHalf = 150, LaneFade = 300 }, -- also calm past the world edge, by the divide crest and the gorge
 	Pad = { AltarRadius = 22, RingRadius = 34, AltarBlend = 36, CacheRadius = 9, CacheBlend = 20, GateRadius = 18, GateBlend = 56, GateStep = 16, ArenaMargin = 6, ArenaBlend = 56, SkipCaches = { WaterfallAlcove = true, PagodaRafters = true } },
 	Road = { Half = 8, Blend = 26, MaxBlend = 140, MaxGrade = 0.46 },
 	-- Channels: Points are { X, Z, depth below the surrounding ground }. Wet channels fill with Water
@@ -817,7 +825,7 @@ local function data(): any
 	built.keepIndex = buildIndex(keep, 400)
 
 	-- Roads: walkable edges (not shortcuts, caves, lifts or edges steeper than MaxGrade after meander).
-	local roads, roadSegs = {}, {}
+	local roads, roadSegs, trailSegs = {}, {}, {}
 	for _, e in Overworld.Edges do
 		local a, b = Overworld.Nodes[e.A], Overworld.Nodes[e.B]
 		if e.Kind ~= "shortcut" and not def.Underground[e.A] and not def.Underground[e.B] and not def.Scramble[e.A] and not def.Scramble[e.B] then
@@ -829,8 +837,11 @@ local function data(): any
 				for k = 2, #pts do
 					table.insert(roadSegs, segment(pts[k - 1][1], pts[k - 1][2], pts[k][1], pts[k][2], pts[k - 1][3], pts[k][3]))
 				end
+				continue
 			end
 		end
+		-- no road graded: the straight trail between the nodes keeps the hills off it (relief)
+		table.insert(trailSegs, segment(a.Position.X, a.Position.Z, b.Position.X, b.Position.Z, 0, 0))
 	end
 
 	local channelSegs, chasmSegs = {}, {}
@@ -851,6 +862,11 @@ local function data(): any
 	D.Pads, D.Roads = pads, roads
 	D.roadIndex = buildIndex(roadSegs, def.Road.Half + def.Road.MaxBlend)
 	D.channelIndex = buildIndex(channelSegs, 80)
+	local wet = {}
+	for _, sg in channelSegs do if sg.wet then table.insert(wet, sg) end end
+	D.gorgeIndex = buildIndex(wet, 320) -- the hills stay out of the Headwater gorge (relief)
+	D.trailIndex = buildIndex(trailSegs, 200)
+	D.roadCalmIndex = buildIndex(roadSegs, 300)
 	D.chasmIndex = buildIndex(chasmSegs, def.Chasm.HalfWidth + 1)
 	-- Road correction: where the node-pinned base differs from a road's grade, the base is eased toward
 	-- it over 3x the mismatch (160..700 studs) so the road sits in the ground instead of a cut with cliff banks.
@@ -1041,6 +1057,28 @@ local function relief(D: any, x: number, z: number, h: number, W: { [string]: nu
 			local g = 1 - math.abs(math.noise(x / 115 + 12.9, z / 115 - 6.2))
 			e += mh * M.Crown * crown * g * g * g
 		end
+	end
+	local Hl, hillAmp = def.Hills, 0
+	for id, w in W do hillAmp += smooth(w) * (Hl.Amp[id] or 0) end -- smoothstep: no faint swell leaks past a border band
+	if hillAmp > 0.5 and clr < 1 then
+		-- clear of the edge cliffs; the raw frame distance, since edgeAt's inset steps at its fast-path thresholds
+		local E, F = def.Edge, Overworld.Frame
+		local dm = math.min((x - F.MinX) * E.Scale.W, (F.MaxX - x) * E.Scale.E, (z - F.MinZ) * E.Scale.N, (F.MaxZ - z) * E.Scale.S)
+		local calm = smooth((segDist(D.lane, x, z) - Hl.LaneHalf) / Hl.LaneFade) * smooth((dm - E.Foot - 150) / 300)
+		for _, sg in near(D.crestIndex, x, z) do calm = math.min(calm, smooth(((segDist(sg, x, z)) - 150) / 350)) end
+		for _, sg in near(D.gorgeIndex, x, z) do calm = math.min(calm, smooth(((segDist(sg, x, z)) - 40) / 260)) end
+		for _, sg in near(D.trailIndex, x, z) do calm = math.min(calm, smooth(((segDist(sg, x, z)) - 30) / 160)) end
+		-- roads keep their banks gentle: the swells ease in beyond the road's own bank (up to 148 studs)
+		for _, sg in near(D.roadCalmIndex, x, z) do calm = math.min(calm, smooth(((segDist(sg, x, z)) - 40) / 250)) end
+		-- the Amberfall chasm floor sits at its band's bottom; fades inside the chasm index's 226 stud reach
+		for _, sg in near(D.chasmIndex, x, z) do calm = math.min(calm, smooth(((segDist(sg, x, z)) - 120) / 100)) end
+		for _, c in Hl.Calm do
+			calm = math.min(calm, smooth((math.sqrt((x - c.X) ^ 2 + (z - c.Z) ^ 2) - c.R) / Hl.CalmFade))
+		end
+		-- math.noise mostly stays within +-0.5, so the octaves are doubled to make Amp the swell's real half-height
+		local n = 2 * (math.noise(x / Hl.Scale + 51.3, z / Hl.Scale - 27.9) + 0.5 * math.noise(x / Hl.Detail - 13.7, z / Hl.Detail + 8.1))
+		if n < 0 then n *= 1 - 0.75 * (W.Snowfields or 0) end -- Frostmere rolls upward: its band floor (250) sits just under the border ground
+		e += hillAmp * n * calm * (1 - clr)
 	end
 	local ko = 1
 	for _, k in near(D.keepIndex, x, z) do

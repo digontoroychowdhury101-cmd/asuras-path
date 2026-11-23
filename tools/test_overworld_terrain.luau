@@ -392,6 +392,32 @@ do
 		deep = math.max(deep, math.min(O.heightAt(p[1] + 150, p[2]), O.heightAt(p[1] - 150, p[2])) - bed)
 	end
 	check("river gorge (" .. string.format("%.0f", deep) .. " studs)", deep >= 25)
+	-- win-87 (creator: "elevation changes throughout instead of just flat terrain"): the lowlands carry kilometre swells.
+	-- Before the pass the median rise over 50 studs (both axes summed) was ~10 and the relief over the base surface spanned
+	-- 13 (Saltreach), 22 (Frostmere) and 45 (Bellwood) studs p05..p95; now the rise is 13+ and the swells span 75+ (extremes
+	-- near +-120). Taller swells broke the 4-stud step budget on road banks and the band floors, so 75 is the guard.
+	local rise, swell = { Forest = {}, AridBasin = {}, Snowfields = {} }, { Forest = {}, AridBasin = {}, Snowfields = {} }
+	for x = F.MinX, F.MaxX, 100 do
+		for z = F.MinZ, F.MaxZ, 100 do
+			if O.edgeInset(x, z) > 60 then
+				local h = O.heightAt(x, z)
+				local list = rise[O.regionAt(x, h + 3, z) or ""]
+				if list then
+					table.insert(list, math.abs(O.heightAt(x + 50, z) - h) + math.abs(O.heightAt(x, z + 50) - h))
+					table.insert(swell[O.regionAt(x, h + 3, z)], h - O.baseAt(x, z))
+				end
+			end
+		end
+	end
+	for id, list in rise do
+		table.sort(list)
+		local median = list[math.floor(#list / 2)]
+		check(string.format("%s rolls: median 50-stud rise %.1f >= 13", id, median), median >= 13)
+		local sw = swell[id]
+		table.sort(sw)
+		local spread = sw[math.floor(#sw * 0.95)] - sw[math.floor(#sw * 0.05)]
+		check(string.format("%s swells: relief over the base spans %.0f >= 75 studs (p05..p95)", id, spread), spread >= 75)
+	end
 end
 
 -- 13. Writer shell (OverworldTerrain.writeTile uses O.shellBottom, SHELL = 8 since C3 ruling 1a): on steep faces each

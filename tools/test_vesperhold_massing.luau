@@ -26,7 +26,8 @@ for wx = -10000, -1600, 25 do
 	end
 end
 -- Relative tolerance: Mac and Windows libm differ by ~0.05 over 112,666 samples; a real edit moves the sum by thousands.
-check("terrain outside the Vesperhold weight is unchanged", math.abs(sum - 176934331.5874) < 1e-8 * 176934331.5874)
+-- Re-baselined win-87: the rolling-hills pass (TerrainDef.Hills) moved the lowlands on purpose; the ridge itself is calm.
+check("terrain outside the Vesperhold weight is unchanged", math.abs(sum - 177146254.1500) < 1e-8 * 177146254.1500)
 local T = L.Tiers
 local lowest = 0
 for i = 1, 17 do lowest = math.min(lowest, ground((i - 9) * T.T0.Bay, T.T0.FrontZ)) end
