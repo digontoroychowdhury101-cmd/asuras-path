@@ -19,6 +19,8 @@ Credits.ThirdParty = table.freeze({
 	{ Work = "Rock Face 03 texture", By = "Poly Haven", License = "CC0", Source = "https://polyhaven.com/a/rock_face_03" },
 	{ Work = "Bark Platanus texture", By = "Poly Haven", License = "CC0", Source = "https://polyhaven.com/a/bark_platanus" },
 	{ Work = "Leaf Set 024 texture", By = "ambientCG", License = "CC0", Source = "https://ambientcg.com/view?id=LeafSet024" },
+	{ Work = "Lion Statue - optimized · the Bellwood guardians", By = "nebulousflynn1 (Thomas Flynn)", License = "CC0-1.0", Source = "https://zenodo.org/records/10324226" },
+	{ Work = "Löwe scan · the Bellwood guardians", By = "www.noe-3d.at", License = "CC0-1.0", Source = "https://sketchfab.com/3d-models/lowe-4522a4cdc1c14190bf1a8811fa27da32" },
 	{ Work = "Stone 01", By = "Poly Haven", License = "CC0-1.0", Source = "https://polyhaven.com/a/stone_01" },
 	{ Work = "Stone Fire Pit", By = "Poly Haven", License = "CC0-1.0", Source = "https://polyhaven.com/a/stone_fire_pit" },
 	{ Work = "Brass Diya Lantern", By = "Poly Haven", License = "CC0-1.0", Source = "https://polyhaven.com/a/brass_diya_lantern" },

@@ -376,8 +376,21 @@ function World.colossalTempleCollision(frame: CFrame): Folder
 		part.Transparency, part.CastShadow = 1, false
 		part.Parent = folder
 	end
-	for i = 0, 127 do
-		add(string.format("Tread%03d", i), 257 - i * 2.35, 0.60 + i * 0.88, 77 - 33 * i / 128, 2.37, 1.10)
+	-- The 128-tread stair collides as a smooth ramp through the tread middles (rise 0.88, run 2.35): per-tread boxes made the walk
+	-- hitch at every riser (mac-96 Play log: speed 22 -> 9). The stair mesh keeps the look; feet sit within 0.44 of a tread.
+	-- Eight segments of 16 treads, each as wide as its middle tread (the stair narrows 77 -> 44 as it climbs).
+	local function treadMid(i: number): Vector3
+		return frame * Vector3.new(0, 0.60 + i * 0.88, 257 - i * 2.35)
+	end
+	for s = 0, 7 do
+		local a, b = treadMid(s * 16 - 0.5), treadMid(s * 16 + 15.5)
+		local part = Instance.new("Part")
+		part.Name = string.format("StairRamp%d", s)
+		part.Size = Vector3.new(77 - 33 * (s * 16 + 8) / 128, 2, (b - a).Magnitude + 0.2)
+		part.CFrame = CFrame.lookAt((a + b) / 2, b, frame.UpVector) * CFrame.new(0, -1, 0)
+		part.Anchored, part.CanCollide, part.CanQuery, part.CanTouch = true, true, true, false
+		part.Transparency, part.CastShadow = 1, false
+		part.Parent = folder
 	end
 	add("HallFloor", -84, 113, 144, 88, 2)
 	return folder
@@ -408,16 +421,19 @@ function World.colossalApproach(lm: any, frame: CFrame): { any }
 	local entry = World.kitToWorld(lm, lm.Tunnel.Passage[#lm.Tunnel.Passage]) - Vector3.new(0, 8, 0)
 	local stair = frame * Vector3.new(0, .60, 258)
 	local gate = World.gateFrame(lm) * Vector3.new(0, .4, lm.Basin.Gate.Steps + 4)
-	local bed = World.Layout.basinLevels(lm) - lm.Basin.Deep - 3
+	local floor, water = World.Layout.basinLevels(lm)
+	local bed = floor - lm.Basin.Deep - 3
 	local out = {}
 	local function path(a: Vector3, b: Vector3, width: number)
 		local flat = (b - a) * Vector3.new(1, 0, 1)
 		local segments = math.max(1, math.ceil(flat.Magnitude / 16))
 		for i = 1, segments do
 			local sample = a:Lerp(b, (i - .5) / segments)
-			local mid = Vector3.new(sample.X, (sample.Y + bed) / 2, sample.Z)
+			-- The passage and the stair toe sit at the lake surface; a run along that line left the avatar swimming and snagged.
+			local top = math.max(sample.Y, water + 1)
+			local mid = Vector3.new(sample.X, (top + bed) / 2, sample.Z)
 			table.insert(out, { CFrame = CFrame.lookAt(mid, mid + flat),
-				Size = Vector3.new(width, sample.Y - bed, flat.Magnitude / segments + .8), Material = Enum.Material.Rock })
+				Size = Vector3.new(width, top - bed, flat.Magnitude / segments + .8), Material = Enum.Material.Rock })
 		end
 	end
 	path(entry, stair, 16)
@@ -536,6 +552,276 @@ function World.routeLanterns(lm: any): { Model }
 	return out
 end
 
+-- The Hollow (LandmarkLayout.Basin.Cavern): the colossal temple's basin is underground, so a vault closes over it. Inner surface at
+-- angle theta and height fraction t: the ring Inset studs past the shore, scaled toward the centre by s(t) = (1 - t^Power)^(1/Power),
+-- t running 0 at the spring (rim top - 6) to 1 at Apex. Near-vertical walls, a broad flat-ish ceiling.
+local function cavernScale(V: any, t: number): number
+	t = math.clamp(t, 0, 1)
+	return (1 - t ^ V.Power) ^ (1 / V.Power)
+end
+
+-- One column of the vault: centre, the unit direction out from it, the spring ring's distance R and the spring height.
+local function cavernColumn(lm: any, theta: number): (Vector3, Vector3, number, number)
+	local L, V = World.Layout, lm.Basin.Cavern
+	local c = L.basinCentre(lm)
+	local x, z = L.basinRing(lm, theta, V.Inset)
+	local centre, ring = Vector3.new(c.X, 0, c.Z), Vector3.new(x, 0, z)
+	return centre, (ring - centre).Unit, (ring - centre).Magnitude, L.rimTop(lm, theta, World.Height) - 6
+end
+
+-- The vault as terrain boxes: Columns slabs round the ring, a course every Step studs. Each slab reaches radially from just inside the
+-- course above (so no step leaves a gap) out to Shell past its own course, and Step + 4 high; the outer 6 studs are a Rock skin.
+-- Basalt inside with Slate bands that follow height (a band per column would read as vertical streaks). Vault = true on each.
+function World.cavernShell(lm: any): { any }
+	local V = lm.Basin and lm.Basin.Cavern
+	if not (V and World.Layout and World.Height) then return {} end
+	local out, n = {}, V.Columns
+	local columns = {}
+	for k = 0, n - 1 do
+		local centre, dir, R, y0 = cavernColumn(lm, (k + 0.5) / n * 2 * math.pi)
+		columns[k] = { Centre = centre, Dir = dir, R = R, Y0 = y0 }
+	end
+	for k = 0, n - 1 do
+		local col = columns[k]
+		-- half the angle to the wider neighbour gap (the rays from the centre are uneven round an ellipse)
+		local gap = math.max(math.acos(math.clamp(col.Dir:Dot(columns[(k + 1) % n].Dir), -1, 1)),
+			math.acos(math.clamp(col.Dir:Dot(columns[(k - 1) % n].Dir), -1, 1))) / 2
+		local H = V.Apex - col.Y0
+		local y = col.Y0
+		while y < V.Apex - 0.01 do
+			local y1 = math.min(y + V.Step, V.Apex)
+			local inner = math.max(0, cavernScale(V, (y1 - col.Y0) / H) * col.R - 2)
+			local outer = cavernScale(V, (y - col.Y0) / H) * col.R + V.Shell
+			local width = 2 * outer * math.tan(gap) + 4
+			local banded = math.sin(y / 37 + 1.5 * math.sin(k / n * 6 * math.pi)) > 0.72
+			local function slab(r0: number, r1: number, material: Enum.Material)
+				local mid = col.Centre + col.Dir * ((r0 + r1) / 2) + Vector3.new(0, (y + y1) / 2, 0)
+				table.insert(out, { CFrame = CFrame.lookAt(mid, mid + col.Dir), Size = Vector3.new(width, y1 - y + 4, r1 - r0),
+					Material = material, Vault = true })
+			end
+			slab(inner, outer - 6, if banded then Enum.Material.Slate else Enum.Material.Basalt)
+			slab(outer - 6, outer, Enum.Material.Rock)
+			y = y1
+		end
+	end
+	return out
+end
+
+-- Where the walking route crosses the vault wall (Layout.route's crest over the rim), an air doorway Route.Width + 6 wide from 2 studs over
+-- the tread to 26, one box per route point inside the wall band, so the way out of the basin stays open.
+function World.cavernExit(lm: any): { any }
+	local L, V = World.Layout, lm.Basin and lm.Basin.Cavern
+	if not (V and lm.Basin.Route and L and World.Height) then return {} end
+	local pts = L.route(lm, World.Height).Points
+	local out = {}
+	for i, p in pts do
+		local inWall = L.basinEllipse(lm, p.X, p.Z, V.Inset - 8) >= 1 and L.basinEllipse(lm, p.X, p.Z, V.Inset + V.Shell + 8) < 1
+		local nxt = pts[math.min(i + 1, #pts)]
+		local prev = pts[math.max(i - 1, 1)]
+		local along = Vector3.new(nxt.X - prev.X, 0, nxt.Z - prev.Z)
+		if inWall and along.Magnitude > 0.1 then
+			local mid = Vector3.new(p.X, p.Y + 14, p.Z)
+			table.insert(out, { CFrame = CFrame.lookAt(mid, mid + along), Size = Vector3.new(lm.Basin.Route.Width + 6, 24, 8),
+				Material = Enum.Material.Air, Doorway = true })
+		end
+	end
+	return out
+end
+
+-- Light inside the Hollow, placed on the built terrain by raycasts (so nothing floats), with every light anchored, non-colliding and
+-- unqueryable. Returns the model and the stalactite terrain fills (FillBall rows, Ball = true). Without Workspace.Raycast it returns an
+-- empty model (the test mock). Pieces:
+--   veins: kintsugi-style amber Neon cracks climbing the walls and across the ceiling, each with forks, meeting at the iris
+--   iris: an eye in the ceiling over the basin centre (the eye of the head leads here): an amber ring, fibre spokes and a light shaft
+--   stalactites: Basalt rows hanging over the crown, tips no lower than TipFloor, a glowing crystal on each tip
+--   glowstones: teal crystal clusters in the shallows round the shore, a few with a small light
+--   motes: slow rising amber sparks over the lake
+local AMBER, TEAL = Color3.fromRGB(255, 176, 90), Color3.fromRGB(90, 220, 210)
+function World.cavernLights(lm: any): (Model, { any })
+	local model = Instance.new("Model")
+	model.Name = "HollowLights"
+	local fills = {}
+	local L, V = World.Layout, lm.Basin and lm.Basin.Cavern
+	if not (V and L and World.Height and (Workspace :: any).Raycast) then return model, fills end
+	local rays = RaycastParams.new()
+	rays.FilterType = Enum.RaycastFilterType.Include
+	rays.FilterDescendantsInstances = { Workspace.Terrain }
+	rays.IgnoreWater = true
+	local rng = Random.new(9061)
+	local function glow(name: string, cf: CFrame, size: Vector3, color: Color3, shape: Enum.PartType?): Part
+		local part = Instance.new("Part")
+		part.Name, part.Size, part.CFrame, part.Material, part.Color = name, size, cf, Enum.Material.Neon, color
+		if shape then part.Shape = shape end
+		part.Anchored, part.CanCollide, part.CanQuery, part.CanTouch, part.CastShadow = true, false, false, false, false
+		part.Parent = model
+		return part
+	end
+	local function light(part: Part, color: Color3, range: number, brightness: number)
+		local l = Instance.new("PointLight")
+		l.Color, l.Range, l.Brightness, l.Shadows = color, range, brightness, false
+		l.Parent = part
+	end
+	-- the vault's inner surface at (theta, t) found on the terrain: cast outward along the surface normal from 30 studs inside it
+	local function onVault(theta: number, t: number): (Vector3?, Vector3?)
+		local centre, dir, R, y0 = cavernColumn(lm, theta)
+		local H = V.Apex - y0
+		t = math.clamp(t, 0, 0.995)
+		local s = cavernScale(V, t)
+		local slope = R * t ^ (V.Power - 1) * (1 - t ^ V.Power) ^ (1 / V.Power - 1) -- -dr/dt
+		local inward = (-dir * H - Vector3.yAxis * slope).Unit
+		local p = centre + dir * (s * R) + Vector3.new(0, y0 + t * H, 0)
+		local hit = Workspace:Raycast(p + inward * 30, -inward * 80, rays)
+		if not hit then return nil, nil end
+		return hit.Position, hit.Normal
+	end
+	local function crack(a: Vector3, b: Vector3, n: Vector3, width: number, name: string)
+		local mid = (a + b) / 2 + n * 0.3
+		if (b - a).Magnitude < 0.5 then return end
+		glow(name, CFrame.lookAt(mid, mid + (b - a), n), Vector3.new(width, width * 0.5, (b - a).Magnitude + width * 0.6), AMBER)
+	end
+	-- a vein: theta wanders (two slow sines and a jitter per joint) while t climbs; arc steps of ~24 studs; stops at the iris ring
+	-- drift: radians of theta per unit t, so a fork leaves its parent at an angle
+	local function vein(theta: number, t: number, tEnd: number, width: number, forks: number, drift: number, name: string)
+		local prev
+		local _, _, R, y0 = cavernColumn(lm, theta)
+		local H = V.Apex - y0
+		local phase = rng:NextNumber(0, 2 * math.pi)
+		local base, t0 = theta, t
+		local joints = 0
+		while t < tEnd do
+			local s = cavernScale(V, t)
+			if s * R < V.Iris + 4 then break end
+			local th = base + drift * (t - t0) + 0.06 * math.sin(t * 9 + phase) + 0.035 * math.sin(t * 23 + 2 * phase) + rng:NextNumber(-0.008, 0.008)
+			local at, n = onVault(th, t)
+			if at and prev then crack(prev, at, n, width * (1 + 0.8 * t), name) end
+			prev = at
+			joints += 1
+			if at and forks > 0 and joints % 9 == 0 then
+				local side = if joints % 18 == 0 then 1 else -1
+				vein(th, t, math.min(1, t + rng:NextNumber(0.08, 0.2)), width * 0.55, forks - 1, side * rng:NextNumber(0.4, 0.9), name .. "Fork")
+			end
+			local slope = R * t ^ (V.Power - 1) * (1 - t ^ V.Power) ^ (1 / V.Power - 1)
+			t += 24 / math.sqrt(H * H + slope * slope)
+		end
+	end
+	for i = 1, V.Veins do
+		vein((i - 1) / V.Veins * 2 * math.pi + rng:NextNumber(-0.12, 0.12), rng:NextNumber(0.02, 0.1), 1, 2.4, 2, rng:NextNumber(-0.15, 0.15), "Vein")
+	end
+	-- the iris: the ceiling straight over the basin centre
+	local c = L.basinCentre(lm)
+	local function ceiling(x: number, z: number): RaycastResult?
+		return Workspace:Raycast(Vector3.new(x, V.TipFloor, z), Vector3.new(0, V.Apex - V.TipFloor + 80, 0), rays)
+	end
+	local fx, fz = L.front(lm)
+	local across, front = Vector3.new(-fz, 0, fx), Vector3.new(fx, 0, fz)
+	local ringAt = function(r: number, a: number): Vector3? -- a point on the ceiling at radius r, angle a round the centre
+		local hit = ceiling(c.X + (across.X * math.cos(a) + front.X * math.sin(a)) * r, c.Z + (across.Z * math.cos(a) + front.Z * math.sin(a)) * r)
+		return hit and hit.Position - Vector3.yAxis * 0.4
+	end
+	local spokes, last = 32, nil
+	for i = 0, spokes do
+		local p = ringAt(V.Iris, i / spokes * 2 * math.pi)
+		if p and last then crack(last, p, -Vector3.yAxis, 7, "IrisRing") end
+		last = p
+	end
+	last = nil
+	for i = 0, spokes do
+		local p = ringAt(V.Iris * 0.42, i / spokes * 2 * math.pi)
+		if p and last then crack(last, p, -Vector3.yAxis, 3.5, "IrisPupil") end
+		last = p
+	end
+	for i = 0, 23 do
+		local a = (i + 0.5) / 24 * 2 * math.pi
+		local p0, p1 = ringAt(V.Iris * 0.46, a), ringAt(V.Iris * (0.92 - 0.12 * (i % 2)), a + 0.05 * math.sin(i * 1.7))
+		if p0 and p1 then crack(p0, p1, -Vector3.yAxis, 1.8, "IrisFibre") end
+	end
+	local pupil = ceiling(c.X, c.Z)
+	if pupil then
+		-- the shaft: a soft additive beam from the pupil down to the lake by the tree
+		local top = glow("IrisPupilCore", CFrame.new(pupil.Position - Vector3.yAxis * 1.5), Vector3.new(4, 1, 4), AMBER)
+		top.Transparency = 1
+		light(top, AMBER, 60, 2)
+		local frame = World.templeFrame(lm, lm.Basin.ColossalTemple)
+		local _, water = L.basinLevels(lm)
+		local foot = Instance.new("Part")
+		foot.Name, foot.Size, foot.Transparency = "IrisShaftFoot", Vector3.one, 1
+		foot.CFrame = CFrame.new(Vector3.new(frame.X, water + 2, frame.Z))
+		foot.Anchored, foot.CanCollide, foot.CanQuery, foot.CanTouch = true, false, false, false
+		foot.Parent = model
+		local a0, a1 = Instance.new("Attachment"), Instance.new("Attachment")
+		a0.Parent, a1.Parent = top, foot
+		local beam = Instance.new("Beam")
+		beam.Name, beam.Attachment0, beam.Attachment1 = "IrisShaft", a0, a1
+		beam.Width0, beam.Width1, beam.FaceCamera, beam.Segments = 26, 150, true, 1
+		beam.LightEmission, beam.LightInfluence, beam.Brightness = 1, 0, 1.4
+		beam.Color = ColorSequence.new(AMBER, Color3.fromRGB(255, 226, 170))
+		beam.Transparency = NumberSequence.new({ NumberSequenceKeypoint.new(0, 0.55), NumberSequenceKeypoint.new(0.6, 0.86), NumberSequenceKeypoint.new(1, 1) })
+		beam.Parent = top
+	end
+	-- stalactites over the crown: a row of shrinking terrain balls from the ceiling down, then a crystal tip (every fourth one lit)
+	local count = 0
+	for i = 1, V.Stalactites * 3 do
+		if count >= V.Stalactites then break end
+		local a = rng:NextNumber(0, 2 * math.pi)
+		local f = rng:NextNumber(0.12, 0.72)
+		local x = c.X + (across.X * math.cos(a) * lm.Basin.Width / 2 + front.X * math.sin(a) * lm.Basin.Depth / 2) * f
+		local z = c.Z + (across.Z * math.cos(a) * lm.Basin.Width / 2 + front.Z * math.sin(a) * lm.Basin.Depth / 2) * f
+		local hit = ceiling(x, z)
+		if not hit or hit.Position.Y - V.TipFloor < 30 then continue end
+		count += 1
+		local len = math.min(hit.Position.Y - V.TipFloor, rng:NextNumber(36, 130))
+		local top, tip = hit.Position.Y + 6, hit.Position.Y - len
+		local thick = 5 + len * 0.13
+		local balls = math.ceil((top - tip) / 6)
+		for b = 0, balls - 1 do
+			local u = b / balls
+			local y = top - (top - tip) * u
+			table.insert(fills, { CFrame = CFrame.new(x + math.sin(u * 4 + i) * u * 2, y, z), Size = Vector3.one * 2 * (2 + (thick - 2) * (1 - u) ^ 1.4),
+				Material = if b % 5 == 4 then Enum.Material.Slate else Enum.Material.Basalt, Ball = true })
+		end
+		local color = if count % 3 == 0 then AMBER else TEAL
+		local crystal = glow("StalactiteTip", CFrame.new(x, tip - 2.5, z) * CFrame.Angles(0, a, 0) * CFrame.Angles(0, 0, math.rad(45)),
+			Vector3.new(2.4, 2.4, 2.4), color)
+		local spike = glow("StalactiteTip", CFrame.new(x, tip - 6, z) * CFrame.Angles(0, a, 0), Vector3.new(1.4, 7, 1.4), color)
+		if count % 4 == 0 then light(crystal, color, 50, 1.6) end
+		spike.Name = "StalactiteSpike"
+	end
+	-- glowstones: clusters of three tilted teal prisms in the shallows inside the shore
+	local floorY, waterY = L.basinLevels(lm)
+	for k = 1, V.Glowstones do
+		local theta = (k - 0.5) / V.Glowstones * 2 * math.pi + rng:NextNumber(-0.03, 0.03)
+		local x, z = L.basinRing(lm, theta, -rng:NextNumber(4, 34))
+		local hit = Workspace:Raycast(Vector3.new(x, waterY + 40, z), Vector3.new(0, -80, 0), rays)
+		if not hit or hit.Position.Y > waterY + 4 or hit.Position.Y < floorY - lm.Basin.Deep - 2 then continue end
+		local up = CFrame.lookAt(hit.Position, hit.Position + hit.Normal) * CFrame.Angles(-math.pi / 2, 0, 0) -- Y along the normal
+		local first
+		for j = 1, 3 do
+			local h = rng:NextNumber(2.5, 6.5)
+			local lean = CFrame.Angles(rng:NextNumber(-0.45, 0.45), j * 2.1, rng:NextNumber(-0.45, 0.45))
+			local cf = up * CFrame.new(rng:NextNumber(-1.2, 1.2), 0, rng:NextNumber(-1.2, 1.2)) * lean * CFrame.new(0, h / 2 - 0.6, 0)
+			local p = glow("Glowstone", cf, Vector3.new(rng:NextNumber(1, 1.9), h, rng:NextNumber(1, 1.9)), TEAL)
+			first = first or p
+		end
+		if k % 8 == 0 then light(first, TEAL, 40, 1.3) end
+	end
+	-- motes over the lake, emitted from a thin invisible slab across the basin
+	local field = Instance.new("Part")
+	field.Name, field.Transparency = "HollowMotes", 1
+	field.Size = Vector3.new(lm.Basin.Width * 0.9, 2, lm.Basin.Depth * 0.9)
+	field.CFrame = CFrame.lookAt(Vector3.new(c.X, waterY + 24, c.Z), Vector3.new(c.X, waterY + 24, c.Z) + front)
+	field.Anchored, field.CanCollide, field.CanQuery, field.CanTouch = true, false, false, false
+	local motes = Instance.new("ParticleEmitter")
+	motes.Name, motes.Shape, motes.ShapeStyle, motes.EmissionDirection = "Motes", Enum.ParticleEmitterShape.Box, Enum.ParticleEmitterShapeStyle.Volume, Enum.NormalId.Top
+	motes.Rate, motes.Lifetime, motes.Speed = 140, NumberRange.new(14, 24), NumberRange.new(1.2, 3)
+	motes.Acceleration, motes.SpreadAngle, motes.LightEmission, motes.Brightness = Vector3.new(0, 0.3, 0), Vector2.new(20, 20), 1, 2
+	motes.Size = NumberSequence.new({ NumberSequenceKeypoint.new(0, 0), NumberSequenceKeypoint.new(0.15, 0.55), NumberSequenceKeypoint.new(0.8, 0.4), NumberSequenceKeypoint.new(1, 0) })
+	motes.Color = ColorSequence.new(AMBER, TEAL)
+	motes.Transparency = NumberSequence.new(0.15)
+	motes.Parent = field
+	field.Parent = model
+	return model, fills
+end
+
 -- folders: region id -> Map_Overworld region folder. waitReady(region) blocks until that region's terrain is written.
 function World.build(folders: { [string]: Instance }, waitReady: (string) -> boolean)
 	local Kit, Layout = deps()
@@ -562,6 +848,8 @@ function World.build(folders: { [string]: Instance }, waitReady: (string) -> boo
 				local frame = World.templeFrame(lm, candidate)
 				local pack = Instance.new("Model")
 				pack.Name = candidate.Model
+				-- LandscapeBudget hid the crown past 900 studs and faded the eaves and windows by size, leaving bare black tiers
+				pack:SetAttribute("AsuraKeepFar", true)
 				for _, piece in candidate.Pieces do
 					local pose = frame * CFrame.new(piece.X, piece.Y, piece.Z)
 						* CFrame.Angles(0, piece.Yaw or 0, 0) * CFrame.new(piece.Foot.X, piece.Foot.Y, piece.Foot.Z)
@@ -603,7 +891,9 @@ function World.build(folders: { [string]: Instance }, waitReady: (string) -> boo
 				local terrain = Workspace.Terrain
 				local sinceWait, volumeSinceWait = 0, 0
 				local function fill(f: any) -- one terrain write, then hand the frame back often enough that the server keeps ticking
-					if f.Wedge then terrain:FillWedge(f.CFrame, f.Size, f.Material) else terrain:FillBlock(f.CFrame, f.Size, f.Material) end
+					if f.Wedge then terrain:FillWedge(f.CFrame, f.Size, f.Material)
+					elseif f.Ball then terrain:FillBall(f.CFrame.Position, f.Size.X / 2, f.Material)
+					else terrain:FillBlock(f.CFrame, f.Size, f.Material) end
 					sinceWait += 1
 					volumeSinceWait += f.Size.X * f.Size.Y * f.Size.Z
 					if sinceWait >= World.YieldEvery or volumeSinceWait >= World.YieldVolume then
@@ -630,6 +920,15 @@ function World.build(folders: { [string]: Instance }, waitReady: (string) -> boo
 					for _, f in World.gateFills(lm) do fill(f) end
 					for _, f in World.routeFills(lm) do fill(f) end
 					for _, lantern in World.routeLanterns(lm) do lantern.Parent = model end
+				end
+				if colossalFrame and lm.Basin.Cavern then -- the Hollow closes over the colossal temple only; the doorway is cut after the vault
+					for _, f in World.cavernShell(lm) do fill(f) end
+					for _, f in World.cavernExit(lm) do fill(f) end
+					local lights, stalactites = World.cavernLights(lm)
+					for _, f in stalactites do fill(f) end
+					lights.Parent = model
+					model:SetAttribute("Cavern", true)
+					Workspace:SetAttribute("AsuraCavern", true) -- clients grade the basin as a cave (EnvironmentProfiles Cavern)
 				end
 				model:SetAttribute("BoreCarved", true)
 				model:SetAttribute("BasinSculpted", #lake > 0)

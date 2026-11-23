@@ -105,6 +105,9 @@ local function updateEnvironment(self: any, position: Vector3, region: string, i
 	local playableTop = landmark and landmark:GetAttribute("ColossalTemplePlayableTop")
 	local basinCeiling = if typeof(playableTop) == "number" then playableTop else basinWater + basin.TempleTop
 	local atBasin = nearBasin and position.Y <= basinCeiling and landmark ~= nil and landmark:GetAttribute("BasinSculpted") == true
+	-- the Hollow's vault (LandmarkWorld sets workspace AsuraCavern): every sound in the basin rings like a cave
+	local reverb = if atBasin and workspace:GetAttribute("AsuraCavern") == true then Enum.ReverbType.Cave else Enum.ReverbType.NoReverb
+	if SoundService.AmbientReverb ~= reverb then SoundService.AmbientReverb = reverb end
 	local ambient = if atBasin then "BasinBirdsInsects" elseif ridgeWeight > 0.3 then "VesperWindSpires" else ambientKeys[region] or "Wind"
 	if ambient ~= "Wind" and Audio.id(ambient) == "" then ambient = "Wind" end
 	local gain = if ambient == "Wind" then windVolume(self, region) else 0.30

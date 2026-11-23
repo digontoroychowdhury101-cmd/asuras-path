@@ -383,6 +383,10 @@ do
 	local W = load("src/server/Services/LandmarkWorld.luau", table.clone(base), "LandmarkWorld")
 	local LL = require("../src/shared/LandmarkLayout")
 	local bw = LL.Landmarks.Bellwood
+	-- The configured colossal pack replaces the hall only when every piece loads. The hall checks below cover that fallback; the
+	-- configured pack is checked on its own after the build checks.
+	local colossal = bw.Basin.ColossalTemple
+	bw.Basin.ColossalTemple = nil
 	local fx, fz = LL.front(bw)
 	local mouth = W.kitToWorld(bw, { 0, 1, 0 }) - W.kitToWorld(bw, { 0, 0, 0 })
 	check("kitToWorld: kit +Y (the mouth) points along LandmarkLayout.front", near(mouth.X, fx) and near(mouth.Z, fz) and near(mouth.Y, 0))
@@ -573,8 +577,10 @@ do
 	local fills, readyAsked = 0, nil
 	local env = table.clone(base)
 	local fillOrder, wedges = {}, 0
+	local wsAttributes = {}
 	local ws = { Terrain = { FillBlock = function(_, _, _, m) fills += 1; table.insert(fillOrder, m.Name) end,
-		FillWedge = function(_, _, _, m) fills += 1; wedges += 1; table.insert(fillOrder, m.Name) end } }
+		FillWedge = function(_, _, _, m) fills += 1; wedges += 1; table.insert(fillOrder, m.Name) end },
+		SetAttribute = function(_, k, v) wsAttributes[k] = v end }
 	env.game = { GetService = function(_, n) if n == "Workspace" then return ws end return services[n] end }
 	local waits = 0
 	env.task = { spawn = function(f) f() end, wait = function() waits += 1; return 0 end }
@@ -677,22 +683,27 @@ do
 	(function()
 		local frame = CFrame.new(60, 150, -38) * CFrame.Angles(0, math.rad(18), 0)
 		local model = W2.colossalTempleCollision(frame)
-		local stairCount, continuous, lastTop = 0, true, nil
-		for _, part in model:GetChildren() do
-			local localPose = frame:ToObjectSpace(part.CFrame)
-			if string.match(part.Name, "^Tread") then
-				stairCount += 1
-				local top = localPose.Y + part.Size.Y / 2
-				continuous = continuous and part.Size.Z >= 2.35 and part.Size.X > 40
-					and (lastTop == nil or math.abs(top - lastTop - .88) < 1e-4)
-					and part.CanCollide and part.CanQuery and not part.CanTouch and part.Anchored and part.Transparency == 1
-				lastTop = top
+		-- mac-96 Play log: per-tread boxes hitched the walk at every riser (speed 22 -> 9); the stair collides as one smooth ramp in
+		-- eight segments, each top on the tread midline (rise .88, run 2.35), end to end, ending a half tread under the hall floor.
+		local ramps, smooth, lastTop, lastEnd = 0, true, nil, nil
+		for s = 0, 7 do
+			local ramp = model:FindFirstChild("StairRamp" .. s)
+			if not ramp then smooth = false; continue end
+			ramps += 1
+			local lo = frame:PointToObjectSpace((ramp.CFrame * CFrame.new(0, 1, ramp.Size.Z / 2 - 0.1)).Position)
+			local hi = frame:PointToObjectSpace((ramp.CFrame * CFrame.new(0, 1, -ramp.Size.Z / 2 + 0.1)).Position)
+			for _, p in { lo, hi } do
+				smooth = smooth and math.abs(p.Y - (0.60 + (257 - p.Z) / 2.35 * 0.88)) < 0.02 and math.abs(p.X) < 1e-3
 			end
+			smooth = smooth and (lastEnd == nil or (lo - lastEnd).Magnitude < 0.05) and ramp.Size.X > 40
+				and ramp.CanCollide and ramp.CanQuery and not ramp.CanTouch and ramp.Anchored and ramp.Transparency == 1
+			lastEnd, lastTop = hi, hi.Y
 		end
 		local deck = model:FindFirstChild("HallFloor")
-		check("colossal Temple builds ordered independent walkable stair treads", stairCount == 128 and continuous)
+		check("colossal Temple stair collides as eight continuous ramp segments on the tread midline, no per-tread boxes",
+			ramps == 8 and smooth and model:FindFirstChild("Tread000") == nil)
 		check("colossal Temple stair meets the hall floor within one tread rise", deck ~= nil and lastTop ~= nil
-			and frame:ToObjectSpace(deck.CFrame).Y + deck.Size.Y / 2 - lastTop <= .88)
+			and math.abs(frame:ToObjectSpace(deck.CFrame).Y + deck.Size.Y / 2 - lastTop) <= .88)
 		local original = W2.Kit
 		local allReady = false
 		bw.Basin.ColossalTemple = { Model = "ColossalTest", Across = 30, Along = -115, Lift = 2,
@@ -789,6 +800,78 @@ do
 	-- the enlarged basin is ~11k fills; build hands the frame back every YieldEvery fills or YieldVolume studs^3 (never one long stall)
 	local totalFills, bigWait = fills, 0
 	check(string.format("build yields between terrain writes (%d fills, %d waits)", totalFills, waits), waits >= totalFills / W2.YieldEvery - 1 and waits > 100)
+	do
+	(function()
+		-- v20 (LandmarkLayout Basin.ColossalTemple): body and both guardians assemble with their own collision, replace the old hall,
+		-- light their own eaves inside the basin, and add the ridge and approach terrain after the lake.
+		check("the configured colossal pack names the temple body and both guardians", colossal ~= nil and #colossal.Pieces == 3
+			and colossal.Pieces[1].Model == "Bellwood_ColossalTemple" and colossal.Pieces[2].Model == "Bellwood_ColossalGuardianEast"
+			and colossal.Pieces[3].Model == "Bellwood_ColossalGuardianWest")
+		bw.Basin.ColossalTemple = colossal
+		local before = fills
+		local folder = Instance.new("Folder")
+		W2.build({ Forest = folder }, function() return true end)
+		local built = folder:FindFirstChild("Landmark_Bellwood")
+		local pack = built and built:FindFirstChild("Bellwood_ColossalTemple")
+		check("the configured colossal pack replaces the old hall with its own collision", pack ~= nil and #pack:GetChildren() == 4
+			and pack:FindFirstChild("ColossalTempleCollision") ~= nil and built:FindFirstChild("Bellwood_TempleHall") == nil)
+		local lights = built and built:FindFirstChild("BasinLights")
+		local templeLights, inside = 0, true
+		for _, part in if lights then lights:GetChildren() else {} do
+			if part:GetAttribute("For") == "Temple" then
+				templeLights += 1
+				inside = inside and LL.basinEllipse(bw, part.Position.X, part.Position.Z) < 1
+			end
+		end
+		check("colossal eave and doorway accents: one per configured accent, all inside the basin", templeLights == #colossal.Accents and inside)
+		local vault, doorway = W2.cavernShell(bw), W2.cavernExit(bw)
+		local extra = #W2.colossalRidgeFills(bw) + #W2.colossalApproach(bw, W2.templeFrame(bw, colossal)) + #vault + #doorway
+		check("colossal ridge and approach terrain are written on top of the hall build's fills", extra > 0 and fills - before == totalFills + extra
+			and built:GetAttribute("ColossalTemplePlayableTop") ~= nil and built:GetAttribute("ColossalTempleChimes") ~= nil)
+		local _, water = LL.basinLevels(bw)
+		local dry = true
+		for _, fill in W2.colossalApproach(bw, W2.templeFrame(bw, colossal)) do
+			dry = dry and fill.CFrame.Position.Y + fill.Size.Y / 2 >= water + 1 - 1e-6
+		end
+		check("the colossal causeway tops out at least a stud above the lake, so the walk to the stair is dry", dry)
+		local placed = built:FindFirstChild(colossal.Model)
+		check("the colossal pack is kept whole at distance (LandscapeBudget AsuraKeepFar)", placed ~= nil and placed:GetAttribute("AsuraKeepFar") == true)
+		-- The Hollow (creator 2026-11-23: the eye leads underground, no sky): a vault over the colossal basin, a doorway where the route
+		-- leaves, light placed by raycast (none in this mock, which has no Raycast) and the cave-grade flag for clients.
+		local V = bw.Basin.Cavern
+		local frame = W2.templeFrame(bw, colossal)
+		local apex, closes, nearCrown, lowest = -math.huge, false, math.huge, math.huge
+		for _, f in vault do
+			local p, half = f.CFrame.Position, f.Size / 2
+			local top, bottom = p.Y + half.Y, p.Y - half.Y
+			apex = math.max(apex, top)
+			lowest = math.min(lowest, bottom)
+			-- the slab's nearest horizontal reach to the temple frame (its radial centre line, less half its width)
+			local look = f.CFrame.LookVector
+			local d = Vector3.new(frame.X - p.X, 0, frame.Z - p.Z)
+			local u = math.clamp(d:Dot(look), -half.Z, half.Z)
+			local reach = (d - look * u).Magnitude - half.X
+			if reach < 300 then nearCrown = math.min(nearCrown, bottom) end
+			closes = closes or ((p - look * half.Z) - Vector3.new(LL.basinCentre(bw).X, p.Y, LL.basinCentre(bw).Z)).Magnitude < 1 and top >= V.Apex
+		end
+		check("the vault closes at Apex over the basin centre", closes and apex <= V.Apex + 2.01)
+		check("the vault stays over 965 within 300 studs of the temple (the crown tops out at ~943)", nearCrown >= 965)
+		local carveTop = -math.huge
+		for _, c in W2.carves(bw) do carveTop = math.max(carveTop, c.CFrame.Position.Y + c.Size.Y / 2) end
+		check("the vault springs above the eye's passage, so the walk in stays open", lowest > carveTop)
+		local route, inWall = LL.route(bw, O.heightAt).Points, 0
+		for _, p in route do
+			if LL.basinEllipse(bw, p.X, p.Z, V.Inset - 8) >= 1 and LL.basinEllipse(bw, p.X, p.Z, V.Inset + V.Shell + 8) < 1 then inWall += 1 end
+		end
+		local doorOk = #doorway > 0 and #doorway == inWall
+		for _, f in doorway do doorOk = doorOk and f.Material == Enum.Material.Air and f.Size.Y >= 24 end
+		check("a doorway is cut at every route point inside the vault wall", doorOk)
+		local hollow = built:FindFirstChild("HollowLights")
+		check("the Hollow is flagged for clients and its lights skip cleanly without raycasts", built:GetAttribute("Cavern") == true
+			and wsAttributes.AsuraCavern == true and hollow ~= nil and #hollow:GetChildren() == 0)
+		bw.Basin.ColossalTemple = nil
+	end)()
+	end
 	-- mac-89: rain fell inside the bore (captures/mac/bellwood_face/ingame_tunnel_rain_leak.jpg). Invisible roofs tagged AsuraShelter
 	-- (WeatherController casts 60 up) over the whole route; terrain cannot be tagged.
 	local shelter = lm:FindFirstChild("TunnelShelter")

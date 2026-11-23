@@ -153,7 +153,9 @@ function Controller.Sample(self: any)
 	local encounter = player:GetAttribute("AsuraEncounter")
 	local ridge = if region == "Snowfields" then Overworld.vesperholdWeight(position.X, position.Z) else 0
 	local basin = if region == "Forest" then LandmarkLayout.basinWeight(position.X, position.Z) else 0
-	local covered = sheltered(position, if ridge > 0 then 230 else 60)
+	-- inside the Hollow's vault (LandmarkWorld flags it): a cave grade and no rain; the doorway band eases it at the wall
+	local cavern = if workspace:GetAttribute("AsuraCavern") == true then basin else 0
+	local covered = sheltered(position, if ridge > 0 then 230 else 60) or cavern > 0.5
 	local mix = Profiles.weatherBlend(weights, t)
 	-- One volumetric deck over the whole overworld; the ridge thickens the same instance (Profiles.clouds), never a second one.
 	local sky = Profiles.clouds({ Weights = weights, Mix = mix, Time = t, Vesperhold = ridge })
@@ -164,18 +166,18 @@ function Controller.Sample(self: any)
 			clouds.Parent = workspace.Terrain
 			self.Clouds = clouds
 		end
-		self.Clouds.Cover, self.Clouds.Density, self.DeckColor = sky.Cover, sky.Density, sky.Color
+		self.Clouds.Cover, self.Clouds.Density, self.DeckColor = sky.Cover * (1 - cavern), sky.Density, sky.Color -- no cloud deck under the vault
 		if not self.Atmos then self.Clouds.Color = sky.Color end
 	end
 	self.Rates = Profiles.ambience({ Weights = weights, Mix = mix, Time = t, Sheltered = covered,
 		Comfort = Effects.reducedMotion() or Effects.reduced() })
 	if not self.Ambience then self.Ambience = Ambience.new() end
-	self.Basin = basin
+	self.Basin, self.Cavern = basin, cavern
 	self.Ridge, self.Comfort = ridge, Effects.reducedMotion() or Effects.reduced()
 	if ridge > 0 and not self.Atmos then self.Atmos = Atmosphere.new() end
 	local profile, info = Profiles.compose({ Weights = weights, Time = t, Mix = mix,
 		Sheltered = covered, Comfort = Effects.reducedMotion() or Effects.reduced(),
-		Vesperhold = ridge, Basin = basin })
+		Vesperhold = ridge, Basin = basin, Cavern = cavern })
 	self.Active, self.Composed, self.Info = true, profile, info
 	self.Wind = Wind.sample(true, Config.Workspace.GlobalWind, info.WindGain)
 	-- Weather stays out of a fight: the arena look and readability floor belong to the encounter.

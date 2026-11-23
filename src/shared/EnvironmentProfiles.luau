@@ -375,7 +375,7 @@ local function guard(p: any, comfort: boolean)
 end
 
 -- input: { Weights = Overworld.blendAt(...) or nil outside the overworld, Time = world seconds, Mix = weather mix,
---          Sheltered, Comfort, Boss = { Phase, Arena } when a fight is on }.
+--          Sheltered, Comfort, Vesperhold, Basin, Cavern (0..1 weights), Boss = { Phase, Arena } when a fight is on }.
 -- Returns the Lighting-child profile (nil = not the open overworld: lobby and domain keep their own path) and
 -- { Hour, Daylight, Precip = { Rain/Snow/Dust = 0..1 }, WindGain }.
 function Profiles.compose(input: any): (any?, any)
@@ -430,6 +430,36 @@ function Profiles.compose(input: any): (any?, any)
 		grade.Brightness += 0.03 * basin
 		grade.Contrast += 0.06 * basin
 		grade.TintColor = grade.TintColor:Lerp(rgb(250, 240, 228), 0.08 * basin)
+	end
+	-- The Hollow (creator 2026-11-23): a vault roofs the colossal basin, so inside it is a cave at every hour (input.Cavern = the basin
+	-- weight once the server flags workspace AsuraCavern). The vault's shadow would black out sun and sky (mac-97 Studio check), so
+	-- EnvironmentController turns GlobalShadows off and swaps in a black sky; this grade then lights the stone with a steady teal-grey
+	-- fill at a fixed noon clock, a warm key over teal shadows to match the amber veins and glowstones, low contrast so dark basalt
+	-- does not crush, and a thin teal haze that hides the far wall.
+	local cave = input.Cavern or 0
+	if cave > 0 then
+		local light, fog, grade = p.Lighting, p.CB_Atmosphere, p.CB_ColorCorrection
+		local toNoon = (12 - light.ClockTime + 12) % 24 - 12 -- shortest way round the dial
+		light.ClockTime = (light.ClockTime + toNoon * cave) % 24
+		light.Ambient = light.Ambient:Lerp(rgb(150, 158, 162), cave)
+		light.OutdoorAmbient = light.OutdoorAmbient:Lerp(rgb(150, 158, 162), cave)
+		light.Brightness += (1 - light.Brightness) * cave
+		light.ExposureCompensation += (0.3 - light.ExposureCompensation) * cave
+		light.EnvironmentDiffuseScale += (1 - light.EnvironmentDiffuseScale) * cave
+		light.EnvironmentSpecularScale += (0.6 - light.EnvironmentSpecularScale) * cave
+		light.ColorShift_Top = light.ColorShift_Top:Lerp(rgb(255, 184, 110), 0.6 * cave)
+		light.ColorShift_Bottom = light.ColorShift_Bottom:Lerp(rgb(48, 130, 138), 0.6 * cave)
+		fog.Density += (0.25 - fog.Density) * cave
+		fog.Haze += (1.2 - fog.Haze) * cave
+		fog.Offset += (1 - fog.Offset) * cave
+		fog.Color = fog.Color:Lerp(rgb(60, 84, 90), cave)
+		fog.Decay = fog.Decay:Lerp(rgb(150, 110, 70), cave)
+		p.CB_SunRays.Intensity *= 1 - cave
+		p.CB_Bloom.Intensity += (0.35 - p.CB_Bloom.Intensity) * cave
+		grade.Contrast += (0.04 - grade.Contrast) * cave
+		grade.Brightness += (0.02 - grade.Brightness) * cave
+		grade.Saturation += (0.06 - grade.Saturation) * cave
+		grade.TintColor = grade.TintColor:Lerp(rgb(255, 246, 236), cave)
 	end
 	guard(p, input.Comfort == true)
 	return p, { Hour = hour, Daylight = daylight, Precip = precip, WindGain = gain }

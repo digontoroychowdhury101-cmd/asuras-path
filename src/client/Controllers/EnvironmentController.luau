@@ -39,6 +39,24 @@ local function applySky(self: any, key: string)
 		end
 	end
 end
+-- Inside the Hollow's vault: no sky at all, and no global shadows, since the vault would shadow every surface even where the
+-- engine culls it from view (mac-97). shortcut: the built-in black texture stands in for a cave skybox; upload one if it is ever removed.
+local CAVE_SKY = "rbxasset://textures/blackBkg_square.png"
+local function setCave(self: any, cave: boolean)
+	if cave == self.Cave then return end
+	self.Cave = cave
+	if cave then
+		self.Shadows = Lighting.GlobalShadows
+		Lighting.GlobalShadows = false
+		local sky = Lighting:FindFirstChildOfClass("Sky")
+		if sky then
+			sky.CelestialBodiesShown, sky.StarCount = false, 0
+			for _, suffix in {"Bk","Dn","Ft","Lf","Rt","Up"} do (sky :: any)["Skybox"..suffix] = CAVE_SKY end
+		end
+	else
+		Lighting.GlobalShadows = if self.Shadows == nil then true else self.Shadows
+	end
+end
 function Controller.Update(self: any, dt: number)
 	local actor = self.State:Own()
 	self.Ash:Update(dt,if actor and actor.Root then actor.Root.Position else nil,self.Key)
@@ -80,9 +98,13 @@ function Controller.Update(self: any, dt: number)
 			local tween = TweenService:Create(target, TweenInfo.new(if entering then 2.4 else 0.4, Enum.EasingStyle.Sine), values)
 			table.insert(self.Tweens, tween); tween:Play()
 		end
-		if entering then applySky(self, "Weather") end
+		local cave = (if self.Weather then self.Weather.Cavern or 0 else 0) >= 0.5
+		local leaving = self.Cave == true and not cave
+		setCave(self, cave)
+		if (entering or leaving) and not cave then applySky(self, "Weather") end
 		return
 	end
+	if self.Cave then setCave(self, false) end
 	if key == self.Key then return end
 	self.Key = key
 	for _, tween in self.Tweens do tween:Cancel() end

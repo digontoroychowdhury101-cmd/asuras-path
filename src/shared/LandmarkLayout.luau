@@ -49,6 +49,23 @@ Layout.Landmarks = {
 			-- It turns to face the passage exit (LandmarkWorld.templeFrame). Foot = GLB foot frame from its manifest (model axes).
 			Temple = { Model = "Bellwood_TempleHall", Across = -110, Along = 20, Lift = -1, Radius = 55, Deck = 3.6, Height = 59.4,
 				Foot = { X = 0, Y = 0, Z = 4.115 } },
+			ColossalTemple = { Model = "Bellwood_ColossalTemple", Across = 30, Along = -115, Lift = 2,
+				Pieces = {
+					{ Model = "Bellwood_ColossalTemple", X = 0.0000, Y = 0.0000, Z = 0.0000, Yaw = 0.000, Foot = { X = -17.0630, Y = -1.4770, Z = -50.9424 } },
+					{ Model = "Bellwood_ColossalGuardianEast", X = -54.5352, Y = 29.9900, Z = 202.9500, Yaw = 0.380, Foot = { X = -0.0405, Y = 0.0250, Z = 0.2623 } },
+					{ Model = "Bellwood_ColossalGuardianWest", X = 54.0195, Y = 33.5100, Z = 193.5500, Yaw = -0.380, Foot = { X = -0.1429, Y = 0.0250, Z = 0.3048 } },
+				},
+				Accents = { { 0, 133, -52, 36, 1.55 }, { -22, 140, -46, 34, 1.35 },
+					{ 22, 140, -46, 34, 1.35 }, { -47, 124, -47, 30, 1.05 }, { 47, 124, -47, 30, 1.05 } },
+				Chimes = { X = 0, Y = 132, Z = -58 },
+			},
+			-- The Hollow (creator 2026-11-23: the eye leads underground, so no sky over the colossal temple): a basalt vault springs from
+			-- the rim and closes at Apex over the crown. Its cross-section is a superellipse of power Power, Inset studs past the shore at
+			-- the spring and Shell thick, with a Rock skin outside so from the forest it reads as a mountain. Power 4 and Apex 1160
+			-- clear every crown mesh's bounds by 29 studs (mac-95 Studio check). Light lives inside it: amber veins on the vault meet in a stone iris above the tree, crystal-tipped stalactites hang over the crown,
+			-- glowstones line the shallows and motes drift up. Built only with the colossal pack (the old hall keeps its open sky).
+			Cavern = { Apex = 1160, Power = 4, Inset = 6, Shell = 20, Step = 20, Columns = 160, Iris = 70, Veins = 12,
+				Stalactites = 36, TipFloor = 975, Glowstones = 64 },
 			-- The temple's twin gate towers and moss stair (tools/blender/landmarks/bellwood_gate_towers.py, mac-91; concept bellwood_3,
 			-- left third): origin = tower-line centre on the bed, Across/Along/Lift as the temple, front (model +Z) to the basin centre
 			-- (LandmarkWorld.gateFrame). Model Z: lowest step front edge at Steps, landing (Width wide, top Landing over the origin) back

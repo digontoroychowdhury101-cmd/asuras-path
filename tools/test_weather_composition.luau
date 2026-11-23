@@ -752,7 +752,7 @@ do
 	local Soundscape = load("src/client/Controllers/SoundscapeController.luau", {
 		game = { GetService = function(_, name) return signals[name] end },
 		script = { Parent = { SpatialAudio = audio } },
-		workspace = { FindFirstChild = function()
+		workspace = { GetAttribute = function(_, key) return key == "AsuraCavern" end, FindFirstChild = function()
 			return { FindFirstChild = function()
 				return { FindFirstChild = function() return { GetAttribute = function() return true end } end }
 			end }
@@ -779,6 +779,7 @@ do
 	position = roblox.Vector3.new(centre.X, bed + 6, centre.Z)
 	space:Update(0.2)
 	check("the hidden basin takes over the outdoor ambience below the rim", live("BasinBirdsInsects") and not live("FrostmereBlizzard"))
+	check("the Hollow's vault makes the basin ring like a cave", signals.SoundService.AmbientReverb == roblox.Enum.ReverbType.Cave)
 	local gate = Layout.gateSpot(basin)
 	position = roblox.Vector3.new(gate.X, gate.Y + 17, gate.Z)
 	space:Update(0.2)
@@ -820,6 +821,31 @@ do
 	local halfLit = Profiles.compose({ Weights = { Forest = 1 }, Time = noon, Mix = { Rain = 1 }, Basin = 0.5 })
 	check("the basin grade blends with the weight", halfLit.Lighting.ExposureCompensation > rainBase.Lighting.ExposureCompensation and halfLit.Lighting.ExposureCompensation < lit.Lighting.ExposureCompensation)
 	check("the lobby never composes, even with a basin weight", Profiles.compose({ Time = noon, Basin = 1 }) == nil)
+	-- The Hollow (creator 2026-11-23): the vaulted basin grades as a lit cave at a fixed noon, with no sun rays, low contrast and thin haze.
+	check("Cavern weight 0 composes the exact basin grade", same(lit, Profiles.compose({ Weights = { Forest = 1 }, Time = noon, Mix = { Rain = 1 }, Basin = 1, Cavern = 0 })))
+	local cave = Profiles.compose({ Weights = { Forest = 1 }, Time = noon, Mix = { Clear = 1 }, Basin = 1, Cavern = 1 })
+	local caveNight = Profiles.compose({ Weights = { Forest = 1 }, Time = midnight, Mix = { Clear = 1 }, Basin = 1, Cavern = 1 })
+	check("the cave grade: a stone fill well above the night floor, no sun rays, flat grade, warm key over teal shadow",
+		L(cave.Lighting.Ambient) > Profiles.Night.Ambient + 80 and cave.CB_SunRays.Intensity == 0 and cave.CB_ColorCorrection.Contrast <= 0.05
+		and cave.Lighting.EnvironmentDiffuseScale >= 0.99 and cave.Lighting.ColorShift_Top.R > cave.Lighting.ColorShift_Top.B
+		and cave.Lighting.ColorShift_Bottom.G > cave.Lighting.ColorShift_Bottom.R)
+	check("the cave haze is thin and teal, and covers the sky", cave.CB_Atmosphere.Density < 0.3 and cave.CB_Atmosphere.Offset >= 0.99
+		and cave.CB_Atmosphere.Color.G > cave.CB_Atmosphere.Color.R)
+	check("the cave is noon at every hour", math.abs(cave.Lighting.ClockTime - 12) < 1e-6 and math.abs(caveNight.Lighting.ClockTime - 12) < 1e-6)
+	local halfCave = Profiles.compose({ Weights = { Forest = 1 }, Time = midnight, Mix = { Clear = 1 }, Basin = 1, Cavern = 0.5 })
+	local night0 = Profiles.compose({ Weights = { Forest = 1 }, Time = midnight, Mix = { Clear = 1 }, Basin = 1, Cavern = 0 })
+	local function fromNoon(h: number): number return math.abs((h - 12 + 12) % 24 - 12) end
+	check("at the doorway the clock eases halfway to noon the short way round", halfCave.Lighting.ClockTime >= 0 and halfCave.Lighting.ClockTime < 24
+		and math.abs(fromNoon(halfCave.Lighting.ClockTime) - fromNoon(night0.Lighting.ClockTime) / 2) < 1e-6 and fromNoon(night0.Lighting.ClockTime) > 6)
+	check("the cave keeps its fill at night", L(caveNight.Lighting.Ambient) > Profiles.Night.Ambient + 80 and caveNight.CB_SunRays.Intensity == 0)
+	check("EnvironmentController blacks out the sky and lifts global shadows inside the Hollow, and restores both",
+		has("src/client/Controllers/EnvironmentController.luau", "Lighting.GlobalShadows = false") and has("src/client/Controllers/EnvironmentController.luau", "CAVE_SKY")
+		and has("src/client/Controllers/EnvironmentController.luau", "Lighting.GlobalShadows = if self.Shadows")
+		and has("src/client/Controllers/WeatherController.luau", "self.Cavern = basin, cavern")
+		and has("src/client/Controllers/WeatherController.luau", "sky.Cover * (1 - cavern)"))
+	check("WeatherController grades the Hollow only once the server flags it, and keeps rain out",
+		has("src/client/Controllers/WeatherController.luau", "AsuraCavern") and has("src/client/Controllers/WeatherController.luau", "Cavern = cavern")
+		and has("src/client/Controllers/WeatherController.luau", "or cavern > 0.5"))
 	check("basin grade code is inside its own branch", string.find(fs.readFile("src/shared/EnvironmentProfiles.luau"), "if basin > 0 then", 1, true) ~= nil)
 	check("WeatherController feeds the basin weight, only in the Forest, and does not write Lighting for it",
 		has("src/client/Controllers/WeatherController.luau", "LandmarkLayout.basinWeight") and has("src/client/Controllers/WeatherController.luau", "Basin = basin"))
