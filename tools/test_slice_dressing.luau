@@ -1143,7 +1143,8 @@ else
 		local env = { game = { GetService = function(_, n) return services[n] end },
 			script = { Parent = { WaitForChild = function(_, name) return modules[name] end } }, require = function(m) return m end,
 			task = { wait = function() end, spawn = function(f, ...) f(...) end, delay = function() end }, os = os, math = math, table = table, string = string,
-			Vector3 = roblox.Vector3, CFrame = roblox.CFrame, Color3 = roblox.Color3, Instance = roblox.Instance, Enum = roblox.Enum, RaycastParams = roblox.RaycastParams,
+			Vector3 = roblox.Vector3, CFrame = roblox.CFrame, Color3 = roblox.Color3, Instance = roblox.Instance, Enum = roblox.Enum, RaycastParams = roblox.RaycastParams, ColorSequence = roblox.ColorSequence, NumberSequence = roblox.NumberSequence,
+			NumberSequenceKeypoint = roblox.NumberSequenceKeypoint, NumberRange = roblox.NumberRange, Vector2 = roblox.Vector2,
 			pairs = pairs, ipairs = ipairs, type = type, tostring = tostring, warn = function(m) table.insert(warnings, m) end, print = function() end,
 			assert = assert, error = error, setmetatable = setmetatable, pcall = pcall, typeof = typeof }
 		local Service = luau.load(source, { debugName = "SliceDressingService", environment = env })()
@@ -1302,6 +1303,12 @@ else
 	check("non-glow subs carry no light", stone ~= nil and stone:FindFirstChildOfClass("PointLight") == nil)
 	check("the glow template is a clone (the cached loaded model is untouched)", glow ~= nil and glow.Parent == nil)
 	check("the glow template is cached (one light, not one per call)", Service3.Template("Bell_Lantern_Post__Glow", {}) == glow)
+	-- win-86 bioluminescence: a mushroom's __Caps sub carries one glow-spore emitter (no light), off and tagged AsuraGlowCap.
+	models["rbxassetid://5005"] = { 9052 }
+	local caps = Service3.Template("Mushroom_Cluster__Caps", { MeshId = "rbxassetid://9052", Asset = "rbxassetid://5005" })
+	local spores = caps and caps:FindFirstChildOfClass("ParticleEmitter")
+	check("mushroom caps carry one tagged glow-spore emitter, off by default, and no light", spores ~= nil and spores.Enabled == false
+		and spores.LightEmission == 1 and spores:HasTag("AsuraGlowCap") and caps:FindFirstChildOfClass("PointLight") == nil and caps.Parent == nil)
 	local barkFinished, barkOwn, leafOwn, leafFinished = 0, 0, 0, 0
 	for _, d in f3:GetDescendants() do
 		if d:IsA("MeshPart") then

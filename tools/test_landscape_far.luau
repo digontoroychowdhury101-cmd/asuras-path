@@ -117,7 +117,7 @@ local function mapPart(name, at, radius, keepFar)
 	model.Attrs.AsuraKeepFar = (keepFar == true) or nil
 	local p = inst("MeshPart", name, model)
 	p.Attrs.AsuraKeepFar = (keepFar == "part") or nil
-	p.Anchored, p.Position, p.Size, p.LocalTransparencyModifier = true, at, Vector3.new(radius * 2, 0, 0), 0
+	p.Anchored, p.Position, p.Size, p.LocalTransparencyModifier, p.Transparency = true, at, Vector3.new(radius * 2, 0, 0), 0, 0
 	function p:IsA(c) return c == "MeshPart" or c == "BasePart" end
 	function p:IsDescendantOf(x) return x == fakeWorkspace end
 	return p
@@ -143,7 +143,31 @@ check("the lobby still hides keep-far meshes beyond 900", kept.LocalTransparency
 player.attrs.AsuraRegion = "Forest"
 k:Refresh()
 check("leaving the lobby draws them again", kept.LocalTransparencyModifier == 0)
+-- LocalTransparencyModifier hides a mesh but the renderer still draws it (win-86: 3.62M castle tris either way);
+-- a fully faded mesh must also take Transparency 1, and get its own value back when it returns.
+check("a mesh cut beyond 900 is really dropped (Transparency 1)", plain.Transparency == 1)
+check("kept meshes keep their Transparency", kept.Transparency == 0 and stone.Transparency == 0)
+camera.CFrame = CFrame.new(0, 0, 1400)
+k:Refresh()
+check("back in range: the cut mesh is drawn again", plain.Transparency == 0 and plain.LocalTransparencyModifier == 0)
 k:Destroy()
+
+-- Castle ornament subs (crockets, tracery) span a whole spire, so their bounds pass the 38-stud keep, yet their detail
+-- is a few studs: they fade by detail size. Silhouette stone of the same bounds stays.
+camera.CFrame = CFrame.new(0, 0, 0)
+local crockets = mapPart("Spire_Belfry_Stage__Crockets_2", Vector3.new(0, 0, 400), 22, false)
+local tracery = mapPart("Arcade_Bay_60__Tracery", Vector3.new(0, 0, 700), 25, false)
+local bigStone = mapPart("Spire_Belfry_Stage__Stone", Vector3.new(0, 0, 700), 25, false)
+local nearCrockets = mapPart("Spire_Belfry_Stage__Crockets", Vector3.new(0, 0, 120), 22, false)
+local o = Budget.new()
+for _, p in { crockets, tracery, bigStone, nearCrockets } do fakeWorkspace.DescendantAdded:Fire(p) end
+o:Refresh()
+check("crockets 400 studs away are dropped", crockets.Transparency == 1)
+check("tracery 700 studs away is dropped", tracery.Transparency == 1)
+check("stone of the same bounds stays", bigStone.Transparency == 0 and bigStone.LocalTransparencyModifier == 0)
+check("crockets 120 studs away stay", nearCrockets.Transparency == 0 and nearCrockets.LocalTransparencyModifier == 0)
+o:Destroy()
+check("Destroy gives dropped meshes their Transparency back", crockets.Transparency == 0 and tracery.Transparency == 0)
 
 print(string.format("landscape far: %d passed, %d failed", passed, failed))
 if failed > 0 then error("landscape far toggle failed") end

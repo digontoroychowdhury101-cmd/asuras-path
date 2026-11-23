@@ -237,6 +237,22 @@ local function meshTemplate(key: string, entry: any): Instance?
 		light.Parent = tpl
 		CollectionService:AddTag(light, "AsuraLanternLight")
 	end
+	-- win-86 bioluminescence: mushroom caps breathe teal glowing spores after dusk. A faked glow (no light, research budget);
+	-- off and tagged here, OverworldAmbience lights the ones near the camera at night.
+	if tpl and string.match(key, "^Mushroom_.+__Caps$") then
+		if tpl.Parent ~= nil then tpl = tpl:Clone() end
+		local e = Instance.new("ParticleEmitter")
+		e.Name, e.Texture, e.Enabled = "GlowSpores", "rbxassetid://84933589518173", false -- OverworldAmbience.Glow sprite
+		e.Color = ColorSequence.new(Color3.fromRGB(90, 255, 200), Color3.fromRGB(120, 190, 255))
+		-- A soft halo that swells over the caps and drifts up as spores (~20 live per cluster; only clusters near the camera run).
+		e.Size = NumberSequence.new({ NumberSequenceKeypoint.new(0, 0), NumberSequenceKeypoint.new(0.3, 2.4), NumberSequenceKeypoint.new(0.7, 1.2), NumberSequenceKeypoint.new(1, 0) })
+		e.Transparency = NumberSequence.new({ NumberSequenceKeypoint.new(0, 1), NumberSequenceKeypoint.new(0.3, 0.35), NumberSequenceKeypoint.new(1, 1) })
+		e.LightEmission, e.LightInfluence, e.Brightness = 1, 0, 5
+		e.Rate, e.Lifetime, e.Speed = 6, NumberRange.new(2.5, 4), NumberRange.new(0.1, 0.3)
+		e.SpreadAngle, e.Acceleration, e.Drag = Vector2.new(35, 35), Vector3.new(0, 0.3, 0), 0.4
+		e.Parent = tpl
+		CollectionService:AddTag(e, "AsuraGlowCap")
+	end
 	meshCache[key] = tpl or false
 	return tpl
 end

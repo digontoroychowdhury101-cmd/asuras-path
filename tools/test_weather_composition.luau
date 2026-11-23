@@ -688,11 +688,22 @@ end
 for _, region in regions do
 	local mid = Profiles.compose({ Weights = { [region] = 1 }, Time = midnight, Mix = { Clear = 1 } }).Lighting
 	local day = Profiles.compose({ Weights = { [region] = 1 }, Time = noon, Mix = { Clear = 1 } }).Lighting
-	check(string.format("%s midnight is moonlit: fill %.0f >= 70, outdoor %.0f >= 100, exposure %.2f >= 0.3", region, L(mid.Ambient), L(mid.OutdoorAmbient), mid.ExposureCompensation),
-		L(mid.Ambient) >= 70 and L(mid.OutdoorAmbient) >= 100 and mid.ExposureCompensation >= 0.3)
+	-- win-86: the creator still found night "just too dark"; the moon fill rises to ~100 / ~140 and exposure to +0.5.
+	check(string.format("%s midnight is moonlit: fill %.0f >= 92, outdoor %.0f >= 120, exposure %.2f >= 0.45", region, L(mid.Ambient), L(mid.OutdoorAmbient), mid.ExposureCompensation),
+		L(mid.Ambient) >= 92 and L(mid.OutdoorAmbient) >= 120 and mid.ExposureCompensation >= 0.45)
 	check(region .. " moonlight is blue (B leads R by > 25)", (mid.OutdoorAmbient.B - mid.OutdoorAmbient.R) * 255 > 25)
 	check(region .. " midnight is still night: dimmer sky fill and sun than noon", L(mid.OutdoorAmbient) < L(day.OutdoorAmbient) and mid.Brightness < day.Brightness)
 end
+local ridgeNight = Profiles.compose({ Weights = { Snowfields = 1 }, Time = midnight, Mix = { Snow = 1 }, Vesperhold = 1 }).Lighting
+check(string.format("the Vesperhold ridge at midnight in snow stays readable (fill %.0f >= 85, exposure %.2f >= 0.2)", L(ridgeNight.Ambient), ridgeNight.ExposureCompensation),
+	L(ridgeNight.Ambient) >= 85 and ridgeNight.ExposureCompensation >= 0.2)
+-- Glow life after dark (win-86): cold wisps over snow, the ridge and the Ashen Stair; bioluminescent spores off the forest floor.
+check("Frostmere night: wisps, none by day", life("Snowfields", nil, midnight).Wisps > 0.6 and life("Snowfields").Wisps == 0)
+check("the Vesperhold ridge keeps its wisps through snow", life("Snowfields", { Snow = 1 }, midnight).Wisps > 0.4)
+check("Ashen Stair night: wisps", life("MountainAscent", nil, midnight).Wisps > 0.3)
+check("Bellwood night: glowing spores, none by day", life("Forest", nil, midnight).Spores > 0.6 and day.Spores == 0)
+check("Amberfall night: spores too", life("GoldenRavine", nil, midnight).Spores > 0.3)
+check("rain washes the spores down", life("Forest", { Rain = 1 }, midnight).Spores < 0.3)
 -- Lanterns light after dusk everywhere in the overworld, independent of weather.
 for _, region in regions do
 	check(region .. " lanterns: off at noon, full at midnight, lit by deep dusk", life(region).Lanterns == 0 and life(region, nil, midnight).Lanterns > 0.95

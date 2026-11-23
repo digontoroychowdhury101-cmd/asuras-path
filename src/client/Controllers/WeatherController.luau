@@ -212,7 +212,7 @@ function Controller.Update(self: any, dt: number)
 		local camera = workspace.CurrentCamera
 		local own = self.State:Own()
 		local at = if camera then camera.CFrame.Position elseif own and own.Root then own.Root.Position else nil
-		self.Ambience:Update(dt, at, self.Rates, self.Wind)
+		self.Ambience:Update(dt, at, self.Rates, self.Wind, own and own.Root)
 	end
 	self.Elapsed += dt
 	if self.Elapsed < 0.2 then return end

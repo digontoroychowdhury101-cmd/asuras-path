@@ -190,7 +190,9 @@ Profiles.Horizon = table.freeze({ Fill = 0.2, Sun = 0.3, Exposure = 0, Density =
 Profiles.Golden = table.freeze({ Rim = 0.5, Lift = 0.06, Rays = 0.12, Spread = 0.6, Warm = rgb(255, 180, 120) })
 -- Moonlight (win-80): at full night the fill blends to these and exposure rises by Exposure, so the overworld reads as blue moonlight
 -- (path, trunks, silhouettes) instead of the old ~48/255 black under the canopy. Still dimmer than day; the sun is gone.
-Profiles.Moon = table.freeze({ Ambient = rgb(74, 88, 124), Outdoor = rgb(100, 118, 162), Exposure = 0.3, Top = rgb(150, 175, 235) })
+-- win-86: the creator still found night "just too dark"; fill ~100 and +0.42 exposure read the ground. The sky fill (~125)
+-- stays under the dimmest noon sky fill (Ashen Stair ~129), so night never out-shines day.
+Profiles.Moon = table.freeze({ Ambient = rgb(84, 100, 142), Outdoor = rgb(106, 126, 170), Exposure = 0.42, Top = rgb(150, 175, 235) })
 Profiles.Glare = table.freeze({ Bloom = 0.35, Threshold = 1.8, Rays = 0.12, Atmosphere = 0.4, Brightness = 2.4 })
 
 -- Density/Haze add to the biome, Rays/Fill/Wind multiply, Sat adds, Tint lerps by Amount (all scaled by the state's weight).
@@ -506,14 +508,15 @@ end
 -- Ambient life (win-80): 0..1 rates per kind for OverworldAmbience. Motes are sunlit pollen and dust, Leaves fall from the
 -- canopy, Fireflies come out after dusk, Glitter is diamond dust in cold clear sun. Rain and snow ground the motes and
 -- fireflies; a roof stops leaves and glitter; comfort keeps 40%. nil outside the overworld.
+-- win-86 night glow: Spores are bioluminescent motes rising off the forest floor, Wisps cold spirit-lights over snow and ash.
 local life: { [string]: { [string]: number } } = {
-	Forest = { Motes = 1, Leaves = 0.85, Fireflies = 1 },
-	GoldenRavine = { Motes = 0.8, Leaves = 1, Fireflies = 0.6 },
+	Forest = { Motes = 1, Leaves = 0.85, Fireflies = 1, Spores = 1 },
+	GoldenRavine = { Motes = 0.8, Leaves = 1, Fireflies = 0.6, Spores = 0.6 },
 	AridBasin = { Motes = 0.45 },
-	Snowfields = { Glitter = 1 },
-	MountainAscent = { Motes = 0.25, Glitter = 0.6 },
+	Snowfields = { Glitter = 1, Wisps = 1 },
+	MountainAscent = { Motes = 0.25, Glitter = 0.6, Wisps = 0.6 },
 }
-Profiles.AmbienceKinds = table.freeze({ "Motes", "Leaves", "Fireflies", "Glitter" })
+Profiles.AmbienceKinds = table.freeze({ "Motes", "Leaves", "Fireflies", "Glitter", "Wisps", "Spores" })
 function Profiles.ambience(input: any): { [string]: number }?
 	if not input.Weights then return nil end
 	local hour = Profiles.hourAt(input.Time or 0)
@@ -534,7 +537,9 @@ function Profiles.ambience(input: any): { [string]: number }?
 		if kind == "Motes" then v *= day * (clear + 0.4 * (mix.Overcast or 0) + 0.6 * (mix.Dust or 0))
 		elseif kind == "Leaves" then v *= 1 - 0.3 * wet
 		elseif kind == "Fireflies" then v *= dark * (1 - wet) * (1 - (mix.Dust or 0))
-		elseif kind == "Glitter" then v *= day * (clear + 0.5 * (mix.Snow or 0)) end
+		elseif kind == "Glitter" then v *= day * (clear + 0.5 * (mix.Snow or 0))
+		elseif kind == "Wisps" then v *= dark * (1 - 0.5 * (mix.Rain or 0)) -- spirits keep to the snow
+		elseif kind == "Spores" then v *= dark * (1 - 0.8 * wet) end
 		if input.Sheltered and (kind == "Leaves" or kind == "Glitter") then v = 0 end
 		if input.Comfort then v *= 0.4 end
 		out[kind] = math.clamp(v, 0, 1)

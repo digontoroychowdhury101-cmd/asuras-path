@@ -38,6 +38,13 @@ Ambience.Kinds = {
 		Alpha = NS(0), Color = CS(rgb(214, 255, 120)), Glow = 1, Influence = 0, Speed = { 0.5, 1.4 }, Spread = 180, Drift = 0.05, Fall = -0.1, Brightness = 3 },
 	Glitter = { Rate = 45, Life = 3, Sprite = "Glow", Size = NS({ NK(0, 0), NK(0.4, 0.09), NK(0.5, 0.18), NK(0.6, 0.09), NK(1, 0) }),
 		Alpha = NS(0), Color = CS(rgb(235, 245, 255)), Glow = 1, Influence = 0.2, Speed = { 0.1, 0.4 }, Spread = 180, Drift = 0.3, Fall = 0.4, Brightness = 2 },
+	-- win-86 night glow. Wisps: slow cold-blue spirit-lights that swell and dim. Spores: teal bioluminescent specks rising off the floor.
+	Wisps = { Rate = 4, Life = 10, Sprite = "Glow", Size = NS({ NK(0, 0), NK(0.2, 0.9), NK(0.5, 0.55), NK(0.8, 0.9), NK(1, 0) }),
+		Alpha = NS({ NK(0, 1), NK(0.2, 0.1), NK(0.8, 0.1), NK(1, 1) }), Color = CS(rgb(140, 225, 255)), Glow = 1, Influence = 0,
+		Speed = { 0.3, 0.9 }, Spread = 180, Drift = 0.08, Fall = -0.06, Brightness = 3 },
+	Spores = { Rate = 14, Life = 8, Sprite = "Glow", Size = NS({ NK(0, 0), NK(0.15, 0.2), NK(0.85, 0.14), NK(1, 0) }),
+		Alpha = NS({ NK(0, 1), NK(0.15, 0.2), NK(0.85, 0.3), NK(1, 1) }), Color = CS(rgb(110, 255, 210), rgb(150, 200, 255)), Glow = 1,
+		Influence = 0, Speed = { 0.2, 0.6 }, Spread = 180, Drift = 0.06, Fall = -0.35, Brightness = 2.5 },
 }
 local GREEN, AMBER = rgb(122, 150, 62), rgb(214, 132, 44)
 
@@ -63,20 +70,48 @@ local function emitter(self: any, kind: string, spec: any): ParticleEmitter
 	return e
 end
 
-local function lanterns(level: number)
+-- Glowing mushroom caps (win-86): the server's tagged GlowSpores emitters, lit after dusk within CAP_RANGE of the camera only.
+local CAP_TAG, CAP_RANGE = "AsuraGlowCap", 160
+
+local function lanterns(level: number, at: Vector3?)
 	for _, light in CollectionService:GetTagged(LANTERN_TAG) do
 		local on = level > 0.05
 		if light.Enabled ~= on then light.Enabled = on end
 		if on then light.Brightness = Ambience.LanternBrightness * level end
 	end
+	for _, e in CollectionService:GetTagged(CAP_TAG) do
+		local part = e.Parent
+		local on = level > 0.3 and at ~= nil and part ~= nil and part:IsA("BasePart") and (part.Position - at).Magnitude < CAP_RANGE
+		if e.Enabled ~= on then e.Enabled = on end
+	end
 end
 
-function Ambience.Update(self: any, dt: number, at: Vector3?, rates: { [string]: number }?, wind: any?)
+-- Qi aura (win-86): under the canopy at midnight the moon fill alone left the floor black (capture win/vesp86 07). One soft,
+-- shadowless cool light on the player's root by the lantern level: the one real light the night budget spends on the player.
+Ambience.Aura = { Range = 26, Brightness = 0.85, Color = rgb(196, 218, 255) } -- 1.1 bleached a trunk 6 studs away (capture 09)
+local function aura(self: any, level: number, root: BasePart?)
+	local light = self.AuraLight
+	if root and (not light or light.Parent ~= root) and level > 0.05 then
+		if light then light:Destroy() end
+		light = Instance.new("PointLight")
+		light.Name, light.Shadows, light.Range, light.Color = "AsuraQiAura", false, Ambience.Aura.Range, Ambience.Aura.Color
+		light.Parent = root
+		self.AuraLight = light
+	end
+	if light then
+		local on = level > 0.05 and root ~= nil and light.Parent == root
+		if light.Enabled ~= on then light.Enabled = on end
+		if on then light.Brightness = Ambience.Aura.Brightness * level end
+	end
+end
+
+function Ambience.Update(self: any, dt: number, at: Vector3?, rates: { [string]: number }?, wind: any?, root: BasePart?)
 	local level = if rates then math.clamp(rates.Lanterns or 0, 0, 1) else 0
 	self.LanternClock += dt
 	if self.LanternClock >= LANTERN_STEP or math.abs(level - self.Lit) > 0.1 then
 		self.LanternClock, self.Lit = 0, level
-		lanterns(level)
+		lanterns(level, at)
+		aura(self, level, root)
 	end
 	local wanted = false
 	if rates and at then
@@ -126,6 +161,7 @@ end
 function Ambience.Destroy(self: any)
 	self:Clear()
 	lanterns(0)
+	if self.AuraLight then self.AuraLight:Destroy(); self.AuraLight = nil end
 end
 
 return Ambience

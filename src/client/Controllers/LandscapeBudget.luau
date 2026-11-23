@@ -12,6 +12,11 @@ local WorldMap = require(Shared.WorldMap)
 local Budget = {}
 Budget.__index = Budget
 local protected = { "Lantern", "Frosted", "Sheltered", "Paper", "WarmLight", "Candle", "Column_", "Roof_", "Beam_" }
+-- Kit ornament subs span a whole spire or bay, but their detail is a few studs: they fade by this radius instead of
+-- their bounds (win-86: crockets and tracery were 2.5M of the 3.7M triangles in the Vesperhold approach view).
+-- Detailed tier: crockets go beyond ~185 studs, tracery beyond ~277; the storm haze already hides both there (captures
+-- win/vesp86 gate 04 vs 05 match). Balanced (phones) halves those distances.
+local detail = { Crockets = 2, Tracery = 3 }
 
 local function position(item: Instance): Vector3?
 	local parent = item.Parent
@@ -46,8 +51,10 @@ function Budget.new(): any
 		if item:IsA("BasePart") and item.Anchored then
 			-- Collision/query surfaces keep their visibility; decorative mesh siblings carry the art.
 			if item:IsA("MeshPart") or item:GetAttribute("AsuraMicroDetail") then
+				local fine = detail[string.match(item.Name, "__(%a+)") or ""]
 				table.insert(self.Parts, { Part = item, Original = item.LocalTransparencyModifier,
-					Keep = keepFar or keep(item), KeepFar = keepFar, Radius = item.Size.Magnitude * 0.5, Sanctuary = root.Name == "Sanctuary" })
+					Keep = keepFar or (fine == nil and keep(item)), KeepFar = keepFar, Radius = fine or item.Size.Magnitude * 0.5,
+					Sanctuary = root.Name == "Sanctuary" })
 			end
 		elseif item:IsA("PointLight") and root.Name == "Sanctuary" then
 			table.insert(self.Lights, { Light = item, Enabled = item.Enabled })
@@ -132,6 +139,16 @@ function Budget.Refresh(self: any)
 		if not row.Sanctuary and distance > 900 and (lobby or not row.KeepFar) then fade = 1 end
 		local value = math.max(row.Original, fade)
 		if part.LocalTransparencyModifier ~= value then part.LocalTransparencyModifier = value end
+		-- The modifier only hides: the renderer still draws the mesh. Transparency 1 drops it from the frame.
+		-- shortcut: a server write of Transparency 1 while culled is undone on return; track writes if a hidden mesh reappears.
+		local cull = fade >= 1
+		if cull ~= (row.Culled == true) then
+			if cull then row.Base, row.Culled = part.Transparency, true; part.Transparency = 1
+			else
+				if part.Transparency == 1 then part.Transparency = row.Base end
+				row.Culled = false
+			end
+		end
 		if fade >= 1 then hidden += 1 end
 	end
 	for model, row in self.Far do
@@ -178,7 +195,12 @@ function Budget.Destroy(self: any)
 	for _, link in self.Links do link:Disconnect() end
 	for part in self.Shadows do if part.Parent then part.CastShadow = true end end
 	for model in self.Far do self.FarRestore(model) end
-	for _, row in self.Parts do if row.Part.Parent then row.Part.LocalTransparencyModifier = row.Original end end
+	for _, row in self.Parts do
+		if row.Part.Parent then
+			row.Part.LocalTransparencyModifier = row.Original
+			if row.Culled and row.Part.Transparency == 1 then row.Part.Transparency = row.Base end
+		end
+	end
 	for _, row in self.Lights do if row.Light.Parent then row.Light.Enabled = row.Enabled end end
 	for _, row in self.Emitters do if row.Emitter.Parent then row.Emitter.Rate, row.Emitter.Enabled = row.Rate, row.Enabled end end
 	table.clear(self.Parts); table.clear(self.Lights); table.clear(self.Emitters); table.clear(self.Shadows); table.clear(self.Links)
