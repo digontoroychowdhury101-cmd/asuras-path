@@ -41,6 +41,9 @@ local ravine = Overworld.Nodes.G3_Crossing.Position
 local ravineSound = Vector3.new(ravine.X, ravine.Y - 50, ravine.Z)
 local crypt = ridge * Vector3.new(570, 286, -332)
 local ambientKeys = { Snowfields = "FrostmereBlizzard", MountainAscent = "AshenStairWind" }
+-- win-87 ElevenLabs score: one quiet theme across the five overworld regions, picked by time of day; the lobby keeps its own.
+local overworld = { Forest = true, GoldenRavine = true, AridBasin = true, Snowfields = true, MountainAscent = true }
+local MUSIC_GAIN = 0.2
 local Controller = {}
 Controller.__index = Controller
 local function stop(s: Sound?)
@@ -72,6 +75,18 @@ local function setLoop(self: any, key: string, enabled: boolean, gain: number, a
 		local source = sound.Parent
 		if source and source:IsA("BasePart") then source.Position = at end
 	end
+end
+
+-- The lantern level (0 by day, 1 after dusk) is the night signal the whole overworld already shares.
+local function night(self: any): boolean
+	local rates = self.Weather and self.Weather.Rates
+	return rates ~= nil and (rates.Lanterns or 0) > 0.5
+end
+
+local function score(self: any, key: string?)
+	if self.MusicKey == key and (key == nil or (self.Music and self.Music.Parent)) then return end
+	stop(self.Music)
+	self.Music, self.MusicKey = if key then Audio.play(key, SoundService, MUSIC_GAIN, true) else nil, key
 end
 
 local function nearestTorch(position: Vector3): Vector3?
@@ -119,6 +134,13 @@ local function updateEnvironment(self: any, position: Vector3, region: string, i
 		self.Ambient.Volume = gain
 	end
 
+	local dark = night(self)
+	setLoop(self, "ForestDay", region == "Forest" and not atBasin and not dark, 0.22)
+	setLoop(self, "ForestNight", region == "Forest" and not atBasin and dark, 0.32)
+	setLoop(self, "SnowNight", region == "Snowfields" and ridgeWeight <= 0.3 and dark, 0.30)
+	local theme = if not overworld[region] or SoundService:GetAttribute("AsuraBossMusic") ~= nil then nil
+		elseif ridgeWeight > 0.3 then "ThemeVesperhold" elseif dark then "ThemeNight" else "ThemeDay"
+	score(self, theme)
 	setLoop(self, "VesperRain", ridgeWeight > 0 and rain, 0.28)
 	setLoop(self, "VesperChoir", insideKeep and ridgeWeight > 0, 0.16)
 	local torch = if ridgeWeight > 0 then nearestTorch(position) else nil
@@ -166,7 +188,7 @@ function Controller.Update(self: any, dt: number)
 	self.Tick = 0
 	local own = self.State:Own()
 	if not own or not own.Root then
-		stop(self.Loop); stop(self.Ambient); stop(self.Water)
+		stop(self.Loop); stop(self.Ambient); stop(self.Water); score(self, nil)
 		self.Loop, self.Ambient, self.Water, self.LastMovement = nil, nil, nil, ""
 		for _, sound in self.EnvironmentLoops do stop(sound) end
 		table.clear(self.EnvironmentLoops)
@@ -216,6 +238,7 @@ function Controller.Destroy(self: any)
 	if self.Loop then self.Loop:Destroy() end
 	if self.Ambient then self.Ambient:Destroy() end
 	if self.Water then self.Water:Destroy() end
+	if self.Music then self.Music:Destroy() end
 	for _, sound in self.EnvironmentLoops do sound:Destroy() end
 	table.clear(self.EnvironmentLoops)
 	Audio.destroy()

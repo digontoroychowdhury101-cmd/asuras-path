@@ -747,9 +747,11 @@ do
 	}
 	local region = "Sanctuary"
 	local position = roblox.Vector3.new(0, 600, 0)
+	local boss = nil
+	local weather = { Rates = { Lanterns = 0 } }
 	local listening = true
 	local signals = {
-		SoundService = {}, Players = { LocalPlayer = { GetAttribute = function() return nil end } },
+		SoundService = { GetAttribute = function(_, key) return if key == "AsuraBossMusic" then boss else nil end }, Players = { LocalPlayer = { GetAttribute = function() return nil end } },
 		TweenService = { Create = function()
 			local complete
 			return { Completed = { Once = function(_, fn) complete = fn end }, Play = function() complete() end }
@@ -772,13 +774,15 @@ do
 	})
 	local space = Soundscape.new({ Own = function()
 		return if listening then { Root = { Position = position } } else nil
-	end }, { State = "" })
+	end }, { State = "" }, weather)
 	local function live(key)
 		for _, s in sounds do if s.Name == key and s.Parent then return true end end
 		return false
 	end
+	local function scored() return live("ThemeDay") or live("ThemeNight") or live("ThemeVesperhold") end
 	space:Update(0.2)
 	check("Sanctuary still uses its authored wind bed", live("Wind"))
+	check("the lobby keeps its own soundscape: no overworld score", not scored())
 	region = "Snowfields"
 	position = roblox.Vector3.new(-4300, 535, -5800)
 	space:Update(0.2)
@@ -799,9 +803,26 @@ do
 	space:Update(0.2)
 	check("moving above the basin restores Bellwood wind and releases the gate loop",
 		live("Wind") and not live("BasinBirdsInsects") and not live("BasinRibbons"))
+	-- win-87 (ElevenLabs): one overworld score by time of day, and a forest bed under the wind.
+	check("Bellwood by day: the day theme and the forest day bed", live("ThemeDay") and live("ForestDay") and not live("ThemeNight"))
+	weather.Rates.Lanterns = 1
+	space:Update(0.2)
+	check("Bellwood at night: the night theme and the insect bed replace the day ones",
+		live("ThemeNight") and live("ForestNight") and not live("ThemeDay") and not live("ForestDay") and live("Wind"))
+	boss = "GrandmasterShen"
+	space:Update(0.2)
+	check("a boss score silences the overworld score", not scored())
+	boss = nil
+	region = "Snowfields"
+	position = roblox.Vector3.new(Overworld.Vesperhold.X - 100, Overworld.Vesperhold.Y + 10, Overworld.Vesperhold.Z)
+	space:Update(0.2)
+	check("the Vesperhold ridge takes its own theme over the night one", live("ThemeVesperhold") and not live("ThemeNight") and not live("ForestNight"))
+	position = roblox.Vector3.new(-4300, 535, -5800)
+	space:Update(0.2)
+	check("Frostmere at night: the snow night bed and the night theme", live("SnowNight") and live("ThemeNight") and not live("ThemeVesperhold"))
 	listening = false
 	space:Update(0.2)
-	check("losing the character releases environmental loops", not live("Wind"))
+	check("losing the character releases environmental loops", not live("Wind") and not scored() and not live("SnowNight"))
 	space:Destroy()
 end
 

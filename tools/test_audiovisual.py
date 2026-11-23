@@ -21,8 +21,8 @@ output=ROOT/'work/test_audiovisual.generated.luau';output.parent.mkdir(exist_ok=
 subprocess.run([str(ROOT/'work/bin/luau/luau'),str(output)],cwd=ROOT,check=True)
 audio_registry = json.loads((ROOT / 'assets/OVERWORLD_AUDIO_UPLOADED.json').read_text())['audio']
 landmark_audio = [asset for asset in audio_registry.values() if 'cueKey' in asset]
-assert len(landmark_audio) == len({asset['cueKey'] for asset in landmark_audio}) == 26
-assert len({asset['assetId'] for asset in landmark_audio}) == 26
+assert len(landmark_audio) == len({asset['cueKey'] for asset in landmark_audio}) == 32
+assert len({asset['assetId'] for asset in landmark_audio}) == 32
 presentation_source = (ROOT / 'src/shared/PresentationAssets.luau').read_text()
 audio_source = presentation_source.split('Assets.Audio = {', 1)[1].split('Assets.Textures = {', 1)[0]
 for asset in landmark_audio:

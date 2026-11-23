@@ -46,6 +46,8 @@ Assets.Audio = {
 	AmberfallRoar = "rbxassetid://112448285053190",
 	SaltreachSurf = "rbxassetid://101880220175941",
 	AshenStairWind = "rbxassetid://131006012808636",
+	-- win-87 beds and score: ForestDay is the Approved win-11 bed. Forest/Snow night beds and the three ElevenLabs themes join on approval.
+	ForestDay = "rbxassetid://105210588065430",
 }
 Assets.Textures = {
 	-- CC0 Effekseer samples; uploaded and typed-preloaded 6/6 on 2026-10-26 (assets/GITHUB_UPLOADED.json).
