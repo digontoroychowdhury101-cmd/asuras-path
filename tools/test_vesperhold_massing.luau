@@ -82,6 +82,15 @@ check("look-up >= 25 degrees to the first parapet", minAngle >= 25)
 
 -- 3. Slots: spires, buttresses, windows, doors, viaduct, statues.
 local slots = L.slots(ground)
+-- win-88: the T1 crown stands on the wall top (190); at 170 it left a bare 20-stud band as the castle's flat skyline.
+do
+	local bal, pin = 0, 0
+	for _, s in slots do
+		if s.Tier == "T1" and s.Group == "Balustrade" then bal += 1; check("T1 balustrade stands on the wall top", math.abs(s.Y - T.T1.Top) < 0.01) end
+		if s.Tier == "T1" and s.Group == "Pinnacle" then pin += 1; check("T1 pinnacles rise above the wall top", s.Y > T.T1.Top) end
+	end
+	check("T1 crown has 33 balustrades and 17 pinnacles", bal == 33 and pin == 17)
+end
 local byGroup, ids = {}, {}
 for _, s in slots do
 	byGroup[s.Group] = byGroup[s.Group] or {}

@@ -342,7 +342,7 @@ function Layout.slots(ground: (number, number) -> number): { { [string]: any } }
 		local low = math.min(ground(x, T0.FrontZ), ground(x, T0.FrontZ - 30)) - 8
 		add("Buttress_Pier", "Buttress", x, low, T0.FrontZ + 6, 0, 1, (-low + 24) / Layout.Piece.Buttress_Pier[2], 1)
 	end
-	-- T1: three stacked arcade galleries (arches 60/60/50), balustrade, pinnacle row. The gate bay is open at level 0.
+	-- T1: three stacked arcade galleries (arches 60/60/50) under a 20-stud frieze, then the balustrade and pinnacle row on the wall top. The gate bay is open at level 0.
 	for lvl, band in { { 0, 60, "Arcade_Bay_60" }, { 60, 120, "Arcade_Bay_60" }, { 120, 170, "Arcade_Bay_50" } } do
 		for i = 1, 16 do
 			local cx = (i - 8.5) * 40
@@ -353,9 +353,9 @@ function Layout.slots(ground: (number, number) -> number): { { [string]: any } }
 	end
 	for i = 1, 33 do
 		local x = (i - 17) * 20
-		add("Balustrade_20", "Balustrade", x, 170, T1.FrontZ + 1, 0, 1, 1, 1, { Tier = "T1" })
+		add("Balustrade_20", "Balustrade", x, T1.Top, T1.FrontZ + 1, 0, 1, 1, 1, { Tier = "T1" })
 	end
-	for i = 0, 16 do add("Pinnacle_Crocket_S", "Pinnacle", (i - 8) * 40, 178, T1.FrontZ + 2, 0, 1, 1, 1, { Tier = "T1" }) end
+	for i = 0, 16 do add("Pinnacle_Crocket_S", "Pinnacle", (i - 8) * 40, T1.Top + 8, T1.FrontZ + 2, 0, 1, 1, 1, { Tier = "T1" }) end
 	-- T2 cloister gallery, two levels (40 then 30 tall), on the back wall of the terrace.
 	for lvl = 1, 2 do
 		for i = 1, 13 do
