@@ -9,6 +9,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local ContextActionService = game:GetService("ContextActionService")
 local GuiService = game:GetService("GuiService")
 local UserInputService = game:GetService("UserInputService")
+local SoundService = game:GetService("SoundService")
 
 local Shared = ReplicatedStorage:WaitForChild("AsurasPath")
 local simFolder = Shared:WaitForChild("Simulation")
@@ -34,6 +35,8 @@ local VitalsTags = require(script.Parent.VitalsTags)
 local Visibility = require(script.Parent.HudVisibility)
 local AltarAscension = require(script.Parent.AltarAscension)
 local LevelPreview = require(sharedFolder:WaitForChild("LevelPreview") :: ModuleScript)
+local WorldMap = require(sharedFolder:WaitForChild("WorldMap") :: ModuleScript)
+local Audio = require(script.Parent:WaitForChild("SpatialAudio") :: ModuleScript)
 
 type WorldState = WorldState.WorldState
 type Entity = WorldState.Entity
@@ -668,6 +671,22 @@ function Controller.new(state: WorldState, camera: CameraController, input: Inpu
 			self:ShowBanner(string.upper(definition.Name), "", 3)
 		end
 	end))
+	-- A newly found place gets its name and a stinger. The first published value is the saved profile.
+	local found: { [string]: boolean }? = nil
+	local function discoveries()
+		local raw = player:GetAttribute("AsuraDiscoveries")
+		if type(raw) ~= "string" then return end
+		local now: { [string]: boolean } = {}
+		for id in string.gmatch(raw, "[^,]+") do now[id] = true end
+		local new = WorldMap.newDiscoveries(found, now)
+		found = now
+		if #new > 0 then
+			self:ShowBanner(string.upper(WorldMap.placeName(new[#new])), "Discovered", 3)
+			Audio.play("Discovery", SoundService, 0.55, false)
+		end
+	end
+	discoveries()
+	table.insert(self.Connections, player:GetAttributeChangedSignal("AsuraDiscoveries"):Connect(discoveries))
 	return self
 end
 

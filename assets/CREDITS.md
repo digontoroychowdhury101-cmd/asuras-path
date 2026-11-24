@@ -191,3 +191,5 @@ source hash are recorded in `assets/BAMBOO_FROST_STEPS_UPLOADED.json`.
 ## Overworld score and night beds — 24 November 2026
 
 Three instrumental themes (day, night, Vesperhold approach; ElevenLabs Music v2.5) and two night ambience beds (Bellwood forest, Frostmere snow; ElevenLabs SFX v3) were generated for this project in the creator's ElevenLabs workspace. Masters are in `assets/source/audio/overworld_win87/`; creator-owned Roblox IDs, hashes and moderation state are in `assets/OVERWORLD_AUDIO_UPLOADED.json`.
+
+A four-second discovery stinger (temple bowl and guqin harmonic; ElevenLabs SFX v3) was added on the same terms on 24 November 2026; its master is in `assets/source/audio/overworld_win89/`.

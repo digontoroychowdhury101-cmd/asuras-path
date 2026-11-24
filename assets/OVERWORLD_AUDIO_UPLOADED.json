@@ -364,6 +364,18 @@
       "sha256": "46ec16200c5a47e094910b7f170c0184d5fa4ddda8a8e61a0c95bbfa8247ace4",
       "origin": "ElevenLabs (win-87 flow FOHQ0udFunvmy6nqHJRP)",
       "loop": true
+    },
+    "discovery_stinger": {
+      "assetId": "rbxassetid://115536619279909",
+      "operationId": "91c8e381-9b6b-4a7c-8da2-230310443ccb",
+      "source": "assets/source/audio/overworld_win89/discovery_stinger_a.mp3",
+      "uploaded": "2026-11-24",
+      "moderationState": "Reviewing",
+      "moderationChecked": "2026-11-24 (win-89, Open Cloud assets/v1 operation readback)",
+      "cueKey": "Discovery",
+      "sha256": "37375719cd0b29bd43c3613e8b24abdd1867f7517f2f7dfa214eb32aeb93017e",
+      "origin": "ElevenLabs (win-89 flow g0YONxsSahW6uD4mN2yW)",
+      "loop": false
     }
   }
 }

@@ -370,5 +370,15 @@ end
 print(string.format("tint: %d border walks, worst adjacent-pixel step %.2f /255", tintWalks, worstTint))
 check("biome tint adjacent-pixel step stays under the bound across every region border", tintWalks == 20 and worstTint <= TINT_STEP_MAX)
 
+-- Discovery announcements (win-89): only ids added since the last value, in id order, with readable names.
+do
+	local after = { BellGraves = true, BrokenBellTower = true, RopeBridge = true }
+	local new = W.newDiscoveries({ BellGraves = true }, after)
+	check("new discoveries are only the added ids, sorted", #new == 2 and new[1] == "BrokenBellTower" and new[2] == "RopeBridge")
+	check("the first published value announces nothing", #W.newDiscoveries(nil, after) == 0)
+	check("place names split at word joins", W.placeName("BrokenBellTower") == "Broken Bell Tower" and W.placeName("Vesperhold") == "Vesperhold")
+	for _, p in O.POIs do check(p.Id .. " has a place name", #W.placeName(p.Id) > 0) end
+end
+
 print(string.format("world map: %d passed, %d failed", passed, failed))
 if failed > 0 then error("world map regression failed") end

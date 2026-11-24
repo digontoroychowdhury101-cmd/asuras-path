@@ -188,6 +188,23 @@ function WorldMap.discoveredAltars(unlocked: { [string]: boolean }, altars: { [s
 	return list
 end
 
+-- Ids in `after` that `before` lacks, in id order. `before` is nil until the first published value,
+-- which restores a saved profile and announces nothing.
+function WorldMap.newDiscoveries(before: { [string]: boolean }?, after: { [string]: boolean }): { string }
+	local ids: { string } = {}
+	if before == nil then return ids end
+	for id in after do
+		if not before[id] then table.insert(ids, id) end
+	end
+	table.sort(ids)
+	return ids
+end
+
+-- Display name from a place id: "BrokenBellTower" -> "Broken Bell Tower".
+function WorldMap.placeName(id: string): string
+	return (string.gsub(id, "(%l)(%u)", "%1 %2"))
+end
+
 -- POIs on `level`; a Hidden POI (every cache, the under-crossing grotto) only once `found` holds its id.
 function WorldMap.visiblePois(pois: { any }, level: string, found: { [string]: boolean }): { any }
 	local list: { any } = {}
