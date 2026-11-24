@@ -512,7 +512,7 @@ end
 local life: { [string]: { [string]: number } } = {
 	Forest = { Motes = 1, Leaves = 0.85, Fireflies = 1, Spores = 1 },
 	GoldenRavine = { Motes = 0.8, Leaves = 1, Fireflies = 0.6, Spores = 0.6 },
-	AridBasin = { Motes = 0.45 },
+	AridBasin = { Motes = 0.45, Wisps = 0.5 }, -- win-90: pale spirit-lights over the salt pan at night
 	Snowfields = { Glitter = 1, Wisps = 1 },
 	MountainAscent = { Motes = 0.25, Glitter = 0.6, Wisps = 0.6 },
 }
@@ -538,7 +538,7 @@ function Profiles.ambience(input: any): { [string]: number }?
 		elseif kind == "Leaves" then v *= 1 - 0.3 * wet
 		elseif kind == "Fireflies" then v *= dark * (1 - wet) * (1 - (mix.Dust or 0))
 		elseif kind == "Glitter" then v *= day * (clear + 0.5 * (mix.Snow or 0))
-		elseif kind == "Wisps" then v *= dark * (1 - 0.5 * (mix.Rain or 0)) -- spirits keep to the snow
+		elseif kind == "Wisps" then v *= dark * (1 - 0.5 * (mix.Rain or 0)) -- spirits keep to the snow and the salt pan
 		elseif kind == "Spores" then v *= dark * (1 - 0.8 * wet) end
 		if input.Sheltered and (kind == "Leaves" or kind == "Glitter") then v = 0 end
 		if input.Comfort then v *= 0.4 end

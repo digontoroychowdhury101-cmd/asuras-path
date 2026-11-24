@@ -674,6 +674,11 @@ check("rain grounds the motes and fireflies", life("Forest", { Rain = 1 }).Motes
 local frost = life("Snowfields")
 check("Frostmere clear day: diamond-dust glitter, no leaves or fireflies", frost.Glitter > 0.6 and frost.Leaves == 0 and frost.Fireflies == 0)
 check("Saltreach: no leaves, no fireflies", life("AridBasin").Leaves == 0 and life("AridBasin", nil, midnight).Fireflies == 0)
+-- win-90: every overworld region has night glow life; Saltreach had motes only, so its nights went dark.
+for _, region in { "Forest", "GoldenRavine", "AridBasin", "Snowfields", "MountainAscent" } do
+	local n = life(region, nil, midnight)
+	check(region .. " midnight has glow life (fireflies, wisps or spores)", n.Fireflies + n.Wisps + n.Spores >= 0.4)
+end
 local calm = life("Forest", nil, nil, { Comfort = true })
 check("comfort keeps at most 40% of the ambience", calm.Motes <= day.Motes * 0.4 + 1e-9 and calm.Leaves <= day.Leaves * 0.4 + 1e-9)
 local roofed = life("Forest", nil, nil, { Sheltered = true })
