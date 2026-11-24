@@ -189,6 +189,16 @@ local arcade = Kit.place("Arcade_Bay_40", CFrame.new(), V3(1, 1, 1), { Group = "
 local anyHit = false
 for _, p in arcade:GetChildren() do if p.CanCollide or p.CanQuery then anyHit = true end end
 check("arcade (wall cladding) never collides", not anyHit and arcade.PrimaryPart.Name == "Arcade_Bay_40__Stone")
+-- win-91 frame cost: small ornament subs cast no shadow (thousands of them fill the shadow map); stone and tracery keep theirs.
+do
+	local small, ok = 0, true
+	for _, p in arcade:GetChildren() do
+		local role = string.match(p.Name, "__(%a+)")
+		if role == "Crockets" or role == "Frost" or role == "Dress" then small += 1; ok = ok and not p.CastShadow
+		elseif role == "Stone" then ok = ok and p.CastShadow end
+	end
+	check("ornament subs cast no shadow; stone does", small >= 1 and ok)
+end
 local tree = Kit.place("Dead_Pine_Snapped", CFrame.new(), V3(1, 1, 1), { Group = "Tree", Seed = 1 })
 check("tree trunk (Bark) collides with Hull", tree ~= nil and tree.PrimaryPart.CanCollide and tree.PrimaryPart.CollisionFidelity == Enum.CollisionFidelity.Hull)
 local beforeCook = collisionCooks

@@ -287,6 +287,8 @@ function Kit.place(piece: string, frame: CFrame, scale: Vector3, opts: Options?)
 		part.Size,part.CFrame = sub.Source.Size*dimensions,base*pose
 		part.Anchored,part.CanTouch = true,false
 		part.CanCollide, part.CanQuery = collides, collides
+		-- win-91: small ornament subs cast no shadow; thousands of them filled the shadow map at the gate.
+		if sub.Role == "Crockets" or sub.Role == "Frost" or sub.Role == "Dress" then part.CastShadow = false end
 		lightPart(part,sub.Role,name)
 		part.Parent = model
 		local rank = table.find(PRIMARY,sub.Role) or #PRIMARY+1

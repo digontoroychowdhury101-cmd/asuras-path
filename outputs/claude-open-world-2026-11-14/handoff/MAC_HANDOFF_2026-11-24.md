@@ -6,8 +6,8 @@ Read this before running `MAC-LOOP-PROMPT.md`. It records:
 - the open frame-rate problems, with the plan for each.
 
 ## 1. Exact game version
-- **Branch:** `ux/onboarding-overhaul`. Commit `7e7fb51` was the PC's last code commit; later commits are documentation only.
-- **Check:** after `git pull --rebase`, `python3 tools/build.py --output work/latest.rbxlx`, then `python3 tools/studio_mcp.py --digest work/latest.rbxlx`. It must print **scripts 295, bytes 3927613, digest 335807841**. That is what the PC's `work/verify90.rbxlx` printed at `7e7fb51`; `PROJECT_STATE.md` and the handoff docs are not part of the build. If a later PC commit changes code, its PROJECT_STATE line gives the new digest. Then run `tools/qa/SourceDigest.luau` in Studio (Edit). It must match.
+- **Branch:** `ux/onboarding-overhaul`. The newest code is the win-91 commit ("perf(vesperhold): small ornament subs cast no shadow").
+- **Check:** after `git pull --rebase`, `python3 tools/build.py --output work/latest.rbxlx`, then `python3 tools/studio_mcp.py --digest work/latest.rbxlx`. It must print **scripts 295, bytes 3927822, digest 343383436**. That is what the PC's win-91 build (`work/verify91.rbxlx`) printed; `PROJECT_STATE.md` and the handoff docs are not part of the build. If a later PC commit changes code, its PROJECT_STATE line gives the new digest. Then run `tools/qa/SourceDigest.luau` in Studio (Edit). It must match.
 - **Roblox Development place** 118614906972571 is saved at **v53**, carrying every change listed below. It was never published.
 - **Audio masters are not in git** (`assets/source/` is gitignored): `assets/source/audio/overworld_win87/` and `overworld_win89/`. Their Roblox ids are all Approved and owned by creator 3148600636, so the game does not need the masters. Hashes are in `assets/OVERWORLD_AUDIO_UPLOADED.json`.
 
@@ -70,9 +70,14 @@ Research summary (`win-86-research.md`, with Roblox staff guidance):
    **First step on the Mac:** reproduce it in a real client (Roblox Player, or a Team Test with one client) at the approach eye. Use `captures/win/vesp88/04-outer-crown-not-drawn-highlight.jpg` as the reference.
    - **If it reproduces:** cut resident mesh memory. Check which kit models are still `ModelStreamingMode.Persistent` (win-86 counted 274 models with 17.2M source triangles). Keep only `Massing` Persistent, let the kit stream as Default, and put a low-cost silhouette in `Massing` for distance.
    - **If it does not reproduce:** note it as Studio-only and move on.
-2. **Per-pixel cost at the gate** (about 10 ms GPU with the full-screen PBR facade). Options that keep the look:
-   - `CastShadow = false` on the small ornament subs (`__Crockets`, `__Frost`, `__Dress`). Keep it on `__Stone` and `__Tracery`, which carry the readable shadows.
-   - Check that every 2048 map is only on subs that fill the screen.
+2. **Per-pixel cost at the gate** (about 10 ms GPU with the full-screen PBR facade).
+   - **Done in win-91** (code and tests only): `Kit.place` sets `CastShadow = false` on the `__Crockets`, `__Frost` and `__Dress` subs. `__Stone` and `__Tracery` keep their shadows. Test: `test_vesperhold_loader` "ornament subs cast no shadow".
+   - **Not yet verified in Studio:** the Development place had closed on the PC, so the change is in git but **not in Development v53**. On the Mac:
+     - build the place;
+     - measure `RenderGPUFrameTime` and the opaque triangle count at the gate eye (-2930, 672, -6400);
+     - compare the capture with `captures/win/vesp86/05`;
+     - then save to Development.
+   - Next option: check that every 2048 map is only on subs that fill the screen.
 
    Measure with `rbx-perf-profiling` (MicroProfiler) with Studio focused before and after. Accept a change only if the side-by-side captures match.
 3. **Terrain build cost:** `sampleAt` is about 36% slower after the hills. It runs on the server's background build (budgeted at 6 ms per heartbeat), not the client frame. Watch only.
@@ -89,3 +94,10 @@ Research summary (`win-86-research.md`, with Roblox staff guidance):
   - 8 GB Mac: one heavy job at a time under `work/vesperhold-claude/heavy.lock`, and close Blender before opening Studio.
   - Never stage `outputs/mugen-combat-review-2026-11-09/`.
   - Never modify `places/AsurasPath.rbxlx` or `outputs/AsurasPath.rbxlx`.
+
+## 6. The prompt to paste on the Mac
+Start Claude Code in `~/Documents/asuras-path` and paste this:
+
+```
+/loop You are on the Mac. Repo ~/Documents/asuras-path, branch ux/onboarding-overhaul. Before anything else every iteration: git fetch origin; git checkout ux/onboarding-overhaul; git pull --rebase origin ux/onboarding-overhaul. Then read, in full and in this order: (1) outputs/claude-open-world-2026-11-14/handoff/MAC_HANDOFF_2026-11-24.md, which is the newest state from the Windows PC and overrides anything older; (2) the top of PROJECT_STATE.md; (3) outputs/claude-open-world-2026-11-14/MAC-LOOP-PROMPT.md. The text inside MAC-LOOP-PROMPT.md's code block is your standing instruction; follow it, including its spec files, rules, NEVER list and STOP conditions. First iteration: prove the Mac runs the PC's exact game. Build with python3 tools/build.py --output work/latest.rbxlx, then run python3 tools/studio_mcp.py --digest work/latest.rbxlx. It must print the digest given in the handoff's section 1, or a newer one given in the top PROJECT_STATE line. Then open the build in Studio and confirm tools/qa/SourceDigest.luau matches. If anything differs, rebuild and reopen before doing anything else. Then work the handoff's section 4 items first: (a) check whether the Vesperhold kit-mesh dropout reproduces in a real client, and if it does, cut resident mesh memory without losing the look; (b) measure and Studio-verify the win-91 ornament shadow change at the gate eye, then save to Development 118614906972571 (never Publish). Then resume the MAC-LOOP-PROMPT order. The creator's priority is a 60 fps floor (Vesperhold especially) without sacrificing visual appeal; research how other games solve each frame-time problem before changing it. One small, verified, committed step at a time. Commit explicit paths, add a "(Mac)" line of 60 words or fewer to PROJECT_STATE.md, and push after every step.
+```
