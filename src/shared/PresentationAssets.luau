@@ -53,6 +53,7 @@ Assets.Audio = {
 	ThemeDay = "rbxassetid://106605846831693",
 	ThemeNight = "rbxassetid://115707864004169",
 	ThemeVesperhold = "rbxassetid://116441703915606",
+	Discovery = "rbxassetid://115536619279909", -- win-89 discovery stinger (ElevenLabs, Approved 2026-11-24)
 }
 Assets.Textures = {
 	-- CC0 Effekseer samples; uploaded and typed-preloaded 6/6 on 2026-10-26 (assets/GITHUB_UPLOADED.json).
