@@ -1,4 +1,4 @@
-# mac-94: Vesperhold kit-mesh dropout, cause found (2026-11-25, Mac)
+# mac-98: Vesperhold kit-mesh dropout, cause found (2026-11-25, Mac)
 
 ## Verdict
 
