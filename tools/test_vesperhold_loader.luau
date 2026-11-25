@@ -624,7 +624,8 @@ do
 	env.task = { spawn = function(f) f() end, wait = function() waits += 1; return 0 end }
 	local W2 = load("src/server/Services/LandmarkWorld.luau", env, "LandmarkWorld")
 	local placedAt = {}
-	W2.Kit = { place = function(piece, frame) placedAt[piece] = frame; local m = Instance.new("Model"); m.Name = piece; return m end }
+	local scaleAt = {}
+	W2.Kit = { place = function(piece, frame, scale) placedAt[piece] = frame; scaleAt[piece] = scale; local m = Instance.new("Model"); m.Name = piece; return m end }
 	W2.Layout = LL
 	W2.Height = O.heightAt
 	local forest = Instance.new("Folder")
@@ -682,6 +683,7 @@ do
 			and math.abs(origin.UpVector.Y - 1) < 1e-6 and view:Dot(right) < 0 and ang >= 6 and ang <= 35
 	end
 	check("gate towers stand at their spot facing the basin centre, left of centre in the exit view", gateOk)
+	check("gate towers are placed at the layout's Scale (mac-99)", scaleAt.Bellwood_GateTowers == Vector3.one * (G.Scale or 1) and (G.Scale or 1) > 1)
 	do -- own function scope: this section is near Luau's 200-local limit
 	(function()
 		-- Basin accent lights: warm, shadowless, on invisible anchored parts at the hall's eave/doorway and the gate's niches/lintel.
@@ -787,7 +789,7 @@ do
 		if math.abs(top - landingTop) <= 1.5 and contains(f, Vector3.new(back.X, top - 0.5, back.Z))
 			and contains(f, Vector3.new(farEnd.X, top - 0.5, farEnd.Z)) then ledgeOk = true end
 		local step = gframe:PointToWorldSpace(Vector3.new(0, 0, G.Steps))
-		local tw = gframe:PointToWorldSpace(Vector3.new(13, 0, 0))
+		local tw = gframe:PointToWorldSpace(Vector3.new(13 * (G.Scale or 1), 0, 0)) -- a tower foot, at the kit's Scale
 		if math.abs(top - floorY) < 1e-3 and f.Material.Name ~= "Air" and f.Material.Name ~= "Water"
 			and contains(f, Vector3.new(step.X, floorY - bw.Basin.Deep, step.Z)) and contains(f, Vector3.new(tw.X, floorY - bw.Basin.Deep, tw.Z)) then footOk = true end
 	end

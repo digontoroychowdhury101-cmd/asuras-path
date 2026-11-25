@@ -276,7 +276,15 @@ do
 	-- the enlarged basin puts the gate in the lake (plan: across 150 left of centre, 140 toward the face); the causeway (section 10) links it to the shore
 	check("gate landing stays inside the bowl (not buried in the rim); a causeway, not the shore, carries it out", inside and not nearShore)
 	check("gate landing stands over the water", s.Y + G.Landing > waterY + 8)
-	check("gate towers stay under TempleTop", s.Y + G.Height <= floorY + bw.Basin.TempleTop)
+	-- TempleTop kept the old open-sky hall hidden from the roads; under the Hollow's vault nothing shows, so it binds only without Cavern
+	check("gate towers stay under TempleTop (open-sky basin only)", bw.Basin.Cavern ~= nil or s.Y + G.Height <= floorY + bw.Basin.TempleTop)
+	-- mac-99 reveal capture: at 1x the towers stood 51 studs beside a 795-stud colossal temple, a speck at its foot instead of the
+	-- bellwood_3 left-third mass; the kit is placed at Scale, and every gate number here is already in scaled studs.
+	local S = G.Scale or 1
+	check(string.format("gate towers read beside the colossal temple (%.0f studs tall, scale %.1f)", G.Height, S), G.Height >= 140 and S >= 2.5)
+	check(string.format("scaled gate stair stays walkable (riser %.2f studs)", 0.5 * S), 0.5 * S <= 1.6)
+	check("gate numbers are the 1x kit's at Scale", math.abs(G.Landing - 14 * S) < 1e-6 and math.abs(G.Back + 40.8 * S) < 1e-6
+		and math.abs(G.Steps - 10 * S) < 1e-6 and math.abs(G.Foot.Z + 13.655 * S) < 1e-6)
 	check("gate and temple footprints do not overlap", math.sqrt((s.X - t.X) ^ 2 + (s.Z - t.Z) ^ 2) > G.Radius + T.Radius)
 	check("gate keeps clear of the tunnel exit", math.sqrt((s.X - ex) ^ 2 + (s.Z - ez) ^ 2) > G.Radius + bw.Tunnel.Width)
 end
@@ -384,7 +392,7 @@ do
 	local frontX, frontZ = L.front(bw)
 	local g = L.gateSpot(bw)
 	check("route starts at the gate stair's landing level", math.abs(first.Y - (g.Y + bw.Basin.Gate.Landing)) < 0.01
-		and math.sqrt((first.X - g.X) ^ 2 + (first.Z - g.Z) ^ 2) < 60)
+		and math.sqrt((first.X - g.X) ^ 2 + (first.Z - g.Z) ^ 2) < 60 * (bw.Basin.Gate.Scale or 1))
 	local worst, worstRamp, maxGap, jump = 0, 0, 0, 0
 	for i = 2, #pts do
 		local a, b = pts[i - 1], pts[i]

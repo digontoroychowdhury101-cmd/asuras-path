@@ -77,8 +77,11 @@ Layout.Landmarks = {
 			-- (LandmarkWorld.gateFrame). Model Z: lowest step front edge at Steps, landing (Width wide, top Landing over the origin) back
 			-- to Back; the stair climbs away from the lake to a terrain ledge (LandmarkWorld.gateFills). Height = finial top.
 			-- Foot from assets/source/landmarks/bellwood_gate/manifest.json (bbox x -27.06..27.33, y -40.8..13.49, z min -0.58).
-			Gate = { Model = "Bellwood_GateTowers", Across = 150, Along = 140, Lift = 0, Radius = 42, Steps = 10, Back = -40.8,
-				Width = 15, Landing = 14, Height = 50.2, Foot = { X = -0.135, Y = -0.58, Z = -13.655 } },
+			-- Scale (mac-99 reveal): at 1x the towers stood 51 studs at the foot of the 795-stud colossal temple; at 3x they hold the
+			-- bellwood_3 left third. The numbers below are the 1x kit's times Scale; the stair's 0.5 riser becomes 1.5, still walkable.
+			-- Across 250 / Along 120 (was 150 / 140): the 126-stud footprint at the old spot left no seat for the temple base (test_bellwood_fit).
+			Gate = { Model = "Bellwood_GateTowers", Across = 250, Along = 120, Lift = 0, Scale = 3, Radius = 42 * 3, Steps = 10 * 3, Back = -40.8 * 3,
+				Width = 15 * 3, Landing = 14 * 3, Height = 50.2 * 3, Foot = { X = -0.135 * 3, Y = -0.58 * 3, Z = -13.655 * 3 } },
 			-- Walkable route gate landing -> rim -> forest (plan section 3; Layout.route builds it, LandmarkWorld.routeFills writes it): a
 			-- Width-wide causeway from the landing to the left shore at Theta (degrees on the ring, Layout.basinRing's angle), a switchback of
 			-- legs rising Rise each at slope Slope (rise/run, 22 deg) with Pad-long landings, parked Margin off the cliff, topping out on the rim

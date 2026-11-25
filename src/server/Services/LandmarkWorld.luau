@@ -463,10 +463,12 @@ function World.accents(lm: any, which: { [string]: boolean }, temple: any?): Mod
 	model.Name = "BasinLights"
 	for kind, frame in { Temple = World.templeFrame(lm, temple), Gate = World.gateFrame(lm) } do
 		if not which[kind] then continue end
+		-- gate accents are in 1x kit studs; they ride the scaled towers (ranges stay, PointLight caps at 60)
+		local s = if kind == "Gate" and lm.Basin and lm.Basin.Gate then lm.Basin.Gate.Scale or 1 else 1
 		for i, a in (if kind == "Temple" and temple and temple.Accents then temple.Accents else World.Accents[kind]) do
 			local part = Instance.new("Part")
 			part.Name, part.Size, part.Transparency = kind .. "Accent" .. i, Vector3.one, 1
-			part.CFrame = frame * CFrame.new(a[1], a[2], a[3])
+			part.CFrame = frame * CFrame.new(a[1] * s, a[2] * s, a[3] * s)
 			part.Anchored, part.CanCollide, part.CanQuery, part.CanTouch, part.CastShadow = true, false, false, false, false
 			part:SetAttribute("For", kind)
 			local light = Instance.new("PointLight")
@@ -490,7 +492,7 @@ function World.gateFills(lm: any): { any }
 	end
 	local top, landing = frame.Y + G.Landing, G.Back + 6
 	return {
-		box(44, floorY - lm.Basin.Deep - 4, floorY, G.Steps + 2, G.Back, Enum.Material.Mud),
+		box(44 * (G.Scale or 1), floorY - lm.Basin.Deep - 4, floorY, G.Steps + 2, G.Back, Enum.Material.Mud),
 		box(G.Width + 6, floorY - 4, top - 2, landing, G.Back - 24, Enum.Material.Rock),
 		box(G.Width + 6, top - 2, top, landing, G.Back - 24, Enum.Material.LeafyGrass),
 	}
@@ -889,7 +891,7 @@ function World.build(folders: { [string]: Instance }, waitReady: (string) -> boo
 			end
 			local G, gatePlaced = lm.Basin and lm.Basin.Gate, false
 			if G then
-				local m = Kit.place(G.Model, World.gateFrame(lm) * CFrame.new(G.Foot.X, G.Foot.Y, G.Foot.Z), Vector3.one, { Fidelity = World.Fidelity })
+				local m = Kit.place(G.Model, World.gateFrame(lm) * CFrame.new(G.Foot.X, G.Foot.Y, G.Foot.Z), Vector3.one * (G.Scale or 1), { Fidelity = World.Fidelity })
 				if m then m.Parent, gatePlaced = model, true else warn("[LandmarkWorld] " .. id .. ": kit piece " .. G.Model .. " is not available") end
 			end
 			if lm.Basin and (templePlaced or gatePlaced) then
