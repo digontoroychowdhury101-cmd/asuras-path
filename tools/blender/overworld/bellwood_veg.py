@@ -158,11 +158,14 @@ def mushroom_mat():
 
 
 # ------------------------------------------------------------------------------------------ helpers
-def paint(bm, n0, uv):
-    """Flat-colour every face created after index n0 from one atlas point."""
+def paint(bm, before, uv):
+    """Flat-colour every face not in `before` (set(bm.faces) taken before the part was built) from one atlas point.
+    Not an index slice: create_cone / create_icosphere free scratch faces, later faces reuse those slots, and bm.faces[n0:]
+    then skipped new faces and hit old ones (Reed_Clump_B heads came out candy-striped with green sleeves)."""
     uvl = _uvl(bm)
-    bm.faces.ensure_lookup_table()
-    for f in bm.faces[n0:]:
+    for f in bm.faces:
+        if f in before:
+            continue
         for l in f.loops:
             l[uvl].uv = uv
 
@@ -523,7 +526,7 @@ def shrub2(name, S, nstems, seed, depth=2, el=(0.85, 1.25), L0=3.4, leafk=1.0, b
             lf(p, ax * math.cos(t) + (e1 * math.cos(ph) + e2 * math.sin(ph)) * math.sin(t), L * rr.uniform(0.75, 1.15))
 
     def berry(c):
-        n0 = len(ber.faces)
+        n0 = set(ber.faces)
         vs = bmesh.ops.create_icosphere(ber, subdivisions=1, radius=0.17 * S + 0.06)["verts"]
         for v in vs:
             v.co += c
@@ -609,7 +612,7 @@ def flowers_daisy():
         h = rng.uniform(2.2, 4.0)
         bend = Vector((math.cos(a), math.sin(a), 0)) * rng.uniform(0.2, 0.7) + WIND * 0.35
         pts = [base + bend * (k / 3) ** 2 * 1.2 + Vector((0, 0, h * k / 3)) for k in range(4)]
-        n0 = len(stems.faces)
+        n0 = set(stems.faces)
         tube(stems, pts, [0.09, 0.08, 0.07, 0.06], sides=4, uvs=1.0)
         paint(stems, n0, PUV("stem"))
         top, d = pts[-1], (pts[-1] - pts[-2]).normalized()
@@ -618,7 +621,7 @@ def flowers_daisy():
         for k in range(9):
             ph = TAU * k / 9
             leaf(bl, top, (e1 * math.cos(ph) + e2 * math.sin(ph)) * 0.95 + d * 0.25, 0.7, 0.34, 0.0, PUV("white"), tex=0.006)
-        n0 = len(bl.faces)
+        n0 = set(bl.faces)
         disc(bl, top + d * 0.05, d, 0.32, sides=8, bulge=0.12)
         paint(bl, n0, PUV("yellow"))
         for _ in range(2):  # basal leaves
@@ -637,7 +640,7 @@ def flowers_foxglove():
         h = rng.uniform(3.8, 6.0)
         bend = Vector((math.cos(a), math.sin(a), 0)) * rng.uniform(0.1, 0.5) + WIND * 0.3
         pts = [base + bend * (k / 4) ** 2 * 1.2 + Vector((0, 0, h * k / 4)) for k in range(5)]
-        n0 = len(stems.faces)
+        n0 = set(stems.faces)
         tube(stems, pts, [0.14, 0.12, 0.1, 0.08, 0.05], sides=5, uvs=1.0)
         paint(stems, n0, PUV("stem"))
         for j in range(14):
@@ -646,7 +649,7 @@ def flowers_foxglove():
             pos = pts[kk].lerp(pts[kk + 1], t * 4 - kk)
             ang = j * 2.4 + i
             out = Vector((math.cos(ang), math.sin(ang), 0))
-            n0 = len(bl.faces)
+            n0 = set(bl.faces)
             cone_at(bl, pos, out * 0.8 - Vector((0, 0, 0.55)), 0.06, 0.3 * (1.0 - 0.35 * t), 0.62, seg=6)
             paint(bl, n0, PUV(rng.choice(("purple", "purple", "pink"))))
         for k in range(8):  # rosette
@@ -798,14 +801,14 @@ def reeds_b():
         base = Vector((math.cos(a) * r, math.sin(a) * r, -0.1))
         bend = Vector((math.cos(a), math.sin(a), 0)) * rr.uniform(0.2, 0.7) + WIND * 0.4
         pts = [base + bend * (k / 4) ** 2 * 1.2 + Vector((0, 0, h * k / 4)) for k in range(5)]
-        n0 = len(hd.faces)
+        n0 = set(hd.faces)
         tube(hd, pts, [0.1, 0.09, 0.08, 0.07, 0.05], sides=4, uvs=1.0)
         paint(hd, n0, PUV("stem"))
         d = (pts[-1] - pts[-2]).normalized()
-        n0 = len(hd.faces)
+        n0 = set(hd.faces)
         cone_at(hd, pts[-1] - d * 1.9, d, 0.3, 0.27, 1.6, seg=7)
         paint(hd, n0, PUV("brown"))
-        n0 = len(hd.faces)
+        n0 = set(hd.faces)
         cone_at(hd, pts[-1] - d * 0.3, d, 0.09, 0.02, 1.0, seg=5)
         paint(hd, n0, PUV("stem"))
     obj("Reed_Clump_B", "Blades", bm, MATS["Bell_Reed"], smooth=True, recalc=False)
@@ -822,7 +825,7 @@ def grass_piece(name, seed, n, hr, wr, spread, br, nseg, seeds=0):
         h = rr.uniform(3.2, 5.0)
         bend = Vector((math.cos(a), math.sin(a), 0)) * rr.uniform(0.3, 0.9) + WIND * 0.4
         pts = [base + bend * (k / 3) ** 2 * 1.2 + Vector((0, 0, h * k / 3)) for k in range(4)]
-        n0 = len(sd.faces)
+        n0 = set(sd.faces)
         tube(sd, pts, [0.05, 0.045, 0.04, 0.03], sides=3, uvs=1.0)
         paint(sd, n0, PUV("straw"))
         d = (pts[-1] - pts[-2]).normalized()
@@ -1036,6 +1039,8 @@ def main():
     wood_end_mat(), moss_mat(), conifer_mat(), bloom_mat(), mushroom_mat()
     sc, cam, ground = setup_render()
     fig = make_figure()
+    if ONLY and (UP / "upload_manifest.json").exists():  # a subset rebuild keeps the other pieces in the upload pack
+        PACK.update(json.loads((UP / "upload_manifest.json").read_text())["pieces"])
     todo = [b for b in BUILD if not ONLY or b[0] in ONLY]
     for name, fn in todo:
         fn()
@@ -1048,7 +1053,8 @@ def main():
         vignettes(sc, cam, ground, fig)
     for o in [o for os_ in PIECES.values() for o in os_]:
         o.hide_render = False
-    bpy.ops.wm.save_as_mainfile(filepath=str(OUT / "bellwood_veg_kit.blend"), compress=True)
+    if not ONLY:  # a subset scene would overwrite the whole-kit .blend
+        bpy.ops.wm.save_as_mainfile(filepath=str(OUT / "bellwood_veg_kit.blend"), compress=True)
     print("VEG_OK", len(PACK), "pieces", flush=True)
 
 

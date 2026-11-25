@@ -48,3 +48,4 @@ Grass: Grass_Tall, Grass_Lush, Grass_Seed
 - Grass_Tall: sub-meshes {"Grass_Tall__Blades": 490}; tris 490; size [6.39, 4.93, 6.17] studs; GLB 82 KB; render outputs/claude-open-world-2026-11-14/captures/kit/bellwood_veg/eye_Grass_Tall.png
 - Grass_Lush: sub-meshes {"Grass_Lush__Blades": 450}; tris 450; size [6.42, 2.27, 5.71] studs; GLB 80 KB; render outputs/claude-open-world-2026-11-14/captures/kit/bellwood_veg/eye_Grass_Lush.png
 - Grass_Seed: sub-meshes {"Grass_Seed__Blades": 336, "Grass_Seed__Seeds": 768}; tris 1104; size [5.62, 5.38, 5.84] studs; GLB 379 KB; render outputs/claude-open-world-2026-11-14/captures/kit/bellwood_veg/eye_Grass_Seed.png
+- Reed_Clump_B: sub-meshes {"Reed_Clump_B__Blades": 270, "Reed_Clump_B__Heads": 608}; tris 878; size [8.26, 9.69, 8.05] studs; GLB 336 KB; render outputs/claude-open-world-2026-11-14/captures/kit/bellwood_veg/eye_Reed_Clump_B.png
