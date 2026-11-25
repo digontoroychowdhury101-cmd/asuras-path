@@ -134,18 +134,22 @@ end
 local function stratumWander(i: number, tm: number): number
 	return 0.6 * math.sin(i * 1.9 + tm * 3.1) + 0.4 * math.sin(i * 0.8 + tm * 1.7 + 2)
 end
+-- Neighbouring strips overlap by StripSeam on each side (mac-101): a strip turned off the 4-stud voxel grid covers only part of a seam
+-- voxel, and an Air FillBlock keeps what it does not cover, so abutting strips left slivers of the old ground floating in the bowl.
+-- 2 x 3 studs holds a voxel (at most 5.66 studs across, at 45 degrees) wholly inside one strip at any basin yaw.
+World.StripSeam = 3
 local function strips(lm: any, grow: number, bottom: number, top: number, material: Enum.Material, out: { any })
 	local L = World.Layout
 	local c, fx, fz = L.basinCentre(lm), L.front(lm)
 	local front = Vector3.new(fx, 0, fz)
 	local a, b = lm.Basin.Width / 2 + grow, lm.Basin.Depth / 2 + grow
-	local step = World.BasinStep
+	local step, e = World.BasinStep, World.StripSeam
 	for u = -b, b - step, step do
-		local edge = math.max(math.abs(u), math.abs(u + step)) / b -- the outer edge of the strip keeps every corner inside
+		local edge = math.max(math.abs(u - e), math.abs(u + step + e)) / b -- the outer edge of the strip keeps every corner inside
 		local w = a * math.sqrt(math.max(0, 1 - edge * edge))
 		if w > 1 then
 			local p = Vector3.new(c.X, (bottom + top) / 2, c.Z) + front * (u + step / 2)
-			table.insert(out, { CFrame = CFrame.lookAt(p, p + front), Size = Vector3.new(2 * w, top - bottom, step), Material = material })
+			table.insert(out, { CFrame = CFrame.lookAt(p, p + front), Size = Vector3.new(2 * w, top - bottom, step + 2 * e), Material = material })
 		end
 	end
 end

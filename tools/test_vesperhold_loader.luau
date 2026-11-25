@@ -510,6 +510,32 @@ do
 	local nMats = 0
 	for _ in rimMats do nMats += 1 end
 	check("basin bowl: air strips inside the shore, from the floor up over every rim top", (byMat.Air or 0) >= 20 and inBowl)
+	-- mac-101: abutting air strips turned 4 degrees off the voxel grid each covered only part of a seam voxel, and an Air FillBlock keeps
+	-- what it does not cover, so 83 slivers of the old ground floated in the Hollow (one showed in the tunnel-exit reveal). Neighbouring
+	-- strips must overlap by a voxel's span across the seam, so every seam voxel sits wholly inside one strip.
+	do
+		local fx, fz = LL.front(bw)
+		local span = 4 * (math.abs(fx) + math.abs(fz))
+		local groups = {}
+		for _, f in fills do
+			if f.Material.Name == "Air" and not f.Wedge then
+				local key = (if f.Dish then "dish" else "bowl") .. string.format("%.2f", f.CFrame.Position.Y)
+				groups[key] = groups[key] or {}
+				table.insert(groups[key], f)
+			end
+		end
+		local worst, pairs_ = math.huge, 0
+		for _, g in groups do
+			table.sort(g, function(a, b) return a.CFrame.Position.X * fx + a.CFrame.Position.Z * fz < b.CFrame.Position.X * fx + b.CFrame.Position.Z * fz end)
+			for i = 2, #g do
+				local a, b = g[i - 1], g[i]
+				local du = math.abs((b.CFrame.Position - a.CFrame.Position):Dot(Vector3.new(fx, 0, fz)))
+				worst = math.min(worst, (a.Size.Z + b.Size.Z) / 2 - du)
+				pairs_ += 1
+			end
+		end
+		check(string.format("basin air strips overlap a voxel's span at every seam (worst %.2f of %.2f studs, %d seams)", worst, span, pairs_), pairs_ > 20 and worst >= span)
+	end
 	check("basin bed: a mud layer topped at the floor", bedOk)
 	-- mac-89: the first rim was one dark rock wall standing on open meadow (captures/mac/bellwood_face/ingame_basin_aerial_before.jpg).
 	check("basin rim: strata cliffs from under the floor up to a grass cap, in 2+ stone kinds", rimOk and nMats >= 2 and #(function() local n = {} for k in rimSpan do table.insert(n, k) end return n end)() >= 64)
