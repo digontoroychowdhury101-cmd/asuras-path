@@ -445,6 +445,14 @@ function World.colossalApproach(lm: any, frame: CFrame): { any }
 	return out
 end
 
+-- Lake scatter (Basin.Shallows): rocks, logs and the hull are hulls to stand on; reeds and the wreck's ribs never collide.
+World.ShallowsFidelity = { Stone = HULL, Bark = HULL, Hull = HULL }
+function World.shallowsFrame(lm: any, s: any): CFrame
+	local at = World.Layout.shallowsSpot(lm, s)
+	return CFrame.new(at.X, at.Y, at.Z) * CFrame.Angles(0, math.rad(lm.Yaw + (s.Yaw or 0)), 0)
+		* CFrame.Angles(math.rad(s.Pitch or 0), 0, math.rad(s.Roll or 0))
+end
+
 -- The gate towers' origin frame: at Layout.gateSpot, upright, its front (model +Z) turned to the basin centre.
 function World.gateFrame(lm: any): CFrame
 	local s, c = World.Layout.gateSpot(lm), World.Layout.basinCentre(lm)
@@ -897,6 +905,15 @@ function World.build(folders: { [string]: Instance }, waitReady: (string) -> boo
 			if G then
 				local m = Kit.place(G.Model, World.gateFrame(lm) * CFrame.new(G.Foot.X, G.Foot.Y, G.Foot.Z), Vector3.one * (G.Scale or 1), { Fidelity = World.Fidelity })
 				if m then m.Parent, gatePlaced = model, true else warn("[LandmarkWorld] " .. id .. ": kit piece " .. G.Model .. " is not available") end
+			end
+			if lm.Basin and lm.Basin.Shallows then
+				local shallows = Instance.new("Model")
+				shallows.Name = "Shallows"
+				for _, s in lm.Basin.Shallows do
+					local m = Kit.place(s.Model, World.shallowsFrame(lm, s), Vector3.one * s.Scale, { Fidelity = World.ShallowsFidelity })
+					if m then m.Parent = shallows else warn("[LandmarkWorld] " .. id .. ": kit piece " .. s.Model .. " is not available") end
+				end
+				shallows.Parent = model
 			end
 			if lm.Basin and (templePlaced or gatePlaced) then
 				World.accents(lm, { Temple = templePlaced, Gate = gatePlaced }, T).Parent = model

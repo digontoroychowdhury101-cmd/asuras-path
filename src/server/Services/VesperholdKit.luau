@@ -33,13 +33,24 @@ local function registry(): any
 	return Kit.Registry
 end
 
-local function landmarks(): any
+-- Landmark pieces, plus the region kits a landmark dresses with (mac-102: the Bellwood lake scatter reuses uploaded rocks, reeds,
+-- logs and a hull). First module wins; a missing module is skipped.
+Kit.LandmarkModules = { "LandmarkKitRegistry", "BellwoodKitRegistry", "SliceKitRegistry", "SaltreachKitRegistry" }
+function Kit.landmarks(): any
 	if Kit.LandmarkRegistry == nil then
-		local ok, reg = pcall(function()
-			local shared = game:GetService("ReplicatedStorage"):WaitForChild("AsurasPath"):WaitForChild("Shared")
-			return require(shared:FindFirstChild("LandmarkKitRegistry") :: ModuleScript)
+		local merged = {}
+		local found, shared = pcall(function()
+			return game:GetService("ReplicatedStorage"):WaitForChild("AsurasPath"):WaitForChild("Shared")
 		end)
-		Kit.LandmarkRegistry = if ok and type(reg) == "table" then reg else {}
+		for _, name in if found then Kit.LandmarkModules else {} do
+			local ok, reg = pcall(function() return require(shared:FindFirstChild(name) :: ModuleScript) end)
+			if ok and type(reg) == "table" then
+				for piece, subs in reg do
+					if merged[piece] == nil then merged[piece] = subs end
+				end
+			end
+		end
+		Kit.LandmarkRegistry = merged
 	end
 	return Kit.LandmarkRegistry
 end
@@ -80,7 +91,7 @@ local function extent(frame: CFrame, half: Vector3): Vector3
 end
 
 local function readTemplate(piece: string): {Sub}?
-	local entries = registry()[piece] or landmarks()[piece]
+	local entries = registry()[piece] or Kit.landmarks()[piece]
 	if type(entries) ~= "table" then return nil end
 	local _,first = next(entries)
 	if type(first) ~= "table" or type(first.Asset) ~= "string" then return nil end

@@ -86,7 +86,22 @@ Layout.Landmarks = {
 			-- Width-wide causeway from the landing to the left shore at Theta (degrees on the ring, Layout.basinRing's angle), a switchback of
 			-- legs rising Rise each at slope Slope (rise/run, 22 deg) with Pad-long landings, parked Margin off the cliff, topping out on the rim
 			-- segment's own cap, across it and down the outer slope, then Forest studs on into the forest. Max = hard gradient limit (deg).
-			Route = { Theta = 60, Width = 14, Rise = 22, Slope = 0.4, Pad = 16, Margin = 10, Forest = 90, Step = 4, Max = 35 } },
+			Route = { Theta = 60, Width = 14, Rise = 22, Slope = 0.4, Pad = 16, Margin = 10, Forest = 90, Step = 4, Max = 35 },
+			-- The reveal's foreground (concepts/bellwood_3, mac-102): rocks, a half-sunk wreck, a floating log and reeds between the exit
+			-- and the temple, from uploaded kit pieces (Bellwood, Slice and Saltreach kits). Across/Along as Temple; Lift over the lake bed,
+			-- or over the deep dish where it lies (Layout.shallowsSpot). Yaw/Pitch/Roll in degrees off the basin front. R = scaled half
+			-- footprint, kept clear of the causeways and the gate (test_vesperhold_loader). Tops stand 4+ studs over the water: lower ones
+			-- vanished under the streamed water surface at the eye (mac-102 Play). Reed_Clump_B is left out: its cattail heads' UVs render
+			-- as green sleeves on candy-striped stems.
+			Shallows = {
+				{ Model = "Outcrop_Mossy", Along = 470, Across = 10, Scale = 2.8, Lift = 0, Yaw = 25, R = 28 },
+				{ Model = "Boulder_Granite_D", Along = 490, Across = -78, Scale = 2.4, Lift = 0, Yaw = 70, R = 14 },
+				{ Model = "Boulder_Granite_C", Along = 420, Across = -105, Scale = 3.2, Lift = 3, Yaw = -20, R = 40 },
+				{ Model = "Boat_Hull_B", Along = 440, Across = 45, Scale = 1.6, Lift = 5.5, Yaw = 35, Pitch = -6, Roll = 8, R = 17 },
+				{ Model = "Fallen_Log_B", Along = 455, Across = -75, Scale = 1.4, Lift = 7, Yaw = 110, R = 13 },
+				{ Model = "Reed_Clump_A", Along = 505, Across = -12, Scale = 1.8, Lift = -0.5, Yaw = 0, R = 6 },
+				{ Model = "Reed_Clump_A", Along = 508, Across = -60, Scale = 1.5, Lift = -0.5, Yaw = 140, R = 5 },
+			} },
 		-- Grove (SliceDressing): forest scatter in R round the origin. Nothing tall within Clear (the face), and a lane LaneHalf wide from
 		-- the mouth out LaneTo studs along the front (the road sightline) stays open. Ferns and grass hug the base from Clear - 12.
 		Grove = { R = 150, Clear = 70, LaneHalf = 16, LaneTo = 170 },
@@ -365,6 +380,13 @@ function Layout.colossalRidgeHeight(lm: any, x: number, z: number): number?
 	if edge >= 1 or depth >= 1 then return nil end
 	local floor = Layout.basinLevels(lm)
 	return floor + (420 - floor) * (1 - edge ^ 3) * (1 - depth ^ .86)
+end
+
+-- World position of a lake scatter piece's foot: Lift over the lake bed, or over the deep dish Shelf studs in from the shore.
+function Layout.shallowsSpot(lm: any, s: any): Vec
+	local at = basinSpot(lm, s)
+	if Layout.basinEllipse(lm, at.X, at.Z, -lm.Basin.Shelf) < 1 then at.Y -= lm.Basin.Deep end
+	return at
 end
 
 -- World position of the gate towers' origin (tower-line centre, on the lake bed).

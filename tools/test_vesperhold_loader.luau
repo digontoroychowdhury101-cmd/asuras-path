@@ -410,6 +410,21 @@ do
 	assets[id] = w
 	landmarkReg.Bellwood_GiantFace = e
 	setup(registry)
+	do -- mac-102: landmark pieces also resolve from the Bellwood, Slice and Saltreach kits (first module wins; a missing module is skipped)
+		local regs = { LandmarkKitRegistry = { A = "landmark" }, BellwoodKitRegistry = { A = "bellwood", Reed = "reed" }, SaltreachKitRegistry = { Hull = "hull" } }
+		local shared = { FindFirstChild = function(_, n) return if regs[n] then n else nil end }
+		local env = table.clone(base)
+		env.game = { GetService = function(_, n)
+			if n == "ReplicatedStorage" then return { WaitForChild = function() return { WaitForChild = function() return shared end } end } end
+			return services[n]
+		end }
+		env.require = function(n) return regs[n] end
+		local K2 = load("src/server/Services/VesperholdKit.luau", env, "VesperholdKit")
+		local merged = K2.landmarks()
+		check("landmark registry merges the Bellwood, Slice and Saltreach kits, first module wins",
+			merged.A == "landmark" and merged.Reed == "reed" and merged.Hull == "hull"
+			and table.find(K2.LandmarkModules, "SliceKitRegistry") ~= nil and K2.LandmarkModules[1] == "LandmarkKitRegistry")
+	end
 	Kit.LandmarkRegistry = landmarkReg
 	local PRECISE = Enum.CollisionFidelity.PreciseConvexDecomposition
 	local face = Kit.place("Bellwood_GiantFace", CFrame.new(), V3(1, 1, 1), { Fidelity = { Shell = PRECISE } })
@@ -651,7 +666,14 @@ do
 	local W2 = load("src/server/Services/LandmarkWorld.luau", env, "LandmarkWorld")
 	local placedAt = {}
 	local scaleAt = {}
-	W2.Kit = { place = function(piece, frame, scale) placedAt[piece] = frame; scaleAt[piece] = scale; local m = Instance.new("Model"); m.Name = piece; return m end }
+	W2.Kit = (function() -- Placements: no new local here, this function is at Luau's 200-local limit; later sections wrap W2.Kit
+		local list = {}
+		return { Placements = list, place = function(piece, frame, scale, opts)
+			placedAt[piece] = frame; scaleAt[piece] = scale
+			table.insert(list, { Piece = piece, Frame = frame, Scale = scale, Opts = opts })
+			local m = Instance.new("Model"); m.Name = piece; return m
+		end }
+	end)()
 	W2.Layout = LL
 	W2.Height = O.heightAt
 	local forest = Instance.new("Folder")
@@ -710,6 +732,59 @@ do
 	end
 	check("gate towers stand at their spot facing the basin centre, left of centre in the exit view", gateOk)
 	check("gate towers are placed at the layout's Scale (mac-99)", scaleAt.Bellwood_GateTowers == Vector3.one * (G.Scale or 1) and (G.Scale or 1) > 1)
+	do (function()
+		-- mac-102: the reveal's foreground (bellwood_3 concept) — rocks, a wreck, a log and reeds in the lake between the exit and the temple.
+		local S = bw.Basin.Shallows or {}
+		local folder = lm:FindFirstChild("Shallows")
+		local floorY0, water = LL.basinLevels(bw)
+		local exitW2 = W2.kitToWorld(bw, bw.Tunnel.Passage[#bw.Tunnel.Passage])
+		local c = LL.basinCentre(bw)
+		local look = Vector3.new(c.X - exitW2.X, 0, c.Z - exitW2.Z).Unit
+		local blockers = {}
+		for _, f in W2.colossalApproach(bw, W2.templeFrame(bw, colossal)) do table.insert(blockers, f) end
+		for _, f in W2.gateFills(bw) do table.insert(blockers, f) end
+		for _, f in W2.routeFills(bw) do table.insert(blockers, f) end
+		local function clearance(p: Vector3): number -- XZ distance from p to the nearest causeway / stair / route box
+			local best = math.huge
+			for _, f in blockers do
+				local q = f.CFrame:PointToObjectSpace(p)
+				local dx, dz = math.max(math.abs(q.X) - f.Size.X / 2, 0), math.max(math.abs(q.Z) - f.Size.Z / 2, 0)
+				best = math.min(best, math.sqrt(dx * dx + dz * dz))
+			end
+			return best
+		end
+		local regs = {}
+		for _, n in { "LandmarkKitRegistry", "BellwoodKitRegistry", "SliceKitRegistry", "SaltreachKitRegistry" } do
+			table.insert(regs, require("../src/shared/" .. n))
+		end
+		local placedOk, lakeOk, clearOk, viewOk, seatOk, collideOk, artOk = true, true, true, true, true, true, true
+		local gp = Vector3.new(gspot.X, 0, gspot.Z)
+		for _, s in S do
+			local frame = W2.shallowsFrame(bw, s)
+			local hit = nil
+			for _, p in W2.Kit.Placements do if p.Piece == s.Model and (p.Frame.Position - frame.Position).Magnitude < 1e-3 then hit = p end end
+			placedOk = placedOk and hit ~= nil and hit.Scale == Vector3.one * s.Scale and (frame.Position - W2.shallowsFrame(bw, s).Position).Magnitude < 1e-6
+			local p = frame.Position
+			lakeOk = lakeOk and LL.basinEllipse(bw, p.X, p.Z, -s.R) < 1
+			clearOk = clearOk and clearance(p) >= s.R + 2 and (Vector3.new(p.X, 0, p.Z) - gp).Magnitude >= G.Radius + s.R
+			local to = Vector3.new(p.X - exitW2.X, 0, p.Z - exitW2.Z)
+			-- 50: the reveal camera (FOV 70, 16:9) spans about 51 degrees either side of its look
+			viewOk = viewOk and math.deg(math.acos(math.clamp(to.Unit:Dot(look), -1, 1))) <= 50 and to.Magnitude <= 320
+			local bed = if LL.basinEllipse(bw, p.X, p.Z, -bw.Basin.Shelf) < 1 then floorY0 - bw.Basin.Deep else floorY0
+			seatOk = seatOk and math.abs(p.Y - (bed + s.Lift)) < 1e-6 and s.Lift >= -2 and p.Y < water
+			local fid = hit and hit.Opts and hit.Opts.Fidelity
+			collideOk = collideOk and fid ~= nil and fid.Stone ~= nil and fid.Bark ~= nil and fid.Hull ~= nil and fid.Blades == nil and fid.Heads == nil
+			local known = false
+			for _, r in regs do known = known or r[s.Model] ~= nil end
+			artOk = artOk and known
+		end
+		check("lake scatter: at least six uploaded kit pieces, each placed at shallowsFrame and its Scale in the Shallows model",
+			#S >= 6 and folder ~= nil and #folder:GetChildren() == #S and placedOk and artOk)
+		check("lake scatter: inside the shore, clear of the causeways, the gate stair and the gate", lakeOk and clearOk)
+		check("lake scatter: within 50 degrees of the exit's view of the basin centre and 320 studs of the exit", viewOk)
+		check("lake scatter: on the lake or dish bed + Lift, foot under the water", seatOk)
+		check("lake scatter: rocks, logs and the hull collide, reeds never do", collideOk)
+	end)() end
 	do -- own function scope: this section is near Luau's 200-local limit
 	(function()
 		-- Basin accent lights: warm, shadowless, on invisible anchored parts at the hall's eave/doorway and the gate's niches/lintel.
