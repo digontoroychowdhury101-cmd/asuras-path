@@ -1,5 +1,17 @@
 {
   "modelAssets": {
+    "Bellwood_ColonnadeStanding": {
+      "assetId": "rbxassetid://127915433158542",
+      "moderationState": "Approved",
+      "operationId": "f2074776-6b27-495e-bd2b-558b700a799e",
+      "uploaded": "2026-11-25"
+    },
+    "Bellwood_ColonnadeToppled": {
+      "assetId": "rbxassetid://94406393587207",
+      "moderationState": "Approved",
+      "operationId": "ab684278-02d8-470e-80a8-537ab3d62f5c",
+      "uploaded": "2026-11-25"
+    },
     "Bellwood_ColossalGuardianEast": {
       "assetId": "rbxassetid://80072290192771",
       "moderationState": "Approved",
@@ -45,6 +57,100 @@
   },
   "note": "Real IDs only. modelAssets = Assets API Model id (LoadAsset target; part 1 of a split piece). pieces = sub-mesh MeshId/maps read from a verified LoadAsset; split pieces carry per-sub Asset and center (tools/assets/glb_split.py).",
   "pieces": {
+    "Bellwood_ColonnadeStanding": {
+      "Bellwood_ColonnadeStanding__Ribbon": {
+        "ColorMap": "rbxassetid://94818348159381",
+        "MeshId": "rbxassetid://117643784440894",
+        "MetalnessMap": "rbxassetid://131232409846009",
+        "NormalMap": "rbxassetid://93441005601978",
+        "RoughnessMap": "rbxassetid://79971803159806",
+        "center": [
+          6.0134,
+          15.3758,
+          0.303
+        ],
+        "operations": {
+          "Asset": "f2074776-6b27-495e-bd2b-558b700a799e"
+        }
+      },
+      "Bellwood_ColonnadeStanding__Stone": {
+        "ColorMap": "rbxassetid://88459315391699",
+        "MeshId": "rbxassetid://130218616584565",
+        "MetalnessMap": "rbxassetid://131232409846009",
+        "NormalMap": "rbxassetid://120926341867043",
+        "RoughnessMap": "rbxassetid://120332523645807",
+        "center": [
+          0.0,
+          11.4727,
+          0.0
+        ],
+        "operations": {
+          "Asset": "f2074776-6b27-495e-bd2b-558b700a799e"
+        }
+      },
+      "Bellwood_ColonnadeStanding__Vine": {
+        "ColorMap": "rbxassetid://72057770112396",
+        "MeshId": "rbxassetid://134186736199956",
+        "MetalnessMap": "rbxassetid://131232409846009",
+        "NormalMap": "rbxassetid://102122151568985",
+        "RoughnessMap": "rbxassetid://85746137510970",
+        "center": [
+          5.0627,
+          18.2276,
+          0.3248
+        ],
+        "operations": {
+          "Asset": "f2074776-6b27-495e-bd2b-558b700a799e"
+        }
+      }
+    },
+    "Bellwood_ColonnadeToppled": {
+      "Bellwood_ColonnadeToppled__Ribbon": {
+        "ColorMap": "rbxassetid://77317764126736",
+        "MeshId": "rbxassetid://81949672846285",
+        "MetalnessMap": "rbxassetid://131232409846009",
+        "NormalMap": "rbxassetid://112572501321421",
+        "RoughnessMap": "rbxassetid://91909443858731",
+        "center": [
+          2.128,
+          16.2688,
+          -0.8567
+        ],
+        "operations": {
+          "Asset": "ab684278-02d8-470e-80a8-537ab3d62f5c"
+        }
+      },
+      "Bellwood_ColonnadeToppled__Stone": {
+        "ColorMap": "rbxassetid://77452176259970",
+        "MeshId": "rbxassetid://108018656250863",
+        "MetalnessMap": "rbxassetid://131232409846009",
+        "NormalMap": "rbxassetid://107684813365685",
+        "RoughnessMap": "rbxassetid://101937587312813",
+        "center": [
+          0.0,
+          11.2731,
+          0.0
+        ],
+        "operations": {
+          "Asset": "ab684278-02d8-470e-80a8-537ab3d62f5c"
+        }
+      },
+      "Bellwood_ColonnadeToppled__Vine": {
+        "ColorMap": "rbxassetid://113807585167817",
+        "MeshId": "rbxassetid://100616047398237",
+        "MetalnessMap": "rbxassetid://131232409846009",
+        "NormalMap": "rbxassetid://130550185472213",
+        "RoughnessMap": "rbxassetid://77888773130058",
+        "center": [
+          1.8679,
+          17.8982,
+          -1.0686
+        ],
+        "operations": {
+          "Asset": "ab684278-02d8-470e-80a8-537ab3d62f5c"
+        }
+      }
+    },
     "Bellwood_ColossalGuardianEast": {
       "Bellwood_ColossalGuardianEast__Base": {
         "ColorMap": "rbxassetid://93865328180811",

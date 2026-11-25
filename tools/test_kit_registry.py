@@ -212,7 +212,7 @@ class KitRegistry(unittest.TestCase):
         d.mkdir(parents=True)
         subs = ["Bellwood_GiantFace__Shell", "Bellwood_GiantFace__Floor"]
         (d / "manifest.json").write_text(json.dumps({"pieces": {"Bellwood_GiantFace": {"sub_meshes": {s: 10 for s in subs}}}}))
-        for pack in ("bellwood_temple", "bellwood_temple_colossal"):  # every landmark pack needs its manifest
+        for pack in ("bellwood_temple", "bellwood_temple_colossal", "bellwood_colonnade"):  # every landmark pack needs its manifest
             t = self.root / "assets/source/landmarks" / pack
             t.mkdir(parents=True)
             (t / "manifest.json").write_text(json.dumps({"pieces": {}}))

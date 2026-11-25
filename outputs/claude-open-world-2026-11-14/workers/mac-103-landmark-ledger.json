@@ -1,0 +1,22 @@
+{
+ "landmark/Bellwood_ColonnadeStanding__p1": {
+  "assetId": "127915433158542",
+  "bytes": 15442196,
+  "displayName": "landmark_Bellwood_ColonnadeStanding__p1",
+  "error": null,
+  "file": "/Users/digonto/Documents/ChatGPT/Roblox game 2/work/landmark_upload_colonnade/pilot/Bellwood_ColonnadeStanding__p1.glb",
+  "moderation": "Approved",
+  "operationId": "f2074776-6b27-495e-bd2b-558b700a799e",
+  "sha256": "e68282b2dc2ec52663e08fe6fa1e50087803b7b97fad7d03a630fb4d0f637462"
+ },
+ "landmark/Bellwood_ColonnadeToppled__p1": {
+  "assetId": "94406393587207",
+  "bytes": 15245964,
+  "displayName": "landmark_Bellwood_ColonnadeToppled__p1",
+  "error": null,
+  "file": "/Users/digonto/Documents/ChatGPT/Roblox game 2/work/landmark_upload_colonnade/rest/Bellwood_ColonnadeToppled__p1.glb",
+  "moderation": "Approved",
+  "operationId": "ab684278-02d8-470e-80a8-537ab3d62f5c",
+  "sha256": "78c4a034aaba4e7e445b536ddcce120ff23b23695f983a9f2c5c6c70b5ee97af"
+ }
+}

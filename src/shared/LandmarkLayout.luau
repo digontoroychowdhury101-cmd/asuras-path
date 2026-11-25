@@ -101,6 +101,9 @@ Layout.Landmarks = {
 				{ Model = "Fallen_Log_B", Along = 455, Across = -75, Scale = 1.4, Lift = 7, Yaw = 110, R = 13 },
 				{ Model = "Reed_Clump_A", Along = 505, Across = -12, Scale = 1.8, Lift = -0.5, Yaw = 0, R = 6 },
 				{ Model = "Reed_Clump_A", Along = 508, Across = -60, Scale = 1.5, Lift = -0.5, Yaw = 140, R = 5 },
+				-- mac-103: the ruined colonnade (tools/blender/landmarks/bellwood_colonnade.py), midground left as in bellwood_3
+				{ Model = "Bellwood_ColonnadeStanding", Along = 420, Across = 95, Scale = 2.5, Lift = 0, Yaw = 55, R = 52 },
+				{ Model = "Bellwood_ColonnadeToppled", Along = 350, Across = -100, Scale = 2.5, Lift = 0, Yaw = -35, R = 52 },
 			} },
 		-- Grove (SliceDressing): forest scatter in R round the origin. Nothing tall within Clear (the face), and a lane LaneHalf wide from
 		-- the mouth out LaneTo studs along the front (the road sightline) stays open. Ferns and grass hug the base from Clear - 12.
