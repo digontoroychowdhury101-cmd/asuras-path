@@ -4,7 +4,7 @@
 The creator is entirely vibe-coding this Roblox game and does not write code manually. 
 
 ## Efficiency & Token-Saving Rules (CRITICAL)
-1. **Direct File Updates**: When using the Filesystem MCP plugin, read and write files directly in `src/`. Avoid dumping hundreds of lines of code into the chat.
+1. **Direct file updates**: Use the Windows checkout for source edits. Use native filesystem tools or a Filesystem MCP scoped to that checkout. Keep large code changes in the files.
 2. **Surgical Edits**: If outputting code in chat, NEVER reprint an entire 200+ line script. Provide only the specific function, block, or modified lines with precise placement instructions.
 3. **Concise Explanations**: Provide test steps and instructions in 2 short bullet points. Avoid technical lectures or syntax breakdowns unless explicitly requested.
 4. **Never Read Binaries**: Never open or inspect `.rbxl`, `.rbxlx`, `.glb`, `.obj`, or images with text-reading tools. Refer to `PROJECT_STATE.md`, `default.project.json`, and `docs/BUILD.md` instead.
@@ -12,13 +12,14 @@ The creator is entirely vibe-coding this Roblox game and does not write code man
 
 ## Project Layout & Architecture
 - `src/`: All Luau source code (Server, Client, Shared, Simulation).
-- `places/AsurasPath.rbxlx`: Authoritative Roblox Studio place file (mirrored to `outputs/AsurasPath.rbxlx`).
+- `places/AsurasPath.rbxlx` and `outputs/AsurasPath.rbxlx`: Protected local baselines. Open the current Development place from Roblox and build test files under `work/`.
 - `assets/`: Uploaded models (`assets/models/*.rbxmx`), JSON registries, and raw 3D sources (`assets/source/`).
 - `tools/`: Automation tools (`start_sync.command`, `auto_pull.command`, Python build scripts).
 - `default.project.json`: Rojo configuration mapping `src/` and `assets/models/` into Studio.
 
-## Multi-Machine Relay & Git Protocol (CRITICAL)
-- Active branch: `ux/onboarding-overhaul` (all pushes/pulls target this branch).
+## Windows development and Git
+- Claude on the Windows PC owns ongoing development, commits, pushes, Blender work, and Roblox Development saves. The Mac is retiring. Resolve all paths and MCP registrations on Windows.
+- Active branch: `ux/onboarding-overhaul`. GitHub holds source and handoff notes. Roblox holds the saved Development place. Keep a private recovery copy of editable source assets and local-only work.
 - **Zero-Stash Rule**: Commit your completed work and preserve unrelated changes and untracked files.
 - **Before Concluding Any Turn/Batch**:
   1. If code, assets, or `default.project.json` changed, run `ASURA_BUILD_OUTPUT=work/verify.rbxlx bash tools/verify_all.sh` to keep the saved places intact.
@@ -27,12 +28,11 @@ The creator is entirely vibe-coding this Roblox game and does not write code man
   4. Confirm `git status` shows only preserved user files or unrelated work.
 - **When Starting Any Session**:
   1. Run `git status`, fetch `origin`, and fast-forward `ux/onboarding-overhaul`.
-  2. Inspect the top of `PROJECT_STATE.md` to see what the other computer finished.
-  3. Read the latest creator direction and completed work in `outputs/claude-open-world-2026-11-14/handoff/CLAUDE_RETURN_HANDOFF.md`, then read `outputs/claude-open-world-2026-11-14/WINDOWS_HANDOFF.md` for the project procedures and backlog.
-- Handoff scripts: `./tools/handoff.sh` (Mac) or `tools\handoff.cmd` (Windows) automate this entire flow.
+  2. Read the top of `PROJECT_STATE.md` for the latest completed work and outstanding checks.
+  3. Read `outputs/claude-open-world-2026-11-14/handoff/WINDOWS_HANDOFF_2026-11-26.md` for the current Windows workflow, recovery checklist, and ordered next work. Use `docs/BUILD.md` and `tools/toolchain.env` for the build.
 
-## Standing creator decisions (every machine, every agent; updated 22 Nov 2026)
-- **Current state and next work:** `outputs/claude-open-world-2026-11-14/handoff/CLAUDE_RETURN_HANDOFF.md`. Its claims were verified on the Mac on 22 Nov (see its verification note). Procedures and the older backlog are in `outputs/claude-open-world-2026-11-14/WINDOWS_HANDOFF.md`.
+## Standing creator decisions
+- **Current handoff:** [Windows handoff, 26 November 2026](outputs/claude-open-world-2026-11-14/handoff/WINDOWS_HANDOFF_2026-11-26.md). Use the older handoffs for implementation details and evidence.
 - **Always save to Roblox.** After Play verification, use File > Save to Roblox (As) to the Development place 118614906972571 (universe 10777041159). A saved place is what lets Studio grant the MCP and script permissions. **Never Publish.**
 - **Quality bar: "stunning".**
   - There is no total triangle cap.
@@ -54,7 +54,7 @@ The creator is entirely vibe-coding this Roblox game and does not write code man
   - Never break the lobby, combat, progression, persistent IDs or the Shen barrier.
   - Stage explicit paths only.
   - Run one heavy Blender job at a time, under `work/vesperhold-claude/heavy.lock`.
-  - No multi-client tests on the MacBook.
+  - Run single-client and multiplayer checks on Windows and record their results separately.
 
 ## Modern Luau Standards
 - Always use the `task` library (`task.wait()`, `task.spawn()`, `task.delay()`). NEVER use deprecated `wait()`, `spawn()`, or `delay()`.

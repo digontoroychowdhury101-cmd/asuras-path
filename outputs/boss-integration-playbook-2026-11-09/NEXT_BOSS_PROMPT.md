@@ -134,7 +134,7 @@ What cost the time, and what you will do instead:
    - If anything is missing, ask now and do the rest while you wait.
 3. **Bootstrap with one script.** Write `tools/bootstrap.py` (Python, so both computers run it) if it does not exist yet. It must:
    - make one Python environment under `work/` with pinned numpy, scipy and pillow (the system Python had no SciPy and no PIL last time);
-   - put the pinned Luau (0.742: `luau`, `luau-compile`, `luau-analyze`) in `work/bin/luau/` and Rojo (7.7.1) in `work/bin/rojo/`
+   - read the versions from `tools/toolchain.env` and use `docs/BUILD.md` for the release archives. Put the pinned Luau executables (`luau`, `luau-compile`, `luau-analyze`) in `work/bin/luau/` and Rojo in `work/bin/rojo/`
      (`tools/test_asura_stage2.py` calls `work/bin/luau/luau` directly; PATH is not enough);
    - build every generated input the checks need (for example `python3 tools/assets/build_shen_audio.py`);
    - run `bash tools/verify_all.sh` and print its result.

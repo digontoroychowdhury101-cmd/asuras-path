@@ -1,6 +1,8 @@
 # Mac handoff from the Windows PC (24 Nov 2026)
 
-Read this before running `MAC-LOOP-PROMPT.md`. It records:
+> Historical checkpoint. Start with the [26 November Windows handoff](WINDOWS_HANDOFF_2026-11-26.md) for active work.
+
+This records:
 - what the PC changed since the Mac's last pass (mac-94);
 - where each item in the Mac loop prompt stands;
 - the open frame-rate problems, with the plan for each.

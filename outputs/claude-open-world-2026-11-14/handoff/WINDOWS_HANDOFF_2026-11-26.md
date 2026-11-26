@@ -1,16 +1,20 @@
-# Windows handoff from the Mac (26 Nov 2026, AEDT)
+# Asura’s Path handoff to Claude on Windows (26 Nov 2026, AEDT)
 
-Read this first on the Windows PC. It replaces `MAC_HANDOFF_2026-11-24.md` as the newest cross-machine state.
+Claude on the Windows PC owns all ongoing development, Git pushes, Blender work, and Roblox Development saves. The Mac is retiring. Start here and read the latest entry in `PROJECT_STATE.md` before using older notes.
 
 ## 1. Exact game version, and making the PC's Studio match it
 **Git.**
-- Branch `ux/onboarding-overhaul`, at the mac-103 commit that adds this file or later.
-- Run `git fetch origin`, `git checkout ux/onboarding-overhaul` and `git pull --rebase origin ux/onboarding-overhaul`.
+- Branch `ux/onboarding-overhaul`. `498ce7f` contains the last Mac gameplay baseline, the reed source fix, its preview and notes, and the Vesperhold research. Use the latest verified branch head on Windows.
+- Inspect local changes and Studio work before switching branches. Run `git fetch origin` and `git pull --rebase origin ux/onboarding-overhaul` from the correct branch after accounting for local edits.
+
+**Windows toolchain.** Install the versions pinned in `tools/toolchain.env`.
+- Download the [Luau 0.748 Windows ZIP](https://github.com/luau-lang/luau/releases/download/0.748/luau-windows.zip) and extract the executables into `work/bin/luau/`.
+- Download [Rojo 7.7.1](https://github.com/rojo-rbx/rojo/releases/tag/v7.7.1) for your Windows architecture and extract `rojo.exe` into `work/bin/rojo/`. Run it with `plugin install` to install the matching Studio plugin if needed.
+- Use native Windows Python 3, Git Bash, Blender and Roblox Studio. Confirm Blender MCP lists the active scene and Roblox Studio MCP reports the Development place from the Claude session on this PC. Use the local Rojo plugin on port `34872` for sync.
 
 **Build digest.**
-- `python tools/build.py --output work/latest.rbxlx`, then `python tools/studio_mcp.py --digest work/latest.rbxlx`.
-- It must print **scripts 295, bytes 3934626, digest 1107903586**.
-- Docs and Blender scripts are not part of the build.
+- In Git Bash, run `ASURA_BUILD_OUTPUT=work/verify.rbxlx bash tools/verify_all.sh`, then `python3 tools/studio_mcp.py --digest work/verify.rbxlx`.
+- The handoff baseline is **295 scripts, 3,934,626 bytes, digest `1107903586`**. All 14 local stages passed on the Mac with Luau 0.748 and Rojo 7.7.1. Repeat the suite and Play check on Windows.
 
 **Roblox Development place 118614906972571** (universe 10777041159).
 - Saved from the Mac at 2026-11-25 13:22Z (Studio log: "Saved new changes").
@@ -18,14 +22,19 @@ Read this first on the Windows PC. It replaces `MAC_HANDOFF_2026-11-24.md` as th
 - It was never published.
 
 **On the PC:**
-1. **If Studio still has Development open from an earlier session, close it WITHOUT saving.** Saving that old copy would overwrite mac-99 to mac-103 in the cloud place.
+1. If Studio still has an earlier Development session open, preserve any genuine unsaved edits in a separate local copy and close that session before reopening from Roblox.
 2. File > Open from Roblox > Asura's Path — Development.
-3. In Edit, run `tools/qa/SourceDigest.luau`. It must print the digest above.
-   - If it differs, sync the scripts from git (Rojo or `studio_mcp`) until it matches.
-   - Then File > Save to Roblox. Never Publish.
+3. In Edit, run `tools/qa/SourceDigest.luau` and compare it with the local build digest. If they differ, establish which source is newer and reconcile any legitimate Studio edits before syncing or saving.
 4. Eye check: Play, wait for `workspace:GetAttribute("AsuraCavern")` (about 200 s), then look from the tunnel exit: `CFrame.lookAt((-3650,158.5,-2375), (-4200,300,-2200))`, FOV 70. Compare with `captures/mac/bellwood_colonnade/mac103_exit_reveal_colonnade.jpg`.
+5. After Play verification of a new change, use **File → Save to Roblox** on Development. **Never Publish.** Keep the protected `.rbxlx` baselines intact.
 
-`assets/source/` (Blender outputs) is gitignored. The game needs only the Approved asset IDs in `assets/*_UPLOADED.json`.
+### Recovery before erasing the Mac
+
+The checked-in asset IDs are sufficient for the existing game to load. Authoring and registry regeneration also need local source files. In particular, preserve `assets/source/landmarks/bellwood_face/manifest.json` and `assets/source/landmarks/bellwood_colonnade/manifest.json`. Both existed on the Mac and were missing from the `landmark-assets-2026-11-21` branch when checked.
+
+- That asset branch supplies the other three existing Bellwood landmark manifests and `assets/source/landmarks/bellwood_temple_colossal/creator-stair-reference.png`. Restore only missing files. The `codex/overworld-assets-2026-11-16`, `codex/vesperhold-assets-2026-11-19` and `shen-assets-2026-11-09` branches hold earlier asset packs. Use the documented restore tools and keep those branches separate from the code branch.
+- Make a private, verified recovery copy with `assets/source/`, `assets/build/`, relevant `work/` files, local Studio and Blender scenes, and `.git` if preserving the existing stash or local-only history. The repo clone does not carry ignored assets, local scenes or the stash. Keep these files outside public GitHub uploads.
+- Before clearing the Mac, confirm the PC can read that recovery copy, open the editable scenes you need, find all five landmark manifests and run the Windows checks above. The original Mac-to-PC network copy was unsuccessful, so Windows receipt needs direct confirmation.
 
 ## 2. What the Mac did (all tests-first, `verify_all` SUCCESS, saved to Development)
 | Pass | Change | Notes |
@@ -37,12 +46,10 @@ Read this first on the Windows PC. It replaces `MAC_HANDOFF_2026-11-24.md` as th
 | mac-102 | Lake scatter from uploaded kit pieces (`Basin.Shallows`); `Kit.landmarks()` merges four registries. | `workers/mac-102-bellwood-lake-scatter.md` |
 | mac-103 | New Blender kit `bellwood_colonnade.py`. Standing and Toppled are uploaded (127915433158542, 94406393587207, both Approved), registered in `LandmarkKitRegistry`, and placed in the lake at Scale 2.5, framing the temple stair as in the concept. | `workers/mac-103-bellwood-colonnade.md` |
 
-## 3. Unfinished at hand-off (stopped by the usage limit)
-- **Lotus and lily-pad kit** (`tools/blender/landmarks/bellwood_lotus.py`) and the **Reed_Clump_B heads UV fix.**
-  - A Mac subagent was building these in Blender. Nothing of it is committed, uploaded or placed.
-  - If the script exists on the Mac it is untracked. Redo or finish it, then upload with the pipeline in section 5.
-  - `work/vesperhold-claude/heavy.lock` may be left on the Mac; delete it if no Blender job is running.
-- **Vesperhold 60 fps research:** a subagent may have written `outputs/research-2026-11-26/vesperhold-60fps-options.md` (uncommitted, Mac only). If it is missing, redo it: how other games handle draw calls, shadow tris, texture memory, SLIM/HLOD, streaming and occlusion.
+## 3. Work to resume on Windows
+- **Lotus and lily-pad kit.** No lotus recipe was in the handoff checkout. Check the current Windows tree and any recovery copy, then finish or create the kit. Use the mac-103 colonnade as an example for pipeline and evidence.
+- **Reed_Clump_B.** Commit `498ce7f` carries the heads UV fix in `tools/blender/overworld/bellwood_veg.py`, the updated preview and notes. The remaining work is to verify the bake, re-upload it, read back approved IDs, register it and place it in `Basin.Shallows`.
+- **Vesperhold.** The research is in `outputs/research-2026-11-26/vesperhold-60fps-options.md`. Use it for the next measured Windows pass.
 
 ## 4. Open items, in order
 1. **Bellwood reveal:**

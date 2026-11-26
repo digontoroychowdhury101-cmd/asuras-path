@@ -1,8 +1,15 @@
-# Asura's Path — current build and verification (21 October 2026)
+# Asura's Path — current build and verification (26 November 2026)
 
-Rojo project: `default.project.json` (project name `AsurasPath`; namespaces `ReplicatedStorage/AsurasPath`, `ServerScriptService/AsurasPath`, `StarterPlayer/StarterPlayerScripts/AsurasPath`, `ServerStorage/AsuraAssets`). Binaries: official Luau 0.742 and Rojo 7.7.1 in `work/bin/luau` and `work/bin/rojo` (or on PATH).
+Rojo uses `default.project.json` for the `AsurasPath` project. The mappings are `ReplicatedStorage/AsurasPath`, `ServerScriptService/AsurasPath`, `StarterPlayer/StarterPlayerScripts/AsurasPath`, and `ServerStorage/AsuraAssets`.
 
-Pinned tool versions live in `tools/toolchain.env`; use those versions for local setup. `docs/ci-full-verifier.patch` makes GitHub CI read this file and run the same `tools/verify_all.sh` as local verification; it is not applied yet because pushing a workflow file needs a token with `workflow` scope (`git apply docs/ci-full-verifier.patch`, commit, push). Neither a local pass nor CI certifies Studio play.
+GitHub CI and local setup use the versions in `tools/toolchain.env`. Download the release archives for your OS, then extract the executables directly into the folders below. On Windows, the executables have an `.exe` extension. Keep Luau in its project folder because several Python checks use that path directly.
+
+| Tool | Project folder | Release |
+|---|---|---|
+| Luau CLI and compiler | `work/bin/luau/` | [Luau 0.748](https://github.com/luau-lang/luau/releases/tag/0.748) |
+| Rojo | `work/bin/rojo/` | [Rojo 7.7.1](https://github.com/rojo-rbx/rojo/releases/tag/v7.7.1) |
+
+`docs/ci-full-verifier.patch` is an optional change to run the full local verifier in CI. Verify Studio play separately.
 
 | Task | Command | Notes |
 |---|---|---|

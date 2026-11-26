@@ -2,6 +2,8 @@
 
 22 November 2026 · `ux/onboarding-overhaul`
 
+> Use the [26 November Windows handoff](WINDOWS_HANDOFF_2026-11-26.md) for current ownership and next work. This record covers the temple and tree work through 22 November.
+
 The creator asked Sol to wrap up and hand back the work. Start with the colossal Bellwood temple and its tree. The creator supplied a portrait image as the target and explicitly asked for a close recreation. They rejected the earlier temple as flat, sparse and insufficiently dark fantasy. They then pointed out that the branches looked unnatural and appeared attached to the trunk. Sol rebuilt the junctions and rendered the result. The creator still wants further sculpting, especially the tree.
 
 ## Latest handoff for Claude

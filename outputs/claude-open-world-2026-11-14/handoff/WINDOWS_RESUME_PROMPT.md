@@ -1,22 +1,10 @@
-# Continue on Windows from the Mac, 22 November 2026 (landmark loop, Bellwood)
+# Resume Asura’s Path in Claude Code on Windows
 
-Continue Asura's Path; don't start over. These steps work for a Claude or Codex agent. They replace the 19 Nov run 3b
-prompt (in git history at `97deae7`).
+The Windows PC owns development, Git pushes, Blender work and Roblox Development saves. The Mac is retiring. Continue the existing project in the local Windows checkout on `ux/onboarding-overhaul`.
 
-1. Sync safely.
-   - Check local work first.
-   - Run `git fetch origin` and fast-forward `ux/onboarding-overhaul`. No reset, clean, stash or force-push.
-2. Read `outputs/claude-open-world-2026-11-14/WINDOWS_HANDOFF.md` in full. It holds the current state, the creator decisions from 22 Nov, every procedure and the ordered next steps.
-3. Read the spec in full:
-   - `LANDMARK-BUILD-SPEC.md`
-   - the `concepts/*.webp` images (look at them)
-   - `NEXT-VISUAL-PASS-PROMPT.md`
-   - `outputs/vesperhold/THIRD_PARTY.md`
-4. Restore the gitignored landmark sources from branch `landmark-assets-2026-11-21` (handoff §3.2). Then run `ASURA_BUILD_OUTPUT=work/verify.rbxlx bash tools/verify_all.sh` and confirm `SUCCESS`.
-5. Do handoff §4 in order. Next up is the rest of the Sunken Temple: the tree, the gate towers on the left third, dressing, the colonnade, the lion, the water pieces, and the water and mist settings. Then fix the §7 defects, then move on to Amberfall.
-6. Work rules:
-   - Tests first.
-   - One heavy Blender job machine-wide (`work/vesperhold-claude/heavy.lock`).
-   - Verify in a disposable build with Play captures and fps.
-   - Commit explicit paths, push, and add a ≤ 60-word `(Windows)` line to `PROJECT_STATE.md`.
-   - Save verified builds to the Roblox Development place with File > Save to Roblox. Never Publish. The creator decided this on 22 Nov; it overrides the old "cloud stays M1 v9" rule.
+1. Read `CLAUDE.md`, the top of `PROJECT_STATE.md`, and [the 26 November Windows handoff](WINDOWS_HANDOFF_2026-11-26.md). The handoff explains source recovery, the first Windows verification, and the ordered backlog. Start with these three files when older prompts disagree.
+2. Inspect the working tree and any open Studio work. Fetch `origin` and update the current branch after accounting for existing edits. `498ce7f` is the pre-handoff baseline. It contains the reed UV fix and `outputs/research-2026-11-26/vesperhold-60fps-options.md`.
+3. Follow `docs/BUILD.md` and `tools/toolchain.env` for Luau 0.748, Rojo 7.7.1 and Python 3. Verify both local MCP connections. Open **Asura’s Path — Development** (`118614906972571`, universe `10777041159`) fresh from Roblox. In Git Bash, run `ASURA_BUILD_OUTPUT=work/verify.rbxlx bash tools/verify_all.sh` and compare the disposable build’s script digest with Studio Edit before the first Play check.
+4. Confirm the private recovery copy is available from Windows. Restore missing landmark manifests and raw source files per the handoff. Report gaps by path and continue work that uses the committed sources or existing Roblox asset IDs.
+5. Finish the Bellwood lotus and lily-pad kit and re-upload the corrected reeds. Read `../LANDMARK-BUILD-SPEC.md`, the Bellwood concept and latest reveal capture, and `../workers/mac-103-bellwood-colonnade.md`. If using workers, separate art, integration and performance review. Keep one heavy Blender job under `work/vesperhold-claude/heavy.lock` and have the lead coordinate Studio uploads, edits and saves.
+6. Capture and verify the Bellwood reveal in Windows Studio. Save verified changes to Development using **File → Save to Roblox**. **Never Publish.** Preserve the protected place files and gameplay invariants in `CLAUDE.md`. Record the result at the top of `PROJECT_STATE.md`, stage explicit paths, and push the verified project changes.

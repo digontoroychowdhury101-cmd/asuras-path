@@ -1,8 +1,10 @@
 # Mac handoff — continue Windows work, 17 November 2026
 
+> Historical checkpoint. Claude now develops on the Windows PC. Use the [26 November Windows handoff](handoff/WINDOWS_HANDOFF_2026-11-26.md).
+
 ## Current resume point
 
-**Use this handoff for the return to Mac.** It supersedes this file's older version-6 instructions and the preceding Mac-to-Windows resume identity. WINDOWS_HANDOFF.md remains historical evidence of that earlier transfer. Use the newest recorded source and cloud state below.
+This section records the return to Mac on 17 November. The source and cloud state below describe that transfer.
 
 Windows reached **2d4b1ed**, with runtime source through **78662d6**. The real-mesh forest slice is implemented and captured, but **M2 is not integrated into Roblox**. The quota stopped immediately after the Opus lead's final report, before Fable's slice verdict. A completed task notification or green verifier does not establish art acceptance.
 
@@ -133,7 +135,7 @@ Use one ECC task workflow, Ponytail **full**, relevant Matt Pocock spec/ticket/T
        python3 tools/assets/overworld_handoff.py restore --apply
 
    Immutable data commit **1412139fbb6c9adc519031a5d02063c7a952732c**. Dry-run first; apply creates missing only, preserves differing files and reports conflicts. BUNDLE.json/ASSET_MANIFEST.json pin 1277 files/609 contents, archive **1,231,545,662 bytes**, restored source **2,216,435,383 bytes**. Twenty .blend1 backups excluded. Three lantern diagnostics travel in source Git. Matching files need no restore/regeneration.
-4. **Check existing tools before installing.** docs/BUILD.md + tools/toolchain.env pin **Luau 0.742 / Rojo 7.7.1**. Need Python 3, Node (ECC >=18), Git; Windows used Blender **5.2.2**. Put native Mac executables in documented work/bin locations/PATH and chmod as needed; do not run Windows exe files. Local shim needs no separate Lune. Blender uses its bundled Python; uv supports Blender MCP. Reuse existing functioning installs/logins. No remote Mac setup is claimed.
+4. **Check existing tools before installing.** Download the pinned Luau and Rojo releases from `docs/BUILD.md` and `tools/toolchain.env`. Put the native Mac executables in the documented `work/bin` folders. Use Python 3, Git, and Node 18 or later for ECC. Windows used Blender **5.2.2**. The local verifier includes the Lune compatibility shim, Blender uses its bundled Python, and Blender MCP uses `uv`.
 5. **Pinned plugin repositories:**
 
    | Plugin | Version | Source revision |

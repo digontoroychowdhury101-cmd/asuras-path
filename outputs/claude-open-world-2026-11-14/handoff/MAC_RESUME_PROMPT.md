@@ -1,5 +1,7 @@
 # Continue on Mac from Windows — 17 November 2026
 
+> Archived on 26 November 2026. Resume Claude in the [Windows checkout](WINDOWS_RESUME_PROMPT.md).
+
 Continue Asura's Path from the completed Windows-to-Mac handoff. Resume the existing world implementation, preserve newer local/Studio work and do not start over. Resolve repository-relative references to absolute paths in the selected Mac checkout.
 
 Inspect the receiving checkout, open Studio instances, branch/status/stashes first. Fetch origin and safely fast-forward ux/onboarding-overhaul when possible. Only one computer writes the branch at a time. The Windows source/evidence checkpoint was 2d4b1ed; this handoff delivery adds the current MAC_HANDOFF.md, dated build and verification records above it. Do not reset, clean, discard divergence or overwrite unsaved scenes.

@@ -37,9 +37,9 @@ What is final: the source on `ux/onboarding-overhaul`, the 64 exported clips and
 
 ### Local checks (no Studio)
 
-- `bash tools/verify_all.sh`. Tools Git does not carry (`work/` is ignored): Luau 0.742 in `work/bin/luau/` (`luau`, `luau-compile`,
-  `luau-analyze`; `tools/test_asura_stage2.py` calls `work/bin/luau/luau` directly, so PATH alone is not enough) and Rojo 7.7.1 on PATH
-  or in `work/bin/rojo/`. On a fresh clone it also needs the generated Shen audio manifest: `python3 tools/assets/build_shen_audio.py`
+- `bash tools/verify_all.sh`. Install the current pins from `tools/toolchain.env` and `docs/BUILD.md`.
+  Put Luau (`luau`, `luau-compile`, `luau-analyze`) in `work/bin/luau/` because the Python tests use that folder directly. Put Rojo in `work/bin/rojo/`
+  or on PATH. On a fresh clone, generate the Shen audio manifest with `python3 tools/assets/build_shen_audio.py`
   (writes `assets/build/shen_audio/`). Expect "SUCCESS: All local checks passed" and 14 stages.
 - The bake tools need numpy and SciPy (`handoff-2026-11-09/ENVIRONMENT.txt`) and the restored `work/shen_import` data
   (`handoff-2026-11-09/ARCHIVE.md`, branch `shen-assets-2026-11-09`). This commit adds three new files there (`xray_p2.npz`,
@@ -81,7 +81,7 @@ on every computer, or `loads` will fall short.
 - Two clients, phones or other devices, and a live published server: not run (REPORT section 7).
 - That the other computer's own bake of a seam clip equals `bakes/final7` (the solver's iterations may round differently on another
   CPU or numpy build): not run there yet. The shipped clips do not depend on it: the exports, ids and place are committed.
-- `assets/build/shen_audio/` (generated, see above), `work/bin/luau` (download Luau 0.742), the asset archive branch (restore as
+- `assets/build/shen_audio/` (generated, see above), `work/bin/luau` (download the pinned Luau release), the asset archive branch (restore as
   ARCHIVE.md says) and the Studio content folder are outside the code branch.
 - The Windows computer's uncommitted Studio edits of the old place are kept only in a backup on that computer, outside the repo.
 - Do not call the computers identical until step 4 prints the file hash, the script digest and both ShenFingerprint lines above on the

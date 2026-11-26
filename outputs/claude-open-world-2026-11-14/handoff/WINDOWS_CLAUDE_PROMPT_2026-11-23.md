@@ -1,6 +1,6 @@
 # Windows Claude prompt: Bellwood Hollow (2026-11-23, from the Mac)
 
-Paste everything below the line into Claude Code on the Windows computer, opened in the `asuras-path` repo. For the Bellwood Hollow work, this supersedes `WINDOWS_RESUME_PROMPT.md`.
+This prompt is the 23 November Bellwood Hollow checkpoint. Use the [Windows resume prompt](WINDOWS_RESUME_PROMPT.md) and [26 November handoff](WINDOWS_HANDOFF_2026-11-26.md) for active work.
 
 ---
 

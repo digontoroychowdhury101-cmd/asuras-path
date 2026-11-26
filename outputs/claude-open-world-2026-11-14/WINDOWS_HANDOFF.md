@@ -1,6 +1,6 @@
 # Windows handoff: Mac landmark loop, 22 November 2026 (Bellwood: face, tunnel, basin and temple hall)
 
-**Read this first, all of it, before touching anything.** It replaces the 19–21 November handoff (Vesperhold castle run
+**Historical procedures.** Start with the [26 November Windows handoff](handoff/WINDOWS_HANDOFF_2026-11-26.md) for current Windows ownership and next work. This record replaced the 19–21 November handoff (Vesperhold castle run
 3b plus the Windows and Codex records). That version is in git history at `97deae7`:
 `git show 97deae7:outputs/claude-open-world-2026-11-14/WINDOWS_HANDOFF.md`. Its open Vesperhold items are carried over
 in §8. The resume prompt is [handoff/WINDOWS_RESUME_PROMPT.md](handoff/WINDOWS_RESUME_PROMPT.md).
@@ -18,7 +18,7 @@ in §8. The resume prompt is [handoff/WINDOWS_RESUME_PROMPT.md](handoff/WINDOWS_
    - `NEXT-VISUAL-PASS-PROMPT.md`
    - `outputs/vesperhold/THIRD_PARTY.md` (texture licences)
 5. The loop prompt the Mac ran: `MAC-LOOP-PROMPT.md`. Everything in it still applies, except where §1 changes it.
-6. **Current state: `handoff/CLAUDE_RETURN_HANDOFF.md`** (Sol's hand-back, verified on the Mac). Older still: the mac-91 delta in `handoff/SOL_RESUME_PROMPT.md` §2–§4:
+6. **State at this checkpoint: `handoff/CLAUDE_RETURN_HANDOFF.md`** (Sol's hand-back, verified on the Mac). Older still: the mac-91 delta in `handoff/SOL_RESUME_PROMPT.md` §2–§4:
    - Sourcing is widened to CC0/CC-BY/MIT open models and repos.
    - ElevenLabs SFX are approved; 26 were generated.
    - The gate towers are baked.
@@ -73,7 +73,7 @@ Roblox As > Asura's Path — Development > Overwrite. It was saved, not publishe
      - `tools/test_vesperhold_loader.luau` (174 checks)
    - Run them with `python3 tools/lune_compat.py tools/<name>.luau`.
    - If a stray `tools/_lune_*.generated N.luau` appears (a sync duplicate), move it out of the repo; never commit it.
-4. Toolchain: `tools/toolchain.env` (Rojo 7.7.1, Luau 0.742, Lune). Blender 5.2.2 LTS built every landmark.
+4. Install the Windows releases pinned in `tools/toolchain.env` using `docs/BUILD.md`. The verifier supplies the Lune compatibility shim. Blender 5.2.2 LTS built every landmark covered by this handoff.
 
 ## 4. What to do next, in order (one kit or one placement step per iteration, verified and pushed)
 1. **Sunken Temple, remaining spec pieces** (spec §1, "Sunken Temple"). Build each like `bellwood_temple_hall.py`: a Blender script under `tools/blender/landmarks/`, clay first, then a bake.

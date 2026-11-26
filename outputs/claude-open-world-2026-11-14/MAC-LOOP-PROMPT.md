@@ -1,4 +1,6 @@
-# Mac /loop prompt (paste everything inside the code block into Claude Code, started in ~/Documents/asuras-path)
+# Archived Mac /loop prompt
+
+Claude now develops on the Windows PC. Use the [Windows resume prompt](handoff/WINDOWS_RESUME_PROMPT.md) for active work. The original Mac prompt is preserved below for reference.
 
 ```
 /loop Continuously build the Asura's Path open-world landmarks from the creator's concept art and keep improving the world's visuals, on this Mac (repo ~/Documents/asuras-path, branch ux/onboarding-overhaul). Do not ask me anything; be ambitious; give me a one-line status after each step.
@@ -12,7 +14,7 @@ SPEC FILES (read in full every iteration; they are the contract):
 FIRST ITERATION ONLY: make this Mac run the exact same game as the Windows PC.
 a. Sync and check tools:
    - git pull --rebase origin ux/onboarding-overhaul. HEAD must contain the commit that added LANDMARK-BUILD-SPEC.md.
-   - Check the toolchain: the versions in tools/toolchain.env (Rojo 7.7.1, Luau 0.742, Lune) must be in work/bin/ or on PATH. Install exactly those versions into work/bin/ if any is missing.
+   - Check the Rojo and Luau pins in `tools/toolchain.env`. Use `docs/BUILD.md` to download them and install them under `work/bin/` if the versions differ or the tools are missing. The verifier includes the Lune compatibility shim.
    - Blender: /Applications/Blender.app (the same install that built Vesperhold), with the blender-mcp addon. If work/third_party/blender-skills is missing, clone kevinbadi/blender-skills and check out b2f0f816d320b56ae86d52597a35284e0e6cc929.
 b. Build and prove:
    - python3 tools/build.py --output work/latest.rbxlx

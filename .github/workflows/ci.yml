@@ -20,23 +20,19 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install Rojo & Luau
+      - name: Install pinned Rojo and Luau
+        shell: bash
         run: |
-          mkdir -p bin
-          # Download official Rojo 7.7.1
-          curl -sL https://github.com/rojo-rbx/rojo/releases/download/v7.7.1/rojo-7.7.1-linux.zip -o rojo.zip
-          unzip -q rojo.zip -d bin/
-          chmod +x bin/rojo
-          
-          # Download official Luau 0.640
-          curl -sL https://github.com/luau-lang/luau/releases/download/0.640/luau-ubuntu.zip -o luau.zip
-          unzip -q luau.zip -d bin/
-          chmod +x bin/luau
-          
-          echo "$PWD/bin" >> $GITHUB_PATH
+          set -euo pipefail
+          source tools/toolchain.env
           mkdir -p work/bin/rojo work/bin/luau
-          cp bin/rojo work/bin/rojo/rojo
-          cp bin/luau work/bin/luau/luau
+          curl --fail --location --retry 3 "https://github.com/rojo-rbx/rojo/releases/download/v${ROJO_VERSION}/rojo-${ROJO_VERSION}-linux-x86_64.zip" -o "$RUNNER_TEMP/rojo.zip"
+          unzip -q "$RUNNER_TEMP/rojo.zip" -d work/bin/rojo
+          curl --fail --location --retry 3 "https://github.com/luau-lang/luau/releases/download/${LUAU_VERSION}/luau-ubuntu.zip" -o "$RUNNER_TEMP/luau.zip"
+          unzip -q "$RUNNER_TEMP/luau.zip" -d work/bin/luau
+          chmod +x work/bin/rojo/rojo work/bin/luau/luau work/bin/luau/luau-compile work/bin/luau/luau-analyze
+          echo "$PWD/work/bin/rojo" >> "$GITHUB_PATH"
+          echo "$PWD/work/bin/luau" >> "$GITHUB_PATH"
 
       - name: Run Stage 1 & 2 Tests
         run: |
