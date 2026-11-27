@@ -21,6 +21,7 @@ local AI = require(script.Parent:WaitForChild("AIService") :: ModuleScript)
 local BossArenas = require(script.Parent.BossArenas)
 local EncounterHandoff = require(script.Parent.EncounterHandoff)
 local BossRules = require(Shared.Shared.BossEncounterRules)
+local LakeRules = require(Shared.Shared.ShenLakeRules)
 local Progression = require(Shared.Shared.ProgressionRules)
 local Persistence = require(script.Parent:WaitForChild("PersistenceService") :: ModuleScript) :: any
 local ProfileStore = require(script.Parent:WaitForChild("ProfileStore") :: ModuleScript)
@@ -87,6 +88,11 @@ local sessions: { [number]: Session } = {}
 local fights: { [string]: Fight } = {}
 local altarParts: { [string]: BasePart } = {}
 local gateParts: { [string]: BasePart } = {}
+-- Shen's lake trial (ShenLakeRules): one server-wide state. Summoners = players who took the relic and can still face him; the lake
+-- sleeps again when none is left (outside a fight). Since = os.clock() at the state's start.
+local LAKE_RELIC_DISTANCE = 14
+local lake = { State = "Dormant" :: LakeRules.State, Since = 0, Summoners = {} :: { [number]: boolean } }
+local relicPrompts: { [ProximityPrompt]: boolean } = {}
 local connections: { RBXScriptConnection } = {}
 local disconnectors: { () -> () } = {}
 local worldFolder: Folder? = nil
@@ -814,6 +820,88 @@ end
 -- Boss fog gates
 -------------------------------------------------------------------------------------------------
 
+local function lakeGate(): FogGate?
+	for _, gate in World.FogGates do
+		if gate.Summons then return gate end
+	end
+	return nil
+end
+
+local function showRelic(prompt: ProximityPrompt, available: boolean)
+	prompt.Enabled = available
+	local anchor = prompt.Parent
+	local altar = anchor and anchor.Parent
+	if not altar then return end
+	for _, name in { "Relic", "RelicHilt" } do
+		local piece = altar:FindFirstChild(name)
+		if piece and piece:IsA("BasePart") then piece.Transparency = if available then 0 else 1 end
+	end
+end
+
+local function setLake(state: LakeRules.State)
+	lake.State, lake.Since = state, os.clock()
+	if state == "Dormant" then table.clear(lake.Summoners) end
+	Workspace:SetAttribute(LakeRules.StateAttribute, state)
+	Workspace:SetAttribute(LakeRules.PhaseAttribute, state .. ":" .. tostring(Workspace:GetServerTimeNow()))
+	local gate = lakeGate()
+	if gate then BossArenas.still(gate.Boss, LakeRules.walkable(state)) end
+	for prompt in relicPrompts do
+		showRelic(prompt, state == "Dormant")
+	end
+end
+
+-- The relic in the colossal temple's upper hall (LandmarkWorld.shenRelic, tagged ShenLakeRules.RelicTag): taking it wakes Shen.
+local function takeRelic(userId: number, prompt: ProximityPrompt): (boolean, string)
+	local s, e, gate = session(userId), Characters.GetEntity(userId), lakeGate()
+	if not s or not e or not gate or e.Fighter.State == "KO" or e.Respawning then return false, "Unavailable" end
+	if s.Fight or Characters.IsInDuel(userId) then return false, "InBossFight" end
+	if s.Bosses[gate.Boss] then return false, "BossFelled" end
+	if lake.State ~= "Dormant" then return false, "LakeStirring" end
+	if not relicPrompts[prompt] or not prompt.Enabled or not prompt:IsDescendantOf(Workspace) then return false, "Unavailable" end
+	local anchor = prompt.Parent
+	if not (anchor and anchor:IsA("BasePart")) or (e.Root.Position - anchor.Position).Magnitude > LAKE_RELIC_DISTANCE + 2 then return false, "TooFar" end
+	lake.Summoners[userId] = true
+	setLake(LakeRules.step(lake.State, "Relic", 0))
+	task.spawn(AI.PreviewBoss, gate.Boss)
+	return true, "RelicTaken"
+end
+
+local function watchRelic(anchor: Instance)
+	if not anchor:IsA("BasePart") or not anchor:IsDescendantOf(Workspace) or anchor:FindFirstChild("TakeShenRelic") then return end
+	local prompt = Instance.new("ProximityPrompt")
+	prompt.Name, prompt.ActionText, prompt.ObjectText = "TakeShenRelic", "Take", "The Abbot's Relic"
+	prompt.HoldDuration, prompt.MaxActivationDistance, prompt.RequiresLineOfSight = 1.5, LAKE_RELIC_DISTANCE, false
+	InputMap.applyPrompt(prompt)
+	prompt.Parent = anchor
+	relicPrompts[prompt] = true
+	showRelic(prompt, lake.State == "Dormant")
+	table.insert(connections, prompt.Triggered:Connect(function(player: Player)
+		if not prompt.Enabled then return end
+		local ok, reason = takeRelic(player.UserId, prompt)
+		player:SetAttribute("AsuraResult", (if ok then "" else "!") .. reason)
+	end))
+	table.insert(connections, prompt.Destroying:Connect(function() relicPrompts[prompt] = nil end))
+end
+
+local function tickLake()
+	if lake.State == "Dormant" then return end
+	local gate = lakeGate()
+	for userId in lake.Summoners do
+		local s = sessions[userId]
+		if not s or (gate and s.Bosses[gate.Boss]) then lake.Summoners[userId] = nil end
+	end
+	if next(lake.Summoners) == nil then
+		local after = LakeRules.step(lake.State, "Abandoned", 0)
+		if after ~= lake.State then
+			if gate then AI.DespawnBoss(gate.Boss) end
+			setLake(after)
+			return
+		end
+	end
+	local after = LakeRules.step(lake.State, "Tick", os.clock() - lake.Since)
+	if after ~= lake.State then setLake(after) end
+end
+
 local function endFight(gateId: string, victory: boolean)
 	local fight = fights[gateId]
 	if not fight then
@@ -821,6 +909,18 @@ local function endFight(gateId: string, victory: boolean)
 	end
 	fights[gateId] = nil
 	setGate(gateId, false)
+	if fight.Gate.Summons then
+		if victory then
+			-- Put the survivors on the causeway before releasing the water under them.
+			for userId in fight.Participants do
+				local e = Characters.GetEntity(userId)
+				if e and e.Fighter.State ~= "KO" and not e.Respawning then
+					Characters.Teleport(userId, toCFrame(fight.Gate.Outside))
+				end
+			end
+		end
+		setLake(LakeRules.step(lake.State, if victory then "Felled" else "Wipe", 0))
+	end
 	EncounterHandoff.forget(fight.BossId) -- no cutscene lock outlives its fight
 	local boss = World.Bosses[fight.BossId]
 	for userId in fight.Participants do
@@ -840,11 +940,15 @@ local function endFight(gateId: string, victory: boolean)
 	end
 	local participants = {}
 	for userId in fight.Participants do table.insert(participants, userId) end
-	if victory then BossArenas.loot(Vector3.new(boss.Arena.Center.X, 3, boss.Arena.Center.Z), boss.Essence) end
+	if victory then
+		local height = if fight.Gate.Summons then boss.Spawn.Y else 3
+		BossArenas.loot(Vector3.new(boss.Arena.Center.X, height, boss.Arena.Center.Z), boss.Essence)
+	end
 	Characters.Cue(if victory then "BossDefeated" else "BossReset", fight.BossEntity,
 		{ boss = fight.BossId, gate = gateId, participants = participants, banner = boss.Victory or "GREAT FOE VANQUISHED", essence = boss.Essence })
 	if not victory then
 		AI.DespawnBoss(fight.BossId)
+		if fight.Gate.Summons and running and next(lake.Summoners) ~= nil then task.spawn(AI.PreviewBoss, fight.BossId) end
 	end
 end
 
@@ -860,7 +964,7 @@ local function startFight(gate: FogGate, entrants: { number })
 		local position = entityPosition(userId)
 		local e = Characters.GetEntity(userId)
 		if not participants[userId] and e and e.Fighter.State ~= "KO" and not e.Respawning and not Characters.IsInDuel(userId)
-			and position and inBounds(boss.Arena, position) and not s.Bosses[boss.Id] and not s.Fight then
+			and position and inBounds(if gate.Summons then gate.Trigger else boss.Arena, position) and not s.Bosses[boss.Id] and not s.Fight then
 			participants[userId] = true
 			table.insert(list, userId)
 		end
@@ -878,6 +982,9 @@ local function startFight(gate: FogGate, entrants: { number })
 		end
 	end
 	setGate(gate.Id, true)
+	if gate.Summons then
+		setLake(LakeRules.step(lake.State, "Enter", 0))
+	end
 	Characters.Cue("FogGateSealed", entity, { gate = gate.Id, boss = boss.Id, title = boss.Title, participants = list })
 end
 
@@ -902,6 +1009,7 @@ end
 local armed: { [string]: { [number]: boolean } } = {}
 
 local function updateGates()
+	tickLake()
 	for gateId, gate in World.FogGates do
 		local boss = World.Bosses[gate.Boss]
 		local fight = fights[gateId]
@@ -925,11 +1033,12 @@ local function updateGates()
 				end
 			end
 		end
-		if fight == nil then
+		-- Shen's waiting rig only enters combat once the lake can support the fighters.
+		if fight == nil and (not gate.Summons or lake.State == "Stilled") then
 			local entrants: { number } = {}
 			for userId, s in sessions do
 				local e = Characters.GetEntity(userId)
-				if e and e.Fighter.State ~= "KO" and not s.Bosses[boss.Id] and not s.Fight and not Characters.IsInDuel(userId)
+				if e and e.Fighter.State ~= "KO" and not e.Respawning and not s.Bosses[boss.Id] and not s.Fight and not Characters.IsInDuel(userId)
 					and wasArmed[userId] and inBounds(gate.Trigger, e.Root.Position) then
 					table.insert(entrants, userId)
 				end
@@ -937,7 +1046,7 @@ local function updateGates()
 			if #entrants > 0 then
 				startFight(gate, entrants)
 			end
-		else
+		elseif fight ~= nil then
 			local living = 0
 			for userId in fight.Participants do
 				local e = Characters.GetEntity(userId)
@@ -1232,6 +1341,7 @@ function WorldService.Start()
 	BossArenas.build(worldRoot)
 	local gatesFolder = folder("FogGates", worldRoot)
 	for _, gate in World.FogGates do
+		if gate.Summons then continue end -- no wall, no mist prompt: the relic opens it
 		buildGate(gate, gatesFolder)
 		local prompt = Instance.new("ProximityPrompt")
 		prompt.ActionText, prompt.ObjectText, prompt.HoldDuration = "Traverse the Mist", World.Bosses[gate.Boss].Name, 0.35
@@ -1243,6 +1353,9 @@ function WorldService.Start()
 			player:SetAttribute("AsuraResult", (if ok then "" else "!") .. reason) -- refusals toast via InterfaceController.REASONS
 		end))
 	end
+	setLake("Dormant")
+	for _, anchor in CollectionService:GetTagged(LakeRules.RelicTag) do watchRelic(anchor) end
+	table.insert(connections, CollectionService:GetInstanceAddedSignal(LakeRules.RelicTag):Connect(watchRelic))
 	markGeometry(worldRoot)
 	local arena = root:FindFirstChild(Config.Names.Arena)
 	if arena then
@@ -1287,6 +1400,7 @@ function WorldService.Start()
 		end
 	end))
 	table.insert(connections, Players.PlayerRemoving:Connect(function(player: Player)
+		lake.Summoners[player.UserId] = nil
 		local s = sessions[player.UserId]
 		if not s then
 			return
@@ -1338,6 +1452,10 @@ function WorldService.Destroy()
 	for gateId in fights do
 		endFight(gateId, false)
 	end
+	local gate = lakeGate()
+	if gate then AI.DespawnBoss(gate.Boss) end
+	setLake("Dormant")
+	for prompt in relicPrompts do prompt:Destroy() end
 	for _, s in sessions do
 		if s.Stain then
 			s.Stain:Destroy()
@@ -1351,6 +1469,7 @@ function WorldService.Destroy()
 	end
 	table.clear(altarParts)
 	table.clear(gateParts)
+	table.clear(relicPrompts)
 end
 
 function WorldService.Refresh(userId: number)

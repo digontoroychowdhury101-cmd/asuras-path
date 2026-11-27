@@ -9,6 +9,7 @@ HEADER = r'''--!strict
 local Combat=require("../src/simulation/CombatRules")
 local World=require("../src/shared/WorldDefinitions")
 local Rules=require("../src/shared/BossEncounterRules")
+local LakeRules=require("../src/shared/ShenLakeRules")
 local Types=require("../src/shared/BossTypes")
 local AttackCatalog=require("../src/shared/BossAttackCatalog")
 local Bodies=require("../src/shared/BossBodies")
@@ -29,7 +30,7 @@ V.__mul=function(a:any,b:any) if type(a)=="number" then a,b=b,a end;return vec(a
 V.__div=function(a:any,b:any) return vec(a.X/b,a.Y/b,a.Z/b) end
 function V:Dot(b:any) return self.X*b.X+self.Y*b.Y+self.Z*b.Z end
 function V:Lerp(b:any,t:number) return self+(b-self)*t end
-local Vector3:any={new=vec,zero=vec(0,0,0),zAxis=vec(0,0,1)}
+local Vector3:any={new=vec,zero=vec(0,0,0),yAxis=vec(0,1,0),zAxis=vec(0,0,1)}
 local CFrame:any={new=function(p:any) return {Position=p,LookVector=vec(0,0,-1)} end,
  lookAt=function(p:any,t:any) return {Position=p,LookVector=(t-p).Unit} end}
 local actors:any={}; local now=0; local cues:any={}; local hits:any={}
@@ -127,6 +128,38 @@ local spear={Id="Spears",Kind="Barrage",Windup=1,Radius=60,Damage=10,Posture=10,
 local barrage=Hazards.new(spear,vec(0,3,0),vec(20,3,0),20,allowed)
 for i=1,30 do now=20+i*0.1;Hazards.step(-1,barrage,now) end
 check(#hits==prior+1,"tracking spear hits exactly one assigned target")
+-- Run Shen's authored attacks at the live Bellwood elevation.
+local lakeSpawn=World.Bosses.GrandmasterShen.Spawn
+local lakeY=lakeSpawn.Y
+source.Model:SetAttribute("AsuraEncounter","GrandmasterShen")
+source.Root.Position=vec(lakeSpawn.X,lakeY,lakeSpawn.Z)
+player.Root.Position=source.Root.Position+vec(4,0,0)
+player.Fighter=Combat.new(1,"Jian",0)
+local lakeHits=#hits
+local abbotSweep=AttackCatalog.Shen[5]
+Scheduler.start(-1,abbotSweep,1,allowed,23)
+check(math.abs(cues[#cues].Data.y-(lakeY-3))<1e-6,"Shen's sweep warning marks the lake surface")
+now=23+abbotSweep.Windup;Scheduler.step(-1,now)
+check(#hits==lakeHits+1,"a grounded participant takes Shen's sweep on the lake")
+player.Root.Position=source.Root.Position+vec(4,8,0)
+Scheduler.start(-1,abbotSweep,1,allowed,25)
+now=25+abbotSweep.Windup;Scheduler.step(-1,now)
+check(#hits==lakeHits+1,"jump clears Shen's sweep on the lake")
+player.Root.Position=source.Root.Position+vec(20,0,0)
+player.Fighter=Combat.new(1,"Jian",0)
+local bloodWave=AttackCatalog.Chimera[1]
+Scheduler.start(-1,bloodWave,1,allowed,27)
+now=27+bloodWave.Windup+20/bloodWave.Speed+0.05;Scheduler.step(-1,now)
+check(#hits==lakeHits+2,"Blood Wave reaches a grounded participant on the lake")
+check(cues[#cues].Kind=="BossHazard" and math.abs(cues[#cues].Data.y-(lakeY-2.7))<1e-6,"Blood Wave renders above the lake surface")
+Scheduler.cancel(-1)
+local beads=AttackCatalog.Shen[4]
+Scheduler.start(-1,beads,1,allowed,29)
+now=29+beads.Windup;Scheduler.step(-1,now)
+check(cues[#cues].Kind=="BossProjectile" and math.abs(cues[#cues].Data.y-(lakeY+beads.Rise))<1e-6,
+ "Prayer Beads launch above water at Shen's cast height")
+Scheduler.cancel(-1)
+source.Model:SetAttribute("AsuraEncounter",nil)
 -- Aerial traversal includes a high perch and is fully cancelable.
 source.Root.Position=vec(0,3,0)
 Motion.begin(-1,"Pillar",vec(30,3,0),30,32)
@@ -259,20 +292,46 @@ check(agent.Phase==1,"deathblow animation completes before transformation begins
 source.Fighter.State="Idle"
 PhaseCoordinator.Update(agent,World.Bosses.GrandmasterShen,source,now)
 check(agent.Phase==2,"deathblow threshold transitions after cinematic victim state")
-print("Boss phase coordinator: 8 checks passed")
+local phaseWaveHits={}
+function Characters.ApplyArea(id:number,target:number,damage:number,posture:number,unblockable:boolean)
+ table.insert(phaseWaveHits,target)
+ return Combat.applyArea(actors[id].Fighter,actors[target].Fighter,now,damage,posture,unblockable,true,{})
+end
+local shen=World.Bosses.GrandmasterShen
+source.Root.Position=vec(shen.Spawn.X,shen.Spawn.Y,shen.Spawn.Z)
+player.Root.Position=source.Root.Position+vec(4,0,0)
+outsider.Root.Position=source.Root.Position+vec(4,7,0)
+player.Model.Parent=true;outsider.Model.Parent=true
+source.Fighter=Combat.new(-1,"Jian",0)
+agent.Boss,agent.Kind,agent.Allowed=shen,"Boss",{[1]=true,[2]=true}
+agent.TransitionEnd=math.huge
+agent.Shockwave={At=71,Wave=shen.Phases[2].Transition.Shockwave,Cancelable=false}
+now=71;PhaseCoordinator.Update(agent,shen,source,now)
+check(#phaseWaveHits==1 and phaseWaveHits[1]==1,"Shen's phase wave reaches a grounded lake participant and misses a jump")
+print("Boss phase coordinator: 9 checks passed")
 ''')
 # Use the real WorldService entry/participation/reset/reward functions with fake engine boundaries.
 world_source = (ROOT / "src/server/Services/WorldService.luau").read_text()
-fog_source = world_source[world_source.index("local function endFight"):world_source.index("-- Event wiring")]
+fog_source = world_source[world_source.index("local function lakeGate"):world_source.index("-- Event wiring")]
 chunks.append(r'''
 local GateCoordinator=(function()
  local BossRules=Rules
  local EncounterHandoff=registry.EncounterHandoff
- local sessions:any={};local fights:any={};local sealed:any={};local awards:any={};local drops=0;local present=true;local failSpawn=false
- local AI={SpawnBoss=function(_id:string,_participants:any) return if failSpawn then nil else -99 end,
+ local sessions:any={};local fights:any={};local sealed:any={};local awards:any={};local drops=0;local present=false;local failSpawn=false
+ local running, walkable = true, false
+ local AI={SpawnBoss=function(_id:string,_participants:any) if failSpawn then return nil end; present=true; return -99 end,
+  PreviewBoss=function(_id:string) present=true; return -99 end,
   DespawnBoss=function(_id:string) present=false end,IsBossPresent=function(_id:string) return present end,GetBossEntity=function(_id:string) return if present then -99 else nil end,
   SetBossTargets=function(_id:string,_participants:any) end}
- local BossArenas={loot=function(_position:any,_essence:number) drops+=1 end}
+ local BossArenas={loot=function(_position:any,_essence:number) drops+=1 end,still=function(_id:string,on:boolean) walkable=on end}
+ local Workspace:any={Attributes={},SetAttribute=function(self,k,v) self.Attributes[k]=v end,GetServerTimeNow=function() return 1000+now end}
+ local task={spawn=function(fn,arg) fn(arg) end}
+ local os={clock=function() return now end}
+ local LAKE_RELIC_DISTANCE=14
+ local lake:any={State="Dormant",Since=0,Summoners={}}
+ local anchor:any={IsA=function(_,class) return class=="BasePart" end,Position=Vector3.new(10,20,30)}
+ local prompt:any={Parent=anchor,IsDescendantOf=function(_,root) return root==Workspace end}
+ local relicPrompts:any={[prompt]=true}
  local function setGate(id:string,value:boolean) sealed[id]=value end
  local function vec(p:any) return Vector3.new(p.X,p.Y,p.Z) end
  local function toCFrame(p:any) return CFrame.new(vec(p)) end
@@ -292,37 +351,59 @@ local GateCoordinator=(function()
 chunks.append(fog_source)
 chunks.append(r'''
  local function setup(ids:any)
-  table.clear(sessions);table.clear(fights);table.clear(sealed);table.clear(awards);drops=0;present=true;failSpawn=false
+  table.clear(sessions);table.clear(fights);table.clear(sealed);table.clear(awards);drops=0;present=false;failSpawn=false
+  setLake("Dormant")
   for _,id in ids do
-   local o=World.FogGates.Gate_AshColosseum.Placement;local e=actor(id,o.X,o.Y,o.Z+10)
+   local o=World.FogGates[World.Bosses.GrandmasterShen.FogGate].Outside;local e=actor(id,o.X,o.Y,o.Z)
    sessions[id]={UserId=id,Player=e.Model,Bosses={},Fight=nil}
   end
  end
- return {Setup=setup,Enter=traverseGate,Update=updateGates,End=endFight,Sessions=sessions,Sealed=sealed,Awards=awards,
-  Drops=function() return drops end,FailSpawn=function() failSpawn=true end}
+ return {Setup=setup,Enter=traverseGate,Update=updateGates,End=endFight,Sessions=sessions,Sealed=sealed,Awards=awards,Lake=lake,
+  Drops=function() return drops end,FailSpawn=function() failSpawn=true end,Present=AI.IsBossPresent,Walkable=function() return walkable end,
+  RelicPosition=anchor.Position,TakeRelic=function(id) return takeRelic(id,prompt) end,Phase=function() return Workspace.Attributes[LakeRules.PhaseAttribute] end}
 end)()
-local gate=World.FogGates.Gate_AshColosseum
-GateCoordinator.Setup({1,2})
-actors[2].Root.Position=vec(gate.Inside.X,gate.Inside.Y,gate.Inside.Z-10)
-check(GateCoordinator.Enter(1,gate),"interacting with fog begins encounter")
-check(GateCoordinator.Sealed[gate.Id] and GateCoordinator.Sessions[2].Fight==gate.Id,"fog seals and includes living allies already inside")
+local gate=World.FogGates[World.Bosses.GrandmasterShen.FogGate]
+local G=GateCoordinator
+local function put(id:number,p:any,dz:number?) actors[id].Root.Position=vec(p.X,p.Y,p.Z+(dz or 0)) end
+check(gate.Summons==true,"Shen's gate is the summoned lake")
+G.Setup({1,2});G.Update()
+put(1,gate.Inside);put(2,gate.Inside,-10);G.Update()
+check(not G.Present(gate.Boss) and not G.Walkable() and G.Sessions[1].Fight==nil,"Dormant holds no boss, walkway or fight")
+check(not G.TakeRelic(1),"relic cannot be taken from the arena")
+put(1,G.RelicPosition)
+check(G.TakeRelic(1) and G.Lake.State=="Summoning" and G.Present(gate.Boss) and not G.Walkable(),"a nearby relic holder wakes a waiting Shen")
+check(string.match(G.Phase(),"^Summoning:%d") and not G.TakeRelic(1),"summon time replicates with phase and duplicate takes fail")
+put(1,gate.Outside);put(2,gate.Outside);G.Update()
+now+=LakeRules.SummonSeconds;G.Update()
+check(G.Lake.State=="Stilled" and G.Walkable() and G.Sessions[1].Fight==nil,"after the summon the water supports players without starting combat")
+local submerged=vec(gate.Inside.X,gate.Inside.Y-12,gate.Inside.Z)
+put(1,submerged);G.Update()
+check(G.Sessions[1].Fight==nil,"entering below the waterline cannot start combat")
+put(1,gate.Outside);G.Update()
+put(1,gate.Inside);put(2,gate.Inside,-10);G.Update()
+check(G.Sealed[gate.Id] and G.Sessions[1].Fight==gate.Id and G.Sessions[2].Fight==gate.Id,"the stilled lake seals as they walk in, allies included")
+check(G.Lake.State=="Fight","the trial enters its fight")
 check(actors[1].Model:GetAttribute("AsuraEncounter")=="GrandmasterShen","encounter identity replicates to participant")
-actors[1].Root.Position=vec(gate.Inside.X+300,gate.Inside.Y,gate.Inside.Z);GateCoordinator.Update()
+actors[1].Root.Position=vec(gate.Inside.X+300,gate.Inside.Y,gate.Inside.Z);G.Update()
 check(actors[1].Root.Position.X==gate.Inside.X,"participant cannot escape arena perimeter")
-actors[1].Fighter.State="KO";GateCoordinator.Update()
-check(GateCoordinator.Sealed[gate.Id] and GateCoordinator.Sessions[1].Fight==nil,"one death releases that player while co-op encounter stays sealed")
-GateCoordinator.End(gate.Id,true)
-check(not GateCoordinator.Sealed[gate.Id],"victory unlocks fog")
-check(GateCoordinator.Awards[2]==1 and GateCoordinator.Awards[1]==nil and GateCoordinator.Drops()==1,"victory rewards living participants and disperses loot once")
+actors[1].Fighter.State="KO";G.Update()
+check(G.Sealed[gate.Id] and G.Sessions[1].Fight==nil,"one death releases that player while co-op encounter stays sealed")
+G.End(gate.Id,true)
+check(not G.Sealed[gate.Id] and G.Lake.State=="Dormant","victory unlocks the arena and the lake sleeps")
+check(not G.Walkable() and actors[2].Root.Position.X==gate.Outside.X,"victory returns survivors to the causeway before the water releases")
+check(G.Awards[2]==1 and G.Awards[1]==nil and G.Drops()==1,"victory rewards living participants and disperses loot once")
 check(actors[2].Model:GetAttribute("AsuraBosses")=="GrandmasterShen","victory mirrors boss flag immediately")
-GateCoordinator.End(gate.Id,true)
-check(GateCoordinator.Awards[2]==1 and GateCoordinator.Drops()==1,"duplicate defeat event cannot repeat loot")
-GateCoordinator.Setup({1});GateCoordinator.Enter(1,gate)
-actors[1].Fighter.State="KO";GateCoordinator.Update()
-check(not GateCoordinator.Sealed[gate.Id] and GateCoordinator.Drops()==0,"party wipe opens fog without rewards")
-GateCoordinator.Setup({1});GateCoordinator.FailSpawn()
-check(not GateCoordinator.Enter(1,gate) and actors[1].Root.Position.Z==gate.Outside.Z,"failed spawn returns entrant outside safely")
-print("Boss fog coordinator: 11 checks passed")
+G.End(gate.Id,true)
+check(G.Awards[2]==1 and G.Drops()==1,"duplicate defeat event cannot repeat loot")
+G.Setup({1});put(1,G.RelicPosition);check(G.TakeRelic(1),"relic is available after the encounter");put(1,gate.Outside)
+now+=LakeRules.SummonSeconds;G.Update();put(1,gate.Inside);G.Update()
+actors[1].Fighter.State="KO";G.Update()
+check(not G.Sealed[gate.Id] and G.Drops()==0 and G.Lake.State=="Stilled" and G.Present(gate.Boss),"party wipe reopens a stilled lake with Shen waiting")
+G.Sessions[1]=nil;G.Update()
+check(G.Lake.State=="Dormant" and not G.Present(gate.Boss) and not G.Walkable(),"the last summoner leaving resets a waiting lake")
+G.Setup({1});G.FailSpawn()
+check(not G.Enter(1,gate) and actors[1].Root.Position.Z==gate.Outside.Z,"failed spawn returns entrant outside safely")
+print("Boss fog coordinator: encounter and lake lifecycle passed")
 ''')
 generated = ROOT / "work/test_boss_runtime.generated.luau"
 generated.parent.mkdir(exist_ok=True)

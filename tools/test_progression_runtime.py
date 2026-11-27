@@ -63,7 +63,7 @@ local MT={__index=function(t,k)
 end,__newindex=function(t,k,v)
  rawset(t,k,v);if k=="Parent" and v and v.Children then table.insert(v.Children,t) end
 end}
-function Instance.new(kind) return setmetatable({ClassName=kind,Children={},Activated=signal(),Triggered=signal(),Attributes={}},MT) end
+function Instance.new(kind) return setmetatable({ClassName=kind,Children={},Activated=signal(),Triggered=signal(),Destroying=signal(),Attributes={},AbsoluteSize=Vector2.new(760,440)},MT) end
 function Methods:IsA(kind) return self.ClassName==kind or (kind=="GuiObject" and self.ClassName~="UIListLayout") or (kind=="BasePart" and (self.ClassName=="Part" or self.ClassName=="MeshPart")) end
 function Methods:GetChildren() return self.Children end
 function Methods:GetDescendants()
@@ -78,7 +78,8 @@ function Methods:PivotTo(cf) self.Pivot=cf end
 function Methods:FindFirstChildOfClass(kind) for _,c in self.Children do if c.ClassName==kind then return c end end end
 function Methods:FindFirstChild(name) for _,c in self.Children do if c.Name==name and not c.Destroyed then return c end end end
 function Methods:WaitForChild(name) return assert(self:FindFirstChild(name),name) end
-function Methods:Destroy() self.Destroyed=true end
+function Methods:GetPropertyChangedSignal(_key) return signal() end
+function Methods:Destroy() if not self.Destroyed then self.Destroyed=true;self.Destroying:Fire() end end
 function Methods:SetAttribute(k,v) self.Attributes[k]=v end
 local remotes={}
 local function remote(name)
@@ -135,6 +136,13 @@ function ui:OpenAltar(id) self.Altar.Visible=true;self.ReopenedAltar=id;self.Inp
 local UiKit={Theme={Ink=1,Gold=2,Ivory=3,Muted=4,Ember=5,Edge=6,Surface=7,TitleFont="Title",BodyFont="Body"}}
 function UiKit.button(parent,text,_,fn) local b=Kit.make("TextButton",parent,{Text=text});b.Activated:Connect(function() if not b.Disabled then fn() end end);return b end
 function UiKit.setEnabled(b,on) b.Disabled=not on end
+local shownArmor
+local ItemInspection={new=function()
+ local view={}
+ function view:Show(kind,id) self.Kind,self.Id=kind,id;shownArmor=self end
+ function view:Destroy() self.Destroyed=true end
+ return view
+end}
 function ui:ShowBanner() end
 function ui:ShowToast() end
 local camera={}
@@ -190,7 +198,9 @@ source += module("LevelPreview", "src/shared/LevelPreview.luau", {
     "(script :: any).Parent.ProgressionRules": "Progress", "\"./ProgressionRules\"": "Progress",
     "(script :: any).Parent.CombatSettings": "CombatSettings", "\"./CombatSettings\"": "CombatSettings"})
 source += module("CodexView", "src/client/Controllers/CodexView.luau", {"Shared.NarrativeCatalog": "Catalog", "Shared.WorldDefinitions": "Definitions", "Shared.InputMap": "InputMap", "Shared.EndingRules": "EndingRules"})
-source += module("ArmorView", "src/client/Controllers/ArmorView.luau", {"script.Parent.UiKit": "UiKit", "Shared.NarrativeCatalog": "Catalog", "Shared.ArmorRules": "ArmorRules"})
+source += module("ArmorView", "src/client/Controllers/ArmorView.luau", {
+    "script.Parent.UiKit": "UiKit", "script.Parent.HudKit": "Kit", "script.Parent.ItemInspection": "ItemInspection",
+    "Shared.NarrativeCatalog": "Catalog", "Shared.ArmorRules": "ArmorRules"})
 source += module("View", "src/client/Controllers/DialogueView.luau", {
     "script.Parent.CodexView": "CodexView",
     "script.Parent.HudKit": "Kit", "script.Parent.UiKit": "UiKit", "Shared.NarrativeCatalog": "Catalog",
@@ -418,6 +428,7 @@ do
  local choice;for i,c in Catalog.NPCs.Gao.Nodes.Greeting.Choices do if c.Action=="Armor" then choice=i end end
  say({action="Choose",index=choice,revision=latest().revision})
  check(latest().panel=="Armor" and string.find(shown(),"Ashen Pilgrim",1,true) and string.find(shown(),"worn",1,true),"the panel opens on the worn starter and says so")
+ check(shownArmor.Kind=="Armor" and shownArmor.Id=="AshenPilgrim","the worn suit appears in the inspection stage")
  -- A forged request outside the panel does nothing.
  local before=record()
  act("Acquire","Forged",0);check(record()==before and string.find(latest().message or "","Unknown",1,true)~=nil,"an unknown suit is refused by name")
@@ -425,7 +436,9 @@ do
  act("Sell","AshenPilgrim",0);check(record()==before,"an unknown verb moves nothing")
  say({action="Armor",verb="Acquire",id=7,tier=0,revision=latest().revision});check(record()==before,"a malformed id moves nothing")
  -- Locked, then earned.
+ local previousStage=shownArmor
  button("Cinnabar Guard").Activated:Fire()
+ check(previousStage.Destroyed and shownArmor.Id=="CinnabarGuard","browsing replaces the stage with the selected suit")
  local locked=button("Have Gao forge it")
  check(locked and locked.Disabled and string.find(shown(),"first.",1,true)~=nil,"the locked suit is disabled and says what opens it")
  check(string.find(shown(),"Against what you wear",1,true)~=nil and string.find(shown(),"10.0%",1,true)~=nil,"the panel compares it with what is worn")

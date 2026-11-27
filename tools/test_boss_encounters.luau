@@ -96,7 +96,9 @@ do
 	local gate = assert(World.FogGates[shen.FogGate])
 	local o, t = gate.Outside, gate.Trigger
 	check(not World.contains(t, o.X, o.Y, o.Z), "expelled player is outside the capture trigger")
-	check(World.regionAt(o.X, o.Y, o.Z) ~= shen.Region, "outside point is not in the domain region")
+	-- A walled domain (the old summit) expels into the next region; Shen's lake (win-106) is open water in the Bellwood, so its
+	-- outside point is the causeway at the temple stair, outside the arena and its trigger (checked above).
+	check(gate.Summons == true or World.regionAt(o.X, o.Y, o.Z) ~= shen.Region, "outside point is not in the domain region")
 	local dx, dy, dz = o.X - gate.Placement.X, o.Y - gate.Placement.Y, o.Z - gate.Placement.Z
 	check(math.sqrt(dx * dx + dy * dy + dz * dz) > 18, "expelled player is beyond the prompt radius")
 	for id, altar in World.Altars do
@@ -191,9 +193,9 @@ if okFs then
 	local src: string = fs.readFile("src/server/Services/BossArenas.luau")
 	local lift = tonumber(string.match(src, "Arenas%.FloorLift = ([%d%.]+)"))
 	check(lift ~= nil and string.find(src, "boss.Spawn.Y - 3 + Arenas.FloorLift", 1, true) ~= nil, "floor and approach tops use FloorLift")
-	local shen = World.Bosses.GrandmasterShen
-	local top = shen.Spawn.Y - 3 + (lift or 0)
-	local c, s = shen.Arena.Center, shen.Arena.Size
+	local barrier = Overworld.Barrier
+	local top = barrier.BossSpawn.Y - 3 + (lift or 0)
+	local c, s = barrier.Arena.Center, barrier.Arena.Size
 	local minGap, maxGap = math.huge, -math.huge
 	for fx = -1, 1, 0.25 do
 		for fz = -1, 1, 0.25 do
@@ -201,7 +203,7 @@ if okFs then
 			minGap, maxGap = math.min(minGap, gap), math.max(maxGap, gap)
 		end
 	end
-	check(minGap >= 0.05, "no floor point coplanar with or under the terrain pad")
-	check(maxGap <= 2, "floor stays a walkable step above the pad")
+	check(minGap >= 0.05, "the summit pad still seats the original slab without overlap")
+	check(maxGap <= 2, "the summit pad still sits within one step of its original slab")
 end
 print(string.format("Boss encounters: %d checks passed", checks))

@@ -21,7 +21,10 @@ end
 local function src(path: string): string return fs.readFile(path) end
 local Looks = Scene.load("src/shared/LooksCast.luau", { script = { Parent = { CostumeSchema = Schema } } })
 local shared = { WaitForChild = function() return { Shared = { CostumeSchema = Schema, LooksCast = Looks }, Simulation = { WeaponSchema = Weapons } } end }
-local game = { GetService = function() return shared end }
+local serverStorage = Instance.new("Folder")
+local game = { GetService = function(_, name)
+	return if name == "ServerStorage" then serverStorage else shared
+end }
 local Kit = Scene.load("src/server/Services/CostumeKit.luau", { game = game })
 local Figures = Scene.load("src/server/Services/CastFigures.luau", { game = game, script = { Parent = { CostumeKit = Kit } } })
 
@@ -151,6 +154,18 @@ for _, case in { { "Jian", V3.new(0.12, 0.28, 4.2), { "Guard", "GripWrap", "Pomm
 	check(case[1] .. " fittings are welded to an unchanged blade", ok)
 end
 check("held stock weapons are dressed", string.find(src("src/server/CharacterService.luau"), "WeaponModels.dress(part, e.Fighter.Weapon)", 1, true) ~= nil)
+local Jian = Models.inspect("Jian")
+local daggers = Models.inspect("TwinDaggers")
+local displayBlade = Jian and Jian:FindFirstChild("AsuraWeapon")
+check("inspection reuses the field blade and fittings", displayBlade and displayBlade:FindFirstChild("Guard")
+	and displayBlade:FindFirstChild("GripWrap") and (displayBlade.Size - V3.new(0.12, 0.28, 4.2)).Magnitude < 1e-5)
+local anchored, tools = true, 0
+for _, piece in daggers:GetDescendants() do
+	if piece:IsA("BasePart") then anchored = anchored and piece.Anchored; tools += 1 end
+	if piece:IsA("WeldConstraint") then anchored = false end
+end
+check("inspection keeps both paired weapons without mannequin parts or joints", anchored and tools == 4)
+check("unarmed and boss-only entries never produce misleading equipment models", Models.inspect("Unarmed") == nil and Models.inspect("IronBullMaul") == nil)
 check("phase recolours skip weapon fittings", string.find(src("src/server/CharacterService.luau"), 'descendant.Parent.Name == "AsuraWeapon"', 1, true) ~= nil)
 -- Post-F26 step 2: arcs follow the server's committed strike for every actor, boss looks included.
 check("weapon arcs follow the validated strike record", string.find(src("src/client/Controllers/WeaponTrails.luau"), 'GetAttribute("AsuraStrike")', 1, true) ~= nil)

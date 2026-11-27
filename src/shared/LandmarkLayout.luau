@@ -82,6 +82,14 @@ Layout.Landmarks = {
 			-- Across 250 / Along 120 (was 150 / 140): the 126-stud footprint at the old spot left no seat for the temple base (test_bellwood_fit).
 			Gate = { Model = "Bellwood_GateTowers", Across = 250, Along = 120, Lift = 0, Scale = 3, Radius = 42 * 3, Steps = 10 * 3, Back = -40.8 * 3,
 				Width = 15 * 3, Landing = 14 * 3, Height = 50.2 * 3, Foot = { X = -0.135 * 3, Y = -0.58 * 3, Z = -13.655 * 3 } },
+			-- Grandmaster Shen's lake trial (win-106; Overworld.ShenLake, tools/test_shen_lake.luau): the arena is the open water before
+			-- the colossal stair, Across/Along its centre (basin axes), Width across x Depth along, Height tall with its floor Sink under
+			-- the water. Still = how far over the water the stilled surface (an invisible floor) holds the fighters. The causeway from the
+			-- stair toe (Toe studs out from the temple foot, as LandmarkWorld.colossalApproach) runs through it; Outside/Inside are Out/In
+			-- studs along that causeway. Relic: the altar on the upper hall floor, Run along the temple's front axis and Rise over its foot
+			-- (LandmarkWorld.colossalTempleCollision HallFloor: top 113, run -40..-128).
+			ShenLake = { Across = 40, Along = 255, Width = 180, Depth = 170, Height = 100, Sink = 50, Still = 0.4, Toe = 258, Out = 12, In = 45,
+				Relic = { Run = -80, Rise = 113 } },
 			-- Walkable route gate landing -> rim -> forest (plan section 3; Layout.route builds it, LandmarkWorld.routeFills writes it): a
 			-- Width-wide causeway from the landing to the left shore at Theta (degrees on the ring, Layout.basinRing's angle), a switchback of
 			-- legs rising Rise each at slope Slope (rise/run, 22 deg) with Pad-long landings, parked Margin off the cliff, topping out on the rim
@@ -426,6 +434,45 @@ end
 function Layout.basinLevels(lm: any): (number, number)
 	local f = lm.Origin.Y + lm.Basin.Bed
 	return f, f + lm.Basin.Water
+end
+
+-- Kit point (Blender: Z up, +Y = tunnel mouth) -> world, in plain numbers: the twin of LandmarkWorld.kitToWorld.
+function Layout.kitToWorld(lm: any, p: { number }): Vec
+	local a = math.rad(lm.Yaw)
+	local c, s = math.cos(a), math.sin(a)
+	local x, y, z = -p[1], p[3], p[2]
+	return { X = lm.Origin.X + x * c + z * s, Y = lm.Origin.Y + y, Z = lm.Origin.Z - x * s + z * c }
+end
+
+-- Shen's lake trial in world numbers (Basin.ShenLake). Arena is world-axis aligned (the basin front is 4 degrees off +X), so its X
+-- side is Depth and its Z side Width. Toward = the colossal temple's front (to the passage exit), as LandmarkWorld.templeFrame.
+function Layout.shenLake(lm: any): any
+	local S = lm.Basin.ShenLake
+	local _, water = Layout.basinLevels(lm)
+	local c = basinSpot(lm, { Across = S.Across, Along = S.Along, Lift = 0 })
+	local temple = Layout.templeSpot(lm, lm.Basin.ColossalTemple)
+	local exit = Layout.kitToWorld(lm, lm.Tunnel.Passage[#lm.Tunnel.Passage])
+	local tx, tz = exit.X - temple.X, exit.Z - temple.Z
+	local n = math.sqrt(tx * tx + tz * tz)
+	tx, tz = tx / n, tz / n
+	local yaw = math.deg(math.atan2(-tx, -tz)) -- facing out along the causeway, into the arena
+	local function onCauseway(run: number, lift: number): any
+		return { X = temple.X + tx * run, Y = water + lift, Z = temple.Z + tz * run, Yaw = yaw }
+	end
+	local still = water + S.Still
+	return {
+		Arena = { Center = { X = c.X, Y = water - S.Sink + S.Height / 2, Z = c.Z }, Size = { X = S.Depth, Y = S.Height, Z = S.Width } },
+		StillTop = still,
+		Vortex = { X = c.X, Y = water, Z = c.Z },
+		-- Facing the stair toe: look = (-sin Yaw, -cos Yaw).
+		BossSpawn = { X = c.X, Y = still + 3, Z = c.Z,
+			Yaw = math.deg(math.atan2(-(temple.X + tx * S.Toe - c.X), -(temple.Z + tz * S.Toe - c.Z))) },
+		StairToe = onCauseway(S.Toe, 1),
+		Outside = onCauseway(S.Toe + S.Out, 4),
+		Inside = onCauseway(S.Toe + S.In, 4),
+		Relic = { X = temple.X + tx * S.Relic.Run, Y = temple.Y + S.Relic.Rise, Z = temple.Z + tz * S.Relic.Run },
+		Toward = { X = tx, Z = tz },
+	}
 end
 
 return Layout

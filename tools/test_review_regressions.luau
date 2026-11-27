@@ -85,7 +85,8 @@ do
 	function player:SetAttribute(key: string,value: any) self.Attributes[key]=value end
 	function player:Kick(message: string) error(message) end
 	local loaded, unloaded = false, false
-	local profile={inventory={Materials={}},souls={inventory={spellSlots={"JadeAegis","EmberCataclysm"}}}}
+	local profile={inventory={Materials={},Armor={AshenPilgrim={Level=2}}},equippedLoadout={ArmorSet="AshenPilgrim"},
+		souls={inventory={spellSlots={"JadeAegis","EmberCataclysm"}}}}
 	local Persistence={Get=function() return if loaded then profile else nil end,PublicProfile=function() return profile end,
 		Load=function() loaded=true end,Unload=function() unloaded=true end}
 	local remote={FireClient=function(_self: any,_player: any,packet: any) table.insert(received,packet) end}
@@ -115,6 +116,7 @@ do
 	hydrate(player)
 	local packet=statePacket()
 	check(packet and packet.inventory.spellSlots[1]=="JadeAegis" and packet.inventory.spellSlots[2]=="EmberCataclysm","Slow profile load pushes saved slots automatically")
+	check(packet.inventory.armor.AshenPilgrim.Level==2 and packet.inventory.armorSet=="AshenPilgrim","Arsenal receives owned armour and the worn loadout")
 	check(packet.cooldowns.JadeAegis==123 and not packet.open,"Sync preserves cooldowns without opening arsenal")
 	table.clear(received);player.Attributes={};loaded=false;hydrate(player)
 	check(#received==0,"Hydration waits for a listening client")

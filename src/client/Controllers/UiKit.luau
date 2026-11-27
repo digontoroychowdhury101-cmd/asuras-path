@@ -1,31 +1,30 @@
 --!strict
 -- ModuleScript: StarterPlayer/StarterPlayerScripts/AsurasPath/Controllers/UiKit
--- Interactive layer over HudKit: the menu theme, motion timings, SFX hooks and themed buttons
--- (Primary / Secondary / Danger / Ghost) with hover-lift, press-compress and stroke-glow tweens.
--- Gamepad selection mirrors hover. A Bin collects connections so owners can clean up in one call.
+-- Shared button materials, focus states and menu sounds.
 local TweenService = game:GetService("TweenService")
 local HudKit = require(script.Parent:WaitForChild("HudKit") :: ModuleScript)
+local Effects = require(game:GetService("ReplicatedStorage").AsurasPath.Shared.EffectsPreference)
 
 local UiKit = {}
 local P = HudKit.Palette
 
--- Customization ------------------------------------------------------------------------------
 UiKit.Theme = table.freeze({
 	Ink = P.Ink, Ivory = P.Ivory, Muted = P.Muted, Gold = P.Gold, Ember = P.Ember, Edge = P.Edge,
-	Surface = Color3.fromRGB(30, 13, 28), Raised = Color3.fromRGB(56, 24, 50),
-	Primary = Color3.fromRGB(176, 52, 112), PrimaryHot = Color3.fromRGB(222, 96, 156),
-	Secondary = Color3.fromRGB(40, 17, 36), SecondaryHot = Color3.fromRGB(74, 32, 66),
-	Danger = Color3.fromRGB(70, 14, 14), DangerHot = Color3.fromRGB(110, 20, 20),
-	Backdrop = Color3.fromRGB(10, 2, 10), BackdropAlpha = 0.4,
-	TitleFont = HudKit.TitleFont, BodyFont = HudKit.BodyFont, Radius = 6,
+	Surface = Color3.fromRGB(23, 22, 21), Raised = Color3.fromRGB(39, 35, 30),
+	Primary = Color3.fromRGB(225, 195, 145), PrimaryHot = Color3.fromRGB(246, 221, 179),
+	Secondary = Color3.fromRGB(36, 33, 29), SecondaryHot = Color3.fromRGB(55, 48, 40),
+	Danger = Color3.fromRGB(80, 34, 30), DangerHot = Color3.fromRGB(101, 43, 37),
+	Backdrop = Color3.fromRGB(8, 8, 8), BackdropAlpha = 0.16,
+	Jade = P.Jade, Blood = P.Blood,
+	TitleFont = HudKit.TitleFont, BodyFont = HudKit.BodyFont, Radius = 1,
 })
 UiKit.Motion = table.freeze({
-	HoverScale = 1.05, PressScale = 0.95,
+	PressScale = 0.99,
 	Hover = TweenInfo.new(0.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
 	Press = TweenInfo.new(0.08, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
-	Open = TweenInfo.new(0.34, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
+	Open = TweenInfo.new(0.2, Enum.EasingStyle.Quart, Enum.EasingDirection.Out),
 	Close = TweenInfo.new(0.16, Enum.EasingStyle.Quad, Enum.EasingDirection.In),
-	OpenFrom = 0.9, SlidePixels = 18,
+	OpenFrom = 0.992, SlidePixels = 9,
 })
 -- SFX hooks: replace Id with an uploaded rbxassetid:// to re-skin; set Id = "" to mute a cue.
 UiKit.Sfx = {
@@ -60,78 +59,62 @@ function UiKit.clean(bin: Bin)
 	table.clear(bin)
 end
 
-local SKIN: { [Variant]: { Base: Color3, Hot: Color3, Text: Color3, Stroke: Color3, Alpha: number } } = {
-	Primary = { Base = UiKit.Theme.Primary, Hot = UiKit.Theme.PrimaryHot, Text = UiKit.Theme.Ivory, Stroke = UiKit.Theme.Gold, Alpha = 0 },
-	Secondary = { Base = UiKit.Theme.Secondary, Hot = UiKit.Theme.SecondaryHot, Text = UiKit.Theme.Ivory, Stroke = UiKit.Theme.Edge, Alpha = 0.1 },
-	Danger = { Base = UiKit.Theme.Danger, Hot = UiKit.Theme.DangerHot, Text = UiKit.Theme.Ivory, Stroke = UiKit.Theme.Edge, Alpha = 0.05 },
-	Ghost = { Base = UiKit.Theme.Ink, Hot = UiKit.Theme.Raised, Text = UiKit.Theme.Muted, Stroke = UiKit.Theme.Edge, Alpha = 0.6 },
+local T = UiKit.Theme
+local SKIN: { [Variant]: { Base: Color3, Hot: Color3, Text: Color3, Stroke: Color3, Alpha: number, Rim: number } } = {
+	Primary = { Base = T.Primary, Hot = T.PrimaryHot, Text = T.Ink, Stroke = T.Gold, Alpha = 0, Rim = 0 },
+	Secondary = { Base = T.Secondary, Hot = T.SecondaryHot, Text = T.Ivory, Stroke = T.Edge, Alpha = 0, Rim = 0.25 },
+	Danger = { Base = T.Danger, Hot = T.DangerHot, Text = T.Ivory, Stroke = T.Ember, Alpha = 0, Rim = 0.3 },
+	Ghost = { Base = T.Ink, Hot = T.Raised, Text = T.Ivory, Stroke = T.Edge, Alpha = 1, Rim = 1 },
 }
 
--- Disabled buttons stay visible (dimmed, no lift) and answer clicks with the Error cue.
 function UiKit.setEnabled(button: TextButton, enabled: boolean)
 	button:SetAttribute("UiDisabled", not enabled)
 	button.TextTransparency = if enabled then 0 else 0.5
-	local stroke = button:FindFirstChildOfClass("UIStroke")
-	if stroke then
-		stroke.Transparency = if enabled then 0.25 else 0.7
-	end
 end
 
 function UiKit.button(parent: Instance, text: string, variant: Variant, onActivate: () -> ()): TextButton
 	local skin = SKIN[variant]
 	local primary = variant == "Primary"
 	local button = HudKit.make("TextButton", parent, {
-		Name = text, Text = text, Font = if primary then UiKit.Theme.TitleFont else UiKit.Theme.BodyFont,
-		TextSize = if primary then 20 else 19, TextColor3 = skin.Text, AutoButtonColor = false,
+		Name = text, Text = text, Font = if primary then Enum.Font.GothamMedium else UiKit.Theme.BodyFont,
+		TextSize = if primary then 17 else 16, TextColor3 = skin.Text, TextStrokeTransparency = 1, AutoButtonColor = false,
 		BackgroundColor3 = skin.Base, BackgroundTransparency = skin.Alpha, BorderSizePixel = 0,
 		Size = UDim2.new(1, 0, 0, 44), Selectable = true, ClipsDescendants = false,
 	}) :: TextButton
-	HudKit.make("UICorner", button, { CornerRadius = UDim.new(0, UiKit.Theme.Radius) })
 	local stroke = HudKit.make("UIStroke", button, {
-		Color = skin.Stroke, Thickness = if primary then 1.5 else 1, Transparency = 0.25,
-		ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
+		Color = skin.Stroke, Thickness = 1, Transparency = skin.Rim, ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
 	}) :: UIStroke
-	HudKit.make("UIGradient", button, { -- lacquer sheen: lit top edge, darker foot
-		Rotation = 90,
-		Color = ColorSequence.new(Color3.fromRGB(255, 255, 255), Color3.fromRGB(170, 160, 155)),
-	})
+	if primary then
+		HudKit.make("Frame", button, { Name = "Bevel", Position = UDim2.fromOffset(1, 0), Size = UDim2.new(1, -2, 0, 1),
+			BackgroundColor3 = T.Ivory, BackgroundTransparency = 0.36, BorderSizePixel = 0 })
+	end
 	local scale = HudKit.make("UIScale", button, {}) :: UIScale
-	local hovered = false
+	local hovered, focused, pressed = false, false, false
 
-	local function settle(info: TweenInfo)
+	local function settle()
 		local disabled = button:GetAttribute("UiDisabled") == true
-		local lift = hovered and not disabled
-		TweenService:Create(scale, info, { Scale = if lift then UiKit.Motion.HoverScale else 1 }):Play()
-		TweenService:Create(button, info, { BackgroundColor3 = if lift then skin.Hot else skin.Base }):Play()
-		TweenService:Create(stroke, info, {
-			Transparency = if disabled then 0.7 elseif lift then 0 else 0.25,
-			Thickness = (if primary then 1.5 else 1) + (if lift then 1 else 0),
+		local hot = (hovered or focused) and not disabled
+		local down = pressed and not disabled and not Effects.reducedMotion()
+		TweenService:Create(scale, UiKit.Motion.Press, { Scale = if down then UiKit.Motion.PressScale else 1 }):Play()
+		TweenService:Create(button, UiKit.Motion.Hover, {
+			BackgroundColor3 = if hot then skin.Hot else skin.Base,
+			BackgroundTransparency = if variant == "Ghost" and hot then 0 else skin.Alpha,
 		}):Play()
+		stroke.Color = if focused then (if primary then T.Ivory else T.Gold) else skin.Stroke
+		stroke.Transparency = if focused then 0 elseif disabled then math.max(skin.Rim, 0.63) elseif hot then 0.18 else skin.Rim
+		stroke.Thickness = if focused then 2 else 1
 	end
-	local function enter()
-		if not hovered then
-			hovered = true
-			if button:GetAttribute("UiDisabled") ~= true then
-				UiKit.play("Hover")
-			end
-			settle(UiKit.Motion.Hover)
-		end
-	end
-	local function leave()
-		hovered = false
-		settle(UiKit.Motion.Hover)
-	end
-	-- Instance-owned connections die with the button, so callers never need to track them.
-	button.MouseEnter:Connect(enter)
-	button.SelectionGained:Connect(enter)
-	button.MouseLeave:Connect(leave)
-	button.SelectionLost:Connect(leave)
-	button.MouseButton1Down:Connect(function()
-		TweenService:Create(scale, UiKit.Motion.Press, { Scale = UiKit.Motion.PressScale }):Play()
+	button.MouseEnter:Connect(function()
+		hovered = true
+		if button:GetAttribute("UiDisabled") ~= true then UiKit.play("Hover") end
+		settle()
 	end)
-	button.MouseButton1Up:Connect(function()
-		settle(UiKit.Motion.Hover)
-	end)
+	button.MouseLeave:Connect(function() hovered, pressed = false, false; settle() end)
+	button.SelectionGained:Connect(function() focused = true; settle() end)
+	button.SelectionLost:Connect(function() focused, pressed = false, false; settle() end)
+	button.MouseButton1Down:Connect(function() pressed = true; settle() end)
+	button.MouseButton1Up:Connect(function() pressed = false; settle() end)
+	button:GetAttributeChangedSignal("UiDisabled"):Connect(settle)
 	button.Activated:Connect(function()
 		if button:GetAttribute("UiDisabled") == true then
 			UiKit.play("Error")

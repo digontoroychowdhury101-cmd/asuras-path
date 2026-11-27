@@ -239,6 +239,9 @@
           "BossEncounterRules": {
             "$path": "src/shared/BossEncounterRules.luau"
           },
+          "ShenLakeRules": {
+            "$path": "src/shared/ShenLakeRules.luau"
+          },
           "BossAttackCatalog": {
             "$path": "src/shared/BossAttackCatalog.luau"
           },
@@ -803,6 +806,9 @@
         },
         "AsuraArmor_IronOath": {
           "$path": "assets/models/AsuraArmor_IronOath.rbxmx"
+        },
+        "AsuraWeapon_Jian": {
+          "$path": "assets/models/AsuraWeapon_Jian.rbxmx"
         }
       },
       "AsuraLobbyKit": {
@@ -866,6 +872,18 @@
         },
         "AsurasPath": {
           "$className": "Folder",
+          "Vendor": {
+            "$className": "Folder",
+            "Spr": {
+              "$path": "src/client/Vendor/Spr.luau"
+            },
+            "Trove": {
+              "$path": "src/client/Vendor/Trove.luau"
+            },
+            "ViewportModel": {
+              "$path": "src/client/Vendor/ViewportModel.luau"
+            }
+          },
           "Controllers": {
             "$className": "Folder",
             "WorldStateController": {
@@ -951,6 +969,21 @@
             },
             "ArsenalTabs": {
               "$path": "src/client/Controllers/ArsenalTabs.luau"
+            },
+            "ArsenalEquipment": {
+              "$path": "src/client/Controllers/ArsenalEquipment.luau"
+            },
+            "ItemInspection": {
+              "$path": "src/client/Controllers/ItemInspection.luau"
+            },
+            "InspectionStage": {
+              "$path": "src/client/Controllers/InspectionStage.luau"
+            },
+            "InspectionCues": {
+              "$path": "src/client/Controllers/InspectionCues.luau"
+            },
+            "CombatHudStyle": {
+              "$path": "src/client/Controllers/CombatHudStyle.luau"
             },
             "UiKit": {
               "$path": "src/client/Controllers/UiKit.luau"
@@ -1212,6 +1245,9 @@
             },
             "FoliageWind": {
               "$path": "src/client/Controllers/FoliageWind.luau"
+            },
+            "ShenLakeController": {
+              "$path": "src/client/Controllers/ShenLakeController.luau"
             }
           }
         }

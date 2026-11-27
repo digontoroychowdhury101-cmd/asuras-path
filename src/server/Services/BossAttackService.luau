@@ -25,7 +25,10 @@ function Service.start(id: number, attack: Types.Attack, target: number, allowed
 	-- No impact inside an encounter handoff: the windup stretches to the readable lead (#16).
 	local impact = Rules.impact(now, attack.Windup)
 	if type(encounter) == "string" then impact = Handoff.defer(encounter, impact) end
-	local origin = Vector3.new(e.Root.Position.X, 3, e.Root.Position.Z)
+	local boss = if type(encounter) == "string" then World.Bosses[encounter] else nil
+	local gate = if boss then World.FogGates[boss.FogGate] else nil
+	local rootY = if boss and gate and gate.Summons then boss.Spawn.Y else 3
+	local origin = Vector3.new(e.Root.Position.X, rootY, e.Root.Position.Z)
 	local aim = Motion.clamp(id, Vector3.new(victim.Root.Position.X, e.Root.Position.Y, victim.Root.Position.Z))
 	active[id] = { Attack = attack, Impact = impact, Origin = origin, Aim = aim, Target = target, Allowed = allowed, Hazard = nil, Pulse = 0 }
 	local _, counter = Rules.classify(attack.Kind)
@@ -35,7 +38,7 @@ function Service.start(id: number, attack: Types.Attack, target: number, allowed
 	e.Model:SetAttribute("AsuraBossAttack", attack.Kind)
 	e.Model:SetAttribute("AsuraTelegraph", string.format("Perilous|%s|%.3f", attack.Id, impact))
 	Characters.Cue("Telegraph", id, { class = "Perilous", move = attack.Id, kind = attack.Kind, counter = counter, impact = impact,
-		radius = attack.Radius, ox = origin.X, oz = origin.Z, x = aim.X, y = 0, z = aim.Z, duration = attack.Duration, element = attack.Element })
+		radius = attack.Radius, ox = origin.X, oz = origin.Z, x = aim.X, y = rootY - 3, z = aim.Z, duration = attack.Duration, element = attack.Element })
 	if attack.Motion then Motion.begin(id, attack.Motion, Motion.approach(id, attack.Motion, aim), now, impact) end
 end
 -- A body feint or a flourish of the glaive: the motion only, no warning, no impact. He stands for it and any hit interrupts it like a real move.
@@ -102,11 +105,12 @@ function Service.step(id: number, now: number): boolean
 		end
 	else
 		if not current.Hazard then
-			local origin = if kind == "Leap" then Vector3.new(current.Aim.X, 3, current.Aim.Z) else current.Origin
+			local rootY = current.Origin.Y
+			local origin = if kind == "Leap" then Vector3.new(current.Aim.X, rootY, current.Aim.Z) else current.Origin
 			if kind == "Ritual" then
 				local encounter = e.Model:GetAttribute("AsuraEncounter")
 				local boss = if type(encounter) == "string" then World.Bosses[encounter] else nil
-				if boss then origin = Vector3.new(boss.Arena.Center.X, 3, boss.Arena.Center.Z) end
+				if boss then origin = Vector3.new(boss.Arena.Center.X, rootY, boss.Arena.Center.Z) end
 			end
 			current.Hazard = Hazards.new(a, origin, current.Aim, current.Impact, current.Allowed)
 			if kind == "Breath" then
@@ -115,7 +119,7 @@ function Service.step(id: number, now: number): boolean
 				Motion.begin(id, "Aerial", endpoint, now, now + (a.Duration or 3))
 			end
 			Characters.Cue("BossHazard", id, { move = a.Id, start = current.Impact, kind = kind, radius = a.Radius, speed = a.Speed or 36, duration = a.Duration,
-				repeats = a.Repeats or 1, interval = a.Interval or 1, element = a.Element, x = origin.X, y = 0.3, z = origin.Z,
+				repeats = a.Repeats or 1, interval = a.Interval or 1, element = a.Element, x = origin.X, y = origin.Y - 3 + 0.3, z = origin.Z,
 				ax = current.Aim.X, az = current.Aim.Z })
 		end
 		if not Hazards.step(id, current.Hazard :: Hazards.Hazard, now) then Service.cancel(id) end

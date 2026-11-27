@@ -5,17 +5,13 @@
 --   ↺ recoverable damage: during the Blood Rally window it pulses with a countdown ("strike back");
 --     afterwards the flask restores it first.
 --   ▼ lowered ceiling: a notch on the bar where max health currently stops, "rest restores".
--- Also captions the stamina bar. Values come straight from the snapshot; no combat math here.
 local HudKit = require(script.Parent:WaitForChild("HudKit") :: ModuleScript)
-local Sakura = require(script.Parent:WaitForChild("SakuraKit") :: ModuleScript)
+local C = require(script.Parent:WaitForChild("CombatHudStyle") :: ModuleScript)
 
 local Tags = {}
-local C = Sakura.Colors
 
--- Geometry inside the 470x150 vitals plate (matches InterfaceController.buildVitals).
-Tags.Health = table.freeze({ X = 128, Y = 48, W = 300, H = 18 })
-Tags.StatusY = 68
-Tags.Stamina = table.freeze({ X = 404, Y = 83 })
+Tags.Health = table.freeze({ X = 38, Y = 32, W = 404, H = 16 })
+Tags.StatusY = 59
 
 export type View = { Notch: Frame, Rally: TextLabel, RallyScale: UIScale, Ceiling: TextLabel }
 
@@ -25,18 +21,16 @@ function Tags.build(frame: Frame): View
 		Name = "CeilingNotch", AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromOffset(h.X + h.W, h.Y + h.H / 2),
 		Size = UDim2.fromOffset(3, h.H + 10), BackgroundColor3 = C.Ivory, BorderSizePixel = 0, ZIndex = 6, Visible = false,
 	}) :: Frame
-	Sakura.diamond(notch, 7, UDim2.fromScale(0.5, 0), C.Ivory, C.Ink)
+	HudKit.make("Frame", notch, { Position = UDim2.fromScale(0.5, 0), AnchorPoint = Vector2.new(0.5, 0.5),
+		Size = UDim2.fromOffset(6, 6), Rotation = 45, BackgroundColor3 = C.Ivory, BorderSizePixel = 0, ZIndex = 6 })
 	local rally = HudKit.label(frame, "", 13, Enum.Font.GothamBold, C.Gold, {
-		Name = "RallyTag", AnchorPoint = Vector2.new(0, 0.5), Position = UDim2.fromOffset(h.X, Tags.StatusY + 6), Size = UDim2.fromOffset(170, 14),
+		Name = "RallyTag", AnchorPoint = Vector2.new(0, 0.5), Position = UDim2.fromOffset(h.X, Tags.StatusY), Size = UDim2.fromOffset(184, 15),
 		TextXAlignment = Enum.TextXAlignment.Left, TextStrokeTransparency = 0.3, Visible = false,
 	})
 	local rallyScale = HudKit.make("UIScale", rally, {}) :: UIScale
 	local ceiling = HudKit.label(frame, "", 12, Enum.Font.GothamMedium, C.Ivory, {
-		Name = "CeilingTag", AnchorPoint = Vector2.new(1, 0.5), Position = UDim2.fromOffset(h.X + h.W, Tags.StatusY + 6), Size = UDim2.fromOffset(150, 14),
+		Name = "CeilingTag", AnchorPoint = Vector2.new(1, 0.5), Position = UDim2.fromOffset(h.X + h.W, Tags.StatusY), Size = UDim2.fromOffset(186, 15),
 		TextXAlignment = Enum.TextXAlignment.Right, TextStrokeTransparency = 0.3, Visible = false,
-	})
-	HudKit.label(frame, "STAMINA", 10, Enum.Font.GothamBold, C.Stamina, {
-		Name = "StaminaCaption", Position = UDim2.fromOffset(Tags.Stamina.X, Tags.Stamina.Y), Size = UDim2.fromOffset(60, 14), TextXAlignment = Enum.TextXAlignment.Left,
 	})
 	return { Notch = notch, Rally = rally, RallyScale = rallyScale, Ceiling = ceiling }
 end
@@ -57,7 +51,7 @@ end
 function Tags.update(view: View, s: any, clock: number)
 	local rally, ceiling = Tags.texts(s)
 	view.Rally.Text, view.Rally.Visible = rally, rally ~= ""
-	view.Rally.TextColor3 = if s.RallyActive then C.Gold else C.Stamina
+	view.Rally.TextColor3 = if s.RallyActive then C.Gold else C.Bone
 	view.RallyScale.Scale = if s.RallyActive then 1 + 0.08 * math.abs(math.sin(clock * 6)) else 1
 	view.Ceiling.Text, view.Ceiling.Visible = ceiling, ceiling ~= ""
 	local maxHP = math.max(s.MaxHP, 1)

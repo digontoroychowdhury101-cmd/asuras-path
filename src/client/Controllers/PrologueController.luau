@@ -37,8 +37,11 @@ end
 -- Blocks until the character exists, its appearance has loaded and it has settled (or timeout).
 local function ready(player: Player)
 	local deadline = os.clock() + LOAD_TIMEOUT
-	local character = player.Character or player.CharacterAdded:Wait()
-	while os.clock() < deadline and not (player:HasAppearanceLoaded() and character:FindFirstChild("HumanoidRootPart")) do task.wait(0.1) end
+	while os.clock() < deadline do
+		local character = player.Character
+		if character and player:HasAppearanceLoaded() and character:FindFirstChild("HumanoidRootPart") then break end
+		task.wait(0.1)
+	end
 	while os.clock() < deadline and player:GetAttribute("AsuraAltars") == nil do task.wait(0.1) end
 	task.wait(SETTLE)
 end
@@ -56,10 +59,30 @@ function Controller.Play(ui: any, input: any, camera: any?, force: boolean?)
 	for edge = 0, 1 do
 		table.insert(bars, HudKit.make("Frame", veil, { AnchorPoint = Vector2.new(0, edge), Position = UDim2.fromScale(0, edge), Size = UDim2.new(1, 0, 0.12, 0), BackgroundColor3 = Color3.new(0, 0, 0), BorderSizePixel = 0 }))
 	end
-	local line = HudKit.label(veil, "", 34, HudKit.TitleFont, P.Ivory, { AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 0.45), Size = UDim2.new(0.8, 0, 0, 48), TextScaled = true, TextTransparency = 1, TextStrokeTransparency = 1 })
-	HudKit.make("UITextSizeConstraint", line, { MinTextSize = 18, MaxTextSize = 34 })
-	local sub = HudKit.label(veil, "", 20, HudKit.BodyFont, P.Ember, { AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.new(0.5, 0, 0.45, 34), Size = UDim2.new(0.8, 0, 0, 30), TextWrapped = true, TextTransparency = 1, TextStrokeTransparency = 1 })
-	local hint = HudKit.label(veil, "", 14, HudKit.BodyFont, P.Muted, { AnchorPoint = Vector2.new(1, 1), Position = UDim2.new(1, -24, 0.88, -10), Size = UDim2.fromOffset(320, 20), TextXAlignment = Enum.TextXAlignment.Right })
+	local copy = HudKit.make("Frame", veil, {
+		Name = "Story", AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 0.48),
+		Size = UDim2.new(0.84, 0, 0, 132), BackgroundTransparency = 1,
+	}) :: Frame
+	HudKit.make("UISizeConstraint", copy, { MaxSize = Vector2.new(780, 132) })
+	local line = HudKit.label(copy, "", 38, HudKit.TitleFont, P.Ivory, {
+		Size = UDim2.new(1, 0, 0, 76), TextScaled = true, TextWrapped = true, TextTransparency = 1, TextStrokeTransparency = 1,
+	})
+	HudKit.make("UITextSizeConstraint", line, { MinTextSize = 18, MaxTextSize = 38 })
+	local rule = HudKit.make("Frame", copy, {
+		AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.new(0.5, 0, 0, 82), Size = UDim2.new(0.46, 0, 0, 1),
+		BackgroundColor3 = P.Gold, BackgroundTransparency = 1, BorderSizePixel = 0,
+	}) :: Frame
+	HudKit.make("UIGradient", rule, {
+		Transparency = NumberSequence.new({ NumberSequenceKeypoint.new(0, 1), NumberSequenceKeypoint.new(0.5, 0), NumberSequenceKeypoint.new(1, 1) }),
+	})
+	local sub = HudKit.label(copy, "", 18, HudKit.BodyFont, P.Muted, {
+		Position = UDim2.fromOffset(0, 92), Size = UDim2.new(1, 0, 0, 40),
+		TextScaled = true, TextWrapped = true, TextTransparency = 1, TextStrokeTransparency = 1,
+	})
+	HudKit.make("UITextSizeConstraint", sub, { MinTextSize = 14, MaxTextSize = 18 })
+	local hint = HudKit.label(veil, "", 14, HudKit.BodyFont, P.Muted, {
+		AnchorPoint = Vector2.new(0.5, 1), Position = UDim2.fromScale(0.5, 0.9), Size = UDim2.new(0.88, 0, 0, 28), TextWrapped = true,
+	})
 
 	if not force then ready(player) end
 	local story = force == true or Controller.isNewcomer(player:GetAttribute("AsuraAltars"))
@@ -74,6 +97,7 @@ function Controller.Play(ui: any, input: any, camera: any?, force: boolean?)
 		local info = TweenInfo.new(duration, Enum.EasingStyle.Sine)
 		TweenService:Create(line, info, { TextTransparency = target, TextStrokeTransparency = if target < 1 then 0.6 else 1 }):Play()
 		TweenService:Create(sub, info, { TextTransparency = target, TextStrokeTransparency = if target < 1 then 0.7 else 1 }):Play()
+		TweenService:Create(rule, info, { BackgroundTransparency = if target < 1 then 0.38 else 1 }):Play()
 	end
 	local function hold(seconds: number)
 		local finish = os.clock() + seconds

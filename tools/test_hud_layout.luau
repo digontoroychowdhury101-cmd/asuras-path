@@ -40,6 +40,8 @@ for _, v in viewports do
 		check(tag .. " pill clear of " .. other, not Layout.overlaps(pill, Layout.rect(other, w, h)))
 	end
 	check(tag .. " vitals clear of action bar", not Layout.overlaps(Layout.rect("Vitals", w, h), Layout.rect("ActionBar", w, h)))
+	local vitals, actions = Layout.rect("Vitals", w, h), Layout.rect("ActionBar", w, h)
+	check(tag .. " vitals centred just above actions", math.abs(vitals.X + vitals.W / 2 - w / 2) < 1e-6 and math.abs(actions.Y - vitals.Y - vitals.H - 10) < 1e-6)
 	check(tag .. " boss strip clear of objective", not Layout.overlaps(Layout.rect("Boss", w, h), Layout.rect("Objective", w, h)) or w < 1300)
 	-- The report's case: the old dock (bottom-centre, 16 px up, 0.75 scale) sat on the action bar.
 	local f = Layout.factor(h)
@@ -56,19 +58,24 @@ for _, v in { { 1221, 503 }, { 1096, 604 }, table.unpack(viewports) } do
 	-- F08 (Studio 1221x503): "At your lowered ceiling · gourd kept · rest restores…" ran under the card.
 	local toast = Layout.toastRect(w, h)
 	check(w .. "x" .. h .. " toast clear of the training card", not Layout.overlaps(toast, training))
+	check(w .. "x" .. h .. " toast clear of the vitals", not Layout.overlaps(toast, Layout.rect("Vitals", w, h)))
 	check(w .. "x" .. h .. " toast keeps a readable width", toast.W >= 220)
 end
-check("toast built from its reserved band and wraps", has(C .. "InterfaceController.luau", "UDim2.new(1, -2 * HudLayout.Toast.Side, 0, HudLayout.Toast.Height)")
+local narrowToast = Layout.toastRect(740, 320)
+check("short safe viewports keep a readable toast band", narrowToast.W >= 240 and narrowToast.X > 0)
+check("toast built from its reserved band and wraps", has(C .. "InterfaceController.luau", "HudLayout.toastRect(gui.AbsoluteSize.X, gui.AbsoluteSize.Y)")
 	and has(C .. "InterfaceController.luau", "TextWrapped = true,"))
 check("training card placed from its reserved region", has(C .. "TutorialController.luau", "Layout.Regions.Training") and not has(C .. "TutorialController.luau", "UDim2.new(0, 24, 0.46, 0)"))
 -- Mirrored constants must match the components they describe.
 local kit = src(C .. "HudKit.luau")
 check("factor mirrors HudKit", string.find(kit, "REFERENCE_HEIGHT = 900", 1, true) and string.find(kit, "MIN_FACTOR = 0.7", 1, true) and string.find(kit, "MAX_FACTOR = 1.35", 1, true))
 check("action bar bottom from layout", has(C .. "ActionBar.luau", "HudLayout") and has(C .. "ActionBar.luau", "ActionBarBottom"))
-check("vitals plate geometry", has(C .. "InterfaceController.luau", "Position = UDim2.new(0, 16, 1, -12)") and has(C .. "InterfaceController.luau", "Vitals = 0.78"))
+check("vitals plate uses centred stack geometry", has(C .. "InterfaceController.luau", "-HudLayout.vitalsBottom(gui.AbsoluteSize.Y)")
+	and has(C .. "InterfaceController.luau", "local size = HudLayout.Regions.Vitals.Size"))
 check("minimap geometry", has(C .. "SakuraMinimap.luau", "Position = UDim2.fromOffset(20, 66)") and has(C .. "SakuraMinimap.luau", "bindScale(root, 0.82)"))
-check("objective geometry", has(C .. "ObjectiveController.luau", "Position = UDim2.new(1, -20, 0, 64), Size = UDim2.fromOffset(360, 92)"))
-check("spell cluster geometry", has(C .. "SpellHud.luau", "Position = UDim2.new(1, -24, 1, -24)") and has(C .. "SpellHud.luau", "bindScale(root, 0.85)"))
+check("objective geometry", has(C .. "ObjectiveController.luau", "Position = UDim2.new(1, -20, 0, 64), Size = UDim2.fromOffset(360, 98)"))
+check("spell cluster geometry", has(C .. "SpellHud.luau", "Position = UDim2.new(1, -24, 1, -24)")
+	and has(C .. "SpellHud.luau", "bindScale(root, Layout.SpellBase)") and has(C .. "SpellHud.luau", "Layout.SpellSize[1], Layout.SpellSize[2]"))
 check("codex button geometry", has(C .. "DialogueController.luau", "codex.Position=UDim2.new(0,14,0.55,0)"))
 check("card uses the reserved band", has(C .. "ControlsCard.luau", "Layout.modal") and not has(C .. "ControlsCard.luau", "UDim2.new(0.5, 0, 1, -16)"))
 check("vitals bound once (no competing scales)", not has(C .. "InterfaceController.luau", "frame.Destroying:Once(HudKit.bindScale(frame, 0.78))"))
@@ -128,7 +135,8 @@ check("reduced ceiling: lasting loss and rest", rally == "" and ceiling == "▼ 
 check("full health: no tags", select(1, Tags.texts(snap({ Active = 106 }))) == "" and select(2, Tags.texts(snap({ Active = 106 }))) == "")
 check("flask pips are shapes", Tags.flask(1, 3) == "FLASK ◆◇◇" and Tags.flask(0, 3) == "FLASK ◇◇◇" and Tags.flask(0, 0) == "FLASK —")
 local ic = src(C .. "InterfaceController.luau")
-check("currency labelled as essence, Qi stays spell energy", string.find(ic, "\"%d ESSENCE", 1, true) and string.find(ic, "+%d carried", 1, true) and string.find(ic, "QI %d / %d", 1, true))
+check("currency labelled as essence, Qi stays spell energy", string.find(ic, "\"%d ESSENCE", 1, true) and string.find(ic, "+%d carried", 1, true)
+	and string.find(ic, 'Name = "QiValue"', 1, true) and string.find(ic, 'self.QiText.Text = string.format("%d / %d", math.floor(snapshot.Qi), maxQi)', 1, true))
 check("boss reward no longer calls currency Qi", not string.find(ic, "Qi essence", 1, true))
 check("low flask pulses", string.find(ic, "elixirs <= 1", 1, true) ~= nil)
 
@@ -165,7 +173,8 @@ stop()
 check("teardown restores CoreGui", table.find(calls, "Health=true") and added == nil)
 
 -- 7. Grimdark motif and effect priority (#36 + aesthetic request).
-local Sakura = load(C .. "SakuraKit.luau", { script = stubScript, require = function() return { make = function() end } end })
+local navHudKit = load(C .. "HudKit.luau", { game = { GetService = function() return {} end }, Enum = roblox.Enum })
+local Sakura = load(C .. "SakuraKit.luau", { script = stubScript, require = function() return navHudKit end })
 for _, key in { "BloodPetal", "EmberPetal" } do
 	local c = Sakura.Colors[key]
 	check(key .. " is blood red, not pink", c.R > 0.4 and c.G < c.R * 0.25 and c.B < c.R * 0.3)

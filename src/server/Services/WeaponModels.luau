@@ -1,9 +1,23 @@
 --!strict
 local Shared=game:GetService("ReplicatedStorage"):WaitForChild("AsurasPath")
+local ServerStorage = game:GetService("ServerStorage")
 local Weapons=require(Shared.Simulation.WeaponSchema)
 local Models={}
 local STEEL=Color3.fromRGB(164,176,178)
 local JADE=Color3.fromRGB(81,221,205)
+local STOCK: { [string]: { Size: Vector3, Color: Color3, Material: Enum.Material } } = {
+ Jian = { Size = Vector3.new(0.12, 0.28, 4.2), Color = Color3.fromRGB(196, 202, 210), Material = Enum.Material.Metal },
+ Dao = { Size = Vector3.new(0.16, 0.5, 3.6), Color = Color3.fromRGB(170, 160, 150), Material = Enum.Material.Metal },
+ Guandao = { Size = Vector3.new(0.22, 0.22, 8.5), Color = Color3.fromRGB(92, 70, 52), Material = Enum.Material.Wood },
+}
+function Models.stockPart(id: string): Part?
+ local visual = STOCK[id]
+ if not visual then return nil end
+ local part = Instance.new("Part")
+ part.Name, part.Size, part.Color, part.Material = "AsuraWeapon", visual.Size, visual.Color, visual.Material
+ part.CanCollide, part.CanQuery, part.CanTouch, part.Massless = false, false, false, true
+ return part
+end
 local function piece(parent: Instance,hand: BasePart,name: string,size: Vector3,offset: CFrame,color: Color3,shape: Enum.PartType?): Part
  local p=Instance.new("Part");p.Name=name;p.Size=size;p.CFrame=hand.CFrame*offset;p.Color=color;p.Material=Enum.Material.Metal
  p.Massless=true;p.CanCollide=false;p.CanTouch=false;p.CanQuery=false
@@ -45,10 +59,38 @@ function Models.attach(model: Model,id: string): boolean
  end
  return true
 end
+local function dressJian(blade: BasePart): boolean
+ local assets = ServerStorage:FindFirstChild("AsuraAssets")
+ local source = assets and assets:FindFirstChild("AsuraWeapon_Jian")
+ if not (source and source:IsA("Model")) then return false end
+
+ local parts: {MeshPart} = {}
+ for _, original in source:GetChildren() do
+  if not original:IsA("MeshPart") then continue end
+  if original.MeshId == "" then return false end
+  table.insert(parts, original)
+ end
+ if #parts == 0 then return false end
+
+ local reference = source:GetPivot()
+ for _, original in parts do
+  local fitting = original:Clone()
+  fitting.CFrame = blade.CFrame * reference:ToObjectSpace(original.CFrame)
+  fitting.Anchored, fitting.Massless = false, true
+  fitting.CanCollide, fitting.CanTouch, fitting.CanQuery = false, false, false
+  local weld = Instance.new("WeldConstraint")
+  weld.Part0, weld.Part1, weld.Parent = blade, fitting, fitting
+  fitting.Parent = blade
+ end
+ blade.Transparency, blade.CastShadow = 1, false
+ return true
+end
+
 -- Batch 14: the stock jian, dao and guandao were single blocks. Their fittings (guard, wrapped
 -- grip, pommel and tassel; the guandao's moon blade and dragon mouth) are welded to that blade part,
 -- so its length (the trail anchor and reach read) is unchanged and they leave with it.
-function Models.dress(blade: BasePart, id: string)
+function Models.dress(blade: BasePart, id: string, inspectFinish: boolean?)
+ if id == "Jian" and dressJian(blade) then return end
  local z,y=blade.Size.Z*0.5,blade.Size.Y*0.5
  local GOLD,WRAP,TASSEL=Color3.fromRGB(176,140,64),Color3.fromRGB(40,30,26),Color3.fromRGB(150,30,34)
  local function fit(name: string,size: Vector3,offset: CFrame,color: Color3,shape: Enum.PartType?): Part
@@ -58,11 +100,43 @@ function Models.dress(blade: BasePart, id: string)
   return p
  end
  if id=="Jian" or id=="Dao" then
+  local width=blade.Size.Y
+  local tip=-z
+  local shoulder=z-0.78
+  local taper=if id=="Dao" then 0.56 else 0.48
+  local shoulderShift=if id=="Dao" then -width*0.09 else 0
+  local steel=blade.Color
+  if inspectFinish then
+   blade.Transparency=1
+   fit("ForgedBlade",Vector3.new(blade.Size.X*0.76,width*0.82,shoulder-tip-taper),
+    CFrame.new(0,shoulderShift,(tip+taper+shoulder)/2),steel)
+   for _, sign in {-1,1} do
+    local height=width*0.41
+    fit("PointFacet",Vector3.new(blade.Size.X*0.76,height,taper),
+     CFrame.new(0,shoulderShift+sign*height/2,tip+taper/2)*CFrame.Angles(0,0,if sign==1 then 0 else math.pi),
+     steel,Enum.PartType.Wedge)
+    fit("HonedEdge",Vector3.new(blade.Size.X*0.54,width*0.13,shoulder-tip-taper-0.015),
+     CFrame.new(0,shoulderShift+sign*width*0.38,(tip+taper+shoulder)/2),steel:Lerp(Color3.new(1,1,1),0.24))
+   end
+  end
   fit("Guard",Vector3.new(if id=="Dao" then 0.6 else 0.9,0.16,0.2),CFrame.new(0,0,z-0.8),GOLD,if id=="Dao" then Enum.PartType.Ball else nil)
   local grip=fit("GripWrap",Vector3.new(0.2,0.22,0.8),CFrame.new(0,0,z-0.35),WRAP);grip.Material=Enum.Material.Fabric
+  if inspectFinish then
+   for n=1,4 do
+    local binding=fit("Binding",Vector3.new(0.21,0.23,0.06),CFrame.new(0,0,z-0.72+n*0.14),Color3.fromRGB(80,58,39))
+    binding.Material=Enum.Material.Fabric
+   end
+  end
   fit("Pommel",Vector3.new(0.26,0.26,0.26),CFrame.new(0,0,z+0.08),GOLD,Enum.PartType.Ball)
   local cord=fit("Tassel",Vector3.new(0.1,0.7,0.1),CFrame.new(0,-0.35,z+0.12),TASSEL);cord.Material=Enum.Material.Fabric
-  if id=="Dao" then fit("BackSpine",Vector3.new(blade.Size.X+0.06,0.1,blade.Size.Z-1.2),CFrame.new(0,y,-0.4),Color3.fromRGB(120,112,104)) end
+  if id=="Dao" then
+   if inspectFinish then
+    fit("BackSpine",Vector3.new(blade.Size.X*0.58,0.045,shoulder-tip-taper-0.02),
+     CFrame.new(0,y*0.61,(tip+taper+shoulder)/2),Color3.fromRGB(120,112,104))
+   else
+    fit("BackSpine",Vector3.new(blade.Size.X+0.06,0.1,blade.Size.Z-1.2),CFrame.new(0,y,-0.4),Color3.fromRGB(120,112,104))
+   end
+  end
  elseif id=="Guandao" then
   fit("MoonBlade",Vector3.new(0.18,1.1,2.2),CFrame.new(0,0.4,-z-0.8),Color3.fromRGB(176,182,188)).Shape=Enum.PartType.Wedge
   fit("DragonMouth",Vector3.new(0.4,0.42,0.6),CFrame.new(0,0,-z+0.2),GOLD)
@@ -70,4 +144,31 @@ function Models.dress(blade: BasePart, id: string)
   fit("Counterweight",Vector3.new(0.32,0.32,0.5),CFrame.new(0,0,z),Color3.fromRGB(90,88,86))
  end
 end
+
+function Models.inspect(id: string): Model?
+ if id == "Unarmed" or not Weapons.Weapons[id] or Weapons.isBossOnly(id) then return nil end
+ local model = Instance.new("Model")
+ model.Name = id
+ local stock = Models.stockPart(id)
+ if stock then
+  stock.CFrame = CFrame.identity
+  stock.Parent = model
+  Models.dress(stock, id, true)
+ else
+  for index, name in { "RightHand", "LeftHand" } do
+   local grip = Instance.new("Part")
+   grip.Name, grip.CFrame = name, CFrame.new(if index == 1 then 0 else -1.1, 0, if index == 1 then 0 else 0.55)
+   grip.Parent = model
+  end
+  Models.attach(model, id)
+  model.RightHand:Destroy()
+  model.LeftHand:Destroy()
+ end
+ for _, child in model:GetDescendants() do
+  if child:IsA("WeldConstraint") then child:Destroy() end
+  if child:IsA("BasePart") then child.Anchored = true end
+ end
+ return model
+end
+
 return table.freeze(Models)

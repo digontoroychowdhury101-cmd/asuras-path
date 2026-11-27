@@ -457,8 +457,9 @@ check("every fog gate belongs to a live boss, so nothing can start an archived f
 end)())
 check("arena and arena-lighting builders skip archived bosses", string.find(src("src/server/Services/BossArenas.luau"), "if boss.Inactive then continue end", 1, true) ~= nil
 	and string.find(src("src/server/Services/ArenaLighting.luau"), "if boss.Inactive then continue end", 1, true) ~= nil)
-check("Shen keeps the gate flow: one gate, inside the domain", count(World.FogGates) == 1 and World.Bosses.GrandmasterShen.Inactive == nil and World.regionAt(World.FogGates.Gate_AshColosseum.Inside.X, World.FogGates.Gate_AshColosseum.Inside.Y, World.FogGates.Gate_AshColosseum.Inside.Z) == "AshColosseum"
-	and World.regionAt(World.FogGates.Gate_AshColosseum.Outside.X, World.FogGates.Gate_AshColosseum.Outside.Y, World.FogGates.Gate_AshColosseum.Outside.Z) ~= "AshColosseum")
+local lakeGate = World.FogGates.Gate_BellwoodLake -- win-106: Shen's trial is on the Bellwood lake
+check("Shen keeps the gate flow: one gate, on the Bellwood lake", count(World.FogGates) == 1 and World.Bosses.GrandmasterShen.Inactive == nil and lakeGate ~= nil
+	and World.regionAt(lakeGate.Inside.X, lakeGate.Inside.Y, lakeGate.Inside.Z) == "Forest")
 -- (c) Warden: home and leash re-expressed. The old zone leash is gone; the generic home leash (AIService) is what holds it now.
 local wardenSpawn = assert(World.spawnById("DM_Warden_Graves"), "warden spawn")
 local warden = World.Mobs[wardenSpawn.Mob]

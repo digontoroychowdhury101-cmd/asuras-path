@@ -1,6 +1,12 @@
 # Third-party notices
 
-Asura's Path uses no third-party code files, data or assets from the projects below. Its Luau modules are independent implementations that adapt published techniques, and they name their sources in a comment. These notices are kept because some of that work follows upstream expressions closely (the critically damped offset decay in particular). Source-symbol to local-code to test mapping: `outputs/combat-recovery-2026-11-02/INTEGRATION_MAP.md`.
+The inspection interface vendors the three MIT-licensed utilities below. The combat motion code independently adapts published techniques. Its source-symbol and test mapping is in `outputs/combat-recovery-2026-11-02/INTEGRATION_MAP.md`.
+
+| Inspection utility | Pinned revision | Use |
+|---|---|---|
+| [Fraktality/spr](https://github.com/Fraktality/spr) | `665be1721c2a85e5cdfd9d44888d85dfc920626a` | Shot selection indicator. License in `src/client/Vendor/Spr.LICENSE.txt`. |
+| [EgoMoose/ViewportModel](https://gist.github.com/EgoMoose/2fd62ee98754380f6d839267ffe4f588) | `8d6eb8b86b399174033b1f722c1ab927c096d52b` | Perspective fitting for item and component shots. License is in the source header. |
+| [Sleitnick/RbxUtil Trove](https://github.com/Sleitnick/RbxUtil/tree/main/modules/trove) | `5437776752daaeb2f6e43b23c03be2ee5af71a56` | Inspection scene and transition lifetimes. License in `src/client/Vendor/Trove.LICENSE.txt`. |
 
 | Project | Pinned commit | License | Used for | Local code |
 |---|---|---|---|---|

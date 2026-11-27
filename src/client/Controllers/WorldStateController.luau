@@ -387,7 +387,7 @@ function Controller.IsAlive(_self: WorldState, entity: Entity): boolean
 end
 
 function Controller.IsHostile(self: WorldState, entity: Entity): boolean
-	if entity.Id == self.LocalId then
+	if entity.Id == self.LocalId or entity.Model:GetAttribute("AsuraBossAwaiting") == true then
 		return false
 	end
 	local own = self:Own()

@@ -60,6 +60,7 @@ python3 tools/test_cloth_sim.py
 
 echo "[9/14] Testing Objectives System..."
 python3 tools/test_objectives.py
+python3 tools/test_objectives.py test_objectives_overworld
 
 echo "[10/14] Testing Progression, Lore, Review & Campaign Region Regressions..."
 "$LUAU" tools/test_progression_and_lore.luau
@@ -71,6 +72,7 @@ python3 tools/test_campaign_build.py
 python3 tools/lune_compat.py --all # includes test_vesperhold_massing / _loader / _atmosphere, test_slice_dressing, test_weather_composition
 python3 tools/lune_compat.py tools/test_landmark_layout.luau # no @lune/ import, so --all skips it
 python3 tools/lune_compat.py tools/test_bellwood_fit.luau # colossal temple world fit, same reason
+python3 tools/lune_compat.py tools/test_shen_lake.luau # Shen's lake trial (win-106), same reason
 
 echo "[11/14] Testing Backend Persistence & Commercial Systems (local mocks)..."
 "$LUAU" tools/test_backend.luau

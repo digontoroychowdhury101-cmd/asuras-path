@@ -8,18 +8,19 @@ local SoundService = game:GetService("SoundService")
 
 local HudKit = {}
 
-HudKit.Palette = table.freeze({ -- sakura theme; SakuraKit.Colors holds the full set
-	Ink = Color3.fromRGB(22, 10, 20),
-	Ivory = Color3.fromRGB(255, 240, 246),
-	Muted = Color3.fromRGB(190, 156, 176),
-	Blood = Color3.fromRGB(196, 22, 38),
-	Ember = Color3.fromRGB(247, 168, 200),
-	Gold = Color3.fromRGB(236, 196, 120),
-	Edge = Color3.fromRGB(150, 60, 110),
+HudKit.Palette = table.freeze({
+	Ink = Color3.fromRGB(18, 18, 17),
+	Ivory = Color3.fromRGB(245, 237, 222),
+	Muted = Color3.fromRGB(190, 177, 155),
+	Blood = Color3.fromRGB(181, 69, 57),
+	Ember = Color3.fromRGB(232, 163, 119),
+	Gold = Color3.fromRGB(225, 195, 145),
+	Edge = Color3.fromRGB(158, 135, 101),
+	Jade = Color3.fromRGB(121, 176, 152),
 })
 
 HudKit.TitleFont = Enum.Font.Antique
-HudKit.BodyFont = Enum.Font.Garamond
+HudKit.BodyFont = Enum.Font.Gotham
 
 -- Reference viewport height the HUD was authored against, and the factor clamp. The floor keeps
 -- text legible on landscape phones (~360 px tall); the ceiling stops panels ballooning on TVs.
@@ -55,20 +56,42 @@ function HudKit.label(parent: Instance, text: string, size: number, font: Enum.F
 	return result
 end
 
--- Ink panel with the house red edge, matching the altar menu and loadout styling.
 function HudKit.panel(parent: Instance, name: string, properties: { [string]: any }): Frame
 	local frame = HudKit.make("Frame", parent, {
 		Name = name,
 		BackgroundColor3 = HudKit.Palette.Ink,
-		BackgroundTransparency = 0.25,
+		BackgroundTransparency = 0.08,
 		BorderSizePixel = 0,
 	}) :: Frame
 	for key, value in properties do
 		(frame :: any)[key] = value
 	end
-	HudKit.make("UICorner", frame, { CornerRadius = UDim.new(0, 6) })
-	HudKit.make("UIStroke", frame, { Color = HudKit.Palette.Edge, Thickness = 1, Transparency = 0.2 })
+	HudKit.make("UIStroke", frame, { Color = HudKit.Palette.Edge, Thickness = 1, Transparency = 0.55 })
 	return frame
+end
+
+-- Fine score marks and a short inner return suggest a beveled frame without boxing its contents.
+function HudKit.inlay(parent: GuiObject, length: number)
+	for _, x in { 0, 1 } do
+		for _, y in { 0, 1 } do
+			local corner = HudKit.make("Frame", parent, {
+				Name = "Inlay", AnchorPoint = Vector2.new(x, y),
+				Position = UDim2.new(x, if x == 0 then 7 else -7, y, if y == 0 then 7 else -7),
+				Size = UDim2.fromOffset(length, length), BackgroundTransparency = 1, ZIndex = parent.ZIndex + 2,
+			})
+			for _, line in {
+				{ Size = UDim2.new(1, 0, 0, 1), Inset = 0, Color = HudKit.Palette.Edge },
+				{ Size = UDim2.new(0, 1, 1, 0), Inset = 0, Color = HudKit.Palette.Edge },
+				{ Size = UDim2.fromOffset(math.floor(length * 0.45), 1), Inset = 4, Color = HudKit.Palette.Gold },
+				{ Size = UDim2.fromOffset(1, math.floor(length * 0.45)), Inset = 4, Color = HudKit.Palette.Gold },
+			} do
+				HudKit.make("Frame", corner, {
+					AnchorPoint = Vector2.new(x, y), Position = UDim2.new(x, (1 - 2 * x) * line.Inset, y, (1 - 2 * y) * line.Inset),
+					Size = line.Size, BorderSizePixel = 0, BackgroundColor3 = line.Color, ZIndex = corner.ZIndex,
+				})
+			end
+		end
+	end
 end
 
 function HudKit.factor(): number

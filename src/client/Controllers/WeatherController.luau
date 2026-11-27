@@ -70,7 +70,7 @@ function Controller.Reset(self: any)
 	if self.Clouds then self.Clouds:Destroy(); self.Clouds = nil end
 	if self.Ambience then self.Ambience:Destroy(); self.Ambience = nil end
 	if self.Atmos then self.Atmos:Destroy(); self.Atmos = nil end
-	self.Ridge = 0
+	self.Ridge, self.Basin, self.Cavern = 0, 0, 0
 	for kind in table.clone(self.Emitters) do drop(self, kind) end
 	if self.Fx then self.Fx:Destroy() end
 	self.Fx, self.Active, self.Composed, self.Info, self.Wind = nil, false, nil, nil, nil

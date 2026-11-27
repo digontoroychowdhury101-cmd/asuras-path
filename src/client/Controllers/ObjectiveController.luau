@@ -17,6 +17,7 @@ local RouteGates = require(ReplicatedStorage.AsurasPath.Shared.RouteGates)
 local Progress = require(ReplicatedStorage.AsurasPath.Shared.ProgressionRules)
 local TutorialRules = require(ReplicatedStorage.AsurasPath.Shared.TutorialRules)
 local Narrative = require(ReplicatedStorage.AsurasPath.Shared.NarrativeCatalog)
+local LakeRules = require(ReplicatedStorage.AsurasPath.Shared.ShenLakeRules)
 
 local P = HudKit.Palette
 local REFRESH = 0.2
@@ -43,13 +44,20 @@ export type ObjectiveController = typeof(setmetatable({} :: {
 
 function Controller.new(state: WorldState.WorldState, ui: any): ObjectiveController
 	local player = Players.LocalPlayer
-	local panel = HudKit.panel(ui.Gui, "ObjectiveTracker", { AnchorPoint = Vector2.new(1, 0), Position = UDim2.new(1, -20, 0, 64), Size = UDim2.fromOffset(360, 92), Visible = false })
+	local panel = HudKit.panel(ui.Gui, "ObjectiveTracker", {
+		AnchorPoint = Vector2.new(1, 0), Position = UDim2.new(1, -20, 0, 64), Size = UDim2.fromOffset(360, 98),
+		BackgroundTransparency = 0.15, Visible = false,
+	})
 	HudKit.make("UIPadding", panel, { PaddingLeft = UDim.new(0, 14), PaddingRight = UDim.new(0, 14), PaddingTop = UDim.new(0, 8) })
-	local header = HudKit.label(panel, "OBJECTIVE", 14, HudKit.TitleFont, P.Ember, { Size = UDim2.new(1, -60, 0, 18), TextXAlignment = Enum.TextXAlignment.Left })
-	local distance = HudKit.label(panel, "", 14, Enum.Font.GothamMedium, P.Muted, { AnchorPoint = Vector2.new(1, 0), Position = UDim2.fromScale(1, 0), Size = UDim2.fromOffset(60, 18), TextXAlignment = Enum.TextXAlignment.Right })
-	local title = HudKit.label(panel, "", 22, HudKit.TitleFont, P.Ivory, { Position = UDim2.fromOffset(0, 20), Size = UDim2.new(1, 0, 0, 26), TextXAlignment = Enum.TextXAlignment.Left, TextScaled = true })
-	HudKit.make("UITextSizeConstraint", title, { MaxTextSize = 22, MinTextSize = 12 })
-	local detail = HudKit.label(panel, "", 16, HudKit.BodyFont, P.Muted, { Position = UDim2.fromOffset(0, 48), Size = UDim2.new(1, 0, 0, 34), TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top, TextWrapped = true })
+	local header = HudKit.label(panel, "Objective", 14, HudKit.BodyFont, P.Gold, { Size = UDim2.new(1, -68, 0, 18), TextXAlignment = Enum.TextXAlignment.Left })
+	local distance = HudKit.label(panel, "", 14, HudKit.BodyFont, P.Ivory, { AnchorPoint = Vector2.new(1, 0), Position = UDim2.fromScale(1, 0), Size = UDim2.fromOffset(68, 18), TextXAlignment = Enum.TextXAlignment.Right })
+	local title = HudKit.label(panel, "", 22, HudKit.TitleFont, P.Ivory, { Position = UDim2.fromOffset(0, 21), Size = UDim2.new(1, 0, 0, 26), TextXAlignment = Enum.TextXAlignment.Left, TextScaled = true })
+	HudKit.make("UITextSizeConstraint", title, { MaxTextSize = 22, MinTextSize = 14 })
+	local detail = HudKit.label(panel, "", 16, HudKit.BodyFont, P.Muted, {
+		Position = UDim2.fromOffset(0, 47), Size = UDim2.new(1, 0, 0, 42), TextXAlignment = Enum.TextXAlignment.Left,
+		TextYAlignment = Enum.TextYAlignment.Top, TextWrapped = true, TextScaled = true, TextTruncate = Enum.TextTruncate.AtEnd,
+	})
+	HudKit.make("UITextSizeConstraint", detail, { MaxTextSize = 16, MinTextSize = 14 })
 
 	local self = setmetatable({
 		Player = player, Ui = ui, Panel = panel, Header = header, Title = title, Detail = detail, Distance = distance,
@@ -85,6 +93,7 @@ function Controller.Facts(self: ObjectiveController): Objectives.Facts
 	local region = player:GetAttribute("AsuraRegion")
 	local stain = player:GetAttribute("AsuraBloodstain")
 	local bosses = Objectives.parseAltars(player:GetAttribute("AsuraBosses"))
+	local lakeState = workspace:GetAttribute(LakeRules.StateAttribute)
 	local opening = player:GetAttribute("AsuraOpening")
 	local training = player:GetAttribute("AsuraTutorial")
 	local tier = tonumber(player:GetAttribute("AsuraReinforce")) or 0
@@ -106,6 +115,7 @@ function Controller.Facts(self: ObjectiveController): Objectives.Facts
 		InBoss = self.Ui.BossEntity ~= nil,
 		InColosseum = type(player:GetAttribute("AsuraColosseum")) == "string",
 		BossFelled = self.BossFelled or bosses.GrandmasterShen == true,
+		ShenLakeActive = type(lakeState) == "string" and lakeState ~= "Dormant",
 		Rested = self.Rested,
 		Story = Objectives.parseAltars(player:GetAttribute("AsuraStory")),
 	}
@@ -121,13 +131,13 @@ function Controller.Show(self: ObjectiveController, objective: Objectives.Object
 	self.Title.Text = objective.Title
 	self.Detail.Text = objective.Detail
 	if previous and previous.Key ~= objective.Key then
-		self.Header.Text = "NEW OBJECTIVE"
+		self.Header.Text = "New objective"
 		self.Panel.BackgroundTransparency = 0
-		TweenService:Create(self.Panel, TweenInfo.new(1.2, Enum.EasingStyle.Sine), { BackgroundTransparency = 0.25 }):Play()
+		TweenService:Create(self.Panel, TweenInfo.new(1.2, Enum.EasingStyle.Sine), { BackgroundTransparency = 0.15 }):Play()
 		HudKit.cue(HudKit.Sounds.Objective, 0.5, 1.2)
 		task.delay(3, function()
-			if self.Current == objective then
-				self.Header.Text = "OBJECTIVE"
+			if self.Panel.Parent and self.Current == objective then
+				self.Header.Text = "Objective"
 			end
 		end)
 	end

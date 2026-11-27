@@ -170,12 +170,6 @@ local INTENT_KEYS: { [string]: string } = {
 	held = "boolean",
 }
 
-local WEAPON_VISUALS: { [string]: { Size: Vector3, Color: Color3, Material: Enum.Material } } = {
-	Jian = { Size = Vector3.new(0.12, 0.28, 4.2), Color = Color3.fromRGB(196, 202, 210), Material = Enum.Material.Metal },
-	Dao = { Size = Vector3.new(0.16, 0.5, 3.6), Color = Color3.fromRGB(170, 160, 150), Material = Enum.Material.Metal },
-	Guandao = { Size = Vector3.new(0.22, 0.22, 8.5), Color = Color3.fromRGB(92, 70, 52), Material = Enum.Material.Wood },
-}
-
 local entities: { [number]: Entity } = {}
 local byModel: { [Model]: Entity } = {}
 local playerConnections: { [number]: { RBXScriptConnection } } = {}
@@ -332,26 +326,14 @@ local function attachWeapon(e: Entity)
 	if WeaponModels.attach(e.Model,e.Fighter.Weapon) then
 		e.Model:SetAttribute("AsuraWeapon",e.Fighter.Weapon);hideSkinnedWeapon(e);return
 	end
-	local visual = WEAPON_VISUALS[e.Fighter.Weapon]
 	e.Model:SetAttribute("AsuraWeapon", e.Fighter.Weapon)
-	if visual == nil then
-		return
-	end
 	local hand = e.Model:FindFirstChild("RightHand") or e.Model:FindFirstChild("Right Arm")
 	if not hand or not hand:IsA("BasePart") then
 		return
 	end
-	local part = Instance.new("Part")
-	part.Name = "AsuraWeapon"
-	part.Size = visual.Size
-	part.Color = visual.Color
-	part.Material = visual.Material
-	part.CanCollide = false
-	part.CanQuery = false
-	part.CanTouch = false
-	part.Massless = true
-	part.Anchored = false
-	part.CFrame = hand.CFrame * CFrame.new(0, -hand.Size.Y * 0.5, -visual.Size.Z * 0.5 + 0.4)
+	local part = WeaponModels.stockPart(e.Fighter.Weapon)
+	if not part then return end
+	part.CFrame = hand.CFrame * CFrame.new(0, -hand.Size.Y * 0.5, -part.Size.Z * 0.5 + 0.4)
 	local weld = Instance.new("WeldConstraint")
 	weld.Part0 = hand
 	weld.Part1 = part

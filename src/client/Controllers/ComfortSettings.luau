@@ -29,10 +29,10 @@ function Comfort.caption(scale: number): string
 end
 
 local function row(parent: Instance, order: number, text: string, press: () -> ()): TextButton
-	local frame = HudKit.make("Frame", parent, { Name = text, LayoutOrder = order, Size = UDim2.new(1, 0, 0, 44), BackgroundTransparency = 1 })
-	HudKit.label(frame, text, 18, T.BodyFont, T.Ivory, { Size = UDim2.new(1, -130, 1, 0), TextXAlignment = Enum.TextXAlignment.Left })
+	local frame = HudKit.make("Frame", parent, { Name = text, LayoutOrder = order, Size = UDim2.new(1, 0, 0, 48), BackgroundTransparency = 1 })
+	HudKit.label(frame, text, 16, T.BodyFont, T.Ivory, { Size = UDim2.new(1, -94, 1, 0), TextWrapped = true, TextXAlignment = Enum.TextXAlignment.Left })
 	local button = UiKit.button(frame, "", "Secondary", press)
-	button.AnchorPoint, button.Position, button.Size = Vector2.new(1, 0.5), UDim2.new(1, 0, 0.5, 0), UDim2.fromOffset(120, 40)
+	button.AnchorPoint, button.Position, button.Size = Vector2.new(1, 0.5), UDim2.new(1, 0, 0.5, 0), UDim2.fromOffset(84, 44)
 	return button
 end
 

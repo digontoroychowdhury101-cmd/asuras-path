@@ -1,9 +1,5 @@
 --!strict
--- ModuleScript: StarterPlayer/StarterPlayerScripts/AsurasPath/Controllers/SpellHud
--- Bottom-right sakura skill cluster: two blossom-framed spell buttons (slot I = 1 / D-Pad Up,
--- slot II = E / D-Pad Down) and a smaller Arsenal button, each with a key badge. A ring of petal
--- ticks drains with the cooldown; the disc dims while the spell is unaffordable. Each button shows
--- a drawn picture of its spell school (MoveIcons). On touch the cluster lifts above the combat buttons.
+-- Spell slots and Arsenal share a row above the combat buttons on touch.
 local Shared = game:GetService("ReplicatedStorage"):WaitForChild("AsurasPath")
 local Spells = require(Shared:WaitForChild("Simulation"):WaitForChild("SpellSchema") :: ModuleScript)
 local HudKit = require(script.Parent:WaitForChild("HudKit") :: ModuleScript)
@@ -12,13 +8,11 @@ local Sakura = require(script.Parent:WaitForChild("SakuraKit") :: ModuleScript)
 local Icons = require(script.Parent:WaitForChild("MoveIcons") :: ModuleScript)
 
 local Hud = {}
-local C = Sakura.Colors
+local C = require(script.Parent.CombatHudStyle)
 
--- Customization ------------------------------------------------------------------------------
-local CLUSTER = Vector2.new(260, 190)
--- Badge captions are filled each frame from InputMap via Hud.update (hidden on touch).
-local SLOTS = { { Pos = Vector2.new(64, 118), Size = 78 }, { Pos = Vector2.new(160, 64), Size = 78 } }
-local MENU = { Pos = Vector2.new(214, 150), Size = 52 }
+local ROW_Y = 46
+local SLOT_X, SLOT_SIZE = { 53, 153 }, 76
+local MENU_X, MENU_SIZE = 253, 58
 local TICKS = 24
 
 export type Card = { Button: TextButton, Name: TextLabel, Timer: TextLabel, Shade: Frame, Segments: { Frame }, Icon: CanvasGroup, Kind: string, Size: number, Key: TextLabel }
@@ -27,11 +21,10 @@ export type View = { Root: Frame, Cards: { Card }, Menu: TextButton, MenuKey: Te
 local function badge(holder: Instance, size: number): TextLabel
 	local b = HudKit.make("Frame", holder, {
 		Name = "Key", AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.new(0.5, size * 0.36, 0.5, size * 0.36),
-		Size = UDim2.fromOffset(20, 20), BackgroundColor3 = C.Ink, BorderSizePixel = 0, ZIndex = 4,
+		Size = UDim2.fromOffset(20, 20), BackgroundColor3 = C.Raised, BorderSizePixel = 0, ZIndex = 4,
 	}) :: Frame
-	HudKit.make("UICorner", b, { CornerRadius = UDim.new(1, 0) })
-	HudKit.make("UIStroke", b, { Color = C.Sakura, Thickness = 1 })
-	return HudKit.label(b, "", 12, Enum.Font.GothamBold, C.Blossom, { Size = UDim2.fromScale(1, 1), ZIndex = 4 })
+	HudKit.make("UIStroke", b, { Color = C.Edge, Thickness = 1 })
+	return HudKit.label(b, "", 12, Enum.Font.GothamBold, C.Ivory, { Size = UDim2.fromScale(1, 1), ZIndex = 4 })
 end
 
 local function caption(key: TextLabel, text: string?)
@@ -41,44 +34,87 @@ local function caption(key: TextLabel, text: string?)
 	badgeFrame.Size = UDim2.fromOffset(math.max(20, #key.Text * 7 + 8), 20)
 end
 
+local function captionLine(root: Frame, x: number, text: string): TextLabel
+	local label = HudKit.label(root, text, 15, HudKit.TitleFont, C.Ivory, {
+		AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.fromOffset(x, 88), Size = UDim2.fromOffset(98, 24),
+		TextStrokeTransparency = 0.3, TextWrapped = true, TextScaled = true,
+	})
+	HudKit.make("UITextSizeConstraint", label, { MinTextSize = 11, MaxTextSize = 15 })
+	return label
+end
+
+local function arsenalSeal(root: Frame): TextButton
+	local holder = HudKit.make("Frame", root, {
+		Name = "ArsenalSeal", AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromOffset(MENU_X, ROW_Y),
+		Size = UDim2.fromOffset(MENU_SIZE, MENU_SIZE), BackgroundTransparency = 1,
+	}) :: Frame
+	local seal = HudKit.make("Frame", holder, {
+		AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 0.5), Size = UDim2.fromOffset(42, 42),
+		Rotation = 45, BackgroundColor3 = C.Raised, BorderSizePixel = 0,
+	}) :: Frame
+	local rim = HudKit.make("UIStroke", seal, { Color = C.Edge, Thickness = 2 }) :: UIStroke
+	local face = HudKit.make("Frame", seal, {
+		AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 0.5), Size = UDim2.fromOffset(34, 34),
+		BackgroundColor3 = C.Shade, BorderSizePixel = 0,
+	}) :: Frame
+	HudKit.make("UIStroke", face, { Color = C.Patina, Thickness = 1 })
+	local icon = Icons.draw(holder, "Arsenal", MENU_SIZE)
+	icon.Size = UDim2.fromOffset(32, 32)
+	local button = HudKit.make("TextButton", holder, {
+		Name = "Arsenal", Size = UDim2.fromScale(1, 1), Text = "", BackgroundTransparency = 1,
+		AutoButtonColor = false, Selectable = true, ZIndex = 4,
+	}) :: TextButton
+	local hovered, selected = false, false
+	local function focus()
+		rim.Color = if hovered or selected then C.Gold else C.Edge
+	end
+	button.MouseEnter:Connect(function() hovered = true; focus() end)
+	button.MouseLeave:Connect(function() hovered = false; focus() end)
+	button.SelectionGained:Connect(function() selected = true; focus() end)
+	button.SelectionLost:Connect(function() selected = false; focus() end)
+	return button
+end
+
 function Hud.new(gui: ScreenGui, cast: (number) -> (), menu: () -> ()): View
 	local root = HudKit.make("Frame", gui, {
 		Name = "QiSpellSlots", AnchorPoint = Vector2.new(1, 1), Position = UDim2.new(1, -24, 1, -24),
-		Size = UDim2.fromOffset(CLUSTER.X, CLUSTER.Y), BackgroundTransparency = 1,
+		Size = UDim2.fromOffset(Layout.SpellSize[1], Layout.SpellSize[2]), BackgroundTransparency = 1,
 	}) :: Frame
-	root.Destroying:Once(HudKit.bindScale(root, 0.85))
+	root.Destroying:Once(HudKit.bindScale(root, Layout.SpellBase))
 	local cards: { Card } = {}
-	for slot, layout in SLOTS do
-		local at = UDim2.fromOffset(layout.Pos.X, layout.Pos.Y)
-		local button = Sakura.roundButton(root, layout.Size, at, "")
+	for slot, x in SLOT_X do
+		local button = Sakura.roundButton(root, SLOT_SIZE, UDim2.fromOffset(x, ROW_Y), "")
+		button.Name = "SpellSlot" .. slot
 		local holder = button.Parent :: Frame
+		local inner = HudKit.make("Frame", holder, {
+			AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 0.5), Size = UDim2.fromOffset(62, 62), BackgroundTransparency = 1,
+		})
+		HudKit.make("UICorner", inner, { CornerRadius = UDim.new(1, 0) })
+		HudKit.make("UIStroke", inner, { Color = C.Gold, Thickness = 1, Transparency = 0.7 })
 		local shade = HudKit.make("Frame", holder, {
 			Name = "Shade", AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 0.5), Size = UDim2.fromScale(1, 1),
 			BackgroundColor3 = C.Ink, BackgroundTransparency = 1, BorderSizePixel = 0, ZIndex = 4,
 		}) :: Frame
 		HudKit.make("UICorner", shade, { CornerRadius = UDim.new(1, 0) })
-		local key = badge(holder, layout.Size)
+		local key = badge(holder, SLOT_SIZE)
 		local timer = HudKit.label(holder, "", 20, Enum.Font.GothamBold, C.Ivory, { Size = UDim2.fromScale(1, 1), ZIndex = 5, TextStrokeTransparency = 0.2 })
-		local name = HudKit.label(root, "", 12, Enum.Font.Garamond, C.Blossom, {
-			AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.fromOffset(layout.Pos.X, layout.Pos.Y + layout.Size * 0.62),
-			Size = UDim2.fromOffset(120, 16), TextStrokeTransparency = 0.4,
-		})
+		local name = captionLine(root, x, "")
 		local segments: { Frame } = {}
-		local radius = layout.Size * 0.5 + 15
+		local radius = SLOT_SIZE * 0.5 + 5
 		for n = 1, TICKS do
 			local angle = math.rad((n - 1) * 360 / TICKS - 90)
 			segments[n] = HudKit.make("Frame", root, {
-				Name = "Tick", AnchorPoint = Vector2.new(0.5, 0.5), Size = UDim2.fromOffset(3, 7), Rotation = math.deg(angle) + 90,
-				Position = UDim2.fromOffset(layout.Pos.X + math.cos(angle) * radius, layout.Pos.Y + math.sin(angle) * radius),
-				BackgroundColor3 = C.Sakura, BorderSizePixel = 0, Visible = false,
+				Name = "Tick", AnchorPoint = Vector2.new(0.5, 0.5), Size = UDim2.fromOffset(2, 5), Rotation = math.deg(angle) + 90,
+				Position = UDim2.fromOffset(x + math.cos(angle) * radius, ROW_Y + math.sin(angle) * radius),
+				BackgroundColor3 = C.Jade, BorderSizePixel = 0, Visible = false,
 			}) :: Frame
 		end
 		button.Activated:Connect(function() cast(slot) end)
-		table.insert(cards, { Button = button, Name = name, Timer = timer, Shade = shade, Segments = segments, Icon = Icons.draw(holder, "Empty", layout.Size), Kind = "Empty", Size = layout.Size, Key = key })
+		table.insert(cards, { Button = button, Name = name, Timer = timer, Shade = shade, Segments = segments, Icon = Icons.draw(holder, "Empty", SLOT_SIZE), Kind = "Empty", Size = SLOT_SIZE, Key = key })
 	end
-	local menuButton = Sakura.roundButton(root, MENU.Size, UDim2.fromOffset(MENU.Pos.X, MENU.Pos.Y), "")
-	Icons.draw(menuButton.Parent :: Frame, "Arsenal", MENU.Size)
-	local menuKey = badge(menuButton.Parent :: Frame, MENU.Size)
+	local menuButton = arsenalSeal(root)
+	local menuKey = badge(menuButton.Parent :: Frame, MENU_SIZE)
+	captionLine(root, MENU_X, "Arsenal")
 	menuButton.Activated:Connect(menu)
 	return { Root = root, Cards = cards, Menu = menuButton, MenuKey = menuKey }
 end
@@ -96,25 +132,14 @@ function Hud.update(view: View, slots: { string }, cooldowns: { [string]: number
 	local touchLayout = touch == true
 	if view.Root:GetAttribute("TouchLayout") ~= touchLayout then
 		view.Root:SetAttribute("TouchLayout", touchLayout)
-		for slot, card in view.Cards do
-			local at = if touchLayout then Vector2.new(if slot == 1 then 48 else 132, 42) else SLOTS[slot].Pos
-			local holder = card.Button.Parent :: Frame
-			holder.Position = UDim2.fromOffset(at.X, at.Y)
-			card.Name.Position = UDim2.fromOffset(at.X, at.Y + card.Size * 0.62)
-			for i, tick in card.Segments do
-				local angle, radius = math.rad((i - 1) * 360 / TICKS - 90), card.Size * 0.5 + 15
-				tick.Position = UDim2.fromOffset(at.X + math.cos(angle) * radius, at.Y + math.sin(angle) * radius)
-			end
-		end
 		local menuHolder = view.Menu.Parent :: Frame
-		menuHolder.Position = if touchLayout then UDim2.fromOffset(218, 42) else UDim2.fromOffset(MENU.Pos.X, MENU.Pos.Y)
 		local scale = menuHolder:FindFirstChildOfClass("UIScale") or Instance.new("UIScale", menuHolder)
-		scale.Scale = if touchLayout then 1.45 else 1
+		scale.Scale = if touchLayout then 1.4 else 1
 	end
 	local captions = keys or {}
-	caption(view.MenuKey, captions[3])
+	caption(view.MenuKey, if touch then nil else captions[3])
 	for slot, c in view.Cards do
-		caption(c.Key, captions[slot])
+		caption(c.Key, if touch then nil else captions[slot])
 		local id = slots[slot]
 		local s = if id then Spells.get(id) else nil
 		local remaining = if id then math.max(0, (cooldowns[id] or 0) - now) else 0

@@ -419,16 +419,18 @@ check("server Stop clears the epoch", wsData:GetAttribute("AsuraWorldEpoch") == 
 
 -- 8. Wiring (lane 3b): controllers take the one wind; arena lights follow the relocated floor; lobby values unchanged ----
 local World = require("../src/shared/WorldDefinitions") :: any
+local lake = require("../src/shared/Overworld").shenLake()
 local Plan = load("src/shared/ArenaLightPlan.luau")
-local lightsByKind, parts = { AsuraArenaLight = {}, AsuraArenaFill = {} }, {}
+local lightsByKind = { AsuraArenaLight = {}, AsuraArenaFill = {} }
+local firePits = 0
 local fakeTagged = { AddTag = function(_, light, tag) table.insert(lightsByKind[tag], light) end }
-local arenaModules = { WorldDefinitions = World, ArenaLightPlan = Plan, EnvironmentProfiles = Profiles,
-	PbrAssets = { place = function() end } }
+local arenaModules = { WorldDefinitions = World, Overworld = { shenLake = function() return lake end },
+	ArenaLightPlan = Plan, EnvironmentProfiles = Profiles, PbrAssets = { place = function() firePits += 1 end } }
 local arenaEnv = {
 	game = { GetService = function(_, name)
 		if name == "CollectionService" then return fakeTagged end
 		return { AsurasPath = { Shared = {
-			WorldDefinitions = "WorldDefinitions", ArenaLightPlan = "ArenaLightPlan", EnvironmentProfiles = "EnvironmentProfiles" } } }
+			WorldDefinitions = "WorldDefinitions", Overworld = "Overworld", ArenaLightPlan = "ArenaLightPlan", EnvironmentProfiles = "EnvironmentProfiles" } } }
 	end },
 	script = { Parent = { PbrAssets = "PbrAssets" } },
 	workspace = newInstance("Workspace"),
@@ -439,22 +441,20 @@ local ArenaLighting = load("src/server/Services/ArenaLighting.luau", arenaEnv)
 local ok, built = pcall(ArenaLighting.Build)
 check("ArenaLighting.Build runs under fakes (" .. tostring(built) .. ")", ok)
 local shen = World.Bosses.GrandmasterShen
-local floorY = shen.Arena.Center.Y - 20
-check("Shen's arena is relocated off the old Y 0 floor", floorY > 1000 and ArenaLighting.lift(shen.Arena).Y == floorY)
 local legacy = { Center = { X = 0, Y = 20, Z = -1960 }, Size = { X = 120, Y = 60, Z = 130 } }
 check("a legacy Y 20 arena gets no lift", ArenaLighting.lift(legacy).Y == 0)
-local lowest, highest, count = math.huge, -math.huge, 0
-for _, kind in { "AsuraArenaLight", "AsuraArenaFill" } do
-	for _, light in lightsByKind[kind] do
-		local y = light.Parent.Position.Y
-		lowest, highest, count = math.min(lowest, y), math.max(highest, y), count + 1
-	end
+check("the lake has no braziers or firepits", firePits == 0 and #lightsByKind.AsuraArenaLight == 0)
+local fills = lightsByKind.AsuraArenaFill
+local expectedFills = Plan.fills(shen.Arena)
+check("stillwater arena gets a full grid of fill lights", #fills == #expectedFills and #fills > 0)
+for i, light in fills do
+	local p, base = light.Parent.Position, expectedFills[i]
+	check("lake fill sits above the walkable surface", near(p.X, base.X) and near(p.Z, base.Z)
+		and near(p.Y, lake.StillTop + Plan.Fill.Height) and not light.Shadows)
 end
-check("arena lights sit on the relocated floor, not at Y 0 under the mountain (" .. tostring(lowest) .. ".." .. tostring(highest) .. ")",
-	count >= 8 and lowest >= floorY and highest <= floorY + 30)
 -- Fill floor: every arena look keeps fighters readable (combat floor) and its glare stays capped.
 local F = Profiles.Floor
-for _, key in { "Combat:AshColosseum", "Unbound:AshColosseum" } do
+for _, key in { "Combat:AshColosseum", "Unbound:AshColosseum", "Combat:Forest", "Unbound:Forest" } do
 	local l = Profiles.get(key).Lighting
 	check(key .. " keeps the combat fill floor", L(l.Ambient) >= F.Ambient - 1 and L(l.OutdoorAmbient) >= F.Outdoor - 1)
 	check(key .. " glare capped", Profiles.get(key).CB_Bloom.Intensity <= Profiles.Glare.Bloom and Profiles.get(key).CB_SunRays.Intensity <= Profiles.Glare.Rays)
@@ -467,6 +467,39 @@ check("Soundscape keeps the lobby 0.12 / 0.22 levels without weather wind", stri
 	and string.find(sound, "Wind.ambience(w)", 1, true) ~= nil)
 check("EnvironmentController keeps the keyed arena/boss path after the weather branch", string.find(envSource, "Profiles.get(key)", 1, true) ~= nil
 	and string.find(envSource, "self.Weather:Profile(if boss ~= \"\" and alive then", 1, true) ~= nil)
+do
+	local lighting, sky = newInstance("Lighting"), newInstance("Sky")
+	lighting.GlobalShadows, sky.SkyboxBk, sky.Parent = true, "OriginalSky", lighting
+	lighting.ClockTime = 12
+	local player = newInstance("Player")
+	local asura = { Shared = { EnvironmentProfiles = "profiles", PresentationAssets = "assets",
+		WorldDefinitions = "world", LandmarkLayout = "layout" } }
+	local services = { Lighting = lighting, Players = { LocalPlayer = player }, CollectionService = CollectionService,
+		ReplicatedStorage = { WaitForChild = function() return asura end },
+		TweenService = { Create = function() return { Play = function() end, Cancel = function() end } end } }
+	local modulesForEnvironment = { profiles = Profiles, assets = {}, world = World, layout = modules.LandmarkLayout,
+		ash = { new = function() return { Update = function() end, Destroy = function() end } end } }
+	local Environment = load("src/client/Controllers/EnvironmentController.luau", {
+		game = { GetService = function(_, name) return services[name] end },
+		script = { Parent = { ArenaAsh = "ash" } }, require = function(name) return modulesForEnvironment[name] end,
+		TweenInfo = { new = function() return {} end },
+	})
+	local actor = { Root = { Position = roblox.Vector3.new(shen.Spawn.X, shen.Spawn.Y, shen.Spawn.Z) } }
+	local state = { Own = function() return actor end, OnCue = function() return function() end end, Entities = {} }
+	local weather = { Cavern = 1, Profile = function(_, boss) return if boss then nil else Profiles.Forest end }
+	local env = Environment.new(state, weather)
+	env.HollowFetch = true
+	env:Update(0.2)
+	local caveSky = sky.SkyboxBk
+	check("entering the Hollow applies its cave override", caveSky ~= "OriginalSky" and not lighting.GlobalShadows)
+	player:SetAttribute("AsuraEncounter", shen.Id)
+	env:Update(0.2)
+	check("Shen combat keeps the Hollow sky and shadow settings", env.Key == "Combat:Forest" and sky.SkyboxBk == caveSky and not lighting.GlobalShadows)
+	weather.Cavern = 0
+	env:Update(0.2)
+	check("leaving the Hollow restores its sky and shadows even on the same combat profile", env.Key == "Combat:Forest" and sky.SkyboxBk == "OriginalSky" and lighting.GlobalShadows)
+	env:Destroy()
+end
 local lobbyKey = Profiles.resolve("Sanctuary", false, 1, nil)
 check("lobby profile untouched", lobbyKey == "Sanctuary" and Profiles.get(lobbyKey).Lighting.ClockTime == 17.4 and Config.Workspace.GlobalWind[1] == lobbyWind[1])
 

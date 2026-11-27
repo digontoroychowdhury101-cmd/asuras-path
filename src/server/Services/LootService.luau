@@ -28,6 +28,7 @@ end
 function Loot.Sync(player: Player,open: boolean?)
  local p=Persistence.Get(player.UserId);if not p then return end
  local inventory=table.clone(p.souls.inventory);inventory.materials=table.clone(p.inventory.Materials)
+ inventory.armor=table.clone(p.inventory.Armor);inventory.armorSet=p.equippedLoadout.ArmorSet
  remote:FireClient(player,{action="State",inventory=inventory,cooldowns=Magic.Cooldowns(player.UserId),open=open or false})
 end
 -- Assert messages carry "Script:line: "; players see only the reason (F06: the toast showed the script path).

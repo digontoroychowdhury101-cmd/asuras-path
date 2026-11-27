@@ -1,13 +1,9 @@
 --!strict
 -- ModuleScript: StarterPlayer/StarterPlayerScripts/AsurasPath/Controllers/ArsenalTabs
--- Card rendering for the Arsenal's three tabs (spells, weapons, transmutation). Each card is a
--- raised lacquer row with a discipline/state accent bar, name, wrapped lines from ArsenalFacts
--- (practical use, targeting/cost or style, effects or a comparison with the wielded weapon).
--- Pure presentation: actions call `send` with ArsenalIntent packets; the server validates.
+-- Sorcery and remembrance cards. Weapon and armour inspection live in ArsenalEquipment.
 local Shared = game:GetService("ReplicatedStorage"):WaitForChild("AsurasPath")
 local Catalog = require(Shared:WaitForChild("Shared"):WaitForChild("ArsenalCatalog") :: ModuleScript)
 local Spells = require(Shared:WaitForChild("Simulation"):WaitForChild("SpellSchema") :: ModuleScript)
-local Weapons = require(Shared:WaitForChild("Simulation"):WaitForChild("WeaponSchema") :: ModuleScript)
 local Facts = require(Shared:WaitForChild("Shared"):WaitForChild("ArsenalFacts") :: ModuleScript)
 local Inventory = require(Shared:WaitForChild("Simulation"):WaitForChild("ArsenalInventory") :: ModuleScript)
 local HudKit = require(script.Parent:WaitForChild("HudKit") :: ModuleScript)
@@ -29,30 +25,30 @@ export type Env = { Label: (command: string) -> string, Attributes: { [string]: 
 export type Line = { Text: string, Color: Color3, Size: number }
 
 -- A card grows with its text: title, then wrapped lines (use, details, effects/comparison).
-local function card(list: ScrollingFrame, order: number, title: string, lines: { Line }, accent: Color3, actionWidth: number): Frame
+local function card(list: ScrollingFrame, order: number, title: string, lines: { Line }, accent: Color3): Frame
 	local frame = HudKit.make("Frame", list, {
 		Name = title, LayoutOrder = order, Size = UDim2.new(1, -10, 0, 0), AutomaticSize = Enum.AutomaticSize.Y,
 		BackgroundColor3 = T.Raised, BackgroundTransparency = 0.2, BorderSizePixel = 0,
 	}) :: Frame
 	HudKit.make("UICorner", frame, { CornerRadius = UDim.new(0, T.Radius) })
 	HudKit.make("UIStroke", frame, { Color = T.Edge, Transparency = 0.5 })
-	HudKit.make("Frame", frame, { Name = "Accent", Position = UDim2.fromOffset(0, 10), Size = UDim2.new(0, 3, 1, -20), BackgroundColor3 = accent, BorderSizePixel = 0 })
-	local text = HudKit.make("Frame", frame, {
-		Name = "Text", Position = UDim2.fromOffset(16, 0), Size = UDim2.new(1, -actionWidth - 36, 0, 0), AutomaticSize = Enum.AutomaticSize.Y, BackgroundTransparency = 1,
+	HudKit.make("UISizeConstraint", frame, { MinSize = Vector2.new(0, 80) })
+	local content = HudKit.make("Frame", frame, {
+		Name = "CardContent", Size = UDim2.fromScale(1, 0), AutomaticSize = Enum.AutomaticSize.Y, BackgroundTransparency = 1,
 	}) :: Frame
-	HudKit.make("UIListLayout", text, { Padding = UDim.new(0, 2), SortOrder = Enum.SortOrder.LayoutOrder })
-	HudKit.make("UIPadding", text, { PaddingTop = UDim.new(0, 8), PaddingBottom = UDim.new(0, 10) })
-	HudKit.label(text, title, 20, T.BodyFont, T.Ivory, { Size = UDim2.new(1, 0, 0, 26), TextXAlignment = Enum.TextXAlignment.Left, TextTruncate = Enum.TextTruncate.AtEnd, LayoutOrder = 0 })
+	HudKit.make("UIListLayout", content, { Padding = UDim.new(0, 4), SortOrder = Enum.SortOrder.LayoutOrder })
+	HudKit.make("UIPadding", content, { PaddingTop = UDim.new(0, 10), PaddingBottom = UDim.new(0, 10), PaddingLeft = UDim.new(0, 12), PaddingRight = UDim.new(0, 12) })
+	HudKit.label(content, title, 20, T.TitleFont, accent, { Size = UDim2.new(1, 0, 0, 26), TextXAlignment = Enum.TextXAlignment.Left, TextTruncate = Enum.TextTruncate.AtEnd, LayoutOrder = 0 })
 	for index, line in lines do
 		if line.Text ~= "" then
-			HudKit.label(text, line.Text, line.Size, T.BodyFont, line.Color, {
+			HudKit.label(content, line.Text, line.Size, T.BodyFont, line.Color, {
 				Name = "Line" .. index, Size = UDim2.fromScale(1, 0), AutomaticSize = Enum.AutomaticSize.Y, TextWrapped = true,
 				TextXAlignment = Enum.TextXAlignment.Left, LayoutOrder = index,
 			})
 		end
 	end
-	local actions = HudKit.make("Frame", frame, {
-		Name = "Actions", AnchorPoint = Vector2.new(1, 0.5), Position = UDim2.new(1, -12, 0.5, 0), Size = UDim2.new(0, actionWidth, 0, 38), BackgroundTransparency = 1,
+	local actions = HudKit.make("Frame", content, {
+		Name = "Actions", Size = UDim2.new(1, 0, 0, 44), LayoutOrder = #lines + 1, BackgroundTransparency = 1,
 	}) :: Frame
 	HudKit.make("UIListLayout", actions, { FillDirection = Enum.FillDirection.Horizontal, HorizontalAlignment = Enum.HorizontalAlignment.Right, Padding = UDim.new(0, 8), SortOrder = Enum.SortOrder.LayoutOrder })
 	return actions
@@ -64,7 +60,8 @@ end
 
 local function action(actions: Frame, text: string, variant: UiKit.Variant, width: number, enabled: boolean, fn: () -> ()): TextButton
 	local b = UiKit.button(actions, text, variant, fn)
-	b.Size = UDim2.new(0, width, 1, 0)
+	b.Size = UDim2.new(0.48, -2, 1, 0)
+	HudKit.make("UISizeConstraint", b, { MaxSize = Vector2.new(width, 44) })
 	b.TextSize, b.TextScaled = 17, true
 	HudKit.make("UITextSizeConstraint", b, { MinTextSize = 11, MaxTextSize = 17 })
 	UiKit.setEnabled(b, enabled)
@@ -85,39 +82,13 @@ function Tabs.Spells(send: (any) -> (), inv: any, list: ScrollingFrame, env: Env
 			local school = DISCIPLINE[s.Discipline] or { Name = s.Discipline, Color = T.Gold }
 			local facts = Facts.spell(id, ctx)
 			facts.Detail = school.Name .. "  ·  " .. facts.Detail
-			local actions = card(list, order, s.Name, lines(facts), school.Color, 248)
+			local actions = card(list, order, s.Name, lines(facts), school.Color)
 			for slot, command in { "SpellOne", "SpellTwo" } do
 				local on = inv.spellSlots[slot] == id
 				local b = action(actions, Tabs.slotText(slot, env.Label(command), on), if on then "Primary" else "Secondary", 120, true, function()
 					send({ action = "EquipSpell", id = id, slot = slot })
 				end)
 				b.Font = Enum.Font.GothamMedium -- the menu face draws an old-style "1" that reads as "ı" (F05)
-			end
-		end
-	end
-end
-
-function Tabs.Weapons(send: (any) -> (), inv: any, list: ScrollingFrame, env: Env)
- local talismans=if inv.materials then inv.materials.LastBreathTalisman or 0 else 0
- if talismans>0 then
-  local actions=card(list,0,"Last Breath Talisman",{{Text=tostring(talismans).." owned · wards one fatal blow for 30 seconds",Color=T.Muted,Size=14}},T.Gold,104)
-  action(actions,"Invoke","Primary",104,true,function() send({action="UseTalisman"}) end)
- end
-	local ctx = Facts.context(inv, env.Attributes)
-	for order, id in Weapons.WeaponKeys do
-		if inv.weapons[id] then
-			local w = Weapons.get(id :: any) -- WeaponKeys is typed string[]; get() wants the key union
-			local main, off = inv.mainhand == id, inv.offhand == id
-			local facts = Facts.weapon(id, ctx)
-			if off then facts.Detail = "Off-hand focus  ·  " .. facts.Detail end
-			local actions = card(list, order, w.Name, lines(facts), if main then T.Gold else T.Edge, if id == "Catalyst" then 236 else 120)
-			action(actions, if main then "✓ Wielded" else "Wield", if main then "Primary" else "Secondary", 112, not main, function()
-				send({ action = "EquipWeapon", id = id, offhand = false })
-			end)
-			if id == "Catalyst" then
-				action(actions, if off then "✓ Off-hand" else "Off-hand", "Secondary", 116, not off, function()
-					send({ action = "EquipWeapon", id = id, offhand = true })
-				end)
 			end
 		end
 	end
@@ -136,7 +107,7 @@ function Tabs.Forge(send: (any) -> (), inv: any, list: ScrollingFrame, _env: Env
 			local ready = state == "Ready"
 			local detail = { { Text = r.Kind .. " · Remembrance of " .. name, Color = T.Muted, Size = 14 },
 				{ Text = string.format(Catalog.ForgeStates[state], name), Color = if ready then T.Gold else T.Muted, Size = 14 } }
-			local actions, armed, button = card(list, order, r.Name, detail, if ready then T.Gold else T.Edge, 120), false, nil :: TextButton?
+			local actions, armed, button = card(list, order, r.Name, detail, if ready then T.Gold else T.Ivory), false, nil :: TextButton?
 			button = action(actions, if ready then "Forge" else state, if ready then "Primary" else "Ghost", 112, ready, function()
 				if armed then send({ action = "Forge", id = id }); return end
 				armed = true; (button :: TextButton).Text = "Confirm?"

@@ -158,6 +158,8 @@ export type FogGate = {
 	-- Where trapped fighters are returned when they leave the arena, and where outsiders are ejected to.
 	Inside: Placement,
 	Outside: Placement,
+	-- No wall or mist prompt: the encounter opens only once summoned (Shen's lake trial, ShenLakeRules).
+	Summons: boolean?,
 }
 
 -- Layout anchors for the Shrine of the Ascendant, the sky lobby above the sea of clouds. The

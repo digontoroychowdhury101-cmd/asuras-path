@@ -237,6 +237,41 @@ Overworld.Barrier = {
 	},
 }
 
+-- Grandmaster Shen's lake trial (win-106, creator 27 Nov 2026): Shen left the summit and fights on the Bellwood lake. The barrier
+-- above stays as data and scenery (terrain pad, dressing, BarrierNode) but registers no gate. The lake gate has no wall: Summons
+-- marks it as one WorldService opens only after the relic in the colossal temple's upper hall is taken (ShenLakeRules). Numbers
+-- come from LandmarkLayout.shenLake (Basin.ShenLake). Built on first call, so loaders that read this module as plain data (no
+-- relative require) never touch it. Cached in a local, since the module table is frozen.
+local shenLakeCache: any = nil
+function Overworld.shenLake(): any
+	if shenLakeCache then return shenLakeCache end
+	local hasScript = pcall(function() return script.Parent end)
+	local Layout: any = if hasScript then require(script.Parent.LandmarkLayout) else require("./LandmarkLayout")
+	local k = Layout.shenLake(Layout.Landmarks.Bellwood)
+	local vx = k.Vortex
+	shenLakeCache = {
+		Region = "Forest",
+		Boss = "GrandmasterShen",
+		Arena = k.Arena,
+		BossSpawn = k.BossSpawn,
+		StillTop = k.StillTop,
+		Vortex = k.Vortex,
+		StairToe = k.StairToe,
+		Relic = k.Relic,
+		Gate = {
+			Id = "Gate_BellwoodLake",
+			Boss = "GrandmasterShen",
+			Summons = true,
+			Placement = at(vx.X, vx.Y, vx.Z, k.BossSpawn.Yaw),
+			Size = v(1, 1, 1),
+			Trigger = { Center = v(vx.X, k.StillTop + 11, vx.Z), Size = v(k.Arena.Size.X, 24, k.Arena.Size.Z) },
+			Inside = k.Inside,
+			Outside = k.Outside,
+		},
+	}
+	return shenLakeCache
+end
+
 -- Future arena sites for the archived bosses: data only, no region, fog gate or spawn is registered.
 Overworld.ReservedArenas = {
 	VenerableBaize = { Region = "Snowfields", Arena = { Center = v(-2400, 700, -8200), Size = v(180, 100, 180) } },
@@ -1416,12 +1451,14 @@ function Overworld.apply(world: any)
 		world.Regions[entry.Region].Altars[shortName(id)] = entry
 	end
 
-	local barrier = Overworld.Barrier
-	local shen = world.Bosses[barrier.Boss]
+	-- Shen fights on the Bellwood lake (Overworld.shenLake); the summit barrier's gate leaves the world.
+	local lake = Overworld.shenLake()
+	local shen = world.Bosses[lake.Boss]
 	if shen then
-		shen.Region, shen.Arena, shen.Spawn = barrier.Region, barrier.Arena, barrier.BossSpawn
+		shen.Region, shen.Arena, shen.Spawn, shen.FogGate = lake.Region, lake.Arena, lake.BossSpawn, lake.Gate.Id
 	end
-	world.FogGates[barrier.Gate.Id] = barrier.Gate
+	world.FogGates[Overworld.Barrier.Gate.Id] = nil
+	world.FogGates[lake.Gate.Id] = lake.Gate
 	world.Caches = Overworld.Caches
 
 	-- Cutover: the old campaign leaves the world. Region keys and altar ids stay in saves; nothing here.
@@ -1440,7 +1477,7 @@ function Overworld.apply(world: any)
 	-- Inactive bosses keep their ids, remembrance and endings but have no region, arena or fog gate
 	-- in play: they sit on a reserved site (data only) and nothing spawns them.
 	for id, boss in world.Bosses do
-		if id ~= barrier.Boss then
+		if id ~= lake.Boss then
 			local site = Overworld.ReservedArenas[id]
 			assert(site, "No reserved arena for inactive boss " .. id)
 			local c = site.Arena.Center

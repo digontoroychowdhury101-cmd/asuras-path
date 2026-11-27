@@ -19,6 +19,9 @@ module = module.replace('if hasScript then require(script.Parent.EndingRules) el
 overworld = (root / "src" / "shared" / "Overworld.luau").read_text()
 if name == "test_objectives": # the archived-corridor objectives run on the pre-cutover world; the overworld suite keeps Active
     overworld = overworld.replace("Overworld.Active = true", "Overworld.Active = false", 1)
+# Overworld reads Shen's lake trial from LandmarkLayout (win-106); inline it, since ./ resolves from work/ here.
+layout = re.sub(r"^export type", "type", (root / "src" / "shared" / "LandmarkLayout.luau").read_text(), flags=re.MULTILINE)
+overworld = overworld.replace('if hasScript then require(script.Parent.LandmarkLayout) else require("./LandmarkLayout")', "(function()\n" + layout + "\nend)()", 1)
 module = module.replace('if hasScript then require(script.Parent.Overworld) else require("./Overworld")', "(function()\n" + overworld + "\nend)()", 1)
 inlined = "local Objectives = (function()\n" + module + "\nend)()"
 generated = root / "work" / (name + ".generated.luau")

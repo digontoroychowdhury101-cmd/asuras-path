@@ -95,7 +95,8 @@ local touchFlags = table.clone(plain); touchFlags.Touch = true
 check("touch hides them but keeps guidance", Visibility.resolve(touchFlags).Pointer == false and Visibility.resolve(touchFlags).Guidance == true)
 check("the crossing hides the HUD like the prologue", Visibility.flags({ EndingActive = true }).Prologue == true)
 local pause = src(C .. "PauseMenu.luau")
-check("Respite lists Controls and the Codex", string.find(pause, '{ Text = "Codex"', 1, true) ~= nil and string.find(pause, '{ Text = "Controls"', 1, true) ~= nil)
+check("Respite routes to Controls and the Codex", string.find(pause, '"Controls", function() self:Close(); controls:SetOpen(true)', 1, true) ~= nil
+	and string.find(pause, '"Codex", function() self:Close(); if ui.OpenCodex then ui.OpenCodex()', 1, true) ~= nil)
 check("Respite pages scroll on short screens", string.find(pause, 'HudKit.make("ScrollingFrame", self.Window.Body', 1, true) ~= nil)
 check("a controller reaches Respite and the Codex from the Arsenal window", string.find(deviceSource, 'UiKit.button(row, "Respite"', 1, true) ~= nil
 	and string.find(deviceSource, 'UiKit.button(row, "Codex"', 1, true) ~= nil)
@@ -148,7 +149,8 @@ local function frame(name, anchor, pos, sz)
 	local f = Shim.Instance.new("Frame"); f.Name, f.AnchorPoint, f.Position, f.Size = name, anchor, pos, sz; f.Parent = gui
 	return f
 end
-local vitals = frame("Vitals", Shim.Vector2.new(0, 1), Shim.UDim2.new(0, 16, 1, -12), Shim.UDim2.fromOffset(470, 150))
+local vitalsSize = Layout.Regions.Vitals.Size
+local vitals = frame("Vitals", Shim.Vector2.new(0.5, 1), Shim.UDim2.new(0.5, 0, 1, -Layout.vitalsBottom(size.Y)), Shim.UDim2.fromOffset(vitalsSize[1], vitalsSize[2]))
 Shim.Instance.new("UIScale").Parent = vitals
 local bossBar = frame("BossBar", Shim.Vector2.new(0.5, 0), Shim.UDim2.new(0.5, 0, 0, 74), Shim.UDim2.new(0.5, 0, 0, 96))
 local limit = Shim.Instance.new("UISizeConstraint"); limit.MinSize = Shim.Vector2.new(300, 96); limit.Parent = bossBar
@@ -168,11 +170,14 @@ local placed = DeviceLayout.new(ui, device, {})
 check("the death screen reaches under the top bar", deathFrame.Position.Y.Offset == -36 and deathFrame.Size.Y.Scale == 1 and deathFrame.Size.Y.Offset == 36)
 local want = Layout.touch(750, 369)
 check("touch places the vitals in the freed bottom centre", vitals.Position.X.Offset == math.floor(want.Vitals.X) and vitals.Position.Y.Offset == math.floor(want.Vitals.Y) and vitals.AnchorPoint.X == 0)
-check("touch vitals scale follows the profile", math.abs(vitals:FindFirstChildOfClass("UIScale").Scale - Layout.Touch.VitalsBase * 0.7) < 1e-9 and vitals:GetAttribute("AsuraScaleBase") == Layout.Touch.VitalsBase)
+local touchScale = want.Vitals.W / vitalsSize[1]
+check("touch vitals scale follows the available width", math.abs(vitals:FindFirstChildOfClass("UIScale").Scale - touchScale) < 1e-9
+	and math.abs(vitals:GetAttribute("AsuraScaleBase") * 0.7 - touchScale) < 1e-9)
 check("touch sizes the boss bar to the top band", bossBar.Size.X.Offset == math.floor(want.Boss.W) and limit.MinSize.X <= want.Boss.W)
 check("touch: Respite blossom >= 44 pt, controls blossom hidden", 30 * mapScale.Scale * menu:FindFirstChild("TouchGrow").Scale >= 44 - 1e-6 and help.Visible == false and ui.TouchHud == true)
 device.Device = "Keyboard"; device.OnDeviceChanged("Keyboard")
-check("a keyboard restores the authored desktop placement", vitals.AnchorPoint.Y == 1 and vitals.Position.Y.Offset == -12 and bossBar.Size.X.Scale == 0.5 and limit.MinSize.X == 300
+check("a keyboard restores the centred desktop stack", vitals.AnchorPoint.X == 0.5 and vitals.AnchorPoint.Y == 1
+	and vitals.Position.Y.Offset == -Layout.vitalsBottom(size.Y) and bossBar.Size.X.Scale == 0.5 and limit.MinSize.X == 300
 	and vitals:GetAttribute("AsuraScaleBase") == nil and help.Visible == true and menu:FindFirstChild("TouchGrow").Scale == 1 and ui.TouchHud == false)
 device.Device = "Touch"; device.OnDeviceChanged("Touch")
 placed:Destroy()

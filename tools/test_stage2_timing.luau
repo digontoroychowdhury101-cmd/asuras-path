@@ -39,7 +39,7 @@ local chunk = table.concat({
 	"local running, simTime, tickCount = true, 0, 0",
 	"local terminal",
 	between(service, "local MAX_SEQUENCE_GAP", "\nlocal DEFAULT_JUMP"),
-	between(service, "local INTENT_ACTIONS", "\nlocal WEAPON_VISUALS"),
+	between(service, "local INTENT_ACTIONS", "\nlocal entities:"),
 	between(service, "local function eligibleFor(", "\nlocal function disconnectAll("),
 	between(service, "local function validIntent(", "\nlocal function findDeathblowTarget("),
 	"local function perform(e, action, pressTime, dirX, dirZ) return performStub(e, action, pressTime, simTime) end",

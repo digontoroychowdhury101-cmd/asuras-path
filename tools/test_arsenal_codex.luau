@@ -6,6 +6,7 @@
 -- discovery states never expose locked lore. Rules and source checks only: Studio views pending.
 local fs = require("@lune/fs")
 local luau = require("@lune/luau")
+local roblox = require("@lune/roblox")
 local Facts = require("../src/shared/ArsenalFacts")
 local Catalog = require("../src/shared/ArsenalCatalog")
 local Narrative = require("../src/shared/NarrativeCatalog")
@@ -108,7 +109,7 @@ local function leaks(sum, known)
 	return false
 end
 check("empty: no titles leak", not leaks(empty, {}))
-check("empty: every locked entry says where to look", empty.Inscriptions[5].Hint == "The Bellwood" and empty.Souls[1].Hint == "Ash Colosseum" and empty.Souls[2].Hint == "an unexplored region")
+check("empty: every locked entry says where to look", empty.Inscriptions[5].Hint == "The Bellwood" and empty.Souls[1].Hint == "The Bellwood" and empty.Souls[2].Hint == "an unexplored region")
 local partialLore = { Pillars = true, Bamboo = true }
 local partial = Codex.summary(state(partialLore, { GrandmasterShen = true }))
 check("partial: counts", partial.Found == 2 and partial.Rested == 1 and string.find(Codex.status(partial), "2 / 9", 1, true))
@@ -137,6 +138,81 @@ for _, path in { C .. "ArsenalTabs.luau", C .. "ArsenalPanel.luau", C .. "CodexV
 	check(path .. " strict and under 150 lines", string.sub(text, 1, 9) == "--!strict" and lines < 150)
 end
 check("new modules registered", string.find(project, "shared/ArsenalFacts.luau", 1, true) and string.find(project, "Controllers/CodexView.luau", 1, true))
+
+do
+	local function signal()
+		local callbacks = {}
+		return { Connect = function(_, fn) table.insert(callbacks, fn) end, Fire = function(_) for _, fn in callbacks do fn() end end }
+	end
+	local function make(class, parent, props)
+		local o = props or {}
+		o.Parent, o.Children, o.Attributes = parent, {}, {}
+		o.AbsoluteSize, o.Resize, o.Destroying = roblox.Vector2.new(900, 500), signal(), signal()
+		o.Activated, o.MouseEnter, o.MouseLeave = signal(), signal(), signal()
+		o.SelectionGained, o.SelectionLost, o.AttributeChanged = signal(), signal(), signal()
+		if parent then table.insert(parent.Children, o) end
+		function o:GetChildren() return table.clone(self.Children) end
+		function o:IsA(name) return self.ClassName == name or (name == "GuiObject" and not string.match(self.ClassName, "^UI")) end
+		function o:IsDescendantOf(other) return self.Parent == other or self.Parent and self.Parent:IsDescendantOf(other) or false end
+		function o:GetPropertyChangedSignal() return self.Resize end
+		function o:GetAttributeChangedSignal() return self.AttributeChanged end
+		function o:GetAttribute(key) return self.Attributes[key] end
+		function o:SetAttribute(key, value) self.Attributes[key] = value; self.AttributeChanged:Fire() end
+		function o:Destroy() self.Destroying:Fire(); if self.Parent then table.remove(self.Parent.Children, table.find(self.Parent.Children, self)) end end
+		o.ClassName = class
+		return o
+	end
+	local kit = { make = make, label = function(parent, text, _, _, _, props) props.Text = text; return make("TextLabel", parent, props) end }
+	local ui = { Theme = { TitleFont = "Title", BodyFont = "Body", Ink = 1, Edge = 2, Ivory = 3, Raised = 4, Gold = 5, Muted = 6 }, play = function() end }
+	function ui.button(parent, text, _, activate)
+		local button = make("TextButton", parent, { Text = text })
+		button.Activated:Connect(activate)
+		return button
+	end
+	local inspection = { new = function()
+		return { Show = function(s, kind, id) s.Kind, s.Id = kind, id end, Clear = function(s) s.Id = nil end, Destroy = function(s) s.Disposed = true end }
+	end }
+	local gui = {}
+	local services = { GuiService = gui, UserInputService = { GamepadEnabled = true }, ReplicatedStorage = { AsurasPath = {
+		Shared = { ArmorRules = require("../src/shared/ArmorRules"), ArsenalFacts = Facts }, Simulation = { WeaponSchema = Weapons },
+	} } }
+	local equipment = luau.load(src(C .. "ArsenalEquipment.luau"), { debugName = "ArsenalEquipment", environment = {
+		Enum = roblox.Enum, UDim = roblox.UDim, UDim2 = roblox.UDim2, Vector2 = roblox.Vector2, Color3 = roblox.Color3,
+		game = { GetService = function(_, name) return services[name] end }, require = function(x) return x end,
+		script = { Parent = { HudKit = kit, UiKit = ui, ItemInspection = inspection } },
+	} })()
+	local view = equipment.new(make("Frame"))
+	local inv = { weapons = { Jian = true, Catalyst = true }, mainhand = "Jian", offhand = "None",
+		armor = { CinnabarGuard = { Level = 2 } }, armorSet = "CinnabarGuard", materials = { LastBreathTalisman = 1 } }
+	local packets = {}
+	local function send(packet) table.insert(packets, packet) end
+	local function action(caption)
+		for _, b in view.Detail.Children do if b:IsA("TextButton") and b.Text == caption then return b end end
+	end
+	equipment.render(view, "Weapons", inv, attrs, send)
+	check("arsenal opens on the wielded weapon", view.Stage.Id == "Jian" and not action("Wield"))
+	view.Rows.Dao.Button.Activated:Fire()
+	check("locked weapons can be inspected but cannot be equipped", view.Stage.Id == "Dao" and not action("Wield") and #packets == 0)
+	view.Rows.Catalyst.Button.Activated:Fire()
+	gui.SelectedObject = view.Rows.Catalyst.Button
+	local replaced = gui.SelectedObject
+	equipment.render(view, "Weapons", inv, attrs, send)
+	check("inventory refresh restores the selected item's preview and replacement focus", view.Stage.Id == "Catalyst"
+		and gui.SelectedObject == view.Rows.Catalyst.Button and gui.SelectedObject ~= replaced)
+	action("Wield").Activated:Fire(); action("Equip off-hand").Activated:Fire()
+	check("inspection actions send both original equip packets", packets[1].action == "EquipWeapon"
+		and packets[1].id == "Catalyst" and packets[1].offhand == false and packets[2].offhand == true)
+	view.Rows.LastBreathTalisman.Button.Activated:Fire()
+	action("Invoke").Activated:Fire()
+	check("invoking the talisman retains its original packet", packets[3].action == "UseTalisman")
+	equipment.render(view, "Armor", inv, attrs, send)
+	check("portable armour starts with the worn suit", view.Stage.Kind == "Armor" and view.Stage.Id == "CinnabarGuard" and not action("Wear"))
+	view.Root.AbsoluteSize = roblox.Vector2.new(320, 450)
+	view.Root.Resize:Fire()
+	check("narrow arsenal puts the display above the item list", view.Display.Size.X.Scale == 1 and view.Catalog.Position.Y.Offset > 170)
+	view.Root:Destroy()
+	check("the inspection stage follows the arsenal lifetime", view.Stage.Disposed == true)
+end
 
 print(string.format("arsenal codex: %d passed, %d failed", passed, failed))
 if failed > 0 then error("arsenal codex regression failed") end

@@ -1,9 +1,6 @@
 --!strict
 -- ModuleScript: StarterPlayer/StarterPlayerScripts/AsurasPath/Controllers/SakuraHud
--- Owns the sakura HUD furniture that is not tied to combat state: the compass, the minimap (with
--- its Respite / Controls / Map buttons; the radar disc itself is the lobby's alone) and a light drift of screen-space petals. Hidden with the rest
--- of the HUD during the prologue and the death screen. Petals are decoration: they thin out and
--- fade during fights (and with reduced effects) so warnings stay the brightest thing on screen.
+-- Compass, lobby radar and the ambient ember drift. Combat callouts take priority over decoration.
 local Players = game:GetService("Players")
 local Effects = require(game:GetService("ReplicatedStorage"):WaitForChild("AsurasPath"):WaitForChild("Shared"):WaitForChild("EffectsPreference") :: ModuleScript)
 local HudKit = require(script.Parent:WaitForChild("HudKit") :: ModuleScript)
@@ -18,7 +15,7 @@ Controller.__index = Controller
 local C = Sakura.Colors
 
 -- Customization ------------------------------------------------------------------------------
-local PETALS = 14 -- 0 disables the overlay
+local PETALS = 6
 local FALL = { 28, 64 } -- pixels per second
 local SWAY = 26 -- pixels
 local ENGAGE_RADIUS = 45 -- a live hostile this close (or a boss encounter) counts as a fight
@@ -56,8 +53,8 @@ function Controller.new(state: any, ui: any, pause: any, controls: any, map: any
 	local rng = Random.new()
 	local petals: { Petal } = {}
 	for _ = 1, PETALS do
-		local size = rng:NextNumber(8, 14)
-		local alpha = rng:NextNumber(0.15, 0.45)
+		local size = rng:NextNumber(4, 9)
+		local alpha = rng:NextNumber(0.48, 0.7)
 		local gui = HudKit.make("Frame", layer, {
 			AnchorPoint = Vector2.new(0.5, 0.5), Size = UDim2.fromOffset(size, size * 0.62), BorderSizePixel = 0,
 			BackgroundColor3 = if rng:NextNumber() < 0.5 then C.BloodPetal else C.EmberPetal, BackgroundTransparency = alpha,

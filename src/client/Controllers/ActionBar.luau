@@ -1,23 +1,16 @@
 --!strict
 -- ModuleScript: StarterPlayer/StarterPlayerScripts/AsurasPath/Controllers/ActionBar
--- Bottom-centre row of sakura medallions, one per combat move, each with a drawn icon, its name and
--- the key for the current device (keyboard or gamepad; hidden on touch, which has its own buttons).
--- A medallion pops and glows gold while its move is happening: attacks on press, Block while the
--- guard is up, Parry during the deflect window, Dodge while dashing, Lock while locked on.
+-- The keyboard and gamepad key strip. Touch keeps its live combat buttons instead.
 local TweenService = game:GetService("TweenService")
 local Players = game:GetService("Players")
 local HudKit = require(script.Parent:WaitForChild("HudKit") :: ModuleScript)
-local Sakura = require(script.Parent:WaitForChild("SakuraKit") :: ModuleScript)
+local C = require(script.Parent:WaitForChild("CombatHudStyle") :: ModuleScript)
 local Icons = require(script.Parent:WaitForChild("MoveIcons") :: ModuleScript)
+local HudLayout = require(script.Parent:WaitForChild("HudLayout") :: ModuleScript)
+local Effects = require(game:GetService("ReplicatedStorage"):WaitForChild("AsurasPath").Shared.EffectsPreference)
 
 local Bar = {}
-local C = Sakura.Colors
-
--- Customization ------------------------------------------------------------------------------
-local SLOT = 46 -- medallion diameter (px at 900px screen height)
-local GAP = 74 -- centre-to-centre spacing
-local BOTTOM = require(script.Parent:WaitForChild("HudLayout") :: ModuleScript).ActionBarBottom -- reserved combat row
-local FLASH = 0.35 -- seconds an attack medallion stays lit after its key is pressed
+local FLASH = 0.35
 -- Kind = icon, Command = input action whose key is shown, Hint = suffix for shared keys.
 local MOVES: { { Kind: string, Name: string, Command: string, Hint: string? } } = {
 	{ Kind = "Light", Name = "Slash", Command = "Light" },
@@ -30,43 +23,59 @@ local MOVES: { { Kind: string, Name: string, Command: string, Hint: string? } } 
 	{ Kind = "Lock", Name = "Lock On", Command = "Lock" },
 }
 
-type Slot = { Kind: string, Command: string, Hint: string?, Disc: Frame, Stroke: UIStroke?, Scale: UIScale, Key: TextLabel, Icon: CanvasGroup, Lit: boolean, Until: number }
+type Slot = { Command: string, Hint: string?, Mark: Frame, Rim: UIStroke, Scale: UIScale, Key: TextLabel, Icon: CanvasGroup, Lit: boolean, Until: number }
 export type View = { Root: Frame, Slots: { [string]: Slot }, Device: string }
 
 local POP = TweenInfo.new(0.12, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
 
 function Bar.new(gui: ScreenGui): View
-	local width = GAP * (#MOVES - 1) + SLOT + 24
+	local size = HudLayout.ActionBarSize
 	local root = HudKit.make("Frame", gui, {
-		Name = "ActionBar", AnchorPoint = Vector2.new(0.5, 1), Position = UDim2.new(0.5, 0, 1, -BOTTOM),
-		Size = UDim2.fromOffset(width, SLOT + 40), BackgroundTransparency = 1,
+		Name = "ActionBar", AnchorPoint = Vector2.new(0.5, 1), Position = UDim2.new(0.5, 0, 1, -HudLayout.ActionBarBottom),
+		Size = UDim2.fromOffset(size[1], size[2]), BackgroundTransparency = 1,
 	}) :: Frame
-	root.Destroying:Once(HudKit.bindScale(root, 0.8))
+	root.Destroying:Once(HudKit.bindScale(root, HudLayout.ActionBarBase, HudLayout.ActionBarMinScale))
+	local guide = HudKit.make("Frame", root, {
+		Name = "Guide", Position = UDim2.fromOffset(8, 22), Size = UDim2.new(1, -16, 0, 1),
+		BorderSizePixel = 0, BackgroundColor3 = C.Edge,
+	}) :: Frame
+	HudKit.make("UIGradient", guide, { Transparency = NumberSequence.new({
+		NumberSequenceKeypoint.new(0, 1), NumberSequenceKeypoint.new(0.22, 0.35),
+		NumberSequenceKeypoint.new(0.78, 0.35), NumberSequenceKeypoint.new(1, 1),
+	}) })
 	local slots: { [string]: Slot } = {}
+	local gap = size[1] / #MOVES
 	for n, move in MOVES do
-		local x = 12 + SLOT / 2 + (n - 1) * GAP
-		local disc = Sakura.medallion(root, SLOT, UDim2.fromOffset(x, SLOT / 2), false)
-		disc.BackgroundTransparency = 0.15
-		local scale = HudKit.make("UIScale", disc, {}) :: UIScale
-		local icon = Icons.draw(disc, move.Kind, SLOT)
-		local key = HudKit.label(disc, "", 11, Enum.Font.GothamBold, C.Ink, {
-			AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 1), Size = UDim2.fromOffset(34, 16),
-			BackgroundColor3 = C.Blossom, BackgroundTransparency = 0, ZIndex = 5,
+		local x = (n - 0.5) * gap
+		local plate = HudKit.make("Frame", root, { Name = move.Kind, AnchorPoint = Vector2.new(0.5, 0),
+			Position = UDim2.fromOffset(x, 0), Size = UDim2.fromOffset(gap - 4, size[2]), BackgroundTransparency = 1 }) :: Frame
+		local socket = HudKit.make("Frame", plate, { AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.new(0.5, 0, 0, 0),
+			Size = UDim2.fromOffset(24, 20), BackgroundTransparency = 1 }) :: Frame
+		local scale = HudKit.make("UIScale", socket, {}) :: UIScale
+		local icon = Icons.draw(socket, move.Kind, 24)
+		icon.Size = UDim2.fromOffset(22, 22)
+		local mark = HudKit.make("Frame", plate, {
+			AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.new(0.5, 0, 0, 22), Size = UDim2.fromOffset(4, 4),
+			Rotation = 45, BackgroundColor3 = C.Edge, BorderSizePixel = 0,
+		}) :: Frame
+		local key = HudKit.label(plate, "", 13, Enum.Font.GothamBold, C.Ivory, {
+			Position = UDim2.fromOffset(3, 26), Size = UDim2.new(1, -6, 0, 13),
+			BackgroundColor3 = C.Shade, BackgroundTransparency = 0.18, TextScaled = true, ZIndex = 5,
 		})
-		HudKit.make("UICorner", key, { CornerRadius = UDim.new(1, 0) })
-		HudKit.make("UIStroke", key, { Color = C.Rose, Thickness = 1, ApplyStrokeMode = Enum.ApplyStrokeMode.Border })
-		HudKit.label(root, move.Name, 12, Enum.Font.Garamond, C.Blossom, {
-			AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.fromOffset(x, SLOT + 12), Size = UDim2.fromOffset(GAP, 16), TextStrokeTransparency = 0.35,
+		HudKit.make("UICorner", key, { CornerRadius = UDim.new(0, 2) })
+		local rim = HudKit.make("UIStroke", key, { Color = C.Edge, Thickness = 1, Transparency = 0.5, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }) :: UIStroke
+		HudKit.make("UITextSizeConstraint", key, { MinTextSize = 10, MaxTextSize = 13 })
+		HudKit.label(plate, move.Name, 12, HudKit.TitleFont, C.Ivory, {
+			Position = UDim2.fromOffset(0, 39), Size = UDim2.new(1, 0, 0, 13), TextStrokeTransparency = 0.35,
 		})
 		slots[move.Kind] = {
-			Kind = move.Kind, Command = move.Command, Hint = move.Hint, Disc = disc, Stroke = disc:FindFirstChildOfClass("UIStroke"),
+			Command = move.Command, Hint = move.Hint, Mark = mark, Rim = rim,
 			Scale = scale, Key = key, Icon = icon, Lit = false, Until = 0,
 		}
 	end
 	return { Root = root, Slots = slots, Device = "" }
 end
 
--- Lights the medallion for a pressed command (attacks only stay lit for FLASH seconds).
 function Bar.press(view: View, command: string)
 	local kind = if command == "Guard" then "Parry" elseif command == "Roll" then "Dash" else command
 	local slot = view.Slots[kind]
@@ -76,10 +85,12 @@ end
 local function light(slot: Slot, on: boolean)
 	if on == slot.Lit then return end
 	slot.Lit = on
-	TweenService:Create(slot.Scale, POP, { Scale = if on then 1.14 else 1 }):Play()
-	if slot.Stroke then
-		TweenService:Create(slot.Stroke, POP, { Color = if on then C.Gold else C.Sakura, Thickness = if on then 3.5 else 2 }):Play()
-	end
+	TweenService:Create(slot.Scale, POP, { Scale = if on then 1 + Effects.motion(0.14) else 1 }):Play()
+	slot.Mark.BackgroundColor3 = if on then C.Gold else C.Edge
+	slot.Mark.Size = UDim2.fromOffset(if on then 6 else 4, if on then 6 else 4)
+	slot.Rim.Color, slot.Rim.Transparency = if on then C.Gold else C.Edge, if on then 0.1 else 0.5
+	slot.Key.BackgroundColor3 = if on then C.Gold else C.Shade
+	slot.Key.TextColor3 = if on then C.Ink else C.Ivory
 end
 
 function Bar.update(view: View, snapshot: any?, input: any, locked: boolean)
@@ -90,7 +101,6 @@ function Bar.update(view: View, snapshot: any?, input: any, locked: boolean)
 		for _, slot in view.Slots do
 			local key = input:Label(slot.Command)
 			slot.Key.Text = if slot.Hint then string.format("%s %s", key, slot.Hint) else key
-			slot.Key.Size = UDim2.fromOffset(math.max(28, #slot.Key.Text * 7 + 10), 16)
 		end
 	end
 	local now = os.clock()

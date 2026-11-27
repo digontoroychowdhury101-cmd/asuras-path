@@ -13,6 +13,7 @@ export type Facts = {
 	InBoss: boolean,
 	InColosseum: boolean,
 	BossFelled: boolean,
+	ShenLakeActive: boolean?,
 	-- True once the player has rested at any altar this session (teaches the rest loop first).
 	Rested: boolean,
 	Story: { [string]: boolean }?, -- six-sovereign ending flags (batch 22)
@@ -55,7 +56,9 @@ end
 Objectives.Route = ROUTE
 
 local function vec(p: any): Vector3 return Vector3.new(p.X, p.Y, p.Z) end
-local BOSS_APPROACH = if Overworld.Active then vec(Overworld.Barrier.Gate.Placement) else Vector3.new(0, 3, -1880)
+-- Overworld: Shen sleeps until the relic in the Bellwood colossal temple's upper hall is taken, so the trail leads there (win-106).
+local BOSS_APPROACH = if Overworld.Active then vec(Overworld.shenLake().Relic) else Vector3.new(0, 3, -1880)
+local LAKE_APPROACH = if Overworld.Active then vec(Overworld.shenLake().StairToe) else BOSS_APPROACH
 -- The Sanctuary's northern gate always delivers to this altar (WorldDefinitions.Sanctuary.PortalDestination).
 local PORTAL_ARRIVAL = ROUTE[2]
 
@@ -98,7 +101,7 @@ local ENCOUNTERS: { { Id: string, Name: string, Region: string, Position: Vector
 	{ Id = "AzureWyrm", Name = "Azure Wyrm", Region = "SkyCitadel", Position = Vector3.new(0, 3, -2722) },
 }
 if Overworld.Active then -- the inactive sovereigns are never named as a next objective
-	ENCOUNTERS = { { Id = "GrandmasterShen", Name = "Grandmaster Shen", Region = "AshColosseum", Position = BOSS_APPROACH } }
+	ENCOUNTERS = { { Id = "GrandmasterShen", Name = "Grandmaster Shen", Region = Overworld.shenLake().Region, Position = BOSS_APPROACH } }
 end
 Objectives.Encounters = ENCOUNTERS
 
@@ -271,6 +274,14 @@ function Objectives.resolve(facts: Facts): Objective?
 			end
 		end
 		if nextBoss then
+			if Overworld.Active and nextBoss.Id == "GrandmasterShen" then
+				if facts.ShenLakeActive then
+					return { Key = "ShenLake", Title = "Descend to Bellwood Lake", Detail = "Step onto the stilled water to face Grandmaster Shen",
+						Target = { Kind = "Point", Position = LAKE_APPROACH } }
+				end
+				return { Key = "Boss:GrandmasterShen", Title = "Climb the Bellwood temple", Detail = "Take the Abbot's relic from the upper hall",
+					Target = { Kind = "Point", Position = BOSS_APPROACH } }
+			end
 			local approach = nextBoss.Position
 			-- The Well of Descent south of the plaza (SanctuaryRoutes.Marks.CryptDescent, batch 16).
 			if nextBoss.Id == "SlumberingTitan" and facts.Region == "Sanctuary" then approach = Vector3.new(0, 605, 996) end
@@ -280,8 +291,8 @@ function Objectives.resolve(facts: Facts): Objective?
 	elseif not facts.BossFelled then
 		return {
 			Key = "Boss",
-			Title = "Pass the fog gate",
-			Detail = "Grandmaster Shen awaits beyond the Ash Colosseum",
+			Title = if Overworld.Active then "Climb the Bellwood temple" else "Pass the fog gate",
+			Detail = if Overworld.Active then "Take what the Fallen Abbot left in the upper hall" else "Grandmaster Shen awaits beyond the Ash Colosseum",
 			Target = { Kind = "Point", Position = BOSS_APPROACH },
 		}
 	end

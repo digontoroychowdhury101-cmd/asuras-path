@@ -50,6 +50,7 @@ local CreatureMotion = require(controllers:WaitForChild("CreatureMotion", timeou
 local DeviceLayout = require(controllers:WaitForChild("DeviceLayout", timeout) :: ModuleScript)
 local LandscapeBudget = require(controllers:WaitForChild("LandscapeBudget", timeout) :: ModuleScript)
 local FoliageWind = require(controllers:WaitForChild("FoliageWind", timeout) :: ModuleScript)
+local ShenLake = require(controllers:WaitForChild("ShenLakeController", timeout) :: ModuleScript)
 local Effects = require(Shared:WaitForChild("Shared"):WaitForChild("EffectsPreference") :: ModuleScript) :: any
 
 local net = Shared:WaitForChild("Net", timeout)
@@ -122,6 +123,7 @@ local creatures = CreatureMotion.new(state) -- procedural gait/wings/tail for cr
 -- Batch 25: touch/desktop HUD placement, safe-area insets, 44-pt touch targets, controller route to Respite.
 local landscape = LandscapeBudget.new()
 local foliageWind = FoliageWind.new(weather)
+local shenLake = ShenLake.new(camera) -- Shen's lake trial: the crack, the gathering wind, the storm he waits in (win-106)
 local devices = DeviceLayout.new(ui, input, { input.TouchGui, dialogue.View.Gui },
 	{ Window = spells.Panel.Window, Hint = spells.Panel.Hint }, pause)
 ui.OnPrologue = function() task.spawn(Prologue.Play, ui, input, camera, true) end -- Respite: replay opening
@@ -187,6 +189,7 @@ local function destroy()
 	devices:Destroy()
 	landscape:Destroy()
 	foliageWind:Destroy()
+	shenLake:Destroy()
 	dialogue:Destroy();wagers:Destroy();mastery:Destroy()
 	spells:Destroy()
 	sakura:Destroy()

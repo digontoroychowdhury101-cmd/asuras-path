@@ -45,7 +45,7 @@ end
 -- flat dark-teal image with soft mottling (win-83, uploaded 2026-11-23, decal 111215040387593), the colour of the vault's glow.
 local CAVE_SKY = "rbxassetid://83866687618973"
 local function setCave(self: any, cave: boolean)
-	if cave == self.Cave then return end
+	if cave == (self.Cave == true) then return end
 	self.Cave = cave
 	if cave then
 		self.Shadows = Lighting.GlobalShadows
@@ -96,6 +96,9 @@ function Controller.Update(self: any, dt: number)
 	local key = Profiles.resolve(region, boss ~= "" and alive, self.Phase, arena)
 	-- Open overworld: the composed biome/time/weather profile (nil in the lobby, the domain and fights, which keep the keyed path below).
 	local composed = if self.Weather then self.Weather:Profile(if boss ~= "" and alive then { Phase = self.Phase, Arena = arena } else nil) else nil
+	local cave = (if self.Weather then self.Weather.Cavern or 0 else 0) >= 0.5
+	local leavingCave = self.Cave == true and not cave
+	setCave(self, cave)
 	if composed then
 		local entering = self.Key ~= "Weather"
 		self.Key = "Weather"
@@ -112,14 +115,13 @@ function Controller.Update(self: any, dt: number)
 			local tween = TweenService:Create(target, TweenInfo.new(if entering then 2.4 else 0.4, Enum.EasingStyle.Sine), values)
 			table.insert(self.Tweens, tween); tween:Play()
 		end
-		local cave = (if self.Weather then self.Weather.Cavern or 0 else 0) >= 0.5
-		local leaving = self.Cave == true and not cave
-		setCave(self, cave)
-		if (entering or leaving) and not cave then applySky(self, "Weather") end
+		if (entering or leavingCave) and not cave then applySky(self, "Weather") end
 		return
 	end
-	if self.Cave then setCave(self, false) end
-	if key == self.Key then return end
+	if key == self.Key then
+		if leavingCave then applySky(self, key) end
+		return
+	end
 	self.Key = key
 	for _, tween in self.Tweens do tween:Cancel() end
 	table.clear(self.Tweens)
@@ -134,7 +136,7 @@ function Controller.Update(self: any, dt: number)
 			table.insert(self.Tweens, tween); tween:Play()
 		end
 	end
-	applySky(self, key)
+	if not cave then applySky(self, key) end
 end
 function Controller.Destroy(self: any)
 	self.Disconnect()

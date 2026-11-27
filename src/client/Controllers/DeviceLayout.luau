@@ -20,8 +20,8 @@ Device.__index = Device
 
 -- Frame name in the HUD -> touch rect key, whether its size follows the rect, and its UIScale base.
 local MANAGED: { [string]: { Rect: string, Sized: boolean, Base: number? } } = {
-	Vitals = { Rect = "Vitals", Sized = false, Base = 0.78 },
-	Loadout = { Rect = "Vitals", Sized = false, Base = 0.78 },
+	Vitals = { Rect = "Vitals", Sized = false, Base = Layout.Regions.Vitals.Base },
+	Loadout = { Rect = "Vitals", Sized = false, Base = Layout.Regions.Vitals.Base },
 	ObjectiveTracker = { Rect = "Objective", Sized = false },
 	BossBar = { Rect = "Boss", Sized = true },
 	TargetPlate = { Rect = "Target", Sized = true },
@@ -94,13 +94,19 @@ function Device.Place(self: any, touch: boolean)
 				frame.Size = UDim2.fromOffset(math.floor(r.W), frame.Size.Y.Offset)
 				if limit then limit.MinSize = Vector2.new(math.min(limit.MinSize.X, math.floor(r.W)), limit.MinSize.Y) end
 			end
-			if spec.Base then frame:SetAttribute("AsuraScaleBase", Layout.Touch.VitalsBase) end
-			if scale and spec.Base then scale.Scale = Layout.Touch.VitalsBase * HudKit.factor() end
+			if spec.Base then
+				local targetScale = r.W / Layout.Regions.Vitals.Size[1]
+				frame:SetAttribute("AsuraScaleBase", targetScale / HudKit.factor())
+				if scale then scale.Scale = targetScale end
+			end
 		else
 			frame.AnchorPoint, frame.Position, frame.Size = saved.AnchorPoint, saved.Position, saved.Size
 			if limit and saved.Min then limit.MinSize = saved.Min end
-			if spec.Base then frame:SetAttribute("AsuraScaleBase", nil) end
-			if scale and spec.Base then scale.Scale = spec.Base * HudKit.factor() end
+			if spec.Base then
+				frame.Position = UDim2.new(0.5, 0, 1, -Layout.vitalsBottom(size.Y))
+				frame:SetAttribute("AsuraScaleBase", nil)
+				if scale then scale.Scale = math.max(spec.Base * HudKit.factor(), Layout.Regions.Vitals.MinScale or 0) end
+			end
 		end
 	end
 end

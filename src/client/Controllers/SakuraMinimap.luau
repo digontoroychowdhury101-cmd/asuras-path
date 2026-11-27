@@ -1,12 +1,7 @@
 --!strict
 -- ModuleScript: StarterPlayer/StarterPlayerScripts/AsurasPath/Controllers/SakuraMinimap
--- Top-left blossom radar that turns with the camera: sakura-ringed plum disc with corner sprigs,
--- N/E/S/W on the rim, the player's arrow fixed at the centre, crimson dots for hostiles, blossom
--- dots for other fighters, gold diamonds for Incense Altars, the region name beneath, and small
--- round blossom buttons on the rim (Respite menu, Controls). Follow-up 14: under the dots, the
--- objective's walked route (MinimapRoute) - doorways, climbs, portal exits and the bloodstain.
--- Open world: the radar is the lobby's alone. Beyond the sanctuary the disc is hidden (the M map
--- replaces it) and the blossoms fold into a small row in the same corner, with a Map blossom added.
+-- The lobby radar shows the walked route, nearby fighters and altars. Outside the lobby its
+-- controls fold into the navigation row and the full map takes over.
 local Workspace = game:GetService("Workspace")
 local Players = game:GetService("Players")
 local Shared = game:GetService("ReplicatedStorage"):WaitForChild("AsurasPath")
@@ -50,28 +45,28 @@ function Map.new(gui: ScreenGui, state: any, buttons: { Button }): View
 	}) :: Frame
 	root.Destroying:Once(HudKit.bindScale(root, 0.82))
 	local centre = UDim2.fromOffset((DIAMETER + 40) / 2, (DIAMETER + 40) / 2)
-	local disc = Sakura.medallion(root, DIAMETER, centre, false, { 315, 45, 160 })
-	disc.BackgroundTransparency = 0.3
+	local disc = Sakura.medallion(root, DIAMETER, centre)
+	disc.BackgroundTransparency = 0.23
 	for _, rotation in { 0, 90 } do -- faint crosshair
 		HudKit.make("Frame", disc, {
 			AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 0.5), Size = UDim2.new(1, -24, 0, 1), Rotation = rotation,
-			BackgroundColor3 = C.Sakura, BackgroundTransparency = 0.8, BorderSizePixel = 0,
+			BackgroundColor3 = C.Gold, BackgroundTransparency = 0.85, BorderSizePixel = 0,
 		})
 	end
 	local letters: { [number]: TextLabel } = {}
 	for i, text in { "N", "E", "S", "W" } do
-		letters[(i - 1) * 90] = HudKit.label(disc, text, if text == "N" then 15 else 12, Enum.Font.Garamond, if text == "N" then C.Sakura else C.Ivory, {
+		letters[(i - 1) * 90] = HudKit.label(disc, text, if text == "N" then 15 else 12, HudKit.BodyFont, if text == "N" then C.Gold else C.Ivory, {
 			AnchorPoint = Vector2.new(0.5, 0.5), Size = UDim2.fromOffset(16, 16), ZIndex = 4, TextStrokeTransparency = 0.3,
 		})
 	end
-	HudKit.label(disc, "▲", 18, Enum.Font.GothamBold, C.Blossom, {
+	HudKit.label(disc, "▲", 15, Enum.Font.GothamBold, C.Ivory, {
 		AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 0.5), Size = UDim2.fromOffset(20, 20), ZIndex = 5, TextStrokeTransparency = 0.2,
 	})
 	local route = RouteLayer.new(disc, DIAMETER)
 	local dots, altars = {}, {}
 	for i = 1, DOT_POOL do dots[i] = dot(disc, 7, C.Crimson, false) end
 	for i = 1, ALTAR_POOL do altars[i] = dot(disc, 8, C.Gold, true) end
-	local region = HudKit.label(disc, "", 11, Enum.Font.Garamond, C.Blossom, {
+	local region = HudKit.label(disc, "", 12, HudKit.TitleFont, C.Ivory, {
 		AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.new(0.5, 0, 0.66, 0), Size = UDim2.fromOffset(110, 14), ZIndex = 4, TextStrokeTransparency = 0.3,
 	})
 	local blossoms: { Blossom } = {}
@@ -159,7 +154,7 @@ function Map.step(view: View, route: RouteLayer.Route?, radar: boolean, touch: b
 	for i = used + 1, #view.Altars do view.Altars[i].Visible = false end
 	local id = Players.LocalPlayer:GetAttribute("AsuraRegion")
 	local info = if type(id) == "string" then World.Regions[id] else nil
-	view.Region.Text = if info then string.upper(info.Name) else ""
+	view.Region.Text = if info then info.Name else ""
 end
 
 return table.freeze(Map)

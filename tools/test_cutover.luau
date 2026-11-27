@@ -39,10 +39,10 @@ end
 check("portal lands on the glade", World.Altars[World.Sanctuary.PortalDestination].Region == "Forest")
 
 -- 3. Gates and bosses: only Shen's barrier exists; the five archived bosses keep ids but have no gate or live arena.
-check("one fog gate", count(World.FogGates) == 1 and World.FogGates.Gate_AshColosseum ~= nil)
+check("one fog gate", count(World.FogGates) == 1 and World.FogGates.Gate_BellwoodLake ~= nil) -- win-106: Shen moved to the Bellwood lake
 for id, boss in World.Bosses do
 	if id == "GrandmasterShen" then
-		check("shen is live", boss.Inactive == nil and boss.Region == "AshColosseum" and World.FogGates[boss.FogGate] ~= nil)
+		check("shen is live", boss.Inactive == nil and boss.Region == "Forest" and World.FogGates[boss.FogGate] ~= nil)
 	else
 		check("archived boss " .. id, boss.Inactive == true and World.FogGates[boss.FogGate] == nil and World.Regions[boss.Region] ~= nil)
 	end

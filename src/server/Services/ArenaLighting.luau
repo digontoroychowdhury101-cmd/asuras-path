@@ -4,12 +4,12 @@
 local CollectionService = game:GetService("CollectionService")
 local Shared = game:GetService("ReplicatedStorage").AsurasPath.Shared
 local World = require(Shared.WorldDefinitions)
+local Overworld = require(Shared.Overworld)
 local Plan = require(Shared.ArenaLightPlan)
 local Profiles = require(Shared.EnvironmentProfiles)
 local Pbr = require(script.Parent.PbrAssets)
 local Lighting = {}
--- ArenaLightPlan places lights for a floor at Y 0 (arena centre Y 20). A relocated arena (Shen's summit domain, floor Y 1580)
--- sits higher, so every light is lifted by the centre's offset; a Y 20 arena gets no lift.
+-- The legacy plan assumes a floor 20 studs below the arena centre.
 local CENTER_ABOVE_FLOOR = 20
 function Lighting.lift(arena: { Center: { Y: number } }): Vector3
 	return Vector3.yAxis * (arena.Center.Y - CENTER_ABOVE_FLOOR)
@@ -27,13 +27,17 @@ function Lighting.Build(): Folder
 	local folder = Instance.new("Folder"); folder.Name,folder.Parent="AsuraArenaLighting",workspace
 	for _, boss in World.Bosses do
 		if boss.Inactive then continue end
-		local lift = Lighting.lift(boss.Arena)
-		for i, base in Plan.braziers(boss.Arena) do
-			local at = base + lift
-			Pbr.place(folder,"AsuraFirePit",CFrame.new(at),5,"Longest")
-			local light=Instance.new("PointLight")
-			light.Color,light.Range,light.Brightness,light.Shadows=Profiles.arena(boss.Region).Brazier,Plan.Brazier.Range,Plan.Brazier.Brightness*(if boss.Region=="BambooPass" then 0.65 else 1),i<=2
-			light.Parent=anchor(folder,"ArenaBrazierLight",at+Vector3.yAxis*Plan.Brazier.Height);CollectionService:AddTag(light,"AsuraArenaLight")
+		local gate = World.FogGates[boss.FogGate]
+		local lake = gate and gate.Summons
+		local lift = if lake then Vector3.yAxis * (Overworld.shenLake().StillTop - Plan.FloorY) else Lighting.lift(boss.Arena)
+		if not lake then
+			for i, base in Plan.braziers(boss.Arena) do
+				local at = base + lift
+				Pbr.place(folder,"AsuraFirePit",CFrame.new(at),5,"Longest")
+				local light=Instance.new("PointLight")
+				light.Color,light.Range,light.Brightness,light.Shadows=Profiles.arena(boss.Region).Brazier,Plan.Brazier.Range,Plan.Brazier.Brightness*(if boss.Region=="BambooPass" then 0.65 else 1),i<=2
+				light.Parent=anchor(folder,"ArenaBrazierLight",at+Vector3.yAxis*Plan.Brazier.Height);CollectionService:AddTag(light,"AsuraArenaLight")
+			end
 		end
 		for _, base in Plan.fills(boss.Arena) do
 			local at = base + lift

@@ -69,6 +69,7 @@ type Agent = {
 	StrafeUntil: number,
 	-- Boss only
 	Boss: BossDef?,
+	AwaitingEntry: boolean,
 	Phase: number,
 	Deathblows: number,
 	Allowed: { [number]: boolean }?,
@@ -96,6 +97,7 @@ local agents: { [number]: Agent } = {}
 local turns: { [number]: { Holder: number, Since: number, Until: number } } = {} -- target id -> whose attack turn (MobSpacing)
 local spawnAgents: { [string]: number } = {}
 local bossAgents: { [string]: number } = {}
+local bossSpawns: { [string]: {} } = {}
 local noises: { Noise } = {}
 local bossListeners: { (bossId: string, entityId: number) -> () } = {}
 local disconnectors: { () -> () } = {}
@@ -551,8 +553,12 @@ local function releaseShockwave(agent: Agent, self: Entity)
 	Characters.Cue("Shockwave", agent.Id, { radius = wave.Radius, x = origin.X, y = origin.Y, z = origin.Z })
 	-- A boss strikes only its fight's participants; a mob's signature reaches whoever stands in it.
 	local open = agent.Kind == "Mob"
+	local boss = agent.Boss
+	local gate = if boss then World.FogGates[boss.FogGate] else nil
+	local reachY = if boss and gate and gate.Summons then boss.Spawn.Y + 6 else 9
 	for _, e in Characters.Entities() do
-		if e.Kind == "Player" and (open or agent.Allowed and agent.Allowed[e.Id]) and e.Model.Parent and e.Root.Position.Y - 3 <= 6 and (e.Root.Position - origin).Magnitude <= wave.Radius then
+		if e.Kind == "Player" and (open or agent.Allowed and agent.Allowed[e.Id]) and e.Model.Parent
+			and e.Root.Position.Y <= reachY and (e.Root.Position - origin).Magnitude <= wave.Radius then
 			Characters.ApplyArea(agent.Id, e.Id, wave.Damage, wave.Posture, wave.Unblockable)
 		end
 	end
@@ -713,6 +719,7 @@ end
 -------------------------------------------------------------------------------------------------
 
 local function update(agent: Agent, now: number)
+	if agent.AwaitingEntry then return end
 	local self = Characters.GetEntity(agent.Id)
 	if not self then
 		return
@@ -908,6 +915,7 @@ local function newAgent(entityId: number, kind: "Mob" | "Boss", definition: stri
 		StrafeSign = 1,
 		StrafeUntil = -math.huge,
 		Boss = nil,
+		AwaitingEntry = false,
 		Phase = 1,
 		Deathblows = 0,
 		Allowed = nil,
@@ -1039,18 +1047,15 @@ function AIService.RespawnRegion(region: string, skipEngaged: boolean, freed: nu
 	end
 end
 
-function AIService.SpawnBoss(bossId: string, participants: { number }?): number?
-	local existing = bossAgents[bossId]
-	if existing then
-		local living = BossDuo.alive(bossId)
-		if living then return living end
-		AIService.DespawnBoss(bossId)
-	end
+local function spawnBoss(bossId: string, awaitingEntry: boolean): number?
+	if bossSpawns[bossId] then return nil end
 	local boss = World.Bosses[bossId]
 	if not boss then
 		warn("[AIService] Unknown boss " .. bossId)
 		return nil
 	end
+	local spawn = {}
+	bossSpawns[bossId] = spawn
 	local opening = boss.Phases[1]
 	local home = toCFrame(boss.Spawn)
 	local id = Characters.SpawnEnemy({
@@ -1062,31 +1067,49 @@ function AIService.SpawnBoss(bossId: string, participants: { number }?): number?
 		BodyColor = boss.BodyColor,
 		Boss = true,
 	})
+	if bossSpawns[bossId] ~= spawn then
+		if id then Characters.DespawnEnemy(id) end
+		return nil
+	end
 	if not id then
+		bossSpawns[bossId] = nil
 		return nil
 	end
 	local agent = newAgent(id, "Boss", boss.Id, opening.AI, boss.Region, boss.Essence, home, {})
 	agent.Boss = boss
-	agent.Mode = "Engage"
+	agent.AwaitingEntry = awaitingEntry
+	if not awaitingEntry then agent.Mode = "Engage" end
 	agent.Pillars = Bodies.pillars(boss)
 	local hull = (Bodies.Hulls :: any)[boss.Archetype]
 	agent.Clearance = if hull then hull[3] * 0.5 * (boss.Scale or 1) + 0.5 else 0
 
 	local entity = Characters.GetEntity(id)
 	if entity then
+		if awaitingEntry then
+			-- Shen appears before the lake can support him. Use the combat lock until entry starts.
+			entity.Root.Anchored = true
+			Characters.Cinematic(id, math.huge)
+			entity.Model:SetAttribute("AsuraBossAwaiting", true)
+		end
 		applyPhase(agent, boss, 1, entity)
 		entity.Model:SetAttribute("AsuraBossTitle", boss.Title)
 		entity.Model:SetAttribute("AsuraEncounter", boss.Id)
 		BossAppearance.apply(entity.Model, boss.Archetype, boss.Scale)
+		if awaitingEntry then
+			local stand = entity.Humanoid.HipHeight + entity.Root.Size.Y * 0.5
+			Characters.Teleport(id, home + Vector3.yAxis * (stand - 3))
+		end
 	end
-	bossAgents[bossId] = id
 	local members = { id }
 	local partner = boss.Partner
 	if partner then
 		local partnerId = Characters.SpawnEnemy({ Name = partner.Name, Weapon = partner.Weapon, CFrame = home * CFrame.new(16, 0, 0),
 			Stats = partner.Stats, Definition = boss.Id, BodyColor = { 100, 88, 68 }, Boss = true })
-		if not partnerId then
-			agents[id] = nil; bossAgents[bossId] = nil; Characters.DespawnEnemy(id)
+		if bossSpawns[bossId] ~= spawn or not partnerId then
+			if bossSpawns[bossId] == spawn then bossSpawns[bossId] = nil end
+			agents[id] = nil
+			Characters.DespawnEnemy(id)
+			if partnerId then Characters.DespawnEnemy(partnerId) end
 			return nil
 		end
 		local partnerBoss = table.clone(boss)
@@ -1106,12 +1129,43 @@ function AIService.SpawnBoss(bossId: string, participants: { number }?): number?
 		end
 		table.insert(members, partnerId)
 	end
+	bossSpawns[bossId] = nil
+	bossAgents[bossId] = id
 	BossDuo.register(boss, members)
+	return id
+end
+
+function AIService.PreviewBoss(bossId: string): number?
+	local boss = World.Bosses[bossId]
+	if not boss or boss.Partner then return nil end
+	-- The prior KO corpse can finish its dissolve while a new summon waits.
+	return BossDuo.alive(bossId) or spawnBoss(bossId, true)
+end
+
+function AIService.SpawnBoss(bossId: string, participants: { number }?): number?
+	local id = BossDuo.alive(bossId)
+	if id then
+		local agent, entity = agents[id], Characters.GetEntity(id)
+		if not agent or not agent.AwaitingEntry or not entity then return id end
+		agent.AwaitingEntry = false
+		setMode(agent, "Engage", Characters.Now())
+		Characters.Cinematic(id, 0)
+		entity.Root.Anchored = false
+		pcall(entity.Root.SetNetworkOwner, entity.Root, nil)
+		entity.Model:SetAttribute("AsuraBossAwaiting", nil)
+	else
+		if bossSpawns[bossId] then return nil end
+		if bossAgents[bossId] then AIService.DespawnBoss(bossId) end
+		id = spawnBoss(bossId, false)
+		if not id then return nil end
+	end
+	local boss = World.Bosses[bossId]
+	local members = BossDuo.members(bossId)
 	if participants then AIService.SetBossTargets(bossId, participants) end
 	-- Entry handoff: everyone locked and protected through the framing shot and the camera's return.
 	local shot = if participants and #participants > 0 then HandoffRules.shot("Intro") else nil
 	if participants and shot then Handoff.begin(boss.Id, "Intro", participants, members) end
-	Characters.Cue("BossIntro", id, { boss = boss.Id, title = boss.Title, phase = 1, name = opening.Name, members = members, participants = participants, shot = shot })
+	Characters.Cue("BossIntro", id, { boss = boss.Id, title = boss.Title, phase = 1, name = boss.Phases[1].Name, members = members, participants = participants, shot = shot })
 	return id
 end
 
@@ -1140,6 +1194,7 @@ function AIService.SetBossTargets(bossId: string, participants: { number })
 end
 
 function AIService.DespawnBoss(bossId: string)
+	bossSpawns[bossId] = nil
 	local members = table.clone(BossDuo.members(bossId))
 	Handoff.forget(bossId)
 	BossDuo.forget(bossId)
@@ -1205,7 +1260,7 @@ local function onEvent(event: Combat.Event, point: Vector3?)
 		end
 	end
 	local victim = agents[event.Target]
-	if not victim then
+	if not victim or victim.AwaitingEntry then
 		return
 	end
 	if victim.Boss and (event.Kind == "Hit" or event.Kind == "CounterHit") then
@@ -1328,6 +1383,7 @@ function AIService.Start()
 end
 
 function AIService.Destroy()
+	table.clear(bossSpawns)
 	for bossId in table.clone(bossAgents) do AIService.DespawnBoss(bossId) end
 	running = false
 	for _, disconnect in disconnectors do

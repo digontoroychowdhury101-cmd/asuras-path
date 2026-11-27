@@ -7,7 +7,10 @@
 local Layout = {}
 
 Layout.ReferenceHeight, Layout.MinFactor, Layout.MaxFactor = 900, 0.7, 1.35 -- mirrors HudKit.factor
-Layout.ActionBarBottom = 58
+Layout.ActionBarBottom = 16
+Layout.ActionBarSize, Layout.ActionBarBase = { 496, 52 }, 0.88
+Layout.ActionBarMinScale = 0.84
+Layout.SpellSize, Layout.SpellBase = { 306, 112 }, 0.85
 Layout.Margin = 12
 
 export type Rect = { X: number, Y: number, W: number, H: number }
@@ -23,11 +26,11 @@ local function region(anchor: { number }, at: { number }, offset: { number }, si
 end
 
 Layout.Regions = {
-	ActionBar = region({ 0.5, 1 }, { 0.5, 1 }, { 0, -Layout.ActionBarBottom }, { 588, 86 }, 0.8),
-	Vitals = region({ 0, 1 }, { 0, 1 }, { 16, -12 }, { 470, 150 }, 0.78),
-	Spells = region({ 1, 1 }, { 1, 1 }, { -24, -24 }, { 260, 190 }, 0.85),
+	ActionBar = region({ 0.5, 1 }, { 0.5, 1 }, { 0, -Layout.ActionBarBottom }, Layout.ActionBarSize, Layout.ActionBarBase),
+	Vitals = region({ 0.5, 1 }, { 0.5, 1 }, { 0, 0 }, { 480, 118 }, 0.88),
+	Spells = region({ 1, 1 }, { 1, 1 }, { -24, -24 }, Layout.SpellSize, Layout.SpellBase),
 	Minimap = region({ 0, 0 }, { 0, 0 }, { 20, 66 }, { 190, 190 }, 0.82),
-	Objective = region({ 1, 0 }, { 1, 0 }, { -20, 64 }, { 360, 92 }, 0.8),
+	Objective = region({ 1, 0 }, { 1, 0 }, { -20, 64 }, { 360, 98 }, 0.8),
 	Codex = region({ 0, 0 }, { 0, 0.55 }, { 14, 0 }, { 92, 30 }, 0),
 	ControlsPill = region({ 0, 0 }, { 0, 0.55 }, { 14, -40 }, { 150, 30 }, 0.85),
 	-- The training card (unscaled, grows with its text): right column, below the objective and above
@@ -36,6 +39,7 @@ Layout.Regions = {
 }
 -- Health, flask, essence and weapon stay at least ~12 px on a 1096x604 window (F03 Studio view).
 Layout.Regions.Vitals.MinScale = 0.66
+Layout.Regions.ActionBar.MinScale = Layout.ActionBarMinScale
 Layout.Regions.Compass ={ Anchor = { 0.5, 0 }, At = { 0.5, 0 }, Offset = { 0, 8 }, Size = { 520, 60 }, Base = 0, WidthScale = 0.36, MinWidth = 240, MaxWidth = 520 }
 Layout.Regions.Boss = { Anchor = { 0.5, 0 }, At = { 0.5, 0 }, Offset = { 0, 74 }, Size = { 900, 148 }, Base = 0, WidthScale = 0.5, MinWidth = 300, MaxWidth = 900 }
 
@@ -44,8 +48,10 @@ Layout.Regions.Boss = { Anchor = { 0.5, 0 }, At = { 0.5, 0 }, Offset = { 0, 74 }
 Layout.Toast = { Bottom = 200, Side = 400, Height = 48, MaxWidth = 640 }
 function Layout.toastRect(width: number, height: number): Rect
 	local t = Layout.Toast
-	local w = math.clamp(width - 2 * t.Side, 0, t.MaxWidth)
-	return { X = (width - w) / 2, Y = height - t.Bottom - t.Height, W = w, H = t.Height }
+	local available = math.max(0, width - 2 * Layout.Margin)
+	local compact = math.min(264, available)
+	local w = math.clamp(width - 2 * t.Side, compact, t.MaxWidth)
+	return { X = (width - w) / 2, Y = height - Layout.toastBottom(height) - t.Height, W = w, H = t.Height }
 end
 
 -- Post-F26 step 6: a centre warning banner outranks the toast. While one is up, the toast's slot
@@ -59,6 +65,16 @@ function Layout.factor(height: number): number
 	return math.clamp(height / Layout.ReferenceHeight, Layout.MinFactor, Layout.MaxFactor)
 end
 
+function Layout.vitalsBottom(height: number): number
+	local scale = math.max(Layout.ActionBarBase * Layout.factor(height), Layout.ActionBarMinScale)
+	return Layout.ActionBarBottom + Layout.ActionBarSize[2] * scale + 10
+end
+
+function Layout.toastBottom(height: number): number
+	local r = Layout.Regions.Vitals
+	return math.max(Layout.Toast.Bottom, Layout.vitalsBottom(height) + r.Size[2] * math.max(r.Base * Layout.factor(height), r.MinScale or 0) + 8)
+end
+
 -- On-screen rectangle of a region (UIScale scales about the anchor point).
 function Layout.rect(name: string, width: number, height: number): Rect
 	local r = (Layout.Regions :: any)[name] :: Region
@@ -67,7 +83,8 @@ function Layout.rect(name: string, width: number, height: number): Rect
 	if r.WidthScale then w = math.clamp(width * r.WidthScale, r.MinWidth or 0, r.MaxWidth or math.huge) end
 	local h = r.Size[2] * scale
 	local x = width * r.At[1] + r.Offset[1] - w * r.Anchor[1]
-	local y = height * r.At[2] + r.Offset[2] - h * r.Anchor[2]
+	local offsetY = if name == "Vitals" then -Layout.vitalsBottom(height) else r.Offset[2]
+	local y = height * r.At[2] + offsetY - h * r.Anchor[2]
 	return { X = x, Y = y, W = w, H = h }
 end
 
@@ -85,11 +102,11 @@ function Layout.modal(width: number, height: number, cardW: number, cardH: numbe
 		return scale, { X = (width - cardW * scale) / 2, Y = (height - cardH * scale) / 2, W = cardW * scale, H = cardH * scale }
 	end
 	local top = Layout.rect("Compass", width, height)
-	local bar = Layout.rect("ActionBar", width, height)
+	local plate = Layout.rect("Vitals", width, height)
 	local map = Layout.rect("Minimap", width, height)
 	local objective = Layout.rect("Objective", width, height)
 	local side = math.max(map.X + map.W, width - objective.X) + m
-	local bandTop, bandBottom = top.Y + top.H + m, bar.Y - m
+	local bandTop, bandBottom = top.Y + top.H + m, plate.Y - m
 	local scale = math.min(Layout.factor(height), (width - 2 * side) / cardW, (bandBottom - bandTop) / cardH)
 	scale = math.max(scale, 0.5)
 	local w, h = cardW * scale, cardH * scale
@@ -102,18 +119,21 @@ end
 -- freed bottom centre, the spell slots the top-right corner above the buttons, the objective
 -- sits beside the minimap (whose blossom buttons carry Respite, controls and the Codex), and the
 -- target plate and boss bar fill the top band between the minimap and the right-hand column.
-Layout.Touch = { Cluster = { 340, 360 }, Thumb = 0.42, VitalsBase = 0.72, MinTarget = 240, MinBoss = 240, BossHeight = 110 }
+Layout.Touch = { Cluster = { 340, 360 }, Thumb = 0.42, VitalsBase = 1.06, MinTarget = 240, MinBoss = 240, BossHeight = 110 }
 function Layout.touch(width: number, height: number): { [string]: Rect }
 	local f, m, t = Layout.factor(height), Layout.Margin, Layout.Touch
 	local map = Layout.rect("Minimap", width, height)
 	local cluster = { X = width - t.Cluster[1] * f, Y = height - t.Cluster[2] * f, W = t.Cluster[1] * f, H = t.Cluster[2] * f }
 	local thumb = { X = 0, Y = height - height * t.Thumb, W = height * t.Thumb, H = height * t.Thumb }
-	local vw, vh = 470 * t.VitalsBase * f, 150 * t.VitalsBase * f
 	local left, right = thumb.W + m, cluster.X - m
+	local vitalsSize = Layout.Regions.Vitals.Size
+	local vs = math.min(t.VitalsBase * f, math.max(0, right - left) / vitalsSize[1])
+	local vw, vh = vitalsSize[1] * vs, vitalsSize[2] * vs
 	local vitals = { X = left + math.max(0, (right - left - vw) / 2), Y = height - m - vh, W = vw, H = vh }
-	local sw, sh = 260 * 0.85 * f, 190 * 0.85 * f
+	local sw, sh = Layout.SpellSize[1] * Layout.SpellBase * f, Layout.SpellSize[2] * Layout.SpellBase * f
 	local spells = { X = width - 16 - sw, Y = math.max(2, cluster.Y - sh - 2), W = sw, H = sh }
-	local ow, oh = 360 * 0.8 * f, 92 * 0.8 * f
+	local objectiveSize = Layout.Regions.Objective.Size
+	local ow, oh = objectiveSize[1] * 0.8 * f, objectiveSize[2] * 0.8 * f
 	local objective = { X = map.X + map.W + m, Y = 72, W = ow, H = oh }
 	local spanL, spanR = map.X + map.W + m, math.min(cluster.X, spells.X) - m
 	local tw = math.clamp(math.min(width * 0.4, spanR - spanL), t.MinTarget, 520)

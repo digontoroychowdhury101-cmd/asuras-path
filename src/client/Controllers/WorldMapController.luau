@@ -75,19 +75,26 @@ local function parse(value: any): { [string]: boolean }
 	return set
 end
 
-local function swatch(parent: Instance, color: Color3, shape: string, order: number): Frame
+local function swatch(parent: Instance, color: Color3, shape: string, order: number): GuiObject
+	if shape == "arrow" then
+		return HudKit.label(parent, "▲", 14, Enum.Font.GothamBold, color, { Size = UDim2.fromOffset(12, 16) })
+	end
 	local f = HudKit.make("Frame", parent, {
 		LayoutOrder = order, Size = UDim2.fromOffset(12, 12), BackgroundColor3 = color, BorderSizePixel = 0,
 		Rotation = if shape == "diamond" then 45 else 0,
 	}) :: Frame
-	if shape == "dot" then HudKit.make("UICorner", f, { CornerRadius = UDim.new(1, 0) }) end
+	if shape == "dot" or shape == "ring" then HudKit.make("UICorner", f, { CornerRadius = UDim.new(1, 0) }) end
+	if shape == "ring" then
+		f.BackgroundTransparency = 1
+		HudKit.make("UIStroke", f, { Color = color, Thickness = 2 })
+	end
 	return f
 end
 
 function Controller.new(input: any, ui: any, state: any): WorldMapView
-	local window = UiWindow.new(ui.Gui, "WorldMap", "World Map", "What you have walked and seen", WINDOW_SIZE, function() end)
+	local window = UiWindow.new(ui.Gui, "WorldMap", "World Map", "", WINDOW_SIZE, function() end)
 	local pane = HudKit.make("Frame", window.Body, {
-		Name = "Pane", Size = UDim2.fromScale(1, 1), BackgroundColor3 = Color3.fromRGB(20, 12, 24), ClipsDescendants = true, Active = true,
+		Name = "Pane", Size = UDim2.fromScale(1, 1), BackgroundColor3 = T.Ink, ClipsDescendants = true, Active = true,
 	}) :: Frame
 	HudKit.make("UIStroke", pane, { Color = T.Edge, Thickness = 1, Transparency = 0.2 })
 	local canvas = HudKit.make("Frame", pane, { Name = "Canvas", BackgroundTransparency = 1, Size = UDim2.fromOffset(100, 100) }) :: Frame
@@ -110,20 +117,21 @@ function Controller.new(input: any, ui: any, state: any): WorldMapView
 	-- Static layer: region names straight from Overworld.Regions[...].Name.
 	for _, region in WorldMap.regionLabels() do
 		local small = region.Id == "AshColosseum"
-		HudKit.label(canvas, string.upper(region.Name), if small then 11 else 18, Enum.Font.Garamond, if small then C.Ivory else C.Blossom, {
+		HudKit.label(canvas, string.upper(region.Name), if small then 11 else 18, HudKit.TitleFont, C.Ivory, {
 			Name = "Region_" .. region.Id, AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(region.U, region.V),
 			Size = UDim2.fromOffset(240, 22), ZIndex = 3, TextStrokeTransparency = 0.15, TextTransparency = 0.12,
 		})
 	end
-	self.Arrow = HudKit.label(canvas, "▲", 24, Enum.Font.GothamBold, C.Blossom, {
+	self.Arrow = HudKit.label(canvas, "▲", 24, Enum.Font.GothamBold, C.Ivory, {
 		Name = "You", AnchorPoint = Vector2.new(0.5, 0.5), Size = UDim2.fromOffset(26, 26), ZIndex = 9, TextStrokeTransparency = 0,
 		TextStrokeColor3 = C.Ink,
 	})
 	self.Pin = HudKit.make("Frame", canvas, {
-		Name = "Waypoint", AnchorPoint = Vector2.new(0.5, 0.5), Size = UDim2.fromOffset(16, 16), BackgroundColor3 = C.Crimson, ZIndex = 8, Visible = false,
+		Name = "Waypoint", AnchorPoint = Vector2.new(0.5, 0.5), Size = UDim2.fromOffset(16, 16), BackgroundColor3 = T.Ink,
+		BackgroundTransparency = 0.16, BorderSizePixel = 0, ZIndex = 8, Visible = false,
 	}) :: Frame
 	HudKit.make("UICorner", self.Pin, { CornerRadius = UDim.new(1, 0) })
-	HudKit.make("UIStroke", self.Pin, { Color = C.Gold, Thickness = 2 })
+	HudKit.make("UIStroke", self.Pin, { Color = C.Qi, Thickness = 2 })
 
 	-- Overlay (pane space, not zoomed): zoom buttons, legend, hint and chart progress.
 	local tools = HudKit.make("Frame", pane, { Name = "Tools", AnchorPoint = Vector2.new(1, 0), Position = UDim2.new(1, -LAYOUT.ToolsMargin, 0, LAYOUT.ToolsMargin), Size = UDim2.fromOffset(LAYOUT.ToolsW, LAYOUT.ToolsH),
@@ -140,29 +148,31 @@ function Controller.new(input: any, ui: any, state: any): WorldMapView
 	end
 	self.Zoomed = tool("+", 1, function() zoom(BUTTON_STEP) end)
 	tool("−", 2, function() zoom(1 / BUTTON_STEP) end)
-	local you = tool("You", 3, function() self:Centre() end)
-	you.TextSize = 16
+	local you = tool("Centre", 3, function() self:Centre() end)
+	you.TextSize = 14
 
-	local legend = HudKit.panel(pane, "Legend", { AnchorPoint = Vector2.new(0, 1), Position = UDim2.new(0, LAYOUT.LegendMargin, 1, -LAYOUT.LegendMargin), Size = UDim2.fromOffset(LAYOUT.LegendW, LAYOUT.LegendH), ZIndex = 20, BackgroundTransparency = 0.25, Active = true })
+	local legend = HudKit.panel(pane, "Legend", { AnchorPoint = Vector2.new(0, 1), Position = UDim2.new(0, LAYOUT.LegendMargin, 1, -LAYOUT.LegendMargin), Size = UDim2.fromOffset(LAYOUT.LegendW, LAYOUT.LegendH), ZIndex = 20, BackgroundTransparency = 0.1, Active = true })
 	HudKit.make("UIPadding", legend, { PaddingLeft = UDim.new(0, 8), PaddingTop = UDim.new(0, 6) })
 	HudKit.make("UIListLayout", legend, { Padding = UDim.new(0, 3), SortOrder = Enum.SortOrder.LayoutOrder })
 	local rows: { { Text: string, Color: Color3, Shape: string } } = {
-		{ Text = "You", Color = C.Blossom, Shape = "square" }, { Text = "Incense altar", Color = C.Gold, Shape = "diamond" },
+		{ Text = "You", Color = C.Ivory, Shape = "arrow" }, { Text = "Incense altar", Color = C.Gold, Shape = "diamond" },
 		{ Text = "Landmark", Color = C.Ivory, Shape = "square" }, { Text = "Point of interest", Color = C.Sakura, Shape = "dot" },
-		{ Text = "Waypoint", Color = C.Crimson, Shape = "dot" },
+		{ Text = "Waypoint", Color = C.Qi, Shape = "ring" },
 	}
 	for order, row in rows do
 		local line = HudKit.make("Frame", legend, { LayoutOrder = order, Size = UDim2.new(1, 0, 0, 16), BackgroundTransparency = 1, ZIndex = 21 }) :: Frame
 		local s = swatch(line, row.Color, row.Shape, order)
 		s.AnchorPoint, s.Position, s.ZIndex = Vector2.new(0, 0.5), UDim2.fromOffset(0, 8), 21
-		HudKit.label(line, row.Text, 14, Enum.Font.Garamond, T.Ivory, { Position = UDim2.fromOffset(20, 0), Size = UDim2.new(1, -20, 1, 0), TextXAlignment = Enum.TextXAlignment.Left, ZIndex = 21 })
+		HudKit.label(line, row.Text, 14, HudKit.BodyFont, T.Ivory, { Position = UDim2.fromOffset(20, 0), Size = UDim2.new(1, -20, 1, 0), TextXAlignment = Enum.TextXAlignment.Left, ZIndex = 21 })
 	end
 	self.Legend = legend
-	self.LevelLabel = HudKit.label(legend, "", 14, Enum.Font.Garamond, T.Gold, { LayoutOrder = 9, Size = UDim2.new(1, 0, 0, 16), TextXAlignment = Enum.TextXAlignment.Left, ZIndex = 21 })
-	self.Hint = HudKit.label(pane, "", 14, Enum.Font.Garamond, T.Ivory, {
-		AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.new(0.5, 0, 0, 6), Size = UDim2.new(0.6, 0, 0, 18), ZIndex = 20, TextStrokeTransparency = 0.2,
+	self.LevelLabel = HudKit.label(legend, "", 14, HudKit.BodyFont, T.Gold, { LayoutOrder = 9, Size = UDim2.new(1, 0, 0, 16), TextXAlignment = Enum.TextXAlignment.Left, ZIndex = 21 })
+	self.Hint = HudKit.label(pane, "", 14, HudKit.BodyFont, T.Ivory, {
+		AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.new(0.5, 0, 0, 6), Size = UDim2.new(0.6, 0, 0, 30),
+		TextScaled = true, TextWrapped = true, ZIndex = 20, TextStrokeTransparency = 0.15,
 	})
-	self.Status = HudKit.label(pane, "", 16, Enum.Font.Garamond, T.Gold, {
+	HudKit.make("UITextSizeConstraint", self.Hint, { MinTextSize = 11, MaxTextSize = 14 })
+	self.Status = HudKit.label(pane, "", 15, HudKit.BodyFont, T.Gold, {
 		AnchorPoint = Vector2.new(0.5, 1), Position = UDim2.new(0.5, 0, 1, -10), Size = UDim2.fromOffset(260, 22), ZIndex = 20, TextStrokeTransparency = 0.2,
 	})
 
@@ -265,7 +275,7 @@ function Controller.Refresh(self: WorldMapView)
 		if shape == "dot" then HudKit.make("UICorner", mark, { CornerRadius = UDim.new(1, 0) }) end
 		HudKit.make("UIStroke", mark, { Color = C.Ink, Thickness = 1 })
 		table.insert(self.Dynamic, mark)
-		local text = HudKit.label(self.Canvas, name, 12, Enum.Font.Garamond, C.Ivory, {
+		local text = HudKit.label(self.Canvas, name, 12, HudKit.BodyFont, C.Ivory, {
 			Name = "Name_" .. name, AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.new(u, 0, v, size * 0.5 + 2), Size = UDim2.fromOffset(160, 14),
 			ZIndex = layer, TextStrokeTransparency = 0.15, Visible = false,
 		})
@@ -361,8 +371,8 @@ function Controller.Open(self: WorldMapView, fromMenu: boolean?)
 	self:Centre()
 	self:Refresh()
 	local device = self.Input.Device
-	self.Hint.Text = if device == "Keyboard" then string.format("Drag to pan · wheel to zoom · click to set a waypoint · [%s] close", InputMap.label("Map", device))
-		elseif device == "Gamepad" then "Zoom with the buttons · [B] close" else "Drag to pan · tap to set a waypoint"
+	self.Hint.Text = if device == "Keyboard" then string.format("Drag to pan · Click to place a waypoint · [%s] close", InputMap.label("Map", device))
+		elseif device == "Gamepad" then "Zoom with + or − · [B] close" else "Drag to pan · Tap to place a waypoint"
 	self:Fit()
 	ContextActionService:BindActionAtPriority(BACK, function(_: string, state: Enum.UserInputState): Enum.ContextActionResult
 		if state == Enum.UserInputState.Begin then self:Close() end

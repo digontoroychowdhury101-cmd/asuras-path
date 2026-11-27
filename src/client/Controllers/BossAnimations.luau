@@ -43,12 +43,14 @@ local function stop(model: Model)
 	playing[model] = nil
 end
 
-local function play(model: Model, action: string, kind: string?, impact: number?): Rules.Resolved?
+local function play(model: Model, action: string, kind: string?, impact: number?, authoredOnly: boolean?): Rules.Resolved?
 	local humanoid = model:FindFirstChildOfClass("Humanoid")
 	local look, phase, sig = signature(model)
 	local resolved = Rules.resolve(look, phase, action, kind, rigOf(model, humanoid), function(name) return model:GetAttribute(name) end)
-	model:SetAttribute("AsuraAnimationPlaying", resolved.Key .. "|" .. resolved.Source)
+	local authored = resolved.Source == "Override" or resolved.Source == "Custom"
 	local animator = humanoid and humanoid:FindFirstChildOfClass("Animator")
+	if authoredOnly and (not authored or not animator) then return nil end
+	model:SetAttribute("AsuraAnimationPlaying", resolved.Key .. "|" .. resolved.Source)
 	stop(model)
 	if not resolved.Id or not animator then
 		model:SetAttribute("AsuraAuthoredMotion", nil)
@@ -62,7 +64,6 @@ local function play(model: Model, action: string, kind: string?, impact: number?
 	if not ok then return nil end
 	track.Priority = (Enum.AnimationPriority :: any)[resolved.Priority]
 	track.Looped = resolved.Looped
-	local authored = resolved.Source == "Override" or resolved.Source == "Custom"
 	local entry: Playing = { Signature = sig, Key = resolved.Key, Source = resolved.Source, Track = track }
 	local contacts = authored and impact and (Rules.Contacts[look] or {})[action]
 	if contacts then
@@ -82,6 +83,20 @@ local function play(model: Model, action: string, kind: string?, impact: number?
 	return resolved
 end
 Animations.play = play
+
+function Animations.preview(model: Model, action: string, impact: number): (() -> ())?
+	if not play(model, action, nil, impact, true) then return nil end
+	local entry = playing[model]
+	return function()
+		-- Combat can take over this actor before the preview's cleanup runs.
+		if playing[model] ~= entry then return end
+		stop(model)
+		if model.Parent then
+			model:SetAttribute("AsuraAuthoredMotion", nil)
+			model:SetAttribute("AsuraAnimationPlaying", nil)
+		end
+	end
+end
 
 -- The one write of a boss track's speed: the rate the contact plan wants, times the scale hitstop and cinematics asked
 -- for. The clip time a slowdown costs (its debt) is repaid at MAX_RATE once it lifts, so the next contact is not late.

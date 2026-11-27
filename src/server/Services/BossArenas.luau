@@ -26,11 +26,21 @@ Arenas.FloorColor = Color3.fromRGB(118, 110, 100) -- duel floor tone (F09 readab
 -- height (+-0.9 jitter), so a coplanar slab z-fought into dark panels. Must exceed the jitter and stay a walkable step.
 Arenas.FloorLift = 1
 local walls: { [string]: { Part } } = {}
+-- Summoned arenas (Shen's lake, ShenLakeRules): the invisible floor that holds fighters on the stilled water, by boss id.
+local stills: { [string]: Part } = {}
 local function part(parent: Instance, name: string, size: Vector3, position: Vector3, color: Color3): Part
 	local p = Instance.new("Part")
 	p.Name, p.Size, p.Position, p.Color = name, size, position, color
 	p.Anchored, p.Material, p.Parent = true, Enum.Material.Slate, parent
 	return p
+end
+-- The stilled lake: while `on`, the invisible floor at the water surface collides, so the fight walks on the water.
+function Arenas.still(bossId: string, on: boolean)
+	local p = stills[bossId]
+	if p then
+		p.CanCollide, p.CanQuery = on, on
+		p:SetAttribute("Stilled", on)
+	end
 end
 function Arenas.seal(gateId: string, sealed: boolean)
 	for _, p in walls[gateId] or {} do
@@ -56,6 +66,7 @@ local function portal(parent: Instance, name: string, position: Vector3, destina
 end
 function Arenas.build(root: Instance)
 	table.clear(walls)
+	table.clear(stills)
 	local old = root:FindFirstChild("BossArenas")
 	if old then old:Destroy() end
 	local folder = Instance.new("Folder")
@@ -63,6 +74,30 @@ function Arenas.build(root: Instance)
 	for _, boss in World.Bosses do
 		if boss.Inactive then continue end
 		local c, s = boss.Arena.Center, boss.Arena.Size
+		local gate = World.FogGates[boss.FogGate]
+		if gate and gate.Summons then
+			-- Shen's lake: no slab, approach or aperture. The floor is the water itself, made walkable only while stilled
+			-- (its top is three under the spawn, on the water surface); the wind wall rings all four sides.
+			local top = boss.Spawn.Y - 3
+			local still = part(folder, boss.Id .. "Stillwater", Vector3.new(s.X, 2, s.Z), Vector3.new(c.X, top - 1, c.Z), Arenas.FloorColor)
+			still.Transparency, still.CastShadow, still.CanTouch = 1, false, false
+			stills[boss.Id] = still
+			Arenas.still(boss.Id, false)
+			local ring: { Part } = {}
+			for _, spec in {
+				{ Vector3.new(2, 100, s.Z), Vector3.new(-s.X / 2, 48, 0) },
+				{ Vector3.new(2, 100, s.Z), Vector3.new(s.X / 2, 48, 0) },
+				{ Vector3.new(s.X, 100, 2), Vector3.new(0, 48, -s.Z / 2) },
+				{ Vector3.new(s.X, 100, 2), Vector3.new(0, 48, s.Z / 2) },
+			} do
+				local wall = part(folder, "StormPerimeter", spec[1], Vector3.new(c.X, top, c.Z) + spec[2], Color3.fromRGB(176, 196, 206))
+				wall.Material, wall.CastShadow = Enum.Material.ForceField, false
+				table.insert(ring, wall)
+			end
+			walls[boss.FogGate] = ring
+			Arenas.seal(boss.FogGate, false)
+			continue
+		end
 		-- Floor top is three studs under the boss spawn (0 in the old corridor, the summit in the overworld).
 		local center = Vector3.new(c.X, boss.Spawn.Y - 3 + Arenas.FloorLift, c.Z)
 		-- F09: a mid stone, not near-black slate: at the low dusk sun the bare Titan and Wu floors read

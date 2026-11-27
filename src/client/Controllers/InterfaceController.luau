@@ -1,8 +1,6 @@
 --!strict
 -- ModuleScript: StarterPlayer/StarterPlayerScripts/AsurasPath/Controllers/InterfaceController
--- Minimal Souls HUD: curved vitality arcs, inward-filling posture, loadout and gourd, boss
--- encounter bar, lock-on reticle with Deathblow calligraphy, telegraph glyphs, Incense Altar menu
--- and the death screen. Everything is built from instances; no uploaded imagery.
+-- Vitals, encounter cues, altar interface and death presentation.
 local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -23,7 +21,7 @@ local InputController = require(script.Parent:WaitForChild("InputController") ::
 local HudKit = require(script.Parent:WaitForChild("HudKit") :: ModuleScript)
 local HudLayout = require(script.Parent:WaitForChild("HudLayout") :: ModuleScript)
 local UiKit = require(script.Parent:WaitForChild("UiKit") :: ModuleScript)
-local Sakura = require(script.Parent:WaitForChild("SakuraKit") :: ModuleScript)
+local Style = require(script.Parent.CombatHudStyle)
 local BossHud = require(script.Parent.BossHud)
 local BossMusic = require(script.Parent.BossMusic)
 local BossEffects = require(script.Parent.BossEffects)
@@ -35,6 +33,7 @@ local VitalsTags = require(script.Parent.VitalsTags)
 local Visibility = require(script.Parent.HudVisibility)
 local AltarAscension = require(script.Parent.AltarAscension)
 local LevelPreview = require(sharedFolder:WaitForChild("LevelPreview") :: ModuleScript)
+local Effects = require(sharedFolder:WaitForChild("EffectsPreference") :: ModuleScript)
 local WorldMap = require(sharedFolder:WaitForChild("WorldMap") :: ModuleScript)
 local Audio = require(script.Parent:WaitForChild("SpatialAudio") :: ModuleScript)
 
@@ -49,18 +48,14 @@ type InputController = InputController.InputController
 local Controller = {}
 Controller.__index = Controller
 
--- Sakura palette (SakuraKit.Colors): plum ink, blossom pink, crimson life, gold trim.
-local INK = Sakura.Colors.Ink
-local IVORY = Sakura.Colors.Ivory
-local MUTED = Color3.fromRGB(190, 156, 176)
-local BLOOD = Sakura.Colors.Crimson
-local EMBER = Sakura.Colors.Sakura
-local BLEED = Sakura.Colors.Blossom
-local JADE = Sakura.Colors.Stamina
-local GOLD = Sakura.Colors.Gold
-local SCAR = Color3.fromRGB(62, 40, 60)
-local TRACK = Sakura.Colors.Track
-local EDGE = Color3.fromRGB(150, 60, 110)
+local INK = Style.Ink
+local IVORY = Style.Ivory
+local MUTED = Style.Muted
+local BLOOD = Style.Blood
+local EMBER = Style.Rally
+local GOLD = Style.Gold
+local TRACK = Style.Track
+local EDGE = Style.Edge
 
 -- The altar holds the cursor and combat keys while open, so it takes the same back keys as Respite,
 -- the Codex and Lin (Roblox reserves Escape). Bound only while open; anything stacked over it closes it.
@@ -71,7 +66,6 @@ local TITLE_FONT = Enum.Font.Antique
 local BODY_FONT = Enum.Font.Garamond
 local NUMBER_FONT = Enum.Font.GothamMedium
 
-local WEAPON_GLYPH: { [string]: string } = { Unarmed = "FIST", Jian = "JIAN", Dao = "DAO", Guandao = "GLAIVE" }
 local MATERIAL_NAME: { [string]: string } = { SpiritIronOre = "Spirit Iron Ore", StarfallShard = "Starfall Shard" }
 local WEAPON_NAME: { [string]: string } = { Unarmed = "Iron Fist", Jian = "Jian Sword", Dao = "Dao Sabre", Guandao = "Guandao Glaive", None = "—" }
 local REASONS: { [string]: string } = {
@@ -81,6 +75,7 @@ local REASONS: { [string]: string } = {
 	InBossFight = "The fog binds you to this fight.",
 	ArenaOccupied = "Another warrior is facing this foe. Wait for the fog to lift.",
 	BossFelled = "This foe has already fallen.",
+	LakeStirring = "The lake already stirs. Go down to the water.",
 	NotAtAltar = "Kneel at an Incense Altar first.",
 	NoAltar = "There is no altar here.",
 	TooFar = "Move closer to the altar.",
@@ -95,6 +90,10 @@ local REASONS: { [string]: string } = {
 	InColosseum = "The Colosseum forbids it.",
 	GourdFull = "Your gourd is already full.",
 	Unavailable = "Unavailable right now.",
+}
+-- Successes worth a line (most speak through their own cue).
+local NOTICES: { [string]: string } = {
+	RelicTaken = "Something answers from the lake below.",
 }
 
 -------------------------------------------------------------------------------------------------
@@ -152,51 +151,26 @@ local function lerpColor(a: Color3, b: Color3, t: number): Color3
 end
 
 -------------------------------------------------------------------------------------------------
--- Curved segmented arc
+-- Layered resource gauges
 -------------------------------------------------------------------------------------------------
 
-type Arc = { Segments: { Frame }, Count: number }
-type Layer = { Upto: number, Color: Color3 }
+type Gauge = { Root: Frame, Fill: Frame }
 
-local function newArc(parent: Instance, center: Vector2, radius: number, thickness: number, count: number, startDeg: number, sweepDeg: number): Arc
-	local segments: { Frame } = {}
-	local step = math.rad(sweepDeg) / count
-	for index = 1, count do
-		local angle = math.rad(startDeg) + step * (index - 0.5)
-		local segment = make("Frame", parent, {
-			Name = "Segment" .. index,
-			AnchorPoint = Vector2.new(0.5, 0.5),
-			Position = UDim2.fromOffset(center.X + math.cos(angle) * radius, center.Y + math.sin(angle) * radius),
-			Size = UDim2.fromOffset(radius * step * 1.08, thickness),
-			Rotation = math.deg(angle) + 90,
-			BackgroundColor3 = TRACK,
-			BorderSizePixel = 0,
-		}) :: Frame
-		segments[index] = segment
-	end
-	return { Segments = segments, Count = count }
-end
-
--- `visible` (0..1) trims the arc length (it grows with the stat's maximum); layers are cumulative.
-local function setArc(arc: Arc, layers: { Layer }, visible: number, emptyColor: Color3)
-	local shown = math.clamp(math.floor(arc.Count * visible + 0.5), 1, arc.Count)
-	for index, segment in arc.Segments do
-		if index > shown then
-			segment.Visible = false
-		else
-			segment.Visible = true
-			local position = (index - 0.5) / shown
-			local color = emptyColor
-			for _, layer in layers do
-				if position <= layer.Upto then
-					color = layer.Color
-					break
-				end
-			end
-			segment.BackgroundColor3 = color
-			segment.BackgroundTransparency = if color == emptyColor then 0.35 else 0
-		end
-	end
+local function makeGauge(parent: Instance, name: string, x: number, y: number, width: number, height: number, color: Color3): Gauge
+	local root = make("Frame", parent, {
+		Name = name, Position = UDim2.fromOffset(x, y), Size = UDim2.fromOffset(width, height),
+		BackgroundColor3 = TRACK, BorderSizePixel = 0, ClipsDescendants = true,
+	}) :: Frame
+	stroke(root, EDGE, 1, 0.4)
+	local fill = make("Frame", root, {
+		Name = "Fill", Size = UDim2.fromScale(0, 1), BackgroundColor3 = color, BorderSizePixel = 0, ZIndex = 3,
+	}) :: Frame
+	make("UIGradient", fill, { Rotation = 90, Color = ColorSequence.new({
+		ColorSequenceKeypoint.new(0, Color3.fromRGB(248, 241, 225)),
+		ColorSequenceKeypoint.new(0.15, Color3.new(1, 1, 1)),
+		ColorSequenceKeypoint.new(1, Color3.fromRGB(152, 138, 126)),
+	}) })
+	return { Root = root, Fill = fill }
 end
 
 -------------------------------------------------------------------------------------------------
@@ -215,7 +189,6 @@ local function newPosture(parent: Instance, size: UDim2, position: UDim2, anchor
 		BackgroundTransparency = 0.3,
 		BorderSizePixel = 0,
 	}) :: Frame
-	corner(frame, 3)
 	local left = make("Frame", frame, { Name = "Left", Size = UDim2.fromScale(0, 1), BackgroundColor3 = GOLD, BorderSizePixel = 0 }) :: Frame
 	local right = make("Frame", frame, {
 		Name = "Right",
@@ -236,14 +209,14 @@ local function newPosture(parent: Instance, size: UDim2, position: UDim2, anchor
 	return { Frame = frame, Left = left, Right = right, Notch = notch }
 end
 
-local function setPosture(bar: PostureBar, ratio: number, broken: boolean)
+local function setPosture(bar: PostureBar, ratio: number, broken: boolean, showEmpty: boolean?)
 	local r = math.clamp(ratio, 0, 1)
 	local color = if broken then BLOOD elseif r < 0.6 then lerpColor(GOLD, EMBER, r / 0.6) else lerpColor(EMBER, BLOOD, (r - 0.6) / 0.4)
 	bar.Left.Size = UDim2.fromScale(r * 0.5, 1)
 	bar.Right.Size = UDim2.fromScale(r * 0.5, 1)
 	bar.Left.BackgroundColor3 = color
 	bar.Right.BackgroundColor3 = color
-	bar.Frame.Visible = r > 0.005 or broken
+	bar.Frame.Visible = showEmpty == true or r > 0.005 or broken
 end
 
 -------------------------------------------------------------------------------------------------
@@ -256,14 +229,16 @@ type Fields = {
 	Input: InputController,
 	Player: Player,
 	Gui: ScreenGui,
-	HealthArc: Arc,
-	StaminaArc: Arc,
-	QiArc: Arc,
+	TouchHud: boolean,
+	HealthGauge: Gauge,
+	Recoverable: Frame,
+	Deficit: Frame,
+	StaminaGauge: Gauge,
+	QiGauge: Gauge,
 	QiText: TextLabel,
 	OwnPosture: PostureBar,
 	HealthText: TextLabel,
 	LevelText: TextLabel,
-	WeaponGlyph: TextLabel,
 	WeaponName: TextLabel,
 	OffhandName: TextLabel,
 	ElixirText: TextLabel,
@@ -320,59 +295,105 @@ type Fields = {
 
 export type Interface = typeof(setmetatable({} :: Fields, Controller))
 
--- Bottom-left sakura plate (authored at 1080p, scaled with the viewport): blossom medallion,
--- level and essence, then health / stamina / Qi bars and the inward posture bar.
-local VITALS_SIZE = Vector2.new(470, 150)
 local function plate(gui: ScreenGui, name: string): Frame
-	local frame = make("Frame", gui, {
-		Name = name, AnchorPoint = Vector2.new(0, 1), Position = UDim2.new(0, 16, 1, -12),
-		Size = UDim2.fromOffset(VITALS_SIZE.X, VITALS_SIZE.Y), BackgroundTransparency = 1,
-	}) :: Frame
-	return frame
+	local size = HudLayout.Regions.Vitals.Size
+	return make("Frame", gui, {
+		Name = name, AnchorPoint = Vector2.new(0.5, 1), Position = UDim2.new(0.5, 0, 1, -HudLayout.vitalsBottom(gui.AbsoluteSize.Y)),
+		Size = UDim2.fromOffset(size[1], size[2]), BackgroundTransparency = 1, BorderSizePixel = 0,
+	})
 end
 
-local function buildVitals(gui: ScreenGui): (Arc, Arc, PostureBar, TextLabel, Arc, TextLabel, TextLabel)
+local function buildVitals(gui: ScreenGui): (Gauge, Frame, Frame, Gauge, PostureBar, TextLabel, Gauge, TextLabel, TextLabel)
 	local frame = plate(gui, "Vitals")
-	Sakura.medallion(frame, 112, UDim2.fromOffset(60, 84), true, { 35, 200, 305 })
-	local level = label(frame, "Lv. 1", 22, TITLE_FONT, IVORY, {
-		Name = "Level", Position = UDim2.fromOffset(128, 18), Size = UDim2.fromOffset(120, 26), TextXAlignment = Enum.TextXAlignment.Left,
+	local back = make("Frame", frame, {
+		Name = "Vignette", Position = UDim2.fromOffset(12, 9), Size = UDim2.new(1, -24, 0, 106),
+		BackgroundColor3 = Style.Shade, BorderSizePixel = 0,
+	}) :: Frame
+	make("UIGradient", back, { Rotation = 90, Transparency = NumberSequence.new({
+		NumberSequenceKeypoint.new(0, 0.9), NumberSequenceKeypoint.new(0.24, 0.21),
+		NumberSequenceKeypoint.new(0.65, 0.27), NumberSequenceKeypoint.new(1, 0.79),
+	}) })
+	local h = VitalsTags.Health
+	local casing = make("Frame", frame, {
+		Name = "Casing", Position = UDim2.fromOffset(h.X - 5, h.Y - 4), Size = UDim2.fromOffset(h.W + 10, h.H + 8),
+		BackgroundColor3 = Style.Patina, BorderSizePixel = 0,
+	}) :: Frame
+	make("UIGradient", casing, { Rotation = 90, Color = ColorSequence.new(Color3.new(1, 1, 1), Color3.fromRGB(168, 153, 123)) })
+	stroke(casing, EDGE, 1, 0.1)
+	for _, x in { h.X - 7, h.X + h.W + 7 } do
+		local cap = make("Frame", frame, { AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromOffset(x, h.Y + h.H / 2),
+			Size = UDim2.fromOffset(18, 18), Rotation = 45, BackgroundColor3 = INK, BorderSizePixel = 0 }) :: Frame
+		stroke(cap, EDGE, 1)
+		make("Frame", cap, { AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 0.5),
+			Size = UDim2.fromOffset(6, 6), BackgroundColor3 = GOLD, BorderSizePixel = 0 })
+	end
+	local health = makeGauge(frame, "Health", h.X, h.Y, h.W, h.H, BLOOD)
+	for _, split in { 0.25, 0.5, 0.75 } do
+		make("Frame", health.Root, {
+			Position = UDim2.fromScale(split, 0), Size = UDim2.fromOffset(1, 4),
+			BackgroundColor3 = IVORY, BackgroundTransparency = 0.5, BorderSizePixel = 0, ZIndex = 4,
+		})
+	end
+	local regain = make("Frame", health.Root, { Name = "Recoverable", Size = UDim2.fromScale(0, 1),
+		BackgroundColor3 = EMBER, BorderSizePixel = 0, ZIndex = 2 }) :: Frame
+	local deficit = make("Frame", health.Root, { Name = "Deficit", AnchorPoint = Vector2.new(1, 0),
+		Position = UDim2.fromScale(1, 0), Size = UDim2.fromScale(0, 1), BackgroundColor3 = Style.Scar,
+		BorderSizePixel = 0, ZIndex = 2, ClipsDescendants = true }) :: Frame
+	for x = 0, h.W, 8 do
+		make("Frame", deficit, { Position = UDim2.new(1, -x, 0.5, 0), AnchorPoint = Vector2.new(0.5, 0.5),
+			Size = UDim2.fromOffset(1, h.H + 6), Rotation = 35, BackgroundColor3 = TRACK, BorderSizePixel = 0, ZIndex = 2 })
+	end
+	local healthText = label(frame, "", 18, NUMBER_FONT, IVORY, {
+		Name = "HealthValue", Position = UDim2.fromOffset(347, 7), Size = UDim2.fromOffset(95, 20),
+		TextXAlignment = Enum.TextXAlignment.Right, TextScaled = true, TextStrokeTransparency = 0.32,
 	})
-	local _, health = Sakura.bar(frame, "Health", Vector2.new(128, 48), 300, 18, 60, true)
-	Sakura.crest(frame, 24, UDim2.fromOffset(446, 57))
-	local text = label(frame, "", 13, NUMBER_FONT, IVORY, {
-		Position = UDim2.fromOffset(128, 48), Size = UDim2.fromOffset(300, 18), ZIndex = 5, TextStrokeTransparency = 0.3,
+	make("UITextSizeConstraint", healthText, { MinTextSize = 14, MaxTextSize = 18 })
+	local stamina = makeGauge(frame, "Stamina", 58, 71, 167, 6, Style.Bone)
+	for _, x in { 42, 47 } do
+		make("Frame", frame, { Position = UDim2.fromOffset(x, 70), Size = UDim2.fromOffset(2, 8), Rotation = 26,
+			BackgroundColor3 = Style.Bone, BorderSizePixel = 0 })
+	end
+	local qi = makeGauge(frame, "Qi", 260, 70, 115, 8, Style.Jade)
+	local qiSeal = make("Frame", frame, { Position = UDim2.fromOffset(246, 71), Size = UDim2.fromOffset(6, 6), Rotation = 45,
+		BackgroundColor3 = Style.Jade, BorderSizePixel = 0 }) :: Frame
+	stroke(qiSeal, INK, 1)
+	local qiText = label(frame, "", 15, NUMBER_FONT, IVORY, {
+		Name = "QiValue", Position = UDim2.fromOffset(378, 65), Size = UDim2.fromOffset(64, 18),
+		TextXAlignment = Enum.TextXAlignment.Right, TextScaled = true,
 	})
-	-- y 68: VitalsTags status line (rally / lowered ceiling) between health and stamina.
-	local _, stamina = Sakura.bar(frame, "Stamina", Vector2.new(128, 86), 270, 8, 54, false)
-	local _, qi = Sakura.bar(frame, "Qi", Vector2.new(128, 100), 240, 8, 48, false)
-	local qiText = label(frame, "QI 100 / 100", 13, NUMBER_FONT, Sakura.Colors.Qi, {
-		Position = UDim2.fromOffset(376, 96), Size = UDim2.fromOffset(90, 16), TextXAlignment = Enum.TextXAlignment.Left,
+	make("UITextSizeConstraint", qiText, { MinTextSize = 12, MaxTextSize = 15 })
+	local posture = newPosture(frame, UDim2.fromOffset(236, 4), UDim2.fromOffset(122, 87), Vector2.zero)
+	posture.Notch.Rotation = 45
+	posture.Notch.Size = UDim2.fromOffset(6, 6)
+	posture.Notch.BackgroundColor3 = GOLD
+	local level = label(frame, "Lv. 1", 14, NUMBER_FONT, MUTED, {
+		Name = "Level", Position = UDim2.fromOffset(38, 98), Size = UDim2.fromOffset(67, 18), TextXAlignment = Enum.TextXAlignment.Left,
 	})
-	local posture = newPosture(frame, UDim2.fromOffset(200, 5), UDim2.fromOffset(128, 114), Vector2.new(0, 0))
-	return health, stamina, posture, text, qi, qiText, level
+	return health, regain, deficit, stamina, posture, healthText, qi, qiText, level
 end
 
-local function buildLoadout(gui: ScreenGui): (TextLabel, TextLabel, TextLabel, TextLabel, TextLabel)
+local function buildLoadout(gui: ScreenGui): (TextLabel, TextLabel, TextLabel, TextLabel)
 	local frame = plate(gui, "Loadout")
-	local glyph = label(frame, "FIST", 14, TITLE_FONT, IVORY, { Visible = false })
-	local name = label(frame, "", 18, BODY_FONT, IVORY, {
-		Position = UDim2.fromOffset(128, 124), Size = UDim2.fromOffset(140, 22), TextXAlignment = Enum.TextXAlignment.Left,
+	frame.ZIndex = 2
+	local weapon = label(frame, "", 22, TITLE_FONT, IVORY, {
+		Name = "Weapon", Position = UDim2.fromOffset(38, 3), Size = UDim2.fromOffset(177, 24),
+		TextXAlignment = Enum.TextXAlignment.Left, TextTruncate = Enum.TextTruncate.AtEnd,
 	})
-	local offhand = label(frame, "", 14, BODY_FONT, MUTED, {
-		Position = UDim2.fromOffset(268, 124), Size = UDim2.fromOffset(96, 22), TextXAlignment = Enum.TextXAlignment.Left,
+	local offhand = label(frame, "", 13, NUMBER_FONT, MUTED, {
+		Name = "Offhand", Position = UDim2.fromOffset(219, 7), Size = UDim2.fromOffset(122, 20),
+		TextXAlignment = Enum.TextXAlignment.Left, TextTruncate = Enum.TextTruncate.AtEnd,
 	})
-	-- Flask charges as shapes (◆ full, ◇ spent): readable without relying on the colour.
-	local elixir = label(frame, "FLASK —", 18, TITLE_FONT, EMBER, {
-		Name = "Flask", Position = UDim2.fromOffset(364, 124), Size = UDim2.fromOffset(110, 22), TextXAlignment = Enum.TextXAlignment.Left,
+	local elixir = label(frame, "FLASK —", 14, NUMBER_FONT, GOLD, {
+		Name = "Flask", Position = UDim2.fromOffset(107, 98), Size = UDim2.fromOffset(166, 18), TextScaled = true,
 	})
-	-- Essence is the currency (banked + carried); Qi is spell energy and lives by the Qi bar.
-	local essence = label(frame, "", 20, TITLE_FONT, GOLD, {
-		Name = "Essence", Position = UDim2.fromOffset(230, 18), Size = UDim2.fromOffset(216, 26), TextXAlignment = Enum.TextXAlignment.Right,
+	make("UITextSizeConstraint", elixir, { MinTextSize = 12, MaxTextSize = 14 })
+	local essence = label(frame, "", 14, NUMBER_FONT, GOLD, {
+		Name = "Essence", Position = UDim2.fromOffset(279, 98), Size = UDim2.fromOffset(163, 18), TextXAlignment = Enum.TextXAlignment.Right, TextScaled = true,
 	})
-	return glyph, name, offhand, elixir, essence
+	make("UITextSizeConstraint", essence, { MinTextSize = 11, MaxTextSize = 14 })
+	return weapon, offhand, elixir, essence
 end
 
--- Top-centre boss plate under the compass: serif name, ornate crimson bar with gold diamond caps.
 local function buildBoss(gui: ScreenGui): (Frame, TextLabel, TextLabel, Frame, Frame, PostureBar)
 	local frame = make("Frame", gui, {
 		Name = "BossBar",
@@ -383,27 +404,41 @@ local function buildBoss(gui: ScreenGui): (Frame, TextLabel, TextLabel, Frame, F
 		Visible = false,
 	}) :: Frame
 	make("UISizeConstraint", frame, { MaxSize = Vector2.new(900, 96), MinSize = Vector2.new(300, 96) })
+	local header = make("Frame", frame, {
+		Name = "Header", Position = UDim2.fromOffset(-8, -2), Size = UDim2.new(1, 16, 0, 31),
+		BackgroundColor3 = Style.Shade, BorderSizePixel = 0,
+	}) :: Frame
+	make("UIGradient", header, { Rotation = 90, Transparency = NumberSequence.new(0.26, 0.75) })
 	local title = label(frame, "", 24, TITLE_FONT, IVORY, {
-		Size = UDim2.new(1, 0, 0, 26),
+		Size = UDim2.new(0.66, -8, 0, 28), TextScaled = true,
 		TextXAlignment = Enum.TextXAlignment.Left,
 		TextStrokeTransparency = 0.3,
 	})
-	local phase = label(frame, "", 16, BODY_FONT, EMBER, {
-		Size = UDim2.new(1, 0, 0, 26),
+	local phase = label(frame, "", 15, NUMBER_FONT, GOLD, {
+		Position = UDim2.fromScale(0.66, 0), Size = UDim2.new(0.34, 0, 0, 28), TextScaled = true,
 		TextXAlignment = Enum.TextXAlignment.Right,
 	})
+	make("UITextSizeConstraint", title, { MinTextSize = 12, MaxTextSize = 24 })
+	make("UITextSizeConstraint", phase, { MinTextSize = 10, MaxTextSize = 15 })
 	local casing = make("Frame", frame, {
-		Name = "Casing", Position = UDim2.fromOffset(-5, 48), Size = UDim2.new(1, 10, 0, 22),
-		BackgroundColor3 = INK, BackgroundTransparency = 0.3, BorderSizePixel = 0,
+		Name = "Casing", Position = UDim2.fromOffset(-5, 34), Size = UDim2.new(1, 10, 0, 20),
+		BackgroundColor3 = Style.Patina, BorderSizePixel = 0,
 	}) :: Frame
-	stroke(casing, GOLD, 1, 0.45)
-	Sakura.diamond(casing, 16, UDim2.fromScale(0, 0.5), GOLD, EMBER)
-	Sakura.diamond(casing, 16, UDim2.fromScale(1, 0.5), GOLD, EMBER)
-	local posture = newPosture(frame, UDim2.new(0.5, 0, 0, 5), UDim2.new(0.5, 0, 0, 84), Vector2.new(0.5, 0))
+	stroke(casing, EDGE, 1, 0.2)
+	for _, side in { 0, 1 } do
+		local cap = make("Frame", casing, { AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(side, 0.5),
+			Size = UDim2.fromOffset(12, 12), BackgroundColor3 = INK, BorderSizePixel = 0, Rotation = 45 }) :: Frame
+		stroke(cap, EDGE, 1)
+		make("Frame", cap, { AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 0.5),
+			Size = UDim2.fromOffset(4, 4), BackgroundColor3 = GOLD, BorderSizePixel = 0 })
+	end
+	local posture = newPosture(frame, UDim2.new(0.48, 0, 0, 4), UDim2.new(0.5, 0, 0, 64), Vector2.new(0.5, 0))
+	posture.Notch.Rotation = 45
+	posture.Notch.Size = UDim2.fromOffset(6, 6)
 	local track = make("Frame", frame, {
 		Name = "Health",
-		Position = UDim2.fromOffset(0, 52),
-		Size = UDim2.new(1, 0, 0, 14),
+		Position = UDim2.fromOffset(0, 38),
+		Size = UDim2.new(1, 0, 0, 12),
 		BackgroundColor3 = TRACK,
 		BackgroundTransparency = 0.1,
 		BorderSizePixel = 0,
@@ -411,7 +446,7 @@ local function buildBoss(gui: ScreenGui): (Frame, TextLabel, TextLabel, Frame, F
 	stroke(track, EDGE, 1, 0.2)
 	local recoverable = make("Frame", track, { Name = "Recoverable", Size = UDim2.fromScale(1, 1), BackgroundColor3 = EMBER, BorderSizePixel = 0 }) :: Frame
 	local active = make("Frame", track, { Name = "Active", Size = UDim2.fromScale(1, 1), BackgroundColor3 = Color3.new(1, 1, 1), BorderSizePixel = 0 }) :: Frame
-	make("UIGradient", active, { Rotation = 90, Color = ColorSequence.new(Color3.fromRGB(236, 64, 72), Color3.fromRGB(140, 8, 22)) })
+	make("UIGradient", active, { Rotation = 90, Color = ColorSequence.new(Style.Blood, Color3.fromRGB(116, 30, 25)) })
 	return frame, title, phase, active, recoverable, posture
 end
 
@@ -526,8 +561,8 @@ function Controller.new(state: WorldState, camera: CameraController, input: Inpu
 		ZIndexBehavior = Enum.ZIndexBehavior.Sibling,
 		DisplayOrder = 10,
 	}) :: ScreenGui
-	local healthArc, staminaArc, ownPosture, healthText, qiArc, qiText, levelText = buildVitals(gui)
-	local glyph, weaponName, offhand, elixir, essence = buildLoadout(gui)
+	local health, recoverable, deficit, stamina, ownPosture, healthText, qi, qiText, levelText = buildVitals(gui)
+	local weaponName, offhand, elixir, essence = buildLoadout(gui)
 	local bossFrame, bossTitle, bossPhase, bossActive, bossRecoverable, bossPosture = buildBoss(gui)
 	local billboard, lockPosture, lockHealth, lockKanji = buildLockBillboard(gui)
 	local deathblow, deathblowKanji, deathblowPrompt = buildDeathblow(gui)
@@ -536,7 +571,7 @@ function Controller.new(state: WorldState, camera: CameraController, input: Inpu
 	local veil = make("Frame", gui, {
 		Name = "PortalVeil",
 		Size = UDim2.fromScale(1, 1),
-		BackgroundColor3 = Color3.fromRGB(242, 234, 255),
+		BackgroundColor3 = IVORY,
 		BackgroundTransparency = 1,
 		BorderSizePixel = 0,
 		ZIndex = 50,
@@ -548,7 +583,7 @@ function Controller.new(state: WorldState, camera: CameraController, input: Inpu
 		Name = "Toast",
 		AnchorPoint = Vector2.new(0.5, 1),
 		Position = UDim2.new(0.5, 0, 1, -HudLayout.Toast.Bottom),
-		Size = UDim2.new(1, -2 * HudLayout.Toast.Side, 0, HudLayout.Toast.Height),
+		Size = UDim2.fromOffset(0, HudLayout.Toast.Height),
 		TextScaled = true,
 		TextWrapped = true,
 		TextTransparency = 1,
@@ -556,6 +591,12 @@ function Controller.new(state: WorldState, camera: CameraController, input: Inpu
 	})
 	make("UISizeConstraint", toast, { MaxSize = Vector2.new(HudLayout.Toast.MaxWidth, HudLayout.Toast.Height) })
 	make("UITextSizeConstraint", toast, { MinTextSize = 14, MaxTextSize = 22 })
+	local function sizeToast()
+		local rect = HudLayout.toastRect(gui.AbsoluteSize.X, gui.AbsoluteSize.Y)
+		toast.Size = UDim2.fromOffset(rect.W, rect.H)
+	end
+	gui:GetPropertyChangedSignal("AbsoluteSize"):Connect(sizeToast)
+	sizeToast()
 	local banner = label(gui, "", 27, TITLE_FONT, IVORY, {
 		Name = "Banner",
 		AnchorPoint = Vector2.new(0.5, 0.5),
@@ -581,14 +622,16 @@ function Controller.new(state: WorldState, camera: CameraController, input: Inpu
 		Input = input,
 		Player = player,
 		Gui = gui,
-		HealthArc = healthArc,
-		StaminaArc = staminaArc,
-		QiArc = qiArc,
+		TouchHud = false,
+		HealthGauge = health,
+		Recoverable = recoverable,
+		Deficit = deficit,
+		StaminaGauge = stamina,
+		QiGauge = qi,
 		QiText = qiText,
 		OwnPosture = ownPosture,
 		HealthText = healthText,
 		LevelText = levelText,
-		WeaponGlyph = glyph,
 		WeaponName = weaponName,
 		OffhandName = offhand,
 		ElixirText = elixir,
@@ -640,7 +683,8 @@ function Controller.new(state: WorldState, camera: CameraController, input: Inpu
 	self:BuildAltar()
 	-- Panels are authored at 1080p; scale them with the viewport so phones stay legible and
 	-- large displays don't shrink the HUD to a corner.
-	for name, base in { Vitals = 0.78, Loadout = 0.78, AltarMenu = 0.8 } do
+	local vitalsBase = HudLayout.Regions.Vitals.Base
+	for name, base in { Vitals = vitalsBase, Loadout = vitalsBase, AltarMenu = 0.8 } do
 		local panel = gui:FindFirstChild(name)
 		if panel and panel:IsA("GuiObject") then
 			local floor = if name == "AltarMenu" then nil else HudLayout.Regions.Vitals.MinScale -- loadout shares the vitals plate
@@ -656,9 +700,9 @@ function Controller.new(state: WorldState, camera: CameraController, input: Inpu
 	end))
 	table.insert(self.Connections, player:GetAttributeChangedSignal("AsuraResult"):Connect(function()
 		local result = player:GetAttribute("AsuraResult")
-		if type(result) == "string" and string.sub(result, 1, 1) == "!" then
-			local reason = string.sub(result, 2)
-			local text = REASONS[reason]
+		if type(result) == "string" then
+			local failed = string.sub(result, 1, 1) == "!"
+			local text = if failed then REASONS[string.sub(result, 2)] else NOTICES[result]
 			if text then
 				self:ShowToast(text)
 			end
@@ -898,11 +942,11 @@ function Controller.YieldToast(self: Interface)
 	end
 	local scale = toast.AbsoluteSize.Y / math.max(HudLayout.Toast.Height, 1)
 	local current = toast.Position.Y.Offset + HudLayout.Toast.Bottom -- pixels already shifted, unscaled
-	local shift = 0
+	local shift = if self.TouchHud then 0 else HudLayout.Toast.Bottom - HudLayout.toastBottom(self.Gui.AbsoluteSize.Y)
 	if callout and callout:IsA("TextLabel") and callout.Text ~= "" and callout.TextTransparency < 0.5 and toast.TextTransparency < 1 then
 		local bottom = top(callout) + (callout.AbsoluteSize.Y + callout.TextBounds.Y) / 2
 		local slotTop = top(toast) - current * scale + (toast.AbsoluteSize.Y - toast.TextBounds.Y) / 2
-		shift = HudLayout.toastShift(slotTop, bottom) / math.max(scale, 1e-3)
+		shift += HudLayout.toastShift(slotTop + shift * scale, bottom) / math.max(scale, 1e-3)
 	end
 	if math.abs(shift - current) > 0.5 then toast.Position = UDim2.new(0.5, 0, 1, -HudLayout.Toast.Bottom + shift) end
 end
@@ -1181,24 +1225,22 @@ end
 
 function Controller.UpdateVitals(self: Interface, snapshot: Snapshot)
 	local maxHP = math.max(snapshot.MaxHP, 1)
-	local active = snapshot.ActiveHP / maxHP
-	local recoverable = (snapshot.ActiveHP + snapshot.RecoverableHP) / maxHP
-	local ceiling = (maxHP - snapshot.PermanentDeficit) / maxHP
-	local bleed = lerpColor(EMBER, BLEED, 0.5 + 0.5 * math.sin(self.Clock * 6))
-	setArc(self.HealthArc, {
-		{ Upto = active, Color = BLOOD },
-		{ Upto = recoverable, Color = if snapshot.RallyActive then bleed else EMBER },
-		{ Upto = ceiling, Color = TRACK },
-		{ Upto = 1, Color = SCAR },
-	}, math.clamp(maxHP / 200, 0.5, 1), TRACK)
-	local stamina = snapshot.Stamina / math.max(snapshot.MaxStamina, 1)
-	setArc(self.StaminaArc, { { Upto = stamina, Color = if snapshot.State == "StaminaBroken" then MUTED else JADE } }, math.clamp(snapshot.MaxStamina / 200, 0.5, 1), TRACK)
-	local maxQi=if self.Player:GetAttribute("AsuraColosseum") and self.Player:GetAttribute("AsuraArenaNormalized")==true then 130 else (tonumber(self.Player:GetAttribute("AsuraMaxQi")) or 100)
- self.QiText.Text = string.format("QI %d / %d",math.floor(snapshot.Qi),maxQi)
-	setArc(self.QiArc, { { Upto = snapshot.Qi / maxQi, Color = lerpColor(Sakura.Colors.Qi,BLEED,snapshot.Qi/maxQi) } }, 1, TRACK)
-	setPosture(self.OwnPosture, snapshot.Posture / math.max(snapshot.PostureCapacity, 1), snapshot.State == "StanceBroken")
+	local deficit = math.clamp(snapshot.PermanentDeficit / maxHP, 0, 1)
+	local active = math.clamp(snapshot.ActiveHP / maxHP, 0, 1 - deficit)
+	local recoverable = math.clamp(snapshot.RecoverableHP / maxHP + active, active, 1 - deficit)
+	self.HealthGauge.Fill.Size = UDim2.fromScale(active, 1)
+	self.Recoverable.Size = UDim2.fromScale(recoverable, 1)
+	self.Recoverable.BackgroundColor3 = if snapshot.RallyActive then lerpColor(EMBER, GOLD, 0.5 + Effects.flash(0.5) * math.sin(self.Clock * 6)) else EMBER
+	self.Deficit.Size = UDim2.fromScale(deficit, 1)
+	local stamina = math.clamp(snapshot.Stamina / math.max(snapshot.MaxStamina, 1), 0, 1)
+	self.StaminaGauge.Fill.Size = UDim2.fromScale(stamina, 1)
+	self.StaminaGauge.Fill.BackgroundColor3 = if snapshot.State == "StaminaBroken" then MUTED else Style.Bone
+	local normalized = self.Player:GetAttribute("AsuraColosseum") and self.Player:GetAttribute("AsuraArenaNormalized") == true
+	local maxQi = if normalized then 130 else math.max(1, tonumber(self.Player:GetAttribute("AsuraMaxQi")) or 100)
+	self.QiText.Text = string.format("%d / %d", math.floor(snapshot.Qi), maxQi)
+	self.QiGauge.Fill.Size = UDim2.fromScale(math.clamp(snapshot.Qi / maxQi, 0, 1), 1)
+	setPosture(self.OwnPosture, snapshot.Posture / math.max(snapshot.PostureCapacity, 1), snapshot.State == "StanceBroken", true)
 	self.HealthText.Text = string.format("%d / %d", math.floor(snapshot.ActiveHP + 0.5), math.floor(maxHP - snapshot.PermanentDeficit + 0.5))
-	self.WeaponGlyph.Text = WEAPON_GLYPH[snapshot.Weapon] or "FIST"
 	self.WeaponName.Text = Weapons.get(snapshot.Weapon).Name
 	VitalsTags.update(self.Tags, snapshot, self.Clock)
 end
@@ -1281,7 +1323,7 @@ function Controller.Update(self: Interface, dt: number)
 	local maximum = tonumber(player:GetAttribute("AsuraElixirsMax")) or 0
 	self.ElixirText.Text = VitalsTags.flask(elixirs, maximum)
 	local low = maximum > 0 and elixirs <= 1
-	self.ElixirText.TextColor3 = if elixirs == 0 then MUTED elseif low then lerpColor(EMBER, BLOOD, 0.5 + 0.5 * math.sin(self.Clock * 5)) else EMBER
+	self.ElixirText.TextColor3 = if elixirs == 0 then MUTED elseif low then lerpColor(EMBER, BLOOD, 0.5 + Effects.flash(0.5) * math.sin(self.Clock * 5)) else GOLD
 	self.ElixirText.TextTransparency = if maximum > 0 then 0 else 0.4
 	local offhand = player:GetAttribute("AsuraOffhand")
 	self.OffhandName.Text = if type(offhand) == "string" and offhand ~= "None" then "Off: " .. (WEAPON_NAME[offhand] or offhand) else ""

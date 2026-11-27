@@ -1,0 +1,252 @@
+<roblox version="4">
+  <Item class="Model" referent="RBX_Jian">
+    <Properties>
+      <string name="Name">AsuraWeapon_Jian</string>
+      <int64 name="SourceAssetId">126095019171399</int64>
+      <OptionalCoordinateFrame name="WorldPivotData">
+        <CFrame>
+          <X>0</X>
+          <Y>0</Y>
+          <Z>0</Z>
+          <R00>1</R00>
+          <R01>0</R01>
+          <R02>0</R02>
+          <R10>0</R10>
+          <R11>1</R11>
+          <R12>0</R12>
+          <R20>0</R20>
+          <R21>0</R21>
+          <R22>1</R22>
+        </CFrame>
+      </OptionalCoordinateFrame>
+    </Properties>
+    <Item class="MeshPart" referent="RBX_Blade">
+      <Properties>
+        <string name="Name">Blade</string>
+        <bool name="Anchored">true</bool>
+        <bool name="Massless">true</bool>
+        <bool name="CanCollide">false</bool>
+        <bool name="CanQuery">false</bool>
+        <bool name="CanTouch">false</bool>
+        <CoordinateFrame name="CFrame">
+          <X>0</X>
+          <Y>0</Y>
+          <Z>-0.394500017</Z>
+          <R00>-1</R00>
+          <R01>0</R01>
+          <R02>0</R02>
+          <R10>0</R10>
+          <R11>1</R11>
+          <R12>0</R12>
+          <R20>0</R20>
+          <R21>0</R21>
+          <R22>-1</R22>
+        </CoordinateFrame>
+        <Color3uint8 name="Color3uint8">4294967295</Color3uint8>
+        <Vector3 name="InitialSize">
+          <X>0.111000016</X>
+          <Y>0.286000013</Y>
+          <Z>3.40899992</Z>
+        </Vector3>
+        <Vector3 name="size">
+          <X>0.111000001</X>
+          <Y>0.286000013</Y>
+          <Z>3.40899992</Z>
+        </Vector3>
+        <Content name="MeshId">
+          <url>rbxassetid://91981030023587</url>
+        </Content>
+        <token name="RenderFidelity">0</token>
+        <token name="CollisionFidelity">2</token>
+      </Properties>
+      <Item class="SurfaceAppearance" referent="RBX_Blade_PBR">
+        <Properties>
+          <string name="Name">SurfaceAppearance</string>
+          <Content name="ColorMapContent">
+            <uri>rbxassetid://82765796394008</uri>
+          </Content>
+          <Content name="NormalMapContent">
+            <uri>rbxassetid://103518090827115</uri>
+          </Content>
+          <Content name="MetalnessMapContent">
+            <uri>rbxassetid://88890487017519</uri>
+          </Content>
+          <Content name="RoughnessMapContent">
+            <uri>rbxassetid://85068940632786</uri>
+          </Content>
+        </Properties>
+      </Item>
+    </Item>
+    <Item class="MeshPart" referent="RBX_Grip">
+      <Properties>
+        <string name="Name">Grip</string>
+        <bool name="Anchored">true</bool>
+        <bool name="Massless">true</bool>
+        <bool name="CanCollide">false</bool>
+        <bool name="CanQuery">false</bool>
+        <bool name="CanTouch">false</bool>
+        <CoordinateFrame name="CFrame">
+          <X>0.000605184585</X>
+          <Y>0</Y>
+          <Z>1.75416356</Z>
+          <R00>-1</R00>
+          <R01>0</R01>
+          <R02>0</R02>
+          <R10>0</R10>
+          <R11>1</R11>
+          <R12>0</R12>
+          <R20>0</R20>
+          <R21>0</R21>
+          <R22>-1</R22>
+        </CoordinateFrame>
+        <Color3uint8 name="Color3uint8">4294967295</Color3uint8>
+        <Vector3 name="InitialSize">
+          <X>0.231360927</X>
+          <Y>0.241999999</Y>
+          <Z>0.614984393</Z>
+        </Vector3>
+        <Vector3 name="size">
+          <X>0.231360935</X>
+          <Y>0.241999999</Y>
+          <Z>0.614984393</Z>
+        </Vector3>
+        <Content name="MeshId">
+          <url>rbxassetid://79012981443804</url>
+        </Content>
+        <token name="RenderFidelity">0</token>
+        <token name="CollisionFidelity">2</token>
+      </Properties>
+      <Item class="SurfaceAppearance" referent="RBX_Grip_PBR">
+        <Properties>
+          <string name="Name">SurfaceAppearance</string>
+          <Content name="ColorMapContent">
+            <uri>rbxassetid://82765796394008</uri>
+          </Content>
+          <Content name="NormalMapContent">
+            <uri>rbxassetid://103518090827115</uri>
+          </Content>
+          <Content name="MetalnessMapContent">
+            <uri>rbxassetid://88890487017519</uri>
+          </Content>
+          <Content name="RoughnessMapContent">
+            <uri>rbxassetid://85068940632786</uri>
+          </Content>
+        </Properties>
+      </Item>
+    </Item>
+    <Item class="MeshPart" referent="RBX_Guard">
+      <Properties>
+        <string name="Name">Guard</string>
+        <bool name="Anchored">true</bool>
+        <bool name="Massless">true</bool>
+        <bool name="CanCollide">false</bool>
+        <bool name="CanQuery">false</bool>
+        <bool name="CanTouch">false</bool>
+        <CoordinateFrame name="CFrame">
+          <X>0</X>
+          <Y>0</Y>
+          <Z>1.37700003</Z>
+          <R00>-1</R00>
+          <R01>0</R01>
+          <R02>0</R02>
+          <R10>0</R10>
+          <R11>1</R11>
+          <R12>0</R12>
+          <R20>0</R20>
+          <R21>0</R21>
+          <R22>-1</R22>
+        </CoordinateFrame>
+        <Color3uint8 name="Color3uint8">4294967295</Color3uint8>
+        <Vector3 name="InitialSize">
+          <X>0.282565057</X>
+          <Y>0.565999985</Y>
+          <Z>0.20599997</Z>
+        </Vector3>
+        <Vector3 name="size">
+          <X>0.282565057</X>
+          <Y>0.565999985</Y>
+          <Z>0.20599997</Z>
+        </Vector3>
+        <Content name="MeshId">
+          <url>rbxassetid://105169309559986</url>
+        </Content>
+        <token name="RenderFidelity">0</token>
+        <token name="CollisionFidelity">2</token>
+      </Properties>
+      <Item class="SurfaceAppearance" referent="RBX_Guard_PBR">
+        <Properties>
+          <string name="Name">SurfaceAppearance</string>
+          <Content name="ColorMapContent">
+            <uri>rbxassetid://82765796394008</uri>
+          </Content>
+          <Content name="NormalMapContent">
+            <uri>rbxassetid://103518090827115</uri>
+          </Content>
+          <Content name="MetalnessMapContent">
+            <uri>rbxassetid://88890487017519</uri>
+          </Content>
+          <Content name="RoughnessMapContent">
+            <uri>rbxassetid://85068940632786</uri>
+          </Content>
+        </Properties>
+      </Item>
+    </Item>
+    <Item class="MeshPart" referent="RBX_Pommel">
+      <Properties>
+        <string name="Name">Pommel</string>
+        <bool name="Anchored">true</bool>
+        <bool name="Massless">true</bool>
+        <bool name="CanCollide">false</bool>
+        <bool name="CanQuery">false</bool>
+        <bool name="CanTouch">false</bool>
+        <CoordinateFrame name="CFrame">
+          <X>0</X>
+          <Y>0</Y>
+          <Z>2.12450004</Z>
+          <R00>-1</R00>
+          <R01>0</R01>
+          <R02>0</R02>
+          <R10>0</R10>
+          <R11>1</R11>
+          <R12>0</R12>
+          <R20>0</R20>
+          <R21>0</R21>
+          <R22>-1</R22>
+        </CoordinateFrame>
+        <Color3uint8 name="Color3uint8">4294967295</Color3uint8>
+        <Vector3 name="InitialSize">
+          <X>0.280000031</X>
+          <Y>0.333999991</Y>
+          <Z>0.169000149</Z>
+        </Vector3>
+        <Vector3 name="size">
+          <X>0.280000001</X>
+          <Y>0.333999991</Y>
+          <Z>0.169000149</Z>
+        </Vector3>
+        <Content name="MeshId">
+          <url>rbxassetid://119652002784689</url>
+        </Content>
+        <token name="RenderFidelity">0</token>
+        <token name="CollisionFidelity">2</token>
+      </Properties>
+      <Item class="SurfaceAppearance" referent="RBX_Pommel_PBR">
+        <Properties>
+          <string name="Name">SurfaceAppearance</string>
+          <Content name="ColorMapContent">
+            <uri>rbxassetid://82765796394008</uri>
+          </Content>
+          <Content name="NormalMapContent">
+            <uri>rbxassetid://103518090827115</uri>
+          </Content>
+          <Content name="MetalnessMapContent">
+            <uri>rbxassetid://88890487017519</uri>
+          </Content>
+          <Content name="RoughnessMapContent">
+            <uri>rbxassetid://85068940632786</uri>
+          </Content>
+        </Properties>
+      </Item>
+    </Item>
+  </Item>
+</roblox>
