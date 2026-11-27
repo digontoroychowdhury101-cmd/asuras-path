@@ -1,0 +1,22 @@
+{
+ "landmark/Bellwood_MapleDrift__p1": {
+  "assetId": "83630484532494",
+  "bytes": 8118636,
+  "displayName": "landmark_Bellwood_MapleDrift__p1",
+  "error": null,
+  "file": "assets/build/bellwood_maple/upload/Bellwood_MapleDrift__p1.glb",
+  "moderation": "Approved",
+  "operationId": "32f1da81-8b0d-4274-b1c5-d3dda5fb1f1d",
+  "sha256": "7fc7f7f0d46a5696ca1a8985598ae2901fb36143a45ccc8c2b362d9b59960c93"
+ },
+ "landmark/Bellwood_MapleRaft__p1": {
+  "assetId": "75320334726445",
+  "bytes": 7994664,
+  "displayName": "landmark_Bellwood_MapleRaft__p1",
+  "error": null,
+  "file": "assets/build/bellwood_maple/upload/Bellwood_MapleRaft__p1.glb",
+  "moderation": "Approved",
+  "operationId": "c4d98c05-4c05-464c-b81e-f91fe69fcc17",
+  "sha256": "aca81952cb64d1e3ea594eb2f59fd81cc4e9c0cb8784cc770b537426a995f103"
+ }
+}

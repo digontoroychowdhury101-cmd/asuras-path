@@ -72,6 +72,18 @@
       "operationId": "62418c17-d0cc-46b8-919d-af57713aa043",
       "uploaded": "2026-11-27"
     },
+    "Bellwood_MapleDrift": {
+      "assetId": "rbxassetid://83630484532494",
+      "moderationState": "Approved",
+      "operationId": "32f1da81-8b0d-4274-b1c5-d3dda5fb1f1d",
+      "uploaded": "2026-11-27"
+    },
+    "Bellwood_MapleRaft": {
+      "assetId": "rbxassetid://75320334726445",
+      "moderationState": "Approved",
+      "operationId": "c4d98c05-4c05-464c-b81e-f91fe69fcc17",
+      "uploaded": "2026-11-27"
+    },
     "Bellwood_TempleHall": {
       "assetId": "rbxassetid://113452079836448",
       "moderationState": "Approved",
@@ -10372,6 +10384,30 @@
         "RoughnessMap": "rbxassetid://72305875833378",
         "operations": {
           "Asset": "62418c17-d0cc-46b8-919d-af57713aa043"
+        }
+      }
+    },
+    "Bellwood_MapleDrift": {
+      "Bellwood_MapleDrift__Leaf": {
+        "ColorMap": "rbxassetid://101462098276028",
+        "MeshId": "rbxassetid://127732921138373",
+        "MetalnessMap": "rbxassetid://70491594266587",
+        "NormalMap": "rbxassetid://119856958327482",
+        "RoughnessMap": "rbxassetid://75093891245081",
+        "operations": {
+          "Asset": "32f1da81-8b0d-4274-b1c5-d3dda5fb1f1d"
+        }
+      }
+    },
+    "Bellwood_MapleRaft": {
+      "Bellwood_MapleRaft__Leaf": {
+        "ColorMap": "rbxassetid://101462098276028",
+        "MeshId": "rbxassetid://84061440597599",
+        "MetalnessMap": "rbxassetid://70491594266587",
+        "NormalMap": "rbxassetid://119856958327482",
+        "RoughnessMap": "rbxassetid://75093891245081",
+        "operations": {
+          "Asset": "c4d98c05-4c05-464c-b81e-f91fe69fcc17"
         }
       }
     },

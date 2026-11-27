@@ -797,6 +797,18 @@ do
 		-- bellwood_3: lotus and lily pads fill the exit eye's lake foreground on both sides of the walk to the temple
 		check("lake scatter: six or more floating lotus / lily pieces within 120 studs of the exit, some each side of its view",
 			floatNear >= 6 and floatLeft >= 2 and floatRight >= 2)
+		-- bellwood_3: red maple leaves drift on the foreground water among the pads, on both sides of the walk (win-105)
+		local mapleNear, mapleLeft, mapleRight = 0, 0, 0
+		for _, s in S do
+			if string.sub(s.Model, 1, 13) == "Bellwood_Mapl" and s.Float ~= nil then
+				local p = W2.shallowsFrame(bw, s).Position
+				local to = Vector3.new(p.X - exitW2.X, 0, p.Z - exitW2.Z)
+				if to.Magnitude <= 120 then mapleNear += 1 end
+				if to:Dot(right2) > 0 then mapleRight += 1 else mapleLeft += 1 end
+			end
+		end
+		check("lake scatter: three or more floating red maple leaf drifts within 120 studs of the exit, some each side of its view",
+			mapleNear >= 3 and mapleLeft >= 1 and mapleRight >= 1)
 		-- mac-102: Reed_Clump_B's first upload (120166223011291) renders candy-striped heads; only the re-baked upload may stand in the lake
 		local reedB = false
 		for _, s in S do reedB = reedB or s.Model == "Reed_Clump_B" end

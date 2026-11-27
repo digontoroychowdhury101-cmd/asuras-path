@@ -212,7 +212,7 @@ class KitRegistry(unittest.TestCase):
         d.mkdir(parents=True)
         subs = ["Bellwood_GiantFace__Shell", "Bellwood_GiantFace__Floor"]
         (d / "manifest.json").write_text(json.dumps({"pieces": {"Bellwood_GiantFace": {"sub_meshes": {s: 10 for s in subs}}}}))
-        for pack in ("bellwood_temple", "bellwood_temple_colossal", "bellwood_colonnade", "bellwood_lotus"):  # every landmark pack needs its manifest
+        for pack in ("bellwood_temple", "bellwood_temple_colossal", "bellwood_colonnade", "bellwood_lotus", "bellwood_maple"):  # every landmark pack needs its manifest
             t = self.root / "assets/source/landmarks" / pack
             t.mkdir(parents=True)
             (t / "manifest.json").write_text(json.dumps({"pieces": {}}))
@@ -238,7 +238,7 @@ class KitRegistry(unittest.TestCase):
 
     def test_landmark_lotus_pack_registers_floating_pieces(self):
         # The lake lotus / lily-pad kit (assets/source/landmarks/bellwood_lotus) validates and writes with the other landmark packs.
-        packs = {"bellwood_face": {}, "bellwood_temple": {}, "bellwood_gate": {}, "bellwood_temple_colossal": {}, "bellwood_colonnade": {},
+        packs = {"bellwood_face": {}, "bellwood_temple": {}, "bellwood_gate": {}, "bellwood_temple_colossal": {}, "bellwood_colonnade": {}, "bellwood_maple": {},
                  "bellwood_lotus": {"LilyPad_Cluster_A": ["LilyPad_Cluster_A__Pad"], "Lotus_Bloom_A": ["Lotus_Bloom_A__Pad", "Lotus_Bloom_A__Petals"]}}
         for pack, pieces in packs.items():
             d = self.root / "assets/source/landmarks" / pack
@@ -257,6 +257,10 @@ class KitRegistry(unittest.TestCase):
         del reg["pieces"]["Lotus_Bloom_A"]["Lotus_Bloom_A__Petals"]  # a sub the manifest lists but the upload lacks is refused
         (self.root / "assets/LANDMARK_KIT_UPLOADED.json").write_text(json.dumps(reg))
         self.assertTrue(any("Lotus_Bloom_A__Petals" in e for e in K.validate("landmark", self.root)[0]))
+
+    def test_landmark_kit_includes_maple_pack(self):
+        # The floating red maple leaves (assets/source/landmarks/bellwood_maple) are a landmark pack beside the lotus kit.
+        self.assertIn("bellwood_maple", K.KITS["landmark"][2])
 
     def test_vesperhold_mesh_id_shared_across_pieces_only(self):
         # Roblox dedupes identical geometry (both hooded statues' plinths); the loader resolves each piece inside its own model.

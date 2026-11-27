@@ -115,6 +115,11 @@ Layout.Landmarks = {
 				{ Model = "Bellwood_LotusClusterA", Along = 488, Across = -16, Scale = 1, Float = 0.15, Yaw = 160, R = 6.4 },
 				{ Model = "Bellwood_LotusBloom", Along = 438, Across = 22, Scale = 1, Float = 0.15, Yaw = 300, R = 3.6 },
 				{ Model = "Bellwood_LilyPadsDrift", Along = 432, Across = 2, Scale = 1, Float = 0.15, Yaw = 250, R = 7.3 },
+				-- Fallen red maple leaves (bellwood_maple.py) in the open water beside the pads, both sides of the tunnel-exit view and clear of the walk.
+				{ Model = "Bellwood_MapleDrift", Along = 470, Across = -95, Scale = 1, Float = 0.15, Yaw = 30, R = 8.2 },
+				{ Model = "Bellwood_MapleDrift", Along = 421, Across = -50, Scale = 1, Float = 0.15, Yaw = 140, R = 8.2 },
+				{ Model = "Bellwood_MapleRaft", Along = 439, Across = -14, Scale = 1, Float = 0.15, Yaw = 70, R = 4.8 },
+				{ Model = "Bellwood_MapleRaft", Along = 463, Across = 46, Scale = 1, Float = 0.15, Yaw = 200, R = 4.8 },
 				-- Reed_Clump_B, re-baked with whole cattail heads (bellwood_veg.py). It stands on the dish, so Lift 1 keeps its top ~8 over the water.
 				{ Model = "Reed_Clump_B", Along = 474, Across = -66, Scale = 1.8, Lift = 1, Yaw = 60, R = 7.5 },
 			} },
