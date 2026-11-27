@@ -1,0 +1,42 @@
+{
+ "landmark/Bellwood_LilyPadsDrift__p1": {
+  "assetId": "82060593706812",
+  "bytes": 13903756,
+  "displayName": "landmark_Bellwood_LilyPadsDrift__p1",
+  "error": null,
+  "file": "assets/build/bellwood_lotus/upload/Bellwood_LilyPadsDrift__p1.glb",
+  "moderation": "Approved",
+  "operationId": "017967b8-23f1-4145-ac1f-cb9fed7ca1b2",
+  "sha256": "42cc00ba7ece3f85a0790d9fb50bad2e0bc571fbd43446b75982ad9f82d41f9e"
+ },
+ "landmark/Bellwood_LotusBloom__p1": {
+  "assetId": "73375860819538",
+  "bytes": 13789128,
+  "displayName": "landmark_Bellwood_LotusBloom__p1",
+  "error": null,
+  "file": "assets/build/bellwood_lotus/pilot/Bellwood_LotusBloom__p1.glb",
+  "moderation": "Approved",
+  "operationId": "1c1c475d-fe90-4b3a-8f43-32cf77edb756",
+  "sha256": "b0c511fc3f74f4e740cd2b82500d6ae961f18bc508c650d0132da12213f6fc6b"
+ },
+ "landmark/Bellwood_LotusClusterA__p1": {
+  "assetId": "105734158129529",
+  "bytes": 13997400,
+  "displayName": "landmark_Bellwood_LotusClusterA__p1",
+  "error": null,
+  "file": "assets/build/bellwood_lotus/upload/Bellwood_LotusClusterA__p1.glb",
+  "moderation": "Approved",
+  "operationId": "cb2f2d5d-8ea6-4440-9bae-1decf09ec58e",
+  "sha256": "bd7223eb7992bd3d2f7de016561262d0ba98f8b6637518d4e828e75b83582a81"
+ },
+ "landmark/Bellwood_LotusClusterB__p1": {
+  "assetId": "114998259350855",
+  "bytes": 14165948,
+  "displayName": "landmark_Bellwood_LotusClusterB__p1",
+  "error": null,
+  "file": "assets/build/bellwood_lotus/upload/Bellwood_LotusClusterB__p1.glb",
+  "moderation": "Approved",
+  "operationId": "62418c17-d0cc-46b8-919d-af57713aa043",
+  "sha256": "082aca09a744dfa5bbddd726165d26cba27b481e46d54cb039b8ba6b20b92e1d"
+ }
+}

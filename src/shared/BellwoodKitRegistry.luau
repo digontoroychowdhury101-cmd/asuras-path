@@ -254,8 +254,8 @@ return {
 		["Reed_Clump_A__Blades"] = { MeshId = "rbxassetid://122099931886828", Asset = "rbxassetid://127037060667206", ColorMap = "rbxassetid://101072417784730", NormalMap = "rbxassetid://101251167936328", RoughnessMap = "rbxassetid://73488916920199", MetalnessMap = "rbxassetid://105771938566568" },
 	},
 	["Reed_Clump_B"] = {
-		["Reed_Clump_B__Blades"] = { MeshId = "rbxassetid://136618846114704", Asset = "rbxassetid://120166223011291", ColorMap = "rbxassetid://101072417784730", NormalMap = "rbxassetid://101251167936328", RoughnessMap = "rbxassetid://73488916920199", MetalnessMap = "rbxassetid://105771938566568", center = { 0.0, 2.27, 0.0 } },
-		["Reed_Clump_B__Heads"] = { MeshId = "rbxassetid://124579708890539", Asset = "rbxassetid://120166223011291", ColorMap = "rbxassetid://128933845357683", NormalMap = "rbxassetid://86269934185055", RoughnessMap = "rbxassetid://130500621185520", MetalnessMap = "rbxassetid://115183972532059", center = { -0.48, 4.85, 0.39 } },
+		["Reed_Clump_B__Blades"] = { MeshId = "rbxassetid://136618846114704", Asset = "rbxassetid://128825562497257", ColorMap = "rbxassetid://102628287698789", NormalMap = "rbxassetid://101251167936328", RoughnessMap = "rbxassetid://73488916920199", MetalnessMap = "rbxassetid://119095465227933", center = { 0.0, 2.27, 0.0 } },
+		["Reed_Clump_B__Heads"] = { MeshId = "rbxassetid://105229796397426", Asset = "rbxassetid://128825562497257", ColorMap = "rbxassetid://96928537132051", NormalMap = "rbxassetid://86269934185055", RoughnessMap = "rbxassetid://130500621185520", MetalnessMap = "rbxassetid://94411401177445", center = { -0.48, 4.85, 0.39 } },
 	},
 	["Rope_Bridge_Anchor"] = {
 		["Rope_Bridge_Anchor__Bronze"] = { MeshId = "rbxassetid://91579760668346", Asset = "rbxassetid://81892326823106", ColorMap = "rbxassetid://95523375764903", NormalMap = "rbxassetid://102789620654437", RoughnessMap = "rbxassetid://136667534942132", MetalnessMap = "rbxassetid://132441202373627", center = { -0.04, 14.43, -2.62 } },

@@ -212,7 +212,7 @@ class KitRegistry(unittest.TestCase):
         d.mkdir(parents=True)
         subs = ["Bellwood_GiantFace__Shell", "Bellwood_GiantFace__Floor"]
         (d / "manifest.json").write_text(json.dumps({"pieces": {"Bellwood_GiantFace": {"sub_meshes": {s: 10 for s in subs}}}}))
-        for pack in ("bellwood_temple", "bellwood_temple_colossal", "bellwood_colonnade"):  # every landmark pack needs its manifest
+        for pack in ("bellwood_temple", "bellwood_temple_colossal", "bellwood_colonnade", "bellwood_lotus"):  # every landmark pack needs its manifest
             t = self.root / "assets/source/landmarks" / pack
             t.mkdir(parents=True)
             (t / "manifest.json").write_text(json.dumps({"pieces": {}}))
@@ -235,6 +235,28 @@ class KitRegistry(unittest.TestCase):
         del reg["pieces"]["Bellwood_GiantFace"][subs[1]]["center"]
         (self.root / "assets/LANDMARK_KIT_UPLOADED.json").write_text(json.dumps(reg))
         self.assertTrue(any("needs a center" in e for e in K.validate("landmark", self.root)[0]))
+
+    def test_landmark_lotus_pack_registers_floating_pieces(self):
+        # The lake lotus / lily-pad kit (assets/source/landmarks/bellwood_lotus) validates and writes with the other landmark packs.
+        packs = {"bellwood_face": {}, "bellwood_temple": {}, "bellwood_gate": {}, "bellwood_temple_colossal": {}, "bellwood_colonnade": {},
+                 "bellwood_lotus": {"LilyPad_Cluster_A": ["LilyPad_Cluster_A__Pad"], "Lotus_Bloom_A": ["Lotus_Bloom_A__Pad", "Lotus_Bloom_A__Petals"]}}
+        for pack, pieces in packs.items():
+            d = self.root / "assets/source/landmarks" / pack
+            d.mkdir(parents=True)
+            (d / "manifest.json").write_text(json.dumps({"pieces": {p: {"sub_meshes": {s: 10 for s in subs}} for p, subs in pieces.items()}}))
+        (self.root / "src/shared").mkdir(parents=True)
+        lotus = packs["bellwood_lotus"]
+        reg = {"modelAssets": {p: {"assetId": rid()} for p in lotus},
+               "pieces": {p: {s: {"MeshId": rid(), "ColorMap": rid(), "NormalMap": rid()} for s in subs} for p, subs in lotus.items()}}
+        (self.root / "assets/LANDMARK_KIT_UPLOADED.json").write_text(json.dumps(reg))
+        self.assertEqual(K.main(["landmark", "--root", str(self.root)]), 0)
+        text = (self.root / "src/shared/LandmarkKitRegistry.luau").read_text()
+        for subs in lotus.values():
+            for s in subs:
+                self.assertIn(f'["{s}"]', text)
+        del reg["pieces"]["Lotus_Bloom_A"]["Lotus_Bloom_A__Petals"]  # a sub the manifest lists but the upload lacks is refused
+        (self.root / "assets/LANDMARK_KIT_UPLOADED.json").write_text(json.dumps(reg))
+        self.assertTrue(any("Lotus_Bloom_A__Petals" in e for e in K.validate("landmark", self.root)[0]))
 
     def test_vesperhold_mesh_id_shared_across_pieces_only(self):
         # Roblox dedupes identical geometry (both hooded statues' plinths); the loader resolves each piece inside its own model.

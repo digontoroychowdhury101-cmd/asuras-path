@@ -656,6 +656,22 @@ return {
 		["Bellwood_GiantFace__Shell_8"] = { MeshId = "rbxassetid://135893812964921", Asset = "rbxassetid://103105329061830", ColorMap = "rbxassetid://112845957709113", NormalMap = "rbxassetid://130287865031056", RoughnessMap = "rbxassetid://140474009367720", MetalnessMap = "rbxassetid://77579942535104", center = { 14.6426, 46.6298, -7.7324 } },
 		["Bellwood_GiantFace__Shell_9"] = { MeshId = "rbxassetid://92094062949414", Asset = "rbxassetid://103105329061830", ColorMap = "rbxassetid://112845957709113", NormalMap = "rbxassetid://130287865031056", RoughnessMap = "rbxassetid://140474009367720", MetalnessMap = "rbxassetid://77579942535104", center = { 9.9987, 50.6809, -3.2684 } },
 	},
+	["Bellwood_LilyPadsDrift"] = {
+		["Bellwood_LilyPadsDrift__Bloom"] = { MeshId = "rbxassetid://110622082990724", Asset = "rbxassetid://82060593706812", ColorMap = "rbxassetid://139349030301232", NormalMap = "rbxassetid://133718361375228", RoughnessMap = "rbxassetid://124709494464180", MetalnessMap = "rbxassetid://70491594266587" },
+		["Bellwood_LilyPadsDrift__Pad"] = { MeshId = "rbxassetid://140324752944549", Asset = "rbxassetid://82060593706812", ColorMap = "rbxassetid://98757229965556", NormalMap = "rbxassetid://73063831477557", RoughnessMap = "rbxassetid://72305875833378", MetalnessMap = "rbxassetid://70491594266587" },
+	},
+	["Bellwood_LotusBloom"] = {
+		["Bellwood_LotusBloom__Bloom"] = { MeshId = "rbxassetid://71533358020454", Asset = "rbxassetid://73375860819538", ColorMap = "rbxassetid://139349030301232", NormalMap = "rbxassetid://133718361375228", RoughnessMap = "rbxassetid://124709494464180", MetalnessMap = "rbxassetid://129250579325331" },
+		["Bellwood_LotusBloom__Pad"] = { MeshId = "rbxassetid://81779851891065", Asset = "rbxassetid://73375860819538", ColorMap = "rbxassetid://98757229965556", NormalMap = "rbxassetid://73063831477557", RoughnessMap = "rbxassetid://72305875833378", MetalnessMap = "rbxassetid://70491594266587" },
+	},
+	["Bellwood_LotusClusterA"] = {
+		["Bellwood_LotusClusterA__Bloom"] = { MeshId = "rbxassetid://111355424295484", Asset = "rbxassetid://105734158129529", ColorMap = "rbxassetid://139349030301232", NormalMap = "rbxassetid://133718361375228", RoughnessMap = "rbxassetid://124709494464180", MetalnessMap = "rbxassetid://70491594266587" },
+		["Bellwood_LotusClusterA__Pad"] = { MeshId = "rbxassetid://91770037759459", Asset = "rbxassetid://105734158129529", ColorMap = "rbxassetid://98757229965556", NormalMap = "rbxassetid://73063831477557", RoughnessMap = "rbxassetid://72305875833378", MetalnessMap = "rbxassetid://70491594266587" },
+	},
+	["Bellwood_LotusClusterB"] = {
+		["Bellwood_LotusClusterB__Bloom"] = { MeshId = "rbxassetid://105243732870932", Asset = "rbxassetid://114998259350855", ColorMap = "rbxassetid://139349030301232", NormalMap = "rbxassetid://133718361375228", RoughnessMap = "rbxassetid://124709494464180", MetalnessMap = "rbxassetid://70491594266587" },
+		["Bellwood_LotusClusterB__Pad"] = { MeshId = "rbxassetid://103886644915409", Asset = "rbxassetid://114998259350855", ColorMap = "rbxassetid://98757229965556", NormalMap = "rbxassetid://73063831477557", RoughnessMap = "rbxassetid://72305875833378", MetalnessMap = "rbxassetid://70491594266587" },
+	},
 	["Bellwood_TempleHall"] = {
 		["Bellwood_TempleHall__Lacquer"] = { MeshId = "rbxassetid://136607191223916", Asset = "rbxassetid://113452079836448", ColorMap = "rbxassetid://84819162417448", NormalMap = "rbxassetid://78012821489613", RoughnessMap = "rbxassetid://140572823620199", MetalnessMap = "rbxassetid://77579942535104", center = { 0.905, 23.25, -4.113 } },
 		["Bellwood_TempleHall__Lacquer_2"] = { MeshId = "rbxassetid://138489951343329", Asset = "rbxassetid://113452079836448", ColorMap = "rbxassetid://84819162417448", NormalMap = "rbxassetid://78012821489613", RoughnessMap = "rbxassetid://140572823620199", MetalnessMap = "rbxassetid://77579942535104", center = { -14.15, 23.25, -4.113 } },

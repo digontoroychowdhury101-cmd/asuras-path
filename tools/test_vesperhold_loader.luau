@@ -759,6 +759,8 @@ do
 		end
 		local placedOk, lakeOk, clearOk, viewOk, seatOk, collideOk, artOk = true, true, true, true, true, true, true
 		local gp = Vector3.new(gspot.X, 0, gspot.Z)
+		local right2 = look:Cross(Vector3.yAxis)
+		local floatNear, floatLeft, floatRight = 0, 0, 0
 		for _, s in S do
 			local frame = W2.shallowsFrame(bw, s)
 			local hit = nil
@@ -771,9 +773,17 @@ do
 			-- 50: the reveal camera (FOV 70, 16:9) spans about 51 degrees either side of its look
 			viewOk = viewOk and math.deg(math.acos(math.clamp(to.Unit:Dot(look), -1, 1))) <= 50 and to.Magnitude <= 320
 			local bed = if LL.basinEllipse(bw, p.X, p.Z, -bw.Basin.Shelf) < 1 then floorY0 - bw.Basin.Deep else floorY0
-			seatOk = seatOk and math.abs(p.Y - (bed + s.Lift)) < 1e-6 and s.Lift >= -2 and p.Y < water
+			if s.Float ~= nil then
+				-- lotus / lily pads float: foot just over the water surface on the dish or the shelf alike, and never a Lift as well
+				seatOk = seatOk and s.Lift == nil and math.abs(p.Y - (water + s.Float)) < 1e-6 and s.Float >= -0.5 and s.Float <= 2.5
+				if to.Magnitude <= 120 then floatNear += 1 end
+				if to:Dot(right2) > 0 then floatRight += 1 else floatLeft += 1 end
+			else
+				seatOk = seatOk and math.abs(p.Y - (bed + s.Lift)) < 1e-6 and s.Lift >= -2 and p.Y < water
+			end
 			local fid = hit and hit.Opts and hit.Opts.Fidelity
 			collideOk = collideOk and fid ~= nil and fid.Stone ~= nil and fid.Bark ~= nil and fid.Hull ~= nil and fid.Blades == nil and fid.Heads == nil
+				and fid.Pad == nil and fid.Petals == nil and fid.Leaf == nil and fid.Stem == nil and fid.Bud == nil
 			local known = false
 			for _, r in regs do known = known or r[s.Model] ~= nil end
 			artOk = artOk and known
@@ -783,7 +793,17 @@ do
 		check("lake scatter: inside the shore, clear of the causeways, the gate stair and the gate", lakeOk and clearOk)
 		check("lake scatter: within 50 degrees of the exit's view of the basin centre and 320 studs of the exit", viewOk)
 		check("lake scatter: on the lake or dish bed + Lift, foot under the water", seatOk)
-		check("lake scatter: rocks, logs and the hull collide, reeds never do", collideOk)
+		check("lake scatter: rocks, logs and the hull collide, reeds, lotus and lily pads never do", collideOk)
+		-- bellwood_3: lotus and lily pads fill the exit eye's lake foreground on both sides of the walk to the temple
+		check("lake scatter: six or more floating lotus / lily pieces within 120 studs of the exit, some each side of its view",
+			floatNear >= 6 and floatLeft >= 2 and floatRight >= 2)
+		-- mac-102: Reed_Clump_B's first upload (120166223011291) renders candy-striped heads; only the re-baked upload may stand in the lake
+		local reedB = false
+		for _, s in S do reedB = reedB or s.Model == "Reed_Clump_B" end
+		local bwReg = require("../src/shared/BellwoodKitRegistry")
+		local heads = bwReg.Reed_Clump_B and bwReg.Reed_Clump_B.Reed_Clump_B__Heads
+		check("lake scatter: Reed_Clump_B stands in the lake only as its re-baked upload",
+			not reedB or (heads ~= nil and heads.Asset ~= "rbxassetid://120166223011291"))
 	end)() end
 	do -- own function scope: this section is near Luau's 200-local limit
 	(function()

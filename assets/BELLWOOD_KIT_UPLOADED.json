@@ -530,12 +530,12 @@
       "replaces": "rbxassetid://110599369969933"
     },
     "Reed_Clump_B": {
-      "assetId": "rbxassetid://120166223011291",
-      "operationId": "c4a22586-5ad8-4f54-991b-7caa692aab8c",
-      "source": "work/mac-resume-2026-11-18/retone2/bellwood_veg/Reed_Clump_B.glb",
-      "uploaded": "2026-11-20",
+      "assetId": "rbxassetid://128825562497257",
+      "operationId": "0278d194-94bb-4962-ac47-8e79332cc896",
+      "source": "work/win-104/retone/bellwood_veg/Reed_Clump_B.glb",
+      "uploaded": "2026-11-27",
       "moderationState": "Approved",
-      "replaces": "rbxassetid://122111364729366"
+      "replaces": "rbxassetid://120166223011291"
     },
     "Sapling_Tree": {
       "assetId": "rbxassetid://113655823199041",
@@ -2471,11 +2471,11 @@
     },
     "Reed_Clump_B": {
       "Reed_Clump_B__Heads": {
-        "ColorMap": "rbxassetid://128933845357683",
+        "ColorMap": "rbxassetid://96928537132051",
         "NormalMap": "rbxassetid://86269934185055",
+        "MeshId": "rbxassetid://105229796397426",
+        "MetalnessMap": "rbxassetid://94411401177445",
         "RoughnessMap": "rbxassetid://130500621185520",
-        "MeshId": "rbxassetid://124579708890539",
-        "MetalnessMap": "rbxassetid://115183972532059",
         "center": [
           -0.48,
           4.85,
@@ -2483,11 +2483,11 @@
         ]
       },
       "Reed_Clump_B__Blades": {
-        "ColorMap": "rbxassetid://101072417784730",
+        "ColorMap": "rbxassetid://102628287698789",
         "NormalMap": "rbxassetid://101251167936328",
-        "RoughnessMap": "rbxassetid://73488916920199",
         "MeshId": "rbxassetid://136618846114704",
-        "MetalnessMap": "rbxassetid://105771938566568",
+        "MetalnessMap": "rbxassetid://119095465227933",
+        "RoughnessMap": "rbxassetid://73488916920199",
         "center": [
           0,
           2.27,

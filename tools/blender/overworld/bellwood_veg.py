@@ -1,7 +1,8 @@
 """Bellwood vegetation kit (lane M1): trees, deadwood, shrubs, ferns, flowers, fungi, vines/moss, reeds, grass.
 
-  "C:/Program Files/Blender Foundation/Blender 5.2/blender" -b -P tools/blender/overworld/bellwood_veg.py
-  env VEG_ONLY=Name1,Name2 builds a subset; VEG_NORENDER=1 skips renders.
+  "C:/Program Files/Blender Foundation/Blender 5.3/blender" -b -P tools/blender/overworld/bellwood_veg.py
+  env VEG_ONLY=Name1,Name2 builds a subset; VEG_NORENDER=1 skips renders; VEG_CAP=<dir> / VEG_NOTE=<file> send the renders and
+  progress lines elsewhere (a worker rebuilding one piece leaves the committed captures and 21a notes alone).
 
 Reuses the helpers and the bark / leaf / fern / grass materials of slice_kit.py (exec'd without its main()), so the pieces share the
 slice kit's visual language (same Bell_Bark / Bell_Leaf maps, ESE wind lean of crowns toward WNW). 1 BU = 1 stud, base centre at the
@@ -30,8 +31,8 @@ exec(compile(_src.rsplit("\nmain()", 1)[0], "slice_kit.py", "exec"), globals()) 
 ROOT = HERE.parents[3]
 OUT = ROOT / "assets/source/overworld/bellwood_veg"
 UP = ROOT / "assets/source/overworld/upload/bellwood_veg"
-CAP = ROOT / "outputs/claude-open-world-2026-11-14/captures/kit/bellwood_veg"
-NOTE = ROOT / "outputs/claude-open-world-2026-11-14/workers/21a-bell-veg.md"
+CAP = Path(os.environ.get("VEG_CAP") or ROOT / "outputs/claude-open-world-2026-11-14/captures/kit/bellwood_veg").resolve()
+NOTE = Path(os.environ.get("VEG_NOTE") or ROOT / "outputs/claude-open-world-2026-11-14/workers/21a-bell-veg.md").resolve()
 REGISTRY = "assets/BELLWOOD_KIT_UPLOADED.json"
 ONLY = {s for s in os.environ.get("VEG_ONLY", "").split(",") if s}
 NORENDER = bool(os.environ.get("VEG_NORENDER"))

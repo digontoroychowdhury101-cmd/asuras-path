@@ -91,8 +91,8 @@ Layout.Landmarks = {
 			-- and the temple, from uploaded kit pieces (Bellwood, Slice and Saltreach kits). Across/Along as Temple; Lift over the lake bed,
 			-- or over the deep dish where it lies (Layout.shallowsSpot). Yaw/Pitch/Roll in degrees off the basin front. R = scaled half
 			-- footprint, kept clear of the causeways and the gate (test_vesperhold_loader). Tops stand 4+ studs over the water: lower ones
-			-- vanished under the streamed water surface at the eye (mac-102 Play). Reed_Clump_B is left out: its cattail heads' UVs render
-			-- as green sleeves on candy-striped stems.
+			-- vanished under the streamed water surface at the eye (mac-102 Play). Floating pieces (lotus, lily pads) give Float instead of
+			-- Lift: the foot sits Float studs over the water surface, on the dish or the shelf alike (Layout.shallowsSpot).
 			Shallows = {
 				{ Model = "Outcrop_Mossy", Along = 470, Across = 10, Scale = 2.8, Lift = 0, Yaw = 25, R = 28 },
 				{ Model = "Boulder_Granite_D", Along = 490, Across = -78, Scale = 2.4, Lift = 0, Yaw = 70, R = 14 },
@@ -104,6 +104,19 @@ Layout.Landmarks = {
 				-- mac-103: the ruined colonnade (tools/blender/landmarks/bellwood_colonnade.py), midground left as in bellwood_3
 				{ Model = "Bellwood_ColonnadeStanding", Along = 420, Across = 95, Scale = 2.5, Lift = 0, Yaw = 55, R = 52 },
 				{ Model = "Bellwood_ColonnadeToppled", Along = 350, Across = -100, Scale = 2.5, Lift = 0, Yaw = -35, R = 52 },
+				-- Lotus and lily pads (tools/blender/landmarks/bellwood_lotus.py) in the exit eye's lake foreground, as in bellwood_3: a drift right
+				-- of the walk to the temple round the log and reeds, a few left of it by the outcrop, the walk itself left open.
+				{ Model = "Bellwood_LotusBloom", Along = 484, Across = -58, Scale = 1, Float = 0.15, Yaw = 0, R = 3.6 },
+				{ Model = "Bellwood_LilyPadsDrift", Along = 495, Across = -55, Scale = 1, Float = 0.15, Yaw = 20, R = 7.3 },
+				{ Model = "Bellwood_LotusClusterB", Along = 462, Across = -55, Scale = 1, Float = 0.15, Yaw = 200, R = 7.7 },
+				{ Model = "Bellwood_LilyPadsDrift", Along = 440, Across = -55, Scale = 1, Float = 0.15, Yaw = 95, R = 7.3 },
+				{ Model = "Bellwood_LotusClusterA", Along = 514, Across = -20, Scale = 1, Float = 0.15, Yaw = 40, R = 6.4 },
+				{ Model = "Bellwood_LotusClusterB", Along = 500, Across = -2, Scale = 1, Float = 0.15, Yaw = 130, R = 7.7 },
+				{ Model = "Bellwood_LotusClusterA", Along = 488, Across = -16, Scale = 1, Float = 0.15, Yaw = 160, R = 6.4 },
+				{ Model = "Bellwood_LotusBloom", Along = 438, Across = 22, Scale = 1, Float = 0.15, Yaw = 300, R = 3.6 },
+				{ Model = "Bellwood_LilyPadsDrift", Along = 432, Across = 2, Scale = 1, Float = 0.15, Yaw = 250, R = 7.3 },
+				-- Reed_Clump_B, re-baked with whole cattail heads (bellwood_veg.py). It stands on the dish, so Lift 1 keeps its top ~8 over the water.
+				{ Model = "Reed_Clump_B", Along = 474, Across = -66, Scale = 1.8, Lift = 1, Yaw = 60, R = 7.5 },
 			} },
 		-- Grove (SliceDressing): forest scatter in R round the origin. Nothing tall within Clear (the face), and a lane LaneHalf wide from
 		-- the mouth out LaneTo studs along the front (the road sightline) stays open. Ferns and grass hug the base from Clear - 12.
@@ -385,8 +398,15 @@ function Layout.colossalRidgeHeight(lm: any, x: number, z: number): number?
 	return floor + (420 - floor) * (1 - edge ^ 3) * (1 - depth ^ .86)
 end
 
--- World position of a lake scatter piece's foot: Lift over the lake bed, or over the deep dish Shelf studs in from the shore.
+-- World position of a lake scatter piece's foot: Lift over the lake bed, or over the deep dish Shelf studs in from the shore. A
+-- floating piece (Float set) sits Float studs over the water surface wherever it lies.
 function Layout.shallowsSpot(lm: any, s: any): Vec
+	if s.Float ~= nil then
+		local at = basinSpot(lm, { Across = s.Across, Along = s.Along, Lift = 0 })
+		local _, water = Layout.basinLevels(lm)
+		at.Y = water + s.Float
+		return at
+	end
 	local at = basinSpot(lm, s)
 	if Layout.basinEllipse(lm, at.X, at.Z, -lm.Basin.Shelf) < 1 then at.Y -= lm.Basin.Deep end
 	return at
