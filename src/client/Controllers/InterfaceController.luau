@@ -94,6 +94,8 @@ local REASONS: { [string]: string } = {
 -- Successes worth a line (most speak through their own cue).
 local NOTICES: { [string]: string } = {
 	RelicTaken = "Something answers from the lake below.",
+	SutraLearned = "The beads teach you the Sutra of Mending. Something answers from the lake below.",
+	BeadsTaken = "The beads teach you the Sutra of Mending. Slot it from the Spells tab.",
 }
 
 -------------------------------------------------------------------------------------------------

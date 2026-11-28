@@ -34,7 +34,7 @@ local Workspace={Raycast=function(_,a,d,params)
 end}
 local actors={};local now=0;local cues={}
 local Characters={Entities=function() return actors end,GetActor=function(id) return actors[id] end,
- IsHostile=function(a,b) return a~=b and actors[a]~=nil and actors[b]~=nil end,
+ IsHostile=function(a,b) return a~=b and actors[a]~=nil and actors[b]~=nil and not (actors[a].Ally and actors[b].Ally) end,
  Cue=function(kind,id,data) table.insert(cues,{Kind=kind,Id=id,Data=data}) end,
  Teleport=function(id,cf) actors[id].Root.Position=cf.Position;actors[id].Root.CFrame=cf end,
  ApplyArea=function(a,b,damage,posture,unblockable)
@@ -99,7 +99,23 @@ assert(b.Fighter.ActiveHP<100 and b.Fighter.State=="Hitstun","Supernova column r
 local first=b.Fighter.ActiveHP;b.Fighter.State="Idle";step(1.6);assert(b.Fighter.ActiveHP<first,"Supernova second pulse lands")
 a,b=reset();Effects.release(a,"BlazingSunAwakening",1,0);step(0);local sun=b.Fighter.ActiveHP
 assert(sun<100,"Blazing Sun shockwave hits");step(1.5);assert(b.Fighter.ActiveHP<sun,"Blazing Sun heat ring pulses")
-print("Phase 2 server effects: 16 scenarios passed")
+-- Sutra of Mending (win-109): the caster and unhostile players in reach, four pulses, broken by a stagger
+a,b=reset();local ally=actor(3,-904);local far=actor(4,-930)
+a.Ally,ally.Ally,far.Ally=true,true,true;ally.Player,far.Player={},{}
+for _,e in {a,b,ally,far} do e.Fighter.ActiveHP=40 end
+a.Fighter.State,a.Fighter.StateStart="Recovery",0
+Effects.release(a,"SutraOfMending",1,0);step(0)
+assert(a.Fighter.ActiveHP==48 and ally.Fighter.ActiveHP==48,"Sutra mends the caster and a near ally")
+assert(b.Fighter.ActiveHP==40 and far.Fighter.ActiveHP==40,"Sutra never mends a foe or an ally out of reach")
+step(0.75);step(1.5);step(2.25);step(3.0);step(3.75)
+assert(a.Fighter.ActiveHP==72 and ally.Fighter.ActiveHP==72,"Sutra pulses exactly four times")
+a,b=reset();a.Fighter.ActiveHP=40;a.Fighter.State,a.Fighter.StateStart="Recovery",0
+Effects.release(a,"SutraOfMending",1,0);step(0);a.Fighter.State="Hitstun";step(0.75);step(1.5)
+assert(a.Fighter.ActiveHP==48 and cues[#cues].Kind=="SpellInterrupted" and cues[#cues].Data.spell=="SutraOfMending","A stagger breaks the chant")
+a,b=reset();a.Fighter.ActiveHP=99;a.Fighter.State,a.Fighter.StateStart="Recovery",0
+Effects.release(a,"SutraOfMending",1,0);step(0)
+assert(a.Fighter.ActiveHP<=Combat.effectiveMaxHP(a.Fighter),"Sutra never overheals")
+print("Phase 2 server effects: 19 scenarios passed")
 '''
 source = HEADER + inline('Geometry', 'src/server/Services/SpellGeometry.luau') + inline('Effects', 'src/server/Services/SpellEffects.luau') + TESTS
 output = ROOT / 'work' / 'test_weapons_and_spells_runtime.generated.luau'

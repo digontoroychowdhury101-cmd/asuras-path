@@ -32,7 +32,8 @@ end
 function Rules.payload(id: string,potency: number): any
  local s=assert(Spells.get(id),"Unknown spell")
  return {Damage=s.Damage*potency,Posture=s.Posture*potency,Burn=s.Status.Burn,Root=s.Status.Root,Drain=s.Status.Drain,
-  Interrupt=s.Status.Interrupt,IgnoreGuard=s.Status.IgnoreGuard,Ward=s.Status.Ward,Teleport=s.Status.Teleport,Decoy=s.Status.Decoy}
+  Interrupt=s.Status.Interrupt,IgnoreGuard=s.Status.IgnoreGuard,Ward=s.Status.Ward,Teleport=s.Status.Teleport,Decoy=s.Status.Decoy,
+  Heal=s.Status.Heal*potency}
 end
 function Rules.status(target: any,id: string,now: number)
  local s=assert(Spells.get(id))

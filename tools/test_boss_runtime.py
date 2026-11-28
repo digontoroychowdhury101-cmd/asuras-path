@@ -343,15 +343,19 @@ local GateCoordinator=(function()
   local ids={};for id in s.Bosses do table.insert(ids,id) end;table.sort(ids)
   s.Player:SetAttribute("AsuraBosses",table.concat(ids,","))
  end
+ local spells:any={};local refreshed:any={}
+ local function souls(id:number) spells[id]=spells[id] or {};return {inventory={spells=spells[id]}} end
  local function enqueue(s:any,_label:string,run:any)
-  run({RecordBossDefeat=function(_store:any,id:number,boss:string,_amount:number) awards[id]=(awards[id] or 0)+1;return true end})
+  run({RecordBossDefeat=function(_store:any,id:number,boss:string,_amount:number) awards[id]=(awards[id] or 0)+1;return true end,
+   UnlockSpell=function(_store:any,id:number,spell:string) souls(id).inventory.spells[spell]=true;return true end})
  end
  function Characters.IsInDuel(_id:number) return false end
+ function Characters.RefreshProgression(id:number) refreshed[id]=(refreshed[id] or 0)+1 end
 ''')
 chunks.append(fog_source)
 chunks.append(r'''
  local function setup(ids:any)
-  table.clear(sessions);table.clear(fights);table.clear(sealed);table.clear(awards);drops=0;present=false;failSpawn=false
+  table.clear(sessions);table.clear(fights);table.clear(sealed);table.clear(awards);table.clear(spells);table.clear(refreshed);drops=0;present=false;failSpawn=false
   setLake("Dormant")
   for _,id in ids do
    local o=World.FogGates[World.Bosses.GrandmasterShen.FogGate].Outside;local e=actor(id,o.X,o.Y,o.Z)
@@ -360,7 +364,7 @@ chunks.append(r'''
  end
  return {Setup=setup,Enter=traverseGate,Update=updateGates,End=endFight,Sessions=sessions,Sealed=sealed,Awards=awards,Lake=lake,
   Drops=function() return drops end,FailSpawn=function() failSpawn=true end,Present=AI.IsBossPresent,Walkable=function() return walkable end,
-  RelicPosition=anchor.Position,TakeRelic=function(id) return takeRelic(id,prompt) end,Phase=function() return Workspace.Attributes[LakeRules.PhaseAttribute] end}
+  RelicPosition=anchor.Position,TakeRelic=function(id) return takeRelic(id,prompt) end,Spells=spells,Refreshed=refreshed,Phase=function() return Workspace.Attributes[LakeRules.PhaseAttribute] end}
 end)()
 local gate=World.FogGates[World.Bosses.GrandmasterShen.FogGate]
 local G=GateCoordinator
@@ -372,6 +376,7 @@ check(not G.Present(gate.Boss) and not G.Walkable() and G.Sessions[1].Fight==nil
 check(not G.TakeRelic(1),"relic cannot be taken from the arena")
 put(1,G.RelicPosition)
 check(G.TakeRelic(1) and G.Lake.State=="Summoning" and G.Present(gate.Boss) and not G.Walkable(),"a nearby relic holder wakes a waiting Shen")
+check(G.Spells[1].SutraOfMending==true and G.Refreshed[1]==1 and G.Spells[2]==nil,"lifting the beads teaches the holder the Sutra of Mending")
 check(string.match(G.Phase(),"^Summoning:%d") and not G.TakeRelic(1),"summon time replicates with phase and duplicate takes fail")
 put(1,gate.Outside);put(2,gate.Outside);G.Update()
 now+=LakeRules.SummonSeconds;G.Update()
@@ -401,6 +406,11 @@ actors[1].Fighter.State="KO";G.Update()
 check(not G.Sealed[gate.Id] and G.Drops()==0 and G.Lake.State=="Stilled" and G.Present(gate.Boss),"party wipe reopens a stilled lake with Shen waiting")
 G.Sessions[1]=nil;G.Update()
 check(G.Lake.State=="Dormant" and not G.Present(gate.Boss) and not G.Walkable(),"the last summoner leaving resets a waiting lake")
+G.Setup({1});put(1,G.RelicPosition);G.Sessions[1].Bosses[gate.Boss]=true
+local ok,why=G.TakeRelic(1)
+check(ok and why=="BeadsTaken" and G.Spells[1].SutraOfMending and G.Lake.State=="Dormant" and not G.Present(gate.Boss),"a Shen victor who never took the beads learns the Sutra and the lake stays asleep")
+ok,why=G.TakeRelic(1)
+check(not ok and why=="BossFelled" and G.Refreshed[1]==1,"a victor who already knows the Sutra is refused as before")
 G.Setup({1});G.FailSpawn()
 check(not G.Enter(1,gate) and actors[1].Root.Position.Z==gate.Outside.Z,"failed spawn returns entrant outside safely")
 print("Boss fog coordinator: encounter and lake lifecycle passed")

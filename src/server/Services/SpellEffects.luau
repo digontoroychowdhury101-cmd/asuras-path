@@ -3,12 +3,17 @@
 local Shared=game:GetService("ReplicatedStorage"):WaitForChild("AsurasPath")
 local Spells=require(Shared.Simulation.SpellSchema)
 local Rules=require(Shared.Simulation.SpellRules)
+local Combat=require(Shared.Simulation.CombatRules)
 local Characters=require(script.Parent.CharacterService)
 local Geometry=require(script.Parent.SpellGeometry)
 local Effects={}
 type Job={Source: any,Fighter: any,Duel: string?,Spell: any,Potency: number,Origin: Vector3,Direction: Vector3,Point: Vector3,At: number,Travel: number,Hits: {[number]: boolean}}
 type Burn={Source: any,SourceFighter: any,Target: any,Fighter: any,Duel: string?,Stacks: number,At: number,Until: number}
+-- A chant (Status.Heal): pulses while the caster is still in the cast that released it (same StateStart). A stagger,
+-- a KO or any new action ends that state, and the pulses left go with it.
+type Mend={Source: any,Fighter: any,Duel: string?,Spell: any,Potency: number,Start: number,At: number,Left: number}
 local jobs: {Job}={}
+local mends: {Mend}={}
 local burns: {[string]: Burn}={}
 local function valid(j: Job): boolean
  return Characters.GetActor(j.Source.Id)==j.Source and j.Source.Fighter==j.Fighter and j.Fighter.State~="KO" and j.Source.Duel==j.Duel and j.Source.Root.Parent~=nil
@@ -33,6 +38,23 @@ local function strike(j: Job,target: any,now: number)
  end
  Characters.Cue("SpellHit",j.Source.Id,{spell=s.Id,position=target.Root.Position,root=s.Status.Root})
 end
+local function chanting(m: Mend): boolean
+ local f=m.Fighter
+ return Characters.GetActor(m.Source.Id)==m.Source and m.Source.Fighter==f and f.State=="Recovery" and f.StateStart==m.Start
+  and m.Source.Duel==m.Duel and m.Source.Root.Parent~=nil
+end
+-- The caster and every unhostile player in reach, in the same duel space (never an opponent).
+local function mend(m: Mend)
+ local s=m.Spell;local origin=m.Source.Root.Position;local healed={}
+ for _,e in Characters.Entities() do
+  local ally=e==m.Source or (e.Player~=nil and e.Duel==m.Duel and not Characters.IsHostile(m.Source.Id,e.Id))
+  if ally and e.Fighter.State~="KO" and e.Root.Parent and (e.Root.Position-origin).Magnitude<=s.Radius then
+   Combat.heal(e.Fighter,s.Status.Heal*m.Potency*Combat.effectiveMaxHP(e.Fighter))
+   table.insert(healed,e.Id)
+  end
+ end
+ Characters.Cue("SpellPulse",m.Source.Id,{spell=s.Id,position=origin,range=s.Radius,healed=healed})
+end
 local function pulse(j: Job,now: number)
  local s=j.Spell
  local pointed=s.Shape=="Pillars" or s.Shape=="Impact" or s.Shape=="Column"
@@ -52,6 +74,10 @@ function Effects.release(source: any,id: string,potency: number,now: number)
  local point=if s.Shape=="Column" then Geometry.ground(origin) else Geometry.endpoint(origin,direction,s.Range)
  if s.Shape=="Self" then
   if s.Status.Ward then Rules.ward(source.Fighter,now);source.Model:SetAttribute("JadeAegisUntil",now+30) end
+  if s.Status.Heal>0 then
+   table.insert(mends,{Source=source,Fighter=source.Fighter,Duel=source.Duel,Spell=s,Potency=potency,Start=source.Fighter.StateStart,
+    At=now,Left=s.Pulses})
+  end
   if s.Status.Teleport then
    Geometry.teleport(source,point)
    if s.Status.Decoy then source.Model:SetAttribute("PhantomPosition",origin);source.Model:SetAttribute("PhantomUntil",now+2) end
@@ -98,6 +124,16 @@ function Effects.step(now: number,dt: number)
   end
   if remove then table.remove(jobs,index) end
  end
+ for index=#mends,1,-1 do
+  local m=mends[index]
+  if not chanting(m) then
+   table.remove(mends,index)
+   if Characters.GetActor(m.Source.Id)==m.Source then Characters.Cue("SpellInterrupted",m.Source.Id,{spell=m.Spell.Id}) end
+  elseif now>=m.At then
+   mend(m);m.Left-=1;m.At+=m.Spell.Delay
+   if m.Left<=0 then table.remove(mends,index) end
+  end
+ end
  for key,b in burns do
   if now>b.Until or Characters.GetActor(b.Source.Id)~=b.Source or Characters.GetActor(b.Target.Id)~=b.Target or b.Target.Fighter~=b.Fighter
    or b.Source.Fighter~=b.SourceFighter or b.Source.Fighter.State=="KO" or b.Fighter.State=="KO" or b.Source.Duel~=b.Duel or b.Target.Duel~=b.Duel then burns[key]=nil
@@ -105,6 +141,6 @@ function Effects.step(now: number,dt: number)
  end
 end
 function Effects.clear()
- table.clear(jobs);table.clear(burns)
+ table.clear(jobs);table.clear(burns);table.clear(mends)
 end
 return Effects

@@ -7,12 +7,13 @@ local Kit = require(script.Parent.SkillKit)
 local Cinema = require(script.Parent.SkillCinema)
 local Supernova = require(script.Parent.SupernovaShow)
 local BlazingSun = require(script.Parent.BlazingSunShow)
+local Sutra = require(script.Parent.SutraShow)
 local Showcase = {}
 
 export type Cast = { Trove: Kit.Trove, Entity: any, Own: boolean, Cinema: Cinema.Director, Windup: number, Pulses: number, Bag: { [string]: any } }
 export type Showcase = { State: any, Cinema: Cinema.Director, Casts: { [number]: Cast } }
 
-local SHOWS: { [string]: any } = { CelestialSupernova = Supernova, BlazingSunAwakening = BlazingSun }
+local SHOWS: { [string]: any } = { CelestialSupernova = Supernova, BlazingSunAwakening = BlazingSun, SutraOfMending = Sutra }
 local RANGE = 220 -- the pillar reads from far away; past this nothing is built
 
 function Showcase.handles(id: any): boolean
@@ -71,7 +72,7 @@ function Showcase.cue(self: Showcase, cue: any): boolean
 		local cast = self.Casts[cue.Source]
 		if cast then
 			cast.Pulses += 1
-			if show.pulse then show.pulse(cast, point) end
+			if show.pulse then show.pulse(cast, point, d, self.State) end
 			if show.whiteout and cast.Pulses >= (show.FinalPulse or 2) then show.whiteout(cast) end
 		end
 	elseif cue.Kind == "SpellHit" then

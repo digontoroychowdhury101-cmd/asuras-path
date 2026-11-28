@@ -834,7 +834,13 @@ local function showRelic(prompt: ProximityPrompt, available: boolean)
 	if not altar then return end
 	for _, name in { "Relic", "RelicHilt" } do
 		local piece = altar:FindFirstChild(name)
-		if piece and piece:IsA("BasePart") then piece.Transparency = if available then 0 else 1 end
+		if piece and piece:IsA("BasePart") then
+			piece.Transparency = if available then 0 else 1
+		elseif piece then -- the kit beads are a model of mesh parts
+			for _, part in piece:GetDescendants() do
+				if part:IsA("BasePart") then part.Transparency = if available then 0 else 1 end
+			end
+		end
 	end
 end
 
@@ -850,20 +856,39 @@ local function setLake(state: LakeRules.State)
 	end
 end
 
+-- The Fallen Abbot's beads teach the Sutra of Mending to whoever lifts them.
+local RELIC_SPELL = "SutraOfMending"
+
+local function grantBeads(s: Session): boolean
+	local record = souls(s.UserId)
+	if not record or record.inventory.spells[RELIC_SPELL] then return false end
+	enqueue(s, "AbbotBeads", function(store: any): (boolean, string?)
+		local ok, err = store:UnlockSpell(s.UserId, RELIC_SPELL)
+		if ok then Characters.RefreshProgression(s.UserId) end
+		return ok, err
+	end)
+	return true
+end
+
 -- The relic in the colossal temple's upper hall (LandmarkWorld.shenRelic, tagged ShenLakeRules.RelicTag): taking it wakes Shen.
+-- A player who has already felled Shen only learns the Sutra; the lake stays quiet for them.
 local function takeRelic(userId: number, prompt: ProximityPrompt): (boolean, string)
 	local s, e, gate = session(userId), Characters.GetEntity(userId), lakeGate()
 	if not s or not e or not gate or e.Fighter.State == "KO" or e.Respawning then return false, "Unavailable" end
 	if s.Fight or Characters.IsInDuel(userId) then return false, "InBossFight" end
-	if s.Bosses[gate.Boss] then return false, "BossFelled" end
-	if lake.State ~= "Dormant" then return false, "LakeStirring" end
 	if not relicPrompts[prompt] or not prompt.Enabled or not prompt:IsDescendantOf(Workspace) then return false, "Unavailable" end
 	local anchor = prompt.Parent
 	if not (anchor and anchor:IsA("BasePart")) or (e.Root.Position - anchor.Position).Magnitude > LAKE_RELIC_DISTANCE + 2 then return false, "TooFar" end
+	if s.Bosses[gate.Boss] then
+		if grantBeads(s) then return true, "BeadsTaken" end
+		return false, "BossFelled"
+	end
+	if lake.State ~= "Dormant" then return false, "LakeStirring" end
+	local learned = grantBeads(s)
 	lake.Summoners[userId] = true
 	setLake(LakeRules.step(lake.State, "Relic", 0))
 	task.spawn(AI.PreviewBoss, gate.Boss)
-	return true, "RelicTaken"
+	return true, if learned then "SutraLearned" else "RelicTaken"
 end
 
 local function watchRelic(anchor: Instance)

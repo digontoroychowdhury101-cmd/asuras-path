@@ -1,5 +1,5 @@
 """python3 tools/assets/build_skill_audio.py
-Original sound effects for the showcase sorceries (Celestial Supernova, Blazing Sun Awakening),
+Original sound effects for the showcase sorceries (Celestial Supernova, Blazing Sun Awakening, Sutra of Mending),
 synthesized from scratch: filtered noise, oscillators, pitch sweeps, saturation and a generated
 reverb. No recordings or third-party samples, so every cue is ours to upload. Seeded and
 reproducible; mono 48 kHz PCM16, peak-normalised to -3 dBFS, DC-removed, 5 ms / 50 ms fades.
@@ -257,11 +257,56 @@ def sun_pulse() -> np.ndarray:  # pulses: a heat ring thumps out
     return np.tanh(mix(d, (thump, 0, 1), (whump, 0, 0.8)) * 1.4)
 
 
+
+# ---------------------------------------------------------------- Sutra of Mending
+def bead(d: float, f: float) -> np.ndarray:  # one jade bead knocking another: two damped partials
+    t = t_axis(d)
+    body = np.sin(2 * np.pi * f * t) * np.exp(-t * 60) + 0.5 * np.sin(2 * np.pi * f * 2.71 * t) * np.exp(-t * 90)
+    return body + band(noise(d), 3000, None) * env(d, 0.0005, 0.004) * 0.6
+
+
+def mend_click() -> np.ndarray:  # thumbing the mala: a slowing run of bead knocks
+    d = 1.1
+    out, at = np.zeros(int(d * SR)), 0.0
+    for n in range(7):
+        out += mix(d, (bead(0.12, 2300 + rng.uniform(-180, 180)), at, 0.9 - n * 0.06))
+        at += 0.09 + n * 0.025
+    return reverb(out, 0.6, 0.2)
+
+
+def mend_hum() -> np.ndarray:  # a low chanted hum under the cast, an "om" with slow vibrato
+    d = 3.0
+    t = t_axis(d)
+    f0 = 98 * (1 + 0.006 * np.sin(2 * np.pi * 4.5 * t))
+    voice = tone(f0, d, 'saw')
+    vowel = band(voice, 330, 470, 2) + 0.6 * band(voice, 700, 900, 2) + 0.15 * band(voice, 2300, 2700, 2)
+    breath = band(noise(d), 200, 1200) * 0.08
+    return reverb((vowel + breath) * env(d, 0.35, 0.5, 2.0), 1.4, 0.3)
+
+
+def mend_bloom() -> np.ndarray:  # the ring opens: a struck jade bowl with a long shimmer
+    d = 3.2
+    t = t_axis(d)
+    bowl = sum(g * np.sin(2 * np.pi * f * t) * np.exp(-t * k) for f, g, k in ((523, 1, 1.1), (1443, 0.5, 1.8), (2830, 0.25, 3.0), (4610, 0.12, 4.5)))
+    bowl *= 1 + 0.25 * np.sin(2 * np.pi * 3.2 * t)
+    air = sweep(noise(d), 600 + 3000 * env(d, 0.05, 0.4), 'lowpass') * env(d, 0.03, 0.4) * 0.3
+    return reverb(bowl * 0.8 + air, 2.0, 0.4)
+
+
+def mend_pulse() -> np.ndarray:  # each mending pulse: a soft high chime and a breath of air
+    d = 1.4
+    t = t_axis(d)
+    chime = sum(g * np.sin(2 * np.pi * f * t) * np.exp(-t * k) for f, g, k in ((1046, 1, 3), (2793, 0.4, 5), (5240, 0.15, 8)))
+    puff = band(noise(d), 500, 3000) * env(d, 0.02, 0.18) * 0.35
+    return reverb(chime * 0.7 + puff, 1.2, 0.35)
+
+
 CUES = {
     'NovaVoid': nova_void, 'NovaRing': nova_ring, 'NovaSwoop': nova_swoop, 'NovaPlanet': nova_planet,
     'NovaCharge': nova_charge, 'NovaBlast': nova_blast, 'NovaInk': nova_ink, 'NovaColumn': nova_column, 'NovaWhite': nova_white,
     'SunTension': sun_tension, 'SunBoom': sun_boom, 'SunEmber': sun_ember, 'SunThorn': sun_thorn, 'SunCharge': sun_charge,
     'SunBlast': sun_blast, 'SunEyes': sun_eyes, 'SunGauntlet': sun_gauntlet, 'SunPulse': sun_pulse,
+    'MendClick': mend_click, 'MendHum': mend_hum, 'MendBloom': mend_bloom, 'MendPulse': mend_pulse,
 }
 
 

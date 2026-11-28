@@ -401,8 +401,10 @@ function World.colossalTempleCollision(frame: CFrame): Folder
 end
 
 -- Shen's lake trial (win-106, ShenLakeRules): the relic on the colossal temple's upper hall floor, Basin.ShenLake.Relic along the
--- temple frame. Taking it (WorldService) wakes Shen on the lake. Placeholder art until the creator names the item: a sheathed blade
--- on a two-tier stone plinth. WorldService owns the prompt on the tagged plinth.
+-- temple frame. Taking it (WorldService) wakes Shen on the lake and teaches the Sutra of Mending. The Fallen Abbot's beads
+-- (Bellwood_AbbotBeads) lie on a lacquer tray (Bellwood_AbbotTray) on a two-tier stone plinth; until the kit pieces are
+-- uploaded a sheathed blade stands in. WorldService owns the prompt on the tagged plinth and hides the "Relic" while Shen is awake.
+World.RelicYaw = 0 -- the beads' head bead faces +Z, back toward the hall's entrance
 function World.shenRelic(lm: any, frame: CFrame): Model
 	local R = lm.Basin.ShenLake.Relic
 	local base = frame * CFrame.new(0, R.Rise, R.Run)
@@ -417,17 +419,29 @@ function World.shenRelic(lm: any, frame: CFrame): Model
 	local stone, bronze = Color3.fromRGB(96, 91, 82), Color3.fromRGB(116, 84, 50)
 	block("PlinthFoot", Vector3.new(7, 1, 5), CFrame.new(0, 0.5, 0), stone, Enum.Material.Slate)
 	local plinth = block("Plinth", Vector3.new(5, 2.6, 3), CFrame.new(0, 2.3, 0), stone, Enum.Material.Slate)
-	for _, x in { -1.6, 1.6 } do
-		block("Rest", Vector3.new(0.5, 0.9, 1.4), CFrame.new(x, 4.05, 0), bronze, Enum.Material.Metal)
+	local top = base * CFrame.new(0, 3.6, 0) * CFrame.Angles(0, World.RelicYaw, 0)
+	local kit = World.Kit or deps()
+	local tray = kit.place("Bellwood_AbbotTray", top, Vector3.one, { Fidelity = {} })
+	local beads = tray and kit.place("Bellwood_AbbotBeads", top, Vector3.one, { Fidelity = {} })
+	if tray and beads then
+		tray.Parent = model
+		beads.Name, beads.Parent = "Relic", model
+	else
+		if tray then tray:Destroy() end
+		for _, x in { -1.6, 1.6 } do
+			block("Rest", Vector3.new(0.5, 0.9, 1.4), CFrame.new(x, 4.05, 0), bronze, Enum.Material.Metal)
+		end
+		local sheath = block("Relic", Vector3.new(4.8, 0.42, 0.55), CFrame.new(0, 4.6, 0) * CFrame.Angles(0, 0, math.rad(3)), Color3.fromRGB(46, 30, 26), Enum.Material.Wood)
+		local hilt = block("RelicHilt", Vector3.new(1.3, 0.3, 0.3), CFrame.new(-3.0, 4.65, 0) * CFrame.Angles(0, 0, math.rad(3)), bronze, Enum.Material.Metal)
+		for _, piece in { sheath, hilt } do
+			piece.CanCollide, piece.CanTouch, piece.CanQuery = false, false, false
+		end
 	end
-	local sheath = block("Relic", Vector3.new(4.8, 0.42, 0.55), CFrame.new(0, 4.6, 0) * CFrame.Angles(0, 0, math.rad(3)), Color3.fromRGB(46, 30, 26), Enum.Material.Wood)
-	local hilt = block("RelicHilt", Vector3.new(1.3, 0.3, 0.3), CFrame.new(-3.0, 4.65, 0) * CFrame.Angles(0, 0, math.rad(3)), bronze, Enum.Material.Metal)
-	for _, piece in { sheath, hilt } do
-		piece.CanCollide, piece.CanTouch, piece.CanQuery = false, false, false
-	end
+	local glow = Instance.new("Attachment")
+	glow.Name, glow.Position, glow.Parent = "RelicLight", Vector3.new(0, 2.4, 0), plinth
 	local lamp = Instance.new("PointLight")
 	lamp.Color, lamp.Brightness, lamp.Range, lamp.Shadows = Color3.fromRGB(255, 196, 130), 1.4, 16, true
-	lamp.Parent = sheath
+	lamp.Parent = glow
 	model.PrimaryPart = plinth
 	game:GetService("CollectionService"):AddTag(plinth, "AsuraShenRelic")
 	return model

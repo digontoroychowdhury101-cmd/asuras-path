@@ -955,6 +955,13 @@ function Store.UnlockWeapon(self: Engine, id: number, weapon: string): (boolean,
 	end)
 end
 
+-- World relics teach spells (the Fallen Abbot's beads teach the Sutra). Validate rejects ids the spell schema does not know.
+function Store.UnlockSpell(self: Engine, id: number, spell: string): (boolean, string?)
+	return self:Transaction(id, function(p)
+		p.souls.inventory.spells[spell] = true
+	end)
+end
+
 -- Blacksmith: spends banked essence to raise one weapon's reinforcement by a level.
 -- Returns the new level on success.
 function Store.ReinforceWeapon(self: Engine, id: number, weapon: string): (boolean, string?, number)

@@ -16,6 +16,8 @@ local CUES: { [string]: { any } } = {
 	SunTension = { "BossDrone", 0.8, 0.8 }, SunBoom = { "ParryBass", 0.9, 1 }, SunEmber = { "Blunt", 1.3, 0.7 },
 	SunThorn = { "Clash", 0.7, 0.8 }, SunCharge = { "Glide", 0.7, 0.9 }, SunBlast = { "ParryBass", 0.5, 1.3 },
 	SunEyes = { "Slide", 1.4, 0.8 }, SunGauntlet = { "Wind", 1.8, 0.8 }, SunPulse = { "Blunt", 0.8, 0.9 },
+	MendClick = { "ShenBeadClick", 1.25, 0.6 }, MendHum = { "ShenBowedMetal", 0.55, 0.5 },
+	MendBloom = { "ShenJadeChime", 0.9, 0.9 }, MendPulse = { "ShenJadeChime", 1.25, 0.55 },
 }
 
 -- Startup beats are fractions of the windup (a negative beat is seconds before the release, so a
@@ -28,6 +30,10 @@ local SCORES: { [string]: { [string]: { { any } } } } = {
 	Sun = {
 		Startup = { { "SunTension", 0 }, { "SunBoom", 0.33 }, { "SunEmber", 0.42 }, { "SunThorn", 0.8 }, { "SunCharge", -0.75 } },
 		Release = { { "SunBlast", 0 }, { "SunEyes", 3.55 }, { "SunGauntlet", 5.45 } },
+	},
+	Sutra = {
+		Startup = { { "MendClick", 0 }, { "MendHum", 0 } },
+		Release = { { "MendBloom", 0 }, { "MendClick", 0.8 }, { "MendClick", 1.6 } },
 	},
 }
 

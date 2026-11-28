@@ -2,7 +2,8 @@
 local hasScript=pcall(function() return script.Parent end)
 local Tempo: any=if hasScript then require(script.Parent.Tempo) else require("./Tempo")
 export type Discipline="CelestialThunder" | "CrimsonFlame" | "AbyssalVoid" | "SpiritTalismans"
-export type Payload={Burn: number,Root: number,Interrupt: boolean,IgnoreGuard: boolean,Drain: number,Ward: boolean,Teleport: boolean,Decoy: boolean}
+-- Heal: the fraction of each mended fighter's effective max HP restored per pulse (Sutra of Mending; caster and nearby allies).
+export type Payload={Burn: number,Root: number,Interrupt: boolean,IgnoreGuard: boolean,Drain: number,Ward: boolean,Teleport: boolean,Decoy: boolean,Heal: number}
 export type Spell={Id: string,Name: string,Discipline: Discipline,QiCost: number,Range: number,Radius: number,Arc: number,Damage: number,Posture: number,
  Cooldown: number,Startup: number,Active: number,Recovery: number,Speed: number,Pierces: boolean,Pulses: number,Delay: number,Shape: string,Status: Payload}
 local Schema={}
@@ -11,7 +12,7 @@ Schema.Slots=2
 local function spell(id: string,name: string,school: Discipline,cost: number,range: number,shape: string,damage: number): Spell
  return {Id=id,Name=name,Discipline=school,QiCost=cost,Range=range,Radius=5,Arc=65,Damage=damage,Posture=18,Cooldown=6,
   Startup=18,Active=6,Recovery=24,Speed=0,Pierces=false,Pulses=1,Delay=0,Shape=shape,
-  Status={Burn=0,Root=0,Interrupt=false,IgnoreGuard=false,Drain=0,Ward=false,Teleport=false,Decoy=false}}
+  Status={Burn=0,Root=0,Interrupt=false,IgnoreGuard=false,Drain=0,Ward=false,Teleport=false,Decoy=false,Heal=0}}
 end
 local palm=spell("ThunderclapPalm","Thunderclap Palm","CelestialThunder",18,8,"Cone",16)
 palm.Startup=6;palm.Status.Interrupt=true;palm.Posture=32
@@ -37,6 +38,12 @@ local thunder=spell("Thunderfall","Thunderfall","CelestialThunder",45,65,"Impact
 thunder.Speed=180;thunder.Radius=9;thunder.Status.Teleport=true;thunder.Status.Interrupt=true;thunder.Startup=36
 local wind=spell("WindSlash","Wind-Cutting Slash","SpiritTalismans",1,30,"Line",12)
 wind.Speed=90;wind.Radius=2
+-- The Fallen Abbot's beads (taken from the Bellwood temple's upper hall, win-109). The only heal: thumb the beads and chant;
+-- four pulses mend you and allies within Radius while you walk at casting pace (Recovery) and cannot strike or guard.
+-- A hit that staggers you breaks the chant and the pulses left (SpellEffects).
+local sutra=spell("SutraOfMending","Sutra of Mending","SpiritTalismans",40,0,"Self",0)
+sutra.Radius=12;sutra.Posture=0;sutra.Pulses=4;sutra.Delay=0.75;sutra.Cooldown=26;sutra.Startup=16;sutra.Active=200;sutra.Recovery=12
+sutra.Status.Heal=0.08
 -- Showcase sorceries (Sanctuary caches). Long telegraphed channels; the client plays a cinematic
 -- timeline scaled to the server's release time, so quick-cast catalysts stay in sync. Each extra
 -- pulse comes with less damage per hit, so the longer show keeps the same total payoff.
@@ -57,6 +64,7 @@ function Schema.validate(s: Spell)
  assert(s.Arc>=0 and s.Arc<=360 and s.Speed<=240 and s.Cooldown<=60,"Invalid spell reach/timing limits")
  assert(s.Startup>=1 and s.Active>=1 and s.Recovery>=1 and s.Pulses>=1 and s.Pulses<=5 and s.Pulses%1==0,"Invalid spell timings")
  assert(s.Status.Root>=0 and s.Status.Root<=2 and s.Status.Burn>=0 and s.Status.Burn<=5 and s.Status.Drain>=0,"Invalid status")
+ assert(s.Status.Heal>=0 and s.Status.Heal<=0.25 and (s.Status.Heal==0 or s.Shape=="Self"),"Invalid heal")
  assert(table.find({"Self","Cone","Line","Pillars","Aura","Impact","Column"},s.Shape),"Invalid spell shape")
 end
 function Schema.timing(s: Spell,quick: boolean?): {Startup: number,Active: number,Recovery: number,Total: number}
@@ -66,7 +74,7 @@ function Schema.timing(s: Spell,quick: boolean?): {Startup: number,Active: numbe
  local recovery=Tempo.framesToSeconds(Tempo.scaleFrames(s.Recovery))
  return {Startup=startup,Active=active,Recovery=recovery,Total=startup+active+recovery}
 end
-for _,s in {palm,spear,maw,ember,surge,grave,aegis,gale,dirge,fissure,thunder,wind,nova,sun} do
+for _,s in {palm,spear,maw,ember,surge,grave,aegis,gale,dirge,fissure,thunder,wind,sutra,nova,sun} do
  Schema.validate(s);local previous=byId[s.Id];assert(previous==nil,"Duplicate spell")
  byId[s.Id]=s;table.insert(order,s.Id);table.freeze(s.Status);table.freeze(s)
 end

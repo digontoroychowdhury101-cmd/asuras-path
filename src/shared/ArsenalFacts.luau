@@ -42,7 +42,7 @@ end
 
 function Facts.targeting(s: any): string
 	if s.Shape == "Self" then
-		return if s.Status.Teleport then "Self · dash " .. num(s.Range) .. " studs" else "Self"
+		return if s.Status.Heal > 0 then "Self and allies within " .. num(s.Radius) .. " studs" elseif s.Status.Teleport then "Self · dash " .. num(s.Range) .. " studs" else "Self"
 	elseif s.Shape == "Cone" then
 		return string.format("Cone %d° · %s studs", s.Arc, num(s.Range))
 	elseif s.Shape == "Line" then
@@ -73,6 +73,7 @@ function Facts.effects(s: any, potency: number): string
 	if st.Ward then table.insert(parts, "blocks your next posture break for " .. SpellRules.WardSeconds .. "s") end
 	if st.Teleport and s.Shape ~= "Self" then table.insert(parts, "carries you to the target") end
 	if st.Decoy then table.insert(parts, "leaves a phantom decoy") end
+	if st.Heal > 0 then table.insert(parts, string.format("restores %d%% max HP × %d; half pace while chanting, a stagger breaks it", math.round(st.Heal * potency * 100), s.Pulses)) end
 	return table.concat(parts, " · ")
 end
 

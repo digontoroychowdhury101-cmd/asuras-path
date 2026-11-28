@@ -61,6 +61,7 @@ Catalog.SpellUses={
  FissureSlam="Ground-splitting line that breaks posture hard and leaves burning ground.",
  Thunderfall="Hurls lightning at a distant point and carries you to it.",
  WindSlash="Cheap ranged cut for chip damage between melee exchanges.",
+ SutraOfMending="The Fallen Abbot's beads: chant to mend yourself and allies close by. You walk slowly while chanting, and a stagger cuts it short.",
  CelestialSupernova="Rise into the void and call a column of starlight down on everything around you; a long, punishable channel.",
  BlazingSunAwakening="Clench, ignite and blast a fire shockwave, then keep burning heat rings pulsing where you stood.",
 } :: {[string]: string}

@@ -120,6 +120,9 @@ assert(not store:EquipLoadout(7, "Guandao", "None"), "locked weapon refused")
 assert(store:UnlockWeapon(7, "Guandao") and store:EquipLoadout(7, "Guandao", "Jian"))
 assert(store:Souls(7).inventory.mainhand == "Guandao" and store:Souls(7).inventory.offhand == "Jian")
 assert(not store:UnlockWeapon(7, "Nunchaku"))
+assert(not store:Souls(7).inventory.spells.SutraOfMending)
+assert(store:UnlockSpell(7, "SutraOfMending") and store:Souls(7).inventory.spells.SutraOfMending, "the Abbot's beads teach the Sutra")
+assert(store:UnlockSpell(7, "SutraOfMending") and store:Souls(7).inventory.spells.GaleStep, "relearning is harmless and keeps the starters")
 
 -- Blacksmith reinforcement: costs banked essence, scales damage for the equipped weapon only.
 do

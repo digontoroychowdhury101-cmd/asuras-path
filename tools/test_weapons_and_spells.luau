@@ -129,4 +129,16 @@ local early=Inventory.migrate({spells={JadeAegis=true},caches={SanctuaryEaves=tr
 check(early.spells.CelestialSupernova and early.spells.BlazingSunAwakening and Inventory.validate(early),"Caches claimed before the update grant the new spells")
 check(Spells.ById.CelestialSupernova.Shape=="Column" and Spells.ById.CelestialSupernova.Pulses==3 and Spells.ById.BlazingSunAwakening.Pulses==4,"Showcase spell shapes")
 check(Spells.ById.CelestialSupernova.Damage*Spells.ById.CelestialSupernova.Pulses<=72 and Spells.ById.BlazingSunAwakening.Damage*Spells.ById.BlazingSunAwakening.Pulses<=64,"Longer showcase channels keep their total payoff")
+-- Sutra of Mending (win-109): the chant outlasts its pulses on both cast speeds, heals only, and stays the only heal
+local sutra=Spells.ById.SutraOfMending
+check(sutra and sutra.Shape=="Self" and sutra.Damage==0 and sutra.Status.Heal>0 and sutra.Radius>=10,"Sutra mends self and allies")
+for _,quick in {false,true} do
+ local t=Spells.timing(sutra,quick)
+ check(t.Total-t.Startup>=(sutra.Pulses-1)*sutra.Delay+0.1,"Sutra chant outlasts its pulses"..(if quick then " (quick cast)" else ""))
+end
+check(sutra.Status.Heal*sutra.Pulses<=0.35 and sutra.Cooldown>=20 and sutra.QiCost>=35,"Sutra heal is priced: at most 35% for 40 Qi, 20s+ cooldown")
+check(near(Magic.payload("SutraOfMending",1.25).Heal,sutra.Status.Heal*1.25),"Sutra heal scales with spell potency")
+for id,s in Spells.ById do if id~="SutraOfMending" then check(s.Status.Heal==0,"Only the Sutra heals: "..id) end end
+local badHeal=table.clone(sutra);badHeal.Status=table.clone(sutra.Status);badHeal.Status.Heal=0.5
+check(not pcall(Spells.validate,badHeal),"Reject an oversized heal")
 print("Phase 2 weapons and spells: "..checks.." checks passed")
