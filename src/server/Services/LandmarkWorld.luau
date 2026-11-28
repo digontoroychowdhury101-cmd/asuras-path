@@ -16,8 +16,11 @@ local BORE_DEPTH = 8.5 -- below the centre line
 -- Temple hall (mac-90): the stone platform and stair are walked on; the lacquer frame keeps its own shape (a hull would fill the hall);
 -- the roofs (Tiles, Soffit) never collide. The gate uses stone collision for the stair. Its root mesh spans both towers,
 -- so a convex hull across those roots would block the flight.
+-- Amberfall's broken bridge (win-114): its tower walls and its deck and balustrade are walked through and on; the piers, arch,
+-- arcade, roofs, chains and banners hang in the chasm out of reach and never collide.
 World.Fidelity = { Shell = PRECISE, Floor = PRECISE, Band = HULL, Bronze = HULL, Eave = HULL,
-	Stone = PRECISE, Lacquer = Enum.CollisionFidelity.Default }
+	Stone = PRECISE, Lacquer = Enum.CollisionFidelity.Default,
+	TowerW = PRECISE, TowerE = PRECISE, DeckW = PRECISE, DeckE = PRECISE }
 
 local function deps()
 	World.Kit = World.Kit or require(script.Parent:WaitForChild("VesperholdKit") :: ModuleScript)
@@ -281,6 +284,57 @@ function World.tunnelFx(lm: any): Model
 		motes.Parent = box
 		box.Parent = fx
 	end
+	return fx
+end
+
+-- Gorge weather (lm.Gorge, win-114): wide, slow mist banks low in the chasm and amber leaves drifting down past the broken span. Invisible
+-- boxes in kit axes (as Seats) carry the emitters; the sprites are PresentationAssets' Smoke and Leaf.
+World.Textures = nil :: any -- PresentationAssets.Textures, loaded on first use (tests inject it)
+function World.gorgeFx(lm: any): Model
+	World.Textures = World.Textures or (require(ReplicatedStorage:WaitForChild("AsurasPath"):WaitForChild("Shared")
+		:WaitForChild("PresentationAssets") :: ModuleScript) :: any).Textures
+	local textures = World.Textures
+	local fx = Instance.new("Model")
+	fx.Name = "GorgeFx"
+	local base = World.frame(lm)
+	local function box(name: string, spec: any): Part
+		local c, z = spec.Kit, spec.Size
+		local p = Instance.new("Part")
+		p.Name, p.Size, p.Transparency = name, Vector3.new(z[1], z[3], z[2]), 1
+		p.CFrame = base * CFrame.new(-c[1], c[3], c[2])
+		p.Anchored, p.CanCollide, p.CanQuery, p.CanTouch, p.CastShadow = true, false, false, false, false
+		p.Parent = fx
+		return p
+	end
+	local function seq(points: { { number } }): NumberSequence
+		local keys = {}
+		for _, k in points do table.insert(keys, NumberSequenceKeypoint.new(k[1], k[2])) end
+		return NumberSequence.new(keys)
+	end
+	for i, spec in lm.Gorge.Mist do
+		local mist = Instance.new("ParticleEmitter")
+		mist.Name, mist.Texture, mist.Rate = "GorgeMist", textures.Smoke, 2.5
+		mist.Shape, mist.ShapeStyle = Enum.ParticleEmitterShape.Box, Enum.ParticleEmitterShapeStyle.Volume
+		mist.Lifetime, mist.Speed = NumberRange.new(18, 26), NumberRange.new(0.2, 0.8)
+		mist.Acceleration, mist.Rotation, mist.RotSpeed = Vector3.new(0.4, 0.06, -0.2), NumberRange.new(0, 360), NumberRange.new(-3, 3)
+		mist.Size = seq({ { 0, 26 }, { 1, 46 } })
+		mist.Transparency = seq({ { 0, 1 }, { 0.25, 0.7 }, { 0.75, 0.76 }, { 1, 1 } })
+		mist.Color = ColorSequence.new(Color3.fromRGB(232, 206, 168), Color3.fromRGB(214, 170, 118)) -- amber-lit haze
+		mist.LightInfluence = 0.8
+		mist.Parent = box("Mist" .. i, spec)
+	end
+	local leaves = Instance.new("ParticleEmitter")
+	leaves.Name, leaves.Texture, leaves.Rate = "AmberLeaves", textures.Leaf, 6
+	leaves.Shape, leaves.ShapeStyle = Enum.ParticleEmitterShape.Box, Enum.ParticleEmitterShapeStyle.Volume
+	leaves.Lifetime, leaves.Speed, leaves.SpreadAngle = NumberRange.new(14, 20), NumberRange.new(0.5, 1.5), Vector2.new(180, 180)
+	leaves.Acceleration, leaves.Drag = Vector3.new(1.4, -2.2, 0.6), 0.5
+	leaves.Rotation, leaves.RotSpeed = NumberRange.new(0, 360), NumberRange.new(-110, 110)
+	leaves.Squash = seq({ { 0, 0 }, { 0.3, 0.45 }, { 0.6, -0.35 }, { 1, 0 } })
+	leaves.Size = seq({ { 0, 0.55 }, { 1, 0.4 } })
+	leaves.Transparency = seq({ { 0, 1 }, { 0.08, 0.05 }, { 0.85, 0.15 }, { 1, 1 } })
+	leaves.Color = ColorSequence.new(Color3.fromRGB(232, 156, 46), Color3.fromRGB(176, 88, 28))
+	leaves.LightInfluence = 1
+	leaves.Parent = box("Leaves", lm.Gorge.Leaves)
 	return fx
 end
 
@@ -918,6 +972,18 @@ function World.cavernLights(lm: any): (Model, { any })
 end
 
 -- folders: region id -> Map_Overworld region folder. waitReady(region) blocks until that region's terrain is written.
+-- Terrain seats (Layout Seats): kit-axis blocks of one material each, written in order once the region's terrain is ready, so a
+-- landmark can flatten its own approach (Air over the deck line), bed its towers (fill under them) and seat its piers on rock.
+function World.seats(lm: any): { { CFrame: CFrame, Size: Vector3, Material: Enum.Material } }
+	local base, out = World.frame(lm), {}
+	for _, s in lm.Seats or {} do
+		local c, z = s.Kit, s.Size
+		table.insert(out, { CFrame = base * CFrame.new(-c[1], c[3], c[2]), Size = Vector3.new(z[1], z[3], z[2]),
+			Material = (Enum.Material :: any)[s.Material] })
+	end
+	return out
+end
+
 function World.build(folders: { [string]: Instance }, waitReady: (string) -> boolean)
 	local Kit, Layout = deps()
 	for id, lm in Layout.Landmarks do
@@ -1002,11 +1068,19 @@ function World.build(folders: { [string]: Instance }, waitReady: (string) -> boo
 			if placed > 0 and lm.Tunnel and lm.Tunnel.Lanterns then
 				for _, p in lm.Tunnel.Lanterns do World.lantern(World.kitToWorld(lm, p)).Parent = model end
 			end
+			if placed > 0 and lm.Gorge then World.gorgeFx(lm).Parent = model end
 			if placed > 0 and lm.Tunnel and lm.Tunnel.Path then
 				World.tunnelFx(lm).Parent = model
 				World.shelters(lm).Parent = model
 			end
 			model.Parent = folders[lm.Region]
+			if placed > 0 and lm.Seats and waitReady(lm.Region) then -- no seat without the landmark it seats
+				for k, f in World.seats(lm) do
+					Workspace.Terrain:FillBlock(f.CFrame, f.Size, f.Material)
+					if k % 4 == 0 then task.wait() end
+				end
+				model:SetAttribute("SeatsWritten", true)
+			end
 			-- No mesh, no hole: the bore is only carved under a placed shell, after the tiles that would refill it are written.
 			if placed > 0 and lm.Tunnel and waitReady(lm.Region) then
 				local terrain = Workspace.Terrain

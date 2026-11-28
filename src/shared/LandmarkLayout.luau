@@ -184,6 +184,46 @@ Layout.Landmarks = {
 			Crown = { Model = "Bellwood_GiantCrown", Foot = { X = -0.495, Y = -0.65, Z = -6.705 } },
 		},
 	},
+	-- Amberfall: the Broken Ravine Bridge (tools/blender/landmarks/amberfall_broken_bridge.py, win-114; concept amberfall_2). A gothic
+	-- viaduct across the chasm 550 studs south of the AmberfallCrossing, its front (kit +Y) looking up the chasm at the crossing. Origin =
+	-- the chasm centre line at deck level (deck top = Origin.Y, the rims are 287-297 here); kit +X runs east. Span = the kit's plan
+	-- numbers (|x| from the centre line): towers on the rims, piers on the lower ledges, the deck torn off at Broken (west, east).
+	AmberfallBridge = {
+		Region = "GoldenRavine",
+		Origin = { X = -6050, Y = 292, Z = -2600 },
+		Yaw = 180,
+		FootprintRadius = 290,
+		MinClearance = 250,
+		Span = { Tower = 258, TowerWidth = 48, Pier = 150, PierWidth = 50, PierFoot = -300, Spring = -235, BaySpring = -118,
+			Broken = { 46, 68 }, DeckWidth = 26 },
+		Pieces = {
+			Bridge = { Model = "Amberfall_BrokenBridge", Foot = { X = 0, Y = -300.0, Z = 0.695 } }, -- manifest bbox: pier feet at -300
+		},
+		-- Terrain seats (LandmarkWorld.seats, kit axes: { x, y, z } centre and size, Z up), written in order for each side s = -1, +1: clear
+		-- the rim to the deck line round the tower and its approach, bed the tower and a walkable approach pad, then rock under the
+		-- abutment on the upper ledge and under the pier on the lower ledge so neither shows a gap under its foundation.
+		Seats = {
+			{ Kit = { -275, 0, 22 }, Size = { 84, 84, 44 }, Material = "Air" },
+			{ Kit = { -262, 0, -18 }, Size = { 60, 60, 34 }, Material = "Sandstone" },
+			{ Kit = { -300, 0, -6.5 }, Size = { 40, 36, 12 }, Material = "Ground" },
+			{ Kit = { -217, 0, -145 }, Size = { 48, 48, 32 }, Material = "Rock" },
+			{ Kit = { -150, 0, -296 }, Size = { 92, 96, 30 }, Material = "Rock" },
+			{ Kit = { 275, 0, 22 }, Size = { 84, 84, 44 }, Material = "Air" },
+			{ Kit = { 262, 0, -18 }, Size = { 60, 60, 34 }, Material = "Sandstone" },
+			{ Kit = { 300, 0, -6.5 }, Size = { 40, 36, 12 }, Material = "Ground" },
+			{ Kit = { 217, 0, -145 }, Size = { 48, 48, 32 }, Material = "Rock" },
+			{ Kit = { 150, 0, -296 }, Size = { 92, 96, 30 }, Material = "Rock" },
+		},
+		-- Gorge weather (LandmarkWorld.gorgeFx, kit axes as Seats; spec: "mist in the gorge below", "falling amber leaves"): slow mist
+		-- banks on the chasm floor and between the piers, and amber leaves shed from a sheet over the deck and the gap.
+		Gorge = {
+			Mist = {
+				{ Kit = { 0, 0, -420 }, Size = { 190, 380, 40 } },
+				{ Kit = { 0, 0, -330 }, Size = { 200, 260, 50 } },
+			},
+			Leaves = { Kit = { 0, 0, 34 }, Size = { 460, 90, 12 } },
+		},
+	},
 }
 
 -- World XZ unit vector the landmark faces (the tunnel mouth for Bellwood).

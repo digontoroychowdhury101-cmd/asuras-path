@@ -39,6 +39,10 @@ Downloaded 2026-11-19 at 2k (2048 x 2048 JPEG maps; models 2k .blend re-exported
 Tone mapping to the castle palette: `tools/blender/vesperhold/vesp_polyhaven.py` (desaturate, value targets from mac-40,
 grime runs, matte roughness lift). Set `VESP_PROCEDURAL=1` to fall back to the old procedural maps.
 
+Amberfall's Broken Ravine Bridge (`tools/blender/landmarks/amberfall_broken_bridge.py`, win-114) bakes from the same CC0 sets above, re-tinted
+in `vesp_bake.Look`: medieval_blocks_03 (pale gold stone), roof_slates_02 (pagoda tiles), distressed_painted_planks (vermilion lacquer, eaves,
+banners) and metal_plate_02 (rusted chains, tarnished gilt).
+
 ## ElevenLabs generated SFX
 
 26 sound effects (Vesperhold, Bellwood basin / Sunken Temple, Frostmere, Amberfall, Saltreach, Ashen Stair) were generated on 2026-11-22 with ElevenLabs text-to-sound (`eleven_text_to_sound_v3`) under the creator's ElevenLabs account (tier reported by account usage: `starter`). They are original generations made for this project, not third-party assets. Prompts, durations and loop flags are in `assets/source/audio/SFX_LEDGER.json`; files live in `assets/source/audio/{vesperhold,bellwood,regions}/`. Licence/commercial-use terms are those of the account's ElevenLabs plan; they have not been independently verified here, so check the plan terms before shipping.

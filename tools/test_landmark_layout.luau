@@ -41,6 +41,7 @@ local function segDist(x, z, segs)
 end
 
 for id, lm in L.Landmarks do
+	if not lm.Basin then continue end -- sections 1-5 are the hidden-basin landmark's; the bridge has its own checks below
 	local o = lm.Origin
 	local region = O.Regions[lm.Region].Bounds
 	local function inside(x, z, margin)
@@ -486,6 +487,94 @@ do
 	check(string.format("hollowMaps on the real registry covers the colossal pack (%d maps)", #real), #real > 400 and hasStair)
 	local bw = L.Landmarks.Bellwood
 	check("the Hollow preload starts at least 600 studs before the giant's face", (bw.Basin.Cavern.Preload or 0) >= bw.Basin.Back + 600)
+end
+
+-- 8. Amberfall's Broken Ravine Bridge (win-114) against the real chasm: inside the region and clear of everything placed; the deck
+-- line meets both rims at the towers; the centre is open chasm; the piers stand on the lower ledges (ground between the pier foot and
+-- the springline) and the abutments' footing on the upper ledge; the front looks up the chasm at the AmberfallCrossing, which sees
+-- the deck over open air; and no road runs through the towers.
+do
+	local br = L.Landmarks.AmberfallBridge
+	check("AmberfallBridge is laid out", br ~= nil)
+	local o, S = br.Origin, br.Span
+	local region = O.Regions[br.Region].Bounds
+	local function inside(x, z, margin)
+		return math.abs(x - region.Center.X) <= region.Size.X / 2 - margin and math.abs(z - region.Center.Z) <= region.Size.Z / 2 - margin
+	end
+	local function world(kx, ky, kz) return L.kitToWorld(br, { kx, ky, kz }) end
+	local te, tw = world(S.Tower + S.TowerWidth / 2, 0, 0), world(-S.Tower - S.TowerWidth / 2, 0, 0)
+	check("bridge and both towers sit inside the GoldenRavine box", inside(o.X, o.Z, 150) and inside(te.X, te.Z, 100) and inside(tw.X, tw.Z, 100))
+	local nearest, nearestKind = math.huge, ""
+	for _, p in points do
+		for _, q in { o, te, tw } do
+			local d = math.sqrt((q.X - p.x) ^ 2 + (q.Z - p.z) ^ 2)
+			if d < nearest then nearest, nearestKind = d, p.kind end
+		end
+	end
+	print(string.format("  AmberfallBridge: nearest placed thing %.0f studs (%s)", nearest, nearestKind))
+	check("bridge keeps >= 250 studs from altars, collectibles and landmarks", nearest >= br.MinClearance)
+	for _, s in { -1, 1 } do
+		local side = if s < 0 then "west" else "east"
+		local worst = 0
+		for _, k in { S.Tower - S.TowerWidth / 2, S.Tower, S.Tower + S.TowerWidth / 2 } do
+			for _, y in { -S.TowerWidth / 2, 0, S.TowerWidth / 2 } do
+				local p = world(s * k, y, 0)
+				worst = math.max(worst, math.abs(O.heightAt(p.X, p.Z) - o.Y))
+			end
+		end
+		print(string.format("  AmberfallBridge %s tower: rim within %.1f studs of the deck line", side, worst))
+		check(side .. " tower stands on the rim (ground within 9 studs of the deck line)", worst <= 9)
+		-- The pier's outer face is built into the cliff below the upper ledge; its inner face and centre stand on the lower ledge, so the
+		-- great arch springs clear of the ground.
+		local lo, hi = math.huge, -math.huge
+		for _, k in { S.Pier - S.PierWidth / 2, S.Pier, S.Pier + S.PierWidth / 2 } do
+			local p = world(s * k, 0, 0)
+			local g = O.heightAt(p.X, p.Z) - o.Y
+			lo = math.min(lo, g)
+			if k <= S.Pier then hi = math.max(hi, g) end
+		end
+		print(string.format("  AmberfallBridge %s pier: ground %.0f..%.0f under the deck (foot %d, spring %d)", side, lo, hi, S.PierFoot, S.Spring))
+		check(side .. " pier is founded below the ground and springs above it", lo >= S.PierFoot and hi <= S.Spring)
+		local bay = world(s * (S.Pier + S.PierWidth / 2 + 12), 0, 0)
+		local gb = O.heightAt(bay.X, bay.Z) - o.Y
+		print(string.format("  AmberfallBridge %s short bay: ledge %.0f under the deck, springline %d", side, gb, S.BaySpring))
+		check(side .. " short bay opens above the upper ledge", gb <= S.BaySpring)
+		local c = world(s * 40, 0, 0)
+		check(side .. " half of the gap is open chasm (300+ studs under the deck)", o.Y - O.heightAt(c.X, c.Z) >= 300)
+	end
+	-- Facing: the front points at the AmberfallCrossing's mid-deck, and the crossing sees the deck over open air.
+	local cross
+	for _, b in O.Blockout.Bridges do if b.Id == "AmberfallCrossing" then cross = b end end
+	local mx, my, mz = (cross.A.X + cross.B.X) / 2, (cross.A.Y + cross.B.Y) / 2 + 5, (cross.A.Z + cross.B.Z) / 2
+	local fx, fz = L.front(br)
+	local dx, dz = mx - o.X, mz - o.Z
+	local dl = math.sqrt(dx * dx + dz * dz)
+	check("bridge front looks up the chasm at the crossing (dot >= 0.95)", (fx * dx + fz * dz) / dl >= 0.95)
+	local clear = true
+	for i = 1, 99 do
+		local t = i / 100
+		local x, z, y = mx + (o.X - mx) * t, mz + (o.Z - mz) * t, my + (o.Y + 2 - my) * t
+		if O.heightAt(x, z) >= y then clear = false end
+	end
+	check("the AmberfallCrossing sees the bridge deck over open air", clear)
+	check("no road runs through either tower (40+ studs)", segDist(te.X, te.Z, roads) >= 40 and segDist(tw.X, tw.Z, roads) >= 40)
+	check("bridge kit carries a foot frame", br.Pieces.Bridge.Foot ~= nil and br.Pieces.Bridge.Model == "Amberfall_BrokenBridge")
+	local seated = #br.Seats >= 10
+	for _, s in br.Seats do
+		if not (s.Kit and s.Size and ({ Air = true, Sandstone = true, Ground = true, Rock = true })[s.Material]) then seated = false end
+	end
+	check("bridge terrain seats are whole (centre, size, a known material)", seated)
+	-- Gorge weather: each mist bank's centre is above the chasm floor under it and the whole bank lies low in the chasm (150+ under the
+	-- deck); the leaves fall from over the deck.
+	local low = #br.Gorge.Mist >= 1
+	for _, m in br.Gorge.Mist do
+		local p = world(m.Kit[1], m.Kit[2], m.Kit[3])
+		local ground = O.heightAt(p.X, p.Z)
+		print(string.format("  AmberfallBridge mist at %.0f: floor %.0f under it", p.Y, ground))
+		if p.Y <= ground or m.Kit[3] + m.Size[3] / 2 > -150 then low = false end
+	end
+	check("gorge mist lies low in the chasm, above its floor", low)
+	check("amber leaves fall from over the deck", br.Gorge.Leaves.Kit[3] - br.Gorge.Leaves.Size[3] / 2 > 0)
 end
 
 print(string.format("landmark layout: %d passed, %d failed", passed, failed))

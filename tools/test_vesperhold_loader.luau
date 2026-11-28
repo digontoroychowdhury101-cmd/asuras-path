@@ -676,8 +676,10 @@ do
 	end)()
 	W2.Layout = LL
 	W2.Height = O.heightAt
+	W2.Textures = { Smoke = "rbxassetid://1", Leaf = "rbxassetid://2" }
 	local forest = Instance.new("Folder")
-	W2.build({ Forest = forest }, function(region) readyAsked = region; return true end)
+	-- only the Forest is ready: the other landmarks (Amberfall's bridge) write no terrain into these counts
+	W2.build({ Forest = forest }, function(region) if region ~= "Forest" then return false end; readyAsked = region; return true end)
 	local lm = forest:FindFirstChild("Landmark_Bellwood")
 	local footW = W2.frame(bw) * CFrame.new(bw.Pieces.Face.Foot.X, bw.Pieces.Face.Foot.Y, bw.Pieces.Face.Foot.Z)
 	check("build places every piece in the region folder", lm ~= nil and lm:FindFirstChild("Bellwood_GiantFace") and lm:FindFirstChild("Bellwood_GiantCrown"))
@@ -983,7 +985,7 @@ do
 		bw.Basin.ColossalTemple = colossal
 		local before = fills
 		local folder = Instance.new("Folder")
-		W2.build({ Forest = folder }, function() return true end)
+		W2.build({ Forest = folder }, function(region) return region == "Forest" end)
 		local built = folder:FindFirstChild("Landmark_Bellwood")
 		local pack = built and built:FindFirstChild("Bellwood_ColossalTemple")
 		local grips = if colossal.RootGrip then 1 else 0 -- win-113: the root grip joins the pack once it places
@@ -1130,7 +1132,7 @@ do
 	fills = 0
 	W2.Kit = { place = function(piece) if piece == "Bellwood_GateTowers" then return nil end; local m = Instance.new("Model"); m.Name = piece; return m end }
 	local forest3 = Instance.new("Folder")
-	local okNoGate = pcall(W2.build, { Forest = forest3 }, function() return true end)
+	local okNoGate = pcall(W2.build, { Forest = forest3 }, function(region) return region == "Forest" end)
 	local lm3 = forest3:FindFirstChild("Landmark_Bellwood")
 	check("gate kit missing: build still runs, places the rest, and fills no gate ledge",
 		okNoGate and lm3 ~= nil and lm3:FindFirstChild("Bellwood_TempleHall") ~= nil and lm3:FindFirstChild("Bellwood_GateTowers") == nil
@@ -1140,6 +1142,24 @@ do
 	local forest2 = Instance.new("Folder")
 	W2.build({ Forest = forest2 }, function() return true end)
 	check("no piece loaded: no hole is carved", fills == 0)
+	;(function() -- win-114: Amberfall's broken bridge seats its towers and piers in the ravine and hangs its gorge weather
+		local spec = LL.Landmarks.AmberfallBridge
+		fills = 0
+		W2.Kit = { place = function(piece) local m = Instance.new("Model"); m.Name = piece; return m end }
+		local ravine = Instance.new("Folder")
+		W2.build({ GoldenRavine = ravine }, function(region) return region == "GoldenRavine" end)
+		local br = ravine:FindFirstChild("Landmark_AmberfallBridge")
+		local gorge = br and br:FindFirstChild("GorgeFx")
+		check("broken bridge: places, writes every terrain seat, and hangs the gorge mist and leaves", br ~= nil
+			and br:FindFirstChild("Amberfall_BrokenBridge") ~= nil and br:GetAttribute("SeatsWritten") == true and fills == #spec.Seats
+			and gorge ~= nil and #gorge:GetChildren() == #spec.Gorge.Mist + 1)
+		fills = 0
+		W2.Kit = { place = function() return nil end }
+		local bare = Instance.new("Folder")
+		W2.build({ GoldenRavine = bare }, function() return true end)
+		local none = bare:FindFirstChild("Landmark_AmberfallBridge")
+		check("broken bridge missing: no seat is written and no weather hangs", fills == 0 and none ~= nil and none:FindFirstChild("GorgeFx") == nil)
+	end)()
 end
 
 print(string.format("vesperhold loader: %d passed, %d failed", passed, failed))
