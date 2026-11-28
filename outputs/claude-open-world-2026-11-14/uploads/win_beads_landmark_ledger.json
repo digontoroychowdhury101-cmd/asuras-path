@@ -1,8 +1,22 @@
 {
+ "landmark/Bellwood_AbbotBeads__p1": {
+  "assetId": "97855661579037",
+  "bytes": 8174568,
+  "displayName": "landmark_Bellwood_AbbotBeads__p1",
+  "error": null,
+  "file": "C:\\Users\\disha\\AsurasPath\\assets\\build\\bellwood_beads\\upload\\Bellwood_AbbotBeads__p1.glb",
+  "moderation": "Approved",
+  "operationId": "038bebe8-ba0f-4cef-a359-41914e319ca7",
+  "sha256": "d2a9f18022682816b08a7f81aeea1e7644c80b9c66e5ae2b3255118b54baaa5c"
+ },
  "landmark/Bellwood_AbbotTray__p1": {
+  "assetId": "76308932482157",
   "bytes": 7651188,
-  "error": "The requested `studio_id` is not connected \u2014 that Roblox Studio instance may have been closed or its place unloaded. Call `list_roblox_studios` for the current instances, then continue on the one the user confirms (or the one whose `name` matches).",
-  "file": "C:\\Users\\disha\\AppData\\Local\\Temp\\claude\\e54ce3b7c0163f24\\582e413d-b95a-4873-87c1-99dbbc41f991\\scratchpad\\beads_pilot\\Bellwood_AbbotTray__p1.glb",
+  "displayName": "landmark_Bellwood_AbbotTray__p1",
+  "error": null,
+  "file": "C:\\Users\\disha\\AsurasPath\\assets\\build\\bellwood_beads\\upload\\Bellwood_AbbotTray__p1.glb",
+  "moderation": "Approved",
+  "operationId": "8980c851-3211-43af-966e-4cd21754d7cd",
   "sha256": "d81d472c1b89a70cf33dd86d0ab38152cd67bc505f0f18fa7ef345d3f105ee84"
  }
 }

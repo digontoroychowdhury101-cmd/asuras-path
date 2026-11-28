@@ -40,14 +40,30 @@
   - Stage 3: UnlockSpell;
   - Arsenal codex: 182/0.
 
+## Upload and Studio (same day)
+- Uploads:
+  - `Bellwood_AbbotTray`: 76308932482157, Approved.
+  - `Bellwood_AbbotBeads`: 97855661579037, Approved.
+  - Ledger: `uploads/win_beads_landmark_ledger.json`.
+- Registry:
+  - Readback added 46 lines to `LANDMARK_KIT_UPLOADED.json` and removed none.
+  - `bellwood_beads` was added to the `landmark` packs. `test_kit_registry`: 21 OK.
+- `default.project.json` now maps `SutraShow`. Without it, Rojo and the build left the module out even though verify_all passed.
+- Studio Play, single client (Development):
+  - The colossal temple takes about 5–7 minutes to load in Studio. This was already true before win-110.
+  - The altar showed the tray and beads. `RelicYaw` is now `math.pi`, so the jade head bead and tassel face the hall entrance. The lamp moved 7 studs above the plinth.
+  - Holding Z gave `SutraLearned`. The toast showed, Shen began Summoning, and the beads hid.
+  - Qi Sorcery listed the Sutra (Self and allies within 12 studs, 40 Qi, 26 s, 8% × 4). It slotted into slot 2.
+  - E cast it: Qi 100 → 63, and the 26 s cooldown started. The hand glow, the circling mala, the 54-bead ground ring, pulse waves and the self highlight all appeared.
+  - The first pass flooded the hall floor green. The glowing jade is now mixed darker, with floor light 0.6 and range 12.
+  - Studio profiles are in memory, so a new Play starts without the Sutra.
+- Not run in Studio:
+  - two-client ally heal;
+  - stagger interrupt;
+  - an HP restore below max.
+  These are covered by the runtime harness (19 scenarios), not by a live client.
+- verify_all: SUCCESS. Digest 306/4089023/1985442455 matches Studio. Saved Development v96. Not published.
+
 ## Open
-- Upload is blocked. Both tries failed because no place was open in Studio. The ledger at `uploads/win_beads_landmark_ledger.json` holds the error; rerunning resumes.
-- After the upload:
-  1. `registry_readback.py landmark`.
-  2. Merge the additions into `LANDMARK_KIT_UPLOADED.json`.
-  3. Add `bellwood_beads` to the `landmark` packs and the `test_kit_registry` fixture.
-- Check `World.RelicYaw` in Studio (the head bead should face the hall entrance).
-- Then:
-  1. Play solo: take, learn, slot, cast, heal, stagger.
-  2. Play with two clients: ally heal.
-  3. Save to Development.
+- Two-client Studio check of the ally heal and a stagger mid-chant.
+- Render and upload the four synthesized Mend cues (needs scipy on Windows).

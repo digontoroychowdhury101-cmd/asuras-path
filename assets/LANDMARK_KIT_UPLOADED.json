@@ -1,5 +1,17 @@
 {
   "modelAssets": {
+    "Bellwood_AbbotBeads": {
+      "assetId": "rbxassetid://97855661579037",
+      "moderationState": "Approved",
+      "operationId": "038bebe8-ba0f-4cef-a359-41914e319ca7",
+      "uploaded": "2026-11-28"
+    },
+    "Bellwood_AbbotTray": {
+      "assetId": "rbxassetid://76308932482157",
+      "moderationState": "Approved",
+      "operationId": "8980c851-3211-43af-966e-4cd21754d7cd",
+      "uploaded": "2026-11-28"
+    },
     "Bellwood_ColonnadeStanding": {
       "assetId": "rbxassetid://127915433158542",
       "moderationState": "Approved",
@@ -93,6 +105,40 @@
   },
   "note": "Real IDs only. modelAssets = Assets API Model id (LoadAsset target; part 1 of a split piece). pieces = sub-mesh MeshId/maps read from a verified LoadAsset; split pieces carry per-sub Asset and center (tools/assets/glb_split.py).",
   "pieces": {
+    "Bellwood_AbbotBeads": {
+      "Bellwood_AbbotBeads__Beads": {
+        "ColorMap": "rbxassetid://89925732139567",
+        "MeshId": "rbxassetid://76524033978226",
+        "MetalnessMap": "rbxassetid://140237701802017",
+        "NormalMap": "rbxassetid://115360875848809",
+        "RoughnessMap": "rbxassetid://101224952506330",
+        "operations": {
+          "Asset": "038bebe8-ba0f-4cef-a359-41914e319ca7"
+        }
+      },
+      "Bellwood_AbbotBeads__Cord": {
+        "ColorMap": "rbxassetid://89925732139567",
+        "MeshId": "rbxassetid://72243757539397",
+        "MetalnessMap": "rbxassetid://140237701802017",
+        "NormalMap": "rbxassetid://115360875848809",
+        "RoughnessMap": "rbxassetid://101224952506330",
+        "operations": {
+          "Asset": "038bebe8-ba0f-4cef-a359-41914e319ca7"
+        }
+      }
+    },
+    "Bellwood_AbbotTray": {
+      "Bellwood_AbbotTray__Lacquer": {
+        "ColorMap": "rbxassetid://89925732139567",
+        "MeshId": "rbxassetid://104490585620680",
+        "MetalnessMap": "rbxassetid://140237701802017",
+        "NormalMap": "rbxassetid://115360875848809",
+        "RoughnessMap": "rbxassetid://101224952506330",
+        "operations": {
+          "Asset": "8980c851-3211-43af-966e-4cd21754d7cd"
+        }
+      }
+    },
     "Bellwood_ColonnadeStanding": {
       "Bellwood_ColonnadeStanding__Ribbon": {
         "ColorMap": "rbxassetid://94818348159381",

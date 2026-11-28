@@ -13,7 +13,9 @@ local Assets = require(game:GetService("ReplicatedStorage").AsurasPath.Shared.Pr
 local Show = {}
 
 local rgb = Color3.fromRGB
-local JADE, PALE, BRONZE = rgb(70, 190, 140), rgb(190, 255, 225), rgb(150, 105, 55)
+-- Neon lifts hue and value, so the glowing jade is mixed darker than the bead texture.
+local JADE, PALE, BRONZE = rgb(28, 128, 84), rgb(150, 220, 180), rgb(150, 105, 55)
+local GLOW = 0.6 -- jade light on the floor; brighter floods the hall green
 local RADIUS = 12 -- SpellSchema SutraOfMending.Radius
 local COUNT = 54 -- beads on the Abbot's mala
 local HIP = 2.8 -- root to floor
@@ -54,7 +56,7 @@ function Show.startup(cast: any)
 	cast.Bag.Folder = folder
 	for _, hand in Kit.hands(cast.Entity.Model) do
 		local a = Kit.attach(cast.Trove, hand, Vector3.zero, "SutraGlow")
-		Kit.light(a, JADE, 7, 1.6)
+		Kit.light(a, JADE, 5, 1)
 		Kit.emitter(a, { Texture = Assets.Textures.Ember, Color = ColorSequence.new(PALE, JADE), Size = NumberSequence.new(0.22, 0.02),
 			Rate = 14, Lifetime = NumberRange.new(0.5, 0.8), Speed = NumberRange.new(0.4, 1), Spread = 180, Accel = Vector3.new(0, 1.5, 0), Light = 1 })
 	end
@@ -92,7 +94,7 @@ function Show.release(cast: any, at: Vector3)
 	motes.Transparency = 1
 	local rise = Kit.emitter(motes, { Texture = Assets.Textures.Ember, Color = ColorSequence.new(PALE, JADE), Size = NumberSequence.new(0.3, 0.04),
 		Rate = 26, Lifetime = NumberRange.new(1.2, 1.8), Speed = NumberRange.new(1.5, 3), Spread = 8, Accel = Vector3.new(0, 1, 0), Drag = 0.6, Light = 1 })
-	local light = Kit.light(motes, JADE, RADIUS * 1.5, 1.2)
+	local light = Kit.light(motes, JADE, RADIUS, GLOW)
 	cast.Bag.Light = light
 	local grow, spin, last = 0, 0, floor
 	Kit.add(cast.Trove, RunService.Heartbeat:Connect(function(dt: number)
@@ -118,7 +120,7 @@ local function glow(cast: any, entity: any)
 	if not model or not model.Parent then return end
 	local h = Kit.add(cast.Trove, Instance.new("Highlight"))
 	h.FillColor, h.OutlineColor = JADE, PALE
-	h.FillTransparency, h.OutlineTransparency = 0.55, 0.2
+	h.FillTransparency, h.OutlineTransparency = 0.75, 0.3
 	h.DepthMode = Enum.HighlightDepthMode.Occluded
 	h.Adornee, h.Parent = model, model
 	Kit.tween(cast.Trove, h, 0.7, { FillTransparency = 1, OutlineTransparency = 1 })
@@ -136,8 +138,8 @@ function Show.pulse(cast: any, at: Vector3, data: any, state: any)
 	Sfx.play(cast, "MendPulse", 0.85 + cast.Pulses * 0.05)
 	Kit.shockwave(cast.Trove, folder, CFrame.new(at - Vector3.new(0, HIP, 0)), JADE, RADIUS, 0.7, 0.4)
 	if cast.Bag.Light then
-		cast.Bag.Light.Brightness = 3
-		Kit.tween(cast.Trove, cast.Bag.Light, 0.5, { Brightness = 1.2 })
+		cast.Bag.Light.Brightness = GLOW * 2.5
+		Kit.tween(cast.Trove, cast.Bag.Light, 0.5, { Brightness = GLOW })
 	end
 	if type(data) == "table" and type(data.healed) == "table" and state then
 		for _, id in data.healed do glow(cast, state:Get(id)) end

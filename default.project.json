@@ -1198,6 +1198,9 @@
             "BlazingSunShow": {
               "$path": "src/client/Controllers/BlazingSunShow.luau"
             },
+            "SutraShow": {
+              "$path": "src/client/Controllers/SutraShow.luau"
+            },
             "SkillShowcase": {
               "$path": "src/client/Controllers/SkillShowcase.luau"
             },

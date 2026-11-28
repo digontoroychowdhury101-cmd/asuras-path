@@ -404,7 +404,7 @@ end
 -- temple frame. Taking it (WorldService) wakes Shen on the lake and teaches the Sutra of Mending. The Fallen Abbot's beads
 -- (Bellwood_AbbotBeads) lie on a lacquer tray (Bellwood_AbbotTray) on a two-tier stone plinth; until the kit pieces are
 -- uploaded a sheathed blade stands in. WorldService owns the prompt on the tagged plinth and hides the "Relic" while Shen is awake.
-World.RelicYaw = 0 -- the beads' head bead faces +Z, back toward the hall's entrance
+World.RelicYaw = math.pi -- turns the jade head bead and tassel toward the hall entrance (checked in Studio Play, win-110)
 function World.shenRelic(lm: any, frame: CFrame): Model
 	local R = lm.Basin.ShenLake.Relic
 	local base = frame * CFrame.new(0, R.Rise, R.Run)
@@ -438,7 +438,7 @@ function World.shenRelic(lm: any, frame: CFrame): Model
 		end
 	end
 	local glow = Instance.new("Attachment")
-	glow.Name, glow.Position, glow.Parent = "RelicLight", Vector3.new(0, 2.4, 0), plinth
+	glow.Name, glow.Position, glow.Parent = "RelicLight", Vector3.new(0, 7, 0), plinth
 	local lamp = Instance.new("PointLight")
 	lamp.Color, lamp.Brightness, lamp.Range, lamp.Shadows = Color3.fromRGB(255, 196, 130), 1.4, 16, true
 	lamp.Parent = glow
