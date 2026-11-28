@@ -376,5 +376,28 @@ do
 	print(string.format("  footings: %d pieces, nearest gate clearance %.0f studs", #F.Pieces, minGate))
 end
 
+-- Root grip (win-113): the braided roots replace every pack bark section under z 160 (Roots02-07, BarkTwigs03/05/07), and
+-- nothing above the cut, which they join.
+do
+	local RG = B.ColossalTemple.RootGrip
+	local K = require("../src/shared/LandmarkKitRegistry")
+	check("root grip: laid out on the colossal temple", RG ~= nil and RG.Model == "Bellwood_RootGrip")
+	if RG then
+		check("root grip: model is registered", K[RG.Model] ~= nil)
+		local lower = function(key: string): boolean
+			return key:match("^Bellwood_ColossalTemple__Roots0[2-7]_") ~= nil or key:match("^Bellwood_ColossalTemple__BarkTwigs0[357]_") ~= nil
+		end
+		local replaced, exact = {}, true
+		for _, key in RG.Replaces do
+			replaced[key] = true
+			if not (lower(key) and K.Bellwood_ColossalTemple[key]) then exact = false end
+		end
+		for key in K.Bellwood_ColossalTemple do
+			if lower(key) and not replaced[key] then exact = false end
+		end
+		check("root grip: replaces exactly the pack's bark under the cut", exact)
+	end
+end
+
 print(string.format("bellwood fit: %d passed, %d failed", passed, failed))
 if failed > 0 then error("bellwood fit failed") end

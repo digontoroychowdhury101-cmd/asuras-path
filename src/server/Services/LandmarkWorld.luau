@@ -945,14 +945,28 @@ function World.build(folders: { [string]: Instance }, waitReady: (string) -> boo
 				pack.Name = candidate.Model
 				-- LandscapeBudget hid the crown past 900 studs and faded the eaves and windows by size, leaving bare black tiers
 				pack:SetAttribute("AsuraKeepFar", true)
+				-- The root grip (win-113) replaces the pack's lower roots, but only once it has placed: if its model is
+				-- missing, the pack keeps its own roots.
+				local omit, grip = candidate.Omit, nil
+				local RG = candidate.RootGrip
+				if RG then
+					grip = Kit.place(RG.Model, frame * CFrame.new(RG.Foot.X, RG.Foot.Y, RG.Foot.Z), Vector3.one, { Fidelity = {} })
+					if grip then
+						omit = table.clone(candidate.Omit or {})
+						for _, key in RG.Replaces do
+							table.insert(omit, key)
+						end
+					end
+				end
 				for _, piece in candidate.Pieces do
 					local pose = frame * CFrame.new(piece.X, piece.Y, piece.Z)
 						* CFrame.Angles(0, piece.Yaw or 0, 0) * CFrame.new(piece.Foot.X, piece.Foot.Y, piece.Foot.Z)
-					local placedPiece = Kit.place(piece.Model, pose, Vector3.one, { Fidelity = {}, Omit = candidate.Omit })
+					local placedPiece = Kit.place(piece.Model, pose, Vector3.one, { Fidelity = {}, Omit = omit })
 					if not placedPiece then break end
 					placedPiece.Parent = pack
 				end
 				if #pack:GetChildren() == #candidate.Pieces then
+					if grip then grip.Parent = pack end
 					local collision = World.colossalTempleCollision(frame)
 					collision.Parent = pack
 					if lm.Basin.ShenLake then World.shenRelic(lm, frame).Parent = model end
@@ -960,6 +974,7 @@ function World.build(folders: { [string]: Instance }, waitReady: (string) -> boo
 					colossalFrame, templePlaced, T = frame, true, candidate
 					pack.Parent = model
 				else
+					if grip then grip:Destroy() end
 					pack:Destroy()
 				end
 			end

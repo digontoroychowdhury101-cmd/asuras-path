@@ -22,7 +22,8 @@ KITS = {
     "vesperhold": ("VESPERHOLD", "VesperholdKitRegistry", ("kit", "props", "trees")),
     # Open-world landmarks (LANDMARK-BUILD-SPEC): one JSON, generator manifests at assets/source/landmarks/<pack>/manifest.json.
     "landmark": ("LANDMARK", "LandmarkKitRegistry", ("bellwood_face", "bellwood_temple", "bellwood_gate", "bellwood_temple_colossal",
-                                              "bellwood_colonnade", "bellwood_lotus", "bellwood_maple", "bellwood_beads", "bellwood_footings")),
+                                              "bellwood_colonnade", "bellwood_lotus", "bellwood_maple", "bellwood_beads", "bellwood_footings",
+                                              "bellwood_root_grip")),
 }
 # Kits whose registry may not exist yet (nothing uploaded): validate() returns an empty registry and the module is written empty.
 OPTIONAL = {"vesperhold", "landmark"}

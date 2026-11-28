@@ -1,0 +1,32 @@
+{
+ "landmark/Bellwood_RootGrip__p1": {
+  "assetId": "132277268977587",
+  "bytes": 19350960,
+  "displayName": "landmark_Bellwood_RootGrip__p1",
+  "error": null,
+  "file": "assets/build/bellwood_root_grip/upload/Bellwood_RootGrip__p1.glb",
+  "moderation": "Approved",
+  "operationId": "33f19f47-faa1-40de-8038-a7353c750d7e",
+  "sha256": "aa097c95d586eeaa55e6965183eba0ec8401f1f88b61a1f766656daa80a7d445"
+ },
+ "landmark/Bellwood_RootGrip__p2": {
+  "assetId": "105848114049710",
+  "bytes": 19082284,
+  "displayName": "landmark_Bellwood_RootGrip__p2",
+  "error": null,
+  "file": "assets/build/bellwood_root_grip/upload/Bellwood_RootGrip__p2.glb",
+  "moderation": "Approved",
+  "operationId": "6928327d-3a5a-4022-a523-17719559e781",
+  "sha256": "bc4dab39ad4ccbc3079e359936b7096cb5eace3c0b19a9ebe0ebc5f5e2960497"
+ },
+ "landmark/Bellwood_RootGrip__p3": {
+  "assetId": "78362386424246",
+  "bytes": 19081168,
+  "displayName": "landmark_Bellwood_RootGrip__p3",
+  "error": null,
+  "file": "assets/build/bellwood_root_grip/upload/Bellwood_RootGrip__p3.glb",
+  "moderation": "Approved",
+  "operationId": "60700092-a59e-4639-9ccd-70aefebfec9c",
+  "sha256": "717cbc5ddb1962a7b88a032ff6fd0f22dc2be901613db04cd7ed737e8e0b0466"
+ }
+}

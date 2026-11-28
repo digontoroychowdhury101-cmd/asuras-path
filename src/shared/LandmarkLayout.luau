@@ -62,6 +62,23 @@ Layout.Landmarks = {
 					{ 22, 140, -46, 34, 1.35 }, { -47, 124, -47, 30, 1.05 }, { 47, 124, -47, 30, 1.05 },
 					{ -30, 130, -128, 50, 2.6 }, { 30, 130, -128, 50, 2.6 } },
 				Chimes = { X = 0, Y = 132, Z = -58 },
+				-- Root grip (win-113, tools/blender/landmarks/bellwood_root_grip.py): below z 160 the v20 roots lay on the terraces as
+				-- thin, even hoses. Braided, flattened roots, draped on the recipe's own stone, start on the cut rings and replace
+				-- every pack bark section under the cut. The model shares the pack's recipe origin. Foot = its bbox (centre X/Z,
+				-- min Y) in model axes. LandmarkWorld omits Replaces only once the grip has placed.
+				RootGrip = { Model = "Bellwood_RootGrip", Foot = { X = 2.7100, Y = -1.4100, Z = 54.3350 }, Replaces = {
+					"Bellwood_ColossalTemple__Roots02_01_Part01", "Bellwood_ColossalTemple__Roots02_01_Part02",
+					"Bellwood_ColossalTemple__Roots02_01_Part03", "Bellwood_ColossalTemple__Roots02_01_Part04",
+					"Bellwood_ColossalTemple__Roots03_01_Part01", "Bellwood_ColossalTemple__Roots03_01_Part02",
+					"Bellwood_ColossalTemple__Roots03_01_Part03", "Bellwood_ColossalTemple__Roots03_01_Part04",
+					"Bellwood_ColossalTemple__Roots04_01_Part01", "Bellwood_ColossalTemple__Roots04_01_Part02",
+					"Bellwood_ColossalTemple__Roots04_01_Part03", "Bellwood_ColossalTemple__Roots04_01_Part04",
+					"Bellwood_ColossalTemple__Roots05_01_Part01", "Bellwood_ColossalTemple__Roots05_01_Part02",
+					"Bellwood_ColossalTemple__Roots05_01_Part03", "Bellwood_ColossalTemple__Roots05_01_Part04",
+					"Bellwood_ColossalTemple__Roots06_01_Part01", "Bellwood_ColossalTemple__Roots07_01_Part01",
+					"Bellwood_ColossalTemple__BarkTwigs03_01_Part01", "Bellwood_ColossalTemple__BarkTwigs05_01_Part01",
+					"Bellwood_ColossalTemple__BarkTwigs07_01_Part01",
+				} },
 				-- Footings (win-112, tools/blender/landmarks/bellwood_footings.py): the back and flanks stood as sheer coursed walls cut off
 				-- flat on the bed. Bedrock shelves, stepped buttresses and scree stand against them. X/Z in the temple frame
 				-- (LandmarkWorld.templeFrame: +Z to the passage exit, +X right), measured in a Studio probe of the placed pack: back wall

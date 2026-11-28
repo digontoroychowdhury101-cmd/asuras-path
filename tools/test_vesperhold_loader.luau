@@ -986,8 +986,10 @@ do
 		W2.build({ Forest = folder }, function() return true end)
 		local built = folder:FindFirstChild("Landmark_Bellwood")
 		local pack = built and built:FindFirstChild("Bellwood_ColossalTemple")
-		check("the configured colossal pack replaces the old hall with its own collision", pack ~= nil and #pack:GetChildren() == 4
+		local grips = if colossal.RootGrip then 1 else 0 -- win-113: the root grip joins the pack once it places
+		check("the configured colossal pack replaces the old hall with its own collision", pack ~= nil and #pack:GetChildren() == 4 + grips
 			and pack:FindFirstChild("ColossalTempleCollision") ~= nil and built:FindFirstChild("Bellwood_TempleHall") == nil)
+		check("the root grip places inside the colossal pack", grips == 0 or (pack ~= nil and pack:FindFirstChild("Bellwood_RootGrip") ~= nil))
 		local lights = built and built:FindFirstChild("BasinLights")
 		local templeLights, inside = 0, true
 		for _, part in if lights then lights:GetChildren() else {} do
