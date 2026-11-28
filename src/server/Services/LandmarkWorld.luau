@@ -500,6 +500,23 @@ function World.shallowsFrame(lm: any, s: any): CFrame
 		* CFrame.Angles(math.rad(s.Pitch or 0), 0, math.rad(s.Roll or 0))
 end
 
+-- Footings (Basin.ColossalTemple.Footings, win-112): bedrock, buttresses and scree against the colossal temple's back and flanks, in its
+-- frame. Stone and rock are hulls to wade against; the moss never collides. A piece not yet in the registry is left out.
+World.FootingFidelity = { Stone = HULL, Rock = HULL }
+function World.footingFrame(frame: CFrame, F: any, f: any): CFrame
+	return frame * CFrame.new(f.X, F.Lift + (f.Lift or 0), f.Z) * CFrame.Angles(0, math.rad(f.Yaw), 0)
+end
+function World.footings(frame: CFrame, F: any): Model
+	local Kit = deps()
+	local model = Instance.new("Model")
+	model.Name = "Footings"
+	for _, f in F.Pieces do
+		local m = Kit.place(f.Model, World.footingFrame(frame, F, f), Vector3.one * (f.Scale or F.Scale), { Fidelity = World.FootingFidelity })
+		if m then m.Parent = model end
+	end
+	return model
+end
+
 -- The gate towers' origin frame: at Layout.gateSpot, upright, its front (model +Z) turned to the basin centre.
 function World.gateFrame(lm: any): CFrame
 	local s, c = World.Layout.gateSpot(lm), World.Layout.basinCentre(lm)
@@ -939,6 +956,7 @@ function World.build(folders: { [string]: Instance }, waitReady: (string) -> boo
 					local collision = World.colossalTempleCollision(frame)
 					collision.Parent = pack
 					if lm.Basin.ShenLake then World.shenRelic(lm, frame).Parent = model end
+					if candidate.Footings then World.footings(frame, candidate.Footings).Parent = model end
 					colossalFrame, templePlaced, T = frame, true, candidate
 					pack.Parent = model
 				else

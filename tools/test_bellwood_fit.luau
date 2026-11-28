@@ -346,5 +346,35 @@ check("the stairs, top roof and crown emerge together past the passage", exitSig
 print(string.format("  stepped crest: %d/%d road sightlines clear, %d/3 exit sightlines clear",
 	roadSightlines, #eyes * 3, exitSightlines))
 
+-- Footings (win-112): each piece's scaled footprint sits inside the shore, off the gate towers, the causeway and the stair, against
+-- the back (Z <= -300) or a flank (|X| >= 230).
+do
+	local F = B.ColossalTemple.Footings
+	local toWorld = place(B.ColossalTemple)
+	local ca, cb = route.Causeway.A, route.Causeway.B
+	local function segD(x, z)
+		local dx, dz = cb.X - ca.X, cb.Z - ca.Z
+		local t = math.clamp(((x - ca.X) * dx + (z - ca.Z) * dz) / (dx * dx + dz * dz), 0, 1)
+		return math.sqrt((x - ca.X - t * dx) ^ 2 + (z - ca.Z - t * dz) ^ 2)
+	end
+	local inside, offGate, offCause, onWall, offStair, minGate = true, true, true, true, true, math.huge
+	for _, f in F.Pieces do
+		local x, _, z = toWorld(-f.X, f.Z, 0)
+		inside = inside and L.basinEllipse(bw, x, z, -f.R) < 1
+		local g = math.sqrt((x - gate.X) ^ 2 + (z - gate.Z) ^ 2) - B.Gate.Radius - f.R
+		minGate = math.min(minGate, g)
+		if g < 0 then print(string.format("    gate overlap %s X%d Z%d: %.0f", f.Model, f.X, f.Z, g)) end
+		offGate = offGate and g >= 0
+		offCause = offCause and segD(x, z) >= f.R + 8
+		onWall = onWall and (f.Z <= -300 or math.abs(f.X) >= 230)
+		offStair = offStair and not (math.abs(f.X) < 120 and f.Z > 150)
+	end
+	check("footings: every piece inside the shore by its footprint", inside)
+	check("footings: clear of the gate towers", offGate)
+	check("footings: clear of the causeway", offCause)
+	check("footings: each stands against the back or a flank, never on the stair", onWall and offStair)
+	print(string.format("  footings: %d pieces, nearest gate clearance %.0f studs", #F.Pieces, minGate))
+end
+
 print(string.format("bellwood fit: %d passed, %d failed", passed, failed))
 if failed > 0 then error("bellwood fit failed") end

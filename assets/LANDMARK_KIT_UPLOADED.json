@@ -101,6 +101,24 @@
       "moderationState": "Approved",
       "operationId": "3d1bd17b-5619-496c-93c3-ebf40ba629d1",
       "uploaded": "2026-11-22"
+    },
+    "Bellwood_FootingBedrock": {
+      "assetId": "rbxassetid://80713728941652",
+      "moderationState": "Approved",
+      "operationId": "f774b631-11a0-4b9a-8838-0356002aeda6",
+      "uploaded": "2026-11-28"
+    },
+    "Bellwood_FootingButtress": {
+      "assetId": "rbxassetid://88320040419761",
+      "moderationState": "Approved",
+      "operationId": "894d6335-7625-4172-92ac-6ab998837497",
+      "uploaded": "2026-11-28"
+    },
+    "Bellwood_FootingScree": {
+      "assetId": "rbxassetid://85403764289999",
+      "moderationState": "Approved",
+      "operationId": "90c44ecb-7f41-4ca6-ba23-97a53b782cc5",
+      "uploaded": "2026-11-28"
     }
   },
   "note": "Real IDs only. modelAssets = Assets API Model id (LoadAsset target; part 1 of a split piece). pieces = sub-mesh MeshId/maps read from a verified LoadAsset; split pieces carry per-sub Asset and center (tools/assets/glb_split.py).",
@@ -10562,6 +10580,179 @@
         ],
         "operations": {
           "Asset": "3d1bd17b-5619-496c-93c3-ebf40ba629d1"
+        }
+      }
+    },
+    "Bellwood_FootingBedrock": {
+      "Bellwood_FootingBedrock__Rock": {
+        "ColorMap": "rbxassetid://113480648421591",
+        "MeshId": "rbxassetid://94786646590341",
+        "MetalnessMap": "rbxassetid://119798829511219",
+        "NormalMap": "rbxassetid://92726672076220",
+        "RoughnessMap": "rbxassetid://102437310113338",
+        "center": [
+          16.3125,
+          8.0462,
+          -1.2644
+        ],
+        "operations": {
+          "Asset": "f774b631-11a0-4b9a-8838-0356002aeda6"
+        }
+      },
+      "Bellwood_FootingBedrock__Rock_2": {
+        "ColorMap": "rbxassetid://113480648421591",
+        "MeshId": "rbxassetid://81807914238044",
+        "MetalnessMap": "rbxassetid://119798829511219",
+        "NormalMap": "rbxassetid://92726672076220",
+        "RoughnessMap": "rbxassetid://102437310113338",
+        "center": [
+          -13.5157,
+          8.0508,
+          -1.4739
+        ],
+        "operations": {
+          "Asset": "f774b631-11a0-4b9a-8838-0356002aeda6"
+        }
+      },
+      "Bellwood_FootingBedrock__Stone": {
+        "ColorMap": "rbxassetid://138366235617887",
+        "MeshId": "rbxassetid://104595440935394",
+        "MetalnessMap": "rbxassetid://119798829511219",
+        "NormalMap": "rbxassetid://81107226168189",
+        "RoughnessMap": "rbxassetid://100692128539934",
+        "center": [
+          4.8936,
+          10.3844,
+          0.1705
+        ],
+        "operations": {
+          "Asset": "f774b631-11a0-4b9a-8838-0356002aeda6"
+        }
+      },
+      "Bellwood_FootingBedrock__Vine": {
+        "Asset": "rbxassetid://81887062366170",
+        "ColorMap": "rbxassetid://116956376504039",
+        "MeshId": "rbxassetid://139501166365828",
+        "MetalnessMap": "rbxassetid://119798829511219",
+        "NormalMap": "rbxassetid://101156133732273",
+        "RoughnessMap": "rbxassetid://83902952454246",
+        "center": [
+          14.881,
+          8.9775,
+          3.3868
+        ],
+        "operations": {
+          "Asset": "2883df0b-9a1f-4120-bc3b-78a47f15dd5a"
+        }
+      },
+      "Bellwood_FootingBedrock__Vine_2": {
+        "Asset": "rbxassetid://81887062366170",
+        "ColorMap": "rbxassetid://116956376504039",
+        "MeshId": "rbxassetid://109494845044353",
+        "MetalnessMap": "rbxassetid://119798829511219",
+        "NormalMap": "rbxassetid://101156133732273",
+        "RoughnessMap": "rbxassetid://83902952454246",
+        "center": [
+          -14.9035,
+          9.9565,
+          1.68
+        ],
+        "operations": {
+          "Asset": "2883df0b-9a1f-4120-bc3b-78a47f15dd5a"
+        }
+      }
+    },
+    "Bellwood_FootingButtress": {
+      "Bellwood_FootingButtress__Rock": {
+        "ColorMap": "rbxassetid://123297125298475",
+        "MeshId": "rbxassetid://128789548433652",
+        "MetalnessMap": "rbxassetid://119798829511219",
+        "NormalMap": "rbxassetid://139041077644737",
+        "RoughnessMap": "rbxassetid://124799623143921",
+        "center": [
+          0.0,
+          3.803,
+          -0.4402
+        ],
+        "operations": {
+          "Asset": "894d6335-7625-4172-92ac-6ab998837497"
+        }
+      },
+      "Bellwood_FootingButtress__Stone": {
+        "ColorMap": "rbxassetid://93678158237189",
+        "MeshId": "rbxassetid://114968125583064",
+        "MetalnessMap": "rbxassetid://119798829511219",
+        "NormalMap": "rbxassetid://116852436772932",
+        "RoughnessMap": "rbxassetid://134398426656829",
+        "center": [
+          -0.1741,
+          23.9087,
+          1.4044
+        ],
+        "operations": {
+          "Asset": "894d6335-7625-4172-92ac-6ab998837497"
+        }
+      },
+      "Bellwood_FootingButtress__Vine": {
+        "ColorMap": "rbxassetid://100585454337821",
+        "MeshId": "rbxassetid://133226353322293",
+        "MetalnessMap": "rbxassetid://119798829511219",
+        "NormalMap": "rbxassetid://95016878048259",
+        "RoughnessMap": "rbxassetid://133984267888370",
+        "center": [
+          0.0486,
+          24.2982,
+          2.0074
+        ],
+        "operations": {
+          "Asset": "894d6335-7625-4172-92ac-6ab998837497"
+        }
+      }
+    },
+    "Bellwood_FootingScree": {
+      "Bellwood_FootingScree__Rock": {
+        "ColorMap": "rbxassetid://117188764875055",
+        "MeshId": "rbxassetid://111064221087835",
+        "MetalnessMap": "rbxassetid://119798829511219",
+        "NormalMap": "rbxassetid://102030188253338",
+        "RoughnessMap": "rbxassetid://121100121524846",
+        "center": [
+          0.0,
+          5.0686,
+          0.0
+        ],
+        "operations": {
+          "Asset": "90c44ecb-7f41-4ca6-ba23-97a53b782cc5"
+        }
+      },
+      "Bellwood_FootingScree__Stone": {
+        "ColorMap": "rbxassetid://133821562486325",
+        "MeshId": "rbxassetid://103861496194075",
+        "MetalnessMap": "rbxassetid://119798829511219",
+        "NormalMap": "rbxassetid://101507143764708",
+        "RoughnessMap": "rbxassetid://83150073632102",
+        "center": [
+          0.8151,
+          6.7865,
+          0.0376
+        ],
+        "operations": {
+          "Asset": "90c44ecb-7f41-4ca6-ba23-97a53b782cc5"
+        }
+      },
+      "Bellwood_FootingScree__Vine": {
+        "ColorMap": "rbxassetid://78818011105015",
+        "MeshId": "rbxassetid://125070167505621",
+        "MetalnessMap": "rbxassetid://119798829511219",
+        "NormalMap": "rbxassetid://74100647420230",
+        "RoughnessMap": "rbxassetid://93264475318977",
+        "center": [
+          -0.1358,
+          6.9069,
+          1.0338
+        ],
+        "operations": {
+          "Asset": "90c44ecb-7f41-4ca6-ba23-97a53b782cc5"
         }
       }
     }

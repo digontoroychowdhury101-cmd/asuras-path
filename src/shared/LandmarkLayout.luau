@@ -62,6 +62,32 @@ Layout.Landmarks = {
 					{ 22, 140, -46, 34, 1.35 }, { -47, 124, -47, 30, 1.05 }, { 47, 124, -47, 30, 1.05 },
 					{ -30, 130, -128, 50, 2.6 }, { 30, 130, -128, 50, 2.6 } },
 				Chimes = { X = 0, Y = 132, Z = -58 },
+				-- Footings (win-112, tools/blender/landmarks/bellwood_footings.py): the back and flanks stood as sheer coursed walls cut off
+				-- flat on the bed. Bedrock shelves, stepped buttresses and scree stand against them. X/Z in the temple frame
+				-- (LandmarkWorld.templeFrame: +Z to the passage exit, +X right), measured in a Studio probe of the placed pack: back wall
+				-- z ~ -312, main flanks x ~ -294 / +290 from the back to z ~ -40, the right lower terrace x ~ +234 (the gate towers
+				-- dress the left one). Yaw (degrees)
+				-- turns the piece's front (model +Z) out of the wall. Lift is the pivot under the temple foot. R = scaled half footprint
+				-- (test_bellwood_fit keeps it clear of the gate towers and the stair).
+				Footings = { Scale = 2.5, Lift = -3, Pieces = {
+					{ Model = "Bellwood_FootingButtress", X = -205, Z = -312, Yaw = 180, R = 35 },
+					{ Model = "Bellwood_FootingBedrock", X = -98, Z = -314, Yaw = 183, R = 80 },
+					{ Model = "Bellwood_FootingButtress", X = 12, Z = -312, Yaw = 180, R = 35 },
+					{ Model = "Bellwood_FootingBedrock", X = 128, Z = -316, Yaw = 177, R = 80 },
+					{ Model = "Bellwood_FootingButtress", X = 236, Z = -312, Yaw = 180, R = 35 },
+					{ Model = "Bellwood_FootingScree", X = -120, Z = -352, Yaw = 195, R = 40 },
+					{ Model = "Bellwood_FootingScree", X = 160, Z = -354, Yaw = 170, R = 40 },
+					{ Model = "Bellwood_FootingScree", X = -290, Z = -322, Yaw = -135, R = 40 },
+					{ Model = "Bellwood_FootingScree", X = 282, Z = -322, Yaw = 135, R = 40 },
+					{ Model = "Bellwood_FootingBedrock", X = -294, Z = -235, Yaw = -90, R = 80 },
+					{ Model = "Bellwood_FootingButtress", X = -292, Z = -130, Yaw = -90, R = 35 },
+					{ Model = "Bellwood_FootingScree", X = -296, Z = -75, Yaw = -95, R = 40 },
+					{ Model = "Bellwood_FootingBedrock", X = 290, Z = -230, Yaw = 92, R = 80 },
+					{ Model = "Bellwood_FootingButtress", X = 290, Z = -130, Yaw = 90, R = 35 },
+					{ Model = "Bellwood_FootingScree", X = 292, Z = -60, Yaw = 85, R = 40 },
+					{ Model = "Bellwood_FootingBedrock", X = 234, Z = 90, Yaw = 90, R = 80 },
+					{ Model = "Bellwood_FootingScree", X = 236, Z = 195, Yaw = 100, R = 40 },
+				} },
 			},
 			-- The Hollow (creator 2026-11-23: the eye leads underground, so no sky over the colossal temple): a basalt vault springs from
 			-- the rim and closes at Apex over the crown. Its cross-section is a superellipse of power Power, Inset studs past the shore at

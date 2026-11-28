@@ -212,7 +212,7 @@ class KitRegistry(unittest.TestCase):
         d.mkdir(parents=True)
         subs = ["Bellwood_GiantFace__Shell", "Bellwood_GiantFace__Floor"]
         (d / "manifest.json").write_text(json.dumps({"pieces": {"Bellwood_GiantFace": {"sub_meshes": {s: 10 for s in subs}}}}))
-        for pack in ("bellwood_temple", "bellwood_temple_colossal", "bellwood_colonnade", "bellwood_lotus", "bellwood_maple", "bellwood_beads"):  # every landmark pack needs its manifest
+        for pack in ("bellwood_temple", "bellwood_temple_colossal", "bellwood_colonnade", "bellwood_lotus", "bellwood_maple", "bellwood_beads", "bellwood_footings"):  # every landmark pack needs its manifest
             t = self.root / "assets/source/landmarks" / pack
             t.mkdir(parents=True)
             (t / "manifest.json").write_text(json.dumps({"pieces": {}}))
@@ -238,7 +238,7 @@ class KitRegistry(unittest.TestCase):
 
     def test_landmark_lotus_pack_registers_floating_pieces(self):
         # The lake lotus / lily-pad kit (assets/source/landmarks/bellwood_lotus) validates and writes with the other landmark packs.
-        packs = {"bellwood_face": {}, "bellwood_temple": {}, "bellwood_gate": {}, "bellwood_temple_colossal": {}, "bellwood_colonnade": {}, "bellwood_maple": {}, "bellwood_beads": {},
+        packs = {"bellwood_face": {}, "bellwood_temple": {}, "bellwood_gate": {}, "bellwood_temple_colossal": {}, "bellwood_colonnade": {}, "bellwood_maple": {}, "bellwood_beads": {}, "bellwood_footings": {},
                  "bellwood_lotus": {"LilyPad_Cluster_A": ["LilyPad_Cluster_A__Pad"], "Lotus_Bloom_A": ["Lotus_Bloom_A__Pad", "Lotus_Bloom_A__Petals"]}}
         for pack, pieces in packs.items():
             d = self.root / "assets/source/landmarks" / pack
@@ -265,6 +265,10 @@ class KitRegistry(unittest.TestCase):
     def test_landmark_kit_includes_abbot_beads_pack(self):
         # The Fallen Abbot's beads and tray on Shen's relic altar (assets/source/landmarks/bellwood_beads).
         self.assertIn("bellwood_beads", K.KITS["landmark"][2])
+
+    def test_landmark_kit_includes_temple_footings_pack(self):
+        # Bedrock, buttress and scree that seat the colossal temple's rear and flank walls (assets/source/landmarks/bellwood_footings).
+        self.assertIn("bellwood_footings", K.KITS["landmark"][2])
 
     def test_vesperhold_mesh_id_shared_across_pieces_only(self):
         # Roblox dedupes identical geometry (both hooded statues' plinths); the loader resolves each piece inside its own model.

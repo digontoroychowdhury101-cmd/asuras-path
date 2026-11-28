@@ -1,0 +1,42 @@
+{
+ "landmark/Bellwood_FootingBedrock__p1": {
+  "assetId": "80713728941652",
+  "bytes": 13315100,
+  "displayName": "landmark_Bellwood_FootingBedrock__p1",
+  "error": null,
+  "file": "assets/build/bellwood_footings/upload/Bellwood_FootingBedrock__p1.glb",
+  "moderation": "Approved",
+  "operationId": "f774b631-11a0-4b9a-8838-0356002aeda6",
+  "sha256": "f095417d7052376659845fd9fa15f319a57dc3a8dc8b73beb198d53c667cd85e"
+ },
+ "landmark/Bellwood_FootingBedrock__p2": {
+  "assetId": "81887062366170",
+  "bytes": 9581884,
+  "displayName": "landmark_Bellwood_FootingBedrock__p2",
+  "error": null,
+  "file": "assets/build/bellwood_footings/upload/Bellwood_FootingBedrock__p2.glb",
+  "moderation": "Approved",
+  "operationId": "2883df0b-9a1f-4120-bc3b-78a47f15dd5a",
+  "sha256": "28adce9a8209f722351df7ce2ca6726e656cce6cfccf62b49183b0a196d23bd4"
+ },
+ "landmark/Bellwood_FootingButtress__p1": {
+  "assetId": "88320040419761",
+  "bytes": 18691264,
+  "displayName": "landmark_Bellwood_FootingButtress__p1",
+  "error": null,
+  "file": "assets/build/bellwood_footings/upload/Bellwood_FootingButtress__p1.glb",
+  "moderation": "Approved",
+  "operationId": "894d6335-7625-4172-92ac-6ab998837497",
+  "sha256": "1ae1603ee1eae2736175a667974573f50bc79c71f62ee431121d74eff75efb02"
+ },
+ "landmark/Bellwood_FootingScree__p1": {
+  "assetId": "85403764289999",
+  "bytes": 13230888,
+  "displayName": "landmark_Bellwood_FootingScree__p1",
+  "error": null,
+  "file": "assets/build/bellwood_footings/upload/Bellwood_FootingScree__p1.glb",
+  "moderation": "Approved",
+  "operationId": "90c44ecb-7f41-4ca6-ba23-97a53b782cc5",
+  "sha256": "30afd60c533bcd97c378ef55af0e69c71e0a602e5f208e835f6b099f595cc362"
+ }
+}
